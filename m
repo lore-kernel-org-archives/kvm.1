@@ -1,69 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.35.211.235
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793104910;
-	b=lLOm9MuSjU0lYIHPjrZh1braSIr2qUDNmJYFC3+Y8yGGxMfII9ehQ+3kP0ULdfcVpF69
-	 MxCP8eM1gisvWk/G8uXQNkf4+D5HhDkRiaLKtHgtcPKjjaTknWwRZaOCL1SrfpQdk5m+h
-	 AUy947fZHzTybFhcxxFh7u3/wxVukOQRu2yd1PsMtywmld6UoIswQ2pI1esq85rEo+i8e
-	 FRTlfv8XmgDXB3oLW09czmForG+gQyMk+USf8BGmluaZLLvRwuBB4VuALXneKh5lGSzcW
-	 JLayz46rE9ZFdaSdDwmPnPntcnrIn41vdstlsCif9Mxbancg5CkZFhlyl1t/W1GVeAQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793104910;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:Mail-Followup-To:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=kg+ouP1inntzb40DPZ2N3Waqa5fvmozzmC5lJ72Mkwc=;
-	b=Jm9ohIcjlInJxmQmtkPuNIkZjoI9G6WgLIPQV9SS38y2WoczjnpdOKK+IsedrxT2Swqs
-	 tsWuWH+giEp5/JjooDz8nTkZxItaqeGQZr1D/Q4XgogNSXhiEfWACIRruE55E424o95qy
-	 otHqXU68lIp5N99ZateU5VqNN1626FTeTPJemCeOcwbCc5w2yIZI1IFAlv7Fye6bnH6vM
-	 xhbM+cxA9KBXx2WdvIT0FNsimqsRahm7SscZoMZLTmwIVfALUW7adqhvjSxWpKAxdfpRR
-	 ILFZInqax5IC/tkQI6YlsRhqm0OmLRP99KbWGtNkIO5MhbhgxaHQSbAxQR6IJ9NAWfg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mifar.in;
-	spf=pass smtp.mailfrom=mifar.in;
-	dkim=pass header.d=mifar.in header.i=@mifar.in header.a=rsa-sha256 header.s=mail header.b=lhAGkfj9;
-	arc=none smtp.remote-ip=161.35.211.235
-Received: from mifar.in (mifar.in [161.35.211.235])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.43.81
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793107371;
+	b=eiVuAS3//sqGmHZiRux/v6zpLsGLIetFPHXeXpilbffdwvzuUu3b38PYfAfIBpq1m2s7
+	 pxhDksVRo7nCh5e+PiUSQ/HjxJDNnPNor4VUie2mB2uFENJrgvU9bch7Ia+HempPjXRiy
+	 QZ/MNs6BDPsKYw24Z+Gr4RHO6pANrEwr2jBW8HU1jHJKZPQBT1QkhSEt3ZfHnEi9b5yzG
+	 BrEwMfadqVd9WPXFYsw8dOuhk5oDnDmBYWU0jIjk0FICoaOlDIYBW8/GkOANReVfroaaP
+	 DQg8hGAX1jLgBRX9NmTXvuY1nv3l1iWG48dsFQwxYkKplugHIRhtMs75+2Wf6uH8LtQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793107371;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:Message-ID:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=QIhQf0Wr/lT1jSVw4dqBBu8EvYeSTKjw/fvM+D9Fi08=;
+	b=xd9FaTOthVIYFM3cVgBM6qNszYo7QzkX6r/US8BQGGMga15pWi1IZmMnyruXTpesx0pH
+	 1J6jzhPHnt4CrX754QD6Gel2cYQD0IFTvbOfPkMxm1FoGj6LuMzsqd8HOFQpvTJ7/5d5b
+	 Jwr2SKlTC5Bq7Bx+JxwkPsSn60stcXTthP6p+a1TSdJBXFKGGDFnCMNAQp5LegU3Yoosz
+	 8ecXOibpw/dfY3HBkLzo/U4pEasAihxaNCy4jrKaqpbpUOaB75quHF87tKHxAfbvO5aaU
+	 AMDcxGn8PgENkDVaM2BhIY75EV8TCb41CoZMhyXSyp559rEr5lIw0BaPxDRSXVfdKSg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=outlook.com;
+	spf=pass smtp.mailfrom=outlook.com;
+	dkim=pass header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=SLXHUfJJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.43.81
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn19013081.outbound.protection.outlook.com [52.103.43.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CD2606A31D;
-	Tue, 27 Oct 2026 12:41:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76CD2606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mifar.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mifar.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2592606A31A;
+	Tue, 27 Oct 2026 13:22:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2592606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mifar.in header.i=@mifar.in header.a=rsa-sha256 header.s=mail header.b=lhAGkfj9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mifar.in;
- i=@mifar.in; q=dns/txt; s=mail; t=1793104901; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to : from; bh=HqzqDhsejiFPsEAPuUDo4MeCwz/8FJd6yOYFsn3N2aE=;
- b=lhAGkfj9jnSNHPSOMon+2acV5VPELYfQxSGSO5OgHgTnYdMu+AugZo65pvqHhNQkVMEPj
- kmVhtzr7mjBKfA7A8XdU99+qMeQtFjRa+zvkmgU2o2uimt66YAh4LFSSxo4+T9GICaeYX/g
- 4XHsO175nvlFRCIshMC/0zQpkC9qT8RzHL3wPP3Bbcjfq0DPwbTGJ9LJxjCOaDXIXoU2wMg
- 91uBYJ+4BtzgBJKo0N3dQuojbVhqDsCgLw1bo4ERQyDOx4Mk+5UywYpfyjBkXWNztKvJwM8
- j9Y8XmQ3gN2UeP6gWtQpB4hjfcGaDvC0UAgHCcgmtoNa45ymyNs1OTsiqUiw==
-Received: from mifar.in (91-159-80-191.elisa-laajakaista.fi [91.159.80.191])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ED448
-	 client-signature ED448)
-	(Client CN "mutt.mifar.in", Issuer "ca.mifar.in" (verified OK))
-	by mifar.in (Postfix) with ESMTPS id 900263F214;
-	Tue, 27 Oct 2026 12:41:41 +0000 (UTC)
-Date: Tue, 27 Oct 2026 14:41:40 +0200
-From: Sami Farin <lkml20261027@mifar.in>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
-	kimjw04271234@gmail.com, seanjc@google.com, pbonzini@redhat.com,
-	stable@vger.kernel.org
-Subject: [REGRESSION] KVM: x86: OVMF boot hang with SMM enabled after commit
- b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO cache")
-Message-ID: <20261027124140.upuow4a3kv6kssvn@m.mifar.in>
-Mail-Followup-To: Sami Farin <lkml20261027@mifar.in>,
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=SLXHUfJJ
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XhxTh3zAAZA3JFh0SqaSvT5Wda6TOyUqdWFSvx7nmW6i7OzfC4bdu7hh4GvD2Woc3dhb/4QYM3N1a7u3FUkFhXR//PWEQFetvLRGyPWEO30Xbh9LL5iwIivjCThmEnM8uPiTjRv3EwHE7cA39NAr2wrc7gn5Q5mhFuB4ZRxX9PIxv1Nj45WwPdtW/waHsCYUdAzyvLloidhPtBuzwNg2je93jGJuRhkAqQkbtgSM91Sa9pCk6eU58ZeJkpsBjTsVrJo27ca2ll+ZhyVvwb0oYIG9uSUXpAxXjiyLPLG3iEP5xzUL2eLblh5aZRP9H5Owjo5qrCU65ZK47aIIsr9V1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QIhQf0Wr/lT1jSVw4dqBBu8EvYeSTKjw/fvM+D9Fi08=;
+ b=uIuAoExJvXEO48u5K5S7XaNgaDS/vb7oB7fBZjU+h2H9JPjBC+uGheInsVkPyIrRTPI97f21G7c/J8f0TI4ugBWfauWUbzRClMOM4kxWe3fZSuzUsM0dHM3vNwQylLc3OHNraRCZVjiZglAeqcdxyQtdaHTNs4uT3P14YdlPIKaKc4GrzNPsuQyOD5JJoKU49C8iGcozeLyYjE2yYEa933VNfi3uPiLqYzU4D04gYZX27NNWS6iimt3AXc4Ko30XjbZUpD3ZuDT9mVN3ILxnFxwaqmUermJsWXHMu3ODoF22KozO6WHxzj9En0z868SnrTRfb8CXTZ+zAAHfaG8pSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QIhQf0Wr/lT1jSVw4dqBBu8EvYeSTKjw/fvM+D9Fi08=;
+ b=SLXHUfJJsV0evib8Ju4VwpRcSq1yaGFHhJVwKoYNng6eqkw8pDEHfhqRMwNARwLn/FjAeT6zWLFI3ElqbXovCRRvq4LWFyw/7gxd8LdxAGlfXwJdKIRQVgLiBJOPbQMAM8VXRnejIpi5/rHyOpnZujiNvdQwtx9yoq1rsLFV1WWOchwtL06VQpwr2lYBr8pEMCZHhVSMp+wJ2WYOtIAKRSlIJ9J1CNhbrGlo1a220Lw0E+Rp9RvNBBhz9sk8cjjh8M6a1JsXVd0mjuES4JxNIDbM7K/3VWtbraIk9fjpwi1f+hdojLab2nye55TuB81TVkNk+IT3R6FFNcdbRD1lKg==
+Received: from OSQPR01MB6326.apcprd01.prod.exchangelabs.com
+ (2603:1096:604:290::7) by SI2PR01MB4451.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:1be::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
+ 2026 13:22:45 +0000
+Received: from OSQPR01MB6326.apcprd01.prod.exchangelabs.com
+ ([fe80::708b:59ed:4ad6:b84c]) by OSQPR01MB6326.apcprd01.prod.exchangelabs.com
+ ([fe80::708b:59ed:4ad6:b84c%6]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
+ 13:22:44 +0000
+From: slack up <yxcnew@outlook.com>
+To: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org
+Cc: Paul Walmsley <pjw@kernel.org>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
-	kimjw04271234@gmail.com, seanjc@google.com, pbonzini@redhat.com,
-	stable@vger.kernel.org
-References: <2026102314-CVE-2026-99082-e5b1@gregkh>
+	linux-kselftest@vger.kernel.org,
+	Xiaochun Yu <yxcnew@outlook.com>
+Subject: [RFC PATCH 0/3] RISC-V: KVM: Preserve resident guest Vector state
+Date: Tue, 27 Oct 2026 13:13:06 +0000
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SL2P216CA0092.KORP216.PROD.OUTLOOK.COM (2603:1096:101:3::7)
+ To OSQPR01MB6326.apcprd01.prod.exchangelabs.com (2603:1096:604:290::7)
+Message-ID:
+ <OSQPR01MB63265385597FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,250 +102,163 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <2026102314-CVE-2026-99082-e5b1@gregkh>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OSQPR01MB6326:EE_|SI2PR01MB4451:EE_
+X-MS-Office365-Filtering-Correlation-Id: 024603d1-0258-46e6-0841-08df342d62a5
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5062599005|51005399006|5072599009|19110799012|8060799015|24021099003|15080799012|23021999003|41001999006|4140399003|25010399006|260925184616899003|56899033|4302099013|440099028|3412199025|12091999003|10035399007|1602099012|40105399003|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?jiEZxCCdddCbpJmDfFzv+Ws8+n+ejnn6qahF8mgcrsxndWmy/v/ci4fV6J/3?=
+ =?us-ascii?Q?mgIUyrXRh/aMFAGqS8OIKZXCmgGeFCKuUc3oXA8UYPm/qEPjqEBJRv5Gw1W4?=
+ =?us-ascii?Q?WoxdL/KwErpeyYKWzbfxxnqqaW82pUDxXSmXIWRCkVYtYmhtDfBjuHDGY/1g?=
+ =?us-ascii?Q?JIrvQ9/dkdxrSbfqwgnZ7rbg6P9trlaUiG8Xp8AmfujHCFZ5Tah4MLgl78hL?=
+ =?us-ascii?Q?BoltDF0kzDXDhSlPdrKpdAb1Ofg85SEYN8FdXqdRyoNUF1+7xNGHF4mGGeVN?=
+ =?us-ascii?Q?rih5+xqJFxWvwUY35dMKNDi/JVGxwHRbpDP2VIFWycbni0wo4t4gldVW9+X0?=
+ =?us-ascii?Q?q5aD0SqE3jR8aJSW2ucAiYl8L8rL9z6+6dJi9oM8gCAXXy91q8ihsnxOD07N?=
+ =?us-ascii?Q?5AMwW4L9D77gHdqa5JJjxCf13Ehul3FVYMd1ecVuAovOL4WSpvHQiUdt4R2G?=
+ =?us-ascii?Q?SJXGdqQ45femcZEY9YC8RbWiJXfChcSf+5CetlVhBNU+Kts2a0deT4YvnVvC?=
+ =?us-ascii?Q?8qY6RQjkK68Ge7qQutwOoqi2BAt0H0GVSq98QZjnlP1rU2e8lqbpEferB0xY?=
+ =?us-ascii?Q?GU6+j7AEmD0FhpsngH5+DQDdXT86SWkR7edcGVVK31y7lppFWNy0SOdHWSoC?=
+ =?us-ascii?Q?cwoT4lx9afITd7pmApSQALwO/d7zQv/ufy8uT0yOPpEYnmf5IoNjELM/q+ij?=
+ =?us-ascii?Q?Qk8v9JPzT/5Fyt8O8Cdw3BYFbfIn/CrON9Oz20FkantClScYeFx0ouLAxWq3?=
+ =?us-ascii?Q?T9Y7+7WyOExduBeYjpmxR5HYMctf9frpv26S0BUoDcplGO28nVou49CNNAKE?=
+ =?us-ascii?Q?Ckb/wDdGuwW6bnkonlEZdWLzbvqAS7wTcYoUh8U37l5SQW4z6OeTaCzEr4+g?=
+ =?us-ascii?Q?xxQzx8rEB+XM0c4ZPjt5WJKoaxFXpm+83ZWViLLjLB8/UXv7J6Ed54wU/WtO?=
+ =?us-ascii?Q?ptp/6oi8cAygKe5m5oOmlExiyMH+Uw7pos2RW8/6zulH24BqYIVbxzLwO/PV?=
+ =?us-ascii?Q?pkXdfYm5c9iNrTxFPziJ8R0BOH3CQrT37hVMjaMo4gEhxBLqFXYqCEPjQFBZ?=
+ =?us-ascii?Q?PDSAfhZl03iiVZbDarM/cZTcLItv7QQ9Z/d820jeFGcB+dAaksg=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vn41hMXv1gqM4R+QQ1gt7PATxcwQXBG04LZ5X85YFJ4JLbp5+/HQcyci8m/p?=
+ =?us-ascii?Q?R5ujYAtn3T5EUuKZI/3cJkHab8GVA1nKFhFMu1zfNiawXh0Kqr/mbPmLtZ7Q?=
+ =?us-ascii?Q?bO8lg/+VohaGD9WNRgxpwUUqL4O+oVJeSbuggvCgMdcXQ0pCIiQtqvKbyAb4?=
+ =?us-ascii?Q?F1nU1GJMoY6qYYj39exk6bTmDKxdx04kx3hdl0qtBYQ534GPRx6cXBf9dpdu?=
+ =?us-ascii?Q?ZK8F7yBh39A3BxIbblvfuPINwtyVEO3gpfuRQfZuu7cGg0z8FuLxbcSuomKd?=
+ =?us-ascii?Q?ryxE/qtyS3CqMMgUmuBS6Nt4EDWg3z8pKVgjhocRgXbbIcn0NM6pxF5FQYR1?=
+ =?us-ascii?Q?rs4fyCIuYG6OA7GBGdrhk2NUZEzXTAZMq9Psj5YcgrjTW7apXvypNTPO/2fR?=
+ =?us-ascii?Q?v0K2VFuCAh24fzObKyZqqsFX5SbnjHAz51O8yIN1g32Vcq2WPn/DPnFRDN09?=
+ =?us-ascii?Q?tBKqQCVHQlgAN+4QQUQLPRpcn61B1zBhqMzj7e84NUdaGQMS9TeQ2KLzuEBw?=
+ =?us-ascii?Q?ISod9sgzspHuliBATrZe5IS8wPx67pwK9aBLexHPah/RGTHfL9nMaInbjRpg?=
+ =?us-ascii?Q?43AxMsm5FFRmDpE0sqosn+VlsuFDok89pWOX16dCO0jBcNdATnBa9/ndQU/Z?=
+ =?us-ascii?Q?SvSHln6lpyjqAAZd9YGTzwz4hzn4/Sr+y8ytax/HlPck9K87R0B9702JX0ka?=
+ =?us-ascii?Q?XrTTLkwyxuYSQzakOCdN/OTpeZZvlWtAYWEOWqVFSB6GfMfHgxe9s5FNilLm?=
+ =?us-ascii?Q?IyYFspfgK4X0dY+aCoWawcsXZYZd85aRMkC1s+4eYFujNkSPq48eON5IdBET?=
+ =?us-ascii?Q?+fgGpHjcB/iZfoYGtvF9WAI+SDmy1uVQkWhwd0BLTWUOSiCQy+L3Sk2iy6oz?=
+ =?us-ascii?Q?Vd2Z4pOBW0qFiTIVBuTDUWxk+pJQ9K5hSDt77Z9d3klyKa1hQECUFpvplGfM?=
+ =?us-ascii?Q?/j3+2FZNg9PI6lnpgTYbznVmTWeIgF5fK4Oa2GOINKUrsyVPmtrzbgrEXG4b?=
+ =?us-ascii?Q?fR9usxutP0WHPkggmGIEWOyZJp4cfgvWPFXAon2pE1DxFQcg38yoI3NBP1Mj?=
+ =?us-ascii?Q?rHgnXu7tpJcg/4+JAVJazG1BG/himUazv3T9RzEuPFesb0myy2WMwSTZoses?=
+ =?us-ascii?Q?oLoqBkzypx8Iykwcd3gY9rD+3rcZelR1ZKS5XojBfbhQERvhjFygtEDg/kNC?=
+ =?us-ascii?Q?ULXRi/hUyu/zR/avvMeympeiRiAeN9sxEOs2d3EFNrsV8LChQ53d4iuvEjo/?=
+ =?us-ascii?Q?5tBXyZiiZ7xxm7EjiCiHuURr+4k/dE5rk8o9HsChZ91Qmda1LKYAMMrOg6LB?=
+ =?us-ascii?Q?Btk/94bxao/z7co0E2INFbzXISnDvGETEhbGkLBMwuuR59lBlT1+tdTfbw3B?=
+ =?us-ascii?Q?6BNp7bSyL4htDcahSszu9KaB+Mlf?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 024603d1-0258-46e6-0841-08df342d62a5
+X-MS-Exchange-CrossTenant-AuthSource: OSQPR01MB6326.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 13:22:44.5674
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR01MB4451
 
-On Fri, Oct 23, 2026 at 14:45:15 +0200, Greg Kroah-Hartman wrote:
->From: Greg Kroah-Hartman <gregkh@kernel.org>
->
->Description
->===========
->
->In the Linux kernel, the following vulnerability has been resolved:
->
->KVM: x86: Use active memslots for the per-vCPU MMIO cache
+From: Xiaochun Yu <yxcnew@outlook.com>
 
-Hi all,
+kvm_arch_vcpu_put() saves the guest Vector state and restores the host
+register file. A later vCPU load on the same hart saves the host again and
+requests a full guest restore, even when no host user touched the Vector
+data registers in between.
 
-(Disclaimer: I am an end user, not a kernel developer. I used an LLM to help
-triage and trace the issue, but the findings, traces, and tests below are verified.)
+This RFC keeps the guest Vector register file resident across a vCPU
+put/load pair when it is safe to do so. A matching load restores only the
+control CSRs; all uncertain cases retain the existing full-restore path.
 
-I hit a guest boot hang after updating my host from 6.18.57 to 6.18.58 (Fedora 44).
-Windows 11 guests using OVMF with Secure Boot and SMM (-machine q35,smm=on) hang
-indefinitely at the TianoCore splash screen, pegging the host vCPU core at 100%.
+The series is intentionally conservative:
 
-The issue bisects/points directly to commit b3e6212dea2e ("KVM: x86: Use active
-memslots for the per-vCPU MMIO cache"), which was backported into 6.18.58 and is
-also present in 7.3-rc kvm/queue.
+- every dirty vCPU put still saves the guest state, so guest memory remains
+  authoritative for migration and userspace access;
+- a per-hart owner records an opaque vCPU identity, an allocation cookie and a
+  state generation, without retaining a dereferenceable vCPU pointer;
+- task Vector save/restore/discard, kernel-mode Vector use, preemptible kernel
+  Vector task resume and CPU state changes invalidate a resident guest before
+  the registers can be reused;
+- reset, dirty saves and KVM_SET_ONE_REG advance the generation;
+- KVM_SET_ONE_REG advances the generation before copy_from_user(), because a
+  partial copy can modify the destination and still return EFAULT;
+- the optimization is guarded by a read-only module parameter and defaults to
+  disabled. The generic invalidation sites are guarded by a static key.
 
---- What was observed ---
+Patch 1 establishes the generic invalidation boundary without changing KVM
+behavior. Patch 2 adds the owner tracking, CSR-only restore and tracepoints.
+Patch 3 adds focused lifetime, ONE_REG and partial-fault regression tests.
 
-1. 'perf kvm stat live' shows >99.6% of VM exits are IO_INSTRUCTION:
-       VM-EXIT          Samples   Samples%     Time%
-       IO_INSTRUCTION     13163     99.63%    99.40%
+This series currently depends on the separately posted build fix:
 
-2. 'trace-cmd stream -e kvm:kvm_exit' shows a storm of 32-bit IN reads on port 0x608
-    (the ICH9 ACPI PM timer):
-       kvm_exit: reason IO_INSTRUCTION rip 0x7b125f0c info 608000b 0
+  Message-ID: <OSQPR01MB6326DDE9C2F390EA3F0F444EC2662@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
+  Link: https://lore.kernel.org/all/OSQPR01MB6326DDE9C2F390EA3F0F444EC2662@OSQPR01MB6326.apcprd01.prod.exchangelabs.com/
 
-3. Inspecting the guest RIP shows it is stuck in OVMF's MicroSecondDelay() in
-    AcpiTimerLib.c polling a condition that never clears:
-       0x7b125f0c:  inl    (%dx), %eax
-       ...
-       0x7b125f58:  btl    $0x17, %eax
-       0x7b125f5e:  pause
-       0x7b125f60:  jmp    0x7b125f3f
+Ze Huang <ze.huang@oss.qualcomm.com> independently tested that prerequisite
+with GCC 16.2.1 and Clang 23.1.3 and supplied a Tested-by tag in this reply:
 
---- Verifications & Workarounds tested ---
+  Link: https://lore.kernel.org/all/DMCBQSJ0B22A.2TDXAXPJNPZL2@oss.qualcomm.com/
 
-- Booting host kernel 6.18.57: VM boots cleanly.
-- Running 6.18.58 with 'smm=off' and standard OVMF_CODE.fd: VM boots cleanly.
-- Applying a patch to 6.18.59 that stores the address space ID (mmio_as_id)
-   in struct kvm_vcpu_arch and checks it in vcpu_match_mmio_gen(): VM boots cleanly
-   with smm=on and smm=off.
+Validation on Torvalds master 21a7f44fd076:
 
---- Suspected Root Cause ---
+- CONFIG_RISCV_ISA_V=y, CONFIG_KVM=m: full Image + modules build;
+- CONFIG_RISCV_ISA_V=n, CONFIG_KVM=m: full Image + modules build;
+- lifetime, ONE_REG and partial-fault tests pass with the fast path disabled
+  and enabled;
+- nested KVM/RVV smoke passes 3/3 with the fast path enabled;
+- the smoke trace recorded 785 owner hits, 784 CSR-only restores and eight
+  conservative full fallbacks, with no trace-buffer overwrite;
+- no emergency, alert, critical or error messages were present in dmesg.
 
-Commit b3e6212dea2e assumed that:
-   "Memslot generations are unique across address spaces, so the generation
-    also distinguishes the normal and SMM views."
+Development note: OpenAI Codex was used in an extended interactive session to
+assist with source analysis, implementation and selftest drafting, experiment
+orchestration, patch review and changelog preparation. The prompts focused on
+modeling per-hart ownership as a cache-validity problem, enumerating Vector
+register invalidation boundaries, reproducing partial KVM_SET_ONE_REG writes
+and reviewing the resulting patches. The build and runtime results above were
+collected from the stated test environment rather than inferred by the model.
 
-However, address space 0 and address space 1 maintain separate generation counters
-starting from 0. The per-vCPU MMIO cache does not record the address space ID, so
-when OVMF transitions between normal mode and SMM, entries cached in one address
-space appear valid in the other when their generation numbers match. This appears to
-return bogus MMIO/RAM data to OVMF, trapping its delay loop.
+The nested QEMU result demonstrates functional behavior and event counts only;
+it is not presented as a performance result. Hardware performance measurement
+remains future work.
 
-Happy to provide additional traces or test patches if needed.
+Feedback is especially welcome on whether the generic invalidation callback is
+an acceptable RISC-V Vector/KVM boundary, whether the default-off module
+parameter is useful for the first version, and whether the behavior patch
+should be split further after the interface direction is agreed.
 
-I used the included patches to test 6.18.59. I did not try is patch 1
-enough, I tested only both of these.
+Xiaochun Yu (3):
+  riscv: vector: Add a guest owner invalidation hook
+  RISC-V: KVM: Preserve guest Vector state across vCPU put/load
+  KVM: riscv: selftests: Add Vector owner regression tests
 
-########### patch 1
-     The proper upstream fix requires tagging the per-vCPU MMIO cache with the address space ID (as_id) alongside the generation counter.
-     The Flaw in Commit b3e6212dea2e:
-     The commit attempted to fix stale MMIO cache validation in SMM by checking kvm_vcpu_memslots(vcpu)->generation. However, its commit message relied on an incorrect assumption:
-     
-         "Memslot generations are unique across address spaces, so the generation also distinguishes the normal and SMM views."
-     
-     In KVM, each address space maintains an independent struct kvm_memslots with its own generation counter initialized to 0. They are not unique across address spaces. During early VM boot, address space 0 (Normal) and address space 1 (SMM) frequently have identical generation numbers.
-     
-     Because struct kvm_vcpu_arch only stores a single GVA, GFN, and generation counter without an address space identifier:
-     
-         An MMIO access cached in SMM (e.g., GFN 0xFED40000 with gen = 4) matches in normal mode where gen is also 4.
-     
-         When the guest exits SMM, vcpu_is_mmio_gva() bypasses normal MMU translation because vcpu_match_mmio_gen() returns true.
-     
-         RAM or device registers in normal mode are treated as stale MMIO, returning invalid data and trapping OVMF in an infinite polling loop.
-     
-     The Upstream Fix Patch
-     
-     To resolve the collision while preserving the fix for SMM memslot
-     invalidations, as_id must be stored and verified as part of the cache
-     key.
-     
-     Why This Fix Satisfies Both Requirements
-     
-         Prevents Cross-Address-Space Poisoning:
-     
-         If an entry is cached in SMM (mmio_as_id = 1), returning to normal execution (kvm_arch_vcpu_memslots_id(vcpu) == 0) causes vcpu_match_mmio_gen() to fail immediately, regardless of what numeric value generation holds in either address space.
-     
-         Maintains Valid SMM Invalidation:
-     
-         When the guest is in SMM and an SMM memslot update occurs, kvm_vcpu_memslots(vcpu)->generation increments. Subsequent lookups in SMM detect the mismatch against vcpu->arch.mmio_gen, satisfying the original fix for the write-protect fault warning.
-     
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 334962398566..ea3908ca051c 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1000,6 +1000,7 @@ struct kvm_vcpu_arch {
-  	unsigned mmio_access;
-  	gfn_t mmio_gfn;
-  	u64 mmio_gen;
-+	u8 mmio_as_id;
-  
-  	struct kvm_pmu pmu;
-  
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 87a5e085ef4e..0eb11f2bd8bd 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -375,11 +375,13 @@ static inline void vcpu_cache_mmio_info(struct kvm_vcpu *vcpu,
-  	vcpu->arch.mmio_access = access;
-  	vcpu->arch.mmio_gfn = gfn;
-  	vcpu->arch.mmio_gen = gen;
-+	vcpu->arch.mmio_as_id = kvm_arch_vcpu_memslots_id(vcpu);
-  }
-  
-  static inline bool vcpu_match_mmio_gen(struct kvm_vcpu *vcpu)
-  {
--	return vcpu->arch.mmio_gen == kvm_vcpu_memslots(vcpu)->generation;
-+	return vcpu->arch.mmio_as_id == kvm_arch_vcpu_memslots_id(vcpu) &&
-+		vcpu->arch.mmio_gen == kvm_vcpu_memslots(vcpu)->generation;
-  }
-  
-  /*
-@@ -390,7 +392,8 @@ static inline bool vcpu_match_mmio_gen(struct kvm_vcpu *vcpu)
-  
-  static inline void vcpu_clear_mmio_info(struct kvm_vcpu *vcpu, gva_t gva)
-  {
--	if (gva != MMIO_GVA_ANY && vcpu->arch.mmio_gva != (gva & PAGE_MASK))
-+	if (gva != MMIO_GVA_ANY && vcpu->arch.mmio_gva != (gva & PAGE_MASK)
-+		&& vcpu->arch.mmio_as_id != kvm_arch_vcpu_memslots_id(vcpu))
-  		return;
-  
-  	vcpu->arch.mmio_gva = 0;
+ arch/riscv/include/asm/kvm_host.h             |   4 +
+ arch/riscv/include/asm/kvm_vcpu_vector.h      |  54 +++-
+ arch/riscv/include/asm/processor.h            |   1 +
+ arch/riscv/include/asm/vector.h               |  31 +++
+ arch/riscv/kernel/kernel_mode_vector.c        |  38 +++
+ arch/riscv/kvm/trace.h                        |  98 +++++++
+ arch/riscv/kvm/vcpu.c                         |  54 +++-
+ arch/riscv/kvm/vcpu_vector.c                  | 252 +++++++++++++++++-
+ tools/testing/selftests/kvm/Makefile.kvm      |   3 +
+ .../kvm/riscv/vector_owner_fault_test.c       | 147 ++++++++++
+ .../kvm/riscv/vector_owner_lifetime_test.c    | 127 +++++++++
+ .../kvm/riscv/vector_owner_onereg_test.c      | 191 +++++++++++++
+ 12 files changed, 976 insertions(+), 24 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/riscv/vector_owner_fault_test.c
+ create mode 100644 tools/testing/selftests/kvm/riscv/vector_owner_lifetime_test.c
+ create mode 100644 tools/testing/selftests/kvm/riscv/vector_owner_onereg_test.c
 
 
-############## patch 2
-
-Resetting mmio_gen on SMM boundary transitions ensures stale entries do not linger across SMI/RSM context switches.
-
-diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
-index f623c5986119..6f673b650ed2 100644
---- a/arch/x86/kvm/smm.c
-+++ b/arch/x86/kvm/smm.c
-@@ -130,6 +130,8 @@ void kvm_smm_changed(struct kvm_vcpu *vcpu, bool entering_smm)
-  	}
-  
-  	kvm_mmu_reset_context(vcpu);
-+	vcpu->arch.mmio_gen = 0;
-+
-  }
-  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_smm_changed);
-  
->KVM tags the per-vCPU MMIO cache with a memslot generation so that a
->memslot update invalidates cached MMIO information.  Both the fill and
->validation paths use kvm_memslots(), which unconditionally selects address
->space 0, even when the vCPU is running in SMM and using address space 1.
->
->Commit 56f17dd3fbc4 ("kvm: x86: fix stale mmio cache bug") added the
->memslot generation to the cache key so that a memslot update could not
->leave a stale entry valid.  When commit 699023e23965 ("KVM: x86: add SMM
->to the MMU role, support SMRAM address space") added the SMM address space,
->these helpers were not converted to use the active memslots.
->
->Consequently, an update to the SMM memslots can leave an entry from the old
->SMM address space apparently valid after the vCPU returns to the normal
->address space.  A guest can then cause an access to valid RAM at the same
->GFN to be returned to userspace as KVM_EXIT_MMIO.
->
->Completing that exit through the VMM's RAM address space writes the backing
->page without going through KVM's write-tracking path.  If the page backs a
->nested EPT table, KVM can continue using shadow translations derived from
->the old contents.  The WARN_ON_ONCE() in kvm_mmu_write_protect_fault()
->catches this invalid cache and memslot combination.
->
->Use the vCPU's active memslots when caching and validating the entry.
->Memslot generations are unique across address spaces, so the generation
->also distinguishes the normal and SMM views.  This matches the MMIO SPTE
->cache, which already uses kvm_vcpu_memslots().
->
->On an unpatched current-mainline kernel, a regression test that fills the
->cache in SMM and updates only the SMM memslots fails the intended RAM write
->and triggers the kvm_mmu_write_protect_fault() warning.  With this change,
->the same test completes the RAM write without a warning.  The x86/smm_test,
->set_memory_region_test, and memslot_modification_stress_test selftests also
->pass.
->
->The Linux kernel CVE team has assigned CVE-2026-99082 to this issue.
->
->
->Affected and fixed versions
->===========================
->
->	Issue introduced in 4.2 with commit 699023e239658e62da6f42f47d31b54788521ec1 and fixed in 6.6.160 with commit a63f79d9da9468952396af73e1e53330845cf876
->	Issue introduced in 4.2 with commit 699023e239658e62da6f42f47d31b54788521ec1 and fixed in 6.12.114 with commit 7fd4e64f4bbc8c35ae8f0d2a1fb5b77a76d5b4fd
->	Issue introduced in 4.2 with commit 699023e239658e62da6f42f47d31b54788521ec1 and fixed in 6.18.58 with commit 2566780c684c9c21241d409d790087c73070f312
->	Issue introduced in 4.2 with commit 699023e239658e62da6f42f47d31b54788521ec1 and fixed in 7.2.12 with commit e792a9ace39d2812a5b342a1987186c7bc653204
->	Issue introduced in 4.2 with commit 699023e239658e62da6f42f47d31b54788521ec1 and fixed in 7.3 with commit b3e6212dea2e4328a841ceb37f377583176dc735
->
->Please see https://www.kernel.org for a full list of currently supported
->kernel versions by the kernel community.
->
->Unaffected versions might change over time as fixes are backported to
->older supported kernel versions.  The official CVE entry at
->	https://cve.org/CVERecord/?id=CVE-2026-99082
->will be updated if fixes are backported, please check that for the most
->up to date information about this issue.
->
->
->Affected files
->==============
->
->The file(s) affected by this issue are:
->	arch/x86/kvm/x86.h
->
->
->Mitigation
->==========
->
->The Linux kernel CVE team recommends that you update to the latest
->stable kernel version for this, and many other bugfixes.  Individual
->changes are never tested alone, but rather are part of a larger kernel
->release.  Cherry-picking individual commits is not recommended or
->supported by the Linux kernel community at all.  If however, updating to
->the latest release is impossible, the individual changes to resolve this
->issue can be found at these commits:
->	https://git.kernel.org/stable/c/a63f79d9da9468952396af73e1e53330845cf876
->	https://git.kernel.org/stable/c/7fd4e64f4bbc8c35ae8f0d2a1fb5b77a76d5b4fd
->	https://git.kernel.org/stable/c/2566780c684c9c21241d409d790087c73070f312
->	https://git.kernel.org/stable/c/e792a9ace39d2812a5b342a1987186c7bc653204
->	https://git.kernel.org/stable/c/b3e6212dea2e4328a841ceb37f377583176dc735
-
+base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
+prerequisite-patch-id: 370f0468ecd4354950ab075162058e4b7c31768b
 -- 
-Do what you love because life is too short for anything else.
-https://samifar.in/
+2.43.0
 
