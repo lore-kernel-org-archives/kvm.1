@@ -1,74 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793141645;
-	b=PscqS6JbQ1ANmT7TBfkHya7+Op9AziTNNwi1M9Efd3wAeTUbQ2UqGl7SdAb4Yd9gwEKX
-	 EzE69t2PfJkl2yj1o1K2TKhfXR4i40K/paHDgyDlwausnQqKb774YlbQH7w+KDIDSgz/T
-	 tcqL0N/jMxJ1XJbc19IyBpEcCBYIAatjq2l0Eiaw9sk1NmD1tz/KqjRnYJ8EbBrV+Rsz0
-	 uJzlkF6LZbgWSauHnuDNAEoES/i+EUt9DcKGTVtLI6qyNiMKjwaepp7vRUs0aEBbb9aD8
-	 qQgG6HPsf7vm0S5FHau5+cslOlbdtvB5CpcsxFro3S+E3C0UID2vvDS1NCFHA2xJyUg==
+	t=1793141820;
+	b=EGI8A6mfiNc5GS3rqJfi01Nfi0/OgQ6BsFlx96E0Y448yn4fXYUEgXJ2oEIR0SiI3P2L
+	 zqpjF3K6bJp3q53nDTO7t1eSJAmlBcCi4604DDOXKwmoU32oz4C0772zEFcUSPvpUN3Fi
+	 BUJwAGQHlMCOa/zh4i6vAaV0s2+5sI4SFkBDIkPh4k8XWW7Dg94+ORGZNgxDzDYnDYAAE
+	 Jwahk1rVDPsTqlpzHcWbvNhZFR8/RDJShWdYlWJwixsIB/5/pUPL8RgHW1alKy6UOz0VP
+	 yvlYgHr61+AJ2yf0kLJERcI7lSfMx/fU+dScw4bNmnPIvw92MoZ1h8guDVwJ9HwiOkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793141645;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=aTRn4SWx70tTlL1t7OA3leiDcQwKF7nF9/sYzOx9ZSQ=;
-	b=MNfrMhs/f9vN7iat1A8BJPw9Ez6xjwLtMQiImg+UHH7KhhQPeO7BKijdIXw5QO9Z12u4
-	 eXeaQlCGQcJTl8yj8l6v+GcQV/gULtf5iGclKnNEE+nbDARUfG+Eb/viCs7AtHjfYTCgd
-	 00yfi1JB+QbsyKoqkzR0wRbfAG1X1Xg5CYojxksw4sCanpzECvbR0pUkyEfQDyb01fWHc
-	 VwFwOSLnAydWmyFLTc5jzqv8uCvps997ZEr3kZL1TFQRZ7sud/gXIE8WlMuhSOsQM0CUS
-	 G1ul6myIp1S1+L8FpZ/4TDQRbaEG6XZMMh0UaVBB9/N+/0snid+EYr2wbLY9Fw5LHDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793141820;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=gIVns6+2kR7Rl7cmy4htyby4FQjdtEx7csuUjrR4iLk=;
+	b=F130/u5v/q46NJS0VJ72GXNUl2k47DUb89G0qOAn1sn85RyKAHSEdxq9biMKoCHciLI7
+	 c7zOhZ/Y6UQ0dnbTsiww9FDoFC1W2oN/mAuW8O3tYlvFyhHE8yXnVzrQVndLzSUfEKi5k
+	 9tVtrngWYggJaKajhIQQ5fuigkVgXGiWFT7bRbUdIALKMV3yT/yh8Tf/obFZ0PhkrYPTm
+	 LsxypdBdQiGoCMsolwoYrnOolvImm0/aYPE9mKnmrVXDX7Y00MUcz8kzDNpRhMb7tObRv
+	 J/iEHE2DhcRZnBxaALtIO8HnQNOEjaIxAykqZSEb/ZfYH009boPgX/cE3wvI2b4rM3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Tjvm4OTH;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ia0l5YsQ;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C7E606A31A
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:54:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05C7E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654B606A31D
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:56:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6654B606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Tjvm4OTH
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3addd73e66bso326309a91.2
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793141644; x=1793746444; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aTRn4SWx70tTlL1t7OA3leiDcQwKF7nF9/sYzOx9ZSQ=;
-        b=Tjvm4OTHubuauVIdpvdpK6Lbof0ner3JY88hCht1u/p+BdFkDn1u0Vnsgz6I9aSUUl
-         Wi5/m+oFw3/Cis2MIuCbYFm7O9EdXdEdjrGLPtFwKPgG8oX27lWUNcx5T4wk4EROnsWI
-         jxedGJJAoe5UeYy4AanNI2PoDr8fsLYZtbv8xyjIWXCdDhpLhYj4pAlOZK/OA+AxGZ0Z
-         +6gQYZSBtVt4KyBrXoH7MCspG9686tVJ0hW6AIocV4RpUSGN+zZCH3bGkFKItgPRqo4y
-         /z2lh6+ZbW/LUVDPxXMPuEqfV9Ecya/acr9Kk6+gDu4zzTEkX3moGLYrUqU18X94FJ/E
-         2rrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793141644; x=1793746444;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aTRn4SWx70tTlL1t7OA3leiDcQwKF7nF9/sYzOx9ZSQ=;
-        b=jaCtgNc+YmvZ+0brXB7cLXFGbqrJnu3HIi6+P1M8CDBjXgu0ESLvIG1haqn1koUV9m
-         j/zsTM+EFRKwhjqrhuoruz44Ia7i6d6+3ooIJIoNAGQf7Diod3q/9efGO/ip6GhOTwOO
-         CednZXelhW+ucgPZPFCSJKDn8m2tTBe3T+1m+UfoLynr/eBYV3OUDLfj9Kq5+zoiWWTr
-         34BBM7tYw+u0nB56QZavsK3vSm4FAtH+W7W4yoZ6pyLut3zJOYcB558XqxRX66UIhILc
-         T9GvLiXSpHz5OGI8sLOq8kWC3v/mIhmfIq3t9jDGGC5omxGPbr1BlYJFhyWZvaiatq1S
-         LZ/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwZKuUE5p17M4y4W/zPO+EJqog7LGRsPx0cFErZdUJr6ANvetvqp2euVqFqqcXZkfrvWiA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJbOl+EC00O1Drqtn53yfYSIroBgfGp64R0PaTGYRVr8VhZu+tB
-	P9ICa53tQNnsixnVwmCStScwh6XicameHg0kihbA7Zh/Abw1Wc+iulnA0M7HdoDwy9rbjHERn3U
-	IlRW1Vw==
-X-Received: from pjx16.prod.google.com ([2002:a17:90b:5690:b0:3ab:3069:a58c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:53c5:b0:3ac:a11a:7c7f
- with SMTP id 98e67ed59e1d1-3ae581006c1mr311269a91.23.1793141643965; Tue, 27
- Oct 2026 15:54:03 -0700 (PDT)
-Date: Tue, 27 Oct 2026 15:54:03 -0700
-In-Reply-To: <20261027221209.1560865-3-seanjc@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ia0l5YsQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793141818; x=1824677818;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=sOlyCuSZxE0bpLNopzU/8YOcrlV8+AwrSCT7isibU64=;
+  b=Ia0l5YsQfifRZH2wzIMpg6e5f1qQFOZvfYPs5UHUPDQvvzHmjcMJ5sHu
+   ON/uK4CEjP58Gpw3RfQfF43TZ9kH5vebJpr+LS3JHhM2yL7I6FG3pu+oP
+   ddbu/4RM4Q24wp3NQYpoTTwUqzhm+E2x8yHO0hJdntv1bx974wGIc1ShH
+   XCBqjFaE5diwy7D9yiTjmknChew4np62TVzi90JnXPsEHZQXnc38lZxQO
+   KLJ+6iY4Jb7YdWHpaK2zwV8MO+ceR+zfI8THKhpr2chUC64Qcvce9eF2G
+   xoc9mbTwLpozWUzPPn5Q+J3Q8+GH8Xt5e7XuJFxdq8qPEEfRorPwQrt+T
+   A==;
+X-CSE-ConnectionGUID: coxP653nT7S/xJrHgNe3pw==
+X-CSE-MsgGUID: sLHc3+kySwerXRIqAsZWAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1946899"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1946899"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 15:56:58 -0700
+X-CSE-ConnectionGUID: 47NJByKORP2a9ouAGCSZiw==
+X-CSE-MsgGUID: Eowt1B9AQoS9P7g39cH8WQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4998129"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 15:56:57 -0700
+Message-ID: <1e3230bc-800c-4862-9bb8-ff1074e76fc8@intel.com>
+Date: Tue, 27 Oct 2026 17:56:56 -0500
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,93 +71,166 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261027221209.1560865-1-seanjc@google.com> <20261027221209.1560865-3-seanjc@google.com>
-Message-ID: <auEri3Ld3sp0515i@google.com>
-Subject: Re: [PATCH v3 02/15] KVM: nVMX: Don't force a full nested VM-Exit
- when destroying a vCPU
-From: Sean Christopherson <seanjc@google.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>, 
-	James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
-Cc: Hyunwoo Kim <imv4bel@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 12/12] KVM: x86/pmu: Support RDPMC Metrics Clear Mode
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>, sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20260918193937.569414-1-zide.chen@intel.com>
+ <20260918193937.569414-13-zide.chen@intel.com>
+ <20260918202200.F39971F000FF@smtp.kernel.org>
+ <1de5af16-06a5-4b97-ba92-0a4ac02c32ff@linux.intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <1de5af16-06a5-4b97-ba92-0a4ac02c32ff@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-+Hyunwoo
 
-On Tue, Oct 27, 2026, Sean Christopherson wrote:
-> For all intents and purposes, revert commit b4b65b5642d6 ("KVM: x86: cleanup
-> freeing of nested state") and go back to manually tearing down nested state
-> when freeing a vCPU.
-> 
-> When a vCPU is destroyed while L2 is active, KVM synthesizes a nested
-> VM-Exit, which flushes the cached shadow VMCS12 back to guest memory:
-> 
->   vmx_vcpu_free()
->   |-> nested_vmx_free_vcpu()
->       |-> vmx_leave_nested()
->           |-> nested_vmx_vmexit(vcpu, -1, 0, 0)
->               |-> nested_flush_cached_shadow_vmcs12()
->                   |-> kvm_write_guest_cached()
->                       |-> __copy_to_user(ghc->hva, ...)
-> 
-> Accessing user memory via a memslot during VM destruction is broken, as
-> there are no guarantees that current->mm == kvm->mm when the VM is dying,
-> because the last reference to the VM can be put from a different process
-> than the original creating processes.
-> 
-> And even if the original process does put the final reference, during
-> process exit, do_exit() calls exit_mm() before closing file descriptors, so
-> vCPU destruction runs with current->mm == NULL on a borrowed lazy TLB
-> active_mm.  If the borrowed address space has a writable mapping at the
-> to-be-written userspace address, KVM will corrupt an unrelated task's
-> memory since uaccess APIs, including __copy_to_user(), don't sanity check
-> current->mm (and *can't* sanity perform KVM's current->mm == kvm->mm check
-> since that is firmly a KVM-only concept).
-> 
-> Furthermore, the shadow VMCS flaw is only the tip of the iceberg, as the
-> MSR load/store lists mean that emulating a nested VM-Exit can read or write
-> an arbitrary set of MSRs, e.g. if MSR_KVM_SYSTEM_TIME_NEW is in L1's MSR
-> load list:
-> 
->       kvm_arch_vcpu_destroy()
->         kvmclock_reset() - takes pv_time off kvm->gpc_list
->         vmx_vcpu_free()
->           nested_vmx_free_vcpu()
->             vmx_leave_nested()
->               nested_vmx_vmexit()
->                 __nested_vmx_vmexit()
->                   load_vmcs12_host_state()
->                     nested_vmx_load_msr() - writes the MSRs that L1 listed
->                   kvm_cpu_has_injectable_intr() - reads Xen's vcpu_info
->         kvm_xen_destroy_vcpu() - deactivates the vcpu_info cache
-> 
-> processing the MSR write puts the "pv_time" cache back on kvm->gpc_list,
-> and the next list_del() writes into the freed vCPU.  And as effectively
-> pointed out by syzbot[*], attempting to fix each case individually is a
-> losing game of whack-a-mole.
-> 
-> Deliberately leave "nested_run_pending" as-is, because even though doing so
-> creates potentitally inconsistent state, KVM should *never* consume said
-> state while freeing a vCPU.  I.e. if leaving nested_run_pending set trips a
-> sanity check or bug, then that just means there's more fixing to be done.
-> 
-> Open code only the "free vCPU" path, i.e. keep emulating a nested VM-Exit
-> when forcing a vCPU out of L2 via vmx_leave_nested(), as there are a number
-> of updates buried in the nested VM-Exit flow that are needed if the vCPU is
-> going to run in L1, e.g. clearing pending exceptions and MTF traps, setting
-> the TSC offset+scale information back to L1, and so on and so forth.  Note,
-> this means svm_leave_nested() is all but guaranteed to be buggy, but that's
-> basically an open secret at this point and at least any bugs "only" break
-> L1, i.e. don't corrupt host state as is the case for abusing nested VM-Exit
-> when freeing a vCPU.
-> 
-> Link: https://lore.kernel.org/all/6ac0145f.34119e79.2f92f3.0003.GAE@google.com [*]
-> Fixes: b4b65b5642d6 ("KVM: x86: cleanup freeing of nested state")
-> Cc: stable@vger.kernel.org
 
-I completely forgot that Hyunwoo also reported this, so this also needs:
+On 9/21/2026 4:39 AM, Mi, Dapeng wrote:
+> 
+> On 9/19/2026 4:22 AM, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+>> - [High] pmu: event filter mistakenly strips METRICS_CLEAR_EN from fixed_ctr_ctrl_hw
+>> - [Medium] pmu: METRICS_CLEAR_EN unmasked without validating fixed counter bounds
+>> - [Low] pmu: emulation incorrectly ties PERF_METRICS clearing to SLOTS PMC existence
+>> --
+>>
+>> commit 8ba3725c32dbde4a1c3935cb433e898e06425b83
+>> Author: Zide Chen <zide.chen@intel.com>
+>>
+>> KVM: x86/pmu: Support RDPMC Metrics Clear Mode
+>>
+>> This commit adds support for PERF_CAP_RDPMC_METRICS_CLEAR (bit 19 of
+>> IA32_PERF_CAPABILITIES). It advertises this capability to guests when the
+>> mediated PMU is enabled and the host reports it, unmasking the relevant
+>> control bit. It also updates intel_emulate_rdpmc() to replicate the
+>> clear-on-read behavior for consistency.
+>>
+>>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+>>> index 98e2fb80347a1..3e5e8bae67ab0 100644
+>>> --- a/arch/x86/kvm/vmx/pmu_intel.c
+>>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+>> [ ... ]
+>>> @@ -138,6 +149,18 @@ static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
+>>>  			return 1;
+>>>  
+>>>  		*data = pmu->perf_metrics;
+>>> +
+>>> +		/*
+>>> +		 * Per the SDM, RDPMC of PERF_METRICS clears both PERF_METRICS
+>>> +		 * and the SLOTS fixed counter when Metrics Clear Mode is
+>>> +		 * enabled via INTEL_FIXED_3_METRICS_CLEAR in FIXED_CTR_CTRL.
+>>> +		 */
+>>> +		pmc = kvm_pmc_idx_to_pmc(pmu, INTEL_PMC_IDX_FIXED_SLOTS);
+>>> +		if (pmc && intel_pmu_metrics_clear_enabled(pmu)) {
+>>> +			pmu->perf_metrics = 0;
+>>> +			pmc_write_counter(pmc, 0);
+>>> +		}
+>>> +
+>> [Severity: Low]
+>> Does tying the clearing of PERF_METRICS to the existence of the SLOTS PMC in
+>> intel_emulate_rdpmc() violate the hardware specification?
+>>
+>> If the guest executes RDPMC natively and triggers an interception, and the
+>> SLOTS counter is not exposed to the guest (making kvm_pmc_idx_to_pmc return
+>> NULL), but METRICS_CLEAR_EN is enabled, this code silently skips clearing
+>> PERF_METRICS.
+>>
+>> Should the clearing of pmu->perf_metrics be performed independently of whether
+>> the software PMC object for the SLOTS counter exists?
+>>
+>>>  		return 0;
+>>>  	default:
+>>>  		return 1;
+>> [ ... ]
+>>> @@ -601,6 +624,11 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>>>  						 INTEL_FIXED_0_USER |
+>>>  						 INTEL_FIXED_0_ENABLE_PMI);
+>>>  
+>>> +	if (perf_capabilities & PERF_CAP_RDPMC_METRICS_CLEAR)
+>>> +		pmu->fixed_ctr_ctrl_rsvd &=
+>>> +			~intel_fixed_bits_by_idx(INTEL_FIXED_SLOTS_IDX,
+>>> +						 INTEL_FIXED_3_METRICS_CLEAR);
+>>> +
+>> [Severity: Medium]
+>> Does intel_pmu_refresh() unconditionally unmask the METRICS_CLEAR_EN bit
+>> without verifying if the guest topology actually exposes the SLOTS counter?
+>>
+>> If a VM is configured with 3 or fewer fixed counters, this unmasking would
+>> allow the unprivileged guest OS to write to bit 14 in
+>> MSR_CORE_PERF_FIXED_CTR_CTRL without triggering the expected #GP.
+>>
+>> Should this be gated by checking if pmu->nr_arch_fixed_counters >
+>> INTEL_FIXED_SLOTS_IDX?
+> 
+> This sounds like a real risk. Should we mask out PERF_METRICS from guest
+> PERF_CAPABILITIES in intel_pmu_refresh() if guest doesn't advertise fixed
+> counter 3?
 
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/all/am3Bs0DjZ5kay9NJ@v4bel
+Yes, will checks the availability of guest FC3 in
+kvm_vcpu_has_perf_metrics() as well.
+
+>>
+>> [Severity: High]
+>> Does this patch inadvertently cause event filters to strip the METRICS_CLEAR_EN
+>> bit in kvm_mediated_pmu_refresh_event_filter()?
+>>
+>> When a host-level event filter denies the SLOTS counter (counter 3) from
+>> counting, KVM applies a 0xf hardware mask that zeroes all 4 configuration bits
+>> for the counter:
+>>
+>> arch/x86/kvm/pmu.c:kvm_mediated_pmu_refresh_event_filter() {
+>> ...
+>> 	} else {
+>> 		u64 mask = intel_fixed_bits_by_idx(pmc->idx - KVM_FIXED_PMC_BASE_IDX, 0xf);
+>>
+>> 		pmu->fixed_ctr_ctrl_hw &= ~mask;
+>> 		if (allowed)
+>> 			pmu->fixed_ctr_ctrl_hw |= pmu->fixed_ctr_ctrl & mask;
+>> 	}
+>> }
+>>
+>> Since this mask covers the entire 4-bit configuration block, it will also clear
+>> bit 14 (METRICS_CLEAR_EN) from hardware. If the guest sets METRICS_CLEAR_EN and
+>> then executes RDPMC natively, it will lead to un-cleared stale metrics.
+>>
+>> Should the mask be updated to avoid interfering with this newly introduced
+>> feature bit?
+> 
+> This is another tricky corner case. The best way should be disabling
+> PERF_METRICS along with fixed counter 3. But Intel HW doesn't provide a way
+> to disable PERF_METRICS except the EN_PERF_METRICS bit in PERF_GLOBAL_CTRL.
+> Since PERF_GLOBAL_CTRL could be in pass-through mode and guest could
+> directly overwrite PERF_GLOBAL_CTRL, it becomes meaningless for KVM
+> clearing EN_PERF_METRICS bit for guest PERF_GLOBAL_CTRL.
+> 
+> For the filter mask, it may be good enough to only mask out
+> (INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER).
+
+Yes, the 0xf mask erroneously strips bit 14 (METRICS_CLEAR_EN).
+Since event filtering is only intended to prevent counter
+increments, mask out only (INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER) is
+sufficient, which also leaves the PMI enable bit intact.
+
+This also matches the GP counter handling, which only masks out the
+necessary enable bit and keep all other bits unchanged.
+
+@@ -557,7 +574,9 @@ static void
+kvm_mediated_pmu_refresh_event_filter(struct kvm_pmc *pmc)
+                        pmc->eventsel_hw |= pmc->eventsel &
+                                            ARCH_PERFMON_EVENTSEL_ENABLE;
+        } else {
+-               u64 mask = intel_fixed_bits_by_idx(pmc->idx -
+KVM_FIXED_PMC_BASE_IDX, 0xf);
++               u64 mask = intel_fixed_bits_by_idx(pmc->idx -
+KVM_FIXED_PMC_BASE_IDX,
++                                                  INTEL_FIXED_0_KERNEL |
++                                                  INTEL_FIXED_0_USER);
+> 
+>>
+>>>  	counter_rsvd = ~((BIT_ULL(pmu->nr_arch_gp_counters) - 1) |
+>>>  			 ((BIT_ULL(pmu->nr_arch_fixed_counters) - 1) << KVM_FIXED_PMC_BASE_IDX));
+>>>  	pmu->global_ctrl_rsvd = counter_rsvd;
+
