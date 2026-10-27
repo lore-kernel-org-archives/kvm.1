@@ -1,68 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793071058;
-	b=F2b+x9m9WzmR7zcd7GpFJb257w8LARX32SRX3K/uIEjFPPdNNrqgOHev+404Tx35725w
-	 YD4z+GEIwubJ7WhIMn2H1HClTkY/phBtLEQ5vPA9935/EJf15jq3tKbp3DQoUo1qaVbq8
-	 PdlXQj5ltDKS4Z6XLlexhP3zSLxH0CQ+kw7HFTk1euKsbtl+4fz+vLaS3fcvrQCVfcKCq
-	 MmP0+3vnlYtLI6qhP1WQ44gjPTu1MevHbEMQY4NuDr3iPvb2Vtm1/6vkFp5YsSJ3EwUOY
-	 yqc6hDcxKubFpKOOL9W7uDDkqZ/BktiRzNsptirqLjzyMRdyxSxru4JqfOpq21jiacA==
+	t=1793071595;
+	b=wlIcjjyCi1u+iARFCSphFavuRGI543zkwd2F89qSEOmBoxvMOk8nv+RMxVki06E/M7fD
+	 KrPvJB+4MnK2AVHuMbeG3dtTi6AU+IgpOK9ENmzP7Hmm3nxB4229zVGclXBVJi4LiA/+H
+	 6w7GxO9Oc8MRqx0oQM16bPjAxZAYMzduY9Ea/0T40CC/6gSXanttYQdh6QmjbWBp6wy9O
+	 yn/hZmRx6CQvlYhasPHjvuPIg2Yl6P4cvLg0QPwRaYl9EbxTd0Zl1jPfKp7vdQsgXuCo5
+	 MHVbwtyXOvkaV20plmw4VcuJCEO6jAV7R6Otmx4icAGxz0W/bwcbO84wVJ7V8hhd6Dg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793071058;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=wCiFxCAynyXnSTTLGPT7jyMrXA4PVBEFb+6sztVLjwU=;
-	b=5BdgZ6YiCnD70XoEkfUWQHONUMcAGi9cowX4jw0/0gUB5AWwt9mg3+2R9+EVkVzHf+1O
-	 pkAv2+hdbx6JfqSMvl7BPif2CRpSbvKw9tkFRKQmz8wFC2Fl7jQGn2APhJ1+aQtSH8R6t
-	 2HkoysmKRO+mww2MlAglee1dTP+/bFGqnb6LQ3P4UrV0BWgrtICl6OxdYNzgrQk6/JrnH
-	 +vBXV/wcNkMLxkvYr8aNTgqL4A9I/pYwQIPW6iGn7GVz6ck9cexz7oCjuDNEr3TAHe+n1
-	 O70GEZVYuMOovNXEI8qGtjKCsNfmgEdzBbvoe3tz+YDgAlAxu9c4v88b8XTdBgfj/Ow==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793071595;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=mFFfrqlGcCKVNylEOU7fJD0/AGoCZ65FALqe+xT5SYA=;
+	b=IlJ2v0jJ6chzXpgILaH2aiIEYhIy1uSHvk4ppxJK0xsAox9UarBzw+tt0WLp+7V7zsv2
+	 dHuUvbK2/BlT7L+eesxXbinrXp81WwKWYaAywidA0vSKMNdXIkCGkoqCjCwvxIISlme9V
+	 l2idQAn99Egs6Gidkax4Q9qLGQcLon939gJ5oJxdcWfrgcfkwt5qtSeAs90zdYNBLw6Rc
+	 VVq9a5mfJTdBJ1j/mXePLD+ZRHgrUm9VEqr+G650wqU3dXiTGFT4botcotfAeTI+eIrCn
+	 qOLRARcig5Fq0YndBzPbW4pLdidJZsN3dwKAWl9jCgU+7DRFzgnJa4uE6pAY7eJFMQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KJVqsuXS;
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ctJlfWTF;
+	arc=none smtp.remote-ip=209.85.214.169
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A001606A31B;
-	Tue, 27 Oct 2026 03:17:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A001606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EC7606A325
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 03:26:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1EC7606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KJVqsuXS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793071057; x=1824607057;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=H0mHch+7v56HsTbVAWQ3ahM8VZpeCCFPBT7Gdamg36o=;
-  b=KJVqsuXSzh8hvhBr8Fqy/9B43Voz0UB7wZzNk2RwNTcVScznFql0x5Nl
-   5T8zpo9Vua9/bkCWbB9GiKOuj75K43KSx4WglT4vdLplu8YDDfl3R8aWC
-   XAMDNvVfPPY5jd8XVxVLlrXFtQI7fRV3KnZzHQ9TcelSdwJbVOYM/ydZd
-   lPo3JvpSHHpK8lXUXVV38nsjji71LtUlXQxO3SyVRX6nvKMKf20Ie4z+c
-   81Oc+TVfQSdEdBmVk3tmP4sMX1MwK61aVfdp1v1Kv2chArS0uFoPul/Ue
-   3PS/amNK+w8+XbHu7APgOyy98FpNmBMwJIp3ZOito/GOysmEgnjZNmbyK
-   Q==;
-X-CSE-ConnectionGUID: T5nxEb80SmarntBfwdGTQg==
-X-CSE-MsgGUID: KLVSbj/3SrmsVS3Ff4+vxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1790350"
-X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="1790350"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 20:17:37 -0700
-X-CSE-ConnectionGUID: R3kyZcwAQVqMRDm7Z1p+RQ==
-X-CSE-MsgGUID: KrkGFevJQY6Q6syOFcp6Qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="4774504"
-Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 20:17:33 -0700
-Message-ID: <c2fbd673-6f2a-446e-b5d3-04a97bb86930@linux.intel.com>
-Date: Tue, 27 Oct 2026 11:17:30 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ctJlfWTF
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ea7190aea1so16744445ad.1
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 20:26:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793071594; x=1793676394; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mFFfrqlGcCKVNylEOU7fJD0/AGoCZ65FALqe+xT5SYA=;
+        b=ctJlfWTFSAAkxOyoCbcKoCYm5sa7PQkArlEMktHuP2e1Z/TnvR6B2Eci7g7zR2OP/a
+         z0ftTAM8q4BPpA9mLqA7HjdTBvZ884W5DhsbdTWH3vGa/U34pPpFF6m6vA7CT7hUTsDE
+         EsLODOrMJPN2eHtZKvdn0E4isOhcUZnygqt4dpaj92LFqIJK5CWBhDAgNImVyZDizUUs
+         rq7cdrDg/cEa1tu2hYIjPpmenPe4O39G2U5GiueFTlIFLOa3FxrtMMGNsascOXMjvg1L
+         ynwndpzHxdBStfN0SD4wcz9ESDOBFHh48Zs79R+0rBSX9WtRnYmpf0wOG+HDjrNwStrQ
+         y0VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793071594; x=1793676394;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=mFFfrqlGcCKVNylEOU7fJD0/AGoCZ65FALqe+xT5SYA=;
+        b=BAy99KwHOn2G3maWwZ92jv9iE0+fo5VUs/PmYTskY5sh20xC1MtGpbi41dPLs7AKQm
+         RN3kH9C+kTCssaAJkGfBBvatr2I0ORHgPArOteMs562+odc3eESlhiwPy4Gc7uyozsql
+         Gq/UFB0ZPJjiiSjBCup9sE5ZCsc2QcJ4X2IDD2Is7goPgN9AtXKhNElRIK2r60JX/duj
+         Amf7vztx2vl8R4XpOym+VkM0JI1w2ZwLBBEzgHJUvwwi3SmhVSWAMg1A+mRMtQkj380o
+         cP4++s+clDKLCHYi3OmNZBxYU1W3Vuwk7ScrOKcD+CpfDX/AOokzcZmU4CQn6y5IJR8q
+         0NeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzd9WbA/fGSuz21YUx+eK2XI8CY6CmfJ4u8lRDbiJ9rD607tcaJcNhNM/9/1ql3Dctr1Rk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwvYGjRMy26bO5OhKrWbhImgEoV2eQ8dVhaAPP/O88eZkAqdA2
+	48aOI6pHT+WxhZNvsUzM/mWNwDeXI7KUnGU3y84xEE9Y6GppHwMDnVeH/b1vblU3Fg==
+X-Gm-Gg: AYBFou3OtGHwUvEpP1cG7cEd2skQAtzotM/QVqXL/S+RIxWtzdcpSiqTB6X4sMZbHS9
+	h0+EzfEsTONTLlkgMVxhulqmR/OgaBO/NrHYShgMJ5ddz4Ag3hONS+GZZqRa+48IRdID7EFvCY5
+	RIhOWeGcLLDLw1xT5voxWf6rw6Hp0ip1Exeq2uioKSldfBgC9D7REIMNmn0bZumSrVaIJyhKGKr
+	QSBcHeWXS8c69LdY54mM0B+euEP/lF8hyzmHR2OKLURgoyHWj0jLZrAtyuDkLykAhdSnjo1XBFF
+	1ikQaHpzMDBGQ3Lr1PHUnX2LVoD6weVWWjaXcNWOsfTfhUuTIaZ883PDRqTDSOgtbcdeweZev3O
+	tNoGLLj26bv2aPW+ZO92BxYFAbmp+jaRWV9suXrdNQGMXMBWfk4qBy3qOvyRdhI/esGn5j0Hv2T
+	Qc0e+jMoPex59bR6sCvx/aY3Vn0F9Qoq28DjtZff9+8eRJjaupsZmVfHGKddiEsaX4Dv4u2N+Fc
+	568Br5rYTVup0M7cYvLWkP8V4MkvltFoIhCSb1XkXADd56ya0MMyBU9eZSpUJS0m/lD43ew3t9P
+	AV2yXNIV3fuSN2Er8cJW+MRKhsAq4FCMtk6RlSmANVek3WKXeCfWpAVSuM17Dsg33oi4pkw=
+X-Received: by 2002:a17:902:d548:b0:2df:ad58:cf54 with SMTP id d9443c01a7336-2ea9c81ab95mr64373815ad.34.1793071593614;
+        Mon, 26 Oct 2026 20:26:33 -0700 (PDT)
+Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6ce0f45sm2398915ad.70.2026.10.26.20.26.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 20:26:32 -0700 (PDT)
+Date: Tue, 27 Oct 2026 03:26:29 +0000
+From: David Matlack <dmatlack@google.com>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <auAZ5agR1xBo3RLN@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-4-tarunsahu@google.com>
+ <atlQ_Er0Ig7CCSxv@google.com>
+ <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
+ <9huzzew0el59.fsf@tarunix.c.googlers.com>
+ <at_CncIPYCxOVkLo@google.com>
+ <9huzecdcghxu.fsf@tarunix.c.googlers.com>
+ <at_pxoULR1Tp5anN@google.com>
+ <CALe+6DxTR0BpvW7mXMjq_+dczT2jO=R_qLbHhSduhnuSPcXhzQ@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,156 +118,105 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/5] KVM: TDX: Validate directly configurable CPUID
- bits
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
- pbonzini@redhat.com, dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, xiaoyao.li@intel.com,
- chao.gao@intel.com, tony.lindgren@linux.intel.com, kishen.maloor@intel.com,
- dedekind1@gmail.com, adrian.hunter@intel.com
-References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
- <fe3eaf31-acc3-4132-b768-9451c00aa746@suse.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <fe3eaf31-acc3-4132-b768-9451c00aa746@suse.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALe+6DxTR0BpvW7mXMjq_+dczT2jO=R_qLbHhSduhnuSPcXhzQ@mail.gmail.com>
 
-On 10/22/2026 1:43 AM, Nikolay Borisov wrote:
+On 2026-10-27 01:55 AM, Tarun Sahu wrote:
+> On Tue, Oct 27, 2026 at 1:01 AM David Matlack <dmatlack@google.com> wrote:
+
+> > Right, whether a feature is required is a static property of the
+> > feature.  That's exactly why it's redundant to send it in every header.
 > 
+> I meant the different thing.I was saying if a Feature in a kernel will have
+> constant value either required or optional which is fixed at compile time.
+> But the same feature can have different values in two different kernels.
+
+Those would just be 2 separate features. One optional feature, and one
+required feature. They might use the same fields in the struct, that is
+fine.
+
+> Maybe a seal added in kernel version M. Later in kernel  version N this seal is
+> deprecated and replaced by a new seal.
+
+I think this example works fine. The old seal is still a required
+feature. The kernel just stops marking it present and marks the new seal
+present instead. Retiring a feature doesn't change whether it is
+required, only whether the source sets it.
+
+The only thing this split doesn't allow is changing the whether a
+feature is required or optional after it has been introduced. But for
+that case we just introduce a new feature of the desired type.
+
+> > I think you misunderstood the proposal. I'm not proposing to pack only
+> > the set bits, and I'm not proposing that each feature have a bit in both
+> > ranges.
+> >
+> > In my proposal, there is no such thing as "feature N", there is
+> > "required feature N" and "optional feature N".  Required feature N can
+> > be found at bit position flags[N]. Optional feature N can be found at
+> > flags[nr_required + N].
+> >
+> > In more detail:
+> >
+> >  - Each feature is defined as either required or optional, once, when
+> >    the feature is added. That choice is permanent.
+> >
+> >  - Each feature gets exactly one bit, in its range, and that bit is
+> >    always at the same position whether or not it is set. Required
+> >    feature N is bit N. Optional feature N is bit nr_required + N.
+> >
+> >  - nr_required and nr_optional are the number of features of each kind
+> >    the source kernel knows about, not the number of bits set. They tell
+> >    the target where the optional range starts and how long flags[] is.
+> >
+> >  - A set bit means the feature is present in this file's payload. A clear
+> >    bit means it is absent.
 > 
-> On 16.10.26 г. 12:14 ч., Binbin Wu wrote:
->> The TDX module reports a set of CPUID bits that the VMM can directly
->> configure for a TD, but KVM cannot blindly expose all module-supported
->> bits to userspace.  Certain features imply additional architectural state
->> (such as one or more MSRs) that KVM must explicitly manage across
->> host/guest transitions to prevent host state corruption.
->>
->> Today, KVM hardcodes a denylist to filter out host state clobbering
->> features that KVM doesn't support.  However, a denylist doesn't scale as
->> the TDX module evolves, i.e. host state clobbering features added by a
->> future TDX module are not covered by the denylist, and userspace could
->> enable a feature that KVM doesn't support.
->>
->> This series builds an allowlist for directly configurable CPUID bits, and
->> filters and validates userspace input against it, so that newly introduced
->> TDX directly configurable CPUID feature bits can only be enabled by
->> userspace after KVM explicitly opts in.  Except for a few fixed-1 bits
->> required for basic TDX support, host state clobbering features are either
->> directly configurable or gated by TD ATTRIBUTES/XFAM.  KVM already
->> validates ATTRIBUTES/XFAM, so the allowlist only needs to cover directly
->> configurable bits.
->>
->> Patch 1 is a standalone fix for the existing denylist check, which uses
->> the index of the matched userspace entry instead of the subleaf reported
->> by the TDX module, i.e. userspace can bypass the HLE/RTM/WAITPKG check.
->> It is tagged for stable so that it can be backported independently of
->> the rest of the series.
->>
->> Patches 2-5 build the allowlist, add CORE_CAPABILITIES to it, filter
->> KVM_TDX_CAPABILITIES, and validate the CPUID input of KVM_TDX_INIT_VM.
->> The last two patches are user-visible changes, which are now called out
->> in their changelogs, along with why existing userspace and guests are not
->> expected to be affected.
->>
->> For this version, I'm hoping to continue to collect some RBs and Acks.
->> The key discussions from v3/v4 [1] are summarized below.  Note, FRED KVM
->> support is in progress upstream [2], and no TDX module with FRED support
->> exists yet, so there is no immediate issue.  But it would be nice to get
->> this series merged sooner rather than later.
->>
->> Discussions from v3/v4:
->> - Rick asked whether the assumption that the reserved bits in
->>    CPUID.0x1.EAX, CPUID.{0x4,0x18,0x1F} and CPUID.0x80000008.EAX won't be
->>    used to enumerate features can be confirmed by the x86 architects [3].
->>    Confirmation is still pending.  Per the SDM/APM, these leaves/registers
->>    are defined for specific information (version, cache/TLB parameters,
->>    topology, and address sizes), so the reserved bits are expected to be
->>    used to extend the existing information rather than to enumerate
->>    features.  Allowing these registers in full is a best guess, but it's
->>    still far better than the existing denylist-based check.
->>
->> - Whether to restrict the TDX feature bits to kvm_cpu_caps[].
->>    The conclusion from the discussions is to construct the allowlist based
->>    on kvm_cpu_caps[], plus a few bits that KVM can support for TDs
->>    independently of kvm_cpu_caps[].  If TDX feature enabling turns out to
->>    be consistently blocked by non-TDX VM enabling, a solution can be worked
->>    out then.
->>
->> - New opt-in interface vs. backporting.
->>    There are two options for old KVM versions that don't do the filtering
->>    and validation:
->>    1) Add a new opt-in interface to expose features newly introduced by the
->>       TDX module.
->>    2) Backport this series to LTS/stable branches.
->>
->>    The opt-in design vs. backport decision is deferred, since this series
->>    is correct and an improvement either way.
->>
->> - Potential backward compatibility issue when an effective fixed-1 bit
->>    becomes directly configurable due to x86 feature deprecation.
->>    This is left for the future, i.e. it can be addressed if and when such a
->>    deprecation actually happens, e.g. by adding an opt-in interface to let
->>    users/admins choose between migration flexibility and backwards
->>    compatibility on old platforms.
->>
->> Changes since v4 [1]:
->> - Split the CPUID entry index check out into a standalone fix, which
->>    allows it to be backported to stable independently of the rest of the
->>    series.
->> - Exclude XTPR from the allowlist, as neither TDX nor KVM actually
->>    virtualizes the feature and guests don't need it. (Xiaoyao, Rick)
->> - Rename TDX_CFG_EXTRA_F() to TDX_CFG_INDEPENDENT_F(). (Xiaoyao)
->> - Fix AMX_COMPLEX to be added for CPUID_7_1_EDX instead of CPUID_1E_1_EAX.
->> - Drop the descriptions in the TDX documentation and the uapi header, as
->>    the ioctl interfaces for KVM_TDX_CAPABILITIES and KVM_TDX_INIT_VM are
->>    unchanged by this patch series.
->> - Improve changelogs and comments. (Xiaoyao, Rick)
->>
->> The series follows the CSV version of the CPUID virtualization document
->> from "Intel TDX Module ABI Definitions" [4], updated in June 2026.
->>
->> AI tools were used to:
->> - Polish the cover letter and commit messages.
->> - Do code review.
->>
->> [1] v4: https://lore.kernel.org/all/20260917072548.2314491-1-binbin.wu@linux.intel.com
->>      v3: https://lore.kernel.org/all/20260827031837.2863609-1-binbin.wu@linux.intel.com
->>      v2: https://lore.kernel.org/all/20260604023314.3907511-1-binbin.wu@linux.intel.com
->>      v1: https://lore.kernel.org/all/20260417073610.3246316-1-binbin.wu@linux.intel.com
->> [2] https://lore.kernel.org/all/20260911213659.2025974-1-sohil.mehta@intel.com
->> [3] https://lore.kernel.org/all/e7182b3c03a0e39cb60392b4d75111255418d6cf.camel@intel.com
->> [4] https://cdrdv2.intel.com/v1/dl/getContent/795381
->>
->> Binbin Wu (5):
->>    KVM: TDX: Check unsupported CPUID bits against the TDX module's
->>      subleaf
->>    KVM: TDX: Track configurable CPUID bits allowed by KVM
->>    KVM: TDX: Add CORE_CAPABILITIES to the allowlist
->>    KVM: TDX: Report only KVM-allowed CPUIDs in KVM_TDX_CAPABILITIES
->>    KVM: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
->>
->>   arch/x86/kvm/vmx/tdx.c | 258 ++++++++++++++++++++++++++++++++++++-----
->>   1 file changed, 231 insertions(+), 27 deletions(-)
->>
->>
->> base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+> So For #NR number of features, We will end up using 2*NR bits which
+> is exactly same number of bits, V3 [2] uses. So this is just a different
+> way of encoding in implementation perspective.
+
+No, it's NR bits. I think this is the core misunderstanding.
+
+Let's say you have 3 features. 2 are optional. 1 is required. That gets
+encoded in 3 bits:
+
+  nr_required = 1
+  nr_optional = 2
+  flags[0] = Required-Feature-0
+  flags[1] = Optional-Feature-0
+  flags[2] = Optional-Feature-1
+
+> >  - There is no invalid or reserved encoding to define. Each bit just
+> >    means "present".
 > 
+> What if a buggy source sets both required and optional for a feature?
+> That is an invalid case here. Same as 0b10 is an invalid value set by
+> buggy kernel.
+
+That cannot happen. A feature is either required or optional. If you
+have a "logical feature" that is sometimes optional and sometimes
+required then you would have 2 feature bits for that in flags[]. But
+that should be an unusual case.
+
+> >  - The target doesn't need a supported table. Required features are only
+> >    ever appended, so it rejects any required bit at or beyond its own
+> >    MEMFD_LUO_NR_REQUIRED. Optional bits need no validation; the target
+> >    just checks the ones it knows about.
+> >
 > 
-> For the series:
-> 
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> As I explained above, incase a feature is replaced by another feature,
+> new kernel
+> can support it deserialization but it will not be required from there on. So
+> The supported table will still be needed.
 
-Hi Nikolay,
+The one case where a count isn't enough is if a newer kernel drops
+support for an old required feature entirely (e.g. removes the code
+that translates the old seal). That can be handled with an explicit
+check in the handler, or we can keep a supported bitmap. Either way, that
+question is independent of how the header encodes required vs.
+optional.
 
-Thanks for your reviews!
-
-I noticed you later gave separate RBs for patches 2 and 3. Is that because
-patches 4-5 conflict with Sean's series [1] during rebase?
-
-For now, I'll carry your RB only on patches 2 and 3 in the next version.
-
-[1] https://lore.kernel.org/all/20261022210134.612848-1-seanjc@google.com/
-
+Certainly in the immediate-term we can just use a count.
