@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793140244;
-	b=CLXPQzokv0/GPIC7Ue4ytBWP/0ACtCiQrlmnLCxs18lzhpfkJRQJ3lctUQ+1wtKhLY0W
-	 samyPNOq52S9lU/tfi0xNLM4uGl2mA3tNHXcKuJXBPoeNTXNP02mK9J1GeYuc+Ijshnzz
-	 OYNvl4d5XT2Kru6Xb4DtjPfBXYipcq+xdKn0IS+Zl3EPqBOWLZNrchqNyUnFP/2gpDzFa
-	 uF6dS7KL5j0bkDlAOpS79jahSDW62L5T0l+gczOJaW/3tFsV9bopjfkTdrCla/W5fxGPH
-	 D9pVklbBWV1LcVZ1x4XEnFqfoW1eShNe0NH50BkHKjgzXWAjV/425lC+QPdS3mHzwuA==
+	t=1793140246;
+	b=3itFTfxLfM+/X7GLd/vvdp33jUGEaF+bEJDVC9ISAk8rOZrX2AyBYdvM0mDftI4bVv87
+	 Yf4O7F+aSv2jfnS0O2sGroyxI7L7YVJ6MPQNXA60+WCLMSLOPs1X5g/aLGlzNKq/hVHrS
+	 z92UpkgcCbyCljJ/iHLH3817iRRGPZPuWW2Bb+Of63rovCiL3izeSEY5DGBxHC0kpv5OX
+	 b0h5bXMUlkANvN/GnGb2EMOD9qrKDC/GOr4RQRcqj5SyI4Ny0+tBLayIVYZNg5zzYZLmZ
+	 4hCRyFxcOqTuHPEJmjfzdSdL5TR/8LrueoiyOPSc8JbxCgCWbqaq4UFz6hhnnql0isQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140244;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793140246;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=BoPUymxOglcKvNzSLxc2ZHRNuJgwJeLzW+FbyED8JEk=;
-	b=dEqDUkmLnpOdCGqnsd/ZkFMiKfrci7efpt5LQCqX0ZaVMzQTs7h0UYMKvIVD9pqlS+5S
-	 ou6MJqDI7wkT1PW3idZlJW/iUYYHxuHP9iSHgY4eUk3q12HL6Baq/j54jLi3QurAEqKg7
-	 eLw9zbIQXWDNAeW3U5zJdT822xhu6mBqSu0rAW114NYPbzAWtuQip2sTWfC9OYkFqMCCu
-	 bsT5WV9YNATfsxaYgdnaaDi7rBIvdloXn87Jo067oQ7458yw2gFUk2fAWuu5EPKxLiIyh
-	 PH9YCnhaIanRr577mFCYqHGDdFsq+s+GJtcA4uZCbxrK/Ww2WyQTyJzGjVbk2+VUhCQ==
+	bh=lXjWY4taTu4hJv4bATl5d396acZLb9e/6END/2fvrmk=;
+	b=pdI+m9z3TYPVLvUXgw9Wtrl2HHETMz/fiOZpTcl8p8cS0yV/vPV45DfgkfDTJbck+IwT
+	 PISKddWdBaPErUCJpBIqKSFCAp9EP28DLTWEZCALE1bqVmgy7vqZVnfv+aoCW71pdsgxL
+	 TdQ9tmEkEPDdpdw9Ph6KD6Dz9WXeGEtfJ5erkbxBf8c2P/BrnF6v/xL8vzkr/A58BvT8+
+	 v/Cv9t5BSknvQ1y/T3pH3S6ZDDoc+qK+aJuNX/oq+4msyC8rUUsyGh67xZwW9Gh/6PIh5
+	 e+GAbjg/PwYtWonPIOq32Q1ZaSGdDVAiZKSNAQB6mXmIYIX41KLBL6mjJSGWvnNL1mQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jyAK7mlt;
-	arc=none smtp.remote-ip=209.85.215.197
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="Im/yoa3O";
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565D0606A32A
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:30:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 565D0606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A50606A333
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:30:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54A50606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jyAK7mlt
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdac8b7169eso271969a12.2
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:30:43 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Im/yoa3O
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3abb4c24125so292783a91.3
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:30:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793140243; x=1793745043; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793140246; x=1793745046; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=BoPUymxOglcKvNzSLxc2ZHRNuJgwJeLzW+FbyED8JEk=;
-        b=jyAK7mltDDLF55BUGL0gZ9XgqjgHYfNVYN3pF5fCNlieCcjG/7JJ0V4SDgyIpBiN/n
-         JZBLPqzWj+8ufNC6pVei+0NAo0hcDQU1X2lhURVxkUZZtns4+EBZgzwD60y536vG15fz
-         GgQ1NQ1wrFFpOJe+gP0MEV0vUxyiYDe+MWbPeoY5URJaLTvzInzMrOKWcKIg58DQ95uS
-         pVJcz8G8lbXia6lLQ4Qir86ZI1PAJ4sV16ff3yfqxaVv5JDGddVmfZGxrEbqQIZWcf+f
-         3gAIIcZz/Hdwl1u4rplelobWDcMfqW+wmqSPY8huaHpK2CyAbSkFzWStyal15HwwLNPm
-         feDg==
+        bh=lXjWY4taTu4hJv4bATl5d396acZLb9e/6END/2fvrmk=;
+        b=Im/yoa3OlRfL/DkC21L/U7lpLIbVNakCyVQ1NEUJ6dNMP9Dd73MRwFb7JpRqUrMWXR
+         okemdh72fE0WSiT47MG60utj6t3wyGsLxPlGXgaawTLsx7eO+uBb0Mif6MKOmVtlhzjk
+         OdOgnKK6wZGcyKxHAAhEZmFmq8F7iqNTzBq6s7JEtRYgACU50ZR/vgOfV1ru1La/WWBv
+         1aB4Q2b7noa/VJ4J+cyD6l84xs8JE8su/5Ao2rEUK75cKDyeJuveG1K/I7/Zp96uo0sS
+         YXbEUfXwERMKJ09aPS2vnmj/tucv+T/JcEzodw6ZH5gSHotr5W9g6AkpFR+8/RhFIC0w
+         wasA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793140243; x=1793745043;
+        d=1e100.net; s=20260707; t=1793140246; x=1793745046;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BoPUymxOglcKvNzSLxc2ZHRNuJgwJeLzW+FbyED8JEk=;
-        b=L+xLyF+/rJ0rLsXRm5PZQtxsJg43/EuFgUK37u9+0O8Q7dSooowVIThDwwWt2BGOx9
-         mPvOVS3LwotVKg3jUCOTQq2GZcBqG8622j7i+k0ksmjArI/IuylBOEhCeEQYX7QWwR+k
-         c3GhR9SergNXf9Yb3+4d3Lg1qyP6HlQlJiv5GGDNYt8jRQtXTg7SmvdJa414x/o5fQTs
-         WvcPQ6atOTYBu6/JLYrUN2vMTm3774uqX7mdfb8mCrvPjoQRsbSet2ebzul8iu3douMx
-         SCMu0P42FAbpCr4xmOfWm0TPA6BzvFqEtpjOU5vUiIvv3HXEm+3y0THJA4PI/E//fufq
-         81XQ==
-X-Gm-Message-State: AFq9FYJWafBYRpkyuHqy9OTsxg4oVLc3xYAe39wW8176fjGHtfyVEwts
-	5V2IcEGkXo98YDFvQZ0YX1uo+jllfKCogIadIbgb8lra18YWxU70DYKI+bmBR5LgxZwmnxQw3rO
-	f8tLs1A==
-X-Received: from pgp3-n1.prod.google.com ([2002:a05:6a02:62c3:10b0:cc4:aa77:305b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6f91:b0:3e2:a0a4:8ab2
- with SMTP id adf61e73a8af0-3e9020cfb89mr533497637.2.1793140242552; Tue, 27
- Oct 2026 15:30:42 -0700 (PDT)
+        bh=lXjWY4taTu4hJv4bATl5d396acZLb9e/6END/2fvrmk=;
+        b=in1I9gOELmw73c7k98wUYiVk65aB8vYFDOayy1KL1Z9BHPgj9YsuAfL5G7JX7SpiuV
+         r6s+q5qVxomtuk22bWcs+r1msmfw9DkENckJb7qLD/EbTwz0TTcjp39jX9y4rL/FlssI
+         hbeZOIUCzyTbgBxNDzvwi4ckKkHWfl0F5OX7+U9I7YNtFxriP/XDYUc4++9CoLxBAORf
+         RwA634+I6rxexiou14tvvm3SCaK0bq7IOjboWW92RsieqU8h3o9OiiefKZJx+aLFAMyc
+         5l3GWBJ90qgi/qAHjwV/NaXpCTbKXMDYhFhDdcts5Z8MEMXQSQZyQwv/FVkdMhNXgnzq
+         Q3FA==
+X-Gm-Message-State: AFq9FYJSN6QxEnJNkNHz3DplmEZ47NpQVCghNsLBpz6Mgikgx4q0cV/v
+	DJTpYLRcwJJZw5JPLvbT4RbCp2Doy5d1tJtRvWqHXyi3IZ/5deLb1v48Ek97fAU4r29H/LKwQIi
+	IY+6NJQ==
+X-Received: from pjbkb13.prod.google.com ([2002:a17:90a:e7cd:b0:3ab:d5d:f278])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:a09:b0:3ad:a270:a623
+ with SMTP id 98e67ed59e1d1-3ae57e35220mr239679a91.4.1793140245550; Tue, 27
+ Oct 2026 15:30:45 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 27 Oct 2026 15:30:36 -0700
+Date: Tue, 27 Oct 2026 15:30:38 -0700
 In-Reply-To: <20261027223038.1566931-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,9 +80,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261027223038.1566931-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261027223038.1566931-2-seanjc@google.com>
-Subject: [PATCH v3 1/3] KVM: VMX: Update EOI bitmaps even if APICv is
- (temporarily) inhibited
+Message-ID: <20261027223038.1566931-4-seanjc@google.com>
+Subject: [PATCH v3 3/3] KVM: x86: Consolidate invocations of kvm_x86_ops.load_eoi_exitmap()
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -90,37 +89,54 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
 Content-Type: text/plain; charset="UTF-8"
 
-As KVM does with IRTEs for device posted interrupts, update the EOI bitmaps
-if APICv *can* be enabled for the vCPU, not just if APICv is *currently*
-enabled and active.  I.e. keep the bitmaps up-to-date at all times so that
-KVM doesn't need to refresh the bitmaps if APICv is unhibited in the future.
+Rework KVM's handling of EOI exit bitmap updates to consolidate the calls
+to vendor code so that it's easier to see that the Hyper-V path is doing
+the exact same thing, just with extra input to account for the SynIC
+vectors.
 
-In the worst case scenario, failure to update the EOI bitmaps means KVM
-could miss an EOI and effectively break level-triggered IRQs, e.g. if a GSI
-routing change occurred while APICv was inhibitied.
+No functional change intended.
 
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-180887@kernel.org
-Fixes: d62caabb41f3 ("kvm/x86: per-vcpu apicv deactivation support")
-Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/vmx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b341af4c6057..d8e66d67138f 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7079,7 +7079,7 @@ int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0028d57e964a..483dac323c8e 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8047,6 +8047,9 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_inc_or_dec_irq_window_inhibit);
  
- void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
+ static void vcpu_scan_ioapic(struct kvm_vcpu *vcpu)
  {
--	if (!kvm_vcpu_apicv_active(vcpu))
-+	if (!lapic_in_kernel(vcpu) || !enable_apicv)
++	unsigned long *eoi_exit_bitmap = vcpu->arch.ioapic_handled_vectors;
++	DECLARE_BITMAP(__eoi_exit_bitmap, 256) __maybe_unused;
++
+ 	if (!kvm_apic_present(vcpu))
  		return;
  
- 	vmcs_write64(EOI_EXIT_BITMAP0, eoi_exit_bitmap[0]);
+@@ -8064,17 +8067,14 @@ static void vcpu_scan_ioapic(struct kvm_vcpu *vcpu)
+ 
+ #ifdef CONFIG_KVM_HYPERV
+ 	if (to_hv_vcpu(vcpu)) {
+-		u64 eoi_exit_bitmap[4];
+-
+-		bitmap_or((ulong *)eoi_exit_bitmap,
++		bitmap_or(__eoi_exit_bitmap,
+ 			  vcpu->arch.ioapic_handled_vectors,
+ 			  to_hv_synic(vcpu)->vec_bitmap, 256);
+-		kvm_x86_call(load_eoi_exitmap)(vcpu, eoi_exit_bitmap);
+-		return;
++
++		eoi_exit_bitmap = __eoi_exit_bitmap;
+ 	}
+ #endif
+-	kvm_x86_call(load_eoi_exitmap)(
+-		vcpu, (u64 *)vcpu->arch.ioapic_handled_vectors);
++	kvm_x86_call(load_eoi_exitmap)(vcpu, (u64 *)eoi_exit_bitmap);
+ }
+ 
+ void kvm_arch_guest_memory_reclaimed(struct kvm *kvm)
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
