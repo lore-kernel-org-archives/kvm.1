@@ -1,57 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793143022;
-	b=M+C7wVNf669MOQXv1ZOJDpqeVfHqeSO8fLcYLQFciXQCt3A4bQuXIcfnEnFSPc8AcUWI
-	 pBMot4dC7Bn8g3NZq5JlUERzJS9KN5c+A9EF+NZWJCPqVg7ZQ6Er08A4CZksuiFIyuuto
-	 sTKli3qxrJZ+bVTi2tFtpgCRm8b4uCX5EiyN+THGEIDhR2zvnfSo+waDbpnhR+TSC0LSG
-	 Vg+PhIG1ZKoGYL20vUPhsCgjTsSZB2qaWsLeJ3mp6ovZ9y1KgeHnr8iZvQO4XmY53UlVB
-	 nBhPcFz0sz0Jc0HtHTuAUVNOSo9FVgc7Tz135nVG2oAx2mHijCNOflwTvEgr4ouhDyA==
+	t=1793143050;
+	b=kfXjq7ejpZ0rqdsicYn3kiqgnf1OXDO3Cftw8fdaOVvmA+LAE5EKsl6depPdfz6tFCDS
+	 lacsCaGs+zzjj3LIIspJrkPIy+zrssMjfYPrabx/EOnbYQvIKwNEFroRX8zK4ODvHDT6Q
+	 52/Fzw8fes0uO8X2gUsdS4wnnCM3N7kCkUl6sBdhpWLjeRn5bIPTy1ZV9JuCdaWU4Q0lY
+	 Q7qDesY7ftj5iDo9DcpeOb/+cJkt/g+MrjW/Mb9PiPVXOlqEhOtSFzwOWbmMeiTx0lJCD
+	 u0HE2l+Z0qoUihAXUwU1AIqLhMPbtgZP3HOp1sXdCsEBE5tw18LVUz1h87AgVzNhFAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793143022;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=qRhVMaf1rSJj1yr1oMLzr8S4N4fdZyR12NoPdNbj59o=;
-	b=GIovsJL/lCAzIckFL/lN7vJiOrC2JNVueOAV4zvqdmlBtF6gXkRevos0CJBa/PNo5yDq
-	 2cHC2Dx+acD5E3GYcwbyz0UFsQEusv3VwXJfQ3wTYFJ4otYU73Fk/miTtk/VhWInIpLLp
-	 a9Xnkr7GB1fhDn+heicY/x3nK4oeTAPSRv4BZLnxhDJ7i8yhVgfJI7/PnXMt3xPx+rIQC
-	 gLyHXXyrupda9wv2pzYkYJW28BugljnKSbNDmJwhE3jOcXYnaHHYR9Un43cl72CF0RIag
-	 9N/6+YNP2u4VKhkp8YkZYw/S6vBNnlwbVFjDh2LscB18QcWvx0ehG7YQZrzbtDUItZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793143050;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=ZDGRVgYI+YuLX6sEG6mHKRJT8belKw9rO3epzepDmXc=;
+	b=PyqxWXfLRmTSIEeB9a1ZCfvL2S3p92huqik8ZDWKpeQ49TTAKJa1OOS7Y80XVSvTD/qZ
+	 WDPBzSji/4Mg6wraLBAb0BEAV0rLR1zycsVILtHkaAoqtqGYV2KbuNF/3e2q387WnYLp3
+	 hWe4ErVjWiFG9x0FWmMiBzryALcCKfkR/PdnpEGj3ieLlEK4Q+YiFh+q32Paho/Os27Hw
+	 Bwf81Lu6sbVBIqmV9XsSq64Rka+dwPemp7xKOOqNCd9g3bsHMY0Nec42bmth46qs4w6VN
+	 DaBzLLy/niMGr0PTeA9h/AymELiOlx3klw1CVvv/d8nsJlKyjVoKE5rMtLRlCbx5fmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MBKSH5CL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="PE/zx+6A";
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDD3606A31D
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 23:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6E4606A31E
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 23:17:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD6E4606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MBKSH5CL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247B01F01825;
-	Tue, 27 Oct 2026 23:17:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793143021;
-	bh=qRhVMaf1rSJj1yr1oMLzr8S4N4fdZyR12NoPdNbj59o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MBKSH5CLA3X29omnjWVTKLkDGGnBi84J6yv5/q+6nCqeeY8HDuwcVX2rB34PQjVFw
-	 Tl0BMr82n3UfWjDbTjbJEvsEPEe3JD3912rfvDVFh+A0E6KRbx4mbE6dpmjRqacNli
-	 zPG9ms25EUgKIRFXxLJa/fScFBELCxsJk97zVJOIAPerAMafg9VBgyCbKNFXdBS2Xq
-	 FAF6YBvNVQlfO7oP51WWONHveoGCAOBEs/woGLUBJIzrN4awR2MhaonZ0yIxB0lY6G
-	 r9gozAWGHa52nDmpOhYPS6UgGcmrP/5OASf0/IA3fR33iKGNbK395Qb6vu9zfPQEt5
-	 E3rioqosWITpQ==
-Message-ID: <sashiko-outbox-187201@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/6] KVM: x86: Recompute EFER.LMA instead of
- inheriting the current value on EFER writes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261027224914.1574319-5-seanjc@google.com>
-References: <20261027224914.1574319-1-seanjc@google.com>
- <20261027224914.1574319-5-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 23:17:00 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PE/zx+6A
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a01e2962a1so488911b3a.2
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 16:17:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793143049; x=1793747849; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZDGRVgYI+YuLX6sEG6mHKRJT8belKw9rO3epzepDmXc=;
+        b=PE/zx+6Af4cB6kwCb3KWCo2kLDvj8fl2ys7izWUyFpH5zLYmX810u3AzXitpejplQE
+         /jQClQeXVkg24Hq2EtapZZmYZqBqVAzhuerBOXqcEml3pCLmsPFzhUKaKVVRYh78e5jo
+         h8KkCLUPmxBFXlpb/JITMIblABhQ7NlF7KMjGGjdd9IyszPk9+1oO7oOT2MoBvY5XheR
+         C7sZ+dVfMbfS+HyT7uTrugl1sk73k+pwHG2Pfa3KfOiBB28qEE/Udtp4Y7cVn9gp7foT
+         HEcU/cZ1gEdP98XXJk+xlaxcfEGrza6u+gZED9q0MMpJmn/0VM46cFjFyrKNEI0geaag
+         VHHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793143049; x=1793747849;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZDGRVgYI+YuLX6sEG6mHKRJT8belKw9rO3epzepDmXc=;
+        b=t/wJbAB2JfPELCuINqHwL/6BStZBEJKgEwAVV6hKPG7kaUwbvaYiI1xq2hHNqfcRMB
+         DCdMSyQQj2SkmDU8McjmeFPzI0L8MDqbKEcqhuiTU1oqYTNBLrbiQiMh9GWceyDlI1zW
+         4bufdO1kc9Hb6vCCPT7hoB7u7eDPmRxlht5PL0zLDDKbpOLqf8RWq2PFNNMNt48ekr/U
+         +wCwp1WQndSD/L31/V8/8rZHwyxGuzPFK1jL0W7nbuz8P+Yw3011y2D5cI7m6FHvzdRJ
+         Q+AA0W1mwbQ5o7g+9krNZBnr2y6wQDVS08/QzXIDKHi2jJDNLVIt+fUtHKBWMHk3d569
+         SqJQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwN14Fb61fibCNhpntS6H8IIFGjUOk90KBIYkhzpBvLFzeF7cfa2ClF+OjwPSiZlVUu4oQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI2OjsGKXrNDB/LmTQwbILLxOLB8Fxtf+5iH/81qNviU+1LBfAh
+	rBr3wU0tqypcA64FFpcrBU6VDvLTU/z/F/asxUj9g2g3+2Pu6SUJyxAEyrkeGG2FBz7aMaE+zGJ
+	P2N+6UShSqIxMzBk8z2HH8Q==
+X-Received: from pgcgn27-n2.prod.google.com ([2002:a05:6a02:6a1b:20b0:cda:df40:b50f])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:b7a6:b0:3e2:4c65:5905 with SMTP id adf61e73a8af0-3e902404531mr513567637.60.1793143048797;
+ Tue, 27 Oct 2026 16:17:28 -0700 (PDT)
+Date: Tue, 27 Oct 2026 23:17:28 +0000
+In-Reply-To: <ac22215d-3e58-4aab-851e-47c30836e058@app.fastmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,182 +78,193 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+References: <ac22215d-3e58-4aab-851e-47c30836e058@app.fastmail.com>
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261027231728.1466446-1-jthoughton@google.com>
+Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
+ current->mm is NULL
+From: James Houghton <jthoughton@google.com>
+To: arnd@arndb.de
+Cc: James.Bottomley@hansenpartnership.com, acme@kernel.org, 
+	akpm@linux-foundation.org, asml.silence@gmail.com, ast@kernel.org, 
+	axboe@kernel.dk, bpf@vger.kernel.org, daniel@iogearbox.net, david@kernel.org, 
+	dsterba@suse.com, io-uring@vger.kernel.org, jmattson@google.com, 
+	john.fastabend@gmail.com, jpoimboe@kernel.org, jthoughton@google.com, 
+	kees@kernel.org, kvm@vger.kernel.org, liam@infradead.org, 
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, ljs@kernel.org, mason@kernel.org, 
+	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, mhocko@suse.com, 
+	mingo@redhat.com, mkp@kernel.org, namhyung@kernel.org, pbonzini@redhat.com, 
+	peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org, seanjc@google.com, 
+	surenb@google.com, tglx@kernel.org, vbabka@kernel.org, 
+	viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] kvm: x86: guest- and userspace-reachable WARN_ON_ONCE() in set_efe=
-r()
-- [High] kvm: x86: missing MMU context reset in set_efer() when EFER_LMA ch=
-anges
-- [High] KVM: nSVM: guest-reachable WARN_ON_ONCE in set_efer() due to stale=
- EFER.LMA
---
+On Tue, Oct 27, 2026 at 11:32 AM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, Oct 27, 2026, at 18:29, James Houghton wrote:
+> > On Mon, Oct 26, 2026 at 5:13 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> >>
+> >> E.g. on arm64 with CONFIG_ARM64_SW_TTBR0_PAN, the page table base for
+> >> the current process is only set in user_access_begin() and would
+> >> not point to any task here. Without ttbr0_pan, it should be
+> >> covered by cpu_set_reserved_ttbr0() turning off all user space access
+> >> for kernel threads.
+> >>
+> >> Should this perhaps be addressed in architecture specific code
+> >> instead of in a common place?
+> >
+> > You're right that whether corruption can actually occur depends on the
+> > architecture and config. I'll write a note about this in the v2 cover
+> > letter.
+> >
+> > That being said, I still think the right thing to do is to have the
+> > new check(s) in common code. Instances of improper uaccesses are still
+> > bugs, even if no corruption occurs.
+>
+> I agree we have to do something to prevent the problem for most
+> configurations and find any newly introduced bugs.  The questions
+> that need to be properly decided are
+>
+>  - does there need to be any compile-time configuration to skip
+>    the extra checks and/or the warnings?
 
-commit d17bdc446bf3834407b9fa79da8f4a4f619465b7
-Author: Sean Christopherson <seanjc@google.com>
+Since patch 10 moves the warning out of line, it costs nothing on the
+fast path, so making the WARN configurable wouldn't save anything. The
+question is really whether the mm check itself should be configurable,
+and that check is also what makes the access safe.
 
-KVM: x86: Recompute EFER.LMA instead of inheriting the current value on EFE=
-R writes
+The text size increase seems manageable[1], but it would be great to
+hear other people's thoughts. For the runtime cost, I'll do some
+performance testing. My guess is that a load of current->mm and a
+well-predicted branch per user access will be negligible, but I'll get
+numbers.
 
-This commit recomputes EFER.LMA from EFER.LME, CR0.PG, and CR4.PAE on bare
-writes to MSR_EFER instead of inheriting the existing EFER.LMA bit from
-vcpu->arch.efer, and adds a WARN_ON_ONCE() if EFER.LMA changes.
+>  - are there any cheaper ways to make it safe than to add a
+>    condition on each user access?
+>    E.g. the original lazy mm switch was intended to avoid
+>    expensive TLB flushes when switching to a kernel thread and
+>    back to the original task on 32-bit x86. On modern CPUs,
+>    the MMU can deal with multiple ASIDs cheaply, so turning
+>    off user access in a kernel thread may be cheaper than
+>    adding code to uaccess depending on the architecture.
 
-> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-> index c3cb1575fe66e..c55402970a345 100644
-> --- a/arch/x86/kvm/msrs.c
-> +++ b/arch/x86/kvm/msrs.c
-> @@ -638,8 +638,17 @@ static int set_efer(struct kvm_vcpu *vcpu, u64 efer)
->  	    (vcpu->arch.efer & EFER_SVME) && !(efer & EFER_SVME))
->  		return 1;
-> =20
-> -	efer &=3D ~EFER_LMA;
-> -	efer |=3D vcpu->arch.efer & EFER_LMA;
-> +	if ((efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu))
-> +		efer |=3D EFER_LMA;
-> +	else
-> +		efer &=3D ~EFER_LMA;
+That's a fair point. If user memory were inaccessible in kernel threads
+and after exit_mm(), every such access would fault, and the fault
+handler could WARN about it (x86's do_user_addr_fault() already has a
+!mm branch), so it could still be loud without a check on every access.
+
+I'll look into disabling lazy mm switching on x86 and doing some
+performance testing with that (like comparing the per-uaccess check
+with the added cost of non-lazy mm switching).
+
+Other than the performance difference, I see these issues with making
+uaccess safe entirely with the mm switch mechanics:
+
+ - It only helps on architectures (and configs) that implement it,
+   while the common check works everywhere today.
+
+ - The fault handler would need to tell legitimate faults apart from
+   bugs, e.g. copy_from_user_nofault() from BPF or perf in a kernel
+   thread is fine and must stay quiet. The series handles that today by
+   checking current->mm in the nofault helpers (patch 6).
+
+The two approaches are mostly complementary: if non-lazy switching
+turns out to be cheap enough, an architecture that does this will have
+better defense against uaccess bugs. But I'd still like the common
+check so that these bugs are reported on every architecture.
+
+> >> I would think that user_access_begin() is a more natural place
+> >> for the added checks, as this should be called exactly once for
+> >> any function that accesses user space and also stays out of the
+> >> way of the copy_from_kernel_nofault() etc.
+> >
+> > user_access_begin() isn't used in a lot of places that I want to
+> > catch, including the KVM case. Roughly:
+> >
+> >   kvm_write_guest_cached() --> __copy_to_user() --> raw_copy_to_user()
+> >
+> > There's no user_access_begin() in there. :/
+>
+> Good point, yes. After the changes described in
+> https://lwn.net/Articles/1102061/, I had assumed that all
+> __copy_{from,to}_user() are going from common code, but it looks
+> like the series so far only touches __{get,put}_user().
+>
+> There are of course few enough of these left that I think
+> we can consider doing the same thing here and turn them all
+> into the checking version:
+>
+> $ git grep -wl __copy_'\(from\|to\)'_user  drivers mm virt
+> drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> drivers/gpu/drm/i915/i915_gem.c
+> drivers/gpu/drm/i915/i915_query.c
+> drivers/usb/gadget/udc/atmel_usba_udc.c
+> drivers/vhost/scsi.c
+> drivers/vhost/vhost.c
+> mm/kasan/kasan_test_c.c
+> virt/kvm/kvm_main.c
+
+Agreed, I think we should clean those up, but that can be done
+separately. This series already adds the check to the common
+__copy_{from,to}_user() and __copy_{from,to}_user_inatomic() wrappers
+in include/linux/uaccess.h (patches 7 and 8), so the KVM path is
+covered without converting the callers first.
+
+> > I do think user_access_begin() should have the new check though, so
+> > I've added it in the v2.
+>
+> I had the details confused here. Seing that user_access_begin()
+> and the other accessors always call access_ok() at some
+> point, maybe that would be enough?:
+>
+> --- a/include/asm-generic/access_ok.h
+> +++ b/include/asm-generic/access_ok.h
+> @@ -33,6 +33,9 @@ static inline int __access_ok(const void __user *ptr, unsigned long size)
+>         unsigned long limit = TASK_SIZE_MAX;
+>         unsigned long addr = (unsigned long)ptr;
+>
+> +       if (WARN_ONCE(!current->mm))
+> +               return false;
 > +
-> +	/*
-> +	 * Toggling EFER.LMA on a bare write to EFER should be impossible, as
-> +	 * it means KVM allowed architecturally invalid state at some point in
-> +	 * the past, i.e. allowed EFER.LMA=3D1 && (!CR0.PG || !CR4.PAE).
-> +	 */
-> +	WARN_ON_ONCE((efer & EFER_LMA) !=3D (vcpu->arch.efer & EFER_LMA));
+>         if (IS_ENABLED(CONFIG_ALTERNATE_USER_ADDRESS_SPACE) ||
+>             !IS_ENABLED(CONFIG_MMU))
+>                 return true;
+>
+> (plus the few extra copies of access_ok()/__access_ok())
+>
+> As a quick fix I would probably start with just the 'if (!mm) return false'
+> bit here to get something merged while we still discuss the other
+> details.
 
-[Severity: High]
-Can an unprivileged guest or host userspace trigger this WARN_ON_ONCE() in
-arch/x86/kvm/msrs.c:set_efer() by leaving vcpu->arch.efer with a stale
-EFER_LMA across nested SVM transitions?
+Making the same point as Sean[2] but with a little more detail, I had
+thought about making the change in access_ok(), but:
 
-On AMD SVM, VMRUN ignores EFER.LMA in the VMCB save area and computes it
-from (EFER.LME && CR0.PG), so arch/x86/kvm/svm/nested.c:nested_vmcb_check_s=
-ave()
-does not require save->efer's EFER_LMA to match (EFER.LME && CR0.PG).
+ - On x86-64 and powerpc, the masked user access paths don't call
+   access_ok() at all. That includes copy_from_user(),
+   strncpy_from_user(), strnlen_user() and every scoped_user_*_access()
+   block, which is where many of the converted __get_user() users ended
+   up.
 
-In arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_save(), KVM only clears
-EFER_LMA when EFER_LME is 0, and relies on svm_set_cr0() to update EFER_LMA
-when EFER_LME is 1:
+ - __copy_{from,to}_user() and __copy_from_user_inatomic() skip it too,
+   and the KVM bug followed exactly that pattern: the range was checked
+   once up front, and the access came much later from a different
+   context.
 
-arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_save() {
-	/* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing VMRUN). */
-	if (!(svm->nested.save.efer & EFER_LME))
-		svm->nested.save.efer &=3D ~EFER_LMA;
+ - access_ok() is also used as a plain range check where having no mm
+   is fine. For example, copy_{from,to}_user_nofault() call
+   __access_ok()/access_ok(), and BPF and perf legitimately call those
+   from kernel threads, so a WARN there would fire on valid tracing.
 
-	svm_set_efer(vcpu, svm->nested.save.efer);
+Even the quiet 'if (!mm) return false' version would have missed the
+KVM case, because of the first two points. I don't think there's really
+a "small" fix here, unfortunately. :/
 
-	svm_set_cr0(vcpu, svm->nested.save.cr0);
-	svm_set_cr4(vcpu, svm->nested.save.cr4);
-}
+Thanks again for all the feedback, Arnd. I really hope we can get this
+series into a mergeable state. :)
 
-However, arch/x86/kvm/svm/svm.c:svm_set_cr0() only updates EFER_LMA when
-CR0.PG changes relative to the previous vcpu->arch.cr0 (is_paging(vcpu)):
-
-arch/x86/kvm/svm/svm.c:svm_set_cr0() {
-	if (vcpu->arch.efer & EFER_LME) {
-		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
-			vcpu->arch.efer |=3D EFER_LMA;
-			if (!vcpu->arch.guest_state_protected)
-				svm->vmcb->save.efer |=3D EFER_LMA | EFER_LME;
-		}
-
-		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
-			vcpu->arch.efer &=3D ~EFER_LMA;
-			if (!vcpu->arch.guest_state_protected)
-				svm->vmcb->save.efer &=3D ~(EFER_LMA | EFER_LME);
-		}
-	}
-}
-
-This allows vcpu->arch.efer's EFER_LMA to become out of sync with
-(EFER.LME && CR0.PG && CR4.PAE) in several ways:
-
-1. Guest VMRUN (nested_svm_vmrun() -> enter_svm_guest_mode() ->
-nested_vmcb02_prepare_save()): L1 must have CR0.PG=3D1 to execute VMRUN, so
-is_paging(vcpu) is already true when nested_vmcb02_prepare_save() runs. If
-L1 sets vmcb12->save with EFER_LME=3D1, EFER_LMA=3D0, CR0.PG=3D1, CR0.PE=3D=
-1, and
-CR4.PAE=3D1, svm_set_efer() loads EFER_LMA=3D0 into vcpu->arch.efer (and al=
-so
-clears EFER_LME in vmcb02->save.efer when !npt_enabled), and svm_set_cr0()
-sees !is_paging(vcpu) =3D=3D false and never sets EFER_LMA. L2 is left with
-EFER_LME=3D1, EFER_LMA=3D0, CR0.PG=3D1, CR4.PAE=3D1 (which also truncates L=
-2's
-64-bit RSP and RIP to 32 bits and configures the MMU for 32-bit PAE), and
-a subsequent WRMSR(MSR_EFER) in L2 (or KVM_SET_MSRS from userspace)
-computes EFER_LMA=3D1 and trips the WARN_ON_ONCE() in set_efer().
-
-2. Guest RSM into L2 (emulator_leave_smm() -> svm_leave_smm() ->
-enter_svm_guest_mode() -> nested_vmcb02_prepare_save() ->
-rsm_load_state_64()): emulator_leave_smm() clears CR0.PG before calling
-svm_leave_smm(), so is_paging(vcpu) is false. If vmcb12->save in guest
-memory has EFER_LME=3D1, EFER_LMA=3D1, and CR0.PG=3D0, nested_vmcb02_prepar=
-e_save()
-does not clear EFER_LMA and svm_set_cr0() sees is_paging(vcpu) =3D=3D false=
- and
-leaves EFER_LMA=3D1 in vcpu->arch.efer while CR0.PG=3D0. Immediately after
-svm_leave_smm() returns, arch/x86/kvm/smm.c:rsm_load_state_64() calls
-__kvm_emulate_msr_write(vcpu, MSR_EFER, smstate->efer & ~EFER_LMA) ->
-set_efer(), which computes EFER_LMA=3D0 and triggers the WARN_ON_ONCE().
-
-3. KVM_SET_NESTED_STATE or SMM HSAVE restoration followed by nested #VMEXIT
-(svm_set_nested_state() / svm_leave_smm() -> nested_svm_vmexit()):
-arch/x86/kvm/svm/nested.c:svm_set_nested_state() requires CR0.PG=3D1 in L1's
-saved host state (vmcb01->save) and rejects (EFER_LMA && !EFER_LME), but
-allows EFER_LME=3D1 with EFER_LMA=3D0:
-
-arch/x86/kvm/svm/nested.c:svm_set_nested_state() {
-	if (!(save->cr0 & X86_CR0_PG) ||
-	    !(save->cr0 & X86_CR0_PE) ||
-	    (save->rflags & X86_EFLAGS_VM) ||
-	    ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)) ||
-	    !nested_vmcb_check_save(vcpu, &save_cached, false))
-		goto out_free;
-}
-
-When exiting from a paged L2 (is_paging(vcpu) =3D=3D true),
-arch/x86/kvm/svm/nested.c:nested_svm_vmexit() calls
-svm_set_efer(vcpu, vmcb01->save.efer) followed by
-svm_set_cr0(vcpu, vmcb01->save.cr0 | X86_CR0_PE), leaving L1 with
-EFER_LME=3D1, EFER_LMA=3D0, CR0.PG=3D1, CR4.PAE=3D1 and triggering the
-WARN_ON_ONCE() on the next MSR_EFER write.
-
-4. SEV-SNP AP creation (sev_snp_ap_creation() ->
-KVM_REQ_UPDATE_PROTECTED_GUEST_STATE -> kvm_vcpu_reset()): svm_set_cr0()
-sets EFER_LMA without checking is_pae(vcpu) while vcpu->arch.cr4 still has
-CR4.PAE=3D0, allowing a subsequent trapped EFER write via efer_trap() to
-trigger the WARN_ON_ONCE().
-
-> =20
->  	r =3D kvm_x86_call(set_efer)(vcpu, efer);
->  	if (r) {
-
-[Severity: High]
-When set_efer() toggles EFER_LMA to restore architectural consistency,
-doesn't it also need to reset the MMU context if EFER_LMA changed?
-
-At the end of arch/x86/kvm/msrs.c:set_efer(), KVM only calls
-kvm_mmu_reset_context(vcpu) when bits in KVM_MMU_EFER_ROLE_BITS change:
-
-arch/x86/kvm/msrs.c:set_efer() {
-	...
-	if ((efer ^ old_efer) & KVM_MMU_EFER_ROLE_BITS)
-		kvm_mmu_reset_context(vcpu);
-}
-
-However, KVM_MMU_EFER_ROLE_BITS in arch/x86/kvm/mmu.h is defined as
-(EFER_LME | EFER_NX) and does not include EFER_LMA, even though
-arch/x86/kvm/mmu/mmu.c:kvm_calc_cpu_role() computes role.base.level,
-role.ext.efer_lma, role.ext.cr4_pke, and role.ext.cr4_la57 from
-____is_efer_lma(regs).
-
-Because set_efer() rejects any write that modifies EFER_LME while
-is_paging(vcpu) is true, ((efer ^ old_efer) & EFER_LME) is always 0 when
-paging is enabled. If EFER_LMA is toggled by set_efer() while EFER_NX is
-unchanged, ((efer ^ old_efer) & KVM_MMU_EFER_ROLE_BITS) evaluates to 0 and
-kvm_mmu_reset_context(vcpu) is skipped, leaving the vCPU's MMU role and root
-level stale relative to the updated vcpu->arch.efer.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027224914.1574=
-319-1-seanjc@google.com?part=3D4
+[1] https://lore.kernel.org/linux-mm/CADrL8HUZ3t8RdMEeBPfqsy1_1rN0Ty9B2c4iP6OzNS12te6vOg@mail.gmail.com/
+[2] https://lore.kernel.org/kvm/auEVMrMDqVuKtDqh@google.com/
