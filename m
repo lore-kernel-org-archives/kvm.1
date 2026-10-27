@@ -1,74 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793141367;
-	b=GYlkKL3z9212bDLLcyO/EG7j/caW8WIzLBiWTP7i6HWSwurwuycXsRpPIWtehUmygh8+
-	 /Ei4gA1aFmi0FMJX4UR0QthSuNVQVQVeqtilt7rm/9Ffu623SCBNFUvHXiWiFEcNMSi9+
-	 MLG1sM2KGhetootDBwrth/82Pk/AXRZwMy0QZRZ1hh/GxEqPginzo/iktXzRkGbQW7CQm
-	 UU/rMVhJmXI8+ixmINS3wdS3jjtoWWlJXUbuIqV/fQXjBEE+YJYoyE/MOzu/5qecESzyA
-	 Mcx2HLdpLNZoVgYghSxN5/NIOwyXBIJ6WtcwFA5n4p5YfKPd832Bp6jXy9oIoTkE8Pg==
+	t=1793141577;
+	b=kiJRRLcfA7JodaO9yZ1vIG8kQCCFgLau8e/PMO19IPXr9BUuvbxVms/jCntDuD9XRQSp
+	 o/NBvvy9yQ8p3rVln/NJKbw3Qx6NFRTjqwD4DplfuFpeO95llTSQ+sJtnAR1CbXn9zvd+
+	 Z1BHgYy/IWBWJlcSiPBfbiysIAEgVJEJc0NEha98Q7grM+COXMmnNrwOadb0IKEkk32wq
+	 8Gd3T/ZVmfKzPSTbij6NKBj8W8Djf/A3kVCuVbaanzrqhGm3fafmWHG2Rb8LIHzawNfH4
+	 MxzQtPBH1A14fKGvISw8gUHWFgeUXyK4A5zFrCV5+zyroR/lJzY2iiXSRpyuPw7xhKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793141367;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=MDAiMek2MBhrFqFzjIIabNRz2rV6IIbw6asreozihSA=;
-	b=zNSi+SgoVWOlCAxxwxk6gFpfQPry2Wdgz1aRpJwqphar57LKspOhI1Uwx7oIyZW0zhUT
-	 uH5MhyhuGQGzYPXO2iKltMZEZAjZoQ+duptbYRnJKB6qXmNPAL1V4jkPkrOW3MsM16B1g
-	 w5HvhEeeZHMp6JH8a0Y+RyVAKgM9XBU91++/INtLGUoTgI9WakzmAE+G0rhp6tYNILXRH
-	 iIusgkkHj3hvhi6O2BwY7pZb37GfR7XAOuTRJjYJ04lT4cl9IpnI+nxv2yQJKUTFJ1Ei3
-	 GSYcEWX+ZBiCXyyEIIlnmS8munC42vxhgRZXRpXPTXqaDD8gGdHEzvQ8XKd3asQS5oQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793141577;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=LLHeszN3NBnCSekfmuYWBeUA8vPHYFxSGgvz8Lu2E70=;
+	b=KFmf0MJjMTwtMqU1wyqVNou6KyvG5cMiEzq6MSyFbjkmO4de8BaiAxDRVS9ElOoIuXLD
+	 JKmEIMbqH/x3l+5XEJqcHSkpfpw8UIkAr3jYZqVmZzBH+KLpVUwRoWc5/vFnobHMXT/Xq
+	 qktLw88UjZvAzh/DLeyxG+0b+DCzo9VnD6D8XzEnY0H0hvFcwfN/Ebnw/SUCMopsRcCrs
+	 S/FxzOBJbBU2khnZwbUP25bw0L7bYClbULYRigHLi7kUoeLarDihXgMkk2lYwDc8gkYqX
+	 vNlOc/oI04Q4VVx5F8uW0p3b7ewpIn/VpJMmOWJp3QSlsyHlJqmVv7XiweJypm4r3iA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ixrOyOOH;
-	arc=none smtp.remote-ip=209.85.210.198
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XckmGcSO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773DB606A336
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:49:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 773DB606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388D6606A31A
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ixrOyOOH
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a0522cdaf3so301614b3a.0
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:49:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793141367; x=1793746167; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=MDAiMek2MBhrFqFzjIIabNRz2rV6IIbw6asreozihSA=;
-        b=ixrOyOOHCdDEujl6kGi28CiFUnBzHCN280AGhBM34NnrNdWWDh0+Q0xM7jYx459pdF
-         na/5cyvS1XpqxJUbnmGrjbgIE6De8xPRSO3pyeql502TNrk+m1jSIslCmOUPRMObuwoi
-         oPm90OuRznGo2Du/PnI/wCm7A8igEfhr9e04Vm+RZ1V9tMZy/Y5Ah6pBWf5V7zI08pu4
-         Ck+X4pMdcwugDgY6cnSlh8Dvr1IKEfNcc6RHEewE+obzjQZlZjmwmaOhmQotyaXyNAHi
-         Zscf5ERUhzV4jWMhPh+qGNjmXo1QAHHrJBJUmQ4DMNSSdQSbUH169kU4SfN3wLm0be3h
-         d3Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793141367; x=1793746167;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MDAiMek2MBhrFqFzjIIabNRz2rV6IIbw6asreozihSA=;
-        b=VcO3FzcTqWhFcRqdjuKsmAk2owDt0MiUmK+J6KuW3MZpgaGpadQIXV5LDu5a+ZhVE9
-         5f/dG+p/d2XLVEqpbF/as7ooC7tlDf0MnH7OLBS1+QXusOyELJNyz1Vmpimm4NgLUZEF
-         60JGkIYbiEYH2epz73QFRcPW7E7c6BFGaScTuSeu7mF71RpouSqHq+ZOq/fuHjp553A8
-         IEd3yFTcPH3S30vYm3CQ8pBtioQVtPIzPL3+QCcd++mQO8HzRlVdyyFUZ5LM2sU8QZO6
-         +PdjWeRF2B5UOFnSejgvOfLrHXIbfRhsfqpFntVwD0htP9ZuWbH5RBV9XDObgQJsfykI
-         7pVA==
-X-Gm-Message-State: AFq9FYLJs1/w9n9I4sqqXMR7MeretsoCg3ff8nm3pvH0Yh7k5mWsHUiq
-	OkDBhjGgRK3KlaEuq5X7+sVHaUbAk81Ovfowttae4m1M3hwJxjC9u2apHUcQ+Mtfi5m05kG9gOp
-	kBDLtZQ==
-X-Received: from pfop4.prod.google.com ([2002:a05:6a00:b44:b0:890:3943:6267])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:6bdc:b0:3e1:e757:205e
- with SMTP id adf61e73a8af0-3e90234d14amr401818637.42.1793141366625; Tue, 27
- Oct 2026 15:49:26 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 27 Oct 2026 15:49:14 -0700
-In-Reply-To: <20261027224914.1574319-1-seanjc@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XckmGcSO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FA21F01825;
+	Tue, 27 Oct 2026 22:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793141576;
+	bh=LLHeszN3NBnCSekfmuYWBeUA8vPHYFxSGgvz8Lu2E70=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XckmGcSO7wlIx+r/CaC0SVZlIvtyhHsYmAhe5ET0NVsuPbnNdrI+I16qE4+oMt64x
+	 h+E8Dnw4np2YMChXTI12IkHB4pt9jJjzqx6/F2uuVnBxdfcZ3NiS4Io4NALtp+uazs
+	 mQhMDT4PgSSt9KKxnFl9+L/pnRfY6nMc0H10ta8lyu76Z8rK8QdGc4AzwAa/kAhX20
+	 lBArsX01EhZY2u7YWi8eF4csojH2iwE4Byem2IV9aUNNpjtEToMIMBK1FWXqlXMzxx
+	 uG255G1R1Nc8N6UZteo6Yl4GTSwldSdxUmYGTHMACK439eT3HER9FU+004rP6HG5/L
+	 5AYBbuQMqNpew==
+Message-ID: <sashiko-outbox-187178@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6/6] KVM: selftests: Expect failure when trying to
+ set EFER that violates vCPU model
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261027224914.1574319-7-seanjc@google.com>
+References: <20261027224914.1574319-1-seanjc@google.com>
+ <20261027224914.1574319-7-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 27 Oct 2026 22:52:55 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,87 +60,72 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261027224914.1574319-1-seanjc@google.com>
-X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261027224914.1574319-7-seanjc@google.com>
-Subject: [PATCH v2 6/6] KVM: selftests: Expect failure when trying to set EFER
- that violates vCPU model
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Adjust the EFER.LMSLE testcases to expect failure, not success, when
-attempting to stuff EFER.LMSLE=1 even when the guest CPUID model is
-configured with EFER_LMSLE_MBZ enabled, i.e. when it should be impossible
-to set EFER.LMSLE=1.  KVM's ABI is that userspace *must* set CPUID and
-feature MSRs before restoring (or stuffing) vCPU state, i.e. before writing
-normal MSRs.  The previous KVM behavior of allowing usersepace to stuff
-garbage was a KVM bug (that has since been fixed).
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] KVM: selftests: uninitialized sregs in test_sregs_lmsle()
+--
 
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-182135@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../selftests/kvm/x86/svm_nested_efer_test.c  | 20 ++++++-------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+commit 6277431d999ca1b09f23758ba28993921a931827
+Author: Sean Christopherson <seanjc@google.com>
 
-diff --git a/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c b/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
-index fa9cfe8b1242..bdec7cdb3714 100644
---- a/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
-+++ b/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
-@@ -193,23 +193,20 @@ static void test_host_initiated_lmsle(void)
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
- 	u64 efer;
-+	int r;
- 
- 	vm = vm_create_with_one_vcpu(&vcpu, NULL);
- 	vcpu_set_cpuid_feature(vcpu, X86_FEATURE_EFER_LMSLE_MBZ);
- 
--	/*
--	 * EFER_LMSLE_MBZ is a guest CPUID consistency check, not a host
--	 * capability, i.e. must not be enforced against host-initiated writes,
--	 * so that userspace can set MSRs before it sets guest CPUID.
--	 */
- 	efer = vcpu_get_msr(vcpu, MSR_EFER);
- 	TEST_ASSERT(!(efer & EFER_LMSLE), "EFER.LMSLE unexpectedly set");
- 
--	vcpu_set_msr(vcpu, MSR_EFER, efer | EFER_LMSLE);
--	TEST_ASSERT_EQ(vcpu_get_msr(vcpu, MSR_EFER), efer | EFER_LMSLE);
-+	r = _vcpu_set_msr(vcpu, MSR_EFER, efer | EFER_LMSLE);
-+	TEST_ASSERT_EQ(r, 0);
-+	TEST_ASSERT_EQ(vcpu_get_msr(vcpu, MSR_EFER), efer);
- 
- 	kvm_vm_free(vm);
--	ksft_test_result_pass("Host-initiated EFER.LMSLE=1 is allowed\n");
-+	ksft_test_result_pass("KVM_SET_MSRS rejects EFER.LMSLE=1 with EFER_LMSLE_MBZ\n");
- }
- 
- static void test_sregs_lmsle(void)
-@@ -222,11 +219,6 @@ static void test_sregs_lmsle(void)
- 	vm = vm_create_with_one_vcpu(&vcpu, NULL);
- 	vcpu_set_cpuid_feature(vcpu, X86_FEATURE_EFER_LMSLE_MBZ);
- 
--	/*
--	 * Unlike KVM_SET_MSRS, KVM_SET_SREGS runs the full set of guest CPUID
--	 * checks, i.e. rejects EFER.LMSLE even though it's host-initiated.
--	 */
--	vcpu_sregs_get(vcpu, &sregs);
- 	TEST_ASSERT(!(sregs.efer & EFER_LMSLE), "EFER.LMSLE unexpectedly set");
- 
- 	sregs.efer |= EFER_LMSLE;
-@@ -275,7 +267,7 @@ int main(int argc, char *argv[])
- 		test_sregs_lmsle();
- 	} else {
- 		ksft_test_result_skip("Guest EFER_LMSLE_MBZ=0\n");
--		ksft_test_result_skip("Host-initiated EFER.LMSLE=1 is allowed\n");
-+		ksft_test_result_skip("KVM_SET_MSRS rejects EFER.LMSLE=1 with EFER_LMSLE_MBZ\n");
- 		ksft_test_result_skip("KVM_SET_SREGS rejects EFER.LMSLE=1\n");
- 	}
- 
--- 
-2.56.0.307.g5fe7bd680c-goog
+KVM: selftests: Expect failure when trying to set EFER that violates vCPU m=
+odel
 
+This commit updates test_host_initiated_lmsle() in svm_nested_efer_test.c to
+expect KVM_SET_MSRS to reject EFER.LMSLE=3D1 when EFER_LMSLE_MBZ is enabled=
+ in
+guest CPUID, and cleans up related comments in the test.
+
+> diff --git a/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c b/too=
+ls/testing/selftests/kvm/x86/svm_nested_efer_test.c
+> index fa9cfe8b12427..bdec7cdb37146 100644
+> --- a/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
+> +++ b/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
+
+[ ... ]
+
+> @@ -222,11 +219,6 @@ static void test_sregs_lmsle(void)
+>  	vm =3D vm_create_with_one_vcpu(&vcpu, NULL);
+>  	vcpu_set_cpuid_feature(vcpu, X86_FEATURE_EFER_LMSLE_MBZ);
+> =20
+> -	/*
+> -	 * Unlike KVM_SET_MSRS, KVM_SET_SREGS runs the full set of guest CPUID
+> -	 * checks, i.e. rejects EFER.LMSLE even though it's host-initiated.
+> -	 */
+> -	vcpu_sregs_get(vcpu, &sregs);
+>  	TEST_ASSERT(!(sregs.efer & EFER_LMSLE), "EFER.LMSLE unexpectedly set");
+
+[Severity: Medium]
+Was removing vcpu_sregs_get(vcpu, &sregs) in test_sregs_lmsle() unintention=
+al?
+
+Without that call, the stack variable sregs is left uninitialized when
+TEST_ASSERT() reads sregs.efer and when sregs.efer |=3D EFER_LMSLE is passe=
+d to
+_vcpu_sregs_set(vcpu, &sregs):
+
+tools/testing/selftests/kvm/x86/svm_nested_efer_test.c:test_sregs_lmsle() {
+	struct kvm_vcpu *vcpu;
+	struct kvm_sregs sregs;
+	struct kvm_vm *vm;
+	int rc;
+
+	vm =3D vm_create_with_one_vcpu(&vcpu, NULL);
+	vcpu_set_cpuid_feature(vcpu, X86_FEATURE_EFER_LMSLE_MBZ);
+
+	TEST_ASSERT(!(sregs.efer & EFER_LMSLE), "EFER.LMSLE unexpectedly set");
+
+	sregs.efer |=3D EFER_LMSLE;
+	rc =3D _vcpu_sregs_set(vcpu, &sregs);
+	...
+}
+
+In addition to reading uninitialized stack memory on the assertion, passing
+an uninitialized struct kvm_sregs to KVM_SET_SREGS means KVM may reject the
+ioctl due to garbage in other fields rather than specifically testing
+rejection of EFER.LMSLE=3D1.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027224914.1574=
+319-1-seanjc@google.com?part=3D6
