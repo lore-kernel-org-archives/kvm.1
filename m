@@ -1,109 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793125595;
-	b=1eSqVBn62gxqCORxrBpOe+NjjVDtzsbfGt/i7fX/cWIm4jEqC4hUR86SI1tAWXKug7k5
-	 Lwc/I9agSRkjaN4n/1NYHKHteaX4W9XcsNVZ1Wbx7JTOnCCOs4jqOS3t9mf7ZmNzyUp65
-	 bE77xnm9PV4abteAFr7S9YSWQJ9jFPBfu/4rZJWs9gl6xa5364NQv5yaAcCLjtHVM9VL5
-	 dg5oE7aNFKoYFC8Yr9S0vXyY633xCFCxm60UCBHVWi0/xQ2mMj3jcSdLbUebCGCpXS+J0
-	 OBSgoMziPF96Gq9yugdSmwXg5Qq5PazLmIqwJXKIfR9azXXOsaZMYZia/odFDQ4mBCA==
+	t=1793125791;
+	b=tSQeiLWs1iLnE5pVg76IAWC59ZO3kaFmPoN3WANSbyE5KV3Sq8z1S1+EbAJ6s90JBneP
+	 R8+D14gUVPhxp7oulxuwFPMTIQ6h7XsD5R7eO+S/aRwKxD2NqbikQW6ZdKMCoUWy8DZPg
+	 QOuRyam51H/CwpFac8M6uqLhfol3JlUeSji1TZWsu5Cv2xFTikaFnSU967Zf0eFn91MJ/
+	 4njQrRZ8i/t2hBzvfGRY33cgxcLOwGbPOd576EhFa3OOW0MdycXy4uX608e/VxAAmxvZ9
+	 k8SyJrF/+x6NGBx4dq3hpYly4jlz3c0K5ldkFdgCckSOnzWHMeoEtVdd2gXeSPltfdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793125595;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:Content-Language:To:Cc:
-	 References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=5gtNOSL9DkqGrvLv5HiCmciZ411PQzVsYtj0F/yuWWM=;
-	b=NCHcqa+jpzF7xOCMYj7RZDx36hQyddR8yhknUQNNjKaHkWgDueX7XkjZK3B3PYlAlDqg
-	 c+H/vghsaRIe8iigNWf126DgPC6c9zzqZqLppv+Tr/5OEylOW/LkBB0X7cNrchNWrvpIs
-	 SUewXzkgUdDWTINlutq8h4pvTIA8KEf41avTHb2TrXIlwcNlUfiwpLGQL8pUu3uCeup2N
-	 Gm5UiUk0iomzY9lSf/hbT1qhsAfq3UpeoBZD5K/tWcYGCiAWc+KzSWa+KHMePNts9n7f7
-	 ueUjaJgMF1lLRSZ8UahsKAwaY3hRApKChFAZtRxETwF209nQXLwJqRynvzTX+Yhv67g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793125791;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=65AOdH+KgJ7resuIkk0VLKCd0Hg6dbezaVp42JhIP6w=;
+	b=NW4948ir9cckVaPw1LSRQhpB9HgOjTIN9lrBqKqQQPzCzRbfwby48quDw5gzU5t6gClw
+	 AzvrfpZknCBCDufXRNohZZN9q0wG/dRq/gn1i4xUMokf12nGpm8oAtHjY0d/CQ5X2Wm4X
+	 RMu9YhGT3r+xH6Tulo8YZNU3FZFpeZtRzOfuZ3Rg567EGwHA3ldz6N5PBqaaqMFpNPnpc
+	 v6zLBB757f5QOQsblUqSL2F7oOje0dP0ZhuIOIs2d5PIEu5E1q5gzgeuF8QQCRHDKLayB
+	 rOxrlaIcZl2x4CXWfMj6AqPQDCpa44pX+oRXsPSCtSDQ6Xy7PRVUSNqchaq+r7+Eq7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=mhWx35R6;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=iz9OqIxQ;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=SDf8V7lB;
+	arc=none smtp.remote-ip=209.85.222.172
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34D2606A31D
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 18:26:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C34D2606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E3D606A327
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 18:29:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43E3D606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=mhWx35R6;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=iz9OqIxQ
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69RIIAkV3486333
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 18:26:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5gtNOSL9DkqGrvLv5HiCmciZ411PQzVsYtj0F/yuWWM=; b=mhWx35R6EzRfQjVN
-	1xH7p7SD7YTepkSQKvJRjnJdAwgY3XESWxBjR4e7n6msb3JPozQgoQDg0IxUxvi9
-	hh1y0NovGCLazoZMOvJYn2VAHMfRpp6z5/xUwqSWFKtr/SwyQiyWAJkZ36GJbrcZ
-	tjsFwvJyI61eqNejUo0z1ji7yPaKzlLipLt9pj3r4nEbWVn/Fzz09FJXK9JSFAbZ
-	ZzwCiBOs6tcDrhMUPVudgOC8nrmUw8KJgoNXP6ql2E1i1/5zSNRRCklwLpyCRxdA
-	XYxo2Z62g5QP2nNWOWLa+A6cCrxb3JWGzPLY6TIq1iZnyMlyQiHezOf0cPJEU92M
-	nJptmg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hjjbtbun5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 18:26:33 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93dd3c3badbso11254485a.2
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 11:26:33 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=SDf8V7lB
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93f3c616c84so5406485a.1
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 11:29:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793125593; x=1793730393; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5gtNOSL9DkqGrvLv5HiCmciZ411PQzVsYtj0F/yuWWM=;
-        b=iz9OqIxQwwnDJw6z8didL/q/qDNnCPbH/AITLYqXs8gjrUtfpB8+YmEOEaxsoaUWvX
-         /68pY7raCq5P0c7pHXlnP4yqdG+1qkZ37Y+PNdfINtBN6naSWk+2ZSkdIbNs30f4ZMDP
-         OwTaJGB1aHxne6ZyfhdfGtSa6dnnL8mSNFNQFcDyy6oROSKX4yxr1iTJWWyW5laE14vf
-         kfbfIMPnKhGIRg+RTD7HSkeaYsOa4Z7+EjP3nRVEXH/a5XdoQX5y8j4qxnQhRfseHYT/
-         9vFzhv3Rif2lOAZgooVpaW9JV0jCYbbKiFOmNXyowLyy1Pkx4txyQQNnGgfRhQ4IU4oI
-         ZO5A==
+        d=ziepe.ca; s=google; t=1793125789; x=1793730589; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=65AOdH+KgJ7resuIkk0VLKCd0Hg6dbezaVp42JhIP6w=;
+        b=SDf8V7lBjv388ciVxF8uawdikbXUurMY3QTcrM/wcAZ1ed7iS37PQd3b8hqO2kCFRx
+         gb01WAvT/GWqjH2M3gvp5nTNPCdjqqbhamh82v5BqHlkHZ5tX4RxpCPwN2S4eUTG5rVF
+         nIdZZZGD4xKmj4PuO/zIngGRg22kMAXrxt/v8LL8XDjWsrsGlv79HYheSxhWI3VNKxID
+         XDKOc6PzG3HNgjgHvM7g9tfMAy3iHn90923OHajXdDxFRJMsWg+n/gS+difaZDQuJM6Q
+         mCREG7y1/geLjkqkzCE3n+m53JskTRCmddX2n4uYmhS8wHPszgiRnJhqvNsRxFtnRK3f
+         RK3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793125593; x=1793730393;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5gtNOSL9DkqGrvLv5HiCmciZ411PQzVsYtj0F/yuWWM=;
-        b=LaXf2IBuf/TSHdkmGEvgvbMOj1Uk6IXbCnd/gIaAhHv0J9oh78jZLB1zkYgHNKcgmq
-         BtuTRdrquikFsHcyspXTLY8SZUdlLx1+jcSt31oOUryhY48SHQVfiFfvUOhgzZDPRttU
-         TTSlDzLM3rXyxpoc7f9NS5GPo7HyUfLZ1Zi7pJyb7F5PcI+2AvLoc64RhhCFBBb0LrOy
-         C3IsgkCgS/HfD6+1uT+WVviEBis4tF7ASXHwxVCCQbwhM3FA2E6YCnKiwQ1FQ8O6S1lU
-         zwXn6PDoolw07AtcFS0DRe9GXSDqkzOJ2wQvoMdI378gkLH6PzonmvHFkxuTVtXIi15T
-         DFJg==
-X-Forwarded-Encrypted: i=1; AKwUvBzsvL3GW/fEVcSDgCEMKyXk9xxbfan5yO1Q+ahtLG1HcLOJTGgTlhzQ/o5iGl7a/0Q2z6w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJgl+rMa7pZSbTZP7DY+ULPNz7sCa/hLrkdKF7t0dcuA9B8CSEj
-	UcuMo4V5iAwdCOjoLE5KAr73NwqxumBkh/pTwbYtKJmEdx+imXvNIA3ToZsn6m1ToJtmTSczbAj
-	mJNo0lWOS/DY5+BAHEd1hwhHJ5KtPyfkbdnc+hFC8uAKpVSjWbEzBulc=
-X-Gm-Gg: AYBFou3Nsf59Gj/x18t7FM1+B3Vuu08EX87ITjhzt/0z9hf2/nti3vRtKE+kkTetSAx
-	E2XR+Y79KAz6ap0IqJzk0gRmQN0Sl8EE9uh2gYTHAoGP3l3ls/SHsHlRl5bSLHWRGHeyr+OWrDg
-	YY5XpYQ9YAtv12Mwqru4/Qz6Gk58Wcx0XIUOVPXPvqCGDzuwjbVbyJeuu6FLI8+QRVcxOObEYzy
-	e797FrSkuwHJqt8IepisQNXi0/Ywx8n4HXDd2OZjGbF0n+vnJixKSvkozTmdWwHdJCCStSgZYif
-	7cTDkh0Tii8b7Nq9UiLKvY384WSlVB36jhzladBL0cU6Br1atZwhmMLXD/BV3wbYLaG6ZF1xVjZ
-	lkd4t7abSf4T0xoZ9yDvSs0r3l4w6kQKv7r1rcKeA5VdUAAxy1A==
-X-Received: by 2002:a05:620a:2b4e:b0:93f:24c5:f561 with SMTP id af79cd13be357-940ef9457cbmr1583433785a.33.1793125592786;
-        Tue, 27 Oct 2026 11:26:32 -0700 (PDT)
-X-Received: by 2002:a05:620a:2b4e:b0:93f:24c5:f561 with SMTP id af79cd13be357-940ef9457cbmr1583427885a.33.1793125592323;
-        Tue, 27 Oct 2026 11:26:32 -0700 (PDT)
-Received: from [192.168.69.229] (82-67-153-177.subs.proxad.net. [82.67.153.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a94e6b8656sm23975e9.10.2026.10.27.11.26.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2026 11:26:31 -0700 (PDT)
-Message-ID: <5ca7722a-cd6d-47eb-b8ec-4c93ef4d4699@oss.qualcomm.com>
-Date: Tue, 27 Oct 2026 19:26:29 +0100
+        d=1e100.net; s=20260707; t=1793125789; x=1793730589;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=65AOdH+KgJ7resuIkk0VLKCd0Hg6dbezaVp42JhIP6w=;
+        b=hTjdjLhoW/+o7eXTqGgFnue8ZWLyIhhTga8OtYMrJgRBWNcAYUKBzLx/1bQCHxC6di
+         egJctrbneRbzXM5sk2NWqgOB2xtXMvABQ8PlApPclfvcfWpq2+XOE8eJxxbPWSQCrYxt
+         AaJrX1lkPKj51Q/x6jp9peFfxc1tdQhHzNnifZOn4dZfjNYLpeuhRfIROhlG82jO8aKr
+         S+/MKtbC6ckWSVuvLNO+MUw/+WVADKIsR7O8JlQRZJSXt3nBf1Zqn48Z/83bxxs5Msjl
+         t5pEiH8o/16psSWdVxa3cncS3wx6GNN4X7lZdq8+2n6HTsqXTKL2H8Cg241GCCUTlXv1
+         QZSg==
+X-Forwarded-Encrypted: i=1; AKwUvBxGnNSPl4UBouWGEjfw+MYiXUcUmmH3FZdLvq4nSXcG40ZdDWSPL/19hldjJbkM/B93eQc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI/6SEJzLXEEV1qewh/u8n4cBo8VkxaEtOclgR5fzEFiIPjBNL+
+	7gF9zfAnBLsEE7Bj0n6lj+/URBHEwDZ4A7az8tb0DdAyfeBraC5UwA561Bu6AeFVebI=
+X-Gm-Gg: AYBFou2fiDSeBKhnUowAdNtAHUAnznWRRKPztLguiFkYi8O2MLikfipWoC/Kvjuh33W
+	IpqIJdUgtq0WfDL4K8mHyiECRUUhuiyGAZOVYatN9FtGCCREx8kSAevTSmyh2aL6xTND6knwyJP
+	/SwxLKfLSoy/LKGSwxzYhc1xbkL5SlReOEQ91+GTMuJOzYTf8AXaoXkmOG6C2E346ZcxgqrhENP
+	zDrUhTsLYSDVRpxy0z5w5xMMQ8+2Z8dhCxAj+uVOu7S/I7Hkvpa802A+Lu/PQ19qle2OJOrzBlP
+	nkiFxG5X9mxjEA3Ekv1LYtJBHVH+G+ZGJEzC1Dz2Dlb97hNfkmRuhd5/1Jj2/BGRNO36Y0rWWtr
+	YcJdL40DbMmx0uy0QMx9rrNcHCfRO0pxs6ZXO6oRvnoCxa8mQ8Ge6h+mn1ebFNi/SUKL7Zkw7NB
+	4yhHBggios33yoKw4OKsl7eH50HrF0+hYfuTpfxBW72uO2169R0UyOQIFx8KulQOIvcMI4fAe/w
+	AzwGc3aSrdIPFKb+iul0w5g3zaFuDMUh9L9X0D4hvv6bqdlo4Ie5/NNiFviuHpGfQ8YP89Yp+C2
+	nyrh6eeIm2AJpT3pOz+/3l5nLalUYUvBrkqFnA==
+X-Received: by 2002:a05:620a:2a03:b0:93e:c12c:9dc6 with SMTP id af79cd13be357-940ef9c39f3mr1650841185a.70.1793125789315;
+        Tue, 27 Oct 2026 11:29:49 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f06690c0sm1051945485a.11.2026.10.27.11.29.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 11:29:47 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xLlvf-0000000AgNQ-0B8b;
+	Tue, 27 Oct 2026 15:29:47 -0300
+Date: Tue, 27 Oct 2026 15:29:47 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Cc: alex@shazbot.org, iommu@lists.linux.dev, joro@8bytes.org,
+	kevin.tian@intel.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, robin.murphy@arm.com, will@kernel.org
+Subject: Re: [PATCH v4 1/2] iommu: Add iommu_for_each_pci_mmio_window()
+ iterator
+Message-ID: <20261027182947.GI1685504@ziepe.ca>
+References: <20261022193359.GF3381610@ziepe.ca>
+ <20261025133000.205508-1-guanghuifeng@linux.alibaba.com>
+ <20261025133000.205508-2-guanghuifeng@linux.alibaba.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,85 +104,117 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/11] accel/kvm: mark kvm accelerator as secure
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
-        qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        David Hildenbrand <david@kernel.org>,
-        Anthony PERARD <anthony@xenproject.org>,
-        Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Weiwei Li
- <liwei1518@gmail.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Chao Liu
- <chao.liu@processmission.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-        Amit Machhiwal <amachhiw@linux.ibm.com>,
-        xen-devel@lists.xenproject.org, Sergio Lopez <slp@redhat.com>,
-        qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
-        Bibo Mao <maobibo@loongson.cn>, Ilya Leoshkevich <iii@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Xianglai Li <lixianglai@loongson.cn>,
-        Palmer Dabbelt <palmer@dabbelt.com>, qemu-s390x@nongnu.org,
-        kvm@vger.kernel.org, Alexander Graf <graf@amazon.com>,
-        Song Gao <17746591750@163.com>, Eric Farman <farman@linux.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20261027181400.1752951-1-berrange@redhat.com>
- <20261027181400.1752951-10-berrange@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-In-Reply-To: <20261027181400.1752951-10-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA3MiBTYWx0ZWRfX62JCxjVs9CiP
- r3ZocToalV+Hw9PsDU/R05VEUW7+aDdsx7hUkIGgfo2P37F+YemZ1rxMv+iRglJz/ILIwiNW7Z4
- svrFjJF1mNmkqQNd8DgRYm/pyymFlYo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA3MiBTYWx0ZWRfX/cQSftRjH/fm
- W16coWpkuPu84iQAZmaJ7u++rx5B3ulKMRVjD3vQxzjPFhB0xc5n7UXXb+WTL9F8Zu4Uk/FT2hD
- PmgxI2Ol86u/LQSqSeRILQouXJo+3sx0LxsGqebX2kb/X77DnALgkuME+XfWATYVfli1lr+6QKb
- bYecqolChl2xxERAIkvge3MvCpxSz9n6mTbNF0RYgOMW7QbADtHMReJ79Wapdu1TF/3HZaa8jvV
- eQRAY7pZ9IC1An8dqCtGfc1FtnHjoidlb+U3pkwxz0Hw2aJikMVvhNSImDxPywt3FO3ZvmD3+vo
- DPEL7H0zA/ZSs3sYB5rd4QIiQhnqW8zSRlj+fVgkgpKZpkIwSxuVSLGF6QoSCxC7xkAuv+atqHA
- nRQzLq/kpN+jt3vxcjRjZNi8+lbAgOOFiQl8wUbYqrZjiUuKvuRBAwCCQl2x0MSyvEJERGZZ/HY
- pZASHfhdOkJHkom/aRQ==
-X-Proofpoint-ORIG-GUID: _VyAgBwi0aO1JrN2RKJGqt2VOUimyw3k
-X-Proofpoint-GUID: _VyAgBwi0aO1JrN2RKJGqt2VOUimyw3k
-X-Authority-Analysis: v=2.4 cv=XaIcX455 c=1 sm=1 tr=0 ts=6ae0ecd9 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=nz36NW0qrpeEijYxj/H2Ew==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=20KFwNOVAAAA:8 a=EUspDBNiAAAA:8 a=R0rOnUjNbK5cqpqgS9oA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-27_05,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 lowpriorityscore=0 suspectscore=0 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610270072
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261025133000.205508-2-guanghuifeng@linux.alibaba.com>
 
-On 27/10/26 19:13, Daniel P. BerrangÃ© wrote:
-> KVM is servicing virtualization use cases which must provide security
-> and actively maintained.
+On Sun, Oct 25, 2026 at 09:29:59PM +0800, Guanghui Feng wrote:
+> Add a callback-based iterator that walks a PCI device's host bridge
+> MMIO windows and invokes a caller-supplied function with each window's
+> bus address range.  This consolidates the bridge window enumeration
+> logic into a single shared algorithm in the IOMMU core.
 > 
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> Refactor iova_reserve_pci_windows() to use the new iterator, replacing
+> its open-coded resource_list_for_each_entry loop.  The callback approach
+> avoids intermediate allocations: the DMA path's callback directly calls
+> reserve_iova() with the computed PFN range, maintaining the same
+> zero-allocation overhead as the original open-coded loop.
+> 
+> Using a callback rather than returning a linked list of iommu_resv_region
+> entries eliminates size_t truncation risk on 32-bit PAE systems (the
+> callback receives phys_addr_t start/end directly) and removes the need
+> for allocation failure cleanup paths.
+> 
+> Note: commit cd2c9fcf5c66 ("iommu/dma: Move PCI window region reservation back into dma specific path.")
+> intentionally keeps PCI window reservation out of the IOMMU group-level
+> reserved region API.  This iterator respects that boundary: it does not
+> inject windows into iommu_get_group_resv_regions().
+> 
+> Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 > ---
->   accel/kvm/kvm-all.c | 1 +
->   1 file changed, 1 insertion(+)
+>  drivers/iommu/dma-iommu.c  | 29 ++++++++++++++++------
+>  drivers/iommu/iommu-priv.h | 25 +++++++++++++++++++
+>  drivers/iommu/iommu.c      | 51 ++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 97 insertions(+), 8 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
+Seems OK enough
+
+> @@ -504,6 +505,20 @@ static int iommu_dma_ranges_sort(void *priv, const struct list_head *a,
+>  	return res_a->res->start > res_b->res->start;
+>  }
+>  
+> +struct iova_pci_resv_data {
+> +	struct iova_domain *iovad;
+> +};
+
+We don't need a struct to pass a single pointer
+
+> +struct pci_dev;
+> +
+> +/**
+> + * iommu_pci_mmio_window_fn_t - callback for host bridge MMIO window iteration
+> + * @start: First PCI bus address of the window (inclusive)
+> + * @end: Last PCI bus address of the window (inclusive)
+> + * @data: Opaque pointer from iommu_for_each_pci_mmio_window() caller
+> + *
+> + * Return: 0 to continue iteration, negative errno to stop and propagate.
+> + */
+> +typedef int (*iommu_pci_mmio_window_fn_t)(phys_addr_t start, phys_addr_t end,
+> +					  void *data);
+
+Don't really need a comment here
+
+> +#ifdef CONFIG_PCI
+> +/**
+> + * iommu_for_each_pci_mmio_window - iterate over PCI host bridge MMIO windows
+> + * @dev: PCI device whose host bridge to scan
+> + * @fn: callback invoked with each window's bus address range
+> + * @data: opaque pointer passed to @fn
+> + *
+> + * Walks the MEM windows of @dev's PCI host bridge and invokes
+> + * @fn(start, end, data) for each one, where start and end are PCI bus
+> + * addresses (inclusive).  Iteration stops early if @fn returns non-zero,
+> + * and that value is propagated to the caller.
+> + *
+> + * This provides a zero-allocation way for both the DMA IOVA layer and
+> + * iommufd to enumerate the same host bridge window information using a
+> + * shared algorithm.
+> + *
+> + * Note: commit cd2c9fcf5c66 ("iommu/dma: Move PCI window region reservation back into dma specific path.")
+> + * intentionally keeps PCI window reservation out of the IOMMU group-level
+> + * reserved region API.  This iterator respects that boundary: it does not
+> + * inject windows into iommu_get_group_resv_regions().
+
+The last two pargraphs are not very useful
+
+> + *
+> + * Return: 0 on success, negative errno on failure (including from @fn).
+> + */
+> +int iommu_for_each_pci_mmio_window(struct pci_dev *dev,
+> +				   iommu_pci_mmio_window_fn_t fn, void *data)
+> +{
+> +	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
+> +	struct resource_entry *window;
+> +
+> +	if (!bridge)
+> +		return -ENODEV;
+
+Can it fail? The existing code doesn't check it so I guess not. Stick
+a WARN_ON there if you want to keep it.
+
+> +
+> +	resource_list_for_each_entry(window, &bridge->windows) {
+> +		phys_addr_t start, end;
+> +		int ret;
+> +
+> +		if (resource_type(window->res) != IORESOURCE_MEM)
+> +			continue;
+> +
+> +		start = window->res->start - window->offset;
+> +		end = window->res->end - window->offset;
+> +
+> +		ret = fn(start, end, data);
+
+Don't think we need the start/end variable either
+
+Jason
