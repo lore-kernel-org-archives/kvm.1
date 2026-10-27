@@ -1,92 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793110108;
-	b=wH6Pb/g8ry0FdG/kxahPBUf6nO//nEDuHqd1kt+TRT7mR/WoSXRIbpcaxSZcOnTnPAjU
-	 r5I+J1UJGpsfxu4svCacPegqRkBKtkTrUbBrSilzOxbU8SOck6QcHWdTdAnDF57FFTyNC
-	 rR8NwjmGcX5Zcu+o5YTBR0BIxeeXGtGZQjXNubAbnmxn9H2Po7t5aQXAA9pu7i1HY1jEE
-	 fCA0C6XR8S8xbINoeJH+3opqbKsHRuMTQ0HrbyXqMcrhoDMNCCzZ6WOh+U83+XF7NItVi
-	 L81Pq5ksOYVZQiSjC2ObG3Jdgt/Z/Uom0ymZ3Tj7kBeQm3nFxLkifmgzszN7qLdseVQ==
+	t=1793110128;
+	b=ewiVA1oho63iinLlY3I/1nnSf9WCg8wzD1ZCkabaSUrF/yj+nJYmUsiK8uAMUKStrw0U
+	 PIGClLOI0J1gxwvXIkfpARgGit6e8Du9UnERqF8mmAxowHkyAjcU96dXx+YZCITgKx2db
+	 n0f8ClyK1jhBlAVMFOjRBMWGJmEDfkSY4Xcon1UWeGzlv8y98+4EvOSbsc5ZznZobhKjX
+	 OtomG9xy7DseXM8GQCsUlVVqej5Xs2I/084qJIydYsyNAuHWnnmO0KR2xyPp1hIZwbWzb
+	 fpF/JImIeREKc7e+jvuZHKMflyCvQ/p6nXpbgzf4mOqVASjLlkToz5FNTG4znohcWiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793110108;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=CbvGWJmf9YwWN00g1u/NHLatne7a6bJt0jiNry4VqD8=;
-	b=YyEPhNONihwnWo6+I+mZPmahFn2Zr7oB5AGO899V0mZqwimM7nLdLDfvvcaB9/qXZQ/e
-	 DKj/OMaw/okh6TY+Nybp5HD3D/4u6/Fg1G2nDhMpOdVEkgUct5sNZQikZlqnlLTW0UEiZ
-	 UXiroQW7pHChiaeRquh7mkJ1ZXkszKl3MRajWJrjXtnBtz+YkqUKRZgQJGL0BoDCvna4Z
-	 7MvSWbdXCXtyMcjvp3NWS6wngi5eVd3lEYud03qxfccF2QzDun/pk11302vSK/5U83Bs/
-	 M2y3qkl8NccYQgfoMeSITLVJpyMUOvxCk9dDveaqcMnBx7/BnWgNRDV/wMrCW/yLViw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793110128;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=lSLIUaL2Jt52ZL1/ZORhvu/M8g+F3YsO7Y845XP4dWA=;
+	b=EoCWVZcfuS8VFu5/p556HRP8NK+FjeRzqe6qS77TS6w5eUgdhwpNXq1xFd7gtE+OqSiM
+	 NCQz5hQvZZ6NsX/3Ti+wNBN9z5nvJ31Xhk0k9m1CgoNHsTIpLHKvNZGODs3bsZdHKPXpI
+	 RkGCm3cT2v9ybz4PsfHmYln7anG8XL903g+09vhkQAU7ICtV0U8SCEVDT2/lsAR9BxHGi
+	 NG0cQlQ6uGHwxgn5fIzLJDaNZe48DynHd+nCc8ggPL8X8Ys/HPD+2ytinCxdyRYVf2FzC
+	 PQp1mhQ+D9yliuTSzPNaiIgIDz5WZ4bo6KPXET1pz916UDeAN3dr2r+/IKPc6+9TMRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mLH/Tvkc";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S15z9dD9;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCF5606A31B
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA125606A31B;
+	Tue, 27 Oct 2026 14:08:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA125606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mLH/Tvkc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F901F01828;
-	Tue, 27 Oct 2026 14:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793110107;
-	bh=CbvGWJmf9YwWN00g1u/NHLatne7a6bJt0jiNry4VqD8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mLH/TvkcbPJ5pX+EjBJOwjRTX74u6eNmAvjU9QfleDiVHjaVjQW/UQou30MulrOxj
-	 jToXXyijxOB6MGesqEn7wu9ky5T8zw86VlRcsgKAnpYqYNkDKNrV6WE/Z8nbpCvEfZ
-	 lO19Saq3/9HbIkvTIRHU901td+3nILEzJ/Gr/WAPBSpbxNJbFujf3z9Br1/D4YByki
-	 3RRrOcQ4fNSbdoc4nJ2hs6Lf7+NnSiUPF3Tb2rYJ6ge5fQSMQ80AyBQhDFy+VhWIJu
-	 8TL/npIiy1WUyq4OObCMLtpqBEnh8iql8u0bu3P4zLEUlretOIC4LadBPf4u1zanll
-	 OH7d9xyxmpb/w==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 263961980047;
-	Tue, 27 Oct 2026 10:08:20 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 27 Oct 2026 10:08:24 -0400
-X-ME-Sender: <xms:U7DgavnxdSNtUxqaNd3ZPHA-GgqWp0ak_-5ObLq_rxP4hAiTlHOoKg>
-    <xme:U7DgahvkmRPPsHyleWajOnL83T8ou18ct43iD-MVEmfDhiGNYWj7adNpuXMgzcSvL
-    h-Aib8Gkk3fFuJtkkdHHLlzGDYFt5FEMK9Xn7XjtbUpLHkRz6o9QzU>
-X-ME-Received: <xmr:U7DgamDt0DMoMRD9ALRRPZ69IGo-7jn5OsY2yyrJLpMhj7CGSymFsXIejhg>
-X-ME-Proxy-Cause: dmFkZTEaZA2PaW1k67BxuO7K43FLH0AXzaKFjjKJfwu/KpGOFsmjjz9GSuR+5Cg+oI7dZA
-    8BXp96hrgxr8G83eICbVIuq3GGRRXyrwDLmbW5B80ASp3E45NdoC/6iVPRbMkGsI5q7/3F
-    T/g200QQfYlzbcx2nKjkpGdEmX7ucWHHKtmchRf9OkWPEt+EEpay6nygL4fJYyKb7W+qAI
-    nnRokAmwK7V8GxQtulk6RfB7RjPcJAnuFWyVrb3qEDbKJeUsNsxtS0j+Q49GQ8esgGy3V4
-    ZmsVBdUTtK1knjxzJbTbkJX1GHETc68pBeGN/x1WbGSyB4OKk1yN7DYa2iMaIpVnzTIslT
-    7aA4dhG3GVMCk4eZnUELWNFF4UCcuoeVpQmaHUKgefcK9w4C4Fz6Xfyz1MXvkM+/i/gpv/
-    wBnbicRBljlVlfuS5RDXoX/VTYAjKsd0JUJl0skwrZ0+MYdjfRy9CTdoATnXysrrO8qD48
-    ApJmhXkDd/lBtfES8tOCo1i9zCfzVj450Dq23/37fF1tv1GUAZLrsktJHSdjL7zr28Z1ac
-    S4BhWxDe++Qv8LvAK0GnXF9RoJFURWADYIzEd52HXcM6KX9aBC7rpJZnJZNEdRNln4q3+U
-    PMKz0qtlHCAmXs1bZFdjhJBbn8eFOnfdZUQFqf5iyvcczuw2MU6juU0LijUg
-X-ME-Proxy: <xmx:U7Dgasla_gR8q-sI-JNR1LqZkQT_nTfLQl1cHRv6T4W4Ake79iTPUg>
-    <xmx:U7Dgavj3xzu4vBZbB51HVdp4cr7W5e3S-oo_c-kw6mfh46R1sa5L_A>
-    <xmx:U7Dgalty37v8Eg1mkg7bNhiCDj1BSRmb1trVWEo2bwPQFkPmtlNaOg>
-    <xmx:U7DgamBSPtDBwLyo5fZ2kF7cR9JCXEkjyH8DP8ww1lZzUQy3zWuzTA>
-    <xmx:U7DgagVwQ30ZdR7dUwwj3cSK-abW5nEmNfwTYvWuLxrxaHMCSBiyglPP>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 10:08:18 -0400 (EDT)
-Date: Tue, 27 Oct 2026 14:08:17 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>, 
-	kvm@vger.kernel.org, =?utf-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v4 2/4] mm/huge_memory: copy file THPs at fork like
- copy_present_ptes() does
-Message-ID: <auCwHD83jRCtt8Xo@thinkstation>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S15z9dD9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793110126; x=1824646126;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=K47uyZ+9DXPOcHQqkyoR+d19Q9CpijVOgdBU1uW527U=;
+  b=S15z9dD9B7fR9E2m1zxBx0tfqtUZjQFAntxJ9eMw9U+Su76Jyfw5w241
+   ftydpSeHLM8bHRrqk7YTZF1xM6kaA5+9fjjR4kKXFxax9AVEnlOUhtBNI
+   pr6yXeJpfbMeZxWcWf++tQxx/MyPQ2XBlZPb6Vw1RcIrPuT0xpMCtYvl+
+   +XgQpnJxBkl33PXDJC1XjzzSyvqEKg30njerOsML2mUtpg6C0/hHSj0CN
+   Ohn2zWR+rpqTBQwGIu1hIbuFgV/4yGAHwdoLawQo3t+CQEF3Sqq2afijj
+   kDyeOeVWo6Y8n78hufNzLEgiR3H00cblQ+IXLqq3CQiUwwOcNl6zSIosx
+   A==;
+X-CSE-ConnectionGUID: eNTdVfmcTmu7mFNvH8HDog==
+X-CSE-MsgGUID: ZS2o5F9KRACWYKcPz5TYoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1900009"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1900009"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 07:08:45 -0700
+X-CSE-ConnectionGUID: VxLkWFdXR02r0GM8ie7iKA==
+X-CSE-MsgGUID: 33F1fWAMRIyiBsNQEv6I0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4594033"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 07:08:42 -0700
+Message-ID: <7a832e5c-eaff-426f-adff-7935be265bbd@intel.com>
+Date: Tue, 27 Oct 2026 22:08:39 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,48 +72,108 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] virt: tdx-guest: Poll Quote status with
+ exponential backoff
+To: moe@flashbots.net, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Dan Williams <djbw@kernel.org>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Jun Miao <jun.miao@intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
+ <20261024-tdx-guest-quote-poll-v3-2-6a83bb767314@flashbots.net>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261024-tdx-guest-quote-poll-v3-2-6a83bb767314@flashbots.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 21, 2026 at 10:36:01PM +0200, Konstantin Khorenko wrote:
-> This fixes no bug: it makes fork copy a PMD the way copy_present_ptes()
-> copies a PTE. Until now copy_huge_pmd() skipped every folio PMD of a
-> non-anonymous VMA and left the child to fault them in again, while the
-> PTEs of the same VMA are copied.
+On 10/25/2026 3:17 AM, Moe Mahhouk via B4 Relay wrote:
+> From: Moe Mahhouk <moe@flashbots.net>
 > 
-> Treat file folios as the PTE path does: take a reference, duplicate the
-> rmap and account them. fork then pays a reference and an rmap update
-> per PMD, and saves the child a fault per PMD it touches. The next patch
-> sends PFN mappings through the same tail.
-> 
-> That covers the VMAs vma_needs_copy() sends here:
-> 
-> - private file mappings with an anon_vma;
-> - VM_COPY_ON_FORK ones: uffd-wp and uffd-rwp, VM_MIXEDMAP (fuse DAX),
->   and VM_MAYBE_GUARD, which shared shmem, file and DAX mappings get
->   from a guard region.
-> 
-> The DAX huge zero PMD is copied too, with a reference taken by
-> mm_get_huge_zero_folio() as for anonymous VMAs. A migration entry of a
-> file folio is copied and accounted like copy_nonpresent_pte() does, and
-> made read-only in both processes only in a CoW mapping.
-> 
-> The copy then gets the same tail as __copy_present_ptes(): write
-> protect both sides in a CoW mapping, mark the child's copy clean in a
-> shared one, and drop the uffd-wp bit where the child is not armed. An
-> anonymous THP is now write protected only when its PMD is writable, as
-> a PTE is.
-> 
-> A page table is deposited under the copy where the fault paths deposit
-> one: in anonymous VMAs, and wherever the architecture needs one.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+> wait_for_quote_completion() sleeps for a full second before it first
+> checks whether the VMM has completed a GetQuote request, and then
+> rechecks once per second. Every Quote request therefore takes at least
+> one second, however quickly the host answers.
 
-Okay, I see benefit of aligning it to copy_present_ptes().
+It's not 100% correct.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+I think it's possible that the host VMM completes the GetQuote request before
+the first check in wait_for_quote_completion()
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> With a local Quote Generation Service the VMM completes the request in
+> a few milliseconds. On an Emerald Rapids host (KVM, QEMU 11.1, Intel
+> QGS), back-to-back Quote requests through configfs-tsm took 1021-1024 ms
+> each; with this change they take 6-12 ms at HZ=250. Since quote_lock
+> serializes requests, the one-second floor also caps a TD at about one
+> Quote per second, which hurts users that bind a fresh Quote to every
+> connection, such as attested TLS.
+> 
+> Poll with an exponential backoff instead: double the sleep from 1 ms up
+> to 100 ms, so that a fast Quote is noticed within a few milliseconds
+> while a slow one costs at most ten wakeups per second.
+> msleep_interruptible() rounds up to whole jiffies, so at HZ=250 the 1, 2
+> and 4 ms steps are one 4 ms tick each. The sleep stays interruptible,
+> and the timeout becomes a deadline in jiffies.
+> 
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+With the statement of the first paragraph fixed,
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+> Signed-off-by: Moe Mahhouk <moe@flashbots.net>
+> ---
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index a5a53174f9d9..d58c8eccb26b 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/set_memory.h>
+>  #include <linux/io.h>
+>  #include <linux/delay.h>
+> +#include <linux/jiffies.h>
+>  #include <linux/sockptr.h>
+>  #include <linux/tsm.h>
+>  #include <linux/tsm-mr.h>
+> @@ -271,18 +272,25 @@ static struct tdx_quote_buf *alloc_quote_buf(void)
+>   */
+>  static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+>  {
+> -	int i = 0;
+> +	unsigned long deadline = jiffies + secs_to_jiffies(timeout);
+> +	unsigned int sleep_ms = 1;
+>  
+>  	/*
+> -	 * Quote requests usually take a few seconds to complete, so waking up
+> -	 * once per second to recheck the status is fine for this use case.
+> +	 * A local Quote Generation Service usually completes the request
+> +	 * within a few milliseconds. Poll with an exponential backoff of up
+> +	 * to 100 ms, so that a fast Quote is noticed promptly while a slow
+> +	 * one costs at most ten wakeups per second. msleep_interruptible()
+> +	 * rounds up to whole jiffies, so the shortest steps take one tick.
+>  	 */
+> -	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+> -		if (msleep_interruptible(MSEC_PER_SEC))
+> +	while (READ_ONCE(buf->status) == GET_QUOTE_IN_FLIGHT) {
+> +		if (time_after(jiffies, deadline))
+> +			return -ETIMEDOUT;
+> +		if (msleep_interruptible(sleep_ms))
+>  			return -EINTR;
+> +		sleep_ms = min(2 * sleep_ms, 100U);
+>  	}
+>  
+> -	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
+> +	return 0;
+>  }
+>  
+>  static int tdx_report_new_locked(struct tsm_report *report)
+> 
+
