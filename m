@@ -1,101 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=74.125.224.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793062547;
-	b=FOX205CvvDT6avKA/8bEIDPHAgDwCSFl1RbQnQUYWp9qQMDbV4LLKXMjfS/6q/vaQsAc
-	 810CCU8bLTUG3yvdVeHN0j7NlnVk3mxCck5/601PhBHzSC/eDt2u0Z9ItkaRZyeeNiLDf
-	 xQkZPo8WyL5xXoerk95Nd5QHBQHfD1IPZKriJIxYbtMeFSpanrf3pE4pWFwfVE/a3z6ZG
-	 cCZkVAZ39AZ4WJ2Qc+e8Dwo405WAXiQ24qtnJMULmXYsZJtlgktjPPGzeufzzgXKkCrnZ
-	 KDFVekjgSolnXBzM+HEyZDFyMbX+hRqAqfiRCCULXM5tEcOXADO5y8G9TOUwyAmJn+w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793062547;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0rDUgYp8MSkkxbz0QJpm44/zZryJwi/MN1DJH+bVzxg=;
-	b=UtB2010080/ZQam7n5OeZ6AbkimjRa1LztuiRIhWSNseB3Ff6sJeCfZW7zpWHTITK1La
-	 vYJ74Ba6NcRTzefAp2OypVDlW9tT2T9kg5adRTPkZR4Zd4v6ossfCk4njJVlrHYL9K6ag
-	 /BeXKrh9BoXUsqoj4BMkoch2+QrpkgaxiIdikQWxmVuUedhp0wZ+QXQKLAQrP5hJufgpf
-	 DW6ioHrDYvaov/Z3t5tzYwJRFMQ1tMItLCxNcQhYprQ3iGhcNptNMOOeyEWlwp/un9vn+
-	 VqNQ+0H5M2upO3Ed/NNpzlLTsczcm+MbxQRLMIfPtByr3bvBNg00n5wy9cmX9DU5qmA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=B1Bnrmjz;
-	arc=fail smtp.remote-ip=74.125.224.53
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793064351;
+	b=snQ/6dgfWLbnKVpzVUUJR1S4V/sGXL7TPeHZXy3iaUhNQYZL22JjmVEJhxmOkYW0WRe3
+	 OL0Ra94N0ZbzmfOqzeI4p9UZW+dcU0t4YXzqPwdP5+C6Tm4/4gL6fXlmTgC+TAkbL4Jr6
+	 hMY3M8oe+j+Cw6OoYnT5TPvvIglBjd0A4hp8Sk7dyDMjufvXLY5+IIupUDM1kA/rEtww3
+	 pTnCgROxjwgRAs4uBflhem6X16B9/vhPUgsVpuW7RITxoZVOGlOzDbllwwdGCRxOs3EPq
+	 WHNLBNNT9F8HfXoSFawT74KUi00Al7MjlMLL8uSKKUwg+xdxf0heEHccDYkz8QRY9TA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793064351;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Y+DIHcrA443uqX7QES2ZcgrJrcUrUUQxo223RqYtOdc=;
+	b=q2J4aUt6J+8AXcvvqpl3YFJ+M1lT2FA4YVJpKUB0aW98thdVDtZ9SKWR3juBhnuWakOe
+	 WqlHlzrdvafEhz3zJAk1xLvCBQ92mGibc0oULdY+5a7cqCjvVQK5oVUgtzYV2nqBZ8AsI
+	 XQcsyv1gfTPPdu+u1XgJK12Lp6zMAdM2FJDqcbw8IEY3q/yDTbYpyfpjwVZVHXn67moex
+	 UoF2h0WO+mYTvHiBKtVw/xFqXYY34Ytn0arSafLEdtUFVkC0CIeUoYKgL+6ehYBedo3SC
+	 jXAtvQhhQBlmh4pnEzrbS47krsdXFDH4oQdH2VyUlPn1QIX9RUw7ShG4OHP9uisYd6A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=L53lhoCx;
+	arc=none smtp.remote-ip=198.175.65.18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E26606A31D
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 00:55:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4E26606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E809A606A31A;
+	Tue, 27 Oct 2026 01:25:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E809A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=B1Bnrmjz
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6798eb0d13fso3816256d50.0
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 17:55:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793062546; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ByzuE9nhl8Ahkg/S68XESAJYbhc4WxE4+dU3EuBFJrFfxaVj4iQH40GADkd0G54hu2
-         wExPv5gHm4NtyNa/HySL2dZOvDINp97PK58U1rChuBK2S0M5nUD0QJ4mlhPufhQtuzxO
-         MfjeQqhknkXjl49yFcbW6HTzlnSWAB6oMc2wJ3fmrqkx9aBa0uNKxiq6xqGulYQsJ+S6
-         1htJyZ9sdvO46gIVZYU+LC7rYVIEJpuKaVFS+gkReJz9FNjo8X7JMk9ZXjATeJDkyd5J
-         a+nsrdpvN4mMfT5mLhlONfRT4HiHULEstJiTd2/jYdI51dWVDZJ+dHMlozCyDC/gK3Ro
-         npWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0rDUgYp8MSkkxbz0QJpm44/zZryJwi/MN1DJH+bVzxg=;
-        fh=16SzC8W4e2VsSbcMl4V2VPF5xbAeAhrae5A5w9vLX2Y=;
-        b=m0mALTaHoTHWbZtv/wOZJ1wvIIiuNFX7PszSUoiNrnAA60ez/7zw8ocMW63WOQzZfo
-         QcFC3Vg9U36KwJqTWVH1G+c41XCmqr1OIW+22P23yWMabOlMCjv76CnOTtr/1q/MZi8T
-         ZE5xOHHsZ4CirGtwLB01TVp5rOkZZ/2oaxZbPN9Ge+9wzA1d9zQsW798SQO8cd5X/PYE
-         cg0MH1+ytEuwtvnmnRxJMP0Qx5I4Y4jTzk+M4fGq0+P1Y6Qs5up8q8u9UBe4BFNUGGJ2
-         JdzVroZRFcwtbidoL10AtjYM91kaXZPhaePIFJj5wRtOyrFefGS4tAFBBp/YHGcdk6ZF
-         RAFQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793062546; x=1793667346; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0rDUgYp8MSkkxbz0QJpm44/zZryJwi/MN1DJH+bVzxg=;
-        b=B1BnrmjzOQllWKlg5tVh7jHtuToyh4b9r2vQ41qauboTRVa58oOPeN8G5oUXOb6cKI
-         KOa3tNY3pp4+zh4ygoBN2k3b7t1N6irCUYzsghDt3gh4jIZY83CPyzvX+YwDDTWsFDrb
-         Wgicpxlr71pf+zr86rXSF4xWP9rL+KOsCiTa0LVyDbR7hasv/hm64of2cVxj3pV5zla4
-         T7tXoXeEfGXRDv1TziB3LNcG8y/OQqULQkKAPmZO+6OJ/npajDarvKKtoxRNsBp04Blz
-         5RfXY9e1mmS5k1wHMy7yJ8WTVUrN+zPz1xHYHMA+gjY9DeGV/mLlOXofy7vTgSpHLxsT
-         Bbsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793062546; x=1793667346;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0rDUgYp8MSkkxbz0QJpm44/zZryJwi/MN1DJH+bVzxg=;
-        b=MVrZ334ye3zjdPc6ySWhehVpLm/9US2fXm+MUoKxUtvvmkfAfPqhcNnVgcdN0IdWlX
-         /jSPnngPZNKRWqmToOfhlR2l50vKWLR98C/jKKxbl3cGY7r0kbfQ/q5jmGHuQ8LfXKyh
-         N1I69DrKhznfMINelKXm/Fy/QZKET1l/vbk69GpuKTAl6KQAvhZY4M4GePRtJc8nW7vY
-         wydYlNi3KS81jeB6As35efDXRtNbbzLntls3brYUXfEcNVUj2Ge3IF/dZ5Hq7Pccykdu
-         PI5G6mP73ecspo5VAIkHSkXfOp858QBx5ncz1Niu4REs4gs3lybKuAIsEJWQVFjfBmtL
-         D/8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBx7JV6wI27pRxJh5qzxhJqVoj6f2b73NhLOtPUY9GgqmI/lsnKlcxG9ilJ1HDmrXYtBqtg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK3vZ5aDvDRinwU64qMLXHO0CxLU2yFK9r/WKlXGQLjIqNHRLrL
-	oll4+fgYhHi4eRGIptmlqKSKwh3xgErVeqMF8bUZPCvZ9QmyrSDQPsRcD409/j4+dPCgh1qZzq4
-	xSwE6SK2xzwQtDFuxsf6E+uSwBSjTPD3/XfciwgpM
-X-Gm-Gg: AYBFou3l6OOhXJI5nyde2ySsk11RAvMzR1wpv+Ect/iVQWhSYOTmzzVWFzwD777Auxb
-	ux53uiJaocsqN1Olznd/WkSTTxP1TAkw4ZwYR504nKkObvlxd+7jpQgEtvJ4m+DXR/XJQ7GRWtC
-	qPjNtx4vqBUJ+e4/z2L0YmnJsazlU5yygHWbby+Yk4t8scULlvwdOBhuhs8z8qDiYFxs4I5gz3R
-	r/ljORYFAc3Sk3kgXYgoVBwYHgcZQigWM1MUrXmDVTTzMkgO5lRGzXOhu0BrTKQ8eyyR8qqi+08
-	D5KfQKbs+Ak2XFTNDYKLdKFHGJo5DmaLiRuUfhXA9zI8HgmafHOjauCx1ye7DCTS3AOqmF5M+74
-	/EjmJ4fon6vS8PHbODfadhD3xe6/NaN826xxPlw8dNglDlo4PAFLjcK8zQC04kL5qxNrXtClIrd
-	2RjaAifXOs+Lh8BYY+3bOU9X4sxxaIEFiuRJisA2GdHhAjRivlpGU2QBsbsw==
-X-Received: by 2002:a05:690e:4193:b0:679:ab13:5517 with SMTP id
- 956f58d0204a3-67a454185a9mr4463627d50.104.1793062545192; Mon, 26 Oct 2026
- 17:55:45 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=L53lhoCx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793064351; x=1824600351;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1W0qQOp9dlvhFLQgWLSpC14yTIgst1Lk70JE9hOkfO0=;
+  b=L53lhoCxCvJanlIjEpE/6Dp9npkN103lLRTtG+JySOpcoMOgBCsktCaN
+   imlKGhC5v3ZTYiaddOaWn8TkaMxdegrxmPu4qtYC1fQCCScajiaFyahjW
+   +o7TS2oQCNmGQ+oGYTcLYggOiEOD53TxcHOph32TVex7P+JtOrGiRnpQp
+   alXLONnxVEnLnCkNOX/iKh5QnqISDFoxvQorFwI72U2xvGMrn4TkouohL
+   j4UQ0GeBLsuVcMfPyl5tW8DGPq1mySQGlGumDVtHCO5GUbP052cKlNUYx
+   /yJHTGkCYqWFU6JESu4Syn/5u+76azHitGMf9rb48fEedMEvGu7qyPPgz
+   w==;
+X-CSE-ConnectionGUID: Ey5msoRsRW6DdEcDgbXx8A==
+X-CSE-MsgGUID: NPhX6EtZTK+64IVIaDUaFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1760137"
+X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
+   d="scan'208";a="1760137"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 18:25:50 -0700
+X-CSE-ConnectionGUID: 499ixse/RBiiw5XlyzZDTQ==
+X-CSE-MsgGUID: 1iitD3rJT+2NzPxwk+903g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
+   d="scan'208";a="4422631"
+Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 18:25:44 -0700
+Message-ID: <153dd0db-32d8-4ec9-ab8d-2368a790ac55@linux.intel.com>
+Date: Tue, 27 Oct 2026 09:25:42 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,230 +72,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
- <atlQ_Er0Ig7CCSxv@google.com> <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
- <9huzzew0el59.fsf@tarunix.c.googlers.com> <at_CncIPYCxOVkLo@google.com>
- <9huzecdcghxu.fsf@tarunix.c.googlers.com> <at_pxoULR1Tp5anN@google.com>
-In-Reply-To: <at_pxoULR1Tp5anN@google.com>
-From: Tarun Sahu <tarunsahu@google.com>
-Date: Tue, 27 Oct 2026 01:55:34 +0100
-X-Gm-Features: AclHuK8fanKHLtbPQb3b8Hh9aMr64vlKSACVWw1UZzkklpf-Ls0Hu1JyLQFmaw8
-Message-ID: <CALe+6DxTR0BpvW7mXMjq_+dczT2jO=R_qLbHhSduhnuSPcXhzQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-To: David Matlack <dmatlack@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 02/28] KVM: VMX: Initialize VM entry/exit FRED
+ controls in vmcs_config
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
+ David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-3-sohil.mehta@intel.com>
+ <acc168cc-e021-43dc-8846-ed1b2d69facb@linux.intel.com>
+ <a0f99d8b-b67d-42f3-b76b-90187a0bea5d@intel.com>
+ <5af354c7-9bbb-4ff2-b450-c08cc5b46304@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <5af354c7-9bbb-4ff2-b450-c08cc5b46304@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 27, 2026 at 1:01=E2=80=AFAM David Matlack <dmatlack@google.com>=
- wrote:
->
-> On 2026-10-26 11:28 PM, tarunsahu@google.com wrote:
-> > David Matlack <dmatlack@google.com> writes:
->
-> > > But looking at this again, I think the required bit is redundant. Whe=
-ther
-> > > a feature can be safely ignored is a property of the feature itself, =
-not
-> > > of any particular file. Every file that has a feature present will ha=
-ve
-> > > the same required bit for it. The only thing that actually varies per
-> > > file is whether the feature is present.
-> >
-> > The required bit is subsystem property not the per-file. e.g. memfd_luo=
-,
-> > it is set at compile time for a kernel. So every file will get that req=
-uired
-> > bit set. It is not per file property.
-> >
-> > struct u8 memfd_luo_feature_state {
-> >        [MEMFD_LUO_CORE_FEATURE] =3D LUO_FEATURE_REQUIRED
-> > }
->
-> Right, whether a feature is required is a static property of the
-> feature.  That's exactly why it's redundant to send it in every header.
 
-I meant the different thing.I was saying if a Feature in a kernel will have
-constant value either required or optional which is fixed at compile time.
-But the same feature can have different values in two different kernels.
 
-I am not finding a good example, But I am skeptical about making the
-assumption for all future kernels that the features will always be
-required if they were required before.
+On 10/26/2026 1:00 PM, Sohil Mehta wrote:
+> On 10/22/2026 8:10 PM, Sohil Mehta wrote:
+> 
+>> I couldn't find any precedent for this. I don't have a strong preference
+>> here. Is it worth making future-proof?
+> 
+> 
+> I did a bit of digging. The current entry in the table is the result of
+> Sean's preference provided early on in the FRED series. See
+> 
+> https://lore.kernel.org/all/Z739wdGmk4ZuWJ8v@google.com/
+> https://lore.kernel.org/all/ZUz3cPmnqSq7Lol9@google.com/
+> 
+> IIUC, we want the FRED entry/exit controls to be consistent without
+> depending on the ordering.
+> 
+> The current vmx_check_entry_exit_pairs() doesn't cover the FRED case (a
+> single entry bit mapping to two exit bits). So, the updated check would
+> cover this scenario.
 
-Maybe a seal added in kernel version M. Later in kernel  version N this sea=
-l is
-deprecated and replaced by a new seal.
+OK, thanks for the info!
 
-So transition from M->N
-source kernel will preserve the seal values and flag the feature as require=
-d.
-target kernel will mark it supported and use its value to translate
-into a new seal.
+> 
+>> if (!(entry_controls & n_ctrl) == !(exit_controls & x_ctrl) &&
+>>     !(entry_controls & n_ctrl) == ((exit_controls & x_ctrl) != x_ctrl))
+>> 		continue;
+>>
+> 
+> 
+> 1st line: the entry control is set if and only if *any* exit bit is set.
+> 2nd line: the entry control is set if and only if *all* exit bits are
+> set (which is specific to FRED for now).
+> 
+> Also, to make it easier to read, planning to reformat it as:
+> 
+> struct {
+> 	u32 entry_control;
+> 	u64 exit_control;
+> } const vmcs_entry_exit2_pairs[] = {
+> 	{ VM_ENTRY_LOAD_IA32_FRED, SECONDARY_VM_EXIT_SAVE_IA32_FRED |
+> 				   SECONDARY_VM_EXIT_LOAD_IA32_FRED },
+> };
+> 
+> Please let me know if you disagree with the approach.
 
-From N -> Z (latest)
-
-Old seal is no longer required, But the new seal is required, so kernel N w=
-ill
-mark the new seal as required. and Z will support it.
-
-This is hypothetical example. I'm not sure this is enough to convince the p=
-oint.
-So, I will rely on others to chime in with their thoughts.
-
->
-> > > The required bit still has to be conveyed to the target somehow, sinc=
-e
-> > > the kernel that needs it is the one that doesn't know about the featu=
-re.
-> > > But it can be conveyed by the feature's number rather than an extra b=
-it:
-> > > split the flag space into required features and optional features, an=
-d
-> > > assign each feature to one of them when it is defined. This is simila=
-r
-> > > to the required_flags and optional_flags approach in struct pci_ser [=
-1].
-> > >
-> > > Keeping the same header shape as discussed with Pasha:
-> > >
-> > > struct kho_ser_hdr {
-> > >     __u32 size;           /* Size of header + payload in bytes */
-> > >     __u16 nr_required;    /* Number of required feature bits */
-> > >     __u16 nr_optional;    /* Number of optional feature bits */
-> > >     __u64 flags[];        /* Required bits, followed by optional bits=
- */
-> > > };
-> > >
-> > > Required feature N is bit N of flags[], and optional feature N is bit
-> > > nr_required + N (using nr_required from the incoming header). The len=
-gth
-> > > of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both space=
-s
-> > > are numbered contiguously, so there are no gaps, and up to 64 feature=
-s
-> > > still fit in a 16-byte header.
-> > >
-> > > Each bit just means the feature is present, so the truth table become=
-s:
-> > >
-> > > Source bit       Target supports  Action
-> > > ---------------  ---------------  ------------------------------
-> > > Not set          -                Accept: feature absent
-> > > Optional set     No               Accept: ignore the feature data
-> > > Optional set     Yes              Accept: use the feature data
-> > > Required set     No               Reject: -EOPNOTSUPP
-> > > Required set     Yes              Accept: use the feature data
-> > >
-> > > There is no invalid encoding left to check.
-> >
-> >
-> > IIUC, I believe this will not work.
-> >
-> > To Communicate between source and target, We are defining a protocol, A
-> > protocol which will be standard for all the kernel. And each bit locati=
-on in
-> > flags must have the same meaning in both the source and target kernel.
-> >
-> > Now in you approach, If Source kernel send feature N to target kernel,
-> > target kernel must understand Nth bit as the same feature. Even though
-> > the bit position in your approach is not fixed but they are fixed
-> > relative to their starting point.
->
-> I think you misunderstood the proposal. I'm not proposing to pack only
-> the set bits, and I'm not proposing that each feature have a bit in both
-> ranges.
->
-> In my proposal, there is no such thing as "feature N", there is
-> "required feature N" and "optional feature N".  Required feature N can
-> be found at bit position flags[N]. Optional feature N can be found at
-> flags[nr_required + N].
->
-> In more detail:
->
->  - Each feature is defined as either required or optional, once, when
->    the feature is added. That choice is permanent.
->
->  - Each feature gets exactly one bit, in its range, and that bit is
->    always at the same position whether or not it is set. Required
->    feature N is bit N. Optional feature N is bit nr_required + N.
->
->  - nr_required and nr_optional are the number of features of each kind
->    the source kernel knows about, not the number of bits set. They tell
->    the target where the optional range starts and how long flags[] is.
->
->  - A set bit means the feature is present in this file's payload. A clear
->    bit means it is absent.
-
-So For #NR number of features, We will end up using 2*NR bits which
-is exactly same number of bits, V3 [2] uses. So this is just a different
-way of encoding in implementation perspective.
-
->
->  - There is no invalid or reserved encoding to define. Each bit just
->    means "present".
-
-What if a buggy source sets both required and optional for a feature?
-That is an invalid case here. Same as 0b10 is an invalid value set by
-buggy kernel.
-
->
->  - The target doesn't need a supported table. Required features are only
->    ever appended, so it rejects any required bit at or beyond its own
->    MEMFD_LUO_NR_REQUIRED. Optional bits need no validation; the target
->    just checks the ones it knows about.
->
-
-As I explained above, incase a feature is replaced by another feature,
-new kernel
-can support it deserialization but it will not be required from there on. S=
-o
-The supported table will still be needed.
-
-> > For the current appraoch and V3 [2]. Think the below one as msb is
-> > required bit and lsb is feature present in payload bit.
-> >
-> > 00  FEATURE_ABSENT / DEPRECATED
-> > 01  FEATURE_OPTIONAL
-> > 11  FEATURE_REQUIRED
-> > 10  IS INVALID (analogy: required set but feature is not present) which=
- can
-> > have different meaning in future if in future, a need arises to reuse t=
-his
-> > field.
->
-> In v3, 0b10 is reserved and not checked by the target. That means an
-> older kernel will silently accept it, so the only meaning it could ever
-> safely take on is "safe to ignore", which is what 0b01 already means.
-> A reserved encoding is only useful if older kernels reject it, and at
-> that point it's no different from adding a new required feature.
-
-Yes, because I thought 0b10 could be used in the future. And Currently
-If it is set by a source kernel, it is buggy source kernel. But I can chang=
-e
-back to INVALID, As you said, it overlaps with valid field 0b00.
-
-~Tarun
-
->
-> > Deserialization can happen per feature from right to left. without
-> > jumping back and forth.
-> >
-> > Because of all these reasons, I believe current approach presented in
-> > V3 [2] is the better. It is close to your PCI series with two flags
-> > field for required and optional except I combined both field into one
-> > flags. In your above approach you do have two counts but not having gap=
-s
-> > (which is wrong) and the way you proposed to parse with an offset is di=
-fferent.
+It looks good to me.
