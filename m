@@ -1,92 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793109199;
-	b=vsk8TxyW1H0HUs3xuG6PeCE8ZvHFLE7d5+g9No0FlNl1LCtQjPDGo+LPXtx8oDfYVh8g
-	 QZi8LqQPRBcUnsneix4fS7pQlYR9M+cfofj3m1ScETEr327AuHEHcoPj9RcLpxlWt4M4N
-	 z9KIbtTeQ06afaCl+w6k4KdVWrNKyoPof7xP7ncdT6enaeh1zZkpPDPClGqULh2Rd+VdN
-	 FmZhxgqn20kpgAciZJKN6ouhBx8iWDg368aWNit0i4vOcPoGn/lY55FqZ7FEQl7/WvrE/
-	 9oCCu1ZDhY+eWe1+D2jBKYBuRMlcJsxrgupkuOUg8NllvrDfTU+hkjHIlBzNm03R6lw==
+	t=1793109618;
+	b=NC7i1I34rvt5UZFGRKFe5O/Uf3l96J+b6ucgw3hnT8ZxIxrDUqkxQs3rUZz6AnUFv/X8
+	 KgbFdqkdHNonbRJEHkPed5n24ZCgyE9JUqVJkaQVHTp+N6LP1ShV37Lrw5DXQ+mT3zprK
+	 c9FU55UeOuvvZgFT6td3x57l0+icvuYuuWx8ViCGg1aX2CptpdWtIJMoiZSVglx5Lwvs+
+	 X8zUUKGw1JAymrIyK/ndFw1TaVFPOWPYmB2nQB4QBm+1MplhuHSXBRBMiPU0W/8zG3jPD
+	 FNCzKPS0qyHFt0tGqxG1HRHSMY+t3u7ldNDwpIMUrZBQfnTRF29TcRPs0wsK4J6XLHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793109199;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=wGwT1JNbkqmcP8fUAnZimf+aufAiCIdNGNB+5b8MPdA=;
-	b=XgdOOaGH/SIdWrjNMRJMt7eF/rX0u6hnDvR456TGh9DHIMLHVRHAd8zWraQQttcJjI2f
-	 BwTXR2xKj5g9uCmm5lw4KAMud7BoQS3mbEkH8zzYtBMY1XbLJ2fPL32MkNod289k+IKaA
-	 JXAP5g63VigOWWSKmwzvVK3VlqyJhJGfbGjDh2aTHMEEst6hZg8FkO6TZ+3NQpHpSIG1o
-	 ZsVBd15ABpVSg4Pm52ZG3uQ1pFjJWca85oG1Pr5xZHk1gUVZPdEVYoYZ+VGx852F2vgpp
-	 bwEQKCJ+tc8AMEF3UWFL2ZYFsFsByoiatX30D9FUF3fQG5Fv953t0/4oRtqXRSNaE6w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793109618;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=iAMT5ErMlUqsPBFer4Lu1BUk2YLaErYsWfjiGygyJKk=;
+	b=imqETaweTEKsytSWE/0Jl/7Ikqfj7t1JANNomNk3uo5u+gDpRfkHeZh8/WkcYW9qBeYk
+	 4yYx6M7byiWyCx3uHU77ZZZT4aWbsaDjBXOSmU7j3r4wFUur96ICrPoGAr9AuxklECEkg
+	 jE5hvyiLJYJW8hyoeKzK9MsqbWDYdx1yLv0Fx8YToNUcHugYuYzPnOlnGiItBrpGPYT4u
+	 bNz+D9ToecANmGuhiMUDEkrF7JaewUWQUgKh958IsA4ipzCn3i2ddIdZ+aC9Tc2mbO6VO
+	 AC2GTl3uFjk1znQgs24QaQlPrQoVhpIA4srPSTqNCyV02ncFkHqgFGkJgSO+O0KAT5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k48ijW9R;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V9h5asR1;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DFA606A324
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 13:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0C4606A321
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:00:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E0C4606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k48ijW9R
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131131F031E1;
-	Tue, 27 Oct 2026 13:53:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793109199;
-	bh=wGwT1JNbkqmcP8fUAnZimf+aufAiCIdNGNB+5b8MPdA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=k48ijW9RVicq2q2FursGgvWjpH6sIVKScmpHGgvHyK9MPT9Oz7ye0qHgpm5pLzc6U
-	 3iTvUygezJH68Hzr3JgtaYEYnJlg8RiMWsJPFGToeN6lfFpk4V4f4U94iDf1nFo1Wb
-	 6JgsGYPAYwIZgfrP7iStQxk6v77xu6ImDiFeyJ8LCgsRsZONrdgUxqtjhVxV8xObWz
-	 Oj98LVB9PG78itudjQK+N2F4DeMLumcd2p1aEQlEmoUHduC5dziRjfD6nCoVrVU3MG
-	 v3ZWMz6ypCNycZZb1x8sGVKPEj921sL/CKHmVowmFIquzSVITN3U4MNuufH+kLoszO
-	 r79QNsVex59Lg==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 85CC7198004A;
-	Tue, 27 Oct 2026 09:53:11 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 27 Oct 2026 09:53:15 -0400
-X-ME-Sender: <xms:xqzgal-vr3ZeqbXQYJBliutUwh-BPoCNU76xbXs7mx_Ps-IdSmK23A>
-    <xme:xqzgaoksYXGkYGnJF43sYID0Tus98V08BBjG64swDvpdheaZW5VbBJyVOc7DQ6Frl
-    aoZ3R23YOrTA4h2thSa7n_eENBiVLh_oK4jdwW4aOnapsUIANjaAKZd>
-X-ME-Received: <xmr:xqzgajaYJVYfdqtgodH29574WA_vexf-pM5sNeV3dSMQBjrPqxVqpVsiMiw>
-X-ME-Proxy-Cause: dmFkZTEZ/rZ8QL4tKdVH13M4isFoJoqE6mmyk1+ybcvlxgqSp6W0ayLRKd0L7SfTmxuGb5
-    U6+Pfm114T++Wp3SC2FV78EqIZ6zQGqKV5XyNS0Q8g8zeea3kGWywXyvNgIRW79CajYQHr
-    2jF/D3zyUpa8mENlQ2k9kDlrLHG9vuqIwsGPeExjecTgPLyR3BG4mU+4iFcKzGjlB8O7dl
-    rHahXQtAt7H4ct4Hi0ph4caUm45qDhARWvo+NXS6RvFk5in2esxS1VkNF3/wtGoX2gxkDU
-    HYhd+ifyLHB/lQg4TvDcO1vty+4TgdFGCdUfD6xIrm+RnS//HTrIeeMZCfQmeBD5mTfrrt
-    28F2SJuazbG4sdilPjnUK5Xk2C/b77Urnpd+yJpFkxf0srCyBWlhL6vR0USCQldwnnbiLW
-    9q+grn+3rpVTZTV5aFHrdKvOYqBL1I68cy6Ts9EvEo2mG6eqSnlWVGArQuLZTDmYpXGIvS
-    wXLvRFTOpi4viZ4HzYk4qCerKNTdy3232MaWMRw4+fGiHl1k0822eLObmoSxbGhZG/SB+U
-    RY6eT6x1Fr7R33DiHsTIEPGR6+Uf+O9CEjZE+sUhhEJff/MTsubZ9LmOVI85mrAWUqqbJx
-    XWv9aGmJ+yJbAfbRPaNRNIocYryGvdsYvD8pPJi4F3KUYMPNesYsAvQV4dWg
-X-ME-Proxy: <xmx:xqzgaudbz8X2mj1TmcVhbSB5pj192_SKV8vP7t-J3qUs-AsDGR5erQ>
-    <xmx:x6zgar5lbie9c9vsEIGyR4WR5HHpSCBz3DCSwhV-Wl76bl2cm_9stA>
-    <xmx:x6zgaqkT5H7khckA_fD9bSj4bobce4cCO515thNp8GAx2LHLg5LD3g>
-    <xmx:x6zgapYUC1r3US7DHJV2QXJyRoI41UHODbj8ZuE46i0U3Qjz7C1IHw>
-    <xmx:x6zgagOltv2MpGmQj-wyDgIG_3JLhCWmQzbtOVj1MoCubVlHQLT8Bbj6>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 09:53:10 -0400 (EDT)
-Date: Tue, 27 Oct 2026 13:53:09 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>, 
-	kvm@vger.kernel.org, =?utf-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v4 1/4] mm/rmap: duplicate a PMD mapping as one in
- folio_dup_file_rmap_pmd()
-Message-ID: <auCsphluu2gwzEPo@thinkstation>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V9h5asR1
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2eaf8ea208bso1180595ad.1
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 07:00:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793109618; x=1793714418; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iAMT5ErMlUqsPBFer4Lu1BUk2YLaErYsWfjiGygyJKk=;
+        b=V9h5asR1n3TGdrsWRGp8bP3hPD2X/EIV6lj8msTCSb8SeKFDBMDZweNynHy2jb7PKb
+         Oh1Ma70wGEZDVRVbIMu37gSO8pYBzFhEU65CLUkvlMWuXbTHVmE98ojmHQmU9pZ/Ms99
+         UaUH8Lgao1IV3G+RJsInYRAauoHQP5fgM3nBkNSeC1V4laoEMqd86w2pvhKd23pC9pLM
+         ba7MDZLcfu4/tyKEHP+fQvks9ly3GuHF1c4vn7lpDh87SLwGsAKdlkrS+5kCC+E2z/ZX
+         KXLM2KWK7LLRpwm+lGOsFVodtdtl5VnNIFJ+KK5osoPVHLtis7cd20786TYXC55JLqr0
+         6NtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793109618; x=1793714418;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iAMT5ErMlUqsPBFer4Lu1BUk2YLaErYsWfjiGygyJKk=;
+        b=J2dWkweqmWR4jW340/Efj3X67FPa0ovqLwrCWMLFyGbTnOI5Gu42ydRDh7Vj1naB+I
+         ggM4UgQonZaeGLhPConLmvRsg0apCMJEmNJKTWkaPDUBWTaKL1AspCKtNKKXdHhzGH9l
+         L3hObqSCHYbVlGSvGQojSOkj570PJEKbxLq5U1O0yD90XVg05MkvKeNddJmB/fvpUbJZ
+         cSY8LryH1W86lfgw+/0Ih0SGw+zsxgedacTX7rLhAt0TN+jYVlwX++KHmbw4MnE19D0P
+         FtPRcG/sg+QH77LrQSEl16SyHXT885ogLef/V4TtVcGJyUsF0eCSCgDZD1IqTn/Kd/8q
+         Nd4w==
+X-Forwarded-Encrypted: i=1; AKwUvBx6qVBelTkjcaSJNeasAfEOqpMp2A47611pDMjenet7wrjaqF9Ma9Gf5nptdUuD2C/Lxv0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKToydF68+kC5oyJRHStsGQp9A/doAlwQ9zFAUxtceyQl+H6p0N
+	b7IXlzxpswbliysAsGVns0K217ZmNGCsN43ocZ+wKctCvPvec4rnCZr7IYxCAUbm4JJDOzDK3Wu
+	KR+bzIw==
+X-Received: from plvx8.prod.google.com ([2002:a17:902:9a48:b0:2e8:410e:b193])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ecc9:b0:2e6:c39:b25b
+ with SMTP id d9443c01a7336-2ea9c6c835cmr77726895ad.14.1793109617334; Tue, 27
+ Oct 2026 07:00:17 -0700 (PDT)
+Date: Tue, 27 Oct 2026 07:00:16 -0700
+In-Reply-To: <20261026224305.1254-1-hdanton@sina.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,32 +77,124 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+Mime-Version: 1.0
+References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com> <20261026224305.1254-1-hdanton@sina.com>
+Message-ID: <auCucDdZb8mig7UZ@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+From: Sean Christopherson <seanjc@google.com>
+To: Hillf Danton <hdanton@sina.com>
+Cc: Boqun Feng <boqun@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Oct 21, 2026 at 10:36:00PM +0200, Konstantin Khorenko wrote:
-> folio_dup_file_rmap_pmd() passes PGTABLE_LEVEL_PTE to
-> __folio_dup_file_rmap() for HPAGE_PMD_NR pages, so it adds HPAGE_PMD_NR
-> PTE mappings to the folio instead of one PMD mapping. Each unmap of the
-> PMD removes one PMD mapping:
-> 
-> - the folio's mapcount never returns to zero, and removing the folio
->   from the page cache reports "Bad page cache", or hits a VM_BUG_ON
->   with CONFIG_DEBUG_VM;
-> - the first unmap already counts as the last one and drops the
->   PMD-mapped statistics while the other mm still maps the folio;
-> - the second one drives the entire mapcount below zero and drops them
->   again.
-> 
-> The helper has no caller yet, the next patch adds the first one. Pass
-> PGTABLE_LEVEL_PMD, as folio_try_dup_anon_rmap_pmd() does.
-> 
-> Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
++slub folks
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+On Tue, Oct 27, 2026, Hillf Danton wrote:
+> Ask the locking people to shed light on the warning.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+get_partial_node_bulk() is waiting on a non-raw spinlock while in hard IRQ context,
+and it looks like __refill_objects_node() would do the same later on.  On PREEMPT_RT,
+those spinlocks become sleepable locks, which is what triggers the splat.
+
+The alloction coming from KVM-as-a-guest code is GFP_ATOMIC, so I think that wonky
+code is fine.
+
+> > Date: Mon, 26 Oct 2026 03:19:37 -0700	[thread overview]
+> > Hello,
+> > 
+> > syzbot found the following issue on:
+> > 
+> > HEAD commit:    c03c1a14507d Linux 7.3
+> > git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=128d8ca5580000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=129d675874dbf896
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=f11512d1e5878ba5e60e
+> > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=168d8ca5580000
+> > 
+> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > Reported-by: syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com
+> > 
+> > =============================
+> > [ BUG: Invalid wait context ]
+> > syzkaller #0 Tainted: G S                 
+> > -----------------------------
+> > syz-executor177/6041 is trying to lock:
+> > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: get_partial_node_bulk mm/slub.c:3831 [inline]
+> > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> > other info that might help us debug this:
+> > context-{2:2}
+> > locks held by syz-executor177/6041: 1, last CPU#1:
+> >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
+> >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
+> >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_read_lock security/tomoyo/common.h:1112 [inline]
+> >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_check_open_permission+0x169/0x3c0 security/tomoyo/file.c:772
+> > stack backtrace:
+> > CPU: 1 UID: 0 PID: 6041 Comm: syz-executor177 Tainted: G S                  syzkaller #0 PREEMPT(full) 
+> > Tainted: [S]=CPU_OUT_OF_SPEC
+> > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> > Call Trace:
+> >  <IRQ>
+> >  __dump_stack lib/dump_stack.c:94 [inline]
+> >  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+> >  print_lock_invalid_wait_context kernel/locking/lockdep.c:4874 [inline]
+> >  check_wait_context kernel/locking/lockdep.c:4946 [inline]
+> >  __lock_acquire+0xfcc/0x1f40 kernel/locking/lockdep.c:5238
+> >  lock_acquire kernel/locking/lockdep.c:5942 [inline]
+> >  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+> >  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:155 [inline]
+> >  _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:181
+> >  get_partial_node_bulk mm/slub.c:3831 [inline]
+> >  __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> >  refill_objects+0x58/0x410 mm/slub.c:7405
+> >  refill_sheaf mm/slub.c:2885 [inline]
+> >  __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
+> >  alloc_from_pcs mm/slub.c:4850 [inline]
+> >  slab_alloc_node mm/slub.c:4984 [inline]
+> >  __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
+> >  _kmalloc_noprof include/linux/slab.h:991 [inline]
+> >  _kzalloc_noprof include/linux/slab.h:1312 [inline]
+> >  kvm_async_pf_task_wake arch/x86/kernel/kvm.c:224 [inline]
+> >  __sysvec_kvm_asyncpf_interrupt+0x334/0x610 arch/x86/kernel/kvm.c:338
+> >  instr_sysvec_kvm_asyncpf_interrupt arch/x86/kernel/kvm.c:327 [inline]
+> >  sysvec_kvm_asyncpf_interrupt+0x9e/0xc0 arch/x86/kernel/kvm.c:327
+> >  </IRQ>
+> >  <TASK>
+> >  asm_sysvec_kvm_asyncpf_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:753
+> > RIP: 0010:memcmp+0x156/0x1d0 lib/string.c:665
+> > Code: 0f 86 fb fe ff ff 48 89 d8 48 89 de 48 c1 e8 03 83 e6 07 42 0f b6 14 28 48 8d 43 07 48 89 c1 48 c1 e9 03 40 38 f2 40 0f 9e c6 <84> d2 42 0f b6 0c 29 0f 95 c2 40 84 d6 0f 84 45 ff ff ff be 08 00
+> > RSP: 0018:ffffc90003ab7538 EFLAGS: 00000297
+> > RAX: ffff8880220be413 RBX: ffff8880220be40c RCX: 1ffff11004417c82
+> > RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8880220be40c
+> > RBP: ffffffff8c58a940 R08: 0000000000000001 R09: 0000000000000066
+> > R10: 0000000000000066 R11: 0000000000000001 R12: 0000000000000012
+> > R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
+> >  strstr+0x109/0x170 lib/string.c:743
+> >  tomoyo_add_entry security/tomoyo/common.c:2157 [inline]
+> >  tomoyo_supervisor+0xf47/0x1340 security/tomoyo/common.c:2238
+> >  tomoyo_audit_path_log security/tomoyo/file.c:169 [inline]
+> >  tomoyo_path_permission security/tomoyo/file.c:592 [inline]
+> >  tomoyo_path_permission+0x270/0x3b0 security/tomoyo/file.c:577
+> >  tomoyo_check_open_permission+0x37f/0x3c0 security/tomoyo/file.c:782
+> >  tomoyo_file_open+0x6b/0x90 security/tomoyo/tomoyo.c:334
+> >  security_file_open+0xb5/0x1e0 security/security.c:2739
+> >  do_dentry_open+0x588/0x14d0 fs/open.c:973
+> >  vfs_open+0x82/0x3f0 fs/open.c:1101
+> >  do_open fs/namei.c:4836 [inline]
+> >  path_openat+0x1a23/0x2450 fs/namei.c:4999
+> >  do_file_open+0x20e/0x430 fs/namei.c:5028
+> >  do_sys_openat2+0x10f/0x1e0 fs/open.c:1417
+> >  do_sys_open fs/open.c:1423 [inline]
+> >  __do_sys_openat fs/open.c:1439 [inline]
+> >  __se_sys_openat fs/open.c:1434 [inline]
+> >  __x64_sys_openat+0x12d/0x210 fs/open.c:1434
+> >  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+> >  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
