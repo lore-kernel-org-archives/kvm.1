@@ -1,82 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793104314;
-	b=zbLck94x4pq+krFGVpr24zgX4GrGuuzjJhAjGIWxkS+c0ON6wn1IxFLmTU2OorZOhH/h
-	 oIcx+mRPPXkkue2lLfxn5dvnEiXWMBSWImDDH/DHBWgoKaSYodrs6V6iros/1CMjE0rPj
-	 C5s1dRG0OYGdEVJWkY0oaiSFXWnzujXuRuOC1uDauV0NPzLSWnVtXxW18VcZp9GPRtBAX
-	 y8EMYiUWLFQXHGGeYOvFFIfj/xuEBMzJK1wVsz5W3RxozV/SAuZklKuTpn2xO6SNQhsx9
-	 8/DIkX/HND5lkujh2f60LwYVzUxodZDVxuRs3yj4St2jnuHp7LrwfbiJteCCT3CS4gA==
+	t=1793104710;
+	b=o5TWNo3NlgU2pr/z8e8gh48zuDQM18zifKRjGfmSBi9S2NOpXo1YoicbHgEIrsqoUBji
+	 4kqgeiySztu+rU7F8p+NZUV09uuqNzIehleRsSY9/JrvyqFlnVIPFx4n+j8nT9sb9w4GS
+	 YpDZRBlf9+S88SBZiIECCfBBHCYGXFVB76Mr+yonWiUiYekNDTUhqnu+Q/xDzcOHfue6j
+	 RaLRxmls+W3aOauACTyqczb3sk0FKRuejA/PyERsU/hc9Ur8+/Eex69CJpMplC/Sr+7yq
+	 CJdR8ZAZW/AeF9WM9L199e1m3Z74r7Dvi+iNkKNCwUvHoZSugAJa9a4X78fJdN4U0oQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793104314;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=kveJN3/jod4XkmDJmHZz4VCE6cpdj2LRPjXi4+APUSM=;
-	b=cWcje6PZDKQkk7gD/E49Sr2wHvcQeCzwlhy8bmAJqxKp+ap3GH07O/3UTu6GUFWNsvub
-	 QU9S1/EYopU0SI1woUR9kWQRoDV1ar9DTJ1LF56WAo/2T+51nOkkk+m6b8rsgHGbrB7/i
-	 Uv4W/bw5J9oZ7FX2oCWM+GSM+pJNPo4hWOlpCCc6smloeGarj9ZeVCx/1xQNBTBd1kbJ1
-	 9rUmqOJUcUmRnyDkEz1uNE5lS4jgb7v8KLkpmQr9s0u7R5jW43mHRKKJ3g2iHzJBh3iMI
-	 5odIPRLW+LBl2wTi+WKfaIq6qRsSh+R6w+UiUjCAQK5Nft3wp8hkkJm8kQUMhZX8WIw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793104710;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=qN+oFteBBnu0qCEf7Z79N2pFESAzJvFrXcLvl6PgY1Y=;
+	b=054RjRV77eJQgJr9WLI2WGdBU4HnuvMauySTBJh9nAGCjDZWh5ar1EKeEmBT2Qs7V0G7
+	 gogQ8QyXaYUGmnpMMY9gQECE6cfhaEd9FkdG+ZbayB69Jz02TrU9dE0u6WlxHMw64eedZ
+	 56SLeo0IprfkjPVJMPtl9ERg+xnXjYkbY6+SwxmXf7eTO/kSBMuVANcBf+hZCxK4VERHt
+	 /YpyLmLHjQvxgZCONgX55CpaESs2qhZJRZv7RXO7mhjXlykNqvQR/1WhPnxJIUOLNnId5
+	 t/CabxtWLytC+m6jXnIYTdnBYcRVcTVuNT69grgoeMWCLgNAHgXRcU7g2G/43y3y1Lw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tuXrsLIb;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F8D606A326;
-	Tue, 27 Oct 2026 12:31:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83F8D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=K9Nmp3Ym;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E481606A31D;
+	Tue, 27 Oct 2026 12:38:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E481606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tuXrsLIb
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69R5ij2n4073455;
-	Tue, 27 Oct 2026 12:31:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kveJN3
-	/jod4XkmDJmHZz4VCE6cpdj2LRPjXi4+APUSM=; b=tuXrsLIb111HODH3SvYyYS
-	+mhjOb5bFeTYRU7P+LyA3ytkm/VwZMCMv9u/wMHm5DYlzQXl3DoR+tjhb1JtsLSN
-	oFMLmZ67mfmZvf+8tMLWmL7ZuzYzlc5V7LIjwgXGum135YMqCldi8+bgPNp4Xsfc
-	Upy4Avyq5lArqfgm4uqTyBiQdWvYVshTRbT5M3sANFfpBHX6dYcFe58fi0TCDtV+
-	vKoFfDBnfcrwXbjNsOeJb+JxLdnFlbkO9ixneIwLpwroPTPLGyitCICwnXwEnFSY
-	eWIVxxWwsB30iCWfgWT06gOvgmu06bPZ5bQttcvUv/obyPC9RESsFUPR4DQAb0gQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgmbsya3c-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 27 Oct 2026 12:31:37 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69RAenfq3687775;
-	Tue, 27 Oct 2026 12:31:36 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hh7cvjs50-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Oct 2026 12:31:36 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69RCVWxC27722022
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Oct 2026 12:31:32 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC61A2005A;
-	Tue, 27 Oct 2026 12:31:32 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6DE0F20065;
-	Tue, 27 Oct 2026 12:31:32 +0000 (GMT)
-Received: from [9.68.16.159] (unknown [9.68.16.159])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 Oct 2026 12:31:32 +0000 (GMT)
-Message-ID: <421ebe63-dd9a-4da6-a2f6-104a9473b301@linux.ibm.com>
-Date: Tue, 27 Oct 2026 13:31:32 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=K9Nmp3Ym
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D5C115A1;
+	Tue, 27 Oct 2026 05:38:25 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 24FD13F871;
+	Tue, 27 Oct 2026 05:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793104708; bh=AsQV8EPRWv/nZtGsAUNcNbWRUUJk7ZparFQR6Yrsrl8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K9Nmp3Ymll4ZjvGr4zTYwZFV+35ZQwesqboMyB7EIqAfv5qOu9RyO9XG9N+fpdzCo
+	 ULo58NND3GpJE273n6AvoGflscj1dRlINrrfQ6JxS0i+U388wwr+SauPBi98yZpGEr
+	 RxFv1WHb6q4sjcTeU2HZmV9Br7fuJRF2zXZbhbN8=
+Date: Tue, 27 Oct 2026 12:38:21 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
+	lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
+	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 10/20] ctlv: Prepare event queue support
+Message-ID: <auCbPdoaMq9oWoQ_@e129823.arm.com>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-11-jiri@resnulli.us>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,71 +69,81 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] KVM: selftests: Test that KVM_RUN fails for
- unresolvable host faults
-To: Sean Christopherson <seanjc@google.com>
-Cc: frankja@linux.ibm.com, imbrenda@linux.ibm.com, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org
-References: <50a3ff35-ae53-4372-a53c-c07f1d153627@linux.ibm.com>
- <20261023140506.336663-1-borntraeger@linux.ibm.com>
- <att35ilyLvAA8gM4@google.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <att35ilyLvAA8gM4@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA0OCBTYWx0ZWRfX9jU55l5tC0ou
- DwPP1OcYJme62E+PbeSmQJ5c1LyabEa3Ab6yWtCUqde1EXBS8Tabuj2FvoWHJAqqyInykdwl7Lh
- Jo/KYASaQ/WVHEkEd3oHFxW6J4n3HmiztwcNYLcYFC485Yo4rqo3JECy1UwFigaGTFjdfIpAwLb
- 0UnFVeTfWQMyxY9FYbi7g+8bv2awJJs7Dcd7r/iqmaU/fqm57unf7L47LxgeiO73XJOMLw8swOn
- XSDb2j0HkqtzgYXnBTTgpuXTFpSS9jgdyOL/MDLnrYtHt73/W/NkV9EDhztXcm66kEVwLlaSk24
- UhhYwBMkpMSme335B8qd2V2oxjYuUHkZtthVyfteCrMql2zqHkk5ISNNaecFJdKK/gAWy7d59z4
- n0PR5pxrxdsUjLvZVeR6v35ZxXjYT7UO62fg0YoLxVVEyX8RTK2Ox7COTxLiF3XHMleuOcTw+/U
- ZuS8qfazF4rt09BqkTg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA0OCBTYWx0ZWRfX92c45qGvG6gy
- EmGYlX5bKHWSPiKli+fRRTV4T9DiiQ+p1oUE9xVzbKk4wpp8MA1+GkEjtX4EhtEo5koXlVMCRmO
- D6qlbZBAqdznpUvidugueizGJn6Bero=
-X-Proofpoint-ORIG-GUID: SVATyTCUUXodeohhmx9chwGKuDILuDTn
-X-Proofpoint-GUID: 9w142X697fcqVz1HDx9kdeoT1c3CNK9q
-X-Authority-Analysis: v=2.4 cv=CeKdd7rl c=1 sm=1 tr=0 ts=6ae099aa cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=LyKNgWWw_06KBpMtn9AA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-27_02,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 malwarescore=0 phishscore=0 clxscore=1015
- adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610270048
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015145053.3664509-11-jiri@resnulli.us>
 
-Am 23.10.26 um 17:06 schrieb Sean Christopherson:
-> On Fri, Oct 23, 2026, Christian Borntraeger wrote:
->> Add a test in which the guest writes to a shmem-backed memslot beyond
->> the end of the file.  KVM_RUN must fail with -EFAULT.
->>
->> On x86 the guest enables interrupts, and on s390 the test sets up
->> pfault, so that KVM could handle the fault with an asynchronous page
->> fault.  If KVM mistakes the error for a fault that needs I/O, the vCPU
->> retries the access forever, and the test fails after a timeout.
->>
->> The test is not built for LoongArch, which handles a failed mapping as
->> an MMIO access.
->>
->> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
->> ---
->> I went with Seans name proposal
-> 
-> Aww, bummer.  If you posted a faulty_mcfault_face_test, I would absolutely apply
-> that and force Paolo to tell me no :-)
-
-Sean,
-Will you pick up the fix and the selftest, shall I do it or Paolo directly?
+Hi Jiri,
 
 
+[...]
+
+> +int ctlv_event_emit(struct ctlv_op_ctx *ctx)
+> +{
+> +	struct ctlv_device *ctlvdev = ctx->ctlvdev;
+> +	struct ctlv_event_record *rec, *next;
+> +	struct ctlv_file *cfile;
+> +	u32 len, wanted = 0;
+> +	LIST_HEAD(spare);
+> +	int ret;
+> +
+> +	if (WARN_ON_ONCE(ctx->file))
+> +		return -EINVAL;
+> +	ret = ctlv_event_finish(ctx);
+> +	if (ret)
+> +		goto out_free;
+> +
+> +	len = sizeof(struct ctlv_event_hdr) + CTLV_ALIGN(ctx->output.root->len);
+> +	scoped_guard(spinlock, &ctlvdev->events_lock) {
+> +		if (ctlvdev->dead_announced)
+> +			goto out_free;
+> +		list_for_each_entry(cfile, &ctlvdev->files, node)
+> +			if (test_bit(ctx->op->event_index, cfile->subscribed))
+> +				wanted++;
+> +	}
+
+Suppose at the time of here, the number of subscriber is 1.
+However, before calling the ctlv_event_deliver(), another task hold the
+event_lock() to register new subscriber. for example:
+
+
+Task 1 (emit)					Task 2 (new subscriber B)
+
+wanted = 1
+unlock events_lock.
+						Register subscription.
+allocate one record
+ctlv_event_delver()
+
+  grab events_lock.
+    Deliver former subscribe event to old one.
+    new subscriber B will call ctlv_event_queue_event() with NULL.
+
+When this happens, new subscriber B would receive overflow event
+via ctlv_event_queue_dropped() though it was registered right before.
+
+Is this intended? It doesn't make sense that subscribe B receives
+the overflow event in this situation...
+
+
+> +	if (wanted) {
+> +		ctlv_event_copies(ctx, len, &spare, wanted);
+> +		ctlv_event_deliver(ctx, &spare);
+> +		list_for_each_entry_safe(rec, next, &spare, node)
+> +			kfree(rec);
+> +	}
+> +
+> +out_free:
+> +	ctlv_event_free(ctx);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(ctlv_event_emit, "CTLV");
+> +
+
+[...]
+
+Thanks!
+
+-- 
+Sincerely,
+Yeoreum Yun
