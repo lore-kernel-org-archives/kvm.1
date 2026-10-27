@@ -1,102 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793122223;
-	b=yxthh1E5xLYeSVRtsjTGlKhb0jvdDABKZthSqXJlIXfel79AsgoR6cwxqkMMriWhycBu
-	 3MlgQ7cit8vV1yC1dssqVV43OUnqLmmCNNIJTMNzt3FUB11Q3U6VJ8vkjGZqsEfeDdnm7
-	 BIFqmScvLOAKveYCavhn7/kMSTj2Sp6jxB0EzL9nztS26z6ZcTzBgyuBmWONKja4Jcpy3
-	 l0o4w9cZj/noBtKYaESUp2uSPvKj7ac2c5ProFfTUlgzFIvDOC0rt1NRWOKg9LTlHIM0y
-	 fUI/waVoBPXTZwKnWAbn3A2h0rhWLkZwhMkIyxJjCkyLIPrfNu7kY0NRBHQ+nPQQlbQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793122223;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
-	b=toQrTzFy3muwLZEk1k5IaF24zXoAnA5Jy2VMrDWxRmgZpsndzzu2I9eqpvxcn3QhojAx
-	 MeJRnMG+RqFRR1ZSsvUUbFC4nWzNlBpcRWyrVXiqVeCYJF+T6+lOOzAv5D+L36TbDQqXy
-	 BqnTerZ9BiA7pre4B4gydw2rWSbbyo6eCjwTWj9gqUCOaCW0NaRzVORR62p81xzyvz+xh
-	 yYuj9Th/R/3NAq9jfasemzVb4ZNEqq6cbx85xqjjyZWjVZLNg1eKZozGbEEd+etF/znnh
-	 OuAzIwo78ood4aHysb3q2zNoHi0vfvY9F7px6syId+SL7VUJF9IgMYAooScAdOnCe6g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AH5XVSYu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793122371;
+	b=1fAq9zHjlc/2znZi9P3IiNltzaQZu275/70TzW6CGIqJSIkdvjYiWvj3UAvzCqSWCuwq
+	 PuW4dEknIwKqQesI1mS4GhXGtn2tXPyHhpP5V/rgxuzH0dArbx+afAV1nOD0WJFSjdFR6
+	 c/VDyUGvk0X7OSO1GO6rNtwd7hMAWILFkNbQVjcdgbga+iCXlYmjqSoiIYBUcxUiuiBLN
+	 e/YBCQ03AL40JOVAnLanAjAE5Nqt92AzdHviftfmF4uHqw6ZEp0c84rVqcw+keyHihaoO
+	 w58l6G2Xh0a7kev5msV5IJpzLqANTm5hJNdIyNXJ+Lw3BcwKVHREj3T8AKCTi6dMZUA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793122371;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=nAoBGfeqG8r4nTkYv/SqS7sg30afeDFVpQSRm9B+mw0=;
+	b=tPOKqypJbSSAgJe/C0eaX52KSgRc805mMjGvm3AKRE4ueVcHXJ7042Q7IkjZaw0BSJUz
+	 SvPqJYdx8aR0zuH6bRM1kLLhVjt+GJuJX3Z0+vAS3/3GMm7jwWZXrRFAWxfzm9qHjbxcE
+	 EBNykHPgMesMrg5+pBlszs4Sxj3TiC47/coCDCsujumZxZT8jZgWIElFbj2T0PI3+05Kc
+	 1Th+rqQoHcoPV5qWJANtdJ+V9T9GKku+ZKcU38kOGcSslTuLrAyB329xrSAUgH3Jhy1pp
+	 x51UK0fJQvBa+yX3ETBUWLD04PSZFt6qaKJl2ia4+Npgc2eVkKsyqUwTzKTe3V7rSyg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bnsisbT7;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906A3606A323
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 17:30:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 906A3606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A94606A333;
+	Tue, 27 Oct 2026 17:32:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78A94606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AH5XVSYu
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c3fd91337baso7588366b.3
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 10:30:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793122222; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QtGpvUgmROLDWcDkFsP/nMlRYi/Y1UEd7Nw1BLUuRFqb1asnNOueFTLty0dAgNV7k4
-         cOFkB4vZ2cSOfj1OgI6xgAiO8sslDxMk6+rNcuStbt7+gM9pibLETyU+iKbQePm+Bt5c
-         572/sc0EeGkp78FWrW/L8jf+7TjusoFLJXhnXHH44ldxCxvQRhUMp7puCbiKp30zQ3Kj
-         o8uRGtmZqQxKr0SG2n5W2TrmoWnkU++muvk0ioRKHRiq19LzvcqQHufAVx5J7BlDP7Sv
-         5oLhugvwKr6nAHaMH8WNkN0YDr3upL9ptvf2WoEj0h+tGv+0RGfrtCYFrM7wzBpTZoic
-         Nhtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
-        fh=6L7p5+E9TkFx+G+HlcnSox0Xqp6N5/vVDF/CY0SNBgk=;
-        b=HaLF0glV4OoBvPe0Xk7xZdDGzln+5R0n9Lvai3b7KzVzmob90UW8ZGZWgJfaM6uy/g
-         QkPUyjL3tgQzsQvvBBU24Cdqg5cy5msZ9Tvak48CkqlctVok4Wx/DqksfE3rIzEXIUyp
-         FxJTxFKPp87hCfusM/RIawTunSfuQP/m/KXuaRkvVBtirzCBKlTDEOJbCidevq+FKmEw
-         CBwdTVXaU/PTDcmaTGi3fd5FL90ScDG66LfrF3e6QT+rEHFb9JLY+UuUwNkNPxfjkFSY
-         Wj8PE7PJbXTc6fsZJQbmtR475r8kXBB48JG4RNGV24NjlhMKOg/CyQmnxcUjvr4Panwl
-         YnWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793122222; x=1793727022; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
-        b=AH5XVSYuq6HUx6QejcrLzJHXiZbWI9DboIxOz+yByNgh84gxZAIKBuzZHV99EG6rqB
-         sL71z4Wm6MSPA3Nnza0i731ilrImuFj3jUTow6hkS/0r7bYzxQobbOzdeIyt6ASGeEbF
-         yTa0PHt944q+HSgG6NrCVe3wZJYFAVwhpzaLqX011nHEVLqO4I7UJy1zd5cfMTXQHdaA
-         BSUKBBxl7R08MamwKyO7Ss8mI2wGFLi7Y2RxS2XZ75lMQCOMaDZ6YNjy/Um35SI/BQEx
-         H9A/IMXo16KCWMivgQdBOKUL0g+UWglSQzebhEs3U4Ckl7bH2Y72gGHNDHSXACje/sxH
-         22yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793122222; x=1793727022;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
-        b=yPQggl3+A8uZEXO5Jj7BbHPCtz86fj+zL95U693dnnVz2xPVN4qlznw0lUnF49uVc9
-         SR+IiyKDIdXHpCsBPMf26YJUj2cYKT73zS2yt5+YTbq6goAtLB0YOAXhnKPqWZOuYVqe
-         WJ7bp6hmXFyWKn3VAnRDTdE54WsSR4717LCg19WT/MIrmBaEifm4jgRJkxTbUFJl/u0B
-         EFi5MXBoCBKiPhfX3I8zTzQWZl1SQGlrbVVoN/HD8cOFZ5QgEosKPI4w/l/xf+CVvrhj
-         d+jY4DCUukJYKdqD26/zYTMFBP5xh/YsxVKLN4eXXa2YXcaqdqaBF0dAcKPJNvvGF0IE
-         zV5A==
-X-Forwarded-Encrypted: i=1; AKwUvBxAdWTtEl8iGCjMijPVUq9d4fcdHI/tIghAMOBsxo/4vJBrpOxcN5VLKqrQ+VKWdirBkjE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKsyc+xruINekkd9aRW9gANgHTGIFISTehEb3ZWfp1kJ1KNn4E4
-	8k3JbvrW4yjZJ+XLqs8ILIvIjirs0uNjeGb58NnTLUeEUjbw9GuwlfxX71aZIEUmZk/ca3NsBHl
-	qk+Bn5i7KiYYV7GzmdjSmo3YRVyj7O27EBHFvNSLh
-X-Gm-Gg: AYBFou2GZv79og52nSTIdcqBHUA11ZHC2QQETEU+xK5FHBd1ZWKPNDnEggIzbWuQtRq
-	nwqEjkmhPKkGNJu2A+p4dPqN4yQ9yKHAq0ilxDhaNSHX4HDfyO60eenRK7bEn6OUi+wOaE9GIn4
-	L8tvw4chVf0zOe8dmhPh0Q0Srna1QXtoTOb8hxuamD6x6HFyONgvttVN0hwjHxkPDz9YCDmVfHy
-	j9PVRtXFCjiVc7oLhEz2oYL8GUeMzhYQ6RuayQCYQvrnkmJ88Esd9zfs6spXNKo2mYn/5rwbnTu
-	Hz+QW6WFeUpziJDd307NDVjHL0cJxXnhc7+O+spGqnrLvS5ZFCJJKvb1zeqrMLVJVQavgHyBsUc
-	u0JJYh0QvJKm+nJUA4/zVTui9U6qE7uoCw8EXcbeXhh/ybXac1rrtTkFhGNkJWK6HET5gUxTxZh
-	Cgut8VuCpFAg3aIGLl2HEx5Ktt+Ux1WEe11I3DqkdNsBduMmtQmo+GrUXEUDFkWbBZikHTnPOE8
-	KGJJbepTVnBByHlA0C1tKnT6eTeNtYnIw==
-X-Received: by 2002:a17:907:80c:b0:c46:6a50:40c2 with SMTP id
- a640c23a62f3a-c46bdee2675mr1178260566b.39.1793122221137; Tue, 27 Oct 2026
- 10:30:21 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bnsisbT7
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69RHEdGw1952276;
+	Tue, 27 Oct 2026 17:32:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=nAoBGfeqG8r4nTkYv
+	/SqS7sg30afeDFVpQSRm9B+mw0=; b=bnsisbT7XDa1kzNft75bdhCbv1V3jRVcW
+	3hK8U7TUd1rhcaU0U9+3uha3MGwiAk0vDUyDmMgIzxE4MpcBVGQSJ+iDMlOHBpXB
+	of1zc+lkN5kp7mf2qy88WNr3aHVvlt0OmsmarLPhh/XBgzofrVn5NlKY256zVc9/
+	DZ4wl3iqr8QUTkM8ISRVBcRL+rPQR/j/eFzuqIm+UtZyOdfiLwzPpcyySH96z/S0
+	nWNixIRwnQLJiy85XbYoS+xwxbKCs/xohN/3kCK8k5WN5K/RlRPj3J9O0IWFXsQ2
+	rbNUeuC/qbEiY42UMB6S2LeBOvNYuP7K+Wu62GMZCtJquMfJ4ObZA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgk3g0qr9-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 27 Oct 2026 17:32:47 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69RH52dk328597;
+	Tue, 27 Oct 2026 17:32:46 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hjvh1s78b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Oct 2026 17:32:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69RHWehx38732276
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Oct 2026 17:32:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 107B820043;
+	Tue, 27 Oct 2026 17:32:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E5C9D2004D;
+	Tue, 27 Oct 2026 17:32:39 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.68.31.243])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 27 Oct 2026 17:32:39 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
+        david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com
+Subject: [PATCH v3 3/4] KVM: s390: Improve unmapping of large ranges
+Date: Tue, 27 Oct 2026 18:32:38 +0100
+Message-ID: <20261027173239.224849-4-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261027173239.224849-1-imbrenda@linux.ibm.com>
+References: <20261027173239.224849-1-imbrenda@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,121 +93,210 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026215226.3713941-1-jthoughton@google.com> <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
-In-Reply-To: <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
-From: James Houghton <jthoughton@google.com>
-Date: Tue, 27 Oct 2026 10:29:43 -0700
-X-Gm-Features: AclHuK_V7ZmMdE83iy-wOvaliSqHMUcbKVcnfqQwnRgRgjPYRFDHKTZOMwXOk5E
-Message-ID: <CADrL8HXQdzcroeGN-ACjyy-jSAdBNHiT1_BCVVe0P+Y8ZueiyA@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
- current->mm is NULL
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Pavel Begunkov <asml.silence@gmail.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason <mason@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=BOMmP1QG c=1 sm=1 tr=0 ts=6ae0e03f cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=a_yAbKu6etgibcV5VCMA:9
+X-Proofpoint-ORIG-GUID: HzmeR__9M2j4RDG0YQj7fWo1uqoHf25c
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA2OCBTYWx0ZWRfX2zdwJZZjxY/J
+ FjqXcB0SOytAFaKMGAIVbyVmaiiK1AUREY1XM+ubW4lcfksIYSaPYvjf1NioRNnRv4UN2SW+fwK
+ GQ5cAfPIdPp7iSw01HNRLHreR2xn6UjKxDALLxA73OEBZXdj0uoDnl9D7p5sSYQJ2IuujCMBLMd
+ 3MHfW4HwJpoCUFV8PPu0PYIHq+GXwcnJ1OPISpn1wDIjgtgl514aKhsKaOkZSXnIfbwDMU+NKu7
+ cyzAS5voLQsQeiSPLTWXjA1VB7M65tmBjfenpiQohN39ziN/dYL21gEtsUAsIUCPEcruIdhhq5a
+ kimgJ8XVjs8TdQfkUFNi9DvIQgkn7Gji2/Hyn1OicNEw88uvqX5oDdcQU05lHp3xINLiRR4zg+w
+ eZ5AGt7r2BfrUl9+lSQdZB0ZHPndQzcIOfg/hDwGqldSN3/AQixGmdplIeiiHwD0pqTlqbS98GP
+ yrxN+7fe+Q9G7EaU43Q==
+X-Proofpoint-GUID: HzmeR__9M2j4RDG0YQj7fWo1uqoHf25c
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA2OCBTYWx0ZWRfX0+5bWi3bEvay
+ RuhHhfN5wp/pksc9kPWMwgTdnw5fjquRfDRJYhFFcrWYfwnIARW6AK4YtAdHmKQCXrxv7NQOe+l
+ gAorpUKR7Oy3I872lzMVDeQY1OHMM/M=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-27_04,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 malwarescore=0 clxscore=1015 spamscore=0
+ phishscore=0 adultscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610270068
 
-On Mon, Oct 26, 2026 at 5:13=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> On Mon, Oct 26, 2026, at 22:52, James Houghton wrote:
-> >
-> > This series comes out of a set of bugs that were found in KVM where the
-> > kernel can sometimes write to a random process's user memory[1]. The KV=
-M
-> > fixes at [1] are still required, even with this uaccess series, as note=
-d
-> > by Sean here[2] and below in this cover letter. The beginning of this
-> > series includes fixes for similar bugs found through static analysis
-> > with Claude Opus 5.5. I don't think any of these bugs are more severe
-> > than the KVM bugs[1].
-> >
-> > We hit one of the KVM bugs in production, and it was challenging to
-> > debug. This series makes such bugs, where the kernel is doing uaccess
-> > without an mm, much more obvious.
->
-> Nice work!
+When unmapping guest ranges, each individual leaf DAT entry is
+invalidated. When unmapping large ranges, this results in a very large
+amount of invalidations, which is time consuming. Moreover, since the
+unmap callback is called by KVM while holding a spinlock, this also
+leads to stall warnings.
 
-Thanks!
+Improve the situation by invalidating DAT entries higher in the tree,
+instead of each leaf individually.
 
-> > Such an access does not reliably fail. The user portion of the address
-> > space belongs to whatever mm happens to be lazily loaded, if any. If
-> > the access faults, the fault handler refuses to handle it and the copy
-> > fails, but if the page is already mapped, the access silently reads or
-> > writes another task's memory.
->
-> This sounds like the problem depends a lot on the architecture,
-> and to what degree they implement lazy mm switching. If an architecture
-> makes all user pointers invalid for a kernel thread, this does not
-> actually happen, right?
->
-> E.g. on arm64 with CONFIG_ARM64_SW_TTBR0_PAN, the page table base for
-> the current process is only set in user_access_begin() and would
-> not point to any task here. Without ttbr0_pan, it should be
-> covered by cpu_set_reserved_ttbr0() turning off all user space access
-> for kernel threads.
->
-> Should this perhaps be addressed in architecture specific code
-> instead of in a common place?
+For small invalidations (up to 1 segment = 1M of guest memory), and
+special cases (like protected VMs) regardless of the size, the old and
+slow invalidation is performed; all leaf entries are invalidated one by
+one.
 
-You're right that whether corruption can actually occur depends on the
-architecture and config. I'll write a note about this in the v2 cover
-letter.
+For large invalidations (larger than 1M of guest memory), the new
+strategy is used:
+ - Invalidate prefixes on the whole range, extending start and end to
+   1M granularity
+ - Iterate through the page table pointed to by each pmd and unshadow
+   entries as needed
+ - Detatch (invalidate) the pmd
+ - Save storage keys as needed
+ - Invalidate each (now detached) pte by simply overwriting it
+ - Reattach the old pmd to point to the updated page table
 
-That being said, I still think the right thing to do is to have the
-new check(s) in common code. Instances of improper uaccesses are still
-bugs, even if no corruption occurs.
+Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: stable@vger.kernel.org # 7.0+
+---
+ arch/s390/kvm/gmap/gmap.c | 124 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 113 insertions(+), 11 deletions(-)
 
-> > =3D=3D The New WARN =3D=3D
-> >
-> > The rest of the series makes the generic uaccess helpers WARN_ON_ONCE()
-> > and refuse the access when current->mm is NULL:
-> >
-> >  - Patch 6 adds uaccess_should_fail(), which combines the existing
-> >    should_fail_usercopy() fault injection check with the NULL mm check,
-> >    and uses it in place of should_fail_usercopy(). This covers
-> >    copy_{to,from}_user() on all architectures (including the masked
-> >    user access paths, which never call access_ok()), the
-> >    __copy_{to,from}_user() variants used by KVM's guest memory
-> >    accessors, the user-backed iov_iter copy routines and
-> >    strncpy_from_user().
-> ...
-> > The checks are deliberately limited to generic code. Accesses
-> > implemented entirely by architectures (get_user(), put_user(),
-> > clear_user(), and direct users of user_access_begin() or
-> > masked_user_access_begin()) are not covered. Please let me know if the
-> > new check should be placed elsewhere.
->
-> I would think that user_access_begin() is a more natural place
-> for the added checks, as this should be called exactly once for
-> any function that accesses user space and also stays out of the
-> way of the copy_from_kernel_nofault() etc.
+diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
+index 225fdae3d57c..7ae0b4a1a6ca 100644
+--- a/arch/s390/kvm/gmap/gmap.c
++++ b/arch/s390/kvm/gmap/gmap.c
+@@ -434,17 +434,8 @@ static long _gmap_unmap_crste(union crste *crstep, gfn_t gfn, gfn_t next, struct
+ 	return 0;
+ }
+ 
+-/**
+- * gmap_unmap_gfn_range() - Unmap a range of guest addresses.
+- * @gmap: The gmap to act on.
+- * @slot: The memslot in which the range is located.
+- * @start: The first gfn to unmap.
+- * @end: The gfn after the last one to unmap.
+- *
+- * Context: Called with the kvm mmu write lock held.
+- * Return: false
+- */
+-bool gmap_unmap_gfn_range(struct gmap *gmap, struct kvm_memory_slot *slot, gfn_t start, gfn_t end)
++static bool gmap_unmap_gfn_range_slow(struct gmap *gmap, struct kvm_memory_slot *slot,
++				      gfn_t start, gfn_t end)
+ {
+ 	const struct dat_walk_ops ops = {
+ 		.pte_entry = _gmap_unmap_pte,
+@@ -462,6 +453,117 @@ bool gmap_unmap_gfn_range(struct gmap *gmap, struct kvm_memory_slot *slot, gfn_t
+ 	return false;
+ }
+ 
++static long _gmap_unmap_pud_fast(union crste *crstep, gfn_t gfn, gfn_t next, struct dat_walk *w)
++{
++	union crste old = *crstep;
++
++	/* We only care about large puds */
++	if (!old.h.fc)
++		return 0;
++	if (!gfn)
++		gmap_unmap_prefix(w->priv, 0, next);
++	if (old.s.fc1.vsie_notif)
++		gmap_handle_vsie_unshadow_event(w->priv, gfn);
++
++	if (machine_has_tlb_guest())
++		idte_crste(crstep, gfn, IPTE_GUEST_ASCE, w->asce, 0);
++	else
++		idte_crste(crstep, gfn, 0, w->asce, 0);
++	*crstep = _CRSTE_EMPTY(old.h.tt);
++
++	return 0;
++}
++
++static long _gmap_unmap_pmd_fast(union crste *crstep, gfn_t gfn, gfn_t next, struct dat_walk *w)
++{
++	union crste old = *crstep;
++	struct page_table *pt;
++	gfn_t first, last;
++	unsigned int i;
++
++	if (old.h.fc) {
++		if (old.s.fc1.vsie_notif)
++			gmap_handle_vsie_unshadow_event(w->priv, gfn);
++
++		if (machine_has_tlb_guest())
++			idte_crste(crstep, gfn, IPTE_GUEST_ASCE, w->asce, 0);
++		else
++			idte_crste(crstep, gfn, 0, w->asce, 0);
++		WRITE_ONCE(*crstep, _CRSTE_EMPTY(old.h.tt));
++
++		return 0;
++	}
++
++	if (old.h.i)
++		return 0;
++
++	pt = dereference_pmd(old.pmd);
++	first = max(gfn, w->start) & (PTRS_PER_PTE - 1);
++	last = (min(next, w->end) - 1) & (PTRS_PER_PTE - 1);
++
++	for (i = first; i <= last; i++)
++		if (pte_needs_unshadow(pt->ptes[i], _PTE_EMPTY, pt->pgstes[i]))
++			gmap_handle_vsie_unshadow_event(w->priv, gfn + i);
++
++	/* Detach the page table */
++	if (machine_has_tlb_guest())
++		idte_crste(crstep, gfn, IPTE_GUEST_ASCE, w->asce, 0);
++	else
++		idte_crste(crstep, gfn, 0, w->asce, 0);
++
++	for (i = first; i <= last; i++) {
++		if (pte_hole(pt->ptes[i]))
++			continue;
++		if (!pt->ptes[i].h.i && uses_skeys(w->priv))
++			pt->pgstes[i] = dat_save_storage_key_into_pgste(pt->ptes[i], pt->pgstes[i]);
++		pt->ptes[i] = _PTE_EMPTY;
++		pt->pgstes[i].vsie_notif = 0;
++		pt->pgstes[i].vsie_gmem = 0;
++		pt->pgstes[i].zero = 0;
++	}
++
++	barrier();
++	/* Reattach the modified page table */
++	WRITE_ONCE(*crstep, old);
++
++	return 0;
++}
++
++static bool gmap_unmap_gfn_range_fast(struct gmap *gmap, gfn_t start, gfn_t end)
++{
++	const struct dat_walk_ops ops = {
++		.pud_entry = _gmap_unmap_pud_fast,
++		.pmd_entry = _gmap_unmap_pmd_fast,
++	};
++	bool failed;
++
++	lockdep_assert_held_write(&gmap->kvm->mmu_lock);
++
++	gmap_unmap_prefix(gmap, ALIGN_DOWN(start, _PAGE_ENTRIES), ALIGN(end, _PAGE_ENTRIES));
++
++	failed = _dat_walk_gfn_range(start, end, gmap->asce, &ops, DAT_WALK_IGN_HOLES, gmap);
++	KVM_BUG_ON(failed, gmap->kvm);
++	return false;
++}
++
++/**
++ * gmap_unmap_gfn_range() - Unmap a range of guest addresses.
++ * @gmap: The gmap to act on.
++ * @slot: The memslot in which the range is located.
++ * @start: The first gfn to unmap.
++ * @end: The gfn after the last one to unmap.
++ *
++ * Context: Called with the kvm mmu write lock held.
++ * Return: false
++ */
++bool gmap_unmap_gfn_range(struct gmap *gmap, struct kvm_memory_slot *slot, gfn_t start, gfn_t end)
++{
++	if ((end - start <= _PAGES_PER_SEGMENT) ||
++	    test_bit(GMAP_FLAG_EXPORT_ON_UNMAP, &gmap->flags) || is_ucontrol(gmap))
++		return gmap_unmap_gfn_range_slow(gmap, slot, start, end);
++	return gmap_unmap_gfn_range_fast(gmap, start, end);
++}
++
+ static union pgste __pte_test_and_clear_softdirty(union pte *ptep, union pgste pgste, gfn_t gfn,
+ 						  struct gmap *gmap)
+ {
+-- 
+2.56.0
 
-user_access_begin() isn't used in a lot of places that I want to
-catch, including the KVM case. Roughly:
-
-  kvm_write_guest_cached() --> __copy_to_user() --> raw_copy_to_user()
-
-There's no user_access_begin() in there. :/
-
-I do think user_access_begin() should have the new check though, so
-I've added it in the v2.
-
-Thanks for the feedback, Arnd. :)
