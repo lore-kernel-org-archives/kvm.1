@@ -1,137 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.21
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793118982;
-	b=v0QXzyqOJKgf4SZa3aCNOfiy207j/jPW0qKTxWNflHtAncOOcjjfaLhG+muG9aTUIxKC
-	 k2SEe5LWpPStY21SGqZWV4jqn787Url//KE6dZ4cBqdokz5Wbm9innC4GIiocDTknpBcN
-	 iQXE/EYe/JvUwzuoX8IGTA1obZwDZ9yODyPAIw8707C/Z7ai5isF0b6rvBblTTdTTTWmJ
-	 OpK1al3GQR80g67uFGSSpP/rJbgbAxl9afn6PCIaJYzUFz9EEyk2n8SARqtVLBnIXuE6D
-	 pWr+OJ+7q6Qwm7/isyHD9MdM+X0moux56W8z/cScEXA5QwO0KcEU29z08TpFe7NqylQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793118982;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=rDlGdlPqrxe20803Rw4nucxmUzP7t4lNaWKtazBehAc=;
-	b=QwNC0gn02wtzHHKZdWT7pX6K2Qt++s6xIyfLEI7K/BfSzfN1hPBI63uGTcDYeLyDV2v+
-	 82vN6wc69GZR9GVkmMsTAb1fds9rtfZS+YwphstMs7R8Nt9fDnrGNjEat0rDmIqs7lVFw
-	 PMe0uq1Dg6M8lUQ6rbcVrVZnjeME+EdHp4xuo9JpWw5dItPjWzp1G3vaQLdATMQTJBiA6
-	 /IG+mjdH5r5lSmzBYzUlhTZbDvDvEOL5eT28BmLMyGYLQdF7wjs2I5LVxVvuMznRhvoXs
-	 tCckGJuMohDAKkYMIcIwW4t5VgpQ1Bdvpn6PylBk1bL7iVJcY4lw74s7Egb+102QzJQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+ufP52Y;
-	arc=fail smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793119207;
+	b=WLrBqpfnweALLOFhVDCjITWwDvON/zCe7uKMGROGeR0/OkViMo/sMvvDXQIIvWICJTtt
+	 M/F0YDJPeQXR2L/gAzUxu1+IBDpWgXE3JefsRENb1pOjH8/zmWQNNWXqUoEKOHBefO6F1
+	 RwZjD9+ajNykbvq+t9Ic9qOo2QKL9Wk7VJXBWbRfeXIUoMdBzlfqWzv+Z+A8507o7NhC2
+	 p690hKvTvpVifOeEnrFqku6HOcs/aNhn4wNwwr7AQrfFtKlgXiGafbdbvmj15+vT4Luk7
+	 wXiymkHCYsVXiDoxA7FEuU+Ld0VhlYVGO7PbOxvgcQwDY4Qvo9In6UmsAmXVGi2nS7Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793119207;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=gbXuStreYRF1M4k9Su5zd2++RJBOLVmoBCN1Uwl3TZ0=;
+	b=loWJPyWjnJadxNORw0y8C0l5EBCK9JtZ5wWXzdVlK7qqgeog+GdpoC7wRdYeWRK4cEAE
+	 QBIobtwy1veOhwMeJaGabe2vLV3JMPsxsqVXbt9ZMBkjz8Ua+QhRaPghT0k2d1cnrW72R
+	 VffaJy2Q2CfloP8ih9iX+n1cH3QhNXM9B/Jx4KXRnkHJgfFWXT1/nP39RZBfLDq1I813Q
+	 ZJrDNPJrIR6i3BL+Hsxm6UPOjcaLS8jmshJUcMw+5o8YzA5n0uT4Z5QaAZPAwarvXccg3
+	 PCPMQIqf/8XMbNIoDU0WtGQTGnOM70gZD2bQtgDvJwcL8PBIWw8K0MbvqOqruHu00EQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=soleen.com;
+	spf=pass smtp.mailfrom=soleen.com;
+	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Zr7ScxU7;
+	arc=none smtp.remote-ip=209.85.222.49
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55363606A322;
-	Tue, 27 Oct 2026 16:36:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55363606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C17F606A31B
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 16:40:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C17F606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+ufP52Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793118982; x=1824654982;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Crc/rUnGbNYX7mGZ0FbxyxtZr11pZxNvJ9S/qX08khA=;
-  b=W+ufP52YMI7sBtZN8mE/pd++AKSkxZjNbBZeJC2tj2ythi6EHZ9UsH0R
-   BoueVI9KugciIaoRv7Zr3jz203/4DqR/M96mL0nfZ5AXi9oPx3Dk50V0H
-   pKx8z3rdRFIHigLe4y+eWQP4CiAtgnOctc0ylcJhEWZudIdK2I9n57O2Y
-   I2dzjjJu6JPxIi2Hcp/TK0UF7YzCeCUK28PY6aMldZ/57ANYfgXNr+jaa
-   JFY+BTyqDOXOCg55MiuKGkcal4VCaaLpJV4A39NYyLC8hZU0bensTxqDM
-   2rb3N+XKVabKwc21xC7l24/AIgLeJaMwZHq7lN21an6lA+eOU2HNWBQpt
-   g==;
-X-CSE-ConnectionGUID: vcSudkVVRMy8JxNUQh1G0A==
-X-CSE-MsgGUID: ocbh/pc5SoaOG5zIYPLLKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1916024"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1916024"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 09:36:20 -0700
-X-CSE-ConnectionGUID: 8lD42n53SsiNUmAmFGJ5fQ==
-X-CSE-MsgGUID: E+0ZfZInRFeHUvyNyChFsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="6354860"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 09:36:16 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 27 Oct 2026 09:36:15 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 27 Oct 2026 09:36:15 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.56) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 27 Oct 2026 09:36:15 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O8TatAdWkSdYEul3F3bnI40veNNc3ycteK/8BB3b+vZZuF7TKuEx2dINI0EFZEePhX/HQFDOgkyPTMEaYwwBTgQrcobHOKpPB5XttMV+KojKtvvZzDONSwKjqs8TrdBWxoM51ovyPKhi8YPOlVTNtY72i0z5Ba0HLL25bADOS4iN8eSJeuBig+3YV/TsTkxrS3RwJlFCTtad5TSCV/2gXWP4SZLMIYFYRvpKX1Qkrfebso036guGEul+My0pmdpUho6hgzFFY/u9jc1FabaxJtrSrd7lom9La/khW9XizfL2cJu+0hfiTgO8NeC804OxBWHPMkocGtecaPVg8hMQYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rDlGdlPqrxe20803Rw4nucxmUzP7t4lNaWKtazBehAc=;
- b=HamHQZd/yAQzJ8PxEGgxuIiy66oB0u/oWJ9QfjuGaY2jtFcM+8WGvE7aDNYEnXrpBXRyEQbnHZ3MHsH2CiV4HLTg310beyQ/k2hoBYNuV4vXaQ+W71A+Cgz6DSA6kROwgfrkgeyKwZpnLaWbk8QVTFYDQPuBbB/nOP+k6RPAIZvzCaL7Ejk7UkFTrMN4qcebyAQZ2gkRIBvv4/GhdR3mtL4cf2K/p2pnoNE9AkQciY8CA5P39Wr9f2ukrRFMxZTOX4x9M2iD/emdvCdDqnFe4o7+bolgbs9bffNeUau+LJSQq4JEvk8eovPr8fb/dxuqanb/GQRJdLPX81AvQHa0GA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20)
- by MN2PR11MB4662.namprd11.prod.outlook.com (2603:10b6:208:263::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 16:36:08 +0000
-Received: from SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc]) by SJ2PR11MB8370.namprd11.prod.outlook.com
- ([fe80::b6cf:ce77:3cdf:7cc%6]) with mapi id 15.21.0546.016; Tue, 27 Oct 2026
- 16:36:05 +0000
-Message-ID: <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
-Date: Tue, 27 Oct 2026 09:36:03 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
- mode at boot
-To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
-CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-References: <cover.1792627082.git.babu.moger@amd.com>
- <1a8f3900e9e14ec19f5f7204fd64716eb0aa8427.1792627082.git.babu.moger@amd.com>
- <0082b675-5749-410c-9fec-9ce9b23b2498@intel.com>
- <9778fb3e-f5f8-4137-be2a-598cd44fc6f4@amd.com>
-Content-Language: en-US
-From: Reinette Chatre <reinette.chatre@intel.com>
-In-Reply-To: <9778fb3e-f5f8-4137-be2a-598cd44fc6f4@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR03CA0048.namprd03.prod.outlook.com
- (2603:10b6:303:8e::23) To SJ2PR11MB8370.namprd11.prod.outlook.com
- (2603:10b6:a03:540::20)
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Zr7ScxU7
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-988c7371716so55158241.1
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 09:40:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1793119206; x=1793724006; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gbXuStreYRF1M4k9Su5zd2++RJBOLVmoBCN1Uwl3TZ0=;
+        b=Zr7ScxU7LPpcpVmwcDfMzimPKelujj7KZMOtx1IyuU/S4C/UO70x0+DX+9QyLeh4a9
+         PmnVMdTOIGZWjWfC32qpJTjsEOC22/b+oVbdoj4aCBNhoaKTVm1iXV86p4vUFu1DVnFw
+         dI3uLv4u8RrIQ01IQQfwBwKfBFnN2w4rEe4Crl4lu8CTZuhY3dzGQPAeBoRy0oN74oAs
+         HLZUUQkXC2wsvk+R7B8NW2djal7BYB5QrNomAMvVxcHd/eztF+MMYs5OANCNnv+Bhofs
+         R3maM6BL/pFwDUgY2Yc4GszR7T33hmDEDaQG4LcAerPIgwmq7BHN1OF57ygqfvNBL0ZG
+         sYoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793119206; x=1793724006;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gbXuStreYRF1M4k9Su5zd2++RJBOLVmoBCN1Uwl3TZ0=;
+        b=rLSVQNgUHtEN1VH0NCgsuypDbxGIRN2arXG/lJUCGU0gebsiielVzjuNi1N1VjLd1B
+         /7nzTaP+5GViiprJM8JkOep56w25/1ignJP7xZ/Bv8eSWcgX9pl9YeJuFjGRCAQRpQNN
+         MQUCbWkKbxqtwl9LaJzggAfb0wQDzKPtXtBldi7iLXXGbgGZZifhMtwwy9pCevbU00wq
+         6oItuIw29vw1wbSHWgi9hvH3VQBTaW3LZRI7eYqF08Cz/8sMxM/CtxAW5FpVRJ7XJrUl
+         CufXQAGXAmDJOgJndJ/f57ZR2JAUjlH7LprpSpF3lEeGTiz/Jpa5loq0lT+83jjA8MTx
+         H5zg==
+X-Forwarded-Encrypted: i=1; AKwUvBxwPGPg0RdLYfVCe54RvuatJH8WaSqvVaUncQN3F10kUpTp9sigWumPcYZkd+F5dKKIfHw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLms1VG79Ow5yKHYk+BOFVZExyC25VGP68vR4AhPXDrGIy/qAjA
+	XGGWFRGklPR550rYCnutbD7ejC/YNFLQ0CRqTysZWKCZeXKzQ4dHq2dvYEfarA6sMnM=
+X-Gm-Gg: AYBFou2MSkFrY4srVZk6wbng3imqN5GCR+frnbErE6Q6RpJBdP3XbrUJMzOWJsLbRhw
+	SY+FJu7jytxk6VH04Wl5Ant6pEiwKp5q6KQBED3aD4lwvNxGN++Z04PvwVT8j5fGceaIC6Rsh0z
+	uxNqcENq7Wa60bxqO08Q9pZ53Qf8HS/hJY9GcMB3t+hTix95zyq+JuL+0OgDojpWfT/aZTsqmMS
+	n/EzPUHmSR5XAhjd6mdZUtcjfDpZ5z7cqnBo34Sb/GsaA1P5l3TiMjEsW2mFEmmIKfFoQV1zy/k
+	Uw1NgOmw5ZtuLJMuhQXCw8xgv9KOY2Xkms9hlK3czM2BhhMp2unVxvCs6JmxvN9WgQrpTNTzchq
+	2BpKAx2yC3TMn7Ydkm7RazWIJ4Zxr7DboIrqZi18FZ2Bz++fgMUWLW5nkQKkfsuq8WaazcCRbHn
+	2Jd0HBZ4bvq7Qz/WbTR4Ejr1i+JzQY1QHFxJDJ31SxFu3hOxkTQEqWNxFKguXi9/H8NTW/f1kvh
+	1jq1Dt9CUdUh1FTCPf7zwYb0CcRj1a8QLaZe1m3RpVNUyCjsG8tCumxl6FOeGRplCkOUoKfuJUQ
+	Od7T6zKuG8piZFg4jOv2lVVunj19CWwloMIvpgl6lx4wYFxqFf2n08iJBsZ/Lh8g7zpKOdr9S7c
+	QKnZbmavHFfsntII1EIBdkCGORYC4cpNOt7JRXUCQXcVrIH6lJW4=
+X-Received: by 2002:a05:6102:5048:b0:7bf:74c1:b606 with SMTP id ada2fe7eead31-7ce5ce4227dmr3243460137.34.1793119205875;
+        Tue, 27 Oct 2026 09:40:05 -0700 (PDT)
+Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9912da2d9d1sm442866241.7.2026.10.27.09.40.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 09:40:05 -0700 (PDT)
+Date: Tue, 27 Oct 2026 12:40:04 -0400
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Matlack <dmatlack@google.com>
+Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
+	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <auDT5MjXYq3lcQjE@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-4-tarunsahu@google.com>
+ <atlQ_Er0Ig7CCSxv@google.com>
+ <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
+ <9huzzew0el59.fsf@tarunix.c.googlers.com>
+ <at_CncIPYCxOVkLo@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -141,134 +115,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB8370:EE_|MN2PR11MB4662:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b1716ad-cdf1-4e89-d7d2-08df34486585
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|261009223027099003|261022105027099003|261021121427099003|261021135927099003|261022075727099003|10067099003|56012099006|261026121527099003|22082099003|18002099003|11063799006|4143699003|261026140227099003;
-X-Microsoft-Antispam-Message-Info: mwRTAc5yHl4F2+eL5ndF8RQf08uUj3RYbRaFYm+U2JzaMZ+RNZ8sPXaOqVB4meJx6J8Tcl6aosTumjtpASrh0QTplD5lq2aGpyaqIfs/ojVqQJgsvnk5NC85i5nZXgpn4XkfJ536uz+ngjYcKhHUgRS5j0DKMaBjUjn1L5wQ/YEhVImf4Y6OFRca9JLoyAo8XfN2qBuMe8RQw8Es2+HqK4g5M8xI9/ulR9bsEoYvDLgHeax3lrwIY56vEw5LauiRJWogw0sAv/VgHlGWO5j048hgt52EoUCzhNv6x8NmoctV44oDPCFzyJxSoT2JFkQ+ICuxdZO/5CgfPHrd9ixEwkFmrKjs76oSGWa+IHHCedhMepIjyq714F2BbqngT9onvqX4Z04TaGS4AjzFp/TUAWb2hBSqItcwUWKBU5O3DyWbeSCl3woVLd77O1ywagulJY6U+A6RHD19vQHQxxR36b5vLQSApYVQmbF5ANdlBcVZmXiF648LISW/Bs5jAQO00MWw3Ik0vLp3VmBEAuhEc1Q+9g0Qh6w2Ph+VjPbkQDIIwUxmW7VWD+WorpTYMHLMd9EhzJDRAFLf7lOVAa5yj6Ubrjf1Lw9t8StlzahUt5X3yQNqjAQPnb9WKBWWV+SVrl6SarPiRaaathdVvtK2g+9Ll5k3roJoQbZvmaBTxtM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8370.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(261009223027099003)(261022105027099003)(261021121427099003)(261021135927099003)(261022075727099003)(10067099003)(56012099006)(261026121527099003)(22082099003)(18002099003)(11063799006)(4143699003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eDQ5TGhqRmFyY3BTdGdOZVk0a1RieGRhQUxZNUNwZm5EejBFbWNNMlFlWUZW?=
- =?utf-8?B?T3lTd1orYk1iclYrcnM4eVU5TTgyVHhZS0ZOSDAyb0FxWHlGQStFR1I3T24x?=
- =?utf-8?B?dlhsZGNBUzRyR3hwWWd5OWg1K21ZRS9tZklJVEhIRDJnT1p4Uk8zNjlPZlRL?=
- =?utf-8?B?anFwRXVtM2dGMHl5aVkwWHlac05oNWpabWV1cnlmakY2QkpXSnNqODMyMndp?=
- =?utf-8?B?NVdnWG14eFlIWnZJWFlLamZSNCtsOVk1VGhpbzZqbThEcjBKMGtRSno2d25k?=
- =?utf-8?B?WkUrckdBVHhMV3JhdDhpUGIwWVYxNHFaR1VBQXRDT29SL2VzQWRRQ2JtSEdh?=
- =?utf-8?B?YVZKcnJEZHVpZ3dIVVpkWkcyRlkvOEdyb0Z3RlhvaWI5ZGFxSEkvWmkwemFj?=
- =?utf-8?B?TkJOTjA3R0xtZ3lIejkwbDNsK0RqamVsSDRheDRSemFrNjNpUkdtc01pNXhH?=
- =?utf-8?B?SlUySFg5SnR6Y2pROWtFWVIvVERqZVVGWks5Y05KckFBOXkrWXM0UG9vcmVv?=
- =?utf-8?B?RWtrQ3dDOWd5YTB1WXBzNU0wZjAwUFRKNVkyK282K2x1Mm1MSTFtYTV5Mmdj?=
- =?utf-8?B?ZEJMMnNBWnpubEFsbWN1bmR0ZWllencrbG5HQWpramNCdFFxWnJDc1FRdTZ6?=
- =?utf-8?B?S1hmdXRhTk9hT2xFL2h5MUF3TGhCVjhrZXZlK3FsaUxJUFgvNWtyS3RSeW9I?=
- =?utf-8?B?dlo3UXE3dFdFa1ZONFBvQkdmTzJqZUVUaTdQSWVuWTRtVEtOeHN6NWRSeWxm?=
- =?utf-8?B?aDE4T0hVdTZtYUZRS3BuRlNqblpBby9yWTJSeHhSQi93OUwrWENQSXd6RWVq?=
- =?utf-8?B?SGJzYVRWdFptckoyeG9RUjBwQ1l0QlFrMnAyZmZDUnRSOURER3hNbUZlOVVV?=
- =?utf-8?B?TUZweEh4b0d1YkZTWCtWT1FxVmE4SDRCVmhJOHowakdUT3JOOCs1OUEzaGdE?=
- =?utf-8?B?TCt0NUhXc1o1MUhPeVhidHgyRHA3Ujk1NHlZOXU2Ky9GU3VwdFZvOFpSK2Iv?=
- =?utf-8?B?RWwxMXlUY1UxOVRCQlBGeDJEZTZzbGdnMzB5ZTJrakh1NFNPUENrMmlNZ1dW?=
- =?utf-8?B?azQ5WENQWjlYd21HV2g5bVJ3cU56ZVYxMUk3ZFRCNUV6ZlpEdVl2Z2ZHMVU5?=
- =?utf-8?B?VzhDa3Z5MzQ3ek1kNlRZVXl4eHJqSXJ0RDdwTGtEQkhURUQ5ZnkzaktWODBp?=
- =?utf-8?B?WTAraTlpUG16cnpXcVkxSlRJZ0tIVVpsMElwdlVMeTdnWVorQ1ptVm9UNnYr?=
- =?utf-8?B?TnBOeHBVbjhZblY2R1RkUHNWYW9aVGxJMmJUVS9GUTJqZjRZdTRPeHp1ZXIw?=
- =?utf-8?B?RUNsQjRiQVFxQzY2bmVhRzg2eU0xRnQ5WkF2M01uM3hXN1ArMWQzbFJQNnBO?=
- =?utf-8?B?UmJBNlJmQVhSbU9tTlo1OXVnSGZhd2FkeG1xSzNXS3QzajZ3UE1jZ3pKSG9q?=
- =?utf-8?B?VGRCQjYyTDlVeXlNYlltVUVPc3FPT25OaW45a1BwVVA0cFRSMEVTZVZuZU9S?=
- =?utf-8?B?UU9XSzdzYVRsSU5RbTBJNE44dUlPbmE4LytzaEROeDRnMXhEQUExbit6WUgv?=
- =?utf-8?B?d2NXOWdDNnRnY21TU3MreEU2djEybG1OZElEOWd3V2NHZFl6eHEzNWFEc2Ja?=
- =?utf-8?B?c2JCY1BBbHF5cnpFL3J4NFpycTFQQ1d2aGZQenhSelFtalVERGlvNFNKK2pW?=
- =?utf-8?B?MVNFTll3THZxSjNOdXJrQVlORGNFZEJKL2ljSnlsdUZtZEtwUzhnYVBuVUZM?=
- =?utf-8?B?NHhuS1ZPWlVUREUrVTh5OUhuT1NoTmoxVVRPUTk3alBnWXFNNWY5QXM1U2VO?=
- =?utf-8?B?bzdudVpROHdzQjkvNnNwQlFFenZyMTlzSVFBR2ErS3pGd1dmYnRPNFRQYTdq?=
- =?utf-8?B?dGdxTkEzcjQ0UXJxbEcxUExXcjRRWjE4YzRFNHBzUXIxQzhQTnpvRi9uYnd6?=
- =?utf-8?B?QTlXdnltZ3Zoa0VNcVRCMXI3TWxuWUo2bUQyYVZlcVZQcnRYZzI4Rlc0UVFV?=
- =?utf-8?B?bno5Z2MybU8rL2tYUTlWS0J2KzJHZm9qcXZ0MXpiTU1QS2dCbGN4LzhTUjk5?=
- =?utf-8?B?TVRaemVxMmVpVmIrVURGV3VoeE0xZDVxZE1Vd0lsR1lrcWx2RlE5ejZleCtS?=
- =?utf-8?B?TjhBc2hKeHp6VjJQdm1oMFA4OXZZM3dNditpeUd4ZG9sWnNmVVkzVnVXc0JJ?=
- =?utf-8?B?aytKN2tkOG5NZGlaRFBIb09hQ1crbTNOUjd1L3V2ckJrMFJuUW01bkwrTndC?=
- =?utf-8?B?Tjg1OXdwcmNvZDh5WmZrSEhOSWNlSkN4UTMwWTlsbEZlb3NvOGJ2dWFlZmtM?=
- =?utf-8?B?dnVudlczam10d3lyRFFXVTB3cmRmY2NJZVM1WmwvUXR2S09zdERjcERXbTdr?=
- =?utf-8?Q?ABCul9oIgS1vdD3s=3D?=
-X-Exchange-RoutingPolicyChecked: FggsIJihOCHR0x8608SSrgh6eOp01R0b+FCIunFtOKYk6QJu+QFtcdvFQuU6LJ/g94gV/tU38VyWH/skQ07yp+0W/51zh1dNjPvrRzUZw5x2mPXaGqg5XC6KJunxXWexkUbOfY69s05ZFvaRByt3gyGHQ71clcHLD6MVOlm5SMgGK3ATMt0mqki2V9UlWphm2rVlM4r/p7Qu3F6ddaWZK2sC9LTbCWB3VLMt5K406MM0I7EPHpyrdu7Akoog/j7RijiZSYXDSn+USPhwPqmRLO95Y39zwAxV20ZtDiisTRaCaRAL3rhEqH6mfIY61Apk4rbjyVxR8MbDIb9C0ML6vg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b1716ad-cdf1-4e89-d7d2-08df34486585
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8370.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 16:36:05.6553
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FQEUjRbTNc45H0w3SuPrcfc1FEnX/r1Ny2EzQRD0ZLgt4w3W5gcE8bvAmIaIfEUBm7iAYpspL/b32u7zDKVOqxiaAryLBDdtY9QpnWfJyRk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4662
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <at_CncIPYCxOVkLo@google.com>
 
-Hi Babu,
-
-On 10/27/26 7:48 AM, Babu Moger wrote:
-> On 10/26/26 19:15, Reinette Chatre wrote:
->> On 10/21/26 4:58 PM, Babu Moger wrote:
-
-...
-
->>
->>> +  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>> +  [default]
->>> +  mbm_event
->>> +
->>> +The "default" mode is enabled. "mbm_event" is supported but not enabled.
->>>   +b. Enable "mbm_event" mode. Switching the mbm_assign_mode may
->>> +reset all the MBM counters (and thus all MBM events) of all the resctrl groups.
->>> +::
->>> +
->>> +  # echo "mbm_event" > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>     # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>     [mbm_event]
->>>     default
->>>   
->>
->> The above changes could be merged together under a single step "a" that
->> will significantly reduce the churn when considering this is a stable patch.
+On 10-26 21:14, David Matlack wrote:
+> On 2026-10-26 11:50 AM, tarunsahu@google.com wrote:
+> > Right, Required bit should be source kernel payload property to tell
+> > target kernel that the payload must be handled to correctly deserialize
+> > the data. It should be source kernel (userspace) responsiblity to make
+> > sure it understand the target kernel before doing liveupdate.
+> > 
+> > Saying this, During deserialization, target kernel's required bit is not
+> > necessary. So I propose the following truth table.
+> > 
+> > Source hdr  Target supported[i]  Action
+> > ----------  -------------------  ----------------------------------
+> > 00          0 or 1               Accept: feature absent in payload
+> > 01          0                    Accept: ignore the feature data
+> > 01          1                    Accept: use the feature data
+> > 11          0                    Reject: -EOPNOTSUPP
+> > 11          1                    Accept: use the feature data
+> > 10          0 or 1               Reject: -EINVAL (invalid encoding)
 > 
-> Yes. We can. But because of auto assign is not enabled on mode switch, we still have to touch few steps. Your choice.
-
-Understood. The benefit here is that the patch will only change actual information.
-
-Specifically, changes like the two below that just updates the letter
-associated with the step:
-
->>> -b. Check how many assignable counters are supported.
->>> +c. Check how many assignable counters are supported.
->>>   ::
->>>       # cat /sys/fs/resctrl/info/L3_MON/num_mbm_cntrs
->>>     0=32;1=32
-
-and
-
->>>   -c. Check how many assignable counters are available for assignment in each domain.
->>> +d. Check how many assignable counters are available for assignment in each domain.
->>>   ::
-
-will be dropped from the patch. They distract from the core change and do not
-seem appropriate for a patch headed to stable.
-
-...
-
->>>   -h. Read the events mbm_total_bytes and mbm_local_bytes of the default group. There is
->>> +i. Read the events mbm_total_bytes and mbm_local_bytes of the default group. There is
->>>   no change in reading the events with the assignment.
->>>   ::
->>
->> Could you please remind me if the first read after assignment returns
->> "Unavailable" or a valid count?
+> Yes, this matches what I had in mind for the semantics.
 > 
+> To be explicit: the source kernel should set the bits for each Live
+> Update based on what is actually preserved, rather than generating the
+> header from a static per-kernel array. E.g. memfd would only mark a
+> feature present for memfds that actually use it. That's what allows
+> rollback to an older kernel as long as nothing being preserved depends
+> on the new feature.
 > 
-> As far as I have observed, mbm_event mode (ABMC) returns either 0
-> when there is no activity or a valid count. I have not personally
-> encountered an Unavailable value. However, the specification allows
-> Unavailable to be returned when the count is not available.
+> But looking at this again, I think the required bit is redundant. Whether
+> a feature can be safely ignored is a property of the feature itself, not
+> of any particular file. Every file that has a feature present will have
+> the same required bit for it. The only thing that actually varies per
+> file is whether the feature is present.
+> 
+> The required bit still has to be conveyed to the target somehow, since
+> the kernel that needs it is the one that doesn't know about the feature.
+> But it can be conveyed by the feature's number rather than an extra bit:
+> split the flag space into required features and optional features, and
+> assign each feature to one of them when it is defined. This is similar
+> to the required_flags and optional_flags approach in struct pci_ser [1].
+> 
+> Keeping the same header shape as discussed with Pasha:
+> 
+> struct kho_ser_hdr {
+>     __u32 size;           /* Size of header + payload in bytes */
+>     __u16 nr_required;    /* Number of required feature bits */
+>     __u16 nr_optional;    /* Number of optional feature bits */
+>     __u64 flags[];        /* Required bits, followed by optional bits */
+> };
+> 
+> Required feature N is bit N of flags[], and optional feature N is bit
+> nr_required + N (using nr_required from the incoming header). The length
+> of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
+> are numbered contiguously, so there are no gaps, and up to 64 features
+> still fit in a 16-byte header.
+> 
+> Each bit just means the feature is present, so the truth table becomes:
+> 
+> Source bit       Target supports  Action
+> ---------------  ---------------  ------------------------------
+> Not set          -                Accept: feature absent
+> Optional set     No               Accept: ignore the feature data
+> Optional set     Yes              Accept: use the feature data
+> Required set     No               Reject: -EOPNOTSUPP
+> Required set     Yes              Accept: use the feature data
+> 
 
-Thank you for checking. I just wanted to confirm that the values shown
-reasonably represents what a user may see.
+I like this proposal. I bet most features are going to be either 
+optional or required, and even if we ever have a magical 
+sometimes-optional feature, it can have its own required flag. So, no 
+need to pay double the cost on every flag.
 
-Reinette
+Just need to make sure that optional features always start from 0, in 
+their own enum, so the offset can be computed correctly in the incoming 
+kernel.
+
+Pasha
