@@ -1,74 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793109949;
-	b=UaEYCrJffMxtGtv5RPWXA781LQg6wteN4BhNEOf3cBdltiasoNM6WZQ21dzfHiDKHWQO
-	 ulX2wxRvuyBhPoUAN1NrqpihktKian4i+JP1Gx8MSFBLYJ/s9f1YDftaF3V1rEuR/kQ8h
-	 5uejs5FCYMrAuggF/+Ze8IuQqf+ezX93RIyOxzC597lWtDTUR7+J/EmzuHElw8t5I75sx
-	 /MNBfTWwx8jX9QEQ5BiXW1Ev1nxadYeueBOa6a0ya0M0mmruz1IPz555MiJVw2rrDkKIy
-	 GzYi1RYaxAL1IqF5+hGCQJ/Xlads9b6aFo3rC7HqmS4CvmZOt7zuYJR+W/ZKpti9pow==
+	t=1793109974;
+	b=ps6w0cUKeTybS2dg7Q6q6diVy3Hh/vOLfQU0R0zlM2B8n8ZivaUHE5ZV2XnR1h5uEghJ
+	 ZnBvZI4CuEnkJxOfKH4JKrV9tOHaIEtAUN5vy9iT6M6/AnfSX3BmV05+jf5Zu0D/BFZoi
+	 bECNkbncALmMLfPPLpbXyHxmqQQK95RkQa6KmzW09LDhRp0d1psVeFbK7XlC2FDRxNtNO
+	 8oHtQvbp8lnh2PGfej1r6rOQ31oX02lr4jbYojMz+q/VH9kSSakD4nEHKzTWTONeLaad7
+	 vR746LXh8Qahp4X4HfFwGsxBtYrpZj2bOpSw6B7MMhhTW41zmloFnIL10Xn+62uexlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793109949;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
-	b=u6LFfRKTWoKZ8uDfVAcH5jyUCDfnoEkZL+zylWzbSDoizxqW9UrE3dS8dBhd6mXC666Z
-	 vwVQrPOYefP+nEfWK63mOqxfhF8A/Q6gxnINiUE+V2a2lBldIgL5lGrjGMHXPAt+2G5I4
-	 4iAGxNG2jomzX9qreaQ7Pr4nVUabwxu6XdbB4lrXyENSxr8g2bZ2e/ws5q6mm32Q0tpZC
-	 Tse/FOARThae7wrekL4yKbLrnx1nLqHuMI1edN7AoPZdJ9tTrPryR5oY8sHglUVyWWG/D
-	 74LvohkmeJicCD7YL1VtSu0CnAdTOOY1VLqEjmCSqnABm3Rspnmgb+uGtnv5gw9GzUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793109974;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=82GVQF/r/unWzQfzjss77Hz55a2gB/UcDEpj21YiSxk=;
+	b=A/05J3WsAYs87ZhwdTQ39JHEWwFllP1aSe4GI4okIbkp+bGuPR+GEg68qq0iSSVAdbaJ
+	 1Oq9OyRRLsuoJCNzTLSJBpi5R9M3AT2dsftSJYwj/oDSfucq78JY/L9iqjLZGYgdi7s2Q
+	 JBMN5NXFfgqsY7T59Efg3oCpZA7YlG2cFEhefmiELOb+BWITrbHdr1iRYsY883g0mC6Y3
+	 +Bb9kfTFQHZvKf07PbSbj9Vg3m2AC9ek4mcby5WWrtVKujhSuhJs8G99HlTxVK2rSs5XS
+	 OOjUx4V8c3p/poqgGlDEbs9ZmO8Mgnv/OPTkhIBs6KUDJqT+V4FHinUzMTShjxxir9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=uXbUuRDy;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nZUK+SXF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F6B606A31B
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:05:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0F6B606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3C7606A31A;
+	Tue, 27 Oct 2026 14:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=uXbUuRDy
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd67d4bbdffso3192577a12.3
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 07:05:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793109948; x=1793714748; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
-        b=uXbUuRDyl16gOXgWVUihpfVQPkghTFvbIh9Pi+wkMzeqmN2MMMrbpVzcU4Pno4oNye
-         V3grwk230KSLgDIzQCoaYeuNCF1+hzlit5RyzRQIsREVAI+ftxr/FAk77s21gvyLx9ad
-         gCG/HEoNUfv8KSHMBuDFCzgRVyLqsXObRP5h7gRI9PdRieHfsZhYfai9tu7iLknW5kG+
-         K3ukDXDq3FeHzsVHG3wt+gNCXllsj18mBxh4mquJonTw/7aP4gT/aynuUep/w56MHo1/
-         UfobFuEgxhumii57xnCQbt4kRWhzygBk07QC5AIcs00ekhasbTkfloyiS8/4HRw7eT84
-         OqLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793109948; x=1793714748;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
-        b=WTeY9Dtf033kX5s9NO5Caz5RuZnq3r2kFyy5K2VYCGNj+AhgroxsIsuLxQCg9xYi0F
-         RxCuMcIQS7gNUjvVRH4u9bLR9OrNw15SGvR4UK7Pb0cxBaYKrerScgRTgAIXwjEfsBZ4
-         qSGkoosgBdUWle0O3TNL/jF/ESltD5nBALNyp63+a2MJx2G9Mqog2sKqvJ6WmDfhGdwA
-         KLzaPITd0yK3yxb1d+YwFFbOcw2W9Slb9HmRBXkd3ViFXsZQ1AbvMKmim+k4vI7vHlDe
-         +Fnc5MGiBdj3KNdzWk8NUKYxRvn1QHwvI7/FKixjKsjuXPOzbbEtmYiE3k03pi8/NfQV
-         S5Qw==
-X-Forwarded-Encrypted: i=1; AKwUvBxhcZTzGDLEXXupxInaPoSr53y/kl4X9SMH3JWhv6XBhSInrS0YeDtZiTAdrrj1u1fGnJk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK3nOqT1lh8UxDc2H2gQhH2rBbZxpYc5/JBYyi/tuOLEkU0JSC/
-	DNgdPBeR9K3qzi/+il7dNhS7sn9mn5VedylKrWkqdzjg0piTgVZ9UqWbEZmGOu70CdN2daOuguG
-	xISaOWw==
-X-Received: from pjbsb7.prod.google.com ([2002:a17:90b:50c7:b0:3ac:6795:2cbd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1cc4:b0:3ab:c80:9370
- with SMTP id 98e67ed59e1d1-3adead57e85mr7634057a91.20.1793109947891; Tue, 27
- Oct 2026 07:05:47 -0700 (PDT)
-Date: Tue, 27 Oct 2026 07:05:47 -0700
-In-Reply-To: <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nZUK+SXF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0201F01825;
+	Tue, 27 Oct 2026 14:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793109973;
+	bh=82GVQF/r/unWzQfzjss77Hz55a2gB/UcDEpj21YiSxk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=nZUK+SXFsAgy++54w5IClDKo7g3++cFiM8TnqT2+LuG2HpPq1/K3HIQXOOIqc8mVi
+	 mimy9pQ3LiHr7Uv0RMQYlxatSPdssmML/JLJvYuIdW+skcb7OAscL1zKzvE/7KFjSi
+	 C5SfM2niQETkzsKlEAsLJjyhwPpgFj3h1BLvGqJKVglngLpLProiWkhE3sxhOwjds8
+	 Y9aYsuyyzfMODkxbCLDMI2MKNmGNxm1x3h2InAoU1pty5v5HJn/qrj2HC5Us/03zJT
+	 /pmxKM0bibEgfhWd8LG22BhwEnrdTBpRB7oS2UKU1CUeUtFxQc4UiWu8EfdKYfprbP
+	 4ptN8qpbOZvCg==
+Message-ID: <99117abf-29eb-420d-bf8e-740c2068a0ba@kernel.org>
+Date: Tue, 27 Oct 2026 15:06:04 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,71 +50,127 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261022210134.612848-1-seanjc@google.com> <20261022210134.612848-3-seanjc@google.com>
- <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
-Message-ID: <auCvuyY7tTg7ISwR@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
- when filling CPUID entries
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Changyuan Lyu <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] mm/rmap: duplicate a PMD mapping as one in
+ folio_dup_file_rmap_pmd()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Konstantin Khorenko <khorenko@virtuozzo.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>,
+ kvm@vger.kernel.org, =?UTF-8?Q?Lo=C3=AFc_Molinari?=
+ <loic.molinari@collabora.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
+ <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+ <atnEFyGRYGGf9shA@gremlin>
+ <71101695-339d-4f8f-b9d8-dfadf7dbd0ed@virtuozzo.com>
+ <atn3SPG5MKpj2Unj@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <atn3SPG5MKpj2Unj@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 27, 2026, Xiaoyao Li wrote:
-> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
-> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > index 271c2f94b8dd..37d088f6f7a8 100644
-> > --- a/arch/x86/kvm/vmx/tdx.c
-> > +++ b/arch/x86/kvm/vmx/tdx.c
-> > @@ -2,6 +2,7 @@
-> >  #include <linux/cleanup.h>
-> >  #include <linux/cpu.h>
-> >  #include <asm/cpufeature.h>
-> > +#include <asm/cpuid/api.h>
-> >  #include <asm/fpu/xcr.h>
-> >  #include <linux/misc_cgroup.h>
-> >  #include <linux/mmu_context.h>
-> > @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-> >  
-> >  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
-> >  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
-> > +	entry->flags = 0;
-> >  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
-> >  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
-> >  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
-> >  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
-> >  
-> > -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
-> > +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
-> > +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
+On 10/22/26 14:11, Lorenzo Stoakes (ARM) wrote:
+> On Thu, Oct 22, 2026 at 12:44:40PM +0200, Konstantin Khorenko wrote:
+>> On 10/22/26 10:07, Lorenzo Stoakes (ARM) wrote:
+>>
+>>> Was this a mistake in d8ef5e311d7b, or actually intentional for whatever reason?
+>>> If the latter this shouldn't be a fixes.
+>>
+>> commit d8ef5e311d7bfde54b60ab45026f206eff31b2d2
+>>
+>>     mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()
+>>
+>> ...
+>> +static inline void folio_dup_file_rmap_ptes(struct folio *folio,
+>> +               struct page *page, int nr_pages)
+>> +{
+>> +       __folio_dup_file_rmap(folio, page, nr_pages, RMAP_LEVEL_PTE);
+>> +}
+>>
+>> ...
+>> +static inline void folio_dup_file_rmap_pmd(struct folio *folio,
+>> +               struct page *page)
+>> +{
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> +       __folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, RMAP_LEVEL_PTE);
+>> +#else
+>> +       WARN_ON_ONCE(true);
+>> +#endif
+>> +}
 > 
-> I think the WARN_ON_ONCE() is very likely to be triggered in the future when
-> people run old kernel with new TDX modules.
-
-Then upstream patches to make that not happen.  Intel insists on treating the TDX
-Module like hardware.  So, treat new TDX Modules like new hardware.  Upstream
-support for the new "hardware" before it ships, cc'd to stable@vger.kernel.org
-if necessary.
-
-Because IMO, the WARN is doing exactly what it's intended to do: alerting the
-admin that they are running a potentially dangerous setup.
-
-> > +	/*
-> > +	 * Explicitly zero the index when it's not significant, even though it
-> > +	 * _should_ be meaningless.  Userspace relies on the index being zero
-> > +	 * (the ABI was inherited from KVM_GET_SUPPORTED_CPUID).
-> > +	 */
-> > +	if (cpuid_function_is_indexed(entry->function))
-> > +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-> > +	else
-> >  		entry->index = 0;
-> >  
-> >  	/*
+> OK so it was just wrong at the time :)
 > 
+>>
+>> Both functions were introduced in a single commit, i think it's a simple copy-paste issue.
+>>
+>> The helper never had a caller, so nobody could hit it. If you prefer, I
+>> can drop the Fixes tag and only mention d8ef5e311d7b in the changelog, as
+>> there is nothing to backport.
 > 
+> I mean, it seems like a bug to me? If there's no harm in backporting it I think you
+> should add Cc: stable@vger.kernel.org in that case actually.
+
+It was never used, so it's by definition not even a bug. :)
+
+Cc: stable makes sense if we want to backport it along the other things.
+
+-- 
+Cheers,
+
+David
