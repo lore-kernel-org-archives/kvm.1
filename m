@@ -1,68 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793137158;
-	b=h0aB7coxzakjqtWVfKyvf52UCtg9aj7L8LeKHxXHIdafEvR+gWLKH1VAYBlXKY4BVof7
-	 bk8lmkAsdenExIWPWDEhantGLdUrxLS6YICWOqTHH+/pJVouNIp3OteaINVoy9G4wk8PE
-	 CD/1raqCqMQrxkK0l1NFaaDPXpmF9yqsvMptfQrJkf3hhXPKiVms2DAHGoRFzkd4hizzC
-	 HKxuKeByHv384BuqIGZM7qXLlzs8Pon0J4sFykhRsBtnpxNI5YOtV2pdh9eSNc1sSOoJN
-	 5VubECjsYQ3m9Tg9Kmz/EvI1pASAFgbit2f8AVVZGp/unFK0cwzPXrqQf0lHfFARY7A==
+	t=1793138236;
+	b=UQSc09I0Kz/fMeb7Tzp/qvmdBUOLel4Na66J3/yY5zo+m5kADXBthKDlkikBVIbmoNJt
+	 uM2a2p5ZzE6cNa+KW3OY5qT69HWEAxTaBAk3vdswipiylJDN2UdavvCKDKPibQ1qts7HO
+	 4/m5AjfYF/8vFeuNbT2wqHuXeM0L364lRUhGYau+3spDZAbweuV5SbPN+Yi9vtXIS9dZ2
+	 1enNCN+hjDPPu7y9ewnGczp/7SHWzOMxo7aQbqUOgbaprXz7ZqZX3xZbHDrkl2BSZL6P6
+	 eh6Lo9oCn+BzPw6jF82jGYDRB29gFwr9StGJz63c1nyVGWrLnX1hKqBIWNtYX9DgqwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793137158;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=j5221omMActoQkDHF4RaC0GAmHgj+tP1MLFSio0coJk=;
-	b=eGbuPpLeyWlzpHpwFY+BhU3oU1FEpOv7XUQZmuxM2kDtCBxX2PajgEkDfsDfiC54623/
-	 wVA3EgrWsqqWYfQ1F8MRBiuCWVzH0UJfdkezQwpK98YDGxmt0K9Y9Jx9TJq5+VyKTN4bm
-	 bggezPGw0vI0dtt0R1nwYU2pyjLqi5B8OVychROBrv0/tv1J6YRhVMup1CjZJjKwe59gn
-	 75Zybna3NLybmjOS7J87yl3I+G2VAdNRu4J020ouBUkIXMeL3DuQBe5ToOwM+KIWmdA4c
-	 1y6N4efeLQL0+th7b1yXX9Pg3Ca0vbt97n+/fXx0v/R7yWND3G+VvjsGPwxvoOIE/lg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793138236;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=INM4lTecUqg3+ORjH8the43AegIL5wVO95lrhujQQt0=;
+	b=t2wRSkgZKMPWRTXRYt/jGkk4uzg5P6bQcVldi//hWFgTlriQq8TPG9Rigei3aE7Yr846
+	 upaWR2/ywfb/p+2+Ica7Jz20fkP9oi1RTjrshgwBwbOfZF1BFolO8wsfS5pmGKNer7ttI
+	 SY6KbF8JXNYDIruHtS6Q84PHjAN4lZiVqVRJUccvd0jmVTrOZ5zKtJbIYcNKG9koG0Itq
+	 jCVIkr0kw5oaKY8+XhGMu+1F5Ml6aD1+4zVBHgbip9JlEJoTFO50xFR+cbRkc5eg8URQZ
+	 8CnXGn3Vi6obIfoGKOlp6nYP9TKmi0iL9v26XdKvEJNztpqtl2K/+DV5qb+bsR1IquQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NwaEJJmF;
-	arc=none smtp.remote-ip=198.175.65.14
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OPWEDSwI;
+	arc=none smtp.remote-ip=209.85.218.71
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF6C606A31A;
-	Tue, 27 Oct 2026 21:39:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0CF6C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9726C606A321
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 21:57:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9726C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NwaEJJmF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793137158; x=1824673158;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=P3oWki5m/mrnhxYk4sKgWwU2lL7VHJaW83IqKWGyeZ8=;
-  b=NwaEJJmFosqo/zkGFhz01KFbGzrE/6aQwxPLmnm6BllRl8No9Iy5H10F
-   lOPnQLjtP+X9Bb1ew0iVOClmvjfppEVwAE4b6BJaHXdHwxLL6u/hfauqr
-   IDThu7sgpXxtDIAXrnu6olGgiYFyW5tdkSVC04oLDcCW/jjcHfXyRdvon
-   axw1QXMplMuAOZeteSfa4oMyexS6+jnax/6ns31xlHbae4aFOTsZYXyOl
-   cO7mAYwDPGRd58XiIO25p8LIbOB2lQobwp6tzKdM/Fv/BgbX/5Fswcfjp
-   gWNW7A4+zNav2PlbMku5JrfV4z1bdKLRikRnL6A6NNfa7Li+SHLpb3ebg
-   Q==;
-X-CSE-ConnectionGUID: iKHRHyCTQASHDxfWuyxOpw==
-X-CSE-MsgGUID: Ecx7FvysSjGLM+GDhv1CKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1728479"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1728479"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:39:17 -0700
-X-CSE-ConnectionGUID: O8xsiCs+QVCwPruINTCAAg==
-X-CSE-MsgGUID: cVpPdMFAQ2C3Gc3y+/WugQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4755535"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:39:16 -0700
-Message-ID: <8bb51068-461d-4eba-8e4c-0adf35a80839@intel.com>
-Date: Tue, 27 Oct 2026 16:39:16 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OPWEDSwI
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c429d9d05f0so24989866b.1
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:57:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793138234; x=1793743034; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=INM4lTecUqg3+ORjH8the43AegIL5wVO95lrhujQQt0=;
+        b=OPWEDSwIo94pXLNO7GW/VvvkNuKk0SOrCfnZY0B/EfJRSZFt3yRUKQdtap3RO9t18G
+         gPXjPUOIHNRuI2FjW09NqBXtrOSt7f/4cyudF3x4bLlN2/HAwhei2OL2EcjINeYqu9gb
+         IazTAO2vXpCk7hvTKw9Y5IXKBI3iU+yr9fxuCEIVguCmjjlRNqiWQ9LFgRFj1H08bEWG
+         d6hrc6x/i91RkLClItqq/7iujjrBU3jMZrr8WnrXHi5+dbp9qMGhduV4OwhCyp0vYagU
+         x4T3Cj4M1jRIwwMnMhJpTmy0M24PI0EbSb3g6DPVJYGz3tp1JD7Ko7fjAX5KFs4tub12
+         lElQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793138234; x=1793743034;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=INM4lTecUqg3+ORjH8the43AegIL5wVO95lrhujQQt0=;
+        b=EppgydLbf/XNXCgZHu0KiSaYcY+f8jgKnwtr45DiW/2wytgv0DqT58RH+TUpWDFlyZ
+         wZecO0Y1ciOVgdJ+2w46H1BW+iXGs2WS7so0rmLQy0j2SukhsNlaxpwVbd3bz3mM/Bfx
+         ysVaWKOK+WGdm+OfNzSNEHYeGZFwrVF0/8AF9fti4WHaXfyS6qyf6e+2/XJI1cGBZnix
+         9OKfr50qE/ZWfN+yys3OvA3rEAZjWVwM2mo1Tf4Px9RcA0iQy9vdwLYC56OOSaXktfbr
+         Kpi+8E8Wk/ssGxWnUPYLithPN7rHObxr5LDosxIGFX3gd9CP0rIt518xZoyqhZNwnDEG
+         bX2w==
+X-Forwarded-Encrypted: i=1; AKwUvBx1D3p2GtVP1bLQ9gU6J2U88yvzHoyOcNPd2T6SDv/Y/4iJSo7mHX+meGjJP5Dod4mVbCc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKVNQ1HcdFgJcm9IF4H3ILn11lUJcVeyYdF6FrvFIj8x8jzRunC
+	wCtd7bmHv8XibWapK8/rcZU6OI9JoKHGDpbd/Rsbv16jds4YOdnSWJR8dsbVdyawosNNZh979fx
+	n7y2edZs5FZbVYoB6Dg==
+X-Received: from ejkh2.prod.google.com ([2002:a17:906:7182:b0:c46:743f:a4b9])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:e84b:b0:c2e:3a72:ffbd with SMTP id a640c23a62f3a-c49bdf71b7bmr44517166b.41.1793138233642;
+ Tue, 27 Oct 2026 14:57:13 -0700 (PDT)
+Date: Tue, 27 Oct 2026 21:57:12 +0000
+In-Reply-To: <CALzav=dYKAP7pKfoPtz32X1cT_tH4LN0X47_jTO8_HOCT4Pi=w@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,100 +79,130 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/12] perf/x86: Add INTEL_TD_METRIC_FIELD_{BITS,MASK}
- constants
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20260918193937.569414-1-zide.chen@intel.com>
- <20260918193937.569414-10-zide.chen@intel.com>
- <b73ffa7d-29ce-44b3-be1c-88068fc2f443@linux.intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <b73ffa7d-29ce-44b3-be1c-88068fc2f443@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
+ <atlQ_Er0Ig7CCSxv@google.com> <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
+ <9huzzew0el59.fsf@tarunix.c.googlers.com> <at_CncIPYCxOVkLo@google.com>
+ <auDT5MjXYq3lcQjE@google.com> <CALzav=dYKAP7pKfoPtz32X1cT_tH4LN0X47_jTO8_HOCT4Pi=w@mail.gmail.com>
+Message-ID: <9huztsm6958n.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+From: tarunsahu@google.com
+To: David Matlack <dmatlack@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
+	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
+	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+David Matlack <dmatlack@google.com> writes:
+
+> On Tue, Oct 27, 2026 at 9:40=E2=80=AFAM Pasha Tatashin
+> <pasha.tatashin@soleen.com> wrote:
+>>
+>> On 10-26 21:14, David Matlack wrote:
+>> > On 2026-10-26 11:50 AM, tarunsahu@google.com wrote:
+>> > > Right, Required bit should be source kernel payload property to tell
+>> > > target kernel that the payload must be handled to correctly deserial=
+ize
+>> > > the data. It should be source kernel (userspace) responsiblity to ma=
+ke
+>> > > sure it understand the target kernel before doing liveupdate.
+>> > >
+>> > > Saying this, During deserialization, target kernel's required bit is=
+ not
+>> > > necessary. So I propose the following truth table.
+>> > >
+>> > > Source hdr  Target supported[i]  Action
+>> > > ----------  -------------------  ----------------------------------
+>> > > 00          0 or 1               Accept: feature absent in payload
+>> > > 01          0                    Accept: ignore the feature data
+>> > > 01          1                    Accept: use the feature data
+>> > > 11          0                    Reject: -EOPNOTSUPP
+>> > > 11          1                    Accept: use the feature data
+>> > > 10          0 or 1               Reject: -EINVAL (invalid encoding)
+>> >
+>> > Yes, this matches what I had in mind for the semantics.
+>> >
+>> > To be explicit: the source kernel should set the bits for each Live
+>> > Update based on what is actually preserved, rather than generating the
+>> > header from a static per-kernel array. E.g. memfd would only mark a
+>> > feature present for memfds that actually use it. That's what allows
+>> > rollback to an older kernel as long as nothing being preserved depends
+>> > on the new feature.
+>> >
+>> > But looking at this again, I think the required bit is redundant. Whet=
+her
+>> > a feature can be safely ignored is a property of the feature itself, n=
+ot
+>> > of any particular file. Every file that has a feature present will hav=
+e
+>> > the same required bit for it. The only thing that actually varies per
+>> > file is whether the feature is present.
+>> >
+>> > The required bit still has to be conveyed to the target somehow, since
+>> > the kernel that needs it is the one that doesn't know about the featur=
+e.
+>> > But it can be conveyed by the feature's number rather than an extra bi=
+t:
+>> > split the flag space into required features and optional features, and
+>> > assign each feature to one of them when it is defined. This is similar
+>> > to the required_flags and optional_flags approach in struct pci_ser [1=
+].
+>> >
+>> > Keeping the same header shape as discussed with Pasha:
+>> >
+>> > struct kho_ser_hdr {
+>> >     __u32 size;           /* Size of header + payload in bytes */
+>> >     __u16 nr_required;    /* Number of required feature bits */
+>> >     __u16 nr_optional;    /* Number of optional feature bits */
+>> >     __u64 flags[];        /* Required bits, followed by optional bits =
+*/
+>> > };
+>> >
+>> > Required feature N is bit N of flags[], and optional feature N is bit
+>> > nr_required + N (using nr_required from the incoming header). The leng=
+th
+>> > of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
+>> > are numbered contiguously, so there are no gaps, and up to 64 features
+>> > still fit in a 16-byte header.
+>> >
+>> > Each bit just means the feature is present, so the truth table becomes=
+:
+>> >
+>> > Source bit       Target supports  Action
+>> > ---------------  ---------------  ------------------------------
+>> > Not set          -                Accept: feature absent
+>> > Optional set     No               Accept: ignore the feature data
+>> > Optional set     Yes              Accept: use the feature data
+>> > Required set     No               Reject: -EOPNOTSUPP
+>> > Required set     Yes              Accept: use the feature data
+>> >
+>>
+>> I like this proposal. I bet most features are going to be either
+>> optional or required, and even if we ever have a magical
+>> sometimes-optional feature, it can have its own required flag. So, no
+>> need to pay double the cost on every flag.
+>>
+>> Just need to make sure that optional features always start from 0, in
+>> their own enum, so the offset can be computed correctly in the incoming
+>> kernel.
+>
+> Right. Instead of having a single 32-bit feature space where every
+> feature can either be optional or required, we have 2 16-bit feature
+> spaces, one for required features and one for optional features. Both
+> feature spaces span from 0 to 2^16-1, and then are packed into
+> flags[].
 
 
+Okay sounds good. I will send the next version soon. Also I belive the
+design is decided, So I will drop the RFC tag also.
 
-On 9/21/2026 2:01 AM, Mi, Dapeng wrote:
-> 
-> On 9/19/2026 3:39 AM, Zide Chen wrote:
->> Replace the hard coded field width (8) and the equivalent 0xff mask
->> used for PERF_METRICS MSR field access with named constants
->> INTEL_TD_METRIC_FIELD_{BITS,MASK}.
->>
->> INTEL_TD_METRIC_FIELD_BITS will be used by a subsequent KVM patch to
->> validat reserved bits in the PERF_METRICS MSR.
->>
->> No functional change intended.
->>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> Cc: Peter Zijlstra <peterz@infradead.org>
->> ---
->> v9: new patch.
->> ---
->>  arch/x86/events/intel/core.c      | 8 +++++---
->>  arch/x86/include/asm/perf_event.h | 4 ++++
->>  2 files changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->> index cc13164d948f..cbc9a179f2e5 100644
->> --- a/arch/x86/events/intel/core.c
->> +++ b/arch/x86/events/intel/core.c
->> @@ -3159,6 +3159,7 @@ DEFINE_STATIC_CALL(intel_pmu_set_topdown_event_period, x86_perf_event_set_period
->>  
->>  static inline u64 icl_get_metrics_event_value(u64 metric, u64 slots, int idx)
->>  {
->> +	int shift = (idx - INTEL_PMC_IDX_METRIC_BASE) * INTEL_TD_METRIC_FIELD_BITS;
->>  	u32 val;
->>  
->>  	/*
->> @@ -3166,8 +3167,8 @@ static inline u64 icl_get_metrics_event_value(u64 metric, u64 slots, int idx)
->>  	 * summing up to 0xff.
->>  	 * slots-in-metric = (Metric / 0xff) * slots
->>  	 */
->> -	val = (metric >> ((idx - INTEL_PMC_IDX_METRIC_BASE) * 8)) & 0xff;
->> -	return  mul_u64_u32_div(slots, val, 0xff);
->> +	val = (metric >> shift) & INTEL_TD_METRIC_FIELD_MASK;
->> +	return mul_u64_u32_div(slots, val, INTEL_TD_METRIC_FIELD_MASK);
->>  }
->>  
->>  static u64 icl_get_topdown_value(struct perf_event *event,
->> @@ -4742,7 +4743,8 @@ static int core_pmu_hw_config(struct perf_event *event)
->>  }
->>  
->>  #define INTEL_TD_METRIC_AVAILABLE_MAX	(INTEL_TD_METRIC_RETIRING + \
->> -					 ((x86_pmu.num_topdown_events - 1) << 8))
->> +					 ((x86_pmu.num_topdown_events - 1) << \
->> +					  INTEL_TD_METRIC_FIELD_BITS))
-> 
-> Sashiko comments,
-> 
-> "
-> 
-> Is it safe to replace the UMASK shift here with the hardware MSR metric
-> field width?
-> The original << 8 was used to shift the metric ID into the UMASK field
-> (bits 8-15) of the software perf event configuration (attr.config).
-> INTEL_TD_METRIC_FIELD_BITS represents the hardware width of metrics within
-> the PERF_METRICS MSR.
-> When evaluated in is_available_metric_event() during perf_event_open(), this
-> currently functions because both values are 8. However, conflating a software
-> API layout offset with a hardware register field width could cause this macro
-> to calculate an invalid configuration mask if the MSR field width changes in
-> future hardware.
-> 
-> "
-> 
-> It looks reasonable, we either don't change this, or define a macro to
-> represent the UMASK shift. Thanks.
-
-Yes, I can revert this change.
+~Tarun
