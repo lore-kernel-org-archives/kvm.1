@@ -1,74 +1,163 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793112921;
-	b=E30L15EOPDQy1zJ5uxX1WfFJUyeRYNfw1n7Bs+erQ0tmOC8tuqQwwgQmHXgkeen3aPYE
-	 yM1m1hecu1pqWMapB0YLuwMF4nFztPXVwfT6GojiiaY22q8ObVjWhoVDHfiLBiE4rsH0a
-	 K9OJ6foxyplUhLw7KoY9kk1aBBXNiM1s0Sgb4Co0fcq6dDjJxUlZ03eiWG94K0rmDjbCf
-	 gV35+moDjqWP1GiUlE5QCC+r2TUOloEObSbHmQ1d/64nhcKQeYYV/9jB4EuAKtoc9Wfa5
-	 jU+rFt1S5ZOixrzw3EWvR8WKvtkSuzaimfjdUfV/Y0Hvj92n3qtSS/d7vQsjsaKyvJg==
+	t=1793113780;
+	b=XIWt08FRfCVrRx9uAKB+xOQwVRsZ0Ce3chAISKNUs2CrbZDDAvoPNmnaGUIvng5TMLzA
+	 dxxC1P6Zenx7Oa7Xh5P7TvB5wRgUsOJ7Xuz8YLgPg2RYPZ6PdwakiTkNbGihdpBoMEobO
+	 j8A3f0FEy6qyaNYygcxTpgbnZcP9+CxUev6pSIjoeUHoHVkMIchh7FhtfZd61yyEcOqDg
+	 w4LFu3cvtMsStyXauLSOl7MikUGpIUGrhu97Fwrj/Gt0tJzkraqACqqYXrTA6sISy9OkH
+	 w2mer+GkyXF+ilxJqJtYx4Nct/Yb5BeEVEsIDTumjwUaRmxJs/9ALS+BQVlbf7C67bQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793112921;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=1DehjZ5BL8d0YnBEeJuu65Ld1wB1OE7I+m9Hy0VoO3I=;
-	b=f0MtzeuRyS3HauDhIqu1hXnDxLlrHdasjcr+YpLoc+npB0ga4XHwm8mZjLzk7co8xE7B
-	 /OUVhfVZTbTpMgwU1iDEUZ5ZhdVrIEaj95gPtHmoBQcUwyeY3pMl6vRDnVPty1s8smTHD
-	 YPDLTVrsG6S3+yGipLIqgkJXZ3osGv7/5Bzot5j7fz+p5Zd9dqbNcUhLC61bncZuDHIyP
-	 i5is5yQaXBsc6QhjiVNCDXW2NM6gtfsa5e2MmQL9r9QR2O5Ue2Mn0mdKHOad7S+3I3thZ
-	 j1UWKWVNbs5XMX93o9FdfMhsrzIHwpFNVMbsd77Lwqu0EdKcLqzuHoIrsPxKRG1qHqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793113780;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:Reply-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:User-Agent:
+	 X-Scanned-By;
+	bh=YxsqXTT/2SkHCopDBU3zcdHUWKG0aEgc5S4iUgZigFw=;
+	b=FfIahLyT5p5tzquah7sVZX8hRJkMawXc6h/fnsXLJquRxQSN3HGInENS53KcTWwCCQ7g
+	 6KLg0kHuJJThoIjZf7uGRXEX5UY4xzN5sCPoK/WY+PKD9d+Ymdrta9UaOEZLJbnG87AYJ
+	 5WV+1m+dGnpyGcowyAOnbcvIoe2TEn76KUFyxxZ5TDpxsqDBwMfvP0vqM6PMlTEtz6YUp
+	 +Ej+QYooYEuH5H41DCi5dlUD1ZwrKj/5mvk8ZNjlKUYgbZJGSQSOaCtNKYlTmFgXqL/vX
+	 nL84unqECiaJSw0ATvPDW6P4Sae9oYWfjC30UMq/TjHRxh4l4vqfhdOmIbPlbumUM/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gO8jXOfi;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EMLjalLG;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF62606A31B
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:55:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AAF62606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E03606A31D
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:09:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39E03606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gO8jXOfi
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ab67ff8ec3so3085187a91.0
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 07:55:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793112920; x=1793717720; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1DehjZ5BL8d0YnBEeJuu65Ld1wB1OE7I+m9Hy0VoO3I=;
-        b=gO8jXOfiP+TwEFj4a7G3XZMsl9Jf9enBFTAin8mpQQGJxAfRLf/BpCTqgSDYDLEP2a
-         GwMZnfrfppp7Vj2BHI9qnhNHgFRtvJ+ikqI5mbhD+8bzGy6l7KF7a3rpOATQRj5/hKIS
-         59p06nk156+E+gwg8H/JmahwIxSE7ybCXTjVCsY8qNRhYAmlbRd88KBbLU0zTxhjQaZe
-         oHdSGHT6odYbRzVzp6sTylTqckfRhNl3FPoTA8pe847tCe9EWWzI0QAqNj3Olyl4K3OI
-         jBPAhRcq3jmhfnk/J+Zs1sG/OtgxAat3ZVkxjsnWCRQFjl87lazytSjyWvScXS45L1F1
-         9voQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793112920; x=1793717720;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1DehjZ5BL8d0YnBEeJuu65Ld1wB1OE7I+m9Hy0VoO3I=;
-        b=K6aeZWh7NCno/hsZQZ8CVEOc3Y3cixGAGXnIelXUYpFVR61BDk0uTN2SN6kGRcOI67
-         pRE3Ib1zLF8xF6q+QiXNIk9vs9sY3NA+/8jVn+FT/iDVPcRox7xiJyM9AfmdqU6/JrFp
-         McS5k5jUxgzo+0iJcuGw1I+MzFxhJ5/MbMn1qenWwfVyO/OoV50vmE3AoFl/ljEw17N4
-         0LY+LEn4x59K4AyAFu3R3jvgzoLoTz3IMAp5DTpCoYlgfNUeE8HV5t0FE1Bhomq/rVOA
-         6tiCpmdAFBEKdGaK7PCEcaImRlpwIV+qIFInKCAL9PoQG+uaxaZxeG7CV0VFy2qsR6O8
-         LmdQ==
-X-Forwarded-Encrypted: i=1; AKwUvByUX0culdX87qu1Ic24dofsRsj+jL7F4IpQ/fqS4KsaikYr7qLLX4AqPN0lC3eBVy7TrHg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLOZ449Ui1Vv5PpdGSbsqhGxSWpB5Zi1VlfxFZlFa8zOfHmDEE6
-	RhS1DtVfzLv89YljmNpU1k0j2/L/78YCy5bj1H3sYo52SMGqGhpn1U0cJKtlsR0Oqi81NKDrwC6
-	KGvUwFw==
-X-Received: from pjtn20.prod.google.com ([2002:a17:90a:c694:b0:3ae:1810:840c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:590f:b0:39e:4c81:6c5f
- with SMTP id 98e67ed59e1d1-3adeaae86acmr7469745a91.26.1793112919756; Tue, 27
- Oct 2026 07:55:19 -0700 (PDT)
-Date: Tue, 27 Oct 2026 07:55:18 -0700
-In-Reply-To: <6c156bb3-a04f-4d4e-8611-b1e93359e8ad@intel.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EMLjalLG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793113779;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YxsqXTT/2SkHCopDBU3zcdHUWKG0aEgc5S4iUgZigFw=;
+	b=EMLjalLGTYrNlCmGo2atTSKdh+ic+WcxN8E92twoOTqF6Og6d7Ro1qC5G68B9x+KITzduw
+	qiYY1++St98785pl7l2SO/CwiUAv/+7ZqPLTHo6xDN2dpBAexTzzjZeL5IPdb2fNqv7OC5
+	4yce7LK74VH32Pa60OAsm6URxDJgQqY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-7XFlFRhPPtuZJx-cX-8Sxg-1; Tue,
+ 27 Oct 2026 11:09:34 -0400
+X-MC-Unique: 7XFlFRhPPtuZJx-cX-8Sxg-1
+X-Mimecast-MFC-AGG-ID: 7XFlFRhPPtuZJx-cX-8Sxg_1793113770
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 46A391954B0B;
+	Tue, 27 Oct 2026 15:09:28 +0000 (UTC)
+Received: from redhat.com (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E918918002B1;
+	Tue, 27 Oct 2026 15:09:01 +0000 (UTC)
+Date: Tue, 27 Oct 2026 15:08:58 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+	qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+	John Snow <jsnow@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+	Eric Blake <eblake@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Igor Mammedov <imammedo@redhat.com>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+	Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+	Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>,
+	Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>,
+	Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+	Jagannathan Raman <jag.raman@oracle.com>,
+	John Levon <john.levon@nutanix.com>,
+	Thanos Makatos <thanos.makatos@nutanix.com>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org,
+	linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sergio Lopez <slp@redhat.com>, qemu-arm@nongnu.org,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org,
+	Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>,
+	Xianglai Li <lixianglai@loongson.cn>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org,
+	Zhang Chen <zhangckid@gmail.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Alexander Graf <graf@amazon.com>,
+	"Gonglei (Arei)" <arei.gonglei@huawei.com>,
+	zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>,
+	Luc Michel <luc@lmichel.fr>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+	Jamin Lin <jamin_lin@aspeedtech.com>,
+	Kane Chen <kane_chen@aspeedtech.com>,
+	Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>,
+	FangSheng Huang <FangSheng.Huang@amd.com>,
+	Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+	Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+	Jesper Devantier <foss@defmacro.it>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Glenn Miles <milesg@linux.ibm.com>, Conor Dooley <conor@kernel.org>,
+	Sebastian Huber <sebastian.huber@embedded-brains.de>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Titus Rwantare <titusr@google.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Anthony PERARD <anthony@xenproject.org>,
+	Peter Xu <peterx@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	xen-devel@lists.xenproject.org,
+	Roman Bolshakov <rbolshakov@ddn.com>,
+	Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Tao Tang <tangtao1634@phytium.com.cn>,
+	Stefan Berger <stefanb@linux.vnet.ibm.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Artyom Tarasenko <atar4qemu@gmail.com>,
+	Yoshinori Sato <yoshinori.sato@nifty.com>,
+	Jiri Pirko <jiri@resnulli.us>, Eric Auger <eric.auger@redhat.com>,
+	Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 54/65] qdev: adjust PciDevfn declared type
+Message-ID: <auC-ilqUJq27neSR@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+ <20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
+ <atsxLV5YZo8dr-8G@redhat.com>
+ <CAMxuvazd7G_NBOM_c6BxZn5PFSw=XQUHueHqBoQQfpzPPgi9qA@mail.gmail.com>
+ <87zevz5h4k.fsf@pond.sub.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,68 +166,78 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261022210134.612848-1-seanjc@google.com> <20261022210134.612848-3-seanjc@google.com>
- <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com> <auCvuyY7tTg7ISwR@google.com>
- <6c156bb3-a04f-4d4e-8611-b1e93359e8ad@intel.com>
-Message-ID: <auC7VoynSWStxCg3@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
- when filling CPUID entries
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Changyuan Lyu <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87zevz5h4k.fsf@pond.sub.org>
+User-Agent: Mutt/2.4.2 (2026-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Tue, Oct 27, 2026, Xiaoyao Li wrote:
-> On 10/27/2026 10:05 PM, Sean Christopherson wrote:
-> > On Tue, Oct 27, 2026, Xiaoyao Li wrote:
-> >> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
-> >>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> >>> index 271c2f94b8dd..37d088f6f7a8 100644
-> >>> --- a/arch/x86/kvm/vmx/tdx.c
-> >>> +++ b/arch/x86/kvm/vmx/tdx.c
-> >>> @@ -2,6 +2,7 @@
-> >>>  #include <linux/cleanup.h>
-> >>>  #include <linux/cpu.h>
-> >>>  #include <asm/cpufeature.h>
-> >>> +#include <asm/cpuid/api.h>
-> >>>  #include <asm/fpu/xcr.h>
-> >>>  #include <linux/misc_cgroup.h>
-> >>>  #include <linux/mmu_context.h>
-> >>> @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-> >>>  
-> >>>  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
-> >>>  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
-> >>> +	entry->flags = 0;
-> >>>  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
-> >>>  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
-> >>>  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
-> >>>  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
-> >>>  
-> >>> -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
-> >>> +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
-> >>> +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
-> >>
-> >> I think the WARN_ON_ONCE() is very likely to be triggered in the future when
-> >> people run old kernel with new TDX modules.
-> > 
-> > Then upstream patches to make that not happen.  Intel insists on treating the TDX
-> > Module like hardware.  So, treat new TDX Modules like new hardware.  Upstream
-> > support for the new "hardware" before it ships, cc'd to stable@vger.kernel.org
-> > if necessary.
-> > 
-> > Because IMO, the WARN is doing exactly what it's intended to do: alerting the
-> > admin that they are running a potentially dangerous setup.
+On Tue, Oct 27, 2026 at 03:54:03PM +0100, Markus Armbruster wrote:
+> Marc-André Lureau <marcandre.lureau@redhat.com> writes:
 > 
-> For this specific case, does it mean every later patch to add a new leaf in
-> cpuid_function_is_indexed() needs to be backported to stable?
+> > Hi
+> >
+> > On Fri, Oct 23, 2026 at 2:04 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
+> >>
+> >> On Tue, Oct 20, 2026 at 02:46:11PM +0400, Marc-André Lureau wrote:
+> >> > PciDevfn is a bit special, since it accepts integer and string as
+> >> > setter, but only output integer as getter.
 
-If you want to ship a new TDX Module that enumerates features in those leaves and
-works as-is on older kernels, yes.  Again, this isn't really any different than
-enabling new hardware.  E.g. a kernel from 2024 generally doesn't work flawlessly
-on a CPU being released in 2026.
+snip
+
+> >                                                       But I agree we
+> > could do better.
+> >
+> > There are multiple options. We could keep declaring the property as
+> > str instead. In this case, the getter should probably return a string
+> > for consistency and correctness. This might surprise some existing
+> > users though.
+> 
+> I.e. ditch numeric suppport for numeric addresses, right?
+> 
+> Incompatible change.  Do we care?
+> 
+> If we don't, we should be honest about it and mark qom-get unstable.
+> 
+> > We could introduce new properties like `devfn-str` and `devfn-int`
+> > that alias the same value.
+> 
+> Compatibility break.  If breaking compatibility is okay, I'd rather use
+> the opportunity to get rid of cleverness, and go with your first option.
+> 
+> > We could also introduce a new structured QAPI type.
+> 
+> What kind of type do you have in mind?
+
+IMHO the root cause design flaw here was to overload 'addr' as a
+way to set both the slot number and function number, as using
+one property for two pieces of data is a well known anti-pattern
+we caution against.
+
+IOW, we should have had 'slot' and 'function' as separate properties
+from the start.
+
+From a CLI POV, we could easily change 'addr' to mean only the slot
+number, since it is always parsed in string format without the
+magic (slot << 4) | function encoding. Then add a 'function' prop
+
+The challenge is the impact on QMP with strict typing, as ideally
+int format would soley represent the slot number, but today the
+int format is encoded (slot << 4) | function.  So anyone relying
+on int format in QMP would silently have a semantic change if we
+altered what 'addr' means. 
+
+Deprecating 'addr' entirely and adding brand new 'slot' and
+'function' properties would be a significant disruption to
+a syntax which has been documented for years (decades).
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+
