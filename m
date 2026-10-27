@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793136655;
-	b=jWrvJ62QqEr5T6mbFgvgBPOI/yIQUdZNVVGPY8dPQOPnfqiHSq8W9qKaOVKx8XagXrgy
-	 G0//9O81PFUQcWdgzeMa3IUdmwj+lR4k7qNyuzEeLb4Dvpjq0IDBs+NAUjorm3/N2PTa7
-	 aY9EuzhGdFIFuhJ1CxGxLmR9CYIxJLrqQVa2XGMxQ4P+DdrMVSF58HX3cIFD22hNVtcw7
-	 ZG2VA5cwqAmMLNOSl10NmCEqoafjz6KoIat4eoOjPvK3cRPYmz+fpB92jDFlXJXenhhtP
-	 ZXNJHD/sgoN6kD4pUDq7lbepJ5iG9CITkcGGfj05Gf5LYpqvTgolN2YV2pIDLyrAEaw==
+	t=1793137158;
+	b=h0aB7coxzakjqtWVfKyvf52UCtg9aj7L8LeKHxXHIdafEvR+gWLKH1VAYBlXKY4BVof7
+	 bk8lmkAsdenExIWPWDEhantGLdUrxLS6YICWOqTHH+/pJVouNIp3OteaINVoy9G4wk8PE
+	 CD/1raqCqMQrxkK0l1NFaaDPXpmF9yqsvMptfQrJkf3hhXPKiVms2DAHGoRFzkd4hizzC
+	 HKxuKeByHv384BuqIGZM7qXLlzs8Pon0J4sFykhRsBtnpxNI5YOtV2pdh9eSNc1sSOoJN
+	 5VubECjsYQ3m9Tg9Kmz/EvI1pASAFgbit2f8AVVZGp/unFK0cwzPXrqQf0lHfFARY7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793136655;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793137158;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=5quhoV3MalScmAzYkLeJA6boRgR5AHVSu1xhAFnf4wQ=;
-	b=gdOYuKvIK88u+RmyYwQ5PQwFv57/+3SP24rFEO/LyN52bfgJKT1K8oinrFaaEmDe9DEw
-	 D4tyQbdrWrCcBMm/urVVfH5QuMIfjSjT+jmVR5fvRzcpVKqaCYUaJIGI+Az/f5G+zdymH
-	 /+Hyt/Us6VARfsZQzTZzkdZrogbaTMzebWBn1Rmd6JfReqhw7NGIeft2XEMwjgw0XXQ/U
-	 PtmqpE/0E8mOBfiyl2GM/zfvGEDUdlEZpJ8erxolfnMGzP3okkyOAayyTpDOKfQyKJWsC
-	 meWz/+7X2hTJdAiC1lJIXRUkwWWxXoVzaNMfwsUb139eKucwNRgwFuKMu0EtFitf8pg==
+	bh=j5221omMActoQkDHF4RaC0GAmHgj+tP1MLFSio0coJk=;
+	b=eGbuPpLeyWlzpHpwFY+BhU3oU1FEpOv7XUQZmuxM2kDtCBxX2PajgEkDfsDfiC54623/
+	 wVA3EgrWsqqWYfQ1F8MRBiuCWVzH0UJfdkezQwpK98YDGxmt0K9Y9Jx9TJq5+VyKTN4bm
+	 bggezPGw0vI0dtt0R1nwYU2pyjLqi5B8OVychROBrv0/tv1J6YRhVMup1CjZJjKwe59gn
+	 75Zybna3NLybmjOS7J87yl3I+G2VAdNRu4J020ouBUkIXMeL3DuQBe5ToOwM+KIWmdA4c
+	 1y6N4efeLQL0+th7b1yXX9Pg3Ca0vbt97n+/fXx0v/R7yWND3G+VvjsGPwxvoOIE/lg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bkshNFKn;
-	arc=none smtp.remote-ip=198.175.65.13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NwaEJJmF;
+	arc=none smtp.remote-ip=198.175.65.14
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8583606A31F;
-	Tue, 27 Oct 2026 21:30:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8583606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF6C606A31A;
+	Tue, 27 Oct 2026 21:39:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0CF6C606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bkshNFKn
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NwaEJJmF
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793136653; x=1824672653;
+  t=1793137158; x=1824673158;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=PXYY1ekMEv61fuPP27gXvWwAl/ofe3DPlGY7wbG+SsQ=;
-  b=bkshNFKnCeklcrgCosstu9uA6Ci9X76PY1+niuqiOUwfXJHUuvlfR4/v
-   /zcYu4r40vbAcqVXSqNslItGeVfE/DBGo62pC9Tl5ndBX7lFZXtQ5K4dY
-   rX4pxrMQLN+r3RyetvZ1LOdxu7U5xm+UkaU3JO0wZh3gKfwGA1jq4eRtm
-   IvZOXft0VvLvFbpSA0Uw9OVRsmXTIQ3ivpHJMktISn/1kfjYwkbtGALWf
-   D5hzgBQ/yKd5sUaWIS11OCGo5uHqOHxdzH1ae2M1pQW+8Ko7Bx4SRefDR
-   aN72aZ788qtbqkOzM9HzgYo6cALKIaBPTvQsFbUFpB2+qgEn1YrNz96eg
-   g==;
-X-CSE-ConnectionGUID: g5rvLizhS/2WJYqVPl2T6w==
-X-CSE-MsgGUID: WaAGaEZsTi2lisX2k1NY0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1726540"
+  bh=P3oWki5m/mrnhxYk4sKgWwU2lL7VHJaW83IqKWGyeZ8=;
+  b=NwaEJJmFosqo/zkGFhz01KFbGzrE/6aQwxPLmnm6BllRl8No9Iy5H10F
+   lOPnQLjtP+X9Bb1ew0iVOClmvjfppEVwAE4b6BJaHXdHwxLL6u/hfauqr
+   IDThu7sgpXxtDIAXrnu6olGgiYFyW5tdkSVC04oLDcCW/jjcHfXyRdvon
+   axw1QXMplMuAOZeteSfa4oMyexS6+jnax/6ns31xlHbae4aFOTsZYXyOl
+   cO7mAYwDPGRd58XiIO25p8LIbOB2lQobwp6tzKdM/Fv/BgbX/5Fswcfjp
+   gWNW7A4+zNav2PlbMku5JrfV4z1bdKLRikRnL6A6NNfa7Li+SHLpb3ebg
+   Q==;
+X-CSE-ConnectionGUID: iKHRHyCTQASHDxfWuyxOpw==
+X-CSE-MsgGUID: Ecx7FvysSjGLM+GDhv1CKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1728479"
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1726540"
+   d="scan'208";a="1728479"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:30:53 -0700
-X-CSE-ConnectionGUID: yBpYtmsnRkGRaY+2QA5vKw==
-X-CSE-MsgGUID: vamJhQtTQF+nKc31KwJfqA==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:39:17 -0700
+X-CSE-ConnectionGUID: O8xsiCs+QVCwPruINTCAAg==
+X-CSE-MsgGUID: cVpPdMFAQ2C3Gc3y+/WugQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4753743"
+   d="scan'208";a="4755535"
 Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:30:51 -0700
-Message-ID: <98ed42e6-8c10-40f1-affa-2333188572bb@intel.com>
-Date: Tue, 27 Oct 2026 16:30:50 -0500
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:39:16 -0700
+Message-ID: <8bb51068-461d-4eba-8e4c-0adf35a80839@intel.com>
+Date: Tue, 27 Oct 2026 16:39:16 -0500
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,117 +73,98 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 05/12] KVM: x86/pmu: Support PERF_METRICS MSR in
- mediated vPMU
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v9 09/12] perf/x86: Add INTEL_TD_METRIC_FIELD_{BITS,MASK}
+ constants
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Xudong Hao <xudong.hao@intel.com>
 References: <20260918193937.569414-1-zide.chen@intel.com>
- <20260918193937.569414-6-zide.chen@intel.com>
- <20261023182743.3248481-1-jmattson@google.com>
+ <20260918193937.569414-10-zide.chen@intel.com>
+ <b73ffa7d-29ce-44b3-be1c-88068fc2f443@linux.intel.com>
 Content-Language: en-US
 From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <20261023182743.3248481-1-jmattson@google.com>
+In-Reply-To: <b73ffa7d-29ce-44b3-be1c-88068fc2f443@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 10/23/2026 1:27 PM, Jim Mattson wrote:
-> On Fri, Sep 18, 2026 at 12:39 PM Zide Chen <zide.chen@intel.com> wrote:
+On 9/21/2026 2:01 AM, Mi, Dapeng wrote:
+> 
+> On 9/19/2026 3:39 AM, Zide Chen wrote:
+>> Replace the hard coded field width (8) and the equivalent 0xff mask
+>> used for PERF_METRICS MSR field access with named constants
+>> INTEL_TD_METRIC_FIELD_{BITS,MASK}.
 >>
->> +static inline bool kvm_vcpu_has_perf_metrics(struct kvm_vcpu *vcpu)
->> +{
->> +	return kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_PERF_METRICS;
->> +}
+>> INTEL_TD_METRIC_FIELD_BITS will be used by a subsequent KVM patch to
+>> validat reserved bits in the PERF_METRICS MSR.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>> Cc: Peter Zijlstra <peterz@infradead.org>
+>> ---
+>> v9: new patch.
+>> ---
+>>  arch/x86/events/intel/core.c      | 8 +++++---
+>>  arch/x86/include/asm/perf_event.h | 4 ++++
+>>  2 files changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+>> index cc13164d948f..cbc9a179f2e5 100644
+>> --- a/arch/x86/events/intel/core.c
+>> +++ b/arch/x86/events/intel/core.c
+>> @@ -3159,6 +3159,7 @@ DEFINE_STATIC_CALL(intel_pmu_set_topdown_event_period, x86_perf_event_set_period
+>>  
+>>  static inline u64 icl_get_metrics_event_value(u64 metric, u64 slots, int idx)
+>>  {
+>> +	int shift = (idx - INTEL_PMC_IDX_METRIC_BASE) * INTEL_TD_METRIC_FIELD_BITS;
+>>  	u32 val;
+>>  
+>>  	/*
+>> @@ -3166,8 +3167,8 @@ static inline u64 icl_get_metrics_event_value(u64 metric, u64 slots, int idx)
+>>  	 * summing up to 0xff.
+>>  	 * slots-in-metric = (Metric / 0xff) * slots
+>>  	 */
+>> -	val = (metric >> ((idx - INTEL_PMC_IDX_METRIC_BASE) * 8)) & 0xff;
+>> -	return  mul_u64_u32_div(slots, val, 0xff);
+>> +	val = (metric >> shift) & INTEL_TD_METRIC_FIELD_MASK;
+>> +	return mul_u64_u32_div(slots, val, INTEL_TD_METRIC_FIELD_MASK);
+>>  }
+>>  
+>>  static u64 icl_get_topdown_value(struct perf_event *event,
+>> @@ -4742,7 +4743,8 @@ static int core_pmu_hw_config(struct perf_event *event)
+>>  }
+>>  
+>>  #define INTEL_TD_METRIC_AVAILABLE_MAX	(INTEL_TD_METRIC_RETIRING + \
+>> -					 ((x86_pmu.num_topdown_events - 1) << 8))
+>> +					 ((x86_pmu.num_topdown_events - 1) << \
+>> +					  INTEL_TD_METRIC_FIELD_BITS))
 > 
-> The SDM, volume 3, section 22.3.9.3, says:
+> Sashiko comments,
 > 
->> IA32_PERF_GLOBAL_CTRL. EN_PERF_METRICS[48]: If this bit is set *and*
->> fixed-function performance-monitoring counter 3 is enabled, built-in
->> performance metrics are enabled. [emphasis mine]
+> "
 > 
-> and
+> Is it safe to replace the UMASK shift here with the hardware MSR metric
+> field width?
+> The original << 8 was used to shift the metric ID into the UMASK field
+> (bits 8-15) of the software perf event configuration (attr.config).
+> INTEL_TD_METRIC_FIELD_BITS represents the hardware width of metrics within
+> the PERF_METRICS MSR.
+> When evaluated in is_available_metric_event() during perf_event_open(), this
+> currently functions because both values are 8. However, conflating a software
+> API layout offset with a hardware register field width could cause this macro
+> to calculate an invalid configuration mask if the MSR field width changes in
+> future hardware.
 > 
->> The values in MSR_PERF_METRICS are derived from fixed-function
->> performance-monitoring counter 3.
+> "
 > 
-> Hence, a dependency on fixed counter 3 belongs in this predicate.
-> Perhaps something like:
-> 
-> 	static inline bool kvm_pmu_has_fixed_counter(struct kvm_pmu *pmu,
-> 						     unsigned int idx)
-> 	{
-> 		return idx < pmu->nr_arch_fixed_counters;
-> 	}
-> 
-> 	static inline bool kvm_vcpu_has_perf_metrics(struct kvm_vcpu *vcpu)
-> 	{
-> 		return (kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_PERF_METRICS) &&
-> 		       kvm_pmu_has_fixed_counter(vcpu_to_pmu(vcpu),
-> 						 INTEL_PMC_IDX_FIXED_SLOTS -
-> 						 INTEL_PMC_IDX_FIXED);
-> 	}
-> 
-> with intel_pmu_refresh() calling kvm_vcpu_has_perf_metrics() instead of
-> testing perf_capabilities directly. (nr_arch_fixed_counters has already
-> been computed at that point; all_valid_pmc_idx has not.)
+> It looks reasonable, we either don't change this, or define a macro to
+> represent the UMASK shift. Thanks.
 
-Thanks for the detailed analysis. That makes total sense.
-
-Initially I didn't gate PERF_METRICS on fixed counter 3 out of concern
-about policing userspace configurations. Additionally, as in the quoted
-SDM text above, it means PERF_METRICS can't function without fixed
-counter 3, but strictly speaking, the SDM doesn't prevent other
-operations, for example, writing the METRICS_CLEAR_EN bit.
-
-But having IA32_PERF_CAPABILITIES[15] set in the absence of FC3 is not
-going to happen natively, so I think it doesn't break any rules if KVM
-chooses to gate PERF_METRICS on FC3. And as you pointed out, it's a
-simple and effective way to protect KVM invariants and migration integrity.
-
-I will add the FC3 check to kvm_vcpu_has_perf_metrics().
-
-> 
-> KVM only supports contiguous fixed counters today (see patch 2), so a
-> simple comparison against nr_arch_fixed_counters suffices. However, if KVM
-> ever honors the CPUID.0AH:ECX fixed counter bitmap, a separate helper
-> keeps that assumption in one place.
-
-Before the pmu v5 series is merged:
-https://lore.kernel.org/kvm/20260827223755.143247-1-zide.chen@intel.com/
-
-I have to continue use nr_arch_fixed_counters in this series.
-
-> 
-> As it stands, if userspace sets PERF_CAP_PERF_METRICS for a version 1
-> vPMU, MSR_PERF_METRICS is passed through (kvm_vcpu_has_mediated_pmu()
-> only requires a non-zero version), but intel_pmu_refresh() bails out
-> before it gets to the PERF_METRICS code. With patch 11, that leaves
-> perf_metrics_rsvd at ~0ull, so a value the guest writes directly to
-> hardware can be saved with KVM_GET_MSRS, but not restored with
-> KVM_SET_MSRS.
-> 
-> Since nr_arch_fixed_counters is 0 for a v1 vPMU, the above handles that
-> case too. It also takes care of the METRICS_CLEAR_EN unmasking without
-> fixed counter 3 that Sashiko flagged on patch 12, and it obviates the
-> NULL pmc check in intel_emulate_rdpmc().
-
-Yes, with FC3 gating, these issues can be easily resolved.
-> [...]
-> 
->> +	case MSR_PERF_METRICS:
->> +		pmu->perf_metrics = data;
->> +		break;
-> 
-> On a part with only four metrics (e.g. Ice Lake), userspace can stuff
-> bits 63:32 into pmu->perf_metrics here, and the unchecked wrmsrq() in
-> intel_mediated_pmu_load() will then #GP on every VM-entry. Patch 11
-> isn't an optional follow-on; it needs to be folded into this patch.
-
-Yes, agree.
+Yes, I can revert this change.
