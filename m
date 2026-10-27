@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793064351;
-	b=snQ/6dgfWLbnKVpzVUUJR1S4V/sGXL7TPeHZXy3iaUhNQYZL22JjmVEJhxmOkYW0WRe3
-	 OL0Ra94N0ZbzmfOqzeI4p9UZW+dcU0t4YXzqPwdP5+C6Tm4/4gL6fXlmTgC+TAkbL4Jr6
-	 hMY3M8oe+j+Cw6OoYnT5TPvvIglBjd0A4hp8Sk7dyDMjufvXLY5+IIupUDM1kA/rEtww3
-	 pTnCgROxjwgRAs4uBflhem6X16B9/vhPUgsVpuW7RITxoZVOGlOzDbllwwdGCRxOs3EPq
-	 WHNLBNNT9F8HfXoSFawT74KUi00Al7MjlMLL8uSKKUwg+xdxf0heEHccDYkz8QRY9TA==
+	t=1793067057;
+	b=TUExtBUz7rT4P8eWXqVBBmLsXFTf5wiuo7v4FE4pBPEmg6yUmGHIOdCDNeVv9+Dizbcz
+	 H6c9cUQKeqe97HZ+B2sTKcBYCxLl9R3a+96GNrrh9mAyFUW0wcfTv295oTR3Pb29GNXHl
+	 L9Rnkp31yvwjNACOwlkexxpa8Ypwi/d+Y94LGQCcNLfoEhN7W/m8tWywJlNbWdmQvSpPa
+	 z30NrilNHwZO8PlKBrzIpUuMHU3ZV1AswSlHAGWO9fwwDXGkA7N3U1BVmMwIR+LDmWdVZ
+	 vKrStM+MMU8tyiTjChzHM7Skzw7SZfQfYAI3pZm07ab+rH3qKRA8N8IoLWreItTh3jQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793064351;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793067057;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
 	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Y+DIHcrA443uqX7QES2ZcgrJrcUrUUQxo223RqYtOdc=;
-	b=q2J4aUt6J+8AXcvvqpl3YFJ+M1lT2FA4YVJpKUB0aW98thdVDtZ9SKWR3juBhnuWakOe
-	 WqlHlzrdvafEhz3zJAk1xLvCBQ92mGibc0oULdY+5a7cqCjvVQK5oVUgtzYV2nqBZ8AsI
-	 XQcsyv1gfTPPdu+u1XgJK12Lp6zMAdM2FJDqcbw8IEY3q/yDTbYpyfpjwVZVHXn67moex
-	 UoF2h0WO+mYTvHiBKtVw/xFqXYY34Ytn0arSafLEdtUFVkC0CIeUoYKgL+6ehYBedo3SC
-	 jXAtvQhhQBlmh4pnEzrbS47krsdXFDH4oQdH2VyUlPn1QIX9RUw7ShG4OHP9uisYd6A==
+	bh=ChV9SXo7RCdpu6OOdHTr97QMfnUxnjY7qFzy89+nyu8=;
+	b=I4qd9CiTziDXf4tEvIyqE1FXZDUM7JiRGCzD4HXq1ZEJv+lVQqCcq8e2t7Z3j3gCMIJ7
+	 zt1WCaT0D0RwlmXvja5cNGqwKgmNGcW+iTRBfz13fOEZxmmuFWK1SLIjvy0NqgNaGWSIu
+	 JJ7k3gcxbne7mKt+k1GehVe4jq5ykuPipd/0TSj0RN9+iDlDJWSQxLrtXU9bRk+nmudgn
+	 HS6q89ARbKAl3R3G8rI4MnFYc67gCztuxzYMmwNM3aDq/YXbI1AqhT5/FdfqvbAinrgPY
+	 GpNRJMyBvyuCrYkndpBEHJg6YnCE8A5eh7maEvDyxmTjgafqfnP+UqxynDNiQ+A4ZzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=L53lhoCx;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g40TW4lX;
+	arc=none smtp.remote-ip=192.198.163.11
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E809A606A31A;
-	Tue, 27 Oct 2026 01:25:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E809A606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C37606A31E;
+	Tue, 27 Oct 2026 02:10:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62C37606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=L53lhoCx
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g40TW4lX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793064351; x=1824600351;
+  t=1793067056; x=1824603056;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=1W0qQOp9dlvhFLQgWLSpC14yTIgst1Lk70JE9hOkfO0=;
-  b=L53lhoCxCvJanlIjEpE/6Dp9npkN103lLRTtG+JySOpcoMOgBCsktCaN
-   imlKGhC5v3ZTYiaddOaWn8TkaMxdegrxmPu4qtYC1fQCCScajiaFyahjW
-   +o7TS2oQCNmGQ+oGYTcLYggOiEOD53TxcHOph32TVex7P+JtOrGiRnpQp
-   alXLONnxVEnLnCkNOX/iKh5QnqISDFoxvQorFwI72U2xvGMrn4TkouohL
-   j4UQ0GeBLsuVcMfPyl5tW8DGPq1mySQGlGumDVtHCO5GUbP052cKlNUYx
-   /yJHTGkCYqWFU6JESu4Syn/5u+76azHitGMf9rb48fEedMEvGu7qyPPgz
-   w==;
-X-CSE-ConnectionGUID: Ey5msoRsRW6DdEcDgbXx8A==
-X-CSE-MsgGUID: NPhX6EtZTK+64IVIaDUaFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1760137"
+  bh=CIL7J/YgFCsd7u8uR5ht/g7jTYE9p02wPOlFFiCTM6o=;
+  b=g40TW4lXM+94VcNuF1urOHsIjszYUoRuUl4CwYFHIlEgpHJRe3gjJdlD
+   SikOt/X6Cz9p/Mta36BzP2ysu7bIJ5N2MahRVJQPuVVjPPknQc7dMn3K1
+   zt4pap6bm5wEcCNB6mrGdCIUdPyJRMGAJD2VdVQFb8Y8Betl4fDAfB3r/
+   QuOpGv3bKJDCG3FdpayDNb4zvpwdEP6rwCYj8uaPN8nw3zLFjyTKcu0M+
+   90v7R+g6z9pqwXrJQBceafIm0dVp41iUePXJpfCD8mIlzsT1WYg1DPhCT
+   oNG4os0tmv+hVR85W+QaWX9hbezKrf1mv8RXwJdj0by3ddRF97yFt9NfV
+   A==;
+X-CSE-ConnectionGUID: yHnZwsEeTGq0Pp1q/53vIg==
+X-CSE-MsgGUID: ZQq3GKGpRb6PnHkUyUbJPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1666862"
 X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="1760137"
+   d="scan'208";a="1666862"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 18:25:50 -0700
-X-CSE-ConnectionGUID: 499ixse/RBiiw5XlyzZDTQ==
-X-CSE-MsgGUID: 1iitD3rJT+2NzPxwk+903g==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 19:10:55 -0700
+X-CSE-ConnectionGUID: PInetbcZTamdUGrtM+PoGQ==
+X-CSE-MsgGUID: UoJkD8aHTWmo7cCSoybHQA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="4422631"
+   d="scan'208";a="4433290"
 Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 18:25:44 -0700
-Message-ID: <153dd0db-32d8-4ec9-ab8d-2368a790ac55@linux.intel.com>
-Date: Tue, 27 Oct 2026 09:25:42 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 19:10:52 -0700
+Message-ID: <a61f5570-6652-4658-92a8-161f0cf91aca@linux.intel.com>
+Date: Tue, 27 Oct 2026 10:10:50 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,79 +73,86 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 02/28] KVM: VMX: Initialize VM entry/exit FRED
- controls in vmcs_config
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
+ when filling CPUID entries
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Shivansh Dhiman <shivansh.dhiman@amd.com>,
- David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
- David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-3-sohil.mehta@intel.com>
- <acc168cc-e021-43dc-8846-ed1b2d69facb@linux.intel.com>
- <a0f99d8b-b67d-42f3-b76b-90187a0bea5d@intel.com>
- <5af354c7-9bbb-4ff2-b450-c08cc5b46304@intel.com>
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, Changyuan Lyu <changyuanl@google.com>,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20261022210134.612848-1-seanjc@google.com>
+ <20261022210134.612848-3-seanjc@google.com>
+ <4e1d5d94-9956-4cc1-af5f-1311461ab233@linux.intel.com>
+ <atwR78qCo3qeUXLH@google.com>
 From: Binbin Wu <binbin.wu@linux.intel.com>
 Content-Language: en-US
-In-Reply-To: <5af354c7-9bbb-4ff2-b450-c08cc5b46304@intel.com>
+In-Reply-To: <atwR78qCo3qeUXLH@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-
-
-On 10/26/2026 1:00 PM, Sohil Mehta wrote:
-> On 10/22/2026 8:10 PM, Sohil Mehta wrote:
-> 
->> I couldn't find any precedent for this. I don't have a strong preference
->> here. Is it worth making future-proof?
-> 
-> 
-> I did a bit of digging. The current entry in the table is the result of
-> Sean's preference provided early on in the FRED series. See
-> 
-> https://lore.kernel.org/all/Z739wdGmk4ZuWJ8v@google.com/
-> https://lore.kernel.org/all/ZUz3cPmnqSq7Lol9@google.com/
-> 
-> IIUC, we want the FRED entry/exit controls to be consistent without
-> depending on the ordering.
-> 
-> The current vmx_check_entry_exit_pairs() doesn't cover the FRED case (a
-> single entry bit mapping to two exit bits). So, the updated check would
-> cover this scenario.
-
-OK, thanks for the info!
-
-> 
->> if (!(entry_controls & n_ctrl) == !(exit_controls & x_ctrl) &&
->>     !(entry_controls & n_ctrl) == ((exit_controls & x_ctrl) != x_ctrl))
->> 		continue;
+On 10/24/2026 10:03 AM, Sean Christopherson wrote:
+> On Fri, Oct 23, 2026, Binbin Wu wrote:
+>> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
+>>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>>> index 271c2f94b8dd..37d088f6f7a8 100644
+>>> --- a/arch/x86/kvm/vmx/tdx.c
+>>> +++ b/arch/x86/kvm/vmx/tdx.c
+>>> @@ -2,6 +2,7 @@
+>>>  #include <linux/cleanup.h>
+>>>  #include <linux/cpu.h>
+>>>  #include <asm/cpufeature.h>
+>>> +#include <asm/cpuid/api.h>
+>>>  #include <asm/fpu/xcr.h>
+>>>  #include <linux/misc_cgroup.h>
+>>>  #include <linux/mmu_context.h>
+>>> @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+>>>  
+>>>  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
+>>>  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
+>>> +	entry->flags = 0;
+>>>  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
+>>>  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
+>>>  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+>>>  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
+>>>  
+>>> -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
+>>> +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
+>>> +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
+>>> +
+>>> +	/*
+>>> +	 * Explicitly zero the index when it's not significant, even though it
+>>> +	 * _should_ be meaningless.  Userspace relies on the index being zero
+>>> +	 * (the ABI was inherited from KVM_GET_SUPPORTED_CPUID).
+>>> +	 */
+>>> +	if (cpuid_function_is_indexed(entry->function))
 >>
+>> If the information about whether the entry is indexed mismatched, i.e. the
+>> warning above fired, should we use the information from the TDX module as the
+>> standard?
 > 
-> 
-> 1st line: the entry control is set if and only if *any* exit bit is set.
-> 2nd line: the entry control is set if and only if *all* exit bits are
-> set (which is specific to FRED for now).
-> 
-> Also, to make it easier to read, planning to reformat it as:
-> 
-> struct {
-> 	u32 entry_control;
-> 	u64 exit_control;
-> } const vmcs_entry_exit2_pairs[] = {
-> 	{ VM_ENTRY_LOAD_IA32_FRED, SECONDARY_VM_EXIT_SAVE_IA32_FRED |
-> 				   SECONDARY_VM_EXIT_LOAD_IA32_FRED },
-> };
-> 
-> Please let me know if you disagree with the approach.
+> IMO, no.  All of this information is available at module load.  If we want to
+> harden KVM (and we probably should), then we should apply these sanity checks
+> (or equivalents) during tdx_hardware_setup() and disable TDX if any of them fail.
 
-It looks good to me.
+OK.
+
+In practice, I don't think it is a problem unless cpuid_function_is_indexed() is
+missing an indexed leaf that KVM cares about.  If it isn't missing one, unknown
+CPUID leafs will still be rejected later by the allowlist-based TDX CPUID
+validation.
+
+There is also a false-positive risk: a new TDX module could report an indexed
+leaf that KVM doesn't know about. One way to avoid that is for KVM to fail TDX
+module initialization only when there is a mismatch *and* the leaf is listed in
+reverse_cpuid[]. I think that can be handled separately.
+
+I'll rebase my TDX CPUID validation patch series on top of this series.
+
+> 
+> Anything else is a hope and a prayer.
+
+
