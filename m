@@ -1,68 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793110128;
-	b=ewiVA1oho63iinLlY3I/1nnSf9WCg8wzD1ZCkabaSUrF/yj+nJYmUsiK8uAMUKStrw0U
-	 PIGClLOI0J1gxwvXIkfpARgGit6e8Du9UnERqF8mmAxowHkyAjcU96dXx+YZCITgKx2db
-	 n0f8ClyK1jhBlAVMFOjRBMWGJmEDfkSY4Xcon1UWeGzlv8y98+4EvOSbsc5ZznZobhKjX
-	 OtomG9xy7DseXM8GQCsUlVVqej5Xs2I/084qJIydYsyNAuHWnnmO0KR2xyPp1hIZwbWzb
-	 fpF/JImIeREKc7e+jvuZHKMflyCvQ/p6nXpbgzf4mOqVASjLlkToz5FNTG4znohcWiw==
+	t=1793110268;
+	b=Zn/JEdcNZt7WbkQpN+HW3ZsI8n7HMbTQOybSVU7YQZgQSQ1uIQuQjF52nSIExr8REqRJ
+	 efTNrTrQjD+qIRvUmwsCNsll0jBwAXuKBCUvyQw+3vUy0vTYpw/SZSDT53PTFJ9UUldga
+	 cV6tAhpMEWaJM0jU5b58310+m4xToEA3NY5/EZvZjaS3HQR8T0rkej7mzm+sJl2YLzq6t
+	 J3HmVw3bfGXeBJo+Nas0+pG9B6pjb2O2ZahGJ17zcDXmf09hTqAH72OACTID1aMcYtSG/
+	 kV3cDXuSBb8Xlob2RRqK9yAnJ4wxK37Qb3HNvpumWRb0GED1H19dlPxVf37aaAKSc0w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793110128;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=lSLIUaL2Jt52ZL1/ZORhvu/M8g+F3YsO7Y845XP4dWA=;
-	b=EoCWVZcfuS8VFu5/p556HRP8NK+FjeRzqe6qS77TS6w5eUgdhwpNXq1xFd7gtE+OqSiM
-	 NCQz5hQvZZ6NsX/3Ti+wNBN9z5nvJ31Xhk0k9m1CgoNHsTIpLHKvNZGODs3bsZdHKPXpI
-	 RkGCm3cT2v9ybz4PsfHmYln7anG8XL903g+09vhkQAU7ICtV0U8SCEVDT2/lsAR9BxHGi
-	 NG0cQlQ6uGHwxgn5fIzLJDaNZe48DynHd+nCc8ggPL8X8Ys/HPD+2ytinCxdyRYVf2FzC
-	 PQp1mhQ+D9yliuTSzPNaiIgIDz5WZ4bo6KPXET1pz916UDeAN3dr2r+/IKPc6+9TMRw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793110268;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=PSLRZXEA1oT99TyBIRuZEFfuScd69LinTOoUEodksYY=;
+	b=d74FaSpuz8a8hfUwHYaGmn0QqHflmafzNXGcDWFoYndI1pHxz5PVDeu5l6XaH60ctDzC
+	 kY7mqAv7m9liK9aiSgcNdJZXsEFIiBlrLhmvmd+hkeOpIQ1wy5BhrGLKnAvgTD8c93Shb
+	 L4fdZVkBv3NwvcIiFGevTIcp1BD7khvsL3EfHuVYwqHwoRa7oHHfQg789RBoCZRWOE+jg
+	 R7y6q1uG2hb5TbEXHW/DS9vp4GMhkPQl0SXusJTOI6ocJ6a2xGIC59OoDSV4jG5OaIjfF
+	 5ntGzDdGHVodSTLDDGxyhx8jaL+ehHn/0gQW5JnnL4QIG83y8IZp0yr95zz8rjdA87w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S15z9dD9;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jqqe0aUY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA125606A31B;
-	Tue, 27 Oct 2026 14:08:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA125606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2942C606A32C
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S15z9dD9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793110126; x=1824646126;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=K47uyZ+9DXPOcHQqkyoR+d19Q9CpijVOgdBU1uW527U=;
-  b=S15z9dD9B7fR9E2m1zxBx0tfqtUZjQFAntxJ9eMw9U+Su76Jyfw5w241
-   ftydpSeHLM8bHRrqk7YTZF1xM6kaA5+9fjjR4kKXFxax9AVEnlOUhtBNI
-   pr6yXeJpfbMeZxWcWf++tQxx/MyPQ2XBlZPb6Vw1RcIrPuT0xpMCtYvl+
-   +XgQpnJxBkl33PXDJC1XjzzSyvqEKg30njerOsML2mUtpg6C0/hHSj0CN
-   Ohn2zWR+rpqTBQwGIu1hIbuFgV/4yGAHwdoLawQo3t+CQEF3Sqq2afijj
-   kDyeOeVWo6Y8n78hufNzLEgiR3H00cblQ+IXLqq3CQiUwwOcNl6zSIosx
-   A==;
-X-CSE-ConnectionGUID: eNTdVfmcTmu7mFNvH8HDog==
-X-CSE-MsgGUID: ZS2o5F9KRACWYKcPz5TYoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1900009"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1900009"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 07:08:45 -0700
-X-CSE-ConnectionGUID: VxLkWFdXR02r0GM8ie7iKA==
-X-CSE-MsgGUID: 33F1fWAMRIyiBsNQEv6I0Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4594033"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 07:08:42 -0700
-Message-ID: <7a832e5c-eaff-426f-adff-7935be265bbd@intel.com>
-Date: Tue, 27 Oct 2026 22:08:39 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jqqe0aUY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8D21F01829;
+	Tue, 27 Oct 2026 14:11:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793110267;
+	bh=PSLRZXEA1oT99TyBIRuZEFfuScd69LinTOoUEodksYY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Jqqe0aUYrjxEfBG4D3iCgcqE3F8zFrQxsPB3srwXRNTE6taUBbmFE8e6KMPOzgjgE
+	 7xEAlDj0aFJqT6s13lParQYJp5AC6h3eBNM3lTSwPlayG/qpD5O8/PuqW53jcqjwt5
+	 MY/mWxsSbIgCeOJxhcUi8421PUvetxaA3oNx91kP50+cLf/qo4FZTH41Jh2uGxENCq
+	 VMd8KNM2PJjvLt8JpEwb9nGKKhKBpCGI04XaLkuOxdxTZ3IhIEzclH5Xcs4cecY5Fa
+	 ObS9bAYO9HpfIrCNGXTm0ZNVgh2WhbTxWbMl73ISigdt8nGLSRJrO8Hfp6LcxQLyE6
+	 y456EyY1VkFHg==
+Message-ID: <sashiko-outbox-186708@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 2/3] RISC-V: KVM: Preserve guest Vector state across
+ vCPU put/load
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "slack up" <yxcnew@outlook.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <OSQPR01MB63262D568C71BC3510AAC4A4C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
+References: <OSQPR01MB63265385597FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
+ <OSQPR01MB63262D568C71BC3510AAC4A4C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 27 Oct 2026 14:11:06 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,109 +60,252 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] virt: tdx-guest: Poll Quote status with
- exponential backoff
-To: moe@flashbots.net, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Dan Williams <djbw@kernel.org>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Jun Miao <jun.miao@intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
- <20261024-tdx-guest-quote-poll-v3-2-6a83bb767314@flashbots.net>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20261024-tdx-guest-quote-poll-v3-2-6a83bb767314@flashbots.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/25/2026 3:17 AM, Moe Mahhouk via B4 Relay wrote:
-> From: Moe Mahhouk <moe@flashbots.net>
-> 
-> wait_for_quote_completion() sleeps for a full second before it first
-> checks whether the VMM has completed a GetQuote request, and then
-> rechecks once per second. Every Quote request therefore takes at least
-> one second, however quickly the host answers.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] RISC-V: KVM: missing vector owner invalidation on preempt_v st=
+art race
+- [High] RISC-V: KVM: vector owner invalidation runs before enter_from_user=
+_mode()
+- [Low] RISC-V: KVM: missing kernel-parameters.txt entry for vector_owner_f=
+astpath
+--
 
-It's not 100% correct.
+commit f4e86411e0473662833880eb7f87be358e15d73e
+Author: Xiaochun Yu <yxcnew@outlook.com>
 
-I think it's possible that the host VMM completes the GetQuote request before
-the first check in wait_for_quote_completion()
+RISC-V: KVM: Preserve guest Vector state across vCPU put/load
 
-> With a local Quote Generation Service the VMM completes the request in
-> a few milliseconds. On an Emerald Rapids host (KVM, QEMU 11.1, Intel
-> QGS), back-to-back Quote requests through configfs-tsm took 1021-1024 ms
-> each; with this change they take 6-12 ms at HZ=250. Since quote_lock
-> serializes requests, the one-second floor also caps a TD at about one
-> Quote per second, which hurts users that bind a fresh Quote to every
-> connection, such as attested TLS.
-> 
-> Poll with an exponential backoff instead: double the sleep from 1 ms up
-> to 100 ms, so that a fast Quote is noticed within a few milliseconds
-> while a slow one costs at most ten wakeups per second.
-> msleep_interruptible() rounds up to whole jiffies, so at HZ=250 the 1, 2
-> and 4 ms steps are one 4 ms tick each. The sleep stays interruptible,
-> and the timeout becomes a deadline in jiffies.
-> 
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+This commit introduces per-hart Vector owner tracking in RISC-V KVM so that=
+ a
+vCPU reloaded on the same hart can restore only Vector control CSRs when its
+Vector data registers remain resident in hardware. The optimization is gated
+behind a read-only vector_owner_fastpath module parameter and hooks into the
+generic RISC-V Vector context invalidation callback.
 
-With the statement of the first paragraph fixed,
+> diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
+> index fefc2857f753a..c197d3d7b539d 100644
+> --- a/arch/riscv/kvm/vcpu_vector.c
+> +++ b/arch/riscv/kvm/vcpu_vector.c
+> @@ -17,7 +19,50 @@
+>  #include <asm/kvm_vcpu_vector.h>
+>  #include <asm/vector.h>
+> =20
+> +#include "trace.h"
+> +
+>  #ifdef CONFIG_RISCV_ISA_V
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+[ ... ]
 
-> Signed-off-by: Moe Mahhouk <moe@flashbots.net>
-> ---
->  drivers/virt/coco/tdx-guest/tdx-guest.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> index a5a53174f9d9..d58c8eccb26b 100644
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> @@ -16,6 +16,7 @@
->  #include <linux/set_memory.h>
->  #include <linux/io.h>
->  #include <linux/delay.h>
-> +#include <linux/jiffies.h>
->  #include <linux/sockptr.h>
->  #include <linux/tsm.h>
->  #include <linux/tsm-mr.h>
-> @@ -271,18 +272,25 @@ static struct tdx_quote_buf *alloc_quote_buf(void)
->   */
->  static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
->  {
-> -	int i = 0;
-> +	unsigned long deadline = jiffies + secs_to_jiffies(timeout);
-> +	unsigned int sleep_ms = 1;
->  
->  	/*
-> -	 * Quote requests usually take a few seconds to complete, so waking up
-> -	 * once per second to recheck the status is fine for this use case.
-> +	 * A local Quote Generation Service usually completes the request
-> +	 * within a few milliseconds. Poll with an exponential backoff of up
-> +	 * to 100 ms, so that a fast Quote is noticed promptly while a slow
-> +	 * one costs at most ten wakeups per second. msleep_interruptible()
-> +	 * rounds up to whole jiffies, so the shortest steps take one tick.
->  	 */
-> -	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
-> -		if (msleep_interruptible(MSEC_PER_SEC))
-> +	while (READ_ONCE(buf->status) == GET_QUOTE_IN_FLIGHT) {
-> +		if (time_after(jiffies, deadline))
-> +			return -ETIMEDOUT;
-> +		if (msleep_interruptible(sleep_ms))
->  			return -EINTR;
-> +		sleep_ms = min(2 * sleep_ms, 100U);
->  	}
->  
-> -	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
-> +	return 0;
->  }
->  
->  static int tdx_report_new_locked(struct tsm_report *report)
-> 
+> +static DEFINE_PER_CPU(struct kvm_riscv_vector_owner,
+> +			      kvm_riscv_vector_owner);
+> +static atomic64_t kvm_riscv_vector_owner_cookie =3D ATOMIC64_INIT(0);
+> +static bool kvm_riscv_vector_owner_fastpath;
+> +module_param_named(vector_owner_fastpath, kvm_riscv_vector_owner_fastpat=
+h,
+> +		   bool, 0444);
+> +MODULE_PARM_DESC(vector_owner_fastpath,
+> +		 "Preserve matched guest Vector registers across vCPU put/load");
 
+[Severity: Low]
+Since vector_owner_fastpath is a read-only module parameter checked during
+initialization in kvm_riscv_v_init() (and passed on the kernel command line
+as kvm.vector_owner_fastpath when KVM is built-in), should this parameter
+also be documented in Documentation/admin-guide/kernel-parameters.txt?
+
+> +
+> +bool kvm_riscv_vcpu_vector_owner_enabled(void)
+> +{
+> +	return READ_ONCE(kvm_riscv_vector_owner_fastpath);
+> +}
+
+[ ... ]
+
+> +bool kvm_riscv_vcpu_vector_owner_load(struct kvm_vcpu *vcpu, int cpu)
+> +{
+> +	struct kvm_riscv_vector_owner *owner;
+> +	unsigned long guest_vs =3D vcpu->arch.guest_context.sstatus & SR_VS;
+> +	unsigned long host_vs =3D task_pt_regs(current)->status & SR_VS;
+> +	enum kvm_riscv_vector_owner_reason reason;
+> +	bool eligible =3D false;
+> +
+> +	if (!kvm_riscv_vcpu_vector_owner_enabled())
+> +		return false;
+> +
+> +	owner =3D this_cpu_ptr(&kvm_riscv_vector_owner);
+> +	if (guest_vs =3D=3D SR_VS_OFF) {
+> +		reason =3D KVM_RISCV_VECTOR_OWNER_GUEST_OFF;
+> +	} else if (host_vs !=3D SR_VS_OFF) {
+> +		reason =3D KVM_RISCV_VECTOR_OWNER_HOST_ON;
+> +	} else if (!owner->identity) {
+> +		reason =3D vcpu->arch.last_exit_cpu =3D=3D cpu ?
+> +			 KVM_RISCV_VECTOR_OWNER_EMPTY :
+> +			 KVM_RISCV_VECTOR_OWNER_MIGRATION;
+> +	} else if (owner->identity !=3D (unsigned long)vcpu) {
+> +		reason =3D KVM_RISCV_VECTOR_OWNER_OTHER_VCPU;
+> +	} else if (owner->cookie !=3D vcpu->arch.vector_owner_cookie) {
+> +		reason =3D KVM_RISCV_VECTOR_OWNER_COOKIE;
+> +	} else if (owner->generation !=3D vcpu->arch.vector_state_generation) {
+> +		reason =3D KVM_RISCV_VECTOR_OWNER_GENERATION;
+> +	} else {
+> +		reason =3D KVM_RISCV_VECTOR_OWNER_HIT;
+> +		eligible =3D true;
+> +	}
+
+[Severity: Critical]
+Can a preemption window in riscv_v_start_kernel_context() allow a kernel
+Vector user to clobber the hardware Vector registers without invalidating
+kvm_riscv_vector_owner, causing kvm_riscv_vcpu_vector_owner_load() to
+falsely report KVM_RISCV_VECTOR_OWNER_HIT?
+
+With CONFIG_RISCV_ISA_V_PREEMPTIVE=3Dy, kernel_vector_begin() calls
+riscv_v_start_kernel_context() in arch/riscv/kernel/kernel_mode_vector.c:
+
+	/* Transfer the ownership of V from user to kernel, then save */
+	get_cpu_vector_context();
+	__riscv_flush_vector_context();
+	put_cpu_vector_context();
+	/*
+	 *  A voluntary context switch caused by put_cpu_vector_context() can
+	 *  raise the NEED_RESTORE flag if preempt_v starts too early due to a
+	 *  failed risv_v_is_on() check.
+	 *
+	 *  This causes the next context_nesting_end pollute the v-reg from
+	 *  the stale context memory in kernel-mode vector.
+	 */
+	riscv_v_start(RISCV_PREEMPT_V);
+
+__riscv_flush_vector_context() calls
+riscv_v_owner_invalidate(RISCV_V_INVALIDATE_KERNEL_VECTOR) on the initial
+hart, and then put_cpu_vector_context() clears RISCV_KERNEL_MODE_V and
+re-enables bottom halves or preemption before RISCV_PREEMPT_V is set on
+current->thread.riscv_v_flags.
+
+If the task is preempted at put_cpu_vector_context() before
+riscv_v_start(RISCV_PREEMPT_V) runs:
+1. A vCPU thread can run on this hart and publish itself in
+   kvm_riscv_vector_owner via kvm_arch_vcpu_put() ->
+   kvm_riscv_vcpu_vector_owner_put(), or the preempted task can migrate to
+   another hart that already has a published kvm_riscv_vector_owner.
+2. When the task is scheduled back in, __switch_to_vector() in
+   arch/riscv/include/asm/vector.h checks riscv_preempt_v_started(next):
+
+	if (riscv_preempt_v_started(next)) {
+		riscv_v_owner_invalidate(RISCV_V_INVALIDATE_KERNEL_VECTOR);
+		...
+	} else {
+		riscv_v_vstate_set_restore(next, task_pt_regs(next));
+	}
+
+   Because RISCV_PREEMPT_V is not yet set, __switch_to_vector() skips
+   riscv_v_owner_invalidate(RISCV_V_INVALIDATE_KERNEL_VECTOR).
+3. The task then executes riscv_v_start(RISCV_PREEMPT_V), returns to
+   kernel_vector_begin(), enables Vector, and overwrites v0..v31 with host
+   kernel data while kvm_riscv_vector_owner on that hart still matches the
+   vCPU.
+4. When that vCPU reloads on the same hart,
+   kvm_riscv_vcpu_vector_owner_load() sees a matching owner, cookie, and
+   generation and requests RISCV_V_VCPU_CSR_RESTORE.
+   kvm_riscv_vcpu_enter_exit() in arch/riscv/kvm/vcpu.c then restores only
+   the Vector CSRs via __kvm_riscv_vector_restore_csrs() and enters the
+   guest with host kernel Vector register contents in v0..v31.
+
+> +
+> +	trace_kvm_riscv_vector_owner(vcpu->vcpu_id, cpu, 0, eligible,
+> +				     reason, host_vs, guest_vs,
+> +				     vcpu->arch.vector_state_generation);
+
+[ ... ]
+
+> +void kvm_riscv_vcpu_vector_owner_invalidate(enum riscv_v_invalidate_reas=
+on reason)
+> +{
+> +	struct kvm_riscv_vector_owner *owner;
+> +	struct kvm_vcpu *vcpu;
+> +	enum kvm_riscv_vector_owner_reason trace_reason;
+> +	unsigned long host_vs;
+> +	u32 flags;
+
+[ ... ]
+
+> +	preempt_disable();
+> +	flags =3D riscv_v_flags();
+> +	if (flags & RISCV_V_VCPU_CSR_RESTORE) {
+> +		vcpu =3D *this_cpu_ptr(kvm_get_running_vcpus());
+> +		if (!WARN_ON_ONCE(!vcpu)) {
+> +			flags &=3D ~RISCV_V_VCPU_CSR_RESTORE;
+> +			flags |=3D RISCV_V_VCPU_NEED_RESTORE;
+> +			riscv_v_flags_set(flags);
+> +			host_vs =3D task_pt_regs(current)->status & SR_VS;
+> +			trace_kvm_riscv_vector_owner(vcpu->vcpu_id,
+> +						     smp_processor_id(), 2, false,
+> +					     trace_reason, host_vs,
+> +					     vcpu->arch.guest_context.sstatus & SR_VS,
+> +					     vcpu->arch.vector_state_generation);
+> +		}
+> +	}
+> +
+> +	owner =3D this_cpu_ptr(&kvm_riscv_vector_owner);
+> +	if (!owner->identity)
+> +		goto out;
+> +
+> +	host_vs =3D task_pt_regs(current)->status & SR_VS;
+> +	trace_kvm_riscv_vector_owner(owner->vcpu_id, smp_processor_id(), 2,
+> +				     false, trace_reason, host_vs,
+> +				     owner->guest_vs, owner->generation);
+> +	owner->identity =3D 0;
+> +	owner->cookie =3D 0;
+> +	owner->generation =3D 0;
+> +	owner->vcpu_id =3D 0;
+> +	owner->guest_vs =3D 0;
+> +
+> +out:
+> +	preempt_enable();
+> +}
+
+[Severity: High]
+When kvm_riscv_v_init() in arch/riscv/include/asm/kvm_vcpu_vector.h registe=
+rs
+kvm_riscv_vcpu_vector_owner_invalidate(), can this callback and its RCU
+dispatch in __riscv_v_owner_invalidate() run from do_trap_ecall_u() before
+enter_from_user_mode() transitions RCU and lockdep out of user mode?
+
+In arch/riscv/kernel/traps.c, do_trap_ecall_u() is a noinstr trap handler
+that calls riscv_v_vstate_discard(regs) before entering the kernel context:
+
+	if (user_mode(regs)) {
+		long syscall =3D regs->a7;
+
+		regs->epc +=3D 4;
+		regs->orig_a0 =3D regs->a0;
+		regs->a0 =3D -ENOSYS;
+
+		riscv_v_vstate_discard(regs);
+
+		if (likely(syscall_enter_from_user_mode_randomize_stack(regs, &syscall)))=
+ {
+
+When a user task with active Vector state issues a syscall,
+riscv_v_vstate_discard(regs) in arch/riscv/include/asm/vector.h calls
+riscv_v_owner_invalidate(RISCV_V_INVALIDATE_TASK_DISCARD) ->
+__riscv_v_owner_invalidate() in arch/riscv/kernel/kernel_mode_vector.c:
+
+	rcu_read_lock();
+	invalidate_callback =3D rcu_dereference(kvm_invalidate_vector_ctx_callback=
+);
+	if (invalidate_callback)
+		invalidate_callback(reason);
+	rcu_read_unlock();
+
+Because enter_from_user_mode() is only invoked later inside
+syscall_enter_from_user_mode_randomize_stack(), on configurations with
+CONFIG_CONTEXT_TRACKING_USER=3Dy (such as NO_HZ_FULL), RCU is still in
+CT_STATE_USER (!rcu_is_watching()) and lockdep_hardirqs_off() has not run
+yet. Calling rcu_read_lock(), rcu_dereference(), preempt_disable(), and
+trace_kvm_riscv_vector_owner() here will trigger RCU and tracepoint lockdep
+warnings and leave the callback invocation unprotected by synchronize_rcu()
+during kvm_riscv_v_exit().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/OSQPR01MB6326538559=
+7FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com?part=3D2
