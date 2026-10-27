@@ -1,101 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.56
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793083269;
-	b=OuwP/kPV/xdgJD55q10081Mmm0Ej+QNlL96f7QrEDjAUrv5ITRWHZ2H669Jz181l1Xl+
-	 2sZUsFhgfTvI+JBzsZNSZU4LzIDVjek6bKGZRHdb9Szx9LrawBke4oJEs7qnKjr9F+ewX
-	 IP6fjRpMIvcfHfCbtWlI3gY5X/Qy0iCh7QjHzfYH+a44kJc1pHPs040GBs/fD+5SwIfdk
-	 FP7JX4PnknyAMjDYKV2smUcHIqm1zpG2W6aw2WDvfwxrWTiu50gjPqh/e+VhpSrTAt/nn
-	 XKaMmnEUlwmpx+Q4Vxza/kydgIrg5poKDAJuhcMsYCihy/Qluc1XTIyKKP7nn151wSQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793083269;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
-	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=D9jhrfki5Rzv3EMAPTS/ylJ//+mCdg1LCoGL4dgNgM4=;
-	b=lwjQWdzgBEm4zQ8qfelWYzuVWurRfSppTrBflgkqUsRFHhI18CX9MiWspiC8KX73lcqp
-	 nW/CrCBhBuRJmdMeCIdSTUXdRu/zYdug870Zp373UBoF82FvCknFgxtetDcbHwsnwh954
-	 6htjhNk3ypaJxWx6vQWOwvOvOgHwu8n/hmLGL0IZaA+G9uhnfJWetFqIXMXedecg/zRM2
-	 hLSYfViACJ50U4HQGatILP5i+LDrdZkcYxn/fB/qS8d7WAQkQitPgNCi8sEFXBoDO5zHx
-	 O0uN4IY5meNJc3elkI7b8f2ToebPKIhjdCBW9xcsCTL+ABs0jAd1EKwkJ2uyp+ISX1A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=JtFNbwvK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.56
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010056.outbound.protection.outlook.com [52.101.56.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793083619;
+	b=4EB2NhVY/5Ltp6xQ/UAemuyr+pxw6nQOYq9aj8X80Ra0Wlj/faY7PG7bT4Y5GX1Vvfca
+	 +Bc3Bm/7sBmJTk2oHHIRpCg0+zQEpBS/St6jaNwKQVxHaZEQkiuMMroRInEZAW8Hz014A
+	 tig60G4fkxTI5p7v+E4+IuRQilS9UCw4Hb0yAaa955evia9q5xDCrzSoJRF1aQbuNUvVw
+	 1xyM9Au8EBOjgNWQiKS7/sN6Y2ziJ6as6AFyDxmfoVZVIUPxWjmG1Oby6sL0Ub2qThHBO
+	 tzEju2w5ESn+h4sj/C0/OzeuqCT8+mvF6lt1+1L83L2dY7h7aqv5ZtrOnDPuK0YPubQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793083619;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=JcaGUQbRazqsv6mT2YuGwgADTFeIvqCswJSmdStymkM=;
+	b=bpOVSmvgAhk5B4zrYRbsOPJefu/9iSC5EcA5cNdkoa5gqmL4H5wBwxP1FTBvDypnU6fL
+	 W+/sCr0qc6r/xvagKJp7HSWTNDLB1dWowkhXgaij67BEu1ILOUFyn8mY6KFdGTA/XfWvJ
+	 LiGUsnA4P3jfCatPiTmXQ5/KKQ6UdhX6p3H9zcZsw/TWTAWHk5JUwYtwQRtTSCl9uijgY
+	 P3MaBS5je4kSSjAQ//0C+cCw1CVoQYcJdqgmADTpZSY9y/5LJlX373N1XamENhrYLdGrp
+	 zDxS1IO/mXjCiI91lnMtRGgPw0FVTGU0vKwhrNmyn4VlAgLGxHowK7faeJD0W2hwPDA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=aoYG9MVV;
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5EB606A31A;
-	Tue, 27 Oct 2026 06:41:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F5EB606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E16606A31A
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 06:46:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71E16606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=JtFNbwvK
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PRF7w3kyiDeZC23DfN7iOe3zNO/Eky4EbDfzhJ3f44bkkb6yd+vnWG9EplXRq2xhbIYzHl3xVCCsbOVcifyjubf7IVV8PP/rFry4u859Is9GUVp0A7s+fBL5GSoafBpBHlUgf1AOVo1pNKQ1F6utpqEBYkBex6ZtURvoDzdIdut3He9XMeouhCdOb2+DeBq2bTsqiZqn0Q8ycL5s3EYTuPmdlaAMSAxcJRXyzQ0KVbGNDmI2V8vLja6+TJW9OJ9WiqCJtwEzNQiEwdOW6UVY8VKhZqSFNK6CiXjT8JfYVLjQLgzlfOSAVhhdKEu+MERubaaLD1DKA7RH5W12BXwYiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D9jhrfki5Rzv3EMAPTS/ylJ//+mCdg1LCoGL4dgNgM4=;
- b=VSImvrZD+XrUupXimj6YmhcY7Ym5T3UZCzzXdxcYbOCiW/s+xYfzLFBUR4Y48zqWJJRuVp83UD08RVdStUlLqyIaQd0HstAfJ/i4szxWBYpFGknzpGgH/8rGtKQvt3PRoJWOVeMgXZWBz63j1klRuffjqVnga99nSWEwX9/2B+yh6um3t4kwlVAdZ59XhFubfOjyMBaE6oJQ6qR+L+MQugSvVRXwZIdr80fi/5f3WvlMw4F0cBH4UNaewft5RiC1+0+X8wSM+n9WQ74yJJ0c6Ma5v4kRYP+RQ4w9HdanU9NyRSit6QUiV9vVaplMEmirAjSX/DU5cgB59h9QK4QS7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D9jhrfki5Rzv3EMAPTS/ylJ//+mCdg1LCoGL4dgNgM4=;
- b=JtFNbwvKXOuOW3vjUfGZYUtI/CCsN0KtUIx/J0R5ajpyFivtzdb6Auh/fizwbow02hQYryWdO9qRIvrEnMNIAc1QWFUKOd1w9LB0alCf20NFV8ELMiaKssB0OFrSTQp5YLj8JTE0lhMb0NFVOqYAgCRwxhO2huS6VdPXl107WHM=
-Received: from BN9PR03CA0917.namprd03.prod.outlook.com (2603:10b6:408:107::22)
- by BL1PR12MB5803.namprd12.prod.outlook.com (2603:10b6:208:393::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 06:41:05 +0000
-Received: from BL02EPF00029929.namprd02.prod.outlook.com
- (2603:10b6:408:107:cafe::8a) by BN9PR03CA0917.outlook.office365.com
- (2603:10b6:408:107::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Tue, 27
- Oct 2026 06:41:05 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BL02EPF00029929.mail.protection.outlook.com (10.167.249.54) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Tue, 27 Oct 2026 06:41:04 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 27 Oct
- 2026 01:40:51 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 27 Oct
- 2026 01:40:51 -0500
-Received: from [10.136.37.77] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Tue, 27 Oct 2026 01:40:49 -0500
-Message-ID: <575c1cde-7705-4190-9560-a1d6cfcb4dfa@amd.com>
-Date: Tue, 27 Oct 2026 12:10:43 +0530
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=aoYG9MVV
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48e4831c028so2128958f8f.0
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 23:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1793083617; x=1793688417; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=JcaGUQbRazqsv6mT2YuGwgADTFeIvqCswJSmdStymkM=;
+        b=aoYG9MVVv2kdAHg5xrumowJ/Zuwm+S41V+U/YtgjSziVxJGO9TTcFt3e6gC1YZrGdH
+         gdgInILPjDt8vfGHPSr9IVS05UHfMSnysg8PPKfKeKPL1Pd6Wx9fcbM1nfobRiLAV4mQ
+         beVTyk5FiQOt7Kb/AqDJ0SntYRjcRTvsw1Zxh6DTPB/q5PFg/d/6dnzsGhWRLhhkY7ql
+         BjIVZThStZSHAh3+fAF79rl2ssHOhe3cESJS6iEtJessdsuyl19HgJ6JPn7uWMc1C8Mb
+         ilG1V+MvOMMG+YqJwh0G2HCuZ+zDjH3RY0KkxZsRkPIxLOZ23drpYSGgt7Y/Z/nJuJfD
+         BtuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793083617; x=1793688417;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=JcaGUQbRazqsv6mT2YuGwgADTFeIvqCswJSmdStymkM=;
+        b=Lphi1ZtLJJgQOELNXd+LxAka8uhiyS+BVR4QN0iolN4zK7/Ar04MCGwDJ2mvKZ7/Ht
+         Sbo2HLxiaXqIoPP40arrMoZUL8QuBTsmoDDxtQtUqrBjvLPdQ7+eknu9GnZCmszzC5ys
+         FZMa78Mj3Yc9ottNvfJz1ZnvtpKGjkbKOuCVqWmGYMghABM636bGTrblAsxYEmgmwFow
+         Lz+O9ii1zdut96JYvIge5rwPp4LvGKFyjr+ScK0Gk8VRxxdCAvRsha8m2aQz8jdm1IfH
+         9wIkKlSX9PTH9m2i8oqVlY1b47HdfvO/6md/rZEPxcs6jx4/pJsPLxXd/GKaY0ZRUqMZ
+         /uNA==
+X-Forwarded-Encrypted: i=1; AKwUvBwphUs/qttKmeMBCRG6KduCuAGaVklBTH7QD/KH2E8q7zymbTpmUhFC05QTYTjqCUcSAGQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLtkloJioP4GhcOL7mt0jl2OoOUTHkfnJk/1nht/9OSwsZGBOsv
+	VLUQBfSN4aJpSDTY5s6LUYiRG9ffHjSmUfX+TVzhAUEqTwuB24x8pDr8Shg9UjkiUYg=
+X-Gm-Gg: AYBFou3oEJVcYtTWWmZ7YomQS/ZBJoGuUYyKfyOjhZhVjCn05UojBWDarhZHpKA7Y+j
+	dV+mGKgsNmpoawv/beSHM0xT2yxBSWtSn16OqKBAFUyvs12JPBugXn2bahdzAMZbhHk/BzXzExR
+	BMEsXq7hFO3gitvvw2DR2dTfMNdNxP/TME9RKjLYGwfsp5YYCyuUe0gHhpi+eJF0M2mkSdVq7Fv
+	lo/Kl5p923ilWnaApOqRPyxsWjlE9rpNFCMp0oeTDu6TkBr1vcVb3EPc3pn8QEDDbSX1sA7Qfdl
+	ywJr8d3Jx546tfGIgXt7dW2+8//cpXJb9zXLZXIVC8ZeoFQ0b663z79Ho98s6n0xoQDgPJQTVp7
+	9B7Zd9ZhrwWkvKXFLu3+kfkA2iS+h5zFPo6TueIhf3o+X5xCvJgUkwf1I6PnaoGXu04x0OsyUqh
+	2Axsi2rstyOp2zQKyfxU+eR8MTmKJISVNrwCuyU8RAmZaZ5NozQS4tijF9QrMFTimLuZNeoDcIW
+	22R68wSRxPynUjjXNvfnJeyVWb9tjIjkL/cs+RPBNW8TvaVsBkTlxy3Q8DJ85PY4b8Hh9j/THvH
+	IhmU
+X-Received: by 2002:a05:6000:3104:b0:488:8232:d16e with SMTP id ffacd0b85a97d-48e3eb86a37mr16372061f8f.45.1793083616708;
+        Mon, 26 Oct 2026 23:46:56 -0700 (PDT)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebcb8d5sm21829653f8f.28.2026.10.26.23.46.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Oct 2026 23:46:56 -0700 (PDT)
+Message-ID: <5b26f7b4-0156-4165-a86c-45f5ae7736d7@suse.com>
+Date: Tue, 27 Oct 2026 08:46:54 +0200
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,183 +93,208 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: x86: Compute the max guest TSC frequency from the
- current tsc_khz
-To: Sasha Levin <sashal@kernel.org>, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-CC: Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20261024174525.1218244-1-sashal@kernel.org>
+Subject: Re: [PATCH v5 0/5] KVM: TDX: Validate directly configurable CPUID
+ bits
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, xiaoyao.li@intel.com,
+ chao.gao@intel.com, tony.lindgren@linux.intel.com, kishen.maloor@intel.com,
+ dedekind1@gmail.com, adrian.hunter@intel.com
+References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
+ <fe3eaf31-acc3-4132-b768-9451c00aa746@suse.com>
+ <c2fbd673-6f2a-446e-b5d3-04a97bb86930@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
-From: Nikunj A Dadhania <nikunj@amd.com>
-In-Reply-To: <20261024174525.1218244-1-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00029929:EE_|BL1PR12MB5803:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a7ed99b-887f-4e97-1a55-08df33f54631
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|23010399003|376014|82310400026|261026121527099003|11063799006|56012099006|261022113327099003|261022075727099003|261021135927099003|261009223027099003|261021121427099003|261021123027099003|10067099003|261022105027099003|22082099003|18002099003|13003099007|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	2dnh+2YT6te7B5M+zAgp7iBYYVs/pWvbjOU41Z8zcax90Secm4h82iz73tWF2X21AXvGIWDkkJRdUOwKjZJ/VOUL/z9zjKuZK9IYVxZvqdVu+cN0edVNR9JyLnmoOVtsrgBen/d9hNdHYlUcSug5CqxXN+NvWuL8NilBTLmMCuAd88WWMHlkjTMM3IT0WHQDM+1TdpW0zXDj+VSS7inAPQkde8FZ3BeLMkBb1HLuIHKYnEIHSITLRCffgxt/NAzU6trVGDM14uCi+ZtjQzf03zifoudTuBXC/Kg2rT/iYFCl1PyR7zM3S8hZRERcuW8S5ZhHE78RmZu2Uq35N7JihmVFvyGl0gdmZeUxq10fKINt6LyMy0ZtE3oy8yC5R3Fmb+vtPG3jy0e/IGg0v5wLijb45idfp3RtKT0jaImiT57ZkQlWZNdx99IvhuqqEtPFXqesL1ieB14IK+24Tx/yP7aqDOElswn84txrTxtAIFzdF7uD+16+vgII1J+RWvn8Dl76LCiiylT+Izv7TmaXf6WmRDgSMnSk4kNWagcea0UXxDRGIRFI3YbmD9P6reRdFjNkhgxBiN0w52G5HSblM6e3jHrARiGTPbnJea3koncxEs4R2u/A0BnwccBIy5WU3rey2ELD+UHx84QasG4/AQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(23010399003)(376014)(82310400026)(261026121527099003)(11063799006)(56012099006)(261022113327099003)(261022075727099003)(261021135927099003)(261009223027099003)(261021121427099003)(261021123027099003)(10067099003)(261022105027099003)(22082099003)(18002099003)(13003099007)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	vcfxQpng8NbwSpNDjgxti6NUeGv9L8XignekDw9YuozDCLGPTvudE47qPaJPVNOuz/ab+VMF/rRKQQaqCSlnfuV4f/qeGkUcK9bkctxZizaZX+4dCpE6mJa57RJ+Hoiz1uluGU5t4EQD03b+AXy35ypysy6hSfvfvzRaUldv0YzmDx0RSDoUucoN9egLraJXgi9I06nlB2fYCoLqzmZpG+pBTXhcNMXv/UqdSjTGgBDcEZJhJYoDmeXYVIiOWfY5h7zdw9s8eNIvmFo5mQk2BJprfiDJJgYfBveh7065FA88iikTWc2N4PJFGqbH3Mlw6s6idGePyRM6c/EUh86J4GdvJU7bJ3gCB8xMBOctFdWbcGbFtA8LNj6H3u5Dn6LxFEi/6G4GlG8ZQ3LLGEOWhvqxvOtPAdK9W8eH+7awnPdXZRBLO0qNJ3XjZm6re144
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 06:41:04.7180
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a7ed99b-887f-4e97-1a55-08df33f54631
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00029929.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5803
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <c2fbd673-6f2a-446e-b5d3-04a97bb86930@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 10/24/2026 11:15 PM, Sasha Levin wrote:
-> KVM computes the highest frequency that KVM_SET_TSC_KHZ accepts once,
-> during vendor init, from the tsc_khz of the time. When KVM is built in,
-> that runs before tsc_refine_calibration_work() refines tsc_khz, about a
-> second later. If refinement raises tsc_khz, the cap stays below what the
-> maximum scaling ratio gives for the refined frequency, and
-> KVM_SET_TSC_KHZ rejects frequencies that set_tsc_khz() would accept, as
-> set_tsc_khz() computes the ratio from the current tsc_khz.
-> 
-> nested_tsc_scaling_test runs into this on AMD: its last case asks for
-> the frequency KVM_GET_TSC_KHZ reports times SVM's maximum ratio, and gets
-> -EINVAL on boots where refinement raised tsc_khz. KernelCI sees it
-> intermittently on a DL345 Gen11 (EPYC). On Intel the cap is limited to
-> INT_MAX, so the test does not hit it there.
-> 
-> Like commit 741e511b4208 ("KVM: x86: Don't snapshot "max" TSC if host TSC
-> is constant") did for the default frequency of new VMs, compute the cap
-> from tsc_khz when it is used instead of taking a snapshot at load time.
-> This covers KVM_SET_TSC_KHZ on both the vCPU and the VM file descriptor.
-> 
-> This also drops setting the cap to tsc_khz in the Hyper-V reenlightenment
-> notifier, which left no room for scaling up once the host TSC frequency
-> had changed; commit 0092e4346f49 ("x86/kvm: Support Hyper-V
-> reenlightenment") gives no reason for that limit. The cap now follows the
-> new frequency the same way. The notifier still does not recompute the
-> multipliers of vCPUs that already exist.
-> 
-> Fixes: 92a1f12d2598 ("KVM: X86: Implement userspace interface to set virtual_tsc_khz")
-> Link: https://d.kernelci.org/test/maestro:6adc828a55fda507607f79c3
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
 
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
-Tested-by: Nikunj A Dadhania <nikunj@amd.com>
 
-Tested on an AMD EPYC 9996 (Venice) with KVM built in (CONFIG_KVM_AMD=y),
-booting with tsc_early_khz set to the refined tsc_khz minus 500.
+On 27.10.26 г. 5:17 ч., Binbin Wu wrote:
+> On 10/22/2026 1:43 AM, Nikolay Borisov wrote:
+>>
+>>
+>> On 16.10.26 г. 12:14 ч., Binbin Wu wrote:
+>>> The TDX module reports a set of CPUID bits that the VMM can directly
+>>> configure for a TD, but KVM cannot blindly expose all module-supported
+>>> bits to userspace.  Certain features imply additional architectural state
+>>> (such as one or more MSRs) that KVM must explicitly manage across
+>>> host/guest transitions to prevent host state corruption.
+>>>
+>>> Today, KVM hardcodes a denylist to filter out host state clobbering
+>>> features that KVM doesn't support.  However, a denylist doesn't scale as
+>>> the TDX module evolves, i.e. host state clobbering features added by a
+>>> future TDX module are not covered by the denylist, and userspace could
+>>> enable a feature that KVM doesn't support.
+>>>
+>>> This series builds an allowlist for directly configurable CPUID bits, and
+>>> filters and validates userspace input against it, so that newly introduced
+>>> TDX directly configurable CPUID feature bits can only be enabled by
+>>> userspace after KVM explicitly opts in.  Except for a few fixed-1 bits
+>>> required for basic TDX support, host state clobbering features are either
+>>> directly configurable or gated by TD ATTRIBUTES/XFAM.  KVM already
+>>> validates ATTRIBUTES/XFAM, so the allowlist only needs to cover directly
+>>> configurable bits.
+>>>
+>>> Patch 1 is a standalone fix for the existing denylist check, which uses
+>>> the index of the matched userspace entry instead of the subleaf reported
+>>> by the TDX module, i.e. userspace can bypass the HLE/RTM/WAITPKG check.
+>>> It is tagged for stable so that it can be backported independently of
+>>> the rest of the series.
+>>>
+>>> Patches 2-5 build the allowlist, add CORE_CAPABILITIES to it, filter
+>>> KVM_TDX_CAPABILITIES, and validate the CPUID input of KVM_TDX_INIT_VM.
+>>> The last two patches are user-visible changes, which are now called out
+>>> in their changelogs, along with why existing userspace and guests are not
+>>> expected to be affected.
+>>>
+>>> For this version, I'm hoping to continue to collect some RBs and Acks.
+>>> The key discussions from v3/v4 [1] are summarized below.  Note, FRED KVM
+>>> support is in progress upstream [2], and no TDX module with FRED support
+>>> exists yet, so there is no immediate issue.  But it would be nice to get
+>>> this series merged sooner rather than later.
+>>>
+>>> Discussions from v3/v4:
+>>> - Rick asked whether the assumption that the reserved bits in
+>>>     CPUID.0x1.EAX, CPUID.{0x4,0x18,0x1F} and CPUID.0x80000008.EAX won't be
+>>>     used to enumerate features can be confirmed by the x86 architects [3].
+>>>     Confirmation is still pending.  Per the SDM/APM, these leaves/registers
+>>>     are defined for specific information (version, cache/TLB parameters,
+>>>     topology, and address sizes), so the reserved bits are expected to be
+>>>     used to extend the existing information rather than to enumerate
+>>>     features.  Allowing these registers in full is a best guess, but it's
+>>>     still far better than the existing denylist-based check.
+>>>
+>>> - Whether to restrict the TDX feature bits to kvm_cpu_caps[].
+>>>     The conclusion from the discussions is to construct the allowlist based
+>>>     on kvm_cpu_caps[], plus a few bits that KVM can support for TDs
+>>>     independently of kvm_cpu_caps[].  If TDX feature enabling turns out to
+>>>     be consistently blocked by non-TDX VM enabling, a solution can be worked
+>>>     out then.
+>>>
+>>> - New opt-in interface vs. backporting.
+>>>     There are two options for old KVM versions that don't do the filtering
+>>>     and validation:
+>>>     1) Add a new opt-in interface to expose features newly introduced by the
+>>>        TDX module.
+>>>     2) Backport this series to LTS/stable branches.
+>>>
+>>>     The opt-in design vs. backport decision is deferred, since this series
+>>>     is correct and an improvement either way.
+>>>
+>>> - Potential backward compatibility issue when an effective fixed-1 bit
+>>>     becomes directly configurable due to x86 feature deprecation.
+>>>     This is left for the future, i.e. it can be addressed if and when such a
+>>>     deprecation actually happens, e.g. by adding an opt-in interface to let
+>>>     users/admins choose between migration flexibility and backwards
+>>>     compatibility on old platforms.
+>>>
+>>> Changes since v4 [1]:
+>>> - Split the CPUID entry index check out into a standalone fix, which
+>>>     allows it to be backported to stable independently of the rest of the
+>>>     series.
+>>> - Exclude XTPR from the allowlist, as neither TDX nor KVM actually
+>>>     virtualizes the feature and guests don't need it. (Xiaoyao, Rick)
+>>> - Rename TDX_CFG_EXTRA_F() to TDX_CFG_INDEPENDENT_F(). (Xiaoyao)
+>>> - Fix AMX_COMPLEX to be added for CPUID_7_1_EDX instead of CPUID_1E_1_EAX.
+>>> - Drop the descriptions in the TDX documentation and the uapi header, as
+>>>     the ioctl interfaces for KVM_TDX_CAPABILITIES and KVM_TDX_INIT_VM are
+>>>     unchanged by this patch series.
+>>> - Improve changelogs and comments. (Xiaoyao, Rick)
+>>>
+>>> The series follows the CSV version of the CPUID virtualization document
+>>> from "Intel TDX Module ABI Definitions" [4], updated in June 2026.
+>>>
+>>> AI tools were used to:
+>>> - Polish the cover letter and commit messages.
+>>> - Do code review.
+>>>
+>>> [1] v4: https://lore.kernel.org/all/20260917072548.2314491-1-binbin.wu@linux.intel.com
+>>>       v3: https://lore.kernel.org/all/20260827031837.2863609-1-binbin.wu@linux.intel.com
+>>>       v2: https://lore.kernel.org/all/20260604023314.3907511-1-binbin.wu@linux.intel.com
+>>>       v1: https://lore.kernel.org/all/20260417073610.3246316-1-binbin.wu@linux.intel.com
+>>> [2] https://lore.kernel.org/all/20260911213659.2025974-1-sohil.mehta@intel.com
+>>> [3] https://lore.kernel.org/all/e7182b3c03a0e39cb60392b4d75111255418d6cf.camel@intel.com
+>>> [4] https://cdrdv2.intel.com/v1/dl/getContent/795381
+>>>
+>>> Binbin Wu (5):
+>>>     KVM: TDX: Check unsupported CPUID bits against the TDX module's
+>>>       subleaf
+>>>     KVM: TDX: Track configurable CPUID bits allowed by KVM
+>>>     KVM: TDX: Add CORE_CAPABILITIES to the allowlist
+>>>     KVM: TDX: Report only KVM-allowed CPUIDs in KVM_TDX_CAPABILITIES
+>>>     KVM: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
+>>>
+>>>    arch/x86/kvm/vmx/tdx.c | 258 ++++++++++++++++++++++++++++++++++++-----
+>>>    1 file changed, 231 insertions(+), 27 deletions(-)
+>>>
+>>>
+>>> base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+>>
+>>
+>> For the series:
+>>
+>> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> 
+> Hi Nikolay,
+> 
+> Thanks for your reviews!
+> 
+> I noticed you later gave separate RBs for patches 2 and 3. Is that because
+> patches 4-5 conflict with Sean's series [1] during rebase?
 
-The Hyper-V notifier path is only reachable when KVM runs as a Hyper-V
-guest; I haven't tested that path.
+Yep, overall the whole series LGTM in isolation but given that it 
+intersects with Sean's series I decided to give explicit RB to the 
+patches that won't change.
 
-> Reproduced on an AMD DL345 Gen11 booted with tsc_early_khz= 500 kHz below
-> the refined frequency, so that refinement always raises tsc_khz after KVM
-> is initialized. With KernelCI's x86 build of mainline 5b0764a53235,
-> nested_tsc_scaling_test failed 3 out of 3 times with KVM_SET_TSC_KHZ
-> returning -EINVAL. With the same config plus this patch it passed 3 out
-> of 3, and tsc_scaling_sync, tsc_msrs_test, kvm_clock_test and
-> nested_tsc_adjust_test still pass. A nested SVM guest with the same
-> tsc_early_khz trick gives the same result, and with tsc_early_khz above
-> the real frequency (refinement lowers tsc_khz) mainline passes.
 > 
-> This does not change the existing window between the cap check and
-> set_tsc_khz(), which read tsc_khz separately.
+> For now, I'll carry your RB only on patches 2 and 3 in the next version.
 > 
->  arch/x86/include/asm/kvm_host.h |  2 --
->  arch/x86/kvm/x86.c              | 30 +++++++++++++++---------------
->  2 files changed, 15 insertions(+), 17 deletions(-)
+> [1] https://lore.kernel.org/all/20261022210134.612848-1-seanjc@google.com/
 > 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 1ee4b127004df..35a74f0eb45e5 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -260,8 +260,6 @@ struct kvm_x86_pmu_event_filter;
->  struct kvm_caps {
->  	/* control of guest tsc rate supported? */
->  	bool has_tsc_control;
-> -	/* maximum supported tsc_khz for guests */
-> -	u32  max_guest_tsc_khz;
->  	/* number of bits of the fractional part of the TSC scaling ratio */
->  	u8   tsc_scaling_ratio_frac_bits;
->  	/* maximum allowed value of TSC scaling ratio */
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 32563a91fba99..9e22072f39c18 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -1156,6 +1156,19 @@ static inline u64 __scale_tsc(u64 ratio, u64 tsc)
->  	return mul_u64_u64_shr(tsc, ratio, kvm_caps.tsc_scaling_ratio_frac_bits);
->  }
->  
-> +/*
-> + * Use the current tsc_khz, not the one at load time, as the TSC frequency can
-> + * be refined after KVM is initialized.  Make sure the user can only configure
-> + * tsc_khz values that fit into a signed integer, otherwise KVM_GET_TSC_KHZ
-> + * would return a negative value and confuse userspace.  A min value is not
-> + * calculated because it will always be 1 on all machines.
-> + */
-> +static u32 kvm_max_guest_tsc_khz(void)
-> +{
-> +	return min(0x7fffffffULL,
-> +		   __scale_tsc(kvm_caps.max_tsc_scaling_ratio, tsc_khz));
-> +}
-> +
->  u64 kvm_scale_tsc(u64 tsc, u64 ratio)
->  {
->  	u64 _tsc = tsc;
-> @@ -3728,7 +3741,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->  		user_tsc_khz = (u32)arg;
->  
->  		if (kvm_caps.has_tsc_control &&
-> -		    user_tsc_khz > kvm_caps.max_guest_tsc_khz)
-> +		    user_tsc_khz > kvm_max_guest_tsc_khz())
->  			goto out;
->  
->  		if (user_tsc_khz == 0)
-> @@ -4695,7 +4708,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  		user_tsc_khz = (u32)arg;
->  
->  		if (kvm_caps.has_tsc_control &&
-> -		    user_tsc_khz > kvm_caps.max_guest_tsc_khz)
-> +		    user_tsc_khz > kvm_max_guest_tsc_khz())
->  			goto out;
->  
->  		if (user_tsc_khz == 0)
-> @@ -6749,7 +6762,6 @@ static void kvm_hyperv_tsc_notifier(void)
->  		for_each_present_cpu(cpu)
->  			per_cpu(cpu_tsc_khz, cpu) = tsc_khz;
->  	}
-> -	kvm_caps.max_guest_tsc_khz = tsc_khz;
->  
->  	list_for_each_entry(kvm, &vm_list, vm_list) {
->  		__kvm_start_pvclock_update(kvm);
-> @@ -7188,18 +7200,6 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
->  	if (!tdp_enabled)
->  		kvm_caps.supported_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
->  
-> -	if (kvm_caps.has_tsc_control) {
-> -		/*
-> -		 * Make sure the user can only configure tsc_khz values that
-> -		 * fit into a signed integer, otherwise KVM_GET_TSC_KHZ would
-> -		 * return a negative value and confuse userspace.
-> -		 * A min value is not calculated because it will always
-> -		 * be 1 on all machines.
-> -		 */
-> -		u64 max = min(0x7fffffffULL,
-> -			      __scale_tsc(kvm_caps.max_tsc_scaling_ratio, tsc_khz));
-> -		kvm_caps.max_guest_tsc_khz = max;
-> -	}
->  	kvm_caps.default_tsc_scaling_ratio = 1ULL << kvm_caps.tsc_scaling_ratio_frac_bits;
->  	kvm_init_msr_lists();
->  	return 0;
 
