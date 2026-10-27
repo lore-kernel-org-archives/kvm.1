@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793109792;
-	b=BKLgyb283hCT1eEc2jXiUUtjjwM3eVdTkYM4UBA7tmtf+tUKvgV3f7SogCQiuh+l56s5
-	 XQ3iTnvZdHo8b4HU77kAz51Ap3KC8785uGPbc3DlRiJH4QvACCZXSJT29YVZB1vK1J3n6
-	 SGVxFCqXAhDYT8MRbenT2lqSctkDdIaCZ8wt7u2hklHrU99oOvuoAY1x6kmj2J7YSwZ3x
-	 qvI6w9rPNfVRWjugnR+F+M/QorU+TJBW8uukv6lQjRRqdyFkzLWJLVizhbmJgmgcoyk03
-	 wX5yW0GSikomAYpELDgXObQNza78uOQehiTghb/Jf8QrI3CLBYdUg+XN7XWts7nSVpQ==
+	t=1793109823;
+	b=IdHXgkQFjOFaIPCoycytQd1WJDWvbpgtmKbge0wpyfl/V7JXRD56em7TMJjdqkqhdLsO
+	 p/h2Lk1viUzOQ7NpBS0S9UEt7LIHJeAEZNh5/XS/googiEfw9YfuS0XW8fEpPbGh0kMsW
+	 cBbHLXvfjaayK9T33nw4JCmtWtZfvG0cvAzcFm1ixUOBvjK2+WjJuTuhWvr77jNBwj/Ra
+	 RO2BeHDiY/e0vGb0lF8NbavciPffeQeT7qFIeqquqHDSRynm9wvUrgYMatjPqAGcidfpr
+	 qPF327UwE+Ae9OS+ADW9UDKsGpoFC6zBg7ETrq6LuktSBV5ikQIeLM8o/eurNxEdjqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793109792;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793109823;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=DTTiS0pNazMw6mWdWB2LwKhmSIo7YOFDb57SqsIydHQ=;
-	b=bB3hFWuSzvWImqTyr8cdez9dkJdwOey3BLUuFiYr/OQk98hVQToesQYGZeOnW3jpNlQG
-	 9JDuy4u07llJVhP09Ml7r5pb6XhDFzmC8m1ZKcDv332tidr3KBAZk8GuP5j/58ybuQlqb
-	 /opMO5ghmk+mifmds9PnP8UpCWlmF8XJkwOTTHJJ484WsaNqYvBd2/XeVpxONfc3MhJTF
-	 /9H9Qn/4ubDcDiDr3Qpsldc2NL77NiGvfHixERwKQvgLLQUpPwd56wsFyy1mUeznIqEtN
-	 2srCI/TZlG5lwCIY8S8hwkxATrfSNevMdYmgTIQsgIZk786zQJtDHCC8N6UUdqvcBfA==
+	bh=XoFMhljdtvesrCdXOtN3CnaAsyT2Zq81OSye7AuCvDQ=;
+	b=RuKGVuuE3ULGcydgoazhUex1CL23+oNvonYYhMeMf5FCq9YVB5jOnOOcBUABX/zO+h+l
+	 yR3y9PUh7zpvKUyVBGBldHH5waFoZI7olOJvcL8g1TmdF5UhG9/tmfAQKXhSp1h3L81ia
+	 qVemdo3GS2M8uqEzGLPYLsjHtf001Cf2lkk+TyH9XIfFGF6TyYr5IJooG/DmST1NrjJaf
+	 zyrp6FpdXEl6hxUmsIovV7SxT+L1r6WnkEdTq1YTlMhvG+k+RqK33kTDC05/DVn0hEnsv
+	 o/INxaiS0FsndZHDLPC9OGlMiBAL2N+05h9/lv8gEoYNnjjEwf/3EPDbENvhwpKqwFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dMRZdCye;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QiJ5wrpD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7851A606A31A
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39F0606A31D
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dMRZdCye
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2711F01828;
-	Tue, 27 Oct 2026 14:03:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QiJ5wrpD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B9E1F01828;
+	Tue, 27 Oct 2026 14:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793109792;
-	bh=DTTiS0pNazMw6mWdWB2LwKhmSIo7YOFDb57SqsIydHQ=;
+	s=k20260515; t=1793109822;
+	bh=XoFMhljdtvesrCdXOtN3CnaAsyT2Zq81OSye7AuCvDQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dMRZdCyeYUpTvidl5d2BNkKOX+lLOsRqViw8AjVC9i9tlXNDtQ9hpkNJkPM6rGGdT
-	 nS3VVYLhydsrFjj0ynFcR+TssMB06t0TseNm66bqNTtNaYfD1Q5UdcW+idTNV5Wfw2
-	 ncvhNe4UhtLhwFVszPZiZfLAqaIFPbT5B5lHk7PUFkcSPPL8h5PUC0qTW1GwhFAwTJ
-	 AmLcgxo1YF4Sz+8MMWfE+RVeVi8o35zUD1CXUl3s6XlmQ1s6/e0JlYLYgHuWFILg+M
-	 hVUtaZ9VX424yJDlGiLzCbDiD1cqQXYwV11c/aSZOnDaoSsrCaIA05TChA1cAhXNpV
-	 j1DRq132vnsYg==
-Message-ID: <sashiko-outbox-186684@kernel.org>
+	b=QiJ5wrpDtPKaISqFb7rRXhy7eOcpbX/HZgC+YfWT+f6vwP3fs+a9JkxfIvDE3J3Xj
+	 MjAxLQCGE08lrVLuyUJ7SJIOEMNkxOn3DwbK0tMJ3rfaCiCw/ZToYcr84Ixc/MzSM4
+	 lnNODmpKj8xD9Z+kaEUhV5KZsUUrLLlLVVCmzrOe5dlRMplH7gPNeLlvjTc1FgW88w
+	 obfIZpSIcNjCPbCm+cFG4zsyK3S60ok44OL81r6nnWrv3UwOut9UYp0d2XnF3PjpSh
+	 9Es0yfjPdCgxpAT0qXTqQStHo4kpNEXVNPnt9NEJMBzKxDo5DLb/zHETkfZE9gWB2O
+	 5OFleVfqXmEqA==
+Message-ID: <sashiko-outbox-186687@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 3/3] KVM: riscv: selftests: Add Vector owner
- regression tests
+Subject: Re: [RFC PATCH 1/3] riscv: vector: Add a guest owner invalidation
+ hook
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "slack up" <yxcnew@outlook.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <OSQPR01MB6326D30F15C187093E41762AC2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
+In-Reply-To: <OSQPR01MB6326C7FC1D0778FA203C4CC4C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
 References: <OSQPR01MB63265385597FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
- <OSQPR01MB6326D30F15C187093E41762AC2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
+ <OSQPR01MB6326C7FC1D0778FA203C4CC4C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 14:03:11 +0000
+Date: Tue, 27 Oct 2026 14:03:42 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,243 +61,150 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] KVM: riscv: selftests: prevent C calls from clobbering v0 in gue=
-st code
-- [Medium] KVM: riscv: selftests: split Vector owner tests reimplement kvm_=
-util helpers
-- [Medium] KVM: riscv: selftests: vector_owner_lifetime_test clears owner b=
-efore new_vm
+- [High] riscv: vector: RCU and noinstr violation in riscv_v_vstate_discard=
+()
+- [High] riscv: vector: missed owner invalidation in riscv_v_start_kernel_c=
+ontext()
 --
 
-commit cd1b458fe31c51e7e8df73a0ffb2811bb58b58bb
+commit 1bfcfc81beacec1c831b6f2d3e0f036424e54b70
 Author: Xiaochun Yu <yxcnew@outlook.com>
 
-KVM: riscv: selftests: Add Vector owner regression tests
+riscv: vector: Add a guest owner invalidation hook
 
-This commit adds three RISC-V KVM selftests covering guest Vector owner
-lifetime across vCPU destruction, KVM_GET_ONE_REG and KVM_SET_ONE_REG state
-synchronization, and partial user copy faults during KVM_SET_ONE_REG.
+This commit introduces an RCU-protected invalidation callback guarded by a
+static key so generic RISC-V Vector paths can notify KVM before modifying
+the hardware Vector register file. It adds invalidation hooks to task
+Vector state save, restore, and discard paths, kernel-mode Vector entry,
+and context switch resume for preemptible kernel Vector users.
 
-> diff --git a/tools/testing/selftests/kvm/riscv/vector_owner_fault_test.c =
-b/tools/testing/selftests/kvm/riscv/vector_owner_fault_test.c
-> new file mode 100644
-> index 0000000000000..a25dd21db77f9
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/riscv/vector_owner_fault_test.c
-> @@ -0,0 +1,147 @@
-
-[ ... ]
-
-> +static void guest_code(void)
-> +{
-> +	unsigned long i, vlenb;
-> +
-> +	csr_set(CSR_SSTATUS, SR_VS_INITIAL);
-> +	vlenb =3D csr_read(CSR_VLENB);
-> +	GUEST_ASSERT(vlenb && vlenb <=3D RISCV_MAX_VLENB);
-> +	for (i =3D 0; i < vlenb; i++)
-> +		source[i] =3D OLD_PATTERN;
-> +
-> +	asm volatile(".option push\n"
-> +		".option arch, +v\n"
-> +		"vsetvli zero, %1, e8, m1, ta, ma\n"
-> +		"vle8.v v0, (%0)\n"
-> +		".option pop\n"
-> +		:
-> +		: "r"(source), "r"(vlenb)
-> +		: "memory");
-> +	GUEST_SYNC(1);
-> +
-> +	asm volatile(".option push\n"
-> +		".option arch, +v\n"
-> +		"vsetvli zero, %1, e8, m1, ta, ma\n"
-> +		"vse8.v v0, (%0)\n"
-> +		".option pop\n"
-> +		:
-> +		: "r"(observed), "r"(vlenb)
-> +		: "memory");
-> +	GUEST_DONE();
-> +}
-
-[Severity: Medium]
-Can C function calls and compiler auto-vectorization clobber v0 while
-sstatus.VS is enabled in guest_code()?
-
-When building the RISC-V KVM selftests with a toolchain targeting RVV (such
-as a native GCC or Clang configured for rv64gcv/rva23, or with
-EXTRA_CFLAGS=3D-march=3Drv64gcv), Makefile.kvm compiles guest code and
-lib/string_override.c with -O2 -fno-builtin-memset and without
--fno-tree-vectorize or -fno-vectorize.
-
-In guest_code() here, as well as guest_code() in
-tools/testing/selftests/kvm/riscv/vector_owner_onereg_test.c and old_guest()
-in tools/testing/selftests/kvm/riscv/vector_owner_lifetime_test.c, the guest
-sets SR_VS_INITIAL, loads a pattern into the caller-saved register v0 (in an
-inline asm block without vector register clobbers), and then calls
-GUEST_SYNC() or GUEST_DONE() while sstatus.VS is still active:
-
-  GUEST_SYNC() / GUEST_DONE()
-    -> ucall()
-      -> ucall_alloc()
-        -> memset(uc->args, 0, sizeof(uc->args))
-
-If the compiler vectorizes memset() or the surrounding C loops/helpers, it =
-is
-free to use caller-saved v0 before the sbi_ecall traps to the host. That
-overwrites v0 with zeros before KVM saves or inspects the register, causing
-false test failures in vector_owner_fault_test and vector_owner_onereg_test,
-and zeroing old_vcpu's v0 before exit in vector_owner_lifetime_test so a
-leaked resident v0 would match the zero pattern expected by new_guest().
-
-Should the guest helpers keep sstatus.VS disabled across C calls (or perform
-the vector load/store and ECALL inside a single assembly block) so the
-compiler cannot touch v0 while guest Vector state is live?
-
-> +static void pin_to_one_cpu(void)
-> +{
-> +	cpu_set_t allowed, pinned;
-> +	int cpu;
-> +
-> +	kvm_sched_getaffinity(0, sizeof(allowed), &allowed);
-> +	for (cpu =3D 0; cpu < CPU_SETSIZE; cpu++) {
-> +		if (CPU_ISSET(cpu, &allowed))
-> +			break;
-> +	}
-> +	TEST_ASSERT(cpu < CPU_SETSIZE, "no CPU available");
-> +	CPU_ZERO(&pinned);
-> +	CPU_SET(cpu, &pinned);
-> +	kvm_sched_setaffinity(0, sizeof(pinned), &pinned);
-> +}
+> diff --git a/arch/riscv/include/asm/vector.h b/arch/riscv/include/asm/vec=
+tor.h
+> index 1f8dcae3af517..967dd70f4ea4a 100644
+> --- a/arch/riscv/include/asm/vector.h
+> +++ b/arch/riscv/include/asm/vector.h
 
 [ ... ]
 
-> +int main(void)
-> +{
+> @@ -303,6 +323,7 @@ static inline void __riscv_v_vstate_discard(void)
+>  static inline void riscv_v_vstate_discard(struct pt_regs *regs)
+>  {
+>  	if (riscv_v_vstate_query(regs)) {
+> +		riscv_v_owner_invalidate(RISCV_V_INVALIDATE_TASK_DISCARD);
+>  		__riscv_v_vstate_discard();
+>  		__riscv_v_vstate_dirty(regs);
+>  	}
+
+[Severity: High]
+Is it safe to call riscv_v_owner_invalidate() from riscv_v_vstate_discard()
+during syscall entry before RCU is watching?
+
+In arch/riscv/kernel/traps.c, do_trap_ecall_u() is a __trap_section
+(noinstr) handler that calls riscv_v_vstate_discard() before entering the
+kernel context:
+
+arch/riscv/kernel/traps.c:do_trap_ecall_u() {
+	if (user_mode(regs)) {
+		...
+		riscv_v_vstate_discard(regs);
+
+		if (likely(syscall_enter_from_user_mode_randomize_stack(regs, &syscall)))=
+ {
+
+The transition out of the user-mode RCU extended quiescent state
+(CT_STATE_USER) via enter_from_user_mode() -> user_exit_irqoff() only
+happens inside syscall_enter_from_user_mode_randomize_stack().
+
+When a userspace task with active Vector state issues a syscall while
+riscv_v_owner_invalidate_key is enabled, riscv_v_vstate_discard() calls
+into the instrumentable __riscv_v_owner_invalidate() function, which calls
+rcu_read_lock(), rcu_dereference(), the registered callback, and
+rcu_read_unlock() while the CPU is still in CT_STATE_USER.
+
+On kernels with CONFIG_CONTEXT_TRACKING_USER=3Dy (such as CONFIG_NO_HZ_FULL=
+=3Dy
+or CONFIG_CONTEXT_TRACKING_FORCE=3Dy), RCU is not watching at this point.
+Wouldn't this violate noinstr constraints, trigger the rcu_read_lock()
+lockdep warning for being used while idle, and allow synchronize_rcu() in
+kvm_riscv_unregister_vctx_invalidate() to finish while invalidate_callback()
+is still executing?
+
+> @@ -393,6 +416,13 @@ static inline void __switch_to_vector(struct task_st=
+ruct *prev,
+>  	}
+> =20
+>  	if (riscv_preempt_v_started(next)) {
+> +		/*
+> +		 * A preemptible kernel Vector user can be scheduled back after a
+> +		 * vCPU published a guest owner on this hart.  Drop that owner before
+> +		 * the kernel context resumes or restores and overwrites the register
+> +		 * file.
+> +		 */
+> +		riscv_v_owner_invalidate(RISCV_V_INVALIDATE_KERNEL_VECTOR);
+>  		if (next->thread.riscv_v_flags & RISCV_PREEMPT_V_IN_SCHEDULE) {
+>  			next->thread.riscv_v_flags &=3D ~RISCV_PREEMPT_V_IN_SCHEDULE;
+>  			riscv_v_enable();
 
 [ ... ]
 
-> +	pin_to_one_cpu();
-> +	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
-> +	TEST_REQUIRE(__vcpu_has_isa_ext(vcpu, KVM_RISCV_ISA_EXT_V));
-> +	vm_init_vector_tables(vm);
-> +	vcpu_init_vector_tables(vcpu);
-> +	vlenb_id =3D KVM_REG_RISCV | KVM_REG_RISCV_VECTOR |
-> +		KVM_REG_SIZE_ULONG | KVM_REG_RISCV_VECTOR_CSR_REG(vlenb);
-> +	ret =3D __vcpu_get_reg(vcpu, vlenb_id, &vlenb);
-> +	TEST_ASSERT(!ret, "GET vlenb failed: %d", ret);
-> +	TEST_ASSERT(vlenb && vlenb <=3D RISCV_MAX_VLENB &&
-> +		    !(vlenb & (vlenb - 1)), "bad vlenb: %lu", vlenb);
-> +	size =3D (u64)__builtin_ctzl(vlenb) << KVM_REG_SIZE_SHIFT;
-> +	v0_id =3D KVM_REG_RISCV | KVM_REG_RISCV_VECTOR | size |
-> +		KVM_REG_RISCV_VECTOR_REG(0);
-> +
-> +	page_size =3D sysconf(_SC_PAGESIZE);
-> +	TEST_ASSERT(page_size > 0 && vlenb <=3D 2 * page_size, "bad page size");
-> +	mapping =3D mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-> +		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	TEST_ASSERT(mapping !=3D MAP_FAILED, "mmap failed: %d", errno);
+> diff --git a/arch/riscv/kernel/kernel_mode_vector.c b/arch/riscv/kernel/k=
+ernel_mode_vector.c
+> index 77e98b504485e..9e87bdf020285 100644
+> --- a/arch/riscv/kernel/kernel_mode_vector.c
+> +++ b/arch/riscv/kernel/kernel_mode_vector.c
 
 [ ... ]
 
-> +	kvm_vm_free(vm);
-> +	ret =3D munmap(mapping, 2 * page_size);
-> +	TEST_ASSERT(!ret, "munmap failed: %d", errno);
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Could these three tests use existing kvm_util/kvm_syscalls helpers and be
-consolidated into a single Vector owner test binary?
-
-Specifically:
-1. pin_to_one_cpu() in vector_owner_fault_test.c,
-   vector_owner_lifetime_test.c, and vector_owner_onereg_test.c reimplements
-   pin_self_to_any_cpu() (or pin_self_to_cpu()) from
-   tools/testing/selftests/kvm/include/kvm_util.h.
-2. main() in vector_owner_fault_test.c hand-rolls mmap() and munmap() with
-   TEST_ASSERT() instead of using kvm_mmap() and kvm_munmap() from
-   tools/testing/selftests/kvm/include/kvm_syscalls.h, and both
-   vector_owner_fault_test.c and vector_owner_onereg_test.c call
-   __vcpu_get_reg() with a manual TEST_ASSERT() for the ULONG-sized vlenb
-   register instead of vcpu_get_reg().
-3. Splitting the lifetime, ONE_REG, and fault sub-cases across three separa=
-te
-   binaries in tools/testing/selftests/kvm/Makefile.kvm duplicates the Vect=
-or
-   VM/vCPU initialization, vlenb and v0 register ID calculation, guest
-   vle8.v/vse8.v wrappers, and ucall run helpers across all three files.
-
-> diff --git a/tools/testing/selftests/kvm/riscv/vector_owner_lifetime_test=
-.c b/tools/testing/selftests/kvm/riscv/vector_owner_lifetime_test.c
-> new file mode 100644
-> index 0000000000000..c7b057b27cd0e
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/riscv/vector_owner_lifetime_test.c
-> @@ -0,0 +1,127 @@
-
-[ ... ]
-
-> +int main(void)
-> +{
-> +	struct kvm_vm *old_vm, *new_vm;
-> +	struct kvm_vcpu *old_vcpu, *new_vcpu;
+> @@ -106,6 +142,8 @@ static void __riscv_flush_vector_context(void)
+>  {
+>  	void (*vcpu_flush_v_callback)(void);
+> =20
+> +	riscv_v_owner_invalidate(RISCV_V_INVALIDATE_KERNEL_VECTOR);
 > +
-> +	pin_to_one_cpu();
-> +	old_vm =3D create_vector_vm(&old_vcpu, old_guest);
-> +	run_to_done(old_vcpu);
-> +	kvm_vm_free(old_vm);
-> +
-> +	new_vm =3D create_vector_vm(&new_vcpu, new_guest);
-> +	run_to_done(new_vcpu);
-> +	kvm_vm_free(new_vm);
+>  	if (riscv_v_flags() & RISCV_V_VCPU_CTX) {
+>  		rcu_read_lock();
+>  		vcpu_flush_v_callback =3D rcu_dereference(kvm_flush_vector_ctx_callbac=
+k);
 
-[Severity: Medium]
-Does freeing old_vm while no other VM is open clear the per-CPU Vector owner
-before new_vm is ever created?
+[Severity: High]
+Can a preemption or migration between put_cpu_vector_context() and
+riscv_v_start(RISCV_PREEMPT_V) in riscv_v_start_kernel_context() miss a
+required guest owner invalidation?
 
-In main() in tools/testing/selftests/kvm/riscv/vector_owner_lifetime_test.c,
-kvm_vm_free(old_vm) closes the only open VM fd, which drops kvm_usage_count
-to zero:
+With CONFIG_RISCV_ISA_V_PREEMPTIVE=3Dy, kernel_vector_begin() sets up
+preemptible kernel Vector execution via riscv_v_start_kernel_context():
 
-  kvm_destroy_vm()
-    -> kvm_disable_virtualization()
-      -> cpuhp_remove_state(CPUHP_AP_KVM_ONLINE)
-        -> kvm_offline_cpu()
-          -> kvm_arch_disable_virtualization_cpu()
-            -> kvm_riscv_csr_cleanup()
-              -> kvm_riscv_clear_former_vcpu()
-                -> kvm_riscv_vcpu_vector_owner_invalidate()
+arch/riscv/kernel/kernel_mode_vector.c:riscv_v_start_kernel_context() {
+	...
+	/* Transfer the ownership of V from user to kernel, then save */
+	get_cpu_vector_context();
+	__riscv_flush_vector_context();
+	put_cpu_vector_context();
+	...
+	riscv_v_start(RISCV_PREEMPT_V);
+	return 0;
+}
 
-Because kvm_riscv_vcpu_vector_owner_invalidate() zeroes the per-CPU
-kvm_riscv_vector_owner structure when the last VM is destroyed, the resident
-owner from old_vcpu is already cleared before new_vm is created. When
-new_vcpu runs, kvm_riscv_vcpu_vector_owner_load() in
-arch/riscv/kvm/vcpu_vector.c always hits the !owner->identity branch:
+__riscv_flush_vector_context() calls riscv_v_owner_invalidate() on the
+current hart while preemption is disabled, and then put_cpu_vector_context()
+re-enables preemption and bottom halves before riscv_v_start(RISCV_PREEMPT_=
+V)
+sets RISCV_PREEMPT_V in current->thread.riscv_v_flags.
 
-	} else if (!owner->identity) {
-		reason =3D vcpu->arch.last_exit_cpu =3D=3D cpu ?
-			 KVM_RISCV_VECTOR_OWNER_EMPTY :
-			 KVM_RISCV_VECTOR_OWNER_MIGRATION;
-	} else if (owner->identity !=3D (unsigned long)vcpu) {
-		reason =3D KVM_RISCV_VECTOR_OWNER_OTHER_VCPU;
-	} else if (owner->cookie !=3D vcpu->arch.vector_owner_cookie) {
-		reason =3D KVM_RISCV_VECTOR_OWNER_COOKIE;
-	} else if (owner->generation !=3D vcpu->arch.vector_state_generation) {
-		reason =3D KVM_RISCV_VECTOR_OWNER_GENERATION;
+If the task is preempted in that window before RISCV_PREEMPT_V is set, a
+vCPU thread can run on the same hart and publish guest Vector ownership, or
+the task can migrate to another hart that already has a resident guest
+Vector owner.
 
-So the test never exercises the stale-vCPU identity or cookie checks (and
-even if a second VM is kept alive so kvm_usage_count does not drop to zero
-and new_vcpu reuses old_vcpu's struct kvm_vcpu address, old_vcpu leaves
-owner->generation =3D=3D 2 while new_vcpu starts its first KVM_RUN with
-vector_state_generation =3D=3D 1).
-
-Should the test keep a VM alive across old_vcpu destruction (or recreate the
-vCPU in a way that preserves the per-CPU owner state and matches generation)
-so that the stale-owner checks in kvm_riscv_vcpu_vector_owner_load() are
-actually reached?
+When the task is scheduled back in, __switch_to_vector() checks
+riscv_preempt_v_started(next), which is still false because RISCV_PREEMPT_V
+has not been set yet, so __switch_to_vector() skips
+riscv_v_owner_invalidate(). The task then sets RISCV_PREEMPT_V, returns to
+kernel_vector_begin(), calls riscv_v_enable(), and overwrites the hardware
+Vector registers while the hart's guest Vector owner remains valid.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/OSQPR01MB6326538559=
-7FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com?part=3D3
+7FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com?part=3D1
