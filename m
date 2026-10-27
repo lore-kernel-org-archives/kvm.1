@@ -1,65 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793111801;
-	b=opDHoXFdLPsBvtFISvhLRIfWEGyuzbzmmHJHhKcle0/lAO8CbMI0q/XOCLlMuxuCzTPl
-	 jJqDtxebPO9MlxVSQL7iBJY4q3OqrjX58gEYEUYkqaWeAQAAPR8OA2XkIGna5CN5VonEB
-	 sj8WPG5W3Za0r02shgTyVOmGgnE3GM9XNrQo6xzP8vYgUF4DmgTtwhrQfS1r3DGLgGOwt
-	 ucXIX6cAmP4UtGrFXlDx0PR5Oz45q8lFfD3RvBTslWJEtCUg/InhIs3LfqZNOrzUrmY2m
-	 /a9vKSKPDalvOPH6lspNE+1EW6z/BtoHOivll470BBZCKc5j954UeTVKZSXUcfff3ig==
+	t=1793111969;
+	b=edQcIgOz1u9nfRfW1Culro+p5qFSlAJIi856ujbpBlYjgOfR6tvIWLeVxPoxJR/6YWue
+	 SS95ZczCGoR5ZtXwrVWKo1ohLpe386NrqkuSxSLBaF0rzFMCWHhtDUVNP/GbNfa4k4Yks
+	 87ETTbH6wdqtxRx36A6IBg3SchUpeQpitbUKW2EWdhvQcLSzRkt1+T4YKFfvQYLPVyyaX
+	 S9xe4zVdpaNlEJOcyYlJyaKHeZPE3dludznmmhdHISbvywEiSxyD+ZIPp+jD+D7IDrtB6
+	 viZBMwSYOPjkoxKXftckVnFJg0YOekcIw1ZcLwLhMQ7s3WZmYOuH7cQyhSrt5K2+qSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793111801;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=JGMA7ndsKLYu7/BJrUVeYn2MGUZmeguc8oPK59FGqss=;
-	b=nl0fNxynhrHVxtrHC1FL1XM82XxjBeOGtuRxpY30I5+RZAfJhi9DXcdfgAX9bzD98RGT
-	 tRdFHfiPUsYB9lYtHv1uBPkGwnIsS8QH2dxhgFkY89EZGsnBWz5rF+rFMNfvZ4Rq4f5DX
-	 I70W/Z1MnzWe10tVXq+ElJYxk/AeQ05N+aJl7l6FpNQvw0Td1exQmayMIyYWFM5/ISZXZ
-	 Lcs5c4lHMhgRgytr5cgdSKXfIoqqMHma3mNXfwZ3RMjCxGbn4Jwi0+QaQS5eAbLSr3KGE
-	 s9324QarqVOnBJRLWu1AGWWUr/S+PJZVj4JN4MRSCRw9GvD7BXeiUB9BQUKPbce4Zdw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793111969;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=zWKNZJvS98TaYn91gneC8TBH6IkytbETY3YYVo94WFg=;
+	b=JmGN1xWCcrbqcd+yH+3K6vCJ+CoWNELMG1J/6cUxx1HM10nvOyGtCwuceGC1/N+4ok2p
+	 Kst8yv+n4zVs9ifoXtJFH/zaoOBCD0JX8ScgutvxaV7nUPnDv5d3C6LQaR5wnJmgINdUp
+	 505dZA5zCDtrQj6cYVr0ZaXCYEjcTdoLZTxKxVbZ05kchNTGzjjts3Y637zng3TcTKeI+
+	 B3rgHg4UmJg07VYtFWM0g3VDn9MN8f7QgA3g73LcHy1JQnYMZgYlKYNaCCOi7NrYvn1gq
+	 Mrv9Hm7glob1UO5xBMQYn3YdHA3OgDYzEkNGfxJy153Wie+luowixB/vm2RbxO0Xa6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NyP8Lr2z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhtq+G06;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD0F606A321
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10175606A31A;
+	Tue, 27 Oct 2026 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NyP8Lr2z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2271F01825;
-	Tue, 27 Oct 2026 14:36:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhtq+G06
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A1C1F01828;
+	Tue, 27 Oct 2026 14:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793111800;
-	bh=JGMA7ndsKLYu7/BJrUVeYn2MGUZmeguc8oPK59FGqss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NyP8Lr2ztB0qXFIVfWxs4i77kAyWViEEcm5U7CxheXbwwXWc6N1V+LbxaMrBCd7oI
-	 svTHzmjfzQRFMIq1d0vfm3lpUyO+rE0GECYadHCCGcNZCcGfKbzvgW0qVZc6iXFE7y
-	 OtSh1opavp2ge3SmbNs+rTCgS0vGOJmi2WF45yBv/jCE+WHwaCznSsdf4QtBu3I3cP
-	 kQYurdb2zE11TN19zvy1BEJ360p6LiMUwzSxL6+htFFgwsgCljLZB0aW+1WX1qnD8J
-	 DF+3kvJp1jsH1p4IP7yCCTezYZvmFAee32hJvr8ofeYl9nurSmEJWcmKmuwJE3eGgO
-	 INErjl8v/jwKA==
-Date: Tue, 27 Oct 2026 15:36:33 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Kohei Enju <enju.kohei@fujitsu.com>, gshan@redhat.com,
-	berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
-	qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v4 03/24] target/arm: Add confidential guest support
-Message-ID: <auC28TE3QWlU0Pcm@red-moon>
-References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
- <20260903193611.1058589-4-mathieu.poirier@linaro.org>
- <dhrvydsmaw22xqx5d5i5s7fdyjxupz27yxp6trv2tesysp4npj@quvzrxjvfipz>
- <arI197vJkW75p50c@lpieralisi>
- <arSTQQ5uB6oR-vFe@FCCLS0092175.localdomain>
- <ataBkrIvULJXj4v6@p14s>
- <atdKSwvu_uldqwlz@red-moon>
- <atekhR1Wz03nUCHB@p14s>
- <fgmu2cuxx2n2cuxqeotas2iu43jk7aou3hldhw4757x4jyv6np@snsceczzajcy>
+	s=k20260515; t=1793111968;
+	bh=zWKNZJvS98TaYn91gneC8TBH6IkytbETY3YYVo94WFg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mhtq+G06kqC3xeB4k1jE+dmZEllYWsCyHRkDYVcdsaBoV8aW199hq1GaHjzFYOz0p
+	 vuNdJJUHYSi/oKO4hOgIQ3k/DhuVPlx0CBSsPodt2GfXNCg7s9rnCI9x6Mo3k5rJNx
+	 3pbyLKia5J4YIOawICwO5EcvkwibwoPe39YF4zpytydfEtNzz1POphpsG/gvK95orM
+	 v25QLAFQvhgys9n5rsJWOHakEo+VPMg7kbTE2WMa3hJ4FIPb4m9GY1TSA9t5Z8EviY
+	 k0HqoCHaAfyCbhzNVUM2rosDzTzE+etBEveMz1+Silpow9WeNMVmUBMK6f8Q6m7mt+
+	 M6g8TfrvFDmrQ==
+Message-ID: <8c164738-8025-482f-828a-3f919150a930@kernel.org>
+Date: Tue, 27 Oct 2026 15:39:20 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,283 +51,192 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fgmu2cuxx2n2cuxqeotas2iu43jk7aou3hldhw4757x4jyv6np@snsceczzajcy>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] mm/huge_memory: copy file THPs at fork like
+ copy_present_ptes() does
+To: Konstantin Khorenko <khorenko@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
+ <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 20, 2026 at 01:12:45PM -0500, Michael Roth wrote:
-> On Tue, Oct 20, 2026 at 11:27:33AM -0600, Mathieu Poirier wrote:
-> > On Tue, Oct 20, 2026 at 01:02:35PM +0200, Lorenzo Pieralisi wrote:
-> > > On Mon, Oct 19, 2026 at 02:46:10PM -0600, Mathieu Poirier wrote:
-> > > > On Thu, Sep 24, 2026 at 12:12:35PM +0900, Kohei Enju wrote:
-> > > > > On 09/22 10:01, Lorenzo Pieralisi wrote:
-> > > > > > On Tue, Sep 15, 2026 at 04:27:21PM -0500, Michael Roth wrote:
-> > > > > > > On Thu, Sep 03, 2026 at 01:35:50PM -0600, Mathieu Poirier wrote:
-> > > > > > > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > > > > > > 
-> > > > > > > > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
-> > > > > > > > support the Arm Realm Management Extension (RME). It is instantiated by
-> > > > > > > > passing on the command-line:
-> > > > > > > > 
-> > > > > > > >   -M virt,confidential-guest-support=<id>
-> > > > > > > >   -object rme-guest,id=<id>
-> > > > > > > > 
-> > > > > > > > This is only the skeleton. Support will be added in following patches.
-> > > > > > > > 
-> > > > > > > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > > > > > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > > > > > > > ---
-> > > > > > > >  docs/system/confidential-guest-support.rst |  1 +
-> > > > > > > >  qapi/qom.json                              | 13 +++++++
-> > > > > > > >  target/arm/kvm-rme.c                       | 42 ++++++++++++++++++++++
-> > > > > > > >  target/arm/meson.build                     |  5 ++-
-> > > > > > > >  4 files changed, 60 insertions(+), 1 deletion(-)
-> > > > > > > >  create mode 100644 target/arm/kvm-rme.c
-> > > > > > > > 
-> > > > > > > > diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
-> > > > > > > > index 562a7c3c2852..abb56923ad13 100644
-> > > > > > > > --- a/docs/system/confidential-guest-support.rst
-> > > > > > > > +++ b/docs/system/confidential-guest-support.rst
-> > > > > > > > @@ -42,5 +42,6 @@ Currently supported confidential guest mechanisms are:
-> > > > > > > >  * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
-> > > > > > > >  * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
-> > > > > > > >  * AWS Nitro Enclaves (see :doc:`nitro`)
-> > > > > > > > +* Arm Realm Management Extension (RME)
-> > > > > > > >  
-> > > > > > > >  Other mechanisms may be supported in future.
-> > > > > > > > diff --git a/qapi/qom.json b/qapi/qom.json
-> > > > > > > > index 776b13027fd8..52997c29a32d 100644
-> > > > > > > > --- a/qapi/qom.json
-> > > > > > > > +++ b/qapi/qom.json
-> > > > > > > > @@ -1288,6 +1288,17 @@
-> > > > > > > >    'data': { '*pretty': 'bool',
-> > > > > > > >              '*close-action': 'MonitorQMPCloseAction' } }
-> > > > > > > >  
-> > > > > > > > +##
-> > > > > > > > +# @RmeGuestProperties:
-> > > > > > > > +#
-> > > > > > > > +# Properties for rme-guest objects.
-> > > > > > > > +#
-> > > > > > > > +# Since: 11.1
-> > > > > > > > +##
-> > > > > > > > +{ 'struct': 'RmeGuestProperties',
-> > > > > > > > +  'base': 'ConfidentialGuestSupportProperties',
-> > > > > > > 
-> > > > > > > Just FYI, based on input from Markus I'm planning to drop this
-> > > > > > > ConfidentialGuestSupportProperties base type from my series
-> > > > > > > since it's probably only SNP/TDX that need to be able to switch
-> > > > > > > it on/off, whereas this series appears to use/require it from
-> > > > > > > the start.
-> > > > > > > 
-> > > > > > > I'm not exactly sure what it will look like for v3 yet, but if you
-> > > > > > > were based on v2 you'd instead probably just do the following in the
-> > > > > > > instance_init function for your rme-guest instance:
-> > > > > > > 
-> > > > > > >   cgs->allow_convert_in_place = true;
-> > > > > > >   cgs->convert_in_place = true;
-> > > > > > > 
-> > > > > > > rather than exposing it as a cmdline option.
-> > > > > > 
-> > > > > > Yep, it won't be an option for CCA Realms anyway since that will be
-> > > > > > the baseline.
-> > > > > 
-> > > > > IIUC, in-place conversion requires RAM backed by a shared/mappable
-> > > > > guest_memfd. If in-place conversion is always enabled for CCA Realms,
-> > > > > could QEMU also select the equivalent of
-> > > > > 
-> > > > >   -object memory-backend-guest-memfd,id=ram0,size=...,share=on
-> > > > > 
-> > > > > automatically for the default RAM, so that specifying the RAM size with
-> > > > > `-m` is sufficient?
-> > > > 
-> > > > Are you suggesting that on Arm, we completely get rid of 
-> > > 
-> > > Nit: obviously on Arm rme-guest configs.
-> > 
-> > Indeed.
-> > 
-> > > 
-> > > >     -object memory-backend-guest-memfd,id=ram0,size=$(RAMSIZE),share=on
-> > > 
-> > > If that's what we want to make a default, I guess we ought to override
-> > > create_default_memdev for arm machines + rme-guest configs ?
-> > > 
-> > > Pros and cons ? I am not sure how well received is setting implicit defaults
-> > > for specific machine configs and what that really buys us eventually.
-> > 
-> > I agree, this entails a fair amount of changes for cosmetic gains only.
+On 10/21/26 22:36, Konstantin Khorenko wrote:
+> This fixes no bug: it makes fork copy a PMD the way copy_present_ptes()
+> copies a PTE. Until now copy_huge_pmd() skipped every folio PMD of a
+> non-anonymous VMA and left the child to fault them in again, while the
+> PTEs of the same VMA are copied.
 > 
-> I think it will also add some uneccessary confusion. For instance, based
-> on Paolo's feedback[1], we will likely not expose any sort of option to
-
-I think that [1] is:
-
-https://lore.kernel.org/kvm/866179b6-8303-4c30-aa59-005fa4554362@redhat.com
-
-for completeness.
-
-> switch between in-place/out-of-place conversion for SNP/TDX, but instead
-> just use whatever mode the KVM module was actually configured to use.
+> Treat file folios as the PTE path does: take a reference, duplicate the
+> rmap and account them. fork then pays a reference and an rmap update
+> per PMD, and saves the child a fault per PMD it touches. The next patch
+> sends PFN mappings through the same tail.
 > 
-> For in-place conversion, it actually doesn't seem too bad to hook into
-> create_default_memdev to have it default to memory-backend-memfd.
-> However, currently, it used backend-file/backend-ram depending on other
-
-"it used" - can I ask what "it" refers to please ?
-
-> options, and those options are applicable to out-of-place conversion as
-> well where e.g. maybe the user wants to use file-backed hugetlb memory
-> for their shared memory. So we wouldn't want to change the behavior for
-> out-of-place.
-
-So, here you are saying that basically a sensible default for out-of-place
-might not work for convert-in-place and therefore it does not make much
-sense to have a default that does/doesn't work depending on how KVM is
-configured.
-
-> But then, for in-place, if we default to a different backend then stuff
-> like mem-path=... parameters for out-of-place invocations will then
-> become silently ignored, or we will need to generate an error for those,
-> which works against the idea of having a common cmdline that "just
-> works" for in-place/out-of-place.
-
-Yes that makes sense.
-
-> If we (users, management/libvirt, etc.) consolidate around specifying the
-> memfd backend for confidential VMs, then we can have a "default" that is
-> more consistent between in-place vs. out-of-place, which i think is more
-> beneficial than trying to consolidate around a syntacticly simpler
-> cmdline that might not behave as expected when switching between
-> older/newer kernels which may or may not have in-place support.
-
-Can you elaborate on this Michael please ? In particular in relation to a more
-consistent "default" for in-place/out-of-place, are you referring to defining
-a -object memfd option that works for both in-place and out-of-place ? Isn't
-that the case already with your latest v3 (and the VMM detecting the KVM
-underlying config ie in-place vs out-of-place) ?
-
-> So, a longwinded "I agree" from me as well.
+> That covers the VMAs vma_needs_copy() sends here:
 > 
-> Thanks,
+> - private file mappings with an anon_vma;
+> - VM_COPY_ON_FORK ones: uffd-wp and uffd-rwp, VM_MIXEDMAP (fuse DAX),
+>   and VM_MAYBE_GUARD, which shared shmem, file and DAX mappings get
+>   from a guard region.
 > 
-> Mike
+> The DAX huge zero PMD is copied too, with a reference taken by
+> mm_get_huge_zero_folio() as for anonymous VMAs. A migration entry of a
+> file folio is copied and accounted like copy_nonpresent_pte() does, and
+> made read-only in both processes only in a CoW mapping.
+> 
+> The copy then gets the same tail as __copy_present_ptes(): write
+> protect both sides in a CoW mapping, mark the child's copy clean in a
+> shared one, and drop the uffd-wp bit where the child is not armed. An
+> anonymous THP is now write protected only when its PMD is writable, as
+> a PTE is.
+> 
+> A page table is deposited under the copy where the fault paths deposit
+> one: in anonymous VMAs, and wherever the architecture needs one.
+> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+> ---
+>  mm/huge_memory.c | 60 ++++++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 37 insertions(+), 23 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 1e5d68acf62a5..13e3674fb6115 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1898,12 +1898,13 @@ static void copy_huge_non_present_pmd(
+>  		pmd_t pmd, pgtable_t pgtable)
+>  {
+>  	softleaf_t entry = softleaf_from_pmd(pmd);
+> -	struct folio *src_folio;
+> +	struct folio *src_folio = softleaf_to_folio(entry);
+>  
+>  	VM_WARN_ON_ONCE(!pmd_is_valid_softleaf(pmd));
+>  
+> -	if (softleaf_is_migration_write(entry) ||
+> -	    softleaf_is_migration_read_exclusive(entry)) {
+> +	if ((softleaf_is_migration_write(entry) ||
+> +	     softleaf_is_migration_read_exclusive(entry)) &&
+> +	    vma_is_cow_mapping(src_vma)) {
+>  		entry = make_readable_migration_entry(swp_offset(entry));
+>  		pmd = softleaf_to_pmd(entry);
+>  		if (pmd_swp_soft_dirty(*src_pmd))
 
-Thanks,
-Lorenzo
 
-> > 
-> > > 
-> > > > or simply to get rid of "size=$(RAMSIZE)" in the above because it is redundant
-> > > > with "-m $(RAMSIZE)"?
-> > > > 
-> > > > Gavin and Michael, what is your take on that suggestion?
-> > > 
-> > > Yes please any feedback on this is welcome.
-> > > 
-> > > Thanks,
-> > > Lorenzo
-> > > 
-> > > > Thanks,
-> > > > Mathieu
-> > > > 
-> > > > > 
-> > > > > Thanks,
-> > > > > Kohei
-> > > > > 
-> > > > > > 
-> > > > > > Thanks,
-> > > > > > Lorenzo
-> > > > > > 
-> > > > > > > Thanks,
-> > > > > > > 
-> > > > > > > Mike
-> > > > > > > 
-> > > > > > > > +  'data': {} }
-> > > > > > > > +
-> > > > > > > >  ##
-> > > > > > > >  # @ObjectType:
-> > > > > > > >  #
-> > > > > > > > @@ -1346,6 +1357,7 @@
-> > > > > > > >      { 'name': 'pr-manager-helper',
-> > > > > > > >        'if': 'CONFIG_LINUX' },
-> > > > > > > >      'qtest',
-> > > > > > > > +    'rme-guest',
-> > > > > > > >      'rng-builtin',
-> > > > > > > >      'rng-egd',
-> > > > > > > >      { 'name': 'rng-random',
-> > > > > > > > @@ -1427,6 +1439,7 @@
-> > > > > > > >        'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
-> > > > > > > >                                        'if': 'CONFIG_LINUX' },
-> > > > > > > >        'qtest':                      'QtestProperties',
-> > > > > > > > +      'rme-guest':                  'RmeGuestProperties',
-> > > > > > > >        'rng-builtin':                'RngProperties',
-> > > > > > > >        'rng-egd':                    'RngEgdProperties',
-> > > > > > > >        'rng-random':                 { 'type': 'RngRandomProperties',
-> > > > > > > > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> > > > > > > > new file mode 100644
-> > > > > > > > index 000000000000..42e1d1e7b859
-> > > > > > > > --- /dev/null
-> > > > > > > > +++ b/target/arm/kvm-rme.c
-> > > > > > > > @@ -0,0 +1,42 @@
-> > > > > > > > +/*
-> > > > > > > > + * QEMU Arm RME support
-> > > > > > > > + *
-> > > > > > > > + * SPDX-License-Identifier: GPL-2.0-or-later
-> > > > > > > > + *
-> > > > > > > > + * Copyright Linaro 2026
-> > > > > > > > + */
-> > > > > > > > +
-> > > > > > > > +#include "qemu/osdep.h"
-> > > > > > > > +
-> > > > > > > > +#include "hw/core/boards.h"
-> > > > > > > > +#include "hw/core/cpu.h"
-> > > > > > > > +#include "kvm_arm.h"
-> > > > > > > > +#include "migration/blocker.h"
-> > > > > > > > +#include "qapi/error.h"
-> > > > > > > > +#include "qom/object_interfaces.h"
-> > > > > > > > +#include "system/confidential-guest-support.h"
-> > > > > > > > +#include "system/kvm.h"
-> > > > > > > > +#include "system/runstate.h"
-> > > > > > > > +
-> > > > > > > > +#define TYPE_RME_GUEST "rme-guest"
-> > > > > > > > +OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
-> > > > > > > > +
-> > > > > > > > +struct RmeGuest {
-> > > > > > > > +    ConfidentialGuestSupport parent_obj;
-> > > > > > > > +};
-> > > > > > > > +
-> > > > > > > > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-> > > > > > > > +                                          CONFIDENTIAL_GUEST_SUPPORT,
-> > > > > > > > +                                          { TYPE_USER_CREATABLE }, { })
-> > > > > > > > +
-> > > > > > > > +static void rme_guest_class_init(ObjectClass *oc, const void *data)
-> > > > > > > > +{
-> > > > > > > > +}
-> > > > > > > > +
-> > > > > > > > +static void rme_guest_init(Object *obj)
-> > > > > > > > +{
-> > > > > > > > +}
-> > > > > > > > +
-> > > > > > > > +static void rme_guest_finalize(Object *obj)
-> > > > > > > > +{
-> > > > > > > > +}
-> > > > > > > > diff --git a/target/arm/meson.build b/target/arm/meson.build
-> > > > > > > > index 0369f96b4cc6..9d322a7aad28 100644
-> > > > > > > > --- a/target/arm/meson.build
-> > > > > > > > +++ b/target/arm/meson.build
-> > > > > > > > @@ -31,7 +31,10 @@ arm_common_user_system_ss.add(when: 'TARGET_AARCH64', if_true: files(
-> > > > > > > >  arm_common_system_ss.add(files(
-> > > > > > > >    'arm-qmp-cmds.c',
-> > > > > > > >  ))
-> > > > > > > > -arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
-> > > > > > > > +arm_system_ss.add(when: 'CONFIG_KVM', if_true: files(
-> > > > > > > > +  'hyp_gdbstub.c',
-> > > > > > > > +  'kvm.c',
-> > > > > > > > +  'kvm-rme.c'))
-> > > > > > > >  arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
-> > > > > > > >  
-> > > > > > > >  arm_user_ss.add(files('cpu.c'))
-> > > > > > > > -- 
-> > > > > > > > 2.43.0
-> > > > > > > > 
-> > > > > > > > 
+Any reason we're not adding the vma_is_cow_mapping() check on the
+softleaf_is_device_private_write() path as well?
+
+(I think they are all anonymous ... just for consistency)
+
+
+Is the fallthrough:
+
+	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR)
+
+really expected?
+
+
+> @@ -1927,7 +1928,6 @@ static void copy_huge_non_present_pmd(
+>  			set_pmd_at(src_mm, addr, src_pmd, pmd);
+>  		}
+>  
+> -		src_folio = softleaf_to_folio(entry);
+>  		VM_WARN_ON(!folio_test_large(src_folio));
+>  
+>  		folio_get(src_folio);
+> @@ -1939,9 +1939,11 @@ static void copy_huge_non_present_pmd(
+>  					    dst_vma, src_vma);
+>  	}
+>  
+> -	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+> -	mm_inc_nr_ptes(dst_mm);
+> -	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+> +	add_mm_counter(dst_mm, mm_counter(src_folio), HPAGE_PMD_NR);
+> +	if (pgtable) {
+> +		mm_inc_nr_ptes(dst_mm);
+> +		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+> +	}
+>  	if (!userfaultfd_protected(dst_vma))
+>  		pmd = pmd_swp_clear_uffd(pmd);
+>  	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+> @@ -1957,6 +1959,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+>  	pmd_t pmd;
+>  	pgtable_t pgtable = NULL;
+>  	int ret = -ENOMEM;
+> +	bool writable;
+
+Why do we need this variable?
+
+[...]
+
+> +		goto copy_pmd;
+>  	}
+
+Likely we should clean this up later to avoid the gotos.
+
+
+
+-- 
+Cheers,
+
+David
