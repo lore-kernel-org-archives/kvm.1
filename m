@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793139141;
-	b=BJ+Fmn6hx04fAMsE3yant7oHO/D+CaRaWDRDXhq2ZrCI4M2H2p9IXkJFOMtMLI2UYMzb
-	 fX2LultviGwsQxbuvKINW3gQ4JuiWV19K/VyA7iPnBRp3QchQDKponKnYkwcTW2Rhpcnz
-	 U8JHe3E/Bpz9vwqPtAziE6NiCWSom6rlSVEv7aHjX7YvIpUaar4aSy6lfMUZKnIKm1aT0
-	 yddWg0Pill8KLVSoOX1jvSXytpO1W53Kbh/a0Vss5Z7vXfST+DWICvmRqqlw4gVRBIdch
-	 qVL/du5HYS8IqfaOaPLN1gs1EWN3RWumJrjftIqYFhq/0XUE0IkQIJv26j0IhRDbRJw==
+	t=1793139145;
+	b=hWqvxNUpnsADmTMwJtMo4czonwzNgxWrZthDWRl1VBryKNHRlj1/fqOQk1T2ONk8uOem
+	 8NDN9OFZnp/MHrmYjzYfRgpdHPLPXDLT9JRP1FUBpClNp1Ej/tMawM9GtwfPLbEM4OFDX
+	 CljyOPhJxQ84x3Ad7AFbdMDgmD3b33J5uiYOZImdO6DRHWftR01ODbniujOWnq1qyjfDg
+	 qZf92uFjxiD7ThviTN2wef6a7RGWdjo3TzeX+ugrsw+wz7RHqjaJcba6kTkX92/a+1IUZ
+	 v/yoxw0I4EMOTFNo+44GMx/bbIvn2ByKIajk/42MTnInx9MEFWPbdYGWC9RQp24lhMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793139141;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793139145;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
 	 In-Reply-To:Mime-Version:References:X-Mailer:Message-ID:Subject:From:
 	 To:Cc:Content-Type;
-	bh=EI446rcjrN0x44kbFFvKS4UWEA1sDeBtgZ/wnLAywEQ=;
-	b=4WVDArpyiR1hoQBO5uA1lKAVUJ/wp2/NL579VWg5r3J1SV++u3uavW5PurENyvbkvl5z
-	 OJIDdiWmJSqHAPuWWnYZCwoGaHnQW5EDhpPqZ73yr5S+/HKehBYP5cIRmnQmZkuLdr7BN
-	 fzV/kznqJ2ex8kBwxnJwCeraXlD/BFlqmNAbrs74yllZejLuXAafEHjpg82WMczAeUyvu
-	 xQhWxv0Dod2YwghNQiHCuCUAMXmNZsGVFe5eWmI1x5KzzbOVtlq3D9OwttD7YuGMcbvQT
-	 NSargJ0ClD1GVdzJGL8EkQPMrGWqVHaHvmzX3oFwiNIdjeFco4W/dLSUYryg9xLIZTQ==
+	bh=7KZPmVSe/mbc0d3PV2oDcK5UvV7diSgsE22iAyaAi38=;
+	b=XtGy9d5Ce1Kc+KBbnhsCvD2ua50dGkn+bHgPjyioMPxzlRUl77J4yku+FCIkfPDKFBVn
+	 4C/Q5ukP4DhK4jIKnXPMHCkwEEzz3lULxg9pF2tXBtnn+OhpaMplrwQsfNqCYHSmhiOxP
+	 jgIy2Vd4NG6fHA+cMbf9chjuAAGsXwkyrF91w+66ysV24mRXuie2s8yojqH99KQtZSu9R
+	 jR0eHOaOyfLei4X439Ykj2ojz0XqRfAvmLxvsjOiRim043BgTE3gE5t7RuVCQ/DqjtdTw
+	 1YDPIu4VG6/TLRhy7zGNoTALN3McWhFP2MdvBGYBlc+eyOJTrfQZ1KhjHa6qroX9Wbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AW3lw8ir;
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kkmWDbDm;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C2260A263D
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:12:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98C2260A263D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61325606A32F
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:12:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61325606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AW3lw8ir
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e9821ca96fso3601905ad.0
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:12:21 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kkmWDbDm
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3abb4c24125so283141a91.3
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:12:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793139141; x=1793743941; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793139145; x=1793743945; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=EI446rcjrN0x44kbFFvKS4UWEA1sDeBtgZ/wnLAywEQ=;
-        b=AW3lw8irvpQz1EVNO8y6ShweTTX/lFmzpHv/V3/DNtPpSDXF5/ewearHPBZhdtaDzh
-         6UdXWCH7E0smNjLM3fBbRIHL0MqbvaMpPpX/eHvLBpOqBOrA11yfQUmt8Qq4yej/4ZNL
-         Z4mxiuBgHIrf3RI7O6umg/+bXLQ0tO7dU2OtxpjalkMh9hEw07eJivrPhCdXxVAy4yh7
-         Kk+lRgXUiaO5O0WpL30UYYgCRges0W52tQBy+BoHyF5mWgx7D9YzlwX0h4o4UP3noawF
-         vJEoEiCU2mnP9FSSw9v29mQoowB3MWgR/nrArkJ/ugoNn4QOb0EZUUSYG8BcXIPT8ya1
-         T2ZA==
+        bh=7KZPmVSe/mbc0d3PV2oDcK5UvV7diSgsE22iAyaAi38=;
+        b=kkmWDbDmV1g5+OtfANslIDK/gT5q34IwIbuvNbVqwBDmbGImb0hw8ZSlXkWcOF0Chv
+         Iprt3s7qRlCxHCq0VAr/dYdMKZPN3h4JtzC/GAToUI/qqS24dY3ntjSuLP5VTQMc4MiG
+         KQvWJeUglGkUkiXXphaqa0sSemWAaUGl2hTjsMAINMsqlVGGavscR7JCHc/y7BGUEMXw
+         aOKaiPq+rib8gK/bsEBrRG6O9x8Oi17EeZZGEhjYsNq7W5LhdcZJx8RMogBCjp8v/REZ
+         yB4VFw7+Lz0gN9GLqmXZAddtjBckqeaWWrJj/f3VuiSorrXg/qcNqX5Yd8vabYIsbo/P
+         YSGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793139141; x=1793743941;
+        d=1e100.net; s=20260707; t=1793139145; x=1793743945;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=EI446rcjrN0x44kbFFvKS4UWEA1sDeBtgZ/wnLAywEQ=;
-        b=H8limNW0YzuAfKb0U+CTTKyp9jOB4GekAUUXgkLom9jnffUfPlXqSJBGu5RTE/h5gb
-         9ANH4SCLro+n5pH2Dfx9EwHsRvoo5fDwhVCURqnwm8h50LY8AleMC+KrjsR2ImWJh/2/
-         zB5tKnB6aeau+/yd142QItDCKL/UMZjuyVq+VFrlTBLoM8KU+nByOsh8eFryXfIclnyk
-         IieZvWXTRVm5m0GSCgbM6ikE/qAQB0RXBannlNxZiD34d1JZyA2ieklD8Rfx/0dItYdz
-         4PEQCw0xmgqG5SbfN9hSKuJ3uKKG6rctjPHl8imgvn+5OTcrQxWacY5jkxxHBIIU6rFf
-         YoDA==
-X-Forwarded-Encrypted: i=1; AKwUvBz2cUYJuGjCsNbuk79VyjDZgmf6RLo/02Q/nsjv28TAzLkISwqhHLY95n8mR9RTlrSSsXw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI8BhnMPqLmwDgdPuXtZg7ObyWZ5Hs3SSbMcnP+qS2E/3f+8ixp
-	zT6tAlLjsh3RN/ZtsF6ii8C9ICaOIA0HVsi1u4oBFmvwlyDMSc00z1zmUw/5E5Ckl1nMNiUoZOJ
-	/KbWpAw==
-X-Received: from plnl5.prod.google.com ([2002:a17:902:fd85:b0:2e8:774e:e582])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54c:b0:2e9:a090:dd80
- with SMTP id d9443c01a7336-2eb0048632bmr5982595ad.22.1793139140855; Tue, 27
- Oct 2026 15:12:20 -0700 (PDT)
+        bh=7KZPmVSe/mbc0d3PV2oDcK5UvV7diSgsE22iAyaAi38=;
+        b=ILBwR+A+MPmhZfiuJI9TcR0wxJTXn3BAIRNDyx8b9iRWgIqhZzJSDnTivcOSdk0una
+         8UGoj02JwHfUFaFdDeUwdiY2Yzfq35pFSBkR9PGwA+dImmxeYtqSw9/xYHBK0QfUCGNM
+         BaUEizR+sx6aKiUPYoCWK5MeEnhB1PT9QRH05j/uZNwOOO7Bxotqa1ABzLcCcw71xtP1
+         Nw0ky+Sw9naa6ZK0OBhSU6ygJ1LVnF0iL687+LhzG05/o8JjFVK2Z8vnSRk3aGS5jDVB
+         wWfhP7q/vlS+ik8Z//toi8AXWYPXAuclc/Z3hdMWASosfy0+qBa4oV8gtZmDuOnLPpct
+         0l0A==
+X-Forwarded-Encrypted: i=1; AKwUvBykYSnRnto43oKX0orXm0b/CRea4P62uY3aMOGbLU/iZ2Z4+9fQ7TBhYyp8KzBtpBR3+mk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI3RIb09KkM91Ic4qRaRxBlqCpSDeNB8WuCmEegXbOHpu9XKzkT
+	4Zt3aPz1pPQNLkQ5dQEru4tn3k02qTzEpuZeMNidrlP+mLyL7y6GuLPgOV2J3C9HC3xHOTUvsj8
+	ahLL6ig==
+X-Received: from pjbdy8.prod.google.com ([2002:a17:90b:6c8:b0:3ac:2cdc:a8ca])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:fd92:b0:3a0:d265:3647
+ with SMTP id 98e67ed59e1d1-3ae57e357e5mr211906a91.8.1793139144546; Tue, 27
+ Oct 2026 15:12:24 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 27 Oct 2026 15:12:01 -0700
+Date: Tue, 27 Oct 2026 15:12:03 -0700
 In-Reply-To: <20261027221209.1560865-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,8 +82,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261027221209.1560865-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261027221209.1560865-9-seanjc@google.com>
-Subject: [PATCH v3 08/15] KVM: WARN and reject guest-based uaccess if VM is dying
+Message-ID: <20261027221209.1560865-11-seanjc@google.com>
+Subject: [PATCH v3 10/15] KVM: VMX: Explicility free vmcs01, not the current
+ VMCS, in vCPU free paths
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -92,30 +93,43 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 	James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-WARN and reject user accesses to guest memory if the associated VM is dying
-even if the current address space happens to be the correct address space.
-Accessing guest memory after the last reference to the VM has been put may
-be "fine" from a safety perspective, but it's still a KVM bug.
+Explicitly free vmcs01 instead of the currently loaded VMCS when freeing a
+vCPU, as relying on loaded_vmcs to point at vmcb01 is unnecessarily risky
+and confusing.  E.g. during vCPU creation, the error path relies on setting
+loaded_vmcs and obfuscates that it should be impossible for vmcb02 to be
+allocated, let alone active.  Similarly, if KVM were buggy and left vmcb02
+as the current vCPU when freeing a vCPU, operating on loaded_vmcs would hit
+a use-after-free *and* leak vmcs01.
+
+Because KVM isn't buggy, no functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/vmx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index f3f59bdf7e18..ba8ea62b7304 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1355,7 +1355,8 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index d433cd846ac4..2ef1f634e7ec 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7515,7 +7515,7 @@ void vmx_vcpu_free(struct kvm_vcpu *vcpu)
+ 		vmx_destroy_pml_buffer(vcpu);
+ 	free_vpid(vmx->vpid);
+ 	nested_vmx_free_vcpu(vcpu);
+-	free_loaded_vmcs(vmx->loaded_vmcs);
++	free_loaded_vmcs(&vmx->vmcs01);
+ 	free_page((unsigned long)vmx->ve_info);
  
- static __always_inline __must_check bool kvm_can_do_uaccess(struct kvm *kvm)
- {
--	return !WARN_ON_ONCE(current->mm != kvm->mm);
-+	return !WARN_ON_ONCE(current->mm != kvm->mm ||
-+			     !refcount_read(&kvm->users_count));
- }
+ 	if (vmx_can_use_ipiv(vcpu))
+@@ -7614,7 +7614,7 @@ int vmx_vcpu_create(struct kvm_vcpu *vcpu)
+ 	return 0;
  
- #define BUILD_KVM_COPY_USER_WRAPPER(fn, to_user, from_user)				\
+ free_vmcs:
+-	free_loaded_vmcs(vmx->loaded_vmcs);
++	free_loaded_vmcs(&vmx->vmcs01);
+ free_pml:
+ 	vmx_destroy_pml_buffer(vcpu);
+ free_vpid:
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
