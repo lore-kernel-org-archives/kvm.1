@@ -1,121 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793098910;
-	b=tTqFLefAsw0DsMyKYBmN84oJ+AGDuOreYK91RIEvIw/18QpCRaT9W9tX7p+d865zLtbx
-	 33OeJaTJsbqpmtC9TTirYYLLVIRZGtb/INu2m4GrCIC8xd/5zsOCIQ5nNQoSrIizVBWVl
-	 EkiQyf5O4FgzcK8zQWAtxynxA0ELV0+1/150630eCupO2tHyOcYPX/DrSKrugmXtQ+7W1
-	 B5YZrSbZghbrFLpd4lvZG/wE3YkRukc+pNkjrmuRPT1tPGnBC4FK2jMV8r9ltIA4HBgjN
-	 tEBywkZ1bP7rOHcpeWcs0zVY8ql1zeJL3llooV+VX8rL6wDYma/YlEc1f05xeNHflKA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793098910;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=mswFdaLeZadM3beKHgTV0+pA+8tp/9smRtFllvNXA0g=;
-	b=u6pahhLQhIN80MlK/RBGaxIy7U+v+N9xG4okBZQCjq+Yq5dQbMEDZMh/RCrJvq0nriEZ
-	 dCbO4raTZUMdvGkV11T5izosK8x7kFFfYTNp7Tu2RiX7OeAimVnmyrlIIxaA8+DcQBkL3
-	 wmsHuF9K94/tKHe0Az1uJWZ/VvjqZDiwW5aAs7TsVU3WMmWr7hqSVSV6XkojziED8A8NT
-	 UdSUNYVQjmoSS5NM55LbKUo/A/e9k978DVnsCiyZYLu7qq77Z1f9Q/H4wsTSSKeG8fnwW
-	 8XT+RpWjehvi0LVMwa2xauy1hoT3w1HEGnZ75HduPo2c7OimbDMji24L0DHZswfYxVw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZcIFm6+K;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MyCJDhh4;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793099403;
+	b=hoi/K6ym7mTBdKxY3nYs27ilDMAtA2MzQKfXtH8BWpWg4ZuVdOno5vNCW4AJhW0pV6+G
+	 nauLcKJ5ToB1x9rHUt6wY21IM9o+6aRKr7ugRqJlF8rIEwKrE/AC8pp3YoJAGbXnIn/qL
+	 aeeuv5DNZd/uLkHxzgGTQ19Jy2hl7BVeiBY5k4l4o/7olN/Vkap7+6atC1vfA7gbeld2V
+	 hVDAaufs1B70xFZb+PlPMXQYjDyF8pFilSn6JkEaYLBWb5BJRn+f8cj7KOcv3UooCr2I9
+	 pdSx4cjfQ8Krpgaum5IbWVGv0tN/QOBDNMxzkr18mi+03k03nV16JeQXP7KGH9oz1ZA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793099403;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=8BryABgcZ7DA+XBYIpyIPDmj1TmISKJ+oIODypTsFPw=;
+	b=MXVvH2F8h17+v9i0YehnEsGLYpqNyMqtibeDicZ9UHw7Hjhi+1CKCzIJcaov7dQABCFf
+	 N0MgGny8WJ1EbKnX+Zr9uhiZjomfnaZ/nCkQbgmTuhXSV9ip2ZjLXzNnF3H3rDo9L0uUS
+	 hxd6BDsJ4g7Ls2nTl7+631DSqrJvYM+2adcAkMLebXVtY8CsHTw7NX6PPFld/J3/N6wMh
+	 2KqdjRbEEVXpTgu0y2n+9sCpYMUCgbQVrH0B3OnCHXMhvTpRSFINbjCgi9Pi7vJUocIGs
+	 avCwmz6wb2/JuC5upb/dlWuYbRxkD8hCHfIz8Ik8R9DhkBJT0dw7Pz5cFS9etNbfLBw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=infradead.org;
+	spf=pass smtp.mailfrom=infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tec1jmsz;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A14A606A31B
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 11:01:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A14A606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CDD606A31A;
+	Tue, 27 Oct 2026 11:10:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48CDD606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZcIFm6+K;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MyCJDhh4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793098909;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mswFdaLeZadM3beKHgTV0+pA+8tp/9smRtFllvNXA0g=;
-	b=ZcIFm6+KMrPqs5XTHWruxYF/YnpQSS13+DVpBxh0cN85dlwzjzF5GcdWwaNUFTnKMCkXeR
-	uuQjm1+bI3UVwfaBzt2W+rLWBnPEH0jJFlIbmC+jQLEBxboHRHWMfb0cg6cbsxzmEmhBx5
-	3I9FK9SuT7qBvxGfxYsIrWfVC6mAqDI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-D4KKIO_UMDK60NWZMgRECw-1; Tue, 27 Oct 2026 07:01:47 -0400
-X-MC-Unique: D4KKIO_UMDK60NWZMgRECw-1
-X-Mimecast-MFC-AGG-ID: D4KKIO_UMDK60NWZMgRECw_1793098907
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a77c1cbd15so11363495e9.0
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 04:01:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793098906; cv=none;
-        d=google.com; s=arc-20260327;
-        b=evPmuYouCydzSw6xB4VhF3jaSSOQhTkcvnsFQst/mUx8/dIEzgbIYxqf1tTtR2ypux
-         6QdYBtZxwlz7GSMWKvBupPtnAKojID+hYPXka7/cqYjKL1Q91HWO2VF0QA+IoNna9daO
-         OcChw7ZDC1vWEqi2yEiWdSgeyv5xjtt6ub51l05z9zYLY16rLrKpIIonAHiKlSfKKQJb
-         dvHK7mMRULRotHx3p7v/eljhJ1RODnCwCa/TLiu/ieqtB9oEyvaLb7axIOpLKV9WAcgu
-         /9tzTu9QChisTzKXuGoEhj9fT95Qd7AfWnCirKjsrh4RDMNwUMpa/CY1jF4VCLA/5MPD
-         jggg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mswFdaLeZadM3beKHgTV0+pA+8tp/9smRtFllvNXA0g=;
-        fh=xwspe8h2338NRKKvGrkhwjDwjENdHSKJmL+KUYnTXwI=;
-        b=E5vi3vBCEDinl9igGGJKe2gj0tGfgMI7aYhCNKmEvaqGNfQXeHndUdcN4rH1AZzif4
-         bU4G0CCGkIHDf84ZPBeSo9uTeKkrI5rApTf24NaWpMJXo7zbh2aHKjzF7lLZroyr+1ig
-         QnUaXhzeYkjFuO50aB5fVRWEONGMDVKzggeXz7hGasSCUoGtL9KFGzv4gkVDIWyiMJuo
-         dhhx9OWjKFCCu16uUpr379IFtlSiqQ/TdKae+RI5wVw8cQiy+NDZ9Jp8ULDk6LJ7G+lD
-         xlhy4oY9P17xlofZS94A9RFnA9OFjQez1Mha6daiiufvOpBaSXS930htmG5hw/rU2OR8
-         pheg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793098906; x=1793703706; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mswFdaLeZadM3beKHgTV0+pA+8tp/9smRtFllvNXA0g=;
-        b=MyCJDhh4t0awaj5ua+PfViuasF8XsJnahPe+pBlR28q7tHuIuUStaR8bdQCZS158LT
-         ItliZF+jla82QJvCswfC0cTiPS+xwMKf80jEBIQ3fZ75MIOIw6vSaHkEZg2FzQNPM+kf
-         lWJHWK0OInwhV5PdyUGpkSVl5Q1UapZ8O/uY3Lp6vUbmeVu4ItKwTrKm3pVA/gkP9qun
-         Rjdn1CqceEWVKyGmpGDbBSq2g8IX6TEkHh1wfGCKu+NcqsdowN6ExFGwVfKQqXyrGQBU
-         aiZtcSB7RAerVWoPaeZiytHtQLqgrKvVTyoyMv6lsFXjwWissUXi219M3SnjisyP9UoJ
-         tfKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793098906; x=1793703706;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mswFdaLeZadM3beKHgTV0+pA+8tp/9smRtFllvNXA0g=;
-        b=T2GIR3tTA3jq5QVGw4G7i5iftXN6tmWYDjok7rUE5teJf+mIyoFWECTUKrSjrXeTAt
-         T3Hn5R64xYksFXbB1bN0v0IphFkqvj5g/+Eh0R+2yP/s+R+K/+NKURFPX0Fe7zQ6KRnV
-         3JoIwExxF241QhifqPdRpfutYxgg+2fQNrrkM3TIAF1fq/SHfSd4u56iDounvvVStqwe
-         iAHhdcDGec2Z7aj292mQ535ZnD+ZyEPW2DQPy2z9bLUvtB4xeCcnA8Zwf2FYnQWRUcDS
-         Z0oUty44PLF/XUuYHvo1RjSCfEDoR7ljkZMNGFV2qkv7ebt0nZgEy24Qh0sfUuowwO8g
-         j9YA==
-X-Forwarded-Encrypted: i=1; AKwUvBx+zdsc+wIRST1wRzuGwkVol/8q1kGYMoOJADOb/5TinLu20XoFtj0et8yuKY0aJyx0qEc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIlIwmG+Q2Yaioi7IumThdTjDVTflLR+Noba5HGTodqOTRSWmnu
-	Kxb8Gye47bgo2SnmDWJ3TxXNRp4x0WGEwh5jXmmfeGLQTa9wlfzYy3/I/T9HRWFhq96yUkZ16pe
-	mjVDlpBe4+6fbj0TX/oIPlDULOGwz5EeX6j9AbGR4cSJGC6Rzxrl/699G4JguEOq+MmHXk0qY4R
-	EBlS8I+O1DSPc/wNyVFTkj+A+wNGBo
-X-Gm-Gg: AYBFou1cIc4/Z89wFv7Rlq6AopefQGlls0P3uc+zkkiiJ2k7YMcqqC7R9+CALRJeaXi
-	+ywefizbGunT2T7l8JRrPsBzOlyorj9Ys4ms8Er6MMC1vYAI1MqNz8kq7oFfxJ7X4dQMJR6af1g
-	nlYI3UMq3NaKOQi6zJx47vRzlM6Eyfs9xcijjoQfl0zXs01gLquhA1tPMReGsfheTc3rMlemN/L
-	gADnLl7exk0QLIpxiVXwa1sA0R1TNMweyuwdUmRgW3IcKB8p6hdMsSCqo6tFw==
-X-Received: by 2002:a05:600c:8b6d:b0:4a7:669c:c988 with SMTP id 5b1f17b1804b1-4a7669cc9d8mr64989155e9.23.1793098906387;
-        Tue, 27 Oct 2026 04:01:46 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b6d:b0:4a7:669c:c988 with SMTP id
- 5b1f17b1804b1-4a7669cc9d8mr64987735e9.23.1793098905407; Tue, 27 Oct 2026
- 04:01:45 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tec1jmsz
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8BryABgcZ7DA+XBYIpyIPDmj1TmISKJ+oIODypTsFPw=; b=tec1jmszyHzg20Gsi9B9OGtdi0
+	bsCvcBUhd46e/5/GXq6SGAww+LVpHIHQwe0YKWk72ihksfy4XUJrxTbGdLAnv+D/3l8x0l5pOrtHd
+	7acMwSIp8xdaNQ1AIn1SBzFfdKqfG47ktiRrG9Gdqsr6nFLRAKQwd+iSUVX0qRopMxZbjuME3IWYU
+	rWWjhVhXS7N+lyNQrK9sV4YC1izjgWJLVZnwjd0PysDBxqh4LXHJQqVbGOqt8gUresF7JGcKsKk/M
+	4u4+TrZIvctu40uV383GKM/IXYMeeS9/2czQz3WkAwKHaXgRu8pQpjnw4c+liTKeH/5Cd28W8xTcV
+	Jq4Gy6Aw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xLf3s-0000000D9LE-3APy;
+	Tue, 27 Oct 2026 11:09:48 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 385DE300312; Tue, 27 Oct 2026 12:09:48 +0100 (CET)
+Date: Tue, 27 Oct 2026 12:09:48 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: James Houghton <jthoughton@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Thomas Gleixner <tglx@kernel.org>, Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>, Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	David Sterba <dsterba@suse.com>, Chris Mason <mason@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
+	io-uring@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, bpf@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 05/10] perf/core: Don't unwind the user stack without
+ an mm
+Message-ID: <20261027110948.GI2668564@noisy.programming.kicks-ass.net>
+References: <20261026215226.3713941-1-jthoughton@google.com>
+ <20261026215226.3713941-6-jthoughton@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -125,54 +98,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260804120529.1730187-1-pbonzini@redhat.com> <at9ahKiYsVtH8kpU@google.com>
-In-Reply-To: <at9ahKiYsVtH8kpU@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 27 Oct 2026 12:01:32 +0100
-X-Gm-Features: AclHuK_gMHxkpSkqtzZpmI4E9n3tRQVDE0ExdUQ32JdSX7MqnvWed3WEPGPoNjU
-Message-ID: <CABgObfYgZ87=W+6E=N=WwTuyYkaoKU3hqd84JDTSAvT3_9dh6w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] mm, drm: fix interaction of .pfn_mkwrite() with fixup_user_fault()
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Christian Koenig <christian.koenig@amd.com>, 
-	David Hildenbrand <david@kernel.org>, dri-devel@lists.freedesktop.org, 
-	Fei Li <fei1.li@intel.com>, Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, 
-	linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, 
-	Sergio Lopez <slp@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026215226.3713941-6-jthoughton@google.com>
 
-On Mon, Oct 26, 2026 at 2:50=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
-> > To sum up:
-> >
-> > - patches 1-3 introduce the new MM API, and use it in the DRM .fault()
-> >   callbacks to install writable PTEs in response to write faults
-> >
-> > - patch 4 is a preparatory fix in KVM, eliminating inconsistencies in t=
-he
-> >   handling of !VM_READ and !VM_WRITE VMAs; these would return different
-> >   error codes for a !VM_WRITE VMA depending on whether the PTE happens
-> >   to be mapped (but with wrong permissions).  This needs to be here
-> >   because the next patch would introduce even more inconsistencies.
-> >
-> > - patch 5 moves the check for writable PTEs from follow_pfnmap_start()'=
-s
-> >   callers to the function itself
-> >
-> > - finally, patch 6 is a KVM addendum that will have to wait until
-> >   the next merge window; it removes yet another inconsistency in
-> >   KVM's handling of !VM_WRITE but is technically userspace-visible,
-> >   and therefore it shouldn't be included in stable kernel releases
-> >   unlike the rest.
->
-> What happened to this series?  It seemed liked something semi-urgent, but=
- AFAICT
-> it got silently dropped?
+On Mon, Oct 26, 2026 at 09:52:21PM +0000, James Houghton wrote:
+> get_perf_callchain() only checks is_user_task(current) when the regs it
+> is given aren't user mode regs. However, BPF's bpf_get_task_stack() (and
+> bpf_get_task_stack_sleepable()) pass task_pt_regs(current) when called on
+> the current task, which are user mode regs for a user task, even if that
+> task has already gone through exit_mm(), e.g. when called from a program
+> attached to exit_files() or to the dying task's final sched_switch.
+> 
+> perf_callchain_user() then unwinds the user stack without an mm. That
+> access does not reliably fail: the user half of the address space
+> belongs to whatever mm happens to be lazily loaded, if any, so the
+> unwinder may read another task's memory. This affects e.g. arm64,
+> riscv, loongarch and csky, whose perf_callchain_user() doesn't check
+> current->mm itself. perf events themselves are not affected, as
+> perf_callchain() already clears the user callchain request when
+> current is not a user task with an mm.
+> 
+> Check is_user_task(current) regardless of the regs' mode.
+> 
+> Fixes: fa28dcb82a38 ("bpf: Introduce helper bpf_get_task_stack()")
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+>  kernel/events/callchain.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
+> index 9d24b6e0c91f..a451ca2a5573 100644
+> --- a/kernel/events/callchain.c
+> +++ b/kernel/events/callchain.c
+> @@ -245,11 +245,15 @@ get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
+>  	}
+>  
+>  	if (user && !crosstask) {
+> -		if (!user_mode(regs)) {
+> -			if (!is_user_task(current))
+> -				goto exit_put;
+> +		/*
+> +		 * Even if @regs are user mode regs, e.g. task_pt_regs(current)
+> +		 * passed in by bpf_get_task_stack(), current may already have
+> +		 * gone through exit_mm().
+> +		 */
+> +		if (!is_user_task(current))
+> +			goto exit_put;
+> +		if (!user_mode(regs))
+>  			regs = task_pt_regs(current);
+> -		}
+>  
+>  		if (defer_cookie) {
+>  			/*
 
-It ballooned a bit and getting acks from everyone involved is hard...
-Either I or Sergio will get back to it.
+We have perf_event_exit_task() before exit_mm().
 
-Paolo
-
+Still, it doesn't hurt to be cautious. So no real objection, but perhaps
+adjust the Changelog?
