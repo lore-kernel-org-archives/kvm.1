@@ -1,73 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.144
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793108891;
-	b=kzLfxg01whtDUkS/wT6CUOj6nnf53u6nR27q8rzZyAIvnP66Jxape+NDrJTXrEVGKr5q
-	 TnM+T97HfaJftzT2Lyi8W/EynA5AHwjD3KlZcmfn1W5CKYHkQWNpo1bfP2ravQ75eFBpz
-	 fiVryL9RpvW/HCTj3rhAthQaFMtIr6fjNp/7+M56kYk9tAF1vifNTwMlw941oxAmnVTdb
-	 0j0rfuL+b06YmS1NFA+UncBVgKqxupQkK6A5/RHtot7k9m0I9X4UiitOzmVW9J3myJ2wU
-	 U0qbYKGsAgjv/5n+sBfosd3wtLDv5lw3VOdGo/8GDXhgyDYgzlZA9proGvbHa7ytkmw==
+	t=1793108957;
+	b=vMQq2kXO7g1urJc0ro8y0Gfq9X3W8ZtiDNB3c3PNXaMk8k8+7lwM02GbhDt1iATxv7Da
+	 RFqkLyfdg+rvdbHllLTuSeOmb9ftNSdLFQUsavSkgdvZHJzhSo/ifS/U5HcGqgmqM72yR
+	 WqR+t6yTBZymwGaZllG8oAFnqqJ20IJ4wzArnKYDFXAybkvPzU83ULP7bT2eBlq7IjNdX
+	 wWzgJSBcJHUoOXVd2kXh8gfuZbu0RiUJPHfOaUQJU1pGQkyn68y3tPB8N3PorCqIrrpOf
+	 Z/ZTdKSff1krqVosECR6fn0PAqaTDbFmnTw/ypyO+EGkQkN35v2OBN8KZ4vXGani2zg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793108891;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=BBwZiXKHF9YFz+qznEV62lDf20kSNF1uPxa9vPHb1oY=;
-	b=dhUscH+2taGu2OBlLzrHeWa2ZuqrSNj/7aAPuYgH7/4Cn9nQg0t7kSXIB4frulRKuQny
-	 /zitoPR2sJrXVoazy/nFN81LzxhKxQQBboX3uxbIye++N//ScvODb+p0HGv90alYev/Gy
-	 Upy5pmrJX1yI5Soig4lIuBPGHYPmPuRKqmnoCmh8tW0DVXbL8/v3XSWOQ5Zoruob/Kr6G
-	 rDacsS52wy1VotGXDAxA8rt2L12AVuDZOgeW6ouvrqczCIWlfctC/eMxLcGqq0Bo0o3/W
-	 JlfnGWmWI0pdV0nCZcFpimXzSgtNY1xI8PbsChWhUhC506cZL6n19MaIhdqlIRvQFWw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793108957;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=GEmx/sUPQ2VMJDaiqbyGhNC0GffzmoblRKDktdSOsjs=;
+	b=RutVUPT8R76oPWITh9VJlMAQA8/tOBMf2bTO7iN3LOmmEz0jlPN08luVrn65XGE+PkbU
+	 zBenzmjIIbeg6i/ArtyPUOnM7blENd9PcCvhkm55JTn5787BPaxqaiMDJo7zGPmWXS658
+	 j8IfuZYhnnEmCC8Rl4sHGVsDwstPXWkdSXvfVABGGwhinQIc1+8Duw9BAuTTDMffYpG4x
+	 5Jkc1bCdrf7Wswf3TnkiuvrDdO8VgA61cro0sUstGD8Qz69mHOIUpuU3b7Azc9WBDHGHX
+	 DprkJjY7MsmJzz5pEelG9qD/nSivv6hxr30qV3cQLXjqfP8/d/NgrsXSfngyQopE+VQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oy3N4lo7;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=arndb.de;
+	spf=pass smtp.mailfrom=arndb.de;
+	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=mTTn8ZWR;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z0LOYJhm;
+	arc=none smtp.remote-ip=202.12.124.144
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EAC606A31E
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 13:48:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25EAC606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE0C606A337
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 13:49:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EE0C606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oy3N4lo7
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a079256596so3350040b3a.0
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 06:48:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793108890; x=1793713690; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BBwZiXKHF9YFz+qznEV62lDf20kSNF1uPxa9vPHb1oY=;
-        b=oy3N4lo7GOvTlmWOxiya1yHZGPAsA3WrP1ktvtJzySM/z295mmIptrsfWWQIBTPKvf
-         g3sjdkoTdJLvgem1doZ1COu/10+jddAp13ctL9NgUiYMn9g5R5H3/rx1cR3Uy3DG8t8/
-         U9vqZ53UOKfzSUrPQqkWNulT5x+ldPcqD858PGsQP3bLYoIRTQaS3k6+3odNs7+jotPf
-         C+4vpnLTecQF3gMN0HlEoUl6p+wm/bf3aIZlQGgtoKFRZhhOS1eG17uReVo84729nnBS
-         jcEtvoc4BzDZC7Ew4Ag/ciAqV2s1H865/j22bvhWg3S5y2RXsrgfZn4wpC5pYGLOJjE9
-         0eTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793108890; x=1793713690;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BBwZiXKHF9YFz+qznEV62lDf20kSNF1uPxa9vPHb1oY=;
-        b=Uh3q1np8K70pRjlDuDDH+fSJFY+n4NBxJp1unBRBMaiPWYzX4DH+yHiaQze4m5VAgX
-         JwoKUxtsfYwVUMhnL0OLvOnysC59w3iEUuX/3qPI0RWGBWpNPcmrJqfuOxrrmG/2WbtC
-         lS5jCorfztBetwo3LpJjs+jyicnxjnOxoCauS7Yuet9qvjuuRb0I6kXgXEOaLrWaVdHb
-         w1ZgYV8fUbctD+7CLNmOeygdhjEdp+kn/fg1yW5242ydobF0WIC4X3QKx2IeijDViEAS
-         pQjz92d7vP5VTOCa6NizsL4pXKcWsKvu6hWQr0vDX0duSiQwM6cPLhZ5Yd4DitpXUFFq
-         /GHw==
-X-Gm-Message-State: AFq9FYKE7P/lykPYG5oyjSmaVj+f0dVbsJ1aJy/hDu1B3Adr4BWhyXoK
-	dc3DmfwMJ0MPyJlFmJ2x7ISSruCwe5GV9BmVVLPTz6E7phHEai1GqdC8wnobRHBDPfhAr1M526D
-	68g2H3w==
-X-Received: from pfgt23.prod.google.com ([2002:a05:6a00:1397:b0:89e:e234:4723])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:240d:b0:88b:9eca:951a
- with SMTP id d2e1a72fcca58-8a364e63374mr7775433b3a.1.1793108890264; Tue, 27
- Oct 2026 06:48:10 -0700 (PDT)
-Date: Tue, 27 Oct 2026 06:48:09 -0700
-In-Reply-To: <CA+qxPTe6Dh7Yafw5zRJg1HxU61z7SvZuCOHDrpY2xe5X+M68iQ@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=mTTn8ZWR;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z0LOYJhm
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.stl.internal (Postfix) with ESMTP id DB1851D00168
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 09:49:15 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 27 Oct 2026 09:49:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793108946;
+	 x=1793195346; bh=GEmx/sUPQ2VMJDaiqbyGhNC0GffzmoblRKDktdSOsjs=; b=
+	mTTn8ZWRIuh6yCC8N7zM1RkyjRwCnYj5ApXsvRRDF4DShqntltu32cedImYWxCZW
+	3T3+rX3vuwWPL5BhK3RzggeyxYrft8Aa0815cxCyq8/KAlrCQQgYJqtyYcVcPEAE
+	QZBFcR5xocMUdNEC/Ss256l4ZTh36L0yA6nnDmsTbvCqx+aGJldnAm0J34yVwDd5
+	m04wU9UA04ybLZrICroOAcmeVLw2Ys3YtKcCDiKCNrxuqwql7L/kxY1RPM3o8joN
+	8/N1a/j2bRPmUrjsWmf/ailBEue48H+ng2y83WUFWdeq+wi0PRYNxXfVLZstF6Am
+	KGujzhZxqmlaOMguIzoIhg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793108946; x=
+	1793195346; bh=GEmx/sUPQ2VMJDaiqbyGhNC0GffzmoblRKDktdSOsjs=; b=Z
+	0LOYJhmXY4ILhQ1ZEb9qsYJQb6aASLrmEzl9aoPc7z19rsBh9FMGWNyVNLU7hfmy
+	eZxpXf2mvRssP8XDq5BwNlaRlz5VE7OO5sTjTAUHeCklgX95D9UEE6KYLyNRa5py
+	1buGciWMGbz4a8FiV2/B0WZzxZLXehhPunxe710+MHMw23z0UhckVw58ZTZY1OFF
+	K7sJFwa+taHtRtekI+ovUwvgLNKhqphGmdlgaxNz94Ecd56bxmn/eEDHONbdfZSV
+	GC+WA7Llt0rFNrzwSacSwSzAnXm8emS5XWDdgAx/ihLYXUr3Kuu0StEEeQIx4iyU
+	s2anVNpi2GVaFVauFQC6w==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793108946; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:hnRFWSKuAk6CNUOv1jOTAJ3DBS4WdRm7glDGjSplqIM4pM1
+	TEmNl4avrR+o812nZ1SJnV4UC/BFIQ4ukFZ0DmsciXtqAmVPqko7pebyb3rFRP3U
+	eKLZa9oKrTomSothb2zrBgWN/KnSR7Y7XTxjMPULMJXZasej4B8ecd3m0JdzYQ4P
+	fbbMt2r/Hp5RfzheQAFAiYaM70G2k4hWRz37eeuSaB8wAXzGfFvB5o5Vm4WG/Iva
+	0PWGctBFp467udoZ5mJ9wBgUuHw5vtB6N15l22cfoRPooA0jQyK1i5dpYMVoFVey
+	MPA9AdJdQX9vSFOGDYdscI13JnUGNr8cr5sudVg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:rJDu4bsxco/gIMrD+dD00LfJT4/xDEIwd0IpCUvE7Ok=:KdZkVqaRMOJUI0d/ETxpGSeypZPRT8HH1n5VL0jRLOY=;
+X-ME-Sender: <xms:zKvgamIraj1gKKF0eAeZnUhaYnPU1FGpZQXoPCi9QC9qq4y6HIW4Rw>
+    <xme:zKvgao9YFV_HCtCeHk0_T4CjvW0coaEmOrDF5Z2kFhRAfjJFVdAfJCZgMYi2KAs4y
+    3f0xiWGAzDybQFUZvrDJOKx47W96PA_q1fy2h9Hfuu1yJwKNNKxT-HG>
+X-ME-Proxy-Cause: dmFkZTGzAS/DSW4CsdWGOtMkgyUDpHtAQSg7qB+7/Ys6E0HD63N/Pcrnnyg0NyVoPg7+rI
+    ROPODo20FS22WszwXXzPBCSg8LrAc4Gs0zt1FYqdFSEzsiYNN6B+Zdt10yoE6tItpi5jSF
+    QuM9+Ljs5u0qdw3cXSYAYD7nPRBHPOx8gzkFNpi6Gbseu+z6gAkwtVDJbRXCWlJjnurtGi
+    Pmj6Er35n4sJoC87PBTI4TELC6x88vYuf+atC7A7hhxb4VyPJywRy4I+EgvWCkwzhpkRvn
+    nMptqgxqOXAcIdYDrgrCRIhV3oZrEOQDiLoCeq3SRJUVU6ykskJEuUkSjrW9OFNct6siFR
+    fRCHMvYkK6bV80wdgi788H8hwIJ8b9THhB9ckSuR1RmxxvD7WxOIPSotO3yOc02D3nKnM3
+    e5m4h7NOqMTkmL+0dH3YuEt+ZM4fUlHTkD+MOGsV2QC0axBtB9LuC6UF/Hga2d60sEaMeM
+    40YHfXH1iCpHr3TKPHgkxz6Pj9XU+ZkKAllecoPy6beK8+P2VrT9S8dyN4ldk28HsXkye6
+    rxBtxqQVDFqXb0+HrrMWnKRsiap6QZrMWRBn1XhjGmbJBKSbQuPyhm0bn9y/0hzTeACm5g
+    ExZO57S+I1i8J638jlcrb+h37dguBbsFt1hT6dF/Yp3L+Unc9SLLJFjplqEg
+X-ME-Proxy: <xmx:zqvgaiR9mD7HzWGzG7wCHl-DWnL2Zp7N8DEi80yl8Lf6Z1YFmMmqog>
+    <xmx:zqvgaosexHicgu3YXFdciJAflEvO83wUz3WY2lZdgiSFEu0DpPk1pA>
+    <xmx:zqvgagLpwi8qhmSfz4hjB85clzUCUokk2iF93sfQYo-JIMnIelfEzA>
+    <xmx:zqvgasfLrqodpNqK86D1uz78eKcESEEdMr7W4hbdXGZ5NycJfIS3Zw>
+    <xmx:0qvgaqh-ax7aBUwe4VoD-hxpmbytdLt64gvmlJ3Psa0VesPsIERnIBlT>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 0259C32A0093; Tue, 27 Oct 2026 09:49:00 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,106 +113,102 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <CA+qxPTe6Dh7Yafw5zRJg1HxU61z7SvZuCOHDrpY2xe5X+M68iQ@mail.gmail.com>
-Message-ID: <auCrmeMslCWoiebJ@google.com>
-Subject: Re: KVM: SVM: 32-bit PAE Windows 2000 guest crashes with AVIC on Zen
- 2 (EPYC 7402), reproducible in seconds
-From: Sean Christopherson <seanjc@google.com>
-To: Sam H <sam.martin.howell@gmail.com>
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-ThreadId: AmcrnnMArev7
+Date: Tue, 27 Oct 2026 14:48:29 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Fuad Tabba" <fuad.tabba@linux.dev>
+Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>,
+ kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ "Joey Gouly" <joey.gouly@arm.com>,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Zenghui Yu" <yuzenghui@huawei.com>, "Steffen Eiden" <seiden@linux.ibm.com>,
+ "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>,
+ "Yicong Yang" <yangyicong@hisilicon.com>,
+ "Zhou Wang" <wangzhou1@hisilicon.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <040cf379-baba-4e3a-bf3d-6bc009a9e28d@app.fastmail.com>
+In-Reply-To: 
+ <CA+EHjTyLnAXanf9R7SuoL3gFZUNewX7QOnW=mc3qzwvaxg7jJg@mail.gmail.com>
+References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
+ <20261023070110.1833446-2-fuad.tabba@linux.dev>
+ <86fqxwzul7.wl-maz@kernel.org>
+ <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
+ <86ecdgzp6m.wl-maz@kernel.org>
+ <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
+ <ad724195-3452-495a-a50a-5e5c8093a483@app.fastmail.com>
+ <CA+EHjTyLnAXanf9R7SuoL3gFZUNewX7QOnW=mc3qzwvaxg7jJg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 27, 2026, Sam H wrote:
-> Hey KVM Team,
-> 
-> I have a 32-bit Windows 2000 guest running the PAE kernel
+On Sat, Oct 24, 2026, at 09:14, Fuad Tabba wrote:
+> On Fri, 23 Oct 2026 15:10:23 +0100, "Arnd Bergmann" <arnd@arndb.de> wrote:
+>> diff --git a/arch/arm64/include/asm/mmu_context.h b/arch/arm64/include/asm/mmu_context.h
+> [...]
+>> @@ -254,6 +269,8 @@ switch_mm(struct mm_struct *prev, struct mm_struct *next,
+>>          if (prev != next)
+>>                  __switch_mm(next);
+>>
+>> +        switch_iommu_mm(next, tsk); /* FIXME: is there a better place to do this? */
+>
+> switch_mm() isn't enough when the same thread also runs a vCPU. In v2,
+> which I'll post soon, KVM will save and restore ACCDATA_EL1 only for
+> the guest, since nothing in the host uses it today. So after KVM_RUN
+> returns from a guest that has LS64_ACCDATA, the VMM thread's next
+> ST64BV0 would use the guest's value, unless KVM also saves and
+> restores the host's.
 
-On purpose?  :-D
+Right, makes sense.
 
-> that bugchecks within 15 to 134 seconds under a process churn load on an AMD
-> Zen 2 host with AVIC enabled. The same guest survives the same load with AVIC
-> off, or with PAE off. I have a disk clone that reproduces it on demand and
-> can test patches against it.
-> 
-> Host
-> - 2 x AMD EPYC 7402 (family 17h), microcode 0x830107d
+I was a little unsure at first how ACCDATA_EL1 gets handled on PCIe
+TLPs when there are both host and guest users that set it. As I
+understand it now, this only works if the PCIe requesterID is assigned
+to the guest VMID for stage2 translation, so a guest st64bv0
+uses the ACCDATA_EL1 as PASID in combination with that VMID.
+The host would just use ACCDATA_EL1/PASID for its own stage1
+translation without stage2.
 
-Do you have access to Zen4+ hardware?  If this only reproduces on Rome (Zen2),
-then unfortunately the answer is going to be "don't run AVIC on Rome".
+This means that with your v2 patch and the switch_mm() code I
+have, this should be safe. There is a possible optimization to
+skip the host ACCDATA_EL1 save/restore if current->thread.sctlr_user
+does not enable SCTLR_EL1_EnAS0 (i.e. the same process that
+runs the KVM guest has mapped the MMIO area of an SVA device).
+This would make a difference if ACCDATA_EL1 access traps to
+EL3, but otherwise likely does not much much of a difference
+(I'd have to do some measurements on hardware).
 
-> - Proxmox VE 9.2.21, kernel 7.0.14-25-pve, QEMU 11.0.3 (pve-qemu-kvm 11.0.3-4)
-> - kvm_amd: avic=Y, enable_ipiv=N, npt=Y
-> - Also crashes on 6.14.8-2-pve (no enable_ipiv parameter on that kernel)
-> 
-> Guest
-> - Windows 2000 Datacenter Server SP4, boot.ini /PAE /3GB (ntkrpamp)
-> - Crashes on both the SP4 kernel (5.00.2195.6717) and the Update
-> Rollup 1 kernel (5.00.2195.7045)
-> - -cpu kvm64, machine pc-i440fx-5.1, 2 sockets x 4 cores (8 vCPU),
-> 8192 MiB, numa on
-> - Extra args: -machine hpet=off -rtc driftfix=slew -global
-> kvm-pit.lost_tick_policy=discard (the PIT policy is what keeps AVIC
-> active for this guest)
-> 
-> Crash
-> - STOP 0x0000000A IRQL_NOT_LESS_OR_EQUAL, IRQL 2, always in ntkrnlpa.exe.
-> - SP4 kernel: 0x0A (0x00000154, 2, 0, 0xDD537EAF), ntkrnlpa+0x137EAF,
-> mov ecx,[ebx+0x154] with ebx = 0 or 0xF000FF53 (the real mode IVT
-> pattern, i.e. the contents of guest physical page 0).
-> - UR1 kernel: 0x0A (0x00000098, 2, 0, 0xDD53C9E6), ntkrnlpa+0x13C9E6,
-> read of [esi+0x98] with esi = 0.
-> - One write variant was also seen: 0x0A (0x00000098, 2, 1, 0xDD53C84C).
-> - The faulting code is the PAE memory manager's hyperspace page table
-> walk: it maps a page table page into a per-CPU hyperspace slot by
-> writing a PTE, then reads through the slot, and the read comes back
-> zero.
-> - When it crashes, 7 of the 8 vCPUs are stopped at the same EIP
-> (0xDD4335C3) and the crashing vCPU is at 0xDD06A1A6.
-> 
-> Reproducer
-> 6 concurrent sessions, each looping 200 short cmd.exe processes plus
-> one debug.exe, so heavy process create and exit.
-> 
-> Results on the clone (stress started after boot, same disk each time;
-> 8 vCPU 2x4, kvm64, numa on, 8192 MiB unless stated)
-> - AVIC on, /PAE /3GB (baseline): crashed at 134 s
-> - AVIC on, /3GB only, no /PAE: survived 300 s
-> - AVIC on, /PAE /3GB, 3584 MiB (no RAM above 4 GB): crashed at 26 s
-> - AVIC on, /PAE without /3GB: crashed at 30 s
-> - AVIC on, /PAE /3GB, QEMU vapic=off: crashed at 26 s
-> - AVIC off (PIT reinject), /PAE /3GB: survived 600 s, twice
-> - AVIC on, /PAE /3GB, repeat with tracing: crashed at 15 s
-> - AVIC on, /PAE /3GB, 1 socket x 8 cores: crashed at 50 s
-> - AVIC on, no /PAE, 30 minute soak: survived 1800 s
-> 
-> The production copy of the guest also crashed 3 times in one day on a
-> single vCPU with AVIC on (7.0.14-25, enable_ipiv=N), so one vCPU
-> lowers the rate but does not remove it. Setting the CPU vendor to
-> GenuineIntel made no difference. During a traced run the AVIC IRQ
-> window toggled about 1 to 2 times a second, so I do not think it is
-> the IRQ window inhibit issue.
-> 
-> The same guest image ran on an Intel Xeon E5-2620 v4 host (Proxmox VE
-> 5.4, kernel 4.15) for years and has no crash dumps on its disk from
-> that time.
-> 
-> What I have not tested: npt=0, because AVIC needs NPT, so npt=0 would
-> also turn AVIC off and could not tell the two apart from the AVIC off
-> run above. It would also be a host wide change on a host running ~70
-> other production workloads/guests, and we can't risk performance
-> impacts. Also kernels other than 6.14 and 7.0.
-> 
-> A possibly relevant difference: AMD APM Vol 2 section 15.25.10 says
-> that under nested paging the guest's PAE PDPTEs are not loaded at MOV
-> CR3 the way they are natively or under Intel EPT. I have not proven
-> that is the mechanism, and the AVIC off result says interrupt delivery
-> or timing plays a part as well.
-> 
-> I can provide the two minidumps, register captures of all vCPUs at the
-> moment of a crash, and KVM traces, and I can run any patch against the
-> clone.
-> 
-> Thanks,
-> Sam Howell
-> 
+>> diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+> [...]
+>> +static bool try_enable_st64bv0(struct pt_regs *regs, unsigned long esr)
+> [...]
+>> +        isar1 = read_sanitised_ftr_reg(SYS_ID_AA64ISAR1_EL1);
+>> +        if (!(isar1 & ID_AA64ISAR1_EL1_LS64_LS64_ACCDATA))
+>> +                return false;
+>
+> v2 will add an ARM64_HAS_LS64_ACCDATA cpucap, so this could test that
+> instead. As written it tests bits [1:0] of the register, not the LS64
+> field, since ID_AA64ISAR1_EL1_LS64_LS64_ACCDATA is the unshifted field
+> value.
+
+Thanks for pointing it out. I have rebased on top of your patches now,
+so this line is gone.
+
+>> +
+>> +        sysreg_clear_set(accdata_el1, ACCDATA_EL1_ACCDATA, pasid);
+>> +        sctlr = current->thread.sctlr_user;
+>> +        sctlr |= SCTLR_EL1_EnAS0;
+>> +        current->thread.sctlr_user = sctlr;
+>> +        update_sctlr_el1(sctlr);
+>
+> On a host that runs at EL1 (nVHE or hVHE), this also requires
+> __init_el2_fgt to set nACCDATA_EL1 in HFGRTR_EL2 and HFGWTR_EL2, and
+> __init_el2_hcrx to set HCRX_EL2.EnAS0. Without them, the ACCDATA_EL1
+> access traps to EL2 and the hypervisor panics, and so does ST64BV0
+> once SCTLR_EL1.EnAS0 is set. Happy to write those and the KVM change
+> once you're ready to post this.
+
+Thanks for the offer, that part is definitely not my area.
+
+     Arnd
