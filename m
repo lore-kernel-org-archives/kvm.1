@@ -1,102 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.0
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793127092;
-	b=gh2GgcqtEyRXyWOYSG7bRnO15zFffXdMZ7MnmB3g5tYgIf1Oy6hceAnkykyp908MFmTy
-	 FSPzxoZCa6KWTJQ4YQ/lSuK8EnsM6sgai3VzF6aTBgRruCDSaI9q1u9LxkewItP1s2q5B
-	 sroLcn3LLm04g0X5vdlcptnpA3Mh1J19r/n81vkQhciRa+3tClFqEehU/GMFLsDZldHFw
-	 +dymOHBnebdGxZ3Qx54ioyRUt9kt0n9TxnCRgSyS9KX0h1bvfqxqOlKoGTl78bEyAU1jr
-	 Fi8oe0bG9UR5XuRtYRsLjYHgH97/+4sgkIg8YS0y81kF33eRoklHW1wwtWtft0W4Hhg==
+	t=1793128351;
+	b=sn4uwX3hia0KPh3jqUcygRQYMtbhk9SAn5S+nvHzijCYzbZU3u//oV3r0yIYCvXfDhw4
+	 RPlYGh4vNmdXAsb60MuI2z5faH88BEhCPth4X2sS5IPEUA+zmX+EnAJZUP6jpeIsx2Kwi
+	 0H+PksUGI+AOrZlbPI1Hz3dwirhsP1BF1CVV/nHJEKNOz5lS+DaWSPMeCmPkTCXjG96AQ
+	 sPqjDHGrgjYdTimvDixMTnTG43Tkvn6JOJnduNEfvqNHIaKSTeFfWOwTepRbU0RqifJd4
+	 vIWEPsxNa4MBy21typ8CpYQwUzvxze8MSyxkhTHLaKYCtLggfnp1hKPgrQp6jsss1JQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793127092;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-	b=10pjEZO4R0bCFTZ7D0aCG5+7Z9ML2MpwITcLvzA1cVF3B4T4iLeR7mhGGtkA3kmvCWp/
-	 jgJMoPk6bL9AgNf6vTDf4rNHIcBAYdLMMZUPTf47V8GHJRL7Yc6wKc70LebsxjgWGBPef
-	 Gqq1G01xDtkaf7FgAGtHVTk2v3HmNprXvIidcamKftLbLfVyM+i105pIYXUsaQmjlYtUr
-	 p3JoQZOJq30CJR3I/g1FsDe/IQdJe/6mG9aJdIpX/Wl6lbb+37hoTPxKLhac7e9DWRwyE
-	 LrnsrhsN/tYkSqGhuKv73Xi98hcy2cg2wfI1W98pNKxTG2ifQljJuMuoKsG4ow4/+HQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793128351;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
+	b=me3p7KWFMwwvLoo/LvyG6yVfR+VIYYY/5sl+YhIt3HC4nvYJ9/Z6eBxEFbW0Z3M9qUk9
+	 BtskQw2vnWcgO0oFGeddLBkGTSuqXVOcJslrMqCR0fWbkH+a/0qoaIsBg4eYIPojEeOMd
+	 +E/BrSPtQT9Xai2ZRZOq/W3s1NryZmC4JN3Hqf10J+eG+BAWmEXyLRzLkYz3t7V/o1rOk
+	 VDLbjEj5XbVwH5By4PdQ6xMUhZ6gbcNz16xMv3ohm/L0hS31yUkQ/w2xbkvc1RuKlhBTB
+	 D/2g8XC7+V+yooHeAveq/KFNBxUQDYpyt/9plN7W+T+Fey81aXML91mCDbD7Ikca8jA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HFK9DQOj;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.46
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jk5LgKuW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.0
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012000.outbound.protection.outlook.com [52.101.43.0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3089606A323
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 18:51:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3089606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC3B606A31D;
+	Tue, 27 Oct 2026 19:12:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EDC3B606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HFK9DQOj
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4322d310e7so22963266b.0
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 11:51:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793127090; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nwXCQykQPcW6Jw0WZBy5S6XH95VT08auo0YHuQCx9EMrHlV9w17RR4cnoTVTz6yRHF
-         6+m0EQ57BxjJDuJQsFncVkpLHeAAZOuC0F+GH9yPxTGpLC1YAXEcQfjU3V4dFfq0iL+r
-         8rO3lx3wbLcgxsSlZMw4GbCU4PpJn9bCyvQ1lzlRVpESAU90SbRpVLaIBxt598grR0OG
-         JopBHwF+BQylMkRiHwi9YDE1Ojw6Hh4vepyM5S5PVhoOn6djwNPNo5zfOrRZNJ75t0Tp
-         AGPu8r08a2r4iJHCWdqQz1arUgyCqEhXjqXJ1TdR8C+kWlgO0U9rksPl8gEqlYRwybGv
-         9zeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-        fh=f2DmAgyGWdxIKplBF++qWxGKJNB/rfBXLLWJQ6rRfAw=;
-        b=bu1fJEfE5LloDSG/rXgOPsjs9SCuBAyU3eY6VJw5N5/yRFwB0ZcQYP7ut8elwk7BwK
-         eObgjnCvqniwVuu63ULRNzaY1tobM5HhymsPpDWe3ckcEWESowVpHV1Fn1/PNLjcBhN2
-         c4I1XakvW6pvDYQcH+7MCj8YL0e+HkTAwrEtSEBoV55IVLc+BpcKZSdVBi/cQqN7cofO
-         npFpTceDzP6HDIlVngYXmT/XmO5xfEHqfIq8mpF1wqqUu4bu9tEaWAoqK3DWDMx9TDxV
-         0XgbOnTWUHDWcpJGXNHVgrOH1WEst9PAnpvohnTjo/IS6BCnIAKWpKd0vqjxS4UAe1KZ
-         1HKA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793127090; x=1793731890; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-        b=HFK9DQOjx55GzwyinowY3WKQr1IsXRiJeV+D7Z8hkiYPym2ZUBwoZvUifqN/FnkNGU
-         pfa1ZewvhEMvZLoaCIPFZp4tA/umOO4oOn0eM3xlRhU2sdWIJfNsPw9HVJXR4LYjiytX
-         dUAGwL90rw0Q5w+OWsW5iboZVP9RCytMSNYKe3ji15diP1zhAfgrHC9FvXhRMxxUMt35
-         TQ2tHe1FHlUZ2NICIb0rhXxsSpvA5sFGf5zLgnOgSw/RZnKbxxQN9s376gQ8m4D1+J80
-         lvL/AJdZ7uKnroRkKZncUslhbEYHXR8yj6xbpQX2rU8tK9ueLcaFgAw4VAp3h++AYDrG
-         cmtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793127090; x=1793731890;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-        b=OLedqltu7kK1eOwmYXNHU9ooDNFD9GHtoQLtz2ApnfvKGff5LiAPrc75i3/DG/juHW
-         5wOXPjrMemcGSWXt/4EKsNUAdyXMiTe3uDJsS05Fm7/fdNyPYr2fek+lETZew63mudfa
-         QVTxc7Gw5Tq3rpRBmvoHdsNUyFEyz+en+KPTdzDlIybdAgrs63gDgwJZSmeR7WAHVhxr
-         kVvwhVOo+elujzJ3vOsc+ImKiWR5FUD1ABkTiBF7p54bp/8XAuq/RvELdgNEjfOqMoSv
-         J1mR9O6LJ/H1oHHpnfhotQzjzsG72W9JkgaKXxDfaJOJeKQAhVFGAzBuTNFhlEiTGYj1
-         gN2w==
-X-Forwarded-Encrypted: i=1; AKwUvBww9XSc3kLzbonJX6BbUeX+X7e9tGX+L6/3xrPFTHK113b3SA2iKJRVrVKfBL8un6WWl30=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIXgEGjoRyLMwRp3xmGU3R0cGhLdwuYuMnuzidZdA8eXOLquhp0
-	xsUXZApqMJAgrPf18zj501hHMDIORRF8P70IyN7y4gvWgCUTgkISRF8VtINVxDcASLtXMqKKVEh
-	aOXaCeMTM8IfBcW+zqqSWFxvpFs8/1d3no80Mzowa
-X-Gm-Gg: AYBFou2ATLcbpHlrqEeLt73SIYU+/Y6aEZB/8NFCWZWmf2u8ffXfgUkXv90pcfNxAcD
-	LMaCGQrO1Uj4DVTCk4r3ctqdpt+WbmZ3w/1eWnafUvPlvameR5ScCf6KLm/4ibmoRJrUYEqSct3
-	eFzCS04Us9P2iEw279j+wHBKLsjoOJXp4GMF8xKCP7YFHvVXrWY88/hS2Jy3IwhdETBRM26Z4aG
-	JFCC2lZP5VVgaXr4uQlNEkMldZ3CTIMFTiY9GCXJ+JX8a+IyhetphmH2om0HrYcsRicu7zCdaXV
-	dbdmCZsAc51q+ae3B6J7/5e2MGcndTnSRpFwEZETH7ENo6qdbxeFPQlTxuDtmpKNRK8YtWVyM2p
-	JDO0rV8i1imf75z+eics7e6IoMYgaiyPYxkVMjARuAyauttHxMZgJ4YFLEr7tyAhAs+3vHB28nQ
-	yNiwoWrFR77WyJP9NUKMtTatiKw3qt6jREy1NgFiZ/hoasWeJcNCAAf67gFN7ZObPHiLjAdt+Q+
-	qrV0qdYBgWdH1ZFof531f/ZX5ioVC6AKA==
-X-Received: by 2002:a17:907:a08a:b0:c41:8e21:4d5a with SMTP id
- a640c23a62f3a-c49bdb68d78mr15531766b.5.1793127089381; Tue, 27 Oct 2026
- 11:51:29 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jk5LgKuW
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gMWjDSCtC/LZUEBxoCJJxL1Etxi/j8oT4U6OzZ9xRlFvQZL/PeNOw22hhCFWJiD/wqMiAldcGVeEd3R3nsxqkS5G9BwB44C9QULlYVwlwXLl9+52hUBba9lgM28DLbyzm3HirvffHBTXrKMLP2ElnFJZPQ7kxmzWZ7aBzEHkIZJDi5ldB0RPe1TNMSvhHiYyfzN8srgzue9ac7a43mQz4EKv1G4TmQkXlnLTi+Yq07riJXqYvNKCQbcEul8Ju4Up7bZE0tDtYo5ZooOKv7weBJ+r45FocwQDWTxjy/oI0GK2huGU2JaiMZN7PyeQwTDpsEpO+XAIerRV4HfoCJtDVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
+ b=Q7O0eRYDtLwHqSOLM9XrABbhiq7Nc9LDP1WDx/qNtrzIKDPSPUTlvwjdBa1koLvkbH/1CN3LnaiK/F8wNT7W21AtTIDFV6sUBgQRvJ5dLFxqtIoII/VY/eTs4FAE91GFDshZsnkTJWLzZT6msxu95c7DqDrfgZhhBMdWMopGtV7I/G0N7zrPURDHGlcrJGFM+RB/nLezAPO0IX1yJ4sYJopAMbCCxH8p61zCj916d/cDMEO+Etf4jGr8V3Dp5O9Ho/Sn53tYTCwQDCbDAk8vXe2dUPd/oMinmQCXfL3D0CpH+ABmJf5hmAs/ShCvlkMdPYLXOEIgTuiYALQx20dirw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=enKULTb73Mts2n5pmRSxAcbrjUxOHIXAJPmyub7JJFY=;
+ b=Jk5LgKuWFwFVuw3OWbJeSW49CmZILCRjNXeJlaVoVpKPKdEZMyCEaXXv4DtNgUkaqs2T5J/VVb0lLwrxeSbt5GCkqGmhOZTfoWa0l58vtEtu09UH2bEAfxe6k3s/TM7y8NU4boPPL9DS2gp1BN1vWB5mpW90RuZUhu+Zcsl7dU0=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
+ by CY3PR12MB9679.namprd12.prod.outlook.com (2603:10b6:930:100::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
+ 2026 19:12:28 +0000
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
+ 19:12:27 +0000
+Message-ID: <5135e588-0a73-4d1d-8e1e-7894e8b7089f@amd.com>
+Date: Tue, 27 Oct 2026 14:12:24 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
+ mode at boot
+To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
+ bp@alien8.de
+Cc: x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+References: <cover.1792627082.git.babu.moger@amd.com>
+ <1a8f3900e9e14ec19f5f7204fd64716eb0aa8427.1792627082.git.babu.moger@amd.com>
+ <0082b675-5749-410c-9fec-9ce9b23b2498@intel.com>
+ <9778fb3e-f5f8-4137-be2a-598cd44fc6f4@amd.com>
+ <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
+Content-Language: en-US
+From: Babu Moger <babu.moger@amd.com>
+In-Reply-To: <98597562-0c2c-4b32-a0b0-77777b8076c8@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH2PR03CA0020.namprd03.prod.outlook.com
+ (2603:10b6:610:59::30) To BL1PR12MB5320.namprd12.prod.outlook.com
+ (2603:10b6:208:314::17)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,138 +105,140 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026215226.3713941-4-jthoughton@google.com> <10ab2f3b005f0df2c0a88e93e6917826d928bb1f82c6a645f942c099e48f8b6e@mail.kernel.org>
-In-Reply-To: <10ab2f3b005f0df2c0a88e93e6917826d928bb1f82c6a645f942c099e48f8b6e@mail.kernel.org>
-From: James Houghton <jthoughton@google.com>
-Date: Tue, 27 Oct 2026 11:50:52 -0700
-X-Gm-Features: AclHuK8M0uftDAMQJptfiH_zotg0NLNK0vqcV1a8EUqq1l3N0gBPNm3WO8H3TD0
-Message-ID: <CADrL8HVHCVoh3AToNzFCe7KP=yC8byCGCzGYzzBEGYtYNC4fJw@mail.gmail.com>
-Subject: Re: [RFC PATCH 03/10] bpf: Fail sleepable user copy helpers when
- current->mm is NULL
-To: bot+bpf-ci@kernel.org
-Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, tglx@kernel.org, 
-	peterz@infradead.org, kees@kernel.org, arnd@arndb.de, david@kernel.org, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, seanjc@google.com, pbonzini@redhat.com, 
-	jmattson@google.com, axboe@kernel.dk, asml.silence@gmail.com, 
-	James.Bottomley@hansenpartnership.com, mkp@kernel.org, dsterba@suse.com, 
-	mason@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
-	john.fastabend@gmail.com, jpoimboe@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, mingo@redhat.com, 
-	acme@kernel.org, namhyung@kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, andrii@kernel.org, martin.lau@kernel.org, 
-	eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|CY3PR12MB9679:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1570457-f1f4-4923-a753-08df345e3d43
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|261026121527099003|4143699003|56012099006|261022075727099003|11063799006|261009223027099003|10067099003|261021121427099003|261022105027099003|22082099003|18002099003|261026140227099003;
+X-Microsoft-Antispam-Message-Info:
+	MboWlXes7kA+RQ4Qi7JkKh2I8GAsgRS/aSklBY45TDLfkT47gn/ts7auK7iuQKg+RqQ11e5l+sRLkexIAtd6z82URmUgvPn/jCvTDwhtLrjYrNbdS1LsK5zz61U6SOfJ21N/4sPd6kx+OUW4NlaQ2DN163Rbplp1KAZKHtdORL4rX/CBqXxXOAtBg9fNo6v6Ql/BtGgW8ryp6jAC8NKMaGOVHAvHPGezvcSVCyjdcFi/3nL1+daxbFxNt2RwRccfQOZQPoXVWJgscK9lMYfikIzhMy34A7i9FWC6QkUjVEsZv/YHHt9L5NCeZshcrMfg3EphWZSdV5lwqhyGhNTRqU4f0alkdVemkGIJyIUvJVnyfGDRGD+SKG42vvnPZQ19QJV59vfIR4bINXoOPhbqoIH93gzzLaWitKA7V+F1IjExsR7jlvUns1aH9vXYV7crkO7Jc7Biu9H5zfNScLEEk6gpYkDQt9mNreJC0/WwO3ag6GcDmQUbfFPLTeF35hKjwPIwUIjEnL/mkYbrOW90jYY9VRg2UI7njr2hC9p2ZZRl78C6z7YK+/y1YAnYwnn63eAXPbXac3TnYGphtkZ70pE39YbDe896CT+Dd4RVeyJxzYkK+sWgiPvCtJy5qhaJVAAa5m+mGT4dwavngBLB7aS5bU98DdH361IsvHw8k80=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(261026121527099003)(4143699003)(56012099006)(261022075727099003)(11063799006)(261009223027099003)(10067099003)(261021121427099003)(261022105027099003)(22082099003)(18002099003)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Mmxsak9VSzhYTmlVeDdiam90V1BhTUIzdVhJazdsYU9lalM4Z2diaEs4SWM5?=
+ =?utf-8?B?RmZ2cGZ2a2l3MzJ2SGcrVkdRNlBOVWV4TVFPbnVVVlFmTGQ4S1hhblhQMXBn?=
+ =?utf-8?B?eDRnTUppZFpFd3dKZ0N6djQxZVhtV2dkVisza3hocVVKd3V0dzBJS090KzdQ?=
+ =?utf-8?B?a1RKRnRZV1M0MHpiYTF1Rk1hanAzZlFsMzdKaWhqSnFPT05FdjhtNXMxbGhO?=
+ =?utf-8?B?N29xdEN5R1JZQmRPeDdNeTk0OHBodTJKcWJqLzNRRkcwMzJrVC9tRlZCYjBR?=
+ =?utf-8?B?RGxHT2dQbEttQW1Kb2JjSVdKRllBR2xseHFGczN5TjhKVTQybmRpbFZKQ3Ni?=
+ =?utf-8?B?ZmtNS3kwTERzOGZhcitsZVpoNVJzaUhBL0dzZjBidHVleHAxbWF5MUFjUGNS?=
+ =?utf-8?B?VWhpUXVidm00N1JVQTJ4blBPaXFtN3RjWXJ5bWI0NkM2a29NVjlWcnFMVEJR?=
+ =?utf-8?B?a3R4aGRPMlZLdlBPSDBnQk9rT0o2dm9aenU5Wko3VjFhQ3VtVmx6UW9nNmRl?=
+ =?utf-8?B?OUM1eUdtVGc1dXNDSGRHYXltajk0L1FNalhLREx2dHRNZGdIcDYybVlzc0kv?=
+ =?utf-8?B?SnlKaXczQWZXV1ZWZ1Z5UFFHOHo1QW1YZ2dsanRCNjlMc2YxZFJMcG5RMlhF?=
+ =?utf-8?B?c3E5cG9BbWtNQTVaNnlCNkRIY0ZQWURaVk9xZUVFRG5ya0NvRmdaYy9pVEtD?=
+ =?utf-8?B?TDZzQ2RMRitRdnlyZjZJUXY1WFluUitVV0pKSmgwbU1UQ0Myak1qVVh0Z3R2?=
+ =?utf-8?B?R3Vua09KdTE5TmdFR0QwVU5MREsrRVdWMGlreGIwNWZqTHZaY2g0dzFuQTVJ?=
+ =?utf-8?B?STJQTEJtZkNzcTgxYnZRSk0rQVh1NmoyOEJ1bzJGZ0RpN2R1WG5HT1g4c05C?=
+ =?utf-8?B?emVmSjE3TUxoQVQzRmFqdnFJYmFjeDFrM1YyOVJyOUZWUmNSRkpmTTl6bHN2?=
+ =?utf-8?B?Q3FkNDhNTXFSaDI4VkVFdTdqNTV4NnZjQjh4ZFVZeHR0S0w2dkpMNUEvNmlH?=
+ =?utf-8?B?MkVFb3BVYnl0NkNXVFh5RUIzRE5EbTVTdzN0VXRITnhDcHEzR3ZMejhBbHQz?=
+ =?utf-8?B?aVZvWXJVQnFlNkFNbnc1U3NtendndkdubGkvbmo4VUVEbkg0WjFWdUNHY3dH?=
+ =?utf-8?B?cU1jZUJ5R1lwMG11KzkvNW95UzNMWVBISUlqcmh2V3hSRnF3YUxaUWJNNjFI?=
+ =?utf-8?B?bFhtNmlBYTVmajVod0dSWXdUaFBSczNFTWoveE54SThaTnFZbEpRUWkxWGZw?=
+ =?utf-8?B?d2ZCa3lCRmEvV2NGV2xVSXJsbWlrVmxVaWxiN0ErZFF2NlM0c0MvN0QyTTEz?=
+ =?utf-8?B?Z1BET3pJNlhqSHE2Vkh0WUZMeEpPWkFKSUJ4OUY1TzdUUUFoT0JZbnZTY3dE?=
+ =?utf-8?B?WUlmV29pdDIzOU9SekR3V1J2UnJMTTRuSDRsajRETWVGUUdaclhlTWR5bVFX?=
+ =?utf-8?B?VnBOL1BOZjZ0Nm1tb3JKRitmdzUzL3QzSGh1eDk3SDBCUFlzYStuK25JczM4?=
+ =?utf-8?B?emlmcFFUTGt2QXhTRFhja2xYaW50QmN1RllzVmhnZW5TcnQ1MTZLQUxhSzJD?=
+ =?utf-8?B?ZmZlaWJFR1lpL2VMREV2SEpMbTRDcmQ5WU0vM0J6ZGZNbFNUQlJrVGM0ZnFh?=
+ =?utf-8?B?NkpQRGlkeDJ6TUdPbkcwNnc4bHdrNnAzSFE1QW9GSGkxZVB4a1d3cjVCM0E4?=
+ =?utf-8?B?QW01MXpBODJ6UTloY1lqWXE5TVRHb0FUQjk5WW5lVkNIZ1ZYTzNPS1k4dEp0?=
+ =?utf-8?B?RndRK3V6cWt1by9KVENRQnNlUlNNdGtoWnJnMHlCYy9Fbkp0Z3lmVzFyaDZ3?=
+ =?utf-8?B?U2plRDNUUmFYRjl0V2x5WFFQMHBBbjJ3WlpZMjI2d3I4bWFWY01EMjRJeW1F?=
+ =?utf-8?B?WEpjMXdIMlhiQ1JYVVFzWk0wb3I4VWVISWprNXlIU3dpR2RrYVhhQktQWnF5?=
+ =?utf-8?B?ay9TblIwREhlaXl3YTh6UDROYXVEYU43NG9JNGE5Tm8xdFVEb2FMYTZMOUV6?=
+ =?utf-8?B?c1RuMVNHSzROVGl3czNMYkt6UEVrUTVST2Q2eE45aEdaOHJUZEZ1d2VXaTN2?=
+ =?utf-8?B?WUlINDBkbjNzZ0NWckg4c2ljRFhDOGxLZHdUd0VYcldFS1VrSkNXeExRT3Vu?=
+ =?utf-8?B?aVNRNlY4eTBlcjRESHVKSlFNOHpDemtLc0VUNnk3Q2Myek9TRjhxWDc0SWQ3?=
+ =?utf-8?B?MXp4YWxSTVV6V1ZsdGhpNW8xSHArMGlHNWZsYk41VEl5WUozcGVEVW5MRHJM?=
+ =?utf-8?B?aTFycTJEdkhwSjBUb2NZUmdQTTl4eTVKMlNYc0ptRjE0UFN4c1pDOUFadExT?=
+ =?utf-8?Q?pU8TfqCSbntYe/Ie6L?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1570457-f1f4-4923-a753-08df345e3d43
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 19:12:27.0997
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zLmZqiUUfbom5t292AVPLCVBbpsH9b51Hqi53LUvOpdCo8oYfUm15/RsOSh4hvWQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9679
 
-On Mon, Oct 26, 2026 at 3:30=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
->
-> > bpf: Fail sleepable user copy helpers when current->mm is NULL
->
-> TL;DR: Commit message only: the security_file_release() example of a slee=
-pable
-> program running from a kworker looks inaccurate, since such a program app=
-ears
-> not to be attachable there. The fix itself looks justified.
->
-> > bpf: Fail sleepable user copy helpers when current->mm is NULL
-> >
-> > Sleepable BPF programs can run on behalf of a kernel thread, or of a
-> > task that has already gone through exit_mm(). For example, bpf_wq
-> > callbacks always run from a kworker, bpf_task_work callbacks queued
-> > late enough run from exit_task_work(), and lsm.s or fentry.s programs
-> > may be attached to functions called during exit_files(),
-> > exit_task_work() or from kernel threads (e.g. security_file_release()
-> > from a kworker running delayed_fput()).
-> > In such contexts, bpf_copy_from_user(), bpf_copy_from_user_str() and
-> > bpf_copy_from_user{,_str}_dynptr() (when reading from the current task)
-> > call copy_from_user() or strncpy_from_user() without an mm. That access
-> > does not reliably fail: the user half of the address space belongs to
-> > whatever mm happens to be lazily loaded, if any, so the program may rea=
-d
-> > another task's memory.
-> > As there is no user memory to read from in this case, fail with -EFAULT
-> > without attempting the access.
-> > Fixes: 07be4c4a3e7a ("bpf: Add bpf_copy_from_user() helper.")
-> > Fixes: 65ab5ac4df01 ("bpf: Add bpf_copy_from_user_str kfunc")
-> > Fixes: a498ee7576de ("bpf: Implement dynptr copy kfuncs")
-> > Signed-off-by: James Houghton <jthoughton@google.com>
->
-> The commit message gives security_file_release() as an example of a place
-> where an lsm.s or fentry.s program can run from a kworker:
->
-> > (e.g. security_file_release() from a kworker running delayed_fput())
->
-> Is this example accurate for the tree being patched?
->
-> bpf_lsm_file_release is not in the sleepable_lsm_hooks set in
-> kernel/bpf/bpf_lsm.c, so btf_id_allow_sleepable() rejects a sleepable
-> BPF_PROG_TYPE_LSM program there.  bpf_lsm_file_free_security, the other h=
-ook
-> reached from __fput() through file_free(), is in untrusted_lsm_hooks rath=
-er
-> than the sleepable set.
->
-> For a BPF_PROG_TYPE_TRACING program, check_attach_sleepable() requires
-> within_error_injection_list(addr) (or a syscall prefix when
-> CONFIG_FUNCTION_ERROR_INJECTION is off), or an fmodret set with
-> KF_SLEEPABLE.  Neither security_file_release() nor bpf_lsm_file_release()
-> has ALLOW_ERROR_INJECTION, and the only fmodret sets are in
-> net/bpf/test_run.c, net/mptcp/bpf.c and bpf_testmod.
->
-> That suggests a program attached to security_file_release() is never
-> sleepable and cannot call bpf_copy_from_user() or the KF_SLEEPABLE copy
-> kfuncs.
+Hi Reinette,
 
-Great catch. Yeah, the examples aren't right (but the fix is still correct)=
-.
+On 10/27/26 11:36, Reinette Chatre wrote:
+> Hi Babu,
+> 
+> On 10/27/26 7:48 AM, Babu Moger wrote:
+>> On 10/26/26 19:15, Reinette Chatre wrote:
+>>> On 10/21/26 4:58 PM, Babu Moger wrote:
+> 
+> ...
+> 
+>>>
+>>>> +  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>>>> +  [default]
+>>>> +  mbm_event
+>>>> +
+>>>> +The "default" mode is enabled. "mbm_event" is supported but not enabled.
+>>>>    +b. Enable "mbm_event" mode. Switching the mbm_assign_mode may
+>>>> +reset all the MBM counters (and thus all MBM events) of all the resctrl groups.
+>>>> +::
+>>>> +
+>>>> +  # echo "mbm_event" > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>>>>      # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>>>>      [mbm_event]
+>>>>      default
+>>>>    
+>>>
+>>> The above changes could be merged together under a single step "a" that
+>>> will significantly reduce the churn when considering this is a stable patch.
+>>
+>> Yes. We can. But because of auto assign is not enabled on mode switch, we still have to touch few steps. Your choice.
+> 
+> Understood. The benefit here is that the patch will only change actual information.
+> 
+> Specifically, changes like the two below that just updates the letter
+> associated with the step:
+> 
+>>>> -b. Check how many assignable counters are supported.
+>>>> +c. Check how many assignable counters are supported.
+>>>>    ::
+>>>>        # cat /sys/fs/resctrl/info/L3_MON/num_mbm_cntrs
+>>>>      0=32;1=32
 
-> The fix itself still looks justified, since bpf_wq callbacks run from a
-> kworker and is_async_cb_sleepable() is true for them.  Only the example
-> appears to be off.
->
-> Would an example that is actually reachable keep the changelog accurate?
-> For instance, bpf_lsm_task_alloc() when kthreadd forks a kernel thread
-> (current is kthreadd), or bpf_lsm_kernel_read_file() and bpf_lsm_file_ope=
-n()
-> when a kworker loads firmware with kernel_read_file().  All three hooks a=
-re
-> in sleepable_lsm_hooks.
+Yea. This will be dropped.>
+> and
+> 
+>>>>    -c. Check how many assignable counters are available for assignment in each domain.
+>>>> +d. Check how many assignable counters are available for assignment in each domain.
+>>>>    ::
+> 
+> will be dropped from the patch. They distract from the core change and do not
+> seem appropriate for a patch headed to stable.
 
-I've adjusted the first paragraph of the changelog to:
+Actually, the step (d) will be partially dropped as assignable counters 
+changed from 30 to 32 without auto-assignment.
 
-  Sleepable BPF programs can run on behalf of a kernel thread, or of a
-  task that has already gone through exit_mm(). For example, bpf_wq
-  callbacks always run from a kworker, bpf_task_work callbacks queued late
-  enough run from exit_task_work(), lsm.s programs may be attached to
-  hooks reached from kernel threads or from exit_task_work() (e.g.
-  bpf_lsm_inode_free_security() when the final __fput() of an unlinked
-  file runs from delayed_fput() or from exit_task_work(), or
-  bpf_lsm_bprm_check_security() during a usermode helper's
-  kernel_execve()), and fentry.s programs may be attached to
-  error-injectable functions called from kernel threads (e.g.
-  btrfs_should_cancel_balance() from the btrfs-balance kthread).
+   # cat /sys/fs/resctrl/info/L3_MON/available_mbm_cntrs
+-  0=30;1=30
++  0=32;1=32
 
-I think all the Fixes are still accurate. The first Fixes isn't very
-obvious; re-checking it with Claude provided a pretty clear
-explanation for why it's accurate:
 
-    This is the subtle one. In 07be4c4a3e7a (v5.10) the sleepable LSM
-    set was just bpf_lsm_file_mprotect and bpf_lsm_bprm_committed_creds,
-    and both always run with an mm. The LSM examples above only became
-    sleepable later, in 423f16108c9d ("bpf: Augment the set of sleepable
-    LSM hooks", v5.11), and bpf_wq only arrived in 81f1d7a583fa ("bpf:
-    wq: add bpf_wq_set_callback_impl", v6.10).
+Will send the updated series later this week.
 
-    However, fentry.s was already allowed on any ALLOW_ERROR_INJECTION
-    function other than __add_to_page_cache_locked, should_fail_alloc_page
-    and should_failslab, and that list already included
-    btrfs_should_cancel_balance() (called from the btrfs-balance kthread
-    via balance_kthread() -> btrfs_balance() -> __btrfs_balance()), as
-    well as btrfs_check_node() and btrfs_check_leaf_full() (called from
-    the btrfs end-io workers). So bpf_copy_from_user() could be called
-    without an mm from the moment it existed, and 07be4c4a3e7a is the
-    right commit to blame rather than 423f16108c9d.
+Also, noticed a minor typo:
+
+-  # cat /sys/fs/resctrl/mbm_L3_assignment
++  # cat /sys/fs/resctrl/mbm_L3_assignments
+
+
+Thanks
+Babu
+
+
