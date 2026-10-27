@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793096254;
-	b=hb1jruEe6oG9Z/gvHIY7nIwE16jrCy6vRnqzjFstSky7b5umqSvF3PRCG1X4+GSFJBkN
-	 4ce4J7M5pwmSl9WqSgfkOJKAAHzc2nnH2FToSeahRF/AoT7QtCScdmWJgpvjmHVY9rMV4
-	 jqr9vZDWGg054msZi5G2O4CKmGXHxxXwx8mL/uj8k+N8fonTHwT6xsXtddC4yK7Rx1R6/
-	 KhYgO0YyZkeU6qjz2nr2+vVkGDfgW9hAXWYIz8ErHOLPimWOVIC4/4LEchhi9+Bmpjzbl
-	 Snvav827JpkS5/XxCCqm1Z2IvimrokO2uiJHrUMv3u11fm6steq8YInyp1DfR38A8PA==
+	t=1793096476;
+	b=T7hHk11lMwx/ba+sogZdYeoWGoOBdT3oAnxFCExThVjPZeIY1sGywuZXtLmlciqlNTOU
+	 QVbpSGT0dBvOxbsbkjB28Dq790NUXs3mLQDOkwlV6q6FA6x9T9g2AoXL6mM7vqYkk789X
+	 vcGGxC/WsrOTn2TsXNgQjT06tiabvuF9gLtWMUl/nvZXNQZnKvS0a8+bBPXd6v7EZTKnR
+	 BYESp7TpnH1qAm2OuEtaWrmMbmD2RaoHXrOqa7nGg9nLf6yUVdnWuZ24pYyoOtoQK+9Ru
+	 mVhSEkgm0VHnyPH4B7zVB59t3lt2zyT3rrWsjTo7D7OKDLLoHEfIdesMBeWF4yPNcmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793096254;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793096476;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=ROl8Z/DFaCJAxQvsLDCIwxAYaCdKritEmYyIuCU28LM=;
-	b=qBsUCECqFr0G5QmmIUtvlEGxBwcn4EE4PkB0ZfiGS7NlH/ngEOezFOgsmIHb+8xRatWQ
-	 1+sqXe4kUT38ZEZlNx/RuWIiDRZlpA7vC77bZmckXcO9xtREbxnF0EFKePrQIkTyMxkA9
-	 0CCYNhonQ6NzqzioUJ6nyR+5X7l+CEpXMlkZb15F4wLac5/rXmF2gJUIzcgq4Q3aGZfQj
-	 m30QmCA2BDpWOQOEdzw0yAjAjKqfXb6qg6VUQc9xoa1Lh5OvHIcrOL3V3cZ/8Ft2h7zLZ
-	 7cQt7D0dYaoAodfN0tkvjiqqgC3aJQi5F+qpUglFoiy6WVHoaPdsJLkeFK92/Oc4pIA==
+	bh=UcwPjZxaDPQUX38SRpQk0U6z694ngHdtvb+qpNBNolI=;
+	b=FmNOyD7RJOcTaolRsuS9UKMcYdniN88yAer5UH5bCQVXLymZyK7JlthL01PZUgQa4YEN
+	 r0y9s7QU22iw7YkkXAADib6lVuWEZ6A6CY4L1ehQIsrSOfrNpujh2XYkMwKQtkGO/8PNb
+	 SMe3/aSYVUdrT/bPukJX4qp+ce2k10riHPtJlMrV39kblGNw1MPSnjB66ny0AS87r5a17
+	 drXP3qVzRUNCNx1trZZXbyU3w4u1WDiQ6+RyX/VpQl9WXkKiHu/ry3aBqJvKItb6GjSae
+	 QwFaGUvnyCAkrxI8gVwd0hhQIyhvjWycyarJoy3kH6KZVMbsXjrjt3FQNj8r4xt/R3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=resnulli.us;
 	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=fmA5ZVtw;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=U+w+DA7T;
+	arc=none smtp.remote-ip=209.85.167.53
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D147F606A32C
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 10:17:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D147F606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2039606A31E
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 10:21:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2039606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=fmA5ZVtw
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a20bdaf39cso40907495e9.1
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 03:17:32 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=U+w+DA7T
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5bfa7c09c9eso2999965e87.2
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 03:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793096251; x=1793701051; darn=vger.kernel.org;
+        d=resnulli.us; s=google; t=1793096469; x=1793701269; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ROl8Z/DFaCJAxQvsLDCIwxAYaCdKritEmYyIuCU28LM=;
-        b=fmA5ZVtwVJcNE/fAKAHqsP3pTMhIMG/B4/fp3GRzy6U2KUaRfKgSPPQRO7kH3SZ6uV
-         l+fzzhfmGr9Mctm3db6DzPN2NeHVOu5pYzT1nPmjh7/grQz1Dup/ibheJflAfN28BYGt
-         sbIOe1LMk8vFbragFHLOaRICCrM6OPu2imRyfnGBgaurj8ZgT/B2EU27xE/StHY2p3vI
-         0FtODpcVTVfduuEmzZ206fQ1o2SEoqVEe0oCCy1muVMUaUmDeCS4IvdMx8Y+6Yayv+xv
-         4MfvlIyEMIM0RMDLyW4wNgG61M8b27rM8mXK+xBP7O+Jx/KNHvVSN9NnsB2j6/T8iqaN
-         ieig==
+        bh=UcwPjZxaDPQUX38SRpQk0U6z694ngHdtvb+qpNBNolI=;
+        b=U+w+DA7TBbOTsHJ6Enxe39JVFHvrncv5jY+jSoyIQ2z35qjZXvHp3LNnblKOrPL29A
+         y7RE8O/DkYqgtM6po8VciEwy++8yrr0fF30EYhF2VKGclIBsioakCbCgAaR3HRFnnwZB
+         fNYBW+FeTixill9nrDRoI+IpNCTqA55IxLFeHUBlMQlaa8qrSxKDiIACxU0UkJDj8UMh
+         lR0on/o9rFsPmneK/FCtabwWiYP65MsxMx5JUTisdHYPgy2j9M05xRVHhql1vdZyRtw4
+         WoBKFMRyWdL7bNEs8rMdYK3MSTXgnm/TWIMlL9+E1AX8il/kxYBgNEFH0Q32f/iPJK2Q
+         TN1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793096251; x=1793701051;
+        d=1e100.net; s=20260707; t=1793096469; x=1793701269;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ROl8Z/DFaCJAxQvsLDCIwxAYaCdKritEmYyIuCU28LM=;
-        b=bSf4kWTJeQ21PKZ/uFLee72MEVJ09f7H0CxfyPX1IGFR9mv0m25eXTA3Rfn8Fmros+
-         /tvF9GQuhMrQkpZYggBP/XjT4RMJ+IJYk2Vc1tygSnX4shCpbPCz+9OzTh+88FL9829+
-         Mqx2G7sdYNkwrOHvJgGdPHKsaBWRaoQPu6T9o/j8i5udceMw7FjIDLWyYowG+Dgma71O
-         bpK9nEDRXWpEZnMG1qIhhLUaL8ByfBIWCOWSr7RFGpSrzIUssb589SJBjwjQV5IMG+EK
-         LULTIHyDb7fgp4QaIomLdkniE2RDMWrE/NlP28Jw4Rrwq7nXDRjnzY3+MpjMPUJSBMQf
-         6l+w==
-X-Forwarded-Encrypted: i=1; AKwUvBxX2YKfo2guHkWBCmC/3g/ddKBWg/KIAug4xpIm0YcuuO7HI7thc5X87ZZVoe6kLRCwCB8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJqrRQFA2hQb4LAu5hrVPAl7Y62Oyh1eNlorHYHmrIOBPyh7yYq
-	mrkwq3yqJikNk0mItrWugc8oYPNrAw9/Nij3p84iyid6gB7StejaGTBnzQEfvjQU+ww=
-X-Gm-Gg: AYBFou1cfGc4yRQjG/yUYYX5msabLnCS1vynTtcIGu4xG0BqzgZTeHGip7pd6PIhwvJ
-	nITsvNqB4DrRBnsCT8HSIMaIDhSX57JA2TOv9JdeZzcP6PWwM7l/0fCtmchoP9TVG7QIr+f04r9
-	ZI6YSGt8cn3MBi9Qrq1R9q1nyzk8DXDFOyiffO6AeQXsrX0mOXOABbl7T+K+dIJR1gfkei2h0M5
-	qStNvFsfHpr7EwM3OPLuqTxkMKhbJx1pAF3EeGrOGEOBrq0JGENRoBEBcht59QSRFR8ES671TJf
-	MAVZwtRIVnpV8S1mX6emDyV6l1bgbOQnwC6StU1JAexTBBXR70q3ojWXGK8keOhLT39TaA2w6PI
-	zgEL2I/sUQggk9ZGGDsk4Ul0/IxMdYr9CCbpLZqfDkIXKawa4ZXF8tJlGoseyvT64dY4oZJ2W59
-	tkcpEqWBCVzx36wvaKbxuJ5xTij0OYtGlzy2vX+8RlDDsAfPX+5Gt7dvSc13+RtlkTpDWxvC1R3
-	z1c0E+izrXJvGaFHep+TgTRwF9CMLmVsUB5VFVTHmIqCEFb+yU1cLmcJKaqIhj6
-X-Received: by 2002:a05:600c:4704:b0:4a2:190f:cf6a with SMTP id 5b1f17b1804b1-4a35acc2ea1mr170116035e9.35.1793096250940;
-        Tue, 27 Oct 2026 03:17:30 -0700 (PDT)
+        bh=UcwPjZxaDPQUX38SRpQk0U6z694ngHdtvb+qpNBNolI=;
+        b=zgHnVtPnlGks3atxdTxeUuUYwLUE5WqahA6auphXahF1Ut5B0DZiMSLpoj7QChyeC5
+         TjI9VyAHNI7vtIDDXbQjKmlMbukPmgbtmSWgemlx0vkhntWMoVOtQCC+Jl4x5ERigh6p
+         /41McBop2SF6vowAHC9IhfwixWYVMxIcVcoUpaPh+S9JIluXGsXkZEbCeRsUcZ7gHFVD
+         BERuFwaJH+/X1UTPyDbjc8DHYafwN2RLtd2PEF3GXkT7Ue/mYTZeOsmT7QozV7NzlBaU
+         HpAmXFvMz/Tj1aGz0G0pCFVIoHTGmI7dCvp4YyBSzCoOl5IUZh+sM/PaNHToVolwTyyz
+         IwBw==
+X-Forwarded-Encrypted: i=1; AKwUvBzBvDpKvA/0MqkoJhpfC4PmDPGgoEEcF4yq0rDz6L3rr4E2x2a0BHsESNPvsSt3nzC/sEQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ9jcy4Sk6XKHQVFCy/jKZdej6LppAP8vNIBObXHIf/ewtpV8QS
+	+I3Dh6jDHOSNqPk8V2d1PjoD6u6Cd4SCIVoF8xffBZhytRCl0hB6FnX+hRiAgBAwFMk=
+X-Gm-Gg: AYBFou3dQyA3q/ZQqzAld44kwOjfX9cZW5fAjK2pG7Cg9jcFFJdDo3OhAYZjo5AXPFJ
+	QEctUBY2UOJ4+ithqF7Kimqv+aQl79fDxjaMaCHc7zNOJ8jENilvrpoDcogkzT7jesi+8PA+yCU
+	ylhmLDZlc1X6QjxgzFbuWrigzfxGXVqKG+sYUEZdcM2As+m3c6WDK/ihQOJV3LAFz8ZOW+f96Fe
+	9QV+3T2uhzaZ8EmCUpRY9T8k7C+t2XffeY5WaCYhX3Of+Voq/zUCMWrByTdltwqdvDh/ZwN4QpR
+	xDxO9VTq9Xag3JkPQQczb5VDdqxqzwRj0qlrd5E077VVSR4E4mdgigTXZDc/unG5vGc13/JF/4K
+	gwk7kyFIg+DNn7wtvoQeCVGqdi0gDDqAlwP0VP3M8JJJOk4hw8dgubD0lb95tZmzArP2OAxP5ux
+	2uwmN90zko/71sYBtKwfXTyaKgPcXDr/961jwrYMVcwg7Jvkd01TbDyzBH8fJcypH2k2s8be02T
+	ZOn1cLY98G8vauJyCrMelUUBex2j0gDz/oGZ8MrIZkdSul2d9Ys/dtzWU6Ef++H
+X-Received: by 2002:a05:6512:2211:b0:5be:4d37:3bc0 with SMTP id 2adb3069b0e04-5bfb71fe90cmr3245577e87.62.1793096468475;
+        Tue, 27 Oct 2026 03:21:08 -0700 (PDT)
 Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a2ed5a2sm271453735e9.15.2026.10.27.03.17.29
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfb7a6aca4sm2051901e87.15.2026.10.27.03.21.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 03:17:29 -0700 (PDT)
-Date: Tue, 27 Oct 2026 11:17:25 +0100
+        Tue, 27 Oct 2026 03:21:07 -0700 (PDT)
+Date: Tue, 27 Oct 2026 11:21:02 +0100
 From: Jiri Pirko <jiri@resnulli.us>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
@@ -90,11 +90,11 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
 	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
 	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 05/20] ctlv: Prepare message input handling
-Message-ID: <auB5yxcuA50kg5x4@FV6GYCPJ69>
+Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
+Message-ID: <auB61re2C6eN3BmW@FV6GYCPJ69>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-6-jiri@resnulli.us>
- <179302367449.58760.13616210130636541456.b4-review@b4>
+ <20261015145053.3664509-12-jiri@resnulli.us>
+ <179302367452.58760.11808905856343064399.b4-review@b4>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,77 +106,59 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179302367449.58760.13616210130636541456.b4-review@b4>
+In-Reply-To: <179302367452.58760.11808905856343064399.b4-review@b4>
 
 Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
->> [ ... 38 lines skipped ... ]
->> --- /dev/null
->> +++ b/drivers/ctlv/Kconfig
->> @@ -0,0 +1,12 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +menuconfig CTLV
->> +	tristate "CTLV character device TLV UAPI"
->> +	help
->> +	  CTLV provides character device UAPIs described by a checked-in YAML
->> +	  specification. It owns the character device lifetime, the strict TLV
->> +	  message format, request validation, reply serialization, the large
->> +	  payloads a request describes rather than carries, per-open event
->> +	  queues and runtime schema introspection, so families only implement
->> +	  semantics.
+>> [ ... 53 lines skipped ... ]
+>> +/* A cursor packs the record and member where fragmentation resumes. */
+>> +#define CTLV_INTROSPECTION_MEMBER_SHIFT 48
+>> +#define CTLV_INTROSPECTION_RECORD_MASK GENMASK_ULL(CTLV_INTROSPECTION_MEMBER_SHIFT - 1, 0)
+>
+>Use genmask for everything:
+>
+> #define CTLV_INTROSPECTION_MEMBER_MASK GENMASK_U64(63, 48)
+> #define CTLV_INTROSPECTION_RECORD_MASK GENMASK_U64(47, 0)
+>
+>	pos->record = FIELD_GET(CTLV_INTROSPECTION_RECORD_MASK, cursor);
+>	pos->member = FIELD_GET(CTLV_INTROSPECTION_MEMBER_MASK, cursor);
+>
+>	return FIELD_PREP(CTLV_INTROSPECTION_RECORD_MASK, pos->record) |
+>	       FIELD_PREP(CTLV_INTROSPECTION_MEMBER_MASK, pos->member);
+>
+
+Okay.
+
+
 >> +
->> +	  If you don't know what to do here, say N.
+>> +struct ctlv_introspection_dump_position {
+>> +	u64 record;
+>> +	u32 member;
 >
->This should probably just be a simple selectable config instead of a
->full blown menuconfig. ie one with no description. Since this is
->really just a tool for subsystems to use every subsystem that uses it
->should just select it.
->
->So:
->
->config CTLV
->   bool
+>Maybe a comment describing how record and member are encoded for each
+>of the users?
 
-Makes sense.
+Okay.
 
 
 >
+>> [ ... 13 lines skipped ... ]
+>> +/* The immutable root-first chain always has generation zero. */
 >
->> [ ... 159 lines skipped ... ]
->> +static bool ctlv_message_nest_index_ok(const struct ctlv_cursor *nest)
+>This comment seems out of place, it should be closer to the 0's it
+>refers to a function below
+
+Okay.
+
+
+>
+>> +static bool ctlv_introspection_family_record(struct ctlv_cursor *reply, struct ctlv_cursor *entry,
+>> +					     const struct ctlv_family *family,
+>> +					     struct ctlv_introspection_dump_position *pos)
 >> +{
->> +	const struct ctlv_message_input_index *index = nest->msg->index;
->> +	const struct ctlv_message_input_nest *indexed;
->> +	const struct ctlv_message_input_scope *scope;
->> +	const struct ctlv_attr *attr;
+>> +	const struct ctlv_family_schema *schema = family->schema;
 >> +
->> +	if (WARN_ON_ONCE(!nest->msg->request || !index ||
->> +			 nest->index_nest_scope >= index->scopes_count))
+>> +	if (!ctlv_family_entry_start(reply, entry))
 >> +		return false;
->> +	scope = &index->scopes[nest->index_nest_scope];
->> +	if (WARN_ON_ONCE(scope->nest >= index->nests_count))
->> +		return false;
->> +	indexed = &index->nests[scope->nest];
->> +	attr = (const void *)((const u8 *)nest->msg->root + indexed->offset);
->> +	if (WARN_ON_ONCE(attr != nest->attr))
->> +		return false;
->> +	return !WARN_ON_ONCE(scope->tree != nest->tree || scope->node != nest->node);
 >
->Maybe wrap these invariant assertions in a helper and we can compile
->them out?
->
->  #ifdef CONFIG_CTLV_DEBUG
->  #define CTLV_ASSERT(xxx) WARN_ON_ONCE(xxx)
->  #endif
 
-Well, yeah, that would probably make sense.
-
-
->
->It helps manage expectations around WARN_ON. I assume these have all
->been checked to guarentee they cannot be triggered by users space?
-
-Sure.
-
->
->-- 
->Jason
+[..]
