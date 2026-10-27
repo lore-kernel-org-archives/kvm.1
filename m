@@ -1,96 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=183.62.165.209
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793100127;
-	b=0i8Y9CZ4ervK3ZcL9+XVtaqKEoupjplB1vRPVuCn1SMrXqBIVBwLoCtcpa3ibGv6ml21
-	 ft9IiZEHn0/GYpDFMVYTs2mKznB2c2nniBUu5eNpxWzUmSh+oAP4eRwcXud+4rlxRtPq9
-	 YGAjzmGDD3+HeQHk3VJoc9PNB8nsU5u1RFVdzo8QflG38gl25A3aTh6tSLRs67qkliJOB
-	 pTneGzSp9GUGN8bNrR+J5U74jpUQC7x0mUuj50qL1DFqqJ7bAIg7Ay9yc/OEKlRvmCJlR
-	 aUOxYJ54sQqnMhbE9tVkNCaQQ9ZbFloz/N6M7/QXWgXpC2pVTGpUyJF1JWf8ruto1Gw==
+	t=1793101582;
+	b=zE9IJRvMK2UKe8Jdm9jzrhv+hlME6/m9iNOsMGj/L7veX3bOQgJ8FUFpwn1Lpn94xoSB
+	 XOxPXnpUgtetPvJwRiCAqcrphbZX++VkcDuUObD1PyDXllhCb8mlX2F8e4PyOKGrtHggE
+	 LGPO+0I4xla13eOJ0HXo02shgUef9l2Uky/+CIbHoZYan4EMpz8ivTf4MpLaMO1BIzycN
+	 EVEqAJPl+sOCbe4IucVQn29eud1nIWkaXTQXsapFtKkxnOuX71IcmzsBfiorjW+duZSJu
+	 0/Az60clztEsOTAStr/IMMXVPXBHtZITuJbqzxkr/B9/NtTtraIs6WDiYwbj//cxUHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793100127;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=S+oxTAcNImzeaYdPGDfS3qQV6ylfKK/6QUzCHVinTiM=;
-	b=DJX57hFh8HwxHveRYKHxJag3f3GeCXFc8bzJ+Wuguw8V6mMlk32RLyR8JD1TnPIDdRa1
-	 /ilf19KPS/VCwbQSqJ85LjF2BtedupfxDscSYN/ScHULWwzO6jL+SNJbbEiUAi39PwHXS
-	 XHeP8gIY9dfxEf6UxVMFf48Zzdk5e5vFxICuZboCvgKxGVl3ZlGelU4GlVJkaFv+W1f2+
-	 60IuzEylmn24SuiYcKECHP9ELK1AHauWtBbB2QaotHp2s8ITiX7EZUHLK3eV9x9d1Q7im
-	 9Y4dlPHWev56zgpZ2IkD7l81FZXtUGRrtWKBE8xzScchSQVCxRvZnfgHMUkBDYzKAgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793101582;
+	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
+	 X-Zmail-LocalSMTP:X-ZMAIL-USEORIGINALEMLTOOUTBOUND:X-Zmail-RealSender:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-MAIL:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
+	 X-CLEAN:X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=Rwh35XQW/B+4T/QUwz9ROHBDhdVX2RvEsu0ct5jv/fA=;
+	b=efFyvS/KbtIf9PzDfCRgApezlHmNOemOqoABniuIONkkEakOYQJ5wtksSI4VBkVJubtu
+	 CM14f9jrR0Rq4oTDSinCotpxr430pGuY2nXQpyBkfx/3oK5Dkt6E4roW7FgUaMP5B83E0
+	 PjZEmWkac7uPWuxgA/+NPExwghA4qL6CWePyP2g7D7OvijXV11Zy5Y4qJ/CirRZiNNS5X
+	 kD/tc0DgVlR2NaO3e502vOUJ92pvhPt73K09HFRT0tSGwwUKgt80oIhzBBAmzr7Qs3GIz
+	 SRg7nvbLXQFfyrnh7FFkYktTEvoXxcJ3ijCxzdCqXbkv+IWYvjdSCqILK1TpJRFYN2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=i0Zq+bIM;
-	arc=none smtp.remote-ip=209.85.128.53
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=zte.com.cn;
+	spf=pass smtp.mailfrom=zte.com.cn;
+	arc=none smtp.remote-ip=183.62.165.209
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0E6606A31A
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 11:22:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB0E6606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=i0Zq+bIM
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso26114715e9.1
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 04:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793100125; x=1793704925; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:subject:cc:to:from:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=S+oxTAcNImzeaYdPGDfS3qQV6ylfKK/6QUzCHVinTiM=;
-        b=i0Zq+bIMGRTxaB0lxodBl4I5ksR0aHr81nLQefHJ+StMFbUjWPwq8JmS4SijvW3UV/
-         3mGs6fNNmUTaI65N+9d40N1vJ6axmpyB5FzcNUziodrMHfdAY8+hpKDE2nZptxpr8+D/
-         PRtp2/p4beyBZGrt2AScOv44NhBNcFbshgdQReNkQPEzGmYAg6BAzDrVB+gp1KxEQ1jJ
-         PYwG99Q597emcPUGNoc5pojkhxAD98VXB+569B8SzRNqEm7XyO0Dw/ZZN1HabQpvEElC
-         ix7MJFiDrJndMFZzvSewUyMA2+MxbU9/iICoIhdav+cPJDoES4ALouMRovimHEHUFUux
-         cEKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793100125; x=1793704925;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:subject:cc:to:from:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S+oxTAcNImzeaYdPGDfS3qQV6ylfKK/6QUzCHVinTiM=;
-        b=gdZ9xWSsinpgnO2JGNHKSyqv13e0sPwt8yieBbhKqCmKmHeYWPKdhzMbujiSuA+PIZ
-         WW2uwbp1CkGlxhpeKjNL0PT6gLsDGI3Czqk/Ljvh3ntCL5N8LXYash4tUJzFb+A2kNVq
-         Bwh9vsCw9NGhITnN7QSHvOVJqS7MI+JNW/3fDj6vRLjb5H6CfhD4sF5eps5O7HwwBmBo
-         3mzOlKZxWsc9zq7ThLUOBkXQGI3YJMJ/jHCVszRTXtYaQpn+9TznUGfy9MQ9egVBfEh6
-         atYfyAbj1yzzYfZVxoCHBoiitbXxyqV5AgEGrx4SlhaY5dP3MGf5Wfhw1xnhdhkAq6hE
-         UNcw==
-X-Forwarded-Encrypted: i=1; AKwUvByiyflrsy4FKr8K9gMnBY1gclauHpLKiBwpgBfOpFfKMbUY+k3N89yrfssFqlPSKdzCt5o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK7R9LzBDDj5J7WXZ18e17vw07HJ96cltoV0Mk7Ya3vyvw1V1Rv
-	z4L4KGkIGMOH8nsdn5aGl1Y2NWYKJ9R7cy3E5oGtdu87CbQZpvlmkkOXibUNFUfg
-X-Gm-Gg: AYBFou3gqSdLI9xJPqKQ8fUriUr+VgmjJPg45Az+7gRKPyMu9hyvjA58Wd/mKlnmEhC
-	pT3mdv0TxTXF2CYbjwF25meeMOI1FLQLXESBm93rF0nuS68+7D2zjWkrrrTtlgH5d+hH+aCi1hq
-	cuKOi/C728fItY2Dd/jjHd+rxxZxN+ZK9+UMgaUFq6qN3WKlBK6ZDmvRwT+H7ThEDQ8odSShMu4
-	glqUuNEs8uA8FjzrC+KpIVnOQOPd3dBWoIw+Fm4IiBXga3lvoAQMRW39y8PG4DSk+icre/zx0zL
-	hKKsgCfx69L3yM7xU1cJSJTfvd2s0YZPS2VXgnYIqX2u4uawGAEe9uAzl3jPz7gzrovbVca2ilA
-	q7Z9FMW8EcyN3MF43CkGEK5G2/pRS1/afRnY+1PEn+I2PfB9myvJTzeRaEz5pd5GI9+sgt6Z2OP
-	Ttz7scT6mjE8dd7BNixvUFqDTZ+RhGMAZAmwIthP0pVzz2wDnk/b9GDS1hKiqRQVzcRoUdWO23Y
-	na9QbrAaZi+aaF8It7K3P11t/DcDkHwiEFcSd/fH5btImy+loPJAtBe/Ogw1iF8fIzmugODWwCo
-	rmoh0Zlwz+LpVZzfOKC7rlz6jj23xOM=
-X-Received: by 2002:a05:600c:8b66:b0:4a2:a8c:22b0 with SMTP id 5b1f17b1804b1-4a35ac3b3d9mr175224955e9.1.1793100124941;
-        Tue, 27 Oct 2026 04:22:04 -0700 (PDT)
-Received: from SurHub.localdomain ([196.188.114.42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359f59750sm175005495e9.0.2026.10.27.04.22.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 04:22:04 -0700 (PDT)
-Message-ID: <6ae0895c.42cbc100.1c0cce.9e1e@mx.google.com>
-Date: Tue, 27 Oct 2026 04:22:04 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org
-Subject:
- Re: [PATCH v2 0/7] vfio: mmap()/mprotect() hygiene for MMIO region mappings
-In-Reply-To: <20260929143621.540f0024@shazbot.org>
-References: <20260929094848.7439-1-suruurism@gmail.com>
- <20260929143621.540f0024@shazbot.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC44606A328;
+	Tue, 27 Oct 2026 11:46:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4AC44606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4jDTGb3ttYz59trH;
+	Tue, 27 Oct 2026 19:46:15 +0800 (CST)
+Received: from szxl2zmapp05.zte.com.cn ([10.1.32.37])
+	by mse-fl2.zte.com.cn with SMTP id 69RBkBYp038591;
+	Tue, 27 Oct 2026 19:46:11 +0800 (+08)
+	(envelope-from wang.yechao255@zte.com.cn)
+Received: from localhost.localdomain (unknown [10.234.74.162])
+	by smtp (Zmail) with SMTP;
+	Tue, 27 Oct 2026 19:46:14 +0800
+X-Zmail-TransId: 3e816ae08f05027-7111e
+X-Zmail-LocalSMTP: 1
+X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
+X-Zmail-RealSender: wang.yechao255@zte.com.cn
+From: Wang Yechao <wang.yechao255@zte.com.cn>
+To: Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>,
+        Andrew Jones <ajones@ventanamicro.com>, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Wang Yechao <wang.yechao255@zte.com.cn>
+Subject: [PATCH] RISC-V: KVM: Fix out-of-bounds index into aia_irq2bitpos[]
+Date: Tue, 27 Oct 2026 19:44:36 +0800
+Message-ID: <20261027114439.699273-1-wang.yechao255@zte.com.cn>
+X-Mailer: git-send-email 2.41.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -100,26 +69,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-MAIL:mse-fl2.zte.com.cn 69RBkBYp038591
+X-TLS: YES
+X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 27 Oct 2026 19:46:15 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AE08F07.000/4jDTGb3ttYz59trH
 
-Hi Alex,
+aia_get_iprio8() and aia_set_iprio8() index the 64-entry
+aia_irq2bitpos[] array with an irq value derived from the
+guest-controlled VSISELECT register. For RV64:
 
-Thanks again for applying the vfio mmap()/mprotect() series for 7.4. I
-have one process question about stable backports.
+  first_irq = (isel - ISELECT_IPRIO0) * 4
+  nirqs = 8
+  isel up to ISELECT_IPRIO15
 
-Patches 1-3 (vfio/platform, vfio/fsl-mc, vfio/cdx: prevent read-only
-region mappings from becoming writable) still carry their Fixes tags.
-They are the same VM_MAYWRITE/mprotect class as CVE-2026-68445
-(drm/vc4) and CVE-2026-80724 (ptp/vmclock), and I am tracking the class
-as a security fix. Would you like those three to carry
-Cc: stable@vger.kernel.org so they can be backported once they reach
-mainline, or do you prefer to keep the whole series 7.4-only?
+so the irq number can reach 67 and aia_irq2bitpos[64..67] is
+accessed out of bounds. A malicious guest can trigger this,
+causing host panic under KASAN/UBSAN or undefined behavior
+otherwise.
 
-I understand patches 4-7 were deliberately framed as hygiene (Fixes tags
-dropped) and I am not asking for those to be marked stable. I am just
-clarifying the intent for 1-3 so I follow the right process.
+Add an explicit bounds check in both accessors before indexing
+the table.
 
-If you prefer 7.4-only, no change to the applied patches is needed.
+Fixes: 2f4d58f7635a ("RISC-V: KVM: Virtualize per-HART AIA CSRs")
+Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+---
+ arch/riscv/kvm/aia.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Thanks,
-Abdifatah Suruur
-suruurism@gmail.com
+diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+index b3b466e4db33..a51d2db7f331 100644
+--- a/arch/riscv/kvm/aia.c
++++ b/arch/riscv/kvm/aia.c
+@@ -286,8 +286,12 @@ static int aia_irq2bitpos[] = {
+ static u8 aia_get_iprio8(struct kvm_vcpu *vcpu, unsigned int irq)
+ {
+ 	unsigned long hviprio;
+-	int bitpos = aia_irq2bitpos[irq];
++	int bitpos;
+ 
++	if (irq >= ARRAY_SIZE(aia_irq2bitpos))
++		return 0;
++
++	bitpos = aia_irq2bitpos[irq];
+ 	if (bitpos < 0)
+ 		return 0;
+ 
+@@ -319,8 +323,12 @@ static u8 aia_get_iprio8(struct kvm_vcpu *vcpu, unsigned int irq)
+ static void aia_set_iprio8(struct kvm_vcpu *vcpu, unsigned int irq, u8 prio)
+ {
+ 	unsigned long hviprio;
+-	int bitpos = aia_irq2bitpos[irq];
++	int bitpos;
++
++	if (irq >= ARRAY_SIZE(aia_irq2bitpos))
++		return;
+ 
++	bitpos = aia_irq2bitpos[irq];
+ 	if (bitpos < 0)
+ 		return;
+ 
+-- 
+2.27.0
+
