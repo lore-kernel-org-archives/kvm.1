@@ -1,100 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.141
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793096476;
-	b=T7hHk11lMwx/ba+sogZdYeoWGoOBdT3oAnxFCExThVjPZeIY1sGywuZXtLmlciqlNTOU
-	 QVbpSGT0dBvOxbsbkjB28Dq790NUXs3mLQDOkwlV6q6FA6x9T9g2AoXL6mM7vqYkk789X
-	 vcGGxC/WsrOTn2TsXNgQjT06tiabvuF9gLtWMUl/nvZXNQZnKvS0a8+bBPXd6v7EZTKnR
-	 BYESp7TpnH1qAm2OuEtaWrmMbmD2RaoHXrOqa7nGg9nLf6yUVdnWuZ24pYyoOtoQK+9Ru
-	 mVhSEkgm0VHnyPH4B7zVB59t3lt2zyT3rrWsjTo7D7OKDLLoHEfIdesMBeWF4yPNcmQ==
+	t=1793097348;
+	b=hU8jz5Us2BE65BSMUQG8tF5YFF2Eg7WPvq8NZIQcJxFEht3mQi0/VZ7uBKU7ymLShF5A
+	 QCuO5TT+fgVx7ZOtWfWdCzCw1YdkE00s9UYvebRmcWjk2HiHF4yi4eGUlOKEBrzEzws/a
+	 d+aBwlDdp3gsR1F+oEaa0pbWn0Ipu5fLOIuI28rF5OGiTyMVQ3lUDYvOISuz13t2wTM1g
+	 mYt1+2R/IxKhI88FIAqkGVHp5odJy6oCKkB/5vQq40gj+wq5kjDPHB1/1rSf/g7xwyq8n
+	 tGN0BoeNtvOPJr+Ylx6bYAjvOp8AXXw3PpehzW9431rIucn9PA84XzS0T1i8S16AAbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793096476;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=UcwPjZxaDPQUX38SRpQk0U6z694ngHdtvb+qpNBNolI=;
-	b=FmNOyD7RJOcTaolRsuS9UKMcYdniN88yAer5UH5bCQVXLymZyK7JlthL01PZUgQa4YEN
-	 r0y9s7QU22iw7YkkXAADib6lVuWEZ6A6CY4L1ehQIsrSOfrNpujh2XYkMwKQtkGO/8PNb
-	 SMe3/aSYVUdrT/bPukJX4qp+ce2k10riHPtJlMrV39kblGNw1MPSnjB66ny0AS87r5a17
-	 drXP3qVzRUNCNx1trZZXbyU3w4u1WDiQ6+RyX/VpQl9WXkKiHu/ry3aBqJvKItb6GjSae
-	 QwFaGUvnyCAkrxI8gVwd0hhQIyhvjWycyarJoy3kH6KZVMbsXjrjt3FQNj8r4xt/R3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793097348;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=cD96WCdctpe4xqBu48fVzWQv2mdj+Q39Vw8+UuE9NOY=;
+	b=NOMBZanTV2pFMvbl6DqJhnDacwl186Ig3A/h0D3JggRcFS2SqEgMgYUxC/fsreK0W6+4
+	 POYmWwMy7Ld5gyDOR+UB5pPqE7LzankxD0nFTY5EyYbKXd62uB/t6FDTm4ce7BbaQ7AKB
+	 3hUKx+sJ1sI2+4MaXGQaoI8QxabZF8T2etB1nWFIi2cvSOt/HKhGtRxfazzAHJhQe3crG
+	 zLs6wPAz4RvFutG2ZaIasJWNOJc5dBBF+F/DNjkXp7l/mDPpoFS6jZWaB+EKp2UK1w3km
+	 fqnWwbhKEp3lgJsGzm8vk58CbifONT5MCClMhMKWRaFdJg0/xhjFNfT1HP7xHmtuRIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=U+w+DA7T;
-	arc=none smtp.remote-ip=209.85.167.53
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=arndb.de;
+	spf=pass smtp.mailfrom=arndb.de;
+	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=g0poesKL;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=wMaGvRgN;
+	arc=none smtp.remote-ip=202.12.124.141
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2039606A31E
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 10:21:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2039606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9FF606A31B
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 10:35:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E9FF606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=U+w+DA7T
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5bfa7c09c9eso2999965e87.2
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 03:21:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793096469; x=1793701269; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UcwPjZxaDPQUX38SRpQk0U6z694ngHdtvb+qpNBNolI=;
-        b=U+w+DA7TBbOTsHJ6Enxe39JVFHvrncv5jY+jSoyIQ2z35qjZXvHp3LNnblKOrPL29A
-         y7RE8O/DkYqgtM6po8VciEwy++8yrr0fF30EYhF2VKGclIBsioakCbCgAaR3HRFnnwZB
-         fNYBW+FeTixill9nrDRoI+IpNCTqA55IxLFeHUBlMQlaa8qrSxKDiIACxU0UkJDj8UMh
-         lR0on/o9rFsPmneK/FCtabwWiYP65MsxMx5JUTisdHYPgy2j9M05xRVHhql1vdZyRtw4
-         WoBKFMRyWdL7bNEs8rMdYK3MSTXgnm/TWIMlL9+E1AX8il/kxYBgNEFH0Q32f/iPJK2Q
-         TN1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793096469; x=1793701269;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UcwPjZxaDPQUX38SRpQk0U6z694ngHdtvb+qpNBNolI=;
-        b=zgHnVtPnlGks3atxdTxeUuUYwLUE5WqahA6auphXahF1Ut5B0DZiMSLpoj7QChyeC5
-         TjI9VyAHNI7vtIDDXbQjKmlMbukPmgbtmSWgemlx0vkhntWMoVOtQCC+Jl4x5ERigh6p
-         /41McBop2SF6vowAHC9IhfwixWYVMxIcVcoUpaPh+S9JIluXGsXkZEbCeRsUcZ7gHFVD
-         BERuFwaJH+/X1UTPyDbjc8DHYafwN2RLtd2PEF3GXkT7Ue/mYTZeOsmT7QozV7NzlBaU
-         HpAmXFvMz/Tj1aGz0G0pCFVIoHTGmI7dCvp4YyBSzCoOl5IUZh+sM/PaNHToVolwTyyz
-         IwBw==
-X-Forwarded-Encrypted: i=1; AKwUvBzBvDpKvA/0MqkoJhpfC4PmDPGgoEEcF4yq0rDz6L3rr4E2x2a0BHsESNPvsSt3nzC/sEQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ9jcy4Sk6XKHQVFCy/jKZdej6LppAP8vNIBObXHIf/ewtpV8QS
-	+I3Dh6jDHOSNqPk8V2d1PjoD6u6Cd4SCIVoF8xffBZhytRCl0hB6FnX+hRiAgBAwFMk=
-X-Gm-Gg: AYBFou3dQyA3q/ZQqzAld44kwOjfX9cZW5fAjK2pG7Cg9jcFFJdDo3OhAYZjo5AXPFJ
-	QEctUBY2UOJ4+ithqF7Kimqv+aQl79fDxjaMaCHc7zNOJ8jENilvrpoDcogkzT7jesi+8PA+yCU
-	ylhmLDZlc1X6QjxgzFbuWrigzfxGXVqKG+sYUEZdcM2As+m3c6WDK/ihQOJV3LAFz8ZOW+f96Fe
-	9QV+3T2uhzaZ8EmCUpRY9T8k7C+t2XffeY5WaCYhX3Of+Voq/zUCMWrByTdltwqdvDh/ZwN4QpR
-	xDxO9VTq9Xag3JkPQQczb5VDdqxqzwRj0qlrd5E077VVSR4E4mdgigTXZDc/unG5vGc13/JF/4K
-	gwk7kyFIg+DNn7wtvoQeCVGqdi0gDDqAlwP0VP3M8JJJOk4hw8dgubD0lb95tZmzArP2OAxP5ux
-	2uwmN90zko/71sYBtKwfXTyaKgPcXDr/961jwrYMVcwg7Jvkd01TbDyzBH8fJcypH2k2s8be02T
-	ZOn1cLY98G8vauJyCrMelUUBex2j0gDz/oGZ8MrIZkdSul2d9Ys/dtzWU6Ef++H
-X-Received: by 2002:a05:6512:2211:b0:5be:4d37:3bc0 with SMTP id 2adb3069b0e04-5bfb71fe90cmr3245577e87.62.1793096468475;
-        Tue, 27 Oct 2026 03:21:08 -0700 (PDT)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfb7a6aca4sm2051901e87.15.2026.10.27.03.21.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 03:21:07 -0700 (PDT)
-Date: Tue, 27 Oct 2026 11:21:02 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
-Message-ID: <auB61re2C6eN3BmW@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-12-jiri@resnulli.us>
- <179302367452.58760.11808905856343064399.b4-review@b4>
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=g0poesKL;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=wMaGvRgN
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.stl.internal (Postfix) with ESMTP id B7C3B130298C
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 06:35:46 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 27 Oct 2026 06:35:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793097324;
+	 x=1793104524; bh=cD96WCdctpe4xqBu48fVzWQv2mdj+Q39Vw8+UuE9NOY=; b=
+	g0poesKLuQGMaU7v25wYb164Iof879cLQ+jrS7Vw6CuhEsyJqwn7PFMO9TEgL555
+	salmD3V/ClUhsKzYPi0e1twlBEQsUQgTWR1AZ4ucxcvSWh0tFF+QsAmR7kyrExiD
+	rs8QFLT2d4K3gWpb7cbvYPqhV9WNtc7sDvVFrq/AeZGLbrsDceBV0QVq1catnKNP
+	0vZraw8GdX+eRczyZn9JW2/ZNbjBM4QFUKd6YGV2yTzJi2ns5fiipJSmFKiJF3sN
+	GoBWeR4K6FMeN3rQg7Q7I4UT9hD0E+qvVgrEVdMfqW0b8abtf0o6SMw5UbAH+FLg
+	hVWbTZEFzS2/5wF4AlN9FA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793097324; x=
+	1793104524; bh=cD96WCdctpe4xqBu48fVzWQv2mdj+Q39Vw8+UuE9NOY=; b=w
+	MaGvRgN74SqlQokg0yGoa0qHrxHvnpo1EgRYl+NAZ2HGjyf2DoHqc5uAKC9rWw6/
+	vV5njRj3VAjVsozr2QciajWKilgp9EVdkzTxKpA/MsGbxExu52PceTGPRcPZsISB
+	KpYKodw2SCDSr9uGfucfgcGE2SA0UG7iid20bXHmKysdvynyqnnRbJjpSNwQ33N1
+	0pa9wUuAxjPIT/YsNOqCEmHDj7Qibp8Oyln4Wr2lT6g2YFOhW7GTB1NdlTnD6Y/N
+	mqImDReIq39YA7WkoOuwESu2xsiCrgirovD+YpK1k72+skpa4xR6mPYjJvlLn92L
+	+KFpP5vjxlM5S0xUcBdYw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793097324; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:gO7CXbW/wTZjNbXW6ZDnz1H/fAZ9JW18cXRg3sis7Wx73m+
+	Ep8ql2ZMfe8UVZQ3harZbFJpiMojKEyRwGnhC14UZKrnnZcQSATWd6wqHYEnxsbn
+	dLKlalUKyAULN2zoJGJd2sNSX26TPnbRdN5/RlLvT8bXGOwEsVDp47tbUD02aAb/
+	OwJeUSe+Vuhz47VADCwI8J2Do1MFJl4RXOWPvMF7flMajLDWp9hdBOxLDtw9T0SG
+	QwtVdpOUxHXZaNOC2ThLisjZ1Ll7pJng3bKAxuly069DFLmNgXtUublTJ8UCAGEI
+	NQLZpwuvyEmgxZ6roODKtzTpcGzafR8s4FsjzPg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:cKjetnoeFjJorNH+mroEPI71xZFnj0iEAx7opE2N30E=:+7cbM9Ly9xGwj1eAsvoI2B7rTf1bDojBouGfp8ZZDqA=;
+X-ME-Sender: <xms:Yn7gauJPeu1PinbCI2gYx0_jlj2PnQL9uVqEmxziDToBSgj9D_xRbA>
+    <xme:Yn7gag_jv3yDvc0KG6xNU0a3i3tsXlBRwgQXJ5nMfcMcUHLemzagppJ4LiVff77wd
+    kWfJ0mG4Cc1YdeleyjjRgNmR8bhi_EzFH5DKuKtc6zsMLGUhHUiVHY>
+X-ME-Proxy-Cause: dmFkZTFn5p5gNfTa2ln7Ur1M8HLGH3FByI3bMffV+IVuNBxFNqZT4qibdV0911N+HRUSXj
+    K07q1nctC5A6CcFfeLY7jBaLOsZKNIqYeTCeDTItiSfcD8KPMq3RagWnzHGWxZYBxWAiCm
+    A3VT2o0IozuPu/s7pvPmuxDhNCPVlHQtdJeKAQbZtM/B41WPfEm0WHEt7Z4VBmU7Awz3r2
+    CW1Ic84f68hqkyPgXyGKcQw2wWDeenYkz/P7wEtiFmdUVM0amFmkVyW6og0RqG5tm89hZw
+    aKjqOAwHgBmvujhKmrOmxUKnEU58c+GvStpS1gjFmbH3Cw9L2zocbcI2nShgNxT4DZbAQR
+    wgaSkDdcdMc/d9G+mxaz1POpKC9kteRE12RXj5cBt5pww+0ny7yXHoqz13E7ttwMLwV2Zx
+    irGvBcy8nzFHGZLzVSm2bc8v02AbCF8YXzUkvfzziFLvAHlSLPGQdoNZ9j8Z+n4FuXVzNX
+    YX6+5h5244zwOTl9aQiqLa2ox4HvDWrM9qIOP1ddj/Qc6TrOohBTM5knyFzE2y92EKQkba
+    jTOi3P5IOCM4Xz9GLVwUPx/34MQnZ46TWseR6J3W3XI63DkzQUPhI7lmU3qjmL7/C1LwgY
+    Sem/AhqkedQIukr61kUqtibtpdY8TqVUBtJQynB3XFjVXPk3rqiMNJFlIJrQ
+X-ME-Proxy: <xmx:Z37gapHvcVHvMaM3ipgnYUZzm2Ryqqq0XCp7NdxFgDjKT2zqjSy1vg>
+    <xmx:Z37gapt5WD8JfcDqZC3gZOEaTUAl0efsI8damzFuxdzMc9AsHa6DBA>
+    <xmx:Z37gao4LOQoh_k9Rjo00qqoo4baOxCcq29WjL83ZgQ6XABea2d3MPA>
+    <xmx:Z37galm2wjPgXkNjyPJ3HOpQNs8U8c25nqH_wkaWl6-1QurrUIflow>
+    <xmx:bH7gapzWCUwwKYEsxCX9776XutFUkBaJpOGzr7ZN12X60l-MCDK0DRme>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id A3C9932A0093; Tue, 27 Oct 2026 06:35:14 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,61 +114,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179302367452.58760.11808905856343064399.b4-review@b4>
+X-ThreadId: AUJ1OXWu3nCJ
+Date: Tue, 27 Oct 2026 11:33:08 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "James Houghton" <jthoughton@google.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>
+Cc: "Thomas Gleixner" <tglx@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Kees Cook" <kees@kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Sean Christopherson" <seanjc@google.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson" <jmattson@google.com>,
+ "Jens Axboe" <axboe@kernel.dk>, "Pavel Begunkov" <asml.silence@gmail.com>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, "David Sterba" <dsterba@suse.com>,
+ "Chris Mason" <mason@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Namhyung Kim" <namhyung@kernel.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <3c125ff6-5426-4f19-8e34-fb564d4b6387@app.fastmail.com>
+In-Reply-To: <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
+References: <20261026215226.3713941-1-jthoughton@google.com>
+ <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
+Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
+ current->mm is NULL
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
->> [ ... 53 lines skipped ... ]
->> +/* A cursor packs the record and member where fragmentation resumes. */
->> +#define CTLV_INTROSPECTION_MEMBER_SHIFT 48
->> +#define CTLV_INTROSPECTION_RECORD_MASK GENMASK_ULL(CTLV_INTROSPECTION_MEMBER_SHIFT - 1, 0)
+On Tue, Oct 27, 2026, at 01:12, Arnd Bergmann wrote:
 >
->Use genmask for everything:
->
-> #define CTLV_INTROSPECTION_MEMBER_MASK GENMASK_U64(63, 48)
-> #define CTLV_INTROSPECTION_RECORD_MASK GENMASK_U64(47, 0)
->
->	pos->record = FIELD_GET(CTLV_INTROSPECTION_RECORD_MASK, cursor);
->	pos->member = FIELD_GET(CTLV_INTROSPECTION_MEMBER_MASK, cursor);
->
->	return FIELD_PREP(CTLV_INTROSPECTION_RECORD_MASK, pos->record) |
->	       FIELD_PREP(CTLV_INTROSPECTION_MEMBER_MASK, pos->member);
->
+> E.g. on arm64 with CONFIG_ARM64_SW_TTBR0_PAN, the page table base for
+> the current process is only set in user_access_begin() and would
+> not point to any task here. Without ttbr0_pan, it should be
+> covered by cpu_set_reserved_ttbr0() turning off all user space access
+> for kernel threads.
 
-Okay.
+correction: for non-sw_ttbr0_pan, enter_lazy_tlb() does nothing
+on arm64, so it is the same as x86 and the others.
 
-
->> +
->> +struct ctlv_introspection_dump_position {
->> +	u64 record;
->> +	u32 member;
->
->Maybe a comment describing how record and member are encoded for each
->of the users?
-
-Okay.
-
-
->
->> [ ... 13 lines skipped ... ]
->> +/* The immutable root-first chain always has generation zero. */
->
->This comment seems out of place, it should be closer to the 0's it
->refers to a function below
-
-Okay.
-
-
->
->> +static bool ctlv_introspection_family_record(struct ctlv_cursor *reply, struct ctlv_cursor *entry,
->> +					     const struct ctlv_family *family,
->> +					     struct ctlv_introspection_dump_position *pos)
->> +{
->> +	const struct ctlv_family_schema *schema = family->schema;
->> +
->> +	if (!ctlv_family_entry_start(reply, entry))
->> +		return false;
->
-
-[..]
+     Arnd
