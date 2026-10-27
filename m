@@ -1,56 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793101843;
-	b=lXk0cmwzZkthSEvC4tD/fRp8cWtsapBOVS1rNrqdokcC3y5Jz/bz6+5eXpM79cvAaESI
-	 0HfbgkOV9KunbZUn05j1s6AsIcVwvEU3ZtlSBse8HXDCvxVBBmnq4+6pVMeJqNxLp57lg
-	 ZX/MFnFgSd6hvqHkDfWUdm08SQ+TBBmS+4h8ypZ0Q3EDsSjqHIQFfPV33uWAZXCiUAlsM
-	 pagRXBXCu5v3kWpWrgnj9reP3jcFeG7fdsaEBf9L32Y6WNrBbea4RO1WUsq7saL0nISoF
-	 C4aXriAwleWKS4kMyaXbUFBTpDnWE6nMpfzKq4Vsx4zx8D4++bhtK9MiHMsGJq9WgOA==
+	t=1793102514;
+	b=xprTDIQCPgm7+29Kkoa/MrsOMW33tqrXHrLc4Sblpe99NNfs4jWlfDLfMRKHGQsiCM3/
+	 Hz5HMfuSMCNPHAZuAZY1O8KA3DNV3nP/o11yuUQFvbKX7QxUGpLB66/v83Q3jgbflTGpI
+	 2bwUUV0x+230Unx4Z1u55w81Wbd3LXF6Sh/rkAcilu22wc8Ss1chjxFx1m/omtqWTLLCH
+	 zgb8oLhnMwl/V8VAMgIDwQk/BlUHLISxpd9y/55vI3Uru9YbVRyA8yCdaGU1PZ6/XzNuW
+	 1xFd40sZlvGI81YoAPALtXGdzK7+mh9qPeaK/fJE2irOYu8e1dhJcJXOFD8QfSoeTDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793101843;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=OL+KIH/+KpZsrWgVhdXaikKeRWtE5nstS96ioSavevw=;
-	b=tggoDvQKOCKQ0F1rXmkJIHod9xeGM/PNGcHCXs/x1mzGu75/WAqcWW0CbxJRM0SmeRdi
-	 S0oX+nz1yYwpf03i3yPyuHDXUflnNFldJmZ5vel8scoLUdqbUzklbXRWlvandyYYm9qoC
-	 fv3BYH5SrTNwU7Pa0VH4wBZisSIkGYHmZac8fQywQ9MwcFVXcy8O896ySWVi0df4g65MN
-	 E+rmirvDQkv6LvkdgZ275fOGj1aq+eoOJk823qpW/WeDNhG5JD6pKofk033IK5KWSdVh/
-	 J6BCdfqgO5TYeoaZkas1yDIKAFSp6D++P9dbbwJk8JNCVACEQ1z1co4T5+HBX3jGJuw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793102514;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=PpqCaReoXiYonrOXHNsdcBrA4jEmkFZT2sQJk8Qpqsg=;
+	b=fCMY3Qn9EVu3KBXlCnAGZdOonW5ItV/cWJ/eDAi25HUABVIiOWDIDtvidYw4IjfFm75D
+	 ndveaCNmMng9amHTfNydfYizM9flpXVWcgIEr4ASnKiKvBySwXlgLYDAuLRWq4wb9/stI
+	 ik5GUqGSLfAqt50w2KxuqqdOa+8Q2IwPUsFayFnNgY+HcOWyqx/lwJQlQ4tok4bz3MjyZ
+	 GnUQTXk8eryJJ98CYpe+wwKC9suhe3BG4pwW5eh+5IKX0KhhLGMwDX2hct7fUUyIYDOc8
+	 t5LLmMFs7ZRhSM6X32KQGAjNw8cUV5iH/6vsdwQ7KU1wqOo3M1CUi3aPkIl8P4pWZOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ggzciCLV;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LgUdjWW2;
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C437A606A31A
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 11:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0DE60A6F64;
+	Tue, 27 Oct 2026 12:01:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE0DE60A6F64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ggzciCLV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7501F01825;
-	Tue, 27 Oct 2026 11:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793101842;
-	bh=OL+KIH/+KpZsrWgVhdXaikKeRWtE5nstS96ioSavevw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ggzciCLVF1bSV7EIcrkdA9igBOI41aZlIGCImTtelHYMTxPPV5w3pBWVc3p0poMXO
-	 VmyhdJCSGc0RJTINvGhM0/p72LJuTW7HC+r/4FsfJHgmuE2ji/YI1wukAUXFeip4zY
-	 LHY6wGraWInHY6eY78gU8EcnI64zQOcZUbBZcqqun65pCNLw8cpAVCW5KBcB2eTXKq
-	 ENjWV33Tvoph9lUrrAbNlkCkNY4yYXhXZJTmFQKgbuRPjWTjWEH3ObeN26IobFx6Mt
-	 vHPaN1C/iuCbpDHHQfQJB2szIjYw8V8tPtGxgZhaWxzBccEH0bOpnDWbFf2BuoIrdc
-	 evfiLKCEHCNQw==
-Message-ID: <sashiko-outbox-186480@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Fix out-of-bounds index into
- aia_irq2bitpos[]
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Wang Yechao" <wang.yechao255@zte.com.cn>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261027114439.699273-1-wang.yechao255@zte.com.cn>
-References: <20261027114439.699273-1-wang.yechao255@zte.com.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 11:50:41 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LgUdjWW2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793102514; x=1824638514;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xtt4YsT9ZPy9O6YkSBviTjv1G0dD2klmXmaqyNznP+A=;
+  b=LgUdjWW2vB5V0U8dKLRWm3lU1c375riqVU/TsB0YJR6JYt1pkYSzfNNL
+   GLgSApxILFVd/6fRWNEzb0Ag9Vnqp2vZA4qclOAvT+WbSsni7e57mxWqy
+   FJbfUzOmGeXVEldB9AcEYgbjv+F6nyM4JfmjHIPM5x7NTa+f5rjO/+aTr
+   5oJMBWQ/tHKVyN2g33Jht7KFK7+g9jXcpm/BF07y1s8ZCLms0AN1BiMBg
+   EEPqhMWz9YFIOUqLaVjZ35drgE//P6YEEkcfeBOrRMZyJ+uYT2bB+2td7
+   ToRDaIpZUqk91r3AhsNHorDaIhpFGl+JCQMv6cTAr4M/XG+KAM6iuDKzu
+   Q==;
+X-CSE-ConnectionGUID: +IsCUtJGS9uaSfX5sna11w==
+X-CSE-MsgGUID: cN4l3KA3RMWN79aRNgvlnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1801579"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1801579"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 05:01:53 -0700
+X-CSE-ConnectionGUID: Ntby6jSXQ8GyCEFkcBAcTQ==
+X-CSE-MsgGUID: q5ZTIPQWSIWeq8q0z+yU0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="6370961"
+Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 05:01:49 -0700
+Message-ID: <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
+Date: Tue, 27 Oct 2026 20:01:46 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,106 +71,93 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
+ when filling CPUID entries
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ Binbin Wu <binbin.wu@linux.intel.com>, Changyuan Lyu
+ <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
+References: <20261022210134.612848-1-seanjc@google.com>
+ <20261022210134.612848-3-seanjc@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261022210134.612848-3-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] riscv: kvm: dead bounds check in aia_get_iprio8() and aia_set_ip=
-rio8()
---
+On 10/23/2026 5:01 AM, Sean Christopherson wrote:
+> From: Changyuan Lyu <changyuanl@google.com>
+> 
+> Set the KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag in the kvm_cpuid_entry2
+> structures returned by KVM_TDX_CAPABILITIES if the CPUID is indexed,
+> otherwise KVM could confuse userspace and induce a configuration error.
+> This also ensures consistency with the CPUID entries returned by
+> KVM_GET_SUPPORTED_CPUID.
+> 
+> WARN if KVM and the TDX Module don't align on which functions have
+> significant indices, e.g. to help ensure the kernel is updated when the
+> TDX Module learns about new CPUID leaves, and vice versa.
+> 
+> Opportunistically add a comment to call out that zeroing the index when it
+> isn't significant is ABI that userspace relies on, e.g. QEMU looks for '0'
+> instead of checking KVM_CPUID_FLAG_SIGNIFCANT_INDEX.
+> 
+> Fixes: 61bb28279623 ("KVM: TDX: Get system-wide info about TDX module on initialization")
+> Cc: stable@vger.kernel.org
+> Cc: Binbin Wu <binbin.wu@linux.intel.com>
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Changyuan Lyu <changyuanl@google.com>
+> [sean: keep the WARN, don't key off KVM_TDX_CPUID_NO_SUBLEAF, add comment]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/vmx/tdx.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 271c2f94b8dd..37d088f6f7a8 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -2,6 +2,7 @@
+>  #include <linux/cleanup.h>
+>  #include <linux/cpu.h>
+>  #include <asm/cpufeature.h>
+> +#include <asm/cpuid/api.h>
+>  #include <asm/fpu/xcr.h>
+>  #include <linux/misc_cgroup.h>
+>  #include <linux/mmu_context.h>
+> @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+>  
+>  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
+>  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
+> +	entry->flags = 0;
+>  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
+>  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
+>  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+>  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
+>  
+> -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
+> +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
+> +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
 
-commit c874cd5cc69d874febde23d82ec7ecdefc1600f2
-Author: Wang Yechao <wang.yechao255@zte.com.cn>
+I think the WARN_ON_ONCE() is very likely to be triggered in the future when
+people run old kernel with new TDX modules.
 
-RISC-V: KVM: Fix out-of-bounds index into aia_irq2bitpos[]
+> +	/*
+> +	 * Explicitly zero the index when it's not significant, even though it
+> +	 * _should_ be meaningless.  Userspace relies on the index being zero
+> +	 * (the ABI was inherited from KVM_GET_SUPPORTED_CPUID).
+> +	 */
+> +	if (cpuid_function_is_indexed(entry->function))
+> +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
+> +	else
+>  		entry->index = 0;
+>  
+>  	/*
 
-This commit adds bounds checks against ARRAY_SIZE(aia_irq2bitpos) in
-aia_get_iprio8() and aia_set_iprio8() to prevent an alleged out-of-bounds
-array access when emulating per-HART AIA priority registers on RV64.
-
->     RISC-V: KVM: Fix out-of-bounds index into aia_irq2bitpos[]
->    =20
->     aia_get_iprio8() and aia_set_iprio8() index the 64-entry
->     aia_irq2bitpos[] array with an irq value derived from the
->     guest-controlled VSISELECT register. For RV64:
->    =20
->       first_irq =3D (isel - ISELECT_IPRIO0) * 4
->       nirqs =3D 8
->       isel up to ISELECT_IPRIO15
->    =20
->     so the irq number can reach 67 and aia_irq2bitpos[64..67] is
->     accessed out of bounds. A malicious guest can trigger this,
->     causing host panic under KASAN/UBSAN or undefined behavior
->     otherwise.
->    =20
->     Add an explicit bounds check in both accessors before indexing
->     the table.
->    =20
->     Fixes: 2f4d58f7635a ("RISC-V: KVM: Virtualize per-HART AIA CSRs")
->     Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
->
-> diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-> index b3b466e4db337..a51d2db7f3311 100644
-> --- a/arch/riscv/kvm/aia.c
-> +++ b/arch/riscv/kvm/aia.c
-> @@ -286,8 +286,12 @@ static int aia_irq2bitpos[] =3D {
->  static u8 aia_get_iprio8(struct kvm_vcpu *vcpu, unsigned int irq)
->  {
->  	unsigned long hviprio;
-> -	int bitpos =3D aia_irq2bitpos[irq];
-> +	int bitpos;
-> =20
-> +	if (irq >=3D ARRAY_SIZE(aia_irq2bitpos))
-> +		return 0;
-> +
-> +	bitpos =3D aia_irq2bitpos[irq];
->  	if (bitpos < 0)
->  		return 0;
-> =20
-> @@ -319,8 +323,12 @@ static u8 aia_get_iprio8(struct kvm_vcpu *vcpu, unsi=
-gned int irq)
->  static void aia_set_iprio8(struct kvm_vcpu *vcpu, unsigned int irq, u8 p=
-rio)
->  {
->  	unsigned long hviprio;
-> -	int bitpos =3D aia_irq2bitpos[irq];
-> +	int bitpos;
-> +
-> +	if (irq >=3D ARRAY_SIZE(aia_irq2bitpos))
-> +		return;
-
-[Severity: Medium]
-Can irq actually reach 64..67 in aia_get_iprio8() or aia_set_iprio8()?
-
-Both helpers are static and only called from aia_rmw_iprio() via
-kvm_riscv_vcpu_aia_rmw_ireg() when isel is between ISELECT_IPRIO0 (0x30) and
-ISELECT_IPRIO15 (0x3f).
-
-In arch/riscv/kvm/aia.c, aia_rmw_iprio() rejects odd isel values on RV64
-before computing first_irq:
-
-arch/riscv/kvm/aia.c:aia_rmw_iprio() {
-#ifndef CONFIG_32BIT
-	if (isel & 0x1)
-		return KVM_INSN_ILLEGAL_TRAP;
-#endif
-
-	nirqs =3D 4 * (BITS_PER_LONG / 32);
-	first_irq =3D (isel - ISELECT_IPRIO0) * 4;
-    ...
-}
-
-Because ISELECT_IPRIO15 (0x3f) is odd, it returns KVM_INSN_ILLEGAL_TRAP on
-RV64. The largest even isel reaching the loop on RV64 is ISELECT_IPRIO14
-(0x3e), which gives first_irq =3D (0x3e - 0x30) * 4 =3D 56 and nirqs =3D 8,=
- so
-first_irq + i is at most 56 + 7 =3D 63. On RV32, isel can be ISELECT_IPRIO15
-(0x3f), which gives first_irq =3D 60 and nirqs =3D 4, so first_irq + i is a=
-lso
-at most 60 + 3 =3D 63.
-
-Since ARRAY_SIZE(aia_irq2bitpos) is 64, isn't irq already guaranteed to be
-in 0..63, making these bounds checks unreachable?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027114439.6992=
-73-1-wang.yechao255@zte.com.cn?part=3D1
