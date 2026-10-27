@@ -1,131 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.10
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793142980;
-	b=CFQ6pJblkN0s2AcpxF1iaGNL7DEejJD9AE89087udyDc7NQGVNHCXNsXUcCP9Twh8wBr
-	 6cLjfvukMUUUty2iGvKQE8JnFz6bLsP9jfF9IMXFuhRnZ/zLhOBpBRUzxCg68v6iZWqnI
-	 Tc7Vz1QgUco5XQsDvwHkdjA7SRqqhZyRx4dfv35NUI9gHsl4EUYBSIRqFev8yH7o36kJI
-	 kd50S9MJbw+O5M/F0TXSXuPoayIGG47CO7AMzgLwV3q+kgfac7D+nl1Kk5ivS3fjA44yF
-	 gIincxaUdjjtMvA0AjZiyyxtFqdzbxNPKQ6urtCJosaq3tN5lMhNFD2z8HgkSK6p/bw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793142980;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:
-	 Content-Language:To:CC:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=IM4JYP/eLEWRPR7tEh3lLmFvIrJ1kOhSdkJ2pG2HVoE=;
-	b=VkTpazWVTw/VegebsUOS4U1DmKUXIW0VRMPDvwBGYelBEm1feyq9Dt5zpw3mlNBuWFT+
-	 +U+l/b3y6AoM50QSJ+p4r6yvrx7jSWxjZI4KxddtuouKJvtSyUSdtIMbMXuTZ5Tvma0u+
-	 8daKMD4TbCzPi7/xc0mFZ5NmskQc+eDtDy5glydG1hzwaJaVSojpbI5MM5ZXahqS/JV6D
-	 n9H5T+x992sxsEaYTLVe+fkFzUEFoVhYVcM8Ed9ujAmXqqT6Xp9oslbK4YZITbC+Kyrt1
-	 C4KRpN5SWs2R7u4EUSHrnAG8unvNRZYwIk9M9m4MyInCsOBCPCqXp3kEcfwYGQVVcOw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E7dOKdFM;
-	arc=fail smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793143022;
+	b=M+C7wVNf669MOQXv1ZOJDpqeVfHqeSO8fLcYLQFciXQCt3A4bQuXIcfnEnFSPc8AcUWI
+	 pBMot4dC7Bn8g3NZq5JlUERzJS9KN5c+A9EF+NZWJCPqVg7ZQ6Er08A4CZksuiFIyuuto
+	 sTKli3qxrJZ+bVTi2tFtpgCRm8b4uCX5EiyN+THGEIDhR2zvnfSo+waDbpnhR+TSC0LSG
+	 Vg+PhIG1ZKoGYL20vUPhsCgjTsSZB2qaWsLeJ3mp6ovZ9y1KgeHnr8iZvQO4XmY53UlVB
+	 nBhPcFz0sz0Jc0HtHTuAUVNOSo9FVgc7Tz135nVG2oAx2mHijCNOflwTvEgr4ouhDyA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793143022;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=qRhVMaf1rSJj1yr1oMLzr8S4N4fdZyR12NoPdNbj59o=;
+	b=GIovsJL/lCAzIckFL/lN7vJiOrC2JNVueOAV4zvqdmlBtF6gXkRevos0CJBa/PNo5yDq
+	 2cHC2Dx+acD5E3GYcwbyz0UFsQEusv3VwXJfQ3wTYFJ4otYU73Fk/miTtk/VhWInIpLLp
+	 a9Xnkr7GB1fhDn+heicY/x3nK4oeTAPSRv4BZLnxhDJ7i8yhVgfJI7/PnXMt3xPx+rIQC
+	 gLyHXXyrupda9wv2pzYkYJW28BugljnKSbNDmJwhE3jOcXYnaHHYR9Un43cl72CF0RIag
+	 9N/6+YNP2u4VKhkp8YkZYw/S6vBNnlwbVFjDh2LscB18QcWvx0ehG7YQZrzbtDUItZA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MBKSH5CL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B6B60A2606
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 23:16:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61B6B60A2606
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDD3606A31D
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 23:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E7dOKdFM
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793142979; x=1824678979;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=/2HeNr/eST6af/vM3wHZgceEkqyTkpNxQP1jI6GenPQ=;
-  b=E7dOKdFMPU6IOOv/YKJC8upglx0APlaPPr/6TDdybQgO7OIQWtw3/Bx9
-   vL8vbu7ZD+ODY7Ms6YWuZ1ePnrP7RALVhJVg+3puszCifwWIn5tQgAyuy
-   jkhkhyeiPsWp+9dpmuTBR0lHMLS+mDCvsvd0Qzq1izxZEHzyoh3Aa1nxb
-   JSJ1aFdzqCKqB9Cbzl6LYs0ut1TOFA4XUdPqtpCW4aNisa7GkC1jBsJ99
-   1bsC+Gzhqw/xEqTNXzZwDQIG7FaZ70+NJCXWxouoJbwumsRFQgWI96mmZ
-   QaIpgk4/PjVcH7iGEl1cCm+wPajLvR9ulxl26Y8Si8Ex7XESU+Ml5/aUr
-   g==;
-X-CSE-ConnectionGUID: ycNCLA7WRrWpG5XKVlfFsQ==
-X-CSE-MsgGUID: 6TZsIrKCQ+6E5Q7n+zIpDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1758525"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1758525"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 16:16:17 -0700
-X-CSE-ConnectionGUID: /PfIdsLRRgGQQPsG97u0dg==
-X-CSE-MsgGUID: 54XIKXA8Q/2op2DPtDccog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4684397"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 16:16:18 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 27 Oct 2026 16:16:16 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 27 Oct 2026 16:16:16 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.22) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 27 Oct 2026 16:16:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BjAbq49AkyAgkG+kdd+msjlOc+R1EnXVlWv0kXw399Nhv/m2Wr2fiW7o9XxlnjMbij4ltyZTmCQB2r3YiwJH4XbSoze7UQ18jnO4ENw3Sb5A1kE8LTwyS9XuFA9jXhp7a/rbASzEwMh88qH9rm8ZZR3Ow6rdT27kZHCml8fpMqbie/g0rKorpWPaTvhV48y4FPHwTgxakHridfnvACnpnL2L/D9E3MnZGDLYj2NOmx55LVCH5IR9KwKAohlrvoM/164Ax+NZkl4JmPiF6sulOjGZZ/PzCG86P2Xp4f5xqUBVHu8Ch/9OSvlQ1D6VgyYacZoIWheBS41DvJPLAEqK/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IM4JYP/eLEWRPR7tEh3lLmFvIrJ1kOhSdkJ2pG2HVoE=;
- b=Nx2R40F80D8nDCfZxFaBfyrRjYZKh2wXMjwJeO24W6Seuz/ikckj9p3F7K4wZRtvWuCte50YQvD+R9xQCUzF9Ym+3hoDPD2u6TzMah3P0g2fKzD2wQ7OwfM9JfYTMIj24xz36Vp0uzjLHv/2JUlIvxf8x2l5tJsgDjsni6UkmLftP2BdfgxDjB883lF3M0G1NfihGBQ8fHxS9TSLJoEvMdsuMJvWg5yvakbavDEL8fmkzrpKCesbyTfRRWzS0HRUskZtLF7DKyM4iGMTQnyZLYVbo2fSgxi0a0pRGk4YF4g3Ersj1FgdL6rmICprT2mSZ5cHMz24TW55h2QjVWcKrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7846.namprd11.prod.outlook.com (2603:10b6:930:79::14)
- by CY5PR11MB6533.namprd11.prod.outlook.com (2603:10b6:930:43::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 23:16:14 +0000
-Received: from CY8PR11MB7846.namprd11.prod.outlook.com
- ([fe80::cae0:d05c:b2fc:c395]) by CY8PR11MB7846.namprd11.prod.outlook.com
- ([fe80::cae0:d05c:b2fc:c395%5]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
- 23:16:14 +0000
-Message-ID: <0fdaaf2d-2113-48e9-81d7-4afa6bd522ba@intel.com>
-Date: Tue, 27 Oct 2026 16:16:12 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 05/28] x86/cea: Use array indexing to simplify
- exception stack access
-Content-Language: en-US
-To: <sashiko-reviews@lists.linux.dev>
-CC: <kvm@vger.kernel.org>
-References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-6-sohil.mehta@intel.com>
- <20260911215759.6C04F1F000FF@smtp.kernel.org>
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <20260911215759.6C04F1F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0012.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::17) To CY8PR11MB7846.namprd11.prod.outlook.com
- (2603:10b6:930:79::14)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MBKSH5CL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247B01F01825;
+	Tue, 27 Oct 2026 23:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793143021;
+	bh=qRhVMaf1rSJj1yr1oMLzr8S4N4fdZyR12NoPdNbj59o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MBKSH5CLA3X29omnjWVTKLkDGGnBi84J6yv5/q+6nCqeeY8HDuwcVX2rB34PQjVFw
+	 Tl0BMr82n3UfWjDbTjbJEvsEPEe3JD3912rfvDVFh+A0E6KRbx4mbE6dpmjRqacNli
+	 zPG9ms25EUgKIRFXxLJa/fScFBELCxsJk97zVJOIAPerAMafg9VBgyCbKNFXdBS2Xq
+	 FAF6YBvNVQlfO7oP51WWONHveoGCAOBEs/woGLUBJIzrN4awR2MhaonZ0yIxB0lY6G
+	 r9gozAWGHa52nDmpOhYPS6UgGcmrP/5OASf0/IA3fR33iKGNbK395Qb6vu9zfPQEt5
+	 E3rioqosWITpQ==
+Message-ID: <sashiko-outbox-187201@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 4/6] KVM: x86: Recompute EFER.LMA instead of
+ inheriting the current value on EFER writes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261027224914.1574319-5-seanjc@google.com>
+References: <20261027224914.1574319-1-seanjc@google.com>
+ <20261027224914.1574319-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 27 Oct 2026 23:17:00 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -134,115 +60,182 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7846:EE_|CY5PR11MB6533:EE_
-X-MS-Office365-Filtering-Correlation-Id: c483894a-ccdd-4e3e-f3d8-08df34804bba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|5023799004|4143699003|11063799006|56012099006|261009223027099003|261022075727099003|261021121427099003|261026121527099003|22082099003|6133799003|18002099003|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info: Ot+Zy7Pim7yXfbn6n1wzCciEacUDQMXrNHWaE/SZzgfqKXuBiSlWSt4e+s9P+ZQXK3JQUhks+hgYrKZBRSLnIH95omDgncC3JH/tVOnuMW/Ul0sxAp7JdrJ0tqB5sTLULXFd41AmhdtqGTSyVeARbiuX4T/nG0CWQILIOLW4IWh+yxS0/xWFnRAhPBgrto3mTyGDjWYH5YF0nQ/D3glAGWsPxmexLE4zyKeW83fTXy02udhmZRxI1obTRihURaReFcEBISYSls32YmawoNnNdK070zVtlH4tgnZ4K6yPNK3zkysgIRgKt3aCCVyR2Xevpz3pidKmfdhkr642xSr5lyU57Fm+dtvoR1MBztGd7bEzVzWt52rW1RGqstHDonZwJ/Q2j9BCXE7h68jWDLxWawiFD0wV+IFUWB1hSbp+LFX6s4uVK2bGodeyBNyRmKW5aPZBGIYsUtsOO5QDmzG8Uz+vzwqGIqJsIRb5/3+Ejc1wGnfLOadLExndT61YjuzimTitRW1sF9pHmGxZmqf/djToqdH0BXXz2mjhtZ2wntuF3zcx/RxYc7gIZFZ1I2VgA4ABifBUXA+U3rIp8Vd5ivjzhK3q7V+gf5AMMVMjaRM4cCaB/7+OzDr23b520XLi1+YF6Ufz7WTFOqn4K5psHacDrjeTJHWuUJk3wvLjzlU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7846.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(5023799004)(4143699003)(11063799006)(56012099006)(261009223027099003)(261022075727099003)(261021121427099003)(261026121527099003)(22082099003)(6133799003)(18002099003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WW1QejFYNmRiV2Vpa3VZMDc3V0h5TGsySitMMDNGVks2dStnMXpEb3pxYlA4?=
- =?utf-8?B?RnZtRlB2Z3l6dzBhaEdFT2Z4TWtESk5yWDJmUTArM0MxTkxNRTQrYW53SWdX?=
- =?utf-8?B?MXZZYWRlL0cyWndoYjVyK2lwOFVUbmF5MzI2SC84cU1vYU9Pa1UzTWlnaTlv?=
- =?utf-8?B?dkpmZ3BhcExrcVZBUjQ1bHVtdENHNnNUQWl3TGQ4aWZIckRFeVdnYmYrT0NC?=
- =?utf-8?B?QjhCSGwvNnMvTE9hVnIvOU4xdU5OVkVvU3d6YUJ5T25rcTA1OFZoOHRyaWxC?=
- =?utf-8?B?RTNiVmsvU2JPYXNSZlNqQjNic1dRa0VmTTI4TWtoVytJMU5NS1VGUk9jUEpz?=
- =?utf-8?B?V0ZFTjRkNTNuSTA5aGNNSzJtRE9VeVpYcXN5QmphZks0ZUZhNFFVcDhUbUJF?=
- =?utf-8?B?Y2JDdHhqYW9tbGRQaGo2aFpMVldLaC9sNE5iMHA1dzh1Y3BmQ0dnL0tyRzlS?=
- =?utf-8?B?OVd3b1g3NUx6WkxpdjdNMnpnK1BXRk1FZG15T1RqWFZqM2FIc3E2UHp1TWdo?=
- =?utf-8?B?ZkJNMXFhalVGeW1Ld0Q5cFBkYmJlb2hLNWFVVEJIeXVlVzBidys2UmNRaDh1?=
- =?utf-8?B?bWh3WVpiUXhLZThabml3RzRqTGVFd0pobjZQNEt5cklndXdyYm1JTHJqMGk4?=
- =?utf-8?B?UjhWUnhpblJNTWpOdmJheEx6VUN0SmZvOWg1VWhIV2dyQXRRZzdTMUVKZWp0?=
- =?utf-8?B?SjYwd3FXZEZYMStKTDdhaW1KVzZxTXpMaHE0TlZUUUU1YU9XclJMdThqT215?=
- =?utf-8?B?Ty92Q1lWUmZza3J6YjYwREJpRXE1eVR4TURNYzBBVlVTeVNxZFRjRDYrOXg0?=
- =?utf-8?B?Y0REQnV5NU56ZzNXREpVL3N5b1RhdmFCU0JLZGF1Ti9UYXpJWEE1S2tON0h2?=
- =?utf-8?B?R09wZWtPWmFHSWJPWDNYTTRHWmsxR2ZKRzlZUU5tSllZdjI5ajF4SFcrbUda?=
- =?utf-8?B?NVZyZ2ZpUU10OU1IN0h5SmM2MUg0Z2lqU3RNeTJOdmFxOTBTQTJYRldMcGlB?=
- =?utf-8?B?VnhrMkFrdlJBa2xsQUtjYjA5encrR0xMYXRHemszWGlwSG1LY05US0U5RUJU?=
- =?utf-8?B?NVlwMGZYbHA1QnNDQk1FVi9YMnNoaE92YVpKUkN0Z3VDTk5xV20zSGx2MHRs?=
- =?utf-8?B?VmtuQTc4VlVTOUt6SUl5YjVMakYwQVQwZVhMRGQ0UWVFMXNJSGMybktpa3lm?=
- =?utf-8?B?QU16OVgreDQxdjNJbXJsQVlSQS9pbjZQOWJiSjNlTnhDUXBqa29vU1I1aGl3?=
- =?utf-8?B?T1NyeitRa2JKZWJ6TStQdEsrUzgvYVQyeEFpc0I3aHJCK0tvb3BaSFlIc2hJ?=
- =?utf-8?B?cGxsbnlWWUI5YXRWWGxJVWNGUTdJbHFnZEJEbk1ZbER4RE5pTG8wMFA0M2lI?=
- =?utf-8?B?Umg3MUNJalI0cGRBcGo0c0R5YkhkRjQ1bDJ5RVJ6ckZSK0dSRS9rWHBER1FG?=
- =?utf-8?B?dXdHT0pmMjFMaHhDQTduUi80VDJHOEdtaDAxN2pNcVRNTXhEcXE3MnpJRTlC?=
- =?utf-8?B?NmVvcURwSlVsSWJIdElqZzl3Q2NsNUxJWkR4SXFEUTAzVDhlL1hUaWFadm9x?=
- =?utf-8?B?TGcraUVwbWd2NXRQeVJrWWZUTXJlK1BuNy96QXBQRlFMU1lqN0E4VndYaVBz?=
- =?utf-8?B?VzNJNzMyN1pZNVdzNVR1RExNVWlqWTlxa1Q5OHg0clNaZVBUSmpKckNpekZl?=
- =?utf-8?B?akl4ZUhSTGErTDRxdzl2b0NSRXJUa2hxK3FTSEJ1ZXFmVU1BZEFrRXYwbXk0?=
- =?utf-8?B?eWFrSEcvTUFJMDVUaUFtWHg5TlFNYlRyNDI0QnZ1bmxYUndhYitlb3BCekJP?=
- =?utf-8?B?ZGVtelpPTTAvSklKeFN5cUYyTHJISDkvQTQ4TFJwVjVFaG9HbkFiVldrVnNT?=
- =?utf-8?B?UVRpalR1T2oyRU5BRUZkeEl0MTFWS0dGc1BTMDUrT21VMzZLU3IvdUVtWklw?=
- =?utf-8?B?Z3o1WTlxd0VkWUdSbTROeXFWeWNLUi85TlFGUWJ1RUljbjhqR1hhN3NpZE1k?=
- =?utf-8?B?UElPQWJLeUY5VlRKcnBtM2RMeGdFUXhORzlpM0J1YnhKU3JHTnFsNXI0cTZW?=
- =?utf-8?B?ZitEbWhtTWllSEhhakR3d2tWMlhRaElqVktLNyt0dTQ5TjdCb3pIYmVhY1ZN?=
- =?utf-8?B?MUpVWkFoSDlPQWN6MitOMGU3NXBBQUhWYlVKQXpNeDE0UjBCT1NSV1M5TlhU?=
- =?utf-8?B?YlJmUlJHcmQvTWpxWkR5c1NJZ01kNnkvZlB1WTlHYVRtbXpRYS9lQ1dlanRn?=
- =?utf-8?B?Rmd2WDlJNVhyYnlTUFJzQUxOdnFZeHdON2pESEROT3RiYk1HdlNWMnYyQWVR?=
- =?utf-8?B?WXZDOCtGKzBIU0VKVFhyNUk4amFuTE1iRkwrOUV6VHgrZXAyNG1VUT09?=
-X-Exchange-RoutingPolicyChecked: fHSrXgs4cdWpP7FraZxHcJ46AMde7dwTQdPgL3r6tulkZ+8Bbcqjbq7WB703EeyooW01KFrA2CK69truuxYIE3dMxWBwAAbwaz29j7pwx89WIIpk5RECpyzzWQoU1KdN1dFFC+N+chD6GfYEg+P1m4m1FpflbfsJYVqmed7gkjjWOoU4accJPKs8Gx40WsQqT1kxwSy4bGfocaLffnXdM4s+D8nWSjG0PxaOD59JioUFGJ6pEEGOGPjItY/7lQ6bZm0e8icycNMeVYVCMTjQRPtklhCFGiVFuxpQmR9qVU9j1UFRMRrYAx8eNGSihrs/TSNuxZjWM7i7Fdpxd19q5g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c483894a-ccdd-4e3e-f3d8-08df34804bba
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7846.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 23:16:14.2122
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MAH1iiRdN8WPybPAp1Rlc+PqFTQFSQ7TYbuAxbFzOJ82SJi2zbm6n52oGO/TZglZyw5nsbL2IGsOBTLjAsRDow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6533
-X-OriginatorOrg: intel.com
 
-On 9/11/2026 2:57 PM, sashiko-bot@kernel.org wrote:
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] kvm: x86: guest- and userspace-reachable WARN_ON_ONCE() in set_efe=
+r()
+- [High] kvm: x86: missing MMU context reset in set_efer() when EFER_LMA ch=
+anges
+- [High] KVM: nSVM: guest-reachable WARN_ON_ONCE in set_efer() due to stale=
+ EFER.LMA
+--
 
->> +/*
->> + * Typically invoked by entry code, so must be noinstr.
->> + */
->> +noinstr unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack)
->> +{
->> +	struct cea_exception_stacks *s;
->> +
->> +	BUILD_BUG_ON(ESTACK_DF != 0);
->> +	BUG_ON(stack >= N_EXCEPTION_STACKS);
-> 
-> [Severity: Medium]
-> Does moving these helpers from macros in the header to out-of-line functions
-> introduce an unintended performance regression?
-> 
-> Because the functions are defined out-of-line in a different translation unit,
-> the compiler cannot statically evaluate the BUG_ON(stack >= N_EXCEPTION_STACKS)
-> bounds checks nor inline the pointer math.
-> 
-> This incurs a penalty of multiple function calls and dynamic checks in
-> performance-sensitive #VC exception entry paths. For example, hot paths like
-> is_vc2_stack() in arch/x86/coco/sev/vc-handle.c repeatedly call these functions,
-> which are evaluated on every #VC exception:
-> 
-> arch/x86/coco/sev/vc-handle.c:is_vc2_stack() {
->     ...
->     return (sp >= __this_cpu_ist_bottom_va(ESTACK_VC2) &&
->             sp < __this_cpu_ist_top_va(ESTACK_VC2));
-> }
-> 
-> Could this regression in a noinstr entry path be avoided by defining these
-> helpers as static __always_inline in the header instead?
-> 
+commit d17bdc446bf3834407b9fa79da8f4a4f619465b7
+Author: Sean Christopherson <seanjc@google.com>
 
-The performance regression concern seems overblown to me. The #VC
-handling has other heavy-handed things such as GHCB and VMGEXIT. The
-extra cycles for __this_cpu_ist_bottom_va() and __this_cpu_ist_top_va()
-shouldn't have any meaningful impact.
+KVM: x86: Recompute EFER.LMA instead of inheriting the current value on EFE=
+R writes
 
-I am thinking of avoiding the __always_inline directive unless someone
-has a strong reason/preference.
+This commit recomputes EFER.LMA from EFER.LME, CR0.PG, and CR4.PAE on bare
+writes to MSR_EFER instead of inheriting the existing EFER.LMA bit from
+vcpu->arch.efer, and adds a WARN_ON_ONCE() if EFER.LMA changes.
 
->> +
->> +	s = __this_cpu_read(cea_exception_stacks);
->> +
->> +	return (unsigned long)&s->event_stacks[stack].stack;
->> +}
-> 
+> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+> index c3cb1575fe66e..c55402970a345 100644
+> --- a/arch/x86/kvm/msrs.c
+> +++ b/arch/x86/kvm/msrs.c
+> @@ -638,8 +638,17 @@ static int set_efer(struct kvm_vcpu *vcpu, u64 efer)
+>  	    (vcpu->arch.efer & EFER_SVME) && !(efer & EFER_SVME))
+>  		return 1;
+> =20
+> -	efer &=3D ~EFER_LMA;
+> -	efer |=3D vcpu->arch.efer & EFER_LMA;
+> +	if ((efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu))
+> +		efer |=3D EFER_LMA;
+> +	else
+> +		efer &=3D ~EFER_LMA;
+> +
+> +	/*
+> +	 * Toggling EFER.LMA on a bare write to EFER should be impossible, as
+> +	 * it means KVM allowed architecturally invalid state at some point in
+> +	 * the past, i.e. allowed EFER.LMA=3D1 && (!CR0.PG || !CR4.PAE).
+> +	 */
+> +	WARN_ON_ONCE((efer & EFER_LMA) !=3D (vcpu->arch.efer & EFER_LMA));
 
+[Severity: High]
+Can an unprivileged guest or host userspace trigger this WARN_ON_ONCE() in
+arch/x86/kvm/msrs.c:set_efer() by leaving vcpu->arch.efer with a stale
+EFER_LMA across nested SVM transitions?
+
+On AMD SVM, VMRUN ignores EFER.LMA in the VMCB save area and computes it
+from (EFER.LME && CR0.PG), so arch/x86/kvm/svm/nested.c:nested_vmcb_check_s=
+ave()
+does not require save->efer's EFER_LMA to match (EFER.LME && CR0.PG).
+
+In arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_save(), KVM only clears
+EFER_LMA when EFER_LME is 0, and relies on svm_set_cr0() to update EFER_LMA
+when EFER_LME is 1:
+
+arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_save() {
+	/* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing VMRUN). */
+	if (!(svm->nested.save.efer & EFER_LME))
+		svm->nested.save.efer &=3D ~EFER_LMA;
+
+	svm_set_efer(vcpu, svm->nested.save.efer);
+
+	svm_set_cr0(vcpu, svm->nested.save.cr0);
+	svm_set_cr4(vcpu, svm->nested.save.cr4);
+}
+
+However, arch/x86/kvm/svm/svm.c:svm_set_cr0() only updates EFER_LMA when
+CR0.PG changes relative to the previous vcpu->arch.cr0 (is_paging(vcpu)):
+
+arch/x86/kvm/svm/svm.c:svm_set_cr0() {
+	if (vcpu->arch.efer & EFER_LME) {
+		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
+			vcpu->arch.efer |=3D EFER_LMA;
+			if (!vcpu->arch.guest_state_protected)
+				svm->vmcb->save.efer |=3D EFER_LMA | EFER_LME;
+		}
+
+		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
+			vcpu->arch.efer &=3D ~EFER_LMA;
+			if (!vcpu->arch.guest_state_protected)
+				svm->vmcb->save.efer &=3D ~(EFER_LMA | EFER_LME);
+		}
+	}
+}
+
+This allows vcpu->arch.efer's EFER_LMA to become out of sync with
+(EFER.LME && CR0.PG && CR4.PAE) in several ways:
+
+1. Guest VMRUN (nested_svm_vmrun() -> enter_svm_guest_mode() ->
+nested_vmcb02_prepare_save()): L1 must have CR0.PG=3D1 to execute VMRUN, so
+is_paging(vcpu) is already true when nested_vmcb02_prepare_save() runs. If
+L1 sets vmcb12->save with EFER_LME=3D1, EFER_LMA=3D0, CR0.PG=3D1, CR0.PE=3D=
+1, and
+CR4.PAE=3D1, svm_set_efer() loads EFER_LMA=3D0 into vcpu->arch.efer (and al=
+so
+clears EFER_LME in vmcb02->save.efer when !npt_enabled), and svm_set_cr0()
+sees !is_paging(vcpu) =3D=3D false and never sets EFER_LMA. L2 is left with
+EFER_LME=3D1, EFER_LMA=3D0, CR0.PG=3D1, CR4.PAE=3D1 (which also truncates L=
+2's
+64-bit RSP and RIP to 32 bits and configures the MMU for 32-bit PAE), and
+a subsequent WRMSR(MSR_EFER) in L2 (or KVM_SET_MSRS from userspace)
+computes EFER_LMA=3D1 and trips the WARN_ON_ONCE() in set_efer().
+
+2. Guest RSM into L2 (emulator_leave_smm() -> svm_leave_smm() ->
+enter_svm_guest_mode() -> nested_vmcb02_prepare_save() ->
+rsm_load_state_64()): emulator_leave_smm() clears CR0.PG before calling
+svm_leave_smm(), so is_paging(vcpu) is false. If vmcb12->save in guest
+memory has EFER_LME=3D1, EFER_LMA=3D1, and CR0.PG=3D0, nested_vmcb02_prepar=
+e_save()
+does not clear EFER_LMA and svm_set_cr0() sees is_paging(vcpu) =3D=3D false=
+ and
+leaves EFER_LMA=3D1 in vcpu->arch.efer while CR0.PG=3D0. Immediately after
+svm_leave_smm() returns, arch/x86/kvm/smm.c:rsm_load_state_64() calls
+__kvm_emulate_msr_write(vcpu, MSR_EFER, smstate->efer & ~EFER_LMA) ->
+set_efer(), which computes EFER_LMA=3D0 and triggers the WARN_ON_ONCE().
+
+3. KVM_SET_NESTED_STATE or SMM HSAVE restoration followed by nested #VMEXIT
+(svm_set_nested_state() / svm_leave_smm() -> nested_svm_vmexit()):
+arch/x86/kvm/svm/nested.c:svm_set_nested_state() requires CR0.PG=3D1 in L1's
+saved host state (vmcb01->save) and rejects (EFER_LMA && !EFER_LME), but
+allows EFER_LME=3D1 with EFER_LMA=3D0:
+
+arch/x86/kvm/svm/nested.c:svm_set_nested_state() {
+	if (!(save->cr0 & X86_CR0_PG) ||
+	    !(save->cr0 & X86_CR0_PE) ||
+	    (save->rflags & X86_EFLAGS_VM) ||
+	    ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)) ||
+	    !nested_vmcb_check_save(vcpu, &save_cached, false))
+		goto out_free;
+}
+
+When exiting from a paged L2 (is_paging(vcpu) =3D=3D true),
+arch/x86/kvm/svm/nested.c:nested_svm_vmexit() calls
+svm_set_efer(vcpu, vmcb01->save.efer) followed by
+svm_set_cr0(vcpu, vmcb01->save.cr0 | X86_CR0_PE), leaving L1 with
+EFER_LME=3D1, EFER_LMA=3D0, CR0.PG=3D1, CR4.PAE=3D1 and triggering the
+WARN_ON_ONCE() on the next MSR_EFER write.
+
+4. SEV-SNP AP creation (sev_snp_ap_creation() ->
+KVM_REQ_UPDATE_PROTECTED_GUEST_STATE -> kvm_vcpu_reset()): svm_set_cr0()
+sets EFER_LMA without checking is_pae(vcpu) while vcpu->arch.cr4 still has
+CR4.PAE=3D0, allowing a subsequent trapped EFER write via efer_trap() to
+trigger the WARN_ON_ONCE().
+
+> =20
+>  	r =3D kvm_x86_call(set_efer)(vcpu, efer);
+>  	if (r) {
+
+[Severity: High]
+When set_efer() toggles EFER_LMA to restore architectural consistency,
+doesn't it also need to reset the MMU context if EFER_LMA changed?
+
+At the end of arch/x86/kvm/msrs.c:set_efer(), KVM only calls
+kvm_mmu_reset_context(vcpu) when bits in KVM_MMU_EFER_ROLE_BITS change:
+
+arch/x86/kvm/msrs.c:set_efer() {
+	...
+	if ((efer ^ old_efer) & KVM_MMU_EFER_ROLE_BITS)
+		kvm_mmu_reset_context(vcpu);
+}
+
+However, KVM_MMU_EFER_ROLE_BITS in arch/x86/kvm/mmu.h is defined as
+(EFER_LME | EFER_NX) and does not include EFER_LMA, even though
+arch/x86/kvm/mmu/mmu.c:kvm_calc_cpu_role() computes role.base.level,
+role.ext.efer_lma, role.ext.cr4_pke, and role.ext.cr4_la57 from
+____is_efer_lma(regs).
+
+Because set_efer() rejects any write that modifies EFER_LME while
+is_paging(vcpu) is true, ((efer ^ old_efer) & EFER_LME) is always 0 when
+paging is enabled. If EFER_LMA is toggled by set_efer() while EFER_NX is
+unchanged, ((efer ^ old_efer) & KVM_MMU_EFER_ROLE_BITS) evaluates to 0 and
+kvm_mmu_reset_context(vcpu) is skipped, leaving the vCPU's MMU role and root
+level stale relative to the updated vcpu->arch.efer.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027224914.1574=
+319-1-seanjc@google.com?part=3D4
