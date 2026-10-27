@@ -1,110 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.144
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793108957;
-	b=vMQq2kXO7g1urJc0ro8y0Gfq9X3W8ZtiDNB3c3PNXaMk8k8+7lwM02GbhDt1iATxv7Da
-	 RFqkLyfdg+rvdbHllLTuSeOmb9ftNSdLFQUsavSkgdvZHJzhSo/ifS/U5HcGqgmqM72yR
-	 WqR+t6yTBZymwGaZllG8oAFnqqJ20IJ4wzArnKYDFXAybkvPzU83ULP7bT2eBlq7IjNdX
-	 wWzgJSBcJHUoOXVd2kXh8gfuZbu0RiUJPHfOaUQJU1pGQkyn68y3tPB8N3PorCqIrrpOf
-	 Z/ZTdKSff1krqVosECR6fn0PAqaTDbFmnTw/ypyO+EGkQkN35v2OBN8KZ4vXGani2zg==
+	t=1793109060;
+	b=WKCWs4fM/txzAoSnc8e6koYEGrUHZebh5pjWZwHenRUctW7UUsJRWittA2omkLjGdfOw
+	 fRW/wAHxcmB7Dxwt2IQZ9t1rMbSRoh/Kiw9BBnTuw5heOFap+WM38CsQR7lW8eW86EuxB
+	 a4JVx1tkyaUyUzja6DUb4SnHHNDvvRMH7Jn69NmuajJu6ddVqxu0kDcyGXQNxMQUoOYvC
+	 fImHsOIy+YhgHlJuehVRE0fgt9HSWBACgtqKG17DD9mlu/JvFhMvFSxFvLlHxA14VNOuN
+	 c1bb1XISh4/V/a6jxROqNOhCi0AP9Kj1GvCzPGgvKyAop4y1y4FX9VzRrMnDXPH1xYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793108957;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=GEmx/sUPQ2VMJDaiqbyGhNC0GffzmoblRKDktdSOsjs=;
-	b=RutVUPT8R76oPWITh9VJlMAQA8/tOBMf2bTO7iN3LOmmEz0jlPN08luVrn65XGE+PkbU
-	 zBenzmjIIbeg6i/ArtyPUOnM7blENd9PcCvhkm55JTn5787BPaxqaiMDJo7zGPmWXS658
-	 j8IfuZYhnnEmCC8Rl4sHGVsDwstPXWkdSXvfVABGGwhinQIc1+8Duw9BAuTTDMffYpG4x
-	 5Jkc1bCdrf7Wswf3TnkiuvrDdO8VgA61cro0sUstGD8Qz69mHOIUpuU3b7Azc9WBDHGHX
-	 DprkJjY7MsmJzz5pEelG9qD/nSivv6hxr30qV3cQLXjqfP8/d/NgrsXSfngyQopE+VQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793109060;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=iDpeC4vAedQvXqYDjDb5n7gsefa3gXa0pHuyMumuaJg=;
+	b=iQUJTiO9L/xDmdaACr0HZHLwQWwaOfjdAsXlDJm7jaKUKu4TwjxgnQF4u4EGbPRLAi8/
+	 dImBGK2xFta3sMl+JDIL/BoG3NmVRo3tr4CLxuezJufOtz2IXVSTa652PQO1gDcgfWqXe
+	 PhU8WCj7KsN+MU4bYmiCGAyE65SZAZd3lGGOOhgMHHW1FPIKrwSdSLolYwDLrp0b1Cz3A
+	 nq2dF0yD51n9VFSKZyfktDtNV3dqoIRuy59xIahrWAzgbrMEMJHORI4VrVfoUNN5I4vaz
+	 JWiNBQqUJdjuAELTCjtUAJfKs0wpIRf2Lql1UkXE4c8U7I2gHrbOc/Ce9sxkI1bdM0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arndb.de;
-	spf=pass smtp.mailfrom=arndb.de;
-	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=mTTn8ZWR;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z0LOYJhm;
-	arc=none smtp.remote-ip=202.12.124.144
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ea14WwRR;
+	arc=none smtp.remote-ip=198.175.65.14
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE0C606A337
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 13:49:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EE0C606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3526C606A322;
+	Tue, 27 Oct 2026 13:50:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3526C606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=mTTn8ZWR;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z0LOYJhm
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id DB1851D00168
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 09:49:15 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 27 Oct 2026 09:49:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793108946;
-	 x=1793195346; bh=GEmx/sUPQ2VMJDaiqbyGhNC0GffzmoblRKDktdSOsjs=; b=
-	mTTn8ZWRIuh6yCC8N7zM1RkyjRwCnYj5ApXsvRRDF4DShqntltu32cedImYWxCZW
-	3T3+rX3vuwWPL5BhK3RzggeyxYrft8Aa0815cxCyq8/KAlrCQQgYJqtyYcVcPEAE
-	QZBFcR5xocMUdNEC/Ss256l4ZTh36L0yA6nnDmsTbvCqx+aGJldnAm0J34yVwDd5
-	m04wU9UA04ybLZrICroOAcmeVLw2Ys3YtKcCDiKCNrxuqwql7L/kxY1RPM3o8joN
-	8/N1a/j2bRPmUrjsWmf/ailBEue48H+ng2y83WUFWdeq+wi0PRYNxXfVLZstF6Am
-	KGujzhZxqmlaOMguIzoIhg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793108946; x=
-	1793195346; bh=GEmx/sUPQ2VMJDaiqbyGhNC0GffzmoblRKDktdSOsjs=; b=Z
-	0LOYJhmXY4ILhQ1ZEb9qsYJQb6aASLrmEzl9aoPc7z19rsBh9FMGWNyVNLU7hfmy
-	eZxpXf2mvRssP8XDq5BwNlaRlz5VE7OO5sTjTAUHeCklgX95D9UEE6KYLyNRa5py
-	1buGciWMGbz4a8FiV2/B0WZzxZLXehhPunxe710+MHMw23z0UhckVw58ZTZY1OFF
-	K7sJFwa+taHtRtekI+ovUwvgLNKhqphGmdlgaxNz94Ecd56bxmn/eEDHONbdfZSV
-	GC+WA7Llt0rFNrzwSacSwSzAnXm8emS5XWDdgAx/ihLYXUr3Kuu0StEEeQIx4iyU
-	s2anVNpi2GVaFVauFQC6w==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793108946; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:hnRFWSKuAk6CNUOv1jOTAJ3DBS4WdRm7glDGjSplqIM4pM1
-	TEmNl4avrR+o812nZ1SJnV4UC/BFIQ4ukFZ0DmsciXtqAmVPqko7pebyb3rFRP3U
-	eKLZa9oKrTomSothb2zrBgWN/KnSR7Y7XTxjMPULMJXZasej4B8ecd3m0JdzYQ4P
-	fbbMt2r/Hp5RfzheQAFAiYaM70G2k4hWRz37eeuSaB8wAXzGfFvB5o5Vm4WG/Iva
-	0PWGctBFp467udoZ5mJ9wBgUuHw5vtB6N15l22cfoRPooA0jQyK1i5dpYMVoFVey
-	MPA9AdJdQX9vSFOGDYdscI13JnUGNr8cr5sudVg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:rJDu4bsxco/gIMrD+dD00LfJT4/xDEIwd0IpCUvE7Ok=:KdZkVqaRMOJUI0d/ETxpGSeypZPRT8HH1n5VL0jRLOY=;
-X-ME-Sender: <xms:zKvgamIraj1gKKF0eAeZnUhaYnPU1FGpZQXoPCi9QC9qq4y6HIW4Rw>
-    <xme:zKvgao9YFV_HCtCeHk0_T4CjvW0coaEmOrDF5Z2kFhRAfjJFVdAfJCZgMYi2KAs4y
-    3f0xiWGAzDybQFUZvrDJOKx47W96PA_q1fy2h9Hfuu1yJwKNNKxT-HG>
-X-ME-Proxy-Cause: dmFkZTGzAS/DSW4CsdWGOtMkgyUDpHtAQSg7qB+7/Ys6E0HD63N/Pcrnnyg0NyVoPg7+rI
-    ROPODo20FS22WszwXXzPBCSg8LrAc4Gs0zt1FYqdFSEzsiYNN6B+Zdt10yoE6tItpi5jSF
-    QuM9+Ljs5u0qdw3cXSYAYD7nPRBHPOx8gzkFNpi6Gbseu+z6gAkwtVDJbRXCWlJjnurtGi
-    Pmj6Er35n4sJoC87PBTI4TELC6x88vYuf+atC7A7hhxb4VyPJywRy4I+EgvWCkwzhpkRvn
-    nMptqgxqOXAcIdYDrgrCRIhV3oZrEOQDiLoCeq3SRJUVU6ykskJEuUkSjrW9OFNct6siFR
-    fRCHMvYkK6bV80wdgi788H8hwIJ8b9THhB9ckSuR1RmxxvD7WxOIPSotO3yOc02D3nKnM3
-    e5m4h7NOqMTkmL+0dH3YuEt+ZM4fUlHTkD+MOGsV2QC0axBtB9LuC6UF/Hga2d60sEaMeM
-    40YHfXH1iCpHr3TKPHgkxz6Pj9XU+ZkKAllecoPy6beK8+P2VrT9S8dyN4ldk28HsXkye6
-    rxBtxqQVDFqXb0+HrrMWnKRsiap6QZrMWRBn1XhjGmbJBKSbQuPyhm0bn9y/0hzTeACm5g
-    ExZO57S+I1i8J638jlcrb+h37dguBbsFt1hT6dF/Yp3L+Unc9SLLJFjplqEg
-X-ME-Proxy: <xmx:zqvgaiR9mD7HzWGzG7wCHl-DWnL2Zp7N8DEi80yl8Lf6Z1YFmMmqog>
-    <xmx:zqvgaosexHicgu3YXFdciJAflEvO83wUz3WY2lZdgiSFEu0DpPk1pA>
-    <xmx:zqvgagLpwi8qhmSfz4hjB85clzUCUokk2iF93sfQYo-JIMnIelfEzA>
-    <xmx:zqvgasfLrqodpNqK86D1uz78eKcESEEdMr7W4hbdXGZ5NycJfIS3Zw>
-    <xmx:0qvgaqh-ax7aBUwe4VoD-hxpmbytdLt64gvmlJ3Psa0VesPsIERnIBlT>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 0259C32A0093; Tue, 27 Oct 2026 09:49:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ea14WwRR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793109058; x=1824645058;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=K44EYJ+tSE+pgxSxW23nPIYPzojqHbOOSxq0BfMNrVI=;
+  b=Ea14WwRR7SqS5KOhieOwmc4O2uh+1oZbUWQj6kH5aItlLizfGhKLUdLd
+   nrhEqaSKvdrgNNEl/mYOh0T0CU0/1XcO0JxBRMO8qdsjzG8gDkdM/hsdz
+   kLQyMeFJOfCwXlJbIg06lItxbr5ZuG9tUv8zamWzOIKOG8LjgIuX4PY2G
+   KBI/u+GtZbWztYqe9or/XkXsdFkWplkF/KmpPQCUPcp7iRPDjcfkoEsCu
+   bvxF1AmoaK5Bjun0VoBJ7JvcYJU2EzY3lxt5QRlbVkEyOuq6JyA3zOs/r
+   Qrt2nYUPavelTFebw59Anylk9pTdE2JAHks/b9jdAdodtynPIpYjAC2QZ
+   g==;
+X-CSE-ConnectionGUID: dx607dAQQVaKQlu3exNpQg==
+X-CSE-MsgGUID: LWdroOMsRpWgW++aVFN3pw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1686232"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1686232"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 06:50:58 -0700
+X-CSE-ConnectionGUID: fJsaj7XAQDGmmauUEdyIXA==
+X-CSE-MsgGUID: Ab3HNCNHQya+uxSLtVYLsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="6424319"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 06:50:55 -0700
+Message-ID: <47bbb569-985d-4d48-8193-616685c76fcd@intel.com>
+Date: Tue, 27 Oct 2026 21:50:52 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -114,101 +72,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AmcrnnMArev7
-Date: Tue, 27 Oct 2026 14:48:29 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Fuad Tabba" <fuad.tabba@linux.dev>
-Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>,
- kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- "Joey Gouly" <joey.gouly@arm.com>,
- "Suzuki K Poulose" <suzuki.poulose@arm.com>,
- "Zenghui Yu" <yuzenghui@huawei.com>, "Steffen Eiden" <seiden@linux.ibm.com>,
- "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>,
- "Yicong Yang" <yangyicong@hisilicon.com>,
- "Zhou Wang" <wangzhou1@hisilicon.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <040cf379-baba-4e3a-bf3d-6bc009a9e28d@app.fastmail.com>
-In-Reply-To: 
- <CA+EHjTyLnAXanf9R7SuoL3gFZUNewX7QOnW=mc3qzwvaxg7jJg@mail.gmail.com>
-References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
- <20261023070110.1833446-2-fuad.tabba@linux.dev>
- <86fqxwzul7.wl-maz@kernel.org>
- <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
- <86ecdgzp6m.wl-maz@kernel.org>
- <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
- <ad724195-3452-495a-a50a-5e5c8093a483@app.fastmail.com>
- <CA+EHjTyLnAXanf9R7SuoL3gFZUNewX7QOnW=mc3qzwvaxg7jJg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] virt: tdx-guest: Fix timeout detection in
+ wait_for_quote_completion()
+To: moe@flashbots.net, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Dan Williams <djbw@kernel.org>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Jun Miao <jun.miao@intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
+ <20261024-tdx-guest-quote-poll-v3-1-6a83bb767314@flashbots.net>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261024-tdx-guest-quote-poll-v3-1-6a83bb767314@flashbots.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Sat, Oct 24, 2026, at 09:14, Fuad Tabba wrote:
-> On Fri, 23 Oct 2026 15:10:23 +0100, "Arnd Bergmann" <arnd@arndb.de> wrote:
->> diff --git a/arch/arm64/include/asm/mmu_context.h b/arch/arm64/include/asm/mmu_context.h
-> [...]
->> @@ -254,6 +269,8 @@ switch_mm(struct mm_struct *prev, struct mm_struct *next,
->>          if (prev != next)
->>                  __switch_mm(next);
->>
->> +        switch_iommu_mm(next, tsk); /* FIXME: is there a better place to do this? */
->
-> switch_mm() isn't enough when the same thread also runs a vCPU. In v2,
-> which I'll post soon, KVM will save and restore ACCDATA_EL1 only for
-> the guest, since nothing in the host uses it today. So after KVM_RUN
-> returns from a guest that has LS64_ACCDATA, the VMM thread's next
-> ST64BV0 would use the guest's value, unless KVM also saves and
-> restores the host's.
+On 10/25/2026 3:17 AM, Moe Mahhouk via B4 Relay wrote:
+> From: Moe Mahhouk <moe@flashbots.net>
+> 
+> wait_for_quote_completion() counts the seconds it has waited in i and
+> reports a timeout when i == timeout. That gets both outcomes of the
+> last second wrong:
+> 
+> - If the request is still in flight after the last sleep, the loop
+>   condition increments i once more before it fails, so the loop ends
+>   with i == timeout + 1 and the function returns 0. The caller then
+>   returns -EIO instead of -ETIMEDOUT, without the "GetQuote request
+>   timedout" message. Before commit 0f409eaea53e ("virt: tdx-guest:
+>   Return error for GetQuote failures") a timed-out request even
+>   returned success with an empty Quote.
+> 
+> - If the VMM completes the request during the last sleep, the loop ends
+>   on the status check with i == timeout, and the function returns
+>   -ETIMEDOUT for a completed request, discarding the Quote.
+> 
+> Decide on the Quote buffer instead: the request timed out if it is
+> still in flight when the wait ends.
+> 
+> Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+> Cc: stable@vger.kernel.org
+> Reported-by: Kiryl Shutsemau <kas@kernel.org>
+> Closes: https://lore.kernel.org/all/atoHWgQF-0vlTRK4@thinkstation/
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-Right, makes sense.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-I was a little unsure at first how ACCDATA_EL1 gets handled on PCIe
-TLPs when there are both host and guest users that set it. As I
-understand it now, this only works if the PCIe requesterID is assigned
-to the guest VMID for stage2 translation, so a guest st64bv0
-uses the ACCDATA_EL1 as PASID in combination with that VMID.
-The host would just use ACCDATA_EL1/PASID for its own stage1
-translation without stage2.
+> Signed-off-by: Moe Mahhouk <moe@flashbots.net>
+> ---
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index 11d741da3b35..a5a53174f9d9 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -282,7 +282,7 @@ static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+>  			return -EINTR;
+>  	}
+>  
+> -	return (i == timeout) ? -ETIMEDOUT : 0;
+> +	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
+>  }
+>  
+>  static int tdx_report_new_locked(struct tsm_report *report)
+> 
 
-This means that with your v2 patch and the switch_mm() code I
-have, this should be safe. There is a possible optimization to
-skip the host ACCDATA_EL1 save/restore if current->thread.sctlr_user
-does not enable SCTLR_EL1_EnAS0 (i.e. the same process that
-runs the KVM guest has mapped the MMIO area of an SVA device).
-This would make a difference if ACCDATA_EL1 access traps to
-EL3, but otherwise likely does not much much of a difference
-(I'd have to do some measurements on hardware).
-
->> diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-> [...]
->> +static bool try_enable_st64bv0(struct pt_regs *regs, unsigned long esr)
-> [...]
->> +        isar1 = read_sanitised_ftr_reg(SYS_ID_AA64ISAR1_EL1);
->> +        if (!(isar1 & ID_AA64ISAR1_EL1_LS64_LS64_ACCDATA))
->> +                return false;
->
-> v2 will add an ARM64_HAS_LS64_ACCDATA cpucap, so this could test that
-> instead. As written it tests bits [1:0] of the register, not the LS64
-> field, since ID_AA64ISAR1_EL1_LS64_LS64_ACCDATA is the unshifted field
-> value.
-
-Thanks for pointing it out. I have rebased on top of your patches now,
-so this line is gone.
-
->> +
->> +        sysreg_clear_set(accdata_el1, ACCDATA_EL1_ACCDATA, pasid);
->> +        sctlr = current->thread.sctlr_user;
->> +        sctlr |= SCTLR_EL1_EnAS0;
->> +        current->thread.sctlr_user = sctlr;
->> +        update_sctlr_el1(sctlr);
->
-> On a host that runs at EL1 (nVHE or hVHE), this also requires
-> __init_el2_fgt to set nACCDATA_EL1 in HFGRTR_EL2 and HFGWTR_EL2, and
-> __init_el2_hcrx to set HCRX_EL2.EnAS0. Without them, the ACCDATA_EL1
-> access traps to EL2 and the hypervisor panics, and so does ST64BV0
-> once SCTLR_EL1.EnAS0 is set. Happy to write those and the KVM change
-> once you're ready to post this.
-
-Thanks for the offer, that part is definitely not my area.
-
-     Arnd
