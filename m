@@ -1,163 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793113780;
-	b=XIWt08FRfCVrRx9uAKB+xOQwVRsZ0Ce3chAISKNUs2CrbZDDAvoPNmnaGUIvng5TMLzA
-	 dxxC1P6Zenx7Oa7Xh5P7TvB5wRgUsOJ7Xuz8YLgPg2RYPZ6PdwakiTkNbGihdpBoMEobO
-	 j8A3f0FEy6qyaNYygcxTpgbnZcP9+CxUev6pSIjoeUHoHVkMIchh7FhtfZd61yyEcOqDg
-	 w4LFu3cvtMsStyXauLSOl7MikUGpIUGrhu97Fwrj/Gt0tJzkraqACqqYXrTA6sISy9OkH
-	 w2mer+GkyXF+ilxJqJtYx4Nct/Yb5BeEVEsIDTumjwUaRmxJs/9ALS+BQVlbf7C67bQ==
+	t=1793114256;
+	b=iHg3gIMZcW8Q0OJsZaBJ/8q4i/llpDvcP1blyHctTxSKGeJq2/xwLRZNvQ3dJ6wl3L/w
+	 h+chTGuAbF2ewbigX/3upHg2UciO2Aax/F3TgCGsyiAHNqWO7LLIwt5sFmWdXZd6Bz2dy
+	 Y0sLmE0AVkrp+ymniTrDHJUqdDhPEklQU5z2K1oPbEViau5rwo/Y5G05bHCjXrV9CUNmu
+	 1UlXI9kt28DGBVXBEK5oUv5n0Hb+U9i+K0qVvDblhRhRE4fOgpGt516iIrNkKo/7K8bxa
+	 Nr5nnevmBfv3UWvcBokyOZIHi0wTqYTUYzAQn6XQYOAphzkdf309kc6KBv/LRcEoFtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793113780;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:Reply-To:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:User-Agent:
-	 X-Scanned-By;
-	bh=YxsqXTT/2SkHCopDBU3zcdHUWKG0aEgc5S4iUgZigFw=;
-	b=FfIahLyT5p5tzquah7sVZX8hRJkMawXc6h/fnsXLJquRxQSN3HGInENS53KcTWwCCQ7g
-	 6KLg0kHuJJThoIjZf7uGRXEX5UY4xzN5sCPoK/WY+PKD9d+Ymdrta9UaOEZLJbnG87AYJ
-	 5WV+1m+dGnpyGcowyAOnbcvIoe2TEn76KUFyxxZ5TDpxsqDBwMfvP0vqM6PMlTEtz6YUp
-	 +Ej+QYooYEuH5H41DCi5dlUD1ZwrKj/5mvk8ZNjlKUYgbZJGSQSOaCtNKYlTmFgXqL/vX
-	 nL84unqECiaJSw0ATvPDW6P4Sae9oYWfjC30UMq/TjHRxh4l4vqfhdOmIbPlbumUM/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793114256;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=U4Ud7qq2I83GZDTdN1xiR67Ms11VsCn4buA6mqvOa9c=;
+	b=LwErnrdjrAvxoqCoRis3fGuHTd7uCVNIR2kPW8fbABQ+KJziENzJsFWsyKcE6071CPT0
+	 PWHBcg/PzpJvdAF2JAa3Ca+IG6j4KixhOQkhtrFpPXyvXDN00Qn5wGYY6HMgPf8SKS12t
+	 kwZ7lv8Wj4swSec/smOpKlxWfz8/GxOTWKSKwh02stw8eCtNwl+8E7pF0WZWdzaq07ne0
+	 +HVvNp2eu/OpxhRedb44KajFnuKYD/2jJLYMw3NmaA/miJAcslZLtFnnXoc8EdAezJD6V
+	 tFcBfTFx8eTFvn4ctJp7NEblUmprApMKll/eer/kXUNxjwijnPHKveZ2DrwvUbP59rA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EMLjalLG;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=U1iZ1xcI;
+	arc=none smtp.remote-ip=209.85.219.46
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E03606A31D
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:09:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39E03606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4AB606A31D
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:17:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A4AB606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EMLjalLG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793113779;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YxsqXTT/2SkHCopDBU3zcdHUWKG0aEgc5S4iUgZigFw=;
-	b=EMLjalLGTYrNlCmGo2atTSKdh+ic+WcxN8E92twoOTqF6Og6d7Ro1qC5G68B9x+KITzduw
-	qiYY1++St98785pl7l2SO/CwiUAv/+7ZqPLTHo6xDN2dpBAexTzzjZeL5IPdb2fNqv7OC5
-	4yce7LK74VH32Pa60OAsm6URxDJgQqY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-7XFlFRhPPtuZJx-cX-8Sxg-1; Tue,
- 27 Oct 2026 11:09:34 -0400
-X-MC-Unique: 7XFlFRhPPtuZJx-cX-8Sxg-1
-X-Mimecast-MFC-AGG-ID: 7XFlFRhPPtuZJx-cX-8Sxg_1793113770
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 46A391954B0B;
-	Tue, 27 Oct 2026 15:09:28 +0000 (UTC)
-Received: from redhat.com (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E918918002B1;
-	Tue, 27 Oct 2026 15:09:01 +0000 (UTC)
-Date: Tue, 27 Oct 2026 15:08:58 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
-	qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
-	John Snow <jsnow@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kostiantyn Kostiuk <kkostiuk@redhat.com>,
-	Eric Blake <eblake@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Igor Mammedov <imammedo@redhat.com>,
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
-	Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>,
-	Hanna Reitz <hreitz@redhat.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>,
-	Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>,
-	Elena Ufimtseva <elena.ufimtseva@oracle.com>,
-	Jagannathan Raman <jag.raman@oracle.com>,
-	John Levon <john.levon@nutanix.com>,
-	Thanos Makatos <thanos.makatos@nutanix.com>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org,
-	linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sergio Lopez <slp@redhat.com>, qemu-arm@nongnu.org,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org,
-	Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Pedro Barbuda <pbarbuda@microsoft.com>,
-	Mohamed Mediouni <mohamed@unpredictable.fr>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org,
-	Zhang Chen <zhangckid@gmail.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Alistair Francis <alistair@alistair23.me>,
-	Alexander Graf <graf@amazon.com>,
-	"Gonglei (Arei)" <arei.gonglei@huawei.com>,
-	zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>,
-	Luc Michel <luc@lmichel.fr>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
-	Jamin Lin <jamin_lin@aspeedtech.com>,
-	Kane Chen <kane_chen@aspeedtech.com>,
-	Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>,
-	FangSheng Huang <FangSheng.Huang@amd.com>,
-	Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
-	Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
-	Jesper Devantier <foss@defmacro.it>,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Glenn Miles <milesg@linux.ibm.com>, Conor Dooley <conor@kernel.org>,
-	Sebastian Huber <sebastian.huber@embedded-brains.de>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Jason Herne <jjherne@linux.ibm.com>,
-	Titus Rwantare <titusr@google.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Anthony PERARD <anthony@xenproject.org>,
-	Peter Xu <peterx@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	xen-devel@lists.xenproject.org,
-	Roman Bolshakov <rbolshakov@ddn.com>,
-	Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Tao Tang <tangtao1634@phytium.com.cn>,
-	Stefan Berger <stefanb@linux.vnet.ibm.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-	Artyom Tarasenko <atar4qemu@gmail.com>,
-	Yoshinori Sato <yoshinori.sato@nifty.com>,
-	Jiri Pirko <jiri@resnulli.us>, Eric Auger <eric.auger@redhat.com>,
-	Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 54/65] qdev: adjust PciDevfn declared type
-Message-ID: <auC-ilqUJq27neSR@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
- <20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
- <atsxLV5YZo8dr-8G@redhat.com>
- <CAMxuvazd7G_NBOM_c6BxZn5PFSw=XQUHueHqBoQQfpzPPgi9qA@mail.gmail.com>
- <87zevz5h4k.fsf@pond.sub.org>
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=U1iZ1xcI
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91c7a0c1617so194036d6.0
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 08:17:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1793114254; x=1793719054; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=U4Ud7qq2I83GZDTdN1xiR67Ms11VsCn4buA6mqvOa9c=;
+        b=U1iZ1xcIf2hwIIOOPzvu5+3f09OLBYFlaWg95+yayNLvnC0/CP4TAjRhcqtpvXTd0t
+         CA9I4Qu2DQg94szEzY0/jUH1zGh1rz42/wZ788zBQrIV/+RWinv1iWjnNl+y4kBE5ZS3
+         y/Ki19lyLJO1nBHR1WIB2DnTEfcGTEEi85QIJfGTKhq4g6Z88bHiC7THxR3ARfvpxhTr
+         Pic1Qs2yGJ/Q1nLcIuSGiQrAGuzp7gM2jlppig8T8Gbe/y501Lck3L0DNHUOTDycYoeh
+         VNyvrin1iqtYmuH7R5QmANxalIiZaq1HW75IiG8cDacUp51JEx1Q/MmIjXoLwAe0gBTE
+         eopw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793114254; x=1793719054;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U4Ud7qq2I83GZDTdN1xiR67Ms11VsCn4buA6mqvOa9c=;
+        b=CvdWC/kzj5v9m0gR5NSqUquU+ibJ5H+bBiml4tD4VtcW64/yKZGJdY9M5d2hxr2pmr
+         tEH7MMXkiYU4VGJ5T15Zf4TARsF7JHsrfl5U9yLck3cspUPQ0V1ZPj/2tWpXb/8tB1AM
+         7WNLgiGpH+Hhrx1xLoSd3/kNkj4waSAzW9K7EpvdzO0t+GVRIS/JadF68Fsh9PW+s0HN
+         Jv414uCPjjd1r53QzJjobgnID22iDJKbME9ceNBqDCZZtOee+XoYq1T+vkVbkVN98l0I
+         e6xMiKnagfq8/DexJbmMztmMXsD/P+Hl8JWVSGk5drel1EItqywdo/vX1QKlQOeXIAtm
+         0eaQ==
+X-Forwarded-Encrypted: i=1; AKwUvByKTxSW8FBp4YexNs4GOtc1/h1HS1CsfZpWeJttto/edvPUhE+J61lsOTSGmCUAesnQ7i4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ0EmdqgGf0+ZFCNUqDXaUxOTwfBaUZw4My5YVclx6LMvCFNW/3
+	0TfrptvfJ8vSUfDnw6TczzxvMiaLCqfwDSCUW0XWc7VXgv3603pXTZ8lT2kqu36p8OSlArWEVKp
+	jx551
+X-Gm-Gg: AYBFou2Ija8jJzNdupxfNzBFMS0dThPpx0+dDxACJkl9XZ7kBs5fVBPvlBtx3VdMfB/
+	GWznpoCjmwwJEo50F1auA12jWEz8ndY1zO8341oQmNS+24/iGBzrJ/tVte0OS4+iIvIMjbkz81f
+	8//GTheGYHv2WXoBzNphoEedRfbX7DX+ke1/R/9O1Yk4nhlDWspk9xEJTUq7VbN7QG2uuElkHur
+	a/gQ4rqEffqwDH103ThGRAI83EXbuje8I16XWQxy44OP9pYF1OKYpm2VLF9IJWr3/EwmDx5ivPz
+	lkdFRgKkoYR+VjEQFY6jV0pyYsZMdDLzODtYp61E8HuhsVOgckVDbXC6doyrnPOiuEPIPvjEi6y
+	hSDg8R4fS/nxieYDY5l/v9sST7YQ/4bwMB+g9iFo4MvGp+WxfSh7xOVoWsscELFP/BmeIfwkR5Z
+	V9Ebril2Fmaz+ErJZpBYKG6IEekT/s99FI69o07pCqc5xm2+0Tt6cP7NDQJX1JhgynNYxLLRUlT
+	PUmjK7IQDCYB+wnuT3I2cA0DZgG3w+pswXi5UAx73lJvCv8D/Ir9auOMM0hC1V+WZczha1y82c7
+	KI5thJD2R14MMZw+SgoFdsmYt44GnkTGDiWiBw==
+X-Received: by 2002:a05:6214:f2b:b0:91c:7246:2d4a with SMTP id 6a1803df08f44-91c72462e58mr34928326d6.35.1793114254057;
+        Tue, 27 Oct 2026 08:17:34 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47c96375sm105565826d6.33.2026.10.27.08.17.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 08:17:30 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xLivZ-0000000ADMO-20dz;
+	Tue, 27 Oct 2026 12:17:29 -0300
+Date: Tue, 27 Oct 2026 12:17:29 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
+	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
+Message-ID: <20261027151729.GG1685504@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-3-jiri@resnulli.us>
+ <at-iEMxN98nie1Qr@e129823.arm.com>
+ <auBaROC0XdWpILEI@FV6GYCPJ69>
+ <20261027141524.GF1685504@ziepe.ca>
+ <auC5sw9YMC9NO4wl@e129823.arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -167,77 +116,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87zevz5h4k.fsf@pond.sub.org>
-User-Agent: Mutt/2.4.2 (2026-08-30)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+In-Reply-To: <auC5sw9YMC9NO4wl@e129823.arm.com>
 
-On Tue, Oct 27, 2026 at 03:54:03PM +0100, Markus Armbruster wrote:
-> Marc-André Lureau <marcandre.lureau@redhat.com> writes:
-> 
-> > Hi
+On Tue, Oct 27, 2026 at 02:48:19PM +0000, Yeoreum Yun wrote:
+> > On Tue, Oct 27, 2026 at 09:02:14AM +0100, Jiri Pirko wrote:
+> > > Mon, Oct 26, 2026 at 07:55:12PM +0100, yeoreum.yun@arm.com wrote:
+> > > >[    3.856919]  ctlv_schema_check_attr+0x3dc/0x538
+> > > >[    3.857105]  ctlv_schema_check_indexed_nest+0x788/0x958
+> > > >[    3.857301]  ctlv_schema_validate+0x88/0x180
+> > > >[    3.857482]  ctlv_msg_test_as_deep_as_the_core_allows+0x11c/0x1e8
+> > > >[    3.857698]  kunit_try_run_case+0x64/0x188
+> > > >[    3.857878]  kunit_generic_run_threadfn_adapter+0x30/0x68
+> > > >[    3.858086]  kthread+0x10c/0x140
+> > > >[    3.858245]  ret_from_fork+0x10/0x20
+> > > >[    3.858398] SMP: stopping secondary CPUs
+> > > >[    3.858630] Kernel Offset: disabled
+> > > >[    3.858720] CPU features: 0x0,00000000,00b0802e,9f190bc3,2affe72f
+> > > >[    3.858872] Memory Limit: none
+> > > >[    3.858976] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
+> > > >
+> > > >[...]
+> > > >
+> > > >I think it might be good to configurable according to architecture
+> > > >unless it's not good to reduce the CTLV_MAX_NEST_DEPTH number
+> > > >otherwise, increasing stack size when CTLV is enabled seems unresonable...
+> > > 
+> > > Agreed, will lower it down. I think we should be okay with 8 for start.
+> > 
+> > I'm surprised this ran out of stack though with even as few as
+> > 32 levels.. Is there accidently something large on the stack?
 > >
-> > On Fri, Oct 23, 2026 at 2:04 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >>
-> >> On Tue, Oct 20, 2026 at 02:46:11PM +0400, Marc-André Lureau wrote:
-> >> > PciDevfn is a bit special, since it accepts integer and string as
-> >> > setter, but only output integer as getter.
-
-snip
-
-> >                                                       But I agree we
-> > could do better.
-> >
-> > There are multiple options. We could keep declaring the property as
-> > str instead. In this case, the getter should probably return a string
-> > for consistency and correctness. This might surprise some existing
-> > users though.
 > 
-> I.e. ditch numeric suppport for numeric addresses, right?
+> Nope.
 > 
-> Incompatible change.  Do we care?
+> When I see the each functions stack allocation:
+> - ctlv_schema_check_indexed_nest():
+> 	sub	sp, sp, #0xf0 // 240 bytes
 > 
-> If we don't, we should be honest about it and mark qom-get unstable.
+> - ctlv_schema_check_attr():
+> 	sub	sp, sp, #0xb0 // 176 bytes
 > 
-> > We could introduce new properties like `devfn-str` and `devfn-int`
-> > that alias the same value.
-> 
-> Compatibility break.  If breaking compatibility is okay, I'd rather use
-> the opportunity to get rid of cleverness, and go with your first option.
-> 
-> > We could also introduce a new structured QAPI type.
-> 
-> What kind of type do you have in mind?
+> Roughly (240 + 176) * CTLV_MAX_NEST_DEPTH = 13,952 (around 14KB)
+> consumed.
 
-IMHO the root cause design flaw here was to overload 'addr' as a
-way to set both the slot number and function number, as using
-one property for two pieces of data is a well known anti-pattern
-we caution against.
+400 bytes per nest seems pretty big to me...
 
-IOW, we should have had 'slot' and 'function' as separate properties
-from the start.
+Do you have debug options enabled or something that increases stack usage?
 
-From a CLI POV, we could easily change 'addr' to mean only the slot
-number, since it is always parsed in string format without the
-magic (slot << 4) | function encoding. Then add a 'function' prop
-
-The challenge is the impact on QMP with strict typing, as ideally
-int format would soley represent the slot number, but today the
-int format is encoded (slot << 4) | function.  So anyone relying
-on int format in QMP would silently have a semantic change if we
-altered what 'addr' means. 
-
-Deprecating 'addr' entirely and adding brand new 'slot' and
-'function' properties would be a significant disruption to
-a syntax which has been documented for years (decades).
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
-
+Jason
