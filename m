@@ -1,111 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793119207;
-	b=WLrBqpfnweALLOFhVDCjITWwDvON/zCe7uKMGROGeR0/OkViMo/sMvvDXQIIvWICJTtt
-	 M/F0YDJPeQXR2L/gAzUxu1+IBDpWgXE3JefsRENb1pOjH8/zmWQNNWXqUoEKOHBefO6F1
-	 RwZjD9+ajNykbvq+t9Ic9qOo2QKL9Wk7VJXBWbRfeXIUoMdBzlfqWzv+Z+A8507o7NhC2
-	 p690hKvTvpVifOeEnrFqku6HOcs/aNhn4wNwwr7AQrfFtKlgXiGafbdbvmj15+vT4Luk7
-	 wXiymkHCYsVXiDoxA7FEuU+Ld0VhlYVGO7PbOxvgcQwDY4Qvo9In6UmsAmXVGi2nS7Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793119207;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793122223;
+	b=yxthh1E5xLYeSVRtsjTGlKhb0jvdDABKZthSqXJlIXfel79AsgoR6cwxqkMMriWhycBu
+	 3MlgQ7cit8vV1yC1dssqVV43OUnqLmmCNNIJTMNzt3FUB11Q3U6VJ8vkjGZqsEfeDdnm7
+	 BIFqmScvLOAKveYCavhn7/kMSTj2Sp6jxB0EzL9nztS26z6ZcTzBgyuBmWONKja4Jcpy3
+	 l0o4w9cZj/noBtKYaESUp2uSPvKj7ac2c5ProFfTUlgzFIvDOC0rt1NRWOKg9LTlHIM0y
+	 fUI/waVoBPXTZwKnWAbn3A2h0rhWLkZwhMkIyxJjCkyLIPrfNu7kY0NRBHQ+nPQQlbQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793122223;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=gbXuStreYRF1M4k9Su5zd2++RJBOLVmoBCN1Uwl3TZ0=;
-	b=loWJPyWjnJadxNORw0y8C0l5EBCK9JtZ5wWXzdVlK7qqgeog+GdpoC7wRdYeWRK4cEAE
-	 QBIobtwy1veOhwMeJaGabe2vLV3JMPsxsqVXbt9ZMBkjz8Ua+QhRaPghT0k2d1cnrW72R
-	 VffaJy2Q2CfloP8ih9iX+n1cH3QhNXM9B/Jx4KXRnkHJgfFWXT1/nP39RZBfLDq1I813Q
-	 ZJrDNPJrIR6i3BL+Hsxm6UPOjcaLS8jmshJUcMw+5o8YzA5n0uT4Z5QaAZPAwarvXccg3
-	 PCPMQIqf/8XMbNIoDU0WtGQTGnOM70gZD2bQtgDvJwcL8PBIWw8K0MbvqOqruHu00EQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=soleen.com;
-	spf=pass smtp.mailfrom=soleen.com;
-	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Zr7ScxU7;
-	arc=none smtp.remote-ip=209.85.222.49
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
+	b=toQrTzFy3muwLZEk1k5IaF24zXoAnA5Jy2VMrDWxRmgZpsndzzu2I9eqpvxcn3QhojAx
+	 MeJRnMG+RqFRR1ZSsvUUbFC4nWzNlBpcRWyrVXiqVeCYJF+T6+lOOzAv5D+L36TbDQqXy
+	 BqnTerZ9BiA7pre4B4gydw2rWSbbyo6eCjwTWj9gqUCOaCW0NaRzVORR62p81xzyvz+xh
+	 yYuj9Th/R/3NAq9jfasemzVb4ZNEqq6cbx85xqjjyZWjVZLNg1eKZozGbEEd+etF/znnh
+	 OuAzIwo78ood4aHysb3q2zNoHi0vfvY9F7px6syId+SL7VUJF9IgMYAooScAdOnCe6g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AH5XVSYu;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C17F606A31B
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 16:40:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C17F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906A3606A323
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 17:30:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 906A3606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Zr7ScxU7
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-988c7371716so55158241.1
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 09:40:07 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AH5XVSYu
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c3fd91337baso7588366b.3
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 10:30:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793122222; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QtGpvUgmROLDWcDkFsP/nMlRYi/Y1UEd7Nw1BLUuRFqb1asnNOueFTLty0dAgNV7k4
+         cOFkB4vZ2cSOfj1OgI6xgAiO8sslDxMk6+rNcuStbt7+gM9pibLETyU+iKbQePm+Bt5c
+         572/sc0EeGkp78FWrW/L8jf+7TjusoFLJXhnXHH44ldxCxvQRhUMp7puCbiKp30zQ3Kj
+         o8uRGtmZqQxKr0SG2n5W2TrmoWnkU++muvk0ioRKHRiq19LzvcqQHufAVx5J7BlDP7Sv
+         5oLhugvwKr6nAHaMH8WNkN0YDr3upL9ptvf2WoEj0h+tGv+0RGfrtCYFrM7wzBpTZoic
+         Nhtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
+        fh=6L7p5+E9TkFx+G+HlcnSox0Xqp6N5/vVDF/CY0SNBgk=;
+        b=HaLF0glV4OoBvPe0Xk7xZdDGzln+5R0n9Lvai3b7KzVzmob90UW8ZGZWgJfaM6uy/g
+         QkPUyjL3tgQzsQvvBBU24Cdqg5cy5msZ9Tvak48CkqlctVok4Wx/DqksfE3rIzEXIUyp
+         FxJTxFKPp87hCfusM/RIawTunSfuQP/m/KXuaRkvVBtirzCBKlTDEOJbCidevq+FKmEw
+         CBwdTVXaU/PTDcmaTGi3fd5FL90ScDG66LfrF3e6QT+rEHFb9JLY+UuUwNkNPxfjkFSY
+         Wj8PE7PJbXTc6fsZJQbmtR475r8kXBB48JG4RNGV24NjlhMKOg/CyQmnxcUjvr4Panwl
+         YnWQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793119206; x=1793724006; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20260707; t=1793122222; x=1793727022; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gbXuStreYRF1M4k9Su5zd2++RJBOLVmoBCN1Uwl3TZ0=;
-        b=Zr7ScxU7LPpcpVmwcDfMzimPKelujj7KZMOtx1IyuU/S4C/UO70x0+DX+9QyLeh4a9
-         PmnVMdTOIGZWjWfC32qpJTjsEOC22/b+oVbdoj4aCBNhoaKTVm1iXV86p4vUFu1DVnFw
-         dI3uLv4u8RrIQ01IQQfwBwKfBFnN2w4rEe4Crl4lu8CTZuhY3dzGQPAeBoRy0oN74oAs
-         HLZUUQkXC2wsvk+R7B8NW2djal7BYB5QrNomAMvVxcHd/eztF+MMYs5OANCNnv+Bhofs
-         R3maM6BL/pFwDUgY2Yc4GszR7T33hmDEDaQG4LcAerPIgwmq7BHN1OF57ygqfvNBL0ZG
-         sYoA==
+        bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
+        b=AH5XVSYuq6HUx6QejcrLzJHXiZbWI9DboIxOz+yByNgh84gxZAIKBuzZHV99EG6rqB
+         sL71z4Wm6MSPA3Nnza0i731ilrImuFj3jUTow6hkS/0r7bYzxQobbOzdeIyt6ASGeEbF
+         yTa0PHt944q+HSgG6NrCVe3wZJYFAVwhpzaLqX011nHEVLqO4I7UJy1zd5cfMTXQHdaA
+         BSUKBBxl7R08MamwKyO7Ss8mI2wGFLi7Y2RxS2XZ75lMQCOMaDZ6YNjy/Um35SI/BQEx
+         H9A/IMXo16KCWMivgQdBOKUL0g+UWglSQzebhEs3U4Ckl7bH2Y72gGHNDHSXACje/sxH
+         22yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793119206; x=1793724006;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793122222; x=1793727022;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gbXuStreYRF1M4k9Su5zd2++RJBOLVmoBCN1Uwl3TZ0=;
-        b=rLSVQNgUHtEN1VH0NCgsuypDbxGIRN2arXG/lJUCGU0gebsiielVzjuNi1N1VjLd1B
-         /7nzTaP+5GViiprJM8JkOep56w25/1ignJP7xZ/Bv8eSWcgX9pl9YeJuFjGRCAQRpQNN
-         MQUCbWkKbxqtwl9LaJzggAfb0wQDzKPtXtBldi7iLXXGbgGZZifhMtwwy9pCevbU00wq
-         6oItuIw29vw1wbSHWgi9hvH3VQBTaW3LZRI7eYqF08Cz/8sMxM/CtxAW5FpVRJ7XJrUl
-         CufXQAGXAmDJOgJndJ/f57ZR2JAUjlH7LprpSpF3lEeGTiz/Jpa5loq0lT+83jjA8MTx
-         H5zg==
-X-Forwarded-Encrypted: i=1; AKwUvBxwPGPg0RdLYfVCe54RvuatJH8WaSqvVaUncQN3F10kUpTp9sigWumPcYZkd+F5dKKIfHw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLms1VG79Ow5yKHYk+BOFVZExyC25VGP68vR4AhPXDrGIy/qAjA
-	XGGWFRGklPR550rYCnutbD7ejC/YNFLQ0CRqTysZWKCZeXKzQ4dHq2dvYEfarA6sMnM=
-X-Gm-Gg: AYBFou2MSkFrY4srVZk6wbng3imqN5GCR+frnbErE6Q6RpJBdP3XbrUJMzOWJsLbRhw
-	SY+FJu7jytxk6VH04Wl5Ant6pEiwKp5q6KQBED3aD4lwvNxGN++Z04PvwVT8j5fGceaIC6Rsh0z
-	uxNqcENq7Wa60bxqO08Q9pZ53Qf8HS/hJY9GcMB3t+hTix95zyq+JuL+0OgDojpWfT/aZTsqmMS
-	n/EzPUHmSR5XAhjd6mdZUtcjfDpZ5z7cqnBo34Sb/GsaA1P5l3TiMjEsW2mFEmmIKfFoQV1zy/k
-	Uw1NgOmw5ZtuLJMuhQXCw8xgv9KOY2Xkms9hlK3czM2BhhMp2unVxvCs6JmxvN9WgQrpTNTzchq
-	2BpKAx2yC3TMn7Ydkm7RazWIJ4Zxr7DboIrqZi18FZ2Bz++fgMUWLW5nkQKkfsuq8WaazcCRbHn
-	2Jd0HBZ4bvq7Qz/WbTR4Ejr1i+JzQY1QHFxJDJ31SxFu3hOxkTQEqWNxFKguXi9/H8NTW/f1kvh
-	1jq1Dt9CUdUh1FTCPf7zwYb0CcRj1a8QLaZe1m3RpVNUyCjsG8tCumxl6FOeGRplCkOUoKfuJUQ
-	Od7T6zKuG8piZFg4jOv2lVVunj19CWwloMIvpgl6lx4wYFxqFf2n08iJBsZ/Lh8g7zpKOdr9S7c
-	QKnZbmavHFfsntII1EIBdkCGORYC4cpNOt7JRXUCQXcVrIH6lJW4=
-X-Received: by 2002:a05:6102:5048:b0:7bf:74c1:b606 with SMTP id ada2fe7eead31-7ce5ce4227dmr3243460137.34.1793119205875;
-        Tue, 27 Oct 2026 09:40:05 -0700 (PDT)
-Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9912da2d9d1sm442866241.7.2026.10.27.09.40.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 09:40:05 -0700 (PDT)
-Date: Tue, 27 Oct 2026 12:40:04 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Matlack <dmatlack@google.com>
-Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
-	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
-	will@kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <auDT5MjXYq3lcQjE@google.com>
-References: <20261021152527.375070-1-tarunsahu@google.com>
- <20261021152527.375070-4-tarunsahu@google.com>
- <atlQ_Er0Ig7CCSxv@google.com>
- <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
- <9huzzew0el59.fsf@tarunix.c.googlers.com>
- <at_CncIPYCxOVkLo@google.com>
+        bh=7gQ+97vReKa4toS9130cb0MEUCUe5fofr2ehSKz/dNw=;
+        b=yPQggl3+A8uZEXO5Jj7BbHPCtz86fj+zL95U693dnnVz2xPVN4qlznw0lUnF49uVc9
+         SR+IiyKDIdXHpCsBPMf26YJUj2cYKT73zS2yt5+YTbq6goAtLB0YOAXhnKPqWZOuYVqe
+         WJ7bp6hmXFyWKn3VAnRDTdE54WsSR4717LCg19WT/MIrmBaEifm4jgRJkxTbUFJl/u0B
+         EFi5MXBoCBKiPhfX3I8zTzQWZl1SQGlrbVVoN/HD8cOFZ5QgEosKPI4w/l/xf+CVvrhj
+         d+jY4DCUukJYKdqD26/zYTMFBP5xh/YsxVKLN4eXXa2YXcaqdqaBF0dAcKPJNvvGF0IE
+         zV5A==
+X-Forwarded-Encrypted: i=1; AKwUvBxAdWTtEl8iGCjMijPVUq9d4fcdHI/tIghAMOBsxo/4vJBrpOxcN5VLKqrQ+VKWdirBkjE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKsyc+xruINekkd9aRW9gANgHTGIFISTehEb3ZWfp1kJ1KNn4E4
+	8k3JbvrW4yjZJ+XLqs8ILIvIjirs0uNjeGb58NnTLUeEUjbw9GuwlfxX71aZIEUmZk/ca3NsBHl
+	qk+Bn5i7KiYYV7GzmdjSmo3YRVyj7O27EBHFvNSLh
+X-Gm-Gg: AYBFou2GZv79og52nSTIdcqBHUA11ZHC2QQETEU+xK5FHBd1ZWKPNDnEggIzbWuQtRq
+	nwqEjkmhPKkGNJu2A+p4dPqN4yQ9yKHAq0ilxDhaNSHX4HDfyO60eenRK7bEn6OUi+wOaE9GIn4
+	L8tvw4chVf0zOe8dmhPh0Q0Srna1QXtoTOb8hxuamD6x6HFyONgvttVN0hwjHxkPDz9YCDmVfHy
+	j9PVRtXFCjiVc7oLhEz2oYL8GUeMzhYQ6RuayQCYQvrnkmJ88Esd9zfs6spXNKo2mYn/5rwbnTu
+	Hz+QW6WFeUpziJDd307NDVjHL0cJxXnhc7+O+spGqnrLvS5ZFCJJKvb1zeqrMLVJVQavgHyBsUc
+	u0JJYh0QvJKm+nJUA4/zVTui9U6qE7uoCw8EXcbeXhh/ybXac1rrtTkFhGNkJWK6HET5gUxTxZh
+	Cgut8VuCpFAg3aIGLl2HEx5Ktt+Ux1WEe11I3DqkdNsBduMmtQmo+GrUXEUDFkWbBZikHTnPOE8
+	KGJJbepTVnBByHlA0C1tKnT6eTeNtYnIw==
+X-Received: by 2002:a17:907:80c:b0:c46:6a50:40c2 with SMTP id
+ a640c23a62f3a-c46bdee2675mr1178260566b.39.1793122221137; Tue, 27 Oct 2026
+ 10:30:21 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -115,84 +106,121 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <at_CncIPYCxOVkLo@google.com>
+References: <20261026215226.3713941-1-jthoughton@google.com> <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
+In-Reply-To: <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
+From: James Houghton <jthoughton@google.com>
+Date: Tue, 27 Oct 2026 10:29:43 -0700
+X-Gm-Features: AclHuK_V7ZmMdE83iy-wOvaliSqHMUcbKVcnfqQwnRgRgjPYRFDHKTZOMwXOk5E
+Message-ID: <CADrL8HXQdzcroeGN-ACjyy-jSAdBNHiT1_BCVVe0P+Y8ZueiyA@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
+ current->mm is NULL
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jim Mattson <jmattson@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Pavel Begunkov <asml.silence@gmail.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason <mason@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10-26 21:14, David Matlack wrote:
-> On 2026-10-26 11:50 AM, tarunsahu@google.com wrote:
-> > Right, Required bit should be source kernel payload property to tell
-> > target kernel that the payload must be handled to correctly deserialize
-> > the data. It should be source kernel (userspace) responsiblity to make
-> > sure it understand the target kernel before doing liveupdate.
-> > 
-> > Saying this, During deserialization, target kernel's required bit is not
-> > necessary. So I propose the following truth table.
-> > 
-> > Source hdr  Target supported[i]  Action
-> > ----------  -------------------  ----------------------------------
-> > 00          0 or 1               Accept: feature absent in payload
-> > 01          0                    Accept: ignore the feature data
-> > 01          1                    Accept: use the feature data
-> > 11          0                    Reject: -EOPNOTSUPP
-> > 11          1                    Accept: use the feature data
-> > 10          0 or 1               Reject: -EINVAL (invalid encoding)
-> 
-> Yes, this matches what I had in mind for the semantics.
-> 
-> To be explicit: the source kernel should set the bits for each Live
-> Update based on what is actually preserved, rather than generating the
-> header from a static per-kernel array. E.g. memfd would only mark a
-> feature present for memfds that actually use it. That's what allows
-> rollback to an older kernel as long as nothing being preserved depends
-> on the new feature.
-> 
-> But looking at this again, I think the required bit is redundant. Whether
-> a feature can be safely ignored is a property of the feature itself, not
-> of any particular file. Every file that has a feature present will have
-> the same required bit for it. The only thing that actually varies per
-> file is whether the feature is present.
-> 
-> The required bit still has to be conveyed to the target somehow, since
-> the kernel that needs it is the one that doesn't know about the feature.
-> But it can be conveyed by the feature's number rather than an extra bit:
-> split the flag space into required features and optional features, and
-> assign each feature to one of them when it is defined. This is similar
-> to the required_flags and optional_flags approach in struct pci_ser [1].
-> 
-> Keeping the same header shape as discussed with Pasha:
-> 
-> struct kho_ser_hdr {
->     __u32 size;           /* Size of header + payload in bytes */
->     __u16 nr_required;    /* Number of required feature bits */
->     __u16 nr_optional;    /* Number of optional feature bits */
->     __u64 flags[];        /* Required bits, followed by optional bits */
-> };
-> 
-> Required feature N is bit N of flags[], and optional feature N is bit
-> nr_required + N (using nr_required from the incoming header). The length
-> of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
-> are numbered contiguously, so there are no gaps, and up to 64 features
-> still fit in a 16-byte header.
-> 
-> Each bit just means the feature is present, so the truth table becomes:
-> 
-> Source bit       Target supports  Action
-> ---------------  ---------------  ------------------------------
-> Not set          -                Accept: feature absent
-> Optional set     No               Accept: ignore the feature data
-> Optional set     Yes              Accept: use the feature data
-> Required set     No               Reject: -EOPNOTSUPP
-> Required set     Yes              Accept: use the feature data
-> 
+On Mon, Oct 26, 2026 at 5:13=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
+:
+>
+> On Mon, Oct 26, 2026, at 22:52, James Houghton wrote:
+> >
+> > This series comes out of a set of bugs that were found in KVM where the
+> > kernel can sometimes write to a random process's user memory[1]. The KV=
+M
+> > fixes at [1] are still required, even with this uaccess series, as note=
+d
+> > by Sean here[2] and below in this cover letter. The beginning of this
+> > series includes fixes for similar bugs found through static analysis
+> > with Claude Opus 5.5. I don't think any of these bugs are more severe
+> > than the KVM bugs[1].
+> >
+> > We hit one of the KVM bugs in production, and it was challenging to
+> > debug. This series makes such bugs, where the kernel is doing uaccess
+> > without an mm, much more obvious.
+>
+> Nice work!
 
-I like this proposal. I bet most features are going to be either 
-optional or required, and even if we ever have a magical 
-sometimes-optional feature, it can have its own required flag. So, no 
-need to pay double the cost on every flag.
+Thanks!
 
-Just need to make sure that optional features always start from 0, in 
-their own enum, so the offset can be computed correctly in the incoming 
-kernel.
+> > Such an access does not reliably fail. The user portion of the address
+> > space belongs to whatever mm happens to be lazily loaded, if any. If
+> > the access faults, the fault handler refuses to handle it and the copy
+> > fails, but if the page is already mapped, the access silently reads or
+> > writes another task's memory.
+>
+> This sounds like the problem depends a lot on the architecture,
+> and to what degree they implement lazy mm switching. If an architecture
+> makes all user pointers invalid for a kernel thread, this does not
+> actually happen, right?
+>
+> E.g. on arm64 with CONFIG_ARM64_SW_TTBR0_PAN, the page table base for
+> the current process is only set in user_access_begin() and would
+> not point to any task here. Without ttbr0_pan, it should be
+> covered by cpu_set_reserved_ttbr0() turning off all user space access
+> for kernel threads.
+>
+> Should this perhaps be addressed in architecture specific code
+> instead of in a common place?
 
-Pasha
+You're right that whether corruption can actually occur depends on the
+architecture and config. I'll write a note about this in the v2 cover
+letter.
+
+That being said, I still think the right thing to do is to have the
+new check(s) in common code. Instances of improper uaccesses are still
+bugs, even if no corruption occurs.
+
+> > =3D=3D The New WARN =3D=3D
+> >
+> > The rest of the series makes the generic uaccess helpers WARN_ON_ONCE()
+> > and refuse the access when current->mm is NULL:
+> >
+> >  - Patch 6 adds uaccess_should_fail(), which combines the existing
+> >    should_fail_usercopy() fault injection check with the NULL mm check,
+> >    and uses it in place of should_fail_usercopy(). This covers
+> >    copy_{to,from}_user() on all architectures (including the masked
+> >    user access paths, which never call access_ok()), the
+> >    __copy_{to,from}_user() variants used by KVM's guest memory
+> >    accessors, the user-backed iov_iter copy routines and
+> >    strncpy_from_user().
+> ...
+> > The checks are deliberately limited to generic code. Accesses
+> > implemented entirely by architectures (get_user(), put_user(),
+> > clear_user(), and direct users of user_access_begin() or
+> > masked_user_access_begin()) are not covered. Please let me know if the
+> > new check should be placed elsewhere.
+>
+> I would think that user_access_begin() is a more natural place
+> for the added checks, as this should be called exactly once for
+> any function that accesses user space and also stays out of the
+> way of the copy_from_kernel_nofault() etc.
+
+user_access_begin() isn't used in a lot of places that I want to
+catch, including the KVM case. Roughly:
+
+  kvm_write_guest_cached() --> __copy_to_user() --> raw_copy_to_user()
+
+There's no user_access_begin() in there. :/
+
+I do think user_access_begin() should have the new check though, so
+I've added it in the v2.
+
+Thanks for the feedback, Arnd. :)
