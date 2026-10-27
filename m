@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793123646;
-	b=FvXi7yIr9AUU3FpZaB/UHisLkrTy+l+PGUtr4vstwUl6YyPlac2fxizNL0x7TFQCEV7W
-	 hL3yUBsiBZFk/wJ7nxZe6UY95SgSHyJVJQXXJmFssLQKpuFYcleLbUATdIJWq9TPyVsUs
-	 PI9i09z3qVW9VBUEPz9g0h+vJvHegYf3WiUZQM62J+UF4xVchsEirqWFWwq6aqK1zV9iL
-	 VBsJUCSKCP65yhr7y8noWCiErNMHhuI/RZXz1cw0UJkPoSI1uNk/qJLyDhYMtBcixFAm+
-	 soci3CCBtJ2hh6xYvYz4Cve3tygRNI2r7k+dd8YyDemmfGq4PLKUQOTPMTGcnQD0SKQ==
+	t=1793123787;
+	b=ExJv03VW4j+JYLc/Qe2D3DPamFhMyknR7VS90qnMZ9Kczp8DekK2hIVPWui57wDt3+Os
+	 AhmnLt9skJNbMfSz+4Bwb81+GJGJGqe1sfZcHgHhNcrR+Nh1tLvJ5ofh62dtK5kue3mrB
+	 396OH9VsUoV+Uj49kSHGtswYYPhH3uplo/loFQyMYcy4X8AxgsCq5AJwc4UPJvjXZjOuI
+	 uj3xD1HZ5bqF0ji7yhin58Ek8ErVkziJnYIHXMLHQnrAV6i41l8A11CJ3D1ZhQAKvMnHD
+	 TZADXANnMOXpDF5sqWTmxn5BeuCqwHS1l1LCauBc0uPcnX4gkBhph/NwTPSyKJdj+jg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793123646;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=hkthE3LGg4pUwXVNxWMZwWIDTaHK3HN3fIb+gMEWqs0=;
-	b=D05c2y8g6sSaGXNOOBpuPXcvJsVSZiho4UKvpIhPBhnXTZKuUsMwSTrEUSzB8pCB+xpK
-	 7CozhlcrnTRFZuAhEGc/DwOFh0FdeIxFj1c7sVTLfZJuIUyhNie/drOLq1bq6CZMxqVeA
-	 lE0tBMEGLOZvTKzuXNFr/DeP0AvNyyqAjl0M/WY8yTc31IakkU5KHKwMGlfdFDAVWRi2Z
-	 KdEZlr+mimpXjyDlk6klDdV4SOYwIdtjpFhTLDBsIO5WcG5y62lVEAk0xA3/ptz0KCqpn
-	 ueXuewTyMs5tT+2hUxQnRJJqGrlLSkNl3u4Tci9TZPOvjoCD/vi4u+CxZtS6CYLbCEw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793123787;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Q7mwPyRYYbvgtpCr60Q7T+YMbXSs5veHKoppqZdUka0=;
+	b=dAWi5IFPkLydHwsVICPx8pHcLbF0CpEIHHqa+/OlI/09GCTSSX2ZKyPXJb7a7oCH8a/F
+	 b3wB617HycaaIfr5Zr34A+tFy/ac8GFO+bMP95PBzD0eia12BboApEiTMZd52pXNT91LC
+	 WSjdkONmTiHLL3tNSb16DVY7o8OltDa28m9Qj7bzaaQ7am6npYQWXExtL1ClWcN5ReLfY
+	 2lhf2Njc45cZGkYtigPZA8AEbYpDifWJG+VpY3RzFKJSBJ7wXQ1E0Ayl/s78zH11ED1XO
+	 v0hp8ZCBVNSLrF+4Vi6R7tz68wj76acuHgBJsJM0QL2GlLQL2fSC9JjAJsOYzVFcYuQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="k/3Get4N";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cr7ZnfTa;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFAF606A31A;
-	Tue, 27 Oct 2026 17:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF05F606A322
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 17:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k/3Get4N
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE711F01825;
-	Tue, 27 Oct 2026 17:54:04 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cr7ZnfTa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460D01F01825
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 17:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793123645;
-	bh=hkthE3LGg4pUwXVNxWMZwWIDTaHK3HN3fIb+gMEWqs0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k/3Get4NpMBbzsTD/kNm2UTGXj7bFuFMTbpSY72TuVkaluGq66tCLFkmY/d/8ZDnX
-	 fFJnS6yF9HxQlElrFXZk5B5dyxXXy/wKzlJXPT8gdZS0+trFfMsAa/cbKQ49xHu1ca
-	 0LvixkKgnvvUdct28gVrmRrfz1YWa902XVbZ1gvbtseXC16jl1V14vBf1U4/h8zclC
-	 avesGqLNurzfJHrhuTFzG7UFOM8Uj5kERcXuA6S/Kkkyxm3KVPi7+o87gxcdA0d4sX
-	 ahEnpXl/Z4WYMBTx/C6kxYrQdIjk4mHOyeHn2aza+iqJtsvdbvQsRv/QCaDFv+cMph
-	 Td55owyWHffsw==
-Message-ID: <sashiko-outbox-186996@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/4] KVM: s390: Fix UCONTROL inconsistencies
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261027173239.224849-2-imbrenda@linux.ibm.com>
-References: <20261027173239.224849-1-imbrenda@linux.ibm.com>
- <20261027173239.224849-2-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 17:54:04 +0000
+	s=k20260515; t=1793123786;
+	bh=Q7mwPyRYYbvgtpCr60Q7T+YMbXSs5veHKoppqZdUka0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cr7ZnfTaqNWGO6K9bAI+oSzOldqiVBbKntKVnqpjv3bAzWJCAo69vUjkx5Chf0Shi
+	 4A2JunKQMV3hKjKkdzXweuGaCKZjcXxURN+C9Agge8K9aAVzGh0sW04QuFqIY2/vHd
+	 R1VaYB7AWbMMTYICwgc0ZKnsA2+y7LsmIUCwrzY3wVHOSgXTMNNGsWyGXBWO6LXka+
+	 oJEx5/4uLBnlEmOFqWBRNqeNRVOFAcAkET/E1jLHnAhyo6LlY8BtTcTqjr7MXVVwM+
+	 Z5s7nf8Gh03P4eqdPDWgFfuhZ8r0bhAzFvscPUQBsWnut155r2BJDzTZZkZGBVL8kW
+	 SohLos2XrxFKg==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f560af6aeso6135985a.0
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 10:56:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBx3iX/uNMrssz09xYMcMqtRGPy/DnRYqBbF5t4LL/T08ImPbaoECqIxy5YavvupVR3wQB0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLabc8HKPKR58+Y/htSvQ7DfxI7CYABrncb30Bejlis5xAF+0Ds
+	aEV/g8Q0kKPEnudy0bn8Fe6AgoWjtWDlaaaVufeMpJIBQaasqehd/UAt1Y4hJwEVrvQZUJHO51Y
+	j4PYfUU120yujfCGtT2Hd+hH4BchORrE=
+X-Received: by 2002:a05:620a:410e:b0:93f:3120:6c84 with SMTP id
+ af79cd13be357-940ef8cf39bmr1517681985a.36.1793123785656; Tue, 27 Oct 2026
+ 10:56:25 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,98 +58,139 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-27-yosry@kernel.org>
+ <CALMp9eS8KDozNGT9J_uN69W32QEvTbg2JrtRqN0ESi00b_uq=A@mail.gmail.com>
+ <atqRyeqSXViiNIk6@google.com> <CAO9r8zMqiW=3t7zRo_WAhKJfpYsDwuG3e=nK14GXhrq+foYnOw@mail.gmail.com>
+ <at-O8-tzgezj2du-@google.com> <CAO9r8zO8ViSqCBer4rV5qBQGcDKA_60Aj_KEVQx2obd9zU7-Hg@mail.gmail.com>
+ <auDkX94UTjrLNmqp@google.com>
+In-Reply-To: <auDkX94UTjrLNmqp@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 27 Oct 2026 10:56:12 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zP5rom7VpA3-BsuB-H_+G5r-OC-Bfz=iTMbhQrWB4RYbA@mail.gmail.com>
+X-Gm-Features: AclHuK-k6y80ZiwPfhFZdinBjgmMB612AkS5NrA46EEDOGyFzwnr8rX2cHZ8_cg
+Message-ID: <CAO9r8zP5rom7VpA3-BsuB-H_+G5r-OC-Bfz=iTMbhQrWB4RYbA@mail.gmail.com>
+Subject: Re: [PATCH v3 26/27] KVM: nSVM: Use different ASIDs for L1 and L2
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] KVM: s390: _crste_ucas() collides with _crste_hole() and _crste_no=
-ne()
---
+On Tue, Oct 27, 2026 at 10:50=E2=80=AFAM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> On Mon, Oct 26, 2026, Yosry Ahmed wrote:
+> > On Mon, Oct 26, 2026 at 10:33=E2=80=AFAM Sean Christopherson <seanjc@go=
+ogle.com> wrote:
+> > >
+> > > On Thu, Oct 22, 2026, Yosry Ahmed wrote:
+> > > > On Thu, Oct 22, 2026 at 3:44=E2=80=AFPM Sean Christopherson <seanjc=
+@google.com> wrote:
+> > > > >
+> > > > > On Fri, Oct 16, 2026, Jim Mattson wrote:
+> > > > > > On Mon, Oct 12, 2026 at 4:37=E2=80=AFPM Yosry Ahmed <yosry@kern=
+el.org> wrote:
+> > > > > > Moreover, does this change the semantics of PV TLB flush? In
+> > > > > > record_steal_time(), we have:
+> > > > > >
+> > > > > > if (st_preempted & KVM_VCPU_FLUSH_TLB)
+> > > > > >         kvm_vcpu_flush_tlb_guest(vcpu);
+> > > > > >
+> > > > > > IIUC, an idle vCPU that wakes into L2 will flush only L2's ASID=
+. In
+> > > > > > the past, with a shared ASID, L1's ASID was always flushed on e=
+mulated
+> > > > > > VM-exit anyway. Now, L1's ASID will be unaffected. Though I can=
+'t find
+> > > > > > any real documentation on PV TLB flush, it *seems* like the rem=
+ote
+> > > > > > vCPU would want L1's ASID to be flushed. OTOH, this change make=
+s nSVM
+> > > > > > behave just like nVMX.
+> > > > >
+> > > > > That's a bug that absolutely needs to be fixed, probably relative=
+ly urgently.  We
+> > > > > should also document that passing through the steal_time shared i=
+nformation to L2
+> > > > > to utilize PV TLB flushes for L2 is explicitly not supported.
+> > > > >
+> > > > > I hate to re-introduce deferred actions for L2 =3D> L1 things, bu=
+t that seems like
+> > > > > the only sane way to handle this, because handling the !tdp_enabl=
+ed case, where
+> > > > > KVM needs to sync the current root, requires knowing what MMU is =
+going to be in
+> > > > > use when L1 regains control.  Yuck.
+> > > >
+> > > > Are you implying that *you* will be re-introducing deferred actions=
+? :P
+> > >
+> > > Heh, probably not this calendar year.
+> >
+> > Are you opposed to this series landing before that is fixed, keeping
+> > in mind that it will expose nSVM to the pre-existing bug?
+>
+> Nah, though I should just fix the damn bug.  It's not hard, I just don't =
+want to
+> do it because I don't want to reintroduce a deferred request.  Untested, =
+but I
+> think this is all that's needed.
 
-commit 8288fc810dc049ff30a9d687a1ca6d691bb508c2
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Makes sense to the untrained eye, although I do wonder sometimes if
+requests more generally need a way to key off guest mode. I am sure
+you don't want to open this can of worms :)
 
-KVM: s390: Fix UCONTROL inconsistencies
-
-This commit changes the flag encoding used for mapped but unallocated
-UCONTROL vCPU segment entries so that they do not set the present bit,
-and updates the UCAS gmap helpers accordingly.
-
-> diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
-> index 90389d47ba4e0..4665c1112bb91 100644
-> --- a/arch/s390/kvm/gmap/dat.h
-> +++ b/arch/s390/kvm/gmap/dat.h
-> @@ -109,6 +109,8 @@ union pte {
->  #define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
->  #define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
->  #define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
-> +#define _UCAS_ENTRY_LENGTH	0
-> +#define _UCAS_ENTRY_OFFSET	3
-> =20
->  /* Soft dirty, needed as macro for atomic operations on ptes */
->  #define _PAGE_SD 0x002
-> @@ -421,6 +423,17 @@ static inline union crste _crste_fc0(kvm_pfn_t pfn, =
-int tt)
->  	return res;
->  }
-> =20
-> +static inline union crste _crste_ucas(kvm_pfn_t pfn)
-> +{
-> +	union crste res =3D { .val =3D PFN_PHYS(pfn) };
+>
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index 0378577d9d8b..696aae38f619 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -879,6 +879,7 @@ struct kvm_vcpu_arch {
+>
+>         struct {
+>                 u8 preempted;
+> +               bool flush_tlb_pending;
+>                 u64 msr_val;
+>                 u64 last_steal;
+>                 struct gfn_to_hva_cache cache;
+> diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+> index 97c17b120a57..efa54f9f9e9a 100644
+> --- a/arch/x86/kvm/regs.h
+> +++ b/arch/x86/kvm/regs.h
+> @@ -469,6 +469,11 @@ static inline void leave_guest_mode(struct kvm_vcpu =
+*vcpu)
+>                 kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
+>         }
+>
+> +       if (vcpu->arch.st.flush_tlb_pending) {
+> +               kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+> +               vcpu->arch.st.flush_tlb_pending =3D false;
+> +       }
 > +
-> +	res.h.i =3D 1;
-> +	res.h.tt =3D TABLE_TYPE_SEGMENT;
-> +	res.h.fc0.tl =3D _UCAS_ENTRY_LENGTH;
-> +	res.h.fc0.tf =3D _UCAS_ENTRY_OFFSET;
-> +	return res;
-> +}
-
-[Severity: High]
-With _UCAS_ENTRY_LENGTH set to 0, _crste_ucas() leaves bit 63 (res.tok.pr)
-cleared while setting res.h.i =3D 1 and placing PFN_PHYS(pfn) across bits
-0..51, which overlaps res.tok.type (bits 0..15) and res.tok.par (bits
-16..31).
-
-In arch/s390/kvm/gmap/dat.h, _crste_hole() and _crste_none() check:
-
-static inline bool _crste_hole(union crste crste)
-{
-	return crste.h.i && !crste.tok.pr && crste.tok.type !=3D _DAT_TOKEN_NONE;
-}
-
-#define crste_hole(x) _crste_hole(_CRSTE(x))
-
-static inline bool _crste_none(union crste crste)
-{
-	return crste.h.i && !crste.tok.pr && crste.tok.type =3D=3D _DAT_TOKEN_NONE;
-}
-
-When a UCONTROL segment is mapped via KVM_S390_UCAS_MAP to a host address
-with non-zero bits in 63:48 (i.e. PFN_PHYS(pfn) >=3D (1UL << 48), which is
-normal for 5-level s390x mmap addresses), crste_hole() evaluates to true
-for the UCAS entry.
-
-While this patch passes DAT_WALK_IGN_HOLES in the gmap_ucas_*() helpers,
-other callers walk vcpu->arch.gmap->asce without DAT_WALK_IGN_HOLES, such
-as:
-
-- vcpu_check_access_key_gpa() (via KVM_S390_MEM_OP) and handle_iske() ->
-  dat_get_storage_key() -> dat_entry_walk(..., DAT_WALK_ANY, ...)
-- handle_rrbe() -> dat_reset_reference_bit() ->
-  dat_entry_walk(..., DAT_WALK_ANY, ...)
-
-In dat_entry_walk(), hitting the segment entry triggers:
-
-	if (crste_hole(entry) && !ign_holes)
-		return entry.tok.type =3D=3D _DAT_TOKEN_PIC ? entry.tok.par : -EFAULT;
-
-Instead of returning 0 at the !crste.s.fc1.pr check in
-dat_get_storage_key() or dat_reset_reference_bit(), won't this fail with
--EFAULT (or return the upper address bits as a bogus program interruption
-code if entry.tok.type happens to equal _DAT_TOKEN_PIC)?
-
-Should _crste_hole() and _crste_none() exclude crste_is_ucas(crste) (or
-check !crste.h.fc0.tf)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027173239.2248=
-49-1-imbrenda@linux.ibm.com?part=3D1
+>         vcpu->stat.guest_mode =3D 0;
+>  }
+>
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 32563a91fba9..15eb033b8e17 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -2117,8 +2117,12 @@ static void record_steal_time(struct kvm_vcpu *vcp=
+u)
+>
+>                 trace_kvm_pv_tlb_flush(vcpu->vcpu_id,
+>                                        st_preempted & KVM_VCPU_FLUSH_TLB)=
+;
+> -               if (st_preempted & KVM_VCPU_FLUSH_TLB)
+> -                       kvm_vcpu_flush_tlb_guest(vcpu);
+> +               if (st_preempted & KVM_VCPU_FLUSH_TLB) {
+> +                       if (!is_guest_mode(vcpu))
+> +                               kvm_vcpu_flush_tlb_guest(vcpu);
+> +                       else
+> +                               vcpu->arch.st.flush_tlb_pending =3D true;
+> +               }
+>
+>                 if (!user_access_begin(st, sizeof(*st)))
+>                         goto dirty;
