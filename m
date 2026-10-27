@@ -1,68 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793138988;
-	b=TNzxeyjZOyaYmD8ZKHQ3rTvqk+BKb0utH5Ae/K2rrRb5wg0nqnYCmDLNpkApJwudsc+p
-	 ei8nr/93oZ4DJErsCFha+bmm+ApDyJ9ZUva26c5fOnBxNsTQ9a8AoiaoMUGd8govZvd7j
-	 kSljz+0X2mdnyBNQSSfvXUsdGOHbFhyV1fyZ5UiMDElr85mRXXeTItRv2sy8POfvrSCpY
-	 RrAm0nz90x4Ktw0MZPv04E1FA5SSo2rBsI0GIMJjNcFrbiEpS2a/9ogOnr4n84ZYM3psv
-	 8p2HdA7EQdO6GjQrg50lf60F1E7wskE3JIiFg8ObDebknnrtzAdOCbV5UAtH8cXAjdQ==
+	t=1793139132;
+	b=F5POss5iMRbPeQBqr94pBmRDti9O3wPtdgopCcbXAsacVr6D/P1tofviH+XyqhVgrI7o
+	 JDWwjip/lJ8whDf61Z0vjoZrwp6l8e+UxBIo/vp8bFxlY6E0anevuT3HPs1HOSJjfiRfX
+	 c2TayBl+6dWIJL62AhU2sELetK2I+qQPMzBPVyO1RnY5EVPTlX1+AKjh0QwbwQtc0eQkf
+	 TfCPUKet7xKb1W4x98gTkyDFOepT5soC+ZPcSGD5mGXU1jL148R/5nwBfdGL9ZCx1AlYW
+	 YfXLYiCODj6oc8bf5VkX1C0aO5t2TAizuoZZdO1/5NOtDunhfbgeJtgm9MnqIwFrFMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793138988;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=C3yDSyTVIHoKB3jH8aCOChCJ46WC+deb33ZaKBNRmsU=;
-	b=aQmhE0DXJJiPwBTTUo4BlA9doc3tpiiciFEUM7tcD1lwou7LivEBgQefhbDvPP96N80f
-	 pgPvk4HFpKUuw5b89J0AzhvgUC48gSlYGBWPh7R/Jwgi261WIxEim6jji9I3X1tBmrhUP
-	 0lsfhlJ5S9MvEEw/64P0uTA9YX6MXUHSPEbJ7ZT0eb3RQ36dFv9KA31wm5FsKdcZXJ5Zs
-	 pv95PUl6yPoXZs/ydRZDwsjHGj+7b0YCtA+5qwHT2n7uL9Pqq8B7x1WW9tQtcRGOJ40os
-	 tMdDHsWmPHqAaPxQw3rNrc8F3lrYrvR8U592tVu7SaQ6/aPtW28tC4yURfJ++u2JRVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793139132;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
+	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=5Vq2l0nNlx4Jt5Br3FhBTT5y6+xzpkVfJlHDQEljzdw=;
+	b=RmXVi2Df7oFLuGx6rF2BWIfN7aG/63Xg3Ss7FVNrGa15TQEdhrX5AhkwKF4PMxhWwIHl
+	 LhUSB/EtdB093LY0qY3tPlzU8n+Nnv1LKRwClx7u4pgtbp5Y5Vs+5k+9sBEA8cLYmFmJ9
+	 6/qV2qrDD3bd708/rOk9qrhyY3Dcpor3TPJu5ZpaUfy2EbFlSk3BjOEmYdfTehgkraUej
+	 rmI5f6Nvdjn9ggTzPctoAVnryiJKAIXm//VVcbwwg4ORXeLKTJpeg7eTyAYOpjER6V4Bt
+	 rFh12CmJk1XCvaSvk74HiMeYoLZ1XHxEr1/h0gxzPKljVDrO14IZs/H/3dlZOo26ftQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EyYPwQ72;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Tzko39Gb;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAED606A31A;
-	Tue, 27 Oct 2026 22:09:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2AAED606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB64606A31D
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:12:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFB64606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EyYPwQ72
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793138988; x=1824674988;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tEl3vdBEf6ngwULHa3r7A28OiOnmCpS7OuFXwziP5GU=;
-  b=EyYPwQ72YEyhnhDanCJFDe8z7qsDzRmg35YDS03bmvK/RWyWc+DNAlNK
-   fdqsCbUtnMAPCBwsQj1Az9aUQfaOVPwEv/i26xybZbl1z4miRD5t0MiQM
-   IZdKU2bX2tdlnYdGGIx1wqbp3XSjjCZtwd6ZZY+5j30d+IkJ8d/KeqXnZ
-   I+bQEd+HiNCqK+OWgVls9ty1UffTRjBcxTnA6ld+6fQVgjcoYRI/RZiFt
-   7vnI+zzm+p3ZO4CYCbxzRX4ye5tjYGCMf5Gw8JLPx5JIHzFHPkDlPu3sr
-   BpTtiMsUs6cYnF2rHzl+a58E0PJ2drBkacEd1rwLdDO5Ggos2f29qMb3y
-   A==;
-X-CSE-ConnectionGUID: E6Ixz6Y0Sh69nMyI92zBMg==
-X-CSE-MsgGUID: gEMHDBIWTc+TiGQ81mZaHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1884141"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1884141"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 15:09:47 -0700
-X-CSE-ConnectionGUID: zXz8nBh0QUmnGFKJEBZsdA==
-X-CSE-MsgGUID: jFi5twpsQN2n/NBoUm+Maw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="5005018"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 15:09:44 -0700
-Message-ID: <6da36d01-c456-4bd9-8d3a-591e98ab3481@intel.com>
-Date: Tue, 27 Oct 2026 17:09:43 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Tzko39Gb
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso228648a12.0
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:12:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793139131; x=1793743931; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5Vq2l0nNlx4Jt5Br3FhBTT5y6+xzpkVfJlHDQEljzdw=;
+        b=Tzko39Gb8NK/pISNaMz2B1Yq1HUoap3Gu7pMr5Zke3dZCqzwxoKxorktaoCIOmeWst
+         4y4wyvjMGqGCt7XMlhFtGSebCxisln2f2AV3Two5Ferweaq3ihtc5vGEYxKcjZQvEa9O
+         iVLHma9J4m+X3T6vTNZgBxUOPjfFI+CPvTpsiiaRIT95aV8/I6GWatTGAPTEOI7UIzYp
+         xLVkK80HpXJHF0h49u4G8QfVmVwsVLJZWUCMkRSJVReUyjukmFX9HYnkqi7uGg1NCdzP
+         S5USayKgDSP/Un1sSvc8g4imPcDEHevbJu3s9paEDu+TtQAp5/dr5f0UsFMl4JsFOiBT
+         yH7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793139131; x=1793743931;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5Vq2l0nNlx4Jt5Br3FhBTT5y6+xzpkVfJlHDQEljzdw=;
+        b=nq4+HNavZ3ezXo2y7GpUh+jwVm8033VFTKTMiIDNiGOdancLXtaf61Q704B7vGiuq9
+         cWbhqoVnYZyw9OSTQFTmS+zV8cqfRcgiUSbvFeqKLgtnHowgTJ6xOAMn3RmqPqetNSZG
+         b6PTY1JETw5KcwhRGEpFsRvHgGjLM2UaDXBKMeIvDYvyA9JZ1FbkxIINJv11zs6YjcV7
+         wLGNWHxC7HWNwdnYIFh7DvRgGhrG1Uy3KwB/thx58A+W8V49cK/qL/I5UQnfm/ktnGjC
+         7a3WlmBtk4u5+JthIEwgcB66KRB+SW0SUBQt4FrDMA2Z0Anin/CmlpVzAdF+FVvqOWQj
+         DYmA==
+X-Forwarded-Encrypted: i=1; AKwUvBx2cM6IQoKb79A7aDWZ/V3gImGbsjAQfD+44uf1pJBupiTlrSWj+oOLphiZPSLyXDuGO+c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMOHXWrQy7myORTLIZ1XxfLhYVJUgJt0F71mHMo2h66qkzjIew
+	olOlS4O0c4bUKKEnpcRyu9i0APesaxPs9Q42qrIFj3fGNIkmLC/NLBX58qtBaS6/2l/uyUVdaWh
+	v7cStDg==
+X-Received: from pfbig23.prod.google.com ([2002:a05:6a00:8b97:b0:89e:af6f:f0c7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0c:b0:3e0:d2ba:5b37
+ with SMTP id adf61e73a8af0-3e902462639mr382770637.75.1793139130927; Tue, 27
+ Oct 2026 15:12:10 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 27 Oct 2026 15:11:53 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,73 +76,111 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 11/12] KVM: x86/pmu: Reject writes to reserved
- MSR_PERF_METRICS bits
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260918193937.569414-1-zide.chen@intel.com>
- <20260918193937.569414-12-zide.chen@intel.com>
- <20261023184505.3284911-1-jmattson@google.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <20261023184505.3284911-1-jmattson@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261027221209.1560865-1-seanjc@google.com>
+Subject: [PATCH v3 00/15] KVM: Fix+harden against bad uaccess using dying VM
+From: Sean Christopherson <seanjc@google.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>, 
+	James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+
+Fix a class of bugs (limited to nested VMX, as far as we know) where KVM can
+corrupt an unrelated process' memory if KVM (attempts to) write to guest memory
+during VM destruction.  Because current->mm usually isn't kvm->mm when a VM is
+dying, e.g. because the associated kvm->mm process has already exited, writing
+to what KVM thinks is guest memory will corrupt the current address space if
+the associated userspace address happens to be writable in the victim.
+
+Patch 1 is a blanket fix for the uaccess paths.  AFAIK, x86's nVMX is the only
+path in KVM that screws up, but auditing kvm_arch_destroy_vm() proved to be
+infeasible for a human (I didn't throw AI at it, yet...), and I can't think of
+any downsides to going straight to a broader fix.
+
+Patch 2 fixes the underlyihng nVMX bug where KVM absuses the architectural
+nested VM-Exit flow when tearing down a vCPU, which has a truly absurd number
+of problems.
+
+Patch 3 fixes what I assume is a blatant PPC bug.  KVM PPC completely ignores
+kvm_arch_flush_shadow_all(), i.e. AFAICT, doesn't tear down its page tables
+when the owning process exits.  I don't have much confidence in the "fix", in
+part because it seems impossible that such a blatant bug could have gone
+unnoticed, but also because I went with a very naive approach of invoking
+kvm_arch_flush_shadow_memslot() for each memslot.  The changelog is pretty
+sparse, because I didn't know how to describe the issue byeond "this is
+completely broken".
+
+Patches 4-6 implement more agressive hardening to nuke the memslots before
+calling kvm_arch_destroy_vm(), e.g. to guard against writing to guest memory
+during kvm_arch_destroy_vm() without going through uaccess.  Setting dummy
+memslots feels a little hacky, but kvm_arch_flush_shadow_all() should have
+purged everything that effectively caches memslots, so it seems like the right
+approach?
+
+Patches 7-9 add more hardening to detect KVM bugs (though the uaccess+memslot
+changes earlier in the series should render any bugs benign).
+
+The remaining patches double down on open coding nVMX's vCPU teardown by
+tearing down the vCPU "as-is", instead of forcing a switch to L1 and then
+doing teardown.  The forced switch is quite heinous, as it requires KVM to
+*load* the vCPU when it's dying due to architectural constraints for active
+VMCSes.  Not only is that gross, it was also papering over a bug (hopefully
+just the one) where KVM was relying on the vCPU load for nested VMX to take
+vCPUs off the posted interrupts wakeup list.
+
+v3:
+ - Give up, and open code nVMX teardown. [Sashiko, syzbot, Chris]
+ - Drop the nVMX hacks that were trying to fudge around the mass of nVMX
+   teardown issues.
+ - Free the VMA only for the non-SMM internal memslot. [Sashiko]
+ - Use @len, not hardcoded PAGE_SIZE, in kvm_is_guest_access_ok(). [Sashiko]
+ - Rip out the awful vCPU load code from nested_vmx_free_vcpu().
+ - Collect James' reviews.
+
+v2: https://lore.kernel.org/all/20261001202234.3794060-1-seanjc@google.com
+
+v1: https://lore.kernel.org/all/20260908132838.2116068-1-jmattson@google.com
+
+Sean Christopherson (15):
+  KVM: Reject user accesses to guest memory if current->mm != kvm->mm
+  KVM: nVMX: Don't force a full nested VM-Exit when destroying a vCPU
+  KVM: PPC: Flush/zap all memslots on kvm_arch_flush_shadow_all()
+  KVM: x86: Unmap VMAs for KVM-internal memslots when the memslot is
+    freed
+  KVM: Disallow setting memslots when the VM is being destroyed
+  KVM: Destroy memslots immediately after mmu_notifiers are unregistered
+  KVM: WARN if KVM attempts to do guest-related uaccess with "wrong"
+    process
+  KVM: WARN and reject guest-based uaccess if VM is dying
+  KVM: Pre-check uaccesses in KVM's APIs to read/write guest memory
+  KVM: VMX: Explicility free vmcs01, not the current VMCS, in vCPU free
+    paths
+  KVM: nVMX: Don't explicitly VMCLEAR+free() vmcs01's shadow VMCS when
+    freeing vCPU
+  KVM: nVMX: Cancel the nested VMX Preemption Timer's hrtimer in
+    free_nested()
+  KVM: VMX: Explicitly remove dying vCPUs from the PI wakeup list
+  KVM: nVMX: Don't switch to vmcs01 when freeing a vCPU
+  KVM: nVMX: Don't load+put the vCPU when freeing nested state for a
+    dying vCPU
+
+ arch/powerpc/include/asm/kvm_host.h |  1 -
+ arch/powerpc/kvm/powerpc.c          | 11 ++++
+ arch/x86/kvm/vmx/nested.c           | 69 ++++++++++++-----------
+ arch/x86/kvm/vmx/posted_intr.c      | 68 +++++++++++++---------
+ arch/x86/kvm/vmx/posted_intr.h      |  1 +
+ arch/x86/kvm/vmx/sgx.c              |  2 +-
+ arch/x86/kvm/vmx/vmx.c              | 19 ++++---
+ arch/x86/kvm/x86.c                  | 38 ++++++-------
+ include/linux/kvm_host.h            | 26 ++++++++-
+ virt/kvm/kvm_main.c                 | 87 +++++++++++++++++++----------
+ 10 files changed, 199 insertions(+), 123 deletions(-)
 
 
+base-commit: 7e60162b16f9da0d2fa83da5c1723b6853a0ac1d
+-- 
+2.56.0.307.g5fe7bd680c-goog
 
-On 10/23/2026 1:45 PM, Jim Mattson wrote:
-> On Fri, Sep 18, 2026 at 12:39 PM Zide Chen <zide.chen@intel.com> wrote:
->>
->> +		if (kvm_pmu_cap.num_topdown_events < INTEL_TD_METRIC_NUM)
->> +			pmu->perf_metrics_rsvd =
->> +				~(BIT_ULL(kvm_pmu_cap.num_topdown_events *
->> +					  INTEL_TD_METRIC_FIELD_BITS) - 1);
->> +		else
->> +			pmu->perf_metrics_rsvd = 0;
-> 
-> perf only sets x86_pmu.num_topdown_events for the models it knows about
-> (Ice Lake and intel_pmu_init_glc() users). On a non-hybrid part that
-> perf treats as "generic_arch_v5+", PERF_CAPABILITIES.PERF_METRICS_AVAILABLE
-> can be set while num_topdown_events is 0. (intel_pmu_init() even sets
-> GLOBAL_CTRL_EN_PERF_METRICS in intel_ctrl in that case.)
-> 
-> vmx_get_perf_capabilities() will still advertise PERF_CAP_PERF_METRICS,
-> but perf_metrics_rsvd will be ~0ull. The guest writes PERF_METRICS
-> directly, and the hardware updates it on its own, so KVM_GET_MSRS can
-> return a non-zero value that KVM_SET_MSRS will then reject. That breaks
-> save/restore. (The selftest's write of 0xdeaddead would also fail.)
-> 
-> Shouldn't vmx_get_perf_capabilities() withhold PERF_CAP_PERF_METRICS
-> (and PERF_CAP_RDPMC_METRICS_CLEAR) when kvm_pmu_cap.num_topdown_events
-> is 0? 
-
-Yes, this is safer. Will updated vmx_get_perf_capabilities() to gate
-advertising both PERF_CAP_PERF_METRICS and PERF_CAP_RDPMC_METRICS_CLEAR
-on num_topdown_events.
-
-> The SDM, volume 3, section 22.8, says:
->> IA32_PERF_CAPABILITIES.PERF_METRICS_AVAILABLE[15]: If set, indicates
->> that the architecture provides built in support for [four] TMA L1
->> metrics through the PERF_METRICS MSR.
-> 
-> So, four could be a fallback, but if the part actually implements
-> eight, the upper fields would break the round trip in the same way.
-> 
-> Also, since the guest's own writes go straight to hardware, this check
-> really exists to keep the wrmsrq() in intel_mediated_pmu_load() from
-> faulting on a bogus userspace value. The commit message should say so.
-
-Agreed. I will update the commit message to clarify that because guest
-writes are passed through to hardware, the primary purpose of this check
-in intel_pmu_set_msr() is to prevent userspace (e.g. via KVM_SET_MSRS)
-from stuffing invalid metric values that would cause the unchecked
-wrmsrq() in intel_mediated_pmu_load() to #GP on VM-entry.
