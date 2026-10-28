@@ -1,99 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793151256;
-	b=tLm+ZNle1N5umkLpWKBtwOoj1mMOJrvspHPdpIUQI5W5sv9cBRhGZWb06iZYvk3JVZ42
-	 g/j0/drhR4O5P6ILY8fj3+H6Kf46nSSvmU0lAUC2JW+cMHJ6gVZsLedqJZ9H6U6UQ5Ref
-	 LfJD+HoWmzBZOhy5QzoOyjUjeqXWEAkWQkk0eASVEvi+1OGuGsqID1lPo8xqadVifZORY
-	 /3NiLwL8wE6FfL9bTlLUnUGzf9sns9fTKE37bIEVp/214ATEsJ/6e+l27r3/OcrLFd2Qi
-	 qZ7wsI3gXZfj3jSlu/G8MTUMe84wdT1WgquRXBNS23FhSL9YgoT3IMY6d9O8KtGFCyg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793151256;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=ceSvdvJb2kczIli1psGhGhGu/Eg5GANFV15HZPGtyK8=;
-	b=LmRYrnyIXQQ36vp8V6zvoECmfZzbNdQ6FtGOK7t5aM514QJiUjFzN51uXj4V5lLWbRAx
-	 sS4FU+GOJyoLNhI7VCwXOEZ0RHoRIEZgbRILoVrM83Q0Yagglp5f30ay6QKUwjbSYfY10
-	 JcZfmNADoflHOVFoK3RSIqKoF0k8Y7q2HlNEiOfEUS5nxaImQP+f/wUuT5+y7rBGe0CR2
-	 lh/oFcfZDPypaWq8yHndeBvEuhyojvcMaSfDfswc6N9ch/2eSKhS042ytyW0rgASAiKu7
-	 yr3/LabkSXcIgFDHa7svvLl9xPh5ONamIH/5lcBNkooqjL6NzXTZT2TUAhcfiHGjdtg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mMYRoAci;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.46
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793152304;
+	b=pDShNd07ozIT9z8MhLWrlVEtH/9qQwdxezibnVuTKq+AgIYNvcrP47HCQlPwYCrndMQA
+	 YnkYAwP1INJFo5QEWT9JqZsGCbeTwjLiN1G9fxRJ4XzqoE+PGVRvkBCZuRcLthkLH2CoO
+	 mkCQV9EM6jl6WEWQ/epP/ma8dJF6iKECoUgsc+ue6+psvrRs4TDEoyKYXE8ghS+XHsKYy
+	 RF9jblxkbo/Y/JGRkTNL9FKgdHpMGt9FSnQOXFhPtuzzGT7oSQMN3jHByPn98q8ZIOb/u
+	 hwKYNLBUjCNMlaA3EWxw6MPvInaL6IH6Tm7bkL19NGgCVsgsoZb9v9uNn45vbLdFCoA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793152304;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=G18YpjquSjO6D532GrD6rLkvIfON+n7DZwNyuYr0uic=;
+	b=2Fb6xZhU5I9ANP0fDyQBlh2BxQFNSSGSlPqjsMozfIr9P9KNwmDdOnjLkn0QfxDPs9oO
+	 Vx0Qw9IiyVwlUaWhvjq8drQdnGUaRvaBmUttCfAdgxd+X4/O+uTiBG4x4x4bkv8PJaHO6
+	 if2hgS3yXtixtJt4408a/JsBLOCpJmhrRpCDKHBM5zH0SqUyOXotwdeGKDR5/3h3RZmLD
+	 dZlttM5rnjhD701OM22I9kAK62++STRsfp0JWBaNBAO4QF7AWiFKKrQ4DNxcanX6Tysdc
+	 UreowiHgT+gy5PLpr8oyArCUnHjLnxXi1RJXY6nT03ubbmaa6O+5Cd2Pd4UH7If3YTA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YXoOe7Y8;
+	arc=none smtp.remote-ip=198.175.65.19
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BD7606A31F
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 01:34:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04BD7606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E3D606A31E;
+	Wed, 28 Oct 2026 01:51:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2E3D606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mMYRoAci
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7f84a55cc06so264082a34.2
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 18:34:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793151255; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A5ZJttS5xpcWB1C2ap4Iu/7n3fyhRUGrG/01zyihB2aVVuPktHr+TNGLiMGLOfdBcf
-         X9U0KB+5K3EczrBTeRa1QOC/N1w8lfu3plWAtbiTvHNxkZiAU+ClXIBw379kLaJi6pdM
-         Xmg6UIGdXN5zqap/gVnsN/s8xkIUHSxw/+jW9e06WXVlNtYm/kYilo3wLpEpeK8qtbNb
-         Jr3n5Bj/+R93KSjCFSsdSGJhAbsOIsmHPY5f25Zgv674+9jqfgZlzN5XuvNXGycNxFAR
-         TJ3lRnR5mTWaxlf0KckURNCHY+Fdv3ZJuBK3oLHiBVZKjP0/CQ6+QjVqqbHcPehkdX0S
-         Jdvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ceSvdvJb2kczIli1psGhGhGu/Eg5GANFV15HZPGtyK8=;
-        fh=DeIX9ziinein0TJuLOTriryKACvtGFzY3E64os8b8dw=;
-        b=Dthxz5P5fY9cNAk1znbIMluggsGjeLtIxIiQ4MIZ1bcVwqS7CzN+nkoNU+9UOquSDO
-         hOCMeK/deI5UjdHWU/UhwFobINspGB6aLSm2FL7yptgomlde3IiB2b96WwrYlOSaf3hJ
-         UusGM9EyzCDl3ILMRF+WUptgtofCfhKmRRVrfRgKICGV1yPUPwigVqvhtd/jA4wc2ppC
-         erg1Cz1d6RfODU//ojpFBsKAZJazyAynpbgvYEINkTB8nNKcGeNT7wqtCYiiY/JhvxNq
-         E18d24XycRKNDX3ksJbKH1ZLR0NEKATc0i6JsX6AC6EjgwH8E+FIM18XGjn5Q9gM+/ah
-         JAzA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793151255; x=1793756055; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ceSvdvJb2kczIli1psGhGhGu/Eg5GANFV15HZPGtyK8=;
-        b=mMYRoAcisf0Uv0owJKPukAKIfL7c12YS6OKkfoYZfyoMFNMJ7eus+7BpRGPiw9C8vm
-         5cCW9xRrVnwU+eCNzfH/D0BReJ2IzJRuDUNb4KSItkCXM3p9a5sD1uP1/6YVKp/gY9sm
-         CcFuNiKOdBy8qCkZ9A/sEaupaLvSAZw37UvLmz8Zp2CdVQR+m6ysMYXQxaOLYKuxRqpU
-         b8U7O/SWvq0+aSizN3M1o1mc8Q8lmxPev18OUJTwipi4ETz/lV4HKifGwblo5gZ2Vtlw
-         yuExrHRPgkcQErmw3S9LWeARnME6UhUboUm6iLfpqG9Ylo4aUJsMFXc7PopUyTKdSZGz
-         ol6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793151255; x=1793756055;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ceSvdvJb2kczIli1psGhGhGu/Eg5GANFV15HZPGtyK8=;
-        b=yG73yEeLUDwEpboufxdJLZ7IONiq51qqtbYO8md0MXDnUmdFxSMMfVqf0Fp9sPxcHy
-         7ur8pfaAI2w+gdBTMTNcxrRNwkTYWsR6nzfpQkhiThc5s6LFHGnZqLhl+nrjY5NfxZoN
-         PAWxuXKWPKdhGUBcgU1kPwBiurVHR9EmcLFKEaddE6kPsFjwBPoJQiys6LqDwMw4Xt2b
-         cvaBiXrxF3LsgaU2iRZiNsZID04MAjoIZbrEHPzR36bHn2bBc1qy4ULAp17ldEGZDpn1
-         xU2V0pjd/uPfl1s2tCJrMfZzfh0/2cRJ5TYFvOoT58tHV2VLGuzXolnpQ+XOF+g2BXco
-         w1WQ==
-X-Gm-Message-State: AFq9FYKtmq4uypNr5gSObVf1cuGIEb0ByMH//dJPjDEbixu7QZ8jyHKL
-	GpOvQQiv+TFBjWLTOaRC2q15YyfRMVD8omZBVjeDtOb3En0GFFInRMn4pOxwEgWSM4vMZV0Ft1R
-	j5VS+gcGPnLBl7VMZB+r/gs594H2l6ciEZ00N
-X-Gm-Gg: AYBFou1DBYdXAau2MxbQgJpL7Z2K+lXvPPNfYkithmKraBo08HqnCQmLKB2Igb6sAeD
-	Ux77AfBpjrwJTM3XaBj3psH6Oye2l5DpabQmeOAiajYJhPUAxLr98D4TORdy6IZ8CsXDPmuo+MC
-	ozLAI9lLE9J4tRy6zWPV9lGt67SAg783/vJIlKobK5+/umU5N78P3hXRUgeZPDRYNvVOAx/NZ/2
-	cO6igbTjMqVylS1eUA/yKarXP+COZb3EqK9YRzhzfRs4DSV5lueK+SYfV8EZK2v70h39AYTo01v
-	5xLYcGc6WovZR3HejMd9UvM7FhRg8Fdi+Yf7iIoZZbDuxps5/U223rwc0pTUusr0Rmqki0qUq9s
-	wR0KM/2yUg7J01mF0Tr4A9orkIXb2USQdRq9kI3Y/6f2N2PmKl4wriFoA5gmVOCewenkZWAZFav
-	e/O/voTP3Toqh7pWIjO2q4ISVpI4lIQbpDwGq9stiZuvRBd5mKeoQ3wM0S
-X-Received: by 2002:a05:6808:168c:b0:4f4:6421:5efe with SMTP id
- 5614622812f47-56383d93653mr590787b6e.36.1793151254639; Tue, 27 Oct 2026
- 18:34:14 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YXoOe7Y8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793152303; x=1824688303;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Zzd3TmgZ5MZHTciE28cEVWUNl7miIFyDQPHHPlpHXlk=;
+  b=YXoOe7Y86B0AUPUF/rtlMmst1xRmqFoEOZVAl0o0Xu7rhU4c/Os/g2Yt
+   +FqyXFJLzg3PMBXvrJA6CupZbTZDrSb5f+dppboOTq/o8VQlNPbIUWdIF
+   Sp3GBnnHN5XwgwwJ5Wp5Q+nMiygUZwjqecE4AFtaJRI4wxfOWnxitdt8o
+   tfAIOkFzL74IksD6rMVko78IprkoatHKvoXEX7zb27yuoQ7bDRFvLdIy5
+   YJNwnawEeEyC4CJMlSCtaB1PKcWbMVR7O0Bs7pyHU+c2GB3maZd6zMK0F
+   XuBik5VuC0NJqDeUzyN0Yz4PUgx0FTeDpyr8kZioFiB6muG2JTuinQvyu
+   w==;
+X-CSE-ConnectionGUID: CxeoRpg2SFuST8u3EcZJGw==
+X-CSE-MsgGUID: pc62YxoxTUqzr2zyliavNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1891842"
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="1891842"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 18:51:42 -0700
+X-CSE-ConnectionGUID: HdRX+of/TbSxvEJrPBy/1g==
+X-CSE-MsgGUID: lKJx0SVBQSOcrz+Lw88BzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="6533872"
+Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 18:51:38 -0700
+Message-ID: <b35a10e9-e48a-4da5-84d6-caaad693bb3d@linux.intel.com>
+Date: Wed, 28 Oct 2026 09:51:18 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,197 +72,469 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CA+qxPTe6Dh7Yafw5zRJg1HxU61z7SvZuCOHDrpY2xe5X+M68iQ@mail.gmail.com>
- <auCrmeMslCWoiebJ@google.com>
-In-Reply-To: <auCrmeMslCWoiebJ@google.com>
-From: Sam H <sam.martin.howell@gmail.com>
-Date: Wed, 28 Oct 2026 11:34:04 +1000
-X-Gm-Features: AclHuK9hNjK1eEsKCfDoeAFGfQRcHRcRlQ8F8_4N7nX75WPfwG0zGXp8diphXug
-Message-ID: <CA+qxPTfmTETd8Sr7Vfw8FrEpjybSiO6A0fjRbV6HBqW8aEorcA@mail.gmail.com>
-Subject: Re: KVM: SVM: 32-bit PAE Windows 2000 guest crashes with AVIC on Zen
- 2 (EPYC 7402), reproducible in seconds
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/18] iommu/vt-d: Implement device and iommu
+ preserve/unpreserve ops
+To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ David Woodhouse <dwmw2@infradead.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ John Starks <dev@jstarks.net>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-7-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261025021930.674647-7-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
->> I have a 32-bit Windows 2000 guest running the PAE kernel
->
-> On purpose?  :-D
+On 10/25/26 10:19, Samiullah Khawaja wrote:
+> Add implementation of the device and iommu preservation in a separate
+> file. Also set the device and iommu preserve/unpreserve ops in the
+> struct iommu_ops.
+> 
+> Preservation is refused for devices where ATS is supported. Carrying an
+> active ATS configuration across kexec would require adopting the ATS
+> state in the PCI core and in the context entries, and handling the
+> disable-to-enable, enable-to-disable and STU mismatch cases for a live
+> device.
+> 
+> Note that the preserved iommu root table, context table and device pasid
+> table will need cleanup as devices do not go through the release flow
+> during kexec. So the stale entries need to be removed during shutdown.
+> This is done in the next commit.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>   MAINTAINERS                      |   8 +
+>   drivers/iommu/intel/Makefile     |   1 +
+>   drivers/iommu/intel/iommu.c      |   9 +-
+>   drivers/iommu/intel/iommu.h      |  13 ++
+>   drivers/iommu/intel/liveupdate.c | 246 +++++++++++++++++++++++++++++++
+>   include/linux/kho/abi/iommu.h    |  27 ++++
+>   6 files changed, 302 insertions(+), 2 deletions(-)
+>   create mode 100644 drivers/iommu/intel/liveupdate.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 08800ff55cae..15e1da41b0cc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13231,6 +13231,14 @@ S:	Supported
+>   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/iommu/linux.git
+>   F:	drivers/iommu/intel/
+>   
+> +INTEL IOMMU LIVEUPDATE (VT-d)
+> +M:	Samiullah Khawaja <skhawaja@google.com>
+> +M:	Lu Baolu <baolu.lu@linux.intel.com>
+> +L:	iommu@lists.linux.dev
+> +S:	Maintained
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/iommu/linux.git
+> +F:	drivers/iommu/intel/liveupdate.c
+> +
+>   INTEL IPU3 CSI-2 CIO2 DRIVER
+>   M:	Yong Zhi <yong.zhi@intel.com>
+>   M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+> diff --git a/drivers/iommu/intel/Makefile b/drivers/iommu/intel/Makefile
+> index ada651c4a01b..d38fc101bc35 100644
+> --- a/drivers/iommu/intel/Makefile
+> +++ b/drivers/iommu/intel/Makefile
+> @@ -6,3 +6,4 @@ obj-$(CONFIG_INTEL_IOMMU_DEBUGFS) += debugfs.o
+>   obj-$(CONFIG_INTEL_IOMMU_SVM) += svm.o
+>   obj-$(CONFIG_IRQ_REMAP) += irq_remapping.o
+>   obj-$(CONFIG_INTEL_IOMMU_PERF_EVENTS) += perfmon.o
+> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 5a2e705a2f2e..14bd1ca4fbd5 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -16,6 +16,7 @@
+>   #include <linux/crash_dump.h>
+>   #include <linux/dma-direct.h>
+>   #include <linux/dmi.h>
+> +#include <linux/iommu-liveupdate.h>
+>   #include <linux/memory.h>
+>   #include <linux/pci.h>
+>   #include <linux/pci-ats.h>
+> @@ -56,8 +57,6 @@ static int rwbf_quirk;
+>    */
+>   int intel_iommu_tboot_noforce;
+>   
+> -#define ROOT_ENTRY_NR (VTD_PAGE_SIZE/sizeof(struct root_entry))
+> -
+>   /*
+>    * Take a root_entry and return the Lower Context Table Pointer (LCTP)
+>    * if marked present.
+> @@ -4070,6 +4069,12 @@ const struct iommu_ops intel_iommu_ops = {
+>   	.is_attach_deferred	= intel_iommu_is_attach_deferred,
+>   	.def_domain_type	= device_def_domain_type,
+>   	.page_response		= intel_iommu_page_response,
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +	.preserve_device	= intel_iommu_preserve_device,
+> +	.unpreserve_device	= intel_iommu_unpreserve_device,
+> +	.preserve		= intel_iommu_preserve,
+> +	.unpreserve		= intel_iommu_unpreserve,
+> +#endif
+>   };
+>   
+>   static void quirk_iommu_igfx(struct pci_dev *dev)
+> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+> index 5b3d234ae265..a6c0ed55db30 100644
+> --- a/drivers/iommu/intel/iommu.h
+> +++ b/drivers/iommu/intel/iommu.h
+> @@ -552,6 +552,8 @@ struct root_entry {
+>   	u64     hi;
+>   };
+>   
+> +#define ROOT_ENTRY_NR (VTD_PAGE_SIZE / sizeof(struct root_entry))
+> +
+>   /*
+>    * low 64 bits:
+>    * 0: present
+> @@ -1305,6 +1307,17 @@ static inline int iopf_for_domain_replace(struct iommu_domain *new,
+>   	return 0;
+>   }
+>   
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +int intel_iommu_preserve_device(struct device *dev,
+> +				struct iommu_device_ser *device_ser);
+> +void intel_iommu_unpreserve_device(struct device *dev,
+> +				   struct iommu_device_ser *device_ser);
+> +int intel_iommu_preserve(struct iommu_device *iommu,
+> +			 struct iommu_hw_ser *iommu_ser);
+> +void intel_iommu_unpreserve(struct iommu_device *iommu,
+> +			    struct iommu_hw_ser *iommu_ser);
+> +#endif
+> +
+>   #ifdef CONFIG_INTEL_IOMMU_SVM
+>   void intel_svm_check(struct intel_iommu *iommu);
+>   struct iommu_domain *intel_svm_domain_alloc(struct device *dev,
+> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+> new file mode 100644
+> index 000000000000..0047f9d92cbc
+> --- /dev/null
+> +++ b/drivers/iommu/intel/liveupdate.c
+> @@ -0,0 +1,246 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +/*
+> + * Copyright (C) 2026, Google LLC
+> + * Author: Samiullah Khawaja <skhawaja@google.com>
+> + */
+> +
+> +#define pr_fmt(fmt)    "DMAR: liveupdate: " fmt
+> +
+> +#include <linux/kexec_handover.h>
+> +#include <linux/liveupdate.h>
+> +#include <linux/iommu-liveupdate.h>
+> +#include <linux/module.h>
+> +#include <linux/pci.h>
+> +
+> +#include "iommu.h"
+> +#include "../iommu-pages.h"
+> +
+> +/* 2 tables per bus in scalable mode with upper table at odd bit */
+> +#define CONTEXT_TABLE_PRESERVED_BIT(bus, devfn) (((bus) << 1) + ((devfn) >> 7))
+> +static bool is_context_table_preserved(struct intel_iommu *iommu,
+> +				       struct iommu_hw_ser *ser,
+> +				       u8 bus, u8 devfn)
+> +{
+> +	return test_bit(CONTEXT_TABLE_PRESERVED_BIT(bus, devfn),
+> +			(unsigned long *)&ser->intel.context_tables_bitmap[0]);
+> +}
+> +
+> +static void unpreserve_context_table(struct intel_iommu *iommu,
+> +				     struct iommu_hw_ser *ser,
+> +				     u8 bus, u8 devfn)
+> +{
+> +	struct context_entry *context;
+> +
+> +	/*
+> +	 * In the Intel IOMMU driver, context tables are never freed once they
+> +	 * are allocated during runtime, as they can be shared across multiple
+> +	 * devices. So taking the iommu lock here to protect against concurrent
+> +	 * allocations inside iommu_context_addr() should be enough. Once the
+> +	 * address is read, it is safe to use it without holding the lock.
+> +	 */
+> +	spin_lock(&iommu->lock);
+> +	context = iommu_context_addr(iommu, bus, devfn, 0);
+> +	spin_unlock(&iommu->lock);
+> +	if (context && is_context_table_preserved(iommu, ser, bus, devfn)) {
+> +		iommu_unpreserve_pages(context);
+> +		clear_bit(CONTEXT_TABLE_PRESERVED_BIT(bus, devfn),
+> +			  (unsigned long *)&ser->intel.context_tables_bitmap[0]);
+> +	}
+> +}
+> +
+> +static int preserve_context_table(struct intel_iommu *iommu,
+> +				  struct iommu_hw_ser *ser,
+> +				  u8 bus, u8 devfn)
+> +{
+> +	struct context_entry *context;
+> +	int ret;
+> +
+> +	spin_lock(&iommu->lock);
+> +	context = iommu_context_addr(iommu, bus, devfn, 0);
+> +	spin_unlock(&iommu->lock);
+> +
+> +	/*
+> +	 * Intel IOMMU context tables are never freed by the driver once
+> +	 * allocated. It is safe to access the context pointer outside of the
+> +	 * iommu->lock.
+> +	 *
+> +	 * The check and set of the context_tables_bitmap below is not atomic.
+> +	 * This is fine as the IOMMU core serializes the preserve_device() and
+> +	 * unpreserve() callbacks using the lock of its liveupdate FLB object.
+> +	 * That lock is private to the IOMMU core, so it cannot be asserted here.
+> +	 */
+> +	if (context && !is_context_table_preserved(iommu, ser, bus, devfn)) {
+> +		ret = iommu_preserve_pages(context);
+> +		if (ret)
+> +			return ret;
+> +
+> +		set_bit(CONTEXT_TABLE_PRESERVED_BIT(bus, devfn),
+> +			(unsigned long *)&ser->intel.context_tables_bitmap[0]);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void unpreserve_iommu_context_tables(struct intel_iommu *iommu,
+> +					    struct iommu_hw_ser *ser)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+> +		unpreserve_context_table(iommu, ser, i, 0);
+> +
+> +		if (!sm_supported(iommu))
+> +			continue;
+> +
+> +		unpreserve_context_table(iommu, ser, i, 0x80);
+> +	}
+> +}
+> +
+> +static int preserve_iommu_context_tables(struct device_domain_info *info)
+> +{
+> +	struct iommu_hw_ser *iommu_ser;
+> +	struct intel_iommu *iommu;
+> +	int ret;
+> +	int i;
+> +
+> +	/* IOMMU for this device should already preserved.*/
 
-My face when I accidentally boot a Windows 2000 guest running the PAE
-kernel again xD
+... should already be preserved ...
 
-Unfortunately, I inherited it. It's for a monolith app running on
-servers older than I am. We are currently trying to strangler fig it
-out of existence into microservices, but until the last vine closes in
-it has to keep running. When they bought the replacement hypervisor
-server, before I started, they didn't think (or know) to check for
-things like this, so the old dying box with Intel CPU's works fine and
-the new AMD one doesn't.
+> +	iommu = info->iommu;
+> +	iommu_ser = iommu_preserved_state(&iommu->iommu);
+> +	if (!iommu_ser)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * We could do preservation of context tables only for the bus of this
+> +	 * device, but these devices can have PCI aliases, so context tables for
+> +	 * those will also require preservation. Also unpreserve would require
+> +	 * some kind of refcounting where the context table will only be
+> +	 * unpreserved when the last device associated with it is unpreserved.
+> +	 *
+> +	 * This introduces unnecessary complication with minimum benefits as the
+> +	 * unpreserved context tables will probably be recreated by the next
+> +	 * kernel as these are all active devices. We follow simpler approach by
+> +	 * just preserving the currently active context tables.
+> +	 */
+> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+> +		ret = preserve_context_table(iommu, iommu_ser, i, 0);
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (!sm_supported(iommu))
+> +			continue;
+> +
+> +		ret = preserve_context_table(iommu, iommu_ser, i, 0x80);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
+> + * @dev: Target device
+> + * @device_ser: Struct to populate with serialized device state
+> + *
+> + * Return: 0 on success, or negative error code.
+> + */
+> +int intel_iommu_preserve_device(struct device *dev,
+> +				struct iommu_device_ser *device_ser)
+> +{
+> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
+> +	int ret;
+> +
+> +	if (!dev_is_pci(dev)) {
+> +		dev_err(dev, "Cannot preserve non-PCI device\n");
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	if (dev_is_real_dma_subdevice(dev))
+> +		return -EOPNOTSUPP;
+> +
+> +	if (!info || !info->domain)
+> +		return -EINVAL;
+> +
+> +	if (info->ats_supported)
+> +		return -EOPNOTSUPP;
+> +
+> +	/*
+> +	 * intel_iommu_preserve() is only called once per IOMMU, when the first
+> +	 * device behind it is preserved. The context tables are allocated on
+> +	 * demand as devices are probed, so new context tables might have been
+> +	 * allocated since then. Preserve all the currently allocated context
+> +	 * tables every time a device is preserved, so the context tables of the
+> +	 * device being preserved are always covered.
+> +	 */
+> +	ret = preserve_iommu_context_tables(info);
+> +	if (ret)
+> +		return ret;
+> +
+> +	device_ser->attachment.attachment_id = domain_id_iommu(info->domain,
+> +							       info->iommu);
+> +	return 0;
+> +}
+> +
+> +/**
+> + * intel_iommu_unpreserve_device() - Intel IOMMU callback to unpreserve device state
+> + * @dev: Target device
+> + * @device_ser: Struct containing serialized device state
+> + */
+> +void intel_iommu_unpreserve_device(struct device *dev,
+> +				   struct iommu_device_ser *device_ser)
+> +{
+> +	/*
+> +	 * The context tables preserved during device preservation, in the
+> +	 * preserve_device() callback, might be shared with other devices, so
+> +	 * those are unpreserved in the iommu unpreserve() callback. So this
+> +	 * callback is kept empty.
+> +	 *
+> +	 * Once device PASID tables are preserved, the unpreservation of PASID
+> +	 * tables will be added here.
+> +	 */
+> +}
+> +
+> +/**
+> + * intel_iommu_preserve() - Intel IOMMU callback to preserve hardware state
+> + * @iommu_dev: Generic IOMMU device handle
+> + * @ser: Struct to populate with serialized hardware state
+> + *
+> + * Return: 0 on success, or negative error code.
+> + */
+> +int intel_iommu_preserve(struct iommu_device *iommu_dev,
+> +			 struct iommu_hw_ser *ser)
+> +{
+> +	struct intel_iommu *iommu;
+> +	int ret;
+> +
+> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
+> +
+> +	ret = iommu_preserve_pages(iommu->root_entry);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ser->intel.sm_enabled = sm_supported(iommu);
+> +	ser->intel.phys_addr = iommu->reg_phys;
+> +	ser->intel.root_table = __pa(iommu->root_entry);
+> +	ser->type = IOMMU_SER_TYPE_INTEL;
+> +	ser->token = ser->intel.phys_addr;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * intel_iommu_unpreserve() - Intel IOMMU callback to unpreserve hardware state
+> + * @iommu_dev: Generic IOMMU device handle
+> + * @ser: Struct containing serialized hardware state
+> + */
+> +void intel_iommu_unpreserve(struct iommu_device *iommu_dev,
+> +			    struct iommu_hw_ser *ser)
+> +{
+> +	struct intel_iommu *iommu;
+> +
+> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
+> +
+> +	unpreserve_iommu_context_tables(iommu, ser);
+> +	iommu_unpreserve_pages(iommu->root_entry);
+> +}
+> diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
+> index 20e6c764aa2e..95354a12ba1d 100644
+> --- a/include/linux/kho/abi/iommu.h
+> +++ b/include/linux/kho/abi/iommu.h
+> @@ -77,12 +77,14 @@
+>   /**
+>    * enum iommu_type_ser - Type of the IOMMU being preserved
+>    * @IOMMU_SER_TYPE_INVALID: Invalid type of IOMMU
+> + * @IOMMU_SER_TYPE_INTEL: Intel VT-d IOMMU
+>    *
+>    * IOMMU type is stored in the IOMMU HW state to differentiate between various
+>    * IOMMU HWs.
+>    */
+>   enum iommu_type_ser {
+>   	IOMMU_SER_TYPE_INVALID,
+> +	IOMMU_SER_TYPE_INTEL,
+>   };
+>   
+>   #define IOMMU_SER_FLAG_DELETED	BIT(0)
+> @@ -155,18 +157,43 @@ struct iommu_device_ser {
+>   	u64 reserved[2];
+>   } __packed;
+>   
+> +/* There are maximum 256 buses, so maximum 512 context tables */
+> +#define VTD_PRESERVED_BITMAP_LONGS  DIV_ROUND_UP(512, BITS_PER_LONG_LONG)
+> +
+> +/**
+> + * struct iommu_intel_ser - Serialized state of an Intel IOMMU instance
+> + * @features: Bitmask of Intel IOMMU specific features
+> + * @sm_enabled: Whether the IOMMU was used in scalable mode
+> + * @phys_addr: Physical address of the IOMMU register base
+> + * @root_table: Physical address of the root entry table
+> + * @context_tables_bitmap: Bitmap representing the context tables that are
+> + * preserved.
+> + */
+> +struct iommu_intel_ser {
+> +	u32 features;
+> +	u8 sm_enabled;
+> +	u8 padding[3];
+> +	u64 phys_addr;
+> +	u64 root_table;
+> +	u64 context_tables_bitmap[VTD_PRESERVED_BITMAP_LONGS];
+> +} __packed;
+> +
+>   /**
+>    * struct iommu_hw_ser - Serialized state of an IOMMU instance
+>    * @hdr: Common object header
+>    * @token: Unique token to identify the IOMMU instance
+>    * @type: IOMMU type serialized state belongs to
+>    * @reserved: Reserved for future common fields.
+> + * @intel: Intel specific serialization data
+>    */
+>   struct iommu_hw_ser {
+>   	struct iommu_hdr_ser hdr;
+>   	u64 token;
+>   	u64 type;
+>   	u64 reserved[2];
+> +	union {
+> +		struct iommu_intel_ser intel;
+> +	};
+>   } __packed;
+>   
+>   /**
 
->> Host
->> - 2 x AMD EPYC 7402 (family 17h), microcode 0x830107d
->
-> Do you have access to Zen4+ hardware?  If this only reproduces on Rome (Zen2),
-> then unfortunately the answer is going to be "don't run AVIC on Rome".
+This patch looks good to me,
 
-Yes, and it reproduces on Zen 4 as well.
-
-I copied the same disk clone to a Zen 4 host and ran it with the same
-QEMU arguments and the same stress load. It crashed twice out of two
-valid runs.
-
-Zen 4 host
-- AMD Ryzen Threadripper 7960X (family 19h, model 0x18), 1 socket,
-microcode 0xa10810c, CPU flags avic and x2avic
-- Ubuntu 24.04, kernel 7.0.0-38.38~24.04.4-generic (based on 7.0.14)
-- QEMU 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)
-- kvm_amd: avic=Y, enable_ipiv=Y, vnmi=Y, npt=Y
-- AVIC confirmed active during the runs with kvm tracing, not only
-from the module parameter
-
-Guest (same as the Rome runs)
-- Same disk clone, booted on a throwaway qcow2 overlay each run
-- Windows 2000 Datacenter Server SP4 kernel (5.00.2195.6717), boot.ini
-/PAE /3GB, CR4 0x6b1 on all 8 vCPUs
-- -cpu kvm64, machine pc-i440fx-5.1, 2 sockets x 4 cores (8 vCPU),
-8192 MiB, numa on
-- -machine hpet=off -rtc driftfix=slew -global kvm-pit.lost_tick_policy=discard
-
-Results
-- AVIC on, /PAE /3GB: crashed within 28 s of starting the stress
-  STOP 0x0000004E PFN_LIST_CORRUPT (0x00000099, 0x0, 0x0, 0x00000000)
-- AVIC on, /PAE /3GB, repeat: crashed 10 s after starting the stress
-  STOP 0x0000004E PFN_LIST_CORRUPT (0x00000099, 0x0, 0x1, 0x00000000)
-
-The stop code is different from Rome (0x0A there), but the pattern is
-the same. Parameter 1 0x99 is a PTE pointing at an invalid PFN, and
-the PFN is 0. That fits a page table read coming back as zero, which
-is what the 0x0A crashes on Rome showed. At the time of the crash 7 of
-the 8 vCPUs were stopped at the same EIP (0xDD431D87), and the
-crashing vCPU was at 0xDD069C0E doing port I/O to 0x1F0 while it wrote
-the dump. The EIPs differ from my first mail because this clone is now
-on the SP4 kernel and not Update Rollup 1.
-
-Things that differ from the Rome host, for completeness: QEMU 8.2.2
-here against 11.0.3 there, enable_ipiv=Y here against N there, and
-x2AVIC and vNMI are available here.
-
-What I do not have yet
-- A clean AVIC off control on the Zen 4 host. My one attempt did not
-finish booting the guest and I stopped it before any stress ran, so I
-am not counting it. I will rerun it and follow up with the result.
-- A reproducer I can share. The disk clone holds company data and
-Windows 2000 is not mine to redistribute. A Debian 12 i386 guest on
-the 686-pae kernel, same QEMU machine plus kvm=off -x2apic, under a
-fork/exec/exit storm (about 21,600 forks/s across 8 vCPUs) ran for
-about 4 minutes without a crash. That is a short run, so I would not
-call it conclusive. Next I will try a clean Windows 2000 SP4 install
-with the same QEMU arguments and boot.ini. If that crashes, I can send
-the full steps to rebuild it from your own media plus the stress
-script, which is ours.
-
-In the meantime the offer stands. I can run any patch or debug build
-against the clone on either host, and I can send vCPU register
-captures and KVM traces from the Zen 4 crashes. The full memory dumps
-contain company data, so I can't post those, but I can pull anything
-specific out of them on request.
-
-Thanks,
-Sam Howell
-
-On Tue, 27 Oct 2026 at 23:48, Sean Christopherson <seanjc@google.com> wrote:
->
-> On Tue, Oct 27, 2026, Sam H wrote:
-> > Hey KVM Team,
-> >
-> > I have a 32-bit Windows 2000 guest running the PAE kernel
->
-> On purpose?  :-D
->
-> > that bugchecks within 15 to 134 seconds under a process churn load on an AMD
-> > Zen 2 host with AVIC enabled. The same guest survives the same load with AVIC
-> > off, or with PAE off. I have a disk clone that reproduces it on demand and
-> > can test patches against it.
-> >
-> > Host
-> > - 2 x AMD EPYC 7402 (family 17h), microcode 0x830107d
->
-> Do you have access to Zen4+ hardware?  If this only reproduces on Rome (Zen2),
-> then unfortunately the answer is going to be "don't run AVIC on Rome".
->
-> > - Proxmox VE 9.2.21, kernel 7.0.14-25-pve, QEMU 11.0.3 (pve-qemu-kvm 11.0.3-4)
-> > - kvm_amd: avic=Y, enable_ipiv=N, npt=Y
-> > - Also crashes on 6.14.8-2-pve (no enable_ipiv parameter on that kernel)
-> >
-> > Guest
-> > - Windows 2000 Datacenter Server SP4, boot.ini /PAE /3GB (ntkrpamp)
-> > - Crashes on both the SP4 kernel (5.00.2195.6717) and the Update
-> > Rollup 1 kernel (5.00.2195.7045)
-> > - -cpu kvm64, machine pc-i440fx-5.1, 2 sockets x 4 cores (8 vCPU),
-> > 8192 MiB, numa on
-> > - Extra args: -machine hpet=off -rtc driftfix=slew -global
-> > kvm-pit.lost_tick_policy=discard (the PIT policy is what keeps AVIC
-> > active for this guest)
-> >
-> > Crash
-> > - STOP 0x0000000A IRQL_NOT_LESS_OR_EQUAL, IRQL 2, always in ntkrnlpa.exe.
-> > - SP4 kernel: 0x0A (0x00000154, 2, 0, 0xDD537EAF), ntkrnlpa+0x137EAF,
-> > mov ecx,[ebx+0x154] with ebx = 0 or 0xF000FF53 (the real mode IVT
-> > pattern, i.e. the contents of guest physical page 0).
-> > - UR1 kernel: 0x0A (0x00000098, 2, 0, 0xDD53C9E6), ntkrnlpa+0x13C9E6,
-> > read of [esi+0x98] with esi = 0.
-> > - One write variant was also seen: 0x0A (0x00000098, 2, 1, 0xDD53C84C).
-> > - The faulting code is the PAE memory manager's hyperspace page table
-> > walk: it maps a page table page into a per-CPU hyperspace slot by
-> > writing a PTE, then reads through the slot, and the read comes back
-> > zero.
-> > - When it crashes, 7 of the 8 vCPUs are stopped at the same EIP
-> > (0xDD4335C3) and the crashing vCPU is at 0xDD06A1A6.
-> >
-> > Reproducer
-> > 6 concurrent sessions, each looping 200 short cmd.exe processes plus
-> > one debug.exe, so heavy process create and exit.
-> >
-> > Results on the clone (stress started after boot, same disk each time;
-> > 8 vCPU 2x4, kvm64, numa on, 8192 MiB unless stated)
-> > - AVIC on, /PAE /3GB (baseline): crashed at 134 s
-> > - AVIC on, /3GB only, no /PAE: survived 300 s
-> > - AVIC on, /PAE /3GB, 3584 MiB (no RAM above 4 GB): crashed at 26 s
-> > - AVIC on, /PAE without /3GB: crashed at 30 s
-> > - AVIC on, /PAE /3GB, QEMU vapic=off: crashed at 26 s
-> > - AVIC off (PIT reinject), /PAE /3GB: survived 600 s, twice
-> > - AVIC on, /PAE /3GB, repeat with tracing: crashed at 15 s
-> > - AVIC on, /PAE /3GB, 1 socket x 8 cores: crashed at 50 s
-> > - AVIC on, no /PAE, 30 minute soak: survived 1800 s
-> >
-> > The production copy of the guest also crashed 3 times in one day on a
-> > single vCPU with AVIC on (7.0.14-25, enable_ipiv=N), so one vCPU
-> > lowers the rate but does not remove it. Setting the CPU vendor to
-> > GenuineIntel made no difference. During a traced run the AVIC IRQ
-> > window toggled about 1 to 2 times a second, so I do not think it is
-> > the IRQ window inhibit issue.
-> >
-> > The same guest image ran on an Intel Xeon E5-2620 v4 host (Proxmox VE
-> > 5.4, kernel 4.15) for years and has no crash dumps on its disk from
-> > that time.
-> >
-> > What I have not tested: npt=0, because AVIC needs NPT, so npt=0 would
-> > also turn AVIC off and could not tell the two apart from the AVIC off
-> > run above. It would also be a host wide change on a host running ~70
-> > other production workloads/guests, and we can't risk performance
-> > impacts. Also kernels other than 6.14 and 7.0.
-> >
-> > A possibly relevant difference: AMD APM Vol 2 section 15.25.10 says
-> > that under nested paging the guest's PAE PDPTEs are not loaded at MOV
-> > CR3 the way they are natively or under Intel EPT. I have not proven
-> > that is the mechanism, and the AVIC off result says interrupt delivery
-> > or timing plays a part as well.
-> >
-> > I can provide the two minidumps, register captures of all vCPUs at the
-> > moment of a crash, and KVM traces, and I can run any patch against the
-> > clone.
-> >
-> > Thanks,
-> > Sam Howell
-> >
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
