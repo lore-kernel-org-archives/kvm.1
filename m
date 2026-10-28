@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793214187;
-	b=S+5D9hqU9g7DgKYN3fRPguqqP+k3g9w0wMWiQCS7C/ul70VPRSGaQ20InJkDspDzW+vI
-	 KXx8+AeL8q/pRoaTzlHkCoqM73O+fWaPmQ1Lz7yl8B4rfAQ4NMlZ710fBKZ1rHI7ruQ3l
-	 OuRb/TRnJl3W2KTHFFPxyp77wBjTvFWiApDEVFUZdSTQyCCMHXfWS3/6LIDMpdpEuCiFp
-	 yrNg494Yczhp3r1f/3s6yIs4oZAnu/eRl82A5Q52SrQ0UWUvmJrmdSSjb0aKljhrsCGsV
-	 YvL0llnZGTSWd4GD/634S+ZiTJhsXtlnsAxFf4GJ/VIZK/SvCp7Qxx1kG0V3+gqgaXw==
+	t=1793214184;
+	b=v4LehKzDrdlMhMG/vxXqfeGsFw/rw0SFeEAogo54vbtaeJzLxYHcg8Mr3NUiQH6MghX8
+	 0sclcN0qR/gWej1ea80nrLQCXKKlBuv9vFvhAYPLrQlmEHUgafCGo8f3rR11Cj8ZZkYyU
+	 y2amSBfgrFj9SQGcVz1/bQ7r7y93zY9txC4whFD98lNXhebu4DjtM+1GFbRu1BvRwbOIV
+	 J+Cca0Lx9ed3bmj7YgGIdd6T4pA+u1XfKWfaRLnPXP61l4BFRiBaLvSO57Ooxgj9OJBrJ
+	 cDr5TE9bjcl63osQGNwwlWoYWrCinALvjTYC2atSxEMixuMV+a0FdsPLI65vPKwtu9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793214187;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793214184;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
 	 In-Reply-To:Mime-Version:References:X-Mailer:Message-ID:Subject:From:
 	 To:Cc:Content-Type;
-	bh=RloCiG6ktfajfft7oZXWWlUR2yO2W/arq16CEWx06hk=;
-	b=hxeKCCE8BO2+EG6U/YU0LhfZaIoyByKueTJ13ieFjORBDCsFSBFfCwtUhhQ54wGSSH5a
-	 8CFCtfLSPPdQ/4NdoTipRUY4/+mNftUC4GqHehlq284akMttEWhLosK/ylcllNjrQJzBI
-	 Ez7mFeIbQJlXfBVAYZABiz1nftbSR73ogE+yBgP71e3Er4z7z4KMXxOHKRsAEUCQLqLgZ
-	 EV+407NQEydBat+f6mCzlAXtWooI/qndI3xOLrvVUuGhM/DCPjJJ4Okj84GYbFdkjFql7
-	 Ad5n4DLWgFV9qkDSzVLiRxO6PAdEJ3Uc4ZjF0NDYzdGG9siePoU//2+e/Xz6RoqLJWQ==
+	bh=LaqWhYbOMD7sY9Ovf2nEN4IH4sn07uRJnSek/bjgEtY=;
+	b=JHi1b9EekqQHguRnhlqLSjIVfqq8A9avSORVJnFAwDSZDUZqQzIKqeWGkbbt6PAUdY5j
+	 QqIcGhWl2mlozPBRYgBb4HHC17M7OnhlO9WF9umy0tYesyzi9FKJXQUyWvAGDYi2UCVVt
+	 jWi2zfJoJ69FPnU+fH3iy4sl2BwhJvL+vR7dvxEipDthMKvcIB6Ogt2AqH4RiD7yeaAsH
+	 K4iXwOr4CIh08dhfiXDe2O+8wcBXBEVH5egfKW7+urmM+t5Qi6X5eqjKagE1Bx/bN3S6k
+	 Mg3srrr9N/4Rdf3hJEfhHqzh3R77UHw0US80/8f1Ox4h7RlLHyTJWCbSWEYkEpTfU8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jzH4kia2;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PBBEXKdM;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DF660A3809
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 19:03:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82DF660A3809
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A885B606A33D
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 19:03:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A885B606A33D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jzH4kia2
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e95f8543c9so10025985ad.3
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 12:03:07 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PBBEXKdM
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3adad90c894so1402162a91.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 12:03:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793214187; x=1793818987; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793214183; x=1793818983; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=RloCiG6ktfajfft7oZXWWlUR2yO2W/arq16CEWx06hk=;
-        b=jzH4kia2yfr+yDj533Sy1CVo5oa3Snw3/kZKq+TA4XhD5kt7pldlMsWeTQ4KVx7ejN
-         TRW33zJGMnikyEo6KpCgTjRSveMnJdDy4cTdCYVS0XvWWMQEtXtWWUBOYD9r7m5KlE4/
-         6a5zVFGT3nMx0Ldnw48TJaSYVRCv0n2Y379J0cBvTj8GLHS+HID7guUQmbT0rh/6Euuv
-         QgYZKBM00ohhrMhckJvzpFs3QgEWPsIz3o39+ONWhEoCeFxINcRozL9VPC24L4CsTn9F
-         +1GJOiq5584WhDCQBB9uEeTB5wvjACeZ9Rt9VJ3yegkAssNd8Qt+QW+jCZ0uLZLdrBQg
-         82+w==
+        bh=LaqWhYbOMD7sY9Ovf2nEN4IH4sn07uRJnSek/bjgEtY=;
+        b=PBBEXKdMwfX+FjL1d5AZipaGfCOiVWPE3ZyGym/gyDjDtfCSZrVdtSa4uiqDHkUAnw
+         nWn0JCeheccbKH+eq26vu7CIhvWZv7xT5cW7fsKeMpcAlFpHqzT5ibP85wG2AX/lsRon
+         TdSnzsVXvxkKaZGTazt7S0ncI90qxjJdg+x21UouS6k4kJRok83E8UPGJr897LPL3tDR
+         /Nx3bD17OLmsPvbZe4ifj4bJFa5nRrjMjbh3Fcx2L0ohXcoB4bWCgz/MfbE825NH4Bcv
+         JyNMLGtOSIuFQPO/uobuTFC/iJS3fXRYHvdJqMkt4W9++3eQzL5XW+luaLqedqQZ/n95
+         IBNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793214187; x=1793818987;
+        d=1e100.net; s=20260707; t=1793214183; x=1793818983;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=RloCiG6ktfajfft7oZXWWlUR2yO2W/arq16CEWx06hk=;
-        b=iEOwE++E9yD8TZS8H7kSAH9OiHZMTcatsjzO5sktQFXoYWjma8DJo+DAvipAXgqj33
-         tftRAU/d71khzXEsYB1STT28UdtiN7dwtgDDzUE5JJzGmzlLexWchLctb+z8IGZ4Yy7W
-         lM452PYXKaWmF8QOb7HzcN2WUS7ODbzzWOjHlBwCRsUFvIoNz9GBywjVnYdjrJaXYEIh
-         /0cCRTCFbTmADk25BpTWMfk97MR+iWeAqObl0C6gPNLDjDXahHmBOdgUipbkwr3m1UZI
-         8K+su4UicTtZGMO1isvm2s0lNbNGBpW9AbGG6ZsACARp0qOS1W/ZfkdaKpLVC3QHPXQT
-         BwMg==
-X-Forwarded-Encrypted: i=1; AKwUvBxujck5O0GqeCueYjkjaVbBWrSQCEaxcH/vsO4ahggyIjfORWTlTCNJQc6PNF80lbuwYes=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIpEeuAok/rWXrU+SvFV++mIIygXALh2Owm4VnRha6p66ockG6r
-	Sx072I/pKYcqACCkDrkFsodp7hHygB2undx/HOU3rt9VIvrJXfGfDgVlWLUinXuwk7oVFYh9koO
-	5Ilywhw==
-X-Received: from plma18.prod.google.com ([2002:a17:902:7d92:b0:2e9:73da:58d6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d504:b0:2e8:3d48:4d92
- with SMTP id d9443c01a7336-2eb003bf1dfmr27738995ad.33.1793214186739; Wed, 28
- Oct 2026 12:03:06 -0700 (PDT)
+        bh=LaqWhYbOMD7sY9Ovf2nEN4IH4sn07uRJnSek/bjgEtY=;
+        b=h0WPPouVVX+p+Idgpjj9HSXbGq6n4QQIi6jvdGfaO+DMALAg/2ZJsMI5WdgRBZhOxm
+         gSyjNH6xKQYZ2h+5aTpfPsFYPbtip25A2fA6oHRFLfR5GC/+QE3u8xH8DgjV+Y/2adYP
+         2Omgfg4CuVLVXCguBp4wIVG2oI+2jYKEU+HI8ymrIgZc/wDH7olqlRaiE+gm5jAlkdoG
+         56VqdKdHH8O5pq9FLyaGQRibTs9e0gXAWYB0ZFosL2RyNpKZbmLhv0SvGwfZWaLiT362
+         Ig0GzZNr6a247r5RqLHJ8bSrphZ3uCOWZE1p/AeDIY2dLpFW2RqoN44L0FoOxENevOhn
+         VeQw==
+X-Forwarded-Encrypted: i=1; AKwUvBwrIoFgjiisZeL04HF/0tQvbeZbifpehsMJLh8Qx7EFKF+MR0ucQAVKrJm9MX0MgHWvp18=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKv+oET1XR6dfoDynqaQq4lmJGxbCgC7j65LvKXF2cCOQu5f5VH
+	Uc7XRQ+R3sabcZMLL7hVzeVd3sgbQ4OUAlECiWW4WvehnHfBMfWJOf9wHpgLQxhRNeCLnFE3IKJ
+	Sog9Vqw==
+X-Received: from pjbmh6.prod.google.com ([2002:a17:90b:4ac6:b0:3aa:f38e:cb2d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:264d:b0:3ac:9d83:8856
+ with SMTP id 98e67ed59e1d1-3ae57e3d6c1mr2423992a91.9.1793214182870; Wed, 28
+ Oct 2026 12:03:02 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Oct 2026 12:02:56 -0700
+Date: Wed, 28 Oct 2026 12:02:53 -0700
 In-Reply-To: <20261028190259.1819571-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,9 +82,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261028190259.1819571-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261028190259.1819571-5-seanjc@google.com>
-Subject: [PATCH 4/7] KVM: MIPS: Rework kvm_arch_vcpu_should_kick() to use
- standard implementation
+Message-ID: <20261028190259.1819571-2-seanjc@google.com>
+Subject: [PATCH 1/7] KVM: s390: Drop unused and unreachable kvm_arch_vcpu_should_kick()
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -103,37 +102,34 @@ Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
 	Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Rework MIPS' kvm_arch_vcpu_should_kick() to use the "standard" arch
-implementation so that the arch hook can be dropped (MIPS is the only
-arch other than PPC that implements a non-standard hook, and PPC uses the
-recently added @force param when invoking __kvm_vcpu_kick() instead of
-relying on kvm_arch_vcpu_should_kick()).
+Drop s390's kvm_arch_vcpu_should_kick() stub as the one and only call site
+is wrapped with "#ifndef CONFIG_S390".
 
-Convert MIPS to the standard implementation even though the code should be
-unreachable (neither kvm_vcpu_kick() nor kvm_make_request_and_kick() are
-used by MIPS or common KVM), so that there is a bisection point if the
-code is somehow reachable.
-
-No functional change intended (because the code is currently unreachable).
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/mips/kvm/mips.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kvm/s390/s390.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index a53abbba43ea..c37e212bc0a3 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -122,7 +122,7 @@ bool kvm_arch_vcpu_in_kernel(struct kvm_vcpu *vcpu)
- 
- int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
- {
--	return 1;
-+	return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
+diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
+index 18fb200f854a..9900a1a1c148 100644
+--- a/arch/s390/kvm/s390/s390.c
++++ b/arch/s390/kvm/s390/s390.c
+@@ -3922,13 +3922,6 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
+ 	return false;
  }
  
- int kvm_arch_enable_virtualization_cpu(void)
+-int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+-{
+-	/* kvm common code refers to this, but never calls it */
+-	BUG();
+-	return 0;
+-}
+-
+ static int kvm_arch_vcpu_ioctl_get_one_reg(struct kvm_vcpu *vcpu,
+ 					   struct kvm_one_reg *reg)
+ {
 -- 
 2.56.0.313.g2479322e68-goog
 
