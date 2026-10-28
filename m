@@ -1,68 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793228743;
-	b=rgqgk58it2jCaeokfHRFwUuOPcGYHDhW7KLpE9G6cz1CYhs0oLdQLHvy8Rp/72W4+8Bp
-	 ucVvkolPTRxKCz7NXj3p9R7OaCu4mJgPGDrCPUizI1iygbIIHdb4sEwbNCwrb9T9vtZiH
-	 PuotzkupPv+uFO3+tjKhuXg3DAUw63ynXCqrpfZNqm1PxBQfk4Nt8iVj8SJg5+gV0Di9O
-	 lYWaBJipiAsUJ5XEz4kesCNW37SKOFhibozRZU0XHEnbAEDUeGyxCERJmmDZxwlHWi6k/
-	 LBoYrO11zxcKzvMIpp3kmjcXvvPaKLvTdlWW16C++Mw//xhL/w1hxqrB8mGZLyJcC3w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793228743;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=suVSzY2WLsNNi/QlNmuXbGKhXaTdt+DarJhzp+o3EiQ=;
-	b=SzZvbFbaXPodRwrV0KtfHKW4NfCaD/BhFNqUvqNgdyCoQEGPzFaOnsVWjQ7rDaMxykPR
-	 J/6Ok8cIaF3+qckPa75IA7g+U2FG+7B49Zl/TkUedrjoIOyCrInJkS5Vq4UJ7/+io51VU
-	 d7E4rx306WGHXAIab+eCxJSXIWlLan5UUEClX3rBjRekRqRoZHyXxC7SB7qT9tfA3bSuA
-	 s+au9Ic3kdZ7eM4g/zhbh1dZCEa2ohj315+Wa2t/7p8H/p+D0i13ZX4k2zhZb3LryPEf3
-	 Gh2uH0Y8Cjw7PzFx7kRmxVcS8cwwBap8j4iWPDxdHMgN9xKCzbY3OAtWV0iAU1a2Hag==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ALmAifdY;
-	arc=none smtp.remote-ip=198.175.65.12
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793228996;
+	b=4BtPh/ra14zXKlMGS2HBtZBK9jvG9+IXIaNJfDD9B/xOMvZhpBwZAdW5oEoVc+2PcZzm
+	 1cS9bTGLPqmS5FfM7yC2uPOpi9ICOI0gcCSWnLKcCrlf/zMkYGhalAePxopX+ZNyE50+u
+	 QTLdQlXQIVdfdlNAHsLrw6ZOfcU2OdE6p4wkJK+hmluaJU+r0W5zdC0Og7/+wgFw41lXT
+	 oIo2prLvweLAUgtRDC44bidm/PRF21xgUemI6IMq75NbHzaDqhnbRt1RTPR71wEVfEiW4
+	 wDz5OAbYEmmJSemcMyIq9ZI0F0bkGp82VCNRVRElt0yxqtD6tzz84HnHFERVb3tukxg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793228996;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=zvXLaiNtyYYitYdwgR8oZSNIHXteT3NWQoDApGH7D5w=;
+	b=ZLX3iv7gwaniJVcNk0AR66HrYGZ6QJjcupxojymdDGCNPfWQS7AKbiARQBb8IhGlWxpc
+	 2X/O0yTJnSaYkmauvtay2XHKi4dUuBUNFAUQOlvkfiHLufElv4MiBgpkGx8XHmE+F54kw
+	 QfSA38+z5MxpKTPUze46F7oCn3sqZjy49nDPmm/QIkCkl6xwHQ9pRXWYzN2rFI+DttOY3
+	 JjZv9mk/ek75bgK9OCGrO+VkIRIR12HXRhqDP5CwIOCLpB0krFtkR7kWkRF/Ujsd7cRJz
+	 FzIRSLcyf0n1h+nE/rpgIj/gYu9AFkMCfgiJdXiP8jaJTze2VO7WTnx8BhVPRwanzdg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WC8v59WQ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9E8606A31A;
-	Wed, 28 Oct 2026 23:05:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A9E8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B8A606A31D
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 23:09:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10B8A606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ALmAifdY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793228736; x=1824764736;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KJFNR0pW7YC9NPV5so4T42k9SYy0Y5VBgbxqpg2In0I=;
-  b=ALmAifdYl9lz/Q6KmU/MtmigrgVWw+sHHItKbSNuo1aIRlPCz2chTYjx
-   0zzJqNMDnwL06BYPAcrfvbce6vP5Ffs9Al5e1f16doLJ4Ve5sincKKmhw
-   Q4wk2X3EjdYxVGi69SdhJ+UXdhlaPnnvvP7b4k7GhMeisC83HR5gn0lxS
-   SjdDq0tMacmhUf/DOP74jFA1fW6zw+xWo8XQs5HeGVtL6UVMwKJDmAUHE
-   5gtQktEqYxQx0M5JPwnz0qcytPiQnaVvLP1ov4d95yIpmFZSDqAvED9id
-   +1738wa95YtS7ggFwsY2bqM8ur6g2cfyXHf2WtjoaRPxPjxzBRyodp/p+
-   w==;
-X-CSE-ConnectionGUID: 151+3cBrTuSyMaQm7z/gJg==
-X-CSE-MsgGUID: +IqYLXr4Tyqb746XYHKUvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1848062"
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="1848062"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 16:05:34 -0700
-X-CSE-ConnectionGUID: PwU4Gh+YTxCzIBmc5EDpCw==
-X-CSE-MsgGUID: k6+5y11wQvmDdjDv5QVLrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="6732040"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 16:05:32 -0700
-Message-ID: <82af5e57-c4f0-452a-b484-ec9270a960b8@intel.com>
-Date: Wed, 28 Oct 2026 18:05:32 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WC8v59WQ
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so2215a12.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 16:09:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793228994; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JeE1ysAbBUgl6gP2HFtLaBzQn77mV4+tOjZe9RjLlr9V26g2pxWhYeXt3qhCBYo2Wf
+         r4TmUR1dzX94ZtUgta8H5JUQ6IYU20Lr6qm/556ggJkIL5Hz81SesoQK+3C+yc4eSaLX
+         Cm3QVDfjzpu6RC2xUHOGhF/LCNx6ogfoKJEMMMYJtlm/sCeBc1pG4sCt1sy5AAU1bpGN
+         IwpA3cK1g00oLfQzJ99BJLQkWCW7puo86ZgoXZTUWtp3NbiQzruSvPHzFDMQw97hHugF
+         AomxZA0tcXyrBjI8U3SxwkyOoPH7EYN7k9sxGufqkNmNkmucL4h78hkLk5sBI47lrtrs
+         viNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zvXLaiNtyYYitYdwgR8oZSNIHXteT3NWQoDApGH7D5w=;
+        fh=hs5qYnxicKa5MvxbglE5ZehfG2e50IgD7DR3rw8JXL8=;
+        b=hAbXWS+cZDtEAJ0FZXD23ZN04y6ekqWHTEz9k2mGZE08Z408ek8PZO+GY7dou0S/ar
+         eHHvVFyMLPEx3d8ZJ9+RfsoxuIAEwhsszJhtV9CW6EFrrammZ9HjZ+HJbrfgWMTvtMZD
+         lRf5Bpnb7ZIW/yKtQpdz34JrfmE/uTcmyhy8x7k8fB8Ca+Yu8JrUtU3C++Uqc2KYeMc5
+         Ti/yar+n2npwSKlXCLPd0VGU0/XLdlCk/XOpaaJVX1anGDjVtP9W8P/xmg/HoaX6fRcD
+         avAp0L/WYPJJnoqghrXdykMUiP6igoHsCzO6EneLMhtP9+J3T22zs6fMYA/ENMKhnmGl
+         oV+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793228994; x=1793833794; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zvXLaiNtyYYitYdwgR8oZSNIHXteT3NWQoDApGH7D5w=;
+        b=WC8v59WQpMym+tCAEbtqGNDf5z/c3m8Yg4PN/2fiKrFMNaj9CbrhKrbDLGvBiNuXkD
+         LbEsc0w+EXZ1/9rwJPC1F6TuYIQabxtxP2sXIMGDzlHmp/SzW3qDiQX+ZfULbUa/f4Wm
+         ohefXJW0+MJjAqwCqGunV3ah5Xv0mhz8bTFECrBqwpAT67ZD9HHcbK1AJhcfjr1Jst6F
+         +E5WD9ZlJU/7H5KorkZ/lyG4Y60FOdxF+O/fROG9bVP6fl+E9q0hIx1NlkxD8GZZfIAI
+         /p/DpoDLfknq3MZzA+84Su62MjcLu+4vOjNNTHY3BJyIig/6Gay5WKlWjsjM6YF2mw6S
+         zFpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793228994; x=1793833794;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zvXLaiNtyYYitYdwgR8oZSNIHXteT3NWQoDApGH7D5w=;
+        b=rSmVpON3vIC6DN9XTCy/Mcj8GktZNzrVzwPO2O0JW3ylsh+wR7i8AET2B3z003qko7
+         9Onamd8jlUL6yYx/62GaZA5GNgNUgOGM5vaZL1Uhe/0o/OpTC3/I9jPVy6UtR+kwzqYu
+         z9fLCqCjFtqN+OvztAmij6RPTnjaXrdw4rml6fTLpICwZm7PXNO560eZwdbquuQIHBLE
+         /RCwZ8h/7r4ni4U0PU2XmAWRTZH8qP5VhBvFBhsgCTPIRcHU5/cchv0tFAEGGqOCsZzq
+         d50mEdBTSWOWMowXlf9ncbxuzBYKNGSLypyYK5YM4NZk+Dtbv2OVOZ1vhHT0TLzCOLwt
+         CFfg==
+X-Forwarded-Encrypted: i=1; AKwUvBxN6E48jZ57utdjxw6ZxLTk/VuaJsph32c0BjauK2JchkyuOkfeYBxVs+2MDAh8mfk2ALg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKV+bAWDKPeMjMRhLRZEo8NDwCLlVvVHWWXbohUBLJiV2BHJcmh
+	eLINI8Px2MK5B077mII+Q95Z4Dqer882lmHBPr4jiJB3cXv5u+Wy6IyWdjp/m0OzANcYDmqAI52
+	uO0jdDwU7mTq5V6mneozW4Ldrv8NU5iC+l364hKof
+X-Gm-Gg: AYBFou0MMsTmTMCjELYsHP1tEMYILcRZhL2bYXNh+efRP9333QItpTlA4RmJ1fEfY++
+	qwpLaf+23LGlkp2JiWAdStT3mP3gaP0v/rBi91s0MGbDXGSN0lnAjXvzGHJSxg2q3vhJIkP4TiO
+	xGU/l6aM90FOrmHkpp2B7JoGSn/AqdwLTZPB94CQ7IvZsaB62QwPRFCjFy5bYLDSUCmUe5hcA8b
+	A/iOlHINonQyoW2tlt9uT//KuYrC/TQXHqQnylMnoGrm/uL7gqryCOFh0X5k9HsUDpyMjsSbP6R
+	o0YSkEcOa4C0MFJtmmP1ScYN41/XlQ7orR9G0u4fD3goVKqM4n8AHWOs2LkmQYHFc77fsR4FpeC
+	lTf0ym+ACQR1AJVNz/uPDjqlYrPLw8OI1+yO0tw==
+X-Received: by 2002:a05:6402:a24c:20b0:6b1:a517:5bce with SMTP id
+ 4fb4d7f45d1cf-6b4b459e6admr16181a12.16.1793228994188; Wed, 28 Oct 2026
+ 16:09:54 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,137 +104,48 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-15-zide.chen@intel.com>
+ <CALMp9eRypTqSvMUes6PVB8z30EcppLJ3i_votpMnJOawP1c4sA@mail.gmail.com> <82af5e57-c4f0-452a-b484-ec9270a960b8@intel.com>
+In-Reply-To: <82af5e57-c4f0-452a-b484-ec9270a960b8@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 28 Oct 2026 16:09:41 -0700
+X-Gm-Features: AclHuK-clTnps2FKEgApvJbvAL97jxbQ5SKxHh15_KZqqExdJoTLjZ3SwVK6MI4
+Message-ID: <CALMp9eS53ow0xRh9B_u1EksUCZ=VRh3JDR6Qqv4UOw0vOJqTMg@mail.gmail.com>
 Subject: Re: [PATCH v2 14/16] KVM: x86/pmu: Ignore AnyThread bit if
  CPUID.0AH:EDX[15] is set
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260827223755.143247-1-zide.chen@intel.com>
- <20260827223755.143247-15-zide.chen@intel.com>
- <CALMp9eRypTqSvMUes6PVB8z30EcppLJ3i_votpMnJOawP1c4sA@mail.gmail.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CALMp9eRypTqSvMUes6PVB8z30EcppLJ3i_votpMnJOawP1c4sA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: "Chen, Zide" <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Oct 28, 2026 at 4:05=E2=80=AFPM Chen, Zide <zide.chen@intel.com> wr=
+ote:
+>
+> On 10/28/2026 4:50 PM, Jim Mattson wrote:
+> > On hardware with CPUID.0AH:EDX.ANYTHREAD_DEPRECATION[15] =3D 1, if soft=
+ware
+> > sets the AnyThread bit in IA32_PERFEVTSELx or IA32_FIXED_CTR_CTRL and t=
+hen
+> > reads the MSR back with RDMSR, does hardware return 0 for the AnyThread
+> > bit, or does it return 1 but otherwise ignore the bit?
+>
+> It returns 1. That said, the current implementation, which clears the
+> AnyThread bit in intel_pmu_set_msr(), breaks this behavior.
+>
+> To make matters more subtle, in the case of an invalid configuration
+> where ANYTHREAD_DEPRECATION is set in the guest CPUID while deprecation
+> is not supported by the host (Ice Lake, for instance), it is better for
+> KVM not to pass the AnyThread bits to the host hardware and expect them
+> to be ignored by the host.
+>
+> Is the complete solution to keep the AnyThread bits set in the
+> guest-visible states (pmc->eventsel and pmu->fixed_ctr_ctrl) for RDMSR
+> readback, but drop them from the hardware-visible states (their _hw
+> counterparts)?
 
-
-On 10/28/2026 4:50 PM, Jim Mattson wrote:
-> On Thu, Aug 27, 2026 at 3:48 PM Zide Chen <zide.chen@intel.com> wrote:
->>
->> Intel PerfMon v5 introduces the ANYTHREAD_DEPRECATION capability
->> (CPUID.0AH:EDX[15]) to indicate that AnyThread counting is deprecated
->> and that writes to the AnyThread bit in IA32_PERFEVTSELx are ignored.
->>
->> When ANYTHREAD_DEPRECATION is present in the guest CPUID, emulate the
->> architectural behavior and silently ignore writes to the AnyThread bit
->> instead of injecting #GP.
->>
->> Continue to inject #GP when ANYTHREAD_DEPRECATION is not present in the
->> guest CPUID, e.g. for PerfMon v3/v4 guests or when the capability is
->> not configured for a PerfMon v5+ guest.
->>
->> Advertise CPUID.0AH:EDX[15] only for PMU version 5+ guests, since the
->> bit doesn't exist below version 5.
->>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> v2:
->> - Advertise anythread_deprecated only if kvm_pmu_cap.version >= 5.
->> - Add the missing AnyThr bit handling for IA32_FIXED_CTR_CTRL.
->> - Update the comments to be clearer.
->> ---
->>  arch/x86/kvm/cpuid.c         |  2 +-
->>  arch/x86/kvm/vmx/pmu_intel.c | 19 +++++++++++++++++++
->>  2 files changed, 20 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
->> index 63201d4ea4a1..ef208906b3ee 100644
->> --- a/arch/x86/kvm/cpuid.c
->> +++ b/arch/x86/kvm/cpuid.c
->> @@ -1542,7 +1542,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->>                                             KVM_MAX_NR_FIXED_COUNTERS);
->>                 edx.split.bit_width_fixed = kvm_pmu_cap.bit_width_fixed;
->>
->> -               if (kvm_pmu_cap.version)
->> +               if (kvm_pmu_cap.version >= 5)
->>                         edx.split.anythread_deprecated = 1;
->>
->>                 entry->eax = eax.full;
->> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
->> index c7472778137a..599c69dfa6e3 100644
->> --- a/arch/x86/kvm/vmx/pmu_intel.c
->> +++ b/arch/x86/kvm/vmx/pmu_intel.c
->> @@ -446,6 +446,12 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>                 if (data & pmu->fixed_ctr_ctrl_rsvd)
->>                         return 1;
->>
->> +               /*
->> +                * This is to emulate ANYTHREAD_DEPRECATION. Guests without
->> +                * support for it would have had the write rejected by
->> +                * pmu->fixed_ctr_ctrl_rsvd above.
->> +                */
->> +               data &= ~intel_pmu_fixed_ctrl_bits(pmu, INTEL_FIXED_0_ANYTHREAD);
->>                 if (pmu->fixed_ctr_ctrl != data)
->>                         reprogram_fixed_counters(pmu, data);
->>                 break;
->> @@ -494,6 +500,8 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>                         if (data & eventsel_rsvd)
->>                                 return 1;
->>
->> +                       /* See above comments for MSR_CORE_PERF_FIXED_CTR_CTRL. */
->> +                       data &= ~ARCH_PERFMON_EVENTSEL_ANY;
->>                         if (data != pmc->eventsel) {
->>                                 pmc->eventsel = data;
->>                                 pmc->eventsel_hw = data;
->> @@ -603,6 +611,17 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
->>         pmu->pmc_exists64 = (BIT_ULL(nr_gp_counters) - 1) &
->>                             kvm_pmu_cap.cntr_mask64;
->>
->> +       /*
->> +        * AnyThread counting is not supported by KVM due to cross-VM
->> +        * information leakage concerns on SMT cores. Therefore, AnyThread
->> +        * remains unavailable for PerfMon v3/v4 guests, where AnyThread
->> +        * deprecation is not enumerated.
->> +        */
->> +       if (pmu->version >= 5 && edx.split.anythread_deprecated) {
->> +               pmu->eventsel_rsvd &= ~ARCH_PERFMON_EVENTSEL_ANY;
->> +               fixed_enable_bits |= INTEL_FIXED_0_ANYTHREAD;
->> +       }
->> +
-> 
-> According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"), only
-> Fixed Counters 0, 1, and 2 have an AnyThread bit (bits 2, 6, and 10 of
-> IA32_FIXED_CTR_CTRL). FC3 has never had an AnyThread bit;
-> IA32_FIXED_CTR_CTR[bit 14] is reserved in PerfMon v5 and becomes
-> METRICS_CLEAR_EN in PerfMon v6. Passing INTEL_FIXED_0_ANYTHREAD to
-> intel_pmu_fixed_ctrl_bits() will wrongly clear bit 14 in
-> pmu->fixed_ctr_ctrl_rsvd once Fixed Counter 3 is enabled.
-
-Right, the IA32_FIXED_CTR_CTR[bit 14] should be handled differently.
-Thanks!
-> On hardware with CPUID.0AH:EDX.ANYTHREAD_DEPRECATION[15] = 1, if software
-> sets the AnyThread bit in IA32_PERFEVTSELx or IA32_FIXED_CTR_CTRL and then
-> reads the MSR back with RDMSR, does hardware return 0 for the AnyThread
-> bit, or does it return 1 but otherwise ignore the bit?
-
-It returns 1. That said, the current implementation, which clears the
-AnyThread bit in intel_pmu_set_msr(), breaks this behavior.
-
-To make matters more subtle, in the case of an invalid configuration
-where ANYTHREAD_DEPRECATION is set in the guest CPUID while deprecation
-is not supported by the host (Ice Lake, for instance), it is better for
-KVM not to pass the AnyThread bits to the host hardware and expect them
-to be ignored by the host.
-
-Is the complete solution to keep the AnyThread bits set in the
-guest-visible states (pmc->eventsel and pmu->fixed_ctr_ctrl) for RDMSR
-readback, but drop them from the hardware-visible states (their _hw
-counterparts)?
+That makes sense to me.
