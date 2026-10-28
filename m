@@ -1,67 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793209755;
-	b=XFuj6FGfcHx1TKM5tZmUKME6Llju1bpZ9AJRLzEw5l45XNonPR+G4wvR38vUzuurByaQ
-	 730esJftupLoq7WlYnsVx1GIPLLxjvS2yXuBhCgTUWXO3D4bu1NMu5NrsS+4kx5ZI/kKK
-	 JLp6jnrFZaEEN9jxLaHGfyLbwdGyH6HprLg2Ted+Zpkn4a4CR8ZHldKpxyYR8wONYB7jz
-	 56BiEacwk9JebnuY3kMYN6dOofKNobb27yEFjPjTJEhgnhjArjYfi/ht6LKAVXdw4jrdL
-	 9Dmu+viAKu3yOTtpXTJ3Y02IlMIkddkym/4wGZ25tk6Y0r/atqOqQIyJGopgWzebFgQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793209755;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:References:From:Content-Language:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=1PuETIDmWaDFPuxKiqzCWt0cjAowQ4XGmIMamrsovLc=;
-	b=vwzr4kr0h6TNoIvfWQLqleqkt8dA2K+b7/1diSESDKv3wAiuINJyW22qDOko6VgZZSGl
-	 /tXWXnceszZlmfs2hLcNlBTvSjbQU1zvHUKsYD9tR7VoTh/i6D7iN5grNhW4fSuPYSZRI
-	 fH9R9iSeV/ebbdwyYdhpYDXCoiiez8CPpudD6csba/PCGWop+L5IwXRk/vevrE8kOCDYf
-	 w53XW6LZzqMKWw+pgT/3hjxCEEZKVBKAU85B3+ejpX45H0JXYZq1lhT/JAfazdP3R3zd8
-	 X2LmcvrbWhLgrsBKAMeMT9oc5s1fQJvbIjYTW/j/wAYmZGj+TxnIXMjggek6MN1EthA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHe+l3Jz;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793210255;
+	b=mja3kVt0927SjwEhnQwOQ7AGJtkQwSOffrHPkZm7WpbDoJAqUh1R5CcC26yqU8VcMXZ6
+	 jtCUA2mFV2SLqWRgwuXqVfzUbqy7O1sqGcW1jH7/AHRocJIsq4b+WiEI1Dqko/XDfUlNt
+	 2zzPAnc4QTxr05C6LpGcZHqPN1H9go1hGFLSAeNSfLlnqei6c8NhLZNwVBeTT61oOwYCE
+	 EW9FHDYHETiqutHfkkcpj6ha5OsW1Jg8I3XKmca8br4tLy/YZ9LtuzbOWXH08gIvsf+cq
+	 hlAZv3U75DGWJUF6ZT7L+1ncVsPG0YieBU1CWeIq1SbOIJCy0oUD2M/z6fJZXdGlEYA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793210255;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=A8Qa0RXrX/7XNwbg8ZPCHY/+0wHx6NViJNjYhzl2jao=;
+	b=WLFjf/vfYu3KAlKfmxWef4CPPEsXqWkDOm+NbDofm7lCeJVWSWxGR+CRw6g8+0J3FYU3
+	 rQWWq9QUYoffdkDc5FirV/JFgr1y82bDIC/G47NqOAdSFguCj2o8z+/pKbJd4//HtaAkR
+	 Mn2Cs+1RDD35py02xgIgmio7p0D4JtIAj4jagc0nbWK6JOTOCMJFQJvlx/lEL7+qhbyGb
+	 +dtiFV7hhlU0wFyKw2Oq0JPxMO6i/DPjsc4C0vE2Il+1nI8gPVzsgKZRCyU/XvNJaNSdj
+	 O6/0uKhsKNUKhQB9miGQ66V6/xfrOlgquVwSbdA02vBMIGeuEe712OZWgQPlgFc6tCw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PTyR36wD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.47
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7012606A321
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:49:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7012606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2238606A322
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:57:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2238606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHe+l3Jz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793209753;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1PuETIDmWaDFPuxKiqzCWt0cjAowQ4XGmIMamrsovLc=;
-	b=RHe+l3JzyzngRuuFkJMQh3RU3a+pZ0ho8XipUyyHYTZv45sUPF8jMUhtZAxIflpB+lECCm
-	DbYHjEqy79YXP/yFsu32jedFftwT4tOUEH/MjG9AyD/ulZ+wXpzHa1CMN2sKBgqDnEAylO
-	lwxoQRfz4W90zCFRM8v7cTUjo+x/Mws=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-ehdSPHajM5mt-_rfjsYIMA-1; Wed,
- 28 Oct 2026 13:49:04 -0400
-X-MC-Unique: ehdSPHajM5mt-_rfjsYIMA-1
-X-Mimecast-MFC-AGG-ID: ehdSPHajM5mt-_rfjsYIMA_1793209742
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 426FD19772F3;
-	Wed, 28 Oct 2026 17:48:57 +0000 (UTC)
-Received: from [100.90.222.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6B3A71803A7A;
-	Wed, 28 Oct 2026 17:48:54 +0000 (UTC)
-Message-ID: <d4214249-5ec0-4600-91be-13632b180425@redhat.com>
-Date: Wed, 28 Oct 2026 18:48:51 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PTyR36wD
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so931a12.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:57:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793210253; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SPkPgVYUfEz2Aa8WL4MI3ywoOkZ6cykFDxNhenZ9jLnw8FBJusutJiP9PiYmn52guC
+         KXgpBFPJ5QRzHI8pRNf+61rt0+i+NawchAcTQZHx3rMsqadrFwms2v5cR1Z6x1KblOSM
+         WiR7wkSBHVo3oKrn9umMv1gCVGZNnHOf1ogGqJtErslg3lSoxTEKHwwSrrrC6mN+tgyF
+         jt1H1yj3KiZRgpXBjsv+JUn8Xh1QspsGSur9JYUeCWl4nTnRGYlmtyJW0R3qEvOuFbs7
+         CAUgVCA/pR4Dsic6RFTbAq86KZ8lxU4vkILMDuS+JpYV6QeuxeamO08egnMBLk9shOTI
+         xRTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=A8Qa0RXrX/7XNwbg8ZPCHY/+0wHx6NViJNjYhzl2jao=;
+        fh=NGJW1kiXvlIvAiDXRMb8TxYae9Y7/3EwqG2Oh6pbrUE=;
+        b=Zi7oLHMUmp+G3olehNqlBBuNpp3Dpvn30YG9kM+sjJhybrXo4h7niAB1aVPknKKLHf
+         IU6pzGwD/eLhFCWdR8JkaRT3UGF6dYNZtNYo/HurtEhy2Rs1DzW/Fd1rnRuGO6mSVjyk
+         Wo9cYLZbx2LBi0Br3VCzxslC0Cj0p0qRJhy3VMDvasTNAmzUwHGkkzEUyFdI/z7zuyZA
+         /WG4xq47lQ2TQZ6dFYqEF12MbaFEFvgnX++4rKSQcTR44So57AaAFz59TzdxM0jdgmvt
+         FmLmVSuxe9vrMYoZWYeABDyHjOSzjPlAUM8n9ySIJuqC728x88cS9+eYsA6aexCCun5t
+         Tlfw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793210253; x=1793815053; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=A8Qa0RXrX/7XNwbg8ZPCHY/+0wHx6NViJNjYhzl2jao=;
+        b=PTyR36wDE767qX1UcGNiYx9neazEbkrUFr6YQVJeFw5uHpzwmI8aapiA1c94+AB34P
+         kCPbLvHntxY5oy8tC0Zqg0dHVxwxYvspKevFci258uZKjHvdqYsskD0C/OV8EeCXGeiC
+         bkLtk76uCalpZMpSLbiJib0TdHufIb3piKcyEqWOorkpLj+Y0nPRSGxzyZloiEvfx0PM
+         6myWSQ3eG+lcJ1zVe0Rr3cQRbN2qF3eT/ymud5/N0gLwU8fgiA6s0VIqh+7q+LS3SLQy
+         5sKJkUZ+TDohA9EEnmhPFpEpSut03C1Vj8Xa/Dynj9OMRxPdDvLyEGB1KtIzY+JLEc9W
+         C73Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793210253; x=1793815053;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A8Qa0RXrX/7XNwbg8ZPCHY/+0wHx6NViJNjYhzl2jao=;
+        b=Ga6Oo9xVBL7e8FBimz68J9oVIoysMJXy5huBiyOYoV8fLfGfc/ZK7fKGlufwIwUSDQ
+         /LL9NeyUG/9LPx5W8xhdlotGdX1ECc7RFyWQX8rkHPyS4sxRccCCSQL/9ZN8smfeo5ep
+         6W5/4VDG6cg8VZc+E27bzHuNeXqBtyr6Y8XItXhe4nI8IP16+aF4PjTAATQWdLPTjfVk
+         YI9ipUnSfkoj8C4B5/fGEHEtoB5Hp5BmTsIhYWK2NnzCVRs1bT3QgPSRfMMUZn1VxP02
+         rH/8rEUUDQ9i5d4+ZLdAv+AnxkFypS1rSrmtdkjcbaqwvishEz32vrMq0bSZDG8fyStZ
+         vEVA==
+X-Forwarded-Encrypted: i=1; AKwUvBxCCVH+7QSlBWQDHa776xSeyE53uaedKXNooyHBEAeR+gEchlOzvcMQJBW0ioadykI+7Tc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLoaIuRG9956swlZ54ysZkOeDD2hsSIcQgRuGiVmi2dU9idn5Mn
+	2PyPvvsy5HAAxu7eWdf7SeN4vk6GqGQlqgUy8HLLEPoChQqlGcPQdE9YFO5KEYGDQZmUDukEYXY
+	U4rIe48+1ZTclsgrgEem0lSxLXZ5s+daMn+D34v+M
+X-Gm-Gg: AYBFou2GwDHMGkop1oRVk72rUROX37QsV0GCe+0VNhwXdR2Xsf1rWFs3aoFVMt5wjz8
+	EtezjUFUbDvKaDznMGmbuBGR1nHmALWaKAlogXYNmW1sUtzUeZBQUqqOB2WdsnoM7UD87BbsObF
+	o4mjEbhHcetXrrF14Bg8tFrZd2q1vFKie/E2zNcIwG05uicLTcjQ3QoDC9S2UXlnTSnv6xlpwsx
+	XsnYw+40vd9nY9q0kWxH87wiJd1Rx7HgVjVoDi5RYO2HOCEz2SBx5clRd4vUiM5KCpkkE/1LwLg
+	XISW6NtGzNDuP93EUYaPHljyS3Wa4/jIdz9letkD6gP7dW8OhNaoGXKzE5tqrnXvYyBuE4IzwO2
+	/SsWKJbiMzrCfqHGPQHx1MivLs9fLuqdAUZCL
+X-Received: by 2002:a05:6402:c548:20b0:6b4:18f4:94a0 with SMTP id
+ 4fb4d7f45d1cf-6b4b0e81e36mr9727a12.1.1793210252740; Wed, 28 Oct 2026 10:57:32
+ -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,92 +104,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] KVM: x86: OVMF boot hang with SMM enabled after
- commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO
- cache")
-To: Sean Christopherson <seanjc@google.com>,
- Sami Farin <lkml20261027@mifar.in>, linux-kernel@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
- kimjw04271234@gmail.com, stable@vger.kernel.org
-References: <2026102314-CVE-2026-99082-e5b1@gregkh>
- <20261027124140.upuow4a3kv6kssvn@m.mifar.in> <auIy4UZMGxLhBCAn@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <auIy4UZMGxLhBCAn@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-10-zide.chen@intel.com>
+In-Reply-To: <20260827223755.143247-10-zide.chen@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 28 Oct 2026 10:57:20 -0700
+X-Gm-Features: AclHuK_UZXIlonVDc0fZszRQciOeJw350hJpkRZR2SLL6hpILBmEJQYohIrIKt0
+Message-ID: <CALMp9eSUcm3aygzDSn7qD_58AxZm6y1M58LOHXpLhcPV43L8Ow@mail.gmail.com>
+Subject: Re: [PATCH v2 09/16] KVM: x86/pmu: Switch to bitmask-based KVM PMU capabilities
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/28/26 18:37, Sean Christopherson wrote:
->> However, address space 0 and address space 1 maintain separate 
-generation counters
->> starting from 0.
+On Thu, Aug 27, 2026 at 3:48=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
+te:
+>
+> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+>
+> Intel platforms support non-contiguous fixed counters via CPUID.0AH:ECX
+> starting with PerfMon v5, and support non-contiguous GP counters
+> through the Architectural PerfMon Extension (CPUID leaf 23H).
+>
+> struct x86_pmu_capability now exposes {,fixed_}cntr_mask64 bitmaps,
+> which may contain sparse bits representing non-contiguous counters.
+> Switch KVM's kvm_host_pmu and kvm_pmu_cap consumers over to the new
+> bitmask fields.
+>
+> CPUID.0AH:EAX[15:8] and CPUID.0AH:EDX[4:0] enumerate only contiguous
+> counters. Derive these values from kvm_pmu_cap.{,fixed_}cntr_mask64 as
+> the number of consecutive counters starting at index 0.
+>
+> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Co-developed-by: Zide Chen <zide.chen@intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+[ ... ]
+> @@ -772,7 +773,8 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm_=
+vcpu *vcpu)
+>                 svm_set_intercept_for_msr(vcpu, MSR_F15H_PERF_CTR + 2 * i=
+,
+>                                           MSR_TYPE_RW, intercept);
+>
+> -       for ( ; i < kvm_pmu_cap.num_counters_gp; i++)
+> +       host_only_gp_mask =3D kvm_pmu_cap.cntr_mask64 & ~gp_mask;
 
-This is also incorrect:
+Should kvm_pmu_cap.cntr_mask64 be kvm_host_pmu.cntr_mask64, as it is
+on the VMX side?
 
-         for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
-                 for (j = 0; j < 2; j++) {
-                         slots = &kvm->__memslots[i][j];
+[ ... ]
 
-                         atomic_long_set(&slots->last_used_slot, 
-(unsigned long)NULL);
-                         slots->hva_tree = RB_ROOT_CACHED;
-                         slots->gfn_tree = RB_ROOT;
-                         hash_init(slots->id_hash);
-                         slots->node_idx = j;
+> @@ -556,7 +557,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>          */
+>         nr_gp_counters =3D min_t(int, eax.split.num_counters, X86_PMC_IDX=
+_MAX - 1);
+>         pmu->pmc_exists64 =3D (BIT_ULL(nr_gp_counters) - 1) &
+> -                           (BIT_ULL(kvm_pmu_cap.num_counters_gp) - 1);
+> +                           kvm_pmu_cap.cntr_mask64;
 
-                         /* Generations must be different for each 
-address space. */
-                         slots->generation = i;
-                 }
-
-
->>          An MMIO access cached in SMM (e.g., GFN 0xFED40000 with gen = 4) matches in normal mode where gen is also 4.
-> Hmm, this isn't adding up for me.  It should be impossible for the generation to
-> be '4' for SMM, because SMM is supposed to use odd-numbered generations.  From
-> kvm_swap_active_memslots():
-
-vcpu_cache_mmio_info() does not use the address space id:
-
-         u64 gen = kvm_memslots(vcpu->kvm)->generation;
-
-Will send a patch soon.
-
-Paolo
-
+CPUID.0AH:EAX[15:8] (eax.split.num_counters) can only enumerate contiguous
+GP counters 0 .. nr_gp_counters - 1. If kvm_pmu_cap.cntr_mask64 ever had a
+hole below nr_gp_counters (when leaf 0x23 isn't exposed to the guest to
+advertise a sparse mask), masking (BIT_ULL(nr_gp_counters) - 1) with
+kvm_pmu_cap.cntr_mask64 would silently punch a hole in the guest's GP
+counters even though guest CPUID.0AH:EAX[15:8] told the guest that all
+counters 0 .. nr_gp_counters - 1 exist. Should nr_gp_counters be clamped to
+find_first_zero_bit(kvm_pmu_cap.cntr_mask, KVM_MAX_NR_GP_COUNTERS) until
+leaf 0x23 is supported?
