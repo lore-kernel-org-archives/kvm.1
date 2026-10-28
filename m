@@ -1,57 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793178867;
-	b=LY8/BsNB8t246YDoucVd2BuZhCePGNBMasq25nYraBendNAGwiakcJmw1SLrA2ZNxoR8
-	 fgr+DgkQXuaP01O7IIzJv0hKoj0w6QwAO3JUQytLv+nu3J3Z4/7iCWd5fJ9B4hiGgiNrl
-	 TrVDPni7YZE7Z/gucqQpfhEWfM2XhAYmjMnZGixS0034G2DhouWnewNXPAsuLne41G3kr
-	 gXgmt5xRb7RRyA+fRJyGCsACAunKo6AxgWE33nWKGyHi9KuL9epVcDtnrXqgQAiG65vSc
-	 ZzoIy6r3SxiwcuJTcrc+bvkobRfcwfdPpFGPBJOLXrScxK9IiBWNsVQxniqf9qBdPlA==
+	t=1793179113;
+	b=TGXJcNAiGloqzoP+qGwLNHXLvwQ7rBh1tWwaKeY3245p+Qwia1gEcTCsv+Z6TcXBxpCV
+	 dAObw+bSIGG7doCxahtlRwL90S74bfCouixROce66uvEZ1ZwAwf1szOBpgj+rwaRDNXdz
+	 3+v90JSdhalqhgFoOp06H2jCKZMYxlE+WfU9qihj1Pj7B5zc19bNOOpEBZrTmRqGLiC2L
+	 SzUS3syadL5jqHOpaRAqDTKGCW2wgygM8pweXvqKJyvm+7doY6F83iAWF22U7YzmRShhJ
+	 jnz6Npu+ZxUW+iFDW4KpP6uHYgHcYHBJMG0kNfUMhMCPAkJH0KeYp8oirKi06lHcg8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793178867;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=LhfiB4JoGhLDOo4pwrAolURHxE6t8PTwF0oLC1Q1bAo=;
-	b=gtwdhOzGZdPGlvzw3DqmeHY7z3UTcugb8no3KXxzdlZgRCvOq9XS3hXBJCAd5BlidLkX
-	 d46UppQlYFjQ03BcDGpR6rC4fWdTyeYjuPh5rtYU2eoPVbjAY5G0j4/dIvBEpyFaZyZnc
-	 Qd8tZnE6JxLCbX3w0auEh8Gg1oAHGMAf3o/MJDVsYi1quDySrw3S47Hha9C0ybGOMAVnS
-	 VaLlxDvGsO9DanSI/28V3XINN1RhVjiSJSPLrXUnGKbftI9lfpW9jQ9ptQ2pu6qf+QH5K
-	 5xtDVZd6E1OtJI6mnJmMgCTFI9rvQdLuS3XiuNoVUGSS4ImCexVu1DlzpY4YUT7E3pw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793179113;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=l7lrYcEGz7yh1S6DURIldpkH4Iej6k+y8xqTeXsmih8=;
+	b=dZeRcVdKpYnA/c96lCSpKHEFAtsjnsOjBwdx6e7SGLFJgec24Wm6t6Ep8zvB4IKmLXn1
+	 WBu8o6PuoXtS6LjBg5r3pmoCW6eMrdVKzw28IIO86sDQv8h8DyvP/o7jgBUq8VbrIT8be
+	 GLYFysxzhIr1toUiT9BdNznDDPkXRJVFX6khu0qmGhmb2g0Si7mCIfXfEuGPTIeAKJn/l
+	 RIKMPrlECKNT0SodkVbPNUHXcm7i+W5rL3FMCZCc/KMcTifp1oeyxuOFxDKbrcKO+ZVVh
+	 lp4Hja4ZCgw6uhdmDtG3NE8KW0nGoN5+el/Pf6iybN3xdtovCP5LX62qKeg45eK+OPw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lfl6rmtb;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.199
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425EA606A31A
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 09:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lfl6rmtb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41F41F01825;
-	Wed, 28 Oct 2026 09:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793178866;
-	bh=LhfiB4JoGhLDOo4pwrAolURHxE6t8PTwF0oLC1Q1bAo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Lfl6rmtbLBaDLRSmFxb31UTv8N9IauTBAa6Do3gg4shugcI1ltKAEdG59ad+t6luJ
-	 x8N55O0NBcEMdPp1PIt/d0am7YzhVp9/O+xF/8e+VAHWFfbZLJoAaPAp/ijzZEegHD
-	 OHpiEJo7ecjnZP31VVCuwpJ3UuUlbvTv5pSZS8IS+KpUhPG/DIcGN9SoyVlnSe5HwB
-	 5es47lOPCDZTN7/whvY8UMzj81agygnM5N31BB7jAO9ed6FhdIfJND4RmousXVJ4v4
-	 GGJLRGgqFQX+7ExOrLSvMruKLzAzXtgB8EsPgtbSW5P1pr1utuOMwM0otFeO3ajNG4
-	 YIDkzP1zTYKBw==
-Message-ID: <sashiko-outbox-187660@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 3/3] iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261028090453.2392991-4-guanghuifeng@linux.alibaba.com>
-References: <20261028071906.2325378-1-guanghuifeng@linux.alibaba.com>
- <20261028090453.2392991-1-guanghuifeng@linux.alibaba.com>
- <20261028090453.2392991-4-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 09:14:26 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D30F606A31D
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 09:18:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D30F606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4b37620eb73so1389345b6e.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 02:18:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793179112; x=1793783912;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=l7lrYcEGz7yh1S6DURIldpkH4Iej6k+y8xqTeXsmih8=;
+        b=qyqKfmpi8gpCHsbd3YRLVwrOWYhJpxtprFVCYYC9LI9kg3nO5iZy9Je/RYifJuXQAO
+         n1AzUnFeBKuHG6CTpjHlYkyRUYVVmhoK2g0w6taTjoyK2I1q+sygBJbIOjfmKeGIgx7a
+         UKLTG/FFp+kA1P8oygZxaUMLpltx7ttl0pULtDQQkSyo3xWBn6EuVVHZfF7BydgtGcP4
+         B7npV6m6SoNDsCIaf0ST2tZkTNxkIAZQOEcotsqQMHiy1Hm0fbfe7drke5b5F0NBnuDI
+         YT2PCafcwTpcc3+y7TUs//nN9R9WS1PMPkUNNk5Jk3Hu/BMbWsT89TFtOjIpcJE0VGTc
+         r/2w==
+X-Forwarded-Encrypted: i=1; AKwUvBy+r/ZBh0GIJf8yjkKjKr2VKZHftSBnxsx9nmfBTXTXAsVoTVAj/n9WPLKBu9r1NvbuqdE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKy0UtxYG3aNQVEAvyA2KcXQnyV0Av8KR+rcCcu2BdlXQWH+vTS
+	hy3zAaW7jDJCv4+NX7X/7GFuNJy8HrpGW3SNAhRJvELC+lA1PpAgTs5gMO6YKud691gxBSIGiRs
+	a9c/2Ohcw/mJk9GE3C5XmrwQ58i46brX5u+cReBxN5nk25nVq7m31XBCXYIE=
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,89 +57,118 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:c133:b0:55b:fcf7:61f8 with SMTP id
+ 5614622812f47-56383598cfamr956832b6e.40.1793179112073; Wed, 28 Oct 2026
+ 02:18:32 -0700 (PDT)
+Date: Wed, 28 Oct 2026 02:18:32 -0700
+In-Reply-To: <20261027221209.1560865-1-seanjc@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae1bde8.f0fe5aea.79aa1.00a0.GAE@google.com>
+Subject: [syzbot ci] Re: KVM: Fix+harden against bad uaccess using dying VM
+From: syzbot ci <syzbot+ci372bc25d95b65291@syzkaller.appspotmail.com>
+To: jmattson@google.com, jthoughton@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	maddy@linux.ibm.com, mason@kernel.org, npiggin@gmail.com, pbonzini@redhat.com, 
+	seanjc@google.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] iommufd: off-by-one ULONG_MAX check in iommufd_ioas_reserve_iova=
-s()
---
+syzbot ci has tested the following series
 
-commit 0ed118205dea2d86a2a0d60398112fcc9b0dd85e
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+[v3] KVM: Fix+harden against bad uaccess using dying VM
+https://lore.kernel.org/all/20261027221209.1560865-1-seanjc@google.com
+* [PATCH v3 01/15] KVM: Reject user accesses to guest memory if current->mm != kvm->mm
+* [PATCH v3 02/15] KVM: nVMX: Don't force a full nested VM-Exit when destroying a vCPU
+* [PATCH v3 03/15] KVM: PPC: Flush/zap all memslots on kvm_arch_flush_shadow_all()
+* [PATCH v3 04/15] KVM: x86: Unmap VMAs for KVM-internal memslots when the memslot is freed
+* [PATCH v3 05/15] KVM: Disallow setting memslots when the VM is being destroyed
+* [PATCH v3 06/15] KVM: Destroy memslots immediately after mmu_notifiers are unregistered
+* [PATCH v3 07/15] KVM: WARN if KVM attempts to do guest-related uaccess with "wrong" process
+* [PATCH v3 08/15] KVM: WARN and reject guest-based uaccess if VM is dying
+* [PATCH v3 09/15] KVM: Pre-check uaccesses in KVM's APIs to read/write guest memory
+* [PATCH v3 10/15] KVM: VMX: Explicility free vmcs01, not the current VMCS, in vCPU free paths
+* [PATCH v3 11/15] KVM: nVMX: Don't explicitly VMCLEAR+free() vmcs01's shadow VMCS when freeing vCPU
+* [PATCH v3 12/15] KVM: nVMX: Cancel the nested VMX Preemption Timer's hrtimer in free_nested()
+* [PATCH v3 13/15] KVM: VMX: Explicitly remove dying vCPUs from the PI wakeup list
+* [PATCH v3 14/15] KVM: nVMX: Don't switch to vmcs01 when freeing a vCPU
+* [PATCH v3 15/15] KVM: nVMX: Don't load+put the vCPU when freeing nested state for a dying vCPU
 
-iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
+and found the following issue:
+WARNING in vt_vcpu_pi_remove_from_wakeup_list
 
-This commit adds the IOMMU_IOAS_RESERVE_IOVAS ioctl to allow userspace to
-reserve IOVA ranges in an IOAS so that they are excluded from
-IOMMU_IOAS_IOVA_RANGES and rejected by mapping operations.
+Full report is available here:
+https://ci.syzbot.org/series/c648fc23-f4c2-4346-93cd-b717ef38b27c
 
-> diff --git a/drivers/iommu/iommufd/ioas.c b/drivers/iommu/iommufd/ioas.c
-> index 8fb5271a95060..1a2361850bd2c 100644
-> --- a/drivers/iommu/iommufd/ioas.c
-> +++ b/drivers/iommu/iommufd/ioas.c
-> @@ -183,6 +183,57 @@ int iommufd_ioas_allow_iovas(struct iommufd_ucmd *uc=
-md)
->  	return rc;
->  }
-> =20
-> +int iommufd_ioas_reserve_iovas(struct iommufd_ucmd *ucmd)
-> +{
-> +	struct iommu_ioas_reserve_iovas *cmd =3D ucmd->cmd;
-> +	struct iommu_iova_range __user *ranges;
-> +	struct iommufd_ioas *ioas;
-> +	u32 i;
-> +	int rc;
-> +
-> +	if (cmd->flags)
-> +		return -EOPNOTSUPP;
-> +
-> +	ioas =3D iommufd_get_ioas(ucmd->ictx, cmd->ioas_id);
-> +	if (IS_ERR(ioas))
-> +		return PTR_ERR(ioas);
-> +
-> +	ranges =3D u64_to_user_ptr(cmd->ranges);
-> +
-> +	down_write(&ioas->iopt.iova_rwsem);
-> +	for (i =3D 0; i < cmd->num_ranges; i++) {
-> +		struct iommu_iova_range range;
-> +
-> +		rc =3D copy_from_user(&range, &ranges[i], sizeof(range));
-> +		if (rc) {
-> +			rc =3D -EFAULT;
-> +			goto out_unlock;
-> +		}
-> +		if (range.last < range.start) {
-> +			rc =3D -EINVAL;
-> +			goto out_unlock;
-> +		}
-> +		if (range.start >=3D ULONG_MAX || range.last >=3D ULONG_MAX) {
-> +			rc =3D -EOVERFLOW;
-> +			goto out_unlock;
-> +		}
+***
 
-[Severity: Medium]
-Should the check in iommufd_ioas_reserve_iovas() in
-drivers/iommu/iommufd/ioas.c use > ULONG_MAX instead of >=3D ULONG_MAX?
+WARNING in vt_vcpu_pi_remove_from_wakeup_list
 
-struct iommu_iova_range represents an inclusive [start, last] interval, and
-iopt_reserve_iova() supports inclusive bounds up to ULONG_MAX, as seen in
-drivers/iommu/iommufd/io_pagetable.c:iopt_table_add_domain():
+tree:      kvm-next
+URL:       https://kernel.googlesource.com/pub/scm/virt/kvm/kvm/
+base:      7e60162b16f9da0d2fa83da5c1723b6853a0ac1d
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/e4ed6c4f-9b58-4549-9ac6-525add47e472/config
+syz repro: https://ci.syzbot.org/findings/320f356a-c5e9-41ff-b8f5-3f0866e300b7/syz_repro
 
-	if (geometry->aperture_end !=3D ULONG_MAX) {
-		rc =3D iopt_reserve_iova(iopt, geometry->aperture_end + 1,
-				       ULONG_MAX, domain);
+------------[ cut here ]------------
+refcount_read(&vcpu->kvm->users_count)
+WARNING: arch/x86/kvm/vmx/posted_intr.c:154 at vt_vcpu_pi_remove_from_wakeup_list+0x142/0x1f0 arch/x86/kvm/vmx/posted_intr.c:154, CPU#1: syz.2.19/5870
+Modules linked in:
+CPU: 1 UID: 0 PID: 5870 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:vt_vcpu_pi_remove_from_wakeup_list+0x142/0x1f0 arch/x86/kvm/vmx/posted_intr.c:154
+Code: 48 85 db 74 2d e8 ee 1b 64 00 eb 0c e8 e7 1b 64 00 eb 05 e8 e0 1b 64 00 5b 41 5e 41 5f 5d e9 c5 b5 87 0a cc e8 cf 1b 64 00 90 <0f> 0b 90 e9 2b ff ff ff e8 c1 1b 64 00 e8 ac 60 cf ff eb da 44 89
+RSP: 0018:ffffc900037cf8c8 EFLAGS: 00010293
+RAX: ffffffff816404a1 RBX: ffff88816ada8000 RCX: ffff888110eb0000
+RDX: 0000000000000000 RSI: 0000000000000003 RDI: 0000000000000000
+RBP: 0000000000000003 R08: ffff88810fb01f83 R09: 1ffff11021f603f0
+R10: dffffc0000000000 R11: ffffed1021f603f1 R12: dffffc0000000000
+R13: 00000000fffffff8 R14: ffff88810fb01f80 R15: dffffc0000000000
+FS:  00007f9e487ab6c0(0000) GS:ffff8882a7cbf000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f07a7ed4870 CR3: 000000010eea9000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ vmx_vcpu_free+0x28/0x400 arch/x86/kvm/vmx/vmx.c:7517
+ kvm_arch_vcpu_destroy+0x154/0x380 arch/x86/kvm/x86.c:9556
+ kvm_vm_ioctl_create_vcpu+0x76f/0x9f0 virt/kvm/kvm_main.c:4384
+ kvm_vm_ioctl+0x442/0xcb0 virt/kvm/kvm_main.c:5294
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9e4799f1eb
+Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
+RSP: 002b:00007f9e487aaed0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f9e4799f1eb
+RDX: 0000000000000003 RSI: 000000000000ae41 RDI: 0000000000000085
+RBP: 00007f9e47a36b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000c00000 R11: 0000000000000246 R12: 00000000000004ce
+R13: 0000200000c00000 R14: 0000200000001040 R15: 00007ffeb7342be8
+ </TASK>
 
-The UAPI comment for struct iommu_ioas_reserve_iovas in
-include/uapi/linux/iommufd.h also notes:
 
- * A range with last < start fails with -EINVAL.  On 32-bit kernels
- * a range exceeding the native address width fails with -EOVERFLOW.
+***
 
-With >=3D ULONG_MAX, any range starting or ending at ULONG_MAX (such as a
-32-bit PCI host bridge MMIO window ending at 0xffffffff on a 32-bit kernel,
-or a reservation reaching U64_MAX on a 64-bit kernel) is rejected with
--EOVERFLOW.
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028090453.2392=
-991-1-guanghuifeng@linux.alibaba.com?part=3D3
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
+
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
