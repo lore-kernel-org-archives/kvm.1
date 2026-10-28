@@ -1,100 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793208830;
-	b=o32luqbzPzqVQNE8AY1FPwsQZfb/P/l7C9dgcAwjfSPtDc5FoQxMecWII5eAyryZGleZ
-	 AP/MQX1WHAGMQlo/DqHJgWuy6kn0MJdg3UKqhNvAIg18mhFGmL5//gRx7KoNUSJcxKJdG
-	 pMCBE3oaetdzibzgqEXQPoW9VgG5qlcQN/5KR9YCDR4ZTz3NKLECFUQasOCF2oy0QEjj8
-	 2/5cQouUnYlmHgxVFG+1flNsbyVHH0DLyQqCMdPtXqVD4M3N+FcSZnF+vdrvsQCAqMZd/
-	 DLhbnMrFBgutJ1Bm5IYDmMs0mNhao1iiU9ET/pdndUJPm8aPSr9bDbEu4f2paItu9fw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793208830;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793209064;
+	b=2DFUGUP2ZRY+MBp7/iwmw+LeDrCrCSoYVgfIFnBPcAJcOgpcP63xP5e4pn5/5/qisdnx
+	 zuxtEYQum9Q+N9jUoWc4/roq/FH7L1qxHEa7b4/AbB0XK0R2lbNAi96Bw9ccrq33JKzqN
+	 PUvglKi2Mf0bxtW1D8OyyIyc2n+93ARgfm3/RSUt5wZMSCKXjRgdSsUrhFVCWidN5v9L2
+	 nY8/oRzzNYVpGZ1e/4e6LHsmSAiBDBVmArQif54QwZ6sQmVjDzsUPz1gyVmm083iaThgO
+	 x1a2iF6fQEpxc3BHpoEA+ChXXeH7Og6TaYU3ZzvFzWbjhF7E97YAA1fs8g/oc0+Gk0Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793209064;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=4x4ogCcrIz3iULJj4AUcmCmwpvZhGjnxniSpLhEijJA=;
-	b=4wqdHVRLjAfYgJVd1qG01TD4x5G4CF3MsNWLH6M2f5Wq4Oe2auo1LxFrJiWrUXz7vlkI
-	 ljNdhE+SFs/8G0v2jrsCIgYQOG975DdKcltQ+tkH9egpzufzvvPFqwOeaJ3BlKp/LJ4uY
-	 6KqWOmDljExlywY6Mjp4x3AEwesIIXrYG+/lM75WiIDTe/WakcjV7x1Uyhma0DHyeL/up
-	 fDpbGiy3krB5vFzMomD80h82GWLmJRZszxt4Xxg4ng23SwjLLzd8BpcqxWQpFZqR6m2Li
-	 1+eQB1bLLEFue58LYn+oz3fbnE0TiPjrEWPt8mERhQTMLTN224pvn60X59vCLlJ+YGw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=cYvri/TspkG2tYIL/heVQtQQlYpPDPdribSzkNzfhow=;
+	b=Jl42EE4qApMQ0IPz+FLc5GIN57OR0wvh841+CcJO8gURp1pLr1Cx8e0pfwr4Hi5r47xQ
+	 +Oa4cPkFugVoeBhvh6znX5ASX9N18rEw6zSK4PPCTokTbFEwj+Jtw/TLy7U8BsF2x4J+w
+	 kASjspk4NoXsZTzUWCshtSd47EhspmVfKcUuEwry99EQakpi9XG/39fBB1FOrq+voySUk
+	 2a3TR/fznHTqpvNLSYfqNJu+WHnA2+7RH1Knmu8jxF6iVDzt2A7huEKeZTFJpYYJeZwJj
+	 CY33T7lLdJXU86/cXLDyW072fupgASJVrE9i211546jU8x10MIlsyJt+8kVZnByxgDw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hHWgMcjy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="K8iv/qok";
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BFE606A31A
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:33:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7BFE606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0379B60A3836
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:37:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0379B60A3836
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hHWgMcjy
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso942a12.0
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:33:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793208828; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CuUsZxIRrN68SPh9DOBl74kW7jeZGqIoXztlzog68dRnXoFllMK6NmkGPcQrSYFapG
-         9ROiz4saTmgkh0eSQ9fWzQuP9Ho9CFyqLQXiUC0B59Mqsp7Oehq2XHJZE27Tn5S/kk8+
-         yZ38LSilYY9NsgaZCo3Emn4MNMIqQ26/WgcreST8nrfKveOp3m30VPCtlCticKVCI/un
-         xZmNr9EZ6f21ErnaOhzjB1U2jSprM/Nw3CA/crVnjzXMHGiA3lyBWIwKe6jGnvSvxY0g
-         v/uE8a/N2WdFOJHiIF9XP7CTGWAYZXiheIKQLC+y8cCEO+n6lQ4Mo52EokEwrBi6gZp9
-         BLVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4x4ogCcrIz3iULJj4AUcmCmwpvZhGjnxniSpLhEijJA=;
-        fh=f19tSADCqvJ13UCXzCuioA9lpEpri8T7YjWtVaYTb24=;
-        b=WZzzIJ6egYO35IumFbu5lBUWxzlWiUOMtkp9/kL0ypIXrB0hb+Tfs8AFUPXLEMS2bO
-         NoyO5fAICPCVOxB4OQ3J/oLO5wfzxUsK5SSJDlqxmGRq8yjUBLfu+doOkS+JcoEhUx2Q
-         AbGOknNdSeMOmmfDgR2CchS1hD3TNTiAhQlallK3mHmCIjsZ9+79wW1kuKZVzSUaBP9h
-         Vp37GYgQaILWprEj75JNokx1eBxiS1ji3LP1ipY0kD9+HTZq7FBv015q1rpmVF/4FKhZ
-         peV5mcuEfGhYZgBOGus4f9LUb2JP/co2dAKIktJ2OteFBB7FXebbYcpv3POBiDMz/kRr
-         1dBw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=K8iv/qok
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a030e0f9c1so1362900b3a.2
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:37:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793208828; x=1793813628; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4x4ogCcrIz3iULJj4AUcmCmwpvZhGjnxniSpLhEijJA=;
-        b=hHWgMcjyEXEFs94F0opmrR2osT29gnRS0Wcbon1pb9d0qNq2KamffAiJQABDUWT+t+
-         bs1tvpNgwt5Ay4A2BPCuvL+699P5FICIWki9EUnEg6NFcXvWyyhjassWjYurneMOLorv
-         632UmjTXENyTpYhAJUOFyvfZEYGE2B0txXFIubn5n+MSPMn96EzmvgP9rpnchfyYONCx
-         hSpZLCfLyOG28ATlnQ6uP83+tZLAq+GjSvG1ozkh1OMVWY1W36x/yfZIaFMd4pKdZffZ
-         YOxnluTIs1peo/YCOQPxwu3qvKsu+upCyvRTaj72DRybLzdZLSKN9qwvGvz7i6TD2Ogf
-         vrjQ==
+        d=google.com; s=20260707; t=1793209058; x=1793813858; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :references:mime-version:in-reply-to:date:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cYvri/TspkG2tYIL/heVQtQQlYpPDPdribSzkNzfhow=;
+        b=K8iv/qokqLcqmosxHF8uwyg869NLyQAd2klYldeDFNTuErcIAIQklXhEcLDF3cAFSI
+         yiamH0AHc0D8T+jPua1OXBPPjJ8rzTy8CxbuXwNti5LTXVHl6Hr8K4IGLsk7BSlZ3TVZ
+         A90BKQAghjbUvuHXi4wJvbSTb9OJ/JLoa4T8bGmpazXopDRJW3JwXhKtXAACo2EB4caC
+         kZ1uw1E2R3+oii9u3oirvbMDSJHMayzSztPbr76VU/enXTOyKVT7Je9j8qnvdVDiY1UG
+         9hEJ2CnnUzP2n4djSjMJ7Z4jlp7nylVquRfCQJDXLWs7SROf6w6abh+nUUSG0aw3gClN
+         oU7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793208828; x=1793813628;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4x4ogCcrIz3iULJj4AUcmCmwpvZhGjnxniSpLhEijJA=;
-        b=uJiWwRBu5Hxr2BjHHEqTi+UaGP1/1NYBd7Du7iria/67/2SwAfh7uEhr5pnVfUbNaQ
-         5l67Wg+Nwq6gRdtien5ZDThhhAFai9YRUV0vi39Xi4tTzpBkxZfSNaFADE1+IEaadkg0
-         CyxAtchjs7NzmJbhEyMxN7Q53wNZAPFL6/xvNtM80RbemWFc9MhUIRTjV5nEtJ+vquRP
-         19XC2HKIF8A48KVslFa9Cfd/w4Qx5nBeIHW9VNwzF/g+fsbkVdubj/Lsj5StJ/1IFlh9
-         zt3JxWrcVztUTnAUOcrWPepMTFlIa+uZpq78fbCZHi/NcgOIPBkeeus1tEWVVaP2LwXL
-         C0HQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx+5atGjqGcqlq8+clDeDGKNjdRWlwMeVTrizApnLKWBgYM0URfamWiGwkPDUewYLl7MfE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ9UM+PkUCMVK+Ob9Q2X/AGDij5+eJq/1RisFML4IDhdxzB4pAx
-	a52w8WDUEo4ZrTfUVygLgvTs36RSLrcV4og9ASwg0E+G8eiHoh/yS7mLal4nnrmvyD0dsm22CCu
-	LBGrr2t0yHkV+tOmR/avDPkyNcTwM6NslaevYr0wG
-X-Gm-Gg: AYBFou0i2IPWG16Aei69JeExRKHN1+tjfwDk24pyVj3rV7sJtIzFKMtnSu5p9vEUkE/
-	2AN6i36Y6OWJmnuUO03RelB6mtSrIBFCRVzxgqVUEDIuOnCG62IiyGtheCIvCZwPgksAnDFYpjw
-	znZyNIMdyYb0xzVhC6he/1Y0y7oueRMK2v8MeR4kF9jgSj9xBrMTLVqZSAgkqM0CZ34JFm3yZVf
-	XaunBncaFATBXcz5gh8m+NWVo5S/rZhOdmYVgtvefH8HsdYFsYDDdleZvoAAazhWLLrm4uEMe55
-	NdzMzWfY4NT+r3ZArodfHK+fNCvAhvD2hz1+DvQ4tyNi7ZPsimE9uz2+bBmkUvcDX6uEg2RDSrd
-	1PSKsAFPMlsma0pJGNCdUe5FyyJqFQBjiFTj4PPKGjJuni/W+4mkqQIjOeA==
-X-Received: by 2002:a05:6402:a204:10b0:6b4:9221:8932 with SMTP id
- 4fb4d7f45d1cf-6b4b10d3756mr7408a12.10.1793208827782; Wed, 28 Oct 2026
- 10:33:47 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793209058; x=1793813858;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :references:mime-version:in-reply-to:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=cYvri/TspkG2tYIL/heVQtQQlYpPDPdribSzkNzfhow=;
+        b=sRDPhKCx8hlIU6KEmGry0vb24oeBexk4p1hAZOesrNt4dQC0VHW9/8PUbTa/XT8+nb
+         53d3iPder8Lhhyqi7JyvM1Dn7yBNShNFmEINVrgDXmnYcM51PHYlXvgvYq0Q+lA6liW7
+         XJoedJwTzgGvVPXJ9F8PMJSacOs6dcKY8ugLYaLGqou5iDf0n4l+okoaYrhwWqorYhCw
+         ZHAJNo8/iWvvpYVB4lP5PwsTqPUpdyyPf+CtPKntC7nBE13cUDNIsEpX+hR/GzV/EbH3
+         v/T3gWQS7GerNbhCsQkyGAySnlOBlfqahD+QROQ+ryWiZ5ET/AJqgQIq6vQx3uPjLgD3
+         9LQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw41qOf3tChTl9u6YaYWAt8mE2rnLQfpu7bZqi13KqI3qW3i7Q9B4bqFkJ2hhItb6FAnJU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLKep28ZWChIgwWTmR3fUE2FDvGG6P+HP7+heBZ1d7W2SY+mdRh
+	TZ95JsrgFvRRM5fLdR2wX1h556buAMjXnCxW7FeJMqPoGwJixy2xPsHHNTAjxYnmJMQTkoSSJWq
+	jlKRBAw==
+X-Received: from pfbfj6.prod.google.com ([2002:a05:6a00:3a06:b0:89d:3267:4348])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2386:b0:892:a8f1:c53d
+ with SMTP id d2e1a72fcca58-8a6e6ff38aamr2448185b3a.22.1793209058009; Wed, 28
+ Oct 2026 10:37:38 -0700 (PDT)
+Date: Wed, 28 Oct 2026 10:37:37 -0700
+In-Reply-To: <20261027124140.upuow4a3kv6kssvn@m.mifar.in>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,36 +78,88 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-8-zide.chen@intel.com>
-In-Reply-To: <20260827223755.143247-8-zide.chen@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 28 Oct 2026 10:33:35 -0700
-X-Gm-Features: AclHuK-cshc-ua1x23QeiEhM2iv4YfYaUSv2c6vItBjWJCU_Q1Z7ZQY_OtyF72s
-Message-ID: <CALMp9eRrgBXxFtNLOw0KAjFu_L9ofar_oiJA9WSJk82w75w+bw@mail.gmail.com>
-Subject: Re: [PATCH v2 07/16] KVM: x86/pmu: Expose kvm_host_pmu to vendor modules
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <2026102314-CVE-2026-99082-e5b1@gregkh> <20261027124140.upuow4a3kv6kssvn@m.mifar.in>
+Message-ID: <auIy4UZMGxLhBCAn@google.com>
+Subject: Re: [REGRESSION] KVM: x86: OVMF boot hang with SMM enabled after
+ commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO cache")
+From: Sean Christopherson <seanjc@google.com>
+To: Sami Farin <lkml20261027@mifar.in>, linux-kernel@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org, kimjw04271234@gmail.com, 
+	pbonzini@redhat.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 3:48=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
-te:
->
-> kvm_host_pmu holds the unadulterated host PMU capabilities, which
-> can be used to compare against guest capabilities to determine whether
-> certain MSRs should be intercepted by KVM.
->
-> Exposing it directly avoids the need to introduce per-field accessors,
-> which would add boilerplate without hiding any implementation detail
-> worth encapsulating.
->
-> Opportunistically, fix typo "Unadultered" in the comment.
->
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On Tue, Oct 27, 2026, Sami Farin wrote:
+> On Fri, Oct 23, 2026 at 14:45:15 +0200, Greg Kroah-Hartman wrote:
+> > From: Greg Kroah-Hartman <gregkh@kernel.org>
+> >=20
+> > Description
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >=20
+> > In the Linux kernel, the following vulnerability has been resolved:
+> >=20
+> > KVM: x86: Use active memslots for the per-vCPU MMIO cache
+>=20
+> Hi all,
+>=20
+> (Disclaimer: I am an end user, not a kernel developer. I used an LLM to h=
+elp
+> triage and trace the issue, but the findings, traces, and tests below are=
+ verified.)
+>=20
+> I hit a guest boot hang after updating my host from 6.18.57 to 6.18.58 (F=
+edora 44).
+> Windows 11 guests using OVMF with Secure Boot and SMM (-machine q35,smm=
+=3Don) hang
+> indefinitely at the TianoCore splash screen, pegging the host vCPU core a=
+t 100%.
+>=20
+> The issue bisects/points directly to commit b3e6212dea2e ("KVM: x86: Use =
+active
+> memslots for the per-vCPU MMIO cache"), which was backported into 6.18.58=
+ and is
+> also present in 7.3-rc kvm/queue.
+
+...
+
+> ########### patch 1
+>     The proper upstream fix requires tagging the per-vCPU MMIO cache with=
+ the address space ID (as_id) alongside the generation counter.
+>     The Flaw in Commit b3e6212dea2e:
+>     The commit attempted to fix stale MMIO cache validation in SMM by che=
+cking kvm_vcpu_memslots(vcpu)->generation. However, its commit message reli=
+ed on an incorrect assumption:
+>         "Memslot generations are unique across address spaces, so the gen=
+eration also distinguishes the normal and SMM views."
+>     In KVM, each address space maintains an independent struct kvm_memslo=
+ts with its own generation counter initialized to 0. They are not unique ac=
+ross address spaces. During early VM boot, address space 0 (Normal) and add=
+ress space 1 (SMM) frequently have identical generation numbers.
+>     Because struct kvm_vcpu_arch only stores a single GVA, GFN, and gener=
+ation counter without an address space identifier:
+>         An MMIO access cached in SMM (e.g., GFN 0xFED40000 with gen =3D 4=
+) matches in normal mode where gen is also 4.
+
+Hmm, this isn't adding up for me.  It should be impossible for the generati=
+on to
+be '4' for SMM, because SMM is supposed to use odd-numbered generations.  F=
+rom
+kvm_swap_active_memslots():
+
+	/*
+	 * Generations must be unique even across address spaces.  We do not need
+	 * a global counter for that, instead the generation space is evenly split
+	 * across address spaces.  For example, with two address spaces, address
+	 * space 0 will use generations 0, 2, 4, ... while address space 1 will
+	 * use generations 1, 3, 5, ...
+	 */
+	gen +=3D kvm_arch_nr_memslot_as_ids(kvm);=20
+
+So while both of the suggested fixes seem reasonable, they _should_ be unne=
+cessary.
+
+Paolo, at PUCK I verbally said we could go with the one-line fix, but I'd p=
+refer
+to hold off until we can figure out why the generations collide in the firs=
+t place.
