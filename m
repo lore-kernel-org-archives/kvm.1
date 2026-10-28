@@ -1,100 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.160.170
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793224226;
-	b=hoyA4+d4Q8EUJEc4V7s3GKDz/uVNBYELJmAlXOrfSd6vbLh3LipeytxjV83XY5p5zE8M
-	 HPeaHefiIXeawaffa1IK7GgHRZCZn5o0nJmKc2XWqrzDcsQNelY+hgXtrL8OI5hQeZ4sx
-	 cSgVKqkEvPl5PS+OcJHPiqOt7Frs2dHoi+xOVVC7R9qDmSjqmeVFuS418Z1JuRnT4eERK
-	 3ow0tAN0f1FK7B+4keonD3k4R2Ldr/hNMfkEyrEYcuncxYH+GL/1UpYVDZnrWAT4gww57
-	 EuS3AdELgVVTe7gL1HDTRmSSYAvtca7mQjTTkjJS+xhyiGqjz/lioqGBJatXI4HXWYg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793224226;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793224305;
+	b=Z7LdXPIgqFzyJugQHFIju5KUT1wTT9VpikxzacFKvPm7df1ARIX86H3mWaWSdaAa4HSg
+	 SgmphQ6P2NOQwEd3V4G8PRVf4pyTBQpnaLA6B/edsk/Ss3MXQjIBfuRddRRYaJMO5PS7n
+	 wSGHbA5IBOZePivO/7FtxO1uUtqc+Ms/trmIBbLsoEfRD8CZJvXOseYzveG2tOOTSM44z
+	 NoPs9LoUU5MRkqnmOBWtnbKgj+hxiTPEuEkvjNDLC5kmUeCLPExUMRkho1OLuXVHLAvbl
+	 sPivh1DF3Zb7hesQsfEhxyDd5VdBXEmd+7T+ROczzfXchl47K6dLUP6QHRYvkNa47Yg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793224305;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=oVkrmmtCx8Wz/yMOuP0167k9m9+QdMkDrba4QH5xysg=;
-	b=I5TJy2nP9gI5zlRGNn8eu6tE51sBUzcPbKlP8aDLZhAjHAOJ4wCm+EdNbZ0Z1aRJOIzG
-	 jtrNbeafE+3FIsanVzGAz3Twab/D3djE0s1fuw6Z4mtP0x+gnmJ2VaJ8Uoi+9mo7MKK3I
-	 +AobeQv2ajA3obfHM6KRibGzOrgUiivZZ6/AWkI5jXthvqQqbMZ/kxWdPW7SxonKIviEY
-	 DszC2yu+opGb5TZmgtqGcdsiNc27Rs6iJ4vy2ax4rUy+X/ebAs4CcOas4DYrBIpKUb1EX
-	 CKL7Y3TeW1WQC0Oc8uoDCCbweE8WyV73lfRAlspd2Sr2MwHk2VyxxOdBidDpxgYvozA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=w7Bp9dEIJxBru2Yx4Wp3IUe1NzI0zM2Aj6BmYM8tSDQ=;
+	b=oAokBmHAgLzMxCNtPR8ZIufw7r66Jx583epUMd6TZyyPpHgqvhUHTyGFuWmUG98jzrvc
+	 E1+b0/7+zwnXlxc177Udt0Qb4hnkhCfd4NpnM+QVeWuzg9iays6uzxNk1wc0yOlTuNlTV
+	 FDvP/mpLhXzR2ZZruEBicukr2EQdxjgMGqYic0BR95JMyJZY5ghCtgr2xc+SvPhAy/lvf
+	 PaH/22PbdDPAGPNZWin3NNUgv8vB9Wuoh8EIYdyH0eCMXPpMjz98ZdJhVrfxwwTkZy/t+
+	 ge1LD4O5m2oblEjWeK/fM++zLucocC5y3vQtIHaLjXyI3O1udQ1S6+hiloIg0CmpxqA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ck0EDRnj;
-	arc=fail smtp.remote-ip=209.85.160.170
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JYIR2HRf;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CB8606A31D
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 21:50:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7CB8606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5660F606A31A
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 21:51:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5660F606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ck0EDRnj
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-533202fe429so116141cf.0
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 14:50:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793224225; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MrC9ElHe6CTVVyPsi5KlsiQ6fkKgaPutSScR5eBSYYbdaOJNh096h8Cr4aCyPdtwW8
-         2vzApk6O/yNh75At37ZHMZpG4PGjvXiQe2LKpsw0ao2zAZcd+SWTJ94mxYKfrXSb/2TB
-         iqpiQVmGVeQr+GYvutcMX/3fVXS31oNNyvLbJVa0Oza/af0xd91VxrG1zNNmIx+kR5JO
-         Oo8lA5H18zRXhhRZSMavocWJSJz81f/1BJvFG/I88NfDXSS3XXgXAazsRj/b6/D5qGRI
-         Lux6fG8CrciuRpB3dmZm8wwbUtZgFqpr43/mlFdLa3w8wRzuHzKisoHdocymax9QokQQ
-         RlbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oVkrmmtCx8Wz/yMOuP0167k9m9+QdMkDrba4QH5xysg=;
-        fh=s6sLU3vU0+LRT/oc7qnr01cu1JyqhTHMStDOpBbm8sw=;
-        b=dkvLHEqpHbJeUkxnW2kuLAHSs8CucbJsROJ0QwqQSQUWEOB6z5l27n5IvmaEHW0dKD
-         /IBxrY2f/OQ45G6ivIHvxM/3YuJcaki/LDqLq0d+tx8FtqBeh7StAMLj1VnUpRks7WXb
-         ChgbyOuPHhF/LQMO+vuN517lQtYDBVOEk+rIF+B7tlShXVwRS0KtUKduQ8NVouYWmtdO
-         mMz36sRLMUMkmQPkOUAuMEB+zkCFrgCMerCiJSh3IifM/zQu78CpyzXVAUQLOoyyEsRW
-         gNE1lV6alebpOJ5reNEBFC5ktoCtSWWzqroMgwxu8HBTG9pmwEATfKx9s5BQmQzFz1jZ
-         mrww==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JYIR2HRf
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ad91787a1aso1030963a91.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 14:51:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793224225; x=1793829025; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oVkrmmtCx8Wz/yMOuP0167k9m9+QdMkDrba4QH5xysg=;
-        b=ck0EDRnjLKay09UM84zGm1JVefEzd3YbVqAzsZSMjjotDQg6LmiDbJkH3c94ItREUn
-         u1z/eRZ7MuZGZoCUEsb1K8spkWIdz4yXDM14DApiLWgu4IGn3joQziWF6ox99pbYO5Rr
-         yu0aVIrTA4X1CIpIVU04f/y0FyVVyM0St+wAhgmx7uwflXlcImRhn6An9WYPHIc+qZQ9
-         VhUSy6djLWm8jnzCsboEJHN9Xv5W4/ectCwU8xHPyCOzl9Cjp07Py95Q/TU4Z3f6K2WV
-         +EW6QttUt3R9AkwIimZmUmR17AbuCKrbIjSHFKPn/W10HiJ/iuTJovy+F2h7oTHHYY02
-         ej9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793224225; x=1793829025;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793224305; x=1793829105; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oVkrmmtCx8Wz/yMOuP0167k9m9+QdMkDrba4QH5xysg=;
-        b=bBCGgTzo6j/PC79qGyZIXgWNMUVFj7mybSf+8MsQaJHppkFT40jw52q3Eq+4KSQgYM
-         KVbEWng3YxVHllGe0o4Q5jhcTA2MC6Klw1WSxpPnFzNo7vN5U6uB0oKqYZ7yqWMr7xhN
-         ma7uXzCRyjdrQocZVkYXpMHgkayhbdD+ACvKwImBinT33WtU1GNnIjBto6cTQOYz2Kjc
-         W+kSZ4yh+2BuRUD0rOWZTik3GSL1Ec26KG822xbyLHAAkIZ4zqBHEnTZnkk0LvX/Dxb3
-         9/IOGiU/BBdJ9WFAi2e77pvQSN+DJusW1h7RPpQTyKv5qidVxkXj3tNPTrlt3X6iiKSd
-         Y+Qg==
-X-Forwarded-Encrypted: i=1; AKwUvBz0tx6mYVFp8y1KKxMQdleUE6PHIog5kzA6yiE56KZ7an6bKTKgFrk96uFhQZsxGu59vBI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKJ+hUcWgw940+FnwG7+0pt18VkdBQUCTZc0CBDyt0PykX3KH/M
-	yW+ThWCo72jb00D2po+hY4K5CVWXloWHKbyBAWAoHa8nCl8XEMhDaax7yKqxYM2b4u1GJI30HOo
-	oDCHX7PXU2OV+U+bVgmp8w7v4u6kP+/ki/OZsoJmP
-X-Gm-Gg: AYBFou3x0HRy09DlWubpPCYQ+jMwf/5uWE8etJrY/DvrUl4qCd6tVavImpQc31Nmg+s
-	JeR7mtLElcBiZ/Q41NhEEUIT+8S6+JVCE1W0tTkSCYCaq6+DxouGvW+LstOjoDqXiIRTlgCqgCU
-	siFI31yZIfEC/ARXslqLpJgOyqs6ae67Tj8ZxpMJdy+LUXbQtz9Br3S5W5x3bFgQDBhn1pa0b+u
-	D5Z8eObsNvUTfDAr445I7jfjsnzPHmMnWR1jdvnTdKS/YWbpdahM4EjmHwXy/VBjhNpUc6HgX80
-	D5SgEpJfj3c/csE3TFoF8hTStA9q2oFz0P1rd4PYsusD0JKsG3w0TJfV2E5uj4BJ/buyCCgdlfz
-	/g/RQ6P/tyx2rofAR47vqFmM6tdy0htiH7zN8
-X-Received: by 2002:a05:622a:5c0b:b0:533:9731:f0f1 with SMTP id
- d75a77b69052e-5414df1402dmr3259361cf.10.1793224224056; Wed, 28 Oct 2026
- 14:50:24 -0700 (PDT)
+        bh=w7Bp9dEIJxBru2Yx4Wp3IUe1NzI0zM2Aj6BmYM8tSDQ=;
+        b=JYIR2HRfFnGvSU2rQGBW5sxdBR8+2GlH2qjSq/HlD6S1u4eJjR1i/w+as6DToQOKvk
+         RSDAri7eQHTr4j9eUTy4Z2DbhxFMnZsVBHmi/fT6/ey6EKp/8L3qtsdyFQVLxeJCqV2D
+         xDHqQydzMq9zx1vSYnV5613GpblmNqBGeXypBuGM2MtlhNUGk5n7a7+RZfJmB8WAVcwG
+         OaJ+Pp4etwzurozhxQU8jivNTMaWuu+r6eaF5dfVdvCQX4ABCS+ynxCJ0SBmG8elQT07
+         HSeIPzYrnw/B3podc0ti5M63QabUaVeyVgEXoLhQhk4NhgCLTvc+yckuVNgToedhZotl
+         S6yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793224305; x=1793829105;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w7Bp9dEIJxBru2Yx4Wp3IUe1NzI0zM2Aj6BmYM8tSDQ=;
+        b=NSqXlfuPLODWGH777TSmKT2QU8tElPd82l454jqRDekkXt6v2wV1jeAf0GbI8X1Wb3
+         Z1v7SfSf/Tv0Aw1Go+KlV0hjMjOERn0FNJXZPgoCmE5JZUE1gMQf51EtMccmIpPulgev
+         a1LnQ4h+VKkFMoGCP/Je5CKk7+WEq7O/nEZzC48iLoyIUCtZKw2uQcDf7/PMWM6A4Fz3
+         YU7AvPswpVsgdntnUkKh9JSuRtG0qaBpXwGj/9/I/2r64RKUXriHYkoIIYKDkOlkna8e
+         3QTb9hjLPKk4aU88Sj+4hGlx4tIgApCUQz15hnz3ca9j2VQBLrOp5As4WHsiacJ0lRWS
+         gQjQ==
+X-Gm-Message-State: AFq9FYKB22rVYgGjGiwn1fl5PjJ714jlpuAEaEuuNhKCVs6lbm5NiGRE
+	f7kAaWF73T2JuVOacFZ2YjdSSmjHGQ4ftZvMsHSy8+4NLENQJNbfGy5W+EIR/Al3iXon7gY5tpJ
+	sALlBZ0NAXc7P/pUweqmKuQ==
+X-Received: from pjbcm5.prod.google.com ([2002:a17:90a:fa05:b0:3ad:ce88:b6b5])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:57e3:b0:3ab:413:49bc with SMTP id 98e67ed59e1d1-3ae58123796mr2472490a91.37.1793224304446;
+ Wed, 28 Oct 2026 14:51:44 -0700 (PDT)
+Date: Wed, 28 Oct 2026 21:51:43 +0000
+In-Reply-To: <20261028202607.1844883-4-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,126 +76,212 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-15-zide.chen@intel.com>
-In-Reply-To: <20260827223755.143247-15-zide.chen@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 28 Oct 2026 14:50:09 -0700
-X-Gm-Features: AclHuK-liHGzIvCMjGYc6qSRUa3UjMY3TGndjwxwFoPElrqbY_zUPbSfw_KI05g
-Message-ID: <CALMp9eRypTqSvMUes6PVB8z30EcppLJ3i_votpMnJOawP1c4sA@mail.gmail.com>
-Subject: Re: [PATCH v2 14/16] KVM: x86/pmu: Ignore AnyThread bit if
- CPUID.0AH:EDX[15] is set
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
+Mime-Version: 1.0
+References: <20261028202607.1844883-4-seanjc@google.com>
+X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
+Message-ID: <20261028215143.2913059-1-jthoughton@google.com>
+Subject: Re: [PATCH 3/4] KVM: x86/mmu: Add automatic prefaulting/prefetching
+ for TDP MMU faults
+From: James Houghton <jthoughton@google.com>
+To: seanjc@google.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mamarang@amazon.com, 
+	pbonzini@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 3:48=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
-te:
->
-> Intel PerfMon v5 introduces the ANYTHREAD_DEPRECATION capability
-> (CPUID.0AH:EDX[15]) to indicate that AnyThread counting is deprecated
-> and that writes to the AnyThread bit in IA32_PERFEVTSELx are ignored.
->
-> When ANYTHREAD_DEPRECATION is present in the guest CPUID, emulate the
-> architectural behavior and silently ignore writes to the AnyThread bit
-> instead of injecting #GP.
->
-> Continue to inject #GP when ANYTHREAD_DEPRECATION is not present in the
-> guest CPUID, e.g. for PerfMon v3/v4 guests or when the capability is
-> not configured for a PerfMon v5+ guest.
->
-> Advertise CPUID.0AH:EDX[15] only for PMU version 5+ guests, since the
-> bit doesn't exist below version 5.
->
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
+On October 28, Sean Christopherson wrote:
+> Leverage the prefault code to add "automatic" prefetching of surrounding
+> SPTEs when handling TDP MMU page faults.  As pointed out by Marco, the TDP
+> MMU doesn't support prefetching SPTEs, which puts the TDP MMU at a severe
+> performance disadvantage relative to the shadow MMU when faulting in guest
+> memory at 4KiB granularity, and in general is a gap in the TDP MMU.
+> 
+> Use the prefault flow to prefetch SPTEs instead of the more minimal, custom
+> approach used by the shadow MMU.  Reusing the prefault flow sacrifices a
+> small amount of performance (the standard page fault path is "heavier"),
+> but is vastly simpler, supports backing memory that can't be GUP'd, and
+> shares its maintenance burden with KVM_PRE_FAULT_MEMORY.  E.g. multiple
+> flaws in x86's prefault code were practically impossible to hit with
+> userspace-driven prefaulting, but were hit almost immediately with
+> KVM-driven automatic prefetching.
+> 
+> Provide a writable module param to let userspace control the number of
+> pages to prefault, as KVM needs a control of some kind, and letting the
+> user choose how aggressively to prefetch is just as easy as hardcoding the
+> number of PTEs to prefetch.  I.e. supporting a variety of use cases is all
+> but free.  Default to PTE_PREFETCH_NUM as that's been KVM's behavior for
+> the shadow MMU for decades, i.e. even if it was arbitrary, it's gotten a
+> *lot* of mileage and so presumably is a reasonable default.
+> 
+> Instead of unconditionally bailing on hugepage faults, skip prefetching if
+> the original installed page size covers at least the number of pages the
+> user wants to prefetch.  In practice, it's unlikely hugepage prefetching
+> will see much, if any, use, but it's practically free to support, and will
+> allow for more experimentation and tuning.
+> 
+> Note!  Check for an incompatible memslot *before* invoking the specific
+> page fault handler, and thus before fast page faults are handled, otherwise
+> the fast page fault handler can "fix" a fault that never happened and log a
+> spurious, non-existent access.
+> 
+> Do NOT prefetch in response to protection faults, i.e. if there was already
+> a shadow-present SPTE, because prefetching in that scenario is unlikely to
+> be beneficial.  Note, this would also prevent spurious dirty logging via
+> fast page faults, but (obviously) only for writes, i.e. wouldn't block fast
+> handling for !PRESENT page faults when A/D bits are disabled.  I.e. the
+> aforementioned early check is still necessary to avoid spurious dirty log
+> entries (or KVM would need to explicitly treat auto-prefetch "faults" as
+> "can't be fast").
+> 
+> Lastly, don't go down the slow I/O path for auto-prefetch faults, as the
+> goal is for auto-prefetching to be light and fast, i.e. to pull in SPTEs
+> without significantly increasing the latency of handling page faults.
+> 
+> For now, use the auto-prefaulting code to the TDP MMU, i.e. defer
+> converting direct shadow MMUs to a separate change.
+> 
+> Reported-by: Marco Marangoni <mamarang@amazon.com>
+> Closes: https://lore.kernel.org/all/20260825140159.70997-1-mamarang@amazon.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
-> v2:
-> - Advertise anythread_deprecated only if kvm_pmu_cap.version >=3D 5.
-> - Add the missing AnyThr bit handling for IA32_FIXED_CTR_CTRL.
-> - Update the comments to be clearer.
-> ---
->  arch/x86/kvm/cpuid.c         |  2 +-
->  arch/x86/kvm/vmx/pmu_intel.c | 19 +++++++++++++++++++
->  2 files changed, 20 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 63201d4ea4a1..ef208906b3ee 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -1542,7 +1542,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_=
-array *array, u32 function)
->                                             KVM_MAX_NR_FIXED_COUNTERS);
->                 edx.split.bit_width_fixed =3D kvm_pmu_cap.bit_width_fixed=
-;
->
-> -               if (kvm_pmu_cap.version)
-> +               if (kvm_pmu_cap.version >=3D 5)
->                         edx.split.anythread_deprecated =3D 1;
->
->                 entry->eax =3D eax.full;
-> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-> index c7472778137a..599c69dfa6e3 100644
-> --- a/arch/x86/kvm/vmx/pmu_intel.c
-> +++ b/arch/x86/kvm/vmx/pmu_intel.c
-> @@ -446,6 +446,12 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, =
-struct msr_data *msr_info)
->                 if (data & pmu->fixed_ctr_ctrl_rsvd)
->                         return 1;
->
-> +               /*
-> +                * This is to emulate ANYTHREAD_DEPRECATION. Guests witho=
-ut
-> +                * support for it would have had the write rejected by
-> +                * pmu->fixed_ctr_ctrl_rsvd above.
-> +                */
-> +               data &=3D ~intel_pmu_fixed_ctrl_bits(pmu, INTEL_FIXED_0_A=
-NYTHREAD);
->                 if (pmu->fixed_ctr_ctrl !=3D data)
->                         reprogram_fixed_counters(pmu, data);
->                 break;
-> @@ -494,6 +500,8 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, s=
-truct msr_data *msr_info)
->                         if (data & eventsel_rsvd)
->                                 return 1;
->
-> +                       /* See above comments for MSR_CORE_PERF_FIXED_CTR=
-_CTRL. */
-> +                       data &=3D ~ARCH_PERFMON_EVENTSEL_ANY;
->                         if (data !=3D pmc->eventsel) {
->                                 pmc->eventsel =3D data;
->                                 pmc->eventsel_hw =3D data;
-> @@ -603,6 +611,17 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
->         pmu->pmc_exists64 =3D (BIT_ULL(nr_gp_counters) - 1) &
->                             kvm_pmu_cap.cntr_mask64;
->
-> +       /*
-> +        * AnyThread counting is not supported by KVM due to cross-VM
-> +        * information leakage concerns on SMT cores. Therefore, AnyThrea=
-d
-> +        * remains unavailable for PerfMon v3/v4 guests, where AnyThread
-> +        * deprecation is not enumerated.
-> +        */
-> +       if (pmu->version >=3D 5 && edx.split.anythread_deprecated) {
-> +               pmu->eventsel_rsvd &=3D ~ARCH_PERFMON_EVENTSEL_ANY;
-> +               fixed_enable_bits |=3D INTEL_FIXED_0_ANYTHREAD;
-> +       }
+>  arch/x86/kvm/mmu/mmu.c | 64 +++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 60 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 3bd0d921778d..c56a2eaa4646 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -122,8 +122,15 @@ static int max_huge_page_level __read_mostly;
+>  static int tdp_root_level __read_mostly;
+>  static int max_tdp_level __read_mostly;
+>  
+> +/*
+> + * The exact number of PTEs that can be prefetched for the shadow MMU, and the
+> + * default number of pages to prefault/prefetch pages for the TDP MMU.
+> + */
+>  #define PTE_PREFETCH_NUM		8
+>  
+> +static unsigned int __read_mostly auto_prefault_nr_pages = PTE_PREFETCH_NUM;
+> +module_param(auto_prefault_nr_pages, uint, 0644);
 > +
+>  #include <trace/events/kvm.h>
+>  
+>  /* make pte_list_desc fit well in cache lines */
+> @@ -4709,10 +4716,12 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+>  	/*
+>  	 * If resolving the page failed because I/O is needed to fault-in the
+>  	 * page, then either set up an asynchronous #PF to do the I/O, or if
+> -	 * doing an async #PF isn't possible, retry with I/O allowed.  All
+> -	 * other failures are terminal, i.e. retrying won't help.
+> +	 * doing an async #PF isn't possible, retry with I/O allowed.  Never
+> +	 * go down the slow I/O path for automatic prefetching, as the goal is
+> +	 * for it to be light and fast.  All other failures are terminal, i.e.
+> +	 * retrying won't help.
+>  	 */
+> -	if (fault->pfn != KVM_PFN_ERR_NEEDS_IO)
+> +	if (fault->pfn != KVM_PFN_ERR_NEEDS_IO || fault->auto_prefetch)
+>  		return RET_PF_CONTINUE;
 
-According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"), only
-Fixed Counters 0, 1, and 2 have an AnyThread bit (bits 2, 6, and 10 of
-IA32_FIXED_CTR_CTRL). FC3 has never had an AnyThread bit;
-IA32_FIXED_CTR_CTR[bit 14] is reserved in PerfMon v5 and becomes
-METRICS_CLEAR_EN in PerfMon v6. Passing INTEL_FIXED_0_ANYTHREAD to
-intel_pmu_fixed_ctrl_bits() will wrongly clear bit 14 in
-pmu->fixed_ctr_ctrl_rsvd once Fixed Counter 3 is enabled.
+Hi Sean,
 
-On hardware with CPUID.0AH:EDX.ANYTHREAD_DEPRECATION[15] =3D 1, if software
-sets the AnyThread bit in IA32_PERFEVTSELx or IA32_FIXED_CTR_CTRL and then
-reads the MSR back with RDMSR, does hardware return 0 for the AnyThread
-bit, or does it return 1 but otherwise ignore the bit?
+I wasn't sure where to leave this feedback, but Marco's original patch[1]
+used fast-only GUP instead of relying on normal GUP + FOLL_NOWAIT. I think
+fast-only GUP is better here. (Correct me if I haven't understood this
+series correctly.)
+
+With normal GUP, we'll get allocate more pages than absolutely necessary,
+and pages that are swapped out with zswap are swapped back in even for
+FOLL_NOWAIT. And I'm a little bit concerned that normal GUP (even with
+FOLL_NOWAIT) might stall page faults noticeably longer than before.
+
+If you leave prefetching as normal GUP, maybe leave it off by default?
+
+What do you think?
+
+[1] https://lore.kernel.org/all/20260825140159.70997-1-mamarang@amazon.com/
+
+>  
+>  	if (!fault->prefetch && kvm_can_do_async_pf(vcpu)) {
+> @@ -5072,6 +5081,18 @@ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+>  		 */
+>  		fault.gfn = gpa_to_gfn(fault.addr) & ~kvm_gfn_direct_bits(vcpu->kvm);
+>  		fault.slot = kvm_vcpu_gfn_to_memslot(vcpu, fault.gfn);
+> +
+> +		if (fault.auto_prefetch) {
+> +			r = kvm_check_memslot_usable_for_auto_prefetch(fault.slot, ACC_ALL);
+> +			if (r)
+> +				return r;
+> +		}
+> +	} else {
+> +		/*
+> +		 * Indirect MMUs need to use a dedicated prefetch mechanism, as
+> +		 * the associated guest PTE factors into the prefetching.
+> +		 */
+> +		WARN_ON_ONCE(fault.auto_prefetch);
+>  	}
+>  
+>  	/*
+> @@ -6654,11 +6675,44 @@ static int kvm_mmu_write_protect_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+>  	return RET_PF_EMULATE;
+>  }
+>  
+> +static void kvm_mmu_auto_prefault(struct kvm_vcpu *vcpu, gpa_t start,
+> +				  u64 error_code, u8 level)
+> +{
+> +	gfn_t nr_pages = READ_ONCE(auto_prefault_nr_pages);
+> +	int nr_pages_msb;
+> +	gfn_t i;
+> +
+> +	if (error_code & (PFERR_RSVD_MASK | PFERR_PRESENT_MASK))
+> +		return;
+> +
+> +	if (!tdp_mmu_enabled || vcpu->arch.mmu->page_fault != kvm_tdp_page_fault)
+> +		return;
+> +
+> +	nr_pages = min(nr_pages, KVM_PAGES_PER_HPAGE(PG_LEVEL_1G));
+> +	if (KVM_PAGES_PER_HPAGE(level) >= nr_pages)
+> +		return;
+> +
+> +	nr_pages_msb = find_last_bit((unsigned long *)&nr_pages, sizeof(nr_pages));
+> +
+> +	start = ALIGN_DOWN(start, gfn_to_gpa(BIT_ULL(nr_pages_msb)));
+> +
+> +	for (i = 0; i < nr_pages; i += KVM_PAGES_PER_HPAGE(level)) {
+> +		gpa_t gpa = start + gfn_to_gpa(i);
+> +
+> +		if (gpa < start || gpa_to_gfn(gpa) > kvm_mmu_max_gfn())
+> +			return;
+> +
+> +		if (kvm_tdp_page_prefault(vcpu, gpa, error_code, KVM_PREFETCH_AUTO, &level))
+> +			return;
+> +	}
+> +}
+> +
+>  int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
+>  		       void *insn, int insn_len)
+>  {
+>  	int r, emulation_type = EMULTYPE_PF;
+>  	bool direct = vcpu->arch.mmu->root_role.direct;
+> +	u8 level;
+>  
+>  	if (WARN_ON_ONCE(!VALID_PAGE(vcpu->arch.mmu->root.hpa)))
+>  		return RET_PF_RETRY;
+> @@ -6692,7 +6746,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+>  
+>  		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code,
+>  					  KVM_PREFETCH_NONE,
+> -					  &emulation_type, NULL);
+> +					  &emulation_type, &level);
+>  		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
+>  			return -EIO;
+>  	}
+> @@ -6703,6 +6757,8 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+>  	if (r == RET_PF_WRITE_PROTECTED)
+>  		r = kvm_mmu_write_protect_fault(vcpu, cr2_or_gpa, error_code,
+>  						&emulation_type);
+> +	else if (r == RET_PF_FIXED)
+> +		kvm_mmu_auto_prefault(vcpu, cr2_or_gpa, error_code, level);
+>  
+>  	if (r == RET_PF_FIXED)
+>  		vcpu->stat.pf_fixed++;
+> -- 
+> 2.56.0.313.g2479322e68-goog
