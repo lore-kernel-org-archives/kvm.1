@@ -1,68 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793207078;
-	b=AwU60rXZw2+ycNbjRK9M/3vGvNxGyDIiMIc/6yIK+HjS2ptBzZqpGdW54hyZcDX59aJL
-	 E55qVE9ofZifR2wJh2L9X+zCKECBPGLzc6gnXg0l0lMTT4kWmIxVUX0t2Psjv7EvFesFm
-	 LEaqexFwaMZXNUUP+JBkfHko2EfmUDQyKWdpcn4EEwkOAZqLIA5aXnnzUiO9mRWxuiPXs
-	 w3tl85bijNe0or+WqCOzhXdFI5ehnmK1DdKVeyc3gFCGdS2ulGzPqA0lE1tjvLlXzb/db
-	 yh77KwfKsFMtsI28BX0y37ehu320FAYu82kV1WOvH+II31Gomm1pbBNN+ZL/ou+SixA==
+	t=1793207487;
+	b=wYqWLDTxlRmlUE77YTocYRAc/MMOKIVjCuwIRTIXmCEzEi7krW5V8x7bMHxUiTxOCYhh
+	 hODMNKy6O/SF99bhXLC/huR10+bJPWuVQdh+/uW3VWJha0Ry8MRkQr2aAsVtXGQOTArSH
+	 tydpF4rP+aZ1BnGxk7S0Dl2Gh28BFLr7FVGBjdKC4LvdLoGeDX2DdF42WAHDSExYIe1Mo
+	 eaj2NuKGNpf5xQidx/dFUdFg/r+jEy8UHwVQB5RxXYtNj7YoiFhwrgcVKc/eg2lbJunNw
+	 gsUX/g8dfMhBdZdY/ibBeUVIh2igjCX/hjxn4da39F9sObZi8x4YnbLl3LHSYL/KApw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793207078;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=7u6epdxCRzzqEJ+g4x5/I9qZne8VNQ2rvwh6ewHJxGI=;
-	b=3mPwWTWmBLguyJb5J7eh1jHuQmjVe/y3dIqL7I8AtSk64C4yfJEmhOX3hBx68OBkqh99
-	 i94VV/75BPIJAJo4z4iX9yoUT/KR6Pv5jDt8W4ndBhcnqS+/HqEkY3TWv2Id9S+egomhS
-	 AKWhjPTZRRgfivwCC5rZdnwZ9O+qIeECpJWcE6aIHWz5DQElVch35wWIRoX7/ELNVodcW
-	 VlRLQUiSDiAGmoKjlS6sEjVWkF8VNSdRBTb9hKB0iEMhIQIdn2ZhEiCYOzkAJIMd1CGTM
-	 KVDqzD3Z81DJXE+EZvF7ZQDFah5nCGfN4KQz8LthyKqaX1YuV9KDNwbdAoJBL9cpX7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793207487;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=XhK75528MoHByOVxCJxhQ0foCg6UVn23+RKhIXHX2s4=;
+	b=YCaHUW8FEXvOAsQ0gzkBh1Uz/CCH2DtwtQAOyIo0AvTM12x4F8HamHiEh122hwreXLgp
+	 ZkdHhlBBkgCmWmMw3dBPY10JpViwJ4uSORUVZKivyhRa+GhmFe69TeC2CADAgVKEc8CWy
+	 876yOOVVNq2CduZoMCv/K8Sp2HQw4E6ybp1YYXTVt4cPsdRS2TVHyKptRHWTjVN9ffHfr
+	 EYWhGHXPMa4YMygZz3ZO822FxEA0b3Upx0tAHIsNQkur8oGA2YD16OSpxyzQU7oe8TfJJ
+	 gi3K8PR0CgWzhhwGaq6YKyCsGwOU0ZD5aiUjRSofop+6qe9qF8U+pPXHbcomazxYe6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MlznExYP;
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NpUGmY1M;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59498606A325;
-	Wed, 28 Oct 2026 17:04:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59498606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8422606A320
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:11:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8422606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MlznExYP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793207077; x=1824743077;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yRZrXN5GFxu0MlVfZUZ1S2TnnWoC/2UKZVvWM7X82eI=;
-  b=MlznExYP77RB4nWVn5sPTgMZh0UkwEoj9ksI0NTu/cJeeUcqx0Q4AufG
-   f80vAIotXcT3EzSMoaJub7AwwB+VYCaddm7PgLBQ0h480oLeuG/zfg+CR
-   qdZZzMoni327hEdx08OXO+X7Tqnpv6lYKLhqTiyN8oa1VwHD2LnyfOAYL
-   BPPDRBTQwPsmDdL93s2TIwCzHVRsJMop2qJoeGWvoIyZIoalmLcfhX2p9
-   1/G7ykjABmh05za9yknbex6usULLzc94v1nngvZD1Ns69uIFeOQpsOGbO
-   ayEVtsWELBKG4tJKHJBdwYguYOwTr/Fo7jzEa259oueVWpdB9wbHy7kYd
-   g==;
-X-CSE-ConnectionGUID: /bPWuVF7SBilUVRJhdf1lA==
-X-CSE-MsgGUID: +V2ppeJyT+u8pVv7XMZZow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1960817"
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="1960817"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 10:04:37 -0700
-X-CSE-ConnectionGUID: Y6g6Vhd3Rgq8j2C7yOtevw==
-X-CSE-MsgGUID: Kyp+cRjATfeEe3pQkwugcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="4953324"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 10:04:36 -0700
-Message-ID: <dbe6599b-2eb0-474d-b4ce-370b0adc4b28@intel.com>
-Date: Wed, 28 Oct 2026 12:04:35 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NpUGmY1M
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e94f72fb9fso11233005ad.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:11:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793207486; x=1793812286; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XhK75528MoHByOVxCJxhQ0foCg6UVn23+RKhIXHX2s4=;
+        b=NpUGmY1Mj16wVzNUXjjzxGVWnE7CVwg/f0IurxCXdvy3WLeJC87FBTDoJIIfVZLWla
+         ND4hInzRx7k5ngq5qRJch9j0/smCslskhv9KSdpfaZVo0yBhiY6eBV2ejmt0D91fDBG9
+         7uSUoTKxqUxNYXf/uwE8XiCRQi4kOJ1XrMzuvYaqU7fjJA+MxSPH+7wXYse3f7wf92tF
+         OBN2bp5JQsNTvTDC47xyjvoDi9gCangQ1J5vgaa88IxInhn8kOKNRlmxLh0XLDvl4xFR
+         ImUxYNRwzzTK108jU16R5KmwDReAjaU01hZQQwIPxamPbbyuyTMyDSQEwOygMmNbK+Jk
+         pFXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793207486; x=1793812286;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XhK75528MoHByOVxCJxhQ0foCg6UVn23+RKhIXHX2s4=;
+        b=D3avPMnsCmgxKkUpgaPnoZAe5KeA4G94cgBv+tR/+xVUdcVf9WtrG2D0N3/W1BXIWp
+         /06SCJVSb5ESp8sqxOAjK09THz1GlrlzT5+FIUTJhwS7Ifbk0CK84AXP/v0yhQUhhpef
+         rzYSv5aV/AZPLDbogPs7I1xPNxTs/kEh/E+qbpghMlS53WmkzZu90BrpU8rXp/gtkA0Y
+         rqviHb6AXUzemfhkqJDHGP9Jd/7HAdWYt/kVdhFU67nOx7XA0d8M6ZY8UgL5t/v71NKP
+         A+DsOYt3AixU9OD+Yn31EAl4op1vsvqqjE4+OMs/kjOkhn9pid5HfoNMOIE47HGGjIcC
+         GAcw==
+X-Forwarded-Encrypted: i=1; AKwUvBw3lGqCQJVKtF3wu71zk+q062x+GIWkcpbY9eFqA9enL5Au5TwU/sAj7PQ8pYHOthPiTKY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLPCD3AFF+cGURjZ0uQdM6PtksaP8Jev5aks6G+EG+Le5DlsEdW
+	bVwx03a0Zrz2/CpwGNAJRetTIUQ7YWifLTp/T/OW2R/4Kpeyn8eR1qogaSCELTxg/qJ+7evMsZE
+	ZzzFK+A==
+X-Received: from plld11.prod.google.com ([2002:a17:902:728b:b0:2e9:5b68:4b7d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d2c4:b0:2e5:dce7:5c43
+ with SMTP id d9443c01a7336-2eb002427f7mr28403405ad.6.1793207485987; Wed, 28
+ Oct 2026 10:11:25 -0700 (PDT)
+Date: Wed, 28 Oct 2026 10:11:25 -0700
+In-Reply-To: <20261028132657.1416783-1-jmattson@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,86 +77,65 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/16] KVM: x86/pmu: Drop nr_arch_{gp,fixed}_counters
- from kvm_pmu
+Mime-Version: 1.0
+References: <20261028132657.1416783-1-jmattson@google.com>
+Message-ID: <auIsvY_Z5Fbej9U8@google.com>
+Subject: Re: [PATCH 1/2] KVM: nSVM: Set NMI_VECTOR in synthesized NMI exit_int_info
+From: Sean Christopherson <seanjc@google.com>
 To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260827223755.143247-1-zide.chen@intel.com>
- <20260827223755.143247-7-zide.chen@intel.com>
- <CALMp9eQ2D2BjX8ZNqRuNp9h46Rw-_7pJD=50JAXbNHf5KEVj2A@mail.gmail.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CALMp9eQ2D2BjX8ZNqRuNp9h46Rw-_7pJD=50JAXbNHf5KEVj2A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Yosry Ahmed <yosry@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+I'm mildly disappointed you didn't go with:
 
+  KVM: nSVM: Really synthesize correct EXITINTINFO on vmexit
 
-On 10/28/2026 9:49 AM, Jim Mattson wrote:
-> On Thu, Aug 27, 2026 at 3:48 PM Zide Chen <zide.chen@intel.com> wrote:
->>
->> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>
->> This is a preparatory step toward fully bitmap-based PMU capability
->> handling. Later patches switch KVM's view of host PMU capabilities from
->> counter counts to counter bitmaps.
->>
->> Populate and use pmc_exists directly when walking guest-visible PMCs,
->> instead of relying on pmu->nr_arch_{gp,fixed}_counters as intermediate
->> state.
->>
->> Iterate counters via the newly added pmc_exists based helpers, and
->> remove the now-redundant nr_arch_{gp,fixed}_counters fields from struct
->> kvm_pmu.
->>
->> Note: {vmx,svm}_recalc_pmu_msr_intercepts() may leave stale intercepts
->> on GP MSRs after CPUID narrowing. This corner case is resolved by the
->> following patch: "KVM: x86/pmu: Switch to bitmask-based KVM PMU
->> capabilities".
+:-D
+
+On Wed, Oct 28, 2026, Jim Mattson wrote:
+> Include NMI_VECTOR (2) in the vector field when synthesizing exit_int_info
+> for a pending injected NMI in nested_save_pending_event_to_vmcb12(),
+> matching nested VMX's idt_vectoring_info_field synthesis and the APM.
 > 
-> Are you saying that you are deliberately breaking bisection?!? Shame on you!
-
-Yeah, I feel bad about this... the other solution could be to
-temporarily use for_each_clear_bit().
-
--       for ( ; i < kvm_pmu_cap.num_counters_gp; i++) {
-+       for_each_clear_bit(i, &gp_mask, kvm_pmu_cap.num_counters_gp) {
-                vmx_set_intercept_for_msr(vcpu, MSR_IA32_PERFCTR0 + i,
-                                          MSR_TYPE_RW, true);
-
-And then remove for_each_clear_bit() in the coming patch when
-kvm_pmu_cap.num_counters_gp is dropped:
-
--       for_each_clear_bit(i, &gp_mask, kvm_pmu_cap.num_counters_gp) {
-
-+       host_only_gp_mask = kvm_host_pmu.cntr_mask64 & ~gp_mask;
-+       for_each_set_bit(i, &host_only_gp_mask, INTEL_PMC_MAX_GENERIC) {
-
->> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->> Co-developed-by: Zide Chen <zide.chen@intel.com>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> v2:
->> - Fix AMD legacy PMU MSR intercept handling for guest PMU
->>   narrowing reconfiguration by adding for_each_clear_bit_from().
->> - Re-word the stale interception changelog part.
->> ---
-> [ ... ]
->> -       for (i = 0; i < pmu->nr_arch_fixed_counters; i++)
->> +       kvm_for_each_fixed_counter(i, fixed_mask)
->>                 vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_FIXED_CTR0 + i,
->>                                           MSR_TYPE_RW, intercept);
->>         for ( ; i < kvm_pmu_cap.num_counters_fixed; i++)
+> Per AMD's APM (Vol. 2, "Intercepts During IDT Interrupt Delivery", Figure
+> "EXITINTINFO" and Table "Guest Exception or Interrupt Types", and "Event
+> Injection"), bits 7:0 of EXITINTINFO hold the 8-bit IDT vector of the
+> interrupt or exception, and injected events are recorded in EXITINTINFO as
+> though they had occurred normally in the guest.  Although hardware ignores
+> EVENTINJ.VECTOR on VMRUN when TYPE is NMI, EXITINTINFO records vector 2
+> (#NMI) if a #VMEXIT occurs during NMI delivery.
 > 
-> Doesn't this potentially leave stale intercepts on FC MSRs after CPUID
-> narrowing as well?
-
-Yes.
+> Commit 36e2e98363e6 ("KVM: nSVM: synthesize correct EXITINTINFO on vmexit")
+> replaced the raw copy of vmcb02->control.exit_int_info (where hardware
+> populates vector 2) with nested_vmcb_save_pending_event(), now
+> nested_save_pending_event_to_vmcb12(), which sets only SVM_EVTINJ_VALID |
+> SVM_EVTINJ_TYPE_NMI and leaves the vector field as 0.  As a result, L1
+> hypervisors that check EXITINTINFO.VECTOR == 2 for NMIs (e.g. FreeBSD's
+> bhyve) or inspect the vector field of exit_int_info observe an invalid
+> vector 0 on nested #VMEXIT.
+> 
+> Fixes: 36e2e98363e6 ("KVM: nSVM: synthesize correct EXITINTINFO on vmexit")
+> Signed-off-by: Jim Mattson <jmattson@google.com>
+> ---
+>  arch/x86/kvm/svm/nested.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index af0ef678433d..9b62113f0cf6 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -673,7 +673,7 @@ static void nested_save_pending_event_to_vmcb12(struct vcpu_svm *svm,
+>  		}
+>  
+>  	} else if (vcpu->arch.nmi_injected) {
+> -		exit_int_info = SVM_EVTINJ_VALID | SVM_EVTINJ_TYPE_NMI;
+> +		exit_int_info = SVM_EVTINJ_VALID | SVM_EVTINJ_TYPE_NMI | NMI_VECTOR;
+>  
+>  	} else if (vcpu->arch.interrupt.injected) {
+>  		nr = vcpu->arch.interrupt.nr;
+> 
+> base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+> -- 
+> 2.56.0.307.g5fe7bd680c-goog
+> 
