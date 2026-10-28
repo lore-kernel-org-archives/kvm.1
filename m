@@ -1,89 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793213679;
-	b=qY1nEUvTKrIXliLbzLMF+IKeWnUk7pNGogEIh6pdtF28qIGpd8JBKS6oMAf4o2z1vyKU
-	 o+DvYAIM8bCTuf3F/SYOSXXu2KaRp424S4C7UCcPTgwoM9MPy4qG/dMN9IULlE/gFw4uc
-	 ZrCtvsFZPyIZC4vABRsKFb3l493jz3qyYJa6M1VSiW8LUeAMSDLndeZzooWZ0aX0Y+21t
-	 0qHOkU1pofZcbbpltQYy7al8S453M+nS6CtlERNYouXj3k0v+je/JgHSdnava3euDkab7
-	 Hi20w91n+7a2B2e9k1pPD5quOqzemR7GZcGsDxBc6iK6bbFLwBWIiPYdpB2HWZDhIGw==
+	t=1793214185;
+	b=cvsQXaVk9nqR2h+hus1eIRG2TssK6qsBKZM8aPMuwpHPm+TlGH8pD2Hh60prGCLQT4EW
+	 /FjS6KmqIxkJFPIWtoEd8MgDJguw9mCYwqAJXOfByfaScZova3DMDRKAuu6NcsiQGjqdD
+	 MLg078aearq6RsakFOssVrhgHYzw+KiQKFKdrl/7ba06UgH198KS/f9V5OYidtb2QCK0L
+	 QH5lQ+zlbwxN7Ml5PCpIpoF5yF5vEHGCpRb/24jq0Qe8CGUnFmvgN9qHDb9xvBARfJqzK
+	 ylA7pNnXqRloPqZFPdGAoNwzp41MOtLO+eLXbgZBpfMnF3RomyydtAVPs23NlM4u9dQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793213679;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=9YVBTzCoBmFYTK0l2/O6XJkdzc+P4h0u7drIqQo/0r0=;
-	b=YhEyK5EPAzJ+cjLx6x2m5xTfuYaqMTDuc2t0BBIxdZrj7Dq3ZIsSI9taY3HALL2o5+Qm
-	 0d7Cbh2nSv7zDe7x44d/L8AXNXsS0b4A99Z0oiY3gM2/c+i7n+omlUWwuBnQdo/dOQTrv
-	 7XhWq5/FifpLDfA/qzDrEt65qCenCSNBUh/Q8KUWj7k7XOmJrBBlEvIcO81Pzp83Rd9UR
-	 WNUrauFi229gX9VENW0ZhBMOSLmjqhgpxf0ISEzx+H78kuLfxOziEQp2MBXsuxA3s/+tS
-	 a9t5vrS80bzXD6ajT4iOGuDR0tdJRB/g8HK/AHDO8sena3jkWxwGaJx68i2CdipUmCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793214185;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
+	 In-Reply-To:Mime-Version:References:X-Mailer:Message-ID:Subject:From:
+	 To:Cc:Content-Type;
+	bh=ua8GfkfDrHDUR8px+Sy19+vmLzFSWzTq6VAHh+SakiE=;
+	b=BWk6hKK+6uHOG809v39qNcQ5zIsr2SDgGGuxVlhCfRj9yHFyZRrqlM/rz7pihWdjy9ZM
+	 zMAVPRg1Ur5gpSUbAoF8FzpRsml6fP2c7vtfNEodc/ZBvOjbNL9IqJUYJYyuunhyxqeTV
+	 fzCJIHs6Z1xj/M1KJ5puXAprs4ZVg9InL3jpqKNdqzWxy0bzj8oe30S3OgB1lWRowTmNB
+	 2gO3+oYzn4wy+++uSO1BKuMIWUOPGN48XbGkHR7POyzWmSBmC7IBsMcU7RiVJrzHH+iWS
+	 vgR5OaTK3h/iGEAwbAe0fan6b93L6ZIX3l/XJLisdbdSMDzoCEckeHIo07SCekcX9Kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eql0p0wC;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bxt7Z8wd;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC64606A32F;
-	Wed, 28 Oct 2026 18:54:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FC64606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDA460A261A
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 19:03:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFDA460A261A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eql0p0wC
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69SIiJMZ2234481;
-	Wed, 28 Oct 2026 18:54:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=9YVBTzCoBmFYTK0l2
-	/O6XJkdzc+P4h0u7drIqQo/0r0=; b=eql0p0wCvLZNus7mzFQzOef80DukGxK1A
-	E8ctslYUnG4v5mbX6iB2vTwgUKOav9lR/zj+QelajAurZiMQGfdrF+fgOeabOTj9
-	jlagbFnNOxVyRkSVGARN67+xn7xuyGl9rOv0Flj0NU95ctjlIxrAodQplW8i7a4B
-	7E5r8hfpnFxF4UAXJHs66Dsz+SAk+wvHedbbRs05ZCpFJPeswHRwcf8QdhGSoZoI
-	D/bt/z5G2Q3dh+weU3TEI3qDTqvuXSkuy/rz+Or0OaRsv2lSEbqJ6AvaSaSf5z2F
-	H+MUmg7mjqR1sombh8whlpuS/EVYznCP4I90sHYJzO+0srFMpEn2Q==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgm646h6p-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 28 Oct 2026 18:54:29 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69SIYvOC2008293;
-	Wed, 28 Oct 2026 18:54:28 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hh8gh8pwe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Oct 2026 18:54:28 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69SIsMwh51708188
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 28 Oct 2026 18:54:22 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD98F2004B;
-	Wed, 28 Oct 2026 18:54:22 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9DA7B20043;
-	Wed, 28 Oct 2026 18:54:22 +0000 (GMT)
-Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.68.31.243])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 28 Oct 2026 18:54:22 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
-        david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com
-Subject: [PATCH v4 2/7] KVM: s390: Move some skey functions to headers
-Date: Wed, 28 Oct 2026 19:54:17 +0100
-Message-ID: <20261028185422.272146-3-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261028185422.272146-1-imbrenda@linux.ibm.com>
-References: <20261028185422.272146-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bxt7Z8wd
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3adbc9a47fbso1504527a91.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 12:03:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793214184; x=1793818984; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ua8GfkfDrHDUR8px+Sy19+vmLzFSWzTq6VAHh+SakiE=;
+        b=bxt7Z8wde6nB+VKnGLTbQOgO0WAPwnj21OlBYLZL2WreRrQgI/PSzqaByZuydLuYmn
+         sDXb8vXBC1zN4uqGCFWL1ZdN/4EQt7dO3X6JV98m7ImqakWH7EBjlfQDZ2Jy9glZxaZS
+         m9GjnXqDQGn9+nwwCxzQTmsn6qbLFouAvl5tRior2/pX2+MSgBlGvPyW6FrHBBa/fVaf
+         ZYf8Jb+RyeuLpQIfiiWfV7HmIPZhPZ7kM49t12UUdV0ECNgwnf24y3axMKuVhTdP0+z8
+         P0SB8puAP/sWa1hP0NKyo6zpkuZFD115enxQ7041dd0h/VoZj0m0v+hNcU1Pu9uKacfd
+         WJIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793214184; x=1793818984;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ua8GfkfDrHDUR8px+Sy19+vmLzFSWzTq6VAHh+SakiE=;
+        b=eOXpovyKQAhf4TV+gxZL2cW5kB4l5qFrD2XMS0/d4MF4Guy2rZto8332r24bs2yO+z
+         SJVvA/YS/eShotJkIBUK8a1ENm9qTbPhom8gVQn0ZxTwOcg4AypekIvwZHwbUOrBJARg
+         xEHfII4IymPTlYUlf8ROP6wCeCBBKNKVUREGO7aZn9t3PdshwQgZB+oedrLntQ1GVKVE
+         ogmiB55kPwn5Dp+i9zPe/omTbCsXCDsZC9mPsmbsM/S5UE3GgdjT25wG6XLfd0OnQzXl
+         ltBrwiNPOFi88Xxvl11rZZKKiAjvAboOa6Hs8koDQLGe9jBk0R3y0TdZuYA8IdUgothb
+         b1WQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxXTY+FkgF0QYIHSQMp8jMeKQQfBJqcDeY7zKg74aPABNOfjIeGAk/svz3zljF99F1mW4U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLk7GaFMsMGyhmXjr2BzLyW+DcmCONI2tYPUNHoT3PTs4kggvjv
+	os/aLiEA+dy5yVnXW+Y4Tz+G3xR85U3fCjGd/J1S2jLLTVwJkCy+ZpAHy+SP/FDH5thynFkNfBa
+	hkRpFQg==
+X-Received: from pjbov14.prod.google.com ([2002:a17:90b:258e:b0:3a8:d9d:78ef])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224f:b0:3a0:b312:1fbe
+ with SMTP id 98e67ed59e1d1-3ae580a7ac7mr2187674a91.23.1793214184152; Wed, 28
+ Oct 2026 12:03:04 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 28 Oct 2026 12:02:54 -0700
+In-Reply-To: <20261028190259.1819571-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -92,118 +79,100 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI4MDA3NCBTYWx0ZWRfX873H+PBei649
- dnXI4WupB6vXbDQ7GTbT8ttaDMu4G8WA7TWno8gGi+m/WxKCJWEsMqCZJs9G89uyIM8h6gGDYop
- 3YA7ynpmxlAe7Sau0tBXcJJwayfNcPs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI4MDA3NCBTYWx0ZWRfXxoFipQU0szTC
- bAghqYXQYX/nGmuJDEv+ZrpZQ55zpxdvtV2ZAhEyqHq8NBen/jFWHirpxPhiMz+WM66b1/mTfy+
- s3KoHgJXrg5FQPPAWg+xf8QscvvgIS0xsIqtdgiRCVsPmckjJDZhOiLgfWOZN5h2M6UB2MZRHoW
- 72adfPkapNZPzfFsBk1rJ9leJWsx1pXLLJoIgBGzNqbaQ/X5NG0GtBC3/bwc7/mjDohFeuFoE8G
- zww5Shyi6QfOiO27BBoTPVMn5Pvl6FYtF3TbZLqo0XmrzX57RmXBkZbG4fHqsaGOGB+p4Xe/Nm/
- FypGwQYUun0hpjGboqnyAv81BUpuMMppWVyRtJhp2/2QafgZpnPlYey7fNbE2sKru/LHVe6jsdm
- QxxbZPp0zrJt6HaZos8uNEVQNiHWjBaxfXFex+FXZJi/xT2KB0YnTmP+Gf5OpGiJxxoNJXH0Vvj
- fQDzo2o0IzzWW1OR5Qw==
-X-Proofpoint-ORIG-GUID: hZJrnw6ES7efjpuxk1MSp05IlISAqwXm
-X-Authority-Analysis: v=2.4 cv=Uu32pOwB c=1 sm=1 tr=0 ts=6ae244e5 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=HEUQaSvOCpYZseJEH4QA:9
-X-Proofpoint-GUID: hZJrnw6ES7efjpuxk1MSp05IlISAqwXm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-28_06,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610280074
+Mime-Version: 1.0
+References: <20261028190259.1819571-1-seanjc@google.com>
+X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
+Message-ID: <20261028190259.1819571-3-seanjc@google.com>
+Subject: [PATCH 2/7] KVM: Add a @force param to __kvm_vcpu_kick() for PPC
+ backwards compatibility
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Move some storage key handling functions to headers, since they will be
-needed from outside, and they are small, so inlining is acceptable.
+Plumb in a @force param to __kvm_vcpu_kick() to force an IPI without
+checking kvm_arch_vcpu_should_kick().  The param will be used to drop
+kvm_arch_vcpu_should_kick() in favor of kvm_request_needs_ipi() without
+regressing PPC, which for unknown reasons unconditionally blasts an IPI
+in a variety of kvm_vcpu_kick() flows.
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: stable@vger.kernel.org # 7.0+: prerequisite for the next patch
+No functional change intended (nothing yet passes in @force=true).
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/s390/kvm/gmap/dat.c | 26 --------------------------
- arch/s390/kvm/gmap/dat.h | 26 ++++++++++++++++++++++++++
- 2 files changed, 26 insertions(+), 26 deletions(-)
+ include/linux/kvm_host.h |  6 +++---
+ virt/kvm/kvm_main.c      | 10 +++++++---
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/s390/kvm/gmap/dat.c b/arch/s390/kvm/gmap/dat.c
-index ff80d02c9f56..b9507daaf327 100644
---- a/arch/s390/kvm/gmap/dat.c
-+++ b/arch/s390/kvm/gmap/dat.c
-@@ -159,32 +159,6 @@ bool __must_check dat_crstep_xchg_atomic(union crste *crstep, union crste old, u
- 	return cspg_crste(crstep, old, new);
- }
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index e7fc94e2910a..3b9844c3906d 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1570,11 +1570,11 @@ void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu);
+ bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu);
  
--static void dat_set_storage_key_from_pgste(union pte pte, union pgste pgste)
--{
--	union skey nkey = { .acc = pgste.acc, .fp = pgste.fp };
--
--	page_set_storage_key(pte_origin(pte), nkey.skey, 0);
--}
--
--static void dat_move_storage_key(union pte old, union pte new)
--{
--	page_set_storage_key(pte_origin(new), page_get_storage_key(pte_origin(old)), 1);
--}
--
--static union pgste dat_save_storage_key_into_pgste(union pte pte, union pgste pgste)
--{
--	union skey skey;
--
--	skey.skey = page_get_storage_key(pte_origin(pte));
--
--	pgste.acc = skey.acc;
--	pgste.fp = skey.fp;
--	pgste.gr |= skey.r;
--	pgste.gc |= skey.c;
--
--	return pgste;
--}
--
- union pgste __dat_ptep_xchg(union pte *ptep, union pgste pgste, union pte new, gfn_t gfn,
- 			    union asce asce, bool uses_skeys)
+ #ifndef CONFIG_S390
+-void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait);
++void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait, bool force);
+ 
+ static inline void kvm_vcpu_kick(struct kvm_vcpu *vcpu)
  {
-diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
-index 4665c1112bb9..687e1fa904d6 100644
---- a/arch/s390/kvm/gmap/dat.h
-+++ b/arch/s390/kvm/gmap/dat.h
-@@ -1002,4 +1002,30 @@ static inline bool crste_is_ucas(union crste crste)
- 	       crste.h.fc0.tl == _UCAS_ENTRY_LENGTH && crste.h.fc0.tf == _UCAS_ENTRY_OFFSET;
+-	__kvm_vcpu_kick(vcpu, false);
++	__kvm_vcpu_kick(vcpu, false, false);
  }
+ #endif
  
-+static inline void dat_set_storage_key_from_pgste(union pte pte, union pgste pgste)
-+{
-+	union skey nkey = { .acc = pgste.acc, .fp = pgste.fp };
-+
-+	page_set_storage_key(pte_origin(pte), nkey.skey, 0);
-+}
-+
-+static inline void dat_move_storage_key(union pte old, union pte new)
-+{
-+	page_set_storage_key(pte_origin(new), page_get_storage_key(pte_origin(old)), 1);
-+}
-+
-+static inline union pgste dat_save_storage_key_into_pgste(union pte pte, union pgste pgste)
-+{
-+	union skey skey;
-+
-+	skey.skey = page_get_storage_key(pte_origin(pte));
-+
-+	pgste.acc = skey.acc;
-+	pgste.fp = skey.fp;
-+	pgste.gr |= skey.r;
-+	pgste.gc |= skey.c;
-+
-+	return pgste;
-+}
-+
- #endif /* ARCH_KVM_GMAP_DAT_H */
+@@ -2315,7 +2315,7 @@ static __always_inline void kvm_make_request(int req, struct kvm_vcpu *vcpu)
+ static inline void kvm_make_request_and_kick(int req, struct kvm_vcpu *vcpu)
+ {
+ 	kvm_make_request(req, vcpu);
+-	__kvm_vcpu_kick(vcpu, req & KVM_REQUEST_WAIT);
++	__kvm_vcpu_kick(vcpu, req & KVM_REQUEST_WAIT, false);
+ }
+ #endif
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cf4cb586f140..67addb9e48a7 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3908,7 +3908,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_wake_up);
+ /*
+  * Kick a sleeping VCPU, or a guest VCPU in guest mode, into host kernel mode.
+  */
+-void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait)
++void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait, bool force)
+ {
+ 	int me, cpu;
+ 
+@@ -3933,9 +3933,13 @@ void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait)
+ 	 * after kvm_arch_vcpu_should_kick(), which could result in sending an
+ 	 * IPI to the previous pCPU.  But, that's ok because the purpose of the
+ 	 * IPI is to force the vCPU to leave IN_GUEST_MODE, and migrating the
+-	 * vCPU also requires it to leave IN_GUEST_MODE.
++	 * vCPU also requires it to leave IN_GUEST_MODE
++	 *
++	 * Note #2, do NOT check if an IPI is needed if @force is true, as the
++	 * check also modifies vcpu->mode and KVM PPC needs to avoid that side
++	 * effect for unknown historical reasons.
+ 	 */
+-	if (kvm_arch_vcpu_should_kick(vcpu)) {
++	if (force || kvm_arch_vcpu_should_kick(vcpu)) {
+ 		cpu = READ_ONCE(vcpu->cpu);
+ 		if (cpu != me && (unsigned int)cpu < nr_cpu_ids && cpu_online(cpu)) {
+ 			/*
 -- 
-2.56.0
+2.56.0.313.g2479322e68-goog
 
