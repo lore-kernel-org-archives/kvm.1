@@ -1,95 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793202489;
-	b=JJM5Wk1XdIBx5s0iaKWxTDGQyM3SnPqAOyG6Z31OB0Y7HkK1xnDWGi5NapPC9/1ICdqZ
-	 7baGyAUYn3WT8tGId+u7XTwTvWWdDQZrBbiAP4IFqDs4MAtsXqqCMvG5XTSZ+PAPu4pyP
-	 FP8OQizbK53BoR/10y5D7oQYOIcWgtsbqm59h3eN6ML1HiukgTNVnOg7foFdMRoCBDG7m
-	 nKkBgY2wwAXYK3kwmoXXCe9FZIgOFZKJnr+bTyMwrgHKbeDrqu/1GCypnP+wSDfLCOlLa
-	 PxF1gUyFg/Wwm/+tb+E6p9q4hrzKN1GN5Ij/8CPJKrO4uPnCSme4rXqRqLjEpn3FLQA==
+	t=1793202513;
+	b=xBM1/PesPwpK1GmnR8QGirsiMaEMU/lrL30xSSwHaO93SPBRYT0QGO56+6U6DCSTjHwC
+	 WgXur+QntEHzoKWu8Nbhgmf0B/IThannxfDNt07uDW+75REWrk2E+Wy8H8BOrHb+PHWgT
+	 hTAYxv5w58wRapd5gRebrqIX3BSjjaoevVLmGSQiNUH718I62PIhh2kfpulNgSI/FNniy
+	 USR8nqtqj8g99qAUDoa5ilaHgVhd49615KGcWr92r2eKoKP1SumDg/xzymMO9dEZpzZtO
+	 ULoYNIKnt87MAm+ufJdD8r2lJN0TkdW7NlcDJQPISlSQXfgSSjtPJDV1VzM9zVZbb3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793202489;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=aaltjzKFEfEbF1rtU/0c4Nk1nD9Pu78rG2FlShgdIU0=;
-	b=1Kp685kRjtjOuJOUtdlw3di9podVNVktpmxUKK6bdqYRpv3IRDUS9ENhPY9i0ZjaLRcq
-	 TQvd+jwg2IGboS3QoE/Ztd2laI+K4Srq+ngvz3I9DXWFOoGOKKeqFRFThHf5MAxIGKw5f
-	 Z/vwmiXIhLeVcJjYWVJVeD04BTIIk1trwiuMe+Y5Dcx1HdY9GW3D8I9fJoHsTPB0jiixk
-	 Vd3leHJPOLN7Hw0uKiFDhkxBjN1r66F9J5kG3+qe5MI7T/AiUcokd6Qh9eCZKEVD4apRk
-	 MyO+wW52cq7T2kHdg2vKZbfqIBjJcs+Q0zKiyLUwjgX+Z7hLnmc6jISWWE3DStjnyYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793202513;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=r9FswEhsqUAoLXxb6XOa2/ngLfV3IiEobglb2Mjl9Jk=;
+	b=fSflgrpBsiQh1EhXy5RskMqWo5cnCS1pc7ASE37y/WvvycYG35mAWi57VD5UkrxXsj46
+	 kWtypKkVidtY9NqNDTTVfq+ebfHw7UMnJ/CHLJEqJjEdVqn2eutkO854loWQ4Zv0Y+gqy
+	 rplrwKhmFzmfKbZGO2GdgSSy7eOVAZBHil+00m/AQlnsQQU7LiuwNbn525Q4wawCW5qNN
+	 YP1OfxA08r9NQffaH5W9JmzBsBRtpDQAoPs61kKGnkj6G7p0C9xRZ6Korz3YEuF7YeqGQ
+	 DsdH7av+63yS++WW3tELbPMxYzl8ccujjhtBDl10wQtx6CRZ2BqjEaUMpM+fgtWDQ3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=CuHPcbbn;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="YXF/YS7f";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E618B606A321;
-	Wed, 28 Oct 2026 15:48:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E618B606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59741606A33A
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 15:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=CuHPcbbn
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6210940E04D4;
-	Wed, 28 Oct 2026 15:48:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ZfiF1Mnx24IK; Wed, 28 Oct 2026 15:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793202483; bh=aaltjzKFEfEbF1rtU/0c4Nk1nD9Pu78rG2FlShgdIU0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CuHPcbbnpjiItXwHuESNRo8VmbkEMiUNvEVKMBtMPyZL8v7e91hHWRRrh/sin0IGo
-	 K9JnMwvttRqYhH470uv2H7pTbjMJ3bhjlejvuBRGBjzs69yd5WoTSErQQMpB0GrHJW
-	 ZclMJykhAn7m9OXDHs8Nosh9SfoSN31FgQdr5WNa7zmGjWfevbYFwIAQny0cZ1zUGx
-	 a+b4kdnlHpQdWsuby+0xM/+3VNpHzKj6TKztClSXU6ijqGP66hRtWPKqx7hfEjCfHA
-	 hD48Kd87I5qrXbQo99MYplZKd9FWBGyLd4JTpO2Ebi0BaziVvie5ERpZxZUff6IBCP
-	 KIlWUiS3fOWAMVjK4yoTbwdZJMXgHPbnw4QMtlCOvNd05kygHiaODyyBTR+8iDvM98
-	 9fCudyf1abm4rmxRxkrblVn7ssy9uk2VQmn8j3a9+7DsG1GYNnt10yRoKvIruiChSf
-	 2AqD2GECfPxk7WE39GpRUdUv7g1Gal3OyrRchEb4bIC+Xh3m+Pc7EqtCzVlAGUYYDX
-	 hDzIwFWF77ujV8ZNMautfh7Ki14TztpQEtwjsFekVn0UtpgcMcRtwrNzwfkrt24mCW
-	 maoBr4kPiWKyg43rxRHNdMSlTIp1WP/N0nSZAgrqzFp8TQhDq8S4uWG/T8O94cMwRY
-	 A133YqKy3LXueBQBpBaEzhc4=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 984EF40E016C;
-	Wed, 28 Oct 2026 15:47:46 +0000 (UTC)
-Date: Wed, 28 Oct 2026 08:47:43 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	"biju.das.au" <biju.das.au@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Au Dang <au.dang.jx@renesas.com>
-Subject: Re: [PATCH v3 0/4] Fix transmit handling on SCI/RSCI ports
-Message-ID: <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
-References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
- <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
- <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
- <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
- <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YXF/YS7f
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B892D1F01825;
+	Wed, 28 Oct 2026 15:48:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793202512;
+	bh=r9FswEhsqUAoLXxb6XOa2/ngLfV3IiEobglb2Mjl9Jk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YXF/YS7fng8zjqrLjdH5iyQ3VtTk694E54InSg6ZCq2Po2lu6Tl3KPfgTskghyOHw
+	 +tc5CQszyYHPABEu5Ly/SoIX4Hv5TTtzZ9ohtRnQgvjTuHIM8MovQwhqfIrGMdQTBU
+	 AR/gNbSU7BuctmXhLyLvLfUT3tJdh0NGQLxefh9WV49CMjIv6F4ki3QiDlqIQRwhnS
+	 u2BVaodJveIi7n7VdS0Aqof5m1QS+dixs5N+fD5PmvvJWhN+KTCz76JuFTspKhpgCE
+	 v/hm5KUX4xGEYR6odAjuPlfluIz8hjBrNuq8+9z6hDxyhXtudTYKB9xfApLX4Fl9M0
+	 OiZjatYBTurDQ==
+Message-ID: <sashiko-outbox-188083@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 01/14] KVM: guest_memfd: Clamp the order of PFN mode
+ blocks to what KVM can map
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Fred Griffoul" <griffoul@gmail.com>, "Ackerley Tng" <ackerleytng@google.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, "Sean Christopherson" <seanjc@google.com>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, "Kevin Tian" <kevin.tian@intel.com>
+Cc: "Alex Williamson" <alex@shazbot.org>, "Alexander Graf" <graf@amazon.de>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Alexey Kardashevskiy" <aik@amd.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, "Ashish
+ Kalra" <ashish.kalra@amd.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Baolu
+ Lu" <baolu.lu@linux.intel.com>, "Bill Wendling" <morbo@google.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Catalin Marinas" <catalin.marinas@arm.com>, "Christian
+ Brauner" <brauner@kernel.org>, =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Connor
+ Williamson" <connordw@amazon.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Dave
+ Jiang" <dave.jiang@intel.com>, "David Hildenbrand" <david@kernel.org>, "David
+ Rientjes" <rientjes@google.com>, "David Woodhouse" <dwmw2@infradead.org>, "Erdem
+ Aktas" <erdemaktas@google.com>, "Frank van der Linden" <fvdl@google.com>, "Gregory
+ Price" <gourry@gourry.net>, "H . Peter Anvin" <hpa@zytor.com>, "Hugh
+ Dickins" <hughd@google.com>, "Ingo Molnar" <mingo@redhat.com>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "James
+ Houghton" <jthoughton@google.com>, "Jan Kara" <jack@suse.cz>, "Jianxiong
+ Gao" <jxgao@google.com>, "Joerg Roedel" <joro@8bytes.org>, "Joey Gouly" <joey.gouly@arm.com>, "John
+ Starks" <John.Starks@microsoft.com>, "Jonathan Corbet" <corbet@lwn.net>, "Justin
+ Stitt" <justinstitt@google.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>, "Michael Roth" <michael.roth@amd.com>, "Mike
+ Rapoport" <rppt@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Nick
+ Desaulniers" <ndesaulniers@google.com>, "Nicolin Chen" <nicolinc@nvidia.com>, "Oliver
+ Upton" <oupton@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Robin Murphy" <robin.murphy@arm.com>, "Samiullah
+ Khawaja" <skhawaja@google.com>, "Shuah Khan" <shuah@kernel.org>, "Steffen
+ Eiden" <seiden@linux.ibm.com>, "Steven Price" <steven.price@arm.com>, "Suzuki
+ K Poulose" <suzuki.poulose@arm.com>, "Tarun Sahu" <tarunsahu@google.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Tom Lendacky" <thomas.lendacky@amd.com>, "Tycho
+ Andersen" <tycho@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Yan
+ Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261027154649.91571-2-griffoul@gmail.com>
+References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
+ <20261027154649.91571-1-griffoul@gmail.com>
+ <20261027154649.91571-2-griffoul@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 28 Oct 2026 15:48:29 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -98,23 +92,201 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
 
-On Wed, Oct 28, 2026 at 12:02:22PM +0100, Krzysztof Kozlowski wrote:
-> Someone from x86/tdx folks added such pattern, so it is not a
-> contributors fault, that pattern hit.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] kvm: guest_memfd: race in __kvm_gmem_invalidate_start() due to=
+ late range expansion
+- [High] kvm: guest_memfd: infinite loop in kvm_gmem_pfn_map_order() when P=
+UD_ORDER =3D=3D PMD_ORDER
+- [High] KVM: guest_memfd: non-zero order passed to kvm_arch_gmem_make_priv=
+ate()
+--
 
-No one's disputing that - I was trying to explain why I'm complaining. And
-that is, the avalance of mails I am buried under and that I don't want to get
-more, especially if they are unrelated.
+commit ec431028c58523e8ac8bc3e4a0b8d9a1a1868bb2
+Author: Fred Griffoul <fgriffo@amazon.co.uk>
 
-So relax, please, we're fixing this.
+KVM: guest_memfd: Clamp the order of PFN mode blocks to what KVM can map
 
--- 
-Regards/Gruss,
-    Boris.
+This commit clamps the mapping order returned for PFN-mode guest_memfd
+files to block sizes supported by KVM where the gfn, file index, and pfn
+share the same alignment and memory attributes. It also expands invalidation
+ranges in PFN mode to 1G-aligned blocks so concurrent faults on the same
+block retry.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 3c4bedceccfc2..be26bd16d4207 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+
+[ ... ]
+
+> @@ -355,6 +360,16 @@ static void __kvm_gmem_invalidate_start(struct gmem_=
+file *f, pgoff_t start,
+> =20
+>  		flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
+> =20
+> +		/*
+> +		 * In PFN mode, a fault may map a block of up to PUD_ORDER
+> +		 * pages, sized before this invalidation (see
+> +		 * kvm_gmem_pfn_map_order()): make faults anywhere in the
+> +		 * blocks around the range retry.
+> +		 */
+> +		kvm_mmu_invalidate_range_add(kvm,
+> +					     round_down(gfn_range.start, blk),
+> +					     round_up(gfn_range.end, blk));
+
+[Severity: Critical]
+Does expanding the invalidation range after kvm_mmu_unmap_gfn_range() leave=
+ a
+window where a concurrent fault can install a stale huge mapping?
+
+In __kvm_gmem_invalidate_start(), gfn_range.may_block is true. When
+kvm_mmu_unmap_gfn_range() runs, it registers only the unexpanded
+[gfn_range.start, gfn_range.end) in kvm->mmu_invalidate_range_start and
+kvm->mmu_invalidate_range_end before calling kvm_unmap_gfn_range():
+
+virt/kvm/kvm_main.c:kvm_mmu_unmap_gfn_range() {
+	kvm_mmu_invalidate_range_add(kvm, range->start, range->end);
+	return kvm_unmap_gfn_range(kvm, range);
+}
+
+Because may_block is true, kvm_unmap_gfn_range() can yield kvm->mmu_lock
+(for example via tdp_mmu_iter_cond_resched() in tdp_mmu_zap_leafs() or
+cond_resched_rwlock_write() in __walk_slot_rmaps()). Meanwhile,
+kvm->mmu_invalidate_seq is not incremented until kvm_mmu_invalidate_end().
+
+If a vCPU fault on another gfn in the same 2M or 1G block already completed
+kvm_gmem_get_pfn() with a large *max_order before the invalidation began, it
+can acquire kvm->mmu_lock while kvm_unmap_gfn_range() has yielded the lock.
+At that point mmu_invalidate_retry_gfn() checks only the unexpanded
+range->start..range->end and sees the old mmu_invalidate_seq, so the fault
+will not retry and can install a huge SPTE covering the range being revoked
+or converted.
+
+Should kvm_mmu_invalidate_range_add() with the blk-aligned range be called
+before kvm_mmu_unmap_gfn_range()?
+
+[ ... ]
+
+> @@ -1535,6 +1550,44 @@ static struct folio *__kvm_gmem_get_pfn(struct fil=
+e *file,
+>  	return folio;
+>  }
+> =20
+> +/*
+> + * The order a PFN mode block can be mapped at: the provider's order, no
+> + * larger than the alignment of @gfn and @pfn to @index allows, rounded =
+down to
+> + * a page-table size, and never over pages that are not all shared or all
+> + * private, since KVM maps a block with a single attribute.  Called with=
+ the
+> + * invalidate lock held; an invalidation of any page of the block makes =
+the
+> + * fault retry (see __kvm_gmem_invalidate_start()).
+> + */
+> +static int kvm_gmem_pfn_map_order(struct inode *inode, pgoff_t index,
+> +				  gfn_t gfn, kvm_pfn_t pfn, int order)
+> +{
+> +	u64 misalign =3D (gfn ^ index) | (pfn ^ index);
+> +	u64 attrs;
+> +
+> +	if (WARN_ON_ONCE(order < 0))
+> +		return 0;
+> +
+> +	order =3D min(order, PUD_ORDER);
+> +	if (misalign)
+> +		order =3D min_t(int, order, __ffs64(misalign));
+> +
+> +	if (order >=3D PUD_ORDER)
+> +		order =3D PUD_ORDER;
+> +	else if (order >=3D PMD_ORDER)
+> +		order =3D PMD_ORDER;
+> +	else
+> +		return 0;
+> +
+> +	attrs =3D kvm_gmem_get_attributes(inode,
+> +					mtree_load(&GMEM_I(inode)->attributes, index));
+> +	while (order &&
+> +	       !kvm_gmem_range_has_attributes(inode,
+> +					      ALIGN_DOWN(index, 1UL << order),
+> +					      1UL << order, attrs))
+> +		order =3D order =3D=3D PUD_ORDER ? PMD_ORDER : 0;
+
+[Severity: High]
+Can this while loop hang when PUD_ORDER equals PMD_ORDER?
+
+On arm64 with 2-level page tables (CONFIG_PGTABLE_LEVELS =3D=3D 2, such as =
+64K
+pages with 42-bit VA or 16K pages with 36-bit VA),
+arch/arm64/include/asm/pgtable-types.h includes
+include/asm-generic/pgtable-nopmd.h, which defines PMD_SHIFT as PUD_SHIFT.
+This makes PUD_ORDER equal to PMD_ORDER.
+
+If a PFN-mode block of order >=3D PUD_ORDER has mixed shared/private
+attributes, kvm_gmem_range_has_attributes() returns false and the loop
+evaluates:
+
+	order =3D order =3D=3D PUD_ORDER ? PMD_ORDER : 0;
+
+Since order =3D=3D PUD_ORDER is true and PMD_ORDER =3D=3D PUD_ORDER, order =
+remains
+non-zero and unchanged, spinning forever while holding the shared
+filemap_invalidate_lock and kvm->srcu.
+
+Would checking order > PMD_ORDER instead of order =3D=3D PUD_ORDER avoid th=
+is?
+
+> +	return order;
+> +}
+> +
+>  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
+>  {
+> @@ -1556,6 +1609,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_m=
+emory_slot *slot,
+>  		goto out;
+>  	}
+> =20
+> +	if (kvm_gmem_is_pfn_mode(GMEM_I(file_inode(file))))
+> +		*max_order =3D kvm_gmem_pfn_map_order(file_inode(file), index, gfn,
+> +						    *pfn, *max_order);
+> +
+>  	if (kvm_arch_has_gmem_convert() &&
+>  	    kvm_gmem_is_private_mem(file_inode(file), index))
+>  		r =3D kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+
+[Severity: High]
+What happens on SEV-SNP when kvm_gmem_pfn_map_order() returns a non-zero
+order for a private range?
+
+In kvm_gmem_get_pfn(), *max_order is now preserved up to PMD_ORDER or
+PUD_ORDER in PFN mode (even when the caller passes max_order =3D=3D NULL, s=
+ince
+max_order is redirected to &__order), and then passed to
+kvm_arch_gmem_make_private() as:
+
+	r =3D kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+				       (kvm_pfn_t)1 << *max_order);
+
+However, the x86 implementation in arch/x86/kvm/svm/sev.c only supports
+single-page conversions:
+
+arch/x86/kvm/svm/sev.c:sev_gmem_make_private() {
+	if (!sev_snp_guest(kvm))
+		return 0;
+
+	if (WARN_ON_ONCE(nr_pages !=3D 1))
+		return -EIO;
+	...
+}
+
+In addition, gfn and *pfn are the faulting subpage's frame numbers rather
+than the base of the aligned 2^(*max_order) block. Won't a PFN-mode provider
+returning order >=3D PMD_ORDER for an SEV-SNP guest trigger WARN_ON_ONCE() =
+and
+fail with -EIO?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027154649.9157=
+1-1-griffoul@gmail.com?part=3D1
