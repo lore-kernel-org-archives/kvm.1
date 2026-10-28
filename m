@@ -1,100 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793209181;
-	b=pG+jF9aUbRX70Ks7WfRj+U0mi/6R/f/ak2ZbXifquZlMinFkYdTt3kX/JYcvfhx1dvWl
-	 deWID4wDt4WNo9xo0PPGFQfLFbs5IR2N7N+HO3gPCaL/9omyaA3mVumU8MTzHk9QRtBbH
-	 Bb3TSFj/T/QKO21v6qTDcHqUH+fUaUcb+dBut2Xw98x/U+skWr2aYrA8VADNMg+1/ETon
-	 NDwKu0ZLRuCdjbXqzuYtrJg+5TwSnlum6eq1pRYtlUeGUpRHScfsItbQ3mrhSeKHq9Ezv
-	 Pu9oUYXnVAxsA1LSZJ859iuSBUPFD/hHYU7LBZ3Tnsg8OhvtrBuIyLHQDXaBV+yHSaw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793209181;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.52
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793209470;
+	b=Ai3TkbNn/0oG59GFOGBXuAKmDzPEf+bK8BfjhsYtrEbIOuplDK7gabUQHTrfP2KYnMLF
+	 wHcyWdb6Qw7C2JWoIJLDb0uWruaHrDL++j31gM9gvI8KtmaIBiWf1uY4qbl3C9FsEaRq8
+	 SvviNBAm71soGlG0iJRO1Ops9w1B3fq0tAjBfo65bNP0LkPC+EbWb38D2RTo+2z5jpdJG
+	 pS9y2lE0/94eaChfBaiMeVYc5LcZ52qIOMKrEVrqvHN7mZ83E2YBpcaqsbypNzR0SrjUm
+	 Luwkqq9RZo17Qy83NuGi2Xbuv3zbd3MxkVNYm1ILTFl35F7C1GeBjKvQsnkJ14WNX8Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793209470;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
-	b=wYghJIGY8URIuYMLJPk/O3XF6KpYfOmfgVTRoA9T8ra+rWW/vPGcr019jbA8QqErvoby
-	 EmRMVjWKc4xcP3GgOxahGOzhpocuo72jGLMqFxWxaDvAaTCG5OWYO1FjWl+zMXx/7bKwM
-	 3Q3WDFDyNwjomOvyNso0Sx7WX5Jk+vm4mEf/UcAbENl8MLYhrl2ZGlhHpLuSf21pUpssR
-	 j6baTKg4Q7YulSgXaJZmyKdKR5vEvvSG9Z0N+bJILmUeFCNfumEtNv3xvsl6T0yuQ1r97
-	 g4fUlOuKZs16+ue3MosGWfVignKO1knxD6vKr7o1DP9BtQ7OO+XaGA4n64APZY1ATvQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dBrQSCJH;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=s56cw49H74YOeay3n+CLmJxr96H3PjfrjsaPdtr6E80=;
+	b=4hQSr3jQLhlqkusAhtdhbq65gtnykgswubZr1AQWjV4W1eJmfmXzcPGH3y6JNQcJWlo8
+	 3xGJZr+Fn+a4785P98ehUh5BiKN2qcXFeG/eEX5rLMQSwk3n/729ejP6AHF0aXkbNBqXr
+	 R9ryCQF4T46Og9kA+kRXW5i9SoG7aBa+ABeD8rha/sEjPK7p5O4+aFaeYkV7I1b4wmuDb
+	 kAvw4zvyR+yxhAbOxbg+6uSXxAcXeB0WScRMGlTOT+HGs2GCLHN2STk/l5WaCh3sJCYlj
+	 R38PdEUdvW/TMWqg/bssh2EiDabMLOsmSMnG5TV3EI+xWpn4uLfETB1CnJjrv79HeOQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=soleen.com;
+	spf=pass smtp.mailfrom=soleen.com;
+	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=iJy5kuJI;
+	arc=none smtp.remote-ip=209.85.217.52
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E2A606A31D
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:39:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37E2A606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731C1606A321
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:44:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 731C1606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dBrQSCJH
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso680a12.1
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:39:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793209180; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WFzb1ce5gtFgVa8cRdTqkATPRuq71gV6ObUdwrIa7WgHfBRDRdrMY1P05N9RW5VFv0
-         /7bcj0eyn9ZMsZFLNqJ/spJiSHLFM2sRPViMZSmkvlMV9OgBOkOCVZ9Jk0uZQp7q4/3m
-         OwLhwU4D5BQ6NutE48DSFzF1iCVeK7V5/vM74VXADF8aEGrq8lz+vbmC7RnVflqB3QWc
-         T0sGnqsvRbCZHEgyvmWde1QM9CGxxJCJORLejPMMgMAwIqCW1UmwYMuUNF5MxX7EEVYE
-         Nu2+0U/rALmMjqB6bGla+kp0qad/pi698BRanDSD9Vm4tqhM7/Ny+28KJBNk5YksMJq0
-         UGlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
-        fh=XXJaPPG4cVPL8KyUTAA7pjbfXLr5IbygP0pdlvUTmlI=;
-        b=XgMKD3Am5x68DQHslZlHHhFhrimNYMKtM3ZfzShW4vKGiiI7RYEZHCHHSOfRsIScwQ
-         ckTsOZA0IR77+LUB7b8vrs3dYUR/GFM0XREHMj/L0kPsqUqcLxxWeQJ+bv23uxvr0xRk
-         FPrIhrCcxVW/UIoonM/cIBLrh2IJfrBWlbiUd4vcLlg34tbRBRbw0AzBE6x8vf0aAnXg
-         /AqNa99lWcM70VumcdlP3YbE40iOrA1RHWxhpqtIfV9Mna2rKhcWL4xvY0kGWoSwHO4r
-         hq49h99drM10E2GQxKsZnp8aAbVrslmAeuoM+aOqGjLPdoYi3Ng//aVpNB6FFbuk7Trg
-         k5TQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=iJy5kuJI
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-7cc91ddf447so483241137.2
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:44:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793209180; x=1793813980; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
-        b=dBrQSCJHenLTS5rrxGOYQzI08ml/pfEGaUEXk5B6yiH4wZU72ilvhWWUKuniukX8O8
-         2mN2I3E4cPP20nCDU1+kxBQFz/mpjhPiJJrj3JyJibG09wgx+OCNXT9lpQaoE+fPNbNS
-         gZF5aIp9oej8f7T4qwLngy3xPBcu2lSeLBUDQ76mb11qduJ3Po6ByiftnVTxs21VaUzi
-         qFxUS/7OgoO1KYCsJsXVn4T6JPXyjJCKYatBwV5WnS8n54gBpKnO9r7VrBuLHVYYHXBD
-         1qf9+/l+Xa8YCCd+RjdIh+IlEFlAsBYxZDWf4xnBw9oai4GmMCH0n+J7znu02/vTQkmk
-         q1UQ==
+        d=soleen.com; s=google; t=1793209469; x=1793814269; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=s56cw49H74YOeay3n+CLmJxr96H3PjfrjsaPdtr6E80=;
+        b=iJy5kuJIKEFoVGXIv0G1W+lcBvi4+8Xg3Up72eyRWsM34ppCddP5ilpekezxnMXx54
+         wNVtglNWl1Juw56jX8SNwQS7WZKs9Y2X61a375wMFfYgiH4i03Atn7I+ij8S+kLhqtfT
+         l07FNZinyoqAk6s+eVtDRNFkKCg8ONt5X560obpxpG2ZC7VnPvjzuP7bhaeVMMRQaZQf
+         bnvIZGVN+qVBNlncKqiFZBQ2j+79seozjiyPSZgLY1TuGDnPTDoB10ATDbxfyjixqlJz
+         vdOfv2Qybh76j3dxSW1ILlTknOlei2s6oL7+i6Y7LDLEJWeTZKkbkP+obWZ+cP33y8/P
+         9s8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793209180; x=1793813980;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
-        b=g3lUtSfR5tZkob66AmzDROpZA2jhzAKD/zgsyXjHWzM+kEhaYegO3dpyziu8TE/mAY
-         NDnfIAVwXMB23XB/+ym5VJ41A0pjnG8WtKMDHtLPls0xULYyKYkRQwHbZe/NMOZjvOEZ
-         4LH1rv+kY4yYp4XPiEJRUXZuXtBOguZ+LuLg6AVgdOvwF6LYCTYgVFAsYOD0jz9vWBkI
-         KtyMsSqhArQ+iJ4G4D1xqGHvKq8pY3KrRLdootYPj8kmrQ35ecbfAunaVbkM+GDdkt0T
-         V+qjEop4Vl4cZ03rhzYJsnlPCSASh0EOTS2cJ1FRcvfMDl4urs+zTcL/2Gk9DkpRDaTB
-         Qs4A==
-X-Forwarded-Encrypted: i=1; AKwUvByhAHYT6QEomofighTbXv9rqg5Mb83+/1h8NOc/Hlvv8FRXY2Gt+9Xy4PR5AtSnwPYriNw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLDSPyUC9RJZhr2jvERDyPROXeMuv5UwL30mTXj59e5rFh1qD0R
-	RgsWJf3t9ceGfDHdeWlxDkyQ+jJdSQM5pBQTYw5kjgfPmLF6E3Hv6grDKmSoVoRlBmZW1WOAw1b
-	Na5LbcZMT68YIlpqXIRhknzCDKqcA1Mas0D04cBC/
-X-Gm-Gg: AYBFou0CF85SuEelfaOv2h1xQ6TDqsKQC5u/Hr9e8k7sYFh6GHpV1PPXIDoNHHzvZ4E
-	zAQt5YNVJNn8ryuWP0+IlXdjd2b8gC4dzWJC3y7nduosrfAhsTIa0ILQpPut+74Tq9SdaB1Y383
-	CuTlJVrPWkwftAreCOUSC51gUWvpt7Fb53rmOXVAc9on23GfW7kSIo+rGCosloRLWYDm5/K2T+I
-	Pl5BNviqNecbN0y5/lzu2sUAJraoNejsEkquYHGq39ygTDExN6EMNMIRf0ZtwMPYc3LriZYBK7D
-	3VGCfocxkg3V/2MXUhkpV3JRHsrJmyRyfaBkj0fJAdEmTPD+Wqrl37Hs+x++AerhPwanuoxUiIA
-	OshSRJM+eo+wb2yJ3V7BI7wUDsMVSsVfpR/JT
-X-Received: by 2002:a05:6402:115a:b0:6a6:7dff:61ab with SMTP id
- 4fb4d7f45d1cf-6b49c132c7dmr79948a12.15.1793209179030; Wed, 28 Oct 2026
- 10:39:39 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793209469; x=1793814269;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=s56cw49H74YOeay3n+CLmJxr96H3PjfrjsaPdtr6E80=;
+        b=kFFtG8bDpgbqOpXLAL2aU6Rr8Bn89Nj8x9gzCZSsadeEfM9lJf1VUVaxlNeD1k1/tR
+         qUKMROQUReGsRDmQr1xAibyNnqYvQKR3vtDpr/ItyNixwDALEleMGzLyRbZPlOZrmTdb
+         Znin+34szX550FL/oU5WtxISas/0SR0f54gF2amJ4D0sZkriOhB+5AM547YN+aKXQVVZ
+         HDvkBVJxMrx2EB3rd+PXhjG2Zq51F9qCANe5kfXfCOPXkW0vcWomYttFsH4uqRedSxRp
+         Vl8rfkW+ogGM9I+PIgtFL6WzacogD8f1sWgxhWw1W1AQmX68R5Y78yDporfm+Fge+jUp
+         97LQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxrjv7FmljjVUptmMmejncKX++hc+4B3dNRZQYx3T7TCrBNZsNm+PFjcvzf1xo2tXbHf7k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJbHP2TELMSJXA2Vi7vKEVOlCKwRelTsjjOhaXuH8Kaj4OL3rgx
+	3xgDvOJk87OjVUDf75vnDDLNZBv66Ds4USYy9oS69Xi4fBsl+U4IeMuZ3gBJBs+9MWI=
+X-Gm-Gg: AYBFou0FAKX7F19CO8Z+AdiaoT1wT3XOElccn5C9gOZ+heTnOTZjaHBFR177n57Vu4y
+	ik/cvCGtZWw5jpHs56P1sSG45QqNUd+p3Z4G5E1dk9+isa5zqy2EoQGs3uGPF//ZIZtnrH8NlUo
+	tYqOnVaclByHMqxBivJJWX6t/FNHO+Vn7haBJZ2up/3Qcr64i7crQeyWI8PfcZTVNKlMGCc3PDe
+	dQoMa+PhGUsCpic2VPztZaDGTNURX1Pf/LmTIzU/ZgQsaY3WJxaOo6WNQZiadW8iRUVCuxJ5VsF
+	kQRAy+fLXf8Y/gXxXzCQQcXwl98UVbk6KUnpCXKxYK3tzdYTz+caXGX1xC91XPuL6cY3HE3BBQ6
+	MLw7HiMVfbgxkYhROH9L1U090iCs2jK4cYzdPzyjZQWW+eGjDJVOCxjbeHRQKCUDBmDFVTkyM9V
+	Ne85EUTzfp8NlP90HRlelQl65xXaWGC8djdLJiYt1AUI+IDo5/EKidvKEbhbRvo2XPH9Nh3eRbm
+	2/kCyZUX1lQwbUkPOUEl66bCjvddMadhPFGiJQT3G8qcoC0eRjeQvKs7XQLb+Oj//umQKIIJl8+
+	Dsljj9pNokuvj3Wp8Sh5tMKIpV8+oaBfVR6mySVnXNwe1yFXb2JirJIxaYCuKrEVGykIEzmMIBp
+	Wf/uygZIhnVcG1ifqbdwe3Uz2K7OBkT8T
+X-Received: by 2002:a05:6102:3e8d:b0:7a5:7282:1994 with SMTP id ada2fe7eead31-7d03a50a85cmr1269510137.7.1793209468986;
+        Wed, 28 Oct 2026 10:44:28 -0700 (PDT)
+Received: from google.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99125931983sm6616412241.2.2026.10.28.10.44.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 10:44:28 -0700 (PDT)
+Date: Wed, 28 Oct 2026 13:44:27 -0400
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>, 
+	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, oupton@kernel.org, 
+	kevin.tian@intel.com, alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com, 
+	seanjc@google.com, will@kernel.org, Alexander Graf <graf@amazon.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org, 
+	linux-arch@vger.kernel.org, sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
+	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <auIvjVmWnsVPN_9g@google.com>
+References: <atl7peoVHdP5hz7z@google.com>
+ <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
+ <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
+ <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
+ <atpNFEFIlqAoYIwH@google.com>
+ <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
+ <attmFVIFU_mS0Y7p@google.com>
+ <CA+CK2bDXDWbww_d3sD6OZqpo37V1a3t76_ubbrXLQS=9DB3dWA@mail.gmail.com>
+ <at-8vkVpN2SF3XgB@google.com>
+ <2vxz8q3hoicx.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,43 +116,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-9-zide.chen@intel.com>
-In-Reply-To: <20260827223755.143247-9-zide.chen@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 28 Oct 2026 10:39:25 -0700
-X-Gm-Features: AclHuK8ySYeolJHo7pCBJUUKUCrPrGo9dyPRJSPDpGLXiM1VD-QYMD7CcoN58h4
-Message-ID: <CALMp9eQnWPd2TmC3WgR27VTpFPf1T-4-jhDn6opn940JpFOcYA@mail.gmail.com>
-Subject: Re: [PATCH v2 08/16] perf/x86: Plumb counter bitmap from x86_pmu to x86_pmu_cap
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2vxz8q3hoicx.fsf@kernel.org>
 
-On Thu, Aug 27, 2026 at 3:51=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
-te:
->
-> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
->
-> Intel PerfMon v5 introduced CPUID.0AH:ECX to support non-contiguous
-> fixed counters and Architectural PerfMon Extension leaf (0x23) further
-> supports non-contiguous general-purpose counters.
->
-> num_counters_{gp,fixed} indicates the total number of GP or fixed
-> counters, but cannot represent non-contiguous counters.
->
-> Add cntr_mask and fixed_cntr_mask unions so that KVM can get the
-> accurate counter availability directly from x86_pmu_cap. The u64
-> alias is convenient for mask arithmetic, while the bitmap form works
-> with for_each_set_bit() and friends.
->
-> num_counters_{gp,fixed} in x86_pmu_capability will be removed once
-> callers have been converted to the use of {,fixed_}cntr_mask.
->
-> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On 10-28 18:17, Pratyush Yadav wrote:
+> On Mon, Oct 26 2026, David Matlack wrote:
+> 
+> > On 2026-10-25 04:38 PM, Pasha Tatashin wrote:
+> >> On Fri, Oct 23, 2026 at 9:50 AM David Matlack <dmatlack@google.com> wrote:
+> >
+> [...]
+> >> The reason I care about keeping the header compact is that we are
+> >> defining a foundational kernel ABI and want to use this header across
+> >> almost every serialized data structure so we can evolve them later
+> >> without breaking compatibility. While some top-level structs are on
+> >> sparse folios today, other serialized structs are tightly packed, and
+> >> we are looking to add KHO slab support in the future where tightly
+> >> packed allocations will be common.
+> >
+> > My intuition is we will have a small number of headers per preserved
+> > file and per preserved FLB. One for the top-level struct and then
+> > optionally a few more for sub-structs like arch-specific data. That is
+> > why I am less worried 8 bytes per header, even if we fix the folio
+> > problem.
+> >
+> > Maybe where our visions differ is when there are collections of
+> > serialized structs, like KHO blocks. For collections I don't think the
+> > elements will each have their own headers. Otherwise the elements could
+> > be different sizes.
+> 
+> kho_block today doesn't store entry_size in the serialized payload. It
+> relies on its caller to do so. With extensible structures, this can get
+> messy. Sure, the owner of the kho_block_set can track the size somewhere
+> in its payload, but perhaps we should store the size in
+> kho_block_header_ser to begin with?
+
+I agree, and we will discuss versioned vs. owned serialized data 
+structures separately. With this series, we establish a common 
+framework: size/feature flags and accessors, and we update most of our 
+serialized structs to include them. All "shared" structs (e.g., KHO, 
+FLB, radix-tree, block_sets, etc.) should have their own versioning.
+
+kho_block_header_ser should have this header. 
+
+Pasha
+
+> 
+> Anyway, not a problem this series needs to solve, but something we
+> should eventually do.
+> 
+> [...]
+> 
+> -- 
+> Regards,
+> Pratyush Yadav
