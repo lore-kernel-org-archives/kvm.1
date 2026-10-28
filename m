@@ -1,59 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793215694;
-	b=fN+csMLz+mgczGQ7wX7a+gb/5vsmjM0cH+3j1ZU1y6pfuFzxgOKCiSI2/k1lo9SxB/jI
-	 KW2WFaU13DCyaZKVmbiKAobM6SjS6lN51eeLnUguBtOKiQeUBXWN8ikpip6xxGsKkFk/u
-	 GGaOPRSJveWbwo90bozSa3XrgSS9T7TF2odp1IcpgqCg779cMpc37VV3x4DxDu4QM+Q7h
-	 AqhjIb0Yjvy8u58IzAjdKLjqyOImY+A+uahwomlJ4LC0/J7QBRZwQB02RYYmmzzezvgFJ
-	 C4iq8WhuB+LqEZtGy5sMvNfgInGXuwWZnjYEK1oO1y8TSiwvp2ZHMbatNhkeffGFPhw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793215694;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=OttymoT+Gj7B3Pr54kafvxx7oIh2IVc8g1Kog35whCo=;
-	b=gyAr42Tz6qnBADlof1zvJBW8hbGPL9tsLSFm2vTegSnb6u4ilikQBH3aHLkbeHiE4ulB
-	 UkKvlaFUUL3xnkdtTKeTNrs5YgoHlZVfgeQQdvz0uzmptI7CkBAnrZgesKaMuBFEg6H2N
-	 6l9AbAbQmsz/nf1k+SI4faBvIVk99jY4t5Gddou2cAtixK7qKIgZKX0hnv2NV4xXU61Mc
-	 WgtRJ/6LE8BE5y3OXOp7G4Nw44mMc8w3OUWb2nNS8tyArgMhyBrFLc33zweyKyFwTatw9
-	 lsIfi2CaYGDNXp/wt/5zdYYxTZx3Y72aYc4aaRVCoeKQ1YwItWGI5CIfRsytIi64XNA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CHs9QdF8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.32
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793216934;
+	b=OKwPLtD79kYnTrhJErtA5gn3pYYiR1p/4SZACvXmvaatieW3IAS0V4aURZQp21jIK08l
+	 ieFY4fxqRciUz4S1hHu4Hky+vba+gFPciNylvNHz8g3bglH2aWs4vA2CO2G1iiowiukD/
+	 T+7/a8JQodx99nSDafUW4Q9zOS/Qd8syPiSoZ87Fj/SVIRrUUG8UGTeJkBs/c8jYGnfu/
+	 1LRVQ470d5rCMPESsj+RltRYBJT56bTxCpaZA5c6QWp4UxKPbP0Ty8BE6QWdPh8nciRAJ
+	 2jx+jsJ4j/NJahJj19+mvzsp7gB0abduAxo2L2wBy0OZtHqZmIqNLlrY93H1GEKqURw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793216934;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=oZ3rtw++Z/KIUuv5THoGOrT8+ZRVNw9dCKfCBdXT5TI=;
+	b=BAFTbLjVuEUkvuk2AA8JmGVDImB1qzrFMmw6NM0bjbx7cQIDGGTI96TShOMdyK4p/PDr
+	 nGV8cXaBg2SqXQTGitDxENUxCUMA6Kna7dpWiizojY1CHuNDaCDvi0Gg9Q72v5MsJxUF6
+	 ZLAy1wryNNXKEwVYcG5C60fsxNhSyOSaY51V25OceLqF+sQs4WjIPQDG8Bbjl6W3WUvm5
+	 e8hEtV8MpFOGvKD+bhzqIpTTnpook/BJ0/5ui5SX/NKmWluPW1nksYs02nboNJUGUwZo9
+	 MFdALDknJ+qMKNrSbSTZta92LVqFcHXpp2uiJFPuf+62FYDn09YwmYbMJDmmaXk+HjQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=xL5PgNfj;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.32
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013032.outbound.protection.outlook.com [40.107.201.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C7E606A31F;
-	Wed, 28 Oct 2026 19:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA623606A31A;
+	Wed, 28 Oct 2026 19:48:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA623606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CHs9QdF8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A14A1F01825;
-	Wed, 28 Oct 2026 19:28:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793215693;
-	bh=OttymoT+Gj7B3Pr54kafvxx7oIh2IVc8g1Kog35whCo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CHs9QdF88lJ9yx5KdbMUMjNXFUJMKhRgejE6Th5YBrOYZdEFphAuoedmcREOGiCH9
-	 5k8Otl7ufJxkW+FCAtKKZab3GW3+bxwxnRh6KRmVrO+kQOLEX04SqQ4LsrEU3z9Db9
-	 0Tg/c9WJl8I9+Sg+OcmOqSTmwnF2DejkW/lr7nbpq6vXJagdJdxjd49SRGY5sXS1oa
-	 aUyyW0ZZL+kx4UjRcCIKRO/HlB+0v4EMSpt3v8nfNCk4yNyw+xUW+DO2xcg6BM0H44
-	 a+YyMVmIkgZ3UfxOZIE3vrr136uUsdRZb7+DvmnD0l4TxJZXTx78fYjQjrJWWM/eOv
-	 /KcFDNz0kulwA==
-Message-ID: <sashiko-outbox-188352@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 7/7] KVM: s390: Allocate page tables when CMMA is
- used
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261028185422.272146-8-imbrenda@linux.ibm.com>
-References: <20261028185422.272146-1-imbrenda@linux.ibm.com>
- <20261028185422.272146-8-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 19:28:12 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=xL5PgNfj
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r5Km59AhSR9LF3nFpLHsXS63IUl64N8GI7jp5jFbfxTegojlS/nVZm/suKIVBk8TrikBEM2vW5kolvAZvsUI43OIncEZbGi0Rqk3l9YfTqlnWIdNfio8EDC3wdE2FzFpkt+KEj86Pk6IGKC7yTAJGWDn1R7hn2GW5ks8B3hjt1I0rEB3bwcw+/4P9TEocDd9UqUAQH7CJYJBEtUR38MrCGO6uUv5hiktzlsEhxJyExpbKdxi1UZAHxFEl5J+tr+3p1625j2XjaF2jJ2J2kOXt4jzmqhJ9nIKKYb9/LIABOLnLMGfFQkT3KrvcFTQzXUTezSYAzz8BZ/uDF5atSSGSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oZ3rtw++Z/KIUuv5THoGOrT8+ZRVNw9dCKfCBdXT5TI=;
+ b=cslaYG1N2HqnEFHzyiBWk9UyZPUohgveJgN0nRchOURnhm2sS/dPdqx1FqVZzRUXn/isSMsUEskJDFGyiPaTjvzPb87CK3Zuu2vL9OZqq2CoSIfH6o7NrVb03FjzimZpiEyWIOm3pDF66k3ovgSIkicoTMpO9RCU84zk+GUpbYZ/W69KfSucCHyvQFV1bHI6CYaJicz6E9WUUe1H/GMQCxr5aA4YI0cwhhDVX/DkYIuLDwrdu12yj47q+l+Lke4YF6EZN8Wl8Mk3ZbC+h8Vl6xiVwaISbhNbEs3krlZBSG9E6TQKbimg/6iMaUbSejLVJWwlgG0ALxfWill/OsxfvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oZ3rtw++Z/KIUuv5THoGOrT8+ZRVNw9dCKfCBdXT5TI=;
+ b=xL5PgNfjvAXiwKClp6oGkAN1oBmTw0MB2EXgxwkob49VcIJTzwSTa++BpxLD9NXZA0Smocqi4i6O71QWZiN7tncXA4e86QV0aUVgVJDX9AvucD24g1PvzJzhi/5GqZ/HHt9Uo1NhCYvddhqldHu8vCBMKFAvtK0CplRrQ3bzR2s=
+Received: from CH0PR04CA0011.namprd04.prod.outlook.com (2603:10b6:610:76::16)
+ by MN2PR12MB4373.namprd12.prod.outlook.com (2603:10b6:208:261::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Wed, 28 Oct
+ 2026 19:48:48 +0000
+Received: from CH3PEPF0002457A.namprd04.prod.outlook.com
+ (2603:10b6:610:76:cafe::ad) by CH0PR04CA0011.outlook.office365.com
+ (2603:10b6:610:76::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Wed,
+ 28 Oct 2026 19:48:48 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH3PEPF0002457A.mail.protection.outlook.com (10.167.252.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.569.4 via Frontend Transport; Wed, 28 Oct 2026 19:48:47 +0000
+Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 28 Oct
+ 2026 14:48:46 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <darwi@linutronix.de>,
+	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH v4 0/2] x86/sev: Fix RMPOPT enablement on non-RMPOPT configs
+Date: Wed, 28 Oct 2026 19:48:36 +0000
+Message-ID: <cover.1793216372.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,239 +112,87 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0002457A:EE_|MN2PR12MB4373:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c00d54f-3764-4691-128e-08df352c7bb2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|82310400026|36860700016|921020|261028144727099003|11063799006|56012099006|261022105027099003|261022075727099003|261009223027099003|261021121427099003|261026140227099003|261021123027099003|10067099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	Z2mPeUzA0HbR9A2bRVjn4t/Ei8j3W5KAbygQQ3LUCWKihVKuRT/5us+zwCyps28Ac1kNEAWFNcr7l7o5T9sMTBkxlCb6+gqo0byY46Gh4+u8UK0m2PMnPgidY3UWBRZiERvveZGukk9OfH15lc753NG7q8ZXwbDbjKjNOZwn3u/k7pDU/vmipZU+lZBNo3fvDN43keDH8Fyrm1ReE1E3mM6bKI8f41qcN+4cNcZo3oWORWbn1OM7boMeIro/Q/+Dadd4IsKng56mOY0V6/JNLKzzCQG5Xpoy1PlgP+qhsjwXUCQQoaeeeZBjHVyp9krsPGXC5rNkmWllz5rc0VncyAXu8jJ3J9dKZwL833hO3C0pSV3k/G2GDpIgjTez+WbRuLauSVTF3GuZR5jDAEqYwop/boOYesX/qgm8C3Ygh3q4XXAziV4JMLSRgncW7xpXM3eehCPTXddVXY1HwCioRnR21wWTY2hSnYk3U/QKVdUpjMLn/JxI3AsfaLsmX7o/MCeTmwVj5CbGagDm+aARHhFeCN2tAtuNvMTC4fNS3louXmwdZ9dLhkzyfK9ALWRVSdbt7l95Wk3n2Kix+W1lenoGS8cOcD2jS6+CY1es1PwYDP/00Ix9aFIX0Um+YikIBiydzeYi+95orYKIsDsDjNssaqYEK+9GD8IfME04yxApasSF5vofpxN9B0JY13ziZCvYB/U40tFlLqmKM7/ZsR4a9Fj/8PYmmkfus+r1m6bBFmxDJign9ov9iqSTY/i1
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(82310400026)(36860700016)(921020)(261028144727099003)(11063799006)(56012099006)(261022105027099003)(261022075727099003)(261009223027099003)(261021121427099003)(261026140227099003)(261021123027099003)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	2RfyMCSmFVr/U7c+kKh9wUvZLcBsV/nu6kaELnpCT+wZiZkZxK/nw1prDOvrCZ9gPB4BmG0vLLxBu++9nHMDsROQmNGmk314+quMfm3TNWAUrb15aTTtdoGCoxQvNDWiG1GIdmSXLAEt2zdJjA6HBl1yM8t1J+w8K5d0b1pWSLmbBkbDXIcyOXeI6jZhO2zCBQgoANxgekVCpb5l/cs8fSSoYZ0TOVmC/z1iD1kDMGnhMK6sznfl3Jowyb3HTgbDaLPeFZ4/prDiCLRCW0sdYje85Il9PvkLArljZlgAWpOV2kI51+CUL5wW0+QfJlNbdUL2F7PuucU6/vlORr/PGxLs+iaGpXwaXKnjmm6HphCmsANA8AXxt7R1Srz8fUuCxn0kn86I1rU+CA22Fg00H5xTJBqs6DQuNAMej82aTiELdUYgghSe7l/ztRAdAvlr
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 19:48:47.9430
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c00d54f-3764-4691-128e-08df352c7bb2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0002457A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4373
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] KVM: s390: gmap_allocate_all_page_tables_best_effort() drops s=
-keys on split
-- [High] KVM: s390: hugepage flags left enabled when enabling CMMA in handl=
-e_essa()
-- [Medium] KVM: s390: race in handle_essa() setting GMAP_FLAG_USES_CMM befo=
-re allocation
-- [Medium] KVM: s390: page tables allocated after dat_set_cmma_bits() in kv=
-m_s390_set_cmma_bits()
---
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-commit 2d680e1a8c09302f7abfa247b43bee558b17d8ec
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Two fixes for the RMPOPT series, both for configurations where the
+RMPOPT CPUID bit is advertised but RMPOPT is not actually usable:
 
-KVM: s390: Allocate page tables when CMMA is used
+Patch 1 clears X86_FEATURE_RMPOPT when the platform advertises segmented
+RMP but the firmware has it disabled (contiguous RMP) - otherwise
+RMPOPT_BASE is programmed and RMPOPT issued, which #GP on a contiguous RMP.
 
-This commit calls gmap_allocate_all_page_tables_best_effort() in
-handle_essa() and kvm_s390_set_cmma_bits() when GMAP_FLAG_USES_CMM is first
-set on the gmap, so that page tables are pre-allocated and existing large
-page mappings are split when CMMA is used.
+Patch 2 sets up RMPOPT only on an active SNP host by moving the soft-init
+(workqueue setup and the "optimizations enabled" message) into
+snp_rmptable_init(), so it no longer runs on systems where SNP is not
+enabled (e.g. disabled in the BIOS).
 
-> diff --git a/arch/s390/kvm/s390/priv.c b/arch/s390/kvm/s390/priv.c
-> index 856939acf012f..4f0dd3173ab91 100644
-> --- a/arch/s390/kvm/s390/priv.c
-> +++ b/arch/s390/kvm/s390/priv.c
-> @@ -1248,7 +1248,10 @@ static int handle_essa(struct kvm_vcpu *vcpu)
->  		 * value really needs to be written to; if the value is
->  		 * already correct, we do nothing and avoid the lock.
->  		 */
-> -		set_bit(GMAP_FLAG_USES_CMM, &vcpu->arch.gmap->flags);
-> +		if (!uses_cmm(vcpu->arch.gmap)) {
-> +			set_bit(GMAP_FLAG_USES_CMM, &vcpu->arch.gmap->flags);
-> +			gmap_allocate_all_page_tables_best_effort(vcpu->arch.gmap);
-> +		}
+v4:
+ - Patch 1: drop the inline comment on the common fall-through clear (the
+   rationale is in the commit message), and reword the commit message so
+   RMPOPT_BASE programming is no longer attributed to the "RMPOPT initcall".
+   No functional change; Tom's Reviewed-by retained.
+ - Patch 2: instead of gating rmpopt_init() on CC_ATTR_HOST_SEV_SNP, move
+   the RMPOPT soft-init into snp_rmptable_init(), which runs only once the
+   host RMP table is established (CC_ATTR_HOST_SEV_SNP guaranteed).
+   rmpopt_init() keeps its X86_FEATURE_RMPOPT-only gate and drops the
+   device_initcall.
 
-[Severity: Medium]
-What happens if two vCPUs in a multi-vCPU guest intercept on ESSA
-concurrently in handle_essa() when !READ_ONCE(vcpu->kvm->arch.migration_mod=
-e)?
+v3:
+ - Patch 2: gate rmpopt_init() on cc_platform_has(CC_ATTR_HOST_SEV_SNP)
+   instead of the X86_FEATURE_SEV_SNP CPUID bit.  SNP can be disabled after
+   feature detection (e.g. when AMD IOMMU init fails to enable it), which
+   clears CC_ATTR_HOST_SEV_SNP but leaves the CPUID bit set;
+   CC_ATTR_HOST_SEV_SNP reflects the final host state and matches the gate
+   in snp_enable_rmpopt().
 
-In this path only vcpu->mutex and the kvm->srcu read lock are held. When the
-first vCPU sees !uses_cmm(vcpu->arch.gmap), it immediately sets
-GMAP_FLAG_USES_CMM via set_bit() and then enters
-gmap_allocate_all_page_tables_best_effort(), which iterates over all memslo=
-ts
-while repeatedly dropping gmap->kvm->mmu_lock and sleeping in
-kvm_s390_mmu_cache_topup():
+v2:
+ - Patch 1: expand the commit message to spell out the CPUID-advertise vs
+   firmware-enable distinction and how the configuration arises; drop the
+   trailing sentence; add Tom's Reviewed-by.
+ - Patch 2: rather than moving the announcement to snp_enable_rmpopt(),
+   gate rmpopt_init() on an SNP host and keep the message there (Tom).
 
-arch/s390/kvm/gmap/gmap.c:gmap_allocate_all_page_tables_best_effort() {
-    ...
-		for (gfn =3D start; gfn < end; gfn +=3D _PAGE_ENTRIES) {
-			if (kvm_s390_mmu_cache_topup(mc))
-				break;
+Ashish Kalra (2):
+  x86/sev: Clear RMPOPT when segmented RMP is disabled by firmware
+  x86/sev: Set up RMPOPT only on an active SNP host
 
-			guard(write_lock)(&gmap->kvm->mmu_lock);
+ arch/x86/virt/svm/sev.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-			dat_entry_walk(mc, gfn, gmap->asce, DAT_WALK_ALLOC | DAT_WALK_SPLIT,
-				       TABLE_TYPE_PAGE_TABLE, &crstep, &ptep);
-		}
-}
 
-If a second vCPU enters handle_essa() while the first vCPU is still running
-gmap_allocate_all_page_tables_best_effort(), the second vCPU will observe
-uses_cmm(vcpu->arch.gmap) =3D=3D true, skip the allocation, set
-vcpu->arch.sie_block->ecb2 |=3D ECB2_CMMA, and retry ESSA in SIE before all
-page tables have been allocated and all large pages have been split.
-Conversely, because !uses_cmm() and set_bit() are not atomic or serialized =
-by
-a VM-wide lock such as kvm->slots_arch_lock, two vCPUs can both pass
-!uses_cmm() and run duplicate allocation walks across all memslots.
+base-commit: 250ee734115bca1c1f7a38d838909aa83cce87ae
+-- 
+2.43.0
 
-Should the check, flag update, and page table allocation be serialized under
-a VM-wide lock so other vCPUs wait until allocation finishes before re-ente=
-ring
-SIE with ECB2_CMMA enabled?
-
-[Severity: Critical]
-Can calling gmap_allocate_all_page_tables_best_effort() here (and in
-kvm_s390_set_cmma_bits()) corrupt guest storage keys when splitting aged
-1M or 2G large pages?
-
-If storage keys are already enabled (GMAP_FLAG_USES_SKEYS) and a 1M large
-page has been aged via gmap_age_gfn() -> gmap_clear_young_crste() so that
-crste.h.i is set while the storage keys remain in the physical pages,
-gmap_allocate_all_page_tables_best_effort() calls dat_entry_walk() without
-DAT_WALK_USES_SKEYS:
-
-arch/s390/kvm/gmap/gmap.c:gmap_allocate_all_page_tables_best_effort()
-  -> dat_entry_walk(mc, gfn, gmap->asce, DAT_WALK_ALLOC | DAT_WALK_SPLIT, .=
-..)
-     -> dat_split_ste()
-
-Inside dat_split_ste() in arch/s390/kvm/gmap/dat.c, saving the physical
-storage keys into the newly allocated PGSTEs for an invalid segment entry is
-gated on uses_skeys from the walk flags:
-
-arch/s390/kvm/gmap/dat.c:dat_split_ste() {
-    ...
-			pgste_init.pcl =3D uses_skeys && init.h.i;
-			dat_init_pgstes(pt, pgste_init.val);
-		} else {
-			dat_init_page_table(pt, init.val, 0);
-		}
-
-		if (dat_pmdp_xchg_atomic(pmdp, old, new, gfn, asce)) {
-			if (!pgste_init.pcl)
-				return 0;
-			for (i =3D 0; i < _PAGE_ENTRIES; i++) {
-				union pgste pgste =3D pt->pgstes[i];
-
-				pgste =3D dat_save_storage_key_into_pgste(pt->ptes[i], pgste);
-				pgste_set_unlock(pt->ptes + i, pgste);
-			}
-    ...
-}
-
-Because DAT_WALK_USES_SKEYS is not passed, pgste_init.pcl is false and the =
-new
-PGSTEs are left with zeroed storage keys while pt->ptes[i].h.i =3D=3D 1. Wh=
-en
-those 4K pages are later faulted back in via _gmap_handle_minor_pte_fault()=
- ->
-__dat_ptep_xchg() (which does pass uses_skeys(gmap)), old.h.i && !new.h.i
-triggers dat_set_storage_key_from_pgste() and overwrites the guest's hardwa=
-re
-storage keys with zero.
-
-Should gmap_allocate_all_page_tables_best_effort() include
-(uses_skeys(gmap) ? DAT_WALK_USES_SKEYS : 0) in the flags passed to
-dat_entry_walk()?
-
-[Severity: High]
-Could leaving GMAP_FLAG_ALLOW_HPAGE_1M and GMAP_FLAG_ALLOW_HPAGE_2G set on
-gmap->flags when enabling CMMA lead to a guest vCPU infinite fault loop?
-
-When userspace enables KVM_CAP_S390_HPAGE_1M or KVM_CAP_S390_HPAGE_2G and
-also enables KVM_S390_VM_MEM_ENABLE_CMMA, neither handle_essa(),
-kvm_s390_set_cmma_bits(), nor gmap_allocate_all_page_tables_best_effort()
-clears GMAP_FLAG_ALLOW_HPAGE_1M or GMAP_FLAG_ALLOW_HPAGE_2G, and
-gmap_1m_allowed() / gmap_2g_allowed() in arch/s390/kvm/gmap/gmap.c do not
-check !uses_cmm(gmap):
-
-arch/s390/kvm/gmap/gmap.c:gmap_1m_allowed() {
-	return test_bit(GMAP_FLAG_ALLOW_HPAGE_1M, &gmap->flags) &&
-	       !((f->gfn ^ f->pfn) & ~_SEGMENT_FR_MASK) &&
-	       slot->base_gfn <=3D ALIGN_DOWN(f->gfn, _PAGES_PER_SEGMENT) &&
-	       slot->base_gfn + slot->npages >=3D ALIGN(f->gfn + 1, _PAGES_PER_SEG=
-MENT);
-}
-
-If gmap_allocate_all_page_tables_best_effort() bails out early on an
-allocation failure, if another vCPU faults on a segment not yet visited whi=
-le
-mmu_lock is dropped between segments, or if a memslot is added or moved aft=
-er
-GMAP_FLAG_USES_CMM is set (where s390_kvm_mmu_prepare_memory_region() ->
-dat_create_slot() installs _CRSTE_EMPTY entries without page tables),
-gmap_link() will install a valid 1M or 2G large CRSTE.
-
-When a vCPU with ECB2_CMMA set subsequently faults on that valid large page,
-kvm_s390_faultin_gfn() -> gmap_try_fixup_minor() ->
-gmap_handle_minor_crste_fault() sees:
-
-arch/s390/kvm/gmap/gmap.c:gmap_handle_minor_crste_fault() {
-    ...
-	/* Appropriate permissions already (race with another handler), nothing to=
- do. */
-	if (!oldcrste.h.i && !(f->write_attempt && oldcrste.h.p))
-		return 0;
-    ...
-}
-
-and returns 0 without splitting the large page, causing the vCPU to fault
-indefinitely. Should GMAP_FLAG_ALLOW_HPAGE_1M and GMAP_FLAG_ALLOW_HPAGE_2G =
-be
-cleared (or checked against uses_cmm(gmap)) before splitting existing large
-pages?
-
-> diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
-> index 18fb200f854a8..739e8c23c3ae0 100644
-> --- a/arch/s390/kvm/s390/s390.c
-> +++ b/arch/s390/kvm/s390/s390.c
-> @@ -2359,7 +2359,10 @@ static int kvm_s390_set_cmma_bits(struct kvm *kvm,
->  		}
->  	} while (r =3D=3D -ENOMEM);
-> =20
-> -	set_bit(GMAP_FLAG_USES_CMM, &kvm->arch.gmap->flags);
-> +	if (!uses_cmm(kvm->arch.gmap)) {
-> +		set_bit(GMAP_FLAG_USES_CMM, &kvm->arch.gmap->flags);
-> +		gmap_allocate_all_page_tables_best_effort(kvm->arch.gmap);
-> +	}
-
-[Severity: Medium]
-In kvm_s390_set_cmma_bits(), is it intentional that
-gmap_allocate_all_page_tables_best_effort() is called after
-dat_set_cmma_bits() rather than before it?
-
-Inside dat_set_cmma_bits() in arch/s390/kvm/gmap/dat.c, dat_entry_walk() is
-called under read_lock(&kvm->mmu_lock) with DAT_WALK_ALLOC and without
-DAT_WALK_SPLIT:
-
-arch/s390/kvm/gmap/dat.c:dat_set_cmma_bits() {
-    ...
-	for (cur =3D ALIGN_DOWN(gfn, _PAGE_ENTRIES); cur < gfn + count; cur +=3D _=
-PAGE_ENTRIES) {
-		rc =3D dat_entry_walk(mc, cur, asce, DAT_WALK_ALLOC, TABLE_TYPE_PAGE_TABL=
-E,
-				    &crstep, &ptep);
-		if (rc)
-			return rc;
-	}
-    ...
-}
-
-If any 1M or 2G large page mappings already exist in the target GFN range
-when KVM_S390_SET_CMMA_BITS is first invoked, dat_set_cmma_bits() will hit
-the unsplit large page entry in dat_entry_walk() and fail with -EFBIG before
-gmap_allocate_all_page_tables_best_effort() has had a chance to split it.
-
-In addition, because the !uses_cmm(kvm->arch.gmap) block runs unconditional=
-ly
-after the loop even when r !=3D 0, any error from dat_set_cmma_bits() (such=
- as
--EFBIG or PGM_ADDRESSING on an invalid GFN range) will still set
-GMAP_FLAG_USES_CMM and allocate page tables across all memslots before
-returning the error.
-
-Should the !uses_cmm(kvm->arch.gmap) check and
-gmap_allocate_all_page_tables_best_effort() happen before the
-dat_set_cmma_bits() loop (or be gated on success if placed after)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028185422.2721=
-46-1-imbrenda@linux.ibm.com?part=3D7
