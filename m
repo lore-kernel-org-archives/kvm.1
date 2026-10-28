@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793217648;
-	b=poY2HZzj/puhQ9qHg68yEtqSXKnc4RpC3aaVmt9AqYqKCFv3ltsmhL3+H0wCBaux3Ufe
-	 XvgLWIYqLSN3naOzc/dihZ6c7zQ+sdjXs+omcz1Qic10qdZ4nnje9rv/ktco6bI/ybEpc
-	 0T+FsMqR4hJzpWwW/UVT4m0D9glYMMrm2JtWNQ31tVwYSRLK+ZLFpDkA9NDWqpupYmYAe
-	 dDJEFi4iaURoIIqtYp8+UvEjGG9t2QQ4EwE4iHTsHCvpxTPIvfdn6H0TlqjaDUM6atsCi
-	 hlnqclmsXTW7KIx/Jvqm3/wGO1qYkW/wShB9vJSkh0T5T/CCra2ThSm6q3D67Y9ZW4Q==
+	t=1793218571;
+	b=sDh7DxVZrcA06DlkM1Crd4gw1yfRTZS02mM0M/fDNNpr+3B0000dK2KMzJhisBBJY7yb
+	 RjuwCzVkMELxsqmiBeQTi6ghl0IA4yq4Op5Slj6wFNUDw4+NwCxLGzwstnUyLZFAhRKLG
+	 yEWsHq9nyh1EVJMJGp0q7YOSjKSOarHI0DtmU3Skn7y/Tbw7/77jq7tqidE1HdJs6HOAw
+	 v43HTTlzsxG+HwuximZPHezfaY0JIRX0lfPwcf6O9szr2bJ4un3uH6qgH829vao6lRgtT
+	 bs5NuTPIm9yy/4PpUWb6BN1Qi9iDT3OJGPLU3Edfo/+C2x4Sv/J2cFpn6oRRC2/LJWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793217648;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793218571;
 	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=iN+I/JlwOuCME5qKnXSs3MS63FBCZtas7AXo/RaQmDc=;
-	b=PqvQ4GOcnMquVY1gV5PuO0417r8OL77C5+xSE4tAl36jm3zKpODzY6MPiTRpt4666RkC
-	 tvsg5rQNIgztQnrlkCW/GfS8FioLY/Ni23WPznut2U+BVO+aG+dYyU4vP8slBDGg10vih
-	 Gru9+XvfnNwLz4Wg22bA9Z/KZ5VdeIK4u2H5rf5dJ32Fh3ME2w8kTNnMOexN6HJdNPGoy
-	 hj2bhrWs9fYIVPDAiKzsCG0yBWjC5+nVgct6MuKcg0ABRpTqslq+IuBY/Pw6WDFdLpe2y
-	 axkKC5GNs8jm04E0JKtW1ECYytJ2lRV5+yIM4aHdvJPszLP9P4zWV+qcVnUJqqawzyA==
+	bh=ZHO8zY3zGR66Z83umM/amjj6Zf6URUWKg1d+imcElEc=;
+	b=r7YZJVd+H3sVnN8gPXUUVEzTB6Zt1HKbJ9NT969B0JhjvvlIRKABwM1vfTEk6AbtQQ7g
+	 fieH6fUfXWAlkn2TfATQf7HsJ7Lw6TbAZelVBkcM2Hw8cBhe5CR4h03jWvssYypIvXqJj
+	 LSvF9Tb4kQVkHyhWjtMHO4hoLsIOuOUr+8Oh6wMwiUXtmjhrf5Lfp5H8NjxGsr6WQ+ZFn
+	 ajK19PKZFy6HCCvS3sbDjvuCfLAe3opnokvdcpDTVMXUeptuij93cvPbg+onqXubOKB5w
+	 FwYMs0A91/4kavF1bFre3Zj2lCROBpsjjDNhUAZ9Nf0h6yZZL8U/McvZZPHHINj1G0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EI0pwI5D;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m85aBDwY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C76606A331
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 20:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694FB606A327
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 20:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EI0pwI5D
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F941F01829
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 20:00:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m85aBDwY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BE01F031E4
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 20:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793217648;
-	bh=iN+I/JlwOuCME5qKnXSs3MS63FBCZtas7AXo/RaQmDc=;
+	s=k20260515; t=1793218566;
+	bh=ZHO8zY3zGR66Z83umM/amjj6Zf6URUWKg1d+imcElEc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EI0pwI5Df5XwDCaq/jpV/UeVZQz81n4DwXOEpc63jF1xwKaggjf9HRXj1giL/r8wt
-	 gHApwEyu55+1TOk76KXARv0SrNurRnyp8HmN98rMoWikQCV1gqJPKo/flF/6ejpj8A
-	 9GVqadhfpYU3qt8CerJmetnqM18r/Ft4qkxsCmlZ/M/ClBMTqobrCA+ekqoc3PiANt
-	 FvcwuiK6PUiBhpvz4HRRSLgp0abNDoaYSKcQieg+AHD4jiuIVaU6Fysf64s7dPS+7p
-	 KawZVHDTyjY/XV7aBrORzZEfsSpqlXp0ePv92I0fhtJTFzF8n2WbUce63bEkKBvcg5
-	 eZ8xLHkgEzCNg==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c46bd7a7345so10570966b.0
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 13:00:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzPEzFcf3fOTgYy3/TLAubVPoTPFcdScPw5nDtBaIhoXiIvLqCLMfPUOjh2I/xMoR5GF+g=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLrT4z+spYSTFnEucD1x2s+v4GDPLpZeTGk6/6aSSTmWzNarGCL
-	LAHT1EWl202kmTsCtVVEVl9GUYmiLJC+SujaLMfPWL86uVc3nlDEkbsn1PKb+13nM3bAgGtq2PD
-	Dr98uY59sRjA7McApZl8F3cDoBGOBOho=
-X-Received: by 2002:a17:907:940f:b0:c2e:1b6b:8b19 with SMTP id
- a640c23a62f3a-c49d142cb22mr46806766b.23.1793217646978; Wed, 28 Oct 2026
- 13:00:46 -0700 (PDT)
+	b=m85aBDwYVoTxHlA93Rs9c4CNVI+77+sHYacMo772vyIG+3aqIh/wpc/3W6uzPKh2O
+	 sR7MGVq3Uxd9ft3P8SHjP0vWLAI4k2Cj3F2Uq5sptikozV2OLqcPwE+jtO6hAQdaRp
+	 KaZA3R7apv5yEaU2yNW4WqVqCOyvv1tUmc7P9yRj8Uyiuo8aMS+JlSOqoULQv5ggwf
+	 Ty2R9l36BbhZUGrmAqcwuzIyrUO+iZ+pZNQeooswoXOM7VDYrDLUSVCvA0U/4aFUgt
+	 cHabCvl1r3YUBdNQheE3nqpnyOnyML7tUPEnv3zvbiepGrQcXudh6qCO3rjEY0nbz+
+	 UuPI/6n+0MGfA==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c434376dbebso11370866b.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 13:16:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwr06UNUG/cl5qBk8MYUlOimLc+dQpKoGcFv1BbWtuel6d1+tDFQoX5xIVJwgdC3pZd600=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL6YJ6H9jpNNVM3HTldR91xa8KGfqAJafJkWBzc7eutuI0wvRFQ
+	DEtfwqFqvaUZi666uZrgrQDJHpsCktF74wGZ3yObP5oxKWSDNTBLwXP62HxkL4G/btW19dVsrw1
+	/2Ijr2TnrFSgjSqGfm53oGKDdJdY9Jr8=
+X-Received: by 2002:a17:907:7294:b0:c49:8bf8:a7a7 with SMTP id
+ a640c23a62f3a-c49d1123fb8mr54251666b.7.1793218565180; Wed, 28 Oct 2026
+ 13:16:05 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,143 +59,171 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-27-yosry@kernel.org>
- <CALMp9eS8KDozNGT9J_uN69W32QEvTbg2JrtRqN0ESi00b_uq=A@mail.gmail.com>
- <atqRyeqSXViiNIk6@google.com> <CAO9r8zMqiW=3t7zRo_WAhKJfpYsDwuG3e=nK14GXhrq+foYnOw@mail.gmail.com>
- <at-O8-tzgezj2du-@google.com> <CAO9r8zO8ViSqCBer4rV5qBQGcDKA_60Aj_KEVQx2obd9zU7-Hg@mail.gmail.com>
- <auDkX94UTjrLNmqp@google.com> <CAO9r8zP5rom7VpA3-BsuB-H_+G5r-OC-Bfz=iTMbhQrWB4RYbA@mail.gmail.com>
- <auJTHfdEPjbhGdyw@google.com>
-In-Reply-To: <auJTHfdEPjbhGdyw@google.com>
+References: <CAHCio2jc9++n2Qoa0-sNkObZsWOybSwK1X2aBjFirchjRTBZsQ@mail.gmail.com>
+ <CAHCio2hpL+Y0iYdGXs5zKA-81+w_9pHs+tZPe2uaYKs8yOCz_w@mail.gmail.com>
+In-Reply-To: <CAHCio2hpL+Y0iYdGXs5zKA-81+w_9pHs+tZPe2uaYKs8yOCz_w@mail.gmail.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 28 Oct 2026 13:00:33 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOKuY5wGXYr9_L0p+-w3qBaNd36XgjyQn462zxU5aCY3w@mail.gmail.com>
-X-Gm-Features: AclHuK82LMqGgvf__ZxUe0i6_hmRunCbftKZn4NK7U4RpiGRuFUQuVrnckq9TXs
-Message-ID: <CAO9r8zOKuY5wGXYr9_L0p+-w3qBaNd36XgjyQn462zxU5aCY3w@mail.gmail.com>
-Subject: Re: [PATCH v3 26/27] KVM: nSVM: Use different ASIDs for L1 and L2
-To: Sean Christopherson <seanjc@google.com>
-Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 28 Oct 2026 13:15:53 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
+X-Gm-Features: AclHuK8qYQ4fqzpFfJa07mPN-tFBit3XuauYAYoKnvWdLnpbGGbkMARbTUkZ00c
+Message-ID: <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
+Subject: Re: Some options abort RFC: KVM: SVM: Rework ASID management
+To: Jackie Yu <ufo19890607@gmail.com>
+Cc: jmattson@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	mlevitsk@redhat.com, pbonzini@redhat.com, seanjc@google.com, 
+	thomas.lendacky@amd.com, vkuznets@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2026 at 12:55=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
+On Wed, Oct 28, 2026 at 6:37=E2=80=AFAM Jackie Yu <ufo19890607@gmail.com> w=
+rote:
 >
-> On Tue, Oct 27, 2026, Yosry Ahmed wrote:
-> > On Tue, Oct 27, 2026 at 10:50=E2=80=AFAM Sean Christopherson <seanjc@go=
-ogle.com> wrote:
-> > >
-> > > On Mon, Oct 26, 2026, Yosry Ahmed wrote:
-> > > > On Mon, Oct 26, 2026 at 10:33=E2=80=AFAM Sean Christopherson <seanj=
-c@google.com> wrote:
-> > > > >
-> > > > > On Thu, Oct 22, 2026, Yosry Ahmed wrote:
-> > > > > > On Thu, Oct 22, 2026 at 3:44=E2=80=AFPM Sean Christopherson <se=
-anjc@google.com> wrote:
-> > > > > > >
-> > > > > > > On Fri, Oct 16, 2026, Jim Mattson wrote:
-> > > > > > > > On Mon, Oct 12, 2026 at 4:37=E2=80=AFPM Yosry Ahmed <yosry@=
-kernel.org> wrote:
-> > > > > > > > Moreover, does this change the semantics of PV TLB flush? I=
-n
-> > > > > > > > record_steal_time(), we have:
-> > > > > > > >
-> > > > > > > > if (st_preempted & KVM_VCPU_FLUSH_TLB)
-> > > > > > > >         kvm_vcpu_flush_tlb_guest(vcpu);
-> > > > > > > >
-> > > > > > > > IIUC, an idle vCPU that wakes into L2 will flush only L2's =
-ASID. In
-> > > > > > > > the past, with a shared ASID, L1's ASID was always flushed =
-on emulated
-> > > > > > > > VM-exit anyway. Now, L1's ASID will be unaffected. Though I=
- can't find
-> > > > > > > > any real documentation on PV TLB flush, it *seems* like the=
- remote
-> > > > > > > > vCPU would want L1's ASID to be flushed. OTOH, this change =
-makes nSVM
-> > > > > > > > behave just like nVMX.
-> > > > > > >
-> > > > > > > That's a bug that absolutely needs to be fixed, probably rela=
-tively urgently.  We
-> > > > > > > should also document that passing through the steal_time shar=
-ed information to L2
-> > > > > > > to utilize PV TLB flushes for L2 is explicitly not supported.
-> > > > > > >
-> > > > > > > I hate to re-introduce deferred actions for L2 =3D> L1 things=
-, but that seems like
-> > > > > > > the only sane way to handle this, because handling the !tdp_e=
-nabled case, where
-> > > > > > > KVM needs to sync the current root, requires knowing what MMU=
- is going to be in
-> > > > > > > use when L1 regains control.  Yuck.
-> > > > > >
-> > > > > > Are you implying that *you* will be re-introducing deferred act=
-ions? :P
-> > > > >
-> > > > > Heh, probably not this calendar year.
-> > > >
-> > > > Are you opposed to this series landing before that is fixed, keepin=
-g
-> > > > in mind that it will expose nSVM to the pre-existing bug?
-> > >
-> > > Nah, though I should just fix the damn bug.  It's not hard, I just do=
-n't want to
-> > > do it because I don't want to reintroduce a deferred request.  Untest=
-ed, but I
-> > > think this is all that's needed.
-> >
-> > Makes sense to the untrained eye, although I do wonder sometimes if
-> > requests more generally need a way to key off guest mode. I am sure
-> > you don't want to open this can of worms :)
+> Hi, guys!
 >
-> It's not so much a can of worms as it is infeasible to come up with a gen=
-eric
-> scheme that would add value.  The hardest part in all of this is identify=
-ing when
-> an action/request *always* needs to be serviced in the context of L1, e.g=
-. this
-> code has been around for ages and it wasn't until Jimshiko came along tha=
-t anyone
-> noticed there's a bug.
->
-> The actual servicing of the request in L1 is straightforward and vendor s=
-pecific
-> for the vast majority of cases.  E.g. guard(vmx_vmcs01) is essentially wh=
-at you're
-> asking for, but it's obviously VMX specific beause SVM can simply grab th=
-e pointer
-> to vmcb01.  In other words, there isn't a general need to defer requests =
-or have a
-> framework for servicing requests while L2 is active.
->
-> This one is special because of legacy shadow paging, and specifically the=
- need to
-> synchronizing the MMU.  In theory, we could temporarily switch to L1's MM=
-U, a la
-> vmcs01, but it's entirely possible L1's MMU doesn't even "exist", e.g. be=
-cause
-> the host state that will be loaded from the VMCS on nested VM-Exit is dif=
-ferent
-> than the pre-VM-Enter state (which is possible on Intel).  Even if the MM=
-U context
-> was known, switching MMUs at this point in the KVM_RUN flow is terrifying=
-.
->
-> So, while I detest the deferred approach, I also think it's absolutely th=
-e right
-> thing to do for a fix that needs to go to stable@, and probably the least=
- awful
-> fix long term as well.  But it's very much a one-off snowflake, not somet=
-hing we
-> should generally encourage.
+> Jackie Yu <ufo19890607@gmail.com> =E4=BA=8E2026=E5=B9=B410=E6=9C=8828=E6=
+=97=A5=E5=91=A8=E4=B8=89 21:36=E5=86=99=E9=81=93=EF=BC=9A
+>>
+>> Hi Yosry and KVM folks,
+>>
+>> We would appreciate your guidance on supporting INVLPGB in ordinary (non=
+-SEV)
+>> L1 guests alongside the proposed static per-vCPU ASIDs.
+>>
+>> The 2025 ASID rework RFC proposed one static ASID per L1 VM and listed
+>> "enabling INVLPGB virtualization" among its motivations [1]. The June
+>> 2026 RFC v2 changed the design from per-VM to per-vCPU ASIDs [2]. In
+>> the October v2 series, patches 2-11 establish static per-vCPU ASIDs,
+>> while the remaining patches primarily address nested TLB flushes [3].
+>> Our question is how guest INVLPGB should be supported under the
+>> per-vCPU design.
+>>
+>> Some of our workloads frequently discard and repopulate memory using
+>> patterns involving madvise() and memset(). Broadcast IPI-based TLB
+>> shootdowns are expensive for these workloads, so we are interested in
+>> making AMD INVLPGB available to guests. We use a small benchmark to
+>> approximate the resulting shared-address-space pressure:
+>>
+>>     region =3D mmap(256 MiB, MAP_SHARED | MAP_ANONYMOUS);
+>>     memset(region, 0xab, 256 MiB);       // Initial population
+>>     start N workers, pinned across 64 allowed CPUs;
+>>     each worker repeatedly reads pages in its own slice of region;
+>>
+>>     repeat 500 warmup + 2,000 measured iterations:
+>>         start =3D clock_gettime(CLOCK_MONOTONIC);
+>>         madvise(region, 256 MiB, MADV_DONTNEED);
+>>         record elapsed madvise() time;
+>>         write one page in every 64 pages to repopulate part of region;
+>>
+>>     stop and join the workers;
+>>
+>> The benchmark uses memset() for initial population; subsequent
+>> iterations re-touch pages rather than repeatedly calling memset().
+>> The numbers below measure the advisor thread's madvise() syscall
+>> latency, not worker throughput.
+>>
+>> In our experimental KVM4 configuration with a VM-shared ASID and our
+>> separate guest INVLPGB passthrough changes, we observed:
+>>
+>>                          INVLPGB off     INVLPGB on    Difference
+>>     64 workers  mean       21.624 ms       12.505 ms     -42.17%
+>>                 P99        32.760 ms       21.518 ms     -34.32%
+>>     128 workers mean       29.553 ms       20.459 ms     -30.77%
+>>                 P99        39.628 ms       28.160 ms     -28.94%
+>>
+>> These are single, sequential A/B runs for each worker count, with
+>> 500 warmup and 2,000 measured calls per run. The process had 64
+>> allowed CPUs, so the 128-worker case was oversubscribed. The
+>> measurements show a useful latency difference, but do not by
+>> themselves establish INVLPGB instruction counts or IPI reductions.
+>>
+>> We then experimentally combined the October per-vCPU ASID changes for
+>> ordinary guests with our existing, out-of-tree L1 INVLPGB/TLBSYNC
+>> passthrough. With guest INVLPGB enabled, a one-vCPU guest boots, but
+>> otherwise comparable two-vCPU and 64-vCPU guests fail early during
+>> boot. Keeping QEMU's +invlpgb setting while adding clearcpuid=3D419
+>> to the same guest kernel allows the multi-vCPU guest to boot; the
+>> guest logs "Clearing CPUID bits: invlpgb".
 
-The other example I thought about is
-kvm_service_local_tlb_flush_requests(), AFAICT this only exists
-because we don't have a way to specify a request for L1/L2. But yeah,
-I agree if these are the exceptions rather than the rule.
+I imagine for INVLPGB to work correctly with per-vCPU ASIDs, you need
+to intercept INVLPGB and basically issue an INVLPGB for each ASID used
+by this VM (nr_vcpus or 2 * nr_vcpus with nested). I can't imagine
+this would perform well on large VMs, not sure if virtualizing INVLPGB
+would still make sense.
 
-In my head, there was also a request we clear for exceptions on nested
-VM-Exit, but looking at the code again, it's not a request, we clear
-the exception and interrupt queues. I think this is the right thing to
-do architecturally anyway though?
+Regarding the boot failure, I would guess there are some missing cases
+due to the complexity of emulating INVLPGB without a shared per-VM
+ASID.
+
+>> These controlled boot comparisons identify a problem with combining
+>> static per-vCPU ASIDs and direct guest INVLPGB/TLBSYNC passthrough:
+>> the multi-vCPU guest fails to boot when it uses INVLPGB, but boots
+>> when its INVLPGB CPUID bit is cleared. A one-vCPU guest also boots
+>> with INVLPGB enabled.
+>>
+>> In this configuration, an unintercepted guest INVLPGB targets the
+>> invoking vCPU's hardware ASID, while sibling vCPUs have distinct
+>> ASIDs.
+
+It's neat that INVLPGB will automatically use the current ASID and not
+ASID=3D0 for guest usage.
+
+>> The October ASID rework does not add handling to extend that
+>> guest broadcast invalidation to sibling ASIDs. Consequently, direct
+>> passthrough does not preserve the required multi-vCPU guest
+>> invalidation semantics. This problem arises when our out-of-tree
+>> passthrough is combined with the per-vCPU ASID scheme; it is not a
+>> claim that the upstream ASID series alone causes a boot failure.
+>> The earlier discussion of guest INVLPGB and global ASIDs is relevant
+>> here [4].
+>>
+>> Could you advise on the preferred upstream direction?
+
+This is a question for Sean and Paolo.
+
+It is possible to use one ASID per-VM, however:
+1. It adds complexity as we need to track what vCPU in a VM ran last
+on a CPU, so that we can flush the shared ASID in between different
+vCPUs running on the same CPU.
+2. It adds some TLB flushes due to scenario (1), not sure how much
+this matters in practice.
+3. It will re-establish a divergence in ASID/VPID management between
+AMD and Intel, unless we also switch VMX to per-VM ASIDs, but I am not
+sure if there's any benefit to this for now.
+
+>>
+>>   1. Would an opt-in, VM-scoped ASID mode for ordinary VMs that expose
+>>      guest INVLPGB be acceptable, while other VMs retain per-vCPU
+>>      ASIDs? This would require a properly managed shared-ASID lifetime
+>>      and flush/reuse semantics, rather than simply giving vCPUs the
+>>      same VMCB ASID value.
+>>
+>>   2. Alternatively, is the intended direction to retain per-vCPU
+>>      ASIDs and intercept/virtualize guest INVLPGB and TLBSYNC, so that
+>>      a guest broadcast invalidation correctly covers the relevant
+>>      sibling vCPU ASIDs and preserves the required ordering?
+>>
+>>   3. If neither approach is currently planned, should ordinary
+>>      multi-vCPU guests be prevented from enabling INVLPGB until the
+>>      required semantics exist?
+>>
+>> We can share the madvise benchmark and its measurement methodology,
+>> and would be happy to compare the same benchmark under both proposed
+>> designs. We would appreciate feedback on the preferred upstream
+>> architecture before pursuing a downstream implementation.
+>>
+>> References:
+>> [1] 2025 ASID rework RFC (per-VM):
+>>     https://patchew.org/linux/20250326193619.3714986-1-yosry.ahmed@linux=
+.dev
+>> [2] June 2026 RFC v2 (per-VM to per-vCPU):
+>>     https://lore.kernel.org/kvm/20260616004155.1435766-1-yosry@kernel.or=
+g/
+>> [3] October 2026 v2 series:
+>>     https://lore.kernel.org/kvm/20261008001425.2458927-1-yosry@kernel.or=
+g/
+>> [4] Discussion of non-SEV guest INVLPGB and global ASIDs:
+>>     https://patchew.org/linux/20250223194943.3518952-1-riel@surriel.com/=
+20250223194943.3518952-7-riel@surriel.com
+>>
+>> Best regards,
+>> Wind Yu
