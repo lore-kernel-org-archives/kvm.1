@@ -1,114 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793207818;
-	b=3qqTHCbBfszdPGBgJjuSyEtg+PbQ+Wcw6CBSnoOkSf3iq0bisPt/Crx1cyetvJWlP0i+
-	 7NjbEQW3IBAWqYbu/jwC+3o6+myGgmCSNpRo1LGZd52UPO3fBBA81L0GThRwB+SsJaEeQ
-	 0widurM7r5ktlDayWCiigvErpiTSZVq2j52zEa5vX7cYvOcRZpn2WQbezd+x9Pb00MUpa
-	 aD56wvu8UsYfB1wsy1uXubjofbmz3trU7fQaCK0cJPF+YqcXJHWgrvTlQ2fP2/1t5FScV
-	 T4BL3xBhu32AjoTOmv1IhYuWS+59N6oDqKlO6seSi5MVcRKp6kEZUU6Qfz0GY5jBbuw==
+	t=1793207829;
+	b=rsjNvs1gw5szYiMXeRn25J76NXPBKngnVSWVbDb2S7p7j+2FnwGkXJTW7xRLabpetkVW
+	 fMRUkooK76Tqt30kI/eS4vwqZAawNvob1tyCPW4qEUQSwJK8UdwsRButxOPnCczzqpLtF
+	 MzIXibBNIRTOpzCFkjMZm8iOl5HD8tZt5eIulFxnpmGIqfDsGJmfiTn2Io3UHlf2N7f3z
+	 3bvy6vW5y3aEYreJtDTM24uExjHfaWBSswY4xU6mVdOw3z3tqa2zM5uNfLR1ohHkWowp3
+	 mj09ECHVB75i++FS2PEnIT4XpW7Q+JS7wmTcZN9c0k3m1VtaMkn0wIp9eKw1Imuo3UA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793207818;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:X-Mailer:
-	 X-Mutt-Fcc;
-	bh=Cir+mFJzA4Bj65dFGKcajxs4xlnVmewfcGaQZuCK4tM=;
-	b=h8y5tJAClKDhlhYzKLoYpSQBdX9rntUvWuPVR10RP66lEdXEWIosil3sAF01mfAPrhSr
-	 zyuahkpJgZKA/l0gdz0fWAo74qY8vDtlRTCnhs8hL44m6TV6LpXlEaJWNHODxQTXu7gIN
-	 6L9QSLxphK4nw8LfW3unClwvsFQGy/fuv5Z62lHClvsQ9V9R27hcLzr5SsXUu9yl4Qp/J
-	 NWQ7PkMcYGSbuMjNQuEXO2FfESYTO/hW1ORujQe/5eBgrZx5Y6IHfe/6FS0xQyogSFNF7
-	 7PO6Vn86vIAvi4HZRaHwKDFE16QtbE42abz3JiHOwr3vycrODhcxU48exlLs83VhQYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793207829;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:User-Agent:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=05SG7gAJ008w03i9CCuLSraJDJiyVFmW6Oo7ipBrjbs=;
+	b=4EMPikBDoKCMWj8vwTaCapSZRO8Jzk3LYcDxRNl/pWCv1iP1cK7Ean50hAJfNVeWZ8RS
+	 +ndICaITPInxXuoaK0vlQHxm7BfOf7jCfP+raAgTnf1VpG2MPaGpQR8AC/T2hBqc4u6uB
+	 RoZowgULkSQUOLpJkIjInuhn4gNbfqCAm1XZE9IfC1Qnh/U8Ka8OEfhZnBW9aZlbt8SG6
+	 hUiKWs8tqHub3NzasnkF3wcPux6cstVr9Q33W6tb3wA7u2ilv6D5BZAsPHxHPmY0CYQ3R
+	 cZElWfwGyUM/fctVYAiOFLD8vNvWeLfcqirYjYRrQH46BUhUKnN8ZX+2wM+r5aPgLDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TIbm83gz;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=S10MriQv;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LIVACHG1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE928606A31D
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:16:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE928606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB6606A320;
+	Wed, 28 Oct 2026 17:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TIbm83gz;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=S10MriQv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793207817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cir+mFJzA4Bj65dFGKcajxs4xlnVmewfcGaQZuCK4tM=;
-	b=TIbm83gz3t2e8YnhHE2Ua7cRb22Qzsh6Zan0uJpqnYNQ/TjiTlmaVXqznIyEzfNR0DcHih
-	eIFJFtY9tEpm+3mAVgPUFqEEdJ0O3KY8/m6uagURD7bqk5l6mVZj0IE0BM7/gMJblr5yHt
-	4CC4y76k8HnwzNLD1dX8/C7CKp2m/l8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-976t3IePNTOeolPNkGrxFQ-1; Wed, 28 Oct 2026 13:16:55 -0400
-X-MC-Unique: 976t3IePNTOeolPNkGrxFQ-1
-X-Mimecast-MFC-AGG-ID: 976t3IePNTOeolPNkGrxFQ_1793207814
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1d1f26a63so10989165e9.1
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:16:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793207814; x=1793812614; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Cir+mFJzA4Bj65dFGKcajxs4xlnVmewfcGaQZuCK4tM=;
-        b=S10MriQvo737n7XdQd4O811Z5So9a4Ia4aeMNN0nBQnZGwC4rEmIM7ZzYpBtAwzvt4
-         SnI+Rcu1l2ORID9GYjpZXWgb584gqJdu4qKyFnaPYYuCCBpexhEzRNQNd2IjYVpYJFAb
-         lK0Y0XDLuveF9FwbYmQ7jb7pmVaOmPrDcJ13f55lUjpZYxOMcvt5AY+m4fpnDHQKuKRb
-         IUsNRBMe+fH2lo3qvxk9itoW89HaXAA5w2pAzRSLdDq8l91Jg+IkLockETbyl8wNukEa
-         uDQA9mbD1zIHFLHAEYCYnBK0zxeAA9uN/IP2YjY4emjhcAUfi9cJIyhS/jL6jmXxSNie
-         3IEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793207814; x=1793812614;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Cir+mFJzA4Bj65dFGKcajxs4xlnVmewfcGaQZuCK4tM=;
-        b=J7rxCFkwhSkPQeKPfo04uOP8xF/ohIuIoie0G4ZwSFjLPCcsSTeIlM5HTbeC4wEMZe
-         HmZAAGXvXTsIts5ugkDvIvv4otdJbmVG0Hi/kwENORCg2d+VBpcQ9M3As9QmoLZmN3YP
-         hxpw5lvcws3sotOmNDNHSLMAj/GWWUil/74j+mUIqMqIi78s2XmHbSqr7cRXlFF1/C4U
-         VNu5KxQbgDiguzw2DIHwe4iO5BnwRFYIpYnPGr+gwyvHbexEMupvVpYfVw4pD/yDZjPJ
-         Vx19kchg7Q5Dcq9eHjyuQJCYgNcK0fiPgxxao+MpzsAURoWo9+2uTLQQuo8T/jZsbYZo
-         KDQw==
-X-Forwarded-Encrypted: i=1; AKwUvBwR2GG3K81eJVudr26L7jBBaEsXiES9qHMXYQPmqOVnP9Zc2TLjp9myoQRNxAfCujbSwHE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK2psuCBNbfMrK8P+IX+L+p5a08Rc0bhIswhgCWquuhmGnAxTGg
-	Rz75vLWf+XjVoDMGWF2j58005q5XZWCD+RWN/d5iCZtUStw8ETfddqgwY8san/UUhFypMp9T3uM
-	3tWQubQk2IaGeX+cIcYHeLj8icL4jdgElZlVlaHWiiOZsonDoiUX/smp9fwFxxw==
-X-Gm-Gg: AYBFou07jCszKqA3icuo+jJqE1w+ASacTJ8wQnUrF0GEXmaONlMmNXwZGrNE+gkhTl0
-	m6Xczz5GxSB3LHZrlOJC0BjGwoxFd5/tismHwokSzBhrKiGgN8/NrTdlmhmgtPqp9aGaY57rJQ6
-	6sUUv4M7etKlp0EaMxlKZqe8Bi5+oAOhH78wTzYRKg/NrOt1Xftpd/LwKIuULHO6oAPiWhX3UzF
-	W7g/IODTwWyuk843xKSsghbfrqiiHTTEb5Irs3B2m13sinvAqGhsZ+szDhGN2NH5sNkWRNHUmAg
-	kNYhoWIpda/znpm06gOIFNVTmmPAjgiCi/kQ970w7eFYlRFr8a3p4bhlrN8TP5yw4k5+AfSaeUf
-	/RwIOuICs+Is/aa/0TRWAkGk/j+Pj+BjOv6CTl5FP
-X-Received: by 2002:a05:600c:4e55:b0:4a2:1655:87e2 with SMTP id 5b1f17b1804b1-4a966f22108mr68349375e9.19.1793207814268;
-        Wed, 28 Oct 2026 10:16:54 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e55:b0:4a2:1655:87e2 with SMTP id 5b1f17b1804b1-4a966f22108mr68348525e9.19.1793207813685;
-        Wed, 28 Oct 2026 10:16:53 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd4bc5sm29495209f8f.34.2026.10.28.10.16.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 10:16:53 -0700 (PDT)
-Date: Wed, 28 Oct 2026 13:16:51 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
-	Sairaj Kodilkar <sarunkod@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
-Subject: [PULL 65/78] i386/kvm: Use x86_iommu_device_get() for per-device
- IOMMU lookup
-Message-ID: <70c046b180c8f85c5199d691c51715dd42a65efb.1793207602.git.mst@redhat.com>
-References: <cover.1793207602.git.mst@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LIVACHG1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A438E1F01828;
+	Wed, 28 Oct 2026 17:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793207828;
+	bh=05SG7gAJ008w03i9CCuLSraJDJiyVFmW6Oo7ipBrjbs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=LIVACHG1RijgMjCcG/Za6quG10uP/bwvgH9QE8LBE1Ivatgc9Gsxomr3AtpNUFPU0
+	 A+6txV+JhFA/FQ9wi7C+7pWYpZ0e+Pc7WqKMe9jkABrVblw1ZFcwlZAztCqgB1P/e3
+	 p9b8wN4tDVitUGLc/V+1hQT1NZFTVD7m3WdPU0oqKQlNmHSSGk9l9hK3CeTbNDWqSe
+	 VN3sAKFewBC6xe0t5rYtB+sbuiw5e5lDQoKvIRxdjJ0DrtoKis23WnQwx7fOelIVvL
+	 Atltab4Pstjrs4D4dYuIJSyaVZnuHq7QWlD07iE6RtqSOvkxEaO4SzTr/vUKZm0prA
+	 whzCKqWsehupA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  tarunsahu@google.com,
+  Andrew Morton <akpm@linux-foundation.org>,  joro@8bytes.org,  Mike
+ Rapoport <rppt@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,
+  maz@kernel.org,  arnd@arndb.de,  jgg@nvidia.com,  robin.murphy@arm.com,
+  loganodell@google.com,  oupton@kernel.org,  kevin.tian@intel.com,
+  alex@shazbot.org,  dwmw2@infradead.org,  pbonzini@redhat.com,
+  seanjc@google.com,  will@kernel.org,  Alexander Graf <graf@amazon.com>,
+  Bjorn Helgaas <bhelgaas@google.com>,  baolu.lu@linux.intel.com,
+  linux-arm-kernel@lists.infradead.org,  linux-arch@vger.kernel.org,
+  sagis@google.com,  linux-mm@kvack.org,  kvmarm@lists.linux.dev,
+  iommu@lists.linux.dev,  linux-pci@vger.kernel.org,
+  kexec@lists.infradead.org,  skhawaja@google.com,  kvm@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string
+ with a 2-bit pair feature header
+In-Reply-To: <at-8vkVpN2SF3XgB@google.com> (David Matlack's message of "Mon,
+	26 Oct 2026 20:49:02 +0000")
+References: <atlKsD-aJB3mJr2j@google.com>
+	<CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
+	<atl7peoVHdP5hz7z@google.com>
+	<CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
+	<CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
+	<CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
+	<atpNFEFIlqAoYIwH@google.com>
+	<CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
+	<attmFVIFU_mS0Y7p@google.com>
+	<CA+CK2bDXDWbww_d3sD6OZqpo37V1a3t76_ubbrXLQS=9DB3dWA@mail.gmail.com>
+	<at-8vkVpN2SF3XgB@google.com>
+Date: Wed, 28 Oct 2026 18:17:02 +0100
+Message-ID: <2vxz8q3hoicx.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,103 +82,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1793207602.git.mst@redhat.com>
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+On Mon, Oct 26 2026, David Matlack wrote:
 
-Currently, kvm_arch_fixup_msi_route() unconditionally uses the default
-system IOMMU for interrupt remapping when IOMMU is present. This
-approach fails when an IOMMU is attached to a non-system bus and serves
-only a subset of devices, because the kernel does not program IRT
-(Interrupt Remapping Table) entries for devices outside the IOMMU's
-scope.
+> On 2026-10-25 04:38 PM, Pasha Tatashin wrote:
+>> On Fri, Oct 23, 2026 at 9:50=E2=80=AFAM David Matlack <dmatlack@google.c=
+om> wrote:
+>
+[...]
+>> The reason I care about keeping the header compact is that we are
+>> defining a foundational kernel ABI and want to use this header across
+>> almost every serialized data structure so we can evolve them later
+>> without breaking compatibility. While some top-level structs are on
+>> sparse folios today, other serialized structs are tightly packed, and
+>> we are looking to add KHO slab support in the future where tightly
+>> packed allocations will be common.
+>
+> My intuition is we will have a small number of headers per preserved
+> file and per preserved FLB. One for the top-level struct and then
+> optionally a few more for sub-structs like arch-specific data. That is
+> why I am less worried 8 bytes per header, even if we fix the folio
+> problem.
+>
+> Maybe where our visions differ is when there are collections of
+> serialized structs, like KHO blocks. For collections I don't think the
+> elements will each have their own headers. Otherwise the elements could
+> be different sizes.
 
-This patch changes the behavior to perform per-device IOMMU lookup:
-- For PCI devices: Use pci_device_get_x86_iommu() to find the specific
-  IOMMU serving that device, if any
-- For non-PCI devices (IOAPIC): Fall back to the default IOMMU
-  only if interrupt remapping is enabled (ioapic_as != address_space_memory)
+kho_block today doesn't store entry_size in the serialized payload. It
+relies on its caller to do so. With extensible structures, this can get
+messy. Sure, the owner of the kho_block_set can track the size somewhere
+in its payload, but perhaps we should store the size in
+kho_block_header_ser to begin with?
 
-This ensures MSI route translation occurs only for devices actually
-managed by an IOMMU, enabling proper interrupt remapping in configurations
-where IOMMUs are attached to arbitrary buses.
+Anyway, not a problem this series needs to solve, but something we
+should eventually do.
 
-NOTE: This patch assumes that only non-PCI device calling is IOAPIC and
-checks ioapic_as to determine interrupt remapping.
+[...]
 
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20261014053433.24564-6-sarunkod@amd.com>
----
- hw/intc/ioapic.c      |  3 ++-
- target/i386/kvm/kvm.c | 15 ++++++++++++---
- 2 files changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
-index 1932b14642..e171cf8432 100644
---- a/hw/intc/ioapic.c
-+++ b/hw/intc/ioapic.c
-@@ -438,8 +438,9 @@ static void ioapic_machine_done_notify(Notifier *notifier, void *data)
- #ifdef ACCEL_GSI_IRQFD_POSSIBLE
-     IOAPICCommonState *s = container_of(notifier, IOAPICCommonState,
-                                         machine_done);
-+    X86MachineState *x86ms = X86_MACHINE(qdev_get_machine());
- 
--    if (accel_irqchip_is_split()) {
-+    if (accel_irqchip_is_split() && x86ms->ioapic_as != &address_space_memory) {
-         X86IOMMUState *iommu = x86_iommu_get_default();
-         if (iommu) {
-             /* Register this IOAPIC with IOMMU IEC notifier, so that
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index da922f72d7..072da8b9f1 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -6746,7 +6746,15 @@ uint64_t kvm_swizzle_msi_ext_dest_id(uint64_t address)
- int kvm_arch_fixup_msi_route(struct kvm_irq_routing_entry *route,
-                              uint64_t address, uint32_t data, PCIDevice *dev)
- {
--    X86IOMMUState *iommu = x86_iommu_get_default();
-+    X86IOMMUState *iommu = NULL;
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    X86MachineState *x86ms = X86_MACHINE(ms);
-+
-+    if (dev) {
-+        iommu = x86_iommu_device_get(dev);
-+    } else if (x86ms->ioapic_as != &address_space_memory) {
-+        iommu = x86_iommu_get_default();
-+    }
- 
-     if (iommu) {
-         X86IOMMUClass *class = X86_IOMMU_DEVICE_GET_CLASS(iommu);
-@@ -6848,6 +6856,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
- {
-     static bool notify_list_inited = false;
-     MSIRouteEntry *entry;
-+    X86IOMMUState *iommu = NULL;
- 
-     if (!dev) {
-         /* These are (possibly) IOAPIC routes only used for split
-@@ -6867,13 +6876,13 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
-     if (!notify_list_inited) {
-         /* For the first time we do add route, add ourselves into
-          * IOMMU's IEC notify list if needed. */
--        X86IOMMUState *iommu = x86_iommu_get_default();
-+        iommu = x86_iommu_device_get(dev);
-         if (iommu) {
-             x86_iommu_iec_register_notifier(iommu,
-                                             kvm_update_msi_routes_all,
-                                             NULL);
-+            notify_list_inited = true;
-         }
--        notify_list_inited = true;
-     }
-     return 0;
- }
--- 
-MST
-
+--=20
+Regards,
+Pratyush Yadav
