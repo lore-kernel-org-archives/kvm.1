@@ -1,154 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793222040;
-	b=AVbOl57HnUKzPzR1e3SRhz3xZxPoye/H4+n1OVJKWKts74vKGGGLz8SiWtFw9i70RhsG
-	 xdnXdgUQSR1vKIEh4j+i7JV1ZBiApyvgqMD489UibF9wQGFPHlYXdTel3uO0W0Iz1K9oH
-	 yssJp90etiXEsqJn2UErE9Jnwvcz8AULD3gN/XI193gm5PIqq78IoUY7aiPJ02X1oS8qT
-	 XD6BTV0iQMiyEnB8mizQZu2RGKVPpaITq6iWmRjBeWsFRErrr/k2wOGWGyjl9ivgSo861
-	 73pVrTGnpd6aWFRBimnNwGsI0Ot1agHJ5RG8DWsjsGOeEm51b1dFzuWH3hdlSoh5KEA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793222040;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
-	 In-Reply-To:References:Autocrypt:Content-Type:
-	 Content-Transfer-Encoding:Date:MIME-Version:User-Agent:X-TM-AS-GCONF:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=NVAtJGVJSXzp0BrnLtPFJyAyAoiFJ9Rvt6l34PEri54=;
-	b=LUv/uyQZHx36WY0iDRlu5FmtZp2pWby6jlodSc1pmTvHxwSsMGtIOe7nFKM9aOWtoV3t
-	 VHyLJ7Oa2/WfaDkVgQy8tBmx8O/x+fkW6kKZ0K9gTV2+IA/ovgbV6EpmgCXpybcRM6DhP
-	 VL4AoiL2wQ1Mx2QgBcb3ooDyubCw9sapBcDf0NWf7NtNH+rD0sX85pm7yAz6U7bAKw0/G
-	 IDBcrA2aTAYE2bnx2w5ejD5fmq0aupSYGJc2gkZzi1OCykohlELbQlfTK2aYyYN8UX4e5
-	 ecxBTV+MWY+aiRhICbJl33akI14s6/j5fMJmDbSQ58k7RTn1k+W4zQlB7iqrZuiIa6A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R2gFmzQN;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793222713;
+	b=0zoWOcuoEus2mAtRV/IYBmGBmxTtBM7E8+D+Dpz82R9EPcFbBR9TbGlz7J5gb9w2r1VF
+	 E6Cjk298rqjqfaeq4Un1/XQV4d74ZmsnkJEAPc6cXLs73/N+LO3Wf6cI+gyl05Xay6K/1
+	 m7ilVhuXku8Les6LGC1gL7eInCzcgeFzmZNpXRbX+JbP7SsRSdLNhBKFvUZ+lKGjHWavu
+	 S9Mbe/WPLGoyMzlSq9WeGpKCJqXbpLNiktoCQOYh2mZKxXOCq7fpOhaytrBxS803TCrcx
+	 iDmsDtPjqw5pi7+/dh4hyy/bk0si3TPSY563o6AIz08gNfAwAXqZw7AkhEtZlJQf0Tg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793222713;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=ENw9Q5VwwMeL1RTcYiZmzftcc9Hrpk/z8YkgEUgfUU8=;
+	b=OL7UOJEA7qRtYUFf7JeIZnN1Y8CQ+37z61O1sjg222gq5ofIOj9Nfvt6swsowOLJWh2K
+	 /M4tzPJayLEyJ3CHNZV5lhlV086jGd1xu8AnVQAK0eFbVCPIYwvFwog99cj+YU3iYzr45
+	 yklFlQeInZAjoAzyNmKV/XJUwPmiF7zLSr95TGHLHEL/EaTU0gNuckPaM7wprK2TcRDsi
+	 yQsXH/JlZa3XwZ30JWSi1eUmwDLMjLrdfWMaFcopPjBccQ0t4Sm8khKyr+6tOKWZNBWmA
+	 BFrjskWaG2Ig8k4789NfOvZuXnaX+XS33vdkbC4oVeNiJay+EedPJpQ28IWwBcUT/zQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XVcCHliF;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710DB606A31A;
-	Wed, 28 Oct 2026 21:14:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 710DB606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49CE606A327
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 21:25:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B49CE606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R2gFmzQN
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69SJZ5Rg2127453;
-	Wed, 28 Oct 2026 21:13:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=NVAtJG
-	VJSXzp0BrnLtPFJyAyAoiFJ9Rvt6l34PEri54=; b=R2gFmzQN4uPhVcAoRlIrJB
-	0D/M4tkrEr7QtqZ/q7ajmcU4VXBdCQ3r9lrEq4jfi0EcHIyiTiK9Y+DzosSSQeUo
-	RuvhpGK6LKk77SFcA9N1pRDT+AQFxrbiso99t5ihLh8xTCL1S1a3Q9cJu8b7J1PZ
-	MlgYrhIEwJy0gKQgMJb9i1C6cow43vEwqZ7Nb0aXzcTzP6Q7I6IQyGOQaAaACmqr
-	Skm1Cwmd5rBXuuK95b8RVyuKCQuxlZfhAMG7ejeElfnMmrVkRdQtmxwyMfiI+AGg
-	B9lg0C92JXOzzjcg4Ywnd29woHs6+TLk/N+0ggqtxtc2oPKUJzFQtYkGiTDzKBqw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgmd770v3-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 28 Oct 2026 21:13:59 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69SIZ7mR2008397;
-	Wed, 28 Oct 2026 21:13:58 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hh8gh952b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Oct 2026 21:13:58 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69SLDvGs33751802
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 28 Oct 2026 21:13:57 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 02AC85805C;
-	Wed, 28 Oct 2026 21:13:57 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 850E45805A;
-	Wed, 28 Oct 2026 21:13:54 +0000 (GMT)
-Received: from [9.111.18.3] (unknown [9.111.18.3])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 28 Oct 2026 21:13:54 +0000 (GMT)
-Message-ID: <1cd8eed2c5268a02df5f8600ae469d023761754c.camel@linux.ibm.com>
-Subject: Re: [PATCH v11 3/5] s390/pci: Reuse FMB buffer across enable and
- disable cycles
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Omar Elghoul <oelghoul@linux.ibm.com>, sashiko-reviews@lists.linux.dev,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        Matthew Rosato	 <mjrosato@linux.ibm.com>,
-        Farhan Ali <alifm@linux.ibm.com>, Gerd Bayer	 <gbayer@linux.ibm.com>
-In-Reply-To: <72ddf1a4-d672-4d9f-a205-07aec3db1248@linux.ibm.com>
-References: <20261028154352.15108-1-oelghoul@linux.ibm.com>
-	 <20261028154352.15108-4-oelghoul@linux.ibm.com>
-	 <sashiko-outbox-188110@kernel.org>
-	 <72ddf1a4-d672-4d9f-a205-07aec3db1248@linux.ibm.com>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 22:12:52 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XVcCHliF
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-535f598d126so36281cf.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 14:25:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793222711; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ENPYR6VlGM6xRG4u40M2uuTLHi68inc0NbC56HtXBrz6knuazNMmflxhJxnsTnWACf
+         coan1Mg6cA3Puo9TWDZy8rFvbzLWzbLLvJHmYnqXVYLrztWh4PhyoyR/bkowHE8YGXXI
+         1xIt5//XrY6yE1bcQArwCiSt1DG9acEk8fP0WzAZCK3YT2xS2xuYfq9W2aNsTXOzuLe0
+         /x5TVHT29D4qn6rvf1JOj6mMcxrl1Nw7umM2SdQ03ZOYPjLDyMNXlEh7Euyxlcjb9Tw5
+         PPqRgUEfJsIoEsgstvliN9k7eBQ+CPHvAPJqids9k3benH90GQaDahHUdVY7B78nc85u
+         NQKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ENw9Q5VwwMeL1RTcYiZmzftcc9Hrpk/z8YkgEUgfUU8=;
+        fh=ngkmZgDB4RkR90rvbvVjmd6Nz+ItJpEY3tYcaHnHSKA=;
+        b=JKDzqDtVXB3MGFEHLLMsi6dBfXV1znS23kIx4MAGNM92tp5nXoWsLtgtbzWbmOfSeq
+         hnHMymdjASVI8gROUtbZh++BndMSXHlPphM7ojdBBDgukPryGgKmMcMmcD+BuQ/DUdRy
+         WmapYw4naTgF5Dbya4v8M+V8Fpzvw5Yor2ozYQ7PlEPG7lF4XOae9p7FC38uANmlFloM
+         k5z6Hyh6KaXx9U8g63ZV43oULmMwkGiIz8sjC0AXpLR1wc2t50sFeWsgkpcLkHAnMFfv
+         01XRjRZETaWTd9vbfovVeXRJHrAksyf7RwwEyya9Tgg1Gm44/Ltrc8zC8Ix44nH9v4JP
+         g/RQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793222711; x=1793827511; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ENw9Q5VwwMeL1RTcYiZmzftcc9Hrpk/z8YkgEUgfUU8=;
+        b=XVcCHliFMA6rjXQU2QBUHQSqm4R95UTxBEYXa8U2XPSb5amj03DiOpVoZ9DXvZtYSC
+         bG8i9cwDwTpHFbx+8ieyM/KOzxpOKaAvQR5ghVUahJKuNjTqtxqHWu8wbLCf+BJZbgXF
+         LkjtWCaSJMi0RuFIEeOoKhEtJAd3+PXko0XtWWWEXO4JLo92fuuMSRHAuN4X3zm3E3cg
+         4oI+SG6FaOBhvO3DC8OMbi9Fvx0LN4k8bhK2OMWMRcATpULbO8asZIw8nhDuVknXiszP
+         FwJauEIFO0F0ug+kPPyND47rU0CJ1xWVofLCzS+4MquEbHlDXY6GLhmT/gLg5sUr16jp
+         wNag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793222711; x=1793827511;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ENw9Q5VwwMeL1RTcYiZmzftcc9Hrpk/z8YkgEUgfUU8=;
+        b=NtxBvn37oh+rMhuChBwflx1IbyTC9/FqUK+VD97xwslqQBILow2AUo7ak+OnLOD7pv
+         4vNLCgDXK1TRwNVPe3s07Ts+gDvhynOALr6iLtfeU5Ix+4xyO+iO1whJAKb+RbUrt2xY
+         cNSXaj1gCt6fwRPAbI4+0Y23K07UI8UeQuetLihb3rVOQQA+8OmyQmPGdtU5zpzEqJWf
+         FT/HKRVnICfb8X79L+rfR41w/dHrlOrfbPY/2/NtHcz22f0P+BV74IbYUN2W3/Of9trK
+         PEs/HmXL022bA+4cCcAOQtwJEb+G92pXJluy4ptb3b0bwJe05mRHR3/g8mOCoqKIeijA
+         5T3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwh+Tc6S6aMgQ9z8mzB4H+qHdmkPQl/JUB0/hF7u1nEHXFp7hXXg1lEFDC2afFSlCSOBZg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLuWYIy/h0EW7PKwZf9mkcoeUZ9F2opynl3XzZS26KkpQtsdNkt
+	TkWC6pSAKDoetmIFv4FsoOC8IYPvJGy/fLDjGLogTg7MmmwlWXZFYDL5Req0k2eeWE+g524Dsuq
+	fwZPmer3VNWFDqh4Jk01U6psE43ttLzGE5Petb3rH
+X-Gm-Gg: AYBFou19Oh2AkdP3MKWsnqjxicQFaKKOki1UwfUIGgJ7v5MrWgQw9L5o1g2+Lkj1YAq
+	XkCZozs81SfxGz0alPQgeCFztzv/dCa8/U2nCD6T1j7hlYqihaLdEfeHLAhOARS+D5VU6q+VTXX
+	4B1Jd13ketbrctj+QtmUEz6q2tG1XhbJOFPfOluDOvP6uab0+6IFo5FQ+rFr6dPGdF6ha/T6XT0
+	VAG7F4IDTRpJt8xSB+KliOrvsmqZCN11vis0S2GRbgZKu4bcXlrzWOlkA9Tb+E287rc5iX8I7xS
+	IcRsi/OeUMIX2+mH7isxA0TTec9OewOeX+Xww2YXZ9hkYQCsly2VYBKJf5LCCCguOjkrOzW7sgV
+	rm+V8EX+RfQG+PN8I1quJ5T5YAji2epVefIVj
+X-Received: by 2002:a05:622a:2298:b0:536:d46:ffa7 with SMTP id
+ d75a77b69052e-5414e3fe9afmr2752931cf.12.1793222710639; Wed, 28 Oct 2026
+ 14:25:10 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -158,73 +104,209 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ZYOIpcVA c=1 sm=1 tr=0 ts=6ae26597 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=WtBk71qh1JqlTf72BxUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI4MDA4MiBTYWx0ZWRfXz0Uitfw6xKF6
- 0JEZgeQ8kwekCNK9OF2qOq+z8Agf9LX5jMni3viv5lYLPsPUnUpbPTlNMyGMuUebSo2teQ+yxnx
- y4vYpIuu0VglWwt0DyQiqzpaC28dBw2NGrXHGWr7gxX6HjNA3EmWtZA2a4bfpQEwacwrDvlCGRW
- mROix0u1mWUX5k0PU5hY3DJv18GUEgK1KRA4Dwej3ybmd6tNSy9HNGp5gRePD0WDBOc6iN9yF3b
- kX1tw2j/PRZaZFB77ohPZT9azZzrI6qD6w3eNtAvZsFOG+3vg+kKmj16ekDl/ghACbXBnh366fE
- 6YHNjVICn2fXKtJWZBi5ZetxU7E+r98KMnHS8+aBpUC9eqK5jScH4f0nOihQRsQjvvlzJDDJ5Fv
- +HVzVH+satPW6TvBpQvapyk8wXrC0lRtFba4YOAY8TJXJsNZslkKFP8LDlqJlJdnTExE3kkBhRI
- pBiq1ABYPEDC/65dKxQ==
-X-Proofpoint-GUID: 9Of9Qt5JN501oWTbgT1xZxQHQDWBqxv1
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI4MDA4MiBTYWx0ZWRfX2Q97Wt6IIeoJ
- j482gRdvHV/2RW/dxjfl+k1+F0r6R3eYykb98H+95QHuWNikMKchCkoGrapo5x5DRByGURi7r4j
- X3XP8ctYnxxsCIFNzgKbrJWADNWB0J4=
-X-Proofpoint-ORIG-GUID: 9Of9Qt5JN501oWTbgT1xZxQHQDWBqxv1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-28_06,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610280082
+References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-12-zide.chen@intel.com>
+In-Reply-To: <20260827223755.143247-12-zide.chen@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 28 Oct 2026 14:24:57 -0700
+X-Gm-Features: AclHuK9dEqdUmO-HHiIIftvXmEGOnx7VGEu94hz8TxQGo8ovabGloAkS3SRkWVQ
+Message-ID: <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
+Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-10-28 at 12:15 -0400, Omar Elghoul wrote:
-> On 10/28/26 11:59 AM, sashiko-bot@kernel.org wrote:
-> [...]
-> >=20
-> > [Severity: Medium]
-> > Can keeping zdev->fmb non-NULL when zpci_mod_fc() fails in zpci_fmb_ena=
-ble()
-> > leave the FMB enablement state inconsistent?
->=20
-> Valid concern, but unfortunately I think this is a tradeoff we are going
-> to have to accept. Based on this discussion [1] under a previous version
-> of the series, we can accept these stale reads because as Niklas said,
-> the firmware-written sample includes a timestamp of the last write. So
-> we're already transparent about giving the user stale data, and in the
-> unlikely event that this happens, the user will be able to recover by
-> disabling and re-enabling statistics via debugfs or simply re-enabling
-> it directly via vfio.
->=20
-> Thanks
->=20
-> [1]=20
-> https://lore.kernel.org/all/a24337bd66864dd70ae61e28d86590052ac0fc5d.came=
-l@linux.ibm.com/
-> >=20
+On Thu, Aug 27, 2026 at 3:48=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
+te:
+>
+> Intel PerfMon v4 introduces IA32_PERF_GLOBAL_STATUS_SET (0x391) to
+> allow software to set individual bits in the global status MSR. Reads
+> of IA32_PERF_GLOBAL_STATUS_SET always return zero.
+>
+> IA32_PERF_GLOBAL_INUSE (0x392) is also introduced in v4, to track
+> which counters and the PMI are currently claimed by other agents,
+> allowing independent software agents to check counter availability
+> without a shared scheduler arbitrating between them.
+>
+> IA32_PERF_GLOBAL_INUSE is an read-only MSR, and any write attempt
+> results in a #GP.
+>
+> Neither MSR is part of the VM state, so they don't need to be
+> advertised to userspace, nor saved and restored during live
+> migration.
+>
+> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+> v2:
+> - Change intel_pmu_get_global_inuse() to return u64, to match the
+>   surrounding code style.
+> - Add the missing vmcs02 updates for these two MSRs.
+> - Change "> 3" to ">=3D 4" to make the "v4-gated" more obvious and match
+>   the existing code style.
+> ---
+>  arch/x86/include/asm/msr-index.h |  4 ++++
+>  arch/x86/kvm/pmu.c               |  9 ++++++++
+>  arch/x86/kvm/vmx/nested.c        |  2 ++
+>  arch/x86/kvm/vmx/pmu_intel.c     | 37 ++++++++++++++++++++++++++++++++
+>  arch/x86/kvm/vmx/vmx.c           |  4 ++++
+>  5 files changed, 56 insertions(+)
+>
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-=
+index.h
+> index 11b99d237e05..0b093cf41edf 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -1240,6 +1240,10 @@
+>  #define MSR_CORE_PERF_GLOBAL_CTRL      0x0000038f
+>  #define MSR_CORE_PERF_GLOBAL_OVF_CTRL  0x00000390
+>  #define MSR_CORE_PERF_GLOBAL_STATUS_SET        0x00000391
+> +#define MSR_CORE_PERF_GLOBAL_INUSE     0x00000392
+> +
+> +/* Intel IA32_PERF_GLOBAL_INUSE MSR */
+> +#define PERF_GLOBAL_INUSE_PMI_INUSE    BIT_ULL(63)
+>
+>  #define MSR_PERF_METRICS               0x00000329
+>
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index 437a7bc49bf8..7c05cf5157bf 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -832,6 +832,8 @@ bool kvm_pmu_is_valid_msr(struct kvm_vcpu *vcpu, u32 =
+msr)
+>         case MSR_CORE_PERF_GLOBAL_CTRL:
+>         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+>                 return kvm_pmu_has_perf_global_ctrl(vcpu_to_pmu(vcpu));
+> +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+> +               return vcpu_to_pmu(vcpu)->version >=3D 4;
 
-I think the problem is a slightly different one. With patch 2
-statistics_on tracks if the statistics should be on and zdev->fmb !=3D
-NULL tracks if they are on. With this patch zdev->fmb loses that
-meaning. So when the zpci_mod_fc() in zpci_fmb_enable() in
-pcibios_enable_device() fails the removal of the "if (cc)" block now
-means that we still do the zpci_fmb_disable() in
-pcibios_disable_device() but that is a sequencing error.
+MSR_CORE_PERF_GLOBAL_STATUS_SET should be handled in pmu_intel.c? It is an
+Intel-specific MSR (note that commit 79a71cc2568f ("KVM: x86/pmu: Move
+Intel specific MSRs to pmu_intel.c") moved all of MSR_CORE_PERF_GLOBAL_*
+into pmu_intel.c).
 
-So, as we want to keep the FMB associated to prevent the platform from
-overwriting an already kmem_cache freed different FMB and thus can't
-have zdev->fmb NULL at any point after having it enabled we need to
-track the actual enablement state separately. I'd add another bool to
-zdev for this maybe "fmb_enabled".
+Moreover, checking "vcpu_to_pmu(vcpu)->version >=3D 4" here without checkin=
+g the
+vendor will expose MSR_CORE_PERF_GLOBAL_STATUS_SET on AMD when AMD's
+pmu->version reaches 4.
 
-Thanks,
-Niklas
+> @@ -865,6 +867,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr=
+_data *msr_info)
+>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
+>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+>         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+> +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+>                 msr_info->data =3D 0;
+>                 break;
+>         default:
+> @@ -931,6 +934,12 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct ms=
+r_data *msr_info)
+>                 if (!msr_info->host_initiated)
+>                         pmu->global_status &=3D ~data;
+>                 break;
+> +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+> +               if (data & pmu->global_status_rsvd)
+> +                       return 1;
+> +               if (!msr_info->host_initiated)
+> +                       pmu->global_status |=3D data;
+> +               break;
+
+According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"),
+IA32_PERF_GLOBAL_STATUS.CondChgd[bit 63] cannot be set by writing to
+IA32_PERF_GLOBAL_STATUS_SET, because IA32_PERF_GLOBAL_STATUS_SET[bit 63] is
+reserved.  In other words, it is not possible to save/restore
+IA32_PERF_GLOBAL_STATUS when bit 63 is set.
+
+Because bit 63 is clear in pmu->global_status_rsvd:
+
+1. An intercepted guest WRMSR(MSR_CORE_PERF_GLOBAL_STATUS_SET, BIT_ULL(63))
+   succeeds instead of injecting #GP(0) and sets bit 63 in
+   pmu->global_status.
+2. When bit 63 is set in pmu->global_status (whether it was set by
+   kvm_pmu_set_msr() or by intel_mediated_pmu_put()), the next
+   intel_mediated_pmu_load() will try to write an illegal value to
+   MSR_CORE_PERF_GLOBAL_STATUS_SET. I don't think we get a #GP, because
+   every wrmsr is "safe" these days, but the write will be ignored.
+
+OTOH, what about PerfMon v4 bits 58 (GLOBAL_STATUS_LBRS_FROZEN), 59
+(GLOBAL_STATUS_COUNTERS_FROZEN), and 61 (GLOBAL_STATUS_OVF_UNCORE)?  Per
+Intel SDM Vol. 4, Table 2-2, those bits are valid in
+IA32_PERF_GLOBAL_STATUS, IA32_PERF_GLOBAL_STATUS_RESET, and
+IA32_PERF_GLOBAL_STATUS_SET when CPUID.0AH:EAX[7:0] > 3.
+
+When those MSRs are passed through in mediated mode, the guest can set bits
+58, 59, or 61 in hardware via IA32_PERF_GLOBAL_STATUS_SET. Leaving those
+bits set in pmu->global_status_rsvd for pmu->version >=3D 4 will break
+KVM_SET_MSRS(MSR_CORE_PERF_GLOBAL_STATUS) as well as any intercepted guest
+writes to GLOBAL_OVF_CTRL / GLOBAL_STATUS_SET.
+
+As I pointed out in patch 04/16, we can't pass through the PMU global
+controls unless their reserved bits match hardware.
+
+[ ... ]
+
+> +static u64 intel_pmu_get_global_inuse(struct kvm_vcpu *vcpu)
+> +{
+> +       struct kvm_pmu *pmu =3D vcpu_to_pmu(vcpu);
+> +       unsigned long fixed_mask =3D kvm_fixed_pmc_mask(pmu);
+> +       unsigned long gp_mask =3D kvm_gp_pmc_mask(pmu);
+> +       bool pmi_inuse =3D false;
+> +       u64 eventsel, data =3D 0;
+> +       u32 fixed_ctrl;
+> +       int i;
+> +
+> +       kvm_for_each_gp_counter(i, gp_mask) {
+> +               eventsel =3D pmu->gp_counters[i].eventsel;
+> +
+> +               if (eventsel & ARCH_PERFMON_EVENTSEL_EVENT)
+> +                       data |=3D BIT_ULL(i);
+> +               pmi_inuse |=3D eventsel & ARCH_PERFMON_EVENTSEL_INT;
+> +       }
+> +       kvm_for_each_fixed_counter(i, fixed_mask) {
+> +               fixed_ctrl =3D fixed_ctrl_field(pmu->fixed_ctr_ctrl, i);
+> +
+> +               if (fixed_ctrl & (INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_US=
+ER))
+> +                       data |=3D BIT_ULL(KVM_FIXED_PMC_BASE_IDX + i);
+> +               pmi_inuse |=3D fixed_ctrl & INTEL_FIXED_0_ENABLE_PMI;
+> +       }
+> +       pmi_inuse |=3D pmu->pebs_enable;
+
+Nit: I am always complaining about unnecessary use of '!!', but I
+think it is warranted in the two assignments to pmi_inuse above.
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 56daf5c61082..2dabb7e64956 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -4282,6 +4282,10 @@ static void vmx_recalc_pmu_msr_intercepts(struct k=
+vm_vcpu *vcpu)
+>                                   MSR_TYPE_RW, intercept);
+>         vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+>                                   MSR_TYPE_RW, intercept);
+> +       vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_GLOBAL_STATUS_SET,
+> +                                 MSR_TYPE_RW, intercept || pmu->version =
+< 4);
+> +       vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_GLOBAL_INUSE,
+> +                                 MSR_TYPE_RW, intercept || pmu->version =
+< 4);
+
+When a PMU event filter denies a fixed counter in mediated mode,
+kvm_mediated_pmu_refresh_event_filter() clears the entire 4-bit control
+nybble in pmu->fixed_ctr_ctrl_hw (written to physical IA32_FIXED_CTR_CTRL),
+while pmu->fixed_ctr_ctrl contains the guest-written value.
+
+If MSR_CORE_PERF_GLOBAL_INUSE is passed through, a guest RDMSR of
+IA32_PERF_GLOBAL_INUSE will see FCx_InUse =3D=3D 0 (and potentially PMI_InU=
+se
+=3D=3D 0) from hardware even though RDMSR(IA32_FIXED_CTR_CTRL) reports the
+fixed counter as enabled (and intel_pmu_get_global_inuse() reports it as
+in-use when MSR_CORE_PERF_GLOBAL_INUSE is intercepted).
