@@ -1,75 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793209064;
-	b=2DFUGUP2ZRY+MBp7/iwmw+LeDrCrCSoYVgfIFnBPcAJcOgpcP63xP5e4pn5/5/qisdnx
-	 zuxtEYQum9Q+N9jUoWc4/roq/FH7L1qxHEa7b4/AbB0XK0R2lbNAi96Bw9ccrq33JKzqN
-	 PUvglKi2Mf0bxtW1D8OyyIyc2n+93ARgfm3/RSUt5wZMSCKXjRgdSsUrhFVCWidN5v9L2
-	 nY8/oRzzNYVpGZ1e/4e6LHsmSAiBDBVmArQif54QwZ6sQmVjDzsUPz1gyVmm083iaThgO
-	 x1a2iF6fQEpxc3BHpoEA+ChXXeH7Og6TaYU3ZzvFzWbjhF7E97YAA1fs8g/oc0+Gk0Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793209064;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793209181;
+	b=pG+jF9aUbRX70Ks7WfRj+U0mi/6R/f/ak2ZbXifquZlMinFkYdTt3kX/JYcvfhx1dvWl
+	 deWID4wDt4WNo9xo0PPGFQfLFbs5IR2N7N+HO3gPCaL/9omyaA3mVumU8MTzHk9QRtBbH
+	 Bb3TSFj/T/QKO21v6qTDcHqUH+fUaUcb+dBut2Xw98x/U+skWr2aYrA8VADNMg+1/ETon
+	 NDwKu0ZLRuCdjbXqzuYtrJg+5TwSnlum6eq1pRYtlUeGUpRHScfsItbQ3mrhSeKHq9Ezv
+	 Pu9oUYXnVAxsA1LSZJ859iuSBUPFD/hHYU7LBZ3Tnsg8OhvtrBuIyLHQDXaBV+yHSaw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793209181;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=cYvri/TspkG2tYIL/heVQtQQlYpPDPdribSzkNzfhow=;
-	b=Jl42EE4qApMQ0IPz+FLc5GIN57OR0wvh841+CcJO8gURp1pLr1Cx8e0pfwr4Hi5r47xQ
-	 +Oa4cPkFugVoeBhvh6znX5ASX9N18rEw6zSK4PPCTokTbFEwj+Jtw/TLy7U8BsF2x4J+w
-	 kASjspk4NoXsZTzUWCshtSd47EhspmVfKcUuEwry99EQakpi9XG/39fBB1FOrq+voySUk
-	 2a3TR/fznHTqpvNLSYfqNJu+WHnA2+7RH1Knmu8jxF6iVDzt2A7huEKeZTFJpYYJeZwJj
-	 CY33T7lLdJXU86/cXLDyW072fupgASJVrE9i211546jU8x10MIlsyJt+8kVZnByxgDw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
+	b=wYghJIGY8URIuYMLJPk/O3XF6KpYfOmfgVTRoA9T8ra+rWW/vPGcr019jbA8QqErvoby
+	 EmRMVjWKc4xcP3GgOxahGOzhpocuo72jGLMqFxWxaDvAaTCG5OWYO1FjWl+zMXx/7bKwM
+	 3Q3WDFDyNwjomOvyNso0Sx7WX5Jk+vm4mEf/UcAbENl8MLYhrl2ZGlhHpLuSf21pUpssR
+	 j6baTKg4Q7YulSgXaJZmyKdKR5vEvvSG9Z0N+bJILmUeFCNfumEtNv3xvsl6T0yuQ1r97
+	 g4fUlOuKZs16+ue3MosGWfVignKO1knxD6vKr7o1DP9BtQ7OO+XaGA4n64APZY1ATvQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="K8iv/qok";
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dBrQSCJH;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0379B60A3836
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:37:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0379B60A3836
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E2A606A31D
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:39:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37E2A606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=K8iv/qok
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a030e0f9c1so1362900b3a.2
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:37:38 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dBrQSCJH
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso680a12.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:39:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793209180; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WFzb1ce5gtFgVa8cRdTqkATPRuq71gV6ObUdwrIa7WgHfBRDRdrMY1P05N9RW5VFv0
+         /7bcj0eyn9ZMsZFLNqJ/spJiSHLFM2sRPViMZSmkvlMV9OgBOkOCVZ9Jk0uZQp7q4/3m
+         OwLhwU4D5BQ6NutE48DSFzF1iCVeK7V5/vM74VXADF8aEGrq8lz+vbmC7RnVflqB3QWc
+         T0sGnqsvRbCZHEgyvmWde1QM9CGxxJCJORLejPMMgMAwIqCW1UmwYMuUNF5MxX7EEVYE
+         Nu2+0U/rALmMjqB6bGla+kp0qad/pi698BRanDSD9Vm4tqhM7/Ny+28KJBNk5YksMJq0
+         UGlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
+        fh=XXJaPPG4cVPL8KyUTAA7pjbfXLr5IbygP0pdlvUTmlI=;
+        b=XgMKD3Am5x68DQHslZlHHhFhrimNYMKtM3ZfzShW4vKGiiI7RYEZHCHHSOfRsIScwQ
+         ckTsOZA0IR77+LUB7b8vrs3dYUR/GFM0XREHMj/L0kPsqUqcLxxWeQJ+bv23uxvr0xRk
+         FPrIhrCcxVW/UIoonM/cIBLrh2IJfrBWlbiUd4vcLlg34tbRBRbw0AzBE6x8vf0aAnXg
+         /AqNa99lWcM70VumcdlP3YbE40iOrA1RHWxhpqtIfV9Mna2rKhcWL4xvY0kGWoSwHO4r
+         hq49h99drM10E2GQxKsZnp8aAbVrslmAeuoM+aOqGjLPdoYi3Ng//aVpNB6FFbuk7Trg
+         k5TQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793209058; x=1793813858; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:to:from:subject:message-id
-         :references:mime-version:in-reply-to:date:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cYvri/TspkG2tYIL/heVQtQQlYpPDPdribSzkNzfhow=;
-        b=K8iv/qokqLcqmosxHF8uwyg869NLyQAd2klYldeDFNTuErcIAIQklXhEcLDF3cAFSI
-         yiamH0AHc0D8T+jPua1OXBPPjJ8rzTy8CxbuXwNti5LTXVHl6Hr8K4IGLsk7BSlZ3TVZ
-         A90BKQAghjbUvuHXi4wJvbSTb9OJ/JLoa4T8bGmpazXopDRJW3JwXhKtXAACo2EB4caC
-         kZ1uw1E2R3+oii9u3oirvbMDSJHMayzSztPbr76VU/enXTOyKVT7Je9j8qnvdVDiY1UG
-         9hEJ2CnnUzP2n4djSjMJ7Z4jlp7nylVquRfCQJDXLWs7SROf6w6abh+nUUSG0aw3gClN
-         oU7w==
+        d=google.com; s=20260707; t=1793209180; x=1793813980; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
+        b=dBrQSCJHenLTS5rrxGOYQzI08ml/pfEGaUEXk5B6yiH4wZU72ilvhWWUKuniukX8O8
+         2mN2I3E4cPP20nCDU1+kxBQFz/mpjhPiJJrj3JyJibG09wgx+OCNXT9lpQaoE+fPNbNS
+         gZF5aIp9oej8f7T4qwLngy3xPBcu2lSeLBUDQ76mb11qduJ3Po6ByiftnVTxs21VaUzi
+         qFxUS/7OgoO1KYCsJsXVn4T6JPXyjJCKYatBwV5WnS8n54gBpKnO9r7VrBuLHVYYHXBD
+         1qf9+/l+Xa8YCCd+RjdIh+IlEFlAsBYxZDWf4xnBw9oai4GmMCH0n+J7znu02/vTQkmk
+         q1UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793209058; x=1793813858;
-        h=content-transfer-encoding:content-type:to:from:subject:message-id
-         :references:mime-version:in-reply-to:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=cYvri/TspkG2tYIL/heVQtQQlYpPDPdribSzkNzfhow=;
-        b=sRDPhKCx8hlIU6KEmGry0vb24oeBexk4p1hAZOesrNt4dQC0VHW9/8PUbTa/XT8+nb
-         53d3iPder8Lhhyqi7JyvM1Dn7yBNShNFmEINVrgDXmnYcM51PHYlXvgvYq0Q+lA6liW7
-         XJoedJwTzgGvVPXJ9F8PMJSacOs6dcKY8ugLYaLGqou5iDf0n4l+okoaYrhwWqorYhCw
-         ZHAJNo8/iWvvpYVB4lP5PwsTqPUpdyyPf+CtPKntC7nBE13cUDNIsEpX+hR/GzV/EbH3
-         v/T3gWQS7GerNbhCsQkyGAySnlOBlfqahD+QROQ+ryWiZ5ET/AJqgQIq6vQx3uPjLgD3
-         9LQQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw41qOf3tChTl9u6YaYWAt8mE2rnLQfpu7bZqi13KqI3qW3i7Q9B4bqFkJ2hhItb6FAnJU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLKep28ZWChIgwWTmR3fUE2FDvGG6P+HP7+heBZ1d7W2SY+mdRh
-	TZ95JsrgFvRRM5fLdR2wX1h556buAMjXnCxW7FeJMqPoGwJixy2xPsHHNTAjxYnmJMQTkoSSJWq
-	jlKRBAw==
-X-Received: from pfbfj6.prod.google.com ([2002:a05:6a00:3a06:b0:89d:3267:4348])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2386:b0:892:a8f1:c53d
- with SMTP id d2e1a72fcca58-8a6e6ff38aamr2448185b3a.22.1793209058009; Wed, 28
- Oct 2026 10:37:38 -0700 (PDT)
-Date: Wed, 28 Oct 2026 10:37:37 -0700
-In-Reply-To: <20261027124140.upuow4a3kv6kssvn@m.mifar.in>
+        d=1e100.net; s=20260707; t=1793209180; x=1793813980;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uEHTXMHdpGW92Te2ykl2wHLQjlCid9PVQybwnkt0bJE=;
+        b=g3lUtSfR5tZkob66AmzDROpZA2jhzAKD/zgsyXjHWzM+kEhaYegO3dpyziu8TE/mAY
+         NDnfIAVwXMB23XB/+ym5VJ41A0pjnG8WtKMDHtLPls0xULYyKYkRQwHbZe/NMOZjvOEZ
+         4LH1rv+kY4yYp4XPiEJRUXZuXtBOguZ+LuLg6AVgdOvwF6LYCTYgVFAsYOD0jz9vWBkI
+         KtyMsSqhArQ+iJ4G4D1xqGHvKq8pY3KrRLdootYPj8kmrQ35ecbfAunaVbkM+GDdkt0T
+         V+qjEop4Vl4cZ03rhzYJsnlPCSASh0EOTS2cJ1FRcvfMDl4urs+zTcL/2Gk9DkpRDaTB
+         Qs4A==
+X-Forwarded-Encrypted: i=1; AKwUvByhAHYT6QEomofighTbXv9rqg5Mb83+/1h8NOc/Hlvv8FRXY2Gt+9Xy4PR5AtSnwPYriNw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLDSPyUC9RJZhr2jvERDyPROXeMuv5UwL30mTXj59e5rFh1qD0R
+	RgsWJf3t9ceGfDHdeWlxDkyQ+jJdSQM5pBQTYw5kjgfPmLF6E3Hv6grDKmSoVoRlBmZW1WOAw1b
+	Na5LbcZMT68YIlpqXIRhknzCDKqcA1Mas0D04cBC/
+X-Gm-Gg: AYBFou0CF85SuEelfaOv2h1xQ6TDqsKQC5u/Hr9e8k7sYFh6GHpV1PPXIDoNHHzvZ4E
+	zAQt5YNVJNn8ryuWP0+IlXdjd2b8gC4dzWJC3y7nduosrfAhsTIa0ILQpPut+74Tq9SdaB1Y383
+	CuTlJVrPWkwftAreCOUSC51gUWvpt7Fb53rmOXVAc9on23GfW7kSIo+rGCosloRLWYDm5/K2T+I
+	Pl5BNviqNecbN0y5/lzu2sUAJraoNejsEkquYHGq39ygTDExN6EMNMIRf0ZtwMPYc3LriZYBK7D
+	3VGCfocxkg3V/2MXUhkpV3JRHsrJmyRyfaBkj0fJAdEmTPD+Wqrl37Hs+x++AerhPwanuoxUiIA
+	OshSRJM+eo+wb2yJ3V7BI7wUDsMVSsVfpR/JT
+X-Received: by 2002:a05:6402:115a:b0:6a6:7dff:61ab with SMTP id
+ 4fb4d7f45d1cf-6b49c132c7dmr79948a12.15.1793209179030; Wed, 28 Oct 2026
+ 10:39:39 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,88 +103,44 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <2026102314-CVE-2026-99082-e5b1@gregkh> <20261027124140.upuow4a3kv6kssvn@m.mifar.in>
-Message-ID: <auIy4UZMGxLhBCAn@google.com>
-Subject: Re: [REGRESSION] KVM: x86: OVMF boot hang with SMM enabled after
- commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO cache")
-From: Sean Christopherson <seanjc@google.com>
-To: Sami Farin <lkml20261027@mifar.in>, linux-kernel@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org, kimjw04271234@gmail.com, 
-	pbonzini@redhat.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-9-zide.chen@intel.com>
+In-Reply-To: <20260827223755.143247-9-zide.chen@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 28 Oct 2026 10:39:25 -0700
+X-Gm-Features: AclHuK8ySYeolJHo7pCBJUUKUCrPrGo9dyPRJSPDpGLXiM1VD-QYMD7CcoN58h4
+Message-ID: <CALMp9eQnWPd2TmC3WgR27VTpFPf1T-4-jhDn6opn940JpFOcYA@mail.gmail.com>
+Subject: Re: [PATCH v2 08/16] perf/x86: Plumb counter bitmap from x86_pmu to x86_pmu_cap
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2026, Sami Farin wrote:
-> On Fri, Oct 23, 2026 at 14:45:15 +0200, Greg Kroah-Hartman wrote:
-> > From: Greg Kroah-Hartman <gregkh@kernel.org>
-> >=20
-> > Description
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >=20
-> > In the Linux kernel, the following vulnerability has been resolved:
-> >=20
-> > KVM: x86: Use active memslots for the per-vCPU MMIO cache
->=20
-> Hi all,
->=20
-> (Disclaimer: I am an end user, not a kernel developer. I used an LLM to h=
-elp
-> triage and trace the issue, but the findings, traces, and tests below are=
- verified.)
->=20
-> I hit a guest boot hang after updating my host from 6.18.57 to 6.18.58 (F=
-edora 44).
-> Windows 11 guests using OVMF with Secure Boot and SMM (-machine q35,smm=
-=3Don) hang
-> indefinitely at the TianoCore splash screen, pegging the host vCPU core a=
-t 100%.
->=20
-> The issue bisects/points directly to commit b3e6212dea2e ("KVM: x86: Use =
-active
-> memslots for the per-vCPU MMIO cache"), which was backported into 6.18.58=
- and is
-> also present in 7.3-rc kvm/queue.
-
-...
-
-> ########### patch 1
->     The proper upstream fix requires tagging the per-vCPU MMIO cache with=
- the address space ID (as_id) alongside the generation counter.
->     The Flaw in Commit b3e6212dea2e:
->     The commit attempted to fix stale MMIO cache validation in SMM by che=
-cking kvm_vcpu_memslots(vcpu)->generation. However, its commit message reli=
-ed on an incorrect assumption:
->         "Memslot generations are unique across address spaces, so the gen=
-eration also distinguishes the normal and SMM views."
->     In KVM, each address space maintains an independent struct kvm_memslo=
-ts with its own generation counter initialized to 0. They are not unique ac=
-ross address spaces. During early VM boot, address space 0 (Normal) and add=
-ress space 1 (SMM) frequently have identical generation numbers.
->     Because struct kvm_vcpu_arch only stores a single GVA, GFN, and gener=
-ation counter without an address space identifier:
->         An MMIO access cached in SMM (e.g., GFN 0xFED40000 with gen =3D 4=
-) matches in normal mode where gen is also 4.
-
-Hmm, this isn't adding up for me.  It should be impossible for the generati=
-on to
-be '4' for SMM, because SMM is supposed to use odd-numbered generations.  F=
-rom
-kvm_swap_active_memslots():
-
-	/*
-	 * Generations must be unique even across address spaces.  We do not need
-	 * a global counter for that, instead the generation space is evenly split
-	 * across address spaces.  For example, with two address spaces, address
-	 * space 0 will use generations 0, 2, 4, ... while address space 1 will
-	 * use generations 1, 3, 5, ...
-	 */
-	gen +=3D kvm_arch_nr_memslot_as_ids(kvm);=20
-
-So while both of the suggested fixes seem reasonable, they _should_ be unne=
-cessary.
-
-Paolo, at PUCK I verbally said we could go with the one-line fix, but I'd p=
-refer
-to hold off until we can figure out why the generations collide in the firs=
-t place.
+On Thu, Aug 27, 2026 at 3:51=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
+te:
+>
+> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+>
+> Intel PerfMon v5 introduced CPUID.0AH:ECX to support non-contiguous
+> fixed counters and Architectural PerfMon Extension leaf (0x23) further
+> supports non-contiguous general-purpose counters.
+>
+> num_counters_{gp,fixed} indicates the total number of GP or fixed
+> counters, but cannot represent non-contiguous counters.
+>
+> Add cntr_mask and fixed_cntr_mask unions so that KVM can get the
+> accurate counter availability directly from x86_pmu_cap. The u64
+> alias is convenient for mask arithmetic, while the bitmap form works
+> with for_each_set_bit() and friends.
+>
+> num_counters_{gp,fixed} in x86_pmu_capability will be removed once
+> callers have been converted to the use of {,fixed_}cntr_mask.
+>
+> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
