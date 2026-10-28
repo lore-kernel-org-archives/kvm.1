@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793214185;
-	b=cvsQXaVk9nqR2h+hus1eIRG2TssK6qsBKZM8aPMuwpHPm+TlGH8pD2Hh60prGCLQT4EW
-	 /FjS6KmqIxkJFPIWtoEd8MgDJguw9mCYwqAJXOfByfaScZova3DMDRKAuu6NcsiQGjqdD
-	 MLg078aearq6RsakFOssVrhgHYzw+KiQKFKdrl/7ba06UgH198KS/f9V5OYidtb2QCK0L
-	 QH5lQ+zlbwxN7Ml5PCpIpoF5yF5vEHGCpRb/24jq0Qe8CGUnFmvgN9qHDb9xvBARfJqzK
-	 ylA7pNnXqRloPqZFPdGAoNwzp41MOtLO+eLXbgZBpfMnF3RomyydtAVPs23NlM4u9dQ==
+	t=1793214187;
+	b=i/oKSlQuDsl1CVPcaNxRO/4/CYhqd+RDLy1aV5ikWqTUtamAw1IAplPsS7PZAQZE81X2
+	 vHNH6tRggZ01z/UVTsE4Ifac/vsPAeAKNfuS/YvUVftUSAZX/iazcmlkfn43CjU7gEE+m
+	 E/AaCMtyK4VLROnvhI0g+yoPo82h5FEnGrik9ohVY9aAc7olYtXskoM2XixWbIa0yGtUE
+	 KqoVfrWcnHYGBp0hmH7Yv4ewEi+IjRPUBZUzgx1Wf851jS6KAkML72C0iTOMBazdzzWeg
+	 IYjF0yvNAWu6qBObaD4GydiC1wEsjiYEh27gdpSds1Fq3f5l9aC/Mq0omjUmOhgKYOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793214185;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793214187;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
 	 In-Reply-To:Mime-Version:References:X-Mailer:Message-ID:Subject:From:
 	 To:Cc:Content-Type;
-	bh=ua8GfkfDrHDUR8px+Sy19+vmLzFSWzTq6VAHh+SakiE=;
-	b=BWk6hKK+6uHOG809v39qNcQ5zIsr2SDgGGuxVlhCfRj9yHFyZRrqlM/rz7pihWdjy9ZM
-	 zMAVPRg1Ur5gpSUbAoF8FzpRsml6fP2c7vtfNEodc/ZBvOjbNL9IqJUYJYyuunhyxqeTV
-	 fzCJIHs6Z1xj/M1KJ5puXAprs4ZVg9InL3jpqKNdqzWxy0bzj8oe30S3OgB1lWRowTmNB
-	 2gO3+oYzn4wy+++uSO1BKuMIWUOPGN48XbGkHR7POyzWmSBmC7IBsMcU7RiVJrzHH+iWS
-	 vgR5OaTK3h/iGEAwbAe0fan6b93L6ZIX3l/XJLisdbdSMDzoCEckeHIo07SCekcX9Kw==
+	bh=kQihi39MSjxZBPCKWC1v+KxEdPYKoJ3DWZvMHVb+Z7E=;
+	b=0JIRe+fyicDDUdBtTXvwG/wYn1ugyzTKH74F4zHXlbQyWRPhxTT+kMY/HhCzVUDIyHzk
+	 MFQwaQ9XZrT/ojP8f4TobFJdziKKxlnoTlEiIYKlbiPB1jQdNqAvkTrJR9eWuQCRChB25
+	 ciQUJnkDIfLRPtnVsHK3coPH4QkAdL5xgAQEw5uPuIv/JJNP4ImcqIOi9RLnc9gh/0nv8
+	 TgbOK1R4BYujkn68Nq0ca+URu+B1jISReiYhCVT411oYGS2NPI2YwrPNNJChLYOcjcRPD
+	 QpxGalAYOS8yoR7MpLn2mRKompiZv3J+MwaRQJcoZ7Mc3I1JeXnISKE8k+Pmxepq4bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bxt7Z8wd;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FLP7Cxw3;
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDA460A261A
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 19:03:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFDA460A261A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5038960A262C
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 19:03:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5038960A262C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bxt7Z8wd
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3adbc9a47fbso1504527a91.1
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 12:03:04 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FLP7Cxw3
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd67d4bbdffso995266a12.3
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 12:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793214184; x=1793818984; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793214186; x=1793818986; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=ua8GfkfDrHDUR8px+Sy19+vmLzFSWzTq6VAHh+SakiE=;
-        b=bxt7Z8wde6nB+VKnGLTbQOgO0WAPwnj21OlBYLZL2WreRrQgI/PSzqaByZuydLuYmn
-         sDXb8vXBC1zN4uqGCFWL1ZdN/4EQt7dO3X6JV98m7ImqakWH7EBjlfQDZ2Jy9glZxaZS
-         m9GjnXqDQGn9+nwwCxzQTmsn6qbLFouAvl5tRior2/pX2+MSgBlGvPyW6FrHBBa/fVaf
-         ZYf8Jb+RyeuLpQIfiiWfV7HmIPZhPZ7kM49t12UUdV0ECNgwnf24y3axMKuVhTdP0+z8
-         P0SB8puAP/sWa1hP0NKyo6zpkuZFD115enxQ7041dd0h/VoZj0m0v+hNcU1Pu9uKacfd
-         WJIg==
+        bh=kQihi39MSjxZBPCKWC1v+KxEdPYKoJ3DWZvMHVb+Z7E=;
+        b=FLP7Cxw33/iojb8pUFLZUvfjojf9EeO4ai12YPbYkFJHT6FElfCizg8kBBKbhd4KfW
+         Fnb/+Yy8cY/x1595xJnxsYjS9RZfsrTg17EloC0+HMRSFW3DN4owzLixVhMRF8eOGJxL
+         s34yqDKA54I1ImBvfebl8TqJtYgm/dHyyQk4uyTMxmWnrby9CDH8Ife3uxNFigrsF4fD
+         NlFqP1hrxUtTzobr5HDG0sL1tAkI0bnsFDaGIX3nj5LyACZJmBZH22EVDKeScejAVOYB
+         SW7zxjrZJfqRI5hdIeq8Rh9FuQcHBAah0vOxlNRrvLl3RbdauHqkMqEVH/6WeS9stvwb
+         ZcVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793214184; x=1793818984;
+        d=1e100.net; s=20260707; t=1793214186; x=1793818986;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ua8GfkfDrHDUR8px+Sy19+vmLzFSWzTq6VAHh+SakiE=;
-        b=eOXpovyKQAhf4TV+gxZL2cW5kB4l5qFrD2XMS0/d4MF4Guy2rZto8332r24bs2yO+z
-         SJVvA/YS/eShotJkIBUK8a1ENm9qTbPhom8gVQn0ZxTwOcg4AypekIvwZHwbUOrBJARg
-         xEHfII4IymPTlYUlf8ROP6wCeCBBKNKVUREGO7aZn9t3PdshwQgZB+oedrLntQ1GVKVE
-         ogmiB55kPwn5Dp+i9zPe/omTbCsXCDsZC9mPsmbsM/S5UE3GgdjT25wG6XLfd0OnQzXl
-         ltBrwiNPOFi88Xxvl11rZZKKiAjvAboOa6Hs8koDQLGe9jBk0R3y0TdZuYA8IdUgothb
-         b1WQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxXTY+FkgF0QYIHSQMp8jMeKQQfBJqcDeY7zKg74aPABNOfjIeGAk/svz3zljF99F1mW4U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLk7GaFMsMGyhmXjr2BzLyW+DcmCONI2tYPUNHoT3PTs4kggvjv
-	os/aLiEA+dy5yVnXW+Y4Tz+G3xR85U3fCjGd/J1S2jLLTVwJkCy+ZpAHy+SP/FDH5thynFkNfBa
-	hkRpFQg==
-X-Received: from pjbov14.prod.google.com ([2002:a17:90b:258e:b0:3a8:d9d:78ef])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224f:b0:3a0:b312:1fbe
- with SMTP id 98e67ed59e1d1-3ae580a7ac7mr2187674a91.23.1793214184152; Wed, 28
- Oct 2026 12:03:04 -0700 (PDT)
+        bh=kQihi39MSjxZBPCKWC1v+KxEdPYKoJ3DWZvMHVb+Z7E=;
+        b=yHyzFV/nA2YcOVj6tk07ImpXdqSf49iRAd/Op1bJlBMAsZ7Z72sBYIbLbehw+pUNfP
+         LScX+PEL6olfkyokk3B3v8qAhaCUsEKcl4F4r1gacRwyEBpLptOzJp93lTIJTEiyEzVW
+         aiPMEv5z25fqkZmzwlQ4JTASEw2oCdBUThOUQokryKN10GN5QvOlOIu2nerBQjJjGeJV
+         UgieaYs0e/wTeXuLSAaXQZDsqQHJYERoGQ0frreCEB/nHvBI2i3i3nM0ew0tPp2OLZPC
+         pHAxWWWWqcSO20YmGpUK8mQqZY5qolIGuZIglYyL9/yMJoBcHqgeX5KGCQ1ml9NzTxRR
+         ApWw==
+X-Forwarded-Encrypted: i=1; AKwUvBw8CCtGcYALUttf1cmNn5d8X+W/qC7aHPTkJo4Xien1faLJg0eYU/bqwf6GO87zwwLWv7s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKHRnoU54Li9g/fMzv+TrAZmB0rwP4R+Kf4ANJTxIkUk2k+rNCl
+	bJJ5z1K3Zk8Ffy9AXAhxITpKZG/RMPkuZJxmjI9CYpkf/nuQobppUuL7F4QbPYIztTbhA6hmRIB
+	WF6jPjg==
+X-Received: from pgx20.prod.google.com ([2002:a63:1754:0:b0:cd4:ef82:4e33])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a120:b0:3e1:5816:8749
+ with SMTP id adf61e73a8af0-3e9023eda44mr2865201637.38.1793214185450; Wed, 28
+ Oct 2026 12:03:05 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Oct 2026 12:02:54 -0700
+Date: Wed, 28 Oct 2026 12:02:55 -0700
 In-Reply-To: <20261028190259.1819571-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,9 +82,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261028190259.1819571-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261028190259.1819571-3-seanjc@google.com>
-Subject: [PATCH 2/7] KVM: Add a @force param to __kvm_vcpu_kick() for PPC
- backwards compatibility
+Message-ID: <20261028190259.1819571-4-seanjc@google.com>
+Subject: [PATCH 3/7] KVM: PPC: Explicitly force IPIs when directly kicking vCPUs
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -103,76 +102,146 @@ Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
 	Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Plumb in a @force param to __kvm_vcpu_kick() to force an IPI without
-checking kvm_arch_vcpu_should_kick().  The param will be used to drop
-kvm_arch_vcpu_should_kick() in favor of kvm_request_needs_ipi() without
-regressing PPC, which for unknown reasons unconditionally blasts an IPI
-in a variety of kvm_vcpu_kick() flows.
+Explicitly force an IPI when invoking kvm_vcpu_kick() directly instead of
+relying on kvm_arch_vcpu_should_kick() to unconditionally return 1/true.
+This will allow dropping kvm_arch_vcpu_should_kick() in favor of
+kvm_request_needs_ipi().
 
-No functional change intended (nothing yet passes in @force=true).
+No functional change intended (1 || 1 == true).
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h |  6 +++---
- virt/kvm/kvm_main.c      | 10 +++++++---
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/kvm_ppc.h | 13 ++++++++++++-
+ arch/powerpc/kvm/book3s.c          |  4 ++--
+ arch/powerpc/kvm/book3s_pr.c       |  2 +-
+ arch/powerpc/kvm/booke.c           |  6 +++---
+ arch/powerpc/kvm/e500_emulate.c    |  2 +-
+ arch/powerpc/kvm/powerpc.c         |  2 +-
+ 6 files changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index e7fc94e2910a..3b9844c3906d 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1570,11 +1570,11 @@ void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu);
- bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu);
- 
- #ifndef CONFIG_S390
--void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait);
-+void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait, bool force);
- 
- static inline void kvm_vcpu_kick(struct kvm_vcpu *vcpu)
- {
--	__kvm_vcpu_kick(vcpu, false);
-+	__kvm_vcpu_kick(vcpu, false, false);
- }
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 169ea6a7fbad..bbe7378ad0ef 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -30,6 +30,17 @@
  #endif
+ #include <asm/inst.h>
  
-@@ -2315,7 +2315,7 @@ static __always_inline void kvm_make_request(int req, struct kvm_vcpu *vcpu)
- static inline void kvm_make_request_and_kick(int req, struct kvm_vcpu *vcpu)
- {
- 	kvm_make_request(req, vcpu);
--	__kvm_vcpu_kick(vcpu, req & KVM_REQUEST_WAIT);
-+	__kvm_vcpu_kick(vcpu, req & KVM_REQUEST_WAIT, false);
- }
- #endif
- 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cf4cb586f140..67addb9e48a7 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3908,7 +3908,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_wake_up);
++/*
++ * TODO: For unknown reasons, KVM PPC has historically ignored vcpu->mode when
++ *       determining if kicking a vCPU needs an IPI.  Either document why that
++ *       behavior is necessary, or drop this helper and the @force param from
++ *       __kvm_vcpu_kick().
++ */
++static inline void kvmppc_vcpu_kick(struct kvm_vcpu *vcpu)
++{
++	__kvm_vcpu_kick(vcpu, false, true);
++}
++
  /*
-  * Kick a sleeping VCPU, or a guest VCPU in guest mode, into host kernel mode.
-  */
--void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait)
-+void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait, bool force)
- {
- 	int me, cpu;
+  * KVMPPC_INST_SW_BREAKPOINT is debug Instruction
+  * for supporting software breakpoint.
+@@ -598,7 +609,7 @@ static inline void kvmppc_clear_host_ipi(int cpu)
  
-@@ -3933,9 +3933,13 @@ void __kvm_vcpu_kick(struct kvm_vcpu *vcpu, bool wait)
- 	 * after kvm_arch_vcpu_should_kick(), which could result in sending an
- 	 * IPI to the previous pCPU.  But, that's ok because the purpose of the
- 	 * IPI is to force the vCPU to leave IN_GUEST_MODE, and migrating the
--	 * vCPU also requires it to leave IN_GUEST_MODE.
-+	 * vCPU also requires it to leave IN_GUEST_MODE
-+	 *
-+	 * Note #2, do NOT check if an IPI is needed if @force is true, as the
-+	 * check also modifies vcpu->mode and KVM PPC needs to avoid that side
-+	 * effect for unknown historical reasons.
- 	 */
--	if (kvm_arch_vcpu_should_kick(vcpu)) {
-+	if (force || kvm_arch_vcpu_should_kick(vcpu)) {
- 		cpu = READ_ONCE(vcpu->cpu);
- 		if (cpu != me && (unsigned int)cpu < nr_cpu_ids && cpu_online(cpu)) {
- 			/*
+ static inline void kvmppc_fast_vcpu_kick(struct kvm_vcpu *vcpu)
+ {
+-	kvm_vcpu_kick(vcpu);
++	kvmppc_vcpu_kick(vcpu);
+ }
+ 
+ static inline bool kvm_hv_mode_active(void)		{ return false; }
+diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
+index 2efbe05caed7..dce53c5a3868 100644
+--- a/arch/powerpc/kvm/book3s.c
++++ b/arch/powerpc/kvm/book3s.c
+@@ -260,7 +260,7 @@ void kvmppc_core_queue_external(struct kvm_vcpu *vcpu,
+ 	 * external interrupts for the guest just before entering
+ 	 * the guest.  That is OK even if userspace did do a
+ 	 * KVM_INTERRUPT_SET on a pseries guest vcpu, because the
+-	 * caller (kvm_vcpu_ioctl_interrupt) does a kvm_vcpu_kick()
++	 * caller (kvm_vcpu_ioctl_interrupt) does a kvmppc_vcpu_kick()
+ 	 * which ends up doing a smp_send_reschedule(), which will
+ 	 * pull the guest all the way out to the host, meaning that
+ 	 * we will call kvmppc_core_prepare_to_enter() before entering
+@@ -827,7 +827,7 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
+ void kvmppc_decrementer_func(struct kvm_vcpu *vcpu)
+ {
+ 	kvmppc_core_queue_dec(vcpu);
+-	kvm_vcpu_kick(vcpu);
++	kvmppc_vcpu_kick(vcpu);
+ }
+ 
+ int kvmppc_core_vcpu_create(struct kvm_vcpu *vcpu)
+diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+index ecfb88bf6464..1894968f2c25 100644
+--- a/arch/powerpc/kvm/book3s_pr.c
++++ b/arch/powerpc/kvm/book3s_pr.c
+@@ -2066,7 +2066,7 @@ static struct kvmppc_ops kvm_ops_pr = {
+ 	.emulate_op = kvmppc_core_emulate_op_pr,
+ 	.emulate_mtspr = kvmppc_core_emulate_mtspr_pr,
+ 	.emulate_mfspr = kvmppc_core_emulate_mfspr_pr,
+-	.fast_vcpu_kick = kvm_vcpu_kick,
++	.fast_vcpu_kick = kvmppc_vcpu_kick,
+ 	.arch_vm_ioctl  = kvm_arch_vm_ioctl_pr,
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	.hcall_implemented = kvmppc_hcall_impl_pr,
+diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
+index 13ad4cf5fa71..fd7f24a68b31 100644
+--- a/arch/powerpc/kvm/booke.c
++++ b/arch/powerpc/kvm/booke.c
+@@ -650,7 +650,7 @@ static void kvmppc_watchdog_func(struct timer_list *t)
+ 	if (new_tsr & TSR_WIS) {
+ 		smp_wmb();
+ 		kvm_make_request(KVM_REQ_PENDING_TIMER, vcpu);
+-		kvm_vcpu_kick(vcpu);
++		kvmppc_vcpu_kick(vcpu);
+ 	}
+ 
+ 	/*
+@@ -661,7 +661,7 @@ static void kvmppc_watchdog_func(struct timer_list *t)
+ 	    vcpu->arch.watchdog_enabled) {
+ 		smp_wmb();
+ 		kvm_make_request(KVM_REQ_WATCHDOG, vcpu);
+-		kvm_vcpu_kick(vcpu);
++		kvmppc_vcpu_kick(vcpu);
+ 	}
+ 
+ 	/*
+@@ -1872,7 +1872,7 @@ void kvmppc_set_tsr_bits(struct kvm_vcpu *vcpu, u32 tsr_bits)
+ 	set_bits(tsr_bits, &vcpu->arch.tsr);
+ 	smp_wmb();
+ 	kvm_make_request(KVM_REQ_PENDING_TIMER, vcpu);
+-	kvm_vcpu_kick(vcpu);
++	kvmppc_vcpu_kick(vcpu);
+ }
+ 
+ void kvmppc_clr_tsr_bits(struct kvm_vcpu *vcpu, u32 tsr_bits)
+diff --git a/arch/powerpc/kvm/e500_emulate.c b/arch/powerpc/kvm/e500_emulate.c
+index 051102d50c31..10cd6b4ab456 100644
+--- a/arch/powerpc/kvm/e500_emulate.c
++++ b/arch/powerpc/kvm/e500_emulate.c
+@@ -75,7 +75,7 @@ static int kvmppc_e500_emul_msgsnd(struct kvm_vcpu *vcpu, int rb)
+ 		int cpir = cvcpu->arch.shared->pir;
+ 		if ((param & PPC_DBELL_MSG_BRDCAST) || (cpir == pir)) {
+ 			set_bit(prio, &cvcpu->arch.pending_exceptions);
+-			kvm_vcpu_kick(cvcpu);
++			kvmppc_vcpu_kick(cvcpu);
+ 		}
+ 	}
+ 
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 9194cf492d1c..09c94b849185 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -1903,7 +1903,7 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
+ 
+ 	kvmppc_core_queue_external(vcpu, irq);
+ 
+-	kvm_vcpu_kick(vcpu);
++	kvmppc_vcpu_kick(vcpu);
+ 
+ 	return 0;
+ }
 -- 
 2.56.0.313.g2479322e68-goog
 
