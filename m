@@ -1,91 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=139.138.37.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793163105;
-	b=ttYelv7o5f9+Dx/0tlgYvarrXI5bv9W/RxrHnzq/k9gzCvlh4g7TSpiI607MSepc/0rO
-	 QChD6GlRMBrh2Mex7HA5FvRB1j/n5M41wxKGUXUAl7C/m2QIv6YlamFrvVGM6pCmoTZfv
-	 NGn5g+yfA3i7AgIiI+96mHEteuarKY25plj74mR2dIjoOlCK1fv91FT+EIITeiT97UcBX
-	 bgyqo7UefcJ9a8G12XLOAwnoOXRD6kP1AqLQucGuScULJ8AI3MbUSgi7ryOKHyWDSFRF5
-	 6Rf5oSYcOh5GZVoK2eBtd37O8JzV8m3L1r743SQTNZmoUH8ad7ZLYv4jK4DOTsr1bTA==
+	t=1793163688;
+	b=pXQ9a7k/GtS++7Kef4p9d8mGgyYaqtqYvI7acYewy/GxNmwUYBkCcyJpiZ9BzwnfUpLk
+	 uaA7eJatrYLW68PUEnDVeMHAXEG39jEZFCAqBdtPjbV4qg1cXyMZwnCuVtnsCROoVkXex
+	 N/fy4UkAPYILSR8Woh79mcPj7JQamqz3x4jGkJaqXrHsQ3vFyVMTlYVt8G0+ZAY6+mCXI
+	 oohI5O8V2C8ZieLycL30NxmdEgCd6zrYVHgWyrcaajw5Cm1FePz8+jiwAy5g6hxJzs8B3
+	 f/5lInpBF+jDkYMr3u5FaLT6ptV5TKSn+w4osAClobzlZdvplohyHYIfgaJAYJ/ZzOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793163105;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=cB3kgbMCdJ3/96t9GcxgtKuwzmPOAVnNl2VYw6yYmyc=;
-	b=sXOiIHwsYc8noaU5QNX7pf0nt/I9xJEJzfP/licCpxd3kJNKQZrq5oZ+RZ/CYJI0DRXs
-	 YKD7jaqb8uwRQw5oHwmiP+vrequo6jVT9GQ6OZ2HozBudvbhgDIeki0A4+ggjsyBZafV6
-	 VApVYWFemox1mZcDWq+t3Xsf6e0biChYSSDsEL1hAMlvExUTq+F5//P1E9SC+ZDAdUX6m
-	 Pc2iPyeRImBK5PxlMSiM7LWI1GEY+OZ4/sRUlLjNnWUurh2XwT9+TQq32XXF7K+loFWJL
-	 dE9VyVnSuQDvGwM9dELK2JZAhEi0VvhtGGBW2nuWH8kboPRre0xaRY4kxYR71eKob6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793163688;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=MsI8OZZh9dKz1v392dtfILjaERE3/nyinId1eBUI+OM=;
+	b=k2Aa2T5tRJ4IJFTwXucmoE2PhJSeGNbEsMczslx51lAYj4evCV1Eyy1yqYXQaV+lYIU0
+	 RvRssgEM7yJfvzouV/ILKX7MWJOE6Bj+iyBA78J7qBFit0EpAfCmUAHe4jOfDOLClcdwA
+	 st89VFq9ff4K3T+OCAO+UvS/hOpHqtAgk9Ge0ic3o46LFUk+TxxqDZHVmzpoJP3U6gwf5
+	 zWv8OEVVKrpPkfNPNF6hpMC/HmBdoErXQ1H6VtKs+MPR5nrz4IJLHLsaMzQ232MSvOSf3
+	 N/mHyAv+qOGQ0J6fB026ZvcCDeIcyEEN+jpEIkGVyP9FIKH1Ah6s5awVgATr/2ubsXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=O6FZJV4J;
-	arc=none smtp.remote-ip=139.138.37.100
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0YrwKb5+;
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D206606A31A
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 04:51:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D206606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EAF60A261F
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 05:01:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00EAF60A261F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=O6FZJV4J
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1793163104; x=1824699104;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vEQHe4OQbDaVWWPIT41fh0Pgui+NyNm61DH2obcWQ/k=;
-  b=O6FZJV4JEN2sR+gZ2b94VN/19WQzGKnx37YQHvLG40F6i6Gh8lbv+nXZ
-   Kuqcz4TZJzcTC+cucC+oJS+Gr0fCWuykQO/b9adqRBb7AsVg+9+eMOv7V
-   cwq0uDpnXdkEJKaJdnvMyzt0r0ABIpFZfHaMCETe5gJIhI633wGiKpKIm
-   7OuM7wRQMyoMpSpctbplAdP5dMFN/2/w3RYwyEJjvRMMakI0CieW9ZwRX
-   dOEhkK0VM+nkKCfaQOjIuOwDFy6OLlMioQquyyy+KTbkPBFC+sQPaxvxu
-   ZgMB+SPOVh5RTt5xxs3wpy4BJUvEejKBS9BsUmxq0bm1+2ICA2LESIyfp
-   g==;
-X-CSE-ConnectionGUID: FFtQA4PZRlCM9GerVz6wVA==
-X-CSE-MsgGUID: PNEwnOdqSPyV9BZ/IIY/Cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="237444916"
-X-IronPort-AV: E=Sophos;i="6.27,182,1786978800"; 
-   d="scan'208";a="237444916"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 13:51:37 +0900
-Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 66291C006DB
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 04:51:37 +0000 (UTC)
-Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id 1D16414003F8
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 04:51:37 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.69.152])
-	by az2uksmom2.o.css.fujitsu.com (Postfix) with SMTP id ACAD814002FE;
-	Wed, 28 Oct 2026 04:51:30 +0000 (UTC)
-Date: Wed, 28 Oct 2026 13:51:29 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Gavin Shan <gshan@redhat.com>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, michael.roth@amd.com, berrange@redhat.com, kchamart@redhat.com, 
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com, 
-	pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, 
-	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v4 03/24] target/arm: Add confidential guest support
-Message-ID: <auF8rstVcvsDUO6C@FCCLS0092175.localdomain>
-References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
- <20260903193611.1058589-4-mathieu.poirier@linaro.org>
- <dhrvydsmaw22xqx5d5i5s7fdyjxupz27yxp6trv2tesysp4npj@quvzrxjvfipz>
- <arI197vJkW75p50c@lpieralisi>
- <arSTQQ5uB6oR-vFe@FCCLS0092175.localdomain>
- <ataBkrIvULJXj4v6@p14s>
- <784dfea3-24cb-4e70-ab46-b96b4b9a1831@redhat.com>
- <at-Wkw7a3Tn3Oh3M@red-moon>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0YrwKb5+
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a1fbd52ab6so3990035e9.0
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793163686; x=1793768486; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MsI8OZZh9dKz1v392dtfILjaERE3/nyinId1eBUI+OM=;
+        b=0YrwKb5+jvPDDNM7+U5lrwnlzNjBYxvjeWxJHiksh0eQmBD4YSGwJSD7epdsbzMUHV
+         VLYQBWcOsXd2QguIaPDq5LO2SUKHPS5If5gH0xbgAGqerx3VN6jvYyXkBT6EOrZmaAK1
+         RspwV8mGvhNGZ4ZMMu2VfNRhzA41fVOoYFST7Gka4vceEHb4gVduEGHPKUVeStk/IwiW
+         Pdh+inWUtIbg9cAO8EnAOI8lsYG5/BtV212TMf7Ek9ZRxyUe/KjD5iVF38uKM0K2Sgq7
+         ed+UYJ9hB9lwPeEsOyIHk5bJk1kxggD324tx50rEm5GZC40xUc152Y/yUfC23nouTQMB
+         geKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793163686; x=1793768486;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MsI8OZZh9dKz1v392dtfILjaERE3/nyinId1eBUI+OM=;
+        b=AF4xXmVkzXOjhngD0blUKegzZDNlRK9I8pb2InetkbMHkXgROgt5tfW2qWMHNxKe/K
+         3eMjmRntPIOqZ7nMkfLVMY8+Afw9AK7r/GXvNIWBS948qaOfvcHAulBZvhHNXfuFZzUV
+         0Q/ISUuSmGU3Daunb/jQI7fuUJfWrU+VtK9EzvsBYpZnKxGHmNt473llXdRp8scj7DGd
+         x15rjvst8ac3nvyRTT0vNBSoW1ik/DeAM5iZK4/v/MUzEtnVpaT5/JwsQj2Hr/Xgc19t
+         XWNa8z6eWc72txOmQdrPMiL/79XSC1xr9MgzxTLmvd4i9wNUUO8eWjn7krNs4Hc+6Va5
+         zUTQ==
+X-Forwarded-Encrypted: i=1; AKwUvByj6F/diwGVdppPdrn8/MvcsBsdgdgJhe3TKUr9QV0rj7M8IqgRs3wqlc0gMX7Rgz0LCAI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJxXvMhAaw3BeOA7aeZIYx6Xlw78l3IpACeAAMFQp8W/JTKwrnQ
+	tjf7pvXxie5xRLpbsyJYGeeakRf/WetVPXe1vyAe+NBfOM6hoTWnb6Rr
+X-Gm-Gg: AYBFou3gzQrILeHo1PSbGJvPD4J+j+tIbia5i9qYA3YC4ntnQ9Y2Kitu5fANXFZmWuz
+	x7F7z8qODUH74wAbNfRmq0exPwBNM0yOxFKFeQZq9OD0zu7twpP0AGUtBY6V5tkCLquegGndw0l
+	udIWoOCg1/E1KnpuHJPCgpact/7vbvTNDrMh/JCTqkOgXBWgM8qBwxQqSFTGS1s4LLPtA3T82bl
+	jvyKlD9sL4CBYTJn3cO5iS8/sjmLUQUuZ3ZVLjGw5QqqEOn9ah1ygimVmdYdkb1eGTOmayww1Q2
+	CuLzhARS/sjV64JdiDA80HIgyx8ip7jyiviJoKnKoksrhKKSXTBm3WApUC79547r676LRY30WjE
+	HMD21UKJ1MAOz191C1fAKhWaQ/T8Ov4Tdu2Bwh7+CEiuol4an+/ZT7Gw4LWAh8B33mZ9BbKiQKM
+	idvRtRt3n+3h1rpl/vTOPChxJzAIL9miKaRbcxONc6Sx50KjuSBf3rrp+5088Awl9ckkc7iJGxF
+	Ntz5rwIhdL+DLLGbTmd7Lae93MoN+3lUEdQCyMJBYd5tE9fx3ZNM37aGxdpbxedMTGqlErF+kql
+	a1B5K/zC9A2XyMDaIR6zfBVqG5qpAfQiP+SBgw5Qg67NMXJEiiuvtWb20HGgNyx2kgIfYTVRIYj
+	VtBYCtbw7D1iU2aJmf0KNU+AbU8BqtE1Sdl7oBIgVxCs64yS+ING1tBSkcmh2xhoyzo61kzv1+j
+	c/F+vAAgC5w+pnD3kHJBkBJG1+yl0hw9xEODHhuw==
+X-Received: by 2002:a05:600c:c117:b0:4a2:cbe:beac with SMTP id 5b1f17b1804b1-4a9672f814emr15602045e9.23.1793163686125;
+        Tue, 27 Oct 2026 22:01:26 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a45b-7d01-5035-b393-698f-53f0.310.pool.telefonica.de. [2a02:3100:a45b:7d01:5035:b393:698f:53f0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a94eb8a60fsm13523365e9.3.2026.10.27.22.01.24
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 27 Oct 2026 22:01:25 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] KVM: arm64: Preserve level IRQ re-pending
+Date: Wed, 28 Oct 2026 06:01:10 +0100
+Message-Id: <20261028050113.10046-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,255 +113,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <at-Wkw7a3Tn3Oh3M@red-moon>
+Content-Transfer-Encoding: 8bit
 
-On 10/26 19:06, Lorenzo Pieralisi wrote:
-> On Wed, Oct 21, 2026 at 11:42:14PM +1000, Gavin Shan wrote:
-> > On 10/20/26 6:46 AM, Mathieu Poirier wrote:
-> > > On Thu, Sep 24, 2026 at 12:12:35PM +0900, Kohei Enju wrote:
-> > > > On 09/22 10:01, Lorenzo Pieralisi wrote:
-> > > > > On Tue, Sep 15, 2026 at 04:27:21PM -0500, Michael Roth wrote:
-> > > > > > On Thu, Sep 03, 2026 at 01:35:50PM -0600, Mathieu Poirier wrote:
-> > > > > > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > > > > > 
-> > > > > > > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
-> > > > > > > support the Arm Realm Management Extension (RME). It is instantiated by
-> > > > > > > passing on the command-line:
-> > > > > > > 
-> > > > > > >    -M virt,confidential-guest-support=<id>
-> > > > > > >    -object rme-guest,id=<id>
-> > > > > > > 
-> > > > > > > This is only the skeleton. Support will be added in following patches.
-> > > > > > > 
-> > > > > > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > > > > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > > > > > > ---
-> > > > > > >   docs/system/confidential-guest-support.rst |  1 +
-> > > > > > >   qapi/qom.json                              | 13 +++++++
-> > > > > > >   target/arm/kvm-rme.c                       | 42 ++++++++++++++++++++++
-> > > > > > >   target/arm/meson.build                     |  5 ++-
-> > > > > > >   4 files changed, 60 insertions(+), 1 deletion(-)
-> > > > > > >   create mode 100644 target/arm/kvm-rme.c
-> > > > > > > 
-> > > > > > > diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
-> > > > > > > index 562a7c3c2852..abb56923ad13 100644
-> > > > > > > --- a/docs/system/confidential-guest-support.rst
-> > > > > > > +++ b/docs/system/confidential-guest-support.rst
-> > > > > > > @@ -42,5 +42,6 @@ Currently supported confidential guest mechanisms are:
-> > > > > > >   * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
-> > > > > > >   * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
-> > > > > > >   * AWS Nitro Enclaves (see :doc:`nitro`)
-> > > > > > > +* Arm Realm Management Extension (RME)
-> > > > > > >   Other mechanisms may be supported in future.
-> > > > > > > diff --git a/qapi/qom.json b/qapi/qom.json
-> > > > > > > index 776b13027fd8..52997c29a32d 100644
-> > > > > > > --- a/qapi/qom.json
-> > > > > > > +++ b/qapi/qom.json
-> > > > > > > @@ -1288,6 +1288,17 @@
-> > > > > > >     'data': { '*pretty': 'bool',
-> > > > > > >               '*close-action': 'MonitorQMPCloseAction' } }
-> > > > > > > +##
-> > > > > > > +# @RmeGuestProperties:
-> > > > > > > +#
-> > > > > > > +# Properties for rme-guest objects.
-> > > > > > > +#
-> > > > > > > +# Since: 11.1
-> > > > > > > +##
-> > > > > > > +{ 'struct': 'RmeGuestProperties',
-> > > > > > > +  'base': 'ConfidentialGuestSupportProperties',
-> > > > > > 
-> > > > > > Just FYI, based on input from Markus I'm planning to drop this
-> > > > > > ConfidentialGuestSupportProperties base type from my series
-> > > > > > since it's probably only SNP/TDX that need to be able to switch
-> > > > > > it on/off, whereas this series appears to use/require it from
-> > > > > > the start.
-> > > > > > 
-> > > > > > I'm not exactly sure what it will look like for v3 yet, but if you
-> > > > > > were based on v2 you'd instead probably just do the following in the
-> > > > > > instance_init function for your rme-guest instance:
-> > > > > > 
-> > > > > >    cgs->allow_convert_in_place = true;
-> > > > > >    cgs->convert_in_place = true;
-> > > > > > 
-> > > > > > rather than exposing it as a cmdline option.
-> > > > > 
-> > > > > Yep, it won't be an option for CCA Realms anyway since that will be
-> > > > > the baseline.
-> > > > 
-> > > > IIUC, in-place conversion requires RAM backed by a shared/mappable
-> > > > guest_memfd. If in-place conversion is always enabled for CCA Realms,
-> > > > could QEMU also select the equivalent of
-> > > > 
-> > > >    -object memory-backend-guest-memfd,id=ram0,size=...,share=on
-> > > > 
-> > > > automatically for the default RAM, so that specifying the RAM size with
-> > > > `-m` is sufficient?
-> > > 
-> > > Are you suggesting that on Arm, we completely get rid of
-> > > 
-> > >      -object memory-backend-guest-memfd,id=ram0,size=$(RAMSIZE),share=on
-> > > 
-> > > or simply to get rid of "size=$(RAMSIZE)" in the above because it is redundant
-> > > with "-m $(RAMSIZE)"?
-> > > 
-> > > Gavin and Michael, what is your take on that suggestion?
-> > > 
-> > 
-> > I don't think that's what Kohei meant. He actually suggested the memory backend
-> > shall be pinned to memory-backend-guest-memfd and its in-place conversion shall
-> > be enabled when the memory backend isn't explicitly specified by users through
-> > "-object memory-backend-xxxx". For this inexplicit case, where the memory backend
-> > is determined by '-mem-path', the memory backend is either TYPE_MEMORY_BACKEND_FILE
-> > or TYPE_MEMORY_BACKEND_RAM. Please refer to create_default_memdev().
-> > 
-> > I think Kohei's suggestion makes sense. Besides, I think '-mem-path' should be
-> > disallowed for CCA Realms as TYPE_MEMORY_BACKEND_FILE isn't what we want.
-> 
-> Kohei, what were you suggesting then please ? I think TYPE_MEMORY_BACKEND_FILE
-> would not pass the checks required by Michael's v3 [0] on CCA - I will test this
-> and report back but the only backend allowed, rightly, is memfd,share=on, so it
-> _is_ disallowed.
+A guest can set a level interrupt pending again while handling it. The
+GIC records Active and Pending and delivers the interrupt after
+deactivation. KVM instead drops the second pending state for both the
+GICv2 and GICv3 backends.
 
-Sorry for the late response.
+The VGIC keeps software pending state outside the LR because commit
+67b5b673ad4d stopped placing Pending and Active together for level
+interrupts. When the LR is folded, KVM cannot distinguish the pending
+state used to populate the LR from a later ISPENDR write.
 
-To clarify, I meant the latter: when rme-guest is selected and the user
-has not explicitly provided a memory backend, QEMU could automatically
-create the default RAM as a shared guest-memfd backend.
+Synchronize the target vCPU's LRs in vgic_mmio_write_spending() with
+vgic_access_active_prepare() and vgic_access_active_finish() under
+config_lock before setting pending_latch, as suggested by Oliver Upton.
+When a vCPU writes its own GICR_ISPENDR0, this synchronization is a
+no-op. For shared interrupts or remote redistributor writes, stopping
+the guest folds any prior ack from the target vCPU's LRs before the
+new pending state is recorded. In the v2 and v3 fold paths, clear
+pending_latch when an LR populated for an inactive interrupt no longer
+reports a pending state, and preserve a latch written while the
+interrupt was active.
 
-In other words, rather than only rejecting the default file/RAM backend,
-the Realm configuration could select the equivalent of
+The last patch adds a two-vCPU GICv3 selftest covering same-vCPU and
+cross-vCPU re-pending while active, as well as a cross-vCPU ISPENDR
+write before the ack.
 
-  -object memory-backend-guest-memfd,id=<default-ram-id>,size=<RAMSIZE>,share=on
+The issue was reproduced with Zephyr, NuttX and RT-Thread test harnesses
+that configure an unused SPI as level-sensitive, pend it via
+GICD_ISPENDR, and re-pend it once from the ISR before deactivation. On a
+Raspberry Pi 400 host with a GIC-400, each GICv2 guest handled the SPI
+once on the baseline and twice with the RFC fix. A native RT-Thread run
+on the same GIC-400 also delivered the re-pended interrupt.
 
-by default. Explicitly specified memory backends would still need to be
-validated against the Realm requirements.
+The v2 change was A/B tested with RT-Thread's direct and mailbox-pic
+reproducers on Linux/KVM hosts running under QEMU TCG with GICv2 and
+GICv3. The baseline lost the second event and v2 delivered it. The new
+GICv3 selftest also passes in that setup. I do not have a physical GICv3
+host, so the GICv3 testing is emulated.
 
-My intention was that, if in-place conversion is the baseline for CCA
-Realms, `-m <size>` should be sufficient for the common Realm case,
-while preserving an explicit memory-backend option for users who need to
-control it.
+Changes in v2:
+- Synchronize target vCPU LRs in vgic_mmio_write_spending() via
+  vgic_access_active_prepare() and vgic_access_active_finish() under
+  config_lock instead of tracking on-LR writes with a separate
+  latch_written flag (Oliver Upton).
+- Extend the selftest to verify that a cross-vCPU GICD_ISPENDR write
+  before the ack merges with the initial pending state without causing
+  a second delivery.
+- Drop RFC prefix.
+- Link to v1: https://lore.kernel.org/r/20261022064628.4206-1-kmehltretter@gmail.com
 
-That said, I do not have a strong preference for deciding the default
-`-m` behavior at this stage. If it is premature to make that decision
-before the memory-backend and conversion interfaces have settled, I am
-happy to keep the explicit guest-memfd backend requirement for now and
-revisit the default behavior later.
+Karl Mehltretter (3):
+  KVM: arm64: vgic-v2: Don't drop pending writes to active level IRQs
+  KVM: arm64: vgic-v3: Don't drop pending writes to active level IRQs
+  KVM: selftests: arm64: Test pending writes to active level IRQs
 
-Thanks,
-Kohei
+ arch/arm64/kvm/vgic/vgic-mmio.c              |  76 +++++-----
+ arch/arm64/kvm/vgic/vgic-v2.c                |  10 +-
+ arch/arm64/kvm/vgic/vgic-v3.c                |  10 +-
+ tools/testing/selftests/kvm/arm64/vgic_irq.c | 140 +++++++++++++++++++
+ 4 files changed, 197 insertions(+), 39 deletions(-)
 
-> 
-> Lorenzo
-> 
-> [0] https://lore.kernel.org/kvm/20261007134323.1606088-1-michael.roth@amd.com/
-> 
-> > Thanks,
-> > Gavin
-> > 
-> > > Thanks,
-> > > Mathieu
-> > > 
-> > > > 
-> > > > Thanks,
-> > > > Kohei
-> > > > 
-> > > > > 
-> > > > > Thanks,
-> > > > > Lorenzo
-> > > > > 
-> > > > > > Thanks,
-> > > > > > 
-> > > > > > Mike
-> > > > > > 
-> > > > > > > +  'data': {} }
-> > > > > > > +
-> > > > > > >   ##
-> > > > > > >   # @ObjectType:
-> > > > > > >   #
-> > > > > > > @@ -1346,6 +1357,7 @@
-> > > > > > >       { 'name': 'pr-manager-helper',
-> > > > > > >         'if': 'CONFIG_LINUX' },
-> > > > > > >       'qtest',
-> > > > > > > +    'rme-guest',
-> > > > > > >       'rng-builtin',
-> > > > > > >       'rng-egd',
-> > > > > > >       { 'name': 'rng-random',
-> > > > > > > @@ -1427,6 +1439,7 @@
-> > > > > > >         'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
-> > > > > > >                                         'if': 'CONFIG_LINUX' },
-> > > > > > >         'qtest':                      'QtestProperties',
-> > > > > > > +      'rme-guest':                  'RmeGuestProperties',
-> > > > > > >         'rng-builtin':                'RngProperties',
-> > > > > > >         'rng-egd':                    'RngEgdProperties',
-> > > > > > >         'rng-random':                 { 'type': 'RngRandomProperties',
-> > > > > > > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> > > > > > > new file mode 100644
-> > > > > > > index 000000000000..42e1d1e7b859
-> > > > > > > --- /dev/null
-> > > > > > > +++ b/target/arm/kvm-rme.c
-> > > > > > > @@ -0,0 +1,42 @@
-> > > > > > > +/*
-> > > > > > > + * QEMU Arm RME support
-> > > > > > > + *
-> > > > > > > + * SPDX-License-Identifier: GPL-2.0-or-later
-> > > > > > > + *
-> > > > > > > + * Copyright Linaro 2026
-> > > > > > > + */
-> > > > > > > +
-> > > > > > > +#include "qemu/osdep.h"
-> > > > > > > +
-> > > > > > > +#include "hw/core/boards.h"
-> > > > > > > +#include "hw/core/cpu.h"
-> > > > > > > +#include "kvm_arm.h"
-> > > > > > > +#include "migration/blocker.h"
-> > > > > > > +#include "qapi/error.h"
-> > > > > > > +#include "qom/object_interfaces.h"
-> > > > > > > +#include "system/confidential-guest-support.h"
-> > > > > > > +#include "system/kvm.h"
-> > > > > > > +#include "system/runstate.h"
-> > > > > > > +
-> > > > > > > +#define TYPE_RME_GUEST "rme-guest"
-> > > > > > > +OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
-> > > > > > > +
-> > > > > > > +struct RmeGuest {
-> > > > > > > +    ConfidentialGuestSupport parent_obj;
-> > > > > > > +};
-> > > > > > > +
-> > > > > > > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-> > > > > > > +                                          CONFIDENTIAL_GUEST_SUPPORT,
-> > > > > > > +                                          { TYPE_USER_CREATABLE }, { })
-> > > > > > > +
-> > > > > > > +static void rme_guest_class_init(ObjectClass *oc, const void *data)
-> > > > > > > +{
-> > > > > > > +}
-> > > > > > > +
-> > > > > > > +static void rme_guest_init(Object *obj)
-> > > > > > > +{
-> > > > > > > +}
-> > > > > > > +
-> > > > > > > +static void rme_guest_finalize(Object *obj)
-> > > > > > > +{
-> > > > > > > +}
-> > > > > > > diff --git a/target/arm/meson.build b/target/arm/meson.build
-> > > > > > > index 0369f96b4cc6..9d322a7aad28 100644
-> > > > > > > --- a/target/arm/meson.build
-> > > > > > > +++ b/target/arm/meson.build
-> > > > > > > @@ -31,7 +31,10 @@ arm_common_user_system_ss.add(when: 'TARGET_AARCH64', if_true: files(
-> > > > > > >   arm_common_system_ss.add(files(
-> > > > > > >     'arm-qmp-cmds.c',
-> > > > > > >   ))
-> > > > > > > -arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
-> > > > > > > +arm_system_ss.add(when: 'CONFIG_KVM', if_true: files(
-> > > > > > > +  'hyp_gdbstub.c',
-> > > > > > > +  'kvm.c',
-> > > > > > > +  'kvm-rme.c'))
-> > > > > > >   arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
-> > > > > > >   arm_user_ss.add(files('cpu.c'))
-> > > > > > > -- 
-> > > > > > > 2.43.0
-> > > > > > > 
-> > > > > > > 
-> > > 
-> > 
+
+base-commit: dd0bc00e3e9201fd49b62ff9cc07890c89003afe
+-- 
+2.39.5 (Apple Git-154)
+
