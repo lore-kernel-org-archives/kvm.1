@@ -1,112 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793209635;
-	b=QGU8kLc9hs1efDxnqHP2NgCzu+7dLtVdccXcVff6OjKp4xhzL7A7DLUTxpyfuBI0NX6M
-	 XwUJljAGeKSqZYqeulzoutQ16fyoH/T0yrm7DA46M0D52VhfmE2kgC4MdmIkORQa9vPXZ
-	 lfZD69Jr9Vo9ImPEEd6IbIeJxLOxJAmoDicQ1GrlbQEjtTaCTH/kr4/OISruAvBxFjXOf
-	 L7kLknPLrjg6pXslq6GTTLB2xS10eV23lGzw30/ggTQKh/fBin6/wwo4H7VvNGVEsXDgA
-	 F10+rHPDCklhpGHyeNZZBux4pj3DXg5U/dV9HoG1GbprDTEGAiqxQbcA+Bbw4czOr2g==
+	t=1793209755;
+	b=XFuj6FGfcHx1TKM5tZmUKME6Llju1bpZ9AJRLzEw5l45XNonPR+G4wvR38vUzuurByaQ
+	 730esJftupLoq7WlYnsVx1GIPLLxjvS2yXuBhCgTUWXO3D4bu1NMu5NrsS+4kx5ZI/kKK
+	 JLp6jnrFZaEEN9jxLaHGfyLbwdGyH6HprLg2Ted+Zpkn4a4CR8ZHldKpxyYR8wONYB7jz
+	 56BiEacwk9JebnuY3kMYN6dOofKNobb27yEFjPjTJEhgnhjArjYfi/ht6LKAVXdw4jrdL
+	 9Dmu+viAKu3yOTtpXTJ3Y02IlMIkddkym/4wGZ25tk6Y0r/atqOqQIyJGopgWzebFgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793209635;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=tOxsbn2WzdX0v59D7Zs82WgtkG4cFGkj3ewz31Uolyw=;
-	b=myyWg7VR3O4aGqd/S89WrzEUYnY31TSbOqKGtzvnnAisl2lUvs2w8OtRa9b6qTX+XAmo
-	 nWiPiDROzaQsM+6EdwdmtWy77RSF4r+h7FGIWo2bwy0Nmdr+sLFXDiaox88vmtITdgWuF
-	 uj0kUGLvTsXNrVaHZ3hIvO2Wv9xWq4Rlezl+mgJUe2ZWIO0w661+0PylxNbaVfCGcY6WM
-	 XJPY30gb+ycWT+3blF3Xmh3lcF+q1ayyc4b2l08p0lXF6K4DNYUvf7A8o0zH/OW2NQDx0
-	 83AKC7Rpv174S+5zo2aoav8MwrWpCpzNZNG/TR+/FPwiiuRlMMrFCLAfpC0Jpm5Qvrw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793209755;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:References:From:Content-Language:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=1PuETIDmWaDFPuxKiqzCWt0cjAowQ4XGmIMamrsovLc=;
+	b=vwzr4kr0h6TNoIvfWQLqleqkt8dA2K+b7/1diSESDKv3wAiuINJyW22qDOko6VgZZSGl
+	 /tXWXnceszZlmfs2hLcNlBTvSjbQU1zvHUKsYD9tR7VoTh/i6D7iN5grNhW4fSuPYSZRI
+	 fH9R9iSeV/ebbdwyYdhpYDXCoiiez8CPpudD6csba/PCGWop+L5IwXRk/vevrE8kOCDYf
+	 w53XW6LZzqMKWw+pgT/3hjxCEEZKVBKAU85B3+ejpX45H0JXYZq1lhT/JAfazdP3R3zd8
+	 X2LmcvrbWhLgrsBKAMeMT9oc5s1fQJvbIjYTW/j/wAYmZGj+TxnIXMjggek6MN1EthA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=soleen.com;
-	spf=pass smtp.mailfrom=soleen.com;
-	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=TD1Tphal;
-	arc=none smtp.remote-ip=209.85.221.179
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHe+l3Jz;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BB5606A324
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:47:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33BB5606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7012606A321
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 17:49:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7012606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=TD1Tphal
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5eac4855401so603036e0c.1
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 10:47:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793209634; x=1793814434; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tOxsbn2WzdX0v59D7Zs82WgtkG4cFGkj3ewz31Uolyw=;
-        b=TD1Tphal9MmPmFW1OAcHF/1klWnZxSWsLxd9CIm64eCSWcLG7mG8zrPQ3838MtFr4w
-         ZTKCFSl3LqqxJqx29pzfAWYQn1mEBphAMjxHQh2ZHPqCNzRbnJPKUjX2PRrurF12ETcu
-         CqpI8q6ywMMFJMi3OCCZOyjdy4BmQdRRXzkxus9AfgMjqltqf3IgwcGXKdaAfyNZJuvk
-         HngFug3/3BeoVvKeVjohQauw+bz3WMJQ37zeQDc/5Xa08m9CibytH/i9Kqr3FZ0mRD9u
-         xfZJ4xMidWmVes15PXyLTH2PjJtuANBfb2w8XVOA8lDU7YBkZu5NB+fyh6+p652P4J5j
-         lCkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793209634; x=1793814434;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tOxsbn2WzdX0v59D7Zs82WgtkG4cFGkj3ewz31Uolyw=;
-        b=ObHTShEYZhBMpbfmqhOQh5u8Q4dMNMGRq2aCCOa3jDcC8rliaLNzzrLcqqFs6DxoFv
-         j1Yx+sWh9yrSBR6MtQJ9xNXX+hswQBT5iEux/XFi+5XCjBSYOZtCpowrZ7YTDMfPUbs6
-         um11JXi5aQlK/IFPGrTgsFiXnHJ7235PiNu1qZig0oS36XCXdbZ2zUneSqFsKPZxfWTG
-         4kD4tdNRaH1evL1hbQRl2vWjY+mUgZFwOGirzBRLpAiyysWS0CFGTQZF6cRMWueAgoTR
-         dzDicuyjrSIvLvEdnyNWxD6MR9OTyytLkrG60hXnJl7zeu1WRDUDOy8OQtsz/ycrLKLC
-         WTTg==
-X-Forwarded-Encrypted: i=1; AKwUvByQ/S7uDOk+jTFL8g1ejUQOv1U/HvcekFofXUe2t8nGZWRwEFvfOKmCK3JJP2+WTFlPbHA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIiGTBKdE06JOmammx7EbFUBW+6laak3WyrZSon80/+mHoZN9hn
-	OAgSbV/J6Ms+DqLdhJV5gTXcIjrX1hnrznO7/ooWAqRR+t1uaJfHeRZdvVC/L3u/QS0=
-X-Gm-Gg: AYBFou0vQrMsIcQUEOh8ieUlv7exgHAC1UXMsq/EnBTn3r0hygC3GsxwwkGyw8VsLY1
-	BTT4Z9oqoLUzUO3Nxo9ReLMBuMTh+Fvbw3DWmpLvVq389JqdokOfN5BV88mNs3cjg50FY7IaX3v
-	i7yxAt5Rdi1nTfAa+l9ustjfhzFdZ2aatgQ8MJpk6iijZ0asCEnkcIZkC7N97/ph0Wa77rXf1vs
-	e5ax4Vd4oKrjeml9HVV4W+MDn6e/ND8A/CV6ozlu8meQggAFl6ULIniFCapVx3iL755iesq5z8r
-	QbeRsDxO8suV+RijDGzGQIm9rddA8I+N8KX9FYVn2oggkoRLz5hucy04wMVPK3rTwxm/vaOJfqo
-	QHXxWmPibA24KCMYYN3Vaqzawgj4kiRG8kQMy9bLR19sKkrZuUd2HnHL+f3Oc0QE0kMW+gLPV8G
-	203gq5O0WYd7sDAfZM5wBENEciftoEvy3vFg6mGXGUU2lvsrIZ8YeDsbSu8Cq0b/szTgd8wGeI/
-	mJz/Xcnv8K0lTyJMVlc+4XI1NbtMs9OKpzpnnNs90e03ISKMgd9KR/RoCe+Ssw9RPv1N9zHQi/e
-	DfZCHEXE6N6f5OL7zHR+kU7zPFL8IjsHLn3k6JPByXA6APjNWDfDMeYbbGzoQrMabER4gsRsdIM
-	zh3ixJ0oWCkD7GGAU5990NfIMV8DumbcE+vK+XQoy3DlgROjuwTeWSQ==
-X-Received: by 2002:a05:6122:2896:b0:5ea:fae8:e69e with SMTP id 71dfb90a1353d-5ec4cc4f065mr1774474e0c.11.1793209634129;
-        Wed, 28 Oct 2026 10:47:14 -0700 (PDT)
-Received: from google.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec57e4e556sm445088e0c.5.2026.10.28.10.47.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 10:47:13 -0700 (PDT)
-Date: Wed, 28 Oct 2026 13:47:12 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>, 
-	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, oupton@kernel.org, 
-	kevin.tian@intel.com, alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com, 
-	seanjc@google.com, will@kernel.org, Alexander Graf <graf@amazon.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org, 
-	linux-arch@vger.kernel.org, sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <auI02M-pZO_aQ4jn@google.com>
-References: <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
- <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
- <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
- <atpNFEFIlqAoYIwH@google.com>
- <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
- <attmFVIFU_mS0Y7p@google.com>
- <CA+CK2bDXDWbww_d3sD6OZqpo37V1a3t76_ubbrXLQS=9DB3dWA@mail.gmail.com>
- <at-8vkVpN2SF3XgB@google.com>
- <2vxz8q3hoicx.fsf@kernel.org>
- <CALzav=eG5j2n5omO2Mxqw8xA4sZLduxdbBYFcnHpPn0PDpt9Hg@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHe+l3Jz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793209753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1PuETIDmWaDFPuxKiqzCWt0cjAowQ4XGmIMamrsovLc=;
+	b=RHe+l3JzyzngRuuFkJMQh3RU3a+pZ0ho8XipUyyHYTZv45sUPF8jMUhtZAxIflpB+lECCm
+	DbYHjEqy79YXP/yFsu32jedFftwT4tOUEH/MjG9AyD/ulZ+wXpzHa1CMN2sKBgqDnEAylO
+	lwxoQRfz4W90zCFRM8v7cTUjo+x/Mws=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-ehdSPHajM5mt-_rfjsYIMA-1; Wed,
+ 28 Oct 2026 13:49:04 -0400
+X-MC-Unique: ehdSPHajM5mt-_rfjsYIMA-1
+X-Mimecast-MFC-AGG-ID: ehdSPHajM5mt-_rfjsYIMA_1793209742
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 426FD19772F3;
+	Wed, 28 Oct 2026 17:48:57 +0000 (UTC)
+Received: from [100.90.222.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6B3A71803A7A;
+	Wed, 28 Oct 2026 17:48:54 +0000 (UTC)
+Message-ID: <d4214249-5ec0-4600-91be-13632b180425@redhat.com>
+Date: Wed, 28 Oct 2026 18:48:51 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -116,61 +71,92 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALzav=eG5j2n5omO2Mxqw8xA4sZLduxdbBYFcnHpPn0PDpt9Hg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] KVM: x86: OVMF boot hang with SMM enabled after
+ commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO
+ cache")
+To: Sean Christopherson <seanjc@google.com>,
+ Sami Farin <lkml20261027@mifar.in>, linux-kernel@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
+ kimjw04271234@gmail.com, stable@vger.kernel.org
+References: <2026102314-CVE-2026-99082-e5b1@gregkh>
+ <20261027124140.upuow4a3kv6kssvn@m.mifar.in> <auIy4UZMGxLhBCAn@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <auIy4UZMGxLhBCAn@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On 10-28 10:24, David Matlack wrote:
-> On Wed, Oct 28, 2026 at 10:17 AM Pratyush Yadav <pratyush@kernel.org> wrote:
-> >
-> > On Mon, Oct 26 2026, David Matlack wrote:
-> >
-> > > On 2026-10-25 04:38 PM, Pasha Tatashin wrote:
-> > >> On Fri, Oct 23, 2026 at 9:50 AM David Matlack <dmatlack@google.com> wrote:
-> > >
-> > [...]
-> > >> The reason I care about keeping the header compact is that we are
-> > >> defining a foundational kernel ABI and want to use this header across
-> > >> almost every serialized data structure so we can evolve them later
-> > >> without breaking compatibility. While some top-level structs are on
-> > >> sparse folios today, other serialized structs are tightly packed, and
-> > >> we are looking to add KHO slab support in the future where tightly
-> > >> packed allocations will be common.
-> > >
-> > > My intuition is we will have a small number of headers per preserved
-> > > file and per preserved FLB. One for the top-level struct and then
-> > > optionally a few more for sub-structs like arch-specific data. That is
-> > > why I am less worried 8 bytes per header, even if we fix the folio
-> > > problem.
-> > >
-> > > Maybe where our visions differ is when there are collections of
-> > > serialized structs, like KHO blocks. For collections I don't think the
-> > > elements will each have their own headers. Otherwise the elements could
-> > > be different sizes.
-> >
-> > kho_block today doesn't store entry_size in the serialized payload. It
-> > relies on its caller to do so. With extensible structures, this can get
-> > messy. Sure, the owner of the kho_block_set can track the size somewhere
-> > in its payload, but perhaps we should store the size in
-> > kho_block_header_ser to begin with?
-> 
-> +1000
-> 
-> KHO block should track the entry size automatically and not rely on
-> the caller. Otherwise every caller is going to have to store the entry
-> size in the struct that owns the KHO block, like I had to do in the
-> PCI v10 series :(
+On 10/28/26 18:37, Sean Christopherson wrote:
+>> However, address space 0 and address space 1 maintain separate 
+generation counters
+>> starting from 0.
 
-I am fine with updating this as part of the versioning change so that we 
-do not have to do it twice.
+This is also incorrect:
 
-Tarun, could you pelase include entry size change into the next version as 
-well?
+         for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+                 for (j = 0; j < 2; j++) {
+                         slots = &kvm->__memslots[i][j];
 
-Thanks,
-Pasha
+                         atomic_long_set(&slots->last_used_slot, 
+(unsigned long)NULL);
+                         slots->hva_tree = RB_ROOT_CACHED;
+                         slots->gfn_tree = RB_ROOT;
+                         hash_init(slots->id_hash);
+                         slots->node_idx = j;
 
-> 
-> > Anyway, not a problem this series needs to solve, but something we
-> > should eventually do.
+                         /* Generations must be different for each 
+address space. */
+                         slots->generation = i;
+                 }
+
+
+>>          An MMIO access cached in SMM (e.g., GFN 0xFED40000 with gen = 4) matches in normal mode where gen is also 4.
+> Hmm, this isn't adding up for me.  It should be impossible for the generation to
+> be '4' for SMM, because SMM is supposed to use odd-numbered generations.  From
+> kvm_swap_active_memslots():
+
+vcpu_cache_mmio_info() does not use the address space id:
+
+         u64 gen = kvm_memslots(vcpu->kvm)->generation;
+
+Will send a patch soon.
+
+Paolo
+
