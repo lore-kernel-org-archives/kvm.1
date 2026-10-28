@@ -1,64 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793171966;
-	b=W8Q4tXeOH+fHRPdSDxtjfXr894BKPRxZ92y3JinDMpaFUDCencYeppttjaVco9MC6etF
-	 XIvr0aJwwfE5sUV56p6f4wpyk2TC6J7GbUBY1nueTNWOLfH07fDnfeOmLl9yMig+ehtVh
-	 71Lg8BGWoBOpP33jq4sFOktpxM8u1ZjUaRZFehkaeq2fz0Vjon45W7Z3VKjLago4Tripc
-	 hvRJe3BuwIgO58tnbHCebdr53lgEGPXGVldJU1+s/zNKifCwf/kbuj49UjLrY56b/sAkD
-	 BKNt9IB2ntnqyVsInOmqg7W6McdHZJzLOo4rYR7Wrb/PCrqDNBIxyzNCzJmOaLY7g2w==
+	t=1793172813;
+	b=cZwoK9k/eBIRead27FSVTgiMOdz9yj/frGfPr1FNRaf7SmcrAj2/CxpyHeoz/JKX7Lmv
+	 nZ+VbC725vfvWxbiPbsGgYNjmKUShKdgcNJ50qCjWwH4fk3vd8Se6d+mM1d1cQjtBzhrb
+	 AfZHSJmg2RqflzggMpC7p0HXSHhknEa9xYw7/5JvfpotwEu8af/PQj3lcGLBtZECYXPnF
+	 mZqH52T4qd2dMoLP7S2bDMCOr9/19h9nSvlk8pnSOGPpHKFVlh2SA61k2sJt7+nvC+Hcb
+	 tTYDKFdcnP1v6Mex+YGldSKYZFAvI//KVO+8E2EY4brbD+4tWOGMTNNBPMlrToFVUFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793171966;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9c5BIqCQwqEMe6raAgV29X4TaWw6HZHTzcW1OPzCR4E=;
-	b=hBVUOxABHawQG7YUZbwIXq/TGNVo+IA8ha4fFKefQsxwdBpd7gjh1rouxqQBabDqS0SM
-	 YuAy8uyjrKS+H/3qR2JW1/OYGTpwZ39ncHCIuhbaxr8qIh9WBKZhiVL8d+1JGjvV2P7aE
-	 XK3tG8+NEIWTD2cHGTXQCNis12HB1t08/nmsaqd+D1YFW9sz4TAX4MkS4Y4Bo487rKpOT
-	 3CDHkb74Oo1zItCwikQ+JWWPYVc9qP/uZjQxPoB//Vrik1FV5M3DCzjtdH5DCwDSAeH1P
-	 UuIcSNn9ERpbm+ek75zBcHHIz5Joy3ycGj41Hda6wlVjwhloKFCd59pCxRSiQR+81cg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793172813;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=tCHH2ocNTR2+1rXUWBXKTRSEf48EU6EMTZZdWFeBzLA=;
+	b=YUoLOBSAz/ZeDWG1RP1e4Yh0v7AHZjnpvpxlvQY47q00I82dmaJgMF2Vdkc1jz4kdsY5
+	 K7MulBvhRWDn4paFIiLmOee+Nx7AmJ2uDUMgutbE1nvxxIES41MFTHzYSzXnxNKbKXK2A
+	 Sm5ROjr1aWGnquDHYJKAIwqaIpC/0PvR2sNTQqGj01fTvSGknXYop8UGA592tK9NoG9kx
+	 mnVVl3bhai/WU6RwXaR7zGPETVKlt8r3kR0emBorqbTvXr8/zAYO9lr4QuXqG58p1F259
+	 GVvIlpRVGwNo06vv1BatWsgJ7CSufw/Kpv6oQyAHcaykpn4P7tKIPGls4DA8ugpq8AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.alibaba.com;
-	spf=pass smtp.mailfrom=linux.alibaba.com;
-	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=xQJwAQP1;
-	arc=none smtp.remote-ip=115.124.30.97
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VdidTVHK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99FC606A321;
-	Wed, 28 Oct 2026 07:19:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D99FC606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5B9606A31A
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 07:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=xQJwAQP1
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793171961; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=9c5BIqCQwqEMe6raAgV29X4TaWw6HZHTzcW1OPzCR4E=;
-	b=xQJwAQP1TD+NW4r/VPs+A986lrSYc6h4nFDc+ILVUSR4LMTyvuGAb2WIZbQulAOHb9j8Gygni32IDavNOBkcUIrYJcY9lITjwBxeTaS6ouWsLjNZjbah8wAisegiahXt0xUOWItvH7bqhO/HIz/WZB+jpHRfxNQKwG/dv8A8v7w=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R321e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XDg7jlb_1793171960;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XDg7jlb_1793171960 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 28 Oct 2026 15:19:21 +0800
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-To: jgg@ziepe.ca
-Cc: alex@shazbot.org,
-	iommu@lists.linux.dev,
-	joro@8bytes.org,
-	kevin.tian@intel.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	robin.murphy@arm.com,
-	will@kernel.org
-Subject: [PATCH v5 3/3] iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
-Date: Wed, 28 Oct 2026 15:19:06 +0800
-Message-ID: <20261028071906.2325378-4-guanghuifeng@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20261028071906.2325378-1-guanghuifeng@linux.alibaba.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VdidTVHK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3851F01828;
+	Wed, 28 Oct 2026 07:33:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793172812;
+	bh=tCHH2ocNTR2+1rXUWBXKTRSEf48EU6EMTZZdWFeBzLA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VdidTVHKN6kKGgberodmVQQTNbFmxJVL3iREUPrha1Z29Dztag19F8kkGq51RWwIu
+	 mVtnRUDhf2Dl9IuRTMva7YkW+tbRnIBI0ePerTEK0bB3GcH++4TQAyLuBpZ0sgZBg7
+	 N6L3NPRoGWgHBKknPK6wEaJauh54bGLIMI1I+aLdOC/dGDjd5QcGpHWs+/fh3eYOoE
+	 BbpKomCaAZ/rA0vIXtprHxcBkIUhiXTfIimtn5wznAlTJ5oO5wWQSw4MHpbtDQZVdT
+	 VW3wOLSyx5TfKMTlrJmwr+bhzpu/nH57tywhreIrgjDJpzhcQMH6KcA7828G1aVZIM
+	 I7pQliW1oo4Tw==
+Message-ID: <sashiko-outbox-187579@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 3/3] iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261028071906.2325378-4-guanghuifeng@linux.alibaba.com>
 References: <20261027183418.GJ1685504@ziepe.ca>
  <20261028071906.2325378-1-guanghuifeng@linux.alibaba.com>
+ <20261028071906.2325378-4-guanghuifeng@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 28 Oct 2026 07:33:31 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -67,203 +60,125 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add an ioctl allowing userspace to reserve IOVA ranges in an IOAS,
-creating a restriction on the address space: reserved ranges are
-excluded from IOMMU_IOAS_IOVA_RANGES and rejected by mapping
-operations.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] iommufd: 32-bit range truncation in iommufd_ioas_reserve_iovas()
+- [Low] iommufd: unnecessary iommufd_ucmd_respond() in iommufd_ioas_reserve=
+_iovas()
+--
 
-This completes the opt-in flow for the kernel's reservation
-recommendations: userspace queries IOMMU_GET_RECOMMENDED_RESERVATIONS
-for a device, decides which ranges to honour, and feeds them back
-through this ioctl so the kernel enforces them on its behalf.  Both
-steps are optional; nothing changes for userspace that does not use
-them.
+commit c4727e768ae8fb291a064ae74e64f9f8999c92bb
+Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-The semantics mirror the existing internal users of
-iopt_reserve_iova(): ranges conflicting with existing mappings or
-allowed IOVAs fail with -EADDRINUSE, and overlapping reservations are
-permitted so that recommendations queried for several devices behind
-the same host bridge can each be reserved independently.  User
-reservations carry a NULL owner and live until the IOAS is destroyed;
-accordingly the NULL-owner cleanup in iopt_destroy_table() is no
-longer conditional on CONFIG_IOMMUFD_TEST, since production userspace
-can now create such reservations.
+iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
 
-On failure the leading ranges already inserted stay reserved; because
-overlaps are permitted, retrying the whole call is idempotent.
+This commit adds the IOMMU_IOAS_RESERVE_IOVAS ioctl to allow userspace to
+reserve IOVA ranges in an IOAS, excluding them from IOMMU_IOAS_IOVA_RANGES
+and rejecting overlapping mapping operations.
 
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
----
- drivers/iommu/iommufd/io_pagetable.c    |  7 +++-
- drivers/iommu/iommufd/ioas.c            | 49 +++++++++++++++++++++++++
- drivers/iommu/iommufd/iommufd_private.h |  1 +
- drivers/iommu/iommufd/main.c            |  3 ++
- include/uapi/linux/iommufd.h            | 33 +++++++++++++++++
- 5 files changed, 91 insertions(+), 2 deletions(-)
+> diff --git a/drivers/iommu/iommufd/ioas.c b/drivers/iommu/iommufd/ioas.c
+> index 8fb5271a95060..e1ded7e8c5eed 100644
+> --- a/drivers/iommu/iommufd/ioas.c
+> +++ b/drivers/iommu/iommufd/ioas.c
+> @@ -183,6 +183,55 @@ int iommufd_ioas_allow_iovas(struct iommufd_ucmd *uc=
+md)
+>  	return rc;
+>  }
+> =20
+> +int iommufd_ioas_reserve_iovas(struct iommufd_ucmd *ucmd)
+> +{
+> +	struct iommu_ioas_reserve_iovas *cmd =3D ucmd->cmd;
+> +	struct iommu_iova_range __user *ranges;
+> +	struct iommufd_ioas *ioas;
+> +	u32 i;
+> +	int rc;
+> +
+> +	if (cmd->flags)
+> +		return -EOPNOTSUPP;
+> +
+> +	ioas =3D iommufd_get_ioas(ucmd->ictx, cmd->ioas_id);
+> +	if (IS_ERR(ioas))
+> +		return PTR_ERR(ioas);
+> +
+> +	ranges =3D u64_to_user_ptr(cmd->ranges);
+> +
+> +	down_write(&ioas->iopt.iova_rwsem);
+> +	for (i =3D 0; i < cmd->num_ranges; i++) {
+> +		struct iommu_iova_range range;
+> +
+> +		rc =3D copy_from_user(&range, &ranges[i], sizeof(range));
+> +		if (rc) {
+> +			rc =3D -EFAULT;
+> +			goto out_unlock;
+> +		}
+> +		if (range.last < range.start) {
+> +			rc =3D -EINVAL;
+> +			goto out_unlock;
+> +		}
+> +
+> +		rc =3D iopt_reserve_iova(&ioas->iopt, range.start, range.last,
+> +				       NULL);
 
-diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd/io_pagetable.c
-index 5ac736cf5bb5..9a10daf6491e 100644
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -1036,8 +1036,11 @@ void iopt_destroy_table(struct io_pagetable *iopt)
- {
- 	struct interval_tree_node *node;
- 
--	if (IS_ENABLED(CONFIG_IOMMUFD_TEST))
--		iopt_remove_reserved_iova(iopt, NULL);
-+	/*
-+	 * Reservations made by userspace through IOMMU_IOAS_RESERVE_IOVAS
-+	 * carry a NULL owner and live until the IOAS is destroyed.
-+	 */
-+	iopt_remove_reserved_iova(iopt, NULL);
- 
- 	while ((node = interval_tree_iter_first(&iopt->allowed_itree, 0,
- 						ULONG_MAX))) {
-diff --git a/drivers/iommu/iommufd/ioas.c b/drivers/iommu/iommufd/ioas.c
-index 8fb5271a9506..e1ded7e8c5ee 100644
---- a/drivers/iommu/iommufd/ioas.c
-+++ b/drivers/iommu/iommufd/ioas.c
-@@ -183,6 +183,55 @@ int iommufd_ioas_allow_iovas(struct iommufd_ucmd *ucmd)
- 	return rc;
- }
- 
-+int iommufd_ioas_reserve_iovas(struct iommufd_ucmd *ucmd)
-+{
-+	struct iommu_ioas_reserve_iovas *cmd = ucmd->cmd;
-+	struct iommu_iova_range __user *ranges;
-+	struct iommufd_ioas *ioas;
-+	u32 i;
-+	int rc;
-+
-+	if (cmd->flags)
-+		return -EOPNOTSUPP;
-+
-+	ioas = iommufd_get_ioas(ucmd->ictx, cmd->ioas_id);
-+	if (IS_ERR(ioas))
-+		return PTR_ERR(ioas);
-+
-+	ranges = u64_to_user_ptr(cmd->ranges);
-+
-+	down_write(&ioas->iopt.iova_rwsem);
-+	for (i = 0; i < cmd->num_ranges; i++) {
-+		struct iommu_iova_range range;
-+
-+		rc = copy_from_user(&range, &ranges[i], sizeof(range));
-+		if (rc) {
-+			rc = -EFAULT;
-+			goto out_unlock;
-+		}
-+		if (range.last < range.start) {
-+			rc = -EINVAL;
-+			goto out_unlock;
-+		}
-+
-+		rc = iopt_reserve_iova(&ioas->iopt, range.start, range.last,
-+				       NULL);
-+		if (rc)
-+			goto out_unlock;
-+	}
-+	up_write(&ioas->iopt.iova_rwsem);
-+
-+	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-+
-+	iommufd_put_object(ucmd->ictx, &ioas->obj);
-+	return rc;
-+
-+out_unlock:
-+	up_write(&ioas->iopt.iova_rwsem);
-+	iommufd_put_object(ucmd->ictx, &ioas->obj);
-+	return rc;
-+}
-+
- static int conv_iommu_prot(u32 map_flags)
- {
- 	/*
-diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-index 8016c3efca78..361223372cf3 100644
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -356,6 +356,7 @@ int iommufd_ioas_map(struct iommufd_ucmd *ucmd);
- int iommufd_ioas_map_file(struct iommufd_ucmd *ucmd);
- int iommufd_ioas_change_process(struct iommufd_ucmd *ucmd);
- int iommufd_ioas_copy(struct iommufd_ucmd *ucmd);
-+int iommufd_ioas_reserve_iovas(struct iommufd_ucmd *ucmd);
- int iommufd_ioas_unmap(struct iommufd_ucmd *ucmd);
- #ifdef CONFIG_IOMMUFD_NOIOMMU
- int iommufd_ioas_noiommu_get_pa(struct iommufd_ucmd *ucmd);
-diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-index 85f8ea154218..ea03a2078a37 100644
---- a/drivers/iommu/iommufd/main.c
-+++ b/drivers/iommu/iommufd/main.c
-@@ -447,6 +447,7 @@ union ucmd_buffer {
- 	struct iommu_ioas_noiommu_get_pa noiommu_get_pa;
- 	struct iommu_ioas_iova_ranges iova_ranges;
- 	struct iommu_ioas_map map;
-+	struct iommu_ioas_reserve_iovas ioas_reserve_iovas;
- 	struct iommu_ioas_unmap unmap;
- 	struct iommu_option option;
- 	struct iommu_recommended_reservations recommended_reservations;
-@@ -509,6 +510,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
- 		 struct iommu_ioas_map_file, iova),
- 	IOCTL_OP(IOMMU_IOAS_NOIOMMU_GET_PA, iommufd_ioas_noiommu_get_pa, struct iommu_ioas_noiommu_get_pa,
- 		 out_phys),
-+	IOCTL_OP(IOMMU_IOAS_RESERVE_IOVAS, iommufd_ioas_reserve_iovas,
-+		 struct iommu_ioas_reserve_iovas, ranges),
- 	IOCTL_OP(IOMMU_IOAS_UNMAP, iommufd_ioas_unmap, struct iommu_ioas_unmap,
- 		 length),
- 	IOCTL_OP(IOMMU_OPTION, iommufd_option, struct iommu_option, val64),
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 45ba7bd7abd5..75d2421c0f80 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -59,6 +59,7 @@ enum {
- 	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
- 	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
- 	IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS = 0x96,
-+	IOMMUFD_CMD_IOAS_RESERVE_IOVAS = 0x97,
- };
- 
- /**
-@@ -1436,4 +1437,36 @@ struct iommu_recommended_reservations {
- };
- #define IOMMU_GET_RECOMMENDED_RESERVATIONS \
- 	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS)
-+
-+/**
-+ * struct iommu_ioas_reserve_iovas - ioctl(IOMMU_IOAS_RESERVE_IOVAS)
-+ * @size: sizeof(struct iommu_ioas_reserve_iovas)
-+ * @flags: Must be 0
-+ * @ioas_id: IOAS ID to reserve ranges in
-+ * @num_ranges: Number of ranges in the input array
-+ * @ranges: Pointer to the input array of struct iommu_iova_range
-+ *
-+ * Reserve IOVA ranges in an IOAS, excluding them from mapping and from
-+ * IOMMU_IOAS_IOVA_RANGES.  Intended for opting into the ranges
-+ * reported by IOMMU_GET_RECOMMENDED_RESERVATIONS.
-+ *
-+ * Reserve before mapping: a range overlapping an existing mapping or
-+ * an allowed IOVA range fails with -EADDRINUSE.  Overlapping
-+ * reservations are permitted, so ranges recommended for multiple
-+ * devices (e.g. behind the same host bridge) can each be reserved.
-+ * A range with last < start fails with -EINVAL.  Ranges are processed
-+ * in order and earlier ranges stay reserved on failure; retrying the
-+ * whole call is safe.  Reservations live until the IOAS is destroyed.
-+ *
-+ * Return: 0 on success, negative errno on failure.
-+ */
-+struct iommu_ioas_reserve_iovas {
-+	__u32 size;
-+	__u32 flags;
-+	__u32 ioas_id;
-+	__u32 num_ranges;
-+	__aligned_u64 ranges;
-+};
-+#define IOMMU_IOAS_RESERVE_IOVAS \
-+	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_RESERVE_IOVAS)
- #endif
--- 
-2.43.7
+[Severity: High]
+On 32-bit architectures, can passing 64-bit range.start and range.last into
+iopt_reserve_iova() silently truncate the range and corrupt
+ioas->iopt.reserved_itree?
 
+In struct iommu_iova_range, start and last are __aligned_u64, whereas
+iopt_reserve_iova() in drivers/iommu/iommufd/io_pagetable.c and struct
+interval_tree_node take unsigned long:
+
+    int iopt_reserve_iova(struct io_pagetable *iopt, unsigned long start,
+                          unsigned long last, void *owner)
+
+Unlike iommufd_ioas_map(), iommufd_ioas_unmap(), and iommufd_ioas_copy(),
+which check for ULONG_MAX overflow and return -EOVERFLOW,
+iommufd_ioas_reserve_iovas() only checks range.last < range.start in 64-bit
+arithmetic before passing them to iopt_reserve_iova().
+
+On 32-bit kernels (for example, a 32-bit PAE/LPAE system where
+IOMMU_GET_RECOMMENDED_RESERVATIONS reports a 64-bit PCI host bridge MMIO
+window above 4 GiB), ranges with range.last > ULONG_MAX are truncated modulo
+2^32, reserving the wrong low IOVA range.
+
+Furthermore, if a range satisfies range.start <=3D range.last in 64-bit
+arithmetic but wraps such that (unsigned long)range.last <
+(unsigned long)range.start (for example, range.start =3D 0xfffff000ULL and
+range.last =3D 0x100000fffULL), iopt_reserve_iova() receives start > last. =
+The
+overlap checks in iopt_area_iter_first() and iopt_allowed_iter_first() miss
+existing ranges, and an inverted node with node.start > node.last is insert=
+ed
+into iopt->reserved_itree, breaking interval_tree_for_each_span() in
+iommufd_ioas_iova_ranges() and interval_tree_for_each_double_span() in
+iopt_alloc_iova().
+
+Should iommufd_ioas_reserve_iovas() check range.last > ULONG_MAX (or
+range.start >=3D ULONG_MAX) and fail with -EOVERFLOW?
+
+> +		if (rc)
+> +			goto out_unlock;
+> +	}
+> +	up_write(&ioas->iopt.iova_rwsem);
+> +
+> +	rc =3D iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+
+[Severity: Low]
+Is the call to iommufd_ucmd_respond() needed here?
+
+All fields of struct iommu_ioas_reserve_iovas are inputs, and
+iommufd_ioas_reserve_iovas() never modifies *cmd. Calling
+iommufd_ucmd_respond() performs an unnecessary copy_to_user() back to
+userspace, and if the caller passes the input struct in read-only memory, t=
+he
+ioctl will return -EFAULT after the reservations have already been committed
+to ioas->iopt.reserved_itree.
+
+Other input-only handlers in drivers/iommu/iommufd/ioas.c, such as
+iommufd_ioas_allow_iovas() and iommufd_ioas_change_process(), return 0
+directly without calling iommufd_ucmd_respond().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028071906.2325=
+378-1-guanghuifeng@linux.alibaba.com?part=3D3
