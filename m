@@ -1,74 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.192
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793152803;
-	b=fafQ1/XCXuxtDhloysBfcGUQmp0lnDVmXe7iLQcjJT2xZpq8UUaC+5Ns1QKh0tIVfioR
-	 dzA4S5S9GjQEC4XhEgulNfd9OOmpdLQnEy+dCr1eQ/Yhpve0Y4isH05O0BOrapanUYa5D
-	 HIHRHbjP17KETZWS03aPyvwZyI19H/Fv1qVRvKHY6ZjyB4Zbb6vHWYtDq9zGyw8I/hp/0
-	 kif519bI0HQq/Nkxt+8X1ULm7Aa/x96po8CYZG5sx4+ukVAf+Pkf3iENC4kBYjv4g720r
-	 Kyl8L/1e6gY6V4JcQspcXUBGIMo1zvqEsK7sYcd6qQhfdbtmXVz/oHsULx8RZ05/dxw==
+	t=1793157043;
+	b=C7HvUPdExgS6jyBGpr7ssZkoOIAes1AgMsTVhTr66NgtderpnlZU4AWCbYPhcATfXK75
+	 bx6RLc4aRUg+gnvJH8Ti55mx8+vdYFw0u7qvUpHt9MKLz+oCigwHlxGVu7LShq4KwMJUn
+	 4gPWqyXl6upgcwTpqAZa0NkxA6M0o6yK3AsQOOBXafjj0I9p6Wi8CpUFMruRcKiFxEcni
+	 dBsv0i+fslza4pXYkjpedaxsDRTf0kcRKrdwoWo8CuspmyIirmjAVsPPsf/iRBzzPegjb
+	 1xJoviWhFNEV3LRLw5vhdeaSkug8oPdej4vMPB3sV5FP5B/5t54tPR9sq7ADhjs48ow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793152803;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=OqTguHw/2H6yU31W8+OM9YESt2jiE6Km/mtjIrXZoEg=;
-	b=lZRFqd1uq8fxmpPCxh6ymkRb+3yqZ9go6Zk8Me2STNAjGxliVwdZc+vNUD8Kv08aCZRx
-	 85lAO/qyqaLNf0INSYCdwct2xyFzbHMP/T+B+dyrqZooHhB6Nk7Dvdr0yTk5oLWXqBuYh
-	 vor5vpBHgjrmSUzgnNOglciY9RZsLz4bIavChZaaG1a2wRmnoNsSd3yC7mW3t+cNOZtgh
-	 +an3RhXLiS/uYJCgwBJzAB3ZumyFCKZp3Mum5xUvWG9WyL7dz4loadczxrm0j5tsI8CDt
-	 V8+WZRlrdoFsTnN+ki0hxw+wXxL9uw2G72XyJ6msY3lWnD5bMCs4vFaHx/XYw0wV1cA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793157043;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=fy0HfsUMOjewH2fDLKsY21nLEjTbk/eksQFYtRokMBQ=;
+	b=RVXpr9YKNcKWJNQ8Mw/CrYIXS7TIUur9Gx1qUSnPrsd4SFn9IPPPbAO3ctaAcFWAa5R3
+	 o1hBHeiHRpbwtQHtrCWlChsN/SsalkmMZE1dyqgJildCOWX9xk5BcHtN4rqfyfEVIhRGE
+	 0d5Iy+LO1r2C7jpnkXO03u30kuet8zt25p0zrtkves37vwvRQPMuSyMekPOTK/iJEZXu6
+	 x/nMXxm7s2pdMFL0mSSW7HLskYeM/fn5loEBkdbPhCwXTrT3G75CcIEMzDJg1mwwAphre
+	 fUsqCMLqE1i2MZYr5GTf2cF91FZ4y1+WlEYhfdXSw2yQ3lJbvKKeBkM8qBlH3iifCUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=IykLTgF0;
-	arc=none smtp.remote-ip=203.205.221.192
-Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="P9J5thH/";
+	arc=none smtp.remote-ip=209.85.214.178
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C89606A31A;
-	Wed, 28 Oct 2026 02:00:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6C89606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0C2606A31D
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 03:10:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA0C2606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=IykLTgF0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793152799; bh=OqTguHw/2H6yU31W8+OM9YESt2jiE6Km/mtjIrXZoEg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IykLTgF0alAoqQeHDVHR4AucD1wKIa6H3X1jvarG44/6/pv1Mb9WywG2cDNrr1qbc
-	 JRXLgnJA135nSlDSU1uApCrq/uQMG8OOPUv7ciVkDXxXB098T27cbnmCaFjrRn2EYI
-	 tI7m4dSL4kXkeLWI1MkCM2aFBsLHwJIOPipSHcoI=
-Received: from [127.0.0.1] ([2409:8d5c:c30:3b3:1100:5cd8:d3a9:fd5d])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id EF98A233; Wed, 28 Oct 2026 09:59:57 +0800
-X-QQ-mid: xmsmtpt1793152797tjj7kw3q2
-Message-ID: <tencent_6EE8901CBE1ED363CBBA2E8CEC6D88D19F09@qq.com>
-X-QQ-XMAILINFO: OeJ9zRfntlNPnb5/8XQSBhO9yatlQ1tZ8C8poYmggx6zKh5pBHgfsMKFfaesJc
-	 JrVqPsAKaJ3vvnPvufkmkchAXyBxZPsag261rrFD/Apn8vriVoeAoulxWH7PlfQ8bUNSAG8tYAgm
-	 poyxk6CXQKCYPqlyBKJxlsGGfG73dBDZIjlOWfPQpZ/moHFx+HlIiq3gORicxOAyny+pVnRQtHzm
-	 oUh2yIh4APO5wplDyTE+nTp/UDqHQfqYM4rLQnxidsdQU2DTn2+62295+JD3zUGFbbLcGoPyZ3Nm
-	 747HISlWPUWJoNRyKnoTFT8dPL+SsUyXS+3kTqiWkWin2nWBN0fJBVuUE3Y1eamZNZ+9adsXjU/t
-	 MPJd3xzhKSEQoDtMqG0oAbu+BR2jXbayE+H6XwmZOjvskcSTeWYRwPm93uAPKV6IjG1burNhH3Xe
-	 YjOr6fme5wf1Z0x8hpvTyjCn5yOvhgDCRTizE+kJg53KWk9V7iU31makgDmIGCJzcODBh4wZfJbQ
-	 Bkvnm5i83cuJblQX1VL6JVxwbCTS6UhQtvv1xeEL4ZnGu/7WmXhFxsO1FtkKA2AxDAC4d0h4tDQa
-	 SuKzfuZq1dtrFi0BdJg8Nec2wEgIIbgr0fFpOuTajM//EULcsqbqCjGwGnK0vJ34HRR36rEzJ+Zi
-	 T7Blt5eYIcI3ty3lq5z+xQnbZ3qF2OHXhH5KMQYdgkvZjURZG4QG9Xo4niOIKlikB0jJ6/1Z1FTe
-	 NYK0ueOI4mSjb7sapx9Pmo4FklO2I1tanqoxoD+S6cZAttNDfTN0QAbGupM/dlBktRrEVV8i7JJU
-	 rmfozPBx5Z5qOV5/+pyQe2Kojna8YYYTNl1U7D/FyVzJtmx9rC5ukPP2qmVHI7sOLLZUizqqwnaH
-	 hXT9huFq/aFlqIKgsY/lLc6c/f0jXOI8m4P+kNQsTHR2xCrXMYuLVHWEd2M636UCNTZDKPqSMspd
-	 3Ple3T/zaV+Mm42Yc+h9gGCtiTWEJzkFyMgH1t7fHfA5n4qoqdztJuMPkfbz35Ho95ZxLIVzZkK8
-	 Co6TmDPM7E43vm8Owt7juIDhAFtLGxwge6D8Pr9hVaTPgvaEdR81I+b/03fGoeqdlrMqqOZg==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Hang Nan <2122295973@qq.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>, Carlos Llamas <cmllamas@google.com>,
- linux-kernel@vger.kernel.org
-Subject: [PATCH v2] KVM: coalesced_mmio: reject zone sizes that don't fit in an int
-Date: Wed, 28 Oct 2026 09:59:56 +0800
-X-OQ-MSGID: <1793152796.776305.v2@qq.com>
-In-Reply-To: <1792859391.770388.v1@qq.com>
-References: <1792859391.770388.v1@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=P9J5thH/
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e9f6a16afcso22145ad.1
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 20:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793157042; x=1793761842; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fy0HfsUMOjewH2fDLKsY21nLEjTbk/eksQFYtRokMBQ=;
+        b=P9J5thH/x8btNLogQ9fUEHV7LGlgAo+4lNsFc0wgkLBV5e0/UxT6eNdQGT3Im6vLKq
+         0/2ZpWZ712obGuISp4ZItWb/7C71Xbmfn9wkWw+2vRd6JWtzn3xoIwu+VM0rBDapLO/t
+         hX5pwznm6Vf6pawuVmIKWA15d2WCJ4Jxg3654tl7R5b7JwGcG3FQ0pVaokNFj0Q6Nhqb
+         SBhzHUuMZ2zbWgGtmlYnt+U1aSeDYGFt+gZnevt4DYMmV3qjmidHreCfaTSrAV4DajJk
+         acMx2xHoBWZqYvApfn/KVaEOynXFnFbmtyrF0kzyXvcmabmRtdJ0HzZqQltc4RHM4Rpr
+         gcqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793157042; x=1793761842;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fy0HfsUMOjewH2fDLKsY21nLEjTbk/eksQFYtRokMBQ=;
+        b=swyyON8+fXTFeZF3FfV8Moqe6CKmED/qdutVQHqsNnvJcMBMK5Y/aSyNbOVtLpLwzJ
+         sh84u907r0yszX86saA8nrMMtQBXL/NH8tLgsjmpLTM0hUl3QjCHXFIXMSjBzLm/IRE0
+         iLgBHOPhc7V0jSoL7LAQV2EqlsZSN6zvnzfv7Fp+zdLX09a6Eit4SHj3KWqlD7VIyO2R
+         4dDoDGgDJn1Uh02kTCLOfgmfsYi8JNfx9R4J2d0yDEhOgCF2uHrieD+8Qan0++VHci7p
+         N10YU6FbKgtw3jgo376Jg3H+Twj2yRnOcvom0ehTUaSATmrb6+H645XGJsuwVcGUCLrq
+         84uQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwIFn+IjxXiiJev4xz/C4fcr3H9xXUP7uTuPNPQH7wkjz1vnCGpSEfVVSGf4Wa1f0K23s4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKdS2pwm4mCqJ3mWL698AEJ5N2rAgFH+rHsQCr23ogQnXRfzr/5
+	yJsMwWBwol0glZF7BQ53JvxJhFrrYyJbCv7k2imO18fXgQBY2PAmhelCXL555CxPfQ==
+X-Gm-Gg: AYBFou1tkF5gyuZ6p3X2O7CwH58WUyYGlWCE/IrwEyeM+R5II6bWkiYkjfTLXofSd15
+	RZzUuV53Klh+0cqhYGPlFlbFt21wVi2KW6E3qu7SuDQtQ/Rew0c2hFHAYUmGrbnj/FXgFmk0KBO
+	PxK58UrOEZ7j3mUp0K+Db0uFziyWxQtXrNiOzQhXKaMIOD+yDczSstk8PZrKo24LoPQ3GVyqb3b
+	m86MlPTv8ubvXe+ikDDfAXH4QiOukcl/xFENef13P9HqJPPi/9mMDPFuPvAdq8FhezZBAdlkgba
+	7/Hl/Hvpsd/MKXc3mmIV4C342o0XCIaCTHlLhL9/aHq7+qmI/nXVCigY3d6X4XuYZhyNOIaBej/
+	cULBKdgMxmU4O+mp9x0r95djDubPdHFqrGMF4dNyJgF24eVgE1R5zL+hrq9iI560Pi9Zv9+rKEb
+	nwv18pN7ae0ABQWdHKZaKFbJ6TcUySX9NmHkbjAzU96t6Tyy+4AFku/7SsWdoJbHey5JC0LqK6Z
+	Jnz+RaFbxwjUFK7dJPIsoJ2hfCToNRU4HjJooZrjqkCwC+9Ms5NuQx0HOIl3w7i8NDvO6P+nosO
+	I2ohxKj5pFJ4REcMYq5TgF5bjPeQxqpqIlqOZ1zbCxQYoSRQHgRGX1RkFPbtY2Honum1O0jnPd1
+	yKnhvOW458T38XeMYO+cVsQ==
+X-Received: by 2002:a17:902:e74d:b0:2e6:1013:ad57 with SMTP id d9443c01a7336-2eb0191f658mr2455145ad.12.1793157041492;
+        Tue, 27 Oct 2026 20:10:41 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c90be0sm15672355ad.62.2026.10.27.20.10.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 20:10:40 -0700 (PDT)
+Date: Wed, 28 Oct 2026 03:10:36 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse <dwmw2@infradead.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
+	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v6 06/18] iommu/vt-d: Implement device and iommu
+ preserve/unpreserve ops
+Message-ID: <auFnMRfOOZCmU944@google.com>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-7-skhawaja@google.com>
+ <b35a10e9-e48a-4da5-84d6-caaad693bb3d@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,119 +107,132 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <b35a10e9-e48a-4da5-84d6-caaad693bb3d@linux.intel.com>
 
-kvm_vm_ioctl_register_coalesced_mmio() validates @zone->pio but not
-@zone->size.  The u32 size is handed to kvm_io_bus_register_dev() as an
-"int len", so any size >= 0x80000000 silently becomes negative.
+On Wed, Oct 28, 2026 at 09:51:18AM +0800, Baolu Lu wrote:
+>On 10/25/26 10:19, Samiullah Khawaja wrote:
+>>Add implementation of the device and iommu preservation in a separate
+>>file. Also set the device and iommu preserve/unpreserve ops in the
+>>struct iommu_ops.
+>>
+>>Preservation is refused for devices where ATS is supported. Carrying an
+>>active ATS configuration across kexec would require adopting the ATS
+>>state in the PCI core and in the context entries, and handling the
+>>disable-to-enable, enable-to-disable and STU mismatch cases for a live
+>>device.
+>>
+>>Note that the preserved iommu root table, context table and device pasid
+>>table will need cleanup as devices do not go through the release flow
+>>during kexec. So the stale entries need to be removed during shutdown.
+>>This is done in the next commit.
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+>>  MAINTAINERS                      |   8 +
+>>  drivers/iommu/intel/Makefile     |   1 +
+>>  drivers/iommu/intel/iommu.c      |   9 +-
+>>  drivers/iommu/intel/iommu.h      |  13 ++
+>>  drivers/iommu/intel/liveupdate.c | 246 +++++++++++++++++++++++++++++++
+>>  include/linux/kho/abi/iommu.h    |  27 ++++
+>>  6 files changed, 302 insertions(+), 2 deletions(-)
+>>  create mode 100644 drivers/iommu/intel/liveupdate.c
+>>
 
-coalesced_mmio_in_range() bails out immediately for len < 0, so such a
-zone never matches its own range:
+[snip]
 
-  - coalesced MMIO writes for the zone are no longer coalesced and are
-    forwarded to userspace instead;
-  - KVM_UNREGISTER_COALESCED_MMIO returns 0 but does not remove the zone,
-    because the unregister path uses coalesced_mmio_in_range() for matching
-    too, leaving the kvm_io_device permanently registered;
-  - the leaked device occupies a slot on the MMIO/PIO bus.  After
-    NR_IOBUS_DEVS - 1 (998) such zones every further
-    kvm_io_bus_register_dev() on that bus fails with -ENOSPC, including
-    ioeventfds and valid coalesced zones, effectively killing the VM's
-    device model until the VM is destroyed.
+>>+
+>>+static int preserve_iommu_context_tables(struct device_domain_info *info)
+>>+{
+>>+	struct iommu_hw_ser *iommu_ser;
+>>+	struct intel_iommu *iommu;
+>>+	int ret;
+>>+	int i;
+>>+
+>>+	/* IOMMU for this device should already preserved.*/
+>
+>... should already be preserved ...
 
-A negative len additionally breaks the sorted-interval invariant used by
-kvm_io_bus_cmp(), which computes the end of an interval as "addr + len".
+I will fix this in the next revision.
+>
+>>+	iommu = info->iommu;
+>>+	iommu_ser = iommu_preserved_state(&iommu->iommu);
+>>+	if (!iommu_ser)
+>>+		return -EINVAL;
+>>+
+>>+	/*
+>>+	 * We could do preservation of context tables only for the bus of this
+>>+	 * device, but these devices can have PCI aliases, so context tables for
+>>+	 * those will also require preservation. Also unpreserve would require
+>>+	 * some kind of refcounting where the context table will only be
+>>+	 * unpreserved when the last device associated with it is unpreserved.
+>>+	 *
+>>+	 * This introduces unnecessary complication with minimum benefits as the
+>>+	 * unpreserved context tables will probably be recreated by the next
+>>+	 * kernel as these are all active devices. We follow simpler approach by
+>>+	 * just preserving the currently active context tables.
+>>+	 */
+>>+	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+>>+		ret = preserve_context_table(iommu, iommu_ser, i, 0);
+>>+		if (ret)
+>>+			return ret;
+>>+
+>>+		if (!sm_supported(iommu))
+>>+			continue;
+>>+
+>>+		ret = preserve_context_table(iommu, iommu_ser, i, 0x80);
+>>+		if (ret)
+>>+			return ret;
+>>+	}
+>>+
+>>+	return 0;
+>>+}
+>>+
+>>+
 
-ioeventfd rejects lengths outside {0, 1, 2, 4, 8}, so the same ioctl
-family cannot be abused this way; coalesced MMIO has no equivalent check.
+[snip]
 
-Validate the zone in kvm_vm_ioctl_unregister_coalesced_mmio() as well: it
-has the same gap today and is only saved by coalesced_mmio_in_range()
-rejecting negative lengths (commit 1a214246cbb4).  Factor both checks into
-kvm_is_valid_io_zone() and reject with -EINVAL.
+>>+/**
+>>+ * struct iommu_intel_ser - Serialized state of an Intel IOMMU instance
+>>+ * @features: Bitmask of Intel IOMMU specific features
+>>+ * @sm_enabled: Whether the IOMMU was used in scalable mode
+>>+ * @phys_addr: Physical address of the IOMMU register base
+>>+ * @root_table: Physical address of the root entry table
+>>+ * @context_tables_bitmap: Bitmap representing the context tables that are
+>>+ * preserved.
+>>+ */
+>>+struct iommu_intel_ser {
+>>+	u32 features;
+>>+	u8 sm_enabled;
+>>+	u8 padding[3];
+>>+	u64 phys_addr;
+>>+	u64 root_table;
+>>+	u64 context_tables_bitmap[VTD_PRESERVED_BITMAP_LONGS];
+>>+} __packed;
+>>+
+>>  /**
+>>   * struct iommu_hw_ser - Serialized state of an IOMMU instance
+>>   * @hdr: Common object header
+>>   * @token: Unique token to identify the IOMMU instance
+>>   * @type: IOMMU type serialized state belongs to
+>>   * @reserved: Reserved for future common fields.
+>>+ * @intel: Intel specific serialization data
+>>   */
+>>  struct iommu_hw_ser {
+>>  	struct iommu_hdr_ser hdr;
+>>  	u64 token;
+>>  	u64 type;
+>>  	u64 reserved[2];
+>>+	union {
+>>+		struct iommu_intel_ser intel;
+>>+	};
+>>  } __packed;
+>>  /**
+>
+>This patch looks good to me,
+>
+>Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
-Note that this makes KVM_UNREGISTER_COALESCED_MMIO return -EINVAL for a
-zone that could never have been registered, instead of the old "0 but the
-zone stays" behaviour.  QEMU never registers a zone larger than the
-coalesced ring window, so no in-tree user is affected.
-
-Fixes: 743eeb0b01d2 ("KVM: Intelligent device lookup on I/O bus")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hang Nan <2122295973@qq.com>
----
-v2:
- - recipients taken from scripts/get_maintainer.pl (Paolo and the list in To:,
-   you and Carlos in Cc:), sorry about that
- - dropped the comment
- - folded the validation into kvm_is_valid_io_zone() and used it from
-   kvm_vm_ioctl_unregister_coalesced_mmio() as well
-
-On the unregister side: agreed, it only survives today because
-coalesced_mmio_in_range() rejects negative lengths (1a214246cbb4).  Validating
-there does change the return value for a zone that can no longer be registered
-at all, from 0 to -EINVAL, so I called it out in the changelog -- it is an
-ABI-visible difference for anyone who relied on the old behaviour.
-
-Verified before and after the patch on v7.3-11778-g5b0764a53235, same .config,
-unprivileged /dev/kvm, same initrd:
-
-  before: REGISTER {addr=0x1000, size=0x80000000}          -> 0
-          UNREGISTER {same}                                -> 0 (zone stays)
-          998 bad zones accepted, then
-          REGISTER {addr=0x900000, size=0x1000}            -> -ENOSPC
-  after:  REGISTER {addr=0x1000, size=0x80000000}          -> -EINVAL
-          UNREGISTER {same}                                -> -EINVAL
-          1200 attempts, 0 accepted
-          REGISTER {addr=0x900000, size=0x1000}            -> 0
-          UNREGISTER {same}                                -> 0
-
-The reproducer is ~150 lines of static C that only opens /dev/kvm; happy to
-post it if it is useful.
-
-Hang
-
-
-virt/kvm/coalesced_mmio.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/virt/kvm/coalesced_mmio.c b/virt/kvm/coalesced_mmio.c
-index 3b5430036cae..4afa86b72cf6 100644
---- a/virt/kvm/coalesced_mmio.c
-+++ b/virt/kvm/coalesced_mmio.c
-@@ -121,13 +121,24 @@ void kvm_coalesced_mmio_free(struct kvm *kvm)
- 		free_page((unsigned long)kvm->coalesced_mmio_ring);
- }
- 
-+static bool kvm_is_valid_io_zone(struct kvm_coalesced_mmio_zone *zone)
-+{
-+	if (zone->pio != 1 && zone->pio != 0)
-+		return false;
-+
-+	if (zone->size > INT_MAX)
-+		return false;
-+
-+	return true;
-+}
-+
- int kvm_vm_ioctl_register_coalesced_mmio(struct kvm *kvm,
- 					 struct kvm_coalesced_mmio_zone *zone)
- {
- 	int ret;
- 	struct kvm_coalesced_mmio_dev *dev;
- 
--	if (zone->pio != 1 && zone->pio != 0)
-+	if (!kvm_is_valid_io_zone(zone))
- 		return -EINVAL;
- 
- 	dev = kzalloc_obj(struct kvm_coalesced_mmio_dev, GFP_KERNEL_ACCOUNT);
-@@ -162,7 +173,7 @@ int kvm_vm_ioctl_unregister_coalesced_mmio(struct kvm *kvm,
- 	struct kvm_coalesced_mmio_dev *dev, *tmp;
- 	int r;
- 
--	if (zone->pio != 1 && zone->pio != 0)
-+	if (!kvm_is_valid_io_zone(zone))
- 		return -EINVAL;
- 
- 	mutex_lock(&kvm->slots_lock);
-
+Thanks for the review,
+Sami
