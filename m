@@ -1,145 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793171647;
-	b=pFfwt1JfQTLIAZBJqsZ+W9x43coglw7kIgoTpD2GU335cBHXTxqWoIh75QqU47xphmq+
-	 pPND932KKGFsM/+uF6hyLJK+WB34ezEyaKnLfotoUPkg/ggUlJWJws3jChJvGY/J/4qWO
-	 ZwQ7/hU/bxSEI5/5Gdg0txVQMR3gYqA9Czdat6orWaz2GRj3nPjuUgrgSlBypCPwYxHK4
-	 9xZvoGVzbpNMJ4BCwNU6VTrA+jEo+itr9EwjBCgEKR5NneoThVGxxW+HXw5NASyxzYGhS
-	 H6ycmMtEV1Hx1D62a1XwtLJBny3c/6D/zPynNJmI/MU5GIW07MfZDpgZuMEAw1XnGEg==
+	t=1793171675;
+	b=l0cnphUVy3sqO/mlpOm0doXHcbIQ/CcNovVJIqHc3FrmlJa1fDuio0nZhfOLaOsRZ77Y
+	 mQrUooXO41HZuB/ADG4EOugkXikf5KKkFuBYdhiiE9Xafhu7jkGvLd9idlAnv7ihhd+i8
+	 as3/Wz8a1Psw68FHDC99pEihgGg/EPsgyYCrrnX4Adsz97dNot0tLRIYNAgdracHSCiy1
+	 XiPzr9NXphLtkc5aNAyPUWTl3b2cUY3ZlDxLnvgRKk/24CTlZhfNVl6pA/eHXNWJY3cga
+	 yOE+xvc98kxI3Wnbc0KgK3AYnDA0HuIvhc++wJ8dmsKZOfR1inZVVjWXvra3SJnUyaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793171647;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=QxmQ5AxN89rC1HiyefFy0FHMMxtlG6Y/Map2WM9XKmw=;
-	b=SAYlWBEAKdNLWJnqUEUMTowK6/UMGMMjnH5Cf3HC56nzyRLK74t4okqyIsdG5XGXCeLc
-	 arKTLIAXvlX8NtegM82Suj4aJ8gC/cJyjnbwY2G5q6EKAyWZQ60JcriQMy1uz8LKDFmmM
-	 8cOOP259BP2OVR6xnbTbVS6AferKAYj06UvpQw12cTIofsWse2agW2E4PX9ASNyLWx+Ug
-	 5u7zE/DO6DFc0nZXOPNb6Iye7PrenXtHyt0hDLupkpKLQNFEBMCVCzVx1fkWjv1vcQCUn
-	 KFAvrBTzClUUI4zay6sULTSx0H2Y182/LDye+/XzQYfY72GFIyo35gUXiwB4rZi/9xw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793171675;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=nWvZ3TM+SO8+XPvG+XWKa0let6l7VYIlGYjlYFnH3+M=;
+	b=S0A741XspxeHuH7ny0y8Wcn8bO9E5tWEaNQXTgVztsfBO7kM8P9G43i/vUS9fft5/EDh
+	 sP1Jmg45LqH8vl8hVbAhgZHJ/NZ0WaMxTD6qjZmJrCcRyTO8sPix8iJpnLsn/hFf8+Fzg
+	 TjxJiZq8YiSed6okIWKorl3Rz4bh45qT6Y2yaw/234+MXCK/O+Fcnt4B0Vw3YV4qOg+0Q
+	 zINBpRPX8vKU4O4m0NJaV6WU577qQpf8TLmETJ2yMnJyyi95dy2Dff9UDLN3QgSUdSN9q
+	 aLUmM+W0m4GZ/kHIVN2lPWJDdmly4LHDRPAnfTEjMm+HUJZN80sDyW3R8IyIEDOXyOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Kj8rqiQg;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kvbBERdx;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F203606A31D
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 07:14:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F203606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF321606A322;
+	Wed, 28 Oct 2026 07:14:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF321606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Kj8rqiQg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793171646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QxmQ5AxN89rC1HiyefFy0FHMMxtlG6Y/Map2WM9XKmw=;
-	b=Kj8rqiQgXInB5MESDsA+2KTrGy89kosKe4U37flKN5NA8VT6scQcInSQraPlpZrNtBScJM
-	WBhzJLFoKMEB3tNvFP9kSI46ziasagnqiD/aQGy3hy+3fPKUyjDXNt7nVDP2QrgeS/Qmxk
-	FPNUTTmtRysuJsvmHoKDXgvlH+k7RhI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-aPtTQLUAOnmRkcQac9q43w-1; Wed,
- 28 Oct 2026 03:14:01 -0400
-X-MC-Unique: aPtTQLUAOnmRkcQac9q43w-1
-X-Mimecast-MFC-AGG-ID: aPtTQLUAOnmRkcQac9q43w_1793171635
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9EEAC1955EA3;
-	Wed, 28 Oct 2026 07:13:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 11B5A1800257;
-	Wed, 28 Oct 2026 07:13:47 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 8C76D21E6A04; Wed, 28 Oct 2026 08:13:44 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
-  qemu-devel@nongnu.org,
-  Michael Roth <michael.roth@amd.com>,  John Snow <jsnow@redhat.com>,
-  Peter Maydell <peter.maydell@linaro.org>,  Mauro Carvalho Chehab
- <mchehab+huawei@kernel.org>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Kostiantyn Kostiuk <kkostiuk@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  David Hildenbrand <david@kernel.org>,  Igor Mammedov
- <imammedo@redhat.com>,  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-  Jason Wang <jasowangio@gmail.com>,  Marcelo Tosatti
- <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto Garcia
- <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,
-  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
-  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
-  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
- <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
- Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,
-  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
-  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
-  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
- Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
-  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
-  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
- <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
- <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
-  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
- <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
- Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
- <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
- Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
-  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
- <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
- <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
- Lin
- <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
- Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
- Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
- Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
- <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
- <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
- Dooley <conor@kernel.org>,  Sebastian Huber
- <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
- <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  Anthony PERARD
- <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
- <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
-  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
-  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
-  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
-  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
- <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
- Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 54/65] qdev: adjust PciDevfn declared type
-In-Reply-To: <auC-ilqUJq27neSR@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
-	"Tue, 27 Oct 2026 15:08:58 +0000")
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-	<20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
-	<atsxLV5YZo8dr-8G@redhat.com>
-	<CAMxuvazd7G_NBOM_c6BxZn5PFSw=XQUHueHqBoQQfpzPPgi9qA@mail.gmail.com>
-	<87zevz5h4k.fsf@pond.sub.org> <auC-ilqUJq27neSR@redhat.com>
-Date: Wed, 28 Oct 2026 08:13:44 +0100
-Message-ID: <87o6ce47rr.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kvbBERdx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793171676; x=1824707676;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=V++wtxYvvFtv+QXNQW1GugFJXMKwwFidjcD9QJCz6O8=;
+  b=kvbBERdxMHVMytsEc9n8QWO3VQ55+YlV83ooyWOkoF6DD5Q4BT1zcLRX
+   DdFkHVMXQ0/b9msUKkEtd+L+CVxXcjThMVTxzru+It0zw9zVwiI49PxuF
+   q92DG7c6Rf7n6Epe1tD+BJcbHTGQV5nHFwtHeNci5+0Xn6AyqZbk4/aUj
+   qqcELFWoCjhQ/O4HapfgHmoYYTuJd/r5bEb/ZpLqkm+yoL5y7Jp4XoYfa
+   UpSgM7v9QYrDNsyW2LwatdhqFJRdfhAYRQFY+6UqouQeJP7NSCUKaitRo
+   Wmp6sYVMSvaJ0kCjE1GMTzFeaPnYtOqsOplk16QCm0qsSja0DH4afiEDZ
+   g==;
+X-CSE-ConnectionGUID: VFME67/TRF6pg9bRjjb/NQ==
+X-CSE-MsgGUID: BSZgQfTtRl+V6zwB0OeYwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1914695"
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="1914695"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 00:14:35 -0700
+X-CSE-ConnectionGUID: EZYw30CpTfG8IRpiQz3tHw==
+X-CSE-MsgGUID: FJcdkkdcTLioWet2HjwKRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="4743439"
+Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 00:14:29 -0700
+Message-ID: <e86c855a-bad8-4909-ae88-a7cdca2837a7@linux.intel.com>
+Date: Wed, 28 Oct 2026 15:14:26 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -149,105 +72,410 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
+ domain ids
+To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ David Woodhouse <dwmw2@infradead.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ John Starks <dev@jstarks.net>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-11-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261025021930.674647-11-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On 10/25/26 10:19, Samiullah Khawaja wrote:
+> During boot fetch the preserved state of IOMMU unit and if found then
+> restore the state.
+> 
+> - Reuse the root_table that was preserved in the previous kernel.
+> - Reclaim the domain ids of the preserved domains for each preserved
+>    devices so these are not acquired by another domain.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>   drivers/iommu/intel/iommu.c      |  71 ++++++++++++------
+>   drivers/iommu/intel/iommu.h      |  14 ++++
+>   drivers/iommu/intel/liveupdate.c | 121 +++++++++++++++++++++++++++++++
+>   3 files changed, 185 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 35ec2ae0c8d5..991ad9b2456e 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -987,6 +987,8 @@ static void iommu_disable_translation(struct intel_iommu *iommu)
+>   
+>   static void release_dmar_iommu(struct intel_iommu *iommu)
+>   {
+> +	intel_iommu_handle_drhd_restore_failure(iommu);
+> +
+>   	/*
+>   	 * All iommu domains must have been detached from the devices,
+>   	 * hence there should be no domain IDs in use.
+> @@ -1452,7 +1454,7 @@ static void intel_iommu_init_qi(struct intel_iommu *iommu)
+>    * Returns 0 when the ID is reserved, was already reserved, or cannot be
+>    * re-assigned, and a negative errno for a genuine allocation failure.
+>    */
+> -static int reserve_domain_id(struct intel_iommu *iommu, int did)
+> +int reserve_domain_id(struct intel_iommu *iommu, int did)
+>   {
+>   	int ret;
+>   
+> @@ -1743,12 +1745,16 @@ static int copy_translation_tables(struct intel_iommu *iommu)
+>   
+>   static int __init init_dmars(void)
+>   {
+> +	struct iommu_hw_ser *iommu_ser;
+>   	struct dmar_drhd_unit *drhd;
+>   	struct intel_iommu *iommu;
+>   	int ret;
+>   
+>   	for_each_iommu(iommu, drhd) {
+> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys,
+> +						     IOMMU_SER_TYPE_INTEL);
+>   		if (drhd->ignored) {
+> +			intel_iommu_handle_drhd_restore_failure(iommu);
+>   			iommu_disable_translation(iommu);
+>   			continue;
+>   		}
+> @@ -1766,7 +1772,9 @@ static int __init init_dmars(void)
+>   		}
+>   
+>   		intel_iommu_init_qi(iommu);
+> -		init_translation_status(iommu);
+> +
+> +		if (!iommu_ser)
+> +			init_translation_status(iommu);
 
-> On Tue, Oct 27, 2026 at 03:54:03PM +0100, Markus Armbruster wrote:
->> Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
->>=20
->> > Hi
->> >
->> > On Fri, Oct 23, 2026 at 2:04=E2=80=AFPM Daniel P. Berrang=C3=A9 <berra=
-nge@redhat.com> wrote:
->> >>
->> >> On Tue, Oct 20, 2026 at 02:46:11PM +0400, Marc-Andr=C3=A9 Lureau wrot=
-e:
->> >> > PciDevfn is a bit special, since it accepts integer and string as
->> >> > setter, but only output integer as getter.
->
-> snip
->
->> >                                                       But I agree we
->> > could do better.
->> >
->> > There are multiple options. We could keep declaring the property as
->> > str instead. In this case, the getter should probably return a string
->> > for consistency and correctness. This might surprise some existing
->> > users though.
->>=20
->> I.e. ditch numeric suppport for numeric addresses, right?
->>=20
->> Incompatible change.  Do we care?
->>=20
->> If we don't, we should be honest about it and mark qom-get unstable.
->>=20
->> > We could introduce new properties like `devfn-str` and `devfn-int`
->> > that alias the same value.
->>=20
->> Compatibility break.  If breaking compatibility is okay, I'd rather use
->> the opportunity to get rid of cleverness, and go with your first option.
->>=20
->> > We could also introduce a new structured QAPI type.
->>=20
->> What kind of type do you have in mind?
->
-> IMHO the root cause design flaw here was to overload 'addr' as a
-> way to set both the slot number and function number, as using
-> one property for two pieces of data is a well known anti-pattern
-> we caution against.
->
-> IOW, we should have had 'slot' and 'function' as separate properties
-> from the start.
+Why skipping init_translation_status() for a preserved iommu? The final
+step of intel_iommu_init() does the following:
 
-Fair.
+         /* Finally, we enable the DMA remapping hardware. */
+         for_each_iommu(iommu, drhd) {
+                 if (!drhd->ignored && !translation_pre_enabled(iommu))
+                         iommu_enable_translation(iommu);
 
-Our modeling of PCI is old and weird.
+                 iommu_disable_protect_mem_regions(iommu);
+         }
 
-What we call "pci-device" isn't a device, it's a function, where
-function 0 sort of stands in for the device.
+That touches the gcmd register of a preserved iommu.
+VTD_FLAG_TRANS_PRE_ENABLED should be set for all preserved iommu. Or
+not?
 
-Its "addr" isn't a PCI address, it's the address of the function on its
-PCI bus, i.e. the tail of a PCI address.
+>   
+>   		if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
+>   			iommu_disable_translation(iommu);
+> @@ -1775,14 +1783,18 @@ static int __init init_dmars(void)
+>   				iommu->name);
+>   		}
+>   
+> -		/*
+> -		 * TBD:
+> -		 * we could share the same root & context tables
+> -		 * among all IOMMU's. Need to Split it later.
+> -		 */
+> -		ret = iommu_alloc_root_entry(iommu);
+> -		if (ret)
+> -			goto free_iommu;
+> +		if (iommu_ser) {
+> +			intel_iommu_liveupdate_restore_root_table(iommu, iommu_ser);
+> +		} else {
+> +			/*
+> +			 * TBD:
+> +			 * we could share the same root & context tables
+> +			 * among all IOMMU's. Need to Split it later.
+> +			 */
+> +			ret = iommu_alloc_root_entry(iommu);
+> +			if (ret)
+> +				goto free_iommu;
+> +		}
+>   
+>   		if (translation_pre_enabled(iommu)) {
+>   			pr_info("Translation already enabled - trying to copy translation structures\n");
+> @@ -1818,7 +1830,11 @@ static int __init init_dmars(void)
+>   	 */
+>   	for_each_active_iommu(iommu, drhd) {
+>   		iommu_flush_write_buffer(iommu);
+> -		iommu_set_root_entry(iommu);
+> +
+> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys,
+> +						     IOMMU_SER_TYPE_INTEL);
+> +		if (!iommu_ser)
+> +			iommu_set_root_entry(iommu);
+>   	}
+>   
+>   	check_tylersburg_isoch();
+> @@ -2245,17 +2261,28 @@ int dmar_parse_one_satc(struct acpi_dmar_header *hdr, void *arg)
+>   static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
+>   {
+>   	struct intel_iommu *iommu = dmaru->iommu;
+> +	struct iommu_hw_ser *iommu_ser;
+>   	int ret;
+>   
+> -	/*
+> -	 * Disable translation if already enabled prior to OS handover.
+> -	 */
+> -	if (iommu->gcmd & DMA_GCMD_TE)
+> -		iommu_disable_translation(iommu);
+> +	/* Use IOMMU HW unit MMIO base to identify the preserved state. */
+> +	iommu_ser = iommu_get_preserved_data(iommu->reg_phys,
+> +					     IOMMU_SER_TYPE_INTEL);
+> +	if (iommu_ser) {
+> +		if (dmaru->ignored)
+> +			intel_iommu_handle_drhd_restore_failure(iommu);
 
-> From a CLI POV, we could easily change 'addr' to mean only the slot
-> number, since it is always parsed in string format without the
-> magic (slot << 4) | function encoding. Then add a 'function' prop
+intel_iommu_add() runs during runtime ACPI hot-add, not during boot.
+It's unclear whether an preserved IOMMU can reach this path. By the time
+a hot-add event occurs, the preserved data may already be gone because
+the LUO session has ended.
 
-In CLI, HMP and QMP string (not integer), value "5" is shorthand for
-"5.0", and means device 5, function 0.
+I would suggest starting from simple by not supporting IOMMUs with
+preserved state in the hot-plug case. Returning -EBUSY here would be
+enough?
 
-We could deprecate the .FN part in favor of a new property "function".
+>   
+> -	ret = iommu_alloc_root_entry(iommu);
+> -	if (ret)
+> -		goto out;
+> +		intel_iommu_liveupdate_restore_root_table(iommu, iommu_ser);
+> +	} else {
+> +		/*
+> +		 * Disable translation if already enabled prior to OS handover.
+> +		 */
+> +		if (iommu->gcmd & DMA_GCMD_TE)
+> +			iommu_disable_translation(iommu);
+> +
+> +		ret = iommu_alloc_root_entry(iommu);
+> +		if (ret)
+> +			goto out;
+> +	}
+>   
+>   	intel_svm_check(iommu);
+>   
+> @@ -2281,7 +2308,8 @@ static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
+>   	if (ret)
+>   		goto out;
+>   
+> -	iommu_set_root_entry(iommu);
+> +	if (!iommu_ser)
+> +		iommu_set_root_entry(iommu);
+>   	iommu_enable_translation(iommu);
+>   
+>   	iommu_disable_protect_mem_regions(iommu);
+> @@ -2797,7 +2825,8 @@ int __init intel_iommu_init(void)
+>   		 * to avoid unnecessary lock order splat.
+>   		 */
+>   		up_read(&dmar_global_lock);
+> -		iommu_device_register(&iommu->iommu, &intel_iommu_ops, NULL);
+> +		if (iommu_device_register(&iommu->iommu, &intel_iommu_ops, NULL))
+> +			intel_iommu_handle_drhd_restore_failure(iommu);
+>   		down_read(&dmar_global_lock);
+>   
+>   		iommu_pmu_register(iommu);
+> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+> index 16ab103d308a..260c7a5b1240 100644
+> --- a/drivers/iommu/intel/iommu.h
+> +++ b/drivers/iommu/intel/iommu.h
+> @@ -1307,6 +1307,8 @@ static inline int iopf_for_domain_replace(struct iommu_domain *new,
+>   	return 0;
+>   }
+>   
+> +int reserve_domain_id(struct intel_iommu *iommu, int did);
+> +
+>   #ifdef CONFIG_IOMMU_LIVEUPDATE
+>   int intel_iommu_preserve_device(struct device *dev,
+>   				struct iommu_device_ser *device_ser);
+> @@ -1317,10 +1319,22 @@ int intel_iommu_preserve(struct iommu_device *iommu,
+>   void intel_iommu_unpreserve(struct iommu_device *iommu,
+>   			    struct iommu_hw_ser *iommu_ser);
+>   void clear_unpreserved_context_entries(struct intel_iommu *iommu);
+> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+> +					       struct iommu_hw_ser *iommu_ser);
+> +void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu);
+>   #else
+>   static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
+>   {
+>   }
+> +
+> +static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+> +							     struct iommu_hw_ser *iommu_ser)
+> +{
+> +}
+> +
+> +static inline void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
+> +{
+> +}
+>   #endif
+>   
+>   #ifdef CONFIG_INTEL_IOMMU_SVM
+> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+> index f92cb774cc99..cf98b95bf8d2 100644
+> --- a/drivers/iommu/intel/liveupdate.c
+> +++ b/drivers/iommu/intel/liveupdate.c
+> @@ -272,6 +272,127 @@ static int preserve_iommu_context_tables(struct device_domain_info *info)
+>   	return 0;
+>   }
+>   
+> +static int restore_context_table(struct intel_iommu *iommu,
+> +				 struct iommu_hw_ser *ser,
+> +				 u8 bus, u8 devfn, u64 root_val)
+> +{
+> +	bool present = root_val & 1;
+> +
+> +	/*
+> +	 * The root entries of unpreserved context tables are cleared during
+> +	 * shutdown, so the preserved bitmap must match the present bits.
+> +	 */
+> +	if (is_context_table_preserved(iommu, ser, bus, devfn) != present)
+> +		return -EINVAL;
+> +
+> +	if (present)
+> +		iommu_restore_pages(root_val & VTD_PAGE_MASK);
+> +
+> +	return 0;
+> +}
+> +
+> +static int restore_iommu_context(struct intel_iommu *iommu,
+> +				 struct iommu_hw_ser *ser)
+> +{
+> +	struct root_entry *root;
+> +	int ret;
+> +	int i;
+> +
+> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+> +		root = &iommu->root_entry[i];
+> +
+> +		ret = restore_context_table(iommu, ser, i, 0, root->lo);
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (!sm_supported(iommu))
+> +			continue;
+> +
+> +		ret = restore_context_table(iommu, ser, i, 0x80, root->hi);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int _restore_used_domain_ids(struct iommu_device_ser *ser, void *arg)
+> +{
+> +	int id = ser->attachment.attachment_id;
+> +	struct iommu_hw_ser *iommu_hw_ser;
+> +	struct intel_iommu *iommu = arg;
+> +
+> +	if (WARN_ON(!ser->iommu_phys))
+> +		return 0;
+> +
+> +	iommu_hw_ser = phys_to_virt(ser->iommu_phys);
+> +	if (iommu_hw_ser->type != IOMMU_SER_TYPE_INTEL)
+> +		return 0;
+> +
+> +	/* Only allocate domain ID from associated IOMMU HW unit */
+> +	if (iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
+> +		return 0;
 
-Once we drop support for .FN from "addr", its name becomes even more
-misleading than it always was.
+Unlike kdump case, where out-of-range did is ignored.
 
-> The challenge is the impact on QMP with strict typing, as ideally
-> int format would soley represent the slot number, but today the
-> int format is encoded (slot << 4) | function.  So anyone relying
-> on int format in QMP would silently have a semantic change if we
-> altered what 'addr' means.=20
+	/* For live update, an out-of-range did means corrupt state. */
+	if (id < 0 || id >= iommu->max_domain_id)
+		return -EINVAL;
 
-That's a no-go.
+> +
+> +	return reserve_domain_id(iommu, id);
+> +}
+> +
+> +/**
+> + * intel_iommu_liveupdate_restore_root_table() - Restore root table and reclaim domain IDs
+> + * @iommu: Target IOMMU
+> + * @iommu_ser: Serialized IOMMU hardware state from previous kernel
+> + *
+> + * Restores the preserved root table and context tables for the IOMMU hardware
+> + * instance across Live Update, and reclaims all domain IDs previously allocated
+> + * to preserved devices so they are not reused.
+> + *
+> + * The preserved devices keep doing DMA through the preserved translation
+> + * tables, so a failure to restore them is fatal.
+> + */
+> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+> +					       struct iommu_hw_ser *iommu_ser)
+> +{
+> +	int ret;
+> +
+> +	/*
+> +	 * The kernel command line might have changed across kexec, e.g.
+> +	 * intel_iommu=sm_off, so make sure the preserved tables are in the
+> +	 * format this kernel is going to use.
+> +	 */
+> +	if (iommu_ser->intel.sm_enabled != sm_supported(iommu))
+> +		panic("%s: preserved scalable mode %u does not match current %u\n",
+> +		      iommu->name, iommu_ser->intel.sm_enabled,
+> +		      sm_supported(iommu));
 
-> Deprecating 'addr' entirely and adding brand new 'slot' and
-> 'function' properties would be a significant disruption to
-> a syntax which has been documented for years (decades).
+I'm not clear on the trust model for the preserved data. What if it does
+not match the hardware's current configuration? Should we verify that
+the preserved data matches the hardware state here? Would the following
+check help detect such mismatches?
 
-What about this:
+	u64 rtaddr = readq(iommu->reg + DMAR_RTADDR_REG);
+	u32 gsts = readl(iommu->reg + DMAR_GSTS_REG);
 
-* No change to PCIDevice member @devfn: encodes slot and function as an
-  integer.
+	if (!(gsts & DMA_GSTS_TES) ||
+	    (rtaddr & VTD_PAGE_MASK) != iommu_ser->intel.root_table ||
+	    !!(rtaddr & DMA_RTADDR_SMT) != !!iommu_ser->intel.sm_enabled)
+		panic(...);
 
-* New "pci-device" properties "slot" and "function".  "slot" sets just
-  the slot bits of @devfn, and "function" sets just the function bits.
-  Both default to zero, so specifying just "slot" gives you
-  PCI_DEVFN(slot, 0), which makes sense.
+> +
+> +	iommu_restore_pages(iommu_ser->intel.root_table);
+> +	iommu->root_entry = __va(iommu_ser->intel.root_table);
 
-* Deprecate "pci-device" property "addr" for QMP.  We can keep it around
-  for longer than the required grace period if that helps.
+__va() is used here while other places use phys_to_virt(). Why?
 
-* Declare it legacy for CLI and HMP, with no intent to remove it.
+> +
+> +	ret = restore_iommu_context(iommu, iommu_ser);
+> +	if (ret)
+> +		panic("%s: failed to restore preserved context tables\n",
+> +		      iommu->name);
+> +
+> +	ret = iommu_for_each_preserved_device(_restore_used_domain_ids, iommu);
+> +	if (ret)
+> +		panic("%s: failed to reclaim preserved domain IDs: %d\n",
+> +		      iommu->name, ret);
+> +}
+> +
+> +/**
+> + * intel_iommu_handle_drhd_restore_failure() - Handle DRHD restore failure
+> + * @iommu: Target IOMMU
+> + */
+> +void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
+> +{
+> +	/*
+> +	 * The preserved devices keep doing DMA through the preserved
+> +	 * translation tables, so a failure to restore and register the IOMMU
+> +	 * is fatal.
+> +	 */
+> +	if (iommu_get_preserved_data(iommu->reg_phys, IOMMU_SER_TYPE_INTEL))
+> +		panic("%s: failed to restore IOMMU with preserved state\n",
+> +		      iommu->name);
+> +}
+> +
+>   /**
+>    * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
+>    * @dev: Target device
 
+Thanks,
+baolu
