@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793227407;
-	b=2OaNlnvCfgC3Pwgx1KZSnfKEdQdkStac6IGLIoEGu03bj8R9ODjhiYElqFwkmeIQ+HcS
-	 P2S+8+zZ+jbYZWK1T/dw4Q1QVSTxrnKGu/m99PFudtA4QZHyx1D0HMUgoL2UB4+ocUH8t
-	 wjDF/QBSUduaMp6+WIYWarjZc3asEIrHtj4PhMrha2ZsieyaIFOmBuZl0eFWhP4kCxZ+g
-	 AjoZ8yAqf43x3UlEjr5bUSspQDwQe9UygykmvIVYfyXt19OsFaTifpm3hPeJcxDG65IHW
-	 ll5Se7gsRdQ5a4YMhUn4SYzm8pG5lf2QhFVHqR+/dhvRLMcznCdU1UOHa5sZj+uivLg==
+	t=1793227409;
+	b=el04dSrKCXT8AKSGnQN0OCKnIcxFmKeee/zQYrkxepd9wH7s9r1ZfLmIf5u7+VqzzTe2
+	 lG10HHaCyewNyf/qaYU9OzffrEaViUboou9fhLX4SfSXzsYMdxK0KwOfhnc5TMpDDl8Qr
+	 jQxxCdtmCE53V0UzM16UvcsKiBJjwl9WkRPMjNUjNuMMe+Ny75m1ClDf96kN3mD4P2lJY
+	 b5mpzbgWS4CC8z4R3JOecDNYsfv85S0fYoE6GlXQLlHohqrO4kopU3/MkxwimCBDNLMxr
+	 /HS5Xs5OpKuhh9pPis/G78QFrATiEl1AsT5ySzejRA6slt5t9sHrrsuqOHdoocNZvnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793227407;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793227409;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=qy3A1Vkwd/cDXLut21ZiXnCP/BKq6y64SvmrcYwH9Tc=;
-	b=PxW8JsBpAVE4O3w1JcLoor9wEaqf+X/LZVwQc8oBL8fGCT8zg7keSWiKst4DRcF6JoQV
-	 ++9U2oRCNz+Z+YTvIvpZy8EgB5lsQOGCKJkUp41/oSxWmPWyYrPZuXv2r537VJMKPypG5
-	 1ffxA/UFs6O+0IrDYBUNnf+93ficEvNA0dCAVHv+wCy731x6MyHfRjrTF984tG9M4mzn4
-	 yP+b/CORyzQXxrVtZAIILSyBsf1S/+NBtHNPjYaA12Scq0vVt0SRBpF1yKSKrV7+Cd/7o
-	 i/dm+524Ee5TN1kwo7+L4XX6F1ipwZjyGE+PJCFNsgX9Nq8YsuLpKst1GPiyAnlGeig==
+	bh=dAZhtXQcONVBEEfX+FEqGwIc1UuckqT1BoM+QvmFfV4=;
+	b=ucMmi6ytDZoZMrTFKdVuoIEqemRbBwNFTl1ULUr2lv7ptumLrabW56im101NFUXwb0Vz
+	 xlm80tRVOeEN/oJnU1E+OIry9TasTgFh3fDFriB3iePBPVWC3dFe+PoQ3DzyqnhS7sZUT
+	 PXSHYylgsYhMvBikWmdMcFfkW+FazGMA/7qpJqTBeNlH3LqyasY7viMyOceuAN9K4wZfm
+	 IhJLH+Af0/lM446wU4ezJraoUPUdyoeP+MylRMNDClvOo31V846IhcYUlLaMvTeVgD4gG
+	 A0wW0yiK57dd4FSJYNTdfFSesQE9QdAvBERPVUgDyQnvyY/5RRWH+YH897+xmn2FBhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YKfTsW0W;
-	arc=none smtp.remote-ip=209.85.219.52
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aDfAoReG;
+	arc=none smtp.remote-ip=209.85.222.170
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E070606A32F
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 22:43:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E070606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC9060A2609
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 22:43:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FC9060A2609
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YKfTsW0W
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-91befbcad6dso22386876d6.3
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 15:43:26 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aDfAoReG
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-93ead211f14so16844285a.1
+        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 15:43:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793227406; x=1793832206; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793227408; x=1793832208; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qy3A1Vkwd/cDXLut21ZiXnCP/BKq6y64SvmrcYwH9Tc=;
-        b=YKfTsW0WhzHsSvgIRpwRO4gmA5dPuQiVZilgiylIQK+wa6jofYHO6Cp+GEcBEI6JsC
-         6ME6fh08RtefwmOh9625NhVq9JqHOcYuvzvar0M0HImQBqxrtcyisPpVy5OxhsfXw2YT
-         xUrT/VXZU5sVAfQXa0q0WXjSS+nvDv2LRap9cA6+TcKzS8BglWJ1+nqSbuzPEcIMJbOs
-         Dnkrh/zPQBbUw65w9R2lAjwE3qQaGWXtaj0NqDbExqTaMuLTMwx6etI9S1ZYWrVgax7q
-         W/fQaJi3Pmooa294lcu4yQfRl3KfgBJSFsAqrWrDzJEaotrwtUO7XHBui5dbiP9+oYWK
-         CqpA==
+        bh=dAZhtXQcONVBEEfX+FEqGwIc1UuckqT1BoM+QvmFfV4=;
+        b=aDfAoReGszCY9w4sxolGpn+BnWh4d9neMfgdGDzZWuH6evLPJkLvIeM0fJaDtXvgTN
+         Wv0w1TWqbbW4tF/rXcLGRL97XViGSqAKPWeXrYWXUS8ixyhLyyfwZdDZJPTphuScVpL2
+         uCKLYcI8yEKzmarrVeflOdDUZ5j2hd5SZGZfktUV/FPNXFbvEMF48PRzE3F4JLBhefo/
+         DSSWUBbNE1iqhla/+4PU/5A31q0oaFSd1A34eUmx2rzJnx7w01ws1+75wY4sKc+CRJFX
+         F0I6tYB/9f6QRTawx2fzKFbEBqGmj4CFP5LcI+suJTrk18bHluD/3iGzTXIq3SqQnqK+
+         1LAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793227406; x=1793832206;
+        d=1e100.net; s=20260707; t=1793227408; x=1793832208;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qy3A1Vkwd/cDXLut21ZiXnCP/BKq6y64SvmrcYwH9Tc=;
-        b=NS0Jp8AUvYEeV2yasFfuf9uzpvuleDkum7Eb+hzrW1ACAiAzi7OOYCUfBSMsUXRmh8
-         gUZFb18/6pnqwb5FKowiPPwV6NHP3GvhvC1b1SoQiPqnGp/FVErTGSLL5hecOUELSSQp
-         7qs7+zdq6x1L4HTUUPEEHe0AHiZ6Wf91zG5wUmnhWPPqehKg4viu9sIJMYYDQKqO8KPd
-         BiT5ubDw5Eem6ieIuadZEXXtesHNaw12kwOzNwmBjIbgM54TsxJTYWS9u53a6ueNLSdy
-         VH6rgosO4hsTH3JxKC6qSPm5Z+VcSWyBe6zucA+7U+ui06vq6Y/4r1SmG//uL/5XCr9b
-         SSRA==
-X-Gm-Message-State: AFq9FYLpaIuuZxKi7z49rMdS3aoMuAeoIvuYR1Mju6y5uQmsY4dJY03e
-	TB6vIv0lAOtcEZdUFeKMR17zoSfjnLbd3wqBGiWqWqLjqlASsyCY+FHF
-X-Gm-Gg: AYBFou0aNfq9HKHFz7SEnM4c8UlwCjkagckl8OKTz1VUq+c3lfj/xVDaC/Bln6LtqdH
-	/nj7r+al8GbmMvEkh7cMMDUcuhURFnbXKOSTMPIk/iiVZb6r0vTXFVmA8WJiEaMvSuQELY3CkVA
-	5ZMHelBLrjl89weBeOwJbsUFlIcaJRhq3q790ciY2gX9RGyU98+D4NOvpCCyEJ75MD9/OZO3CGG
-	wzBQmPjzSgx95FoX+kQW1M/cil2WRdAkNWOlcT66nxuk7PYb8SVeNqKE7QoZi4L3KDuFZRJHtCt
-	JweSHDeEMaUr8bBdoB36sAd9Np/GPwmwu1tBv3C/0i6BOsYAMoEVOaFXwBCmn1eEQ8/wt2BXsnv
-	sF55JhEaWxyAe+Ki4miu5QbKSBjG0i5bPJHBQaMhqmP4sudyOakQIXfwFnloseg2nbQabQVugTS
-	2CBSQlodRykPuIoY6G+K26D54UKlmKN3XiIg1kU0ridRfLFptwNJEQPd5WyN9ROvXqBbomVEX2+
-	36SgnDYx3r4KJktAqFa50n2JCiGvgK4ClOF1Fsefrg12kcv7DI2rMxQ6oTwDmKEfud3K9Ycz8ds
-	ju4kmwtn62fn8ISEFctokkahjU0VEVFGpqTIJM2HKS0EBS1RYhQH75ivsJqWyICgOrLc/A6X0s6
-	tFtqazIB4Xwye/EvLJZqWy9PUCSRsXlLNLcVOB1BIY/wMQcsnoOo=
-X-Received: by 2002:a05:620a:2629:b0:93e:c12c:9b77 with SMTP id af79cd13be357-94408d68de4mr575691585a.82.1793227405973;
-        Wed, 28 Oct 2026 15:43:25 -0700 (PDT)
+        bh=dAZhtXQcONVBEEfX+FEqGwIc1UuckqT1BoM+QvmFfV4=;
+        b=sndZhJwPAi4dD9Q1jfKGvb1v8E9otX6TM/pEZsYtgmUoTTmwHKJDQFr1YXqoPpB341
+         OXkYJ0ryFto1q5LU6FX+bFAKy2ZmT8V7/bgYwB0m9cLSbThEtkWZa+m0/eMPL2XHWEMu
+         8XERzzMwco265e9W9SV+1NVQj8R8lX7St2AP8Cvk28d59UWvqYatHjLhBH99gemCUyLH
+         C5YseAK8g655b18FQ824YF1iDkLGYkh954xgWh190PjZZ56ILbDG+p/mZ1e6e4pZSxbh
+         flpG94+2KCNbCeJRlvba1NjErhTyd5MStSYJkAndXQnrq+oX9b4kQBLFuBf2LKgmiFFQ
+         ZNNw==
+X-Gm-Message-State: AFq9FYLwFoxqVe3FOZPtoD3iCVxZ3ruJDFYfvlDyyHDI2xP4oDqTH6P+
+	gT4hrlUFG4eYDLoVA54WDN/hqB2jAEypaGMiq0OdfLsBcmvzKun9Apsb
+X-Gm-Gg: AYBFou3CrxcTNd4XBFw12CsOtEIlh/nJz1j2QXyPMfZxT/oPKAHn/7wWGoKiXltJrr6
+	HyUr7dpgzoDqxH8Gw76uOAaqxc/eilwbtkzwEoBsl/7YzDWQ7lO4n+NrTnAvqDrXQqCj7PthtGH
+	H2HyuH51kgl5S3963y6+7Ub1TZel0MmH8dmuBHlION8jf0izTqbYnP3TSNEL6NRJEw0fn0Itgmt
+	r1ryHG1KDREi7Ec1gobLbc5FRgRykg39rvdQ+I7NNda6Em7w9SKT1+ccFyXYB7mr6a6ZG7lffZV
+	RS55bHwq0KqfzoxSFzspMUMAMW7vEHA8bLvfpgryzyACpQUMaBzF90fGmtez2A6WDFrYGtPaCj8
+	8RdCNguNDi//s/CQHfKsSaZ90tksTA4MZJFa22VB+AqfFZptpbbJFqJPS24b6ntpQ8gCTVsjWYa
+	QDEVq6wYj4C6D6S8m5oSJSyjCkyHIXMOhWJxFP/qCfJO2ijWYPkZ8J9WXm79ApJAhCye0vUFcLP
+	6mgDCC/C22YHhr9XNmDy+22giLRvnZtNkagweCvRTFabPAjlSRkPKCvP86VMOnheuUxMEWGZ6p5
+	0GD+x2Pcr3cdivGM5mZ22gZ99YkQMN1o4WpI6euBm0hCjv7o9FAcAvYaXb0PPLixms6XRXflH1j
+	/bts0bYQnswPBf2Pybt4AHjD727nreL2x9BWv0LA0zOHRXyZSicQ=
+X-Received: by 2002:a05:620a:410f:b0:93e:53db:d59e with SMTP id af79cd13be357-9441338b4cfmr150529085a.23.1793227407492;
+        Wed, 28 Oct 2026 15:43:27 -0700 (PDT)
 Received: from paul-white-HP-Pavilion-Laptop-15-cs1xxx.mynetworksettings.com ([2600:4040:ad65:1c00:b8:5aeb:4bda:886])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f0787d96sm1370085685a.28.2026.10.28.15.43.25
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f0787d96sm1370085685a.28.2026.10.28.15.43.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 15:43:25 -0700 (PDT)
+        Wed, 28 Oct 2026 15:43:26 -0700 (PDT)
 From: Paul White <paul.white.kernel@gmail.com>
 To: anup@brainfault.org,
 	atish.patra@linux.dev,
@@ -90,9 +90,9 @@ Cc: kvm@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Paul White <paul.white.kernel@gmail.com>
-Subject: [PATCH v2 1/2] KVM: riscv: Eliminate redundancy in get_reg function via pointers
-Date: Wed, 28 Oct 2026 18:43:08 -0400
-Message-ID: <072bcc0994a5d2a0c21778a7a6f9e395395535c6.1793223506.git.paul.white.kernel@gmail.com>
+Subject: [PATCH v2 2/2] KVM: riscv: Eliminate redundancy in set_reg function via pointers
+Date: Wed, 28 Oct 2026 18:43:09 -0400
+Message-ID: <7290d6f5bead955e7a4bcb5b7aba97962031f0cb.1793223506.git.paul.white.kernel@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1793223506.git.paul.white.kernel@gmail.com>
 References: <cover.1793223506.git.paul.white.kernel@gmail.com>
@@ -145,26 +145,27 @@ make the code longer in the long run.
 
 I also renamed reg_num to token_reg_num in my code as I felt it made
 it clearer that it was the register number the application wants and
-requested in a token. It differentiated it from the many other
-variables with the word reg in it.
+requested in a token so that it can write data into that register. It
+differentiated it from the many other variables with the word reg in
+it.
 
 Signed-off-by: Paul White <paul.white.kernel@gmail.com>
 ---
 v2:
-- Only checked whether size token listed was 32 or 64 bits, which could
-  create/allow tokens with mismatched sizes and types to pass.
-  Should've checked if token's size was correct for its FP type. Did
-  this by replacing u32 and u64 parts with byte_offset because it is
-  mode-dependent local variable.
+ - only checked whether size token listed was either 32 or 64 which
+   could create/allow tokens with mismatched sizes and types to pass,
+   but should've checked if token's size was correct for its FP type.
+   Did this by replacing u32 and u64 with byte_offset because it is a
+   existing mode-dependent variable.
 ---
- arch/riscv/kvm/vcpu_fp.c | 68 +++++++++++++++++++++++-----------------
- 1 file changed, 39 insertions(+), 29 deletions(-)
+ arch/riscv/kvm/vcpu_fp.c | 62 +++++++++++++++++++++++-----------------
+ 1 file changed, 36 insertions(+), 26 deletions(-)
 
 diff --git a/arch/riscv/kvm/vcpu_fp.c b/arch/riscv/kvm/vcpu_fp.c
-index bb11e6757d34..da4f83be6b19 100644
+index da4f83be6b19..b8e89107b6c3 100644
 --- a/arch/riscv/kvm/vcpu_fp.c
 +++ b/arch/riscv/kvm/vcpu_fp.c
-@@ -83,41 +83,51 @@ int kvm_riscv_vcpu_get_reg_fp(struct kvm_vcpu *vcpu,
+@@ -142,41 +142,51 @@ int kvm_riscv_vcpu_set_reg_fp(struct kvm_vcpu *vcpu,
  	struct kvm_cpu_context *cntx = &vcpu->arch.guest_context;
  	unsigned long __user *uaddr =
  			(unsigned long __user *)(unsigned long)reg->addr;
@@ -207,9 +208,9 @@ index bb11e6757d34..da4f83be6b19 100644
 -		if (reg_num == KVM_REG_RISCV_FP_F_REG(fcsr))
 -			reg_val = &cntx->fp.f.fcsr;
 -		else if ((KVM_REG_RISCV_FP_F_REG(f[0]) <= reg_num) &&
--			  reg_num <= KVM_REG_RISCV_FP_F_REG(f[31])) {
+-			 reg_num <= KVM_REG_RISCV_FP_F_REG(f[31])) {
 -			reg_num = array_index_nospec(reg_num,
--					ARRAY_SIZE(cntx->fp.f.f));
+-						     ARRAY_SIZE(cntx->fp.f.f));
 -			reg_val = &cntx->fp.f.f[reg_num];
 -		} else
 -			return -ENOENT;
@@ -224,7 +225,7 @@ index bb11e6757d34..da4f83be6b19 100644
 -			if (KVM_REG_SIZE(reg->id) != sizeof(u64))
 -				return -EINVAL;
 -			reg_num = array_index_nospec(reg_num,
--					ARRAY_SIZE(cntx->fp.d.f));
+-						     ARRAY_SIZE(cntx->fp.d.f));
 -			reg_val = &cntx->fp.d.f[reg_num];
 -		} else
 -			return -ENOENT;
@@ -240,29 +241,8 @@ index bb11e6757d34..da4f83be6b19 100644
  		return -ENOENT;
 +	}
  
- 	if (copy_to_user(uaddr, reg_val, KVM_REG_SIZE(reg->id)))
+ 	if (copy_from_user(reg_val, uaddr, KVM_REG_SIZE(reg->id)))
  		return -EFAULT;
-@@ -144,9 +154,9 @@ int kvm_riscv_vcpu_set_reg_fp(struct kvm_vcpu *vcpu,
- 		if (reg_num == KVM_REG_RISCV_FP_F_REG(fcsr))
- 			reg_val = &cntx->fp.f.fcsr;
- 		else if ((KVM_REG_RISCV_FP_F_REG(f[0]) <= reg_num) &&
--			  reg_num <= KVM_REG_RISCV_FP_F_REG(f[31])) {
-+			 reg_num <= KVM_REG_RISCV_FP_F_REG(f[31])) {
- 			reg_num = array_index_nospec(reg_num,
--					ARRAY_SIZE(cntx->fp.f.f));
-+						     ARRAY_SIZE(cntx->fp.f.f));
- 			reg_val = &cntx->fp.f.f[reg_num];
- 		} else
- 			return -ENOENT;
-@@ -161,7 +171,7 @@ int kvm_riscv_vcpu_set_reg_fp(struct kvm_vcpu *vcpu,
- 			if (KVM_REG_SIZE(reg->id) != sizeof(u64))
- 				return -EINVAL;
- 			reg_num = array_index_nospec(reg_num,
--					ARRAY_SIZE(cntx->fp.d.f));
-+						     ARRAY_SIZE(cntx->fp.d.f));
- 			reg_val = &cntx->fp.d.f[reg_num];
- 		} else
- 			return -ENOENT;
 -- 
 2.53.0
 
