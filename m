@@ -1,73 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793214182;
-	b=PWohJynoSANNrFJP6s3WD8yISa515NbLs3qVE9EBqYHvd286u7QFzGb09NoUaKaIXkV/
-	 jz7LCiwLcCN3OSIPDu/YrWyFggg+itHMUJ059n1Gtv8HT8tIhhmKxfWCG5+19vc2xBZAY
-	 4w3EXAlOyhDK2Lj4AImIgdfBLZ2G8PadeBkcu4FBjQI9+204O2z+M/7mXMV1WQ6iwqqo8
-	 M3y5Q+ZPMeXY1wBw0o1Fy2mD/6ijJDW6lVNlidIpp/0sLC1ypPT0HIyImAc1ScuC6uLVy
-	 os/V/B4UV7b3taz5FrP1YrbFSMkwSbphAuyRMYYi8oUaF5bPxo60I3DJpc+kxKDYDkg==
+	t=1793214342;
+	b=QtJEoGJopyGdtbicoOKOjbiSnHKEkCg+YTMEkptoVSJJsiiRA4rI4OULr2Z3pdnteHtV
+	 n1FDGAVUQBemlyigmKFIJHN0BgM4B2GOW46E5HryHx4E6A/OPBoh9AT6KnG+t2sDQQAdA
+	 Q208UY9A91z5cHhqzXbSspOvCONC6X7FQgn+ZUmpyEQ0e8Vgx513u/MdRkCIA2Kq6xNcQ
+	 FwCA03J+IuJWTS/fJqpl+Xhzz0+6AGJrjoW3UcVg8JBzeqyZKbK9y9/gwexoq6E0DATxf
+	 xB49C7ciOdktZ1R9CfkvYdp1HxqHqwL5qZXdhxizC9/x46dmdl65ardHt7Jvr7csEYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793214182;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
-	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=HbuVr5an123e2WdNsh7qTkraPx2QUzUAuDpOvbvX5g4=;
-	b=fDFWQ6HYtTSInBXXyY5Ks/kC4GmxUAR+ErufEohHlmeadZnaDCX+zjBVGe1X9ND8sOmx
-	 k+AsRh6i9KDTkg+tdGceik2llo0H0rvNeM9q0uFSIdwaIUrXEexdw270moo+EARTevtdl
-	 eGQQIBvAPGoAmq6uxEueXKvqPd+LeIz3yp886NBHoWTmGH9w9nvQEZq7Xd3oS6j/3rcm8
-	 yUkEmBKdtd6RRS76WGsqmgtE1yrIvTKIoOgSGsNHOJTssBr1r/za9kuXVjMmJlZu3n9ge
-	 0coo2FiRY4ztQHtCgcjwjIudSraiYAijMo3glO6LaOw/zKss8VC3igBuW7z4dFlLChg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793214342;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=HM4GuFRiZ6os5mV6f66FJO3C+vTpjnZOmCOCbLh+NG4=;
+	b=cAwRkR1QiMZ55TTYnCf5B3NCAuCBJCo+q8dFoRIV9cqxAXHhZQo79ix8A6ZtGaDX4cWt
+	 GcRxD6fSp+Fb9dg2/5gFdPDSRbiV211Rb5Acv6T4qDR1yAnSfqbc49CGDC9Nv+RCWNkLR
+	 IOiDsVXbZq24DmFGlHuqPWpGylOCMIkYttSYtLLL/MFrcOZ/06nciEblShUaOs79EpguU
+	 ERVn31Gl4qQdrVJwCOVO5wW2RsCJpeGeFlFfsmgrPJzAlSApaVp8ccMGgGxNukfwWmhTV
+	 h4DbHoErXEPh0u8TfhfZU9TkeVCz3Ia/tItjX/7pmxUAL01CPrD1loKCzwZ2gCD6rLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oazk4ysR;
-	arc=none smtp.remote-ip=209.85.210.200
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZJXDHGC9;
+	arc=none smtp.remote-ip=192.198.163.7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC33606A32C
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 19:03:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BC33606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628D0606A326;
+	Wed, 28 Oct 2026 19:05:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 628D0606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oazk4ysR
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-89e6ddd4554so902397b3a.3
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 12:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793214182; x=1793818982; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HbuVr5an123e2WdNsh7qTkraPx2QUzUAuDpOvbvX5g4=;
-        b=oazk4ysRjdwfkIurL2Hux4Kh/9Lmhp3O4to7NmvuC48V/8/s1Tvy84hkvcMbPTXCCd
-         0hrgfiNjdcVVh6RFnnKijtunaeGCSbJ/7pT7Bq2dQuesfeUkdVrexYiSwysCQatEGkre
-         g+F8Da800Cic2G5Y1xA+3dVNa56bEgy4+mluJlVbhiE/zWiK39P+ZwQFlToRiupyikih
-         dACSL8Ti6LkiEcBU/6AIGe/SSAKgWblIWdj39QcU6IEByfG+neiGgyUNYHFf9FaJpxAz
-         d6Ulecj/CBNT2ReIVzU1K32hqGy/e/zJcwmRNAz4sEtQDf3yDc0mDnP8EIqaTR+BWjMJ
-         chpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793214182; x=1793818982;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=HbuVr5an123e2WdNsh7qTkraPx2QUzUAuDpOvbvX5g4=;
-        b=rYGfVvXuCgya99eCDKcKihWk4RErOk6iaDx3lm2eR8vAYLm/cVeJqteWOz6ufWi4+P
-         TZLR34wxcP8hE2RPC7XB0+CziFbFREPKsdlefhjyaU+QfqsT2XYGzFX0WxXsi7/kfLE0
-         g5bGrgSAYFC+/vt7Ljm/55QiBjFtXzv+SGnoaU/cxIBnKHrjwgtIdolHhLwqSdX/u61z
-         Zt2L9PanQSRRyplYdr/5E3Sw0bKpuB2tBvzFqxXatfhMchn4YnzzCzhnR2q3JhuJHKRH
-         13+L+aNePDphoLGmw3A5F6gxpwDiyG5v4sj2Mf+WrQS/VOOgCKb1IoBienGPjh5GUOE+
-         Ez5A==
-X-Forwarded-Encrypted: i=1; AKwUvBx1n6PLvIkkVIXYvfbH8X+kxDa5GOoY9/PA2Ubdriw3cR6ZpiXIRMJ+fQqBOa+krVjlX9I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI+WJADUzS06yHmfahtylD0yqRFCjaXn+Mx5AU2r0SgNjQ3LQSJ
-	UpYIiEy1lX5WTxWBKFIhEOgbu9qXIn4GUus8venLCSYu1i6VzvyudINoNX8kVXhb+Z/PY4L4L7g
-	hK6IFKA==
-X-Received: from pfog22.prod.google.com ([2002:aa7:8756:0:b0:8a0:7e84:9992])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:18a8:b0:899:55e9:880b
- with SMTP id d2e1a72fcca58-8a6e72dc7admr2727923b3a.14.1793214181492; Wed, 28
- Oct 2026 12:03:01 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Oct 2026 12:02:52 -0700
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZJXDHGC9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793214340; x=1824750340;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=V4ZwezyHpLNXEy0NLUQ0oHxywA8tuHw0wlZ8f+3lisA=;
+  b=ZJXDHGC9wOi6gF032NJsfu4/SmO1f0GwgQfqCtj690JYEc8VU946+6eL
+   4UvQbaj3EqFbSCA6NDCjwxmZkzQG/9zTkRPrnqMKS+B05p5XR0m4SlXRJ
+   5MwcmWhAQnNRbXeF6BYNlmJ+PRmBD0uOqh4Cx6RVo/flRnomLoN1/Dan+
+   cswaf7kQXBNLgTNZvqhzHoZLzxsxJ6ZlwWkC54QhhJ19zjrIgeNuyGIoz
+   xvIaTXAhezhAvM7SHciVcGhChyE39V9xxjW7aP8je+aBZEa8ZKSPybcy8
+   C+ztMWTT/dZvaxyYhRvG/5lKiZJ0HHBkGpdYyTS1rJXRB7L4RS0FttgIv
+   g==;
+X-CSE-ConnectionGUID: C36PxnTXQ7aHv3NzI3m94w==
+X-CSE-MsgGUID: wQd7kIDyQHq1qTxGBV/R2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1833824"
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="1833824"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 12:05:39 -0700
+X-CSE-ConnectionGUID: Pfru9TC5QOC3GHhSEoE4IQ==
+X-CSE-MsgGUID: 9KnnJ0wjRzOkSUL5eA5+xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="4843441"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 12:05:38 -0700
+Message-ID: <3eab289c-d48b-4aa3-a057-63cd3ca662dd@intel.com>
+Date: Wed, 28 Oct 2026 14:05:36 -0500
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,84 +71,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261028190259.1819571-1-seanjc@google.com>
-Subject: [PATCH 0/7] KVM: Ensure WAIT requests actually wait
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="UTF-8"
-
-Fix a bug in where kvm_make_request_and_kick() won't actually wait if the
-kick races without another non-waiting kick.  The issue is that all of the
-conditional kvm_arch_vcpu_should_kick() implementations are missing this code:
-
-	if (req & KVM_REQUEST_WAIT)
-		return mode != OUTSIDE_GUEST_MODE;
-
-Thankfully, kvm_request_needs_ipi() does the right thing, so this doesn't
-affect kvm_make_all_cpus_request() or kvm_make_vcpus_request_mask(), i.e. it's
-limited to x86 SNP's used of kvm_make_request_and_kick().
-
-To fix, address this TODO:
-
-  /* TODO: merge with kvm_arch_vcpu_should_kick */
-
-and purge kvm_arch_vcpu_should_kick().  As usual, PPC makes that difficult
-because it has wonky code that is poorly documented.  For reasons unknown,
-kvm_vcpu_kick() unconditionally returns true on (most flavors of) PPC.  To
-preserve that behavior, add a compatibility wrapper in PPC, along with a
-@force param to __kvm_vcpu_kick().
-
-This series would ideally go into 7.4, even though it's obviously not small,
-as guest_memfd in-place conversion massively widens the window where a missed
-kick+wait can lead to the host trying to reclaim an in-use VMSA page, which
-is generally fatal to the host.
-
-Sean Christopherson (7):
-  KVM: s390: Drop unused and unreachable kvm_arch_vcpu_should_kick()
-  KVM: Add a @force param to __kvm_vcpu_kick() for PPC backwards
-    compatibility
-  KVM: PPC: Explicitly force IPIs when directly kicking vCPUs
-  KVM: MIPS: Rework kvm_arch_vcpu_should_kick() to use standard
-    implementation
-  KVM: Move kvm_arch_vcpu_should_kick() to common code as
-    kvm_vcpu_should_kick()
-  KVM: Plumb the full request into __kvm_vcpu_kick()
-  KVM: Drop kvm_vcpu_should_kick() and use kvm_request_needs_ipi()
-
- arch/arm64/kvm/arm.c               |  5 -----
- arch/loongarch/kvm/vcpu.c          |  5 -----
- arch/mips/kvm/mips.c               |  5 -----
- arch/powerpc/include/asm/kvm_ppc.h | 13 ++++++++++++-
- arch/powerpc/kvm/book3s.c          |  4 ++--
- arch/powerpc/kvm/book3s_pr.c       |  2 +-
- arch/powerpc/kvm/booke.c           |  6 +++---
- arch/powerpc/kvm/e500_emulate.c    |  2 +-
- arch/powerpc/kvm/powerpc.c         |  7 +------
- arch/riscv/kvm/vcpu.c              |  5 -----
- arch/s390/kvm/s390/s390.c          |  7 -------
- arch/x86/kvm/x86.c                 |  5 -----
- include/linux/kvm_host.h           |  7 +++----
- virt/kvm/kvm_main.c                | 28 ++++++++++++++++------------
- 14 files changed, 39 insertions(+), 62 deletions(-)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/16] KVM: x86/pmu: Gate BUFFER_OVF reserved bit on
+ guest DS
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
+ <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+ <20260827223755.143247-5-zide.chen@intel.com>
+ <CALMp9eTq-yPoQwwoEFPYLqvLNc_2n-4kGbnZ=x=-ZAJjyOrvnw@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CALMp9eTq-yPoQwwoEFPYLqvLNc_2n-4kGbnZ=x=-ZAJjyOrvnw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
-base-commit: 7e60162b16f9da0d2fa83da5c1723b6853a0ac1d
--- 
-2.56.0.313.g2479322e68-goog
 
+On 10/28/2026 9:25 AM, Jim Mattson wrote:
+> On Thu, Aug 27, 2026 at 3:49 PM Zide Chen <zide.chen@intel.com> wrote:
+>>
+>> global_status_rsvd unconditionally clears GLOBAL_STATUS_BUFFER_OVF
+>> (bit 62), even when the guest does not have X86_FEATURE_DS feature.
+>> Clear it only when guest_cpu_cap_has(vcpu, X86_FEATURE_DS), matching
+>> hardware behavior.
+>>
+>> Fixes: f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")
+>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>> ---
+>> v2: new patch.
+>> ---
+>>  arch/x86/kvm/vmx/pmu_intel.c | 12 ++++++++++--
+>>  1 file changed, 10 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+>> index 11c9161dc853..9fdae437e569 100644
+>> --- a/arch/x86/kvm/vmx/pmu_intel.c
+>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+>> @@ -576,8 +576,16 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>>                          ((BIT_ULL(pmu->nr_arch_fixed_counters) - 1) << KVM_FIXED_PMC_BASE_IDX));
+>>         pmu->global_ctrl_rsvd = counter_rsvd;
+>>
+>> -       pmu->global_status_rsvd = pmu->global_ctrl_rsvd
+>> -                       & ~(GLOBAL_STATUS_BUFFER_OVF | GLOBAL_STATUS_COND_CHG);
+>> +       /*
+>> +        * Layout of bits 48:0 in IA32_PERF_GLOBAL_CTRL is identical to
+>> +        * IA32_PERF_GLOBAL_STATUS, but IA32_PERF_GLOBAL_STATUS has additional
+>> +        * bits.
+>> +        */
+>> +       pmu->global_status_rsvd = pmu->global_ctrl_rsvd;
+>> +       if (guest_cpu_cap_has(vcpu, X86_FEATURE_DS))
+>> +               pmu->global_status_rsvd &= ~GLOBAL_STATUS_BUFFER_OVF;
+> 
+> According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"), bit
+> 62 (OvfBuf / ClrOvfBuf) in IA32_PERF_GLOBAL_STATUS (0x38e) and
+> IA32_PERF_GLOBAL_STATUS_RESET (0x390) is supported "If CPUID.0AH:EAX[7:0] >
+> 0", and bit 62 (Set OvfBuf) in IA32_PERF_GLOBAL_STATUS_SET (0x391) is
+> supported "If CPUID.0AH:EAX[7:0] > 3". Though it makes some sense, a
+> dependency on CPUID.01H:EDX.DS[bit 21] is not documented in the SDM.
+> 
+> In mediated PMU mode, vmx_pebs_supported() is false, so KVM clears
+> X86_FEATURE_DS for mediated PMU guests. However, when PMU global controls
+> don't have to be intercepted, MSR_CORE_PERF_GLOBAL_STATUS,
+> MSR_CORE_PERF_GLOBAL_OVF_CTRL, and MSR_CORE_PERF_GLOBAL_STATUS_SET are
+> passed through directly to the guest. Hardware certainly allows bit 62 to
+> be written to IA32_PERF_GLOBAL_OVF_CTRL or IA32_PERF_GLOBAL_STATUS_SET.
+> 
+> If a guest sets bit 62 in hardware via IA32_PERF_GLOBAL_STATUS_SET,
+> intel_mediated_pmu_put() will save bit 62 into pmu->global_status, and
+> subsequent KVM_SET_MSRS(MSR_CORE_PERF_GLOBAL_STATUS) or intercepted writes
+> to MSR_CORE_PERF_GLOBAL_OVF_CTRL will fail the pmu->global_status_rsvd
+> check.
+> 
+> Essentially, this means that we can't pass through the PMU global controls
+> unless their reserved bits match hardware.
+
+Thanks for bringing this up. This patch should be dropped.
