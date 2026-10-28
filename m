@@ -1,45 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793171965;
-	b=esQRI/tDpfySs0LdAQkVUktPRNZ4iXhoA1ZWW6+sgxyTnuoUmmvfpR/wN0BTgeR8uDVt
-	 AmRsQqB6hsaPx3hNNEGVTgXCKVdPOckPNGn5ZFBENH6SJJObo2p99NcmqaOYM5ReG4Jh8
-	 hFzAwB+WzlZ8tjwyMDEZkHJzOGDCl7S/adu2HiYdhnjAAil0HrjPcwg8WoCX8JyFKvUtw
-	 A8GkuQLoEd6Xw6jeLRR6Clv3eR5E1MgU8UdgDVr/MsiZc0y3B49b4SAswV7ayp6oYA106
-	 jgARQV7foRcBnebFKNsjoOfBHFfS5GM+hsjueCG4zPYytpms61ibI7KRk8pUdwuPn5A==
+	b=5e7a/TUcTwseeVgjseBtYFao9RiVDDUQ4mkE41lMiTbb0JN85uySbRT93O6USbJ8WOQE
+	 IocEzac9GUK6+zIYL2I1zFM9Oh5b7Z2ORFqzgQjy0ntQXpp8wOiFwDxxaP/n82MHWg02I
+	 YZkgpfiVeO+NVjztHnN+dfBFzo3D27ZsOD/hptVPEGkx62vD0Yj+KF+5GpG9bcY+zHHND
+	 J3mZVZauKawXkT1QrU35mykeusFkHPr87clUtXNZ8tkIQ46xWsXlDs2Nq0R6s1lZ64RVe
+	 za2HVTdKTbx0Tc60/hHW4AV1+OYyZzhBhLBVCv20/Lem6cRXcPwXYv8cb4nqtzq5UMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793171965;
 	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=+KnwYo2XdWjMn4cLtFXsc7wNn/LqJ2SyRK+sPxYoWIM=;
-	b=eT3L4x0FeP7ErvtEGyowlHX2E5E5rWA6lIfvepGFQZx/q096EwgC/TDFZ9Nb5gIiXdS3
-	 bqfCN0UGrvnMOYnRwDxnAJlOAGn1tNA0RF9fIwHTZkSBIe8+B3pO/W7Eb7/2/zIOf/2Aa
-	 xuMjbnTP9jm6aGUP7ii0LVaPW4xOOHVvcwgM5TPyxU9XMbSfAL/QeMHIFLcMYsPTjX0bq
-	 JXz4IgzvHNK5srOX23vyNGgD6v1BgyjJxgVW0OkX9KxrFe3UCWkBkvf1MkahBhwpoTx+X
-	 Ryn7SHwkXi7dMUeKboiqMQnsqixbTgkMyiKEo7b64ZfQAls881nHB6ixbf7bRKd+yew==
+	bh=iDtWAtQ9UJlQ7QtpVTKrQvbSoxBnQV9Ww8wHGNhN9T8=;
+	b=xnRIz0kYemhHFoL/4uYeZ/ZowFZzxvwF9RDyLLsJG4f+Hh6taIAFthGJrJyEExVl9LgO
+	 8v+CLTnNckSyiqaM1+VynSKV8uxP3HCLS7sRfSe8lUNlb9Za2Kk2eP9e4b5RY5ntgHm3d
+	 o6l1lSJdne5DahT1BVMT6tyH5wQxiKzA75koRSdMN++s1sZPOvRM3P+FCZVlESwrzHfC5
+	 ee+H1j5MpOkyFuNt3KbfdFW/KneQwUIvJtECQFEh3Hv4MTEqKKKiG87r1UG0voOFbYH8O
+	 5Jqrgxj2C00XtrP+L58fsVFjrb49zXjmsqHTJuTaB1jgJHNSkaNb5xKq4ruyUbV99Pg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.alibaba.com;
 	spf=pass smtp.mailfrom=linux.alibaba.com;
-	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ZbIoFKca;
-	arc=none smtp.remote-ip=115.124.30.119
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b="fN/AGw7m";
+	arc=none smtp.remote-ip=115.124.30.98
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD840606A31F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4900E606A320;
 	Wed, 28 Oct 2026 07:19:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD840606A31F
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4900E606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ZbIoFKca
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=fN/AGw7m
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1793171960; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=+KnwYo2XdWjMn4cLtFXsc7wNn/LqJ2SyRK+sPxYoWIM=;
-	b=ZbIoFKcabusOXTAtaHbHCDrquRU9JeXNipHSHCRI1KlDIm6XzqqAZ5qgMf4HI0/KFq+omCsWEIQ/OkoeupwnSC77g+yJA8spWpSG4sncvnHIyPEPUYP/o7wzswHX/ORXlUDVJ6bzErX6XvPastbZcf1N+dQ2Zojf4I9AB698+1Q=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R401e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XDg7jl6_1793171960;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XDg7jl6_1793171960 cluster:ay36)
+	t=1793171961; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=iDtWAtQ9UJlQ7QtpVTKrQvbSoxBnQV9Ww8wHGNhN9T8=;
+	b=fN/AGw7m+Gak/s2hDQ4obVr6PC8SfxS3XwUCn8AM+bi2N9PnT4qLSmsZDPAwL7P9gtgVkf3PVQld1YQmtyxjalGhMXZCix7OHA8dKaWaciEgDjJWd7V1t/fno/OajzAWXb07ZNk+cUJolUGCMJqDHyWs7fgesdyMf/bHWbZmWxs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XDg7jlL_1793171960;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XDg7jlL_1793171960 cluster:ay36)
           by smtp.aliyun-inc.com;
           Wed, 28 Oct 2026 15:19:20 +0800
 From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
@@ -52,9 +52,9 @@ Cc: alex@shazbot.org,
 	linux-kernel@vger.kernel.org,
 	robin.murphy@arm.com,
 	will@kernel.org
-Subject: [PATCH v5 1/3] iommu: Add iommu_for_each_pci_mmio_window() iterator
-Date: Wed, 28 Oct 2026 15:19:04 +0800
-Message-ID: <20261028071906.2325378-2-guanghuifeng@linux.alibaba.com>
+Subject: [PATCH v5 2/3] iommufd: Add IOMMU_GET_RECOMMENDED_RESERVATIONS ioctl
+Date: Wed, 28 Oct 2026 15:19:05 +0800
+Message-ID: <20261028071906.2325378-3-guanghuifeng@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20261028071906.2325378-1-guanghuifeng@linux.alibaba.com>
 References: <20261027183418.GJ1685504@ziepe.ca>
@@ -70,140 +70,198 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a callback-based iterator that walks a PCI device's host bridge
-MMIO windows and invokes a caller-supplied function with each window's
-bus address range.  This consolidates the bridge window enumeration
-logic into a single shared algorithm in the IOMMU core.
+Add a per-device query ioctl that reports the IOVA ranges the kernel
+recommends reserving for a given device.  For PCI devices these are
+the MMIO windows of the host bridge the device sits behind: DMA using
+IOVAs inside those windows could be misrouted as peer-to-peer traffic
+by a PCIe switch instead of reaching the root complex for IOMMU
+translation.
 
-Refactor iova_reserve_pci_windows() to use the new iterator, replacing
-its open-coded resource_list_for_each_entry loop.  The callback
-receives phys_addr_t start/end directly, so the DMA path reserves the
-same ranges as before with zero intermediate allocation, and window
-lengths never pass through a size_t field (which would truncate on
-32-bit PAE systems).
+The interface is advisory, and deliberately named after the general
+concept of recommended reserved regions rather than its first source:
+the kernel reports recommendations and userspace decides whether to
+act on them, either by feeding them back through
+IOMMU_IOAS_RESERVE_IOVAS or by avoiding the ranges in its own IOVA
+allocation.  This follows the principle that PCI window information
+should not be forced onto userspace through the IOMMU reserved-region
+API, as established when the earlier attempt was reverted in commit
+cd2c9fcf5c66 ("iommu/dma: Move PCI window region reservation back into dma specific path.")
+
+The output reuses struct iommu_iova_range and follows the array +
+count + EMSGSIZE protocol established by IOMMU_IOAS_IOVA_RANGES.
+Per-device granularity is chosen because the recommendations derive
+from the device's bus topology and are available immediately after
+VFIO_DEVICE_BIND_IOMMUFD, before any IOAS attachment.
 
 Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 ---
- drivers/iommu/dma-iommu.c  | 22 ++++++++++++++--------
- drivers/iommu/iommu-priv.h | 17 +++++++++++++++++
- drivers/iommu/iommu.c      | 37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+), 8 deletions(-)
+ drivers/iommu/iommufd/device.c          | 65 +++++++++++++++++++++++++
+ drivers/iommu/iommufd/iommufd_private.h |  1 +
+ drivers/iommu/iommufd/main.c            |  4 ++
+ include/uapi/linux/iommufd.h            | 38 +++++++++++++++
+ 4 files changed, 108 insertions(+)
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 78742aeba932..5b73e71c312e 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -505,6 +505,15 @@ static int iommu_dma_ranges_sort(void *priv, const struct list_head *a,
- 	return res_a->res->start > res_b->res->start;
+diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
+index 1b0bdf57ac8a..eedda48012a1 100644
+--- a/drivers/iommu/iommufd/device.c
++++ b/drivers/iommu/iommufd/device.c
+@@ -1749,3 +1749,68 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
+ 	iommufd_put_object(ucmd->ictx, &idev->obj);
+ 	return rc;
  }
- 
-+static int iova_reserve_pci_window_fn(phys_addr_t start, phys_addr_t end,
++
++struct recommended_resv_ctx {
++	struct iommu_iova_range __user *out_ranges;
++	u32 max_ranges;
++	u32 num_ranges;
++};
++
++static int recommended_resv_window_fn(phys_addr_t start, phys_addr_t end,
 +				      void *data)
 +{
-+	struct iova_domain *iovad = data;
++	struct recommended_resv_ctx *ctx = data;
 +
-+	reserve_iova(iovad, iova_pfn(iovad, start), iova_pfn(iovad, end));
-+	return 0;
-+}
++	if (ctx->num_ranges < ctx->max_ranges) {
++		struct iommu_iova_range elm = {
++			.start = start,
++			.last = end,
++		};
 +
- static int iova_reserve_pci_windows(struct pci_dev *dev,
- 		struct iova_domain *iovad)
- {
-@@ -512,15 +521,12 @@ static int iova_reserve_pci_windows(struct pci_dev *dev,
- 	struct resource_entry *window;
- 	unsigned long lo, hi;
- 	phys_addr_t start = 0, end;
-+	int ret;
- 
--	resource_list_for_each_entry(window, &bridge->windows) {
--		if (resource_type(window->res) != IORESOURCE_MEM)
--			continue;
--
--		lo = iova_pfn(iovad, window->res->start - window->offset);
--		hi = iova_pfn(iovad, window->res->end - window->offset);
--		reserve_iova(iovad, lo, hi);
--	}
-+	ret = iommu_for_each_pci_mmio_window(dev, iova_reserve_pci_window_fn,
-+					     iovad);
-+	if (ret)
-+		return ret;
- 
- 	/* Get reserved DMA windows from host bridge */
- 	list_sort(NULL, &bridge->dma_ranges, iommu_dma_ranges_sort);
-diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
-index 1f9f886b2c10..81c5b5ce67ec 100644
---- a/drivers/iommu/iommu-priv.h
-+++ b/drivers/iommu/iommu-priv.h
-@@ -127,4 +127,21 @@ static inline void iommu_debug_init(void)
- 
- #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
- 
-+struct pci_dev;
-+
-+typedef int (*iommu_pci_mmio_window_fn_t)(phys_addr_t start, phys_addr_t end,
-+					  void *data);
-+
-+#ifdef CONFIG_PCI
-+int iommu_for_each_pci_mmio_window(struct pci_dev *dev,
-+				   iommu_pci_mmio_window_fn_t fn, void *data);
-+#else
-+static inline int iommu_for_each_pci_mmio_window(struct pci_dev *dev,
-+						 iommu_pci_mmio_window_fn_t fn,
-+						 void *data)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_PCI */
-+
- #endif /* __LINUX_IOMMU_PRIV_H */
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index b486b8bbd1fc..6b0e2b08ceba 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -945,6 +945,43 @@ iommu_insert_device_resv_regions(struct list_head *dev_resv_regions,
- 	return ret;
- }
- 
-+#ifdef CONFIG_PCI
-+/**
-+ * iommu_for_each_pci_mmio_window - iterate over PCI host bridge MMIO windows
-+ * @dev: PCI device whose host bridge to scan
-+ * @fn: callback invoked with each window's bus address range (inclusive)
-+ * @data: opaque pointer passed to @fn
-+ *
-+ * Iteration stops early if @fn returns non-zero, and that value is
-+ * propagated to the caller.
-+ *
-+ * Return: 0 on success, negative errno on failure (including from @fn).
-+ */
-+int iommu_for_each_pci_mmio_window(struct pci_dev *dev,
-+				   iommu_pci_mmio_window_fn_t fn, void *data)
-+{
-+	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
-+	struct resource_entry *window;
-+
-+	if (WARN_ON(!bridge))
-+		return -ENODEV;
-+
-+	resource_list_for_each_entry(window, &bridge->windows) {
-+		int ret;
-+
-+		if (resource_type(window->res) != IORESOURCE_MEM)
-+			continue;
-+
-+		ret = fn(window->res->start - window->offset,
-+			 window->res->end - window->offset, data);
-+		if (ret)
-+			return ret;
++		if (copy_to_user(&ctx->out_ranges[ctx->num_ranges], &elm,
++				 sizeof(elm)))
++			return -EFAULT;
 +	}
++	ctx->num_ranges++;
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(iommu_for_each_pci_mmio_window);
-+#endif /* CONFIG_PCI */
 +
- int iommu_get_group_resv_regions(struct iommu_group *group,
- 				 struct list_head *head)
- {
++int iommufd_device_get_recommended_reservations(struct iommufd_ucmd *ucmd)
++{
++	struct iommu_recommended_reservations *cmd = ucmd->cmd;
++	struct recommended_resv_ctx ctx;
++	struct iommufd_device *idev;
++	int rc;
++
++	if (cmd->flags)
++		return -EOPNOTSUPP;
++
++	idev = iommufd_get_device(ucmd, cmd->dev_id);
++	if (IS_ERR(idev))
++		return PTR_ERR(idev);
++
++	if (!dev_is_pci(idev->dev)) {
++		rc = -EOPNOTSUPP;
++		goto out_put;
++	}
++
++	ctx.out_ranges = u64_to_user_ptr(cmd->out_ranges);
++	ctx.max_ranges = cmd->num_ranges;
++	ctx.num_ranges = 0;
++
++	rc = iommu_for_each_pci_mmio_window(to_pci_dev(idev->dev),
++					    recommended_resv_window_fn, &ctx);
++	if (rc)
++		goto out_put;
++
++	cmd->num_ranges = ctx.num_ranges;
++	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
++	if (rc)
++		goto out_put;
++	if (ctx.num_ranges > ctx.max_ranges)
++		rc = -EMSGSIZE;
++
++out_put:
++	iommufd_put_object(ucmd->ictx, &idev->obj);
++	return rc;
++}
+diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+index eb2e85b27e42..8016c3efca78 100644
+--- a/drivers/iommu/iommufd/iommufd_private.h
++++ b/drivers/iommu/iommufd/iommufd_private.h
+@@ -534,6 +534,7 @@ iommufd_device_get_iommu_dev(struct iommufd_device *idev)
+ 
+ void iommufd_device_pre_destroy(struct iommufd_object *obj);
+ void iommufd_device_destroy(struct iommufd_object *obj);
++int iommufd_device_get_recommended_reservations(struct iommufd_ucmd *ucmd);
+ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd);
+ 
+ struct device *iommufd_global_device(void);
+diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
+index 9a921b153162..85f8ea154218 100644
+--- a/drivers/iommu/iommufd/main.c
++++ b/drivers/iommu/iommufd/main.c
+@@ -449,6 +449,7 @@ union ucmd_buffer {
+ 	struct iommu_ioas_map map;
+ 	struct iommu_ioas_unmap unmap;
+ 	struct iommu_option option;
++	struct iommu_recommended_reservations recommended_reservations;
+ 	struct iommu_vdevice_alloc vdev;
+ 	struct iommu_veventq_alloc veventq;
+ 	struct iommu_vfio_ioas vfio_ioas;
+@@ -480,6 +481,9 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
+ 		 struct iommu_fault_alloc, out_fault_fd),
+ 	IOCTL_OP(IOMMU_GET_HW_INFO, iommufd_get_hw_info, struct iommu_hw_info,
+ 		 __reserved),
++	IOCTL_OP(IOMMU_GET_RECOMMENDED_RESERVATIONS,
++		 iommufd_device_get_recommended_reservations,
++		 struct iommu_recommended_reservations, out_ranges),
+ 	IOCTL_OP(IOMMU_HW_QUEUE_ALLOC, iommufd_hw_queue_alloc_ioctl,
+ 		 struct iommu_hw_queue_alloc, length),
+ 	IOCTL_OP(IOMMU_HWPT_ALLOC, iommufd_hwpt_alloc, struct iommu_hwpt_alloc,
+diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+index 010f47f7d3d2..45ba7bd7abd5 100644
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -58,6 +58,7 @@ enum {
+ 	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
+ 	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
+ 	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
++	IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS = 0x96,
+ };
+ 
+ /**
+@@ -1398,4 +1399,41 @@ struct iommu_hw_queue_alloc {
+ 	__aligned_u64 length;
+ };
+ #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
++
++/**
++ * struct iommu_recommended_reservations - ioctl(IOMMU_GET_RECOMMENDED_RESERVATIONS)
++ * @size: sizeof(struct iommu_recommended_reservations)
++ * @flags: Must be 0
++ * @dev_id: The device bound to iommufd to query
++ * @num_ranges: Input/output number of recommended ranges
++ * @out_ranges: Pointer to the output array of struct iommu_iova_range
++ *
++ * Query the IOVA ranges the kernel recommends reserving for @dev_id.
++ * For a PCI device these are the MMIO windows of its host bridge,
++ * where a PCIe switch could misroute DMA as peer-to-peer traffic.
++ * Advisory only: userspace may feed the ranges back through
++ * IOMMU_IOAS_RESERVE_IOVAS or handle them itself.
++ *
++ * Ranges are reported in resource order, not guaranteed sorted, and
++ * should be treated as a set.  Query each device and take the union
++ * when multiple devices are in use.
++ *
++ * On input num_ranges is the length of the out_ranges array.  On
++ * output it is the total number of ranges.  The ioctl will return
++ * -EMSGSIZE and set num_ranges to the required value if num_ranges is
++ * too small.
++ *
++ * Return: 0 on success, -EOPNOTSUPP if the device has no
++ * recommendations, -ENOENT if @dev_id is invalid, -EMSGSIZE if the
++ * output array is too small.
++ */
++struct iommu_recommended_reservations {
++	__u32 size;
++	__u32 flags;
++	__u32 dev_id;
++	__u32 num_ranges;
++	__aligned_u64 out_ranges;
++};
++#define IOMMU_GET_RECOMMENDED_RESERVATIONS \
++	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS)
+ #endif
 -- 
 2.43.7
 
