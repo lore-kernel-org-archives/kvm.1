@@ -1,47 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793202528;
-	b=FT8RqgyzBX0PkK4ATvIn2eH4jgVbow8Vl5Y3gfkrAfTyBY/ngyO+jaNrjNATTFJHrBrz
-	 dSyM5Rug1kvzpWA5Fju8dqjt7b9I8oClaO5sMsVop6br5WJyvyotwiTYgsPR1h3KjdNdn
-	 3JX/8aLMhmCtSkIxEQ2dKsLH0VBhXn2eNNj3Ogv8fUnwPb4s/O5RuZ0rvIrMUHA+h7i+B
-	 zkI0k9PvqdmH4eKNdJgViDj74JlU+7GX5Gz1Bl9vMJiHFehkwuwAQTFeMTgmwKZ0L81yW
-	 NJjsr5RkiG20yN0SOtI6buLASMD9FvlW5Kz2To0GpaCgTteCnmxoLiEVcUEKuHvxK4A==
+	t=1793202535;
+	b=M2Cjkly1jNwodYlshkvS2dsz3bsRw9vC6MzHTK8rZBtTI4aFINODa7TOAFXQfX3pVysy
+	 nvOhwMQprDig/exhjnAtqj2BAUvE7za10LLDtLiZUq3vbqUHbbCWiAVvyTkVsf9AxGoJR
+	 vUdbwtuum6vVRIxAhvlr6KZwzuqRJawgSn0FJ3Lpuz2t2MTF3bgekLMYaytyF9VOjLIQd
+	 sTjFqhpI0kMQl5Usm0jnM87D9X6lZ46mKCk58Lq7GnrGNlDJ3hduD2a3yljMyGictgQda
+	 CDLxCbdWMmTHi9MOsnOoSfg3eraSDN9zrNfKbEhlDmbpEU8N1pboXHk0hOImSlp/Zqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793202528;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793202535;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=sgJp/0Bmza7ipLqb+lZFfXeJ26JvK37iVpiObAP88/8=;
-	b=hpV+5HBcrcThTloZ9FI+bNZ22h/31S9MLXMrHuvylPHpynXeuoe5GssL57o6hJC/22B+
-	 IuAa6UlO9bYp/TiSaNRoNJdEzE3BOv+5yznv4TEOvz4FOGPKrmGbX0EFP5swySAZmC4c8
-	 /cGBSdbmE+qE4doc6Qb+IoAjIe+htgIPqBm3gM9TSRYex4VKH/I/sCk1H5uH5Ccv984J7
-	 /zO2ZcCafcVsNMJHmej5/bL8gpXBaQdph2fAz6ANTPBRJ5J4wmFK7+exfznCHE/7axMIx
-	 /cqycj+EcvqLp2TIIg/RDz4BXZ/HdUPlTU3zipY4FtYNaFfOWNEkcjcy9YHrU5WIBkg==
+	bh=K1JDBLPFOu6JXnIWw8Oy0ZhhClazUCLSQIjUwYJcSrM=;
+	b=T0jmPBiEIjQZ8yIhAIGuKVbJkUcJJmj2DVVfGNLE9MtImmIqNYVjUPcUTgGRxfQLT400
+	 9rmIdUip9ecunyJgepeMdStTDMWyqXDo7un4TCln9NrH/dabjHhxuLetzNUrujGASHNGd
+	 qOSlrfkGb+wLGW5EwSvc7p5ABsN0pZ8k+b5p3BBoLPpF9qXCbCBFwicQBgepzFeOlGYZw
+	 FhcIvkXVsA6o+jOVK6VYz+KlBl56h/rOwfTToSLRP83zcwGX0KfcOD1bkFb/LLCsXwioJ
+	 cxdaFNH9bdNaV6bjslH3oD5azdgIIkQJ2LfODQAo3HaC5gXtNqmAGTTyYAKysMNy0NA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHrUnolf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ogsZoNea;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CE7606A758
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 15:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA22606A331
+	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 15:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHrUnolf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A94E1F01828;
-	Wed, 28 Oct 2026 15:48:44 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ogsZoNea
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ADC1F01828;
+	Wed, 28 Oct 2026 15:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793202527;
-	bh=sgJp/0Bmza7ipLqb+lZFfXeJ26JvK37iVpiObAP88/8=;
+	s=k20260515; t=1793202534;
+	bh=K1JDBLPFOu6JXnIWw8Oy0ZhhClazUCLSQIjUwYJcSrM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lHrUnolfy+YsLFeyY2tP7vYLm7i3gMc9YoxQBihnfLd27aOjScxlVDU+LhJDcuIGk
-	 9qv7MFaNczHRsglMpcqDCwhS4qiUU3IpO3D391xTblXQUT57ysbcvEYFErI43cnjeL
-	 9K1jZ1PWdN43Pw9j8eoEnNsR+B2fHKp3G4sBvX2Wr8aaaGW6UPd1ej+lILxKKC6cIi
-	 rGd98CbkfubRGrPRcR0rNhK/IOS5vnTbO/pdIARDcX/VuOUfszYRa9TYAXbv/nan2q
-	 zWcN8fNOylcY36JomFflZ6CeOtAgsiZT9Ss+/qhfZFn6HEm2jY/v1dhfx7dkNS/Ujs
-	 UPY816FNkHuWw==
-Message-ID: <sashiko-outbox-188091@kernel.org>
+	b=ogsZoNeaTQNfOirbMVKSK6feq27pIMRM4V0VWtg4Db+xUyoFKNllWKv6Jr9cdTqFD
+	 Xq4HPwuvGIxEi3dHAguImSCmj0CA+m7xfLj5LD0aE8ogB9pn83aVidkbxuXYCsOAUG
+	 S2t9blyXTKBgSGx4zaJpDYVQ7ijBHlrlIvAFiDyb+JfJuS2qMGRUVgNp7AKO8MqtBX
+	 oRZp9iPOwk8n/CRuY2YOe6knYA2scnjcyTDLi62ohDMemIcqhj146bkQfds9Pn6Zkc
+	 kip5mr2qmpKADJLd1Bnavr210B8cSCKoc3BpG79rZl2OJf3UMo93vh5Bb8I6vpkdJr
+	 pA5asqO6hJUAA==
+Message-ID: <sashiko-outbox-188096@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 09/14] iommufd: Map guest_memfd files
+Subject: Re: [RFC PATCH 14/14] KVM: selftests: Test guest_memfd mapped by
+ iommufd
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Fred Griffoul" <griffoul@gmail.com>, "Ackerley Tng" <ackerleytng@google.com>, "Paolo
  Bonzini" <pbonzini@redhat.com>, "Sean Christopherson" <seanjc@google.com>, "Jason
@@ -76,13 +77,13 @@ Cc: "Alex Williamson" <alex@shazbot.org>, "Alexander Graf" <graf@amazon.de>, "Al
  Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Yan
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261027154649.91571-10-griffoul@gmail.com>
+In-Reply-To: <20261027154649.91571-15-griffoul@gmail.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
  <20261027154649.91571-1-griffoul@gmail.com>
- <20261027154649.91571-10-griffoul@gmail.com>
+ <20261027154649.91571-15-griffoul@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 15:48:43 +0000
+Date: Wed, 28 Oct 2026 15:48:51 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,97 +95,116 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] iommufd: missing iova page-alignment check for gmem in iopt_inse=
-rt_area()
+- [Low] KVM: selftests: host_access() reimplements TEST_EXPECT_SIGBUS() poo=
+rly
 --
 
-commit bbd05c04a17efd9d7e027af5dc5147510ebf160e
+commit 039c70671ebb1232a61b8053400cfbcf04938b2b
 Author: Fred Griffoul <fgriffo@amazon.co.uk>
 
-iommufd: Map guest_memfd files
+KVM: selftests: Test guest_memfd mapped by iommufd
 
-This commit allows IOMMU_IOAS_MAP_FILE to map guest_memfd files using
-guest_memfd's export interface without pinning pages. It maps PAGE_SIZE
-entries and updates IOMMU mappings upon guest_memfd update notifications.
+This commit adds gmem_conversion_iommufd_test to verify that iommufd mock
+domain device mappings of a guest_memfd stay synchronized across conversion=
+s,
+allocations, hole punching, memory failure, and PFN provider operations.
 
-> diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd=
-/io_pagetable.c
-> index 43d518e4ce585..62fa553cdffc0 100644
-> --- a/drivers/iommu/iommufd/io_pagetable.c
-> +++ b/drivers/iommu/iommufd/io_pagetable.c
-> @@ -217,9 +217,13 @@ static int iopt_insert_area(struct io_pagetable *iop=
-t, struct iopt_area *area,
->  		return -EPERM;
-> =20
->  	area->iommu_prot =3D iommu_prot;
-> +	area->gmem =3D iopt_is_gmem(pages);
->  	area->page_offset =3D start_byte % PAGE_SIZE;
->  	if (area->page_offset & (iopt->iova_alignment - 1))
->  		return -EINVAL;
-> +	/* guest_memfd frames are mapped whole, see iopt_gmem_map(). */
-> +	if (area->gmem && (area->page_offset || !PAGE_ALIGNED(length)))
-> +		return -EINVAL;
+> diff --git a/tools/testing/selftests/kvm/x86/gmem_conversion_iommufd_test=
+.c b/tools/testing/selftests/kvm/x86/gmem_conversion_iommufd_test.c
+> new file mode 100644
+> index 0000000000000..5d17b0e2dd438
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/gmem_conversion_iommufd_test.c
+> @@ -0,0 +1,956 @@
 
-[Severity: Medium]
-Should iopt_insert_area() also check !PAGE_ALIGNED(iova) when area->gmem
-is set?
+[ ... ]
 
-When userspace calls IOMMU_IOAS_MAP_FILE (or IOMMU_IOAS_COPY) with
-IOMMU_IOAS_MAP_FIXED_IOVA, iopt_alloc_area_pages() validates the IOVA
-through iopt_check_iova(), which only checks iova & (iopt->iova_alignment -=
- 1).
-Unlike iopt->disable_large_pages in iopt_calculate_iova_alignment(), a
-guest_memfd area does not force iopt->iova_alignment to PAGE_SIZE, so
-iopt->iova_alignment is 1 when no domain is attached yet, or smaller than
-PAGE_SIZE when attached to a domain supporting sub-PAGE_SIZE granules:
+> +/*
+> + * Read @addr, or write @val to it, through a host mapping.  Return the
+> + * signal that the access raised, or 0.
+> + */
+> +static int host_access(volatile uint64_t *addr, bool write, uint64_t val)
+> +{
+> +	struct sigaction sa =3D { .sa_handler =3D host_sig }, old_bus, old_segv;
+> +	int sig;
+> +
+> +	sigaction(SIGBUS, &sa, &old_bus);
+> +	sigaction(SIGSEGV, &sa, &old_segv);
+> +	sig =3D sigsetjmp(host_jmp, 1);
+> +	if (!sig) {
+> +		if (write)
+> +			*addr =3D val;
+> +		else
+> +			(void)*addr;
+> +	}
+> +	sigaction(SIGBUS, &old_bus, NULL);
+> +	sigaction(SIGSEGV, &old_segv, NULL);
+> +	return sig;
+> +}
 
-drivers/iommu/iommufd/io_pagetable.c:iopt_calculate_iova_alignment() {
-	/* See batch_iommu_map_small() */
-	if (iopt->disable_large_pages)
-		new_iova_alignment =3D PAGE_SIZE;
-	else
-		new_iova_alignment =3D 1;
-}
+[ ... ]
 
-Later, iopt_gmem_map() derives iova from iopt_area_index_to_iova(area, inde=
-x)
-and passes it to batch_iommu_map_small(), which expects PAGE_SIZE alignment:
+> +#define host_read_faults(p)	(host_access(p, false, 0) =3D=3D SIGBUS)
+> +#define host_write_faults(p, v)	(host_access(p, true, v) =3D=3D SIGBUS)
 
-drivers/iommu/iommufd/pages.c:batch_iommu_map_small() {
-	if (IS_ENABLED(CONFIG_IOMMUFD_TEST))
-		WARN_ON(paddr % PAGE_SIZE || iova % PAGE_SIZE ||
-			size % PAGE_SIZE);
+[ ... ]
 
-	while (size) {
-		rc =3D iommu_map(domain, iova, paddr, PAGE_SIZE, prot,
-			       GFP_KERNEL_ACCOUNT);
-}
+> +static void scenario_readonly(void)
+> +{
+> +	struct vmm v =3D { .name =3D "pfn" };
+> +	volatile uint64_t *page;
+> +
+> +	pr_info("   read-only frames on a PFN mode provider\n");
+> +	vmm_setup(&v, BACKING_PFN);
+> +	page =3D (volatile uint64_t *)(v.hva + RO_OFF);
+> +
+> +	*page =3D MAGIC;
+> +	vmm_run(&v, 0, 0, RO_GPA);
+> +	TEST_ASSERT(expect_sync_then_done(&v) =3D=3D MAGIC,
+> +		    "guest does not read the host's write");
+> +
+> +	mps_set(v.child, MPS_SET_READONLY, RO_OFF, PAGE, true);
+> +	TEST_ASSERT(vmm_iova_mapped(&v, IOVA + RO_OFF, PAGE, true),
+> +		    "read-only page not mapped for the device");
+> +	vmm_run(&v, 0, 0, RO_GPA);
+> +	TEST_ASSERT(expect_sync_then_done(&v) =3D=3D MAGIC,
+> +		    "guest cannot read a read-only page");
+> +	vmm_run(&v, RO_GPA, ~MAGIC, 0);
+> +	expect_memory_fault(&v, RO_GPA);
+> +	TEST_ASSERT(host_write_faults(page, ~MAGIC),
+> +		    "host write to a read-only page did not fault");
+> +	TEST_ASSERT(*page =3D=3D MAGIC, "write to a read-only page landed");
+> +
+> +	/* Writable again: the guest retries the same write. */
+> +	mps_set(v.child, MPS_SET_READONLY, RO_OFF, PAGE, false);
+> +	vmm_resume(&v);
+> +	expect_done(&v);
+> +	TEST_ASSERT(*page =3D=3D ~MAGIC, "write after clearing read only lost");
+> +	TEST_ASSERT(!host_write_faults(page, MAGIC),
+> +		    "host write after clearing read only faulted");
 
-This allows userspace to trigger the WARN_ON() in batch_iommu_map_small()
-when CONFIG_IOMMUFD_TEST is enabled, or pass an unaligned iova with
-PAGE_SIZE to iommu_map() during mapping or asynchronously in
-iopt_gmem_update().
+[Severity: Low]
+Could this test use TEST_EXPECT_SIGBUS() from test_util.h instead of
+reimplementing signal-catching accesses in host_access()?
 
-Also, in iopt_alloc_area_pages():
+In host_access(), both SIGBUS and SIGSEGV are caught, while
+host_write_faults() only checks whether the return value equals SIGBUS.  In
+scenario_readonly(), if the write in !host_write_faults(page, MAGIC) raises
+SIGSEGV instead of succeeding, host_access() catches it and returns SIGSEGV,
+causing !host_write_faults() to evaluate to true without checking that
+*page =3D=3D MAGIC afterward.
 
-> @@ -289,6 +293,9 @@ static int iopt_alloc_area_pages(struct io_pagetable =
-*iopt,
->  		case IOPT_ADDRESS_DMABUF:
->  			start =3D elm->start_byte + elm->pages->dmabuf.start;
->  			break;
-> +		case IOPT_ADDRESS_GMEM:
-> +			start =3D elm->start_byte + elm->pages->gmem.start;
-> +			break;
->  		}
->  		rc =3D iopt_alloc_iova(iopt, dst_iova, start, length);
-
-Because iopt_alloc_gmem_pages() sets pages->gmem.start =3D start without
-subtracting start_byte (unlike iopt_alloc_file_pages() and
-iopt_alloc_dmabuf_pages()), if an unaligned start is passed without
-IOMMU_IOAS_MAP_FIXED_IOVA, start_byte is added twice here before
-iopt_insert_area() rejects area->page_offset. Should iopt_alloc_gmem_pages()
-reject unaligned start or strip start_byte up front?
+Also, in scenario_readonly(), mps_set(..., MPS_SET_READONLY, ..., true)
+revokes the host mapping before host_write_faults(page, ~MAGIC) runs.
+Because the write happens before *page =3D=3D MAGIC faults in a present rea=
+d-only
+PTE, it only exercises kvm_gmem_pfn_fault() on an unmapped PTE and leaves
+kvm_gmem_pfn_mkwrite() on a present read-only PTE untested.  Should the host
+read happen before the write attempt (or should another write attempt follow
+the read), and should a direct store *page =3D MAGIC be used once the page =
+is
+writable again?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027154649.9157=
-1-1-griffoul@gmail.com?part=3D9
+1-1-griffoul@gmail.com?part=3D14
