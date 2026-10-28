@@ -1,57 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793172813;
-	b=cZwoK9k/eBIRead27FSVTgiMOdz9yj/frGfPr1FNRaf7SmcrAj2/CxpyHeoz/JKX7Lmv
-	 nZ+VbC725vfvWxbiPbsGgYNjmKUShKdgcNJ50qCjWwH4fk3vd8Se6d+mM1d1cQjtBzhrb
-	 AfZHSJmg2RqflzggMpC7p0HXSHhknEa9xYw7/5JvfpotwEu8af/PQj3lcGLBtZECYXPnF
-	 mZqH52T4qd2dMoLP7S2bDMCOr9/19h9nSvlk8pnSOGPpHKFVlh2SA61k2sJt7+nvC+Hcb
-	 tTYDKFdcnP1v6Mex+YGldSKYZFAvI//KVO+8E2EY4brbD+4tWOGMTNNBPMlrToFVUFQ==
+	t=1793175202;
+	b=xuMXmv+/WkDciX8leuYQCp/vlGbBU0x6Yb77lJPlZgeri6STYcM07aX5z0aKoGOuMjI/
+	 IeqCoh0e5P1oAThoZu5bWWLHXhfty6z7rPsvvNCFCQKyzIZB1GYiFsgBAqH13tg8Xc3yx
+	 P0IAH1FgRIavt5Fj3ru48N9uQ3vM+rqwjOAiK3xMc70DuV0mWRv1+gL8rMRJUH2m1Bb/h
+	 QAE2zG6mPBVMApU2hUzIKRgmRap0ikaccqyb0QQefbRRhgPXQNNqHVB8DwjmHwzyhxeWI
+	 vLVmsBRg7lOLz/Hf6NUCUIxbSjPNCj62gnPhNU1EOhTRyuft5GraBSGZ0kmHOpYzDww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793172813;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=tCHH2ocNTR2+1rXUWBXKTRSEf48EU6EMTZZdWFeBzLA=;
-	b=YUoLOBSAz/ZeDWG1RP1e4Yh0v7AHZjnpvpxlvQY47q00I82dmaJgMF2Vdkc1jz4kdsY5
-	 K7MulBvhRWDn4paFIiLmOee+Nx7AmJ2uDUMgutbE1nvxxIES41MFTHzYSzXnxNKbKXK2A
-	 Sm5ROjr1aWGnquDHYJKAIwqaIpC/0PvR2sNTQqGj01fTvSGknXYop8UGA592tK9NoG9kx
-	 mnVVl3bhai/WU6RwXaR7zGPETVKlt8r3kR0emBorqbTvXr8/zAYO9lr4QuXqG58p1F259
-	 GVvIlpRVGwNo06vv1BatWsgJ7CSufw/Kpv6oQyAHcaykpn4P7tKIPGls4DA8ugpq8AA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793175202;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=AQ69QgwWrBTLbLy8ZCOmzzYIZQFOgR3K0SSo1y7xus0=;
+	b=n9g06leBfnA+iCkSWFKBsQwYTio2C6BbaUZY5cGH7hRBH7/uO0OogHqCMJaO90aATo6I
+	 UKTP9TFny7ULZrirEueJbmUG7bodhOk8KNjvkekz77Xv1+zKV6o7xvLXXmGMmsEr+Icnx
+	 TUQTqaj+P5C6oc6MuqKAxP6cKXDalFk7yNeqOTOHNcRUWIAicXF0+wAlDcbwjhqE5N67b
+	 3AG8p2e4U6Vb3wx23fGDvrNr9H4MInKBXvOYE2Fy08YwX7pEenU/kyRhu3C/Nf8AJAx/G
+	 3ZAUyasgK3aptFRB2BQL1PIsVx8zbX1NEvfBHzDpp3m8Odb+UPX/DPIjLkXmu6Iz+jw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VdidTVHK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YbM4UYMV;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5B9606A31A
-	for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 07:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4B8606A31A;
+	Wed, 28 Oct 2026 08:13:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE4B8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VdidTVHK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3851F01828;
-	Wed, 28 Oct 2026 07:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793172812;
-	bh=tCHH2ocNTR2+1rXUWBXKTRSEf48EU6EMTZZdWFeBzLA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VdidTVHKN6kKGgberodmVQQTNbFmxJVL3iREUPrha1Z29Dztag19F8kkGq51RWwIu
-	 mVtnRUDhf2Dl9IuRTMva7YkW+tbRnIBI0ePerTEK0bB3GcH++4TQAyLuBpZ0sgZBg7
-	 N6L3NPRoGWgHBKknPK6wEaJauh54bGLIMI1I+aLdOC/dGDjd5QcGpHWs+/fh3eYOoE
-	 BbpKomCaAZ/rA0vIXtprHxcBkIUhiXTfIimtn5wznAlTJ5oO5wWQSw4MHpbtDQZVdT
-	 VW3wOLSyx5TfKMTlrJmwr+bhzpu/nH57tywhreIrgjDJpzhcQMH6KcA7828G1aVZIM
-	 I7pQliW1oo4Tw==
-Message-ID: <sashiko-outbox-187579@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/3] iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261028071906.2325378-4-guanghuifeng@linux.alibaba.com>
-References: <20261027183418.GJ1685504@ziepe.ca>
- <20261028071906.2325378-1-guanghuifeng@linux.alibaba.com>
- <20261028071906.2325378-4-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 07:33:31 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YbM4UYMV
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793175201; x=1824711201;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YdoBbntMRkrdPEwFCxfL27AAbVHzuUnLR/LwX9+Decw=;
+  b=YbM4UYMVjM7dlGjHWizIs2dyhhtJ+hg7ytnxDdj7hvIuAloCKUV/8pmE
+   WUahkU8ObEKIEo75Ef+uQF5LHvGgvz8NfMJxfAJ7ODSNKudbB8JgUrhdw
+   GzNg8O7igUuUkbU5kcfkNdrtMd5E5hotzAVVpNbQd49mI/HzsiCg05JJm
+   bPIsxXPbdqHmqrJJJeAbQb93Oeq5FgFhH6yOCEv0A16D0DV6pfNlmC9TO
+   VLfdIycpfo46zeoZEkNMMmf8pGVbHH6q2UD3thmoakYvTKR1+2a1Y+Bev
+   NYWns77R3hDaUo59Njz9jmleN8Pd9CVwaPDxNUU3AdZnTUajIHa8vgJYD
+   g==;
+X-CSE-ConnectionGUID: c5le7f29SfygcixKshIPQw==
+X-CSE-MsgGUID: K2nNZGPrQBGyskRafqbrtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1902885"
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="1902885"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 01:13:15 -0700
+X-CSE-ConnectionGUID: Wf6ZPOlUQhGh9RE7nrD4Kg==
+X-CSE-MsgGUID: VwaN//XQQ12DTxB+Ez6USg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="5118463"
+Received: from litbin-desktop.sh.intel.com ([10.239.57.15])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 01:13:10 -0700
+From: Binbin Wu <binbin.wu@linux.intel.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	dave.hansen@linux.intel.com,
+	andrew.cooper3@citrix.com,
+	nik.borisov@suse.com,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	xiaoyao.li@intel.com,
+	chao.gao@intel.com,
+	tony.lindgren@linux.intel.com,
+	kishen.maloor@intel.com,
+	dedekind1@gmail.com,
+	binbin.wu@linux.intel.com
+Subject: [PATCH v6 0/4] KVM: TDX: Validate directly configurable CPUID bits
+Date: Wed, 28 Oct 2026 16:16:53 +0800
+Message-ID: <20261028081658.1228484-1-binbin.wu@linux.intel.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,125 +88,111 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] iommufd: 32-bit range truncation in iommufd_ioas_reserve_iovas()
-- [Low] iommufd: unnecessary iommufd_ucmd_respond() in iommufd_ioas_reserve=
-_iovas()
---
+Hi,
 
-commit c4727e768ae8fb291a064ae74e64f9f8999c92bb
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+This is a quick respin of the TDX CPUID validation series (v5 [1]) to
+address Rick's changelog comments [2] and to rebase on top of Sean's TDX
+CPUID fixes series [3], which this series depends on.  Also, patch 4 now
+ignores the index for non-indexed CPUID functions when looking up the
+allowlist, as userspace isn't required to zero it.
 
-iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
+I think this version is in good shape.  If there are no further concerns,
+I'd appreciate it if this could be considered for queueing.
 
-This commit adds the IOMMU_IOAS_RESERVE_IOVAS ioctl to allow userspace to
-reserve IOVA ranges in an IOAS, excluding them from IOMMU_IOAS_IOVA_RANGES
-and rejecting overlapping mapping operations.
+The TDX module reports a set of CPUID bits that the VMM can directly
+configure for a TD, but KVM cannot blindly expose all module-supported
+bits to userspace.  Certain features imply additional architectural state
+(such as one or more MSRs) that KVM must explicitly manage across
+host/guest transitions to prevent host state corruption.
 
-> diff --git a/drivers/iommu/iommufd/ioas.c b/drivers/iommu/iommufd/ioas.c
-> index 8fb5271a95060..e1ded7e8c5eed 100644
-> --- a/drivers/iommu/iommufd/ioas.c
-> +++ b/drivers/iommu/iommufd/ioas.c
-> @@ -183,6 +183,55 @@ int iommufd_ioas_allow_iovas(struct iommufd_ucmd *uc=
-md)
->  	return rc;
->  }
-> =20
-> +int iommufd_ioas_reserve_iovas(struct iommufd_ucmd *ucmd)
-> +{
-> +	struct iommu_ioas_reserve_iovas *cmd =3D ucmd->cmd;
-> +	struct iommu_iova_range __user *ranges;
-> +	struct iommufd_ioas *ioas;
-> +	u32 i;
-> +	int rc;
-> +
-> +	if (cmd->flags)
-> +		return -EOPNOTSUPP;
-> +
-> +	ioas =3D iommufd_get_ioas(ucmd->ictx, cmd->ioas_id);
-> +	if (IS_ERR(ioas))
-> +		return PTR_ERR(ioas);
-> +
-> +	ranges =3D u64_to_user_ptr(cmd->ranges);
-> +
-> +	down_write(&ioas->iopt.iova_rwsem);
-> +	for (i =3D 0; i < cmd->num_ranges; i++) {
-> +		struct iommu_iova_range range;
-> +
-> +		rc =3D copy_from_user(&range, &ranges[i], sizeof(range));
-> +		if (rc) {
-> +			rc =3D -EFAULT;
-> +			goto out_unlock;
-> +		}
-> +		if (range.last < range.start) {
-> +			rc =3D -EINVAL;
-> +			goto out_unlock;
-> +		}
-> +
-> +		rc =3D iopt_reserve_iova(&ioas->iopt, range.start, range.last,
-> +				       NULL);
+Today, KVM hardcodes a denylist to filter out host state clobbering
+features that KVM doesn't support.  However, a denylist doesn't scale as
+the TDX module evolves, i.e. host state clobbering features added by a
+future TDX module are not covered by the denylist, and userspace could
+enable a feature that KVM doesn't support.
 
-[Severity: High]
-On 32-bit architectures, can passing 64-bit range.start and range.last into
-iopt_reserve_iova() silently truncate the range and corrupt
-ioas->iopt.reserved_itree?
+This series builds an allowlist for directly configurable CPUID bits, and
+filters and validates userspace input against it, so that newly introduced
+TDX directly configurable CPUID feature bits can only be enabled by
+userspace after KVM explicitly opts in.  Except for a few fixed-1 bits
+required for basic TDX support, host state clobbering features are either
+directly configurable or gated by TD ATTRIBUTES/XFAM.  KVM already
+validates ATTRIBUTES/XFAM, so the allowlist only needs to cover directly
+configurable bits.
 
-In struct iommu_iova_range, start and last are __aligned_u64, whereas
-iopt_reserve_iova() in drivers/iommu/iommufd/io_pagetable.c and struct
-interval_tree_node take unsigned long:
+Discussions from v3/v4:
+- Rick asked whether the assumption that the reserved bits in
+  CPUID.0x1.EAX, CPUID.{0x4,0x18,0x1F} and CPUID.0x80000008.EAX won't be
+  used to enumerate features can be confirmed by the x86 architects.
+  Confirmation is still pending.  Per the SDM/APM, these leaves/registers
+  are defined for specific information (version, cache/TLB parameters,
+  topology, and address sizes), so the reserved bits are expected to be
+  used to extend the existing information rather than to enumerate
+  features.  Allowing these registers in full is a best guess, but it's
+  still far better than the existing denylist-based check.
 
-    int iopt_reserve_iova(struct io_pagetable *iopt, unsigned long start,
-                          unsigned long last, void *owner)
+- Whether to restrict the TDX feature bits to kvm_cpu_caps[].
+  The conclusion from the discussions is to construct the allowlist based
+  on kvm_cpu_caps[], plus a few bits that KVM can support for TDs
+  independently of kvm_cpu_caps[].  If TDX feature enabling turns out to
+  be consistently blocked by non-TDX VM enabling, a solution can be worked
+  out then.
 
-Unlike iommufd_ioas_map(), iommufd_ioas_unmap(), and iommufd_ioas_copy(),
-which check for ULONG_MAX overflow and return -EOVERFLOW,
-iommufd_ioas_reserve_iovas() only checks range.last < range.start in 64-bit
-arithmetic before passing them to iopt_reserve_iova().
+- New opt-in interface vs. backporting.
+  There are two options for old KVM versions that don't do the filtering
+  and validation:
+  1) Add a new opt-in interface to expose features newly introduced by the
+     TDX module.
+  2) Backport this series to LTS/stable branches.
 
-On 32-bit kernels (for example, a 32-bit PAE/LPAE system where
-IOMMU_GET_RECOMMENDED_RESERVATIONS reports a 64-bit PCI host bridge MMIO
-window above 4 GiB), ranges with range.last > ULONG_MAX are truncated modulo
-2^32, reserving the wrong low IOVA range.
+  The opt-in design vs. backport decision is deferred, since this series
+  is correct and an improvement either way.
 
-Furthermore, if a range satisfies range.start <=3D range.last in 64-bit
-arithmetic but wraps such that (unsigned long)range.last <
-(unsigned long)range.start (for example, range.start =3D 0xfffff000ULL and
-range.last =3D 0x100000fffULL), iopt_reserve_iova() receives start > last. =
-The
-overlap checks in iopt_area_iter_first() and iopt_allowed_iter_first() miss
-existing ranges, and an inverted node with node.start > node.last is insert=
-ed
-into iopt->reserved_itree, breaking interval_tree_for_each_span() in
-iommufd_ioas_iova_ranges() and interval_tree_for_each_double_span() in
-iopt_alloc_iova().
+- Potential backward compatibility issue when an effective fixed-1 bit
+  becomes directly configurable due to x86 feature deprecation.
+  This is left for the future, i.e. it can be addressed if and when such a
+  deprecation actually happens, e.g. by adding an opt-in interface to let
+  users/admins choose between migration flexibility and backwards
+  compatibility on old platforms.
 
-Should iommufd_ioas_reserve_iovas() check range.last > ULONG_MAX (or
-range.start >=3D ULONG_MAX) and fail with -EOVERFLOW?
+Changes since v5 [1]:
+- Dropped the bug fix patch in v5 and rebased on top of Sean's TDX CPUID
+  fixes series [3].
+- Changelog updates per Rick's comments [2].
+- Collected RBs from Rick, Chao, Nikolay, Xiaoyao.
+- Ignore the index for non-indexed functions when walking reverse_cpuid[].
 
-> +		if (rc)
-> +			goto out_unlock;
-> +	}
-> +	up_write(&ioas->iopt.iova_rwsem);
-> +
-> +	rc =3D iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+The series follows the CSV version of the CPUID virtualization document
+from "Intel TDX Module ABI Definitions" [4], updated in June 2026.
 
-[Severity: Low]
-Is the call to iommufd_ucmd_respond() needed here?
+AI tools were used to:
+- Polish the cover letter and commit messages.
+- Do code review.
 
-All fields of struct iommu_ioas_reserve_iovas are inputs, and
-iommufd_ioas_reserve_iovas() never modifies *cmd. Calling
-iommufd_ucmd_respond() performs an unnecessary copy_to_user() back to
-userspace, and if the caller passes the input struct in read-only memory, t=
-he
-ioctl will return -EFAULT after the reservations have already been committed
-to ioas->iopt.reserved_itree.
+[1] v5: https://lore.kernel.org/all/20261016091422.3182216-1-binbin.wu@linux.intel.com
+    v4: https://lore.kernel.org/all/20260917072548.2314491-1-binbin.wu@linux.intel.com
+    v3: https://lore.kernel.org/all/20260827031837.2863609-1-binbin.wu@linux.intel.com
+    v2: https://lore.kernel.org/all/20260604023314.3907511-1-binbin.wu@linux.intel.com
+    v1: https://lore.kernel.org/all/20260417073610.3246316-1-binbin.wu@linux.intel.com
+[2] https://lore.kernel.org/all/b196cf9f65fe1e52aba7b867b7c2687c40caa337.camel@intel.com
+[3] https://lore.kernel.org/all/20261022210134.612848-1-seanjc@google.com
+[4] https://cdrdv2.intel.com/v1/dl/getContent/795381
 
-Other input-only handlers in drivers/iommu/iommufd/ioas.c, such as
-iommufd_ioas_allow_iovas() and iommufd_ioas_change_process(), return 0
-directly without calling iommufd_ucmd_respond().
+Binbin Wu (4):
+  KVM: TDX: Track configurable CPUID bits allowed by KVM
+  KVM: TDX: Add CORE_CAPABILITIES to the allowlist
+  KVM: TDX: Report only KVM-allowed CPUID bits in KVM_TDX_CAPABILITIES
+  KVM: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028071906.2325=
-378-1-guanghuifeng@linux.alibaba.com?part=3D3
+ arch/x86/kvm/vmx/tdx.c | 260 ++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 231 insertions(+), 29 deletions(-)
+
+
+base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+prerequisite-message-id: <20261022210134.612848-1-seanjc@google.com>
+-- 
+2.46.0
+
