@@ -1,59 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793214613;
-	b=CaML6Htm7shlLcVpK6psnVzOMFp+HbMa91rNx6PMAN5oURqY+1p4VkfNh5etGbOV6A28
-	 EK04GjRrFJh0QVRJIYJ4UdwzW11lBAaSfJE9rOD35NNOmCYO+VNbu8SXVOvo/UHvOfJWh
-	 kRBAbv5JS+fbWX9I8gZ/sSnwlBKVP4LVbN0Us9wsnIvhffxm+MYbRtDTrSkpeK4qK0z5s
-	 Zudl2uGeNtsg5URZ9zH3H3KGDOO9sBGloWCTYhX3HtwTWuRGlC26A9QIjf1GEmcJgdrtw
-	 z7HtwarGHdXRrdpOl+5gZlC12CVDOjKDhOPDiHlwW2zaA/kF1zOns3lb3GgZRY6ZkUA==
+	t=1793214943;
+	b=epXwM6XRac6mS69MvvO/K7tXkkx5NYGtAcFHiSFr8fFLrtrmuTUPP6rCv8E+4iCUNnWT
+	 lBduiiC7T2PD5/DloMkYnti5dCOZ7GlDBedpvDNM473Gn1z956ouilBw+RHieRA7dKuI9
+	 V6oomNUF4urwGprjoe18w6+YuQ46dtAU5iuxMEY/EXSvbGuIDUqb8/3leZaraVlK/1Syo
+	 OHfPuwEmLccYldr3T0m/8VEDc69aEiazvnXcy3mxg5pBQUgu/qfr7Wipzre/4qLsWBnNs
+	 QMFg3Y2M/rM+/t8Pn7YjXiFXghUkB4HNim2LzgElx1hQ9sPG80ts0wQ7MlMQJm5+XtA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793214613;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793214943;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=zCgcXqHEvEyVgEpxAVIyx0DoRb/hM4ZRmy30a1vhzBs=;
-	b=whIsywRjDt7XzKst0AsXsgt6prV+M5akHOoBXCikGxIAmpGnq0d7/cLdm2Uyb+kIy28e
-	 zbhWRdofWBKBUvBWM+4cVkFVI6NNE9dgAWEQRGM1QzoU1osNRqAVWnFP7o37Hz+lHZvfm
-	 wFPTO6yY6S6VAFkdD3kSi4jEXLlw5uyWlffcv4pazL9YUfAwsjBVn+8tmRRu6OHKBJNyG
-	 sTIxlvshA1mTcWrGyl1JjLr3ZtuCt8cvAz9HBf049jbK0ujkU0MRvb2yu08QDbHbsfilc
-	 n54b8IGGNpTs5ayLVMwVYUnvI3WCy3+aWe/6Clesp26eBwG2pNZ7u0jER/TPttmbr8w==
+	bh=w/sdlVL7e521paInlVGPXeRSGyEf8ci6lJZqdL6F8Kw=;
+	b=o0GdAPVaTeTt/dM/Jc2FCws6kVpIc9LYnggJR7EBMqo3eKzEGATeieGf3liBQQi4Jrny
+	 vCT4ZmGmSB//fBNrxCoBHRkew5X5+WOxc72fcwLtr0LPiutc0Nfb3W/gsvOZGnLn1pibk
+	 9GT+j0ZxtA4FlS31DzN80rUVtyb/qKNVR34LZhlSu31rbWHgOcIDQVYyfzukgQ4pn6miL
+	 vXFaNeds9oc71WfmEA5YTpxZtVqfnHIlhw+nA7yPXs+9wKhAgYF3cWPEaC6jR98Ha6Hlh
+	 43h0PMs7J1n7iDRWIKzN0yVqe3rgJHTVolIpmkunQb1hHxer8CZguEBlcaZglK/zyOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezgR5MKD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QWuK+tPW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E36606AB1E;
-	Wed, 28 Oct 2026 19:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25F9606A31D;
+	Wed, 28 Oct 2026 19:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezgR5MKD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A725B1F01828;
-	Wed, 28 Oct 2026 19:10:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QWuK+tPW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC0D1F01825;
+	Wed, 28 Oct 2026 19:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793214613;
-	bh=zCgcXqHEvEyVgEpxAVIyx0DoRb/hM4ZRmy30a1vhzBs=;
+	s=k20260515; t=1793214942;
+	bh=w/sdlVL7e521paInlVGPXeRSGyEf8ci6lJZqdL6F8Kw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ezgR5MKDcshm56Myp7y8HBQjk+2Uoc5dQjYq4WlMCX96kmjDLZbeP07FYgZmQFw7w
-	 2GrtfonGkL4SfbXE5KeiGcsgfj4J5b8ETclXNpF48ubZ07fvw7xa6BGhJl32InCXFO
-	 fDKoSSc+HehjGEBQyRuV3hmDXzM8iF/ApqguER1yhgZfuoy0J7jSXmLPonEIJINlHl
-	 8or5uTREQzOsZzI3WNKW+pQV70rD7ddf4DxtRl0VYcbjeapid4xm+lh05eX54J2VQP
-	 4rpLnG4cXC5tCcI5e51EF7bMJVW7cqfE6ZS3trqCWTdZmFgh5xPZHg4AWQ/ILCp3Rz
-	 lvtCo4N/Y7ksA==
-Message-ID: <sashiko-outbox-188342@kernel.org>
+	b=QWuK+tPWzqKOV20bQnyK064xRtRsP+dElRESjfGlFawPeOlaX+T5jMWAHAjvIurrG
+	 YhK4OfMM08f0sN1pZHdMRssL7kZiqbyvxYCJQ26hV8afBfrVwPoj4nvkyiLI+fSrxz
+	 6bD1/TLgL5IXBfPnG/M/bmBKN9H9J0pVE3PxasCvqdtAKKS+msArXMTdpWDU5gcbmn
+	 DDKbJ1Lo6LPRKniaK8EebtESJdBfXlSE7dvnXCb9E9ShFX0IFkDHP6jeKfPRlZ0ksN
+	 1yrcVDnnAQ5PcCXuDXedyUcxk+QIo2Q8DkrdF5NG9UijMjnMHJYuwamkxzpfzk1Joz
+	 3mClGKwg0JRZg==
+Message-ID: <sashiko-outbox-188344@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 6/7] KVM: s390: Introduce
- gmap_allocate_all_page_tables_best_effort()
+Subject: Re: [PATCH v4 1/7] KVM: s390: Fix UCONTROL inconsistencies
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
 Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
  Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
  Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261028185422.272146-7-imbrenda@linux.ibm.com>
+In-Reply-To: <20261028185422.272146-2-imbrenda@linux.ibm.com>
 References: <20261028185422.272146-1-imbrenda@linux.ibm.com>
- <20261028185422.272146-7-imbrenda@linux.ibm.com>
+ <20261028185422.272146-2-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 19:10:12 +0000
+Date: Wed, 28 Oct 2026 19:15:41 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,126 +62,118 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: s390: pass DAT_WALK_USES_SKEYS to dat_entry_walk() on split
-- [Low] kvm: s390: use return on kvm_s390_mmu_cache_topup() failure
+- [High] KVM: s390: _crste_ucas() entries are misclassified by _crste_hole()
 --
 
-commit 9e76b2f0d91bb75ee34f562ce5400b323e47a284
+commit ae2a9cbd52d9a1b0705430e97b065c3fd62e60bc
 Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-KVM: s390: Introduce gmap_allocate_all_page_tables_best_effort()
+KVM: s390: Fix UCONTROL inconsistencies
 
-This commit introduces gmap_allocate_all_page_tables_best_effort() to
-walk all memslots of a running guest and allocate 4K page tables while
-splitting existing large page mappings on a best-effort basis.
+This patch updates mapped-but-unallocated UCONTROL segment entries to use a
+new combination of flags (_UCAS_ENTRY_LENGTH and _UCAS_ENTRY_OFFSET) so they
+no longer collide with the present bit, and adds DAT_WALK_IGN_HOLES to the
+UCAS walk paths.
 
-> diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
-> index 04f3ab03a041a..3ff08232cbb36 100644
-> --- a/arch/s390/kvm/gmap/gmap.c
-> +++ b/arch/s390/kvm/gmap/gmap.c
-> @@ -1524,3 +1524,40 @@ struct gmap *gmap_create_shadow(struct kvm_s390_mm=
-u_cache *mc, struct gmap *pare
->  	}
->  	return new;
+> diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
+> index 90389d47ba4e0..4665c1112bb91 100644
+> --- a/arch/s390/kvm/gmap/dat.h
+> +++ b/arch/s390/kvm/gmap/dat.h
+> @@ -109,6 +109,8 @@ union pte {
+>  #define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
+>  #define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
+>  #define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
+> +#define _UCAS_ENTRY_LENGTH	0
+> +#define _UCAS_ENTRY_OFFSET	3
+> =20
+>  /* Soft dirty, needed as macro for atomic operations on ptes */
+>  #define _PAGE_SD 0x002
+> @@ -421,6 +423,17 @@ static inline union crste _crste_fc0(kvm_pfn_t pfn, =
+int tt)
+>  	return res;
 >  }
-> +
-> +/* Bail out for any allocation failure. This is only a best effort to al=
-locate all page tables. */
-> +void gmap_allocate_all_page_tables_best_effort(struct gmap *gmap)
+> =20
+> +static inline union crste _crste_ucas(kvm_pfn_t pfn)
 > +{
-> +	struct kvm_s390_mmu_cache *mc __free(kvm_s390_mmu_cache) =3D NULL;
-> +	struct kvm_memory_slot *ms;
-> +	struct kvm_memslots *slots;
-> +	gfn_t gfn, start, end;
-> +	union crste *crstep;
-> +	union pte *ptep;
-> +	int bkt;
+> +	union crste res =3D { .val =3D PFN_PHYS(pfn) };
 > +
-> +	mc =3D kvm_s390_new_mmu_cache();
-> +	if (!mc)
-> +		return;
-> +
-> +	guard(srcu)(&gmap->kvm->srcu);
-> +
-> +	slots =3D kvm_memslots(gmap->kvm);
-> +	if (!slots || kvm_memslots_empty(slots))
-> +		return;
-> +
-> +	kvm_for_each_memslot(ms, bkt, slots) {
-> +		start =3D ALIGN(ms->base_gfn, _PAGE_ENTRIES);
-> +		end =3D ALIGN_DOWN(ms->base_gfn + ms->npages, _PAGE_ENTRIES);
-> +
-> +		for (gfn =3D start; gfn < end; gfn +=3D _PAGE_ENTRIES) {
-> +			if (kvm_s390_mmu_cache_topup(mc))
-> +				break;
-
-[Severity: Low]
-Should this be a return instead of break?
-
-Using break here only exits the inner GFN loop for the current memslot,
-so kvm_for_each_memslot() will continue iterating over any remaining
-memslots and retrying allocations after kvm_s390_mmu_cache_topup(mc) has
-failed.
-
-> +
-> +			guard(write_lock)(&gmap->kvm->mmu_lock);
-> +
-> +			dat_entry_walk(mc, gfn, gmap->asce, DAT_WALK_ALLOC | DAT_WALK_SPLIT,
-> +				       TABLE_TYPE_PAGE_TABLE, &crstep, &ptep);
+> +	res.h.i =3D 1;
+> +	res.h.tt =3D TABLE_TYPE_SEGMENT;
+> +	res.h.fc0.tl =3D _UCAS_ENTRY_LENGTH;
+> +	res.h.fc0.tf =3D _UCAS_ENTRY_OFFSET;
+> +	return res;
+> +}
 
 [Severity: High]
-Can splitting an aged large page here lose guest storage keys when
-uses_skeys(gmap) is true?
+Can _crste_ucas() entries be misclassified by _crste_hole() and
+dat_entry_walk() when walking a UCONTROL gmap without DAT_WALK_IGN_HOLES?
 
-When a 1M or 2G large page is aged via gmap_age_gfn() ->
-gmap_clear_young_crste(), the entry is marked invalid (h.i =3D 1) while
-the guest storage keys for its 4K frames remain in hardware storage keys.
+In _crste_ucas(), PFN_PHYS(pfn) is stored in bits 0..51 of res.val while
+res.h.fc0.tl =3D 0 (clearing tok.pr) and res.h.fc0.tf =3D 3 (in bits 56..57=
+).
+However, _crste_hole() and _crste_none() only inspect crste.tok.type (bits
+0..15 of res.val) and do not check crste_is_ucas():
 
-When dat_entry_walk() splits that invalid large PMD via dat_split_ste(),
-saving the hardware storage keys into the newly allocated 4K PGSTEs is
-gated on uses_skeys (from DAT_WALK_USES_SKEYS):
-
-arch/s390/kvm/gmap/dat.c:dat_split_ste() {
-    ...
-			pgste_init.pcl =3D uses_skeys && init.h.i;
-			dat_init_pgstes(pt, pgste_init.val);
-		} else {
-			dat_init_page_table(pt, init.val, 0);
-		}
-
-		if (dat_pmdp_xchg_atomic(pmdp, old, new, gfn, asce)) {
-			if (!pgste_init.pcl)
-				return 0;
-			for (i =3D 0; i < _PAGE_ENTRIES; i++) {
-				union pgste pgste =3D pt->pgstes[i];
-
-				pgste =3D dat_save_storage_key_into_pgste(pt->ptes[i], pgste);
-				pgste_set_unlock(pt->ptes + i, pgste);
-			}
-    ...
+arch/s390/kvm/gmap/dat.h:
+static inline bool _crste_hole(union crste crste)
+{
+	return crste.h.i && !crste.tok.pr && crste.tok.type !=3D _DAT_TOKEN_NONE;
 }
 
-Because DAT_WALK_USES_SKEYS is not passed to dat_entry_walk(),
-pgste_init.pcl is false and the new PGSTEs are left zeroed while the new
-PTEs have h.i =3D 1. When a subsequent minor fault validates the PTE via
-_gmap_handle_minor_pte_fault() -> gmap_ptep_xchg() -> __dat_ptep_xchg(),
-uses_skeys(gmap) is true, so __dat_ptep_xchg() restores the zeroed PGSTE
-over the hardware storage key:
-
-arch/s390/kvm/gmap/dat.c:__dat_ptep_xchg() {
-    ...
-	if (uses_skeys) {
-		if (old.h.i && !new.h.i)
-			/* Invalid to valid: restore storage keys from PGSTE. */
-			dat_set_storage_key_from_pgste(new, pgste);
-    ...
+static inline bool _crste_none(union crste crste)
+{
+	return crste.h.i && !crste.tok.pr && crste.tok.type =3D=3D _DAT_TOKEN_NONE;
 }
 
-Should this pass (uses_skeys(gmap) ? DAT_WALK_USES_SKEYS : 0) in the
-dat_entry_walk() flags, similar to gmap_protect_rmap()?
+And in dat_entry_walk():
+
+arch/s390/kvm/gmap/dat.c:dat_entry_walk() {
+	...
+	if (crste_hole(entry) && !ign_holes)
+		return entry.tok.type =3D=3D _DAT_TOKEN_PIC ? entry.tok.par : -EFAULT;
+	...
+	if (entry.pmd.h.i && !entry.pmd.h.fc) {
+		if (!allocate)
+			return any ? 0 : -ENOENT;
+		rc =3D dat_split_ste(mc, &(*last)->pmd, gfn, asce, uses_skeys);
+	...
+}
+
+Because crste.tok.type overlaps (PFN_PHYS(pfn) >> 48) & 0xffff and
+crste.tok.par overlaps (PFN_PHYS(pfn) >> 32) & 0xffff, two problems can
+occur when a caller walks vcpu->arch.gmap->asce without DAT_WALK_IGN_HOLES
+(for example via KVM_S390_MEM_OP -> vcpu_check_access_key_gpa() ->
+dat_get_storage_key(), or storage-key and CMMA handlers such as
+handle_sske(), handle_pfmf(), or dat_perform_essa()):
+
+1. When PFN_PHYS(pfn) < (1UL << 48) (256 TiB, which is true for all 3-level
+   s390x user address spaces), crste.tok.type is 0 (_DAT_TOKEN_NONE).
+   _crste_hole() returns false instead of treating the UCAS entry as a hole.
+   If dat_entry_walk() was called with DAT_WALK_ALLOC (for instance via
+   dat_set_storage_key(), dat_cond_set_storage_key(), or
+   dat_set_cmma_bits()), it falls through to dat_split_ste(), overwriting
+   the UCAS segment entry with a newly allocated page table that has
+   PTVAL_VMADDR =3D=3D 0, wasn't allocated in gmap->parent->asce, and is le=
+aked
+   when the child gmap is destroyed because GMAP_FLAG_OWNS_PAGETABLES is not
+   set on vcpu->arch.gmap.
+
+2. When (PFN_PHYS(pfn) >> 48) =3D=3D _DAT_TOKEN_PIC (1, i.e. 256 TiB <=3D
+   user_addr < 512 TiB under 5-level page tables), _crste_hole() returns
+   true, but dat_entry_walk() sees entry.tok.type =3D=3D _DAT_TOKEN_PIC and
+   returns entry.tok.par (bits 16..31 of the user address) instead of
+   -EFAULT. Callers interpret positive return values as a guest Program
+   Interruption Code, or if bits 16..31 happen to be 0, dat_entry_walk()
+   returns 0 with *ptepp =3D=3D NULL, causing callers like dat_perform_essa=
+()
+   to dereference a NULL ptep.
+
+Should _crste_hole() (and _crste_none()) account for crste_is_ucas(crste),
+or should dat_entry_walk() explicitly check for crste_is_ucas(entry) before
+inspecting entry.tok.type?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028185422.2721=
-46-1-imbrenda@linux.ibm.com?part=3D6
+46-1-imbrenda@linux.ibm.com?part=3D1
