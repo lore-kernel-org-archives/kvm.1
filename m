@@ -1,101 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793293675;
-	b=S/9qfxzdfZGBNVn1JYpLaPs1MjbgShCT6gHxadA5y+BwzIIIkmEHjs3t883JNUqof27K
-	 rZXVvYMzciglN8IRpYsiF/jh6Lq3SCtNtYlVWzmVq+TTMAsgd+QDnpeG1OYXbeaJmJ7N1
-	 9GUcFHC0uHrttlMz88NQkwTgqdGUbPI4Y7VUQcJrIFxqk7aoEhJlZgH/0nOWi4tnAEIbU
-	 QyHctp1osv3pTSbavGD464g6twFhmKmuSy64OZJ+ijim5ZnhTQ2GGpKaijmKYEbDHDkhA
-	 UMiSPzou2Ah/VXLydTy3EWYwAojqi8eU7od19RyEqKDXuSQI1linqJdvl7jHIZYctzA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793293675;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793294776;
+	b=LDxJxmTxZHqWNIcyvFjoENK4lV0rSRONqyfG0Z3M9tBhNftL/JameHZAuN8UyhSFNAqf
+	 KVk1xwM/8gka8LL0o6JnBnKXEUSXW4Kd15692ihk1e1FMuYwhlMNRfKhnf51VHmcu/g5b
+	 a/2TggqsSnce4dxnqcTJjpgKZb/RNQTD20UYpfOA0DW5kUOCJ9bWeXBv2nix+eB+WYRGH
+	 HhAorbP7+ZvFEIL87c9qXP0NWLsvsEdRg7JegZ2l0f3RGsW+UU/qdmhAyfNyS6hCXYaUS
+	 kAqWsNu9f0ggAjSa2/M2ZjbRS8q67xjCwvWYUKRuDA6qS4SMYf1zWGchNcsS2HGgWYw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793294776;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
-	b=z1MgRPYl6xrnEGWR1BB8/NravuU7N9ilFNTKYGb+RhsJJG8LsE9S39xftXWmsbk5Rgso
-	 AlmsqY10egO4MOpWmAUWFUgbWp7DzxS/au7P3fdhHTS6pzEma/tZjxaToSSYOAEn15BfF
-	 rkhXr6o7UuLgCW9144FBfPcPEz3IasDJzTeyzuIGp2Zh0VftaeQvTtsqjT62f1fojfN6K
-	 71hA0lipM7c9Ph2RdLuvqDO1IGq66EyViVJFWmC5NYOd3nbBCV3CQIdnaH3H1mmV3MM7q
-	 9X3y2ctmNCEKan9df064pxz4s164ByVbtBExQ2Kq/8eayISOFEFUq9hiXX/WV2kc2Dw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MuWAqUZR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.48
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=R9gXbOeTpbZuWe2yIPQcNtZrgS23nXQ+wWuvRY3jxBM=;
+	b=Xf7MBqXLRqoIRRgo+aQQUhFiW6UORHJMRoqGeAzfdTPvl9QszTtKyO87pcjr+NQq3Uhi
+	 l0d6hNp3wv69r8/btRh/3w0mJCGpzVAkZKGn7A0qOp8n4bz0qrmCeWqYgSIECxHk4U16t
+	 NGC/xBXWiPN96eBR4hngbTosErlTYSkPg9klN/Q2y01Ka/QCAdGtDLKqClAh4FHSAmfH7
+	 vPD6iiE2gDGxoUzZ8JzUlrDkifFFWp0c5MRvCW23YqsKa+pOAEzRBnYDPBJoK/FYgf8bg
+	 /p+C/MP7zGv54fI+u5AVbo6Pussw0TEOYXquUhRye5rbAt+QKtrwSVnq/ybHxIBT8DA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HmBo4XM0;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479B4606A323
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:07:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 479B4606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D2C606A31C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:26:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5D2C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MuWAqUZR
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso432270566b.2
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:07:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793293672; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CEYvRZjpCyPSlJ65MGEUV85AjtsDyyiC96hul0ubLgRiohAYRSLVvsyzNcjXL6pv/f
-         3sCCf62w96+HdACYdTcWiUc1A87uHnpAyrHZlxC2b+b64ngM3kp9ABu9F1rjz/W28DYG
-         MD365B/Y/AK+nVdF0A9xrzX0XKHLAnS0UWasXsyaEOpEVHcG5CnIC1gqAiloFzSVmsCx
-         grFi2zuSPJEajrf9YLggc90lPat696qkpxnYEwvCZ1Xnyy3OC7AhnO32KMzDoWPzqwXg
-         U1JchJXRmP27uxEXeZl9+Z7SDOxHE66ZfGuPSrnpIRe7uojg4YlvkwuLuiIvKAGlO8fc
-         EVFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
-        fh=PrZ1jzHINibOApjQ3D+MOIeClYSmQSju2FvEhggr0oI=;
-        b=YPn/dInmXHIByrrygTdEEIOWZin08HoAZfIEzjyNJKB4NktL6+HzfKgRJh7maVTES3
-         uzfb/7MnwLHuPjIBteXt4AgKl8T/qYWSni4XEVZVuTDce53hFaXZzzEHUYcp7S5uH2rv
-         N9r19he5OGxKG7vUMqDH9Ft713pMhd0PbKUG7VaAA7eMN8k5hiajZMMr5wM1CKL27Rxc
-         IPtMGU6ZFt/YNtiB4wD/lm6Ct7AWB6jK77wjaoGfclmiamzrvUdebgVoeNGwoOh4BQde
-         TVF+ZFoWw6pvyyXIbVq9L11T9XbEEG5sVPkfNp0gW4qKjMKMbYFvLv3vKdbJqVN9RBn0
-         1LNQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HmBo4XM0
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2eb2437d752so10562615ad.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:26:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793293672; x=1793898472; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
-        b=MuWAqUZRlat6aJ6f8GSESPnGQrfK9syg40aZf1Ngw4XasvhbbIUdsMyG95RGl30Qzz
-         9Yxe0i/egPCaT2iDSP9o+SPOXxQDDHkvTy3Tmbsi7gHFPDFfNRdbgAMu2ri/XRuLOU4P
-         w/N5pfbyO9+Mpyr56qJnr5Sli9u08T7aPzZBRGkJDhg+UkYzIxyUfOXZhvpgOXisSD+b
-         zn44DE015kKSRc0VnLzrd7UMO1HCWL8nTrMaQf75CEoS8svAUUSwo8/rKdYyb+ti+XeW
-         +ALiAdTd1CasSqLpNDr1GyAgjW6d36Qz7JKGCZD44Z9QbmaWAcCAiRBe1yPTRf3qPA3x
-         QBqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793293672; x=1793898472;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793294775; x=1793899575; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
-        b=MhDvIntmuURGSqtP0dyb4OHsH6T6lr16hZ7/qyGaGCpEkR+/zVN4KmOFMOvwunaAFU
-         NsATCwRUZUS9ln8yvmo8dqpHA5zz03wlnjLOJ3ABpU8BY7w02eq7RuKBOnvzwrKXfJrN
-         TBCE1c5yaF8h8eD8sIpKD0/DUFPm4/8bn9o1VgClTTSwAb0cSrfqvt9sb5GQo3G/Fsqw
-         nrlNrX/l/4YSO8p7YUsjTjnoSQIH7BayT+ArlQhsGauN58mGNyDqj3UZD6tO0WpIewqB
-         jLJZgz2rbRIIJGBsC94G3xmVm/jSDyWwHRfT46hNmZq8CLFfUVq87XvZueDoILOsXIxG
-         LcRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw4YS4GXk3Avgtt8n3O0y2tKMw8BfCnp/5ApJV5ijZ6aBl7Puo3LoIul/EqyEQJ95TBLDk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK3IOS/0senvhVik333jfeGz6EacmAf11yTUtHnrlRD2SWNXnf1
-	ZI271xpQSfaWZ68xrZyyvjMS7YpN5naf5ge0TRC49lO6adBEM5yd/ZGz1KQPpOLPgANMRMeUin6
-	vD/dO7Le4Pm8hJdpGCOLK7kxVJJm2iWQ=
-X-Gm-Gg: AYBFou32exmyxITP70poPR4hKkwzZabSwWK40TyohstgoneKU3ajrcfPs9BLt0jL6+P
-	ymfZzsutKZpRYYKLH8fwVyXJPbUciR9xwZkKTpR9Kuy+QT7rDW1nc0svl088dqp5+HONz0QiT0r
-	0Gw5YQS9khf4g5IwpjWUxOsVdsOaIeiVMMWjn6uiC8+TeSCSvi/5cUrblPTHFm7oM/Z2rrPnCL2
-	YoUxfcGchOLLrhZeS35RvnzQlK5T0P1TuLMH9Mko+zHyrPzzS+kI7j75Y/YprXrz+ZVh5J/O4vv
-	jpmiB8OxZt9VsUEp9tSf5lk//3Ts+CHIITKt2ECHIVFFE41F6I87CzoJW0Elo4CJwxk/gnDkNZL
-	G+x698o0pk87XHSawPySCa+2/kT+iuQTNyNguS/H8csnSJuTOBbdwE+7KNaj1TWOIF0xc/BJjHZ
-	GeF4MqxLxBE62JL1A=
-X-Received: by 2002:a17:906:7313:b0:c45:c030:732c with SMTP id
- a640c23a62f3a-c49be03a73amr610119866b.41.1793293672256; Thu, 29 Oct 2026
- 10:07:52 -0700 (PDT)
+        bh=R9gXbOeTpbZuWe2yIPQcNtZrgS23nXQ+wWuvRY3jxBM=;
+        b=HmBo4XM0keFzi449eNoOJoycWwntk7K2g7yGqHUBvxgL6z07MM2yfZ0/qhXk9Cq+/B
+         7yMvarlYEUpPNLYASJOwhiqgwB9jhmn382mKkF9RtloA1MjytXeJBbNDGzuch/8FwDKD
+         8+9WVrO/7UTllVn7k2T4v54vchjKoLO7keejckWQzYSS9uOAsccU71lJ9QN8sYtJp7qg
+         McHY7w0cWEfJNMeiQuLhbfgAjT9rpOFaBv4YGDOJfnz780e6dn3x3yA+1duuohiR7rP8
+         TR/J7cFMXesT7m3RC+mNcRJZnXe86z8dax1X8slhBF4Whit2CKxWgL1JbfOLEscavRuQ
+         XzkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793294775; x=1793899575;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=R9gXbOeTpbZuWe2yIPQcNtZrgS23nXQ+wWuvRY3jxBM=;
+        b=SxaOUmFdhoX2+tLAHYZ/NYWAwLTfqth15GqHEARCEdg+Zah/M2rBP5wP82UBWYFeDu
+         BA9wDKwnIodoeF4JHJ3LDrgBFFzunfj1sYDcCfsFPxtxagkrnMxb3i4i4uHBmQunc/93
+         3BqhRzshQjRJ5o6ZSoZOgGxEJbsAVnBkeTF3M+h2vLGYAjejm4AGnhRv+b/JUj+T6KDN
+         qwc/Xo/kWOVtc9X2HHvWJlHlJ/F7NM7+12tDw8p7OQ9U4tlwXufAya/iotUHKnzRWU2s
+         P8Eklq7EK3AGDgcJwZ9vOlwhIH/wJbsyRF6yDhHPj+kC1UE/T1PMcHrzZYOcTQVWULLH
+         Mt5w==
+X-Gm-Message-State: AFq9FYJyK9J1++eo8g2BOP+z6xazNjfZRA6jHp/rZ8iiiEGMcVDTqR8a
+	GItFIjvz4v9VFbGplZgNZHt7nz4tSiuE8G3i+tR+QJVp2vSOPtu2v0hc6dVOD0pZz6MIQAyCp+N
+	3t2zlNg==
+X-Received: from pleo17.prod.google.com ([2002:a17:903:2111:b0:2e8:ab6e:81d5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:8c4:b0:2dd:c053:a6f1
+ with SMTP id d9443c01a7336-2eb364e7e09mr554585ad.35.1793294774832; Thu, 29
+ Oct 2026 10:26:14 -0700 (PDT)
+Date: Thu, 29 Oct 2026 10:26:14 -0700
+In-Reply-To: <6ae372ba.f57e0135.1770dd.0070.GAE@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,295 +76,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261027154649.91571-1-griffoul@gmail.com> <20261027154649.91571-2-griffoul@gmail.com>
- <CAEvNRgGvxtgT=x3sLcasLZzCrtX+qEkHjPgs2yFRY0HRJvodag@mail.gmail.com>
-In-Reply-To: <CAEvNRgGvxtgT=x3sLcasLZzCrtX+qEkHjPgs2yFRY0HRJvodag@mail.gmail.com>
-From: Frederic Griffoul <griffoul@gmail.com>
-Date: Thu, 29 Oct 2026 17:07:41 +0000
-X-Gm-Features: AclHuK-XOTTZ577Y9tlQyUF1DU-1w6QS3FSXEW1jGcpzGvSeAxBjghFI3p-6WVU
-Message-ID: <CAF2vKzP7mKAsbDFfj-ndoYSxxZYbNzVO7uysb-XtKytR4zuC7w@mail.gmail.com>
-Subject: Re: [RFC PATCH 01/14] KVM: guest_memfd: Clamp the order of PFN mode
- blocks to what KVM can map
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Alexander Graf <graf@amazon.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Alexey Kardashevskiy <aik@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Baolu Lu <baolu.lu@linux.intel.com>, 
-	Bill Wendling <morbo@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christian Brauner <brauner@kernel.org>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Connor Williamson <connordw@amazon.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Erdem Aktas <erdemaktas@google.com>, Frank van der Linden <fvdl@google.com>, 
-	Gregory Price <gourry@gourry.net>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins <hughd@google.com>, 
-	Ingo Molnar <mingo@redhat.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	James Houghton <jthoughton@google.com>, Jan Kara <jack@suse.cz>, Jianxiong Gao <jxgao@google.com>, 
-	Joerg Roedel <joro@8bytes.org>, Joey Gouly <joey.gouly@arm.com>, 
-	John Starks <John.Starks@microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Justin Stitt <justinstitt@google.com>, Lorenzo Stoakes <ljs@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Michael Roth <michael.roth@amd.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Oliver Upton <oupton@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Steven Price <steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tarun Sahu <tarunsahu@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org, 
-	Shuah Khan <skhan@linuxfoundation.org>, Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, llvm@lists.linux.dev, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <6ae372ba.f57e0135.1770dd.0070.GAE@google.com>
+Message-ID: <auOBtkWSVJO1Ty3k@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING in kvm_vcpu_ioctl
+From: Sean Christopherson <seanjc@google.com>
+To: syzbot <syzbot+da2a2f350196c7a0a389@syzkaller.appspotmail.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Oct 29, 2026 at 06:25:49AM -0700, Ackerley Tng wrote:
-> Fred Griffoul <griffoul@gmail.com> writes:
->
-> > +        kvm_mmu_invalidate_range_add(kvm,
-> > +                         round_down(gfn_range.start, blk),
-> > +                         round_up(gfn_range.end, blk));
-> > +
->
-> Yes, we want to make the invalidation range larger, but not the range
-> being zapped. We can't over-zap for CoCo VMs.
->
-> Would it be better to refactor kvm_mmu_unmap_gfn_range() instead of
-> doing kvm_mmu_invalidate_range_add() twice?
+On Thu, Oct 29, 2026, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    c339f4010dea Merge tag 'platform-drivers-x86-v7.4-1' of gi..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=15f440b1580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=119e5f4d0a8d39cf
+> dashboard link: https://syzkaller.appspot.com/bug?extid=da2a2f350196c7a0a389
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12952929580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c339f401.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/ff23ecfc810c/vmlinux-c339f401.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/6554a89077aa/bzImage-c339f401.xz
+> 
+> AI-generated root cause summary:
+> When a VM is terminated or marked dead (e.g., via kvm_vm_dead() due to an error
+> in enter_smm() or migration), the KVM_REQ_VM_DEAD request is raised on its
+> vCPUs. If userspace subsequently issues the KVM_PRE_FAULT_MEMORY ioctl,
+> kvm_tdp_page_prefault() bails out upon observing KVM_REQ_VM_DEAD and returns
+> -EIO. However, kvm_vcpu_pre_fault_memory() in virt/kvm/kvm_main.c considers -EIO
+> an unexpected internal condition and triggers WARN_ON_ONCE(r == 0 || r == -EIO).
+> In a production kernel without panic_on_warn, execution breaks out of the loop
+> and cleanly returns -EIO to userspace without crashing or corrupting memory.
+> 
+> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=da2a2f350196c7a0a389
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+da2a2f350196c7a0a389@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> r == 0 || r == -EIO
+> WARNING: arch/x86/kvm/../../../virt/kvm/kvm_main.c:4465 at kvm_vcpu_pre_fault_memory virt/kvm/kvm_main.c:4465 [inline], CPU#1: syz.0.17/6063
+> WARNING: arch/x86/kvm/../../../virt/kvm/kvm_main.c:4465 at kvm_vcpu_ioctl+0x156a/0x17b0 virt/kvm/kvm_main.c:4744, CPU#1: syz.0.17/6063
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 6063 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:kvm_vcpu_pre_fault_memory virt/kvm/kvm_main.c:4465 [inline]
+> RIP: 0010:kvm_vcpu_ioctl+0x156a/0x17b0 virt/kvm/kvm_main.c:4744
+> Code: 9c 35 8b 00 be 01 00 00 00 4c 89 f7 e8 4f b1 b5 03 e9 c3 f8 ff ff e8 85 35 8b 00 90 0f 0b 90 e9 2c f2 ff ff e8 77 35 8b 00 90 <0f> 0b 90 e9 38 fd ff ff e8 69 35 8b 00 65 48 8b 3d 99 02 36 14 31
+> RSP: 0018:ffffc90003957c98 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: 1ffff9200072af98 RCX: 0000000000000000
+> RDX: ffff8880355fcb00 RSI: ffffffff81831d69 RDI: 0000000000000007
+> RBP: ffff8880459f8048 R08: fffffffffffffffb R09: fffffffffffffffb
+> R10: ffff8880459f803f R11: 0000000000000001 R12: fffffffffffffffb
+> R13: ffffed1006abf960 R14: ffff8880459f8000 R15: ffffc90003957d70
+> FS:  00007f7bf8c946c0(0000) GS:ffff8880d458e000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f0b9aa1ee9c CR3: 0000000037636000 CR4: 0000000000352ef0
+> Call Trace:
+>  <TASK>
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>  __se_sys_ioctl fs/ioctl.c:583 [inline]
+>  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f7bf7d9f559
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f7bf8c94028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> RAX: ffffffffffffffda RBX: 00007f7bf8026090 RCX: 00007f7bf7d9f559
+> RDX: 0000200000000800 RSI: 00000000c040aed5 RDI: 0000000000000005
+> RBP: 00007f7bf7e36b20 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f7bf8026128 R14: 00007f7bf8026090 R15: 00007ffcdd24ea18
+>  </TASK>
 
-Good point. As far as I can see, kvm_mmu_unmap_gfn_range() is only
-kvm_mmu_invalidate_range_add() plus kvm_unmap_gfn_range(), so
-guest_memfd could do the two steps itself: add the blocks around the
-range, then unmap the exact range. The zap stays exact and the range is
-added once. Or am I missing something about kvm_mmu_unmap_gfn_range()
-that a refactor would need to keep?
-
-> So I think we should follow the same model:
->
-> + The provider reports the max_order based on it's contiguity
->   information, which is the actual contiguity of memory and
->   read-only attributes
-> + guest_memfd further reduces max_order due to shared/private contiguity
-> + After handing it to KVM, KVM further reduces the max order based on
->   the above.
->
-> I think mappings for all other page tables (userspace and IOMMU) should
-> also follow this approach.
-
-Agreed. guest_memfd should then only reduce the order for shared and
-private pages, and drop the gfn alignment and the rounding to a
-page-table size, which KVM does. For the provider, "contiguity" would
-mean a naturally aligned block of contiguous frames with the same
-attributes, the frames aligned to the block too, so a mapping of that
-size is valid as is.
-
-One gap: KVM does not cover a memslot whose gfn and guest_memfd offset
-are not aligned to each other. On x86, kvm_alloc_memslot_metadata()
-disallows large pages when base_gfn and userspace_addr are misaligned,
-but nothing compares base_gfn with gmem.pgoff, and kvm_gmem_bind()
-takes any page-aligned offset. A gmem.pgoff check next to the
-userspace_addr one would keep that in KVM too.
-
-The export lookup in the series already works this way: it reports the
-provider's block, reduced for shared and private pages. iommufd maps
-PAGE_SIZE IOPTEs in this series, and will pick larger IOPTEs from that
-block later.
-
-> I guess the kvm_gmem_fault_user_mapping() equivalent of this max_order
-> tuning is missing from this series. :) I think we should defer order >
-> 0 to a later series though. I think read-only-ness should be part of
-> the first PFN mode series.
-
-Right, userspace mappings are PAGE_SIZE for now.
-
-Deferring order > 0 for KVM and userspace is fine with me. I'd like to
-keep the order in the export lookup, though: large IOPTEs matter for
-device performance, and I'm preparing iommupt changes to split and merge
-them in place.
-
-Fred
-
-On Thu, Oct 29, 2026 at 1:25=E2=80=AFPM Ackerley Tng <ackerleytng@google.co=
-m> wrote:
->
-> Fred Griffoul <griffoul@gmail.com> writes:
->
-> > From: Fred Griffoul <fgriffo@amazon.co.uk>
-> >
-> > KVM maps guest memory in 4K, 2M or 1G blocks, and uses guest_memfd's
-> > max_order to choose. A folio of order N is physically aligned and never
-> > mixes shared and private pages, so the order needs no check. A PFN mode
-> > provider's frames need not be aligned
->
-> I'll need to think about max_order > 0 more for PFNs. I put it out of my
-> mind because my frame of mind is that only order-0 folios are supported
-> today. Perhaps with PFNs it's actually a lot easier to support order >
-> 0.
->
-> > and the provider does not know
-> > which pages are private, yet kvm_gmem_get_pfn() passes its order to KVM
-> > unchanged. KVM can then map a block over the wrong frames, or with one
-> > attribute over shared and private pages.
-> >
->
-> Yes, makes sense that private/shared contiguity needs to be taken into
-> account. I didn't consider this because order-0 is always safe to
-> map. Thank you!
->
-> >
-> > [...snip...]
-> >
-> > -static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t s=
-tart,
-> > +static void __kvm_gmem_invalidate_start(struct inode *inode,
-> > +                                     struct gmem_file *f, pgoff_t star=
-t,
-> >                                       pgoff_t end,
-> >                                       enum kvm_gfn_range_filter attr_fi=
-lter)
-> >  {
-> > +     const gfn_t blk =3D kvm_gmem_is_pfn_mode(GMEM_I(inode)) ?
-> > +                       1UL << PUD_ORDER : 1;
-> >       bool flush =3D false, found_memslot =3D false;
-> >       struct kvm_memory_slot *slot;
-> >       struct kvm *kvm =3D f->kvm;
-> > @@ -355,6 +360,16 @@ static void __kvm_gmem_invalidate_start(struct gme=
-m_file *f, pgoff_t start,
-> >
-> >               flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
-> >
-> > +             /*
-> > +              * In PFN mode, a fault may map a block of up to PUD_ORDE=
-R
-> > +              * pages, sized before this invalidation (see
-> > +              * kvm_gmem_pfn_map_order()): make faults anywhere in the
-> > +              * blocks around the range retry.
-> > +              */
-> > +             kvm_mmu_invalidate_range_add(kvm,
-> > +                                          round_down(gfn_range.start, =
-blk),
-> > +                                          round_up(gfn_range.end, blk)=
-);
-> > +
->
-> Yes, we want to make the invalidation range larger, but not the range
-> being zapped. We can't over-zap for CoCo VMs.
->
-> Would it be better to refactor kvm_mmu_unmap_gfn_range() instead of
-> doing kvm_mmu_invalidate_range_add() twice?
->
-> >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> >               kvm_arch_gmem_invalidate_range(kvm, &gfn_range);
-> >  #endif
-> > @@ -374,7 +389,7 @@ static void kvm_gmem_invalidate_start(struct inode =
-*inode, pgoff_t start,
-> >       struct gmem_file *f;
-> >
-> >       kvm_gmem_for_each_file(f, inode)
-> > -             __kvm_gmem_invalidate_start(f, start, end, filter);
-> > +             __kvm_gmem_invalidate_start(inode, f, start, end, filter)=
-;
-> >  }
-> >
-> >  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t sta=
-rt,
-> > @@ -670,7 +685,7 @@ static int kvm_gmem_release(struct inode *inode, st=
-ruct file *file)
-> >        * Zap all SPTEs pointed at by this file.  Do not free the backin=
-g
-> >        * memory, as its lifetime is associated with the inode, not the =
-file.
-> >        */
-> > -     __kvm_gmem_invalidate_start(f, 0, -1ul,
-> > +     __kvm_gmem_invalidate_start(inode, f, 0, -1ul,
-> >                                   kvm_gmem_get_all_gfns_filter(inode));
-> >       __kvm_gmem_invalidate_end(f, 0, -1ul);
-> >
-> > @@ -1535,6 +1550,44 @@ static struct folio *__kvm_gmem_get_pfn(struct f=
-ile *file,
-> >       return folio;
-> >  }
-> >
-> > +/*
-> > + * The order a PFN mode block can be mapped at: the provider's order, =
-no
-> > + * larger than the alignment of @gfn and @pfn to @index allows, rounde=
-d down to
-> > + * a page-table size, and never over pages that are not all shared or =
-all
-> > + * private, since KVM maps a block with a single attribute.  Called wi=
-th the
-> > + * invalidate lock held; an invalidation of any page of the block make=
-s the
-> > + * fault retry (see __kvm_gmem_invalidate_start()).
-> > + */
-> > +static int kvm_gmem_pfn_map_order(struct inode *inode, pgoff_t index,
-> > +                               gfn_t gfn, kvm_pfn_t pfn, int order)
-> > +{
-> > +     u64 misalign =3D (gfn ^ index) | (pfn ^ index);
-> > +     u64 attrs;
-> > +
-> > +     if (WARN_ON_ONCE(order < 0))
-> > +             return 0;
-> > +
-> > +     order =3D min(order, PUD_ORDER);
-> > +     if (misalign)
-> > +             order =3D min_t(int, order, __ffs64(misalign));
-> > +
-> > +     if (order >=3D PUD_ORDER)
-> > +             order =3D PUD_ORDER;
-> > +     else if (order >=3D PMD_ORDER)
-> > +             order =3D PMD_ORDER;
-> > +     else
-> > +             return 0;
-> > +
-> > +     attrs =3D kvm_gmem_get_attributes(inode,
-> > +                                     mtree_load(&GMEM_I(inode)->attrib=
-utes, index));
-> > +     while (order &&
-> > +            !kvm_gmem_range_has_attributes(inode,
-> > +                                           ALIGN_DOWN(index, 1UL << or=
-der),
-> > +                                           1UL << order, attrs))
-> > +             order =3D order =3D=3D PUD_ORDER ? PMD_ORDER : 0;
-> > +     return order;
-> > +}
-> > +
->
-> I'll review this function more closely again. I think the mapping order
-> should fit into how KVM does it. After taking guest_memfd's input on
-> max_order, KVM then lets these parties possibly tune the max order down:
->
-> 1. lpage_info contains information about highest order due to memslot
->    alignment and alignment due to VM-level memory attributes
-> 2. CoCo platform can impose a max order
-> 3. Userspace mappings can impose a max order too.
->
-> So I think we should follow the same model:
->
-> + The provider reports the max_order based on it's contiguity
->   information, which is the actual contiguity of memory and
->   read-only attributes
-> + guest_memfd further reduces max_order due to shared/private contiguity
-> + After handing it to KVM, KVM further reduces the max order based on
->   the above.
->
-> I think mappings for all other page tables (userspace and IOMMU) should
-> also follow this approach.
->
-> I guess the kvm_gmem_fault_user_mapping() equivalent of this max_order
-> tuning is missing from this series. :) I think we should defer order > 0
-> to a later series though. I think read-only-ness should be part of the
-> first PFN mode series.
->
-> >
-> > [...snip...]
-> >
+#syz dup: [syzbot] [kvm?] WARNING in kvm_vcpu_pre_fault_memory
