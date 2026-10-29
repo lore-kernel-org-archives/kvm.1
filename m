@@ -1,82 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793262109;
-	b=uL+YNe1GhY0ChXjHnEeMWrXPW1/YmHFwppKZpsCpmR5Tw8qe2Y9KMGwJAMf3eKzVWn9T
-	 AZA0rntMjYaZ8o0NqTNetp43JvBC3UVAhY3iR25KCKFvmyA2S4Uixd8ej0kBt92HEknwO
-	 Nye19Cmxpviaso+xfaTgJAzQrdgIdBT9SVN7GvJBAqBglJoZujyVGTpquIXgrpv+Cst4c
-	 NzhXd35chv8PoCFeV6mruNqk6yvCBvoZSy0rL69NTJo45v62bOUBhY64lMgYDU0Mq4Tg/
-	 mF8m3QIXSRz7zNFsSG30/QmhcXbmOWZU2+pErFbx8zLeicY2IN5K2GL0Sv6Ovh4ha/g==
+	t=1793262314;
+	b=FTiQxptmjCjAKUFs0qSM3bPVHU1ykcCRWLgnhrbDs+rswMk3WrhmmkhzM6TQt7CyfO7A
+	 qFGwN/X3aNLQ1B+8ErAqtXum0hfJvh874FuHEfFieAfz3Relnh2FRlkAQf8Owdo32wD3t
+	 zypg+2beaOTjPW0LjVHkGZ/StODPiwN4uIiL/KGkell9ri/IP87MjNNh0nOAR0GnTuIAo
+	 xozR6WvEQQKcvFKJdMtHSB1t8h7BVwXMuJYKl92k7W3KuqVuTUmTlxNsw+SktJ14Hb6OI
+	 ohOeG1fx9zi7p5rWVTuGE0I1vjpotcFZBPlvAOpHW71yXEatJ2nTwQHDAaz0EkQ5Hig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793262109;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=xPmA0pkfhdgm8CaJDGdf7BEDZGYIBrL6KWwLvFembQY=;
-	b=dAwHK1Z6FphkKqtk2qt8Mn32Bk3Hbp6VAeS6BzQz2ft1AVt9MEqxESb0bPxrfAM+I356
-	 zXrI8UU9/n/Am/fVxcjRthx+ahmyHn+tnOvcBj2Q9QqOFLIOCbbl2hykDd8kva2pVyunI
-	 5nWOoiHWaALOa7CQV3nSggf9DqNhe6zVTe3WfkskUk4+BjscykzHcY26i6ejdjZQWB8M7
-	 P0DdVq1LPKVg7RRd+ggJVVmAgNMnO4zI1yVewy4vc+o+n8IA1Xh77m7nsGnwYLyivk9oM
-	 QyeAm+Peu8OSohwdZn67+0wIVNnfp3S4Ih8RPoOTVHna//UMleZT3WYdAhCXWVcgJjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793262314;
+	h=DMARC-Filter:DKIM-Signature:X-Lms-Return-Path:To:Cc:From:Subject:
+	 X-Mailer:Content-Transfer-Encoding:Message-Id:Received:Date:
+	 Mime-Version:X-Original-From:Content-Type;
+	bh=sDSw+quj48/Sv4K0BAesVEV8uBVWYkpg2NZQSvi+LvE=;
+	b=OghAR0toCPmILCueNOPrL/wBuDPPlthCXSjM+/iyf2S1gmUf+Y/WNh3mPOr65fo9yqZS
+	 cNaAO9bSBTkdCn2oIze+wsT5teL+K5QZTjevdgB1/f3DhRuGUqtdsjhViMOMHKpTYOMDt
+	 P1reBo65s2EoOCfl5w/LCUVlZteWT+W+plK7MyB4YWr3BdweaBgSB48sCmB/4y0hNlmnL
+	 w9QvLi2IM0+ouv14yXAoDTbbJzZGxOEOqvyFOqmH+p7muDKA7XKf5OGZYSGYwUJRBFUhZ
+	 ZJ1MqZwONazK7J+W0t5StR0nNLflVa3hwm4pApZOmoT0+M/o+dKw8QnH2rciOt0YCHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+VpPybF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=lanxincomputing.com;
+	spf=pass smtp.mailfrom=lanxincomputing.com;
+	dkim=pass header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.a=rsa-sha256 header.s=s1 header.b=cjj1Rrte;
+	arc=none smtp.remote-ip=209.127.231.35
+Received: from va-2-35.ptr.blmpb.com (va-2-35.ptr.blmpb.com [209.127.231.35])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E574606A32C;
-	Thu, 29 Oct 2026 08:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221E9606A31A
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 08:25:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 221E9606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+VpPybF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026C61F01825;
-	Thu, 29 Oct 2026 08:21:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793262109;
-	bh=xPmA0pkfhdgm8CaJDGdf7BEDZGYIBrL6KWwLvFembQY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=j+VpPybF6IZFS02jOwPLDCU/oqxnF36kGt/r+uuygcDVDakU+jtz7x6bM47p1LBbB
-	 A5DkDZENUbYysQ/lFizuVu9Jakcxi+LatcRtyxMktaYn959Xd+jSu1xzh4Rp3ldkxj
-	 0jCC1apEtCbQ36cK51x6ekx5Wo0w+S5PmzaPF8liLzSuNORTHrw6cWAgnVidD/keCF
-	 FCXGBZqw8jA/6Ea+//8GN+Qh/ttyFLzrNrOPiNntT4aDom9QwKVkPs1pzNdWRumSjR
-	 WBqj5BQVS7ec/2NdB5VXi7EpvUmfgTm+GtkQwFSADEIhzS9z94STGRqVROt2AYgnCb
-	 mE3Omf6VbU3Dg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>,
-	Alexey Kardashevskiy <aik@amd.com>
-Cc: iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v7 13/16] iommufd/viommu: Select vIOMMU operations
- before allocation
-In-Reply-To: <179321444125.2412245.13201160469751061592.b4-review@b4>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-14-aneesh.kumar@kernel.org>
- <179321444125.2412245.13201160469751061592.b4-review@b4>
-Date: Thu, 29 Oct 2026 13:51:37 +0530
-Message-ID: <yq5a7bj0c3xq.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.a=rsa-sha256 header.s=s1 header.b=cjj1Rrte
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1793262307;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=sDSw+quj48/Sv4K0BAesVEV8uBVWYkpg2NZQSvi+LvE=;
+ b=cjj1Rrteu7g9BBTuYp+/eEn96lTrJ4mIGH9s18T8Vc8vbQoj/Jjy1ln+epszOtNLHROjFR
+ jFjAUtLmNrs2KiPpu2RrZ1WAtEQ0TTcq/1REmqOl+n87ZkDg+987O3nsH2/lHt40mMEPUw
+ O4GZn8j6UuudfhgMyOHKjGbeoJ5dkqbw+c+4mreN231rtmygpHtb+G67Cviv4mnbhshHgC
+ Hjk7JXPrMkqWuEEDWccoiK8HOZtlHaLBO0p9Wm2pkOCvnlQdxukOiejfua5SmNujPe+SwQ
+ fXn/jiT0gCO59wFnR+lqpzZAiNmSzD3zSbjo+pEul1qhGk5Ybp6UnNJ88n0F7w==
+X-Lms-Return-Path: <lba+26ae302e1+11ff5d+vger.kernel.org+xiangwencheng@lanxincomputing.com>
+To: <anup@brainfault.org>
+Cc: <atish.patra@linux.dev>, <pjw@kernel.org>, <palmer@dabbelt.com>, 
+	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <kvm@vger.kernel.org>, 
+	<kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>, 
+	<linux-kernel@vger.kernel.org>, <xiangwencheng@lanxincomputing.com>
+From: "BillXiang" <xiangwencheng@lanxincomputing.com>
+Subject: [PATCH v2] riscv: KVM: Add hart-to-vCPU mapping for faster MSI injection
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261029082426.706302-1-xiangwencheng@lanxincomputing.com>
+Received: from lanxin-ThinkBook-16-G5-IRH ([123.120.5.129]) by smtp.feishu.cn with ESMTP; Thu, 29 Oct 2026 16:25:04 +0800
+Date: Thu, 29 Oct 2026 16:24:26 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,56 +64,160 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+X-Original-From: BillXiang <xiangwencheng@lanxincomputing.com>
+Content-Type: text/plain; charset=UTF-8
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+Replace linear searches over all vCPUs in MSI injection paths with a
+hart_index -> vCPU xarray lookup table. This avoids O(n) scans on
+every injected interrupt and improves performance when the number of
+vCPUs is large.
 
->> [ ... 62 lines skipped ... ]
->> --- a/drivers/iommu/amd/iommufd.c
->> +++ b/drivers/iommu/amd/iommufd.c
->> @@ -32,13 +32,21 @@ void *amd_iommufd_hw_info(struct device *dev, u32 *length, enum iommu_hw_info_ty
->>  	return hwinfo;
->>  }
->>  
->> -size_t amd_iommufd_get_viommu_size(struct device *dev, enum iommu_viommu_type viommu_type)
->> +static size_t amd_iommufd_get_viommu_size(struct device *dev,
->> +		enum iommu_viommu_type viommu_type)
->>  {
->>  	return VIOMMU_STRUCT_SIZE(struct amd_iommu_viommu, core);
->>  }
->>  
->> -int amd_iommufd_viommu_init(struct iommufd_viommu *viommu, struct iommu_domain *parent,
->> -			    const struct iommu_user_data *user_data)
->> +const struct iommufd_viommu_ops *
->> +amd_iommufd_get_viommu_ops(struct device *dev, enum iommu_viommu_type viommu_type)
->> +{
->> +	return &amd_viommu_ops;
->> +}
->
-> This needs to fail not retain the broken behavior if this is getting
-> touched..
->
+Both kvm_riscv_aia_inject_msi_by_id() and kvm_riscv_aia_inject_msi()
+now use the table instead of iterating over the vCPU list.
 
-Do you mean return NULL until we add an AMD-specific type equivalent to
-IOMMU_VIOMMU_TYPE_ARM_SMMUV3?
+Signed-off-by: BillXiang <xiangwencheng@lanxincomputing.com>
+Changes in v2:
+- Use xarray instead of normal array to handle incontiguous hart_index.
+- Link to v1:
+  https://lore.kernel.org/kvm-riscv/20260730093614.983508-1-xiangwencheng@lanxincomputing.com/
+---
+ arch/riscv/include/asm/kvm_aia.h |  3 ++
+ arch/riscv/kvm/aia_device.c      | 50 +++++++++++++++++---------------
+ 2 files changed, 30 insertions(+), 23 deletions(-)
 
-modified    drivers/iommu/amd/iommufd.c
-@@ -41,7 +41,7 @@ static size_t amd_iommufd_get_viommu_size(struct device *dev,
- const struct iommufd_viommu_ops *
- amd_iommufd_get_viommu_ops(struct device *dev, enum iommu_viommu_type viommu_type)
+diff --git a/arch/riscv/include/asm/kvm_aia.h b/arch/riscv/include/asm/kvm_aia.h
+index ab03f853e507..3b075f18e1d6 100644
+--- a/arch/riscv/include/asm/kvm_aia.h
++++ b/arch/riscv/include/asm/kvm_aia.h
+@@ -12,6 +12,7 @@
+ 
+ #include <linux/jump_label.h>
+ #include <linux/kvm_types.h>
++#include <linux/xarray.h>
+ #include <asm/csr.h>
+ 
+ struct kvm_aia {
+@@ -47,6 +48,8 @@ struct kvm_aia {
+ 
+ 	/* Internal state of APLIC */
+ 	void		*aplic_state;
++
++	struct xarray hart_to_vcpu;
+ };
+ 
+ struct kvm_vcpu_aia_csr {
+diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+index efc7c0bcfba9..a415a8c10967 100644
+--- a/arch/riscv/kvm/aia_device.c
++++ b/arch/riscv/kvm/aia_device.c
+@@ -259,6 +259,8 @@ static int aia_init(struct kvm *kvm)
+ 	if (ret)
+ 		return ret;
+ 
++	xa_init(&aia->hart_to_vcpu);
++
+ 	/* Iterate over each VCPU */
+ 	kvm_for_each_vcpu(idx, vcpu, kvm) {
+ 		vaia = &vcpu->arch.aia_context;
+@@ -280,6 +282,11 @@ static int aia_init(struct kvm *kvm)
+ 		/* Update HART index of the IMSIC based on IMSIC base */
+ 		vaia->hart_index = aia_imsic_hart_index(aia,
+ 							vaia->imsic_addr);
++		
++		ret = xa_insert(&aia->hart_to_vcpu, vaia->hart_index, vcpu, GFP_KERNEL);
++		if (ret) { 
++			goto fail_cleanup_imsics;
++		}
+ 
+ 		/* Initialize IMSIC for this VCPU */
+ 		ret = kvm_riscv_vcpu_aia_imsic_init(vcpu);
+@@ -299,6 +306,7 @@ static int aia_init(struct kvm *kvm)
+ 			continue;
+ 		kvm_riscv_vcpu_aia_imsic_cleanup(vcpu);
+ 	}
++	xa_destroy(&aia->hart_to_vcpu);
+ 	kvm_riscv_aia_aplic_cleanup(kvm);
+ 	return ret;
+ }
+@@ -557,30 +565,25 @@ void kvm_riscv_vcpu_aia_deinit(struct kvm_vcpu *vcpu)
+ int kvm_riscv_aia_inject_msi_by_id(struct kvm *kvm, u32 hart_index,
+ 				   u32 guest_index, u32 iid)
  {
--	return &amd_viommu_ops;
-+	return NULL:
+-	unsigned long idx;
+ 	struct kvm_vcpu *vcpu;
++	struct kvm_aia *aia = &kvm->arch.aia;
+ 
+ 	/* Proceed only if AIA was initialized successfully */
+ 	if (!kvm_riscv_aia_initialized(kvm))
+ 		return -EBUSY;
+ 
+-	/* Inject MSI to matching VCPU */
+-	kvm_for_each_vcpu(idx, vcpu, kvm) {
+-		if (vcpu->arch.aia_context.hart_index == hart_index)
+-			return kvm_riscv_vcpu_aia_imsic_inject(vcpu,
+-							       guest_index,
+-							       0, iid);
+-	}
+-
+-	return 0;
++	vcpu = xa_load(&aia->hart_to_vcpu, hart_index);
++	if (!vcpu)
++		return 0;
++	
++	return kvm_riscv_vcpu_aia_imsic_inject(vcpu, guest_index, 0, iid);
  }
  
- int amd_iommufd_viommu_init(struct iommufd_viommu *viommu,
-
-
-Alexey,
-
-Could you look at this and suggest the AMD equivalent of
-arm_smmu_get_viommu_ops()? We could add it as part of this patch.
-
-
--aneesh
+ int kvm_riscv_aia_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
+ {
+ 	gpa_t tppn, ippn;
+-	unsigned long idx;
+ 	struct kvm_vcpu *vcpu;
+-	u32 g, toff, iid = msi->data;
++	u32 g, toff, iid = msi->data, hart_index;
+ 	struct kvm_aia *aia = &kvm->arch.aia;
+ 	gpa_t target = (((gpa_t)msi->address_hi) << 32) | msi->address_lo;
+ 
+@@ -595,18 +598,16 @@ int kvm_riscv_aia_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
+ 	g = tppn & (BIT(aia->nr_guest_bits) - 1);
+ 	tppn &= ~((gpa_t)(BIT(aia->nr_guest_bits) - 1));
+ 
+-	/* Inject MSI to matching VCPU */
+-	kvm_for_each_vcpu(idx, vcpu, kvm) {
+-		ippn = vcpu->arch.aia_context.imsic_addr >>
+-					IMSIC_MMIO_PAGE_SHIFT;
+-		if (ippn == tppn) {
+-			toff = target & (IMSIC_MMIO_PAGE_SZ - 1);
+-			return kvm_riscv_vcpu_aia_imsic_inject(vcpu, g,
+-							       toff, iid);
+-		}
+-	}
++	hart_index = aia_imsic_hart_index(aia, target);
++	vcpu = xa_load(&aia->hart_to_vcpu, hart_index);
++	if (!vcpu)
++		return 0;
+ 
+-	return 0;
++	ippn = vcpu->arch.aia_context.imsic_addr >> IMSIC_MMIO_PAGE_SHIFT;
++	if (ippn != tppn)
++		return 0;
++	toff = target & (IMSIC_MMIO_PAGE_SZ - 1);
++	return kvm_riscv_vcpu_aia_imsic_inject(vcpu, g,	toff, iid);
+ }
+ 
+ int kvm_riscv_aia_inject_irq(struct kvm *kvm, unsigned int irq, bool level)
+@@ -647,9 +648,12 @@ void kvm_riscv_aia_init_vm(struct kvm *kvm)
+ 
+ void kvm_riscv_aia_destroy_vm(struct kvm *kvm)
+ {
++	struct kvm_aia *aia = &kvm->arch.aia;
+ 	/* Proceed only if AIA was initialized successfully */
+ 	if (!kvm_riscv_aia_initialized(kvm))
+ 		return;
++	
++	xa_destroy(&aia->hart_to_vcpu);
+ 
+ 	/* Cleanup APLIC context */
+ 	kvm_riscv_aia_aplic_cleanup(kvm);
+-- 
+2.53.0
