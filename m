@@ -1,81 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793285804;
-	b=oaxM/P9lHl3DLJEYaIlYdHJMpPJL06sKWq3M3HBCy4+V+TNJZhk6t/pgkfDotBQVjYO5
-	 UK6enngAnjvaVJyDFZRMT6aVayU6T1zPMhEGmXdTIkfBLc81CZ6qOBepCp8aMWCTd6aM9
-	 d46C6ALDyNqUDDK7aeXuWh1r27AdaZodkZQhP6Ys5VwltA1shbaBjbc6idA/VcZqUwAtH
-	 a6o78knJ6vC/cQPLFZu/lDQFjIIlwY+npZqn8fkPJWTIocL+5a3h/cKPc2wCqjXhfWNKW
-	 lqTbLHcjj7Fo8PS1cjP2aLcanqICUIWmiSqFcuxIUGrx+Jx8yRQPBPwz+zUJtEyc3Ww==
+	t=1793286178;
+	b=1QYXqU5gdx3jfUIZZPTUsJInzpOp+NCDR/oo3v8rSPGVPLr9Z3bKHNjK0/+fSjJrZrqz
+	 y+X3w02Ffxvonh4zTYz/l/xOr2sU6KmxJGs8P5u+xt7YFLOt9MXOKAXKFk7WOR5sSOSLw
+	 a5FVvA+QTZal+YfolSzrE65d7CEsBl6AbKgOLf9U7EGRi2F2J7OHf7Bvodo9Z5q2egvMv
+	 r0T5h00rwhUOXTKgtvpAFcvCKET89G4VskHYSO6SVlaw0IFO8HN9RTODPIhfWaRu+kf5a
+	 5CTgSvyC/PtToy5TQ4XiZjWzX2Ezvo42LpYo+j+RbK5tUajxbALXZqVEN3ptJLkS5fw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793285804;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:From:Subject:To:Cc:References:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=GHgvV6rzEEa0plcFuAOk8oPHdGIYn1CeqwTmGhSiL/k=;
-	b=xZTaFuMg6PsdVLxysqHTV7pGObIX1F3INxr7kzrQ4ZQWZWIUYxbO4gx0irhO6h9g3K46
-	 hLPhgIF+4mVXdfzQVVvbATpYhxv8vLelp4Mvsv7fKevN7a5u0VmsWRDozuw9rXPZOw/vW
-	 kV0QlEEQzRYGPpaN43aPKOyof9IIcHOB3GTzR0c4TGFi99VdhFWrcPf/S4QDPv0iMMq28
-	 orQde8hCEwYheSfam3FNWRfNLZNvhr1xA3ytFt8aHMVh8wk4rDE1m90uo9E984dJfhso4
-	 QPZqrnSh8kpleNcTg37TFC10ECNxGMiXciqYHYDNkkN6NKcV5lILrWD+0D2yMhn0Ztw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793286178;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Bu/CWKPDCcsa9kOSXMtobSt/utwZ/evlDx4NIEJ/cvE=;
+	b=cqwQY1ZZIzTvpDaDv0a1pxoj9kmaRPRc/6i73HC5+nQ1sKtvXSrLLEPA6PYRG0AE7EFD
+	 YLNtFFvqQ0hI0TGXYu6gUv3cKn+F2XkUkT7hgulGA3Z+6HYZv5pY3IimRQOiPQWRKR0jV
+	 Xs/lIuI6zTltciphStPVnim7SPtC1ZlXvQ/RBgkZUNcfOH5am2PN060fKltm7uEh0rB3w
+	 KETuVpBM84dQIBTzMnaEjgn4j7nIZC0DaG4G8ca4fETsOtMcGt4cU63rl0oBPWP+8m62v
+	 bHFV9ebPeVS+HLIUzUvYBKwQLFwxH4m/x+HcPXzgrw8UnPlG80m29eH/F5ppdQ+NV+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ASfxCxQ7;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="IrqAVrc/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F67606A31C;
-	Thu, 29 Oct 2026 14:56:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63F67606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8521A606A31C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ASfxCxQ7
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69TCi9Yn4142674;
-	Thu, 29 Oct 2026 14:56:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=GHgvV6
-	rzEEa0plcFuAOk8oPHdGIYn1CeqwTmGhSiL/k=; b=ASfxCxQ7RQPWCD5kKYOHZA
-	R5SBzGT/zeqrzDfqePWJ0Pv0cvPB1Uo32CYdNPcqepSZXlQ7UehjmCtDdLXvvm8O
-	CpH9K6LgReh8NbTWyYs7CPOgDtQBV5VoQaEi8jrexiPNLNQg6VK4hsStZ4hKSFV+
-	cyVXydB7ONA3/4/vjI3kXCnEgtxYmbRTsJdWSqGYZEfsq60GLK/oc8xEvJ226iQP
-	na/gTVtEl3MOC/Ih6WO/fMpbULcAu9NTDvptwy1Hq9UQdj6S7b8ZleNnF/yPV1ON
-	ZTORQTcTuJ5m70zEbPJF73b09uWJTw8ewVz+6P7hrTw31LbtMy10AyULfXOuXayw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgj3mk1yq-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 14:56:42 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69TCntAe1967902;
-	Thu, 29 Oct 2026 14:56:41 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hk010rp8f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 14:56:41 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69TEudle32506480
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Oct 2026 14:56:39 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3CD8D58070;
-	Thu, 29 Oct 2026 14:56:39 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C015B58060;
-	Thu, 29 Oct 2026 14:56:38 +0000 (GMT)
-Received: from [9.61.101.238] (unknown [9.61.101.238])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Oct 2026 14:56:38 +0000 (GMT)
-Message-ID: <f040a2b7-59eb-418d-b8c8-239acee73eb9@linux.ibm.com>
-Date: Thu, 29 Oct 2026 10:56:38 -0400
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IrqAVrc/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38AD91F031E7
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793286178;
+	bh=Bu/CWKPDCcsa9kOSXMtobSt/utwZ/evlDx4NIEJ/cvE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IrqAVrc/3yeH5FEpEO724htUWgSvkDudxC4qcPzM03VjfvOnCABLjhSLcO0/2IhQa
+	 8jKOPp+/cQhezq7XUUHDljkZ5yDky1S07TMTVTNcr9VEf+kWV8o+T5+0/5R8XnQ0pi
+	 ac0A3hYjAQA2GFwc4hu/2+3cAsVIsplqvh4FG/7jV44dxcAGiyeMDyRBmhTcpLaLDI
+	 qeB1mQM7YKWqlNuT9no/tlMJg/3y2ickke5NB2Jm+LkR97g9hFYlNjruBceZ1HnW10
+	 5eeoedBZtBYJSALrQDyPeuyCL1sOtUqdPcxfXHm5nN0kEq7NN6giVuV1DRrqMlIADG
+	 QuBUBZmbcbfbw==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c40e02b2ebaso359932666b.1
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 08:02:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzVYO6NLYMA456NROEH81gMrN9kxYuRbMlRnrtmaH6QUVWkfRljieBoRz47l7qKeXXaLg4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLC6iO/g/M9+P3PcpNgrFEPkNVvdGov+lTmqx/jT/YBv1xjA++g
+	ypgEit5dblptHIIm+N6Q3Io2NHYB1zFeLPsQz9fkwPrr9r5Y/2UcM6UkrQLPMT3YbHOXgnhGXuo
+	ycgwPOm3jw6+JLSXiawonHGCkEOR4SEk=
+X-Received: by 2002:a17:906:ee8b:b0:c29:659e:2fd2 with SMTP id
+ a640c23a62f3a-c49bdf309a0mr458971366b.27.1793286176883; Thu, 29 Oct 2026
+ 08:02:56 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,200 +59,216 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-Subject: Re: [PATCH v10 07/15] s390/vfio-ap: File ops called to save the vfio
- device migration state
-To: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20261023174349.3545941-1-akrowiak@linux.ibm.com>
- <20261023174349.3545941-8-akrowiak@linux.ibm.com>
- <sashiko-outbox-183048@kernel.org>
-Content-Language: en-US
-In-Reply-To: <sashiko-outbox-183048@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA1NyBTYWx0ZWRfX7mhOHVUYbVFi
- 3nt7w/QOIqPzotF+6wz1VkqZdrgg0hyWG67VCcfkCJP12AdaECv2BYsfMH7UX4TB81S0Z0KS7TX
- knrr9pZPDvMrkhSKMJLH5OjA2Mlg4fY=
-X-Proofpoint-ORIG-GUID: YFynBK0IxjQGS2R-naA5rVEPFav2hWw2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA1NyBTYWx0ZWRfXwTLmGnmYCEOY
- 9B+isGQWWPDUrzzGbWypTK/lribJNaJbAnIujnALRvdUaayUFnld1Xlc/yWq9jYDP/KkTZVbAhI
- V/+2GmdfoN37UQmgBaTiZSdo5tSTfoDIOAja7rd/XGpGoWr/2EmQEIyU3fiyRU27nuG+LXv4WxM
- s0zysLyNwnq3HkzxETSpJfnKvP2Q8YBPIvDz8MTtsXlDB9zcADBOo5zxpp+N263vYlDiWx/1q7y
- 5ojKszu1mwPawJJsHe6Wcyx3v7Z/nPlcIUR5k8KzmajsC6yxuhcN4CByjz4wxU1pl8Rmzd3Ep5D
- 7YFsmEcUunc6tQ2iP5XswCwn1LFM808OFeo0iCBnbIVeTUaj7KA7YJydgdHERkzthInnpdvh/Et
- bgnzOFI5GH0c73bDRLtCdYFg1UM14dyhTtvh0mmTjeFZsaTXPIGkN74ObwJlATjqt7SA65UDKfw
- LU6hzwmw0CzO++YEjYA==
-X-Authority-Analysis: v=2.4 cv=G7uJgNk5 c=1 sm=1 tr=0 ts=6ae35eaa cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=s6wHbzJGuloGhX0a5BcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: YFynBK0IxjQGS2R-naA5rVEPFav2hWw2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_04,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0 clxscore=1015
- phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610290057
+References: <CAHCio2jc9++n2Qoa0-sNkObZsWOybSwK1X2aBjFirchjRTBZsQ@mail.gmail.com>
+ <CAHCio2hpL+Y0iYdGXs5zKA-81+w_9pHs+tZPe2uaYKs8yOCz_w@mail.gmail.com>
+ <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
+ <CAO9r8zOmH6yzcNbUOF3FoNsac8rtx47rp5wByOFfGgaBPaLxug@mail.gmail.com> <CAHCio2hTSuTf4HcJ=+wb=_EQvi2as9QMwfRMG5tUkdCmex=yJg@mail.gmail.com>
+In-Reply-To: <CAHCio2hTSuTf4HcJ=+wb=_EQvi2as9QMwfRMG5tUkdCmex=yJg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 29 Oct 2026 08:02:45 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNohnNE66PVMyE-RAnKYGEfvPpzupLgCO+s0OtAdNPCyw@mail.gmail.com>
+X-Gm-Features: AclHuK_9AtQI9Cq9L71bVvMpHX8tQ3tsB8oPsV8KkVS99aJp2maiwZdom2yxf3U
+Message-ID: <CAO9r8zNohnNE66PVMyE-RAnKYGEfvPpzupLgCO+s0OtAdNPCyw@mail.gmail.com>
+Subject: Re: Some options abort RFC: KVM: SVM: Rework ASID management
+To: Jackie Yu <ufo19890607@gmail.com>
+Cc: jmattson@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	mlevitsk@redhat.com, pbonzini@redhat.com, seanjc@google.com, 
+	thomas.lendacky@amd.com, vkuznets@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Oct 29, 2026 at 3:57=E2=80=AFAM Jackie Yu <ufo19890607@gmail.com> w=
+rote:
+>
+> Subject: Re: [PATCH v2 00/29] KVM: nSVM: Optimize nSVM TLB flushes
+>
+> Hi Yosry,
+>
+> Thank you for the quick response. Two clarifications from our side:
+>
+> 1. About the boot failures: no emulation is involved in our experiment. O=
+ur out-of-tree changes enable direct guest INVLPGB/TLBSYNC execution by cle=
+aring the KVM intercepts, without any software emulation of the instruction=
+. The failures occur with this unintercepted passthrough combined with stat=
+ic per-vCPU ASIDs, so they are not missing cases in an emulation path. Unde=
+r the per-vCPU design we did not attempt to intercept and emulate INVLPGB a=
+t all.
 
-
-On 10/23/26 2:10 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] s390/vfio-ap: f_pos corruption on -EFAULT in vfio_ap_stop_copy_read()
-> - [Medium] s390/vfio-ap: high-order kmalloc() in vfio_ap_stop_copy_read()
-> --
->
-> commit 244125b3df6e4802b043acebf35691558c6264c3
-> Author: Anthony Krowiak<akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: File ops called to save the vfio device migration state
->
-> This commit implements the vfio_ap_stop_copy_read() callback for the
-> migration file created when transitioning from stop to stop-copy state,
-> copying the guest's AP configuration and queue hardware information to
-> userspace.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
->> index bc216c51a1a79..f9b00fb89410f 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> [ ... ]
->
->> @@ -162,6 +155,269 @@ static int vfio_ap_release_mig_file(struct inode *file_inode, struct file *filp)
-> [ ... ]
->
->> +static int vfio_ap_get_config(struct ap_matrix_mdev *matrix_mdev)
->> +{
->> +	struct vfio_ap_config *ap_configuration;
->> +	unsigned long *apm, *aqm, apid, apqi;
->> +	unsigned int num_queues;
->> +	const char *mdev_name;
->> +	size_t ap_config_size;
->> +	int ret, qindex;
->> +
->> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
->> +
->> +	ap_config_size = vfio_ap_config_size(matrix_mdev, &num_queues);
->> +
->> +	ap_configuration = kvzalloc(ap_config_size, GFP_KERNEL_ACCOUNT);
->> +	if (!ap_configuration)
->> +		return -ENOMEM;
-> [ ... ]
->
->> +static ssize_t vfio_ap_stop_copy_read(struct file *filp, char __user *buf,
->> +				      size_t len, loff_t *pos)
->> +{
->> +	struct vfio_ap_migration_file *mig_file;
->> +	struct ap_matrix_mdev *matrix_mdev;
->> +	void *bounce;
->> +	ssize_t ret;
-> [ ... ]
->
->> +	/*
->> +	 * Don't read past the end of the AP configuration data. Limit len to
->> +	 * the number of bytes remaining.
->> +	 */
->> +	len = min_t(size_t, mig_file->config_sz - *pos, len);
->> +	if (len == 0) {
->> +		mutex_unlock(&matrix_dev->mdevs_lock);
->> +		return 0;
->> +	}
->> +
->> +	/*
->> +	 * Copy into a bounce buffer under mdevs_lock and advance *pos, then
->> +	 * perform copy_to_user() outside the lock. This avoids stalling
->> +	 * all host mdev operations if userspace passes a buffer that faults.
->> +	 */
->> +	bounce = kmalloc(len, GFP_KERNEL);
->> +	if (!bounce) {
->> +		mutex_unlock(&matrix_dev->mdevs_lock);
->> +		return -ENOMEM;
->> +	}
-> [Severity: Medium]
-> In drivers/s390/crypto/vfio_ap_migration.c, vfio_ap_get_config() allocates
-> ap_configuration using kvzalloc() with GFP_KERNEL_ACCOUNT because a guest's
-> configuration can hold up to 65,536 queues, making mig_file->config_sz up to
-> 1,048,624 bytes:
->
-> 	ap_config_size = vfio_ap_config_size(matrix_mdev, &num_queues);
->
-> 	ap_configuration = kvzalloc(ap_config_size, GFP_KERNEL_ACCOUNT);
->
-> In vfio_ap_stop_copy_read(), len is clamped only to mig_file->config_sz - *pos
-> and passed directly to kmalloc(). When userspace reads the full migration
-> blob in a single read() call for a guest with a large queue configuration,
-> this requests up to an order-9 (2 MiB) physically contiguous allocation
-> without vmalloc fallback or memcg accounting, which can fail and trigger page
-> allocation warnings on fragmented hosts.
->
-> Should vfio_ap_stop_copy_read() allocate bounce with kvmalloc() using
-> GFP_KERNEL_ACCOUNT and free it with kvfree() instead of kmalloc() and
-> kfree()?
-
-The maximum migration blob size is bounded: 65,536 queues *
-16 bytes/queue + 48 bytes of header = 1,048,624 bytes (~1 MiB).
-KMALLOC_MAX_SIZE on a 4K-page kernel is 4 MiB (order-10), so
-a worst-case single read() of the full blob is well within what
-kmalloc() can satisfy without vmalloc fallback or a page
-allocation warning.
-
-The bounce buffer's lifetime is also strictly local to
-vfio_ap_stop_copy_read() — allocated, memcpy'd, copy_to_user'd,
-and freed within a single call. There is no accumulation.
-kvzalloc() in vfio_ap_get_config() is appropriate there because
-ap_configuration is a long-lived, variable-size allocation;
-that rationale does not apply to a transient bounce buffer.
-
-No change needed.
-
->> +
->> +	memcpy(bounce, (char *)mig_file->ap_config + *pos, len);
->> +	*pos += len;
->> +	mutex_unlock(&matrix_dev->mdevs_lock);
->> +
->> +	if (copy_to_user(buf, bounce, len)) {
->> +		kfree(bounce);
->> +		return -EFAULT;
->> +	}
-> [Severity: Medium]
-> What happens to filp->f_pos if copy_to_user() fails in
-> vfio_ap_stop_copy_read()?
->
-> In drivers/s390/crypto/vfio_ap_migration.c, vfio_ap_stop_copy_read() sets
-> pos = &filp->f_pos, advances *pos += len, and drops matrix_dev->mdevs_lock
-> before calling copy_to_user(). If copy_to_user() faults and returns non-zero,
-> the function returns an error while leaving filp->f_pos permanently advanced
-> past the unread bytes.
->
-> Because vfio_ap_open_file_stream() opens the migration file with
-> stream_open(), seeking and pread() are rejected, so userspace cannot rewind
-> the stream. Any subsequent read() will silently skip those len bytes or
-> observe end-of-file prematurely, corrupting or truncating the saved migration
-> state. In addition, because stream_open() clears atomic position locking on
-> filp->f_mode, dropping matrix_dev->mdevs_lock after advancing *pos but before
-> copy_to_user() allows concurrent readers to advance *pos further, preventing
-> a safe rollback and allowing out-of-order stream delivery.
->
-> Can *pos be updated only after copy_to_user() succeeds (or only by the number
-> of bytes actually copied), while keeping concurrent reads serialized?
-
-This is a valid concern.
-The problem will be fixed by introducing mig_file->lock, a new
-mutex embedded in struct vfio_ap_migration_file. mig_file->lock
-is acquired before mdevs_lock and held for the full duration of
-the read — across the copy_to_user() call — so only one read
-proceeds at a time. *pos will be advanced only after
-copy_to_user() succeeds. If the copy fails, f_pos is left
-unchanged and the caller can retry.
+That's what I meant, the missing emulation of INVLPGB needed with
+different per-vCPU ASIDs.
 
 >
+> 2. We do not use nested virtualization in our deployments. L1 guests in o=
+ur production scenarios run without nested guests. Therefore, the ASID-repl=
+acement behavior you quoted from the APM does not affect our current use ca=
+se: with one shared ASID per non-nested VM, an unintercepted guest INVLPGB =
+would be scoped to that VM's ASID, which matches what our per-VM configurat=
+ion relies on today.
+>
+> Regarding the direction: we understand that with per-vCPU ASIDs, correct =
+handling would require intercepting INVLPGB and re-issuing a flush for ever=
+y ASID in use by the VM, which you note is unlikely to perform well on larg=
+e VMs. We also note your point that as long as any vCPU uses nested, KVM mu=
+st intercept INVLPGB anyway because the hardware replaces the requested ASI=
+D with the current ASID.
+>
+> If we read the situation correctly, the practical options seem to be eith=
+er (a) a per-VM shared ASID mode restricted to non-nested VMs, with uninter=
+cepted guest INVLPGB, plus mandatory interception whenever nested is in use=
+, or (b) always intercepting and virtualizing INVLPGB under per-vCPU ASIDs.=
+ Either way, direct passthrough would at most cover the non-nested case. We=
+ would appreciate Sean's and Paolo's input on which direction upstream pref=
+ers; we are glad to provide more details of our configuration or run tests =
+that would help decide between these options.
 
+I don't think (b) makes a lot of sense, but if we do (a) we should
+always use per-VM ASIDs, supporting both implementations based on
+nested vs. non-nested would be a huge pain. I think what KVM can do is
+disable INVLPGB intercepts until one vCPU sets EFER.SVME (or maybe on
+first VMRUN, because with enable_virt_at_load KVM will always set
+EFER.SVME on once it's loaded).
+
+>
+> Thanks,
+>
+> Jackie
+>
+>
+> Yosry Ahmed <yosry@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=8829=E6=97=
+=A5=E5=91=A8=E5=9B=9B 14:08=E5=86=99=E9=81=93=EF=BC=9A
+>>
+>> On Wed, Oct 28, 2026 at 1:15=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+>> >
+>> > On Wed, Oct 28, 2026 at 6:37=E2=80=AFAM Jackie Yu <ufo19890607@gmail.c=
+om> wrote:
+>> > >
+>> > > Hi, guys!
+>> > >
+>> > > Jackie Yu <ufo19890607@gmail.com> =E4=BA=8E2026=E5=B9=B410=E6=9C=882=
+8=E6=97=A5=E5=91=A8=E4=B8=89 21:36=E5=86=99=E9=81=93=EF=BC=9A
+>> > >>
+>> > >> Hi Yosry and KVM folks,
+>> > >>
+>> > >> We would appreciate your guidance on supporting INVLPGB in ordinary=
+ (non-SEV)
+>> > >> L1 guests alongside the proposed static per-vCPU ASIDs.
+>> > >>
+>> > >> The 2025 ASID rework RFC proposed one static ASID per L1 VM and lis=
+ted
+>> > >> "enabling INVLPGB virtualization" among its motivations [1]. The Ju=
+ne
+>> > >> 2026 RFC v2 changed the design from per-VM to per-vCPU ASIDs [2]. I=
+n
+>> > >> the October v2 series, patches 2-11 establish static per-vCPU ASIDs=
+,
+>> > >> while the remaining patches primarily address nested TLB flushes [3=
+].
+>> > >> Our question is how guest INVLPGB should be supported under the
+>> > >> per-vCPU design.
+>> > >>
+>> > >> Some of our workloads frequently discard and repopulate memory usin=
+g
+>> > >> patterns involving madvise() and memset(). Broadcast IPI-based TLB
+>> > >> shootdowns are expensive for these workloads, so we are interested =
+in
+>> > >> making AMD INVLPGB available to guests. We use a small benchmark to
+>> > >> approximate the resulting shared-address-space pressure:
+>> > >>
+>> > >>     region =3D mmap(256 MiB, MAP_SHARED | MAP_ANONYMOUS);
+>> > >>     memset(region, 0xab, 256 MiB);       // Initial population
+>> > >>     start N workers, pinned across 64 allowed CPUs;
+>> > >>     each worker repeatedly reads pages in its own slice of region;
+>> > >>
+>> > >>     repeat 500 warmup + 2,000 measured iterations:
+>> > >>         start =3D clock_gettime(CLOCK_MONOTONIC);
+>> > >>         madvise(region, 256 MiB, MADV_DONTNEED);
+>> > >>         record elapsed madvise() time;
+>> > >>         write one page in every 64 pages to repopulate part of regi=
+on;
+>> > >>
+>> > >>     stop and join the workers;
+>> > >>
+>> > >> The benchmark uses memset() for initial population; subsequent
+>> > >> iterations re-touch pages rather than repeatedly calling memset().
+>> > >> The numbers below measure the advisor thread's madvise() syscall
+>> > >> latency, not worker throughput.
+>> > >>
+>> > >> In our experimental KVM4 configuration with a VM-shared ASID and ou=
+r
+>> > >> separate guest INVLPGB passthrough changes, we observed:
+>> > >>
+>> > >>                          INVLPGB off     INVLPGB on    Difference
+>> > >>     64 workers  mean       21.624 ms       12.505 ms     -42.17%
+>> > >>                 P99        32.760 ms       21.518 ms     -34.32%
+>> > >>     128 workers mean       29.553 ms       20.459 ms     -30.77%
+>> > >>                 P99        39.628 ms       28.160 ms     -28.94%
+>> > >>
+>> > >> These are single, sequential A/B runs for each worker count, with
+>> > >> 500 warmup and 2,000 measured calls per run. The process had 64
+>> > >> allowed CPUs, so the 128-worker case was oversubscribed. The
+>> > >> measurements show a useful latency difference, but do not by
+>> > >> themselves establish INVLPGB instruction counts or IPI reductions.
+>> > >>
+>> > >> We then experimentally combined the October per-vCPU ASID changes f=
+or
+>> > >> ordinary guests with our existing, out-of-tree L1 INVLPGB/TLBSYNC
+>> > >> passthrough. With guest INVLPGB enabled, a one-vCPU guest boots, bu=
+t
+>> > >> otherwise comparable two-vCPU and 64-vCPU guests fail early during
+>> > >> boot. Keeping QEMU's +invlpgb setting while adding clearcpuid=3D419
+>> > >> to the same guest kernel allows the multi-vCPU guest to boot; the
+>> > >> guest logs "Clearing CPUID bits: invlpgb".
+>> >
+>> > I imagine for INVLPGB to work correctly with per-vCPU ASIDs, you need
+>> > to intercept INVLPGB and basically issue an INVLPGB for each ASID used
+>> > by this VM (nr_vcpus or 2 * nr_vcpus with nested). I can't imagine
+>> > this would perform well on large VMs, not sure if virtualizing INVLPGB
+>> > would still make sense.
+>> >
+>> > Regarding the boot failure, I would guess there are some missing cases
+>> > due to the complexity of emulating INVLPGB without a shared per-VM
+>> > ASID.
+>> >
+>> > >> These controlled boot comparisons identify a problem with combining
+>> > >> static per-vCPU ASIDs and direct guest INVLPGB/TLBSYNC passthrough:
+>> > >> the multi-vCPU guest fails to boot when it uses INVLPGB, but boots
+>> > >> when its INVLPGB CPUID bit is cleared. A one-vCPU guest also boots
+>> > >> with INVLPGB enabled.
+>> > >>
+>> > >> In this configuration, an unintercepted guest INVLPGB targets the
+>> > >> invoking vCPU's hardware ASID, while sibling vCPUs have distinct
+>> > >> ASIDs.
+>> >
+>> > It's neat that INVLPGB will automatically use the current ASID and not
+>> > ASID=3D0 for guest usage.
+>>
+>> Hmm, actually, how is this supposed to work with nested
+>> virtualization? The APM says:
+>>
+>>     A guest that executes a legal INVLPGB that is not intercepted will h=
+ave
+>>     the requested ASID field replaced by the current ASID and the valid
+>>     ASID bit set before doing the broadcast invalidation.
+>>
+>> If any ASID passed by an L1 guest is replaced by its own ASID, then if
+>> L1 is flushing L2's ASID (i.e. a non-zero ASID), passing through
+>> INVLPGB would do the wrong thing and flush L1's ASID instead, right?
+>>
+>> Seems like if the VM is using nested (on any vCPU), KVM must intercept
+>> INVLPGB anyway to correctly handle the ASID?
+>>
+>> The APM also says:
+>>
+>>     Two forms of INVLPGB intercepts, conditional and unconditional, are
+>>     available to the hypervisor. The unconditional intercept traps all g=
+uest
+>>     usage of INVLPGB. The conditional intercept traps only
+>>     illegally-specified INVLPGB instructions.
+>>
+>> When I read "conditional", I was really hoping it was conditional on
+>> the ASID being zero or non-zero, as KVM really only needs to intercept
+>> INVLPGB with non-zero ASIDs (assuming the ASID is shared to begin
+>> with).
+>>
+>> Am I missing something?
