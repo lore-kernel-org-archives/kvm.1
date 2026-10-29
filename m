@@ -1,105 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793304091;
-	b=EEot3OcE5doyIjj0FDGE/Yuvf1NoUtBIZyDj2abclvtfrocEs3gaJKgQBIc4sWMHU50V
-	 QwByOrk9JOQmtYlPXNkJUO2q41NX0owAg9JXnI43IhhfBieQ8zHl+MCPd5MnAbYuw2T2w
-	 PMUf1I7+pSBfnBD24nki1wNkztkNhoY1Vk3uyyMeGCZ9ZrP0hmt6DBLCn+iwpbf77hgop
-	 ps57Qh1tb1k8M6dSTxMZ6YBs1ET4SpM2BBCHydF4o5lxuTCX0qY+ZRqW9NcjOyCuAJ1cY
-	 ouwYP9p6xegSkHLR7rhg9VYF2PHf+vnAGf4Q4vJPBmfCIYVtNPB7dnW3hLkXdwfEYvQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793304091;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793304136;
+	b=YmkYvZYpC8W0JMaYAn8VMe39rfr5qFJSgvuSusGe5QUIdkZA6KT2eazA523uTzs2vAGq
+	 4bC9aJDRQXOlwWd/ah4hTYM+IAD6wf0qeMb6/hKCcuokdz4tW9LpFREW2bg2VWX9sHij0
+	 T6V1FZZ1s+HdivZaKbTEVNNg5ZCmUI9mnyck9O25VWsy4RVLuJWCAkRr61Bj54Zdlopm6
+	 hyyNHhwpkZvIH5pYDmnbWbiHdEyDpnvtNh5BxdFlEEGE8zVsb2UMNdvk7pJOGIRkCNeJC
+	 4NVPrfip8ma+nsABazc+jAMKeBohCEBqQT07lrFy4c4tPB8huazIZmS0xx07ZFVK3pg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793304136;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=41rEEZJHQ1b0lZW5NZ/hL5Z21i+HuFKPEi+1JbBpXGc=;
-	b=upAT/1waEypzcoTVsWiX214Gxq1F6qeLlBhhMxIgFdZe1NuvZPkZGR7gQWoAgsuTm+I1
-	 xhLSvKc/6tvhFNMxG5AvHCdFP2jpyKJWWVRGIO+wR5gpbRE6L2KJtQFjVeYcpeOA2xTsq
-	 AIVoeeoj71bG960mYuIYckbGqtlHZfCNosh8ygN6WVeS3fO3UnNSiH9M0yg3XgsTOzHMY
-	 GPrqsjtjPqLf0r1aXjlhuj4p8F/AmSEjzyss9Kup0zTjRrK/DCBO8iXqCAqxtWuzwiWCX
-	 AYSiXK3JMB0oO9ZCel2QzDTMj63FiVVycmyknQSW6tFIC5ydUmP1tadPpLe0RN6E0Tg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WzkVwYzI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.178
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ToZEVjNJ0PTS0mMKreAcFedmCPAxwnkNokZhg87lyPA=;
+	b=EnANjPWfuleV3QrLJUOqxqfaXWgX4F4nHu5gf13EsV3BY5cAwbug68uH0Fk7FotZtaKp
+	 8wKb5gOr23BCrO5Xy1kE4qG0fVl4jRXz7ZusPkl5c4X9+baJzFOfDRirrdRxKocfQO2pv
+	 vD8lhvFkzB15a4ZmkxFMNGNh1ktypDAZ2Jm6hSnb/VWyR1H9AsbzE5DO8OP+qT9deK4YZ
+	 0NOLF58ctpV+nY3/Dw0elz53Rq1mc7t0s/WPQXtc+kYRLFAwV9bxL0nREN4OFPMTbMLRA
+	 NJRGfFEKDqiZxwfnZ8CUZwilGaor4ujy9wLF1dcCYCutdE/ij8dOL4QUXry6YVsJDlQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=openvz.org;
+	spf=pass smtp.mailfrom=openvz.org;
+	dkim=pass header.d=openvz.org header.i=@openvz.org header.a=rsa-sha256 header.s=google header.b=i69iXx1r;
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED69606A31D
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 20:01:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DED69606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DA2606A31D
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 20:02:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39DA2606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvz.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WzkVwYzI
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93f22a8515eso217346585a.2
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 13:01:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793304090; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mXQWUm+fhgQtLxMrLvZmTEQo46Bb//vApcm3fLas6asdGAnnTDrEjQh0Knfxc7r/8L
-         wdPe6c0JnZt1pWMmr67xHUMkr+b7rUWUguFgtDV9Wphgg100KuYJ2E7uCKepO4EQPRw0
-         IiTs9XKT0esnOhxmR3lhTakJZh0hWnwsg9ZcOFtCCvPba63hIrF2GBZ/imDxR0UPUpS7
-         VCVN/bqxVjnArQIHlWamW9/9wboicgofKpJp8tnOwP4lBcNmDKLPPeemEujBH72WOEoP
-         72B3nXZX5JFWaxfn9ZAb8mQa48YvNkZ/8LRyqews/Z/NIQw+HxrJEvRYVbM4pcK5NUw7
-         Ligw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=41rEEZJHQ1b0lZW5NZ/hL5Z21i+HuFKPEi+1JbBpXGc=;
-        fh=u4Eddgn2fEuYtFIGkfKtRv18fqfchx8ErAS2Ea0FdrQ=;
-        b=JkIfqss+UuZk+fbJIBCIU8fZ58dgef5GDjxFyXZS5YcqSHvFALrxO3pDcQcP5D6K01
-         RoAgHbwSeEkh+/l1nRBDHbzTZZZFHcnYhHiX0PrQMZjTv7/xhjpuhxFZdbHaVlPRKMGR
-         76s8x7P8cmg2QIRJaNhQ6lXo5UibKHxEf6tD0y01a9kV95YZSxW4Tq3e9V5WdFJViKgU
-         zQ0M/UP8YrjK18xAzWkBy3a0NqgFaB/NuBFYHSK89WClnjxmBLmx4sjNsCX1rwvECjDB
-         Y8qiHZXhZeswCGrYCf1/x9ZujpV2thF7LAaSDMMeaJ4cNXz4bWm/csd4pHQMNSfzHg/2
-         GrfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=openvz.org header.i=@openvz.org header.a=rsa-sha256 header.s=google header.b=i69iXx1r
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a210470b49so21742795e9.2
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 13:02:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793304090; x=1793908890; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=41rEEZJHQ1b0lZW5NZ/hL5Z21i+HuFKPEi+1JbBpXGc=;
-        b=WzkVwYzIEvlUD4jouGSIwB6FRlfF8hxTgPyyNpqGmkTWIQg0Ole0rsRJIpCMSLmcYo
-         xny2WIjTKOduGBsjO3M3Hy3Y5Gpxav5pAEQ+dey/WDXOYqqnfW/4s9rt/5qtlD0o1JQD
-         qgNWqEb/ESz1VmMIS/1NOS99QXo6xUINV4qKkkXEUdhm9m1VegHsAvLzUItKmZOIN1QJ
-         iIqXI//Wxc9ozlcrU7fWVky9rHoQfM3GQHS/Ns3ot/06EY6+UkCJJuj9LxgFC9LLrk2R
-         hMe7EXKbU+My2iqLUjxXv7+wewDozb/5zzK2zqO63rDc2gOPzlMplP5cO5XTnsm8pZwT
-         JcEw==
+        d=openvz.org; s=google; t=1793304134; x=1793908934; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ToZEVjNJ0PTS0mMKreAcFedmCPAxwnkNokZhg87lyPA=;
+        b=i69iXx1ra30cdw3Wzg0EB2AItA+4a4gdg+DYEuUs7L1ectKkJUogAWvyDaVN86G3Eu
+         v+JpLjSZskJASW1DEHuMKsrWpSHY+4WCqOhx3j5UlfbyKAkRBBFSq8F4X3zz9zoV+GBa
+         WbB+NqS+zjFUYPh3rGWHd5X8cVrMPn3LoY9+yXT1fmhGLlu93emY3G6S0ty5wDwK+TNV
+         nCmu+w5EGIj7iyGcGMHSkoeQ0po5w/q67XOYvps7rtSr5P44Hp8ybB00x6MwvaI5WOtt
+         dcbv99KJ6+fdKRD2IVd+mhhAPcA8ojpEBY/aauf6n8SislG4mGKHL45dxcEzhb0ZUz3K
+         9o2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793304090; x=1793908890;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793304134; x=1793908934;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=41rEEZJHQ1b0lZW5NZ/hL5Z21i+HuFKPEi+1JbBpXGc=;
-        b=SpApj+GqAv9YleDQN9qB++KN1GeAcmud8EzCKNnKKjkd4nDQ01vEkjJnVTfIA3T1L4
-         JJhdY2thVOPn+junP0uqWSlQcBIaQn9NpaZpXC38hhNXmARsMBq6fUH5d2s1yMCimf6C
-         sQLC093Gi1EuIE3QaPFhmfCdQhNRFBi9UM6hdrNNeg1dX3GK5EXfb6yr/+bMaAWCAMab
-         pTpSgt1UucSJQfNyUtJPhUN5efNQdesVN9lGcXTPYl4DT9OkA1CT6fN4uANUOoqNAx5w
-         lO38jxBA7YhzJV3T1R9scq7ZxLShBBG032wYXIL8Tpk8/yD8275L5yMLpabnEA3CswAL
-         9/SA==
-X-Forwarded-Encrypted: i=1; AKwUvByRF1NAfbzwc6kQ3Bp3AzyCbXxIh4tbkK1UuOjWWUvRerfUv+yAw/+b2fR8tb2LPoUFF30=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJCzFm6LjUTyE3oJ+L307aBOJRe+ABsoqMog/iHiN+BuNPZtoMZ
-	LYUGY4MEiIwdGT9y7T7AcRCo8Za1e8gjMWeH3H4dwbPRTt9qgUtkPxxz8Gw6cVOEHEnOJvrVC39
-	Q+kw/s6mF8wkX7oAp0CieoK+x7zhdIS+7qcOD3jA9
-X-Gm-Gg: AYBFou0CcrpenNd3wd2wD8WaBwaIpJtAw4JpPLanS56vUiXSrczhnCtzPC/LPjWMovh
-	CEzd+MSOC4nxni/7vywbVKkFDh3OyLE1fUTSjK+RRwpdCRPeb06pA1vhhJ7VuQUY2FrfD2d/Fnf
-	u34rjQd4b2NhykkwXz97LQxubcWilx3jXsnYXQbsjlvyZgnL5h7hE+kzHBxnxu+/4BzjwqCq76U
-	iKtR+xNgodaQ6wDTLirtjIGyN4gs5JUxf+0g87m0R8iL6qpFd/dzVyE+CNnT04E1x77ra+KHgGe
-	1UN1C0kbYnkPe69GalVKA2SGAGZ/JtyVI2I4tW8L2O2+OozZp/hvc0QAKgrdmGOZah01jqlHmFC
-	QRNm6m37K1zPU4WsAeCeNrLBxxiITSjobPNgIkvOBRXV/mU6q5grVQY+S+Hy9XTSAJVYugPRCAw
-	2uv/xVvq+gJz5Q0p2TTZo8Q6Q=
-X-Received: by 2002:a05:620a:439b:b0:93c:b6db:8c with SMTP id
- af79cd13be357-94421400aaemr54046085a.0.1793304088692; Thu, 29 Oct 2026
- 13:01:28 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 29 Oct 2026 13:01:27 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261026064424.3003536-1-gongtao@google.com>
-References: <20261026064424.3003536-1-gongtao@google.com>
+        bh=ToZEVjNJ0PTS0mMKreAcFedmCPAxwnkNokZhg87lyPA=;
+        b=xn777Kfp5aZ0Je+q9eMyVLQJG98BT+/LZDS7p6A/3kuv8ApchjVpzi4g3WEB/4PbsE
+         10hQ7RBH0ebpvVunzbHtC0fqfojkn9hGMxa7FfN94T4YriYOOIf5SktKxEcutfl1YpRg
+         WR4q2PPWbjIjSATorWv0DplegU5tXfHS3U79UMoK6iu6PBPA2zGOcOM/XzRegjK5NRXu
+         rTFw4kKXUAOZ/PI/aTqFumRRw1ZsXqhdq2RgooKEtDoce+zHjH8LzhPKfx3yfaLIdLOC
+         Sb6W3s0Ljq8PgXnF1cJXeEEm12pK28yO125MoOE7t59VWzRviP2oVbJBFh+cXDF0pQ/f
+         LsQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw/0Te363vqp1bjwCEnh5Kh33Za+3CZl1pBuUvC8bPxzAqOHzL+F7f14smTBc4uANpw9xU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKtvS8/T2GmVwT/pC4JKbcM50jF23tl6kjLWRgprWb22dLVAR1X
+	GW7LnnPthu2847HIziyXP8QPHfUNUooReMPFwxj8mptex0wrpnj66FQsOHu6xHSNBVE=
+X-Gm-Gg: AYBFou2IWlwKfgXwIWhRfI5t6jns+3JbSSLMFyCB0v2b5IOpUdXZ0RAA4f1QgBGypQA
+	U9QL+uQyMrBvDuVvux7aq30uGvlTb2wMOgtz9WW6ZW1MLvMVM05Ux6fV556Pgolqs4lsx8QSbki
+	V11n3SuSpZ3XCMuidtTEkJGqpMRFfFUsn25yLsh6qGazOdN3JBhLjDifv2bcorGs33YYhrQXMQ6
+	wcJfVvXnvVxTOl6U04XATAJzogzDLvDqPvgZe3i44CNtZ+ONi5+RxZVwCjlAlG2VIMkqANS1JPg
+	M2mR77LFctdUIzSejgChTQUpZcKvvjEckMZ1BPsyA1SoofAMU9A2V+fHKOCJP5s44WWhf6mAFPQ
+	rzynYf+cjzFNvTjKOCD3QL9A2mQl3CeVpe8HIRRgPGCfrM8Jxq2hNjHdyq709CE93c8RGpqrw9G
+	usnBHSxGE++lPrY16iINDeD+6q9iYgBKe8q7aFYsT3i/luG9getDpaQKNvxmAGI8JzMkfxR0Sqh
+	ewc6rNoOIp2n9SrnnVhxqH8fDv54hw96rgnRhc5zYPN5ICpfs1A4OvyUamGCB0xEmUqSNQD4cfx
+	Z9NVLSwAPwJNu+gEFRTiZyJ9vQ==
+X-Received: by 2002:a05:600c:a4e:b0:4a7:76fa:87e9 with SMTP id 5b1f17b1804b1-4ac187a766bmr583785e9.21.1793304134476;
+        Thu, 29 Oct 2026 13:02:14 -0700 (PDT)
+Received: from athena.sw.ru ([2a06:5b06:b600:300:f4be:f111:4ee0:40d3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa7f3229dbsm84628175e9.1.2026.10.29.13.02.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 13:02:14 -0700 (PDT)
+From: "Denis V. Lunev" <den@openvz.org>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	den@openvz.org
+Subject: [PATCH] KVM: x86: Fix lost EOI when unmasking a pending level IOAPIC pin
+Date: Thu, 29 Oct 2026 21:02:11 +0100
+Message-ID: <20261029-kvm-ioapic-eoi-v1-den@openvz.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,95 +102,136 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 29 Oct 2026 13:01:27 -0700
-X-Gm-Features: AclHuK8yWAvbtrHc6IRHr91-GPti5braQ_xMkumtHHr_gZTK1th84mOiXH74nIU
-Message-ID: <CAEvNRgFtgAFg_nBLXwvXv69zrCQDKRSvLC6DwYPAw30N+BEoeg@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 0/5] KVM: guest_memfd: Add KVM_LINK_GUEST_MEMFD ioctl
-To: Tao Gong <gongtao@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: David Hildenbrand <david@kernel.org>, Ryan Afranji <afranji@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Sagi Shahar <sagis@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, aneesh.kumar@kernel.org, 
-	Fred Griffoul <fgriffo@amazon.co.uk>, David Woodhouse <dwmw2@infradead.org>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, John Hubbard <jhubbard@nvidia.com>, 
-	pankaj.gupta@amd.com, "Alain Gefflaut (HE/HIM)" <agefflaut@microsoft.com>, michael.roth@amd.com, 
-	Samiullah Khawaja <skhawaja@google.com>, suzuki.poulose@arm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Tao Gong <gongtao@google.com> writes:
+When the guest unmasks a level-triggered redirection entry whose line is
+already asserted, ioapic_write_indirect() injects the pending interrupt
+first and only then asks the destination vCPUs to rescan their
+ioapic_handled_vectors and EOI exit bitmaps. If the same write also set
+the vector or the trigger mode, a destination vCPU can take the interrupt
+and EOI it before the rescan. A posted interrupt reaches a running vCPU
+without a VM exit, and the EOI is then either virtualized without an exit
+or dropped by kvm_ioapic_send_eoi() because the vector is not in
+ioapic_handled_vectors yet. Remote IRR stays set and the pin delivers no
+more interrupts until the guest reprograms it.
 
-Adding a few more people to Cc after today's discussion at guest_memfd
-biweekly.
+Linux programs the entry masked and unmasks it with a separate write, so
+the vector is scanned before anything can be injected. Windows writes
+the vector, the trigger mode and the mask bit in one go. A virtio balloon
+on INTx whose line is already up when the driver connects its interrupt
+then stops receiving interrupts for the rest of the boot, and the guest
+ignores every later balloon target.
 
-Sean mentioned the link ioctl as the line of sight to sharing memory,
-would like people's thoughts on this. Captured some of today's
-discussion below.
+Make the scan request before servicing the pending IRR. The request
+waits for the destination vCPUs to leave guest mode, and each of them
+rescans the routes and reloads its EOI exit bitmap before it can enter
+the guest and take the interrupt.
 
-> [...snip...]
->
-> Use cases
-> ---------
->
-> 1. Intra-host migration of VMs with private memory, where the
->    destination VM takes over the source VM's guest memory in place:
->
->    a. Userspace passes the source VM's guest_memfd fd to the destination
->       VM, e.g. over a Unix socket.
->    b. The destination VM calls KVM_LINK_GUEST_MEMFD to get a new fd for
->       the same inode, bound to the destination VM.
->    c. The destination VM binds the new fd to its memslots with
->       KVM_SET_USER_MEMORY_REGION2, at the same offsets as the source.
->    d. The remaining VM state is moved with KVM_CAP_VM_MOVE_ENC_CONTEXT_FROM
->       (SEV only today; generalized by the follow-up series) and the
->       destination VM is run as normal.
->
->    Linking does not revoke the source VM's access; the source simply
->    stops using the memory, so every private page keeps a single owner.
->
-> 2. Sharing guest memory between non-confidential VMs. Both VMs bind the
->    same inode at the same time, each through its own file, and the
->    memory keeps its guest_memfd properties: neither VMM needs a
->    userspace mapping of it, and inode-level operations such as a hole
->    punch apply to every linked VM.
->
->    A related use raised in discussion is Nitro Enclaves-style memory
->    donation, where a guest gives part of its memory to a sibling VM on
->    the same host ("nesting without real nesting").
->
+Fixes: c7c9c56ca26f ("x86, apicv: add virtual interrupt delivery support")
+Fixes: 3bb345f387dd ("KVM: x86: store IOAPIC-handled vectors in each VCPU")
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+---
+Reproducer: "[kvm-unit-tests PATCH] x86: add ioapic_eoi_race test for
+unmasking a pending level pin", posted separately. On a nested Intel
+host with APICv and a 7.2.13 kernel it loses about 95% of the EOIs in
+the single-write case. With this patch it loses none, the masked-write
+case never loses any, kernel_irqchip=split is unaffected, and
+x86/ioapic.flat passes.
 
-We discussed Fred's "aliased" attribute that was going to be passed to
-guest_memfd through .get_pfn(). "aliased" was going to indicate that
-this memory is shared between two users of the same memory range.
+The symptom in the field is a Windows guest whose virtio balloon is on
+INTx: the balloon raises its line before the driver connects the
+interrupt, Windows programs the pin and unmasks it in one write, and the
+balloon gets no further interrupt until the next boot.
 
-> Alternatives considered
-> -----------------------
->
-> [...snip...]
->
-> * Keeping the memory and its attributes in a "memory provider" and
->   creating two independent guest_memfd instances on top of it. The
->   guest_memfd inode already plays that role today (page cache,
->   attributes and the list of files), so linking gets the same result
->   without a new abstraction. If guest_memfd grows a provider layer,
->   linking could be expressed on top of it.
->
+ arch/x86/kvm/ioapic.c | 66 +++++++++++++++++++++----------------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
-Sean pointed out that we need to take into account that at some point
-there CoCo protected memory might need sharing, where protected
-indicates protected for a given guest (and let encryption be orthogonal
-to protection).
+diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
+index 0d59b9c758c2..8cca333cdc9d 100644
+--- a/arch/x86/kvm/ioapic.c
++++ b/arch/x86/kvm/ioapic.c
+@@ -384,39 +384,6 @@ static void ioapic_write_indirect(struct kvm_ioapic *ioapic, u32 val)
+ 		mask_after = e->fields.mask;
+ 		if (mask_before != mask_after)
+ 			kvm_fire_mask_notifiers(ioapic->kvm, KVM_IRQCHIP_IOAPIC, index, mask_after);
+-		if (e->fields.trig_mode == IOAPIC_LEVEL_TRIG &&
+-		    ioapic->irr & (1 << index) && !e->fields.mask && !e->fields.remote_irr) {
+-			/*
+-			 * Pending status in irr may be outdated: the IRQ line may have
+-			 * already been deasserted by a device while the IRQ was masked.
+-			 * This occurs, for instance, if the interrupt is handled in a
+-			 * Linux guest as a oneshot interrupt (IRQF_ONESHOT). In this
+-			 * case the guest acknowledges the interrupt to the device in
+-			 * its threaded irq handler, i.e. after the EOI but before
+-			 * unmasking, so at the time of unmasking the IRQ line is
+-			 * already down but our pending irr bit is still set. In such
+-			 * cases, injecting this pending interrupt to the guest is
+-			 * buggy: the guest will receive an extra unwanted interrupt.
+-			 *
+-			 * So we need to check here if the IRQ is actually still pending.
+-			 * As we are generally not able to probe the IRQ line status
+-			 * directly, we do it through irqfd resampler. Namely, we clear
+-			 * the pending status and notify the resampler that this interrupt
+-			 * is done, without actually injecting it into the guest. If the
+-			 * IRQ line is actually already deasserted, we are done. If it is
+-			 * still asserted, a new interrupt will be shortly triggered
+-			 * through irqfd and injected into the guest.
+-			 *
+-			 * If, however, it's not possible to resample (no irqfd resampler
+-			 * registered for this irq), then unconditionally inject this
+-			 * pending interrupt into the guest, so the guest will not miss
+-			 * an interrupt, although may get an extra unwanted interrupt.
+-			 */
+-			if (kvm_notify_irqfd_resampler(ioapic->kvm, KVM_IRQCHIP_IOAPIC, index))
+-				ioapic->irr &= ~(1 << index);
+-			else
+-				ioapic_service(ioapic, index, false);
+-		}
+ 		if (e->fields.delivery_mode == APIC_DM_FIXED) {
+ 			struct kvm_lapic_irq irq;
+ 
+@@ -451,6 +418,39 @@ static void ioapic_write_indirect(struct kvm_ioapic *ioapic, u32 val)
+ 		} else {
+ 			kvm_make_scan_ioapic_request(ioapic->kvm);
+ 		}
++		if (e->fields.trig_mode == IOAPIC_LEVEL_TRIG &&
++		    ioapic->irr & (1 << index) && !e->fields.mask && !e->fields.remote_irr) {
++			/*
++			 * Pending status in irr may be outdated: the IRQ line may have
++			 * already been deasserted by a device while the IRQ was masked.
++			 * This occurs, for instance, if the interrupt is handled in a
++			 * Linux guest as a oneshot interrupt (IRQF_ONESHOT). In this
++			 * case the guest acknowledges the interrupt to the device in
++			 * its threaded irq handler, i.e. after the EOI but before
++			 * unmasking, so at the time of unmasking the IRQ line is
++			 * already down but our pending irr bit is still set. In such
++			 * cases, injecting this pending interrupt to the guest is
++			 * buggy: the guest will receive an extra unwanted interrupt.
++			 *
++			 * So we need to check here if the IRQ is actually still pending.
++			 * As we are generally not able to probe the IRQ line status
++			 * directly, we do it through irqfd resampler. Namely, we clear
++			 * the pending status and notify the resampler that this interrupt
++			 * is done, without actually injecting it into the guest. If the
++			 * IRQ line is actually already deasserted, we are done. If it is
++			 * still asserted, a new interrupt will be shortly triggered
++			 * through irqfd and injected into the guest.
++			 *
++			 * If, however, it's not possible to resample (no irqfd resampler
++			 * registered for this irq), then unconditionally inject this
++			 * pending interrupt into the guest, so the guest will not miss
++			 * an interrupt, although may get an extra unwanted interrupt.
++			 */
++			if (kvm_notify_irqfd_resampler(ioapic->kvm, KVM_IRQCHIP_IOAPIC, index))
++				ioapic->irr &= ~(1 << index);
++			else
++				ioapic_service(ioapic, index, false);
++		}
+ 		break;
+ 	}
+ }
 
-Then, we'd need to know which struct kvm the memory belongs to, to
-determine whether to share or not, and for that, guest_memfd would be
-the natural choke point that understands memory, which kvm owns it, and
-shared/private state, and hence memory sharing should be handled via
-guest_memfd rather than directly through the provider.
+base-commit: 5b0764a53235d3c77e1ed674e836e1b3fe1a4b1f
+-- 
+2.53.0
 
->
->
-> [...snip...]
->
