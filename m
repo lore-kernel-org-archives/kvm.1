@@ -1,81 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793276882;
-	b=NsZwYH5XiVm8jARgF54S4Pyi894LE82xEyPtu5pCrkLxknkdzt8HC9OvBXcmzjZkTWuy
-	 KNTYaBm8oz9e7Qk8Yf3SHn3BYtr3ZE7GjV3+/KEnA5ACWaOG6i/HuJI5J6S27xuaUErXs
-	 tXP9rNR8WKb8ZqAYAS5hwHEufhKdVKd2STuJEn2OfjabQce5P3rIfM4SUs9TClNXzAwNu
-	 FlMhHryrMD+zt8V1DMQg3HEgpfuGYdWYM7GU+/AT5DCni7942AXQBzgmnDhkxjT+RBUNg
-	 l8TTz8l5g2bZkaYZJPagnjf+dvG2RrVDGc0KItVsC2NQIKC7FGTcQaxiMiwbh9KqqSw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793276882;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=afURIQgSjuNj8H/0h9C1lu4HfwqgVmdt+unp2XHI2sc=;
-	b=Gmm0QnGuOFrEtqJlQ/P52KVPXm9oI6oKsooDi+d+0R5ezkZhnygTbxdZf0XAhk3m9CfI
-	 JoPtHEjhKlOPx2c8Mg7HL8+1iT/hk3ilx5vX1LYdLFYum015d+XcXSCKWRRh6m7JPQsKk
-	 Qigt9N9hXgK7arSMR3+JW6aZizNDnH4O/zg3riAZESqfsg9bGEbRdbUFssJXSsFTC/Qea
-	 Uz232Pr02TrprW9agGeM9MflSh4jioGHX2xpPHit/YqwPnwfhmm+5sntkTHvxCbZdMIQT
-	 ewkGacRnxnBOjllk41Raf12bjtZYZ0yRXkFqszXjbY3OEtw0wkVzkfmmjQz9BITbNGg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XwSz1H3S;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.17
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793277812;
+	b=gLpnk65RbZmC6UzXclZjituoLM/ThkoHBdshCmcu+nsIdfnbSKS/Ve5uR4FqmU/Rns5Z
+	 R5qbPR8ekAHAdGHgw5yf5/oEliFN5yA/PGJDN9b70uTl6QWUZdFqSXKq+OroV3AOvzpSq
+	 /Dlmxyc+qAHvxIi9fkA2iHLyOVv7kcJo9R5iaK5tMW3/ONJvRUnl9/TYiIgyj4gAafEPv
+	 oBKbq43SGIfMvIGq0nn/bJNpdvHF/SnCeQ/TntynZFdbDqVIgMNoEnPWAPuuPdwlTGjzX
+	 ZVvWItfOImaCt+txV+sUoA1jIgOuzIlAi7FGWq5eVTSF1YN1J2aYna1cG7ovVP0xyIA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793277812;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=f/Be/r/0+o61KZQUOPjZcG2yniCeh74DiO5qcZY1yqc=;
+	b=UJ7s3FLIxQT+cDmtDe5/vyG1CFCIRdMHWME4dGhAwrd5Ks3cehcXMZPizD9KH6UvfXvd
+	 6r/tyVsVJWL7aJFGL4p675e4whn3he1isA/NDJ0moXh0Kcd5BM9bySW2uoBXwmwFAK5b4
+	 XDvop1G4E7noatNrfHmD2SnuqZP1o3HkByF2dk2vu3ttXbxICsVeqaXJMGp/knrMcQEkS
+	 bV8HTYbr4WPFvvBrkxMJOgTylPJMPU89edqqQFb6Ko/Wp7UxhnRaBmHudOKgIBNxeYh9k
+	 M2IntDA4oQMLLjIxXrrO3IMhJKRwnB7Opmhn2LWNYAiek3ed7XBBwTbLbuBRfEZeAyg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CInIrfi2;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.17
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010017.outbound.protection.outlook.com [52.101.85.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D247E606A327;
-	Thu, 29 Oct 2026 12:28:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D247E606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2992606A31A;
+	Thu, 29 Oct 2026 12:43:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2992606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XwSz1H3S
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69T9E6Fi3962704;
-	Thu, 29 Oct 2026 12:28:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=afURIQ
-	gSjuNj8H/0h9C1lu4HfwqgVmdt+unp2XHI2sc=; b=XwSz1H3S+ehfJpOsyQJMNr
-	/y1+Z4O9umyNW8bmUU+0n0KMj4klj5qbDl1zekqtDcf+8lqbICw4pv42AtzvpDR9
-	bM3LmWlXku/PBjIgmKFa0b4lyWrcYd7xEElIcq1TFS/lzsVE+1GlemDmlO1EfEvP
-	zsufi5SpoJppUbIYhSmXrtoEN/kGQsEaF8Ln6n9JyBJhOrLvZgoMK6Zk3ssN3Uoo
-	RzltouhJpA1kg/qTyonSeXBzLIlZ9HfmjwG7Eaw1VQkaVXYzmr9vc4YROHbz8tz9
-	NAzmro/8mZZ4ZQs5dHt9mu/ZPt4WTS+hjL2Tz+VXqlISWYoDVYSS6j3L1A5ztTkA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgm64a3q1-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 12:28:00 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69T950Fc2829705;
-	Thu, 29 Oct 2026 12:27:59 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hjtnnhhkw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 12:27:59 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69TCRwe260424512
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Oct 2026 12:27:58 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5591B58052;
-	Thu, 29 Oct 2026 12:27:58 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E62B5805E;
-	Thu, 29 Oct 2026 12:27:57 +0000 (GMT)
-Received: from [9.61.241.59] (unknown [9.61.241.59])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 29 Oct 2026 12:27:57 +0000 (GMT)
-Message-ID: <fd754769-c15b-4d59-b259-d4d044598a52@linux.ibm.com>
-Date: Thu, 29 Oct 2026 08:27:56 -0400
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CInIrfi2
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hxBsnfXwcrLbInzOjMTsBzOTC4/iSzP9KXtu8/1So7WQTAKSLSB/HPCAyiji7J99XkXBGPvOhZBgRZZmwnzI1E+KHgQTes98w9Z52j7kWZhVbr5YHnLpx94Ea6JcM4qUs0IDKp2S9SxI2SgWFZl02XiHFzWQ150vTvV6KIhA1wXGbLjdxGRy3EcqNPvXRrtIa4hcsLbZWO8WgbGTw4EDas7Wp9x5/pwXG7J8OJfTpNrJVplAfvYGehlSXsBSVR5moVqgsypAUfILyeBuFT26gwAr9lIYab+zwKFgYmkjG/T4K78k74AVtNHVxqNo+uV1XCi8lG65qKzrgk5wvztsnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f/Be/r/0+o61KZQUOPjZcG2yniCeh74DiO5qcZY1yqc=;
+ b=cj80gNIamr7zmuQoFG5c/4bhAEHYD4NL8GyqJhN/iFlwt7m1FAKjDlUXuogbVrc3GmdzDDyxS8+dRZjV9wLFVoIklIfzr/XrSAgoly1l/Azfc+3zQTjVkqI7R/SlwWGU0xv0Y3VOG7OcqDyMJfhKNym/QTw5IWx4Pz9vOS4fH3RENaEsM/pKTz5PfLWXwYhO+5rCxJMzPx1kzWD+4n2fUx00GJ5kIzJ2r0ihsmB7rY4wqcNv7+Z1Y2zwvkkjOT/uXBeJ7rmXRS9s4e9xRgkB6KtojsItCqMUlWb8WpMjbUbHx8guiH59gtTv3Dr2F9FEI5D6cXQs1PKimnLPTygZIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f/Be/r/0+o61KZQUOPjZcG2yniCeh74DiO5qcZY1yqc=;
+ b=CInIrfi288jguocrBCxRRS6idMCHUh0dMnDmes6LUZgzp4QtjcbPNCdASANAvhjwLbsqkBODLatZbsKVma9E1en4UukimpnWgiq2r4bdA35swBXuKuxArmpu6ANUeRWdFPv2DWVzYzRzdqXucw5JYdNyyBaZaz/nVp4OxDUBgZML/T9JZ3ENdy+viwUR/tG6yQMIE4rxXDNqhFHY1qhXHc9lmX4LdRyN+xmV84fKiqNn5UK5Bg/6SHrTqQo0NPNz8LSEHDDuuAUbKP8q3UyHpwGTTXVl+4MQBU/omROK1F3rmqUouWWfrM6GJzhoha5M2lEFW3UfclFSbiPBN4w9Wg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by LV2PR12MB6013.namprd12.prod.outlook.com
+ (2603:10b6:408:171::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
+ 2026 12:43:28 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
+ 12:43:28 +0000
+Date: Thu, 29 Oct 2026 09:43:27 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>, iommu@lists.linux.dev,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v7 13/16] iommufd/viommu: Select vIOMMU operations before
+ allocation
+Message-ID: <20261029124327.GF3040767@nvidia.com>
+References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
+ <20261008055955.4014342-14-aneesh.kumar@kernel.org>
+ <179321444125.2412245.13201160469751061592.b4-review@b4>
+ <yq5a7bj0c3xq.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5a7bj0c3xq.fsf@kernel.org>
+X-ClientProxiedBy: YT4P288CA0052.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d2::7) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,109 +119,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 3/5] s390/pci: Reuse FMB buffer across enable and
- disable cycles
-To: Niklas Schnelle <schnelle@linux.ibm.com>, sashiko-reviews@lists.linux.dev,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Farhan Ali <alifm@linux.ibm.com>, Gerd Bayer <gbayer@linux.ibm.com>
-References: <20261028154352.15108-1-oelghoul@linux.ibm.com>
- <20261028154352.15108-4-oelghoul@linux.ibm.com>
- <sashiko-outbox-188110@kernel.org>
- <72ddf1a4-d672-4d9f-a205-07aec3db1248@linux.ibm.com>
- <1cd8eed2c5268a02df5f8600ae469d023761754c.camel@linux.ibm.com>
-Content-Language: en-US
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-In-Reply-To: <1cd8eed2c5268a02df5f8600ae469d023761754c.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA0NyBTYWx0ZWRfXznUojVge8K1B
- TU+gip8I1KoPtvphJmv2K+9guUj0gRqZWOYUfq54225LbNrQgtnPW32f41+dr0QAjBgBQ37Jk+N
- HzgwS2ySyLZ/a/OO6WmNvJ11mpQ0k90=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA0NyBTYWx0ZWRfXwn+XuJgWFKKB
- qx0u0ePBkON5r63RpvY+yosw6zSdrgt9KcznxCRFnpyvQi1Uh0Eu3km4nFTtC7/8wnzN9iRWSDh
- JqI5IMQWDS/syhM0ge8je16wUVxiiQdRzB6mmmIpLEdWNdl7e2jN4xxyE+auGs1XnRKa0gP1Raw
- aRE59/S9pp1ymeMvkTH148ZUmarshBuJfU2zMH+1FYAU0/Forn6E7UOVG75U8eNLFYyXVKnv5qu
- SH6LnvjI+jFKdlZliFIok4+QD2gtwmJxuo/Me22CZJDKpoExGT/1ztlkGv20+eBi04lKTdxICQ/
- huT1X5kcMyxQY0KJOapX6DO8bX6vGPJatCnjj+KGIFbwfsy4ikHin222CukYeMxjTIGuDJtKhYH
- /Jp4V3OUZBI7XGVl3LfgUh0/RZkpN9gxuQq4CFvvMuCVWQPfm4W1WE/MgwUWx1AVxleUlJUYe/d
- Uj391iszzRSgfD3lf+g==
-X-Proofpoint-ORIG-GUID: 8P_4t0yUzvnV1XjYo-IcylLa9K6G3iG8
-X-Authority-Analysis: v=2.4 cv=Uu32pOwB c=1 sm=1 tr=0 ts=6ae33bd0 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=ULb8jbz8dg8js5G6V90A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 8P_4t0yUzvnV1XjYo-IcylLa9K6G3iG8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610290047
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|LV2PR12MB6013:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f548cfa-9fc3-4534-bf6e-08df35ba3b0d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|11063799006|4143699003|56012099006|261009223027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	DhQxVtcfZUe0uT27/aYjA4bmK013NPt9lssw+hN3aRIE72HseYuYYOcQLFdkIa6uu0Hp6g5Lo9rT9cVoU3unhFxkrYRe67ca2FaYZGUR6bHkxTz8F0TdPb6rfVsbi1b56xCN6wO/SKQWLLctWd7Lh7AzCiPjgk6ycYuYwPwch1KLJel34DLDVyc6BdhmoUwfTf791iDxJ7x7ulFmKEhy548l+db+89pHm3NDUQ5FP2Z85ipanfRAhk2CLVcKpkAVmuB9KRyk98oxrFsSwe8SqOYuZ3kyip7y7kmeNUOLGtzwH5rUomcJQRE9i6+idqj3+81PSiMnHZHVhlJHn57vI2yC0FhK4lyE+wFZ07VdH5RSlfJGoofhN0qu3Z58JGdivAD6OE1kqmBd6R/M9okO2aODBDBGp5z1FcSsoYVdiHqLAVwYy847H9dQ4uh5WvNrtecwUHGTSBUpmqQcboAb/k0VDUqoKNZh0s5APJ0EM1dawmv9fWGsTCb5TI/t3+PbZuWhqIUZbmm8RN5briDRgdGP5wkwIBeDiKeYdsfxn9cZNqaSG/QpoEapL9Q6HUuHsQWT89104rRC3EqCp0zKLvkidvQKjwKvQQWUSouUTu3/3O/gZNL1ScTfBj0LEhWJXiwrj/i+KQpEcfOOc4Au8N6MQEmrNGkFTHVY9oXM8CQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(11063799006)(4143699003)(56012099006)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?o3y2EhUf9YYOLkywnyQrvAUrHqvTrTgYS2rG8EglQqw/X/ge51uwk41I28z2?=
+ =?us-ascii?Q?/qrAIEoBLLQrF5LzJlW2d0WvSwzWO6o0Ta/U30xGpCOeJG8MhbNiQsOpCEAv?=
+ =?us-ascii?Q?cPMzUVAZuaHV2H/Ih7k00YtwgFzbfIGvWZHN8BP5ZJMIpp5MWjw+O4oaQMw9?=
+ =?us-ascii?Q?TPwffTTOIVZSHmCitZgQd1iRU5dOCHd554Q+hexPvKE+pz1HgY25OMl/VTXz?=
+ =?us-ascii?Q?T6x7req6CD7jcomFZVdznCkvviMRRUNBTVhoEJLVPBEJpNnUbST0dPhURQkE?=
+ =?us-ascii?Q?7Iq1M3BqLh6tQMDfurvZdxv/Fo1eUbzHojj/lWq2mU8O/81F3S2wUmfvD1Q1?=
+ =?us-ascii?Q?qAYiFWYKM5dhfGaoW3dh4MRhpufgZNSVLvCEzFUVvsy390jOLp7uH/CvVClu?=
+ =?us-ascii?Q?klICNRojI9Oz8meX+vVLWG6BiTSDqMcOPFbyBnQY8uNb9Nwi+cwgCtaH7Q1o?=
+ =?us-ascii?Q?lMXjNfd11de1lP4lIkt7A0jECzeT/NVm9p5oWXPamLh8DVs5PZhjelL+fGcA?=
+ =?us-ascii?Q?LtHW/ivK4Sdr4lLmfvPj2KEkUta0YfJ++jdA08eKRenndd8frbyijFEp2c5M?=
+ =?us-ascii?Q?J0sqfvpwcWeLyLYwJw+p8HUbzW1/zCDLShjTDcbI2J/A4fQ/lXAtxIDbudxs?=
+ =?us-ascii?Q?9jU3C4xTI20YIpR3Ud4NOmd3U4skF6gMFZHkrEEWEJmsay33cuCpf4X5gdcv?=
+ =?us-ascii?Q?cYS0GJk1UnruNeXHRAM2UMIKc0Gr649US4ZN89CMWPC+fN7zXnVp07h0EoK1?=
+ =?us-ascii?Q?YgzTXGLlIbE7AWa1jgn6UGgdU0AgBzLrHDttYw+8UlVava4K4NUKTQa51nTE?=
+ =?us-ascii?Q?38cPioKYJWXhH3TdopZWv4iobuEZdKDZ7sDcj88yjLkODxS1uJa1XuXZPgNl?=
+ =?us-ascii?Q?NHYZ8ad2FIj2n0uGOh+8c3RQoKJiLdUg7o5syoV/iEIt/fWJVgJhYSK7GZhH?=
+ =?us-ascii?Q?yWplUwW13gsLzvBvlAQuLANBFb78IwRpafmiW/X8TqDKuKIdmsE/V91HjULp?=
+ =?us-ascii?Q?n8c7g+GKjXQ62zffT13q5MI/Mctc+ZqzT7WF9AH/IsFia5ZOyRX+jqVSDf/Y?=
+ =?us-ascii?Q?HdWD0KApN41BqYbJ9HgbY2yimJJSkPNaKqBlcy0XEVIO47W2oSf+dy/oN4lM?=
+ =?us-ascii?Q?zECeSx3DzJ4d+X6XQqr7uqiPjN7MX9ONw/4j2CAuh65+9dJ+ekOrMtblYjpS?=
+ =?us-ascii?Q?0gj00PsSPOcw0wLW5PnDePdKn4mYoPOCWPyDuZcH6TvkQUVnBDGON+r3yTNn?=
+ =?us-ascii?Q?lNOLQHyaBXttrL7fuFeJugw2L4JoDFRlxBjYu0q0a16czuNEvjZIyBO3Dpb4?=
+ =?us-ascii?Q?eJ6OMJrz2jYOdlSX6+W3L5sQ5V7Bu/s0Q8ukpwfEWSOiziTKwlSPRswBd9Sd?=
+ =?us-ascii?Q?o2OY96APy/K4onaeLglivR0hMZywQpw6Sml9t1aBXLA1aVXyQbQtH9pz62/1?=
+ =?us-ascii?Q?maAfK0Ut1B/2xXEvRNu+jfTotAUL0/pPA25YOA2K9lCcPNgBI9ggFtXQBwtf?=
+ =?us-ascii?Q?y3P7hsRGcCXqEsmzz2vnJDxgFrBL0SAaRp0ZrVHAxM50+bVho6RkcHoOuBWi?=
+ =?us-ascii?Q?IxNlNZ+gUcyofWNUIVZ9w1xaSpNAU/D8a1LJtxmKL1anrY7COoga94hOAxA4?=
+ =?us-ascii?Q?E7wgkr4zv5czr2QIf7aPvLKz1f5I2Vo2RlD69HQu4VUiyHj4fPYglptkiyAU?=
+ =?us-ascii?Q?49T4WNd3Lprrqmcxq+x6T+aT9u71npj314VYWQr9u3OguAuU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f548cfa-9fc3-4534-bf6e-08df35ba3b0d
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 12:43:28.1788
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vHP3QL9wAEYaQpu+WOy2szz72MdGqqS+3t3eVta+NpwiTR30K+j097hiFblp8Z/o
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB6013
 
-On 10/28/26 5:12 PM, Niklas Schnelle wrote:
-> On Wed, 2026-10-28 at 12:15 -0400, Omar Elghoul wrote:
->> On 10/28/26 11:59 AM, sashiko-bot@kernel.org wrote:
->> [...]
->>>
->>> [Severity: Medium]
->>> Can keeping zdev->fmb non-NULL when zpci_mod_fc() fails in zpci_fmb_enable()
->>> leave the FMB enablement state inconsistent?
->>
->> Valid concern, but unfortunately I think this is a tradeoff we are going
->> to have to accept. Based on this discussion [1] under a previous version
->> of the series, we can accept these stale reads because as Niklas said,
->> the firmware-written sample includes a timestamp of the last write. So
->> we're already transparent about giving the user stale data, and in the
->> unlikely event that this happens, the user will be able to recover by
->> disabling and re-enabling statistics via debugfs or simply re-enabling
->> it directly via vfio.
->>
->> Thanks
->>
->> [1]
->> https://lore.kernel.org/all/a24337bd66864dd70ae61e28d86590052ac0fc5d.camel@linux.ibm.com/
->>>
+On Thu, Oct 29, 2026 at 01:51:37PM +0530, Aneesh Kumar K.V wrote:
+
+> modified    drivers/iommu/amd/iommufd.c
+> @@ -41,7 +41,7 @@ static size_t amd_iommufd_get_viommu_size(struct device *dev,
+>  const struct iommufd_viommu_ops *
+>  amd_iommufd_get_viommu_ops(struct device *dev, enum iommu_viommu_type viommu_type)
+>  {
+> -	return &amd_viommu_ops;
+> +	return NULL:
+>  }
+>  
+>  int amd_iommufd_viommu_init(struct iommufd_viommu *viommu,
+
+Yes, it was a mistake to let this in the way it was
+
+Ideally maybe lets get Joerg to pick up just that patch next week.
+
+> Alexey,
 > 
-> I think the problem is a slightly different one. With patch 2
-> statistics_on tracks if the statistics should be on and zdev->fmb !=
-> NULL tracks if they are on. With this patch zdev->fmb loses that
-> meaning. So when the zpci_mod_fc() in zpci_fmb_enable() in
-> pcibios_enable_device() fails the removal of the "if (cc)" block now
-> means that we still do the zpci_fmb_disable() in
-> pcibios_disable_device() but that is a sequencing error.
+> Could you look at this and suggest the AMD equivalent of
+> arm_smmu_get_viommu_ops()? We could add it as part of this patch.
 
-In the unlikely case zpci_fmb_enable() in pcibios_enable_device() fails,
-the FMB simply stays disabled from the firmware's perspective. Then the
-user will see zeroes or stale counters. AFAIK the architecture doesn't
-forbid double-disabling, so IMHO I think the extra disable step in
-pcibios_disable_device() in this case is redundant at worst.
+It needs a whole other 20 patch series from Suravee to complete the
+viommu work in the driver.
 
-> 
-> So, as we want to keep the FMB associated to prevent the platform from
-> overwriting an already kmem_cache freed different FMB and thus can't
-> have zdev->fmb NULL at any point after having it enabled we need to
-> track the actual enablement state separately. I'd add another bool to
-> zdev for this maybe "fmb_enabled".
+  https://patch.msgid.link/20260930092344.5616-1-suravee.suthikulpanit@amd.com
 
-I think this will introduce a lot more complexity than is needed for FMB
-handling, and even then it will still be really messy to get right and
-account for all the cases where firmware can disable measurement without
-the user requesting that. That's largely why I thought the tradeoffs of
-occasionally giving the user stale counters and allowing them to recover
-via debugfs or vfio if needed were acceptable.
-
-Thanks
-
-> 
-> Thanks,
-> Niklas
-
+Jason
