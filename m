@@ -1,74 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793306011;
-	b=b6sKKc5XBA1Tt4u+l17OF0LmksvVK/mJIcLHotGk1EdRfE51Eqz91X7mBhX5NJWimM9d
-	 Lf5jZUPrU1W8Fmuk/rP6jeyxRNVZal55p/zi9QTZCDhTHp3x0notXnAyBhD3e+L6lsZY0
-	 G3fIbD/UtGN4P717/F3QW6GfS0PvG8AeF/9yhiCGSRaZ2rA+vokcGmgxs/j5s8EGhrLh1
-	 y7hYtrfWLfsupfHmotgLbCpNV2boGN11wV9AS+9701mtKxSeJD9EkWbUeRB4GGy5jumUj
-	 75AvK51XkWAVM8sAczkQkxCL0gN3lqe7g1Em0VS903qHiWhv+jvrO6BYrBVtOBaQfLg==
+	t=1793308159;
+	b=hDXUUG41odvxe0l50CjcNNzfAtfvo8gd3qJrKIbi9P8rRSfo9BJqXn62MNvpp6TrBqto
+	 AMitPEfYhCw+L+iGc1QO7FibTfL8NbCP3ncmyxWiAHBjhHeYki02Mcl5TXAuJTQ2BnCKL
+	 XKIZ4km5w+0BNMO6JlSjBeBAokqCBjdaA+u34dzqKsEY0jfpVxRoL2FAHdYrlVCxBh5lZ
+	 v7wwccuzNZ0AWpv+3kLlPeqmQq739kfxl+wcbOTd1Cn3dmoLxjtbAVh834TabL671D5Qw
+	 V0ahIzKW3AuceGrX7HPv2tuyq0hSzF03OAl+fQ9rxVK6xnzCKI9jKEdrbfj+V1w+yyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793306011;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793308159;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=aPubatOHkkdD5AHBvFSNw0aw4UoRgW6eq+k6wMoCK9w=;
-	b=kpFdqeGFYdn5IzVVCnE/miyS0ZcQu7buKM0BxGTUm6ho7XR67vWIaLRZ5snGUTImEqTA
-	 9H0YCPERGkwfUZvz4s0P1I092CExZmMhj8xE/SsBo2Tt1H5VjKSmxEolAmScqytBzAPw1
-	 BZfeCyL1vUG/nSdOwUgaqkn0ZvTFQusQNWBwioVVsXcBZX6HuDxfmShCGH7KD3SwQOdXZ
-	 e7L79H1Qt9RSueW0lljLy4K51OXtYLgR1nvTBHBsOOrvUnrukJxnCq7cBQO2PJl2KPG0m
-	 wZ1g14BJ7yxBci/WtDmsol3xZON13bcY9KsZHmI4Lk3bsVrqOUjh0HJ9hH2XerP+SxQ==
+	 References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=UZTQQFl2Xa9cNGYHC+qyfUooFiuQyHGk98xX353r+qY=;
+	b=i3SsaCLwfZoosbEjfwrWjhji+DyUX8UbWRTVInAYpyD3Pm20IOVApWfyJp/VS6BKdsYU
+	 a/rkIlTespz9UZAymk4MGDaXykd0GQ1bIHVPS/sJ7qb02uGf1KTMP5Qod2pi469O2Hr6v
+	 HA19P9UN5ib5RerRWLwDRbZMwQ4NK52cPfU7UIy8Oe8YFWiaFzJc7zVLAKTR1+7Ze4Wf0
+	 6IuHLpDNyzFghammFlpDgaRVROBhHjoxW4SIctxpNtLQ9CiNeqGxH6zf2rd2odGDW4zXw
+	 ENphnOyYgiwwX14jDzTqxWeQwdzdJVFcUdxODngdBVsN9BwRIkSNUXmLkmcxpvqEOkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lEe7+BN8;
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lX5yng3c;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EF0606A33E
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 20:33:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81EF0606A33E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28E1606A31C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 21:09:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E28E1606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lEe7+BN8
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e93f266d20so533385ad.3
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 13:33:31 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lX5yng3c
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ad30487d55so53010a91.2
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 14:09:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793306011; x=1793910811; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aPubatOHkkdD5AHBvFSNw0aw4UoRgW6eq+k6wMoCK9w=;
-        b=lEe7+BN8ekA8v3V8WGjQBcyrW9vlA3AgEYL7fnpGvm88JJOo4O2VgS6u9fj/iQ5DBL
-         UGpGU2xgxQXjTQtgRAT17Gd11w2i/Pe58/kSP8eJaiG2f1dTHTpJdCJbzolvf+7zyPUn
-         FMkDcySWQ+xWFl+sscREsEVBRlmITn4eTR0wuii0nxLaYrYmtx+m/sxkVwHnTF59bpy5
-         eFWP4RGTMSs9LRA4VPnd4+ghwCCuTzsOmS7lyYDJXSBVQLxkXLri2XzdgI5OAcaCZ9jj
-         z86xcENzgNh+P7phoGKqUA5NyOVbl9/C/RZ+W4ZMSn7b1T13TFk3VkW3DyNhTOKH0RKO
-         qkwQ==
+        d=google.com; s=20260707; t=1793308158; x=1793912958; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UZTQQFl2Xa9cNGYHC+qyfUooFiuQyHGk98xX353r+qY=;
+        b=lX5yng3cJrilLmgre+XF6cWaCORTkxbMYGTQ27oLnG9B34rlaYEmnwsqLb+AyL+C49
+         z5Rp/X00V1BXhQuQF1+Ch6W0sfSOtPXIjFI3ETVrfufZI8r27XqztpvW6K7VJ0ZA7682
+         xn4WPtchzaCtluDwPAnBJCVDYTOCu73xf6CUk6ezPgFeIa7/5o7Ge/kNJkPd0zrL5EtV
+         02ybCwKdo4zIa6JVJuw56zSYlhijS7KrzLvz0405ViUgVLzFeKloy1z0qr5NuAiaHlRg
+         inoRJvlpqw25y8Y2jAxcHcaNKhTV2kJGpMBD8smeO0ayuX+Djxs9xR8YPHzF4eN8MhU4
+         wPsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793306011; x=1793910811;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aPubatOHkkdD5AHBvFSNw0aw4UoRgW6eq+k6wMoCK9w=;
-        b=ZhJ8tEyYnm3apCcFWYftHWjmxtcbJ5I52e6100+kt0sz0DJlGpW2PiDHJIcHbBs65m
-         I9uACzNleeZX6oBZ36Jc4cUPnZ35zuXK/ZJ+cKksjh851W1oIxDCh91gnz+IWmBK8us6
-         j2Lbre7EBwUYMIdLyAYZl1T7hMZ4DvisEt3TbjDN0j0b8p909RAKdCh9mdLv8bJvqiCL
-         nLOUA9v/XLSDFBziwNA0IZBryRcJ2AhMA8hx8mxSyu8QCj1WW3/Yaye2bkgAN/xM/n/U
-         +1+LsU790vE/aNG2PcX042AUEgCmY/4fECkQafLE063sWuWO9/3RONH9eO1Z7ufun0Le
-         M81A==
-X-Gm-Message-State: AFq9FYLjcLfqcmkFuMMdyw+ZNEx7TH6P/Bu0NBmkjLc78UWVsweP7n7U
-	oFU5h7ag4kBTRiOD2lY0R1qo7KqfdSeLvnisOdesIKgiFG2Du9BRTiAz/ETEyFz6yaHBfwm/ubj
-	UfLZwgNBT+VxSDrOFh0B4+JANOp9OIqP9r0sHBiE1Swnk4qFmuygIfW7rwJ667tAEy8MgDRY+AR
-	6jaZJf8qlF/99uLIyaGhtxN1tNlsHuUxutOShNSva0XaU=
-X-Received: from plbjk1.prod.google.com ([2002:a17:903:3301:b0:2e8:b6a:4fac])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:cec9:b0:2e8:5202:aa8c with SMTP id d9443c01a7336-2eb364f0a21mr5065755ad.48.1793306010581;
- Thu, 29 Oct 2026 13:33:30 -0700 (PDT)
-Date: Thu, 29 Oct 2026 20:33:24 +0000
-In-Reply-To: <20261029203324.1637772-1-dmatlack@google.com>
+        d=1e100.net; s=20260707; t=1793308158; x=1793912958;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UZTQQFl2Xa9cNGYHC+qyfUooFiuQyHGk98xX353r+qY=;
+        b=SkD4mUmUYokHq/lcTlvX6aLqoDattP5SkldQ5M8w1PaOaF4xPq9FzZK0MYQ42Iyz9E
+         gTe+bzCrUcZOzFZWlNxza7TTfxwjuU9Ls5HWAnohSVyPRSUVU3dqJV37BZXguJ2qTE9t
+         QCPuROXK3tVpZl5zUKeQYzHqWKMblkXeVmV4ERt+7zTiKGlDpRO4vk4E2Y6IshJLeHmx
+         H307DbMa0APUpyjZppGUq0SPixiICof/FqJFqKdIeVCWKe4njL3+OtuF5068I7bAuWWr
+         VfMWgWIup2PZH/WJGu94qRd96NcKglc0qXxZta5emGjc29ttj3Qfgh9Dg3Os58AFM7HI
+         +67g==
+X-Gm-Message-State: AFq9FYKw77frB1Q81A961d39chH4Fj3tMP1IagkrdZcxnnC6EUCH5LLd
+	89bhy1D6Z4HAH0T+KjWRxNzEe0rjMfgT8Dc34b7uZM8EmXGw8KViLcTJ+yYmdk2oxsgMQeG9kxv
+	1pUHtoA==
+X-Received: from pjff12.prod.google.com ([2002:a17:90b:562c:b0:3aa:ff61:94d0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b90:b0:3ac:da41:ef7e
+ with SMTP id 98e67ed59e1d1-3ae89851099mr137795a91.52.1793308157908; Thu, 29
+ Oct 2026 14:09:17 -0700 (PDT)
+Date: Thu, 29 Oct 2026 14:09:17 -0700
+In-Reply-To: <GV2PR06MB10711171A7A8F225207FACD6BB96E2@GV2PR06MB10711.eurprd06.prod.outlook.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,252 +79,214 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261029203324.1637772-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261029203324.1637772-6-dmatlack@google.com>
-Subject: [PATCH 5/5] vfio: selftests: Add test for device power state transitions
-From: David Matlack <dmatlack@google.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Cc: Abhishek Sahu <abhsahu@nvidia.com>, Alex Williamson <alex@shazbot.org>, 
-	David Matlack <dmatlack@google.com>, Raghavendra Rao Ananta <rananta@google.com>, Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20261028202607.1844883-4-seanjc@google.com> <20261028215143.2913059-1-jthoughton@google.com>
+ <GV2PR06MB10711171A7A8F225207FACD6BB96E2@GV2PR06MB10711.eurprd06.prod.outlook.com>
+Message-ID: <auO1_YE89Q0T0hfI@google.com>
+Subject: Re: [PATCH 3/4] KVM: x86/mmu: Add automatic prefaulting/prefetching
+ for TDP MMU faults
+From: Sean Christopherson <seanjc@google.com>
+To: Marco Marangoni <mamarang@amazon.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"cc-open-source@amazon.com" <cc-open-source@amazon.com>, James Houghton <jthoughton@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add vfio_pci_power_state_test to exercise VFIO's handling of device
-power state changes initiated by userspace through the PM capability in
-config space.
+On Thu, Oct 29, 2026, Marco Marangoni wrote:
+> Hi Sean, thanks for the patch!
+> I run some benchmarks on it, and it definitely helps! This is the time to=
+ fault 128 MiB linearly after a snapshot restore, with an UFFD page handler=
+ that faults chunks on demand; medians of 60 restores. Baseline is kvm-x86/=
+next. Each entry is nr_pages: change vs baseline on the patched kernel; neg=
+ative means faster.
+>=20
+> - UFFD 4 KiB handler (baseline 2228 ms) 0: +1%, 1: =E2=88=925%, 2: =E2=88=
+=923%, 4: +1%, 8: =E2=88=923%, 16: +1%, 32: 0%, 64: 0%, 128: =E2=88=922%, 2=
+56: +1%, 512: +1%
+> - UFFD 512 KiB handler (baseline 543 ms) 0: 0%, 1: 0%, 2: =E2=88=9236%, 4=
+: =E2=88=9251%, 8: =E2=88=9259%, 16: =E2=88=9264%, 32: =E2=88=9271%, 64: =
+=E2=88=9267%, 128: =E2=88=9268%, 256: =E2=88=9267%, 512: =E2=88=9266%
+> - UFFD 2 MiB handler (baseline 513 ms) 0: 0%, 1: +1%, 2: =E2=88=9234%, 4:=
+ =E2=88=9250%, 8: =E2=88=9259%, 16: =E2=88=9264%, 32: =E2=88=9268%, 64: =E2=
+=88=9268%, 128: =E2=88=9268%, 256: =E2=88=9268%, 512: =E2=88=9268%
+>=20
+> 8 is the series' default; 0 and 1 both disable prefetch and reproduce
+> baseline. The 4 KiB row is within =C2=B15%, i.e. noise.  It's measured on=
+ nested
+> virtualization, so the improvement is probably less dramatic on metal. Fo=
+r
+> context, my initial patch was around ~75% faster, so I'd say that
+> performance-wise, your implementation is solid!
+>=20
+> It seems like a prefetch of 32 is the sweet spot, but I agree that with J=
+ames
+> that with the normal GUP it's probably better to keep it off or very low =
+by
+> default.
 
-The test covers:
+Yeah, agreed.  Triggering zswap or any other heavy operations could regress=
+ a
+lot of configurations/workloads.
 
- - Closing a device while it is in D3hot, which must return the device
-   to D0.
- - Enabling SR-IOV while the PF is in D3hot, which must return the PF to
-   D0 and prevent it from leaving D0 while VFs are enabled.
- - Racing a close of the device while it is in D3hot against enabling
-   SR-IOV, both of which transition the device back to D0.
+Hrm, but I don't want to lose support for guest_memfd without an hva.  Oh. =
+ That's
+a pre-existing bug, kvm_prefetch_pages() should reject kvm_memslot_is_gmem_=
+only()
+slots.  But that's a side topic.
 
-The SR-IOV tests are skipped if the device does not support SR-IOV or
-already has VFs enabled.
+Argh, FOLL_FAST_ONLY is internal-only.  But do we actually need it to be su=
+per
+strictly fast-only?  Wouldn't FOLL_NOFAULT suffice?  IRQs are enabled so ta=
+king
+mmap_sem is fine; it's not be ideal, but KVM will still try fast-GUP first,=
+ and
+in practice performance is going to suffer no matter what if mmap_sem is
+contended, e.g. arm64 *unconditionally* takes mmap_sem for read when handli=
+ng
+faults, and while it shows up in micro-benchmarks, e.g. mmu_stress_test, AF=
+AIK
+no one has complained otherwise.
 
-Bugs in VFIO's power state handling, such as the race above, often only
-manifest as kernel warnings (e.g. WARN() or KASAN reports). So fail the
-test if /sys/kernel/warn_count changes between fixture setup and
-teardown.
+So isn't the fix just this?
 
-Signed-off-by: David Matlack <dmatlack@google.com>
----
- tools/testing/selftests/vfio/Makefile         |   1 +
- .../vfio/vfio_pci_power_state_test.c          | 189 ++++++++++++++++++
- 2 files changed, 190 insertions(+)
- create mode 100644 tools/testing/selftests/vfio/vfio_pci_power_state_test.c
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index b673c8130edd..1fcf4fedc0bb 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4684,6 +4684,9 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcp=
+u,
+ {
+ 	unsigned int foll =3D fault->write ? FOLL_WRITE : 0;
+=20
++	if (fault->auto_prefetch)
++		foll |=3D FOLL_NOFAULT;
++
+ 	if (fault->is_private || kvm_memslot_is_gmem_only(fault->slot))
+ 		return kvm_mmu_faultin_pfn_gmem(vcpu, fault);
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 2c32c48db509..e2b152528560 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -12,6 +12,7 @@ TEST_GEN_PROGS += vfio_iommufd_setup_test
- TEST_GEN_PROGS += vfio_pci_device_test
- TEST_GEN_PROGS += vfio_pci_device_init_perf_test
- TEST_GEN_PROGS += vfio_pci_driver_test
-+TEST_GEN_PROGS += vfio_pci_power_state_test
- TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
- 
- TEST_FILES += scripts/cleanup.sh
-diff --git a/tools/testing/selftests/vfio/vfio_pci_power_state_test.c b/tools/testing/selftests/vfio/vfio_pci_power_state_test.c
-new file mode 100644
-index 000000000000..d5853eb89856
---- /dev/null
-+++ b/tools/testing/selftests/vfio/vfio_pci_power_state_test.c
-@@ -0,0 +1,189 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <pthread.h>
-+#include <stdlib.h>
-+#include <unistd.h>
+> From my perspective, using fast GUP has the problem that you cannot prefa=
+ult
+> "around" your page, but just ahead of it, so I don't mind going with norm=
+al
+> GUP if it makes things easier for you.
+
+I think I'm missing something, why would fast GUP prevent prefaulting "behi=
+nd"?
+E.g. is that effectively a limitation of the underlying backing store you'r=
+e
+using, a fundamental limitation somewhere in mm/, or a limitation in KVM it=
+self?
+
+> I'd say that most setup would know the size at which UFFD copies the memo=
+ry,
+> so having to explicitly configure is okay.
+>=20
+> For completeness, I also measured how much the patch improves at various =
+UFFD chunks, with nr_pages at the same size:
+>   - 4 KiB: 2285 ms =E2=86=92 2321 ms (np1), +2% (np1 is "off", noise)
+>   - 8 KiB: 1435 ms =E2=86=92 1441 ms (np2), 0%
+>   - 16 KiB: 1036 ms =E2=86=92 860 ms (np4), =E2=88=9217%
+>   - 32 KiB: 743 ms =E2=86=92 469 ms (np8), =E2=88=9237%
+>   - 64 KiB: 645 ms =E2=86=92 319 ms (np16), =E2=88=9250%
+>   - 128 KiB: 587 ms =E2=86=92 242 ms (np32), =E2=88=9259%
+>   - 256 KiB: 561 ms =E2=86=92 200 ms (np64), =E2=88=9264%
+>   - 512 KiB: 543 ms =E2=86=92 165 ms (np128), =E2=88=9270%
+>   - 1 MiB: 534 ms =E2=86=92 171 ms (np256), =E2=88=9268%
+>   - 2 MiB: 523 ms =E2=86=92 151 ms (np512), =E2=88=9271%
+>=20
+> These measurement highlight a possible limitation (why didn't 8KiB improv=
+e?):
+> it seems like the prefetching doesn't kick in the first time a page is
+> getting faulted in the chunk, is that expected? I asked an LLM to
+> investigate, and it seems to be because with async PF, the first fault
+> doesn't reach the kvm_mmu_auto_prefault code path.
+
+Hmm, right.  I deliberately hooked kvm_mmu_page_fault() instead of
+kvm_mmu_do_page_fault() so that prefetching wouldn't trigger auto-prefetch,=
+ but
+the existing shadow MMU prefetching does kick in for async #PFs, and it doe=
+s make
+sense to prefetch in that case if we buy my argument (from this changelog) =
+that
+async #PF should punch through dirty logging.
+
+Auto-prefetching for KVM_PRE_FAULT_MEMORY feels "wrong", but we do prefetch=
+ in
+that case for the shadow MMU, though I'm like 99.9% certain no one is runni=
+ng
+TDP with the shadow MMU these days, so I don't think we should consider tha=
+t a
+valid datapoint.
+
+Untested, but I think it'd be this:
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index b673c8130edd..c0ff50c52ad5 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5024,6 +5024,9 @@ enum kvm_prefetch_type {
+ 	KVM_PREFETCH_AUTO,
+ };
+=20
++static void kvm_mmu_auto_prefault(struct kvm_vcpu *vcpu, gpa_t start,
++				  u64 error_code, u8 level);
 +
-+#include <linux/pci_regs.h>
+ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 				 u64 err, enum kvm_prefetch_type prefetch,
+ 				 int *emulation_type, u8 *level)
+@@ -5098,6 +5101,9 @@ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vcp=
+u, gpa_t cr2_or_gpa,
+ 	if (level)
+ 		*level =3D fault.goal_level;
+=20
++	if (r =3D=3D RET_PF_FIXED && prefetch !=3D KVM_PREFETCH_AUTO)
++		kvm_mmu_auto_prefault(vcpu, cr2_or_gpa, err, fault.goal_level);
 +
-+#include <libvfio.h>
+ 	return r;
+ }
+
+or to disable it for KVM_PRE_FAULT_MEMORY:
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index b673c8130edd..ee31a35f6a55 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5021,9 +5021,13 @@ static int kvm_tdp_page_fault(struct kvm_vcpu *vcpu,=
+ struct kvm_page_fault *faul
+ enum kvm_prefetch_type {
+ 	KVM_PREFETCH_NONE,
+ 	KVM_PREFETCH_MANUAL,
++	KVM_PREFETCH_ASYNC,
+ 	KVM_PREFETCH_AUTO,
+ };
+=20
++static void kvm_mmu_auto_prefault(struct kvm_vcpu *vcpu, gpa_t start,
++				  u64 error_code, u8 level);
 +
-+#include "kselftest_harness.h"
+ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 				 u64 err, enum kvm_prefetch_type prefetch,
+ 				 int *emulation_type, u8 *level)
+@@ -5098,6 +5102,10 @@ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vc=
+pu, gpa_t cr2_or_gpa,
+ 	if (level)
+ 		*level =3D fault.goal_level;
+=20
++	if (r =3D=3D RET_PF_FIXED && prefetch !=3D KVM_PREFETCH_AUTO &&
++	    prefetch !=3D KVM_PREFETCH_MANUAL)
++		kvm_mmu_auto_prefault(vcpu, cr2_or_gpa, err, fault.goal_level);
 +
-+/* PCI_PM_CTRL_STATE_MASK values */
-+#define D0	0
-+#define D3HOT	3
-+
-+static const char *device_bdf;
-+
-+static u16 power_state_get(struct vfio_pci_device *device, u8 pm_cap)
-+{
-+	return vfio_pci_config_readw(device, pm_cap + PCI_PM_CTRL) &
-+	       PCI_PM_CTRL_STATE_MASK;
-+}
-+
-+static void power_state_set(struct vfio_pci_device *device, u8 pm_cap, u16 state)
-+{
-+	u16 pmcsr = vfio_pci_config_readw(device, pm_cap + PCI_PM_CTRL);
-+
-+	pmcsr &= ~PCI_PM_CTRL_STATE_MASK;
-+	pmcsr |= state;
-+
-+	vfio_pci_config_writew(device, pm_cap + PCI_PM_CTRL, pmcsr);
-+}
-+
-+static bool sriov_supported(void)
-+{
-+	return sysfs_sriov_totalvfs_get(device_bdf) > 0 &&
-+	       sysfs_sriov_numvfs_get(device_bdf) == 0;
-+}
-+
-+FIXTURE(vfio_pci_power_state_test) {
-+	struct iommu *iommu;
-+	struct vfio_pci_device *device;
-+	u8 pm_cap;
-+	int warn_count;
-+};
-+
-+FIXTURE_SETUP(vfio_pci_power_state_test)
-+{
-+	/*
-+	 * Snapshot the kernel's warning count so that teardown can check that
-+	 * the test did not trigger any kernel warnings (e.g. WARN() or KASAN
-+	 * reports). Bugs in power state handling often only manifest as kernel
-+	 * warnings, which are otherwise invisible to the test.
-+	 */
-+	self->warn_count = sysfs_kernel_warn_count_get();
-+
-+	self->iommu = iommu_init(default_iommu_mode);
-+	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+
-+	self->pm_cap = vfio_pci_find_capability(self->device, PCI_CAP_ID_PM);
-+	if (!self->pm_cap)
-+		SKIP(return, "Device does not have a PM capability\n");
-+
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+}
-+
-+FIXTURE_TEARDOWN(vfio_pci_power_state_test)
-+{
-+	if (self->device)
-+		vfio_pci_device_cleanup(self->device);
-+
-+	iommu_cleanup(self->iommu);
-+
-+	if (self->warn_count >= 0)
-+		EXPECT_EQ(sysfs_kernel_warn_count_get(), self->warn_count);
-+}
-+
-+/*
-+ * Put the device into D3hot via config space and then close it. VFIO must
-+ * return the device to D0 when it is closed.
-+ */
-+TEST_F(vfio_pci_power_state_test, close_in_d3hot)
-+{
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+	vfio_pci_device_cleanup(self->device);
-+
-+	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+}
-+
-+/*
-+ * Put the device into D3hot via config space and then enable SR-IOV. VFIO
-+ * must return the PF to D0 before enabling VFs, and must not allow the PF to
-+ * leave D0 while VFs are enabled.
-+ */
-+TEST_F(vfio_pci_power_state_test, sriov_enable_in_d3hot)
-+{
-+	if (!sriov_supported())
-+		SKIP(return, "SR-IOV is not supported or already enabled\n");
-+
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+	sysfs_sriov_numvfs_set(device_bdf, 1);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+
-+	sysfs_sriov_numvfs_set(device_bdf, 0);
-+
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+	power_state_set(self->device, self->pm_cap, D0);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+}
-+
-+struct sriov_enable_args {
-+	pthread_barrier_t barrier;
-+	int delay_us;
-+};
-+
-+static void *sriov_enable_thread(void *arg)
-+{
-+	struct sriov_enable_args *args = arg;
-+
-+	pthread_barrier_wait(&args->barrier);
-+	usleep(args->delay_us);
-+	sysfs_sriov_numvfs_set(device_bdf, 1);
-+	return NULL;
-+}
-+
-+/*
-+ * Race closing the device while it is in D3hot against enabling SR-IOV. Both
-+ * paths transition the device back to D0, which must be serialized by VFIO,
-+ * e.g. to avoid restoring the PF's BARs after VFs have been enabled or
-+ * double-freeing the saved PM state.
-+ *
-+ * The D3hot->D0 transition during close includes a delay (10ms by default)
-+ * before the device's state is restored. Use a barrier to start closing the
-+ * device and enabling SR-IOV at the same time, and then delay enabling SR-IOV
-+ * by a few milliseconds so that it lands inside that window. Vary the delay
-+ * across iterations to account for differences in timing across systems and
-+ * kernel configs.
-+ */
-+TEST_F(vfio_pci_power_state_test, close_in_d3hot_races_sriov_enable)
-+{
-+	struct sriov_enable_args args;
-+	pthread_t thread;
-+	int i;
-+
-+	if (!sriov_supported())
-+		SKIP(return, "SR-IOV is not supported or already enabled\n");
-+
-+	ASSERT_EQ(pthread_barrier_init(&args.barrier, NULL, 2), 0);
-+
-+	/*
-+	 * Keep the number of iterations low since each one enables and
-+	 * disables SR-IOV, which can take over a second.
-+	 */
-+	for (i = 0; i < 10; i++) {
-+		args.delay_us = 2000 + i * 500;
-+
-+		power_state_set(self->device, self->pm_cap, D3HOT);
-+		ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+		ASSERT_EQ(pthread_create(&thread, NULL, sriov_enable_thread, &args), 0);
-+		pthread_barrier_wait(&args.barrier);
-+		vfio_pci_device_cleanup(self->device);
-+		self->device = NULL;
-+		ASSERT_EQ(pthread_join(thread, NULL), 0);
-+
-+		sysfs_sriov_numvfs_set(device_bdf, 0);
-+
-+		self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+		ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+	}
-+
-+	ASSERT_EQ(pthread_barrier_destroy(&args.barrier), 0);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	device_bdf = vfio_selftests_get_bdf(&argc, argv);
-+	return test_harness_run(argc, argv);
-+}
--- 
-2.56.0.317.g454f8302e1-goog
+ 	return r;
+ }
+=20
+@@ -5215,7 +5223,7 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu,=
+ struct kvm_async_pf *work)
+ 		return;
+=20
+ 	r =3D kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, work->arch.error_code=
+,
+-				  KVM_PREFETCH_MANUAL, NULL, NULL);
++				  KVM_PREFETCH_ASYNC, NULL, NULL);
+=20
+ 	/*
+ 	 * Account fixed page faults, otherwise they'll never be counted, but
 
