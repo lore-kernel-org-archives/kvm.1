@@ -1,81 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793293668;
-	b=A8sD/oBU7iKvzDK2cYPE21cVBejgSe+Vmr3pQEHNmNaNwOvp6jZAz9YX4tRADXTqHzIv
-	 orUJpzQcrZwbK/uCnJuXiMZ++K9Ji+geUj9v+uhSZ1urYe5URBj/wehLflmgwGfTfIVg9
-	 wE7Qg4RSu8ozDpW8fNqW+Lgl8GGu+r/frHO/jxi7/pfZCkVfuNpTnQphn6DMkHUC2i/4J
-	 vucK18uwka1MMYnTnsxa9lIYwUO8DeKN715i/TH6PuktgFUCT0CW/gP0AGcoFb9js+ZSx
-	 w289ffrahGs1SDilZMN3IgH0tzYtszynkT251MIvvbRKcW2jcOOfco5jKroAY17r4zw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793293668;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=fC02P9DKeLV7SV+GEdY6Mr54UvwJLAaeH6neAiWLgio=;
-	b=06O4Lkw60yEVSQGDHl2CDLPGbNlT8CLv7xVfXbhZlN+Pr2uD14P1KQSaCTcmvNAlo0e4
-	 phHzf3w/u8/fur34hzVUF25EdYZqjeGgCJ2eJ7lCAvoOj/AHdzNOaLgJZ1gDnx6Wfy4Ek
-	 6o7Tm5K3vzdOkxSqis5dQyBo7jYedavWy7xHnnf/2WyT8KgJQaLN9PANcFhYnOGNceK44
-	 GV5vXUNoVInhcCom+cOtDu7UFrtsoi6LOF8zg41f4I9/jallaW3NrhdSiyNkOXal2t9Cx
-	 CjfPMz+88OsftaeaYdvlsCxnBo8EciyhMGzamMDp7j0jcIIpy6FXRCcp9YQbiKGFHPQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=POVeZItc;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.48
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793293675;
+	b=S/9qfxzdfZGBNVn1JYpLaPs1MjbgShCT6gHxadA5y+BwzIIIkmEHjs3t883JNUqof27K
+	 rZXVvYMzciglN8IRpYsiF/jh6Lq3SCtNtYlVWzmVq+TTMAsgd+QDnpeG1OYXbeaJmJ7N1
+	 9GUcFHC0uHrttlMz88NQkwTgqdGUbPI4Y7VUQcJrIFxqk7aoEhJlZgH/0nOWi4tnAEIbU
+	 QyHctp1osv3pTSbavGD464g6twFhmKmuSy64OZJ+ijim5ZnhTQ2GGpKaijmKYEbDHDkhA
+	 UMiSPzou2Ah/VXLydTy3EWYwAojqi8eU7od19RyEqKDXuSQI1linqJdvl7jHIZYctzA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793293675;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
+	b=z1MgRPYl6xrnEGWR1BB8/NravuU7N9ilFNTKYGb+RhsJJG8LsE9S39xftXWmsbk5Rgso
+	 AlmsqY10egO4MOpWmAUWFUgbWp7DzxS/au7P3fdhHTS6pzEma/tZjxaToSSYOAEn15BfF
+	 rkhXr6o7UuLgCW9144FBfPcPEz3IasDJzTeyzuIGp2Zh0VftaeQvTtsqjT62f1fojfN6K
+	 71hA0lipM7c9Ph2RdLuvqDO1IGq66EyViVJFWmC5NYOd3nbBCV3CQIdnaH3H1mmV3MM7q
+	 9X3y2ctmNCEKan9df064pxz4s164ByVbtBExQ2Kq/8eayISOFEFUq9hiXX/WV2kc2Dw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MuWAqUZR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.48
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B0B606A325;
-	Thu, 29 Oct 2026 17:07:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0B0B606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479B4606A323
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:07:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 479B4606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=POVeZItc
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69TGE5Qw461034;
-	Thu, 29 Oct 2026 17:07:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fC02P9
-	DKeLV7SV+GEdY6Mr54UvwJLAaeH6neAiWLgio=; b=POVeZItczQZMRGlPIDtXrR
-	zy8GeSlM+xZEx1ewOZOR2MmpMXwINih1dmp3kJNO+mvuDaM1gxdnEcKMmJloWPbP
-	tbMtCob4lG0MgUZb2+T97dHJJOfd3AAG8bdo5R2ZHzRhDHJiIM5FEKLYbQ6P8xCw
-	Eyld4fDZhx5Otp+nLNxSgstOhfM1pRoMKrnyu9tPQTls4quiBt9yJ4thDn0kURNF
-	qIReWDZivGASKglYg9JUvS/YuaT9C+AIrSmDWIz6/jq6cZxM+bc03L6CZDdYV5kt
-	GxrhkmZEHWQcF5+GKiCPn0mn6mX6S3uW8oz2c5yedfs9voz2TfKHclOsMizW7O/w
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgmd7bmwr-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 17:07:46 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69TGYlc53418716;
-	Thu, 29 Oct 2026 17:07:45 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hk55pg03x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 17:07:45 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69TH7inU15598266
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Oct 2026 17:07:44 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5329758051;
-	Thu, 29 Oct 2026 17:07:44 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA3A35805E;
-	Thu, 29 Oct 2026 17:07:43 +0000 (GMT)
-Received: from [9.61.101.238] (unknown [9.61.101.238])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Oct 2026 17:07:43 +0000 (GMT)
-Message-ID: <6cbff21c-a080-493c-bef4-0943b0680b71@linux.ibm.com>
-Date: Thu, 29 Oct 2026 13:07:43 -0400
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MuWAqUZR
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso432270566b.2
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:07:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793293672; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CEYvRZjpCyPSlJ65MGEUV85AjtsDyyiC96hul0ubLgRiohAYRSLVvsyzNcjXL6pv/f
+         3sCCf62w96+HdACYdTcWiUc1A87uHnpAyrHZlxC2b+b64ngM3kp9ABu9F1rjz/W28DYG
+         MD365B/Y/AK+nVdF0A9xrzX0XKHLAnS0UWasXsyaEOpEVHcG5CnIC1gqAiloFzSVmsCx
+         grFi2zuSPJEajrf9YLggc90lPat696qkpxnYEwvCZ1Xnyy3OC7AhnO32KMzDoWPzqwXg
+         U1JchJXRmP27uxEXeZl9+Z7SDOxHE66ZfGuPSrnpIRe7uojg4YlvkwuLuiIvKAGlO8fc
+         EVFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
+        fh=PrZ1jzHINibOApjQ3D+MOIeClYSmQSju2FvEhggr0oI=;
+        b=YPn/dInmXHIByrrygTdEEIOWZin08HoAZfIEzjyNJKB4NktL6+HzfKgRJh7maVTES3
+         uzfb/7MnwLHuPjIBteXt4AgKl8T/qYWSni4XEVZVuTDce53hFaXZzzEHUYcp7S5uH2rv
+         N9r19he5OGxKG7vUMqDH9Ft713pMhd0PbKUG7VaAA7eMN8k5hiajZMMr5wM1CKL27Rxc
+         IPtMGU6ZFt/YNtiB4wD/lm6Ct7AWB6jK77wjaoGfclmiamzrvUdebgVoeNGwoOh4BQde
+         TVF+ZFoWw6pvyyXIbVq9L11T9XbEEG5sVPkfNp0gW4qKjMKMbYFvLv3vKdbJqVN9RBn0
+         1LNQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793293672; x=1793898472; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
+        b=MuWAqUZRlat6aJ6f8GSESPnGQrfK9syg40aZf1Ngw4XasvhbbIUdsMyG95RGl30Qzz
+         9Yxe0i/egPCaT2iDSP9o+SPOXxQDDHkvTy3Tmbsi7gHFPDFfNRdbgAMu2ri/XRuLOU4P
+         w/N5pfbyO9+Mpyr56qJnr5Sli9u08T7aPzZBRGkJDhg+UkYzIxyUfOXZhvpgOXisSD+b
+         zn44DE015kKSRc0VnLzrd7UMO1HCWL8nTrMaQf75CEoS8svAUUSwo8/rKdYyb+ti+XeW
+         +ALiAdTd1CasSqLpNDr1GyAgjW6d36Qz7JKGCZD44Z9QbmaWAcCAiRBe1yPTRf3qPA3x
+         QBqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793293672; x=1793898472;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0YjGbXSGdFWqGTw7iXBWdHWj/MRYXXZreyMjEGvCLmY=;
+        b=MhDvIntmuURGSqtP0dyb4OHsH6T6lr16hZ7/qyGaGCpEkR+/zVN4KmOFMOvwunaAFU
+         NsATCwRUZUS9ln8yvmo8dqpHA5zz03wlnjLOJ3ABpU8BY7w02eq7RuKBOnvzwrKXfJrN
+         TBCE1c5yaF8h8eD8sIpKD0/DUFPm4/8bn9o1VgClTTSwAb0cSrfqvt9sb5GQo3G/Fsqw
+         nrlNrX/l/4YSO8p7YUsjTjnoSQIH7BayT+ArlQhsGauN58mGNyDqj3UZD6tO0WpIewqB
+         jLJZgz2rbRIIJGBsC94G3xmVm/jSDyWwHRfT46hNmZq8CLFfUVq87XvZueDoILOsXIxG
+         LcRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw4YS4GXk3Avgtt8n3O0y2tKMw8BfCnp/5ApJV5ijZ6aBl7Puo3LoIul/EqyEQJ95TBLDk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK3IOS/0senvhVik333jfeGz6EacmAf11yTUtHnrlRD2SWNXnf1
+	ZI271xpQSfaWZ68xrZyyvjMS7YpN5naf5ge0TRC49lO6adBEM5yd/ZGz1KQPpOLPgANMRMeUin6
+	vD/dO7Le4Pm8hJdpGCOLK7kxVJJm2iWQ=
+X-Gm-Gg: AYBFou32exmyxITP70poPR4hKkwzZabSwWK40TyohstgoneKU3ajrcfPs9BLt0jL6+P
+	ymfZzsutKZpRYYKLH8fwVyXJPbUciR9xwZkKTpR9Kuy+QT7rDW1nc0svl088dqp5+HONz0QiT0r
+	0Gw5YQS9khf4g5IwpjWUxOsVdsOaIeiVMMWjn6uiC8+TeSCSvi/5cUrblPTHFm7oM/Z2rrPnCL2
+	YoUxfcGchOLLrhZeS35RvnzQlK5T0P1TuLMH9Mko+zHyrPzzS+kI7j75Y/YprXrz+ZVh5J/O4vv
+	jpmiB8OxZt9VsUEp9tSf5lk//3Ts+CHIITKt2ECHIVFFE41F6I87CzoJW0Elo4CJwxk/gnDkNZL
+	G+x698o0pk87XHSawPySCa+2/kT+iuQTNyNguS/H8csnSJuTOBbdwE+7KNaj1TWOIF0xc/BJjHZ
+	GeF4MqxLxBE62JL1A=
+X-Received: by 2002:a17:906:7313:b0:c45:c030:732c with SMTP id
+ a640c23a62f3a-c49be03a73amr610119866b.41.1793293672256; Thu, 29 Oct 2026
+ 10:07:52 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,234 +105,294 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 15/15] s390/vfio-ap: Add live guest migration chapter
- to vfio-ap.rst
-To: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20261023174349.3545941-1-akrowiak@linux.ibm.com>
- <20261023174349.3545941-16-akrowiak@linux.ibm.com>
- <sashiko-outbox-183047@kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <sashiko-outbox-183047@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ZYOIpcVA c=1 sm=1 tr=0 ts=6ae37d62 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=ZVl0G4KO2zEQoFCSB98A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA2NSBTYWx0ZWRfX0AELNxKeCyYW
- 6z/4C/UHygpDHgtbP7WMGmTbsVVDDcviQoHPt7UdtCx2LU9O514PzkAxJIWJlFcKYASBwrwAA3J
- 5rqhGz5Xg6U9PGS88J/DkLHXANBfYuuCVviMzqY42GaTg680Kq1TX2Z+O8zL9Xa5CCPv0PDO/Rz
- jejbGpoBEz2n94TGGdKhyPvfnzQNRcVas90gnOTD+UORbZXFZLsAgqzTW5Ndk/VOaYD4opdnxk9
- EvcpRuVqxZ0VzvNWhJSYUnhCzfYFz5DLMcivbiyH+dNup/sFhcabzMrebYdCklZ+qUsoZba0aFm
- UZnjRn3t8eW6xK2v/Ai0oekBtRrQO9bOLWuuPeJupAoqiEZUM7JmLLa0Vj5CWeXeeR+Wmv0yu9b
- GsbylPjWh6UaT+SEKt+OJPmyyooPNgR0L3xK3ovDKvRA79f6urzBvB0DdCMzUhxGiZJbveIlYfB
- adIk6rBD6IqlRNP5e2w==
-X-Proofpoint-GUID: jmPsZ33-5x3hSqwSOdY-4QE-wI_02VZG
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA2NSBTYWx0ZWRfX182pVtTnvXmO
- wRkEW8nv1ixBq4uaX6yA9KZTd7Bp8wNC269TRz0tEnEjSpM/SQEGMVJXGu3hB5INngEkMjNHd9X
- uIHg4sdSUSGRYjqAtif6Zq9pbUyOl34=
-X-Proofpoint-ORIG-GUID: jmPsZ33-5x3hSqwSOdY-4QE-wI_02VZG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_05,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610290065
+References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
+ <20261027154649.91571-1-griffoul@gmail.com> <20261027154649.91571-2-griffoul@gmail.com>
+ <CAEvNRgGvxtgT=x3sLcasLZzCrtX+qEkHjPgs2yFRY0HRJvodag@mail.gmail.com>
+In-Reply-To: <CAEvNRgGvxtgT=x3sLcasLZzCrtX+qEkHjPgs2yFRY0HRJvodag@mail.gmail.com>
+From: Frederic Griffoul <griffoul@gmail.com>
+Date: Thu, 29 Oct 2026 17:07:41 +0000
+X-Gm-Features: AclHuK-XOTTZ577Y9tlQyUF1DU-1w6QS3FSXEW1jGcpzGvSeAxBjghFI3p-6WVU
+Message-ID: <CAF2vKzP7mKAsbDFfj-ndoYSxxZYbNzVO7uysb-XtKytR4zuC7w@mail.gmail.com>
+Subject: Re: [RFC PATCH 01/14] KVM: guest_memfd: Clamp the order of PFN mode
+ blocks to what KVM can map
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Alexander Graf <graf@amazon.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Alexey Kardashevskiy <aik@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Baolu Lu <baolu.lu@linux.intel.com>, 
+	Bill Wendling <morbo@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christian Brauner <brauner@kernel.org>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Connor Williamson <connordw@amazon.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@kernel.org>, 
+	David Rientjes <rientjes@google.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Erdem Aktas <erdemaktas@google.com>, Frank van der Linden <fvdl@google.com>, 
+	Gregory Price <gourry@gourry.net>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins <hughd@google.com>, 
+	Ingo Molnar <mingo@redhat.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	James Houghton <jthoughton@google.com>, Jan Kara <jack@suse.cz>, Jianxiong Gao <jxgao@google.com>, 
+	Joerg Roedel <joro@8bytes.org>, Joey Gouly <joey.gouly@arm.com>, 
+	John Starks <John.Starks@microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Justin Stitt <justinstitt@google.com>, Lorenzo Stoakes <ljs@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Michael Roth <michael.roth@amd.com>, Mike Rapoport <rppt@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolin Chen <nicolinc@nvidia.com>, Oliver Upton <oupton@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Steven Price <steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Tarun Sahu <tarunsahu@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
+	Xu Yilun <yilun.xu@linux.intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org, 
+	Shuah Khan <skhan@linuxfoundation.org>, Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, llvm@lists.linux.dev, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Oct 29, 2026 at 06:25:49AM -0700, Ackerley Tng wrote:
+> Fred Griffoul <griffoul@gmail.com> writes:
+>
+> > +        kvm_mmu_invalidate_range_add(kvm,
+> > +                         round_down(gfn_range.start, blk),
+> > +                         round_up(gfn_range.end, blk));
+> > +
+>
+> Yes, we want to make the invalidation range larger, but not the range
+> being zapped. We can't over-zap for CoCo VMs.
+>
+> Would it be better to refactor kvm_mmu_unmap_gfn_range() instead of
+> doing kvm_mmu_invalidate_range_add() twice?
 
+Good point. As far as I can see, kvm_mmu_unmap_gfn_range() is only
+kvm_mmu_invalidate_range_add() plus kvm_unmap_gfn_range(), so
+guest_memfd could do the two steps itself: add the blocks around the
+range, then unmap the exact range. The zap stays exact and the range is
+added once. Or am I missing something about kvm_mmu_unmap_gfn_range()
+that a refactor would need to keep?
 
-On 10/23/26 2:09 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] s390/vfio-ap: outdated migration error logs and return codes in vfio-ap.rst
-> --
+> So I think we should follow the same model:
 >
-> commit fc329ac666c2f8054a2481eb51b1b63f8f3ee4bd
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+> + The provider reports the max_order based on it's contiguity
+>   information, which is the actual contiguity of memory and
+>   read-only attributes
+> + guest_memfd further reduces max_order due to shared/private contiguity
+> + After handing it to KVM, KVM further reduces the max order based on
+>   the above.
 >
-> s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
->
-> This commit adds a Live Guest Migration chapter to
-> Documentation/arch/s390/vfio-ap.rst describing how to configure and
-> troubleshoot live guest migration for KVM guests with passed-through AP
-> devices, along with minor comment updates in the vfio_ap driver.
->
->> diff --git a/Documentation/arch/s390/vfio-ap.rst b/Documentation/arch/s390/vfio-ap.rst
->> index ac0c07f76ddd7..f5d9e32875035 100644
->> --- a/Documentation/arch/s390/vfio-ap.rst
->> +++ b/Documentation/arch/s390/vfio-ap.rst
-> [ ... ]
->
->> +3. Assign adapters, domains and control domains to the destination mediated device
->> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> +Assign the same adapters, domains and control domains to the destination
->> +mediated device as are assigned to the source guest's mediated device. For
->> +example, using the same adapters, domains and control domains from the
->> +previous step:
->> +
->> +.. code-block:: bash
->> +
->> +   echo 0x0 > /sys/devices/vfio_ap/matrix/62177883-f1bb-47f0-914d-32a22e3a8804/assign_adapter
->> +   echo 0x14 > /sys/devices/vfio_ap/matrix/62177883-f1bb-47f0-914d-32a22e3a8804/assign_adapter
->> +   echo 0x16 > /sys/devices/vfio_ap/matrix/62177883-f1bb-47f0-914d-32a22e3a8804/assign_adapter
->> +   echo 0x33 > /sys/devices/vfio_ap/matrix/62177883-f1bb-47f0-914d-32a22e3a8804/assign_domain
->> +   echo 0x3a > /sys/devices/vfio_ap/matrix/62177883-f1bb-47f0-914d-32a22e3a8804/assign_domain
-> [Severity: Low]
-> This isn't a bug, but since this example states that it assigns the adapters,
-> domains, and control domains from the previous steps, should it also include
-> the assign_control_domain commands for 0x33 and 0x3a?
+> I think mappings for all other page tables (userspace and IOMMU) should
+> also follow this approach.
 
-That's probably a good idea; I'll make the change.
+Agreed. guest_memfd should then only reduce the order for shared and
+private pages, and drop the gfn alignment and the rounding to a
+page-table size, which KVM does. For the provider, "contiguity" would
+mean a naturally aligned block of contiguous frames with the same
+attributes, the frames aligned to the block too, so a mapping of that
+size is valid as is.
 
->
-> [ ... ]
->
->> +One or more queues are not bound to the vfio_ap driver on the destination host
->> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> +The queue devices passed through to the source guest are not installed in the
->> +destination host or are not bound to its vfio_ap device driver.
->> +
->> +**Source host**
->> +
->> ++--------------+----------------------------------------------------------------+
->> +| Log          | Message                                                        |
->> ++==============+================================================================+
->> +| Console log: | error: operation failed: migration failed. Message from the    |
->> +|              | source host: operation failed: job 'migration out' failed:     |
->> +|              | Sibling indicated error 1. Message from the destination host:  |
->> +|              | operation failed: job 'migration in' failed: load of migration |
->> +|              | failed: No such device: Failed to load vmstate version_id: 1,  |
->> +|              | ret: -19                                                       |
->> ++--------------+----------------------------------------------------------------+
->> +
->> +**Destination host**
->> +
->> ++--------------+----------------------------------------------------------------+
->> +| Kernel log:  | vfio_ap_mdev $UUID: Queue $APID.$APQI not available to         |
->> +|              | vfio_ap driver on target host                                  |
->> ++--------------+----------------------------------------------------------------+
->> +| QEMU log:    | shutting down, reason=failed                                   |
->> +|              | qemu-system-s390x: terminating on signal $SIGNAL_NUM from      |
->> +|              | pid $PID $DAEMON                                               |
->> ++--------------+----------------------------------------------------------------+
->> +
->> +
->> +One or more control domains are not available on the destination host
->> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> +The control domains passed through to the source guest are not installed on the
->> +destination host.
->> +
->> +**Source host**
->> +
->> ++--------------+----------------------------------------------------------------+
->> +| Log          | Message                                                        |
->> ++==============+================================================================+
->> +| Console log: | error: operation failed: migration failed. Message from the    |
->> +|              | source host: operation failed: job 'migration out' failed:     |
->> +|              | Sibling indicated error 1. Message from the destination host:  |
->> +|              | operation failed: job 'migration in' failed: load of migration |
->> +|              | failed: No such device: Failed to load vmstate version_id: 1,  |
->> +|              | ret: -19                                                       |
->> ++--------------+----------------------------------------------------------------+
->> +
->> +**Destination host**
->> +
->> ++--------------+----------------------------------------------------------------+
->> +| Kernel log:  | vfio_ap_mdev $UUID: Control domain $DOMAIN_NUM not available   |
->> +|              | on the destination host                                        |
->> ++--------------+----------------------------------------------------------------+
-> [Severity: Low]
-> Are the documented kernel log messages and return codes in these two sections
-> out of sync with the current implementation in
-> drivers/s390/crypto/vfio_ap_migration.c?
->
-> When a queue or control domain from the source guest is missing on the
-> destination host, do_post_copy_validation() calls
-> ap_config_is_subset_of_shadow_apcb():
->
-> drivers/s390/crypto/vfio_ap_migration.c:ap_config_is_subset_of_shadow_apcb() {
-> 	for (int i = 0; i < source_config->num_queues; i++) {
-> 		...
-> 		if (!test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) ||
-> 		    !test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm)) {
-> 			pr_err_ratelimited("vfio_ap_mdev %s: Queue %02lx.%04lx not in destination mdev's AP configuration\n",
-> 					   mdev_name, apid, apqi);
-> 			ret = false;
-> 		}
-> 	}
->
-> 	for_each_set_bit_inv(domain_num, (unsigned long *)source_config->adm,
-> 			     AP_DOMAINS) {
-> 		if (!test_bit_inv(domain_num, matrix_mdev->shadow_apcb.adm)) {
-> 			pr_err_ratelimited("vfio_ap_mdev %s: Control domain %04lx not in destination mdev's AP configuration\n",
-> 					   mdev_name, domain_num);
-> 			ret = false;
-> 		}
-> 	}
-> }
->
-> And do_post_copy_validation() then returns -EINVAL (-22, Invalid argument)
-> rather than -ENODEV (-19, No such device):
->
-> 	if (!ap_config_is_subset_of_shadow_apcb(mdev_name, matrix_mdev,
-> 						source_config))
-> 		return -EINVAL;
->
-> Should the documentation be updated to reflect the "not in destination mdev's
-> AP configuration" messages and -EINVAL (-22) return code?
+One gap: KVM does not cover a memslot whose gfn and guest_memfd offset
+are not aligned to each other. On x86, kvm_alloc_memslot_metadata()
+disallows large pages when base_gfn and userspace_addr are misaligned,
+but nothing compares base_gfn with gmem.pgoff, and kvm_gmem_bind()
+takes any page-aligned offset. A gmem.pgoff check next to the
+userspace_addr one would keep that in KVM too.
 
-This is a valid documentation bug. The documented kernel log
-messages and return code do not match the current
-implementation. The documentation will be updated as follows:
+The export lookup in the series already works this way: it reports the
+provider's block, reduced for shared and private pages. iommufd maps
+PAGE_SIZE IOPTEs in this series, and will pick larger IOPTEs from that
+block later.
 
-Queue not available:
-   "vfio_ap_mdev $UUID: Queue $APID.$APQI not available to
-    vfio_ap driver on target host"
-should be:
-   "vfio_ap_mdev $UUID: Queue $APID.$APQI not in destination
-    mdev's AP configuration"
+> I guess the kvm_gmem_fault_user_mapping() equivalent of this max_order
+> tuning is missing from this series. :) I think we should defer order >
+> 0 to a later series though. I think read-only-ness should be part of
+> the first PFN mode series.
 
-Control domain not available:
-   "vfio_ap_mdev $UUID: Control domain $DOMAIN_NUM not
-    available on the destination host"
-should be:
-   "vfio_ap_mdev $UUID: Control domain $DOMAIN_NUM not in
-    destination mdev's AP configuration"
+Right, userspace mappings are PAGE_SIZE for now.
 
-The return code in the console log (ret: -19 / -ENODEV) will
-be corrected to ret: -22 / -EINVAL.
+Deferring order > 0 for KVM and userspace is fine with me. I'd like to
+keep the order in the export lookup, though: large IOPTEs matter for
+device performance, and I'm preparing iommupt changes to split and merge
+them in place.
 
+Fred
+
+On Thu, Oct 29, 2026 at 1:25=E2=80=AFPM Ackerley Tng <ackerleytng@google.co=
+m> wrote:
 >
-> [ ... ]
+> Fred Griffoul <griffoul@gmail.com> writes:
 >
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
->> index 660b5a21fe9e8..ac135872da2fa 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
->> @@ -217,8 +217,9 @@ static const struct vfio_migration_ops vfio_ap_migration_ops;
->>   /**
->>    * vfio_ap_setup_vfio_device_migration:
->>    *
->> + * Enable
->>    * Plug the object containing the function pointers to the migration callbacks
->> - * required to facilitate VFIO AP migration into the mdev
->> + * used to facilitate migration of a vfio-ap device.
-> [Severity: Low]
-> This isn't a bug, but was the stray "Enable" line in the comment above
-> vfio_ap_setup_vfio_device_migration() left in by mistake?
-
-Already addressed and will be fixed in the next series.
-
+> > From: Fred Griffoul <fgriffo@amazon.co.uk>
+> >
+> > KVM maps guest memory in 4K, 2M or 1G blocks, and uses guest_memfd's
+> > max_order to choose. A folio of order N is physically aligned and never
+> > mixes shared and private pages, so the order needs no check. A PFN mode
+> > provider's frames need not be aligned
 >
-
+> I'll need to think about max_order > 0 more for PFNs. I put it out of my
+> mind because my frame of mind is that only order-0 folios are supported
+> today. Perhaps with PFNs it's actually a lot easier to support order >
+> 0.
+>
+> > and the provider does not know
+> > which pages are private, yet kvm_gmem_get_pfn() passes its order to KVM
+> > unchanged. KVM can then map a block over the wrong frames, or with one
+> > attribute over shared and private pages.
+> >
+>
+> Yes, makes sense that private/shared contiguity needs to be taken into
+> account. I didn't consider this because order-0 is always safe to
+> map. Thank you!
+>
+> >
+> > [...snip...]
+> >
+> > -static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t s=
+tart,
+> > +static void __kvm_gmem_invalidate_start(struct inode *inode,
+> > +                                     struct gmem_file *f, pgoff_t star=
+t,
+> >                                       pgoff_t end,
+> >                                       enum kvm_gfn_range_filter attr_fi=
+lter)
+> >  {
+> > +     const gfn_t blk =3D kvm_gmem_is_pfn_mode(GMEM_I(inode)) ?
+> > +                       1UL << PUD_ORDER : 1;
+> >       bool flush =3D false, found_memslot =3D false;
+> >       struct kvm_memory_slot *slot;
+> >       struct kvm *kvm =3D f->kvm;
+> > @@ -355,6 +360,16 @@ static void __kvm_gmem_invalidate_start(struct gme=
+m_file *f, pgoff_t start,
+> >
+> >               flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
+> >
+> > +             /*
+> > +              * In PFN mode, a fault may map a block of up to PUD_ORDE=
+R
+> > +              * pages, sized before this invalidation (see
+> > +              * kvm_gmem_pfn_map_order()): make faults anywhere in the
+> > +              * blocks around the range retry.
+> > +              */
+> > +             kvm_mmu_invalidate_range_add(kvm,
+> > +                                          round_down(gfn_range.start, =
+blk),
+> > +                                          round_up(gfn_range.end, blk)=
+);
+> > +
+>
+> Yes, we want to make the invalidation range larger, but not the range
+> being zapped. We can't over-zap for CoCo VMs.
+>
+> Would it be better to refactor kvm_mmu_unmap_gfn_range() instead of
+> doing kvm_mmu_invalidate_range_add() twice?
+>
+> >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> >               kvm_arch_gmem_invalidate_range(kvm, &gfn_range);
+> >  #endif
+> > @@ -374,7 +389,7 @@ static void kvm_gmem_invalidate_start(struct inode =
+*inode, pgoff_t start,
+> >       struct gmem_file *f;
+> >
+> >       kvm_gmem_for_each_file(f, inode)
+> > -             __kvm_gmem_invalidate_start(f, start, end, filter);
+> > +             __kvm_gmem_invalidate_start(inode, f, start, end, filter)=
+;
+> >  }
+> >
+> >  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t sta=
+rt,
+> > @@ -670,7 +685,7 @@ static int kvm_gmem_release(struct inode *inode, st=
+ruct file *file)
+> >        * Zap all SPTEs pointed at by this file.  Do not free the backin=
+g
+> >        * memory, as its lifetime is associated with the inode, not the =
+file.
+> >        */
+> > -     __kvm_gmem_invalidate_start(f, 0, -1ul,
+> > +     __kvm_gmem_invalidate_start(inode, f, 0, -1ul,
+> >                                   kvm_gmem_get_all_gfns_filter(inode));
+> >       __kvm_gmem_invalidate_end(f, 0, -1ul);
+> >
+> > @@ -1535,6 +1550,44 @@ static struct folio *__kvm_gmem_get_pfn(struct f=
+ile *file,
+> >       return folio;
+> >  }
+> >
+> > +/*
+> > + * The order a PFN mode block can be mapped at: the provider's order, =
+no
+> > + * larger than the alignment of @gfn and @pfn to @index allows, rounde=
+d down to
+> > + * a page-table size, and never over pages that are not all shared or =
+all
+> > + * private, since KVM maps a block with a single attribute.  Called wi=
+th the
+> > + * invalidate lock held; an invalidation of any page of the block make=
+s the
+> > + * fault retry (see __kvm_gmem_invalidate_start()).
+> > + */
+> > +static int kvm_gmem_pfn_map_order(struct inode *inode, pgoff_t index,
+> > +                               gfn_t gfn, kvm_pfn_t pfn, int order)
+> > +{
+> > +     u64 misalign =3D (gfn ^ index) | (pfn ^ index);
+> > +     u64 attrs;
+> > +
+> > +     if (WARN_ON_ONCE(order < 0))
+> > +             return 0;
+> > +
+> > +     order =3D min(order, PUD_ORDER);
+> > +     if (misalign)
+> > +             order =3D min_t(int, order, __ffs64(misalign));
+> > +
+> > +     if (order >=3D PUD_ORDER)
+> > +             order =3D PUD_ORDER;
+> > +     else if (order >=3D PMD_ORDER)
+> > +             order =3D PMD_ORDER;
+> > +     else
+> > +             return 0;
+> > +
+> > +     attrs =3D kvm_gmem_get_attributes(inode,
+> > +                                     mtree_load(&GMEM_I(inode)->attrib=
+utes, index));
+> > +     while (order &&
+> > +            !kvm_gmem_range_has_attributes(inode,
+> > +                                           ALIGN_DOWN(index, 1UL << or=
+der),
+> > +                                           1UL << order, attrs))
+> > +             order =3D order =3D=3D PUD_ORDER ? PMD_ORDER : 0;
+> > +     return order;
+> > +}
+> > +
+>
+> I'll review this function more closely again. I think the mapping order
+> should fit into how KVM does it. After taking guest_memfd's input on
+> max_order, KVM then lets these parties possibly tune the max order down:
+>
+> 1. lpage_info contains information about highest order due to memslot
+>    alignment and alignment due to VM-level memory attributes
+> 2. CoCo platform can impose a max order
+> 3. Userspace mappings can impose a max order too.
+>
+> So I think we should follow the same model:
+>
+> + The provider reports the max_order based on it's contiguity
+>   information, which is the actual contiguity of memory and
+>   read-only attributes
+> + guest_memfd further reduces max_order due to shared/private contiguity
+> + After handing it to KVM, KVM further reduces the max order based on
+>   the above.
+>
+> I think mappings for all other page tables (userspace and IOMMU) should
+> also follow this approach.
+>
+> I guess the kvm_gmem_fault_user_mapping() equivalent of this max_order
+> tuning is missing from this series. :) I think we should defer order > 0
+> to a later series though. I think read-only-ness should be part of the
+> first PFN mode series.
+>
+> >
+> > [...snip...]
+> >
