@@ -1,55 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793254123;
-	b=KYrn0M7PGAPfffeGfHbP0yWyKFnZDT8sKfyT1pJCFNGycX2CW94xmoRrhotfCkDqi7pv
-	 zfyKBlQDhlkGKeWO4sB1N/KpOViyKn2m5LezQw4bNBZ/6FGz8/IiH4sHna4WzT0EWGpY+
-	 6gGw+FMnli9ZwlW8QO+j1kGmuMQSr3sagSgAoyqcmpFEL/oelphhnsD3nFYeAVP7IobEZ
-	 pWniuvKPR0MF7I5QA4JSYap2h1ePIdDUAlGWS6/2Rxj7Rt+6vN/vAJjn1mq8iYFKtSYZ8
-	 eIneEjUvRN7SpaTwXQNB5vd7N8AhzrHpJCP6+SyPJYXRZRGC0HeEIf/G/4Fbh8aQbjg==
+	t=1793254308;
+	b=yhop3gA0OSlsl3HvTKEipqDycmn4Q9+C2SxZ2iXW6ki3Hqif/VUXlIiQ8E0YLDZCoGl9
+	 M5Guj+l7kQsmRghE/3BNWvO51Tudak16bTVjuY9UBkjNZFgh1cKwaHqSHC1z4qyWUobXL
+	 yDwY8NmpcA9H5HdCypO2iDZy9LLFc7VDLabXO8WDWVxAgVfzSGZ/TlFlrNsL8Gma0TpLg
+	 qcsT2U6z0bNqSrRsneWEld/Au728qa+yBD37J3JcqGW8Xr29dC8r/jXt/jcyhwLfbFKN5
+	 ZnIg3idiK+uw8Yt9Nf8i+Y69nwVdRXE7f3zs+6lEhTyDC+Fj7zPtgdEBUz0e32JVjVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793254123;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=BLsF4wpJIbbZrsEJG2k18QoV1d35CQVAhY/liIukYqE=;
-	b=zEpbJ9jcnkD0o2Pe2jN4tIbrawt60caOgxaMRcF2GHEZrtlvqSCyId9EIDim3vDx2hBX
-	 yf3UIeoB3723tZa0Ccd1Z+duk5LcQ43eNZZXOHOslrRN5UwXN4fpO/cdRCn7abht7pDKa
-	 gX53yJw/Qodv5keqGnVYE/GeelPrrVQDcxTbNLJwGCcg36xZfHhAG6hZKXOzT58pdwd1Z
-	 HA3fqotR6I4JNtSpbsIYdr5ZJNWMHFKBhnHKYyTctgpEPu7U94MAFMmZT3j+3falsfxvk
-	 UBftI402+Cja0TF6fSkdhnIHt08OVMRQj0UbJiirHyBmdluIpngEQEEdswXzit+HI0Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793254308;
+	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
+	 X-Zmail-LocalSMTP:X-Zmail-RealSender:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 X-ZMAIL-USEORIGINALEMLTOOUTBOUND:Content-Transfer-Encoding:X-MAIL:
+	 X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
+	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=MStteIkcMwwxtnZ8UipMZgex+tlZTUU7ReE3Mj/L6Pk=;
+	b=HUYANYbzSTIaehl7WVZqMqV7VoQzRI/Mmrq2xLvcEBzoFtDvJAn4/TbEerX5n/dU4m5A
+	 KcJv0W1QTwrhhNdEp3DRAu12BNa1Xm09q3SbRG7lnkSDlj1aGV6F1EjP2sEwTrwIVT0Q0
+	 XUcty5zsjHFSD99CDzIZv2vQheEmFk/0FzFWbUR4LdcDPhg+8+yvP6IxE9Xoym+ZtRVGG
+	 O4MLDE+ptgGYB3032cXNYEExLJxTO3GUBSIG6b2oS73mzVoJ5kh1t9LXdliq9VeYvM9xi
+	 pPWBrklxMu2Ek6N9n5JFXHGw490WbRVLajmSpTm1Z8YzXYyYOMQLqUitQ1h1KfHiHlw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YQgMrEJZ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=sanechips.com.cn;
+	spf=pass smtp.mailfrom=sanechips.com.cn;
+	arc=none smtp.remote-ip=160.30.148.34
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF048606A31C
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 06:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YQgMrEJZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B3F1F01825
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 06:08:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793254122;
-	bh=BLsF4wpJIbbZrsEJG2k18QoV1d35CQVAhY/liIukYqE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YQgMrEJZzc8pi4dcwarVaeo2sgT3M/8Our5ktvUS+6+MI7klOA7i8w/DD7odYGRKc
-	 JyCtblT0aCTwoMDTIw+pH0KKAurCdhvGKipsEaebCU7bC0pSuGaC/EI3X4yu1dg3jf
-	 ZI80sS/iNCRBW0aAEVaUFCNZUCLPylNv9xPzcQ9BtIYN8L02TI+Pxs3nnM95Uk9MOP
-	 6FcfF3zqR5M2/5I2XSg1QcOiGR4F1/v25FnBYPg96LrYt/JjS9jnJp/3etHzF4uIv7
-	 5A6WdsbDhcKexNHYMxL4be05zNo47V08PK+OKi48w9R7l+r23+48tC1eyo86jLT+gb
-	 z8HboJsrzRJ1w==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso300267666b.2
-        for <kvm@vger.kernel.org>; Wed, 28 Oct 2026 23:08:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw3o4zNhdeOo6KC4zzChUM1eM+WJ3eVyGpA4eKXljj/gW4QjbuKUipRsMv3GA48DLGy4AM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIoDRTzT/MIlNxXLfN676Hw+B3SCKP8lL+Ny+vd2creF0CCOoNy
-	GLQYDtpSMipuupuZXlx5L4JUK100hxox/qmU+A6oG+Jowb6jRBFWnUCO36RwawevgijfHd7kI67
-	LKVc+EZ/OPeJmlT7kkE12zx8hQR3HPvE=
-X-Received: by 2002:a17:906:c14f:b0:c43:6d40:4f84 with SMTP id
- a640c23a62f3a-c49bddace89mr391035566b.4.1793254121218; Wed, 28 Oct 2026
- 23:08:41 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C126606A31A;
+	Thu, 29 Oct 2026 06:11:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C126606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jFYlc191wz5PkGt;
+	Thu, 29 Oct 2026 14:11:40 +0800 (CST)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl1.zte.com.cn with SMTP id 69T6BXfO003125;
+	Thu, 29 Oct 2026 14:11:33 +0800 (+08)
+	(envelope-from gong.shuai@sanechips.com.cn)
+Received: from ubuntu-35-gs (unknown [10.230.214.35])
+	by smtp (Zmail) with SMTP;
+	Thu, 29 Oct 2026 14:11:35 +0800
+X-Zmail-TransId: 3e816ae2e396027-e7ce4
+X-Zmail-LocalSMTP: 1
+X-Zmail-RealSender: gong.shuai@sanechips.com.cn
+From: Gong Shuai <gong.shuai@sanechips.com.cn>
+To: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        iommu@lists.linux.dev
+Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+        Tomasz Jeznach <tomasz.jeznach@linux.dev>,
+        "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+        Andrew Jones <andrew.jones@oss.qualcomm.com>,
+        Fangyu Yu <fangyu.yu@linux.alibaba.com>,
+        Wu Fei <wu.fei9@sanechips.com.cn>,
+        Zhao Qingye <zhao.qingye@sanechips.com.cn>,
+        Gong Shuai <gong.shuai@sanechips.com.cn>,
+        Gong Shuai <gsh517025@gmail.com>
+Subject: [RFC PATCH v2 3/9] iommufd: Add RISC-V IOMMU cache invalidation data type
+Date: Thu, 29 Oct 2026 14:11:25 +0800
+Message-ID: <20261029061131.584453-4-gong.shuai@sanechips.com.cn>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261029061131.584453-1-gong.shuai@sanechips.com.cn>
+References: <20261029061131.584453-1-gong.shuai@sanechips.com.cn>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,142 +83,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAHCio2jc9++n2Qoa0-sNkObZsWOybSwK1X2aBjFirchjRTBZsQ@mail.gmail.com>
- <CAHCio2hpL+Y0iYdGXs5zKA-81+w_9pHs+tZPe2uaYKs8yOCz_w@mail.gmail.com> <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
-In-Reply-To: <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 28 Oct 2026 23:08:30 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOmH6yzcNbUOF3FoNsac8rtx47rp5wByOFfGgaBPaLxug@mail.gmail.com>
-X-Gm-Features: AclHuK_-Q0Jz4mRR6smK73VVrzxuJ8LSDbRfF-XrsvhphW8oweFG2CIgPW6zY3w
-Message-ID: <CAO9r8zOmH6yzcNbUOF3FoNsac8rtx47rp5wByOFfGgaBPaLxug@mail.gmail.com>
-Subject: Re: Some options abort RFC: KVM: SVM: Rework ASID management
-To: Jackie Yu <ufo19890607@gmail.com>
-Cc: jmattson@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mlevitsk@redhat.com, pbonzini@redhat.com, seanjc@google.com, 
-	thomas.lendacky@amd.com, vkuznets@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
+Content-Transfer-Encoding: 8bit
+X-MAIL:mse-fl1.zte.com.cn 69T6BXfO003125
+X-TLS: YES
+X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 29 Oct 2026 14:11:40 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AE2E39C.000/4jFYlc191wz5PkGt
 
-On Wed, Oct 28, 2026 at 1:15=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Wed, Oct 28, 2026 at 6:37=E2=80=AFAM Jackie Yu <ufo19890607@gmail.com>=
- wrote:
-> >
-> > Hi, guys!
-> >
-> > Jackie Yu <ufo19890607@gmail.com> =E4=BA=8E2026=E5=B9=B410=E6=9C=8828=
-=E6=97=A5=E5=91=A8=E4=B8=89 21:36=E5=86=99=E9=81=93=EF=BC=9A
-> >>
-> >> Hi Yosry and KVM folks,
-> >>
-> >> We would appreciate your guidance on supporting INVLPGB in ordinary (n=
-on-SEV)
-> >> L1 guests alongside the proposed static per-vCPU ASIDs.
-> >>
-> >> The 2025 ASID rework RFC proposed one static ASID per L1 VM and listed
-> >> "enabling INVLPGB virtualization" among its motivations [1]. The June
-> >> 2026 RFC v2 changed the design from per-VM to per-vCPU ASIDs [2]. In
-> >> the October v2 series, patches 2-11 establish static per-vCPU ASIDs,
-> >> while the remaining patches primarily address nested TLB flushes [3].
-> >> Our question is how guest INVLPGB should be supported under the
-> >> per-vCPU design.
-> >>
-> >> Some of our workloads frequently discard and repopulate memory using
-> >> patterns involving madvise() and memset(). Broadcast IPI-based TLB
-> >> shootdowns are expensive for these workloads, so we are interested in
-> >> making AMD INVLPGB available to guests. We use a small benchmark to
-> >> approximate the resulting shared-address-space pressure:
-> >>
-> >>     region =3D mmap(256 MiB, MAP_SHARED | MAP_ANONYMOUS);
-> >>     memset(region, 0xab, 256 MiB);       // Initial population
-> >>     start N workers, pinned across 64 allowed CPUs;
-> >>     each worker repeatedly reads pages in its own slice of region;
-> >>
-> >>     repeat 500 warmup + 2,000 measured iterations:
-> >>         start =3D clock_gettime(CLOCK_MONOTONIC);
-> >>         madvise(region, 256 MiB, MADV_DONTNEED);
-> >>         record elapsed madvise() time;
-> >>         write one page in every 64 pages to repopulate part of region;
-> >>
-> >>     stop and join the workers;
-> >>
-> >> The benchmark uses memset() for initial population; subsequent
-> >> iterations re-touch pages rather than repeatedly calling memset().
-> >> The numbers below measure the advisor thread's madvise() syscall
-> >> latency, not worker throughput.
-> >>
-> >> In our experimental KVM4 configuration with a VM-shared ASID and our
-> >> separate guest INVLPGB passthrough changes, we observed:
-> >>
-> >>                          INVLPGB off     INVLPGB on    Difference
-> >>     64 workers  mean       21.624 ms       12.505 ms     -42.17%
-> >>                 P99        32.760 ms       21.518 ms     -34.32%
-> >>     128 workers mean       29.553 ms       20.459 ms     -30.77%
-> >>                 P99        39.628 ms       28.160 ms     -28.94%
-> >>
-> >> These are single, sequential A/B runs for each worker count, with
-> >> 500 warmup and 2,000 measured calls per run. The process had 64
-> >> allowed CPUs, so the 128-worker case was oversubscribed. The
-> >> measurements show a useful latency difference, but do not by
-> >> themselves establish INVLPGB instruction counts or IPI reductions.
-> >>
-> >> We then experimentally combined the October per-vCPU ASID changes for
-> >> ordinary guests with our existing, out-of-tree L1 INVLPGB/TLBSYNC
-> >> passthrough. With guest INVLPGB enabled, a one-vCPU guest boots, but
-> >> otherwise comparable two-vCPU and 64-vCPU guests fail early during
-> >> boot. Keeping QEMU's +invlpgb setting while adding clearcpuid=3D419
-> >> to the same guest kernel allows the multi-vCPU guest to boot; the
-> >> guest logs "Clearing CPUID bits: invlpgb".
->
-> I imagine for INVLPGB to work correctly with per-vCPU ASIDs, you need
-> to intercept INVLPGB and basically issue an INVLPGB for each ASID used
-> by this VM (nr_vcpus or 2 * nr_vcpus with nested). I can't imagine
-> this would perform well on large VMs, not sure if virtualizing INVLPGB
-> would still make sense.
->
-> Regarding the boot failure, I would guess there are some missing cases
-> due to the complexity of emulating INVLPGB without a shared per-VM
-> ASID.
->
-> >> These controlled boot comparisons identify a problem with combining
-> >> static per-vCPU ASIDs and direct guest INVLPGB/TLBSYNC passthrough:
-> >> the multi-vCPU guest fails to boot when it uses INVLPGB, but boots
-> >> when its INVLPGB CPUID bit is cleared. A one-vCPU guest also boots
-> >> with INVLPGB enabled.
-> >>
-> >> In this configuration, an unintercepted guest INVLPGB targets the
-> >> invoking vCPU's hardware ASID, while sibling vCPUs have distinct
-> >> ASIDs.
->
-> It's neat that INVLPGB will automatically use the current ASID and not
-> ASID=3D0 for guest usage.
+From: Wu Fei <wu.fei9@sanechips.com.cn>
 
-Hmm, actually, how is this supposed to work with nested
-virtualization? The APM says:
+Add IOMMU_VIOMMU_INVALIDATE_DATA_RISCV and
+struct iommu_viommu_riscv_invalidate to carry RISC-V IOTINVAL
+commands from user space. Define the command payload in the uAPI
+instead of relying on the driver internal struct
+riscv_iommu_command.
 
-    A guest that executes a legal INVLPGB that is not intercepted will have
-    the requested ASID field replaced by the current ASID and the valid
-    ASID bit set before doing the broadcast invalidation.
+The vIOMMU cache invalidation support added later uses this format
+to forward guest IOTINVAL commands to the physical IOMMU.
 
-If any ASID passed by an L1 guest is replaced by its own ASID, then if
-L1 is flushing L2's ASID (i.e. a non-zero ASID), passing through
-INVLPGB would do the wrong thing and flush L1's ASID instead, right?
+Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
+Co-developed-by: Gong Shuai <gong.shuai@sanechips.com.cn>
+Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
+---
+ include/uapi/linux/iommufd.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-Seems like if the VM is using nested (on any vCPU), KVM must intercept
-INVLPGB anyway to correctly handle the ASID?
+diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+index 5b5ca6e41063..aa65d494b992 100644
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -918,10 +918,12 @@ struct iommu_hwpt_get_dirty_bitmap {
+  *                                        Data Type
+  * @IOMMU_HWPT_INVALIDATE_DATA_VTD_S1: Invalidation data for VTD_S1
+  * @IOMMU_VIOMMU_INVALIDATE_DATA_ARM_SMMUV3: Invalidation data for ARM SMMUv3
++ * @IOMMU_VIOMMU_INVALIDATE_DATA_RISCV: Invalidation data for RISC-V IOMMU
+  */
+ enum iommu_hwpt_invalidate_data_type {
+ 	IOMMU_HWPT_INVALIDATE_DATA_VTD_S1 = 0,
+ 	IOMMU_VIOMMU_INVALIDATE_DATA_ARM_SMMUV3 = 1,
++	IOMMU_VIOMMU_INVALIDATE_DATA_RISCV = 2,
+ };
+ 
+ /**
+@@ -982,6 +984,31 @@ struct iommu_viommu_arm_smmuv3_invalidate {
+ 	__aligned_le64 cmd[2];
+ };
+ 
++/**
++ * struct iommu_viommu_riscv_invalidate - RISC-V IOMMU cache invalidation
++ *         (IOMMU_VIOMMU_INVALIDATE_DATA_RISCV)
++ * @cmd: 128-bit cache invalidation command that runs in the IOMMU command
++ *       queue, in the format defined by the "IOMMU Page-table cache
++ *       invalidation" section of the RISC-V IOMMU specification. Must be
++ *       little-endian.
++ *
++ * Supported command list only when passing in a vIOMMU via @hwpt_id:
++ *     IOTINVAL.VMA
++ *
++ * The isolation operands are owned by the kernel, which overwrites them
++ * before the command is issued:
++ *     GV = 1 and GSCID = the GSCID assigned to the vIOMMU
++ *     PSCV = 1 and PSCID = 0
++ *
++ * All other reserved bits must be 0.
++ *
++ * -EIO will be returned if the command is not supported, -EINVAL if it is
++ * malformed.
++ */
++struct iommu_viommu_riscv_invalidate {
++	__aligned_le64 cmd[2];
++};
++
+ /**
+  * struct iommu_hwpt_invalidate - ioctl(IOMMU_HWPT_INVALIDATE)
+  * @size: sizeof(struct iommu_hwpt_invalidate)
+-- 
+2.53.0
 
-The APM also says:
-
-    Two forms of INVLPGB intercepts, conditional and unconditional, are
-    available to the hypervisor. The unconditional intercept traps all gues=
-t
-    usage of INVLPGB. The conditional intercept traps only
-    illegally-specified INVLPGB instructions.
-
-When I read "conditional", I was really hoping it was conditional on
-the ASID being zero or non-zero, as KVM really only needs to intercept
-INVLPGB with non-zero ASIDs (assuming the ASID is shared to begin
-with).
-
-Am I missing something?
