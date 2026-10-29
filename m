@@ -1,82 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291081;
-	b=vkwxVBxhWuEP4SPYEq/EL6zx3gjCwLsPBr51v6D5xqpKlX+F2foxGlY3VngUVEmv5uvI
-	 hjDynuCb7ukzB9Ghyg7EZnzLX5TFNd43tikzU5V91AK3iIujse5pYz5IEP/l+npZIH28L
-	 vmuCEd3bsPyIC0QjwfWA+Z8OoMKGhkwaXburLfcvfYrxDRpmxfMwJLqxUy+mju5NGZgmi
-	 AijLvUSvWhlnNRtMZfvtmahoBT8Q9DEYIqQASDCX0TOLscozHlWXJSjqUsWygBR0M+keT
-	 gu9t/ncHFVwY/NaX0cpAPQnQ9uLBWB+OWd6YacwbwtvgPwR93JSIO7gK06sQxn4GMUw==
+	t=1793291851;
+	b=Kgp2a/XqzsTuBYuBz1zFCLvo9chlrfODL7r8YhHCPlTkHxU/sUqk8sD+EBtl6bzxz9Rb
+	 UVDFNkZeELxR6ZEWxVLJVprOMm8YiwMqsrb+4C1kvYD86xLVg2UPjP7lOCFpJtTF43eFm
+	 Yt7mUqgVjXeqBf4xyzys/w5vIg5OBhgRPlddZpK89dqJw+bekx2UMOHBt3+Jyc+R84P4f
+	 3jgFVrn5G6hn4/DA/Q7x10y/1EDCR1PBeyhfKxB+ce1lYY+AzXl3KquV8wUoEHirUJSbB
+	 /E8jXMCmmjn8PV7bI2h4kMKjwRAPVuzHDd7/okc+LhVS/fHLwTQdSghEQ2aUHXzen8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291081;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=f3Iv67n0h/RtoMWTXaKdXkfHPf9zC2T3413gV6Ghbnk=;
-	b=a+oyqlEEGthZIQYB6NH0j1lvtDXb03vg6aVqrXGZMGtUukUcnCUVIlZImQLD6FmqvnZl
-	 11uFITNMG8nBJmpJWPNzF00Zt9fZQFwRQOpAdyf477URXEupl0N4LSuUXFBTXalfaTzW2
-	 Fj37nl5CaJ+1592QhQ8cdZ7HLBmvPZoIU8GyjI4FUvFhkobjhZJ8HSa58KTBafv5ExjxJ
-	 Sg0RVGNkInZ5Z6VFiACrau4VHQV+Djpl0FZR7XlmMlsS6TFZZYw7fNohrgmaf8tUrqN7a
-	 wcWYi/Kl2uGwAvS2aaj3EbyMh+xxOQrAkWM22vKv1eQ+1xOBb5/9xevAM6Tjk/MUPnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291851;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=60oBdK7pSBMfkj8btrUeLXs/eWEM8pNj/zNxGpSWBnU=;
+	b=RwUD9vIUIoirOPP3w9dugWYDAHZqYh6WiwZLQe16O/MumI2lLMGqAS5oBZmlX+e+5u5H
+	 U1hTH26+tlEWMwm5G8yGyRMiHiheFaQPhkAb+5+R2hfPJq0knRDkkeS6CczadIiIbUQdA
+	 mLMbUuTYrMs8PwhmVkbFx7obnUeu6THQBzpOsBny+g5b1Fhhnj93HlqByGXFc3bzmjkqG
+	 ZBTIzYEyaAdR4ZDZCtN0xQ0xVB5liQ6JVHvD3y+nFNX0A0WAHXSG14dwqdWWmr+ICMZJF
+	 5dYeS7GnKgn9lBJ4ydx/cZbE3Xzy54YsooBZNFkoBnupzuKsulzXduoYgci+zO2hPbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=me1I9VFl;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4ijLiv7;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F31B606A31A;
-	Thu, 29 Oct 2026 16:24:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F31B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024C2606A31C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:37:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 024C2606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=me1I9VFl
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69TGECKT3505113;
-	Thu, 29 Oct 2026 16:24:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=f3Iv67
-	n0h/RtoMWTXaKdXkfHPf9zC2T3413gV6Ghbnk=; b=me1I9VFloI2gtnUE5qaq9H
-	3coN1a/mZkdhNDRkHVNgJM/m1u25c+O2DKkom/RkE5B0c6XdGNkyNRhTL1ElvECS
-	wTsQyGL+svkc7vD4pOMj9py8VxviBWJpzPhhA2CqeiOgzu7vZnl71AWxNd+tod8A
-	soxmKW8kSeZcoEJWoYCNwHUAnO8PeL14ZTaMcbmDv0m8UOKBXlRpUBUrDBDIqNTF
-	4VYBZu/5jNfQ18O7gKEGCWv4rq7xkdavZe5G0jt59iiOT9wru7dAu+ZD1HsfEPlk
-	+qVOf9Loj5AgWvTsf/8hE7idEgfjLQisMQy2pig3aj5cnqMspoPhS26avwIpQIsA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgk3gb61w-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 16:24:40 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69TGK6PG2213992;
-	Thu, 29 Oct 2026 16:24:39 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hk010s1xr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 16:24:39 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69TGObDJ17039966
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Oct 2026 16:24:37 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C19C58065;
-	Thu, 29 Oct 2026 16:24:37 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E387658051;
-	Thu, 29 Oct 2026 16:24:36 +0000 (GMT)
-Received: from [9.61.101.238] (unknown [9.61.101.238])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Oct 2026 16:24:36 +0000 (GMT)
-Message-ID: <b2bb16bc-d866-4600-b2bf-5ac71e22ced5@linux.ibm.com>
-Date: Thu, 29 Oct 2026 12:24:36 -0400
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4ijLiv7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793291850;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=60oBdK7pSBMfkj8btrUeLXs/eWEM8pNj/zNxGpSWBnU=;
+	b=Q4ijLiv7QAsBiPzdy1/Tbm16tGTn3/60Kc56UTQJfSMtD7CKMPLMLx+T7UaQKqujJ4kxTb
+	tv6LEo+nx79CcmfJdX1u4WkiX8jMPmBE88uih/T0OsLu4Ne8S8p/cFKpwxfWyaiT5pz5se
+	aS5mtqnbYkzgYD8ZDr7caZsuBOwlXXY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-93ymQZXkP_6lq8rkYhGv0A-1; Thu,
+ 29 Oct 2026 12:37:26 -0400
+X-MC-Unique: 93ymQZXkP_6lq8rkYhGv0A-1
+X-Mimecast-MFC-AGG-ID: 93ymQZXkP_6lq8rkYhGv0A_1793291844
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0B424180AEBD;
+	Thu, 29 Oct 2026 16:37:24 +0000 (UTC)
+Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0BAD91956088;
+	Thu, 29 Oct 2026 16:37:17 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: jgg@ziepe.ca,
+	alex@shazbot.org,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	bhelgaas@google.com,
+	jjohnson@kernel.org
+Cc: johannes@sipsolutions.net,
+	mani@kernel.org,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	robh@kernel.org,
+	vkuznets@redhat.com,
+	kevin.tian@intel.com,
+	linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: [PATCH v3 0/8] PCI/KVM/VFIO: MSI address passthrough for Qualcomm WiFi devices
+Date: Thu, 29 Oct 2026 17:37:05 +0100
+Message-ID: <20261029163713.1366077-1-jtornosm@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,151 +91,113 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 11/15] s390/vfio-ap: Transition device migration state
- to from/to STOP
-To: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20261023174349.3545941-1-akrowiak@linux.ibm.com>
- <20261023174349.3545941-12-akrowiak@linux.ibm.com>
- <sashiko-outbox-183053@kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <sashiko-outbox-183053@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=BOMmP1QG c=1 sm=1 tr=0 ts=6ae37348 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=SMkZLCyNcYPAoy_AmJMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: B8ZZJHv0w2aA4b7baDLtBqmvM-E2lYm3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA2MyBTYWx0ZWRfX3HwoTs3FNYWG
- DuJsHPeeVc6phkWGyKIM95KIORJ7NJH0bQfLBNE6k5IJAAthgJEJ3huHB8/xLvrTQ4AnLlim/zL
- wlypfXrdymK0gzGB0ZI4pSCIC2gBMHEoZS2YjzDt0A9a3OVKO2KWRdVG5Y7HUwq63cSxVGhpTAC
- C8zBtai+rg9UUCd2ryiidPrnO9p57XIt/TCUbmllcAH4fOm6L6OLC+UtvkFNGOw4iUL2LErpi3i
- wZ/ek74fm5pM3C7x84lpJBCd6ogUYFa1kICWcM+oBwaMjMjbwcLaKCv+1hqPQwMeIdVV3XfmWwB
- hfXjIUE0ZLGHhcp8484v/iePxgLBGWVzEMN1eRB96ikaNmTHV2Xfx5NkUSr43CUHgkJneqIg9/R
- MByHlTw1mXa6j/aiu/tx36OkbdDH6qu0lVSHVLmrQeXQ+aGUk4ANckDLFtX8NEEcH8JgDSSZAJm
- yguwWQEfLFT5vggJz9g==
-X-Proofpoint-GUID: B8ZZJHv0w2aA4b7baDLtBqmvM-E2lYm3
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA2MyBTYWx0ZWRfX1sNfOly6tuTG
- Jl2gSs1TDlAQlCwc9ddG2/RowaVHP0UI7RAvlJoT1AW0gVDKoF9/ruATnAk2PvxFFV47J8VBNl5
- xLnCvQGFD4qEFjulSalupcdmHLBORts=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_05,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 malwarescore=0 clxscore=1015 spamscore=0
- phishscore=0 adultscore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610290063
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
+This series enables Qualcomm ath11k/ath12k WiFi devices to work in VM
+passthrough scenarios, addressing a long-standing issue where these
+devices fail to initialize when passed through to VMs via VFIO.
 
+Qualcomm ath11k/ath12k WiFi devices have been broken in VM passthrough
+since they were introduced. These devices have embedded firmware that
+programs MSI target addresses directly into device BAR registers,
+bypassing the standard PCI config MSI path. The driver extracts the
+addr/data from the MSI descriptor and programs the firmware's private
+registers. In a VM, the driver only sees the guest's virtual APIC
+address instead of the host's physical IRTE address. The firmware
+programs the guest address into the BAR registers, and the resulting
+MSI writes hit a stale or invalid IRTE in the host's interrupt
+remapping table, causing DMAR faults:
 
-On 10/23/26 2:13 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] s390/vfio-ap: stale resuming_mig_data_complete after write past expected_sz
-> --
->
-> commit d607b25bfceefded024b198c63db651dfdea7ce6
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: Transition device migration state to from/to STOP
->
-> This commit implements the VFIO migration state transitions between STOP
-> and RESUMING, STOP_COPY, and RUNNING in vfio_ap_transition_to_state(),
-> cleaning up migration file state as needed.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
->> index 469fa09ec9087..cf38407d1b157 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> [ ... ]
->
->> @@ -1052,7 +1048,7 @@ static ssize_t vfio_ap_resuming_write(struct file *filp, const char __user *buf,
->>   		}
->>   
->>   		if (*pos == (loff_t)expected_sz) {
->> -			ret = do_post_copy_processing(matrix_mdev, ap_config);
->> +			ret = do_post_copy_validation(matrix_mdev, ap_config);
->>   			matrix_mdev->mig_data->resuming_mig_data_complete = !ret;
->>   		}
->>   	}
->> @@ -1146,20 +1142,46 @@ vfio_ap_transition_to_state(struct ap_matrix_mdev *matrix_mdev,
->>   		return filp;
->>   	}
->>   
->> -	if ((cur_state == VFIO_DEVICE_STATE_RESUMING &&
->> -	     new_state == VFIO_DEVICE_STATE_STOP) ||
->> -	    (cur_state == VFIO_DEVICE_STATE_STOP_COPY &&
->> -	     new_state == VFIO_DEVICE_STATE_STOP)) {
->> -		/* TODO */
->> -		return ERR_PTR(-EOPNOTSUPP);
->> +	/*
->> +	 * Terminates the data transfer session of the vfio-ap device state
->> +	 * to the destination guest.
->> +	 */
->> +	if (cur_state == VFIO_DEVICE_STATE_RESUMING &&
->> +	    new_state == VFIO_DEVICE_STATE_STOP) {
->> +		if (!mig_data->resuming_mig_data_complete)
->> +			return ERR_PTR(-EINVAL);
->> +
->> +		/* Set resuming_mig_data_complete to false for clean reuse */
->> +		matrix_mdev->mig_data->resuming_mig_data_complete = false;
->> +		vfio_ap_release_resuming_file(matrix_mdev->mig_data);
->> +		return NULL;
->>   	}
-> [Severity: Medium]
-> Can the transition from VFIO_DEVICE_STATE_RESUMING to
-> VFIO_DEVICE_STATE_STOP in vfio_ap_transition_to_state() still succeed
-> after a subsequent write() to the migration file descriptor pushes
-> filp->f_pos past expected_sz and returns -EINVAL?
->
-> In vfio_ap_resuming_write(), once a valid vfio_ap_config of size
-> expected_sz (with num_queues < MAX_AP_QUEUES) has been written,
-> resuming_mig_data_complete is set to true:
->
-> drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_resuming_write() {
-> 	...
-> 	memcpy((char *)ap_config + *pos, kbuf, len);
-> 	*pos += len;
->
-> 	if (*pos >= offsetofend(struct vfio_ap_config, num_queues)) {
-> 		...
-> 		if (*pos > (loff_t)expected_sz) {
-> 			ret = -EINVAL;
-> 			goto out_unlock;
-> 		}
->
-> 		if (*pos == (loff_t)expected_sz) {
-> 			ret = do_post_copy_validation(matrix_mdev, ap_config);
-> 			matrix_mdev->mig_data->resuming_mig_data_complete = !ret;
-> 		}
-> 	}
-> }
->
-> If userspace performs an additional write() on the same migration FD where
-> filp->f_pos + len <= VFIO_AP_CONFIG_MAX_SIZE, validate_resuming_write_parms()
-> succeeds, the extra bytes are copied into ap_config, and *pos advances
-> past expected_sz. The check for *pos > (loff_t)expected_sz then returns
-> -EINVAL, but resuming_mig_data_complete remains true.
->
-> When userspace subsequently transitions from VFIO_DEVICE_STATE_RESUMING to
-> VFIO_DEVICE_STATE_STOP, vfio_ap_transition_to_state() only checks
-> !mig_data->resuming_mig_data_complete and succeeds despite the trailing
-> data and failed write(). Should vfio_ap_resuming_write() clear
-> resuming_mig_data_complete (or avoid mutating ap_config and *pos) when a
-> write exceeds expected_sz?
+  DMAR: DRHD: ... INTR-REMAP
+  DMAR: [INTR-REMAP] ... Present field in the IRTE entry is clear
 
-Same as response to patch 10/15
+Standard VFIO MSI virtualization handles PCI config space MSI
+correctly (MHI interrupts work fine), but has no visibility into
+firmware-managed BAR-level MSI programming.
 
->
+Multiple attempts have been made to solve this over the past 2 years:
+
+March 2024: Workaround using module parameters [1]
+  - Required manually copying MSI values from host to VM
+  - Rejected by Johannes Berg as too manual, suggested VMM solution
+
+August 2024: QEMU + kernel solution by Alex Williamson [2]
+  - Kernel disables MSI virtualization, QEMU intercepts config writes
+  - Uses brute force pattern matching to infer MSI data writes
+  - Stuck as RFC - no progress in 14+ months
+
+No action from Qualcomm: Despite multiple reports [4], no vendor
+solution.
+
+The PCI reset support for these devices has already landed in mainline
+(commit f8522a518e59 "PCI: Add device-specific reset for Qualcomm
+WCN6855/WCN7850 WLAN") [3], solving the device reset path for VFIO
+passthrough. This MSI series is the remaining piece, with both in
+place, these Qualcomm WiFi devices would be fully operational in VMs
+for the first time.
+
+v1/v2 explored passing the host MSI address through VFIO extended
+config space. Jason Gunthorpe pointed out [5] that a guest-initiated
+approach via KVM paravirtualization would be cleaner, avoid VFIO
+internal coupling, and generalize better to other devices with
+similar firmware behavior. The proposal here is a new guest module
+that tries to address this by creating a custom MSI domain that
+provides the physical host values instead.
+
+v3 implements this as a 3-piece kernel-only solution:
+
+  1. Host side (KVM + VFIO): A new KVM hypercall
+     (KVM_HC_PCI_MSI_ALLOC) dispatches to a VFIO handler that reads
+     the host's physical MSI address/data for the passthrough device.
+     Connected via function pointer in struct kvm to avoid hard
+     subsystem dependencies.
+
+  2. Guest side (PCI controller): A new MSI IRQ domain module
+     (pci-kvm-msi, taking pci-hyperv.c as a reference as Jason
+     suggested) that intercepts MSI composition for matched devices.
+     In order to sync host initialization with the guest driver, it
+     provides kvm_pci_msi_wait_ready() to poll the hypercall until the
+     host MSI is configured, and kvm_pci_msi_get_address() to read
+     cached values.
+
+  3. Driver changes (ath11k, ath12k): Guarded with
+     IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN). Call wait_ready after
+     msi_enable in power_up, then use get_address where needed.
+     Zero overhead on baremetal (kvm_para_available() returns false).
+
+The solution requires no QEMU changes. Tested with WCN6855 (ath11k),
+WCN7850 (ath12k), and QCN9274 (ath12k) on host with KVM/VFIO
+passthrough, all three create fully working WiFi interfaces in
+the guest VM.
+
+Patches:
+  1-3: Core infrastructure (VFIO helpers, KVM handler, guest module)
+  4-5: ath11k support (link retry + KVM MSI integration)
+  6-7: ath12k support (link retry + KVM MSI integration)
+    8: QCN9274 device support (reset quirks + KVM MSI ID)
+
+[1] https://lore.kernel.org/all/20240322104912.94811-1-jtornosm@redhat.com/
+[2] https://lore.kernel.org/kvm/20240812170014.1583783-1-alex.williamson@redhat.com/
+[3] https://lore.kernel.org/all/20261005105436.83962-1-jtornosm@redhat.com/
+[4] https://lore.kernel.org/all/fc6bd06f-d52b-4dee-ab1b-4bb845cc0b95@quicinc.com/
+[5] https://lore.kernel.org/all/20261014150047.GO14213@ziepe.ca/
+
+---
+v3: KVM paravirtualization approach based on Jason Gunthorpe feedback.
+    New hypercall + guest MSI domain module replaces VFIO variant
+    driver.
+    Added QCN9274 support.
+v2: https://lore.kernel.org/all/20261014142606.418972-1-jtornosm@redhat.com/
+v1: https://lore.kernel.org/all/20260930140833.576941-1-jtornosm@redhat.com/
+
+Jose Ignacio Tornos Martinez (8):
+  vfio: add helper to find PCI device by vendor/device ID
+  KVM: add PCI MSI hypercall for VFIO passthrough
+  PCI: add KVM MSI domain guest module
+  ath11k: add PCIe link recovery retry
+  ath11k: use KVM MSI domain for VM passthrough
+  ath12k: add PCIe link recovery retry
+  ath12k: use KVM MSI domain for VM passthrough
+  PCI: add QCN9274 to reset quirks and KVM MSI domain
 
