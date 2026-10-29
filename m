@@ -1,68 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=114.242.206.163
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793243905;
-	b=p3VDdxVfWJ+J399Us6XvacK9v4NebPJFohRR64ORqX4aQBbO8sU915MUu3a5rn1owUxb
-	 7Daj+ff+Y2gQsuvTcqqKqr5D/14Z5T0UfUw/hcRmcFxksP97BcH49ZqdZfFGq+paE1W18
-	 hYfW8ChqdpQ49DrxhTmGAhFfAiIBS3NVIjezgJqrxdlbxs4jbE8GQlg2XAQsc1B4RvtlN
-	 LeEUJk5tfVxvzu1wMKEEgqbqOktlP3BzyO82eKc4GLqDuVwjInEcRfh9oDTCy6d6BQJqz
-	 uZNCpFimfCIFAdcKuNC65fzwWaAkZ55Yv3u7hjHTS9iaXjKkoWMtc5atXiNdYbJfDXQ==
+	t=1793245008;
+	b=hblMc+Mga4PyjZ+MiDaizB0m1q8d9HfVALcwQRKHjNh8RoMAi7MTvFa6xGQRQtZHtO+E
+	 7mHVAMp+6GJRCV0N9Agq7WskJD5MdZeGGI6mbjNA/oF8VZPcbOpF0nwcV69UPPr+4ydfq
+	 6jU3E0FB6wh9hD9wPKJLw0ho8qCdX0WfdgdaasEzHx9cS7euy4IkZLsCT4FSnN994XVZu
+	 UIAZ/k8UAmrc7uN8GQ6qWuEGT/9/Z2oI6KH/N8THjGv2Xmh1pxs2D6o2ibxBGbqB9P9Yb
+	 Vouxf1rz/9U1JxBL216t8LEvawt7kaoeoghnFOH57NgtNqIxaY5escDIYPD2lQJWZpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793243905;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=38WyXjlueJWRKQRqp8cQGmxITcnnsrYGBn4p3Z8ZZLQ=;
-	b=LjmaOk/V00NYNtJ3+rfGqvLXx3+NxzH2rbvz6heZW8HSMuON1EBjPKrZIGVAR+3mI0pg
-	 dwt4jYyVDT4cM23h7EiNHubn3g3nWcz9v6/gt/NHJ5nZsAAAt+yDOc8fWIf5ktonsxF+3
-	 x0dcAFixcq0o7QQzIKyxhaCtpDGaRzynfE6gTl75UNg/zfBq1/mXlginu6kqxzxzPMhZY
-	 ZhyAQouHc7EhSKZdwLellA8EafIDY/Z9mbSXq4sk55iJ4V9rabqkY4d56T8WK0JO42jNV
-	 R/g+DeD8GqBTDXqXi8c/DLz1YQcKaahy9ujl1iR1mP7QFb1q5tkQnMn/oECO7wk8NAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793245008;
+	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-Id:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-CM-SenderInfo:X-Coremail-Antispam;
+	bh=XUB/7JwFVR3vCwhz9vzj6yKZKYA2g43PyYaNlGDfQBs=;
+	b=nVmT7adLTz2b3/QuNmOJytiSfE/oVz9uEQytOgEVk/8UelJ8zFHpHiFb+koFqUQziB7P
+	 Mqo1+huNhOWMHWXsdEPGvVgD6WFTaEIU8JzXT7cteCJAI2By2zHiZ9ViSLLFIhu7RHTUX
+	 Of5VW1W0wSjxyjuZRhyVYXOK2WNhnyUAuLog2VBkL221Ee2gF31jlybjl1SCxjtQEckw0
+	 EWvelGZK6DNoVslUKB23Y6TAlbEX+NlQQCQwHAFCe4q4sNGyHyPzFS3UQU8cjZB4PTfR3
+	 AjNbFgq4heMIoGTpZrXE5iHbmB5otLYgYicihDZFuFBOjSUDqGy1hbH7YWC7YaE4FGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SsQixV7X;
-	arc=none smtp.remote-ip=198.175.65.17
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D86606A31C;
-	Thu, 29 Oct 2026 03:18:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82D86606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SsQixV7X
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793243905; x=1824779905;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Cj6kU2ZX/RnCd+sPFtuaaUioURVI3NEzsDjWKzasycg=;
-  b=SsQixV7X3WmcmKFp4vPr81c/hKzJ9mAVtEOyiL61rajlWa9RA+p3zo+i
-   dgE3VreVqFz091oitB3u6jGwAqvaVwjdDsBY8qjL5o9q3DhLIq6alIXhm
-   KuJKVFj2fH82GAVtpcAhbOWG+yjxxLCsKrj4Lda5ZVz73Ygc53a51emA2
-   l8EwVROzKcaBT4OcO1/puaFZ401X3QruVU/1gk701L04/eZib7NyJAcKH
-   S020k+l+NTJh28UJx2BUWJCJHzlNW3YZns2ew6NNQASX/AS9UWgJH09ub
-   mD1EPan9wAkn1bqd+wyrDujnUhMkJpJt5//VLH2JavVlw8devLLTg2kQB
-   A==;
-X-CSE-ConnectionGUID: 69fRZQDsTr6OMZn6J8Z94Q==
-X-CSE-MsgGUID: VEdb6YvgTn2wtmUyJxNQwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1994286"
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="1994286"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 20:18:24 -0700
-X-CSE-ConnectionGUID: bBNs7urBRHuRBA/6fWPWfA==
-X-CSE-MsgGUID: 5m/zZIfTTF2dLS/e6nMaig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="4946425"
-Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 20:18:20 -0700
-Message-ID: <5e0be0cd-c2ae-4488-b95f-b04b8315a1ed@linux.intel.com>
-Date: Thu, 29 Oct 2026 11:18:02 +0800
+	dmarc=none header.from=loongson.cn;
+	spf=pass smtp.mailfrom=loongson.cn;
+	arc=none smtp.remote-ip=114.242.206.163
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53333606A31F;
+	Thu, 29 Oct 2026 03:36:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53333606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8DxOvBNv+Jq1FMaAA--.11225S3;
+	Thu, 29 Oct 2026 11:36:45 +0800 (CST)
+Received: from localhost.localdomain (unknown [127.0.0.1])
+	by front1 (Coremail) with SMTP id qMiowJDxzM5Nv+JqXRAxAA--.11789S2;
+	Thu, 29 Oct 2026 11:36:45 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] LoongArch: KVM: Add KVM_LOONGARCH_VM_FEAT_CRASH feature detect support
+Date: Thu, 29 Oct 2026 11:36:36 +0800
+Message-Id: <20261029033636.1280539-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,97 +52,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v6 07/18] iommu/vt-d: Clear unpreserved context entries
- during shutdown
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261025021930.674647-1-skhawaja@google.com>
- <20261025021930.674647-8-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261025021930.674647-8-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxzM5Nv+JqXRAxAA--.11789S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
-> During normal shutdown the iommu translation is disabled. Since the root
-> table is preserved during live update, it needs to be cleaned up and the
-> context entries of the unpreserved devices and root entries for the
-> unpreserved context tables need to be cleared.
-> 
-> This is required because during kexec reboot and shutdown the devices do
-> not go through the release flow, so there might be stale entries in the
-> root table and context tables. Also note that new unpreserved context
-> tables for unpreserved devices might have been added after preservation,
-> so the root table entries for unpreserved context tables also need to
-> removed.
-> 
-> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
-> ---
->   drivers/iommu/intel/iommu.c      |  15 +++-
->   drivers/iommu/intel/iommu.h      |   5 ++
->   drivers/iommu/intel/liveupdate.c | 134 +++++++++++++++++++++++++++++++
->   3 files changed, 152 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 14bd1ca4fbd5..23a1da351ddf 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -1967,6 +1967,14 @@ static int iommu_suspend(void *data)
->   
->   	iommu_flush_all();
->   
-> +	/*
-> +	 * Note that IOMMU suspend doesn't affect live update. The state
-> +	 * preserved during live update is not released and remains valid during
-> +	 * suspend and reused during IOMMU resume.
-> +	 *
-> +	 * Also note deployment of suspend/resume and live updated use case
-> +	 * should be mostly mutually exclusive.
-> +	 */
->   	for_each_active_iommu(iommu, drhd) {
->   		iommu_disable_translation(iommu);
->   
-> @@ -2512,8 +2520,11 @@ void intel_iommu_shutdown(void)
->   		/* Disable PMRs explicitly here. */
->   		iommu_disable_protect_mem_regions(iommu);
->   
-> -		/* Make sure the IOMMUs are switched off */
-> -		iommu_disable_translation(iommu);
-> +		/* Make sure the IOMMUs are switched off if not preserved. */
-> +		if (iommu_preserved_state(&iommu->iommu))
-> +			clear_unpreserved_context_entries(iommu);
-> +		else
-> +			iommu_disable_translation(iommu);
->   	}
->   }
+Add feature detect with KVM_LOONGARCH_VM_FEAT_CRASH, so that VMM in
+user space can detect and enable this feature.
 
-When I revisit this, perhaps we have overlooked something.
+Fixes: 00289c235d40 ("LoongArch: KVM: Add hypercall crash support")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ arch/loongarch/kvm/vm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-After intel_iommu_shutdown() in the previous kernel, the memory for the
-Invalidation Queue, the memory for the PRQ, and the interrupt vector for
-the DMAR fault are all freed. However, the hardware is still configured
-with those resources. This potentially results in use-after-free bugs.
-So my understanding is that while we can preserve the translation state
-in intel_iommu_shutdown(), QI, PRQ, and fault handling should be
-disabled and their resources should be released.
+diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+index e4c1c65fe20b..ba5fdfcd7016 100644
+--- a/arch/loongarch/kvm/vm.c
++++ b/arch/loongarch/kvm/vm.c
+@@ -165,6 +165,7 @@ static int kvm_vm_feature_has_attr(struct kvm *kvm, struct kvm_device_attr *attr
+ 	case KVM_LOONGARCH_VM_FEAT_PV_IPI:
+ 	case KVM_LOONGARCH_VM_FEAT_PV_PREEMPT:
+ 	case KVM_LOONGARCH_VM_FEAT_PV_STEALTIME:
++	case KVM_LOONGARCH_VM_FEAT_CRASH:
+ 		if (kvm_vm_support(&kvm->arch, attr->attr))
+ 			return 0;
+ 		return -ENXIO;
 
-In a normal kexec, DMA translation is disabled, thus all resources
-configured to the hardware are released. However, this is not the case
-for the live update scenario.
+base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
+-- 
+2.39.3
 
-Thanks,
-baolu
