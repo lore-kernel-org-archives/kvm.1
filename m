@@ -1,68 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793317143;
-	b=bmRK1u5cPKfa6Dms9sfwUGa0DJilRzpSOre2mjx3haMD+3lXYnDVXBZtgDIoYa5faCYQ
-	 TJXx+bdvYc0l8203ezZ3DAAyNQSfr2zN/woQcks07EohZ5TqINFQKYbGt51T/pcfLzyAb
-	 JBXE2g9lCuOzjsi9rAPv8PT4NtQg1bSBe3f2zIDCGUzKF8030AtDyNKC7yb8VuXkmvnt+
-	 1Rc0QpZ2qPsWxRSvOS/3CljbzXs9wu4Pn+F4FcBMjG3llPOXxazhE3IeQYWizKE1JJMs3
-	 XdYA8DNuylONeFvmJSe1G1UvIq7JBM4vkqaxbkZhs6nDC8muhdvSL7edo0jkMdNxWIQ==
+	t=1793317846;
+	b=O/zNQSyVZgsMF0gmjs4LmV2YDM0sCjOb50IgOkyXCQq2WA7I64/JnS5FVP6CcavRzeih
+	 /4MDJ8bPBzyYTrGAimsni6igd3eOWBNWGMRHDBnHdxykpEJq3HCm/y1bVCFMw4I/QmTC7
+	 Ygk9p++QW7ybdYxMsFrHahMYCCvWiT+1azQb9x/PXR1R4QtFylGVMOlwEngzC2PD3htTj
+	 6lSus9KA1kM0yMf5w6gbLFe2wyx5oovLNPsNwsg+WvPmq6DHV5mT3sKUgNs+IpBae5mid
+	 19oYEH1vN4Y9yZS64GFigrH3IVLDvoNaK/HNzKvkVuXIPlb0zo8HhYh8C78Xilx5UKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793317143;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=MayldR3d8IBms4sVIuPTrWKB+Oa3RX5tIH6ZU2Vm3LE=;
-	b=WtiMBkTasP0CAM4Y8yI9adsckFmGFWKd9Vena7l7jIFTQ6bhaUwYBsCszNk50tkFE1Lw
-	 Gcz8w290c4xe6853u7W3J6lfcUBycOY5LLRhTnThRNkzBP1VuAy4BuQsYyQVeCwm/674l
-	 qx84+GDTK0vx77asHZ+SLgiv21VX6idA5iK3kerTPIJhQtqSc4ifkR71A48k2GTj+NfjX
-	 9PeLvxWIQC0dptYZH3Z++Tmb/N1zCU+s8X0BDhR0768iS5OIxBwxINis/BcUvBphcfT6o
-	 RfmIFglAfx7GsbocBYhLp8F69ut7vN2maoqGC/7cs4EdGLy8AoY/vKQtzHXbygyswfQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793317846;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=nieVyMQBbnIomw7dtt1FLb8V7O5cp/p1dlZFIxt1aL4=;
+	b=S1QpuAJFPWhGVhrtMD9FDnGzF3Aq1Ka5DV9WAf4A604J+8tuBd6fgtXmCEH5x8FpnQ76
+	 OJEL6MwWe5wV3EgVCcZqnjvNw9nxz59Ysppr+PdSNfZObiiR+tWyr2iVwUILunKymg++x
+	 Dkp0s9CBeQ9UiiB2jQKAWgeGaKbs77jEfCUed1ebZAaMX95K46VONEUQnJX9DqIo4eZSh
+	 fyltOItpP8hynbgctVfBC0m4oOd4C470JXOyaHqy8urNZxtjdvKdsMWqRuguDi9YAiJEy
+	 oAqOCYwCti0eRd6ZxD5oK7wnciMsm/cjXthqR6WZ+tzlY4jxBOmZ5Ow3loh+qzSjNMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MK0gWIIa;
-	arc=none smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XZBVSVaU;
+	arc=none smtp.remote-ip=209.85.214.180
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE165606A31A;
-	Thu, 29 Oct 2026 23:39:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE165606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE275606A31C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 23:50:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE275606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MK0gWIIa
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793317142; x=1824853142;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GNvLU2yIbeuFnhRZLILES5O2I5YTIoobPa6rjUCSEeQ=;
-  b=MK0gWIIawDVpyTainvGL0I7vuosxQ3oDHbHzsx4O18s85C8EirIRXvZt
-   gQ8NbbfSJfSs2++XWurpUZiTTho1ZynQygJGyW1PH2xdQEgksnqw8nMiH
-   8DbADNrB0BWDa/9voWG76G4SUw46+DzrqBQBagsJci6LzXyNQW4CWGVVZ
-   R59493a+6q3qeMl3gaUtKPVjPcwG5644IQSjsN9U1eUuHuN37FUrhZuPu
-   SvjUl3i6s1kMcftFfpCoJiw1J5LOF2kttmeQQRtRewrb8LDbEpe1PTvgD
-   3J84qnOTAMV+bCq5QwcmLjr9bteYNwRz1qiYid5q1jq4aSjJcT7igsbRI
-   g==;
-X-CSE-ConnectionGUID: heBVLo8OTDmsNyTlKEM/mg==
-X-CSE-MsgGUID: Iybr1GjbRXuNAwsyZCTtDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="1977205"
-X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
-   d="scan'208";a="1977205"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 16:39:01 -0700
-X-CSE-ConnectionGUID: PdH2IR+CRvSD3D3BEWZMZQ==
-X-CSE-MsgGUID: ONzVjv/3Si2P4nSEocDSlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
-   d="scan'208";a="5614172"
-Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 16:38:57 -0700
-Message-ID: <84fe2789-7bbc-436e-9141-e879d2e90ef9@linux.intel.com>
-Date: Fri, 30 Oct 2026 07:38:54 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XZBVSVaU
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso944125ad.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:50:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793317845; x=1793922645; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nieVyMQBbnIomw7dtt1FLb8V7O5cp/p1dlZFIxt1aL4=;
+        b=XZBVSVaUz1t5sGtctyI/6VHDRknPdWzzLoI3t0lEwp5JhaHcb35a9Nwmsm65lI12Nl
+         hioDT1PQBE5cLmv23JrzOpZpQg0jfYIge2tG7itstG0M+HF6lREyMgtX78VahrxkIPv1
+         7+9Io2ZaA6PxOu5nXUjAU2ye5fkgkvpDJ67fRPz1C5y55rbw79vycy9UDGgO1zPAxWo5
+         MVM3xvgwvXX/75ShD5UjZey3OS++RKWmVd3AD5QTRiK9/xDRr9fYIgw/2vnHSi2Nc5oY
+         F2SIMxuJr3SGWv1p/Fxmbur65iTQ+2Uv8kqz/Qn2lzQZ5ZWdi7rMV1yAQfilSOL7BDYw
+         JIVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793317845; x=1793922645;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nieVyMQBbnIomw7dtt1FLb8V7O5cp/p1dlZFIxt1aL4=;
+        b=lz9l/BeFKEnwPKlAME6ZfekbZ5RZdbU3zXnwqIUDVcuFbWXuiPLZCn8Uij6AaDGaC/
+         Q8s/HDRIrdUc50xpG9WIYODH1WfF133dZ+oGcb3gqDhQOBCyoEkrT8BlSzslqBF0dMUc
+         fdrFfiLlYyXjIhSeqjPtSpyWaYjP0YC/cEtW7+5nCFJQsr0mT/XMqhok4dowidxTdwC7
+         VGdavzeoStlhQSxtYZbx/IEPwMazjbL0TPn+vZ838k1c7N0e9HPkonoX65E5GEUoVjPn
+         guqMhFsLo5xmYxTCaYFGiicK2Ex2q0IMGxYLcwvELIG27GmiJQOWpDEYxEeowDKCGlu/
+         RnNg==
+X-Gm-Message-State: AFq9FYIAJ8RSgQ1Aq1inJo+WYhyChWLlz85aG+PnHEFjNdzme/gCJp3l
+	0+72UaRDi/7OMmCarPK8P+IBAZnlFlPZPXMbXtm9LTP00cxRNBZlRM7Y
+X-Gm-Gg: AYBFou2VAeqPSoI04x7I3BEekitPmP3q3dsoK7/o6m9ZyXl6eBC/iJz/5wRCFWTMXp1
+	Xu3PaHj6gkfK4IZUXZcri4CDEDLVa5svVsy8hXZhFGJQWgFcDEaZwU+2lh7eCzKpGKRVhTZicDF
+	Fbo2dpztWIDioCRZBzC7TybbPcDTVnrvTHsqk+kC/ezOf84wliOcycy8DMH02BoLkqUf3LHOZz+
+	mcqSgr67/J1ffZ4Toy2PbeZuT202/iL3tano51Ep5er+8grof4ScIi32E4EXZNfeDI5+Wm0nq+H
+	xAdaIXItexcXafr7+YMcQk5NX8qXzBTryMLppBUPbRYifXytiLljE4vP0s0G/ISSU4hzfC/LrL/
+	Czia0bLthgPeAzR8HcjSw980LiLbZn7mu/lWnN2KPKSgJ/6ZPWKKIdmG0X/9hy2UI2rmPjJsh7h
+	YTQfz0FnQSZNDGVsjXMKd/wD7RcRDmMAHH/BjStEN08R2Esm8I3+SJPNCXwVH8sYg54Gw6uy+hd
+	/ZgYPN7xAA+1lUZYOGSwWnuickw0Wnz5nX9gDnqQDfJ9wC7X+tmzJE1QxSHoVCJU7Uqw5dzxKZF
+	hkdPVqc626A12C/Gs9r0+8GYQSTk0aw5uriZnFGq/ODL5Ha0un61s8XN6dRS+iZzwNDd5uSmJSs
+	VCLcHEUKRfQ==
+X-Received: by 2002:a17:902:f545:b0:2e9:3f41:4212 with SMTP id d9443c01a7336-2eb3648a050mr7704565ad.13.1793317845197;
+        Thu, 29 Oct 2026 16:50:45 -0700 (PDT)
+Received: from monk.. ([2604:3d08:8e80:f800:3c86:745c:97f1:5486])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39266f42sm384225ad.40.2026.10.29.16.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 16:50:44 -0700 (PDT)
+From: ma.mandourr@gmail.com
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mahmoud Abumandour <ma.mandourr@gmail.com>
+Subject: [PATCH 0/2] KVM: nVMX: Don't let L2's LMSW modify CR0 bits owned by L1
+Date: Thu, 29 Oct 2026 16:50:38 -0700
+Message-ID: <20261029235040.12013-1-ma.mandourr@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,71 +95,24 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 13/18] iommu/vt-d: Handle reattach of the restored
- domain
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse <dwmw2@infradead.org>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-References: <20261025021930.674647-1-skhawaja@google.com>
- <20261025021930.674647-14-skhawaja@google.com>
- <faeedd16-a271-4ced-be1a-7bd70860bcdc@linux.intel.com>
- <auPC2pByvuW5uHyH@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <auPC2pByvuW5uHyH@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/30/26 06:34, Samiullah Khawaja wrote:
->>> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/ 
->>> liveupdate.c
->>> index 36816d3651e6..665ebb81bd61 100644
->>> --- a/drivers/iommu/intel/liveupdate.c
->>> +++ b/drivers/iommu/intel/liveupdate.c
->>> @@ -394,6 +394,137 @@ void 
->>> intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
->>>                iommu->name);
->>>  }
->>> +static void domain_detach_restored_iommu(struct dmar_domain *domain,
->>> +                     struct intel_iommu *iommu)
->>> +{
->>> +    struct iommu_domain_info *info;
->>> +
->>> +    guard(mutex)(&iommu->did_lock);
->>> +    info = xa_load(&domain->iommu_array, iommu->seq_id);
->>> +    if (--info->refcnt == 0) {
->>> +        xa_erase(&domain->iommu_array, iommu->seq_id);
->>> +        kfree(info);
->>> +    }
->>
->> This seems to be different from normal domain_detach_iommu(), which
->> looks like this,
->>
->>        if (--info->refcnt == 0) {
->>                ida_free(&iommu->domain_ida, info->did);
->>                xa_erase(&domain->iommu_array, iommu->seq_id);
->>                kfree(info);
->>        }
->>
->> why ida_free() is skipped in the restored path?
-> 
-> The restored device can be removed and probed again while the PASID and
-> context entries stay intact. So the restored did is not freed in this
-> path. Once the domain is reclaimed by the iommufd, then it takes the
-> normal detach path.
+From: Mahmoud Abumandour <ma.mandourr@gmail.com>
 
-Can you please add a comment to explain this?
+When L2's LMSW exits to L0 but not to L1, KVM emulates it with
+kvm_lmsw(), which ignores vmcs12's CR0 guest/host mask, so L2 can change
+CR0 bits that L1 owns.
 
-Thanks,
-baolu
+Mahmoud Abumandour (2):
+  KVM: nVMX: Don't let L2's LMSW modify CR0 bits owned by L1
+  KVM: selftests: Verify that L2's LMSW leaves L1-owned CR0 bits alone
+
+ arch/x86/kvm/vmx/vmx.c                        | 15 ++++++++
+ .../kvm/x86/nested_exceptions_test.c          | 36 +++++++++++++++++++
+ 2 files changed, 51 insertions(+)
+
+
+base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+-- 
+2.25.1
+
