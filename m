@@ -1,55 +1,165 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793286178;
-	b=1QYXqU5gdx3jfUIZZPTUsJInzpOp+NCDR/oo3v8rSPGVPLr9Z3bKHNjK0/+fSjJrZrqz
-	 y+X3w02Ffxvonh4zTYz/l/xOr2sU6KmxJGs8P5u+xt7YFLOt9MXOKAXKFk7WOR5sSOSLw
-	 a5FVvA+QTZal+YfolSzrE65d7CEsBl6AbKgOLf9U7EGRi2F2J7OHf7Bvodo9Z5q2egvMv
-	 r0T5h00rwhUOXTKgtvpAFcvCKET89G4VskHYSO6SVlaw0IFO8HN9RTODPIhfWaRu+kf5a
-	 5CTgSvyC/PtToy5TQ4XiZjWzX2Ezvo42LpYo+j+RbK5tUajxbALXZqVEN3ptJLkS5fw==
+	t=1793286741;
+	b=K7DkmG8/ZfSbUvNtVrivHRMo33bs4wtw4xHVGCi4kG54E3a1IzRNkO8oCUYDIzzDOADi
+	 kHY/rxUpwpw+4R7F58JzKizX3rNSL6rBW0ymK/f5s5rFcEV8FF0ap4LvVXuGUBLCswDLJ
+	 CTsOel/fSWtIbeJP4hzuwwGLiF29bagXSbOeDp6tT8sIB4P/3VADLlxeU6JT+Xp/6sy48
+	 CFVEvwXoNHaK/CHTU55tlhtmxNpHN8fNBHvBbKkAITYVrCtRAujv9ntbvk3df2PLvVrkh
+	 IF5zbQP81TRkaUmSZAnzKNjnsGmxhwS8vlgYddVhZVBtF4MtjMY3Y4iLAuqKaDSbbGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793286178;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Bu/CWKPDCcsa9kOSXMtobSt/utwZ/evlDx4NIEJ/cvE=;
-	b=cqwQY1ZZIzTvpDaDv0a1pxoj9kmaRPRc/6i73HC5+nQ1sKtvXSrLLEPA6PYRG0AE7EFD
-	 YLNtFFvqQ0hI0TGXYu6gUv3cKn+F2XkUkT7hgulGA3Z+6HYZv5pY3IimRQOiPQWRKR0jV
-	 Xs/lIuI6zTltciphStPVnim7SPtC1ZlXvQ/RBgkZUNcfOH5am2PN060fKltm7uEh0rB3w
-	 KETuVpBM84dQIBTzMnaEjgn4j7nIZC0DaG4G8ca4fETsOtMcGt4cU63rl0oBPWP+8m62v
-	 bHFV9ebPeVS+HLIUzUvYBKwQLFwxH4m/x+HcPXzgrw8UnPlG80m29eH/F5ppdQ+NV+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793286741;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:Reply-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:User-Agent:
+	 X-Scanned-By;
+	bh=sy6RcJq7kWnzNPatcCz5vMju7T26X8KtMwEXCbitl90=;
+	b=igph783FHPm4rlymmzH5EN1xskO4XNSuwsb/tUC1Sv8T0SxIQFTF5L1Le6hoNZaKQ7R+
+	 xDdEq7dfFv6ZOFtax8PIiN1MHagYGH/KKRlPP2aoQfAfNwoeumZwz3W1gvbLvM6u3tHt3
+	 EVEggsEQrNUblHJD9WkTEUNQM7/XKmwmAKA/xqTjjwHaiTmon9mGwnYn2Ka6Tp3hnZ0ay
+	 AO735ghESBxv2B/WgvoaThBBKc3jDu4lFgnuQrBeWw8DouMiv66K6126KbUwkO1kcNTim
+	 q+eIdLWUi0JRcJnKtZ9Va7jsSz/dF2/2mYEXnoOY+UQoWWFF7d1QdcdyDXF8UCVzy9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="IrqAVrc/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Xm56vkH9;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8521A606A31C
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94B7606A31D
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:12:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A94B7606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IrqAVrc/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38AD91F031E7
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:02:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793286178;
-	bh=Bu/CWKPDCcsa9kOSXMtobSt/utwZ/evlDx4NIEJ/cvE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IrqAVrc/3yeH5FEpEO724htUWgSvkDudxC4qcPzM03VjfvOnCABLjhSLcO0/2IhQa
-	 8jKOPp+/cQhezq7XUUHDljkZ5yDky1S07TMTVTNcr9VEf+kWV8o+T5+0/5R8XnQ0pi
-	 ac0A3hYjAQA2GFwc4hu/2+3cAsVIsplqvh4FG/7jV44dxcAGiyeMDyRBmhTcpLaLDI
-	 qeB1mQM7YKWqlNuT9no/tlMJg/3y2ickke5NB2Jm+LkR97g9hFYlNjruBceZ1HnW10
-	 5eeoedBZtBYJSALrQDyPeuyCL1sOtUqdPcxfXHm5nN0kEq7NN6giVuV1DRrqMlIADG
-	 QuBUBZmbcbfbw==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c40e02b2ebaso359932666b.1
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 08:02:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzVYO6NLYMA456NROEH81gMrN9kxYuRbMlRnrtmaH6QUVWkfRljieBoRz47l7qKeXXaLg4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLC6iO/g/M9+P3PcpNgrFEPkNVvdGov+lTmqx/jT/YBv1xjA++g
-	ypgEit5dblptHIIm+N6Q3Io2NHYB1zFeLPsQz9fkwPrr9r5Y/2UcM6UkrQLPMT3YbHOXgnhGXuo
-	ycgwPOm3jw6+JLSXiawonHGCkEOR4SEk=
-X-Received: by 2002:a17:906:ee8b:b0:c29:659e:2fd2 with SMTP id
- a640c23a62f3a-c49bdf309a0mr458971366b.27.1793286176883; Thu, 29 Oct 2026
- 08:02:56 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Xm56vkH9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793286739;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sy6RcJq7kWnzNPatcCz5vMju7T26X8KtMwEXCbitl90=;
+	b=Xm56vkH9ATMJMygfPZSg+6GK3F6dQs7YPsYUO98Xep2m+NG+NICizkX3sSRQ6aFxum1tFS
+	2r5qzweZVvntR9s1vJ+llUI80AT507RpAf8Wam+f6LXJQP6VwleF7JeNpCHZ3Pdfknrstd
+	mi7fwEqZHv79SYuWjlc8dXp0RGQs8wo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-lR4E_uxDPxGRis0Bj7u-cg-1; Thu,
+ 29 Oct 2026 11:12:15 -0400
+X-MC-Unique: lR4E_uxDPxGRis0Bj7u-cg-1
+X-Mimecast-MFC-AGG-ID: lR4E_uxDPxGRis0Bj7u-cg_1793286731
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CA951956043;
+	Thu, 29 Oct 2026 15:12:09 +0000 (UTC)
+Received: from redhat.com (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 11F131955F08;
+	Thu, 29 Oct 2026 15:11:43 +0000 (UTC)
+Date: Thu, 29 Oct 2026 15:11:41 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+	qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+	John Snow <jsnow@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+	Eric Blake <eblake@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Igor Mammedov <imammedo@redhat.com>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+	Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+	Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>,
+	Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>,
+	Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+	Jagannathan Raman <jag.raman@oracle.com>,
+	John Levon <john.levon@nutanix.com>,
+	Thanos Makatos <thanos.makatos@nutanix.com>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org,
+	linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sergio Lopez <slp@redhat.com>, qemu-arm@nongnu.org,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org,
+	Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>,
+	Xianglai Li <lixianglai@loongson.cn>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org,
+	Zhang Chen <zhangckid@gmail.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Alexander Graf <graf@amazon.com>,
+	"Gonglei (Arei)" <arei.gonglei@huawei.com>,
+	zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>,
+	Luc Michel <luc@lmichel.fr>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+	Jamin Lin <jamin_lin@aspeedtech.com>,
+	Kane Chen <kane_chen@aspeedtech.com>,
+	Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>,
+	FangSheng Huang <FangSheng.Huang@amd.com>,
+	Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+	Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+	Jesper Devantier <foss@defmacro.it>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Glenn Miles <milesg@linux.ibm.com>, Conor Dooley <conor@kernel.org>,
+	Sebastian Huber <sebastian.huber@embedded-brains.de>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Titus Rwantare <titusr@google.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Anthony PERARD <anthony@xenproject.org>,
+	Peter Xu <peterx@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	xen-devel@lists.xenproject.org,
+	Roman Bolshakov <rbolshakov@ddn.com>,
+	Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Tao Tang <tangtao1634@phytium.com.cn>,
+	Stefan Berger <stefanb@linux.vnet.ibm.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Artyom Tarasenko <atar4qemu@gmail.com>,
+	Yoshinori Sato <yoshinori.sato@nifty.com>,
+	Jiri Pirko <jiri@resnulli.us>, Eric Auger <eric.auger@redhat.com>,
+	Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 54/65] qdev: adjust PciDevfn declared type
+Message-ID: <auNiLX-dsm8XsFG-@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+ <20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
+ <atsxLV5YZo8dr-8G@redhat.com>
+ <CAMxuvazd7G_NBOM_c6BxZn5PFSw=XQUHueHqBoQQfpzPPgi9qA@mail.gmail.com>
+ <87zevz5h4k.fsf@pond.sub.org>
+ <auC-ilqUJq27neSR@redhat.com>
+ <87o6ce47rr.fsf@pond.sub.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,216 +169,134 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAHCio2jc9++n2Qoa0-sNkObZsWOybSwK1X2aBjFirchjRTBZsQ@mail.gmail.com>
- <CAHCio2hpL+Y0iYdGXs5zKA-81+w_9pHs+tZPe2uaYKs8yOCz_w@mail.gmail.com>
- <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
- <CAO9r8zOmH6yzcNbUOF3FoNsac8rtx47rp5wByOFfGgaBPaLxug@mail.gmail.com> <CAHCio2hTSuTf4HcJ=+wb=_EQvi2as9QMwfRMG5tUkdCmex=yJg@mail.gmail.com>
-In-Reply-To: <CAHCio2hTSuTf4HcJ=+wb=_EQvi2as9QMwfRMG5tUkdCmex=yJg@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 29 Oct 2026 08:02:45 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNohnNE66PVMyE-RAnKYGEfvPpzupLgCO+s0OtAdNPCyw@mail.gmail.com>
-X-Gm-Features: AclHuK_9AtQI9Cq9L71bVvMpHX8tQ3tsB8oPsV8KkVS99aJp2maiwZdom2yxf3U
-Message-ID: <CAO9r8zNohnNE66PVMyE-RAnKYGEfvPpzupLgCO+s0OtAdNPCyw@mail.gmail.com>
-Subject: Re: Some options abort RFC: KVM: SVM: Rework ASID management
-To: Jackie Yu <ufo19890607@gmail.com>
-Cc: jmattson@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mlevitsk@redhat.com, pbonzini@redhat.com, seanjc@google.com, 
-	thomas.lendacky@amd.com, vkuznets@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87o6ce47rr.fsf@pond.sub.org>
+User-Agent: Mutt/2.4.2 (2026-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, Oct 29, 2026 at 3:57=E2=80=AFAM Jackie Yu <ufo19890607@gmail.com> w=
-rote:
->
-> Subject: Re: [PATCH v2 00/29] KVM: nSVM: Optimize nSVM TLB flushes
->
-> Hi Yosry,
->
-> Thank you for the quick response. Two clarifications from our side:
->
-> 1. About the boot failures: no emulation is involved in our experiment. O=
-ur out-of-tree changes enable direct guest INVLPGB/TLBSYNC execution by cle=
-aring the KVM intercepts, without any software emulation of the instruction=
-. The failures occur with this unintercepted passthrough combined with stat=
-ic per-vCPU ASIDs, so they are not missing cases in an emulation path. Unde=
-r the per-vCPU design we did not attempt to intercept and emulate INVLPGB a=
-t all.
+On Wed, Oct 28, 2026 at 08:13:44AM +0100, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Tue, Oct 27, 2026 at 03:54:03PM +0100, Markus Armbruster wrote:
+> >> Marc-André Lureau <marcandre.lureau@redhat.com> writes:
+> >> 
+> >> > Hi
+> >> >
+> >> > On Fri, Oct 23, 2026 at 2:04 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
+> >> >>
+> >> >> On Tue, Oct 20, 2026 at 02:46:11PM +0400, Marc-André Lureau wrote:
+> >> >> > PciDevfn is a bit special, since it accepts integer and string as
+> >> >> > setter, but only output integer as getter.
+> >
+> > snip
+> >
+> >> >                                                       But I agree we
+> >> > could do better.
+> >> >
+> >> > There are multiple options. We could keep declaring the property as
+> >> > str instead. In this case, the getter should probably return a string
+> >> > for consistency and correctness. This might surprise some existing
+> >> > users though.
+> >> 
+> >> I.e. ditch numeric suppport for numeric addresses, right?
+> >> 
+> >> Incompatible change.  Do we care?
+> >> 
+> >> If we don't, we should be honest about it and mark qom-get unstable.
+> >> 
+> >> > We could introduce new properties like `devfn-str` and `devfn-int`
+> >> > that alias the same value.
+> >> 
+> >> Compatibility break.  If breaking compatibility is okay, I'd rather use
+> >> the opportunity to get rid of cleverness, and go with your first option.
+> >> 
+> >> > We could also introduce a new structured QAPI type.
+> >> 
+> >> What kind of type do you have in mind?
+> >
+> > IMHO the root cause design flaw here was to overload 'addr' as a
+> > way to set both the slot number and function number, as using
+> > one property for two pieces of data is a well known anti-pattern
+> > we caution against.
+> >
+> > IOW, we should have had 'slot' and 'function' as separate properties
+> > from the start.
+> 
+> Fair.
+> 
+> Our modeling of PCI is old and weird.
+> 
+> What we call "pci-device" isn't a device, it's a function, where
+> function 0 sort of stands in for the device.
 
-That's what I meant, the missing emulation of INVLPGB needed with
-different per-vCPU ASIDs.
+Mmm, yes, interesting way of looking at it.
 
->
-> 2. We do not use nested virtualization in our deployments. L1 guests in o=
-ur production scenarios run without nested guests. Therefore, the ASID-repl=
-acement behavior you quoted from the APM does not affect our current use ca=
-se: with one shared ASID per non-nested VM, an unintercepted guest INVLPGB =
-would be scoped to that VM's ASID, which matches what our per-VM configurat=
-ion relies on today.
->
-> Regarding the direction: we understand that with per-vCPU ASIDs, correct =
-handling would require intercepting INVLPGB and re-issuing a flush for ever=
-y ASID in use by the VM, which you note is unlikely to perform well on larg=
-e VMs. We also note your point that as long as any vCPU uses nested, KVM mu=
-st intercept INVLPGB anyway because the hardware replaces the requested ASI=
-D with the current ASID.
->
-> If we read the situation correctly, the practical options seem to be eith=
-er (a) a per-VM shared ASID mode restricted to non-nested VMs, with uninter=
-cepted guest INVLPGB, plus mandatory interception whenever nested is in use=
-, or (b) always intercepting and virtualizing INVLPGB under per-vCPU ASIDs.=
- Either way, direct passthrough would at most cover the non-nested case. We=
- would appreciate Sean's and Paolo's input on which direction upstream pref=
-ers; we are glad to provide more details of our configuration or run tests =
-that would help decide between these options.
+> Its "addr" isn't a PCI address, it's the address of the function on its
+> PCI bus, i.e. the tail of a PCI address.
+> 
+> > From a CLI POV, we could easily change 'addr' to mean only the slot
+> > number, since it is always parsed in string format without the
+> > magic (slot << 4) | function encoding. Then add a 'function' prop
+> 
+> In CLI, HMP and QMP string (not integer), value "5" is shorthand for
+> "5.0", and means device 5, function 0.
+> 
+> We could deprecate the .FN part in favor of a new property "function".
+> 
+> Once we drop support for .FN from "addr", its name becomes even more
+> misleading than it always was.
 
-I don't think (b) makes a lot of sense, but if we do (a) we should
-always use per-VM ASIDs, supporting both implementations based on
-nested vs. non-nested would be a huge pain. I think what KVM can do is
-disable INVLPGB intercepts until one vCPU sets EFER.SVME (or maybe on
-first VMRUN, because with enable_virt_at_load KVM will always set
-EFER.SVME on once it's loaded).
+Yes.
 
->
-> Thanks,
->
-> Jackie
->
->
-> Yosry Ahmed <yosry@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=8829=E6=97=
-=A5=E5=91=A8=E5=9B=9B 14:08=E5=86=99=E9=81=93=EF=BC=9A
->>
->> On Wed, Oct 28, 2026 at 1:15=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> w=
-rote:
->> >
->> > On Wed, Oct 28, 2026 at 6:37=E2=80=AFAM Jackie Yu <ufo19890607@gmail.c=
-om> wrote:
->> > >
->> > > Hi, guys!
->> > >
->> > > Jackie Yu <ufo19890607@gmail.com> =E4=BA=8E2026=E5=B9=B410=E6=9C=882=
-8=E6=97=A5=E5=91=A8=E4=B8=89 21:36=E5=86=99=E9=81=93=EF=BC=9A
->> > >>
->> > >> Hi Yosry and KVM folks,
->> > >>
->> > >> We would appreciate your guidance on supporting INVLPGB in ordinary=
- (non-SEV)
->> > >> L1 guests alongside the proposed static per-vCPU ASIDs.
->> > >>
->> > >> The 2025 ASID rework RFC proposed one static ASID per L1 VM and lis=
-ted
->> > >> "enabling INVLPGB virtualization" among its motivations [1]. The Ju=
-ne
->> > >> 2026 RFC v2 changed the design from per-VM to per-vCPU ASIDs [2]. I=
-n
->> > >> the October v2 series, patches 2-11 establish static per-vCPU ASIDs=
-,
->> > >> while the remaining patches primarily address nested TLB flushes [3=
-].
->> > >> Our question is how guest INVLPGB should be supported under the
->> > >> per-vCPU design.
->> > >>
->> > >> Some of our workloads frequently discard and repopulate memory usin=
-g
->> > >> patterns involving madvise() and memset(). Broadcast IPI-based TLB
->> > >> shootdowns are expensive for these workloads, so we are interested =
-in
->> > >> making AMD INVLPGB available to guests. We use a small benchmark to
->> > >> approximate the resulting shared-address-space pressure:
->> > >>
->> > >>     region =3D mmap(256 MiB, MAP_SHARED | MAP_ANONYMOUS);
->> > >>     memset(region, 0xab, 256 MiB);       // Initial population
->> > >>     start N workers, pinned across 64 allowed CPUs;
->> > >>     each worker repeatedly reads pages in its own slice of region;
->> > >>
->> > >>     repeat 500 warmup + 2,000 measured iterations:
->> > >>         start =3D clock_gettime(CLOCK_MONOTONIC);
->> > >>         madvise(region, 256 MiB, MADV_DONTNEED);
->> > >>         record elapsed madvise() time;
->> > >>         write one page in every 64 pages to repopulate part of regi=
-on;
->> > >>
->> > >>     stop and join the workers;
->> > >>
->> > >> The benchmark uses memset() for initial population; subsequent
->> > >> iterations re-touch pages rather than repeatedly calling memset().
->> > >> The numbers below measure the advisor thread's madvise() syscall
->> > >> latency, not worker throughput.
->> > >>
->> > >> In our experimental KVM4 configuration with a VM-shared ASID and ou=
-r
->> > >> separate guest INVLPGB passthrough changes, we observed:
->> > >>
->> > >>                          INVLPGB off     INVLPGB on    Difference
->> > >>     64 workers  mean       21.624 ms       12.505 ms     -42.17%
->> > >>                 P99        32.760 ms       21.518 ms     -34.32%
->> > >>     128 workers mean       29.553 ms       20.459 ms     -30.77%
->> > >>                 P99        39.628 ms       28.160 ms     -28.94%
->> > >>
->> > >> These are single, sequential A/B runs for each worker count, with
->> > >> 500 warmup and 2,000 measured calls per run. The process had 64
->> > >> allowed CPUs, so the 128-worker case was oversubscribed. The
->> > >> measurements show a useful latency difference, but do not by
->> > >> themselves establish INVLPGB instruction counts or IPI reductions.
->> > >>
->> > >> We then experimentally combined the October per-vCPU ASID changes f=
-or
->> > >> ordinary guests with our existing, out-of-tree L1 INVLPGB/TLBSYNC
->> > >> passthrough. With guest INVLPGB enabled, a one-vCPU guest boots, bu=
-t
->> > >> otherwise comparable two-vCPU and 64-vCPU guests fail early during
->> > >> boot. Keeping QEMU's +invlpgb setting while adding clearcpuid=3D419
->> > >> to the same guest kernel allows the multi-vCPU guest to boot; the
->> > >> guest logs "Clearing CPUID bits: invlpgb".
->> >
->> > I imagine for INVLPGB to work correctly with per-vCPU ASIDs, you need
->> > to intercept INVLPGB and basically issue an INVLPGB for each ASID used
->> > by this VM (nr_vcpus or 2 * nr_vcpus with nested). I can't imagine
->> > this would perform well on large VMs, not sure if virtualizing INVLPGB
->> > would still make sense.
->> >
->> > Regarding the boot failure, I would guess there are some missing cases
->> > due to the complexity of emulating INVLPGB without a shared per-VM
->> > ASID.
->> >
->> > >> These controlled boot comparisons identify a problem with combining
->> > >> static per-vCPU ASIDs and direct guest INVLPGB/TLBSYNC passthrough:
->> > >> the multi-vCPU guest fails to boot when it uses INVLPGB, but boots
->> > >> when its INVLPGB CPUID bit is cleared. A one-vCPU guest also boots
->> > >> with INVLPGB enabled.
->> > >>
->> > >> In this configuration, an unintercepted guest INVLPGB targets the
->> > >> invoking vCPU's hardware ASID, while sibling vCPUs have distinct
->> > >> ASIDs.
->> >
->> > It's neat that INVLPGB will automatically use the current ASID and not
->> > ASID=3D0 for guest usage.
->>
->> Hmm, actually, how is this supposed to work with nested
->> virtualization? The APM says:
->>
->>     A guest that executes a legal INVLPGB that is not intercepted will h=
-ave
->>     the requested ASID field replaced by the current ASID and the valid
->>     ASID bit set before doing the broadcast invalidation.
->>
->> If any ASID passed by an L1 guest is replaced by its own ASID, then if
->> L1 is flushing L2's ASID (i.e. a non-zero ASID), passing through
->> INVLPGB would do the wrong thing and flush L1's ASID instead, right?
->>
->> Seems like if the VM is using nested (on any vCPU), KVM must intercept
->> INVLPGB anyway to correctly handle the ASID?
->>
->> The APM also says:
->>
->>     Two forms of INVLPGB intercepts, conditional and unconditional, are
->>     available to the hypervisor. The unconditional intercept traps all g=
-uest
->>     usage of INVLPGB. The conditional intercept traps only
->>     illegally-specified INVLPGB instructions.
->>
->> When I read "conditional", I was really hoping it was conditional on
->> the ASID being zero or non-zero, as KVM really only needs to intercept
->> INVLPGB with non-zero ASIDs (assuming the ASID is shared to begin
->> with).
->>
->> Am I missing something?
+> > The challenge is the impact on QMP with strict typing, as ideally
+> > int format would soley represent the slot number, but today the
+> > int format is encoded (slot << 4) | function.  So anyone relying
+> > on int format in QMP would silently have a semantic change if we
+> > altered what 'addr' means. 
+> 
+> That's a no-go.
+> 
+> > Deprecating 'addr' entirely and adding brand new 'slot' and
+> > 'function' properties would be a significant disruption to
+> > a syntax which has been documented for years (decades).
+> 
+> What about this:
+> 
+> * No change to PCIDevice member @devfn: encodes slot and function as an
+>   integer.
+> 
+> * New "pci-device" properties "slot" and "function".  "slot" sets just
+>   the slot bits of @devfn, and "function" sets just the function bits.
+>   Both default to zero, so specifying just "slot" gives you
+>   PCI_DEVFN(slot, 0), which makes sense.
+> 
+> * Deprecate "pci-device" property "addr" for QMP.  We can keep it around
+>   for longer than the required grace period if that helps.
+> 
+> * Declare it legacy for CLI and HMP, with no intent to remove it.
+
+We can't easily keep it in CLI/HMP, while removing from QMP can we ?
+As long as the property exists on the PCIDevice object, it will be
+accessible everywhere.
+
+
+Perhaps keep it relatively simple and merely deprecate the string
+syntax of 'addr' in QMP. That's the place where it is really ugy.
+Force QMP over to only the integer syntax for 'addr', and leave
+CLI/HMP accepting the (optionally dotted) string syntax.
+
+Mgmt apps like libvirt will have to adapt. Tedious, but actually
+quite simple compared to most deprecations, as the integer syntax
+can already be used with all historical QEMU versions in QMP that
+mgmt apps ever need to deal with. They can unconditionally change
+their code to int syntax and not worry about old/new QEMUs at all.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+
