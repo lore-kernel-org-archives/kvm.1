@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793301638;
-	b=ECN3JBIOEkIg06Q34mwWrF60pLucEjecCx6532EFcohuKg4UpAEHi6ZBgO9Y3iUfAvLX
-	 DErEVupizXqOoJElzD1/Ru1S8aLUgymZzrQse6gbcSrxfriHvvC8fOBQxXO/mAkRyAe1H
-	 TNliYNWGGjFWt4YJqb4qGasq2dvdofbn9OUiyM6x2K8cdGT4ZHtbvDeHh3I7g9OM+f+qX
-	 rDnShDs2uCvZcsdhwrbvbQndsekKp/8htSu+whBJv22v4RM3b0ohKKw2G+whZd7deHKVd
-	 P98HZOgwMZojN6JlAjrgCBXq561onB/5BIlP4D0tdIDnVutZMhfaeh013jiwaxurt+A==
+	t=1793301644;
+	b=JHTkOpOpjgyDVRWRYYQGwL+Z+79+Nj/m/rVy0WuFonzTPIqZ2M1tRupoaWQcViCwdvIE
+	 jjsztHURfaElr1HMg5bUTFShPne4Vrv19/j/Ivi5Ducfy88F4IsaSw/e/wYNAZDx55t4J
+	 DURJSby/cAlzuDtKvSUpYmoG3TG5rs9UeB8Rd+8DuwBQoshufeJT5O/LJ/Uf0VsXl6ZW5
+	 j5bmJZPdG4MVUZQgY1zeFnG3NKjk3eS7uUcbr4Re3dtHfCK9WjBgKteWaOiWC+9zdc7cs
+	 pJsCp1CXUPlIqUAlXRhfDSWJt13pGxsUZc56AO5LbXXsEGMdYiJv4NQNKAXiTiyOlog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793301638;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793301644;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=6VUj5I95g/DnmFhalu50syOf9VCbIVGKu2KqtebqEpM=;
-	b=uAIqPpnCjE26pIfjCGlHdp8S5K6CDtZM7Jqn2fzwRejreGByPNgWbhyN7swC7lRtcte6
-	 NwKgyIQhtRW+NtW764QyLOE7Kz0ceBInxk21wglOYsPcpWkiwOO4AzEt9zrR/kUovwLnB
-	 3NzRIOA0mMmXPDaSps9GcJduys0RamQ8HP4g2yHaVlXk0MS45SUrkFfQFH5e5G82I936v
-	 9Asbr/jMxImGgSIr3QRETR4991LvQjFRGmMTKwDwsWY9QttVhnL0h2X50OqDtyQM7nvQU
-	 +Paj3V6f42y/TfgEfJXW4Kc/bGYATgdAoHRLXBK8nXi8mZ4Q1Kl2s8usKvUShyn0Akw==
+	bh=oLQ+mmN5dLQLmkoJUCAuKfUnNuDhfYCRTO7wyp1kLyI=;
+	b=BHS5n4c1vPHg3O6u2OIuaV2/W3mygFqMCTWpUkMS07UgcyJIP1MPqJ8G61v5vUJ7BRc8
+	 qAYxx+JdQvZBp+itUuAM6wIZnaVbtj3h6Sw47kOFk81f9RN1WS0Ienm+hPwiJIWrE8zDn
+	 RZ+4MHOEqfnxeOwXYzHFhkFGp0krEQefy9ikX99fiKDEah1eOzC9cJk+ZytC0sTb12kmc
+	 lD70ygc1xP8PmZD2UdRCI1kGx2FtyoU0D20h7Tm+iEsB9a41qkJtayGEaR/Ht4VspNCt8
+	 fd0EoY4hsUTFupUsO7jI8HqzewEdGV4FuWzMVsfSguJyeZV1QwAEkUreFlEX3IpaMsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yItuUYyR;
-	arc=none smtp.remote-ip=74.125.224.44
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lsNs9LwW;
+	arc=none smtp.remote-ip=74.125.224.50
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CADC606A324
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 19:20:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CADC606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92553606A337
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 19:20:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92553606A337
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yItuUYyR
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-677bc4704cbso2644130d50.0
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 12:20:38 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lsNs9LwW
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6798eb0d13fso2675568d50.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 12:20:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793301637; x=1793906437; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793301643; x=1793906443; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6VUj5I95g/DnmFhalu50syOf9VCbIVGKu2KqtebqEpM=;
-        b=yItuUYyRL0uSigkf9uWU/pnnQytcz9WrM6TwWB2wZBWfD8R/icWviMFJc0wiZAhV7o
-         Dxsy1NSkMtErdjj7kWtdY8L9DT4z0V2LRqNBz0ZynonuwFlFKyc4C/YpV4QdTpHWNsCq
-         oxs9r7TpX2STl4aSXv0OCwUAJnQcZgggwSsea6KozBhA8XkvjGQtHWP2Kn9HEhxcG95B
-         C7/aagbM/xp16A7iju4s+kbuv58TU14ekFxzF8j1kOinfJ7YAR/wiYxc3JsF0Nem299H
-         KDPOxQpgB7GVI4XmDgwDPCNDweqsObXWY6NSbDiqsiRVIyBHgTTD79m1nRDFhC631g30
-         v/Ig==
+        bh=oLQ+mmN5dLQLmkoJUCAuKfUnNuDhfYCRTO7wyp1kLyI=;
+        b=lsNs9LwWwBdIbm2FihFgxoP/fMqkuzDz9ocenyA/JzEWYK52Q6R0nyMw6B8yNQSkKR
+         YRbMh3bDBWU5FpLF7oWl1GQA2SJne/g46o0VLzbEJtiflvIG21gn/+8AW75Sc48Clgcl
+         XfP5O7A/S9UCLq1iUkNOzYvWp+N9tCxZZpoKNEiQF+cJaFDsNa3n424jLMynJrL+M5pG
+         x//bVIyWx7WOm8wjKG0Dd0lYrzIWWRuXHTpmfKEa94d55KBXu/HOv9aSL1DL8vmpSL77
+         hZSjAEO0lYcQfhXNArbWuG4XqrtHR2FTpa+sFcOggOw7W5GcHezrsvAII+H6gvVYVyGN
+         NS9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793301637; x=1793906437;
+        d=1e100.net; s=20260707; t=1793301643; x=1793906443;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6VUj5I95g/DnmFhalu50syOf9VCbIVGKu2KqtebqEpM=;
-        b=D4JcxF4rMPot8UUigxRzFDigraH66I7Xy/H3ihOLNfsv+Io7C4HpMzbzyqGneLrp9U
-         en8tY8ohk4MNbPVfc/xMIarZaHSBOjqMjrS2a5s4IeXptmMKCCN4VgoxuJ7n2t2aEm1Q
-         3L8kAyTbdXspDNLmc+DLWv9XmCywi/ZL0Gr8wf4OFQ1mmnbFMW1SnYZ5eT7yAI9RY8PH
-         v4DCRLJekOkyqddejLMN4XpuirEHry9hpVxf7o2RM6ipgc7BN/TlkeRfcaDC4vLR3QZR
-         FkqBOmBxwnPymyXVUUc+cHoxbuWXjxYOOITrCfupTNtp/TR00lBZcYNNLC789kYvBNk6
-         2p0Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzN2uaGTpuUo7isGSCyCBusDUb6fdR1ogO0YcBZNOhCCbAX/xJ3zjQEmnLU43yB20139Dc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJZMQYLsEPDTeSkmIZ4SbprgN3JCjUYCMgUCD2QP3RTS0sVyfM7
-	0f4A9AEjUTBpFroQ0rdbkwmDJryhhjh69UibbACKt0ZukR178vYtO8mm
-X-Gm-Gg: AYBFou2ZtPeKhqsws0txARw9Nv9urPNocVyolIJH+olel7BPLYn9el4GMsHiU0rg6Kp
-	XsjpE4d6qYqp9vjmc+OlKzIbBuduNs2LNjYG60uBif81HOjiEhiKDDYuZ6tLfYNfYyAL8Y1YMD3
-	pHBjKy/NTgnbPPFiRg9GGhfXTDpZZvCbJeDTXGDVYuHZvEHzlWX1aIScbsrhCS2SENyjiKp2f8K
-	thdrllAsOplfiOmJ8YOuoR+b6Pn23riyOL4iryzl6/Le/Az8K5O4z0O60QBvMvrgvuTMYzUjV8Q
-	kXOPKHUTpZKhRmwtN99ZxeC16HeV9gSOWqFBcBbBqBWXd8wo8uHQKKW8KFIZexBOns0so/Vdhal
-	IWPJByNC6hI4NaaiZG1I0B44mxzrKxySWAN9wfXZEqkz7kyi7QAghMOIPZvzBv2iSaOJaLlk57C
-	NngDcLKjuEzB1Ksx8yR10T0KBzXvxz5LHXodxNiPcymwARNblAndbi0SVI8OtUWzpjzJAm4Ckl8
-	IXao/9xdslGpAYNYqlh73uuN6KTLAja/kOViPTDQ9CuDLz/Y4mCfKnrghJgU9SE1g26frWOZkCU
-	sOxAiWn5LgOsOBYEt+VNA/ZpzyYM
-X-Received: by 2002:a05:690e:205e:b0:67a:56ce:ac2d with SMTP id 956f58d0204a3-67ba4c882f3mr52677d50.3.1793301637481;
-        Thu, 29 Oct 2026 12:20:37 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:1fff:4b::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67ba335ad79sm175635d50.0.2026.10.29.12.20.37
+        bh=oLQ+mmN5dLQLmkoJUCAuKfUnNuDhfYCRTO7wyp1kLyI=;
+        b=n0qua1vFW/dzus21Mj9oRPXkRTaSNMQmMl4wiMsOD0x+rVn4X5A2dTaM1BxipXwiVV
+         LFIEz1cgwP2KMg8YVd7ZWk96GStDO/pGWu4srT5WAbznu6Y0cM2acFN0PCq1RumdUGDp
+         Aap3tylnxvmqSwXFSul3hdKRsJ32/hJyvYNMZfR9WeZy7WWjc9cy1ZmEJs+A4VN54tOu
+         yuIq0BIDLf1WyQQ57yeN8MFjMWA32CPT9vdbDzWLdnrx13aGete17lTP1R6APiIdYtaZ
+         QnE11jd4k/KHzsXa9Gw5v3AVx01Ysj+q4SU3ESQy/9cofvcWTZXM53x/wDfF8BM5BTqx
+         GyMQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxwAr+xgBU8oX5X08Fngp2xCfbTod9btI5M5fU8K4lFVEudoeKSuMMOsHaMDz+Zugk7n48=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLrwvSblfw+5BtpwpC2NriDGt7WwXIR9mObwjm16Cj2dI/Vk+LZ
+	+UPo/mx8vwwU/S86Z2wsBNlbXFBrFYBptHgZs1+ka5cmQ+YAbGWuNqj/K5bZgg==
+X-Gm-Gg: AYBFou09gc0c0j1H2oM+xOhfUNp7SHanwhB1qHuzlCa/QUuaNd3QcpNC/33LcbUuXrI
+	lpCkrzmQVEeZZzZJF4kDbpKBfB2r+Xr5Dmfw/5JWVLDpzQ3k+IFyQ6H9325eLb4tOR/deoX0iHJ
+	J06G3mXsZwTEDPZjlz6d9dI3IbtGZHYs6COgvyntiGwv1Y44Kkd/sSG4GmEBImulFW3D5+kbknV
+	GHEe+USBeSorelOBQ8Ho35Te081JmAMqAsMDJProZjUOk4UZEC7xjJZx7+3z/72W+xK3SP/BAc0
+	H+eV8LKGvz0s3BlKGa3IIm2wRrYG58WwrqqJkcEVGTNvHLF8sMEg1qvYS0lyBgCIdUHoO6Zs/cj
+	OnclvFoafZVsa8f1dWkpNTQ3cgwBtxCaAZcUfxXSRlT/aPdnd7rhmsjoUDzGTFJ8bA6utr9NJUz
+	5NNk48z8JDC4367DiyWAXj5wGD4W20h35tGbxGWZ7kxTulcU9e4uyUyJu/GVk/cdG4WrOwjOiHf
+	3M+RizBIN9SGg6d0xeKk8ytLyn7fPEWr8zF+Go+ggwcMmx0mZfZBb55qYLnQsidhTtHZEeEyHQs
+	MxXBAv8rlKcTM3OTIfXv5UI2T8eW
+X-Received: by 2002:a05:690e:4812:b0:679:9eb4:45fb with SMTP id 956f58d0204a3-67ba502320emr24880d50.133.1793301642649;
+        Thu, 29 Oct 2026 12:20:42 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:1fff:45::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67ba3a97758sm147801d50.23.2026.10.29.12.20.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 12:20:37 -0700 (PDT)
+        Thu, 29 Oct 2026 12:20:42 -0700 (PDT)
 From: Matthew Wood <thepacketgeek@gmail.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
 Cc: linux-pci@vger.kernel.org,
@@ -86,9 +86,9 @@ Cc: linux-pci@vger.kernel.org,
 	Alex Williamson <alex@shazbot.org>,
 	kvm@vger.kernel.org,
 	Nikita Vetoshkin <nikita.vetoshkin@gmail.com>
-Subject: [PATCH v2 1/5] PCI: Add disconnected device checks to user config reads
-Date: Thu, 29 Oct 2026 12:20:25 -0700
-Message-ID: <20261029192032.1325629-2-thepacketgeek@gmail.com>
+Subject: [PATCH v2 4/5] PCI/sysfs: Use user config accessors for link attributes
+Date: Thu, 29 Oct 2026 12:20:28 -0700
+Message-ID: <20261029192032.1325629-5-thepacketgeek@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261029192032.1325629-1-thepacketgeek@gmail.com>
 References: <20261029192032.1325629-1-thepacketgeek@gmail.com>
@@ -103,58 +103,68 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit 4b1038834739 ("PCI: Don't attempt config access to
-disconnected devices") the kernel config read accessors skip devices
-marked disconnected, returning PCIBIOS_DEVICE_NOT_FOUND and ~0 data.
-The user config read accessors still issue the read, and if the host
-bridge completes it with ~0 data and no error, they report success.
+max_link_width, current_link_speed and current_link_width read the PCIe
+Link Capabilities and Link Status registers with the kernel config
+accessors. Those don't check block_cfg_access so a read that races
+with a reset goes to the device mid-reset and can fail or return a bogus
+value.
 
-Check pci_dev_is_disconnected() in pci_user_read_config_*() as well,
-failing with -ENODEV and ~0 data. Do the check after waiting for any
-pci_cfg_access_lock() holder so a reader blocked behind a reset also
-sees a device that was disconnected while it waited.
-
-This prepares for converting sysfs attributes from the kernel
-accessors to the user accessors so they keep skipping disconnected
-devices.
-
-On a disconnected device, existing callers of the user read accessors
-now behave as follows:
-
-  - The sysfs "config" file and /proc/bus/pci ignore the return value
-    and return the same ~0 data as before
-  - pciconfig_read() fails with -EIO
-  - VPD reads and VFIO config reads fail with -ENODEV instead of
-    returning ~0 data
-  - VPD writes fail with -ENODEV instead of timing out with a
-    "firmware bug" warning
-  - VFIO writes to PCI_COMMAND fail with -ENODEV, since VFIO reads the
-    current value first
+Use pcie_capability_user_read_{word,dword}() instead so the read waits for
+any pci_cfg_access_lock() holder (e.g. pci_reset_function()) to finish. For
+max_link_width, this means inlining the pcie_get_width_cap() logic
+instead of creating an additional helper with this single calling location.
 
 Signed-off-by: Matthew Wood <thepacketgeek@gmail.com>
 Tested-by: Nikita Vetoshkin <nikita.vetoshkin@gmail.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
 ---
- drivers/pci/access.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/pci-sysfs.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/access.c b/drivers/pci/access.c
-index b123da16b63b..18a206bb2a94 100644
---- a/drivers/pci/access.c
-+++ b/drivers/pci/access.c
-@@ -237,8 +237,11 @@ int pci_user_read_config_##size						\
- 	raw_spin_lock_irq(&pci_lock);					\
- 	if (unlikely(dev->block_cfg_access))				\
- 		pci_wait_cfg(dev);					\
--	ret = dev->bus->ops->read(dev->bus, dev->devfn,			\
--				  pos, sizeof(type), &data);		\
-+	if (pci_dev_is_disconnected(dev))				\
-+		ret = PCIBIOS_DEVICE_NOT_FOUND;				\
-+	else								\
-+		ret = dev->bus->ops->read(dev->bus, dev->devfn,		\
-+					  pos, sizeof(type), &data);	\
- 	raw_spin_unlock_irq(&pci_lock);					\
- 	if (ret)							\
- 		PCI_SET_ERROR_RESPONSE(val);				\
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index b37a285d717d..a272f8583a8f 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -208,14 +208,16 @@ static ssize_t max_link_width_show(struct device *dev,
+ 				   struct device_attribute *attr, char *buf)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+-	ssize_t ret;
++	u32 lnkcap;
+ 
+ 	/* We read PCI_EXP_LNKCAP, so we need the device to be accessible. */
+ 	pci_config_pm_runtime_get(pdev);
+-	ret = sysfs_emit(buf, "%u\n", pcie_get_width_cap(pdev));
++	pcie_capability_user_read_dword(pdev, PCI_EXP_LNKCAP, &lnkcap);
+ 	pci_config_pm_runtime_put(pdev);
+ 
+-	return ret;
++	return sysfs_emit(buf, "%u\n", lnkcap ?
++			  FIELD_GET(PCI_EXP_LNKCAP_MLW, lnkcap) :
++			  PCIE_LNK_WIDTH_UNKNOWN);
+ }
+ static DEVICE_ATTR_RO(max_link_width);
+ 
+@@ -228,7 +230,8 @@ static ssize_t current_link_speed_show(struct device *dev,
+ 	enum pci_bus_speed speed;
+ 
+ 	pci_config_pm_runtime_get(pci_dev);
+-	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
++	err = pcie_capability_user_read_word(pci_dev, PCI_EXP_LNKSTA,
++					     &linkstat);
+ 	pci_config_pm_runtime_put(pci_dev);
+ 
+ 	if (err)
+@@ -248,7 +251,8 @@ static ssize_t current_link_width_show(struct device *dev,
+ 	int err;
+ 
+ 	pci_config_pm_runtime_get(pci_dev);
+-	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
++	err = pcie_capability_user_read_word(pci_dev, PCI_EXP_LNKSTA,
++					     &linkstat);
+ 	pci_config_pm_runtime_put(pci_dev);
+ 
+ 	if (err)
 -- 
 2.53.0-Meta
 
