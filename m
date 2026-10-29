@@ -1,165 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793286741;
-	b=K7DkmG8/ZfSbUvNtVrivHRMo33bs4wtw4xHVGCi4kG54E3a1IzRNkO8oCUYDIzzDOADi
-	 kHY/rxUpwpw+4R7F58JzKizX3rNSL6rBW0ymK/f5s5rFcEV8FF0ap4LvVXuGUBLCswDLJ
-	 CTsOel/fSWtIbeJP4hzuwwGLiF29bagXSbOeDp6tT8sIB4P/3VADLlxeU6JT+Xp/6sy48
-	 CFVEvwXoNHaK/CHTU55tlhtmxNpHN8fNBHvBbKkAITYVrCtRAujv9ntbvk3df2PLvVrkh
-	 IF5zbQP81TRkaUmSZAnzKNjnsGmxhwS8vlgYddVhZVBtF4MtjMY3Y4iLAuqKaDSbbGQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793286741;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:Reply-To:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:User-Agent:
-	 X-Scanned-By;
-	bh=sy6RcJq7kWnzNPatcCz5vMju7T26X8KtMwEXCbitl90=;
-	b=igph783FHPm4rlymmzH5EN1xskO4XNSuwsb/tUC1Sv8T0SxIQFTF5L1Le6hoNZaKQ7R+
-	 xDdEq7dfFv6ZOFtax8PIiN1MHagYGH/KKRlPP2aoQfAfNwoeumZwz3W1gvbLvM6u3tHt3
-	 EVEggsEQrNUblHJD9WkTEUNQM7/XKmwmAKA/xqTjjwHaiTmon9mGwnYn2Ka6Tp3hnZ0ay
-	 AO735ghESBxv2B/WgvoaThBBKc3jDu4lFgnuQrBeWw8DouMiv66K6126KbUwkO1kcNTim
-	 q+eIdLWUi0JRcJnKtZ9Va7jsSz/dF2/2mYEXnoOY+UQoWWFF7d1QdcdyDXF8UCVzy9Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Xm56vkH9;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793287069;
+	b=tOxuPth/C8TjYQgwmJn0w0lfngv3DoPuvxnW72CDmFwIEEg8YajyGpkrrcqF1kOs32D9
+	 ShzN/eSfZmiRSEuaGg5XYuFx2elilKot2iVIGmQwaYe04ZiEcb5gWGhC0j+JVKn+5CeZd
+	 DDkX+Ui7iaeIfAp7OCSQpp8WIl64q2j1l8rgp3OnhvkHJDEB8pSBQyuarmaea0wfN/4fT
+	 vwkjBco8nFmuAcnwsqZp9P2uDoxRqT/G5V+FN3i4NXayv7rKkDvO4BYlawWoXDRATAiG6
+	 FXqhoX6nm+wEmVtIlqAEO6Vz7RRl/5/5vTUGaRrPwf15hWorlggNz6BsZ98Lym/mEbQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793287069;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=AbTJQnBlN+pvqKG1klAFs8PHaT7iP4av50nNUNBWkKw=;
+	b=RfCIs0QdaKTefJzWC4d4CQLdfTFE7pw+BBB1c+U4XTL8bZXYtgbrH6oZBF8X0r99GsVe
+	 IED4WTvyRCfy41ObDtGJCiJmNUwLk4FKFTbGZcz4SnJCIh1IW5M1toriBt4bQsBvvO8hl
+	 FG79xCWUcr08peZXtEco0lGMV6Bs+cw99VDB86HtVm2HbozQ+HXl+G6GlLE8r+SWlj7uI
+	 B/gHt+FroSQa5o3NpY/CdNfuFpKtUEUoRC2i+BWKzNiOTDotPgSsg9n2iHMCqHtxozSB+
+	 0rUU8WZY6z7DSb6+k218lZYHnrTPuwZAH8aLAhK7Z/DtE4P3iufqOGFjIAsrivH5T4w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pdkgTWm7;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94B7606A31D
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:12:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A94B7606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76523606A31C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:17:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76523606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Xm56vkH9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793286739;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sy6RcJq7kWnzNPatcCz5vMju7T26X8KtMwEXCbitl90=;
-	b=Xm56vkH9ATMJMygfPZSg+6GK3F6dQs7YPsYUO98Xep2m+NG+NICizkX3sSRQ6aFxum1tFS
-	2r5qzweZVvntR9s1vJ+llUI80AT507RpAf8Wam+f6LXJQP6VwleF7JeNpCHZ3Pdfknrstd
-	mi7fwEqZHv79SYuWjlc8dXp0RGQs8wo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-lR4E_uxDPxGRis0Bj7u-cg-1; Thu,
- 29 Oct 2026 11:12:15 -0400
-X-MC-Unique: lR4E_uxDPxGRis0Bj7u-cg-1
-X-Mimecast-MFC-AGG-ID: lR4E_uxDPxGRis0Bj7u-cg_1793286731
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CA951956043;
-	Thu, 29 Oct 2026 15:12:09 +0000 (UTC)
-Received: from redhat.com (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 11F131955F08;
-	Thu, 29 Oct 2026 15:11:43 +0000 (UTC)
-Date: Thu, 29 Oct 2026 15:11:41 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
-	qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
-	John Snow <jsnow@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kostiantyn Kostiuk <kkostiuk@redhat.com>,
-	Eric Blake <eblake@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Igor Mammedov <imammedo@redhat.com>,
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
-	Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>,
-	Hanna Reitz <hreitz@redhat.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>,
-	Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>,
-	Elena Ufimtseva <elena.ufimtseva@oracle.com>,
-	Jagannathan Raman <jag.raman@oracle.com>,
-	John Levon <john.levon@nutanix.com>,
-	Thanos Makatos <thanos.makatos@nutanix.com>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org,
-	linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sergio Lopez <slp@redhat.com>, qemu-arm@nongnu.org,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org,
-	Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Pedro Barbuda <pbarbuda@microsoft.com>,
-	Mohamed Mediouni <mohamed@unpredictable.fr>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org,
-	Zhang Chen <zhangckid@gmail.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Alistair Francis <alistair@alistair23.me>,
-	Alexander Graf <graf@amazon.com>,
-	"Gonglei (Arei)" <arei.gonglei@huawei.com>,
-	zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>,
-	Luc Michel <luc@lmichel.fr>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
-	Jamin Lin <jamin_lin@aspeedtech.com>,
-	Kane Chen <kane_chen@aspeedtech.com>,
-	Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>,
-	FangSheng Huang <FangSheng.Huang@amd.com>,
-	Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
-	Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
-	Jesper Devantier <foss@defmacro.it>,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Glenn Miles <milesg@linux.ibm.com>, Conor Dooley <conor@kernel.org>,
-	Sebastian Huber <sebastian.huber@embedded-brains.de>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Jason Herne <jjherne@linux.ibm.com>,
-	Titus Rwantare <titusr@google.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Anthony PERARD <anthony@xenproject.org>,
-	Peter Xu <peterx@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	xen-devel@lists.xenproject.org,
-	Roman Bolshakov <rbolshakov@ddn.com>,
-	Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Tao Tang <tangtao1634@phytium.com.cn>,
-	Stefan Berger <stefanb@linux.vnet.ibm.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-	Artyom Tarasenko <atar4qemu@gmail.com>,
-	Yoshinori Sato <yoshinori.sato@nifty.com>,
-	Jiri Pirko <jiri@resnulli.us>, Eric Auger <eric.auger@redhat.com>,
-	Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 54/65] qdev: adjust PciDevfn declared type
-Message-ID: <auNiLX-dsm8XsFG-@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
- <20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
- <atsxLV5YZo8dr-8G@redhat.com>
- <CAMxuvazd7G_NBOM_c6BxZn5PFSw=XQUHueHqBoQQfpzPPgi9qA@mail.gmail.com>
- <87zevz5h4k.fsf@pond.sub.org>
- <auC-ilqUJq27neSR@redhat.com>
- <87o6ce47rr.fsf@pond.sub.org>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pdkgTWm7
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso11522a12.1
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 08:17:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793287067; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r7arltXljTf2PLAsVeO+I09HJl6Wwoaiqro/ZfYRaWcn3wKA4Tavk+LvtERoHTue53
+         cuINgJJSWfCLCx5SulRqFEo/IXPu5gmyPWoLhpeMEbC1qEfpi9M2WtebAnFpqXWHXs7c
+         ee5WZ+feF3AUM/gGxhjNTX/hWwIDiMPcTg8BgEWk81fxdC+w8YEO9YXhzwTRT96eK3T/
+         3pNNh/qBxRYSADyZaq3lWeTsFqfrhx942AIK5IUa2rbENZ6aVvrn/bhupoSUpPhSdNdY
+         H6JDTCq7hzbVP9BYzVqFRr2sKc996RfsyPav3wAddi/5uTwkCidNKO8kioQzofEt0MFs
+         mLUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AbTJQnBlN+pvqKG1klAFs8PHaT7iP4av50nNUNBWkKw=;
+        fh=xrvlYIkJmb2v0Pl6FN4mYz3xY+EPChQpx/RIsm5embA=;
+        b=Io9hU+dx+KnHEf637W4kv813G4peLaEDLbYnhPObf+9XRGcAW0wDaCLIGETDcwu/XH
+         L39NtYC1fbjLr2+PP6QnVjX1W1FQRUYR0nf1yE/PJmkysWrskM2PLH+QjOPHrO3Dpd3J
+         VWK3b2//6bkJfoHrGatZFEfEDXTtdHyci8VoOsJwLSllL4NpdgbUmQnyKu6IqYpy88ul
+         pTromA2LKYxUpmi/30R+NA+kEvAMSB+Pe+b5Hh1K4yv5KeGJGgiElDf00QQq5L/jksRL
+         mYBFWa0wfPtHGE4lB0C7tgE7Wm5zlbX6JdhI5L/ZULQW7O00H84AypYlfkZRxwrv5JTy
+         TL8g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793287067; x=1793891867; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AbTJQnBlN+pvqKG1klAFs8PHaT7iP4av50nNUNBWkKw=;
+        b=pdkgTWm7tofy1O2oXfWkE6Y6P9fz0F3R+LY9mPxymq4mh3t9QTc+C85u42unFHOkgP
+         1nJrysrqvWDmImETri83vopaH2eAaWAYDmkD662fqjMriP6igDBB66tnFswHkOj2kSUp
+         FmEB2l9BSB7fnGylR03Isbbpa3HbHG+d2gNFBDI2XQohDomQ6XrQs2xeD9DyzMQNb77y
+         tE6QK85CCp8SCPmCFShGCgVxR+e4dJvt6fR4p2+IJbn0OYwnq8bDxo2t3iIoyIO7WmfF
+         WSXcFRJHq61aV0GkPrzwKaRcQNMRjzj0bkfjZ1EP5v0Xfuc3UOGd+owErnAT8Qlhkwr9
+         FfqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793287067; x=1793891867;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AbTJQnBlN+pvqKG1klAFs8PHaT7iP4av50nNUNBWkKw=;
+        b=Qqp8SPGzBTqU3+4boCQ2sxRkAAid+RvZE5tYKhyMLZHrwnfuFeM4EfLdleifzF5TCN
+         3/xwAy7ttnhYlvBI0jSdnyPSY2stwdU4PXPjrC0eWjmJn4pVzByBNgptPOKZSWuBmp3Q
+         RfR2WekgSjV0YNsk2iKllmmlgQedCUAlZz8lSa3rdSgbCP7d7D3x1p3+8uVqNKSchwcT
+         litzW/0uM1984hYiYBb4wP4wOaskOXCQeftnQcTVan0HemUDOgPpZWdCBsrwHk94qRaB
+         hNlAUswgTOt+azi8FgrfwhBHcS90x2clKXFZCWANIzaIwD7M+kUNDC9UDIiGmhNT+jgg
+         2Sjg==
+X-Forwarded-Encrypted: i=1; AKwUvByK9vcUQORczHNiIgB6mxpNREc34IasI1GHeuoedx76iwRVB74r+aZxX47bgjYY6D5+GOs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJU/OX1Wz1QhVkvn0eZes/VQ8wuv1Z6gdP7DjLgcdHLhp2LK7Xi
+	8wUrFbVM1aRzi6Ao2sr7rm9ZppfKXIuHASPssU5pmj4NiUB5tDIlsZMmfDuC7IbMm1KZJWYQJke
+	uZ0ZU3sUg0+4yntb55JyqBdQF1eYxyjBq4zdy8/HG3oyVDUNwu+7NxfUNMhI=
+X-Gm-Gg: AYBFou0oIXpMc0/OVPLuWSM6sSb3CQC9UUzXSRh2n3bEixcDCVcAwH69DdB4yBwtSRM
+	/YrYieFAq5JyaE9zLFmPG3tpMpzYxWp9rjS86d4Tz98NLJ45JlYqRWhC+kXK71AvNeesKQkTw+o
+	UQliGiw+nKGNWbYy6hyOukXC+wrJmLX1Ln0pP45tSb0TnM2ZqlmXibhHwHY9MOiiNVyVGkxsoxt
+	4Z0c6oI/N+QbiyIfReW7CB9rM38MLiO3Qllkg8lQwcjXzoo8ia+wCW5f2DcLgpHn4CeyNc2RRc7
+	JJcl2eK4CWkmXmIvYq8AFjJ3s7wnXe+3OoN1dBjspNGn9JTQj9DxnwRq1QH8YcXpbpbnTy0APk5
+	26RsuMmkXnHEgWbiRsdzEM1EBQ3lSFjErE6xA
+X-Received: by 2002:a05:6402:305b:20b0:6ae:188e:e119 with SMTP id
+ 4fb4d7f45d1cf-6b4b38e71bamr62668a12.9.1793287066191; Thu, 29 Oct 2026
+ 08:17:46 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -169,134 +104,111 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87o6ce47rr.fsf@pond.sub.org>
-User-Agent: Mutt/2.4.2 (2026-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+References: <20261029024005.575065-1-chengkev@google.com>
+In-Reply-To: <20261029024005.575065-1-chengkev@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 29 Oct 2026 08:17:34 -0700
+X-Gm-Features: AclHuK-ibUT22cMMhhMbZ12t_iaUe3kZdk_OoF1b8jtJuWxJeYHY-_Y434LwOJ8
+Message-ID: <CALMp9eSvG5Kfur_3JfmrBjwAGi0+oJqCnFk4LqADCJfeh+0k6g@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nVMX: Synthesize advanced VM-Exit info for emulated
+ EPT Violations
+To: Kevin Cheng <chengkev@google.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, yosry@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2026 at 08:13:44AM +0100, Markus Armbruster wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > On Tue, Oct 27, 2026 at 03:54:03PM +0100, Markus Armbruster wrote:
-> >> Marc-André Lureau <marcandre.lureau@redhat.com> writes:
-> >> 
-> >> > Hi
-> >> >
-> >> > On Fri, Oct 23, 2026 at 2:04 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >> >>
-> >> >> On Tue, Oct 20, 2026 at 02:46:11PM +0400, Marc-André Lureau wrote:
-> >> >> > PciDevfn is a bit special, since it accepts integer and string as
-> >> >> > setter, but only output integer as getter.
-> >
-> > snip
-> >
-> >> >                                                       But I agree we
-> >> > could do better.
-> >> >
-> >> > There are multiple options. We could keep declaring the property as
-> >> > str instead. In this case, the getter should probably return a string
-> >> > for consistency and correctness. This might surprise some existing
-> >> > users though.
-> >> 
-> >> I.e. ditch numeric suppport for numeric addresses, right?
-> >> 
-> >> Incompatible change.  Do we care?
-> >> 
-> >> If we don't, we should be honest about it and mark qom-get unstable.
-> >> 
-> >> > We could introduce new properties like `devfn-str` and `devfn-int`
-> >> > that alias the same value.
-> >> 
-> >> Compatibility break.  If breaking compatibility is okay, I'd rather use
-> >> the opportunity to get rid of cleverness, and go with your first option.
-> >> 
-> >> > We could also introduce a new structured QAPI type.
-> >> 
-> >> What kind of type do you have in mind?
-> >
-> > IMHO the root cause design flaw here was to overload 'addr' as a
-> > way to set both the slot number and function number, as using
-> > one property for two pieces of data is a well known anti-pattern
-> > we caution against.
-> >
-> > IOW, we should have had 'slot' and 'function' as separate properties
-> > from the start.
-> 
-> Fair.
-> 
-> Our modeling of PCI is old and weird.
-> 
-> What we call "pci-device" isn't a device, it's a function, where
-> function 0 sort of stands in for the device.
+On Wed, Oct 28, 2026 at 7:40=E2=80=AFPM Kevin Cheng <chengkev@google.com> w=
+rote:
+>
+> When synthesizing an EPT Violation to inject into L1 in response to a
+> fault detected while emulating an L2 GVA access, populate bits 11:9 of
+> EXIT_QUALIFICATION, i.e. the "advanced VM-Exit information", with the U/S=
+,
+> R/W, and X/NX attributes of the L2 linear address' translation.
+>
+> KVM has advertised VMX_EPT_ADVANCED_VMEXIT_INFO_BIT to L1 since
+> commit a0efd8cb221f ("KVM: nVMX: pass advanced EPT violation vmexit info
+> to guest"), but has never correctly populated bits 11:9 for synthesized
+> faults.  Originally the bits were pulled from vmcs02.EXIT_QUALIFICATION,
+> which is stale and/or holds unrelated data when the fault didn't come
+> from an EPT Violation VM-Exit.  Commit 96b067b59ad9 ("KVM: VMX:
+> Synthesize nested EPT violation GVA_IS_VALID/GVA_TRANSLATED bits")
+> correctly stopped consuming the stale vmcs02 data for synthesized faults,
+> but nothing in the synthesized path sets bits 11:9, and so L1 now always
+> observes a supervisor, read-only, executable translation for every
+> synthesized EPT Violation.  Per the SDM, bits 11:9 are valid whenever
+> bits 7 and 8 (GVA_IS_VALID and GVA_TRANSLATED) are set and advanced
+> VM-Exit information is supported.
+>
+> Fill in the bits from vmx_translate_nested_gpa(), which already receives
+> the effective L2 pte_access (for MBEC), rather than from the EPT walker
+> in paging_tmpl.h: the L2 page attributes are not EPT properties and so
+> are not visible to the EPT walker, and the nonpaging L2 case (CR0.PG=3D0,
+> where every linear address is architecturally user-mode, writable, and
+> executable) is handled for free as nonpaging_gva_to_gpa() passes ACC_ALL.
+>
+> Skip the synthesis for EPT Misconfigs, as the walker doesn't initialize
+> exit_qualification for misconfigs and the injection path ignores it, and
+> leave bits 11:9 clear when GVA_TRANSLATED is clear, as the bits are
+> architecturally undefined in that case.
+>
+> Explicitly strip bits 11:9 from the synthesized fault's exit qualificatio=
+n
+> in nested_ept_inject_page_fault() when L1 isn't advertised advanced
+> VM-Exit information. Previously that was implicitly guaranteed because
+> nothing set the bits in the synthesized fault, but now that
+> vmx_translate_nested_gpa() does, relying on the bits being outside the
+> "take from the fault" mask would leak them to L1.
+>
+> Fixes: a0efd8cb221f ("KVM: nVMX: pass advanced EPT violation vmexit info =
+to guest")
+> Signed-off-by: Kevin Cheng <chengkev@google.com>
+> Assisted-by: LLM
+> ---
+> Tested on hardware with advanced VM-Exit information support by running
+> the vmx kvm-unit-tests, including a new ept_access_test_adv_info test
+> (will be sent separately) that exercises bits 11:9 for both native
+> accesses, where the bits are propagated from vmcs02, and emulated accesse=
+s
+> (string I/O), where KVM must synthesize the bits.  The emulated cases fai=
+l
+> without this patch and pass with it.
 
-Mmm, yes, interesting way of looking at it.
+Doesn't this break tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
+on hardware that supports VMX_EPT_ADVANCED_VMEXIT_INFO_BIT?
 
-> Its "addr" isn't a PCI address, it's the address of the function on its
-> PCI bus, i.e. the tail of a PCI address.
-> 
-> > From a CLI POV, we could easily change 'addr' to mean only the slot
-> > number, since it is always parsed in string format without the
-> > magic (slot << 4) | function encoding. Then add a 'function' prop
-> 
-> In CLI, HMP and QMP string (not integer), value "5" is shorthand for
-> "5.0", and means device 5, function 0.
-> 
-> We could deprecate the .FN part in favor of a new property "function".
-> 
-> Once we drop support for .FN from "addr", its name becomes even more
-> misleading than it always was.
+In that test, l2_test_page is mapped writable in L2's page tables via
+vm_alloc(), and l1_vmx_code() asserts exact equality on EXIT_QUALIFICATION
+without expecting EPT_VIOLATION_GVA_WRITABLE in TEST_FINAL_PAGE_UNMAPPED
+and TEST_FINAL_PAGE_WRITE_PROTECTED.
 
-Yes.
+Also, rather than only adding a test to kvm-unit-tests, please update and
+extend nested_tdp_fault_test.c to cover the advanced VM-Exit information
+bits.
 
-> > The challenge is the impact on QMP with strict typing, as ideally
-> > int format would soley represent the slot number, but today the
-> > int format is encoded (slot << 4) | function.  So anyone relying
-> > on int format in QMP would silently have a semantic change if we
-> > altered what 'addr' means. 
-> 
-> That's a no-go.
-> 
-> > Deprecating 'addr' entirely and adding brand new 'slot' and
-> > 'function' properties would be a significant disruption to
-> > a syntax which has been documented for years (decades).
-> 
-> What about this:
-> 
-> * No change to PCIDevice member @devfn: encodes slot and function as an
->   integer.
-> 
-> * New "pci-device" properties "slot" and "function".  "slot" sets just
->   the slot bits of @devfn, and "function" sets just the function bits.
->   Both default to zero, so specifying just "slot" gives you
->   PCI_DEVFN(slot, 0), which makes sense.
-> 
-> * Deprecate "pci-device" property "addr" for QMP.  We can keep it around
->   for longer than the required grace period if that helps.
-> 
-> * Declare it legacy for CLI and HMP, with no intent to remove it.
+[ ... ]
 
-We can't easily keep it in CLI/HMP, while removing from QMP can we ?
-As long as the property exists on the PCIDevice object, it will be
-accessible everywhere.
+> -                       exit_qualification =3D fault->exit_qualification =
+& ~mask;
+> +                       /*
+> +                        * Always drop the advanced VM-Exit information b=
+its from
+> +                        * the synthesized fault, as they are undefined u=
+nless L1
+> +                        * is advertised support, in which case they'll b=
+e filled
+> +                        * in below from the appropriate source.
+> +                        */
+> +                       exit_qualification =3D fault->exit_qualification =
+& ~(mask | adv_info);
 
+Why set these bits in vmx_translate_nested_gpa() when
+VMX_EPT_ADVANCED_VMEXIT_INFO_BIT isn't set in vmx->nested.msrs.ept_caps,
+only to strip them out here?
 
-Perhaps keep it relatively simple and merely deprecate the string
-syntax of 'addr' in QMP. That's the place where it is really ugy.
-Force QMP over to only the integer syntax for 'addr', and leave
-CLI/HMP accepting the (optionally dotted) string syntax.
-
-Mgmt apps like libvirt will have to adapt. Tedious, but actually
-quite simple compared to most deprecations, as the integer syntax
-can already be used with all historical QEMU versions in QMP that
-mgmt apps ever need to deal with. They can unconditionally change
-their code to int syntax and not worry about old/new QEMUs at all.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
-
+If you gate the synthesis in vmx_translate_nested_gpa() on
+VMX_EPT_ADVANCED_VMEXIT_INFO_BIT, then nested_ept_inject_page_fault()
+doesn't need to be touched at all (or better yet, the mask dance in
+nested_ept_inject_page_fault() can be confined to the 'if (from_hardware)'
+block.
