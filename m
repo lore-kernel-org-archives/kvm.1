@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793262525;
-	b=OudI6O1GWbJQL3qJ6OEALoGbaE/Pp+zJaRfrZIY/ErSIcscDggggOCMUu2HnpAyMyzcw
-	 RfGIizaXrwiV1wcsXQFGj3aJZ6oIhg5zjW5fza6gH1mA4sMx3jqxaT/ibLBNfWHK3Z6Lo
-	 +eJYKc2M2B0wWGi5RGZgEHKzprNVOquwB9Y/pO6+JoZ1VEkHfc6hbkMhE9ElgCog/Q537
-	 2ciAUd4FgMxJvG1FF93ZG0Ipmawzvt0KV1Xc+UqWfio+Siyq7zMOpifEed2tTd2nJ7lPH
-	 4ZDNQoJKfuQrDzL/h2Oxk4H7MV+07/bm4HlICuvTAiWoNr9Jh/SvW8mjq/JLFVHY3cg==
+	t=1793263317;
+	b=2b3eYe0zNOt6m8pS3lpBqcyooME0aQCz/WaKNIPpuLC17o+9Sh1C4hElxzr70wllm6RX
+	 KxShbeT1GBKdNv494mR82dGd9XNbPZ3cWXOztG5sAxHE31t+JaeZYj2cbv4AlgiBuinga
+	 7EC0RfXNV8WiBgXFwJa/D71Th4RbzHYvuFTVymKY2LpyVtf3u58CSCXFh7KWKH7DM86wQ
+	 ZsoWZFsLJTg8g7PlsGdw+QcabcJv6KmBcqRFPrkiwVLrhG+wdO47dAxQh5HB42a8+1T37
+	 rmJHhPaMKbj1t9H3xGbEEwQn2VhQ0bafPhR5WN102I4wsO+A3Mr8ArZ/eGoKGpS4DuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793262525;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793263317;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=+O06dij/E4AszSh3h8D/A3AN8Cmq/N471sJmbDo5SdM=;
-	b=ul4MaLkhgpluSfOxYG22W9vCptHl76+F1mxRmcu9ZRsoNq6p7z6s1uSFrPm7wQdmj1re
-	 BpnG4XP/LV0bwz2OXsYwktgCui1h5Wb6/Zd3KdFtWV8zz43oAC7qLlj+uINoYt+RgPqR7
-	 XwIuGmvYqVRsLqB9R2KL/hKtKgP9zpDJ4w3omxG+WejfydQ4cMBzawWY/jLZbPYOUvgGo
-	 XK/T2tPhW6aS5WJV6fqr+Z6Kqi0FnshZ1FXo6Ewr8ll9NnqyFnO0Bbs+sAGV99mStRluM
-	 OqcEcygfmZvsdjc6rVQtTekNHKKwECZWd5nR4hEvKNU5ztZdtUPziRtNi8BzTb6jw7w==
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=+iHG5Nv7QtD3HvoUzsxeataN0HwPw98x2EhIsYF3L+A=;
+	b=2GVqvC2UQuHtGAe7k3kxwx3XGGEp9FxiY90J4FugMcKwhBnKbP+REp9V9Sc3cjxHTftg
+	 0R27zUH1ZDDTb52Xd2oXHGDMD3QGJ1121emFqup2oWr0dlULRo60jqfPLhjooAzzQpZhZ
+	 2JKHGS+BJCgWeaGiSJP2HPjDNGXCB5N5JHdEUxxvV9gbgacAYkeYtHCHjJqkPnJywsj1/
+	 PPO278Uf4chvBsqG85RypLJZ9FvczhrNU8FWlPz6o4yw4xDWiWPyuL0ON17yP5eV3l6Xc
+	 D8zMbQdaK+RXJfGOBRlXmwR5QptrNHyfclNpFLXkfz0MCIzRYBdKkaRoutbMCEhLtng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bWpRZVuv;
-	arc=none smtp.remote-ip=198.175.65.12
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="Gh/q5g/3";
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AA1606A31D;
-	Thu, 29 Oct 2026 08:28:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42AA1606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0F4606A322;
+	Thu, 29 Oct 2026 08:41:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F0F4606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bWpRZVuv
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Gh/q5g/3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793262524; x=1824798524;
-  h=message-id:date:mime-version:cc:subject:to:references:
+  t=1793263316; x=1824799316;
+  h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=mLZ17SLVuKJOfZG+q8nNSv4+tuB7DXBX7DQa1UdgEHc=;
-  b=bWpRZVuvblQ/WevSIn6OUYmzRxgMjk8sX29BKrjtLb0Nn6k8VWUnfeHs
-   Qf197JRwVfGB2IepaoVnxnDdA89jC82TwpBw73busQ/BxogT4tic7AGuN
-   pUzeyXw0dhnkSs/A5vGzQ4RwPzG+NYCXDWph7hL0zh+OYG1Nq0A5ZxAST
-   E5vf05WSPA41hO+k83xzrDWtcLBOAcPd8jSocDGXc09jGlKIhgtBal6BZ
-   /60XRNGHw4a7nNIQYNr4D1oMR+GAmeEYspeB6rvHAA6/qs466FC4WIibZ
-   sgxoF9AVtbLfKVCd+LgYPQyUIjOup6GtNDu3NBfFl9i0zNXFLiMoeeAL1
-   w==;
-X-CSE-ConnectionGUID: bizze6wBTW+yZhdGMaFYJw==
-X-CSE-MsgGUID: ghnlzgS7QUGQ3H8iTMBPaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1881220"
+  bh=JC5hKSpzmc00gb8cESNfe5ryL5VkO2PEYB0+W435hzY=;
+  b=Gh/q5g/3g/s8Ngt2/o4MP9iXWhRobZAom4i4dGGEA/Mbjo5Gy3Myg1pP
+   1QIUAzI4mfGGuu3uw1t6ylnW46xv/co9xDgosnDNHmL+WfGAUvx3b9YX6
+   3n2Sr6bwBBfzIozOY4ijZc5u3amKHKJVzYiz5mUkxYp0nd5xaxDjhAm6m
+   EbuTGD7/F+klFHmKztVwNKCwHxfZTiVTrkSB7g9Ac2s05wdjoimNURqhg
+   xQuU96qDHf0ZIJs5L84naSEXr2Vbo9Sbi6cX5nzYsE8WldPC/uWoFosW5
+   Qm74tWLXnWbN79Wr45HcmDVckGCxF8kxUa9HKhqRFq3JA9HJyPEogv93v
+   A==;
+X-CSE-ConnectionGUID: cLW3LCChSDyQlxHQSvTSyg==
+X-CSE-MsgGUID: ayuzNsVoStSOpicasvWA4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1892353"
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="1881220"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:28:38 -0700
-X-CSE-ConnectionGUID: YEZk7yxMTfyll+nI6HZ4hQ==
-X-CSE-MsgGUID: O5OSDsujS+qaCtgj7dGapg==
+   d="scan'208";a="1892353"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:41:55 -0700
+X-CSE-ConnectionGUID: G3YTq7HSTKCER1pld6MiJg==
+X-CSE-MsgGUID: hsGJeeYcTR2RewFgXvJNVg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="5170576"
-Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:28:33 -0700
-Message-ID: <faeedd16-a271-4ced-be1a-7bd70860bcdc@linux.intel.com>
-Date: Thu, 29 Oct 2026 16:28:30 +0800
+   d="scan'208";a="5089359"
+Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:41:50 -0700
+Message-ID: <a77b4273-4d3f-464c-8ced-f6b958eac9e4@linux.intel.com>
+Date: Thu, 29 Oct 2026 16:41:47 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,344 +73,99 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v6 13/18] iommu/vt-d: Handle reattach of the restored
- domain
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261025021930.674647-1-skhawaja@google.com>
- <20261025021930.674647-14-skhawaja@google.com>
+Subject: Re: [PATCH v10 13/28] KVM: VMX: Virtualize FRED nested exception
+ tracking
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
+ David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-14-sohil.mehta@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261025021930.674647-14-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260911213659.2025974-14-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
-> Reattach the restored domain to the preserved device using restored
-> domain ID. While reattaching do not setup the context and PASID entries
-> as those are preserved during liveupdate.
+On 9/12/2026 5:36 AM, Sohil Mehta wrote:
+> From: "Xin Li (Intel)" <xin@zytor.com>
 > 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   drivers/iommu/intel/iommu.c      |  34 ++++++--
->   drivers/iommu/intel/iommu.h      |  14 ++++
->   drivers/iommu/intel/liveupdate.c | 131 +++++++++++++++++++++++++++++++
->   3 files changed, 171 insertions(+), 8 deletions(-)
+> Set the VMX nested exception bit in VM-entry interruption information
+> field when injecting a nested exception using FRED event delivery to
+> ensure:
+>   1) A nested exception is injected on a correct stack level.
+>   2) The nested bit defined in FRED stack frame is set.
 > 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index ecec057f78dd..4f01aa34ccb5 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -2926,6 +2926,9 @@ static int blocking_domain_attach_dev(struct iommu_domain *domain,
->   				      struct device *dev,
->   				      struct iommu_domain *old)
->   {
-> +	if (dev_iommu_restored_state(dev))
-> +		return -EBUSY;
-> +
+> The event stack level used by FRED event delivery depends on whether
+> the event was a nested exception encountered during delivery of an
+> earlier event, because a nested exception is "regarded" as happening
+> on ring 0.  E.g., when #PF is configured to use stack level 1 in
+> IA32_FRED_STKLVLS MSR:
+>   - nested #PF will be delivered on the stack pointed by IA32_FRED_RSP1
+>     MSR when encountered in ring 3 and ring 0.
+>   - normal #PF will be delivered on the stack pointed by IA32_FRED_RSP0
+>     MSR when encountered in ring 3.
+> 
+> The VMX nested-exception support ensures a correct event stack level is
+> chosen when a VM entry injects a nested exception.
+> 
+> In addition, save/restore the nested flag of an exception during VM
+> save/restore and live migration to ensure a correct event stack level
+> is chosen when a nested exception is injected through FRED event
+> delivery across VM save/restore and live migration.
+> 
+> Note, like the other fields of struct kvm_queued_exception, the nested
+> flag is meaningful only while the exception is pending or injected. It
+> is not consulted otherwise, and so doesn't need to be cleared when an
+> exception is dropped.
 
-There is a contract between the iommu core and iommu drivers that
-attaching a blocking domain must always succeed. Otherwise, some
-existing code paths will break.
+Just try to understand the sentence.
+The patch clears is_nested alongside pending/injected in two places:
+1. kvm_clear_exception_queue()
+2. When the exception from userspace is converted to a nested vm exit.
 
-My understanding is that "block DMA" is always a legitimate request, but
-we don't expect it while the device is in the restored state. So perhaps
-we could trigger a WARN here and continue tearing down the preserved
-entry?
+So are they needed?
 
->   	iopf_for_domain_remove(old, dev);
->   	device_block_translation(dev);
->   	return 0;
-> @@ -3294,6 +3297,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
->   {
->   	int ret;
->   
-> +	if (dev_iommu_restored_state(dev))
-> +		return intel_iommu_attach_restored_device(domain, dev);
-> +
->   	device_block_translation(dev);
->   
->   	ret = paging_domain_compatible(domain, dev);
-> @@ -3424,7 +3430,8 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
->   	info->iommu = iommu;
->   	RB_CLEAR_NODE(&info->node);
->   	if (dev_is_pci(dev)) {
-> -		if (ecap_dev_iotlb_support(iommu->ecap) &&
-> +		if (!dev_iommu_restored_state(dev) &&
-> +		    ecap_dev_iotlb_support(iommu->ecap) &&
->   		    pci_ats_supported(pdev) &&
->   		    dmar_ats_supported(pdev, iommu)) {
->   			info->ats_supported = 1;
-> @@ -3529,12 +3536,16 @@ static void intel_iommu_release_device(struct device *dev)
->   	struct device_domain_info *info = dev_iommu_priv_get(dev);
->   	struct intel_iommu *iommu = info->iommu;
->   
-> -	iommu_disable_pci_pri(info);
-> -	iommu_disable_pci_ats(info);
-> +	if (!dev_iommu_restored_state(dev)) {
-> +		iommu_disable_pci_pri(info);
-> +		iommu_disable_pci_ats(info);
->   
-> -	if (info->pasid_enabled) {
-> -		pci_disable_pasid(to_pci_dev(dev));
-> -		info->pasid_enabled = 0;
-> +		if (info->pasid_enabled) {
-> +			pci_disable_pasid(to_pci_dev(dev));
-> +			info->pasid_enabled = 0;
-> +		}
-> +	} else {
-> +		intel_iommu_detach_restored_device(dev);
->   	}
->   
->   	mutex_lock(&iommu->iopf_lock);
-> @@ -3542,11 +3553,15 @@ static void intel_iommu_release_device(struct device *dev)
->   		device_rbtree_remove(info);
->   	mutex_unlock(&iommu->iopf_lock);
->   
-> -	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev) &&
-> +	if (!dev_iommu_restored_state(dev) && sm_supported(iommu) &&
-> +	    !dev_is_real_dma_subdevice(dev) &&
->   	    !context_copied(iommu, info->bus, info->devfn))
->   		intel_pasid_teardown_sm_context(dev);
->   
-> -	intel_pasid_free_table(dev);
-> +	if (!dev_iommu_restored_state(dev))
-> +		intel_pasid_free_table(dev);
-> +	else
-> +		kfree(info->pasid_table);
->   	intel_iommu_debugfs_remove_dev(info);
->   	kfree(info);
->   }
-> @@ -4003,6 +4018,9 @@ static int identity_domain_attach_dev(struct iommu_domain *domain,
->   	struct intel_iommu *iommu = info->iommu;
->   	int ret;
->   
-> +	if (dev_iommu_restored_state(dev))
-> +		return -EBUSY;
-> +
->   	device_block_translation(dev);
->   
->   	if (dev_is_real_dma_subdevice(dev))
-> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-> index 260c7a5b1240..f910e5383e12 100644
-> --- a/drivers/iommu/intel/iommu.h
-> +++ b/drivers/iommu/intel/iommu.h
-> @@ -1322,6 +1322,9 @@ void clear_unpreserved_context_entries(struct intel_iommu *iommu);
->   void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->   					       struct iommu_hw_ser *iommu_ser);
->   void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu);
-> +int intel_iommu_attach_restored_device(struct iommu_domain *domain,
-> +				       struct device *dev);
-> +int intel_iommu_detach_restored_device(struct device *dev);
->   #else
->   static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
->   {
-> @@ -1335,6 +1338,17 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
->   static inline void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
->   {
->   }
-> +
-> +static inline int intel_iommu_attach_restored_device(struct iommu_domain *domain,
-> +						     struct device *dev)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline int intel_iommu_detach_restored_device(struct device *dev)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
->   #endif
->   
->   #ifdef CONFIG_INTEL_IOMMU_SVM
+> 
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> [ Sean: reworked kvm_requeue_exception() to simply the code changes ]
+                                                ^
+simplify
 
-It appears that there is no way to replace the restored domain, because
-nothing ever clears IOMMU_SER_FLAG_INCOMING or dev->iommu->device_ser.
-As a result, if iommufd later tries to move the device to a new hwpt,
-the attempt will always fail.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+> Reviewed-by: Chao Gao <chao.gao@intel.com>
 
-I assume this is intended for this phase, and that the actual
-replacement will be handled in a later phase. If so, please mention this
-in the commit message.
+[...]
 
-> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-> index 36816d3651e6..665ebb81bd61 100644
-> --- a/drivers/iommu/intel/liveupdate.c
-> +++ b/drivers/iommu/intel/liveupdate.c
-> @@ -394,6 +394,137 @@ void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
->   		      iommu->name);
->   }
->   
-> +static void domain_detach_restored_iommu(struct dmar_domain *domain,
-> +					 struct intel_iommu *iommu)
-> +{
-> +	struct iommu_domain_info *info;
-> +
-> +	guard(mutex)(&iommu->did_lock);
-> +	info = xa_load(&domain->iommu_array, iommu->seq_id);
-> +	if (--info->refcnt == 0) {
-> +		xa_erase(&domain->iommu_array, iommu->seq_id);
-> +		kfree(info);
-> +	}
+> @@ -8978,6 +8993,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  					   ex->has_payload, ex->payload);
+>  		ex->injected = false;
+>  		ex->pending = false;
+> +		ex->is_nested = false;
+>  	}
+>  	vcpu->arch.exception_from_userspace = false;
+>  
+> diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+> index 0f5919b092e4..2d6bae66cfae 100644
+> --- a/arch/x86/kvm/x86.h
+> +++ b/arch/x86/kvm/x86.h
+> @@ -158,6 +158,7 @@ static inline void kvm_clear_exception_queue(struct kvm_vcpu *vcpu)
+>  {
+>  	vcpu->arch.exception.pending = false;
+>  	vcpu->arch.exception.injected = false;
+> +	vcpu->arch.exception.is_nested = false;
+>  	vcpu->arch.exception_vmexit.pending = false;
+>  }
 
-This seems to be different from normal domain_detach_iommu(), which
-looks like this,
-
-         if (--info->refcnt == 0) {
-                 ida_free(&iommu->domain_ida, info->did);
-                 xa_erase(&domain->iommu_array, iommu->seq_id);
-                 kfree(info);
-         }
-
-why ida_free() is skipped in the restored path?
-
-> +}
-> +
-> +static int domain_attach_restored_iommu(struct dmar_domain *domain,
-> +					struct intel_iommu *iommu,
-> +					struct iommu_device_ser *device_ser)
-> +{
-> +	struct iommu_domain_info *info, *curr;
-> +	struct iommu_domain_ser *domain_ser;
-> +	struct iommu_hw_ser *iommu_hw_ser;
-> +	int restored_did;
-> +	int ret;
-> +
-> +	if (!iommu_domain_restored_state(&domain->domain))
-> +		return -EINVAL;
-> +
-> +	if (!device_ser->attachment.domain_phys ||
-> +	    !device_ser->iommu_phys)
-> +		return -EINVAL;
-> +
-> +	domain_ser = phys_to_virt(device_ser->attachment.domain_phys);
-> +	if (domain_ser->restored_domain != &domain->domain)
-> +		return -EINVAL;
-> +
-> +	iommu_hw_ser = phys_to_virt(device_ser->iommu_phys);
-> +	if (iommu_hw_ser->type != IOMMU_SER_TYPE_INTEL ||
-> +	    iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
-> +		return -EINVAL;
-> +
-> +	restored_did = device_ser->attachment.attachment_id;
-> +	if (!ida_exists(&iommu->domain_ida, restored_did))
-> +		return -EINVAL;
-> +
-> +	info = kzalloc_obj(*info);
-> +	if (!info)
-> +		return -ENOMEM;
-> +
-> +	guard(mutex)(&iommu->did_lock);
-> +	curr = xa_load(&domain->iommu_array, iommu->seq_id);
-> +	if (curr) {
-
-		if (WARN_ON(curr->did != restored_did))
-			return -EINVAL;
-
-> +		curr->refcnt++;
-> +		kfree(info);
-> +		return 0;
-> +	}
-> +
-> +	info->refcnt	= 1;
-> +	info->did	= restored_did;
-> +	info->iommu	= iommu;
-> +	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
-> +			  NULL, info, GFP_KERNEL);
-> +	if (curr) {
-> +		ret = xa_err(curr) ? : -EBUSY;
-> +		goto err_unlock;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_unlock:
-> +	kfree(info);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * intel_iommu_attach_restored_device() - Restore device domain attachment after live update
-> + * @domain: Restored domain
-> + * @dev: Restored device
-> + *
-> + * Return: 0 on success, or negative error code.
-> + */
-> +int intel_iommu_attach_restored_device(struct iommu_domain *domain,
-> +				       struct device *dev)
-> +{
-> +	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
-> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
-> +	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
-> +	struct intel_iommu *iommu = info->iommu;
-> +	unsigned long flags;
-> +	int ret;
-> +
-> +	if (!device_ser)
-> +		return -EINVAL;
-> +
-
-The context and PASID table entries are not touched in the restore path.
-That's fine, but it would be better to check that the hardware
-configuration matches the restored domain before trusting it, at least
-the physical address of the page table and the domain ID. With that
-check in place, it would be reasonable to skip
-paging_domain_compatible().
-
-> +	ret = domain_attach_restored_iommu(dmar_domain, iommu, device_ser);
-> +	if (ret)
-> +		return ret;
-> +
-> +	info->domain = dmar_domain;
-> +	info->domain_attached = true;
-> +	spin_lock_irqsave(&dmar_domain->lock, flags);
-> +	list_add(&info->link, &dmar_domain->devices);
-> +	spin_unlock_irqrestore(&dmar_domain->lock, flags);
-> +
-> +	return 0;
-> +}
-> +
-> +int intel_iommu_detach_restored_device(struct device *dev)
-> +{
-> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
-> +	struct intel_iommu *iommu = info->iommu;
-> +	struct iommu_domain *domain;
-> +	unsigned long flags;
-> +
-> +	if (!info->domain_attached || !info->domain)
-> +		return -EINVAL;
-> +
-> +	domain = &info->domain->domain;
-> +	if (!iommu_domain_restored_state(domain))
-> +		return -EINVAL;
-> +
-> +	info->domain_attached = false;
-> +
-> +	spin_lock_irqsave(&info->domain->lock, flags);
-> +	list_del(&info->link);
-> +	spin_unlock_irqrestore(&info->domain->lock, flags);
-> +
-> +	domain_detach_restored_iommu(info->domain, iommu);
-> +	info->domain = NULL;
-> +
-> +	return 0;
-> +}
-> +
->   enum pasid_lu_op {
->   	PASID_LU_OP_PRESERVE = 1,
->   	PASID_LU_OP_UNPRESERVE,
-
-Thanks,
-baolu
