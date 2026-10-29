@@ -1,65 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793308524;
-	b=ZRzNSXuB9ZAT3NNaa71AW5/PZ5d12VMwQw8RVCZktJglWUCVG+ikL4O/XaDZvJ3tXG39
-	 dalbnOxlFF9yzNvi8M5x3TGw7SuJ59LYoLXYk6P8Zzah56XGo+hXkPfrdGC3O2OfvkmGz
-	 Clwljf4xbh3nZTeMum30fLEvSvXKyXHYrSj6tKNv+zEfNcBHdO10sQujOlXPgOTI04dK0
-	 JK5cZNejzpcqW+qtZQLLh5iLWsAZMPHBf7hi23J3HHx+F/tF+z/onPIH0/RJDMv5zd7IJ
-	 hIdw4IIrILFR+kbjnUEjZPZ8w34Hxq1uK9s99wzU4zb1zlebJAwzVt+EzFFokfMBvcQ==
+	t=1793308756;
+	b=rabpkqiMnjJ+Yl8qZ8QTTWGPaNKig6Ewi72p+xiSAvzJ8+Zrb9D4azQhiA5qHiSY3zSE
+	 VQdqBEJJMeX4DXeOlzSWAReFawkRLgfSUuRfclI4nStnxxBlAsuE2pDVwLn5W7plG7MWD
+	 8CMHdxSz7NNkmAvEAH8rSiY75vAl49H37Wb45C/qiFENjJkb0t8B3TUhbRJoE739rYhwy
+	 8qhM3JPK0ZmHVL5wluvByQGjxHzi4WY6P/ouwCslCdLhgKBMd1PUdGiea79QTVE1hr8Xy
+	 he/059jqxHnT8Ge82vh20EUurmd1VbtP2y0Ial6O2m/Yi00JkcNbg6cUFxjJpOMfcSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793308524;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=uUOoxh5FjWUwpph2LqQnLF50bqkpEqoE20tLRRD+3zY=;
-	b=ot/V41iyhEF2bJJvVW+zJFtM5V6HjnOgi1pJ2/X98qV3QIpv7TjH7x4Sxd2uhYOzI47G
-	 KhDXiae+DlH56C5bAdkY0U1Jtqe8UphqEoJzh3rXtmnFFUMyTtGJGAibp12vf5wvOjbIf
-	 PerTcttb5EXyGuh6Rx1wJqTQ1SE1OB656DerEUpg5CNwTifOXTi8I5vAaaCblJRNbgwQs
-	 Bc0x6NgrfvQ+Q1Kk6IuGjWjdSkimboFj3cuv2IDdVKNQnFjcfFZOFFJzggIyfCKGX9svT
-	 1lS6N0UDegTUzUyd6gobhANDxISX3BZyiQAsMe9xxlEfrmwoAkSrn4TbGHX0QPtGzQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793308756;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=XrOdXK5MJaZc6vQPZfGn1tZxemfMdTWyC26Qnw17Sz4=;
+	b=HHXlDbBqxdMQKpPw5KibDXtddh3L2iaUN7IgLSZKh01KBe0a3H8bY8fm0EOoD51cZzC7
+	 iplIY6gTMohYTmTyf+EiwdL/dqLHDLNgMkaiyPDnBAaTZ0j7JjJImpEfOaY+KMtZkY4Br
+	 2aXagtJ0ddlQwbnFFtewD12wYVJcVNUfhG/t9FBMyj5ITlEla5kjvNeHv7SjVwlX9fE0y
+	 hJesL4sitntOQtE4lNlCR0BJf3GJiL8Y94x3X30lujwLcJuga+MfFiMCcxhiVjY448VzT
+	 dVo7egh1XkeZXNIYjzi0deJA7QAlM5ppbEjmmnC5RMJo84DC9K99fOCK8QSXlxDDt2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=g8Ac2snP;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2A0606A322;
-	Thu, 29 Oct 2026 21:15:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F2A0606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T3a8whui;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6C0606A31A
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 21:19:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C6C0606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=g8Ac2snP
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F6711682;
-	Thu, 29 Oct 2026 14:15:19 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5CED13F59E;
-	Thu, 29 Oct 2026 14:15:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793308522; bh=cLLb8kTBxnx4UA1bZ7blmuTf4w+v25p4Ofqywv52Tv8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g8Ac2snP/yP6eE1gMl5eSWsRnObRxt4TKvv7JwVEnOV/kho0T5s+Ll5cxuy0oypZS
-	 OzFHVvh/5N8rSHvnPETiD9ah02AzfUsabo/JDjP9K5JkXElI053yHln7/VWq8aKRCp
-	 QOatav4wSox4p9lwpJ4gSOt/tbvtIl1Wc8PtPt4c=
-Date: Thu, 29 Oct 2026 21:15:18 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Will Deacon <will@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Zhou Wang <wangzhou1@hisilicon.com>, Arnd Bergmann <arnd@arndb.de>,
-	Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] KVM: arm64: Add context-switch of ACCDATA_EL1
-Message-ID: <auO3ZuB74waA_bPD@arm.com>
-References: <20261025075138.2919734-1-fuad.tabba@linux.dev>
- <20261025075138.2919734-4-fuad.tabba@linux.dev>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T3a8whui
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab67ff8ec3so31866a91.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 14:19:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793308756; x=1793913556; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XrOdXK5MJaZc6vQPZfGn1tZxemfMdTWyC26Qnw17Sz4=;
+        b=T3a8whuihdDx7Y3dZu/J4WSUiyuHu9KemApWFzyeBszF2peBcDP0C4EVAQxN66wsxM
+         f57YGcJyXwcqZYHYEcJyAuGT5gPucJgoGtBuFR4A5gDnw135fTcGfr5LQFFF5maUGKMY
+         BYNp9IACZYfJfyMBXwCwAGv0voFPGfKsdLgYwn9J60/sYbfzsBQcXdD5+yhpq72eAtj8
+         Bp+mdAMNzG18sJa2M60ABls83VarqTu9yyXxQReLWvZOWIZsHhQPLgus1oEi6RdQrgTL
+         xGHdFiyJ4gR40o86k1jf3G5nS0x9aR8LftC+LdEG9O7dUx0UXCrpcIaR+Xpr7wvEZYSf
+         BlMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793308756; x=1793913556;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XrOdXK5MJaZc6vQPZfGn1tZxemfMdTWyC26Qnw17Sz4=;
+        b=tsjAHEYNgEuuicITDJpv+wtI3CyW7IdZzQ8bdnfllvSteAzmi6XbDbxy/afexfQoHD
+         g07grHP/ganXizV5qnI+k7p0cFArLZwWZzsKv0hZrjmpPtlwS5fc4hycAtTgdGu9Y2zX
+         1OMDyVHiHKC3jxYIzPaem61EwHNC2FPDEb76xGEpeIvwJpKpw/S0BM6Q+YgM+SCa78Px
+         4kSnkQa+KRgC5CsAtC5XggSKWFhknRP4t71qhWu/KtN+AU1yUoB3n05PHTfP3bVedCdM
+         cqzqBtXsBjeD+q4urBerQBaqaThWvEZEg4RPOb+fwUXYZLTlizvsT6Q6GMVdq/bPf038
+         fVTg==
+X-Forwarded-Encrypted: i=1; AKwUvBxU6/BNDzRI3e+TP48mitds8ct/iJpiw7k6pd5GoHWE0qqR4rBeJnYduFFVdGkNWVg3REk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLbt/wkjg7Lvm/9tSJN/nJPU1GOp28a8VedSBX76IZLrkxx7HZ5
+	4ktmtnIq7BWQ0r1Y7JozIO7/Jd+DyH18wKsSdudMOfmnjGdp7HsBLa22FOpbYefNva3WOy0RMPE
+	T+Y01VA==
+X-Received: from pgfd7-n1.prod.google.com ([2002:a05:6a02:6547:10b0:cc7:e6e5:e624])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4cc8:b0:3a0:c276:1ec0
+ with SMTP id 98e67ed59e1d1-3ae897f673emr156104a91.28.1793308755622; Thu, 29
+ Oct 2026 14:19:15 -0700 (PDT)
+Date: Thu, 29 Oct 2026 14:19:14 -0700
+In-Reply-To: <20261029202817.901145-1-jmattson@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,26 +77,89 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261025075138.2919734-4-fuad.tabba@linux.dev>
+Mime-Version: 1.0
+References: <20261029202817.901145-1-jmattson@google.com>
+Message-ID: <auO4UueaV0mTVzzB@google.com>
+Subject: Re: [PATCH 1/3] KVM: SVM: Check EFER.SVME before updating MSR_VM_CR
+ on guest writes
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Sun, Oct 25, 2026 at 07:51:36AM +0000, Fuad Tabba wrote:
-> From: Marc Zyngier <maz@kernel.org>
-> 
-> Add ACCDATA_EL1 save/restore as part of the EL0 context. This is
-> conditioned on the guest's view of ID_AA64ISAR1_EL1.LS64 reporting
-> that this register is supported.
-> 
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Fixes: 58ce78667a641 ("arm64: Add support for FEAT_{LS64, LS64_V}")
-> Link: https://lore.kernel.org/r/20240815125959.2097734-5-maz@kernel.org
-> Cc: stable@vger.kernel.org
-> [Fuad: rebased; switch ACCDATA_EL1 for guests only, as the host never
->  uses it; gate it on a new ARM64_HAS_LS64_ACCDATA capability, since
->  in pKVM the host controls a non-protected guest's ID registers, and
->  an EL2 access to ACCDATA_EL1 on a CPU without the feature is UNDEFINED]
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+On Thu, Oct 29, 2026, Jim Mattson wrote:
+> (Host- initiated writes are allowed to set any valid MSR_VM_CR bits.)
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Eww.  Why?  If we allow this, then we'll end up with the mess where the guest
+can't write back the current value (if userspace is being weird).  I get that
+we want to avoid ordering issues, but there's *already* a required order here,
+unless userspace ignores the failure from svm_set_vm_cr() and continues on.
+
+KVM doesn't advertise the MSR as something to be saved/restored, and none of
+QEMU, CHV, CrosVM, or our VMM appear to save/restore it.  So why make trouble
+for ourselves?
+
+> Fixes: 4a810181c8bc ("KVM: SVM: Implement emulation of vm_cr msr")
+> Signed-off-by: Jim Mattson <jmattson@google.com>
+> ---
+>  arch/x86/kvm/svm/svm.c | 22 +++++++++++++---------
+>  1 file changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 136069dfcd44..3a0a507c94b2 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -3015,14 +3015,24 @@ static int svm_complete_emulated_msr(struct kvm_vcpu *vcpu, int err)
+>  	return 1;
+>  }
+>  
+> -static int svm_set_vm_cr(struct kvm_vcpu *vcpu, u64 data)
+> +static int svm_set_vm_cr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+>  {
+>  	struct vcpu_svm *svm = to_svm(vcpu);
+> -	int svm_dis, chg_mask;
+> +	u64 data = msr->data;
+> +	int chg_mask;
+>  
+>  	if (data & ~SVM_VM_CR_VALID_MASK)
+>  		return 1;
+>  
+> +	if (msr->host_initiated) {
+> +		svm->nested.vm_cr_msr = data;
+> +		return 0;
+> +	}
+> +
+> +	/* check for svm_disable while efer.svme is set */
+> +	if ((data & SVM_VM_CR_SVM_DIS_MASK) && (vcpu->arch.efer & EFER_SVME))
+> +		return 1;
+> +
+>  	chg_mask = SVM_VM_CR_VALID_MASK;
+>  
+>  	if (svm->nested.vm_cr_msr & SVM_VM_CR_SVM_DIS_MASK)
+> @@ -3031,12 +3041,6 @@ static int svm_set_vm_cr(struct kvm_vcpu *vcpu, u64 data)
+>  	svm->nested.vm_cr_msr &= ~chg_mask;
+>  	svm->nested.vm_cr_msr |= (data & chg_mask);
+>  
+> -	svm_dis = svm->nested.vm_cr_msr & SVM_VM_CR_SVM_DIS_MASK;
+> -
+> -	/* check for svm_disable while efer.svme is set */
+> -	if (svm_dis && (vcpu->arch.efer & EFER_SVME))
+> -		return 1;
+> -
+>  	return 0;
+>  }
+>  
+> @@ -3262,7 +3266,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+>  		svm->nested.hsave_msr = data & PAGE_MASK;
+>  		break;
+>  	case MSR_VM_CR:
+> -		return svm_set_vm_cr(vcpu, data);
+> +		return svm_set_vm_cr(vcpu, msr);
+>  	case MSR_VM_IGNNE:
+>  		kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
+>  		break;
+> -- 
+> 2.56.0.317.g454f8302e1-goog
+> 
