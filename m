@@ -1,105 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793278364;
-	b=zeQfkPZMRGgrUZDRGNMjOlq3gEcJnWq6VFFXTUwt17Y/E286wajd9xmBN0b+r4Avc7JD
-	 QZQuWWU2cLhyUOufn9MEtjgn7aJdLEJ+gZecw1lg5EX7jesmZgHCVLGNbt3AzvSDnN9gL
-	 ZZIwZ8NHeo4oJM41d0CkPrCuAJAKVK7RnH7hWitihveMrDCs7oMsNPDfO37HgyJSlM+o7
-	 cpXE0Wek3hWM0zNHXGRXLCl6mPiGmdS/81JAc81RgUK/+JD0Q8DAT/UU5TjqjoaLG8PRa
-	 mEB1osxTfOKmVa0iiLzMM/twJ0q00De1q2Q5lU0aVjmJUh2/tDY7zDSotMJJVPThD2w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793278364;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=zf2xViTkAeLxB49iEkeFNan7sx9Snfm1yj/XBegFK/Q=;
-	b=tpXiSgKW9x8aeROGMhlB47MsWNpgpT8ZBX6tC6rpWSIaq9Rotoh2W0rTFGTv3qvwEuzR
-	 7qMISxYY/tUe1+dh5Eep6bFV5GHZBFtIhZhb962PZYLe6QsAcCQrzPCQoE7aV4G5CQvXl
-	 9/WK6v/m5E7Tst6noABO2Scp7M+pqqhF8dKqV/v7Tfdb/cDg92PaaJIeNmFy7PE3/nRZw
-	 5aqMD5uuDLPWL/rexNhi2hIJIL423mhpmqbaz+uPECkgLuFhQqAcCOxJq7RmeTP/Eawv+
-	 elDbaTRPeT5khEMSYaezd4s52dXYOD533Qxe6kdb5hC/TDJM2ak77UzTVi1fjVGuUVg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kekh7D0y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.54
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793278854;
+	b=3lTdmGhcKLHtZcYuYQ/OOauc3X7eXudeUtVTkyhNDBfw1Xi9WFpMxunVs8mEP2frhbgY
+	 hczizQMdj4ZVgolv+lqLczxHM24flwZplN6+tuOlulrz3WZjNw7VoPHl13xUeh0gHf6Q9
+	 KWFEa4PsldqpOVPJ6WXhX58ftsP8h2FySmEMeqG5JB1EfojI8b+jqBvUNDgmGqR68VQxu
+	 ahslFp6RbjJ1oCYUJ0UVqA85h4BSViDRNojrZCMDHYhiIBKzL3OJmGZr4bGX+eVsPEwPe
+	 ipmcSZ+JVZX3D1cQ/qL6k4da0u7jS3I3NFM8C8Ygx5BpZqqo9ccHEZoZuPlcoi6o1Og==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793278854;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-TM-AS-GCONF:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=6CQXsIiq9KF7dfjRDf4pgTKUOfPi1lu3KBSiDo3qmec=;
+	b=1oOD/INz8c+eDIGCZMMbxTcZ3HNV4hX6YmMjbOsHTPj2ycD8Ntb3KyIFD6N7Al2ETMgg
+	 MrenOZpXanCSjCkKxqkaEJKyNnAyswXmdd565p1NICmRg1Pid+r685si+dSOuG/TEjZm1
+	 EF67pVqFHnjo37Mr7M9kDN7QlUY783YNn48jrttrQVUYKN3tSR2GpYcf47KMEC7BvTABI
+	 hAGjK9BRD1mjWMbmgjsLep9btZDFcTKw+D+93DmPs/4nBMWn8mEmq8LuHeSSHt6Rhx38a
+	 mGopP5TDXwjmVE6SvO6600vUklwdVEwHWBL/ZhSQQ+ddiNmzI3e80QqyKT5yFJFRlEg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XiTLLno6;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2852606A31D
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 12:52:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2852606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BBB606A31F;
+	Thu, 29 Oct 2026 13:00:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37BBB606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kekh7D0y
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91c75267b0fso24077486d6.3
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 05:52:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793278362; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AU8/gSzPgjpbnn9VF+heFbLmH3d1nVcCiLYPk34o7X2DNMK3bb5Pu2MdsagJkA1QbM
-         SPrfMVz9CQKy6BR7G+AUnw8/cv7zg458EeJ8Knc0iUpnpJgeO15Iw1TtS5DTdQPoUfRu
-         JX6/2L3A0aYxGGaX0i00gL6LTCfxOYH4Ef47aHbYl8c9fkn2JxxTwmsO3KjtxElfwFPQ
-         UB4Fk22LYEmWkoWs/ya8PvcOeOSxVXHyeSqBoFMtzpRRV3INq13h1f+EWdNqEHkaJ8MK
-         REzAQLhXVEAKugefai4QYUP5kEocPvdfcI3wRzDlZ1psXvYsYRXB2Ka4w3ch4+Y3ui8Q
-         SNIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=zf2xViTkAeLxB49iEkeFNan7sx9Snfm1yj/XBegFK/Q=;
-        fh=jMh7qc2mmqwn8NL0rrIvCE71vMw+0vptP34qp68ysOw=;
-        b=k06FCMqXPl/4DUKgNtewLoQ+4xCj2w3xeTNyyNeiAma21y4dINxhqMjow8bIqQFw9R
-         YRp4RHvN3kYXGebiDGL4sgVFQoVducIsybvVmYKHV2/Rr8v3iFUcx/tDq1JJFg3makH/
-         bGsdZ3dKlBKHyA9N3+2VZMb34OVaPV+mxro62C81aNlZruaKII4B0y5hfXqTLbbBvr/D
-         7FQgc2Fw5ETmT5/yExuFCdD1AYRtG4PoCGVgoEadS9wTr76VLpL7u5rq5kFrga1onGw4
-         yMC5UuwmkIcSIThVFoURX6VCgAtML3ZdDLEI3d5vVpgAy/yocwSX3/dusYeMDNUgsZhs
-         vD1A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793278362; x=1793883162; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zf2xViTkAeLxB49iEkeFNan7sx9Snfm1yj/XBegFK/Q=;
-        b=kekh7D0yvhQ1NkkjDmNzw05/UHrBOu1T0vh3axp5pIlugWookQdl2HOOKBAuRlC4kt
-         SRUtmdrx6rNa2rvgMGUVi3vfVG40FI1tLn1EaEfWNlvzfMqQcK2jTfHgta0f0F7baGeN
-         te9zb9jp/5y6rZKFj4kJ34DkOXFF/WFIe55uketGc44+LosN3Ael0rA13ZOowHojLeND
-         /6/QUuP75GyXQ1IGOibX5jto2HJD9imi5mA+3+112vXYsn6jdRuRiKqtbBO+tQAt/+Wb
-         NVgsnnU2dBOd/JmXYN0rBOFTvhIFtK1SSwZE/YxarMq8eETWEFURRIersU/k7dZ1pKpp
-         5uMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793278362; x=1793883162;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zf2xViTkAeLxB49iEkeFNan7sx9Snfm1yj/XBegFK/Q=;
-        b=lSkqC3CtXOzVT59F6P73V0i1waf94S4jAQnxPAWTTDTlkPEnQihFbBSZnFnoUEG5XX
-         2+InASmLa52Hkv7O6aGaJwuFJFFjVjNPuvtu9Y0qFab2C5tyzA8qsFtxX9UA6IvXXWZk
-         vXnnznk9GStIMMFjsUQ7h5wdY0nzkp/nJ+bs+aslFDKO6GbByfrYhdbPK/9uVdNAfcRK
-         qfVRBmiT4J2myOriXf6n1hFB0M+yJtBx2imz1UzXSOYBfqB5E5o8cN+XdyuhCGtMdBN/
-         u8cGKw3uIE/5seTnjw9U3/0nCBu/tPENxWz1zU9UhDggWsrZbQ9HUgbtXuTCI0vgI/BQ
-         yYyw==
-X-Forwarded-Encrypted: i=1; AKwUvByB2ivjUX0WMd8P1P3vOqLfahVpVSGpLEzuRxeNh1Zdi5ehKIkvv95TCKP+Dq47E4V1np4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI0Eln3MaimFEGVmaUKHTtOCUWe0QhY+ChQXT88CE70EEb+5kWh
-	DApG/NX3ord9Y8DuH+psXr244mLR4SFtzMPRAbHnno23V6XN6id6L2T6BBuEXx5g7YV+71pYu6L
-	SbUIyUY2e0xLsl77W8pIY6fESENE0ClxshCmCNVEY
-X-Gm-Gg: AYBFou0/v8j2TowaDyM+Sn8YNNwzuAd+xWDIW5nOgMRzYlYai95D9W5+FHBjJCz2iG9
-	RN8Syx4mzD+xy2U2jD28RqGraX9FpUcidHR7wmlNzAmXWuAx7fjvNPU/ADQyGqGebJNfrU+4FWJ
-	ini2VohimGwO5LNOVvj4I6dSs79us6ZLDTownph78rklGwOaUWLi2rIRPRE2BxbZzQL2a3m9A8d
-	PbL5COOauBh10Sr0g5otDp/NeZLdvAEUuME6ATVGu1/xTtau3YBZOMFZTF512yshUN3k9W9NzV5
-	Eg0rbmqbxhG8D2OUs/t5lo+UXuwwNEDFGeMqyR2Tj5c4fiMxt9AxcGKqODSBAhcvI+qX9+Aap1U
-	9ddfm1RHY+9rsY7yWhuebo3aHzoDvR3hS6phYk9xBdVDkhNwOxMsgnxuDSOggyu5s9Q==
-X-Received: by 2002:ad4:5747:0:b0:91b:9496:6a18 with SMTP id
- 6a1803df08f44-91c7d1ae53bmr83041376d6.37.1793278361370; Thu, 29 Oct 2026
- 05:52:41 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 29 Oct 2026 05:52:40 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261027154649.91571-12-griffoul@gmail.com>
-References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261027154649.91571-1-griffoul@gmail.com> <20261027154649.91571-12-griffoul@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XiTLLno6
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69TCiSYD2581151;
+	Thu, 29 Oct 2026 13:00:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=6CQXsIiq9KF7dfjRDf4pgTKUOfPi1lu3KBSiDo3qm
+	ec=; b=XiTLLno6K8u0m4rBJV/ElGv9TZn41dIMxd+xfcDIjUeIrm0tXHsM7GdZZ
+	wqB9LcyVlsTUYh5sbH4O3pNL6FEjDUqk0RJ+BkDkMWXq5Q+Z6wwZrmZTiADGx7Uc
+	pzCMXA+u5jVA31RVOwvpycphGg/fO0M+tWy83ebUeM1QFZlzeJknQLPp+MOqFY9n
+	xeZXBfCzzAOYT0eR+ooHvsIZq47mMl4Qc5eCkLdSfJ4U2mz5IOIRArOCIxy7pMeU
+	wMEeMRcYWekuS031efcv2BYJWEJaOj6SVqnBsKpiDoVSwOj8aQljJYZUn7ocIOZr
+	oKsLWaK9D+6pV9G1wGiA2F/8UNXnQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgmbtaa4r-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 29 Oct 2026 13:00:51 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69TCo3743196606;
+	Thu, 29 Oct 2026 13:00:51 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hjvh218w3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Oct 2026 13:00:51 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69TD0i5534341314
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Oct 2026 13:00:45 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D522520043;
+	Thu, 29 Oct 2026 13:00:44 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B1CBA20040;
+	Thu, 29 Oct 2026 13:00:44 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.68.31.243])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 29 Oct 2026 13:00:44 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
+        david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com
+Subject: [PATCH v5 0/7] KVM: s390: Misc bugfixes for 7.4
+Date: Thu, 29 Oct 2026 14:00:37 +0100
+Message-ID: <20261029130044.125032-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,118 +90,88 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 29 Oct 2026 05:52:40 -0700
-X-Gm-Features: AclHuK85LBuCmtDdaaOWg4OEyIMQUVa8mDtLyPY6JdCBNPTut6N07RXjZEiRQWQ
-Message-ID: <CAEvNRgGn09qrCZjUM5sdqQohPWE62GN4c52iK7ZV_gi5wro_Ww@mail.gmail.com>
-Subject: Re: [RFC PATCH 11/14] KVM: guest_memfd: Add kvm_gmem_restore() for
- PFN mode providers
-To: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>
-Cc: Alex Williamson <alex@shazbot.org>, Alexander Graf <graf@amazon.de>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Alexey Kardashevskiy <aik@amd.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Baolu Lu <baolu.lu@linux.intel.com>, Bill Wendling <morbo@google.com>, 
-	Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Christian Brauner <brauner@kernel.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Connor Williamson <connordw@amazon.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Erdem Aktas <erdemaktas@google.com>, Frank van der Linden <fvdl@google.com>, 
-	Gregory Price <gourry@gourry.net>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins <hughd@google.com>, 
-	Ingo Molnar <mingo@redhat.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	James Houghton <jthoughton@google.com>, Jan Kara <jack@suse.cz>, Jianxiong Gao <jxgao@google.com>, 
-	Joerg Roedel <joro@8bytes.org>, Joey Gouly <joey.gouly@arm.com>, 
-	John Starks <John.Starks@microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Justin Stitt <justinstitt@google.com>, Lorenzo Stoakes <ljs@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Michael Roth <michael.roth@amd.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Oliver Upton <oupton@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Steven Price <steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tarun Sahu <tarunsahu@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org, 
-	Shuah Khan <skhan@linuxfoundation.org>, Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, llvm@lists.linux.dev, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA0OSBTYWx0ZWRfX27auR0oCYslH
+ oj1T1XXi2Edbcd3EROyly6ew15jEw0K4FESDtdlvmeTl73qYikQgUoTJOWFrBw3Nrz5DzOWV46/
+ IW+XjnSjdzTSLaCTJvjcvWVvEPNVpkWiX9gugdUSEKZlK4o2TtDMAiysoh028DbpqYZsE/E/dXz
+ MomYhHbk0gbVPZKyLo9YnCGdYZcwLAsTP12NsPqYmUPGxX1Q+aCRAyHxYxaiGhTAOVeZVZLIRb7
+ 7lDCxzfh8q6nQRXwbk/GOO4CTe2MnhupazyLvO1nkZukT0kirCf1vBWC+IER/JqVReWccVaQa/K
+ QzG1I9BT5ssYPx372z86xIMdm7BgTRvugUUg/GBgSEjYjScmLENx722iMF17hcI2pjH/nVzL5m0
+ cvsVaOoI9HcEOgDG1+eReTd41ug7p7+HJNqpg6ad5lXUZExDKbiWUm5IUmDEgoWx2qBcA9N+9e5
+ OyCW9cQOlMKSDUH1Bpg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA0OSBTYWx0ZWRfX2WT7ER0n45ct
+ uR4Qm8SKAXJBCZkKrxzZTNKucO/IkjthtUGO83FqMx5rgpYGtUyZ6a0YlX0R+5dRTWSBKZvK3xF
+ BNnNQl/NbXjfbQQMcltnVT5cos+lRIg=
+X-Proofpoint-ORIG-GUID: Ge_fhPkTKjX_dTmccwTe_Gi4THfc8OWP
+X-Proofpoint-GUID: Ge_fhPkTKjX_dTmccwTe_Gi4THfc8OWP
+X-Authority-Analysis: v=2.4 cv=CeKdd7rl c=1 sm=1 tr=0 ts=6ae34383 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=6_dDdnKulsZJQZLWuZAA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-29_04,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 malwarescore=0 phishscore=0 clxscore=1015
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610290049
 
-Fred Griffoul <griffoul@gmail.com> writes:
+Misc bugfixes.
 
-> From: Fred Griffoul <fgriffo@amazon.co.uk>
->
-> A device cannot fault, so when a PFN mode provider gives frames to pages
-> that had none, or makes a read-only frame writable, a subsystem that
-> maps the file must be told.
+Some Fixes tags are approximate, since the bugs arise from slow changes
+behind the scenes in the kernel, and not from an actual bug at the moment
+of the introduction of the original code.
 
-Totally makes sense that guest_memfd needs a way to actively map pages
-into the IOMMU page tables, rather than passively like for userspace
-page tables and stage 2 page tables.
+v4->v5:
+* fix check gmap_unmap_gfn_range_fast()
+* refactor and rename the function to enable cmma, now have a lockless
+  version called gmap_enable_cmm_already_locked() and a wrapper called
+  gmap_enable_cmm() that performs the locking
+* fix missing DAT_WALK_USES_SKEYS flag
+* fix some comments
 
-When the memory is owned by guest_memfd, on a to-shared conversion,
-guest_memfd would do the mapping for IOMMU, which can't handle faults
-like Stage 2 or userspace page tables.
+v3->v4:
+* oops! some stuff removed in the previous iteration was actually needed
+* improve patch descriptions
+* fix idte_crste() clobber and table type (partially picked from v2)
+* s/IPTE_GUEST_ASCE/IDTE_GUEST_ASCE/ when using idte_crste()
+* improve comments in gmap_unmap_gfn_range()
+* do not attempt unmapping prefixes if the unmap range is above 2G
+* remove useless !hpa check in pin_blocks()
+* fix cmma issue when using large pages that caused the whole guest
+  memory to be allocated
 
-> kvm_gmem_revoke() does not fit: it would
-> zap the guest's and the VMM's mappings and reclaim frames that a guest
-> may already use.
->
+v2->v3:
+* remove all non-bugfix patches
+* rebase onto master
 
-I'd drop this paragraph from the commit message, kvm_gmem_revoke() is
-the complete opposite and isn't a candidate at all for the goal, which
-is to notify importers that a page is now available (and they can map it
-in).
+v1->v2:
+* add "memory" clobber to idte_crste()
+* remove superflouos gpa parameter for unpin_scb()
+* clear the zero bit in the PGSTE when unmapping, add missing barrier
 
-> Add kvm_gmem_restore(), the counterpart to kvm_gmem_revoke() that the
-> sample provider leaves for users that cannot fault. It only updates the
-> exports, under the shared invalidate lock.
->
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
-> ---
->  arch/x86/kvm/Makefile       |  1 +
->  include/linux/guest_memfd.h | 37 ++++++++++++++++++++++---------------
->  virt/kvm/guest_memfd.c      | 35 +++++++++++++++++++++++++++++++++--
->  3 files changed, 56 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
-> index 25fb3d6e2032..3255280884b5 100644
-> --- a/arch/x86/kvm/Makefile
-> +++ b/arch/x86/kvm/Makefile
-> @@ -63,6 +63,7 @@ exports_grep_trailer := --include='*.[ch]' -nrw $(srctree)/virt/kvm $(srctree)/a
->  				-e kvm_write_track_remove_gfn \
->  				-e kvm_file_to_kvm_fn \
->  				-e kvm_gmem_revoke \
-> +				-e kvm_gmem_restore \
 
-provider --1--> guest_memfd --2--> IOMMU
+Claudio Imbrenda (7):
+  KVM: s390: Fix UCONTROL inconsistencies
+  KVM: s390: Move some skey functions to headers
+  KVM: s390: Fix idte_crste() clobber and table type
+  KVM: s390: Improve unmapping of large ranges
+  KVM: s390: vsie: Fix pinning using the wrong flag
+  KVM: s390: Introduce gmap_enable_cmm()
+  KVM: s390: Allocate page tables when CMMA is used
 
-2 is definitely required, but why is 1 required?
+ arch/s390/kvm/gmap/dat.c  |  26 -----
+ arch/s390/kvm/gmap/dat.h  |  48 +++++++-
+ arch/s390/kvm/gmap/gmap.c | 227 +++++++++++++++++++++++++++++++-------
+ arch/s390/kvm/gmap/gmap.h |  11 ++
+ arch/s390/kvm/s390/priv.c |   8 +-
+ arch/s390/kvm/s390/s390.c |   4 +-
+ arch/s390/kvm/s390/vsie.c | 135 ++++++++---------------
+ 7 files changed, 299 insertions(+), 160 deletions(-)
 
-Between the first .get_pfn() or .lookup_pfn_range() () and
-.put_pfn_range() or kvm_gmem_revoke(), the provider should consider the
-memory in-use by guest_memfd.
+-- 
+2.56.0
 
-When it's in-use by guest_memfd, then guest_memfd should use --2--> to
-map into IOMMU page tables as necessary.
-
-When it's not in-use by guest_memfd, why would the provider force it
-into guest_memfd?
-
-If the guest VM knows that the page is now usable (some other
-communication channel), it would touch the memory and do a .get_pfn(),
-that would be successful this time. Perhaps that's when --2--> needs to
-be performed?
-
->  				-e kvm_gmem_export
->
->  # Force grep to emit a goofy group separator that can in turn be replaced with
->
-> [...snip...]
->
