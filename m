@@ -1,73 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.35.211.235
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793270317;
-	b=S8z7wW2euf715mljJVSCb7/1C89gJ4EOVyofH9hwCJ/1TGbOX0qZMANRBs+3PC2LXAw7
-	 u4HDPgrYYQ+12G/MXafOLm9OqSo4i45xexNpxATbcQZ1U18b9rv3sID+7bEy7XOg+tzvG
-	 cHfmNuwlIATTo3mBlk8WFuZSlYnsSPqHEVTl7FuZ9JLksBnYUzqdi2m2MSj04hUK+mGpY
-	 WY9Nh+LM8SPW9Y04mNKKOKLQDgnjFDfqjlhQSsrjd+4QAezIKO6tzWh7M/D/Z1Z4+psNs
-	 yhhmsZPfCBLJ0Q3U3fdx2hKrLaWGCBtsGMAqc0aFErfAQJ+12SwVF5+1IOPlULYWagQ==
+	t=1793271328;
+	b=oYZByuj8ZM69vH9F/ChQ+3MwYErhnaAZ2NBenXWOMgoCvwXdgEO7AR4V5xk0vjBhYHQi
+	 lSAwqOX9b5rjoSGVl99mHVbxnhHZgqu6h2blwTWHdJYWf94dtwNJVmpL3wcQqbh7BDguL
+	 57VTFWunj6wVpJFr3kuaLnqlkGEKsGcRENxLOooEjAeMEmnfyJN+5GWpcxZqNk1kkX6/7
+	 xMc41LsPQ+J6at40Ke+GW+xRbN/CCFVngGr7KyX0ndfzEBG9gwu9UKFn7lqJjbW4k7Be1
+	 jRLkttBCAFJVK46oD4ps4dMxNlqTZTBKUY+/sZDxrCXM7R/+7d5fVImltpkfZnOAfbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793270317;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:Mail-Followup-To:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=Ld4QZ3pQQcZaz8vukIMO+uxQ90DsPcX0V4TVlD11JwE=;
-	b=vcnKwBZJL4sGye+LONDaKpVWo0KTRgPJ1gnQmJW8vMYmcqWqtPHQB256g7YLXSAfkgkb
-	 Iiw1kCEC2JnCqcjapIYo8WMrGLsXm9A2LzkkSwcun6X8QDd/kPk5DY0z5n6ezBxtdYwvx
-	 48MnzgEm7vj8hBFioxp7wD2Dx/hhqopZrEjicXygqcGu015IScKZjmsUnxlP60JGh0VGF
-	 LYU6nKKJoR2ZGJ2scR8FJYtOyfvF3SrzxGI19OdG8CgyfarNA3I/5WJuLBtLVvL1X5wM/
-	 ieHrjII9SFSHKyAJIN5fatWx34f3on+s5HqO7aCmUjHzAXKkIVoZ0KP33+F0oOENoag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793271328;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=QkkwAFQHohFN3MMtdm1q3jZttxO/j+fe5cVvGi3Xl6c=;
+	b=YgU/RR9K5CvbIQceL+Xe91OE6zVeK31Yji/nz7g3hVzb7GGSWZyjAgiSLXgzWgIT2qaK
+	 jJQaWroEAE9JNpkWEQclbyL3PT4tHhSO/Ot36DB+jggPO5ywnJ/8aeVnRtY7NnqMygMHv
+	 fOTZnIvhmR+N/o9obIly1xqamY6va3c3puLig5zXOEQb0EyfkXerANGwIzleVOG2mqGlj
+	 dDyerCEm5ZjQO3+eFco1cgO2b1MzGLtPifD6riXVLd8HCr0WXabq4gGOEQPGr4WTLcUVy
+	 ldTBxYl/5demT4SX6jKnvqxRxhWW5kt4r3XmXGV9pkGJn3Vbc2yp8obkk08yrhTUulA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mifar.in;
-	spf=pass smtp.mailfrom=mifar.in;
-	dkim=pass header.d=mifar.in header.i=@mifar.in header.a=rsa-sha256 header.s=mail header.b=mPwfOPuO;
-	arc=none smtp.remote-ip=161.35.211.235
-Received: from mifar.in (mifar.in [161.35.211.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hAfZlOvp;
+	arc=none smtp.remote-ip=192.198.163.7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0591606A31D
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:38:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0591606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mifar.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mifar.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F638606A31A;
+	Thu, 29 Oct 2026 10:55:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F638606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mifar.in header.i=@mifar.in header.a=rsa-sha256 header.s=mail header.b=mPwfOPuO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mifar.in;
- i=@mifar.in; q=dns/txt; s=mail; t=1793270303; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to : from;
- bh=cHpyh54zy9xh+wdRjyz3Jr7nU3jQZkJ9CsSQ6jhbF3w=;
- b=mPwfOPuOZNbbuBaKJ9oZDbH/i/v3oJlA1QMQsyrR9FhtCzSgn56yqKLptec5W7Wmhuynk
- UbU1pGPVchzuaIf38vtL9pvvEldm/hPtpr09U8wT8bgjOv3QyygX71y5wBjsnXSlxZbFDSw
- w4+6gSWFPb6HCkahd5u7qS2eXBMlP9TiqUOp1Gy3RTIN4uwBKVhASZrRSubjDRA357E8tzV
- 5UUPT8Irc/2w7aWRU5zdA3cKnEsPa/C1yxaRRZuP7KCumqw1kvzQnVsbJSvIUXFCs335jn3
- EbATEzAZMctWNoS1UDDOeqfDxsd9K5PKk9zuA0Yjd7yMZzxMVdyK9ncaKljA==
-Received: by mifar.in (Postfix, from userid 1000)
-	id 213E044917; Thu, 29 Oct 2026 10:38:23 +0000 (UTC)
-Date: Thu, 29 Oct 2026 10:38:23 +0000
-From: Sami Farin <lkml20261027@mifar.in>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
-	kimjw04271234@gmail.com, stable@vger.kernel.org
-Subject: Re: [REGRESSION] KVM: x86: OVMF boot hang with SMM enabled after
- commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO
- cache")
-Message-ID: <20261029103823.3u32wxlxdjksq6j4@m.mifar.in>
-Mail-Followup-To: Sami Farin <lkml20261027@mifar.in>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
-	kimjw04271234@gmail.com, stable@vger.kernel.org
-References: <2026102314-CVE-2026-99082-e5b1@gregkh>
- <20261027124140.upuow4a3kv6kssvn@m.mifar.in>
- <auIy4UZMGxLhBCAn@google.com>
- <d4214249-5ec0-4600-91be-13632b180425@redhat.com>
- <69437bf0-45fc-4701-9144-a208c12423e6@redhat.com>
- <auI4kViOXpqxT3wA@google.com>
- <6f6694db-b1aa-4d9e-be82-b0d11cd814d9@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hAfZlOvp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793271328; x=1824807328;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QuCVJTSRuC+l8TTfanattdAyMrkAFWAplA63tjk/Ubc=;
+  b=hAfZlOvp1RmtV47iSAy9QuJfiKnX+l4gbbxj6jECqTjnpacxc9mE4faq
+   GKpDpggwEXYffFJnEMUoSDriMYu0NyQMjbXAuoydhGv8Fwn52PbYsc65e
+   1Q0A2Uj6SQZ5qthnubO8qePkGgmoJ/dZ8ROAJWnKVe8Nq1jkMIvpZRIu7
+   Zrb+hASRIDh17zVE2fUVN6upDNLkYzb3lMfs2iJ83v3rbXvjMbWgj51ts
+   tMNuExDOop3HznnjAPu90VECzB9gd3gcV2O1VehhX2YgCi1sYyzc+ZlVC
+   Xv6l/Mt6MUXE38kO+4DSyBoMXs9PjGPAx6Nj++HK58eAyIqdFmc00E+Yx
+   w==;
+X-CSE-ConnectionGUID: bnJQe9QeSTe13SFAw4aeEg==
+X-CSE-MsgGUID: XiN9O3laR5Wc6iP1ROjqwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1899186"
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="1899186"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 03:55:26 -0700
+X-CSE-ConnectionGUID: TCIFsRTITRCDp/Up5ewsjw==
+X-CSE-MsgGUID: pxmLGcUrRe6SW/aUTpSCkQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="5208689"
+Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 03:55:21 -0700
+Message-ID: <2afe6fcd-eadc-4f9d-bbe4-0e6449479603@linux.intel.com>
+Date: Thu, 29 Oct 2026 18:55:19 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,80 +72,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6f6694db-b1aa-4d9e-be82-b0d11cd814d9@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 14/28] KVM: VMX: Virtualize FRED event_data
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
+ David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-15-sohil.mehta@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20260911213659.2025974-15-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 28, 2026 at 19:42:38 +0100, Paolo Bonzini wrote:
-...
->1) if this patch gives the WARN (with vanilla 6.18.58):
->
->diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
->index cfe96962a4e4..a96d839a317b 100644
->--- a/arch/x86/kvm/x86.h
->+++ b/arch/x86/kvm/x86.h
->@@ -263,6 +263,7 @@ static inline void vcpu_cache_mmio_info(struct 
->kvm_vcpu *vcpu,
-> 	vcpu->arch.mmio_access = access;
-> 	vcpu->arch.mmio_gfn = gfn;
-> 	vcpu->arch.mmio_gen = gen;
->+	WARN_ON_ONCE((gen & 1) != kvm_arch_vcpu_memslots_id(vcpu));
-> }
+On 9/12/2026 5:36 AM, Sohil Mehta wrote:
+>  
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 94d684210cf6..e10ac6b280f6 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -431,9 +431,22 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
 
-This did not trigger, but would it have been better to do
-WARN_ON_ONCE((gen % kvm_arch_nr_memslot_as_ids(vcpu->kvm)) != kvm_arch_vcpu_memslots_id(vcpu));
+kvm_deliver_exception_payload() returns early if !ex->has_payload.
 
-Anyways, I tried this with 6.18.58, but I cannot reproduce the infinite loop anymore!
-I have Intel Core i5-13600K, qemu-11.1.2.
+For example, if a #PF is injected, kvm_deliver_exception_payload() sets
+ex->event_data to cr2.
+Later, if a #DB without payload is queued via KVM_GUESTDBG_INJECT_DB, the
+event_data is not updated.
+It seems the stale #PF event_data will be write to INJECTED_EVENT_DATA and
+delivered to #DB handler in the guest.
 
-Please disregard and drop this patch.
-
-After deeper tracing to understand why deterministic reproduction was elusive,
-I looked into how memslot generations are initialized and incremented in
-virt/kvm/kvm_main.c:1667-1673:
-
-     /*
-      * Generations must be unique even across address spaces. We do not need
-      * a global counter for that, instead the generation space is evenly split
-      * across address spaces. For example, with two address spaces, address
-      * space 0 will use generations 0, 2, 4, ... while address space 1 will
-      * use generations 1, 3, 5, ...
-      */
-     gen += kvm_arch_nr_memslot_as_ids(kvm);
-
-Because KVM seeds AS 0 with 0 and AS 1 with 1, and steps each update by 2,
-AS 0 generations are strictly even while AS 1 generations are strictly odd.
-The generation sets are disjoint (AS0 ∩ AS1 = ∅).
-
-Commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO
-cache") already fixed this completely by switching from kvm_memslots() to
-kvm_vcpu_memslots(). Because the active memslots' generation already embeds
-address-space parity in bit 0, an MMIO entry cached in SMM (odd generation)
-can never produce a false cache hit in normal mode (even generation). Tracking
-mmio_as_id separately is redundant.
-
-The Windows 11 / OVMF boot freeze that originally motivated this was traced
-separately to high-vCPU SMI rendezvous lock contention during an NVRAM write
-storm on dirty boot, completely unrelated to the MMIO cache.
-
-Sorry for the noise.
-
-Thanks,
-Sami
-
-> static inline bool vcpu_match_mmio_gen(struct kvm_vcpu *vcpu)
->
->2) if patch 1 or patch 2 separately are enough to fix the issue;
->
->If you have time, can you also check if it fails to boot even before 
->reaching Windows (you can try any Linux ISO, or even with no disk at 
->all)?  Also, just to cover all bases is your machine Intel or AMD?
->
->Thanks,
->
->Paolo
->
-
--- 
-Do what you love because life is too short for anything else.
+>  		 * breakpoint), it is reserved and must be zero in DR6.
+>  		 */
+>  		vcpu->arch.dr6 &= ~BIT(12);
+> +
+> +		/*
+> +		 * FRED #DB event data matches DR6, but follows the polarity of
+> +		 * VMX's pending debug exceptions, not DR6.
+> +		 */
+> +		ex->event_data = ex->payload & ~BIT(12);
+> +		break;
+> +	case NM_VECTOR:
+> +		ex->event_data = ex->payload;
+>  		break;
+>  	case PF_VECTOR:
+>  		vcpu->arch.cr2 = ex->payload;
+> +		ex->event_data = ex->payload;
+> +		break;
+> +	default:
+> +		ex->event_data = 0;
+>  		break;
+>  	}
+>  
