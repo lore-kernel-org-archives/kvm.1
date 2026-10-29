@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793306010;
-	b=CLSQV9cAjZh3N56sC+ckQK0SsxGn4IpUHcZ+dakXliDlsf/s5EuKXjx+6o/AKDFkiwcb
-	 UlA4ySPn4P13n9wDzlitasPoFS3N1PtUcIvc/BvtIyxU9ys6RlO7lSw6Z5QuKdiznn8OK
-	 7DaK0BNWKQW0sLNOdfMi6goqP+lzEStERPqlOJ7jg8s5dSEKUIilbEDimu8+52S1kyv+q
-	 BS2wUTuGsbU/gekZRlQq361tMIA4SDEfDPru9la2imE8NtPHF4p6Xuv3HijUhQ4wCg8wB
-	 6zMtdzvn7fcQj4MiNtF7HE4gEGlRMjTNG99UIFozC06nMbirmvdjl0kvzuFBNw96QQQ==
+	t=1793306014;
+	b=lz8k2mRTvOXYhBqcd0Bwj03a2CG0gQU52vc0/0ENMcZxj5ioK5o3h8Y6Dh17mOA0vk+m
+	 WM9YeYqL1Hc3J33sIHOdqhgJ7+S5Q4plainfLvtBYwH96GqpEbHvaaYZb2PJ5dqTvS9OQ
+	 k/dSpxO5x/ktajhLeJnaoQcrPALCdPh2+UGAxdL1z4vd4ImlDzE1Gf2fAvPPIhs2BGFWT
+	 F+iEo44U1pqUVw0s07c0rBdw/VSrvS11iWYE9LUw8sDbtKDMQa4O6TfXhNHICzD6OWJuU
+	 3c4w36nVa7IOmOXWxzfFfRXmaWcwzQ90TY6NO5o5lx8pBDWX8rVUEKrVB/W0b6MYqDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793306010;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793306014;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=tDfMnHPOVxE98+9TE/nBvfLsdX5oZKXJTQxV9ofrPB8=;
-	b=LvYRyL1iml9CIG8tPL4PaQn2H5np5fnuwLFLTTLYQNuf213Ftw5f45Fy0XjnXB/ZG/vg
-	 157DXgmCnq4jjFan5F9f5zA6z/7+NCHaiprKj1LGIsR9q5J3JPCAFqP9oxGMqXCi2Ghjm
-	 VcMtAfFcPpNZoxZZpKP8tVEkcpOFDqUy/+JtN/q03MEJRdMf4xIe6tnbfxZ2kug4pDYxG
-	 3hUm6Cz8UXKZQV/TacvBldLOpds4oN4b5PqwZqZIr4ASx+S2bDzhz3axa+qaOrBhiAEGh
-	 I0y7NKVGWxBw5pzuBbNgzeHuD6hwpAj/RWhWbmUBDH6nLUW7rPKCNDvwArX04PfPMNw==
+	bh=z179Ocr4JquFIIJEs4efAQ+NRuf5uFGDrSodVviqc40=;
+	b=F4vDxhRTEULApS0HJtqtvRanG1/B2L685c+fByWlN0jjBpf4gE1TkSNckHYJOflW0eqU
+	 BNNr9FCJGIqKvqju7sbJZEmlnmT1oRLpx0UpgxqhlvdMImH1Hs6a0xYqUQYh71t+XB7uY
+	 4pFEUHna5wA+FivdmUuPnC2TYNuaTlLT7t3FceakI0S+GXIpCbApAw8HrGmEXuwNmwqIM
+	 iuPkCbgmHMriJIr6WZJXHRbVEgzwOgPH2GQXs4P/dhrcisr/GBQwd7MPGm5C9T/Diace4
+	 QUxO805wmAgnAHZdOfzRtNcWxGHFkbHLgehS/ZA34v4+C9wNbJ4Jb6SrBSpErsbpj3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jVFy5+f3;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="k/h7ENib";
+	arc=none smtp.remote-ip=209.85.210.198
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA75E606A334
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 20:33:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA75E606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD98C606A324
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 20:33:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD98C606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jVFy5+f3
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ada8bc8575so4430198a91.3
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 13:33:29 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=k/h7ENib
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8862ed0539dso2580900b3a.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 13:33:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793306009; x=1793910809; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793306010; x=1793910810; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tDfMnHPOVxE98+9TE/nBvfLsdX5oZKXJTQxV9ofrPB8=;
-        b=jVFy5+f39q99V15VIlErwgQ/W4JaK3puuVFnmWxDh5qTYdzYTJm/i5S26DvU74eokY
-         dEBszj0wP7s60Ia5DwLR246rhtEnlUJLcrW89C+l/iTHE05Mgyua3tJU2eIIVEn7QGa2
-         1tP7NcSxuZN+unp/iskwvxXQ1DN9j+EpgKQftNQ1WYbq/mOK4Q7833DHO/d3tcd2rg0y
-         yHshEZmt8XPPm7p82kjx5mH6lZZMkBSmHaAzogxKryBwnvlU4dmXHUnd+h4jJyPAeX6i
-         g1KvAV2uq3R4Ybl9rxrMFMQwuWvdlwGlpZPDprdmvJXJM0Tq5Na/aG/AruA+chpCVvcC
-         oqqw==
+        bh=z179Ocr4JquFIIJEs4efAQ+NRuf5uFGDrSodVviqc40=;
+        b=k/h7ENibaZ/MHveOfXZbn8cGvIsxFR9IpAxNtw3uxjW2EEVPpBpgKySaDvjVCOtLkC
+         PFPyV6kU+sS1sl2BXzQphOCHkjj+1XhYVzhLPwFeoiTBp7QrtAWXIyKORrt0HLt2Olmk
+         Rqdjd4bcgIe+aXaCPfjfbV/wcB4KhVhth/FMBH1Acc5y1M8qHyXaae0FputJ9WIt6wK1
+         ELuMFTyxid2zLMBN1WdTMSsV0IJlaGuE6o9f9XdTN1mbpnf9AuQhHazzCUy2IuoW9u+H
+         J/t1k11ZqkQ7EmxV54ne+n3n5zMIwVgbZONmDDp7KmG2yiiZclWh5sL1Bogt4zPnEBoG
+         yBhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793306009; x=1793910809;
+        d=1e100.net; s=20260707; t=1793306010; x=1793910810;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tDfMnHPOVxE98+9TE/nBvfLsdX5oZKXJTQxV9ofrPB8=;
-        b=uv8+WsnZ6FD6ES9Ua+J5ghXtJ5nd4csce2S6rU93nC/VFUYZ+Y+R0xco/DgHa4MKUj
-         66UzRWKy3X3JGuI5bCJPDZLZTMtmzbJT1/XmjH9VUaIHZqQO0axp/w9G+pqgy7H+qRc+
-         LjJykFfYX6IIIU5NVBOOp0LuXLcL5M02FmdIgVdSTEue4Xjw7KhCnhNNszJFU1EdKqC8
-         HfrNdh9qQm7u++5ihGawgaWUhJVm4DUwP5Vtqd9c7JJ9MJOTMNvf1sJnTtrd4SKDEbV/
-         v7GdmyW9TIXZcMcikO5VBD7qrPvwnMJ4iNxUb36cyfbLmxVTi2bwl10SRDdmHL2NiYxY
-         2Nbg==
-X-Gm-Message-State: AFq9FYL5lr9pXpA6oqtaM87jlpwfpMz2Y3+ejQ6t/eoyZ+SrlFph465I
-	uuDQo1+VPd7iFOBbLa+volJN2nDr9r/X94XbexevHWsaMne48whONfcXTDjDX7XLLOdYvndOSUz
-	JepUC/EfdXZOlwcOr9O6FB5dqkIXOvvios4Dr90CBEBLYs4pRKA7QufNX80v1QxLsO5BDcW3Xg1
-	94Xo1lVVS+ycKjxexDWT1qCg2ng+PTllKphq2hoGkU5Pw=
-X-Received: from pjff12.prod.google.com ([2002:a17:90b:562c:b0:3a6:daac:15d1])
+        bh=z179Ocr4JquFIIJEs4efAQ+NRuf5uFGDrSodVviqc40=;
+        b=at8nSR/IQgzZVsTYnsgSU/ycwrmmO7JfVAitoa7I/3zKihROcZGSNoF0NCl8jd+IXb
+         LgzEl/EbfSMugzowH1ZJXzJFGFrqNU3ll+/fva3/WfXyqqBx6XuB0RRxGGC2qUFYZCA6
+         amj3GO80ph2Ss96q0gDflcBvZPOPLaMXtoRHGScXL9on7/7XaUVO3CBUO6pLxeAd3DlN
+         DivzQnjAnOCBINBmcpY0Uzx3srrKqDsQ27I8BxwqZJ8AfhuDqvNiR5s3rVNBtZ1ypXJO
+         5r4CIjxGgbi/C9JlTeQHYiVhgHwraL5xhXH7kEOtjJ1MNYv+ufWD9+dmpOLiTA0Dmd/E
+         noxQ==
+X-Gm-Message-State: AFq9FYL8rDAq1EdihU0b7fd3ybTQ8711a8rsjRnShV4KRen3NCWUFISC
+	O78DV83owL0K/KfWhUB2G3l1D1ID0pJ9DAsEO9DXXgzChNcnuw/oBv2p3nvWNUqWlR4Le9gnuWU
+	oGV6mS3NPpjU8JPja931uqMKxl2TwaWtA3/9OH6KByF57J0y6o627AQ+4LtM/FyNd8So0Ylt92r
+	wMg/q4MmZ8RI+zQfUqgIAkSPcl7cx2knAw6ED9nMQj0d0=
+X-Received: from pgdo12-n2.prod.google.com ([2002:a05:6a02:620c:20b0:cd6:1fc4:6199])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3812:b0:3ad:183f:5e3a with SMTP id 98e67ed59e1d1-3ae89574cc8mr139687a91.4.1793306009170;
+ 2002:a05:6a21:7741:b0:3e2:30c1:fe01 with SMTP id adf61e73a8af0-3e928e3f9c8mr297152637.69.1793306009847;
  Thu, 29 Oct 2026 13:33:29 -0700 (PDT)
-Date: Thu, 29 Oct 2026 20:33:22 +0000
+Date: Thu, 29 Oct 2026 20:33:23 +0000
 In-Reply-To: <20261029203324.1637772-1-dmatlack@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,8 +80,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261029203324.1637772-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261029203324.1637772-4-dmatlack@google.com>
-Subject: [PATCH 3/5] vfio: selftests: Add vfio_pci_find_capability()
+Message-ID: <20261029203324.1637772-5-dmatlack@google.com>
+Subject: [PATCH 4/5] vfio: selftests: Add sysfs_kernel_warn_count_get()
 From: David Matlack <dmatlack@google.com>
 To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
@@ -89,73 +89,85 @@ Cc: Abhishek Sahu <abhsahu@nvidia.com>, Alex Williamson <alex@shazbot.org>,
 	David Matlack <dmatlack@google.com>, Raghavendra Rao Ananta <rananta@google.com>, Shuah Khan <shuah@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Add a helper to find the config space offset of a capability in a
-device's standard capability list, mirroring the kernel's
-pci_find_capability(). Return 0 if the device does not have the
-capability.
+Add a helper to read /sys/kernel/warn_count, which counts the number of
+warnings (e.g. WARN(), KASAN, and UBSAN reports) the kernel has
+encountered since boot. Return a negative value if the file does not
+exist, e.g. on kernels that predate it.
 
-This will be used in a subsequent commit to locate the PM capability.
+Factor the code to read an integer from a sysfs file out of
+sysfs_val_get_int() so that it can be shared by both helpers.
+
+This will be used in a subsequent commit to detect kernel warnings
+triggered by tests.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- .../lib/include/libvfio/vfio_pci_device.h     |  7 ++++++
- .../selftests/vfio/lib/vfio_pci_device.c      | 25 +++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ .../vfio/lib/include/libvfio/sysfs.h          |  7 +++++++
+ tools/testing/selftests/vfio/lib/sysfs.c      | 19 +++++++++++++++----
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-index 007adc322c1e..1839e95cc792 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-@@ -79,6 +79,13 @@ void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
- #define vfio_pci_config_writew(_d, _o, _v) vfio_pci_config_write(_d, _o, _v, u16)
- #define vfio_pci_config_writel(_d, _o, _v) vfio_pci_config_write(_d, _o, _v, u32)
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/sysfs.h b/tools/testing/selftests/vfio/lib/include/libvfio/sysfs.h
+index c9ab1ea8f5a9..1b9711d1bf90 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio/sysfs.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/sysfs.h
+@@ -9,4 +9,11 @@ char *sysfs_sriov_vf_bdf_get(const char *pf_bdf, int i);
+ int sysfs_iommu_group_get(const char *bdf);
+ char *sysfs_driver_get(const char *bdf);
  
 +/*
-+ * Return the config space offset of the first capability with the given ID
-+ * (PCI_CAP_ID_*) in the device's standard capability list, or 0 if the device
-+ * does not have the capability.
++ * Return the number of warnings the kernel has encountered since boot (e.g.
++ * WARN(), KASAN, and UBSAN reports), or a negative value if the kernel does
++ * not support /sys/kernel/warn_count.
 + */
-+u8 vfio_pci_find_capability(struct vfio_pci_device *device, u8 cap_id);
++int sysfs_kernel_warn_count_get(void);
 +
- static inline void vfio_pci_cmd_set(struct vfio_pci_device *device, u16 bits)
- {
- 	u16 cmd = vfio_pci_config_readw(device, PCI_COMMAND);
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index 4063a0e2b3df..2afbc465d30c 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -260,6 +260,31 @@ void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
- 		       write ? "write to" : "read from", config);
+ #endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_SYSFS_H */
+diff --git a/tools/testing/selftests/vfio/lib/sysfs.c b/tools/testing/selftests/vfio/lib/sysfs.c
+index d88e348a1e0d..71470196f092 100644
+--- a/tools/testing/selftests/vfio/lib/sysfs.c
++++ b/tools/testing/selftests/vfio/lib/sysfs.c
+@@ -33,15 +33,12 @@ static void readlink_base(const char *path, const char *data_fmt, void *out_data
+ 	VFIO_ASSERT_EQ(ret, 1);
  }
  
-+/* Bound the capability list walk in case the list contains a loop. */
-+#define PCI_FIND_CAP_TTL 48
-+
-+u8 vfio_pci_find_capability(struct vfio_pci_device *device, u8 cap_id)
+-static int sysfs_val_get_int(const char *component, const char *name,
+-			     const char *file)
++static int sysfs_path_get_int(const char *path)
+ {
+-	char path[PATH_MAX];
+ 	char buf[32];
+ 	int ret;
+ 	int fd;
+ 
+-	snprintf_assert(path, PATH_MAX, "/sys/bus/pci/%s/%s/%s", component, name, file);
+ 	fd = open(path, O_RDONLY);
+ 	if (fd < 0)
+ 		return fd;
+@@ -56,6 +53,15 @@ static int sysfs_val_get_int(const char *component, const char *name,
+ 	return ret;
+ }
+ 
++static int sysfs_val_get_int(const char *component, const char *name,
++			     const char *file)
 +{
-+	int ttl = PCI_FIND_CAP_TTL;
-+	u8 pos;
++	char path[PATH_MAX];
 +
-+	if (!(vfio_pci_config_readw(device, PCI_STATUS) & PCI_STATUS_CAP_LIST))
-+		return 0;
-+
-+	pos = vfio_pci_config_readb(device, PCI_CAPABILITY_LIST);
-+
-+	while (pos >= PCI_STD_HEADER_SIZEOF && ttl--) {
-+		pos &= ~3;
-+
-+		if (vfio_pci_config_readb(device, pos + PCI_CAP_LIST_ID) == cap_id)
-+			return pos;
-+
-+		pos = vfio_pci_config_readb(device, pos + PCI_CAP_LIST_NEXT);
-+	}
-+
-+	return 0;
++	snprintf_assert(path, PATH_MAX, "/sys/bus/pci/%s/%s/%s", component, name, file);
++	return sysfs_path_get_int(path);
 +}
 +
- int __vfio_pci_device_reset(struct vfio_pci_device *device)
+ static void sysfs_val_set(const char *component, const char *name,
+ 			  const char *file, const char *val)
  {
- 	if (ioctl(device->fd, VFIO_DEVICE_RESET, NULL))
+@@ -148,3 +154,8 @@ char *sysfs_driver_get(const char *bdf)
+ 
+ 	return out_driver;
+ }
++
++int sysfs_kernel_warn_count_get(void)
++{
++	return sysfs_path_get_int("/sys/kernel/warn_count");
++}
 -- 
 2.56.0.317.g454f8302e1-goog
 
