@@ -1,17 +1,17 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.0
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.19
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793303803;
-	b=MFWiY+vohDl/eMfzXjjXa7/DkdTTyw30BdBBj6kkkWILRBAwDGJAZ9GUO1dktuCA5hhd
-	 l58vjqRhFa1l7kZ5vMhnLjHvfYSfLcwazbI8kmYofHB8nkQf62YyxbH2vIe2MmrYJjT1c
-	 YfjCFHG6KTziDSVz2DJEh15obpBOfNXW00MFvh8YV9KW78dvNrVkwOtxczn16L6JyASke
-	 HWM4p775Ywoq1PviK9mO1YFdRLQh/qu5f+00eT6Rnj/Rdu7IiLVtJkjZcBgisHbstb6mJ
-	 DTWvYSH7+ThaX6iKxSD2QvzIUix+fNE9NlYGvHEVjaSnvmGGpUiBnnkV3IGi6Su04zg==
+	t=1793303806;
+	b=sIpLK5qaDtFLpIX2xDjlC8fFYNqfR2ryTa2uqefqkdR2wdF/bWrvEJrXS4hbN1GeiYAW
+	 rj5qGK5BN1j7IbRYIf20L90HMz/AiIYp7QV9R01W9eXlY+kWiatuDD7RWrvlFTCbn/5ON
+	 11DVb2u0czA+KP6Q2llzajyWvFCrdI8QJh9paPNgD35UIIVWvOsd9sz2chyC5GytYP1TJ
+	 eP+0BSqFKFqDIukQLOXLe3CEydCUlufU3b7oSlt1CSDoAOPrNwNjoIEIPPhUMB+yQBSOA
+	 sbzsx9wK+upLhAEJYp339wxGOSQ6IDUjaCtdyoudn89D/IlVz77O5LqDWRNqu8c5UqQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793303803;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793303806;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
 	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
@@ -26,53 +26,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=En9Q/meKfsGfmKSlCdGFvPimwYqUtG5GsZ2ZY8a72ec=;
-	b=3iuYDhZ/EL5yf8rh8oRHubNON9rE/0pewyajgA9SapPcLP4D7CN/SyPt7KfLTWPsuQbY
-	 01EEBfiBP0377Z7csehPNKddhIVHiqK2Es5q01/315irpI2AB1AOCjI0+FeKRMxxMMBt5
-	 JYXMCmnUgeqEdQydUZsANDpx87noDWHSlPUodW5s6P6jv+sGV2GD/28ynJ74BUdmri9Vf
-	 9rDj0RVivAW/uYwmoqGmNeoMzvMDl4i806jgM/rKeECW1I4D1cGKHX/LlKPIcKA3hfRCl
-	 teHegpxzHaZ7K9kvnyHYprqnDl4Z39V4MP/sze2svPwj9t/u0BAWyOcuaN3EhzWXWPQ==
+	bh=2nTTs2389CZpYD9qLs3aHhULxjDsuKy4+h3GbDFH8OU=;
+	b=5X89GO9M4S8KSTfYkAVgJlfvVPQ+HsS5jrIlb3miIR3zbngTxbVCPNnlJ9+4OhZ5dGnO
+	 1SOmi3Aasn7eAtasPT6WOVDWHK1r1nX8wIkq0kmE8TkXeKQpX3zrlVjsKYqOSRXeqjMJ+
+	 LAIRwX+CVBlbaNizPMqfwXk2KEPn8zdX7HOAgNlW87oif/dnN2OpSzNbr5ghXUcblh/Ih
+	 QNa91Q69HlL2kxLX4O5WcEdlof7w3olh1GVx5CMVSQxOuYnTKkH5lUTWSGLRWYSBhVQSF
+	 WciVScCn/gp7lGkYiQfxPhcfjXy+Ftoxdn2i2I707DxnKJUQkOZAyW9EOENnSdyLScA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Kd9BECA4;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.0
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010000.outbound.protection.outlook.com [52.101.56.0])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jn6lQGvm;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.19
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012019.outbound.protection.outlook.com [52.101.48.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB4B606A31A
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 19:56:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFB4B606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F9E606A320
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 19:56:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1F9E606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Kd9BECA4
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jn6lQGvm
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pNKfOj6bp4JTNUBuHXq7La/KYBrhAmv2G1trw1fzvJzMZEvw0VwKK+A7NDBXh0tNVVt3g0A1Hwit15F5DyAPjXWD1Dv9YHCd1gAGiPYfG/Uv0wVeubyOP6aETFZtJW6BQjHdDzV7vSU7YE3X6rN+S0R4h66B8bvCkksdpiL0tKSemdao2XKXzPj+nziOa+MmZ448OkubqPEOY0nYWoPBRITb4MfOC+b7dh5i0z52nN0dNLQxKM54oNYK6Uxh24AjVm+FTntI0mckgnMd0ewyoZv4CFlrvYrLxhhfh4mYUT7G6B3h0X985xLlJf16Ly0nyporMYcMEoZ5t2/ti00v2A==
+ b=kzoEB5whPiZKxS3fryrtEtZ7VzaVe/vLXV1TJLkb0YfaE08Klll0lWK0DzT77PzpEXG3isZBRbdqMACHkfyMFtcZLAs7AoXZ49qptrgrLquB4bKHMxPbdOJ280C9Nd+okXDKuATdeQpnAvX60hdu2o8UE8f2tGIz+p9SoCB/nigsPxX79n+p7aa2Fdp9GNOvkNe1b4oe5Tkt9N7PGnsRSfj1t+6VvHRl79RMk92QKZlxofFHi91BLAX4MfI8OjSJSFLc6zc3unVQdW0tMVPASds/xU5FHHEECaoW87/58D6yqGfSXLvq4K71+1c/mz8tXM1F9gSZLujJyF18TkWvKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=En9Q/meKfsGfmKSlCdGFvPimwYqUtG5GsZ2ZY8a72ec=;
- b=NKqh5IR5lRDnrI0MXkDeqZbN2Lu0vs8kMAOd0sa3OacsbqPy/Drf/j63tNlM0JvjfWuHKY3YyPPXuDjGrNhUR0OBkfkx9H4iJO0RpBvkLW/YzqDRv0Si2JxWlh7SxnMoTsmqFVK++g3guDDzefBYSL8BSfrgICQFAYTuP8kzwaWqnZJUjM2F+OVHnoOYumPGtXKdq1pdHCfJ09yCV6sTAfIe3GtlUNlummzrL8niKcemWuVuuic1WddRfgzUpwIeII+C351DMDhf5X89keJngd0fYPXtXpVOypnJsBwRLTStEZG6j8iSiISBU7r8nASvAj2uXJYmYOrtL26L/KVcHA==
+ bh=2nTTs2389CZpYD9qLs3aHhULxjDsuKy4+h3GbDFH8OU=;
+ b=B9CwYH3/mbgVVeicyiMdpIXpHnu6jzQsg9SYEfTfSC4gIqAxTMVUINm581meboQ3jvr/p8+gFK5dyaHVOrHfunA7yictez3vQWyk77hMsrBLwGjHMTZ1x+x340g/sTdtHV3FiaTZt2KLrtQEhoa2HN8ostAVAvTH4Xrakd7f1XRfNDME7LQWAwJHpvZw6YlbV2rYijcY3DULrzE4xir0PhC9imKF4vBtYFxmQFVNb5ppAeooTQqDoJMjv/ep0j0v98r5WIr+18T/LxyDs+pKZKtcqM6BRnycjFcE+u4F4zKBQlBaI4UvD7hLBxhLl43pZxFK78i1aAZzSaext5i6Bg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=En9Q/meKfsGfmKSlCdGFvPimwYqUtG5GsZ2ZY8a72ec=;
- b=Kd9BECA4olDy0tfKbihDUxYONrc7nBA210RpOTmvl4qXJ2+CPuSPOXAZ90vEelvNedvTAw6boWMGg0i/xvkToVNe9VI1HCRCPQKIpILxdU6FkyGDHXJp+07oDp67VtvYbGYgWecSWg5O6gHKiH8md7B0/FE67hgcieh0JzLd2Y8=
-Received: from CH0PR03CA0074.namprd03.prod.outlook.com (2603:10b6:610:cc::19)
- by BL3PR12MB6617.namprd12.prod.outlook.com (2603:10b6:208:38c::22) with
+ bh=2nTTs2389CZpYD9qLs3aHhULxjDsuKy4+h3GbDFH8OU=;
+ b=Jn6lQGvmABljm6KpLKrW2p3diTVTZfvCaIq9MjTDVz+ElZBQ1cxm0tncWw5gu5fcB5n6yj0M3EPWUnzK+L0ia16d6LmbUHp4AkQtYq9/HvhALIcohgolu1Ipq2ap/kbA+idHh5y0coPaH1Opm7NIsbUqdnSYqQOGVHXIFUhVHtM=
+Received: from YT4PR01CA0040.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:fe::23)
+ by DM4PR12MB7718.namprd12.prod.outlook.com (2603:10b6:8:102::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
- 2026 19:56:38 +0000
-Received: from BN2PEPF0000A98F.namprd04.prod.outlook.com
- (2603:10b6:610:cc:cafe::5b) by CH0PR03CA0074.outlook.office365.com
- (2603:10b6:610:cc::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.7 via Frontend Transport; Thu, 29
- Oct 2026 19:56:38 +0000
+ 2026 19:56:42 +0000
+Received: from BN2PEPF0000A992.namprd04.prod.outlook.com
+ (2603:10b6:b01:fe:cafe::4e) by YT4PR01CA0040.outlook.office365.com
+ (2603:10b6:b01:fe::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Thu,
+ 29 Oct 2026 19:56:41 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -80,21 +80,24 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF0000A98F.mail.protection.outlook.com (10.167.248.139) with Microsoft
+ BN2PEPF0000A992.mail.protection.outlook.com (10.167.248.134) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Thu, 29 Oct 2026 19:56:38 +0000
+ 15.21.569.4 via Frontend Transport; Thu, 29 Oct 2026 19:56:41 +0000
 Received: from ausbcheatha02.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 29 Oct
- 2026 14:56:37 -0500
+ 2026 14:56:40 -0500
 From: Ben Cheatham <Benjamin.Cheatham@amd.com>
 To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <mtosatti@redhat.com>
 CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, <shivansh.dhiman@amd.com>,
-	<babu.moger@amd.com>, Ben Cheatham <Benjamin.Cheatham@amd.com>
-Subject: [PATCH 0/6] QEMU: Add support for AMD EPYC Zen6 and Turin-v3 models
-Date: Thu, 29 Oct 2026 14:56:17 -0500
-Message-ID: <20261029195623.2209-1-Benjamin.Cheatham@amd.com>
+	<babu.moger@amd.com>, Ben Cheatham <Benjamin.Cheatham@amd.com>, Ravi Bangoria
+	<ravi.bangoria@amd.com>
+Subject: [PATCH 4/6] i386: Add Bus Lock Detect support
+Date: Thu, 29 Oct 2026 14:56:21 -0500
+Message-ID: <20261029195623.2209-5-Benjamin.Cheatham@amd.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261029195623.2209-1-Benjamin.Cheatham@amd.com>
+References: <20261029195623.2209-1-Benjamin.Cheatham@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,83 +113,103 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000A98F:EE_|BL3PR12MB6617:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8799441-2f35-4979-745a-08df35f6be79
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A992:EE_|DM4PR12MB7718:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3d0ec97-e675-4cf1-6ea9-08df35f6c090
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|36860700016|82310400026|11063799006|56012099006|261009223027099003|261026121527099003|261022075727099003|261021123027099003|261021121427099003|261021135927099003|10067099003|18002099003|3023799007;
+	BCL:0;ARA:13230040|376014|36860700016|82310400026|1800799024|23010399003|3023799007|18002099003|22082099003|56012099006|11063799006|261026140227099003|261021121427099003|261022105027099003|10067099003|261021123027099003|261022075727099003|261028144727099003;
 X-Microsoft-Antispam-Message-Info:
-	Ate9cKAmgRrwduVS4WN0QAhI0QLkEwzvOgAwFi4rSsZPvQ3pLtHY9Z2itBWPDqWpH6XOmt1L5PbKQrwELHF8+XT/V0oB8cMoXwJZItqq4BgRrCdtaiqePnXIoEu02ikB8atEN6ofSzmBx3gmARY0sSKGS0gdLYMZEhoLu9Cadx7qcXzRu78frm2G8T+YvUx6Nb9MadfIqX5AS4dP5WgiLK8buVxxVEIiglidCZuTQmVo5suvbVY4YlJmvJM7HNMthyBsNbQZFXMEgfaZ2wRCHj0yxBsjE/qwKoyhF8rH2XdCEjpMh8Ni+xklGKJMQGVVMw7ymWjtQHnTH5PTbTnwEDNih7opbi7Shj427uKU6y7huXJB0niNxUfUgPvejdymuT5jNWaAKk/Pw7u9wLt+XvEih+w0f7Ndm31DXdG1AigJabCtCplCoS0kL4mf/UE8Pu1aYsPeCtqPH5Dt1r+/D/FMNWa5dBXZk+7+1IAqzoBJsJ/SGTEm/AepyJdAVor/R9Z/WQod5F1cnL6slqcQLc5gyyK/iAQqr+QXFUy3BkoIJPQJuO9uJLKX2U0k0Hz7WjpzXxqbAAOp5KI91PNkc+DPIhwpmWwLe69HYxCfO/1r37fhHP4QLV9ikRTCo6dj257+5LuO71WibfyOOZkFcbKiH2Ox06NUBqJy2PiTzWA=
+	Gh8onByt6XaWtFIS6E3sGQOqPm/89MpqQ87Eq6Xf9JEP/Ka0LU4jIVVDhQRNCSpH+LVTAq6wJ2CbeOyw9px2V7kjMfi+m5n36NuRNV+MY7Te3pu7zIaXtQHEf/nUrwmjCsgs5FDS7QJGKoaJ4Kzi/kBV1BilgHVMDHERJo/k1dk092SA4x0hwgOmqZePWXLTujLJFbdaQOpT6eOZ+Dk5yxNfh7G/0bZHR4PhZpWArQp2gZs1IgIVw4VrLzduEImvjR7Dn0JYx0cAF0JKG/75KleA/urnR2WcKOaYqHpgzU0ndmsBnnInlG292FFLKkatLdB6gd+kLE9D+a+jDGphcFEA160rAg5W9STsB4Ipcq1fItcYjztj/s+lcCzVXCg5VgTHwmI78Mnu3l6bqH50GHR4ACUIpTriptJz3DLz65gMd07WCaGSQPJeh90gvQR6FbQnOgUqTFpl0RXj0g/ozIkYdGTjKYGWN9zDhpjga8ONhGjPZoKy3JORnMfHzdDeR3sEFl4KFC4kb83JSijvqIp/GOz4IQFoXnMzURBRDfE/nBngSw4qSBAlOSNsUx6ZgyS1z0M46Jx0yAZsbA9bv9gDu/huPEabKlO1UgTp+eeyV56stvH8QqHdHGIUbq3+oica2mOgPgjah1hrO1Ryxw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(36860700016)(82310400026)(11063799006)(56012099006)(261009223027099003)(261026121527099003)(261022075727099003)(261021123027099003)(261021121427099003)(261021135927099003)(10067099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(82310400026)(1800799024)(23010399003)(3023799007)(18002099003)(22082099003)(56012099006)(11063799006)(261026140227099003)(261021121427099003)(261022105027099003)(10067099003)(261021123027099003)(261022075727099003)(261028144727099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Na21ruovBHI10MWPPMre8OUmzq8frPi4rEXNkhyQDUu7aJe2Ia/PfJnJ00rdU82+G3YPOScYvNDxD4lSHxInji9Ijedhou2IjCvQBOp1Rp7Qtnx+xvk1qr0VQY73r1MQ2LOeRrr0/0B/Ea5yJQP3uAD6KoZlyfCpTWHn/U+m99MH945V5MxPK/dSlKwlLceEfdPQylPt4FZv0wzyrORlzfUosRt8F9usVBlvvk9qvvKDHf1/w+iBTKMN7njUfH9D+PdokAvb4cJbyOS+qJPg5axSiEZXpuywAw2rQimGJWNcqBfP48P8ybOuZAeRYxp8nj3eeJWu6Obn6CRlSkeHmdigFNFNe23plAfHj0CacGam4rdij58R1owpEJOCk5G5USi6fdqXKPFgYn15qL7ni0gawl62Wz39J1u3rcMMn+51yuQu4YWrWhuL7bFksljH
+	o9bMOMVTGnVBetP8ighwNThLuhvzsEfnZNcj4kSPQwGynw16Od06NpYu+xtaeVCmnUZzLeyNpCyXQ/woflojOnkXq6Fi+zH7ATi7hj8LeOb+cgx3Zwrj03Z9FaEj0KklWyWv1HAs7h2oIjwDW3kf8gbpSqJ4sZG1/Q6/koWlHzxMsdyM0mGer5voLLossjfLKp3+Dq/q3/Zj/1IBg+sCuEiYL2ypn7eE3hZ+4HcRY6rLPggRsYXsEbrCwPMEBkdVWo3c4ruG/dDn2Fdj6XouapGvfWN/RjxtpQQvsvV2BUW+GhFQNDXjZ3YHccDRcmR6fKT6WokgG2lVwUigWJmbEgobIUd6u3KGgjByBN6u25zlNMgme9O5Gp5FCx5/mCEYs4uE23f/9r4aKAt53kGdhkps+ficQ+ianZb1i0x4JfY1FlnGs3kIhj1WCAQpnpJF
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 19:56:38.3300
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 19:56:41.8382
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8799441-2f35-4979-745a-08df35f6be79
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3d0ec97-e675-4cf1-6ea9-08df35f6c090
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000A98F.namprd04.prod.outlook.com
+	BN2PEPF0000A992.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6617
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7718
 
-This series adds support for AMD's upcoming EPYC Zen6 CPU models
-(EPYC-Venice). The first four patches add support for the EPYC-Venice
-model while patch 6/6 adds the actual model.
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-The EPYC-Venice model is based on the EPYC-Turin model feature set with
-the following feature additions:
+Bus Lock Detect is enumerated with cpuid Fn0000_0007_ECX_x0
+bit [24 / BUSLOCKTRAP]. It can be enabled through MSR_IA32_DEBUGCTLMSR.
+When enabled, hardware clears DR6[11] and raises a #DB exception on
+occurrence of Bus Lock if CPL > 0. More detail about the feature can be
+found in AMD APM[1].
 
-	ERAPS, TSC Adjustment, Flush l1d, Bus Lock Detect, and Shadow Stack
+Qemu supports remote debugging through host gdb (the "gdbstub" facility)
+where some of the remote debugging features like instruction and data
+breakpoints relies on the same hardware infrastructure (#DB, DR6 etc.)
+that Bus Lock Detect also uses. Instead of handling internally, KVM
+forwards #DB to Qemu when remote debugging is ON and #DB is being
+intercepted. It's Qemu's responsibility to re-inject the exception to
+guest when some of the exception source bits (in DR6) are not being
+handled by Qemu remote debug handler. Bus Lock Detect is one such case.
 
-and support for the following instructions:
+[1]: AMD64 Architecture Programmer's Manual Pub. 40332, Rev. 4.07 - June
+     2023, Vol 2, 13.1.3.6 Bus Lock Trap
+     https://bugzilla.kernel.org/attachment.cgi?id=304653
 
-	AVX512 FP16, AVX512 IFMA, AVX NE-Convert, AVX VNNI Int8, and
-	AVX512 BMM instructions
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+---
 
-as well as new cache values.
+This patch was originally submitted by Shivansh as part of a separate
+set:
 
-Some of these features (ERAPS, Bus Lock Detect) were only just recently
-merged into the Linux kernel. It's recommended to use the latest kernel to
-leverage the full support of the model.
+https://lore.kernel.org/kvm/20251121083452.429261-5-shivansh.dhiman@amd.com/#t
 
-This series also adds a new version of the EYPC-Turin model (patch 5/6)
-that includes some of the features enabled as part of adding the
-Venice model support. I've done this for convenience, but can split the
-Turin model out into a separate series if needed. The only patches
-required for the Turin support are 2/6, 3/6, and 4/6.
+I've included it here at his request since it goes with the Turin model
+update.
 
-The Venice model had two revisions before this one, see [1]. Change log
-from that is:
-	- Add Turin-v3 Model
-	- Add flush-l1d and bus-lock-detect to Venice model
-	- Add Bus Lock Detect DR6 support
+---
+ target/i386/cpu.h     | 1 +
+ target/i386/kvm/kvm.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-[1]:
-Link: https://lore.kernel.org/qemu-devel/20260825162544.18633-1-Benjamin.Cheatham@amd.com/
-
-Amit Shah (1):
-  target/i386: Add getting RAPSIZE for ERAPS enabled guests
-
-Ben Cheatham (4):
-  target/i386: Update RAPSIZE definition
-  i386: Add Bus Lock Detect support
-  target/i386: Add EPYC-Turin-v3 CPU model
-  target/i386: Add EPYC-Venice CPU model
-
-Nikunj A Dadhania (1):
-  target/i386: Add AVX512 Bit Matrix Multiply (BMM) support
-
- target/i386/cpu.c     | 163 +++++++++++++++++++++++++++++++++++++++++-
- target/i386/cpu.h     |  10 ++-
- target/i386/kvm/kvm.c |   4 +-
- 3 files changed, 170 insertions(+), 7 deletions(-)
-
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index b7d135d610d6..137b754b4ebb 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -300,6 +300,7 @@ typedef enum X86Seg {
+                 | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_CET_MASK \
+                 | CR4_PKS_MASK | CR4_LAM_SUP_MASK | CR4_FRED_MASK))
+ 
++#define DR6_BLD         (1 << 11)
+ #define DR6_BD          (1 << 13)
+ #define DR6_BS          (1 << 14)
+ #define DR6_BT          (1 << 15)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 644c45fb0a02..7e410dd9a47d 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -6279,14 +6279,14 @@ static int kvm_handle_debug(X86CPU *cpu,
+     } else if (kvm_find_sw_breakpoint(cs, arch_info->pc)) {
+         ret = EXCP_DEBUG;
+     }
+-    if (ret == 0) {
++    if (ret == 0 || !(arch_info->dr6 & DR6_BLD)) {
+         cpu_synchronize_state(cs);
+         assert(env->exception_nr == -1);
+ 
+         /* pass to guest */
+         kvm_queue_exception(env, arch_info->exception,
+                             arch_info->exception == EXCP01_DB,
+-                            arch_info->dr6);
++                            ret == 0 ? arch_info->dr6 ^ DR6_BLD : DR6_BLD);
+         env->has_error_code = 0;
+     }
+ 
 -- 
 2.53.0
 
