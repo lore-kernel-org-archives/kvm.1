@@ -1,100 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793311495;
-	b=ci1y7GOo0ZchFTaQVs8SXfLFAqwq/ZggVM4r3cc4pSqMfV6pDcjgPOvfo2deq8wvjQeD
-	 p4QVatoFt5JaYBqBfyq+m/U74DPG/aTLWODdpgusuLCtrBAaoGTBqBZkFX6dOMJYyzYCc
-	 gw8p3BVkX0IFsLdpvJjqCjZuiVgNfxUIXGT/irRYDfit6LmYvoGDL1MlrJaMnp71QdVBL
-	 j9ZjworQZX8Zz2BKhPJQU5jJ5ak4NN6MeImnp9fzyu96LCAzRe+Z49YY455OOSqrtVm7N
-	 g6FWghVhy5PTIG3cqdUKSFXPF/ex2cpFyA7xQ5OwwzoETIKsfa1IN5Y88XNBaXxMFAQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793311495;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=vcjS2XWAO2PVPZ4E8IA6fWD7RE9agLKIkmYjROKzQ6c=;
-	b=YRLfKvaDX7Y6u3TCDO/lnm5S0k0ATMltQf/8zAaQDgoYxrNhJP7DFzA8mCx0Hzpxo5pg
-	 Oa1BC333h1V3oEcrILH460dld2ArdbWnDynkpmlLzWYvnZsZDcj6sxIgT9TijnwF5Sbps
-	 CBkBrk8roAcm4nwCT8rSPhc24+opqzt/mshisfFW+/wJ+Unsqp/kinLFDmH70BeLTWT03
-	 4u76iw81SVh1dqiSJABydMloE3fJC5fMkCB49QcenXpAkHTiRVm4GylLmfB67aQBFqJx0
-	 jZUxSm2V/rN7FpTIuKOncpQyr1kdiSHpj7tIQPggkzBmGsi+GUZhSxpl1Jb+NDsVm9Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EoZYrDRq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793311603;
+	b=NyHUhIs8nVP5pNIJdX6oeVQAFw4H8n1Yvv2jEr34j5ut3YWMS5mnD5C8WvmaF8CaLIeK
+	 Fc+T7ZthheEfw2+cnJZb3O8/7cg6E5vsZWOKUkqJKOZH8Z6Wa9yo7q1cFKQsHDWp+Cbj/
+	 p3DOI/vmAIvV3FObMls/c4ls4OOKBVGFNjptO277YA8xWBOckWW7WbQ/qxuP8DyiwqUab
+	 8CpwoGWCa6oHdv40d96mApukeL7m1E2Bd0OJfUxDkMNtUVEyGlIM8Dem5KDfn9aAAc4Sx
+	 wUjnH/NU25F+2cPCOZdPt0BA8fBAZc7KySAICngHuqKnwtsrz0wUYvscAtZDKb5Mcvg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793311603;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=vfDsYkb1rupmnaoE26fc2eH1wSISvhn3BAdlNxMy260=;
+	b=Xo/3ulgcHUcVbgzbLVYS09O9JfH+b7HndrdtR4BIk028oEgNubHMYpz8Gx6e5ZfIk4tg
+	 N/+LVeSEeef3vWoTlrmqQ0SGWHZbHpmflDzQN8/bSPaeb9LQ+J7F475s63IklwOISruqv
+	 x8fPm6TfkS1vhu+7MEEkp7lGFslfVxGKitXSUvC3gRfJUISGhNt+uGiMATKALNpLr6PnF
+	 XzzmNBgPtsc9Tk2opmq3DAoboQEhKr8DPD7uQ2WXwaW5CXoC6S8Ry9JaAlTJxoZW91G5n
+	 yVHY0zjROWpOvT7h0Df9DTd2FZo7D8pxcxr8q8S2DfkB7YhVOwIGSGCK8+JAAqwQAnA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Id73sxy8;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5CE606A31A
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 22:04:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C5CE606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FBD606A32C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 22:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EoZYrDRq
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso4949a12.0
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:04:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793311494; cv=none;
-        d=google.com; s=arc-20260327;
-        b=him8rHsOTqJ9264sDk8I1UNZxfAB26RL0UzfHhh+6zRW391bNrFkMdb8iqtMr7Mi6f
-         zUxWbZ7NFj0LW93WOSUUS3yfSTpyTMJHaq1VPM/88ZcG18Sv3phZg2xAQFxNWiUg/jIi
-         37h512lw0uJSaNHrppvmy/rlQuqXDyret88rhn7130x4FUqoZQPlbKv6okOfzGJZMHFF
-         s8QZ3WSKiG0doy2vJwllMUGN+IZYjJ5EDRjRQVHAOawgAH4AymlzhYT+OZl0J78GCOCA
-         9dRsKn0sTQuDNF6WrvteMSGcazn8Vz90E4T2nB3i7HrYK+16Fzh8PucYa5I6g/l9hMlQ
-         ZCCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vcjS2XWAO2PVPZ4E8IA6fWD7RE9agLKIkmYjROKzQ6c=;
-        fh=qsyGTynt3jLukymni07/0jCZM/bZ8AcGiZ2jzbueZ7Y=;
-        b=gNCt8m8un4QGg6EvPQSicDnx3JdNKV2eoeQ+4NilWbWA4uDIiS6CD6sPlhzPmh+T0V
-         6OTNY6YS/D6jkFfL9VTz4xN8bqOeWFfRYKlqw7g12FCnhOqTQNf9EEtfq4kEoYG2V7SB
-         lli0UdqW2Q6ENGPmSsV+wRSsZf2pQ/jRfED+aS8qqV0MZBvds/LHm+WAP2HStQgrS+ys
-         gJar9Y5ikgFKk7ifMBR4jnhGqmQWakkR6Q4WsH7T/hG6oT4sfSrOmgHvud46pO+6w5dj
-         iPGlu5F5zkXjbPNrQlwOyixzVE8Osf9Wr/e6RALN8gunhYCkOPoyVYZNMQKDXNmJs8q6
-         Jp7A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793311494; x=1793916294; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vcjS2XWAO2PVPZ4E8IA6fWD7RE9agLKIkmYjROKzQ6c=;
-        b=EoZYrDRq09IAHfGFnB6PhfFCC8BohHQL3muqXimashHCmHChePNgkWhfxO9y5MpA9Q
-         Y/Ry0dNNIBodVgVAZvKmaTm05tvUuLIjs8k515ashbM6WctShEhMk1OOh8+B4xfpDNgW
-         S0qWb2UfXumsusqqhYlwb9ewzluD1G/lQhSIDJyX4BcREmyCJzBUacg/A3GSFBa3fdy6
-         kHGqSR1gEJzIWieotrGcwpdTnXERAC41+PfmfXz5k6Ugc+2qygD9Mqy82uV2mVMyyJ+A
-         38lipn9hFrNT9H/JgkUTQWTvL59P2MzRKm9Ww2Oo1t8S6keL75vN9AVGmi02y+Ler8aJ
-         xKqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793311494; x=1793916294;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vcjS2XWAO2PVPZ4E8IA6fWD7RE9agLKIkmYjROKzQ6c=;
-        b=GFjcwvElCNv30YghynbSt5iMmgAdOOl1Rw8Appwy/aplxzmYeehxpspenu1Fen73Lq
-         HGRtjxwljVg4scHQMV/jYlDP20UlfJPApqvDwQPfsEaM0zgX9V7eGZgHwRc/OYlncry/
-         1Av9F8GfD+BsqW3YRw7lgzh+h+yLpP3IC9OVI0Rh9CSr/QQds1dpGiQS+OPqvBKqvxZT
-         5qvz8R+nFz7gU3+gCfeLfoGVUmznGR2KBe9m08qPpjDJgYI4HW9wNyRD57sQErrfTmsj
-         d7hQRP8oO7XozG9e6tPQyKd1NGELfcit95fEwdqq5zaO/RSl4cNsMuorNOspCQ76Cuf2
-         bqLQ==
-X-Forwarded-Encrypted: i=1; AKwUvByvWfW7U60rJo2WHpiD8i/zCmnj1wy/wB846WMcsAIF63uk1Hu6ta4mukZknc8rTlC7aGs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJKNmvQs9qHWXkSCxvsrsWJ2iHbJHkSrQZBFbwBVbrhon+0wlnt
-	Pqy4onm0PWNKE6+roYrDBmvTZq6XuntaUXZ+aITcRpp4oJXuIGWTJybKyd0oiGGjbKJvSmsK/dB
-	QJu3VTmYrMzGbnq5JBypIhYQ01hGst7GRJBXzJMnN
-X-Gm-Gg: AYBFou2k425Y8PKdL/1euwbrklUxv4PYbklwbNZTlgfL0mRiCe43LAXK6teMnUb7/ZV
-	LiLCJATFx0vxyvko3ikxafdB33ErzKy/RzhEqzfOlxcOBVLK7rCU7qneaBjgsqguFA8dkCEljj6
-	BaVbj6n2BKu8SqmOcdFXDoFoyyCm0DHTOx7i1WazO3yiIq43wjK7OJbjQGug8i+UQ1yjb845Lx7
-	xBHiuxneFdu0JvS+F9lupDot4rUP6QHPblu5Mh01Nxxk/5CQPKyKEL8i8STPBCBrjwOyS59e7uQ
-	LLQx/BfqPa/+wxe4SGW3N1aWWBPJp6bOhX+pGSR2i2kCbYBsQlxETPX422sULNpe7eCbUb9C1TU
-	3T4Sezg3GojKkCAiixWs+Nz7zEJuqnYUuAQBu56JLVHGaP6NXXbql//TgxQ==
-X-Received: by 2002:aa7:d3ce:0:b0:6b1:c6fc:aba0 with SMTP id
- 4fb4d7f45d1cf-6b4b38e3229mr100799a12.7.1793311493406; Thu, 29 Oct 2026
- 15:04:53 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Id73sxy8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C531F031E3
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 22:06:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793311601;
+	bh=vfDsYkb1rupmnaoE26fc2eH1wSISvhn3BAdlNxMy260=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Id73sxy8FQws9662a48X3WJ155EdYs1sKdjseAOifu6aMxceu2kV2X/E/kL8uFrse
+	 rYsgZ1rH7wOdQn/P8N2Zes1J9QuPu5Jhp0WjItFxuzXWggT/+N5uW2s59px19vleYO
+	 TxFWIHTLp4nh69tjwjNg2Jy2GwXin52E78x9KIa102a3TiHjPhkqPm5xiHlcqOmaoo
+	 fpuV/LW+kvWM+wg3ORlZefZJ/ym5zIZ9L76th4F1uPN9HrB7RbAFYf0ChXGdMRRp4K
+	 +9vLgYBWPi3ciskd221/ooktYgyVZaI0kcA9WWSztkiHu8Sti08O695BRPYVpIIFTA
+	 o5C5Oa3egNKeQ==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c34bff61551so3055566b.2
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:06:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwUE5WF0uxDDqL3uuNpxbzIYotAtCctQFOsUG4kBN65Ck839ADx3rTq40PAjk3TAlFHyi4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIL3eryZgS7b1W6qWh+RaETdN8zJ2otF2HAoyUI8dqp1+fqDHl0
+	aOlJ9pqW0bWs5ikuy6k1O5XDFAC+/tGTaMpWS4N+Ysu+ichSrUWNuAZMDJ3oJ8R0gQHEGLP9Dsm
+	t69un7C4WzP6QXqRIglp0JHX56ZtAah0=
+X-Received: by 2002:a17:906:c109:b0:c46:9ba4:872f with SMTP id
+ a640c23a62f3a-c4ca7acbaf8mr32137666b.36.1793311600609; Thu, 29 Oct 2026
+ 15:06:40 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,62 +59,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029202817.901145-1-jmattson@google.com> <auO4UueaV0mTVzzB@google.com>
- <CALMp9eTKXa9v1TxJMPrE-tSXajwJCErCk=g34dOPJtG057t5mg@mail.gmail.com> <auPAFxXy4ulcK_jq@google.com>
-In-Reply-To: <auPAFxXy4ulcK_jq@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 29 Oct 2026 15:04:39 -0700
-X-Gm-Features: AclHuK_ENQe2XaR80YT1-r3wPysVO9nAq8MWJ4g7grxHkMKrLjeivCR9yTj8Qmg
-Message-ID: <CALMp9eQdtvjQkdgnJ_NTt=2ArdzUtqqzieXLccv9Vb_My5G+fQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] KVM: SVM: Check EFER.SVME before updating MSR_VM_CR
- on guest writes
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>
+References: <20260918193937.569414-1-zide.chen@intel.com> <20260918193937.569414-6-zide.chen@intel.com>
+In-Reply-To: <20260918193937.569414-6-zide.chen@intel.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 29 Oct 2026 15:06:28 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOY8W6s5U8O_tZ3dERA4h+mnWWjeS2GDgF=gbo+CQDNLg@mail.gmail.com>
+X-Gm-Features: AclHuK_h6YwuBizUsxN-GdymIVz4fJ18vw0iMYEWjNc1ZjkVmTudt-64at2AUZE
+Message-ID: <CAO9r8zOY8W6s5U8O_tZ3dERA4h+mnWWjeS2GDgF=gbo+CQDNLg@mail.gmail.com>
+Subject: Re: [PATCH v9 05/12] KVM: x86/pmu: Support PERF_METRICS MSR in
+ mediated vPMU
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 2:52=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index 448044a2b121..f4d3801b97bc 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -806,9 +806,16 @@ static bool kvm_need_any_pmc_intercept(struct kvm_vcpu *vcpu)
+>                pmu->nr_arch_fixed_counters != kvm_host_pmu.num_counters_fixed;
+>  }
 >
-> On Thu, Oct 29, 2026, Jim Mattson wrote:
-> > On Thu, Oct 29, 2026 at 2:19=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > On Thu, Oct 29, 2026, Jim Mattson wrote:
-> > > > (Host- initiated writes are allowed to set any valid MSR_VM_CR bits=
-.)
-> > >
-> > > Eww.  Why?  If we allow this, then we'll end up with the mess where t=
-he guest
-> > > can't write back the current value (if userspace is being weird).  I =
-get that
-> > > we want to avoid ordering issues, but there's *already* a required or=
-der here,
-> > > unless userspace ignores the failure from svm_set_vm_cr() and continu=
-es on.
-> > >
-> > > KVM doesn't advertise the MSR as something to be saved/restored, and =
-none of
-> > > QEMU, CHV, CrosVM, or our VMM appear to save/restore it.  So why make=
- trouble
-> > > for ourselves?
-> >
-> > OMG! I didn't look any farther than the obviously broken svm_set_vm_cr(=
-).
-> >
-> > It looks like svm->nested.vm_cr_msr controls nothing other than itself.
->
-> LOL, nice.
->
-> > It's just 5 bits of storage with some weird locking rules, and it
-> > resets to 0 on suspend/resume.
-> >
-> > What is the point of such half-baked support?
->
-> More than likely, so that older kernels didn't crash when writing an MSR =
-KVM
-> didn't emulate. :-(
+> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
 
-You're not going to let me get rid of it, are you?
+The name is confusing, this doesn't control the intercept of
+PERF_METRICS (and it wouldn't be correct to use it for that AFAICT).
+
+> +{
+> +       return (kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS) &&
+> +               !kvm_vcpu_has_perf_metrics(vcpu);
+> +}
+>
