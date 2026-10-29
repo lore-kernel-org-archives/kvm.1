@@ -1,58 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.221
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793282549;
-	b=dPQw4hBkROknYNBB5zA74DnU9vcSCYnqv6+OLR2JJuqroq46I6oHuez6Qj8Fa3zCAv68
-	 TuapTBOtlIyscCtM/eCtxfycHTNSIHF6BtBvBPb9lVVq4hbnjCziWZ1oRrVotSuRRaqBH
-	 cAsu0N9EIQfhLpaOOZC1YfuyMeaSqJu8tfGUhaD11pEG3eRZOMhT/4uWRLIi1V3/sp0O7
-	 97vE1EHJvYi5tTnx6uXB0i9ACsEQFTPlz7WgfcY3WGvzGQgOcOyY8S66DUVpxkyRgD7V4
-	 yCogqF5/hHr6xLYq5Gedmpylx2lbFRF14lZNxtULocslgSOKlk/9QkEaoSCqS5W0UeQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793282549;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=46BTS2L17vKUMaAXzO89PlCn4e9X2ecYyyZ5hRRDLBc=;
-	b=WS9Phh0Zw8LWjnC4ojlp9jcodm0sjhRCYzM4FTlOIgbB/DDt8AfBer5c7Sb+cmCJyHgV
-	 hbWCbKa0KrTeKjddRi7JYlL/2XF4HKT0mUWN7g6RzM0A9f+p/BnSMamt+EMJMUYdUiBuI
-	 wIUGXAYZX8WiMJnqedYH0W8iItjBj4VAIF2lwIJIS0WNqzF8905aA9GNj3IoYxkF5vzzC
-	 FnD8CsDKgAsokuYbwviMRBP3F932m1J3xor4KGDqejzduXDvLxxRq6//IJEwnJYaaKMwX
-	 ZlVsuI0Nk9B19Wp634g857ibrqGLKVJMqwZmAT14ahNEN3rPDXt0kIACAF4QvlkXfUQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Xxcr1uEv;
-	arc=none smtp.remote-ip=113.46.200.221
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793282931;
+	b=eE5HL30NMkr0Z/p9A71mzRxG1ig+criC+mRN5Q9Z8u8jmhdMUBnrBAVYXSFrqGUOUapN
+	 kM3t7mXjG6EbCvb3/t8khk2BxLJDrlC2mCsSkuDaw79TWftaoM0PAIYqARruKy8Y9gcI8
+	 Sgb18t8neL7UZLvsXTRnr+O9IyKo9xWKnALdutqQJ44gNR0IZ2NiM20DwETXLx8oOC7gV
+	 VkRAEPbFfRzTLoZPoFG46ZR+HVG+AOIKSQU0v1yXU9ZYNAxvwM1VtKAbxRiUkqF8J7HS9
+	 6wzZ87kU5o7Fg3KoovHnxWTrhEHJXUOiAZ2GrQU3QWnHItDV92zJ4/OVfj3YrsK5L5Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793282931;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=H7Sot6fFV/mqoa6U1RpNz1ThNjxhsXi7WSqRiEBh7pk=;
+	b=wzBE0uTFRmN72/enE+U37j2gyfHO+vL+f1+19b8UyjOKVFzWhiBRdbFTZZRTJhNmxhPN
+	 HymAUTUwjBgamdrdpwGN/a9QRYC77e8zSMlRUGewkmdLRGrK+6+1qU70viKbBQl+DkqoN
+	 9b6tnMTU6pfbHWdkL1rOngV0rkwQR2m3/9EqRw5OlnaA+kNLqG8v0Hn9sQY7WGXkYvqSx
+	 QHYc+cI0DioMHE/J0h1hRo30OSTgaJBGN/x0StH0kHIhJsVUHj7FFeTTPq5THn2Q5r5Yg
+	 VwgrXzZXv1V5lRSK63N/qWB2Gzyr2mr8fUj4o20axB+xeJhg4frJTcidtICmumH+tTQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WtkFjV7g;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.42
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C28606A336;
-	Thu, 29 Oct 2026 14:02:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7C28606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE59606A31F
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 14:08:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BAE59606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Xxcr1uEv
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=46BTS2L17vKUMaAXzO89PlCn4e9X2ecYyyZ5hRRDLBc=;
-	b=Xxcr1uEvjyUncblEyLuJ13eru1beYW/GY5GFrPE5ZiK43B4KlA7E+sfVr4qhA3hrvIBxIwDSM
-	8bbmRWDAsZAUJOf4aPz+Fkbsf8dlBiYZwCbJ4LCU36/fQiGVBZ8WrYc5WWyoqZLYFc7PE1SX2xp
-	egChEha82ieFCMIiUlrLwNo=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4jFmBT2KpwzRhQX;
-	Thu, 29 Oct 2026 22:02:09 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 162B340561;
-	Thu, 29 Oct 2026 22:02:12 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 29 Oct 2026 22:02:10 +0800
-Message-ID: <009b13c6-f618-43fe-8a56-8519d31b239b@huawei.com>
-Date: Thu, 29 Oct 2026 22:02:10 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WtkFjV7g
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91b9e758c50so10979936d6.1
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 07:08:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793282930; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pC7dImS+qVKCBmuH1RCMFKqoroLMWO6ow5zibzzymPhwn170Zw1ya/JTssobRbrBYD
+         UWu1SEdMUxK7p22qWbkzu42wu4+DAPLHVolf+WTp13evYMqxpN6P/szcU/ktDn4MbHHh
+         eTq/Xb6nNm00PW1B0w8nHbrR3lnAkrE7DYaAo+noGf8hF+G5uhGt/7mw2ePLzjlTrYrq
+         yRhaWyE5xbRsnaTosB1fH4TVeOk9QGKPfQXJ0UDZbN1aROm0Cp5L8GQEv5C4mewrbndX
+         FMmwfch7IXUx4kLPnL4y1irCBTZc+CkFMVqvIXL4BPQLoXglDizYPkfm1jJpHSb38Qo9
+         owTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=H7Sot6fFV/mqoa6U1RpNz1ThNjxhsXi7WSqRiEBh7pk=;
+        fh=2tATt2IztrKT5qJzgMYFkwNwUUwu/supb8MMz6VSYY8=;
+        b=kiV0sK3cCt8H2LsqzT6/zvZEMa5E2quvp6RX9Sy5u+h8jVJ9896idPfNL0rLn2cRtN
+         gHl1Gd2MrUdMQPeIxT+JHdTqtz9rJU7QKnjFEWujZfR1Q6MjKFy0vQ29sqeBEn7EZBeg
+         nMMtqz56oQQxceu2v+MjqKcuskXVsI4+fT8JFPWiaWgfHgFjuFW/XvHsMNEf8VtIe3hc
+         4hMir6Y3KxsWfN9DoNV+Vfm/o/VDRVFt+6FCu/AYe4g4hH4SICOli/d8hcLWq651vDRL
+         zsI3BYW4jC0hRmneoIXH3jDLSiqLA7u7H/OBCrxFsC72eDNwWo8UWScNAuX3EE+QbO9T
+         pCtQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793282930; x=1793887730; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H7Sot6fFV/mqoa6U1RpNz1ThNjxhsXi7WSqRiEBh7pk=;
+        b=WtkFjV7g0ToV00v8yrSM9PA1SDdq9vQXINOrbjuvFyIlNcULS0boES8NVv+LAPu9jP
+         kzHrDUjXGPkksXhZAwKRjAutyaJ+9er85NSCUHcZbVprTPE37JY3YQg+yYmG/QSo4EZT
+         ecJG/I3JBONTYDKc16JKyMZf1mNEbslwJ/QRdmjBI/qvFa+lmD5QuB2ZdETfc9TdRt0m
+         ODIIsB/3oI65RzUha7T/uPMoyGLo28LuJ8Z6keo77+56WtI7+ZPw9RTo8lOwum0UbKdh
+         zjqjxlil5mNQur53BosdHjickAw5W9X9hQ7L17cBiDiaDctrf6jsP9zjQmGmDwy5+NBc
+         SRPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793282930; x=1793887730;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H7Sot6fFV/mqoa6U1RpNz1ThNjxhsXi7WSqRiEBh7pk=;
+        b=oE3OaU/KDqMFpOhFTOqARtWFAu40WFK5YI+BfENO5vcItN15J7EEi0ZN8eRQROI8vu
+         b56lsB9JDKxB3v2CChaM33Ugbe/FlrVIKXqv/neBjUaqiZWmhN2LvIvSuUg0Z9CYtb3j
+         CETGFQAlU+bz2y7O+YJYLSRwq2Cyo35EyNP/8v4Z3XArZJYd7G7AV4/vwlY+zW/oX7iu
+         ykf8fiD4UDIcxldHiJLGD4khBlMpgArfyik4ywnb//e43FJPBfpX1DX38er7bguI+/TZ
+         7saeC1q8o8XO748KGRQd0mCSqvoSovHuGhayhInx2dBdiWMRW+w6wBBdR54dD72QgiJE
+         P5LA==
+X-Forwarded-Encrypted: i=1; AKwUvBwsZ1SP8pYewyf+icuhBw0OlSH4YXEHd2Cn0aTmXKxIngSEfzhbq4STF3Yei+OCikunpzg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK+RYT6bM7hdhatLxGjfmX2h8JUDev5U9tMgJhRw15HWC85yDkd
+	3+RZ0ZD9VL7xxhH/v7cA+NDs7sVtvUOKSe5+NerGUq12Ome5CkPD5SB2Kkjq695Dt/mmPQ7LALt
+	4y5PcZfL7TBeXq6DJ1iA3tT1oB30IeHJOPDV080ot
+X-Gm-Gg: AYBFou3wQgcGNuz4HRz8hu+I88mOnnlptxY8B/V8BJu5jYXMjmWH9iDJyLeZS3KGn7U
+	zz7ufaiiNBLw8tjh1QCu+op8bv0ZQdQs/C19Tj7TdMG6w7rWmtavhFchZdnXE4QIDnzEbu5NIdb
+	cvg0dKbsEHALXZud/8HIGrHPn+3FeSQJrh87QuaFWv8NpVhztiuxPRRxM2biYkaLroyyAuBrPO/
+	NdPwL9cGuEun6rCgUGvuMP7a37/BPVghjb7NC2BHCqlH+oxs4UjbXHwZ+il1yNQQSTWio6iBwMf
+	JhyIB+2JP6sCvCRo5wsWTb+Kuudz+VwIKZ9Bed6uqBPxknPvh06cUFUO9tQ0TXp+1A8ehyrDYGC
+	QmkG4dYmv61TvcwABAER9ZFrhm4Mu8sjwiVFFaPmW3W/y76QuFiWj5lORbVARwwbDcQ==
+X-Received: by 2002:ad4:5dc3:0:b0:917:9703:48b5 with SMTP id
+ 6a1803df08f44-91c90742c32mr40775726d6.26.1793282928607; Thu, 29 Oct 2026
+ 07:08:48 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 29 Oct 2026 07:08:47 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20261017073149.1303738-1-aneesh.kumar@kernel.org>
+References: <20261017073149.1303738-1-aneesh.kumar@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,143 +108,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 05/15] KVM: arm64: Harvest stage-2 dirty state into the
- host folio account
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
-	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
-	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
-	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-6-zhengtian10@huawei.com> <at-WceRKAVM2kEnI@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <at-WceRKAVM2kEnI@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+Date: Thu, 29 Oct 2026 07:08:47 -0700
+X-Gm-Features: AclHuK_fk7ikZ1Ry_rR0lNw1rkr7m6j782yki2DT2D_WNr6A4h89KzpbSsJWlnU
+Message-ID: <CAEvNRgFb5zLkTph_9k3io=7UD6S-j3QPnjE3qVTvzeGZxEJSHg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 00/13] KVM/VFIO: guest_memfd support for device
+ MMIO resources
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev
+Cc: Alex Williamson <alex@shazbot.org>, David Woodhouse <dwmw2@infradead.org>, 
+	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Kevin Tian <kevin.tian@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, Will Deacon <will@kernel.org>, 
+	Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Steven Price <steven.price@arm.com>, Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
 
+> This series adds a guest_memfd device-resource framework for exposing PCI
+> BAR memory to guests. The intended use is confidential device assignment,
+> where KVM needs to coordinate private device mappings with shared access
+> through VFIO. The Arm CCA backend is provided separately; these patches
+> contain the guest_memfd, VFIO and IOMMUFD interfaces it uses.
 
-On 10/27/2026 2:05 AM, Leonardo Bras wrote:
-> Hi Tian,
-> Sorry for the delay in reviewing...
-> 
-> On Tue, Sep 29, 2026 at 06:36:45PM +0800, Tian Zheng wrote:
->> With VTCR_EL2.HD set, hardware promotes writable-clean descriptors to
->> writable-dirty without any VM exit, and the only record of the write
->> is the S2AP[1] bit in the stage-2 PTE. The write never passed through
->> the host stage-1, and no unmap path reads the bit, so the record dies
->> with the PTE and reclaim may discard written guest data (silent
->> corruption).
-> 
-> Sorry, I didn't get what you are trying to achieve here.
-> 
-> On your patch, I see you marking backing pages dirty at wrprotect and unmap
-> walkers, and it's very confusing to me on why you are doing this.
-> 
-> IIUC, what you are trying to do is make sure a page does not lose it's
-> contents in case it is reclaimed by the OS.
-> 
-> IIUC, when a page is reclaimed, it will unmap the S2 PTE, and save it's
-> contents to swap, so when the guest read or write to that page will cause
-> it to fault.
-> 
-> The page can never be just unmaped, as if there was a single write to it,
-> the backing pages should be writable, and the contents need to be saved
-> somewhere.
-> 
-> So, if I was able to understand your suggestion, we don't need to worry
-> about this, and this patch wouldn't be necessary.
-> 
-> Did you hit this issue?
-> Can you please expand on your issue, if I could not describe it above?
-> 
-> Thanks!
-> Leo
+Thank you for this revision to guest_memfd + VFIO support!
 
-Hi Leo,
+>
+> The guest_memfd framework and Arm CCA backend are available together at:
+>
+>   https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-da-gmem-backend
+>
+> Userspace creates a device-backed guest_memfd using the ordinary VFIO
+> device fd as resource_fd, with GUEST_MEMFD_FLAG_USE_RESOURCE and
+> GUEST_MEMFD_FLAG_INIT_SHARED.
+> The resource mapping superblock selects its
+> provider; get_pfn identifies PFN-backed memory. Eligible BAR intervals are
+> registered as guest_memfd memslots.
 
-Thanks for the review. I haven't hit this in practice, and based on your
-analysis the patch doesn't look necessary.
+> File offsets use the existing VFIO
+> region-offset namespace,
 
-Reclaim only writes back folios whose PG_dirty flag is set; a clean
-folio is simply freed. A stage-2 write never touches the host
-stage-1, so the folio depends entirely on kvm_release_faultin_page()
-at fault-in to be marked as dirty; without it, the page stays clean from
-the host's perspective and reclaim drops the data.
+Yes, this is great, thank you. I think we should have guest_memfd and
+VFIO share the same offset to PFN mapping.
 
-Your **RFC v1** patch 2 changed that marking from writable to dirty:
+> allowing one guest_memfd to cover multiple BAR
+> intervals.
 
-```
-- kvm_release_faultin_page(kvm, s2vi->page, !!ret, writable);
-+ kvm_release_faultin_page(kvm, s2vi->page, !!ret, dirty);
-```
+Yes, this is an advantage I see of using guest_memfd to wrap VFIO too,
+instead of requiring separate memslots for each shared/private range.
 
-During logging, a read fault maps the page as WC: the folio is not
-marked PG_dirty in kvm_s2_fault_map() and hardware promotes the PTE to
-WD on write without any fault, so reclaim frees the page without saving
-it (the folio was treated as clean).
+> The device-backed guest_memfd fd rejects mmap and fallocate;
+> shared guest faults obtain bare BAR PFNs from the provider instead of
+> resolving the memslot HVA or allocating folios.
+>
+> IOMMUFD resolves and pins the device's existing vDEVICE after its backend
+> validates the VM association. Its MMIO mutex coordinates conversion and
+> device state changes. VFIO supplies BAR PFNs, validates eligible ranges
+> and excludes dma-buf exports while a guest_memfd provider is attached.
+>
+> Without GUEST_MEMFD_FLAG_MMAP, attachment rejects existing VFIO BAR VMAs,
+> and new VFIO mmap calls. With the flag, existing and new BAR VMAs are
+> allowed through the VFIO fd. Attachment invalidates existing BAR mappings,
+> including huge mappings. Subsequent faults use base-page mappings so each
+> page's shared-range attributes are checked separately. Mapping the
+> PFN-backed guest_memfd fd remains disabled (We can decide on this later).
+>
 
-Therefore, **HDBSS v5** patch 2 reverted to marking the folio for any
-write-permitting mapping:
+I saw your other email regarding how to handle read/write/faulting
+(mmap). I still think we should have all these be blocked on the wrapped
+VFIO fd and have it handled through guest_memfd.
 
-```
-kvm_release_faultin_page(kvm, s2vi->page, !!ret, writable);
-```
+The gmem_device_host_accessible() function in this series has a comment
+that explains this, which is that the shared/private attribute is
+guarded by filemap_invalidate_lock() in guest_memfd, and so having
+providers call back into guest_memfd is probably going to cause locking
+issues. That's also what I figured when I was trying to implement the
+integration with the sample memory provider in [1].
 
-Together with the v5 scheme, this makes patch 5 unnecessary:
+[1] https://lore.kernel.org/all/20261022-gmem-alternative-providers-v2-45-5dd1dc6c660a@google.com/
 
-- kvm_s2_fault_compute_prot: always set PROT_W when map_writable
-- stage2_set_prot_attr: PROT_W -> DBM unconditionally
+> VFIO BAR read/write, ioeventfd and userspace mapping faults check the
+> requested range's guest_memfd attributes.
+>
 
+Thanks for calling out ioeventfd, this is one other backdoor to possibly
+access guest-private memory. To avoid calling back into guest_memfd to
+check shared/private status, I have these suggestions:
 
----------
+1. Treat the ioeventfd setup as yet another "mapping" alongside stage 2,
+   host userspace, IOMMU page tables. For IOMMU page tables, guest_memfd
+   will have to do mappings eagerly on conversion to shared since the
+   IOMMU cannot handle faults. We could also "zap" the eventfd-to-VFIO
+   connection on conversion to private and "map" the connection back on
+   conversion to shared.
+2. Take a shortcut for now and say that if the VFIO is wrapped by
+   guest_memfd, always block ioeventfd setup.
 
-On a related note, I'd like to discuss the next version of the DBM
-scheme, following Oliver's suggestion [1].
+> This series depends on:
+> * Ackerley Tng's "Allow guest_memfd to be created using a resource (pool)
+>   fd" RFC, which provides the tmpfs resource-provider API:
+>   https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
+> * The IOMMUFD/TSM series, which provides the vIOMMU and vDEVICE interfaces:
+>   https://lore.kernel.org/all/20261008055955.4014342-1-aneesh.kumar@kernel.org/
+>
 
-Oliver asked for the write bit to be selected by the system capability:
+For easier testing, is there a VFIO sample we could use? How about mdpy?
+Is mdpy representative enough for selftests?
 
-	FEAT_HAFDBS: PROT_W => DBM, PROT_DIRTY => S2AP[1]
-	!FEAT_HAFDBS: both => S2AP[1]
-
-However, our v5 kvm_s2_fault_compute_prot() granted PROT_W
-unconditionally. With PROT_W => S2AP[1] on !FEAT_HAFDBS, a read fault on
-a dirty-tracked memslot would install a writable page. Since dirty-
-logging relies on the write fault to observe the page, we would fail to
-track it.
-
-So we also need to fix kvm_s2_fault_compute_prot():
-
-```
-if (s2vi->map_writable) {
-         if (s2vi->device ||
-             !memslot_is_logging(s2fd->memslot) ||
-             kvm_is_write_fault(s2fd->vcpu)) {
-                 *prot |= KVM_PGTABLE_PROT_W |
-                          KVM_PGTABLE_PROT_DIRTY;
-         } else if (kvm_supports_hafdbs()) {
-                 *prot |= KVM_PGTABLE_PROT_W;
-         }
-}
-```
-
-For normal RAM on a system without FEAT_HAFDBS:
-
-	logging + read fault  -> PTE read-only
-	logging + write fault -> PTE S2AP[1]=1
-
-[1] 
-https://lore.kernel.org/all/ff218960-c412-4283-aa41-b7af2a7048b8@huawei.com/
-
-Thanks,
-Tian
+>
+> [...snip...]
+>
