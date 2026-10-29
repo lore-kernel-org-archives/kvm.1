@@ -1,103 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793313299;
-	b=PJRBLNwxjiCKgpebY0fpkzsrqcPlTlOXgFvbWpIH2AD6Gl82XbzdQ2OWl00KFHBn+KGC
-	 vMlZ3ehltFq7Bgoab+cq2Mux1sGFX9/+HzSiDiVuxZ0wsw5sonISzDmeHeIyHDGZeXvKM
-	 QZ6LUi37PxxpSQ7a5GPkjL2RztQdKtnlwKQGx6/2L5pt5ulJs2cscsucq6mYLLQ6rtWhE
-	 EUtCs+excB4SEzMv9/7G9O2OFj42SmktG0UOtuhF0ehhaWh0CYyzVcala+N88hI+Ug2w8
-	 w+1f1G91D1EWjJ3jeWR/KyT2idc94XgnHWweOeZl4Bse1JtA2G1U2zl+6BfxPfnrFLw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793313299;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Vn+1r0fXkT/Pxt7Z8ODGIrb/O48lJ8IHe/qMz+85vCk=;
-	b=2vrStTQ5vxAH3/QT97SUt+8/SP0u5cShQwxB4pTbgSKAXNK4nPc4V9xM/1+EBE+qvudt
-	 I7PZPXaRCQOMdrztC06J2IWXuxXEzl/9vdKacBl2HyZTxAv3O41peAUOwV9wrVhrobirX
-	 pQl/ch2zzu5iQyBpG6iaVnV7jRsJtUc1JKYGOjm6jm+Qpv15CVMr8Pn4jGzPlw+7OgeqJ
-	 Y+t5oQu8KiMhQC5OgSyGRLibhD4i+65ent2zBlIUCwnHrR7nqjg5R2G5zPtO4nvswSLdz
-	 XGY8ImYEh2zv+w6PnzoiZV46JZ5+5Xr6MUD5sjQAx4bCB8uNKESVQjrBq0Mi7ujpf9w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=esevf+ew;
-	arc=none smtp.remote-ip=209.85.214.169
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.67
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793314937;
+	b=uD9oa3uB57inzpfUkzt0jhSRR4Ca1BYBbGjPz9OVpLOgfrvYf+1ifUWeVgsw+xor3Wly
+	 ESMixvT6Bg2uiQhCJiuw11fYRxjTbMC9JSWtklLnek8xQoke64AEWEX0mUAqhVMT40HPs
+	 KhbtcLkRmtZwrsB1kKqQkzCqfnUp16gV1pkLQKCAjdcAHkfOMysd5k3XWMX9GcGC+Ewqo
+	 ozLDXq9ZcZKJhLuce7Kgo9iEWrqE+kLAbrK0VWa6ni/GKfMM340TGSPAvGItjPWyAC4Kx
+	 88odo310aNzQsjPGTIoYxLdAhi8n6+uRcCilM8Acze+8qkUt8ROAKsCk8TcBQakyAuQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793314937;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=GZrx6eul7qIXwBnSONA+s5/t8vkBMPjoBdp91I0wiAE=;
+	b=gDczLcnkfnWpSf8awtzmrKfXrXZqp/06l8JExt4kIIrWtgFyQhDnc+zlbQcOmfa0jrqK
+	 llfRIXFHjMcdIB4FvB5LTki+8QZ4yiW6wtKja8LVd3rzKVYDO45gMxu2X4W3zoQ3YTdkk
+	 c1y3EIsPmPYY1v2tACc62Q1xW3D55ePprYNpVy2B3O6LgRlm3KlGO+jGGLyWAB9gO25by
+	 +rkQhm76mmHyZGXy19elTbl+qvsLmd573dM0mmVBx7AXR0Kp/5+/04MNgv0bE/0Zbity+
+	 R+CULqQv+mw/LWL66B7V6cVjryuXcXYUj+JNzWTqfNJ6ZZ/rmhQ+L3hDCq6yAGViMFQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=w6Oyymua;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.67
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012067.outbound.protection.outlook.com [40.93.195.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2D4606A31C
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 22:34:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE2D4606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4C1606A31A
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 23:02:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F4C1606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=esevf+ew
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e9f6a16afcso11885ad.1
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 15:34:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793313298; x=1793918098; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Vn+1r0fXkT/Pxt7Z8ODGIrb/O48lJ8IHe/qMz+85vCk=;
-        b=esevf+ewgtSEDL6YbCSCOwjbxaL4hFjnYGhepCidMgeZNm94mX9XMzjwlweuOpTtTD
-         A5zHOd/t8T3PNxlBQ+SJr3G/vGG3m/TW+RE3PqQBXsVgOIjKsowtmX2byWGNusLBHAtw
-         G3NJrcaNFzGFdmkYbQwsfMA6WPM8ZczMhVYUoL3ALVQ4vaZvCuqANv5zPYatMQrmq+/Q
-         YkFRPZzBVXvEx9YRZdmNWjIkVlM/UEhVyREf56b/HMvFAppdCLin9BjPSWwUTm7tKdXo
-         3md647asMJ2xyTP0JSLvS+xwgkfQNpbXXgdGYfUdP/mzQ+v8ZQLO0ZlUXPewEelCQhPn
-         CcLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793313298; x=1793918098;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vn+1r0fXkT/Pxt7Z8ODGIrb/O48lJ8IHe/qMz+85vCk=;
-        b=O3NMJwL93+8BIQ/m44CDNI0jmXPNcLF47drnHL13Pb6kptIOQmiCLAo0+Ekc0fAUVM
-         kEFz06VSiQUrcCzcpcrlEZunOSbKU1PqGj8d0TOGuejWOyQR4X7SvSWaOIw+QgzdBsgf
-         I66KBaT0rmMetcdjngdWgyghdDlPDm++dPNhByXS4QNucKkzVD8gTuBgf44UqOkqmF3z
-         krPYITuwSLMVEe8+cO2d20YL6NPtHZ0NCSo1IpdyJvkMCUAPTdXEJenUMKQd4o3UwUpF
-         mlhvvptiQd1gj+Yw4gtf5nQxy33N1xzzLvzD89ioY4jfhtWqZBMq2Ul1zJ5WXPjOU7Of
-         JuEA==
-X-Forwarded-Encrypted: i=1; AKwUvBynWmukf6u2Rq5cVp0RvbcSDfKYhvKrKbHTAE2bfW2zmSvV25KBlXKoo+wbEyyvyGlJpt4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK3OxnVIRakwElGs+utWt6ZCkiK1hlDsVhPGK2G5JJztuIfP5qH
-	JMo5roPVQT0yRnMndCvMUG8566fsPdi0gSIVlM5eu1SIjRconrCuppfSCfptju4xuw==
-X-Gm-Gg: AYBFou0OhQy/cR0ArFtP/GOR50btRv71Zek8EDwhu79AUsl/wDhW69eLnvnxhlEuH8Q
-	mBG1vkzshS8hx/16R8avcri3c9O75MXAe7frv+HhP8azoLN0V/VdaD+Nx8PgdU08AltzXFU4np8
-	E268toPJHgRtR/CqIJsjJ+R40io1atCr+PzIXzXyuFYJp4aIKYuRZQJkHfL82SURhgP27Dy6tP4
-	hEr1/guDjV5GY+Nmyi+0qIXjk9j/SQB+P/FZLlch3TrMae0ELGQOwzVHUdZXadvv+kE7srUGYi4
-	1q1aTAV+F+x7uWAbfc63IzneNhNljQnSoCeTpduins4lHYF1QhSbva44z3UQgvfGReyCd/+EYQo
-	Z1mq13gkkIXgT5M4J6DrfITbpu6OIiOqQjZ0A04ydgUU8hUsw8BPJWcq7UdZ19UWdLCbS/bkHIq
-	Suc6QdHuTccDx798+YDZ6y0O7j/zo6K9+xeiA8CbU0c8s4nAxwDK9GXIKpMdPmal6LgLnHdodhw
-	OukRwqdmNrnnHoS7M37t98dhqrwK6wYtXO2gzUDN6wi+MWK38v+bMDoE9iS+1nQf9kaX7PNWmDq
-	GiT9K0lrBoAzwiuoIu0epHXKzjRsmyj5Z6ggHsamFzt0M1TXbLTXJl15lE7CyDktLZmNV8Tw5J8
-	/9TTACETW2+15D0u9ZvgGr2g7NErrkKuvzWx3a/eqp7s=
-X-Received: by 2002:a17:902:ccc2:b0:2d5:db38:8013 with SMTP id d9443c01a7336-2eb1ececd67mr7233115ad.18.1793313297370;
-        Thu, 29 Oct 2026 15:34:57 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3927ff6bsm43495ad.52.2026.10.29.15.34.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 15:34:55 -0700 (PDT)
-Date: Thu, 29 Oct 2026 22:34:51 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse <dwmw2@infradead.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v6 13/18] iommu/vt-d: Handle reattach of the restored
- domain
-Message-ID: <auPC2pByvuW5uHyH@google.com>
-References: <20261025021930.674647-1-skhawaja@google.com>
- <20261025021930.674647-14-skhawaja@google.com>
- <faeedd16-a271-4ced-be1a-7bd70860bcdc@linux.intel.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=w6Oyymua
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZqY7sMtpjhngGT7E2hAwaX60YawTaTR5yWk9o3Ay3UG7e0ZK2/rBaeQGlM41lfwWxGUS6UM6Up5rLqMIgXhBAczt4Ie2Slh/HAk5dUbCKIdFshB5Gnb9QJiPdahTSM989I/2Aj8w1nkpUYK4fUpCTjcFMKl5ly/SZhjn1BVqQItZS0+YYgAii1ZTgllQQ1GzwsPeHh4AaQw4r52IX538a63IGvGs++/+SkiOZWY4yUfTNpWpF1O+zr7WqswwVg1s96pQulV9DdjMi8T1Yh9KmfUEk5uKi2vOqy3HDGArqCwRrDmYAH8sVNynhgd49eZwKfGiLEb83DrJ2LDt0EQBLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GZrx6eul7qIXwBnSONA+s5/t8vkBMPjoBdp91I0wiAE=;
+ b=OPTwbizVVpxceZjRorHJO2rfzoP4aKaM/yL9Gyspxujhbg6VGg/x/IhqJoJCidGKU5PaVUG8xzKzN4NZB7l6oh/zDb65Z/nHw/uaCGS1YDMfrEeK0nItS3Q+YtADklcVj9FLFe5yYlJrCxDsUxa/x1dSwTGHuF1UOszSgNZb1dF0xM3YcKOl0gJt/Ac77nTKjSxpAlnp8xdRmPNFnNTWEgZ5D0cKJiTKkx+wkBYPiR3nSchkQhy205/n6E9TImZJTOtFIS7+4hurBVeHPCNbcg8egeRhnuxp1Fxvr8QHxuVgx1rfjZOcoudJCnlv2SYSvYT5t19gzNjRtgXiE0Rd3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GZrx6eul7qIXwBnSONA+s5/t8vkBMPjoBdp91I0wiAE=;
+ b=w6Oyymua/NTtAKAFpMHIY1CjMHcEmogO2wit6/Ia3FgyFGgqLyI37FAmzQmx53LUIW7UwN2n5uZtyFrIlJ8CfYiSNl3+Cj336/anJIYSRaJHpBUIV9Vcd18k6gXUX/pRCPsFcJY/1hlivlCCOjOI8AFR8q1EY9Y0A4eI1dAPHn4=
+Received: from BY3PR05CA0054.namprd05.prod.outlook.com (2603:10b6:a03:39b::29)
+ by SN7PR12MB7977.namprd12.prod.outlook.com (2603:10b6:806:340::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Thu, 29 Oct
+ 2026 23:02:10 +0000
+Received: from BY1PEPF0002696B.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b:cafe::4d) by BY3PR05CA0054.outlook.office365.com
+ (2603:10b6:a03:39b::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.4 via Frontend Transport; Thu, 29
+ Oct 2026 23:02:10 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BY1PEPF0002696B.mail.protection.outlook.com (10.167.244.155) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.569.4 via Frontend Transport; Thu, 29 Oct 2026 23:02:10 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 29 Oct
+ 2026 18:02:10 -0500
+Date: Thu, 29 Oct 2026 18:01:53 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+CC: Mathieu Poirier <mathieu.poirier@linaro.org>, Kohei Enju
+	<enju.kohei@fujitsu.com>, <gshan@redhat.com>, <berrange@redhat.com>,
+	<kchamart@redhat.com>, <pierrick.bouvier@oss.qualcomm.com>,
+	<peter.maydell@linaro.org>, <mst@redhat.com>, <cohuck@redhat.com>,
+	<pbonzini@redhat.com>, <eblake@redhat.com>, <armbru@redhat.com>,
+	<lorenzo.pieralisi@linaro.org>, <qemu-devel@nongnu.org>,
+	<qemu-arm@nongnu.org>, <kvm@vger.kernel.org>
+Subject: Re: [RFC v4 03/24] target/arm: Add confidential guest support
+Message-ID: <x72wavbe4mfl4ccbusjpb424m4mribably2cko6rbhemea7xtc@t7xrxvyzv3zo>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-4-mathieu.poirier@linaro.org>
+ <dhrvydsmaw22xqx5d5i5s7fdyjxupz27yxp6trv2tesysp4npj@quvzrxjvfipz>
+ <arI197vJkW75p50c@lpieralisi>
+ <arSTQQ5uB6oR-vFe@FCCLS0092175.localdomain>
+ <ataBkrIvULJXj4v6@p14s>
+ <atdKSwvu_uldqwlz@red-moon>
+ <atekhR1Wz03nUCHB@p14s>
+ <fgmu2cuxx2n2cuxqeotas2iu43jk7aou3hldhw4757x4jyv6np@snsceczzajcy>
+ <auC28TE3QWlU0Pcm@red-moon>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -107,341 +118,364 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <faeedd16-a271-4ced-be1a-7bd70860bcdc@linux.intel.com>
+In-Reply-To: <auC28TE3QWlU0Pcm@red-moon>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0002696B:EE_|SN7PR12MB7977:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99d50d64-2041-41f6-334a-08df3610a9e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|23010399003|7416014|376014|30052699003|82310400026|261026121527099003|11063799006|56012099006|4143699003|261009223027099003|261009221227099003|261022105027099003|10067099003|261022075727099003|261021121427099003|22082099003|18002099003|261021123027099003|6133799003|13003099007|261028144727099003|261026140227099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	JFyvZotOi8wRJDp6BHrt2F6Ml2anub+8Y63rBVyaZFQdMBlVT29afo/WB0/KOXKtTDfxw2u06ea3KntowQQylz1gUhXcwGEXE0w/dEmSu+heEP7CQgdAb6ihwoXso1u+w1a9bBLqfgkSrmSZ2N+fIgI8vqKXn4Gw77/Wk//YIpHEroR9Nqp3k8K+LxOwn8Z+47xWJfKBZnkWnI6uahY+XoBmmqInbWgeRQ90MFdO6HeRBRSaWnLpJsFWa65AiKXT0PIn8W2AOqZ4QW91RFBJBau5eApBNZP/0Kvh+EcxVxpj/P0pe/zmNwMKjol/DogUqmKqAxrptgaSZRYIK44FgWrWwk2VdMyuiR8KjNN5Hjg1/Z9+uJfGKxy9vMdszMMw9S9wDd8S2tgdgbbbib54vIXXrpH4G6MFqhGwu+Oiv36XSd/nqg8eLFislJY+AYNVxL5A/r37Jw4h9Pv0r48cVOrD8bdMPSfpz/7foTPFFiNWfS/37ear6ebmG2p6LCsO1FeXLlivG++gxQUejiI6mTi9CyZHLi74kgFLtK06VTvpY1iQvk0BNogJyFR/lwjlRIG5JgHod9B/rwOPZOMVbMNUED2csO6oirR0CYLhhoA+WB0u0ckEdOMLHh53p8Pq2ca4lCxP/nPSzGO6SPfVLvvsVsAu8oAhIJA5rjf8cOI=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(23010399003)(7416014)(376014)(30052699003)(82310400026)(261026121527099003)(11063799006)(56012099006)(4143699003)(261009223027099003)(261009221227099003)(261022105027099003)(10067099003)(261022075727099003)(261021121427099003)(22082099003)(18002099003)(261021123027099003)(6133799003)(13003099007)(261028144727099003)(261026140227099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	X25j8xGrkAm/RvmaTgWHct3i+1BJBkKUni4ySPRbbWXLEbkuDs0CqoVkSWU45s7tPA4R1S4ZbIBLuuof1EbotM1zt0x7Erfna94Dea9Xqsz+ZpeEV4Ebv97DCXBPcHYaRBe8WwocB0Kygi2XF/5s87rzlR2d1ccw9PoHUiUXKdqVeU7GcNZIHubrwXi4Yyr6ryJxyi4Mv7LEY4wehpXZTk7ODAMN5XwA3P2vQDwgoPXavtm6uHmSecAI5xHgsJFw/OcJCKkeyAi1slnNLQbrQREB0cwTi2lsY5xCFwnCGoy1YuC6ewilSX7KLGXjgaoGD2NTbj+2AViDZVLgm0/wlIWdDkeLxqKUpGyOKXmmY+cyK5dpV6mgL64Cxkoglgm01usN/r/UKslX8xMh2MiZyvkZ9W/S+2XCHhP2jbmSt0cI6HdZ2p4Zkuy/+IpOWJbm
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 23:02:10.6354
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99d50d64-2041-41f6-334a-08df3610a9e1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0002696B.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7977
 
-On Thu, Oct 29, 2026 at 04:28:30PM +0800, Baolu Lu wrote:
->On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
->>Reattach the restored domain to the preserved device using restored
->>domain ID. While reattaching do not setup the context and PASID entries
->>as those are preserved during liveupdate.
->>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
->>  drivers/iommu/intel/iommu.c      |  34 ++++++--
->>  drivers/iommu/intel/iommu.h      |  14 ++++
->>  drivers/iommu/intel/liveupdate.c | 131 +++++++++++++++++++++++++++++++
->>  3 files changed, 171 insertions(+), 8 deletions(-)
->>
->>diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
->>index ecec057f78dd..4f01aa34ccb5 100644
->>--- a/drivers/iommu/intel/iommu.c
->>+++ b/drivers/iommu/intel/iommu.c
->>@@ -2926,6 +2926,9 @@ static int blocking_domain_attach_dev(struct iommu_domain *domain,
->>  				      struct device *dev,
->>  				      struct iommu_domain *old)
->>  {
->>+	if (dev_iommu_restored_state(dev))
->>+		return -EBUSY;
->>+
->
->There is a contract between the iommu core and iommu drivers that
->attaching a blocking domain must always succeed. Otherwise, some
->existing code paths will break.
->
->My understanding is that "block DMA" is always a legitimate request, but
->we don't expect it while the device is in the restored state. So perhaps
->we could trigger a WARN here and continue tearing down the preserved
->entry?
+On Tue, Oct 27, 2026 at 03:36:33PM +0100, Lorenzo Pieralisi wrote:
+> On Tue, Oct 20, 2026 at 01:12:45PM -0500, Michael Roth wrote:
+> > On Tue, Oct 20, 2026 at 11:27:33AM -0600, Mathieu Poirier wrote:
+> > > On Tue, Oct 20, 2026 at 01:02:35PM +0200, Lorenzo Pieralisi wrote:
+> > > > On Mon, Oct 19, 2026 at 02:46:10PM -0600, Mathieu Poirier wrote:
+> > > > > On Thu, Sep 24, 2026 at 12:12:35PM +0900, Kohei Enju wrote:
+> > > > > > On 09/22 10:01, Lorenzo Pieralisi wrote:
+> > > > > > > On Tue, Sep 15, 2026 at 04:27:21PM -0500, Michael Roth wrote:
+> > > > > > > > On Thu, Sep 03, 2026 at 01:35:50PM -0600, Mathieu Poirier wrote:
+> > > > > > > > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > > > > > > 
+> > > > > > > > > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
+> > > > > > > > > support the Arm Realm Management Extension (RME). It is instantiated by
+> > > > > > > > > passing on the command-line:
+> > > > > > > > > 
+> > > > > > > > >   -M virt,confidential-guest-support=<id>
+> > > > > > > > >   -object rme-guest,id=<id>
+> > > > > > > > > 
+> > > > > > > > > This is only the skeleton. Support will be added in following patches.
+> > > > > > > > > 
+> > > > > > > > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > > > > > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > > > > > > > > ---
+> > > > > > > > >  docs/system/confidential-guest-support.rst |  1 +
+> > > > > > > > >  qapi/qom.json                              | 13 +++++++
+> > > > > > > > >  target/arm/kvm-rme.c                       | 42 ++++++++++++++++++++++
+> > > > > > > > >  target/arm/meson.build                     |  5 ++-
+> > > > > > > > >  4 files changed, 60 insertions(+), 1 deletion(-)
+> > > > > > > > >  create mode 100644 target/arm/kvm-rme.c
+> > > > > > > > > 
+> > > > > > > > > diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
+> > > > > > > > > index 562a7c3c2852..abb56923ad13 100644
+> > > > > > > > > --- a/docs/system/confidential-guest-support.rst
+> > > > > > > > > +++ b/docs/system/confidential-guest-support.rst
+> > > > > > > > > @@ -42,5 +42,6 @@ Currently supported confidential guest mechanisms are:
+> > > > > > > > >  * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
+> > > > > > > > >  * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
+> > > > > > > > >  * AWS Nitro Enclaves (see :doc:`nitro`)
+> > > > > > > > > +* Arm Realm Management Extension (RME)
+> > > > > > > > >  
+> > > > > > > > >  Other mechanisms may be supported in future.
+> > > > > > > > > diff --git a/qapi/qom.json b/qapi/qom.json
+> > > > > > > > > index 776b13027fd8..52997c29a32d 100644
+> > > > > > > > > --- a/qapi/qom.json
+> > > > > > > > > +++ b/qapi/qom.json
+> > > > > > > > > @@ -1288,6 +1288,17 @@
+> > > > > > > > >    'data': { '*pretty': 'bool',
+> > > > > > > > >              '*close-action': 'MonitorQMPCloseAction' } }
+> > > > > > > > >  
+> > > > > > > > > +##
+> > > > > > > > > +# @RmeGuestProperties:
+> > > > > > > > > +#
+> > > > > > > > > +# Properties for rme-guest objects.
+> > > > > > > > > +#
+> > > > > > > > > +# Since: 11.1
+> > > > > > > > > +##
+> > > > > > > > > +{ 'struct': 'RmeGuestProperties',
+> > > > > > > > > +  'base': 'ConfidentialGuestSupportProperties',
+> > > > > > > > 
+> > > > > > > > Just FYI, based on input from Markus I'm planning to drop this
+> > > > > > > > ConfidentialGuestSupportProperties base type from my series
+> > > > > > > > since it's probably only SNP/TDX that need to be able to switch
+> > > > > > > > it on/off, whereas this series appears to use/require it from
+> > > > > > > > the start.
+> > > > > > > > 
+> > > > > > > > I'm not exactly sure what it will look like for v3 yet, but if you
+> > > > > > > > were based on v2 you'd instead probably just do the following in the
+> > > > > > > > instance_init function for your rme-guest instance:
+> > > > > > > > 
+> > > > > > > >   cgs->allow_convert_in_place = true;
+> > > > > > > >   cgs->convert_in_place = true;
+> > > > > > > > 
+> > > > > > > > rather than exposing it as a cmdline option.
+> > > > > > > 
+> > > > > > > Yep, it won't be an option for CCA Realms anyway since that will be
+> > > > > > > the baseline.
+> > > > > > 
+> > > > > > IIUC, in-place conversion requires RAM backed by a shared/mappable
+> > > > > > guest_memfd. If in-place conversion is always enabled for CCA Realms,
+> > > > > > could QEMU also select the equivalent of
+> > > > > > 
+> > > > > >   -object memory-backend-guest-memfd,id=ram0,size=...,share=on
+> > > > > > 
+> > > > > > automatically for the default RAM, so that specifying the RAM size with
+> > > > > > `-m` is sufficient?
+> > > > > 
+> > > > > Are you suggesting that on Arm, we completely get rid of 
+> > > > 
+> > > > Nit: obviously on Arm rme-guest configs.
+> > > 
+> > > Indeed.
+> > > 
+> > > > 
+> > > > >     -object memory-backend-guest-memfd,id=ram0,size=$(RAMSIZE),share=on
+> > > > 
+> > > > If that's what we want to make a default, I guess we ought to override
+> > > > create_default_memdev for arm machines + rme-guest configs ?
+> > > > 
+> > > > Pros and cons ? I am not sure how well received is setting implicit defaults
+> > > > for specific machine configs and what that really buys us eventually.
+> > > 
+> > > I agree, this entails a fair amount of changes for cosmetic gains only.
+> > 
+> > I think it will also add some uneccessary confusion. For instance, based
+> > on Paolo's feedback[1], we will likely not expose any sort of option to
+> 
+> I think that [1] is:
+> 
+> https://lore.kernel.org/kvm/866179b6-8303-4c30-aa59-005fa4554362@redhat.com
+> 
+> for completeness.
 
-For restore device we try to not block the DMA unless the entity that
-preserved in the previous kernel restores it. But you are raising a fair
-point, I will see if we can make sure in the core that this is only
-called from the core when there is a legitimate reason to block DMA in
-case of restored devices. Then we can remove this check from here.
->
->>  	iopf_for_domain_remove(old, dev);
->>  	device_block_translation(dev);
->>  	return 0;
->>@@ -3294,6 +3297,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
->>  {
->>  	int ret;
->>+	if (dev_iommu_restored_state(dev))
->>+		return intel_iommu_attach_restored_device(domain, dev);
->>+
->>  	device_block_translation(dev);
->>  	ret = paging_domain_compatible(domain, dev);
->>@@ -3424,7 +3430,8 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
->>  	info->iommu = iommu;
->>  	RB_CLEAR_NODE(&info->node);
->>  	if (dev_is_pci(dev)) {
->>-		if (ecap_dev_iotlb_support(iommu->ecap) &&
->>+		if (!dev_iommu_restored_state(dev) &&
->>+		    ecap_dev_iotlb_support(iommu->ecap) &&
->>  		    pci_ats_supported(pdev) &&
->>  		    dmar_ats_supported(pdev, iommu)) {
->>  			info->ats_supported = 1;
->>@@ -3529,12 +3536,16 @@ static void intel_iommu_release_device(struct device *dev)
->>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>  	struct intel_iommu *iommu = info->iommu;
->>-	iommu_disable_pci_pri(info);
->>-	iommu_disable_pci_ats(info);
->>+	if (!dev_iommu_restored_state(dev)) {
->>+		iommu_disable_pci_pri(info);
->>+		iommu_disable_pci_ats(info);
->>-	if (info->pasid_enabled) {
->>-		pci_disable_pasid(to_pci_dev(dev));
->>-		info->pasid_enabled = 0;
->>+		if (info->pasid_enabled) {
->>+			pci_disable_pasid(to_pci_dev(dev));
->>+			info->pasid_enabled = 0;
->>+		}
->>+	} else {
->>+		intel_iommu_detach_restored_device(dev);
->>  	}
->>  	mutex_lock(&iommu->iopf_lock);
->>@@ -3542,11 +3553,15 @@ static void intel_iommu_release_device(struct device *dev)
->>  		device_rbtree_remove(info);
->>  	mutex_unlock(&iommu->iopf_lock);
->>-	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev) &&
->>+	if (!dev_iommu_restored_state(dev) && sm_supported(iommu) &&
->>+	    !dev_is_real_dma_subdevice(dev) &&
->>  	    !context_copied(iommu, info->bus, info->devfn))
->>  		intel_pasid_teardown_sm_context(dev);
->>-	intel_pasid_free_table(dev);
->>+	if (!dev_iommu_restored_state(dev))
->>+		intel_pasid_free_table(dev);
->>+	else
->>+		kfree(info->pasid_table);
->>  	intel_iommu_debugfs_remove_dev(info);
->>  	kfree(info);
->>  }
->>@@ -4003,6 +4018,9 @@ static int identity_domain_attach_dev(struct iommu_domain *domain,
->>  	struct intel_iommu *iommu = info->iommu;
->>  	int ret;
->>+	if (dev_iommu_restored_state(dev))
->>+		return -EBUSY;
->>+
->>  	device_block_translation(dev);
->>  	if (dev_is_real_dma_subdevice(dev))
->>diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
->>index 260c7a5b1240..f910e5383e12 100644
->>--- a/drivers/iommu/intel/iommu.h
->>+++ b/drivers/iommu/intel/iommu.h
->>@@ -1322,6 +1322,9 @@ void clear_unpreserved_context_entries(struct intel_iommu *iommu);
->>  void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->>  					       struct iommu_hw_ser *iommu_ser);
->>  void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu);
->>+int intel_iommu_attach_restored_device(struct iommu_domain *domain,
->>+				       struct device *dev);
->>+int intel_iommu_detach_restored_device(struct device *dev);
->>  #else
->>  static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
->>  {
->>@@ -1335,6 +1338,17 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
->>  static inline void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
->>  {
->>  }
->>+
->>+static inline int intel_iommu_attach_restored_device(struct iommu_domain *domain,
->>+						     struct device *dev)
->>+{
->>+	return -EOPNOTSUPP;
->>+}
->>+
->>+static inline int intel_iommu_detach_restored_device(struct device *dev)
->>+{
->>+	return -EOPNOTSUPP;
->>+}
->>  #endif
->>  #ifdef CONFIG_INTEL_IOMMU_SVM
->
->It appears that there is no way to replace the restored domain, because
->nothing ever clears IOMMU_SER_FLAG_INCOMING or dev->iommu->device_ser.
->As a result, if iommufd later tries to move the device to a new hwpt,
->the attempt will always fail.
->
->I assume this is intended for this phase, and that the actual
->replacement will be handled in a later phase. If so, please mention this
->in the commit message.
+Yes, sorry, I should know better by now that adding citations before
+adding the links is a bad idea.
 
-Yes, this is intentional for this phase. I will add a note about this in
-the commit message also.
->
->>diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
->>index 36816d3651e6..665ebb81bd61 100644
->>--- a/drivers/iommu/intel/liveupdate.c
->>+++ b/drivers/iommu/intel/liveupdate.c
->>@@ -394,6 +394,137 @@ void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
->>  		      iommu->name);
->>  }
->>+static void domain_detach_restored_iommu(struct dmar_domain *domain,
->>+					 struct intel_iommu *iommu)
->>+{
->>+	struct iommu_domain_info *info;
->>+
->>+	guard(mutex)(&iommu->did_lock);
->>+	info = xa_load(&domain->iommu_array, iommu->seq_id);
->>+	if (--info->refcnt == 0) {
->>+		xa_erase(&domain->iommu_array, iommu->seq_id);
->>+		kfree(info);
->>+	}
->
->This seems to be different from normal domain_detach_iommu(), which
->looks like this,
->
->        if (--info->refcnt == 0) {
->                ida_free(&iommu->domain_ida, info->did);
->                xa_erase(&domain->iommu_array, iommu->seq_id);
->                kfree(info);
->        }
->
->why ida_free() is skipped in the restored path?
+> 
+> > switch between in-place/out-of-place conversion for SNP/TDX, but instead
+> > just use whatever mode the KVM module was actually configured to use.
+> > 
+> > For in-place conversion, it actually doesn't seem too bad to hook into
+> > create_default_memdev to have it default to memory-backend-memfd.
+> > However, currently, it used backend-file/backend-ram depending on other
+> 
+> "it used" - can I ask what "it" refers to please ?
 
-The restored device can be removed and probed again while the PASID and
-context entries stay intact. So the restored did is not freed in this
-path. Once the domain is reclaimed by the iommufd, then it takes the
-normal detach path.
+"it used" -> "QEMU uses" is what I meant.
 
->
->>+}
->>+
->>+static int domain_attach_restored_iommu(struct dmar_domain *domain,
->>+					struct intel_iommu *iommu,
->>+					struct iommu_device_ser *device_ser)
->>+{
->>+	struct iommu_domain_info *info, *curr;
->>+	struct iommu_domain_ser *domain_ser;
->>+	struct iommu_hw_ser *iommu_hw_ser;
->>+	int restored_did;
->>+	int ret;
->>+
->>+	if (!iommu_domain_restored_state(&domain->domain))
->>+		return -EINVAL;
->>+
->>+	if (!device_ser->attachment.domain_phys ||
->>+	    !device_ser->iommu_phys)
->>+		return -EINVAL;
->>+
->>+	domain_ser = phys_to_virt(device_ser->attachment.domain_phys);
->>+	if (domain_ser->restored_domain != &domain->domain)
->>+		return -EINVAL;
->>+
->>+	iommu_hw_ser = phys_to_virt(device_ser->iommu_phys);
->>+	if (iommu_hw_ser->type != IOMMU_SER_TYPE_INTEL ||
->>+	    iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
->>+		return -EINVAL;
->>+
->>+	restored_did = device_ser->attachment.attachment_id;
->>+	if (!ida_exists(&iommu->domain_ida, restored_did))
->>+		return -EINVAL;
->>+
->>+	info = kzalloc_obj(*info);
->>+	if (!info)
->>+		return -ENOMEM;
->>+
->>+	guard(mutex)(&iommu->did_lock);
->>+	curr = xa_load(&domain->iommu_array, iommu->seq_id);
->>+	if (curr) {
->
->		if (WARN_ON(curr->did != restored_did))
->			return -EINVAL;
+> 
+> > options, and those options are applicable to out-of-place conversion as
+> > well where e.g. maybe the user wants to use file-backed hugetlb memory
+> > for their shared memory. So we wouldn't want to change the behavior for
+> > out-of-place.
+> 
+> So, here you are saying that basically a sensible default for out-of-place
+> might not work for convert-in-place and therefore it does not make much
+> sense to have a default that does/doesn't work depending on how KVM is
+> configured.
+> 
+> > But then, for in-place, if we default to a different backend then stuff
+> > like mem-path=... parameters for out-of-place invocations will then
+> > become silently ignored, or we will need to generate an error for those,
+> > which works against the idea of having a common cmdline that "just
+> > works" for in-place/out-of-place.
+> 
+> Yes that makes sense.
+> 
+> > If we (users, management/libvirt, etc.) consolidate around specifying the
+> > memfd backend for confidential VMs, then we can have a "default" that is
+> > more consistent between in-place vs. out-of-place, which i think is more
+> > beneficial than trying to consolidate around a syntacticly simpler
+> > cmdline that might not behave as expected when switching between
+> > older/newer kernels which may or may not have in-place support.
+> 
+> Can you elaborate on this Michael please ? In particular in relation to a more
+> consistent "default" for in-place/out-of-place, are you referring to defining
+> a -object memfd option that works for both in-place and out-of-place ? Isn't
+> that the case already with your latest v3 (and the VMM detecting the KVM
+> underlying config ie in-place vs out-of-place) ?
 
-Agreed. I will add this.
+To clarify, what I mean is that if we all CoCo platforms use a similar
+command-line like:
 
->
->>+		curr->refcnt++;
->>+		kfree(info);
->>+		return 0;
->>+	}
->>+
->>+	info->refcnt	= 1;
->>+	info->did	= restored_did;
->>+	info->iommu	= iommu;
->>+	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
->>+			  NULL, info, GFP_KERNEL);
->>+	if (curr) {
->>+		ret = xa_err(curr) ? : -EBUSY;
->>+		goto err_unlock;
->>+	}
->>+
->>+	return 0;
->>+
->>+err_unlock:
->>+	kfree(info);
->>+	return ret;
->>+}
->>+
->>+/**
->>+ * intel_iommu_attach_restored_device() - Restore device domain attachment after live update
->>+ * @domain: Restored domain
->>+ * @dev: Restored device
->>+ *
->>+ * Return: 0 on success, or negative error code.
->>+ */
->>+int intel_iommu_attach_restored_device(struct iommu_domain *domain,
->>+				       struct device *dev)
->>+{
->>+	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
->>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
->>+	struct intel_iommu *iommu = info->iommu;
->>+	unsigned long flags;
->>+	int ret;
->>+
->>+	if (!device_ser)
->>+		return -EINVAL;
->>+
->
->The context and PASID table entries are not touched in the restore path.
->That's fine, but it would be better to check that the hardware
->configuration matches the restored domain before trusting it, at least
->the physical address of the page table and the domain ID. With that
->check in place, it would be reasonable to skip
->paging_domain_compatible().
+  qemu-system-<arch> -object memory-backend-memfd,...
 
-Since the page table address and the domain ID are both programmed into
-the context and PASID tables, and both of those are preserved, we can
-rely on the KHO preservation of the memory to assume the correctness
-here. We already rely on the KHO preservation for the page tables
-themselves, including the mappings. Also note that the RTADDR check
-during restore gives a sanity check on the root table being used by the
-live hardware.
+then that would be consistent not only across all CoCo platforms (for
+currently implementations anyway...) that support only in-place
+conversion, but it would also be consistent across CoCo platforms that
+support both in-place/out-of-place (SNP/TDX). There seems to be a desire
+for the latter based on Paolo's comments (thanks for fixing the
+references).
 
->
->>+	ret = domain_attach_restored_iommu(dmar_domain, iommu, device_ser);
->>+	if (ret)
->>+		return ret;
->>+
->>+	info->domain = dmar_domain;
->>+	info->domain_attached = true;
->>+	spin_lock_irqsave(&dmar_domain->lock, flags);
->>+	list_add(&info->link, &dmar_domain->devices);
->>+	spin_unlock_irqrestore(&dmar_domain->lock, flags);
->>+
->>+	return 0;
->>+}
->>+
->>+int intel_iommu_detach_restored_device(struct device *dev)
->>+{
->>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>+	struct intel_iommu *iommu = info->iommu;
->>+	struct iommu_domain *domain;
->>+	unsigned long flags;
->>+
->>+	if (!info->domain_attached || !info->domain)
->>+		return -EINVAL;
->>+
->>+	domain = &info->domain->domain;
->>+	if (!iommu_domain_restored_state(domain))
->>+		return -EINVAL;
->>+
->>+	info->domain_attached = false;
->>+
->>+	spin_lock_irqsave(&info->domain->lock, flags);
->>+	list_del(&info->link);
->>+	spin_unlock_irqrestore(&info->domain->lock, flags);
->>+
->>+	domain_detach_restored_iommu(info->domain, iommu);
->>+	info->domain = NULL;
->>+
->>+	return 0;
->>+}
->>+
->>  enum pasid_lu_op {
->>  	PASID_LU_OP_PRESERVE = 1,
->>  	PASID_LU_OP_UNPRESERVE,
->
->Thanks,
->baolu
+If however we introduce some syntactic sugar to have it handled
+automatically by -m / create_default_memdev(), then any users who
+previously ran SNP/TDX for out-of-place conversion with something like:
+
+  qemu-system-x86_64 -m <size> -machine ...,mem-path=/path/to/hugetlb
+  
+would break/misbehave if we enabled in-place conversion. And that's okay,
+but it makes clear that using -m comes with a number of restrictions in
+the case of in-place-conversion (e.g. mem-path not supported), that aren't
+restrictions for out-of-place-conversion, and that can cause some
+confusion if we don't document it appropriately.
+
+I don't have any strong objection to that, but it's just trickier to
+document/explain, whereas if we all just generally agree to use:
+
+  qemu-system-<arch> -object memory-backend-memfd,...
+
+a lot of this ambiguity goes away. So I prefer specifying the backend
+explicitly, especially since guest-memfd is a well-understood commonality
+for CoCo VMs and we can concentrate our documentation and how we expose
+that to management/libvirt through this same backend.
+
+That said, there's no reason we can't also have -m "Do the right thing"
+for in-place conversion, I just don't think we should lean on that too
+heavily in our documentation/management tooling, and keep it as more of
+a 'shortcut' for non-production use-cases if we decide it's worth
+adding.
+
+Thanks,
+
+Mike
+
+> 
+> > So, a longwinded "I agree" from me as well.
+> > 
+> > Thanks,
+> > 
+> > Mike
+> 
+> Thanks,
+> Lorenzo
+> 
+> > > 
+> > > > 
+> > > > > or simply to get rid of "size=$(RAMSIZE)" in the above because it is redundant
+> > > > > with "-m $(RAMSIZE)"?
+> > > > > 
+> > > > > Gavin and Michael, what is your take on that suggestion?
+> > > > 
+> > > > Yes please any feedback on this is welcome.
+> > > > 
+> > > > Thanks,
+> > > > Lorenzo
+> > > > 
+> > > > > Thanks,
+> > > > > Mathieu
+> > > > > 
+> > > > > > 
+> > > > > > Thanks,
+> > > > > > Kohei
+> > > > > > 
+> > > > > > > 
+> > > > > > > Thanks,
+> > > > > > > Lorenzo
+> > > > > > > 
+> > > > > > > > Thanks,
+> > > > > > > > 
+> > > > > > > > Mike
+> > > > > > > > 
+> > > > > > > > > +  'data': {} }
+> > > > > > > > > +
+> > > > > > > > >  ##
+> > > > > > > > >  # @ObjectType:
+> > > > > > > > >  #
+> > > > > > > > > @@ -1346,6 +1357,7 @@
+> > > > > > > > >      { 'name': 'pr-manager-helper',
+> > > > > > > > >        'if': 'CONFIG_LINUX' },
+> > > > > > > > >      'qtest',
+> > > > > > > > > +    'rme-guest',
+> > > > > > > > >      'rng-builtin',
+> > > > > > > > >      'rng-egd',
+> > > > > > > > >      { 'name': 'rng-random',
+> > > > > > > > > @@ -1427,6 +1439,7 @@
+> > > > > > > > >        'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
+> > > > > > > > >                                        'if': 'CONFIG_LINUX' },
+> > > > > > > > >        'qtest':                      'QtestProperties',
+> > > > > > > > > +      'rme-guest':                  'RmeGuestProperties',
+> > > > > > > > >        'rng-builtin':                'RngProperties',
+> > > > > > > > >        'rng-egd':                    'RngEgdProperties',
+> > > > > > > > >        'rng-random':                 { 'type': 'RngRandomProperties',
+> > > > > > > > > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> > > > > > > > > new file mode 100644
+> > > > > > > > > index 000000000000..42e1d1e7b859
+> > > > > > > > > --- /dev/null
+> > > > > > > > > +++ b/target/arm/kvm-rme.c
+> > > > > > > > > @@ -0,0 +1,42 @@
+> > > > > > > > > +/*
+> > > > > > > > > + * QEMU Arm RME support
+> > > > > > > > > + *
+> > > > > > > > > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > > > > > > > > + *
+> > > > > > > > > + * Copyright Linaro 2026
+> > > > > > > > > + */
+> > > > > > > > > +
+> > > > > > > > > +#include "qemu/osdep.h"
+> > > > > > > > > +
+> > > > > > > > > +#include "hw/core/boards.h"
+> > > > > > > > > +#include "hw/core/cpu.h"
+> > > > > > > > > +#include "kvm_arm.h"
+> > > > > > > > > +#include "migration/blocker.h"
+> > > > > > > > > +#include "qapi/error.h"
+> > > > > > > > > +#include "qom/object_interfaces.h"
+> > > > > > > > > +#include "system/confidential-guest-support.h"
+> > > > > > > > > +#include "system/kvm.h"
+> > > > > > > > > +#include "system/runstate.h"
+> > > > > > > > > +
+> > > > > > > > > +#define TYPE_RME_GUEST "rme-guest"
+> > > > > > > > > +OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
+> > > > > > > > > +
+> > > > > > > > > +struct RmeGuest {
+> > > > > > > > > +    ConfidentialGuestSupport parent_obj;
+> > > > > > > > > +};
+> > > > > > > > > +
+> > > > > > > > > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+> > > > > > > > > +                                          CONFIDENTIAL_GUEST_SUPPORT,
+> > > > > > > > > +                                          { TYPE_USER_CREATABLE }, { })
+> > > > > > > > > +
+> > > > > > > > > +static void rme_guest_class_init(ObjectClass *oc, const void *data)
+> > > > > > > > > +{
+> > > > > > > > > +}
+> > > > > > > > > +
+> > > > > > > > > +static void rme_guest_init(Object *obj)
+> > > > > > > > > +{
+> > > > > > > > > +}
+> > > > > > > > > +
+> > > > > > > > > +static void rme_guest_finalize(Object *obj)
+> > > > > > > > > +{
+> > > > > > > > > +}
+> > > > > > > > > diff --git a/target/arm/meson.build b/target/arm/meson.build
+> > > > > > > > > index 0369f96b4cc6..9d322a7aad28 100644
+> > > > > > > > > --- a/target/arm/meson.build
+> > > > > > > > > +++ b/target/arm/meson.build
+> > > > > > > > > @@ -31,7 +31,10 @@ arm_common_user_system_ss.add(when: 'TARGET_AARCH64', if_true: files(
+> > > > > > > > >  arm_common_system_ss.add(files(
+> > > > > > > > >    'arm-qmp-cmds.c',
+> > > > > > > > >  ))
+> > > > > > > > > -arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
+> > > > > > > > > +arm_system_ss.add(when: 'CONFIG_KVM', if_true: files(
+> > > > > > > > > +  'hyp_gdbstub.c',
+> > > > > > > > > +  'kvm.c',
+> > > > > > > > > +  'kvm-rme.c'))
+> > > > > > > > >  arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
+> > > > > > > > >  
+> > > > > > > > >  arm_user_ss.add(files('cpu.c'))
+> > > > > > > > > -- 
+> > > > > > > > > 2.43.0
+> > > > > > > > > 
+> > > > > > > > > 
