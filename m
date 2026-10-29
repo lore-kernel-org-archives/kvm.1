@@ -1,101 +1,142 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793268474;
-	b=Y3H3WxPvo6sMwcQtz0qt1ngLRtXeZFYsZwDAUi7pNUkXB+/4v1D88kHhXyIf/JFB55/U
-	 rtiF6JypVKjtANThM+xOMZfSHbkOvJ96PYeY55VtAPLONxGieSm+2EV5zeF0WIHU5hKpz
-	 GVVWnZIABSc4jT186G/n1vxKWiEI+8xvsRmRmx0BXp7qsmGf98cECn4m7dX7iZiH44fIY
-	 1LcHC4zLSF3DBkMaD7287rdiVZbudkh9IWUYG43/gzDXRL2yTSa3UTnA2sUsxWHMRkxvS
-	 0vBvkJl92BuyY7V332IbP/trh1uP5hjFVVzjH6e5hHWvb+KSsehQ7r2H9AYIgTLO+tw==
+	t=1793269827;
+	b=tlKUClyFnx66ktJyr01hDYNg0ikGw9nso8FBMTaXot4TFSdDovB0fCTBQIT4Mk5/fHm3
+	 9STVWZOCVqRseMgKAU4//H1yHPIkFg4cjdCjbHmkImZxfwqhtR8qmUct+uF2c4kLTG3EH
+	 ZXPjOGY3LWbCSFYIX0UiPct+svMfueICoEchLpC3XzTWMXTZtEIsWx65HJYLDTLqdu/FG
+	 S8Zpm5NOPq8DPYUIxfoWNWiW88t14k4NTPd3TxLrJw+9p9U2Gy8k+qHImFM3gL1IcJrr8
+	 SkMnDInt81wScL4yhgNwrh4QuN15/IfjamX/yxPl1KUJIPX6Z/25/Kri2romJ5FpjCw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793268474;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=wgroa5qxrEZgRV1TzlPeAteJauIXp9n4MbPCfUIQ4C8=;
-	b=PMUTJO8RrZdvFZ1tWt1CQC7auM0dqBa1pvWibEcs5yngH8UaJC84xIUDwxsYLrh3NpTL
-	 SBhf0Pa5SSobAaB03skt3YcFhLXdY0ao3ZouU6m7YNe9qSDvPZkldeekeZTwc7kyO4DEh
-	 qFtO/K029f147dmzEGpDrJ0FJb4pT5BKRSN665pCim+COh1E17ZqnN2FuUM/88wMwBW+P
-	 uP+BsH2rZGtYbXrWhlaPKBbCGsv3GJ+yarbAFxGGC5vA7tPS2Mo6Nq1PpT7XXtUvjAVax
-	 K3rVXcNXE+nh1DN6Z7ih5IB9VcfQg6ds5CL+EDbqgne0AmDGiH/c7CzTRGj3NeYPdvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793269827;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=cAtddHWUPZrCBDhs0Y+44QLZfPLGxO3YxnP4tMoElZY=;
+	b=QzQNcqJz2EqOnYS/OA6s2iiMn7pv5muviZjw7Xf83jE7EwCXiasIWvDtqRXaXLq3eGaZ
+	 tDV3NX3yYG7+rH7TslIWyy0ZOnNibfAulv6eObaW+nyzAWCdHqeKKOtJjGdQhtRIL1UpB
+	 1/RHJ26Tp0s+8aQhe4Xc7zJ1U+GU1kmn79Ura05Wa413ahfYBW0+g1XhOo0s9XEMmGKDU
+	 EvQBdaSDcoH+yvc4QV0vCKB0xRFuc9lj7GOOuWu/RMO+bK3phh+RmA6OievH7kJeJhq70
+	 IKugI9Z3/9T5W/X5J/XLOAqKRKxp4ujBL8jEPComYEKcnzkdA/bnqnC1AxFnJ5z3CEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b="MCGV9df/";
-	arc=none smtp.remote-ip=209.85.218.48
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHJaO+mI;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBF3606A31E
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:07:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFBF3606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A256606A31E
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:30:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A256606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=MCGV9df/
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c4326803b54so136718766b.0
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 03:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793268472; x=1793873272; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wgroa5qxrEZgRV1TzlPeAteJauIXp9n4MbPCfUIQ4C8=;
-        b=MCGV9df/7k4ajBlFLNzpnpiyVP554R79li/56qz4JFgvKSV4eMPHTSDzDtiO+v0OXG
-         amQcqEYKMIKb06gnn3dwytNvTkYChDHgYHuD1GcIs6YsflunLHI2CEtw25RALpdQtNDn
-         5Se6m2V7pofQQZhstlbmMVyRNnXfrt8FDQidCK2DCySntXp3eXIjMIwGd3GBhkoA+M+R
-         o/hwUoFTvZnV2wRrJeYXyGpoR6GETTnHQqYkHF1me+YT7LsyP8KIuGgUQ5bQ0SaQ8CmY
-         I+L4iyO5i6YI0hE+HABSCmQHgKTuOcQH2FfxU2YTP2MUN3qxImSYhWmC5V41uQuPOFab
-         nvbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793268472; x=1793873272;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wgroa5qxrEZgRV1TzlPeAteJauIXp9n4MbPCfUIQ4C8=;
-        b=d3XDoHSnb8C0jFFPQqm9Qpcd5lsB7jyBdzaL7H+VRGAoc6Y8dcqvCAe1UlfalsJJq0
-         h/3acU6UbGkqr+oc12YVe/aYXsYkFI7JwEtvjy5+jhiGK7CQyRf1eGk2OWZPmColu6dq
-         V4BY41w/giM1hr+yf+cejK6RWpf/D7csl+GPgJcQZjkiHtIDIVTcgXnlwAIOpozg2mLd
-         B2akvTL0VLqSSBMlQz+TyqHql/92cMxiN6ENKlMVFKVFWc2oGDxFg18DuuEBQplsXoMM
-         lcQS4mF4LNuPMFuZHoUdTbyiCfkBnn0ZN7UOxjl0wktg/BViXcVgPBE9AgHSRQoXpkzc
-         ao+A==
-X-Forwarded-Encrypted: i=1; AKwUvBwpq8/r/q0L2O0famPZK/sKFciIFhVm2CtfltrQWxL+dgKGDyzohdZ6qR4CyJurFaKIBXo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJHLhHzotv5B7V+3UI4lgBsotZwI8IbhS87sdLNbo4lloNHF/qK
-	DRpmdJxgBuOHNj5Wh20mXdPn4xf2y2RAxerkafbhuQ0BbFKYcQaXrYf+vzVw6GSKzg0=
-X-Gm-Gg: AYBFou2dcruzhujeHNzGpouAZovg83nRGjHydFGVCpH1GQWwGJQg0aWAQ+YxWHO8x4S
-	gcU/Kx8leJWnoHm4USUmJGYB0pwxU7iTJL2W6+Gvqjv0kB6X/35jyiE4Z9XfR9h3NH+bGe3XiyO
-	O2cUlrAuL07dQp/6MPqycyk3DCvgUKjIG3mp2POtJd5/AX21vDWWSQemfT6p5GDuns6huxL6HF0
-	WyqekZLq3mFMmU9JEO5Vvmrmje01dKExzLxzUxIvaeM+ZOQluNxDTXksEOariQJDQwnDlzIu03v
-	J406hhhdLmzenVmJisgapXY4lb5Yo7hK7WPaZ8ic766pgJm+TxHyHlc2otezx6Z2ay6r7wNztMg
-	NCQqqZdW8lY2rrBJQkajoIKsAubhNKcBGR51q0IYMK71o+ARltC+WTgldhABlLFg/p1/dUAI26q
-	6lVBe4dDT3g4EUCrwghPJ2ubCAjd1HOHrRSS2HtEA0TfHSrJdAJDEhLS8MweDD+a788njMtFThm
-	4AmTJf8uiE0gGvE6s6HFDkRIwbGr7vSZ7ejkf45kDQfjUN6BX0mEqXzRDcmEkPMXHiw9fL815FU
-	gKLRZdL3V4A6iWeqtXoikQY6coo0+QJJ6XZqtw==
-X-Received: by 2002:a17:907:9405:b0:c49:8d28:73ad with SMTP id a640c23a62f3a-c49be020e3dmr404569566b.49.1793268472113;
-        Thu, 29 Oct 2026 03:07:52 -0700 (PDT)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd520838sm715397566b.31.2026.10.29.03.07.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 03:07:51 -0700 (PDT)
-Date: Thu, 29 Oct 2026 11:07:47 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <auMahpRIeL-Dkytk@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHJaO+mI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793269826;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cAtddHWUPZrCBDhs0Y+44QLZfPLGxO3YxnP4tMoElZY=;
+	b=RHJaO+mISeHTk3J3i5P/aLernKDLHY1UaCYyfjtPm+Eh+EdG2PLBBO4sjZiGVqVo8JWY9i
+	ZWDqxFz4OMoiQL31rqaM0I18NegDsg5c+VNcYd1S8zp7TwEgmNjbmIbbrnTJPt9HYAWd6l
+	qRy/bQZSY/h5zY3pSHSDy9W6biOdodI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-31dn0k00OXi4Pkf-NALwaA-1; Thu,
+ 29 Oct 2026 06:30:22 -0400
+X-MC-Unique: 31dn0k00OXi4Pkf-NALwaA-1
+X-Mimecast-MFC-AGG-ID: 31dn0k00OXi4Pkf-NALwaA_1793269818
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9F9651801358;
+	Thu, 29 Oct 2026 10:30:15 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7AAD23000735;
+	Thu, 29 Oct 2026 10:30:11 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 1B5FA21E6A04; Thu, 29 Oct 2026 11:30:09 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
+ <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
+ Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
+ Kostiuk
+ <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
+ <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
+ Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
+  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
+ Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@oss.qualcomm.com>,
+  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
+  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
+  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
+ Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,
+  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
+  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
+ Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
+  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
+  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
+ <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
+  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
+ Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
+ <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
+ Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
+  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
+ <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
+ <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
+ Lin
+ <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
+ Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
+ Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
+ Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
+ <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
+ <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
+ Dooley <conor@kernel.org>,  Sebastian Huber
+ <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
+ <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Anthony PERARD
+ <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
+ <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
+  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
+  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
+  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
+  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
+ <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
+ Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 61/65] qdev: remove deprecated PropertyInfo.type and
+ .enum_table fields
+In-Reply-To: <20261020-qom-qapi-v7-61-431a86b02b58@redhat.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?=
+	Lureau"'s message of "Tue, 20 Oct 2026 14:46:18 +0400")
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+	<20261020-qom-qapi-v7-61-431a86b02b58@redhat.com>
+Date: Thu, 29 Oct 2026 11:30:09 +0100
+Message-ID: <87ecd8dcjy.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,42 +146,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Tue, Oct 27, 2026 at 07:43:04PM +0100, dave.jiang@intel.com wrote:
+Re title: I think "deprecated" isn't the right word.  Let's go with
+"unused", or maybe
+
+    qdev: PropertyInfo.type and .enum_table are no longer used, drop
+
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+
+> Now that all PropertyInfo definitions use .qapi_type, remove the
+> legacy .type (string) and .enum_table fields from PropertyInfo, and
+> the .arrayinfo/.arrayfieldsize fields from Property.
 >
+> Remove fallback branches in qdev_property_add_static() and
+> qdev_class_add_property() that used object_property_add() with
+> prop->info->type: these always use the QAPI-aware registration
+> path now. Simplify qdev_propinfo_enum_lookup(), prop_array_info()
+> and prop_array_elem_size() to use the new fields directly.
 >
->On 10/15/26 7:50 AM, Jiri Pirko wrote:
->> From: Jiri Pirko <jiri@nvidia.com>
->> 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-[..]
-
-
->3. Jason asked on 14/20 whether anyone needs a variable-length challenge. I
->   don't think devices need a range. A plain read sends an empty challenge, and
->   an SPDM GET_MEASUREMENTS nonce is "NL = 32 or 0". Your TDX provider always
->   takes 64 (attestation_tdx_evidence_caps).
-
-https://lore.kernel.org/all/auMX4kbsflE9kK3Q@FV6GYCPJ69/
-
->
->   A device needs exactly two lengths: 0 for a plain read and 32 for a refresh.
->   struct attestation_evidence_caps only holds a single min/max range. It's
->   checked on every request in attestation_evidence_request_decode(), and any
->   range that allows both 0 and 32 also allows everything in between.
->
->   To work around that, my provider declares 0-64 and PCI/TSM rejects any length
-
-Perhaps just omit the challenge attr in that case would be the best way?
-
-
->   other than the backend's nonce size, 32 for both backends I ran. Could the
->   caps give one exact challenge length instead of a range, plus a flag that
->   also allows an empty challenge? A device provider would set 32 with the flag,
->   and your TDX provider 64 without it.
->
-
-[..]
