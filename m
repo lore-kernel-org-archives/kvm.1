@@ -1,65 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291932;
-	b=0G8sdH/1RfKC3Jwcpv8dkGBAtXJibP4L8wlEvfJH+V+NI2UzwzXxQXMfeoxCq4NyAahz
-	 rAQSpwtswRCii92ERdyAaH650QrhTjrN+lD19XNR1mx4cg+ds6SwKzPdtS7TTVDxCvQen
-	 X8EdzSMRrNjU35KgehcGFIKvUt5Gpzu2mnLpyprPttNHTJ1MpSLxnvmT44eYaK8UcD4Fd
-	 FCXR+Xl6HaQh4jI7NCFOuu+xtCfatK+ojY4PE0hlcXO/a8sVM2fJU+fxSZnzO52A71odK
-	 rv4sQlWhHh2vwuyecSoG+joIYu6OIz9ttBtHBK7wfhs5HbiT9mi4Lb14lUScYSr2VzA==
+	t=1793291938;
+	b=VeOhg73YukZ3iGFHVRn3XvUyT16yDk/sNcdTW9tQlfA8fRUfUJwXe8BmZzPkxQQ0kIZz
+	 FtadfyYF5Pd30bGI+M218BwYIdAnjZnRgm7eZ9rjRi00QGLoji9GuRTb0+CjoQAWIbRXp
+	 TNvOogJ/TRs8W/+bDc9KLb33qnDuS6uHmmIEiUQBwjd8DmU8RhV0h8Xu8D4w5B7PzrpsO
+	 1uXeUWenfgSp3N76Hw8kCl3Hi+pKhwMVBiJSqTzcXxdwkQnDM/zTOIzuXlvbN5LEhqCkm
+	 lPn5Y3244LFoEmxSKL0WcNDE8L9gKD3/PkX9IEwU9XlBYf3mQeHjoKPQRAEJQK9Tnzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291932;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291938;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=4UgMdOKrtB64nXpcXBIKe/cthT0pJUT9b78xEaySiIs=;
-	b=LPrqhC3kcJW8gq2CL5neVTCX0xEJMUzque62LI1BjXz73I1ALK+0dzyNVuttQPQ6CtVF
-	 sOTRFd1jjjWXP+fu4CIdvcPXAfPEXPrvs8tCid1YGsiCh55NhhPZfe6RTzlxtobtXXjH+
-	 c4xQyBpVkDB/u03RC0k5hahtbkDs+4wDbg8cryooTbKpA241s5uqwr3HZ7uvhM1oDV2Fb
-	 AFWNV/SZvnogMQ395AQVY9FYcF8n+QJs3Hj2CVmr3Ow1Kd+jzocHNKYAFz/qR8go8qpDx
-	 ulkX9AxzdNwO8wzck7AHRsQTW3SZp8QBhMVzq03guOy/bSGBfwouEr9h0V24Idb9Mkw==
+	bh=bNMG+lIhxZcEUu3kzAXgyCfzh9SPkmetdc8XLLC9LrM=;
+	b=wfH8IvxJSDgW/moCA/X6Pffp3lbnnCQb1oqLfAZn2JU3W3nj0/A0m7MxAq33qThN+Psk
+	 2aYtoRam8wwq8zVhJmxIyd4X9aU9PCO02ZYzvqyh7usT64bMAwmmIcofwEFEgdhjsmtJB
+	 RG97yepsBwpNS05Ebv8eZ0NCSa9mCUm/uSbFuoygnlKSlQwT0WHAunJSBllrl9kFGaFd9
+	 42i9OCW4LvrMRuSrpxCsEpnVgCJy59WWmpM8jXMtxhvz6wiOuEEFLfhQrYSSs+d9UKx9r
+	 3TLqNHmkvIC24n0VyC1Y8mCH4aDxTH3Pybj/YSVKtYwKq5gFtwXaflgsHpSpqF+VpzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GkT7oq4S;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CC13zp0N;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DD3606A32A
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:38:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0DD3606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA57606A337
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:38:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FA57606A337
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GkT7oq4S
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CC13zp0N
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793291931;
+	s=mimecast20190719; t=1793291937;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4UgMdOKrtB64nXpcXBIKe/cthT0pJUT9b78xEaySiIs=;
-	b=GkT7oq4S9+SzKjsVAVUAmgaPS6OlOnOIQyVxUTVNQMWGKaPErwH5WgPm6R+yxNlHfsICpV
-	dj1NDYxTxjwMcJOrVfgWuKTwFrLACj7orZIKvlXr9w8w/8F3HzzYgycKgLvA+MSo+dkSYE
-	buoHXIpFHgJUfirePz/zIexgYhjlwe4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=bNMG+lIhxZcEUu3kzAXgyCfzh9SPkmetdc8XLLC9LrM=;
+	b=CC13zp0N9gg6RJPyRSkrO7gmwORJZOlTkxi6osdNLDPNHGt8S/OOoe1G+hnIor8BJBrOzc
+	1A8fP0amUQFLXhZfo9n0SXK0VQrbj1ypv210E4xPiwFSR+SFmmsjbTDzP8aDUGHvgnyBFB
+	WEBrjraIttCT/2G261naiuZINfk+rnY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-573-3zgHXh3SP9WTJ94dViTHCQ-1; Thu,
- 29 Oct 2026 12:38:43 -0400
-X-MC-Unique: 3zgHXh3SP9WTJ94dViTHCQ-1
-X-Mimecast-MFC-AGG-ID: 3zgHXh3SP9WTJ94dViTHCQ_1793291921
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-428-eg23MM3yOHGLfjy1yaOlzQ-1; Thu,
+ 29 Oct 2026 12:38:53 -0400
+X-MC-Unique: eg23MM3yOHGLfjy1yaOlzQ-1
+X-Mimecast-MFC-AGG-ID: eg23MM3yOHGLfjy1yaOlzQ_1793291930
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 613891809C8F;
-	Thu, 29 Oct 2026 16:38:41 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 999A9180B5F2;
+	Thu, 29 Oct 2026 16:38:50 +0000 (UTC)
 Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 30FD81955F0A;
-	Thu, 29 Oct 2026 16:38:37 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 57B161955F0A;
+	Thu, 29 Oct 2026 16:38:46 +0000 (UTC)
 From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 To: jgg@ziepe.ca,
 	alex@shazbot.org,
@@ -81,9 +81,9 @@ Cc: johannes@sipsolutions.net,
 	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH v3 7/8] ath12k: use KVM MSI domain for VM passthrough
-Date: Thu, 29 Oct 2026 17:37:12 +0100
-Message-ID: <20261029163713.1366077-8-jtornosm@redhat.com>
+Subject: [PATCH v3 8/8] PCI: add QCN9274 to reset quirks and KVM MSI domain
+Date: Thu, 29 Oct 2026 17:37:13 +0100
+Message-ID: <20261029163713.1366077-9-jtornosm@redhat.com>
 In-Reply-To: <20261029163713.1366077-1-jtornosm@redhat.com>
 References: <20261029163713.1366077-1-jtornosm@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -98,85 +98,60 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The Qualcomm ath12k firmware programs MSI addresses directly into
-device BAR registers for CE/SRNG ring interrupt delivery, bypassing
-the standard PCI config MSI path managed by QEMU/VFIO. In a VM, the
-firmware receives the guest virtual APIC address instead of the host
-IRTE address, causing DMAR faults and non-functional interrupts.
+In order to have Qualcomm QCN9274 (PCI ID 17cb:1109) completely
+operational from VM environments, add to:
 
-When CONFIG_PCI_KVM_MSI_DOMAIN is enabled, use the KVM PCI MSI domain
-synchronization functions:
+1. quirk_no_bus_reset: Disable broken bus reset, as with WCN6855 and
+   WCN7850.
 
-1. In power_up, after msi_enable, call kvm_pci_msi_wait_ready() to
-   retrieve and cache the host physical MSI address via KVM hypercall.
+2. pci_dev_specific_reset_methods: Use the existing
+   reset_qualcomm_wlan function. Unlike WCN7850, the QCN9274 is not
+   initialized at all without a valid device-specific reset method.
 
-2. In ath12k_pci_get_msi_address(), call kvm_pci_msi_get_address() to
-   return the cached host MSI address instead of reading from PCI
-   config (which contains the guest virtual address in a VM).
-
-Unlike ath11k which caches MSI address once during power_up, ath12k
-reads MSI address on-the-fly via get_msi_address() each time rings
-are configured. The kvm_pci_msi_get_address() function provides the
-cached host values from a previous successful wait_ready call.
-
-On baremetal, if CONFIG_PCI_KVM_MSI_DOMAIN is not enabled the code is
-compiled out and the behavior is identical to the original. If
-CONFIG_PCI_KVM_MSI_DOMAIN is enabled (e.g. distribution kernels), the
-KVM MSI functions detect baremetal at runtime and return immediately,
-preserving the original behavior with no side effects.
+3. kvm_msi_devids in pci-kvm-msi: Enable KVM MSI domain support for
+   VFIO passthrough to VMs.
 
 Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
 v3: new
 v2: https://lore.kernel.org/all/20261011074514.515894-1-jtornosm@redhat.com/
 
- drivers/net/wireless/ath/ath12k/pci.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/pci/controller/pci-kvm-msi.c | 1 +
+ drivers/pci/quirks.c                 | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index f7879fb48d32..dbd960f88d38 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -8,6 +8,9 @@
- #include <linux/interrupt.h>
- #include <linux/msi.h>
- #include <linux/pci.h>
-+#if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
-+#include <linux/pci-kvm-msi.h>
-+#endif
- #include <linux/time.h>
- #include <linux/vmalloc.h>
+diff --git a/drivers/pci/controller/pci-kvm-msi.c b/drivers/pci/controller/pci-kvm-msi.c
+index e935e5d9846d..b008e73fedce 100644
+--- a/drivers/pci/controller/pci-kvm-msi.c
++++ b/drivers/pci/controller/pci-kvm-msi.c
+@@ -336,6 +336,7 @@ static int kvm_msi_create_domain(struct pci_dev *ref_dev)
+ static const struct pci_device_id kvm_msi_devids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x1103) },	/* WCN6855 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x1107) },	/* WCN7850 */
++	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x1109) },	/* QCN9274 */
+ 	{ }
+ };
  
-@@ -1082,6 +1085,11 @@ void ath12k_pci_get_msi_address(struct ath12k_base *ab, u32 *msi_addr_lo,
- 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
- 	struct pci_dev *pci_dev = to_pci_dev(ab->dev);
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 7f1f47ea2ee4..89d82675a76c 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3818,6 +3818,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0034, quirk_no_bus_reset);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x003e, quirk_no_bus_reset);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_QCOM, 0x1103, quirk_no_bus_reset); /* WCN6855 */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_QCOM, 0x1107, quirk_no_bus_reset); /* WCN7850 */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_QCOM, 0x1109, quirk_no_bus_reset); /* QCN9274 */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_QCOM, 0x0308, quirk_no_bus_reset); /* SDX62/SDX65 */
  
-+#if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
-+	if (kvm_pci_msi_get_address(pci_dev, msi_addr_lo, msi_addr_hi, NULL))
-+		return;
-+#endif
-+
- 	pci_read_config_dword(pci_dev, pci_dev->msi_cap + PCI_MSI_ADDRESS_LO,
- 			      msi_addr_lo);
+ /*
+@@ -4398,6 +4399,7 @@ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
+ 	{ PCI_VENDOR_ID_QCOM, 0x0308, reset_qualcomm_modem }, /* SDX62/SDX65 modems */
+ 	{ PCI_VENDOR_ID_QCOM, 0x1103, reset_qualcomm_wlan },  /* WCN6855 WLAN */
+ 	{ PCI_VENDOR_ID_QCOM, 0x1107, reset_qualcomm_wlan },  /* WCN7850 WLAN */
++	{ PCI_VENDOR_ID_QCOM, 0x1109, reset_qualcomm_wlan },  /* QCN9274 WLAN */
+ 	{ 0 }
+ };
  
-@@ -1485,6 +1493,10 @@ int ath12k_pci_power_up(struct ath12k_base *ab)
- 
- 	ath12k_pci_msi_enable(ab_pci);
- 
-+#if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
-+	kvm_pci_msi_wait_ready(ab_pci->pdev, 500);
-+#endif
-+
- 	if (ath12k_fw_feature_supported(ab, ATH12K_FW_FEATURE_MULTI_QRTR_ID))
- 		ath12k_pci_update_qrtr_node_id(ab);
- 
-@@ -1886,3 +1898,6 @@ EXPORT_SYMBOL(ath12k_pci_unregister_driver);
- /* firmware files */
- MODULE_FIRMWARE(ATH12K_FW_DIR "/QCN9274/hw2.0/*");
- MODULE_FIRMWARE(ATH12K_FW_DIR "/WCN7850/hw2.0/*");
-+#if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
-+MODULE_SOFTDEP("pre: pci-kvm-msi");
-+#endif
 -- 
 2.56.0
 
