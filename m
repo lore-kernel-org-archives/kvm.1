@@ -1,52 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.28
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793246741;
-	b=3zzEn7SumWiuJFE6LNdt8Ln/2p6MzZsoQo1odwgJ483nRWrdDeF5RTJ469GW/K7EP2EA
-	 8L6LnPBYo2xmx5QBxVV9rNpA5SUCsNstT3adH30R1CrvG4+7lI8O6jtj2wQgkA2OMlexC
-	 memx1DX5WeTo8eu8L9rrHR59T/fZ9kK+C/sFyKifmAmBM+/FwUMLO+PaAFQ4e7rl4oHhC
-	 qwsIIeNQw9hsILUg9kibICO5KbVIvG72Nux9aUb+wOva/LY/zs6sEAzQisR6b2nFlxN2Y
-	 mnSK3YLAzNyVo2GP39Ap24Byl22sJgGmoJzOkH2zwrOqgXmHBk9prcn5zzVwts/cR9w==
+	t=1793248141;
+	b=CPSgubTPRpxwKCfS/XZbhpQaBsgdILbF7Aqjh0STLLoJtbV2Kizp0T8I/84V3J29wfFc
+	 XW4uLZQ5V+RR00Dfgw0oZyyrXiJpoq81H6JJD94iLICy+cHY54izc3vtvw5FG7Ce2epxq
+	 gI8V9FtExjVp/UsDOLrg0KQyRfeff7aTwwjEb3pWhS8MUyno0N3iL9Sxg311D5hMkdSgr
+	 DjKm6+nd44Qa6aJWeYS+R2uHyH2G2zwKu/tE+OEvhelDwhI9f/A2829Gs0W3oHIAtS3C1
+	 O672yzBBLGjbni3Su71G+Xi43tEukc+n6zl2WlwMAAvq2VULm07GqO863EwfrcJVtfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793246741;
-	h=DMARC-Filter:DKIM-Signature:Date:Message-Id:Subject:Mime-Version:
-	 Content-Language:References:Content-Type:Content-Transfer-Encoding:To:
-	 From:User-Agent:In-Reply-To:Cc:Received:X-Lms-Return-Path:
-	 X-Original-From;
-	bh=of5wDV3zwnZMfBn47sFHMyptb9HWLvJPm1MdsBWIy34=;
-	b=lDyZ0qHwN+UCvKetWhW1lwI92KwoZcmkXNdWLk6t9nhLDS54Dq3BfG2ajDMuz7CnKESF
-	 SNG6syNiAD/N//Jh5igDbEyiEOUu89GMZs8pyjdD7fuS6Gdr4PHL9tPYhStcaoP3Z2SxP
-	 zthSuXUBagyXcli8P2rw0lGxxZrJXrGHhXzf9n6BYK5JXSCFPtyXrYBMZ86si8oz9CBU/
-	 Kgd7xjEfU2T948poLfPjytECIS2vXTwzIem7sglt1lm7RrjIJD+ZqUcRD4LHtFRFvu/Fs
-	 glCkH+m3koGkgpUBgc6AbMSZG5Jj2vf7L1UorwdcZP9UNUTO90g12EYhDi6bVSUUsvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793248141;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=rzYTe3CAmln9p4nHbX2TG5gIE9RDWcbeR5wsihoOolA=;
+	b=khNL+sEb2CwceE69qMaPk8O2tYB0Vqne7OQR0x6hN51bsF+Z2/tIe3jxsL7ggDtvIoXd
+	 EOsf94e6hXtrJeTQj9ltGRft2OknX/fvyMxjW32LLGQI2ru1wpUpvNpVrKwMHeMF3WjDz
+	 iPvUwBd4tFLbLCm77EV71zbwYoriwMx55f8SXxzMHlgo/LeH73vi3j9Bixe8b8wBE/rpu
+	 zgQ4678XqkERm5eeJWyNJG1of64yYSStE7OLv9He6Z+YLNbmB6x2mFkCCyi/9XHNQz6Ez
+	 d+BV8SKDDQXlcdlf9HGbcLEJZC4o5S7QNtCgColWfLPm41VmQ2+xFIQyEw7k5AaKQOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=lanxincomputing.com;
-	spf=pass smtp.mailfrom=lanxincomputing.com;
-	dkim=pass header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.a=rsa-sha256 header.s=s1 header.b=DZvC8UJp;
-	arc=none smtp.remote-ip=209.127.231.28
-Received: from va-2-28.ptr.blmpb.com (va-2-28.ptr.blmpb.com [209.127.231.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVFqIl7i;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A633B606A31A
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 04:05:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A633B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630E4606A31E;
+	Thu, 29 Oct 2026 04:29:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 630E4606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.a=rsa-sha256 header.s=s1 header.b=DZvC8UJp
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1793246733;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=of5wDV3zwnZMfBn47sFHMyptb9HWLvJPm1MdsBWIy34=;
- b=DZvC8UJp55cNc+AsqR0J/ANVE84SYlqCJXKEfY37p7YjLsPGQDJBEvbR0Q6etMZr7t0DVH
- G8INE7JANAPKuJYeWn49fKMXN/CYrQSK5RQIF3YVzxgpVXIeRKwXjs4T3jSCYc9ybPjRb7
- dMrCeDOIYCiCHG1RxsaiF42kCKHT4y+Y+YoHZtFAnT5YK7dzwhJ2OjasTd1jUpXAr7qBXf
- UwZkc5um65dOmaPSeq79HYIZk4DqweB9R1n0u2o6KY6mn4OyPt30de+gNLw4bCRsaxkvYw
- Ky/L3Exx/L8Wat8g9Izwhe/XKRqZyF10+fG96y02VMSC/AwYRol0HXrFfoR3PQ==
-Date: Thu, 29 Oct 2026 12:05:28 +0800
-Message-Id: <504d1c51-857b-4f42-ad66-bea00ab9a03f@lanxincomputing.com>
-Subject: Re: [PATCH] RISC-V: KVM: Flush VS-stage TLB before reusing a host CPU
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVFqIl7i
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793248140; x=1824784140;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Jwzke+C5vjNMWt9GhijAMYGap9eff9wd25DcLISYkNM=;
+  b=mVFqIl7iGKaU6y5yzwOWRTSpigVTMq6021gq5g+lUkPLc33FkD1KrtPA
+   q6Ae0sJHopZaFv4n0E46U1YAInSyOHbKHqlim+01KVGaLLUH5H3J810lH
+   yfEgwlazIGpLZSQa/f2n2nKxPPSbdvLzjjIC18ejwnRq9u7Gf7cmfCPrg
+   0ZTV/SYoSwhwnHMJW5oBpkUOBohQUusSdZFfX2YGj02pGsG7ZqiwXczsE
+   59ugmbNGhGL4K5kWGtfKseZ+9bmfmpwfONgr6586EFfc00h/JmT6mJ/j0
+   tG1TWMfYTcbiCvWw9xc17utn6ciuxAyssqdVGsGEgC45Jm24WTAVgx68c
+   Q==;
+X-CSE-ConnectionGUID: HCrSg3slScOYsO6d3IiaKw==
+X-CSE-MsgGUID: ptDalr1tSm+2q87sagCoLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1864186"
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="1864186"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 21:29:00 -0700
+X-CSE-ConnectionGUID: osN9a3PLRlOOr9m7+NTyIg==
+X-CSE-MsgGUID: mvmHAIL2QW2K62VmmX1+6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="5143691"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa002.fm.intel.com with ESMTP; 28 Oct 2026 21:28:59 -0700
+Date: Thu, 29 Oct 2026 12:22:52 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, sashiko-reviews@lists.linux.dev,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v7 09/16] tsm: Remove the device from lookup before PCI
+ teardown
+Message-ID: <auLKHDLCg5XKDIWv@yilunxu-OptiPlex-7050>
+References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
+ <20261008055955.4014342-10-aneesh.kumar@kernel.org>
+ <sashiko-outbox-163673@kernel.org>
+ <yq5a33ub5lgt.fsf@kernel.org>
+ <20261012130109.GK13920@nvidia.com>
+ <yq5ald82q934.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -55,308 +84,180 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Language: en-US
-References: <20260817102447.40259-1-guoyaxing@bosc.ac.cn> <CAAhSdy2qwdHE7SB2gRK3_PQ6m_bMSfWpvcuSG-31W2yd3-UTKg@mail.gmail.com> <285419e5-c4fc-4c75-a765-436165bdc8b9@bosc.ac.cn> <CAAhSdy1Q7a+54qn0xNBQBd1eV2ve+Nzqz9uRsWrGSmTn35z8=A@mail.gmail.com> <c050c85c-482a-4351-b627-ac074f7f7952@bosc.ac.cn> <CAAhSdy3XDEGfFJJnHfx2Q0w+dG4FombF3Lj5O_V4wBpkyAYTNg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-To: "Anup Patel" <anup@brainfault.org>, "guoyaxing" <guoyaxing@bosc.ac.cn>
-From: "BillXiang" <xiangwencheng@lanxincomputing.com>
-User-Agent: Mozilla Thunderbird
-In-Reply-To: <CAAhSdy3XDEGfFJJnHfx2Q0w+dG4FombF3Lj5O_V4wBpkyAYTNg@mail.gmail.com>
-Cc: "Atish Patra" <atish.patra@linux.dev>, "Paul Walmsley" <pjw@kernel.org>, 
-	"Palmer Dabbelt" <palmer@dabbelt.com>, 
-	"Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>, 
-	<kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>, 
-	<linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>, 
-	<majiuyue@bosc.ac.cn>, <anzoso@outlook.com>, 
-	"BillXiang" <xiangwencheng@lanxincomputing.com>
-Received: from [127.0.0.1] ([123.120.5.129]) by smtp.feishu.cn with ESMTPS; Thu, 29 Oct 2026 12:05:30 +0800
-X-Lms-Return-Path: <lba+26ae2c60b+3b3495+vger.kernel.org+xiangwencheng@lanxincomputing.com>
-X-Original-From: BillXiang <xiangwencheng@lanxincomputing.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5ald82q934.fsf@kernel.org>
 
-On 10/24/2026 11:49 PM, Anup Patel wrote:
-> On Sat, Oct 10, 2026 at 2:36=E2=80=AFPM guoyaxing <guoyaxing@bosc.ac.cn> =
-wrote:
->>
->>
->>
->> =E5=9C=A8 2026/10/10 15:50, Anup Patel =E5=86=99=E9=81=93:
->>> On Sat, Oct 10, 2026 at 4:12=E2=80=AFAM guoyaxing <guoyaxing@bosc.ac.cn=
-> wrote:
->>>>
->>>>
->>>>
->>>> =E5=9C=A8 2026/10/10 02:51, Anup Patel =E5=86=99=E9=81=93:
->>>>> On Mon, Aug 17, 2026 at 12:25=E2=80=AFPM Yaxing Guo <guoyaxing@bosc.a=
-c.cn> wrote:
->>>>>>
->>>>>> Guest Linux uses mm_cpumask to decide whether an sfence.vma needs to=
- be
->>>>>> local or remote. Under KVM that mask tracks guest CPUs, not the host=
- CPUs
->>>>>> that previously backed a vCPU.
->>>>>>
->>>>>> This can miss stale VS-stage TLB entries when a vCPU migrates across=
- host
->>>>>> CPUs. For example:
->>>>>>
->>>>>>      - vcpu0 runs on host CPU1 and fills a VS-stage TLB entry.
->>>>>>      - vcpu0 migrates to host CPU0.
->>>>>>      - the guest updates the mapping on vcpu0 and issues a local sfe=
-nce.vma.
->>>>>>      - later, the guest task runs on vcpu1 while vcpu1 is backed by =
-host CPU1.
->>>>>
->>>>> When the vcpu0 is brought back to host CPU1, the kvm_riscv_local_tlb_=
-sanitize()
->>>>> will ensure TLB entries associated with Guest/VM are nuked.
->>>>>
->>>>> By default, kvm_riscv_local_hfence_gvma_vmid_all() will only do HFENC=
-E.GVMA
->>>>> for the associated VMID because most RISC-V H-extension implemenation=
- will
->>>>> tag VS-stage TLB entries with VMID and HFENCE.GVMA must remove both
->>>>> G-stage and VS-stage TLB entries for given VMID.
->>>>>
->>>>> If your HW does not tag VS-stage TLB enteries with VMID then it buggy
->>>>> / inefficient
->>>>> so you have to set kvm_riscv_vsstage_tlb_no_gpa in
->>>>> kvm_riscv_setup_vendor_features()
->>>>> as work-around.
->>>>>
->>>>> NACK to this patch from myside.
->>>>>
->>>>> Regards,
->>>>> Anup
->>>>>
->>>> Hi Anup,
->>>>      Thanks for the review and clarification.
->>>>
->>>>      Regarding =E2=80=9CWhen the vcpu0 is brought back to host CPU1=E2=
-=80=9D: the failure
->>>> we hit is not caused by vcpu0 being brought back onto host CPU1. In ou=
-r
->>>> case, after vcpu0 has already migrated away, neither vCPU migrates
->>>> again. The guest process is later scheduled inside the multi-vCPU gues=
-t
->>>> onto vcpu1, which is still running on host CPU1. So the stale TLB is
->>>> re-hit without any further KVM vCPU migration, and
->>>> kvm_riscv_local_tlb_sanitize() is not involved on that path.
->>>>
->>>>      My commit message was a bit too terse on this point. The concrete
->>>> sequence we observed was described earlier in the RFC discussion:
->>>>
->>>>
->>>> https://lore.kernel.org/kvm/0d15b098-b8f7-4080-9f33-e8c49c2331e1@bosc.=
-ac.cn/
->>>>
->>>>      In short, the issue is: because vcpu0 migrated away, cpu1 still h=
-as
->>>> stale TLB entries while cpu0 has the new mapping. After that, neither
->>>> vcpu migrated again, but the process was scheduled from vcpu0 to vcpu1
->>>> (which is on cpu1), causing it to hit the stale TLB. Consider the
->>>> following scenario:
->>>>
->>>>      1. vcpu0 and vcpu1 are both running on cpu1. At this point, vcpu0=
- is
->>>> on cpu1, and a process on it reads a page, which gets cached in the TL=
-B
->>>> (let's call this the "stale TLB entry").
->>>>
->>>>      2. vcpu0 migrates to cpu0, and then the process (on vcpu0, now on
->>>> cpu0) does a CoW (copy-on-write) and establishes a new mapping.
->>>>
->>>>      3. Neither vcpu0 nor vcpu1 migrates again. At this point, the pro=
-cess
->>>> gets scheduled inside the VM onto vcpu1 (which is on cpu1), reads the
->>>> same page, and hits the stale TLB entry.
->>>
->>> This cannot happen because in step#2 when mapping was updated the
->>> Guest OS will do TLB flush for all its VCPUs which means vcpu1 on cpu0
->>> will also receive TLB flush and the stale TLB will be removed. This mea=
-ns
->>> when process is moved back to vcpu1 on cpu0, HW will fetch updated
->>> PTE and new TLB entry will be populated.
->>>
->>
->> Hi Anup,
->>
->> Thanks for the follow-up. I may be missing something, so I wanted to
->> double-check this against the guest TLB shootdown path.
->>
->> If I follow the Linux guest CoW path correctly, when the mapping is
->> updated in step#2 it goes through:
->>
->>     wp_page_copy()
->>       -> ptep_clear_flush()
->>         -> flush_tlb_page()
->>           -> __flush_tlb_range(mm, mm_cpumask(mm), ...)
->>
->> So the remote SFENCE.VMA appears to be targeted only at CPUs in
->> mm_cpumask(mm), rather than at all VCPUs of the guest. mm_cpumask is
->> updated in switch_mm()/set_mm() for guest CPUs that have actually run
->> that mm.
->>
->> In our case, before the CoW the process had only ever run on vcpu0. From
->> the guest's point of view it did not migrate: the host migration of
->> vcpu0 from cpu1 to cpu0 is not visible to guest Linux, which only sees
->> vCPUs. So at CoW time mm_cpumask still contains only vcpu0 (or at least
->> does not contain vcpu1), and __flush_tlb_range() would not IPI vcpu1.
->> The local SFENCE on vcpu0 would only cover host cpu0, where vcpu0 is
->> currently running. The stale VS-stage TLB entry left on host cpu1 from
->> when vcpu0 previously ran there would then remain.
->>
->> Later, still without any further vCPU migration, the process is
->> scheduled inside the guest onto vcpu1, which remains on host cpu1, and
->> can hit that stale entry.
->>
->> This also seems more likely when the ASID allocator is enabled, because
->> set_mm_asid() does not always local_flush_tlb_all() on switch_mm(). So
->> even the first time the process lands on vcpu1, a stale ASID-tagged
->> entry on host cpu1 may still be present.
->>
->> In other words, I am not sure this case is covered by a full guest TLB
->> flush to all VCPUs on the mapping update. Guest shootdown looks
->> mm_cpumask-based, and host pCPU migration of a vCPU does not by itself
->> add other vCPUs that never ran the mm into that mask.
+On Tue, Oct 13, 2026 at 02:19:03PM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@nvidia.com> writes:
+> 
+> > On Mon, Oct 12, 2026 at 02:44:58PM +0530, Aneesh Kumar K.V wrote:
+> >> sashiko-bot@kernel.org writes:
+> >> 
+> >> > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> >> > - [Medium] tsm: race in tsm_register() error path leads to UAF and NULL pointer deref
+> >> > --
+> >> >
+> >> > commit f9b77b7469552ae6078c3a47333908a88eec2474
+> >> > Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> >> >
+> >> > tsm: Remove the device from lookup before PCI teardown
+> >> >
+> >> > This commit modifies the teardown flow to remove the TSM device from
+> >> > lookup before tearing down the PCI state. It also adjusts the setup
+> >> > flow in tsm_register() to handle PCI registration failures differently.
+> >> >
+> >> >> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
+> >> >> --- a/drivers/virt/coco/tsm-core.c
+> >> >> +++ b/drivers/virt/coco/tsm-core.c
+> >> >> @@ -56,26 +56,25 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
+> >> > [ ... ]
+> >> >> -static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
+> >> >> -						 struct pci_tsm_ops *pci_ops)
+> >> >> +static int tsm_register_pci(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
+> >> >>  {
+> >> > [ ... ]
+> >> >>  	tsm_dev->pci_ops = pci_ops;
+> >> >>  	rc = pci_tsm_register(tsm_dev);
+> >> >>  	if (rc) {
+> >> >> +		tsm_dev->pci_ops = NULL;
+> >> >
+> >> > [Severity: Medium]
+> >> > Does this unprotected write to tsm_dev->pci_ops introduce a race condition?
+> >> >
+> >> > If pci_tsm_register() returns an error early (e.g. if a driver incorrectly 
+> >> > provides both link_ops and devsec_ops, returning -EINVAL before acquiring 
+> >> > pci_tsm_rwsem), a concurrent userspace write to the connect sysfs attribute 
+> >> > might trigger connect_store().
+> >> >
+> >> > If connect_store() evaluates is_link_tsm() concurrently, this lockless 
+> >> > assignment to NULL on the error path could cause the compiler to reload the 
+> >> > pointer after the NULL check. Could this lead to a NULL pointer dereference 
+> >> > when accessing ->link_ops.probe?
+> >> >
+> >> >>  		dev_err(tsm_dev->dev.parent,
+> >> >>  			"PCI/TSM registration failure: %d\n", rc);
+> >> >> -		device_unregister(&tsm_dev->dev);
+> >> >> -		return ERR_PTR(rc);
+> >> >> +		return rc;
+> >> >>  	}
+> >> > [ ... ]
+> >> >> @@ -96,15 +95,22 @@ struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
+> >> >>  	if (rc)
+> >> >>  		return ERR_PTR(rc);
+> >> >>  
+> >> >> -	return tsm_register_pci_or_reset(no_free_ptr(tsm_dev), pci_ops);
+> >> >> +	rc = tsm_register_pci(tsm_dev, pci_ops);
+> >> >> +	if (rc) {
+> >> >> +		device_del(dev);
+> >> >
+> >> > [Severity: Medium]
+> >> > Can this error path lead to a use-after-free if PCI registration fails?
+> >> >
+> >> > Since device_add() is called prior to tsm_register_pci() in tsm_register(), 
+> >> > the device is already exposed via class_find_device(). If a concurrent 
+> >> > connect_store() finds the device and proceeds to pci_tsm_connect() before 
+> >> > this error path cleans it up, it will attach the PCI context to tsm_dev.
+> >> >
+> >> > When this error path calls device_del() and returns, the __free(put_tsm_dev) 
+> >> > guard at the top of tsm_register() will drop the primary reference to 
+> >> > tsm_dev, freeing its memory.
+> >> >
+> >> > Because the attached PCI context stores the pointer without taking an 
+> >> > additional device reference, wouldn't this leave a dangling pointer in the 
+> >> > PCI context, resulting in a use-after-free on subsequent accesses?
+> >> >
+> >> >> +		return ERR_PTR(rc);
+> >> >> +	}
+> >> >> +	return no_free_ptr(tsm_dev);
+> >> >>  }
+> >> 
+> >> 
+> >> I think this problem already exists upstream. We should delay
+> >> device_add() until PCI/TSM registration succeeds. The kobject event
+> >> should also be emitted after device_add(). I will add the fix as a
+> >> separate patch.
+> >
+> > Sigh, trying to do all this stuff through sysfs makes such an
+> > mess.. Nothing gets to be atomic in sysfs land so..
+> >
+> > It looks like this ordering is to ensure that when connect appears on
+> > the pci device it can immediately be used with the tsm that triggered
+> > it's creation. I'm not sure this is valuable but I haven't worked out
+> > how a userspace is even supposed to exist with all these troublesome
+> > races.
+> >
+> 
+> The issue is theoretical and does not arise with a single link TSM
+> driver. The PCI device's "connect" attribute is added only after
+> pci_tsm_register() succeeds.
+> 
+> The race can occur when registering a second TSM. The "connect"
+> attribute already exists, and userspace may try to connect using the new
+> link driver, for example "tsm1". connect_store() then looks up ID 1 and
+> can find the new tsm_dev in tsm_class because device_add() has already
+> completed.
+> 
+> The proposed fix is to reorder registration so that device_add() is
+> called last.
 
-Hi Anup,
+Yes, since the cleanup path is changed to:
 
-I have a few more questions about the issues and changes you raised.
+ device_del()
+ pci_tsm_unregister()
+ put_device()
 
->=20
-> This makes sense now considering ASID allocator in Guest Linux is global
-> and not local. In any case, KVM RISC-V must not assume that the Guest OS
-> has local ASID allocator hence the kvm_riscv_local_tlb_sanitize() must al=
-so
-> santize TLB for other VCPUs of the same Guest which can potentially run
-> on the previous host CPU where current VCPU ran.
->=20
-> Having said the above, there are multiple issues with the current patch:
-> 1) The kvm_riscv_local_hfence_gvma_vmid_all() is sufficient for most
-> implementations to sanitize both G-stage and VS-stage TLB entries
-> because both G-stage and VS-stage TLB entries are generally tagged
-> with VMID. The kvm_riscv_vsstage_tlb_no_gpa work-around is for
-> implmentations which do not tag VS-stage TLB entries with VMID
-> and this patch remove this work-around.
-> 2) The other VCPUs on the previous host CPU may be already running
-> and may still hit stale TLB entry before kvm_riscv_local_tlb_sanitize()
-> gets a chance to sanitize TLB on previous host CPU.
+the initialization patch should be:
 
-First, the migrated vCPU have run on the previous host CPU before the=20
-other vCPUs do, and kvm_riscv_local_tlb_sanitize() will have been called=20
-before the other vCPUs run on that previous host CPU. Therefore, with=20
-vcpu_switched in Yaxing's original patch, no stale TLB entries remain.
+ device_initialize()
+ pci_tsm_register()
+ device_add()
 
-> 3) The per-CPU pointer in struct kvm_arch is racy because we
-> may have two VCPUs on same host CPU which are migrated to
+> 
+> ie, changes the sequence from:
+> 
+> 	rc = dev_set_name(dev, "tsm%d", tsm_dev->id);
+> 	if (rc)
+> 		return ERR_PTR(rc);
+> 
+> 	rc = device_add(dev);
+> 	if (rc)
+> 		return ERR_PTR(rc);
+> 
+> 	return tsm_register_pci_or_reset(no_free_ptr(tsm_dev), pci_ops);
+> 
+> to this.
+> 
+> 	rc = dev_set_name(dev, "tsm%d", tsm_dev->id);
+> 	if (rc)
+> 		return ERR_PTR(rc);
+> 
+> 	/* Complete PCI registration before exposing the TSM to class lookup. */
+> 	rc = tsm_register_pci(tsm_dev, pci_ops);
 
-Seconed, kvm_riscv_local_tlb_sanitize() is called under=20
-preempt_disabled() in kvm_arch_vcpu_ioctl_run, so it is not racy between=20
-two vCPUs.
+Maybe we don't need the helper any more, open code pci_tsm_register(),
+align with tsm_unregister(), seems clearer to me.
 
-> other host CPUs. Instead, it is much simpler to have an atomic
-> cpumask in each VCPU where any part of KVM can mark a host
-> CPU in the cpumask of the VCPU to force TLB sanitization whenever
-> the VCPU runs on that particular host CPU.
->=20
-> How about the following change ?
->=20
-> diff --git a/arch/riscv/include/asm/kvm_host.h
-> b/arch/riscv/include/asm/kvm_host.h
-> index a30600579231..c975eee7240c 100644
-> --- a/arch/riscv/include/asm/kvm_host.h
-> +++ b/arch/riscv/include/asm/kvm_host.h
-> @@ -9,6 +9,7 @@
->   #ifndef __RISCV_KVM_HOST_H__
->   #define __RISCV_KVM_HOST_H__
->=20
-> +#include <linux/cpumask.h>
->   #include <linux/types.h>
->   #include <linux/kvm.h>
->   #include <linux/kvm_types.h>
-> @@ -184,6 +185,9 @@ struct kvm_vcpu_arch {
->       /* ISA feature bits (similar to MISA) */
->       DECLARE_BITMAP(isa, RISCV_ISA_EXT_MAX);
->=20
-> +    /* Sanitize TLB host CPU mask */
-> +    cpumask_t tlb_sanitize_mask;
-> +
->       /* Vendor, Arch, and Implementation details */
->       unsigned long mvendorid;
->       unsigned long marchid;
-> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-> index 2ae34632cdcb..b1387a00c8b0 100644
-> --- a/arch/riscv/kvm/tlb.c
-> +++ b/arch/riscv/kvm/tlb.c
-> @@ -207,11 +207,31 @@ void kvm_riscv_local_hfence_vvma_all(unsigned long =
-vmid)
->=20
->   void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
->   {
-> -    unsigned long vmid;
-> +    struct kvm_vcpu *tvcpu;
-> +    unsigned long i, vmid;
->=20
-> -    if (!kvm_riscv_gstage_vmid_bits() ||
-> -        vcpu->arch.last_exit_cpu =3D=3D vcpu->cpu)
-> -        return;
-> +    if (!cpumask_test_cpu(vcpu->cpu, &vcpu->arch.tlb_sanitize_mask)) {
-> +        if (!kvm_riscv_gstage_vmid_bits() ||
-> +            vcpu->arch.last_exit_cpu =3D=3D vcpu->cpu)
-> +            return;
-> +    }
-> +
-> +    /*
-> +     * The VCPU might have left stale TLBs on the previous host CPU so
-> +     * mark previous host CPU in the tlb_sanitize_mask of other VCPUs.
-> +     */
-> +    if (vcpu->arch.last_exit_cpu > -1 && vcpu->arch.last_exit_cpu !=3D
-> vcpu->cpu) {
-> +        kvm_for_each_vcpu(i, tvcpu, vcpu->kvm) {
-> +            if (tvcpu =3D=3D vcpu)
-> +                continue;
-> +            cpumask_set_cpu(vcpu->arch.last_exit_cpu,
-> +                    &tvcpu->arch.tlb_sanitize_mask);
-> +            kvm_vcpu_kick(tvcpu);
+> 	if (rc)
+> 		return ERR_PTR(rc);
+> 
+> 	rc = device_add(dev);
+> 	if (rc) {
+> 		if (pci_ops)
+> 			pci_tsm_unregister(tsm_dev);
+> 		return ERR_PTR(rc);
+> 	}
+> 
+> 	/* Notify TSM userspace that PCI/TSM operations are now possible. */
+> 	if (pci_ops)
+> 		kobject_uevent(&dev->kobj, KOBJ_CHANGE);
+> 
 
-Last, vcpu_kick is an asynchronous operation, so there is still a chance=20
-that the other vCPUs will hit stale TLB entries.
+I'm good to the analysis and good to the fix. I was confused why the
+original patch refactored tsm_register_pci_or_reset() with no functional
+change. But with this proposal, the change becomes reasonable.
 
-Please let me know what you think. Thanks in advance!
-
-Regards,
-Bill
-
-
-> +        }
-> +    }
-> +
-> +    /* Clear current host CPU from the tlb_sanitize_mask */
-> +    cpumask_clear_cpu(vcpu->cpu, &vcpu->arch.tlb_sanitize_mask);
->=20
->       /*_kick
->        * On RISC-V platforms with hardware VMID support, we share same
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index dd786f758eb7..c00dc0b191dc 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -107,6 +107,8 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu
-> *vcpu, bool kvm_sbi_reset)
->=20
->       vcpu->arch.last_exit_cpu =3D -1;
->=20
-> +    cpumask_clear(&vcpu->arch.tlb_sanitize_mask);
-> +
->       kvm_riscv_vcpu_context_reset(vcpu, kvm_sbi_reset);
->=20
->       kvm_riscv_vcpu_fp_reset(vcpu);
->=20
-> Regards,
-> Anup
->=20
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+I haven't finished the series yet and am not sure why this fix is needed
+in this series, how it affects the following patches. But it is a good
+fix standalone.
