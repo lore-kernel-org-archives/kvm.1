@@ -1,25 +1,25 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793254314;
-	b=VkezoeYmamXQOckB1xgQCrz1qDnACe9fberyby1ZFaP3f9zKnTEd4JXKN/+T3hjjF9at
-	 Ir1hHcPPup7DtjWdYRNgzBFnLVFs95S7nLt+uGdgXemy3V1fKnAY1GRfy1S+zPiY/dw36
-	 SblPu6S8dft+Qt07/U+7CKvXocsaGUf2SUcJ1kwKPtIZdTDp2+Zc/Zu5ls/boq9e+45Zf
-	 bkPn1Vh/2BZTrILOmyhgIg14otLQWEiS3fJmOkSrz2xVifZ2eerARyrOn1fmie/OeOjpp
-	 qwmE56d0JmF5TBjseA+J5vCVSKM4ysm+ml/s5Fk3sqBuk9gorsv7kK1FYhbe0VKH9iA==
+	t=1793254310;
+	b=SKajVpxbaNYO8K7SxjgSuasitvD34TevVvUaMDVaAmWxk8OuKu6VyN9d1dxyEOCHAIGh
+	 6Pdm/N2HMpgNhjHa19OHcNtFqEv/DjpKgqE847+mtxwXECRdFjV5YOEJeu77Rad4p2Y/v
+	 pfceLtEWlzhv65qI78xnWyGgWLgZfuZ5gO/IeX727Mj33JzJm2k6h8TB/nInhly8nRcPY
+	 wSV9KetN9PFLJsnROi2HcAzFZCXuXAt2UGGAoajh4hL6jRBpA57GfmTjNJN+69rbxvuP+
+	 grQ1IgTj67lktDvHysPkDJ6ig9ZvqSOjD+pvJ7qccwdPmt+3vtktivciZrqkMEDKK5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793254314;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793254310;
 	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
 	 X-Zmail-LocalSMTP:X-Zmail-RealSender:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 X-ZMAIL-USEORIGINALEMLTOOUTBOUND:Content-Transfer-Encoding:X-MAIL:
 	 X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
 	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
-	bh=lEFaOgUY9j3NkmVlcaXimZAUNSl/Q/naPVQh39qUVgU=;
-	b=jBCacLgE57FR1I84Ark/Z4jv35kzTzLQNnusCpjJZil+1JS7ci5DxX5g5Sl9cMvFeHIu
-	 +IsGNG6UdNS5WMHOSCkkKy8q9PmXv9RUI5mxoHJ+CXOD3zuECNkfAqRYRBFM14a0zlEht
-	 ayZQM+Yd3fnJ1ri1e690ceh4xxweNxHSili9ho8mlxKx3SC2HgqLM5pnOl0hrCO67CT5W
-	 T4DdbqHExCuOnVfRwvEj3OuqBxpqtHhki/Bfeop/kBWFHfdEOXP7Dvi32YavlU/VZKtxN
-	 vDUMnHpkEbbtTRVMXFBYG87PcXFnBr+IJtFOV1vbA2/YxXHLY4dzQh9bz+DTZtL7FLg==
+	bh=vJabha16XjqVKoBM+M5VzlBDy3ANP3Gdyed/2wde958=;
+	b=MH1vWZVR+0B6pM70YQ808aaptQNpali1FHVdl41k5UOVDw9MsJxjikIb5a6O4YhNQX/Q
+	 D5wo/nD13QSJBLYKb5GkBG97Zaq0cDR3KGC2K53tTzu55gmh+dEXzlf00mzYOfgVBA3VR
+	 XNfAUaraxWUm9U2NaDYufuyFO5qZhKVKDUM45WOigw+P4bWtK1AJqNSVFjSSu2+9UHUuh
+	 uyd0FD9CCFH0/7Bz/8r2+6k3EptaGnlhW55dWpKJg95nHdh/t9qVvBe4YtgkX2bNv+Fa2
+	 X7Bp7InZGx8khm5lroDYWGw2C1zjo2PH6cOYaHX1Y9lZzFMS62Sa46k75vsJvpb51sg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=sanechips.com.cn;
 	spf=pass smtp.mailfrom=sanechips.com.cn;
@@ -28,25 +28,25 @@ Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693BA60A262C;
-	Thu, 29 Oct 2026 06:11:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 693BA60A262C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7829F606A332;
+	Thu, 29 Oct 2026 06:11:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7829F606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jFYll4fMvz8XrrZ;
-	Thu, 29 Oct 2026 14:11:47 +0800 (CST)
-Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
-	by mse-fl2.zte.com.cn with SMTP id 69T6BdP8044561;
-	Thu, 29 Oct 2026 14:11:39 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jFYld6S2sz8Xrrh;
+	Thu, 29 Oct 2026 14:11:41 +0800 (CST)
+Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
+	by mse-fl2.zte.com.cn with SMTP id 69T6BWnN044396;
+	Thu, 29 Oct 2026 14:11:32 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from ubuntu-35-gs (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Thu, 29 Oct 2026 14:11:41 +0800
-X-Zmail-TransId: 3e816ae2e39c027-e7d9b
+	Thu, 29 Oct 2026 14:11:34 +0800
+X-Zmail-TransId: 3e816ae2e395027-e7ca8
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -68,9 +68,9 @@ Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
         Zhao Qingye <zhao.qingye@sanechips.com.cn>,
         Gong Shuai <gong.shuai@sanechips.com.cn>,
         Gong Shuai <gsh517025@gmail.com>
-Subject: [RFC PATCH v2 9/9] iommu/riscv: Add riscv_iommu_attach_dev_nested
-Date: Thu, 29 Oct 2026 14:11:31 +0800
-Message-ID: <20261029061131.584453-10-gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH v2 1/9] iommu/riscv: Use DC.tc.V as the device context valid bit
+Date: Thu, 29 Oct 2026 14:11:23 +0800
+Message-ID: <20261029061131.584453-2-gong.shuai@sanechips.com.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261029061131.584453-1-gong.shuai@sanechips.com.cn>
 References: <20261029061131.584453-1-gong.shuai@sanechips.com.cn>
@@ -85,89 +85,123 @@ Precedence: list
 MIME-Version: 1.0
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl2.zte.com.cn 69T6BdP8044561
+X-MAIL:mse-fl2.zte.com.cn 69T6BWnN044396
 X-TLS: YES
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 29 Oct 2026 14:11:47 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 29 Oct 2026 14:11:41 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AE2E3A3.002/4jFYll4fMvz8XrrZ
+X-Fangmail-MID-QID: 6AE2E39D.001/4jFYld6S2sz8Xrrh
 
-From: Wu Fei <wu.fei9@sanechips.com.cn>
+Previously, riscv_iommu_iodir_update() accepted only a partial device
+context and used bit 0 of the translation attributes as the valid
+flag. It also kept only GADE in DC.tc and dropped the other fields
+needed to pass guest translation settings for nested domains.
 
-Attach a device to a nested domain by combining the guest provided
-stage 1 context with the host-owned stage 2 context in the device
-directory entry. This allows the physical IOMMU to translate device
-DMA through both stages.
+Now that the function accepts a complete device context, take the
+valid bit from DC.tc.V and copy all defined TC fields so the guest
+configuration reaches the hardware.
 
-The device is bonded to the stage 2 parent domain so that it shares
-the parent's invalidation state.
+Use the DC field macros for the remaining device context updates as
+well.
 
-Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
-Co-developed-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 ---
- drivers/iommu/riscv/iommu.c | 41 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/iommu/riscv/iommu-bits.h |  6 ++++++
+ drivers/iommu/riscv/iommu.c      | 28 ++++++++++++----------------
+ 2 files changed, 18 insertions(+), 16 deletions(-)
 
+diff --git a/drivers/iommu/riscv/iommu-bits.h b/drivers/iommu/riscv/iommu-bits.h
+index 65d1f2250011..80c32f00ee5e 100644
+--- a/drivers/iommu/riscv/iommu-bits.h
++++ b/drivers/iommu/riscv/iommu-bits.h
+@@ -348,6 +348,12 @@ struct riscv_iommu_dc {
+ #define RISCV_IOMMU_DC_TC_SBE		BIT_ULL(10)
+ #define RISCV_IOMMU_DC_TC_SXL		BIT_ULL(11)
+ 
++/*
++ * All bits of dc.tc as defined by the spec. Bits 12-23 and 32-63
++ * are reserved for future standard use, bits 24-31 are for custom use.
++ */
++#define RISCV_IOMMU_DC_TC_DEFINED	GENMASK_ULL(11, 0)
++
+ /* Second-stage (aka G-stage) context fields */
+ #define RISCV_IOMMU_DC_IOHGATP_PPN	RISCV_IOMMU_ATP_PPN_FIELD
+ #define RISCV_IOMMU_DC_IOHGATP_GSCID	GENMASK_ULL(59, 44)
 diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index 44fab79110ac..a103c0465e62 100644
+index ca24d1b836d9..554361dd3159 100644
 --- a/drivers/iommu/riscv/iommu.c
 +++ b/drivers/iommu/riscv/iommu.c
-@@ -1673,12 +1673,53 @@ struct riscv_iommu_nested_domain {
- #define to_riscv_iommu_nested_domain(domain) \
- 	container_of(domain, struct riscv_iommu_nested_domain, domain)
- 
-+static int riscv_iommu_attach_dev_nested(struct iommu_domain *domain,
-+					 struct device *dev,
-+					 struct iommu_domain *old_domain)
-+{
-+	struct riscv_iommu_nested_domain *nested_domain =
-+		to_riscv_iommu_nested_domain(domain);
-+	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
-+	struct riscv_iommu_domain *s2_parent = nested_domain->viommu->s2_parent;
-+	struct riscv_iommu_info *info = dev_iommu_priv_get(dev);
-+	struct pt_iommu_riscv_64_hw_info pt_info;
-+	struct riscv_iommu_dc dc = {0};
-+
-+	if (nested_domain->viommu->iommu != iommu)
-+		return -EINVAL;
-+
-+	if (!s2_parent->nest_parent)
-+		return -EINVAL;
-+
-+	pt_iommu_riscv_64_hw_info(&s2_parent->riscvpt, &pt_info);
-+
-+	dc.tc = nested_domain->tc;
-+	dc.fsc = nested_domain->iosatp;
-+
-+	dc.iohgatp = FIELD_PREP(RISCV_IOMMU_DC_IOHGATP_MODE, pt_info.iohgatp_mode) |
-+		     FIELD_PREP(RISCV_IOMMU_DC_IOHGATP_PPN, pt_info.ppn) |
-+		     FIELD_PREP(RISCV_IOMMU_DC_IOHGATP_GSCID, s2_parent->gscid);
-+
-+	/* SVA/PASID are not supported now, keep PSCID at 0. */
-+	dc.ta = FIELD_PREP(RISCV_IOMMU_DC_TA_PSCID, 0);
-+
-+	if (riscv_iommu_bond_link(s2_parent, dev))
-+		return -ENOMEM;
-+
-+	riscv_iommu_iodir_update(iommu, dev, &dc);
-+	riscv_iommu_bond_unlink(info->domain, dev);
-+	info->domain = s2_parent;
-+
-+	return 0;
-+}
-+
- static void riscv_iommu_domain_nested_free(struct iommu_domain *domain)
- {
- 	kfree(to_riscv_iommu_nested_domain(domain));
+@@ -1132,7 +1132,6 @@ static void riscv_iommu_iotlb_inval(struct riscv_iommu_domain *domain,
+ 	rcu_read_unlock();
  }
  
- static const struct iommu_domain_ops riscv_iommu_nested_ops = {
-+	.attach_dev = riscv_iommu_attach_dev_nested,
- 	.free = riscv_iommu_domain_nested_free,
- };
+-#define RISCV_IOMMU_FSC_BARE 0
+ /*
+  * This function sends IOTINVAL commands as required by the RISC-V
+  * IOMMU specification (Section 6.3.1 and 6.3.2 in 1.0 spec version)
+@@ -1243,18 +1242,14 @@ static void riscv_iommu_iodir_update(struct riscv_iommu_device *iommu,
+ 		riscv_iommu_cmd_sync(iommu, RISCV_IOMMU_IOTINVAL_TIMEOUT);
  
+ 	/*
+-	 * For device context with DC_TC_PDTV = 0, translation attributes valid bit
+-	 * is stored as DC_TC_V bit (both sharing the same location at BIT(0)).
++	 * Only defined bits are writable by the driver.
+ 	 */
+ 	for (i = 0; i < fwspec->num_ids; i++) {
+ 		dc = riscv_iommu_get_dc(iommu, fwspec->ids[i]);
+-		tc = READ_ONCE(dc->tc);
+-		tc &= ~RISCV_IOMMU_DC_TC_GADE;
+-		tc |= new_dc->tc & RISCV_IOMMU_DC_TC_GADE;
+-		tc |= new_dc->ta & RISCV_IOMMU_DC_TC_V;
++		tc = new_dc->tc & RISCV_IOMMU_DC_TC_DEFINED;
+ 
+ 		WRITE_ONCE(dc->fsc, new_dc->fsc);
+-		WRITE_ONCE(dc->ta, new_dc->ta & RISCV_IOMMU_PC_TA_PSCID);
++		WRITE_ONCE(dc->ta, new_dc->ta & RISCV_IOMMU_DC_TA_PSCID);
+ 		WRITE_ONCE(dc->iohgatp, new_dc->iohgatp);
+ 		/* Update device context, write TC.V as the last step. */
+ 		dma_wmb();
+@@ -1373,11 +1368,11 @@ static int riscv_iommu_attach_paging_domain(struct iommu_domain *iommu_domain,
+ 		if (!riscv_iommu_fsc_supported(iommu, pt_info.fsc_iosatp_mode))
+ 			return -ENODEV;
+ 
+-		dc.fsc = FIELD_PREP(RISCV_IOMMU_PC_FSC_MODE, pt_info.fsc_iosatp_mode) |
+-			 FIELD_PREP(RISCV_IOMMU_PC_FSC_PPN, pt_info.ppn);
++		dc.fsc = FIELD_PREP(RISCV_IOMMU_DC_FSC_MODE, pt_info.fsc_iosatp_mode) |
++			 FIELD_PREP(RISCV_IOMMU_DC_FSC_PPN, pt_info.ppn);
+ 	}
+-	dc.ta = FIELD_PREP(RISCV_IOMMU_PC_TA_PSCID, domain->pscid) |
+-	     RISCV_IOMMU_PC_TA_V;
++	dc.ta = FIELD_PREP(RISCV_IOMMU_DC_TA_PSCID, domain->pscid);
++	dc.tc |= RISCV_IOMMU_DC_TC_V;
+ 
+ 	if (riscv_iommu_bond_link(domain, dev))
+ 		return -ENOMEM;
+@@ -1520,9 +1515,10 @@ static int riscv_iommu_attach_blocking_domain(struct iommu_domain *iommu_domain,
+ 	struct riscv_iommu_info *info = dev_iommu_priv_get(dev);
+ 	struct riscv_iommu_dc dc = {0};
+ 
+-	dc.fsc = RISCV_IOMMU_FSC_BARE;
++	dc.fsc = RISCV_IOMMU_DC_FSC_MODE_BARE;
++	dc.tc = 0;
+ 
+-	/* Make device context invalid, translation requests will fault w/ #258 */
++	/* Make device context invalid (DC.tc.V = 0), translation requests will fault w/ #258 */
+ 	riscv_iommu_iodir_update(iommu, dev, &dc);
+ 	riscv_iommu_bond_unlink(info->domain, dev);
+ 	info->domain = NULL;
+@@ -1545,8 +1541,8 @@ static int riscv_iommu_attach_identity_domain(struct iommu_domain *iommu_domain,
+ 	struct riscv_iommu_info *info = dev_iommu_priv_get(dev);
+ 	struct riscv_iommu_dc dc = {0};
+ 
+-	dc.fsc = RISCV_IOMMU_FSC_BARE;
+-	dc.ta = RISCV_IOMMU_PC_TA_V;
++	dc.fsc = RISCV_IOMMU_DC_FSC_MODE_BARE;
++	dc.tc = RISCV_IOMMU_DC_TC_V;
+ 
+ 	riscv_iommu_iodir_update(iommu, dev, &dc);
+ 	riscv_iommu_bond_unlink(info->domain, dev);
 -- 
 2.53.0
 
