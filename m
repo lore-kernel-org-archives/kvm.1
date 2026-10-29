@@ -1,110 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.180
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793283396;
-	b=xxRYg+Nulhpn/+LP/nTXhadPAVWSeJhIdLlEp/Y8BY+IGWDgrPigNRwlwJqWJxIP0Q9s
-	 Sb+A9RWgx8KeGCUF0BLZsgeruO06vJO2Ic0AugyHcBAQUhJux/k1dag90QTx3G6uuHmb+
-	 d1Ha20Nr/1uj2t9yMtT8NTp3hfHeRU9LKLkGHJZbzHa1q/8K2pu5QemRn5+2MKSaIYCol
-	 KCOJglXOH4QyS5mMnZCWM6iTpeBm7YaqqG8adC6oJGPh6zR4ap3mCPTz27U8K21g3A6kd
-	 LEr56/cxmDgeaLoaFhBOl5ALitDkqxUEEEkQrvtHZn9IcCq0To/WAgd9TukCiFbvXHg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793283396;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793284081;
+	b=QTLd3LWgM5yqUMycX5VWJKdOlIt5zxPSsqcDm3zvz0CJIlf5K3zbH7hyyCzo8/zkUVBM
+	 nXsrPXgTQXRcoSbwO2djStR3+UtT0E/UbS2K0BQXV92vQ7weHN43wlL0UpSCuCxOt7zFf
+	 BDKWaDzxgiWllLtTZ43PjstgAUcpn/q+RHxvZ963YLnsh3JZH/Nn0t7e4dhASYZtf/MQJ
+	 pJyznaUK5p1JwE4iWRwL3WGHYu7PVQ/WfmExqf0lRUjG+RyjdTL2xPDs0ozFjGWIZyBkw
+	 4mYJNa5Ub8+h4/UCFsGUhgzEOwlk6v0xvoe8b388IdDom7GpUUTQgreF1MjuJlIDABA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793284081;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=v0w3vTM41MmYY5jFFnm91zARv8a41r8bbrucc1w3RPo=;
-	b=vQl8UfIZpMYLSfBH2dCCsUhWXP82vAXgMI6WTpdYU1jwnhyBYr9qMj+VLzRxYDxTj8QC
-	 evusZy6ZxP+DMf1wxr3Wz1WVpB2npgfWuiQ7dvmokrgvrUz1F1QeZGBWqI9wjDMw2Ouwq
-	 GAuF26ZRypc53w/a407NzgneI0YWzH+4OzfZBnfTY9n78GRd+bsme08BLqRDPo21jyF/A
-	 FLsb51yvYxskYdIPdvd2CqSLdk22pum46A/rNYnn+b4RQUUHEkgyB0HlUihPb1/TiNV+6
-	 YcfkeP1fc+mUiXABtLD6iXkrhqGMDAHLSLH7kOEV+4/gt43GKCGGKYeGw/24UA+aaBg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=K3GWWvW6;
-	arc=none smtp.remote-ip=209.85.160.180
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
+	b=pbbvqlHVwytSJfMfDNsjhwA9DO2/A1vBEMa5FezHrhV9hRZghp10FlGOD295jTjN5f5E
+	 ASf3UH5QNM7WGVSWjMyxzlAEcRH7KaqYgrI7ZPdwjP/bJBW+7Sbo6B14eF/IYNFDp/Kea
+	 P7UMvYKPsJRAPRxtDSAC5fSz5X0P9JPMXwszOGmUQWE3h5SOeWeMIJJfJdHnpA0SkhtUZ
+	 oL6lsTdl9HXuxStK5spbko63ZWUyVpiERk9iPbhjv2RSq37/BiEN+XqGfZaIkGjkAOZSc
+	 oqKzxJ8YUopZNTP7f3+WIjVvEiCahlJv3MRDuxNeEF4VcMn4YeL0uWwAJ9/KAquft6Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j1TTQur8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC6B606A31C
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 14:16:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DC6B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB821606A321
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 14:28:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB821606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=K3GWWvW6
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-53cd0c8614eso20911461cf.0
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 07:16:31 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j1TTQur8
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b1f31c63ebso1323407a12.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 07:28:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793284079; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PCX+hJJrz1Tn8C1M3CGONQgAtO0E1iQi2QHvDh7q0xoYtv6lMM9K1ED+N9soD+n7R0
+         OlgOBVST2wNj1T3lyPBCoICqypp7+HgCo66Q7/yWE5dKvBbhxvh3yFNGId1OCevF+xdR
+         dv8LVqqwqFYjpa2MBx1sRg/tE8Y89KlwiQxbDJZOFvKe3/larOrrAhBOPzV93GJVVfjL
+         XCpHBxocrmnTwOnBXNKMP3eJ2vgfncy+6ei45gXEZBl/BSHz5G/GvPUhNX17MiiDNWw2
+         AyA1E6qofHNswZ2TWiht0w0oWStZc5eimCNenBuTd1/nnmgeKdWV3qhUe/XuO+P3hx3L
+         Ee0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
+        fh=rxtbmWGRjzgO4TrR0fZQACgaU8rmeJtbFk/LWkQNQVQ=;
+        b=OkT3aPJ1MVrO5Wlk91/wj+DN9gK7SdZogcl/2cKuhbSfjzABvKcz/R6NvlGxvzq8GU
+         NoniXnh8ABNbCM48sn7tsE1scJP6dmqQNDulSdFe4QTZg+Vbf6XohwKXdqACeHcSyuXQ
+         f2cJUuu4iHHJ7r42xgxZ/FSKw5uXRHpwmKAl3v5hCqmnz7CYR43QY93fiZtoIVWKqRvu
+         C64Oqt46VmVuvDRM4Veh+u0iaL7qOWfFbQ29MSXKyyNGeSOhbKQkrPgWTFHFgV8TivSt
+         /E0iUaKAl+ZGztpib/jopQn6MlAK/2cx1Xk+1JNYc2V8bZqcRPVGhjZA4q2gSv8+9Osb
+         aGfw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793283390; x=1793888190; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v0w3vTM41MmYY5jFFnm91zARv8a41r8bbrucc1w3RPo=;
-        b=K3GWWvW6rB7cRoFkVogJ2KSZo/0Y/1HCDIRdHzAIwLoLDsyMicRGMjOseGev/J/xTf
-         7GktCCuPItsgUn+ypTk60UX0aWoLaz29rDEd+7ry0VKQZgmxJu4rxk9u/82PZO0lHBoj
-         a0rS4Qcv1UTo0qCGsLn097FMzPIIosJ6Sq/dM+Cpe88Ee5HToav+cCJFoWYUIenfBqwj
-         BfXtQt8E5/J+XaBz+AzHqXbj9Vz+xQWJJQPIA+hvJei/SyQf96CW2nSLK1ee/Y9r1bUI
-         sgaZ8c4K2r7GTls+1UpYG7HJCNHiY8m5qhHnc/SvL5F1gGTyDMBNiM4S9pBh3H/k7bQZ
-         gG+A==
+        d=gmail.com; s=20260707; t=1793284079; x=1793888879; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
+        b=j1TTQur8+34cz+xCnLSGj1Q8IezmFsnFL6FNF89kgyeY+SVBe6V5tIbkVoAguCY6d5
+         pR6EWRwR98xgOpoLbY0MtYGVivdVn2Dd8BTxAOfY6lwP2ygaejDtVOC6DJyiU0eOvsnL
+         7g0i/K+0cdfEhDdEfhjCohSpXG8cUWc8Tl+JQy5a1dhLx+XJFhnEH5y/gfULH5FwgXTV
+         b7T06jcHrkPSo2I0Jy3DUGTSRMwcV21XKoW74ckTitbK+NAO/6P5Rtk0pt2zhsTUuy4q
+         9ZBT/vYqixv/fCsMfGn4uE7Wz/E9N6oEHXMSAwAJCUVjfiNqjmMAKMffL9GiaH/zlma0
+         ieSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793283390; x=1793888190;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=v0w3vTM41MmYY5jFFnm91zARv8a41r8bbrucc1w3RPo=;
-        b=RAvVxExhOQONOIQpAq2inrHquFM53nf6HvWg6WNnikWGUDp5SJoErwQyTFnlvrmfvI
-         EoHTpVRHZROX5052Z5/EB1mnTxNVn9DBhUwqHilJQXrAVupyqEZb7WsQihKglNFHiYSJ
-         AlHSJbE51wiYKAZFylzgZ5nWB9adN3KyAaWeCZw+KADCwdVTByrwFRym/DIVVRFProPK
-         Ui79grP3v3IXF1eW84BTq7tsaAsNZEjphizDvpeGv3aBoTvZ63Fv5GZrMwCmTk5U46PS
-         AJfV0rWZod1NITXv+hqBtpC60a2KjQCmyqdXiQBm6KPxphTBSLmM64XHgLMCVzsajFLB
-         /OZA==
-X-Forwarded-Encrypted: i=1; AKwUvBw8HM2YNq8lMEyplqbtnWk3JFheNthZ2DOT3D/XzwavUcWuw1LJ4A1jsiRtC6eavfZ/sCE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLyhG9sTj9Snfhi1Xd04bqmq/BSPiDF4RNjsL6sLD+ECoL69/4j
-	bNGmO+05wnqhBY2pAeNjDnvtj8tjOzxpSr81MxxooCtWggZ4MvIv6w4QZ95eIIHG8vg=
-X-Gm-Gg: AYBFou2jU0OJDIFBj9LDfAVVtaLYsp+w70Y4sNqit6KqaLBbvVwzxD1m9BmLuhlo4EQ
-	tg1hXNNNHxeOAXR6+MU8HVWqh/gct35hdPCDqEyir905N61OJOn8BIRO2JRCyS8NvFo/8ekoFAM
-	+JfbPJmkspdJhKeSL5aX6VwAnSIW8hmtm2XMslQN3XsrF32cTB+TkHvlZuFSsZQJdGnDjLiGssX
-	jp9N4ygIXljbZuz3V6jYUgOBjtlgjZD/nupFWBdVkE2Kg86IsAVg9R7+hFpO90ooKDbQwxSGmnC
-	SRTU9YfCDp7ZOz4DYe9/KWN6zeRmlfdoY38/lJBRK3dqH9ug3okPSiozIsW5EQIEQGV73Xy0PI0
-	OrU+5PpdxiP6p/dh3TkplSG4p5IVuM6nFuwQH0XSKK8nonGEUprCOinuCm6wjYWQ6lt08JXDWB8
-	8IzSadS2c0lCyFRplzabI6TC3kgWsj5S3DCPT8DFVutRhfmHKaewvgUT/72CWU46/OyYmTCGhAD
-	P5XxrHdaa+cK3kj1pzQ41WBEGSl27kO5K3wM84Ht5aQ7WWr9kVHY9bdjkbrsH91r97YYcTgcdKG
-	1o81i0HzKThQ0xopimEMLKYGUVVBv5wV7NaKTHvpeaah8Si16KMf+J+EKdylV6T0lzU7W3Q6C70
-	pKOswyZv7OGo=
-X-Received: by 2002:a05:622a:5c14:b0:533:21c6:f4e2 with SMTP id d75a77b69052e-53fcb20dda0mr85167991cf.20.1793283389957;
-        Thu, 29 Oct 2026 07:16:29 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c7f6ef1b7sm45505406d6.7.2026.10.29.07.16.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 07:16:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xMQvb-0000000FihF-2QML;
-	Thu, 29 Oct 2026 11:16:27 -0300
-Date: Thu, 29 Oct 2026 11:16:27 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
-	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
-	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
-	dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <20261029141627.GP1685504@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <2a2a5d93-1c10-4533-8709-437ceb6a3f94@suse.com>
+        d=1e100.net; s=20260707; t=1793284079; x=1793888879;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
+        b=MFhOb3yhNhKB5vCQyzTAexoU+SPeVvNTlc56hwBhcPFbxLpkh6rTRvfrwxcFBAoqHp
+         B2YeuKRgtpBvw9zzc/EY+pZDrZeuKrsLTPGhkUbRunSzt2JPPJrEzILyEkTJH3y9XJil
+         HX+hbMOOOcm0tagRKwwmroJYWwazVxLJzrHST3TBNdJ4yAN+bZ1pL6AE9ErTW2zMkwcK
+         Hjnx+urTdDdjUiLiEyy+oyiqOwno1q0qP/4RX221fug3iizb0c+1v6dkHdNt3xTTfb+m
+         5qWtsQjzn6ajCWVQqcpVcsAu6a6BDJdzfwkHmRlZ9cHej3H9qCgo2k3H/GmQVvdKLlaK
+         BdMg==
+X-Forwarded-Encrypted: i=1; AKwUvBz0D159wmFr1lGrSuZcV8XzKGjcYbktf5mALJzs1IkH9lCchpo86eExqprzZkmuYlKxnm0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8DaCMZscOWRhssWY1hwcvUk4SZLaDHTMA3q03f4NHsONHVC1U
+	vVempn6ALOVXnbk/nNxY/8Or5dO/PrW1fklJKAxX5SoJYpz/caj4616xOFOsN0OxkD621HfOGNd
+	yjl2cRly5oeN0FdLRs+/GLjQ/i6qE2ek=
+X-Gm-Gg: AYBFou1tYNy+Y9kpbdGWP2orqBLNUDm0QzCjs6ROtw9+Gpp+fTa+OIci662oRqfD0n+
+	UdPbAuHI6K+PHnYGnGzbhAylYeqNKbiyw1w4nABl9efCus+Mks1HrT8dTmSHPSAqqMp2SXEM2M+
+	CZkJi+S+UyyUhgqEMYCpLpyzZlKvwGGvsYp270Zw0BguQKmzINXDMWUWW3ro42njSZox1BnsC26
+	AKJyzmICcJx/v/P66JwllejgRrJipKZsnwx+h8Dy+ApGmuiL7724UKZguiEv4Q/3MNK4/l0F7nn
+	QdNuJbbTiGPnDWhWoAiPlL3LxnPtQYf7eDc/7Blkp/s+kRAUIwUEXEozC4Hb8atGwMMZVw66DG6
+	x+8HJLSsgPsI0+axKwGAu+UZ6E9Vyk0QUkrcBEA/Q21dYx4Z9HuptwQpne/X18oHIyR7Ghg==
+X-Received: by 2002:a05:6402:4508:b0:6b1:bb19:de98 with SMTP id
+ 4fb4d7f45d1cf-6b4b0b09dcemr2163933a12.1.1793284076799; Thu, 29 Oct 2026
+ 07:27:56 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -114,75 +103,107 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2a2a5d93-1c10-4533-8709-437ceb6a3f94@suse.com>
+References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
+ <20261027154649.91571-1-griffoul@gmail.com> <20261027154649.91571-12-griffoul@gmail.com>
+ <CAEvNRgGn09qrCZjUM5sdqQohPWE62GN4c52iK7ZV_gi5wro_Ww@mail.gmail.com>
+In-Reply-To: <CAEvNRgGn09qrCZjUM5sdqQohPWE62GN4c52iK7ZV_gi5wro_Ww@mail.gmail.com>
+From: Frederic Griffoul <griffoul@gmail.com>
+Date: Thu, 29 Oct 2026 14:27:45 +0000
+X-Gm-Features: AclHuK_kIg9XZ2cFnZL0tpsqSJGFt3xKJOd_xbKB2NrNWZ3oy-bCAgu9pf3hZSM
+Message-ID: <CAF2vKzOTd=0rmMXvtAE_SzbbZ3C9n9jTcjM+Rj=ovFoYBsXCKA@mail.gmail.com>
+Subject: Re: [RFC PATCH 11/14] KVM: guest_memfd: Add kvm_gmem_restore() for
+ PFN mode providers
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Alexander Graf <graf@amazon.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Alexey Kardashevskiy <aik@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Baolu Lu <baolu.lu@linux.intel.com>, 
+	Bill Wendling <morbo@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christian Brauner <brauner@kernel.org>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Connor Williamson <connordw@amazon.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@kernel.org>, 
+	David Rientjes <rientjes@google.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Erdem Aktas <erdemaktas@google.com>, Frank van der Linden <fvdl@google.com>, 
+	Gregory Price <gourry@gourry.net>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins <hughd@google.com>, 
+	Ingo Molnar <mingo@redhat.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	James Houghton <jthoughton@google.com>, Jan Kara <jack@suse.cz>, Jianxiong Gao <jxgao@google.com>, 
+	Joerg Roedel <joro@8bytes.org>, Joey Gouly <joey.gouly@arm.com>, 
+	John Starks <John.Starks@microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Justin Stitt <justinstitt@google.com>, Lorenzo Stoakes <ljs@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Michael Roth <michael.roth@amd.com>, Mike Rapoport <rppt@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolin Chen <nicolinc@nvidia.com>, Oliver Upton <oupton@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Steven Price <steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Tarun Sahu <tarunsahu@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
+	Xu Yilun <yilun.xu@linux.intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org, 
+	Shuah Khan <skhan@linuxfoundation.org>, Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, llvm@lists.linux.dev, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Oct 29, 2026 at 09:37:20AM +0200, Nikolay Borisov wrote:
-> 
-> 
-> On 15.10.26 г. 17:50 ч., Jiri Pirko wrote:
-> > From: Jiri Pirko <jiri@nvidia.com>
-> > 
-> > Linux has several attestation interfaces tied to individual technologies.
-> > That makes evidence retrieval, measurement registers, device state and
-> > kernel consumers provider-specific.
-> > 
-> > This series introduces a common attestation subsystem. Its goal is to
-> > support platform, TEE and device providers through one model, including
-> > TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
-> > This first series implements the common subsystem and a TDX provider.
-> > Existing native TDX tsm_mr and tsm_report interfaces remain independent.
-> 
-> Wasn't config-tsm supposed to be this common attestation subsystem? Was this
-> discussed when the initial config-tsm was proposed? Why is this coming now?
+On Thu, Oct 29, 2026 at 05:52:40AM -0700, Ackerley Tng wrote:
+> Fred Griffoul <griffoul@gmail.com> writes:
+>
+> > kvm_gmem_revoke() does not fit: it would
+> > zap the guest's and the VMM's mappings and reclaim frames that a guest
+> > may already use.
+> >
+>
+> I'd drop this paragraph from the commit message, kvm_gmem_revoke() is
+> the complete opposite and isn't a candidate at all for the goal, which
+> is to notify importers that a page is now available (and they can map it
+> in).
 
-Maybe but it was far too narrowly scoped to do that. config-tsm
-doesn't even include MRs, they were awkwardly pushed off into another
-different spot. It just doesn't seem to meet the need, and it can't
-sanely fit SPDM.
+Sure, I'll drop it.
 
-> > Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
-> > Compared with sysfs or configfs, CTLV executes one validated request
-> > atomically instead of assembling a transaction through several files.
-> > Compared with netlink, an opened device fd directly identifies authority
-> > and lifetime, can be delegated normally, and owns its event queue. CTLV
-> > also provides:
-> 
-> Assuming we want to go through the route of CTLV, do we really want an
-> attestation-specific  interface, or most of this functionality can
-> simply be
+> provider --1--> guest_memfd --2--> IOMMU
+>
+> 2 is definitely required, but why is 1 required?
+>
+> Between the first .get_pfn() or .lookup_pfn_range() () and
+> .put_pfn_range() or kvm_gmem_revoke(), the provider should consider the
+> memory in-use by guest_memfd.
+>
+> When it's in-use by guest_memfd, then guest_memfd should use --2--> to
+> map into IOMMU page tables as necessary.
+>
+> When it's not in-use by guest_memfd, why would the provider force it
+> into guest_memfd?
+>
+> If the guest VM knows that the page is now usable (some other
+> communication channel), it would touch the memory and do a .get_pfn(),
+> that would be successful this time. Perhaps that's when --2--> needs to
+> be performed?
 
-CTLV is not attestation specific..
+The IOMMU never asks, and the CPU may not touch the page before a
+device does. A few cases where only the provider knows:
 
-> implemented as a specific genetlink protocol, utilising all the existing
-> hardening that has gone into netlink's infrastructure to marshal messages
-> from userspace to kernel space?
+- The provider gives frames back with no guest involved: a page that
+  arrives during post-copy, a range moved back to the VM, memory given
+  to an overcommitted VM.
 
-Been there, seems like a hard no:
+- The guest already gave that IOVA to a device as a DMA buffer. The
+  device writes it without any CPU access, so there is no .get_pfn()
+  from a stage-2 fault, and most devices cannot fault.
 
-https://lore.kernel.org/all/20260721182046.16219426@kernel.org/
+- A read-only frame becomes writable. KVM finds out on the next write
+  fault, but a device write to a read-only IOPTE just fails.
 
-And then later this:
+kvm_gmem_restore() doesn't push the memory into guest_memfd: guest_memfd
+only passes it on to its exports. Stage-2 and userspace mappings stay
+lazy, and iommufd looks the range up again and maps it.
 
-https://lore.kernel.org/all/20260921131911.532d81f4@kernel.org/
+I'll make that clear in the kernel-doc and the commit message. Would
+that work for you?
 
-Plus netlink being based around sockets and net namespaces is a very
-poor fit for something that has nothing to do with net namespaces and
-really wants a DAC security model.
-
-> >   83 files changed, 18084 insertions(+), 28 deletions(-)
-> 
-> That's an awful lot of code to just move certain binary blobs around
-> (Judging by what config-tsm is doing ATM).
-
-Yeah, netlink is alot of code.
-
-ctlv is trying to solve a bigger more general problem than just
-config-tsm.
-
-Attestation is simply the first user as it has some complicated data
-structure that suits it well.
-
-Jason
+Fred
