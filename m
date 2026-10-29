@@ -1,103 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793293247;
-	b=EJmFwDmZvhO8nC5kSnyyDKaJam2yxutsFW5bPW9v11Pp45SyXmZx6oaaxJcIrTu22mY/
-	 yg2POUZPCsT8HGPr8VSPqbt1X4Ktl6On+G6f9xZMcrRui/aZKKCMhOmzrQRAuIorWrpfj
-	 FVduadJ73h/mGzSX2QvKbTgTBst0PVXfbGJSZWY7qXnEzpHKRfk8PMA3bPeCnlG1xWXuD
-	 uikeqfLKknA+YOGYLMnANJH6bgWT2HOGrXPyyZx+Q/zTjl/LrD0inu4U6TjviSEg0HbJ5
-	 fCIWuG21InwtPCuSjcNa7xa5A9MxCq/E+RRvQXzjUDWnkYRgnh0OqjkivBgegedl7mA==
+	t=1793293448;
+	b=V/yHOi86J10TtQnqs5Bp+wcEWfijdlvcOZUeNxqlsIuF+mll4elvoY0hlTpCF9rwYPpD
+	 Sxlxv1skRwuvLavYCaG4394qUr2I25tPbA4IXHmEPjg6QXkOHF9d5aHtnt986wt1zqgPU
+	 R6+p/8fGhUUY5ogv5EvWHXo0yFofTJ8gg/CmgQKq3Bb9m1DvclU1Y1Y9GK3S3o4jclz7O
+	 hBqr4g67gjsoaUW0+hcR8WHyO/pZ3f7PnzajqHVebDFL/DZcci0zHEUCd3VK7jD8dD1th
+	 CDwekNzyxkUq/vYoQYRK6vQnB2ooNGO69ngTreUP1lk7K3o+zmoX2Tnvd0hPCbNLMiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793293247;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=ZD/qDGi1O6nHsAaexh1x5wdETQZTzQoYlRWPgZIsXpY=;
-	b=MLDzm7ceZ1xMnMngnluOmZ7hCiB90iyg0LPKHqjYitzeKBluaREtvl159p/6tcLD1+pI
-	 C3XfN7KF4cdLXCNVHNOzRqVadYdVdR+Ap9u9j261YMwiPSDXFrxd4QT38/D3PAaKEe5ty
-	 ZoCeyw6WwHjBtamOOfA7nhmVKcu/SsziBb37uc0g7p5oKAXS9vICZWVJsHlbzYls/90em
-	 zLDvZn0MZezxeacEao1doCmP/UkiTjVCc/PA25hDFCGPPr+uwEj5Wy4Uh/RQtP/XA8tCG
-	 cMLq73mActPNqB0qtjqaxuvsmLCNebckxDCUFN7STg4Kz4/3tUdDlUnnhbL8IO2SgKg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793293448;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=+3u4UkqyYa07lmupnGiZTIflcZuk+saOR2mmUmtxGN8=;
+	b=jqK2f6sRhXgO9/K7wgIqdQWJ/XoI0dkmgMixGmEkJX2YVcrLQiC7R974tD4Lk+wcNr3P
+	 DF9zwyJBEVpQR2+rBnmByKEYXvVSK5vr18jPB0+qv/ioXsCh0dfYZFZSfdiFZowX/gs8o
+	 rEOCI8j49NeRYX3f5MONeQFrV3S+nWqO8Ve4JJlxB3Y7Nixp8kb4yFSJy7mtRtoP8RPgq
+	 7EqlEbldTLyVrv4TmMOgEbb6iislvgYY46/h6PVsMQH4wGD3BI3ZyBia1c1jYWDw3F0la
+	 z8VMFinkB6uKmOPY8NtCO3V62yhNknRFOzDJd4+OZ6VCrnhBUSKJAN8igRFRLvNs0fQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b="P/ryviEr";
-	arc=none smtp.remote-ip=209.85.219.42
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OcA7SOCH;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D650606A322
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:00:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D650606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACC2606A31A;
+	Thu, 29 Oct 2026 17:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=P/ryviEr
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91c75267b0fso26709626d6.3
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:00:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793293246; x=1793898046; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZD/qDGi1O6nHsAaexh1x5wdETQZTzQoYlRWPgZIsXpY=;
-        b=P/ryviErdiPh42kReFxkMw1q1mH9fz9TsFFVhDr7/C5Fa2PSoxZUA9NuSEwkEuOkDH
-         fNZeVoONCuCJO6q9+z+VTVZWbo0t4PQAZZQbmnCCao5RytIfbF7qM4u0UGfrh8SXqE5C
-         1Oy++8U8wu01GKb+uUKj/3+Vr18qQiyVTGVonel5fUq452tyDa7V3ank6XovkMgPdMz1
-         b4mfXcw4lUP07SJ9XOoL+xDmONdFYgfmQzR+4w8bOdy6pmffsNZIdJApXGGJQO3JrUXL
-         yXzp8LM+iVAhhqSPhoFCJc5loCUVs6wj2cMaSUauBqxFa4vtTkEvYVcrRZ93WpEPiEEE
-         wK4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793293246; x=1793898046;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZD/qDGi1O6nHsAaexh1x5wdETQZTzQoYlRWPgZIsXpY=;
-        b=CfACEL1MJ6vP8Bx+OvfjEDmPEo/CLWbsy8qWYb4HmkXPKOqfK2PwcHuy4Kd3E3QiLz
-         uDY1HuVG2dRewWZKSop6+zvzNkUBg7nZwWiDAqPlvTVnXIapEfkk46IJp5R/h2NxGk79
-         X1m4kwfK6u+Glor8fkuARr+qAI4mRS2JdL3NFREpR958NLZZQfQOVl+5wPgUTMsNbcUA
-         G8V+Omvv85ThgF19UpQ45YvCukJZsIH/lCH0FxDklz6vv/T7D9Q5e4fKy5enMdwzFKqB
-         6tbZazE4opIUJNEpqvPbuvphsw0xfn7phfsD6ddDF1HrzdwgWf8mUw/IMnV/S3JlAgbQ
-         b6dg==
-X-Forwarded-Encrypted: i=1; AKwUvBxL3QOed2mVOW+K8//+/g9aV52FIhOvl2JBIljiUMdfTzndozeUrRoXAbvscblwr+dwAsY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLWeIXw4uRfkzyyyL8Z7sEGQyha7lNw7OahtQB5onr2nCKo4DC3
-	5gikMTmpNCUOyNtkeENzQ2ybzqkRmVCIyxSdthpFBFQyy0f1BU9p0vzdlIuYmFlio9o=
-X-Gm-Gg: AYBFou0FmuGIq29LwYVPpusWneVu63C5bwujQUw1Ej4CRu8dRC/9/2K1U7RXfJbUI++
-	wjbkkncYJusu8yVjsvbQcerWOAxGoqf4IRU2KRHGhpioBuR6UXRPDytNElBVaC2exlDplMV2/k9
-	QkElRKkeLefSoktNrnrZDlCG6/hOQz950p3qx4dknWrahlUaMRv2POfRvrxWC3iUvuZoVmEvHSF
-	GfLfJpi0TqrKlPiscrjZPHsMcaIeWX4Gl0jurdtGxkjC+DRslR2A5fIXtzz3GA5dS6k+tCnQ2IQ
-	vU3AvFOX17aPGpU3l1lpBsEI4/g06VMNJ70JcrtTRt7khS41DOTLKZxoX4pBV4Yld6JtOYU6Q0U
-	gl0CAy1stkeBGGQHo/0kRuVmWWvdiXRvqZBbU2YFZckVB8O4wibahaW7CUnON/TfCSK9mUFb9fX
-	Sa7P0YB4mFXpWLErdZ7ItD6XiweL1pXSy1mXLdLY1APQRZZCGEkz8CUYi5gmgw71J8a0kJurbYL
-	SPFbgNoy5lE6Lxu1jg54LNbLhZNDJ9QeXsZDpHugJz8JdeDxIWA+ENG3tRw7Vqz0qSeRslL8CnA
-	3txcNZ/G3YjM1soMISrS5SoZzCeowIrMGnXnLE4rkH4Uu6CDlXb/OoxyPh6xrfD/5pIY8F2S3hy
-	91sDCQg5pp5w=
-X-Received: by 2002:a05:6214:3a87:b0:91c:6e6a:f1ad with SMTP id 6a1803df08f44-91c7cb836c2mr100048286d6.0.1793293245829;
-        Thu, 29 Oct 2026 10:00:45 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca317a421sm870346d6.44.2026.10.29.10.00.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 10:00:45 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xMTUa-0000000G37w-2g1i;
-	Thu, 29 Oct 2026 14:00:44 -0300
-Date: Thu, 29 Oct 2026 14:00:44 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: alex@shazbot.org, pbonzini@redhat.com, seanjc@google.com,
-	bhelgaas@google.com, jjohnson@kernel.org, johannes@sipsolutions.net,
-	mani@kernel.org, lpieralisi@kernel.org, kwilczynski@kernel.org,
-	robh@kernel.org, vkuznets@redhat.com, kevin.tian@intel.com,
-	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 5/8] ath11k: use KVM MSI domain for VM passthrough
-Message-ID: <20261029170044.GR1685504@ziepe.ca>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OcA7SOCH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF061F01816;
+	Thu, 29 Oct 2026 17:04:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793293448;
+	bh=+3u4UkqyYa07lmupnGiZTIflcZuk+saOR2mmUmtxGN8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OcA7SOCHn6Su2MidSomTO8HGYCxnyEt84ruND8ZLG/clTI81wXb7PPOgt2AgJvED4
+	 sUoVVZeLTjoPlIqJF2JGsqBDpAXClPRIksw20s6LZ3gfRXqt1vtoYA1N59RkpmKxbb
+	 wI5CmmxO8IPV6c3E4eUt8riJs+Jk5wOnryP9QcPrinfX6zkDXYfRc6uzflpVL6LOLb
+	 TiJjdp9aKecsKR/LnFdPMTh0z3XWxFuGwZN/l/F1cxKAADSGaJ6mhv3QrW+0hr4GfU
+	 e940un/3FgmqkH6QfKMHOjfWOWF182nwFbtIdSIQLJt+XFTLNu17ReLa+JK1+lKFae
+	 ppY/RoSdIAWFg==
+Message-ID: <sashiko-outbox-189709@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 7/8] ath12k: use KVM MSI domain for VM passthrough
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jose Ignacio Tornos Martinez" <jtornosm@redhat.com>
+Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20261029163713.1366077-8-jtornosm@redhat.com>
 References: <20261029163713.1366077-1-jtornosm@redhat.com>
- <20261029163713.1366077-6-jtornosm@redhat.com>
+ <20261029163713.1366077-8-jtornosm@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 29 Oct 2026 17:04:07 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,25 +59,165 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029163713.1366077-6-jtornosm@redhat.com>
 
-On Thu, Oct 29, 2026 at 05:37:10PM +0100, Jose Ignacio Tornos Martinez wrote:
-> @@ -855,6 +858,13 @@ static int ath11k_pci_power_up(struct ath11k_base *ab)
->  
->  	ath11k_pci_msi_enable(ab_pci);
->  
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] wifi: ath12k: stale msi_ep_base_data not updated in ath12k_pci_pow=
+er_up()
+- [High] wifi: ath12k: module load failure on baremetal when PCI_KVM_MSI_DO=
+MAIN=3Dm
+- [Medium] wifi: ath12k: vmlinux link failure when ATH12K=3Dy and PCI_KVM_M=
+SI_DOMAIN=3Dm
+--
+
+commit ea9e51c37aa4f1f3d5125a423b52732232e12c47
+Author: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+
+ath12k: use KVM MSI domain for VM passthrough
+
+This commit adds support for synchronizing and retrieving the host physical
+message signaled interrupt address via the kvm pci msi domain in
+ath12k_pci_power_up() and ath12k_pci_get_msi_address() when running in a
+virtual machine.
+
+> diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless=
+/ath/ath12k/pci.c
+> index f7879fb48d32e..dbd960f88d386 100644
+> --- a/drivers/net/wireless/ath/ath12k/pci.c
+> +++ b/drivers/net/wireless/ath/ath12k/pci.c
+> @@ -8,6 +8,9 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/msi.h>
+>  #include <linux/pci.h>
 > +#if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
-> +	if (kvm_pci_msi_wait_ready(ab_pci->pdev, 500) > 0)
-> +		kvm_pci_msi_get_address(ab_pci->pdev, &ab->pci.msi.addr_lo,
-> +					&ab->pci.msi.addr_hi,
-> +					&ab->pci.msi.ep_base_data);
+> +#include <linux/pci-kvm-msi.h>
+> +#endif
+>  #include <linux/time.h>
+>  #include <linux/vmalloc.h>
+> =20
+> @@ -1082,6 +1085,11 @@ void ath12k_pci_get_msi_address(struct ath12k_base=
+ *ab, u32 *msi_addr_lo,
+>  	struct ath12k_pci *ab_pci =3D ath12k_pci_priv(ab);
+>  	struct pci_dev *pci_dev =3D to_pci_dev(ab->dev);
+> =20
+> +#if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
+> +	if (kvm_pci_msi_get_address(pci_dev, msi_addr_lo, msi_addr_hi, NULL))
+> +		return;
 > +#endif
 
-This connection should be done through ACPI somehow, and I think
-Thomas would expect this to be modeled on the platform msi domain,
-just ported to PCI instead of this.
+[Severity: Medium]
+Will this cause a vmlinux link failure when ath12k is built-in and the kvm
+msi domain driver is built as a loadable module?
 
-Jason
+Both Kconfig options are defined as tristate without a dependency between
+them:
+
+drivers/net/wireless/ath/ath12k/Kconfig:
+    config ATH12K
+        tristate "Qualcomm Wi-Fi 7 support (ath12k)"
+        depends on MAC80211 && HAS_DMA && PCI
+
+drivers/pci/controller/Kconfig:
+    config PCI_KVM_MSI_DOMAIN
+        tristate "KVM PCI passthrough MSI domain"
+        depends on X86_64 && KVM_GUEST && PCI_MSI
+
+Because the calls to kvm_pci_msi_get_address() in
+ath12k_pci_get_msi_address() and kvm_pci_msi_wait_ready() in
+ath12k_pci_power_up() are guarded with:
+
+    #if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
+
+building with ath12k=3Dy and pci_kvm_msi_domain=3Dm causes built-in
+drivers/net/wireless/ath/ath12k/pci.o to emit direct calls to symbols in
+pci-kvm-msi.ko, failing at the vmlinux link stage. Should this use
+IS_REACHABLE() or enforce a Kconfig dependency?
+
+[Severity: High]
+What happens on baremetal when both ath12k and pci-kvm-msi are built as
+modules?
+
+The direct calls to kvm_pci_msi_get_address() and kvm_pci_msi_wait_ready()
+create a hard symbol dependency from ath12k.ko onto pci-kvm-msi.ko. When
+modprobe loads pci-kvm-msi.ko first, kvm_pci_msi_init() aborts module
+loading on baremetal or when no device in kvm_msi_devids is present on the
+bus:
+
+drivers/pci/controller/pci-kvm-msi.c:kvm_pci_msi_init() {
+    if (!kvm_para_available())
+        return -ENODEV;
+
+    for_each_pci_dev(pdev) {
+        if (pci_match_id(kvm_msi_devids, pdev)) {
+            first =3D pdev;
+            break;
+        }
+    }
+
+    if (!first) {
+        pr_info("kvm-pci-msi: no matching devices found\n");
+        return -ENODEV;
+    }
+
+Note that kvm_msi_devids only matches 0x1103 and 0x1107 here, and even
+with later commit 1d17e12c16ad ("PCI: add QCN9274 to reset quirks and KVM
+MSI domain") adding 0x1109, baremetal systems, guests with only other
+ath12k devices such as 0x1112, or guests prior to hotplug still return
+-ENODEV from kvm_pci_msi_init().
+
+When pci-kvm-msi.ko fails to load with -ENODEV, its exported symbols are
+never registered, preventing ath12k.ko from loading on baremetal. Could
+that break ath12k module loading on distribution kernels where both options
+are enabled as modules?
+
+> =20
+>  	pci_read_config_dword(pci_dev, pci_dev->msi_cap + PCI_MSI_ADDRESS_LO,
+>  			      msi_addr_lo);
+> =20
+> @@ -1485,6 +1493,10 @@ int ath12k_pci_power_up(struct ath12k_base *ab)
+> =20
+>  	ath12k_pci_msi_enable(ab_pci);
+> =20
+> +#if IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN)
+> +	kvm_pci_msi_wait_ready(ab_pci->pdev, 500);
+> +#endif
+
+[Severity: High]
+Does ab_pci->msi_ep_base_data remain stale with the guest virtual message
+data after kvm_pci_msi_wait_ready() completes in ath12k_pci_power_up()?
+
+During ath12k_pci_probe(), before ath12k_pci_power_up() runs,
+ath12k_pci_config_msi_data() latches msi_desc->msg.data into
+ab_pci->msi_ep_base_data:
+
+drivers/net/wireless/ath/ath12k/pci.c:ath12k_pci_config_msi_data() {
+    ...
+    ab_pci->msi_ep_base_data =3D msi_desc->msg.data;
+
+At that point kvm_pci_msi_wait_ready() has not yet been called, so
+msi_desc->msg.data contains the guest virtual vector data rather than the
+host physical base data.
+
+Later, when ath12k_pci_power_up() calls kvm_pci_msi_wait_ready(), the host
+address and data are fetched and cached in kvm_data->msg and desc->msg,
+but ab_pci->msi_ep_base_data is never updated here, and
+ath12k_pci_get_msi_address() passes NULL for the data argument of
+kvm_pci_msi_get_address().
+
+When copy engine and data path rings are subsequently configured via
+ath12k_ce_srng_msi_ring_params_setup() and ath12k_dp_srng_msi_setup(),
+ath12k_hif_get_user_msi_vector() calls ath12k_pci_get_user_msi_assignment():
+
+drivers/net/wireless/ath/ath12k/pci.c:ath12k_pci_get_user_msi_assignment() {
+    ...
+    *num_vectors =3D msi_config->users[idx].num_vectors;
+    *base_vector =3D  msi_config->users[idx].base_vector;
+    *user_base_data =3D *base_vector + ab_pci->msi_ep_base_data;
+
+Wouldn't this program the device registers and firmware ring setup messages
+with the stale guest message data instead of the host base data retrieved
+by kvm_pci_msi_wait_ready()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029163713.1366=
+077-1-jtornosm@redhat.com?part=3D7
