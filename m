@@ -1,142 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.35.211.235
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793269827;
-	b=tlKUClyFnx66ktJyr01hDYNg0ikGw9nso8FBMTaXot4TFSdDovB0fCTBQIT4Mk5/fHm3
-	 9STVWZOCVqRseMgKAU4//H1yHPIkFg4cjdCjbHmkImZxfwqhtR8qmUct+uF2c4kLTG3EH
-	 ZXPjOGY3LWbCSFYIX0UiPct+svMfueICoEchLpC3XzTWMXTZtEIsWx65HJYLDTLqdu/FG
-	 S8Zpm5NOPq8DPYUIxfoWNWiW88t14k4NTPd3TxLrJw+9p9U2Gy8k+qHImFM3gL1IcJrr8
-	 SkMnDInt81wScL4yhgNwrh4QuN15/IfjamX/yxPl1KUJIPX6Z/25/Kri2romJ5FpjCw==
+	t=1793270317;
+	b=S8z7wW2euf715mljJVSCb7/1C89gJ4EOVyofH9hwCJ/1TGbOX0qZMANRBs+3PC2LXAw7
+	 u4HDPgrYYQ+12G/MXafOLm9OqSo4i45xexNpxATbcQZ1U18b9rv3sID+7bEy7XOg+tzvG
+	 cHfmNuwlIATTo3mBlk8WFuZSlYnsSPqHEVTl7FuZ9JLksBnYUzqdi2m2MSj04hUK+mGpY
+	 WY9Nh+LM8SPW9Y04mNKKOKLQDgnjFDfqjlhQSsrjd+4QAezIKO6tzWh7M/D/Z1Z4+psNs
+	 yhhmsZPfCBLJ0Q3U3fdx2hKrLaWGCBtsGMAqc0aFErfAQJ+12SwVF5+1IOPlULYWagQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793269827;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=cAtddHWUPZrCBDhs0Y+44QLZfPLGxO3YxnP4tMoElZY=;
-	b=QzQNcqJz2EqOnYS/OA6s2iiMn7pv5muviZjw7Xf83jE7EwCXiasIWvDtqRXaXLq3eGaZ
-	 tDV3NX3yYG7+rH7TslIWyy0ZOnNibfAulv6eObaW+nyzAWCdHqeKKOtJjGdQhtRIL1UpB
-	 1/RHJ26Tp0s+8aQhe4Xc7zJ1U+GU1kmn79Ura05Wa413ahfYBW0+g1XhOo0s9XEMmGKDU
-	 EvQBdaSDcoH+yvc4QV0vCKB0xRFuc9lj7GOOuWu/RMO+bK3phh+RmA6OievH7kJeJhq70
-	 IKugI9Z3/9T5W/X5J/XLOAqKRKxp4ujBL8jEPComYEKcnzkdA/bnqnC1AxFnJ5z3CEg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793270317;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:Mail-Followup-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=Ld4QZ3pQQcZaz8vukIMO+uxQ90DsPcX0V4TVlD11JwE=;
+	b=vcnKwBZJL4sGye+LONDaKpVWo0KTRgPJ1gnQmJW8vMYmcqWqtPHQB256g7YLXSAfkgkb
+	 Iiw1kCEC2JnCqcjapIYo8WMrGLsXm9A2LzkkSwcun6X8QDd/kPk5DY0z5n6ezBxtdYwvx
+	 48MnzgEm7vj8hBFioxp7wD2Dx/hhqopZrEjicXygqcGu015IScKZjmsUnxlP60JGh0VGF
+	 LYU6nKKJoR2ZGJ2scR8FJYtOyfvF3SrzxGI19OdG8CgyfarNA3I/5WJuLBtLVvL1X5wM/
+	 ieHrjII9SFSHKyAJIN5fatWx34f3on+s5HqO7aCmUjHzAXKkIVoZ0KP33+F0oOENoag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHJaO+mI;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=mifar.in;
+	spf=pass smtp.mailfrom=mifar.in;
+	dkim=pass header.d=mifar.in header.i=@mifar.in header.a=rsa-sha256 header.s=mail header.b=mPwfOPuO;
+	arc=none smtp.remote-ip=161.35.211.235
+Received: from mifar.in (mifar.in [161.35.211.235])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A256606A31E
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:30:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A256606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0591606A31D
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 10:38:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0591606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mifar.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mifar.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RHJaO+mI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793269826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cAtddHWUPZrCBDhs0Y+44QLZfPLGxO3YxnP4tMoElZY=;
-	b=RHJaO+mISeHTk3J3i5P/aLernKDLHY1UaCYyfjtPm+Eh+EdG2PLBBO4sjZiGVqVo8JWY9i
-	ZWDqxFz4OMoiQL31rqaM0I18NegDsg5c+VNcYd1S8zp7TwEgmNjbmIbbrnTJPt9HYAWd6l
-	qRy/bQZSY/h5zY3pSHSDy9W6biOdodI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-31dn0k00OXi4Pkf-NALwaA-1; Thu,
- 29 Oct 2026 06:30:22 -0400
-X-MC-Unique: 31dn0k00OXi4Pkf-NALwaA-1
-X-Mimecast-MFC-AGG-ID: 31dn0k00OXi4Pkf-NALwaA_1793269818
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9F9651801358;
-	Thu, 29 Oct 2026 10:30:15 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7AAD23000735;
-	Thu, 29 Oct 2026 10:30:11 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 1B5FA21E6A04; Thu, 29 Oct 2026 11:30:09 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
- <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
- Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
- Kostiuk
- <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
- <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
- Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
-  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
- Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,
-  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
-  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
-  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
- <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
- Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,
-  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
-  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
-  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
- Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
-  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
-  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
- <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
- <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
-  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
- <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
- Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
- <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
- Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
-  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
- <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
- <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
- Lin
- <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
- Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
- Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
- Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
- <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
- <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
- Dooley <conor@kernel.org>,  Sebastian Huber
- <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
- <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  Anthony PERARD
- <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
- <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
-  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
-  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
-  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
-  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
- <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
- Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 61/65] qdev: remove deprecated PropertyInfo.type and
- .enum_table fields
-In-Reply-To: <20261020-qom-qapi-v7-61-431a86b02b58@redhat.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?=
-	Lureau"'s message of "Tue, 20 Oct 2026 14:46:18 +0400")
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-	<20261020-qom-qapi-v7-61-431a86b02b58@redhat.com>
-Date: Thu, 29 Oct 2026 11:30:09 +0100
-Message-ID: <87ecd8dcjy.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key, unprotected) header.d=mifar.in header.i=@mifar.in header.a=rsa-sha256 header.s=mail header.b=mPwfOPuO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mifar.in;
+ i=@mifar.in; q=dns/txt; s=mail; t=1793270303; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to : from;
+ bh=cHpyh54zy9xh+wdRjyz3Jr7nU3jQZkJ9CsSQ6jhbF3w=;
+ b=mPwfOPuOZNbbuBaKJ9oZDbH/i/v3oJlA1QMQsyrR9FhtCzSgn56yqKLptec5W7Wmhuynk
+ UbU1pGPVchzuaIf38vtL9pvvEldm/hPtpr09U8wT8bgjOv3QyygX71y5wBjsnXSlxZbFDSw
+ w4+6gSWFPb6HCkahd5u7qS2eXBMlP9TiqUOp1Gy3RTIN4uwBKVhASZrRSubjDRA357E8tzV
+ 5UUPT8Irc/2w7aWRU5zdA3cKnEsPa/C1yxaRRZuP7KCumqw1kvzQnVsbJSvIUXFCs335jn3
+ EbATEzAZMctWNoS1UDDOeqfDxsd9K5PKk9zuA0Yjd7yMZzxMVdyK9ncaKljA==
+Received: by mifar.in (Postfix, from userid 1000)
+	id 213E044917; Thu, 29 Oct 2026 10:38:23 +0000 (UTC)
+Date: Thu, 29 Oct 2026 10:38:23 +0000
+From: Sami Farin <lkml20261027@mifar.in>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
+	kimjw04271234@gmail.com, stable@vger.kernel.org
+Subject: Re: [REGRESSION] KVM: x86: OVMF boot hang with SMM enabled after
+ commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO
+ cache")
+Message-ID: <20261029103823.3u32wxlxdjksq6j4@m.mifar.in>
+Mail-Followup-To: Sami Farin <lkml20261027@mifar.in>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@kernel.org>, kvm@vger.kernel.org,
+	kimjw04271234@gmail.com, stable@vger.kernel.org
+References: <2026102314-CVE-2026-99082-e5b1@gregkh>
+ <20261027124140.upuow4a3kv6kssvn@m.mifar.in>
+ <auIy4UZMGxLhBCAn@google.com>
+ <d4214249-5ec0-4600-91be-13632b180425@redhat.com>
+ <69437bf0-45fc-4701-9144-a208c12423e6@redhat.com>
+ <auI4kViOXpqxT3wA@google.com>
+ <6f6694db-b1aa-4d9e-be82-b0d11cd814d9@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -146,27 +77,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6f6694db-b1aa-4d9e-be82-b0d11cd814d9@redhat.com>
 
-Re title: I think "deprecated" isn't the right word.  Let's go with
-"unused", or maybe
-
-    qdev: PropertyInfo.type and .enum_table are no longer used, drop
-
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
-
-> Now that all PropertyInfo definitions use .qapi_type, remove the
-> legacy .type (string) and .enum_table fields from PropertyInfo, and
-> the .arrayinfo/.arrayfieldsize fields from Property.
+On Wed, Oct 28, 2026 at 19:42:38 +0100, Paolo Bonzini wrote:
+...
+>1) if this patch gives the WARN (with vanilla 6.18.58):
 >
-> Remove fallback branches in qdev_property_add_static() and
-> qdev_class_add_property() that used object_property_add() with
-> prop->info->type: these always use the QAPI-aware registration
-> path now. Simplify qdev_propinfo_enum_lookup(), prop_array_info()
-> and prop_array_elem_size() to use the new fields directly.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+>index cfe96962a4e4..a96d839a317b 100644
+>--- a/arch/x86/kvm/x86.h
+>+++ b/arch/x86/kvm/x86.h
+>@@ -263,6 +263,7 @@ static inline void vcpu_cache_mmio_info(struct 
+>kvm_vcpu *vcpu,
+> 	vcpu->arch.mmio_access = access;
+> 	vcpu->arch.mmio_gfn = gfn;
+> 	vcpu->arch.mmio_gen = gen;
+>+	WARN_ON_ONCE((gen & 1) != kvm_arch_vcpu_memslots_id(vcpu));
+> }
 
+This did not trigger, but would it have been better to do
+WARN_ON_ONCE((gen % kvm_arch_nr_memslot_as_ids(vcpu->kvm)) != kvm_arch_vcpu_memslots_id(vcpu));
+
+Anyways, I tried this with 6.18.58, but I cannot reproduce the infinite loop anymore!
+I have Intel Core i5-13600K, qemu-11.1.2.
+
+Please disregard and drop this patch.
+
+After deeper tracing to understand why deterministic reproduction was elusive,
+I looked into how memslot generations are initialized and incremented in
+virt/kvm/kvm_main.c:1667-1673:
+
+     /*
+      * Generations must be unique even across address spaces. We do not need
+      * a global counter for that, instead the generation space is evenly split
+      * across address spaces. For example, with two address spaces, address
+      * space 0 will use generations 0, 2, 4, ... while address space 1 will
+      * use generations 1, 3, 5, ...
+      */
+     gen += kvm_arch_nr_memslot_as_ids(kvm);
+
+Because KVM seeds AS 0 with 0 and AS 1 with 1, and steps each update by 2,
+AS 0 generations are strictly even while AS 1 generations are strictly odd.
+The generation sets are disjoint (AS0 ∩ AS1 = ∅).
+
+Commit b3e6212dea2e ("KVM: x86: Use active memslots for the per-vCPU MMIO
+cache") already fixed this completely by switching from kvm_memslots() to
+kvm_vcpu_memslots(). Because the active memslots' generation already embeds
+address-space parity in bit 0, an MMIO entry cached in SMM (odd generation)
+can never produce a false cache hit in normal mode (even generation). Tracking
+mmio_as_id separately is redundant.
+
+The Windows 11 / OVMF boot freeze that originally motivated this was traced
+separately to high-vCPU SMI rendezvous lock contention during an NVRAM write
+storm on dirty boot, completely unrelated to the MMIO cache.
+
+Sorry for the noise.
+
+Thanks,
+Sami
+
+> static inline bool vcpu_match_mmio_gen(struct kvm_vcpu *vcpu)
+>
+>2) if patch 1 or patch 2 separately are enough to fix the issue;
+>
+>If you have time, can you also check if it fails to boot even before 
+>reaching Windows (you can try any Linux ISO, or even with no disk at 
+>all)?  Also, just to cover all bases is your machine Intel or AMD?
+>
+>Thanks,
+>
+>Paolo
+>
+
+-- 
+Do what you love because life is too short for anything else.
