@@ -1,63 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291851;
-	b=Kgp2a/XqzsTuBYuBz1zFCLvo9chlrfODL7r8YhHCPlTkHxU/sUqk8sD+EBtl6bzxz9Rb
-	 UVDFNkZeELxR6ZEWxVLJVprOMm8YiwMqsrb+4C1kvYD86xLVg2UPjP7lOCFpJtTF43eFm
-	 Yt7mUqgVjXeqBf4xyzys/w5vIg5OBhgRPlddZpK89dqJw+bekx2UMOHBt3+Jyc+R84P4f
-	 3jgFVrn5G6hn4/DA/Q7x10y/1EDCR1PBeyhfKxB+ce1lYY+AzXl3KquV8wUoEHirUJSbB
-	 /E8jXMCmmjn8PV7bI2h4kMKjwRAPVuzHDd7/okc+LhVS/fHLwTQdSghEQ2aUHXzen8g==
+	t=1793291869;
+	b=JU7nSv6vG+Xj2duhzJSMwkzuUNiG63iiXIdQU17m+24YdV7iYxfgTJ+NXbn4jvZ8OXPg
+	 lzjih9Tj9tzyKxgVRd89b/UCsfayDG4FUGexJgdOGAhwwfKKl1GENsjlg60CAuLdfICVW
+	 teAtRGL0dQL4maklf84wSqMt2X96tRNaSE41anqvIAvhEHN+yQiL/Jx6U5clriXD+yAZo
+	 mtcHKjAuWrxUWAQ+pRaVpBDHxRpzgdDN/YHlf4HrrVV5KhRY9LxNLLlQAjLopLpz7EIt1
+	 29YFE1sN4+R2Y2Hv0n8b7bm+FvwAiCYRp/Xvs40L0fMGI/RoUm3Lp1DnrGKwXv1OM2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291851;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291869;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
-	bh=60oBdK7pSBMfkj8btrUeLXs/eWEM8pNj/zNxGpSWBnU=;
-	b=RwUD9vIUIoirOPP3w9dugWYDAHZqYh6WiwZLQe16O/MumI2lLMGqAS5oBZmlX+e+5u5H
-	 U1hTH26+tlEWMwm5G8yGyRMiHiheFaQPhkAb+5+R2hfPJq0knRDkkeS6CczadIiIbUQdA
-	 mLMbUuTYrMs8PwhmVkbFx7obnUeu6THQBzpOsBny+g5b1Fhhnj93HlqByGXFc3bzmjkqG
-	 ZBTIzYEyaAdR4ZDZCtN0xQ0xVB5liQ6JVHvD3y+nFNX0A0WAHXSG14dwqdWWmr+ICMZJF
-	 5dYeS7GnKgn9lBJ4ydx/cZbE3Xzy54YsooBZNFkoBnupzuKsulzXduoYgci+zO2hPbA==
+	 Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Scanned-By;
+	bh=UPYTek6wuZR3RFTVbmpzV/dpdd/bHHoy5BiG4jXXPbk=;
+	b=dA7VzyF862BMkk6Tk655V9iMRNDe3t578JA2pWodGD4iAxkj0YznQ9TJkLoFf62kcYUC
+	 OjuZhjlp3cLFN7ZAsBN4GbUEZL7vJCdkeibfKvwxulA890uS4kjSzRkzihWkNcFZKAfkr
+	 8DrhOSBzQR2r5nVQ4WMhIAdZLwVFWTbgUVbBUGXIBrGLBadQXhlfq/4Z/es6WFn7KDPuY
+	 zLmKmzI/5UydXiqn2xQiypulsxqUi/E/QY6EAWgkdZXGJ2Yk24vbaNphatQkWTiXMF1vM
+	 Gh+4+yYneG27yvNWYXkfcFPgq6v98oR9/Cdkl8wwZjpXUbEMUFE7Ch64BiBkwI2VTmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4ijLiv7;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y6yT1TC6;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024C2606A31C
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:37:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 024C2606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F8F606A326
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:37:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16F8F606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q4ijLiv7
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y6yT1TC6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793291850;
+	s=mimecast20190719; t=1793291867;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=60oBdK7pSBMfkj8btrUeLXs/eWEM8pNj/zNxGpSWBnU=;
-	b=Q4ijLiv7QAsBiPzdy1/Tbm16tGTn3/60Kc56UTQJfSMtD7CKMPLMLx+T7UaQKqujJ4kxTb
-	tv6LEo+nx79CcmfJdX1u4WkiX8jMPmBE88uih/T0OsLu4Ne8S8p/cFKpwxfWyaiT5pz5se
-	aS5mtqnbYkzgYD8ZDr7caZsuBOwlXXY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UPYTek6wuZR3RFTVbmpzV/dpdd/bHHoy5BiG4jXXPbk=;
+	b=Y6yT1TC6RcHx3+II/3Txol3kfN6JFqPFEL/chnwYZ800oUmMoxHlyi7jlefDRL1m+ihdML
+	UwOpIIV3frzsVJwQ4nGUpHUPD8F9UrwMl5B49+/JTn/J7+FHrWCCYgITPFBhHV6L5Ixyh5
+	OpXRUKfKj2rSGGFQE2f9RJEx+gzl9dU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-93ymQZXkP_6lq8rkYhGv0A-1; Thu,
- 29 Oct 2026 12:37:26 -0400
-X-MC-Unique: 93ymQZXkP_6lq8rkYhGv0A-1
-X-Mimecast-MFC-AGG-ID: 93ymQZXkP_6lq8rkYhGv0A_1793291844
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-65-Pg7fpbxHOSyRPKo45j9n-w-1; Thu,
+ 29 Oct 2026 12:37:43 -0400
+X-MC-Unique: Pg7fpbxHOSyRPKo45j9n-w-1
+X-Mimecast-MFC-AGG-ID: Pg7fpbxHOSyRPKo45j9n-w_1793291861
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0B424180AEBD;
-	Thu, 29 Oct 2026 16:37:24 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D0EA21944F00;
+	Thu, 29 Oct 2026 16:37:40 +0000 (UTC)
 Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0BAD91956088;
-	Thu, 29 Oct 2026 16:37:17 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 70AA81955F01;
+	Thu, 29 Oct 2026 16:37:36 +0000 (UTC)
 From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 To: jgg@ziepe.ca,
 	alex@shazbot.org,
@@ -79,9 +81,11 @@ Cc: johannes@sipsolutions.net,
 	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH v3 0/8] PCI/KVM/VFIO: MSI address passthrough for Qualcomm WiFi devices
-Date: Thu, 29 Oct 2026 17:37:05 +0100
-Message-ID: <20261029163713.1366077-1-jtornosm@redhat.com>
+Subject: [PATCH v3 2/8] KVM: add PCI MSI hypercall for VFIO passthrough
+Date: Thu, 29 Oct 2026 17:37:07 +0100
+Message-ID: <20261029163713.1366077-3-jtornosm@redhat.com>
+In-Reply-To: <20261029163713.1366077-1-jtornosm@redhat.com>
+References: <20261029163713.1366077-1-jtornosm@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,110 +98,277 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-This series enables Qualcomm ath11k/ath12k WiFi devices to work in VM
-passthrough scenarios, addressing a long-standing issue where these
-devices fail to initialize when passed through to VMs via VFIO.
+Some PCI devices (e.g. Qualcomm WiFi adapters) have firmware that
+programs MSI addresses directly into device BAR registers, bypassing
+the standard PCI config MSI path. When these devices are passed
+through to VMs via VFIO, the firmware programs the guest virtual MSI
+address instead of the host physical IRTE address, causing DMAR faults
+and non-functional interrupts.
 
-Qualcomm ath11k/ath12k WiFi devices have been broken in VM passthrough
-since they were introduced. These devices have embedded firmware that
-programs MSI target addresses directly into device BAR registers,
-bypassing the standard PCI config MSI path. The driver extracts the
-addr/data from the MSI descriptor and programs the firmware's private
-registers. In a VM, the driver only sees the guest's virtual APIC
-address instead of the host's physical IRTE address. The firmware
-programs the guest address into the BAR registers, and the resulting
-MSI writes hit a stale or invalid IRTE in the host's interrupt
-remapping table, causing DMAR faults:
+Add a KVM hypercall (KVM_HC_PCI_MSI_ALLOC) that allows a guest to
+request the host's physical MSI address/data for a VFIO-assigned PCI
+device. The hypercall is dispatched from the x86 hypercall handler to
+a VFIO backend that:
 
-  DMAR: DRHD: ... INTR-REMAP
-  DMAR: [INTR-REMAP] ... Present field in the IRTE entry is clear
+1. Finds the host PCI device matching the guest's vendor:device ID
+   using vfio_file_find_pci_device() (introduced in a previous patch)
+2. Reads the host MSI address/data from the device's msi_desc or
+   by walking the IRQ domain compose chain
+3. Returns the result to the guest via a GPA response buffer
 
-Standard VFIO MSI virtualization handles PCI config space MSI
-correctly (MHI interrupts work fine), but has no visibility into
-firmware-managed BAR-level MSI programming.
+The VFIO handler is connected to the KVM instance via a function
+pointer (pci_msi_alloc) in struct kvm, set when the VFIO device is
+created and cleared on release. This avoids a hard dependency between
+KVM and VFIO subsystems.
 
-Multiple attempts have been made to solve this over the past 2 years:
+When MSI is not yet enabled by QEMU, or the IRQ vector is not
+configured, the handler returns success with a zeroed response,
+allowing the guest to poll until the host MSI is ready.
 
-March 2024: Workaround using module parameters [1]
-  - Required manually copying MSI values from host to VM
-  - Rejected by Johannes Berg as too manual, suggested VMM solution
-
-August 2024: QEMU + kernel solution by Alex Williamson [2]
-  - Kernel disables MSI virtualization, QEMU intercepts config writes
-  - Uses brute force pattern matching to infer MSI data writes
-  - Stuck as RFC - no progress in 14+ months
-
-No action from Qualcomm: Despite multiple reports [4], no vendor
-solution.
-
-The PCI reset support for these devices has already landed in mainline
-(commit f8522a518e59 "PCI: Add device-specific reset for Qualcomm
-WCN6855/WCN7850 WLAN") [3], solving the device reset path for VFIO
-passthrough. This MSI series is the remaining piece, with both in
-place, these Qualcomm WiFi devices would be fully operational in VMs
-for the first time.
-
-v1/v2 explored passing the host MSI address through VFIO extended
-config space. Jason Gunthorpe pointed out [5] that a guest-initiated
-approach via KVM paravirtualization would be cleaner, avoid VFIO
-internal coupling, and generalize better to other devices with
-similar firmware behavior. The proposal here is a new guest module
-that tries to address this by creating a custom MSI domain that
-provides the physical host values instead.
-
-v3 implements this as a 3-piece kernel-only solution:
-
-  1. Host side (KVM + VFIO): A new KVM hypercall
-     (KVM_HC_PCI_MSI_ALLOC) dispatches to a VFIO handler that reads
-     the host's physical MSI address/data for the passthrough device.
-     Connected via function pointer in struct kvm to avoid hard
-     subsystem dependencies.
-
-  2. Guest side (PCI controller): A new MSI IRQ domain module
-     (pci-kvm-msi, taking pci-hyperv.c as a reference as Jason
-     suggested) that intercepts MSI composition for matched devices.
-     In order to sync host initialization with the guest driver, it
-     provides kvm_pci_msi_wait_ready() to poll the hypercall until the
-     host MSI is configured, and kvm_pci_msi_get_address() to read
-     cached values.
-
-  3. Driver changes (ath11k, ath12k): Guarded with
-     IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN). Call wait_ready after
-     msi_enable in power_up, then use get_address where needed.
-     Zero overhead on baremetal (kvm_para_available() returns false).
-
-The solution requires no QEMU changes. Tested with WCN6855 (ath11k),
-WCN7850 (ath12k), and QCN9274 (ath12k) on host with KVM/VFIO
-passthrough, all three create fully working WiFi interfaces in
-the guest VM.
-
-Patches:
-  1-3: Core infrastructure (VFIO helpers, KVM handler, guest module)
-  4-5: ath11k support (link retry + KVM MSI integration)
-  6-7: ath12k support (link retry + KVM MSI integration)
-    8: QCN9274 device support (reset quirks + KVM MSI ID)
-
-[1] https://lore.kernel.org/all/20240322104912.94811-1-jtornosm@redhat.com/
-[2] https://lore.kernel.org/kvm/20240812170014.1583783-1-alex.williamson@redhat.com/
-[3] https://lore.kernel.org/all/20261005105436.83962-1-jtornosm@redhat.com/
-[4] https://lore.kernel.org/all/fc6bd06f-d52b-4dee-ab1b-4bb845cc0b95@quicinc.com/
-[5] https://lore.kernel.org/all/20261014150047.GO14213@ziepe.ca/
-
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
-v3: KVM paravirtualization approach based on Jason Gunthorpe feedback.
-    New hypercall + guest MSI domain module replaces VFIO variant
-    driver.
-    Added QCN9274 support.
-v2: https://lore.kernel.org/all/20261014142606.418972-1-jtornosm@redhat.com/
-v1: https://lore.kernel.org/all/20260930140833.576941-1-jtornosm@redhat.com/
+v3: new
+v2: https://lore.kernel.org/all/20261011074514.515894-1-jtornosm@redhat.com/
 
-Jose Ignacio Tornos Martinez (8):
-  vfio: add helper to find PCI device by vendor/device ID
-  KVM: add PCI MSI hypercall for VFIO passthrough
-  PCI: add KVM MSI domain guest module
-  ath11k: add PCIe link recovery retry
-  ath11k: use KVM MSI domain for VM passthrough
-  ath12k: add PCIe link recovery retry
-  ath12k: use KVM MSI domain for VM passthrough
-  PCI: add QCN9274 to reset quirks and KVM MSI domain
+ arch/x86/kvm/x86.c            | 39 ++++++++++++++
+ include/linux/kvm_host.h      |  3 ++
+ include/uapi/linux/kvm_para.h |  1 +
+ virt/kvm/vfio.c               | 97 +++++++++++++++++++++++++++++++++++
+ virt/kvm/vfio.h               |  8 +++
+ 5 files changed, 148 insertions(+)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 32563a91fba9..2f0cae07f978 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -86,6 +86,7 @@
+ #include <asm/sgx.h>
+ #include <asm/virt.h>
+ 
++#include <linux/msi.h>
+ #include <clocksource/hyperv_timer.h>
+ 
+ #define CREATE_TRACE_POINTS
+@@ -7490,6 +7491,44 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+ 		vcpu->arch.complete_userspace_io = complete_hypercall;
+ 		return 0;
+ 	}
++	case KVM_HC_PCI_MSI_ALLOC: {
++		struct msi_msg msg = {};
++		struct {
++			u32 address_lo;
++			u32 address_hi;
++			u32 data;
++			u32 reserved;
++		} resp;
++
++		if (vcpu->kvm->pci_msi_alloc == NULL) {
++			ret = -KVM_ENOSYS;
++			break;
++		}
++
++		/*
++		 * a0 = PCI vendor:device (vendor << 16 | device)
++		 * a1 = MSI vector index
++		 * a2 = GPA of response buffer
++		 */
++		ret = vcpu->kvm->pci_msi_alloc(vcpu->kvm, a0, a1, &msg);
++		if (ret) {
++			ret = -KVM_EINVAL;
++			break;
++		}
++
++		resp.address_lo = msg.address_lo;
++		resp.address_hi = msg.address_hi;
++		resp.data = msg.data;
++		resp.reserved = 0;
++
++		if (kvm_write_guest(vcpu->kvm, a2, &resp, sizeof(resp))) {
++			ret = -KVM_EFAULT;
++			break;
++		}
++
++		ret = 0;
++		break;
++	}
+ 	default:
+ 		ret = -KVM_ENOSYS;
+ 		break;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index e7fc94e2910a..4921810e9f3f 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -871,6 +871,9 @@ struct kvm {
+ 	struct xarray mem_attr_array;
+ #endif
+ 	char stats_id[KVM_STATS_NAME_SIZE];
++
++	int (*pci_msi_alloc)(struct kvm *kvm, u32 devid,
++			     unsigned int vector, struct msi_msg *msg);
+ };
+ 
+ #define kvm_err(fmt, ...) \
+diff --git a/include/uapi/linux/kvm_para.h b/include/uapi/linux/kvm_para.h
+index 960c7e93d1a9..3c7ca359faa6 100644
+--- a/include/uapi/linux/kvm_para.h
++++ b/include/uapi/linux/kvm_para.h
+@@ -30,6 +30,7 @@
+ #define KVM_HC_SEND_IPI		10
+ #define KVM_HC_SCHED_YIELD		11
+ #define KVM_HC_MAP_GPA_RANGE		12
++#define KVM_HC_PCI_MSI_ALLOC		13
+ 
+ /*
+  * hypercalls use architecture specific
+diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
+index 19548a430942..60356173e69f 100644
+--- a/virt/kvm/vfio.c
++++ b/virt/kvm/vfio.c
+@@ -11,7 +11,10 @@
+ #include <linux/kvm_host.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
++#include <linux/irq.h>
++#include <linux/msi.h>
+ #include <linux/mutex.h>
++#include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+ #include <linux/vfio.h>
+@@ -315,6 +318,8 @@ static void kvm_vfio_release(struct kvm_device *dev)
+ 
+ 	kvm_vfio_update_coherency(dev);
+ 
++	dev->kvm->pci_msi_alloc = NULL;
++
+ 	kfree(kv);
+ 	kfree(dev); /* alloc by kvm_ioctl_create_device, free by .release */
+ }
+@@ -349,6 +354,98 @@ static int kvm_vfio_create(struct kvm_device *dev, u32 type)
+ 	mutex_init(&kv->lock);
+ 
+ 	dev->private = kv;
++	dev->kvm->pci_msi_alloc = kvm_vfio_pci_msi_alloc;
++
++	return 0;
++}
++
++/**
++ * kvm_vfio_pci_msi_alloc - Get physical MSI address/data for a VFIO device
++ * @kvm: the VM instance
++ * @devid: PCI vendor:device packed as (vendor << 16 | device)
++ * @vector: MSI vector index
++ * @msg: output MSI message (address + data)
++ *
++ * Walks VFIO files attached to this VM, uses vfio_file_find_pci_device()
++ * to find the PCI device matching the given vendor:device ID, and returns
++ * the host's physical MSI address/data for the requested vector.
++ *
++ * Returns 0 on success, negative errno on failure.
++ */
++int kvm_vfio_pci_msi_alloc(struct kvm *kvm, u32 devid,
++			     unsigned int vector, struct msi_msg *msg)
++{
++	struct kvm_vfio_file *kvf;
++	struct kvm_vfio *kv = NULL;
++	struct vfio_device *vdev;
++	struct kvm_device *dev;
++	struct msi_desc *desc;
++	struct irq_data *irqd;
++	struct pci_dev *pdev;
++	u16 vendor = devid >> 16;
++	u16 device = devid & 0xffff;
++	int irq;
++
++	scoped_guard(mutex, &kvm->lock) {
++		list_for_each_entry(dev, &kvm->devices, vm_node) {
++			if (dev->ops == &kvm_vfio_ops) {
++				kv = dev->private;
++				break;
++			}
++		}
++	}
++
++	if (!kv)
++		return -ENODEV;
++
++	guard(mutex)(&kv->lock);
++
++	vdev = NULL;
++	list_for_each_entry(kvf, &kv->file_list, node) {
++		vdev = vfio_file_find_pci_device(kvf->file, vendor, device);
++		if (vdev)
++			break;
++	}
++
++	if (!vdev)
++		return -ENODEV;
++
++	pdev = to_pci_dev(vdev->dev);
++
++	if (!pdev->msi_enabled && !pdev->msix_enabled) {
++		memset(msg, 0, sizeof(*msg));
++		return 0;
++	}
++
++	irq = pci_irq_vector(pdev, vector);
++	if (irq <= 0) {
++		memset(msg, 0, sizeof(*msg));
++		return 0;
++	}
++
++	irqd = irq_get_irq_data(irq);
++	if (!irqd) {
++		memset(msg, 0, sizeof(*msg));
++		return 0;
++	}
++
++	desc = irq_get_msi_desc(irq);
++	if (desc) {
++		*msg = desc->msg;
++	} else {
++		struct irq_data *pos;
++
++		for (pos = irqd; pos; pos = pos->parent_data) {
++			if (pos->chip && pos->chip->irq_compose_msi_msg) {
++				pos->chip->irq_compose_msi_msg(pos, msg);
++				break;
++			}
++		}
++		if (!pos) {
++			memset(msg, 0, sizeof(*msg));
++			return 0;
++		}
++	}
+ 
+ 	return 0;
+ }
+diff --git a/virt/kvm/vfio.h b/virt/kvm/vfio.h
+index e130a4a03530..c2237ca9ff38 100644
+--- a/virt/kvm/vfio.h
++++ b/virt/kvm/vfio.h
+@@ -5,6 +5,8 @@
+ #ifdef CONFIG_KVM_VFIO
+ int kvm_vfio_ops_init(void);
+ void kvm_vfio_ops_exit(void);
++int kvm_vfio_pci_msi_alloc(struct kvm *kvm, u32 devid,
++			     unsigned int vector, struct msi_msg *msg);
+ #else
+ static inline int kvm_vfio_ops_init(void)
+ {
+@@ -13,6 +15,12 @@ static inline int kvm_vfio_ops_init(void)
+ static inline void kvm_vfio_ops_exit(void)
+ {
+ }
++static inline int kvm_vfio_pci_msi_alloc(struct kvm *kvm, u32 devid,
++					   unsigned int vector,
++					   struct msi_msg *msg)
++{
++	return -ENODEV;
++}
+ #endif
+ 
+ #endif
+-- 
+2.56.0
 
