@@ -1,99 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793284081;
-	b=QTLd3LWgM5yqUMycX5VWJKdOlIt5zxPSsqcDm3zvz0CJIlf5K3zbH7hyyCzo8/zkUVBM
-	 nXsrPXgTQXRcoSbwO2djStR3+UtT0E/UbS2K0BQXV92vQ7weHN43wlL0UpSCuCxOt7zFf
-	 BDKWaDzxgiWllLtTZ43PjstgAUcpn/q+RHxvZ963YLnsh3JZH/Nn0t7e4dhASYZtf/MQJ
-	 pJyznaUK5p1JwE4iWRwL3WGHYu7PVQ/WfmExqf0lRUjG+RyjdTL2xPDs0ozFjGWIZyBkw
-	 4mYJNa5Ub8+h4/UCFsGUhgzEOwlk6v0xvoe8b388IdDom7GpUUTQgreF1MjuJlIDABA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793284081;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-	b=pbbvqlHVwytSJfMfDNsjhwA9DO2/A1vBEMa5FezHrhV9hRZghp10FlGOD295jTjN5f5E
-	 ASf3UH5QNM7WGVSWjMyxzlAEcRH7KaqYgrI7ZPdwjP/bJBW+7Sbo6B14eF/IYNFDp/Kea
-	 P7UMvYKPsJRAPRxtDSAC5fSz5X0P9JPMXwszOGmUQWE3h5SOeWeMIJJfJdHnpA0SkhtUZ
-	 oL6lsTdl9HXuxStK5spbko63ZWUyVpiERk9iPbhjv2RSq37/BiEN+XqGfZaIkGjkAOZSc
-	 oqKzxJ8YUopZNTP7f3+WIjVvEiCahlJv3MRDuxNeEF4VcMn4YeL0uWwAJ9/KAquft6Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j1TTQur8;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793285087;
+	b=pE1I16N0CZIlUY0vzdmZPcX0JyVuZFRGybyE5dx5+3ouD9zj3wQ1npcTm7z3C70ftjQM
+	 rZL1S2F3K/oPsykFurApBv/aZ12SC4fOSNcVl6L5WbAzo3c796fPuKKwe2vuUxZk6ReU1
+	 zwaEDQQFVW++5RXXjpsE5LmS9Wzhqf+Sx0YwWHLrDPgPCM/0S0u38sX4pBoMOQEjdpnw9
+	 jqFvusSZPrAb/VK+e4WAA09ee3w7ojzKK2tN12NPBga9tpNkF2MZagLFRNdhryIB9NaGV
+	 8oMAvHV/TxYUz9m5k7ggDhID7aIYvXE5kSJwjZpD8KlkDs4yRxwU5ZHiLM1aampctBw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793285087;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:X-Spamd-Result:
+	 X-Spam-Score;
+	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
+	b=lpnZnKIaMFh6J8zzB81Hd1xm23Xiz9gW90vL+ZkaslNZJiQJKtB6QILXwyUb3kE3DUBc
+	 8q5mGx0KYIZJLE/NUeRobJkVCt9xju7aQM0qMHYRgnO0gVTsHFcJMupJJb0uy4FRRKg2M
+	 TvtGPcm4x6Y1fa3CZVlTyd8/gMB2Ux3PS/NBFkFERc5MqqKZjVxWbjXB2UXe6WIdkIKgl
+	 ti44630LjVrDlGvQhnPDNV44FlteBYf0KE30IdsBMOvNxBoQs1sMVuk3WZm9QE8CgQyAa
+	 8gMuyJ8LxfwPw15LKiV4dqGX9i/jAOXjUkkgPoTDY2FC2SKxu6zDyUZyKYdYF4a4Tqg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UrdyCeEM;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GWyd71jI;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UrdyCeEM;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GWyd71jI;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB821606A321
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 14:28:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB821606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF2D606A33C;
+	Thu, 29 Oct 2026 14:44:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BF2D606A33C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j1TTQur8
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b1f31c63ebso1323407a12.0
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 07:28:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793284079; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PCX+hJJrz1Tn8C1M3CGONQgAtO0E1iQi2QHvDh7q0xoYtv6lMM9K1ED+N9soD+n7R0
-         OlgOBVST2wNj1T3lyPBCoICqypp7+HgCo66Q7/yWE5dKvBbhxvh3yFNGId1OCevF+xdR
-         dv8LVqqwqFYjpa2MBx1sRg/tE8Y89KlwiQxbDJZOFvKe3/larOrrAhBOPzV93GJVVfjL
-         XCpHBxocrmnTwOnBXNKMP3eJ2vgfncy+6ei45gXEZBl/BSHz5G/GvPUhNX17MiiDNWw2
-         AyA1E6qofHNswZ2TWiht0w0oWStZc5eimCNenBuTd1/nnmgeKdWV3qhUe/XuO+P3hx3L
-         Ee0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-        fh=rxtbmWGRjzgO4TrR0fZQACgaU8rmeJtbFk/LWkQNQVQ=;
-        b=OkT3aPJ1MVrO5Wlk91/wj+DN9gK7SdZogcl/2cKuhbSfjzABvKcz/R6NvlGxvzq8GU
-         NoniXnh8ABNbCM48sn7tsE1scJP6dmqQNDulSdFe4QTZg+Vbf6XohwKXdqACeHcSyuXQ
-         f2cJUuu4iHHJ7r42xgxZ/FSKw5uXRHpwmKAl3v5hCqmnz7CYR43QY93fiZtoIVWKqRvu
-         C64Oqt46VmVuvDRM4Veh+u0iaL7qOWfFbQ29MSXKyyNGeSOhbKQkrPgWTFHFgV8TivSt
-         /E0iUaKAl+ZGztpib/jopQn6MlAK/2cx1Xk+1JNYc2V8bZqcRPVGhjZA4q2gSv8+9Osb
-         aGfw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793284079; x=1793888879; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-        b=j1TTQur8+34cz+xCnLSGj1Q8IezmFsnFL6FNF89kgyeY+SVBe6V5tIbkVoAguCY6d5
-         pR6EWRwR98xgOpoLbY0MtYGVivdVn2Dd8BTxAOfY6lwP2ygaejDtVOC6DJyiU0eOvsnL
-         7g0i/K+0cdfEhDdEfhjCohSpXG8cUWc8Tl+JQy5a1dhLx+XJFhnEH5y/gfULH5FwgXTV
-         b7T06jcHrkPSo2I0Jy3DUGTSRMwcV21XKoW74ckTitbK+NAO/6P5Rtk0pt2zhsTUuy4q
-         9ZBT/vYqixv/fCsMfGn4uE7Wz/E9N6oEHXMSAwAJCUVjfiNqjmMAKMffL9GiaH/zlma0
-         ieSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793284079; x=1793888879;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-        b=MFhOb3yhNhKB5vCQyzTAexoU+SPeVvNTlc56hwBhcPFbxLpkh6rTRvfrwxcFBAoqHp
-         B2YeuKRgtpBvw9zzc/EY+pZDrZeuKrsLTPGhkUbRunSzt2JPPJrEzILyEkTJH3y9XJil
-         HX+hbMOOOcm0tagRKwwmroJYWwazVxLJzrHST3TBNdJ4yAN+bZ1pL6AE9ErTW2zMkwcK
-         Hjnx+urTdDdjUiLiEyy+oyiqOwno1q0qP/4RX221fug3iizb0c+1v6dkHdNt3xTTfb+m
-         5qWtsQjzn6ajCWVQqcpVcsAu6a6BDJdzfwkHmRlZ9cHej3H9qCgo2k3H/GmQVvdKLlaK
-         BdMg==
-X-Forwarded-Encrypted: i=1; AKwUvBz0D159wmFr1lGrSuZcV8XzKGjcYbktf5mALJzs1IkH9lCchpo86eExqprzZkmuYlKxnm0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK8DaCMZscOWRhssWY1hwcvUk4SZLaDHTMA3q03f4NHsONHVC1U
-	vVempn6ALOVXnbk/nNxY/8Or5dO/PrW1fklJKAxX5SoJYpz/caj4616xOFOsN0OxkD621HfOGNd
-	yjl2cRly5oeN0FdLRs+/GLjQ/i6qE2ek=
-X-Gm-Gg: AYBFou1tYNy+Y9kpbdGWP2orqBLNUDm0QzCjs6ROtw9+Gpp+fTa+OIci662oRqfD0n+
-	UdPbAuHI6K+PHnYGnGzbhAylYeqNKbiyw1w4nABl9efCus+Mks1HrT8dTmSHPSAqqMp2SXEM2M+
-	CZkJi+S+UyyUhgqEMYCpLpyzZlKvwGGvsYp270Zw0BguQKmzINXDMWUWW3ro42njSZox1BnsC26
-	AKJyzmICcJx/v/P66JwllejgRrJipKZsnwx+h8Dy+ApGmuiL7724UKZguiEv4Q/3MNK4/l0F7nn
-	QdNuJbbTiGPnDWhWoAiPlL3LxnPtQYf7eDc/7Blkp/s+kRAUIwUEXEozC4Hb8atGwMMZVw66DG6
-	x+8HJLSsgPsI0+axKwGAu+UZ6E9Vyk0QUkrcBEA/Q21dYx4Z9HuptwQpne/X18oHIyR7Ghg==
-X-Received: by 2002:a05:6402:4508:b0:6b1:bb19:de98 with SMTP id
- 4fb4d7f45d1cf-6b4b0b09dcemr2163933a12.1.1793284076799; Thu, 29 Oct 2026
- 07:27:56 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UrdyCeEM;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GWyd71jI;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UrdyCeEM;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GWyd71jI
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B54C22210D;
+	Thu, 29 Oct 2026 14:44:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793285085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
+	b=UrdyCeEMKHhopqmzqB8HSWFgIEcKTFU4pSYcOCLxn3f/ee6De+XpoEYELmPbxsMduW0d3a
+	596LYkT6TmeSIL8H/20MEj37EoRurGIvmzIGn+C7tiHkb9FRgi3NS1/YJIcCio8Xnl0i2D
+	pRhue5Oo8xf5WTkSNWH5zZ+V+BQ3HvA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793285085;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
+	b=GWyd71jI75LiMrHVSGXVpQz70/7L7+unh/faDaAFEJ33aAcmosuQKzFL6yk0+RBTU3mlPx
+	hi/UyO4w4CAHTyCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793285085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
+	b=UrdyCeEMKHhopqmzqB8HSWFgIEcKTFU4pSYcOCLxn3f/ee6De+XpoEYELmPbxsMduW0d3a
+	596LYkT6TmeSIL8H/20MEj37EoRurGIvmzIGn+C7tiHkb9FRgi3NS1/YJIcCio8Xnl0i2D
+	pRhue5Oo8xf5WTkSNWH5zZ+V+BQ3HvA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793285085;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
+	b=GWyd71jI75LiMrHVSGXVpQz70/7L7+unh/faDaAFEJ33aAcmosuQKzFL6yk0+RBTU3mlPx
+	hi/UyO4w4CAHTyCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C9C7C1339F;
+	Thu, 29 Oct 2026 14:44:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iNqFENhb42qRUwAAD6G6ig:T5
+	(envelope-from <clopez@suse.de>); Thu, 29 Oct 2026 14:44:44 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	linux-mm@kvack.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: linux-s390@vger.kernel.org,
+	imbrenda@linux.ibm.com,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Subject: [RFC PATCH 4/4] KVM: x86/mmu: don't zap the secondary MMU on permission upgrade
+Date: Thu, 29 Oct 2026 15:33:37 +0100
+Message-ID: <20261029143336.390231-7-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20261029143336.390231-3-clopez@suse.de>
+References: <20261029143336.390231-3-clopez@suse.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,107 +125,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261027154649.91571-1-griffoul@gmail.com> <20261027154649.91571-12-griffoul@gmail.com>
- <CAEvNRgGn09qrCZjUM5sdqQohPWE62GN4c52iK7ZV_gi5wro_Ww@mail.gmail.com>
-In-Reply-To: <CAEvNRgGn09qrCZjUM5sdqQohPWE62GN4c52iK7ZV_gi5wro_Ww@mail.gmail.com>
-From: Frederic Griffoul <griffoul@gmail.com>
-Date: Thu, 29 Oct 2026 14:27:45 +0000
-X-Gm-Features: AclHuK_kIg9XZ2cFnZL0tpsqSJGFt3xKJOd_xbKB2NrNWZ3oy-bCAgu9pf3hZSM
-Message-ID: <CAF2vKzOTd=0rmMXvtAE_SzbbZ3C9n9jTcjM+Rj=ovFoYBsXCKA@mail.gmail.com>
-Subject: Re: [RFC PATCH 11/14] KVM: guest_memfd: Add kvm_gmem_restore() for
- PFN mode providers
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Alexander Graf <graf@amazon.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Alexey Kardashevskiy <aik@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Baolu Lu <baolu.lu@linux.intel.com>, 
-	Bill Wendling <morbo@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christian Brauner <brauner@kernel.org>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Connor Williamson <connordw@amazon.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Erdem Aktas <erdemaktas@google.com>, Frank van der Linden <fvdl@google.com>, 
-	Gregory Price <gourry@gourry.net>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins <hughd@google.com>, 
-	Ingo Molnar <mingo@redhat.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	James Houghton <jthoughton@google.com>, Jan Kara <jack@suse.cz>, Jianxiong Gao <jxgao@google.com>, 
-	Joerg Roedel <joro@8bytes.org>, Joey Gouly <joey.gouly@arm.com>, 
-	John Starks <John.Starks@microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Justin Stitt <justinstitt@google.com>, Lorenzo Stoakes <ljs@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Michael Roth <michael.roth@amd.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Oliver Upton <oupton@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Steven Price <steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tarun Sahu <tarunsahu@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org, 
-	Shuah Khan <skhan@linuxfoundation.org>, Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, llvm@lists.linux.dev, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spamd-Result: default: False [-16.30 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
+X-Spam-Score: -16.30
 
-On Thu, Oct 29, 2026 at 05:52:40AM -0700, Ackerley Tng wrote:
-> Fred Griffoul <griffoul@gmail.com> writes:
->
-> > kvm_gmem_revoke() does not fit: it would
-> > zap the guest's and the VMM's mappings and reclaim frames that a guest
-> > may already use.
-> >
->
-> I'd drop this paragraph from the commit message, kvm_gmem_revoke() is
-> the complete opposite and isn't a candidate at all for the goal, which
-> is to notify importers that a page is now available (and they can map it
-> in).
+When an mmu_notifier invalidation only upgrades permissions
+(MMU_NOTIFIER_RANGE_PERM_UPGRADE), keep the existing SPTEs instead of
+zapping them. The PFN is unchanged and no access is revoked, so a held
+SPTE is at most as permissive as before. Permissions for the SPTE are
+updated on the next fault, so dropping them early gains nothing.
 
-Sure, I'll drop it.
+The motivating case is a userfaultfd-wp dirty tracker such as QEMU's
+background snapshot, which unprotects every guest page as it saves it.
+Zapping on each unprotect makes the guest refault its whole working
+set. On a 64GB guest under a background snapshot, a read-mostly workload
+drops secondary-MMU refaults from ~1M/s to ~2.5K/s and cross-vCPU TLB
+shootdowns from ~1400/s to near zero. Uses of mprotect() that only add
+access benefit likewise.
 
-> provider --1--> guest_memfd --2--> IOMMU
->
-> 2 is definitely required, but why is 1 required?
->
-> Between the first .get_pfn() or .lookup_pfn_range() () and
-> .put_pfn_range() or kvm_gmem_revoke(), the provider should consider the
-> memory in-use by guest_memfd.
->
-> When it's in-use by guest_memfd, then guest_memfd should use --2--> to
-> map into IOMMU page tables as necessary.
->
-> When it's not in-use by guest_memfd, why would the provider force it
-> into guest_memfd?
->
-> If the guest VM knows that the page is now usable (some other
-> communication channel), it would touch the memory and do a .get_pfn(),
-> that would be successful this time. Perhaps that's when --2--> needs to
-> be performed?
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+ arch/x86/kvm/mmu/mmu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-The IOMMU never asks, and the CPU may not touch the page before a
-device does. A few cases where only the provider knows:
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index dc2aef72ffdd..a4258a8c0c89 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -1719,6 +1719,13 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ 	lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+ 			    lockdep_is_held(&kvm->slots_lock));
+ 
++	/*
++	 * Do not bother zapping SPTEs if this is only a protection upgrade.
++	 * Permissions will be faulted-in on demand.
++	 */
++	if (range->perm_upgrade)
++		return false;
++
+ 	if (kvm_memslots_have_rmaps(kvm))
+ 		flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
+ 						 range->start, range->end,
+-- 
+2.51.0
 
-- The provider gives frames back with no guest involved: a page that
-  arrives during post-copy, a range moved back to the VM, memory given
-  to an overcommitted VM.
-
-- The guest already gave that IOVA to a device as a DMA buffer. The
-  device writes it without any CPU access, so there is no .get_pfn()
-  from a stage-2 fault, and most devices cannot fault.
-
-- A read-only frame becomes writable. KVM finds out on the next write
-  fault, but a device write to a read-only IOPTE just fails.
-
-kvm_gmem_restore() doesn't push the memory into guest_memfd: guest_memfd
-only passes it on to its exports. Stage-2 and userspace mappings stay
-lazy, and iommufd looks the range up again and maps it.
-
-I'll make that clear in the kernel-doc and the commit message. Would
-that work for you?
-
-Fred
