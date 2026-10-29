@@ -1,89 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793259445;
-	b=j8QTGFnfxhnUIblRDcz8d1fc2KXd7T0QEHR+jQWN9RWU76/IF2qqK41ZEZWt2LpRVA6n
-	 fnixM2HATJTEg3onFhU8WVySSkC7sJvxOispfHPPVqs44RS92+muESe0jmajGXJ/ZXlU4
-	 NL+elztNjqNTJN3VCimUKi36XURnbEZ3KBjWSWct5gaLtb3xX1DQsRLO5dqd7nRPs7DM1
-	 GSvAlpyGM7rZcX1b7AQYtVAwWPw6VGxiawDPltonmdH0vHir5u2Dl+oIrnIEJtEzOW+Gk
-	 Nv3LH6ScgkvYVgkBIXOfWjzI2vGXez0h2PMO9QfYvk8U5wQQIUOtbcjSW+/xIJVrM4w==
+	t=1793259750;
+	b=PUZbjwAuW67FT9Q6y34hRkKZJs4gORiZjGFShUL44rCl/KZRLjbOErr5g12S+DqKkwrr
+	 mVCS2J7swKBzNRM4OWIIXWTM4aYflV+d+wzTu/2meRY6AJqfGM2xHkKAAo96lzfoDiXir
+	 K9Hygg9liK7TO7r6ZstzrmT6Y3/KYZrEdmzy3+8n2LpnYq1sba8dkPIktqI4bSIcT5ZY3
+	 NAixVpe2DA1aqBnJxP5dtzTnWDxjwJh1lA/1o7K4h6vByWkovxfo4ooNhPpxP8qSqUVEp
+	 ClBZPKdvBYvQzhf0Tsfnd39fA5T/L67pVKXIZBlQz1bN2ZTquhoZyzNHEMRIOgQqeBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793259445;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=fzUObAd1gPdMT5m6XcBC5Jns8W/Y+lrWpL82WiQ785A=;
-	b=KNxQfoCvZb9YVbVtLhE8tRgkjtMGiuYsEtGt7e1lsemtgndP+rBe3MuebxaeThXkQUHW
-	 p0k+UGoQvSzcguTnr1eT2GoTwoTg4DiaXLhlkRXV0nWncPsVSmg71M63yDk5yejakssU1
-	 KsskYp5BXGC29VtH7r3qwaaKf0aoCp33vawPPFZBsJGljy6pX2rQrQ/5aGiu0fMuk40d/
-	 PAXcfDBHUAloCi7S7vyeYeHlJF+FF7lnphMreS9YrolgwF9wlHK5qpxJyNPK/dqMqZw8W
-	 ZOtf0fspC5+CmIpzFvP7g1CIecoIGGaJKe3IIUKAyedcyDtNUB4VrjnGIIB8b/1ihDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793259750;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=uqtLDQD5xTS0V2akScr1AeCuZBi18jL8j7JRCM14Iek=;
+	b=KYQMYaKQ0L52G9rFKG955z0A5f68fAASfg+OBQ63/nlQ0DyJ8QmQ2uadStdySiaiC1LN
+	 BJDrFk5IXr+1vlBbPDs12oxzjv7gF3v4gECXl9yt5HoknCO9fohUcz4RZU9CoDs9NfDwS
+	 BJU4pkjnVwps93VAdOEZnkqBlVaHB0rERiT3WC5zRiXFkj/5Exkl81aGbg3Qrx0hBH6kd
+	 E1zEYdihI5wBAis3DgcDHdIO+dT5FCphT+piGp4pgK1gbkD/mhNwx2wsg1eLznVBYZ1ul
+	 UPN2Iut4VYmD18Crs41I7Nq0/o9iLXOnOB//T+TJYoTm4uQrYlbiXcosuDdYiUSlO9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b="TJhrKm/D";
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=djNC1Rw9;
+	arc=none smtp.remote-ip=198.175.65.20
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E12606A31D
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 07:37:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93E12606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473AE606A31C;
+	Thu, 29 Oct 2026 07:42:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 473AE606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=TJhrKm/D
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a2000d5fb1so12789225e9.1
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 00:37:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1793259443; x=1793864243; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=fzUObAd1gPdMT5m6XcBC5Jns8W/Y+lrWpL82WiQ785A=;
-        b=TJhrKm/Damb4bsRQwz1SifntKVJJkxhYDgN962GmLP/xy2kCtvUcONSf1d3+6RBcEe
-         lmZNHUhzIB4jgy/hPyIeBvELGo3Zaym0jDYgFFEmFENYa5YnAvR97dRnBaFfypF3m5FI
-         hwNukOS8ezJt9tUz+YtT0U46mKX057MGXy+J3BDUZ17jmN+lesBATi2ZrRG4L1hWpZ5l
-         +ocxI6217Nx2ssWp2SRx1dhZS+Cmciv8QJIM3AlT1PG410DBDeuLf3jIh4eHwjhr48G5
-         +FJRUPMSFEvAhPEyLc22DsORQuXV3TIyt++gg0hf8helkMnlmvaYzG2wDBe3hWMnjDrI
-         iEDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793259443; x=1793864243;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fzUObAd1gPdMT5m6XcBC5Jns8W/Y+lrWpL82WiQ785A=;
-        b=bT8PmbebE7Z8w4S8Zfa7nLLCWvfwFKRmLVEMx1gfQ/GbFtiBTEx+4NeNDRSlihcieJ
-         hgE/zFszHdCCWqvgMQaC4BHTVkyvtxKHAgEG0h8Dy9KsLIkkSuVMODoXKVkKysKQJpw8
-         OENLHB4HVLbJDbVPwQ2frMWnmvT60fe0PjxZ2leWs+uyCbYP8IE+GA1khDGRseP6GY1Q
-         jJLoUvcRWX+pjrTqLvZF3A/l6fDKDEcFmTA8Khb2ocnnYgsxpDIpF+qwOE9UPhkNYHqb
-         ZWnX8LXPfxY31B0wWc/XeFqswomI++/6M6Gjx2YLfOslJcvNVl7cCIx/LLBgsvpuX9JQ
-         AAtg==
-X-Forwarded-Encrypted: i=1; AKwUvBzPzQxQQKpwwBG2giib/LhUugcWMDQ7p+XopvvIDP3ofIW3gLNgz7+ufiqcW/gpozI6gnQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKYvCkXGwXH0IfH3wzewD0YQ9XyTTe+8quZsRRk9E/JmBs2GAlb
-	XkI5umKRZnLSV6qqCXC8nfgEWHsuJqE3dSxFPkvSrIZhW/ujgxVCg9jXVOtML3ByAtU=
-X-Gm-Gg: AYBFou3IEZLQ1pkj7KEJUmXRMiF3k7Yq0+iW0+aBvImc81af5UWtafRi5AkukO27UqW
-	umzrk6mmAwgYFkhRJ+doJevEgom1T5dd86UxvbwfyuLnt+AVqD0BvDIs4avK/LiomaxnO6DZlNl
-	bEaSNgkfzRZmHGRWCFDAiHediijbrisnZ0jqear5lfKrekjTagciKdfxj8y3vUvTSzY5trLM1/a
-	cwcGWdS7vWx7bt0R5htODXJmYWkF6aALJgkEh5pMW+ok6Tf3tyx72/jZiX0QPYuuBuEE5+yNFV3
-	91/bCPv5cAzLgi1Da+yiZFbe7AB/oLm+SBTtwOO6RYuC+IEDEhM1tnQb2LHm1N+/RGUSH2BuaJ/
-	DxZu2C9GqWrjHJKNaPJHJJfSs1mLP3yYwvG6SDXA+lc+N4t9JgNqR8KYj5X2bU4KJKFWh3uJdxX
-	PVEbUcBTbClcW2A+GyQm5tUsjq0/9rI9jaub/MSEYuhRZ2tvTM2xgpxuutOc9gYisd3MxGnmPOS
-	ygqrS2Ju1JnliTeh1Qmxs+JBvDiRMEz8NmTnCEihQV9DDTzx22CsLlTpr91Ti/sRmq4D09ciUDD
-	TAT6eqRrlEfy44v3fNrzP/KGEgTgCCY1JX1D54AcNZe4U0b9m4vo/6jVvAnKAmyLFk+BAwtKcxg
-	=
-X-Received: by 2002:a05:600c:4f94:b0:4a3:5a42:b29c with SMTP id 5b1f17b1804b1-4a967202997mr107918525e9.26.1793259442995;
-        Thu, 29 Oct 2026 00:37:22 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a94f05e4e4sm68388545e9.3.2026.10.29.00.37.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 00:37:22 -0700 (PDT)
-Message-ID: <2a2a5d93-1c10-4533-8709-437ceb6a3f94@suse.com>
-Date: Thu, 29 Oct 2026 09:37:20 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=djNC1Rw9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793259750; x=1824795750;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=MVpVtdLQY4IkhjqzlWnwVcUPW52r2XOrV9LJwuyJ5k4=;
+  b=djNC1Rw9WbnjxgyKxSPeoG/tA56mEJCCp2eIq8otp+wwnxh4cPTWghmT
+   0IGHoQ2iObykXtCqFJZQEYK4nextG6C98Zwg7aMhKIYYhN28UT2xLdn+m
+   +HcMHpzx16DTQSKkcPytTtAx+/njBGf9fwVA70v37qfNYlmnAGaoxU0sR
+   rN7Q3ojYBXcELXwPL/smFFf5bUiYSJpippOPJjy2XH008TgMZXNa351OM
+   o8kXq8wI9JQZriQQwEgr9vTB04m+JYmOoPoyiq9D+nV9y082Gc21jlN8f
+   DpaoL7C+Pz++4Mfe+FqeqfsWNiExcKLKfyh3TacPexL20l0ONgJUDjp9D
+   w==;
+X-CSE-ConnectionGUID: z/bylCyEQPaA8UmcuVNX7w==
+X-CSE-MsgGUID: is+ZuzrEQJWOqPVQOfe0vA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2022961"
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="2022961"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 00:42:29 -0700
+X-CSE-ConnectionGUID: kxMxIR/0T1ONe6fL/FYo9Q==
+X-CSE-MsgGUID: 3ztfeBnzRVClbEO5iW7CNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="5456510"
+Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 00:42:24 -0700
+Message-ID: <0945bca7-fb1c-4bbe-b14d-1e9939738daf@linux.intel.com>
+Date: Thu, 29 Oct 2026 15:42:21 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,164 +73,338 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-To: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org, jgg@ziepe.ca,
- david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
- rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
- drdeeglaze@gmail.com, James.Bottomley@HansenPartnership.com, aik@amd.com,
- jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
- jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
- suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- elena.reshetova@intel.com, dave.hansen@linux.intel.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-References: <20261015145053.3664509-1-jiri@resnulli.us>
-From: Nikolay Borisov <nik.borisov@suse.com>
+Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
+ Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v6 11/18] iommu/vt-d: Preserve PASID table of preserved
+ device
+To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ David Woodhouse <dwmw2@infradead.org>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-12-skhawaja@google.com>
 Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20261015145053.3664509-1-jiri@resnulli.us>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261025021930.674647-12-skhawaja@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
+On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
+> In scalable mode the PASID table is used to fetch the io page tables.
+> Preserve and restore the PASID table of the preserved devices.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>   drivers/iommu/intel/iommu.c      |   3 +-
+>   drivers/iommu/intel/liveupdate.c | 144 +++++++++++++++++++++++++++++--
+>   drivers/iommu/intel/pasid.c      |  10 ++-
+>   drivers/iommu/intel/pasid.h      |   8 ++
+>   include/linux/kho/abi/iommu.h    |  19 ++++
+>   5 files changed, 176 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 991ad9b2456e..ecec057f78dd 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -3473,7 +3473,8 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
+>   			goto clear_rbtree;
+>   		}
+>   
+> -		if (!context_copied(iommu, info->bus, info->devfn)) {
+> +		if (!context_copied(iommu, info->bus, info->devfn) &&
+> +		    !dev_iommu_restored_state(dev)) {
+>   			ret = intel_pasid_setup_sm_context(dev);
+>   			if (ret)
+>   				goto free_table;
+> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+> index cf98b95bf8d2..36816d3651e6 100644
+> --- a/drivers/iommu/intel/liveupdate.c
+> +++ b/drivers/iommu/intel/liveupdate.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/pci.h>
+>   
+>   #include "iommu.h"
+> +#include "pasid.h"
+>   #include "../iommu-pages.h"
+>   
+>   /* 2 tables per bus in scalable mode with upper table at odd bit */
+> @@ -393,6 +394,69 @@ void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
+>   		      iommu->name);
+>   }
+>   
+> +enum pasid_lu_op {
+> +	PASID_LU_OP_PRESERVE = 1,
+> +	PASID_LU_OP_UNPRESERVE,
+> +	PASID_LU_OP_RESTORE,
+> +};
+> +
+> +static int pasid_lu_do_op(void *table, enum pasid_lu_op op)
+> +{
+> +	int ret = 0;
+> +
+> +	switch (op) {
+> +	case PASID_LU_OP_PRESERVE:
+> +		ret = iommu_preserve_pages(table);
+> +		break;
+> +	case PASID_LU_OP_UNPRESERVE:
+> +		iommu_unpreserve_pages(table);
+> +		break;
+> +	case PASID_LU_OP_RESTORE:
+> +		iommu_restore_pages(virt_to_phys(table));
+> +		break;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int pasid_lu_handle_pd(struct pasid_dir_entry *dir,
+> +			      u32 max_pasid, enum pasid_lu_op op)
+> +{
+> +	int max_pde = max_pasid >> PASID_PDE_SHIFT;
+> +	struct pasid_entry *table;
+> +	int i, ret;
+> +
+> +	for (i = 0; i < max_pde; i++) {
+> +		table = get_pasid_table_from_pde(&dir[i]);
+> +		if (!table)
+> +			continue;
+> +
+> +		ret = pasid_lu_do_op(table, op);
+> +		if (ret)
+> +			goto err;
+> +	}
+> +
+> +	ret = pasid_lu_do_op(dir, op);
+> +	if (ret)
+> +		goto err;
+> +
+> +	return 0;
+> +
+> +err:
+> +	if (op != PASID_LU_OP_PRESERVE)
+> +		return ret;
+> +
+> +	while (i > 0) {
+> +		table = get_pasid_table_from_pde(&dir[--i]);
+> +		if (!table)
+> +			continue;
+> +
+> +		pasid_lu_do_op(table, PASID_LU_OP_UNPRESERVE);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>   /**
+>    * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
+>    * @dev: Target device
+> @@ -404,6 +468,7 @@ int intel_iommu_preserve_device(struct device *dev,
+>   				struct iommu_device_ser *device_ser)
+>   {
+>   	struct device_domain_info *info = dev_iommu_priv_get(dev);
+> +	struct pasid_table *pasid_table;
+>   	int ret;
+>   
+>   	if (!dev_is_pci(dev)) {
+> @@ -434,6 +499,22 @@ int intel_iommu_preserve_device(struct device *dev,
+>   
+>   	device_ser->attachment.attachment_id = domain_id_iommu(info->domain,
+>   							       info->iommu);
+> +
+> +	if (!sm_supported(info->iommu))
+> +		return 0;
+> +
+> +	pasid_table = intel_pasid_get_table(dev);
+> +	if (!pasid_table)
+> +		return -EINVAL;
+> +
+> +	ret = pasid_lu_handle_pd(pasid_table->table,
+> +				 pasid_table->max_pasid,
+> +				 PASID_LU_OP_PRESERVE);
+> +	if (ret)
+> +		return ret;
+> +
+> +	device_ser->intel.pasid_table = virt_to_phys(pasid_table->table);
+> +	device_ser->intel.max_pasid = pasid_table->max_pasid;
+>   	return 0;
+>   }
+>   
+> @@ -445,15 +526,33 @@ int intel_iommu_preserve_device(struct device *dev,
+>   void intel_iommu_unpreserve_device(struct device *dev,
+>   				   struct iommu_device_ser *device_ser)
+>   {
+> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
+> +	struct pasid_table *pasid_table;
+> +
+> +	if (!dev_is_pci(dev))
+> +		return;
+> +
+> +	if (!info)
+> +		return;
+> +
+> +	if (!sm_supported(info->iommu))
+> +		return;
+> +
+>   	/*
+>   	 * The context tables preserved during device preservation, in the
+>   	 * preserve_device() callback, might be shared with other devices, so
+> -	 * those are unpreserved in the iommu unpreserve() callback. So this
+> -	 * callback is kept empty.
+> -	 *
+> -	 * Once device PASID tables are preserved, the unpreservation of PASID
+> -	 * tables will be added here.
+> +	 * those are unpreserved in the iommu unpreserve() callback.
+>   	 */
+> +	if (!device_ser->intel.pasid_table)
+> +		return;
+> +
+> +	pasid_table = intel_pasid_get_table(dev);
+> +	if (!pasid_table)
+> +		return;
+> +
+> +	pasid_lu_handle_pd(pasid_table->table,
+> +			   pasid_table->max_pasid,
+> +			   PASID_LU_OP_UNPRESERVE);
+>   }
+>   
+>   /**
+> @@ -499,3 +598,38 @@ void intel_iommu_unpreserve(struct iommu_device *iommu_dev,
+>   	unpreserve_iommu_context_tables(iommu, ser);
+>   	iommu_unpreserve_pages(iommu->root_entry);
+>   }
+> +
+> +/**
+> + * intel_pasid_restore_table() - Restore preserved PASID table for a device
+> + * @dev: Restored device
+> + * @max_pasid: Maximum supported PASID
+> + *
+> + * Return: Pointer to restored PASID table directory, or NULL if not preserved.
+> + */
+> +void *intel_pasid_restore_table(struct device *dev, u64 max_pasid)
+> +{
+> +	struct iommu_device_ser *ser = dev_iommu_restored_state(dev);
+> +
+> +	if (!ser || !ser->intel.pasid_table)
+> +		return NULL;
+> +
+> +	/*
+> +	 * MAX PASID of a device should not change as it is read from
+> +	 * capabilities.
+> +	 */
+> +	if (ser->intel.max_pasid != max_pasid)
+> +		panic("%s: preserved max PASID %llu does not match %llu\n",
+> +		      dev_name(dev), ser->intel.max_pasid, max_pasid);
+> +
+> +	if (ser->intel.restored)
+> +		goto out;
+> +
+> +	if (pasid_lu_handle_pd(phys_to_virt(ser->intel.pasid_table),
+> +			       ser->intel.max_pasid, PASID_LU_OP_RESTORE))
+> +		panic("%s: failed to restore preserved PASID table\n",
+> +		      dev_name(dev));
+> +	ser->intel.restored = 1;
+> +
+> +out:
+> +	return phys_to_virt(ser->intel.pasid_table);
+> +}
+> diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+> index e4f24d3f19a6..59cc69383799 100644
+> --- a/drivers/iommu/intel/pasid.c
+> +++ b/drivers/iommu/intel/pasid.c
+> @@ -13,6 +13,7 @@
+>   #include <linux/cpufeature.h>
+>   #include <linux/dmar.h>
+>   #include <linux/iommu.h>
+> +#include <linux/iommu-liveupdate.h>
+>   #include <linux/memory.h>
+>   #include <linux/pci.h>
+>   #include <linux/pci-ats.h>
+> @@ -60,8 +61,13 @@ int intel_pasid_alloc_table(struct device *dev)
+>   
+>   	size = max_pasid >> (PASID_PDE_SHIFT - 3);
+>   	order = size ? get_order(size) : 0;
+> -	dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
+> -					1 << (order + PAGE_SHIFT));
+> +
+> +	max_pasid = 1 << (order + PAGE_SHIFT + 3);
+> +	if (dev_iommu_restored_state(dev))
+> +		dir = intel_pasid_restore_table(dev, max_pasid);
+> +	else
+> +		dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
+> +						1 << (order + PAGE_SHIFT));
+>   	if (!dir) {
+>   		kfree(pasid_table);
+>   		return -ENOMEM;
+> diff --git a/drivers/iommu/intel/pasid.h b/drivers/iommu/intel/pasid.h
+> index 48d3bb6b68de..801768cdea16 100644
+> --- a/drivers/iommu/intel/pasid.h
+> +++ b/drivers/iommu/intel/pasid.h
+> @@ -301,6 +301,14 @@ static inline void pasid_set_eafe(struct pasid_entry *pe)
+>   
+>   extern unsigned int intel_pasid_max_id;
+>   int intel_pasid_alloc_table(struct device *dev);
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +void *intel_pasid_restore_table(struct device *dev, u64 max_pasid);
+> +#else
+> +static inline void *intel_pasid_restore_table(struct device *dev, u64 max_pasid)
+> +{
+> +	return NULL;
+> +}
+> +#endif
+>   void intel_pasid_free_table(struct device *dev);
+>   struct pasid_table *intel_pasid_get_table(struct device *dev);
+>   int intel_pasid_setup_first_level(struct intel_iommu *iommu, struct device *dev,
+> diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
+> index 95354a12ba1d..08443f6cee6f 100644
+> --- a/include/linux/kho/abi/iommu.h
+> +++ b/include/linux/kho/abi/iommu.h
+> @@ -137,6 +137,21 @@ struct iommu_attachment_ser {
+>   	u32 padding;
+>   } __packed;
+>   
+> +/**
+> + * struct iommu_device_intel_ser - Intel specific state of serialized device
+> + * @features: Bitmask of Intel device specific features
+> + * @restored: Whether the device state is restored
+> + * @pasid_table: Physical address of pasid table
+> + * @max_pasid: Maximum supported pasid
+> + */
+> +struct iommu_device_intel_ser {
+> +	u32 features;
+> +	u8 restored;
+> +	u8 padding[3];
+> +	u64 pasid_table;
+> +	u64 max_pasid;
+> +} __packed;
+> +
+>   /**
+>    * struct iommu_device_ser - Serialized state of a device
+>    * @hdr: Common object header
+> @@ -146,6 +161,7 @@ struct iommu_attachment_ser {
+>    * @iommu_phys: Physical address of the serialized IOMMU the device is behind
+>    * @attachment: Attachment of the device to its domain
+>    * @reserved: Reserved for future common fields.
+> + * @intel: Intel specific serialization data
+>    */
+>   struct iommu_device_ser {
+>   	struct iommu_hdr_ser hdr;
+> @@ -155,6 +171,9 @@ struct iommu_device_ser {
+>   	u64 iommu_phys;
+>   	struct iommu_attachment_ser attachment;
+>   	u64 reserved[2];
+> +	union {
+> +		struct iommu_device_intel_ser intel;
+> +	};
+>   } __packed;
+>   
+>   /* There are maximum 256 buses, so maximum 512 context tables */
 
-
-On 15.10.26 г. 17:50 ч., Jiri Pirko wrote:
-> From: Jiri Pirko <jiri@nvidia.com>
-> 
-> Linux has several attestation interfaces tied to individual technologies.
-> That makes evidence retrieval, measurement registers, device state and
-> kernel consumers provider-specific.
-> 
-> This series introduces a common attestation subsystem. Its goal is to
-> support platform, TEE and device providers through one model, including
-> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
-> This first series implements the common subsystem and a TDX provider.
-> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
-
-Wasn't config-tsm supposed to be this common attestation subsystem? Was 
-this discussed when the initial config-tsm was proposed? Why is this 
-coming now?
-
-> 
-> Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
-> Compared with sysfs or configfs, CTLV executes one validated request
-> atomically instead of assembling a transaction through several files.
-> Compared with netlink, an opened device fd directly identifies authority
-> and lifetime, can be delegated normally, and owns its event queue. CTLV
-> also provides:
-
-Assuming we want to go through the route of CTLV, do we really want an 
-attestation-specific  interface, or most of this functionality can 
-simply be implemented as a specific genetlink protocol, utilising all 
-the existing hardening that has gone into netlink's infrastructure to 
-marshal messages from userspace to kernel space?
-
-> 
->    - generated kernel metadata, UAPI constants and documentation;
->    - strict type, bounds, nesting and required-field validation;
->    - runtime operation and schema introspection;
->    - family inheritance and extension points;
->    - fragmented queries with generation checks;
->    - per-fd event subscription, overflow reporting and removal notification;
->    - large input and output blobs.
-> 
-> The attestation family exposes capabilities, evidence, measurement-register
-> topology and operations, an append-only MR journal and journal
-> notifications. This first ABI contains the paths exercised by TDX. Extended
-> evidence classes, dynamic registers, record payloads, verdict recording and
-> device-security transitions follow with providers that need them and are out
-> of scope of this initial patchset. The broader direction is illustrated here:
-> 
-> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
-> 
-> That branch also contains additional providers (test and sim),
-> attestation core extensions, libctlv and ctlvctl. With the tools
-> and kernel specifications, an attestation device can be used as follows:
-> 
->    # Discover CTLV devices and their family chains.
->    ctlvctl --spec-dir Documentation/ctlv/specs list
-> 
->    # Inspect the root-family lineage and attestation capabilities.
->    ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
->    ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
-> 
->    # List the measurement registers of the attestation device.
->    ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
-> 
->    # Read RTMR0 (MR 1).
->    ctlvctl --spec-dir Documentation/ctlv/specs \
->            query ctlv0 mr-read mr.id=1
-> 
->    # Extend RTMR0 with 48 zero bytes (SHA-384).
->    digest=$(printf '%096d' 0)
->    ctlvctl --spec-dir Documentation/ctlv/specs \
->            exec ctlv0 mr-extend --json \
->            '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
-> 
->    # Retrieve the RTMR0 journal.
->    ctlvctl --spec-dir Documentation/ctlv/specs \
->            query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
-> 
-> The 20 patches are organized as follows:
-> 
->    1-13    add CTLV, its generator and documentation
->    14-17   add the base attestation family and implementation
->    18-20   expose the native TDX service and add the TDX family
-> 
-> Note to reviewers: Please focus on the overall design, UAPI and internal
-> attestation-provider API. The internal CTLV and attestation implementations
-> remain rough around the edges.
-> 
-
-<snip>
-
->   83 files changed, 18084 insertions(+), 28 deletions(-)
-
-That's an awful lot of code to just move certain binary blobs around 
-(Judging by what config-tsm is doing ATM).
-
-<snip>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
