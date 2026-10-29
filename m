@@ -1,65 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291864;
-	b=xWjBm91UmXkWPTnZ6uhxyl1IMH3pfk/ZudUY2T7c77e8r/cwuAELoArXRa6GjfM9QaVB
-	 cliulzRu4mFMKqKCDIc5eoYe2jCE2X9cyiWmepKErO3xRyAs50MEmgjeZz7eRaj/tjR2a
-	 f/n/D8Hs+v7ts48pTr4FFscBGkd3zebe/c4DxDOOcAOfpj6REBoJawy6TGI9/zrRtRya4
-	 xkXtV4lOwbpwtY6yCO784XXkpzGUhFBD4iW67FBP7opFk4jd4pZAYPhqnL6hmD7LaBILM
-	 GJH9fQI9RS8n0zuqYoz9v9sRMy3TBsdtGeR1B3rmbQI4DAHoFkAf7NaSGpoltZqK/Aw==
+	t=1793291879;
+	b=F4ZeLhpNrStIeMajegf5CXwCIgOtc+p+djmFzpPqRuqsq1/gAoPM8iSmAfj/5IG+mt/Q
+	 YFcJ4ec5zTaKruk+AghsU8mmf384Ns8JedWk+yFNrpzJGfp+xEnqfbzpFLN3VzQJ1FP4U
+	 pJuGzR4SG7D33WL/9WEX6+DURzZNUIlfXfO+YuoveeqWFdCSxaIQQlSmqq+5kCG3kjgHQ
+	 YxXqbeBuO048Wm4IRA+CgMS1IYc8WbVOlr01C6ideqNvO14gBEqMaCmiQZbkmMSlDonwg
+	 V5DalK+OM2lnvQgKXPbkGvOkn2U7+Trelui6ijUmM9lbm87XP7n9m2EXUmqDydRHjlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291864;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291879;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=EL2/HLZV7T4w8h6BrUAxNvEjpz/gOsDFSWb10I0z+sQ=;
-	b=Hz0A7oMnACUO7ira2oD9CfCMgtNkdCf6pf0Kp1mwICNqFNtXzG5/5xNU58J2fKx3vaj8
-	 4oXAS37cuW89sx++jMIi39ds7cQLW0eAS2U3JzZsArQokCcpktBPJUkUd5gXZSP3G1fx7
-	 9kmD8VLIuBe4SUXuFKRBd3AmvrDHjdlK15X8tocpdT/cZZjl5FVFtHbyOBxg2Pp+5BrFe
-	 9RZSKsQ0BQ1+Up7F/cO0qsJD3bZiRXNlTaHxNBCHZOhQFsQeuGYNG2I8wq+XHm5aECU2b
-	 XAS7Myk81CF+lRnph96iNAa9bdfS6qUiZQ2Vvy7GgET3PZzBN1vQF/aouTc4q3lCgPQ==
+	bh=zAG+0WSFA5WXD5miil2adZSlV6mL923L244kg/kLehA=;
+	b=X/IIFXnpglDw2G5nKmpeOrxMbOHIHxH0J/M6KGOW1mTu0WTawZ/2dybT/2OdSYq0UxPD
+	 FcrXO3b2vEkbk2+WLmAgMpMoHzz8WpGslqGv4u6nexhyv9iaGPDkFJQnSHxfX+HCw0NvS
+	 9QokY/vdnFSHTyQ3G1g/wngvVjcRcRAB5TxCjfWUmCf/GAigQxvyJskebcN9ys9WZG2F5
+	 fAvsaQWRwMLpiA0GK98GcWPh8TX71zs2jJuz05cGaKD2wcKDGaROe2f7xCPgftBRMvSnU
+	 MFbf6EDcM5L8lbPPjX9pJyDc5LJ8ysOAOm9z5fHnClUTaGMRm/LAxtRWQtSyKEoojoQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="NE9wAQd/";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TOH6G7DA;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A82606A31F
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:37:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87A82606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AD7606A31C
+	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:37:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0AD7606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NE9wAQd/
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TOH6G7DA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793291862;
+	s=mimecast20190719; t=1793291877;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EL2/HLZV7T4w8h6BrUAxNvEjpz/gOsDFSWb10I0z+sQ=;
-	b=NE9wAQd/7PzXq5lHIyGxBwn1rdH/TFz22pk25pFiKBK8RWKwqQ5NGGkA/Jocb6AIHRSSmg
-	gUak69TBo/vI36QrdX3j0Jz2KH29s3b5pnkV4tOh2cvZZW5f2P/z9rA79YMbuxQAkreFg3
-	LQpViyHwpG2nqfemRfGjsOdCKk4ChiM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=zAG+0WSFA5WXD5miil2adZSlV6mL923L244kg/kLehA=;
+	b=TOH6G7DAS0+ndGQXpWb+ncX9nGWmGEPiTh74r5AGcfHGOhnhX3PmTdPJZI6GN7Zz0cJ+Uw
+	8GekRnQWVDtID447R4M0kqhbLTt+KzylBqy/aHwfJGYfPgraSq+mhYYHtde48H2/wO7LWK
+	CT6LEvtLDNPlaQSkkPz5oBxOapCtmM0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-U8TEP4GpNzm9BiNBv0dUfQ-1; Thu,
- 29 Oct 2026 12:37:37 -0400
-X-MC-Unique: U8TEP4GpNzm9BiNBv0dUfQ-1
-X-Mimecast-MFC-AGG-ID: U8TEP4GpNzm9BiNBv0dUfQ_1793291854
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-R8ynF9VIMbeTW0w4eCc8aw-1; Thu,
+ 29 Oct 2026 12:37:53 -0400
+X-MC-Unique: R8ynF9VIMbeTW0w4eCc8aw-1
+X-Mimecast-MFC-AGG-ID: R8ynF9VIMbeTW0w4eCc8aw_1793291870
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 12ADE195FDF4;
-	Thu, 29 Oct 2026 16:37:34 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 557F0193FA9B;
+	Thu, 29 Oct 2026 16:37:49 +0000 (UTC)
 Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2A4BC1956088;
-	Thu, 29 Oct 2026 16:37:28 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0F8D81956088;
+	Thu, 29 Oct 2026 16:37:44 +0000 (UTC)
 From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 To: jgg@ziepe.ca,
 	alex@shazbot.org,
@@ -81,9 +81,9 @@ Cc: johannes@sipsolutions.net,
 	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH v3 1/8] vfio: add helper to find PCI device by vendor/device ID
-Date: Thu, 29 Oct 2026 17:37:06 +0100
-Message-ID: <20261029163713.1366077-2-jtornosm@redhat.com>
+Subject: [PATCH v3 3/8] PCI: add KVM MSI domain guest module
+Date: Thu, 29 Oct 2026 17:37:08 +0100
+Message-ID: <20261029163713.1366077-4-jtornosm@redhat.com>
 In-Reply-To: <20261029163713.1366077-1-jtornosm@redhat.com>
 References: <20261029163713.1366077-1-jtornosm@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -98,134 +98,557 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Add vfio_file_find_pci_device() that searches for a PCI device with
-the specified vendor/device ID within a VFIO group or device file. The
-function walks the group device list to find a matching PCI device, or
-checks the single device for a cdev-based file.
+Add a guest-side PCI MSI IRQ domain driver for KVM virtual machines
+that intercepts MSI composition for devices whose firmware programs
+MSI addresses directly into BAR registers.
 
-This helper enables other subsystems (e.g. KVM PCI MSI domain) to
-locate VFIO-owned PCI devices by their IDs without depending on VFIO
-internals. The companion vfio_file_device() provides access to the
-underlying vfio_device from a device file descriptor.
+The problem: Qualcomm WiFi devices (ath11k/ath12k) have embedded
+firmware that programs MSI target addresses from values cached at
+driver init time. In a VM with VFIO passthrough, the driver sees
+the guest's virtual APIC address instead of the host's physical
+IRTE address. When the firmware writes this guest address to BAR
+registers, the resulting MSI goes to a stale or invalid IRTE,
+causing DMAR faults.
+
+The solution: This module creates a custom MSI parent IRQ domain
+(modeled on pci-hyperv.c) that interposes between the PCI MSI layer
+and the platform's existing MSI domain. It provides two exported
+functions for use by device drivers:
+
+  - kvm_pci_msi_wait_ready(): Polls a KVM hypercall
+    (KVM_HC_PCI_MSI_ALLOC, introduced in a previous patch) until the
+    host returns non-zero MSI address/data. Caches the result in
+    per-vector chip_data and updates msi_desc->msg for the base
+    vector.
+
+  - kvm_pci_msi_get_address(): Returns cached host MSI address/data
+    previously obtained by wait_ready. Allows drivers that read MSI
+    addresses on-the-fly (like ath12k) to get the host values without
+    another hypercall.
+
+On baremetal (no KVM), kvm_para_available() returns false and
+wait_ready returns 0 immediately, so drivers guarded with
+IS_ENABLED(CONFIG_PCI_KVM_MSI_DOMAIN) have zero overhead.
+
+The compose callback is maintained for completeness: if the MSI
+framework recomposes after wait_ready has populated the cache, the
+cached host values are returned instead of the guest virtual address.
+
+The module matches devices by PCI ID table, attaches the custom MSI
+domain before driver probe via bus notifier, and requires the
+pci-kvm-msi module to load before the wireless drivers via
+MODULE_SOFTDEP in the driver patches.
 
 Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
 v3: new
 v2: https://lore.kernel.org/all/20261011074514.515894-1-jtornosm@redhat.com/
 
- drivers/vfio/group.c     | 41 ++++++++++++++++++++++++++++++++++++++++
- drivers/vfio/vfio_main.c |  6 ++++++
- include/linux/vfio.h     | 10 ++++++++++
- 3 files changed, 57 insertions(+)
+ drivers/pci/controller/Kconfig       |  12 +
+ drivers/pci/controller/Makefile      |   1 +
+ drivers/pci/controller/pci-kvm-msi.c | 437 +++++++++++++++++++++++++++
+ include/linux/pci-kvm-msi.h          |  13 +
+ 4 files changed, 463 insertions(+)
+ create mode 100644 drivers/pci/controller/pci-kvm-msi.c
+ create mode 100644 include/linux/pci-kvm-msi.h
 
-diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-index 185f359f75d3..0b6cf90edda3 100644
---- a/drivers/vfio/group.c
-+++ b/drivers/vfio/group.c
-@@ -10,6 +10,7 @@
-  * Author: Tom Lyon, pugs@cisco.com
-  */
+diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
+index d246bbe37948..cdf65d1c2674 100644
+--- a/drivers/pci/controller/Kconfig
++++ b/drivers/pci/controller/Kconfig
+@@ -248,6 +248,18 @@ config PCI_HYPERV_INTERFACE
+ 	  drivers to have a common interface with the Hyper-V PCI frontend
+ 	  driver.
  
++config PCI_KVM_MSI_DOMAIN
++	tristate "KVM PCI passthrough MSI domain"
++	depends on X86_64 && KVM_GUEST && PCI_MSI
++	select IRQ_MSI_LIB
++	help
++	  Provides physical MSI address/data to PCI devices in KVM guests
++	  that need them for firmware-managed interrupts. Required for
++	  passthrough of devices like Qualcomm WiFi where firmware programs
++	  MSI addresses directly.
++
++	  If unsure, say N.
++
+ config PCI_TEGRA
+ 	tristate "NVIDIA Tegra PCIe controller"
+ 	depends on ARCH_TEGRA || COMPILE_TEST
+diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
+index d478743b5142..4f10edae0f92 100644
+--- a/drivers/pci/controller/Makefile
++++ b/drivers/pci/controller/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_PCI_FTPCI100) += pci-ftpci100.o
+ obj-$(CONFIG_PCI_IXP4XX) += pci-ixp4xx.o
+ obj-$(CONFIG_PCI_HYPERV) += pci-hyperv.o
+ obj-$(CONFIG_PCI_HYPERV_INTERFACE) += pci-hyperv-intf.o
++obj-$(CONFIG_PCI_KVM_MSI_DOMAIN) += pci-kvm-msi.o
+ obj-$(CONFIG_PCI_MVEBU) += pci-mvebu.o
+ obj-$(CONFIG_PCI_AARDVARK) += pci-aardvark.o
+ obj-$(CONFIG_PCI_TEGRA) += pci-tegra.o
+diff --git a/drivers/pci/controller/pci-kvm-msi.c b/drivers/pci/controller/pci-kvm-msi.c
+new file mode 100644
+index 000000000000..e2b0a4114aa8
+--- /dev/null
++++ b/drivers/pci/controller/pci-kvm-msi.c
+@@ -0,0 +1,437 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: Copyright Red Hat
++/*
++ * KVM PCI MSI domain driver
++ *
++ * Provides physical MSI address/data to PCI devices in KVM guests that
++ * need them for firmware-managed interrupts (e.g., Qualcomm WiFi devices
++ * where firmware programs MSI addresses directly).
++ *
++ * Modeled on pci-hyperv.c MSI domain. Instead of VMbus messages, uses
++ * KVM hypercalls to request physical MSI addresses from the host.
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/delay.h>
 +#include <linux/pci.h>
- #include <linux/vfio.h>
- #include <linux/iommufd.h>
- #include <linux/anon_inodes.h>
-@@ -894,6 +895,46 @@ bool vfio_file_has_dev(struct file *file, struct vfio_device *device)
- }
- EXPORT_SYMBOL_GPL(vfio_file_has_dev);
- 
-+struct vfio_device *vfio_file_find_pci_device(struct file *file,
-+					      u16 vendor, u16 device_id)
++#include <linux/pci-kvm-msi.h>
++#include <linux/pci_ids.h>
++#include <linux/msi.h>
++#include <linux/irq.h>
++#include <linux/irqdomain.h>
++#include <linux/kvm_para.h>
++#include <linux/irqchip/irq-msi-lib.h>
++#include <asm/hw_irq.h>
++#include <asm/pgtable_types.h>
++
++struct kvm_msi_response {
++	u32 address_lo;
++	u32 address_hi;
++	u32 data;
++	u32 reserved;
++};
++
++struct kvm_msi_irq_data {
++	struct msi_msg msg;
++	u32 devid;
++	unsigned int vector;
++	bool cached;
++};
++
++#define KVM_MSI_POLL_INTERVAL_MS	10
++
++static struct irq_domain *kvm_msi_domain;
++
++struct kvm_msi_ctx {
++	struct pci_dev *pdev;
++	struct irq_domain *domain;
++	u32 devid;
++	unsigned int first_virq;
++	unsigned int nr_irqs;
++};
++
++static struct kvm_msi_ctx kvm_msi_ctx;
++
++int kvm_pci_msi_wait_ready(struct pci_dev *pdev, unsigned long timeout_ms)
 +{
-+	struct vfio_group *group;
-+	struct vfio_device *vdev;
-+	struct vfio_device *ret = NULL;
++	struct kvm_msi_response resp = {};
++	struct kvm_msi_irq_data *kvm_data;
++	unsigned int max_retries;
++	struct irq_data *irqd;
++	struct msi_desc *desc;
++	unsigned int retries;
++	long hret;
++	int i;
 +
-+	group = vfio_group_from_file(file);
-+	if (group) {
-+		mutex_lock(&group->device_lock);
-+		list_for_each_entry(vdev, &group->device_list, group_next) {
-+			struct pci_dev *pdev;
++	if (!kvm_para_available())
++		return 0;
 +
-+			if (!dev_is_pci(vdev->dev))
-+				continue;
++	if (!kvm_msi_domain)
++		return 0;
 +
-+			pdev = to_pci_dev(vdev->dev);
-+			if (pdev->vendor == vendor &&
-+			    pdev->device == device_id) {
-+				ret = vdev;
-+				break;
-+			}
++	if (!pdev || !kvm_msi_ctx.pdev || kvm_msi_ctx.pdev != pdev)
++		return 0;
++
++	max_retries = timeout_ms / KVM_MSI_POLL_INTERVAL_MS;
++	if (!max_retries)
++		max_retries = 1;
++
++	for (retries = 0; retries < max_retries; retries++) {
++		memset(&resp, 0, sizeof(resp));
++		hret = kvm_hypercall3(KVM_HC_PCI_MSI_ALLOC,
++				      kvm_msi_ctx.devid, 0,
++				      slow_virt_to_phys(&resp));
++
++		if (hret == 0 && resp.address_lo != 0)
++			goto ready;
++
++		msleep(KVM_MSI_POLL_INTERVAL_MS);
++	}
++
++	pr_err("kvm-pci-msi: %s wait timed out after %lu ms\n",
++	       pci_name(pdev), timeout_ms);
++	return -ETIMEDOUT;
++
++ready:
++	pr_info("kvm-pci-msi: %s host addr=%08x:%08x data=%08x\n",
++		pci_name(pdev), resp.address_hi, resp.address_lo,
++		resp.data);
++
++	for (i = 0; i < kvm_msi_ctx.nr_irqs; i++) {
++		irqd = irq_domain_get_irq_data(kvm_msi_ctx.domain,
++						kvm_msi_ctx.first_virq + i);
++		if (!irqd)
++			continue;
++		kvm_data = irqd->chip_data;
++		if (!kvm_data)
++			continue;
++
++		kvm_data->msg.address_lo = resp.address_lo;
++		kvm_data->msg.address_hi = resp.address_hi;
++		kvm_data->msg.data = resp.data + i;
++		kvm_data->cached = true;
++	}
++
++	desc = irq_get_msi_desc(pdev->irq);
++	if (desc) {
++		desc->msg.address_lo = resp.address_lo;
++		desc->msg.address_hi = resp.address_hi;
++		desc->msg.data = resp.data;
++	}
++
++	return 1;
++}
++EXPORT_SYMBOL_GPL(kvm_pci_msi_wait_ready);
++
++int kvm_pci_msi_get_address(struct pci_dev *pdev, u32 *addr_lo, u32 *addr_hi,
++			     u32 *data)
++{
++	struct kvm_msi_irq_data *kvm_data;
++	struct irq_data *irqd;
++
++	if (!kvm_msi_domain)
++		return 0;
++
++	if (!pdev || !kvm_msi_ctx.pdev || kvm_msi_ctx.pdev != pdev)
++		return 0;
++
++	irqd = irq_domain_get_irq_data(kvm_msi_ctx.domain,
++					kvm_msi_ctx.first_virq);
++	if (!irqd)
++		return 0;
++
++	kvm_data = irqd->chip_data;
++	if (!kvm_data || !kvm_data->cached)
++		return 0;
++
++	*addr_lo = kvm_data->msg.address_lo;
++	*addr_hi = kvm_data->msg.address_hi;
++	if (data)
++		*data = kvm_data->msg.data;
++
++	return 1;
++}
++EXPORT_SYMBOL_GPL(kvm_pci_msi_get_address);
++
++static void kvm_parent_compose_msi_msg(struct irq_data *data,
++				       struct msi_msg *msg)
++{
++	struct irq_data *pos;
++
++	for (pos = data->parent_data; pos; pos = pos->parent_data) {
++		if (pos->chip && pos->chip->irq_compose_msi_msg) {
++			pos->chip->irq_compose_msi_msg(pos, msg);
++			return;
 +		}
-+		mutex_unlock(&group->device_lock);
++	}
++	memset(msg, 0, sizeof(*msg));
++}
++
++static void kvm_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
++{
++	struct kvm_msi_irq_data *kvm_data = data->chip_data;
++
++	if (kvm_data && kvm_data->cached) {
++		*msg = kvm_data->msg;
++		return;
++	}
++
++	kvm_parent_compose_msi_msg(data, msg);
++}
++
++static struct irq_chip kvm_msi_irq_chip = {
++	.name			= "KVM-MSI",
++	.irq_compose_msi_msg	= kvm_compose_msi_msg,
++	.irq_set_affinity	= irq_chip_set_affinity_parent,
++	.irq_ack		= irq_chip_ack_parent,
++};
++
++static int kvm_pcie_domain_alloc(struct irq_domain *d, unsigned int virq,
++				 unsigned int nr_irqs, void *arg)
++{
++	struct irq_alloc_info *info = arg;
++	struct kvm_msi_irq_data *kvm_data;
++	struct msi_desc *desc;
++	struct pci_dev *pdev;
++	u32 devid;
++	int ret;
++	int i;
++
++	ret = irq_domain_alloc_irqs_parent(d, virq, nr_irqs, arg);
++	if (ret < 0)
 +		return ret;
++
++	desc = info->desc;
++	if (!desc || !desc->dev || !dev_is_pci(desc->dev)) {
++		ret = -EINVAL;
++		goto err_free_parent;
 +	}
 +
-+	vdev = vfio_file_device(file);
-+	if (vdev && dev_is_pci(vdev->dev)) {
-+		struct pci_dev *pdev = to_pci_dev(vdev->dev);
++	pdev = to_pci_dev(desc->dev);
++	devid = ((u32)pdev->vendor << 16) | pdev->device;
 +
-+		if (pdev->vendor == vendor &&
-+		    pdev->device == device_id)
-+			return vdev;
++	for (i = 0; i < nr_irqs; i++) {
++		kvm_data = kzalloc_obj(*kvm_data);
++		if (!kvm_data) {
++			ret = -ENOMEM;
++			goto err_free_data;
++		}
++
++		kvm_data->devid = devid;
++		kvm_data->vector = desc->msi_index + i;
++
++		irq_domain_set_info(d, virq + i, virq + i,
++				    &kvm_msi_irq_chip, kvm_data,
++				    handle_edge_irq, NULL, "KVM-MSI");
 +	}
 +
-+	return NULL;
-+}
-+EXPORT_SYMBOL_GPL(vfio_file_find_pci_device);
++	kvm_msi_ctx.pdev = pdev;
++	kvm_msi_ctx.devid = devid;
++	kvm_msi_ctx.first_virq = virq;
++	kvm_msi_ctx.nr_irqs = nr_irqs;
++	kvm_msi_ctx.domain = d;
 +
- static char *vfio_devnode(const struct device *dev, umode_t *mode)
- {
- 	return kasprintf(GFP_KERNEL, "vfio/%s", dev_name(dev));
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 4e5d738ccf4b..a83e5d805eac 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1551,6 +1551,12 @@ void vfio_file_set_kvm(struct file *vfio_file, struct file *kvm)
- }
- EXPORT_SYMBOL_GPL(vfio_file_set_kvm);
- 
-+struct vfio_device *vfio_file_device(struct file *file)
++	return 0;
++
++err_free_data:
++	for (i--; i >= 0; i--) {
++		kvm_data = irq_data_get_irq_chip_data(
++				irq_domain_get_irq_data(d, virq + i));
++		kfree(kvm_data);
++	}
++err_free_parent:
++	irq_domain_free_irqs_parent(d, virq, nr_irqs);
++	return ret;
++}
++
++static void kvm_pcie_domain_free(struct irq_domain *d, unsigned int virq,
++				 unsigned int nr_irqs)
 +{
-+	return vfio_device_from_file(file);
++	struct kvm_msi_irq_data *kvm_data;
++	int i;
++
++	if (kvm_msi_ctx.first_virq == virq) {
++		kvm_msi_ctx.pdev = NULL;
++		kvm_msi_ctx.nr_irqs = 0;
++	}
++
++	for (i = 0; i < nr_irqs; i++) {
++		kvm_data = irq_data_get_irq_chip_data(
++				irq_domain_get_irq_data(d, virq + i));
++		kfree(kvm_data);
++	}
++	irq_domain_free_irqs_top(d, virq, nr_irqs);
 +}
-+EXPORT_SYMBOL_GPL(vfio_file_device);
 +
- /*
-  * Sub-module support
-  */
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 0cc91c6f96d2..a62fbf42458a 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -364,6 +364,8 @@ struct iommu_group *vfio_file_iommu_group(struct file *file);
- #if IS_ENABLED(CONFIG_VFIO_GROUP)
- bool vfio_file_is_group(struct file *file);
- bool vfio_file_has_dev(struct file *file, struct vfio_device *device);
-+struct vfio_device *vfio_file_find_pci_device(struct file *file,
-+					      u16 vendor, u16 device_id);
- #else
- static inline bool vfio_file_is_group(struct file *file)
- {
-@@ -374,10 +376,18 @@ static inline bool vfio_file_has_dev(struct file *file, struct vfio_device *devi
- {
- 	return false;
- }
++static const struct irq_domain_ops kvm_pcie_domain_ops = {
++	.alloc	= kvm_pcie_domain_alloc,
++	.free	= kvm_pcie_domain_free,
++};
 +
-+static inline struct vfio_device *vfio_file_find_pci_device(struct file *file,
-+							    u16 vendor,
-+							    u16 device_id)
++static bool kvm_pcie_init_dev_msi_info(struct device *dev,
++				       struct irq_domain *domain,
++				       struct irq_domain *real_parent,
++				       struct msi_domain_info *info)
 +{
-+	return NULL;
++	struct irq_chip *chip = info->chip;
++
++	if (!msi_lib_init_dev_msi_info(dev, domain, real_parent, info)) {
++		pr_err("kvm-pci-msi: msi_lib_init_dev_msi_info failed for %s\n",
++		       dev_name(dev));
++		return false;
++	}
++
++	info->ops->msi_prepare = pci_msi_prepare;
++
++	chip->irq_set_affinity = irq_chip_set_affinity_parent;
++	chip->irq_retrigger = irq_chip_retrigger_hierarchy;
++	chip->flags |= IRQCHIP_MOVE_DEFERRED;
++
++	return true;
 +}
- #endif
- bool vfio_file_is_valid(struct file *file);
- bool vfio_file_enforced_coherent(struct file *file);
- void vfio_file_set_kvm(struct file *vfio_file, struct file *kvm);
-+struct vfio_device *vfio_file_device(struct file *file);
- 
- #define VFIO_PIN_PAGES_MAX_ENTRIES	(PAGE_SIZE/sizeof(unsigned long))
- 
++
++static const struct msi_parent_ops kvm_pcie_msi_parent_ops = {
++	.required_flags		= MSI_FLAG_USE_DEF_DOM_OPS |
++				  MSI_FLAG_USE_DEF_CHIP_OPS,
++	.supported_flags	= MSI_GENERIC_FLAGS_MASK |
++				  MSI_FLAG_PCI_MSIX,
++	.bus_select_token	= DOMAIN_BUS_PCI_MSI,
++	.chip_flags		= MSI_CHIP_FLAG_SET_ACK,
++	.init_dev_msi_info	= kvm_pcie_init_dev_msi_info,
++};
++
++static int kvm_msi_create_domain(struct pci_dev *ref_dev)
++{
++	struct irq_domain *parent;
++	struct irq_domain_info info = {
++		.ops		= &kvm_pcie_domain_ops,
++	};
++
++	parent = dev_get_msi_domain(&ref_dev->dev);
++	if (!parent)
++		parent = dev_get_msi_domain(&ref_dev->bus->dev);
++	if (!parent) {
++		dev_err(&ref_dev->dev, "no MSI domain found for parent\n");
++		return -ENODEV;
++	}
++
++	info.parent = parent;
++	info.fwnode = irq_domain_alloc_named_fwnode("KVM-PCI-MSI");
++	if (!info.fwnode)
++		return -ENOMEM;
++
++	kvm_msi_domain = msi_create_parent_irq_domain(&info,
++						       &kvm_pcie_msi_parent_ops);
++	if (!kvm_msi_domain) {
++		pr_err("kvm-pci-msi: failed to create MSI domain\n");
++		irq_domain_free_fwnode(info.fwnode);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static const struct pci_device_id kvm_msi_devids[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x1103) },	/* WCN6855 */
++	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x1107) },	/* WCN7850 */
++	{ }
++};
++
++static void kvm_msi_attach_device(struct pci_dev *pdev)
++{
++	if (pdev->driver) {
++		dev_warn(&pdev->dev,
++			 "kvm-pci-msi: driver already bound (%s), unbind/rebind needed\n",
++			 pdev->driver->name);
++		return;
++	}
++
++	dev_info(&pdev->dev,
++		 "kvm-pci-msi: attaching KVM MSI domain [%04x:%04x]\n",
++		 pdev->vendor, pdev->device);
++	dev_set_msi_domain(&pdev->dev, kvm_msi_domain);
++}
++
++static int kvm_msi_bus_notify(struct notifier_block *nb, unsigned long action,
++			      void *data)
++{
++	struct pci_dev *pdev;
++
++	if (action != BUS_NOTIFY_ADD_DEVICE)
++		return NOTIFY_DONE;
++
++	pdev = to_pci_dev(data);
++	if (!pci_match_id(kvm_msi_devids, pdev))
++		return NOTIFY_DONE;
++
++	if (!kvm_msi_domain)
++		return NOTIFY_DONE;
++
++	kvm_msi_attach_device(pdev);
++	return NOTIFY_OK;
++}
++
++static struct notifier_block kvm_msi_nb = {
++	.notifier_call = kvm_msi_bus_notify,
++};
++
++static int __init kvm_pci_msi_init(void)
++{
++	struct pci_dev *pdev = NULL;
++	struct pci_dev *first = NULL;
++	int ret;
++
++	if (!kvm_para_available())
++		return -ENODEV;
++
++	for_each_pci_dev(pdev) {
++		if (pci_match_id(kvm_msi_devids, pdev)) {
++			first = pdev;
++			break;
++		}
++	}
++
++	if (!first) {
++		pr_info("kvm-pci-msi: no matching devices found\n");
++		return -ENODEV;
++	}
++
++	ret = kvm_msi_create_domain(first);
++	pci_dev_put(first);
++	if (ret)
++		return ret;
++
++	pdev = NULL;
++	for_each_pci_dev(pdev) {
++		if (pci_match_id(kvm_msi_devids, pdev))
++			kvm_msi_attach_device(pdev);
++	}
++
++	bus_register_notifier(&pci_bus_type, &kvm_msi_nb);
++
++	pr_info("kvm-pci-msi: ready, domain created for %zu device types\n",
++		ARRAY_SIZE(kvm_msi_devids) - 1);
++	return 0;
++}
++
++static void __exit kvm_pci_msi_exit(void)
++{
++	struct fwnode_handle *fwnode;
++
++	bus_unregister_notifier(&pci_bus_type, &kvm_msi_nb);
++
++	if (kvm_msi_domain) {
++		fwnode = kvm_msi_domain->fwnode;
++		irq_domain_remove(kvm_msi_domain);
++		irq_domain_free_fwnode(fwnode);
++		kvm_msi_domain = NULL;
++	}
++}
++
++module_init(kvm_pci_msi_init);
++module_exit(kvm_pci_msi_exit);
++
++MODULE_DESCRIPTION("KVM PCI MSI passthrough domain driver");
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Jose Ignacio Tornos Martinez <jtornosm@redhat.com>");
+diff --git a/include/linux/pci-kvm-msi.h b/include/linux/pci-kvm-msi.h
+new file mode 100644
+index 000000000000..cc615e913a3b
+--- /dev/null
++++ b/include/linux/pci-kvm-msi.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* SPDX-FileCopyrightText: Copyright Red Hat */
++
++#ifndef _LINUX_PCI_KVM_MSI_H
++#define _LINUX_PCI_KVM_MSI_H
++
++#include <linux/pci.h>
++
++int kvm_pci_msi_wait_ready(struct pci_dev *pdev, unsigned long timeout_ms);
++int kvm_pci_msi_get_address(struct pci_dev *pdev, u32 *addr_lo, u32 *addr_hi,
++			     u32 *data);
++
++#endif /* _LINUX_PCI_KVM_MSI_H */
 -- 
 2.56.0
 
