@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793395294;
-	b=wrvfkX2btviw/sqFqaqAwCo/9O3ICV0RAAg2mwuCTXLqAIBADg5l7wtHuOtAfu31QAID
-	 aFvD2fMfYG0iz6KfETcCjWBBAAI0rdoBDaHk5ioezihvkj3iimp2IqGj+BCe8Xmt3fV8C
-	 bm5hncu5TAzlOgFTiEw7UQO416hde+/ovXm9Vq1mJUZ03CZC3dpp5aFAAzRfIcrlLnnXv
-	 sCbmSLtz5KkODhDLe8ZxVFFyAEXR8KzRWd5UMCfSVgvrwvED2hXByxir4FQJoNtlK9UnF
-	 f6x+I10W3gjPBQ5gvVNvf/Se+9OseI5vX6xniiuTz1p9DE16sNCLh1XV0v107j1SIZA==
+	t=1793395289;
+	b=l6gUGDfNscx6yPeCvae1KsNCh4Kd3HwSFYnzXKaWUI9s0/8Xj4WK30W9Dn/fzWJs3TZq
+	 KRJ+Y+TghMvmdWKRC+MWAy+a8TktR7kCJGarBq4UIalwk+11G5G52NzTpCasD5BZBJTWb
+	 ByX8EmaH2HvKJoMOQAfNsMky4+yIulVGGV0L6levgV5NNQH3xVdiN/5i+lbBgoezOceHz
+	 8K3dgdhZqjLssMKoBEhTS1GzCf0KcgVnfrVGJOXZ41Lca6hHx7+GJuAI2AZ6mJF1c5uHR
+	 5PWW8aVdTMUTRGOIy+5y3vWpcZmVb+cbTNfapVEsh1Tm8QQdTR8JP1wD+2n/JmP+YpQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793395294;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793395289;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
 	 In-Reply-To:Mime-Version:References:X-Mailer:Message-ID:Subject:From:
 	 To:Cc:Content-Type;
-	bh=ThXh/PpZVawaCwOY2TL0ZJCsO7ZffHOqKGZR+ZoMMAE=;
-	b=AUdDHPgfo0IpqijXowLWaAys6eEqEjjH7jWGdydi5gfeP0gYdMtVID6nmdu5GGxcbUpo
-	 y9+wXHzbCaUskiUb5JNFt4Kv2jpnoc56FP2up+AMX+sn/U5vWPUudCSPVy9Pcz7wcQIe8
-	 e1AelnrH5RcsiaenJQn4/ed0/1S/c660KiIrlq8LQTkHNGv+PXGe/JQd8Qyi7ar6EQprL
-	 6jUmPBUskqf3AQVDfODml+PBZJ0+HqFo+OZeh66Ei2DIDOuJ0A/ttX87AA3Cl2QVPx+ce
-	 UxznJdZ8KqT+O4HpvNwxaaH/P1cwnJNmC0NwnbrNVeYAdf9eUJVhpO7jE8rAqqe71xw==
+	bh=RcX2YZRJWHg2bC94YnzCHmgguqsUuMXALdhLJOO1CSU=;
+	b=tCULkAafAXOgXn99/pflB8r8ygEzRe6hgZ5JEYiA3W8pwPhw4t0u//Fbs4asUFkW+ds9
+	 9QNghtyLkOgsjo7fF1AJfftcZKhEhVaELTXYnrfSXZZG9uaAEJ8wSeta8YjdlKYrFMD6O
+	 mU1BWYxXjU/vw2ctC9JmXscjjiwFdvStugaCHbxQIX1+QLsrYXibTRz4OoSSdSuE8KXsq
+	 nY/a8p7+yLhmU9sFgTdBRvEhzBy4Hllg2IFQ6GBz7+9aQPa2VVXZRwQ+BFTOyB79tC5Mp
+	 UzzSObuxVDkBCSxwWNzk5RJp/Z4kFLl02CNkh0ixu/QcZ5UJ4Tx2fzvVmFAu89a0iWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RkmU8gSO;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=o3SqJh5H;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5A8606CE6F
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:21:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE5A8606CE6F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042AF606C31C
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:21:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 042AF606C31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RkmU8gSO
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ab926c236aso991093a91.0
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:21:33 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=o3SqJh5H
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e8ad8c5f80so19140515ad.0
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:21:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793395293; x=1794000093; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793395288; x=1794000088; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=ThXh/PpZVawaCwOY2TL0ZJCsO7ZffHOqKGZR+ZoMMAE=;
-        b=RkmU8gSO0fKC8a0ylR/zmMRN0+f1wOiV0ZSK9VQM48njxcic4M/Me1oWDqfYvvbBHT
-         kuO/BM3dAYhHqXPA5SOULgl7mb1qfhuRSbD9wkzqa918qY/KPFSeb9mA0fLrYQPYP7dl
-         x1Vb0NCuzNtN2PgI02VTN3G6YLlSKbgHpvi5/vdDxLJ5AZKZ9nCuvAsOrvVsdNGAUsst
-         KY7SagjkwMgxtazTZJvFM1kmjZ+WgXzgYaZ1yVN3HQPTfPRuHgriB8GrezRdMx4wmA+y
-         Q9/M09AEIiEktcNS1QfXI3bh9URB4XP1wKWofO2hrK0pu6mgTV/lfR7bUM0cozNtI8iM
-         OmVg==
+        bh=RcX2YZRJWHg2bC94YnzCHmgguqsUuMXALdhLJOO1CSU=;
+        b=o3SqJh5Hj0Oct0vOoPUFXVsVMU3yye10P9R91YGVOyvMkxcAzuSMT4IK8Ui+bOYkL5
+         MoLjf5r01aYWMjShUBCeFCECcxaSGb8xAjCaEVomZVeEVcdHla0zZVF/AMLPJRHb9ONt
+         SS2s6iIAznd/vthvXVGTVXKidB1ek5aUSvqEUF0K2jBcxjSXeeknzYCOB2wTHXBOkYje
+         +ouxxhGXK8HUaqEbBWQkDMdOuwuxOIV0Oo4WYhBU/r82BhIzCpamhYCeINS26Sl01Ncv
+         L1yjKv0JrmZfaK0JPkkh7bnxU9wA9Y/LyRBEcxyeTdEV//gyRBrwPpHXtSP1pN4gzyJH
+         q0dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793395293; x=1794000093;
+        d=1e100.net; s=20260707; t=1793395288; x=1794000088;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ThXh/PpZVawaCwOY2TL0ZJCsO7ZffHOqKGZR+ZoMMAE=;
-        b=msDvJfmPpyS9zVW7XC7XqvvjzddlkRYqnmEpEaur6UdvF9dMh0zArCjlBmuG0alnqF
-         3SfJVLhCgMvGItwUJ0KO8xNgO4PIjukaUouZas5uoHxEIgjNpV7fHAS+iAC6da17TCho
-         SL8VWQ/OIdJ+yaRVgsk88hB65sBhxTPZiVbGkbQ8M51MfVdzrNvjyvlHLr1zgtT4NoiO
-         qQzvAV4myBVKRbnXBNiyKXtfFVp7NdlxuOFjjpRQJAmPmBSlJ24N9nmwAN/lF+WrTAhY
-         wpqTVN+K7SUSBrhuveX1OmgYlULk5UoDRbBmxrrLk3eD/YwXVLuXtWWKL2KNvpW/jK+q
-         vhOQ==
-X-Forwarded-Encrypted: i=1; AKwUvByJigw3lTjs14bRuiJjVZG70UBKarp8zC0FNUrFyxPRo/sh3YAK8eolr/uDiMrgo0hW7gY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL4FoHVJzOzSEdsAR04w0yIM8cb1qzA8NVG+Cna2QytNA2A0zqk
-	lPNaoxLYZWfx+iprBfYQJCOmdNZKxrpzq5L53pMjWnAoqPp8LLJE5vGF/jghtdF4Kvvu+oL/oM4
-	KxCTQzg==
-X-Received: from pjbir4.prod.google.com ([2002:a17:90b:4684:b0:3a8:74c5:5a5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2741:b0:3a0:e4ce:31fd
- with SMTP id 98e67ed59e1d1-3ae896f8304mr3027164a91.10.1793395293218; Fri, 30
- Oct 2026 14:21:33 -0700 (PDT)
+        bh=RcX2YZRJWHg2bC94YnzCHmgguqsUuMXALdhLJOO1CSU=;
+        b=Q+eTSqP0kT6D5Jz0htreLkgrZg0u2rysFeRKyzrqoieXSrjwZjQZZoODzM3j5WnMdv
+         vbCBvv7BVqYgGKIr86g9yDXwBo45dZnyl+h5b0zzEecBxpY13i4R6fngw1UhSgEnfeZN
+         LtjOOB77vm2nkWjmNIEOjFSHZNbL2AUGXIbtNxcUQe8pL9bqwAxqBPr+/0p33bLcrKTj
+         UZDwas76F1Ac9Vf9TqdjZ2Zv0FaF7vZTn6ooueuFnZSnpwyFVMMLxIvucf7hsciDSB6s
+         AM1SQ2rllTI4AmyYxHR7/Ti+EbXpx00MDUoFLeHCrDg0Wmwya+mhCW09Gt3Pj40ZtY9k
+         9bNA==
+X-Forwarded-Encrypted: i=1; AKwUvBx5QLYEt9g/2aNcYCodI4GeAYPFa+J24rvrWPHujS2ff8Isq7ZRS9T/coYsQIsBqFWRDHQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLt97CWl2+4xMbcSCn9l0oGnPSsIOSWyFRlvOStqfBdf6Wn0d/2
+	fjpnbss1FoZZFie7kwd5asuwj/AXw53CjdwmCiJ7GiMbKy99RHYWbKNT98jP8FH950AE2rQZu6w
+	RV6nWqw==
+X-Received: from plbkn5.prod.google.com ([2002:a17:903:785:b0:2e9:6e08:e249])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a30:b0:2e3:598:75b8
+ with SMTP id d9443c01a7336-2eb364b0dc1mr36320905ad.27.1793395288251; Fri, 30
+ Oct 2026 14:21:28 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 30 Oct 2026 14:21:04 -0700
+Date: Fri, 30 Oct 2026 14:21:00 -0700
 In-Reply-To: <20261030212112.2598640-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,9 +82,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261030212112.2598640-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261030212112.2598640-17-seanjc@google.com>
-Subject: [PATCH v4 16/23] KVM: VMX: Explicility free vmcs01, not the current
- VMCS, in vCPU free paths
+Message-ID: <20261030212112.2598640-13-seanjc@google.com>
+Subject: [PATCH v4 12/23] KVM: Destroy memslots immediately after
+ mmu_notifiers are unregistered
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -93,43 +93,102 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 	James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Explicitly free vmcs01 instead of the currently loaded VMCS when freeing a
-vCPU, as relying on loaded_vmcs to point at vmcb01 is unnecessarily risky
-and confusing.  E.g. during vCPU creation, the error path relies on setting
-loaded_vmcs and obfuscates that it should be impossible for vmcb02 to be
-allocated, let alone active.  Similarly, if KVM were buggy and left vmcb02
-as the current vCPU when freeing a vCPU, operating on loaded_vmcs would hit
-a use-after-free *and* leak vmcs01.
+Instally dummy, empty memslots immediately after unregistering KVM's
+mmu_notifier during VM destruction to harden against accessing memory from
+the wrong address space when tearing down a VM.  Because kvm_destroy_vm()
+often runs when the associated VM's file is being released, current->mm is
+often no longer kvm->mm, i.e. using the memslots to access userspace memory
+is inherently broken/dangerous.
 
-Because KVM isn't buggy, no functional change intended.
+While KVM's APIs to read/write guest memory explicitly reject accesses if
+current->mm != kvm->mm, taking away the memslots adds another layer of
+defense and helps guard against rogue accesses that don't go through KVM's
+standard API, or that do GUP+kmap().
+
+Note, simply hoisting memslot destruction above kvm_arch_destroy_vm()
+without installing dummy slots is not a viable alternative.  Doing so would
+require auditing all the paths of kvm_arch_destroy_vm(), which is nearly
+infeasible, and missing even one case would result in a NULL pointer
+dereference and/or use-after-free, neither of which is a substantially
+better outcome than the status quo.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/vmx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ virt/kvm/kvm_main.c | 45 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 31 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index d433cd846ac4..2ef1f634e7ec 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7515,7 +7515,7 @@ void vmx_vcpu_free(struct kvm_vcpu *vcpu)
- 		vmx_destroy_pml_buffer(vcpu);
- 	free_vpid(vmx->vpid);
- 	nested_vmx_free_vcpu(vcpu);
--	free_loaded_vmcs(vmx->loaded_vmcs);
-+	free_loaded_vmcs(&vmx->vmcs01);
- 	free_page((unsigned long)vmx->ve_info);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index fa548b12228f..2eda12a52bf4 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -963,23 +963,42 @@ static void kvm_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
+ 	kfree(slot);
+ }
  
- 	if (vmx_can_use_ipiv(vcpu))
-@@ -7614,7 +7614,7 @@ int vmx_vcpu_create(struct kvm_vcpu *vcpu)
- 	return 0;
+-static void kvm_free_memslots(struct kvm *kvm, struct kvm_memslots *slots)
++static const struct kvm_memslots kvm_empty_memslots = {
++	.generation = -1ull,
++	.hva_tree = RB_ROOT_CACHED,
++	.gfn_tree = RB_ROOT,
++	.id_hash[0 ... (ARRAY_SIZE(kvm_empty_memslots.id_hash) - 1)] = HLIST_HEAD_INIT,
++	.node_idx = 0,
++};
++
++static void kvm_destroy_memslots(struct kvm *kvm)
+ {
+ 	struct hlist_node *idnode;
+ 	struct kvm_memory_slot *memslot;
+-	int bkt;
++	int bkt, i;
++
++	/*
++	 * Install empty memslots to guard against memslot lookups while the VM
++	 * is being destroyed.  Consuming memslots at this stage is a KVM bug,
++	 * but "gracefully do nothing" is a much better outcome than "crash the
++	 * host" or "corrupt random memory" when there inevitably is a bug.
++	 */
++	mutex_lock(&kvm->slots_lock);
++	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++)
++		rcu_assign_pointer(kvm->memslots[i], &kvm_empty_memslots);
++
++	synchronize_srcu_expedited(&kvm->srcu);
++	mutex_unlock(&kvm->slots_lock);
  
- free_vmcs:
--	free_loaded_vmcs(vmx->loaded_vmcs);
-+	free_loaded_vmcs(&vmx->vmcs01);
- free_pml:
- 	vmx_destroy_pml_buffer(vcpu);
- free_vpid:
+ 	/*
+ 	 * The same memslot objects live in both active and inactive sets,
+-	 * arbitrarily free using index '1' so the second invocation of this
+-	 * function isn't operating over a structure with dangling pointers
+-	 * (even though this function isn't actually touching them).
++	 * arbitrarily free using index '1'.
+ 	 */
+-	if (!slots->node_idx)
+-		return;
+-
+-	hash_for_each_safe(slots->id_hash, bkt, idnode, memslot, id_node[1])
+-		kvm_free_memslot(kvm, memslot);
++	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
++		hash_for_each_safe(kvm->__memslots[i][1].id_hash, bkt, idnode,
++				   memslot, id_node[1])
++			kvm_free_memslot(kvm, memslot);
++	}
+ }
+ 
+ static umode_t kvm_stats_debugfs_mode(const struct kvm_stats_desc *desc)
+@@ -1310,12 +1329,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
+ 		kvm->mn_active_invalidate_count = 0;
+ 	else
+ 		WARN_ON(kvm->mmu_invalidate_in_progress);
++	kvm_destroy_memslots(kvm);
++
+ 	kvm_arch_destroy_vm(kvm);
+ 	kvm_destroy_devices(kvm);
+-	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+-		kvm_free_memslots(kvm, &kvm->__memslots[i][0]);
+-		kvm_free_memslots(kvm, &kvm->__memslots[i][1]);
+-	}
+ 	cleanup_srcu_struct(&kvm->irq_srcu);
+ 	srcu_barrier(&kvm->srcu);
+ 	cleanup_srcu_struct(&kvm->srcu);
 -- 
 2.56.0.385.gac671c819a-goog
 
