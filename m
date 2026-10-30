@@ -1,100 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793318458;
-	b=Zm/tBHlo6rwh4uell250//fgfltnMMFE1jJPQ39J6qwWZeq2bUu5WfZQoepJAgNKATXS
-	 8f5vZwGfnJTnwzq7iNDeQNe9cAWkG9Nm8OCyeBhNWTf2KcnKCxCvROE5WRaCV+T3eT+e8
-	 ptjg4wyKi/w8uKAfhW3r00lCsGMk/qXiPz+qniZwNUsWAjKFdjioMV7TVSeKWHyTtd3Jw
-	 oPElZePLtQ28bTsov9RwaK1dGegfIwM9PKsUr4UTpmzfiEPN/FIdx4VMi6V1lXcgE7QmT
-	 VnmJh3l52YTbVUnJ0hDcNPqxH1aQDrESMsTUuTaIcnYyyn4t0bt/DlxUj8nz8UgrPWQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793318458;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
-	b=0nj95zVsiW1SmELP2aksqZ026ogI2nN4lXCbQCaLbt3s00EQ9GV2+omlRlZjtpbGOkOH
-	 6l85LO+5HLlgwrLgLy98KN+C/l20MEEp6Wp+FM/krnEcfjj7zLUwSVs2ERKXEZ016Eqkp
-	 +9oU0LKkiBVZ/lj05Nj+yeyxaupvHv15kkUdbIFQBFg1VMevUqFsVYayWDIbmFg3UqznQ
-	 71dS+bjImltAZsbI1iYYAVmWUqyIBYjEikmfvOwsgDcYqZCbx8Cf3IUkHP6yuecKCtQ9t
-	 sMTJdG/cY04fHjNMkkW1fI+uQs7a4qSlBHr6RaNjl5aXUGnR4G8mcU+rWhaF81MmN6Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AW1HInfw;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793318691;
+	b=nAQOTSatFuIE1GZNa3TrG45MDSOOmQ5DtMTT0BXSbLFdnKik2of6yr1GJw0PWGFRuteK
+	 OQS3h8v4VRWWRCAr+6wIc6mpPN2OqUoUl5XFCS6o/Kx0DE0uLyBSF9npTaVM1eeeC1r0l
+	 1uKJcva8ceRjzrHL7XxLOWQgPWGwiqx58Gu0cgYZa+uQsDdgEpSrgKXyFGHgtWwUAxAQj
+	 u5l00LGSdnUBWX55OeCMt+8JkfXwZWPy4FRiMI66ND3c8L1a006yYM/CgnpHSq/HMLV9r
+	 bF/hFgrwtVZRTsO/UnVO0cfyShYYxxZQL4f0zfIJMwJ7TkKa/67J6svx+oRYDTH19uA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793318691;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=QT0b4cj8MXIGv8LIRca513xpWCi25cLtYz1pl1JYINc=;
+	b=ujHyP2yI++cppIAal78CBHHVQUxIvOIUDUWgMdf25CDzQhSLOq6N/MwFjR2qrsyNJYcJ
+	 gR0aJaUuIatW0VfqVABg2AzMeaJla3sqoxM1dl3wdBYIEIemJVlWqBg4FhSaUziHmqRFP
+	 75/ZXztL5D4UdrhMbSUx1zl9SwLeVyQABVwliv3lqnyVuyknKNlkLC3vnC4cpNs3Jyrb/
+	 J21RAKfbLlSHvGvkc6Zq3NWa7x+R7PX3Q5bUq+wrXrcd5XvLnrfu6uzg4mJjoUUzkx14t
+	 vD5KrdpOcmV35i/aG40rXO4lof7B0wy5C0HmCfJ/2wFzrwBMazW021RY0g0nIwkhSLQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TNdchIJf;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFF6606A31A
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 00:00:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEFF6606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7341E606A31A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 00:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AW1HInfw
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so2492a12.1
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:00:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793318456; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qYf1ahZ2c4HV2IHaY4RNWUTD9gfhaCjUCshqmm9nAMhrFiWcb9R+tIRuLjYyHRQt9E
-         azyx3Xe+NOmImxXgYpWq0YNO4VsRYGCl3qwk/vnzwsO4quVH/16wG7v3wuCx++DBJLdE
-         DjItnqEHjDowinAh7zh3JBzy3I2KnNISV8BMzOCudYp/vlNyNDvnpFmWCI2gxq2VGaR2
-         SiF86BAjJuyMSvVQwPhny8VybUQ1B7XkmfjDNGClQJ82x0WDydaZToBr+1F7X61ptQGW
-         zlrUt/Ydks8FIsVJc6eLVEEawh+m/1bOASCpHZLH/MYDjm0xCk82FDGviEtiA3udo6H9
-         jIcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
-        fh=xktS1cydym5mlYKZJb5etHoGdYjZhnvXYQqq6tQt9fI=;
-        b=EVpDbTASMK4+SzPQYlHy//tuvF6gxg7xgm5cgqvQC39r3rSuVZBctsqZq+dRqDnqbb
-         Gdh7wfbHSuv4rQue8Y8eB8lqOJ9K/vbh+sVkAsBEsYnTRV6phsJP9B9+oS6DdDUqCmIK
-         ybJlvO62dHycII/TV7X87LlIqrqB/oG02U+bO9EhL5+f8SCfteq12R4ZrtWzFtvYaann
-         DJwulW0Kli3eY34+07Az7ytAnm9mzBvLguwUgVCgTZEbyi3psh0TfM53gBh6HRRbiLVh
-         6El+P8SnYvFcscQAkIUvQx+tyMqJeyLluJOZfkk9Jzv5/9u5i/f59M8nCk6SJYD0/wvC
-         7YKQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793318456; x=1793923256; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
-        b=AW1HInfw6hVPfoRvD736sYB3zTE0cSDxnVw6yygthKUGTF4onkFNlGmz4/caAqgUU3
-         SDwEL5QPayGRF6LFj2d2Yvse1adS39hRumxe2SFEHm5nGZYUo5Ma7D/hvm5HOuoTJYxH
-         vLMH4gHyoAjN2cMOL+tNZbe/vcN1I4XdQN+B+dnDclu1g6hPdtWxTTLKHVX6SOhbm1nq
-         WDci24T9Kih9hvtVH4F/Oc1Cu+7+rDtAxm1UfsuTZs/TNYHzzBx2cCIZE/LARAvKGlQi
-         lJb9LxGzIlOhDcTPXT9GBq2MgmvebgHNmW93Xdp7GyGMYeaCS7FMN4Roth16XZtyV6me
-         TI+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793318456; x=1793923256;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
-        b=1ytWlD8PKjjK6LPKXdSJY64NAfH385Tf569jPFmPb4RtgC7Wnct0llfVySCQAbfqe/
-         dVM0/xs0IXEJyU+E9jM2eOZqofiBUwKTHBzZ0YASf26xeapD0EjDNjeteeVsnjtt/9c6
-         teFqAFCdJLLaGRJocwQQZ+9hbXlUkfSLUGKhe+t5DLVgRGvk2cBqCP976g3m5EMLTDg3
-         4+GJUMmzoqJq8Zu0Ho+/vcAZZtkAa89QzTWsCPQjXC1QXwvfPyUzMGfAUHs2zsv/Vxgi
-         piYjWpCXXtSwQW8ugy4Z9BansDFFSyIX1+7aOA3r+QJSQy4fIRWaFkEBbdJ8T2sLXAFk
-         BVcQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzr5hIUhhmQu0KiU11NrIF6aJgd7p85y4QmDdZoKUkB5v4XxF8iVUFlB9j6w73A/4YZpSA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK1+6+k7Ivh1410Z2K6YxIDZtBP0Ry0uJxrCrX6oB13A7jyp64L
-	rL5TckPnK9t1IXMlJcyk9JUnlOy/THQHbk69HCDVJXSadPy4SzvkOo5eJADL/ySgDJBJ4nA58ok
-	7GFdL4Fi73y/Ua8DKFhhj8T/yA1LsWv2ZNQ11xMUc
-X-Gm-Gg: AYBFou254bvv9KgoBOkKqKYQWcyYx+XyatFkiJg4ZoJ5LBGuRyjzTc7XxHp2KEJTQiT
-	7aH0ejF6FN/o7JOnKKlCY/Ogk+1xB1FofDo5rSIua+MyePQsxOGB9AvbP45Gb8C0foBl1zJfXc0
-	7Zbc2uOUobxceg/tXxDhyCgNZclUpsK0mBdcQB6NF81o43RzK61rTk1OKLygdnWhm/HD/aC7jfm
-	pl/cKDJ4CuSjaQro77kD50gADC6O0my/EesuBeR8OqQHvwjcoCYpNHsMhjxZdh9l81yBFtkDsYp
-	MzRVfva5+VF7wAEul+LYQJ07yFIIvABFT7PyMZWh/3H+09tTaot//YjJuO6F8GXvWZm8kMb0SmA
-	ZunSb2kExZkfc833REAzI8CrlOEkQiUFFV1mlZ6QaIMm/xPC5+HQknc1Sww==
-X-Received: by 2002:a05:6402:641:b0:6b4:597f:50ed with SMTP id
- 4fb4d7f45d1cf-6b4b10ef524mr124485a12.5.1793318455914; Thu, 29 Oct 2026
- 17:00:55 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TNdchIJf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0461F000C1;
+	Fri, 30 Oct 2026 00:04:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793318691;
+	bh=QT0b4cj8MXIGv8LIRca513xpWCi25cLtYz1pl1JYINc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=TNdchIJfPa5hc78llUzvYEcuBCS0sXQYAVlpEYheaFea52G7DSS6kEttrBJQu/miQ
+	 WHDt5wUC00roJav7GnWcelVepjzgHw+5o4jVfVs9T7PSVi2lsPxAqYz/G8PG7LtJOd
+	 0MhPuH3S23N/947Q21O0rwdl54xLT13WNwNDwOp8aNNsw9QUF0+CeX2LP2vyuB8Sm/
+	 Tr369E6M4gcz+bUhudsCQE5qm2kGnR0jrHP25PpFasmnA+A3DC7SS64BcYfV/TcS5Z
+	 mcTTyKmhKZVFUIOXwwySVtmMtCT64WtZdrbUSxwZe2+Rvd+HVhVjybyLxvk8u5P9Ni
+	 FeeerT91XVKfw==
+Message-ID: <sashiko-outbox-190122@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] KVM: selftests: Verify that L2's LMSW leaves
+ L1-owned CR0 bits alone
+Reply-To: sashiko-reviews@lists.linux.dev
+To: ma.mandourr@gmail.com
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261029235040.12013-3-ma.mandourr@gmail.com>
+References: <20261029235040.12013-1-ma.mandourr@gmail.com>
+ <20261029235040.12013-3-ma.mandourr@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 00:04:50 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,78 +60,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261029202817.901145-1-jmattson@google.com> <auO4UueaV0mTVzzB@google.com>
- <CALMp9eTKXa9v1TxJMPrE-tSXajwJCErCk=g34dOPJtG057t5mg@mail.gmail.com>
- <auPAFxXy4ulcK_jq@google.com> <CALMp9eQdtvjQkdgnJ_NTt=2ArdzUtqqzieXLccv9Vb_My5G+fQ@mail.gmail.com>
-In-Reply-To: <CALMp9eQdtvjQkdgnJ_NTt=2ArdzUtqqzieXLccv9Vb_My5G+fQ@mail.gmail.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 29 Oct 2026 17:00:43 -0700
-X-Gm-Features: AclHuK9Gf9FXwfveb_3CfkAO_qfPf7-qk20lAd5kJcyEb-CP0c5NZ2eSdTbAAeE
-Message-ID: <CALMp9eSgWhTFi1vxxnN=1zV4mRVsKD55F=37yg4LmT_xUAc_Pw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] KVM: SVM: Check EFER.SVME before updating MSR_VM_CR
- on guest writes
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 3:04=E2=80=AFPM Jim Mattson <jmattson@google.com> w=
-rote:
->
-> On Thu, Oct 29, 2026 at 2:52=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Thu, Oct 29, 2026, Jim Mattson wrote:
-> > > On Thu, Oct 29, 2026 at 2:19=E2=80=AFPM Sean Christopherson <seanjc@g=
-oogle.com> wrote:
-> > > >
-> > > > On Thu, Oct 29, 2026, Jim Mattson wrote:
-> > > > > (Host- initiated writes are allowed to set any valid MSR_VM_CR bi=
-ts.)
-> > > >
-> > > > Eww.  Why?  If we allow this, then we'll end up with the mess where=
- the guest
-> > > > can't write back the current value (if userspace is being weird).  =
-I get that
-> > > > we want to avoid ordering issues, but there's *already* a required =
-order here,
-> > > > unless userspace ignores the failure from svm_set_vm_cr() and conti=
-nues on.
-> > > >
-> > > > KVM doesn't advertise the MSR as something to be saved/restored, an=
-d none of
-> > > > QEMU, CHV, CrosVM, or our VMM appear to save/restore it.  So why ma=
-ke trouble
-> > > > for ourselves?
-> > >
-> > > OMG! I didn't look any farther than the obviously broken svm_set_vm_c=
-r().
-> > >
-> > > It looks like svm->nested.vm_cr_msr controls nothing other than itsel=
-f.
-> >
-> > LOL, nice.
-> >
-> > > It's just 5 bits of storage with some weird locking rules, and it
-> > > resets to 0 on suspend/resume.
-> > >
-> > > What is the point of such half-baked support?
-> >
-> > More than likely, so that older kernels didn't crash when writing an MS=
-R KVM
-> > didn't emulate. :-(
->
-> You're not going to let me get rid of it, are you?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] KVM: selftests: unordered l2_cr0 store and zero check in l2_lmsw=
+_test()
+--
 
-LOL! Even the 'LOCK' check is wrong:
+commit 81df08b65f8d95b00451c4c4a33f93d0001cf528
+Author: Mahmoud Abumandour <ma.mandourr@gmail.com>
 
- if (svm->nested.vm_cr_msr & SVM_VM_CR_SVM_DIS_MASK)
-        chg_mask &=3D ~(SVM_VM_CR_SVM_LOCK_MASK | SVM_VM_CR_SVM_DIS_MASK);
+KVM: selftests: Verify that L2's LMSW leaves L1-owned CR0 bits alone
 
-The condition should be checking SVM_VM_CR_SVM_LOCK_MASK.
+This commit adds a nested VMX test case to nested_exceptions_test to verify
+that an LMSW in L2 that exits to L0 preserves L1-owned CR0.TS and reads an
+L1-owned CR0.NE from the CR0 read shadow.
 
-Well, at least it can be used as a sentinel you can poll to see if
-your VM has live-migrated. :)
+> diff --git a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c b/t=
+ools/testing/selftests/kvm/x86/nested_exceptions_test.c
+> index f47432526ea16..7113018ee62a9 100644
+> --- a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+> @@ -109,6 +109,40 @@ static void l1_svm_code(struct svm_test_data *svm)
+>  	GUEST_DONE();
+>  }
+> =20
+> +static u64 l2_cr0;
+> +
+> +static void l2_lmsw_test(void)
+> +{
+> +	/* Toggle CR0.MP, which KVM intercepts and L1 doesn't. */
+> +	asm volatile("lmsw %w0" : : "r" (get_cr0() ^ X86_CR0_MP));
+> +	l2_cr0 =3D get_cr0();
+> +	asm volatile("fnop");
+> +	GUEST_FAIL("L2's FNOP didn't take #NM");
+> +}
+> +
+> +/*
+> + * L1 owns CR0.TS (set) and CR0.NE, both with a read shadow of 0.  L2's =
+LMSW
+> + * must leave both alone: FNOP takes #NM and L2 reads NE as 0.
+> + */
+> +static void vmx_run_l2_lmsw(void)
+> +{
+> +	u64 cr0 =3D vmread(GUEST_CR0);
+> +
+> +	vmwrite(CR0_GUEST_HOST_MASK, X86_CR0_TS | X86_CR0_NE);
+> +	vmwrite(CR0_READ_SHADOW, cr0 & ~(X86_CR0_TS | X86_CR0_NE));
+> +	vmwrite(GUEST_CR0, cr0 | X86_CR0_TS);
+> +	vmwrite(EXCEPTION_BITMAP, BIT(NM_VECTOR));
+> +	vmwrite(GUEST_RIP, (u64)l2_lmsw_test);
+> +	vmresume();
+> +
+> +	GUEST_ASSERT_EQ(vmread(VM_EXIT_REASON), EXIT_REASON_EXCEPTION_NMI);
+> +	GUEST_ASSERT_EQ(vmread(VM_EXIT_INTR_INFO) & 0xff, NM_VECTOR);
+> +	GUEST_ASSERT(!(l2_cr0 & X86_CR0_NE));
+
+[Severity: Medium]
+Can the store to l2_cr0 in l2_lmsw_test() be reordered past the fnop
+instruction, causing the assertion in vmx_run_l2_lmsw() to pass vacuously?
+
+In tools/testing/selftests/kvm/include/x86/processor.h:get_cr0(), the inline
+assembly reads CR0 into a register, and l2_lmsw_test() then stores that
+register to static u64 l2_cr0, which is zero-initialized in .bss and not
+marked volatile (nor written via WRITE_ONCE()).
+
+Because asm volatile("fnop") does not have a memory clobber, the compiler is
+only required to order the volatile asm inside get_cr0() before fnop, while
+the plain C store to l2_cr0 can be scheduled after fnop (before the function
+call in GUEST_FAIL()). When fnop triggers #NM and exits to L1, any store
+scheduled after fnop never executes, leaving l2_cr0 at 0.
+
+In vmx_run_l2_lmsw(), GUEST_ASSERT(!(l2_cr0 & X86_CR0_NE)) only tests that
+X86_CR0_NE is clear, which succeeds when l2_cr0 is still 0.
+
+Should l2_cr0 be written with WRITE_ONCE() (or given a memory clobber on fn=
+op)
+and checked against the full expected CR0 value
+(cr0 & ~(X86_CR0_TS | X86_CR0_NE)) ^ X86_CR0_MP via GUEST_ASSERT_EQ()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029235040.1201=
+3-1-ma.mandourr@gmail.com?part=3D2
