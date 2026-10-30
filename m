@@ -1,97 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793371210;
-	b=fUxJ04mp1m0ls2uYyjMQb2QVtZ7M9B3w6w0TiM9mZNrW2S3+fF9bjVZrtotUhE9gfY/A
-	 D5mGkKydtJRnIRJmr6Z/ddFUVX6Oxzs8sx+RTx+GCcukyUfP3Mvebr6oeb/UoAXHzI1Th
-	 9Q9aXgH7+1heP/16QEpjl73ByXVddaPIXXm3e1+KivBjjFoJqhuBqI58ozuOUUVyAN3e1
-	 wo9LAOokwsDqLSe8PcYZqb4Jt9cicgjqUqLH2dOBGjsWjvvD3nFaSN0Q854SHV6p6kzjf
-	 26GtSBKHXvTS3UIW8bIbUM08CyTL0zLSE6GTjMw6w9/elHe6NEAFYrNBYorWZ5TvvSg==
+	t=1793371493;
+	b=yKF5FLEzakjaGI6UzrhIJLpZp4ujxFhZmncZ+0hTCzk2Vql1ya2apyrklg02zAq1K9aX
+	 DczGywp03AS4IOD+7GvTccCDU6B2/y5uCvJHmewy42EzTSXdwDDcgybj2D6oBdT0viaKh
+	 6hG0GECBc/dCJjazktSuTbjlbDY4kj0fF1w56/n9qdHAZbBzglFf4gxS3cq9xToeNr9dq
+	 baceANwA3LJK/LAwBnZbXLZ9BSOZS1E6bWhO5e7HCbVux3yNs5xdBQ9tq4de13dj0EGdz
+	 VT3yD5JkFy4ATC/2sAQqNhTaE7oGf+Pq5LYVII18bmB2BqidKPQ7EpzKl2nrmxtPQww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793371210;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=fcq75/n5to7KVPQGZLdMt4JCssKTlOZI1ZlvEz8dUiA=;
-	b=on3artDbufN7PM/g/ltyVQFBI69TV4Ow/S5UGmBL1wWHLvd92E9RNbBCcrlLcIiDmfi/
-	 ET00Uk8kuObJ/NipZlO/IcM1vZNMaT0DQjf4hBcy8byjPVUCK8eE2QTiD86s1eRc70CvK
-	 TID4QvuEzcre8DFaWs7VvHOL/oPFv+aZZ0KjYrtvwcFShdkMCdQET1cd96jQgOYcMfFWc
-	 dA/GbQtHt0XRhsMvt5fBgjv1F++fqyhQV6LmOpxnVJXNws95rFlZ4g7cRGB1npNo/LOfe
-	 o3Gyouti9QSBzXDRZcUIeMv0lUG7DVbPJcsTDKGt4AKSgRrtGF24N9xuiT9UueN7QKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793371493;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=aZXf/CiAEOj3syudgngCaaHilsxgeSJVS9oPEnBDhwo=;
+	b=r6kuoprEUPlFmL/5kQWsJbgaTAC6Evr2bVQXqA/vTcVAudh7R12DxM7uLBJHIjB8KpEr
+	 QYH3tXBDQl//ESj3FtlHzgA8vHGSQv7uRp/RvvpogNhfqwF0irH6ZgSyWDV44Nm3NkT84
+	 kB+B4GZBS5bKdgeeJNEyQEWhbfnkHLCAovVnXlJNKv7Qu2fCG7BcSjNApnrzkIaAGwTQ8
+	 wnBKp3EHNH3QlzkdRfPVgN+uwJh1GIvfYMIuwOQEaY+A3KLDKjFED1FPLV1osINeqeO97
+	 L2+id0qli6AjydA8QpOi1SRVQ5WZcwSGfaBmt7DD5cR+KXsnBvEcq5WOLRqdN0aYCag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=opnizZ+2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SRBbpSBh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2290F606A31A;
-	Fri, 30 Oct 2026 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE404606A31A;
+	Fri, 30 Oct 2026 14:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=opnizZ+2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220C81F00A02;
-	Fri, 30 Oct 2026 14:40:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SRBbpSBh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991E51F000C1;
+	Fri, 30 Oct 2026 14:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793371209;
-	bh=fcq75/n5to7KVPQGZLdMt4JCssKTlOZI1ZlvEz8dUiA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=opnizZ+2dNikd4k65O8cRdMCDWoFnGzGm8H06Tue87Fz2IY3Vl4g9tTezUqcwc3wT
-	 2S6k8/wdhtbqKtvti1EgHreItj+UG5ZBkRBY+ay1FJ2DMCO5RncXnTjV+pURh7ZIro
-	 XNZv6YTMLXemRfd3n+9r7A4h6KNmwKrYIG57sbEnbATY6K2ZIueRLWVNpW++DnTT2g
-	 6j9cPgPuREHbNQ8UMD5t+M3B6xIbKyPezo5ElEInFyan2i1LKH1bgSwTQOQiILbWLB
-	 6bxDTx1NypaHLyEF3TNygCKFE23hVT/x+Laf/8uav6MskOgnGXulWrMLVw1+eFCQcs
-	 JzKAKQeuxklMw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 235AC198003A;
-	Fri, 30 Oct 2026 10:40:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 30 Oct 2026 10:40:06 -0400
-X-ME-Sender: <xms:Q6zkahjpOj4ZSaCUZVh_bd9rI2MnpdmCfUnAYYGcnjInOD05oNfb1w>
-    <xme:Q6zkajbGIHULW1k9syjh4YXvBPDt66fdFnIS_5PV7amJHak8pByIxZZQLkztpXdqg
-    fBfkYOiqdNcPpFxCXn01p-8P6XxaWhRqh2_6Mpdfuqf9J6cdP6E3bly>
-X-ME-Received: <xmr:Q6zkatHdsrPk1n_nDjoGF_qe5L9NFTQJTTaIt6u1UONBAAPWdR3k-2pAJpg>
-X-ME-Proxy-Cause: dmFkZTGcH0aYPKX2YJAbVL0xyGQh0oSkJL6yLpuefE0X4Co1hkT5qUmJcZVHIEtIcIYX8y
-    WY5Zc3yBQ6YcnmYlYpaq8uBDxFkI0uDlEyFyz2fkaB0ItzM9Er4N7JxO3vfQJMxLdTL27+
-    TmMFq2gr7DbfJSNquyE3MQwnLRvpN3yKRyBeYNa3/4AwiM4h5DMNmwfBgZNYE7hNq2lNj0
-    +qtXQ59/RfdGZcvFx3q0A4FZ2SwR8jIBm0jzU0fu/zsiosCzA5z+wHByYBr+XXSJ3DblCg
-    yQgwRKwYdunH7rAOmH+JqasmO7UVYI3li7f/5VtJjFYoAwzKBFo+m6ITJ3x7qhmL8urmqt
-    JYUmMRS3ow43Y9WEUMeuKWWOQ9DfLPeFvYXAp+mtXgXuec1e7OHrWVWY9Tf2yNa3DOy3UV
-    sqoUk30o91JUgvRkm0ONxH84/jHYWY2nVdJDZjdX7y+43j1c9kEqJEE9fsKasLBd5HVGzC
-    t8jd1lK9ja1hdBTqwKQSs2bBKzFC7Qtj2kifCEtyVFxIswfC8PyClvOMtMs7pIouk9oQxv
-    MKSaifVFxabUBf9lJ4Qct3v64EREhYGltHSWCWcfdX2M+2ZuOJVne0k8rqE2nQZs/i+Fap
-    yPAiUFR9GtpE9GVbrI295I/j7SS4UlsixVV6g3a6EdbJFDjwz4uOWGa6XYLg
-X-ME-Proxy: <xmx:Q6zkap-66JLgSuqW2cp6D03ZHrfBFlScV2mKn7rB9A1LacGBqwA4XA>
-    <xmx:Q6zkaqWb8s3rqXdJpGxh4w_EH5O13ebU5WMLHaomzoyCOAH5caYKYA>
-    <xmx:Q6zkatboXt60IeNosoJWbYRrnnuFTz5pw0csjmwaWXvlhMWJjRETmA>
-    <xmx:Q6zkanX9bgrJNDTkdR4HfJK1PP2V6QpuGzibD7EiQi5SI7BlwJMzaQ>
-    <xmx:Q6zkakLU1l40MFtuUcUwTiJiNuzkjkEeC9docC7gsfxkRmed_bPge6oA>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Oct 2026 10:40:02 -0400 (EDT)
-Date: Fri, 30 Oct 2026 14:40:00 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, "biju.das.au" <biju.das.au@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Au Dang <au.dang.jx@renesas.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <auSrwtQgJRM09_ve@thinkstation>
-References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
- <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
- <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
- <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
- <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
- <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+	s=k20260515; t=1793371492;
+	bh=aZXf/CiAEOj3syudgngCaaHilsxgeSJVS9oPEnBDhwo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SRBbpSBhbpzYPTxEYvVPe0YqNeqeeZXvc40Xfp6E/6NNdDO/YIaX1fQ9xoLaydR/l
+	 M2KlDhSlKxubUE46HvQ8IqmdNWYZrcwWW0rYCpOC8z9eOomi+qBXtW7djAyVYPileJ
+	 +PzoyM10G3unV5KEiQPfN0St5VDMkiFKoQfNFbdBE8xvvgcfkSHazcCfakn6zZPfet
+	 cpZ5PrZ+eSWWsn97mve67wdNmQ+N/b1rVa8wT4L2I9P/WU2XIe0PhfoH7MSIkTEHOr
+	 bqzInNADbdgGCR8YpCMJhAIZFeb+HHPjt+FFh9bSprH3bsl5nEAuJKQ2Tm8QnNWzpb
+	 eWYFbkFOCP7nQ==
+Message-ID: <sashiko-outbox-191117@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 1/4] mm/mprotect: add MM_CP_PERM_UPGRADE
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Q2FybG9zIEzDs3Bleg==?= <clopez@suse.de>, kvm@vger.kernel.org, linux-mm@kvack.org, seanjc@google.com, pbonzini@redhat.com
+Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, "Andrew Morton" <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261029143336.390231-4-clopez@suse.de>
+References: <20261029143336.390231-3-clopez@suse.de>
+ <20261029143336.390231-4-clopez@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 14:44:51 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -100,26 +65,166 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
 
-On Thu, Oct 29, 2026 at 07:33:38PM -0700, Borislav Petkov wrote:
-> From: "Borislav Petkov (AMD)" <bp@alien8.de>
-> Date: Thu, 29 Oct 2026 19:25:27 -0700
-> 
-> A K: is a content regex file pattern which matches any text in a patch
-> so if a commit message contains "TDx" as in
-> 
->   the TDxE (Transmit Data Empty) flag
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] mm/mprotect: MM_CP_PERM_UPGRADE set when change_protection() revok=
+es write
+- [Medium] mm/mprotect: vma_flags_is_perm_upgrade() ignores arch-specific p=
+rot flags
+--
 
-K: matching is case-sensitive, so the TDxE prose never matched. The hit
-was tdxe_auto_clear, the field that patch adds, in the diff as well as in
-the changelog. A keyword can't tell that from TDX code, so paths only is
-the right fix.
+commit f3d5a380cac712469a433d985427420721eea496
+Author: Carlos L=C3=B3pez <clopez@suse.de>
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+mm/mprotect: add MM_CP_PERM_UPGRADE
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+This commit introduces the MM_CP_PERM_UPGRADE flag for change_protection()
+when mprotect() updates VMA permissions to a superset of the previous
+permissions without changing the protection key, allowing MMU notifier
+consumers to avoid invalidating PTEs.
+
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 754333698c1ea..96e32e0159166 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -756,6 +756,17 @@ static const struct mm_walk_ops prot_none_walk_ops =
+=3D {
+>  	.walk_lock		=3D PGWALK_WRLOCK,
+>  };
+> =20
+> +static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
+> +				       vma_flags_t new_vma_flags)
+> +{
+> +	vm_flags_t old =3D vma_flags_to_legacy(old_vma_flags);
+> +	vm_flags_t new =3D vma_flags_to_legacy(new_vma_flags);
+> +	vm_flags_t rwx =3D VM_READ | VM_WRITE | VM_EXEC;
+> +
+> +	return !(old & rwx & ~new) &&
+> +	       (old & ARCH_VM_PKEY_FLAGS) =3D=3D (new & ARCH_VM_PKEY_FLAGS);
+> +}
+
+[Severity: Medium]
+Does vma_flags_is_perm_upgrade() also need to check architecture-specific
+protection flags that mprotect() can modify?
+
+In do_mprotect_pkey(), newflags is computed via calc_vm_prot_bits() (which
+calls arch_calc_vm_prot_bits()) and masks off VM_FLAGS_CLEAR (which includes
+VM_ARCH_CLEAR):
+
+mm/mprotect.c:do_mprotect_pkey() {
+    ...
+    mask_off_old_flags =3D VM_ACCESS_FLAGS | VM_FLAGS_CLEAR;
+
+    new_vma_pkey =3D arch_override_mprotect_pkey(vma, prot, pkey);
+    newflags =3D calc_vm_prot_bits(prot, new_vma_pkey);
+    newflags |=3D (vma->vm_flags & ~mask_off_old_flags);
+    ...
+}
+
+Several architectures expose PROT_* flags in mprotect() that set or clear
+VMA flags affecting hardware PTE protection or attribute bits in
+vm_get_page_prot():
+
+- On arm64, arch_calc_vm_prot_bits() maps PROT_BTI to VM_ARM64_BTI (cleared
+  via VM_ARCH_CLEAR when omitted) and PROT_MTE to VM_MTE. In
+  arch/arm64/mm/mmap.c:vm_get_page_prot(), VM_ARM64_BTI sets PTE_GP (which
+  restricts execution by faulting on indirect branches to non-BTI landing
+  pads) and VM_MTE sets PTE_ATTRINDX(MT_NORMAL_TAGGED) (which enables MTE
+  tag check faults).
+- On sparc64, PROT_ADI sets VM_SPARC_ADI (cleared via VM_ARCH_CLEAR when
+  omitted), which sets _PAGE_MCD_4V in
+  arch/sparc/mm/init_64.c:vm_get_page_prot() to enable hardware ADI tag
+  checking traps.
+- On powerpc64, PROT_SAO sets VM_SAO, which sets _PAGE_SAO in
+  arch/powerpc/mm/book3s64/pgtable.c:vm_get_page_prot() to alter hardware
+  memory ordering attributes.
+
+Because vma_flags_is_perm_upgrade() only inspects VM_READ | VM_WRITE |
+VM_EXEC and ARCH_VM_PKEY_FLAGS, if userspace calls mprotect() to enable
+PROT_BTI, PROT_MTE, PROT_ADI, or PROT_SAO while keeping the read/write/exec
+bits identical (or a superset) and the pkey unchanged, won't this set
+MM_CP_PERM_UPGRADE and allow MMU notifier consumers to skip secondary MMU
+invalidation when access restrictions were tightened or PTE attributes
+changed?
+
+> +
+>  int
+>  mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+>  	       struct vm_area_struct *vma, struct vm_area_struct **pprev,
+> @@ -836,6 +847,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_g=
+ather *tlb,
+>  	vma_flags_reset_once(vma, &new_vma_flags);
+>  	if (vma_wants_manual_pte_write_upgrade(vma))
+>  		mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
+> +	if (vma_flags_is_perm_upgrade(old_vma_flags, new_vma_flags))
+> +		mm_cp_flags |=3D MM_CP_PERM_UPGRADE;
+>  	vma_set_page_prot(vma);
+> =20
+>  	change_protection(tlb, vma, start, end, mm_cp_flags);
+
+[Severity: High]
+Can setting MM_CP_PERM_UPGRADE when the VMA already had VM_WRITE (or on a
+hugetlb VMA) violate the invariant that no access is revoked and the PFN
+stays the same?
+
+Follow-up commits ("mm/mmu_notifier: add MMU_NOTIFIER_RANGE_PERM_UPGRADE",
+"KVM: plumb MMU_NOTIFIER_RANGE_PERM_UPGRADE into kvm_gfn_range", and
+"KVM: x86/mmu: don't zap the secondary MMU on permission upgrade") wire
+MM_CP_PERM_UPGRADE to MMU_NOTIFIER_RANGE_PERM_UPGRADE so that
+kvm_unmap_gfn_range() skips zapping secondary MMU SPTEs.
+
+However, when a VMA already has VM_WRITE and mprotect() adds permissions
+(for example, upgrading PROT_READ | PROT_WRITE to
+PROT_READ | PROT_WRITE | PROT_EXEC, or PROT_WRITE to
+PROT_READ | PROT_WRITE), vma_set_page_prot() computes vma->vm_page_prot
+(newprot) without write permission for all MAP_PRIVATE mappings (COW) and
+for MAP_SHARED mappings where vma_wants_writenotify() is true.
+
+When change_protection() applies this read-only newprot across the VMA,
+there are several paths where write permission is stripped from existing
+entries or entries are unmapped in the primary MMU while MM_CP_PERM_UPGRADE
+is set:
+
+1. In mprotect_fixup(), vma_wants_manual_pte_write_upgrade(vma) is called
+   after vma_flags_reset_once() but before vma_set_page_prot(vma). For
+   MAP_SHARED VMAs without vm_ops->page_mkwrite that use writenotify for
+   VM_UFFD_WP or soft-dirty tracking (such as shmem),
+   vma_wants_writenotify(vma, vma->vm_page_prot) compares the old read-only
+   vma->vm_page_prot against vma_pgprot_modify(vm_page_prot, vma->flags)
+   (which still has VMA_SHARED_BIT | VMA_WRITE_BIT) and returns false. As a
+   result, MM_CP_TRY_CHANGE_WRITABLE is not set, vma_set_page_prot()
+   computes a read-only vma->vm_page_prot, and change_present_ptes() /
+   change_huge_pmd() strip write permission from all writable PTEs and PMDs
+   in the VMA.
+
+2. In mm/hugetlb.c:hugetlb_change_protection(), MM_CP_TRY_CHANGE_WRITABLE
+   is not handled, so huge_pte_modify(old_pte, newprot) unconditionally
+   strips write permission from already-writable COW huge PTEs in
+   MAP_PRIVATE hugetlb VMAs; in addition, huge_pmd_unshare() unmaps shared
+   PMD tables via pud_clear().
+
+3. In mm/huge_memory.c:change_huge_pud(), MM_CP_TRY_CHANGE_WRITABLE is not
+   handled, so pud_modify(oldpud, newprot) strips write permission from
+   writable huge PUDs in writenotify DAX mappings.
+
+4. In mm/mprotect.c:change_softleaf_pte(),
+   mm/huge_memory.c:change_non_present_huge_pmd(), and
+   mm/hugetlb.c:hugetlb_change_protection(), writable migration entries
+   (softleaf_is_migration_write()) and writable device-private entries
+   (softleaf_is_device_private_write()) are unconditionally downgraded to
+   read-only entries via make_readable_exclusive_migration_entry(),
+   make_readable_migration_entry(), or make_readable_device_private_entry().
+
+5. In change_present_ptes() and change_huge_pmd(), pte_modify() /
+   pmd_modify() strip write permission and do not restore it under
+   MM_CP_TRY_CHANGE_WRITABLE when !folio in a private PFN/mixed mapping or
+   when a shared writenotify PTE was cleaned (!pte_dirty(ptent)).
+
+Wouldn't skipping secondary MMU invalidation in these cases leave secondary
+MMUs (such as KVM SPTEs) with stale writable mappings to pages that
+change_protection() has write-protected or unmapped in the primary MMU?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029143336.3902=
+31-3-clopez@suse.de?part=3D1
