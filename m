@@ -1,73 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793396272;
-	b=LcyT9DF/BKwpERVnpMi8BD7pmm9mcHRDXyvQ4EqUqbV3iefgomd1uuK3vQbtkTEkeoun
-	 +m+I+ZMt2vVhFAV9ArgWrcAAkodB1JH1CCfHVLiJPYHWw51O0ql4G0S+Qm46fwrQ9JqlL
-	 eat2U1+kUfOqOrJphga4upcZ29vYf8/xxO/8cg5s8w5eSY5Iam/lfx5J1w1Djc7DDKPDo
-	 qEPGJ+vrgOQiNSKz9W7bHV33ZF1e+bEndKSq04ynFjyATb27Qcdpf2ob+bEqJx86blUCN
-	 BKE3SI8Bs66FHn6CzmA/phlhuR7ZRRlNlFewPtHSIZImle2dfRJfgZJ/taClbANbSpQ==
+	t=1793396274;
+	b=fq49vRIYUCBIrMrfv6PpWhhYS7ZWATtPKLGCnkP6FekXWLPvl68EWyzas0dE6oocomvw
+	 r4uGURY73AjAKRMrvQjVEiWCil9x1iH/DWegVKASXqB+oxXxZw+JnmmXXjIQbLr/m1+dy
+	 ust5g8eVMxFQp9m9cot/T6ffE9pMoMbZA3qwy4tW+qxhxYo/QmOW9nHdQDRuMJls+YYQJ
+	 xal4oD2r+NTNoaA34TkcRiiJjPL3aIvP1pY53mddKD+6FucfCalO2s0vgGIhwHd1Bv6KM
+	 EWTRXuiMAItmwM+vpFuUj7bZnY/tY3Yx4uFfDeJCv1NpjWYoQMUWNndd6YIui2RDxwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793396272;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793396274;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=UWpoThsKVVH8wpihCZprx9pHZaFu0THdyOfPf9yMXho=;
-	b=e7XSM9xkH6rVo041BH071KbMpT0KJHhD3TkxgdsYpRwqAoJOHWF7ULNbCabUHVpC3zOh
-	 WKuOt+UZfVurWYcVsBO75wq+8qor6qKHT9SCh6f68KtRSFJ505m3REjaY6cMnFVQm7Ot2
-	 /OU4JK8T8TTofauHVr00FkbJ6NZiYH/lLoqwViIhreKY/SgZV6DU5Ol8WQfMmxcYolMrK
-	 vYonHcC7byOAJ7XySlM1Ibn44xzPKDxSiSbVbzciOlIUqoFE0MrTQenCc6SLTtxnsiFzQ
-	 r2bOiyoc9YelMLkJscqYGIbgc4O/xDPRMTDSEtHTzi2A6JaDdi2AZU24zPFHQ0bikog==
+	bh=nJFBxVgZV9XoDCRLOfNtMREStn7w9nRhV8Ti5t4DrDE=;
+	b=3qwEnGncL34OPtpQmO+nuBJjVAQIJDhFzxgu6d/q/HWLbuAMd23pMbWJbGkYJcJKHs/U
+	 TTgDjCDqZaQ+pd3oljum+3dwHYy/IHyVz2ncFVazYXKni8oWNVi+sHXAfHM+n1NhuMZ34
+	 kBfXmDug9XWQOjI8JwwSiEkwe6CzuuvUwvDRrntWVGc7IGIftY7zsGDJi460dO5tqoBgG
+	 rDfd2+LJM9Qj6taTW/eaCcCcHTVOxEK0pYPEfg7FaY3831H9wnbHxqdEFKJazQDBQ0OQ5
+	 kvJDrr47QI6SHut0FDx2eqVH+QKJ4crIa3U0yoFxVnARxU/ePnh6LmpTXD2Qf9F0A2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="gtryOvc/";
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=a0bT5Dv4;
 	arc=none smtp.remote-ip=209.85.214.200
 Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8793D606A338
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:37:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8793D606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F9660A260A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:37:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1F9660A260A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gtryOvc/
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e954d87b48so18767615ad.2
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:37:52 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=a0bT5Dv4
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e601800e58so19554285ad.2
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:37:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793396272; x=1794001072; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793396273; x=1794001073; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=UWpoThsKVVH8wpihCZprx9pHZaFu0THdyOfPf9yMXho=;
-        b=gtryOvc/4zzvrqwQWsgk67IFil5Pi4Bb2Hnu4kdTfu39Vph8zpUlFTNg3rdUGxeEek
-         zvoysvJL7nA/khRDZMfZg90RsxjZvr9N+/FXE0xBA3Rve06zI9abzDtwegHO/AwArq3x
-         Jxg/a7eEMinVphpSZ7JhgM36DikoLiGPC/7/CX+GlrWoj6rH2jSR/xw6xLDnEr+B94X9
-         +3SxxnQXyxwc08si/IW2xJ7X0OhFIZIp+2/45m5lCjFMHc/z4ekWzGYFVwpupceoA30T
-         ZtYfnzWUAWmOv53V9gJ/yCgbG+zfN+LcyoXBiZVduiHgRfal9KebHm8feUG+Ss/7iR/U
-         a3ww==
+        bh=nJFBxVgZV9XoDCRLOfNtMREStn7w9nRhV8Ti5t4DrDE=;
+        b=a0bT5Dv4tnQJLo+zXr0DZjQeChZehYxal1FAWzrM5nrFjoBDyvDpdHYbg2Ve3BRSpU
+         Hyk2rn43LnfIAqmn0qcpaRUbOVOiSLIDQufOLYYHeXmttmB7VuWqmfvtMAHHxcQQrwbu
+         gfANODgEbnOzavhYxoaKw9T3g/OMkNmbtxaZl1GQ5e8ECFCct4tuf49aeZyatJR0wMF4
+         pw0xrCNCUMFqURY+veRifUco4AaM/McYV5z5i9rDVVGO7DV7MKp09H/hePMzxHyVHowy
+         QfMp/Tl00CrqNurOEpxqWBzKEf2NFWMGxAx4/gg+MymFondvF5v9/VdrnA8mtugv7bt6
+         Ckqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793396272; x=1794001072;
+        d=1e100.net; s=20260707; t=1793396273; x=1794001073;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=UWpoThsKVVH8wpihCZprx9pHZaFu0THdyOfPf9yMXho=;
-        b=iuvXFGJseizXFNaIKZnJg3MpjDFiwZGFv1xm0I9hWa/ysga+iENi4wnukOFynd5UtW
-         gaR2nmzPOXTJv0B3lfd5+MjszBvqlmAdjP4jxfkrJ0iz4U0HPRtqiSsA34uHgededAOu
-         ZblUyQ2okHFPN3vidW1E8az4vzLrQIBI1PYTzLMKKY1/zxObBnoI4JSRkRIYza3rHnKS
-         UPM1BJLnV/Coj8OgwTia/r4OB0WA9PWG34EzaiG3Ykbia3fSyTXOjNDBK6H+pz1CfS0V
-         SBUlTHsw2kfwC5A/Qdyn0t0aUmswlHp77CQaU9LRP/jrSmISe5C8Pk+kUGqGwMPCckmd
-         F16w==
-X-Gm-Message-State: AFq9FYLlAlH6s6qKxrO+RtD8eISVHBCnm3Cm03DGRK9QHx+Zha5+J9fm
-	Z82zjyZSooOVsFrypZ6iF163QzQ0YD1+hK8s7qmUgmzqMKk5BGR2mLeHE0DGSwmRf/CbDbKUq4j
-	JFrGk2g==
-X-Received: from plpn9.prod.google.com ([2002:a17:902:9689:b0:2e6:e1e:5217])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:38c3:b0:2e9:5b4e:b8a1
- with SMTP id d9443c01a7336-2eb3650af7dmr38510525ad.55.1793396271705; Fri, 30
- Oct 2026 14:37:51 -0700 (PDT)
+        bh=nJFBxVgZV9XoDCRLOfNtMREStn7w9nRhV8Ti5t4DrDE=;
+        b=NtVl8VsMHZy3NpvNEoZLL34/SRrB6zGsdMfxEUmLmgibvKs4quiDtFUk2xhL8V2+5u
+         34JTYDNG5eaAjwWGANq9uPhIyo1NyT+bgm2qKG+NthG0XcQj+QcaNPfTgyrbrfD8lhCc
+         03ZVvIydNTR/HrsdT2+1WDh4gObKdSi/zzpLw3638dCDZuXO8bzzjylXz9vlAIe5x5ba
+         zYWLf9XCQcoadPmrEwrrsau+1kHZhxr04pf6vs93kaqeuIjmovy3RfWFsv/UN0Fb7CfV
+         DAn6AdXEElYLZWMulAwFpyhW5XlY7KIvhuau3S1/sD+rE5OU4TCSphPsagp9RzP2AOXY
+         967A==
+X-Gm-Message-State: AFq9FYJ5t9e2KglHhrNWwgQG5nhwKupLx/xVn98zMDQOtm0mvTeI1T9u
+	9KO1CrmqNbVjhtiiKfwgupROXO5ptYswsQFrLQEDUfsbJUTjMASJBAlIdFxPonkl09XJIb1CjDe
+	DaeV3+A==
+X-Received: from pllj16.prod.google.com ([2002:a17:902:7590:b0:2e2:ec03:928c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db01:b0:2e9:a16b:c251
+ with SMTP id d9443c01a7336-2eb36415052mr38618865ad.3.1793396272864; Fri, 30
+ Oct 2026 14:37:52 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 30 Oct 2026 14:37:44 -0700
+Date: Fri, 30 Oct 2026 14:37:45 -0700
 In-Reply-To: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,9 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261030213747.2611815-3-seanjc@google.com>
-Subject: [PATCH v3 2/5] KVM: nVMX: Honor L1-owned CR0 bits when emulating
- intercepted LMSW for L2
+Message-ID: <20261030213747.2611815-4-seanjc@google.com>
+Subject: [PATCH v3 3/5] KVM: nVMX: Synthesize #GP if L2 writes a "bad" CR0
+ value via LMSW
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -91,72 +91,52 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Mahmoud Abumandour <ma.mandourr@gmail.com>
 
-When emulating an intercepted LMSW on behalf L2, i.e. when LMSW exits to L0
-but not to L1, emulate it via handle_set_cr0(), as is done for MOV to CR0,
-so that KVM honor's the guest/host mask and read shadow from vmcs12.  This
-fixes a bug where so L2 could change L1-owned CR0 bits, e.g. clear TS, and
-read their effective values instead of the read shadow.
+Synthesize a #GP if writing CR0 when emulating LMSW fails, as it's possible
+for LMSW to #GP on a bad value when executed post-VMXON, i.e. if LMSW
+attempts to set/clear bits in violation of MSR_IA32_VMX_CR0_FIXED{0,1}.
 
-Drop kvm_lmsw() as it is no longer used, and opportunistically trace the
-effectively CR0 value (previously, KVM traced the raw CR0.PE value), e.g.
-so that users don't have to piece together that CR0.PE will be preserved if
-it was already '1'.
+Outside of VMX operation, LMSW can only arbitrarily modify bits 3:1 and can
+only set bit 0 (PE).  I.e. LMSW can't modify any CR0 bits that are
+unsupported or are subject to additional checks and thus should never #GP
+due to a bad value.
+
+Note, KVM has a virtualization hole where it doesn't enforce must-be-1 CR0
+or CR4 bits that KVM doesn't intercepted.  E.g. if userspace marked CR0.TS
+as a must-be-1 bit (while post-VMXON), then the guest could clear CR0.TS.
+That hole will be plugged shortly.
+
+Note #2, with the virtualization hole plugged, it *should* be impossible
+for LMSW to #GP on a bad value.  Unfortunately, KVM's save/restore ioctls
+allow userspace to load a CR0 value that violates the must-be-1 masks, i.e.
+userspace can make the impossible happen (and plugging *those* holes is all
+but guaranteed to be a waste of time).  Ideally, KVM would WARN, but since
+userspace could trip the WARN, take the easy route and handle failure
+appropriately.
 
 Fixes: eeadf9e7558c ("KVM: nVMX: Handling of CR0 and CR4 modifying instructions")
 Signed-off-by: Mahmoud Abumandour <ma.mandourr@gmail.com>
+[sean: split to a separate patch]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/regs.c    | 6 ------
- arch/x86/kvm/regs.h    | 1 -
- arch/x86/kvm/vmx/vmx.c | 6 ++++--
- 3 files changed, 4 insertions(+), 9 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
-index 3621f1a47d37..44a88c70b77b 100644
---- a/arch/x86/kvm/regs.c
-+++ b/arch/x86/kvm/regs.c
-@@ -303,12 +303,6 @@ int kvm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_set_cr0);
- 
--void kvm_lmsw(struct kvm_vcpu *vcpu, unsigned long msw)
--{
--	(void)kvm_set_cr0(vcpu, kvm_read_cr0_bits(vcpu, ~0x0eul) | (msw & 0x0f));
--}
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lmsw);
--
- int kvm_set_cr3(struct kvm_vcpu *vcpu, unsigned long cr3)
- {
- 	bool skip_tlb_flush = false;
-diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
-index 97c17b120a57..c30ac8394271 100644
---- a/arch/x86/kvm/regs.h
-+++ b/arch/x86/kvm/regs.h
-@@ -62,7 +62,6 @@ int kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val);
- unsigned long kvm_get_dr(struct kvm_vcpu *vcpu, int dr);
- unsigned long kvm_get_dr6_fixed_1(struct kvm_vcpu *vcpu);
- unsigned long kvm_get_cr8(struct kvm_vcpu *vcpu);
--void kvm_lmsw(struct kvm_vcpu *vcpu, unsigned long msw);
- int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
- 
- static inline bool is_long_mode(struct kvm_vcpu *vcpu)
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 544b7840897c..2d5feeb8a059 100644
+index 2d5feeb8a059..68c1361a92d1 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5743,8 +5743,10 @@ static int handle_cr(struct kvm_vcpu *vcpu)
- 		break;
- 	case 3: /* lmsw */
- 		val = (exit_qualification >> LMSW_SOURCE_DATA_SHIFT) & 0x0f;
--		trace_kvm_cr_write(0, (kvm_read_cr0_bits(vcpu, ~0xful) | val));
--		kvm_lmsw(vcpu, val);
-+		val |= kvm_read_cr0_bits(vcpu, ~0x0eul);
-+
-+		trace_kvm_cr_write(cr, val);
-+		(void)handle_set_cr0(vcpu, val);
+@@ -5746,9 +5746,8 @@ static int handle_cr(struct kvm_vcpu *vcpu)
+ 		val |= kvm_read_cr0_bits(vcpu, ~0x0eul);
  
- 		return kvm_skip_emulated_instruction(vcpu);
+ 		trace_kvm_cr_write(cr, val);
+-		(void)handle_set_cr0(vcpu, val);
+-
+-		return kvm_skip_emulated_instruction(vcpu);
++		err = handle_set_cr0(vcpu, val);
++		return kvm_complete_insn_gp(vcpu, err);
  	default:
+ 		break;
+ 	}
 -- 
 2.56.0.385.gac671c819a-goog
 
