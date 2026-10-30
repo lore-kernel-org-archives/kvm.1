@@ -1,57 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793399072;
-	b=jmTkMTpMImVjpWK1idKrdJiW2rVRwYLetPELZwqAKObdjwtpUiqE3D8e3BN+6+l9Hbnh
-	 w0Z7qNYb1A6rH2iQvQgzrv5VlIY91KhqG3WvY7IDGKLdIQDD07RvBnvF77nCle8LqgB/8
-	 /EVLT/Y/SJpWtUpGvlUoDoa/joerfrIqSH6gehCBtT44QPukj9m8qcTsSh2tE723hDuvR
-	 RRyUguKfAIRgg11Aak9VH/nlBRVMwNlTjLdwl3guW/2gLteVcvd8HNG+dfvmyMj1iIZ/W
-	 MTKtQJj8tjasYi4cJLIeVQUhTxhnF8dmW3wDzoS1TT7UPoq0htyfXeFYmWdx1G2jGAg==
+	t=1793399106;
+	b=Lj2PV3BNlJ+ovI73/agpIkH4ZtWt5eo6Whdyk8BMoLahU8zyr2cUt9vhGZ28zu0mMS2s
+	 sVjMRmW1ByY5/5x/x27CSfhwJJvDNG+u/lzt/8cg+dWzy1H0hXyQQybFh42FWLCTI95rP
+	 ArzEbvlEDDlBZIMMtm+s7Kce08uslIYF9l7ZbCx8WbHqMOMXdxVvRQNvWnIiULV8NsD0x
+	 0kJhlr0P9bbwS3yY/r/XtypLpELHZunvDpkoIGY+7qhJIT9N8DCC79DfXajfPQuTSSKzB
+	 357pn+p7STg3nb56aL/w///+LlwgicWuNj+QSodaMhdt715GE2k358xnZ66HK0E1AwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793399072;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=LiyYhDUll57MN+i6YDruf1spIaUOsvJrDoh/JrOf4SM=;
-	b=KYYwjiI2tK6anBM7yr2dGQTpGoBisL9o7zEJRUtN8nb4z7VdAdJE0gOJnqDXBLQx6Qrh
-	 9lgnpqYFACC2aOdovZSzVIY2+Bqsq61GBfHJOhAtf/DqbRM5/AzqVirOr7NtWJd6NpDrP
-	 62+KPK6yN4peyXT8zc5YQ2S8PAUvEKOGz/UOwH9C8HpzYPffpQtFpQZ9e3B69C+Lr7Gd2
-	 3bjhEQuJnyQETJOa7aGakXwBQ5ICbVEk2Gi4ItClC54Ffw9yoK0tS00zRrIghVx9AEDhn
-	 PhEW8ZcaJZa0e0liTvJe0MC/zGtXlF3anPRx6mMuVCCHCg0FHJnKJY/ruX3GpY9wlHA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793399106;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=/+KneAP5j4JycW2Osy6h4oU9OQtsTeRD6BdS9+k/6qE=;
+	b=F0ilhbkF6ZayklCH416zSxw3HMtej/kAPF0k2+cX3UmBP4WivZgyIJiqYfD1LWwkGsgD
+	 MHn1J1WBP4kl0Srou3ze6s2i2BHqw6V6Rw+s7IiSCUizF9vwRHSkQLEPJOldgPFs7HLbE
+	 N385GD7izWRt88x5eqRo7YIkGd5kzqkxrrzRjAwtACjjE2c4C1Hc/Iv1dTlMtxqdB6aeF
+	 RL2wy+6ZX5rQOJ2vHCv2+6CYoC19LYZc4IJqIVLO1Qh44VuwaeWiekRaS7S22qb9Q/88R
+	 L+GGNX2Xi193E3hlgt8Xca151zbagw59LXcxHk7x7vznzckNPhRUNmHkqFBE5LDAKjQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YEvVWm+M;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fON+oxNo;
+	arc=none smtp.remote-ip=209.85.128.175
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2AD606A31A
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 22:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86400606A31F
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 22:25:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86400606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YEvVWm+M
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DD31F0093A;
-	Fri, 30 Oct 2026 22:24:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793399071;
-	bh=LiyYhDUll57MN+i6YDruf1spIaUOsvJrDoh/JrOf4SM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YEvVWm+MmQbWtfqDhkXJgVz6nFcLq0JIlXvC5x8DjRYN/dsF8E3cUvVoClANGGnhP
-	 KNWobtDJoPz6Xd18GNTGOBqDwYJzjAFparDNklbZKpOEYjJ6uuYMdcclV+Aq+Wpj4G
-	 /jfkpLDXPAFNtHl8U+aBc3z2CRNWrfqqrhSx44Fuwg1iMzO7N5lj3/qM/nT22K+N1U
-	 gJPKSvuCpTn7EgKs/Zi3VpU+TQIMdO0R8vWOq4yWzYiD408kpNrhMctGpXtyNAyb0g
-	 7SG8im4mVIaKxweCav6R5AJslRsK7otxmORm1jOX3Q00uA15WAo+fPXf9TEFyst+8o
-	 UQ80oNmIDqVJQ==
-Message-ID: <sashiko-outbox-191575@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 5/7] KVM: x86: Recompute EFER.LMA instead of
- inheriting the current value on EFER writes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261030212721.2606393-6-seanjc@google.com>
-References: <20261030212721.2606393-1-seanjc@google.com>
- <20261030212721.2606393-6-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 22:24:31 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fON+oxNo
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8ac8a2ac52bso15372887b3.0
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 15:25:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793399104; x=1794003904; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/+KneAP5j4JycW2Osy6h4oU9OQtsTeRD6BdS9+k/6qE=;
+        b=fON+oxNodYAgFJVlp9NMyimkvkAqRKgDVxsc7oPe5/oKL+jFJcDMbJD7JyAAlKDN6X
+         Ulrgfg5oRZHZvrJt1/wumsGGM6hnegz6txsFgooLxk17khHW2ooVi/Ebs0ftClD4SO5k
+         n87A+Wy9KTW+fTdyYvj8B78qf8da4YbMqPpTFvdhHzQbqLrSLrSxEbLO9sF5YhJ5aLZH
+         YzEujhIVn4WLLXO+6Is1F/CV7tGZSvmR9kqFIziZ6PFOz+Ezxqzc11v/PzKOrWmTKfIJ
+         HvRSkgc7fXxGW5Y1gE7/dvg5HajVlh5gjWdFt2sz6g7JoT2qcYV/r5PoHimftmTExgD9
+         ApVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793399104; x=1794003904;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/+KneAP5j4JycW2Osy6h4oU9OQtsTeRD6BdS9+k/6qE=;
+        b=P2QjJCmcR3Wmz2tNgFsrkXIw3ljyqsnTB5/hJ6nH58O2rZlw0AhbwEtzh3kPcTDFv3
+         gqIBBEHTbYlcJ66YC5EueDGb6iH03V0PzB0pQ25bUW8xzBQPHj83e+vAkQbe2tUeD3Kg
+         phjWXRjKRSSfZQ3Hb5XsZ/udDa2oWbvC2i9aBi9kmrpfak/R3OE2geoqmpJ1LeaoqDNO
+         DE971FqDeSBr0+O4bFJVn0OHua2GFnsopVj/zBCdvG4RBhuAGXMu4RJjN2Dc8qTJAZoG
+         7YO7tmxeRsaBBhuq9NDxalyFyqq3JPCpPDEO7Q6RW6Am6FEI017Nzdr/IHx1YCbwZk87
+         q/Ww==
+X-Forwarded-Encrypted: i=1; AKwUvBz7z4p1g8kmz741mxDilRH+oL8qrWvb75a2S+yJkPc9a5lcVUBu13oNJrqhDOAVPZzMRsU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKFS2Xy4agf75Ewa5fID2E6nyoJmNJ/h7EvVhEQ14TEQ6Wg0j3u
+	t/MpJI7rsNAFccDZqDsaJrAmn6OSMIDO2b3zq3PFeautjHbVsKmF3Iza
+X-Gm-Gg: AYBFou1iUXNKI4ZqWG3MzdNw64sjJkA/QCUfBte0kshvC0OwsEx7akboz7882TisWEJ
+	snXrtCJSwMIoDtDPEoCw6Hkz1D1kl7ZhJlpqPJTOPDjZxF2nLguYxr8/KUA2NMo6zRQtQXe2q7F
+	tlXGtm0++qsSKplLjyEmQulDKvx1mdcFgZ+ZCbd9H89tNKr9sCN5vPXWijBQUhFm3KY6ANnNiTU
+	PenmrOdphMR7KCG45vECZxK4fTx2Dhjdib9wGXeAAQA3zW/PW5zDmyWkeifJCgYg+qK/r+XZ+tD
+	5ca259jy30h0AYsYT7jQ7OQE1xjkKwGQZGf1z9By15YgmPK2RQidgbh9OGepCRWhJ5m0Z42njr7
+	qt3m7sQWIJwMyoZvG5zFvyiGCP8FvHx8sTzDituwahAhxgmuE+en5TUvxO+xJApH1xR0+s4ruoe
+	L64QJ3PvrVPV29NM5SKFWsOBhu5r7GT6XHSe2YmeajCccGjoNC17SLGrqs2eLRrTMWWTlrkFgDp
+	yjeGUEDeQw6oAwY1Bbpnx9xISh+BRYaiAqCdAXfOsjcfehDQSog/A0s6MMU6kU2dPednFn76ukW
+	cj0gSFauNbmt9AhJDimVaSK0kg==
+X-Received: by 2002:a05:690c:92:b0:8a9:8744:c07d with SMTP id 00721157ae682-8b1c67060e0mr55008757b3.18.1793399104308;
+        Fri, 30 Oct 2026 15:25:04 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:72::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67baf147246sm730246d50.1.2026.10.30.15.25.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 15:25:03 -0700 (PDT)
+Date: Fri, 30 Oct 2026 15:25:02 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: jrmmhm.kernel@eldare.de
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] vsock/virtio: clear vqs[] to avoid a UAF on a failed
+ PM restore
+Message-ID: <auUZPiXDIPpQ2/vK@devvm29614.prn0.facebook.com>
+References: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,172 +106,144 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] kvm: x86: guest-triggerable WARN_ON_ONCE in set_efer() via SVM sta=
-te sync
---
+On Thu, Oct 01, 2026 at 07:13:29PM +0200, Jerome Mohm via B4 Relay wrote:
+> From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+> 
+> virtio_vsock_vqs_del() frees the virtqueues via del_vqs() but never
+> clears vsock->vqs[]. If a later virtio_vsock_restore() fails to
+> reallocate them (its error path is a bare "goto out" that only unlocks
+> and returns), the driver is left bound with a dangling vqs[]. The next
+> virtio_vsock_vqs_del() - on a second freeze or on remove/unbind - then
+> passes a freed vring_virtqueue to virtqueue_detach_unused_buf(), a slab
+> use-after-free. KASAN on a guest with a virtio-vsock device, after a
+> restore made to fail by fault injection:
+> 
+>   BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
+>   Read of size 4 at addr ... by task repro
+>    virtqueue_detach_unused_buf
+>    virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
+>    virtio_vsock_remove
+>    virtio_dev_remove
+>    ... unbind_store
+>   Freed by task ...:
+>    kfree
+>    vp_del_vqs
+>    virtio_vsock_freeze          <- the preceding freeze freed the vq
+>   Allocated by task 1:
+>    vring_create_virtqueue
+>    virtio_vsock_vqs_init
+>    virtio_vsock_probe           <- original allocation at probe
+> 
+> The object is the RX vring_virtqueue freed during the freeze;
+> vsock->vqs[RX] still points at it. virtqueue_detach_unused_buf() does
+> not guard a NULL vq, so a bare NULL-out is not enough on its own.
+> 
+> Clear vsock->vqs[] after del_vqs() in virtio_vsock_vqs_del(), skip the
+> detach loops when a vq pointer is NULL, and also clear the array when
+> virtio_find_vqs() fails partway in virtio_vsock_vqs_init() (which can
+> leave freed pointers behind). This mirrors virtio_blk
+> commit 0739c2c6a015 ("virtio_blk: NULL out vqs to avoid double free on
+> failed resume") and virtio_rtc commit 548d2208455f ("virtio: rtc: tear
+> down old virtqueues before restore"); virtio_console carries the same
+> stale-pointers-after-failed-restore fix.
+> 
+> Testing: reproduced on a private VM with a KASAN fuzz kernel based on
+> v7.3-rc5. The restore allocation failure was forced with CONFIG_FAILSLAB
+> steered by the fault-injection stacktrace filter to the virtio-vsock
+> restore path only; a guest-root program drives a pm_test=devices
+> freeze/restore cycle (so .restore returns -ENOMEM) and then unbinds the
+> device. The unfixed kernel reports the slab-use-after-free above; with
+> this patch the same run makes restore fail identically yet produces no
+> KASAN report. checkpatch.pl --strict is clean and the build is
+> warning-free. The reproducer is available on request.
+> 
+> Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+> ---
+>  net/vmw_vsock/virtio_transport.c | 28 +++++++++++++++++++++++-----
+>  1 file changed, 23 insertions(+), 5 deletions(-)
+> 
+> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+> index 4f9aa9c4c3aa..0553c0641fd2 100644
+> --- a/net/vmw_vsock/virtio_transport.c
+> +++ b/net/vmw_vsock/virtio_transport.c
+> @@ -714,8 +714,15 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+>  	atomic_set(&vsock->queued_replies, 0);
+>  
+>  	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
+> -	if (ret < 0)
+> +	if (ret < 0) {
+> +		/*
+> +		 * On a partial failure virtio_find_vqs() can leave freed
+> +		 * virtqueue pointers in vsock->vqs[]; clear them so a later
+> +		 * virtio_vsock_vqs_del() does not detach a freed virtqueue.
+> +		 */
 
-commit 5720ef7430b0bd8d9e28950790604b1d1ec8ce2d
-Author: Sean Christopherson <seanjc@google.com>
+IMHO we can drop this comment. Clearing after failure is common enough.
 
-KVM: x86: Recompute EFER.LMA instead of inheriting the current value on EFE=
-R writes
-
-This commit updates set_efer() to recompute EFER_LMA from EFER_LME,
-is_paging(vcpu), and is_pae(vcpu) instead of carrying forward the existing
-EFER_LMA value from vcpu->arch.efer, and adds a WARN_ON_ONCE() if the
-recomputed EFER_LMA differs from the previous value.
-
-> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-> index c3cb1575fe66e..c55402970a345 100644
-> --- a/arch/x86/kvm/msrs.c
-> +++ b/arch/x86/kvm/msrs.c
-> @@ -638,8 +638,17 @@ static int set_efer(struct kvm_vcpu *vcpu, u64 efer)
->  	    (vcpu->arch.efer & EFER_SVME) && !(efer & EFER_SVME))
->  		return 1;
-> =20
-> -	efer &=3D ~EFER_LMA;
-> -	efer |=3D vcpu->arch.efer & EFER_LMA;
-> +	if ((efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu))
-> +		efer |=3D EFER_LMA;
-> +	else
-> +		efer &=3D ~EFER_LMA;
+> +		memset(vsock->vqs, 0, sizeof(vsock->vqs));
+>  		return ret;
+> +	}
+>  
+>  	virtio_vsock_update_guest_cid(vsock);
+>  
+> @@ -782,19 +789,30 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+>  	virtio_reset_device(vdev);
+>  
+>  	mutex_lock(&vsock->rx_lock);
+> -	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+> -		kfree_skb(skb);
+> +	if (vsock->vqs[VSOCK_VQ_RX])
+> +		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+> +			kfree_skb(skb);
+>  	mutex_unlock(&vsock->rx_lock);
+>  
+>  	mutex_lock(&vsock->tx_lock);
+> -	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
+> -		kfree_skb(skb);
+> +	if (vsock->vqs[VSOCK_VQ_TX])
+> +		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
+> +			kfree_skb(skb);
+>  	mutex_unlock(&vsock->tx_lock);
+>  
+>  	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+>  
+>  	/* Delete virtqueues and flush outstanding callbacks if any */
+>  	vdev->config->del_vqs(vdev);
 > +
 > +	/*
-> +	 * Toggling EFER.LMA on a bare write to EFER should be impossible, as
-> +	 * it means KVM allowed architecturally invalid state at some point in
-> +	 * the past, i.e. allowed EFER.LMA=3D1 && (!CR0.PG || !CR4.PAE).
+> +	 * del_vqs() has freed the virtqueues. Clear the stale pointers: if a
+> +	 * later virtio_vsock_restore() fails to allocate new ones, the driver
+> +	 * stays bound with a dangling vqs[] and the next virtio_vsock_vqs_del()
+> +	 * would detach a freed virtqueue (use-after-free). Mirrors virtio_blk
+> +	 * commit 0739c2c6a015.
 > +	 */
-> +	WARN_ON_ONCE((efer & EFER_LMA) !=3D (vcpu->arch.efer & EFER_LMA));
 
-[Severity: High]
-As reported by Sashiko on v1 [1], can a guest or host userspace trigger this
-WARN_ON_ONCE() via SVM paths that leave EFER_LMA in vcpu->arch.efer out of
-sync with EFER_LME, X86_CR0_PG, and X86_CR4_PAE?
+Ditto here.
 
-In arch/x86/kvm/msrs.c:set_efer(), changing EFER_LME while paging is enabled
-is rejected earlier:
+> +	memset(vsock->vqs, 0, sizeof(vsock->vqs));
+>  }
+>  
+>  static int virtio_vsock_probe(struct virtio_device *vdev)
+> 
+> ---
+> base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+> change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+> 
+> Best regards,
+> --  
+> Jerome Mohm <jrmmhm.kernel@eldare.de>
+> 
+> 
 
-	if (is_paging(vcpu) && (vcpu->arch.efer & EFER_LME) !=3D (efer & EFER_LME))
-		return 1;
+The rest LGTM.
 
-As a result, the recomputed EFER_LMA always equals
-((vcpu->arch.efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu)), and the
-WARN_ON_ONCE() fires whenever a vCPU enters set_efer() with vcpu->arch.efer=
-'s
-EFER_LMA bit out of sync with EFER_LME, X86_CR0_PG, and X86_CR4_PAE. Several
-SVM paths appear to still leave EFER_LMA out of sync:
-
-1. In arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_save() and
-arch/x86/kvm/svm/svm.c:svm_set_cr0():
-
-	/* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing VMRUN). */
-	if (!(svm->nested.save.efer & EFER_LME))
-		svm->nested.save.efer &=3D ~EFER_LMA;
-
-	svm_set_efer(vcpu, svm->nested.save.efer);
-
-	svm_set_cr0(vcpu, svm->nested.save.cr0);
-	svm_set_cr4(vcpu, svm->nested.save.cr4);
-
-where svm_set_cr0() only updates EFER_LMA on a transition of X86_CR0_PG
-relative to the previous vcpu->arch.cr0:
-
-	if (vcpu->arch.efer & EFER_LME) {
-		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
-			vcpu->arch.efer |=3D EFER_LMA;
-			if (!vcpu->arch.guest_state_protected)
-				svm->vmcb->save.efer |=3D EFER_LMA | EFER_LME;
-		}
-
-		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
-			vcpu->arch.efer &=3D ~EFER_LMA;
-			if (!vcpu->arch.guest_state_protected)
-				svm->vmcb->save.efer &=3D ~(EFER_LMA | EFER_LME);
-		}
-	}
-
-Because L1 has X86_CR0_PG=3D1 when executing VMRUN, is_paging(vcpu) is alre=
-ady
-true when svm_set_cr0() runs. If L1 executes VMRUN with vmcb12->save
-containing EFER_SVME=3D1, EFER_LME=3D1, EFER_LMA=3D0, X86_CR0_PG=3D1, X86_C=
-R0_PE=3D1,
-and X86_CR4_PAE=3D1 (which nested_vmcb_check_save() accepts because hardware
-SVM ignores EFER_LMA in the VMCB save area), L2 runs with EFER_LMA=3D0 in
-vcpu->arch.efer while EFER_LME=3D1, is_paging(vcpu), and is_pae(vcpu) are a=
-ll
-true. A subsequent WRMSR to MSR_EFER in L2 or KVM_SET_MSRS from userspace
-enters set_efer(), computes EFER_LMA=3D1, and triggers the WARN_ON_ONCE().
-
-2. On RSM from SMM into nested SVM via
-emulator_leave_smm() -> svm_leave_smm() -> enter_svm_guest_mode() ->
-nested_vmcb02_prepare_save(), emulator_leave_smm() clears X86_CR0_PG=3D0
-before calling svm_leave_smm(). If vmcb12->save in guest memory has
-EFER_SVME=3D1, EFER_LME=3D1, EFER_LMA=3D1, and X86_CR0_PG=3D0,
-nested_vmcb02_prepare_save() does not clear EFER_LMA (since EFER_LME=3D1) a=
-nd
-svm_set_cr0() does not clear EFER_LMA (since is_paging(vcpu) is already
-false). Immediately afterward, rsm_load_state_64() calls
-__kvm_emulate_msr_write(vcpu, MSR_EFER, smstate->efer & ~EFER_LMA) ->
-set_efer(), which computes EFER_LMA=3D0 against vcpu->arch.efer's EFER_LMA=
-=3D1
-and triggers the WARN_ON_ONCE().
-
-3. In arch/x86/kvm/svm/nested.c:svm_set_nested_state(), the check on L1's
-host save state in vmcb01->save only rejects (save->efer & EFER_LMA) &&
-!(save->efer & EFER_LME):
-
-	if (!(save->cr0 & X86_CR0_PG) ||
-	    !(save->cr0 & X86_CR0_PE) ||
-	    (save->rflags & X86_EFLAGS_VM) ||
-	    ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)) ||
-	    !nested_vmcb_check_save(vcpu, &save_cached, false))
-		goto out_free;
-
-and svm_leave_smm() similarly loads vmcb01->save from guest MSR_VM_HSAVE_PA
-memory without checking EFER_LMA, allowing vmcb01->save to hold EFER_LME=3D=
-1,
-EFER_LMA=3D0, X86_CR0_PG=3D1, and X86_CR4_PAE=3D1. On nested_svm_vmexit() f=
-rom a
-paged L2 (where is_paging(vcpu) is already true):
-
-	svm_set_efer(vcpu, vmcb01->save.efer);
-	svm_set_cr0(vcpu, vmcb01->save.cr0 | X86_CR0_PE);
-	svm_set_cr4(vcpu, vmcb01->save.cr4);
-
-L1 is left with EFER_LMA=3D0 in vcpu->arch.efer while EFER_LME=3D1, X86_CR0=
-_PG=3D1,
-and X86_CR4_PAE=3D1, so the next WRMSR to MSR_EFER or KVM_SET_MSRS triggers
-the WARN_ON_ONCE().
-
-4. On SEV-SNP AP creation via sev_snp_init_protected_guest_state() and
-kvm_vcpu_reset(), KVM initializes vcpu->arch.cr0 =3D X86_CR0_ET,
-vcpu->arch.cr4 =3D 0, and vcpu->arch.efer =3D 0 while the guest VMSA can al=
-ready
-have X86_CR4_PAE=3D1 in hardware. In arch/x86/kvm/svm/svm.c:cr_trap():
-
-	case 0:
-		old_value =3D kvm_read_cr0(vcpu);
-		svm_set_cr0(vcpu, new_value);
-
-		kvm_post_set_cr0(vcpu, old_value, new_value);
-		break;
-
-If the AP traps on an MSR_EFER write setting EFER_LME=3D1 (while vcpu->arch=
-.cr0
-has X86_CR0_PG=3D0) and then traps on a CR0 write setting X86_CR0_PG=3D1 wi=
-thout
-having trapped on CR4, cr_trap() -> svm_set_cr0() sets
-vcpu->arch.efer |=3D EFER_LMA even though vcpu->arch.cr4 is still 0. A
-subsequent MSR_EFER write trap before any CR4 write enters
-efer_trap() -> set_efer(), sees !is_pae(vcpu), clears EFER_LMA in
-vcpu->arch.efer while the guest is running in long mode, and triggers the
-WARN_ON_ONCE().
-
-[1] https://lore.kernel.org/r/sashiko-outbox-182134@kernel.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030212721.2606=
-393-1-seanjc@google.com?part=3D5
+Best,
+Bobby
