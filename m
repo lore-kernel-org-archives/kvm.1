@@ -1,101 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.83.148.184
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793353999;
-	b=oGOEp3M7U7O26z02B2Wt3GHLjf2WAn2eLm/8ErWLJ/tQGP3xHkxGv51iKCAfJKOhdzbU
-	 yN0Tf+h4R8tkZBEW9quEQcfXd6dpx/2fi2ChG7v+03JPl47cERHECs0wts9qfZgAZgvtg
-	 hQWWqLjKzZpyf4uWijpcCmVjHm9Vm3JhAJD+wO1hckRl5s+lvw6nHto4bwgoP+Ppkwyjr
-	 lq7iocvnV6B1EIkX9J1WTfsbRk0agK94y6kQ9X0L8LvdD1Q/dPvDh5JbkDVqymw/MuMv6
-	 dzLO5I1oOufl0CvEFc90u67bEwBwZk8lidOQy55yvACfOhEewYpFg6A+uu312gHokUA==
+	t=1793356624;
+	b=CSk6I+ufyu2SGBMN8zGErz4P7jjJ/f3CQS6Ay1KcMJ3fppWe7wEuTv3e12rmrZtr019h
+	 2Nmtv4QVhe5ihTtgp9hwoxfODwgvQCvYupfCQsU/gECzlovgekL5Z2CkRp1hVISfPQekL
+	 sHoJxfnNOdJpgvmhbc+6Sio8HA3EMiLd18930vuECM3lX7mSIrIxsfQpMaqNG77xThwW4
+	 Gmt6nWm6Mjb5NC7WO+c7a0f/qzd29T0TvzwSrs8gwAZT5eWxwcMSo4zX25fkv46hMM8+7
+	 5YoSj+VxxsQCEr0vADWFci6fhMtNUvJ98mpg2Fa+8ri1enhTwtmP2BL5U8Rez1ZuEHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793353999;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=2sVz2kekigEwFuAjOAkuOKnCrnayEOdl/QGk0rPw5eA=;
-	b=NYIeSKUnlb1A23LQhyVev5907ckq7tQcQSnAO4P3OGgf/X8TRaSDUGUgFtMg9svwqfaD
-	 9S65blpAWvPW/dK27PSz6ooxqt/q7R8/2Ml8Ef1J0siD9ElSKPw06plF9LuO8m/OWDKOJ
-	 q9AUt/811BwkFgASZyFJJX9m41vluyA3+g8IB1kB89x+x67kkDaLYGyrWD3+kr+5rbHic
-	 Cfp/6H9WlqxeG1C0Qd6p9lMwPtrV+fg2kTCTnXCGp4AQ68vVe2xdu4AcSGSa/A2pcGup5
-	 /9Lx+xrbgDQYXz9QnU+/jkYNKALOSRtXq8pwmiavRad/QKLkCYUD3u4Daqm3hX27HlA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793356624;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=DmHjgENSEM3/SBgtOokrDXU+0jtEzKN/4QNEBO3+0hw=;
+	b=T8Xpz70haw7Ih2GT7nA9u71I5Tgj6xBbeVIh0GeRLtsvBdOWiClewi/dYt2hUZZTSSO1
+	 i2tmwjGJYOfFW1Dn/+UhdgLmy9vlg2b+UpRKbSJTF+CNhTW2st2rbZCx+dM6A05ziPvhR
+	 TfnNVbULpU19h9nrHFFWDzhWfa2y5fvWBfTz/GVBmVVUTi/siD+4djVqwWm6r5JxuiaGy
+	 2T70QZuZxR3Y9IC3zvs7SrzOO/e3ads8M4jwxCCCDO3ZY3Kk9F5UprBQWljjS0iQ+FRt5
+	 hd8B3u3ogFKtEjqaC7eanm35uhzk4AjbV4rC8M/OcnAnmW0LTbI6ZlCsIDWa1GZmiwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=jfCUPK9s;
-	arc=none smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amazon.de;
+	spf=pass smtp.mailfrom=amazon.de;
+	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=XRNQZJBs;
+	arc=none smtp.remote-ip=35.83.148.184
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790F960A2600
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 09:53:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 790F960A2600
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3691D606A604;
+	Fri, 30 Oct 2026 10:37:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3691D606A604
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=jfCUPK9s
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a35d5d4a20so5029335e9.2
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 02:53:18 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=XRNQZJBs
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793353997; x=1793958797; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2sVz2kekigEwFuAjOAkuOKnCrnayEOdl/QGk0rPw5eA=;
-        b=jfCUPK9sZBoRtj2E+Alb9yXH9e9oEAKo6O5FdNMtEtjfbqrv2VRaYVXKp3gzMIsb45
-         sd5OuL+bpBjiYZ5XwMFZwC4lARId+a+AiPW3kCH52zurleBtox0FUUeoLFox5UZbALIX
-         iKhkw0WljBZZ7vq1pKhyJKVBXZVsAGRnFlj9YEJ71eTohu3oCRaJIaiPjZ+ONR0FrkN7
-         9FWaY5PjdmumcBgOVAnQAZYOrvX2In4f41fMgf6TycYk0f0XDQq32zX+826jUXH5Tntc
-         GM244THgeu1VuSeiZn0SWIzmXDYSOnmv4iLsdz10MK0iILCHIe5p/kNUpjENpypGm5IQ
-         jgYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793353997; x=1793958797;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2sVz2kekigEwFuAjOAkuOKnCrnayEOdl/QGk0rPw5eA=;
-        b=nE5KPgyaPHdAfghGpQ8KDgo2OJ/WkeZFg/abqiyHHlOmGX+vQUsAiZSYBL+w3LVJ06
-         JePN525NOo0sPJxZp5u4astfT6xqnJ0/XefbzBzD6jjR7bwbm3aAB0Kq9XwKw7gJy3Nt
-         X9NbbyoU/1Qh2dS42mJFo696GahXS5NW/Ue7bQzVjkV4ffG+E1bYXdGLClrwrrIEr/mn
-         8yiVh+Yh9qkRkg7Nie2ODX+euxtcpV911TCv+YNLyANGg8UpHX5kiGFvilfs3fhk+Wiy
-         SA0VhIWWvBYf7mI+Vk7iLQc9LaEI99HWjNIWmZfjemkEU28u+aeiRI+JidNKj50cGG1k
-         yU1A==
-X-Forwarded-Encrypted: i=1; AKwUvBwQsIO8sxWfENwTDl6YKL3M1yeBTCkU42XU3UmIQjRucOre53/2ndBH82vj/0CM91RgmsU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI4Bxd7HOw2A6lwrrP7TJ1OtdI4/HN8K/emw85yxtq4tQxypvTh
-	Tgsugtajk6T9hXOSalBsoPQJWXxBISFkYfYZdAflWOHfIM4eVZb3UpYLKnrKnxbQFjg=
-X-Gm-Gg: AYBFou3/A67jKHxge3vje7ltpA5I0J/htSdbnvMUlC1z9BLx07neKxWSymhVXV53AUB
-	1rBwcpZeq2c3euEOZj93uOvuB/YM91vDoyiAxs1dEPp73i+SRCPAlEQN+Ba763fqg24yT6zqH8F
-	QQJ1yTqj6MH/olyBqe3ttfAcrI53+XUBESCV9ojqneted4Afo9o/gtGqiBAbY4RTva6Z473quMz
-	QOiuUO/SVewI5lD/mE29Amb3A9h6iABJVZthQPW3K9ZJH9kmrdXY+JkENQPJ4zLHE1xlQVURkjK
-	pQRFqifRjSNl767SVoKJqnK6fLaaWduXY1eeMEqBg4sJt9q4x1qqWWGQrM8rxIS125DKOKx7ZNx
-	QLupFvkVFW37brIomQ4e2oo6fH5nka3VzHIFsFxg8Pcb6dL8T2CJcDsiYppU5aZH8mKSL42lb0a
-	cosFN9nblGpZK9iY0Sf6venL1ZrPeDWstjxaDjMNVaCk06EjoXh8vfd+f7COG+drcq2+jVABZ7p
-	p7LT+p3qGTs8uUArgGDQO0n9zlbyB73d9oACm3F3wyqArnApPrDZvNFT5uz1Ql7e+CtgcoQcQF4
-	Viws+BvfqqyzUm9lDyji4SNIEtmDkJDu5sbP1iok6JD/x2tOJtGOSIZ2zDE=
-X-Received: by 2002:a05:600c:524d:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4ac18993ca7mr37419475e9.32.1793353996568;
-        Fri, 30 Oct 2026 02:53:16 -0700 (PDT)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa80f04785sm127578065e9.4.2026.10.30.02.53.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 02:53:16 -0700 (PDT)
-Date: Fri, 30 Oct 2026 10:53:11 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
-Message-ID: <auRmMPfaFINUIchi@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-12-jiri@resnulli.us>
- <179302367452.58760.11808905856343064399.b4-review@b4>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1793356624; x=1824892624;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DmHjgENSEM3/SBgtOokrDXU+0jtEzKN/4QNEBO3+0hw=;
+  b=XRNQZJBsfJyJ8AE+yuJKE5db41ky82ak98DRuQXgPaJHdJkaJiEA7lQV
+   c+zSyBzEBkgNzsc1UMMiNywxyElPsMUAmiSIUY7VeC+6IxB6HlWc1amFB
+   yScOkulerA7rQ2PkeApXhHRcLQiamQuTynZw0igxRyKEUNqreRO4Kys80
+   pLoZjFWtisSmPtYIgmW3n5n2VdAohfi8rOIt1QMVjVuD6FW5wnufph/r5
+   405bU03NePN86y7hpPRLI1HLAZ+jW2VGb3myVZVpoQGcVC00is54U0pM/
+   TxXZrLH2sovtTMu5ARTnfYyevJkaXw8BehUeeh8ScaeCRSzz+UOGqvRsY
+   w==;
+X-CSE-ConnectionGUID: 536e3dnJQjyPQh9pUrBmHA==
+X-CSE-MsgGUID: 7gCkdxJYSqGKNdgGjOhSIw==
+X-IronPort-AV: E=Sophos;i="6.27,186,1787011200"; 
+   d="scan'208";a="32449747"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 10:37:00 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:7805]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.7.65:2525] with esmtp (Farcaster)
+ id 15856f3a-0c04-464f-a522-68f6fdd5e38b; Fri, 30 Oct 2026 10:37:00 +0000 (UTC)
+X-Farcaster-Flow-ID: 15856f3a-0c04-464f-a522-68f6fdd5e38b
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Fri, 30 Oct 2026 10:37:00 +0000
+Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Fri, 30 Oct 2026 10:36:59 +0000
+From: Bjoern Doebel <doebel@amazon.de>
+To: <stable@vger.kernel.org>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <kvm@vger.kernel.org>, "Bjoern
+ Doebel" <doebel@amazon.de>
+Subject: [PATCH 6.18.y 0/3] Backport nested EPT violation GVA bit fix
+Date: Fri, 30 Oct 2026 10:36:40 +0000
+Message-ID: <20261030103643.573356-1-doebel@amazon.de>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,102 +82,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179302367452.58760.11808905856343064399.b4-review@b4>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
+Backport of commit 96b067b59ad9 ("KVM: VMX: Synthesize nested EPT
+violation GVA_IS_VALID/GVA_TRANSLATED bits") to 6.18.y, with its two
+dependencies.
 
-[..]
+Patch 3 is the fix: KVM pulls the GVA_IS_VALID and GVA_TRANSLATED bits
+from vmcs02.EXIT_QUALIFICATION even when the fault injected into L1 was
+synthesized while emulating an L2 GVA access, i.e. when that field
+describes an unrelated VM-Exit.
 
->
->This isn't even that complicated, if I ask AI to explain it in a C ish
->language:
->
->struct device_get_reply {
->	struct {
->		optional struct {
->			uint min_challenge_length;
->			uint max_challenge_length;
->			uint max_total_output_length;
->			struct {
->				enum blob_class;
->				string format;
->				enum representation;
->				uint max_length;
->			} objects[];
->		} evidence;
->
->		optional struct {
->			flags mr_flags; /* read, extend */
->		} mr;
->	} caps;
->
->	struct {
->		/* device-info: filled by the derived family */
->	} info;
->};
->
->I think the yaml names are not helping, calling everything attrs
->everywhere is really confusing. At least the transition into a nest
->and an attr-set should be more clearly marked in the yaml..
->
->The yaml would be significantly better if it was layed out according
->to the actual semantic flow instead of artificially being twisted into
->this need to put everything into a linear list. AI invented this:
->
->device-get:
->  request: {}
->  reply:
->    caps:
->      evidence?:
->        min-challenge-length: uint
->        max-challenge-length: uint
->        max-total-output-length: uint
->        objects[]:
->          blob-class: evidence-blob-class
->          format: string
->          representation: evidence-representation
->          max-length: uint
->      mr?:
->        mr-flags: mr-device-caps
->    info:
->      $extend: device-info
->
+Patches 1 and 2 are prerequisites, tagged Stable-dep-of; neither changes
+behavior on its own.  Patch 1 lets the EPT walker tell a paging-structure
+access from a final access, patch 2 plumbs in whether a fault came from
+hardware and renames kvm_inject_emulated_page_fault()'s exported symbol
+to __kvm_inject_emulated_page_fault().
 
-I have it implemented like this (with small changes). Looks great!
+Context adjustments are noted per patch.  Based on v6.18.56, build tested
+on x86_64 with CONFIG_KVM_INTEL=m and CONFIG_KVM_AMD=m.  Not runtime
+tested under nested virtualization.
 
+Kevin Cheng (1):
+  KVM: VMX: Synthesize nested EPT violation GVA_IS_VALID/GVA_TRANSLATED
+    bits
 
->So.. how about could we drop the sets, use a direct description of the
->layout and do something else for the ID numbering? Maybe the numbering
->can be solved directly by only listing the names in:
->
->numbering:
->  - device-get.reply
->  - device-get.reply.caps
->  - device-get.caps.evidence
->  -[..]
->
->?
+Paolo Bonzini (1):
+  KVM: x86/mmu: pass PFERR_GUEST_PAGE/FINAL_MASK to kvm_translate_gpa
 
-I'm still committed to implicit numbering. For "inline records" I
-resolved it by having it encoded as a tree with 4 levels:
+Sean Christopherson (1):
+  KVM: x86: Tell ->inject_page_fault() whether or a fault came from
+    hardware
 
- 63         48 47 46 45        32 31  28 27  24 23  20 19  16 15               0
-+-------------+-----+------------+------+------+------+------+------------------+
-|   family    |kind |   index    |  L1  |  L2  |  L3  |  L4  |      field       |
-+-------------+-----+------------+------+------+------+------+------------------+
-              |<------------------ record ------------------>|
+ arch/x86/include/asm/kvm_host.h | 18 ++++++++++++++----
+ arch/x86/kvm/hyperv.c           |  3 ++-
+ arch/x86/kvm/mmu/mmu.c          |  3 ++-
+ arch/x86/kvm/mmu/paging_tmpl.h  | 26 ++++++++++++++++++++++----
+ arch/x86/kvm/regs.c             |  3 ++-
+ arch/x86/kvm/svm/nested.c       |  3 ++-
+ arch/x86/kvm/vmx/nested.c       | 26 +++++++++++++++++++++-----
+ arch/x86/kvm/x86.c              | 16 +++++++++-------
+ 8 files changed, 74 insertions(+), 24 deletions(-)
 
-Renamed "attr" to "field" - I agree that the original implementation had
-attr everywhere. I got rid of it.
-"group" is now "record". I enlarged it to 32 bits to accomodate:
-1) kind is one of: named, request, reply - request and reply is used for
-   inline op records,
-2) index for named records (pre defined)
-3) L1-L4 for inline records
+-- 
+2.50.1
 
-rfc2 will show it in more details
->
->-- 
->Jason
