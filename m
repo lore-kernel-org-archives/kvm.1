@@ -1,76 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.200
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793391181;
-	b=m6fd0i+wIRHIyKn3xNtcW3rIukXrWLeCfrcyYDgyxR/y7ns9e1rxOdAGZYrCv+cYIsqr
-	 EVtiHseJ4wGq08l1tvQoUKAnEdhBHuxDEZh6x1Bn2qYemF76t3OvWqeILZFfnG8mQ2W8q
-	 jeloUq9tXkRM6mDuCqLrj0f2bo1GoSrNiifvhjBspNjKlCDvtjpx61v6Iil1OZouEeTem
-	 c97Qm4T1hP1yVW/OWmiQzcfUXsIc5pa5osuCfLKm6w0un7kfh4BHF3bo7eBOCenAC+2Bo
-	 Z4RMmWZHq8aoUdGZED+XxTsz4NduHIVHjqjA7XQX326blkXOp1T8xSL4VU9XuO9Xr/g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793391181;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ua+C9vpOidUeh38X5VWKBRe9NwFSaOtLQgMBx+NbHhE=;
-	b=3LYtV/a94153qCCCpxzf8T7aEDGQ3+jW78RLWO0Yqh5oFlUmGJTFgpdG9CKt0Q1ivCJ2
-	 vCtCASt3yhCWeWLm5eyzET6nT+IDTdm6Y31dEFYbgac9WsUYSGNaeqtf8xSAMIuK7P2pN
-	 POAEygbBNBmPNQG63dWcOuzKE4LLVMLNrJICyxsvviwu4EZnzV37piVVZ3WiwKqafn1gN
-	 GbLBAoxwIZ9+1HBn39cP6jDiPunTAxOytaV37mOW5KchYRudbLy1yWARhrXvGIIEQbGgT
-	 F+By1ZTqaYgZVYc3o386fxBtQkOW127bmkMHHu5563ApUpnD8OyC6PWJAn9GrzK0y4Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bBIGQQUl;
-	arc=none smtp.remote-ip=209.85.210.200
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.7
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793392160;
+	b=nHjObcJex1jJWsDuuy1DFfB4NG11fB/TnRDWKZhZBJJ32OJWrnCNWF4lq+KkYjcyw8Mv
+	 tssknTQ2c4bJwYHUv6p/T1mCGsWkfqS3urNW1i9fKCcpj8qxPRIh9wGD/cOq1XqnR5kFn
+	 JqogmZXP3i6XxwGTs+0yzo/t/YeP7D1GIauAeP7ekzo/boAKhEGL2iT3/6elmirPtigOz
+	 Zx70n3PzYHehbupIwdlVOsUEy1rhaz9sGh3PCpYFSuFOyL4Zz9r/ppc5GWV2HtDk8OFCg
+	 nx8zwSfrnXyl55uqH0RH9t67y0KC9I1S83sSVjCPh4/i1wQWEm82M8FmiG6tObzESXg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793392160;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=gOAKYplRAVGpqSRIoBikQrmnJiVXtEJLIS4oj6XG2cw=;
+	b=Rgolz/R/OOwWN69NzvG4cNwxSvgpdZMGk3u6kClFa/5Cr+fB9qpu1wArd2MSpBTv49IH
+	 h9zY3qglJKh483g3PVuudbZkahGes/vZjQxePDXKOo4vi26avCH97dYhWMC9xLIFpU4gp
+	 /EjJLydqPMt93OxdSTF1U7HlXDAyJX8Yt3vZhFkRLRYckRDXHT3ZoSA9crymZiE5TrvMp
+	 9/IoqDmuo7RCVkRz62dRddd5kJ3nn/GbsVCdtfV5uaSmjnIGpIFrBU78u5DT9ghTgCOBs
+	 s2jT9RSXRO/OTK+sZ1EBrkPb/K5B4GksembemIJE1Gl2nOsiJBeypQFOV5cahyI/KPA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=k1LDP6xu;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.7
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010007.outbound.protection.outlook.com [52.101.201.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64001606A320
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 20:13:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64001606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBEB606A31A;
+	Fri, 30 Oct 2026 20:29:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0BBEB606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bBIGQQUl
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8a5971cf7ceso1376574b3a.1
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 13:13:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793391181; x=1793995981; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ua+C9vpOidUeh38X5VWKBRe9NwFSaOtLQgMBx+NbHhE=;
-        b=bBIGQQUlZU11drb/YdFP19thgVsO6QOFUewvM8uTGj9M+dlBtUlEyYAJrqOaKrY0Ry
-         ZF/Z6VGVe3MMd03CD5Fb65U7josq/sX+OAZTyj4s0lOpru20jpEG70EJHE0TaPcIVrCJ
-         0gqE3M1IQvGGYNqyDLAImm3T9amMsXOJG0aEjOnTEaTDShiI4RvuE0CHjoQEcFdEF2hH
-         hNjqb8gzMNFXB5oBceQHMg9Omp37T0WV/oHmkBx7odrvwT8oxOu05Q+R5YR2mJ2XdqAc
-         F4pfAJKagJjscnMr31jT8gi1LoKuza6T4XKZv8b270LH23krUcwq9Skon3EkRUqWmnOL
-         hrjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793391181; x=1793995981;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ua+C9vpOidUeh38X5VWKBRe9NwFSaOtLQgMBx+NbHhE=;
-        b=Fkb+O2+/uwLiJoWmSDZeP+CvIUWnKWYAoEACApcS4DxTvDZTB40LGCDo9AkIpAWvDd
-         IjsMGWA1HsbNt7rnmhmmG9LHqoo2UmKltWEtyEXOu88tm7NIM6h+R1UObEm40O4m/NEc
-         L+yU+uq4R2KP4+xC273CInqDbO7/kW7rOgKf01juZy9XWYsYCjemxBj25E8DHh2D5UVB
-         Iq+fgVTb/nycibiPF4NmZqv8eBGtyAlPgqnURlz+QvDY2FLGvtAnzMvWWA/jKzxmyoNn
-         JomFOFJs0pHngLvN7oroecxehi1rk/ddilnCupKe86aCn1iYmPpUSArFUJhN8goZVwwn
-         8cWQ==
-X-Forwarded-Encrypted: i=1; AKwUvByGd2ysORENXiGfNPCmTjLgOdmiO24zhiFOJNAMgTkVeGQtF2MPSZabeN2JCROETUPPrTo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIbNv4yKmB2D7UaXd1et28icTlF61Fjh6SRk/A7DWt3VMMOx2do
-	PfVz+sZu6Urw/VSuXmm8SVJUSlbIQ4L3uMeOVA9nFadnfVJ9QG0Qq7p47YXjSVLU6oq2UL7x6/C
-	B8/lLUQ==
-X-Received: from pfbgr18.prod.google.com ([2002:a05:6a00:4d12:b0:888:e7c7:5580])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1daa:b0:882:956c:58e2
- with SMTP id d2e1a72fcca58-8a9bd2f071fmr3325949b3a.17.1793391180582; Fri, 30
- Oct 2026 13:13:00 -0700 (PDT)
-Date: Fri, 30 Oct 2026 13:12:59 -0700
-In-Reply-To: <62e09b20-b839-448c-90ad-0c63233b523e@oracle.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=k1LDP6xu
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s22vpCcrpt8/03i5EuaXzLZ7AiIycNPAxNlpxsABiaFCoNJvdJCQEykwN7MLb9+ZpGGBnXsAoxvIWQgB4g8uZjrr5ZNVk08BeEaP6ObTYbj+sHVvHGel01ZHRlUjbYmiemPetjXEeygVPrkLzIizeRkwI/4JDbtQly1/jFz5gNr6NuQrfCtdWpkXV05kmLMz24qUqzZ0e/mjaTg4muOa0e5ZccfAadylMMhUKts2egcQe15k+pefOf36lmsWlHFnF96dFLM9+Qjn7MZiFI98gYm5TYGYaobhmd38/F2unI/Z2yPQHiaundE3iDabq23OxuZSeh34wQXjlfWkKg4xmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gOAKYplRAVGpqSRIoBikQrmnJiVXtEJLIS4oj6XG2cw=;
+ b=di2M1Y8ywW94EIqTyekpo9lJWpy409nOp/Aeumg9ybRuKwGEjIRvgh9c2iD6MispPa/LZXj2G+7ApLh7Ie4QXmklAohfB068vd/t2hh5AJ/xmS2RCMAjgRl2A3bdYScFAyHYbLn13RYAjNPiomJEbDvdYZpuO303+3BmaBwzXkF8pVxeqiOwy/qqTZHfY0E18G16+sTZiXNSR1zXQcJHcvE/f+rqXp+OpTfSuyeEGUbv0GxiYCNbHNJ7ZCAmFo/vlJM7NCMChJHRnl4aHdc28jr8y1jXC8eannM3YoVcR9oZEG7rzzBs7+DDrlq0J2ON7HpwJ1V9ETV0GnYT6eJ2OA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gOAKYplRAVGpqSRIoBikQrmnJiVXtEJLIS4oj6XG2cw=;
+ b=k1LDP6xuCUPQpV+E7B4tGuzdqfwxk8P9pOnYXWCRRo0go6XhL0LnzfPh55T/sTtZe6TFQJZZZOe5FcfR0Gm7/VU9j84fRH46IqVVx/RUFI/bF4G+RKDFJRzzR3395ouLWKU4+4hevOETzK8PCAR0+FMVVjuxHQfaHGXpVab+Uys=
+Received: from CH0PR03CA0313.namprd03.prod.outlook.com (2603:10b6:610:118::34)
+ by LV1PR12MB174264.namprd12.prod.outlook.com (2603:10b6:408:50d::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
+ 2026 20:29:14 +0000
+Received: from BL6PEPF0006C3DC.namprd02.prod.outlook.com
+ (2603:10b6:610:118:cafe::3c) by CH0PR03CA0313.outlook.office365.com
+ (2603:10b6:610:118::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.8 via Frontend Transport; Fri, 30
+ Oct 2026 20:29:13 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0006C3DC.mail.protection.outlook.com (10.167.249.230) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.5 via Frontend Transport; Fri, 30 Oct 2026 20:29:12 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 30 Oct
+ 2026 15:29:11 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <babu.moger@amd.com>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
+	<bp@alien8.de>
+CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+Subject: [PATCH v6 1/2] x86/resctrl: Fix ABMC counter programming
+Date: Fri, 30 Oct 2026 15:28:47 -0500
+Message-ID: <3a5e99300f1309ae279beb058ef0438516b2bdcd.1793392128.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1793392128.git.babu.moger@amd.com>
+References: <cover.1793392128.git.babu.moger@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,195 +110,116 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261027051808.243000-1-partha.satapathy@oracle.com>
- <auDF9WpqW8OCu_8w@google.com> <85b0e3aa-0b84-4a00-852a-821aed4a0649@oracle.com>
- <auEI0B7QkIhg-lLG@google.com> <62e09b20-b839-448c-90ad-0c63233b523e@oracle.com>
-Message-ID: <auT6S-I5b5ordXy9@google.com>
-Subject: Re: [PATCH 1/2] KVM: x86: Select lowest vCPU ID for aliased xAPIC IDs
-From: Sean Christopherson <seanjc@google.com>
-To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Cc: Partha Sarathi Satapathy <partha.satapathy@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	wim.ten.have@oracle.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0006C3DC:EE_|LV1PR12MB174264:EE_
+X-MS-Office365-Filtering-Correlation-Id: bcb69e7a-a73d-4c22-def8-08df36c475e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|23010399003|1800799024|6133799003|22082099003|18002099003|13003099007|3023799007|11063799006|56012099006|261022105027099003|261022075727099003|10067099003|261021123027099003|261021121427099003|261009223027099003|261026140227099003|261028144727099003|261026121527099003|260925022911599003|260925021911599003|260925021311599003;
+X-Microsoft-Antispam-Message-Info:
+	gYMIXCtWfnCaAGHMZ3C1ottxDQ3CgoCarYIfgjmx0QBn85c8W8EC0jLCGFeEApOmxF9TUhowNsHPg77nv3NJOSkEzFrJafn6ekJRGK2Tw0wbfJKhWzAfbjBIO/Sl9vh4TKQs6b4jdC8s4qTfsqkzFxiaGZu6vjGfbcDmL8XCD1e/ES93I/UFb87XXlH5iFOmYSmPOGRPJ33R58a36+KsvWmPp/DCpwv60Cdp1WPiUwiC7crk/byMhP87ySEcLYLDcWiq9HGj4Vs2VNIYU6lpk1DzAphegmbwHpDmNK5eCP7749XDC2rvFtOHDr6nbT/pBaeGsLvfKjepk3Pt9IW+At4l/+fEevUGux6ETNuSo8rQ0KwFtZmpOzKKOYkbhPaXvK+kVPDzIa0N012z3A8jBRgdT45/TNONQVpzPHj+z4R/C6gCb7VGcGhJhKR2GeRK5WqF0bKE2Tp/DW1nt4pppZ/43gxTwWk9AZCwavyiT0n6yhAX44MiljEUcMJY4QRqikvGjkNAqoD33PPwnVQAu9wPrnFL63w30RdLLXIL4FIGekUo+Ax/Ws34MLjtW1kEklmFTZeYjztYxOuuXh5lS6Nc3htPUU2Lwnw73oZWTkdd8Yvb0rkyJc1cQjSCJouokfQxW5EISrqJ/opoAu5t1Q==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(23010399003)(1800799024)(6133799003)(22082099003)(18002099003)(13003099007)(3023799007)(11063799006)(56012099006)(261022105027099003)(261022075727099003)(10067099003)(261021123027099003)(261021121427099003)(261009223027099003)(261026140227099003)(261028144727099003)(261026121527099003)(260925022911599003)(260925021911599003)(260925021311599003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	rnEIHbL1bitkubZeagS6I6d55xIdmjrSaKtf+f40pO0+V9Gwti0bm/jNiBNgnCz/70J/OlxV/eYKiQt74GtIqeCiSsOiQLLQ+79aN2/T5REhHw2u9Mya3zSDOeOmvpsBGE6bW9IiAputOBrpnQCAeQ50CKqsRgsJHicMwzrYrXgDLqhN8uJejLwMXGG08Sq29d4uXmkDTXTB/IW472mwb3AE2QFws7NU7jrXDYv6+AD1Hfw72IFYB+Z+hQRTkkOa1FW0M6KI+jom8sOTyt3NxzR2VqXS3AlsAJp/eJlxQEukcVtWHFey7OqQY4HX3jT+gAcKldBToqQEBu3gwWG9fv/IQSjcx6HdDK7GSZIxahi/HtM6RrIFQovxCXJT4hRtRkwVbZq5ZcNSes8ZplsSCWd+SCud7cHwFCYXvvlK6oY/RPg69mP5A9+D6KIBwSrL
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 20:29:12.9115
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bcb69e7a-a73d-4c22-def8-08df36c475e8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0006C3DC.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB174264
 
-On Wed, Oct 28, 2026, Alejandro Jimenez wrote:
-> On 10/27/26 4:25 PM, Sean Christopherson wrote:
-> > On Tue, Oct 27, 2026, Alejandro Jimenez wrote: > On 10/27/26 11:=E2=80=
-=8A40 AM,
-> >> The issue was triggered with QEMU and a tool that uses libvirt API for
-> >> resizing guests and balancing their vCPU allocations across NUMA nodes=
-. I
-> >> am not sure if similar work has been published upstream, so I'll defer=
- to
-> >> Wim (CC'd) if you want more details.
-> >=20
-> > Oooh, actual hotplug of vCPUs.  That makes sense.
+AMD's Assignable Bandwidth Monitoring Counters (ABMC) are configured via
+MSR_IA32_L3_QOS_ABMC_CFG; MSR_IA32_L3_QOS_ABMC_CFG.cntr_id selects the
+counter the configuration applies to. The number of counters a platform
+supports (the number of possible values written to
+MSR_IA32_L3_QOS_ABMC_CFG.cntr_id) is enumerated separately via CPUID.
 
-...
+On platforms that enumerate more than 32 counters, the current 5-bit
+encoding truncates the counter ID and misprograms ABMC.
 
-> > I suspect there's no solution that will magically fix everything.  E.g.=
- if you're
-> > trying to resolve an issue where vCPUs aren't recognizing SIPIs, then t=
-he example
-> > you provided means vCPU_531 will never wakeup, i.e. which vCPU is  "bug=
-gy" changes,
-> > but the bug itself is still there.
-> >=20
->=20
-> Sorry, I don't follow. vCPU 531 would not receive an INIT/SIPI addressed =
-to
-> the aliased 0x13 APIC ID in my example, but it will be reachable using it=
-s
-> full x2APIC ID of 0x213, for which an entry in the phys_map was installed=
- in:
->=20
->         if (vcpu->kvm->arch.x2apic_format) {
->=20
->                 /* See also kvm_apic_match_physical_addr(). */
->=20
->                 if (apic_x2apic_mode(apic) || x2apic_id > 0xff)
->=20
->                         new->phys_map[x2apic_id] =3D apic;
+The AMD64 Architecture Programmer's Manual [1], available from [2], has
+been updated to widen MSR_IA32_L3_QOS_ABMC_CFG.cntr_id from 5 bits to 12
+bits (the published revision 3.41 does not yet reflect this; a future
+revision will). The CPUID enumeration reports the maximum counter ID in a
+16-bit field and may therefore report more counters than a 12-bit
+MSR_IA32_L3_QOS_ABMC_CFG.cntr_id can address.
 
-Oh, duh, the hotplug hack allows using the x2APIC ID even if the target isn=
-'t
-in x2APIC mode.
+Widen MSR_IA32_L3_QOS_ABMC_CFG.cntr_id to 12 bits to match the
+architecture. Cap the enumerated counter count at BIT(12) so every counter
+ID used by resctrl can be written to MSR_IA32_L3_QOS_ABMC_CFG.cntr_id
+without truncation.
 
-> My interpretation is that behavior is "the KVM hotplug hack", and that
-> behavior is not changed in the proposed patch.
->=20
-> My example was meant to show the conflict of your proposed change with th=
-e
-> "deliver to the lowest ID" rule, which you clarified is not a rule after
-> all :) (but perhaps it should be since it has been working so far..?)
+[1] AMD64 Architecture Programmer's Manual Volume 2: System Programming,
+    Publication #24593, Revision 3.41, Section 19.3.3.3 "Assignable
+    Bandwidth Monitoring (ABMC)"
 
-Heh, "rule".  More like half-assed description of what KVM kinda sorta does=
-.
+Fixes: 84ecefb76674 ("x86/resctrl: Add data structures and definitions for ABMC assignment")
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
+---
+v6: No changes.
 
-> > If this is about SIPIs hitting the all CPUs, then I think to have a rob=
-ust (well,
-> > as robust as this mess can get) implementation, we'd have to disable us=
-e of the
-> > optimized map when processing SIPIs with PHYSICAL delivery, e.g.
->=20
-> But then we would also have to disable the optimized map for INIT as well
-> (APIC_DM_INIT), since those would still be routed to the wrong vCPU other=
-wise?
->=20
-> And if both INIT & SIPI are using the slow path, they will be delivered t=
-o
-> all matching vCPU IDs, which is likely to cause problems e.g. hot pluggin=
-g
-> one vCPU will potentially initialize and start all of its aliases too?
->=20
-> I need to test this with proper instrumented kernel so I can "bring
-> receipts" (and I think Partha is doing it already), but hopefully my
-> concern above makes sense.
+v5: Added Reviewed-by:(Reinette).
 
-Don't bother testing my patch, my brain was slow to catch on.
+v4: Changelog update(from Reinette's input).
 
-> In short, I think the original proposal of allowing a replacement of a
-> phys_map[xapic_id] entry only with a new "low" entry (i.e. one with vcpu_=
-id
-> =3D=3D x2apic_id =3D=3D xapic_id) fixes the creation order issue while pr=
-eserving
-> the existing behavior for the typical cases.
+v3: Dropped the fix for truncation on 32-bit x86.
+    Removed the change bw_src field(RMID) width to 15 bits.
+    Added new check to limit the number of counters to 12 bits.
 
-Agreed, though I think we tie the overide to "xapic_id <=3D 0xff" instead o=
-f letting
-the "lower" vCPU win.  I.e. to make it a bit more obvious that the goal is =
-to keep
-the non-truncated xAPIC ID reachable.
+v2: Moved the link tag to the last.
 
-Ha!  Yeah, looking at 5bd5db385b3e ("KVM: x86: allow hotplug of VCPU with A=
-PIC ID
-over 0xff"), it had:
+v1: https://lore.kernel.org/lkml/980f39d3a0e0d9f73925e362f835aeef070a1bc5.1784322818.git.babu.moger@amd.com/
+---
+ arch/x86/kernel/cpu/resctrl/internal.h | 4 ++--
+ arch/x86/kernel/cpu/resctrl/monitor.c  | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-                /*
-                 * ... xAPIC ID of VCPUs with APIC ID > 0xff will wrap-arou=
-nd,
-                 * prevent them from masking VCPUs with APIC ID <=3D 0xff.
-                 */
-                if (!apic_x2apic_mode(apic) && !new->phys_map[xapic_id])
-                        new->phys_map[xapic_id] =3D apic;
-
-so the goal really was to prevent an truncated x2APIC ID from clobbering a =
-"pure"
-xAPIC ID.
-
-Actually, even better: what if we only let the vCPU whose ID exactly matche=
-s the
-aliased xAPIC ID win?  Unless I've gone into the weeds yet again, that's wh=
-at we
-(and more importantly, userspace and guest firmware) really want.  It shoul=
-dn't
-matter in practice, but it lets KVM provide a stronger, and hopefully easie=
-r to
-understand, guarantee in the errata.
-
-E.g.
-
-diff --git a/Documentation/virt/kvm/x86/errata.rst b/Documentation/virt/kvm=
-/x86/errata.rst
-index a9cf0e004651..09c6e6a29ae2 100644
---- a/Documentation/virt/kvm/x86/errata.rst
-+++ b/Documentation/virt/kvm/x86/errata.rst
-@@ -63,10 +63,11 @@ When KVM_X2APIC_API_USE_32BIT_IDS is enabled, KVM activ=
-ates a hack/quirk that
- allows sending events to a single vCPU using its x2APIC ID even if the tar=
-get
- vCPU has legacy xAPIC enabled, e.g. to bring up hotplugged vCPUs via INIT-=
-SIPI
- on VMs with > 255 vCPUs.  A side effect of the quirk is that, if multiple =
-vCPUs
--have the same physical APIC ID, KVM will deliver events targeting that API=
-C ID
--only to the vCPU with the lowest vCPU ID.  If KVM_X2APIC_API_USE_32BIT_IDS=
- is
--not enabled, KVM follows x86 architecture when processing interrupts (all =
-vCPUs
--matching the target APIC ID receive the interrupt).
-+have the same physical legacy xAPIC ID, KVM may deliver events targeting t=
-hat
-+xAPIC ID only to the vCPU whose vCPU ID matches the aliased x2APIC ID.  If
-+KVM_X2APIC_API_USE_32BIT_IDS is not enabled, KVM follows x86 architecture =
-when
-+processing interrupts (all vCPUs matching the target APIC ID receive the
-+interrupt).
-=20
- MTRRs
- -----
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index d6e5fbc3c58c..e89c4fef1832 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -297,8 +297,8 @@ static int kvm_recalculate_phys_map(struct kvm_apic_map=
- *new,
- 	 * Apply KVM's hotplug hack if userspace has enable 32-bit APIC IDs.
- 	 * Allow sending events to vCPUs by their x2APIC ID even if the target
- 	 * vCPU is in legacy xAPIC mode, and silently ignore aliased xAPIC IDs
--	 * (the x2APIC ID is truncated to 8 bits, causing IDs > 0xff to wrap
--	 * and collide).
-+	 * but make sure the non-truncated xAPIC ID always "wins" (the x2APIC
-+	 * ID is truncated to 8 bits, causing IDs > 0xff to wrap and collide).
- 	 *
- 	 * Honor the architectural (and KVM's non-optimized) behavior if
- 	 * userspace has not enabled 32-bit x2APIC IDs.  Each APIC is supposed
-@@ -312,7 +312,8 @@ static int kvm_recalculate_phys_map(struct kvm_apic_map=
- *new,
- 		if (apic_x2apic_mode(apic) || x2apic_id > 0xff)
- 			new->phys_map[x2apic_id] =3D apic;
-=20
--		if (!apic_x2apic_mode(apic) && !new->phys_map[xapic_id])
-+		if (!apic_x2apic_mode(apic) &&
-+		    (!new->phys_map[xapic_id] || vcpu->vcpu_id =3D=3D xapic_id))
- 			new->phys_map[xapic_id] =3D apic;
- 	} else {
- 		/*
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index e3cfa0c10e92..ffd74a68671b 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -214,8 +214,8 @@ union l3_qos_abmc_cfg {
+ 			      bw_src   :12,
+ 			      reserved1: 3,
+ 			      is_clos  : 1,
+-			      cntr_id  : 5,
+-			      reserved : 9,
++			      cntr_id  :12,
++			      reserved : 2,
+ 			      cntr_en  : 1,
+ 			      cfg_en   : 1;
+ 	} split;
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+index 3838e0a13d36..5d0d3b18f9b8 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -470,7 +470,8 @@ int __init rdt_get_l3_mon_config(struct rdt_resource *r)
+ 		r->mon.mbm_cntr_assignable = true;
+ 		r->mon.mbm_cntr_configurable = true;
+ 		cpuid_count(0x80000020, 5, &eax, &ebx, &ecx, &edx);
+-		r->mon.num_mbm_cntrs = (ebx & GENMASK(15, 0)) + 1;
++		/* cntr_id is 12 bits and can only encode 4096 counters. */
++		r->mon.num_mbm_cntrs = min((ebx & GENMASK(15, 0)) + 1, BIT(12));
+ 		hw_res->mbm_cntr_assign_enabled = true;
+ 	}
+ 
+-- 
+2.43.0
 
