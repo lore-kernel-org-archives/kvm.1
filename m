@@ -1,72 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793563842;
-	b=q90U5jgNEJip7ODmbJX8bEgcregFG6KvVAUTAa91Qx3sKwnSBbs7wrQXfBt+CzzOrU9U
-	 IqAQrWLVZMNgwBZ1ggB5gaAeb/6AbDmTd0JvpSNRzzVQG65Eno3XzLktguvLzGDCgDzil
-	 sHEkI20oYY/ExpZ74Mc/EZ//kJ7EUocRECRcO/BGJTyR5djLGfSaRiLRSmXeLmtUiAjbr
-	 0H7OPvZK+i5Lx5yCrgTCXqd5RzlP2IyqjqbNSS4GlKrP2W3SzNaO6CwmFCpBB4xxGNdVV
-	 73/BroqzmVIcdIQuYBQ0hrfqIIXVHKT84ERRykFLz5U3B4Nt4pkLVPGnunQAes8YsVA==
+	t=1793563879;
+	b=JLF5/iYcwhLpRrWqQv4YU+49BTM958ParACgzkNOwBHxISS7Yd+XWXu4DxEOW17T0LMc
+	 6X66l78zB0Oa3gwy08/34xDVaq3TfJ22yQly7+bcw2D67XlYXtpr8cH9hl3jy6fogI6kH
+	 Kibg6QnixZesucFre5uVBhrFy0O+8IWwcMhKJlCkb83Tzm3a4ECr0srtodNyjE6S24oe8
+	 xmWAeo6lJ+QfQLviW/tsoQ0XAu/dysB19rIoKHEr48gbWFRvBx3r7c+YwmOz0JRgUV6i5
+	 Hu7FfsnZNuGxnH7yGIY73U08lH6YlJt9vSi/KmPUysu7I6X8U1u3Vpmaqkv4EXi0VJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793563842;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793563879;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Resent-To:
 	 Resent-From:Resent-Date:Resent-Message-ID:From:To:Cc:Subject:
 	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Lines:X-Scanned-By;
-	bh=ky1zk6thScAqYqHATy6gr4bYU7NPm4fM3/3dmXxNTDM=;
-	b=kLxV3SvhT23wQMvmpMfEKidWQogCbLrIPz7xjpMLexSlJX6qyx3PZB4pOX/2u5o48rA6
-	 5Ve9AldK0xfX4QtDWdoupQ4Akyy5jwyW5izATVJUJ7FJEeaYjZcKfgl+lSBQXl6QqTrUn
-	 24/2n0YQZ2HcTZmocPmRwmCnevRrrY/klKMfY5di5FlwmNXBNUlT+y6D6vpmvLu4BHXUH
-	 dOu2MJKmT83BV4UXXUXlFob5fOl+AQQ0bY+7ucDeIvOvwQw4BK8wZTn2ez1DY6Sxm3mEz
-	 /OSnPcErSaPPsMIvfVys7yjOaZm+vhPO5bzrwKDhwSjuWudleA3Y7n6yY6xRFSq2R4w==
+	bh=9GKjds795ZOn0qLQCvSAqATX0f0l3wXdmlJ13Y6Fxbk=;
+	b=HQh2rTfvWvKg2jCNd3z1JNmEakXae9jPoMHuQr+QjJ755zUgDtUvndBVwcDt9VobuhtL
+	 Jly9y1vcXhgzrVDOy6kslkd9GnhixHzIrHsLUCyUA9XYurx8v720cfo4rRB14kdblzIzR
+	 GE45ubGA6Deo0rlj/mr9+s++TMrCgb3ImHMMGZxDBFefY9vRA3qJG5A6wI1TBI3l8pAO+
+	 swLRiUNkzvhCa1IBs1B3giotqZAgah7Sdh0IajnUvfusNBvOfGXha2vqCJnH/rED/lW90
+	 KB7/s8JWVEk8ND5BlerIVf9y2L9AFNg6CU0xXtLIiQWW6b3LIe0g8Fuh93Yzyzb392g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WR+SWVYm;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VY+N5JiH;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63D0606A324
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 20:10:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E63D0606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CB7606A325
+	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 20:11:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71CB7606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WR+SWVYm
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VY+N5JiH
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793563840;
+	s=mimecast20190719; t=1793563877;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:resent-to:
 	 resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references;
-	bh=ky1zk6thScAqYqHATy6gr4bYU7NPm4fM3/3dmXxNTDM=;
-	b=WR+SWVYm6Nle2ckMPipbjVT26FOhy5wssA4kF/yyJgbSV7uh/GZe+CsLU3/1RmkindUBm8
-	4mDOhINJN1dzqsw+QqG5DKmjTQZJ9OBgwh3i2IfqVrTe9svL2n1ceDlCBId82lyd8HqKhp
-	yGWE1X1lbEpnZ+nZNa3D3uhIKVWkDac=
+	bh=9GKjds795ZOn0qLQCvSAqATX0f0l3wXdmlJ13Y6Fxbk=;
+	b=VY+N5JiH+ZXym/3VSnCV6Wvm6fmpeyZHjO05WNshFtrNJU8Tybaeh4lTkXfzUMZwQPMirs
+	L65JNPpc/3Th52jHZNhUSLvdNrawYrhqtoVSYjIgSPPTDoT75KR29FH41E0h4bgjBl6Jmi
+	ugDkJBUGMSriABXpa4DJ9j7vHMRK0vs=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-400-NyKQmjqwPNCy-wEX0umkxA-1; Sun,
- 01 Nov 2026 15:10:39 -0500
-X-MC-Unique: NyKQmjqwPNCy-wEX0umkxA-1
-X-Mimecast-MFC-AGG-ID: NyKQmjqwPNCy-wEX0umkxA_1793563835
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-dbNBgUI3NkO7qJoX7yVMQQ-1; Sun,
+ 01 Nov 2026 15:11:14 -0500
+X-MC-Unique: dbNBgUI3NkO7qJoX7yVMQQ-1
+X-Mimecast-MFC-AGG-ID: dbNBgUI3NkO7qJoX7yVMQQ_1793563870
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 872EA1801324;
-	Sun,  1 Nov 2026 20:10:34 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 23A951800619;
+	Sun,  1 Nov 2026 20:11:09 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 853CA30002CF;
-	Sun,  1 Nov 2026 20:10:31 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D6A2730002CB;
+	Sun,  1 Nov 2026 20:11:06 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 0F7E521E6A04; Sun, 01 Nov 2026 21:10:29 +0100 (CET)
-Resent-To: 17746591750@163.com, alistair@alistair23.me, graf@amazon.com,
- FangSheng.Huang@amd.com, michael.roth@amd.com, jamin_lin@aspeedtech.com,
- kane_chen@aspeedtech.com, palmer@dabbelt.com, rbolshakov@ddn.com,
- foss@defmacro.it, sebastian.huber@embedded-brains.de, fam@euphon.net,
+	id 5DB5421E6A04; Sun, 01 Nov 2026 21:11:04 +0100 (CET)
+Resent-To: pasic@linux.ibm.com, 17746591750@163.com, rathc@linux.ibm.com,
+ alistair@alistair23.me, stefanb@linux.vnet.ibm.com, graf@amazon.com,
+ xen-devel@lists.xenproject.org, FangSheng.Huang@amd.com,
+ michael.roth@amd.com, jamin_lin@aspeedtech.com, kane_chen@aspeedtech.com,
+ palmer@dabbelt.com, rbolshakov@ddn.com, foss@defmacro.it,
+ sebastian.huber@embedded-brains.de, fam@euphon.net,
  jiaxun.yang@flygoat.com, lizhijian@fujitsu.com, atar4qemu@gmail.com,
  edgar.iglesias@gmail.com, jasowangio@gmail.com, liwei1518@gmail.com,
  npiggin@gmail.com, zhangckid@gmail.com, titusr@google.com,
@@ -75,34 +77,31 @@ Resent-To: 17746591750@163.com, alistair@alistair23.me, graf@amazon.com,
  its@irrelevant.dk, clg@kaod.org, conor@kernel.org, david@kernel.org,
  jic23@kernel.org, kbusch@kernel.org, mchehab+huawei@kernel.org,
  sstabellini@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, pasic@linux.ibm.com,
- zhiwei_liu@linux.alibaba.com, rathc@linux.ibm.com, zhenwei.pi@linux.dev,
- stefanb@linux.vnet.ibm.com, adityag@linux.ibm.com,
- xen-devel@lists.xenproject.org, alifm@linux.ibm.com, luc@lmichel.fr,
- lixianglai@loongson.cn, maobibo@loongson.cn, pbarbuda@microsoft.com,
- yoshinori.sato@nifty.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org, john.levon@nutanix.com, thanos.makatos@nutanix.com,
- kfting@nuvoton.com, den@openvz.org, elena.ufimtseva@oracle.com,
- jag.raman@oracle.com, daniel.barboza@oss.qualcomm.com,
- philmd@oss.qualcomm.com, pierrick.bouvier@oss.qualcomm.com,
- phil@philjordan.eu, tangtao1634@phytium.com.cn,
- chao.liu@processmission.com, jiri@resnulli.us, sam@rfc1149.net,
- anisa.su@samsung.com, alex@shazbot.org, farosas@suse.de,
+ richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com,
+ zhenwei.pi@linux.dev, adityag@linux.ibm.com, alifm@linux.ibm.com,
+ amachhiw@linux.ibm.com, borntraeger@linux.ibm.com,
+ brueckner@linux.ibm.com, farman@linux.ibm.com, harshpb@linux.ibm.com,
+ iii@linux.ibm.com, jjherne@linux.ibm.com, milesg@linux.ibm.com,
+ mjrosato@linux.ibm.com, luc@lmichel.fr, lixianglai@loongson.cn,
+ maobibo@loongson.cn, pbarbuda@microsoft.com, yoshinori.sato@nifty.com,
+ qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ john.levon@nutanix.com, thanos.makatos@nutanix.com, kfting@nuvoton.com,
+ den@openvz.org, elena.ufimtseva@oracle.com, jag.raman@oracle.com,
+ daniel.barboza@oss.qualcomm.com, philmd@oss.qualcomm.com,
+ pierrick.bouvier@oss.qualcomm.com, phil@philjordan.eu,
+ tangtao1634@phytium.com.cn, chao.liu@processmission.com, jiri@resnulli.us,
+ sam@rfc1149.net, anisa.su@samsung.com, alex@shazbot.org, farosas@suse.de,
  mohamed@unpredictable.fr, kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
- alistair.francis@wdc.com, anthony@xenproject.org, amachhiw@linux.ibm.com,
- borntraeger@linux.ibm.com, brueckner@linux.ibm.com, farman@linux.ibm.com,
- harshpb@linux.ibm.com, iii@linux.ibm.com, jjherne@linux.ibm.com,
- milesg@linux.ibm.com, mjrosato@linux.ibm.com
+ alistair.francis@wdc.com, anthony@xenproject.org
 Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Sun, 01 Nov 2026 21:10:29 +0100
-Resent-Message-ID: <87mrrs1fey.fsf@pond.sub.org>
+Resent-Date: Sun, 01 Nov 2026 21:11:04 +0100
+Resent-Message-ID: <87ik2g1fdz.fsf@pond.sub.org>
 From: Markus Armbruster <armbru@redhat.com>
 To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,  Michael
- Roth <michael.roth@amd.com>,  John Snow <jsnow@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Mauro Carvalho Chehab
- <mchehab+huawei@kernel.org>,  Pierrick Bouvier
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
+ <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
+ Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
  <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
   Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
  Kostiuk
@@ -163,17 +162,14 @@ Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,  Michael
  <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
  Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
  Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 38/65] qom: convert scalar properties to QAPI-aware
- registration
-In-Reply-To: <CAMxuvaya+Tihnwjf8JNjhmhBMwE7XpTF8zPL7tbfb8DFiAV62g@mail.gmail.com>
-	(=?utf-8?Q?=22Marc-Andr=C3=A9?= Lureau"'s message of "Fri, 30 Oct 2026
- 13:01:17 +0400")
+Subject: Re: [PATCH v7 17/65] qom: add object_{class_}property_add_qapi_enum
+In-Reply-To: <20261020-qom-qapi-v7-17-431a86b02b58@redhat.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?=
+	Lureau"'s message of "Tue, 20 Oct 2026 14:45:34 +0400")
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-	<20261020-qom-qapi-v7-38-431a86b02b58@redhat.com>
-	<87y0bfa81j.fsf@pond.sub.org>
-	<CAMxuvaya+Tihnwjf8JNjhmhBMwE7XpTF8zPL7tbfb8DFiAV62g@mail.gmail.com>
-Date: Fri, 30 Oct 2026 10:31:46 +0100
-Message-ID: <87bj8ba60t.fsf@pond.sub.org>
+	<20261020-qom-qapi-v7-17-431a86b02b58@redhat.com>
+Date: Fri, 30 Oct 2026 11:02:00 +0100
+Message-ID: <871p97a4mf.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -190,32 +186,128 @@ X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
 Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
 
-> Hi
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> ---
+>  include/qom/object.h | 74 ++++++++++++++++++++++++++++++++++++++++++
+>  qom/object.c         | 90 ++++++++++++++++++++++++++++++++++++++++++++++=
++++---
+>  2 files changed, 159 insertions(+), 5 deletions(-)
 >
-> On Fri, Oct 30, 2026 at 12:48=E2=80=AFPM Markus Armbruster <armbru@redhat=
-.com> wrote:
->>
->> Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
->>
->> > Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
->> > Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->>
->> How did you create this patch?  It looks almost mechanical.
->
-> Repeated grep / multi-cursor in zed iirc
->
->>
->> It misses a few conversions, almost certainly in code added since you
->> made this patch.  I can take care of them.
->
-> Not surprising after several months.
+> diff --git a/include/qom/object.h b/include/qom/object.h
+> index eb61d8842b80..e04be4caed57 100644
+> --- a/include/qom/object.h
+> +++ b/include/qom/object.h
+> @@ -2027,6 +2027,80 @@ ObjectProperty *object_class_property_add_enum(Obj=
+ectClass *klass,
+>                                      int (*get)(Object *, Error **),
+>                                      void (*set)(Object *, int, Error **)=
+);
+>=20=20
+> +/**
+> + * struct QapiEnumProp: Descriptor for a property backed by a QAPI enum =
+type
+> + *
+> + * Binds a QOM object property to a QAPI enum, providing automatic
+> + * string<->int conversion through QAPI visitors and optional
+> + * default-value initialization during object instance init.
+> + *
+> + * Use the QAPI_ENUM_PROP() macro to construct instances inline.
+> + *
+> + * @name: property name exposed on the QOM object
+> + * @description: human-readable description (shown in ``-device help``, =
+etc.)
+> + * @default_value: initial enum value applied via @set during instance i=
+nit,
+> + *                 or -1 (the QAPI_ENUM_PROP default) to skip initializa=
+tion
+> + * @qapi_type: pointer to the generated QAPITypeInfo for the enum
+> + *             (provides the string<->int lookup table)
+> + * @get: getter that returns the current enum value as int, or -1 on err=
+or
+> + * @set: setter that receives the enum value as int; %NULL for read-only=
+ props
+> + */
+> +typedef struct QapiEnumProp {
+> +    const char *name;
+> +    const char *description;
+> +    const int default_value;
+> +    const QAPITypeInfo *qapi_type;
+> +    int (*get)(Object *, Error **);
+> +    void (*set)(Object *, int, Error **);
+> +} QapiEnumProp;
+> +
+> +#define QAPI_ENUM_PROP(...) ({                                          =
+ \
+> +    static const QapiEnumProp _prop =3D {                               =
+   \
+> +        .default_value =3D -1, __VA_ARGS__                              =
+   \
+> +    };                                                                  =
+ \
+> +    &_prop; })
 
-Not at all.  Almost surprised it's so few.
+This is a cute and reasonably well-known macro trick for optional
+keyword arguments in C.
+
+The example [*] below specifies all arguments.  What happens when we
+omit any?  They default to zero via default initializaion, except for
+.default_value, which defaults to -1.
+
+Trap for developers: some arguments aren't actually optional!  If you
+forget to specify @name or @qapi_type, the code compiles, but crashes at
+run time.
+
+Not a fan.
+
+> +
+> +/**
+> + * object_property_add_qapi_enum:
+> + * @obj: the object to add a property to
+> + * @prop: property descriptor
+> + *
+> + * Add an enum property with QAPI type association.
+> + *
+> + * Returns: The newly added property on success, or %NULL on failure.
+> + */
+> +ObjectProperty *
+> +object_property_add_qapi_enum(Object *obj, const QapiEnumProp *prop);
+> +
+> +/**
+> + * object_class_property_add_qapi_enum:
+> + * @klass: the class object to add a property to
+> + * @prop: property descriptor
+> + *
+> + * Add an enum property with QAPI type association.
+> + *
+> + * Use the QAPI_ENUM_PROP() macro to construct the property descriptor
+> + * inline. If .default_value is not set, the property is not initialized
+> + * (default_value is -1). Otherwise, the setter is called with
+> + * default_value during object instance init.
+> + *
+> + * Example::
+
+[*]
+
+> + *
+> + *   object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
+> + *       .name =3D "policy",
+> + *       .description =3D "Set the NUMA policy",
+> + *       .default_value =3D HOST_MEM_POLICY_DEFAULT,
+> + *       .qapi_type =3D &HostMemPolicy_type_info,
+> + *       .get =3D my_get_policy,
+> + *       .set =3D my_set_policy,
+> + *   ));
+> + *
+> + * Returns: The newly added property on success, or %NULL on failure.
+> + */
+> +ObjectProperty *
+> +object_class_property_add_qapi_enum(ObjectClass *klass,
+> +                                    const QapiEnumProp *prop);
+> +
+>  /**
+>   * object_property_add_qapi:
+>   * @obj: the object to add a property to
 
 [...]
-
-> Are you working on v8 or should I start rebasing?
-
-I think it's overall less work if I do v8 at this point.
 
