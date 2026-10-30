@@ -1,95 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793317847;
-	b=JYEVyWpIRoumQ61i8VUkblrilceq8uvDIOCxIe0JogI+zJ8vwABhcsE0aQKzBXbGh5z7
-	 yl73x3Uxnxt8THQb76tKvONaPcaGR0CNLtI2ZeVsHg+90vIu+TXsC8+b6SPp8nZBZy4vN
-	 dLHXioXF2OY4FVt+3x8XOW5/zRnBVtntsN173jXmWdG7iwF2hpGg1K1T4tWvfj7oFhziw
-	 h6Q4JiYnIEThI00X14tTYBen8G5jdtmPhYwEA5AjFBPnikNCofq3VuYCr0yiIiljy8mZ+
-	 d4+68t1jnSZwt2nH1J+r4hWcCx/wfYatciZi2+dnNDPcAOAWh0T4WqTG6F98EOpTX8Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793317847;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793318458;
+	b=Zm/tBHlo6rwh4uell250//fgfltnMMFE1jJPQ39J6qwWZeq2bUu5WfZQoepJAgNKATXS
+	 8f5vZwGfnJTnwzq7iNDeQNe9cAWkG9Nm8OCyeBhNWTf2KcnKCxCvROE5WRaCV+T3eT+e8
+	 ptjg4wyKi/w8uKAfhW3r00lCsGMk/qXiPz+qniZwNUsWAjKFdjioMV7TVSeKWHyTtd3Jw
+	 oPElZePLtQ28bTsov9RwaK1dGegfIwM9PKsUr4UTpmzfiEPN/FIdx4VMi6V1lXcgE7QmT
+	 VnmJh3l52YTbVUnJ0hDcNPqxH1aQDrESMsTUuTaIcnYyyn4t0bt/DlxUj8nz8UgrPWQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793318458;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=aLKH9Mb7xVZoEANx5zLK4zjozsRFYCrTpLOqfVIFbFU=;
-	b=EBzkgY8oHteu7a3vgXT3ZE4X9Gwxt7YITmjTc1glp6jdmc+OyWoDfRB2q+zS1o1sQJuX
-	 flnNPCjbuIxv94yY3crk44HLKPpI9LNcBnTaHpGLfoAnvM2ivq6vbBuUpeyRxsietY5Gk
-	 F+W7UWjyT9qSZdFrZjY6Hip9Z5kzBjG1y+yeZI9AvsFkDh5vMsX6D3/EtKEmSIFVCE1MU
-	 K96qCWgBL0OzNWKZ812x5yt5Ors3zj3XuRtC3+NZDuyvoDDoKmUTJWEynuuVJw3HvvXbY
-	 YSiQv8jYptzuZ58/HO4mYt+tMb4kh5Hnd6PLLFb8DFp42m+J+MC/Jztd3Cxcivzdd0Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=x6t4nlL+;
-	arc=none smtp.remote-ip=209.85.214.181
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
+	b=0nj95zVsiW1SmELP2aksqZ026ogI2nN4lXCbQCaLbt3s00EQ9GV2+omlRlZjtpbGOkOH
+	 6l85LO+5HLlgwrLgLy98KN+C/l20MEEp6Wp+FM/krnEcfjj7zLUwSVs2ERKXEZ016Eqkp
+	 +9oU0LKkiBVZ/lj05Nj+yeyxaupvHv15kkUdbIFQBFg1VMevUqFsVYayWDIbmFg3UqznQ
+	 71dS+bjImltAZsbI1iYYAVmWUqyIBYjEikmfvOwsgDcYqZCbx8Cf3IUkHP6yuecKCtQ9t
+	 sMTJdG/cY04fHjNMkkW1fI+uQs7a4qSlBHr6RaNjl5aXUGnR4G8mcU+rWhaF81MmN6Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AW1HInfw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81ED606A321
-	for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 23:50:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B81ED606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFF6606A31A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 00:00:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEFF6606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=x6t4nlL+
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e8da6ef7ddso836205ad.3
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 16:50:46 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AW1HInfw
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so2492a12.1
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:00:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793318456; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qYf1ahZ2c4HV2IHaY4RNWUTD9gfhaCjUCshqmm9nAMhrFiWcb9R+tIRuLjYyHRQt9E
+         azyx3Xe+NOmImxXgYpWq0YNO4VsRYGCl3qwk/vnzwsO4quVH/16wG7v3wuCx++DBJLdE
+         DjItnqEHjDowinAh7zh3JBzy3I2KnNISV8BMzOCudYp/vlNyNDvnpFmWCI2gxq2VGaR2
+         SiF86BAjJuyMSvVQwPhny8VybUQ1B7XkmfjDNGClQJ82x0WDydaZToBr+1F7X61ptQGW
+         zlrUt/Ydks8FIsVJc6eLVEEawh+m/1bOASCpHZLH/MYDjm0xCk82FDGviEtiA3udo6H9
+         jIcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
+        fh=xktS1cydym5mlYKZJb5etHoGdYjZhnvXYQqq6tQt9fI=;
+        b=EVpDbTASMK4+SzPQYlHy//tuvF6gxg7xgm5cgqvQC39r3rSuVZBctsqZq+dRqDnqbb
+         Gdh7wfbHSuv4rQue8Y8eB8lqOJ9K/vbh+sVkAsBEsYnTRV6phsJP9B9+oS6DdDUqCmIK
+         ybJlvO62dHycII/TV7X87LlIqrqB/oG02U+bO9EhL5+f8SCfteq12R4ZrtWzFtvYaann
+         DJwulW0Kli3eY34+07Az7ytAnm9mzBvLguwUgVCgTZEbyi3psh0TfM53gBh6HRRbiLVh
+         6El+P8SnYvFcscQAkIUvQx+tyMqJeyLluJOZfkk9Jzv5/9u5i/f59M8nCk6SJYD0/wvC
+         7YKQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793317846; x=1793922646; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aLKH9Mb7xVZoEANx5zLK4zjozsRFYCrTpLOqfVIFbFU=;
-        b=x6t4nlL+/THve+kHJInO3FmP78H3hnlw8R/TNjnUl0q+3MFcz8V4p2WlKkfwrIeXFS
-         dDSwysLd952vKhoSz0Fp+dzZwXu+dKZP27WkOYTQmGRQnUCUHrh/2EuLAyFacYHoeIME
-         se9FT4e+jl1v0G7doBPpOqMr36vuV1RSriPV0lD6teqvd+fXmoWME/tjOggoTaTOGgpU
-         RBb6Cl0ys+h95ymk3vujCbKnKUH12Mw/bxVwKgCqg5/Aw1ToL5oEo2ENt13nHGiRcmzr
-         TgE6r2Ym3hB6e7/Xc4mc9JlIT2yeBi4am/Xwi/5ygOXMRQ1bJ0X3s9eZ7NQzRF4WnZKf
-         xpWg==
+        d=google.com; s=20260707; t=1793318456; x=1793923256; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
+        b=AW1HInfw6hVPfoRvD736sYB3zTE0cSDxnVw6yygthKUGTF4onkFNlGmz4/caAqgUU3
+         SDwEL5QPayGRF6LFj2d2Yvse1adS39hRumxe2SFEHm5nGZYUo5Ma7D/hvm5HOuoTJYxH
+         vLMH4gHyoAjN2cMOL+tNZbe/vcN1I4XdQN+B+dnDclu1g6hPdtWxTTLKHVX6SOhbm1nq
+         WDci24T9Kih9hvtVH4F/Oc1Cu+7+rDtAxm1UfsuTZs/TNYHzzBx2cCIZE/LARAvKGlQi
+         lJb9LxGzIlOhDcTPXT9GBq2MgmvebgHNmW93Xdp7GyGMYeaCS7FMN4Roth16XZtyV6me
+         TI+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793317846; x=1793922646;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aLKH9Mb7xVZoEANx5zLK4zjozsRFYCrTpLOqfVIFbFU=;
-        b=nu9iN7EJR3HeWnKedV+R/FqoUqEGwieTDfRQ3ZNLMZZbZ4REu02f99KhCDp8JP7aag
-         lSbqBCSNYx4om573gN9g0Z/J7TuZBeNjQ2bKe5aXDzW0O4JukiVZ0UT8DtqFEgBDRIv6
-         DgK/NQFdeRlgfCXzquhKJwF9dHRbnanF345mGbmWENJdHfL1FBaPC5TTf2CnHwN7JUtf
-         yV4RgAUTjUT18ornHqKgfkofbhCV2FzI2LXJkGoFowIm8655QmQhbWkxZJNAnlN7EIV9
-         01XNt2LTVTzNrbDnqUVUKWOXyk0sXOGyAmH8cjpSGhKgnccyQzi/hb2TS4pO6aAwp2TP
-         iXNA==
-X-Gm-Message-State: AFq9FYIJVWpPmAhg1vh1Fx7s/ETykwl2HqvPrzdkylaEMmRrvlGCJ3qh
-	uOMFNWtKpqeSPb5u5vmU91FYADdLkFQibzdBwJTaEYR6zrDz30Qq+tjj
-X-Gm-Gg: AYBFou3nWFxH/EdyLRFVDrOldGP+hn4jzn/WReMJQcWZpPbVvvrkLsffV927nfhVg0c
-	sMPA0J/XZWGBP6jNMfMANiOU1dm3izG9J+hbATPSp0UQYm8B/W84hq/gqfXKy1LQP9OmIukBxdp
-	e1GxoyV/7jj1L8i1itoJ9qADPqngEp3D8golE5N9uotUEykRr/C1XKJUi9pacrF2tgnIkcVHRQV
-	2AKUz0oHytyOck8I3skZeSO6KLKExDDHBpfayoh2w6anZS+7jrh086kIhLSG92PuOxFgANAvzlJ
-	Hp78kG/hgZ67LlMcuC5jhg5O65yIIPUuJnxPIslJVLQoA4DCUfoLl2OkJUj5QTPKbhViq32D3C2
-	8NLsdxkYWyklv6M6QCt40eX+LLjuk76ugeZMTpwylzO3FMRK5cv20sdPXtaihSayxbtGOmbCNPQ
-	to5+nEQkgVMJjnvOxe4UAjak+vfeMeJ8DxJslUNfXXF2gu2J9MRH/a2FI9s9F+2VAziEYICXMAh
-	5sAtoLaiCOC0tuAiasEbxf4xs2U6bGIUbe97lkaIQbp0unM0kW97aT+hEbmEFxNRjYfgx37GEWP
-	bQCv3C7dbv1mBEwBQRYyE//DnYmq75gOX/H3z7VfnLWCedV8D0WNP0OIElTs3XMF9d8wGuzawZs
-	NfsU9XBSU5Q==
-X-Received: by 2002:a17:903:24c:b0:2e9:4b32:fc6c with SMTP id d9443c01a7336-2eb3643d494mr8145375ad.26.1793317845994;
-        Thu, 29 Oct 2026 16:50:45 -0700 (PDT)
-Received: from monk.. ([2604:3d08:8e80:f800:3c86:745c:97f1:5486])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39266f42sm384225ad.40.2026.10.29.16.50.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 16:50:45 -0700 (PDT)
-From: ma.mandourr@gmail.com
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mahmoud Abumandour <ma.mandourr@gmail.com>
-Subject: [PATCH 1/2] KVM: nVMX: Don't let L2's LMSW modify CR0 bits owned by L1
-Date: Thu, 29 Oct 2026 16:50:39 -0700
-Message-ID: <20261029235040.12013-2-ma.mandourr@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261029235040.12013-1-ma.mandourr@gmail.com>
-References: <20261029235040.12013-1-ma.mandourr@gmail.com>
+        d=1e100.net; s=20260707; t=1793318456; x=1793923256;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6AajOicrvuRgSKCOUIMtr9ZDlZu1f1csRJX+CeX/PXg=;
+        b=1ytWlD8PKjjK6LPKXdSJY64NAfH385Tf569jPFmPb4RtgC7Wnct0llfVySCQAbfqe/
+         dVM0/xs0IXEJyU+E9jM2eOZqofiBUwKTHBzZ0YASf26xeapD0EjDNjeteeVsnjtt/9c6
+         teFqAFCdJLLaGRJocwQQZ+9hbXlUkfSLUGKhe+t5DLVgRGvk2cBqCP976g3m5EMLTDg3
+         4+GJUMmzoqJq8Zu0Ho+/vcAZZtkAa89QzTWsCPQjXC1QXwvfPyUzMGfAUHs2zsv/Vxgi
+         piYjWpCXXtSwQW8ugy4Z9BansDFFSyIX1+7aOA3r+QJSQy4fIRWaFkEBbdJ8T2sLXAFk
+         BVcQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzr5hIUhhmQu0KiU11NrIF6aJgd7p85y4QmDdZoKUkB5v4XxF8iVUFlB9j6w73A/4YZpSA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK1+6+k7Ivh1410Z2K6YxIDZtBP0Ry0uJxrCrX6oB13A7jyp64L
+	rL5TckPnK9t1IXMlJcyk9JUnlOy/THQHbk69HCDVJXSadPy4SzvkOo5eJADL/ySgDJBJ4nA58ok
+	7GFdL4Fi73y/Ua8DKFhhj8T/yA1LsWv2ZNQ11xMUc
+X-Gm-Gg: AYBFou254bvv9KgoBOkKqKYQWcyYx+XyatFkiJg4ZoJ5LBGuRyjzTc7XxHp2KEJTQiT
+	7aH0ejF6FN/o7JOnKKlCY/Ogk+1xB1FofDo5rSIua+MyePQsxOGB9AvbP45Gb8C0foBl1zJfXc0
+	7Zbc2uOUobxceg/tXxDhyCgNZclUpsK0mBdcQB6NF81o43RzK61rTk1OKLygdnWhm/HD/aC7jfm
+	pl/cKDJ4CuSjaQro77kD50gADC6O0my/EesuBeR8OqQHvwjcoCYpNHsMhjxZdh9l81yBFtkDsYp
+	MzRVfva5+VF7wAEul+LYQJ07yFIIvABFT7PyMZWh/3H+09tTaot//YjJuO6F8GXvWZm8kMb0SmA
+	ZunSb2kExZkfc833REAzI8CrlOEkQiUFFV1mlZ6QaIMm/xPC5+HQknc1Sww==
+X-Received: by 2002:a05:6402:641:b0:6b4:597f:50ed with SMTP id
+ 4fb4d7f45d1cf-6b4b10ef524mr124485a12.5.1793318455914; Thu, 29 Oct 2026
+ 17:00:55 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -99,47 +104,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261029202817.901145-1-jmattson@google.com> <auO4UueaV0mTVzzB@google.com>
+ <CALMp9eTKXa9v1TxJMPrE-tSXajwJCErCk=g34dOPJtG057t5mg@mail.gmail.com>
+ <auPAFxXy4ulcK_jq@google.com> <CALMp9eQdtvjQkdgnJ_NTt=2ArdzUtqqzieXLccv9Vb_My5G+fQ@mail.gmail.com>
+In-Reply-To: <CALMp9eQdtvjQkdgnJ_NTt=2ArdzUtqqzieXLccv9Vb_My5G+fQ@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 29 Oct 2026 17:00:43 -0700
+X-Gm-Features: AclHuK9Gf9FXwfveb_3CfkAO_qfPf7-qk20lAd5kJcyEb-CP0c5NZ2eSdTbAAeE
+Message-ID: <CALMp9eSgWhTFi1vxxnN=1zV4mRVsKD55F=37yg4LmT_xUAc_Pw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] KVM: SVM: Check EFER.SVME before updating MSR_VM_CR
+ on guest writes
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Mahmoud Abumandour <ma.mandourr@gmail.com>
+On Thu, Oct 29, 2026 at 3:04=E2=80=AFPM Jim Mattson <jmattson@google.com> w=
+rote:
+>
+> On Thu, Oct 29, 2026 at 2:52=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Thu, Oct 29, 2026, Jim Mattson wrote:
+> > > On Thu, Oct 29, 2026 at 2:19=E2=80=AFPM Sean Christopherson <seanjc@g=
+oogle.com> wrote:
+> > > >
+> > > > On Thu, Oct 29, 2026, Jim Mattson wrote:
+> > > > > (Host- initiated writes are allowed to set any valid MSR_VM_CR bi=
+ts.)
+> > > >
+> > > > Eww.  Why?  If we allow this, then we'll end up with the mess where=
+ the guest
+> > > > can't write back the current value (if userspace is being weird).  =
+I get that
+> > > > we want to avoid ordering issues, but there's *already* a required =
+order here,
+> > > > unless userspace ignores the failure from svm_set_vm_cr() and conti=
+nues on.
+> > > >
+> > > > KVM doesn't advertise the MSR as something to be saved/restored, an=
+d none of
+> > > > QEMU, CHV, CrosVM, or our VMM appear to save/restore it.  So why ma=
+ke trouble
+> > > > for ourselves?
+> > >
+> > > OMG! I didn't look any farther than the obviously broken svm_set_vm_c=
+r().
+> > >
+> > > It looks like svm->nested.vm_cr_msr controls nothing other than itsel=
+f.
+> >
+> > LOL, nice.
+> >
+> > > It's just 5 bits of storage with some weird locking rules, and it
+> > > resets to 0 on suspend/resume.
+> > >
+> > > What is the point of such half-baked support?
+> >
+> > More than likely, so that older kernels didn't crash when writing an MS=
+R KVM
+> > didn't emulate. :-(
+>
+> You're not going to let me get rid of it, are you?
 
-When L2's LMSW exits to L0 but not to L1, emulate it through
-handle_set_cr0(), as is done for MOV to CR0.  kvm_lmsw() ignores
-vmcs12's CR0 guest/host mask, so L2 could change CR0 bits that L1 owns,
-e.g. clear TS, and read their effective values instead of the read shadow.
+LOL! Even the 'LOCK' check is wrong:
 
-Fixes: eeadf9e7558c ("KVM: nVMX: Handling of CR0 and CR4 modifying instructions")
-Signed-off-by: Mahmoud Abumandour <ma.mandourr@gmail.com>
----
- arch/x86/kvm/vmx/vmx.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ if (svm->nested.vm_cr_msr & SVM_VM_CR_SVM_DIS_MASK)
+        chg_mask &=3D ~(SVM_VM_CR_SVM_LOCK_MASK | SVM_VM_CR_SVM_DIS_MASK);
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b341af4c60..3633496299 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5748,6 +5748,21 @@ static int handle_cr(struct kvm_vcpu *vcpu)
- 	case 3: /* lmsw */
- 		val = (exit_qualification >> LMSW_SOURCE_DATA_SHIFT) & 0x0f;
- 		trace_kvm_cr_write(0, (kvm_read_cr0_bits(vcpu, ~0xful) | val));
-+		if (is_guest_mode(vcpu)) {
-+			struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
-+			unsigned long mask = vmcs12->cr0_guest_host_mask;
-+			unsigned long cr0;
-+
-+			/*
-+			 * LMSW leaves the bits L1 owns unmodified, as does a MOV
-+			 * to CR0 that writes their read shadow values.  Emulate
-+			 * it as that MOV: L2's view of CR0 with LMSW's bits.
-+			 */
-+			cr0 = (kvm_read_cr0(vcpu) & ~mask) |
-+			      (vmcs12->cr0_read_shadow & mask);
-+			err = handle_set_cr0(vcpu, (cr0 & ~0x0eul) | val);
-+			return kvm_complete_insn_gp(vcpu, err);
-+		}
- 		kvm_lmsw(vcpu, val);
- 
- 		return kvm_skip_emulated_instruction(vcpu);
--- 
-2.25.1
+The condition should be checking SVM_VM_CR_SVM_LOCK_MASK.
 
+Well, at least it can be used as a sentinel you can poll to see if
+your VM has live-migrated. :)
