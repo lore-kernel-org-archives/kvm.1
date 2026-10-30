@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793395652;
-	b=mLWS1MgFUcsdPdB5MikjzB0xZgFVX0T0Xt8puw9P0tXFrdXRu+bnu76c8EwigfmpCidi
-	 wAtUQBWLCBFIOcg/1E2P1mEIQZPpYW9a0VkymwLBGkbr96HRpg8gA3AFnjCmXoqZr8c4v
-	 zoUOWjpwAI4/xyZByrTD27DO+jmeXg7dSOTYlH82sZU6A/SQXk0rjOLZdkOzXDXDq8a7J
-	 +w36r/53CZXzCU3Dcd1lA+3xm4KCbMX6btdcFtcohBq29Q+6INv4D3DsRyO3kIGDRol4R
-	 ml8VPZcaSueTw+/DgWNeS6eka4Dx6yqiGufzmbfjl4D1LLzlZhHDVSgBZCGK1t+7eXw==
+	t=1793396271;
+	b=gMh1k4NX6ssvfkAjLV56fbY95U1Ni4IIWN4LJRI341tryAITDH5p5GHj5gVyJCliOjhX
+	 IeTD+fytfn4uMyv/F3/m8biru4iJnVBMtTYwfWxEoKNCpMz/HDT9zennpfKgb0YsEP4l7
+	 OHUiwZla0AUZmjTvs4rUGgNHeBscRVG8fuFuHqlRXunxa+orYRFCyWt+/0eOTY3vY7Xo4
+	 arqB75b8iMur08aoF9jltkFerjl3jfW0+PviSD1ywJiQ1D1dPsgf9dgxkFsbcnOzhYHlT
+	 PFCm6i9lFvWSq4TGIR7N9AnRK1e3zXNOIrt6vh7y0JXh3nYDSsNeyibjM4GvrPtDJuw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793395652;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793396271;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=HeDTQ03pI5t02YnngoAj9iApBg9D2x8DKS/xIEI0dis=;
-	b=QtIy0sY+QNsyTeZJcbFu+nJ6LEwLPurgHvAOFUmJgoql8lKHlAR+YAEkfIeKlcklA15i
-	 NSs/vXmcno90B9/aN/EI4xlpuhQKPoao9vag2cNtukRRuvAj7PQsf1IzTFE/JAt2pfQG4
-	 3JtuMVUaL5r23GRCziwJDbeqaGCLFWu6sHjPhAtQ5+A838vXTU+/AwuHOHzoJDkeSbsWb
-	 j1aLICJ6Hd6rPpXNEelNhxqfPueCb5eJ1EOh01ju59w59d1txiUH2HpzxbehEa59Sfmoj
-	 JaZa9BEToyu21b5ZY2J2+OjOuypxtTelYWm8bapN4gj2ay72hHi2q5CbubjU/JlrPqA==
+	bh=Xhyg5cGPtjP9AGfE0CLRkt6sDAb9YKw1TbZgcTvrTXs=;
+	b=mg/LFFnAyqQAfqG2dd+x+4i3HZqIepoNMqoDUcNJb8gwf2n7H4Ltfun0P/bECvbeI/C6
+	 vE3o9f35nN2zIeLNVvJrTbARYcAKmk8aqxAx9sLI19+ktGl0BxUzm95b39WDCHF44xJcj
+	 i77w3D0LsAy7+0KR5uPnTP+pp8WWWrVlErLokXTedaCZRUjJKY8rW8D41z3VClgMsXyKT
+	 4VrHTq8MIDQzqpdtENLe2QJXuNKz6QSIXtWZF113sP0UhuPXUtis3J4pFpsy+SpWOJoan
+	 ZgyxjVWYVJTsYjZxLv2ZFbi2r0Csu/EPMwDCq4XdbsgkCKgDY/0Jd9usPQwCq3hwQ6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="ie/Eq36f";
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=awqH94wq;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A68260A3832
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:27:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A68260A3832
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0F5606A323
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:37:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B0F5606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ie/Eq36f
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e60770381cso10698615ad.0
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:27:32 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=awqH94wq
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd5ca3840c5so1220393a12.2
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:37:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793395652; x=1794000452; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793396270; x=1794001070; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=HeDTQ03pI5t02YnngoAj9iApBg9D2x8DKS/xIEI0dis=;
-        b=ie/Eq36frfd0MwfTmclBxyyEe+NmcRvXvhWkictGDGaIt3PktgSfosR4z+/Z7muSua
-         awPcKuWT7GvSwGQC9vHk89bKeRLtln4FWadRQrvX5X3IW30vlx3JwqpL5gDCjZKkvzrF
-         mr1SCvuhrpSSMiaMF5ExjJgGEOmZ9t40SgiVHajjOwHXXKP2kQ+Pq368O3mqL7aghvz8
-         HVtgJ6IbxBtI20Zpg61phXo2Q0DnR/ItueL8q443OQoOt6zFESc/D2maI3XUsc5ekqQY
-         6TxaOs/YerUGi3If49Uu+6LW14WzY6WpdaPI0pdupr/cxmAXoDapmG9L+1GV2TFTe773
-         72Sw==
+        bh=Xhyg5cGPtjP9AGfE0CLRkt6sDAb9YKw1TbZgcTvrTXs=;
+        b=awqH94wqEZhCQvpfloo3dpfVfXMqbHChw37m5kRq57aQXaUTbKjZGrZQOomvCkWttv
+         BMLr7VOlkro0PfN38oOEMO1YvlwONM3ZS1I9jUbnoKg3xnJ/AUbU+A9PM8zpNYgtvAKx
+         dHlDddMAj6gllny66hP2wOQ9VgEQq54pTPKT98u/QPPXkLhXnDgx5ANx1dYtrkxm0q+a
+         z7bCWSdrBaIT8ef9+MhjBW7RLkIjGQfQHcyWh6mhBeL/AQ1SGocuchnQAlc4wMzs5YqW
+         D8c+fRwhfbM2hhOLJ6FOzb1cKdZ/ReqTKOx1iYRuqSkL1MCuq8SoHR/RP5B5f+36xn82
+         uZAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793395652; x=1794000452;
+        d=1e100.net; s=20260707; t=1793396270; x=1794001070;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=HeDTQ03pI5t02YnngoAj9iApBg9D2x8DKS/xIEI0dis=;
-        b=vL8LAXKf7o51K51JMOYsRO2Tl0/OmLhXMJ98/WH6ALH7U3vt3d3BAW2R4yNYeI4nmz
-         wIiXgkPrukpFlONA0fe6m7BXMJkUZoouoQaC0pDSvPLb6iBQ6/dmoKGnYOUZvyZ3qXNa
-         gQMEU9HPveNpJbhf5sOhJbTCuYH/cOnl3POmydvX+Qbqe9Tsct05a+N8z+Q0x8G9UnR5
-         MSNe/vcJ1jgR+i2NOIpQ7F53HGWNFv7o6L5FSYYdpm/oN0674iWfy3OBAJxhbCj2X5ye
-         gjzKfZkZMd6BzuEGKAa4vCaEjHzeZ5A1Tqa5NC2miWIPkVMLdZQF5YSg/mgZBQu+erQG
-         GIZQ==
-X-Gm-Message-State: AFq9FYKAzloE8hboSu7HgLv8xh+9/I0GAhmUuFooNNK7w8y47pTD3r6M
-	ra8k/voPKhGkRlvqVCHOHjuyLDdlzvum9W383QglOyPuvwQh7GPQav3BTEAQfdbttC+AQlVJiF0
-	WSQ4BJg==
-X-Received: from plgw5.prod.google.com ([2002:a17:902:e885:b0:2e8:486b:aed])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1209:b0:2e9:5829:9b48
- with SMTP id d9443c01a7336-2eb3649be66mr33001425ad.20.1793395651474; Fri, 30
- Oct 2026 14:27:31 -0700 (PDT)
+        bh=Xhyg5cGPtjP9AGfE0CLRkt6sDAb9YKw1TbZgcTvrTXs=;
+        b=xKUlkKmcfDW3Tu1FAEzoUjg16s1ptmkTQoeufHOYcAH9siLcZQ8tr5ZiNBoQCVEmyC
+         wZapn+TG+aEEq78HdJmUaVg9ljLaTUJviiWBfiDthdwcIiclMGehI/JtM8pLj0jvbqOd
+         DVX8wp7XsmRSWisV7FJ+o3wziW1aazY4ARPxkM0JlAIT4JmTCJZRv7RnMkY3O58usvax
+         Fye7BRZkPuP7WvAx1NxRX2Qge36rbHyYj40whhcNcHR3nkAT3mnGxCgAtnju0pf68EeN
+         p8DJyARTC+4T/iOKCobqvmOusNzDnwWrbY09oIK4FyRWCkfhdBgr1SlCEqRPbb+X2ZDP
+         wTPg==
+X-Gm-Message-State: AFq9FYKR3JaMj2a/cWL7hcZDToCEmpo5kSFSVOHusUhW+X3dwSNL8qT5
+	f4tl9mFRDcdJFIVEoBkkD4ZKo05uiAhiOvaUJ2kKYMt2ZiK7S3nG4PEGx4eh4BzxYtaSKjDFdHr
+	TszlNeQ==
+X-Received: from plfz5.prod.google.com ([2002:a17:902:d545:b0:2e2:f305:e980])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5cc:b0:2df:accf:e873
+ with SMTP id d9443c01a7336-2eb36415081mr41010915ad.4.1793396270447; Fri, 30
+ Oct 2026 14:37:50 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 30 Oct 2026 14:27:21 -0700
-In-Reply-To: <20261030212721.2606393-1-seanjc@google.com>
+Date: Fri, 30 Oct 2026 14:37:43 -0700
+In-Reply-To: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,85 +78,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261030212721.2606393-1-seanjc@google.com>
+References: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261030212721.2606393-8-seanjc@google.com>
-Subject: [PATCH v3 7/7] KVM: selftests: Expect failure when trying to set EFER
- that violates vCPU model
+Message-ID: <20261030213747.2611815-2-seanjc@google.com>
+Subject: [PATCH v3 1/5] KVM: nVMX: Preserve L1-owned bits in CR{0,4} read shadows
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>
+	Mahmoud Abumandour <ma.mandourr@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Adjust the EFER.LMSLE testcases to expect failure, not success, when
-attempting to stuff EFER.LMSLE=1 even when the guest CPUID model is
-configured with EFER_LMSLE_MBZ enabled, i.e. when it should be impossible
-to set EFER.LMSLE=1.  KVM's ABI is that userspace *must* set CPUID and
-feature MSRs before restoring (or stuffing) vCPU state, i.e. before writing
-normal MSRs.  The previous KVM behavior of allowing usersepace to stuff
-garbage was a KVM bug (that has since been fixed).
+When emulating an intercepted MOV CR{0,4} for L2, i.e. when L2 is toggling
+CR{0,4} bits that L0 intercepts but L1 does not, explicitly preserve
+L1-owned bits in the vmcs02 read shadow instead of subtly relying on the
+interception logic to preserve the bits.  For straight MOV instructions,
+relying on the interception logic works, because KVM would have synthesized
+a nested VM-Exit to L1 if L2 were toggling L1-owned bits, i.e. if L2 were
+explicitly changing any of the shadowed bits.
 
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-182135@kernel.org
+However, for LMSW, which preserves bits 31:4, and conditionally preserves
+CR0.PE (bit 0), the effective value being set by L2 can diverge from the
+read shadow *without* triggering a nested VM-Exit.  E.g. if CR0.PE=1 in
+"hardware", CR0_READ_SHADOW.PE=0, and CR0_GUEST_HOST_MASK.PE=1, then a LMSW
+with CR0.PE=0 won't VM-Exit, but will preserve/set CR0.PE=1 in "hardware".
+
+Explicitly preserving the shadowed bits will allow using handle_set_cr0()
+to honor L1's guest/host mask when emulating LMSW.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/x86/svm_nested_efer_test.c  | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c b/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
-index fa9cfe8b1242..141ef035a8c4 100644
---- a/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
-+++ b/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
-@@ -193,23 +193,20 @@ static void test_host_initiated_lmsle(void)
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
- 	u64 efer;
-+	int r;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b341af4c6057..544b7840897c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5629,22 +5629,19 @@ static int handle_set_cr0(struct kvm_vcpu *vcpu, unsigned long val)
+ {
+ 	if (is_guest_mode(vcpu)) {
+ 		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+-		unsigned long orig_val = val;
++		u64 mask = vmcs12->cr0_guest_host_mask;
  
- 	vm = vm_create_with_one_vcpu(&vcpu, NULL);
- 	vcpu_set_cpuid_feature(vcpu, X86_FEATURE_EFER_LMSLE_MBZ);
- 
--	/*
--	 * EFER_LMSLE_MBZ is a guest CPUID consistency check, not a host
--	 * capability, i.e. must not be enforced against host-initiated writes,
--	 * so that userspace can set MSRs before it sets guest CPUID.
--	 */
- 	efer = vcpu_get_msr(vcpu, MSR_EFER);
- 	TEST_ASSERT(!(efer & EFER_LMSLE), "EFER.LMSLE unexpectedly set");
- 
--	vcpu_set_msr(vcpu, MSR_EFER, efer | EFER_LMSLE);
--	TEST_ASSERT_EQ(vcpu_get_msr(vcpu, MSR_EFER), efer | EFER_LMSLE);
-+	r = _vcpu_set_msr(vcpu, MSR_EFER, efer | EFER_LMSLE);
-+	TEST_ASSERT_EQ(r, 0);
-+	TEST_ASSERT_EQ(vcpu_get_msr(vcpu, MSR_EFER), efer);
- 
- 	kvm_vm_free(vm);
--	ksft_test_result_pass("Host-initiated EFER.LMSLE=1 is allowed\n");
-+	ksft_test_result_pass("KVM_SET_MSRS rejects EFER.LMSLE=1 with EFER_LMSLE_MBZ\n");
- }
- 
- static void test_sregs_lmsle(void)
-@@ -222,10 +219,6 @@ static void test_sregs_lmsle(void)
- 	vm = vm_create_with_one_vcpu(&vcpu, NULL);
- 	vcpu_set_cpuid_feature(vcpu, X86_FEATURE_EFER_LMSLE_MBZ);
- 
--	/*
--	 * Unlike KVM_SET_MSRS, KVM_SET_SREGS runs the full set of guest CPUID
--	 * checks, i.e. rejects EFER.LMSLE even though it's host-initiated.
--	 */
- 	vcpu_sregs_get(vcpu, &sregs);
- 	TEST_ASSERT(!(sregs.efer & EFER_LMSLE), "EFER.LMSLE unexpectedly set");
- 
-@@ -275,7 +268,7 @@ int main(int argc, char *argv[])
- 		test_sregs_lmsle();
+ 		/*
+-		 * We get here when L2 changed cr0 in a way that did not change
+-		 * any of L1's shadowed bits (see nested_vmx_exit_handled_cr),
+-		 * but did change L0 shadowed bits. So we first calculate the
+-		 * effective cr0 value that L1 would like to write into the
+-		 * hardware. It consists of the L2-owned bits from the new
+-		 * value combined with the L1-owned bits from L1's guest_cr0.
++		 * L2 is writing a CR0 value that isn't modifying any of L1's
++		 * shadowed bits (see nested_vmx_exit_handled_cr()), but *is*
++		 * modifying L0 shadowed bits.  Set the "hardware" CR0 and the
++		 * read shadow using the L2-owned bits from the new value,
++		 * combined with the L1-owned bits.
+ 		 */
+-		val = (val & ~vmcs12->cr0_guest_host_mask) |
+-			(vmcs12->guest_cr0 & vmcs12->cr0_guest_host_mask);
+-
+-		if (kvm_set_cr0(vcpu, val))
++		val &= ~mask;
++		if (kvm_set_cr0(vcpu, val | (vmcs12->guest_cr0 & mask)))
+ 			return 1;
+-		vmcs_writel(CR0_READ_SHADOW, orig_val);
++		vmcs_writel(CR0_READ_SHADOW, val | (vmcs12->cr0_read_shadow & mask));
+ 		return 0;
  	} else {
- 		ksft_test_result_skip("Guest EFER_LMSLE_MBZ=0\n");
--		ksft_test_result_skip("Host-initiated EFER.LMSLE=1 is allowed\n");
-+		ksft_test_result_skip("KVM_SET_MSRS rejects EFER.LMSLE=1 with EFER_LMSLE_MBZ\n");
- 		ksft_test_result_skip("KVM_SET_SREGS rejects EFER.LMSLE=1\n");
- 	}
+ 		return kvm_set_cr0(vcpu, val);
+@@ -5655,14 +5652,13 @@ static int handle_set_cr4(struct kvm_vcpu *vcpu, unsigned long val)
+ {
+ 	if (is_guest_mode(vcpu)) {
+ 		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+-		unsigned long orig_val = val;
++		u64 mask = vmcs12->cr4_guest_host_mask;
  
+ 		/* analogously to handle_set_cr0 */
+-		val = (val & ~vmcs12->cr4_guest_host_mask) |
+-			(vmcs12->guest_cr4 & vmcs12->cr4_guest_host_mask);
+-		if (kvm_set_cr4(vcpu, val))
++		val &= ~mask;
++		if (kvm_set_cr4(vcpu, val | (vmcs12->guest_cr4 & mask)))
+ 			return 1;
+-		vmcs_writel(CR4_READ_SHADOW, orig_val);
++		vmcs_writel(CR4_READ_SHADOW, val | (vmcs12->cr4_read_shadow & mask));
+ 		return 0;
+ 	} else
+ 		return kvm_set_cr4(vcpu, val);
 -- 
 2.56.0.385.gac671c819a-goog
 
