@@ -1,68 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793380814;
-	b=Z7H/d8b7tNCKIFCwKeGHUnDcmybFl6DixZJburlHq1XfmIVIGS6+WPv2fzgES4LGszWX
-	 I0m0tJOianiebIwBhlsVm3Xjs1vjxvDkG8UIfBHazAmRszTzv+Ht/BpmJrpegBoD/IjN3
-	 krqcfrJPyj4qx4/cTk/JzAiTeLS0i9WgTSzfZSEOJFbTM+1ajn1q1I03Vvk1cxuHNn/vc
-	 kYYc+1mmua7u3jdGs1ey1gcfoG5Iic7qQoMWFnl6xZrZGS2RcDBKKNowr+92R0djIus7p
-	 J3dKmixqEK4T73dv2ba05YrjsiThpbpf3xUlkDyoDoFIAVcNUb6uRWrFo03UDaiVaCA==
+	t=1793384465;
+	b=GhkMMxqzh2888XhMx/gTWb92/NjGFyZsQ2N8OjUeK06DMCwF5p2lYGxQVAhdh1Yhccfu
+	 cg9ZqFo7Gs/2ZmsPpIoFkDVUg3JQe2TNMZeAbs7XQRegxFQbNodmiRYnyiEGAPjxiv4v6
+	 lydQs1GCX2Kyfe7Xnxi88EHdBe2JSjzJBJvarMQnxGwjvMASrBIcYx+o5bxxP5F9bA7CN
+	 csOjMu09kykVVFIsVPkcg6TO4HDcUeXclqz8lydnk1noP8Sm6HTuvyOLxyhuxsEXhAgOf
+	 alBcRtuAQQHBBPINhuDIFaozhlfF2BAu9zdGe44xUxH4KCXakf3hg5lGdEh8vY859IQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793380814;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=AcVyijD+6yLOeZt0UOcPVnuuFbFqdyuwknD/b0gv2JU=;
-	b=UNM+EEJJKJYkj/4VarDb/4xDH4pYY1khRPVbeohU6caQ889d5gz65z2ORfYW1R+UgbyR
-	 5HQhXRc/UYSyQxI+3oa8y6nvVgw/dyKYttZpGDBMv304Q3olLi8UJp9xe88lqluhr0ao4
-	 hfFfRukKBfhGwQHIKssi+AKdzM4+ndgTV4qqvfsRvRWGhyTk7YFk+2KhUSEsjbwQjsQ/0
-	 GH8dcT555teS6b/Q0JObj7WT5BRYIKTeGCoTJnYu86+HjxjyLlJ4Cdj/Gx/AXs2OoJdIM
-	 teSip6Fkk4qC1Bi45aRjttwRw0SfwjoO1qCKxioYJF/xMGNi7h8Ln1V9IMtIqshJIeg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793384465;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=TA0ier9L2dOG8aDW3mq4N88jDjf82Z6ca1kvjV5M8Wg=;
+	b=CewfaKIrUfAvwH0VLnVkrRrYH0bFrNUNf/Rh3JKF/j6G2D6y/HU3Owjd/2CblnSvweiY
+	 D+jqwO4fpGmjC2bEIONxcMs+EKIR9fW/IurRSpOvBy9D33mE8108WeqVv6tqpuwHC+pvr
+	 7N6HIc+rvvGS0atmj/90sBO2nZC9CZLGYt9McovtZqyivoawlW7t/yLwMD/nU698UK4if
+	 GljOSh1LGC0rL3UNzIuLB7tt0QH4YHARtx18UIHmy8gDyguyV0T7VOrvVOWUGTau7B9wu
+	 spj08UZbf06seR6PLJEpC20J6NDtD3DjGQFqoqJY0dgGaw7kgeTwTV/k7YLdNVW3tKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DiH16WDS;
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=aMFhnyLj;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F339606A31A;
-	Fri, 30 Oct 2026 17:20:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F339606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC78C606A31D;
+	Fri, 30 Oct 2026 18:21:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC78C606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DiH16WDS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793380813; x=1824916813;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nqQ+D2b3NqIlF/gQ1YTZQUWKoENJnTQBcQkLuHa+snI=;
-  b=DiH16WDSA+SglurdRWbPbLYsOD/XdOKcXtrSi601cDasia7lAcVpw7T8
-   Y4uqRahd5LHkk5HMoRSdLNRKSX5THXt3kGt70Ot949mlAY7SdnBuZaVX1
-   1hVDLhSc3y5Ao9HyAbjR5R6S8/C9T1qJLJFfv6EqrNRD08PWiHd94acQ5
-   8DWTnKSMSVMgXalRZWIfGY9hCDtqvZC8bqG0DwFd2HHF04knP4VqH313v
-   3I+IGkgetgEKnGCL7bEKQul9/ERU6KkWczkKjLlLa3DZTyJDBzFL30Ms5
-   r54soU2XBzThHh+sN9dXFhi7BJM7oEuRwGxksc4YdRqj+dwSiFP0Fh0Ki
-   g==;
-X-CSE-ConnectionGUID: 2nC9O/YHQ96j68IK8pkXrQ==
-X-CSE-MsgGUID: VRW6e2ASRCiN13XTNGlgQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2064175"
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2064175"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 10:20:12 -0700
-X-CSE-ConnectionGUID: Y7ZuUq3XS1mkbk4WNjuOUw==
-X-CSE-MsgGUID: LWkz3+GhRj6n7DvpMfdMog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5571160"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 10:20:11 -0700
-Message-ID: <dc0e6998-6b8c-4b0c-a04e-b6af0a1cf653@intel.com>
-Date: Fri, 30 Oct 2026 12:20:10 -0500
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=aMFhnyLj
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 39FD740E03BE;
+	Fri, 30 Oct 2026 18:20:55 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Fm28ecBqvhZs; Fri, 30 Oct 2026 18:20:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793384452; bh=TA0ier9L2dOG8aDW3mq4N88jDjf82Z6ca1kvjV5M8Wg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aMFhnyLj00DlXpNhVKtkOikorM2JTL5YJ6k/kfvP3CA+6rZYsVJujx1lOehecSUvr
+	 IsOneQJKSDKDJCdGNjvpNRqWiBXW2We6TDUqaPWG6p0ilQvHg2GRhMGvxUZkAj++eG
+	 pRznLjTgM9DCtwRzJCnLJs+I0k1owmvHyEsyFwNz3HcrwA3Z9a5Ydukht+3WtFrGbr
+	 R0Cfvgn30/hXGUf161V/VqN02inKtwckYNvbWLiTXapt0AN/FyL7Reke/pW+/OdR6f
+	 +wAG0Yaqa07+R3BlybzGNnGk/O+rjX2+kJuCDrL9RUxks5HeuR4KDDXIwpJHuqhvIi
+	 5d5KEL1LzecUii08ARp+tRm14TpiZUuZML9jIDLbqfyvo+pDCTZGkUMSlvmc4tBgV2
+	 FZ9dvQlBlMgwDpqV1Tf0+sSiFQJqzn8oxC6LyRClVW6osKHedqvtOoK2nqKAFP4bcF
+	 oCnSRmnGD4VnTc02f+5r+8WcTtCXvCfpj1aWeYIfZeUU9DX0PVjCKGMk20Wpe3GUSv
+	 2ZkKQ3NL6g06IFW4dxJVqzgNe8gPwAPrZjGoPlcJ2GrUvYMLa1AoU2LgXkVsfix13c
+	 cJn6A233z8FguWs+lq3prnd4MuLQf86tauj6JSQngpWh9QNaxwZCrg2mwuNW1TIJdt
+	 RYOACRdzZtdiLD3oTUU2Nz9k=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 915CA40E016C;
+	Fri, 30 Oct 2026 18:20:34 +0000 (UTC)
+Date: Fri, 30 Oct 2026 11:20:31 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Joe Perches <joe@perches.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
+Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
+Message-ID: <20261030182031.GAauTf71ujnYNQPluW@fat_crate.local>
+References: <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
+ <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+ <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+ <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+ <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+ <7d35e2db2da34735760a08a6f103abee075413c8.camel@perches.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,69 +102,17 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
- GLOBAL_INUSE MSRs
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260827223755.143247-1-zide.chen@intel.com>
- <20260827223755.143247-12-zide.chen@intel.com>
- <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
- <b3dcb403-ec19-4d23-9bab-336e2eb344bd@intel.com>
- <CALMp9eTHRzXXm1gpKR3u1nzJU3i9M1a_wUjp9+bD8_r4eoPQ_Q@mail.gmail.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CALMp9eTHRzXXm1gpKR3u1nzJU3i9M1a_wUjp9+bD8_r4eoPQ_Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7d35e2db2da34735760a08a6f103abee075413c8.camel@perches.com>
 
+On Fri, Oct 30, 2026 at 10:16:46AM -0700, Joe Perches wrote:
+> It's probably better to use F: and not N:
 
+The reason being?
 
-On 10/30/2026 6:55 AM, Jim Mattson wrote:
-> On Thu, Oct 29, 2026 at 10:45 AM Chen, Zide <zide.chen@intel.com> wrote:
->> On 10/28/2026 4:24 PM, Jim Mattson wrote:
-> [ ... ]
->>> As I pointed out in patch 04/16, we can't pass through the PMU global
->>> controls unless their reserved bits match hardware.
->>
->> Totally agree. Then the handling of bit 55 breaks this rule as well.
->>
->> if (vmx_pt_mode_is_host_guest())
->>         pmu->global_status_rsvd &= ~GLOBAL_STATUS_TRACE_TOPAPMI;
->>
->> Always intercepting GLOBAL_OVF_CTRL and GLOBAL_STATUS_SET can solve this
->> problem, but it may impair guest performance, especially for nested.
->>
->> Instead, I'd propal to have separate reserved masks:
->> - pmu->global_status_rsvd: unchanged, strictly tracking virtualized
->> guest state and preserving live migration validation.
->> - pmu->global_status_{clr,set}_rsvd: unmasking all architecturally valid
->> hardware bits for the corresponding MSRs on v4+.
->>
->> Any bits allowed by hardware but unvirtualized by KVM are
->> scrubbed/filtered in intel_mediated_pmu_{put,load}().
-> 
-> That is a terrible proposal. MSR bits that vanish at unpredictable
-> times?!? No. If an MSR contains bits that aren't virtualized, that MSR
-> can't be passed through. Full stop.
+-- 
+Regards/Gruss,
+    Boris.
 
-OK, I agree. I will intercept GLOBAL_STATUS_SET (0x391) and remove the
-nested_vmx_merge_msr_bitmaps() for it.
-
-However, I propose we keep GLOBAL_OVF_CTRL (0x390) passed through, even
-though its reserved bits don't match hardware. Since it is
-write-1-to-clear, it cannot manufacture unvirtualized state or leak host
-data.
-
-The only divergence is the lack of a #GP if the guest writes an
-unvirtualized but hardware-valid bit. If we want to eliminate this
-behavior by intercepting it, it will force an additional VM-exit on
-every single guest PMI.
-
-What do you think?
+https://people.kernel.org/tglx/notes-about-netiquette
