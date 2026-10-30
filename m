@@ -1,74 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793389220;
-	b=uo7eZhaTCGyopknbFtnhLuAziDPzHfFEST5mAo/rGVV0VpiaVtQcAWNGYy+X5GF2HgCG
-	 gzSMu71so+RwH/0fFy3kwWGI13IP2Kj4M2xXseWzyfa4tjA4jfbaorOxeqgDRIEuy7L7z
-	 vxmeCTZ5L+9nsEDD/SvwbIF3rHZkt+SbzKbfT8Fv56807J4o6pHgxmXMOpSRtOyMvvXv2
-	 DU+jMAhoWYLOUVct6BMMari2Ebehf6WUGiVSLeo1W4ckFNG+BuxtBk7BuXWAvlumFWh0s
-	 68o0DjaX46xg8vJogMXINq0vaUxMNzIhKVg9JcCCYFJnFYrqAnRvYlTANf/XGEGJDkw==
+	t=1793389315;
+	b=o/8IYitZfU69L1TS1rb0vUHUxSjb6Fd3UC369d15jws+OMzT/sAzNCPVUKp2yUtRomba
+	 HypuS/1DTmngSOmfBNNIT3D9EGyVyKPWbUV9CRPJBaEcm985BpHLfcnUfWlmCslV4jrkD
+	 R0Gi3fwpCaYaAwdBVJiBhtQhMmPs05tjbwXnALkLVhO9U43B9YNLoF0QgvkNQ5t78WhIM
+	 lJuZFZgwM1eS7bHWfh24QON6cs31xDsbKY1Z2ZjYLYzMe0M01WpCd5jGd4EZWrulsJ/i/
+	 EBvqVkxaIc0wc97ugTEtCYH1dNps3iEpC8KOZSPFv6o0X2K865XhsOICZ9+RAyhOHBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793389220;
-	h=DMARC-Filter:Received:Received:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-Rspamd-Server:X-Rspamd-Queue-Id:
-	 X-Stat-Signature:X-Spam-Status:X-Session-Marker:X-Session-ID:X-HE-Tag:
-	 X-HE-Meta;
-	bh=tB3wDibpkEIsc1D1uRR5wCOBeM1B+5vNvLuHqpwTlCA=;
-	b=Tkjqu9WF39ganH5PsNrQ0IepfSFhPrdj56Oir0ixSYQjHNQ1ui8A/Swf8NNLKtAZHnei
-	 2roCaS/K0T8XI469ixJokFyUlCDQtcM1ef370pVhk2iuCesylJWmsLRxN83MSb/qaUsHV
-	 QDLajNQqOIzLHKeovy39sBIlUD4VV3XecQXmjFdEvpa49GIsi/gsw84Ueblj9iHXTvry4
-	 O5aS03+vaSljkhE36pg64N3eAm1RIky6eiUT/hRcqpV0fqL4LGFfVWHBavUoLlw05t3Dz
-	 l0TvfNHETR47wdTB4lL+WHRkgUPAfBvLp/tJGxr0myTuqNgEbzXdjuNAIfyDc+5sEtw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793389315;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=dTiMgOnQWSO1fXm1V5etvmBssPqHNLO/3CtDNAXggW4=;
+	b=h3klaVT9H/soKCzzYwKuDvyrbpSLmr9+XnuQFHFzfomnIWupIEGR6rZnZ2Tg7gTlHgNh
+	 ZsmgrFWetZXXv7FfT7xdj2igeitW8a6C2YiskOLIncrkr+T4ktaDJSJ7l/4YoDR8sJhpX
+	 mEQObQO5e1XWtnvKhsmT2PbmhnD3dycMT979mpmDk7GmKvN+oEsGGkzWus+MM73Fr9xy7
+	 S9w5IsoVDh27Nw+O9PGNcmyIxSi8OYOZsl+N8VecSxqlJDmyRlE5vqM94mmQDI0379J1D
+	 c1WvvvzEoeYrLWmmsmpeH2CG43znlywmkkZeGAXdo8y2Iwl6Cu2gSXlIBOpIkskX3XQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=perches.com;
-	spf=pass smtp.mailfrom=perches.com;
-	arc=none smtp.remote-ip=216.40.44.17
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WxXzGHkz;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D52B606A31A;
-	Fri, 30 Oct 2026 19:40:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D52B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A094BA8586;
-	Fri, 30 Oct 2026 19:40:11 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf06.hostedemail.com (Postfix) with ESMTPA id D04412000F;
-	Fri, 30 Oct 2026 19:40:06 +0000 (UTC)
-Message-ID: <f0bbfcecd63e11fedc4a745aa357fd8c529df097.camel@perches.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
-From: Joe Perches <joe@perches.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe	
- <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Krzysztof Kozlowski	 <krzk@kernel.org>, Biju Das
- <biju.das.jz@bp.renesas.com>, "biju.das.au"	 <biju.das.au@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
- "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
- "linux-serial@vger.kernel.org"	 <linux-serial@vger.kernel.org>,
- "linux-renesas-soc@vger.kernel.org"	 <linux-renesas-soc@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,  "linux-coco@lists.linux.dev"	
- <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- Au Dang <au.dang.jx@renesas.com>
-Date: Fri, 30 Oct 2026 12:40:05 -0700
-In-Reply-To: <20261030182031.GAauTf71ujnYNQPluW@fat_crate.local>
-References: <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
-	 <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	 <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
-	 <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	 <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
-	 <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
-	 <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
-	 <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
-	 <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
-	 <7d35e2db2da34735760a08a6f103abee075413c8.camel@perches.com>
-	 <20261030182031.GAauTf71ujnYNQPluW@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A02606A31A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 19:41:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40A02606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WxXzGHkz
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so11855ad.1
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 12:41:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793389315; x=1793994115; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dTiMgOnQWSO1fXm1V5etvmBssPqHNLO/3CtDNAXggW4=;
+        b=WxXzGHkzvWE4vrXsD7NvdxRYE9kGtHF7duKGC17xUlBFZsNLXQaRokvRERbQ+5XriH
+         bKXbxpcikRbPD8xFQMaHwJ8q1fyPod8a4eiMz5jbvz2SrjkRWVzjmr0u3lx+tjn0Nevv
+         buGBA9VSrIVTLdkqFglyCrktFfM4N0Dv3WCZF4MKtGJv7l8PmfVheZnwZMru91QADvox
+         4HqWUCKOt2llEWcmx98vxQ/Nz3sx9x/GFLt9bM+uBhWM1CbwdxuMOMokSDs4wVzC3SBq
+         HTWI9Z8G5IEb4pSwI839LNV6VIbvSNpF0i7TuRyN3cetGr58WBkMhgY6DfandYO9p8Km
+         MLTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793389315; x=1793994115;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dTiMgOnQWSO1fXm1V5etvmBssPqHNLO/3CtDNAXggW4=;
+        b=QGMhjGnvYhdYxJar3Y7pRVAWO73VUhYm03MPWhw4K5boIO2xP8z36AW+MLuPeN7k14
+         Kc4TyF5tNrOq6iV+A53u3vBy2a9K6R6q3timJpK6O92ZZtk2pioFdpIB+DqWkw2wf3dZ
+         EvYra0+kBrGgTXHsuz5LcBVnxpZBQ2ASUT3gz4evlDZ3f6lJvUbaMeRrEzqu6Jrvz8rz
+         9ONaWAyVsKjI2UerAcZeWBoj0BTXwZbWXVqbF48rPc9UpIObyXiMUJcOP8z+poRaB/oL
+         wFvS+tOIy1nkKVJ7d02OnqRM7ogX4rVn/+e+Z0q8tEWy6OYJqZV2q5QFhHSJvlGYEsyN
+         32Xw==
+X-Forwarded-Encrypted: i=1; AKwUvBygrcjcJRqAMbKreEOhYghEyjHbyN29gTnx0yaKEk5lUaYv3bYIp3tvxT6064d7zaUYcfA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKGveBIvNCYQTgxtK3FOakfiKJe1oxovmAHi/DBu0Uu7oLoMZ3W
+	J3AM3BRrXV5u5mlijIL2FmD8eVJ8YjtAChi4gPSHZL0REN+kYrVxR6Dfrin7KTBmtQ==
+X-Gm-Gg: AYBFou1TKIKMkvsAP9IqBIwum1wQuwi/6Ob0LpPEs3qWMefQxAjo4We+XQWDfXZPsSK
+	5Ft4cIpPyIIzPwwldWo5c3DEtPGmsoaoTWUe1Jim0moK2fILfgXGHykwHMERzz1vs3PxqGaplai
+	BQywJ6P3uLaUO8SP5ea6uV31jLFoH5xYxLEqkbnWXQxsQ6WaFjn6yz1D2iXyqS/9skNNh7TFanL
+	3swXdmJd1xgoDzrzmwlP5a9I2vWtHWucULNvjAiuu1IWOgK3BoHvWIV2TjR5hxl7JLEtlHKwB36
+	2YrK4kJCQu//0l372KDk0olMHElsW36sV33cigeKVjWHHtzXmdBeRAIugLjDb1qxWoFg0F0wXio
+	U40g1mWWZ6JK3aNRWwjOw3fssB+SZcTTxmpqdK6zB+qE4bvEfLXDEaAL6SXXctBJlTBH+dfbEdZ
+	MRAvJMsmuo2GXTnhEImOGThAmsFiBOhCH+SE2lymG/Vwutriid9+Dq5InlkUecLj8fOXUK0wXoT
+	VzMHNiNgqMOckmBBrvdloRXsMdnobuY6mIruMo3Km7LeEFI+7Qw605uvYx5NcR/5ZMuFwQgI3LD
+	mLQBfihVaPl87EIDeHnK62vDA2oeB5XEcQDvb1mSHgUCyqeYRekufQgDSFT+I4Qe+YdjcI/0/yi
+	vpsvlK2O5JZEdH/nOMMuRdok=
+X-Received: by 2002:a17:903:2acc:b0:2e9:73e0:2a6e with SMTP id d9443c01a7336-2eb019ace41mr19649005ad.17.1793389314108;
+        Fri, 30 Oct 2026 12:41:54 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb096b7483sm1191940a12.9.2026.10.30.12.41.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 12:41:53 -0700 (PDT)
+Date: Fri, 30 Oct 2026 19:41:50 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse <dwmw2@infradead.org>, 
+	Pranjal Shrivastava <praan@google.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>, 
+	John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v6 02/18] iommu/pages: Add APIs to
+ preserve/unpreserve/restore iommu pages
+Message-ID: <auTy6JtTflLq09eD@google.com>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-3-skhawaja@google.com>
+ <d6e6abad-c3c7-4f99-996a-0030bf6ef166@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,41 +108,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Rspamd-Server: rspamout05
-X-Rspamd-Queue-Id: D04412000F
-X-Stat-Signature: wkcp5ff7qj9ftg3f5hfh8x3ibujhqfgd
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX18MClqx0jSvr36hEcX/6cU4hJ/gcfU5s1s=
-X-HE-Tag: 1793389206-130397
-X-HE-Meta: U2FsdGVkX1+bis/K6Jvejfrw3OxHiUz+/eHYnGFdduYgMGW84zDkju7YEB2ispdporcrRtwLuBMUWaJJSr5WG2JFmt7Kl2xftjhbrrvKKGpPan1w9dEeVAhOEuB9LLRQrRlJGBVcpHPnB6tXwSSdxf7ICDDEFHONn3jrjIPVdiQlcie0Wqw7tkcpYtoibfn+b43zNZiyfh/8cOsu5hDdtcwKVnvchcBH3SU9s3Dm0gqw1L0TuvoLDIjp4stCLYs7J2jcnp9M2712pYYETSsa2vWHqFe89wksKpxG2k2fYz0ymeiBBie2D1mCkZ9DLSC2
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <d6e6abad-c3c7-4f99-996a-0030bf6ef166@linux.intel.com>
 
-On Fri, 2026-10-30 at 11:20 -0700, Borislav Petkov wrote:
-> On Fri, Oct 30, 2026 at 10:16:46AM -0700, Joe Perches wrote:
-> It's probably better to use F: and not N:
->=20
-> The reason being?
+On Fri, Oct 30, 2026 at 09:26:45AM +0800, Baolu Lu wrote:
+>On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
+>>IOMMU pages are allocated/freed using APIs using struct ioptdesc. For
+>>the proper preservation and restoration of ioptdesc add helper
+>>functions.
+>>
+>>Reviewed-by: Pranjal Shrivastava<praan@google.com>
+>>Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+>>---
+>>  drivers/iommu/iommu-pages.c | 109 ++++++++++++++++++++++++++++++++++--
+>>  drivers/iommu/iommu-pages.h |  30 ++++++++++
+>>  2 files changed, 135 insertions(+), 4 deletions(-)
+>>
+>
+>[...]
+>
+>>+
+>>+/**
+>>+ * iommu_restore_pages - Restore pages that were preserved in KHO
+>>+ * @phys: Physical address of page to restore
+>>+ */
+>>+void iommu_restore_pages(u64 phys)
+>>+{
+>>+	struct ioptdesc *iopt;
+>>+	struct folio *folio;
+>>+	unsigned long pgcnt;
+>>+	unsigned int order;
+>>+
+>>+	folio = kho_restore_folio(phys);
+>>+	if (!folio)
+>>+		panic("Failed to restore preserved IOMMU page %llx\n", phys);
+>>+
+>>+	iopt = folio_ioptdesc(folio);
+>>+
+>>+	/*
+>>+	 * For the restored pages incoherent is set to false as these are not
+>>+	 * mapped using the DMA_API. The remapping of these pages using DMA_API
+>>+	 * is not needed as these are not going to be written to by the new
+>>+	 * kernel.
+>>+	 */
+>>+	iopt->incoherent = false;
+>>+
+>>+	order = folio_order(folio);
+>>+	pgcnt = 1UL << order;
+>>+	iommu_folio_update_stats(folio, pgcnt);
+>>+}
+>>+EXPORT_SYMBOL_GPL(iommu_restore_pages);
+>
+>The pages were charged to the VMM's memcg in the old kernel (iommufd
+>maps with GFP_KERNEL_ACCOUNT), but after the live update they are no
+>longer charged to any memcg. I think that's fine, because the restored
+>tables are immutable and will be replaced by ordinary ones after boot.
+>
+>This patch looks good to me,
+>
+>Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
-From MAINTAINERS:
-
-	F: *Files* and directories wildcard patterns.
-	   A trailing slash includes all files and subdirectory files.
-	   F:	drivers/net/	all files in and below drivers/net
-	   F:	drivers/net/*	all files in drivers/net, but not below
-	   F:	*/net/*		all files in "any top level directory"/net
-	   F:	fs/**/*foo*.c	all *foo*.c files in any subdirectory of fs
-	   One pattern per line.  Multiple F: lines acceptable.
-	X: *Excluded* files and directories that are NOT maintained, same
-	   rules as F:. Files exclusions are tested before file matches.
-	   Can be useful for excluding a specific subdirectory, for instance:
-	   F:	net/
-	   X:	net/ipv6/
-	   matches all files in and below net excluding net/ipv6/
-	N: Files and directories *Regex* patterns.
-	   N:	[^a-z]tegra	all files whose path contains tegra
-	                        (not including files like integrator)
-	   One pattern per line.  Multiple N: lines acceptable.
-	   scripts/get_maintainer.pl has different behavior for files that
-	   match F: pattern and matches of N: patterns.  By default,
-	   get_maintainer will not look at git log history when an F: pattern
-	   match occurs.  When an N: match occurs, git log history is used
-	   to also notify the people that have git commit signatures.
+Thanks for the review,
+Sami
