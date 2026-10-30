@@ -1,100 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793384646;
-	b=XKasTlA6HmlxLjhLYu3T2aEqFHSNR+xFfVuFIivF+WmLb30Ct5n8AK7Ji8pDpPMwSfR3
-	 6/LAx3oqxxxYN/0n6GBO+KoT5gGzMTuNO96Z04I616QSHXATg/DcRMQJVSyTSQ/g4gFAs
-	 tWWUU6ERib1HpvZFQHb07gW/OGbOBrk+MJYjdrmSyfrCrRTZjfya5IHGM5M5a9MBkYs7l
-	 oqkSBa46PLTAVII65r9ZT4CbiXxQattWtOkQzTmVXkqimJahmlGj2ZZJ7GymOy64f21RI
-	 3GkTJVD52Ser6SVsOCV4AVrT9KQpKAZq8OyGOQKVXRdkKnNs3yofyJSPpqHwy1jeC9A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793384646;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
-	b=eYiZ+/Ni46j9nr/XTfGYKxm/Z07Vj9nrbsuwzMXCfahYTfHNGJFlzamNzCh30zydAxVK
-	 k73TiycYGOH33QKRPquExL02weWZg9DVyL3/D/U9MT5/wHhdasaIqu7Oyn7Vsbb74Dz3j
-	 ij8gniYB3sN1/qn4PCr1AEXah0rx6i6eqk3EFk2yOXO4a0snGqU8fOwu69N/37dO2x1A+
-	 ZOvPQTd8JpcYLoChC3unuAGQKJFgH8OwYY2unVrj3QdiFYOv8tUbClLcE2k6CTSarvwbG
-	 mz4XC16ep7dgFKdyjc/oXqwdBhIo6Ky3E0gAcDbEMfc6vzou2+G6DVKdm37gA5isrrQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T4ruIAOd;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793384762;
+	b=rwKVv0VIVTF6br+uDJ6XHNsgu1AV6Lix3EnTqj7zO5Esnv6haaK+0VfaMIDHrAs5TeWb
+	 239fkCWrtFrFy/0AQPqXQc/j3vYFjx0Tn5L94x7kEbk6l2WjA7tV+dXCT41WxWL84DY89
+	 mqgJLJd3p0SqlnO609dg8z7RiPa1w3lfl8uAh6RGscAVUeKvwmImzNQxALGqjKch6WNaE
+	 1vOizhmPxJ4TuxO57KanmxdHx2jv/kLBZzbtKixeBhcCP/pb5z/tcZS3O3QKp/MBYwIFB
+	 0xVCGXSFLxPW6F+23FctkMdWFsvIHLUM6Or8GafQeHUWJWHhxmzg7D/+ZHSrGPQTVoA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793384762;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=jNyQUjUQJUIyMMQ0wfpgXGfUPfMmddjjb+UShX+g7BI=;
+	b=QOQSp6XldlDO/hDSzDzDoX2L6WRXEHwUCwKjGSmFLA/HbR6bTRTZyfCST+4DlYdzvqmT
+	 rcbcAGbiPzZfGdfF1ih/v1rEkaCti27tlskzXQdhivE1liKz4/yNOO3CDWRVtk45pwfAo
+	 K30wj7fzVJUPxLhCvqA/kT3CZHbX3iNDw9cBtdBTWQIaqKB8NUMj1YC5cEqUZG5XR82AA
+	 880yLeqmnn+FhbwLyZakLVxS2E4u3BwxHLKv1XkvjhPNofX1o2Qrq6tC669zO6WmLa4MY
+	 L0DY4VJcIcx+uNRQqYFnwmTPU9xwVvq9h4sQL+fRCXnAsaB7BOC41IUmBbxByt/JVdA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B9GcWgMT;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9905B606A31D
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 18:24:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9905B606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B35606A323
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 18:26:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87B35606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T4ruIAOd
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5383c97c8cfso25081cf.1
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 11:24:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793384644; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Mmp37cAhxG097nn3P3X9kxDJ75o585BUr4uAIpA57zGqGTs7AV2SovGmN9Ig7s4PBa
-         6aE2ImG2mOUch9xVWoPREgpn7hJcV86IQtQc0QFlOtEn6wg/ZoK/8HCHJYiWlVC7eAb5
-         3nf37FAxKlo8JLZzLCxc6N+3WSJKXkfR7yqC5lQ+Et/2eLcyJtTfHPjSnmc6EvBxYW/o
-         ZRteHKPj1PI+aZJnhANxGPNUhURdNvVdhdwRE9QoahSo42cCXsh60jCAvG4XcpCXoDx1
-         Vpxu4Orl1EObposXvfI/XyxLrFkViVeGIr0uLhqq9FXVKx16PryTzHbzF02g3Kj4iCsg
-         LcfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
-        fh=TnVFjPn5JbrQbv1TPufSU/l1kfvoJHV1QbI6Ccjia8M=;
-        b=JQuj6l555hOL/9o/rDPLgIiNMcMXbCFFh03PlykRDhZ+o5aJfBnx1D3vSCFGYWgxhV
-         Rx28qlZh1O4qEOgZEurvQqoUAzTuaEsBfWqLGfI401gDgFdHvHXOz1OYEFTydnZabJ+s
-         4gihtWZrOz1sX5ujDxjG2uON3nN2I+4a4cxlQnHoAsP0Qg/5f8v0vmbsXNI9OF6Fn+ci
-         RG8ZKRxNjr4Fw64og8bwWzE3yoLAcUzI1JFeH8skbf+3UnTZMejg4JDgMMy7wNd3cdaE
-         x2DGqqSLuYbf8oa9oX7qpOmx52RfZtT/Tb5bLL6sPvFXLUnTHKQwWuKxHesCCXPKoOnf
-         6WGA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793384644; x=1793989444; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
-        b=T4ruIAOdTtx8ZxacqgjXIAGV0SmNNSJS/QwhXKBiHoOxBRoufgxlPFqxFtfAdR5jIK
-         ZY18/LZOP3HAqOCVCF8ukpR3+4Ho7nljIaFW7cb6jqW2BesfIOfq2iCD6Acn7FS2F3Vh
-         Z3PcXBbgdSzvAoecIdCPDeiDInqQdAQugWDRUXYlNI2+Y8+xNBXTpjFp0PCNHSBkMjtd
-         EQUTVGE+GQGh4rphuXx/jPl15iRNpvjEW1lHLxbsmqSUQEHQrKYQsqOoUi33bRrJsk/J
-         K3QF8A/0P7XhKoJkkDZxlG3cbWJ4hMCZsZuiwZ1KmMljE7OpGR0Pa2/3FFcLxQK/2aQX
-         4/AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793384644; x=1793989444;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
-        b=tUuRxqKlE7SGrRUSFdHqtR56/WNtA5bulSHcJa0ZpbtsgLsjoT46QfvwsvDhZSTbNM
-         r7sqR/IYOlN5c6zMKYmwpAaiTIglzzRVWPn/J51PsX1t9BaGvnevgyZP5glYhY4XybN4
-         CKAJ3JzZogN59lcic0sZ6w6cS6JJz1AaeLzF93SaxqCNgLtjWgv8JllUJAUeLjNfCmrA
-         YUQ0nFRNpt3efWvZJkxHpPyRCpOm8EU9MnOshsNIG3eUFpeHPUHuPP0kcspcg50ObAM6
-         0Bu6j+n7mtjgwA72t3ifXKRtb9oUazVC85JAmdrNpvJvu/ooZf23nRh2Oy0cW5NpFyX4
-         7eaA==
-X-Forwarded-Encrypted: i=1; AKwUvBwR62VLBv772KKHI7ACdY09gP5ksaPAhZD09Wn9/CVhRAP1C/RVfd8jE462D/zDqzZ0+/0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLFE7wHPs0UmX0LVF5eUsvo8TRacArVLHEGNq+pehYctfL7vPWy
-	mph0QKltPl4r1HQdwz3Neqx5XOSAYcnl3AhYiyJ2pW+6bBwhzmsOrtrqfyGaoX8eZg1whVSW8fn
-	zf7TAR8cc2i+m3xVDQsAgQnRY8ku1lTQTDmc7X+dW
-X-Gm-Gg: AYBFou1r4j1N3w94R52TfYi4JuyJl+Iy3X5QmJAn1N7uXw4jZwKRNmo+jItpDtXifMd
-	QHnMXrXrueiyaYfwQZ9RucIHKchvgSIJc+egbx1HqsbQHSvKO7j3EKJy5tsd6NjLUEzpPXLWaEo
-	zlF/jMeaSgDSK9mrTpNWCtzoON1EX/I8LwLF/oxevHdqbIoLatCJIPwSRlfjM3uQiV32nqewcRn
-	d01J/VbtWgHYufSirs+0oXD+pFqOXETPb7VNvtMCQ/L4Iin9I+fhqtndRe4jeKNcqccVfa5mWaW
-	/ust5o0b00GlB5EutbJf+TrwiQsbMv06BYdoJgHoAg5Tzm9PUifKvGZB9hXj6RQ9ILpupcH56aC
-	5LlJDdkbmDycVShZj1HgxJtSuVSh2h1P1Ue1i
-X-Received: by 2002:a05:622a:4d46:b0:535:84ef:2e26 with SMTP id
- d75a77b69052e-5414de1ec9amr50031541cf.7.1793384643499; Fri, 30 Oct 2026
- 11:24:03 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B9GcWgMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793384760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jNyQUjUQJUIyMMQ0wfpgXGfUPfMmddjjb+UShX+g7BI=;
+	b=B9GcWgMT22c8ybthv+9if571mK0mtJPomXwwjwJ7Iyw/Wn7Moxwcn0y/HJ0JV08tC/wwjM
+	39RJF+EpQ56T/0A+LekiKJML5oZP7WAl4R/CjTGP6JmRa1L6wEF1xnUPLkWr0V0DCvpJfn
+	jblPYXmPiWN6AL7hXK1Ap2vm3UhDzQ8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-85Lc-lXeMXGCnQI4NdiFNA-1; Fri,
+ 30 Oct 2026 14:25:56 -0400
+X-MC-Unique: 85Lc-lXeMXGCnQI4NdiFNA-1
+X-Mimecast-MFC-AGG-ID: 85Lc-lXeMXGCnQI4NdiFNA_1793384755
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EE4091955F30;
+	Fri, 30 Oct 2026 18:25:54 +0000 (UTC)
+Received: from pbonzini-thinkpadx1carbon6th.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D25D31800347;
+	Fri, 30 Oct 2026 18:25:53 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: torvalds@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] Second batch of KVM changes for Linux 7.4 merge window
+Date: Fri, 30 Oct 2026 19:25:52 +0100
+Message-ID: <20261030182552.1269009-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,77 +74,230 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-12-zide.chen@intel.com>
- <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
- <b3dcb403-ec19-4d23-9bab-336e2eb344bd@intel.com> <CALMp9eTHRzXXm1gpKR3u1nzJU3i9M1a_wUjp9+bD8_r4eoPQ_Q@mail.gmail.com>
- <dc0e6998-6b8c-4b0c-a04e-b6af0a1cf653@intel.com>
-In-Reply-To: <dc0e6998-6b8c-4b0c-a04e-b6af0a1cf653@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 30 Oct 2026 11:23:47 -0700
-X-Gm-Features: AclHuK9E07m7dz2wKjkFpXS9KkhXE21jPyyRBCg8pZLGFJS_nCKIByMBt2PJplg
-Message-ID: <CALMp9eTRTLGziPtrSG9tQWLqoUuz9zmrRwUis5gb-wSeJeA7-w@mail.gmail.com>
-Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
- GLOBAL_INUSE MSRs
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Fri, Oct 30, 2026 at 10:20=E2=80=AFAM Chen, Zide <zide.chen@intel.com> w=
-rote:
->
->
->
-> On 10/30/2026 6:55 AM, Jim Mattson wrote:
-> > On Thu, Oct 29, 2026 at 10:45=E2=80=AFAM Chen, Zide <zide.chen@intel.co=
-m> wrote:
-> >> On 10/28/2026 4:24 PM, Jim Mattson wrote:
-> > [ ... ]
-> >>> As I pointed out in patch 04/16, we can't pass through the PMU global
-> >>> controls unless their reserved bits match hardware.
-> >>
-> >> Totally agree. Then the handling of bit 55 breaks this rule as well.
-> >>
-> >> if (vmx_pt_mode_is_host_guest())
-> >>         pmu->global_status_rsvd &=3D ~GLOBAL_STATUS_TRACE_TOPAPMI;
-> >>
-> >> Always intercepting GLOBAL_OVF_CTRL and GLOBAL_STATUS_SET can solve th=
-is
-> >> problem, but it may impair guest performance, especially for nested.
-> >>
-> >> Instead, I'd propal to have separate reserved masks:
-> >> - pmu->global_status_rsvd: unchanged, strictly tracking virtualized
-> >> guest state and preserving live migration validation.
-> >> - pmu->global_status_{clr,set}_rsvd: unmasking all architecturally val=
-id
-> >> hardware bits for the corresponding MSRs on v4+.
-> >>
-> >> Any bits allowed by hardware but unvirtualized by KVM are
-> >> scrubbed/filtered in intel_mediated_pmu_{put,load}().
-> >
-> > That is a terrible proposal. MSR bits that vanish at unpredictable
-> > times?!? No. If an MSR contains bits that aren't virtualized, that MSR
-> > can't be passed through. Full stop.
->
-> OK, I agree. I will intercept GLOBAL_STATUS_SET (0x391) and remove the
-> nested_vmx_merge_msr_bitmaps() for it.
->
-> However, I propose we keep GLOBAL_OVF_CTRL (0x390) passed through, even
-> though its reserved bits don't match hardware. Since it is
-> write-1-to-clear, it cannot manufacture unvirtualized state or leak host
-> data.
->
-> The only divergence is the lack of a #GP if the guest writes an
-> unvirtualized but hardware-valid bit. If we want to eliminate this
-> behavior by intercepting it, it will force an additional VM-exit on
-> every single guest PMI.
->
-> What do you think?
+Linus,
 
-That seems reasonable to me, as long as the architectural misbehavior
-is documented in Documentation/virt/kvm/x86/errata.rst.
+The following changes since commit 164405e8e9a0378c7e1aff2254625a6553a291f1:
+
+  KVM: always make in-place conversion a compile-time constant when possible (2026-10-21 03:28:21 -0400)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+
+for you to fetch changes up to 1689c80fca308978ea1c9f03d15a500f4e44e2e1:
+
+  Merge tag 'kvmarm-fixes-7.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD (2026-10-28 19:01:07 +0100)
+
+----------------------------------------------------------------
+Arm:
+
+- Fix a couple of embarrassing merge mistakes in kvmarm-7.4
+
+- Cleanup the HCR_EL2 bit fields to exclusively use the generated
+  definitions, fixings a nasty regression introduced in 6.16, where
+  barriers were not upgraded from NSH to ISH anymore
+
+- Fix publication of state when a vcpu is forced out of the guest
+
+- Let vcpu pausing nest correctly
+
+- Sanitise ID_AA64MMFR3_EL1.S1P[IO]E to follow the rules of the architecture
+
+- Don't warn on SMCCC filter reserved range allocation failure
+
+- Prevent GICv5 and TLBI hypercalls to be used from the host when pKVM
+  is active
+
+- Enforce that only GICv3 guests are supported for pKVM
+
+- Don't try to access GICv5 EL2 sysregs from EL1
+
+- Compute architectrally correct values for ID_AA64MMFR3_EL1.S1P[IO]E
+  by checking the feature dependencies
+
+- Require matching VGIC and ITS model
+
+- Cleanup TRACE_REMOTE dependencies
+
+- Fix random comments
+
+Arm selftests:
+
+- selftests: Skip unwritable ID fields in the failed-run test
+
+- Move pkvm_selftests() after all CPUs have initialized EL2
+
+RISC-V:
+
+- Allow Zicclsm, Ziccamoa, Ziccif, Za64rs for KVM guest
+
+- Implement KVM_PRE_FAULT_MEMORY ioctl()
+
+- Replace imsic switch-case macros with range checks
+
+RISC-V fixes:
+
+- Avoid redundant interrupt check for pending timers
+
+- Reject vCPU creation after AIA initialization
+
+- Fix build with vector support disabled
+
+- Fix IPI delivery for out-of-order vcpu_id
+
+- Use a raw lock for IMSIC wakeup state
+
+- Reject vCPU creation after AIA initialization
+
+RISC-V selftests:
+
+- Lazy V-extension enablement for KVM selftests
+
+- Show sepc/scause/stval CSRs in KVM selftests vcpu dump
+
+----------------------------------------------------------------
+Andrew Jones (2):
+      RISC-V: KVM: Reject vCPU creation after AIA initialization
+      RISC-V: KVM: Use a raw lock for IMSIC wakeup state
+
+Fuad Tabba (10):
+      KVM: arm64: vgic-its: Don't map an LPI from more than one event
+      KVM: arm64: vgic-its: Remove the pending state of a discarded LPI
+      KVM: arm64: Don't WARN on SMCCC filter reserved range allocation failure
+      KVM: arm64: Reject the GICv5 CPU interface hypercalls under pKVM
+      KVM: arm64: Return on kvm_gmem_get_pfn() failure in gmem_abort()
+      KVM: arm64: Reject the stage-2 flush hypercalls under pKVM
+      KVM: arm64: Validate the host-provided vgic model in pKVM
+      KVM: arm64: vgic: Do not access the GICv5 CPU interface from EL1
+      KVM: arm64: Fix stale VGICv3 comments in the nVHE world switch
+      KVM: arm64: Set HCR_EL2.BSU to Inner Shareable for guests
+
+Heinrich Schuchardt (2):
+      RISC-V: KVM: Allow Zicclsm, Ziccamoa, Ziccif, Za64rs in guest
+      KVM: riscv: selftest: add Zicclsm, Ziccamoa, Ziccif, Za64rs
+
+Jinyu Tang (4):
+      KVM: riscv: Avoid redundant interrupt check for pending timers
+      KVM: riscv: Implement KVM_PRE_FAULT_MEMORY
+      KVM: selftests: Add RISC-V Sv57 page table indexing
+      KVM: selftests: Enable pre_fault_memory_test for RISC-V
+
+Marc Zyngier (12):
+      KVM: arm64: nv: Move L2->L1 switch on interrupt early
+      KVM: arm64: Move OUTSIDE_GUEST_MODE publication past context being saved
+      KVM: arm64: Move IN_GUEST_MODE ahead of state being loaded
+      KVM: arm64: Turn vcpu->arch.pause into a counter
+      KVM: arm64: vgic: Stop the target vcpu when disabling LPIs
+      KVM: arm64: vgic-its: Stop the VM when handling MOVALL
+      KVM: arm64: Convert HCR_xyz to HCR_EL2_xyz
+      KVM: arm64: Get rid of compatibility HCR_EL2 aliases
+      KVM: arm64: Sanitise ID_AA64MMFR3_EL1.S1P[IO]E
+      Merge branch kvm-arm64/hcr-cleanup into kvmarm-master/fixes
+      Merge branch kvm-arm64/cross-vcpu-sync into kvmarm-master/fixes
+      Merge branch kvm-arm64/misc-fixes-7.4-1 into kvmarm-master/fixes
+
+Matthias Goergens (1):
+      MAINTAINERS: name the kvm-riscv/linux riscv_kvm_next branch
+
+Oliver Upton (1):
+      KVM: arm64: Add helpers to halt a vCPU
+
+Paolo Bonzini (2):
+      Merge tag 'kvm-riscv-7.4-1' of https://github.com/kvm-riscv/linux into HEAD
+      Merge tag 'kvmarm-fixes-7.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
+
+Sascha Bischoff (3):
+      KVM: arm64: gic-v5: Drop unused addr variable
+      KVM: arm64: vgic: Require matching VGIC and ITS models
+      KVM: selftests: Reject GICv3 ITS with a GICv5 VGIC
+
+Sasha Levin (2):
+      KVM: arm64: Take a protected vCPU's TWI and TWE only at vCPU load
+      KVM: arm64: selftests: Skip unwritable ID fields in the failed-run test
+
+Stefan Butz (1):
+      RISC-V: KVM: Don't write MMIO load result to x0
+
+Vincent Donnefort (2):
+      KVM: arm64: Move pkvm_selftests() after all CPUs have initialized EL2
+      tracing/remotes: Fix TRACE_REMOTE build when TRACING=n
+
+Xiaofeng Yuan (2):
+      RISC-V: KVM: Fix IPI delivery for out-of-order vcpu_id
+      RISC-V: KVM: Replace imsic switch-case macros with range checks
+
+Yong-Xuan Wang (1):
+      KVM: riscv: selftests: Dump sepc/scause/stval on vcpu_arch_dump()
+
+Zhanpeng Zhang (1):
+      RISC-V: KVM: Fix build with vector support disabled
+
+jinrui (1):
+      KVM: selftests: riscv: Add lazy V extension enablement for guests
+
+ MAINTAINERS                                        |   2 +-
+ arch/arm64/include/asm/el2_setup.h                 |   4 +-
+ arch/arm64/include/asm/hardirq.h                   |   6 +-
+ arch/arm64/include/asm/kvm_arm.h                   |  79 +----------
+ arch/arm64/include/asm/kvm_asm.h                   |  22 +--
+ arch/arm64/include/asm/kvm_emulate.h               |  18 +--
+ arch/arm64/include/asm/kvm_host.h                  |  10 +-
+ arch/arm64/include/asm/kvm_mte.h                   |   4 +-
+ arch/arm64/include/asm/kvm_pkvm.h                  |   1 -
+ arch/arm64/include/asm/kvm_ptrauth.h               |   4 +-
+ arch/arm64/kernel/head.S                           |   4 +-
+ arch/arm64/kvm/Kconfig                             |   2 +-
+ arch/arm64/kvm/arm.c                               | 100 ++++++++------
+ arch/arm64/kvm/at.c                                |  18 +--
+ arch/arm64/kvm/config.c                            |  78 +++++++++++
+ arch/arm64/kvm/emulate-nested.c                    | 116 ++++++++--------
+ arch/arm64/kvm/guest.c                             |   2 +-
+ arch/arm64/kvm/handle_exit.c                       |   2 +-
+ arch/arm64/kvm/hyp/include/hyp/switch.h            |  14 +-
+ arch/arm64/kvm/hyp/include/nvhe/pkvm.h             |  13 +-
+ arch/arm64/kvm/hyp/nvhe/host.S                     |   2 +-
+ arch/arm64/kvm/hyp/nvhe/hyp-init.S                 |   2 +-
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c                 |  15 ++-
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c              |   6 +-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                     |  41 +++---
+ arch/arm64/kvm/hyp/nvhe/switch.c                   |   4 +-
+ arch/arm64/kvm/hyp/vgic-v3-sr.c                    |   4 +-
+ arch/arm64/kvm/hyp/vhe/switch.c                    |  12 +-
+ arch/arm64/kvm/hyp/vhe/tlb.c                       |   2 +-
+ arch/arm64/kvm/hypercalls.c                        |   4 +-
+ arch/arm64/kvm/inject_fault.c                      |   6 +-
+ arch/arm64/kvm/mmu.c                               |   9 +-
+ arch/arm64/kvm/nested.c                            |  16 ++-
+ arch/arm64/kvm/pkvm.c                              |   4 +-
+ arch/arm64/kvm/sys_regs.c                          |  26 ++--
+ arch/arm64/kvm/vgic/vgic-init.c                    |  17 +++
+ arch/arm64/kvm/vgic/vgic-irs-v5.c                  |   3 +-
+ arch/arm64/kvm/vgic/vgic-its.c                     |  85 ++++++++++--
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c                 |  15 ++-
+ arch/arm64/kvm/vgic/vgic-v3-nested.c               |   4 +-
+ arch/arm64/kvm/vgic/vgic.c                         |  15 +--
+ arch/riscv/include/asm/kvm_vcpu_vector.h           |   6 +-
+ arch/riscv/include/uapi/asm/kvm.h                  |   4 +
+ arch/riscv/kvm/Kconfig                             |   1 +
+ arch/riscv/kvm/aia_imsic.c                         | 149 +++++----------------
+ arch/riscv/kvm/gstage.c                            |   6 +-
+ arch/riscv/kvm/isa.c                               |   8 ++
+ arch/riscv/kvm/mmu.c                               |  47 +++++++
+ arch/riscv/kvm/vcpu.c                              |   3 +
+ arch/riscv/kvm/vcpu_insn.c                         |   2 +-
+ arch/riscv/kvm/vcpu_sbi_replace.c                  |  12 +-
+ arch/riscv/kvm/vcpu_timer.c                        |   6 +-
+ arch/riscv/kvm/vm.c                                |   1 +
+ include/kvm/arm_vgic.h                             |   6 +-
+ kernel/trace/Kconfig                               |   1 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ tools/testing/selftests/kvm/arm64/set_id_regs.c    |  13 +-
+ tools/testing/selftests/kvm/arm64/vgic_v5.c        |  32 +++++
+ .../selftests/kvm/include/riscv/processor.h        |  19 +++
+ tools/testing/selftests/kvm/lib/riscv/processor.c  | 109 +++++++++++++--
+ tools/testing/selftests/kvm/riscv/get-reg-list.c   |  16 +++
+ 61 files changed, 768 insertions(+), 465 deletions(-)
+
