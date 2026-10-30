@@ -1,97 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793384590;
-	b=lRno1gWvKgZmTPc7cmm1qJR0BsUDE13AtOHIIaBDQzQrDaz8ONxops67jwSbPjz09fUt
-	 RL2hp/+jDEm+3q56W9nKjk3mHmLJeh3SP9Uhj9Ljx6uAlI5R8M7zK7V6RPFwWBI+krGCC
-	 YUXg6vhEkXkoVMB7WLy6a7pQmDqoJABeveGh1sSWxeBRCY+cjWotwCVdqC7cr+Or80Bx8
-	 KXHabGS8Bp+nNCSjSgwGl3+u/2ug4dHK3Uc7lBIM3geseabbs8Slxe4C6lUJRYSr7oCm1
-	 Rfhyua9uHZINkJ735ZcxZnyIKaX/L1QckpFiNSTW92hTRklqTk7BB/g00ZGWYCp4VqA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793384590;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=/Xvg0R25amrWBeRSgNLozzHcB9qbFo+cgJRFaRIuY8s=;
-	b=5A7ZKWS1o27QJbX4Ww6NcpMJpGP9PcFlVnucuKsOsShLlebxTl7hAG53XiHEgKx+D7Oo
-	 ytcmnzkaphZ+gEdC4Y/NlnzeZO3BXezAVQDRd8Ed3vP8Ma5r7X7J/49k1O0MXSsf0wPme
-	 8DukZSgwhVIPFtz+anqfskQsEhj+C2jFWCKrbZ5Ee3HT5vuFVTCccijulr6mCV0fwWkwS
-	 NKGoyP9jMWoKkRHKFq7nGydNzepAEmAEDhqFvfDifPFgiI0+cbcFk1kvDY7e8WfG6sE2a
-	 w9tknBE1//M18gl3RLp0SbcS2UtTvOaWuOGUJLoI3EEWc2P5iewuzA3ZB+d7MUAHHKg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Q06kMkXv;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793384646;
+	b=XKasTlA6HmlxLjhLYu3T2aEqFHSNR+xFfVuFIivF+WmLb30Ct5n8AK7Ji8pDpPMwSfR3
+	 6/LAx3oqxxxYN/0n6GBO+KoT5gGzMTuNO96Z04I616QSHXATg/DcRMQJVSyTSQ/g4gFAs
+	 tWWUU6ERib1HpvZFQHb07gW/OGbOBrk+MJYjdrmSyfrCrRTZjfya5IHGM5M5a9MBkYs7l
+	 oqkSBa46PLTAVII65r9ZT4CbiXxQattWtOkQzTmVXkqimJahmlGj2ZZJ7GymOy64f21RI
+	 3GkTJVD52Ser6SVsOCV4AVrT9KQpKAZq8OyGOQKVXRdkKnNs3yofyJSPpqHwy1jeC9A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793384646;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
+	b=eYiZ+/Ni46j9nr/XTfGYKxm/Z07Vj9nrbsuwzMXCfahYTfHNGJFlzamNzCh30zydAxVK
+	 k73TiycYGOH33QKRPquExL02weWZg9DVyL3/D/U9MT5/wHhdasaIqu7Oyn7Vsbb74Dz3j
+	 ij8gniYB3sN1/qn4PCr1AEXah0rx6i6eqk3EFk2yOXO4a0snGqU8fOwu69N/37dO2x1A+
+	 ZOvPQTd8JpcYLoChC3unuAGQKJFgH8OwYY2unVrj3QdiFYOv8tUbClLcE2k6CTSarvwbG
+	 mz4XC16ep7dgFKdyjc/oXqwdBhIo6Ky3E0gAcDbEMfc6vzou2+G6DVKdm37gA5isrrQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T4ruIAOd;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.169
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D90606A31D;
-	Fri, 30 Oct 2026 18:23:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61D90606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9905B606A31D
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 18:24:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9905B606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Q06kMkXv
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EB5F540E02B7;
-	Fri, 30 Oct 2026 18:23:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3HScSIozuZQu; Fri, 30 Oct 2026 18:23:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793384583; bh=/Xvg0R25amrWBeRSgNLozzHcB9qbFo+cgJRFaRIuY8s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q06kMkXvdpQNuBgPUoBEd6jxa4S5aHs1FyNGqdyg7Amy5j6BGcJNl7/LZkmVpYEh5
-	 zZ/0jspxBpDgsL39fn1ydFRA/Q/+a7Kmf1qtGhG5NOzhcCZiivvMLEQEyAsCyBCBhd
-	 UJU2ShDPDySy8LNX7D5eaDsV+DOjPWF79vRMkYPk5QSFH0Si0Yo4k5BGe1nDOPMCTG
-	 GYlv6lRUaKBMNfsejSLgNhKf8c3bksFOx3A4IH7t9wqOOs/gl+KadQXg5qcM16lD6s
-	 yuEiBeKN1lgAiiT2yRJkZAl4Z0VrKrPLdyJOC3lPUAFCQjQ7g2428yHun69ORlvKy7
-	 mNaJ1ftqcTu1LE0Idog3jN/wwjng14W652V4Y7Ij5QzuLftcXAh5ScjZEvuMkOBuvt
-	 nWwAPLKmXT2t1hWOAh8JffB5k53AUPa+T+xnda6pJ+qjDklGZ7MowDD+4En/XOCsRS
-	 FvP68M39jTF/9aypl8TacTO19etLDGbz+Ln1EInsMM4nnqnntOcWdcLZcMHWEre/c2
-	 a/oDCJKSs3zJyBQCn9ATmkZZZL8LWZ5PGt13uXzuK6aR06Vk+cW/Em6xygSxyH3pi4
-	 OpCSO6DNIZWxZewMKjEwF2hopsYtzFu8XxpwU+iRo5LpAkmALLrAjfxA/s0RMGVs9k
-	 XF2RW0rXfK1gQhB0kFX0SqRA=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 438B140E016C;
-	Fri, 30 Oct 2026 18:22:47 +0000 (UTC)
-Date: Fri, 30 Oct 2026 11:22:44 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	"biju.das.au" <biju.das.au@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Au Dang <au.dang.jx@renesas.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <20261030182244.GBauTgdBvhDWLoloSJ@fat_crate.local>
-References: <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
- <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
- <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
- <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
- <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
- <auSrwtQgJRM09_ve@thinkstation>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T4ruIAOd
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5383c97c8cfso25081cf.1
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 11:24:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793384644; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Mmp37cAhxG097nn3P3X9kxDJ75o585BUr4uAIpA57zGqGTs7AV2SovGmN9Ig7s4PBa
+         6aE2ImG2mOUch9xVWoPREgpn7hJcV86IQtQc0QFlOtEn6wg/ZoK/8HCHJYiWlVC7eAb5
+         3nf37FAxKlo8JLZzLCxc6N+3WSJKXkfR7yqC5lQ+Et/2eLcyJtTfHPjSnmc6EvBxYW/o
+         ZRteHKPj1PI+aZJnhANxGPNUhURdNvVdhdwRE9QoahSo42cCXsh60jCAvG4XcpCXoDx1
+         Vpxu4Orl1EObposXvfI/XyxLrFkViVeGIr0uLhqq9FXVKx16PryTzHbzF02g3Kj4iCsg
+         LcfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
+        fh=TnVFjPn5JbrQbv1TPufSU/l1kfvoJHV1QbI6Ccjia8M=;
+        b=JQuj6l555hOL/9o/rDPLgIiNMcMXbCFFh03PlykRDhZ+o5aJfBnx1D3vSCFGYWgxhV
+         Rx28qlZh1O4qEOgZEurvQqoUAzTuaEsBfWqLGfI401gDgFdHvHXOz1OYEFTydnZabJ+s
+         4gihtWZrOz1sX5ujDxjG2uON3nN2I+4a4cxlQnHoAsP0Qg/5f8v0vmbsXNI9OF6Fn+ci
+         RG8ZKRxNjr4Fw64og8bwWzE3yoLAcUzI1JFeH8skbf+3UnTZMejg4JDgMMy7wNd3cdaE
+         x2DGqqSLuYbf8oa9oX7qpOmx52RfZtT/Tb5bLL6sPvFXLUnTHKQwWuKxHesCCXPKoOnf
+         6WGA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793384644; x=1793989444; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
+        b=T4ruIAOdTtx8ZxacqgjXIAGV0SmNNSJS/QwhXKBiHoOxBRoufgxlPFqxFtfAdR5jIK
+         ZY18/LZOP3HAqOCVCF8ukpR3+4Ho7nljIaFW7cb6jqW2BesfIOfq2iCD6Acn7FS2F3Vh
+         Z3PcXBbgdSzvAoecIdCPDeiDInqQdAQugWDRUXYlNI2+Y8+xNBXTpjFp0PCNHSBkMjtd
+         EQUTVGE+GQGh4rphuXx/jPl15iRNpvjEW1lHLxbsmqSUQEHQrKYQsqOoUi33bRrJsk/J
+         K3QF8A/0P7XhKoJkkDZxlG3cbWJ4hMCZsZuiwZ1KmMljE7OpGR0Pa2/3FFcLxQK/2aQX
+         4/AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793384644; x=1793989444;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Fw1kmg+I1ASrdCP1OUgNo/WWfGRAnAaqRKHEspPk4Vc=;
+        b=tUuRxqKlE7SGrRUSFdHqtR56/WNtA5bulSHcJa0ZpbtsgLsjoT46QfvwsvDhZSTbNM
+         r7sqR/IYOlN5c6zMKYmwpAaiTIglzzRVWPn/J51PsX1t9BaGvnevgyZP5glYhY4XybN4
+         CKAJ3JzZogN59lcic0sZ6w6cS6JJz1AaeLzF93SaxqCNgLtjWgv8JllUJAUeLjNfCmrA
+         YUQ0nFRNpt3efWvZJkxHpPyRCpOm8EU9MnOshsNIG3eUFpeHPUHuPP0kcspcg50ObAM6
+         0Bu6j+n7mtjgwA72t3ifXKRtb9oUazVC85JAmdrNpvJvu/ooZf23nRh2Oy0cW5NpFyX4
+         7eaA==
+X-Forwarded-Encrypted: i=1; AKwUvBwR62VLBv772KKHI7ACdY09gP5ksaPAhZD09Wn9/CVhRAP1C/RVfd8jE462D/zDqzZ0+/0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLFE7wHPs0UmX0LVF5eUsvo8TRacArVLHEGNq+pehYctfL7vPWy
+	mph0QKltPl4r1HQdwz3Neqx5XOSAYcnl3AhYiyJ2pW+6bBwhzmsOrtrqfyGaoX8eZg1whVSW8fn
+	zf7TAR8cc2i+m3xVDQsAgQnRY8ku1lTQTDmc7X+dW
+X-Gm-Gg: AYBFou1r4j1N3w94R52TfYi4JuyJl+Iy3X5QmJAn1N7uXw4jZwKRNmo+jItpDtXifMd
+	QHnMXrXrueiyaYfwQZ9RucIHKchvgSIJc+egbx1HqsbQHSvKO7j3EKJy5tsd6NjLUEzpPXLWaEo
+	zlF/jMeaSgDSK9mrTpNWCtzoON1EX/I8LwLF/oxevHdqbIoLatCJIPwSRlfjM3uQiV32nqewcRn
+	d01J/VbtWgHYufSirs+0oXD+pFqOXETPb7VNvtMCQ/L4Iin9I+fhqtndRe4jeKNcqccVfa5mWaW
+	/ust5o0b00GlB5EutbJf+TrwiQsbMv06BYdoJgHoAg5Tzm9PUifKvGZB9hXj6RQ9ILpupcH56aC
+	5LlJDdkbmDycVShZj1HgxJtSuVSh2h1P1Ue1i
+X-Received: by 2002:a05:622a:4d46:b0:535:84ef:2e26 with SMTP id
+ d75a77b69052e-5414de1ec9amr50031541cf.7.1793384643499; Fri, 30 Oct 2026
+ 11:24:03 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,20 +104,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <auSrwtQgJRM09_ve@thinkstation>
+References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-12-zide.chen@intel.com>
+ <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
+ <b3dcb403-ec19-4d23-9bab-336e2eb344bd@intel.com> <CALMp9eTHRzXXm1gpKR3u1nzJU3i9M1a_wUjp9+bD8_r4eoPQ_Q@mail.gmail.com>
+ <dc0e6998-6b8c-4b0c-a04e-b6af0a1cf653@intel.com>
+In-Reply-To: <dc0e6998-6b8c-4b0c-a04e-b6af0a1cf653@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Fri, 30 Oct 2026 11:23:47 -0700
+X-Gm-Features: AclHuK9E07m7dz2wKjkFpXS9KkhXE21jPyyRBCg8pZLGFJS_nCKIByMBt2PJplg
+Message-ID: <CALMp9eTRTLGziPtrSG9tQWLqoUuz9zmrRwUis5gb-wSeJeA7-w@mail.gmail.com>
+Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+To: "Chen, Zide" <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 30, 2026 at 02:40:00PM +0000, Kiryl Shutsemau wrote:
-> K: matching is case-sensitive, so the TDxE prose never matched. The hit
-> was tdxe_auto_clear, the field that patch adds, in the diff as well as in
-> the changelog. A keyword can't tell that from TDX code, so paths only is
-> the right fix.
+On Fri, Oct 30, 2026 at 10:20=E2=80=AFAM Chen, Zide <zide.chen@intel.com> w=
+rote:
+>
+>
+>
+> On 10/30/2026 6:55 AM, Jim Mattson wrote:
+> > On Thu, Oct 29, 2026 at 10:45=E2=80=AFAM Chen, Zide <zide.chen@intel.co=
+m> wrote:
+> >> On 10/28/2026 4:24 PM, Jim Mattson wrote:
+> > [ ... ]
+> >>> As I pointed out in patch 04/16, we can't pass through the PMU global
+> >>> controls unless their reserved bits match hardware.
+> >>
+> >> Totally agree. Then the handling of bit 55 breaks this rule as well.
+> >>
+> >> if (vmx_pt_mode_is_host_guest())
+> >>         pmu->global_status_rsvd &=3D ~GLOBAL_STATUS_TRACE_TOPAPMI;
+> >>
+> >> Always intercepting GLOBAL_OVF_CTRL and GLOBAL_STATUS_SET can solve th=
+is
+> >> problem, but it may impair guest performance, especially for nested.
+> >>
+> >> Instead, I'd propal to have separate reserved masks:
+> >> - pmu->global_status_rsvd: unchanged, strictly tracking virtualized
+> >> guest state and preserving live migration validation.
+> >> - pmu->global_status_{clr,set}_rsvd: unmasking all architecturally val=
+id
+> >> hardware bits for the corresponding MSRs on v4+.
+> >>
+> >> Any bits allowed by hardware but unvirtualized by KVM are
+> >> scrubbed/filtered in intel_mediated_pmu_{put,load}().
+> >
+> > That is a terrible proposal. MSR bits that vanish at unpredictable
+> > times?!? No. If an MSR contains bits that aren't virtualized, that MSR
+> > can't be passed through. Full stop.
+>
+> OK, I agree. I will intercept GLOBAL_STATUS_SET (0x391) and remove the
+> nested_vmx_merge_msr_bitmaps() for it.
+>
+> However, I propose we keep GLOBAL_OVF_CTRL (0x390) passed through, even
+> though its reserved bits don't match hardware. Since it is
+> write-1-to-clear, it cannot manufacture unvirtualized state or leak host
+> data.
+>
+> The only divergence is the lack of a #GP if the guest writes an
+> unvirtualized but hardware-valid bit. If we want to eliminate this
+> behavior by intercepting it, it will force an additional VM-exit on
+> every single guest PMI.
+>
+> What do you think?
 
-Right you are, thanks. I'll fix it up.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+That seems reasonable to me, as long as the architectural misbehavior
+is documented in Documentation/virt/kvm/x86/errata.rst.
