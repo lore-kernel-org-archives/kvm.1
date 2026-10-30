@@ -1,76 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793386447;
-	b=OugP9cmUf1GWq3GOnV5JsXzImQjpcxNp/xkpWFCb7KtjVXikLlezR9sFs+EwmEx91hdc
-	 DmlzrWqmGkQAMSGfGtd1flqXQ4IWyoe63po7otav0prESJxGaE3kvTqDyVAy+LNe7VZ9y
-	 u9YGbyw0pftOTGxC/q2yaAlV54/AUV7e/drTAwQ3d5jX/80qMl4XjU9nvXD2gbSXlG/5g
-	 4I6bE3G428I2V4/nnxEpgXgGAbH2+gErY34LS1uEY24qTS+gt1eUNZy7YUNzvspgAWwGA
-	 5vP8yC+uNZEyik6ed1WQ7DnJQg+8TXX+i7tKjjCCSYbOU2iD0MQnabwbhXWph/GvBoA==
+	t=1793386632;
+	b=R5E68pSKs2k11isRSZr2O8Qx4ckxmjrtENJZ3t84FBN6/rzpvCVuSuvRGq+T8y6PLZCb
+	 gSb9L6gpWfzMbaqc6E+6sKL5wdeQG1dD2feaVIwTjs3itGvM5P/+sgQ64aM35Mmb/plBW
+	 p3wjNiawS25sRaWpZpjQ3TlN+TGtmMv2i1rSI6e8KoY4KEDW1hNiWM3yLVKFcKnoZLAjx
+	 NlV8LPID+w0ZxJ6Kf8maALcuGgLCuKy28tnWvmRNEjfPBUOza3urzwknmOvMMQbPZWh7D
+	 YGGsQDmzRSdAwAtF3JwzWTCtACQ5XwQo3AZby7QdP9jfNfKqg2LZAvnhT5Zqx+Yj2qQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793386447;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793386632;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=u/p+CdNB031652mF8XZuXCF6muaar3ooWIvBYaXGN3c=;
-	b=Lx485Reg+e76Z+8p9fPJ8Y84lwmEjwj5tw5u/3kvXNPgiUv7BVyY1wTL/dQ+jwNjjFZb
-	 mWmCbMcxVgTuqCbmFTyeQJ9HjahsjoOJ6CSmYyrQtPmp2TLC1eMsfp2nuHgzDj3woaAke
-	 anygxA8GhPCVTWn5daB/wQrqUfPIUTB07bvwePC1Rf7WfBoMR6ehRNNTTg6EZyyEO9AR8
-	 yCNqCdYnsjpjpT/AlQjWc/ndfuDBvpwuLT90bQl3bjZHtqy2my8TApz4gxEtyNq2mDdql
-	 YDU6SGdC0oWD/RWVfhvqbnHkByRepllf5zmoacY0vpfR1RW/Qscz8BY1gJd9/VVCt5A==
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=AqsM43MOtFOSSZV0EEwrjw089w0rw12SYsGwf7bUH9w=;
+	b=KfUtq5Sa8JAhb8hoEycugBn5p85lw0A1vxRfOzEBndoNFxfaRBaZ2gSmz5K7QjZcoQK3
+	 uI90xk0HCZxcbtV/sQESFO7Rjs1PXL/vgYnCDmeFTcoA1L5FlO/lJdHAM+isPjxPP9zvD
+	 9xLHy6JficNNAryaqjfLxjDJmJ0/1u7zLg6bACiEcdfx7yfphh4E0hoi4kULXDj9nXGjn
+	 QRj1dbVPWTnLNob8rwJbdMTXm2YkS9IJ5EQT37wJKzu+NexmsMHc81+cu6ng+7kuk9Pb1
+	 I9lTyPkHC6LM6OXQ12+h55k4eTuCrZgflVuzz2XtOLpm6abaTtJdtzp2LfkvMyGZvRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="cnRI/wVD";
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KGbcCTq3;
 	arc=none smtp.remote-ip=209.85.216.69
 Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002DE606A324
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 18:54:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 002DE606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADDB606A31A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 18:57:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CADDB606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cnRI/wVD
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab926c236aso909442a91.0
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 11:54:06 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KGbcCTq3
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab1e771632so1661899a91.1
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 11:57:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793386446; x=1793991246; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=u/p+CdNB031652mF8XZuXCF6muaar3ooWIvBYaXGN3c=;
-        b=cnRI/wVDs05gS9M2Bq0RLbN+ADojbqHvUc87f7ibZ/up8TS9ooi7XFmypERgojXCMB
-         Nku8VC3bOY33aAdfXQg9FmqxGQzv9cRZOEp8T9v8+b+mp4K2d9k/ZafQtAHgMtehPdp7
-         x4CfRAWSC4w2DnJX7B+Sc3CUffw6l5VNkgRgFTNYdyLik/ssf+eN41sDXASLJnzJ4X2i
-         JXMUNH3wQB9L5AByEY+aS/BauKzCUHHFLoo0nk+frQ+t6mUD+9/9E9rmRw4903/1OxkD
-         QnYMFACSTVcv1f5Pl/7jzfFQG47zbMgHOsC6fIBNtnqGsRllKCc0iRCfBscN1SMKwkDD
-         dOmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793386446; x=1793991246;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793386631; x=1793991431; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=u/p+CdNB031652mF8XZuXCF6muaar3ooWIvBYaXGN3c=;
-        b=f5Rj6k7kFiuBoY8++hndNLN1i9GlfNgwUgdv00FVZygmZzMkqX3qYGJsAbHERrjBzs
-         pTVN+u3DO8PJIOUEQn7Q9EtW5YgsLrg3GDOkuNA9zsdEuTdZeluDa9/VQJDh958MRNtF
-         Sz09qu5TWMWaLgbYr/erAsgIFjP7ftGS0O6eiDSg9HE8a4eLl1VZErUdqjL6OUBZj/gR
-         tGiMwbN+fsQakMZiyvTe55poVZk4uxTIUqYfrZkJ8jgDrGEOre7N2PrFvabPNHfg/1Ah
-         DExlrFJG6dm7mBcP/afbVecc9/L0KGoyrLtGXPTxk+F4ODt4coat1b/iRtYHF0JQy9pC
-         EtFg==
-X-Forwarded-Encrypted: i=1; AKwUvByVN1ijnQtSMYZAuQzccPNTKwcY/OJGCXmSK6z+DhL2THrdUDOtB5cUSQisJrvJq451vCs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK2P690avuwZqJFl1RHBM9k9LBAnFcAvVF3VyxIwTgFoQDdeWXm
-	uti4vGsau+8hNyEYJNjyZTdlzsTsFKpgaykldyl+VqfZQhBBdwp4QZcERnMYNDVkq3USK0VV19T
-	C+ysIsA==
-X-Received: from pgkp2.prod.google.com ([2002:a63:f442:0:b0:cca:5338:9514])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:44:b0:3ab:ab5a:ef06
- with SMTP id 98e67ed59e1d1-3ae896f832bmr2783583a91.12.1793386446130; Fri, 30
- Oct 2026 11:54:06 -0700 (PDT)
-Date: Fri, 30 Oct 2026 11:54:05 -0700
-In-Reply-To: <CALMp9eS_XAyfRQ0aa7pGmC2t-=mbHA7rngWD9oqOB2U8AJZMsw@mail.gmail.com>
+        bh=AqsM43MOtFOSSZV0EEwrjw089w0rw12SYsGwf7bUH9w=;
+        b=KGbcCTq3/YKhRrX1UNf7Ho4eL476BVmg9txOYH/svCVz6IiaE6aABPJBZY9TV0MDLu
+         EwdjM1CqURyrxWWE78SIO2SAfw2XROkXNMSZRFaie+TolrQaGOTn/IwGs8CJAAPvx3uq
+         rSZiRDbKarXCKtUcTuqWMLxiXg+dIyeCbXVT3Gabdju8Tnjv7MEULhI52uT+ME/T5Xfv
+         Umq3zMQlrqUao1CzOqyNXt8QEBzDhGZvoKu0F2Ormzv+fJIw++NhRjV5ofr6tGNoKwPj
+         pOSmkuylFhQSblVQVtsohxGsX6qghDIcik3c9VsBAuJ/RdE2WznezUukCTqrOmLnOBWq
+         WzKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793386631; x=1793991431;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AqsM43MOtFOSSZV0EEwrjw089w0rw12SYsGwf7bUH9w=;
+        b=gikJs39EPKgK4DLDBpAkV5ZovB/ZbcCGWgPIt2p6CDm8bTNj2cDJiKbmwkhZyqIsYG
+         VsdmPyb9PrMmBj8dRYB13hVZVOsbJ0KkkpDdC+kXdDB+UFekKLzNLyMVYLLjYeAIu+B3
+         x37SjaP0K2GYQDSWORxJqtCKzUCgOFPn2Y8qTP6Q8qDmXK9U9hKYT6wGfpoGDWrvYaTe
+         4ySPzDhfk83A02galnLhXY26Yn7kGktfntHVhN5SuNYXXxH+RPxLU3oWALbSM/YY3O3N
+         DJ7dhj9dXlsOR86aTM2UF4sya1SNbzE1lMwqekzAnWyzPkj67Zer0mv2H6LuCqiDmoxi
+         lydw==
+X-Forwarded-Encrypted: i=1; AKwUvBzsCXnYTg8JTAjkgYgBU/TM0Fz5KtYrKGEFFNxGa0uMIMX4NgC41yeI67Nk76j6cgtHUcE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJXEBail91C3umt0xdJ7J76lHfoHhWRbXR/TTJ3sS6/zpDIxY0J
+	s/1GI0SBjtEIFgfLjUUMQX7ISCNQwh3c0BdjL9BUiVdnESAfmM6qyNNSsiEIRK4O5qna3enQUPT
+	7KEuaLw==
+X-Received: from pjbbo5.prod.google.com ([2002:a17:90b:905:b0:3ac:24b3:3484])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:c2c6:b0:3ac:b3c7:de04
+ with SMTP id 98e67ed59e1d1-3ae897aa752mr1800362a91.34.1793386630946; Fri, 30
+ Oct 2026 11:57:10 -0700 (PDT)
+Date: Fri, 30 Oct 2026 11:57:10 -0700
+In-Reply-To: <auStM0rbFol79h5o@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,36 +78,82 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261030032937.2813-1-ma.mandourr@gmail.com> <auTnBZMSHWKL4j4b@google.com>
- <CALMp9eS_XAyfRQ0aa7pGmC2t-=mbHA7rngWD9oqOB2U8AJZMsw@mail.gmail.com>
-Message-ID: <auTnzSiIihVgs8ha@google.com>
-Subject: Re: [PATCH v2 0/2] KVM: nVMX: Don't let L2's LMSW modify CR0 bits
- owned by L1
+References: <20261028190259.1819571-1-seanjc@google.com> <20261028190259.1819571-4-seanjc@google.com>
+ <auStM0rbFol79h5o@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
+Message-ID: <auTohixp3V5-vNsB@google.com>
+Subject: Re: [PATCH 3/7] KVM: PPC: Explicitly force IPIs when directly kicking vCPUs
 From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Mahmoud Abumandour <ma.mandourr@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Gautam Menghani <gautam@linux.ibm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Atish Patra <atish.patra@linux.dev>, 
+	Alexandre Ghiti <alex@ghiti.fr>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Oct 30, 2026, Jim Mattson wrote:
-> On Fri, Oct 30, 2026 at 11:51=E2=80=AFAM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> >
-> > On Thu, Oct 29, 2026, Mahmoud Abumandour wrote:
-> > > When L2's LMSW exits to L0 but not to L1, KVM emulates it with
-> > > kvm_lmsw(), which ignores vmcs12's CR0 guest/host mask, so L2 can cha=
-nge
-> > > CR0 bits that L1 owns.
-> > >
-> > > v2:
-> > >  - Patch 2: order the CR0 store before FNOP and check L2's whole CR0.
-> >
-> > I'll send a v3, I already spent an absurd amount of time figuring all o=
-f this
-> > out.  I really hate x86 sometimes.
->=20
-> You should redirect that emotion to KVM APIs!
+On Fri, Oct 30, 2026, Gautam Menghani wrote:
+> On Wed, Oct 28, 2026 at 12:02:55PM -0700, Sean Christopherson wrote:
+> > Explicitly force an IPI when invoking kvm_vcpu_kick() directly instead of
+> > relying on kvm_arch_vcpu_should_kick() to unconditionally return 1/true.
+> > This will allow dropping kvm_arch_vcpu_should_kick() in favor of
+> > kvm_request_needs_ipi().
+> > 
+> > No functional change intended (1 || 1 == true).
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/powerpc/include/asm/kvm_ppc.h | 13 ++++++++++++-
+> >  arch/powerpc/kvm/book3s.c          |  4 ++--
+> >  arch/powerpc/kvm/book3s_pr.c       |  2 +-
+> >  arch/powerpc/kvm/booke.c           |  6 +++---
+> >  arch/powerpc/kvm/e500_emulate.c    |  2 +-
+> >  arch/powerpc/kvm/powerpc.c         |  2 +-
+> >  6 files changed, 20 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+> > index 169ea6a7fbad..bbe7378ad0ef 100644
+> > --- a/arch/powerpc/include/asm/kvm_ppc.h
+> > +++ b/arch/powerpc/include/asm/kvm_ppc.h
+> > @@ -30,6 +30,17 @@
+> >  #endif
+> >  #include <asm/inst.h>
+> >  
+> > +/*
+> > + * TODO: For unknown reasons, KVM PPC has historically ignored vcpu->mode when
+> > + *       determining if kicking a vCPU needs an IPI.  Either document why that
+> > + *       behavior is necessary, or drop this helper and the @force param from
+> > + *       __kvm_vcpu_kick().
+> > + */
+> > +static inline void kvmppc_vcpu_kick(struct kvm_vcpu *vcpu)
+> > +{
+> > +	__kvm_vcpu_kick(vcpu, false, true);
+> > +}
+> > +
+> 
+> AFAICS, there is no reason for PPC to always return 1. I was looking at
+> the old patches on mailing list and found this - https://lore.kernel.org/kvm/0FEE585F-5E21-47F2-A3F0-AD0DE05EBB43@suse.de
+> 
+> ```
+> How about we return 1 for kvm_arch_vcpu_in_guest_mode() on !x86 always, just
+> like it's done today basically? Then we can worry about needless IPIs later
+> and don't regress from the respective current kick implementations.
+> ```
 
-Heh, saying I hate KVM's APIs sometimes would be a lie.  I hate them all th=
-e time.
+FWIW, I found that as well, but there are a metric ton of kvm_vcpu_kick() calls
+that have been added since then, and they scared me.
+
+> However, I'll do some testing and get back by mid next week to make sure
+> there are no suprises.
+
+Thanks!  If we can drop the PPC behavior, that would be wonderful!  Though if
+we do that, it should be for 7.5 in a follow-up (this series really should go
+into 7.4 due to the SNP issue).
