@@ -1,85 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793379154;
-	b=gpoyQxnJJDbyj8MT7o8vctwQdnxKBqINkHC/zuQpd0Kv4oaqSGMsROxAO6IYaRM6IYYM
-	 9Spih6KT3CBBDZzPQpx3YV1ErshotA6sSpLBJWtWGxP2uZ1hmnAVr3fbBXXZl5SJY0Fh3
-	 ROkAEIzZtYhlflDeGrora0gtx4U7xy/8GhyEg524sKCaZ9QWz/fch291BfRHxbvUcX7gD
-	 riM7M7iWsuspQjKliThUiL/kwDCe352gyZeKuzij9bp0fguZkpiUnneQmDd7fuxVWNIwb
-	 E0MhVNEckDXJu3ANqcvEHQihhRQZ3zxLBEJqh/fAySI0Nv5Hsfb/uFn3YMtgQGm3q9Q==
+	t=1793379518;
+	b=w7CZ/bv6wP3Dw73I9F3alkxZhtBL1iv/a/sTxrcXdlYbGVAQ/pXE2TxHA1MIstnAu8K1
+	 MFJeZH1VZAQ/YXtv7JWTOJgWb7m1tbXDpZqBHHiCbxvnlARoj6J2teGmKVopM2mi9LhDS
+	 rCI/hPc1fCN+uRckPK5ALGyhDn1G/T4RI2cQJimettYwP3E1AKb/4zxTWdUvRniUMMRUi
+	 41Cz5W0aLeHpvjgxyYpmCIIBOrTqSF01HH7Qmy+ccLgQnmqB4akQoEY3qzZaTFxlVygV1
+	 9EaVZwwkT3tfORxITkZv+Qk1XQrU0/njfokhamMTh8PTgB8ZqbuRjYH29KfxERpqA4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793379154;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=ktj+5dC08v5X6CbAXYodRMTXsnx7EjXTMl4rsHotSsw=;
-	b=g5Kx7i/sh+I6a+PPnoRavJ+1jnJXRNrNgvZd69myDRlDuYgEqFO5TlMMMIbktjPgiuxX
-	 mw01rLA49xvX0OLs7iSOsIJiXsmPa1pvVn9TfJGUgpZ6RmVdGX1dGMBIbrYoVNhqWUR82
-	 rEhdRFvnyL84EDv/uSoXngUHcoEMbBjhjvWzuJ0RlWk7lo8o0xr5+TGCipsqyUN8jNUdz
-	 iLW5QLZ+iDNfPQ+hzAAJbkCwcPxNbxB44/gXQRGF9y1rw2r+WO2Vws3KAbbqNqEa7YV25
-	 jBrTnvS2J/CkmJgHfoi1pYzrLS1iopbPBFvss7EaHQAp84qVyG7hOwUZreqJDEqvLGg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793379518;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Of8qcGhrASNngOAxz8m59rDteGhCMKDYRjobFeTSxhE=;
+	b=GWwmOwIGRDeSWCsITFEm5NGGssZSxjAuMIAGqVm2hu2abO7Nm6/FUW4EOgdidWET6aK8
+	 CzwimC1YaUsh+/dVfo6eloypQpO2KLZ8qa1dUAgAktuTzc9PrIZzQQPGocK7nL1NdmfGB
+	 WKrb0GORRoYG0mMudkE1jv0yJMtoXHWvegNILrxjAvcZc4jXSJTPDZXpt4iNlgzO7jT5D
+	 M3V1KA+bwEyk7tYuLcybjg7c5DTReLfdJ1Y45qTW6AFzi9qE470tkc4LjfSFZkdiipMwk
+	 Vcc1+dwseVGLYcMT+eJUF+2LT2nmhHlBTQXrg3AqCUNV6Tld3p73sZ26AQ+HvfPyylQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vsLUxmt6;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1D8606A31A;
-	Fri, 30 Oct 2026 16:52:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B1D8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vsLUxmt6
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0249A1682;
-	Fri, 30 Oct 2026 09:52:29 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE1D03F673;
-	Fri, 30 Oct 2026 09:52:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793379152; bh=7VMMf7kMCadyG94rG4Zx25wwUW0u14+sRWOtUecg2H8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vsLUxmt6b/5m7BzFV7Hd8fIIx1EsthiLTP6rN+Ce6YaebNT/TyYfDFqazq9LqUwgB
-	 9RphgrRu+PvjSC9PSvb4hysq0nLDGl2+UBl5il7GrIuZiENqtwODfbcpLMWOpptqBa
-	 6Mh5JBUfaxOKWika3tkdWGger6AD196OTOfbuvSA=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	maz@kernel.org,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	tangchengchang@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com,
-	fuad.tabba@linux.dev,
-	mark.rutland@arm.com,
-	seanjc@google.com,
-	rdunlap@infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH v5 08/15] KVM: arm64: Flush the HDBSS buffer on VM exit
-Date: Fri, 30 Oct 2026 16:52:08 +0000
-Message-ID: <auTLOIafIq4cjRho@LeoBrasDK>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <5bbd0d3b-1026-43f3-bc45-245472603144@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-9-zhengtian10@huawei.com> <auDpyRNpeDNzIk3W@LeoBrasDK> <5bbd0d3b-1026-43f3-bc45-245472603144@huawei.com>
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	arc=none smtp.remote-ip=209.85.219.47
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF09E606A31C
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 16:58:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF09E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91c79f306e9so10969416d6.3
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 09:58:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1793379506; x=1793984306; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Of8qcGhrASNngOAxz8m59rDteGhCMKDYRjobFeTSxhE=;
+        b=bhjVVBdqP0p5ncqFTagx6Bs8saftcLn5bietHySzPVy+OkEz6ZQ9M/fOli6KxslP2k
+         EkGkkKWXOROR+xZ5Y66zJosRACFVLr3t/huYutlqxtRTvemmBSyY8XCDaB4+AHAme/cE
+         TUzJOIx69n/1h++BVedB8bNC+bSirPirKyjQj4ta1JNOyf0n7xCiBi3Sgqnppr3n74jW
+         MRXn8TAOSdTG77kw9kIjE6+ApVorj0R20JMOvkgwCfupAdhbz9Ne3709GxfyCy0J6QCA
+         hcNNS7dNywL5KAaD63ZlJ3I9EzgudyhIHPI13g7bUNcUrkZTtmh9+K8wnpmq1kIruP9q
+         kJ9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793379506; x=1793984306;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Of8qcGhrASNngOAxz8m59rDteGhCMKDYRjobFeTSxhE=;
+        b=bquLQlqEiaEFwraJgKq6vr9PBCT1ErDDzJLxR+uV0OI+8JrakM9X9g3yL9LD+uSrqI
+         13NHyoYhCzNcRXmA1SXEE4axesNmj34Mw4zxgbyfKibZH1QUu7X5F/tD+kB9wVQQSkmD
+         DWSD8BSvx/xLeFmjA67q3azba1l/CipmVOnkUwEyJhLoVEhYbFGDL6SXQYBfycZacTeK
+         2hH6rultKZyTSZnrrYlhFIBkdV3SrKhpBzlnX1vGtiXoBiJ60A5B8skX5idqtvvOQSnn
+         QabxAp6AhR71r8D6eLGXtcgyHBfJPURGf56qVxrREKRKxrbml5brcNHpl+gqA5cstnb1
+         +zFQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzvk4xo2H7Qxq4eUPrEnFgOwgrob8bEA+MP3Uta0fISvyioSZrYx1Mi2u8Xj+zPL8B7wNA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLbKWZQ0JmkKePbArwkuZQi30FK/FzxqrysAq9xoPgigvh1Vbci
+	JgagViZMGhZAP9Yhuj1VdBA+PCnHRmr6f2xxR3Ddp9HJL43qrzrQJcjptYvuqC3UGrw=
+X-Gm-Gg: AYBFou08D1R2TQu2a/Ec/FUtiZsTSMiPkQO5rLNZxR9xA3hkHwd2BwhxBusfMM/Jntm
+	33xSCy2IqcXFtDgL0hUM5p1sBoNr5eZtqyNmtA6ZAAdJIuK46oVwHYpMJCUBNqLnQ0z+kYi+sBb
+	HvUhR96aWC2WQuSg2UmfsXDOZ0BUakX22Z2FKfqoVOmMnCoBow2cHDFI3JRAfYBPtqk51i9yv6H
+	5j93oKdDY0iB9gJoAN6zfpo4r0IGek+z7Vc4EX42ennJgVguS1pi69AH/es9HkLo8mUcR9AiItB
+	BY/GVIYDWzN06rzlthdEX1MmAhoLE/sIidCqa+9+o+UyVexRgjG+qMtFhxycraooTkOW2+50fyN
+	S3tG/E6FfZ09JWZSJownKNQeA9BrRZkApvw/UMMHfVDfYUuv4P4m9m5FukuCyOiZUzvRNC285N3
+	pyIrNLHviVsEA6ZP8VeKUSyoBO/ONaywu0BW+xpMR8r0wYnfuY36NZf6ayYiRfb6eG23L2Ggv9J
+	mwhM+o1kWd0U8wpTGjkKsLr5Jpy3OA2QYT8FcASCY5ymld3IS/OxWn9xVgiNolBSehw5ekpFDoq
+	cfXR6yKg/YsVOf8+2y1I5Lt9THDFnBpY2L39T8q+nG7JbmoNS1+bgJarrpKfIIfTtmEnG61bXQg
+	U5X0AKOrpGZA=
+X-Received: by 2002:a05:6214:226b:b0:91b:ec0b:9671 with SMTP id 6a1803df08f44-91ca4b9a540mr46456036d6.52.1793379506439;
+        Fri, 30 Oct 2026 09:58:26 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca80700b5sm19825486d6.38.2026.10.30.09.58.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 09:58:25 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xMpvt-000000019rO-0nKn;
+	Fri, 30 Oct 2026 13:58:25 -0300
+Date: Fri, 30 Oct 2026 13:58:25 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH v7 08/16] iommufd/viommu: Keep a reference to the KVM file
+Message-ID: <20261030165825.GE3889730@ziepe.ca>
+References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
+ <20261008055955.4014342-9-aneesh.kumar@kernel.org>
+ <20261014105913.00001217@linux.microsoft.com>
+ <yq5aecd9aupx.fsf@kernel.org>
+ <CO1PR11MB48351C4BD0BAD3BF6AFB2E0C8C6D2@CO1PR11MB4835.namprd11.prod.outlook.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -91,140 +128,17 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CO1PR11MB48351C4BD0BAD3BF6AFB2E0C8C6D2@CO1PR11MB4835.namprd11.prod.outlook.com>
 
-On Fri, Oct 30, 2026 at 12:57:06PM +0800, Tian Zheng wrote:
-> 
-> 
-> On 10/28/2026 2:13 AM, Leonardo Bras wrote:
-> > On Tue, Sep 29, 2026 at 06:36:48PM +0800, Tian Zheng wrote:
-> > > From: Eillon <yezhenyu2@huawei.com>
-> > > 
-> > > HDBSS entries accumulate in the per-vCPU buffer while the guest runs,
-> > > and must be drained into the dirty bitmap or dirty ring before
-> > > userspace can observe them.
-> > > 
-> > > Drain the buffer at a single point: kvm_arch_vcpu_ioctl_run() flushes
-> > > it on every VM exit, before the exit reason is handled. Flushing
-> > > inside the run loop keeps the dirty-ring feedback timely: when a flush
-> > > pushes the ring past its soft limit, kvm_dirty_ring_push() raises
-> > > KVM_REQ_DIRTY_RING_SOFT_FULL, which check_vcpu_requests() observes at
-> > > the top of the next loop iteration, so the vCPU exits to userspace for
-> > > the harvest before re-entering the guest.
-> > > 
-> > > kvm_arch_sync_dirty_log() relies on the exit path to flush: it kicks
-> > > vCPUs out of guest mode, and the GET/CLEAR protocol tolerates
-> > > concurrent bitmap writes, so the snapshot is complete without extra
-> > > synchronization.
-> > > 
-> > > Signed-off-by: Eillon <yezhenyu2@huawei.com>
-> > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> > > ---
-> > >   arch/arm64/include/asm/kvm_dirty_bit.h | 15 +++++++++
-> > >   arch/arm64/kvm/arm.c                   | 20 ++++++++++++
-> > >   arch/arm64/kvm/dirty_bit.c             | 45 ++++++++++++++++++++++++++
-> > >   3 files changed, 80 insertions(+)
-> > > 
-> > > diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
-> > > index fe703f02626b..d828e6b43fe9 100644
-> > > --- a/arch/arm64/include/asm/kvm_dirty_bit.h
-> > > +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
-> > > @@ -13,6 +13,9 @@
-> > >   #include <asm/sysreg.h>
-> > >   #include <linux/sizes.h>
-> > > 
-> > > +#define HDBSS_ENTRY_VALID	BIT(0)
-> > > +#define HDBSS_ENTRY_IPA	GENMASK_ULL(55, 12)
-> > > +
-> > >   #define KVM_ARM_HDBSS_DEFAULT_SIZE  PAGE_SIZE
-> > >   #define KVM_ARM_HDBSS_MAX_SIZE      SZ_2M
-> > > 
-> > > @@ -22,7 +25,19 @@ static inline u32 kvm_hdbss_buffer_size(struct kvm *kvm)
-> > >   	return kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
-> > >   }
-> > > 
-> > > +static inline bool kvm_hdbss_enabled(struct kvm *kvm)
-> > > +{
-> > > +	return kvm->arch.mmu.vtcr & VTCR_EL2_HDBSS;
-> > > +}
-> > > +
-> > > +static inline bool vcpu_hdbss_enabled(struct kvm_vcpu *vcpu)
-> > > +{
-> > > +	return vcpu->arch.hw_mmu &&
-> > > +		(vcpu->arch.hw_mmu->vtcr & VTCR_EL2_HDBSS);
-> > > +}
-> > > +
-> > 
-> > IIUC, arch.mmu is always the canonical s2_mmu, while hw_mmu can be the
-> > nested s2_mmu, if enabled.
-> > 
-> > Was that your intend here?
-> > If not, we could use only kvm* version, which can be called with vcpu->kvm.
-> > 
-> > If it was, then I would like to understand the logic here, as IIUC the
-> > buffer is accessible only for the non-nested guest, as it's
-> > allocated in a per-vcpu structure. (vcpu->arch)
-> > 
-> 
-> Hi leo,
-> 
-> Yes, that was the intent. The shadow MMU never carries VTCR_EL2.HDBSS,
-> so the flush is naturally skipped when running nested.
+On Fri, Oct 30, 2026 at 07:54:04AM +0000, Tian, Kevin wrote:
 
-Ah, right. If we always test the kvm one, we may enable it for the nested 
-guest, which is undesired.
+> Besides, it might be a good idea to return an error if idev->kvm_file is
+> NULL in iommufd_viommu_alloc_ioctl(). I don't think the viommu logic
+> is designed for native application...
 
-[...]
-> 
-> > 
-> > > @@ -2017,7 +2025,19 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-> > > 
-> > >   void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
-> > >   {
-> > > +	unsigned long i;
-> > > +	struct kvm_vcpu *vcpu;
-> > > 
-> > > +	if (!kvm_hdbss_enabled(kvm))
-> > > +		return;
-> > > +
+That's probably going too far..
 
-And then here you check for the L1 VM because during migration the host 
-could have dirtied memory, and you want to track that as well.
+It should be possible to fully test most of the viommu stuff without
+an actual kvm, for example.
 
-Makes sense
-
-> > > +	/*
-> > > +	 * The buffer is drained on every VM exit, so kicking running
-> > > +	 * vCPUs is enough to flush them; the dirty-log GET/CLEAR
-> > > +	 * protocol tolerates bits set concurrently with the snapshot.
-> > > +	 */
-> > > +	kvm_for_each_vcpu(i, vcpu, kvm)
-> > > +		kvm_vcpu_kick(vcpu);
-> > >   }
-> > > 
-> > >   static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
-> > > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
-> > > index f9aeb9f34ad0..be0d12555c84 100644
-> > > --- a/arch/arm64/kvm/dirty_bit.c
-> > > +++ b/arch/arm64/kvm/dirty_bit.c
-> > > @@ -13,6 +13,7 @@
-> > >   #include <linux/kconfig.h>
-> > >   #include <linux/log2.h>
-> > >   #include <linux/mm.h>
-> > > +#include <linux/srcu.h>
-> > > 
-> > 
-> > Out of curiosity, could you please explain you reasoning on selecting srcu
-> > as locking here?
-> > 
-> > (Like, what are you protecting against, and why srcu is a good choice)
-> > 
-> 
-> kvm_vcpu_mark_page_dirty() resolves the memslot under SRCU
-> (kvm_vcpu_gfn_to_memslot), and the flush loop calls it for each entry,
-> so the whole loop needs the read lock held.
-
-Oh, right, it's just about getting the memslot... now I see it :)
-
-Thanks!
-Leo
+Jason
