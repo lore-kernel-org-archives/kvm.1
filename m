@@ -1,98 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793389820;
-	b=rUrJu7jY+vXpUHBGPDSLhZw/dKob/AH0SYFwwOQtAlQgCdOHp1kAbZzKIWeycFURUyZc
-	 cYC8FpJ5f/syxlYO96or6RpVgc9V/bvDPRx78bNiN1bLzzx8XDvs1vIBcwZzP9uNoOqhI
-	 rjEpkFNnWHG7K+XIuttzFN6hROjY+WfRi6f8Zm5EikZ1U42jt8tQldz2xgYdIMnRR3vID
-	 ncLPOPGVcebQR5aT2qXLTu97kCfcD4+K+jXibXnW/upaxHZm/VURGlEs2M7nELNFi6fMs
-	 P18xSSuUdlmhnpbFGme3i/USOMylmPRX7TZ+aQmupau4sZH/DzNjJJj9HpdkOSLtGIA==
+	t=1793390474;
+	b=eVXM+hoaWCzTWM9bmEyvap4hgfoYjfVLLZZ0nReHwWLUTLeRrCcqNnjOCVY58gmbN95i
+	 1I+wI81Nj1o7eomdNenrudzTJm7EgyWJeG8whzLLvqySoS0wdERo4wU0YLD7DOpM88evk
+	 PlgniETUcr3Xf8pBrM1fHL+GJadLziJ/wQKwI9EzmKtJiBBsWWuzSVkDAnALCWoIrsGTf
+	 ejMYop7khXPz7/F/7svjlXDu/99fpzSrZxl6B5PELlZFdFE+VYcUoFRRfOL0CDLp+nlFC
+	 38pcGZu6jRSrkXZGX7+tHHQQTW8CaJhHC9H3AXhsZJ+iPMwd6Fjr5WLT7QN+1FXcVpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793389820;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=sEaAj7L7ItwQxArcMJg/ysXYsqtPbJ9UNO11ET+2E+g=;
-	b=JMMo2i82CD4oFV/EbqgwEANG6DLK/q2qYA596cOwg1tmuNgvO8r791eIsZSlLSF6daWz
-	 g/IVs84z1gxGVhx4idUA75nAoS8nxSlBBhQR+MZN1+eZXF7gAnUrhvUhAwfsQTRE9238l
-	 iuVote//4Sjl7fvqMJU1z54E30Bxry+BX8saluQA82tqSiij24zK+H9PWEU12Ov5pkGyy
-	 HwzHCWKGHMOWjquLb3eSBKFjHKhjxQezFx+sK141wA34Jg0Sw13eQKvBa1FeicCFRy5E2
-	 YbNz49rAOGfXAHPFV04ybF3cycjc+hII5+r0m+lJoHml4LgUt9OPpjDUjGrV85HxiXA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793390474;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=pFrcOXhViBdH28F/rO42mZGNABj+tFhweJ/WrDNE/kg=;
+	b=wdrgb3JeZQC4fFLwayAnUisejA4QSFadTy0vqOCcA+PbUSbBWnlvNfOliZ+ddkLmISQH
+	 yRzjrvey1UfbrdTMsbNEV5Fqbq5/SRT5FMLDIhfBMlngDKnCikQP3r/iQFF0nkfWzn97W
+	 9DwVwtzUw5C5lroozddeK2MGAQ0NKraK7Mp9TQ5NKMsPo2naD33MzILLN5W9+pNaT6TMS
+	 Oi2KfFeMoseVS3tZMEbkyerSLMmjPj7rqa3z8H+2R4h3NFkzev9eZBdBeb4Ia/u7HEu6R
+	 9v1bJDNXag0fcoa/TOZz6jNpL6f7LxxhnNEosQxwu200jjFkpsBLRfSqkfvY96ruyAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=XJp6JKJy;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Vslcx7Dr;
+	arc=none smtp.remote-ip=198.175.65.14
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E51A606A31E;
-	Fri, 30 Oct 2026 19:50:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E51A606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED13606A31C;
+	Fri, 30 Oct 2026 20:01:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7ED13606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=XJp6JKJy
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DCA2140E03BE;
-	Fri, 30 Oct 2026 19:50:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BWhGogmD7hSx; Fri, 30 Oct 2026 19:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793389814; bh=sEaAj7L7ItwQxArcMJg/ysXYsqtPbJ9UNO11ET+2E+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XJp6JKJyqgvz0ecw98cfcEZk49v6hdXNUj7ge7teuEu+TL25s3vUwNdmhs0OqcQsJ
-	 Ej+1WU7hhZKyYZZEPXWqsbKqforvRvs6tPqDkCK3f0jeWJYELj5Z6m0c+CzyxYdnEL
-	 1srqs8AqGzjlat5zA+DDfI/KA+suUXQf0yW08sSFxBcqT0YHUMNq0UKagg5ygeyP2n
-	 yVZfbr7oV0O45RjO+DMMRumpJGmSPH5S2N/+rppol15KnxGr0nARD7UaAoA3vybGns
-	 EFICC/6X2EUdLm/nwhK/RQHVGjqf5zys6O0UwWfPrXMl0pLSYqeeY6zLazpYmCYiAk
-	 Na+COgsVUPX+dkqD6WR12vgKzc8ZgCbLVV22k/+HqeFi2xdFiTqsy/BA9mdgfOsffp
-	 nvNSNG78osxwqNIHw3Edb3YoVpuaOXp6kup0cDpIA9xLDXdxxF/v0uThh7qKfbVDUW
-	 Dtb0xSlHI0+O5eijPY9u5jRBi/iiHIy0O8uc82Bfkvk1/zFStKe/1NbQcoiqk1Opsm
-	 nKl+vPDm173jGUP6QCN5dmCh/gidr2ozAyPNfyt1biD1DDTW5w3GnDEF/ezy3SX4HB
-	 cxfb8hYkycI4AH/QMMeEGENLkmp6XD5UazcdK1eQ2Mewoo5+G6giP9oZ2sVMH4SpgK
-	 Imk18ki9Gq0fUbtHjJPXIR7g=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3893140E02B7;
-	Fri, 30 Oct 2026 19:49:57 +0000 (UTC)
-Date: Fri, 30 Oct 2026 12:49:53 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Joe Perches <joe@perches.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	"biju.das.au" <biju.das.au@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Au Dang <au.dang.jx@renesas.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix Intel TDX kernel file patterns
-Message-ID: <20261030194953.GEauT04SAhyseued3N@fat_crate.local>
-References: <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
- <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
- <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
- <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
- <7d35e2db2da34735760a08a6f103abee075413c8.camel@perches.com>
- <20261030182031.GAauTf71ujnYNQPluW@fat_crate.local>
- <f0bbfcecd63e11fedc4a745aa357fd8c529df097.camel@perches.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Vslcx7Dr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793390473; x=1824926473;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=csjH2mric7kGbdZqhswZMkEiW0X3FsU+SuPN42EQ9Wc=;
+  b=Vslcx7DrLM86GDbOQQ1KCowoD/3W+rJourrCd0Ix+M4N8Wa6dwbjTnHd
+   2GqUHd7s39MM/ncbhYpaiiRqwG5LO5FeCZxph7Gu5x5m//nKcRbz1ykeL
+   I9LjTmOX/oU9JU+L8ZPaLSx82dne16c4zFwpWIWflRrCXOrduV6WKUUPC
+   AcuBrOqcn+i3OTf3hICjy2R2IwFhyaWrQA+TAF2183dQGnPu07rJqJrGg
+   0XJiClTX0S6xMsmfE9jWJQQoXpmZSjz4/0uTen3M41GXSVPRafjF8itaJ
+   Xd9v1rMqphvN9WfN1tPbWVVI5cV81RSvZVLfF04IYolpgiokorUDjJpM6
+   A==;
+X-CSE-ConnectionGUID: WTgrvaoLSouPFQ3TPUizTg==
+X-CSE-MsgGUID: J1UVyBuOSgiC7aHwEY3gbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2040670"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="2040670"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 13:01:12 -0700
+X-CSE-ConnectionGUID: ekxGTmPLS0+BfToRrPu8wA==
+X-CSE-MsgGUID: 6FiM6dEZT+CcNIfUHLp6/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="5522460"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 13:01:11 -0700
+Message-ID: <d0e5f936-8203-459a-b9e0-1bb796943644@intel.com>
+Date: Fri, 30 Oct 2026 15:01:10 -0500
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,23 +72,89 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f0bbfcecd63e11fedc4a745aa357fd8c529df097.camel@perches.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
+ <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+ <20260827223755.143247-12-zide.chen@intel.com>
+ <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
+ <b3dcb403-ec19-4d23-9bab-336e2eb344bd@intel.com>
+ <CALMp9eTHRzXXm1gpKR3u1nzJU3i9M1a_wUjp9+bD8_r4eoPQ_Q@mail.gmail.com>
+ <dc0e6998-6b8c-4b0c-a04e-b6af0a1cf653@intel.com>
+ <CALMp9eTRTLGziPtrSG9tQWLqoUuz9zmrRwUis5gb-wSeJeA7-w@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CALMp9eTRTLGziPtrSG9tQWLqoUuz9zmrRwUis5gb-wSeJeA7-w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 30, 2026 at 12:40:05PM -0700, Joe Perches wrote:
-> 	   scripts/get_maintainer.pl has different behavior for files that
-> 	   match F: pattern and matches of N: patterns.  By default,
-> 	   get_maintainer will not look at git log history when an F: pattern
-> 	   match occurs.  When an N: match occurs, git log history is used
-> 	   to also notify the people that have git commit signatures.
 
-Aha, ok. Will change.
 
-Thx.
+On 10/30/2026 1:23 PM, Jim Mattson wrote:
+> On Fri, Oct 30, 2026 at 10:20 AM Chen, Zide <zide.chen@intel.com> wrote:
+>>
+>>
+>>
+>> On 10/30/2026 6:55 AM, Jim Mattson wrote:
+>>> On Thu, Oct 29, 2026 at 10:45 AM Chen, Zide <zide.chen@intel.com> wrote:
+>>>> On 10/28/2026 4:24 PM, Jim Mattson wrote:
+>>> [ ... ]
+>>>>> As I pointed out in patch 04/16, we can't pass through the PMU global
+>>>>> controls unless their reserved bits match hardware.
+>>>>
+>>>> Totally agree. Then the handling of bit 55 breaks this rule as well.
+>>>>
+>>>> if (vmx_pt_mode_is_host_guest())
+>>>>         pmu->global_status_rsvd &= ~GLOBAL_STATUS_TRACE_TOPAPMI;
+>>>>
+>>>> Always intercepting GLOBAL_OVF_CTRL and GLOBAL_STATUS_SET can solve this
+>>>> problem, but it may impair guest performance, especially for nested.
+>>>>
+>>>> Instead, I'd propal to have separate reserved masks:
+>>>> - pmu->global_status_rsvd: unchanged, strictly tracking virtualized
+>>>> guest state and preserving live migration validation.
+>>>> - pmu->global_status_{clr,set}_rsvd: unmasking all architecturally valid
+>>>> hardware bits for the corresponding MSRs on v4+.
+>>>>
+>>>> Any bits allowed by hardware but unvirtualized by KVM are
+>>>> scrubbed/filtered in intel_mediated_pmu_{put,load}().
+>>>
+>>> That is a terrible proposal. MSR bits that vanish at unpredictable
+>>> times?!? No. If an MSR contains bits that aren't virtualized, that MSR
+>>> can't be passed through. Full stop.
+>>
+>> OK, I agree. I will intercept GLOBAL_STATUS_SET (0x391) and remove the
+>> nested_vmx_merge_msr_bitmaps() for it.
+>>
+>> However, I propose we keep GLOBAL_OVF_CTRL (0x390) passed through, even
+>> though its reserved bits don't match hardware. Since it is
+>> write-1-to-clear, it cannot manufacture unvirtualized state or leak host
+>> data.
+>>
+>> The only divergence is the lack of a #GP if the guest writes an
+>> unvirtualized but hardware-valid bit. If we want to eliminate this
+>> behavior by intercepting it, it will force an additional VM-exit on
+>> every single guest PMI.
+>>
+>> What do you think?
+> 
+> That seems reasonable to me, as long as the architectural misbehavior
+> is documented in Documentation/virt/kvm/x86/errata.rst.
 
--- 
-Regards/Gruss,
-    Boris.
+How about add something like this to errata.rst:
 
-https://people.kernel.org/tglx/notes-about-netiquette
+IA32_PERF_GLOBAL_STATUS_RESET
+-----------------------------
+To reduce VM-exits to performance-critical paths, KVM passes through
+writes to IA32_PERF_GLOBAL_STATUS_RESET (0x390) in mediated PMU mode,
+even if the MSR has bits that are not supported by KVM.  Consequently,
+KVM does not inject #GP if the guest writes bits that are valid in
+hardware but unvirtualized by KVM.
