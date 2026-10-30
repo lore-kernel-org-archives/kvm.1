@@ -1,77 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.12
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793342869;
-	b=pqjyVn+X1PhU6hi8PQu7GhOZzLpE/DN5vuBQ3Ay19DpK0nnALs0nUutdvYrQrOhHvl3F
-	 eVB1zj2dg8uv7IoSTEu8lg2W8SOyMxwBKXYIC4LhUduo9x5QKXXLzrCFaYGnLfL/FjFJ+
-	 TM46ASgSwCrjxCKSF+V5LbZrK8J8OiZxncZBqryaQAxKHmXijoS5X7iVw7cYpsAeH0ytG
-	 41hdwDM2YHABHdRHJWF7cSHRc/lEQYKv8aIUcuomClKIDcx2HQJo2T42wtR8nKOxcsk34
-	 mKxfX4piDniuoMhpNaZjDlNt9gJVImCUsMGUbeLXNUVYV8qNXo2vjXs4y5RNmig1oRw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793342869;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=jSNCuWQInnB4aTqSt/QqhCYYoxsHtezivvgpUv5+8rE=;
-	b=AN62UqCoUoeW5LL6E1aTitrxFdzxfuMMccnLOwFy92IdazD/CbPrG2tzKJm/EE42h3ET
-	 tptwLte47AkwUKlT781KXVmOsL8K6OSb8uKGKSyJANuVGS1NuMoBoudrDdjju1B4n6Ip5
-	 XD4TDhtFq85nMWBVZ7tWFQqlKQmbMld3ZIjkYdhJQ/4ynjTBcQfMjmIE3c6GkoSF9MwDg
-	 ihxlLppYOVin08vbEFqynjWek8zhVUgoeay2/6qtc347UrBOrohcj7VDh/eypEggEicr+
-	 zyuMdZD32n/8tJkuVIWjNQc5cutYWa9cBdhrO2kGOT2ieA6yu8gLK3f+c6p6pUUdy/g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ikuyo.dev;
-	spf=pass smtp.mailfrom=ikuyo.dev;
-	dkim=pass header.d=ikuyo.dev header.i=@ikuyo.dev header.a=rsa-sha256 header.s=s1 header.b=E98jXeGq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.12
-Received: from sender5-op-o12.zoho.com (sender5-op-o12.zoho.com [165.173.182.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793344811;
+	b=vX8hcb1a++3UkNDDHOp5myJEOiF66dtgNWTLqemH5pnuVEEI3iFcKuBf4s1WxKSud/hL
+	 IhjqyfzAkcDBUo7jcGbbwM7YX5/+mkomtlN7VwM8HrdUMRMOuT+/5YKjGBRCJINl65iNV
+	 GURxWyylNyDpClOZ/rGBFRynTmsGczNiFNYVe7kMsgsNBRNwOH6TenXYAoxFEZxpAizSG
+	 HrbHwTpviwqjronJVXRfjwB1nGb/hD8s3HXbPShyEqGdSE/U762wAJDZ766wR/GKp6PDn
+	 QnMLOoPQo2wyl731KT/G/ctgPnhx5UUAij86jhaOK6CtMcSYvUKAgxrzDC5+ODwL89g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793344811;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=rmoLMwfiK+YL2vPo6QREPKDVZ8nBW1EiguldNrj3cJE=;
+	b=GhZiPAuzv4VnuLl+Vl5B3tMiMpVxU4i8MkBhJGr+FqFBBOTFIMyjA1xgZAHsFCj4TD5G
+	 ks4sMF9mfcoqaSpUrtfDdoa3TDtHY6rRYqSySy7ZzFWqb45FTH3gfmAzW1PmDU5HRSjck
+	 KM4/5EHtW9IrLQlxmSkOdtkNOD6YfJac+1UdDKa3Vjf8tgX+9IHd+XMHtsQnK0aRhakK7
+	 k+Vzk0c7Bv2pGRaz4gH8Wrs9xB6tehwCHPtzmWnOHRvW5p9FW6B6sKgv1BSlhUytS80Yp
+	 MybZz6I0f4n0s66W/yq7UH0049JSlf5wk6faUR0Juav9O3/w31tEH2abPageFhKadmQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SnurgeD3;
+	arc=none smtp.remote-ip=198.175.65.14
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359E1606A31C;
-	Fri, 30 Oct 2026 06:47:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 359E1606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ikuyo.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ikuyo.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BFA606A31A;
+	Fri, 30 Oct 2026 07:20:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19BFA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ikuyo.dev header.i=@ikuyo.dev header.a=rsa-sha256 header.s=s1 header.b=E98jXeGq
-ARC-Seal: i=1; a=rsa-sha256; t=1793342818; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NykSCv8xszM0rcbcli9swwgB4qcQp3pl9NVtUMCmn4YJuao73EDqT1tuyAHJUaWmd1iIwkz6oQ7cG4Dr3GCR0zvjPrF5LK2yk7qDJvPUUchz/dVVw31SZX0TiAPifiF7YKCMBj0JDgbeIasaQP7tmWncRuEq2+1iMNRkO273iuE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1793342818; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jSNCuWQInnB4aTqSt/QqhCYYoxsHtezivvgpUv5+8rE=; 
-	b=htGtByCqWghsZgFpqJtFIyD8+emCzrrrMwh4/7ebgmmZ6xOvUVzL8P4C16/ONo+qgpdsPccM2+N1yMOTTVItk+TDdKLwmG+Ayj5NOPGnHbqIr5+3vCrYDZmFsXWQRiox73H9JOGf55n+fpae1IK7GFj0+i76YikY8B0nagPN9kU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ikuyo.dev;
-	spf=pass  smtp.mailfrom=eritque-arcus@ikuyo.dev;
-	dmarc=pass header.from=<eritque-arcus@ikuyo.dev>
-DKIM-Signature: a=rsa-sha256; b=E98jXeGqGHPI5K8Sl59gZfybQYCl/S1MKzCrFkvCfHr/Jf00U9pa4WxXBYzH9eCL7cZPXhqqOQMhJwKlxii8SWjqPGgYwjzCLm/EELRofIcH1tVC04HQp7sB2dl1Q1xb+wQf5Iyop3XFAnTIvfIB8BniposL4FZg/5Bnn8lQOjayJesHkkgnuK83DLDYwo5fEIKXBi0dRj7QIHZzRzwt/EFD+J+wPzZpYKT1UG3L98Y3y4UPcmftdBVKHOvgOUnb52qAGHcFMHQcstH50bjF2oAPquzorLweOIyx+MMd8htaVDh6mrxo5rqTNBvEWuaTtsDPIYHtCgOG5DCcUO29nw==; c=relaxed/relaxed; s=s1; d=ikuyo.dev; v=1; bh=jSNCuWQInnB4aTqSt/QqhCYYoxsHtezivvgpUv5+8rE=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1793342815719234.33637440490043;
-	Thu, 29 Oct 2026 23:46:55 -0700 (PDT)
-From: Yiran Qiu <eritque-arcus@ikuyo.dev>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yiran Qiu <eritque-arcus@ikuyo.dev>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH RFC net v2 3/3] vsock/virtio: only update a socket's local CID to the transport's CID
-Date: Fri, 30 Oct 2026 02:44:18 -0400
-Message-ID: <20261030064418.133349-4-eritque-arcus@ikuyo.dev>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261030064418.133349-1-eritque-arcus@ikuyo.dev>
-References: <20261030064418.133349-1-eritque-arcus@ikuyo.dev>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SnurgeD3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793344811; x=1824880811;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=P88XNsKf3Vh/t34WvSz6tI7gRI9VLcNqq/npDRATwTM=;
+  b=SnurgeD3Mw2f4mMvzgXC4g1NL34iIvrk0QdGJ825xBI81gSuDAOTd2L2
+   7mq1kfhLyGCyJTDJiO7KBHL5uT+xjH+rzBewXtiDCXDLXW3UutynYT6uP
+   pQYnHDz3P5i8w1zsyW9hlblhdMnptNIr5EkhSIA5dDrteDqCLPB0T4y1U
+   6a8wUpt0l/1DMqX9c6P6Ix6jjBRFtO3Uu+vkurtoPPCCs4Zoh7btsRK8f
+   9l6dRncvis5+aluoKRwsAGEK//krIbpeQenqJ5+Gxm99g6wGsThftPBKv
+   Q2vl3Agay+rIkEvDHIDU1j/hD+Ea+D7U+00jZCFTQ12nowwQXHUswXgGP
+   g==;
+X-CSE-ConnectionGUID: CCvR8kX7QU6XSZgVTiaaOg==
+X-CSE-MsgGUID: N4k+INdyRFaet8XRJQz8GQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="1980823"
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="1980823"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 00:20:10 -0700
+X-CSE-ConnectionGUID: x2xPGva8Q3Syc7UDzQnT0w==
+X-CSE-MsgGUID: pcsz/cdMSJ613RnEYRDQ4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="5327425"
+Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 00:20:04 -0700
+Message-ID: <887b7c7e-38b8-4798-84a5-bf96bc13ef04@linux.intel.com>
+Date: Fri, 30 Oct 2026 15:20:02 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,61 +72,293 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, YiFei Zhu <zhuyifei@google.com>,
+ Pranjal Shrivastava <praan@google.com>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
+ Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vipin Sharma
+ <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>,
+ Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v6 14/18] iommufd: Implement ioctl to mark HWPT for
+ preservation
+To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ David Woodhouse <dwmw2@infradead.org>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-15-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261025021930.674647-15-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-virtio_transport_recv_pkt() copies a packet's destination CID into the
-local address of the socket it reaches, so that sockets follow a guest
-CID change after a transport reset.  But the bound-socket lookup also
-delivers packets addressed to VMADDR_CID_ANY, and vsock_loopback can
-carry them: a connect() to VMADDR_CID_ANY goes over loopback when the
-guest->host transport has no CID (no virtio-vsock device, or hv_sock).
-The socket bound to that port then ends up with VMADDR_CID_ANY as its
-local CID: a listener on (VMADDR_CID_LOCAL, P) turns into a wildcard
-listener, and a socket whose connect() was refused for its CID would
-pass the check in virtio_transport_connect() on the next try.
+On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
+> From: YiFei Zhu <zhuyifei@google.com>
+> 
+> Userspace provides a token to mark the HWPT for preservation. Note that
+> this token is not the LUO token that is used to preserve the iommufd.
+> Once all the required HWPT are marked for preservation, the user can
+> preserve the iommufd into LUO. The iommufd will preserve the HWPTs that
+> are marked for preservation.
+> 
+> The marked HWPTs are tracked using a new XArray mark protected by a new
+> liveupdate mutex. This mutex will also be used during iommufd
+> preservation to protect against any race with the mark preserve ioctl.
+> 
+> The HWPT token will be used during restore to identify this HWPT. The
+> restoration logic is not implemented and will be added later.
+> 
+> Reviewed-by: Pranjal Shrivastava <praan@google.com>
+> Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>   MAINTAINERS                             |  1 +
+>   drivers/iommu/iommufd/Makefile          |  1 +
+>   drivers/iommu/iommufd/iommufd_private.h | 17 ++++++
+>   drivers/iommu/iommufd/liveupdate.c      | 72 +++++++++++++++++++++++++
+>   drivers/iommu/iommufd/main.c            |  9 ++++
+>   include/uapi/linux/iommufd.h            | 27 ++++++++++
+>   6 files changed, 127 insertions(+)
+>   create mode 100644 drivers/iommu/iommufd/liveupdate.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 15e1da41b0cc..78af4e3dc106 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13738,6 +13738,7 @@ M:	Samiullah Khawaja <skhawaja@google.com>
+>   R:	Pranjal Shrivastava <praan@google.com>
+>   L:	iommu@lists.linux.dev
+>   S:	Maintained
+> +F:	drivers/iommu/iommufd/liveupdate.c
+>   F:	drivers/iommu/liveupdate.c
+>   F:	include/linux/iommu-liveupdate.h
+>   F:	include/linux/kho/abi/iommu.h
+> diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
+> index 67207914bb6e..cfd5b4b14ccb 100644
+> --- a/drivers/iommu/iommufd/Makefile
+> +++ b/drivers/iommu/iommufd/Makefile
+> @@ -12,6 +12,7 @@ iommufd-y := \
+>   
+>   iommufd-$(CONFIG_IOMMUFD_NOIOMMU) += hwpt_noiommu.o
+>   iommufd-$(CONFIG_IOMMUFD_TEST) += selftest.o
+> +iommufd-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
+>   
+>   obj-$(CONFIG_IOMMUFD) += iommufd.o
+>   obj-$(CONFIG_IOMMUFD_DRIVER) += iova_bitmap.o
+> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+> index eb2e85b27e42..a33b32708afa 100644
+> --- a/drivers/iommu/iommufd/iommufd_private.h
+> +++ b/drivers/iommu/iommufd/iommufd_private.h
+> @@ -44,6 +44,11 @@ struct iommufd_ctx {
+>   	struct file *file;
+>   	struct xarray objects;
+>   	struct xarray groups;
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +#define IOMMUFD_OBJ_LIVEUPDATE_MARK XA_MARK_1
+> +	/* @liveupdate_mutex: Protects the preservation of HWPTs. */
+> +	struct mutex liveupdate_mutex;
+> +#endif
+>   	wait_queue_head_t destroy_wait;
+>   	struct rw_semaphore ioas_creation_lock;
+>   	struct maple_tree mt_mmap;
+> @@ -392,6 +397,9 @@ struct iommufd_hwpt_paging {
+>   	bool auto_domain : 1;
+>   	bool enforce_cache_coherency : 1;
+>   	bool nest_parent : 1;
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +	u64 liveupdate_token;
+> +#endif
+>   	/* Head at iommufd_ioas::hwpt_list */
+>   	struct list_head hwpt_item;
+>   	struct iommufd_sw_msi_maps present_sw_msi;
+> @@ -729,6 +737,15 @@ void iommufd_vdevice_abort(struct iommufd_object *obj);
+>   int iommufd_hw_queue_alloc_ioctl(struct iommufd_ucmd *ucmd);
+>   void iommufd_hw_queue_destroy(struct iommufd_object *obj);
+>   
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd);
+> +#else
+> +static inline int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
+> +{
+> +	return -ENOTTY;
+> +}
+> +#endif
+> +
+>   #ifdef CONFIG_IOMMUFD_TEST
+>   int iommufd_test(struct iommufd_ucmd *ucmd);
+>   void iommufd_selftest_destroy(struct iommufd_object *obj);
+> diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
+> new file mode 100644
+> index 000000000000..5fb491ff3a3d
+> --- /dev/null
+> +++ b/drivers/iommu/iommufd/liveupdate.c
+> @@ -0,0 +1,72 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +/*
+> + * Copyright (C) 2026, Google LLC
+> + * Author: Samiullah Khawaja <skhawaja@google.com>
+> + */
+> +
+> +#define pr_fmt(fmt) "iommufd: " fmt
+> +
+> +#include <linux/file.h>
+> +#include <linux/iommufd.h>
+> +#include <linux/liveupdate.h>
+> +
+> +#include "iommufd_private.h"
+> +
+> +int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
+> +{
+> +	struct iommu_hwpt_liveupdate_mark_preserve *cmd = ucmd->cmd;
+> +	struct iommufd_ctx *ictx = ucmd->ictx;
+> +	struct iommufd_hwpt_paging *hwpt;
+> +	struct iommufd_object *obj;
+> +	unsigned long index;
+> +	bool marked = false;
+> +	int rc = 0;
+> +
+> +	hwpt = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+> +	if (IS_ERR(hwpt))
+> +		return PTR_ERR(hwpt);
+> +
+> +	mutex_lock(&ictx->liveupdate_mutex);
+> +
+> +	xa_lock(&ictx->objects);
+> +
+> +	/* PRI use cases are not supported. */
+> +	if (hwpt->common.fault) {
+> +		rc = -EOPNOTSUPP;
+> +		goto out_unlock;
+> +	}
+> +
+> +	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
+> +		struct iommufd_hwpt_paging *hwpt_marked;
+> +
+> +		if (WARN_ON_ONCE(obj->type != IOMMUFD_OBJ_HWPT_PAGING))
+> +			continue;
+> +
+> +		hwpt_marked = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
+> +
+> +		if (hwpt_marked == hwpt)
+> +			marked = true;
+> +
+> +		if (hwpt_marked->liveupdate_token == cmd->hwpt_token) {
+> +			if (hwpt_marked == hwpt)
+> +				goto out_unlock;
+> +
+> +			rc = -EADDRINUSE;
+> +			goto out_unlock;
+> +		}
+> +	}
+> +
+> +	__xa_set_mark(&ictx->objects, hwpt->common.obj.id, IOMMUFD_OBJ_LIVEUPDATE_MARK);
+> +
+> +	if (marked)
+> +		pr_warn_ratelimited("Overwriting HWPT liveupdate token from: %llu to %llu\n",
+> +				    hwpt->liveupdate_token, cmd->hwpt_token);
+> +	hwpt->liveupdate_token = cmd->hwpt_token;
+> +
+> +out_unlock:
+> +	xa_unlock(&ictx->objects);
+> +	mutex_unlock(&ictx->liveupdate_mutex);
+> +	iommufd_put_object(ictx, &hwpt->common.obj);
+> +	return rc;
+> +}
+> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
+> index 9a921b153162..fe8610fd58e3 100644
+> --- a/drivers/iommu/iommufd/main.c
+> +++ b/drivers/iommu/iommufd/main.c
+> @@ -333,6 +333,9 @@ static int iommufd_fops_open(struct inode *inode, struct file *filp)
+>   	init_rwsem(&ictx->ioas_creation_lock);
+>   	xa_init_flags(&ictx->objects, XA_FLAGS_ALLOC1 | XA_FLAGS_ACCOUNT);
+>   	xa_init(&ictx->groups);
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +	mutex_init(&ictx->liveupdate_mutex);
+> +#endif
+>   	ictx->file = filp;
+>   	mt_init_flags(&ictx->mt_mmap, MT_FLAGS_ALLOC_RANGE);
+>   	init_waitqueue_head(&ictx->destroy_wait);
+> @@ -395,6 +398,9 @@ static int iommufd_fops_release(struct inode *inode, struct file *filp)
+>   	 * iommufd_object_tombstone_user()
+>   	 */
+>   	xa_destroy(&ictx->objects);
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +	mutex_destroy(&ictx->liveupdate_mutex);
+> +#endif
+>   
+>   	WARN_ON(!xa_empty(&ictx->groups));
+>   
+> @@ -440,6 +446,7 @@ union ucmd_buffer {
+>   	struct iommu_hwpt_alloc hwpt;
+>   	struct iommu_hwpt_get_dirty_bitmap get_dirty_bitmap;
+>   	struct iommu_hwpt_invalidate cache;
+> +	struct iommu_hwpt_liveupdate_mark_preserve mark_preserve;
+>   	struct iommu_hwpt_set_dirty_tracking set_dirty_tracking;
+>   	struct iommu_ioas_alloc alloc;
+>   	struct iommu_ioas_allow_iovas allow_iovas;
+> @@ -516,6 +523,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
+>   		 __reserved),
+>   	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
+>   		 struct iommu_viommu_alloc, out_viommu_id),
+> +	IOCTL_OP(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE, iommufd_hwpt_liveupdate_mark_preserve,
+> +		 struct iommu_hwpt_liveupdate_mark_preserve, hwpt_token),
+>   #ifdef CONFIG_IOMMUFD_TEST
+>   	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
+>   #endif
+> diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+> index 206fa667c782..93372689afec 100644
+> --- a/include/uapi/linux/iommufd.h
+> +++ b/include/uapi/linux/iommufd.h
+> @@ -58,6 +58,7 @@ enum {
+>   	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
+>   	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
+>   	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
+> +	IOMMUFD_CMD_HWPT_LIVEUPDATE_MARK_PRESERVE = 0x96,
+>   };
+>   
+>   /**
+> @@ -1390,4 +1391,30 @@ struct iommu_hw_queue_alloc {
+>   	__aligned_u64 length;
+>   };
+>   #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
+> +
+> +/**
+> + * struct iommu_hwpt_liveupdate_mark_preserve - ioctl(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE)
+> + * @size: sizeof(struct iommu_hwpt_liveupdate_mark_preserve)
+> + * @hwpt_id: HW pagetable ID to preserve for liveupdate
+> + * @hwpt_token: Token to identify this hwpt upon restore
+> + *
+> + * The target HWPT will be preserved during iommufd preservation.
+> + * Only file-based memory mappings (e.g. memfd) are supported for HWPTs marked
+> + * for preservation. Mapping anonymous memory into a preserved HWPT will result
+> + * in a failure during the preservation phase.
+> + *
+> + * The hwpt_token is provided by userspace. If userspace enters a token
+> + * already in use within this iommufd, -EADDRINUSE is returned from this ioctl.
+> + *
+> + * Note: There is no 'unmark' operation, so any HWPTs pooled in userspace that
+> + * are marked for preservation must be destroyed after use.
+> + */
+> +struct iommu_hwpt_liveupdate_mark_preserve {
+> +	__u32 size;
 
-Only take the destination CID if it differs from the socket's current
-one, is not VMADDR_CID_ANY, and is the transport's own CID.  The
-VMADDR_CID_ANY test is still needed: get_local_cid() itself returns
-VMADDR_CID_ANY while the virtio-vsock device is removed or frozen.
+Most iommufd commands have a "flags" member here, so that the uAPI
+struct can be extended later. Why is this one different?
 
-In a guest without a virtio-vsock device, after a loopback connect() to
-(VMADDR_CID_ANY, P), getsockname() on a listener bound to
-(VMADDR_CID_LOCAL, P) returns VMADDR_CID_ANY on unmodified kernels and
-VMADDR_CID_LOCAL with this patch; vsock_test passes.  Drafted with
-Claude.
+> +	__u32 hwpt_id;
+> +	__aligned_u64 hwpt_token;
+> +};
+> +#define IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE \
+> +	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_HWPT_LIVEUPDATE_MARK_PRESERVE)
+> +
+>   #endif
 
-Fixes: 408624af4c89 ("vsock: use local transport when it is loaded")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-188830@kernel.org/
-Signed-off-by: Yiran Qiu <eritque-arcus@ikuyo.dev>
----
-Since 36c5b48b91ac ("vsock: fix bind() behaviour taking care of CID")
-the CID update no longer helps listeners, and connected sockets are
-reset on a transport reset, so the update could be dropped instead;
-would you prefer that?  Refusing connect() to VMADDR_CID_ANY in
-vsock_use_local_transport() would also work, but would stop guests
-without a guest->host CID from reaching local listeners.
+Otherwise, this patch looks good to me,
 
- net/vmw_vsock/virtio_transport_common.c |  5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 4d0511629044..b276009efab9 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1861,7 +1861,10 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 	space_available = virtio_transport_space_update(sk, skb);
- 
- 	/* Update CID in case it has changed after a transport reset event */
--	if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
-+	if (vsk->local_addr.svm_cid != VMADDR_CID_ANY &&
-+	    vsk->local_addr.svm_cid != dst.svm_cid &&
-+	    dst.svm_cid != VMADDR_CID_ANY &&
-+	    dst.svm_cid == t->transport.get_local_cid())
- 		vsk->local_addr.svm_cid = dst.svm_cid;
- 
- 	if (space_available)
--- 
-2.56.0
-
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
