@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793320812;
-	b=MmzCPaBi87iEEMULY9OzaklAmLkY9CDWxmk6TI9vM3z1BvTQFx6QL5FLrSjbW69Or5Lv
-	 j4bEtyn+o+Sf8ppkc5gCas7rURGXyJvfhiDyNqdW1HIQXVu2PoKcaB0Y6WA0tyIR9cA6e
-	 wjzLJH7BetXuYTIiMVQqBuxHv+o9ikHSnNw+B3LKxxjX56fUMuvITHaZ8Bj6yzLeKgdu7
-	 yxfC3QovEjTJbR0E8yLx205+l8UxDuvEIztkIcqZJkr/RMF+fsTGn7TLFqW7TzBiowvoV
-	 HPtqndfQq7WhGUI6gqHMcP94XvOhrPsT18YihjPfXFywLkNd11y0uA+xRYDTO7pjtWw==
+	t=1793321067;
+	b=RAz3coo1IqfoCcFCaHdL2cQxZwVqS86VVQQWOi+MUl6js/M44il7cuWuR6YOM0Cv/XEd
+	 eCQYe5Q93uDVSQkf1ZogoHyNoxed6algWJgpcvnshCtdZezwsroyqwEJj1SoMHsNBgxYA
+	 Ogx8FH3WS7TUgBEFNzanq9mq+JR9LCe5kIQJBwkdYzGpNM4v9r+AUG3FxmMQBAFtglr0I
+	 gtdcOg9vMnl+QvaTD3GAfCUzElIWpCLggI5P3sOWI8Mk+OYnvrEQVSgulthjfHzOAZ4Es
+	 jaWakLvvwZje4LvllKOth4j8+DVIrenTxTYXPmg0JyTLLyG5kPIcUn2oVoSYLcNk4qQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793320812;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793321067;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=g+ayCKw5I3K5VafWEEb2ONwynGPon+gb25iOXiWi2Zk=;
-	b=XvSFiZ7JatEi9bTPjQjJDl4JDAPHK99TygmVfbte376aOzYc3BdlxsZdKHtfXa+ywKDz
-	 ImQsJdSWe6kc5PT6VpwlFsCdt/xILTBFdT4rkVuYFCECjXD2GLJBqXRxkO6DLxb4fqVbK
-	 lWK4UfDZMxBNEGFo3aFq9bmq6+7oLRCJIWHZzDvLA3WVr7gCuA2x/g7btmJbxnNn+uXEG
-	 oyFAdqTnI1uwx59z0HsGr9FxC+tE+QhtMBSPkbrWRzwFZgzDKUU+tDI10t7tlFce23Mch
-	 QzZgQl26lxmSKkrBZnQGINgNmZQG6qofObLWHUZ0rTF1VOso2Jd9qruuu1v4KsD7wbw==
+	bh=fDJFbvdkS3S3/SvfTOXomGOADmk0+mqHe0JMv4Qvqcg=;
+	b=iGhTQ6MycWo1knl4ILDgmtwsKgj1Tf/AdJg3uNYCziHhTAxftX0PF1AORMLHyeUi2/1X
+	 buTPO5R+5mzlKDKEISNWY8Kdr2lNgXTijHQS7j4+4YQBOwz3WEVniMpp59lwG+gXFDduX
+	 bD1BesFXrtP4ksH18ihngUZHFPYu+FqXwYxnjEd25kg8kfTHEfvqWnRE6MgIjVFuqXosi
+	 wZCAgWFgjsRe3KqZU3qIVDIFCUtiHtEMhCq/R4gKUvx63F00l6JSv5jdJJZayriK5k0/b
+	 6HpxY1xFkAqFs9O1U79r+IcJvYT/rMDbmP1LJb9k6AMQSz3LJfkn0tUsduWaQlNNAWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VK1+zQTF;
-	arc=none smtp.remote-ip=209.85.221.53
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uv3Celrf;
+	arc=none smtp.remote-ip=209.85.128.42
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3666606A31A
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 00:40:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3666606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40E1606A31A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 00:44:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A40E1606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VK1+zQTF
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48afcfc4bf5so147909f8f.1
-        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:40:11 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uv3Celrf
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a5720b0a57so7204155e9.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 17:44:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793320810; x=1793925610; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793321065; x=1793925865; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g+ayCKw5I3K5VafWEEb2ONwynGPon+gb25iOXiWi2Zk=;
-        b=VK1+zQTFyDw/g8UTwn9ubZN3vqZpawI4ppratlLnIo8DhxRv55uW4AWIYVwlUILqmN
-         AFD5ecz2loLnupgLqqUMSc0++eioTBp3shfi6vRQ0/bnPgOfdH24zEzQTJ/afE3DvKv7
-         L2Ii0PCQbe2AB0Vsj64wfLoVa3qM5drMFkRSvwx7Op5WMQhLb7sUpOKgiJyP9G/ZsQci
-         jTBQd/pdA4KXbKE+g8i1lWK8k3YQ8SttnZfZdZCNWs9lcyEgWcmBCGw4zRj7M+HTYwrB
-         l+kodm7zwtzYZ+cYz1srlDj58k1wMMCkHJz/PNbvOZZQii7dFrOLDCOVHLNmQdNgZufU
-         NXug==
+        bh=fDJFbvdkS3S3/SvfTOXomGOADmk0+mqHe0JMv4Qvqcg=;
+        b=uv3CelrffGv2bJIFWAWSl98ENhLNHTHKfIhcpEhjZo/rhZxmp7Ame+7y7e9tESDqvh
+         ci3Llvr/uezuh6b8ZwVgPzeJeb4PnA0KHE/Y3klwvl8xmIE6kItQBwPqz8sC4yMXD91o
+         e6oVyiqQ9mAxHEcxHYyp6VfdixCElg6xkSlsoB8iKOrvZwSTuQs59HEp2+xam3i6xpcg
+         cEgIsD4QIoo8xtw0rPmwMlrxhJpUHfjQY2ZXNRK0Bfs9fmI2DBoT/v4pXDjtTgefieVm
+         bfOAoFiF78/P6GiN9/WbVEpAv3L7kFJYY4P8OXbMpEmcXM3DPHXKJVwBm1j6QQw1NtSx
+         20yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793320810; x=1793925610;
+        d=1e100.net; s=20260707; t=1793321065; x=1793925865;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=g+ayCKw5I3K5VafWEEb2ONwynGPon+gb25iOXiWi2Zk=;
-        b=CVHVMd1/qEZdDV3XnfiedWQpuQbKXxUbHvHAjUe0p+YakUsOzbp64kgX/AZbEG1L5J
-         DhqwOY4y6IcHfldcobDVIGzKRmuwISIRpMl/5KfNHciOJmw+SES9TM74RFv/joCGsod4
-         5lZ52t+wXjMS48u5V4vC8ULsidIlvKRzbCtiW+AdCHeOBxZRuY6dNb+hDRgpzfRZ9+ec
-         sOr5x3IPVaaKQK75DXZ2u2QYEuE7z98b69o3A/p1ejIoSs874Jv4QzNMuyu9b9A/Qsy/
-         xx9aVmHvWsrhjp9iqGQtb8qti8/m+n3FoLyRlbl6SLW0QpEjKb6+MVM1VTg/6NiDUwEI
-         XDUQ==
-X-Gm-Message-State: AFq9FYLdeFes7ww5qEFhvjDmEm8Kk7il2bqvtVSND3+MaBJVWf2g2g0m
-	pTinmi92DH+qm7aIUB8xL2byDfrr8mDQcSqd7QiB6KHRmPOQp1AZA9uf
-X-Gm-Gg: AYBFou15CMRv+GZiapgSOpZ5JCZVVXiy71PLUPF0wCbLC7ltjyUWlLN28wyJKjtliyh
-	66c1jmZuVI+SMkPp6HwUnx8/osMylYmiKTzH27DhfdXztG+I1UGojyxPOnHe1UMtZgqtP8MLlza
-	FC1MberW5F1zECN1ly6p1w3Ygou04kU4Bcff0sHgpBjA7iP7/dD2XYBodaWzLuU1LCcna/N2CJV
-	gDGkOyRhooQuL8/E9gM2PYZbvRgUkRV/qbukt6crzqQIy2SHo3oO9SLdiEBKvBotSO1tiDvMkXP
-	cgi9T+0el2alLrAycpHtz54K3GMXifVr5ldz3ceGrsIhFTrYNzHdR655U9nugSlYgojGCBMKxN2
-	qNE7VNf7fUG1GulRdGQsg3zsyFS9IpfLWNJAuRGZ9QLZKneqT+rLXILBoxn9AUyVsyxFls0M07h
-	yqYllGPCt7sMn0IyGLOJWCl8nIlvsGwdYOWhHnam34G2o9uT+SbDaot0gnExH/p/tbZzLm47q+s
-	Ha4Dm8qaRFFjlsAhBC20bOJXH/sEi/bW+mls+0GRt1yjRaH4p/xgfkwVRU8WQWa83eF4+3eb6eg
-	p3khzIjNB3e4jiWTJB4Zduh4rEAYSxNcafx4j3g3AXTjK7KVeYoS1J6p5oU2zTo=
-X-Received: by 2002:a05:6000:605:b0:487:1ac0:32af with SMTP id ffacd0b85a97d-48e6e50d8d8mr2305209f8f.51.1793320810103;
-        Thu, 29 Oct 2026 17:40:10 -0700 (PDT)
+        bh=fDJFbvdkS3S3/SvfTOXomGOADmk0+mqHe0JMv4Qvqcg=;
+        b=MbWk7XMm8TUMcs86R8Ua3BWHQBRkWnwrJcdtcdRFKKGkQHHBA4stxTu5OAXP/1WPdQ
+         1PLFKP+V0J1WIy5xZabAdwFsslUlyTAkrV2sle9cV5qlmm45CmLITY6hBS1GcPw+9HSl
+         nyxyeDczzCyKRd2CAwhAvrHQevKYnp59OTJGjTt3bRujEbvtK4TZflwzMDzQfgRq52gm
+         G+6Z/TJx3T0vsx4ebezuiMk2+Chu6hkzcB+taSAJWK4mGtzAIF7ULGnZYaYoPMeEOOhx
+         DWuOw6dDyynACr1d8BpH/5PISdiFwr9KyeydQCaukreImfciFnzCZQbKBsEFnOHJ+IIG
+         TeTA==
+X-Gm-Message-State: AFq9FYLAiVvEMsChMaMoieWTF3/K7xQMgHn/1wDPcQHusKVvnXb8IEBM
+	G+woVxUVGzoFQspzthdSVLW+c7+7jRwlqFL+LqAAYQNaxaBoUZ4j+GAa
+X-Gm-Gg: AYBFou1ztHfygFqF7SlCepqk6D8EoYtc1j8fi/duk4p2714Em+t/5TiKaFOPFLLYHGq
+	vlVO6YQHA4ghrahhlP758SOb3gaNpj5G7R3OOz+cc+/Prl8+RwAy3H/PDi5JnNZb3gSDbQ1L3Vy
+	C0d8h6AF8V5xvs8MlZvXbhQrOzmYIgiRL8/tfK+/cf99q08oNanZttU0CMggbFDRu8h0+taLqZB
+	+pdfMiDUYkfbO54CpF4XN9XpWyv3Iz4fayxf//Zhq7RFPGUEu8z71xt7oeiP0fWtxRIacy0cgkB
+	lhnPe1F9dxobINXq1wiNA0EeN9pSJ/7bAG+nGIvBTizRZi+8SSzhJ8SNhm5JRK0kUZizHTA1jan
+	x+cqI1Mq1ixI/89znXbnxESliTiEUJGkEV2RRpOtnskusNmT4sNUIzRv3abdLBkJ6sBlJ1PAnTy
+	561xBKbsfI0GijUziWBnWJlrbiuw6mNc66yBlk/7hMCcBITCQdHYbpAKlocxQElTfxWFB0Q0Fm9
+	V48THurS0e6gMlzuWELh3sq/rng1j2Lfp2NIpFGc51PPZg2Dn+XCptk/vX2UW+JSp9C3zwRXgPc
+	F0eFDphA6HO+cpx9m8pIYPKhBSBIv5uN9qIEpTAIZA==
+X-Received: by 2002:a05:600c:4988:b0:4a2:1002:223e with SMTP id 5b1f17b1804b1-4aa8a7ac780mr67449175e9.7.1793321064987;
+        Thu, 29 Oct 2026 17:44:24 -0700 (PDT)
 Received: from IsoOmenaM3 ([91.136.216.14])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80333sm115130f8f.32.2026.10.29.17.40.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b78a1dsm126683f8f.24.2026.10.29.17.44.22
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 29 Oct 2026 17:40:08 -0700 (PDT)
+        Thu, 29 Oct 2026 17:44:23 -0700 (PDT)
 From: Mika Tammi <mikatammi@gmail.com>
 To: Will Deacon <will@kernel.org>,
 	Julien Thierry <julien.thierry.kdev@gmail.com>
 Cc: kvm@vger.kernel.org,
 	Mika Tammi <mikatammi@gmail.com>
-Subject: [PATCH kvmtool] Makefile: Fix the feature checks when SHELL isn't /bin/sh
-Date: Fri, 30 Oct 2026 01:39:34 +0100
-Message-ID: <20261030003934.30456-1-mikatammi@gmail.com>
+Subject: [PATCH kvmtool v2] Makefile: Fix the feature checks when SHELL isn't /bin/sh
+Date: Fri, 30 Oct 2026 01:44:22 +0100
+Message-ID: <20261030004422.33732-1-mikatammi@gmail.com>
 X-Mailer: git-send-email 2.54.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -133,7 +133,11 @@ leaves backslashes alone, which echo doesn't in every shell.
 Fixes: 328a03bc3f07 ("kvm tools: Add conditional compilation of symbol resolving")
 Fixes: 2c82d39a080d ("kvm tools: Add test for -static libc present")
 Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Mika Tammi <mikatammi@gmail.com>
 ---
+v2: Add my Signed-off-by, which v1 lacked.
+v1: https://lore.kernel.org/kvm/20261030003934.30456-1-mikatammi@gmail.com/
+
 I used Claude Opus 5.5 to track down the cause, write this patch and
 its description, and run the tests below; I have reviewed the result.
 
