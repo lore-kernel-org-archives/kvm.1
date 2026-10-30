@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793396271;
-	b=gMh1k4NX6ssvfkAjLV56fbY95U1Ni4IIWN4LJRI341tryAITDH5p5GHj5gVyJCliOjhX
-	 IeTD+fytfn4uMyv/F3/m8biru4iJnVBMtTYwfWxEoKNCpMz/HDT9zennpfKgb0YsEP4l7
-	 OHUiwZla0AUZmjTvs4rUGgNHeBscRVG8fuFuHqlRXunxa+orYRFCyWt+/0eOTY3vY7Xo4
-	 arqB75b8iMur08aoF9jltkFerjl3jfW0+PviSD1ywJiQ1D1dPsgf9dgxkFsbcnOzhYHlT
-	 PFCm6i9lFvWSq4TGIR7N9AnRK1e3zXNOIrt6vh7y0JXh3nYDSsNeyibjM4GvrPtDJuw==
+	t=1793396275;
+	b=Vrl0Cd+FreEh89e13PoKVrl9bPIDX1sL7xmVUB/LZAxpWKKo8Gb226rJrRcGRNKpi9Ig
+	 kuAx5mlQpQ0jVCzfUk+6NsXTmYSoXm+oH4lM0F1ZTcoFKu+TBiUQ2GknyeGAPX6xqkd4K
+	 KmSHujdm56VKxM+gTXhA5vJJlWepJsHgvpliuOJeGSjPWHwYyTJGWjlpfCKwiWYY8phnF
+	 032UcJVuXHHg8mehRkbwt7AhJWzr0iZ0Uh8HpwxGbO18yc6EKYo4buzkGrw6N2RyG08QJ
+	 dC0VKTCZQW8dBoNxUqPah9RxfmUaD3VBJXjgdA95OuDoH/YFSSGh0GtZGxs7w9/IlSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793396271;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793396275;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=Xhyg5cGPtjP9AGfE0CLRkt6sDAb9YKw1TbZgcTvrTXs=;
-	b=mg/LFFnAyqQAfqG2dd+x+4i3HZqIepoNMqoDUcNJb8gwf2n7H4Ltfun0P/bECvbeI/C6
-	 vE3o9f35nN2zIeLNVvJrTbARYcAKmk8aqxAx9sLI19+ktGl0BxUzm95b39WDCHF44xJcj
-	 i77w3D0LsAy7+0KR5uPnTP+pp8WWWrVlErLokXTedaCZRUjJKY8rW8D41z3VClgMsXyKT
-	 4VrHTq8MIDQzqpdtENLe2QJXuNKz6QSIXtWZF113sP0UhuPXUtis3J4pFpsy+SpWOJoan
-	 ZgyxjVWYVJTsYjZxLv2ZFbi2r0Csu/EPMwDCq4XdbsgkCKgDY/0Jd9usPQwCq3hwQ6g==
+	bh=bAp1oLLc4NylX44ka1QJP/C4krDFDu3MTt3wwDG+pYk=;
+	b=QcKpbbwLmaLu8bl3FAMd32q1omP/UFh7b8MjoL/7tIkwx4uAiOUXUUZB9Q33dx1w2hGb
+	 Y8CEoP8vJeMQDs2UG8XvXfFcTCxk4aQOPLkZ76SlirezmPhuRU5Q3kKdwGXljzhJFxp7U
+	 lBWXb9d1RKwYuQgNLI3r39we8DQOL+WhglE5oUtC/ISEnpM0Uz6xJedHkZrTA9/jDeyzH
+	 stwWAGT27kSUtUlGpj13nrGonms9Gsh/3xXp4EIJyzO88xgL+NbAqg1h0NBoqCsh4q64W
+	 ZOGxjU7z96pKbk2Bfa5U7pUsjqIGGCpkIrHOrznvWT9vl/Xba4ngjoadUCcoTgRx81A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=awqH94wq;
-	arc=none smtp.remote-ip=209.85.215.197
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="eE0/MGBx";
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0F5606A323
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:37:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B0F5606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC31B606A322
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:37:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC31B606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=awqH94wq
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd5ca3840c5so1220393a12.2
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:37:51 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eE0/MGBx
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ae1d132d52so1032518a91.0
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793396270; x=1794001070; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793396274; x=1794001074; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Xhyg5cGPtjP9AGfE0CLRkt6sDAb9YKw1TbZgcTvrTXs=;
-        b=awqH94wqEZhCQvpfloo3dpfVfXMqbHChw37m5kRq57aQXaUTbKjZGrZQOomvCkWttv
-         BMLr7VOlkro0PfN38oOEMO1YvlwONM3ZS1I9jUbnoKg3xnJ/AUbU+A9PM8zpNYgtvAKx
-         dHlDddMAj6gllny66hP2wOQ9VgEQq54pTPKT98u/QPPXkLhXnDgx5ANx1dYtrkxm0q+a
-         z7bCWSdrBaIT8ef9+MhjBW7RLkIjGQfQHcyWh6mhBeL/AQ1SGocuchnQAlc4wMzs5YqW
-         D8c+fRwhfbM2hhOLJ6FOzb1cKdZ/ReqTKOx1iYRuqSkL1MCuq8SoHR/RP5B5f+36xn82
-         uZAQ==
+        bh=bAp1oLLc4NylX44ka1QJP/C4krDFDu3MTt3wwDG+pYk=;
+        b=eE0/MGBx/HeDEwIQ4OLnVT9ULzBqSdVHAn25tQS1IJbCeUmRoZAsKaVSJd2Lc4iSZU
+         ALURzp+tT1Q6PfnoGoASNRiK6I8QIJBEH01p8ud/Kyagi29J0DtkYi5gR8adJOUzpuIp
+         ytUDo3oO4e6AGngK53nMQwPVIr3WIG/hKEl0cEuxcOEkxLxBL+6ZCV1uZGLi6qbLx4KJ
+         SBQqRgHwqrHuNGI7OQBjIfwdk+bAtpT5WqnTDI/eyUJXfXgp8uwGqfV4E3usL+ZtZQTR
+         lXXw4/abVtyw6GR4UY1pzGzOJCatq3Cvx50xlYG55akje4Se+fHy5rI61ZGyxJw3pKnJ
+         PqsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793396270; x=1794001070;
+        d=1e100.net; s=20260707; t=1793396274; x=1794001074;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Xhyg5cGPtjP9AGfE0CLRkt6sDAb9YKw1TbZgcTvrTXs=;
-        b=xKUlkKmcfDW3Tu1FAEzoUjg16s1ptmkTQoeufHOYcAH9siLcZQ8tr5ZiNBoQCVEmyC
-         wZapn+TG+aEEq78HdJmUaVg9ljLaTUJviiWBfiDthdwcIiclMGehI/JtM8pLj0jvbqOd
-         DVX8wp7XsmRSWisV7FJ+o3wziW1aazY4ARPxkM0JlAIT4JmTCJZRv7RnMkY3O58usvax
-         Fye7BRZkPuP7WvAx1NxRX2Qge36rbHyYj40whhcNcHR3nkAT3mnGxCgAtnju0pf68EeN
-         p8DJyARTC+4T/iOKCobqvmOusNzDnwWrbY09oIK4FyRWCkfhdBgr1SlCEqRPbb+X2ZDP
-         wTPg==
-X-Gm-Message-State: AFq9FYKR3JaMj2a/cWL7hcZDToCEmpo5kSFSVOHusUhW+X3dwSNL8qT5
-	f4tl9mFRDcdJFIVEoBkkD4ZKo05uiAhiOvaUJ2kKYMt2ZiK7S3nG4PEGx4eh4BzxYtaSKjDFdHr
-	TszlNeQ==
-X-Received: from plfz5.prod.google.com ([2002:a17:902:d545:b0:2e2:f305:e980])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5cc:b0:2df:accf:e873
- with SMTP id d9443c01a7336-2eb36415081mr41010915ad.4.1793396270447; Fri, 30
- Oct 2026 14:37:50 -0700 (PDT)
+        bh=bAp1oLLc4NylX44ka1QJP/C4krDFDu3MTt3wwDG+pYk=;
+        b=EibSS1DKUfx16F0cXkbgOfDlW6PVtNTAHWhcOoQ16igH5D/PiJNALltiVPHALJ63rR
+         J3k1YHiPWeUpQQP/bQWEm8XcqOiehBnYQ68NBowIaOzGqshC9FvtcRH6lH9Y1AtwFIMd
+         LZ02Iodokyrmiyciz1ab+mDfqvciJWz64sqBvAMa475REdin/WrvsNc50fqkJxGPUqGr
+         l9F0J/LIjUaqWrHhuOOPCKX6w9aOa8tEySXCVFlpPDIYUwSIbyMxZLyU9XtgLyrFY86w
+         wO7MtbivNf/UmwbsyoExBK5mcMWranGUp6d6l26TPmFvoXzIJGJLHi/ZAKbiFDyitqdz
+         II7A==
+X-Gm-Message-State: AFq9FYLp9pvceGsGkrLbyugxxgmPDAb8hryySbZgGU28Z+Tzm6KIosnc
+	zz6ImPqbYgAk2vG5qGQgvbZ86/eTYOIDxuYcgxjLSLRWwa6daBeDDBRsLCPiXYMF9ZZTVZJ8iPo
+	LTOt7JQ==
+X-Received: from pjva15.prod.google.com ([2002:a17:90a:d80f:b0:3ad:4a1f:14aa])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c44:b0:3ae:6fda:789f
+ with SMTP id 98e67ed59e1d1-3ae897c3efbmr2699410a91.54.1793396274166; Fri, 30
+ Oct 2026 14:37:54 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 30 Oct 2026 14:37:43 -0700
+Date: Fri, 30 Oct 2026 14:37:46 -0700
 In-Reply-To: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,91 +80,142 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261030213747.2611815-2-seanjc@google.com>
-Subject: [PATCH v3 1/5] KVM: nVMX: Preserve L1-owned bits in CR{0,4} read shadows
+Message-ID: <20261030213747.2611815-5-seanjc@google.com>
+Subject: [PATCH v3 4/5] KVM: nVMX: Take full ownership of the post-VMXON
+ CR{0,4} must-be-1 bits
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Mahmoud Abumandour <ma.mandourr@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When emulating an intercepted MOV CR{0,4} for L2, i.e. when L2 is toggling
-CR{0,4} bits that L0 intercepts but L1 does not, explicitly preserve
-L1-owned bits in the vmcs02 read shadow instead of subtly relying on the
-interception logic to preserve the bits.  For straight MOV instructions,
-relying on the interception logic works, because KVM would have synthesized
-a nested VM-Exit to L1 if L2 were toggling L1-owned bits, i.e. if L2 were
-explicitly changing any of the shadowed bits.
+Effectively drop support for restoring/stuffing fixed-0 CR{0,4} MSRs, as
+restoring to anything other than KVM's hardcoded value is broken, and is
+absolutely not worth fixing.  KVM doesn't adjust the "guest owned" masks
+based on the MSR values, and so if userspace were to require any of the
+passed-through bits to be '1', KVM would fail to prevent the guest from
+clearing a must-be-1 bit.
 
-However, for LMSW, which preserves bits 31:4, and conditionally preserves
-CR0.PE (bit 0), the effective value being set by L2 can diverge from the
-read shadow *without* triggering a nested VM-Exit.  E.g. if CR0.PE=1 in
-"hardware", CR0_READ_SHADOW.PE=0, and CR0_GUEST_HOST_MASK.PE=1, then a LMSW
-with CR0.PE=0 won't VM-Exit, but will preserve/set CR0.PE=1 in "hardware".
+Even worse, if userspace disables KVM_X86_QUIRK_STUFF_FEATURE_MSRS without
+ever setting the CR{0,4} FIXED0 MSRs, then KVM would allow running with an
+impossible configuration, as KVM would advertise to L1 that there are *no*
+must-be-1 bits, but couldn't honor that because VM-Entry would fail due to
+the bits still being must-be-1 in real hardware.  E.g. KVM would tell the
+guest that CR4.VMXE can be toggled at will, in complete violation of VMXON.
 
-Explicitly preserving the shadowed bits will allow using handle_set_cr0()
-to honor L1's guest/host mask when emulating LMSW.
+Don't try to fix KVM, as no known VMM sets values other than KVM's own
+hardcoded value.  KVM already requires the incoming value be a superset of
+KVM's value, i.e. KVM doesn't allowed reducing the set of must-be-1 bits,
+and so it's only possible for userspace to require *extra* bits to always
+be 1.  Drop KVM's "support" before anyone tries to utilize it, e.g. to
+harden a guest or something, as honoring things like CR0.TS in particular
+would be painful, e.g. KVM would need to handle CLTS interception.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/vmx.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ Documentation/virt/kvm/api.rst                |  9 +++---
+ arch/x86/kvm/vmx/nested.c                     | 30 ++-----------------
+ arch/x86/kvm/vmx/vmx.c                        |  3 ++
+ .../selftests/kvm/x86/feature_msrs_test.c     |  2 +-
+ 4 files changed, 11 insertions(+), 33 deletions(-)
 
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index e95c9cda085d..c9f7284f76b4 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -8764,10 +8764,11 @@ KVM_X86_QUIRK_STUFF_FEATURE_MSRS           By default, at vCPU creation, KVM set
+                                            i.e. treats the feature MSRs like CPUID
+                                            leaves and gives userspace full control of
+                                            the vCPU model definition.  This quirk does
+-                                           not affect VMX MSRs CR0/CR4_FIXED1 (0x487
+-                                           and 0x489), as KVM does now allow them to
+-                                           be set by userspace (KVM sets them based on
+-                                           guest CPUID, for safety purposes).
++                                           not affect VMX MSRs CR0/CR4_FIXED{0,1}
++                                           (0x486 - 0x489), as KVM does now allow them
++                                           to be set by userspace (KVM sets them based
++                                           on the virtual CPU model, for simplicity and
++                                           safety purposes).
+ 
+ KVM_X86_QUIRK_IGNORE_GUEST_PAT             By default, on Intel platforms, KVM ignores
+                                            guest PAT and forces the effective memory
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 9b0bfa2f854c..a5547ec78846 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -1508,33 +1508,6 @@ static int vmx_restore_vmx_ept_vpid_cap(struct vcpu_vmx *vmx, u64 data)
+ 	return 0;
+ }
+ 
+-static u64 *vmx_get_fixed0_msr(struct nested_vmx_msrs *msrs, u32 msr_index)
+-{
+-	switch (msr_index) {
+-	case MSR_IA32_VMX_CR0_FIXED0:
+-		return &msrs->cr0_fixed0;
+-	case MSR_IA32_VMX_CR4_FIXED0:
+-		return &msrs->cr4_fixed0;
+-	default:
+-		BUG();
+-	}
+-}
+-
+-static int vmx_restore_fixed0_msr(struct vcpu_vmx *vmx, u32 msr_index, u64 data)
+-{
+-	const u64 *msr = vmx_get_fixed0_msr(&vmcs_config.nested, msr_index);
+-
+-	/*
+-	 * 1 bits (which indicates bits which "must-be-1" during VMX operation)
+-	 * must be 1 in the restored value.
+-	 */
+-	if (!is_bitwise_subset(data, *msr, -1ULL))
+-		return -EINVAL;
+-
+-	*vmx_get_fixed0_msr(&vmx->nested.msrs, msr_index) = data;
+-	return 0;
+-}
+-
+ /*
+  * Called when userspace is restoring VMX MSRs.
+  *
+@@ -1577,8 +1550,9 @@ int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 data)
+ 	case MSR_IA32_VMX_MISC:
+ 		return vmx_restore_vmx_misc(vmx, data);
+ 	case MSR_IA32_VMX_CR0_FIXED0:
++		return data && data != vmcs_config.nested.cr0_fixed0;
+ 	case MSR_IA32_VMX_CR4_FIXED0:
+-		return vmx_restore_fixed0_msr(vmx, msr_index, data);
++		return data && data != vmcs_config.nested.cr4_fixed0;
+ 	case MSR_IA32_VMX_CR0_FIXED1:
+ 	case MSR_IA32_VMX_CR4_FIXED1:
+ 		/*
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b341af4c6057..544b7840897c 100644
+index 68c1361a92d1..4afbb3986a4c 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5629,22 +5629,19 @@ static int handle_set_cr0(struct kvm_vcpu *vcpu, unsigned long val)
- {
- 	if (is_guest_mode(vcpu)) {
- 		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
--		unsigned long orig_val = val;
-+		u64 mask = vmcs12->cr0_guest_host_mask;
+@@ -7712,7 +7712,10 @@ static void nested_vmx_cr_fixed1_bits_update(struct kvm_vcpu *vcpu)
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	struct kvm_cpuid_entry2 *entry;
  
- 		/*
--		 * We get here when L2 changed cr0 in a way that did not change
--		 * any of L1's shadowed bits (see nested_vmx_exit_handled_cr),
--		 * but did change L0 shadowed bits. So we first calculate the
--		 * effective cr0 value that L1 would like to write into the
--		 * hardware. It consists of the L2-owned bits from the new
--		 * value combined with the L1-owned bits from L1's guest_cr0.
-+		 * L2 is writing a CR0 value that isn't modifying any of L1's
-+		 * shadowed bits (see nested_vmx_exit_handled_cr()), but *is*
-+		 * modifying L0 shadowed bits.  Set the "hardware" CR0 and the
-+		 * read shadow using the L2-owned bits from the new value,
-+		 * combined with the L1-owned bits.
- 		 */
--		val = (val & ~vmcs12->cr0_guest_host_mask) |
--			(vmcs12->guest_cr0 & vmcs12->cr0_guest_host_mask);
--
--		if (kvm_set_cr0(vcpu, val))
-+		val &= ~mask;
-+		if (kvm_set_cr0(vcpu, val | (vmcs12->guest_cr0 & mask)))
- 			return 1;
--		vmcs_writel(CR0_READ_SHADOW, orig_val);
-+		vmcs_writel(CR0_READ_SHADOW, val | (vmcs12->cr0_read_shadow & mask));
- 		return 0;
- 	} else {
- 		return kvm_set_cr0(vcpu, val);
-@@ -5655,14 +5652,13 @@ static int handle_set_cr4(struct kvm_vcpu *vcpu, unsigned long val)
- {
- 	if (is_guest_mode(vcpu)) {
- 		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
--		unsigned long orig_val = val;
-+		u64 mask = vmcs12->cr4_guest_host_mask;
++	vmx->nested.msrs.cr0_fixed0 = vmcs_config.nested.cr0_fixed0;
+ 	vmx->nested.msrs.cr0_fixed1 = 0xffffffff;
++
++	vmx->nested.msrs.cr4_fixed0 = vmcs_config.nested.cr4_fixed0;
+ 	vmx->nested.msrs.cr4_fixed1 = X86_CR4_PCE;
  
- 		/* analogously to handle_set_cr0 */
--		val = (val & ~vmcs12->cr4_guest_host_mask) |
--			(vmcs12->guest_cr4 & vmcs12->cr4_guest_host_mask);
--		if (kvm_set_cr4(vcpu, val))
-+		val &= ~mask;
-+		if (kvm_set_cr4(vcpu, val | (vmcs12->guest_cr4 & mask)))
- 			return 1;
--		vmcs_writel(CR4_READ_SHADOW, orig_val);
-+		vmcs_writel(CR4_READ_SHADOW, val | (vmcs12->cr4_read_shadow & mask));
- 		return 0;
- 	} else
- 		return kvm_set_cr4(vcpu, val);
+ #define cr4_fixed1_update(_cr4_mask, _reg, _cpuid_mask) do {		\
+diff --git a/tools/testing/selftests/kvm/x86/feature_msrs_test.c b/tools/testing/selftests/kvm/x86/feature_msrs_test.c
+index d56d0ddb3a57..837fee78835c 100644
+--- a/tools/testing/selftests/kvm/x86/feature_msrs_test.c
++++ b/tools/testing/selftests/kvm/x86/feature_msrs_test.c
+@@ -14,7 +14,7 @@
+ 
+ static bool is_kvm_controlled_msr(u32 msr)
+ {
+-	return msr == MSR_IA32_VMX_CR0_FIXED1 || msr == MSR_IA32_VMX_CR4_FIXED1;
++	return msr >= MSR_IA32_VMX_CR0_FIXED0 && msr <= MSR_IA32_VMX_CR4_FIXED1;
+ }
+ 
+ /*
 -- 
 2.56.0.385.gac671c819a-goog
 
