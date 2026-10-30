@@ -1,59 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793398405;
-	b=Q+4AFdvrlyEeZsPSr6UHHq9Kdb8wNYhh7+BOGNjJbFvim8RWi6U359+Y3euQwrzJIGWN
-	 rWjrs5eBWuofvY59caGiOuV4xOuPlLyk99W9vlSwkA1skHtxLuff32f9W/pVMBoTwMdOc
-	 Y7q5HkC13hhg3DjR8zCjbajsedZCCzlGCBjLpTdI0yTpXdeKS7JjuxBunDTMNptpJWlUQ
-	 xe7DcFsxhw38gez+SbIQ/Fb/JUAGEKYwl/GXPIsgMilWqXo5ZLN6kRqeu0NAlJIH9ZTWB
-	 UOJl7DsuCSW/TflAStD5JU/eBzQ3n3vYmSWOvkYRTJ/vknZXvPX+gt4SKZ5BAIzK5mw==
+	t=1793399072;
+	b=jmTkMTpMImVjpWK1idKrdJiW2rVRwYLetPELZwqAKObdjwtpUiqE3D8e3BN+6+l9Hbnh
+	 w0Z7qNYb1A6rH2iQvQgzrv5VlIY91KhqG3WvY7IDGKLdIQDD07RvBnvF77nCle8LqgB/8
+	 /EVLT/Y/SJpWtUpGvlUoDoa/joerfrIqSH6gehCBtT44QPukj9m8qcTsSh2tE723hDuvR
+	 RRyUguKfAIRgg11Aak9VH/nlBRVMwNlTjLdwl3guW/2gLteVcvd8HNG+dfvmyMj1iIZ/W
+	 MTKtQJj8tjasYi4cJLIeVQUhTxhnF8dmW3wDzoS1TT7UPoq0htyfXeFYmWdx1G2jGAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793398405;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Ad9G+QJKWBbiVuK5/YoploQz2oiKmEWZuVEvN3yaNqw=;
-	b=hNOZxLgOFgbHhu3b4fVvlfJuo+Q7XENAY/TKtdQBuat+tdh1NlH5J8rymytDowOggJ6V
-	 0u/lJdHRRUlzpbJtTavzu43V4dk1Bg6Iq9Aay8xNDZ6w08KSnDGzPMxsPYvOgUVd1wtmn
-	 7o8pWhGFLiNkvzhR5UnPbpeOBcdmyyCqBB3Pomu4e/FfQSnkFU6MxJ+c/GfO257OWrbf3
-	 okVBZAPH1SNKa08HV+bpeV/g/oR0RQaqqro6/asGh/mOp3xY4r40hbvueBMWgNo5SLXYm
-	 tTlz+LeBSnWxZBCCIX/hCFiic6NXZ92ISeaGNwA0kxVlhPI8Od5e149WpX3H/f1mCew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793399072;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=LiyYhDUll57MN+i6YDruf1spIaUOsvJrDoh/JrOf4SM=;
+	b=KYYwjiI2tK6anBM7yr2dGQTpGoBisL9o7zEJRUtN8nb4z7VdAdJE0gOJnqDXBLQx6Qrh
+	 9lgnpqYFACC2aOdovZSzVIY2+Bqsq61GBfHJOhAtf/DqbRM5/AzqVirOr7NtWJd6NpDrP
+	 62+KPK6yN4peyXT8zc5YQ2S8PAUvEKOGz/UOwH9C8HpzYPffpQtFpQZ9e3B69C+Lr7Gd2
+	 3bjhEQuJnyQETJOa7aGakXwBQ5ICbVEk2Gi4ItClC54Ffw9yoK0tS00zRrIghVx9AEDhn
+	 PhEW8ZcaJZa0e0liTvJe0MC/zGtXlF3anPRx6mMuVCCHCg0FHJnKJY/ruX3GpY9wlHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7ObQvDf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YEvVWm+M;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77A1606A31A;
-	Fri, 30 Oct 2026 22:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2AD606A31A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 22:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7ObQvDf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4501F00A02;
-	Fri, 30 Oct 2026 22:13:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YEvVWm+M
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DD31F0093A;
+	Fri, 30 Oct 2026 22:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793398404;
-	bh=Ad9G+QJKWBbiVuK5/YoploQz2oiKmEWZuVEvN3yaNqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G7ObQvDfVzQMhL9YU3BBDjDOOiDuO5NdUysaQvuK8wMrnjXG9HCwCj4Aq8P+3LhCv
-	 Lfj9ol/XzrhECCeeJDlrMfPvdLs99VU5hIynwGeqJ0fqUUcei+MlogrsyRVV+Zpstd
-	 mrF6/Z8KRz04ryc4QfLIdnU9XjZ2C7ze57sXl5h+2R9KPIolmWKywEXajvIgTL3TXg
-	 gZ6VI6fFuK3cGqO5g8aQnRPOGXb7z2Y2jKbHHcyufb3fWewhk3WoiEA+vhOKk6PNr6
-	 gT2IfgZBM0rpdV82D27h8YhrCrjJDNwToEd/T3VexyuO7N49HwZMkzIk2gJ6lQHHXj
-	 csZYBM8+MPCSA==
-Date: Fri, 30 Oct 2026 22:13:22 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Jim Mattson <jmattson@google.com>
-Cc: Zide Chen <zide.chen@intel.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
-	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
- GLOBAL_INUSE MSRs
-Message-ID: <auUQgRVFASkWtkoK@google.com>
-References: <20260827223755.143247-1-zide.chen@intel.com>
- <20260827223755.143247-12-zide.chen@intel.com>
- <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
+	s=k20260515; t=1793399071;
+	bh=LiyYhDUll57MN+i6YDruf1spIaUOsvJrDoh/JrOf4SM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YEvVWm+MmQbWtfqDhkXJgVz6nFcLq0JIlXvC5x8DjRYN/dsF8E3cUvVoClANGGnhP
+	 KNWobtDJoPz6Xd18GNTGOBqDwYJzjAFparDNklbZKpOEYjJ6uuYMdcclV+Aq+Wpj4G
+	 /jfkpLDXPAFNtHl8U+aBc3z2CRNWrfqqrhSx44Fuwg1iMzO7N5lj3/qM/nT22K+N1U
+	 gJPKSvuCpTn7EgKs/Zi3VpU+TQIMdO0R8vWOq4yWzYiD408kpNrhMctGpXtyNAyb0g
+	 7SG8im4mVIaKxweCav6R5AJslRsK7otxmORm1jOX3Q00uA15WAo+fPXf9TEFyst+8o
+	 UQ80oNmIDqVJQ==
+Message-ID: <sashiko-outbox-191575@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 5/7] KVM: x86: Recompute EFER.LMA instead of
+ inheriting the current value on EFER writes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261030212721.2606393-6-seanjc@google.com>
+References: <20261030212721.2606393-1-seanjc@google.com>
+ <20261030212721.2606393-6-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 22:24:31 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,77 +60,172 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
 
-> > @@ -865,6 +867,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-> >         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-> >         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
-> >         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
-> > +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> >                 msr_info->data = 0;
-> >                 break;
-> >         default:
-> > @@ -931,6 +934,12 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-> >                 if (!msr_info->host_initiated)
-> >                         pmu->global_status &= ~data;
-> >                 break;
-> > +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> > +               if (data & pmu->global_status_rsvd)
-> > +                       return 1;
-> > +               if (!msr_info->host_initiated)
-> > +                       pmu->global_status |= data;
-> > +               break;
-> 
-> According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"),
-> IA32_PERF_GLOBAL_STATUS.CondChgd[bit 63] cannot be set by writing to
-> IA32_PERF_GLOBAL_STATUS_SET, because IA32_PERF_GLOBAL_STATUS_SET[bit 63] is
-> reserved.  In other words, it is not possible to save/restore
-> IA32_PERF_GLOBAL_STATUS when bit 63 is set.
-> 
-> Because bit 63 is clear in pmu->global_status_rsvd:
-> 
-> 1. An intercepted guest WRMSR(MSR_CORE_PERF_GLOBAL_STATUS_SET, BIT_ULL(63))
->    succeeds instead of injecting #GP(0) and sets bit 63 in
->    pmu->global_status.
-> 2. When bit 63 is set in pmu->global_status (whether it was set by
->    kvm_pmu_set_msr() or by intel_mediated_pmu_put()), the next
->    intel_mediated_pmu_load() will try to write an illegal value to
->    MSR_CORE_PERF_GLOBAL_STATUS_SET. I don't think we get a #GP, because
->    every wrmsr is "safe" these days, but the write will be ignored.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] kvm: x86: guest-triggerable WARN_ON_ONCE in set_efer() via SVM sta=
+te sync
+--
 
-On SPR, it does produce a #GP that gets ignored (and logged) and the bit
-is not set.  Interestingly, on CLX, the write goes through and the bit
-is set. Didn't check other CPUs.
+commit 5720ef7430b0bd8d9e28950790604b1d1ec8ce2d
+Author: Sean Christopherson <seanjc@google.com>
 
-> OTOH, what about PerfMon v4 bits 58 (GLOBAL_STATUS_LBRS_FROZEN), 59
-> (GLOBAL_STATUS_COUNTERS_FROZEN), and 61 (GLOBAL_STATUS_OVF_UNCORE)?  Per
-> Intel SDM Vol. 4, Table 2-2, those bits are valid in
-> IA32_PERF_GLOBAL_STATUS, IA32_PERF_GLOBAL_STATUS_RESET, and
-> IA32_PERF_GLOBAL_STATUS_SET when CPUID.0AH:EAX[7:0] > 3.
-> 
-> When those MSRs are passed through in mediated mode, the guest can set bits
-> 58, 59, or 61 in hardware via IA32_PERF_GLOBAL_STATUS_SET. Leaving those
-> bits set in pmu->global_status_rsvd for pmu->version >= 4 will break
-> KVM_SET_MSRS(MSR_CORE_PERF_GLOBAL_STATUS) as well as any intercepted guest
-> writes to GLOBAL_OVF_CTRL / GLOBAL_STATUS_SET.
-> 
-> As I pointed out in patch 04/16, we can't pass through the PMU global
-> controls unless their reserved bits match hardware.
+KVM: x86: Recompute EFER.LMA instead of inheriting the current value on EFE=
+R writes
 
-I think there are two other relevant (but pre-existing) problems here:
+This commit updates set_efer() to recompute EFER_LMA from EFER_LME,
+is_paging(vcpu), and is_pae(vcpu) instead of carrying forward the existing
+EFER_LMA value from vcpu->arch.efer, and adds a WARN_ON_ONCE() if the
+recomputed EFER_LMA differs from the previous value.
 
-1. GLOBAL_STATUS_TRACE_TOPAPMI_BIT can leak from the host into the
-guest. If a host PT PMI arrives while the guest context is loaded, bit
-55 will be set for the guest, and the guest won't be able to clear it if
-OVF_CTRL is intercepted (it will #GP as it is reserved for the guest).
-Similarly, the value can't be restored through KVM_SET_MSRS.
+> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+> index c3cb1575fe66e..c55402970a345 100644
+> --- a/arch/x86/kvm/msrs.c
+> +++ b/arch/x86/kvm/msrs.c
+> @@ -638,8 +638,17 @@ static int set_efer(struct kvm_vcpu *vcpu, u64 efer)
+>  	    (vcpu->arch.efer & EFER_SVME) && !(efer & EFER_SVME))
+>  		return 1;
+> =20
+> -	efer &=3D ~EFER_LMA;
+> -	efer |=3D vcpu->arch.efer & EFER_LMA;
+> +	if ((efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu))
+> +		efer |=3D EFER_LMA;
+> +	else
+> +		efer &=3D ~EFER_LMA;
+> +
+> +	/*
+> +	 * Toggling EFER.LMA on a bare write to EFER should be impossible, as
+> +	 * it means KVM allowed architecturally invalid state at some point in
+> +	 * the past, i.e. allowed EFER.LMA=3D1 && (!CR0.PG || !CR4.PAE).
+> +	 */
+> +	WARN_ON_ONCE((efer & EFER_LMA) !=3D (vcpu->arch.efer & EFER_LMA));
 
-(I think the PMI may also be lost as LVTPC points at the mediated vPMU
-vector)
+[Severity: High]
+As reported by Sashiko on v1 [1], can a guest or host userspace trigger this
+WARN_ON_ONCE() via SVM paths that leave EFER_LMA in vcpu->arch.efer out of
+sync with EFER_LME, X86_CR0_PG, and X86_CR4_PAE?
 
-2. On AMD, bit 58 and 59 have a similar problem. HW accepts those bits
-but they are reserved for the guest, so the guest can set them if
-GLOBAL_STATUS_SET is passed through, but userspace cannot restore them.
+In arch/x86/kvm/msrs.c:set_efer(), changing EFER_LME while paging is enabled
+is rejected earlier:
+
+	if (is_paging(vcpu) && (vcpu->arch.efer & EFER_LME) !=3D (efer & EFER_LME))
+		return 1;
+
+As a result, the recomputed EFER_LMA always equals
+((vcpu->arch.efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu)), and the
+WARN_ON_ONCE() fires whenever a vCPU enters set_efer() with vcpu->arch.efer=
+'s
+EFER_LMA bit out of sync with EFER_LME, X86_CR0_PG, and X86_CR4_PAE. Several
+SVM paths appear to still leave EFER_LMA out of sync:
+
+1. In arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_save() and
+arch/x86/kvm/svm/svm.c:svm_set_cr0():
+
+	/* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing VMRUN). */
+	if (!(svm->nested.save.efer & EFER_LME))
+		svm->nested.save.efer &=3D ~EFER_LMA;
+
+	svm_set_efer(vcpu, svm->nested.save.efer);
+
+	svm_set_cr0(vcpu, svm->nested.save.cr0);
+	svm_set_cr4(vcpu, svm->nested.save.cr4);
+
+where svm_set_cr0() only updates EFER_LMA on a transition of X86_CR0_PG
+relative to the previous vcpu->arch.cr0:
+
+	if (vcpu->arch.efer & EFER_LME) {
+		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
+			vcpu->arch.efer |=3D EFER_LMA;
+			if (!vcpu->arch.guest_state_protected)
+				svm->vmcb->save.efer |=3D EFER_LMA | EFER_LME;
+		}
+
+		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
+			vcpu->arch.efer &=3D ~EFER_LMA;
+			if (!vcpu->arch.guest_state_protected)
+				svm->vmcb->save.efer &=3D ~(EFER_LMA | EFER_LME);
+		}
+	}
+
+Because L1 has X86_CR0_PG=3D1 when executing VMRUN, is_paging(vcpu) is alre=
+ady
+true when svm_set_cr0() runs. If L1 executes VMRUN with vmcb12->save
+containing EFER_SVME=3D1, EFER_LME=3D1, EFER_LMA=3D0, X86_CR0_PG=3D1, X86_C=
+R0_PE=3D1,
+and X86_CR4_PAE=3D1 (which nested_vmcb_check_save() accepts because hardware
+SVM ignores EFER_LMA in the VMCB save area), L2 runs with EFER_LMA=3D0 in
+vcpu->arch.efer while EFER_LME=3D1, is_paging(vcpu), and is_pae(vcpu) are a=
+ll
+true. A subsequent WRMSR to MSR_EFER in L2 or KVM_SET_MSRS from userspace
+enters set_efer(), computes EFER_LMA=3D1, and triggers the WARN_ON_ONCE().
+
+2. On RSM from SMM into nested SVM via
+emulator_leave_smm() -> svm_leave_smm() -> enter_svm_guest_mode() ->
+nested_vmcb02_prepare_save(), emulator_leave_smm() clears X86_CR0_PG=3D0
+before calling svm_leave_smm(). If vmcb12->save in guest memory has
+EFER_SVME=3D1, EFER_LME=3D1, EFER_LMA=3D1, and X86_CR0_PG=3D0,
+nested_vmcb02_prepare_save() does not clear EFER_LMA (since EFER_LME=3D1) a=
+nd
+svm_set_cr0() does not clear EFER_LMA (since is_paging(vcpu) is already
+false). Immediately afterward, rsm_load_state_64() calls
+__kvm_emulate_msr_write(vcpu, MSR_EFER, smstate->efer & ~EFER_LMA) ->
+set_efer(), which computes EFER_LMA=3D0 against vcpu->arch.efer's EFER_LMA=
+=3D1
+and triggers the WARN_ON_ONCE().
+
+3. In arch/x86/kvm/svm/nested.c:svm_set_nested_state(), the check on L1's
+host save state in vmcb01->save only rejects (save->efer & EFER_LMA) &&
+!(save->efer & EFER_LME):
+
+	if (!(save->cr0 & X86_CR0_PG) ||
+	    !(save->cr0 & X86_CR0_PE) ||
+	    (save->rflags & X86_EFLAGS_VM) ||
+	    ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)) ||
+	    !nested_vmcb_check_save(vcpu, &save_cached, false))
+		goto out_free;
+
+and svm_leave_smm() similarly loads vmcb01->save from guest MSR_VM_HSAVE_PA
+memory without checking EFER_LMA, allowing vmcb01->save to hold EFER_LME=3D=
+1,
+EFER_LMA=3D0, X86_CR0_PG=3D1, and X86_CR4_PAE=3D1. On nested_svm_vmexit() f=
+rom a
+paged L2 (where is_paging(vcpu) is already true):
+
+	svm_set_efer(vcpu, vmcb01->save.efer);
+	svm_set_cr0(vcpu, vmcb01->save.cr0 | X86_CR0_PE);
+	svm_set_cr4(vcpu, vmcb01->save.cr4);
+
+L1 is left with EFER_LMA=3D0 in vcpu->arch.efer while EFER_LME=3D1, X86_CR0=
+_PG=3D1,
+and X86_CR4_PAE=3D1, so the next WRMSR to MSR_EFER or KVM_SET_MSRS triggers
+the WARN_ON_ONCE().
+
+4. On SEV-SNP AP creation via sev_snp_init_protected_guest_state() and
+kvm_vcpu_reset(), KVM initializes vcpu->arch.cr0 =3D X86_CR0_ET,
+vcpu->arch.cr4 =3D 0, and vcpu->arch.efer =3D 0 while the guest VMSA can al=
+ready
+have X86_CR4_PAE=3D1 in hardware. In arch/x86/kvm/svm/svm.c:cr_trap():
+
+	case 0:
+		old_value =3D kvm_read_cr0(vcpu);
+		svm_set_cr0(vcpu, new_value);
+
+		kvm_post_set_cr0(vcpu, old_value, new_value);
+		break;
+
+If the AP traps on an MSR_EFER write setting EFER_LME=3D1 (while vcpu->arch=
+.cr0
+has X86_CR0_PG=3D0) and then traps on a CR0 write setting X86_CR0_PG=3D1 wi=
+thout
+having trapped on CR4, cr_trap() -> svm_set_cr0() sets
+vcpu->arch.efer |=3D EFER_LMA even though vcpu->arch.cr4 is still 0. A
+subsequent MSR_EFER write trap before any CR4 write enters
+efer_trap() -> set_efer(), sees !is_pae(vcpu), clears EFER_LMA in
+vcpu->arch.efer while the guest is running in long mode, and triggers the
+WARN_ON_ONCE().
+
+[1] https://lore.kernel.org/r/sashiko-outbox-182134@kernel.org
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030212721.2606=
+393-1-seanjc@google.com?part=3D5
