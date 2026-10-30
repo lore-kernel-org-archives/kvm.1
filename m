@@ -1,123 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793377052;
-	b=yo7N3MiXz4BIc5WY8oHAXyIUwtafVln4Z+Ha/iiPR1ySY4r1Xch2MZjUIsyQIZgxMMhN
-	 JBGTwBslKQ6OWyuXfo4g2dPsZOeVoFcy10o6O6DvvZFWT6GLosSEs0mmRoZP81NutrXQM
-	 MvIvYb1hsj6+oaoaeV4kyHX9R4Q+bQeI+tH6HyCg8vokHLHGCfPOIWOi0JlYK8XtW0Uiq
-	 hGiAg8kxw6b3DKMqXYmSyzfSRE+Zy7AuKV7Jk59gtPc28zlwB5C1r/h7zbeqAH08Kr/MF
-	 V85fcWidaCtNEmngVT/llzh0R7ijk9Y+sKIV94MB0/3MYXnaZc3ZlsSKSy+TWmqN7Sg==
+	t=1793377603;
+	b=2tiXHO7MveBu3gMa09R3UbRZpL+tvpAN9zfTmFnTBbcouhVurMMgbkXZbQxNzGs4pUPs
+	 3hkcKY3CYCN98LVfsNLjUvtcArHgz+oNqrIw+ueg8aNn8uBafBLigfSvUGipcC7n2OPD7
+	 8wfw6gZKuRODsWprF7vAd/4wcfTCaVIt+iv3d5/cxW2IcJGGPnH1LjJw6i5GhJGby724I
+	 R4XUBoqEvBLC9d4Bc7oROt6NLmdTnW1fOofnO7HkjTltRxqALuu68KOYcsvu3MHvPRDdF
+	 TNnDrmUMvsvPcrwk8nOQgxwqM2xV4aQEnV1GJfbWZu/fUjrugTRb4qi/zhH+b8rndCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793377052;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=2uOq10yMMLhle29ctikza3QlQPUgCB7HGNNZNg8weIk=;
-	b=jEmQchKVaeqqA9GAOkbpy0bOecY2uUFEsnUJuAOlZB5z2YAwea4GNmlOqLYXFoCwTYTh
-	 nNjYys2eZVGAquw5c1fDXNEJJ0d2T+JJ7a0nPuFLVv5iaqkJBeeuzS5xS49IAf3Kadoza
-	 W7FeFDkEYaAQaurDD9s8mLwxwooR66Wrd3GWybk/r/rKkviuzIz7IWtLdMyIbPMtv8v03
-	 fE0eY9i0HrbLVNZRsmiqbgJjt8v+46gB//bpMVdT8WHmf5VTZqsMG93ja1E5N2AzERbRr
-	 NFJbGUMz2IrPEgP+4EUXk+drgVrXoTQR3pqr9k07+yTt1jgtrdLUhLisd5sQDuCYemw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793377603;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=vewquYtyWMTTPew/3rciXZBlW6QyJvk7tE2jn/GyFDA=;
+	b=rDGX0QP6G+myVTrApWz5PPKeeAYGWmeB87cb4xQi0swRlamk2UIZXw2yfN7lLLdvM3B2
+	 ZA9bepMMxfSDHkqzMju0PNf8cSLq/qLMMFb3CrinOwYdlT0O8OncLh3Ay3AuMFP5a7qQt
+	 qHggEz+/qpdYMTjyoLZoFyudeSUEDmwlpPmOkMDy8TZDdzhX884lEsFFQKpgOQ1MEeM5s
+	 rUKbMge6dq3VRu1pycDYKKfs+60xxKBnzuVeOkYzQI9FAKuiIwYQBV7ltyQ09Ju9jaBgn
+	 69DU7P7ccyYNqcskjxi00Br6Ftdf2ZGMxCwApCI6ZWAmWqoS2VfEfhnKLXJmCfdFLnQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=DVPZJPam;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=nyT58qKv;
-	arc=none smtp.remote-ip=202.12.124.148
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MpBV13Aa;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3232B606A31A
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 16:17:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3232B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D67606A31A;
+	Fri, 30 Oct 2026 16:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=DVPZJPam;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=nyT58qKv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MpBV13Aa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E835A1F0093A;
+	Fri, 30 Oct 2026 16:26:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793377603;
+	bh=vewquYtyWMTTPew/3rciXZBlW6QyJvk7tE2jn/GyFDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MpBV13AanCKDXCGEU+PtepdXmUlfOazM+NDpDUNtZ1if38mgqbsOc8bg19CAqA8YF
+	 C1arMJXKa+5EK2293+KnKeo1cVclGK8iqTR+G+rRYYPwfhB1kBPkRRVeDap25OoH+V
+	 iv9HB7LKU9Ci1GSmqNgJ9TICAVYropjR9EumVcBDfOYzw9CFRAZnFgciJRvwlbPbj5
+	 +wVyP49cQpdVsP8WnCcQQKZvsX8AR7nXYPhRH04Z1LWWTymDkJMUUeuYTRZZFZYHNi
+	 ysCjuVt6czEgMOnCf2b+VVqYYvouYEEuomVLPs+ppsTHm3BPMGqVb09jyF3PMVT2Dq
+	 +Ke+tBceINj8w==
 Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfout.stl.internal (Postfix) with ESMTP id 562D51D00095
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 12:17:30 -0400 (EDT)
+	by mailfauth.ams.internal (Postfix) with ESMTP id 0B6BE198003A;
+	Fri, 30 Oct 2026 12:26:37 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Fri, 30 Oct 2026 12:17:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793377049;
-	 x=1793463449; bh=2uOq10yMMLhle29ctikza3QlQPUgCB7HGNNZNg8weIk=; b=
-	DVPZJPamzhe2ZLjftDx+4SqbVWJb6A7JjsADMVlzlJoqeYNU/saNCKQIu+TH3u05
-	c1/qzMjcQ6tcQ64sup/7+K6coMh58pcGGrhaNd0VS6nHw47CpCMSq+PU8G+ZTLwS
-	zTVgcQPPNkmZZkGWkJW60iE2BaCImN8jj+VDvbIvnbWU7bMjzajsMklAh2LfLqpU
-	91DiwEwHv0O7NhE0z2wu1TuCNeoYKW02cHA6j6PtYd9yOt6Wuf844Kv5iN2WgNK6
-	fewmV3YiGQ0hP9OZG6CCmv6Hqhwv6LUT/mWj6OslmM3sDYt2KHtVHFfSmtBdjylp
-	eZ2tBltswQTBLq64Oidmqw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793377049; x=
-	1793463449; bh=2uOq10yMMLhle29ctikza3QlQPUgCB7HGNNZNg8weIk=; b=n
-	yT58qKvBQJuFZ23t5KFSmqQJel91i4tWtwWrjwN42xNoxZKlM+otoRcIgGgjaQTm
-	vuxtUCAuhAi3XlRViuyjpONRdDwAxjN44lsJl/TaWEWjvFX2RYoZUAmSSqHNfvTm
-	KwRmSX+kcAaZjLI/gK7AldFSvNfA7l7V4wSUk9DiVG5ndVrcx9nlTZDi4KgujR4y
-	eEIM8qS64kdxUxWjDwFE8lXbSDl/XC0jZecSPDqQGdYiWHC4z2vx+c8a4/365kjU
-	PM8BbL5UumS5miqpo+pjmgxEs5vsjvMsmgaVINoo6GWsaX3ZdQHcD5/AsE99ujAO
-	B46I0fwIBPZji92xdzxew==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793377049; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:tvgE02Zvk3jf+Q0JHB31jX1lXL7i/OVJb/MVoHW0fBFLbbX
-	nfRphWHffrpjgSuO2Nkru/sTm9kpxLXjkrBRXFfP3g9biBGMT9Mfv8an6oiO8Lgg
-	jfh0Z4gSOuZALINbxKhlxapnb7PhEhtDDY6pLnDf5pBLd4CavCQEWlc8wxK1nxzc
-	eqo4qz98Y3HaMNPwx1erufhCSG2KTD9zC9AS1kaK0j7ozTfEBja2I2Qa5DTSB07l
-	DIUwOzBLiDyJkFN3uCi3Z5LodKULgJcCfpGN5WykYgWIEWy65La1hydKdsPuX5c7
-	2upsloq4M2+x7QvdVrr0zzWbchR1FkCbXzkWGrA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:tRrZfRtIza3+gJUWxsd9mYE5BvvNH22G//9Zy3FVyCw=:hRD2H4pExrLt9ycKVLu1nKhPqy4cDLyP7T/BftbSfd8=;
-X-ME-Sender: <xms:GcPkaoFFFbREG2jZLaIBpBVOvbFxUdMzDtr7wxJ-nWaimUjzyn629Q>
-    <xme:GcPkaoU-mx28Y260EbkJzB2fvaGntuC-kj9bCoWRuXmeaSS1tNJXkDWZ_qWzU8l08
-    bcXI3tI_3mhInf7F36pqnry_D_w9xNtcnDKD12Bi7aislTPGt-zuPA>
-X-ME-Received: <xmr:GcPkanIqy3tGDHVBFgROVURs9EfHBBRRvSmeEvIh44xj98aPUR2bnQOlaAIL1A>
-X-ME-Proxy-Cause: dmFkZTGRRet89JNWWzh2rBfSrH+G3d8tEp1ZRm/+qNvQ2Io9Hq3KdwPbHCFBYnJOpju+pJ
-    8/6dpm+m5JG+u3CEcvFJ38VNW9NUa/HMy4TUNJ65M1eI/e943edrc3WUMYsL9W1ED2KnGw
-    rlZJBiQPX3F1+/ulJmkcwb32Ktu7PhJX5WR9l0aAbXA5h9P8ikn1DC6rxuEW7RPxfWLQv0
-    8pbXl5BdOBrnF4xKiRYTc7zrU52GZE2+SIFvzTvPEbiFA8SBD60MZnsi/DHPWtLpNguFel
-    auF2aEvF06Kti9Iu3AersFY5jNcumJpvgRFEQdcFsrJ7DjMeySdZfkZ1Az1gjIzKuXCeH+
-    pG1/7X+3OnIHOiuSHee19W30yswMotGFJP2TD0CSfCEtXacTjImPvc2cYuGb467jOqE9SW
-    WIyPqqnmdBcPDZb0Mvm9QVB1BIPJaZuZCgdxT2qoaIDr/JmVTdj7pVQE3evBJVnlOr8pxi
-    DYYxL57F8iZ4r/05g+0XwTWTrlV3a4+6aNgSBgwYp3iwlQdyKkvEmU8ZTWc9S62tZWWB8c
-    CWcMGRF4VzKWyukOYmdWfZ/i92ZdYmt9JohFq61h+/mhr2Y00ffsh8p+Fu0U6acVSq5H+E
-    mzcJyZ2GXfK4C1S72YUtbfIRyk/damaU4Bqz29PjlGhBR98JNAavGjsnXNFw
-X-ME-Proxy: <xmx:GcPkao-M2xOFEQgM6By2s6i-31AqmmKaQTYC4ChhvmEj2m2Cma5iDQ>
-    <xmx:GcPkaqKI2Pe3TBZv9U97ilIFHS-B9JNzq8COjjbPARcK1dzqzJKTMQ>
-    <xmx:GcPkatkG4tE5RhzUaT0qUi8AtZM3zAyyXjVueEJoRT_wmQTJv0fDug>
-    <xmx:GcPkauPzWnUsOqRwoSaCS2jqHga_-JmjzC5zZX2xcl03bmqVqYDe4A>
-    <xmx:GcPkahKhVJyx-pon0DOGCH8CyPtacxdr2WoUqRaDBUoxQh3Xf4XMnlNd>
-Feedback-ID: i03f14258:Fastmail
+  by phl-compute-07.internal (MEProxy); Fri, 30 Oct 2026 12:26:40 -0400
+X-ME-Sender: <xms:PcXkarepDZcwkXPaDvw1l9meX1ix8cBNcbSba9-rds1sl6XeloMfDQ>
+    <xme:PcXkaiYAI_vT59BqHq0ZygNMM5okQJjYKU_DN9AduU74co3ByTkWXIHszmuEWklPW
+    pgBXsdumm_lvCkL06kjKhQ-_xXGCB8jRqzrMoP2wm0GjyteJBdcuMs->
+X-ME-Received: <xmr:PcXkak8ezFsZAfxW4l0Mvcm4LtO1fFfXqEJiulOIBKEWLfmrRvW-8zTaQBY>
+X-ME-Proxy-Cause: dmFkZTGEAIFWzBJh0zWLN17+nisZqat9HnPlshouus3rVlwm90kalixREFWaFGYcU/tF0W
+    3UdkUB5dz3jJ/7gphqEuNFHpf+z8VsmOxTezlK75l5ORKrVKFBa2NEgRwbYKxcTq7uyZQA
+    W2W98B6jmDIrAQO8QKfXxueVgpiWnggcI/BJ/18E5DEgyYQ/qfuiqqVvOgCo9BjplJFuNF
+    Cq2lBkk/rOOp1wPHM5RPg+KN1AdKgUA5k0+FVNS57TFgOuKqthusIzIHYb5h9oR56n2lPD
+    m3bIIIT/Oa4M4xQorz7MW066A5A3Ilw7G7kLTJS6cCINZEIS17roHp+ddyILdojq+VTTHE
+    2MY3XR+A2l7OBM2ub01U6gbuYDHwIWf+Swtm5zC7sOi3harXi4z0yCXZWSoHi3RAKslPon
+    otpxzqyqAYRWWojiWcoT7qUs6tH5gim5jFMxHgdLDNVKCh5KbnwHxj24tVQmrM/pPr+8RU
+    Lse0RbqcqIjr9tKNAVnOGXNH8X5IFxsk3dnHXP064AXskGHK77xRqxNkH/D/NDqgQHTFjU
+    4Cn1v8+ReLH7NyMTA+RnhfJZnIw+IahQV8Cs5go/vouHMcd46srIpH0UsKCBuYR6U+VhFT
+    5X4IrG3Jg78xgttGn+AtH7t6hdR4nEakdA4xO0VeCYxleQm716CLywLEHQrQ
+X-ME-Proxy: <xmx:PcXkamVlQ2jGwIgyyw7CUrFTE9b22yNeHLvUZX0SYWvWKneZMieQJA>
+    <xmx:PcXkatdRTC1wqqXKq8XEshFHyfBdgKMD7rGUhJu0dEwBET2-mSU3FQ>
+    <xmx:PcXkarXiQS1P0vfF0vaQ6CaF_zxTEGGxOu_yo6_3rmhGSuJ5WdPWJQ>
+    <xmx:PcXkakWDbmZZj9fKf7Gmq_vbad2xvqM_FADgEPUBMqoLcDaV9qZ0Cw>
+    <xmx:PcXkarMhj1T7gDsxJAxPahlNVUaY2kwoc8YFK8_raX-_IUOofkJZ5i26>
+Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Oct 2026 12:17:28 -0400 (EDT)
-Date: Fri, 30 Oct 2026 10:17:27 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Abdifatah Suruur <suruurism@gmail.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>, kvm@vger.kernel.org,
- alex@shazbot.org
-Subject: Re: [PATCH v2 0/7] vfio: mmap()/mprotect() hygiene for MMIO region
- mappings
-Message-ID: <20261030101727.2dcb33ea@shazbot.org>
-In-Reply-To: <6ae0895c.42cbc100.1c0cce.9e1e@mx.google.com>
-References: <20260929094848.7439-1-suruurism@gmail.com>
-	<20260929143621.540f0024@shazbot.org>
-	<6ae0895c.42cbc100.1c0cce.9e1e@mx.google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+ 30 Oct 2026 12:26:36 -0400 (EDT)
+Date: Fri, 30 Oct 2026 16:26:35 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Challvy Tee <challvy.tee@gmail.com>, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, dave.hansen@linux.intel.com, 
+	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com, kai.huang@intel.com, seanjc@google.com
+Subject: Re: [PATCH v3] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module
+ is not initialized
+Message-ID: <auTExTAMoaKKjBrb@thinkstation>
+References: <auM3KKutfutAqgWG@thinkstation>
+ <20261030154851.907726-1-challvy.tee@gmail.com>
+ <939b4cc7-5c7f-429d-a9be-830aa1c53ac5@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -127,37 +90,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <939b4cc7-5c7f-429d-a9be-830aa1c53ac5@intel.com>
 
-On Tue, 27 Oct 2026 04:22:04 -0700 (PDT)
-Abdifatah Suruur <suruurism@gmail.com> wrote:
+On Fri, Oct 30, 2026 at 09:13:12AM -0700, Dave Hansen wrote:
+> On 10/30/26 08:48, Challvy Tee wrote:
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -2321,6 +2321,9 @@ void tdx_sys_disable(void)
+> >  	struct tdx_module_args args = {};
+> >  	u64 ret;
+> >  
+> > +	if (!tdx_module_state.initialized)
+> > +		return;
+> 
+> NAK from me on this.
+> 
+> If SEAMCALL is fatal then we need stronger barriers on the generic paths
+> to SEAMCALLs themselves, not one-off patches of the sites.
 
-> Hi Alex,
-> 
-> Thanks again for applying the vfio mmap()/mprotect() series for 7.4. I
-> have one process question about stable backports.
-> 
-> Patches 1-3 (vfio/platform, vfio/fsl-mc, vfio/cdx: prevent read-only
-> region mappings from becoming writable) still carry their Fixes tags.
-> They are the same VM_MAYWRITE/mprotect class as CVE-2026-68445
-> (drm/vc4) and CVE-2026-80724 (ptp/vmclock), and I am tracking the class
-> as a security fix. Would you like those three to carry
-> Cc: stable@vger.kernel.org so they can be backported once they reach
-> mainline, or do you prefer to keep the whole series 7.4-only?
-> 
-> I understand patches 4-7 were deliberately framed as hygiene (Fixes tags
-> dropped) and I am not asking for those to be marked stable. I am just
-> clarifying the intent for 1-3 so I follow the right process.
-> 
-> If you prefer 7.4-only, no change to the applied patches is needed.
+I don't think the generic path is the right place for it. For every
+other caller, reaching a SEAMCALL on a non-TDX system means something
+went wrong higher up, and we want to see it. A check there that quietly
+returns an error hides that. Making it WARN would catch it, but then the
+crash path would still need its own check before the call.
 
-The commits are immutable now.  They can be proposed to stable, but they
-cannot be amended to include a tag for stable.  Personally, I think the
-backport argument for any of these is weak, thus the framing as hygiene
-and hardening.  IIRC, none of them have any exploit path and largely
-guard against future work exposing these vulnerabilities.  That
-theoretical future work would largely be feature rather than fix
-oriented, so the demand for stable seems low to me.  Thanks,
+So gate the call on X86_FEATURE_TDX_HOST_PLATFORM, the same way
+paddr_is_tdx_private() does.
 
-Alex
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
