@@ -1,69 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793378304;
-	b=EScpD1M/SgOHNlkfx6htNiVHtozVuPWO2Mxqp7+AQekJK9ITw+S+VN6Fhyc0uX9go5gu
-	 UGH/Ck8KjTyfBL+5k4h0os2UnAmoUxKcgpSlI22V8ZNZM88MmA5Fd9hL4H/2l4A6oT9Wn
-	 F1mkZq+2Yero1bmdVU9gmuAmuDLNXedEMpKry3f/v5wYRoBVAHVHaKTbQnUrx2VODzLL4
-	 a53tvN0nislevco+A8/1ripaHARUaCde6cq3erkTn/FI8ai17wAPiiYc6gzbuM/ZCe/Us
-	 GcvcvJfttlWA7X5cVSeJa36xpGUEdC4wriMNwXDhTTxmGKWVD0uG590+W0LmIjF4xQg==
+	t=1793379154;
+	b=gpoyQxnJJDbyj8MT7o8vctwQdnxKBqINkHC/zuQpd0Kv4oaqSGMsROxAO6IYaRM6IYYM
+	 9Spih6KT3CBBDZzPQpx3YV1ErshotA6sSpLBJWtWGxP2uZ1hmnAVr3fbBXXZl5SJY0Fh3
+	 ROkAEIzZtYhlflDeGrora0gtx4U7xy/8GhyEg524sKCaZ9QWz/fch291BfRHxbvUcX7gD
+	 riM7M7iWsuspQjKliThUiL/kwDCe352gyZeKuzij9bp0fguZkpiUnneQmDd7fuxVWNIwb
+	 E0MhVNEckDXJu3ANqcvEHQihhRQZ3zxLBEJqh/fAySI0Nv5Hsfb/uFn3YMtgQGm3q9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793378304;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=lmiyVDfmhgCeLECAq9Kvvld1LYn1lD8BCxmRxoOvlpc=;
-	b=lXWLv8Mrnpb5I9rM85o15IUQ5uGKxsouwyq9nlclXTjjt0k6frv44YKz7SF9/kGN/h+n
-	 WZ4J50SF3aiyIie9Pb50gOn9+aPUUbtzhXiQTw4KReSxpzAdA2iMPB8DfRcTEPcn1MPgs
-	 SAsFTRjyvMrgufgStznHy7cFIthlawi1C5cq+OW0o0MMbLbVGiehhvUczk6ybTk9f6h22
-	 dropg8kz3KjGk7tRguTUmYwWVO1J4U4qr0NaC9i39CmqmOb/AQI9IiPSxes6EuKSfWiid
-	 GoMI1W4K23xpbjRIfJUq/z32+BwZYasvsk6RmmDxHFbOM77GjINRpTVPfptYtAGGCiQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793379154;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=ktj+5dC08v5X6CbAXYodRMTXsnx7EjXTMl4rsHotSsw=;
+	b=g5Kx7i/sh+I6a+PPnoRavJ+1jnJXRNrNgvZd69myDRlDuYgEqFO5TlMMMIbktjPgiuxX
+	 mw01rLA49xvX0OLs7iSOsIJiXsmPa1pvVn9TfJGUgpZ6RmVdGX1dGMBIbrYoVNhqWUR82
+	 rEhdRFvnyL84EDv/uSoXngUHcoEMbBjhjvWzuJ0RlWk7lo8o0xr5+TGCipsqyUN8jNUdz
+	 iLW5QLZ+iDNfPQ+hzAAJbkCwcPxNbxB44/gXQRGF9y1rw2r+WO2Vws3KAbbqNqEa7YV25
+	 jBrTnvS2J/CkmJgHfoi1pYzrLS1iopbPBFvss7EaHQAp84qVyG7hOwUZreqJDEqvLGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lRU208nV;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16194606A32E;
-	Fri, 30 Oct 2026 16:38:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16194606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vsLUxmt6;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1D8606A31A;
+	Fri, 30 Oct 2026 16:52:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B1D8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lRU208nV
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793378304; x=1824914304;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=QRgmhf/8HrL5jp+mSWNkdgH7jksrQ4/5gi/MuQs4mw0=;
-  b=lRU208nVF74HW7WTaQi/c8hQgpS0x3u9SAYRi9tQrvwSG2jqHS+mqaZy
-   t043MnCH4EsjvxSVt6oaEKC3BFNqY3ru4D+1wl+1JhP0Y5XhuQQ2i19ae
-   3Cbj9VbCMVUP1+sJ//uPstICpyMMcMfj4fo7loOa7UCZuy/H/kddSv85K
-   LSICcsdPogfWUJzH05puLiEQB/p7uCIR3LKVcsR8aoqJrNPJFHFimydWx
-   kFNCGiliYw4+iC4ri05aYe72FhmOzUZeQQ0pen8tC49ghJyNF2Bw092JZ
-   +yW5NFHAK10QgsZmnZws3h5oXlKnaxx0Qaq6dU/7d+wBljjsUVonrD4U5
-   Q==;
-X-CSE-ConnectionGUID: QEa3+ZO6STe8H8oxBI454A==
-X-CSE-MsgGUID: GkMCCeArTjyJBcU43LiKSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2239538"
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2239538"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 09:38:23 -0700
-X-CSE-ConnectionGUID: CYKQvGNRThyjOX0WtOwBxA==
-X-CSE-MsgGUID: +7yC1JGUQtaffzqtuTipqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5486569"
-Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.109.71]) ([10.125.109.71])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 09:38:22 -0700
-Message-ID: <07cfa95a-e766-411b-8765-33352a04c0be@intel.com>
-Date: Fri, 30 Oct 2026 09:38:21 -0700
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vsLUxmt6
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0249A1682;
+	Fri, 30 Oct 2026 09:52:29 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE1D03F673;
+	Fri, 30 Oct 2026 09:52:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793379152; bh=7VMMf7kMCadyG94rG4Zx25wwUW0u14+sRWOtUecg2H8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vsLUxmt6b/5m7BzFV7Hd8fIIx1EsthiLTP6rN+Ce6YaebNT/TyYfDFqazq9LqUwgB
+	 9RphgrRu+PvjSC9PSvb4hysq0nLDGl2+UBl5il7GrIuZiENqtwODfbcpLMWOpptqBa
+	 6Mh5JBUfaxOKWika3tkdWGger6AD196OTOfbuvSA=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 08/15] KVM: arm64: Flush the HDBSS buffer on VM exit
+Date: Fri, 30 Oct 2026 16:52:08 +0000
+Message-ID: <auTLOIafIq4cjRho@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <5bbd0d3b-1026-43f3-bc45-245472603144@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-9-zhengtian10@huawei.com> <auDpyRNpeDNzIk3W@LeoBrasDK> <5bbd0d3b-1026-43f3-bc45-245472603144@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,79 +89,142 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module
- is not initialized
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Challvy Tee <challvy.tee@gmail.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, regressions@lists.linux.dev, stable@vger.kernel.org,
- dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com,
- vishal.l.verma@intel.com, kai.huang@intel.com, seanjc@google.com
-References: <auM3KKutfutAqgWG@thinkstation>
- <20261030154851.907726-1-challvy.tee@gmail.com>
- <939b4cc7-5c7f-429d-a9be-830aa1c53ac5@intel.com>
- <auTExTAMoaKKjBrb@thinkstation>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <auTExTAMoaKKjBrb@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 10/30/26 09:26, Kiryl Shutsemau wrote:
->>
->> If SEAMCALL is fatal then we need stronger barriers on the generic paths
->> to SEAMCALLs themselves, not one-off patches of the sites.
-> I don't think the generic path is the right place for it. For every
-> other caller, reaching a SEAMCALL on a non-TDX system means something
-> went wrong higher up, and we want to see it. A check there that quietly
-> returns an error hides that. Making it WARN would catch it, but then the
-> crash path would still need its own check before the call.
+On Fri, Oct 30, 2026 at 12:57:06PM +0800, Tian Zheng wrote:
 > 
-> So gate the call on X86_FEATURE_TDX_HOST_PLATFORM, the same way
-> paddr_is_tdx_private() does.
+> 
+> On 10/28/2026 2:13 AM, Leonardo Bras wrote:
+> > On Tue, Sep 29, 2026 at 06:36:48PM +0800, Tian Zheng wrote:
+> > > From: Eillon <yezhenyu2@huawei.com>
+> > > 
+> > > HDBSS entries accumulate in the per-vCPU buffer while the guest runs,
+> > > and must be drained into the dirty bitmap or dirty ring before
+> > > userspace can observe them.
+> > > 
+> > > Drain the buffer at a single point: kvm_arch_vcpu_ioctl_run() flushes
+> > > it on every VM exit, before the exit reason is handled. Flushing
+> > > inside the run loop keeps the dirty-ring feedback timely: when a flush
+> > > pushes the ring past its soft limit, kvm_dirty_ring_push() raises
+> > > KVM_REQ_DIRTY_RING_SOFT_FULL, which check_vcpu_requests() observes at
+> > > the top of the next loop iteration, so the vCPU exits to userspace for
+> > > the harvest before re-entering the guest.
+> > > 
+> > > kvm_arch_sync_dirty_log() relies on the exit path to flush: it kicks
+> > > vCPUs out of guest mode, and the GET/CLEAR protocol tolerates
+> > > concurrent bitmap writes, so the snapshot is complete without extra
+> > > synchronization.
+> > > 
+> > > Signed-off-by: Eillon <yezhenyu2@huawei.com>
+> > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > > ---
+> > >   arch/arm64/include/asm/kvm_dirty_bit.h | 15 +++++++++
+> > >   arch/arm64/kvm/arm.c                   | 20 ++++++++++++
+> > >   arch/arm64/kvm/dirty_bit.c             | 45 ++++++++++++++++++++++++++
+> > >   3 files changed, 80 insertions(+)
+> > > 
+> > > diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > index fe703f02626b..d828e6b43fe9 100644
+> > > --- a/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > @@ -13,6 +13,9 @@
+> > >   #include <asm/sysreg.h>
+> > >   #include <linux/sizes.h>
+> > > 
+> > > +#define HDBSS_ENTRY_VALID	BIT(0)
+> > > +#define HDBSS_ENTRY_IPA	GENMASK_ULL(55, 12)
+> > > +
+> > >   #define KVM_ARM_HDBSS_DEFAULT_SIZE  PAGE_SIZE
+> > >   #define KVM_ARM_HDBSS_MAX_SIZE      SZ_2M
+> > > 
+> > > @@ -22,7 +25,19 @@ static inline u32 kvm_hdbss_buffer_size(struct kvm *kvm)
+> > >   	return kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
+> > >   }
+> > > 
+> > > +static inline bool kvm_hdbss_enabled(struct kvm *kvm)
+> > > +{
+> > > +	return kvm->arch.mmu.vtcr & VTCR_EL2_HDBSS;
+> > > +}
+> > > +
+> > > +static inline bool vcpu_hdbss_enabled(struct kvm_vcpu *vcpu)
+> > > +{
+> > > +	return vcpu->arch.hw_mmu &&
+> > > +		(vcpu->arch.hw_mmu->vtcr & VTCR_EL2_HDBSS);
+> > > +}
+> > > +
+> > 
+> > IIUC, arch.mmu is always the canonical s2_mmu, while hw_mmu can be the
+> > nested s2_mmu, if enabled.
+> > 
+> > Was that your intend here?
+> > If not, we could use only kvm* version, which can be called with vcpu->kvm.
+> > 
+> > If it was, then I would like to understand the logic here, as IIUC the
+> > buffer is accessible only for the non-nested guest, as it's
+> > allocated in a per-vcpu structure. (vcpu->arch)
+> > 
+> 
+> Hi leo,
+> 
+> Yes, that was the intent. The shadow MMU never carries VTCR_EL2.HDBSS,
+> so the flush is naturally skipped when running nested.
 
-Sounds fine to me.
+Ah, right. If we always test the kvm one, we may enable it for the nested 
+guest, which is undesired.
+
+[...]
+> 
+> > 
+> > > @@ -2017,7 +2025,19 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
+> > > 
+> > >   void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+> > >   {
+> > > +	unsigned long i;
+> > > +	struct kvm_vcpu *vcpu;
+> > > 
+> > > +	if (!kvm_hdbss_enabled(kvm))
+> > > +		return;
+> > > +
+
+And then here you check for the L1 VM because during migration the host 
+could have dirtied memory, and you want to track that as well.
+
+Makes sense
+
+> > > +	/*
+> > > +	 * The buffer is drained on every VM exit, so kicking running
+> > > +	 * vCPUs is enough to flush them; the dirty-log GET/CLEAR
+> > > +	 * protocol tolerates bits set concurrently with the snapshot.
+> > > +	 */
+> > > +	kvm_for_each_vcpu(i, vcpu, kvm)
+> > > +		kvm_vcpu_kick(vcpu);
+> > >   }
+> > > 
+> > >   static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
+> > > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > > index f9aeb9f34ad0..be0d12555c84 100644
+> > > --- a/arch/arm64/kvm/dirty_bit.c
+> > > +++ b/arch/arm64/kvm/dirty_bit.c
+> > > @@ -13,6 +13,7 @@
+> > >   #include <linux/kconfig.h>
+> > >   #include <linux/log2.h>
+> > >   #include <linux/mm.h>
+> > > +#include <linux/srcu.h>
+> > > 
+> > 
+> > Out of curiosity, could you please explain you reasoning on selecting srcu
+> > as locking here?
+> > 
+> > (Like, what are you protecting against, and why srcu is a good choice)
+> > 
+> 
+> kvm_vcpu_mark_page_dirty() resolves the memslot under SRCU
+> (kvm_vcpu_gfn_to_memslot), and the flush loop calls it for each entry,
+> so the whole loop needs the read lock held.
+
+Oh, right, it's just about getting the memslot... now I see it :)
+
+Thanks!
+Leo
