@@ -1,89 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793368631;
-	b=ZOcAYdHHX//MB+GTvCYFqn8UDsxi7Az8lHHl6zyfFtp79g/ActMsJ5mOpmVIdY+V/6nI
-	 YB5/lQeWC7YChewHaupcXdkwY4s8zgHkO6FxhcNrr1/ifo6M3AjWFvdnCgbQqGzRsIg+K
-	 UnhMf/D5qgl8f9DGscEf+0vGV94lJzqUSqeO9RwYIznr3pZF4dfcLMQZwTUaa/MltmBzi
-	 ErsbqP6sL4OqSSvdnaTy9WX0nuEqt+DeOE24vWdJpOeSZEd31xNwSdSWRahAcb83S/BDN
-	 rbxPa/znEzP5YDuiKi9NZitj8LaQdH9zDkNm0HCQPzdVc4BbtwHKUYbmg+06o98dnCA==
+	t=1793369762;
+	b=CuoaUbAizQywET+xzmpqu3mu6X7u+L/b1VRxICqVC1YQBQk2x7RUGuR6fkXV2vYI9GnC
+	 UowASUJbB4rv46V9dPHbdL9sn8UB9mF2RzsOyK/4Yi+B0UgBi/lXMol6ZHYNAZZY9h1Es
+	 nkyYFzI/hxxwyafFN7qdOAhMKpAXJH9jmw8U5quVCB89QSvaD91NODmDLq6qS6DO7eYMc
+	 BmvaqckaisA7SGTo8GBZSr9qgJ2tE8dlfasgH5RkOj1CstAlRQaVcSEv4jMjUCXazYPEP
+	 WubqAUDDWZmy8dyFCx31v6mElB2xdYSWE+JKXd9oj4sRy2stRkpPvs4nuaaEmFOHIpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793368631;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References;
-	bh=GNIOi3l2fXouiVMkzU5S0Fr0utCMy6QmwVq2E0otj7I=;
-	b=HWtV2wsFjBkhgFNY1PtYzEFlWTpBp8SfroYV5MiKA3zb3Rp2GADqLiEboQB3+zJQb7yd
-	 liPlytAyRZ7pQTadQFXuPZ3KdxdgLCVU2t/HNABdYs754LJGetIY4xxEl5waSHMcbRYJ+
-	 2jU/HFbcmpTFVuBqw0f/loM82u1CNLNdrbzt07tirvgpGoToWBvRXxgrbYiILC4H8yF0j
-	 bjun6Oast8NxFuLJtun3JqkLihXpMOd2SshoB/nEo5csDS0nM3my2cuwAGFwvtE9J3JGC
-	 61HIqL6scGNPldKq1nlQTlPYvXrdkQb24SMDSuOouyRR2m3FjDpQKDdBGgbffpWnX/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793369762;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=U3mh0uWcEKmF6rz6g3nv0SX0Dkn3wPP6PAyrpn5THiI=;
+	b=BoQDbPk9qFFFenusz0LmEUkReYoAlQ8Qf0tEYGS8MKGGOfObSwDDnPCPE3I91ajOgU35
+	 ix23OYT89sI8rYq52Cl8wjcfM6/x0UfNSi/zyCZoFGXjI5931VKhWv780wacniDnQWC+N
+	 U1oVGwwOGtrnmldVqgdEoqLkvJ4bhG2ki9QtKucE80Tb7YdAJEAEasX391+dNpHdRaKw2
+	 6LcXXdP61Ih0AqfUp9tXgU7+zj54uyb/fQ9uEF88oMxNV1Gdvmdp3iAheo8D5PfJztJKU
+	 izQAT5jgxKgr3qUhhlJ+oea/S+GG9rJxcT70vUmLlArGT8Xj9lZRllMz0OeMPvFG+tQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ouxQTXuG;
-	arc=none smtp.remote-ip=209.85.214.170
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748F0606A31D
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 13:57:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 748F0606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dutMwEYA;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55933606A31C;
+	Fri, 30 Oct 2026 14:16:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55933606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ouxQTXuG
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e946155442so6442605ad.3
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 06:57:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793368631; x=1793973431; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=GNIOi3l2fXouiVMkzU5S0Fr0utCMy6QmwVq2E0otj7I=;
-        b=ouxQTXuGY0sUIyzArMYPWSLzsXzGVK8/GwzTMGcquJB53F0z+mtYa0vwvFzX0mKKJs
-         i9ovdt2l6t/blE1Ru8wzBGANzZ9/sLcVu0/ows9x2wlcFiq57bgyp+WTw6E6AJX2EBZi
-         YCzj2GjuC2xsnthiGOJO7aWt3jhVWeHUuQx2Kou2E77dkaam0d1Qse/rrRr/gk8ua1yW
-         5gPjLDAhsCaT7BEhY/MT8ntk1Xlr8z4Kirg0mu9p5A9qICrUq1oyAS5N3o27acU3s1v0
-         tsrN1vzsNR+PMGud1ia+XH3+rfzbwzkJdTgI3oOVOubg8Mizsn7qYpFgAEdU0F7VsvJR
-         74ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793368631; x=1793973431;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GNIOi3l2fXouiVMkzU5S0Fr0utCMy6QmwVq2E0otj7I=;
-        b=J3FRN2RFaC+PetwMKlAPRar1MY6uePGbkgM+JB0ooKiA9fsDUwv3wyWxAfTFaL9LE2
-         WEXoVSWF+zuxl35+BY/6t8KRi/06WdIuBBeWyz3W5nAdkJmWqHe8+FHfw0ebNJfeJIUN
-         WFu79I+7lUSj4NLxrd2zSkRAkC6Om+xZM1RU1STxx91v8h125Fq6IXQOv2DMnTDW06KP
-         GZNWnvfrQw8F9kSqHAzLCFvWQxsKEEAdN8vT5JxbQYIdOL6RM6DjfTRdaWoXbu6imajN
-         wb2xmXb10S/ZeMP7bdt/3t4N0VU9M3gWILAGO1AANI5Lwx4CjN1fEFWYyIYR/aba+bzh
-         0Bow==
-X-Forwarded-Encrypted: i=1; AKwUvBzuCEzvtDhMAW5nbTxtXZLji/Y8CUNYiH/mRvatUaJc/zIk2UOaCFbpt4FkWGQmRAHq+lY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLvKUIpjY+8/3Qcs7G+lqkKla3xL/RRGNXYmHbOT2T7LpMdUvHv
-	IiBgSRS9E6hSvpM9n7cexcdGd/Ku0Z1KQGfosoHyIR4mWi4PC0qYhLkEWxNoNA==
-X-Gm-Gg: AYBFou1fOcxhekGrOkC1B+Yj4XYmWzkwwCvYTnSuxni/3IfkqRJCZmwI40VL9uPG+sW
-	G6fBjeqE+n6Ml3v77DP5jGyXyATUpBUwOacg410gWByXtTvhNqEpM2sOFOgURgQ3VwKMsNxsCs7
-	7I7lggNlH2hNGpcgo/fxMjae+9KNAva1wN7MTPZs/aLzx9mPDF8hJYusKMbmxxZxSA/5/kNjpWJ
-	bJqTZ8b1lbOwlV5tDrunme5Zi1rwZGixB5SoglJbJH0W1trRb5mNxSqI4xCk9xDaA8yuovAjITX
-	wkMMnXmseiCdnv1Xk7MRjKBjfjptm1rSHHp0EvPCdZ17yeUuPprZj4qhyodUIfZ/KYrYWJe2H+n
-	1XDBpEs8pXI/ZqZEMCKG5XIsXtEYp2rpJeOLvBGkeeWvGbTmOkt8NQUiSTrO3XwUmqfo5ArLGJa
-	BQ40RHryugGozS548T/nIrA8h1CMGGLPkv9thYS6gImlwJavpGYA1aIOmq4Y2tTdIMji+OV6oCY
-	SweCOsF2MwPByocatRGbclGoydOAAsPj8QIG3Wl2HMUFmmave4oc0hKKOwkbQgQzzvNElrp7x7Q
-	BsSqlHBFrxuZJwHeVFvyhKDR+NY=
-X-Received: by 2002:a17:902:c94d:b0:2e9:6645:e9a6 with SMTP id d9443c01a7336-2eb365363f7mr26307325ad.59.1793368630732;
-        Fri, 30 Oct 2026 06:57:10 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3924c858sm7688305ad.35.2026.10.30.06.57.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 06:57:10 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Gautam Menghani <gautam@linux.ibm.com>, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com, amachhiw@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] KVM: PPC: Book3S HV: XICS: Avoid NULL ptr deref in kvmppc_xive_cleanup_vcpu()
-In-Reply-To: <20261012082922.218799-4-gautam@linux.ibm.com>
-Date: Fri, 30 Oct 2026 19:26:01 +0530
-Message-ID: <8q3fwavi.ritesh.list@gmail.com>
-References: <20261012082922.218799-1-gautam@linux.ibm.com> <20261012082922.218799-4-gautam@linux.ibm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dutMwEYA
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D02F71F60;
+	Fri, 30 Oct 2026 07:15:57 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7681D3F673;
+	Fri, 30 Oct 2026 07:15:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793369761; bh=GgEd+PH/jbq28UuYqcwDbQX/UOZkQ32m5RYqOej8J8E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dutMwEYAFpbCr/3XewPMFmB38iOS8ovV+p3UxpXzOGWbjtVHG7Al4HMwOz+NFMXD6
+	 /aaaD3oKAX2aT2ycObpBXr5+dBEcYMgzJBnPS2YuS/IDD/LhqDW+hN3V+rSuTryn9i
+	 bi+6s+GHCIUINFW1E+zM80eCwXTT1rVCtofpGbmg=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 06/15] KVM: arm64: Add support for FEAT_HDBSS
+Date: Fri, 30 Oct 2026 14:15:51 +0000
+Message-ID: <auSml6yTVYIQe7NZ@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <a301e884-f6d1-4082-8551-8d8a17276dc3@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-7-zhengtian10@huawei.com> <at-X_hFbsBU_Dsgr@LeoBrasDK> <a301e884-f6d1-4082-8551-8d8a17276dc3@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -92,28 +88,68 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Gautam Menghani <gautam@linux.ibm.com> writes:
+On Fri, Oct 30, 2026 at 10:53:57AM +0800, Tian Zheng wrote:
+> 
+> 
+> On 10/27/2026 2:12 AM, Leonardo Bras wrote:
+> > On Tue, Sep 29, 2026 at 06:36:46PM +0800, Tian Zheng wrote:
+> > > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> > > index 32102c3912fa..12fa37328dd2 100644
+> > > --- a/arch/arm64/kernel/cpufeature.c
+> > > +++ b/arch/arm64/kernel/cpufeature.c
+> > > @@ -2158,6 +2158,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
+> > >   	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
+> > >   }
+> > > 
+> > > +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int scope)
+> > > +{
+> > > +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, scope);
+> > > +}
+> > > +
+> > 
+> 
+> Hi leo,
+> 
+> > IIUC you run this on every cpu in the system, to make sure it's matching
+> > the feature. Is there any chance the kernel is in EL2 only on some of the
+> > cpus here?
+> > 
+> 
+> It's impossible for the system to have only some CPUs in EL2 and others
+>  not.
+> 
+> > If not, maybe we can run it on system_supports_hdbss() instead, which would
+> > be easier for the user to understand it only runs in EL2, on top of not
+> > needing the above.
+> > 
+> 
+> However, The question is whether a cap should mean "this system can use
+> the feature" or "this hardware supports the feature". If the cap only
+> tracks hardware support, users may be confused when the hardware
+> supports HDBSS but the system runs in nVHE mode — they would mistakenly
+> believe they can use the feature.
+> 
+> So I think we should keep is_kernel_in_hyp_mode() in has_vhe_hdbss(),
+> and add a comment in system_supports_hdbss() explaining this.
+> 
+> Does that work for you? Looking forward to your reply.
 
-> In kvmppc_xive_connect_vcpu() if there is a failure before
-> xc->vp_ipi_data is setup, it can result in a NULL pointer dereference in
-> kvmppc_xive_cleanup_vcpu() when accessing the MMIO page in
-> xive_vm_esb_load(). Fix this by adding a check before masking
-> the VP IPI before accessing the MMIO pages.
->
-> Fixes: 5af50993850a ("KVM: PPC: Book3S HV: Native usage of the XIVE interrupt controller")
-> Cc: stable@vger.kernel.org # 4.12+
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
-> v3:
-> 1. Add some more info to the patch description.
->
-> v2:
-> 1. New patch - Introduced to fix the scenario where NULL ptr deref is
-> possible. (Sashiko)
->
+Well, 
+That's just my personal view of this:
 
-Make sense. However, the order of patch-2 and patch-3 should be
-reversed. Otherwise LGTM.
+If we have a function called "has_hdbss" it should only report if the 
+system has the feature available.
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+On the "system_supports_*" we have to figure out if the system itself 
+supports the feature, which checks the feature bits itself and could mean 
+checking for other features being there, such as hyp_mode.  
+
+What do you think?
+
+Thx,
+Leo
