@@ -1,123 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793376062;
-	b=SQ3YAOCYA6RW2bqgbMxT0oBFXKqomuYXPu/VV/hrGiQBOBPQxYTLNsY0pmEp3rMcaxpL
-	 /2N81df9x2rkGf0GojGyF3QtbOU9g4mUZ43VWlJIwGJ1ARgIIaWswXq9opCdX1uh/RFIa
-	 hKDLL2H6xDsxC/7geb8pJXGYTU3kqL2SmAfYHXij6pTHdoNVNjDz2O9CIWCBE7g3nTDzA
-	 pHfRvZvHJekd/+ewQRlDjj5KWSn7oISZzujpHNMaIss51J4f1J/oIkcbnhROUrxcVglZy
-	 GRzonWvc3cJuDWHfRUQvrp6DGVwG4iKj0rc+kcaRZvocT6VHivI9jXc7cXAqHjqdxjw==
+	t=1793376795;
+	b=hq+tyjAhgP86SkWpV7R3o2FxEzznw6PGi3aTcR5mmfnJvriwQmctl3Cr0ATO+L3GOqUt
+	 JtR7rHToQx4+D1rOoLWjSSlgEMEEQmvN8HVCDRFiJj4jq2YrYMmjIo4PWe5aevvKunlzC
+	 s8WOR/ryUVBZ+3RSmOKAX0x46/1KgwXQq1rw6rF6EZLDiRSwUbT0sNCXP35/W/ynU5AN1
+	 ODPaBMzoJRVMntc7PUky89UtHwvNHjDn2NZteaTMwCGJSqg7SMWWjXuiQjFu+7uGUi+PR
+	 QheUk43yzJ2TKr8jFhDl1ccWTSZVFckqeH2pZSDTCbXoHxmat0CzXaAZKe2ifsKcHmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793376062;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=L89tyukt5b5c8qkH2tYN/al1Q24Aux8kILau79H19gs=;
-	b=CGm/WB+1jQoQBo2Mytq0+LQpHe8v3IhvjvhfVdVb+1MIh5ilHyxwB6ndB3ThXsFfLe3b
-	 25MdTXeXmp6z3keOyoD+Y/ztD5vu/wEjWXrJGdLDJtjLymPRnjrM9/ZawJLzT+Eins1BH
-	 XtrdIV07PUhHArhNDkgBvqGsUkeQc1l8p9ZS8AqsgazAAcLW4uDbM9tz8Ie65IhcL79Q5
-	 EkCA3oqTLLYzyUj4XkOabfBF4eToHKskBiDjO+q8zMTwBDHKAVvxfbJbhwvMHpLTZY167
-	 fxmZlx/Gj4LJRrxTicawSz7obAOo3Q4C5k8lbuLAV35Zl7TdkGY8vafIydd4gR5LDKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793376795;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=KK8pJaQH5lIoMU0qwbST6x47M5egpHp6PIXlQuLC+i8=;
+	b=fzj58MpRtFwYXHfmiwt6DHnuO6xgTIFosmWlhcPZzoBFM8tYs/WQRlV9VzaK+lBVoAMD
+	 XCwK/s5GDMJNPb4JnXpFDw9z1O+z4S/GKiDmG1Nf9zdwEmAzCJE3xOWP33wPJgmn/3lg6
+	 x+YKkCazAH4SkMlffZ9zh5dKqF59njpbkj21uDJh4gAHMoldv8vhSEPABqX2pW0DoxMd9
+	 qo1crvSJPhPZzyFY1z8G03b7KTT8BF6WjYxT+I9zk4OKtxae0nmNhIZFxIyFSQPAuDUzN
+	 3R/Mf+PUVW7t1UTKweJNOMXO1CGBr7oE/IisJwFM6l4gqOrpgwQj9tRt05HPHGL5oVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=tieSHTdP;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=nvCOJE9o;
-	arc=none smtp.remote-ip=202.12.124.157
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I8nnGdOw;
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9583606A31C
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 16:00:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9583606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC17606A31C;
+	Fri, 30 Oct 2026 16:13:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EC17606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=tieSHTdP;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=nvCOJE9o
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 1A6167A0139
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 12:00:56 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Fri, 30 Oct 2026 12:00:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793376054;
-	 x=1793462454; bh=L89tyukt5b5c8qkH2tYN/al1Q24Aux8kILau79H19gs=; b=
-	tieSHTdPsW858t4IdRNruGMMvspjyjZiF94vc/xGEHiHcfWpeDldeKwA3NPeEPxc
-	DVAeUQHx2zW7j53z0j2ztJG9dINVLq974CgIP6ueY6zIiij4OMeVN2vn3Q+eho0X
-	47rr+8fVr5gwLPlSdCMhrboU9w3UMgk9U7/UKJ9yHTsQBvju9Yf+t5eJggSMmG1I
-	Auyu1Wjl+z60vuPeW8LxSOuTZNk4eHVPv3sDyx2AK53k5rE6azrIy43VIfQYdBkf
-	HyBvn7xqjW+gJ6OYiLp22FzyJsErNElwJHCbGsqxNPjMW39N0EIvsJtYbVzaSVB/
-	d0cVBTHhqSdrZFEEb8fBGw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793376054; x=
-	1793462454; bh=L89tyukt5b5c8qkH2tYN/al1Q24Aux8kILau79H19gs=; b=n
-	vCOJE9opVcfH82cuieLrQLRdliOw9Fq089ErTs/2t4FftKHTJaqQtHZzYpPWRjBk
-	F9rfX3tvwwqufQ7Ac2FT0za+ed4tjA4EBOCWFXEEmg3xoeZ3evNknENdBa9uJGH0
-	AyIUHsROqp9f760BrgE9TPmUAYCeuJ0rFfSrpbkZwQhZ0A1JnF9G3WnYzcH6f/N2
-	nn5TPg29zJq2SjwMYNwtZJoRPVwmA16/xtpM6AW6sRXff1nel1pLhZohOqmpZZYa
-	kQ03KDvNQ81GgCWmYtPpo4kLYToQQMAnifW82OZS7rnIg/vZHLPKRATQyPzbyQxs
-	9uxPLrOBpIif7UcJKhnfw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793376054; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:SEAbDlZe5KiddB29hnP9GKdYCFAmtkowAvn5qfR4ZM31Z3N
-	G2gy+o3SAzzrIwi4Od78flC5rQxga0hZ2otwTtLorJBBakT5qh0avSr2pp/DY8yg
-	Vd4N3k/v2sO2DGWxdXTXDCM1Fkn88MkLjbQyWOQqNOK+9QNApgPHZ6d/iK+y/tSJ
-	B8tlvJ1oPo0G8t9pXtuuRemzqA2ZvrVY9h1YAAuCNT4a9Hjt1NAwVhu43e/E+GuG
-	NUTYXrvbL/3VqiwzFaGxiG8FZzFym1XFj+21xKOJFkG2sRYW81pb6QfPIeMqYoMQ
-	LCqj++uESBI/4SiGmjub6koEJYyISu0a7tQwz7A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:Dywa0nh01Y4KCxYkiW9uTIaWIurvgzJb6i3EZHfmuls=:EYti1+L3wqJp7tckEjY8frIqelFuOK5JGtGnvfzp/ag=;
-X-ME-Sender: <xms:Nb_karLSMRKdcX4tpOZXpOr7TocodofaJd_rPCZUollRuARARhY-Yg>
-    <xme:Nb_kagvfSE1rCpWjdaSba6WqUo16oygPWF-D4F5jA5Pte5yr_Xx0ZhmxrkmPU3mXJ
-    HQPMFQygSqz6zaFKZHCj_JhjHdfVv_x0NX_troNMD8lHdgswG5j930>
-X-ME-Received: <xmr:Nb_kai9wGc-XrbcA1B_o4M7r3twsLfhIcwnaQkugOLxaroRMgH_2W19HxYOycQ>
-X-ME-Proxy-Cause: dmFkZTFJuiyPAomletbDV+qdH6dBvCjjAz52xg4f2daCyYxnm8YZgRg1ZLSbQlEUf2J6lm
-    ye3poX44/VWNiB0kcC9J1/qYYuQ2M9buv7uyYDJjj2+CIe6iQU4eT7aCWiyjzzgxexCMWq
-    8NKiSE292ktHs7OSAM03zbX7Vhm/uElw95rbIy1RBU+rl3y+RbGpYLbP1HsQzbWnfybCpk
-    h5TjEaeYgL8peSmIAuQy81sXA5aCIdAbBHDSYRJbY4vdOkAj9t1VJedT7Nfuc5Gq9F5S+K
-    QPZm0PqI1HAk/9EsPAQ/c3g/mnp/lJIjzCEGAcVTxZ4tKusllUXQwGDbUN0rGB1xSpKkcF
-    qzJwMAUXn1HSqmTQhmy3ohqGNlzp3qjRrbCSX92d+LhCSuVsdX6BclgCZlao7qMo25+JJr
-    3IYil84YlCCZ3ch5oUA8/usswpis26GiagRmz6SOvgwgF5lygL76CX+TNky6fIM1HEz668
-    eqGtz54PFR9foDfV3/Y427dLXwoSnLn7HCYOnqLlw3IIf510Vxq/aQCpBP7hucLPEDZeSt
-    Es/El7PPfGcjwrTn4RpBe6dluaV4mBz9sif2832STlC8dyOkgumLsp9ibbrW4wJ+sDvTGH
-    lBsTbHJ09L1XrYWMuuMWXGNMrX2gdNwgOba5TiGN/VCh/Ce7MTj0n20B+wSw
-X-ME-Proxy: <xmx:Nb_kaq3P8WAIy1qhUSrVDJekxRfmz5DGMUwIm0zAV0B_MHeAwHJnXw>
-    <xmx:Nb_kanjon8o0RnLX5pnD8xo61PYqJ92VdnlLhsnVMoMfwsn90Ai0xQ>
-    <xmx:Nb_kaqZJ_KEmWOWshc1052AngHXPJM8MUlNyX5jTl8Kh-NtdBCuHwg>
-    <xmx:Nb_kajWhjvjPOCcbMDb1H1h1IpE3hMu78J4V2VKPBYIf4Wbo2HH-hQ>
-    <xmx:Nr_karhBIABsOoYbOLALuXmxJrooHnH_P-uJF302Ku2chN85y8G9prxP>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Oct 2026 12:00:51 -0400 (EDT)
-Date: Fri, 30 Oct 2026 10:00:50 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>, <linux-pci@vger.kernel.org>
-Cc: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
- <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
- <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v20 00/16] vfio/pci: Add PCIe TPH support
-Message-ID: <20261030100050.16df202b@shazbot.org>
-In-Reply-To: <6d86dd9c-83ad-4884-915e-6509995c5ba3@huawei.com>
-References: <20260714104325.54444-1-fengchengwen@huawei.com>
-	<6d86dd9c-83ad-4884-915e-6509995c5ba3@huawei.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I8nnGdOw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793376795; x=1824912795;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uAicCO+jPwcDKA4dY7pgebv4wA+Z858oYVakj2wROsc=;
+  b=I8nnGdOwDUsJKOQ2iPsNh0yq1jMo8IZlaImP+UC13pcHY9XVC9P366dp
+   v9fwmWSEqU0fHGlWFF9JKzofrXlnxJV7vTiI4eXj7g362bZ78xkmmh29+
+   BmTwv6cKOFqOgrB+UuMIZwiQmR/pVEc1f1rFGvjmDxMuY/wCY07chquv4
+   3d6VD0J+SoAiqHeFKRC3EPUkXb9hs4rojdhA2Zaeq3Zf51P8g9YI5L9qj
+   5laxP1Oywb6ahobS3RYEd1t/sx6U4l6EjtJ1JPaAGBQ4ZptpyHFGhKdvG
+   TkzfR1ikHUrpdycRuXYnag3dnsjJw57gr0eNlwz1qxR+pim4yjV2LkPng
+   Q==;
+X-CSE-ConnectionGUID: J10jZTIxR8Gnutf00BZLMQ==
+X-CSE-MsgGUID: Y4trSduSRAy+UCwUR7UpNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2147386"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="2147386"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 09:13:14 -0700
+X-CSE-ConnectionGUID: NTp0fqX4TsquFoCBR6I98Q==
+X-CSE-MsgGUID: n7ulosMeRbyq5LgqgqGgTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="5875989"
+Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.109.71]) ([10.125.109.71])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 09:13:13 -0700
+Message-ID: <939b4cc7-5c7f-429d-a9be-830aa1c53ac5@intel.com>
+Date: Fri, 30 Oct 2026 09:13:12 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -127,53 +73,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module
+ is not initialized
+To: Challvy Tee <challvy.tee@gmail.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org, kas@kernel.org,
+ dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com,
+ vishal.l.verma@intel.com, kai.huang@intel.com, seanjc@google.com
+References: <auM3KKutfutAqgWG@thinkstation>
+ <20261030154851.907726-1-challvy.tee@gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20261030154851.907726-1-challvy.tee@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Wed, 21 Oct 2026 09:43:05 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
+On 10/30/26 08:48, Challvy Tee wrote:
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -2321,6 +2321,9 @@ void tdx_sys_disable(void)
+>  	struct tdx_module_args args = {};
+>  	u64 ret;
+>  
+> +	if (!tdx_module_state.initialized)
+> +		return;
 
-> Hi Alex,
-> 
-> Quick follow-up from our LPC discussion on the VFIO TPH patchset.
-> 
-> The P2P TPH path carries significant verification complexity, as it builds
-> on the PCI P2PDMA stack which is still under active upstream revision.
-> 
-> Meanwhile there is clear real-world demand for the device-to-host scenario.
-> AMD recently posted their debugfs series exposing CPU-to-ST mappings [1],
-> and we also have strong use cases for D2H TPH enablement.
+NAK from me on this.
 
-You might be working ahead of the industry.  The debugfs interface
-provides evidence that the feature is coming, but is perhaps still
-working through implementation pains.
-
-The lack of community participation in the vfio interface actually
-suggests to me that there isn't a great real-world demand for this
-feature, yet. 
-
-> I'd like to propose a phased upstream approach:
-> land device-to-host support first, and defer P2P TPH to a follow-up series.
-> 
-> We can add P2P support cleanly on top once the interface and verification
-> are solid. This way we can deliver usable TPH functionality sooner, while
-> keeping the path open for full P2P support later.
-> 
-> Let me know your thoughts on going ahead with device-to-host support first.
-> If you're okay with this, I'll post v21 accordingly.
-
-As above, the demand is not apparent based on the lack of community
-participation in these threads.  I'm reluctant to commit to a uAPI
-that's largely been proposed by me, as the maintainer, trying to fill
-gaps in the narrow scope of the original proposal.
-
-This needs support from the community and validation across broader use
-cases.  I think that's the actual barrier, rather than ordering versus
-Zhiping's series.
-
-Despite the LPC talk, there still hasn't been much engagement on the
-question of whether device ownership grants the user the ability to
-target specific cache levels and how we handle cases where the
-driver:cpu association isn't static.  Thanks,
-
-Alex
+If SEAMCALL is fatal then we need stronger barriers on the generic paths
+to SEAMCALLs themselves, not one-off patches of the sites.
