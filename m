@@ -1,58 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793328845;
-	b=tfxJJqq/Dq3D8QcBIs+RaVq8K+skQ6q0Khzz2aatazU9FO/GTt16n/Kb9NK1VTIYHCfH
-	 5yLgZafNtbvFFkndPDzWrHl8thHa8VFJf9X4sTjENWkAmAHLr07v5pYWuyuZiByNZx9wk
-	 bDhPJtRK4jInqDvr7wpe9p1A/hOOkqTwRdG9Fr+cSLeA4EWmF2YszLTz1G5caiphP+0aC
-	 yYfSAjbsuhoiEK8llQrlMpw6D6f5yd17PFvPiB04ZRjf6xJgLW3w8o75dGSZoOyVQaZ3D
-	 3CLQR/h0CIh3J8qs7/AtRa4O0NWEZJ9Ok5UaWYB0faCCoFGHyEzuQZcwppCF/ZQEjxw==
+	t=1793329649;
+	b=hUQw0XbXAN55uKp4+crrnw2tkW8U1S643yKPVC/tFh0hC6CbavKO6OjpJarfl7npvYfT
+	 pAmHcbdT0pPg0duy+zuGGgkoobOoXxVxVvuOUvZPI3qrOBF+0yX3oJFAkYc59JZYTorGb
+	 gipTbX5cyzCJsh5Y526swyj1oM7zeu0Wi6g3DsmDIoMV1oE6SPjM4S/M+8uitrDCNlgpU
+	 eUByuIT23Rw1bVjNmWj4u9WjsTqvtpu8UURqq9a+FlggpgmP8hdoZ2z2Hk6IPBdlgumI6
+	 C6HEZ21yuFMtjNKs82zZFa4fryRhHx9vpuBqszqo/yE7QpivzxeZwlXqFijb1ZXZZpQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793328845;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=R32rGPcJuG+1kCDhnHECP/PCqav9h3by8BHulE0myn4=;
-	b=xxa2/U/X5G811Cp2PyU9lVhl10GYpiR/e2iTh+FIq4xw5wWkLYWggf9u2Gi1yB+Rkpid
-	 bIicftAHTr3L/M6j5mqvMl3VO2p+7aMSHHaxJflpeOK6OeAG6ThkxeZgd706Q/0BEkO2o
-	 oIjjgc+Wj+RjGcVXXq5WOd0gkwRnas4bbxLHTlj/NbchfC+HxE11E6ReuzKrxsUyt3Iu6
-	 YrN8PdwxCjqn66MLUrEfKVBE/giCCvJ0S6zCxyBXvzGjcf5eFGkCAKh73x8bbBFBQ9kxJ
-	 VE3yp4m4PErjXFClkDMF/NmkGlYqJR4Rx3qMcS+i1do9EDHgDqGa3LfKffpKbIusqSA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793329649;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=aHgpdCEoD5lWUeN6+WJA5Jj9bBqBJTPp6GiL3jJIPFM=;
+	b=xnyeA0gReQAVS5x6ZnIZqczBmfeB5/v1UXTrnGILDrqITBJFTBSe+F+DrAnXrSEnCH9W
+	 81667qVnzL3KL6HObvteLqgQPau8EW21PK9uCvNhsjDSppiDPWGAjeXnfmnyrUWWIb5AF
+	 GTaM1VV43ftlOm/iUOwEPs1L5enRTaWrlT2Ttu/ZzmQ7hFAJMuUOQ5M7HRyCIAEdGpEnH
+	 tOMab1lTyFh9sG3y4+vl1YzHWKR+pFH8HG3rqNmHNzCETcrPyagRPaY0jiKtDgsLIIY7U
+	 /xi25CrZtFoTP6D+C1aIDEtPd2p6NAHH+PRX/wytllAYEOIKfWjyW53i2wR5Jd4XCmQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b="Unh/wbOF";
-	arc=none smtp.remote-ip=113.46.200.225
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ihYm97t3;
+	arc=none smtp.remote-ip=198.175.65.20
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE28606A31A;
-	Fri, 30 Oct 2026 02:54:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AE28606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B90606A31C;
+	Fri, 30 Oct 2026 03:07:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65B90606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Unh/wbOF
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=R32rGPcJuG+1kCDhnHECP/PCqav9h3by8BHulE0myn4=;
-	b=Unh/wbOFJAII1gDiU/F8veoDlAxf3h+Pjvdy/1dOAIZPRYuocBY31he/5knqTdGoGovtmcwML
-	XvQdJ+ueqPeQKCYaPPM0bZ1ZSGqYTs/EZxNqO4WTd4Q0zQ6D1+1LbnP+1BqJJmbgBiSkzqj+XeS
-	EvdUwJ1ckbq1VmqrXfnldKM=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4jG5K16Mmmz1K9D6;
-	Fri, 30 Oct 2026 10:53:57 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7CE2B40565;
-	Fri, 30 Oct 2026 10:53:59 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 30 Oct 2026 10:53:58 +0800
-Message-ID: <a301e884-f6d1-4082-8551-8d8a17276dc3@huawei.com>
-Date: Fri, 30 Oct 2026 10:53:57 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ihYm97t3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793329648; x=1824865648;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=O/zzEIHYeFxsYEQca3VGErkJGqkPr5bCwH/rsaqactw=;
+  b=ihYm97t3a28CsECZdxHKRbZ78yldgfhKlvtJuTy98/HhzNe1+lL/GHNg
+   z2ERSVxR9ss8xYEsfCUvbMFO5ZbhU+jdHFQ/c6Sj6asKpT5F10F4F3S4c
+   vN1a1xqbhJBJj6fYF5IDFOQMsSN3UQpRPnfAO41sHMOBl4JoAiPDBja+K
+   9gn9esvxkk6U+Rb2LV0gJjDXJU9sWr3FFr/i0x5mw7EvKsvYjOSxHklUZ
+   KSKDLrlz+HT/GQPhMNKeL4vrkL0KH6h4YSKMubN9zJXmA4KughoFO5JLz
+   HvtKnx6+GVJH6WGinIAI3c77dN/wzO7uxeMQMh8VSOnEk1ZCWFt0MuRGQ
+   Q==;
+X-CSE-ConnectionGUID: LrlwW726QsC4k9rs9uMoUQ==
+X-CSE-MsgGUID: AKU4fHEYR/u9oI0CvHpcWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2110465"
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="2110465"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 20:07:28 -0700
+X-CSE-ConnectionGUID: dRudyGz6TzmyUXOiJlCqUw==
+X-CSE-MsgGUID: bu7g0lICRlKoS+ecWB/B8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="5403253"
+Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 20:07:24 -0700
+Message-ID: <14cf71cd-35cd-45b1-a0fe-94d4a76e9e06@linux.intel.com>
+Date: Fri, 30 Oct 2026 11:07:20 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,74 +73,52 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 06/15] KVM: arm64: Add support for FEAT_HDBSS
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
-	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
-	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
-	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-7-zhengtian10@huawei.com> <at-X_hFbsBU_Dsgr@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <at-X_hFbsBU_Dsgr@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
+ Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v6 03/18] iommupt: Implement preserve/unpreserve/restore
+ callbacks
+To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ David Woodhouse <dwmw2@infradead.org>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-4-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261025021930.674647-4-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
+> Add iommupt ops for presevation, unpresevation and restoration of iommu
 
+... preservation, unpreservation ...
 
-On 10/27/2026 2:12 AM, Leonardo Bras wrote:
-> On Tue, Sep 29, 2026 at 06:36:46PM +0800, Tian Zheng wrote:
->> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
->> index 32102c3912fa..12fa37328dd2 100644
->> --- a/arch/arm64/kernel/cpufeature.c
->> +++ b/arch/arm64/kernel/cpufeature.c
->> @@ -2158,6 +2158,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
->>   	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
->>   }
->>
->> +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int scope)
->> +{
->> +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, scope);
->> +}
->> +
+> page tables for liveupdate. Use the existing page walker to preserve the
+> ioptdesc of the top_table and the lower tables.
 > 
-
-Hi leo,
-
-> IIUC you run this on every cpu in the system, to make sure it's matching
-> the feature. Is there any chance the kernel is in EL2 only on some of the
-> cpus here?
+> Preserve top_level, VASZ and FEAT Sign Extended to restore the domain in
+> the next kernel. On restore, the domain has only the preserved features
+> enabled and all the other features are zeroed. This is ok since the
+> restored domain is made immutable and can only be freed. A kunit test is
+> added to verify that the IOMMU domain free can be done with trimmed
+> features.
 > 
+> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+> ---
+>   drivers/iommu/generic_pt/iommu_pt.h       | 155 ++++++++++++++++++++++
+>   drivers/iommu/generic_pt/kunit_iommu_pt.h |  30 +++++
+>   include/linux/generic_pt/iommu.h          |  30 +++++
+>   3 files changed, 215 insertions(+)
 
-It's impossible for the system to have only some CPUs in EL2 and others
-  not.
+This patch looks good to me,
 
-> If not, maybe we can run it on system_supports_hdbss() instead, which would
-> be easier for the user to understand it only runs in EL2, on top of not
-> needing the above.
-> 
-
-However, The question is whether a cap should mean "this system can use
-the feature" or "this hardware supports the feature". If the cap only
-tracks hardware support, users may be confused when the hardware
-supports HDBSS but the system runs in nVHE mode — they would mistakenly
-believe they can use the feature.
-
-So I think we should keep is_kernel_in_hyp_mode() in has_vhe_hdbss(),
-and add a comment in system_supports_hdbss() explaining this.
-
-Does that work for you? Looking forward to your reply.
-
-Thanks,
-Tian
-
-
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
