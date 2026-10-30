@@ -1,83 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793386742;
-	b=3u9vYWiLpyg1XIJoOKvFJe6a7RkHI/2JT69jlPVWEWqRj1NjBogdxtOCcMkv8pVKKjbn
-	 AYlqXD8YSBfnmgp/lkoQ4v5ZUlko4ZakyS7Wz2KOpwfx4yWxTlHYWGS2/5z8rvm60BlMd
-	 zrvvGTd0Dea0fWNTrBLnL7EzPIzT2qW5u3lSQ8Y5Dx7+HIJXdSccEEfjf+O4PnDdSNhUa
-	 jgMM99A2TQyzz02ZThjhrhA4A7bMtaS1LwQfLvN1sb3ra2Ok34WYmlmkbGf2X30ainiIV
-	 r934YKkjtzluVnYsmZPvaAiD4Cu9UMXNyPalaESixvzGUomSxswvF4X5lgXz1hAYbIQ==
+	t=1793386972;
+	b=4gS/H5nKBFVXg8kJY4aS4l2WN781SsKnz2JbxO1et3edGT+Y2eA39ALrhu6PFQNB6a4c
+	 7O3A6Yh7bYDjTrv8831G053YlLRPN4Rq+dBOF1mOcVzy86H3/bv++nDF4Cv9IWcTbqGwA
+	 tSikuod4P3sxMDYKFuQmO1RuvIE/jXFCevNhIqpEZwXTSzoWgQQYe6BKxNu21D7p6wti7
+	 W7v2DWyloAduzwL2/idvpdAPpi9RTsIYtNThuGXdFGGbEBooqwGSywxXdMfsCyg7eakTC
+	 t2dousNnlz0FMU/u599ciPJF2Wf8nxvwLHxL6jCWC1vZzPgjEibCyXcV5XkPTr4SI8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793386742;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-USESPAMBG:From:To:Cc:Subject:Date:
-	 X-OQ-MSGID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=mw96Q007DUPAQeKT8Ptwo3yABVaVeFnZ+TFfC0JmVJ8=;
-	b=13Bw5IB5zQmBJezRxtosiEEEO/i0r0zy7Zo2LDYB9D1ITW3stpcuX7F/r0n6oPx5TkfK
-	 3P/mFWHTswObro2aqM6AZQqCp8tac7t2/e/ipKpbfrJ5l7rgyQEePLfQ/0LTEXejDuw3Y
-	 PzCk1OOqyNUTxlOyYfaobsJ6/wlTAnPjiDNFpmnh5PcJLWmptOODGhwaCOqUwQ4LTZ1Y4
-	 AL6Bp++mUx8IqWCz2jOHuVGnJWV4eOHlf3dbiJ65EvlaK9v7DX6k3QXS+qnyWwxOoyEOo
-	 gbnYjF2iA4MQJ0ZGUdxmzCud8PINL0QLeNFe/nVGWaMtgUPnGzjYQw+ccMw84ot5C0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793386972;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=TsE43CbBcP3yrj//6OBRvd1tGiO9nFSu3Jcj7hV1cls=;
+	b=TrRmZyWylYLLUX4XIXP8EeUQW3L0ugs/5X8fWr1iOVeAbusefcKmBxYjFHC+nJwoWcoO
+	 A8eXSgX24HQXb2BEkdZnVBptUpMDkkbX1fXsosq9UKcnDzHPu8pPyWjpEGfsI55DUfFSM
+	 HWvMw+YdtEcFg2X0Hf8g/kQYdOlHP/hdo0Mfn1TsZJW0IaE/0MXZwhooIPgRParhLhIng
+	 Whd/sdqiRghosqLHpXql0OgjBZkda5ZL4PIIhRV22/YpyvQhM+JGmtwAEkR9fPrtOaCl8
+	 wVCRQf2IOFHzJy/ckVeM0Po3vJk9pOc5m/3mCrmu2x2mpOuwymh7heogOWr0PmXqnDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=cyyself.name;
-	spf=pass smtp.mailfrom=cyyself.name;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=yMDR21xP;
-	arc=none smtp.remote-ip=162.62.58.69
-Received: from out162-62-58-69.mail.qq.com (out162-62-58-69.mail.qq.com [162.62.58.69])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="pGQg/DFW";
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A87606A31C;
-	Fri, 30 Oct 2026 18:58:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30A87606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyyself.name
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C7F606A31A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 19:02:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53C7F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=yMDR21xP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793386730; bh=mw96Q007DUPAQeKT8Ptwo3yABVaVeFnZ+TFfC0JmVJ8=;
-	h=From:To:Cc:Subject:Date;
-	b=yMDR21xPnfephXqAxRXDTKMF0f3O1t4bQN2gVuUDIo6viJU566JwQSPmE/pncAFwa
-	 SvgRZpbWDZXmn3O/e5IRmD60yrM3kaJ8DIW3eZeThfz0158r+nMwfx+nx8vEq3ofLf
-	 TzApOeLWcJC3rppCMCxe8TsQa6W3+9K8NAuxG8oA=
-Received: from cyy-pc.lan ([240e:37c:221f:3500:33ac:ff07:4262:aa6f])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id EAC2CE97; Sat, 31 Oct 2026 02:58:44 +0800
-X-QQ-mid: xmsmtpt1793386724t5a8cffea
-Message-ID: <tencent_C8B170AF63DC42F81A47F9EA044BB4B11C09@qq.com>
-X-QQ-XMAILINFO: MDJWyUmJdVqKyq6UzhUWUXe+4k6nld/Qa5hXvirgeodHiPQTqx5ZGiPGbDNjZX
-	 4qgBqJX7f5EYtOIGRcELlt5Hu7bZsdvzNlHnZi/R9D0bt8PMemZzy67lQIoYR8QQwNclLy4UbYLv
-	 4jU6O+u/VH0cvmaBHCZe8eBAjqjd2x49hPuLybfqomJq7EEaCIxShYmBj0q+oL5svh8QUmbDvKPT
-	 nCvSLFhLySRNnDW4EFHt0b/z+ewKh/1/dN3UpDzI4EMSIIpaB1vXGOV0lf29SuN2z9VNyxGk9d9e
-	 pFLmJM2W9S1BwVoT9VWOGgKI8czYvBkXH8lie1HnO4NMunCByORRYn/tuslVApvIiXXO5CEKn2W9
-	 F28keu9gS1gEKEODEH1d/fkqeD6SLBofCPpTZRKyje4vqClWdi2UO0S6wxpVW36o06hKrXla2FyE
-	 lydfhHbkztV5R0hUYJdDunm8Q7Eqyv5/ahZhzAZmh/gqxXMBlWYDJcNUHIhUsE4dMg3mbJLgLKuO
-	 JaY9YaTX/AMcsmrJRG7DacKsHQuSuJsQAq3gc5iJD7WWRB/PwDXNgrIyGbFeVrUPSdcAI9536qHl
-	 vJeCSNqIuWT9sDZVmdtONJj8WfAjz1WTHtpwJs8BVS0mqUfnAx6N73wJTUoKc2kmCaJNpXqejTXs
-	 j/uAtOTRr8Ve+/X+kAu+TofzdTeSsKi9ynS3rlyw1f49eT4Z5smOxqVzTJWqa9nJwj7GshoWCHnl
-	 YyjRp8MDgTZNgz5kcWETZgpQS7ycJZ4oI3BiXgYdNF7pctMl1bP0ti3CK4WvlIrjuGBwIfXB5VZB
-	 dZphAlVex5klG+9gNA3rdAmyvVlZ20WzwsYocIM84gBvTsvod/viMgjWJyDrQmUriEN87IdVNWrS
-	 ltOB2ifHzWtCXzn8q94zbrgLejWikVtOEcQ2QXES/KSVC9yF3tl8qY91cSqHgD2xqqLhv4xds6Xa
-	 4PbxkxsOFACNC3Vz0y0a2KwxQaQlnzJOlQ01bTMC7x+RqiHaSNzeXG6L5/IUL53OiRwjtrzHPPqk
-	 9ndeif1q2Y1zdx8Fx9r0xAt9AIL0N3/AicUjVU4Q4g8fPVwRdvloiJX3ro9xwlLhjV0DJEsBAwqv
-	 8+8P9zqo5zfLEBCAUJBlfNSFvTzg==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-USESPAMBG: true
-From: Yangyu Chen <cyy@cyyself.name>
-To: anup@brainfault.org
-Cc: atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Yangyu Chen <cyy@cyyself.name>,
-	stable@vger.kernel.org
-Subject: [PATCH] RISC-V: KVM: Fix G-stage page table memory leak on VM destroy
-Date: Sat, 31 Oct 2026 02:58:36 +0800
-X-OQ-MSGID: <20261030185836.4018167-1-cyy@cyyself.name>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pGQg/DFW
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdaf2a74482so580998a12.3
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 12:02:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793386971; x=1793991771; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TsE43CbBcP3yrj//6OBRvd1tGiO9nFSu3Jcj7hV1cls=;
+        b=pGQg/DFW1MJLlZuxMhf+4E1mFkSG3scUnbG0uTPxrEsh09jsMukXyEDikGdDduX55F
+         slCroQPd3498biFNQC/qWa+mXOFjsndCfj2XbiV9JiP4NiHNZMvWJi8jYxQGXeflw09Y
+         PSMVff3xmaPeNNilOUvvDEC0T68aYyT4sgBVyQhzMeMnH86+FBfcatnaP3iOYEqWxNsf
+         pXg1xJN4eljzPh6Au1EwmyMkH/jETaIF5Z1d4t4mDav1m2Tw9pfz3QfqTr8mZLv3U4Zb
+         msmW6aEAqVETpDYLw+USDF0rNms5bzSsQ6gJtnCR3367w3LmDVOlWS6FoQpxG/AMQcOT
+         0mpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793386971; x=1793991771;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TsE43CbBcP3yrj//6OBRvd1tGiO9nFSu3Jcj7hV1cls=;
+        b=TOaRvr7XLut4Iby7EA/rx4LMS3GbNp+bwrSbS39qJ4KMloxoyDf5Avs2eL3SX4attv
+         SRawXVSzrNyXKBqwp5vxJrWQbPyNKwZ3bIphDThNzG1kEIV0EyjHtfZVkRywdyoYE/IF
+         K8UDljqDkDfj1q1MaQxkWPw5RIioU2VWSMPKOMD89ub14VRt/zcdlkc4l3YvcykWjLFJ
+         FHawC+YUOcT9oz1+e0egmcW/Gh/uggqXraG5TBPqBCo9gFxB7uUTscg1BlaXjuE7xXt+
+         EyoxIRnZAOTkZlPkZeXj3gyE470CFh1mnxRWfrU5wiGcpUloA+p/7Pru9995dbMHXqzw
+         4q0A==
+X-Gm-Message-State: AFq9FYJFYji/gjcvQcQBJ/JJ4dT0CDRStSFnVdjDdS/sgVa8wxuGzdfd
+	zKWjIzZHCku8pAEzf35MOkK+PJTKjFynPp0cIosiIxptcTO5oX4pMurnTCPOsNqfH5HibDjYdiu
+	hVfcUMQ==
+X-Received: from pgp20-n2.prod.google.com ([2002:a05:6a02:62d4:20b0:cd6:b08a:e7cb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:914b:b0:3e2:9470:5303
+ with SMTP id adf61e73a8af0-3e928953948mr2814804637.15.1793386970294; Fri, 30
+ Oct 2026 12:02:50 -0700 (PDT)
+Date: Fri, 30 Oct 2026 12:02:49 -0700
+In-Reply-To: <MRWPR06MB107263BB1EF5464326E45DCD7B96D2@MRWPR06MB10726.eurprd06.prod.outlook.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,155 +76,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261028202607.1844883-4-seanjc@google.com> <20261028215143.2913059-1-jthoughton@google.com>
+ <GV2PR06MB10711171A7A8F225207FACD6BB96E2@GV2PR06MB10711.eurprd06.prod.outlook.com>
+ <auO1_YE89Q0T0hfI@google.com> <MRWPR06MB107263BB1EF5464326E45DCD7B96D2@MRWPR06MB10726.eurprd06.prod.outlook.com>
+Message-ID: <auTp2Yp2qtqtiPkX@google.com>
+Subject: Re: [PATCH 3/4] KVM: x86/mmu: Add automatic prefaulting/prefetching
+ for TDP MMU faults
+From: Sean Christopherson <seanjc@google.com>
+To: Marco Marangoni <mamarang@amazon.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"cc-open-source@amazon.com" <cc-open-source@amazon.com>, James Houghton <jthoughton@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-kvm_riscv_mmu_free_pgd() tears down the G-stage with
-kvm_riscv_gstage_unmap_range() over the whole guest physical address
-space. That function looks up each address with
-kvm_riscv_gstage_get_leaf(), which walks down to the leaf PTE, and then
-clears only that leaf. kvm_riscv_gstage_op_pte() frees a page table only
-when it is called on a non-leaf PTE, which never happens here, so every
-page table below the PGD is leaked when a VM is destroyed. With 4 KiB
-mappings this is one page per 2 MiB of guest memory that was ever
-mapped, plus the upper-level tables.
+On Fri, Oct 30, 2026, Marco Marangoni wrote:
+> 
+> On Thu, Oct 29, 2026, Sean Christopherson wrote:
+> >> From my perspective, using fast GUP has the problem that you cannot prefault
+> >> "around" your page, but just ahead of it, so I don't mind going with normal
+> >> GUP if it makes things easier for you.
+> >
+> > I think I'm missing something, why would fast GUP prevent prefaulting "behind"?
+> > E.g. is that effectively a limitation of the underlying backing store you're
+> > using, a fundamental limitation somewhere in mm/, or a limitation in KVM itself?
+> 
+> I didn't explain myself properly, sorry.
+> 
+> What I had in mind is that kvm_mmu_auto_prefault() returns on the first
+> kvm_tdp_page_prefault() failure, and starts from the ALIGN_DOWN'd window start
+> rather than from the faulting page.  So if a hole is below the faulting page,
+> the resident pages above it don't get prefetched either.
+> 
+> E.g. faulting at page 5, window [0..7].  If [4..7] are resident and [0..3] are
+> UFFD-missing, the loop fails on page 0 and nothing gets prefetched, even though
+> 6 and 7 are right there.
+> 
+> It doesn't matter when nr_pages matches the UFFD chunk size and alignment, but
+> it would with smaller chunks or a non-linear access pattern.
 
-The leaked pages are not slab, vmalloc or page cache, so they show up
-only as unaccounted used memory. On a SpacemiT K3 host, a workload that
-creates and destroys tens of thousands of small VMs leaked 0.5-1 MiB per
-VM and ran the host out of memory after about 20,000 VMs.
+Oh, that's easy enough to "fix", the only question is whether or not that would
+be a net positive.
 
-Add kvm_riscv_gstage_unmap_all(), which calls kvm_riscv_gstage_op_pte()
-with GSTAGE_OP_CLEAR on every PGD entry. That recursively clears all
-leaf PTEs and frees each page table below the PGD. Use it in
-kvm_riscv_mmu_free_pgd().
-
-Tested with a reproducer script that builds a minimal KVM host kernel
-from a source tree and boots it under QEMU 11.0.2 (TCG, rv64 with H,
-Sv57x4 G-stage). Its init creates 10 VMs one after another. Each guest
-writes one word in every 2 MiB of an 8 GiB RAM region (anonymous memory
-with MADV_NOHUGEPAGE, so 4 KiB G-stage mappings) and then shuts down,
-so each VM needs 4096 last-level page tables (16 MiB). MemFree lost per
-VM, after one warm-up VM:
-
-  before:  16415 kB  (RESULT: LEAK)
-  after:    1636 kB  (RESULT: OK, noise)
-
-The bug was found while investigating the host OOM, and the fix and
-reproducer were written with the help of an AI coding assistant
-(Claude). The analysis, fix and test results above were reviewed by
-the submitter.
-
-Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programming")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yangyu Chen <cyy@cyyself.name>
----
-How to reproduce:
-
-The reproducer script is at
-https://gist.github.com/cyyself/23abb87a8ad9ee8c64ce03cca78669fc
-and needs riscv64-linux-gnu-gcc, qemu-system-riscv64 and cpio. Run it
-from the top of a kernel source tree:
-
-	$ cd linux
-	$ /path/to/kvm-riscv-gstage-leak.sh
-
-It builds a minimal riscv64 KVM host kernel (allnoconfig + KVM) into
-.kvm-leak-build/ and boots it under QEMU (TCG, -cpu rv64,h=true) with a
-static test program as /init. The test creates 10 VMs one after another.
-Each guest touches one page in every 2 MiB of 8 GiB of guest RAM, so it
-needs 16 MiB of last-level G-stage page tables. The test then prints how
-much MemFree each VM leaves behind. The first run takes about 1.5
-minutes, mostly kernel build; reruns take about 10 seconds.
-
-Without this patch:
-
-	10 VMs, each touching one 4 KiB page per 2 MiB of 8 GiB guest RAM
-	MemFree 2037664 -> 1873512 kB: 16415 kB lost per VM (a leaking kernel loses ~16384 kB)
-	RESULT: LEAK
-
-With this patch:
-
-	MemFree 2054080 -> 2037716 kB: 1636 kB lost per VM (a leaking kernel loses ~16384 kB)
-	RESULT: OK
-
-The exit status is 0 for OK, 1 for LEAK and 2 if the test could not
-run. IMAGE=<path/to/Image> boots an existing kernel instead of building
-one. That kernel needs CONFIG_KVM=y, CONFIG_BLK_DEV_INITRD=y and
-CONFIG_DEVTMPFS=y.
-
-I also tested VMs that select Sv39x4, Sv48x4 and Sv57x4 through
-KVM_CAP_VM_GPA_BITS, and four VMs with mixed modes alive at the same
-time, destroyed one by one while the remaining VMs kept running and
-were checked for correct guest memory contents. With this patch, no
-memory was lost in any mode and no guest data was corrupted. Without
-it, every mode leaked about 16 MiB per VM.
----
- arch/riscv/include/asm/kvm_gstage.h |  2 ++
- arch/riscv/kvm/gstage.c             | 22 ++++++++++++++++++++++
- arch/riscv/kvm/mmu.c                |  3 +--
- 3 files changed, 25 insertions(+), 2 deletions(-)
-
-diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-index aaf080ba1b77..90ec9e0b34b1 100644
---- a/arch/riscv/include/asm/kvm_gstage.h
-+++ b/arch/riscv/include/asm/kvm_gstage.h
-@@ -80,6 +80,8 @@ bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
- bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 				  gpa_t start, gpa_t size, bool may_block);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 08b6a90c7131..61cae6f1d9a9 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5179,8 +5179,7 @@ static void kvm_mmu_auto_prefault(struct kvm_vcpu *vcpu, gpa_t start,
+ 		if (gpa < start || gpa_to_gfn(gpa) > kvm_mmu_max_gfn())
+ 			return;
  
-+bool kvm_riscv_gstage_unmap_all(struct kvm_gstage *gstage);
-+
- bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end);
- 
- bool kvm_riscv_gstage_wp_pt_masked(struct kvm_gstage *gstage, gfn_t base_gfn,
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index e5002cb9cbef..c912cdc2021f 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -456,6 +456,28 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 	return flush;
+-		if (kvm_tdp_page_prefault(vcpu, gpa, error_code, KVM_PREFETCH_AUTO, &level))
+-			return;
++		kvm_tdp_page_prefault(vcpu, gpa, error_code, KVM_PREFETCH_AUTO, &level);
+ 	}
  }
- 
-+/*
-+ * Clear every G-stage mapping and free all page tables below the PGD.
-+ * kvm_riscv_gstage_unmap_range() only clears leaf PTEs and leaves the
-+ * page tables in place, so it cannot be used to tear down a G-stage.
-+ */
-+bool kvm_riscv_gstage_unmap_all(struct kvm_gstage *gstage)
-+{
-+	u32 level = gstage->pgd_levels - 1;
-+	pte_t *pgd = (pte_t *)gstage->pgd;
-+	unsigned long i, page_size;
-+	bool flush = false;
-+
-+	if (gstage_level_to_page_size(gstage, level, &page_size))
-+		return false;
-+
-+	for (i = 0; i < kvm_riscv_gstage_pgd_size / sizeof(pte_t); i++)
-+		flush |= kvm_riscv_gstage_op_pte(gstage, i * page_size, &pgd[i],
-+						 level, GSTAGE_OP_CLEAR);
-+
-+	return flush;
-+}
-+
- bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end)
- {
- 	int ret;
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 371fccaf9df0..87838a0f6bb9 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -784,8 +784,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
- 	write_lock(&kvm->mmu_lock);
- 	if (kvm->arch.pgd) {
- 		kvm_riscv_gstage_init(&gstage, kvm);
--		flush = kvm_riscv_gstage_unmap_range(&gstage, 0UL,
--			kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels), false);
-+		flush = kvm_riscv_gstage_unmap_all(&gstage);
- 		pgd = READ_ONCE(kvm->arch.pgd);
- 		kvm->arch.pgd = NULL;
- 		kvm->arch.pgd_phys = 0;
--- 
-2.53.0
 
+I generally don't like heuristics, but they're practically unavoidable when it
+comes to stuff like this, so the other option would be to set a threshold for
+when to bail.  Failure should be cheap?  So we could set the threshold to be the
+default PTE_PREFETCH_NUM, that way the default behavior is that KVM agressively
+tries to prefault everything.
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 08b6a90c7131..5dc820a32f8c 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5156,8 +5156,8 @@ static void kvm_mmu_auto_prefault(struct kvm_vcpu *vcpu, gpa_t start,
+ 				  u64 error_code, u8 level)
+ {
+ 	gfn_t nr_pages = READ_ONCE(auto_prefault_nr_pages);
++	gfn_t i, nr_failures;
+ 	int nr_pages_msb;
+-	gfn_t i;
+ 
+ 	if (error_code & (PFERR_RSVD_MASK | PFERR_PRESENT_MASK))
+ 		return;
+@@ -5179,7 +5179,10 @@ static void kvm_mmu_auto_prefault(struct kvm_vcpu *vcpu, gpa_t start,
+ 		if (gpa < start || gpa_to_gfn(gpa) > kvm_mmu_max_gfn())
+ 			return;
+ 
+-		if (kvm_tdp_page_prefault(vcpu, gpa, error_code, KVM_PREFETCH_AUTO, &level))
++		if (!kvm_tdp_page_prefault(vcpu, gpa, error_code, KVM_PREFETCH_AUTO, &level))
++			continue;
++
++		if (++nr_failures > PTE_PREFETCH_NUM)
+ 			return;
+ 	}
+ }
+
+> FOLL_NOFAULT is fine by me; it just makes "hole" mean "not mapped" rather than
+> "not resident", so slightly more cases hit this.
