@@ -1,87 +1,84 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793350419;
-	b=lj0RxPlvgCeAXN/wDmfZA9U7FEH3bD+ZxOo17Z/LrgV4FkDb9nlT2w0XcQp8WvWMbE8A
-	 2sWVJTtWX6j0FFU8LqOdvRRW9tdK/MLzMN3txWUGbyXls0Zeacg8OM2MLLReTey2ZOL3k
-	 bETtXRsD+tVkFSEgdGcvjz6MRNqlwDBZzm+nGkM++8zm3906yTDlFEGTPMc76u0aQNL2Z
-	 DF76/hmXhRfsMQIzIxx9Chn1oIVmY2l2wN/toh7FPO4ns/xKhjYAma0efttkLoThdu49o
-	 tu/Ht26yjrVCKUnhtTaUWIcsdfsB6JxwpVtBEugrrh41PXXVAMMBIA/EWKPvQlvx03A==
+	t=1793350414;
+	b=Y9rG24Gsh/1Exe4Av70ZzHzYQNqkO8PJ0T2IADu4AkfgFVFzYmKdvVUo7XUUrk/cR0w4
+	 sYUtTojqwRmfpuRdYR630mjXgWgSWByZDhAfEry65Q4V/1JkjyMi1L/hhFb88LWReCB+H
+	 cTkA8LfzjrGnX83+699KslCcvb+GFR2F7UcLtKjJzWR9uEKvnb/qMEMY7F/zfnf/YXPUu
+	 JeYd3j5Vq6AbBmb6zHLLE4Nphb9X4UeziwT5PU/f0Ot/1ZLsOakf6KM2Aujuk4mrtjyRj
+	 fm0urO+zcuZTDS/qo1/4KzaqA9QQGiPWo9uaTjs8jzZx4qYZF1PB/hflfWcTv5TfXFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793350419;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793350414;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=jHWa1WYOXlIaOcw1Lp9xeyazxvpFG7/2YuPJf/sHw6E=;
-	b=srV9YNg+BqiQdrPxFZXRj/JqMsm4RlQQYmI1SI681hbc9H/uTwyWE6yUF1pTVK/xN1Ik
-	 1GlrCy/3f98BiMOTI0tq2fW94qPMHsG+g4/xzn6yJr1ID3Kgzx2HjNUqJeppkYjIq1wrH
-	 copdjwUdBZ7SCmTq/GsVkh5F8DRo6GY8GwdOUkmrQBUCorVQEZ4hrD/a2DBdpKDm4FIE5
-	 ZtYdbrus23xAsg0VHRc6Yy2T+wB0IVaswXsClS4QoAC5ZcCjndaL2Db+hgGIx+aH/cBxm
-	 dVZ/dAmtfsacJySPeZ+zV1V/vukt/S12sc1WIHsGD1gWUqWc1UuCROqGLw5PG1tzglg==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=S/4+TRsoLshkvAwJpP+2abwX1YTP9lA99c9S8UzEXko=;
+	b=Uha8EYXfmPw0ZsapS2E6y6eZA+ZVOI6KxXBrXcEmCM8yKYiKsIQrRfW4P44Y9X5ysyYb
+	 YIQviWJnBN77PDamTSMtzdQZSA4ffR1uSp+5BMvscUW+WTp0FX0XwgneTlPJytkbugHzz
+	 kWZm0M7MiKNRSfarxqYbC9SreBhQVpEcTG/pu1fmRoYaq6G29y+yjw4zwK5vABZzliQLB
+	 Y5wFO5PS5X/YtEBgm/XEFA2gyhu19XuAvbql/oB7+VV9xgDL3fMTRV6UE6EHX3i+A1dSh
+	 Pbt0Juon4DuEOfuXgZu/QJHSASrOsy0hRyPVzXReLv/eL9xkf4+rgKWSm2/F52lv8Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iSS4T4T1;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="P/g6obrH";
 	arc=none smtp.remote-ip=198.175.65.18
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E094E606A333;
-	Fri, 30 Oct 2026 08:53:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E094E606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AE3606A31C;
+	Fri, 30 Oct 2026 08:53:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02AE3606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iSS4T4T1
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P/g6obrH
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793350419; x=1824886419;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7R5Q6OLG0Hv3DZ66D3ka0yTibw0AspYJGmy+QxvysnA=;
-  b=iSS4T4T1q0mxTnXHimvETMWVoopQa3sXq8fGgZiONd4prm3bo4AAzEeD
-   H37B5OQid5NG6gjYxzLpk2AeUzd9M4x1DfLuiQTQmB4NqnR6rsRJ8cj0Q
-   Tvbt2YbaJW81q8TyLEKqt7RGKTONo6eqp7Kf8IDZKR4uol5kGc7wZH5M/
-   wwSoABRSNjfey5w6Fb0wMrtIh4F0n/UJugeXMzMXFczoD2CHSoG/6RFbT
-   MQjmw2qc7aubRjUQbeI4YVd3f6yuxzC6Yyjsew/ZoPP1BnAbFPaZngdaM
-   UF/z7r2fm6SsWHr88gOhjL4KO6zE8ifmn2dYTEkcLncQ0QrcgEzzhiSMf
-   A==;
-X-CSE-ConnectionGUID: 3etKqwWXQXq26uMhLwP2Xw==
-X-CSE-MsgGUID: Q9OypKlzTV+RY0ps+VV4TQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2122580"
+  t=1793350414; x=1824886414;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=vn0ScrPaHzQTbUF3NhrfMrhAbRmenQcfaJaeeipfx8g=;
+  b=P/g6obrHaCq8Z7tX4qveKvQ29ONW0HimikMWKbIE8P90BPT/XY+y0vhT
+   R/Gtyx8WfVfKK/yLyRzgQgcF7y8Xqzm6ty7Hj8aLRt4DF17n3STeM2PV1
+   Kz0R0yIqhxDbXJkjkeLsVsvfhmNBEP71ibn0TmKVO5Ioik1dOV9CFqPFb
+   AMsZ7xU0DWT5HmCGnmR9fLk99Jm7/GGxMaNv8x1JV6ScP4A4yvuUBjmz0
+   +C+F5SAdI2LN5+KUv9tfnGv1co9/aDqmRkhmsh+UdFlsbRx4Y2kw5VOND
+   aGPxNYrZon2DD4q3L6zYgU5MiudwIjzUrplI1oGFf8wwmHSpUZspX3/d7
+   Q==;
+X-CSE-ConnectionGUID: Oae9db6PS3aockLXmd5XBg==
+X-CSE-MsgGUID: RqB5CScjRqKgLNKiMQgDOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2122553"
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2122580"
+   d="scan'208";a="2122553"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:53:37 -0700
-X-CSE-ConnectionGUID: p6DUTeyPSJuFejtWv2w6zQ==
-X-CSE-MsgGUID: okVd9qIKSFGnMHvJyl/Vhw==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:53:33 -0700
+X-CSE-ConnectionGUID: THJi/VY9QqmldCAK8fTjkg==
+X-CSE-MsgGUID: hwV2OnitRo24IUn9CYVnIg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="7199528"
+   d="scan'208";a="7199498"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:53:38 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:53:34 -0700
 From: Chao Gao <chao.gao@intel.com>
-To: linux-kernel@vger.kernel.org,
+To: x86@kernel.org,
 	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Cc: yilun.xu@intel.com,
 	arjan.van.de.ven@intel.com,
 	Chao Gao <chao.gao@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [RFC PATCH v1 3/3] x86/virt/seamldr: Support multiple sigstruct pages
-Date: Fri, 30 Oct 2026 01:53:00 -0700
-Message-ID: <20261030085304.3886520-4-chao.gao@intel.com>
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [RFC PATCH v1 0/3] TDX: P-SEAMLDR: Support large TDX modules and sigstructs 
+Date: Fri, 30 Oct 2026 01:52:57 -0700
+Message-ID: <20261030085304.3886520-1-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261030085304.3886520-1-chao.gao@intel.com>
-References: <20261030085304.3886520-1-chao.gao@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,81 +90,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Each TDX module update image carries a sigstruct, which is passed along
-with the module binary to P-SEAMLDR. 'struct seamldr_params' has a single
-physical address slot for it, so a sigstruct can be at most one 4KB page.
+This series lets TDX module updates handle large TDX modules and
+sigstructs. It is an RFC for early review.
 
-TDX modules are moving to a post-quantum signature algorithm. Its
-signatures are far larger than the ones in use today, so the sigstruct
-no longer fits in 4KB.
+Dave, feel free to ignore this RFC for now. TDX developers, please take
+a look.
 
-The P-SEAMLDR ABI was extended for this. It now has four sigstruct
-address slots instead of one, for sigstructs of up to 16KB. A new
-'version' value of 1 tells P-SEAMLDR that this layout is in use.
+I would especially like feedback on one question. Does the kernel need
+to tell userspace that it supports large modules and sigstructs? I would
+rather not add such an interface.
 
-Extend 'struct seamldr_params' to match the new ABI.
+Userspace can simply try such an image, because a kernel without this
+series rejects it with -EINVAL before calling P-SEAMLDR, so a failed try
+has no side effects. If userspace should not have to try an update to
+find out, the alternative is to backport this series to all kernels that
+support TDX module updates. Userspace could then assume that any kernel
+with TDX module updates handles such images.
 
-Set 'version' to 1 only when the sigstruct spans more than one page. Old
-P-SEAMLDRs reject version 1, so this keeps updates with a single-page
-sigstruct working on them.
+====
 
-Do not query P-SEAMLDR for version 1 support. Userspace selects the
-update image and is responsible for ensuring the module is compatible
-with P-SEAMLDR.
+This series is a follow-up to the TDX module update series. As thanks
+for merging that series, we agreed to take on the TDX metadata cleanup [1].
+With the cleanup converging, we are starting on this work and expect it
+to be merged after the cleanup.
 
-AI was used under supervision to review code and workshop logs
+Today a TDX module binary can be at most 496 pages and its sigstruct at
+most one page. Both limits come from the P-SEAMLDR ABI.
 
-Signed-off-by: Chao Gao <chao.gao@intel.com>
----
- arch/x86/virt/vmx/tdx/seamldr.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+TDX modules are outgrowing them. A post-quantum signature algorithm
+pushes the sigstruct past 4KB, and new module features push the binary
+past 496 pages. The P-SEAMLDR ABI was extended for both.
 
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 09c8f6e30e9f..04681e67072f 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -32,7 +32,15 @@
- #define SEAMLDR_MAX_NR_MODULE_PAGES	(SZ_1G / PAGE_SIZE)
- 
- #define SEAMLDR_NR_MODULE_PA_ENTRIES	496
--#define SEAMLDR_MAX_NR_SIG_PAGES	1
-+#define SEAMLDR_MAX_NR_SIG_PAGES	4
-+
-+/*
-+ * The seamldr_params "version" field specifies the layout of the
-+ * structure. Version 0 supports only 1 sigstruct page while version 1
-+ * supports up to 4.
-+ */
-+#define SEAMLDR_PARAMS_VERSION_0	0
-+#define SEAMLDR_PARAMS_VERSION_1	1
- 
- /*
-  * The seamldr_params "scenario" field specifies the operation mode:
-@@ -66,7 +74,7 @@ struct seamldr_params {
- 	u32	version;
- 	u32	scenario;
- 	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
--	u8	reserved[104];
-+	u8	reserved[80];
- 	u64	module_nr_pages;
- 	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
- 
-@@ -232,7 +240,14 @@ static void populate_seamldr_params(struct seamldr_params *params,
- 				    const u8 *sig, u32 sig_nr_pages,
- 				    const u8 *mod, u32 mod_nr_pages)
- {
--	params->version		= 0;
-+	params->version		= SEAMLDR_PARAMS_VERSION_0;
-+	/*
-+	 * Use version 1 only for multi-page sigstructs, to stay
-+	 * compatible with old P-SEAMLDRs that lack version 1 support.
-+	 */
-+	if (sig_nr_pages > 1)
-+		params->version	= SEAMLDR_PARAMS_VERSION_1;
-+
- 	params->scenario	= SEAMLDR_SCENARIO_UPDATE;
- 	params->module_nr_pages	= mod_nr_pages;
- 
+The kernel rejects any image over these limits. TDX modules for Diamond
+Rapids exceed them, so without this series, TDX module updates fail on
+Diamond Rapids. This series is all that is needed to make them work.
+
+The image format that userspace uploads ('struct tdx_image') is generic
+enough and needs no change.
+
+== AI Usage ==
+AI was used under supervision to review code and workshop logs. It
+spotted a u32 overflow and an oversized allocation that removing the 496
+page cap would cause in patch 2. The module size limit in that patch
+prevents both. It also suggested renaming init_seamldr_params() in
+patch 1 and updating the comments around it.
+
+== Testing ==
+Tested on a Diamond Rapids system. Updates with a module larger than 2MB
+and an 8KB sigstruct work, which exercises both the chained page list
+and version 1 of 'struct seamldr_params'. TDs keep running across
+updates.
+
+[1]: https://lore.kernel.org/kvm/20261012094754.27702-1-chao.gao@intel.com/
+
+Chao Gao (3):
+  x86/virt/seamldr: Allocate 'struct seamldr_params' after image
+    validation
+  x86/virt/seamldr: Support large TDX module binaries
+  x86/virt/seamldr: Support multiple sigstruct pages
+
+ arch/x86/virt/vmx/tdx/seamldr.c | 154 ++++++++++++++++++++++++++------
+ 1 file changed, 127 insertions(+), 27 deletions(-)
+
+
+base-commit: a49e2d257594931772ab8f0024708c3076f3aa1d
 -- 
 2.52.0
 
