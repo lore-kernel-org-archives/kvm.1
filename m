@@ -1,125 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793398312;
-	b=zbmyX63O+XVoAJ5XFbs3GwswUyMlEYsKBA6QO8fvAeD66IsW+GmHuyzoVnJ+skDS0ZmK
-	 b4H5giznH5uaW4Sj3RwJ+TKXCrosRpphOlqxc2cexhMa+oSsB+v1+0hhUVjuthqEs5lLV
-	 rGahASGU2qI93WEj/HVbuAJKgVd5vPTgjT6G9d5QHZrIP1WFauc37thpLFepBLq3vBDgn
-	 +9CfC6EFenVr69r5478zdy28VGpUT70jJCctjqDYZqMWjUFDkB74WUfJV/QPb6KkqxTTT
-	 TvLxxpQ1h1iqa9SQe9Idx83cctV/QUmQIXALJXz3XVSNbax9w6KzVz8wUP99Q0ZqcXA==
+	t=1793398405;
+	b=Q+4AFdvrlyEeZsPSr6UHHq9Kdb8wNYhh7+BOGNjJbFvim8RWi6U359+Y3euQwrzJIGWN
+	 rWjrs5eBWuofvY59caGiOuV4xOuPlLyk99W9vlSwkA1skHtxLuff32f9W/pVMBoTwMdOc
+	 Y7q5HkC13hhg3DjR8zCjbajsedZCCzlGCBjLpTdI0yTpXdeKS7JjuxBunDTMNptpJWlUQ
+	 xe7DcFsxhw38gez+SbIQ/Fb/JUAGEKYwl/GXPIsgMilWqXo5ZLN6kRqeu0NAlJIH9ZTWB
+	 UOJl7DsuCSW/TflAStD5JU/eBzQ3n3vYmSWOvkYRTJ/vknZXvPX+gt4SKZ5BAIzK5mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793398312;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=tXgoYkViE4VytOJ1ykGKyHw4fz06RphPl2r/Hv88TT0=;
-	b=cDhJG+0stGDVMKCD9DiiVNVU2Lv7CLe/0ZkMCdWl31mDb6o+geRZhpMse9SN9Wu/ZD1a
-	 QGZYZIGpJ5KHEaPZO0tNetDdt1hcKaL2wLAcVTnQlJm8IySapjghvn5KN1VnFVmJedm5L
-	 UPBTZMMdJtM4LbVM884Cy3fCF5+5cPFbrFyLfYbSD4/cYsH6TAU6rYZMWAW0guXqcBDo2
-	 YNRWMa5bf5UbJ79YfCG6CNt5vT6RuVBvc/H/1ZxMQu/Ac9XwG51F48DgOhQyhNXLEuETC
-	 6wYJKz0fhRPk4tDmA5F83gprWrAgqkemRgytG4ETuWJLoRAHo69Ecw/+Dyab+Q23ZcA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793398405;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Ad9G+QJKWBbiVuK5/YoploQz2oiKmEWZuVEvN3yaNqw=;
+	b=hNOZxLgOFgbHhu3b4fVvlfJuo+Q7XENAY/TKtdQBuat+tdh1NlH5J8rymytDowOggJ6V
+	 0u/lJdHRRUlzpbJtTavzu43V4dk1Bg6Iq9Aay8xNDZ6w08KSnDGzPMxsPYvOgUVd1wtmn
+	 7o8pWhGFLiNkvzhR5UnPbpeOBcdmyyCqBB3Pomu4e/FfQSnkFU6MxJ+c/GfO257OWrbf3
+	 okVBZAPH1SNKa08HV+bpeV/g/oR0RQaqqro6/asGh/mOp3xY4r40hbvueBMWgNo5SLXYm
+	 tTlz+LeBSnWxZBCCIX/hCFiic6NXZ92ISeaGNwA0kxVlhPI8Od5e149WpX3H/f1mCew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=dqxmOs2m;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=wMGWV101;
-	arc=none smtp.remote-ip=202.12.124.152
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7ObQvDf;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46F7606A31C
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 22:11:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B46F7606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77A1606A31A;
+	Fri, 30 Oct 2026 22:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=dqxmOs2m;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=wMGWV101
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3AC1E7A0056
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 18:11:51 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 30 Oct 2026 18:11:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793398310;
-	 x=1793484710; bh=tXgoYkViE4VytOJ1ykGKyHw4fz06RphPl2r/Hv88TT0=; b=
-	dqxmOs2m/gIsgdLpZeuW2qJjO3FH01shgdc4UET5J24XscReJ9eYGVqqypQjWFNn
-	8j3fRQPq/gnOgSBpz+/mxzwDEBamYEfNVyJ8eXgliLojv9eW9k0KF0DeP7ykCI+Q
-	RXD+E+yBMaFZ/S4PeG+M5PldC+qMgH5UvOaX4qxyLY5QRmIC+7FJRjFAwX0Kzd0D
-	RdrzCszF+Yo9I8z15XZd6hqpmXOG2JOoR//iCilRpdiMY8+10adQiW/qvTDhT+7y
-	kAL0nPXWb0JF4vfzYBpiU9viFYdIPb4sg7/1fIl7R2W0UOJenAz5hnKVOwiL8WQT
-	kRgcz8ymthRkD6ELglGzDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793398310; x=
-	1793484710; bh=tXgoYkViE4VytOJ1ykGKyHw4fz06RphPl2r/Hv88TT0=; b=w
-	MGWV101N3ZFQcJc0tybcBExNav0t4QKjza4NSNxq3LKGBvakvkiaTw1tKOJnFcVO
-	QYEfhn7Eljpm+rNV5B3gcaXrDv6Xf6Hlvq17j3Uia5l6DjnTnH32uXfjJvtLPgDk
-	EjgpXF8M7/Z6P8ok49NEFbzu5V3g4SQGg+vrWRTB6amRN3H3uVhQtvq/945K1Ubm
-	FD5Hg26Gpn1LGE+ihWekei3C5mzXdVCKaGqim/Fg+KchNHtaKFfvVUsKw6PPesJ3
-	wXsqGmUxQTx10mxLE+dLWrfLJOM287b51XfOpsn0H08JWv0cr6plXI6nDpLFWNwX
-	vZ9HHAi9Pv9WnPjKERH8w==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793398310; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:VWUxyceljeLkmH7gE7eVIhOgLFpJAC/yP9OPa1P9kqnsTwa
-	tttgICAKicjSdx1eBmj3vO5UHv1D7xFsiriyIxmry6AaJYxtdqFW2AwPIVtaIB8A
-	caDKeh08tCZD/8nKiUkhlgGKiVIlFeDvKcjRgCwY5d+m/j6p/wuoS2K3HOzgKWm+
-	ReoBTwSAfY90IQ5Oo4/PyONJ934loi5YfR3Bu+5eD1gMmYuVgPMvh7ZY6+9A6MEm
-	czn6ISEXZJXrfXnMQ+DOf/ViNsFc0/sFOvPMJT/wXgPbwufi05PTzextB4fYKHir
-	giSZ9Vy+dVtSL52oHQeIdY7bV0q/QayjxPojEEQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:DgONvUTqafwhFIT3rT2ESTq3IcnXo1zf9eaYjcsaRDk=:Hp9vWDhBbMPLQFsuKFLEWhVvzXDEk59UA7t90Y/8GlU=;
-X-ME-Sender: <xms:JhblalmivAPSb4VSZp_FGf5s7DSQdj0EXbVXi4x13Q5jYRUq_62mZg>
-    <xme:JhblaoeO8OAGZq9MrRyj3DHD65LjOh18O0MI_NYBeh_TaS1PQqMU0VoRL0Gu17cnF
-    KoD9jNWgO71rzbA_sCWl9w1m6X0eD7OpfuUeqRfLy9-RNrUZBs49w>
-X-ME-Received: <xmr:Jhblar0At3K0Yd2R2Bgv1xGNHxy2FKv4kVe00h7fwHGnCmGzVwoBSiwSgEykVQ>
-X-ME-Proxy-Cause: dmFkZTE3mZ31q0YJ9Rj5hsq8CqCKrHZxkXIFtkac8HVfouhs9eU1VFOH5z4VWiokpy2GrI
-    mQn6kARDNxGG60jxL7dQHgnTMiUBwot3w2q25UK9Q2BmLGhMcfCprPz64dECn9TAndlKKQ
-    I0kuzq+Q556FpBOmZ+tyRtTSvG5wMxG//c4YFti13boC+TiQ/ku8PbpqCxoA4KHraFzaBg
-    J9CQGU9woMSm/bIQfk/y/0tuUh2jma7pJmLFpyA2eiAe97sKoJRCNS6AzZNp9O0DkDY6Hd
-    dNTL7JIMIYB9r1BWJ5qxXs62SiRKVL5Z8wZbIlDlsrczQWNjCiWKGh8zdzP/cD/E3kE5ee
-    qI1y/N77zBjrzKjpvbV9A/NC+o6tmUfFtnpYri52y9XYgta1E3uWWDmUeP4b7blKVYCcix
-    CXi6E70MDLGt8E5KeWf6Gwuj05DHHdX9MhU3F9XUIeOMfo5rfQpjwgJrIvZeyzoIr7jqI3
-    +59mwXmP0fwGuybfU5tS+t0N+qlzzscBDSkSsVCPtbAGhEygVw3VrWCi1ELo2sk4dsTGp6
-    YGgsKtw+I1yw6WnG16mcDLst6BFhVpmTYgXYzRtvKfZvGrtieXkS7yYxVVVsWmmRY8L+D4
-    0K5Sp5ADTemBD5WvJKn+E+KZlUVW4iz7UEbNhmI2iczjzdiQmc73PQO/4pww
-X-ME-Proxy: <xmx:JhblatkDkz1BzVa1vxn6rupzJSdvrmY2lEAAUJ6JX10Sogl_D3j3UQ>
-    <xmx:JhblakZAK83c23EXfu_gvOeDSvwaUPS6j5AWtnsF0FcqoQ52zahNnQ>
-    <xmx:Jhblajreq_kClNcHAj69Gcn1xKXkLsZy8Cg-Z7kT09VgGmMHybrp6Q>
-    <xmx:JhblaiiunuM1x_4dfyl74FoQA35EQWBphtVC33Hx4QubnuK82Nry5w>
-    <xmx:JhblajYKi8E2SQwF5S7Y3uHiSKU8tQkLlJ17UUyq-pcuNcSDqv1Vkllk>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Oct 2026 18:11:49 -0400 (EDT)
-Date: Fri, 30 Oct 2026 16:11:46 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Omar Elghoul <oelghoul@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
- farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
- frankja@linux.ibm.com, imbrenda@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v11 5/5] vfio-pci/zdev: Add VFIO FMB device features
-Message-ID: <20261030161146.5af10847@shazbot.org>
-In-Reply-To: <20261028154352.15108-6-oelghoul@linux.ibm.com>
-References: <20261028154352.15108-1-oelghoul@linux.ibm.com>
-	<20261028154352.15108-6-oelghoul@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7ObQvDf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4501F00A02;
+	Fri, 30 Oct 2026 22:13:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793398404;
+	bh=Ad9G+QJKWBbiVuK5/YoploQz2oiKmEWZuVEvN3yaNqw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=G7ObQvDfVzQMhL9YU3BBDjDOOiDuO5NdUysaQvuK8wMrnjXG9HCwCj4Aq8P+3LhCv
+	 Lfj9ol/XzrhECCeeJDlrMfPvdLs99VU5hIynwGeqJ0fqUUcei+MlogrsyRVV+Zpstd
+	 mrF6/Z8KRz04ryc4QfLIdnU9XjZ2C7ze57sXl5h+2R9KPIolmWKywEXajvIgTL3TXg
+	 gZ6VI6fFuK3cGqO5g8aQnRPOGXb7z2Y2jKbHHcyufb3fWewhk3WoiEA+vhOKk6PNr6
+	 gT2IfgZBM0rpdV82D27h8YhrCrjJDNwToEd/T3VexyuO7N49HwZMkzIk2gJ6lQHHXj
+	 csZYBM8+MPCSA==
+Date: Fri, 30 Oct 2026 22:13:22 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Jim Mattson <jmattson@google.com>
+Cc: Zide Chen <zide.chen@intel.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+Message-ID: <auUQgRVFASkWtkoK@google.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+ <20260827223755.143247-12-zide.chen@intel.com>
+ <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -129,31 +63,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
 
-On Wed, 28 Oct 2026 11:43:52 -0400
-Omar Elghoul <oelghoul@linux.ibm.com> wrote:
-
-> Introduce new VFIO features for zPCI devices to provide FMB passthrough to
-> userspace.
+> > @@ -865,6 +867,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+> >         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
+> >         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+> >         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+> > +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+> >                 msr_info->data = 0;
+> >                 break;
+> >         default:
+> > @@ -931,6 +934,12 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+> >                 if (!msr_info->host_initiated)
+> >                         pmu->global_status &= ~data;
+> >                 break;
+> > +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+> > +               if (data & pmu->global_status_rsvd)
+> > +                       return 1;
+> > +               if (!msr_info->host_initiated)
+> > +                       pmu->global_status |= data;
+> > +               break;
 > 
-> Allow the user to enable or disable the FMB using the SET-only feature
-> VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE. Likewise allow the user to read the
-> latest FMB using the GET-only feature VFIO_DEVICE_FEATURE_ZPCI_FMB_READ
-> in the case when the FMB is enabled.
+> According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"),
+> IA32_PERF_GLOBAL_STATUS.CondChgd[bit 63] cannot be set by writing to
+> IA32_PERF_GLOBAL_STATUS_SET, because IA32_PERF_GLOBAL_STATUS_SET[bit 63] is
+> reserved.  In other words, it is not possible to save/restore
+> IA32_PERF_GLOBAL_STATUS when bit 63 is set.
 > 
-> Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c |  4 ++
->  drivers/vfio/pci/vfio_pci_priv.h | 18 +++++++++
->  drivers/vfio/pci/vfio_pci_zdev.c | 64 ++++++++++++++++++++++++++++++++
->  include/uapi/linux/vfio.h        | 30 +++++++++++++++
->  4 files changed, 116 insertions(+)
+> Because bit 63 is clear in pmu->global_status_rsvd:
+> 
+> 1. An intercepted guest WRMSR(MSR_CORE_PERF_GLOBAL_STATUS_SET, BIT_ULL(63))
+>    succeeds instead of injecting #GP(0) and sets bit 63 in
+>    pmu->global_status.
+> 2. When bit 63 is set in pmu->global_status (whether it was set by
+>    kvm_pmu_set_msr() or by intel_mediated_pmu_put()), the next
+>    intel_mediated_pmu_load() will try to write an illegal value to
+>    MSR_CORE_PERF_GLOBAL_STATUS_SET. I don't think we get a #GP, because
+>    every wrmsr is "safe" these days, but the write will be ignored.
 
-I think the only thing we never closed on from the vfio side is the
-merge plan.  If this goes in via s390 I'd want a topic branch against
-rc1 since there are a couple series floating around contesting for the
-same feature numbers.  Thanks,
+On SPR, it does produce a #GP that gets ignored (and logged) and the bit
+is not set.  Interestingly, on CLX, the write goes through and the bit
+is set. Didn't check other CPUs.
 
-Alex
+> OTOH, what about PerfMon v4 bits 58 (GLOBAL_STATUS_LBRS_FROZEN), 59
+> (GLOBAL_STATUS_COUNTERS_FROZEN), and 61 (GLOBAL_STATUS_OVF_UNCORE)?  Per
+> Intel SDM Vol. 4, Table 2-2, those bits are valid in
+> IA32_PERF_GLOBAL_STATUS, IA32_PERF_GLOBAL_STATUS_RESET, and
+> IA32_PERF_GLOBAL_STATUS_SET when CPUID.0AH:EAX[7:0] > 3.
+> 
+> When those MSRs are passed through in mediated mode, the guest can set bits
+> 58, 59, or 61 in hardware via IA32_PERF_GLOBAL_STATUS_SET. Leaving those
+> bits set in pmu->global_status_rsvd for pmu->version >= 4 will break
+> KVM_SET_MSRS(MSR_CORE_PERF_GLOBAL_STATUS) as well as any intercepted guest
+> writes to GLOBAL_OVF_CTRL / GLOBAL_STATUS_SET.
+> 
+> As I pointed out in patch 04/16, we can't pass through the PMU global
+> controls unless their reserved bits match hardware.
+
+I think there are two other relevant (but pre-existing) problems here:
+
+1. GLOBAL_STATUS_TRACE_TOPAPMI_BIT can leak from the host into the
+guest. If a host PT PMI arrives while the guest context is loaded, bit
+55 will be set for the guest, and the guest won't be able to clear it if
+OVF_CTRL is intercepted (it will #GP as it is reserved for the guest).
+Similarly, the value can't be restored through KVM_SET_MSRS.
+
+(I think the PMI may also be lost as LVTPC points at the mediated vPMU
+vector)
+
+2. On AMD, bit 58 and 59 have a similar problem. HW accepts those bits
+but they are reserved for the guest, so the guest can set them if
+GLOBAL_STATUS_SET is passed through, but userspace cannot restore them.
