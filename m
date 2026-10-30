@@ -1,68 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793329649;
-	b=hUQw0XbXAN55uKp4+crrnw2tkW8U1S643yKPVC/tFh0hC6CbavKO6OjpJarfl7npvYfT
-	 pAmHcbdT0pPg0duy+zuGGgkoobOoXxVxVvuOUvZPI3qrOBF+0yX3oJFAkYc59JZYTorGb
-	 gipTbX5cyzCJsh5Y526swyj1oM7zeu0Wi6g3DsmDIoMV1oE6SPjM4S/M+8uitrDCNlgpU
-	 eUByuIT23Rw1bVjNmWj4u9WjsTqvtpu8UURqq9a+FlggpgmP8hdoZ2z2Hk6IPBdlgumI6
-	 C6HEZ21yuFMtjNKs82zZFa4fryRhHx9vpuBqszqo/yE7QpivzxeZwlXqFijb1ZXZZpQ==
+	t=1793330992;
+	b=5aVYh6vTU9pvJVGlerkgZaXEwwd8GYgCh7ryZfL4U3SFvheTZsUxHIZ/PPAsfokQ5ETo
+	 YN9dqfsRGHXivTAWdX05O2Z85oqGLCkDb8kM/1y/ZZm2dG7OJry0zwhkKd0VD82BRIPF1
+	 /bCICJ69jAhoId7Mvu4+Rta6tgwRt8IRdlHnVq3/VXDyV5k3+qWYsh/F0CjxM4sRaTwaG
+	 vBHzK8RJHLrAgJU+JKaNwBN3QXC6InQb+LtxVMgY4T2hlra+rUjtDahqbaLK7JeyS5FB3
+	 UcqD+dByOX6BiEVHm94Wy6BeObbiN64pBN5TiS3E+DPj2Z12Fn6cdIwJCuaBcpxaKRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793329649;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=aHgpdCEoD5lWUeN6+WJA5Jj9bBqBJTPp6GiL3jJIPFM=;
-	b=xnyeA0gReQAVS5x6ZnIZqczBmfeB5/v1UXTrnGILDrqITBJFTBSe+F+DrAnXrSEnCH9W
-	 81667qVnzL3KL6HObvteLqgQPau8EW21PK9uCvNhsjDSppiDPWGAjeXnfmnyrUWWIb5AF
-	 GTaM1VV43ftlOm/iUOwEPs1L5enRTaWrlT2Ttu/ZzmQ7hFAJMuUOQ5M7HRyCIAEdGpEnH
-	 tOMab1lTyFh9sG3y4+vl1YzHWKR+pFH8HG3rqNmHNzCETcrPyagRPaY0jiKtDgsLIIY7U
-	 /xi25CrZtFoTP6D+C1aIDEtPd2p6NAHH+PRX/wytllAYEOIKfWjyW53i2wR5Jd4XCmQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793330992;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=dahY9MpT6qRl250d4uUuF1qZsWTwuAAtLrsM4UyodQY=;
+	b=mUFgcTZgsFn4kOC4Y7MjnmAjiYcmrr4fQX3TiidHBV+RNOKUG16xRciqn9jmO5vnFXbw
+	 1RCih27it8ZSNWNJymcG9SjH+iNH5rh12QM+s1Xiit2E5q4iNsRzuS8wiMhWcufn1mxit
+	 p5SyhPR+5wnWgg8Gv28QZU0hmm7z5FHg4j7p41oVSPrbk+8nSaFgvBpWIvLaOtAmw7+xq
+	 8xnFPXHzW5CZglHoo1UiL1sw/5BK0uFoWkC2Vt3rLgCQh6MU3jpMiMV9JVK4BFrZTJYX7
+	 bO4oXtOlVkl9xuIf+74H6L0dX3yb+8IRKpA5qbII9QCuTyFGphAHOZ2x86PnWReqwWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ihYm97t3;
-	arc=none smtp.remote-ip=198.175.65.20
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K+jOzsvZ;
+	arc=none smtp.remote-ip=209.85.210.176
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B90606A31C;
-	Fri, 30 Oct 2026 03:07:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65B90606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F927606A32A
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 03:29:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F927606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ihYm97t3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793329648; x=1824865648;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=O/zzEIHYeFxsYEQca3VGErkJGqkPr5bCwH/rsaqactw=;
-  b=ihYm97t3a28CsECZdxHKRbZ78yldgfhKlvtJuTy98/HhzNe1+lL/GHNg
-   z2ERSVxR9ss8xYEsfCUvbMFO5ZbhU+jdHFQ/c6Sj6asKpT5F10F4F3S4c
-   vN1a1xqbhJBJj6fYF5IDFOQMsSN3UQpRPnfAO41sHMOBl4JoAiPDBja+K
-   9gn9esvxkk6U+Rb2LV0gJjDXJU9sWr3FFr/i0x5mw7EvKsvYjOSxHklUZ
-   KSKDLrlz+HT/GQPhMNKeL4vrkL0KH6h4YSKMubN9zJXmA4KughoFO5JLz
-   HvtKnx6+GVJH6WGinIAI3c77dN/wzO7uxeMQMh8VSOnEk1ZCWFt0MuRGQ
-   Q==;
-X-CSE-ConnectionGUID: LrlwW726QsC4k9rs9uMoUQ==
-X-CSE-MsgGUID: AKU4fHEYR/u9oI0CvHpcWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2110465"
-X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
-   d="scan'208";a="2110465"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 20:07:28 -0700
-X-CSE-ConnectionGUID: dRudyGz6TzmyUXOiJlCqUw==
-X-CSE-MsgGUID: bu7g0lICRlKoS+ecWB/B8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
-   d="scan'208";a="5403253"
-Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 20:07:24 -0700
-Message-ID: <14cf71cd-35cd-45b1-a0fe-94d4a76e9e06@linux.intel.com>
-Date: Fri, 30 Oct 2026 11:07:20 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K+jOzsvZ
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-89f28c3ac7bso67759b3a.0
+        for <kvm@vger.kernel.org>; Thu, 29 Oct 2026 20:29:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793330992; x=1793935792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dahY9MpT6qRl250d4uUuF1qZsWTwuAAtLrsM4UyodQY=;
+        b=K+jOzsvZ8fin3aq2OVYoARcSRIp4cKZM1dLjFNCiPZB3P8CvDLZQvCxwfrpNUPqWll
+         yPhzZGmnQBxLkEdTB6YTG1dRqgAMlV3yDUX2z7sLf4/A3lJs+fUj1Gjx0J8CzNSvjHa2
+         /HJMIm5t1VpDT0X5dNFoGZKvXdJv6rcI7N0ayVH4viwXXpjWBQYW+kTlPyNEVURI92iR
+         qYxXi6UENCEHwMJtubWtm5TrHBTzpDnKwZkjBd0P8mnHEUuIIM1qcOej6mBdk/ZKDMTT
+         UkMerMaSwC8MmF6GhlSIcnfBv7ScFFacQdfwS7jQjwTwJyGoIP0yr3deSeFJha7k1Lli
+         9xCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793330992; x=1793935792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dahY9MpT6qRl250d4uUuF1qZsWTwuAAtLrsM4UyodQY=;
+        b=VNId0YBawlajGZ2Y2bpySPX999QK1Ids7lO9XeLDd3EoGYxDoY4qCk7qxsUMjzF20L
+         xBPVGc5o8OFXV6ZXlrm54jr+StlARV9EdGRoeNzvKSadZAPf3++rO6aRrsv2Cl9gg6OV
+         T+tGoXWwWvqObOojVvN6oztp1dC4x57qFyqBmpahYwJ7dN2kLnTGEBFJHpxAYiVWGe32
+         P99lZy6cnDbLCPDDMjLwW4uN130nNjNprKiXnm/KoM7v0rzeuyoxNo/mEBWZUnR72hjE
+         SRN5DRk9+UiWcp6qjC5HBVONHgiO+7G1AfendhJn90df2eGbSI8FgOY6RNRMGB2zpNGX
+         yBbQ==
+X-Gm-Message-State: AFq9FYLG1Xf8hUPg1RqyEK6ieZeAeEzpvPjEiIV17VsuRP83eyimOgj9
+	G7JpTS52/Zx1+k943be2H5idUcYfBJK87305PbtEW9YNUU77cTJfxsK0
+X-Gm-Gg: AYBFou08XILxyGRDAwZpYKsoswdBqG5bAbMJDruDayatOinlXxACAGMDHFGMX5pNea/
+	COaVgahaJNiMkPBj+OneSSjC09FanOQmjZP0gYlFAmMlvT9lTcXWCiB55iXpnCDYM6OP6USTjLV
+	sRBRgKibeCPRuMZjx2dH8RP74Q9ELa+gEFn2UdTAZ+jHu139TnnFFauqV5n3mwZynehV8QCyLRK
+	d5pb9oAFVzMO0o4CrfjL10EN+KOcwc3a8Rzi3CWBQL7rJydwZtuaSPwOqwjZmiwfcQTJpGemkxB
+	JtKmoP94LOuLj1uYAPh3bAyepscYttlAz6SxRpUQWCn5ZBIY6yYllEgh77w5umuFl+2dIZAhFYq
+	k4rcZypBIx9D6S8WTrc714fTw7ytOjoY/TZ+ABwicSdoSwUCfaC0Wy/dXq2VoZKsPzlYmnNsJsf
+	bWKlHHG68rKlXR4tFg9LItKOyimwDp2mgfypWYXFX/ogTxmv0FKtSVTA5lcnR/PESg/rgofGxWx
+	CseRPXT5GXhVwdpCzhh6KXCJHEoraYGlprYl3lI/tY7VlOWlCepV0R96LG99afUpx5RY2wNAZUj
+	nIRjo+MdYB3ct2yS+oyT2HIW6Sueb2JwAoCcnEHILQjnDcvZKwqSOKJyGsqTnq0dPN4/8xurSJB
+	hsQRMF79HLrSga8urwEySNjD1FfUSe2h+4Yla9xX4n5SKnKsrub8gVjbt1hEHKS9rY8oQZKtR
+X-Received: by 2002:a05:6a21:39a:b0:3e2:8fdc:a6c8 with SMTP id adf61e73a8af0-3e9290fd040mr1054244637.72.1793330991760;
+        Thu, 29 Oct 2026 20:29:51 -0700 (PDT)
+Received: from localhost.localdomain (S0106e0dbd1c8af8c.vc.shawcable.net. [24.85.96.29])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb0981c5desm111713a12.27.2026.10.29.20.29.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 20:29:51 -0700 (PDT)
+From: Mahmoud Abumandour <ma.mandourr@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mahmoud Abumandour <ma.mandourr@gmail.com>
+Subject: [PATCH v2 0/2] KVM: nVMX: Don't let L2's LMSW modify CR0 bits owned by L1
+Date: Thu, 29 Oct 2026 20:29:35 -0700
+Message-Id: <20261030032937.2813-1-ma.mandourr@gmail.com>
+X-Mailer: git-send-email 2.40.1.windows.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,53 +95,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v6 03/18] iommupt: Implement preserve/unpreserve/restore
- callbacks
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261025021930.674647-1-skhawaja@google.com>
- <20261025021930.674647-4-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261025021930.674647-4-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
-> Add iommupt ops for presevation, unpresevation and restoration of iommu
-
-... preservation, unpreservation ...
-
-> page tables for liveupdate. Use the existing page walker to preserve the
-> ioptdesc of the top_table and the lower tables.
-> 
-> Preserve top_level, VASZ and FEAT Sign Extended to restore the domain in
-> the next kernel. On restore, the domain has only the preserved features
-> enabled and all the other features are zeroed. This is ok since the
-> restored domain is made immutable and can only be freed. A kunit test is
-> added to verify that the IOMMU domain free can be done with trimmed
-> features.
-> 
-> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
-> ---
->   drivers/iommu/generic_pt/iommu_pt.h       | 155 ++++++++++++++++++++++
->   drivers/iommu/generic_pt/kunit_iommu_pt.h |  30 +++++
->   include/linux/generic_pt/iommu.h          |  30 +++++
->   3 files changed, 215 insertions(+)
-
-This patch looks good to me,
-
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+When L2's LMSW exits to L0 but not to L1, KVM emulates it with=0D
+kvm_lmsw(), which ignores vmcs12's CR0 guest/host mask, so L2 can change=0D
+CR0 bits that L1 owns.=0D
+=0D
+v2:=0D
+ - Patch 2: order the CR0 store before FNOP and check L2's whole CR0.=0D
+=0D
+v1: https://lore.kernel.org/all/20261029235040.12013-1-ma.mandourr@gmail.co=
+m=0D
+=0D
+Mahmoud Abumandour (2):=0D
+  KVM: nVMX: Don't let L2's LMSW modify CR0 bits owned by L1=0D
+  KVM: selftests: Verify that L2's LMSW leaves L1-owned CR0 bits alone=0D
+=0D
+ arch/x86/kvm/vmx/vmx.c                        | 15 ++++++++=0D
+ .../kvm/x86/nested_exceptions_test.c          | 36 +++++++++++++++++++=0D
+ 2 files changed, 51 insertions(+)=0D
+=0D
+=0D
+base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4=0D
+-- =0D
+2.25.1=0D
+=0D
