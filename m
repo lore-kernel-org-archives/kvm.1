@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793395276;
-	b=u4imACQzyQvUA/LQUm5+AZJAQgoiJ6POM2nxUXvAn56O98zMFq0MZ5Q4YY4CjKVDaCcq
-	 qvCVsFwwuLIbhaX8rd9HG2S4aPqYq4Bqger9lJpYY0VueHMEgx/zEw7cNyBlKT6cd2D6f
-	 4SFbMrWuK0xavuPicuNE+cqq0Da5u609jkXfINIMZCc43V297XtEKGD/6/nuqGimW4MpG
-	 NDSPxE1PlEHfHv4gb3zvpywghg7buS1eDqGH69uLEu1GRBkuh/KYmOvnT1jtWIw/Bdskd
-	 8woIJFt7PTG1Dlc+HcrTZWx8ct4LF9wYKh3ZBvozqHw7L4iQ89TQblKgOd+zVueBVEA==
+	t=1793395279;
+	b=BaF6BBhacGkWcrXdf+E56uC16bsCxq9384l4zQDd2mJtcjLJTFH1YY0GKvoEyy0EJ4O8
+	 QarjfmHPaCS/x5Oi2HVPD1hbfFgrMo1w4C4C22NMsidj/uDgn/iNIUQDXf8fdE58NFX1M
+	 gPA8xnKNeqptY3ukVdUrvSCLwiA9WeY1HkFmKYowvPxqsXAWM0Jyb9OdqNWiHJPhhn+NE
+	 6QdGiE9jc32yk5Tg0wF6t/NCvx/kqlqMBlI22T5WP9uTFU84B/u2d5P+o89GrrIsO5Yr6
+	 s7SoYJlkwz9ptxDZ2mBrRUqhD5F5O/J3g4sijIS8NxUSFb/p42IJB6RWN8lKWELRbZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793395276;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793395279;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
 	 In-Reply-To:Mime-Version:References:X-Mailer:Message-ID:Subject:From:
 	 To:Cc:Content-Type;
-	bh=GVfrMv/JwLPpbAn4FrjFqU3DE6u8ipaxUY48dYc7+h0=;
-	b=FEArOfECuuPVAQK5Xj2NMtEQqgwUalDhOqJw7kvef8kdNGZEb9HAimPrMUJaQPjV2io4
-	 1mU4OKppuPD5ylXXC++KwJ3WTqX4B14E2U562CiIjAUu+udPnhFC6S8PkDqIcKYXIJOmj
-	 jJ0yIxhI8tEKnTn0wBY1SVJ5RXt+YhgbG+fAxkFvoxCDS23yf1CpJYUmoEmPXE0CnV5mK
-	 CqyvHUHyl/zxZflua0wr/XIzYtFLfSMNPHR+8mKVxaP20MaS3M60p4azAUBaVUM/PIx5O
-	 yY0o7JDrIAaBuB77nLy3dj7xgrsAlhY9k5UcD6T5sYBb5aodx4M8+lwQQckPvRXS8iA==
+	bh=MEhWTFe6jtxX2Dal10Wapygbfs7VfCvFh36BKYtVScI=;
+	b=s+WjgrAezHOEzal2KUW6bpHx0MLRxnBvRcSJDxsqYA/NPxoflonwk/tv+8cDM1BrNdvJ
+	 tQpV4Y4Cx78OyIL1jbCYvA0bo1XgL2LCNhNqn1k/Dv7ia5PUawba9VKrirI/bCv4vjdH1
+	 o9nVldrgVgQxjblROm8+XOdKsSb1DSOPrFxQwPSP8zefn7vKWQ1SwFNlZfIZ8oy9nw8WH
+	 hAkzG7UUfVEv90XfN5OzOutO3tE2kHbZOz7ZAMZah8fUVolmTahkr52AqIiB/dAt8nYRd
+	 BoafmpLYLIevqkk+68PHQXdQHnvsZWsKKLJCxXPz1JaUDm8pDD59792AaJA0jyuCZRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Tuh4TM7o;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="L9/I4MRO";
+	arc=none smtp.remote-ip=209.85.215.200
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D6C606B79A
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:21:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87D6C606B79A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1540B60A3833
+	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 21:21:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1540B60A3833
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Tuh4TM7o
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e9d52f684fso11707725ad.2
-        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:21:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=L9/I4MRO
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd67466211bso605894a12.1
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 14:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793395276; x=1794000076; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793395278; x=1794000078; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=GVfrMv/JwLPpbAn4FrjFqU3DE6u8ipaxUY48dYc7+h0=;
-        b=Tuh4TM7oSQ5uc31/tj0In4W/mmQosgiHfmEnO8V5wmXtc43tZ4JxyAJCEDxd4DmrW7
-         9CJaCj8qIlrQw239S+bTeNURo+78+tkkts807CDGXazpAbLSvWz6iQyFBCzScAkbqtnx
-         jZCFyAoE+ygfuDiq+NAraXnkIDK8CMq+R+4PIHPTgtj79y+oge7GQtJOyqMmHFHp/lQ5
-         bgrWK6cyz8NgnVb1/PygMhQIEex4LuU/YQHGVuxnErULyltbYuc96ajn8Blzd609IRYO
-         lmQuX8pZxFu/CzJnLLckZs5O142gvdHQLJiQn0YelFSOgREnxgHvWiEaVkniMgNevuoG
-         Ja5Q==
+        bh=MEhWTFe6jtxX2Dal10Wapygbfs7VfCvFh36BKYtVScI=;
+        b=L9/I4MROpIUaWaVHMpI4y9WQFiUA/81ULVBw6yuBd7Fyu3T7XxSq8PdTk47iMRW6Qa
+         50Pv7uuRm/3e7vtQnJvjf3OeMhCYAqhEenMyN/aKGJO+oKLWAxWud/n7n9VgZ6pk2Ylv
+         4jVO3AxuEA39T4cxKWG9fS3EYmrSP6tBA+JRC3+1UulY959Ja5AebvO5Yqu+ip3Amuk/
+         w7oJ6GUD6/ki+gpXqVpccOWf4XmKD16mVBSuNxl8YVJy/UI5PTfC75+PHiz4B7/D2DTe
+         gMhOBccFyWL/5qNnG0n8WIQUZVxqV/v19M2L9QzggSp45iqgjxHjr/tjhUKaqY78n6hK
+         IPBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793395276; x=1794000076;
+        d=1e100.net; s=20260707; t=1793395278; x=1794000078;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GVfrMv/JwLPpbAn4FrjFqU3DE6u8ipaxUY48dYc7+h0=;
-        b=hjRzkfE25KLV8OXteeYhGhrK4VtYWx0lZ/P0QE9jJ+JONtNZ6dd+9fQB0jH0SDnqgU
-         F4DKbhsQuCkKq4sEY9/0n+2RPWNb7ZSK/O/uWZHPh6OCkPd8ZR0Q9/9qhp8SE1Cfw5OJ
-         XXTKhlSv38ubpT3Ds6hOkann9lzAAbX+ra+eDeEoUpU63gmhkvvm7mhYkP6fMVX8cRFO
-         KmIvulZxTrbi7zs7uRWpKxf1EINZdA+2KZZzMYdTJx/tgzDmMOVhjZPA7UXcoOfI56lF
-         jc6nSO9DW/CLOCD0jk7lrGkSZOczXcJydDlfSDdslDJUQtYztHgsurHut991vRjXW3Pf
-         MF1Q==
-X-Forwarded-Encrypted: i=1; AKwUvByN0XeqN7Ri972TsAdkMR4ZNU8DYDHk9PdISy6Xm7YVa3D+9B1B5YBnkOOHCPX3GGfY54s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ7ZUH9uXxOiga7HSETIaPqHNJ6bJWb8NbydtDqa1QYklu5Tycg
-	qsCWKEQrbx5ZNEumyMkr/rKiMlUtbheCoLG+YVfYGmS1NWDUhJYRTcwujm1JbF1sUW6sYS4l8oZ
-	wUVWN9A==
-X-Received: from plbme3.prod.google.com ([2002:a17:902:fc43:b0:2ea:884b:e7df])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cec4:b0:2e9:851a:7188
- with SMTP id d9443c01a7336-2eb3649c631mr36367485ad.23.1793395275725; Fri, 30
- Oct 2026 14:21:15 -0700 (PDT)
+        bh=MEhWTFe6jtxX2Dal10Wapygbfs7VfCvFh36BKYtVScI=;
+        b=w05ka0X+tFw5FHNvZJmuKWcO8y6wcvISrHGjOeWzMUievyxzzdPwMYvyKq4DxnYc56
+         +FSJlcWQN9MTCCNpmMpCUwbZfcvi7DRTOxi0pTCQ2Ib+V5pkk3UZ0TvRhkjpMmEjhm6s
+         +EVpSA2nO+rnRU4CuRop5+ZmqIaNVOct3zUwh6vXbc50OWX7nAWjWWA/7tdvNg/3PAqV
+         3y38w20+gP5ZSEUyevjQfB0funryXZSj5unXWIy36F84L+4MLpNen1kjVQJBZqsWooFT
+         B/hYCAbC3hB/+8P+IG53eDVRvc21GhqQGHgYj9r64o+8z763RvIZPqOznaQR8FTQO75R
+         NXnQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzpEsBhLSAW704BOqzdIESrXGt5SPpAO/Ut9pJS4o8TJphH9VO2XbC0BSGP/9Z0TaGXz8k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL+WlHHPL5sLDB2FfEfUVbVd0C5WLmG1K0CQWuyK+7cMPUj6qsW
+	HTd99/x7hQ5m8yHK9WHWldz7XA2YGmQjRxJWeMUEjYoF1VmjpqTbDp9hBZpC5stlBGmGSLHARA8
+	5oAH72w==
+X-Received: from pgbd28-n2.prod.google.com ([2002:a05:6a02:64dc:20b0:cd6:1088:b8f3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e8e:b0:3e1:c08f:c41a
+ with SMTP id adf61e73a8af0-3e928daac3fmr3216721637.49.1793395278183; Fri, 30
+ Oct 2026 14:21:18 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 30 Oct 2026 14:20:50 -0700
+Date: Fri, 30 Oct 2026 14:20:52 -0700
 In-Reply-To: <20261030212112.2598640-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,9 +82,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261030212112.2598640-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261030212112.2598640-3-seanjc@google.com>
-Subject: [PATCH v4 02/23] KVM: nVMX: Don't force a full nested VM-Exit when
- destroying a vCPU
+Message-ID: <20261030212112.2598640-5-seanjc@google.com>
+Subject: [PATCH v4 04/23] KVM: x86: Drop dead check on an existing memslot not
+ having any pages
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -93,103 +93,45 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 	James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-For all intents and purposes, revert commit b4b65b5642d6 ("KVM: x86: cleanup
-freeing of nested state") and go back to manually tearing down nested state
-when freeing a vCPU.
+Drop the should-be-impossible check on an existing memslot not having any
+pages.  Ever since commit 0577d1abe704 ("KVM: Terminate memslot walks via
+used_slots"), KVM returns NULL if there is no memslot.  Before that, KVM
+pre-allocated all possible memslots and relied on npages==0 to denote "no
+valid memslot".  The check on npages was deliberately left behind to aid
+debug, but that was over six years ago.
 
-When a vCPU is destroyed while L2 is active, KVM synthesizes a nested
-VM-Exit, which flushes the cached shadow VMCS12 back to guest memory:
+Side topic, there is no need to check for KVM_MEMSLOT_INVALID as it
+should be impossible to see an invalid slot while holding slots_lock, and
+more importantly, invalid slots preserve their original size, i.e. the
+npages check has nothing to do with to-be-deleted/moved memslots.
 
-  vmx_vcpu_free()
-  |-> nested_vmx_free_vcpu()
-      |-> vmx_leave_nested()
-          |-> nested_vmx_vmexit(vcpu, -1, 0, 0)
-              |-> nested_flush_cached_shadow_vmcs12()
-                  |-> kvm_write_guest_cached()
-                      |-> __copy_to_user(ghc->hva, ...)
-
-Accessing user memory via a memslot during VM destruction is broken, as
-there are no guarantees that current->mm == kvm->mm when the VM is dying,
-because the last reference to the VM can be put from a different process
-than the original creating processes.
-
-And even if the original process does put the final reference, during
-process exit, do_exit() calls exit_mm() before closing file descriptors, so
-vCPU destruction runs with current->mm == NULL on a borrowed lazy TLB
-active_mm.  If the borrowed address space has a writable mapping at the
-to-be-written userspace address, KVM will corrupt an unrelated task's
-memory since uaccess APIs, including __copy_to_user(), don't sanity check
-current->mm (and *can't* sanity perform KVM's current->mm == kvm->mm check
-since that is firmly a KVM-only concept).
-
-Furthermore, the shadow VMCS flaw is only the tip of the iceberg, as the
-MSR load/store lists mean that emulating a nested VM-Exit can read or write
-an arbitrary set of MSRs, e.g. if MSR_KVM_SYSTEM_TIME_NEW is in L1's MSR
-load list:
-
-      kvm_arch_vcpu_destroy()
-        kvmclock_reset() - takes pv_time off kvm->gpc_list
-        vmx_vcpu_free()
-          nested_vmx_free_vcpu()
-            vmx_leave_nested()
-              nested_vmx_vmexit()
-                __nested_vmx_vmexit()
-                  load_vmcs12_host_state()
-                    nested_vmx_load_msr() - writes the MSRs that L1 listed
-                  kvm_cpu_has_injectable_intr() - reads Xen's vcpu_info
-        kvm_xen_destroy_vcpu() - deactivates the vcpu_info cache
-
-processing the MSR write puts the "pv_time" cache back on kvm->gpc_list,
-and the next list_del() writes into the freed vCPU.  And as effectively
-pointed out by syzbot[*], attempting to fix each case individually is a
-losing game of whack-a-mole.
-
-Deliberately leave "nested_run_pending" as-is, because even though doing so
-creates potentitally inconsistent state, KVM should *never* consume said
-state while freeing a vCPU.  I.e. if leaving nested_run_pending set trips a
-sanity check or bug, then that just means there's more fixing to be done.
-
-Open code only the "free vCPU" path, i.e. keep emulating a nested VM-Exit
-when forcing a vCPU out of L2 via vmx_leave_nested(), as there are a number
-of updates buried in the nested VM-Exit flow that are needed if the vCPU is
-going to run in L1, e.g. clearing pending exceptions and MTF traps, setting
-the TSC offset+scale information back to L1, and so on and so forth.  Note,
-this means svm_leave_nested() is all but guaranteed to be buggy, but that's
-basically an open secret at this point and at least any bugs "only" break
-L1, i.e. don't corrupt host state as is the case for abusing nested VM-Exit
-when freeing a vCPU.
-
-Link: https://lore.kernel.org/all/6ac0145f.34119e79.2f92f3.0003.GAE@google.com [*]
-Fixes: b4b65b5642d6 ("KVM: x86: cleanup freeing of nested state")
-Cc: stable@vger.kernel.org
-Co-developed-by: Chris Mason <mason@kernel.org>
-Signed-off-by: Chris Mason <mason@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/nested.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/kvm/x86.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 9b0bfa2f854c..49c4529901c5 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -385,8 +385,15 @@ static void free_nested(struct kvm_vcpu *vcpu)
-  */
- void nested_vmx_free_vcpu(struct kvm_vcpu *vcpu)
- {
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+
- 	vcpu_load(vcpu);
--	vmx_leave_nested(vcpu);
-+	if (is_guest_mode(vcpu)) {
-+		hrtimer_cancel(&vmx->nested.preemption_timer);
-+		leave_guest_mode(vcpu);
-+		vmx_switch_vmcs(vcpu, &vmx->vmcs01);
-+	}
-+	free_nested(vcpu);
- 	vcpu_put(vcpu);
- }
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 32563a91fba9..cb8b60da5b11 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10043,7 +10043,7 @@ void __user * __x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
  
+ 	slot = id_to_memslot(slots, id);
+ 	if (size) {
+-		if (slot && slot->npages)
++		if (slot)
+ 			return ERR_PTR_USR(-EEXIST);
+ 
+ 		/*
+@@ -10055,7 +10055,7 @@ void __user * __x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
+ 		if (IS_ERR_VALUE(hva))
+ 			return (void __user *)hva;
+ 	} else {
+-		if (!slot || !slot->npages)
++		if (!slot)
+ 			return NULL;
+ 
+ 		old_npages = slot->npages;
 -- 
 2.56.0.385.gac671c819a-goog
 
