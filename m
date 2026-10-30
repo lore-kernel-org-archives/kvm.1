@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793340190;
-	b=yYgs6bRS/CpXJgolPtMM5vmOTy5n3rYQW7JhYO+EP5OmRp4HpxI+vVl/dE/5eFN0p+c3
-	 1AxqGTHBigfIN4tXsUMajzfN9qAsOOqEW4CmrJkoR0apLH9lnWA3cYDsIqxgJI1t/Ii16
-	 9cJxop5b+LGm47BvjkVkLSKX4xDyFhadnItbjljnk7Fo1KkEjj2KKxlWn3GKoPEQIUAvj
-	 jVaulFcqHpNw4/bLy0KLWY5g/H0kFPoIo+1ijZ9sYZzJzSrMZDnkF2/Iyiz1n+/ys7mgy
-	 CttAoPjJwI4Wt33EtOcvv/gGwtqifs7WcqkHgTWIjnXf6lRnW+V8rIJH73TcUZFCeVQ==
+	t=1793341616;
+	b=5ol1AMmTYJEMBmqmIz+DbfqeUCYiUFX1pdYzqFBhlEdkQXIl+B6uwUrANohWEEwRxSFQ
+	 ZAWAKRMCvhGZ6WtPtBn5dpmxuvtcw/Rt3Od2oIYyc/1An/iEd3NA2VYwa0V0dt2+o3Red
+	 f7SJnUzuIRmzDcZL+cxwlWotwr6Obu+qlBccB31kglYMkJqE/rCvetLQYRuyhL8LJiZFC
+	 fhtAcAqZ7MF/hA7OXhDS5JVYii20DjIsaXV88/SAvYChNqeL1JP0q2RsV7BE8+RSuFjkb
+	 pKyJDCWxAfxSbklUTyOp1qM6Qtxsj88bE4R8P8sqfkjwKVWYg/v5WQXb3DDIn9yc52A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793340190;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793341616;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=VtcJuCZbkTR1B/dAPiQGQiUlPLtsiDv+mz9ozJRNgs8=;
-	b=dtWfzOuqyEK9rnZ0hn00vgzVrBohv9ljZ0+CaYrhn3MdjB2OP4BGeWmsFlMKm+2I/pBG
-	 jpJ+ePMUqnAkDnp7hsXJ/4acatosM5hxwXWRVp5Qd4aiY6gix2+H8sXlcVbB6Dg/IDvp7
-	 u5a3iWyK0+swg1JGD63L0kBYvM3t3sM75sW4x3jChwJimuGNo0o8kK7h+NRiNnOeqOBUL
-	 /K8RcK3OFOfVTsH0aWq8diYwfV5l6fwU2Xsgvzwi7DZrFyUKuomC3aUJUY5eJRcrZmEqo
-	 KKD2IjuG9UFdLDxt3M/1+wbVZVxQzua3gRGRWt7Ex8SiBduOs5I29y013Ib56VWicpw==
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=JhYw9FXiZxPgqbrRz8FwW05sr+6zeX/Zi44jK4zh720=;
+	b=I9UOukFuv1TGe27Zg6U0C45s339YrVikINeDrJmltWdO9XM23RwnFdbKJZFTfOEVJ3J7
+	 ASemmpZYjlj7w+WogBZ+Kig3CuVcKFdoocBYGRpPjA7PIi3E6awcQuE6OHmSPc9rkGyYd
+	 ry0Oi6a9TEUEz6VNl8ra6Xbi21kLfED7KSFbcQXrrgiZMFjaCx4RrVUGZhMjZmoKQLHLk
+	 tFHDLgmbVNfX0l7arHUoPKxYRM6HcJPe3kk+0fJ0dnulla7BFJ9UNs100bS1LE45fewvV
+	 CbP4Fcw6kdG+vB8hTTmkU8mpumnqaucgUICsHBqwhy0Is1iNwNNBXbWwR8dFeKIjUQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MNF3r4Rj;
-	arc=none smtp.remote-ip=198.175.65.20
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DVe9g82l;
+	arc=none smtp.remote-ip=198.175.65.13
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C85606A31E;
-	Fri, 30 Oct 2026 06:03:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34C85606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE6C606A325;
+	Fri, 30 Oct 2026 06:26:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEE6C606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MNF3r4Rj
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DVe9g82l
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793340189; x=1824876189;
-  h=message-id:date:mime-version:cc:subject:to:references:
+  t=1793341615; x=1824877615;
+  h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=vkUod3HvNArzznyB/W3yEhAQuKbLtUYUiGRlZqqQ/h4=;
-  b=MNF3r4RjNRBz1SyeWA8WlkBvRCWOxSRriJeKM1IMzwW+ObJJAi+F02nM
-   FV+7Zjnpt+mVrEOnHvvz1zHU7qlqWkEiPhq3nLc5/0Sj1OoQlpqgeUO13
-   b++yE4KuzFG2i8oyqRNR4L5fcjRiDwd77VEDZCfLYLwrjCjjGmdNDmVOb
-   pGyyrlPPtLGVKJdVXhmzK1tqQ9Z8AuXuXr+BaUwKZ/PxdrJI9lJVC4W17
-   TRsfg2nFCH8lJlwQqFcKxr8QuItp3Ls6ocNh8OS8xcE8cpPu3u3lhNwBg
-   mam1TIOBLpfTXKGRoZ5HPCLP3ZfNdLLP3nnCaStNGI5Dt8ySu8AldiAMV
-   g==;
-X-CSE-ConnectionGUID: ER8ubMRdRduFGXH0RNHwAg==
-X-CSE-MsgGUID: T+T81dS0TCKU4bUqPi7gNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2122892"
+  bh=s7eqgc/SI1p9gYahWBt/ttGTws+dbHZkxYII3GftDTc=;
+  b=DVe9g82lHVrCRAFvUgpWOiYjVHyRCz//SF4Z+udQt6LP0RKvmtCE5hTs
+   mKiH2EZ610DBu/zrCvANx8au4Q/sT5rIe1agXZX6Vh+XIC6MRbxGAOVoS
+   6M+dbqEKfRdyDin62x7WBIlRzIZmhqENjpdM96vopw0PSP7BDH3MDNG1g
+   nmNqOsHBwhryj0ksLUFWJn8zTNGa3vqwrbGh3wD109P+cK05hEGgXcndc
+   d5/wdED+EX3skz1tDaS69LCAOnp58HwTyzyRlurz3HVt5T03yFlVv252Y
+   9g/SFVMj4RLEPTcECxJXs32D/M1lju/BwCquVnpGBZ7AvKsmaygZra4rR
+   Q==;
+X-CSE-ConnectionGUID: sjm9i6OnQ+q8ZCOLiPt+SQ==
+X-CSE-MsgGUID: LsIdoM9VSPiPNLaXZbHXtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="1977121"
 X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
-   d="scan'208";a="2122892"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 23:03:08 -0700
-X-CSE-ConnectionGUID: H0sUnuwZScqJCN0L146Q2g==
-X-CSE-MsgGUID: D4iZkS9vQCuTTp4m4goS+A==
+   d="scan'208";a="1977121"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 23:26:54 -0700
+X-CSE-ConnectionGUID: MYMGFIjwQnmnjmZ+puUUkg==
+X-CSE-MsgGUID: BzZNzsrZTIKFodwhqLiUMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
-   d="scan'208";a="5485151"
-Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 23:03:04 -0700
-Message-ID: <7e73da77-3cd2-491a-9ea2-68263f2b5d71@linux.intel.com>
-Date: Fri, 30 Oct 2026 14:03:01 +0800
+   d="scan'208";a="5268597"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 23:26:46 -0700
+Message-ID: <8fd0bb21-c273-4f43-8c08-5e82ea1ed8e5@linux.intel.com>
+Date: Fri, 30 Oct 2026 14:26:41 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,192 +73,114 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Pranjal Shrivastava <praan@google.com>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Vipin Sharma
- <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>,
- Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v6 08/18] iommu: Add APIs to get iommu and device
- preserved state
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261025021930.674647-1-skhawaja@google.com>
- <20261025021930.674647-9-skhawaja@google.com>
+Subject: Re: [PATCH v10 15/28] KVM: x86: Include CR4.FRED in the emulator CR4
+ write mask
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
+ David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-16-sohil.mehta@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261025021930.674647-9-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260911213659.2025974-16-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
-> The preserved state of the device and IOMMU needs to be fetched during
-> shutdown and boot in the next kernel. Add APIs that can be used to fetch
-> the preserved state of a device and IOMMU. The APIs will only be used
-> during shutdown and after liveupdate so no locking needed.
+On 9/12/2026 5:36 AM, Sohil Mehta wrote:
+> From: Xin Li <xin@zytor.com>
 > 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> Add CR4.FRED to the emulator's CR4 write mask.  Historically, CR4 was
+> restricted to its lower 32 bits in the x86 architecture.  With the
+> introduction of FRED, CR4 is expanded to use its higher 32 bits to
+> accommodate the FRED enablement bit at position 32.  Update the mask
+> to ensure the emulator correctly handles FRED initialization and
+> prevents the inadvertent truncation of high-order bits.
+> 
+> Signed-off-by: Xin Li <xin@zytor.com>
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 > ---
->   drivers/iommu/liveupdate.c       | 88 ++++++++++++++++++++++++++++++++
->   include/linux/iommu-liveupdate.h | 70 +++++++++++++++++++++++++
->   2 files changed, 158 insertions(+)
+> v10:
+>  - New patch
+> ---
+>  arch/x86/kvm/regs.h |  2 +-
+>  arch/x86/kvm/x86.c  | 12 +++++++++---
+>  2 files changed, 10 insertions(+), 4 deletions(-)
 > 
-
-[...]
-
-> +
-> +/**
-> + * iommu_get_preserved_data() - Get preserved data for an IOMMU HW
-> + * @token: Token used to preserve this IOMMU HW
-> + * @type: IOMMU type in preserved state
-> + *
-> + * Gets the preserved state of an IOMMU HW using token and the IOMMU type.
-> + *
-> + * Return: struct iommu_hw_ser on success, NULL if no preserved state found.
-> + */
-> +struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
+> diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+> index 4e641a6c20f9..ef46918daf43 100644
+> --- a/arch/x86/kvm/regs.h
+> +++ b/arch/x86/kvm/regs.h
+> @@ -8,7 +8,7 @@
+>  #define KVM_POSSIBLE_CR4_GUEST_BITS				  \
+>  	(X86_CR4_PVI | X86_CR4_DE | X86_CR4_PCE | X86_CR4_OSFXSR  \
+>  	 | X86_CR4_OSXMMEXCPT | X86_CR4_PGE | X86_CR4_TSD | X86_CR4_FSGSBASE \
+> -	 | X86_CR4_CET)
+> +	 | X86_CR4_CET | X86_CR4_FRED)
+>  
+>  #define X86_CR0_PDPTR_BITS    (X86_CR0_CD | X86_CR0_NW | X86_CR0_PG)
+>  #define X86_CR4_TLBFLUSH_BITS (X86_CR4_PGE | X86_CR4_PCIDE | X86_CR4_PAE | X86_CR4_SMEP)
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index e10ac6b280f6..f264bc9c35f9 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5552,11 +5552,17 @@ static int emulator_set_dr(struct x86_emulate_ctxt *ctxt, int dr,
+>  	return kvm_set_dr(emul_to_vcpu(ctxt), dr, value);
+>  }
+>  
+> -static u64 mk_cr_64(u64 curr_cr, u32 new_val)
+> +static u64 mk_cr0_64(u64 curr_cr, u32 new_val)
+>  {
+>  	return (curr_cr & ~((1ULL << 32) - 1)) | new_val;
+>  }
+>  
+> +static u64 mk_cr4_64(struct kvm_vcpu *vcpu, u64 curr_cr, u64 new_val)
 > +{
-> +	struct iommu_hw_ser *iommu_ser;
-> +	struct iommu_flb_obj *flb_obj;
-> +	struct kho_block_set_it it;
-> +	int ret;
-> +
-> +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
-
-iommu_get_preserved_data() returns the incoming state, while
-iommu_preserved_state() returns the outgoing state. The naming is
-confusing.
-
-How about using "preserved" for the old kernel before kexec and
-"restored" for the new kernel after kexec? For example,
-iommu_get_restored_state() would be consistent with
-dev_iommu_restored_state() and iommu_domain_restored_state().
-
-> +	if (ret)
-> +		return NULL;
-> +
-> +	iommu_ser_set_for_each(&flb_obj->iommu_set, it, iommu_ser) {
-> +		if (iommu_ser->token == token && iommu_ser->type == type)
-> +			break;
-> +	}
-> +
-> +	liveupdate_flb_put_incoming(&iommu_flb);
-> +	return iommu_ser;
+> +	u32 shift = guest_cpu_cap_has(vcpu, X86_FEATURE_FRED) ? 33 : 32;
+> +	return (curr_cr & ~((1ULL << shift) - 1)) | new_val;
 > +}
-> +EXPORT_SYMBOL(iommu_get_preserved_data);
 
-Why are different export macros used in the same file?
+It's a bit weird to do it based on specific features.
 
-   EXPORT_SYMBOL(iommu_get_preserved_data);
-   EXPORT_SYMBOL_GPL(iommu_preserve_domain);
+Also, I am not sure this is needed to do the special handling to preserve
+the higher bits.
+emulator has zero extended the higher bits in fetch_register_operand() if
+in non-64bit mode. I think we can just take the full 64-bit new value?
+Did I miss anything?
 
-Should these all be EXPORT_SYMBOL_GPL?
+And also for CR0, is the special handling needed?
 
 > +
->   /**
->    * iommu_preserve_domain() - Preserve an IOMMU domain across live update
->    * @domain: Domain to preserve
-> diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
-> index cdf8a82b7f1d..10fcdd41c7a1 100644
-> --- a/include/linux/iommu-liveupdate.h
-> +++ b/include/linux/iommu-liveupdate.h
-> @@ -13,6 +13,16 @@
->   #include <linux/liveupdate.h>
->   #include <linux/kho/abi/iommu.h>
->   
-> +/**
-> + * iommu_preserved_device_iter_fn - Callback for iterating preserved devices
-> + * @ser: Pointer to serialized device state
-> + * @arg: User-defined context argument
-> + *
-> + * Return: 0 to continue iteration, or a negative error code to abort.
-> + */
-> +typedef int (*iommu_preserved_device_iter_fn)(struct iommu_device_ser *ser,
-> +					      void *arg);
-> +
->   #ifdef CONFIG_IOMMU_LIVEUPDATE
->   int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler);
->   void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler);
-> @@ -52,6 +62,46 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
->   	return NULL;
->   }
->   
-> +/**
-> + * iommu_domain_restored_state() - Get restored state of an IOMMU domain
-> + * @domain: Pointer to struct iommu_domain to get restored state of.
-> + *
-> + * Return: Pointer to restored state on success, NULL on error.
-> + */
-> +static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
-> +{
-> +	struct iommu_domain_ser *ser;
-> +
-> +	ser = domain->domain_ser;
-> +	if (ser && (ser->hdr.flags & IOMMU_SER_FLAG_INCOMING))
-> +		return ser;
-> +
-> +	return NULL;
-> +}
-> +
-> +/**
-> + * dev_iommu_restored_state() - Get restored state of a device
-> + * @dev: Target device
-> + *
-> + * Return: Restored state pointer or NULL.
-> + */
-> +static inline void *dev_iommu_restored_state(struct device *dev)
-> +{
-> +	struct iommu_device_ser *ser;
-> +
-> +	if (!dev->iommu)
-> +		return NULL;
-> +
-> +	ser = READ_ONCE(dev->iommu->device_ser);
-> +	if (ser && (ser->hdr.flags & IOMMU_SER_FLAG_INCOMING))
-> +		return ser;
-> +
-> +	return NULL;
-> +}
-> +
-> +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
-> +				    void *arg);
-> +struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type);
->   int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser);
->   void iommu_unpreserve_domain(struct iommu_domain *domain);
->   int iommu_preserve_device(struct iommu_domain *domain,
-> @@ -88,6 +138,26 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
->   	return NULL;
->   }
->   
-> +static inline void *dev_iommu_restored_state(struct device *dev)
-> +{
-> +	return NULL;
-> +}
-> +
-> +static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
-> +{
-> +	return NULL;
-> +}
-> +
-> +static inline int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn, void *arg)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
-> +{
-> +	return NULL;
-> +}
-> +
->   static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
->   {
->   	return -EOPNOTSUPP;
+>  static unsigned long emulator_get_cr(struct x86_emulate_ctxt *ctxt, int cr)
+>  {
+>  	struct kvm_vcpu *vcpu = emul_to_vcpu(ctxt);
+> @@ -5593,7 +5599,7 @@ static int emulator_set_cr(struct x86_emulate_ctxt *ctxt, int cr, ulong val)
+>  
+>  	switch (cr) {
+>  	case 0:
+> -		res = kvm_set_cr0(vcpu, mk_cr_64(kvm_read_cr0(vcpu), val));
+> +		res = kvm_set_cr0(vcpu, mk_cr0_64(kvm_read_cr0(vcpu), val));
+>  		break;
+>  	case 2:
+>  		vcpu->arch.cr2 = val;
+> @@ -5602,7 +5608,7 @@ static int emulator_set_cr(struct x86_emulate_ctxt *ctxt, int cr, ulong val)
+>  		res = kvm_set_cr3(vcpu, val);
+>  		break;
+>  	case 4:
+> -		res = kvm_set_cr4(vcpu, mk_cr_64(kvm_read_cr4(vcpu), val));
+> +		res = kvm_set_cr4(vcpu, mk_cr4_64(vcpu, kvm_read_cr4(vcpu), val));
+>  		break;
+>  	case 8:
+>  		res = kvm_set_cr8(vcpu, val);
 
-Thanks,
-baolu
