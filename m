@@ -1,62 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793371496;
-	b=X0Wn9wAN/RjNNNpLbb/SI6o3RsHaIiW/kRP//JIURutRzXe1SuiVVoSbYeu/aPS/HNZE
-	 /E1Q7LZJ5aB9MIr2hA8zCs1TGUi9EZ5YDKsbLEaqqnDwF7fJ+f64VZALa9KE1CfP+qoPt
-	 Zh2gfGSrk1ZSH7H0bCVZuWxmP8Bys/T7hSCGRIbI5uH5Xa+eKhfTXtPsV/GhhhAY2NI/j
-	 E+3qbrs2XKSOZ+aO5YDHNZ+7Tjj279/HO5yKFPMW0Pdth+oz0E9vWIAqic6yREbOIIXvj
-	 n1xt5PSLD4hIYy85dJglRv2qXFw6nYmoANiGk2aTGlkLfeG/MWTfFdlYdp+/1OIuT1Q==
+	t=1793371656;
+	b=CZrF71xzZpwtbcm0gPni2nelb0zrsvHa4zO8H/EdQsTmlS7QXPv2FUW93r5e/41WDbKt
+	 7z4qIVrVpgXjVCRpT4KlnPV3YawliAq9icfaJfOhem4zSnLE5867qV/NBBw6BK5ZFquHn
+	 TUeh9r3wxAqLTAiPkUd5DYgZr0y+Wrimv1lPesLQ0sgGmNPwUuyonLhr/M7s9EpicAMvA
+	 PcrHofInVrKxrTKsUwduMe2ghFm23U8IVYWUX0b/rOQAukK4Lw8mWFXCi2mvCwGEKuz2z
+	 cgiwBw0zRsD2licO4RSpenKDgj9M1w36tDa+QXRS6s9bXjdKEGiu3KEcIZLJ4Zg34rQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793371496;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=H/AJXxh88ofL2EmTVTuJdaMcLODH3bnV50L91OVxIF4=;
-	b=41jkdjGC3VuRt1xI2qHidoGBs3l7gSJxFMtyfYdzP1sH5LO2T2uh/IbkPWtslBWgIV9U
-	 HN38G2EKfcTgR69CiZo3baYgmTycftEhcGCXxtGx7A/HVn0g2fTCwKGSz32NS/3QMAxyO
-	 2KhyVwgSsPuzIKnAdVmqeOJIa2hzKZmtboxGoFCuNOCLatmDL2GhPJuMyZIEBgyyKWa9H
-	 aIwyeXlYolQgzM0+W5CIjwrpUDdR6NK1y4X/WoH6urfRM3vibMj1/ryMNn82QFRnAoFLk
-	 Y9pT2HBVQWW36bCAXNb7heVhHdzYCtQASdqx8F1gJ8r8/ryIYtHdYqutAY2eMOfnUIg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793371656;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=sPlsd4bG0V+vrvx8aFKHI87T6e1+NNSF9v0SXVi9pes=;
+	b=BZxUywchuUn893KE8HtXQFH3RO7Ky9KkPtdIUqoD8T0M0HM/ZI8Jn0xTvEnkB7QfAhi9
+	 19yLvFm4r/RnIEjlHVdUKe6TyZSI9U6u001YrnTZ6vH6cfvW9IRGJUz615ay8Y7SeoiF7
+	 gYSUbAT4XfgMc40D30N8y6ap2Yg25XE4NtnnujftMHHu3UoriSduyzF98+FoBDSRsBdtr
+	 AfngnJz9LBUM5BXbs836gEEOufRTVwS110xOyf/cSbOwDveNbDoea4h0RbYA8kFF5FIr/
+	 bdJgwhayt/ojhZIkqXCRxIsLJZSETE65+n9qfYeuqP0vOHBfnmBSrULeFOyBiR/xi3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n8ejGIg+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7716A606A31A;
-	Fri, 30 Oct 2026 14:44:56 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=SSm48v6v;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DD0606A31C;
+	Fri, 30 Oct 2026 14:47:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82DD0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n8ejGIg+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5563E1F00A15;
-	Fri, 30 Oct 2026 14:44:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793371496;
-	bh=H/AJXxh88ofL2EmTVTuJdaMcLODH3bnV50L91OVxIF4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=n8ejGIg+7xN6FNYSqmWb0hOPwVuDl/KSi8E/gvF6eQHSLkfHmVTnR9jgvpHXgEwIQ
-	 Drap8g3sEvYxVD3aFlZeo2VQKFV6wKcxH3Qos9rv2UcwAQfYXEGfiepDt9Cm181B4M
-	 enOHAXl5G0QJsgzpz8XBaIsuIx/2iyaZ0zhPoFRNLEuAjdd4J9/CKNReWiszfL25zC
-	 kx4b5OMVeZRN2l5ruH+nn96mSyuUg1ldG54Ra78nfCtKqM7xSvfNFY2c6IKPCW22D7
-	 20NxJJLrg9SvK082uxVBpkNLv7G/JkOK1IH6Zhg9tvjZ4ED9MFDPqJLSlq5ZjO+ZNo
-	 Xox+ZDAqfb0xQ==
-Message-ID: <sashiko-outbox-191120@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 4/4] KVM: x86/mmu: don't zap the secondary MMU on
- permission upgrade
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?Q2FybG9zIEzDs3Bleg==?= <clopez@suse.de>, kvm@vger.kernel.org, linux-mm@kvack.org, seanjc@google.com, pbonzini@redhat.com
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- =?utf-8?b?bWFpbnRhaW5lcjpYODYgQVJDSElURUNUVVJFICgzMi1CSVQgQU5EIDY0LUJJ?=
- =?utf-8?b?VCk=?= <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261029143336.390231-7-clopez@suse.de>
-References: <20261029143336.390231-3-clopez@suse.de>
- <20261029143336.390231-7-clopez@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 14:44:54 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=SSm48v6v
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 565151595;
+	Fri, 30 Oct 2026 07:47:31 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A91DE3F673;
+	Fri, 30 Oct 2026 07:47:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793371654; bh=2y5Hd/vh9yVMqWeig/UanF1eUsK1+QrSqq6sGhcwPTc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SSm48v6v585NGj2S/xJPI2O483F1tfwhzpxf/qaSPaVIjKO6RIGXVTVMlRLqBaaXQ
+	 9lqZVtv9GVE8yrDveYOU0JxT+odoquId1L408SXmDrDMRK2+aGfNl6e6wdaf9PJzAq
+	 YazML+w1097RX3SWHYA4CIleFkjWb5q00oFOsOis=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 07/15] KVM: arm64: Add HDBSS per-vCPU buffer management
+Date: Fri, 30 Oct 2026 14:47:28 +0000
+Message-ID: <auSuAAmzoND1sy4c@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <6e2d5b81-1ae9-476e-897c-f6dc7079565c@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-8-zhengtian10@huawei.com> <at-bm_p_MHU3GmYn@LeoBrasDK> <6e2d5b81-1ae9-476e-897c-f6dc7079565c@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -65,257 +88,395 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Critical] KVM: x86/mmu: stale SPTEs in kvm_unmap_gfn_range() on hugetlb =
-PMD unshare
-- [High] mm: change_protection() revokes _PAGE_RW under MMU_NOTIFIER_RANGE_=
-PERM_UPGRADE
-- [Medium] KVM: x86/mmu: kvm_unmap_gfn_range() skips APIC page reload on pe=
-rm_upgrade
---
+On Fri, Oct 30, 2026 at 11:47:20AM +0800, Tian Zheng wrote:
+> 
+> 
+> On 10/27/2026 2:27 AM, Leonardo Bras wrote:
+> > On Tue, Sep 29, 2026 at 06:36:47PM +0800, Tian Zheng wrote:
+> > > From: Eillon <yezhenyu2@huawei.com>
+> > > 
+> > > Each vCPU owns an HDBSS buffer, described by HDBSSBR_EL2 (base
+> > > address and encoded size) and advanced by HDBSSPROD_EL2 as hardware
+> > > appends entries. Tie the buffer lifetime to the vCPU: allocate at
+> > > vCPU creation, free at destruction. The buffer is allocated zeroed,
+> > > so a stale producer index can only ever observe invalid entries.
+> > > 
+> > > Registers are programmed whenever the vCPU owns a buffer, regardless
+> > > of whether HDBSS is enabled. The feature can be turned on
+> > > mid-KVM_RUN, and hardware dirty-state updates write to
+> > > HDBSSBR_EL2.BADDR without any fault, so the registers must already
+> > > be in place by then. HDBSSPROD_EL2 is preserved across context
+> > > switches and vCPU migration.
+> > > 
+> > > Two details: the buddy order is kept separate from the HDBSSBR_EL2.SZ
+> > > encoding, since the two only coincide on 4KB pages; and kvm_share_hyp()
+> > > is unwound in kvm_arch_vcpu_create() when the HDBSS allocation fails.
+> > 
+> > Out of curiosity: why can't we allocate the buffers when dirty-tracking
+> > starts? (and free them when it stops)
+> > 
+> > Since we have to request the vcpus to guest_exit, and enable
+> > VTCR_EL2{HA,HD,HDBSS}, we could as well allocate the buffers and set the
+> > HDBSSBR_EL2.BADDR. In case the buffer allocation fails, we could just not
+> > enable HDBSS, maybe.
+> > 
+> > Buffer allocation could happen before the VCPU request, for every vcpu, or
+> > during the vcpu request, so every vcpu allocates it's own buffer.
+> > 
+> > Am I missing something, or is it just to make things easier?
+> > 
+> 
+> Hi loe,
+> 
+> Yes, allocating the buffers at vCPU creation does make things simpler.
+> 
+> I'd rather follow the x86 PML and dirty ring scheme: allocate at vCPU
+> creation. This avoids partial enablement when an allocation fails mid-
+> broadcast, the use-after-free window when freeing at logging stop, and
+> naturally handles vCPU hotplug during logging.
 
-commit eb63ff65a947838d12f405a5148038708c2ed0d7
-Author: Carlos L=C3=B3pez <clopez@suse.de>
+Ah, I see.
+Well, the problem of partial enablement is gone if the requester tries to  
+allocate all buffers for all vcpus, before requesting the vcpus to enable HDBSS.
+If one of them fails, then just don't request the vcpus to enable :)
 
-KVM: x86/mmu: don't zap the secondary MMU on permission upgrade
+As for the use after free: you can free the buffer at the vcpu request to 
+disable the feature, making sure it's not using it when you free the 
+buffer.
 
-This commit skips zapping secondary MMU SPTEs in kvm_unmap_gfn_range() when=
- an
-mmu_notifier invalidation has range->perm_upgrade set, leaving permission
-upgrades to be faulted in on demand.
+I agree that allocating at the creation of a vcpu is easier, but this can 
+receive pushback as a VM will have to carry this buffers for it's whole 
+lifetime, even though it may never use it. 
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index dc2aef72ffddc..a4258a8c0c899 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -1719,6 +1719,13 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct k=
-vm_gfn_range *range)
->  	lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
->  			    lockdep_is_held(&kvm->slots_lock));
-> =20
-> +	/*
-> +	 * Do not bother zapping SPTEs if this is only a protection upgrade.
-> +	 * Permissions will be faulted-in on demand.
-> +	 */
-> +	if (range->perm_upgrade)
-> +		return false;
+I suggest we try allocating at vcpu creation should only if dirty-tracking 
+is already happening, so we can enable the feature on the new vcpu.
 
-[Severity: Critical]
-Can skipping the zap in arch/x86/kvm/mmu/mmu.c:kvm_unmap_gfn_range() leave
-stale SPTEs pointing to freed 2MB hugetlbfs folios when hugetlb PMD page ta=
-ble
-sharing is active (CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING)?
+I agree that x86 may have chosen to do that for a reason, but if we don't 
+know the reason, or if it's not compelling for us, maybe we can just try 
+doing something better.
 
-When a guest backed by a MAP_SHARED hugetlbfs VMA faults in a 2MB page,
-huge_pmd_share() can map a shared PMD table into kvm->mm's PUD while KVM
-installs a present 2MB leaf SPTE and drops the GUP reference in
-kvm_mmu_finish_page_fault().
+> 
+> > > 
+> > > Signed-off-by: Eillon <yezhenyu2@huawei.com>
+> > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > > ---
+> > >   arch/arm64/include/asm/kvm_dirty_bit.h | 28 +++++++++++++
+> > >   arch/arm64/include/asm/kvm_host.h      | 13 ++++++
+> > >   arch/arm64/include/asm/sysreg.h        |  9 +++++
+> > >   arch/arm64/kvm/Makefile                |  1 +
+> > >   arch/arm64/kvm/arm.c                   | 14 ++++++-
+> > >   arch/arm64/kvm/dirty_bit.c             | 55 ++++++++++++++++++++++++++
+> > >   arch/arm64/kvm/hyp/vhe/switch.c        | 17 ++++++++
+> > >   arch/arm64/kvm/reset.c                 |  3 ++
+> > >   8 files changed, 138 insertions(+), 2 deletions(-)
+> > >   create mode 100644 arch/arm64/include/asm/kvm_dirty_bit.h
+> > >   create mode 100644 arch/arm64/kvm/dirty_bit.c
+> > > 
+> > > diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > new file mode 100644
+> > > index 000000000000..fe703f02626b
+> > > --- /dev/null
+> > > +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > @@ -0,0 +1,28 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > > +/*
+> > > + * Per-vCPU buffer management for HDBSS-based dirty page tracking.
+> > > + *
+> > > + * Copyright (C) 2026 Huawei Technologies Co., Ltd
+> > > + * Author: Tian Zheng <zhengtian10@huawei.com>
+> > > + */
+> > > +
+> > > +#ifndef __ARM64_KVM_DIRTY_BIT_H__
+> > > +#define __ARM64_KVM_DIRTY_BIT_H__
+> > > +
+> > > +#include <asm/kvm_pgtable.h>
+> > > +#include <asm/sysreg.h>
+> > > +#include <linux/sizes.h>
+> > > +
+> > > +#define KVM_ARM_HDBSS_DEFAULT_SIZE  PAGE_SIZE
+> > > +#define KVM_ARM_HDBSS_MAX_SIZE      SZ_2M
+> > > +
+> > > +/* 0 means unconfigured, fall back to one page per vCPU. */
+> > > +static inline u32 kvm_hdbss_buffer_size(struct kvm *kvm)
+> > > +{
+> > > +	return kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
+> > > +}
+> > 
+> > Why not set arch.hdbss_buffer_size to KVM_ARM_HDBSS_DEFAULT_SIZE at start,
+> > instead of testing it here like this?
+> > 
+> 
+> The size is set by userspace via ioctl, and we don't allow it to
+> be set twice:
+> 
+> ```
+> if (kvm->created_vcpus) {
+> 	r = -EINVAL;
+> } else if (kvm->arch.hdbss_buffer_size) {
+> 	r = -EBUSY;
+> } else {
+> 	kvm->arch.hdbss_buffer_size = size;
+> }
+> ```
+> 
+> If we pre-fill the default at VM creation, hdbss_buffer_size is
+> always non-zero and the -EBUSY branch would reject every attempt
+> to set a size. The same 0 sentinel also gates the dirty-ring
+> enable (a configured size conflicts with the ring), so it has to
+> mean "not configured".
+> 
 
-If host userspace later upgrades permissions via mprotect() over the VMA or=
- a
-PUD-aligned range (where hugetlb_split() does not unshare beforehand),
-mprotect_fixup() sets MM_CP_PERM_UPGRADE and
-mm/hugetlb.c:hugetlb_change_protection() marks the mmu_notifier range with
-MMU_NOTIFIER_RANGE_PERM_UPGRADE:
+It looks like there is a reason for us not to set the size more than 
+once. I have not figured it yet, do you mind sharing? 
 
-mm/hugetlb.c:hugetlb_change_protection() {
-	if (mm_cp_is_perm_upgrade(cp_flags))
-		mn_flags |=3D MMU_NOTIFIER_RANGE_PERM_UPGRADE;
-	...
-	mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA,
-				mn_flags, mm, start, end);
-	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
-	...
-		ptl =3D huge_pte_lock(h, mm, ptep);
-		if (huge_pmd_unshare(&tlb, vma, address, ptep)) {
-			...
-			pages++;
-			spin_unlock(ptl);
-			address |=3D last_addr_mask;
-			continue;
-		}
-}
+I ask because effectively what we are having here is the same effect: 
+kvm_hdbss_buffer_size() may return two different values depending on the 
+IOCTL being ran or not. So for it's users does it look like the expected 
+value changed mid way.
 
-With range->perm_upgrade set, kvm_unmap_gfn_range() returns false without
-zapping its SPTEs. However, inside the loop,
-hugetlb_change_protection() -> huge_pmd_unshare() -> __huge_pmd_unshare()
-clears the PUD entry (pud_clear(pud)) in kvm->mm, decrements the shared PMD
-count, and skips the rest of the 1GB PUD range without re-populating PTEs or
-issuing a non-upgrade mmu_notifier invalidation.
+What I am trying to understand: is it safe for us to change the perceived 
+value once? (default -> whatever the user sets) In which scenario is it 
+safe?
 
-Because the shared PMD table holds only a single rmap count across all shar=
-ing
-VMAs, once the other sharing VMA unmaps the range via
-__unmap_hugepage_range() -> hugetlb_remove_rmap(folio), folio_mapped(folio)
-becomes false while kvm->mm is already pud_none() and KVM still holds live
-SPTEs.
+In that case, can't we just allow that change to happen in that scenario, 
+instead of having a proxy function to return the ring size?
 
-When that folio is subsequently migrated or truncated,
-mm/migrate.c:unmap_and_move_huge_page() (or try_to_migrate() ->
-mm/rmap.c:__rmap_walk_file() stopping once rwc->done / folio_not_mapped() is
-true, or fs/hugetlbfs/inode.c:remove_inode_single_folio() ->
-hugetlb_unmap_file_folio()) sees !folio_mapped(src) and skips mmu_notifier
-invalidation on kvm->mm:
 
-mm/migrate.c:unmap_and_move_huge_page() {
-	if (folio_mapped(src)) {
-		...
-		try_to_migrate(src, ttu);
-		was_mapped =3D 1;
-	}
+> > > +
+> > > +int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu);
+> > > +void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
+> > > +
+> > > +#endif /* __ARM64_KVM_DIRTY_BIT_H__ */
+> > > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > > index 86a4d6e50934..c8fc29f3db75 100644
+> > > --- a/arch/arm64/include/asm/kvm_host.h
+> > > +++ b/arch/arm64/include/asm/kvm_host.h
+> > > @@ -425,6 +425,9 @@ struct kvm_arch {
+> > >   	 */
+> > >   	struct kvm_protected_vm pkvm;
+> > > 
+> > > +	/* HDBSS: per-VM buffer size in bytes (0 = not configured, use default) */
+> > > +	u32 hdbss_buffer_size;
+> > > +
+> > >   #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
+> > >   	/* Nested virtualization info */
+> > >   	struct dentry *debugfs_nv_dentry;
+> > > @@ -844,6 +847,13 @@ struct vcpu_reset_state {
+> > >   	bool		reset;
+> > >   };
+> > > 
+> > > +struct vcpu_hdbss_state {
+> > > +	struct page *hdbss_pg;		/* HDBSS buffer */
+> > > +	u64 hdbssbr_el2;		/* programmed into the CPU on load */
+> > > +	u64 hdbssprod_el2;		/* producer index, saved on put */
+> > > +	unsigned int buddy_order;	/* allocation order for __free_pages() */
+> > > +};
+> > > +
+> > >   struct vncr_tlb;
+> > > 
+> > >   struct kvm_vcpu_arch {
+> > > @@ -951,6 +961,9 @@ struct kvm_vcpu_arch {
+> > > 
+> > >   	/* Hyp-readable copy of kvm_vcpu::pid */
+> > >   	pid_t pid;
+> > > +
+> > > +	/* HDBSS buffer state */
+> > > +	struct vcpu_hdbss_state hdbss;
+> > >   };
+> > > 
+> > >   /*
+> > > diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> > > index 7aa08d59d494..7c71560b57e4 100644
+> > > --- a/arch/arm64/include/asm/sysreg.h
+> > > +++ b/arch/arm64/include/asm/sysreg.h
+> > > @@ -1039,6 +1039,15 @@
+> > > 
+> > >   #define GCS_CAP(x)	((((unsigned long)x) & GCS_CAP_ADDR_MASK) | \
+> > >   					       GCS_CAP_VALID_TOKEN)
+> > > +
+> > > +/*
+> > > + * Definitions for the HDBSS feature
+> > > + */
+> > > +#define HDBSSBR_EL2(baddr, sz)	(((baddr) & HDBSSBR_EL2_BADDR_MASK) | \
+> > > +				 FIELD_PREP(HDBSSBR_EL2_SZ_MASK, sz))
+> > > +
+> > > +#define HDBSSPROD_IDX(prod)	FIELD_GET(HDBSSPROD_EL2_INDEX_MASK, prod)
+> > > +
+> > >   /*
+> > >    * Definitions for GICv5 instructions
+> > >    */
+> > > diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+> > > index 59612d2f277c..ec2749af64fa 100644
+> > > --- a/arch/arm64/kvm/Makefile
+> > > +++ b/arch/arm64/kvm/Makefile
+> > > @@ -18,6 +18,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+> > >   	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
+> > >   	 vgic-sys-reg-v3.o fpsimd.o pkvm.o \
+> > >   	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+> > > +	 dirty_bit.o \
+> > >   	 vgic/vgic.o vgic/vgic-init.o \
+> > >   	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
+> > >   	 vgic/vgic-v3.o vgic/vgic-v4.o \
+> > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > > index d9ad765943d9..5ea4ac26995e 100644
+> > > --- a/arch/arm64/kvm/arm.c
+> > > +++ b/arch/arm64/kvm/arm.c
+> > > @@ -36,6 +36,7 @@
+> > >   #include <asm/virt.h>
+> > >   #include <asm/kvm_arm.h>
+> > >   #include <asm/kvm_asm.h>
+> > > +#include <asm/kvm_dirty_bit.h>
+> > >   #include <asm/kvm_emulate.h>
+> > >   #include <asm/kvm_hyp.h>
+> > >   #include <asm/kvm_mmu.h>
+> > > @@ -580,10 +581,19 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+> > >   	}
+> > > 
+> > >   	err = kvm_share_hyp(vcpu, vcpu + 1);
+> > > -	if (err)
+> > > +	if (err) {
+> > >   		kvm_vgic_vcpu_destroy(vcpu);
+> > > +		return err;
+> > > +	}
+> > > 
+> > > -	return err;
+> > > +	err = kvm_arm_vcpu_alloc_hdbss(vcpu);
+> > > +	if (err) {
+> > > +		kvm_unshare_hyp(vcpu, vcpu + 1);
+> > > +		kvm_vgic_vcpu_destroy(vcpu);
+> > > +		return err;
+> > > +	}
+> > > +
+> > > +	return 0;
+> > >   }
+> > > 
+> > >   void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+> > > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > > new file mode 100644
+> > > index 000000000000..f9aeb9f34ad0
+> > > --- /dev/null
+> > > +++ b/arch/arm64/kvm/dirty_bit.c
+> > > @@ -0,0 +1,55 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +/*
+> > > + * Per-vCPU HDBSS buffer management.
+> > > + *
+> > > + * Copyright (C) 2026 Huawei Technologies Co., Ltd
+> > > + * Author: Tian Zheng <zhengtian10@huawei.com>
+> > > + */
+> > > +
+> > > +#include <asm/kvm_dirty_bit.h>
+> > > +#include <asm/kvm_mmu.h>
+> > > +#include <asm/sysreg.h>
+> > > +#include <linux/gfp.h>
+> > > +#include <linux/kconfig.h>
+> > > +#include <linux/log2.h>
+> > > +#include <linux/mm.h>
+> > > +
+> > > +int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu)
+> > > +{
+> > > +	struct page *hdbss_pg;
+> > > +	u32 size;
+> > > +	unsigned int buddy_order;
+> > > +	u32 sz_encoded;
+> > > +
+> > > +	if (vcpu->arch.hdbss.hdbss_pg || !system_supports_hdbss())
+> > > +		return 0;
+> > > +
+> > > +	size = kvm_hdbss_buffer_size(vcpu->kvm);
+> > > +
+> > > +	buddy_order = get_order(size);
+> > > +	sz_encoded = ilog2(size) - 12;
+> > > +
+> > > +	hdbss_pg = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, buddy_order);
+> > > +	if (!hdbss_pg)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	vcpu->arch.hdbss = (struct vcpu_hdbss_state) {
+> > > +		.hdbss_pg = hdbss_pg,
+> > > +		.hdbssbr_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg), sz_encoded),
+> > > +		.hdbssprod_el2 = 0,
+> > > +		.buddy_order = buddy_order,
+> > > +	};
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
+> > > +{
+> > > +	if (!vcpu->arch.hdbss.hdbss_pg)
+> > > +		return;
+> > > +
+> > > +	__free_pages(vcpu->arch.hdbss.hdbss_pg, vcpu->arch.hdbss.buddy_order);
+> > > +
+> > > +	vcpu->arch.hdbss.hdbss_pg = NULL;
+> > > +	vcpu->arch.hdbss.hdbssbr_el2 = 0;
+> > > +}
+> > > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+> > > index 7875911c0506..922fc9260e11 100644
+> > > --- a/arch/arm64/kvm/hyp/vhe/switch.c
+> > > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+> > > @@ -19,6 +19,7 @@
+> > >   #include <asm/cpufeature.h>
+> > >   #include <asm/kprobes.h>
+> > >   #include <asm/kvm_asm.h>
+> > > +#include <asm/kvm_dirty_bit.h>
+> > >   #include <asm/kvm_emulate.h>
+> > >   #include <asm/kvm_hyp.h>
+> > >   #include <asm/kvm_mmu.h>
+> > > @@ -219,6 +220,17 @@ static void __vcpu_put_deactivate_traps(struct kvm_vcpu *vcpu)
+> > >   	local_irq_restore(flags);
+> > >   }
+> > > 
+> > > +static void __load_hdbss(struct kvm_vcpu *vcpu)
+> > > +{
+> > > +	if (!vcpu->arch.hdbss.hdbss_pg)
+> > > +		return;
+> > > +
+> > > +	write_sysreg_s(vcpu->arch.hdbss.hdbssbr_el2, SYS_HDBSSBR_EL2);
+> > > +	write_sysreg_s(vcpu->arch.hdbss.hdbssprod_el2, SYS_HDBSSPROD_EL2);
+> > > +
+> > > +	isb();
+> > > +}
+> > > +
+> > >   void kvm_vcpu_load_vhe(struct kvm_vcpu *vcpu)
+> > >   {
+> > >   	host_data_ptr(host_ctxt)->__hyp_running_vcpu = vcpu;
+> > > @@ -226,10 +238,15 @@ void kvm_vcpu_load_vhe(struct kvm_vcpu *vcpu)
+> > >   	__vcpu_load_switch_sysregs(vcpu);
+> > >   	__vcpu_load_activate_traps(vcpu);
+> > >   	__load_stage2(vcpu->arch.hw_mmu);
+> > > +	__load_hdbss(vcpu);
+> > >   }
+> > > 
+> > >   void kvm_vcpu_put_vhe(struct kvm_vcpu *vcpu)
+> > >   {
+> > > +	/* Saved under the same ownership condition as __load_hdbss(). */
+> > > +	if (vcpu->arch.hdbss.hdbss_pg)
+> > > +		vcpu->arch.hdbss.hdbssprod_el2 = read_sysreg_s(SYS_HDBSSPROD_EL2);
+> > 
+> > Above suggestion would need you to reload HDBSSBR_EL2 as well.
+> > 
+> 
+> Right, that reload is part of the ordering obligation above.
+> 
+> I think keeping the allocation at vCPU creation is simpler, but
+> let me know what you think.
+> 
 
-	if (!folio_mapped(src))
-		rc =3D move_to_new_folio(dst, src, mode);
-}
+I fully agree it's simpler, but we have to carry those per-cpu buffers 
+(that can go up to 2M each) for the whole life of the VM, which can be a 
+lot on a big VM.
 
-This leaves the guest with direct read/write access to the migrated or freed
-folio, and if the guest later faults on that GFN after a new folio is mappe=
-d,
-KVM attempts to replace the still-present leaf SPTE with a different PFN and
-hits BUG() in arch/x86/kvm/mmu/tdp_mmu.c:__handle_changed_spte():
+That being said, I'm not against it. But I think we should resort to it 
+only if we have a compelling reason not to allocate/free on demand.
 
-	if (was_leaf && is_leaf && pfn_changed) {
-		...
-		BUG();
-	}
+What do you think?
 
-[Severity: High]
-Is it always guaranteed that primary MMU entries retain _PAGE_RW when
-range->perm_upgrade is set?
-
-In mm/mprotect.c:change_protection(), newprot (vma->vm_page_prot) is passed=
- to
-pte_modify(), pmd_modify(), pud_modify(), and huge_pte_modify(). Because
-_PAGE_RW is not in _COMMON_PAGE_CHG_MASK, those helpers overwrite _PAGE_RW =
-from
-newprot. Whenever vma->vm_page_prot has _PAGE_RW =3D=3D 0 (such as MAP_PRIV=
-ATE VMAs
-or MAP_SHARED VMAs where vma_wants_writenotify() was true due to VM_UFFD_WP,
-soft-dirty tracking, vm_ops_needs_writenotify, or vma_fs_can_writeback),
-_PAGE_RW is stripped from any already-writable entry in the range unless
-explicitly restored:
-
-1. In mm/hugetlb.c:hugetlb_change_protection() and
-   mm/huge_memory.c:change_huge_pud(), MM_CP_TRY_CHANGE_WRITABLE is not
-   implemented:
-
-mm/hugetlb.c:hugetlb_change_protection() {
-	...
-	old_pte =3D huge_ptep_modify_prot_start(vma, address, ptep);
-	pte =3D huge_pte_modify(old_pte, newprot);
-	pte =3D arch_make_huge_pte(pte, shift, vma->vm_flags);
-}
-
-   Any already-writable hugetlb PTE or huge PUD has _PAGE_RW cleared during
-   mprotect() permission upgrades (e.g. PROT_READ | PROT_WRITE to
-   PROT_READ | PROT_WRITE | PROT_EXEC), UFFDIO_WRITEPROTECT(enable_wp=3Dfal=
-se)
-   across a range containing already-writable hugetlb pages, or
-   mm/userfaultfd.c:userfaultfd_clear_vma() on UFFDIO_UNREGISTER / close(uf=
-fd)
-   (which calls change_protection() with MM_CP_UFFD_WP_RESOLVE while VM_UFF=
-D_WP
-   is still set before userfaultfd_reset_ctx() updates vma->vm_page_prot).
-
-2. For 4KB PTEs in mm/mprotect.c:change_present_ptes() and 2MB THP PMDs in
-   mm/huge_memory.c:change_huge_pmd(), restoring _PAGE_RW depends on
-   MM_CP_TRY_CHANGE_WRITABLE from vma_wants_manual_pte_write_upgrade(vma),
-   which calls mm/vma.c:vma_wants_writenotify(vma, vma->vm_page_prot):
-
-mm/vma.c:vma_wants_writenotify() {
-	if (pgprot_val(vm_page_prot) !=3D
-	    pgprot_val(vma_pgprot_modify(vm_page_prot, vma->flags)))
-		return false;
-}
-
-   On a MAP_SHARED VMA where vm_ops_needs_writenotify(vma->vm_ops) is false
-   (such as shmem/memfd) and vma->vm_page_prot was set to read-only due to
-   VM_UFFD_WP or soft-dirty tracking, or in mm/mprotect.c:mprotect_fixup()
-   where vma_flags_reset_once() updates vma->flags before calling
-   vma_wants_manual_pte_write_upgrade(vma) and vma_set_page_prot(vma):
-
-mm/mprotect.c:mprotect_fixup() {
-	vma_flags_reset_once(vma, &new_vma_flags);
-	if (vma_wants_manual_pte_write_upgrade(vma))
-		mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
-	if (vma_flags_is_perm_upgrade(old_vma_flags, new_vma_flags))
-		mm_cp_flags |=3D MM_CP_PERM_UPGRADE;
-	vma_set_page_prot(vma);
-}
-
-   vma_wants_writenotify() returns false and MM_CP_TRY_CHANGE_WRITABLE is n=
-ot
-   set, so change_present_ptes() and change_huge_pmd() strip _PAGE_RW from
-   already-writable PTEs and PMDs. Even when MM_CP_TRY_CHANGE_WRITABLE is s=
-et,
-   can_change_shared_pte_writable() and can_change_pmd_writable() only rest=
-ore
-   _PAGE_RW if the entry is dirty, downgrading writable-but-clean shared
-   PTEs/PMDs to read-only.
-
-Because kvm_unmap_gfn_range() skips zapping on range->perm_upgrade, KVM kee=
-ps
-writable leaf SPTEs (PT_WRITABLE_MASK, shadow_host_writable_mask, and
-shadow_mmu_writable_mask) while the host PTE is now read-only, bypassing ho=
-st
-write-fault tracking. If a subsequent non-write KVM fault (such as an
-access-tracking fault or shadow MMU exec fault) resolves the read-only host=
- PTE
-with fault->map_writable =3D false, make_spte() clears shadow_host_writable=
-_mask
-and shadow_mmu_writable_mask on the present leaf SPTE and triggers the
-WARN_ON_ONCE in arch/x86/kvm/mmu/tdp_mmu.c:tdp_mmu_map_handle_target_level(=
-):
-
-	else if (is_shadow_present_pte(iter->old_spte) &&
-		 (!is_last_spte(iter->old_spte, iter->level) ||
-		  WARN_ON_ONCE(leaf_spte_change_needs_tlb_flush(iter->old_spte, new_spte)=
-)))
-		kvm_flush_remote_tlbs_gfn(vcpu->kvm, iter->gfn, iter->level);
-
-[Severity: Medium]
-What happens to the APIC access page reload in
-arch/x86/kvm/mmu/mmu.c:kvm_unmap_gfn_range() when range->perm_upgrade is tr=
-ue?
-
-Further down in kvm_unmap_gfn_range(), invalidations on
-APIC_ACCESS_PAGE_PRIVATE_MEMSLOT issue KVM_REQ_APIC_PAGE_RELOAD:
-
-	if (kvm_x86_ops.set_apic_access_page_addr &&
-	    range->slot->id =3D=3D APIC_ACCESS_PAGE_PRIVATE_MEMSLOT)
-		kvm_make_all_cpus_request(kvm, KVM_REQ_APIC_PAGE_RELOAD);
-
-When arch/x86/kvm/vmx/vmx.c:vmx_set_apic_access_page_addr() handles
-KVM_REQ_APIC_PAGE_RELOAD, it resolves the PFN with FOLL_WRITE:
-
-	pfn =3D __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_pa=
-ge);
-	if (is_error_noslot_pfn(pfn))
-		return;
-
-	read_lock(&vcpu->kvm->mmu_lock);
-	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
-		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
-	else
-		vmcs_write64(APIC_ACCESS_ADDR, pfn_to_hpa(pfn));
-
-If the VMA backing APIC_ACCESS_PAGE_PRIVATE_MEMSLOT is made read-only (e.g.=
- via
-mprotect(..., PROT_READ)) before the page is faulted in or while the backing
-page is migrated, swapped out, or unmapped, __kvm_faultin_pfn() fails after
-kvm_check_request() has already cleared KVM_REQ_APIC_PAGE_RELOAD, leaving
-APIC_ACCESS_ADDR uninitialized or holding a stale HPA.
-
-When write permission on that VMA is later restored via
-mprotect(..., PROT_READ | PROT_WRITE), range->perm_upgrade is true and the
-early return in kvm_unmap_gfn_range() skips requesting
-KVM_REQ_APIC_PAGE_RELOAD. Since APIC_ACCESS_ADDR in the VMCS is not updated=
- on
-demand during kvm_mmu_do_page_fault(), wouldn't this leave APIC_ACCESS_ADDR
-stale?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029143336.3902=
-31-3-clopez@suse.de?part=3D4
+Thanks!
+Leo
