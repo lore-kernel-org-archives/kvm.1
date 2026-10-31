@@ -1,57 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793402207;
-	b=h5P1YYPfbcxiRcl1sndFnyzScKmzmAPBJyeOjdK4D28ULpZypRVebMkZHUVtcfckaR2h
-	 O0ccI9RR5jPZB/kBJ+xK90VX1icnc3G6ZcyPyonWsosxolo+d2V70KK8spt/AMBWbLvVg
-	 mGS0Azc9VFlzv8lU0t5CQhwHhGrea2I4HxikxbyjMFsJfxeXaUt7Tp/XpnxU9Og/m0YHN
-	 XbPcRuvQayeRW1B35B0yd7xRJQcJimEoS/NCAL4AUucEK9bLKVCWMMZamhxB8y9wrY/Zz
-	 wNd9230oa+2eg2EzylKWFpDYHom3OGbE+1+80hmdQhHg/1qVfwgyLtmyTKKaABgHAzA==
+	t=1793408894;
+	b=sqPURV92J+NfHmz99IbzXHqLUFhiB5uzKsQFCOSG3bjH8IlrwfVNTT+v3B+H4DW5zdV0
+	 y+WFYO0U4TmvOCAiE/cF8hJFjVraW1W3ebia12DFT9+2DLnBWD8L8HLB3awS6X0JfcZNO
+	 ti+7N4aMbVCWxkD/Ln8mvjf7Ztg7xi5Jrgk2lYDTILSkA315dWe3CXSoDq1ivZZOfhzMX
+	 j1SrUkzhi2aDjzmPwVtasiX1c34tLNjPZ8vQrsobQs2uRhjwaQPmSgMp4tmLSnyaxd/gz
+	 PpasFgFh810jqJH++4l675rDbROXkq6y//famQu/Tu6ruxmZxwwebcKpO7sALS5xqHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793402207;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=GLP9wWiTUzqvaRv++L3rxBUC5FSfIL3i5/KGVA3kwt8=;
-	b=a3kE27mJ9+PxwoaIIojmTUX3MxnfzMwGKUQA/lMjwpB1Z9evUPsutOHLpigcjT6prWdK
-	 2pmqcigMeL117dcYPzkLXEgL7I7UMrH8VBXCjRxpAj/Ow/QVkEECHnb4ly6rwt5hiUVXU
-	 Cd/TUKbXaanMTv66JWWt1ofKVUKksAGFAngNhp/n+Ue0p/2eI0erPWoHVTpjp8/UP2Yya
-	 Ahdw5EygyE9OVyTQjH3S/Wf8mkHhabsu0Jxk4bpxkGUPSXEeajhZl7+x5pn7LvRCm15uv
-	 KEp6eUEV9ktXnJAtRnQdkx8HllIertxexCJWtQAXrYP/y46yWB9n0a49UHSzZI//FgQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793408894;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=UBGwpvxng8YWkU7ZTvAl2v1tzqyQSCQj5Ob46jz5lV4=;
+	b=G8JiBJOUSM/6LlSEwnWAl9150CsJGuWBIrWs9zfxD5zEUuaiOafXsQnVEihgmZm6dE+O
+	 pYNCzY3JmmLvo6+Hk5bpBiNr8sJUsuWpoAe4EmzKr3h9Gug/O9sFGWf0c23Pp2FowIKfy
+	 wR6wNQmtl77EA1I25n4hewql6nlsSZ6NsdB/l1eHVrlJuFTfH/l//mqLRVM5PDPuOA0qQ
+	 IJIULp1tll+c5jobQQG3Wq1sEEevXFjnYfqFiQyuORuJ4+QlHwBvWtFTLbejvlQreE5q1
+	 qDtPyaCizYGLFX4RYUyyjB9PeYcq6vlew2pMpb9sc/wpAeQGonCtsVmV5rvP7TIMuvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=baiy9D4L;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jnyaiDsG;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE80F606A31A
-	for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 23:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C97E606A31C;
+	Sat, 31 Oct 2026 01:08:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C97E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=baiy9D4L
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B011F000C1;
-	Fri, 30 Oct 2026 23:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793402206;
-	bh=GLP9wWiTUzqvaRv++L3rxBUC5FSfIL3i5/KGVA3kwt8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=baiy9D4LWfuAY7z8KDxP8onFyYnLuKiI9EZ6Mkmy/CfapGxeMmCkYfmT10kPfwA2Q
-	 MPd/K9hZI55/sEcs/dV9tcMESsNmp6K+qH6LWmBf40gA6wMIh8Ie8DWvfHtHZ2FXYf
-	 bogDllLpcs4Wr4Lz+bATPYRLfZXPsKIKlwJJQJBqLQHwiI4dEOGRoaAycmo95mQ0ip
-	 ePqGnlHGcu8rLlX12J2GddWMg2dF4OnRQYC7w2sh4SA2ZfgG4vF/VscWSBqGlNYQt+
-	 4Q5vtruZ8AV/sz8C+1GnqaSvcO8UI8tH/5khH/FFuGBlVUpPjPKanulqpDFZzJHMCR
-	 oarX44rFCstdA==
-Message-ID: <sashiko-outbox-191627@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 12/23] KVM: Destroy memslots immediately after
- mmu_notifiers are unregistered
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261030212112.2598640-13-seanjc@google.com>
-References: <20261030212112.2598640-1-seanjc@google.com>
- <20261030212112.2598640-13-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 23:16:45 +0000
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jnyaiDsG
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1079B40E02B7;
+	Sat, 31 Oct 2026 01:08:11 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bjktjXMRBRaY; Sat, 31 Oct 2026 01:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793408887; bh=UBGwpvxng8YWkU7ZTvAl2v1tzqyQSCQj5Ob46jz5lV4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jnyaiDsG1rK1Fyz9AS6XoWn5oQ4piwfCFwEVlyVXpiG2JJxf0XoFVS3USSHGZcIOh
+	 /2ehUaczjNbZyKNE3VVPLEpfx+ygcZC5wZI5uoq3Em2PL9t/xgyIUoPqrbFVsvpgJu
+	 LTXEnkhIfxSX4zXaLUGViZPA/62w59/kCr4G3UImLFfxbdSq/WoxL99bAILTx2YFCG
+	 /qj51yq3v9KXNRZqJtmg9q0Bs8t+L6XsIfEwZnYDxKgIfE7A7k3ZeiNTppZ7Tlno2M
+	 egldhHCqqZ3aKQn3gbI9H56yRfmdhiHwXPezHnJlRDC3JF7euQYMQBfH64ycnEswMF
+	 3gDuNucCUM4vVeTSk9H30c+t2TD+twyXTj6KnVQ4kEpSeIWZCCYeAmblA5+LwfJvco
+	 bgWK8XXnE0A2HT1Cch4WiWu13EL+bYLgax6cIMcFzR/aMlNExVwleNBTR2ChjE/47t
+	 XBs33kNw3exH9k7Kb9kq6Ez3viUjk0TGbbZKEpvJJ8dFqmKDwK0r7okGRbJd38gGgF
+	 kTYUOCk7GhEdiBxdW6CMzDt0XK1vms9hYrvlmP/HorQ9ev6mH4T1uD6tZ5+tg5p1wr
+	 Wh2QJJX2na94Yl/D/sut+jaSbPDD2prSgU/acl1gMHrmQy3VlxhDTyRss+Cq2Sz0u4
+	 Ka1T2u4fyXQjDlwhsYRDaVfo=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E386840E0298;
+	Sat, 31 Oct 2026 01:07:47 +0000 (UTC)
+Date: Fri, 30 Oct 2026 18:07:44 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Reinette Chatre <reinette.chatre@intel.com>
+Cc: Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, x86@kernel.org,
+	Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
+	mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+	kas@kernel.org, rick.p.edgecombe@intel.com,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] x86,fs/resctrl: Keep mbm_assign_mode in default
+ mode at boot
+Message-ID: <20261031010744.GFauU_YJdX2eV6GoHV@fat_crate.local>
+References: <cover.1793392128.git.babu.moger@amd.com>
+ <c1e5ef23e83ea663e9aa969e301fac20723a988a.1793392128.git.babu.moger@amd.com>
+ <3ebc7028-c559-4add-800a-614b29d66ba3@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,81 +86,29 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3ebc7028-c559-4add-800a-614b29d66ba3@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] KVM: PPC: Book3S HV: rmap_nested memory leak in kvmhv_release_al=
-l_nested()
---
+On Fri, Oct 30, 2026 at 03:08:09PM -0700, Reinette Chatre wrote:
+> To help future readers understand how we landed on this I think it may be useful
+> to add a link to the decision that resulted in this fix. For example: 
+> 
+> 	...
+> 	Leave mbm_assign_mode in default mode during initialization as decided in [2].
+> 	...
+> 	Link: https://lore.kernel.org/20260804191608.GDanI6eK2Q07w6pNcb@fat_crate.local # [2]
 
-commit 9c25a1b4a76e8526eb8a2b11e1b9e63893b0de80
-Author: Sean Christopherson <seanjc@google.com>
+I can fix that up when applying, yes.
 
-KVM: Destroy memslots immediately after mmu_notifiers are unregistered
+Any other Links I should add? I don't have a problem with leaving enough
+breadcrumbs for the future...
 
-This commit replaces active memslots with an empty memslot set and frees all
-memslots immediately after unregistering the MMU notifier in kvm_destroy_vm=
-(),
-prior to calling kvm_arch_destroy_vm().
+Thx.
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index fa548b12228ff..2eda12a52bf4b 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
+-- 
+Regards/Gruss,
+    Boris.
 
-[ ... ]
-
-> @@ -1310,12 +1329,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
->  		kvm->mn_active_invalidate_count =3D 0;
->  	else
->  		WARN_ON(kvm->mmu_invalidate_in_progress);
-> +	kvm_destroy_memslots(kvm);
-> +
->  	kvm_arch_destroy_vm(kvm);
->  	kvm_destroy_devices(kvm);
-> -	for (i =3D 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
-> -		kvm_free_memslots(kvm, &kvm->__memslots[i][0]);
-> -		kvm_free_memslots(kvm, &kvm->__memslots[i][1]);
-> -	}
-
-[Severity: Medium]
-Does hoisting kvm_destroy_memslots() above kvm_arch_destroy_vm() leak
-struct rmap_nested allocations in slot->arch.rmap on PowerPC Book3S HV when
-destroying a VM with nested virtualization enabled?
-
-In virt/kvm/kvm_main.c, kvm_destroy_memslots() replaces kvm->memslots[i]
-with kvm_empty_memslots and frees each memslot via
-kvm_free_memslot() -> kvm_arch_free_memslot() -> kvmppc_core_free_memslot_h=
-v()
-in arch/powerpc/kvm/book3s_hv.c:
-
-    static void kvmppc_core_free_memslot_hv(struct kvm_memory_slot *slot)
-    {
-            vfree(slot->arch.rmap);
-            slot->arch.rmap =3D NULL;
-    }
-
-which frees the slot->arch.rmap array without freeing the linked
-struct rmap_nested entries.
-
-Previously, those entries were freed before memslot destruction via
-kvm_arch_destroy_vm() -> kvmppc_core_destroy_vm_hv() ->
-kvmhv_release_all_nested() in arch/powerpc/kvm/book3s_hv_nested.c:
-
-    srcu_idx =3D srcu_read_lock(&kvm->srcu);
-    kvm_for_each_memslot(memslot, bkt, kvm_memslots(kvm))
-            kvmhv_free_memslot_nest_rmap(memslot);
-    srcu_read_unlock(&kvm->srcu, srcu_idx);
-
-With kvm_destroy_memslots() running before kvm_arch_destroy_vm(),
-kvm_memslots(kvm) now returns kvm_empty_memslots and the memslots have
-already been freed when kvmhv_release_all_nested() runs, so
-kvmhv_free_memslot_nest_rmap() is never called. Any struct rmap_nested
-entries remaining in slot->arch.rmap at teardown (for example, when
-KVMPPC_SECURE_INIT_DONE causes kvmppc_radix_flush_memslot() to return early,
-or when 4KB PTEs were replaced by a huge page in kvmppc_unmap_free_pte())
-will be leaked.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030212112.2598=
-640-1-seanjc@google.com?part=3D12
+https://people.kernel.org/tglx/notes-about-netiquette
