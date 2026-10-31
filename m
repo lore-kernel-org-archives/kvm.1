@@ -1,73 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793436004;
-	b=LSYWtdyE1zDOtYifLR0/yg200zJU5QghBoLXzUSeWDtpzYIdYMRsjJL+wwq0sTiBXrnP
-	 s8hIXufgmqgyRg+k2U6L7X5xSrJacDW4SMCJvbdjB0rLvZv9jzTQakzA8R3HtIQ4aMGj7
-	 D4ocMud6YOXNmXayLGGQkzGcuXGWIakHWGWFqtmCEDoTh3LsSnw34Vz4aL/rnMPKPsfFy
-	 xr4NUY1scw1fQr/oPuCzBboePUfena2yrXXv+scb/BPicmebwfHbKr5K4nQWj2ppJa2IB
-	 /CGcTDY9EWb45tc2CLPJJgMZDJG/rXnv1TyUkN6XdcQRCRR96XnJ2fQQuU99HNhTexw==
+	t=1793436134;
+	b=XzvKuzMmEA15U3WzOG901Et2C9dmpS+dxjnuyPYVp6UUsRBzhHxEM4EoTtiCQqLGgfoe
+	 ronxxGbmv1J7R1TeLU249z20ZLj0mse9iuEvHoZLqqvpRzZCVR+QcVcgKSQ7bnKEeeHm7
+	 fyA27tU4TjlBgGOtODWnsosvxoEOB7vpIuThNa3Jqga1WO0DPJZ5VWW4YqY4CZuyoSS19
+	 ZLI1mxhHjENOz7AJnKhjqMZ2MT+zU7P/juTQEYeF1ydS0LoFJb/rkDCqkj9mZaufn/7rX
+	 FZPVnYLc2NzLMq1i46y7wWVuKiwpUJDdov6a7yKl0S9WLaXWCP2j8iJjJeRggcLbD8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793436004;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793436134;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
 	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=U6dIqI1m3iSWXQcZuC6+/1Cqc1LHwr0ImOGfQ6XK9co=;
-	b=g72Obx0DohCEUcUDdM21TeDoC4+d8P4/+RE42z2bzWQ5/Thh2AivcU21zeTYhkkG+NcL
-	 PJbCj/owJzBU67UfzXSl4Mg5qFaFd5DVUf0oSSE4yhrperVMlvaTMqHl5Mk2JIaBGfh6M
-	 jj/mmSpDLVb8jLTiwEXfDN+YhPbv6RPeIjg66HJ1aqr7j1pxMs5ArufvUMKBNW2alLvXX
-	 ItcwdaeZOrP0NMjEAzzXaj5xLuJgzqjd1cP622kR6pHKZ0kNo6zVXCEJqzDPf8gyVrOfn
-	 o6Q0NMuaGec2QfFaYuxOlPSntJvWmwPykWvgdyvBAzHbTpepzpesrDJJLUb3VNnU+xA==
+	bh=tShMXLKCMvW84MR4ySY6XES2av2t71FI1bctsItOmxw=;
+	b=wMLfX8jf6G3vUV6Dgrn4oserGgZgd/dgoLywxUHdIJxtxS3g4qMMibMT6oERRjQpdt19
+	 YricGSl30uUXv/25IvknBeyhFW2JjyJXX9a2OIZeg20/8FuUeNDMNZbjrYhj9gVJyjaXC
+	 CdQ+enyMkYtMDDFtQKKhAs5UXDXDoHuGQHAVqygSD3dOB1XgZJbaC8KvHWrSgENqc98y4
+	 VUWrlSd3s0FccNuX3PZmKmsEoU3bqWJfDLGenjZ9evplzhFwuy8uUd6m6vLQEq7/ZD0ZW
+	 yjL/5I0lCS7YzH7q1fLOrlSsbqbrPyKf8b0eFi/1+SFylTjBCvwMZ/AZVUpGrEp8Rsg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cispa.de;
 	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=ZrQUVmV0;
+	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=R+kVdD6f;
 	arc=none smtp.remote-ip=134.76.10.21
 Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF245606A31C;
-	Sat, 31 Oct 2026 08:40:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF245606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06725606A31A;
+	Sat, 31 Oct 2026 08:42:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06725606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=ZrQUVmV0
+	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=R+kVdD6f
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
 	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:
 	Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=U6dIqI1m3iSWXQcZuC6+/1Cqc1LHwr0ImOGfQ6XK9co=; b=ZrQUVmV0H9f/oXSHSzP6b8SYg2
-	hIpc/1endH/Fi0znR62eXqzVPuYsRKBey3DpvpeS97GCohS5qWScXewmzCQRJcDe/fnLVta39TMEA
-	bJ2ANOBPwSzlIzmT8UoWQ10ovxNnYiRwQyiwq9l3FOAq7/UW8bWKgUw/w6wroLul6bln/F71cQ0nS
-	5NV0+TV+942f/Ua6m24ylmrEZSitYCKGCiXP+4OGdbQgTpzT5u/81OLDQ8Cqbm+DKFGAoTNfwybXV
-	Pu84KhYqoAg0rIyAoeKdyOANDZFQHAXLgsYFEShL3R9Xmt/qviMJ3cv/f8TfiCYT14FkRByLUnWtf
-	O5A/UKbA==;
-Received: from mailer.gwdg.de ([134.76.10.26]:60238)
+	bh=tShMXLKCMvW84MR4ySY6XES2av2t71FI1bctsItOmxw=; b=R+kVdD6fTFVMTUfVtM2/eXJUsl
+	TegM7xETbOtuK+vBJsm29UfTdgwBYIl59hPdr+juHreghUJhNK52521woxJrGrGZ55N+gtJiJM51r
+	PDvtqWDAYuVlf9N1MWuLFlWm4U/vNsRKUalnFLB02FnVLlyD3MKcMgld99EgCQ61L1A4yLxXk0KNo
+	8Mfk4QOzwncccBEyp0Rb//dsXMx3SNDx8tEvVzEJz/RcWjn4eWkZ5zTWAGemIMu2Cht47F0aThpjx
+	ZPh3evinTEttORH49SuM/iDQ+u0XXKnYPVkSCsYs2pvkPAGePevOwz7S3s0Ak6JIpzGNgP1hejMs+
+	YAqBWrTQ==;
+Received: from mailer.gwdg.de ([134.76.10.26]:37756)
 	by mailer.gwdg.de with esmtp (GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN4d1-001WSU-10;
-	Sat, 31 Oct 2026 09:39:54 +0100
+	id 1xN4fD-001WUA-0w;
+	Sat, 31 Oct 2026 09:42:10 +0100
 Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
 	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
 	(GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN4d0-000C1b-2t;
-	Sat, 31 Oct 2026 09:39:54 +0100
+	id 1xN4fC-000CZT-2n;
+	Sat, 31 Oct 2026 09:42:10 +0100
 Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
  (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Sat, 31 Oct
- 2026 09:39:53 +0100
+ 2026 09:42:10 +0100
 From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
 To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<amirmohammad.eftekhar@cispa.de>, <amirmohammadeftekhar@gmail.com>
-Subject: [BUG] KVM: nVMX: guest-reachable KVM_BUG "Guest always owns CR0.TS" via stale vmcs02 CR0 read shadow
-Date: Sat, 31 Oct 2026 09:39:43 +0100
-Message-ID: <20261031083943.64279-1-amirmohammad.eftekhar@cispa.de>
+CC: <yosry@kernel.org>, <jmattson@google.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <amirmohammad.eftekhar@cispa.de>,
+	<amirmohammadeftekhar@gmail.com>
+Subject: [BUG] KVM: nVMX: stale vmcs02 VPID/XSS-bitmap/MSR-counts when L1 toggles ACTIVATE_SECONDARY without dirtying vmcs12
+Date: Sat, 31 Oct 2026 09:42:03 +0100
+Message-ID: <20261031084203.64383-1-amirmohammad.eftekhar@cispa.de>
 X-Mailer: git-send-email 2.54.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,101 +88,113 @@ X-Spam-Level: -
 
 Hi,
 
-Reporting a guest-reachable KVM_BUG() in the nested-VMX CR0 handling. On a
-default host it is a WARN plus a forced self-kill of the VM (-EIO on every
-vCPU); on a panic_on_warn=1 host it takes the host down. It is not a
-memory-safety bug. It still reproduces on top of the in-flight "KVM: nVMX:
-Honor L1-owned CR0 bits for LMSW" v3 series
-(<20261030213747.2611815-1-seanjc@google.com>): that series fixes the LMSW
-arm, but not the two paths below.
+Reporting a stale-cached-vmcs02 bug: a few vmcs02 fields that are written only on
+the dirty_vmcs12 rare path are *decided* by state that can change without setting
+dirty_vmcs12, so they survive stale across nested entries. This is the Intel twin
+of the nSVM stale Virtual-VMLOAD/VMSAVE bit you recently took as a real bug. The
+one that matters is an L2->L1 TLB isolation break via a stale VPID; there is also
+a host-side KASLR disclosure on PEBS hosts (details below). Not host
+memory-safety, and not reachable on the kvmCTF config (I checked; see the end).
 
-The assertion
--------------
-handle_cr() treats a CLTS CR-access VM-exit from the guest as impossible:
+Root cause
+----------
+CPU_BASED_VM_EXEC_CONTROL is a SHADOW_FIELD_RW (vmcs_shadow_fields.h:49). An L1
+VMWRITE of it does not exit under hardware VMCS shadowing, and handle_vmwrite()
+does not set dirty_vmcs12 for shadowed fields (nested.c:5874 only for
+non-shadowed). copy_shadow_to_vmcs12() then syncs it silently at VMRESUME.
 
-	case 2: /* clts */
-		KVM_BUG(1, vcpu->kvm, "Guest always owns CR0.TS");	/* vmx.c:5725 */
-		return -EIO;
+prepare_vmcs02_early_rare() (nested.c:2411) and prepare_vmcs02_rare()
+(nested.c:2630) run only when dirty_vmcs12 is set. Two of their writes are gated
+on nested_cpu_has2(), i.e. on the *primary* ACTIVATE_SECONDARY bit:
 
-That holds only while the vmcs02 CR0 read shadow stays equal to
-nested_read_cr0(vmcs12). prepare_vmcs02() establishes it:
+  - VIRTUAL_PROCESSOR_ID  = vpid02 vs vpid01		(nested.c:2431/2433)
+  - XSS_EXIT_BITMAP       written only if XSAVES set	(nested.c:2691)
 
-	vmx_set_cr0(vcpu, vmcs12->guest_cr0);
-	vmcs_writel(CR0_READ_SHADOW, nested_read_cr0(vmcs12));	/* nested.c:2842-2843 */
+Everything else is re-derived from the live vmcs12 on every entry: vmcs02's
+secondary controls in prepare_vmcs02_early(), and every TLB-flush target
+(vmx_get_current_vpid(), nested_vmx_transition_tlb_flush(), handle_invvpid). So
+after an ACTIVATE_SECONDARY toggle done with a shadowed VMWRITE and no other
+non-shadowed VMWRITE before VMRESUME, hardware runs L2 on the VPID/XSS-bitmap
+chosen for the *old* activate state while the rest of KVM follows the new one.
 
-and handle_set_cr0() re-establishes it on the MOV-to-CR0 exit path
-(vmx.c:5623-5643). When L1 owns CR0.TS (cr0_guest_host_mask.TS=1), prepare_vmcs02()
-also sets CR0.TS in the vmcs02 guest/host mask (nested.c:2808-2809), so a CLTS
-by L2 *can* raise a CR-access VM-exit, and KVM relies on
-nested_vmx_exit_handled_cr() (which reads vmcs12) to reflect it to L1 before
-handle_cr() ever runs.
+Manifestation 1 (VPID): L2->L1 TLB isolation break
+--------------------------------------------------
+ACTIVATE 0->1 (VPID turned on): vmcs02 keeps vpid01, but handle_invvpid() and the
+KVM_REQ_TLB_FLUSH_GUEST emulation target vpid02, so L1's INVVPID for L2 never
+reaches the entries L2 actually holds. L2 keeps a stale translation after L1
+remapped the page. The 1->0 direction is the mirror (a missed architectural entry
+flush). On 6.1.74 the 0->1 / missed-INVVPID case is the live one.
 
-The break
----------
-Three L0-side writers run while is_guest_mode() and overwrite CR0_READ_SHADOW
-with the raw CR0, bypassing the nested merge. The write is unconditional:
+Dynamic, host 7.1.2, pinned (a pCPU migration does a global flush). L2 maps GVA
+0x80_0000_0000 -> page X, reads it; L1 flips ACTIVATE 0->1 by a shadowed VMWRITE,
+remaps the PTE to Y, issues single-context INVVPID for vpid12=1, VMRESUMEs; L2
+reads again:
 
-	vmcs_writel(CR0_READ_SHADOW, cr0);			/* vmx_set_cr0, vmx.c:3466 */
+  U1 (control, VPID on from launch) INVVPID rflags=0x2, read#3 = Y (fresh)   as architected
+  U2 (ACTIVATE 0->1 by shadow VMWRITE) INVVPID rflags=0x2, read#3 = X        DEVIATION: translation survived L1's INVVPID
+  U3 (U2 + one non-shadow VMWRITE) read#3 = Y                                 as architected
 
-- M1: a runtime KVM_SET_SREGS2 -> __set_sregs_common() -> vmx_set_cr0(). This is
-  reachable from the guest through QEMU's vmport: an IN/OUT to port 0x5658 from
-  L2 makes QEMU issue a runtime KVM_SET_SREGS2 of the current register set, which
-  round-trips the real CR0 (TS=1) into the read shadow. It needs L1 to expose
-  0x5658 to L2 (vmport is default-on in QEMU).
-- M2: RSM back into L2. leave_smm() re-enters L2 before rsm_load_state_64() ->
-  rsm_enter_protected_mode() -> kvm_set_cr0() loads the SMRAM CR0 into the live
-  L2 (ordering from 72e9cbdb4338, "fix SMI injection in guest mode"). This needs
-  only an SMI taken while L2 runs (SMI IPI from a sibling vCPU, or a firmware
-  SMI); no vmport and no SMRAM edit are required.
-- M3 (L0-handled LMSW) is the arm your v3 series fixes; excluded here.
+5/5 rounds, host dmesg clean. U2's INVVPID VMsucceeds (rflags 0x2) yet the stale
+translation is still observable.
 
-With L1 owning TS (cr0_guest_host_mask.TS=1, cr0_read_shadow.TS=0,
-guest_cr0.TS=1), a clean entry leaves vmcs02 CR0_READ_SHADOW.TS=0
-(nested_read_cr0), so CLTS does not exit (verified control). After M1 or M2,
-vmcs02 CR0_READ_SHADOW.TS=1 while the mask still owns TS, so hardware raises the
-CLTS CR-access VM-exit. nested_vmx_exit_handled_cr() case 2 (nested.c:6386)
-consults vmcs12 (cr0_guest_host_mask.TS=1 && cr0_read_shadow.TS=0 -> false), does
-not reflect, and L0 runs handle_cr() case 2 and hits the KVM_BUG. KVM_BUG() then
-WARNs and calls kvm_vm_bugged(), so the VM is marked dead and every vCPU returns
--EIO.
+Manifestation 2 (XSS): ACTIVATE 0->1 with XSAVES set leaves vmcs02 with the old
+(often empty) XSS_EXIT_BITMAP, so L2's XSAVES/XRSTORS of components L1 asked to
+intercept (e.g. CET_S, loading L1-owned IA32_PL0..2_SSP) run without the exit.
+Observable only where the guest can set IA32_XSS bits (a CET CPU). Measured on
+7.1.2.
 
-Confirmed
----------
-Mainline (7.3.0-rc3, KASAN) and the kvmCTF 6.1.74 build, as throwaway nested L1s.
-arm 33 = raise an SMI while L2 runs, RSM, then CLTS; arm 32 = IN 0x5658 then CLTS.
-Both -> KVM_RUN -EIO with:
+Member 3 (MSR auto-load/store counts): host-side effect
+-------------------------------------------------------
+prepare_vmcs02_rare() is also the only entry-side writer of the vmcs02
+VM_{EXIT,ENTRY}_MSR_*_COUNT fields (nested.c:2740-2746). The exit side resyncs
+vmcs01 unconditionally ("The tracking is per-vCPU, not per-VMCS", nested.c:5172-5176),
+but the entry side does not. add_atomic_switch_msr()/clear_atomic_switch_msr()
+write the count only into the current VMCS and only on a membership change, so if
+the perf MSR list changes while vmcs01 is current (L1 running) and the next
+VMRESUME does not dirty vmcs12, vmcs02's counts are stale.
 
-  Guest always owns CR0.TS
-  WARNING: arch/x86/kvm/vmx/vmx.c:5725 at handle_cr+0x32e/0x1df0 [kvm_intel], CPU#1: t3vmm/132
-  Call Trace:
-   vmx_handle_exit+0x3e1/0x15a0 [kvm_intel]
-   vcpu_enter_guest.constprop.0+0x2110/0x3960 [kvm]
-   kvm_arch_vcpu_ioctl_run+0xd92/0x27b0 [kvm]
-   kvm_vcpu_ioctl+0x66c/0x1480 [kvm]
+On pebs_ept CPUs (Ice Lake server and later) with guest PEBS, a stale-smaller
+count leaves the guest IA32_DS_AREA unloaded on the stale entry, so while L2's
+PEBS counter runs the hardware keeps the *host's* IA32_DS_AREA (a page in the
+per-CPU randomized cpu_entry_area). The PEBS assist treats that host linear
+address as an L2 linear address; the walk goes through L2 paging and EPT, so no
+host memory is read or written, but it marks L2's own paging structures, which
+discloses the host cpu_entry_area base to the nested guest. Confirmed on Sapphire
+Rapids (Xeon Gold 6430): the decoded address matched the host rdmsr 0x600 exactly,
+dmesg clean, no KASAN report. This is a host KASLR disclosure to a nested guest,
+not host memory-safety.
 
-The control arm (CLTS with no preceding clobber) completes in L2 with no exit, as
-expected. I also applied your v3 LMSW series and rebuilt the host: arm 33 still
-fires (now at vmx.c:5726), confirming the series does not cover M1/M2.
+Fixes / precedent / suggested direction
+---------------------------------------
+Fixes: 25a2e4fe8ef7 ("KVM: nVMX: initialize more non-shadowed fields in
+prepare_vmcs02_full"), which moved the nested_cpu_has*-gated VPID/XSS writes and
+the MSR counts into the dirty-gated path. Its own changelog states the rule it
+left incomplete ("we copy them always ... because the corresponding execution
+control might be one of the shadowed fields"). 2abb25273c82 ("KVM: nVMX: Force
+MSR bitmap refresh if runtime eVMCS controls are modified") is the same
+"derived state not refreshed when a shadowed control changes" class, treated as a
+real bug.
 
-Lower-severity side effects of the same clobber (L2->L1 fidelity, not the
-KVM_BUG): until L2's next nested entry, an L2 MOV-CR whose L1-masked bits match
-the real value no longer exits to L1 (lost CR intercept), and L2 can read
-L1-hidden bits (CR0.TS, CR4.VMXE) from the clobbered read shadow.
+I would suggest either treating a change of the effective ACTIVATE_SECONDARY bit
+as dirtying on both entry paths (VMLAUNCH and RSM), recorded where the rare paths
+run, or the point fixes: decide VIRTUAL_PROCESSOR_ID per entry in
+prepare_vmcs02_early(), write XSS_EXIT_BITMAP unconditionally under
+cpu_has_vmx_xsaves(), and move the three MSR-count writes into prepare_vmcs02()
+to mirror the exit side; plus extending the vmcs_shadow_fields.h rule to "a
+shadowed field must not gate anything in the rare paths". I am happy to send and
+test a patch.
 
-Fixes / suggested direction
----------------------------
-The desync dates to the original CR-shadow handling (eeadf9e7558c); the RSM arm
-to 72e9cbdb4338; 673692735fdc turned the resulting CLTS case into a VM-fatal
-KVM_BUG. The fix I would suggest is to keep the nested read shadow consistent on
-the L0-side writers while is_guest_mode(): write nested_read_crX(get_vmcs12(vcpu))
-to the read shadow in vmx_set_cr0/4() (or recompute the shadows after
-rsm_load_state_*()), the same merge handle_set_cr0/4() already does. This is
-adjacent to your v3 CR0 series, so it may be cleanest to fold it in there. I am
-happy to send and test a patch if you would like it done that way.
+kvmCTF / scope note: on the Cascade Lake-Server kvmCTF config this is
+guest-contained. Manifestation 1 is L2<->L1 only (attacker and victim are both the
+guest), 2 needs guest XSAVES (xsaves=off there), and member 3 needs guest PEBS
+(pdcm=off there, and Cascade Lake keeps the perf generic MSR list empty anyway).
+I verified the EPT/MMU context and every host-physical vmcs02 field are re-derived
+every entry, so no stale-pointer-to-host-memory path exists; a 200k-round
+multi-vCPU KASAN churn of the nested-EPT lifecycle under the toggle stayed clean.
+So this is an upstream correctness / isolation report, not a kvmCTF submission.
 
-Reproducer: a standalone C VMM (arms 32/33, an SMM handler that just RSMs) plus a
-KVM-unit-tests variant that reproduces the read-shadow clobber under real QEMU
-10.1.0-rc3 and 6.2.0. Happy to share either.
+Reproducers (standalone probes with small L1/L2 blobs) for all three members are
+available; happy to share or adapt them to a selftest.
 
 Thanks,
 Amirmohammad
