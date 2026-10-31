@@ -1,60 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.82
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793473121;
-	b=D/wcHAUHysXRYl/gyZcWVz16Fdvot5bOcbYQvDCYG+K5qqE9LsIKZOZ4/PguRUnfa18Z
-	 GlFmmv/Ol1GH31x9ua/JXxzRvsAUQnOuOZ1sDkIVTQ8v04UZIl3OvmhGUqjNCXJp44T5q
-	 7+u1pyiIZUg1GIsIsVJFe2NdWhCdl429anZKXcATi110fxuRQHFVkmw0L/XF+Fh/eZn8M
-	 ZIywpmnTCRardTmr+L5CgczCXdfBarbYns6ehgvz9mP1eMWTnaSGdu1ppYpM81/o0GBzm
-	 +TBctRyKdyWihPZBNa9kV79LjTbwFzQeMIqtbbx6mN3+D+SoToadRAx5zEyW2LjjPOQ==
+	t=1793473552;
+	b=dqQhvRnvs00Q9HR464WnThtgY42ZtOszSELsRgdBC8gOTUHy6Ri5waESAakjcOsGaO30
+	 TLPa2ZIXp7nsGwLh6xZTgC4roZMZ+kHCdWw63/XpVp/QJmqhviFOkvb7tvshv4q/icF6F
+	 BRrCLUOYD8c8sKHZJE+bqQJumr0BfqS1l5+634gVdkYz0SE7eImoKmEeYrkQ8h0B3jAa6
+	 VCvEfWhy8IhyW8aXKL7SOZZ24qtUwbwVWkHtD+YyXB1GLZQlzhfcAT8GgEyd++xqs7RaZ
+	 zJs7AmEOpeIAG7hLPSh4nINT+8D/1mCWZ2HNC2xTBiSSBaPCQ0gyr9scZi2hLLubaGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793473121;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793473552;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=WTXPO9m21ChhSJhJsMR1jm9N3k/S9PtVs0GDOD3AsIY=;
-	b=Xi31KQacoJp2Pe9ogljeLt9exbNA+n9YRmKbu3mqUhbn9CmXyOU3H9LXywD/OI1rfc1q
-	 0lTEBPXiNQh1ZUkRI8qoh4J+MWOUz8r1vo3eXIRhbuZfThYdTf6Hg7IORDt6HNzh/Qg1C
-	 bAFJzq39/UBVNplniX7lXroJ+jyEwivkNpAuHQzRFkY8jqN9mqDf3SAcL7VJeskbLNHUg
-	 qY9R2OuDUk4saEDTg/e3u0p707zVbNtJzFnWWjJDzHPbfZn7uoO1mG1GL7dEeGlv+2pTw
-	 xpPueV3PHu7F6l8CwAq/g/0Yg5w1ZlTfqIXNFlqhVsjFQtgE0kSqUMoUluZIXMYpSyg==
+	bh=gF9FP3okBGaulujfi92bns4Xp8Ex+d3QT0+PXv65Qbc=;
+	b=sFxxweXV8DksoPDRAH03XgwfX5a4uV1rQm5Vc2h0suAfvIgRoFhSNIJIfqz4vCrg8yYL
+	 TE9eatcj1+pVFA4DGWhmxtyOHO4TlRBRwQpcO+OCZ5AveP3b4tMQmAPRKpjSFy2/ohZP6
+	 QbaDTrjNGcL9YW3NmAa9OhKg+9+EK9STDAJG2ExS2MmzF24hdt++2FBBSrTZXtDg10YPL
+	 uefy7wjdX3Y8oAlsthn9mPN1ZtB7/g5V9Z6f04GEOrM4gGABv3JqKkhEzzuxBNapDRUTc
+	 HjdQdy0WpZnFshBVu0K9lNlKd9zUc/ua31KkWkhr6/OvZc/pJ7L5OYbZ/aLyyPg3D+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	arc=none smtp.remote-ip=91.218.175.82
-Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=L+kUzswU;
+	arc=none smtp.remote-ip=91.218.175.123
+Received: from mta0.migadu.com (out-123.mta0.migadu.com [91.218.175.123])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B62606A320
-	for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 18:58:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87B62606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864EC606A31C
+	for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 19:05:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 864EC606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=L+kUzswU
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=nhn60L6iDcU1tEzuh3dkIqEoHLNq1R18VibAiPoFZc4=;
+DKIM-Signature: a=rsa-sha256; bh=CbfwumJvnyRc/dDe61N2E5Z8vQbZC6EGlE3DNJg/ZIY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793473113; v=1; x=1794077913;
- b=FgLPquBtbge3POVC+2Dr8m+4QENK0dVztMZkqUikUBrZvJtE6H91VKKswJxIsBJL67pY6Jz9
- 6g8qzsLTfA9LttvrY33jPtsEM+SjPu1YN01qWSJr0tzgcny6phbIpfbk016/wYEPf6rRAq9FOJQ
- UmOda5mSHbWZxP2yJv5ZIimA=
+ t=1793473548; v=1; x=1794078348;
+ b=L+kUzswUjTbrCAF3gBbUSurdKdsKj8MZEDq3pv1MtmxPfnmkV6eaP7fpicoaaCg99i7IM0+4
+ 7sw4Vg89mBBHSl+qpwa5wyK2IaKINMjmI/qcBAaEpIdAZSjndcegit7olkOzgokYC3dsc1jAwIQ
+ F0jRYA0WvxGfcvP7innvIAF8=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id d88e81d4557f9af7;
-	Sat, 31 Oct 2026 18:58:33 +0000
-X-Mizu-Trace-ID: d88e81d4557f9af7
+Received: by smtp.migadu.com with ESMTPS id 801ab3a65b468602;
+	Sat, 31 Oct 2026 19:05:48 +0000
+X-Mizu-Trace-ID: 801ab3a65b468602
 X-Migadu-Flow: FLOW_OUT
-Date: Sat, 31 Oct 2026 11:58:31 -0700
+Date: Sat, 31 Oct 2026 12:05:43 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost_task: do the return-to-userspace work between work
- items
-Message-ID: <auY57Gu5NBtLWKoY@linux.dev>
-References: <20261031181004.4193627-1-shakeel.butt@linux.dev>
- <20261031141506-mutt-send-email-mst@kernel.org>
+To: Aamir Ahmed <elb12345@hotmail.co.uk>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Valentin Schneider <vschneid@redhat.com>, Aaron Lu <ziqianlu@bytedance.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] vhost: Run TIF_NOTIFY_RESUME work in the vhost_task loop
+Message-ID: <auY6zHDao6R6bFNz@linux.dev>
+References: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,54 +68,44 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261031141506-mutt-send-email-mst@kernel.org>
+In-Reply-To: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
 
-On Sat, Oct 31, 2026 at 02:15:40PM -0400, Michael S. Tsirkin wrote:
-> On Sat, Oct 31, 2026 at 11:10:04AM -0700, Shakeel Butt wrote:
-> > A vhost task is a user worker: a thread of a user process that runs only
-> > kernel code. It never returns to userspace, so it never runs the work
-> > that is queued for the way back. resume_user_mode_work() does that work
-> > when TIF_NOTIFY_RESUME is set. For a vhost task this means:
-> > 
-> > - memory.high is handled at the wrong time. When a charge goes over
-> >   memory.high, the task counts the pages, and should reclaim, and sleep
-> >   if needed, on its way back to userspace. A vhost task only reclaims
-> >   when more than a batch of pages has built up and the charge can block.
-> >   Then it reclaims and sleeps in the middle of the charge, maybe while
-> >   it holds a lock. vhost-scsi, for example, can fault in guest memory
-> >   while it holds vq->mutex. If the charges can't block, nothing is done
-> >   at all, and the count keeps growing.
-> > 
-> > - Block cgroup throttling never runs. blkcg_schedule_throttle() asks for
-> >   it, but only resume_user_mode_work() acts on it.
-> > 
-> > - Task work queued with TWA_RESUME, like a deferred fput() or a NUMA
-> >   balancing scan, waits until the task gets a signal or exits.
-> > 
-> > io_uring workers had the same problem, and io_run_task_work() calls
-> > resume_user_mode_work() for them. Do the same in vhost_task_fn(): if
-> > TIF_NOTIFY_RESUME is set, call resume_user_mode_work() at the top of the
-> > loop. That is between work items, no locks are held there, and the task
-> > is running. Passing a NULL regs is fine, io_uring and KVM already do it.
-> > 
-> > This covers every user of vhost_task_create(): the vhost workers and
-> > KVM's NX huge page recovery thread.
-> > 
-> > Tested in a VM with a version of tools/virtio/vhost_net_test that puts
-> > each RX buffer on a new page, so the vhost worker faults in, and
-> > charges, 256M while its cgroup has memory.high=64M. Before, all 285
-> > calls to __mem_cgroup_handle_over_high() came from try_charge_memcg(),
-> > inside handle_rx() with vq->mutex held. After, all 589 came from
-> > vhost_task_fn(). memory.peak stayed at 64M, and the run took about the
-> > same time (0.66s before, 0.67s after). A lockdep kernel showed no
-> > warnings.
-> > 
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+On Sat, Oct 31, 2026 at 01:33:13AM +0000, Aamir Ahmed wrote:
+> Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
+> model"), a throttled task is only dequeued when TWA_RESUME task_work
+> runs on its way back to user mode.
 > 
-> Is this different from:
+> vhost workers never return to user mode, and vhost_task_fn() only runs
+> task_work via get_signal() when a signal is pending. A busy vhost worker
+> therefore ignores its cgroup's cpu.max, while its runtime is still
+> charged to the group, throttling the group's other tasks (typically the
+> VM's vCPUs) harder.
 > 
-> Message-ID: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+> Run pending notify-resume work at the top of the worker loop, as io-wq
+> does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
+> generic xfer to guest work function") fixed the same problem for KVM.
+> 
+> Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
+> Cc: stable@vger.kernel.org # 6.18+
+> Assisted-by: LLM
+> Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
 
-Oh wow, it is same but somewhat for different reasons. I am fine that patch, I
-will comment on it.
+I have this (almost) same patch but for different reasons i.e. memory.high and
+block throtlling. 
 
+http://lore.kernel.org/20261031181004.4193627-1-shakeel.butt@linux.dev
+
+If you don't mind, can you update the commit message to also include that it
+will fix memory.high and cgroup block throttling as well?
+
+You can add:
+
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Tested-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+
+BTW there is a similar issue with io_uring SQPOLL thread which I am fixing
+(testing at the moment), you might be interested.
+
+thanks,
+Shakeel
