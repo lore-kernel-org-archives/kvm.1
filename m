@@ -1,98 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.46.75
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793410401;
-	b=wzmUhxDgFfdfFKPUp2ZV4jd0g7fma+9dsLUZOOmkHYDbJ1UQgFN6bvb63pf0pQj6BNFR
-	 1fEg6vpxvwvnByezffFNJZ+Gvu5YOXNsMqx2MeffFUIUo1recK1gWnEfyHozLThvGkYVH
-	 Kpxls+ImBGB7WK2UGGXv51qMDPV1Z0s6JbdgivKIkyNaF0qOzqfwTPBuo/ovms7V7760Q
-	 n0fuU2gP48sopKse91WMG19ILLpGiyUm5KkVcY06cJcve3Ee4oCLTIh8qtYOg6UVWHt9b
-	 HYnhMU/2tQJBgeCqvD+Y+Ewb16TKrxKGSqS7+4i/hHj51Lro1ep8yha8VxP3FmK1wVA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793410401;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:X-Microsoft-Original-Message-ID:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=685QK07If3Oqid6ffzxzhornPQoDnxE4gCjMTKpDYyI=;
-	b=3XotnSa1/Adom8TAjoxfBd6a0AekmaEKHQETjNT+HWQpZEWXvDX3TiU0sAdmEhvkMUJb
-	 DQdVtlPKyx07bItLZTGcuMMzQiL13LOp3ufLln3K3z0Pa+4YLgLZ6V5ZYqQvnyfX7Y/y5
-	 vC4M3g+OgLSnKPkGcboRHm5Tv5aZqB0my3mP01KoNl8okK4gQtaBf04klrItojch9aMIz
-	 LAHbNZvk6o+ISeYRY1gvgyNXn+2JKqM5UQ0Rx5zg7lHmMnBGuVedOYk2WHnF5ZrV+dBQj
-	 66DEM1iU0QtBnFvg9Spop0tOh1ZMHtejqGNpdGlKD6sMMmDH6FMmo/1Vy9sSDzMQvlw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hotmail.co.uk;
-	spf=pass smtp.mailfrom=hotmail.co.uk;
-	dkim=pass header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=ih1mT1Ym;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.46.75
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazolkn19013075.outbound.protection.outlook.com [52.103.46.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793411144;
+	b=Kw8u3vC6osL3k3aGZ1hjwRbu9uRMGxK4RXomatLyacr0HN0crLtGrd9VTL2DJjSRzCEQ
+	 vBnpGLvBYtncIQGdyg6Y7mbBVTgGlWWWmgkXoMb2MrYN6ckMQEYgwcK7R9UNIpN/kaMCr
+	 1eQdO43PolFeRnvKtj2T0XdbQs2RQvnM5hgYGUpn4tWqKQwhCykODfJsTuiBI/yW+Ajtq
+	 Y33Fu55HlMTHGLyp2AH1k8Ly+unGsHM442EDPcdDXjPI9bHteNZXO8IJWpGWTDyEKPDKW
+	 W3H7yz6K43U2zHnyj58z6w9RJbZvKgCXgQtFvO3KjZS9DiolG3Wv+EZtpD2cBFQ3R1w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793411144;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=SJp1eLkCUWhFyh78MuF96niBaNXUH72k2K0ZQ6kq9pU=;
+	b=HiANlAPK7zu4vw0Q42temKfomkJ4mObJy+7yCPFynTHWONxt1jJmVhBBt1vN1jla2maI
+	 OV0678aJEqbWbnr8rfbYihGaYZd8i5cavnUU3sMPDJZzkcOUz28s5hkqQjVgjEzqXIbgQ
+	 8LE1C0oWdy3CaCka+xp6E3f8Fwlx1LpKUjmUgTDqP+4hkrSyBAr+PHbLYFhJbBz2k/+py
+	 967BvHjH4ZhDk7uUZ+5wolUzm4erPpMWbh73CvD7iM64mQVJ0iXdCf39WzuGWVTWmr6nJ
+	 C9wKy002bavuovjJInsej8k24oTgUGKLWvud8TYG6krjAvARYpJM2iwWihdPTwP189w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JnhsWOSe;
+	arc=none smtp.remote-ip=209.85.214.177
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A864B606A31C;
-	Sat, 31 Oct 2026 01:33:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A864B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18880606A31C
+	for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 01:45:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18880606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=ih1mT1Ym
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cv0UDeyi63dt3B63zw8Cw3gu/qp551UeucidpNiKDMIMoGMZInAkj2dZ6zv2VEWVC7mlTJki/GUOczUgiC+zaqRCCwEmL5mRbNGjR765GP66LerTAM4yKOMggf+G7+ovdzIWcm8oYcM83CQYEOGqDHgMNZdfpqJ5AeNCpIVq8omY5qm3+Kju7sDgLPQzFe5o6HGAcPujv7dmpMd1EdvUThe4HQ1+sqE/gbX5nnLOrULr6dWwwdx/fgfcM6kfW4IaljViqslbsfpBJYnQJWWdkyYwFIP05oZGg6cTS1BOtPwlBLGBMIRjnPQSYsfCi5T9OVG1TFNNSTUR2tm2ZXL3hA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=685QK07If3Oqid6ffzxzhornPQoDnxE4gCjMTKpDYyI=;
- b=I3eE0SSI2YOnab+yp8HRloMFMBXKIIj9P/HrijIOdBejU0YUoc8VMkH6+PYdMBf6vySzYs87Rk3tTdcV/QJDN2BrDaXZoQ/IeLQnRjTlhOFXSDaiSTVhqtZN5A+Ycm3alJof+H3lmR9hq0pWcurww2yLfwdNsbxhy0zTphjeQ8fITX38//e11/r4sEBiGKPMn9Os6wKUtEdTuKt7+4rRUwy+AU0z7tIbSpaMrx2SnPpjye6NknoXAIdAlq+RYe/iL+R22se4YfOakafZyji7km/eEOzw+2t/lukaVu6GTVLHdnwwdwvMIyu37Swq8AYWBcbIkywCrlbyPmC5MU2yFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=685QK07If3Oqid6ffzxzhornPQoDnxE4gCjMTKpDYyI=;
- b=ih1mT1YmhDzB7YybjoaZcIWKjcMYTEnRm3pLqbdbK5qYQk6IRuGgdf4RJZn4auvEMKp57hUgdqBIQ3i8Ki/G1PR9dm/YLDtEOob/Hrdr8HpIqQNAmtQjZGdzS7GPyZzkpkFycF3ZpxZWAvGOX3CYmU+ahxxs0B8xdLoD7klN30S6KVgVNHnBSI3YRb6VscCS+nXAPau7Z4sySKzszvWGQsCul7YhVGgpAeJtWYI3reX4RdmMm5xPZckuqjMbEnkjC46aFMGJ5elu1b82drYdsqmUYo2du7PXdXHhenjy8I3d2EjXQQK7VspzLO1wwrZsAgocRTZv2YKWdhJyQucOUg==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by DU7PPF563096915.EURP251.PROD.OUTLOOK.COM (2603:10a6:18:3::b96) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Sat, 31 Oct
- 2026 01:33:18 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0569.009; Sat, 31 Oct 2026
- 01:33:17 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Valentin Schneider <vschneid@redhat.com>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aamir Ahmed <elb12345@hotmail.co.uk>,
-	stable@vger.kernel.org
-Subject: [PATCH] vhost: Run TIF_NOTIFY_RESUME work in the vhost_task loop
-Date: Sat, 31 Oct 2026 01:33:13 +0000
-Message-ID:
- <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.55.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0279.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:195::14) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20261031013313.55954-1-elb12345@hotmail.co.uk>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JnhsWOSe
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e9f6a16afcso16925ad.1
+        for <kvm@vger.kernel.org>; Fri, 30 Oct 2026 18:45:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793411143; x=1794015943; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SJp1eLkCUWhFyh78MuF96niBaNXUH72k2K0ZQ6kq9pU=;
+        b=JnhsWOSeshPp05IGpENw7cVxlIHz9MR7CMZa13rJyY0njG9KNV4r3IBIAzU+wF3x64
+         z0MhywIMOgAiOV4n+HCAHuL6J/yky0ckbx5bCHrw7C3VjJD0+RnacKjOLleeNUGHQckV
+         9KUZF6oAyx31FQCCQzuoOHPDyv8fO+zwH/ytlAiifNZ6U99SdCdEWVnzdIG1LZv46fJE
+         S8vZ8GdxnTuVxD+awtIsRdeSCFG+mUfQmvuaBLpLQjYfjSOEcaroReY9L2bazbLikKiA
+         Hz27Qivf+Mg54UTs2Clsa6SlrcDNv3qOHTN6u2Di6HJzXa4RgKiLepXoIw2EUWnjrsC3
+         Ot5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793411143; x=1794015943;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SJp1eLkCUWhFyh78MuF96niBaNXUH72k2K0ZQ6kq9pU=;
+        b=imUeDX+xah0ji2CUWmLvzegl+mZFPmAsMv0hWxGkbtXm70IP+yM6ZfEP3WRTpGFxwz
+         mdJaeToDKr1PzLUHrtW1vTdy/SKZb+Jn9HvbcwDDFJjjpJzbVyRVTbBAL4z5Yi2MMlyI
+         VdO12Wrs7z5QY3EV9HB0jhVz/B4P1Q3bjpc+J7HEWFK11kl4hV3Ja/s2brnvIKPtDlIH
+         l+M9v/X8UqDb9H2wG3Xmh6INcYmP8oh5wN9KHNBl8s7Xjj53ng2MFuLaYLUy/ZVR7qwv
+         XAWc29WC7SE0mAwuxZH039eQ3NzB97GkI8GBsPRm0t9xa7539UwYU9sXFwTcBYZkMPYW
+         JaUA==
+X-Forwarded-Encrypted: i=1; AKwUvBx2/jL+5yCTG1mGq0U5LYkKnwga0HeJwOXQx3jbEda67V3+fAF5JOiLdFpxSa3EMcAFsB0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8iZOFfwgqjKSsCQ+zvtXZbggKf/PLjdc9p+2KI9wtGBTVyPk8
+	ObTDHZKe7T3x8SIgvJby1c7Ess85Ysq3Cdjk6ajGIfj5vmBRYo8UO8fihDPb/VPhMg==
+X-Gm-Gg: AYBFou3pVyhdaxIzs9/gUfmW8clfRrvW0DmdyOG4GFwXG/DB+Ewl2GokMYToOM5w3eS
+	eleilztkag6EVhZAoqu4v08OkMpBKJ6b2s5wt5fcy3fwX6PW1HF2vvEVAffyr2VCKSURjgunzIX
+	2kLzX0v8z2AKGyq7VwMlG2dctHu8tbow7L+4+DI9zDslEzfXqKH5NbgbZO5NJU7Zxd3jrm7ffUV
+	DW4bhcBexmhc6T8PSOZHyHXVHyh7JjoxhdbK598BpMCq2t3QlK4ogj5wK9kis8/VpTFejnNpat9
+	2+jYIw2UNCvTbtUXLeSotlTaKRr28PsQo0npvhMKEim6swvO1+LFnX3hynq/IZ+4vOWxmz/m2Kk
+	RV3+xms7qFzNi6Cn5fWTtQ33aGOMNFlbq7eVH/4MchWp5Xby22EDvC7sXwrIK0jP5cNZKy/F8ck
+	Euw5/D4rYQSrF1dFwXs7YpQ5so/5USJFJMtblvj29szNkXC4ashPvY9bFtGDIQgf+s3l8OGyGHG
+	4GERalypDfSMpD/GmEKYL2/nCbxTnWHuW8zQQN5c65Yllze3fxmTvOi3Dy4Ho+KIcEdqNQBlfEx
+	PeVv29iJ4pbs0PONBOGEWRirWy8qHF3dkbLHYYi9s6hkZBHs3N3YWoG+UYcwIz76zPXNiF/2bzB
+	zbzwiSI2Q8Pid8hBgmG3ZHA==
+X-Received: by 2002:a17:902:ecca:b0:2e6:344:7bb4 with SMTP id d9443c01a7336-2eb1ec78372mr13509425ad.11.1793411142587;
+        Fri, 30 Oct 2026 18:45:42 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e944ba9sm10342720a91.8.2026.10.30.18.45.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 18:45:40 -0700 (PDT)
+Date: Sat, 31 Oct 2026 01:45:36 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse <dwmw2@infradead.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
+	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v6 05/18] iommu: Implement device and IOMMU HW
+ preservation
+Message-ID: <auTzN4NWuKsBvIZU@google.com>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-6-skhawaja@google.com>
+ <df75f891-05a0-4d47-8705-d6a00c81ff97@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,126 +107,591 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|DU7PPF563096915:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdbb345c-ebf4-4fa2-f12e-08df36eef086
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5072599009|25010399006|4140399003|260925184616899003|8060799015|19110799012|37011999003|23021999003|25031999004|5062599005|15080799012|24021099003|55001999006|41001999006|52005399003|40105399003|26104999009|440099028|3412199025|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PJi040LwEhSonbgJQedY2WRjYO0FkMF6a7gOvGAWdBERWT1mqGV75ESUgRhI?=
- =?us-ascii?Q?uBjuzM9gVE5oLVDmqccx5AXnUhxYho5EntnBhXB+QLAwKgXKcXNPWkOHkn+d?=
- =?us-ascii?Q?0QDN8cMx8uL36uAvd9Xcf9r9frGicOQM1VIzQC4qAUP61ZJL8HQsE60OmU59?=
- =?us-ascii?Q?dlLoyaAmzVreLm9gkSgVrL5Mtg77WZLjQJnpNVAjkZN8biUujsnFthpvj5xR?=
- =?us-ascii?Q?rlNmvtmg0UYl6kNa3yiEzGhEkec5F7vavJhBMIjtvy+VzzA0o2MBFIIYxr2l?=
- =?us-ascii?Q?TbOS5SRNdn37FQ9B0Elt5VsRymsJm64ZhrnnGm75Y4fRPM3OlTAhYmnyZqW2?=
- =?us-ascii?Q?VNMtpd6e9rEut7geTyn7gXcH2JPi8L6D06DMjctP7URBse1Q9PnQSnaTWAZN?=
- =?us-ascii?Q?v9Qnqd7wG1v3Y2O2+B4jZlhO1cKavhd415yclC/32+LiEaAWM7ZTGatxxZ0W?=
- =?us-ascii?Q?Mwa3PGawYQ7ff0+eSengRhxiyW1kU7kM9drlvPwgpLK+n8PRP5sI1BDnLl5G?=
- =?us-ascii?Q?35koRs7DPzyHpXz20LH5z+b2EBG77E4mfp5OFYLdt/ZMpg9hKP61BldO1dIU?=
- =?us-ascii?Q?TEpvjUqePnedcXqJbB/CU6br/MYLX9Tv10VmW1Jh1Vg9MNystQ8abiH3dDUA?=
- =?us-ascii?Q?VfxCi4cLuXheuwso2IrnGeqTdY8Y+6x31X4tl+FMKWlmufulamVCv82AsMRo?=
- =?us-ascii?Q?ti+caqf44ZacoC4D+jo4VIFxMr5pCGeCIpQvt2iDovp/rY90S5oZWZGAecqK?=
- =?us-ascii?Q?7beJpNL6dIL5bZPfmEayodafUGhrnnsA62rTV+Ct2Co+uD7+MflqNgO00S7O?=
- =?us-ascii?Q?ZPUFNltqYvEjVGCMt/OShTHL935y5E1kXlQBtyanbOedn0RVgZuwe0CYsppJ?=
- =?us-ascii?Q?YlrFp50hQxdwxLKVbTJMAcjuZfFA+E74LXJWzJkpg7xjt59aHYgBGR3w4C5u?=
- =?us-ascii?Q?ixu8ZRjA11KEBsIp1a92T7inplfWaK6MFATQ97kVMa8TcQH/Ia86k6pXZYGj?=
- =?us-ascii?Q?Cbl1Ov7Jh/pNy4VtXixlimf5D+tZQn6pS4SCUW8LHSWfCqWKfgQ7MMlQaFxw?=
- =?us-ascii?Q?Jc3qtZnHJkeHcL7J0YOsg3lfHr4EXy9L9SvqTF/sva3hyJU39dxP0xOWeSeL?=
- =?us-ascii?Q?7sRgSRiZNFgW?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?b7kN7GPuwUAfc/S47U2YU07p82m4LRZroo6Te3OaTu2FdEydKzFzVAwz5hIU?=
- =?us-ascii?Q?3uVmKrdsUfHJ9t1Z9jEtvh5tJcNlNcRrCvLAHt9KM7QjWL6cSM9+v6QsEkNj?=
- =?us-ascii?Q?V+H0o4byHVG3YqXvw8TkwFbL54DXnaEKIuXxU0pu5lCI9k1+lYx3NOkeMIyn?=
- =?us-ascii?Q?bTjndkl8H0TiRMOQ6XH0Tj8zmP0sgZXLtLCRCx+MrADaag/pnrGWdEK9HQd/?=
- =?us-ascii?Q?7iCBhfhCYiVQdda7gvD25/WVNalsKiYc2isGTqweoIFwMuuuUd5icuUOWq9I?=
- =?us-ascii?Q?BKbkGm0ZTcbWvTUcNpo7nIo61iwukxGJJ2tysLF65HrEbyJHiht9H6RPj32X?=
- =?us-ascii?Q?vnK3bTg/j4dK9TwEmhHbZkc11POfCpZ4/a+uyloclxZY9cEZTCNlLOvbEO16?=
- =?us-ascii?Q?y1x6cozijG2WWvG55DuwOCyHXe6206O1Okc+zngfh1wCXz8KeRMKlf7GuEYY?=
- =?us-ascii?Q?jn7bDDCx78Y5aR1Q8ddTwZumffWvYkYkL4SBxwsHnwQISkwI+HbYZ1SbRto0?=
- =?us-ascii?Q?uwQFVoA5AlsVoPvnmfFAJwkjsuCvmemD3VACoW3DmDzq3zTKXo6RELYhigrq?=
- =?us-ascii?Q?GK9FDseE1DyCefqfQwkgewGynws0u0EAZFucQXaYTQzQknNCJ7P5xSfyexPb?=
- =?us-ascii?Q?fJ+tMfJ68Nl7t49txBX1mzbZ983fC5dAiRg2QcTd+YcM/Et1Y/Azzts5HHlR?=
- =?us-ascii?Q?QjDfj4K7C3Cxf1ftHb9HiNr/rImT8S7m6BD2y+BdXu9FOzBQvubTyBciZjC7?=
- =?us-ascii?Q?jV6d2djR0fTZXVFs0+2FQDFy/eLWHiWvFbMzChCPGeyYCQFPlaHA/jp5LSWa?=
- =?us-ascii?Q?22ln4knxpMWa71hk6Oyve9UMb8NcgufxzUtNg1CSelAz1mpLaqkdFkwWeWGa?=
- =?us-ascii?Q?tGSOiHmzn35wS8lPR5B2a8WFPb0/FF7D893sYMBH3PNn8tbOTDXrBPMijKHu?=
- =?us-ascii?Q?+Aq2gxW1ugdVp2E1B2ksG7+PcIg4r13pisBCmVLwxWjdwT+rHWH/uadPaQPH?=
- =?us-ascii?Q?9lyqyZob5WgTf4a0VG+by+BveOaExsuVcfmKX9we3BBWI0MYReSuz5vdigR4?=
- =?us-ascii?Q?wJzviMwipLSdyd9mL06VMUDbOxKw4l2iUcLjR8dL4z28COMG6WwBbBxpKgF5?=
- =?us-ascii?Q?X8383q7zqxb88knSiv+aEtJ63MEku9hJab9/lvHcvsIbcmGICnlROtXmwjga?=
- =?us-ascii?Q?+Go4/TzpJPYz6/bCbuYUiEau8fC6VZF60ae5CMdEp2OvIUs+XyMc1o6sEWso?=
- =?us-ascii?Q?PHL9eLsMhBwvil/fyVsN0Vknu5uXLt097irw/zZMPeeg5psYWoAdq5GX1Adq?=
- =?us-ascii?Q?rzDw8ipKsLv4JUOpxCj8Lw5kukYQzUxehUXFvrSUVSl+Nsh91pLnjO++YKm7?=
- =?us-ascii?Q?Ll0u6LhRB0kvNuj22G8+ROKXofkBUWWKouBbC6KeSxpFS73Ol9uK/vDkJFP4?=
- =?us-ascii?Q?nSrqM7OYTx1nG/DfR9i4s7j1MErCPc3l?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdbb345c-ebf4-4fa2-f12e-08df36eef086
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2026 01:33:17.9359
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PPF563096915
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <df75f891-05a0-4d47-8705-d6a00c81ff97@linux.intel.com>
 
-Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
-model"), a throttled task is only dequeued when TWA_RESUME task_work
-runs on its way back to user mode.
+On Fri, Oct 30, 2026 at 01:12:31PM +0800, Baolu Lu wrote:
+>On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
+>>Add IOMMU ops to preserve/unpreserve the device state handled by the
+>>IOMMU driver. This is IOMMU specific state of the device that needs to
+>>be preserved for liveupdate. These ops can be implemented by the IOMMU
+>>drivers that support preservation of devices that have their IOMMU
+>>domains preserved. During device preservation the state of the
+>>associated IOMMU is also preserved as dependency.
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+>>  drivers/iommu/iommu-priv.h       |   2 +
+>>  drivers/iommu/iommu.c            |  72 +++++++++++-
+>>  drivers/iommu/liveupdate.c       | 189 +++++++++++++++++++++++++++++++
+>>  include/linux/iommu-liveupdate.h |  76 +++++++++++++
+>>  include/linux/iommu.h            |  33 ++++++
+>>  5 files changed, 371 insertions(+), 1 deletion(-)
+>>
+>>diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
+>>index 1f9f886b2c10..6b0ef210b32f 100644
+>>--- a/drivers/iommu/iommu-priv.h
+>>+++ b/drivers/iommu/iommu-priv.h
+>>@@ -21,6 +21,8 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
+>>  void dev_iommu_free(struct device *dev);
+>>+bool iommu_group_is_singleton(struct iommu_group *group);
+>>+
+>>  const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
+>>  static inline const struct iommu_ops *iommu_fwspec_ops(struct iommu_fwspec *fwspec)
+>>diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+>>index b486b8bbd1fc..a66363789ca9 100644
+>>--- a/drivers/iommu/iommu.c
+>>+++ b/drivers/iommu/iommu.c
+>>@@ -18,6 +18,7 @@
+>>  #include <linux/errno.h>
+>>  #include <linux/host1x_context_bus.h>
+>>  #include <linux/iommu.h>
+>>+#include <linux/iommu-liveupdate.h>
+>>  #include <linux/iommufd.h>
+>>  #include <linux/idr.h>
+>>  #include <linux/err.h>
+>>@@ -328,6 +329,47 @@ void iommu_device_unregister(struct iommu_device *iommu)
+>>  }
+>>  EXPORT_SYMBOL_GPL(iommu_device_unregister);
+>>+struct iommu_dev_iter {
+>>+	struct iommu_device *iommu;
+>>+	iommu_dev_iter_fn fn;
+>>+};
+>>+
+>>+static int _iommu_for_each_dev_cb(struct device *dev, void *data)
+>>+{
+>>+	struct iommu_dev_iter *iter = data;
+>>+
+>>+	if (dev->iommu && dev->iommu->iommu_dev == iter->iommu)
+>>+		return iter->fn(dev, iter->iommu);
+>>+
+>>+	return 0;
+>>+}
+>>+
+>>+/**
+>>+ * iommu_for_each_dev() - Iterate over all devices attached to an IOMMU
+>>+ * @iommu: IOMMU instance
+>>+ * @fn: Callback to call for each device attached to @iommu
+>>+ *
+>>+ * Return: 0 on success, or negative error code.
+>>+ */
+>>+int iommu_for_each_dev(struct iommu_device *iommu, iommu_dev_iter_fn fn)
+>>+{
+>>+	struct iommu_dev_iter iter = {
+>>+		.iommu = iommu,
+>>+		.fn = fn,
+>>+	};
+>>+	int ret;
+>>+
+>>+	for (int i = 0; i < ARRAY_SIZE(iommu_buses); i++) {
+>>+		ret = bus_for_each_dev(iommu_buses[i], NULL, &iter,
+>>+				       _iommu_for_each_dev_cb);
+>>+		if (ret)
+>>+			return ret;
+>>+	}
+>>+
+>>+	return 0;
+>>+}
+>>+EXPORT_SYMBOL_GPL(iommu_for_each_dev);
+>
+>The function has no locking against iommu probe or release, so the
+>callback can read dev->iommu while it is being freed or before it is
+>fully set up.
 
-vhost workers never return to user mode, and vhost_task_fn() only runs
-task_work via get_signal() when a signal is pending. A busy vhost worker
-therefore ignores its cgroup's cpu.max, while its runtime is still
-charged to the group, throttling the group's other tasks (typically the
-VM's vCPUs) harder.
+It is only called from intel_iommu_shutdown(), which runs after the
+other CPUs are stopped and interrupts are disabled, so probe and release
+can't run. I will rename it to iommu_for_each_dev_unsafe(), document
+that it must only be called at shutdown and drop the export, since the
+only user is built in.
 
-Run pending notify-resume work at the top of the worker loop, as io-wq
-does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
-generic xfer to guest work function") fixed the same problem for KVM.
+>
+>>+
+>>  #if IS_ENABLED(CONFIG_IOMMUFD_TEST)
+>>  void iommu_device_unregister_bus(struct iommu_device *iommu,
+>>  				 const struct bus_type *bus,
+>>@@ -626,8 +668,8 @@ DEFINE_MUTEX(iommu_probe_device_lock);
+>>  static int __iommu_probe_device(struct device *dev, struct list_head *group_list)
+>>  {
+>>+	struct group_device *gdev, *gdev2;
+>>  	struct iommu_group *group;
+>>-	struct group_device *gdev;
+>>  	int ret;
+>>  	/*
+>>@@ -661,6 +703,13 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+>>  		goto err_put_group;
+>>  	}
+>>+	for_each_group_device(group, gdev2) {
+>>+		if (dev_iommu_has_preserved_state(gdev2->dev)) {
+>>+			ret = -EBUSY;
+>>+			goto err_free_gdev;
+>>+		}
+>>+	}
+>>+
+>>  	/*
+>>  	 * The gdev must be in the list before calling
+>>  	 * iommu_setup_default_domain()
+>>@@ -697,6 +746,7 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+>>  err_remove_gdev:
+>>  	list_del(&gdev->list);
+>>+err_free_gdev:
+>>  	__iommu_group_free_device(group, gdev);
+>>  err_put_group:
+>>  	iommu_deinit_device(dev);
+>>@@ -3543,6 +3593,26 @@ bool iommu_group_dma_owner_claimed(struct iommu_group *group)
+>>  }
+>>  EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
+>>+/**
+>>+ * iommu_group_is_singleton() - Query if group contains exactly one device
+>>+ * @group: The group.
+>>+ *
+>>+ * Return: true if group contains exactly 1 device, false otherwise.
+>>+ */
+>
+>We discussed this interface before, and the consensus was that such an
+>interface is not feasible, because the membership of an iommu_group is
+>not fixed, given the hot-plug support of buses like PCI.
+>
+>I am fine with the usage model of ensuring the iommu group of a
+>preserved device to be a singleton, but I don't think we even need such
+>a kAPI. It should be handled case by case.
 
-Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
-Cc: stable@vger.kernel.org # 6.18+
-Assisted-by: LLM
-Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
----
-Tested on x86_64 with a vhost_task-based reproducer: in a 0.2-CPU cgroup
-a busy worker drops from 100% to 19% of a CPU. Reproducer available on
-request.
+The iommu_group membership can change, this is why we check it in two
+places, both under group->mutex:
 
- kernel/vhost_task.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+- During preservation we check that the group is a singleton, and check
+   again after setting device_ser.
+- During probe we refuse to add a device to a group that has a preserved
+   device.
 
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index 3717885a599..7fa96e1b85b 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -6,6 +6,7 @@
- #include <linux/completion.h>
- #include <linux/sched/task.h>
- #include <linux/sched/vhost_task.h>
-+#include <linux/resume_user_mode.h>
- #include <linux/sched/signal.h>
- 
- enum vhost_task_flags {
-@@ -31,6 +32,14 @@ static int vhost_task_fn(void *data)
- 	for (;;) {
- 		bool did_work;
- 
-+		/*
-+		 * We never return to user mode, so TWA_RESUME task_work (e.g. CFS
-+		 * bandwidth throttling) would otherwise never run. Run it here,
-+		 * where no locks are held, like io-wq workers do.
-+		 */
-+		if (test_thread_flag(TIF_NOTIFY_RESUME))
-+			resume_user_mode_work(NULL);
-+
- 		if (signal_pending(current)) {
- 			struct ksignal ksig;
- 
+So if a device is added to the group while we are preserving, either the
+probe fails because the group already has a preserved device, or the
+preservation fails because the group is no longer a singleton. Could you
+please elaborate what you mean by handling it case by case?
 
-base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
--- 
-2.43.0
+>>+bool iommu_group_is_singleton(struct iommu_group *group)
+>>+{
+>>+	bool ret;
+>>+
+>>+	if (!group)
+>>+		return false;
+>>+
+>>+	mutex_lock(&group->mutex);
+>>+	ret = (list_count_nodes(&group->devices) == 1);
+>>+	mutex_unlock(&group->mutex);
+>>+
+>>+	return ret;
+>>+}
+>>+
+>>  static void iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
+>>  				   struct iommu_domain *domain)
+>>  {
+>>diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+>>index b7eda5615189..d1d11b28ae79 100644
+>>--- a/drivers/iommu/liveupdate.c
+>>+++ b/drivers/iommu/liveupdate.c
+>>@@ -43,6 +43,9 @@
+>>  #include <linux/kexec_handover.h>
+>>  #include <linux/kho_block.h>
+>>  #include <linux/liveupdate.h>
+>>+#include <linux/pci.h>
+>>+
+>>+#include "iommu-priv.h"
+>>  /**
+>>   * struct iommu_ser_set - Set of serialized objects of one type
+>>@@ -358,3 +361,189 @@ void iommu_unpreserve_domain(struct iommu_domain *domain)
+>>  	liveupdate_flb_put_outgoing(&iommu_flb);
+>>  }
+>>  EXPORT_SYMBOL_GPL(iommu_unpreserve_domain);
+>>+
+>>+static int iommu_preserve_locked(struct iommu_device *iommu,
+>>+				 struct iommu_flb_obj *flb_obj)
+>>+{
+>>+	struct iommu_hw_ser *iommu_hw_ser;
+>>+	int ret;
+>>+
+>>+	if (!iommu->ops->preserve || !iommu->ops->unpreserve)
+>>+		return -EOPNOTSUPP;
+>>+
+>>+	lockdep_assert_held(&flb_obj->lock);
+>>+	if (iommu->iommu_ser) {
+>>+		iommu->iommu_ser->hdr.ref_count++;
+>>+		return 0;
+>>+	}
+>>+
+>>+	iommu_hw_ser = iommu_ser_set_alloc(&flb_obj->iommu_set);
+>>+	if (IS_ERR(iommu_hw_ser))
+>>+		return PTR_ERR(iommu_hw_ser);
+>>+
+>>+	ret = iommu->ops->preserve(iommu, iommu_hw_ser);
+>>+	if (ret) {
+>>+		iommu_hw_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
+>>+		return ret;
+>>+	}
+>>+
+>>+	iommu->iommu_ser = iommu_hw_ser;
+>>+	return ret;
+>>+}
+>>+
+>>+static void iommu_unpreserve_locked(struct iommu_device *iommu,
+>>+				    struct iommu_flb_obj *flb_obj)
+>>+{
+>>+	struct iommu_hw_ser *iommu_hw_ser = iommu->iommu_ser;
+>>+
+>>+	lockdep_assert_held(&flb_obj->lock);
+>>+	if (WARN_ON(!iommu_hw_ser))
+>>+		return;
+>>+
+>>+	if (WARN_ON_ONCE(!iommu->ops->preserve ||
+>>+			 !iommu->ops->unpreserve))
+>>+		return;
+>>+
+>>+	iommu_hw_ser->hdr.ref_count--;
+>>+	if (iommu_hw_ser->hdr.ref_count)
+>>+		return;
+>>+
+>>+	iommu->iommu_ser = NULL;
+>>+	iommu->ops->unpreserve(iommu, iommu_hw_ser);
+>>+	iommu_hw_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
+>>+}
+>>+
+>>+/**
+>>+ * iommu_preserve_device() - Preserve device state across live update
+>>+ * @domain: Associated IOMMU domain
+>>+ * @dev: Device to preserve
+>>+ * @dma_owner_token: Token to identify DMA owner of this device
+>>+ *
+>>+ * Return: 0 on success, or negative error code.
+>>+ */
+>>+int iommu_preserve_device(struct iommu_domain *domain,
+>>+			  struct device *dev, u64 dma_owner_token)
+>>+{
+>>+	struct iommu_device_ser *device_ser;
+>>+	struct iommu_flb_obj *flb_obj;
+>>+	struct dev_iommu *iommu;
+>>+	struct pci_dev *pdev;
+>>+	int ret;
+>>+
+>>+	if (!dev_is_pci(dev))
+>>+		return -EOPNOTSUPP;
+>>+
+>>+	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
+>>+		return -EINVAL;
+>>+
+>>+	if (!iommu_group_is_singleton(dev->iommu_group))
+>>+		return -EOPNOTSUPP;
+>>+
+>>+	pdev = to_pci_dev(dev);
+>>+	iommu = dev->iommu;
+>>+	if (!iommu->iommu_dev->ops->preserve_device ||
+>>+	    !iommu->iommu_dev->ops->unpreserve_device ||
+>>+	    !iommu->iommu_dev->ops->preserve ||
+>>+	    !iommu->iommu_dev->ops->unpreserve)
+>>+		return -EOPNOTSUPP;
+>>+
+>>+	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
+>>+	if (ret)
+>>+		return ret;
+>>+
+>>+	mutex_lock(&flb_obj->lock);
+>>+	if (!domain->domain_ser) {
+>>+		ret = -EINVAL;
+>>+		goto out_unlock;
+>>+	}
+>
+>Should we check that @domain is actually attached to the device? The
+>iommu core tracks the device's domain attachment, so what happens if
+>the caller's @domain doesn't match what the iommu core has recorded?
+
+The caller of this API does that check before calling
+iommu_preserve_device. But I agree and I will add a check here.
+>
+>>+
+>>+	if (dev_iommu_preserved_state(dev)) {
+>>+		ret = -EBUSY;
+>>+		goto out_unlock;
+>>+	}
+>>+
+>>+	device_ser = iommu_ser_set_alloc(&flb_obj->device_set);
+>>+	if (IS_ERR(device_ser)) {
+>>+		ret = PTR_ERR(device_ser);
+>>+		goto out_unlock;
+>>+	}
+>>+
+>>+	ret = iommu_preserve_locked(iommu->iommu_dev, flb_obj);
+>>+	if (ret) {
+>>+		device_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
+>>+		goto out_unlock;
+>>+	}
+>>+
+>>+	device_ser->attachment.domain_phys = virt_to_phys(domain->domain_ser);
+>>+	device_ser->iommu_phys = virt_to_phys(iommu->iommu_dev->iommu_ser);
+>>+	device_ser->devid = pci_dev_id(pdev);
+>>+	device_ser->pci_domain_nr = pci_domain_nr(pdev->bus);
+>>+	device_ser->dma_owner_token = dma_owner_token;
+>>+
+>>+	ret = iommu->iommu_dev->ops->preserve_device(dev, device_ser);
+>>+	if (!ret) {
+>>+		WRITE_ONCE(dev->iommu->device_ser, device_ser);
+>>+
+>>+		/* Validate that no sibling device was added concurrently */
+>>+		if (!iommu_group_is_singleton(dev->iommu_group)) {
+>>+			iommu->iommu_dev->ops->unpreserve_device(dev, device_ser);
+>>+			WRITE_ONCE(dev->iommu->device_ser, NULL);
+>>+			ret = -EOPNOTSUPP;
+>>+		}
+>>+	}
+>>+
+>>+	if (ret) {
+>>+		device_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
+>>+		iommu_unpreserve_locked(iommu->iommu_dev, flb_obj);
+>>+		goto out_unlock;
+>>+	}
+>>+
+>>+out_unlock:
+>>+	mutex_unlock(&flb_obj->lock);
+>>+	liveupdate_flb_put_outgoing(&iommu_flb);
+>>+	return ret;
+>>+}
+>>+EXPORT_SYMBOL_GPL(iommu_preserve_device);
+>>+
+>>+/**
+>>+ * iommu_unpreserve_device() - Unpreserve device state
+>>+ * @domain: Associated IOMMU domain
+>
+>@domain is not used anywhere in this function. Why is it needed?
+
+Agreed. I will remove this.
+>
+>>+ * @dev: Device to unpreserve
+>>+ */
+>>+void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
+>>+{
+>>+	struct iommu_device_ser *iommu_device_ser;
+>>+	struct iommu_flb_obj *flb_obj;
+>>+	struct dev_iommu *iommu;
+>>+	int ret;
+>>+
+>>+	if (!dev_is_pci(dev))
+>>+		return;
+>>+
+>>+	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
+>>+		return;
+>>+
+>>+	iommu = dev->iommu;
+>>+	if (WARN_ON(!iommu->iommu_dev->ops->unpreserve_device ||
+>>+		    !iommu->iommu_dev->ops->unpreserve))
+>>+		return;
+>>+
+>>+	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
+>>+	if (WARN_ON(ret))
+>>+		return;
+>>+
+>>+	mutex_lock(&flb_obj->lock);
+>>+	iommu_device_ser = dev_iommu_preserved_state(dev);
+>>+	if (WARN_ON(!iommu_device_ser))
+>>+		goto out_unlock;
+>>+
+>>+	iommu_device_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
+>>+	iommu->iommu_dev->ops->unpreserve_device(dev, iommu_device_ser);
+>>+	WRITE_ONCE(dev->iommu->device_ser, NULL);
+>>+
+>>+	iommu_unpreserve_locked(iommu->iommu_dev, flb_obj);
+>>+out_unlock:
+>>+	mutex_unlock(&flb_obj->lock);
+>>+	liveupdate_flb_put_outgoing(&iommu_flb);
+>>+}
+>>+EXPORT_SYMBOL_GPL(iommu_unpreserve_device);
+>>diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
+>>index caa9778eee2d..cdf8a82b7f1d 100644
+>>--- a/include/linux/iommu-liveupdate.h
+>>+++ b/include/linux/iommu-liveupdate.h
+>>@@ -8,6 +8,7 @@
+>>  #ifndef _LINUX_IOMMU_LIVEUPDATE_H
+>>  #define _LINUX_IOMMU_LIVEUPDATE_H
+>>+#include <linux/device.h>
+>>  #include <linux/iommu.h>
+>>  #include <linux/liveupdate.h>
+>>  #include <linux/kho/abi/iommu.h>
+>>@@ -15,8 +16,58 @@
+>>  #ifdef CONFIG_IOMMU_LIVEUPDATE
+>>  int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler);
+>>  void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler);
+>>+
+>>+/**
+>>+ * dev_iommu_has_preserved_state() - Check if a device has live update state
+>>+ * @dev: Target device
+>>+ *
+>>+ * Unlike dev_iommu_preserved_state() and dev_iommu_restored_state(), this does
+>>+ * not dereference the serialized state, so it is safe to call without holding
+>>+ * a reference on the live update FLB.
+>>+ *
+>>+ * Return: true if @dev has preserved (outgoing) or restored (incoming) state.
+>>+ */
+>>+static inline bool dev_iommu_has_preserved_state(struct device *dev)
+>>+{
+>>+	return dev->iommu && READ_ONCE(dev->iommu->device_ser);
+>>+}
+>>+
+>>+/**
+>>+ * dev_iommu_preserved_state() - Get preserved state of a device
+>>+ * @dev: Target device
+>>+ *
+>>+ * Return: Pointer to preserved device state, or NULL if not preserved.
+>>+ */
+>>+static inline void *dev_iommu_preserved_state(struct device *dev)
+>>+{
+>>+	struct iommu_device_ser *ser;
+>>+
+>>+	if (!dev->iommu)
+>>+		return NULL;
+>>+
+>>+	ser = READ_ONCE(dev->iommu->device_ser);
+>>+	if (ser && !(ser->hdr.flags & IOMMU_SER_FLAG_INCOMING))
+>>+		return ser;
+>>+
+>>+	return NULL;
+>>+}
+>>+
+>>  int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser);
+>>  void iommu_unpreserve_domain(struct iommu_domain *domain);
+>>+int iommu_preserve_device(struct iommu_domain *domain,
+>>+			  struct device *dev, u64 dma_owner_token);
+>>+void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev);
+>>+
+>>+/**
+>>+ * iommu_preserved_state() - Get preserved state of an IOMMU instance
+>>+ * @iommu: IOMMU hardware instance
+>>+ *
+>>+ * Return: Pointer to preserved state, or NULL if not preserved.
+>>+ */
+>>+static inline void *iommu_preserved_state(struct iommu_device *iommu)
+>>+{
+>>+	return iommu->iommu_ser;
+>>+}
+>>  #else
+>>  static inline int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler)
+>>  {
+>>@@ -27,6 +78,16 @@ static inline void iommu_liveupdate_unregister_flb(struct liveupdate_file_handle
+>>  {
+>>  }
+>>+static inline bool dev_iommu_has_preserved_state(struct device *dev)
+>>+{
+>>+	return false;
+>>+}
+>>+
+>>+static inline void *dev_iommu_preserved_state(struct device *dev)
+>>+{
+>>+	return NULL;
+>>+}
+>>+
+>>  static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
+>>  {
+>>  	return -EOPNOTSUPP;
+>>@@ -35,5 +96,20 @@ static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iomm
+>>  static inline void iommu_unpreserve_domain(struct iommu_domain *domain)
+>>  {
+>>  }
+>>+
+>>+static inline int iommu_preserve_device(struct iommu_domain *domain,
+>>+					struct device *dev, u64 dma_owner_token)
+>>+{
+>>+	return -EOPNOTSUPP;
+>>+}
+>>+
+>>+static inline void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
+>>+{
+>>+}
+>>+
+>>+static inline void *iommu_preserved_state(struct iommu_device *iommu)
+>>+{
+>>+	return NULL;
+>>+}
+>>  #endif
+>>  #endif /* _LINUX_IOMMU_LIVEUPDATE_H */
+>>diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+>>index 71e73c5181b5..35d028fe7126 100644
+>>--- a/include/linux/iommu.h
+>>+++ b/include/linux/iommu.h
+>>@@ -684,6 +684,10 @@ __iommu_copy_struct_to_user(const struct iommu_user_data *dst_data,
+>>   *               resources shared/passed to user space IOMMU instance. Associate
+>>   *               it with a nesting @parent_domain. It is required for driver to
+>>   *               set @viommu->ops pointing to its own viommu_ops
+>>+ * @preserve_device: Preserve state of a device for liveupdate.
+>>+ * @unpreserve_device: Unpreserve state that was preserved earlier.
+>>+ * @preserve: Preserve state of iommu translation hardware for liveupdate.
+>>+ * @unpreserve: Unpreserve state of iommu that was preserved earlier.
+>>   * @owner: Driver module providing these ops
+>>   * @identity_domain: An always available, always attachable identity
+>>   *                   translation.
+>>@@ -740,6 +744,13 @@ struct iommu_ops {
+>>  			   struct iommu_domain *parent_domain,
+>>  			   const struct iommu_user_data *user_data);
+>>+#ifdef CONFIG_IOMMU_LIVEUPDATE
+>>+	int (*preserve_device)(struct device *dev, struct iommu_device_ser *device_ser);
+>>+	void (*unpreserve_device)(struct device *dev, struct iommu_device_ser *device_ser);
+>>+	int (*preserve)(struct iommu_device *iommu, struct iommu_hw_ser *iommu_ser);
+>>+	void (*unpreserve)(struct iommu_device *iommu, struct iommu_hw_ser *iommu_ser);
+>>+#endif
+>>+
+>>  	const struct iommu_domain_ops *default_domain_ops;
+>>  	struct module *owner;
+>>  	struct iommu_domain *identity_domain;
+>>@@ -827,6 +838,7 @@ struct iommu_domain_ops {
+>>   * @singleton_group: Used internally for drivers that have only one group
+>>   * @max_pasids: number of supported PASIDs
+>>   * @ready: set once iommu_device_register() has completed successfully
+>>+ * @iommu_ser: preserved iommu state of outgoing kernel for liveupdate.
+>>   */
+>>  struct iommu_device {
+>>  	struct list_head list;
+>>@@ -836,6 +848,10 @@ struct iommu_device {
+>>  	struct iommu_group *singleton_group;
+>>  	u32 max_pasids;
+>>  	bool ready;
+>>+
+>>+#ifdef CONFIG_IOMMU_LIVEUPDATE
+>>+	struct iommu_hw_ser *iommu_ser;
+>>+#endif
+>>  };
+>>  /**
+>>@@ -875,6 +891,8 @@ struct iommu_fault_param {
+>>   * @pci_32bit_workaround: Limit DMA allocations to 32-bit IOVAs
+>>   * @require_direct: device requires IOMMU_RESV_DIRECT regions
+>>   * @shadow_on_flush: IOTLB flushes are used to sync shadow tables
+>>+ * @device_ser: preserved (outgoing) or restored (incoming) liveupdate state
+>>+ *		of this device
+>>   *
+>>   * TODO: migrate other per device data pointers under iommu_dev_data, e.g.
+>>   *	struct iommu_group	*iommu_group;
+>>@@ -890,6 +908,9 @@ struct dev_iommu {
+>>  	u32				pci_32bit_workaround:1;
+>>  	u32				require_direct:1;
+>>  	u32				shadow_on_flush:1;
+>>+#ifdef CONFIG_IOMMU_LIVEUPDATE
+>>+	struct iommu_device_ser		*device_ser;
+>>+#endif
+>>  };
+>>  int iommu_device_register(struct iommu_device *iommu,
+>>@@ -1204,6 +1225,18 @@ static inline void *dev_iommu_priv_get(struct device *dev)
+>>  void dev_iommu_priv_set(struct device *dev, void *priv);
+>>+/**
+>>+ * typedef iommu_dev_iter_fn - Callback for iterating IOMMU attached devices
+>>+ * @dev: Attached device
+>>+ * @iommu: IOMMU instance
+>>+ *
+>>+ * Return: 0 on success, or negative error code.
+>>+ */
+>>+typedef int (*iommu_dev_iter_fn)(struct device *dev,
+>>+				 struct iommu_device *iommu);
+>>+
+>>+int iommu_for_each_dev(struct iommu_device *iommu, iommu_dev_iter_fn fn);
+>>+
+>>  extern struct mutex iommu_probe_device_lock;
+>>  int iommu_probe_device(struct device *dev);
+>
+>Thanks,
+>baolu
+
+Thanks,
+Sami
