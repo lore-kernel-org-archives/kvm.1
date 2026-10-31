@@ -1,75 +1,77 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793436134;
-	b=XzvKuzMmEA15U3WzOG901Et2C9dmpS+dxjnuyPYVp6UUsRBzhHxEM4EoTtiCQqLGgfoe
-	 ronxxGbmv1J7R1TeLU249z20ZLj0mse9iuEvHoZLqqvpRzZCVR+QcVcgKSQ7bnKEeeHm7
-	 fyA27tU4TjlBgGOtODWnsosvxoEOB7vpIuThNa3Jqga1WO0DPJZ5VWW4YqY4CZuyoSS19
-	 ZLI1mxhHjENOz7AJnKhjqMZ2MT+zU7P/juTQEYeF1ydS0LoFJb/rkDCqkj9mZaufn/7rX
-	 FZPVnYLc2NzLMq1i46y7wWVuKiwpUJDdov6a7yKl0S9WLaXWCP2j8iJjJeRggcLbD8Q==
+	t=1793437533;
+	b=qJP202WsDxsH/Cb9SYpNDXeEBMsdXUjn/ori4R0bg5eSKot8qUtHYSPba7BE3fuOifec
+	 unGcQmWdFggv8FZTF4DS4E1KbrXmVSh8fH2QmmRemPrqCKfAu4b3BPAPfCo/78edVfn34
+	 Y3ieQwjlaNW2I+JDiFwZ/ZIq5iH4mWcrrZ2igyXLy8+D5MFdr5CeqcHgwldU0fGzM9BwS
+	 nUwnI5YKlFATSXQDHD1q99Ls88aq3hybv1SL15GMaF3A5LGvkAfenA7SEe+ZUK98I/tMa
+	 EgkvJy0s0/0H0+4mHUJSP8imvvb6/W+CVvVtypseC4CzS2AODMHhkstgZ+LhRbflqQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793436134;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793437533;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=tShMXLKCMvW84MR4ySY6XES2av2t71FI1bctsItOmxw=;
-	b=wMLfX8jf6G3vUV6Dgrn4oserGgZgd/dgoLywxUHdIJxtxS3g4qMMibMT6oERRjQpdt19
-	 YricGSl30uUXv/25IvknBeyhFW2JjyJXX9a2OIZeg20/8FuUeNDMNZbjrYhj9gVJyjaXC
-	 CdQ+enyMkYtMDDFtQKKhAs5UXDXDoHuGQHAVqygSD3dOB1XgZJbaC8KvHWrSgENqc98y4
-	 VUWrlSd3s0FccNuX3PZmKmsEoU3bqWJfDLGenjZ9evplzhFwuy8uUd6m6vLQEq7/ZD0ZW
-	 yjL/5I0lCS7YzH7q1fLOrlSsbqbrPyKf8b0eFi/1+SFylTjBCvwMZ/AZVUpGrEp8Rsg==
+	bh=cGV63zOdaaMx02zc2ytufIk7kkO0ZAWOzzUSuNWiP6I=;
+	b=ov/K4MVEiS0bQfNgyeQY1ewbJV14gh/FNMt7or3M4y4P8xSPvPzwssdTUfAEIaD8/mxr
+	 O5NJWydF2gXX4N3NU1iiLkr0GuGmJXT5X3yq9xKa85BCvnLb2xaLXvUxxKVlci45qGjJg
+	 FojbiMdedSS2fGertcRG5f8O6tUKZbL1IMpmQ3KTIk9licb6GvojU9I2hw5QZ1Z0gRzhe
+	 eSuZVIEm6pC4Ja+Bpfx0TjOT/yEd/53JOO3DtE2mKyQTVvORnuis75q5PbBxIDmy2kG1R
+	 qJ901jZVY5lxDsDLEHnu1PVNYiG3/tHr6aCI6bWIdP/VN+Rs5c4yBXKTf9voXBXszaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cispa.de;
 	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=R+kVdD6f;
+	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=cT6XAza7;
 	arc=none smtp.remote-ip=134.76.10.21
 Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06725606A31A;
-	Sat, 31 Oct 2026 08:42:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06725606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EB8606A31A;
+	Sat, 31 Oct 2026 09:05:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0EB8606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=R+kVdD6f
+	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=cT6XAza7
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:
-	Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=tShMXLKCMvW84MR4ySY6XES2av2t71FI1bctsItOmxw=; b=R+kVdD6fTFVMTUfVtM2/eXJUsl
-	TegM7xETbOtuK+vBJsm29UfTdgwBYIl59hPdr+juHreghUJhNK52521woxJrGrGZ55N+gtJiJM51r
-	PDvtqWDAYuVlf9N1MWuLFlWm4U/vNsRKUalnFLB02FnVLlyD3MKcMgld99EgCQ61L1A4yLxXk0KNo
-	8Mfk4QOzwncccBEyp0Rb//dsXMx3SNDx8tEvVzEJz/RcWjn4eWkZ5zTWAGemIMu2Cht47F0aThpjx
-	ZPh3evinTEttORH49SuM/iDQ+u0XXKnYPVkSCsYs2pvkPAGePevOwz7S3s0Ak6JIpzGNgP1hejMs+
-	YAqBWrTQ==;
-Received: from mailer.gwdg.de ([134.76.10.26]:37756)
+	bh=cGV63zOdaaMx02zc2ytufIk7kkO0ZAWOzzUSuNWiP6I=; b=cT6XAza79BTnk7W7dpfcZFJ2TR
+	S2sq3hjHGPm3McvQCYexhBSn4ynCR+yYOnQ4miDP1mYnPhsAZI4sHiJ/YWgEf37awJO+aWCdd/igE
+	yK2UPV4EbokW0OmporduRyAKEDoDAueFE4A0waOVdT55HhD7Nd2EVb0sxdyJ6z+h351lhkHsHBpa3
+	ugYOS5UtMbx5ZKP8JWsrNoAaDMJkRcIygMu5BpGBGKYgsapVdCANoPMa00RBlH81Pz8b8UPd2M2Tk
+	gh2rkpGotZGAuENFW52tsiYWl5lPHTxLWGd78osz8XWxFUFBMXc7GEN3S8vgYV1DSj7XYZ/6ZZOjq
+	hGGpX80A==;
+Received: from mailer.gwdg.de ([134.76.10.26]:34293)
 	by mailer.gwdg.de with esmtp (GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN4fD-001WUA-0w;
-	Sat, 31 Oct 2026 09:42:10 +0100
+	id 1xN51k-001Wrx-2B;
+	Sat, 31 Oct 2026 10:05:28 +0100
 Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
 	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
 	(GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN4fC-000CZT-2n;
-	Sat, 31 Oct 2026 09:42:10 +0100
+	id 1xN51k-000J3m-0p;
+	Sat, 31 Oct 2026 10:05:28 +0100
 Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
  (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Sat, 31 Oct
- 2026 09:42:10 +0100
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Sat, 31 Oct
+ 2026 10:05:27 +0100
 From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <yosry@kernel.org>, <jmattson@google.com>, <kvm@vger.kernel.org>,
+To: <seanjc@google.com>, <dwmw2@infradead.org>
+CC: <w@1wt.eu>, <paul@xen.org>, <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <amirmohammad.eftekhar@cispa.de>,
 	<amirmohammadeftekhar@gmail.com>
-Subject: [BUG] KVM: nVMX: stale vmcs02 VPID/XSS-bitmap/MSR-counts when L1 toggles ACTIVATE_SECONDARY without dirtying vmcs12
-Date: Sat, 31 Oct 2026 09:42:03 +0100
-Message-ID: <20261031084203.64383-1-amirmohammad.eftekhar@cispa.de>
+Subject: Re: [BUG] KVM: x86/xen: gfn_to_pfn_cache left active after mmu_notifier release leads to a host use-after-free write
+Date: Sat, 31 Oct 2026 10:05:19 +0100
+Message-ID: <20261031090519.65206-1-amirmohammad.eftekhar@cispa.de>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <atolq8545YGo4iKx@google.com>
+References: <atolq8545YGo4iKx@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,120 +83,51 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: mbx19-fmz-02.um.gwdg.de (10.108.142.53) To
+X-ClientProxiedBy: MBX19-SUB-07.um.gwdg.de (10.108.142.72) To
  mbx19-gwd-01.um.gwdg.de (10.108.142.50)
 X-Virus-Scanned: (clean) by clamav
 X-Spam-Level: -
 
-Hi,
+On Thu, Oct 22, 2026, Sean Christopherson wrote:
+> Anyone object to taking this on-list?
 
-Reporting a stale-cached-vmcs02 bug: a few vmcs02 fields that are written only on
-the dirty_vmcs12 rare path are *decided* by state that can change without setting
-dirty_vmcs12, so they survive stale across nested entries. This is the Intel twin
-of the nSVM stale Virtual-VMLOAD/VMSAVE bit you recently took as a real bug. The
-one that matters is an L2->L1 TLB isolation break via a stale VPID; there is also
-a host-side KASLR disclosure on PEBS hosts (details below). Not host
-memory-safety, and not reachable on the kvmCTF config (I checked; see the end).
+No objection, please do, and thanks for picking it up.
 
-Root cause
-----------
-CPU_BASED_VM_EXEC_CONTROL is a SHADOW_FIELD_RW (vmcs_shadow_fields.h:49). An L1
-VMWRITE of it does not exit under hardware VMCS shadowing, and handle_vmwrite()
-does not set dirty_vmcs12 for shadowed fields (nested.c:5874 only for
-non-shadowed). copy_shadow_to_vmcs12() then syncs it silently at VMRESUME.
+> I'm pretty sure this should go inside kvm_flush_shadow_all() [...]
+> The other wrinkle is that super strictly speaking the invalidation needs to
+> happen before kvm_arch_guest_memory_reclaimed().
 
-prepare_vmcs02_early_rare() (nested.c:2411) and prepare_vmcs02_rare()
-(nested.c:2630) run only when dirty_vmcs12 is set. Two of their writes are gated
-on nested_cpu_has2(), i.e. on the *primary* ACTIVATE_SECONDARY bit:
+Agreed on both, and the comment can go.
 
-  - VIRTUAL_PROCESSOR_ID  = vpid02 vs vpid01		(nested.c:2431/2433)
-  - XSS_EXIT_BITMAP       written only if XSAVES set	(nested.c:2691)
+Putting it in kvm_flush_shadow_all() is also right for a reason beyond the
+mmu_notifier point: the stale cache at release is not Xen-specific. The KVM
+pvclock cache (vcpu->arch.pv_time, arch/x86/kvm/x86.c) is left active and valid
+across release in exactly the same way. It just is not a use-after-free write
+today, because once the owning task is gone nothing writes it asynchronously,
+whereas the Xen event-channel hrtimer does. So the Xen timer is the only
+reachable writer at the moment, but the dangling-cache condition is generic,
+and invalidating in kvm_flush_shadow_all() covers both.
 
-Everything else is re-derived from the live vmcs12 on every entry: vmcs02's
-secondary controls in prepare_vmcs02_early(), and every TLB-flush target
-(vmx_get_current_vpid(), nested_vmx_transition_tlb_flush(), handle_invvpid). So
-after an ACTIVATE_SECONDARY toggle done with a shadowed VMWRITE and no other
-non-shadowed VMWRITE before VMRESUME, hardware runs L2 on the VPID/XSS-bitmap
-chosen for the *old* activate state while the rest of KVM follows the new one.
+> Rather than pass literal numbers, what if (over a few patches) we massage
+> gfn_to_pfn_cache_invalidate_start() to take a range pointer [...]
 
-Manifestation 1 (VPID): L2->L1 TLB isolation break
---------------------------------------------------
-ACTIVATE 0->1 (VPID turned on): vmcs02 keeps vpid01, but handle_invvpid() and the
-KVM_REQ_TLB_FLUSH_GUEST emulation target vpid02, so L1's INVVPID for L2 never
-reaches the entries L2 actually holds. L2 keeps a stale translation after L1
-remapped the page. The 1->0 direction is the mirror (a missed architectural entry
-flush). On 6.1.74 the 0->1 / missed-INVVPID case is the live one.
+and David wrote:
+> I think I'd be slightly more inclined just to add a parallel
+> gfn_to_pfn_cache_invalidate_all() which can be a whole lot *simpler*
+> than the existing range-based one [...]
 
-Dynamic, host 7.1.2, pinned (a pCPU migration does a global flush). L2 maps GVA
-0x80_0000_0000 -> page X, reads it; L1 flips ACTIVATE 0->1 by a shadowed VMWRITE,
-remaps the PTE to Y, issues single-context INVVPID for vpid12=1, VMRESUMEs; L2
-reads again:
+Either shape is fine by me. The one practical difference is the backport: the
+standalone gfn_to_pfn_cache_invalidate_all() is a small self-contained change
+that is easy to send to stable, while the range-pointer rework is nicer
+long-term but more churn to carry back. I am happy to follow whichever you two
+prefer.
 
-  U1 (control, VPID on from launch) INVVPID rflags=0x2, read#3 = Y (fresh)   as architected
-  U2 (ACTIVATE 0->1 by shadow VMWRITE) INVVPID rflags=0x2, read#3 = X        DEVIATION: translation survived L1's INVVPID
-  U3 (U2 + one non-shadow VMWRITE) read#3 = Y                                 as architected
+I can turn this into a proper series and add the reproducer as a KVM selftest
+(the UAF reproduces under KASAN through the Xen timer, write into the freed
+shinfo page), or just test your version if you would rather carry it. Let me
+know which you prefer.
 
-5/5 rounds, host dmesg clean. U2's INVVPID VMsucceeds (rflags 0x2) yet the stale
-translation is still observable.
-
-Manifestation 2 (XSS): ACTIVATE 0->1 with XSAVES set leaves vmcs02 with the old
-(often empty) XSS_EXIT_BITMAP, so L2's XSAVES/XRSTORS of components L1 asked to
-intercept (e.g. CET_S, loading L1-owned IA32_PL0..2_SSP) run without the exit.
-Observable only where the guest can set IA32_XSS bits (a CET CPU). Measured on
-7.1.2.
-
-Member 3 (MSR auto-load/store counts): host-side effect
--------------------------------------------------------
-prepare_vmcs02_rare() is also the only entry-side writer of the vmcs02
-VM_{EXIT,ENTRY}_MSR_*_COUNT fields (nested.c:2740-2746). The exit side resyncs
-vmcs01 unconditionally ("The tracking is per-vCPU, not per-VMCS", nested.c:5172-5176),
-but the entry side does not. add_atomic_switch_msr()/clear_atomic_switch_msr()
-write the count only into the current VMCS and only on a membership change, so if
-the perf MSR list changes while vmcs01 is current (L1 running) and the next
-VMRESUME does not dirty vmcs12, vmcs02's counts are stale.
-
-On pebs_ept CPUs (Ice Lake server and later) with guest PEBS, a stale-smaller
-count leaves the guest IA32_DS_AREA unloaded on the stale entry, so while L2's
-PEBS counter runs the hardware keeps the *host's* IA32_DS_AREA (a page in the
-per-CPU randomized cpu_entry_area). The PEBS assist treats that host linear
-address as an L2 linear address; the walk goes through L2 paging and EPT, so no
-host memory is read or written, but it marks L2's own paging structures, which
-discloses the host cpu_entry_area base to the nested guest. Confirmed on Sapphire
-Rapids (Xeon Gold 6430): the decoded address matched the host rdmsr 0x600 exactly,
-dmesg clean, no KASAN report. This is a host KASLR disclosure to a nested guest,
-not host memory-safety.
-
-Fixes / precedent / suggested direction
----------------------------------------
-Fixes: 25a2e4fe8ef7 ("KVM: nVMX: initialize more non-shadowed fields in
-prepare_vmcs02_full"), which moved the nested_cpu_has*-gated VPID/XSS writes and
-the MSR counts into the dirty-gated path. Its own changelog states the rule it
-left incomplete ("we copy them always ... because the corresponding execution
-control might be one of the shadowed fields"). 2abb25273c82 ("KVM: nVMX: Force
-MSR bitmap refresh if runtime eVMCS controls are modified") is the same
-"derived state not refreshed when a shadowed control changes" class, treated as a
-real bug.
-
-I would suggest either treating a change of the effective ACTIVATE_SECONDARY bit
-as dirtying on both entry paths (VMLAUNCH and RSM), recorded where the rare paths
-run, or the point fixes: decide VIRTUAL_PROCESSOR_ID per entry in
-prepare_vmcs02_early(), write XSS_EXIT_BITMAP unconditionally under
-cpu_has_vmx_xsaves(), and move the three MSR-count writes into prepare_vmcs02()
-to mirror the exit side; plus extending the vmcs_shadow_fields.h rule to "a
-shadowed field must not gate anything in the rare paths". I am happy to send and
-test a patch.
-
-kvmCTF / scope note: on the Cascade Lake-Server kvmCTF config this is
-guest-contained. Manifestation 1 is L2<->L1 only (attacker and victim are both the
-guest), 2 needs guest XSAVES (xsaves=off there), and member 3 needs guest PEBS
-(pdcm=off there, and Cascade Lake keeps the perf generic MSR list empty anyway).
-I verified the EPT/MMU context and every host-physical vmcs02 field are re-derived
-every entry, so no stale-pointer-to-host-memory path exists; a 200k-round
-multi-vCPU KASAN churn of the nested-EPT lifecycle under the toggle stayed clean.
-So this is an upstream correctness / isolation report, not a kvmCTF submission.
-
-Reproducers (standalone probes with small L1/L2 blobs) for all three members are
-available; happy to share or adapt them to a selftest.
+Dropping stable@ and security@ from Cc, per Willy.
 
 Thanks,
 Amirmohammad
