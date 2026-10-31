@@ -1,77 +1,77 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793437540;
-	b=E6tCmG172K7aVC8+J6obelvOWTV8TYF7Qf1htlSG/qgnPqQUtJZgFS8VdnQ9K8PZyYmL
-	 7KVBQXNAD5JfktMDfgGOJaBZVY1TfANWGYNL+OsHpfDu1agOWYWvPHhMPZp8Vtsot2B/5
-	 6pTVL0r+b8X3XqKiYYgjaTfuVldXFk9A7hQq8JZcD1o41C+541eiGOMAW7CnqKsXVCQIz
-	 HDKO3WRBH4AjdQwJRkHPJMPJtXAHzpmcWzsYq8AMx2S5HzfxUrTu3MiOML+dc2300yXc8
-	 mXvdhXRor9UhsGGY2Ll/thPYjWb7im/asv3Il6T5ZTwnxSRju5RziLW9jkaeg2vv5fg==
+	t=1793440607;
+	b=oJuIR1XZKMuXuLRTN+DUtvEjJwNbrKXBTfYdKNrwE2iGhp7T8Xc1JeytQH2Rie8D7FPQ
+	 yp6RZpWdcNu+ssbtzSy326glyDnaTly5cW5x3xG2jFkvm4sxqVxgE4LdhsP5voTHafjxO
+	 PGp1MqLHNSLu6ZsIAN2vJhS1nPhrMG31ma4sA/24ntENPyafUIUdMGvZAhQ41ZrTBEXT1
+	 kfgoIjuIaYd144yGx/jGVEEv4dpx2rDUyUydY2bR0M3xul1Izi/unG6jopewArs8s8B5p
+	 wsAZviTaevbXMTl1e9IlYCd5oDKIc0vgRRNcSswx/9MLeTFHqChGv1c5c+o7o0SkNvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793437540;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793440607;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=Mghl+ozZsXUkWImos7sqBzlUuhVkwEuBCgl18BvqRlc=;
-	b=qM18orrjYU+8keb+Q+cKTL3VFfhc2C4njN+VZibICfRhOMgFazFaW95Fe/ilmjSMAHpK
-	 lWyOwj1kWjcY7tWDPHVCbWV1rb26EoWPHCzKl7cwqnfAQD6uI0Cp7cetC5SfB5Dr1W8Cx
-	 hHvJMobuStk9CmFskc6B/9ONEBKKuzaWOSXOGAsh6yFJock5Mvb/m9ScuLcOMDYUCYaWB
-	 yUzYCTtp+tuH5VbiVOwIBMKr22qBQZI/ErnGk9wyTpN4Yoo4xmdaw2EdZ6n2Jbl61tqdv
-	 8WXKdgVYG8bGmJblaZymyg/pwcsm1VU6kxW5paX+rJQbSSXkSFjZyv52Eo2XMpKsurQ==
+	bh=j3mJbUipG7teIjK/zO0RNtzSRCV/bGl/8Rxk9Uq3fU8=;
+	b=rTBIRgzji9R4A29teMO5K8RKnY8OtBdId5dU9HgNKESZpHITBK/7NB/6bVMI4QarvBvM
+	 sWAT+pt/sBawidiVoyqRbCRNP9f4k8BzDQzTNB5VtjZHkZs+XNWEZTW8c7kbzlwnX2ZxJ
+	 QvXU0ocBPc0L8fViAHbALYDsKiYR2SdFSHEtlg7GsWnGNpzLWK5MjjAqmQ4ktUI3Ofjmz
+	 eYo0dnnX57LRCMTnxpumUbKABv6OlAQ/9ZGqxFmE0oWNBynpbjjLsAi/AAQ1RBEGbvego
+	 iTrRQfRcDlXbappX6CVDdRO/j6Og9aWPLWrHDOHoip31fFOZ2SSiV1RDOfvTHNBUS+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cispa.de;
 	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=p3dpftEX;
+	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=NJcQcjk8;
 	arc=none smtp.remote-ip=134.76.10.21
 Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBF2606A31E;
-	Sat, 31 Oct 2026 09:05:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8EBF2606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2264F606A31C;
+	Sat, 31 Oct 2026 09:56:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2264F606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=p3dpftEX
+	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=NJcQcjk8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
 	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=Mghl+ozZsXUkWImos7sqBzlUuhVkwEuBCgl18BvqRlc=; b=p3dpftEXkMFrVYhLomByjMkgDa
-	xvKnXZXLH+0AAiXLyS0TuRIipQDh8Maa4otEAlqW1UkLyQ1y7S4Cn8KSVMLerFi3Yq+P+p8vtmt/w
-	8zqPkAMkeNkXqC3awizQi/c1ty8059lb9wpfBwLF5brYQtul07vZG7vRCtW96/+jUvfjIjF2DGkcH
-	oFqOnIcg7t0Ecp/du2bHIk22jw7i7rap16o2hqTxvtvOlxhUNcRR32AeezmqubTyk8DDJhz7zWR3f
-	TzwZk0ikvqBALw0U98XLvmfUTSQayt+xynqeG5T4RCQxwjMMZlNnCoYTrtolabtQG9HniHgHN3bZI
-	emx7njXA==;
-Received: from mailer.gwdg.de ([134.76.10.26]:60318)
+	bh=j3mJbUipG7teIjK/zO0RNtzSRCV/bGl/8Rxk9Uq3fU8=; b=NJcQcjk8iHIhc+dC2kxaTsw3hc
+	ohv9B90sMpGgDNmrSHnuT0HN3qeTE2Hd/ztql/oFSN03Ge73O+rwycqUhumzflJ3Exmn84kJdnn8g
+	cCb5NVNhheUQnhdrAQgv2CC05+KqIJtnMs9hTrxG/Zj8qt2FB8PpPT+aifcz5+rsJgyOEcDDmNjZo
+	SSeitO40rSClCzVa/zma9u4v1h3ct0vsS6fvIGqPXRqw9WD77gsmzrwO+ssgyiM/24RK56phpw3Pn
+	M10PH5ePPm9flWFCxH2NqGM96Ud3FNoqMBCCEFakuVxrBqx50/Caw0ah4jEeuK+2dJWvPZb843/sB
+	w3SvEjmQ==;
+Received: from mailer.gwdg.de ([134.76.10.26]:48267)
 	by mailer.gwdg.de with esmtp (GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN51u-001WsN-1A;
-	Sat, 31 Oct 2026 10:05:37 +0100
+	id 1xN5pL-001XaV-1N;
+	Sat, 31 Oct 2026 10:56:43 +0100
 Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
 	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
 	(GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN51t-000J69-32;
-	Sat, 31 Oct 2026 10:05:37 +0100
-Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
+	id 1xN5pL-000U3o-00;
+	Sat, 31 Oct 2026 10:56:43 +0100
+Received: from localhost (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
  (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Sat, 31 Oct
- 2026 10:05:37 +0100
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Sat, 31 Oct
+ 2026 10:56:35 +0100
 From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <vkuznets@redhat.com>, <kvm@vger.kernel.org>,
+To: <yosry@kernel.org>, <seanjc@google.com>
+CC: <pbonzini@redhat.com>, <jmattson@google.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <amirmohammad.eftekhar@cispa.de>,
 	<amirmohammadeftekhar@gmail.com>
-Subject: [PATCH v2] KVM: VMX: Add array_index_nospec() to evmcs_field_offset()
-Date: Sat, 31 Oct 2026 10:05:29 +0100
-Message-ID: <20261031090529.65240-1-amirmohammad.eftekhar@cispa.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <kuph5i8x2d0.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
-References: <kuph5i8x2d0.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
+Subject: Re: [PATCH] KVM: nSVM: Reset the virtual VMLOAD/VMSAVE bit in vmcb02 on every nested VMRUN
+Date: Sat, 31 Oct 2026 10:56:24 +0100
+Message-ID: <20261031095624.212806-1-amirmohammad.eftekhar@cispa.de>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <att-Epjatf5sw-ba@google.com>
+References: <att-Epjatf5sw-ba@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -83,56 +83,64 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MBX19-FMZ-08.um.gwdg.de (10.108.142.67) To
+X-ClientProxiedBy: MBX19-GWD-07.um.gwdg.de (10.108.142.60) To
  mbx19-gwd-01.um.gwdg.de (10.108.142.50)
 X-Virus-Scanned: (clean) by clamav
 X-Spam-Level: -
 
-evmcs_field_offset() bounds-checks the guest-supplied field index against
-nr_evmcs_1_fields and then indexes vmcs_field_to_evmcs_1[] without an
-array_index_nospec() clamp, unlike its vmcs12 counterpart
-get_vmcs12_field_offset().
+On Fri, Oct 23, 2026, Yosry Ahmed wrote:
+> Running the selftest under the probe on Zen 2/3/4/5, vmcb02 rows with both
+> vls=1 and the VMLOAD/VMSAVE intercept set still exit 0x82/0x83, so the
+> intercept is honored even with VLS enabled.
+> Can you share a standalone reproducer?
 
-A regular VMREAD instruction is allowed while an enlightened VMCS is active
-since 6cbbaab60ff3 ("KVM: nVMX: Allow VMREAD when Enlightened VMCS is in
-use"), and it reaches evmcs_field_offset() with a guest-supplied field
-encoding. Because the index is not clamped, the guest may be able to
-speculatively access past the bound check and read out of bounds of
-vmcs_field_to_evmcs_1[] (Spectre v1). The leaked value is only the u16
-'offset', so the exposure is limited.
+Thanks for the cross-microarch data and for the script. You are right, and I
+withdraw the intercept-drop claim. I reran this on a VLS-capable box
+(Threadripper PRO 5965WX, Zen 3, kvm_amd vls=1) with your bpftrace unchanged,
+and both your selftest and my own reproducer line up with your reading.
 
-The other callers of evmcs_field_offset() are not under direct guest
-control, but the array_index_nospec() clamp does not hurt them.
+1. Your selftest reproduces your result here. Every VMRUN where vmcb02 carries
+   both the VLS bit and the VMLOAD/VMSAVE intercept exits 0x82/0x83, the
+   intercept wins:
 
-Clamp the index with array_index_nospec(), mirroring
-get_vmcs12_field_offset().
+   vmcb02[vls=1 vmld_icpt=1] vmcb12[vls=1 vmld_icpt=1]  VMLOAD -> 0x82
+   vmcb02[vls=1 vmld_icpt=1] vmcb12[vls=1 vmld_icpt=1]  VMSAVE -> 0x83
+   vmcb02[vls=1 vmld_icpt=0] (intercept clear)          VMLOAD virtualized, no 0x82/0x83
 
-Fixes: 6cbbaab60ff3 ("KVM: nVMX: Allow VMREAD when Enlightened VMCS is in use")
-Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
----
-v2:
- - Reword the changelog per Vitaly Kuznetsov: the reachable path is a
-   regular VMREAD (allowed since 6cbbaab60ff3), not an "enlightened
-   VMREAD/VMWRITE"; note the limited exposure and the other callers.
- - Add the Fixes: tag.
+   So VLS virtualizes only when the intercept is clear; with both bits set the
+   intercept is honored, exactly as you measured.
 
-v1: https://lore.kernel.org/all/20261017093016.32348-3-amirmohammad.eftekhar@cispa.de/
+2. My reproducer does build the stale both-bits state, and it is still harmless.
+   Tracing --step vls-stale on the same box:
 
- arch/x86/kvm/vmx/hyperv_evmcs.h | 2 ++
- 1 file changed, 2 insertions(+)
+   arm    vmcb12(vls,icpt)  vmcb02(vls,vmld_icpt)   entry_rip   exit
+   clean  (0,1)             (0,1)                   0x1004000   0x82  VMLOAD intercepted
+   run1   (1,0)             (1,0)                   0x100400a   0x72  VLS on, VMLOAD virtualized, RIP advances
+   run2   (0,1)             (1,1)  <- stale VLS     0x100400f   0x72  resumes already on the CPUID
 
-diff --git a/arch/x86/kvm/vmx/hyperv_evmcs.h b/arch/x86/kvm/vmx/hyperv_evmcs.h
-index bc08fe405..052b62b8e 100644
---- a/arch/x86/kvm/vmx/hyperv_evmcs.h
-+++ b/arch/x86/kvm/vmx/hyperv_evmcs.h
-@@ -136,6 +136,8 @@ static __always_inline int evmcs_field_offset(unsigned long field,
- 	if (unlikely(index >= nr_evmcs_1_fields))
- 		return -ENOENT;
+   run2's vmcb02 is the exact case my patch was about: the VLS bit is left set
+   from run1 while KVM sets INTERCEPT_VMLOAD for run2. But its 0x72 is not a
+   dropped intercept. run1 virtualized the VMLOAD and advanced L2's RIP to the
+   CPUID, and my test runs run1 and run2 on one shared L2 context without
+   resetting RIP, so run2 resumes past the VMLOAD and never re-executes it. The
+   0x72 is that CPUID. Had VMLOAD actually run in run2 with both bits set, your
+   selftest shows it would have exited 0x82. My earlier Zen 4 "repro" was the
+   same RIP artifact, except that box could not enable VLS at all, so vmcb02
+   never even carried the bit and I misread the CPUID as a virtualized VMLOAD.
 
-+	index = array_index_nospec(index, nr_evmcs_1_fields);
-+
- 	evmcs_field = &vmcs_field_to_evmcs_1[index];
+So the stale bit is real in the code, but it does not drop the intercept: the
+hardware honors the intercept over VLS, as you said. The E3 / cross-layer
+framing was wrong and I withdraw it.
 
- 	/*
---
-2.54.0 (Apple Git-157)
+What survives is only the hygiene you and Sean already pointed at:
+virt_ext/misc_ctl2's VLS bit is OR-set in nested_vmcb02_prepare_control() and
+never cleared, while misc_ctl is reset from vmcb01 a few lines above. Worth
+folding into Sean's cleanup (initialize misc_ctl2 = 0 and un-invert the check to
+match nested_vmcb02_recalc_intercepts()), as hygiene, not a guest-reachable fix.
+The forward WARN in my original patch was oriented wrong; drop it.
+
+Sorry for the noise on the security angle, and thanks for pushing back with the
+measurements.
+
+Thanks,
+Amirmohammad
