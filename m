@@ -1,118 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793472457;
-	b=1KpgQ99rQlIl5VXkoWoibDe+jV7rknHO8dm+nUMMUWfnpWgBhLOVHkuTP0+urQSaykAS
-	 on0HmSOCgmWvHLT44EKJ+VZZJJ/l0Rd7zGgzUIFIl3+rFlR+8DmSeMs9TOR6oamfl4oHG
-	 GP7YQwEbRQX9hrS5lj6GTVENp9dMypQQoVt4eiT+YTqRGLm6SHGtEiX4gACVjt/uvuyMW
-	 a8Ym1Igl278LWtcYATzm+LfUBnYMGZsZP1EOGWcPDFzVAguoxICwJKTivnek/sa4HfWBK
-	 NbamqLdCZuKe86feVsRd0avgmlAy4IHIDpfEDDyRub+iQrHomaFbI6BgIAqEd/fj/XA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793472457;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=vkmwKYf8zQRpeat83U5XIB8sH7pruLs+dStmkRuX/bo=;
-	b=l9qtLdRjsqw/sE4+IGbawJg9CdAqW7Lt6UcgP26qYLzBSM8YGj6wGCe7S4KojESdgmG+
-	 FF/Kfz62WUUTX9rbFhJG1Jpv1EX/8s+qPTTb4XU6plx2iI79y07gnNYq9fzkQrsnVs974
-	 DugSwUWbgvssveq4hPeovgP9HY6plWZFS+ZRq/R7PVN4XcKykt+4LMgrfitgO6tHJTkD6
-	 JP642uu3Yi7NPzEIF+WgQ7nfbkWL+jPcfAPjWBM9JZ7H33Fio6ra3bwVaVnPQr6o2SUPg
-	 sxrpzF9usqSy28t2uzL1T5KK5v/QUyJGasmarbhyYFzc+QEurix89WOPD4Zz6fUIGfA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SEGFxxbt;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=rgrcU8Lu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.82
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793473121;
+	b=D/wcHAUHysXRYl/gyZcWVz16Fdvot5bOcbYQvDCYG+K5qqE9LsIKZOZ4/PguRUnfa18Z
+	 GlFmmv/Ol1GH31x9ua/JXxzRvsAUQnOuOZ1sDkIVTQ8v04UZIl3OvmhGUqjNCXJp44T5q
+	 7+u1pyiIZUg1GIsIsVJFe2NdWhCdl429anZKXcATi110fxuRQHFVkmw0L/XF+Fh/eZn8M
+	 ZIywpmnTCRardTmr+L5CgczCXdfBarbYns6ehgvz9mP1eMWTnaSGdu1ppYpM81/o0GBzm
+	 +TBctRyKdyWihPZBNa9kV79LjTbwFzQeMIqtbbx6mN3+D+SoToadRAx5zEyW2LjjPOQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793473121;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=WTXPO9m21ChhSJhJsMR1jm9N3k/S9PtVs0GDOD3AsIY=;
+	b=Xi31KQacoJp2Pe9ogljeLt9exbNA+n9YRmKbu3mqUhbn9CmXyOU3H9LXywD/OI1rfc1q
+	 0lTEBPXiNQh1ZUkRI8qoh4J+MWOUz8r1vo3eXIRhbuZfThYdTf6Hg7IORDt6HNzh/Qg1C
+	 bAFJzq39/UBVNplniX7lXroJ+jyEwivkNpAuHQzRFkY8jqN9mqDf3SAcL7VJeskbLNHUg
+	 qY9R2OuDUk4saEDTg/e3u0p707zVbNtJzFnWWjJDzHPbfZn7uoO1mG1GL7dEeGlv+2pTw
+	 xpPueV3PHu7F6l8CwAq/g/0Yg5w1ZlTfqIXNFlqhVsjFQtgE0kSqUMoUluZIXMYpSyg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	arc=none smtp.remote-ip=91.218.175.82
+Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED05E606A31A
-	for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 18:47:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED05E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SEGFxxbt;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=rgrcU8Lu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793472455;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vkmwKYf8zQRpeat83U5XIB8sH7pruLs+dStmkRuX/bo=;
-	b=SEGFxxbtDYA3Dh20ShZiGezANQRMftL2WGJ2FdJsn7RGSFPxKofjSBiru01/kZYjMavG5L
-	Z5VUHsiVWtqPw8/uEMr6cwpninSIQxNuEIRQca1jevwo7j4Cx459FTMpnSop06qs24Psea
-	CRAWeeJxXuJgdN/zKPe0X+Bf5domTvE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-iWFbYH_pNfa8pinDfpvEtw-1; Sat, 31 Oct 2026 14:47:33 -0400
-X-MC-Unique: iWFbYH_pNfa8pinDfpvEtw-1
-X-Mimecast-MFC-AGG-ID: iWFbYH_pNfa8pinDfpvEtw_1793472452
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48e17d30a79so934683f8f.3
-        for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 11:47:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793472452; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kEtsRxK9tyzlTPLPXV0nKXRWDyCYv0HqU5ktmb3tg267vyYMpyxaio6uIOfkPAo1up
-         /YHkR508KmjbJ42NFgiR6tzCuFk+9VJ9IENTg7i8ERwAXO8iKelzRJHoPMKOpQxUv1yh
-         vYEQBMfoUUsEswqKXmHnKxNNY3E0GQqUQgDqcy7k6K5nNoJoeDenbaB/H8J24crlehS7
-         WVxJTmpySUxc/WWFNAE/HaIepYtDeUJRTwqzetzUwL0nfn9wWSwMO+lx94sTegiaOPPE
-         ikyJ2P8bwHWhiZeStnlpJZG/+PUk8TSmbjw4gHg8USCZPQWiYqGqE1lqoIb/5cjcCUj6
-         Rv7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=vkmwKYf8zQRpeat83U5XIB8sH7pruLs+dStmkRuX/bo=;
-        fh=XDxdcdx+xw9hxgnK2SR+zf4mabnhAWI1tHOmQwBlZWg=;
-        b=rLyOpb0u/+VMiGXzUh+2G89S3R4aCm9IF+G9UYtqTUrwTF0tO7N0nNfc9JTzJlKClK
-         kHy8yR6hRPcrpfAUydky3AncMm670GV6H6FdDMBqlycBI9CmBASGEKqwSrb0jlJzwwMY
-         gcedo1OtzF1KWSNE1vt5XuqQ8cTybkhLnJVTdSAb3l2QEb5ZN+OCh1a9uml4kndwXWgc
-         4V6ip2wFId4JB5RMiH4t4huEVpdYUajh+02vomKwsXGnFhSVPaSG2DYup3K4cQvamybh
-         G4PixQfKYzNNgkxjJBzC2oFYXaAiin7tyzI5gjcbRxXeEcuNSsab/8+6KgMTQ1ca9HS2
-         QMPQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793472452; x=1794077252; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vkmwKYf8zQRpeat83U5XIB8sH7pruLs+dStmkRuX/bo=;
-        b=rgrcU8LuZ/aUTGXonYVT8EYo/DbYN7xdSW4HZsjM1uMp/pMZWstNcwn9CpQur2eZkB
-         iOjIsTZkAAPdESEQCaeU8e33i31U8ZR6o9yE42T7vZBteYhHO7W5TbYzKbpFsTAZPwiO
-         Uk5LK+RitXQsr1zdzmjpeSTQJNDb8C7Iog5dddm0zzW9JyeDGXCNxuLcoaxy8Hsesq46
-         7WQPaSrMfNGjaum5gnFaw2kkWwjSRudTFe7+2ktVCv9EMkU2YMImC24QGWorXDgNw9oZ
-         9rRP18njy8mP9jM1GlCAvo5MkqK+kvxchXAiDMyXkcTYJnmsqXIMVshiUflSnaO6DAyU
-         tr+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793472452; x=1794077252;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vkmwKYf8zQRpeat83U5XIB8sH7pruLs+dStmkRuX/bo=;
-        b=G+X9PYHvDFyD+CqzFLsfbOpzv97lJW33SsO9CocmgmCclBS7cQicO5cUV/zJrgZfXx
-         psDxgyxLxPXejPyQ2mEc89sT/otwYipMnYHiD0GPoN/5ehglhaWtKsI0bozRS0/bKN47
-         RnYumzQmjqdBnNVKSyJF+RMLPaP3B2QfWnrJOjW8EEcEvKD61NyvR6orrCj4/Q7gITVg
-         mzUWppYbpzBVAE3eslU/HRrv8TK7TFmkjDwH4t9cZO0BEZzWwgKeam9YmeZk6KUBCb+d
-         wVa6S0tuDhuGdcyaubRQtC5rF7q7nyak0cbpAr2VmyA8kqsihNntcO3pDnWKKy6tgdaB
-         hp3A==
-X-Forwarded-Encrypted: i=1; AKwUvBzToKepsrDqenHMNAatlkyQC8JXNLuoxL7uuAEF96SgG220g7wRN8As0fvVwF64Dfda8aM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYINLyj9gyOP89aoXsY945FzrNSY4CL21rOrdUJu4MmpRo54sO8k
-	lkAqeIJ2t2RjiplIGpNWhuFSDRcFVD1DmiAWZh0zx2Z9HTmYWU+BBJWRoAGrG1jbvDupkH/Uuix
-	uT3/I76ZymQasQPqo0oUZNAutgfZnBT77b79b9WDaRStJMVtYjI+7dGqchMVY+bi3sSu6jjhWyd
-	9hzPp+MjkZ4DWCCVjwLcIsEs2IPB9D3CRi3gRCZ8A=
-X-Gm-Gg: AYBFou1IE0PCR0wpTMoD7/Ev7r4NCqvwIVH0kenz5QJzwHJSG25ZrrDUnyqMVkcfSO2
-	y6J9qsN2Lua3CLrZchB7yL8ao7OOZopDQOy2eBAwQr00DS1hzO9rUMKfgFAci/UqiVoeKYl9j8x
-	GILjr1Oa1OgWFzJi/gq80XWuo5lu1aDoeVwmOXT7NYZWvQuzCIuUJf2PCgMGV6sg/b3n9NBmh9L
-	EMHSKWlbdlg76hiCFMf1coEMGle/fMaFO8XjCJB76ktjoNyqoHQRAI6KM8b
-X-Received: by 2002:a05:6000:310d:b0:48a:f59f:8b70 with SMTP id ffacd0b85a97d-48e6e4f8c71mr13594321f8f.46.1793472452528;
-        Sat, 31 Oct 2026 11:47:32 -0700 (PDT)
-X-Received: by 2002:a05:6000:310d:b0:48a:f59f:8b70 with SMTP id
- ffacd0b85a97d-48e6e4f8c71mr13594299f8f.46.1793472452215; Sat, 31 Oct 2026
- 11:47:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B62606A320
+	for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 18:58:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87B62606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=nhn60L6iDcU1tEzuh3dkIqEoHLNq1R18VibAiPoFZc4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793473113; v=1; x=1794077913;
+ b=FgLPquBtbge3POVC+2Dr8m+4QENK0dVztMZkqUikUBrZvJtE6H91VKKswJxIsBJL67pY6Jz9
+ 6g8qzsLTfA9LttvrY33jPtsEM+SjPu1YN01qWSJr0tzgcny6phbIpfbk016/wYEPf6rRAq9FOJQ
+ UmOda5mSHbWZxP2yJv5ZIimA=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id d88e81d4557f9af7;
+	Sat, 31 Oct 2026 18:58:33 +0000
+X-Mizu-Trace-ID: d88e81d4557f9af7
+X-Migadu-Flow: FLOW_OUT
+Date: Sat, 31 Oct 2026 11:58:31 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost_task: do the return-to-userspace work between work
+ items
+Message-ID: <auY57Gu5NBtLWKoY@linux.dev>
+References: <20261031181004.4193627-1-shakeel.butt@linux.dev>
+ <20261031141506-mutt-send-email-mst@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -122,80 +64,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261030183604.3e8e373c@fangorn>
-In-Reply-To: <20261030183604.3e8e373c@fangorn>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 31 Oct 2026 19:47:20 +0100
-X-Gm-Features: AclHuK_9y-00d5m76qSsFcMjJfOv9KZyclM-AmIVcVyuVMir0oD899CQbDHFHvQ
-Message-ID: <CABgObfYRHc0ELLdqm2gF+9y=ef5871TVPy4JoGy1XwPChQhsCw@mail.gmail.com>
-Subject: Re: [PATCH] KVM: reject VMA straddling the dirty ring on mmap
-To: Rik van Riel <riel@surriel.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm <kvm@vger.kernel.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261031141506-mutt-send-email-mst@kernel.org>
 
-Il ven 30 ott 2026, 23:36 Rik van Riel <riel@surriel.com> ha scritto:
->
-> kvm_vcpu_mmap only tests the VMA's first and last page against the
-> dirty-ring interval, in order to prevent a MAP_PRIVATE VMA from
-> getting mapped into the dirty ring, breaking dirty tracking.
->
-> A VMA that starts before the ring and ends after it has neither
-> endpoint inside, so the check passes even though the
-> mapping covers the ring.
->
-> Getting this wrong is observable from host userspace: the VMM
-> (QEMU) mmaps the vCPU fd to reach the dirty ring, and a MAP_PRIVATE
-> mapping that spans the ring succeeds even though it covers the ring.
-> Faulting one instantiates a private CoW copy instead of the shared
-> ring page. The guest's dirty-ring writes then land in a page the
-> VMM never sees, silently breaking dirty-page tracking.
+On Sat, Oct 31, 2026 at 02:15:40PM -0400, Michael S. Tsirkin wrote:
+> On Sat, Oct 31, 2026 at 11:10:04AM -0700, Shakeel Butt wrote:
+> > A vhost task is a user worker: a thread of a user process that runs only
+> > kernel code. It never returns to userspace, so it never runs the work
+> > that is queued for the way back. resume_user_mode_work() does that work
+> > when TIF_NOTIFY_RESUME is set. For a vhost task this means:
+> > 
+> > - memory.high is handled at the wrong time. When a charge goes over
+> >   memory.high, the task counts the pages, and should reclaim, and sleep
+> >   if needed, on its way back to userspace. A vhost task only reclaims
+> >   when more than a batch of pages has built up and the charge can block.
+> >   Then it reclaims and sleeps in the middle of the charge, maybe while
+> >   it holds a lock. vhost-scsi, for example, can fault in guest memory
+> >   while it holds vq->mutex. If the charges can't block, nothing is done
+> >   at all, and the count keeps growing.
+> > 
+> > - Block cgroup throttling never runs. blkcg_schedule_throttle() asks for
+> >   it, but only resume_user_mode_work() acts on it.
+> > 
+> > - Task work queued with TWA_RESUME, like a deferred fput() or a NUMA
+> >   balancing scan, waits until the task gets a signal or exits.
+> > 
+> > io_uring workers had the same problem, and io_run_task_work() calls
+> > resume_user_mode_work() for them. Do the same in vhost_task_fn(): if
+> > TIF_NOTIFY_RESUME is set, call resume_user_mode_work() at the top of the
+> > loop. That is between work items, no locks are held there, and the task
+> > is running. Passing a NULL regs is fine, io_uring and KVM already do it.
+> > 
+> > This covers every user of vhost_task_create(): the vhost workers and
+> > KVM's NX huge page recovery thread.
+> > 
+> > Tested in a VM with a version of tools/virtio/vhost_net_test that puts
+> > each RX buffer on a new page, so the vhost worker faults in, and
+> > charges, 256M while its cgroup has memory.high=64M. Before, all 285
+> > calls to __mem_cgroup_handle_over_high() came from try_charge_memcg(),
+> > inside handle_rx() with vq->mutex held. After, all 589 came from
+> > vhost_task_fn(). memory.peak stayed at 64M, and the run took about the
+> > same time (0.66s before, 0.67s after). A lockdep kernel showed no
+> > warnings.
+> > 
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> 
+> Is this different from:
+> 
+> Message-ID: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
 
-This is deep in "if it hurts don't do it" territory. Unless I am
-missing something huge, it's at best a decent code cleanup. "Silently
-breaking" is overselling by a lot...
-
-> Fix by testing interval overlap instead of endpoint membership.
->
-> Tested by creating a VM with a 16-page dirty ring. Mmap the
-> VCPU fd covering pgoff 0...199 MAP_PRIVATE, then fault a
-> page inside the ring. Succeeds before this patch, -EINVAL after.
-
-I probably would have applied it, but the commit message and
-especially the comment in AI English made me change my mind quickly.
-
-You've been working on Linux for 30 years, I would have expected a
-higher standard; and if this is the kind of commit in Meta's
-8000-patch stash, I'm not sure I want to look at the rest...
-
-Paolo
-
-> Signed-off-by: Rik van Riel <riel@surriel.com>
-> ---
->  virt/kvm/kvm_main.c | 10 +++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -4175,9 +4175,15 @@ static const struct vm_operations_struct kvm_vcpu_vm_ops = {
->  static int kvm_vcpu_mmap(struct file *file, struct vm_area_struct *vma)
->  {
->         struct kvm_vcpu *vcpu = file->private_data;
-> +       struct kvm *kvm = vcpu->kvm;
->         unsigned long pages = vma_pages(vma);
-> +       unsigned long ring_start = KVM_DIRTY_LOG_PAGE_OFFSET;
-> +       unsigned long ring_end = ring_start + kvm->dirty_ring_size / PAGE_SIZE;
->
-> -       if ((kvm_page_in_dirty_ring(vcpu->kvm, vma->vm_pgoff) ||
-> -            kvm_page_in_dirty_ring(vcpu->kvm, vma->vm_pgoff + pages - 1)) &&
-> +       /*
-> +        * An overlapping VMA is rejected when private or executable: a CoW
-> +        * fault hides guest writes from the VMM.
-> +        */
-> +       if (vma->vm_pgoff < ring_end && vma->vm_pgoff + pages > ring_start &&
->             ((vma->vm_flags & VM_EXEC) || !(vma->vm_flags & VM_SHARED)))
->                 return -EINVAL;
->
->
+Oh wow, it is same but somewhat for different reasons. I am fine that patch, I
+will comment on it.
 
