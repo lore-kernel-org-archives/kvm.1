@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793474393;
-	b=t7z/pq94pSDcaQzmdQVTpWmGKIE52IYoZNu3wy4GvptufbYxx3nN1HoBTYKKVUsyaGbQ
-	 HLpNMWhz4OSjtzVZonzx9bdK0Ao2quxT+esJvN5fgPAqIGtjO3lTwzN8MMjfsy3q6Ktil
-	 AahsUgMzMcJZeL821pVS2I1+bvTceDPfh6r6I35Jq4IbK9vJiZc+15qOf+WSzlxDdu3w4
-	 8UywTtx8qx6PQ1cE+7VZ3MzsTEvvx4h1CmoXpuckCuxGAcKcpyWgfIT19u/A57E21UHHI
-	 GdjtgearJMra8nnBFeqUEIIoC9INKqSBAxalqqlnCl7joFvB5r/UqSvjGP9rOTZtA5A==
+	t=1793474629;
+	b=GGxQnIHpfG0d0qH9JOCpYVx+9/YEWCmDfkgg2RxDKNllPfzlm5YNORuaBiPAkzU3gzOu
+	 m5NVrp+MopkswRXD0Obg1Mu0aoHnWkb9/onQcysGkcykHqCNDga951MQpJxoZfOArFlDK
+	 A4NSxjEFHTRNUbkLTHNmptUKmp0QEKzS+5bAtkwOKYfbWaHkncC0kO+azk3oVsaeZ2t1t
+	 DcOtD/NEK4Y7/U019lmFiG63s0V8HhFxa484uRKMjzbi0RP/b33buHTc7SGafQHKp1Scp
+	 1tnEianQ+QoB9NsAaH9OVdgW/liDtsPaa/fKHpY6ju3rsQy4YkCx4QbvVXk6J2D+Ukg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793474393;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793474629;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
 	 In-Reply-To;
-	bh=FI17lU+UEkaw3gnc3aMhItamMlJeUZRGnzTnl6hwNL4=;
-	b=rrJh//lT0Pp+VoPd2KJQTOdK3109ceSQGbj/Ai9Kr+N3UFTCRMDpA8YyPeCgOs7dZ/k9
-	 PO3I5OHRK+SdAj1akcniabpzI+lyXz3s0tlwRD/T+PIHTlwi7EXH+ubY7i6HwJT5LtpBR
-	 cJngqTPKe4nOe3J+Lm8tGfFv4cEcOFxR32NEyjc/sWqi1MxE6X2E3iOUBL0pq/NxSXo5E
-	 Tj5c5Bd3ZG0S0Y0nAO/NDg8BkIFtRkv3aSGVsrUg+VuEIBuolXgsnwJqbcHvIyUjJcSiv
-	 GXioxQcIEJhU2QXnr/dgL8rABcZ+ZeBA5cLxjokxiJLDwoxCXfaY97EpAgO48H9suqg==
+	bh=qee3FwDn+lR4Rdz4X353Tv1A8/aooI3LNRhrS8wuqjk=;
+	b=qwJ8b1hEGe5QConl3ZRErQVJ+r7/8hWtNodOc1IQ4m0/nNUxBG18ArP23UD3ed8FDOSz
+	 iP50VkvWG1iSJrp0Qdc93iVKJMZ6oP0uGvcIneDZJ9Lj0iigPssbrs3XPMbR10pwXOUx0
+	 Spy0AzRpG9sg3u2Scn/eN3Jcb5B9C58hpwpVhBYvtXJXDr3GXrFZV0No76L+nK+jh2l9v
+	 8vuz0pmLCtY2ZpcE14Fedb4p9bSc4R6Hqey6hHU8fhZtDcNQVsWxn2h7rWtzQNwZfHCWv
+	 DhnULxuDgQ8YZhjicY7iaBLWPaakGqsrEh1Icujfdqn2tiymd6YikEzP2dqgrwPlTBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AQ9L6qY1;
-	arc=none smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Aam5o7a8;
+	arc=none smtp.remote-ip=209.85.214.180
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2440C606A31C
-	for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 19:19:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2440C606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A80606A31D
+	for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 19:23:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54A80606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AQ9L6qY1
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2eb0a52d605so38335ad.0
-        for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 12:19:52 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Aam5o7a8
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2eb0a52d605so38725ad.0
+        for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 12:23:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793474392; x=1794079192; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793474629; x=1794079429; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FI17lU+UEkaw3gnc3aMhItamMlJeUZRGnzTnl6hwNL4=;
-        b=AQ9L6qY10DoFWioK3v4cR1xnHBuarXec5BHFdQbg5mauJv2W8uW6hMdv4MECZCwKwG
-         TNwcJ5SSXjfSELYTUlY6PxcC2/b3uJiOodyavwNJBPKnJWxNXtb6F86um6/vpbmGr5XM
-         +KAEudfowPotOxclYKP2qg+KhPA6es2vOgmejvSRaY7CCK728WbMLm5jA/8pd1laPfcy
-         Oti6dFmbxEqxhpVLlQONdkuAz4paaMcPPfhYz9sIA+EQ6IEE8gbT/9JNKVT6ViVUhder
-         9+hGzkSKyxmkoBGMVhEkOgpn5bQLg/TzIWesI1hu/w54Qojpfa4vb1eAWGKuWmRGEbgK
-         0Ikw==
+        bh=qee3FwDn+lR4Rdz4X353Tv1A8/aooI3LNRhrS8wuqjk=;
+        b=Aam5o7a8hUW4mc8284I69mOwmhTF493/rFhQuGGspiyeTybiS/cluWSoa64PtfbBb/
+         ABnWD2HlOW3xv0edtXq3OAdDmMk80Npd8dsL7UrCg1Yh4uB+WEEqi+jxIHRJwDOixemH
+         Mq52MZLQpfPDBeVW1lrO+V5tH87YOpccoeXNTLh4/CkK+WNvDbQ/+5m2X3Flhe+/l0V9
+         ObA+I3e5BCPZ+E31xJyEcze1c9VYcKTy1Zxe8p1398Ak8gTmleOTi5TUdg/Miyg7+VCe
+         X6PnNisIE0Xr7uFBONgsRs+S7ZWawVGABpOc0adz9V3eNQ2yZIfk/Z6/a8IM7oHCFoZZ
+         Y16g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793474392; x=1794079192;
+        d=1e100.net; s=20260707; t=1793474629; x=1794079429;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=FI17lU+UEkaw3gnc3aMhItamMlJeUZRGnzTnl6hwNL4=;
-        b=m7LRJAkL60vLSnP6omC9UaVxpSjWe9xZ3SKZb/gZx8fjCECTbxlmSxcGElwz4F92kK
-         y+Nqg24LI2vQB2pGaNQKUV60Kh3+GaL2fv7CINgjdAEXRKHOoXxRI/VpelTeup+2BZR/
-         /O0aqLOimxwdtqmjixwsvHxQvi7dv9MG8kCXGpqRwpFzRqlNTwvXeMYeqps5SzAqVSOX
-         ExyXWjt776W4kN5HNnaFPRR0bJzJIWfK5zmNnsHb6iF1c9u9iUDmJJ4A+dXse9s/ZERS
-         NyN9z8c90vWXE2k8afqTaktiACs+XG64T/P89oNAXZ9lSSv10b1XJ/BeRv4m4rYF5wtX
-         jhaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw7u4E7mKPleEbxQ0ntnTehvN0bO96xt6EJ3idP7a3PEHI4H0Ynv078S2Exzc6RhKxZEUs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJNM7vk3Zg7ZoqlKc7/53dHJmgDIjKxcR0SvoISuTtu+OzNwr4C
-	AcDrA7/62N10+pjZnpbadmHfN6fPsmGPzJkyadEL+BQeNDXAuaXSPlmAllwBhc1h2Q==
-X-Gm-Gg: AYBFou0HjF/zfyXS44BSizrWpbYA2mLeS7QEM58ZkGnjuEGxzvCGk+abn7OEOtJbmfJ
-	vUSnuNsWcqJGh1th2Nyh6VvsKGSHFcRnp6Tr6WPEhH64+WbTbfR7BukZZNav08Kemb3MnB3xNLl
-	j8+FkwTRYHsT8rsI0psfP16kN1oIudWgbIdycY7/QA0tl83Gr1GuzXdg/iy97icrwfm8jGJOHGV
-	MHgV35ZUU8959QAHeMFllhAt7tmH23WJtKTCgnyD6y1cf080XCCl0DGPOCEvr7lf2eSEp/ovz0a
-	wJaH1XyocL69J34I0rKPZOuMtIgPQmBmP8x39BHCiZzkLMeTC2BBvZN9TQ3xk1CvuWdZyQt34UQ
-	wPimefaafhEtvkGtf4YDyIapYrGqbBVNwP8i/4PYyttVGHTG+mwnCwG8qISW6v26poCBnrRoLGW
-	gvFEW+Chl0Olt+nWOx40fbEluheMy9UEz6ANXRhgkMVnPd6amam+xtrAT+mNKGy3mABBbkClpz3
-	+qiP1EQq5sSZqebE+MSjVyV43U2mnCsHUwV87n4zVESNJcHVVMc4vfp6y7O3SiAf4gAqrigG37C
-	uvmr0dUJLCvb+zd8Sbrva6WrQZSIUPzeVhqvqBJt8H/qHwPG8c6A0K3ROD0QRYoU/wA+++c6YB6
-	vB2QgWRTnQhL8ueZBDfuQuQ==
-X-Received: by 2002:a17:903:3c70:b0:2ea:4a1:e8a4 with SMTP id d9443c01a7336-2eb1b8c029emr17343335ad.13.1793474391728;
-        Sat, 31 Oct 2026 12:19:51 -0700 (PDT)
+        bh=qee3FwDn+lR4Rdz4X353Tv1A8/aooI3LNRhrS8wuqjk=;
+        b=N09lzJztVgMpUkaO/fq1UvkaOS7bohXODVKn3tT88k9anQiqfNGDgxrlcq8W+/ZpST
+         WQRH8ETgnapH4r3klAyaHwfVmZbiu3aVeqhkw9U8qjwTEp254Tp3mpsUtos/EazYmyy6
+         ars77p1iqqCj7jBcD3Mhis2+1O8ZdSdSSdH8FXKc9gkVyJbc8GaxoXRu2sFoRoVFyojJ
+         d5gc6vmdKyCGH7B2Ij9fKqTGTpbqXC5EjxtmQOHHyK4cDtPCpbcMnBSwiDLjVSfGDSap
+         42xngSYAx2Z5g2d21N+C+pOxDHAyqyoJpT4wpWz8cJUHGPAjftW7kqqQ22M0iBKmpOsJ
+         sonA==
+X-Forwarded-Encrypted: i=1; AKwUvBz8UxcsDpfdkxX57ZBpMM1vmzuLEgt1P1xM4o4+JMyMk6iude24L1fBhvxhdJCgFlaYGRM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLx7MfS86hdJdQc4J3p38fGGxudIZ8jR0HVMCsSTlosChnaYuh0
+	HyY2kmXCqX0g1fLQTi3LaNGn3YrZyaboTJvULgRafzIzOz2ooGMp2x/Jbu4azYbMSQ==
+X-Gm-Gg: AYBFou2kQUAqHyj5Bi4AL+nmsT6dI7UyGyP5GtCmNXGHy8oaDk8FfzezqVL+8A8mT7e
+	w1Mzva+XBB+f46n8GYnQcPBe+XtEZ6dBzFrOLV89/FH85QmlertdJRzVesHXhZdZskRCTBf1ec0
+	DvseHAvC0Lyq1dwS3ogDFJztYjmI6sLhoxqcHpH0oe7lqcy00gFxWJ3q4o5UfLYRhmtzD+Rl+Cb
+	DqfjySqZQXna6UmRFQy7Y0sxJ8ElrOeRy5lbHIjPOguGGGXhRxERibUHMQEjDb1fq+mi/KG993v
+	lYOaZoaVznXAOhppcowB9vlOLLpRhbQAKmUrkR4as2NsVsIiqQRFOafeXli28NbXHYoOGR8AVc5
+	8AMqjD1Zl+BkohHUW1ZWr/PWwc2UiQ7gKyblJ61lgbLwqf7vB9yz7UZE/GwwUc7+3Xwx+7vuNvu
+	m9F46ACWOODD+i08kpTLlvfQyKYo1iKFAYI4+Eb0msaZNRNy1aEQ3E4JZQ6alucUvog8wVk63Ka
+	4MPtg1HofypM8Ub5cG/nF64CZMDgJ5io27hhQ1FykvVZBx6gNB+u3JLkqyMnQBabypxElCQsQui
+	gv8jRX41uhstxdeC5Wyd5G3zeKf+QK2RH+Cjciv01ErDVFh1y19ylCszLbyawua8LhfjJjqHdYP
+	nVM1klnQATlWdo5NiwJtnfA==
+X-Received: by 2002:a17:903:3c70:b0:2ea:4a1:e8a4 with SMTP id d9443c01a7336-2eb1b8c029emr17347455ad.13.1793474627935;
+        Sat, 31 Oct 2026 12:23:47 -0700 (PDT)
 Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e7d429fsm12698201a91.2.2026.10.31.12.19.49
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e8fb1ddsm12878243a91.5.2026.10.31.12.23.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 12:19:49 -0700 (PDT)
-Date: Sat, 31 Oct 2026 19:19:47 +0000
+        Sat, 31 Oct 2026 12:23:47 -0700 (PDT)
+Date: Sat, 31 Oct 2026 19:23:44 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Baolu Lu <baolu.lu@linux.intel.com>
 Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
@@ -95,12 +95,14 @@ Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
 	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
 Subject: Re: [PATCH v6 05/18] iommu: Implement device and IOMMU HW
  preservation
-Message-ID: <auYtwy3DjRxq3Upi@google.com>
+Message-ID: <auY_eWa6J567s1uU@google.com>
 References: <20261025021930.674647-1-skhawaja@google.com>
  <20261025021930.674647-6-skhawaja@google.com>
  <df75f891-05a0-4d47-8705-d6a00c81ff97@linux.intel.com>
  <auTzN4NWuKsBvIZU@google.com>
- <38384919-f0e5-4c93-b71b-065b96a74c38@linux.intel.com>
+ <51b23019-8ac2-4f6b-9be7-29f3635b472e@linux.intel.com>
+ <auVfqaDhk25JUkYd@google.com>
+ <7b059c0e-3b60-4d8c-b7d2-7dcb89a51c6f@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,114 +115,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <38384919-f0e5-4c93-b71b-065b96a74c38@linux.intel.com>
+In-Reply-To: <7b059c0e-3b60-4d8c-b7d2-7dcb89a51c6f@linux.intel.com>
 
-On Sat, Oct 31, 2026 at 01:34:00PM +0800, Baolu Lu wrote:
->On 10/31/2026 9:45 AM, Samiullah Khawaja wrote:
->>On Fri, Oct 30, 2026 at 01:12:31PM +0800, Baolu Lu wrote:
->>>On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
->>>>Add IOMMU ops to preserve/unpreserve the device state handled by the
->>>>IOMMU driver. This is IOMMU specific state of the device that needs to
->>>>be preserved for liveupdate. These ops can be implemented by the IOMMU
->>>>drivers that support preservation of devices that have their IOMMU
->>>>domains preserved. During device preservation the state of the
->>>>associated IOMMU is also preserved as dependency.
+On Sat, Oct 31, 2026 at 01:27:05PM +0800, Baolu Lu wrote:
+>On 10/31/2026 11:39 AM, Samiullah Khawaja wrote:
+>>On Sat, Oct 31, 2026 at 11:04:22AM +0800, Baolu Lu wrote:
+>>>On 10/31/2026 9:45 AM, Samiullah Khawaja wrote:
+>>>>>>+
+>>>>>> #if IS_ENABLED(CONFIG_IOMMUFD_TEST)
+>>>>>> void iommu_device_unregister_bus(struct iommu_device *iommu,
+>>>>>>                  const struct bus_type *bus,
+>>>>>>@@ -626,8 +668,8 @@ DEFINE_MUTEX(iommu_probe_device_lock);
+>>>>>> static int __iommu_probe_device(struct device *dev, struct 
+>>>>>>list_head *group_list)
+>>>>>> {
+>>>>>>+    struct group_device *gdev, *gdev2;
+>>>>>>     struct iommu_group *group;
+>>>>>>-    struct group_device *gdev;
+>>>>>>     int ret;
+>>>>>>     /*
+>>>>>>@@ -661,6 +703,13 @@ static int __iommu_probe_device(struct 
+>>>>>>device *dev, struct list_head *group_list
+>>>>>>         goto err_put_group;
+>>>>>>     }
+>>>>>>+    for_each_group_device(group, gdev2) {
+>>>>>>+        if (dev_iommu_has_preserved_state(gdev2->dev)) {
+>>>>>>+            ret = -EBUSY;
+>>>>>>+            goto err_free_gdev;
+>>>>>>+        }
+>>>>>>+    }
+>>>>>>+
+>>>>>>     /*
+>>>>>>      * The gdev must be in the list before calling
+>>>>>>      * iommu_setup_default_domain()
+>>>>>>@@ -697,6 +746,7 @@ static int __iommu_probe_device(struct 
+>>>>>>device *dev, struct list_head *group_list
+>>>>>> err_remove_gdev:
+>>>>>>     list_del(&gdev->list);
+>>>>>>+err_free_gdev:
+>>>>>>     __iommu_group_free_device(group, gdev);
+>>>>>> err_put_group:
+>>>>>>     iommu_deinit_device(dev);
+>>>>>>@@ -3543,6 +3593,26 @@ bool 
+>>>>>>iommu_group_dma_owner_claimed(struct iommu_group *group)
+>>>>>> }
+>>>>>> EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
+>>>>>>+/**
+>>>>>>+ * iommu_group_is_singleton() - Query if group contains 
+>>>>>>exactly one device
+>>>>>>+ * @group: The group.
+>>>>>>+ *
+>>>>>>+ * Return: true if group contains exactly 1 device, false otherwise.
+>>>>>>+ */
+>>>>>
+>>>>>We discussed this interface before, and the consensus was that such an
+>>>>>interface is not feasible, because the membership of an iommu_group is
+>>>>>not fixed, given the hot-plug support of buses like PCI.
+>>>>>
+>>>>>I am fine with the usage model of ensuring the iommu group of a
+>>>>>preserved device to be a singleton, but I don't think we even need such
+>>>>>a kAPI. It should be handled case by case.
 >>>>
->>>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>>>---
->>>> drivers/iommu/iommu-priv.h       |   2 +
->>>> drivers/iommu/iommu.c            |  72 +++++++++++-
->>>> drivers/iommu/liveupdate.c       | 189 +++++++++++++++++++++++++++++++
->>>> include/linux/iommu-liveupdate.h |  76 +++++++++++++
->>>> include/linux/iommu.h            |  33 ++++++
->>>> 5 files changed, 371 insertions(+), 1 deletion(-)
+>>>>The iommu_group membership can change, this is why we check it in two
+>>>>places, both under group->mutex:
 >>>>
->>>>diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
->>>>index 1f9f886b2c10..6b0ef210b32f 100644
->>>>--- a/drivers/iommu/iommu-priv.h
->>>>+++ b/drivers/iommu/iommu-priv.h
->>>>@@ -21,6 +21,8 @@ static inline const struct iommu_ops 
->>>>*dev_iommu_ops(struct device *dev)
->>>> void dev_iommu_free(struct device *dev);
->>>>+bool iommu_group_is_singleton(struct iommu_group *group);
->>>>+
->>>> const struct iommu_ops *iommu_ops_from_fwnode(const struct 
->>>>fwnode_handle *fwnode);
->>>> static inline const struct iommu_ops *iommu_fwspec_ops(struct 
->>>>iommu_fwspec *fwspec)
->>>>diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
->>>>index b486b8bbd1fc..a66363789ca9 100644
->>>>--- a/drivers/iommu/iommu.c
->>>>+++ b/drivers/iommu/iommu.c
->>>>@@ -18,6 +18,7 @@
->>>> #include <linux/errno.h>
->>>> #include <linux/host1x_context_bus.h>
->>>> #include <linux/iommu.h>
->>>>+#include <linux/iommu-liveupdate.h>
->>>> #include <linux/iommufd.h>
->>>> #include <linux/idr.h>
->>>> #include <linux/err.h>
->>>>@@ -328,6 +329,47 @@ void iommu_device_unregister(struct 
->>>>iommu_device *iommu)
->>>> }
->>>> EXPORT_SYMBOL_GPL(iommu_device_unregister);
->>>>+struct iommu_dev_iter {
->>>>+    struct iommu_device *iommu;
->>>>+    iommu_dev_iter_fn fn;
->>>>+};
->>>>+
->>>>+static int _iommu_for_each_dev_cb(struct device *dev, void *data)
->>>>+{
->>>>+    struct iommu_dev_iter *iter = data;
->>>>+
->>>>+    if (dev->iommu && dev->iommu->iommu_dev == iter->iommu)
->>>>+        return iter->fn(dev, iter->iommu);
->>>>+
->>>>+    return 0;
->>>>+}
->>>>+
->>>>+/**
->>>>+ * iommu_for_each_dev() - Iterate over all devices attached to an IOMMU
->>>>+ * @iommu: IOMMU instance
->>>>+ * @fn: Callback to call for each device attached to @iommu
->>>>+ *
->>>>+ * Return: 0 on success, or negative error code.
->>>>+ */
->>>>+int iommu_for_each_dev(struct iommu_device *iommu, 
->>>>iommu_dev_iter_fn fn)
->>>>+{
->>>>+    struct iommu_dev_iter iter = {
->>>>+        .iommu = iommu,
->>>>+        .fn = fn,
->>>>+    };
->>>>+    int ret;
->>>>+
->>>>+    for (int i = 0; i < ARRAY_SIZE(iommu_buses); i++) {
->>>>+        ret = bus_for_each_dev(iommu_buses[i], NULL, &iter,
->>>>+                       _iommu_for_each_dev_cb);
->>>>+        if (ret)
->>>>+            return ret;
->>>>+    }
->>>>+
->>>>+    return 0;
->>>>+}
->>>>+EXPORT_SYMBOL_GPL(iommu_for_each_dev);
+>>>>- During preservation we check that the group is a singleton, and check
+>>>>  again after setting device_ser.
+>>>>- During probe we refuse to add a device to a group that has a preserved
+>>>>  device.
+>>>>
+>>>>So if a device is added to the group while we are preserving, either the
+>>>>probe fails because the group already has a preserved device, or the
+>>>>preservation fails because the group is no longer a singleton. Could you
+>>>>please elaborate what you mean by handling it case by case?
 >>>
->>>The function has no locking against iommu probe or release, so the
->>>callback can read dev->iommu while it is being freed or before it is
->>>fully set up.
+>>>I am fine with the singleton-group checking logic you described above,
+>>>but I don't think we need a helper like iommu_group_is_singleton(). It
+>>>drops group->mutex before returning, so its result may already be stale
+>>>when the caller uses it. That makes it easy to misuse in the future.
+>>>
+>>>I'd prefer to open-code the check where group->mutex is already held, as
+>>>iommu_attach_device() does today:
 >>
->>It is only called from intel_iommu_shutdown(), which runs after the
->>other CPUs are stopped and interrupts are disabled, so probe and release
->>can't run. I will rename it to iommu_for_each_dev_unsafe(), document
->>that it must only be called at shutdown and drop the export, since the
->>only user is built in.
+>>struct iommu_group is private to drivers/iommu/iommu.c, and
+>>iommu_preserve_device() is in liveupdate.c, so open coding it there is
+>>tricky.
+>>
+>>You are correct that it drops the lock before returning. That is why I
+>>recheck the singleton state after setting device_ser, which handles the
+>>race.
+>>
+>>I was thinking of adding something like iommu_group_lock() and
+>>iommu_group_unlock() for this, but the number of devices check also
+>>needs struct iommu_group definition.
+>>
+>>To avoid misuse, I can add a comment on iommu_group_is_singleton() that
+>>the result may be stale and the caller must recheck. What do you think?
 >
->If it's only intended for the intel iommu driver, then it should be
->open-coded there. There is no need to add an immature interface like
->this to the core. It could be misused in the future.
+>I would suggest something like this:
+>
+>size_t iommu_group_device_count(struct iommu_group *group)
+>{
+>        size_t count;
+>
+>        mutex_lock(&group->mutex);
+>        count = list_count_nodes(&group->devices);
+>        mutex_unlock(&group->mutex);
+>
+>        return count;
+>}
+>
+>and, add a comment stating that the device count may change after the
+>function returns, so the caller must recheck it.
 
-Agreed. I will open code it in the VT-d driver in the next revision.
+Sounds good. I will replace iommu_group_is_singleton() with
+iommu_group_device_count() and add the comment.
 
 >
 >Thanks,
