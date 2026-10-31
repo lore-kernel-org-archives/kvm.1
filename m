@@ -1,58 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793419758;
-	b=gR8JC2DD82VCdd9IaIsXnqlisejXKiBiIRMXduC5txE3JKONUHlMmmhR0HYjOkOtxmY2
-	 6q4nT6EIxp0vbD0GUglnTwvJJGv24n0oJf2gTrRCkwRCKubBqUFtZieVnhDZeiC8TicLG
-	 Oy8cuq4MyuqvscD0nILJKT4ZUDha9mHNrryWUTLZbb1vGF1lZ4S3Cs4YpI3550Q8S5Boa
-	 RQ+A1yQ/9vpmaFslONi/+b5C8s2aaMeqbLpfdeVAF062oiD7PZF0A57Z1rJiG+14myzRr
-	 0G4bJK/mCaCLwxhOPWBAVmbxw235g9kdUSs7nROQu002Hlv5jlh1OiIswPzEOvswLVg==
+	t=1793424435;
+	b=iBRfT5INhtYZViTuCg0G6HVWMZNCSlNcbjONQ6H0yof+/FZLZ7LSt0O1oGnQym4FBNa/
+	 ftElf/8vAFsMfMX2Bdco2+b883xwsm/93UBGNjfe8daoSoyXOuTRJJTdS7yo4xwh1p0lX
+	 OGwn4EvTG2z6WCiN5zu8ineaQB6qVVJsDGJvyztF9W0uYAlwWnQw3+ZfarYQYsbImvHKM
+	 cdHJIkHymLI77VkiK8Vm4F6q4VsoaNC5SpZqEGWgZL7MfTIEVXry++tqJbVnDlooFhRjS
+	 36OFlnkzf8JdRCijVRFkl8SFVaQMc2STTnNRSIcb8BkgAv3SKGxem5xPCUmt0i2gQ/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793419758;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-	bh=La4vgolm7+vvTK9sKBHNEhDWpqoKDcVCZH3sqhU3vzE=;
-	b=1tUwAV3wdxf0Ol2OkHbaNVHL7XNw7ZZouMRQGfDvhwFAp/Q+U+Upuq+ch9UI+7Nm/Vm2
-	 9SZxJTKFZ/AKSnYFIdwvP9SN/Fb5HBGYVaa/PQ9Z5gZnazsVXoF+E9vhRfjuMr8SDpYES
-	 hHgXFvZiZN1UJPB4AzW//N5h4m6i2pHoEOq7Mxyr4uukcpRtFRROn5uNvef84McwjDnjX
-	 esQgaN96Ar0wwdMYnBKfBABOfx7N4GxnUHbb07fHKegfhW378Zo3Q0L+WsepReL0VMu1g
-	 BcAgVLEo6EFiMad5yB7+zspEwmPPC1ipDpvWv4OADP60U67BLh+i49a8zIrbX9UtqVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793424435;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=sJ1i2sB19WjZsWpCLPMyCnOc+WH6sAraGwOCsPP3qWk=;
+	b=qBDtk3twiRZTXsni/Sk8ODqNUFdp6Bf+YR2HttBGw8gfFqxHzFIvtQOVuIx5cz81DeEf
+	 6cs7TGcG2+/+bs2NNmrPQIZaSVfphEMNiDMSl9hIFSo2O95wVFxl//QVuCgAvFI70q/W5
+	 9HS8rkCT/21lkWTMkgQMrA4EiDy6God5yEiEq8mC4CoURbbFsx7pVQql10i/zOGWx/v37
+	 xBT1vzbQBWic3B2rAc7CzjOGTFML8bB+cfm6+hrPpfJsYgnZw+jF1ZQkKlaIWNma1diFr
+	 vUX0+L5tJIaPYYIb3u/dbPYSoSJNisFCm4hx2eEheOxcngMvMUaNUKUmSZ9XP8NAQKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=VyujayAR;
-	arc=none smtp.remote-ip=113.46.200.224
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=U6+0nqv7;
+	arc=none smtp.remote-ip=192.198.163.7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB089606A31A;
-	Sat, 31 Oct 2026 04:09:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB089606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD75C606A31C;
+	Sat, 31 Oct 2026 05:27:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD75C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=VyujayAR
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=La4vgolm7+vvTK9sKBHNEhDWpqoKDcVCZH3sqhU3vzE=;
-	b=VyujayARs+t3vamx5pSNgV/neWxILRBNlcQM09rgiIHvz/EuQkvRQPCoUbuEDnihduH/aQrQb
-	eF0RB22R8Yi48c6rD30gHV+7yiGbO9u8mZyCdi39wKum6cyCHmCBRq1XfEJUu8Fp7tUXYfkMjef
-	3o0ke0UemIRYMzSSEgoCQog=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jGkxB1z7yz1cyPs;
-	Sat, 31 Oct 2026 12:09:02 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id C15CA4048B;
-	Sat, 31 Oct 2026 12:09:10 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sat, 31 Oct 2026 12:09:10 +0800
-Message-ID: <22e74fbc-f6f2-4fbc-b721-2be06646029a@huawei.com>
-Date: Sat, 31 Oct 2026 12:09:09 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=U6+0nqv7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793424434; x=1824960434;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=HorgvWPM7Wg7lJRLSZ/w7jpsG9fGBf5ZSc6uneNyf3A=;
+  b=U6+0nqv72QIpc2fEPdQxl37/PzV5q2/hD5yxHH5Pv2zSceIHN9INyYgS
+   GeWvVCoE+7qGre8nwfmQqLglY1uvkIhU4pp09yX2Y6uLM46IpmSBPEKPA
+   0uCt0gYW6u6vR7CFequC9rX90OuIBAPWsoB83tgGBGmhVHAZLckcm0ql+
+   usgS672L6VWm6s8Dx48tBpxmcn+mM3CO1PY25R2H4dZThy0dE3pDB7aSG
+   gWxwjQ9XR1H98x/M9xXAi9wl6HxxGvk6gFTBTlsiavg/f6LNfnKEBee0E
+   HmaPzgHhe0vWc0U2oEQV1T/mRg/684wkVcrr50KMbGuPY2rTb9Ef9tGma
+   Q==;
+X-CSE-ConnectionGUID: lNvTJLG9S6OJiniS+MJQPQ==
+X-CSE-MsgGUID: G6RzzXZXS7Ke5PYxO+gsDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2069153"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="2069153"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 22:27:13 -0700
+X-CSE-ConnectionGUID: CpMzmVyzRTmwuefiKAjO9A==
+X-CSE-MsgGUID: uS7oy4RhQLqJhtXiqh+oLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="5994163"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.249.52]) ([10.124.249.52])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 22:27:08 -0700
+Message-ID: <7b059c0e-3b60-4d8c-b7d2-7dcb89a51c6f@linux.intel.com>
+Date: Sat, 31 Oct 2026 13:27:05 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,92 +73,143 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v20 00/16] vfio/pci: Add PCIe TPH support
-To: Alex Williamson <alex@shazbot.org>, <linux-pci@vger.kernel.org>
-CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
-	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
-	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>
-References: <20260714104325.54444-1-fengchengwen@huawei.com>
- <6d86dd9c-83ad-4884-915e-6509995c5ba3@huawei.com>
- <20261030100050.16df202b@shazbot.org>
+Cc: baolu.lu@linux.intel.com, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ David Woodhouse <dwmw2@infradead.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
+ Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v6 05/18] iommu: Implement device and IOMMU HW
+ preservation
+To: Samiullah Khawaja <skhawaja@google.com>
+References: <20261025021930.674647-1-skhawaja@google.com>
+ <20261025021930.674647-6-skhawaja@google.com>
+ <df75f891-05a0-4d47-8705-d6a00c81ff97@linux.intel.com>
+ <auTzN4NWuKsBvIZU@google.com>
+ <51b23019-8ac2-4f6b-9be7-29f3635b472e@linux.intel.com>
+ <auVfqaDhk25JUkYd@google.com>
 Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20261030100050.16df202b@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <auVfqaDhk25JUkYd@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 10/31/2026 12:00 AM, Alex Williamson wrote:
-> On Wed, 21 Oct 2026 09:43:05 +0800
-> fengchengwen <fengchengwen@huawei.com> wrote:
-> 
->> Hi Alex,
+On 10/31/2026 11:39 AM, Samiullah Khawaja wrote:
+> On Sat, Oct 31, 2026 at 11:04:22AM +0800, Baolu Lu wrote:
+>> On 10/31/2026 9:45 AM, Samiullah Khawaja wrote:
+>>>>> +
+>>>>>  #if IS_ENABLED(CONFIG_IOMMUFD_TEST)
+>>>>>  void iommu_device_unregister_bus(struct iommu_device *iommu,
+>>>>>                   const struct bus_type *bus,
+>>>>> @@ -626,8 +668,8 @@ DEFINE_MUTEX(iommu_probe_device_lock);
+>>>>>  static int __iommu_probe_device(struct device *dev, struct 
+>>>>> list_head *group_list)
+>>>>>  {
+>>>>> +    struct group_device *gdev, *gdev2;
+>>>>>      struct iommu_group *group;
+>>>>> -    struct group_device *gdev;
+>>>>>      int ret;
+>>>>>      /*
+>>>>> @@ -661,6 +703,13 @@ static int __iommu_probe_device(struct device 
+>>>>> *dev, struct list_head *group_list
+>>>>>          goto err_put_group;
+>>>>>      }
+>>>>> +    for_each_group_device(group, gdev2) {
+>>>>> +        if (dev_iommu_has_preserved_state(gdev2->dev)) {
+>>>>> +            ret = -EBUSY;
+>>>>> +            goto err_free_gdev;
+>>>>> +        }
+>>>>> +    }
+>>>>> +
+>>>>>      /*
+>>>>>       * The gdev must be in the list before calling
+>>>>>       * iommu_setup_default_domain()
+>>>>> @@ -697,6 +746,7 @@ static int __iommu_probe_device(struct device 
+>>>>> *dev, struct list_head *group_list
+>>>>>  err_remove_gdev:
+>>>>>      list_del(&gdev->list);
+>>>>> +err_free_gdev:
+>>>>>      __iommu_group_free_device(group, gdev);
+>>>>>  err_put_group:
+>>>>>      iommu_deinit_device(dev);
+>>>>> @@ -3543,6 +3593,26 @@ bool iommu_group_dma_owner_claimed(struct 
+>>>>> iommu_group *group)
+>>>>>  }
+>>>>>  EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
+>>>>> +/**
+>>>>> + * iommu_group_is_singleton() - Query if group contains exactly 
+>>>>> one device
+>>>>> + * @group: The group.
+>>>>> + *
+>>>>> + * Return: true if group contains exactly 1 device, false otherwise.
+>>>>> + */
+>>>>
+>>>> We discussed this interface before, and the consensus was that such an
+>>>> interface is not feasible, because the membership of an iommu_group is
+>>>> not fixed, given the hot-plug support of buses like PCI.
+>>>>
+>>>> I am fine with the usage model of ensuring the iommu group of a
+>>>> preserved device to be a singleton, but I don't think we even need such
+>>>> a kAPI. It should be handled case by case.
+>>>
+>>> The iommu_group membership can change, this is why we check it in two
+>>> places, both under group->mutex:
+>>>
+>>> - During preservation we check that the group is a singleton, and check
+>>>   again after setting device_ser.
+>>> - During probe we refuse to add a device to a group that has a preserved
+>>>   device.
+>>>
+>>> So if a device is added to the group while we are preserving, either the
+>>> probe fails because the group already has a preserved device, or the
+>>> preservation fails because the group is no longer a singleton. Could you
+>>> please elaborate what you mean by handling it case by case?
 >>
->> Quick follow-up from our LPC discussion on the VFIO TPH patchset.
+>> I am fine with the singleton-group checking logic you described above,
+>> but I don't think we need a helper like iommu_group_is_singleton(). It
+>> drops group->mutex before returning, so its result may already be stale
+>> when the caller uses it. That makes it easy to misuse in the future.
 >>
->> The P2P TPH path carries significant verification complexity, as it builds
->> on the PCI P2PDMA stack which is still under active upstream revision.
->>
->> Meanwhile there is clear real-world demand for the device-to-host scenario.
->> AMD recently posted their debugfs series exposing CPU-to-ST mappings [1],
->> and we also have strong use cases for D2H TPH enablement.
+>> I'd prefer to open-code the check where group->mutex is already held, as
+>> iommu_attach_device() does today:
 > 
-> You might be working ahead of the industry.  The debugfs interface
-> provides evidence that the feature is coming, but is perhaps still
-> working through implementation pains.
+> struct iommu_group is private to drivers/iommu/iommu.c, and
+> iommu_preserve_device() is in liveupdate.c, so open coding it there is
+> tricky.
 > 
-> The lack of community participation in the vfio interface actually
-> suggests to me that there isn't a great real-world demand for this
-> feature, yet. 
+> You are correct that it drops the lock before returning. That is why I
+> recheck the singleton state after setting device_ser, which handles the
+> race.
 > 
->> I'd like to propose a phased upstream approach:
->> land device-to-host support first, and defer P2P TPH to a follow-up series.
->>
->> We can add P2P support cleanly on top once the interface and verification
->> are solid. This way we can deliver usable TPH functionality sooner, while
->> keeping the path open for full P2P support later.
->>
->> Let me know your thoughts on going ahead with device-to-host support first.
->> If you're okay with this, I'll post v21 accordingly.
+> I was thinking of adding something like iommu_group_lock() and
+> iommu_group_unlock() for this, but the number of devices check also
+> needs struct iommu_group definition.
 > 
-> As above, the demand is not apparent based on the lack of community
-> participation in these threads.  I'm reluctant to commit to a uAPI
-> that's largely been proposed by me, as the maintainer, trying to fill
-> gaps in the narrow scope of the original proposal.
-> 
-> This needs support from the community and validation across broader use
-> cases.  I think that's the actual barrier, rather than ordering versus
-> Zhiping's series.
-> 
-> Despite the LPC talk, there still hasn't been much engagement on the
-> question of whether device ownership grants the user the ability to
-> target specific cache levels and how we handle cases where the
-> driver:cpu association isn't static.  Thanks,
+> To avoid misuse, I can add a comment on iommu_group_is_singleton() that
+> the result may be stale and the caller must recheck. What do you think?
 
-Thanks for your thoughtful feedback. I understand your concern about
-community consensus on the uAPI model and broader use-case validation.
+I would suggest something like this:
 
-To add some context: there are existing upstream patches related to
-user-facing ST programming. ARM previously posted a VFIO patch series
-for similar ST programming support [1], and AMD has posted the debugfs
-series exposing CPU-to-ST mappings. These show cross-vendor interest
-in this space, even though those prior works take different forms.
+size_t iommu_group_device_count(struct iommu_group *group)
+{
+         size_t count;
 
-I agree that the ownership model and CPU offline lifecycle contract
-need wider review. My next step is to reach out to the relevant AMD
-and ARM developers, and invite them to join this uAPI discussion.
-We will focus on the D2H-only scope and defer P2P TPH for later.
+         mutex_lock(&group->mutex);
+         count = list_count_nodes(&group->devices);
+         mutex_unlock(&group->mutex);
 
-I will proceed with the D2H-focused v21 series, while running this
-cross-vendor discussion in parallel. The discussion can feed revisions
-to future versions of the series.
+         return count;
+}
+
+and, add a comment stating that the device count may change after the
+function returns, so the caller must recheck it.
 
 Thanks,
-Chengwen
-
-[1] https://mails.dpdk.org/archives/dev/2025-June/318908.html
-
-> 
-> Alex
-
+baolu
