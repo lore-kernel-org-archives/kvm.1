@@ -1,68 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793414826;
-	b=ArDY9tMmenRMHAyp1CXkZ58c1vUsmtoSxTOCEZ5s+pYJXpQgMirl4e96OWyvfLPQNqHT
-	 i/AQnPwZUpbGnefeo1772sh+41HuMv4LjfrdOXJdZJuXY6oMBnmemhws0ugppxWS+6kaq
-	 2xD+M4or7zelrWcusPZKfgkrQkEsN9dLfahMqoOYPrHs650mvfM5FvLl9xPwHl+BetNjZ
-	 rlYVzKao9vIwoBMu6qcGdOc2OaP4Q45xw3lb2ek2lDUZcByywC2QKLNL6zs1P4NeG1mFt
-	 2dvkyuGYcYloar+Ors0bL5L2F/BFfkogLI0vdG2YIHnHCnX8hUgRgplj9mlqJcOoGEw==
+	t=1793415700;
+	b=wG9RMDjU2OB91OvC5A2ZYEOfXLSGsuaJoZt3HZNWnsxXlHyRsaHZboiqZkksD+IS1mOg
+	 cCRbi+wbfA2g5Av7eWStFl1MgaFJ1/pSfhPrS92xpBv95KhSO9NaElTdXuJwKrYGr1LIp
+	 S5oYb5NRZV6tMdf8+yVegzpnWLnvxTsstJIqQXqwWQd4RwZNkafKH9s08g+5oqtoPexD8
+	 Y2vA9libQM4A2IY95zO8j1apLpe5GL4cER8CiP6WcqVJRusKm4wwzzOXJrVu9Fnz3S5g9
+	 uHQKIRe02vGt97T1LzY6BiN52BmSlWLA5lrPM5znEIvLV+thXrcJ83+BgZg9P8fOwkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793414826;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=iSKGNFmKLTpmgOIzqerV8G2tWlRDYIbrTVmalAdizuI=;
-	b=yXPrIVZxoGnp+vQmOw/+d803bFPBmDbHQ7B9pwY7bH1h3KlpbG8Q1XGAb016FM4EZxZ8
-	 QEWDcfpOHvpZa5nEeH+eb04LbyJMpkHyz9IMzmDOJoz+HJiLi6SmMow1tCkni2IMWHfxT
-	 ZrFoRGlt9Hc+xHCr+OUBKEgLFF9WVCOTulqQ4CTzqMaTarepkEKuE/1YWelLjST5S2KIG
-	 skgbfSotJ/AYRCt5nQQtil3QwWgrzD8Z13NTsyVvcMXcYSwrBb0aVjm2K31GT+6UzJIzc
-	 onQyAqVq8Kxii1HUBVaDSFL2TePuuLiCX3L8zrjtkBsXEDVw0E/JLgvF3CmmT5bnTUw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793415700;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=0pyAsH8gwqtQqNNm/v8qLvT0oMadqvUmRdeyHoWxCkk=;
+	b=rue+L+nwHac/TZfcWJ8T44f1/mOvR6pT4x+6vg0o/o1KlRzOdLs0xhcbRO5akz2tp9GX
+	 nqVOZKSX5XC3dNJ0TuLsyH4yQWa66p6oVjsSMuEnIzP1t47VlP2c66DvbcD7PC9uNwSdr
+	 mHDqzE1/muhHDHey+xeuFMrSrPqO0u1MO5M0c7HIujCXxdYcFX5YAaetA7jiOyWrSRIRA
+	 GAaV6oXiRpEaDgySKntq098H3VVbyC8bcAB97UG1/vHjMRHKKHk8Z+d+fdVMD1Agi2znC
+	 JUojHNEtKc+MtBgitlMGT70F12Qo6UWO1Oulihe0/db65zwa6eOnV2dEQRdvXpIjWdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=d1gNQvdA;
-	arc=none smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ARo0k0t6;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0472606A31A;
-	Sat, 31 Oct 2026 02:47:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0472606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B91606A31D;
+	Sat, 31 Oct 2026 03:01:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9B91606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=d1gNQvdA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793414825; x=1824950825;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=UwPYZzHb0mj1mjEbXeNxm8CM4NcJfsvX2Gzy0sS/kH8=;
-  b=d1gNQvdAILLyb9JNUJdaNY6Yb6fQ3ZYYI336FPfiv4AdEYA3AFiUTY3N
-   htJ1sJYyrDv8XpXjWRWPpcbLSIXFdtFJBR9BklBnpglv1YEc1yN70gzSC
-   XqbxigIF1kNziTwusBECLZAdOvXOE0mgyk/hToFg1kFl8s+rBFaxfdN6Y
-   JWW7KvDkTafrP71x79ZmYviCM5o6ZTJkGYqsPL34DAyL7DMn7ejx2E34P
-   Q/PxRYDr7Wvks86h0ci7w28Lad7xkM09Lz/8K/QH8p+oUMEEGSkcmWR6B
-   2M05KhaAxfLp6k6VJ2gU6sHWVsZ7N9FdHuCMN8wLlpQs/aDDg6qsZe4dg
-   g==;
-X-CSE-ConnectionGUID: P2oxIEGkTEq6mEwUddsdDw==
-X-CSE-MsgGUID: g/fgUxZ3Tlet7M8jR0E2og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2075245"
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2075245"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 19:47:03 -0700
-X-CSE-ConnectionGUID: /PhNjvBYRlyhxoXUfZteEQ==
-X-CSE-MsgGUID: KMELGtAZSbGpkpSsz46Iuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5971572"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.249.52]) ([10.124.249.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 19:46:59 -0700
-Message-ID: <98fe2806-d4a3-4bee-9324-d1862b2a2cb4@linux.intel.com>
-Date: Sat, 31 Oct 2026 10:46:56 +0800
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=ARo0k0t6
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6E73A40E03BE;
+	Sat, 31 Oct 2026 03:01:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id VAOU-mxyKRtE; Sat, 31 Oct 2026 03:01:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793415692; bh=0pyAsH8gwqtQqNNm/v8qLvT0oMadqvUmRdeyHoWxCkk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ARo0k0t63aHztXyih1D0V4Z2TxlBKaR+J5do/x/gYMHI8FJ9q9fi8OmK1HMDBS7jg
+	 TeYJFKvUD4lGZ3wHHrzeu94rpgtEiCB3a+HyHpF5EaqActVQ2hrRbVuXCurwtkKRjR
+	 PBivNrv1Z4N8nSptEDL++HJXRpxkogeZotdKAVPMC5pfyCvhe+iFMvmX7t+27oUG7M
+	 dQR5+pOvBZC7CR1z58DT2TlRnYeeJiDwA8oRi9wsYbg0YENxgYHuJZw9w+hMdV2rig
+	 wuF6RY6B5M+HZoyjae8efvTAsDdR2qMWua5jr/666ru7IsE1BB9YKZCnsYpdFwsMp0
+	 BhJCtzZn4DiDOaSE8K5203liu4WT6zds/kMVbaiB0cwD7ROSoNpi60TLjCaKy2bxuM
+	 /qzLPMGDf/O1AbeF9nACfcA7MRPW5tqfvuCQWgx879iw3+hboObXn7vRkon9W8pqI6
+	 LnAm2xrppa/b2+MeDRGpPxyfPN12rFH26zOTMM7DOAQmJoK7REkR3HvbewTeQkeweZ
+	 6sIertfd5jYuFhIKFm48spvMpmd31YqFaKDqJlvksul4Suy8lhai7Cjp6aT8iKrojz
+	 Z3OJWfM0hKcOT3PuQosu/3F73ThYEcyEXcC1x5I66IFIGBHX8mqv53CNPsZlESL7z/
+	 lw/SrvWoh2iAxU2PgcnswTxs=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 21C9F40E016C;
+	Sat, 31 Oct 2026 03:01:15 +0000 (UTC)
+Date: Fri, 30 Oct 2026 20:01:12 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
+Subject: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
+Message-ID: <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+References: <20261026-g2ul_sci-v3-0-b3097163edd5@bp.renesas.com>
+ <20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local>
+ <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org>
+ <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
+ <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
+ <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
+ <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,359 +101,63 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, YiFei Zhu <zhuyifei@google.com>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v6 15/18] iommufd: Persist iommu hardware pagetables for
- live update
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261025021930.674647-1-skhawaja@google.com>
- <20261025021930.674647-16-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261025021930.674647-16-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
 
-On 10/25/2026 10:19 AM, Samiullah Khawaja wrote:
-> From: YiFei Zhu <zhuyifei@google.com>
-> 
-> Register iommufd with the LUO framework and implement the preserve and
-> unpreserve ops to save marked HWPTs.
-> 
-> To make sure mappings do not change during preserved state, add a
-> liveupdate_immutable flag to IOAS. When an HWPT is preserved, its IOAS
-> is marked immutable and any map/unmap attempts will fail with -EBUSY.
-> This is synchronized using the domains_rwsem to prevent races with
-> concurrent mapping operations.
-> 
-> The preserve callback iterates over the marked HWPTs, verifies that the
-> backing memory pages are preserved, and calls iommu_preserve_domain() to
-> preserve the associated IOMMU domain.
-> 
-> Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   MAINTAINERS                             |   1 +
->   drivers/iommu/iommufd/io_pagetable.c    |  24 ++
->   drivers/iommu/iommufd/iommufd_private.h |  16 ++
->   drivers/iommu/iommufd/liveupdate.c      | 327 ++++++++++++++++++++++++
->   drivers/iommu/iommufd/main.c            |  10 +-
->   include/linux/kho/abi/iommufd.h         |  56 ++++
->   6 files changed, 433 insertions(+), 1 deletion(-)
->   create mode 100644 include/linux/kho/abi/iommufd.h
-> 
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[...]
-> diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
-> index 5fb491ff3a3d..828203d7254c 100644
-> --- a/drivers/iommu/iommufd/liveupdate.c
-> +++ b/drivers/iommu/iommufd/liveupdate.c
-> @@ -9,9 +9,28 @@
->   
->   #include <linux/file.h>
->   #include <linux/iommufd.h>
-> +#include <linux/kexec_handover.h>
-> +#include <linux/kho/abi/iommufd.h>
->   #include <linux/liveupdate.h>
-> +#include <linux/iommu-liveupdate.h>
-> +#include <linux/mm.h>
-> +#include <linux/pci.h>
->   
->   #include "iommufd_private.h"
-> +#include "io_pagetable.h"
-> +
-> +static u32 iopt_inc_num_preserved_domains(struct io_pagetable *iopt)
-> +{
-> +	guard(rwsem_write)(&iopt->domains_rwsem);
-> +	return ++iopt->num_preserved_domains;
-> +}
-> +
-> +static void iopt_dec_num_preserved_domains(struct io_pagetable *iopt)
-> +{
-> +	guard(rwsem_write)(&iopt->domains_rwsem);
-> +	if (!WARN_ON(!iopt->num_preserved_domains))
-> +		iopt->num_preserved_domains--;
-> +}
->   
->   int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
->   {
-> @@ -70,3 +89,311 @@ int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
->   	iommufd_put_object(ictx, &hwpt->common.obj);
->   	return rc;
->   }
-> +
-> +static int iopt_area_validate_file_pages(struct iopt_area *area)
-> +{
-> +	unsigned long last_index = iopt_area_last_index(area);
-> +	unsigned long index = iopt_area_index(area);
-> +	unsigned int page_offset = area->page_offset;
-> +	struct iopt_pages *pages = area->pages;
-> +	unsigned long iova = iopt_area_iova(area);
-> +
-> +	guard(mutex)(&pages->mutex);
-> +	if (WARN_ON(!area->storage_domain))
-> +		return -EINVAL;
-> +
-> +	while (index <= last_index) {
-> +		phys_addr_t phys = iommu_iova_to_phys(area->storage_domain,
-> +						      iova) - page_offset;
+A K: is a content regex file pattern which matches any text in a patch
+so if a commit message contains "tdx" as in
 
-iommu_iova_to_phys() returns 0 when there is no underlying DMA
-translation. It would be better to check for !phys and return -EINVAL
-before passing it to page_folio():
+  has_tdxe_auto_clear
 
-		if (!phys)
-			return -EINVAL;
+for example, see
 
-> +		struct folio *folio = page_folio(pfn_to_page(PHYS_PFN(phys)));
-> +
-> +		if (folio->mapping != pages->file->f_mapping)
-> +			return -EINVAL;
-> +
-> +		iova += PAGE_SIZE - page_offset;
+  https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp.renesas.com
 
-This walks a full page table per 4K page size, right? Isn't it slow for
-large mappings? Why not jump ahead by folio_size()?
+get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
+obviously is a completely unrelated patch.
 
-> +		page_offset = 0;
-> +		index++;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int iopt_validate_preserved_memory(struct io_pagetable *iopt,
-> +					  struct liveupdate_session *s)
-> +{
-> +	struct iopt_area *area;
-> +	int ret = 0;
-> +
-> +	down_read(&iopt->iova_rwsem);
-> +	for (area = iopt_area_iter_first(iopt, 0, ULONG_MAX); area;
-> +	     area = iopt_area_iter_next(area, 0, ULONG_MAX)) {
-> +		struct iopt_pages *pages = area->pages;
-> +
-> +		if (!pages)
-> +			continue;
-> +
-> +		/* Only allow file based mapping */
-> +		if (pages->type != IOPT_ADDRESS_FILE) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
-> +		/* Make sure that the file was preserved. */
-> +		ret = liveupdate_get_token_outgoing(s, pages->file, NULL);
-> +		if (ret)
-> +			break;
-> +
-> +		/*
-> +		 * Make sure the mapped pages are still associated with the
-> +		 * preserved memfd.
-> +		 */
-> +		ret = iopt_area_validate_file_pages(area);
-> +		if (ret)
-> +			break;
-> +	}
-> +	up_read(&iopt->iova_rwsem);
-> +
-> +	return ret;
-> +}
-> +
-> +static int iommufd_preserve_hwpt(struct iommufd_hwpt_paging *hwpt,
-> +				 struct iommufd_hwpt_ser *hwpt_ser,
-> +				 struct liveupdate_session *session)
-> +{
-> +	struct iommu_domain_ser *domain_ser;
-> +	int rc;
-> +
-> +	/*
-> +	 * Make IOAS immutable so the DMA mappings do not change while
-> +	 * the HWPT is preserved. Since one IOAS can have multiple
-> +	 * HWPTs, if an error occurs this call needs to make the IOAS
-> +	 * mutable again if it was the one that made it immutable.
-> +	 */
-> +	if (iopt_inc_num_preserved_domains(&hwpt->ioas->iopt) == 1) {
-> +		rc = iopt_validate_preserved_memory(&hwpt->ioas->iopt, session);
-> +		if (rc)
-> +			goto err;
-> +	}
-> +
-> +	hwpt_ser->size = sizeof(*hwpt_ser);
-> +	hwpt_ser->token = hwpt->liveupdate_token;
-> +
-> +	rc = iommu_preserve_domain(hwpt->common.domain, &domain_ser);
-> +	if (rc < 0)
-> +		goto err;
-> +
-> +	hwpt_ser->domain_ser_phys = virt_to_phys(domain_ser);
-> +	return 0;
-> +
-> +err:
-> +	iopt_dec_num_preserved_domains(&hwpt->ioas->iopt);
-> +	return rc;
-> +}
-> +
-> +static void _iommufd_unpreserve(struct iommufd_ctx *ictx,
-> +				struct iommufd_ser *ser)
-> +{
-> +	struct iommufd_hwpt_paging *hwpt;
-> +	struct iommufd_object *obj;
-> +	unsigned long index;
-> +
-> +	xa_lock(&ictx->objects);
-> +	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
-> +		if (obj->type != IOMMUFD_OBJ_HWPT_PAGING)
-> +			continue;
-> +
-> +		hwpt = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
-> +		if (!hwpt->liveupdate_preserved)
-> +			continue;
-> +
-> +		xa_unlock(&ictx->objects);
-> +
-> +		iommu_unpreserve_domain(hwpt->common.domain);
-> +		iopt_dec_num_preserved_domains(&hwpt->ioas->iopt);
-> +
-> +		hwpt->liveupdate_preserved = false;
-> +		iommufd_put_object(ictx, obj);
-> +
-> +		xa_lock(&ictx->objects);
-> +	}
-> +	xa_unlock(&ictx->objects);
-> +
-> +	kho_unpreserve_free(ser);
-> +}
-> +
-> +static int iommufd_liveupdate_preserve(struct liveupdate_file_op_args *args)
-> +{
-> +	struct iommufd_ctx *ictx;
-> +	struct iommufd_hwpt_paging *hwpt;
-> +	struct iommufd_ser *iommufd_ser;
-> +	struct iommufd_object *obj;
-> +	unsigned int num_hwpts;
-> +	unsigned long index;
-> +	unsigned int i;
-> +	void *mem;
-> +	int rc;
-> +
-> +	ictx = iommufd_ctx_from_file(args->file);
-> +	if (IS_ERR(ictx))
-> +		return PTR_ERR(ictx);
-> +
-> +	mutex_lock(&ictx->liveupdate_mutex);
-> +
-> +	/* Count the number of HWPTs to preserve */
-> +	num_hwpts = 0;
-> +	xa_lock(&ictx->objects);
-> +	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
-> +		if (obj->type != IOMMUFD_OBJ_HWPT_PAGING)
-> +			continue;
-> +
-> +		hwpt = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
-> +		if (!hwpt->common.domain) {
-> +			rc = -EINVAL;
-> +			xa_unlock(&ictx->objects);
-> +			goto out_unlock;
-> +		}
-> +		num_hwpts++;
-> +	}
-> +	xa_unlock(&ictx->objects);
-> +
-> +	mem = kho_alloc_preserve(struct_size(iommufd_ser,
-> +					     hwpt_array, num_hwpts));
-> +	if (IS_ERR(mem)) {
-> +		rc = PTR_ERR(mem);
-> +		goto out_unlock;
-> +	}
-> +
-> +	iommufd_ser = mem;
-> +	iommufd_ser->size = sizeof(*iommufd_ser);
-> +
-> +	/* Preserve HWPTs */
-> +	i = 0;
-> +	xa_lock(&ictx->objects);
-> +	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
-> +		if (obj->type != IOMMUFD_OBJ_HWPT_PAGING)
-> +			continue;
-> +
-> +		if (!iommufd_lock_obj(obj)) {
-> +			rc = -ENOENT;
-> +			xa_unlock(&ictx->objects);
-> +			goto out_unpreserve;
-> +		}
-> +
-> +		/*
-> +		 * HWPT is locked so it will not be destroyed. The xarray lock
-> +		 * can be released here before preserving the HWPT.
-> +		 */
-> +		xa_unlock(&ictx->objects);
-> +		hwpt = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
-> +		rc = iommufd_preserve_hwpt(hwpt, &iommufd_ser->hwpt_array[i++], args->session);
-> +		if (rc) {
-> +			iommufd_put_object(ictx, obj);
-> +			goto out_unpreserve;
-> +		}
-> +
-> +		/*
-> +		 * Mark the HWPT as successfully preserved. This is distinct
-> +		 * from IOMMUFD_OBJ_LIVEUPDATE_MARK, which only indicates the
-> +		 * userspace intent to preserve.
-> +		 */
-> +		hwpt->liveupdate_preserved = true;
+The same happens when someone uses it to check
 
-Can userspace re-mark an already-preserved HWPT with a new token? It
-seems that mark_preserve() doesn't check hwpt->liveupdate_preserved.
-Would it help to simply return -EBUSY from mark_preserve() once
-hwpt->liveupdate_preserved is set?
+  drivers/power/reset/tdx-ec-poweroff.c
 
-> +		xa_lock(&ictx->objects);
-> +	}
-> +	xa_unlock(&ictx->objects);
-> +
-> +	/* Store the actual number of HWPTs that are preserved */
-> +	iommufd_ser->num_hwpts = i;
-> +
-> +	args->serialized_data = virt_to_phys(iommufd_ser);
-> +	mutex_unlock(&ictx->liveupdate_mutex);
-> +	iommufd_ctx_put(ictx);
-> +	return 0;
-> +
-> +out_unpreserve:
-> +	_iommufd_unpreserve(ictx, iommufd_ser);
-> +out_unlock:
-> +	mutex_unlock(&ictx->liveupdate_mutex);
-> +	iommufd_ctx_put(ictx);
-> +	return rc;
-> +}
-> +
-> +static void iommufd_liveupdate_unpreserve(struct liveupdate_file_op_args *args)
-> +{
-> +	struct iommufd_ctx *ictx;
-> +
-> +	ictx = iommufd_ctx_from_file(args->file);
-> +	if (WARN_ON(IS_ERR(ictx)))
-> +		return;
-> +
-> +	mutex_lock(&ictx->liveupdate_mutex);
-> +	_iommufd_unpreserve(ictx, phys_to_virt(args->serialized_data));
-> +	mutex_unlock(&ictx->liveupdate_mutex);
-> +
-> +	iommufd_ctx_put(ictx);
-> +}
-[...]
+patches.
 
-Thanks,
-baolu
+So switch the x86 TDX patterns to files and directories (F:) wildcard
+type patterns and group them by path, for less false positives.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.local
+---
+ MAINTAINERS | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7a162e9bcab1..015cf66afb96 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -30347,8 +30347,11 @@ L:	linux-coco@lists.linux.dev
+ L:	kvm@vger.kernel.org
+ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
+-N:	tdx
+-K:	\b(tdx)
++F:	arch/x86/**/*tdx*
++F:	Documentation/**/*tdx*
++F:	drivers/virt/coco/tdx*/
++F:	include/uapi/linux/tdx
++F:	tools/testing/selftests/tdx/
+ 
+ X86 VDSO
+ M:	Andy Lutomirski <luto@kernel.org>
+-- 
+2.53.0
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
