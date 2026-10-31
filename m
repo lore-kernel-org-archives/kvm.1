@@ -1,77 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793440607;
-	b=oJuIR1XZKMuXuLRTN+DUtvEjJwNbrKXBTfYdKNrwE2iGhp7T8Xc1JeytQH2Rie8D7FPQ
-	 yp6RZpWdcNu+ssbtzSy326glyDnaTly5cW5x3xG2jFkvm4sxqVxgE4LdhsP5voTHafjxO
-	 PGp1MqLHNSLu6ZsIAN2vJhS1nPhrMG31ma4sA/24ntENPyafUIUdMGvZAhQ41ZrTBEXT1
-	 kfgoIjuIaYd144yGx/jGVEEv4dpx2rDUyUydY2bR0M3xul1Izi/unG6jopewArs8s8B5p
-	 wsAZviTaevbXMTl1e9IlYCd5oDKIc0vgRRNcSswx/9MLeTFHqChGv1c5c+o7o0SkNvA==
+	t=1793448435;
+	b=d3M+LFomvuuk1xKnyFbxc1ZACFnhDPEjOGzbLoPtirH9hkDkXanjuMOD1rgJ1n8mOafm
+	 blqgmNhWdG5ntNSJDdxudSkZAbEhmwK8gLIbKmdGuj1Q9+cM9pHHMembhJ8DuHrzpYc8i
+	 BRlXVxv73nhmvgOHxN1MFwE/6P1p8JftQoK/8TNDlzMC/LHsByCjnz9g1abcBaNe4fgUX
+	 lqmfbGjTVwr5AFhARqRlL9Qb0ZCN7Cdd30PMP8cROS1wzFoGd8VmCu9QIw8EhG9Ge/zKf
+	 tUT1ijIsPTcX0t2V7QUAjVvtGld4As4fSl0ci8ulp3ngYVt9izokJDQ4VOmuPDmR22w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793440607;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=j3mJbUipG7teIjK/zO0RNtzSRCV/bGl/8Rxk9Uq3fU8=;
-	b=rTBIRgzji9R4A29teMO5K8RKnY8OtBdId5dU9HgNKESZpHITBK/7NB/6bVMI4QarvBvM
-	 sWAT+pt/sBawidiVoyqRbCRNP9f4k8BzDQzTNB5VtjZHkZs+XNWEZTW8c7kbzlwnX2ZxJ
-	 QvXU0ocBPc0L8fViAHbALYDsKiYR2SdFSHEtlg7GsWnGNpzLWK5MjjAqmQ4ktUI3Ofjmz
-	 eYo0dnnX57LRCMTnxpumUbKABv6OlAQ/9ZGqxFmE0oWNBynpbjjLsAi/AAQ1RBEGbvego
-	 iTrRQfRcDlXbappX6CVDdRO/j6Og9aWPLWrHDOHoip31fFOZ2SSiV1RDOfvTHNBUS+w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793448435;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=+l1RRgq+C9AayOmwqqNeY+nzGv5HKvLpPKk8tw/PkoQ=;
+	b=VUZ3PaWqBvLBSQR7PNEios6JIpYQ1bMlCYkeLPTiPMIj7fdx6bqyyAMUwtgpWddFA/NU
+	 jqwA7hnd0AtligvwZr4E9c5NBRnM7Zl/9NMNYkBXi098S//mgXnJVk121YHKRAID8p5OB
+	 mzJCyllxwVNB0jsfjBc9hL0RPF5Yn3dWX4v/xUArYuoGfoGcvOhD+I/0eg1CN7kdIxLZd
+	 6C53zE/OzacNSDg6owNkI89QW9N9s3yga+w6USw59KKmCXyaisnHWxCe6I3eyyVgDNNgA
+	 XKlssYoSQcSXOmXOs7gId7gPsYXC2U+yrCFW6byxiDI8c/h3FTy4IC32/u2txXM7gjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cispa.de;
-	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=NJcQcjk8;
-	arc=none smtp.remote-ip=134.76.10.21
-Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k5pQxOSG;
+	arc=none smtp.remote-ip=192.198.163.11
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2264F606A31C;
-	Sat, 31 Oct 2026 09:56:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2264F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DE6606A31E;
+	Sat, 31 Oct 2026 12:07:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74DE6606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=NJcQcjk8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=j3mJbUipG7teIjK/zO0RNtzSRCV/bGl/8Rxk9Uq3fU8=; b=NJcQcjk8iHIhc+dC2kxaTsw3hc
-	ohv9B90sMpGgDNmrSHnuT0HN3qeTE2Hd/ztql/oFSN03Ge73O+rwycqUhumzflJ3Exmn84kJdnn8g
-	cCb5NVNhheUQnhdrAQgv2CC05+KqIJtnMs9hTrxG/Zj8qt2FB8PpPT+aifcz5+rsJgyOEcDDmNjZo
-	SSeitO40rSClCzVa/zma9u4v1h3ct0vsS6fvIGqPXRqw9WD77gsmzrwO+ssgyiM/24RK56phpw3Pn
-	M10PH5ePPm9flWFCxH2NqGM96Ud3FNoqMBCCEFakuVxrBqx50/Caw0ah4jEeuK+2dJWvPZb843/sB
-	w3SvEjmQ==;
-Received: from mailer.gwdg.de ([134.76.10.26]:48267)
-	by mailer.gwdg.de with esmtp (GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN5pL-001XaV-1N;
-	Sat, 31 Oct 2026 10:56:43 +0100
-Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
-	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-	(GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xN5pL-000U3o-00;
-	Sat, 31 Oct 2026 10:56:43 +0100
-Received: from localhost (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
- (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Sat, 31 Oct
- 2026 10:56:35 +0100
-From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-To: <yosry@kernel.org>, <seanjc@google.com>
-CC: <pbonzini@redhat.com>, <jmattson@google.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <amirmohammad.eftekhar@cispa.de>,
-	<amirmohammadeftekhar@gmail.com>
-Subject: Re: [PATCH] KVM: nSVM: Reset the virtual VMLOAD/VMSAVE bit in vmcb02 on every nested VMRUN
-Date: Sat, 31 Oct 2026 10:56:24 +0100
-Message-ID: <20261031095624.212806-1-amirmohammad.eftekhar@cispa.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <att-Epjatf5sw-ba@google.com>
-References: <att-Epjatf5sw-ba@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k5pQxOSG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793448434; x=1824984434;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2NOLA5XLr0F+d2rcxhw0zW65IDgq0qHt9PrC2igHtR4=;
+  b=k5pQxOSG7azQND/AcZuzs3XsntWJI61kUbDswhhMOGyutMUU6dciBlII
+   MkCVebYpkno1KGjFYuJVi2mFUgHC9UdkRbTMIiFsvXVxCsCLffkCD2rjW
+   ljkYQE2SXqNxbncc0HEWXT/DgKEbBAK1ERzMdBweU3HStxTd3KrXEDLeJ
+   fXZMb5vwRji6EMsjS1LgwuNaxxmI4UvPxIV9wlU32SOILkn+rQTa2mMRy
+   fCRcXGXmbj0o4MB+rtlcStzheZAqHw4Pe8ehaoiA3c1YlPRTEsL58qkly
+   GXqX8lKlp2rGQQCtkr2EAiF/i6coMoPJqpIAoWn6lKhNPWY7Urx0NPgzu
+   w==;
+X-CSE-ConnectionGUID: vyeiD72CScKJcvOhpPd90g==
+X-CSE-MsgGUID: RpFbSmK1RsWDcailyE28yA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2111055"
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="2111055"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2026 05:07:13 -0700
+X-CSE-ConnectionGUID: aRmGSsk1R1ugqt8b3FW5xQ==
+X-CSE-MsgGUID: IYxRFdnZT1CpmNC+dmjNEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="7493584"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa011.fm.intel.com with ESMTP; 31 Oct 2026 05:07:09 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xN7rV-00000000coK-1izy;
+	Sat, 31 Oct 2026 12:07:05 +0000
+Date: Sat, 31 Oct 2026 20:07:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, jgg@ziepe.ca,
+	alex@shazbot.org, pbonzini@redhat.com, seanjc@google.com,
+	bhelgaas@google.com, jjohnson@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	johannes@sipsolutions.net, mani@kernel.org, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, vkuznets@redhat.com,
+	kevin.tian@intel.com, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: Re: [PATCH v3 2/8] KVM: add PCI MSI hypercall for VFIO passthrough
+Message-ID: <202610311919.NWIUCtPb-lkp@intel.com>
+References: <20261029163713.1366077-3-jtornosm@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,66 +90,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MBX19-GWD-07.um.gwdg.de (10.108.142.60) To
- mbx19-gwd-01.um.gwdg.de (10.108.142.50)
-X-Virus-Scanned: (clean) by clamav
-X-Spam-Level: -
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029163713.1366077-3-jtornosm@redhat.com>
 
-On Fri, Oct 23, 2026, Yosry Ahmed wrote:
-> Running the selftest under the probe on Zen 2/3/4/5, vmcb02 rows with both
-> vls=1 and the VMLOAD/VMSAVE intercept set still exit 0x82/0x83, so the
-> intercept is honored even with VLS enabled.
-> Can you share a standalone reproducer?
+Hi Jose,
 
-Thanks for the cross-microarch data and for the script. You are right, and I
-withdraw the intercept-drop claim. I reran this on a VLS-capable box
-(Threadripper PRO 5965WX, Zen 3, kvm_amd vls=1) with your bpftrace unchanged,
-and both your selftest and my own reproducer line up with your reading.
+kernel test robot noticed the following build errors:
 
-1. Your selftest reproduces your result here. Every VMRUN where vmcb02 carries
-   both the VLS bit and the VMLOAD/VMSAVE intercept exits 0x82/0x83, the
-   intercept wins:
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus linus/master next-20261030]
+[cannot apply to kvm/queue kvm/next ath/ath-next kvm/linux-next v7.3]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-   vmcb02[vls=1 vmld_icpt=1] vmcb12[vls=1 vmld_icpt=1]  VMLOAD -> 0x82
-   vmcb02[vls=1 vmld_icpt=1] vmcb12[vls=1 vmld_icpt=1]  VMSAVE -> 0x83
-   vmcb02[vls=1 vmld_icpt=0] (intercept clear)          VMLOAD virtualized, no 0x82/0x83
+url:    https://github.com/intel-lab-lkp/linux/commits/Jose-Ignacio-Tornos-Martinez/vfio-add-helper-to-find-PCI-device-by-vendor-device-ID/20261029-173706
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20261029163713.1366077-3-jtornosm%40redhat.com
+patch subject: [PATCH v3 2/8] KVM: add PCI MSI hypercall for VFIO passthrough
+config: x86_64-randconfig-1011-20261031 (https://download.01.org/0day-ci/archive/20261031/202610311919.NWIUCtPb-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261031/202610311919.NWIUCtPb-lkp@intel.com/reproduce)
 
-   So VLS virtualizes only when the intercept is clear; with both bits set the
-   intercept is honored, exactly as you measured.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610311919.NWIUCtPb-lkp@intel.com/
 
-2. My reproducer does build the stale both-bits state, and it is still harmless.
-   Tracing --step vls-stale on the same box:
+All errors (new ones prefixed by >>):
 
-   arm    vmcb12(vls,icpt)  vmcb02(vls,vmld_icpt)   entry_rip   exit
-   clean  (0,1)             (0,1)                   0x1004000   0x82  VMLOAD intercepted
-   run1   (1,0)             (1,0)                   0x100400a   0x72  VLS on, VMLOAD virtualized, RIP advances
-   run2   (0,1)             (1,1)  <- stale VLS     0x100400f   0x72  resumes already on the CPUID
+>> ld.lld: error: undefined symbol: vfio_file_find_pci_device
+   >>> referenced by vfio.c:405 (arch/x86/kvm/../../../virt/kvm/vfio.c:405)
+   >>>               vmlinux.o:(kvm_vfio_pci_msi_alloc)
 
-   run2's vmcb02 is the exact case my patch was about: the VLS bit is left set
-   from run1 while KVM sets INTERCEPT_VMLOAD for run2. But its 0x72 is not a
-   dropped intercept. run1 virtualized the VMLOAD and advanced L2's RIP to the
-   CPUID, and my test runs run1 and run2 on one shared L2 context without
-   resetting RIP, so run2 resumes past the VMLOAD and never re-executes it. The
-   0x72 is that CPUID. Had VMLOAD actually run in run2 with both bits set, your
-   selftest shows it would have exited 0x82. My earlier Zen 4 "repro" was the
-   same RIP artifact, except that box could not enable VLS at all, so vmcb02
-   never even carried the bit and I misread the CPUID as a virtualized VMLOAD.
-
-So the stale bit is real in the code, but it does not drop the intercept: the
-hardware honors the intercept over VLS, as you said. The E3 / cross-layer
-framing was wrong and I withdraw it.
-
-What survives is only the hygiene you and Sean already pointed at:
-virt_ext/misc_ctl2's VLS bit is OR-set in nested_vmcb02_prepare_control() and
-never cleared, while misc_ctl is reset from vmcb01 a few lines above. Worth
-folding into Sean's cleanup (initialize misc_ctl2 = 0 and un-invert the check to
-match nested_vmcb02_recalc_intercepts()), as hygiene, not a guest-reachable fix.
-The forward WARN in my original patch was oriented wrong; drop it.
-
-Sorry for the noise on the security angle, and thanks for pushing back with the
-measurements.
-
-Thanks,
-Amirmohammad
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
