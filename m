@@ -1,75 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793514053;
-	b=DiZBuikD8A0FaquDRHqGa3gWJPJW1cjCaeeSffASGcyJrpQUc4HpuEVoLl1KwCi7iXjK
-	 dqyERqAH7IzAoj7CI5nJL4eJWwgO7kFmjpOVV4orxtgsPP7q7XQselDXgF5HU4ItHTjAr
-	 ycYqDnPMJI3o2LDAzeGb9w+Kodo1WQo0XFxZA+ImHPtpK0UF7tF3Dx5BvJ0CSrOn9S09K
-	 kT19+ztdPbH9kKELccM2vFKngZg/kP8YS+JL8TamGkyBLyRRmQDVuVeie1E4UKzVZ004e
-	 bDEzSOwETGgaKY0exVLkNPdS96GsRXUEHywkGBA4xaTmFbijWXTFo9MEHIheH6WfFDQ==
+	t=1793514644;
+	b=XelZK2zRxnjxkCzOIg1E2zls+pxV9F6NYmDzUiImT65fiLE+CRXJ1232kOwoQxjv3TC7
+	 dd11XB1Nw2h5f0NjWhH0nY5uQwZamP11FAgFfrUxqkSlbVl5C0FLPgkCc1BQzixxSdovP
+	 Xf6Zn4EAW1JFH+9PWsfvi8asyZ0J2uiDGhtxGXHwjDCE15k8fHEJ0p9GfimvdhFIDKB7j
+	 fy19TK3RU5jYw+Z7jUQ/t9nfnr8UM2UN4DRckrLXHdZ3yvb/W8AhMC6IPrBcUBkxh4ypP
+	 e5WImLBDUZ9i22xI1hC3i1y7P5qPz91d8pY0jh65s3ulWc7s8dpV8jT8fpqKsDYWC5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793514053;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=IYshlx1rrOjmioOuAid1HYQHTMbhnYO1NumeTZBupyw=;
-	b=vrGZPxat8DtuOJlBXOXgnlaHVsdGfNT/zzxNIccgRggaSKDESDr8mviUjJazzRUgykVF
-	 83vSjbFTCkszwVCkHtai6DSoI5YWV7vx1gR8rK7YYNhKul1DpJAtBk3c1lxaWgo9Rue9G
-	 0+z9Csx/shOYNgL2gqIN/R/vd5RBGAP2ECQBLIBHzvR5nZ0BW7PqopNWooJeXmuukMY8b
-	 zRS4ZZmEcIZqWYzTCD1C5K/9R+D73ncMnWGp4o/7uFvEi3IvJjVF+2g/oDbuT5Fkkgjyp
-	 PLtnoDcWCmeJUdMvr50dVE1GrF42NHAbUYxycjX4fX/nOmaih6QefuIHHHvKiEFvGag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793514644;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=8ZAwPeKhptZqDoNtuN654yQH/SKx+resgvJT3ESATdY=;
+	b=xVyhR4D6vPMKwMqIWKWMPMPQmULlCSJv2IkR3vmGFjIeP/agyQU9CEdupeNMUHV+ODJf
+	 U8oEncFGSrrWVOSyCTughyryCDPHL0DyhOCIry7pJS95mptJsL9CaLAAsOAk5Qj+lHPsv
+	 CGa9Q7zo7J1xII3CAHMc0iL3BaSAABEWg+FFB9Ifn6ObE9tmQFsBkti1Ky1obydJntCZe
+	 6hSsMSJjIm65tXiyDw+74Cv8/dc84CtIkgP68o/Dsm6eDNKzJLoeI/ypCzVOCw+3dUCal
+	 FHuOPiwfxNwSuGe7dGatJEUe12Vqd0sS5qPojn/Exzi4ymrtAy+L7pSqZziDtkzNiJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XbWkVcSS;
-	arc=none smtp.remote-ip=74.125.82.199
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WAy+bQ3V;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DF160A260B
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 06:20:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15DF160A260B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC3D606A327
+	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 06:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XbWkVcSS
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-3692c5b061bso5855970eec.1
-        for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 23:20:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793514052; x=1794118852; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IYshlx1rrOjmioOuAid1HYQHTMbhnYO1NumeTZBupyw=;
-        b=XbWkVcSSHCPOe/uDVhoGNtnaUmBqv/17tlsucC5WEoCnM4se00HO6irUbzq6Z133V5
-         qn2//bX6+EWkXZYsSR0xR10Q6W73jK14HL2nCcZH91xZ/4pgv0oYIfy4geCUOeFzUx1g
-         vjYHObDM8lRbS0CQlXoZR1oaULDG7TjU0xgZ5uZ+BM3s8gz9lS223+A49sn0cBPtAu7G
-         H2v3XNbgGvVcEpd3evCKKNjyDCQNMjRmo0RuENlp0qH1ZoPj9TzCjG2MmbZCAcDCkCl3
-         95Il+mn1lTPTKiqhy+vfFOmRlRCWF5yRjU542XwO1N9w/I+iw687bHdu0gi+JQOKYmYK
-         lBNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793514052; x=1794118852;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IYshlx1rrOjmioOuAid1HYQHTMbhnYO1NumeTZBupyw=;
-        b=yL7jy4LE+Kld1zYMqDUCgZRHD/7PUZ8CRSrN81vKYOgabxw6BlYxqpwapK0vuIKIwi
-         DekmXGgaP+6XaLzm7dgoFYcXkSe/mUN6pPLqNPKHp50B2QETbIocQ3/Oor/bjPLFrv97
-         31kIrNUZL8UjKougjmpjAS1qwmHDFKtwJBxJ7Mue4FxU5Fr30qe6sM7PwJJ+GK7sPDUS
-         LHj8Jx9YWwbG5evoIPAxa5k0I00K295IoupIzExH+ZJThb6SL/smjgj8qPbSvA+1emtd
-         RlqZytLW9ASCtccx+fMlXBD98Lqy8zG3T6Dy4lTS+MhbK1i2BRaRh0zorpU4y3jSA424
-         0YEw==
-X-Forwarded-Encrypted: i=1; AKwUvBy9xLUAsKPpLXUNwbQkvEwJHU6FtPtA3fNQ3KhFW6ya8dofJUBXBRXsLjq8321rZZjegwk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8tSqQ7mPlKfhy+Yh6/bp5ZrFDIbEjmYb3kCZOStmldWjFA9cV+
-	IeTdZxQ5LQwHgCsuHons31+kn9a8oCsPimiC9mASikOpFjcq4JgNzELeXW5Gt5SrwSkqRS3N1m+
-	FVOtL6lZJB4YAAKRTPGrzJgfDmg==
-X-Received: from dycng18.prod.google.com ([2002:a05:7300:ce12:b0:36a:1148:43f8])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:2504:b0:36a:8a6:6916 with SMTP id 5a478bee46e88-36a4236f746mr9770764eec.18.1793514051896;
- Sat, 31 Oct 2026 23:20:51 -0700 (PDT)
-Date: Sun,  1 Nov 2026 06:20:49 +0000
-In-Reply-To: <20261101062049.998160-1-almasrymina@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WAy+bQ3V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBD81F000C1;
+	Sun,  1 Nov 2026 06:30:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793514644;
+	bh=8ZAwPeKhptZqDoNtuN654yQH/SKx+resgvJT3ESATdY=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=WAy+bQ3VNP4/gE0QXM/Kbfg1OXx4+pQWOKisHEZu/87Bb4Gh6GRco4ovQVUgXgurk
+	 uIdgwI04GRMyU0U3Yizt+oJI5gqKZmUKB4tVvFJjZmw2MEbST6loF/TqdMAJfpvPaz
+	 7ZPOEuiGhP8eGpkBf8txAkr5n2p6iTYvA/Ge0HJrUF+y0vHWXk+/BCS08Gx2GMk197
+	 7+/m/lyWUuxf1anz1FIoiBTQn4NXrEKIX359ncnZuOyMIkrmseOlBtsgtY1P7bgrlQ
+	 3jzWy6NRBJosCTpkNn8P8ubFYrxsjfWsBIaMLvkNFw4Ww51+4YHYmg6nBf4Z4yJPYX
+	 T7z/zGu3nmfFw==
+Message-ID: <sashiko-outbox-192290@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] vfio: selftests: Test BAR write faults after
+ clear_refs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mina Almasry" <almasrymina@google.com>, kvm@vger.kernel.org
+In-Reply-To: <20261101062049.998160-3-almasrymina@google.com>
+References: <20261101062049.998160-1-almasrymina@google.com>
+ <20261101062049.998160-3-almasrymina@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 01 Nov 2026 06:30:43 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,148 +59,136 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261101062049.998160-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261101062049.998160-3-almasrymina@google.com>
-Subject: [PATCH v2 2/2] vfio: selftests: Test BAR write faults after clear_refs
-From: Mina Almasry <almasrymina@google.com>
-To: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, David Matlack <dmatlack@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Content-Type: text/plain; charset="UTF-8"
 
-Add a regression test in vfio_pci_device_test to verify that huge_fault
-on writable MAP_SHARED VFIO PCI BAR mappings handles write faults after
-soft-dirty tracking clears VM_SOFTDIRTY and downgrades vma->vm_page_prot
-to read-only via /proc/self/clear_refs ("4").
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] vfio: selftests: probe pre-faults BAR 0 before clear_soft_dirty_=
+refs()
+--
 
-Specifically, for each mappable read/write BAR (already aligned up to
-SZ_1G by vfio_pci_bar_map() with MADV_HUGEPAGE), verify both:
+commit 43368d01d06eff4702b5d6cf5af459ab154dd5bc
+Author: Mina Almasry <almasrymina@google.com>
 
-1. Read-then-write fault sequence after clear_refs, exercising in-place
-   huge PMD/PUD write-protection upgrade via wp_huge_pmd()/wp_huge_pud().
-2. Direct initial write fault on a freshly mapped unpopulated BAR VMA
-   after clear_refs, exercising vmf_insert_pfn_pmd()/vmf_insert_pfn_pud()
-   with FAULT_FLAG_WRITE set.
+vfio: selftests: Test BAR write faults after clear_refs
 
-Skip gracefully when /proc/self/clear_refs is absent or soft-dirty
-tracking (CONFIG_MEM_SOFT_DIRTY) is disabled, or when the device exposes
-no mappable read/write BARs.
+This commit adds a regression test in vfio_pci_device_test to verify that
+huge_fault on writable MAP_SHARED VFIO PCI BAR mappings handles both
+read-then-write and initial direct write faults after soft-dirty tracking
+clears VM_SOFTDIRTY via /proc/self/clear_refs.
 
-Cc: David Matlack <dmatlack@google.com>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- .../selftests/vfio/vfio_pci_device_test.c     | 83 +++++++++++++++++++
- 1 file changed, 83 insertions(+)
+> diff --git a/tools/testing/selftests/vfio/vfio_pci_device_test.c b/tools/=
+testing/selftests/vfio/vfio_pci_device_test.c
+> index 93c11fd5e0818..75ccc557efb92 100644
+> --- a/tools/testing/selftests/vfio/vfio_pci_device_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_pci_device_test.c
 
-diff --git a/tools/testing/selftests/vfio/vfio_pci_device_test.c b/tools/testing/selftests/vfio/vfio_pci_device_test.c
-index 93c11fd5e081..75ccc557efb9 100644
---- a/tools/testing/selftests/vfio/vfio_pci_device_test.c
-+++ b/tools/testing/selftests/vfio/vfio_pci_device_test.c
-@@ -1,10 +1,13 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+#include <errno.h>
- #include <fcntl.h>
- #include <stdlib.h>
-+#include <unistd.h>
- 
- #include <sys/ioctl.h>
- #include <sys/mman.h>
- 
-+#include <linux/compiler.h>
- #include <linux/limits.h>
- #include <linux/pci_regs.h>
- #include <linux/sizes.h>
-@@ -102,6 +105,86 @@ TEST_F(vfio_pci_device_test, validate_bars)
- 	}
- }
- 
-+static int clear_soft_dirty_refs(void)
-+{
-+	ssize_t ret;
-+	int fd;
-+
-+	fd = open("/proc/self/clear_refs", O_WRONLY);
-+	if (fd < 0)
-+		return -errno;
-+
-+	ret = write(fd, "4\n", 2);
-+	if (ret < 0)
-+		ret = -errno;
-+	else
-+		VFIO_ASSERT_EQ(ret, 2);
-+
-+	VFIO_ASSERT_EQ(close(fd), 0);
-+	return ret < 0 ? ret : 0;
-+}
-+
-+TEST_F(vfio_pci_device_test, bar_write_fault_after_clear_refs)
-+{
-+	const u32 rw_mmap_flags = VFIO_REGION_INFO_FLAG_MMAP |
-+				  VFIO_REGION_INFO_FLAG_READ |
-+				  VFIO_REGION_INFO_FLAG_WRITE;
-+	struct vfio_pci_bar *bar;
-+	bool tested = false;
-+	int ret, i;
-+	u32 val;
-+
-+	ret = clear_soft_dirty_refs();
-+	if (ret == -ENOENT || ret == -EINVAL)
-+		SKIP(return, "soft-dirty clear_refs unsupported (%d)\n", ret);
-+	ASSERT_EQ(0, ret);
-+
-+	vfio_pci_cmd_set(self->device, PCI_COMMAND_MEMORY);
-+
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+		void *vaddr;
-+
-+		bar = &self->device->bars[i];
-+		if ((bar->info.flags & rw_mmap_flags) != rw_mmap_flags)
-+			continue;
-+
-+		ASSERT_NE(NULL, bar->vaddr);
-+
-+		/*
-+		 * clear_soft_dirty_refs() stripped write permissions from
-+		 * vma->vm_page_prot on the unpopulated BAR mapping created by
-+		 * vfio_pci_device_init(). Fault it read-only first, then write
-+		 * to exercise in-place write-upgrade (wp_huge_pmd/wp_huge_pud).
-+		 */
-+		val = READ_ONCE(*(u32 *)bar->vaddr);
-+		WRITE_ONCE(*(u32 *)bar->vaddr, val);
-+
-+		/*
-+		 * Replace the VMA with a fresh unpopulated mapping at the same
-+		 * hugepage-aligned address, clear soft-dirty again, and fault
-+		 * with an immediate store to exercise initial write insertion
-+		 * (vmf_insert_pfn_pmd/pud with write=true).
-+		 */
-+		vaddr = mmap(bar->vaddr, bar->info.size, PROT_READ | PROT_WRITE,
-+			     MAP_SHARED | MAP_FIXED, self->device->fd,
-+			     bar->info.offset);
-+		ASSERT_EQ(bar->vaddr, vaddr);
-+		madvise(bar->vaddr, bar->info.size, MADV_HUGEPAGE);
-+
-+		ASSERT_EQ(0, clear_soft_dirty_refs());
-+
-+		WRITE_ONCE(*(u32 *)bar->vaddr, val);
-+		(void)READ_ONCE(*(u32 *)bar->vaddr);
-+
-+		tested = true;
-+	}
-+
-+	vfio_pci_cmd_clear(self->device, PCI_COMMAND_MEMORY);
-+
-+	if (!tested)
-+		SKIP(return, "No mappable read/write BAR on %s\n", device_bdf);
-+}
-+
- FIXTURE(vfio_pci_irq_test) {
- 	struct iommu *iommu;
- 	struct vfio_pci_device *device;
--- 
-2.56.0.385.gac671c819a-goog
+[ ... ]
 
+> @@ -102,6 +105,86 @@ TEST_F(vfio_pci_device_test, validate_bars)
+>  	}
+>  }
+> =20
+> +static int clear_soft_dirty_refs(void)
+> +{
+> +	ssize_t ret;
+> +	int fd;
+> +
+> +	fd =3D open("/proc/self/clear_refs", O_WRONLY);
+> +	if (fd < 0)
+> +		return -errno;
+> +
+> +	ret =3D write(fd, "4\n", 2);
+> +	if (ret < 0)
+> +		ret =3D -errno;
+> +	else
+> +		VFIO_ASSERT_EQ(ret, 2);
+> +
+> +	VFIO_ASSERT_EQ(close(fd), 0);
+> +	return ret < 0 ? ret : 0;
+> +}
+> +
+> +TEST_F(vfio_pci_device_test, bar_write_fault_after_clear_refs)
+> +{
+> +	const u32 rw_mmap_flags =3D VFIO_REGION_INFO_FLAG_MMAP |
+> +				  VFIO_REGION_INFO_FLAG_READ |
+> +				  VFIO_REGION_INFO_FLAG_WRITE;
+> +	struct vfio_pci_bar *bar;
+> +	bool tested =3D false;
+> +	int ret, i;
+> +	u32 val;
+> +
+> +	ret =3D clear_soft_dirty_refs();
+> +	if (ret =3D=3D -ENOENT || ret =3D=3D -EINVAL)
+> +		SKIP(return, "soft-dirty clear_refs unsupported (%d)\n", ret);
+> +	ASSERT_EQ(0, ret);
+> +
+> +	vfio_pci_cmd_set(self->device, PCI_COMMAND_MEMORY);
+> +
+> +	for (i =3D 0; i < PCI_STD_NUM_BARS; i++) {
+> +		void *vaddr;
+> +
+> +		bar =3D &self->device->bars[i];
+> +		if ((bar->info.flags & rw_mmap_flags) !=3D rw_mmap_flags)
+> +			continue;
+> +
+> +		ASSERT_NE(NULL, bar->vaddr);
+> +
+> +		/*
+> +		 * clear_soft_dirty_refs() stripped write permissions from
+> +		 * vma->vm_page_prot on the unpopulated BAR mapping created by
+> +		 * vfio_pci_device_init(). Fault it read-only first, then write
+> +		 * to exercise in-place write-upgrade (wp_huge_pmd/wp_huge_pud).
+> +		 */
+> +		val =3D READ_ONCE(*(u32 *)bar->vaddr);
+> +		WRITE_ONCE(*(u32 *)bar->vaddr, val);
+
+[Severity: Medium]
+Is bar->vaddr guaranteed to be unpopulated at this point for BAR 0?
+
+During FIXTURE_SETUP(vfio_pci_device_test), vfio_pci_device_init() maps the
+BARs and then calls vfio_pci_driver_probe():
+
+tools/testing/selftests/vfio/lib/vfio_pci_device.c:vfio_pci_device_init() {
+	...
+	vfio_pci_device_setup(device);
+	vfio_pci_driver_probe(device);
+	return device;
+}
+
+Several selftest drivers read from BAR 0 during probe:
+
+- dsa_probe() -> dsa_int_handle_request_required() reads
+  bar0 + IDXD_GENCAP_OFFSET
+- ioat_probe() reads device->bars[0].vaddr + IOAT_VER_OFFSET
+- nv_falcon_probe() reads bar0 + NV_PMC_BOOT_0
+
+Because those reads happen before clear_soft_dirty_refs() is called,
+VM_SOFTDIRTY is still set on the VMA and the fault installs a page table en=
+try
+that is already writable.
+
+When clear_soft_dirty_refs() subsequently runs, clear_refs_write() updates
+vma->vm_page_prot, but clear_refs_test_walk() skips walking page tables for
+VM_PFNMAP VMAs:
+
+fs/proc/task_mmu.c:clear_refs_test_walk() {
+	...
+	if (vma->vm_flags & VM_PFNMAP)
+		return 1;
+	...
+}
+
+As a result, the existing writable page table entry on BAR 0 remains in pla=
+ce,
+and the READ_ONCE() and WRITE_ONCE() above will not fault or exercise
+wp_huge_pmd() / wp_huge_pud() on BAR 0 for those devices.
+
+Should the test replace the VMA with a fresh mmap(MAP_FIXED) and
+madvise(MADV_HUGEPAGE) (or zap the BAR mappings) before the first
+clear_soft_dirty_refs() call so that the read-then-write sequence always st=
+arts
+from an unpopulated mapping?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261101062049.9981=
+60-1-almasrymina@google.com?part=3D2
