@@ -1,78 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793549968;
-	b=C7PW0NnwMQzMwSvrJJUQcB/b3phDxFfMR0/lNVNZ3Y/6ZxyCyGRifprJwBfGnDbyjNPD
-	 9Ptux+eX01xH4ERxqW8dEh9Mo7AIb4UNorOJZbVZClR3NahEMachx24PEaLsAjGb1P9/g
-	 rc/qCVcbtmWS5GqQJY0qL6HxpvYQ4pO6iUt41HcHRuBntdefChU+Hsu2xNZp34guTpcK9
-	 gYLiXCzNA7QT0nDORGiyN9WdHgVJzxsyOexYKnzcqgoV3JUkgLEp6f37XAJUX4Iz45d4R
-	 iYiwYGsYspT4ryi5A+p+RpG+j+BxyA2DG6G6Pv2iwsEqMIR62v4jcqekkBMJqoRlOKw==
+	t=1793559320;
+	b=Eb1O2tEGX92vYThCtn2LPE/AsptTubf/yyLpb6jVqipvIOJrWUnkgO/Ca0GFIsbouY6G
+	 MQ24owyBqlEOx0lNrHbX+lURcBfkuALs6Gz8KIxIhVRlkZfuEkt3s3E8eXzl7sHsncJVJ
+	 +THUn3RCfS+5A8aEbwMipfU/Ttfer56TdkSm627iHMX4hRh/wDf2g5EnAM3zkzrUJLifI
+	 +Bnoz12MTu9AEwfz15fgiZLAMruqlAoipLWo9J1eJ/5j0GPYYioFOrG6gk+nKTAV0SooP
+	 qVH+1Rt6B/nyU1gs7ClxBRVK+65fjCM0Gg0aCXNz9Lr7wLBYcsvFirB1PScWIKd0pQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793549968;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Received:From:
-	 To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-originating-ip:Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=TNSlYSGydi/RSdg73wNRJVezKMRukVFeRxk/X9GiV3k=;
-	b=LIkYsXwBWXFNwp6cTAD6sNRkSNqJ2cc+rYAGxLQEzag7Q0e0Xvh0jkB8evLyPQV9I69s
-	 LQ4tg4PmFTeIMuS+/gqNhN1qor7iU0/TEcZ/oH/ksalklCZsc1upCKxluozf2b2ZXkSVz
-	 jGQeNGHx/3V5Ql3hfYqNeyFxNeRtsobnKn41gHvjE8DfPENpSHcWn0JcN0F9nU6wrmdK4
-	 +MK0hafoYjpdQ1666LKu2mn1/OAbIG81TcwG1+JbIN5AwqPXtz5OKq9LLuDU9cP0VXvxC
-	 MJXYuqyQ4pr2c9QGlLWVqPJj1RooiICDdn4qm4gj5NQGesAAK1ljbidtpykJLQ+cjmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793559320;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=ScgBFQ2sEKk0TgN1KH7zHW+IlMrnPfyRl1r/gf8Y950=;
+	b=y5WkavqLu0n+EWiBCOJToa8usdc4pM6hEaqp9WxZMauD0lkcO8msPWXNlrQR6R+iDXkX
+	 yFa5zoY16OrfW1lHwhmWMtNDBZQUqpsQpD1ckWC7zTpSK18xNWknMXxRJ3Yb4rzcluZYU
+	 qrmLon+Xqdy1bSkqQPFZVKrF2E8n3Pq+N2JpEcjRJ1sdd0cqtyAj86I/Zm9M13LFW5DBl
+	 mW/AhWV0x2lOtXj0vYvzMxrbbdzkXeJ/PxLQaElnIEOvmEzcEETQLa3r3zR9pVI4vOFzx
+	 LYk/w9YD8/DtNSYIGX1eXBilpZCfv9xPAmTOW4Ptz0gzoATOOFylrypRXFJHlr8i5Xw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=p9lFpG8w;
-	arc=none smtp.remote-ip=113.46.200.222
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Fd0sAu6A;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0DE606A324;
-	Sun,  1 Nov 2026 16:19:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF0DE606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD11606A325;
+	Sun,  1 Nov 2026 18:55:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFD11606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=p9lFpG8w
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=TNSlYSGydi/RSdg73wNRJVezKMRukVFeRxk/X9GiV3k=;
-	b=p9lFpG8wjKPkaewxDHQVos7nKa2RYx6WwE7CjzCJWJGwInoO2//vCYkgr3gYHdFcxiTS+vK56
-	5O0psZSU11V5JASSHM69zqfapVffmcdw/xkxk46PZ9sBW9Xmoh69993Vj3e49DVfeQtOOj83cS6
-	u2KcRViFbVpRWA4cOoc8WP0=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jHg565q42zLlTK;
-	Mon,  2 Nov 2026 00:19:06 +0800 (CST)
-Received: from whupemk200013.china.huawei.com (unknown [7.152.185.76])
-	by mail.maildlp.com (Postfix) with ESMTPS id E91024057A;
-	Mon,  2 Nov 2026 00:19:15 +0800 (CST)
-Received: from kwepemr200001.china.huawei.com (7.202.195.18) by
- whupemk200013.china.huawei.com (7.152.185.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 2 Nov 2026 00:19:15 +0800
-Received: from kwepemr200001.china.huawei.com ([7.202.195.18]) by
- kwepemr200001.china.huawei.com ([7.202.195.18]) with mapi id 15.02.2562.045;
- Mon, 2 Nov 2026 00:19:14 +0800
-From: "Chenzhendong (alex)" <alex.chen@huawei.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: luolongmin <luolongmin@huawei.com>, "wangyanan (Y)"
-	<wangyanan55@huawei.com>
-Subject: [BUG REPORT] KVM: x86: Keep kvmclock_offset monotonic across
- same-host pause/resume
-Thread-Topic: [BUG REPORT] KVM: x86: Keep kvmclock_offset monotonic across
- same-host pause/resume
-Thread-Index: Ad1pEq5V9k/YeJKIRqCS7n6kM8dYdw==
-Date: Sun, 1 Nov 2026 16:19:14 +0000
-Message-ID: <e99489abf983494d888f04bb0f901e06@huawei.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Fd0sAu6A
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0AFD240E02B7;
+	Sun,  1 Nov 2026 18:55:16 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id GiwTy8Y-tnlr; Sun,  1 Nov 2026 18:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793559313; bh=ScgBFQ2sEKk0TgN1KH7zHW+IlMrnPfyRl1r/gf8Y950=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fd0sAu6Ag4L25Z3n/tp+oZ0Oac5dsyFgG6/NxLjkeA6Hzya3ScsIvwtPeIgOkyvAe
+	 dAZqcKKMvvewmJwsUX9PmE8HDgp1v290YCz5YzIMwPKOya/2OezBUlX/vL08wMTAhZ
+	 smETM8r1nrReNHkKK1+ODUsC3kQpvQnmaTqgRWmj995ROUril0Qzv7wiuY/qhdJIGn
+	 CDp+niWzh/rNEZUpzvu5XZe2rN0UfgOLoLU9xrzDOF57Zh3s3WrT7sleTwN/9ej3io
+	 WjeH8gzPwzAQp65KGWXh8eEgstVlwRBjZQ3TvqB0OVv337WVcokar1aWvKLULj7MM0
+	 5DAPQaI7v/rTyZ4zY74brkZ5sJQ15/UoCS+6rFg8k8+uCrTDeruN8SpXgaXC6aH4y6
+	 apg9cq7Na4RBP6jBszvo5GoIoH8zGkFO5xKPccEFVlne7i909/jMsnPtT9mDoEJPiX
+	 gGwPHcf2RBLShleWSk9R7qoURpZScNWjx/uqNDL4dDEtx9J5kcwcPfZqTORV9eqMgt
+	 tuANnMrgGsdSM8uwZlCjH6YNiqBUVrzenplMPpNfxpfvUiIsE7hpJ4ZUJwl+sG3YID
+	 YX/tDo/AV63BxCAIVV9as/lGxxH1mCa0q64r5dRfcOCDcPL1bnvE2I/oq2l5sNBM85
+	 tRBEFODZx1DB4hWnVwGyArZw=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 55AA740E0298;
+	Sun,  1 Nov 2026 18:54:55 +0000 (UTC)
+Date: Sun, 1 Nov 2026 10:54:52 -0800
+From: Borislav Petkov <bp@alien8.de>
+To: Joe Perches <joe@perches.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
+Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
+Message-ID: <20261101185452.GAaueK_PzlK68DsmRz@fat_crate.local>
+References: <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
+ <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
+ <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
+ <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
+ <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
+ <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
+ <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
+ <5ad69a1167fddc7caf1eb73e439765116db1ce17.camel@perches.com>
+ <20261101014710.GEauaaHoYk5TzRpGBQ@fat_crate.local>
+ <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,120 +102,19 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
 
-Hi,
+On Sat, Oct 31, 2026 at 10:35:57PM -0700, Joe Perches wrote:
+> No.  The intent is to match typical file matching patterns.
 
-While testing storage snapshots that suspend and resume a VM on the same
-host (vm_stop -> snapshot -> vm_start), we observed that the guest
-CLOCK_MONOTONIC jumps *backward* by the freeze duration after every
-resume.
+Are you trying to have the same matching behavior as <pathspec> of git?
 
-The problem
------------
+See section "pathspec" in gitglossary(7).
 
-On a same-host pause/resume cycle, QEMU saves the kvmclock value at the
-freeze instant (T1) via KVM_GET_CLOCK in vm_stop, and feeds it back via
-KVM_SET_CLOCK in vm_start (T2 =3D T1 + freeze_duration).
+-- 
+Regards/Gruss,
+    Boris.
 
-kvm_vm_ioctl_set_clock() recomputes the offset unconditionally:
-
-    kvmclock_offset =3D data.clock - now_raw_ns
-
-with now_raw_ns sampled at T2. Since
-
-    data.clock  =3D now_raw_ns(T1) + old_kvmclock_offset
-
-this gives
-
-    new_offset  =3D old_kvmclock_offset - freeze_duration
-
-i.e. the offset is pulled back by the freeze duration.
-
-The guest computes CLOCK_MONOTONIC from the pvclock page as:
-
-    CLOCK_MONOTONIC =3D system_time + (rdtsc - tsc_timestamp) * mult >> shi=
-ft
-
-where system_time =3D kernel_ns + kvmclock_offset is filled by the host at
-each vCPU entry. After resume the host re-samples tsc_timestamp, so the
-(rdtsc - tsc_timestamp) term starts growing normally again and never
-goes backward. The only term that can shrink is system_time: because
-kvmclock_offset was pulled back by freeze_duration, the new system_time
-is freeze_duration smaller than the value the guest last observed before
-the freeze. The guest's next clock_gettime(CLOCK_MONOTONIC) therefore
-reads a value freeze_duration smaller than before the freeze -- a
-backward jump, violating the invariant that CLOCK_MONOTONIC never goes
-backward.
-
-The fix
--------
-
-Only allow kvmclock_offset to move forward (or stay the same). If the
-newly computed offset would be smaller than the current one, keep the
-current value, so the guest clock keeps running forward and the freeze
-duration is simply skipped from the guest's perspective -- which is the
-expected behavior for a same-host pause/resume. This is a pure monotonic
-protection with no time threshold; the normal forward path (guest boot,
-KVM_CLOCK_REALTIME, cross-host migration toward a later destination host
-clock) is unaffected.
-
-    old_off =3D ka->kvmclock_offset;
-    new_off =3D data.clock - now_raw_ns;
-    if (new_off >=3D old_off)
-            ka->kvmclock_offset =3D new_off;
-
-Test
-----
-
-Inside the guest, pin a vCPU and call clock_gettime(CLOCK_MONOTONIC)
-twice in a row, flagging any backward step. Over 50 snapshot
-suspend/resume cycles the backward-step counter stays at 0 with this
-patch, while the unpatched kernel reports a backward jump on every cycle
-(measured freeze duration 27-36 ms).
-
-To the best of our knowledge this scenario is not handled upstream. Any
-feedback on whether monotonic protection is the right approach (vs. e.g.
-teaching QEMU to feed a post-resume clock) would be much appreciated.
-
-Signed-off-by: <Alex Chen> <alex.chen@huawei.com>
----
- arch/x86/kvm/x86.c | 19 ++++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 7a0d0e8e5c1f..000000000000 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -XXXX,XX +XXXX,XX @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, =
-void __user *argp)
- 	struct kvm_arch *ka =3D &kvm->arch;
- 	struct kvm_clock_data data;
- 	u64 now_raw_ns;
-+	s64 old_off, new_off;
- 	...
- 	if (ka->use_master_clock)
- 		now_raw_ns =3D ka->master_kernel_ns;
- 	else
- 		now_raw_ns =3D get_kvmclock_base_ns();
--	ka->kvmclock_offset =3D data.clock - now_raw_ns;
-+
-+	/*
-+	 * Monotonic protection: data.clock is the kvmclock value userspace
-+	 * saved at vm_stop (freeze instant); now_raw_ns is sampled at resume.
-+	 * The naive kvmclock_offset =3D data.clock - now_raw_ns pulls the
-+	 * offset back to the freeze instant, which makes pvti.system_time =3D
-+	 * kernel_ns + kvmclock_offset jump backward by the freeze duration ->
-+	 * guest vDSO CLOCK_MONOTONIC goes backward.
-+	 *
-+	 * Only allow kvmclock_offset to move forward (or stay). If the new
-+	 * offset would shrink, keep the old one so the guest clock keeps
-+	 * running forward (the freeze duration is simply skipped from the
-+	 * guest's perspective, which is the desired behavior for a same-host
-+	 * pause/resume). Pure monotonic protection, no time threshold.
-+	 */
-+	old_off =3D ka->kvmclock_offset;
-+	new_off =3D data.clock - now_raw_ns;
-+	if (new_off >=3D old_off)
-+		ka->kvmclock_offset =3D new_off;
- 	kvm_end_pvclock_update(kvm);
-
+https://people.kernel.org/tglx/notes-about-netiquette
