@@ -1,178 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793564044;
-	b=CTs0oar1gaBhfb0W7F0Bv2qnUhydiGWUCOPQ6jPap1eiV3+jfOjsQukrQJMcaf2IO2PQ
-	 GYlvbf3ffq84ZXQP5qQ2YEtR+9+NYnQl0hS1l2tUZNYp6INCWQ7gbGV4yxXfSFaPpqMcR
-	 oMzdrtdSAADBx++ZJkhAv7Uf535stZLdG02Ddef0Hk73BzLAJ9BaJNNiERn1R9xJLzHg1
-	 PjVo/gz5t7+rBnAinK/0AitHqfQgsomFwEEtM9JuL4aNw1r+4uBH6AwTriaZ2FTkZZ1AI
-	 07XKwX557adhVziejdn6Ngnw4+PTn660aiuTi1jPgOtdRJp3GIZBpy7d0fiHs1908YQ==
+	t=1793564279;
+	b=ljR4EA9zAtTbOX4iJq/DWxxXULNHprYa8HIWVDsGowRX9O10JsEiOFpnMX6aUhH40GmW
+	 K4U3QC8gYSk8nNrByPZUeRl5+A9BW5mB/hjGGKx94j3lxAOq4wSbJOnvqtsdTBgcAWImo
+	 +Pz/3LHjHfdKxx+jTmvupUQC1Y8qZDv4EhfyxaEJrO8l+KfTTl0VrvwzcffDEsxrHc11A
+	 GiOkIY8wAdKifvva2VIrqPcWUL8AuPPP6mBqJkyaiLCW2dDK7GH9S7r3T4JwNSIAv6+Y/
+	 zEfoCH8gafrhP1bPUTjF1uwg9sqBlBC4FljkWSlD5VElWWz0vuhih0peWzA9c9qZpXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793564044;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Resent-To:
-	 Resent-From:Resent-Date:Resent-Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Lines:X-Scanned-By;
-	bh=ThHyVQnaxRvTqeSXiQ/D9Q1g9o/PmNA0VuEnTI3nkCI=;
-	b=VD7Cjmm8XmvvlOyuKsOdi8I3WRr/PAfU+MIPQvCZ+uABsQjo7QPN0cuy0R15zk5KMNvV
-	 oieia3hORD0vFBiLz69BFi+M/NFa2LSFnFsGnKyaz6kmmAkAuhIlmODEBX5PlIQVhbjpS
-	 hmPpnVaCFsh8w0El1FICaurguY9D8qqPZ6VaxBERTViifyy/NfrN2ZQiruRQrJwKIVSnc
-	 /UkFjplYIxpFnMbKll+cRUo+WXRBBoWBQZ03nZXHbUAWNu9c8IMRTya+ZIAh190N2M0PF
-	 5SXr78Rgad4AYkx/DfEB0bx4jyEmH/4LZ/+D/84OvU/8OCHivT21TZ9xopK2Tzcqqxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793564279;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=CcMs9tvtlwt5Bs19TD28TDiqHmuTbnMeK3Pwk1m9fcI=;
+	b=RBe5+miP6OiHoKBLNRCjYVohxiKgEwns2qe7QjloR1u7tO94morpwU8ahF99bbyEqfNi
+	 kJdNO8Kk/Jmqgg7N/OA3x5vFs86xtsTBkaTWCNV+mhnbe9AslqKfBkbw5T0cJq91dhTE0
+	 v56IQdWb2qZiiw8rTeJEbuIsypQDeEnzpl8g5ElDKfG+BGT3Np6nhyPtgapCNwgAtErja
+	 Vdv2/Xwlu1i4tj3BYY8oYCMsmCGSewibfhRRPhTa5fGYL4Hxno7hKrVpC49APqv7zOZ8v
+	 hnYruXwFLYy5S4DRTvwxJUp5fe9Sx5RaTBgjollZJOLggIPUMZ19tQQ/iNdyxsD9HMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TGRtq4tm;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=BdZrPLVn;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B89606A327
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 20:14:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36B89606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19755606A337;
+	Sun,  1 Nov 2026 20:17:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19755606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TGRtq4tm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793564043;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:resent-to:
-	 resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references;
-	bh=ThHyVQnaxRvTqeSXiQ/D9Q1g9o/PmNA0VuEnTI3nkCI=;
-	b=TGRtq4tm5DLdvXLit1P88Qe5rPKF8+cimBLhW60gqv66ClD5g2/XbB0gPmwhRzIWLH22mO
-	qX+UxJaiveP7/JllWXhuPdI7Rk7HYk/Pv8Om/jxQpJYNKihwm5pxxE70s8/xrizZnunwRW
-	ydSTo9aId3dJ3MBiLGkknInUtf6MHTw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-zUz3wxw2MFW_-TF18iVIrQ-1; Sun,
- 01 Nov 2026 15:13:57 -0500
-X-MC-Unique: zUz3wxw2MFW_-TF18iVIrQ-1
-X-Mimecast-MFC-AGG-ID: zUz3wxw2MFW_-TF18iVIrQ_1793564033
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=BdZrPLVn
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5C99340E03BE;
+	Sun,  1 Nov 2026 20:17:54 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Bd7ecPcu3egA; Sun,  1 Nov 2026 20:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793564269; bh=CcMs9tvtlwt5Bs19TD28TDiqHmuTbnMeK3Pwk1m9fcI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BdZrPLVnCOqsebut2c7nykFo/vNmhjON4fQa50k/KbCavQnJesAcCCeyovv86jH0Z
+	 6c91xRny7T8cZrM/nOsb7OJFJbpCFlj5B8DX8XbLQ5oJjm7WwEtTuY+HcRSBo9SZ+0
+	 +TiXYiVUwm6ZyrCGWXAISZIx19w4dFtAGYrgjj0IhLYisQ67RXNYWLz3zAfohIVIDN
+	 kdpJ90prDrv09xZpeTqFnN3k5JB7fc7p5Sl2pvahQ3ORoY0Z9jN5W6hZ7O2mHAyjAh
+	 zmU+s1UUy+58aEpNvuRAdxbHn+zsuMukhvt34hgdotP5uO0sSGXBANvo+mRpXrmMc8
+	 +m41JE+gKXLRoPqSEG16r9V6R5T2smfVdoP18vgO48YC1c+ngHB3iE4e6l0WpSE9Zy
+	 CHHfE3wxVIpPrfaSlAMLUWRijoH6NrjVgGeqKI0odptOsvWBp9gUospPyx7+IlS6nd
+	 2hdNNgScNU7TNmJzwlG7KTJRIGQsC3Gh5yZQhOoHvZ9F+gpfA24Rq3S05mdMO+AKF7
+	 QoaBFOzIIgK9Jx9cEUIzXheIbNXcUVMjf3NjqBIn5NuGlsNdS5NGEWDn8qJaz73H4D
+	 jL6jnXgqqUdE3En7PDXPe3PUnpQyGrcf5ytzSHIwKOh7K+Ej2/uyz3dB82z+kwrOIM
+	 vt+Hq3gPyHodhUq01aAERb58=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C6A01800364;
-	Sun,  1 Nov 2026 20:13:53 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D5BA37E0;
-	Sun,  1 Nov 2026 20:13:52 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 8867121E6A04; Sun, 01 Nov 2026 21:13:50 +0100 (CET)
-Resent-To: pasic@linux.ibm.com, 17746591750@163.com, rathc@linux.ibm.com,
- alistair@alistair23.me, stefanb@linux.vnet.ibm.com, graf@amazon.com,
- xen-devel@lists.xenproject.org, FangSheng.Huang@amd.com, luc@lmichel.fr,
- michael.roth@amd.com, jamin_lin@aspeedtech.com, kane_chen@aspeedtech.com,
- palmer@dabbelt.com, rbolshakov@ddn.com, foss@defmacro.it,
- sebastian.huber@embedded-brains.de, fam@euphon.net,
- jiaxun.yang@flygoat.com, lizhijian@fujitsu.com, atar4qemu@gmail.com,
- edgar.iglesias@gmail.com, jasowangio@gmail.com, liwei1518@gmail.com,
- npiggin@gmail.com, zhangckid@gmail.com, titusr@google.com,
- wuhaotsh@google.com, arei.gonglei@huawei.com, berto@igalia.com,
- mark.cave-ayland@ilande.co.uk, junjie.cao@intel.com, zhao1.liu@intel.com,
- its@irrelevant.dk, clg@kaod.org, conor@kernel.org, david@kernel.org,
- jic23@kernel.org, kbusch@kernel.org, mchehab+huawei@kernel.org,
- sstabellini@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com,
- zhenwei.pi@linux.dev, adityag@linux.ibm.com, alifm@linux.ibm.com,
- amachhiw@linux.ibm.com, borntraeger@linux.ibm.com,
- brueckner@linux.ibm.com, farman@linux.ibm.com, harshpb@linux.ibm.com,
- iii@linux.ibm.com, jjherne@linux.ibm.com, milesg@linux.ibm.com,
- mjrosato@linux.ibm.com, lixianglai@loongson.cn, maobibo@loongson.cn,
- pbarbuda@microsoft.com, yoshinori.sato@nifty.com, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, john.levon@nutanix.com,
- thanos.makatos@nutanix.com, kfting@nuvoton.com, den@openvz.org,
- elena.ufimtseva@oracle.com, jag.raman@oracle.com,
- daniel.barboza@oss.qualcomm.com, philmd@oss.qualcomm.com,
- pierrick.bouvier@oss.qualcomm.com, phil@philjordan.eu,
- tangtao1634@phytium.com.cn, chao.liu@processmission.com, jiri@resnulli.us,
- sam@rfc1149.net, anisa.su@samsung.com, alex@shazbot.org, farosas@suse.de,
- mohamed@unpredictable.fr, kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
- alistair.francis@wdc.com, anthony@xenproject.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Sun, 01 Nov 2026 21:13:50 +0100
-Resent-Message-ID: <87wlqwz4w1.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Michael
- Roth <michael.roth@amd.com>,  John Snow <jsnow@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Mauro Carvalho Chehab
- <mchehab+huawei@kernel.org>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
- Kostiuk
- <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
- <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
- Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
-  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
- Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,
-  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
-  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
-  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
- <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
- Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,
-  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
-  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
-  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
- Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
-  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
-  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
- <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
- <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
-  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
- <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
- Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
- <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
- Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
-  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
- <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
- <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
- Lin
- <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
- Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
- Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
- Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
- <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
- <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
- Dooley <conor@kernel.org>,  Sebastian Huber
- <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
- <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  Anthony PERARD
- <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
- <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
-  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
-  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
-  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
-  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
- <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
- Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 44/65] hw/nvdimm: convert UUID property to QAPI-aware
- registration
-In-Reply-To: <20261020-qom-qapi-v7-44-431a86b02b58@redhat.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?=
-	Lureau"'s message of "Tue, 20 Oct 2026 14:46:01 +0400")
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-	<20261020-qom-qapi-v7-44-431a86b02b58@redhat.com>
-Date: Sun, 01 Nov 2026 18:39:55 +0100
-Message-ID: <871p9478no.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7C7F040E0299;
+	Sun,  1 Nov 2026 20:17:30 +0000 (UTC)
+Date: Sun, 1 Nov 2026 12:17:27 -0800
+From: Borislav Petkov <bp@alien8.de>
+To: Joe Perches <joe@perches.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"biju.das.au" <biju.das.au@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Au Dang <au.dang.jx@renesas.com>
+Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
+Message-ID: <20261101201727.GCaueeVySou8SsgdDY@fat_crate.local>
+References: <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
+ <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
+ <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
+ <5ad69a1167fddc7caf1eb73e439765116db1ce17.camel@perches.com>
+ <20261101014710.GEauaaHoYk5TzRpGBQ@fat_crate.local>
+ <b700f0fb96b9454287850f7aa54d876b709cadb0.camel@perches.com>
+ <20261101185452.GAaueK_PzlK68DsmRz@fat_crate.local>
+ <44db8c930587810e902dcb36b5a0718a52eb94fc.camel@perches.com>
+ <20261101193759.GBaueVF-1a0H8BDmZ2@fat_crate.local>
+ <874236faffbe90543d69361f04628fd8047ab1b8.camel@perches.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -183,98 +104,24 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+Content-Disposition: inline
+In-Reply-To: <874236faffbe90543d69361f04628fd8047ab1b8.camel@perches.com>
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+On Sun, Nov 01, 2026 at 11:54:42AM -0800, Joe Perches wrote:
+> I do think it was already generally understood though as
+> there was just one exception to the pattern match style
+> in the existing more than ten thousand ^[FX]: MAINTAINER
+> entries.
 
-> Add a QemuUUID_type_info and use object_property_add_qapi() instead of
-> object_property_add() for the nvdimm UUID property.
->
-> The type info is defined manually in uuid.c rather than generated,
-> since QAPI does not yet support string typedefs. An alternative would
-> be to extend the QAPI schema language with a 'typedef' construct
-> (e.g. { 'typedef': 'UUID', 'data': 'str' }), which would let the
-> generator produce the type info, C typedef, and introspection entry
-> automatically.
->
-> Alternatively, the exposed type being a string, we could change the
-> property to be str_type_info.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> ---
->  hw/mem/nvdimm.c     | 4 ++--
->  include/qemu/uuid.h | 4 ++++
->  util/uuid.c         | 5 +++++
->  3 files changed, 11 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/mem/nvdimm.c b/hw/mem/nvdimm.c
-> index 123ddc938546..b7ccb5c93678 100644
-> --- a/hw/mem/nvdimm.c
-> +++ b/hw/mem/nvdimm.c
-> @@ -104,8 +104,8 @@ static void nvdimm_init(Object *obj)
->                               nvdimm_get_label_size, nvdimm_set_label_siz=
-e, NULL,
->                               NULL);
->=20=20
-> -    object_property_add(obj, NVDIMM_UUID_PROP, "QemuUUID", nvdimm_get_uu=
-id,
-> -                        nvdimm_set_uuid, NULL, NULL);
-> +    object_property_add_qapi(obj, NVDIMM_UUID_PROP, &QemuUUID_type_info,
-> +                             nvdimm_get_uuid, nvdimm_set_uuid, NULL, NUL=
-L);
->  }
->=20=20
+I leave it up to you.
 
-Let's pass &str_type_info, like the next patch does, because ...
+As said, my only angle is having this documented as clearly as possible, even
+with an example, so that people in the future do not stumble over this and
+have to add debug prints to get_maintainer.pl code to figure out what exactly
+happens.
 
->  static void nvdimm_finalize(Object *obj)
-> diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
-> index 869f84af09dd..ed0c62327d4d 100644
-> --- a/include/qemu/uuid.h
-> +++ b/include/qemu/uuid.h
-> @@ -16,6 +16,8 @@
->  #ifndef QEMU_UUID_H
->  #define QEMU_UUID_H
->=20=20
-> +#include "qapi/qapi-type-info.h"
-> +
->=20=20
->  /* Version 4 UUID (pseudo random numbers), RFC4122 4.4. */
->=20=20
-> @@ -99,4 +101,6 @@ QemuUUID qemu_uuid_bswap(QemuUUID uuid);
->=20=20
->  uint32_t qemu_uuid_hash(const void *uuid);
->=20=20
-> +extern const QAPITypeInfo QemuUUID_type_info;
-> +
->  #endif
-> diff --git a/util/uuid.c b/util/uuid.c
-> index 234619dd5e69..363a03051aba 100644
-> --- a/util/uuid.c
-> +++ b/util/uuid.c
-> @@ -17,6 +17,11 @@
->  #include "qemu/uuid.h"
->  #include "qemu/bswap.h"
->=20=20
-> +const QAPITypeInfo QemuUUID_type_info =3D {
-> +    .name =3D "QemuUUID",
-> +    .masked_name =3D "str",
-> +};
-> +
+-- 
+Regards/Gruss,
+    Boris.
 
-... the only difference to str_type_info is @name.
-
-In v7, @name is used as value of ObjectPropertyInfo /
-ObjectPropertyValue member @type.  Your manual QAPITypeInfo lets you
-preserve the value of @type.
-
-It isn't used that way v8 (which I'll post real soon now).  It preserves
-@type values differently.  The problem discussed in the commit message
-doesn't exist then, so I'll cut it some.
-
->  void qemu_uuid_generate(QemuUUID *uuid)
->  {
->      int i;
-
+https://people.kernel.org/tglx/notes-about-netiquette
