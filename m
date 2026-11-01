@@ -1,75 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793493536;
-	b=ZFEPbtTw6ASbBap0DUeuBXZeeJnOjRAR14ZxpkwtjyN1bojYmRkUcw5o4raepMGiREqa
-	 kh+cjaAKozEYRkXC3/uorFSDGPiaHmsq8vkxEhns8/4Kqp9DTxzy5ILGyMS6GfIsQpHqd
-	 flKSwy6PVBRYxpRraEreiBaoiDQeajAgTRr+Cc7l7Apd15+g4R1F8l9nmYLBsnuvnPYPa
-	 SC6Yl7L0UCosBIIwMrkAasoHWuhJsQCXSjkcP0uhbbwSQ++T7jbp4tC9GwlGPqeOAuP9Q
-	 K6+FQ/8wHGLdBBNM8DLLKTOXK409rMk3XZ296hTm8aMdid7ypGHzJPOjQ0IUzJZXLrA==
+	t=1793496804;
+	b=bjBURt0pFL1AamyDIEQbFKi7vjnmgwyqfq1fhCEtAfQOlZ4LzQVbqr9vu9xJwNRl4Ufo
+	 QMAWbTJnXd1DYaGB2nMXC1Z+ZfMzbrCa1WibtMzCuSMaSrUt3k88UAh3CyExiGhwJAWkA
+	 GpVAlRrDtZcU6Y2fGIVj/+WcDiWFwb02arpDf2Ep/FZhv2dVUanw/ME2BHNnVTot78LrY
+	 oj+WDNZ3JaRLs/K0hIe2eOF9EAVuYnMRJtzIU89hlGm756UwziX9XA6yaeKUjnYlGa2at
+	 jigvTebJCQxes91ChG5kCdoSUFNJngsTpb4sf2KGjDUHYmksjfb7ocYZC8f5UmA5z0w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793493536;
-	h=DMARC-Filter:Received:Received:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-Spam-Status:X-Rspamd-Server:
-	 X-Stat-Signature:X-Rspamd-Queue-Id:X-Session-Marker:X-Session-ID:
-	 X-HE-Tag:X-HE-Meta;
-	bh=2NTztGF26GvKO0/bkQXKVX509oc+Xe4ciubHbw6x/mU=;
-	b=2xox3gKJy8zLDudyD369102Uwe/U51/UamSLWenUxhTvyf8dSsZdqNvehVzRdvcbs9Y1
-	 7jAq//+8zL/6mDmmNeOYWERGTQLGvzklZoyarF2G4t22vZnvcZgsapjEPVFIS11a4ES6Y
-	 l6Tt/1Ldy2nW4Sjx3orgtIvoOsExU80xiOn69hfusre2AoXlp7R+DCZuJKBGrYqPj4pzx
-	 cbnB8zNi4MvWP82ATxUKRPvsHiNfEmWGSU1U2zr10kz+JUj8zSEWCk9oyntpIksJPEZiY
-	 sLZrlIQzYDTxKJf7nNovX6DpIPPwMFQzmDIObRlS2wPpkV1jd+Z3LGWQdVgC3Dp0HZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793496804;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=v21NHPdsOLLP7RKg1aRBpi1DMKpd5Yni6sbwZVczwA0=;
+	b=nLEKRVaYsFORL1id9N809/ZXRRup3+ZrHJAIwS9fiVoaABHdKh9BOMJqugu6nz9HvjvO
+	 Xh4Kwp9tSBVu95AexDM0Tgq2ba4EzWUrmg3VtNc/KkUt/ufgG7Q75bzvQoUjsypGYKjnp
+	 7H5+WUVSmxZWM7c5s5ZWj12RGt8n51LC1QZ2cM+zMByI5k/IQbBwVq3JDxoLN8y10/ouX
+	 VP+dZDqNT0mj4KCYtbwN51w25eTX4oFI4WlmYhS/qQp/bCfuHoUD2U43h/3N1lWnPUGyj
+	 pzpdueEIYcPOTCGXl3l1gPG0HsrKnMmw9Zw/03cxLl8sUBVViG8k67JBdvDc1APJoiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=perches.com;
-	spf=pass smtp.mailfrom=perches.com;
-	arc=none smtp.remote-ip=216.40.44.15
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H0swMc55;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90076606A31C;
-	Sun,  1 Nov 2026 00:38:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90076606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A9021A0838;
-	Sun,  1 Nov 2026 00:38:53 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf07.hostedemail.com (Postfix) with ESMTPA id C226E2002C;
-	Sun,  1 Nov 2026 00:38:47 +0000 (UTC)
-Message-ID: <5ad69a1167fddc7caf1eb73e439765116db1ce17.camel@perches.com>
-Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-From: Joe Perches <joe@perches.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe	
- <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Krzysztof Kozlowski	 <krzk@kernel.org>, Biju Das
- <biju.das.jz@bp.renesas.com>, "biju.das.au"	 <biju.das.au@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
- "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
- "linux-serial@vger.kernel.org"	 <linux-serial@vger.kernel.org>,
- "linux-renesas-soc@vger.kernel.org"	 <linux-renesas-soc@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,  "linux-coco@lists.linux.dev"	
- <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- Au Dang <au.dang.jx@renesas.com>
-Date: Sat, 31 Oct 2026 17:38:46 -0700
-In-Reply-To: <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
-References: 
-	<TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-	 <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org>
-	 <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
-	 <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org>
-	 <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
-	 <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local>
-	 <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
-	 <35ba539820e1782bde038df98d3b49295eb7cd3a.camel@perches.com>
-	 <20261031202741.GAauZPPfNDpQLSmIZD@fat_crate.local>
-	 <94f0ab99b5c9072ce7c026672f704b2987db427f.camel@perches.com>
-	 <20261031235958.GDauaA_pScrsk2xYUF@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6168606A31A;
+	Sun,  1 Nov 2026 01:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H0swMc55
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEBC1F000C1;
+	Sun,  1 Nov 2026 01:33:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793496803;
+	bh=v21NHPdsOLLP7RKg1aRBpi1DMKpd5Yni6sbwZVczwA0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=H0swMc55NiRXaq7t/WxuB0DDj/CkuRnvv+YWzn5MJCVLIOLenNDKzPMtrsJVRPSJk
+	 AiyE42jdjH8vbzf9RGgO+7kPph8LFuVKlHDKRe7hHLAHnddizF0TTZWSMwsA4M9mzK
+	 COsFbFmqyFRtHHx9aN8hmbN7o9v2PbXnHhRAtMw537m4yeaSYRQufGnwRz7yeIqouh
+	 bFy2PP6nJV7rj9K41k530Tp++Mvg6LvgO7lrFLkjiVE0OixweS7PdmmnxznsxG8OSy
+	 q1gKaycPDfePboSsUU1PHY8iFzwU6msQzCg+r18BWb8pKqqGOvvpU+rr/zSBzmd0V7
+	 pnSlleyuBqSCw==
+Message-ID: <sashiko-outbox-192237@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vhost: Run TIF_NOTIFY_RESUME work in the vhost_task
+ loop
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Aamir Ahmed" <elb12345@hotmail.co.uk>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, "Eugenio
+ Perez" <eperezma@redhat.com>
+In-Reply-To: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+References: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+Date: Sun, 01 Nov 2026 01:33:22 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,30 +60,132 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-Rspamd-Server: rspamout06
-X-Stat-Signature: 9qg86nfazz3m68n631948ftn5cfi9j79
-X-Rspamd-Queue-Id: C226E2002C
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1/+wDw/0eI1zwSzjIvGXZ69wAnTk9DXqaY=
-X-HE-Tag: 1793493527-313710
-X-HE-Meta: U2FsdGVkX184D06UuHRutAh3RSj4qWrKeaNZYoK4fFL5V54we/zJTGTNU2Bd0MrOnqvxigZeYWqTot/MAgciRnJwE1ziXvp8eFCNc0jJoz/UFHBmQw0oubQKIvPxZ8U+b/dvE5D38uE7wHuFJPikNZQxI8VELGE3VXX5TS+1wN4pHmCJD+7s/jwR5lXHmSmcWchV3mgaIg0mhkqZhi5pX1k7Y5O5R64/ZUhzkC96ssaR9suqXEsRzGoRBxDGi2WAg+g/baYHKX1QnAjmrqz4Gb+HzqcN3qj2yloee9UC5dyC5jfEC8JOeLXPQ/efJCn1
 
-On Sat, 2026-10-31 at 16:59 -0700, Borislav Petkov wrote:
-> On Sat, Oct 31, 2026 at 03:52:50PM -0700, Joe Perches wrote:
-> > Please add a wildcard * at the end
->=20
-> I will, once the rationale is clear and documented so that people know wh=
-at to
-> do in the future.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] vhost: missing cond_resched() and loop in vhost_task_fn() after ta=
+sk_work
+--
 
-MAINTAINERS currently has:
+commit 97d56a24fed4c711b0eae24aaadc9595a3a04199
+Author: Aamir Ahmed <elb12345@hotmail.co.uk>
 
-	F: *Files* and directories wildcard patterns.
-	   A trailing slash includes all files and subdirectory files.
-	   F:	drivers/net/	all files in and below drivers/net
-	   F:	drivers/net/*	all files in drivers/net, but not below
-	   F:	*/net/*		all files in "any top level directory"/net
-	   F:	fs/**/*foo*.c	all *foo*.c files in any subdirectory of fs
+vhost: Run TIF_NOTIFY_RESUME work in the vhost_task loop
 
-How would you make that clearer?
+This patch runs pending TIF_NOTIFY_RESUME work via resume_user_mode_work()
+at the top of the vhost_task_fn() worker loop so that TWA_RESUME task_work,
+such as CFS bandwidth throttling, is processed for vhost worker threads.
+
+> diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+> index 3717885a5992a..7fa96e1b85b66 100644
+> --- a/kernel/vhost_task.c
+> +++ b/kernel/vhost_task.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/completion.h>
+>  #include <linux/sched/task.h>
+>  #include <linux/sched/vhost_task.h>
+> +#include <linux/resume_user_mode.h>
+>  #include <linux/sched/signal.h>
+> =20
+>  enum vhost_task_flags {
+> @@ -31,6 +32,14 @@ static int vhost_task_fn(void *data)
+>  	for (;;) {
+>  		bool did_work;
+> =20
+> +		/*
+> +		 * We never return to user mode, so TWA_RESUME task_work (e.g. CFS
+> +		 * bandwidth throttling) would otherwise never run. Run it here,
+> +		 * where no locks are held, like io-wq workers do.
+> +		 */
+> +		if (test_thread_flag(TIF_NOTIFY_RESUME))
+> +			resume_user_mode_work(NULL);
+
+[Severity: High]
+Should this loop while TIF_NOTIFY_RESUME is set and call cond_resched()
+after resume_user_mode_work(NULL), similar to io_assign_current_work() in
+io_uring/io-wq.c:
+
+	if (work) {
+		io_run_task_work();
+		cond_resched();
+	}
+
+When resume_user_mode_work() runs task_work_run() -> throttle_cfs_rq_work()
+in kernel/sched/fair.c, throttle_cfs_rq_work() dequeues current from its
+cfs_rq (clearing p->se.on_rq), places it on cfs_rq->throttled_limbo_list,
+sets p->throttled =3D true, and only sets TIF_NEED_RESCHED via
+resched_curr(rq) without calling schedule():
+
+	dequeue_task_fair(rq, p, DEQUEUE_SLEEP | DEQUEUE_THROTTLE);
+	list_add(&p->throttle_node, &cfs_rq->throttled_limbo_list);
+	p->throttled =3D true;
+	resched_curr(rq);
+
+Without a cond_resched() and loop here, can several problems occur on
+CONFIG_PREEMPT_NONE or CONFIG_PREEMPT_VOLUNTARY kernels (or when a newly
+unthrottled task is immediately re-throttled on schedule-in)?
+
+1. Because unlocking task_rq_lock at the end of throttle_cfs_rq_work() does
+not preempt current under CONFIG_PREEMPT_NONE or CONFIG_PREEMPT_VOLUNTARY,
+vhost_task_fn() proceeds directly into vtsk->fn(vtsk->data) while current
+is already on throttled_limbo_list with TIF_NEED_RESCHED pending.
+
+For example, when vtsk->fn is kvm_nx_huge_page_recovery_worker() calling
+kvm_recover_nx_huge_pages() in arch/x86/kvm/mmu/mmu.c, it acquires
+srcu_read_lock(&kvm->srcu) and kvm->mmu_lock and then checks need_resched():
+
+	rcu_idx =3D srcu_read_lock(&kvm->srcu);
+	if (is_tdp_mmu)
+		read_lock(&kvm->mmu_lock);
+	else
+		write_lock(&kvm->mmu_lock);
+	...
+		if (need_resched() || rwlock_needbreak(&kvm->mmu_lock)) {
+			...
+			if (is_tdp_mmu)
+				cond_resched_rwlock_read(&kvm->mmu_lock);
+			else
+				cond_resched_rwlock_write(&kvm->mmu_lock);
+
+At that point it schedules out into throttled_limbo_list for the remainder
+of the CFS bandwidth period while holding srcu_read_lock(&kvm->srcu),
+stalling synchronize_srcu(&kvm->srcu). Similarly, on CONFIG_PREEMPT_NONE,
+vhost_run_work_list() executes work->fn(work) (which acquires vq->mutex)
+before reaching its own cond_resched() at the end of the work loop, and any
+CPU time spent before rescheduling is not charged by update_curr() because
+p->se.on_rq is already 0.
+
+2. If vtsk->fn(vtsk->data) returns false (!did_work) while current is on
+throttled_limbo_list, vhost_task_fn() calls schedule() with state set to
+TASK_INTERRUPTIBLE. In __schedule() -> try_to_block_task() -> block_task()
+-> dequeue_task_fair() -> dequeue_throttled_task():
+
+	list_del_init(&p->throttle_node);
+
+	/* task blocked after throttled */
+	if (flags & DEQUEUE_SLEEP) {
+		p->throttled =3D false;
+		return;
+	}
+
+This removes the task from throttled_limbo_list and clears p->throttled, so
+a subsequent vhost_task_wake() while the cgroup is still throttled will
+enqueue the worker back onto the throttled cfs_rq.
+
+3. Even if cond_resched() schedules the throttled task out, when the task
+is later unthrottled and scheduled back in via set_next_task_fair(), if
+sibling tasks have already consumed the newly replenished quota,
+set_next_task_fair() calls task_throttle_setup_work(p) to set
+TIF_NOTIFY_RESUME again without setting TIF_NEED_RESCHED:
+
+	if (throttled)
+		task_throttle_setup_work(p);
+
+If vhost_task_fn() only checks TIF_NOTIFY_RESUME with an if statement
+instead of a while loop around resume_user_mode_work(NULL) and
+cond_resched(), returning from cond_resched() will proceed into vtsk->fn()
+with the new TIF_NOTIFY_RESUME work still pending.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/AS8P251MB00012469E6=
+ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM?part=3D1
