@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793544438;
-	b=SWUbKzE8oGg6t2F9DsOLDIWlAeAqT55RVABZmyDtoaW/OyWawYvj+q/KTXtgXMmqReFb
-	 mWYQ6uF0hiAffLaISaJOdQA4Dp94pCTBedteRY8d7JxvE0qXsPzyNQFT6iBGCgwUqJrcf
-	 Q6OFzpdQymAsyIscFfzlCm/dWmoUYuCoREunWNLyzEPrDS85sF78X+/dmz3BjOF7X032H
-	 uKtU0y0s1QDo+TTvEIabIktM0GyTeUpHOdVZqly35L4VdKNYkPmtSxSlrc7G+a4pKGjrD
-	 3jU91R53isNQxdJ6qSq7/mSGiwOBLMhM6XgGE95sp2wvvz0EfRTPcrve1pUVBTbRznQ==
+	t=1793544433;
+	b=ItOHnAne5ibAV86J/mJM+GIMSHdxp1Zxw95A9IcNLvIWrHDO5RmjTdpcuj2il/i74KBa
+	 iKi3KBc3sH4HfxtJARz39MLDaNozZdvKbavYPHdhB6OYbfF0Q6ytsu4Py7rzi4DxnRfXz
+	 LuKXqy0EEMkzrSlOvCWt2OJtoAmPFBy0nrcKQifjlLFZH1kGRp/vHkF36GSldzaSFmoY+
+	 OEeQvoBMjmCRTgvedApm3Xj7uQ0GP8ANPVBBxgufrK4iWCKA4onDad6yGiEU09vN1ayxq
+	 dyCAtyNOR91N8wcaRBCbvKcDUEnVrg7Oj+UB+e/QYZrNRjGNnuUk84zCxdO/R1ANolg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793544438;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793544433;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=V2lcCV5azjsGrWatUG1LtEdItX9x2QFl+QgQazoBrAk=;
-	b=5tPd6kg8FIEUYPO0Ye2Zv6EvnT7M1gBFcpCM6S7K0s9z6qo8Wx34DlLzS31sitxf/t8Z
-	 zkX9vGZi1scIwq+DWskQ0o5qLLKnocD2Q1D996vhWUvg0BX3Dvwp/GX6epxh56h0ASEfN
-	 Zspm35L/ox5kKBVf6hFtzOm6Z9N9mvfLwybujvat/5UeHnEke970SctZ2+qb2luHlDKgG
-	 JcnrmFKW0CdFj9C0l/Sp/owRfJbujiMQGHQp9VozFPZ2lANVeOWeKXVmAnuEpe//BLvVH
-	 oUm5nDqynN41i0sOejGqWdD5gJZckaOiAt/7Ww4yXllo/rddktQbqLs8TO5fmU72SbA==
+	bh=qduAH+VDk53vSkstbY9xaGv+g9KfxKxHxkbXDOSNrm4=;
+	b=12FCbxB9v9soJ/imHoW+Ek0xMhfCs8LQ1ntN2saADZ55rXEjYm88mvuIhopjYJU8hqvx
+	 3U+4gaM546p5ZrvAZA5WJ1tDpayC5dy3PPeRArhEOaP97CA8QUb3WBfkJbM4TAtweinsK
+	 Lbe2M9ro0VS75h8zXr78RpbigBhkXhm0ZseDpl6mEnbVkMTSrPY75Qi2TAh+yM3z0AEwh
+	 PESnecmJzTmGc8fVeuubLv9kEYzaNmZEYm/1Jhg9HLA0b3F8Oi9OtfXMk1TXmx5ItO8xU
+	 usRC+wAo31aQW/MEXXxGv9krnPWnFXoObg1FBvaJ5kmlu/DNZnmvS4lhgP7ksGtQh7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fd8w8b0f;
-	arc=none smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Ik/VRERy";
+	arc=none smtp.remote-ip=74.125.82.173
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631CE606A327
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 14:47:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 631CE606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D63606A325
+	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 14:47:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67D63606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fd8w8b0f
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35c76e9614aso3134412eec.0
-        for <kvm@vger.kernel.org>; Sun, 01 Nov 2026 06:47:17 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ik/VRERy
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36a17a332ecso3643230eec.1
+        for <kvm@vger.kernel.org>; Sun, 01 Nov 2026 06:47:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793544436; x=1794149236; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793544431; x=1794149231; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V2lcCV5azjsGrWatUG1LtEdItX9x2QFl+QgQazoBrAk=;
-        b=fd8w8b0f7MOG8V/KrCeyk2gPvDBJKhVBEko1EZ8P5BYIWiFtm2yuYLz5hRWEDo1sJE
-         EIA2MTmfG6kGDtiMmzlu+c52/v0tAdr2jiISuzyKSTcid/GDQRklXW9FOJ8y+zOBIZR8
-         t/3PZAwKD2rusBW/eYOqTnf4j8F3fYXxc1LPdrGnNG2YWU6qlSKnsl2l9O7qwWWksfps
-         B+IG4QtMP/7YILwhroJWwj3xbmHCO5dqdpvPdpgawnwJqrCul7qERwy+RXZCjniVINru
-         My41J5+gMdIWgw00a1HCytVSDcuxNq/9L3iCDV5TPX12w6F/fkjLt5Qu3+PW1fyf3Ej/
-         k0YQ==
+        bh=qduAH+VDk53vSkstbY9xaGv+g9KfxKxHxkbXDOSNrm4=;
+        b=Ik/VRERyq2Pi8C5N6JrPgt0gUjER35IiFV8EDZLJV0b5clyVOD4bnPTJX+EVUmQsxx
+         3ui5NJBOPxnZVjpNemv3TfywG00kn/EGX8Yh54DYpJkm/L+G1Nd1mXJ1tNh20fVf8LcE
+         XkywzaV4M1AXV0pTj2dQnmSq0VYdWvaNw53b6jaTtWIZB1gf82zQKodRov9TaVqsMOqe
+         ACeojoh1v4K5UlqsG3GNUupePXDWbae0xMAR8+hOYc802n078+Bd2On+o9KhqwWum6al
+         2lLFXv6nFZ5ibnnYSuHCNZjMd/V6rcSj0D9oTkqOnM0/oQMFnGXhNVVcZnZiM8dqAPoY
+         WXNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793544436; x=1794149236;
+        d=1e100.net; s=20260707; t=1793544431; x=1794149231;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V2lcCV5azjsGrWatUG1LtEdItX9x2QFl+QgQazoBrAk=;
-        b=WY92mtPYgE7UTotrd8dVXcx7IDrCyNUcPwiidThG2kySqQ+ZkQCsFdio5LLpkvcxyP
-         LYxNmTqXCGd+jOOewyvrPfr9St4Wsyyvb8bB3n6GIRnmRSwD+p8V26UApTKpNw1nSnAT
-         xjz5jk5dZQWJ4KqEgNGCYIy3DbLCnz/Iq+qZgw3A/eg2Qzpw9HzV+KSPP9Tu7RHh9B7M
-         mcVk0Kg/l/WLMOlPnukp5mccAMzMl4ZJeiy1S26BPIavJ0NherbTYWid6ss3p6n6maF/
-         mzHYk74ZjpJU1DHu8lijL036W5VZLQjtbYhx7AqpBcPP5x4UUIxl1wBbf7dduyzrJHLX
-         MM4Q==
-X-Forwarded-Encrypted: i=1; AKwUvByJA17hHso/AaB4a7yBVbJMS7ews7U+vkAmHdfUk/xiXA8eTysg+f9Yyb4TUAVj8RcEi5k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKLHkMVCd5s7SuyaVX74uiiyju/lVogYwUwqdBbnTte7mGuy4I2
-	mFs3PbLR6fM1/7CCzxFcZfmha0ETzYEDdO0noQrVDOuXNQcs8QAytthv
-X-Gm-Gg: AYBFou0+cFvfzTGKZ0Modw6Y9kEmUp1+FXrdpBaS1yKIH6mwiD0+iq5wVWC6ruhMEHF
-	yBhgC8esU1PVO4uOZExtGH4iWMgQ/hq95Dp6sMGrB388YmvyDs8eNJb62nPjQMoioOc4nz+FVuv
-	2Lq90tRad4yxdrZ3o5DiaF/5YFoiOKTWMRnVrfUwKS7fUHKJIiPpUd/fSjyYyE1BzyAeicrZ9Bw
-	FjoN/1QaqNt5P/JYBv3d3oGe58HJCb+FQZX42eoUd14G503OrK9oq5Yhj5AZno8sZN2UiBzcJBL
-	x31Wo6j5o3SoEa+eaFyca+L5FJZfD46kTNapI7aTfJvRA31LLHbEgulcO66HDRAyIkZkqo3dFC5
-	CQ2d5PD+PuadHHbTLn1xdyX6iopB/dQ6FdLWRkdfvQwyjtw/sYcPAuV3XsKb2JE3lHqeFtJGBUr
-	2EtAOCefJIGIu2m6n/g3j4dO9L/emcFw8u+91dVDxeaYDGw+uzERPb8JuIzc8QEQPPRODVOQCx+
-	iynrrLB+MXAEmLm/OhzGzQ6UAaP+n8XaTGQ5g7PIMWvmoYGLKTIZnVEla1maNjNhj1Ipaw0Tz0f
-	Nyaqpr7579Bbkae9wAkk5w0yRTTY32kGHA==
-X-Received: by 2002:a05:693c:639a:20b0:359:1b05:ed30 with SMTP id 5a478bee46e88-36a42203bc1mr11532986eec.4.1793544436256;
-        Sun, 01 Nov 2026 06:47:16 -0800 (PST)
+        bh=qduAH+VDk53vSkstbY9xaGv+g9KfxKxHxkbXDOSNrm4=;
+        b=PIhs/jsQ/k6Ye6VJD8fQ0obL2HYQpLi1ZuASQRXxTHfXg+d9EISlAkHoXLOgLrskST
+         rzDADzQ2irbrR/7ZnJVnGCH2midYt0BWjtFvTW+GbncYReMuo7IFPeH58e9x2Lk8iZqk
+         2WKKzRrSaBz3c2kyBXOh33xjycCqEN/1h9AE4oWXTTZ5c57l1SLVFolIP/f50QG/1WBj
+         C+rl+QMYEte6wmreNRYEVgIvHWTlyutLqZav7CiNEJ00/7GuEz5G1MTRHPcrHvcrZorO
+         qJ/WtytOO/bpxog/bAEMcS6Uc55+1+q5K4LG7oO+pN6sOXy0IFrHAwNwUnzsb3qoNJOi
+         9Emw==
+X-Forwarded-Encrypted: i=1; AKwUvBwZAgl26zWGdzbRr6nSB9xqrgw6wE0Mj/HveXKipPxVUF8B7xO1LHbuBve+HUtcGvFgtHQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Yv0SBFKPlVGZviHMBbWkg4Tdz9XRboQA0BCxilOawNgkDxQxP
+	QJ3+1MWp1FstAblXXVKdjbx6X+jqefwr051rZ1h9wgkJceH9kLeItJ46TGeZ7A==
+X-Gm-Gg: AYBFou0PUXK7bbLq66gybJxq+gc6z9HUfix9ZtI71tfbsqYC+AGrWAe+hZlj9LV5giq
+	h6cHOAKio5VIwt866DDTWdr0WGy7//ylwLdxFwM8LOGukmftF3TA1JpyjdOB9lIyWMn3vemekMG
+	/jE3cHxwHi3uqchoAkb4DPYBje5Pz402aOuVGd6Hjc6Mr2KveKEuR18TEGNHti+UNiTXZXER363
+	7tf6I0Y5cWja22Y+9aGjJKqNFKjcryidqkiGfH6TGJZfCKz6DOg1uOXKyJEQJ4XvJYLztEo3jul
+	KNynicXsuTLcY9MaV2CoLNsUX83RhsODNI27+UHkvk9GqLj+v7EKHHeQnQqw4GSemjHIenMrGNg
+	4gSZ0JJbuxvgE/Uvaqn3w+Cp82D6CHoN1IdDgS5X92A94c0c/SnACPsmN7WF+/VQgOG3D12OL0p
+	RyZ+qx6YfYpMqAphoJEponSdhBvTjQkmh+jKUCwNwq15yTog1PeBvF+mdv81Ok5vDRaUOlHJSDI
+	iCoykw+KD7wSqI000MwIF0Or0bzvjGLenEmbYKQaSSekqDAELdqHHEnjnia7w8zoVTq47DXVXfm
+	zno5I+tf9xyoFOY+YaBrZNEBDJfFqL5Cpg==
+X-Received: by 2002:a05:7301:4b0a:b0:369:9af5:7bc9 with SMTP id 5a478bee46e88-36a424199eamr11896233eec.23.1793544431471;
+        Sun, 01 Nov 2026 06:47:11 -0800 (PST)
 Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42a6f7f9sm32747545eec.25.2026.11.01.06.47.11
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42a6f7f9sm32747545eec.25.2026.11.01.06.47.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 06:47:15 -0800 (PST)
+        Sun, 01 Nov 2026 06:47:10 -0800 (PST)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -90,9 +90,9 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Anushree Mathur <anushree.mathur@linux.ibm.com>,
 	Harsh Prateek Bora <harshpb@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCHv2 6/7] KVM: PPC: Book3S HV: Fix error handling during vcore create
-Date: Sun,  1 Nov 2026 20:16:31 +0530
-Message-Id: <ca419693358e3af49b1dfa7887b34b8ef91a5daf.1793543627.git.ritesh.list@gmail.com>
+Subject: [PATCHv2 5/7] KVM: PPC: Book3S HV nestedv2: reject vCPU ids beyond the PAPR limit
+Date: Sun,  1 Nov 2026 20:16:30 +0530
+Message-Id: <183d9a0e755f3735ebd531accb9c193cb40317ce.1793543627.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1793543627.git.ritesh.list@gmail.com>
 References: <cover.1793543627.git.ritesh.list@gmail.com>
@@ -107,38 +107,39 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-kvmppc_vcore_create() can fail and return NULL, this patch fixes the
-error handling when this happens.
+The previous patch caps KVM_CAP_MAX_VCPU_ID at 2048 on nestedv2 but
+nothing actually enforces it. The generic KVM_CREATE_VCPU path only
+checks the id against KVM_MAX_VCPU_IDS, which is 8 * NR_CPUS on HV.
+That means a VMM that ignores the capability can still pass a larger id.
+That id goes all the way down to H_GUEST_CREATE_VCPU, where the L0
+rejects it and prints, ...
 
-vcore and online_vcores count should only be updated when vcore was
-actually created, otherwise it's state gets messed up for the VM run.
+        KVM: Create Guest vcpu hcall failed, rc=-56
+
+...for every such attempt before failing the ioctl with -EINVAL anyway.
+
+Check the id in kvm_arch_vcpu_precreate() instead so it fails early with
+the same -EINVAL. Note that PowerNV and nestedv1 are not affected.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/powerpc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 22283d46e8fe..7975e5de89d0 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3090,10 +3090,12 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
- 			err = -ENOMEM;
- 			vcore = kvmppc_vcore_create(kvm,
- 					id & ~(kvm->arch.smt_mode - 1));
--			mutex_lock(&kvm->arch.mmu_setup_lock);
--			kvm->arch.vcores[core] = vcore;
--			kvm->arch.online_vcores++;
--			mutex_unlock(&kvm->arch.mmu_setup_lock);
-+			if (!vcore) {
-+				mutex_lock(&kvm->arch.mmu_setup_lock);
-+				kvm->arch.vcores[core] = vcore;
-+				kvm->arch.online_vcores++;
-+				mutex_unlock(&kvm->arch.mmu_setup_lock);
-+			}
- 		}
- 	}
- 
--- 
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index cf620b6534de..5f9cfc34bec2 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -778,6 +778,9 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+
+ int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
+ {
++	if (kvmhv_is_nestedv2() && id >= KVM_MAX_VCPU_IDS_NESTEDv2)
++		return -EINVAL;
++
+ 	return 0;
+ }
+
+--
 2.39.5
 
