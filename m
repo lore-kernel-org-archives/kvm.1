@@ -1,114 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793545049;
-	b=k45zahEhzRKavTY7GxSDHeY/CTRQaNf4hIK1zo5AoT+VSKqIjUNobKGhFzURKlZosQR3
-	 21dKxFdrn6FukJwrKniWwnXhv3gl+1PgcYGVhU8sRxhIXVSvYzxGz7VVKWg8lbV+JlH8E
-	 Se0f3zg3mVOSC/EJK6d/y2FiL3NvgK77/rzxub16PiuqD1a3G+6Czbn1BTvbb3h+iFx9g
-	 mkjkt05clKXOEx32EiQA0KNmz70W2lqUSEeyrpHb5qxjxtaCqZJvXH7AEkffgsjK8S9ls
-	 gWa1CU3ieS7IoDEYJJCvjdfyEawZWbjZFcZu51hBvumUTkunbw1vY8acwZ068zfKumw==
+	t=1793545100;
+	b=E5PdCNlSHj3Pw2/q+XpijD5v3sOxSPuP2PdPE+ig41omKImf7bsqplxJds23Tf4bJ0sY
+	 NNClkBBGdaQbjTihPAFT/kXdDYqaqk3/u/mVq5OTV561S2BWMgM4ztXf0zNz3HKS0bo3Z
+	 wG89NnsfnSPmG21e49N1qf9+P4TDkvhDcb1IMu1+C5pjvRtKzOmxBmX6QL3jXySbxAYbm
+	 oU37Us60gGNk/OMjZG78uqCvAyaVFg+UlLx0hVB4c+qTw1H3A8FVc9ZZ2WZEedB1hQKty
+	 CPq3Fetx05c+VuSCq3mbpT7D7tFxrTFTFk121yM4e7tZiIaO2kcWNaKbCWYwFXl+Dpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793545049;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=PGMqY+oZ0RvA46OKAo95DoA/lt7CWx4VsMgHlnaoQfk=;
-	b=zAkHi/3lij3N/wwV1SiAJxqZ0XC07fWstgXb+crWq8jqnS43yapxIQztbgKs8y9gkE9n
-	 pCqYODeCCuaKSKfwa7mXIWX25lJvu0gDc6+rlNSflCUt158ngGlZpu1RtVclV0Y/mrsEG
-	 Gm4PrGrqUaU/6hE7ucf0F3crS1l7G+XdVNYBXDtCB8Gh2pOu0mTiaymBVN0KiG80OCw8+
-	 3UKoQ3zksoiQpoDGtJpt769+uUsEbEZEajsuvsrm+UsVrawUkfplamdaVR46APfJyXUFm
-	 R5pLiWCB/W14hrgOLV3y4CIT886lSz/W9NkGYeEShj9wIy0kcpOzD8plTwgdmbJgzyQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793545100;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=s4F0Gc/epIyD0iTLx8KA+5MdWA5rfq4bhGKZDrNipJo=;
+	b=LQFUu5oR73T7QBm3fGiOevrSvt+i2wAWqMoT0adRDmm9R+F/JXHC102nATzRMTcntsfS
+	 ryX15jhn056bfLs0AGhHnNuAHK0AEU5P3Qijj173okCY7/eP65xBXV3kMDOwzNjnBksx2
+	 D2YLstSZczTk2rt5kR+22iCpV/1QIgHhmdZd3HOs96fXBrZrORb6sQ/cbNG+nA7JxcVkk
+	 qpEZxMKT+xeauQ+G2YJ+yBmOO+LCag1DqgkquQvKAR96gE4Yz8vDvNxVcQF81gZ3Sgk31
+	 RRDr6CMIrTb40v7TsKrzHs10jvdcS2szV+0V1zf+f+FZE3WVFJdIT3qMXHWAwTKQohQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YnrXzXXD;
-	arc=none smtp.remote-ip=209.85.217.52
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAuvE+O5;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFB2606A327
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 14:57:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FFB2606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5E5606A324
+	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 14:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YnrXzXXD
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-7cc013095d4so626163137.2
-        for <kvm@vger.kernel.org>; Sun, 01 Nov 2026 06:57:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793545048; x=1794149848; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=PGMqY+oZ0RvA46OKAo95DoA/lt7CWx4VsMgHlnaoQfk=;
-        b=YnrXzXXDO7AHeU25pOIfi0Q6lPUH72unj6hi5PzCFWFZGiCB388hJtBD4DzkllGc0J
-         WjYLOaesnpl2Ohx2FSGQZ7elGKhBPrhrMVAFC0sbmKfpxK2SBy0nYgvnF+rduLVKFnx8
-         HTTNgv3IVA3IBj3uVKN+W6/NnvNeDYQTzm0P/2p+qvHzppQ3RhVoZOFRu/NGE2/RKSLz
-         yl/ECevi5DevNrtT9nJzjLqRv8mVzjwhfJ3+lB73hYrq3W8PuFf3375FHd7pjS/wsQ1S
-         hqa4GbMgsJczYccs1pMnSzN2k8J31zSr2av627d2jfhIEAdGJ2dKq1AnkS0RDkJIVjJI
-         JNXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793545048; x=1794149848;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PGMqY+oZ0RvA46OKAo95DoA/lt7CWx4VsMgHlnaoQfk=;
-        b=MZIjE/M05+gMOgxkdKhKEyshK+zrK9x4xJQCVqyqf45uCFvbBMW9HHDtucH8Wub7WJ
-         mnZqxs7Xj3WFHveaXUJHUtsCvRdY1VnPvtGFv1YkNc0HkLjkEHDNOCHsqUOpUbWJDGWo
-         GY0AVcYK63zG4+v8LeqAHdIEMTTLGpgOILyutD1OY2rZsn6AgCq4Pubyvs0PfA30HVD5
-         3PifW363zkx9KLpbH46hnifdipzSSxOtRYsCVkN7BsH5B5VLQEu9PK4sn46YDT19Nind
-         eSOz3HTyN53xaNaEBdDRMRc03rzHBsfE30EtU6DejZE5NKC9AnfFN7t4Z/xwNVTN1Ame
-         +Diw==
-X-Forwarded-Encrypted: i=1; AKwUvBy7s8K0e+5d7BtBCIzEJj5Djg+nVzFaaOivvZVXCITctI3VJ6n42Vxw/GYzXrKISd6Sxkw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIqwWCH1pRv+yBcRk+u5xZ77XXF78ujdGxqybsc5xcvFTH71Tkr
-	9kE2kwxzGZxNWReKc54LtUcBQNhgKe201lSgfEp2o6uJhW7m1FEULeA7
-X-Gm-Gg: AYBFou3zumQPQ1v9qaUNtdeVAAzDQe0Qo4d4m+mvM00/kZt4We3irnWZI1kIu4cs82O
-	wPcPsACIaESYc8sHxlSWqwo66a+Y1kW+H7vktZ+RK+Bj0PrzEjCdcwkK/8KCfvuNluPHsg0tfKu
-	hc0B02OC7j4X0/16Uz4zJH0dR+WoDQWzq9W9f1KjhQ4taJczBgVflNonLqIbXJ0ktBXJoeHkQAj
-	tZcCqxPm6x+u/aFDBeaaL5EFAZyWG6NrsrfACkb+VWq5ITll9E/PwUoLGlmJjLeKRTngnZ2vrL2
-	xOHw+cNmcHuNGVgxutrczwQPEBW6iwQYSrhJhWF/lxw6i0tyOttsZGFMhwZZAZjtImb8KueO78S
-	/X5IFxdY49vCRG/wG5mUOEXjB0aiavmVmZ5f30aL0McFnB/4TZaJ3F8weP2NJpuWDGfN4f1BR5G
-	Zh2TG/CoYQCtNLZGeXhNeo9mrV/CYdN1bT7XTqnkOnAIVuJFbCGWuCQ+oIWAvPLpmQGfC49Qxtz
-	l79lXOKZhkM+vgvGBJyzH7WwkJuTJf5l7Irm/y8wmbZflwf8nzNKyncP2iQhP3y9qbyGyj0LnUJ
-	cmPqtSoFCrwhPPI9Gqdm5Ub9GayOPiXdvIgv1lJcFh8fDmjcSld8GWcEBQKI96LwY2gjtUw2DTE
-	b4jlhUroFPOz06igp9A1ezA6bJtApj0MXgs74VqPu5WlNCrufeiJOPqEypGfKulY1cUE5
-X-Received: by 2002:a05:6102:5709:b0:7c1:f530:2d8e with SMTP id ada2fe7eead31-7d072d33bbemr3289437137.35.1793545047921;
-        Sun, 01 Nov 2026 06:57:27 -0800 (PST)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-992edfb5511sm9722277241.0.2026.11.01.06.57.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 06:57:27 -0800 (PST)
-Date: Sun, 01 Nov 2026 09:57:26 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, 
- kvm@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1d6388f036c46@gmail.com>
-In-Reply-To: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-Subject: Re: [PATCH RFC v4 0/6] virtio-net: add receive timestamp support
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAuvE+O5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071C91F000C1;
+	Sun,  1 Nov 2026 14:58:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793545100;
+	bh=s4F0Gc/epIyD0iTLx8KA+5MdWA5rfq4bhGKZDrNipJo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aAuvE+O5yGAmOJ0eDn10iEWNAVtWRTdff4O7sTNBplxJ7Q7JEnS6LlEob/E8fU6rU
+	 L2VrnbfPfntYE/Ko0mdr+R7R2LKbQv7mdI1ous77wtay4lLURCQWq3xeV8CXlPrNde
+	 mCfNKNRHM5z+OXNTNi1vy8fq9EXzo7ZFpY7ZMT3ZlAhTg6OV6MXQUkY2Tuj0SFrJj6
+	 B4MP7ZH2iNnNdTMaX0Od4JwS05UvnNm3PKpYJc06OUpnwNTjCwJ1AF6pmYAD36xyEd
+	 SZMPPz6HyfZwaEByud2h6ZN+OoI5U3E3N8a0MGCg8MxdfSXEVSmbOdj86RbDISJlHO
+	 PGR7Xi//ThUMw==
+Message-ID: <sashiko-outbox-192462@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCHv2 5/7] KVM: PPC: Book3S HV nestedv2: reject vCPU ids
+ beyond the PAPR limit
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <183d9a0e755f3735ebd531accb9c193cb40317ce.1793543627.git.ritesh.list@gmail.com>
+References: <cover.1793543627.git.ritesh.list@gmail.com>
+ <183d9a0e755f3735ebd531accb9c193cb40317ce.1793543627.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 01 Nov 2026 14:58:19 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -117,152 +60,52 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Steffen Trumtrar wrote:
-> This series picks up Willem de Bruijn's work on a virtio-net receive
-> timestamp. The device puts the time of arrival (TAI, ns) into the
-> virtio-net header so the guest can use it for PTP and RTT estimation
-> without taking the timestamp itself after the host-to-guest latency.
-> =
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] KVM: PPC: undeclared KVM_MAX_VCPU_IDS_NESTEDv2 in kvm_arch_vcpu_=
+precreate()
+--
 
-> The series is an RFC. I am mostly interested in feedback on the
-> approach and on the wire format:
+commit f56e9e3141b7693c524f0cc29414b94ab8a0b784
+Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-At a high level +1 from me.
+KVM: PPC: Book3S HV nestedv2: reject vCPU ids beyond the PAPR limit
 
-Some comments inline.
-> =
+This commit adds a check in kvm_arch_vcpu_precreate() on Book3S HV nestedv2
+to reject vCPU IDs at or above KVM_MAX_VCPU_IDS_NESTEDv2 with -EINVAL before
+reaching the H_GUEST_CREATE_VCPU hcall.
 
->  - The timestamp is a new field at the end of virtio_net_common_hdr
->    after outer_nh_offset and ipsec, offset 32 (see virtio spec),
->    negotiated with VIRTIO_NET_F_RX_TSTAMP (bit 49). Header size now 40
->    bytes.
->    Willem noted on v3 that virtio_net_common_hdr was not meant to be
->    extended this way; I kept it as the simplest approach, but a
->    separate struct for the timestamp header is an option.
->  - Timestamping is enabled at runtime with SIOCSHWTSTAMP; all
->    supported rx filters behave the same for now.
->  - XDP programs can read the timestamp with
->    bpf_xdp_metadata_rx_timestamp().
->  - vhost-net passes the feature through; the timestamp itself is
->    written by tun. The tun patch is only meant as a reference
->    implementation for the device side.
->  - The timestamp is in TAI.
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 9194cf492d1ca..f82d3545b39ad 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -772,6 +772,9 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+> =20
+>  int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
+>  {
+> +	if (kvmhv_is_nestedv2() && id >=3D KVM_MAX_VCPU_IDS_NESTEDv2)
+> +		return -EINVAL;
 
-Is this a requirement? It is common for PHCs to be synced to TAI,
-but not 100% the case. Does virtio need to specify this.
+[Severity: Medium]
+Is this missing the prerequisite patch referenced in the commit message?
 
->    The driver reports it as
->    SOF_TIMESTAMPING_RAW_HARDWARE without a PTP clock (phc_index -1),
->    so userspace cannot tell which clock it refers to and may compare
->    it against CLOCK_REALTIME (currently off by 37s). Options I see:
->    convert to the guest's system time in the driver (correct only if
->    host and guest agree on the TAI offset), expose a PHC so the
->    time base is explicit, or keep the raw TAI value and leave the
->    conversion to userspace. Which one is preferred?
->  - Like the existing rx_hash, the XDP timestamp callback locates the
->    header relative to xdp->data, so it must be called before
->    bpf_xdp_adjust_head().
-> =
+In arch/powerpc/kvm/powerpc.c, kvm_arch_vcpu_precreate() compares id against
+KVM_MAX_VCPU_IDS_NESTEDv2, which is not defined anywhere in the tree, causi=
+ng
+compilation of arch/powerpc/kvm/powerpc.c to fail with an undeclared
+identifier error.
 
-> A virtio spec change is needed as well and not yet proposed.
-> =
+In addition, kvm_vm_ioctl_check_extension() in arch/powerpc/kvm/powerpc.c
+still returns KVM_MAX_VCPU_IDS unconditionally for KVM_CAP_MAX_VCPU_ID:
 
-> Testing: the feature needs a QEMU that knows VIRTIO_NET_F_RX_TSTAMP and=
+	case KVM_CAP_MAX_VCPU_ID:
+		r =3D KVM_MAX_VCPU_IDS;
+		break;
 
-> sets the matching vnet header size; see
-> https://github.com/strumtrar/qemu/tree/v11.0.1/virtio-rx-stamps
-> =
+rather than capping the capability at 2048 on nestedv2 as described in the
+changelog.
 
-> Performance: I measured the receive rate with 64 byte UDP packets in
-> a nested QEMU/KVM setup with vhost-net. The variance between runs is
-> larger than any difference between the variants (without the series,
-> series without the feature, feature negotiated, feature enabled), so
-> I cannot show a measurable cost or the absence of one. Numbers from
-> bare metal will follow with a non-RFC version.
-
-This does not seem performance sensitive to me. And it is opt-in.
-IMHO no need for extensive testing for performance regressions.
-
-
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
-> Changes in v4:
-> - zero the header beyond the known fields on tx and in vhost
-> - grow padded_vnet_hdr for the 40 byte header (big packets)
-> - install xdp_metadata_ops if only RX_TSTAMP is negotiated
-> - rename VIRTIO_NET_F_TSTAMP to VIRTIO_NET_F_RX_TSTAMP
-> - move tstamp to offset 32 (header size 40) to match virtio spec layout=
-
-> - drop XDP restriction for SIOCSHWTSTAMP, add xmo_rx_timestamp
-> - add static_asserts for header sizes
-> - add support in vhost
-> - move virtio_net_common_hdr to virtio_net.h
-> - Link to v3: https://patch.msgid.link/20260921-v6-7-topic-virtio-net-p=
-tp-v3-0-3350851c4f88@pengutronix.de
-> Changes in v3:
-> - rework to use virtio_net_common_hdr instead of adding new struct
-> Changes in v2:
-> - rework patches to use flow filter instead of feature flag
-> - Link to v1: https://lore.kernel.org/r/20231218-v6-7-topic-virtio-net-=
-ptp-v1-0-cac92b2d8532@pengutronix.de
-> =
-
-> To: Michael S. Tsirkin <mst@redhat.com>
-> To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> To: David S. Miller <davem@davemloft.net>
-> To: Jakub Kicinski <kuba@kernel.org>
-> To: Paolo Abeni <pabeni@redhat.com>
-> To: Richard Cochran <richardcochran@gmail.com>
-> To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> To: Andrew Lunn <andrew+netdev@lunn.ch>
-> To: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> To: Jason Wang <jasowangio@gmail.com>
-> To: Alexei Starovoitov <ast@kernel.org>
-> To: Daniel Borkmann <daniel@iogearbox.net>
-> To: Jesper Dangaard Brouer <hawk@kernel.org>
-> To: John Fastabend <john.fastabend@gmail.com>
-> To: Stanislav Fomichev <sdf@fomichev.me>
-> To: Eric Dumazet <edumazet@kernel.org>
-> Cc: virtualization@lists.linux.dev
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: bpf@vger.kernel.org
-> Cc: kvm@vger.kernel.org
-> =
-
-> ---
-> Steffen Trumtrar (6):
->       virtio-net: move virtio_net_common_hdr to virtio_net.h
->       virtio-net: support receive timestamp
->       virtio-net: assert header sizes
->       vhost-net: support VIRTIO_NET_F_RX_TSTAMP
->       virtio-net: add XDP rx timestamp metadata
->       tun: add rx timestamp to the vnet header
-> =
-
->  drivers/net/tun.c               |  14 ++--
->  drivers/net/tun_vnet.h          |  18 +++--
->  drivers/net/virtio_net.c        | 171 ++++++++++++++++++++++++++++++++=
-++------
->  drivers/vhost/net.c             |  17 +++-
->  include/linux/virtio_net.h      |  30 +++++++
->  include/uapi/linux/virtio_net.h |   1 +
->  6 files changed, 214 insertions(+), 37 deletions(-)
-> ---
-> base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
-> change-id: 20231218-v6-7-topic-virtio-net-ptp-3df023bc4f4d
-> =
-
-> Best regards,
-> --  =
-
-> Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> =
-
-
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/183d9a0e755f3735ebd=
+531accb9c193cb40317ce.1793543627.git.ritesh.list@gmail.com?part=3D1
