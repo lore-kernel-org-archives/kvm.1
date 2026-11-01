@@ -1,57 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.222
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793547520;
-	b=MUQqziPmY4qg0mgfNsvfaWCBHXrt+Ej/dB7aFPBGwfU/gqCvq/vnYTir+Od2iOqeMR5H
-	 l0n0U+2/oocTk6etM5VtkaHcaXQXg0P4lYu+HfyUkciARbkhWLIwal+RYExzvKAWKxPj2
-	 6ZMG9GiGNrY9VxUaKw8kPS06EaF6K9eMSQ6uXo/qqPx5YeE60NHbe50yo9Qd66ZHGiZN5
-	 tCn6G4xMNUu83oYakZn99odj8AwYjnuUAI+44JN1EAXplcur8dtTliyxhojMNJ6YtW46r
-	 F7UXmtdcHVhcfQrad2ouZm8Ibdq498okg67anHqXSJqVhZkXiLwRbFS8g/iWaF119Cg==
+	t=1793549968;
+	b=C7PW0NnwMQzMwSvrJJUQcB/b3phDxFfMR0/lNVNZ3Y/6ZxyCyGRifprJwBfGnDbyjNPD
+	 9Ptux+eX01xH4ERxqW8dEh9Mo7AIb4UNorOJZbVZClR3NahEMachx24PEaLsAjGb1P9/g
+	 rc/qCVcbtmWS5GqQJY0qL6HxpvYQ4pO6iUt41HcHRuBntdefChU+Hsu2xNZp34guTpcK9
+	 gYLiXCzNA7QT0nDORGiyN9WdHgVJzxsyOexYKnzcqgoV3JUkgLEp6f37XAJUX4Iz45d4R
+	 iYiwYGsYspT4ryi5A+p+RpG+j+BxyA2DG6G6Pv2iwsEqMIR62v4jcqekkBMJqoRlOKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793547520;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=hs88lmycObCyIS57FEw3DJd/YB2da3akD0Vo8DfWWmg=;
-	b=YXVuT8l3pK3GoMrF4n1dw2ThQ4hBU6oGi4mmT6RiA+MygE9lPQ8lPSBWJcQ7iApTCc/h
-	 dtV3cHodLJgm/EGp0VLpCU7pxd1gpy9RxuUKtoxJYsG1lV89d9akvPDJRcXipJy5Kptz+
-	 l+UZynGUTlWJQDyIZPXAMj/sY/VN0cHYnAaI6Z5FSdKQkY0UaOetaHq/0Z1268vc9BlQJ
-	 pxVkFGUZs1c2BCo/pVTDHrKrC+QH8MwTY6WlpiXdkfC5Aghg4bPz7HYpTpLhRJWrHG7KM
-	 kBalg2h1vKM09XmbR25OCUzCUeYx2ThH82UKc83xlYaaRRtwCsjKw6gm0MLIihMlLYg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793549968;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Received:From:
+	 To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-originating-ip:Content-Type:Content-Transfer-Encoding:MIME-Version;
+	bh=TNSlYSGydi/RSdg73wNRJVezKMRukVFeRxk/X9GiV3k=;
+	b=LIkYsXwBWXFNwp6cTAD6sNRkSNqJ2cc+rYAGxLQEzag7Q0e0Xvh0jkB8evLyPQV9I69s
+	 LQ4tg4PmFTeIMuS+/gqNhN1qor7iU0/TEcZ/oH/ksalklCZsc1upCKxluozf2b2ZXkSVz
+	 jGQeNGHx/3V5Ql3hfYqNeyFxNeRtsobnKn41gHvjE8DfPENpSHcWn0JcN0F9nU6wrmdK4
+	 +MK0hafoYjpdQ1666LKu2mn1/OAbIG81TcwG1+JbIN5AwqPXtz5OKq9LLuDU9cP0VXvxC
+	 MJXYuqyQ4pr2c9QGlLWVqPJj1RooiICDdn4qm4gj5NQGesAAK1ljbidtpykJLQ+cjmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kL2hGxwU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=p9lFpG8w;
+	arc=none smtp.remote-ip=113.46.200.222
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCFB606A327
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 15:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0DE606A324;
+	Sun,  1 Nov 2026 16:19:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF0DE606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kL2hGxwU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344F81F000C1;
-	Sun,  1 Nov 2026 15:38:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793547519;
-	bh=hs88lmycObCyIS57FEw3DJd/YB2da3akD0Vo8DfWWmg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kL2hGxwUQTgirusmfhWs+UzBOahV14Lr31VZeZq5JrrNBEh5n4HLuhqRQH4ltb25S
-	 erprpy9eIBrSEYyT1ciW+ocAcKATtwbmFk3annbKSiErZNqkDZ8BaMzW6YbmzXeFJA
-	 KuhELEBqhIzH4vyPko60dlRK2VHTF1f3UcL7PKAcN1aj4Q+7w8gPTuYUiexcYRlYJX
-	 /tCmee1gs4wir2UzVwZxrohG4i4K7Ildz+S8PFOwBBZ00DmqK0JIBqy/sByoadSDW4
-	 1+lZ32h7O0bbpoh9dvFT7goNibgoP4NLWFI2FkNGaKcs0t8/NQufkPL7sqV6q5/lEB
-	 +lCEaclFBbMcA==
-Message-ID: <sashiko-outbox-192480@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCHv3 5/7] KVM: PPC: Book3S HV nestedv2: reject vCPU ids
- beyond the PAPR limit
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <3b233fa135d54d3ffb569d7febdc1cb8e0ed406a.1793546707.git.ritesh.list@gmail.com>
-References: <cover.1793546707.git.ritesh.list@gmail.com>
- <3b233fa135d54d3ffb569d7febdc1cb8e0ed406a.1793546707.git.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=p9lFpG8w
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=TNSlYSGydi/RSdg73wNRJVezKMRukVFeRxk/X9GiV3k=;
+	b=p9lFpG8wjKPkaewxDHQVos7nKa2RYx6WwE7CjzCJWJGwInoO2//vCYkgr3gYHdFcxiTS+vK56
+	5O0psZSU11V5JASSHM69zqfapVffmcdw/xkxk46PZ9sBW9Xmoh69993Vj3e49DVfeQtOOj83cS6
+	u2KcRViFbVpRWA4cOoc8WP0=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jHg565q42zLlTK;
+	Mon,  2 Nov 2026 00:19:06 +0800 (CST)
+Received: from whupemk200013.china.huawei.com (unknown [7.152.185.76])
+	by mail.maildlp.com (Postfix) with ESMTPS id E91024057A;
+	Mon,  2 Nov 2026 00:19:15 +0800 (CST)
+Received: from kwepemr200001.china.huawei.com (7.202.195.18) by
+ whupemk200013.china.huawei.com (7.152.185.76) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 2 Nov 2026 00:19:15 +0800
+Received: from kwepemr200001.china.huawei.com ([7.202.195.18]) by
+ kwepemr200001.china.huawei.com ([7.202.195.18]) with mapi id 15.02.2562.045;
+ Mon, 2 Nov 2026 00:19:14 +0800
+From: "Chenzhendong (alex)" <alex.chen@huawei.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: luolongmin <luolongmin@huawei.com>, "wangyanan (Y)"
+	<wangyanan55@huawei.com>
+Subject: [BUG REPORT] KVM: x86: Keep kvmclock_offset monotonic across
+ same-host pause/resume
+Thread-Topic: [BUG REPORT] KVM: x86: Keep kvmclock_offset monotonic across
+ same-host pause/resume
+Thread-Index: Ad1pEq5V9k/YeJKIRqCS7n6kM8dYdw==
+Date: Sun, 1 Nov 2026 16:19:14 +0000
+Message-ID: <e99489abf983494d888f04bb0f901e06@huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 01 Nov 2026 15:38:38 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,59 +81,121 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] KVM: PPC: undeclared KVM_MAX_VCPU_IDS_NESTEDv2 in kvm_arch_vcpu_=
-precreate()
---
+Hi,
 
-commit 6b87f3d0f26a22dc1fab90af1a0540a7a33c6a90
-Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+While testing storage snapshots that suspend and resume a VM on the same
+host (vm_stop -> snapshot -> vm_start), we observed that the guest
+CLOCK_MONOTONIC jumps *backward* by the freeze duration after every
+resume.
 
-KVM: PPC: Book3S HV nestedv2: reject vCPU ids beyond the PAPR limit
+The problem
+-----------
 
-This commit adds a check in kvm_arch_vcpu_precreate() to reject vCPU IDs at
-or above KVM_MAX_VCPU_IDS_NESTEDv2 with -EINVAL when running on nestedv2,
-avoiding failing later in H_GUEST_CREATE_VCPU.
+On a same-host pause/resume cycle, QEMU saves the kvmclock value at the
+freeze instant (T1) via KVM_GET_CLOCK in vm_stop, and feeds it back via
+KVM_SET_CLOCK in vm_start (T2 =3D T1 + freeze_duration).
 
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 9194cf492d1ca..f82d3545b39ad 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -772,6 +772,9 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
-> =20
->  int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
->  {
-> +	if (kvmhv_is_nestedv2() && id >=3D KVM_MAX_VCPU_IDS_NESTEDv2)
-> +		return -EINVAL;
+kvm_vm_ioctl_set_clock() recomputes the offset unconditionally:
 
-[Severity: Medium]
-Is this commit missing the prerequisite patch referenced in the commit
-message?
+    kvmclock_offset =3D data.clock - now_raw_ns
 
-In arch/powerpc/kvm/powerpc.c, kvm_arch_vcpu_precreate() checks id against
-KVM_MAX_VCPU_IDS_NESTEDv2, but KVM_MAX_VCPU_IDS_NESTEDv2 is not defined in
-arch/powerpc/include/asm/kvm_host.h:
+with now_raw_ns sampled at T2. Since
 
-#define KVM_MAX_VCPU_IDS	(MAX_SMT_THREADS * KVM_MAX_VCORES)
+    data.clock  =3D now_raw_ns(T1) + old_kvmclock_offset
 
-or anywhere else in the tree, causing compilation of
-arch/powerpc/kvm/powerpc.c to fail when CONFIG_KVM is enabled.
+this gives
 
-In addition, the commit message notes that the previous patch caps
-KVM_CAP_MAX_VCPU_ID at 2048 on nestedv2, yet kvm_vm_ioctl_check_extension()
-in arch/powerpc/kvm/powerpc.c still returns KVM_MAX_VCPU_IDS unconditionall=
-y:
+    new_offset  =3D old_kvmclock_offset - freeze_duration
 
-	case KVM_CAP_MAX_VCPU_ID:
-		r =3D KVM_MAX_VCPU_IDS;
-		break;
+i.e. the offset is pulled back by the freeze duration.
 
-Should the prerequisite patch defining KVM_MAX_VCPU_IDS_NESTEDv2 and capping
-KVM_CAP_MAX_VCPU_ID in kvm_vm_ioctl_check_extension() be applied before this
-change?
+The guest computes CLOCK_MONOTONIC from the pvclock page as:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/3b233fa135d54d3ffb5=
-69d7febdc1cb8e0ed406a.1793546707.git.ritesh.list@gmail.com?part=3D1
+    CLOCK_MONOTONIC =3D system_time + (rdtsc - tsc_timestamp) * mult >> shi=
+ft
+
+where system_time =3D kernel_ns + kvmclock_offset is filled by the host at
+each vCPU entry. After resume the host re-samples tsc_timestamp, so the
+(rdtsc - tsc_timestamp) term starts growing normally again and never
+goes backward. The only term that can shrink is system_time: because
+kvmclock_offset was pulled back by freeze_duration, the new system_time
+is freeze_duration smaller than the value the guest last observed before
+the freeze. The guest's next clock_gettime(CLOCK_MONOTONIC) therefore
+reads a value freeze_duration smaller than before the freeze -- a
+backward jump, violating the invariant that CLOCK_MONOTONIC never goes
+backward.
+
+The fix
+-------
+
+Only allow kvmclock_offset to move forward (or stay the same). If the
+newly computed offset would be smaller than the current one, keep the
+current value, so the guest clock keeps running forward and the freeze
+duration is simply skipped from the guest's perspective -- which is the
+expected behavior for a same-host pause/resume. This is a pure monotonic
+protection with no time threshold; the normal forward path (guest boot,
+KVM_CLOCK_REALTIME, cross-host migration toward a later destination host
+clock) is unaffected.
+
+    old_off =3D ka->kvmclock_offset;
+    new_off =3D data.clock - now_raw_ns;
+    if (new_off >=3D old_off)
+            ka->kvmclock_offset =3D new_off;
+
+Test
+----
+
+Inside the guest, pin a vCPU and call clock_gettime(CLOCK_MONOTONIC)
+twice in a row, flagging any backward step. Over 50 snapshot
+suspend/resume cycles the backward-step counter stays at 0 with this
+patch, while the unpatched kernel reports a backward jump on every cycle
+(measured freeze duration 27-36 ms).
+
+To the best of our knowledge this scenario is not handled upstream. Any
+feedback on whether monotonic protection is the right approach (vs. e.g.
+teaching QEMU to feed a post-resume clock) would be much appreciated.
+
+Signed-off-by: <Alex Chen> <alex.chen@huawei.com>
+---
+ arch/x86/kvm/x86.c | 19 ++++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 7a0d0e8e5c1f..000000000000 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -XXXX,XX +XXXX,XX @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, =
+void __user *argp)
+ 	struct kvm_arch *ka =3D &kvm->arch;
+ 	struct kvm_clock_data data;
+ 	u64 now_raw_ns;
++	s64 old_off, new_off;
+ 	...
+ 	if (ka->use_master_clock)
+ 		now_raw_ns =3D ka->master_kernel_ns;
+ 	else
+ 		now_raw_ns =3D get_kvmclock_base_ns();
+-	ka->kvmclock_offset =3D data.clock - now_raw_ns;
++
++	/*
++	 * Monotonic protection: data.clock is the kvmclock value userspace
++	 * saved at vm_stop (freeze instant); now_raw_ns is sampled at resume.
++	 * The naive kvmclock_offset =3D data.clock - now_raw_ns pulls the
++	 * offset back to the freeze instant, which makes pvti.system_time =3D
++	 * kernel_ns + kvmclock_offset jump backward by the freeze duration ->
++	 * guest vDSO CLOCK_MONOTONIC goes backward.
++	 *
++	 * Only allow kvmclock_offset to move forward (or stay). If the new
++	 * offset would shrink, keep the old one so the guest clock keeps
++	 * running forward (the freeze duration is simply skipped from the
++	 * guest's perspective, which is the desired behavior for a same-host
++	 * pause/resume). Pure monotonic protection, no time threshold.
++	 */
++	old_off =3D ka->kvmclock_offset;
++	new_off =3D data.clock - now_raw_ns;
++	if (new_off >=3D old_off)
++		ka->kvmclock_offset =3D new_off;
+ 	kvm_end_pvclock_update(kvm);
+
