@@ -1,68 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793563984;
-	b=nAOd3XP7psGN2q5Ecmn9fdQXNzOd+Abo9a8CmXokQyfhfLEctG0fpxg4ruFPmxLcEqtw
-	 CQsMDV3PbITRYKhXQnjUosjIC5nYzaSLAmIDHWhDF9dK/jHxVAPwVLtPPO/MDKau8LmBU
-	 AOy9IjszQhZq7jcEPxTmJCBIucH2tVrGFiaGMAMT9a3j9X7lznDv3T5dxDX4kgrOLP1KI
-	 plP/VdPZk/RQpsEleiIV0u8IrScVkmj87f7y2EOor8MnL0MEKmg/iK6SI5dUdSAXGPS82
-	 7l7Xp4dpffy9R0GiH6tHOy/lEl/vjXd78WxY1IIB+O4bIEOSxYzkBGdhvNSyzVzUKSQ==
+	t=1793564011;
+	b=xES13YrI35akU/JazCDX//Yx50rxPuwJFT4+/UwXyJDF4YoGM1Uaw8gXuLfY0YqYM7K5
+	 zDSPLp87BzM6TS5XrjGKsnrZnKucYLEwIzrDnhtJsUfIPP6ikymwDbd7EkM+cllERUDea
+	 B0NPeKzGdlZFW+G/W4vXQZzNpVjlDPVS+ZVUF2fqq9kezqgzT8L4ijMGkCDzhFyCEzFg0
+	 cnoatcTSNnI7eNTBSv1S2XplLY2uKbRWGIucxFBYD+wuDcKYDv6/uhPPRdvUIqJ90T/dV
+	 LMTKJgjoFrW/4wvlY1ywrfs6gLm01Y4tCiPGAWw9iBkjfna6V9p3jDKDOXCpgGv//ZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793563984;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793564011;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Resent-To:
 	 Resent-From:Resent-Date:Resent-Message-ID:From:To:Cc:Subject:
 	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Lines:X-Scanned-By;
-	bh=38jtNySmm4986eFfpM0QTUc8I+R0MireRTh42Ru0zCM=;
-	b=pyiy1OffOMOTxkpivCn5+lUOmzfFDCKVR4b9uo9fubcJ40DZF6eaVr4+6PoFxUegJXrk
-	 Feqw6792MUh9EzBmCxYxNv546MTHUMd/thB3aMyJjHuu35GnZo6BGudkaobcTs5pxPkw2
-	 dqhIgEDX9sTPZwAI8YZsd7TZTpHKw+OF7w2F7xrnUjqhbbDxPp59q1UHYhmkGRLmklyjL
-	 ZBg871ZEHFtnhjlFkopKgII38uGRwO+056aPTxicqZWD1cf0HxrSnv1AECYdZtqMwqCW/
-	 37JTiJqSc7aBDnTtHx2H+Z3Mcj4K9aoVEAqAI4KneO3COW1Z1JH2doCUoHv3x314DLw==
+	 Content-Type:Lines:X-Scanned-By;
+	bh=XB5EnWMeZC+TuUTfvw5ippbkRaPu3bjzBuwOlljxabM=;
+	b=0WJYzTp36sSkT/a/Xfr6rjKhj2Od1gv8/v/dzkX6fcLQpPS4HP6OQNt4lVDdYNKwcIZP
+	 01irCR4cpeCOKYsQPp04MAOEzHT1S8Q59EwTagRvB9vdHW324OtQRb6rhIfC/eJZSMhAw
+	 NMJ8i5oJBknbdKL5cIgJPUI9uGm/a2PPZyThKmEVEzrLdtgFOmG0M4iw+23FzoPQKkyPL
+	 T+yJtPpbbYLdjt/XaYAWXPoIM4Z9Jvn1pSaD4ZAR9tNT/tH5pEmeEW1GTFc4vGRYgUeoR
+	 ZuEGzm/9lSjwiSJsEMcObyCjeJ5e8QnTg3Kbfrs0CaZlvo86bjElBRVpmX+2w2R8tVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jf13OME9;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JPGygn6K;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4493606A324
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 20:13:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4493606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063CA606A324
+	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 20:13:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 063CA606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jf13OME9
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JPGygn6K
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793563982;
+	s=mimecast20190719; t=1793564010;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:resent-to:
-	 resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references;
-	bh=38jtNySmm4986eFfpM0QTUc8I+R0MireRTh42Ru0zCM=;
-	b=Jf13OME9RIJMNDx5lduODE0C/h8xuHd0x7+UIysjxiLPsf8UtiyZuS1cp6n9+VyNrssw5g
-	XTE0vKbVJ/GuzzetgXIt75lmHQrZ1VbxOZc5LjCU+onMPFpmEXxAcwVD26/1CfhKjpmelh
-	gVo1BYX50IQlOfAWAQunKfKMf+jd5u0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	 resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+	 references:references; bh=XB5EnWMeZC+TuUTfvw5ippbkRaPu3bjzBuwOlljxabM=;
+	b=JPGygn6KTclH2oTYPv6dkjEdr2Tfoz0v1N1faAABCx1HotVNtm4CSgLcV3epnAWJuKCuva
+	B5POEHzUU+iP8ICsco5FPiq4/T5flaxZ+d8hcwNvvAnzZzPrizbnZL74WeEZBpw9Vll0qT
+	0N7WTlC2B78TjTvDcR/XTVLMJZ/4TDM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-NHSE1nS8MaKM2Lkt4h6T7g-1; Sun,
- 01 Nov 2026 15:12:59 -0500
-X-MC-Unique: NHSE1nS8MaKM2Lkt4h6T7g-1
-X-Mimecast-MFC-AGG-ID: NHSE1nS8MaKM2Lkt4h6T7g_1793563975
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-EOQDkoJqOrSzuYyhPjyxGw-1; Sun,
+ 01 Nov 2026 15:13:26 -0500
+X-MC-Unique: EOQDkoJqOrSzuYyhPjyxGw-1
+X-Mimecast-MFC-AGG-ID: EOQDkoJqOrSzuYyhPjyxGw_1793564002
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C6351954B0B;
-	Sun,  1 Nov 2026 20:12:52 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 305B619560B3;
+	Sun,  1 Nov 2026 20:13:22 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 369CF1800446;
-	Sun,  1 Nov 2026 20:12:51 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E9645195608B;
+	Sun,  1 Nov 2026 20:13:20 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id D8DE121E6A04; Sun, 01 Nov 2026 21:12:48 +0100 (CET)
+	id 7626A21E6A04; Sun, 01 Nov 2026 21:13:18 +0100 (CET)
 Resent-To: 17746591750@163.com, alistair@alistair23.me, graf@amazon.com,
  FangSheng.Huang@amd.com, michael.roth@amd.com, jamin_lin@aspeedtech.com,
  kane_chen@aspeedtech.com, palmer@dabbelt.com, rbolshakov@ddn.com,
@@ -75,7 +74,14 @@ Resent-To: 17746591750@163.com, alistair@alistair23.me, graf@amazon.com,
  pasic@linux.ibm.com, its@irrelevant.dk, rathc@linux.ibm.com, clg@kaod.org,
  stefanb@linux.vnet.ibm.com, conor@kernel.org,
  xen-devel@lists.xenproject.org, david@kernel.org, luc@lmichel.fr,
- jic23@kernel.org, lixianglai@loongson.cn, maobibo@loongson.cn,
+ jic23@kernel.org, kbusch@kernel.org, mchehab+huawei@kernel.org,
+ sstabellini@kernel.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com,
+ zhenwei.pi@linux.dev, adityag@linux.ibm.com, alifm@linux.ibm.com,
+ amachhiw@linux.ibm.com, borntraeger@linux.ibm.com,
+ brueckner@linux.ibm.com, farman@linux.ibm.com, harshpb@linux.ibm.com,
+ iii@linux.ibm.com, jjherne@linux.ibm.com, milesg@linux.ibm.com,
+ mjrosato@linux.ibm.com, lixianglai@loongson.cn, maobibo@loongson.cn,
  pbarbuda@microsoft.com, yoshinori.sato@nifty.com, qemu-arm@nongnu.org,
  qemu-block@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, john.levon@nutanix.com,
@@ -86,17 +92,10 @@ Resent-To: 17746591750@163.com, alistair@alistair23.me, graf@amazon.com,
  tangtao1634@phytium.com.cn, chao.liu@processmission.com, jiri@resnulli.us,
  sam@rfc1149.net, anisa.su@samsung.com, alex@shazbot.org, farosas@suse.de,
  mohamed@unpredictable.fr, kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
- alistair.francis@wdc.com, anthony@xenproject.org, kbusch@kernel.org,
- mchehab+huawei@kernel.org, sstabellini@kernel.org,
- peter.maydell@linaro.org, richard.henderson@linaro.org,
- zhiwei_liu@linux.alibaba.com, zhenwei.pi@linux.dev, adityag@linux.ibm.com,
- alifm@linux.ibm.com, amachhiw@linux.ibm.com, borntraeger@linux.ibm.com,
- brueckner@linux.ibm.com, farman@linux.ibm.com, harshpb@linux.ibm.com,
- iii@linux.ibm.com, jjherne@linux.ibm.com, milesg@linux.ibm.com,
- mjrosato@linux.ibm.com
+ alistair.francis@wdc.com, anthony@xenproject.org
 Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Sun, 01 Nov 2026 21:12:48 +0100
-Resent-Message-ID: <875wyg1fb3.fsf@pond.sub.org>
+Resent-Date: Sun, 01 Nov 2026 21:13:18 +0100
+Resent-Message-ID: <871p941fa9.fsf@pond.sub.org>
 From: Markus Armbruster <armbru@redhat.com>
 To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
@@ -163,13 +162,13 @@ Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
  Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
  Vivier <lvivier@redhat.com>
 Subject: Re: [PATCH v7 07/65] qapi: add QAPITypeInfo struct definition
-In-Reply-To: <20261020-qom-qapi-v7-7-431a86b02b58@redhat.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?=
-	Lureau"'s message of "Tue, 20 Oct 2026 14:45:24 +0400")
+In-Reply-To: <87ik2g7cd6.fsf@pond.sub.org> (Markus Armbruster's message of
+	"Sun, 01 Nov 2026 17:19:49 +0100")
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 	<20261020-qom-qapi-v7-7-431a86b02b58@redhat.com>
-Date: Sun, 01 Nov 2026 17:19:49 +0100
-Message-ID: <87ik2g7cd6.fsf@pond.sub.org>
+	<87ik2g7cd6.fsf@pond.sub.org>
+Date: Sun, 01 Nov 2026 17:27:17 +0100
+Message-ID: <87a4ns7c0q.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -180,65 +179,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+Markus Armbruster <armbru@redhat.com> writes:
 
-> Introduce a minimal struct that pairs a QAPI type's internal name with
-> its "masked" introspection name. Generated constants of this type will
-> let QOM property registration carry a reliable reference to the QAPI
-> schema and possibly other associated data.
->
-> The fields are populated in following commits.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> ---
->  include/qapi/qapi-type-info.h | 31 +++++++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
->
-> diff --git a/include/qapi/qapi-type-info.h b/include/qapi/qapi-type-info.h
-> new file mode 100644
-> index 000000000000..6a6355568325
-> --- /dev/null
-> +++ b/include/qapi/qapi-type-info.h
-> @@ -0,0 +1,31 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#ifndef QAPI_TYPE_INFO_H
-> +#define QAPI_TYPE_INFO_H
-> +
-> +#include "qapi/util.h"
-> +
-> +/**
-> + * QAPITypeInfo - QAPI type metadata
-> + *
-> + * @name: QAPI type name (e.g. "str", "OnOffAuto", "int32List").
-> + *        QOM uses this as the property type string.
-> + * @masked_name: Name of the type in the QAPI introspection schema, assi=
-gned by
-> + *        scripts/qapi code generator (e.g. "368").
-> + * @lookup: QEnumLookup for this type, or NULL for non-enum types.
-> + *        visit_type_enum(), qapi_enum_parse(), and qapi_enum_lookup()
-> + *        all rely on it.
-> + * @list: The list-type counterpart, or NULL if none exists.
-> + *        str_type_info.list points to strList_type_info.  qdev array
-> + *        properties follow this to find the list type for their element.
-> + */
-> +typedef struct QAPITypeInfo {
-> +    const char *name;
-> +    const char *masked_name;
-> +    const QEnumLookup *lookup;
-> +    const struct QAPITypeInfo *list;
-> +} QAPITypeInfo;
-> +
-> +#endif /* QAPI_TYPE_INFO_H */
+> As far as I can tell, @name is used outside tests only for an error
+> message in object_property_get_enum(), and I'm not sure that error makes
+> sense.  Observation, not a demand.
 
-As far as I can tell, @name is used outside tests only for an error
-message in object_property_get_enum(), and I'm not sure that error makes
-sense.  Observation, not a demand.
+No, I managed to confuse myself.  Please ignore.
 
