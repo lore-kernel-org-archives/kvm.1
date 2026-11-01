@@ -1,72 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793514051;
-	b=w0n+dNXHJ2S6YioOcXCl3TTDNwH9+i58+TuGTo3cfZdaZB1uUkcy9GtB0y3vBcz40SA9
-	 NybYu24iT2pcvnciEy4T+uf+Ww1GU6BjoIynD78xkRmZ2KG7SjP8iiRvZUQz8FVjORXFS
-	 6KDsmaEcYapyJj3QO3P3+2dA66la9Nr1cbxZR3hKadntl69ZAZtIstgWpoBcgdWFFQteb
-	 X/l517WZn9gBYFNFYdULoPTGMNdi4EOxichJmen5Ot4Duud6y/8csEn+TL8wJD0+T7+r4
-	 rF7D1+O+BcHvI9MgQ1UBmpZ69I9W54Cwpaw0EMe7jcx2EwOqcNXQnKvWEyPRd8KeLHw==
+	t=1793514052;
+	b=G0F1DibvMQYBC1xuSIqr9imCY+8tf+jJSGadd08u8rVymhpTHRQSCeQnu8v4truBB9qo
+	 bo3hQIKOLopXOJdQS+k6PAQfRgI+AQZF1dPHvp+fCUXZXVyUmAVoJhCU54J2YMqGt1klq
+	 sbOPzfCb97trgsgi2G5+NmL0kDYRkMoHi5NBzW0486JF59xlT1IUb1Z9FWOn8eJ9iuPyL
+	 hZBALxnaK/5uoY27T3Z54hubMobz3WlC9psXcVpL5hBLXyU1BSxItKueWVSnfJsz0WbLx
+	 dgdxCv3021OQNM34pVCIxAPWYGMToElppT7GtilQcYoU3WWhs2x4opSojbCD2aRUqZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793514051;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793514052;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=oaPJYRLQOnUXY3GkH7jTJTAE7Wl3NuOEbtsp4Z/SUgc=;
-	b=Q7Z3AogUWs3s5KOrGKAiKL7EtxAG9VGk9EuMf1/ebnfgvZD4Pv8cUliC0VcyBnd7+Tds
-	 fo/kcbPxxXJ6ePLbD3Tt4b7A0ZVKz+iVpqIspsjPP1BDahDGXJ2J17l7WLe3eybwBBLNF
-	 7KwEWepmTl17hj7J5Bd3Gqj90NB4G3XJnSzzgkvil+Q6UdhuW0iLDaQdYjVTBAAlsZBnk
-	 87iK8r4JYDpYU/wObBu3EasA2TIwPIga4zEqB5tbxq/r0vlDChsuVF9oJGRpkVWd0/nP5
-	 srNqX33SlV1sGm4RFJQs1pLWSzWKtQaz5s4XFjsYdfSpLYM/S1SWnTPqi6KPOV3Nr4g==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=qdpAw2CeVyl2O4/SsZKsGMa/ZVARBuLoVGSK/7j1CNs=;
+	b=aL1Wmi9uAIU6bEE44VYfmXr6x/qIG9JNTbhZMBnoaK4xtdo+I2UXdr49nEk8B48y1Z74
+	 4uka6eB1r1Ktz0IhQUZr7vq2I6PSRuC2a8ZfYmNBv5gPBsazZN7DUeSnrSZP+l18ORiTY
+	 Nb9GuQqdH6oUgIJ+CvANUlngOLVmTMWXZTuGg/qFi89oMyrJ9LbI+54i7rk/cRIh4ATMT
+	 20QSTKu8b7/+wqlKoOr62po254u03YLGdNU+QMXE9SqmytAocL/1/sCwaajn3CeUED5bJ
+	 IZEXicLja6dQvAcgMhR64C+NgdDCwzIRZ0XxAZqSG6DE0AGvh2shkZloobUHYy4M13A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BuQzGhTZ;
-	arc=none smtp.remote-ip=74.125.82.197
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VmB0NE1S;
+	arc=none smtp.remote-ip=74.125.82.69
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF58D606A324
-	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 06:20:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF58D606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108F9606A333
+	for <kvm@vger.kernel.org>; Sun,  1 Nov 2026 06:20:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 108F9606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BuQzGhTZ
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-36a190c53a3so2775329eec.0
-        for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 23:20:50 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VmB0NE1S
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-154e9d2d94fso4207911c88.0
+        for <kvm@vger.kernel.org>; Sat, 31 Oct 2026 23:20:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793514050; x=1794118850; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oaPJYRLQOnUXY3GkH7jTJTAE7Wl3NuOEbtsp4Z/SUgc=;
-        b=BuQzGhTZI+KMKd3AqJd6tbk+GDDIKP+orSREe1lCsOFmj8e48N8Y9Bekm8LL28stEz
-         jyQeNR07S3Tvvmxp324XlNxfmn109Gi4srlgUu5TBQ2bDryrhHvqUP7b2nChw5lHDEY9
-         5Sq2eYfcmNn5nxp2/mdG2JmSQIrl8BdnDlchxIkfDjUS3ZFerQt+qN+cBONcQea9/eiU
-         Lm82dTsu20HN1G6dPMDjADLzFt5QDU7yVavVfKVf6W218D6DhEbpryzM4KHZG7c7baOi
-         MVXZYNGCSwC/evPXhieRFIxV1vOhKLQxEvfuavDyvg3oJ3wxqYWlHn5DTRCKmPsc67Jc
-         YwMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793514050; x=1794118850;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793514051; x=1794118851; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oaPJYRLQOnUXY3GkH7jTJTAE7Wl3NuOEbtsp4Z/SUgc=;
-        b=O0Jyt0/59K/lJ24sKFUuXRvjH0JQYOz+iCIGbML5rg2AgWkqfKzQI6uiiC+Y0Vc0Sn
-         2OnHH/I7wQmoXPWewYq0n2/5mK7g0usLfGrtONiNQpzSbFLfX8vx/kwHC++JI9dTr5ZI
-         rfg0ccenswCkNeV6jazfUzZ8DZi6HjHwrAFoyXk+CwnjukG3Yq6yNYhj1KjBgXoMsmAE
-         V1U1247s/GjhZ8f9K6ntXVgTuoXB7Wa/gMQcje51qKq3c9ry2iFDAprP9+M1FSBqTcKx
-         LtdU7+XcG47jYdoTxhUQWpkxS2L4vNgnGbQWtFxrs6ba6YSbJqgOB7RiQc7sos+yjFn7
-         q8zw==
-X-Forwarded-Encrypted: i=1; AKwUvBwSyv43IEP/vg2wTG7sC/odVBpA2XAi2t0AiDqVJvqLYMwWx1y9ug2rdN/fqHUgVb3lYmE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL4PfJIAepZNFGLdMvAnGvQswiBqthCr7WoE5zRmVxVdm/QB268
-	tdK7kowmm0jIWTef3AT21DrqyYxg/hiZJMPQObHnzM74bnyl+hHndXP+E89zg4nmRoYxUuuI7F/
-	qK2lmVwKYSuY2mdW8+Q/QMCXxUg==
-X-Received: from dybsq12.prod.google.com ([2002:a05:7301:710c:b0:366:233a:49c7])
+        bh=qdpAw2CeVyl2O4/SsZKsGMa/ZVARBuLoVGSK/7j1CNs=;
+        b=VmB0NE1SK1dSZHehZEKpYbNRGVAGQoG9sQbszpc9MIBSgSAjM/pPWk3zq0OiAMzo4P
+         aXpZMJ1fu/qHOu4kKnjuHertLWFdhPNWWX4AmRNuu6UImMXGGcdtIGQMsnvpV5Sbtr/q
+         5J5Wburg8odMV/IM93Fq91sk6QaDHFBU3aOXdY/lTAnPPejMCw0ztL2fvvYxB1n56ZPy
+         a77OdHFYhf912lAi/ZosyYVBgmvlv5B7ky5ESj24tW2XqkmCnSWXBpUm3DUSQe9SsJxC
+         ng3ES16VGTLfidOgfPLDyGWmR/ey7i6XpFQw+suc1PhoSmKpAPn9QAkJrGJ3ZX+Q2ini
+         T/kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793514051; x=1794118851;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qdpAw2CeVyl2O4/SsZKsGMa/ZVARBuLoVGSK/7j1CNs=;
+        b=Gjxguk7eNcsp37Sg50gs+RdrU0jJ1mREULJN0Hpw6yVgG79G60GwYaicobSP4zxZNY
+         HM0ZKNIf4z5QlAwfqQxLOCvsVmYkntKpHWFezeaOli6k03LusvByuMoeKKjzQTwJyPLb
+         NT/Nbd2SWa85Y4zIeahLk9qZLt4AZ6XNiuS/WS4p4CwsaG5iihrlrnkEFreFNVqui5+0
+         bYzavWJ1AMsCw2xvw067FUqhS49UqDfK8zNSET+r2eKTlpJ0HVXJSgpQmPshDcH96CDb
+         T8GHmH5G67Y/+fed1G7X+vZb0Zj+g3Pa8sCsWqA/zO7XNu/5Q5mq/XUDuSpoCLj1DGSZ
+         xj2w==
+X-Forwarded-Encrypted: i=1; AKwUvBzD+IBvtxH59ErczPhUnuM6z8KdHYsWJ6ddWOIEanhXUASEYrrr/+hFRy1IU9yYRUd9p0I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJJhZdNitc3BczeoM4nbg7VbATfXCUuxibTuHpC3P0vLq+Rs+vz
+	ueSeiHY4fh5V0/2PHQbHxkdDwe7lDJtHNWhytyPyWJT8cy1JcKY83Ku3SH36n8v2qw6x4x8Axqi
+	JiGaQxuNXRInH2YuGvHGz/lX15g==
+X-Received: from dlbrx13.prod.google.com ([2002:a05:7022:170d:b0:184:6cc9:b13c])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7301:4715:b0:369:f17d:efb with SMTP id 5a478bee46e88-36a3002dfe5mr13291921eec.10.1793514049730;
- Sat, 31 Oct 2026 23:20:49 -0700 (PDT)
-Date: Sun,  1 Nov 2026 06:20:47 +0000
+ 2002:a05:7022:3a06:b0:1a5:1c15:9ea3 with SMTP id a92af1059eb24-1ac5ac4b77amr10797606c88.17.1793514050726;
+ Sat, 31 Oct 2026 23:20:50 -0700 (PDT)
+Date: Sun,  1 Nov 2026 06:20:48 +0000
+In-Reply-To: <20261101062049.998160-1-almasrymina@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,44 +79,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261101062049.998160-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261101062049.998160-1-almasrymina@google.com>
-Subject: [PATCH v2 0/2] vfio/pci: fix huge_fault write handling and add selftest
+Message-ID: <20261101062049.998160-2-almasrymina@google.com>
+Subject: [PATCH v2 1/2] vfio/pci: pass FAULT_FLAG_WRITE to vmf_insert_pfn_pmd/pud()
 From: Mina Almasry <almasrymina@google.com>
 To: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org
 Cc: Mina Almasry <almasrymina@google.com>, David Matlack <dmatlack@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>
+	Shuah Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	stable@vger.kernel.org, Ankit Agrawal <ankita@nvidia.com>, 
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix vfio_pci_vmf_insert_pfn() passing write=false to
-vmf_insert_pfn_pmd() and vmf_insert_pfn_pud(), which causes an infinite
-write page-fault loop when vma->vm_page_prot starts read-only (such as
-after soft-dirty clearing via /proc/<pid>/clear_refs in CRIU or live
-migration, or on arm64 without hardware DBM), and add a companion VFIO
-PCI selftest covering both read-then-write upgrade and initial write
-faults after clear_refs.
+vfio_pci_vmf_insert_pfn() is the only caller of vmf_insert_pfn_pmd() and
+vmf_insert_pfn_pud() in the kernel that hardcodes write=false instead of
+passing vmf->flags & FAULT_FLAG_WRITE (unlike drm, panthor, and mshv).
 
-Changes in v2:
-- Expand Patch 1/2 commit log with practical trigger scenarios (CRIU /
-  clear_refs soft-dirty clearing and arm64 software dirty tracking) for
-  stable backport evaluation, per Alex Williamson.
-- Drop the Assisted-by tag from Patch 1/2.
-- Add Patch 2/2 selftest in vfio_pci_device_test (bar_write_fault_after_clear_refs),
-  as suggested by Alex Williamson.
-- Link to v1: https://lore.kernel.org/all/20261024015540.538758-1-almasrymina@google.com/
+On x86_64, normal MAP_SHARED | PROT_WRITE VFIO BAR mappings usually mask
+this bug because vma->vm_page_prot already has _PAGE_RW set. However,
+when vma->vm_page_prot starts read-only, insert_pmd() and insert_pud()
+with write=false install a read-only huge entry without calling
+pmd_mkdirty()/maybe_pmd_mkwrite() (and similarly for PUD). Subsequent
+write-protection faults enter wp_huge_pmd() or wp_huge_pud(), which call
+vma->vm_ops->huge_fault() to upgrade the entry in place. Because
+vfio_pci_vmf_insert_pfn() passes write=false, insert_pmd() and
+insert_pud() see !pmd_none(*pmd) with !write, do nothing, and return
+VM_FAULT_NOPAGE, causing an unrecoverable infinite write page-fault loop
+and host CPU soft lockup on the next userspace or KVM guest MMIO store.
 
-Mina Almasry (2):
-  vfio/pci: pass FAULT_FLAG_WRITE to vmf_insert_pfn_pmd/pud()
-  vfio: selftests: Test BAR write faults after clear_refs
+In practice, vma->vm_page_prot is read-only on a writable MAP_SHARED BAR
+mapping in two situations:
 
- drivers/vfio/pci/vfio_pci_core.c              |  6 +-
- .../selftests/vfio/vfio_pci_device_test.c     | 83 +++++++++++++++++++
- 2 files changed, 87 insertions(+), 2 deletions(-)
+1. Userspace soft-dirty tracking (CONFIG_MEM_SOFT_DIRTY) when a process
+   such as CRIU (during pre-dump/checkpoint), a VMM live-migration loop,
+   a memory profiler, or an unprivileged process holding a VFIO device
+   fd writes "4" (CLEAR_REFS_SOFT_DIRTY) to /proc/<pid>/clear_refs. That
+   clears VM_SOFTDIRTY on all VMAs (including VM_PFNMAP) and calls
+   vma_set_page_prot(), stripping _PAGE_RW from vma->vm_page_prot for
+   subsequent huge faults.
 
+2. Architectures where shared writable mappings start read-only for
+   software dirty tracking, such as arm64 without hardware DBM
+   (CONFIG_ARM64_HW_AFDBM off or FEAT_HAFDBS absent), where _PAGE_SHARED
+   sets PTE_RDONLY | PTE_WRITE and pgprot_noncached() preserves
+   PTE_RDONLY on MT_DEVICE_nGnRnE mappings until pmd_mkdirty() clears
+   it on a write fault.
 
-base-commit: 076d7e989cb69f6ded7d60f2a080eb909930061b
+This bug was found by code inspection while auditing huge_fault handlers
+and reproduced with a VFIO PCI selftest on a 2 MiB-aligned BAR mapping
+after writing "4" to /proc/self/clear_refs.
+
+Pass vmf->flags & FAULT_FLAG_WRITE to vmf_insert_pfn_pmd() and
+vmf_insert_pfn_pud() so write faults properly mark huge PFNMAP entries
+dirty and writable.
+
+Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Cc: stable@vger.kernel.org
+Cc: Ankit Agrawal <ankita@nvidia.com>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: David Matlack <dmatlack@google.com>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ drivers/vfio/pci/vfio_pci_core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index fcbb2da860e2..204d959086e9 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1745,6 +1745,8 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
+ 				   unsigned long pfn,
+ 				   unsigned int order)
+ {
++	bool write = vmf->flags & FAULT_FLAG_WRITE;
++
+ 	lockdep_assert_held_read(&vdev->memory_lock);
+ 
+ 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+@@ -1754,10 +1756,10 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
+ 		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+ 
+ 	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
+-		return vmf_insert_pfn_pmd(vmf, pfn, false);
++		return vmf_insert_pfn_pmd(vmf, pfn, write);
+ 
+ 	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PUD_ORDER)
+-		return vmf_insert_pfn_pud(vmf, pfn, false);
++		return vmf_insert_pfn_pud(vmf, pfn, write);
+ 
+ 	return VM_FAULT_FALLBACK;
+ }
 -- 
 2.56.0.385.gac671c819a-goog
 
