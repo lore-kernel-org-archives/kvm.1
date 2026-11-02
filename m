@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633841;
-	b=0sMHrNlfUhJ0t2ztlhZ9JVxDNst2vUB/kaoGz/Z2Q9nt5K/PLHop3cPe91/naguuzfWs
-	 ipLU3SGH9ZaS4L2PwBh5H4alqdB18KgyBaSHFbtqgjycMf6cHDnT63oSFm/H0DuUl3GRB
-	 uoYxGkshwpby7F7FZHxtevnEJdN1mIsyakTzCmPNzQ2esQnbm6Ijgdf/EFmFfEiLidal8
-	 xo6TyGuhFo+vQ6Bxo4VTq32V4CtYQZypyEFHgXUa0Mf9czBHeLKTWFQgOsZ4+yTYW3MMP
-	 NkwWHUGDdemn3cp1uoeglm0JqJriEbj41bcA0/v257undvZEhRp5t3Hrr+aKf6pCNcA==
+	t=1793633838;
+	b=MZScCg3Gi73IaR+j6BpfjcRcUZPfTCjh/2vr8EKSYaGcFFYLaCzUjbYj+H+M19UpLNVr
+	 N+8G7HA2DNs9mdboxjCRXhjR+YQjDf1K97fNrXrmeLeSS/nvNAHWbNzCEQ25HKIP3y/RK
+	 d4w1up07L+hmr4/LrGx5Wys5FAwN+SBlexeFFqX9dinrR/o/oNQWMOl0G8xUNeJzmwGS3
+	 CO3TJUS9Y0kIXYVzLcs+EE1ECsT+d5VUoIkQFlAxTAOTxLQdMro0juMIccSydDrctI1J2
+	 OJ8WTmw7NjK7b3W2ipnFokqTPHr3xVTKmioeOiWmrTDxJc4OdOMz43m4vclpnNIlr2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633841;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633838;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=tylWbFCUgeCOXBn9trkYSMBYVlhA9mV6Qs1lbXsCOco=;
-	b=C3D3vWaaOQ0V3A0K8ZOxdYYcaA/oeVl78j3e8xWiG11ExSbfxI2ZcQAtfEldAyMyj87a
-	 ZkdlgGCqH4mZnULqrBqnBBuMX4Aurzq5UsPJhI6F8tKoQal28pdTEeXQ9Z9XTduGgnLqL
-	 RYx6SAv/u95gfjGlMHvqGCBCcgkPmvSvU6NlSuBbxco1M2oRu1vhwnAHEPP+nIblZyH25
-	 BaxN8PBmPVB0ZnMadFxw2jHsURaOVZ+EubYY8qFl0PTZ3pxAomPFaFrXYpQQJ0Oq3LMNo
-	 R89avb6XjrEjMLBbRrsTMevJN2J7uV67tsmV4xxgu5qawuPPmVFuLn2XUUXsrMNnOkg==
+	bh=Ms8itCh4PfqJV6uxhFhSbZGdhGd+gOvwo6FEHxIUACI=;
+	b=PfazNit6OIeRakpRwxFiqCLmuQRtZCaubP2a9UTJH/biLDUQbUAgzstILcMZSBy7Pe0i
+	 ZKQgdz0dSysPap+aKCcLpsCXYb3u5gZ3lBDGlWutKnSTFAN7Pcv/Hj8nJPpPHLaFgvQCP
+	 6nrvj3XpEk65IjnqYRODwIlQe/HvND2zbuv2hc+LVZaWmnx8SooVi+pcAhP9uzmYb467s
+	 2lO28S+X5xG6z1N3S9q9LsYPaqFFxgJ1EQD/pOJpCTDzbc+Qv2VAo4LGrja5uYRc54pXh
+	 9ltvJXK83v+h8l6qTggACzil0ji1vAX7lv0ci7TbE/U7z3+PtsECBi+svGILGWZur/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NSzJydZv;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ldmIxEXD;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2727560EB601
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2727560EB601
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA8260A7F2F
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDA8260A7F2F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NSzJydZv
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e601800e58so51290015ad.2
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:21 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ldmIxEXD
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2eb2437d752so46914275ad.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633840; x=1794238640; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793633837; x=1794238637; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tylWbFCUgeCOXBn9trkYSMBYVlhA9mV6Qs1lbXsCOco=;
-        b=NSzJydZvMVXYxTC62CIB6ze6cmzNxnlcYaAgAV5q0w8GPnprJgO1rjDotE1ldsqVF7
-         id7VY8rj8sVMHSKlTmzi/PwHWNeII+QwqojnCqdiqX3PxCO2GIn3vjlHmseHkMN5XYqg
-         BYPAspktX6r0+V8A2/zX1+AyJq1DpXHLE0LDtoRiJxXMg8DAr6vPt8WXhLgLQF8ebD15
-         QcofgRuBHeqjWN5y9E3jlhTLHW98sFut6vpM+lSkpNsQsFyL3sjc0/ACce80N8Qbe8HF
-         sfB8sbQFa0HOWibvXSBBCPqGq5tFavtJkOEq49CN4uJoCYR6CeAVMFVKwOily0i0nNoJ
-         IFzw==
+        bh=Ms8itCh4PfqJV6uxhFhSbZGdhGd+gOvwo6FEHxIUACI=;
+        b=ldmIxEXD39zl4nBLfBA+4rAPOuHPhzzCv8bFjZBy6+XbPfYx4KLkY3ZU2wjDon5s+y
+         niIiQ9IQm1w/Ilca+JlCoAy3hAXaDazpIOx3PPjC59/CzetAivWxfiHjkJx4mt9TCekG
+         c+4ZdKaNMqTaXnCTL8k7Rrl7u2Wype1jgmXrs3vQTja/vWfLH7fn4ii2bNkjUjNhOCxV
+         IsVYc8FWgiYai326JH9uRsrCg4jS9JUSDC7XCFPMzrEC5UOYE04Z2aSDYRCL+FzuZJZd
+         SQjCUC9T4o0BHYtyKRmOZyw/dxcB0sqBFKb6NNqIRdYjOf2p9Ut6wbWM0Adpzk638EPj
+         w5/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633840; x=1794238640;
+        d=1e100.net; s=20260707; t=1793633837; x=1794238637;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tylWbFCUgeCOXBn9trkYSMBYVlhA9mV6Qs1lbXsCOco=;
-        b=W8H1KbpQr8Z/cOpZEvgr2RRIziSz716a4BjamjF2S0lj/7F5CbMsajWMjAWpjjulhC
-         aLZGxM0meIk5Za5V+zsKuOOCQD+5lNTZkkOqycZi8y1f9RuQ0yV6ZbAilxSJrU4COEC+
-         c4URY/LJ0lAJN2n84AoBiHQyl5P/iJazBzevXOL9ashBM7Q9/muS9+Nq7KBbp0iwHbk/
-         /VN8X4ZYf2PoEUEHLUnHAQAeOvXdzjU/Q5b4RxGfQJhYGHTanCyUtVk2llA7mmaabos6
-         asSUUBWvTIAwyu/4fj6KMCHmAh7jPi9v6RmqFzD/kuHwo+4V7j10fa+xsoN2tMDwHoBL
-         PLqQ==
-X-Forwarded-Encrypted: i=1; AKwUvByABNmj4eB1RCJWGvfAS0P1MkeUJsZHfN1C/pu5iRcVFz8OLkpDbk3NtRlK6GIppXKtecs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8BmEr5CQq8XE2bDIkFJmKVcMHuuwR4fd/2AC0NBVdp1y0p1ljI
-	TbgAnxLoD3UWaQR+C2YYJ9QtkoQG9mip4Hrxq2FZtDbAnLScCLqHrcAoQpd6NihkNA6tlQcALHe
-	2UT4LxDeHVA==
-X-Received: from plbix15.prod.google.com ([2002:a17:902:f80f:b0:2ea:a5c1:240f])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:37c7:b0:2e8:b5b2:a9f9
- with SMTP id d9443c01a7336-2eb364e9f75mr92959155ad.37.1793633840266; Mon, 02
- Nov 2026 07:37:20 -0800 (PST)
-Date: Mon,  2 Nov 2026 07:36:48 -0800
+        bh=Ms8itCh4PfqJV6uxhFhSbZGdhGd+gOvwo6FEHxIUACI=;
+        b=A2NBXi+SjgMLLdTfadKy/W0bBsYzBn4/JPLnwSorHffvrIsbXokzPK9xTgNXelq37u
+         pU3uFlTqE2sapIol8gcdajPGPjJKlyO9faX2VasCLjaP9pod0vqwveKSiVbOs2GLKUn/
+         dB/fPV5A9ChN4F0Azr9ybbHqwxfNNK/KW2WG3jLJCBxZ3vwxECMydVxdOJKprgnvgjfF
+         8ZZkMBwLv6ldgjt0NWSIt213GrHR0+e2W23oFEnfKFbKY9XBiFv0tcREmFHrANGY6/H2
+         YqYzqmyi98RzTXME+iLYEJUUeKpwwbRoPOIRGxAXQmFXolUY2IFQ7Uzn4ShmxdTa0k7d
+         /BqA==
+X-Forwarded-Encrypted: i=1; AKwUvBxnCmlqaG1kSGJKeCfdfcOEpfP9HGuHmzMQRvNV+WY2UT+FLF+uV5hwd/94YTKepNviO6I=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/i7HTz0V4x0Istvs+vq/AT49lGdyNTQ6ZdZctFvpU7SsMIH0vO
+	bSu8EFZBJhNBcF+5uMQfofEohN9XdJO7r96eLHF/v+P5sAf+tUQllN4URCkTTECpaEgGzzihEEo
+	hIGgFIbDrJg==
+X-Received: from plhs10.prod.google.com ([2002:a17:903:320a:b0:2e9:6b18:1067])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b23:b0:2e5:db61:e5d4
+ with SMTP id d9443c01a7336-2eb3653906emr104135025ad.62.1793633836956; Mon, 02
+ Nov 2026 07:37:16 -0800 (PST)
+Date: Mon,  2 Nov 2026 07:36:45 -0800
 In-Reply-To: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261102153656.1431701-20-vipinsh@google.com>
-Subject: [PATCH v6 19/27] vfio: selftests: Add Makefile support for TEST_GEN_PROGS_EXTENDED
+Message-ID: <20261102153656.1431701-17-vipinsh@google.com>
+Subject: [PATCH v6 16/27] vfio: selftests: Build liveupdate library in VFIO selftests
 From: Vipin Sharma <vipinsh@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
@@ -102,50 +102,50 @@ Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
 	yanjun.zhu@linux.dev, yi.l.liu@intel.com
 Content-Type: text/plain; charset="UTF-8"
 
-From: David Matlack <dmatlack@google.com>
+Import and build liveupdate selftest library in VFIO selftests.
 
-Add Makefile support for TEST_GEN_PROGS_EXTENDED targets. These tests
-are not run by default.
+It allows using liveupdate ioctls in VFIO selftests
 
-TEST_GEN_PROGS_EXTENDED will be used for Live Update selftests in
-subsequent commits. These selftests must be run manually because they
-require the user/runner to perform additional actions, such as kexec,
-during the test.
-
+Co-developed-by: David Matlack <dmatlack@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Vipin Sharma <vipinsh@google.com>
 ---
- tools/testing/selftests/vfio/Makefile | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tools/testing/selftests/vfio/Makefile | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index c2764fcef31d..ece2a3618f2b 100644
+index 2c32c48db509..55e1e1843090 100644
 --- a/tools/testing/selftests/vfio/Makefile
 +++ b/tools/testing/selftests/vfio/Makefile
-@@ -34,16 +34,18 @@ LDFLAGS += -pthread
- LIBS_O := $(LIBVFIO_O)
- LIBS_O += $(LIBLIVEUPDATE_O)
+@@ -21,6 +21,7 @@ TEST_FILES += scripts/setup.sh
  
--$(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBS_O)
-+$(TEST_GEN_PROGS) $(TEST_GEN_PROGS_EXTENDED): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBS_O)
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBS_O) $(LDLIBS) -o $@
+ include ../lib.mk
+ include lib/libvfio.mk
++include ../liveupdate/lib/libliveupdate.mk
  
--TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
--$(TEST_GEN_PROGS_O): $(OUTPUT)/%.o: %.c
-+TESTS_O := $(patsubst %, %.o, $(TEST_GEN_PROGS))
-+TESTS_O += $(patsubst %, %.o, $(TEST_GEN_PROGS_EXTENDED))
+ CFLAGS += -I$(top_srcdir)/tools/include
+ CFLAGS += -MD
+@@ -29,14 +30,17 @@ CFLAGS += $(EXTRA_CFLAGS)
+ 
+ LDFLAGS += -pthread
+ 
+-$(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBVFIO_O)
+-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
++LIBS_O := $(LIBVFIO_O)
++LIBS_O += $(LIBLIVEUPDATE_O)
 +
-+$(TESTS_O): $(OUTPUT)/%.o: %.c
++$(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBS_O)
++	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBS_O) $(LDLIBS) -o $@
+ 
+ TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
+ $(TEST_GEN_PROGS_O): $(OUTPUT)/%.o: %.c
  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
  
--TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBS_O))
-+TEST_DEP_FILES = $(patsubst %.o, %.d, $(TESTS_O) $(LIBS_O))
+-TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBVFIO_O))
++TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBS_O))
  -include $(TEST_DEP_FILES)
  
--EXTRA_CLEAN += $(TEST_GEN_PROGS_O) $(TEST_DEP_FILES)
-+EXTRA_CLEAN += $(TESTS_O) $(TEST_DEP_FILES)
- 
- endif
+ EXTRA_CLEAN += $(TEST_GEN_PROGS_O) $(TEST_DEP_FILES)
 -- 
 2.56.0.317.g454f8302e1-goog
 
