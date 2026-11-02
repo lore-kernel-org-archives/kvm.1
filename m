@@ -1,52 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793618566;
-	b=D0AUKyE7Vu93bK9wPxn1xElEPlIdS3RFMjCmbEFlPHyJ1KDi+WPUpTH36dZln624woOA
-	 I/Zv6LvyHM17J9jhXnMCPteBddQlHdd0oqRmBjUitY3aySC2/XsWESiWj+LV1EX0eR1fS
-	 Kqrm+V3IrSxdUIJDqa/du1Z86E3mpYnpVuMi4Llp5jYi4Y4J9ha1RR+UouxN3wiNATlQT
-	 vd06JiT3UexLtQXRxESuHwNNYd7nRglqaSOW98NNdZ5wiM6EWyN+COCTQxh40BCxLTp52
-	 rCZWxasbn5t4+Pi4dJMCQIyuRcgaNjd3ybaL9AES6muqkVxseKVeyFT8Y0C3puCfSWA==
+	t=1793618580;
+	b=VGvvUJRAtWuUD8avo1wNoFcGMeROoDIq6BAg9H/QgpOmRzfLf4HVh0WIBSLStE0eT7aY
+	 XJ6toqGFBk3CQfM3v/KazhbksKrLbV/yDaiHBNH8neiF82dvSiC6I0glLjqSrwwoyHvnW
+	 D6YxyIqP7Ntqv8CzDJacaG6YC/V7am4qtFRLLpONjdZ00t8Oe880zTrfNkQXw9CxDSvi/
+	 nSQTd9CBuh+rs3AYQBiIgolOLKaZZww4gDiFRKcT6lXpvCWcHdGUwoxdoYKGBJ8Q3SUtK
+	 oP7uQWfBsnTvskDyAd4PoAdbnSUWEOraoelAU8jYq0COooDRJhsMuEYuWC7MFgyWHMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793618566;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793618580;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=JQeg6N8tF3c2ZKXl0aeVJdIb4rnpiEyWbh6rBzOCUVQ=;
-	b=tesiMjtxcvc0GTwFjzQ9B59Uf+bDrjjO8qrfmyabX3xIY5q62U5Tc1AAmyK80Mj3kCYk
-	 iAi5w9Avz9zabWi8WfzgkeSk/j9k4+DwD9MumtNfJwrfrJfwFBEXgKSF2Axa5dzSYHNA4
-	 ISrLqpRMsi6TI3ztjNLHcuHBvXNIuO77G0lhqXH5jXRdjBuRrIDrELNAmKxDCk7hncz7t
-	 E/SAp/9venR2LSeWJUkBQUeS9GMpuglKWTXpiqlHuAFf8IZPlfGfZqhxoZqJ9ViTvxWFC
-	 0k+CXeb9M1U7roarq6m+qmFCcGHY831pOuRPhn1hWNIVlkXopqoiK6z0nLBko8mnI9A==
+	bh=3lY+1ZzPRqoScYAMKyAN5RN/YFCIvuobO8x0DYvXDjE=;
+	b=PIaGjord72fYfPXZH+IeVgMX62Qj1i8XQaQoV+/9gOan+30HKg4YQD9drgw8OtBitcDP
+	 Ya+VdgcSRlgEjG5A9zlZPJ9iL5F3SSq6OytBPU73VGJ4lMlMz9+xogapXuJxWyM4gkcM7
+	 /0nB+khJqt01jeFNb9u3iDeeV2B4Q7JYGgamA6oqFFfhUF75sEYEnHUc5owEvaMgEE+wX
+	 4W/cqYfgsR57y8qMRmgUYSXLrPnJLdaxkVxixeGYhSccRRer7zKBzSQCv1h6GHwbedzpe
+	 Xnr2TUnR1hwaUFjX+PINH/U+mgkNt2Dbn3k0PQAjzrMULHDzoW4eZoKheJqcrSr+4bQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RsFLsyf1;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OL6q65xC;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4D860A6F71;
-	Mon,  2 Nov 2026 11:22:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E4D860A6F71
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CAC606B380;
+	Mon,  2 Nov 2026 11:22:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85CAC606B380
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RsFLsyf1
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OL6q65xC
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D37871691;
-	Mon,  2 Nov 2026 03:22:42 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C05B22972;
+	Mon,  2 Nov 2026 03:22:55 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C7FCA3F632;
-	Mon,  2 Nov 2026 03:22:39 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B2FB3F632;
+	Mon,  2 Nov 2026 03:22:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618565; bh=uF4DfWzXa9EkGf1I0Bn2aL3RfBnTbP81TBjbavbJ8QQ=;
+	t=1793618578; bh=bEX3sSqEnQKAQjL0B+MI6TFOYIMgpmFaiG2QcWnZ5UQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RsFLsyf1Ata7d0KOtqzPB7spCrIFhZHbMA0SSIsc3J50ctwBwFtCV0Z2YINZYuYl1
-	 axvMSatrzTWBN5HpeQBgg1ibhRlgnvCAtI4rJkD/9rMna30Ury4ZYSO33jBiVAAtlf
-	 YwBemrzcCZNlPsQc3YLM94WSry4c46hzaYal8oLs=
+	b=OL6q65xCnF2Tz4ITltDKgFLNBYVVrj82d5jxdji1GVBZb75n9gPi0z1tfCET6eB7u
+	 4s4rCEiwCIn3qlysbR++0NoFqJK82k/WXfZq11aTvIy0cVuMV3M4EHp2+WOGymGRhI
+	 8T0sz25bKGSqnXOGGxivwKApdCmjhFNLN3gptB4o=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:24 +0000
-Subject: [PATCH RESEND v2 11/21] riscv: mm: use proper set_pXd() for
- generic compile-time folded patable in vmalloc_fault()
+Date: Mon, 02 Nov 2026 11:21:26 +0000
+Subject: [PATCH RESEND v2 13/21] x86/mm: Introduce helper for checking
+ direct map 1G page support
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,7 +58,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-11-78840b2ec73c@arm.com>
+Message-Id: <20261102-dummy_ptxp3-v2-13-78840b2ec73c@arm.com>
 References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -89,143 +89,169 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
+ linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>, 
+ Sohil Mehta <sohil.mehta@intel.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3753; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=uF4DfWzXa9EkGf1I0Bn2aL3RfBnTbP81TBjbavbJ8QQ=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI0EhHemhFZT76+hkFEHBElBSQOBJI6GP7jl
- ZStUURgzUeJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNAAKCRBt1cPRWsUx
- M84jC/9S9/aAhhSrKviCbj48B1rRZZrYq4NqcKgkdwxZVfhy+7gtmxs99D6rhsaJdl68LkLYoQ6
- VyH1mb7ItqGWTah++FtNBeXOorhLS2mYEFR/1jKSDb62UfF4DimM3s3wrPH2+G4W8vvlAvA9RE0
- vr0L8mQ6lrGmyqUgbKu8GrSpaYgd9J8fM6EZpFE4KhVkJqxOe3/Mthnaa+nc/wTvPsTP2HZG9aP
- uFtGA4pIhDaYRHFox7AQfkAggATajLnNd/gKUF11QNNhxNNbQAcKOkf8XVo3/CqE5rLVNR7FIN9
- X3jUHSsR4I1853YVKxn9Y6y2Cp9ckjoZXCZL8WtyyAUe+43XVI3EL0dADQQ1EIrjm0Xjd2VgmyC
- nnkYstSWKwOQigSOlu+TvlKk/0yA8Xn9AdXJ5rXSOb6e0D5pYbVuIhtyLEjNUQpYzjDKKfKfoLm
- Vx9lj3xIhnAxthINB3ejIGFbqbn5Os3x2fKnddFMK2B19loCvjy5L66p6hupOcw5yRg5U=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5614; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=ArnDgja24P54ewtxWlKChMWDZmg5SmpxwVJZIltWfVo=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI1RIbrWXEKJzjwjPKklaXB5ULDRFe5CQCSy
+ l3tJmaWOOyJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNQAKCRBt1cPRWsUx
+ M5ZHC/4tf/XkQKbv2sSjxw7u2qbrKs9afdYINdi0Ck9j09hNi8AocMbGW9v/Vi9jdTVJhqvjeM+
+ 0sYVgbLZ7S1NsxmWc+vOyzpYCgCWM8FI1l7ZGEf/tFHGBxVsXiPh2p0/5rAlHtJmpZBBY45cONO
+ yJ0kAXibS0A3hvLaJbkw6PSC3kLvxObC5zVc/nyVKFvByL2NL/jYQbYUtgZ/G8X7idCTR5++VqV
+ 5FCMJ61PnZtwooqTgFZaz96tdLnXBgid9Tx5+ZQ1lySgDzMx2h5UE9MRTNLZOgaPd/QARaBHgER
+ 9GeJyNqO+4m2xPCIhjFa9rk63IaIQ3oNhZxMaZFbnq8TlJ4mud1USfX8U/LQk8IVQw02LEOokQJ
+ IVbwwNYeY+sXQc0PostpjU9MZCnD10kjbGu0XjEb1ifkhYYkn8eIiQNghYQZ0Aie5KTCSuT2hLO
+ SuYDXUuJF3Zd1utQ8h1lmnOikT85YsrZp+E5Rb1mpROYDHK+aMhG5EmJyA/gSFehyrnws=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
 
-The behaviour of pXdp_get() will change with generic compile-time folded
-page tables, making it invalid to use set_pXd() with the result of
-pXdp_get(). Instead, the appropriate first-level set_pXd() must be paired
-with the corresponding pXdp_get().
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-Therefore, call the appropriate set_pXd() for generic compile-time folded
-page tables so that vmalloc_fault() continues to handle folded entries
-correctly when checking pXd_present().
+There is an existing variable (direct_gbpages) that says whether the
+kernel can and should use 1G pages in the direct map. It is driven
+by a bunch of other machinery. At least:
 
-There should be no functional change.
+ 1. Hardware support for 1G pages
+ 2. Kconfig support for 1G direct mappings
+ 3. Kernel command line overrides
 
-Since most architectures use a similar pattern to handle vmalloc fault
-by syncing the faulted entry, it would be worth cleaning this up by
-introducing a common helper in the near future.
+Most code just checks the 'direct_gbpages' variable itself.  But there
+are cases where 1G mappings are compile-time disabled (via
+X86_DIRECT_GBPAGES) and 'direct_gbpages' is always 0. Unfortunately,
+that constraint is invisible to the compiler.
 
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+This opacity has been historically functionally harmless; it only
+leaves a bit of dead code. But, there are plans to tigthen up the
+compile-time checks around folded page table levels. The build will
+break if that dead code appears reachable to the compiler. Making
+the compile-time config visible to the compiler fixes the build.
+
+Add a helper to replace 'direct_gbpages' checks. Check the Kconfig
+option and base CPU support before looking at the variable.
+
+This lets the compiler optimize things better, especially
+collapse_pud_page() where most of the function can now be optimized
+out when the PUD level is folded.
+
+Notes:
+
+Use boot_cpu_has() instead of cpu_feature_enabled(). There's no
+required/disabled features for 1G pages themselves
+(X86_DIRECT_GBPAGES is for kernel mappings only) and the
+static_cpu_has() infrastructure is just gets in the compiler's way.
+
+This makes 64-bit build marginally larger (20 bytes in one compile)
+and 32-bit builds less marginally _smaller_ (~700 bytes).
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Tested-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Link: https://lore.kernel.org/all/20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com/ [1]
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- arch/riscv/mm/fault.c | 52 ++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 33 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/pgtable.h     | 14 ++++++++++++++
+ arch/x86/kernel/cpu/common.c       |  2 +-
+ arch/x86/kernel/machine_kexec_64.c |  2 +-
+ arch/x86/mm/init.c                 |  2 +-
+ arch/x86/mm/pat/set_memory.c       |  6 +++---
+ 5 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-index 04ed6f8acae4f..b2bcaf10d13f1 100644
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -167,14 +167,16 @@ bad_area(struct pt_regs *regs, struct mm_struct *mm, int code,
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 000fc6c1ca37c..a277082121878 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1167,6 +1167,20 @@ static inline int pgd_none(pgd_t pgd)
+ #ifndef __ASSEMBLER__
  
- static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long addr)
- {
--	pgd_t *pgd, *pgd_k;
--	pud_t *pud_k;
--	p4d_t *p4d_k;
--	pmd_t *pmd_k;
--	pte_t *pte_k;
-+	pgd_t *pgdp_k, *pgdp, pgd_k;
-+	p4d_t *p4dp_k, *p4dp;
-+	pud_t *pudp_k, *pudp, pud_k;
-+	pmd_t *pmdp_k, *pmdp, pmd_k;
-+	pte_t *ptep_k;
- 	int index;
- 	unsigned long pfn;
- 
-+	BUILD_BUG_ON(CONFIG_PGTABLE_LEVELS != 5 && CONFIG_PGTABLE_LEVELS != 2);
+ extern int direct_gbpages;
++static inline bool direct_gbpages_enabled(void)
++{
++	/* Check the direct map config option: */
++	if (!IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
++		return false;
 +
- 	/* User mode accesses just cause a SIGSEGV */
- 	if (user_mode(regs))
- 		return do_trap(regs, SIGSEGV, code, addr);
-@@ -189,39 +191,51 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
- 	 */
- 	index = pgd_index(addr);
- 	pfn = csr_read(CSR_SATP) & SATP_PPN;
--	pgd = (pgd_t *)pfn_to_virt(pfn) + index;
--	pgd_k = init_mm.pgd + index;
- 
--	if (!pgd_present(pgdp_get(pgd_k))) {
-+	pgdp = (pgd_t *)pfn_to_virt(pfn) + index;
-+	pgdp_k = init_mm.pgd + index;
++	/* Check the CPU feature: */
++	if (!boot_cpu_has(X86_FEATURE_GBPAGES))
++		return false;
 +
-+	pgd_k = pgdp_get(pgdp_k);
-+	if (!pgd_present(pgd_k)) {
- 		no_context(regs, addr);
- 		return;
- 	}
--	set_pgd(pgd, pgdp_get(pgd_k));
-+	if (CONFIG_PGTABLE_LEVELS == 5)
-+		set_pgd(pgdp, pgd_k);
- 
--	p4d_k = p4d_offset(pgd_k, addr);
--	if (!p4d_present(p4dp_get(p4d_k))) {
-+	p4dp = p4d_offset(pgdp, addr);
-+	p4dp_k = p4d_offset(pgdp_k, addr);
-+	if (!p4d_present(p4dp_get(p4dp_k))) {
- 		no_context(regs, addr);
- 		return;
++	/* Check the command-line and early setup variable: */
++	return direct_gbpages;
++}
++
+ void init_mem_mapping(void);
+ void early_alloc_pgt_buf(void);
+ void __init poking_init(void);
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 9bd50c68cd7e5..12a51dba16627 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2655,7 +2655,7 @@ void __init arch_cpu_finalize_init(void)
+ 		 * Right now we don't do that with gbpages because there seems
+ 		 * very little benefit for that case.
+ 		 */
+-		if (!direct_gbpages)
++		if (!direct_gbpages_enabled())
+ 			set_memory_4k((unsigned long)__va(0), 1);
+ 	} else {
+ 		fpu__init_check_bugs();
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index c3f4a389992da..0da0e89f2611a 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -257,7 +257,7 @@ static int init_pgtable(struct kimage *image, unsigned long control_page)
+ 		info.kernpg_flag |= _PAGE_ENC;
  	}
  
--	pud_k = pud_offset(p4d_k, addr);
--	if (!pud_present(pudp_get(pud_k))) {
-+	pudp = pud_offset(p4dp, addr);
-+	pudp_k = pud_offset(p4dp_k, addr);
-+
-+	pud_k = pudp_get(pudp_k);
-+	if (!pud_present(pud_k)) {
- 		no_context(regs, addr);
- 		return;
- 	}
--	if (pud_leaf(pudp_get(pud_k)))
-+	if (pud_leaf(pud_k))
- 		goto flush_tlb;
+-	if (direct_gbpages)
++	if (direct_gbpages_enabled())
+ 		info.direct_gbpages = true;
  
+ 	for (i = 0; i < nr_pfn_mapped; i++) {
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 079f8c7e9e3cd..f0f4a06584c61 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -251,7 +251,7 @@ static void __init probe_page_size_mask(void)
+ 		__default_kernel_pte_mask &= ~_PAGE_GLOBAL;
+ 
+ 	/* Enable 1 GB linear kernel mappings if available: */
+-	if (direct_gbpages && boot_cpu_has(X86_FEATURE_GBPAGES)) {
++	if (direct_gbpages_enabled()) {
+ 		printk(KERN_INFO "Using GB pages for direct mapping\n");
+ 		page_size_mask |= 1 << PG_LEVEL_1G;
+ 	} else {
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index b1d5c5a0ffb41..f27811e6e00bd 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -130,7 +130,7 @@ void arch_report_meminfo(struct seq_file *m)
+ 	seq_printf(m, "DirectMap4M:    %8lu kB\n",
+ 			direct_pages_count[PG_LEVEL_2M] << 12);
+ #endif
+-	if (direct_gbpages)
++	if (direct_gbpages_enabled())
+ 		seq_printf(m, "DirectMap1G:    %8lu kB\n",
+ 			direct_pages_count[PG_LEVEL_1G] << 20);
+ }
+@@ -1355,7 +1355,7 @@ static int collapse_pud_page(pud_t *pud, unsigned long addr,
+ 	pmd_t *pmd, first;
+ 	int i;
+ 
+-	if (!direct_gbpages)
++	if (!direct_gbpages_enabled())
+ 		return 0;
+ 
+ 	addr &= PUD_MASK;
+@@ -1737,7 +1737,7 @@ static int populate_pud(struct cpa_data *cpa, unsigned long start, p4d_t *p4d,
  	/*
- 	 * Since the vmalloc area is global, it is unnecessary
- 	 * to copy individual PTEs
+ 	 * Map everything starting from the Gb boundary, possibly with 1G pages
  	 */
--	pmd_k = pmd_offset(pud_k, addr);
--	if (!pmd_present(pmdp_get(pmd_k))) {
-+	pmdp = pmd_offset(pudp, addr);
-+	pmdp_k = pmd_offset(pudp_k, addr);
-+
-+	pmd_k = pmdp_get(pmdp_k);
-+	if (!pmd_present(pmd_k)) {
- 		no_context(regs, addr);
- 		return;
- 	}
--	if (pmd_leaf(pmdp_get(pmd_k)))
-+	if (CONFIG_PGTABLE_LEVELS == 2)
-+		set_pmd(pmdp, pmd_k);
-+	if (pmd_leaf(pmd_k))
- 		goto flush_tlb;
+-	while (boot_cpu_has(X86_FEATURE_GBPAGES) && end - start >= PUD_SIZE) {
++	while (direct_gbpages_enabled() && end - start >= PUD_SIZE) {
+ 		set_pud(pud, pud_mkhuge(pfn_pud(cpa->pfn,
+ 				   canon_pgprot(pud_pgprot))));
  
- 	/*
-@@ -230,8 +244,8 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
- 	 * addresses. If we don't do this, this will just
- 	 * silently loop forever.
- 	 */
--	pte_k = pte_offset_kernel(pmd_k, addr);
--	if (!pte_present(ptep_get(pte_k))) {
-+	ptep_k = pte_offset_kernel(pmdp_k, addr);
-+	if (!pte_present(ptep_get(ptep_k))) {
- 		no_context(regs, addr);
- 		return;
- 	}
 
 -- 
 2.43.0
