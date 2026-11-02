@@ -1,62 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.250.239
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793618864;
-	b=G8mEcH1379a5UZo7Q+2s2G4j0hlp5KhWahrg9YCH8rNXm937QDlHFrZA/eZTZKakoQTg
-	 73YNprvrYrf98anB8cFnavk62li+QK7EiP9m2zNAWell+YK7fB3Aqpr3SJvWjPlqUMMDH
-	 6Pj6VX2h0ggAvjD5JQSRTsGOt2qLIqLe/ABtG5JoofRisrbDj4rENpLH6+j5BS7vkpk4p
-	 5+kP0qbJZz9s1SNRonRf9riKfGvvL42mE+NARJjbFHSS2kDCVO9U6ujGTlTaCpYKNJCy9
-	 JQhnKHNE5QgF58unUiq8S4bLLPCbYr+L3k3ZnfT1aoB3ljGj7mDeQ+Gg+szuC6hFwsQ==
+	t=1793619732;
+	b=GJ1RXMaFesVuHWWMmvXvpx1+zJVCkv4/zcHXJnR3py939kpNl1SC+EWFQDaeO1QdSDh3
+	 gpt11YWDbO3hH4yvV//3TYLAdnJ1/QPErtW1atb7UfR1h5xXneNcHjzsX59erv9aRhsV2
+	 jVqLV6icKUw+spBbJgeBJgsR7dOZJnTMj/rW21xI37TuQyxepKsSnq1mNHNuOejhjtQ1l
+	 q5MqhRkgY28Uh6zlW7gShoBEUOo7gHB39fi2GN1FipwxnUHiWNdWgdDBtIKvTEHfyxlfT
+	 qvctzBuA4fs7yp3WRWWPi8qFHi32Zn/Ic+pUO/cKbN7KpswHNOb/9+93y0iW9jYU39g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793618864;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:From:Subject:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=TEl1DgfXUA5pWV0ULqPFDtP6OTn2CRZgvQuqRoLVd2k=;
-	b=1BiD+0YWOOWU+RSs0VdDELzIgBQuPu7HneK6AgXumBemwztUTiGOZYkQoUPE8hfve6or
-	 eKDzGhgvmYPiPj93yGefshkUvVil7VFab3jm1f7v9AQe1LxMCJGt5pHXP84bkZ7ZMVJhn
-	 MPpfyNY5/7dy8a4TfPopUxDh4nGezXwtPJeAvrlQCkeAXnYMuk1soEp4j6rEKIDpQ+Dw5
-	 sl38k+9GfogvELMJ5xOQuOdZV0Ewle3RqmunkSXHk9Tdhcr1pybEr8NkkWWG/hDZyzj0K
-	 lP1lEHBzxE2kfD0p0sc/0DjNMIZBhSurr87tBKre0WOTvEc/VYWjJ+wUfX5iaUd/1hQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793619732;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=Wg/9BkvVbzjYLnmge/yC5tcnzeQaEmaT35H+5c8S5lU=;
+	b=VCR9jfDYCEuXhCvXTwUIUXjq4nm2U43r8jM475/gc39Yv1xDd86saf9nxfeEr+nYb/th
+	 zPqbije0vAfYbqZmZrcVufGVSp13PkPIm+1ZXO8BWxN8bY7TFkZLyz9q83JrQ3Jsgwbh1
+	 2VT6fUo+p7gkLEsB30vDd6N2+5NbsiJTAI5fCSU5ghu4nw6JfVCWoNR6BxQUQN8cp4uFw
+	 ZifGhzl6ZiRIT7CTq2PBM/Izn97+trnsFBVopKWzb5Ig2K/uzs+kpUt+VU9hfLKfuIC5A
+	 cPtPqqrPviRQpb0x+Kl6GmMKr35O9KOeJvwVNeVi+x1E8uzGH4MtPYpfmNogJRgeFuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rbox.co;
-	spf=pass smtp.mailfrom=rbox.co;
-	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=UdlUnKwa;
-	arc=none smtp.remote-ip=185.226.149.38
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	dmarc=none header.from=8bytes.org;
+	spf=pass smtp.mailfrom=8bytes.org;
+	arc=none smtp.remote-ip=85.214.250.239
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7EFA606A32C;
+	Mon,  2 Nov 2026 11:42:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7EFA606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from io.fritz.box (p200300f6af404a0027ad06761c59e6b3.dip0.t-ipconnect.de [IPv6:2003:f6:af40:4a00:27ad:676:1c59:e6b3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710DE606A324;
-	Mon,  2 Nov 2026 11:27:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 710DE606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=UdlUnKwa
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1xNqCJ-00BSF1-5z; Mon, 02 Nov 2026 12:27:31 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=TEl1DgfXUA5pWV0ULqPFDtP6OTn2CRZgvQuqRoLVd2k=; b=UdlUnKwa2wwdsv4p1NZcbSZeV7
-	t4UOZnJaFeNb1oOLIegteX+/dZrJeyljqcQ8j+DemSAkcNZ9NA6RWxLB1qHZwZpB51BTC6BQllue7
-	kUMdtmojCpnGTa7941e3k/nOmpzV90w9kZJo+S6M0WLvFJcPy3x0eW7Okn9UrI0Mho7XOqc1/gDPz
-	J7OgLEcen16fXD3G+0uHsUVhj/SkBoJl+XumCZkg+45U3u6GRIH5EaDajhTqxh8WHW1GAr4INWy4d
-	nUkOjpuLeOMmHg40TB5oRoTVszVeAuf/LQnMd7teaFJCfeGJI7wxfjhsnD0t6bOizG7rupdqMfw7W
-	shLj9clg==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1xNqC6-0001gG-1k; Mon, 02 Nov 2026 12:27:18 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1xNqC0-00BRqT-Uz;
-	Mon, 02 Nov 2026 12:27:13 +0100
-Message-ID: <44aa83c2-042b-4d4f-9f9c-f9be8b0fccc1@rbox.co>
-Date: Mon, 2 Nov 2026 12:27:10 +0100
+	by mail.8bytes.org (Postfix) with ESMTPSA id 5CE3E243AD4;
+	Mon,  2 Nov 2026 12:42:04 +0100 (CET)
+From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>,
+	Liam Merwick <liam.merwick@oracle.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Ninad Naik <ninadnaik07@gmail.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	coconut-svsm@lists.linux.dev,
+	joro@8bytes.org
+Subject: [PATCH v3 3/8] KVM: SVM: Hold SRCU while reloading guest-owned VMSAs
+Date: Mon,  2 Nov 2026 12:41:32 +0100
+Message-ID: <20261102114137.1198982-4-joro@8bytes.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261102114137.1198982-1-joro@8bytes.org>
+References: <20261102114137.1198982-1-joro@8bytes.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,53 +63,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH net-next v4 4/7] vsock: add a netlink command to assign
- the g2h device to a netns
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Donald Hunter
- <donald.hunter@gmail.com>, Eric Dumazet <edumazet@kernel.org>,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, sargun@sargun.me,
- jlinbox@meta.com
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
- <20261020-vsock-guest-ns-v4-4-047527cfccfc@meta.com>
- <atjZZP2ebhXKzMxL@sgarzare-redhat>
- <atld3+5LKmGxJ8+s@devvm29614.prn0.facebook.com>
- <atnjOZjKUBagRVWq@sgarzare-redhat>
- <d946003a-8bec-4e8b-89a3-05eeb96780cc@rbox.co>
- <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
- <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/2/26 02:21, Michal Luczaj wrote:
-> On 10/30/26 21:30, Bobby Eshleman wrote:
->>> virtio_vsock_reset_sock() and vhost_vsock_reset_orphans() are my pet
->>> peeves: state switcheroo without taking lock_sock(). Which, again, races
->>> vsock_connect().
->>
->> True, I don't love that either, but I feel the impact is at least
->> constrained by the fact that it only happens when the module or device
->> is already going away.
-> 
-> Doesn't it happen on suspend as well? Is so, with a poorly timed connect()
-> things can go south on resume.
+From: Joerg Roedel <joerg.roedel@amd.com>
 
-What I wrote doesn't really make sense, does it? vsock_connect() cannot
-freeze midway, so SS_UNCONNECTED (due to virtio_vsock_reset_sock() flipping
-state to TCP_CLOSE) can't be set. Sorry.
+Take a dedicated KVM SRCU read lock around the guest-owned VMSA memslot
+and guest_memfd lookup.  This makes the reload path self-contained and
+prevents it from racing a userspace memslot replacement.
 
-But it is still the case for bind/unbind, right?
+Keep the lock through VMCB installation, and release it on all lookup
+failure paths.
+
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+---
+ arch/x86/kvm/svm/sev.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index f690edaf8b69..9681ff0aa5d3 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4059,6 +4059,7 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	gfn_t gfn = gpa_to_gfn(gpa);
+ 	unsigned long mmu_seq;
+ 	kvm_pfn_t pfn;
++	int idx;
+ 
+ 	lockdep_assert_held(&svm->sev_es.snp_vmsa_mutex);
+ 
+@@ -4090,9 +4091,10 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	if (!VALID_PAGE(gpa))
+ 		return;
+ 
+-	slot = gfn_to_memslot(vcpu->kvm, gfn);
++	idx = srcu_read_lock(&kvm->srcu);
++	slot = gfn_to_memslot(kvm, gfn);
+ 	if (!slot)
+-		return;
++		goto out_unlock;
+ 
+ 	mmu_seq = kvm->mmu_invalidate_seq;
+ 	smp_rmb();
+@@ -4101,8 +4103,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	 * The new VMSA will be private memory guest memory, so retrieve the
+ 	 * PFN from the gmem backend.
+ 	 */
+-	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL))
+-		return;
++	if (kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, NULL))
++		goto out_unlock;
+ 
+ 	read_lock(&kvm->mmu_lock);
+ 	/*
+@@ -4117,6 +4119,9 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	else
+ 		svm->vmcb->control.vmsa_pa = pfn_to_hpa(pfn);
+ 	read_unlock(&kvm->mmu_lock);
++
++out_unlock:
++	srcu_read_unlock(&kvm->srcu, idx);
+ }
+ 
+ /*
+-- 
+2.53.0
+
