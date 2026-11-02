@@ -1,92 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793614387;
-	b=1bZwKo/48YKbEd01V54GWiQ236gfR3S6i8EeXy9tv3pFJlmrGyBn+mOiT278FU7+VO44
-	 VvY8sx6hx7O/1PpUOdnqTAHRsOAR7/LdYhmEcipYXl+8IA7IDqtGDNoEL0rj8UTocfbXB
-	 Zpnnb7XyQgghfl7dD7SV6NjnVQ4aqgljwBRqNxPzFluDa25zCpZP1EbkrYjTKJrLRcWxE
-	 cr8yoemSqyLe5nJK8aKTO9jOWx/Zk2VxnCaxVvLUDqMcGAvrNIzZ61bgaxUN4438MhSNb
-	 wqeCeXpdFJoHOwgUwpB/Gnnh2MeD0CAQ6BWWz8i4DLlNkH5erLydn5n/PKzzfy2MroQ==
+	t=1793618017;
+	b=VcbgGETML1FkL1gUxtHWjKB6wpyowyCIQSkMm0wFLDSb7ibIiix3NDJGb3CYaW1u2B8j
+	 paHf1/z7fOvr2S9sykAYYhsL1uaJMb8tRxcB4sD7pyPyIEur+Yy6H+dSdBFx9uXcu7MJO
+	 e/MjyTqnqJLtS5Z+qJc+Xy7hXUMDrb276pqlUyD8PZ6zYIcVcdrgdciB8M6YCD0ylhDPI
+	 7AIq7VKNNerxbqolft5y4yRlrQ8Z2IH4KwV0phgxpCT9/kOYxEUk36RmBTxcckwtkpax+
+	 HRQGoidKlKDdQabTJdQJMIQ+B0qrwTbmwXTMEqAn/Wzn0SttjLJXFLyp64Zix6hz8MA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793614387;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=yI9ETbLZiGkZ1PIenI8hYf34x5l1KL1WOI/mwt8fqfI=;
-	b=e6z9aNibjDneWgE+3GR0/YYKIKU8vb1sdtgfE/5Q9sslVaHSHr1LpE6QqoJLZeQNHsWj
-	 Qpg2NjGOABwI5adBp5AA2mmJx1YMEI3dgKDOF5EtCa/rLg0t9QBUgdOH1uzj+Qg8z/NN+
-	 mX7k376EjEd1BKct1uPoRce01t6zCIHF7xM50TFJqDCMSGdOyFSVw6KRPiZGkDXwvruNn
-	 NtubnQpJKseJ5vTPDGEfS6omuz7NSk7WmVuuafG+qfYnDtcoXFywZ4SmF57/sPWIuIV3I
-	 yJQH4V1UA/4GtYql7OXEV+/R0mOwwI+BfBmk/E7yxS4xnbne1utu6505ZLmsy4w8rIw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793618017;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References;
+	bh=a8Rvs+APlES4o/Y+QNKx+Wsj0zsjMwsSLTHZLYdVhZI=;
+	b=tLighUQNV4akwHqYgZxyREiS7X/S1nqK1/bkauKlXqQYVFGGjKnvxgqrDk0eR4PsOWDe
+	 lbXN3gcPU9LvCnyIZ+Le/IHE/4ETVyka47T7Wc27jU/5xh1C8gsTicZkFZRngXu6VY8Vr
+	 f2p74ExYGMBPCwQQ4hi/+La1h+hyuNfROA1PUk/1YvRSnWq3uRYjLPoFg2kka/McFyE0S
+	 0h+sKoXGCPkSaxeZoM/pX7es79IdtjkOwmCOD3LQhYNwMNJ1qtubRSu4R/zI9ojlaKNlE
+	 YUUxI7BvtkVBcCYATFZ3e8UhhtuR0dbkJki6xU9GjneqaNproCcGQvrqZWr9+JgyMOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Eyck3Tpx;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NrH6aB6V;
+	arc=none smtp.remote-ip=74.125.82.175
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC53606A331;
-	Mon,  2 Nov 2026 10:13:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBC53606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDB1606A324
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 11:13:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FDB1606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Eyck3Tpx
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A29ERni1334231;
-	Mon, 2 Nov 2026 10:13:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=yI9ETbLZiGkZ1PIenI8hYf34x5l1KL
-	1WOI/mwt8fqfI=; b=Eyck3TpxudnvOAuxGX+aeomS1QVVPSsSDCqdtaVifxLm0b
-	9dOQ3G8UyHEvp0l45R9RUu7k9u62Tcuw364Tub7ea48SO5mrMFQDaHj/MRNVkxNl
-	q/4WsCmMyEXLub2MZGi2SG+9PQWJibX+nNCO4s+YmmXslKEB8Oi7UCT6G8WJ1r3J
-	JmE1xYNCBJTH/vjx4HoFj96XE1OUsMyS/GIrK+WrRu6dWK4xoUeOFJpR0ZnrfZP6
-	v6PZofjxdtw23Y9TgPqxaEr1kLCTa2+xc0C0yfXw0aMcjTw++8ZhXi6/SGkN6f0Z
-	SWYJimQSlQb1XkLUKSbzQlk6sHQeTwTzMsu0VZ/g==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn6rcyx29-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 10:13:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A29K26T744393;
-	Mon, 2 Nov 2026 10:13:03 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hnwbxw1yg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 10:13:03 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A2ACxmF45744474
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Nov 2026 10:13:00 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DCA4920043;
-	Mon,  2 Nov 2026 10:12:59 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4BCDF20067;
-	Mon,  2 Nov 2026 10:12:59 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.138.96])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  2 Nov 2026 10:12:59 +0000 (GMT)
-Date: Mon, 2 Nov 2026 11:12:57 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Omar Elghoul <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, hca@linux.ibm.com,
-        gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
-        farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
-        frankja@linux.ibm.com, imbrenda@linux.ibm.com
-Subject: Re: [PATCH v11 5/5] vfio-pci/zdev: Add VFIO FMB device features
-Message-ID: <689e23a6-dcbf-4fee-bdcf-13d333db2e85-agordeev@linux.ibm.com>
-References: <20261028154352.15108-1-oelghoul@linux.ibm.com>
- <20261028154352.15108-6-oelghoul@linux.ibm.com>
- <20261030161146.5af10847@shazbot.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NrH6aB6V
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso1008948eec.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 03:13:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793618016; x=1794222816; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=a8Rvs+APlES4o/Y+QNKx+Wsj0zsjMwsSLTHZLYdVhZI=;
+        b=NrH6aB6V18WdvAaTOTYu2ib/o3fJ3G04pmguQH+yPdqTn82Eo9//qh9iYqXbBLisDx
+         CMU3fG0f7a1PTXKTWI1ryI+9KqeGmtILbHEzpfk9PGQ8M4k7bgMvRWiglac5kEgNrizu
+         ITizSUknar3bqCMxA15U+b3wAE7H1E8/6mh6Zd186ILeujGUFTzblfL8010uYcnAq5gQ
+         FYwmkTxWmZrsUXvjH/0JvXCyLvWITeNPWjt3vBl1zd7RzaA+KgtM9R2nH+JIgxWsg7VJ
+         U+ymX5bkZDPRoUYS/kpqj/lNx+XVzqlWvJo/RTKNKWgXYCFeIhSx+EysUSeT/MXSiLHf
+         XuWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793618016; x=1794222816;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=a8Rvs+APlES4o/Y+QNKx+Wsj0zsjMwsSLTHZLYdVhZI=;
+        b=rAaxieLZOHVGn6LStkCQ/WBbbsi+1D1u7pMIq60drcmc2x6c280K3ngMt3lxa6FrY0
+         UtZGoTr8Yp3AZornUUE+ddwathaEe3ncBy8sXul03TJHfV4Kn/CLrbMLbuwK63XYSYoG
+         mQpbcPpSvLfRSgBnrbj0TWXi7kQwzMkgDJM1A2VOHK+P6fOkh9f8P4xnWUkk28Si8cL9
+         mYmv9sTbKYyoB+F6d9te8lpQ2ztWhgV6Dbn1kQDNNa2kp32ucLzqdCcqzG20xHCRffSV
+         m7zVYmNO9yj9lM52yZJ+IuNAp7Q/jfHtBQ6A0Nsl8I5AeJTUzOQMdxl3LnfL0zNwDOuv
+         cvVA==
+X-Forwarded-Encrypted: i=1; AKwUvBxxGIibBOGoZanK/9c/MfmLOt/4Wkx0ch6W6QOl2oZ1UCd+gUu963u+k1CkJLPmdO+QQCs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Ps2Bxq3Vk4BHugB1Novfw+7AX31aJOPj0dhEd8ZIgk8xlklqq
+	rBfid8RxZlqDbUkLimNRfA6VXcfqcLM+D87kPE4o0Z2Bv7gT/ex3/LER
+X-Gm-Gg: AYBFou0BFAghvHC5A4g8T60wytb1prn0+GtwNaeQYQdVAbJqHmIWsv9aqRdO1Ua+JW7
+	zvirPIuK2eTl7O16k2cgstHVhehpKjJKn2Xo7F7BwsBzNUwY5uL84IsPJD1e9/u1FZoIB7xaLlH
+	eiPMK0jbOb5fSHm6yvEFf28to2vjIcNfIkRwDua0G8B/Vf7ZpHxzf52ZhYCp5hD/TjnUzOSSHFE
+	W2uf7FHyOUt3t8fLIVOC5CdSurJmrb/D9vrdwCYuQhFx5Dt/PCvNWmFNCi2rM8ZcT3ag0Wdfw7K
+	2AoyZPF4zp1tZwq2oeXjNDIWDiqvE++61TAZ3bcW+WV3MSvIrDoiSIJxZ0ID98xCu3Qs+JBQQQK
+	rGMBReNGQsig4s1HOqMl5CFPDQiH2i4xwN0QDjCGIjlaGFx1jOsBQffUqy1kikrQzJXytniB1Pm
+	veri0RBqWe0Vglu9HT+/xBTwghxvOD/uq6o3JMYEB75dcJ3anr2QsoGf3x3SuTK4Y8RZZRtzqNi
+	nbTTtIfMe3HLcfqMb10Zqw8usxlf53rRiOBvAcBBh7zqhevw97ld+DWdb/CkBB0yGrxLTsna5aG
+	t+trlm+6RW6a3pP4EtIBXQyVx6c=
+X-Received: by 2002:a05:7300:3b1a:b0:351:52ec:60ee with SMTP id 5a478bee46e88-36a423f04b7mr23743030eec.28.1793618015928;
+        Mon, 02 Nov 2026 03:13:35 -0800 (PST)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42902649sm42099651eec.11.2026.11.02.03.13.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 03:13:35 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gautam Menghani <gautam@linux.ibm.com>, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Timothy Pearson <tpearson@raptorengineering.com>
+Subject: Re: [PATCH v5] KVM: PPC: Book3S HV: Avoid spurious interrupts caused by LPCR_MER bit
+In-Reply-To: <20261102091700.253381-1-gautam@linux.ibm.com>
+Date: Mon, 02 Nov 2026 16:42:12 +0530
+Message-ID: <y0bb5vxv.ritesh.list@gmail.com>
+References: <20261102091700.253381-1-gautam@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,55 +92,45 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030161146.5af10847@shazbot.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ndDsZI2lgL3rn1GVI79iu_XZLq5vKVuH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDAzOCBTYWx0ZWRfX4O9t8Ltm7VaO
- 6wlDc1o1p1VWlKVCHXFC992bJ3DU8L9uCL3J3oryNzL7FJ0FfvhjBuce5f3oD/ttLCDLRx4q7A5
- nHZgQWqxP0vOK0EvcZRT9QL2PY09KNl98A0XhaMPynz2lhLf9sQz00QKxGNwegzyVcaxDZxIaUf
- 645ZlCfxr01RADm+aWdf9diYwOEVJ27yLpdkfOcEU99quO2NS//WrHYnagLgTVsU6ewOPSZnoDl
- 69YXMjXJxy03lZkhBqMN/xt0USfibhfhWr9ZIC7YghmxSZ0A8hDUsoP/3oVuW4t3f1EmG37K2Iz
- xXWa0cq0WtZ/I7rTbEvbQJoAuadY4oopIRy1AgTyCEwN4fq86it2F4n2hVJXP8KQSIbiujmVbzf
- BIPPYwXWYSeU1owj7FuA5pMrS7nYOP3409OSWmRQVZbV00TF5HJuP++YOF/cYXplYpqr7XF5rf9
- wA7lOyfr4CeacH8LgUg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDAzOCBTYWx0ZWRfXwtTLxj+hPKvk
- kxUn64w8otQSiJ1jttlN3ac55RTUBeN+9vhcV4jA5OAFNwic+e3lwSgulzAp0oKaV7OWHIfLQhg
- wNdsEZoroCmPamSQSH0Iu2tkagg+Hpk=
-X-Authority-Analysis: v=2.4 cv=QK391QLL c=1 sm=1 tr=0 ts=6ae86230 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=kbR4MaXf9azrtOfwTQsA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: ndDsZI2lgL3rn1GVI79iu_XZLq5vKVuH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0
- impostorscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
- definitions=main-2611020038
 
-On Fri, Oct 30, 2026 at 04:11:46PM -0600, Alex Williamson wrote:
-> >  drivers/vfio/pci/vfio_pci_core.c |  4 ++
-> >  drivers/vfio/pci/vfio_pci_priv.h | 18 +++++++++
-> >  drivers/vfio/pci/vfio_pci_zdev.c | 64 ++++++++++++++++++++++++++++++++
-> >  include/uapi/linux/vfio.h        | 30 +++++++++++++++
-> >  4 files changed, 116 insertions(+)
-> 
-> I think the only thing we never closed on from the vfio side is the
-> merge plan.  If this goes in via s390 I'd want a topic branch against
-> rc1 since there are a couple series floating around contesting for the
-> same feature numbers.  Thanks,
+Gautam Menghani <gautam@linux.ibm.com> writes:
 
-Hi Alex,
+> A huge number of spurious interrupts can be seen immediately after a KVM
+> on PowerNV guest boots up in XIVE mode.
+>
+> $ cat /proc/interrupts  | grep SPU
+> SPU:     223705     192439     273526     147623   Spurious interrupts
+>
+> This bug was introduced by commit ecd10702baae5 ("KVM: PPC: Book3S HV:
+> Handle pending exceptions on guest entry with MSR_EE"). The root cause
+> is that once LPCR_MER bit is set, it is supposed to be reset by
+> software. But when a vCPU starts running with LPCR_MER set, the vCPU does
+> not exit back to the host until the decrementer expires or there is an
+> hcall, etc. This is because KVM on PowerNV guests have support for
+> native XIVE, so they are not dependent on host for interrupt emulation.
+> Due to this behaviour, a huge number of spurious interrupts are seen
+> since LPCR_MER continues to be set and LPCR_MER cannot be reset until the
+> vCPU exits to the host.
+>
+> Fix this behaviour by not using the LPCR_MER bit whenever native XIVE is
+> available (currently in case of KVM on PowerNV only), as the XIVE hardware
+> can present interrupts to the KVM guest vCPU directly. So the LPCR_MER
+> functionality is not required. This reduces the number of spurious
+> interrupts drastically.
+>
+> Fixes: ecd10702baae5 ("KVM: PPC: Book3S HV: Handle pending exceptions on guest entry with MSR_EE")
+> Cc: stable@vger.kernel.org # 6.8+
+> Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+> Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+> v5:
+> 1. Drop the redundant check for the presence of the native XIVE
+> device. (Ritesh)
+>
 
-Yes, I can create the branch once all patches are reviewed.
+Thanks Gautam for confirming that.
 
-Thanks!
+The patch looks good to me. Feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-> Alex
