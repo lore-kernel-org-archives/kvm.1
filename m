@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633836;
-	b=fXYA9XdDo26hd/f2lWJY+Kb4/gLvu7nrcBzWJCxHNQ+A0tRUiwdbfjiH/oXF9iKgfK3E
-	 b1n9vQb9fOZM1tMNsQJGZo04T6ZTvQ/dgvTV7pV6oTNNrkXdg/n4nrInoL9gKdrp25Xdu
-	 Hqa2EKyYJOgKL9P/D0eq+oXb0J1+9JbVP6OakVwGFkZPUXE5lMk1PA0ThWqVUOu4DBKdp
-	 AZo/91gnjl4c8PfYvIUGowh/IAFZByZtFb917PE2jy6I39goN5dSq3nQ4sUuajRYX6qb0
-	 4UaxnnMh3lQaNCZ07JWMmEYSJughO5PCWud+FjVQo2AdFlI69OviX3uBEC6sX+HDRJg==
+	t=1793633827;
+	b=RlVCz+SwVbVjwASasnuVNMpyI4xP8RVPPjGV9Co/DHFWzSC4WLqlzeDJWXnGeLOdlXUC
+	 bmaMFtbI9LJg/KP8zGuI0nUkI7TjjLnvQTbES4GiK0cWu+p15/HM17A6Zm7Pc1/GQI+Fs
+	 bR64zPmhvsi139oNLaSkGj49bLpPkXwQliUU/6KZ00V/er903rgcFPfso4B0Jd8jBpObO
+	 b7ooVsr0GPOZI6usQm6RJ2+bUPRrBVwfN/8ZkFmM2F6q2FJNFyL3EvIlRFnnCZ+npWKvT
+	 mfIIr4KDWgwiJcP+ipryr8stV/z9N3WXtZevGq1eN++Q0ZVSURz9DHDd3Fnin2h5C+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633836;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633827;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=7oNMxFcokvWOq1vpjD6EaSwY983MmsMnjeXj/vNf0HQ=;
-	b=l+IwGE84DVUAGdFuHnFIrA9bzvQdWjVT4+okyAzxYMI0rgv+qq/HMILEMWyX/gXwrcVc
-	 157TURSUpL0lb6I3mrnhTik+apEtdC1+YMYW0aei2DskcTPQKk3DI0ye+mWGH4Qm3acTX
-	 zu0p07goGAN+yB5XOw0ZXoy9lhNweaf9JAeqlQR4Pq+cVLt3kL84acqCW+gcxFShx/7oN
-	 gRJKGFixIudEEsCtzZszuwMGqThb6H24y1INqIzGpS8oeWoCFThy49JP1STS8hdfL5F0m
-	 IuuVZUttGaZgAEWHi8lE3YPTk6mp42gJ2Shq9KXF8qnUA8h7dvoQfnomjogtIisNWvA==
+	bh=6CTI6wZf9fmjJK3hlmivlOQee38QTMnwowyyRsW/zh4=;
+	b=TqN3KPrxan6Lm2npZFs4A1bJQxdZcxgJKo25nd+AIgV45Urchxc+AEobTY3Ncj6768uS
+	 5+dk9YaE/mI4uLGvArbEhcK0nL2GJsmeRQmjX90qbNZarbAFyURQLlvLX3N45oGnLggqh
+	 7p4pYSkw2pBsjr3Ne4qmaFeraXokcHmBUBLNtn0nTdDdJ0rvaj7PB/vMn+suZzZrlRuV1
+	 yZla2SJs4qem2/k1/OhOYRzmgGb5NMeInJtMFZyoGIfJ8bPXvfecwpQLMkCUBtw5r2Ueg
+	 DmpAYB7kl1QsyQCxb2ML2Aqn0jbSR+7nJd24BbrDzE9MByq+mNHQ450KG0NZtpkhx/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ByU106m3;
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Hn2t6mwi;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC2960E6E51
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8CC2960E6E51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC9060E408F
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EEC9060E408F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ByU106m3
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e987ec84afso27013735ad.3
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:15 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Hn2t6mwi
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e8dd9b9743so38795975ad.1
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633835; x=1794238635; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793633826; x=1794238626; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7oNMxFcokvWOq1vpjD6EaSwY983MmsMnjeXj/vNf0HQ=;
-        b=ByU106m3EGLrZcaE1aVefm8Q4KaxNoV6SHq20WrhC+8XmDCEwVSCBSd6EDo5a+upZC
-         wCtZqbsKa5enxoEsZ9fYfB1YZcwHUYyAeDWwmmmO9WsKjGdR7Gictl5C3cAnr8QI9AZ3
-         2OYpfYnIryEz43W0oC0yAzmLQndbzCr5MNJRyCen2kWozbsX4Cyg5Ps4B12KlpofWJye
-         L0bM04x+BV0Pmw9bxrQcnUmZ82BpkaRxORuLeH5YmFl+br5mTrlT5N80xtvids/tuRq0
-         fBIwjTpHNku0OjpGkkhkRLe+qFBS+b9V4GjRE/smcuh/5AZRa5mwIlpW+Y020oFfDz9M
-         fHXA==
+        bh=6CTI6wZf9fmjJK3hlmivlOQee38QTMnwowyyRsW/zh4=;
+        b=Hn2t6mwiCOCnKJYHbSI4r7YEIwDSLpmn+wdiodbT/07QFRFvMJkMrHiKk4CmStrEA0
+         XV84XfE0Ppzrkm3RLpwzLkfwlXdZOODr/P0C900SEGtXO0Tyo2HUnp08E3pz+gUd+18M
+         wZU+PIInbM0X7xctljZpdMkDf0gRTxqpf2BWlzRqzXS1ZfGF+UCTsDBz5AGzdOomDShH
+         HxenHfUtDSgyBHAEV1k7a6oT+mCT38TZSVD4GLRGQT3hWAUYPRmQWyyW3RQ/4ow/Rv4S
+         GUxURDRrKgwtY6zD5OerG4lx3xqNngfAbAnKpsqjE70cooyzL49iLh5K+uzpBfGt0e+7
+         I7XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633835; x=1794238635;
+        d=1e100.net; s=20260707; t=1793633826; x=1794238626;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7oNMxFcokvWOq1vpjD6EaSwY983MmsMnjeXj/vNf0HQ=;
-        b=kOvChsUB8vvWypZ6nWSMLo+vhk9+b+PK416YMgQmMMG9uNSal3FGJl7+vUW9CzFCjW
-         7M3tEHQOwBm+VCWGw6ZmXfkqQZcubd7MEeRb57ro1N/clP3VFUsgZZXiipGS2dEHNCsd
-         Q21pXtdx8w/VyOK/74BG1mjcCRj26VLxEUarp8t9hcaCh7bEAonkvJgWD1A3DLoS7m4o
-         uefOUMYi7QKaqxQIP92Z84FnMPhfXhzGTjKY9AC0cFnyBZx7V5wudzGdZIaueXcJQvw8
-         Dqh9dsCHFJJ9lctH2Fotu2EsKQJ6fzdzT9rMi6PXhoXNMOnDNsOmVwmJ3gcHbKq52MXq
-         t6FA==
-X-Forwarded-Encrypted: i=1; AKwUvBz1ARHi6fPsqP97iMvzDuViaV9Uhj8uDbFSqam4pjWMNjRc4kEj0tZJm6416dKrCLgx3iQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8jd5bFlbicu9cEVRC1ICt9NXFEFjW815KARYMmv+KtU8pQW9+u
-	1Eqb1tXUcHlQlJ2W94F5+FBOD3i2GS8luxuqGhQTGObUVpBiliYX6wuAmaY/Tqx8QcAhzfiTGjf
-	L0pcOETbzaQ==
-X-Received: from plbkn5.prod.google.com ([2002:a17:903:785:b0:2e9:6e08:e249])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:390d:b0:2e2:dd98:59e8
- with SMTP id d9443c01a7336-2eb36395c06mr94444135ad.3.1793633834806; Mon, 02
- Nov 2026 07:37:14 -0800 (PST)
-Date: Mon,  2 Nov 2026 07:36:43 -0800
+        bh=6CTI6wZf9fmjJK3hlmivlOQee38QTMnwowyyRsW/zh4=;
+        b=zgQbKF6tmcj6KQJhSGnSXw1DA7ing3GBuhPL0eacq3oMPkr/0s7D8cWZLVq79Wazi8
+         chcWDLtnKTsNR/QcgPZkzCCEFEi5TfARQ1ueuQKyFYnpS7OgWnRnTSjEzU2oEQWVGL/D
+         AfnUsewycVM8dXoaiTXuEB0KjhBIm2WlEcay40wFNdTQx/K9eA9x05F2pnF3DOiDbhzV
+         fLq1xVTnyutGtMEpbf1n/7I/poYuyt2YVWlnr/13yO6z8r9b7FmVXuEtXZNjzdfXZ8VD
+         al3l+5ACoAIN2XN23VXi0Ffw345vhSpE9l3Lt/ET8KDIDJqyTEC6yUPlxlYWUAkXCqG8
+         CgHg==
+X-Forwarded-Encrypted: i=1; AKwUvBxGdDCk2/xBppSnF8EHT/tmhtp66WJhWlXRDeVEyUiPoVLYNOqyvL5bDQZxMgVWCKt2Mm0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z86/FMjRL/YXF2OBiNdkQuSLkH7vwigx56FOT7UaGPatepgdZds
+	9CEYm0gFmQS48IlVOjoruBzIYACC1FEgNBIOGzAAT0LLHRFUe3BXRqiFC0lUKyiiVBLM9fuR0DD
+	MPsXug/8O3g==
+X-Received: from plct12.prod.google.com ([2002:a17:902:d28c:b0:2e5:712c:5c7])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b2b:b0:2e9:60fb:5e2b
+ with SMTP id d9443c01a7336-2eb364e5a41mr100336855ad.44.1793633826227; Mon, 02
+ Nov 2026 07:37:06 -0800 (PST)
+Date: Mon,  2 Nov 2026 07:36:35 -0800
 In-Reply-To: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,9 +81,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261102153656.1431701-15-vipinsh@google.com>
-Subject: [PATCH v6 14/27] vfio/pci: Take over preserved devices without
- resetting them
+Message-ID: <20261102153656.1431701-7-vipinsh@google.com>
+Subject: [PATCH v6 06/27] vfio: Add helpers to identify device files that can
+ be preserved
 From: Vipin Sharma <vipinsh@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
@@ -103,302 +103,135 @@ Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
 	yanjun.zhu@linux.dev, yi.l.liu@intel.com
 Content-Type: text/plain; charset="UTF-8"
 
-When userspace binds a retrieved VFIO cdev file descriptor via
-VFIO_DEVICE_BIND_IOMMUFD after kexec, take over the running device in
-vfio_pci_core_enable() via vfio_pci_liveupdate_take_over() without
-resetting it or clearing bus mastering:
+Add two helpers needed by vfio-pci Live Update support:
 
-- Skip pci_clear_master(), pci_try_reset_function(), and
-  pci_save_state().
-- Save PCI_COMMAND before pci_enable_device() and restore the memory and
-  I/O decode bits afterwards so pci_enable_device() does not re-enable
-  BAR decode (such as I/O port decode) that was disabled before kexec.
-- Also restore PCI_COMMAND_INTX_DISABLE, which freeze() set before
-  kexec, when vfio-pci uses PCI 2.3 INTx masking for the device
-  (vdev->pci_2_3) or masks its broken INTx (vdev->nointx), so INTx stays
-  masked until userspace configures interrupts. Otherwise vfio-pci masks
-  INTx at the interrupt controller (e.g. with vfio_pci.nointxmask=1), so
-  leave DisINTx cleared by pci_enable_device() as a normal open does.
-- Build pci_config_map via vfio_config_init(), verify that it matches
-  the preserved config map snapshot, and overlay the preserved vconfig
-  snapshot onto vdev->vconfig.
-- Perform all fallible take-over setup before adopting the preserved
-  state. If take-over fails before the device is claimed, leave the
-  running device untouched (keeping bus mastering, decode bits, and
-  liveupdate_incoming intact) so userspace can retry binding the
-  retrieved FD or let the session finish/close reset the unclaimed
-  device.
-- Once vfio_pci_liveupdate_take_over() succeeds, adopt the preserved
-  pci_saved_state and reset_works flag, clear liveupdate_kept_running,
-  and free the temporary incoming state; any subsequent error or final
-  device close follows the normal vfio_pci_core_disable() path and
-  resets the device.
+1. vfio_file_is_bound_cdev(): checks whether a specific file is a VFIO
+   cdev device file that has been bound to an iommufd. Only the bound
+   cdev file keeps the device open; the device-level cdev_opened flag
+   cannot distinguish between the bound cdev file and a second, unbound
+   cdev file opened for the same device.
+
+2. vfio_device_is_noiommu(): move the existing helper out of line and
+   export it so vfio-pci can enforce that only devices in no-IOMMU mode
+   are preserved across Live Update.
+
+No functional change intended for existing callers.
 
 Signed-off-by: Vipin Sharma <vipinsh@google.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c       | 117 +++++++++++++++++++++----
- drivers/vfio/pci/vfio_pci_liveupdate.c |  23 ++++-
- drivers/vfio/pci/vfio_pci_priv.h       |  23 ++++-
- 3 files changed, 141 insertions(+), 22 deletions(-)
+ drivers/vfio/device_cdev.c | 20 ++++++++++++++++++++
+ drivers/vfio/vfio.h        | 10 ----------
+ drivers/vfio/vfio_main.c   | 18 ++++++++++++++++++
+ include/linux/vfio.h       | 10 ++++++++++
+ 4 files changed, 48 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 828d620cf836..63f484c0654c 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -595,8 +595,68 @@ static const struct dev_pm_ops vfio_pci_core_pm_ops = {
- 			   NULL)
- };
+diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
+index 1d9515c967b0..23b229468151 100644
+--- a/drivers/vfio/device_cdev.c
++++ b/drivers/vfio/device_cdev.c
+@@ -200,6 +200,26 @@ void vfio_df_unbind_iommufd(struct vfio_device_file *df)
+ 	vfio_device_unblock_group(device);
+ }
  
-+/*
-+ * Take over a device that was kept running across a Live Update. The device
-+ * is enabled only after every step that can fail, because unwinding with
-+ * pci_disable_device() would clear bus mastering on the running device. A
-+ * failed take-over thus leaves the device untouched and can be retried.
++/**
++ * vfio_file_is_bound_cdev - True if the file is a VFIO cdev file bound to an
++ *                           iommufd
++ * @file: File to check
++ *
++ * Return: True if @file is a VFIO cdev device file on which
++ * VFIO_DEVICE_BIND_IOMMUFD has succeeded, false otherwise.
 + */
-+static int vfio_pci_liveupdate_take_over(struct vfio_pci_core_device *vdev,
-+					 struct vfio_pci_liveupdate_incoming *in)
++bool vfio_file_is_bound_cdev(struct file *file)
 +{
-+	const u8 *vconfig = in->data;
-+	const u8 *config_map = in->data + in->cfg_size;
-+	struct pci_dev *pdev = vdev->pdev;
-+	u16 orig, cmd, keep;
-+	int ret;
++	struct vfio_device_file *df = file->private_data;
 +
-+	if (in->cfg_size != pdev->cfg_size ||
-+	    memcmp(config_map, vdev->pci_config_map, in->cfg_size)) {
-+		pci_warn(pdev,
-+			 "Config map mismatch during Live Update take-over\n");
-+		return -EINVAL;
-+	}
++	if (file->f_op != &vfio_device_fops)
++		return false;
 +
-+	pci_read_config_word(pdev, PCI_COMMAND, &orig);
-+	ret = pci_enable_device(pdev);
-+
-+	/*
-+	 * pci_enable_device() enables memory and I/O decode for all assigned
-+	 * BARs and clears PCI_COMMAND_INTX_DISABLE. Restore the decode settings
-+	 * the device was running with and keep INTx masked, as freeze() left
-+	 * it, until userspace configures interrupts. If vfio-pci does not use
-+	 * PCI 2.3 INTx masking for the device, it masks INTx at the interrupt
-+	 * controller instead, so leave PCI_COMMAND_INTX_DISABLE as a normal
-+	 * open does. If enabling failed, restore everything.
-+	 */
-+	keep = PCI_COMMAND_IO | PCI_COMMAND_MEMORY;
-+	if (ret || vdev->pci_2_3 || vdev->nointx)
-+		keep |= PCI_COMMAND_INTX_DISABLE;
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	if ((cmd ^ orig) & keep)
-+		pci_write_config_word(pdev, PCI_COMMAND,
-+				      (cmd & ~keep) | (orig & keep));
-+	if (ret)
-+		return ret;
-+
-+	memcpy(vdev->vconfig, vconfig, in->cfg_size);
-+	/*
-+	 * Redo the virtual BAR fixup: the snapshot may hold a BAR sizing write
-+	 * not fixed up yet, or a fixup half done by a config read racing with
-+	 * freeze(), as config reads do not take vdev->igate.
-+	 */
-+	vdev->bardirty = true;
-+	cmd = le16_to_cpu(*(__le16 *)&vdev->vconfig[PCI_COMMAND]);
-+	vdev->virq_disabled = !!(cmd & PCI_COMMAND_INTX_DISABLE);
-+	vdev->reset_works = in->reset_works;
-+
-+	return 0;
++	/* Paired with smp_store_release() in vfio_df_ioctl_bind_iommufd() */
++	return !df->group && smp_load_acquire(&df->access_granted);
 +}
++EXPORT_SYMBOL_GPL(vfio_file_is_bound_cdev);
 +
- int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+ int vfio_df_ioctl_attach_pt(struct vfio_device_file *df,
+ 			    struct vfio_device_attach_iommufd_pt __user *arg)
  {
-+	struct vfio_pci_liveupdate_incoming *in =
-+		vfio_pci_liveupdate_incoming(vdev);
- 	struct pci_dev *pdev = vdev->pdev;
- 	int ret;
- 	u16 cmd;
-@@ -608,23 +668,30 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 			return ret;
- 	}
+diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
+index 7728bc99b63d..12557d45dfee 100644
+--- a/drivers/vfio/vfio.h
++++ b/drivers/vfio/vfio.h
+@@ -185,16 +185,6 @@ static inline void vfio_group_cleanup(void)
  
--	/* Don't allow our initial saved state to include busmaster */
--	pci_clear_master(pdev);
-+	/*
-+	 * A device kept running across a Live Update is enabled later, without
-+	 * a reset, by vfio_pci_liveupdate_take_over().
-+	 */
-+	if (!in) {
-+		/* Don't allow our initial saved state to include busmaster */
-+		pci_clear_master(pdev);
+ #endif /* CONFIG_VFIO_GROUP */
  
--	ret = pci_enable_device(pdev);
--	if (ret)
--		goto out_power;
-+		ret = pci_enable_device(pdev);
-+		if (ret)
-+			goto out_power;
+-static inline bool vfio_device_is_noiommu(struct vfio_device *vdev)
+-{
+-#if IS_ENABLED(CONFIG_VFIO_GROUP)
+-	if (vdev->group && vdev->group->type == VFIO_NO_IOMMU)
+-		return true;
+-#endif
+-
+-	return IS_ENABLED(CONFIG_IOMMUFD_NOIOMMU) && vdev->noiommu;
+-}
+-
+ #if IS_ENABLED(CONFIG_VFIO_CONTAINER)
+ /**
+  * struct vfio_iommu_driver_ops - VFIO IOMMU driver callbacks
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 73a5c4f3751c..291460102cd1 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -1507,6 +1507,24 @@ struct vfio_device *vfio_device_from_file(struct file *file)
+ }
+ EXPORT_SYMBOL_GPL(vfio_device_from_file);
  
--	/* If reset fails because of the device lock, fail this path entirely */
--	ret = pci_try_reset_function(pdev);
--	if (ret == -EAGAIN)
--		goto out_disable_device;
-+		/* If reset fails because of the device lock, fail this path entirely */
-+		ret = pci_try_reset_function(pdev);
-+		if (ret == -EAGAIN)
-+			goto out_disable_device;
- 
--	vdev->reset_works = !ret;
--	pci_save_state(pdev);
--	vdev->pci_saved_state = pci_store_saved_state(pdev);
--	if (!vdev->pci_saved_state)
--		pci_dbg(pdev, "%s: Couldn't store saved state\n", __func__);
-+		vdev->reset_works = !ret;
-+		pci_save_state(pdev);
-+		vdev->pci_saved_state = pci_store_saved_state(pdev);
-+		if (!vdev->pci_saved_state)
-+			pci_dbg(pdev, "%s: Couldn't store saved state\n",
-+				__func__);
-+	}
- 
- 	if (likely(!vdev->nointxmask)) {
- 		if (vfio_pci_nointx(pdev)) {
-@@ -635,10 +702,12 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 			vdev->pci_2_3 = pci_intx_mask_supported(pdev);
- 	}
- 
--	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
--	if (vdev->pci_2_3 && (cmd & PCI_COMMAND_INTX_DISABLE)) {
--		cmd &= ~PCI_COMMAND_INTX_DISABLE;
--		pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+	if (!in) {
-+		pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+		if (vdev->pci_2_3 && (cmd & PCI_COMMAND_INTX_DISABLE)) {
-+			cmd &= ~PCI_COMMAND_INTX_DISABLE;
-+			pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+		}
- 	}
- 
- 	ret = vfio_pci_zdev_open_device(vdev);
-@@ -649,6 +718,12 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 	if (ret)
- 		goto out_free_zdev;
- 
-+	if (in) {
-+		ret = vfio_pci_liveupdate_take_over(vdev, in);
-+		if (ret)
-+			goto out_free_config;
-+	}
-+
- 	msix_pos = pdev->msix_cap;
- 	if (msix_pos) {
- 		u16 flags;
-@@ -675,13 +750,17 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 
- 	return 0;
- 
-+out_free_config:
-+	vfio_config_free(vdev);
- out_free_zdev:
- 	vfio_pci_zdev_close_device(vdev);
- out_free_state:
- 	kfree(vdev->pci_saved_state);
- 	vdev->pci_saved_state = NULL;
- out_disable_device:
--	pci_disable_device(pdev);
-+	/* A take-over enables the device only once nothing can fail. */
-+	if (!in)
-+		pci_disable_device(pdev);
- out_power:
- 	if (!vdev->disable_idle_d3)
- 		pm_runtime_put(&pdev->dev);
-diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-index ad757acac400..00c008117259 100644
---- a/drivers/vfio/pci/vfio_pci_liveupdate.c
-+++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-@@ -120,7 +120,28 @@
-  *
-  * ``LIVEUPDATE_SESSION_RETRIEVE_FD`` validates the handed-over serialized state
-  * and returns a new unbound VFIO cdev file descriptor. The device is claimed on
-- * the first ``VFIO_DEVICE_BIND_IOMMUFD`` on that file descriptor.
-+ * the first ``VFIO_DEVICE_BIND_IOMMUFD`` on that file descriptor without
-+ * resetting it or clearing ``PCI_COMMAND_MASTER``:
++/**
++ * vfio_device_is_noiommu - True if the VFIO device is registered in no-IOMMU
++ *                          mode
++ * @vdev: The VFIO device to check
 + *
-+ *  * ``vfio_pci_core_enable()`` skips ``pci_clear_master()``,
-+ *    ``pci_try_reset_function()``, and ``pci_save_state()``. It builds
-+ *    ``pci_config_map`` normally via ``vfio_config_init()`` and verifies that
-+ *    it matches the preserved snapshot before it enables the device. It keeps
-+ *    the memory and I/O decode settings and ``PCI_COMMAND_MASTER`` the device
-+ *    was running with, and keeps physical INTx masked until userspace
-+ *    configures interrupts. On devices for which vfio-pci does not use PCI
-+ *    2.3 INTx masking (e.g. with ``vfio_pci.nointxmask=1``), vfio-pci masks
-+ *    INTx at the interrupt controller, so ``PCI_COMMAND_INTX_DISABLE`` is left
-+ *    as on a normal open. It then overlays the preserved ``vconfig`` snapshot
-+ *    and adopts the preserved ``pci_saved_state`` and ``reset_works`` flag for
-+ *    subsequent resets or device close.
-+ *
-+ *  * If the take-over in ``vfio_pci_core_enable()`` fails,
-+ *    ``VFIO_DEVICE_BIND_IOMMUFD`` fails and leaves the device running
-+ *    untouched, and userspace can retry the bind. If the ioctl fails after
-+ *    the device was claimed, it closes the device, which resets it like any
-+ *    other close. A device that is never claimed is reset when the session
-+ *    is finished or closed, as described below.
-  *
-  * ``LIVEUPDATE_SESSION_FINISH`` (or closing a retrieved session file
-  * descriptor) always completes:
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index 39ea26402312..2549a5321fce 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -203,6 +203,12 @@ vfio_pci_liveupdate_check_noiommu(struct vfio_pci_core_device *vdev)
- 	}
- }
- 
-+static inline struct vfio_pci_liveupdate_incoming *
-+vfio_pci_liveupdate_incoming(struct vfio_pci_core_device *vdev)
++ * Return: True if @vdev is registered in no-IOMMU mode, false otherwise.
++ */
++bool vfio_device_is_noiommu(struct vfio_device *vdev)
 +{
-+	return vdev->liveupdate_incoming;
++#if IS_ENABLED(CONFIG_VFIO_GROUP)
++	if (vdev->group && vdev->group->type == VFIO_NO_IOMMU)
++		return true;
++#endif
++
++	return IS_ENABLED(CONFIG_IOMMUFD_NOIOMMU) && vdev->noiommu;
 +}
++EXPORT_SYMBOL_GPL(vfio_device_is_noiommu);
 +
- static inline void
- vfio_pci_liveupdate_free_incoming(struct vfio_pci_core_device *vdev)
- {
-@@ -219,6 +225,8 @@ vfio_pci_liveupdate_free_incoming(struct vfio_pci_core_device *vdev)
- static inline void
- vfio_pci_liveupdate_claim_incoming(struct vfio_pci_core_device *vdev)
- {
-+	struct vfio_pci_liveupdate_incoming *in = vdev->liveupdate_incoming;
-+
- 	/*
- 	 * A reset that finish() left for unbind is not needed once the device
- 	 * is opened after finish(): the open resets the device if it can, and
-@@ -226,10 +234,15 @@ vfio_pci_liveupdate_claim_incoming(struct vfio_pci_core_device *vdev)
- 	 */
- 	vdev->liveupdate_reset_pending = false;
+ /**
+  * vfio_file_is_valid - True if the file is valid vfio file
+  * @file: VFIO group file or VFIO device file
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index de3fa6e6bf2a..3cfbf1d73479 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -380,6 +380,7 @@ bool vfio_file_is_valid(struct file *file);
+ bool vfio_file_enforced_coherent(struct file *file);
+ void vfio_file_set_kvm(struct file *file, struct kvm *kvm);
+ struct vfio_device *vfio_device_from_file(struct file *file);
++bool vfio_device_is_noiommu(struct vfio_device *vdev);
  
--	if (!vdev->liveupdate_incoming)
-+	if (!in)
- 		return;
+ #define VFIO_PIN_PAGES_MAX_ENTRIES	(PAGE_SIZE/sizeof(unsigned long))
  
--	vfio_pci_liveupdate_free_incoming(vdev);
-+	vdev->pci_saved_state = in->saved_state;
-+	if (!vdev->pci_saved_state)
-+		pci_dbg(vdev->pdev, "%s: Couldn't store saved state\n",
-+			__func__);
-+	kfree(in);
-+	vdev->liveupdate_incoming = NULL;
- 	vdev->liveupdate_kept_running = false;
- }
+@@ -431,4 +432,13 @@ int vfio_virqfd_enable(void *opaque, int (*handler)(void *, void *),
+ void vfio_virqfd_disable(struct virqfd **pvirqfd);
+ void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
  
-@@ -288,6 +301,12 @@ vfio_pci_liveupdate_check_noiommu(struct vfio_pci_core_device *vdev)
- {
- }
- 
-+static inline struct vfio_pci_liveupdate_incoming *
-+vfio_pci_liveupdate_incoming(struct vfio_pci_core_device *vdev)
++#if IS_ENABLED(CONFIG_VFIO_DEVICE_CDEV)
++bool vfio_file_is_bound_cdev(struct file *file);
++#else
++static inline bool vfio_file_is_bound_cdev(struct file *file)
 +{
-+	return NULL;
++	return false;
 +}
++#endif /* IS_ENABLED(CONFIG_VFIO_DEVICE_CDEV) */
 +
- static inline void
- vfio_pci_liveupdate_free_incoming(struct vfio_pci_core_device *vdev)
- {
+ #endif /* VFIO_H */
 -- 
 2.56.0.317.g454f8302e1-goog
 
