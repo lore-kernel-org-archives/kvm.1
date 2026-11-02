@@ -1,72 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793612396;
-	b=dHDOE9d/1ebKxY6lvou8v9O4TootxDxFCOyfROAb+iXZJDBmf5ieRaUJxV74VLxRWMBL
-	 Zk5ebd1VO0oySkKgpmn9H/yB1QPhgYfj9trSJRwfIEcqVcKh+lLY2mFPg8yIEEiLnMNhm
-	 PvlPBjTmJDjdYS1nW38QnkSFrJn/Tv6W4S1LAZ3/ZXluLi7VDqbtyqsBuhyXZ9CuFpqmE
-	 R2t+TFjK2H9MHiqXflyW16jki1J9KjiLdbZ6TJidABPd/ZhVShMtt8zHnAWGBpH4mSlqN
-	 Jp7qhaMgd+btiq4eDq75aGORYOdH8MGsM/TjddFOzV/cuz47xsjLWzDVwaUR20Uagsg==
+	t=1793612578;
+	b=GMRKYxdN/dTnWqEURoaFflMshtEytDjqVeB2TfEu0jk8Qr/ltsc6UHcPbqxXDffLDd2W
+	 YzuomcDOugtm67+GXwUDsYE4svTftae96PNEXN1s8LxmVNqgmtDLTrcn2/5sCEYQ8EzIU
+	 bFuNaeKNqaRENrKBEKmCZUWK63xWT7pMnpKDANa2Tvh+/yDDFho12N1xno5RGCuYT8XOr
+	 Wdangh2NoyMnjDEnKvkRVfc3pVRSg++tUEaXTjPVoefEj31pCOvGSwjK9QpGbmEqFbXwG
+	 eFKk1ibZdL3bg8b72Q4/lKUSaaQ6cT5gSIO/JkKkJJCI22arY/3jlc40+m2Yhshl78Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793612396;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=DhqedRR4az/uxbrOAZjla/ffplx4oLVvfwX9vhPDhZc=;
-	b=bkyAG3TQqirUFVRGGmsXvikKk7PkdwGRmOCydzWWVTdmF7FO1CC835BNRulaxLFO4pD6
-	 RMLHtgCPrdYdM5Ekzs7u611WS62Gj2W37MCBXiG3agzKLjf8AdytKKaNT8iaARv4FY/Ha
-	 ppbRwDRNM/uDOxWJujh2VngfuSB8fnDwAvSZVdgcz57Uy4OA7vpnA1xVXlwlFrnACFWvl
-	 t3VEmFfGFYooeHm+khcU40Q6rl7VqdvBipUktcoOI2PVwy8olP1wyyfXRKUrOK8JWAdP7
-	 r7NdbXjfNa9xZPzSi45x64ZLBct7UkuzpYIOteCzi032aQIAWCoRbGoIeolQnXXfiTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793612578;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=s7UqG3TpVMZULsSsKNu6N4cz1DW5BOeuUtIPS6QDAis=;
+	b=PJ9b9m3v5uKjJi3wjFR9euIfryQ+vgzWD0s8lbEW8hpAvZ6VJ7JoMwtAMVpSMahE8+lj
+	 hV4CYaqqFo+TxReG4ypmbiyCRxa9rCr2lsHTEnB6AwPdJtS+9YBh/0E3qNg7MHtLV1Mk7
+	 Gb4de8lyaStxPc2cpK0Ic2PVPuVNHYIOGUbdXnjBmMOHti1pIyyknH5rUi2biKiWPeR+L
+	 itygxCyA0gEmjcrGAckIN09aR3KOqB0yShDSy83T2MOW1V+2GwIZE4N+/U45vUpstWN4o
+	 1S2trQfygvfj+/pz2d68zP1OMvONyBe2piXsRjF00afIrbCxGrss2oNIRjb6CX6KfCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=G3bF4bGu;
-	arc=none smtp.remote-ip=91.218.175.175
-Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HewBOeCl;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FAC606A32F
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 09:39:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00FAC606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C9C606A331;
+	Mon,  2 Nov 2026 09:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=G3bF4bGu
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Dbw8940zR/jUhNkJIS8yVdfOTSwknMqwdcPr0t/bPyo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793612391; v=1; x=1794217191;
- b=G3bF4bGu4W9LBDqYe4s4H9hNVR1cDTt/ve6HR6rx05Llf5dGvNIhCFXBILYmT1AYyWh09Gtr
- RQ82GKxDxfDYRkxdIGa5qACVxCgy2PqOVjaSSmZGoCP4hDyOZBrbvrDBXAuB+Dkij5VMMe42PUy
- V/HK/HiDXasr6ZeQe/SqLxmc=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id f81ad78c3eac48bc;
-	Mon, 02 Nov 2026 09:39:51 +0000
-X-Mizu-Trace-ID: f81ad78c3eac48bc
-X-Migadu-Flow: FLOW_OUT
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: arm64: Add support for self-hosted debug in protected guests
-Date: Mon,  2 Nov 2026 09:39:50 +0000
-Message-ID: <20261102093950.2922035-1-fuad.tabba@linux.dev>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HewBOeCl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3806B1F00919;
+	Mon,  2 Nov 2026 09:42:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793612577;
+	bh=s7UqG3TpVMZULsSsKNu6N4cz1DW5BOeuUtIPS6QDAis=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HewBOeCl5pz79CSpkijwZTiI4ct1J5rEbJ6byoh4SHSvMl1udzw0FO1BHpGwylJBV
+	 uQE3hkho4oZ6QlQocfKIuuc8l394gcmQ8wuHAeCL2XgV1A9KugxD/fiEpaSFNYpKqU
+	 uUTElwPtEawTRD3xI+Otjo3vn6ED47Idnim/MdJJrqU7Jp7OR8txfJtiFhj67yaeXQ
+	 jlD6EpdAJ3lxJ1cVqN9b1vnREtkrDzgTWh1fgCZ9mvEuzYIW1kgtmGhtVD/zjFYPEQ
+	 IS6teisJNdU3jtV1ZP0D8IJWyItQrRzS7exF6tsDig8VLw6ZDt7G5QZprDG0UAoZ5V
+	 26oGGOnjookOg==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.ams.internal (Postfix) with ESMTP id B5D5F198004A;
+	Mon,  2 Nov 2026 04:42:52 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Mon, 02 Nov 2026 04:42:54 -0500
+X-ME-Sender: <xms:G1voajdT0_ST4aQr5srb36ML8tbnQydvXNDb1Wa0pglc3-bl__0YRw>
+    <xme:G1voamoeTNZ_tLBRDKp4twtHfohRjjLY4Xdgxca7BPM58xswyriI0uPrLDxUcPrGJ
+    Ezolv1sTUcr7-5o0NIrPwaOZweizPE15Oa4Gu575E_BOCfeZSmZZDJm>
+X-ME-Received: <xmr:G1voasfqxLXbh9XEw9fIfqRJKKZl5m2OFKwZnoCvtkwLsethhHA1tzFqAMI>
+X-ME-Proxy-Cause: dmFkZTGUOybRtx7YsTcBd5eNLK4m3Fkm/Ey/0xNm/0ciR+HWLydMlnFcbPmj41D+Y1M07r
+    Sge36pJQ3Qh+uHPDZOt/Z0sw/zsNNy1zqLH6KQvtPBB7yRjuoI07tRUvZSKeBRtG7B1sD0
+    uAMxb5LPpw1ft4DgUZO3C8U4DLm5LSGomrKiANeik8BfMUm7H1eDcnAULVGAG4HLh4jZMz
+    ngg87BfUvwo2om0W0IDhfELBej4BrrIUZDHHWL61OWFhiKNr8MV2yCZ9saruXg5vczc+sN
+    56+11nmDJ3E6+gjErvQq7eGSpVe+dO5PhqG3Qe7j+bLHcDRWh4Xh7mITAz11RYl23v9FNE
+    9WySUbJ+jWj8Ngudc6sIePDxuGI+T/pG7YC5TIoUgGstZcw1h8NKcrBTIvaG3VWxSW1vmw
+    fgHGNcQRfeqJVryEov4ON6A5qd73Jtl3FkZhFcF8E0cJSOOaXI9bg8it/xzDBUw9aSRrWv
+    OnaDSuZ4s2b7vbpy8V2NHpB0dML1teWBFvRl5gk63Z8q8FbTPFM2KWPijasMF0zidFe8bK
+    08j54SKtHXyfp4NXSnpoIp949Lvt1fzxEg4CxmQCL/Z0ChfLObP0gnAmQqc8O3pdmwrrKZ
+    r+seW0vgXh4jOQejglUudMHx7CMpM2RrChQF3ctdHz/9mo0qPfwkJ8aIjPFA
+X-ME-Proxy: <xmx:G1voamlZf7s0DTyUWpxwvlxGs6f2Q_7BgepitSo_USDSMTdr-ErkkQ>
+    <xmx:G1voavu_HeXJX7iywt4AiOTqV54DB5KKlTYfIjCXVCp-mJCzZgf7QQ>
+    <xmx:G1voapxx6N7ltWYBSw6C5B7w4IbKrl_5MbI5rXH-QcW7rx_qsUlclA>
+    <xmx:G1voaqzwqwzR_zITWWZaT7wJMmOSAzFgKSFAW3C2pdC4o69fl8QrtA>
+    <xmx:HFvoan5gDyq0b69Nhm1DONlarQjnMvSSx45oTUCz0rkzanScX9i30Ews>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Nov 2026 04:42:51 -0500 (EST)
+Date: Mon, 2 Nov 2026 09:42:50 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Challvy Tee <challvy.tee@gmail.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com, 
+	vishal.l.verma@intel.com, kai.huang@intel.com, seanjc@google.com
+Subject: Re: [PATCH v4] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module
+ is not initialized
+Message-ID: <auhbCeeG-hX6tLZ_@thinkstation>
+References: <07cfa95a-e766-411b-8765-33352a04c0be@intel.com>
+ <20261102073244.919864-1-challvy.tee@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,476 +89,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102073244.919864-1-challvy.tee@gmail.com>
 
-pKVM hides DebugVer from protected guests and makes their debug
-registers RAZ/WI or UNDEFINED, so they don't have breakpoints,
-watchpoints or single-step. For a non-protected guest, the host sets the
-owner of the debug registers at vcpu load, from the guest's MDSCR_EL1
-and OS Lock, and EL2 copies the owner and the registers in at each
-entry. However, the host can't see a protected guest's registers.
+On Mon, Nov 02, 2026 at 03:32:44PM +0800, Challvy Tee wrote:
+> Commit 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and
+> kdump") made native_machine_crash_shutdown() call tdx_sys_disable(),
+> whose only gate is compile time (CONFIG_INTEL_TDX_HOST).  A kernel that
+> never initialized the TDX module therefore still issues
+> TDH.SYS.DISABLE.
+> 
+> In VMX non-root operation on a SEAM-capable host, SEAMCALL causes a VM
+> exit instead of a native #UD.  KVM injects #UD only since
+> commit 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute
+> SEAMCALL or TDCALL"), first released in v6.18.  On an older host the
+> VMM gets KVM_EXIT_INTERNAL_ERROR and the vCPU never resumes, so
+> machine_kexec() is never reached and no vmcore is written.  Kdump is
+> thus broken only in guests on SEAM-capable hosts whose hypervisor does
+> not handle the exit; plain kexec is unaffected because tdx_shutdown()
+> only runs as a syscore op, registered after init_tdx_module() succeeds.
+> 
+> Gate the SEAMCALL on X86_FEATURE_TDX_HOST_PLATFORM before issuing it,
+> the way paddr_is_tdx_private() already guards its own SEAMCALL in this
+> file.  Without that feature the module is never initialized, so there
+> is nothing to disable; on a TDX host the gate is a no-op.
+> 
+> It also decouples kdump from the host KVM version -- a guest cannot
+> require its host to inject the #UD.
+> 
+> Fixes: 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and kdump")
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Challvy Tee <challvy.tee@gmail.com>
 
-Set the owner at EL2 for a protected vCPU instead, by the rules the host
-uses for a non-protected guest, but keep MDCR_EL2.TDA set when the guest
-is the owner. A trap handler returns to the guest without going back
-through the world switch, so a handler that changes the owner switches
-the debug registers itself. The PSCI CPU_ON reset runs after the vcpu
-load, so it sets the owner again.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Advertise DebugVer, capped at V8P8 as for a non-protected guest, and the
-breakpoint, watchpoint and context-aware breakpoint counts. The other
-debug registers that took an UNDEF behave as they do for a non-protected
-guest that doesn't own its debug registers.
-
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
-
-Notes:
-    Commit 3a81a814437d ("KVM: arm64: Expose self-hosted debug regs as
-    RAZ/WI for protected guests") made these registers RAZ/WI and left
-    debug support for later.
-    
-    Tested by running the breakpoint_test_arm64 kselftest in a protected
-    guest under kvmtool. It passes on hVHE and nVHE hosts under QEMU,
-    and on hVHE again after offlining and onlining the guest CPU it runs
-    on. That test has no single-step case, so I checked single-step with
-    the pkvm_exceptions test from my pKVM selftests series, coming soon.
-    
-    Based on Linux 7.4-rc1 (6628e7d4c6b25).
-
- Documentation/virt/kvm/arm/pkvm.rst    |   7 +-
- arch/arm64/include/asm/kvm_hyp.h       |   1 +
- arch/arm64/kvm/arm.c                   |   1 +
- arch/arm64/kvm/hyp/include/nvhe/pkvm.h |   1 +
- arch/arm64/kvm/hyp/nvhe/hyp-main.c     |   2 +
- arch/arm64/kvm/hyp/nvhe/pkvm.c         |   8 +-
- arch/arm64/kvm/hyp/nvhe/sys_regs.c     | 253 +++++++++++++++++++++++--
- 7 files changed, 248 insertions(+), 25 deletions(-)
-
-diff --git a/Documentation/virt/kvm/arm/pkvm.rst b/Documentation/virt/kvm/arm/pkvm.rst
-index b75bb8ad6f26d..b8c8c94cba534 100644
---- a/Documentation/virt/kvm/arm/pkvm.rst
-+++ b/Documentation/virt/kvm/arm/pkvm.rst
-@@ -241,10 +241,9 @@ Other interface differences
- Debug
- -----
- 
--Hardware-assisted debugging is not available to protected guests.
--``MDSCR_EL1``, ``OSLAR_EL1``, ``OSLSR_EL1``, ``OSDLR_EL1``, and breakpoint
--and watchpoint 0 are RAZ/WI; any other debug register access takes an
--undefined instruction exception.
-+A protected guest can use self-hosted debug (breakpoints, watchpoints and
-+single-step) as a non-protected guest can. ``KVM_SET_GUEST_DEBUG`` returns
-+``-EPERM`` for a protected VM.
- 
- Resources
- =========
-diff --git a/arch/arm64/include/asm/kvm_hyp.h b/arch/arm64/include/asm/kvm_hyp.h
-index b0e42be3d9eef..9a785a341090e 100644
---- a/arch/arm64/include/asm/kvm_hyp.h
-+++ b/arch/arm64/include/asm/kvm_hyp.h
-@@ -151,6 +151,7 @@ extern u64 kvm_nvhe_sym(id_aa64mmfr0_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64mmfr1_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64mmfr2_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64smfr0_el1_sys_val);
-+extern u64 kvm_nvhe_sym(id_aa64dfr0_el1_sys_val);
- 
- extern unsigned long kvm_nvhe_sym(__icache_flags);
- extern unsigned int kvm_nvhe_sym(kvm_arm_vmid_bits);
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 157bf4b812020..ec90a580e82a4 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -2834,6 +2834,7 @@ static void kvm_hyp_init_symbols(void)
- 	kvm_nvhe_sym(id_aa64mmfr1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
- 	kvm_nvhe_sym(id_aa64mmfr2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64MMFR2_EL1);
- 	kvm_nvhe_sym(id_aa64smfr0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64SMFR0_EL1);
-+	kvm_nvhe_sym(id_aa64dfr0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64DFR0_EL1);
- 	kvm_nvhe_sym(__icache_flags) = __icache_flags;
- 	kvm_nvhe_sym(kvm_arm_vmid_bits) = kvm_arm_vmid_bits;
- 
-diff --git a/arch/arm64/kvm/hyp/include/nvhe/pkvm.h b/arch/arm64/kvm/hyp/include/nvhe/pkvm.h
-index 0261b2bc681f7..993d54ce44408 100644
---- a/arch/arm64/kvm/hyp/include/nvhe/pkvm.h
-+++ b/arch/arm64/kvm/hyp/include/nvhe/pkvm.h
-@@ -130,6 +130,7 @@ void put_pkvm_hyp_vm(struct pkvm_hyp_vm *hyp_vm);
- bool kvm_handle_pvm_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code);
- bool kvm_handle_pvm_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code);
- bool kvm_handle_pvm_restricted(struct kvm_vcpu *vcpu, u64 *exit_code);
-+void kvm_load_pvm_debug(struct kvm_vcpu *vcpu);
- void kvm_init_pvm_id_regs(struct kvm_vcpu *vcpu);
- void kvm_reset_pvm_sys_regs(struct kvm_vcpu *vcpu);
- int kvm_check_pvm_sysreg_table(void);
-diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-main.c b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-index 179d7c8277b88..9958ca6d7b0a2 100644
---- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-+++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-@@ -837,6 +837,8 @@ DEFINE_KVM_HOST_HCALL(void, __pkvm_vcpu_load,
- 		hyp_vcpu->vcpu.arch.hcr_el2 &= ~(HCR_EL2_TWE | HCR_EL2_TWI);
- 		hyp_vcpu->vcpu.arch.hcr_el2 |= hcr_el2 & (HCR_EL2_TWE | HCR_EL2_TWI);
- 
-+		kvm_load_pvm_debug(&hyp_vcpu->vcpu);
-+
- 		/* HPMN == 0 is reserved without FEAT_HPMN0. */
- 		if (pmuv3_implemented(SYS_FIELD_GET(ID_AA64DFR0_EL1, PMUVer, dfr0)))
- 			u64p_replace_bits(&hyp_vcpu->vcpu.arch.mdcr_el2,
-diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-index fc0475f0877d1..1d484da274c0e 100644
---- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
-+++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-@@ -123,8 +123,11 @@ static void pvm_init_traps_mdcr(struct kvm_vcpu *vcpu)
- 		val &= ~(MDCR_EL2_HPME | MDCR_EL2_MTPME);
- 	}
- 
--	if (!kvm_has_feat(kvm, ID_AA64DFR0_EL1, DebugVer, IMP))
--		val |= MDCR_EL2_TDRA | MDCR_EL2_TDA;
-+	/*
-+	 * Keep TDA set even when the guest owns debug: it also traps the DCC
-+	 * and the claim tags, which the world switch doesn't switch.
-+	 */
-+	val |= MDCR_EL2_TDRA | MDCR_EL2_TDA;
- 
- 	if (!kvm_has_feat(kvm, ID_AA64DFR0_EL1, DoubleLock, IMP))
- 		val |= MDCR_EL2_TDOSA;
-@@ -1245,6 +1248,7 @@ int pkvm_reset_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu)
- 
- 	kvm_reset_vcpu_core(&hyp_vcpu->vcpu);
- 	kvm_reset_pvm_sys_regs(&hyp_vcpu->vcpu);
-+	kvm_load_pvm_debug(&hyp_vcpu->vcpu);
- 
- 	/* Must be done after resetting sys registers. */
- 	kvm_reset_vcpu_psci(&hyp_vcpu->vcpu, reset_state);
-diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-index 32e82653ebf7e..e7148254ec5b8 100644
---- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-+++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-@@ -10,6 +10,8 @@
- #include <asm/kvm_mmu.h>
- 
- #include <hyp/adjust_pc.h>
-+#include <hyp/debug-sr.h>
-+#include <hyp/sysreg-sr.h>
- 
- #include <nvhe/pkvm.h>
- 
-@@ -28,6 +30,7 @@ u64 id_aa64mmfr0_el1_sys_val;
- u64 id_aa64mmfr1_el1_sys_val;
- u64 id_aa64mmfr2_el1_sys_val;
- u64 id_aa64smfr0_el1_sys_val;
-+u64 id_aa64dfr0_el1_sys_val;
- 
- struct pvm_ftr_bits {
- 	bool		sign;
-@@ -55,6 +58,13 @@ struct pvm_ftr_bits {
- #define MAX_FEAT_ENUM(id, fld, max)						\
- 	__MAX_FEAT_FUNC(id, fld, max, NULL, false)
- 
-+#define MAX_FEAT_PASSTHRU(id, fld)						\
-+	{									\
-+		.shift = id##_##fld##_SHIFT,					\
-+		.width = id##_##fld##_WIDTH,					\
-+		.max_val = GENMASK(id##_##fld##_WIDTH - 1, 0),			\
-+	}
-+
- #define FEAT_END {	.width = 0,	}
- 
- static bool vm_has_ptrauth(const struct kvm *kvm)
-@@ -175,17 +185,18 @@ static const struct pvm_ftr_bits pvmid_aa64isar2[] = {
- 	FEAT_END
- };
- 
--/*
-- * None of the features in ID_AA64DFR0_EL1 nor ID_AA64MMFR4_EL1 are supported.
-- * However, both have Not-Implemented values that are non-zero. Define them
-- * so they can be used when getting the value of these registers.
-- */
--#define ID_AA64DFR0_EL1_NONZERO_NI					\
--(									\
--	SYS_FIELD_PREP_ENUM(ID_AA64DFR0_EL1, DoubleLock, NI)	|	\
--	SYS_FIELD_PREP_ENUM(ID_AA64DFR0_EL1, MTPMU, NI)			\
--)
-+/* DoubleLock and MTPMU are hidden, but their Not-Implemented values are non-zero. */
-+static const struct pvm_ftr_bits pvmid_aa64dfr0[] = {
-+	MAX_FEAT(ID_AA64DFR0_EL1, DebugVer, V8P8),
-+	MAX_FEAT_PASSTHRU(ID_AA64DFR0_EL1, BRPs),
-+	MAX_FEAT_PASSTHRU(ID_AA64DFR0_EL1, WRPs),
-+	MAX_FEAT_PASSTHRU(ID_AA64DFR0_EL1, CTX_CMPs),
-+	MAX_FEAT(ID_AA64DFR0_EL1, DoubleLock, NI),
-+	MAX_FEAT(ID_AA64DFR0_EL1, MTPMU, NI),
-+	FEAT_END
-+};
- 
-+/* ID_AA64MMFR4_EL1 is hidden, but its Not-Implemented value is non-zero. */
- #define ID_AA64MMFR4_EL1_NONZERO_NI					\
- 	SYS_FIELD_PREP_ENUM(ID_AA64MMFR4_EL1, E2H0, NI)
- 
-@@ -245,7 +256,7 @@ static u64 pvm_calc_id_reg(const struct kvm_vcpu *vcpu, u32 id)
- 	case SYS_ID_AA64MMFR2_EL1:
- 		return get_restricted_features(vcpu, id_aa64mmfr2_el1_sys_val, pvmid_aa64mmfr2);
- 	case SYS_ID_AA64DFR0_EL1:
--		return ID_AA64DFR0_EL1_NONZERO_NI;
-+		return get_restricted_features(vcpu, id_aa64dfr0_el1_sys_val, pvmid_aa64dfr0);
- 	case SYS_ID_AA64MMFR4_EL1:
- 		return ID_AA64MMFR4_EL1_NONZERO_NI;
- 	default:
-@@ -372,6 +383,179 @@ static bool pvm_idst_access(struct kvm_vcpu *vcpu,
- 	return false;
- }
- 
-+static void pvm_set_external_mdscr(struct kvm_vcpu *vcpu, u64 mdscr)
-+{
-+	vcpu->arch.external_mdscr_el1 = mdscr & ~(MDSCR_EL1_SS | MDSCR_EL1_MDE | MDSCR_EL1_KDE);
-+}
-+
-+/* KVM_SET_GUEST_DEBUG fails for a protected vCPU, so only the OS Lock makes it HOST_OWNED. */
-+static int pvm_debug_owner(struct kvm_vcpu *vcpu, u64 mdscr)
-+{
-+	if (kvm_vcpu_os_lock_enabled(vcpu))
-+		return VCPU_DEBUG_HOST_OWNED;
-+
-+	if (mdscr & (MDSCR_EL1_KDE | MDSCR_EL1_MDE))
-+		return VCPU_DEBUG_GUEST_OWNED;
-+
-+	return VCPU_DEBUG_FREE;
-+}
-+
-+/* Trap handlers run after entry has loaded the debug state. */
-+static void pvm_debug_switch_owner(struct kvm_vcpu *vcpu, int new)
-+{
-+	*ctxt_mdscr_el1(&vcpu->arch.ctxt) = read_sysreg(mdscr_el1);
-+
-+	__debug_switch_to_host_common(vcpu);
-+	vcpu->arch.debug_owner = new;
-+	__debug_switch_to_guest_common(vcpu);
-+
-+	write_sysreg(*ctxt_mdscr_el1(&vcpu->arch.ctxt), mdscr_el1);
-+}
-+
-+static void pvm_debug_set_guest_ownership(struct kvm_vcpu *vcpu)
-+{
-+	if (kvm_debug_regs_in_use(vcpu))
-+		return;
-+
-+	pvm_debug_switch_owner(vcpu, VCPU_DEBUG_GUEST_OWNED);
-+}
-+
-+/* Runs before the world switch, which loads the debug state that debug_owner selects. */
-+void kvm_load_pvm_debug(struct kvm_vcpu *vcpu)
-+{
-+	u64 mdscr = __vcpu_sys_reg(vcpu, MDSCR_EL1);
-+
-+	vcpu->arch.debug_owner = pvm_debug_owner(vcpu, mdscr);
-+
-+	if (kvm_host_owns_debug_regs(vcpu))
-+		pvm_set_external_mdscr(vcpu, mdscr);
-+}
-+
-+static bool pvm_trap_dbg_wb_reg(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
-+				const struct sys_reg_desc *r)
-+{
-+	struct kvm_guest_debug_arch *dbg = &vcpu->arch.vcpu_debug_state;
-+	u64 *reg;
-+
-+	switch (r->Op2) {
-+	case 0b100:
-+		reg = &dbg->dbg_bvr[r->CRm];
-+		break;
-+	case 0b101:
-+		reg = &dbg->dbg_bcr[r->CRm];
-+		break;
-+	case 0b110:
-+		reg = &dbg->dbg_wvr[r->CRm];
-+		break;
-+	default:
-+		reg = &dbg->dbg_wcr[r->CRm];
-+	}
-+
-+	if (p->is_write)
-+		*reg = p->regval;
-+	else
-+		p->regval = *reg;
-+
-+	/* Guest-owned registers are live: __debug_switch_to_host() overwrites memory with them. */
-+	if (p->is_write && kvm_guest_owns_debug_regs(vcpu))
-+		__debug_restore_state(dbg, &vcpu->arch.ctxt);
-+
-+	pvm_debug_set_guest_ownership(vcpu);
-+	return true;
-+}
-+
-+/* Outside HOST_OWNED, use the live register: __sysreg_save_state_nvhe() overwrites memory. */
-+static u64 pvm_read_mdscr(struct kvm_vcpu *vcpu)
-+{
-+	if (kvm_host_owns_debug_regs(vcpu))
-+		return __vcpu_sys_reg(vcpu, MDSCR_EL1);
-+
-+	return read_sysreg(mdscr_el1);
-+}
-+
-+static bool pvm_trap_mdscr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
-+			   const struct sys_reg_desc *r)
-+{
-+	if (!p->is_write) {
-+		p->regval = pvm_read_mdscr(vcpu);
-+	} else if (kvm_host_owns_debug_regs(vcpu)) {
-+		__vcpu_assign_sys_reg(vcpu, MDSCR_EL1, p->regval);
-+		pvm_set_external_mdscr(vcpu, p->regval);
-+		write_sysreg(vcpu->arch.external_mdscr_el1, mdscr_el1);
-+	} else {
-+		write_sysreg(p->regval, mdscr_el1);
-+	}
-+
-+	pvm_debug_set_guest_ownership(vcpu);
-+	return true;
-+}
-+
-+/* __debug_restore_state() loads MDCCINT_EL1 from memory, so keep memory current. */
-+static bool pvm_trap_mdccint(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
-+			     const struct sys_reg_desc *r)
-+{
-+	if (p->is_write) {
-+		__vcpu_assign_sys_reg(vcpu, MDCCINT_EL1, p->regval);
-+		if (kvm_debug_regs_in_use(vcpu))
-+			write_sysreg(p->regval, mdccint_el1);
-+	} else {
-+		p->regval = __vcpu_sys_reg(vcpu, MDCCINT_EL1);
-+	}
-+
-+	pvm_debug_set_guest_ownership(vcpu);
-+	return true;
-+}
-+
-+static bool pvm_trap_oslar(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
-+			   const struct sys_reg_desc *r)
-+{
-+	int new_owner;
-+	u64 mdscr;
-+
-+	if (!p->is_write) {
-+		inject_undef64(vcpu);
-+		return false;
-+	}
-+
-+	mdscr = pvm_read_mdscr(vcpu);
-+
-+	if (p->regval & OSLAR_EL1_OSLK)
-+		__vcpu_rmw_sys_reg(vcpu, OSLSR_EL1, |=, OSLSR_EL1_OSLK);
-+	else
-+		__vcpu_rmw_sys_reg(vcpu, OSLSR_EL1, &=, ~OSLSR_EL1_OSLK);
-+
-+	new_owner = pvm_debug_owner(vcpu, mdscr);
-+	if (new_owner == VCPU_DEBUG_HOST_OWNED)
-+		pvm_set_external_mdscr(vcpu, mdscr);
-+
-+	if (new_owner != vcpu->arch.debug_owner)
-+		pvm_debug_switch_owner(vcpu, new_owner);
-+
-+	return true;
-+}
-+
-+static bool pvm_trap_oslsr(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
-+			   const struct sys_reg_desc *r)
-+{
-+	if (p->is_write) {
-+		inject_undef64(vcpu);
-+		return false;
-+	}
-+
-+	p->regval = __vcpu_sys_reg(vcpu, OSLSR_EL1);
-+	return true;
-+}
-+
-+/* As the host's trap_dbgauthstatus_el1(). */
-+static bool pvm_trap_dbgauthstatus(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
-+				   const struct sys_reg_desc *r)
-+{
-+	if (!p->is_write)
-+		p->regval = read_sysreg(dbgauthstatus_el1);
-+
-+	return true;
-+}
-+
- /* Mark the specified system register as an AArch32 feature id register. */
- #define AARCH32(REG) { SYS_DESC(REG), .access = pvm_access_id_aarch32 }
- 
-@@ -391,6 +575,12 @@ static bool pvm_idst_access(struct kvm_vcpu *vcpu,
- /* Mark the specified system register as Read-As-Zero/Write-Ignored */
- #define RAZ_WI(REG) { SYS_DESC(REG), .access = pvm_access_raz_wi }
- 
-+#define DBG_WB(n)							\
-+	{ SYS_DESC(SYS_DBGBVRn_EL1(n)), .access = pvm_trap_dbg_wb_reg },	\
-+	{ SYS_DESC(SYS_DBGBCRn_EL1(n)), .access = pvm_trap_dbg_wb_reg },	\
-+	{ SYS_DESC(SYS_DBGWVRn_EL1(n)), .access = pvm_trap_dbg_wb_reg },	\
-+	{ SYS_DESC(SYS_DBGWCRn_EL1(n)), .access = pvm_trap_dbg_wb_reg }
-+
- /* Mark the specified system register as not being handled in hyp. */
- #define HOST_HANDLED(REG) { SYS_DESC(REG), .access = NULL }
- 
-@@ -404,15 +594,36 @@ static bool pvm_idst_access(struct kvm_vcpu *vcpu,
- static const struct sys_reg_desc pvm_sys_reg_descs[] = {
- 	/* Cache maintenance by set/way operations are restricted. */
- 
--	/* Debug and Trace Registers are restricted. */
--	RAZ_WI(SYS_DBGBVRn_EL1(0)),
--	RAZ_WI(SYS_DBGBCRn_EL1(0)),
--	RAZ_WI(SYS_DBGWVRn_EL1(0)),
--	RAZ_WI(SYS_DBGWCRn_EL1(0)),
--	RAZ_WI(SYS_MDSCR_EL1),
--	RAZ_WI(SYS_OSLAR_EL1),
--	RAZ_WI(SYS_OSLSR_EL1),
-+	/* Debug registers */
-+	DBG_WB(0),
-+	DBG_WB(1),
-+	{ SYS_DESC(SYS_MDCCINT_EL1), .access = pvm_trap_mdccint },
-+	{ SYS_DESC(SYS_MDSCR_EL1), .access = pvm_trap_mdscr },
-+	DBG_WB(2),
-+	DBG_WB(3),
-+	DBG_WB(4),
-+	DBG_WB(5),
-+	DBG_WB(6),
-+	DBG_WB(7),
-+	DBG_WB(8),
-+	DBG_WB(9),
-+	DBG_WB(10),
-+	DBG_WB(11),
-+	DBG_WB(12),
-+	DBG_WB(13),
-+	DBG_WB(14),
-+	DBG_WB(15),
-+	RAZ_WI(SYS_MDRAR_EL1),
-+	{ SYS_DESC(SYS_OSLAR_EL1), .access = pvm_trap_oslar },
-+	{ SYS_DESC(SYS_OSLSR_EL1), .access = pvm_trap_oslsr },
- 	RAZ_WI(SYS_OSDLR_EL1),
-+	RAZ_WI(SYS_DBGPRCR_EL1),
-+	RAZ_WI(SYS_DBGCLAIMSET_EL1),
-+	RAZ_WI(SYS_DBGCLAIMCLR_EL1),
-+	{ SYS_DESC(SYS_DBGAUTHSTATUS_EL1), .access = pvm_trap_dbgauthstatus },
-+	RAZ_WI(SYS_MDCCSR_EL0),
-+	RAZ_WI(SYS_DBGDTR_EL0),
-+	RAZ_WI(SYS_DBGDTRTX_EL0),
- 
- 	/* Group 1 ID registers */
- 	HOST_HANDLED(SYS_REVIDR_EL1),
-@@ -559,6 +770,8 @@ static const struct sys_reg_desc_reset pvm_sys_reg_reset_vals[] = {
- 	RESET_UNKNOWN(TPIDR_EL1),
- 	RESET_ZERO(CNTKCTL_EL1),
- 	RESET_UNKNOWN(PAR_EL1),
-+	RESET_ZERO(MDCCINT_EL1),
-+	RESET_VAL(OSLSR_EL1, OSLSR_EL1_OSLM_IMPLEMENTED),
- 	RESET_ZERO(DISR_EL1),
- 	RESET_ZERO(CPACR_EL1),
- 	RESET_VAL(CONTEXTIDR_EL1, 0x00000000dbadc0deULL),
-@@ -586,6 +799,8 @@ void kvm_reset_pvm_sys_regs(struct kvm_vcpu *vcpu)
- 
- 		r->reset(vcpu, r);
- 	}
-+
-+	memset(&vcpu->arch.vcpu_debug_state, 0, sizeof(vcpu->arch.vcpu_debug_state));
- }
- 
- /*
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
-2.47.3
-
+  Kiryl Shutsemau / Kirill A. Shutemov
