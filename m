@@ -1,49 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793634359;
-	b=sh7/AjIXVaif8kmN/fNDc9214hTBTNTGcl64dVNZ0JI7lOhFCXIZnP2NF+k3qvcRKECw
-	 z+HTFta6Nx8M9bRneg1HojaCFYWyGV2+PwBSDki2gqoka9uB4v310c7NKnujhTT9xnANE
-	 W/57qqiJZ9FxsXgCZVQbYjonxK6uDZdt11u3NM56FdsqysR+vDyPCWV59nsbwK/bffv7p
-	 AK4J/VA9N9I9HbshEny0cHuYNIcMOJsP4+f4gXb4+8at8xZ6zHlFk9abnweQoOtrjGk7v
-	 Won5uKcBoOlNBqk5kTC7+F8YDO98UuicnS1QnaL2JlqRhnIfN8q8TgR8VrxYUSAXnqg==
+	t=1793634362;
+	b=WDApMpY0L1EGKqFScTErs4/PUarIxAx/4IRgpnB+0Dh5b5tgZBlp0ULPnFs7tZ+8jXOJ
+	 f7ADrPjTtbdQQqxEzR6fkZGQ88IlWNYBg9BJP1TygZ4Zhu37UdR7ONU9bMYgyu85bW6L9
+	 6ljDTKci0L//yq5V60eNjNi30p5nyaVW5DOeLsqYfnjl821RWyNosqxriZnN3fIDtJta8
+	 ivXUQSeqAhVd3PJok4UKf4rfvUz/Nj0C3vnfU/pvbeF9PF2NjgTd+Pl6yWjk0zbeEV0ps
+	 F/SX0FPbnb+kXiD4juWmSMYizxz1BdGln+17uD87MYBvYCwllt8j080F2S2lsF9yvxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793634359;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=OxZ1FKz93yFmSf3rlu7UFTVP3JEk6naoYRS2+rfDo78=;
-	b=rnGXEyXmCxGPzBEujmJhOHKqBf6oW7aeGnrTgWdWURDJb77BkrcBj7BmRT3FU7cRGwQ2
-	 1e2brPl67C9JJrSG0DsIjyb0dF8bXBWaXN4GCiYF93n0g+/lwAZgC6Kv9tt4xSpx8VeaX
-	 n8UP6kfml84nOA638RZF6vxrd0Sofsi6qUFH8Z0TrWdaVrA2G3Ymrcu4nY9/oaB1/H4u1
-	 ESguYhrgGvuPznu7gtRcTzXiNMPmMsZKZK1mGnxK0o5kE1THWfeNhDUBhbJxu1dRsV10u
-	 tI0BXDX9KnpnT7a4CBCjXQM2TVOZfnWP0u/RE5oNlVtZOuk8vT/f4zz4JHcHeR4CQfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793634362;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=XcnciT3D7d65PtFeUoZXa7fxLTNaJkc6pdnB1BKXFZQ=;
+	b=qGtZdyXp3bsd3+iD//x5bYimsOLC/3DQRWL8x09gZgAoANqjnrWa5RF5W6ztF6Mexbjo
+	 t2o268GlwX7frpwEoh0eia7E0W8zoi4HoSjFjSpcgQEJdXn6mO57211+j/bahmCbo5+2M
+	 4zXuRBmbBCx053eyZke29LEeSZDBI9Jbj6vhsn/hQmceydiIdzG19VY2Hj2otLWVVlQ1T
+	 oMRK7SHmCrNVgZk+8u8hWEVcNwqPqX/uMBAdGwTJUg5n1GdgbtpP7qxIQONIuSbOENZ0M
+	 WErpcLDU3rKYdrvRUKCNSvIjd6D+kimH4mxRzrWOS0EWSOx8e5R22E8NRQBaPhOkhUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="cOCS/GGj";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657A56076736
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:45:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 657A56076736
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="XjF/poUB";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F176076736;
+	Mon,  2 Nov 2026 15:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=cOCS/GGj
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABA581691;
-	Mon,  2 Nov 2026 07:45:54 -0800 (PST)
-Received: from [10.57.58.9] (unknown [10.57.58.9])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 85CB43F673;
-	Mon,  2 Nov 2026 07:45:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793634357; bh=20817R1mA1QbVjTwjDkW4AThGUuc7p8N/sVrM+ih4AM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cOCS/GGjHAgkaZa/DZHphD0w3MxNA7tE7wxbCjH8zp+5E7JfZTNU8KDbBKcYTkzOx
-	 P6yo5GiKL8de1WXQF+qhbIqjXEZz6rB1M9ziyY9EMMl4CCUM+JI7JSq+3rS6d0FCAP
-	 MgQUxyTQuOyY5SBKB0xtNrB55E8y/cf5P+PdJUYE=
-Message-ID: <b0755ab6-d7a9-4952-8f18-09b72fbd662d@arm.com>
-Date: Mon, 2 Nov 2026 15:45:54 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XjF/poUB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7B41F00A18;
+	Mon,  2 Nov 2026 15:46:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793634361;
+	bh=XcnciT3D7d65PtFeUoZXa7fxLTNaJkc6pdnB1BKXFZQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XjF/poUBLyluFrKR0FBgvI/0pOBsrmI9ruOzol6/iX3R+oOz0ECqZ4KEoNO4JwzHr
+	 ycSPqlrFos314M/wZ2pwiTdMZbdlpzMoxuYJKyW1L91K3Wm5AZthEd67/uahlxfgTe
+	 FYCnoXMCGBVXIeQ72Gkl64nH99R4aR8jCyXqlzImrlUIolnAMzrCd5w4bGMRCtw1m9
+	 34T3B4o/hhvQLarRCIT43GSQeObho3hzwM4VBgg/aadrjCoESAp1PLAH16qlDB/ec6
+	 sV0xSJmGduAIt2cNhr8WhKIo3hCOd2rCkNKCoJuO5pZXnSMWNouHUx0OqA713YV8ky
+	 A1lGnCTMYaZfw==
+Message-ID: <sashiko-outbox-193701@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11 03/14] s390/vfio-ap: Functions to initialize/release
+ vfio device migration data
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261102151604.2150055-4-akrowiak@linux.ibm.com>
+References: <20261102151604.2150055-1-akrowiak@linux.ibm.com>
+ <20261102151604.2150055-4-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 15:46:00 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,155 +61,293 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/11] KVM: arm64: CCA: Introduce Realms
-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-3-steven.price@arm.com>
- <sashiko-outbox-193575@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <sashiko-outbox-193575@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 02/11/2026 14:30, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] KVM: arm64: premature kvm_arch_has_private_mem() breaks gmem checks and caps
-> - [Low] KVM: arm64: duplicate kvm_arm_vcpu_finalize() declarations in kvm_host.h
-> --
-> 
-> commit d7e08ee0dbb02a4cf114f13c026edc843145fe6e
-> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
-> 
-> KVM: arm64: CCA: Introduce Realms
-> 
-> This commit adds foundational infrastructure for Arm CCA Realm VMs,
-> including the VM_REALM flavor, a static key for RMI availability,
-> per-VM Realm state tracking in struct kvm_arch, and initial feature and
-> memslot checks.
-> 
->> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
->> index ccd2dc8f73c3a..7d0222047ca1e 100644
->> --- a/arch/arm64/include/asm/kvm_host.h
->> +++ b/arch/arm64/include/asm/kvm_host.h
-> [ ... ]
->> @@ -1572,30 +1584,43 @@ struct kvm *kvm_arch_alloc_vm(void);
-> [ ... ]
->> +#define kvm_vm_is_realm(kvm)		((kvm)->arch.vm_flavor == VM_REALM)
->> +#define vcpu_is_rec(vcpu)		kvm_vm_is_realm((vcpu)->kvm)
->>  
->>  #define kvm_vm_hyp_is_distrusting(kvm)	((kvm)->arch.vm_flavor >= __VM_DISTRUSTING_HYP)
->>  
->> -#endif	/* __KVM_NVHE_HYPERVISOR__ */
->> +#define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
-> 
-> [Severity: High]
-> Does defining kvm_arch_has_private_mem(kvm) here cause a regression in
-> guest_memfd memslot validation and capability reporting across arm64?
-> 
-> Because CONFIG_KVM_PRIVATE_MEMATTR_VM is not selected on arm64, defining
-> kvm_arch_has_private_mem activates the preprocessor branch in
-> include/linux/kvm_host.h that sets gmem_in_place_conversion to true at
-> compile time:
-> 
-> include/linux/kvm_host.h:
->     #elif defined kvm_arch_has_private_mem
->     #define gmem_in_place_conversion true
->     #define kvm_is_private_gfn kvm_gmem_is_private_gfn
-> 
-> With gmem_in_place_conversion unconditionally true,
-> kvm_gmem_prepare_memory_region() in virt/kvm/guest_memfd.c sets
-> KVM_MEMSLOT_GMEM_ONLY on every guest_memfd memslot even when
-> GUEST_MEMFD_FLAG_MMAP is not set:
-> 
-> virt/kvm/guest_memfd.c:kvm_gmem_prepare_memory_region() {
->     ...
->     if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
->         slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
-> }
-> 
-> As a result, the check in kvm_arch_prepare_memory_region() in
-> arch/arm64/kvm/mmu.c that rejects non-mappable guest_memfd memslots:
-> 
-> arch/arm64/kvm/mmu.c:kvm_arch_prepare_memory_region() {
->     ...
->     if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
->         return -EINVAL;
-> }
-> 
-> is bypassed for non-Realm VMs, allowing userspace to bind a private
-> guest_memfd created with flags == 0 via KVM_SET_USER_MEMORY_REGION2 and
-> fault those pages into non-Realm stage-2 page tables through gmem_abort().
-> 
-> In addition, when userspace queries
-> KVM_CHECK_EXTENSION(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES) on the /dev/kvm
-> fd (where kvm is NULL), kvm_vm_ioctl_check_extension_generic() in
-> virt/kvm/kvm_main.c calls kvm_supports_private_mem(NULL):
-> 
-> virt/kvm/kvm_main.c:kvm_supports_private_mem() {
->     return !kvm || kvm_arch_has_private_mem(kvm);
-> }
-> 
-> virt/kvm/kvm_main.c:kvm_vm_ioctl_check_extension_generic() {
->     ...
->     case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
->         if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
->             return 0;
-> 
->         return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> }
-> 
-> This advertises KVM_MEMORY_ATTRIBUTE_PRIVATE on all arm64 hosts even when
-> KVM_MODE_RMM is not active and while kvm_gmem_set_attributes() in
-> virt/kvm/guest_memfd.c rejects KVM_SET_MEMORY_ATTRIBUTES2 with -EINVAL on
-> every creatable VM.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] s390/vfio-ap: use-after-free of mig_data when migration FD out=
+lives device FD
+- [Medium] s390/vfio-ap: commit message does not match code in vfio_ap_migr=
+ation.c
+- [Low] s390/vfio-ap: malformed kernel-doc comment on vfio_ap_release_mig_f=
+iles()
+--
 
-Dang, yes that's broken. The later commit "KVM: arm64: CCA: Support
-runtime faulting of memory" changes the condition in
-kvm_arch_prepare_memory_region() to check "!kvm_vm_is_realm()" but
-clearly I've broken the bisect here. That check also isn't quite right.
-I think rather than using kvm_memslot_is_gmem_only() we should check the
-gmem file with kvm_gmem_supports_mmap(). So we end up with the check:
+commit 2bff67e6f9b81966cd8ed45a78897f37868b65ad
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-       if (kvm_slot_has_gmem(new) && !kvm_vm_is_realm(kvm) &&
-           !kvm_gmem_slot_supports_mmap(new))
+s390/vfio-ap: Functions to initialize/release vfio device migration data
 
-and a new function:
+This commit adds functions to allocate, initialize, and release the data
+structures used to maintain live guest migration state for vfio_ap mediated
+devices when the VFIO device is opened, closed, or released.
 
- bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot)
- {
-        /* The guest_memfd file is pinned while preparing a new memslot. */
-        return kvm_gmem_supports_mmap(file_inode(slot->gmem.file));
- }
+>     s390/vfio-ap: Functions to initialize/release vfio device migration d=
+ata
+>    =20
+>     Provides the functions that initialize and release the data structures
+>     used during live guest migration:
+>    =20
+>     * vfio_ap_init_migration_data
+>    =20
+>       Allocates and initializes the object used to maintain the state of =
+the
+>       VFIO migration. It is called when the VFIO device is opened.
+>    =20
+>     * vfio_ap_release_migration_data
+>    =20
+>       Frees the memory of the object used to maintain the VFIO migration
+>       state. It is called when the VFIO device release callback is invoked
+>       and when the VFIO device is closed.
+>    =20
+>     * vfio_ap_release_mig_files
+>    =20
+>       This function is called from the vfio_ap_release_migration_data
+>       function (above) and releases the vfio_ap_migration_file objects
+>       contained within the vfio_ap_migation_data object used to maintain
+>       the state of the VFIO migration process.
+>    =20
+>     * vfio_ap_release_stop_copy_file
+>    =20
+>       This function is called from the vfio_ap_release_mig_files function
+>       (above) to release the vfio_ap_migration_file used during the
+>       STOP_COPY phase of migration. For now, this is a stub function that
+>       will be fully implemented in a subsequent patch after the
+>       vfio_ap_config object referenced within is allocated, as it will
+>       need to be freed according to how it is allocated.
+>    =20
+>     * vfio_ap_release_resuming_file
+>    =20
+>       This function is called from the vfio_ap_release_mig_files function
+>       (above) to release the vfio_ap_migration_file used during the
+>       RESUMING phase of migration. For now, this is a stub function that
+>       will be fully implemented in a subsequent patch after the
+>       vfio_ap_config object referenced within is allocated, as it will
+>       need to be freed according to how it is allocated.
+>    =20
+>     * vfio_ap_set_state, vfio_ap_get_state and vfio_ap_get_data_size
+>    =20
+>       These three functions are callback functions assigned to the
+>       vfio_ap_migration_ops (.migration_set_state, .migration_get_state
+>       and .migration_get_data_size function pointers).
+>    =20
+>     Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>=20
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 2a0a8c76f820e..d525dec782a18 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -4,6 +4,7 @@
+>   *
+>   * Copyright IBM Corp. 2025
+>   */
+> +#include <linux/file.h>
+>  #include "vfio_ap_private.h"
+> =20
+>  /* Magic number and version for the vfio_ap_config migration blob */
+> @@ -123,3 +124,105 @@ struct vfio_ap_config {
+>  	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
+>  	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
+>  };
+> +
+> +static void
+> +vfio_ap_release_stop_copy_file(struct vfio_ap_migration_data *mig_data)
+> +{
+> +	kvfree(mig_data->stop_copy_mig_file.ap_config);
+> +	mig_data->stop_copy_mig_file.ap_config =3D NULL;
+> +	mig_data->stop_copy_mig_file.config_sz =3D 0;
+> +	mig_data->stop_copy_mig_file.filp =3D NULL;
+> +}
+> +
+> +static void vfio_ap_release_resuming_file(struct vfio_ap_migration_data =
+*mig_data)
+> +{
+> +	kvfree(mig_data->resuming_mig_file.ap_config);
+> +	mig_data->resuming_mig_file.ap_config =3D NULL;
+> +	mig_data->resuming_mig_file.config_sz =3D 0;
+> +	mig_data->resuming_mig_file.filp =3D NULL;
+> +	mig_data->resuming_mig_data_complete =3D false;
+> +}
 
+[Severity: Medium]
+Is the commit message out of sync with the changes in
+drivers/s390/crypto/vfio_ap_migration.c?
 
-I'm not sure what we can do about the KVM extension when !kvm. x86
-presumably already has the situation where !kvm can expose
-KVM_MEMORY_ATTRIBUTE_PRIVATE even if the host doesn't support it. Is
-this a problem?
+The changelog describes vfio_ap_release_stop_copy_file() and
+vfio_ap_release_resuming_file() as stubs to be implemented in a subsequent
+patch, but both functions are already fully implemented here to call
+kvfree() on ap_config and reset the fields on stop_copy_mig_file and
+resuming_mig_file.
 
->> +
->> +int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
->> +bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
-> 
-> [Severity: Low]
-> This isn't a bug, but commit df6a70516adec8 already moved the declarations
-> of kvm_arm_vcpu_finalize() and kvm_arm_vcpu_is_finalized() earlier in
-> arch/arm64/include/asm/kvm_host.h right below VCPU_PKVM_FINALIZED:
-> 
-> arch/arm64/include/asm/kvm_host.h:
->     #define VCPU_PKVM_FINALIZED	__vcpu_single_flag(cflags, BIT(2))
-> 
->     int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
->     bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
-> 
-> Can these duplicate declarations be dropped?
+The changelog also states that this commit provides vfio_ap_set_state(),
+vfio_ap_get_state(), and vfio_ap_get_data_size() assigned to
+vfio_ap_migration_ops, which are not present in this patch and instead get
+introduced in later patches in the series, along with the usage of the newly
+added linux/file.h include.
 
-Indeed they can.
+> +
+> +/**
+> + * vfio_ap_init_migration_data - initialize migration data and functions
+> + *
+> + * @matrix_mdev: pointer to object containing the mdev state
+> + *
+> + * Return: zero if initialization is successful; otherwise, returns a er=
+ror.
+> + */
+> +int vfio_ap_init_migration_data(struct ap_matrix_mdev *matrix_mdev)
+> +{
+> +	struct vfio_ap_migration_data *mig_data;
+> +
+> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
+> +
+> +	/*
+> +	 * Live guest migration is not supported for SE guests, so there is no
+> +	 * need to initialize the migration data.
+> +	 */
+> +	if (ap_is_se_guest())
+> +		return 0;
+> +
+> +	mig_data =3D kzalloc_obj(struct vfio_ap_migration_data, GFP_KERNEL);
+> +	if (!mig_data)
+> +		return -ENOMEM;
+> +
+> +	mig_data->mig_state =3D VFIO_DEVICE_STATE_RUNNING;
+> +	mig_data->resuming_mig_data_complete =3D false;
+> +	mig_data->resuming_mig_file.matrix_mdev =3D matrix_mdev;
+> +	mutex_init(&mig_data->resuming_mig_file.lock);
+> +	mig_data->stop_copy_mig_file.matrix_mdev =3D matrix_mdev;
+> +	mutex_init(&mig_data->stop_copy_mig_file.lock);
+> +	matrix_mdev->mig_data =3D mig_data;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * vfio_ap_release_mig_files:
+> + *
+> + * Free the ap_config buffers for any open migration FDs. Although a
+> + * migration FD may still be held open by userspace, it is safe to free
+> + * mig_data here because:
+> + *
+> + *   1. matrix_mdev remains valid for the lifetime of any open migration
+> + *      FD via the vfio_device registration reference taken in
+> + *      vfio_ap_open_file_stream() and dropped in
+> + *      vfio_ap_release_mig_file().
+> + *
+> + *   2. mig_data is only accessed by the migration file ops
+> + *      (vfio_ap_stop_copy_read, vfio_ap_resuming_write) under
+> + *      mdevs_lock. Once mig_data is set to NULL by the caller, those
+> + *      paths will see NULL and return -ENODEV before dereferencing it.
+> + *
+> + * @matrix_mdev: The object used to maintain the state for a mediated de=
+vice
+> + */
+> +static void vfio_ap_release_mig_files(struct ap_matrix_mdev *matrix_mdev)
 
-Steve
+[Severity: Low]
+This isn't a bug, but the kernel-doc comment on vfio_ap_release_mig_files()
+in drivers/s390/crypto/vfio_ap_migration.c omits the short description on t=
+he
+identifier line and places the @matrix_mdev parameter description after the
+body text, which triggers a scripts/kernel-doc warning about a missing
+initial short description. Should the short description and @matrix_mdev
+parameter be moved to the top of the kernel-doc block?
 
+> +{
+> +	struct vfio_ap_migration_data *mig_data;
+> +
+> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
+> +
+> +	mig_data =3D matrix_mdev->mig_data;
+> +	vfio_ap_release_stop_copy_file(mig_data);
+> +	vfio_ap_release_resuming_file(mig_data);
+> +}
+> +
+> +/**
+> + * vfio_ap_release_migration_data: reclaim private migration data
+> + *
+> + * @matrix_mdev: pointer to the object containing the state of the mdev
+> + */
+> +void vfio_ap_release_migration_data(struct ap_matrix_mdev *matrix_mdev)
+> +{
+> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
+> +
+> +	if (!matrix_mdev->mig_data)
+> +		return;
+> +
+> +	vfio_ap_release_mig_files(matrix_mdev);
+> +	mutex_destroy(&matrix_mdev->mig_data->stop_copy_mig_file.lock);
+> +	mutex_destroy(&matrix_mdev->mig_data->resuming_mig_file.lock);
+> +	kfree(matrix_mdev->mig_data);
+> +	matrix_mdev->mig_data =3D NULL;
+> +}
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 01439f0ca42ab..1aada3068df5f 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+
+[ ... ]
+
+> @@ -2052,19 +2062,39 @@ static int vfio_ap_mdev_reset_qlist(struct list_h=
+ead *qlist)
+
+[ ... ]
+
+>  static void vfio_ap_mdev_close_device(struct vfio_device *vdev)
+>  {
+> -	struct ap_matrix_mdev *matrix_mdev =3D
+> -		container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	struct ap_matrix_mdev *matrix_mdev;
+> +
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	vfio_ap_release_migration_data(matrix_mdev);
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> =20
+>  	vfio_ap_mdev_unset_kvm(matrix_mdev);
+>  }
+
+[Severity: Critical]
+As reported by Sashiko on v3 [1], can closing the VFIO device file descript=
+or
+while a migration file descriptor remains open trigger a use-after-free of
+matrix_mdev->mig_data?
+
+In drivers/s390/crypto/vfio_ap_migration.c, struct vfio_ap_migration_data
+embeds resuming_mig_file and stop_copy_mig_file by value:
+
+struct vfio_ap_migration_data {
+	enum vfio_device_mig_state	mig_state;
+	bool				resuming_mig_data_complete;
+	struct vfio_ap_migration_file	resuming_mig_file;
+	struct vfio_ap_migration_file	stop_copy_mig_file;
+};
+
+When a migration stream file descriptor is opened in
+vfio_ap_open_file_stream() (added in later patches in this series),
+anon_inode_getfile() sets filp->private_data to &mig_data->stop_copy_mig_fi=
+le
+or &mig_data->resuming_mig_file, and takes a registration reference on
+vdev via vfio_device_try_get_registration().
+
+That registration reference keeps struct ap_matrix_mdev alive until
+vfio_ap_mdev_release_dev(), but it does not prevent the last close of the
+VFIO device file descriptor from calling
+vfio_ap_mdev_close_device()->vfio_ap_release_migration_data(), which destro=
+ys
+stop_copy_mig_file.lock and resuming_mig_file.lock and frees
+matrix_mdev->mig_data with kfree().
+
+When userspace subsequently reads, writes, or closes the open migration file
+descriptor (including during process exit when close_files() closes the
+lower-numbered VFIO device FD before the migration FD),
+vfio_ap_stop_copy_read(), vfio_ap_resuming_write(), and
+vfio_ap_release_mig_file() dereference filp->private_data (mig_file->lock,
+mig_file->filp, and mig_file->matrix_mdev) inside the freed mig_data object.
+
+[1] https://lore.kernel.org/r/20260630111142.08F0A1F00A3A@smtp.kernel.org
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102151604.2150=
+055-1-akrowiak@linux.ibm.com?part=3D3
