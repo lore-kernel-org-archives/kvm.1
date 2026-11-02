@@ -1,91 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793605756;
-	b=lSNJbau5dw+GeYv+NwezCmWSc10q39RLDquTODkTtBWvlu0GrbZPvKiRNKs2/0nsYfzH
-	 WJoF9cXEsSpUiTS2USisd5fNjGfN0IhweGMmLfrPp2GUk9BACYHY/V8YpGVJN7uQ+CmAl
-	 yviGoSuIHInV07bS7MEI6KGZvjWhcanZxQ1l8sm8JeOwK0AuK9Z2goXiAmX1froAn63z0
-	 zZpRUZ64wA6sOhEKZ6ZOsAsAr3aChBYjX5FyLuRwJ4PMbo4cACdSmo3afeVKGd7dCvUbJ
-	 jslfPg4PCSI2uwyDAObmAeOIijTRYEGH/PYvoYYSmltW/8vDBnuqqrjIMA1O4r4ugIA==
+	t=1793608199;
+	b=5RGeXwnFWhh4ffs590HivCcd3/D2ON0mhxrvNI3O6647IxEFI7q0xRVzlYM71A3ctrkd
+	 DmMwJCUZKXKlm6FvfPVcShfiKHb4F7CL66PQkdVG/3SiHhiX3GS+qNZpn2l9QdD4THtHD
+	 sY19MIPb8fJdGV+rUupXzmMfm+Y124AxI0Dn/nQiwSTAEJFPl9j1jIPPO5oBRilS5Ep84
+	 G6DV6aX9jCfoTfnNXZiDh0ghpPHq/6Sqrt1MCX6cH9LY7VwFgNTurpSVFYZPCE8x8vupo
+	 w0t7oJRYx0+Bljv8Er+1CrnR41pJy/f9nWgtGaHoL0uQFkPLPapXiWfTdegRC2OBMjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793605756;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=9E0zGD2ODat2SvttteActsyR0xXKqRS4RgBIccVpIig=;
-	b=ghkbZHb4+43/SR3pfVhPErI6hXSPbXMiIQYV1MgusMVGfzbEip+Jgr/Khzw4Lo5Xnzhi
-	 bSVIcPzhjMN4/5qYmf+oxk3ukOCz/sIaojm5ODNA80fh7l5LtL5l0dcIpk4eLSqVJ3bsN
-	 OlClbYWv2fIdf3rn9ow+NccSqH/XThfwCkI1dH2nTwRgugUWNKZGvjfS6H8+R6bB2VbT5
-	 ZCm2BYL22Zrzth8iXzZk8b9KjbX81cXhj7BFnhv4c6TOl4IN/e7VbXscvoKEx0MO32McF
-	 jUQl5QGWmPfys8WnYKXNyaWiDCbeqvxHxHBcecT9GM/zxNpGbjLMg1wtKMt3Gla7Msw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793608199;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=xgaHGHJ703/BmLgkQ/c7X7zJbd3V5E8MeHEoM0XykK4=;
+	b=cDY5EnH22In3KHcN8JEmd233QUh6iQKyVdtIFZC2XU31CyPKTgqjvEAqAbHYUYPkTg5e
+	 Vi2DGmUpW1dT2Pb4zBcb1kek+5Ren1qhW9YUyNbn8Ssaubq0IHxWdisUyuPXvT2tAxqgM
+	 w/sY6+OsOhQaEZtroZ7aURZ+KYGnRyemaFR/byjnmbln8R0XGmrTQpFwEVtRdgYysZQkC
+	 6WKMbe/ZX9W5SnQTiJH9nwHsML/RUQOgBVt8zZSmFJ0Ftf72l7EqYbT2/vT1pqsPINaE6
+	 DPZFKy62S0iwhCxcE3UYguD/zodHpSmePAvm4o1Gg8V6NfdNAWMM26KclicGJLM03aQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y2WNM8XS;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCJdLjhQ;
+	arc=none smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F7D606A332
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 07:49:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4F7D606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829FF606A324;
+	Mon,  2 Nov 2026 08:29:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 829FF606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y2WNM8XS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793605754;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9E0zGD2ODat2SvttteActsyR0xXKqRS4RgBIccVpIig=;
-	b=Y2WNM8XSRiHDKY0jXgNNSRAraYz56kqs/Jgeucn4DJ8N2E/QC2uGBrmn2FdxMQQXWW3jWP
-	day4E7LqpngUYbz5Eq45HmfKDqFhowzrJFuO+PnWPzp/t3fHZkNZWhQFbNVdgj3zmKX1rG
-	x02aMfS5jFjaq7sM0tpyHkCV6eRLuxw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-rafnIFLNMu2yIqXetp5ebg-1; Mon,
- 02 Nov 2026 02:49:11 -0500
-X-MC-Unique: rafnIFLNMu2yIqXetp5ebg-1
-X-Mimecast-MFC-AGG-ID: rafnIFLNMu2yIqXetp5ebg_1793605749
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C42019560B8;
-	Mon,  2 Nov 2026 07:49:08 +0000 (UTC)
-Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5BF2E300019F;
-	Mon,  2 Nov 2026 07:49:03 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: jgg@ziepe.ca
-Cc: alex@shazbot.org,
-	ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	bhelgaas@google.com,
-	jjohnson@kernel.org,
-	johannes@sipsolutions.net,
-	jtornosm@redhat.com,
-	kevin.tian@intel.com,
-	kvm@vger.kernel.org,
-	kwilczynski@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	lpieralisi@kernel.org,
-	mani@kernel.org,
-	pbonzini@redhat.com,
-	robh@kernel.org,
-	seanjc@google.com,
-	vkuznets@redhat.com
-Subject: Re: [PATCH v3 5/8] ath11k: use KVM MSI domain for VM passthrough
-Date: Mon,  2 Nov 2026 08:49:02 +0100
-Message-ID: <20261102074902.27907-1-jtornosm@redhat.com>
-In-Reply-To: <20261029170044.GR1685504@ziepe.ca>
-References: <20261029170044.GR1685504@ziepe.ca>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCJdLjhQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793608198; x=1825144198;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JGjRxR6gm6ACNJIRopKVz3Mv1eqCxBu0rrxBy/s9uoc=;
+  b=PCJdLjhQoOPua0HtBNdizFy6Ze/4WTByDmQCAMzOldMx7zf1IaqW9FBw
+   r0kIfAb7dTXTEr3BggnAwfo6CNVTN2el/83xZVBJNinq9GbDxteBc624e
+   G/orBkQw5qbw3hLhUeqtm5EPUzXTnRZ1EslBS8XQyCsVBRfsRGWf4JCXm
+   HnDmu0WpIjOyalQk67MiQ9G8dXaXjnofMozFF9bK3XOhRc6E9AZBhML1F
+   VB0WehKaymoUExdtv5pLGlaEUnb7wiTjbtk29ESjNaTzTOdVIh7dG+dKC
+   NEH+t0G/MBl+lXKGMj761clk22FwPcPlEooEhDFt9P0W4znG5Nux6Jspt
+   w==;
+X-CSE-ConnectionGUID: JmkFaQtpSuyEnttKmAsgYg==
+X-CSE-MsgGUID: 6VC9+4V4RqqhBt9qyfNrHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2169918"
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="2169918"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 00:29:56 -0800
+X-CSE-ConnectionGUID: f5i1oGraQiCNnG6AikT8IA==
+X-CSE-MsgGUID: D20pI9MoSXGOIV3+GHf8eQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="5888222"
+Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 00:29:51 -0800
+Message-ID: <eb118916-090d-431a-8f78-ab2f320c6bc1@linux.intel.com>
+Date: Mon, 2 Nov 2026 16:29:48 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,17 +72,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 20/28] KVM: nVMX: Enable support for secondary VM exit
+ controls
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
+ David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-21-sohil.mehta@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20260911213659.2025974-21-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> This connection should be done through ACPI somehow, and I think
-> Thomas would expect this to be modeled on the platform msi domain,
-> just ported to PCI instead of this.
+On 9/12/2026 5:36 AM, Sohil Mehta wrote:
+> From: "Xin Li (Intel)" <xin@zytor.com>
+> 
+> Add support for secondary VM exit controls in nested VMX to facilitate
+> future FRED integration.
+> 
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 
-Thank you for the suggestion. I will explore the ACPI-based
-discovery approach and study the platform MSI domain model for
-the next version.
-
-Best regards
-Jose Ignacio
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
