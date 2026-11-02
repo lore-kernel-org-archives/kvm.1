@@ -1,68 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793604781;
-	b=tzRuyrMOBpGD1EIoXOI+ej3EFBaYTlt1kGziqng2uVX3aK6/Rw2Vmxih+VM0XhZX3Ret
-	 umbMzpay8D5M/VghSgurnQjgecWulT4nND1sjh887eaWOZM8F7oLVaOm5GYl/fcT+ve5S
-	 pTBZAfejL4Z6qozrFYIXmk3DcS0VfhvmEWri/5DdSqVaQU2plbCYPUGJzbnbHaAe3cCeB
-	 uUFuwi+Kplu9pWCqj25juKXmOAJEGLYyNj5DVkGmczE9wbXKATwgPJY4FKR8S5Ehbp+ay
-	 RJLG8W4hOQdwaNT9PXJN5AJJWeU0bUCg2I8NnLVf6oG/vMNDvosUPeWSv/ZyCoo/gwQ==
+	t=1793604790;
+	b=2UspqgwrqvfUYb+y9RLPxO7LpxltyvmTDw7xaOFo6cRD/jhmOGhwNMfi0ZIThS9D2gGZ
+	 rBidsMhXuZGi0tYZjbB7rPYhQtTj1ACwsE7u37c2W3gIzK802kWP5pCVYvTJzLAX1IW3v
+	 xy2ogtTkwVhxb6on+YMTg9DwpmyIvxPd2soXzL1c5gXrhjzNe3uIHaCbh9qyK1d1hQqcJ
+	 hf9dCiAEY75v0AwYdVlMpeef5nk7QyMkpUSB213Ka0nh7kSxn2JPE06vhyhoNiGz75mAR
+	 MqAkqZ5EMiQhVzKqFm/mPj3Z8L4BPqzcWB7YWwaoSnJ/ToNgGVKuMaYCPV/K2+PNn7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793604781;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=yjKLHHzS10n4wGDXarJMvF0fOdP5JcGYaK0RuRwho0s=;
-	b=g4XaGdF8552gxNRIAuK0VVEQOPOZvPz3FCSobUi5CgM1x968gWshHDo1j45WvAzH69Wa
-	 G5MGwDDbLYoQLMqCqcbMqw63prwud5Uh5zFBSHLI+Y6aamC/Wq6+jhrneSXBi04Gik3pP
-	 D7TaBtEJeSxZ24H26aZAS3LvZQDha7a2fTocAiz4r3eTcSuHkqoJNWb6EsHWw/rSnAaSo
-	 YX4jiziveONSFipXLpvOlah+fkdSNGQUk3c0PoTEvbwO5ptRzwVPh/erYXLrkUlMwY4me
-	 7su1Dr9eytfaJ03tr3DPfaRDt7ad9lbAHv7FqMeLseq3F/vRy7Tw8aJ1hCadXUq+WfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604790;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=uhlq7lRBnMZgN/FlVC6dxixNTQE9Qh0fbitp0y0qEhA=;
+	b=lLDJcJrgjk1+JqKkTeVKTH4KcLnCMfkrzCvDJBK5IFO/SLW+LGz3rZTWFCw7OqvGG8GU
+	 7QwqWd2wmOTTm7UKp+9CE/gUg8uAyBVVjT4Z+HHrUxoaxmheqeoY3q3Gj5/0/FT/J6Tt1
+	 Sl91e4Dau0fcOB9NLVA9XZXtRQWewx+XkZzxeNj7xjh8s3Be4z4rVltx6qvonznAx3DtZ
+	 gSDxfAD17fgWsAOlflkVWUwOSMavW7ZhI80ivqRM3CeA/d/KltL0vRYYWAiSYUw+s/etg
+	 qAO5U9APXQ2I+ZI6SM537bJ1w2Kf640MZAycIgLdB642yx0T0/8Xz9z3X+IuLq1y7LQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JyBHoWUA;
-	arc=none smtp.remote-ip=198.175.65.9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FijoGuQS;
+	arc=none smtp.remote-ip=209.85.210.177
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC82606A326;
-	Mon,  2 Nov 2026 07:33:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BC82606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A8D606A33A
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 07:33:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71A8D606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JyBHoWUA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793604781; x=1825140781;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=kCW91QP6kziHBH5nmJbj/L70gH2j0FXLHyWiHf3tiRQ=;
-  b=JyBHoWUAzChv0NkKTa/hyIf+JC9LRVRcCRSiBnNOgru/MSQAGIJj5XMA
-   gdwBDq/Ve4d0sFgg6FwO7LL6LCYPqDV7asDL5LNLcRBf2SkcRAUJwYt2X
-   M9rJMmNaewd1IDOK2mM5Xt3uKFnrtmoaqnv/9qaqy+LBtihiOfUA8dUyN
-   ekxroAOSyHD+DmWAb1gHL7Cpj4/Gk/qN89FNG18gLMjv494OUVP+mvkL2
-   yrtC/H28Fj6Fxt//9wHNntZVtrj44cjl1pTJFA39DReExH2UMHb2h3y8w
-   XNlEZncABipAj/iatYTzyNpgR6ECpZTjt4pIYYg+1lLJ33DqV/NKZmDJi
-   A==;
-X-CSE-ConnectionGUID: Okj9089pRtusxwyj3vpnlA==
-X-CSE-MsgGUID: Uw9imQ2LTamzyQSdlEPkMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2174758"
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2174758"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:33:00 -0800
-X-CSE-ConnectionGUID: 4RPUP8gfTXyAuUQuVakVWg==
-X-CSE-MsgGUID: /Tc03w7gTjWtUuHOZbVydQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="6368915"
-Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:32:54 -0800
-Message-ID: <14447223-008f-49e1-824b-9f6e8a4aa0c1@linux.intel.com>
-Date: Mon, 2 Nov 2026 15:32:50 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FijoGuQS
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a0880a46e7so1257773b3a.1
+        for <kvm@vger.kernel.org>; Sun, 01 Nov 2026 23:33:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793604789; x=1794209589; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uhlq7lRBnMZgN/FlVC6dxixNTQE9Qh0fbitp0y0qEhA=;
+        b=FijoGuQSUaP574cBOPnGIczHrUOjWFNk+Jrj5n35e1QLUZFUl92Q2mJQAAIRY/qjmt
+         yfSIm4cqlrnhqOIhYqMtBfb1vR9mQZtZZuVQk7vUKi/4kAkWME4ZK/onJy0/xUFlCPay
+         P/RYk7M5cYEYydnSHpjzXyv0mTCTPnOJSmOJV0JxkzAPKs4GpSCTpso6tr+e5CyPQLcK
+         5VIY2bgxCNC21HzAb5ZiGCt8JMbOFVDuWDQTJjY7H+YjIm0oweELaFeyNgqG26pMFstz
+         UmlqdiGKZiiWqzGeiQ3nheYmhEBke39hbZKtUL56OgNdNlkET4GIFtEGaUhY8SCkz8/C
+         8S3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793604789; x=1794209589;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uhlq7lRBnMZgN/FlVC6dxixNTQE9Qh0fbitp0y0qEhA=;
+        b=K5YXMcJyWuhzUNX3R+bJGOP19hEOv6CvupMJxqFF4gZ99wLko4oWz7c4gwmAOlCH9O
+         cPLRt+0x6GDxp/Kkq4N6M7hZqzsSi3Vkj679gTtCIApd84MX+lqoEZAsUf+uhvk0aWS3
+         B+3wpqP8266N9cJCKHC4d8Iix9gDKjete8RsMSa0sFc6NsOrRYa0NOYXXV1lhysBEv7C
+         V8piZ4SmK74jp1HLg/i6gpnYvcVQU0zgFbYvs2Vz4RcGU7QrIsba4cngfETW5gHECEBM
+         UEMLffpVV8i1Mk5CrHgMRJkZ0XNIxlSDF+pDln9MOozoaY11ToQnqvG9ZsVoLNSO9VBW
+         KUWg==
+X-Forwarded-Encrypted: i=1; AKwUvBxxzFUf018JoDvbUO78Js+mEKdLbw72Nbn7iISricd5IQk+5um0HT2ECtGsKJcIVeXiniU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8iBcNnFe8KJXfVBA+XAihAl59qrU7PZQ0avBk4EXVZUv4QBMA9
+	3qscdCJFfm4kT4z/xIFwofRxE/LWihH0uqFMEdUr2s3D5l7mT69IXHra
+X-Gm-Gg: AYBFou2Se/zIcRWGV7gQt7VM1POUJpNuyLKZABHHSgQSWz3xpy88e2ZwVWeiCdKnkAZ
+	6NtIjEGH0PE8yFqKC6BzYcLWsifDrhcsqn6mygrytSCxxLSt2cSVj9Y69LP2HncpmDGvpJm/IvU
+	iMS8IMUe4J6IWUQGHkwsJH7ARR/7lJutSXDWgOgRBGwmTcnTOjm+yatIxrg7sz+9/xTA/0gR0Io
+	mEFNBnEXb4zzSwAvm+CA7bZN1pkI4uYAnu/97FW09MjkR2076DppL4+Rv9jufi0ZtLLIMrMAXCh
+	zvQoPLxWxW7UJeylF53B4vPI/8NqNf08JSa0P6KcZvHNc53NnfqIWz1RMLvkJCUjGm529wqDGMI
+	/Q/cicjFjJW53ncSNIXapMAeec8RIxvmGDUnQMws3StjW5yiqDnbcbEF5O2xzgIiTFs1BorZNW1
+	ui1uu+nWe7l7oRNEtj8NhLl7qu9jZW9UHDwteg9Td5eMVkYAMMOOztXng2MQsGz6T8ReQS6F1/J
+	dbdLsovbeDWu5Jk7xOcKTHOpP6BYWSsa1oMvTHdDDeR1hx5U6XAyf2W16UmgPY9iApLqzCOW0rp
+	x0WIJeQff7yx1GhEyFGwKAyU0efO0xCl9/N3Suf5g8c=
+X-Received: by 2002:a05:6a00:340a:b0:89f:d449:7526 with SMTP id d2e1a72fcca58-8a8321b41acmr7898596b3a.21.1793604788690;
+        Sun, 01 Nov 2026 23:33:08 -0800 (PST)
+Received: from iZj6c0kydq3fvfrtx5kta5Z ([47.86.51.122])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aada6c2c28sm1563174b3a.43.2026.11.01.23.33.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 23:33:08 -0800 (PST)
+From: Challvy Tee <challvy.tee@gmail.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	kas@kernel.org,
+	dave.hansen@linux.intel.com,
+	rick.p.edgecombe@intel.com,
+	vishal.l.verma@intel.com,
+	kai.huang@intel.com,
+	seanjc@google.com
+Subject: [PATCH v4] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module is not initialized
+Date: Mon,  2 Nov 2026 15:32:44 +0800
+Message-ID: <20261102073244.919864-1-challvy.tee@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <07cfa95a-e766-411b-8765-33352a04c0be@intel.com>
+References: <07cfa95a-e766-411b-8765-33352a04c0be@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,81 +106,111 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 19/28] KVM: x86: Advertise support for FRED
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Shivansh Dhiman <shivansh.dhiman@amd.com>,
- David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
- David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-20-sohil.mehta@intel.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <20260911213659.2025974-20-sohil.mehta@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/12/2026 5:36 AM, Sohil Mehta wrote:
-> From: "Xin Li (Intel)" <xin@zytor.com>
-> 
-> Advertise support for FRED to userspace after changes required to enable
-> FRED in a KVM guest are in place.
-> 
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
+Commit 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and
+kdump") made native_machine_crash_shutdown() call tdx_sys_disable(),
+whose only gate is compile time (CONFIG_INTEL_TDX_HOST).  A kernel that
+never initialized the TDX module therefore still issues
+TDH.SYS.DISABLE.
 
-The code change itself looks good to me.
-But this patch should be moved after patch 25.
+In VMX non-root operation on a SEAM-capable host, SEAMCALL causes a VM
+exit instead of a native #UD.  KVM injects #UD only since
+commit 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute
+SEAMCALL or TDCALL"), first released in v6.18.  On an older host the
+VMM gets KVM_EXIT_INTERNAL_ERROR and the vCPU never resumes, so
+machine_kexec() is never reached and no vmcore is written.  Kdump is
+thus broken only in guests on SEAM-capable hosts whose hypervisor does
+not handle the exit; plain kexec is unaffected because tdx_shutdown()
+only runs as a syscore op, registered after init_tdx_module() succeeds.
 
-X86_CR4_FRED is added to nested.msrs.cr4_fixed1 in patch 25, before that
-if the L1 guest enables FRED, it will break the nested case when do VMXON,
-which checks nested_host_cr4_valid() and it will fail during the bisect
-window before patch 25.
+Gate the SEAMCALL on X86_FEATURE_TDX_HOST_PLATFORM before issuing it,
+the way paddr_is_tdx_private() already guards its own SEAMCALL in this
+file.  Without that feature the module is never initialized, so there
+is nothing to disable; on a TDX host the gate is a no-op.
 
-> ---
-> v10:
->  - kvm_cpu_cap_clear(X86_FEATURE_FRED) in svm_set_cpu_caps() (Chao).
-> ---
->  arch/x86/kvm/cpuid.c   | 1 +
->  arch/x86/kvm/svm/svm.c | 3 +++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index ddb022cb203a..5682bacdfd32 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -1034,6 +1034,7 @@ void kvm_initialize_cpu_caps(void)
->  		F(FSRS),
->  		F(FSRC),
->  		F(WRMSRNS),
-> +		X86_64_F(FRED),
->  		X86_64_F(LKGS),
->  		F(AMX_FP16),
->  		F(AVX_IFMA),
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index f254a5ff570d..dd19c7b4e904 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -5518,6 +5518,9 @@ static __init void svm_set_cpu_caps(void)
->  
->  	kvm_cpu_cap_clear(X86_FEATURE_IBT);
->  
-> +	/* SVM FRED virtualization not implemented yet */
-> +	kvm_cpu_cap_clear(X86_FEATURE_FRED);
-> +
->  	/* CPUID 0x80000001 and 0x8000000A (SVM features) */
->  	if (nested) {
->  		kvm_cpu_cap_set(X86_FEATURE_SVM);
+It also decouples kdump from the host KVM version -- a guest cannot
+require its host to inject the #UD.
+
+Fixes: 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and kdump")
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Challvy Tee <challvy.tee@gmail.com>
+---
+v3 -> v4:
+ - Gate on X86_FEATURE_TDX_HOST_PLATFORM instead of
+   tdx_module_state.initialized, guarding the SEAMCALL itself the way
+   paddr_is_tdx_private() already does, as suggested in review.
+ - Drop the v3 rationale about covering the syscore and future callers.
+ - Retested with this predicate: kdump produces a vmcore on the
+   Alibaba ECS Emerald Rapids guest (6.12.0-278.el10 base).
+   v3: https://lore.kernel.org/all/20261030154851.907726-1-challvy.tee@gmail.com/
+
+Hypervisor -- KVM on all five (CPUID leaf 0x40000000), across three
+clouds: Alibaba Cloud ECS, AWS EC2 and Tencent Cloud CVM.
+
+Host log -- yes, from the Alibaba ECS host of the Emerald Rapids guest:
+
+  KVM internal error. Suberror: 4
+  extra data[0]: 4c
+  extra data[1]: 2f
+  RAX=0000000000000045 RDI=0000000000000045 RIP=ffffffff855422fe
+  R12=8000020300000000 R13=8000000300000000 R14=8000020200000000
+  Code=... 4c 8b 5e 28 <66> 0f 01 cf 72 05 ...
+  check runstate transition: 'running' -> 'internal-error'
+
+Suberror 4 is KVM_INTERNAL_ERROR_UNEXPECTED_EXIT_REASON; the two data
+words are the exit reason (0x4c = EXIT_REASON_SEAMCALL) and
+last_vmentry_cpu, i.e. kvm_prepare_unexpected_reason_exit().
+
+RAX and RDI hold 0x45 = TDH_SYS_DISABLE and RIP is at the '66 0f 01 cf'
+SEAMCALL opcode in __seamcall.  RAX still holds the input leaf rather
+than a status code: the SEAMCALL never returned.
+
+Reproduced with 'echo c > /proc/sysrq-trigger'.  All five have
+CONFIG_INTEL_TDX_HOST=y, kexec_crash_loaded=1, a kernel changelog
+naming both backported commits, and "TDX not supported by the host
+platform" in dmesg:
+
+  Microarch          x86_vfm  Cloud          Kernel             echo c
+  Sapphire Rapids    0x68F    AWS EC2        6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    AWS EC2        6.12.0-278.el10    no vmcore
+  Emerald Rapids     0x6CF    Alibaba ECS    6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    Alibaba ECS    6.12.0-278.el10    no vmcore
+  Granite Rapids     0x6AD    Tencent CVM    6.12.0-278.el10    no vmcore
+
+That dmesg line is printed by tdx_enable() when
+X86_FEATURE_TDX_HOST_PLATFORM is clear, so the feature this patch tests
+is absent on all five.
+
+Controls, each producing a vmcore: the same platform on a kernel
+without 5b25f249be32 (tdx_sys_disable absent from kallsyms), platforms
+without SEAM support (Skylake, Cascade Lake, Ice Lake, AMD), and plain
+kexec.
+
+With the gate applied kdump produces a vmcore on the Alibaba ECS
+Emerald Rapids guest, retested with this predicate.  The Granite
+Rapids guest was verified with the v3 predicate and not re-run; the
+AWS and Tencent guests are reproduction evidence only.  No TDX host was
+available, so the no-op case is reasoned from the code, not measured.
+
+ arch/x86/virt/vmx/tdx/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 96ced0494b68..9b01131f7b7b 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2321,6 +2321,9 @@ void tdx_sys_disable(void)
+ 	struct tdx_module_args args = {};
+ 	u64 ret;
+ 
++	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
++		return;
++
+ 	/*
+ 	 * Don't loop forever.
+ 	 *
+-- 
+2.52.0
 
