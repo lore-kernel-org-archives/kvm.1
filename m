@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793655340;
-	b=u4k1FYI0XXhJW1W3sIucfvHizfwQvN6LEArk7PqsyagOssPZopIkoLUXSqE9S5LbsPGr
-	 Sro8+wT5vajjHtZlU00POEO8InPBk2nHTrcNnzO+fgubLBZ87SZz6qPZKqQ/pvBGUI66y
-	 TX4KWfmLRdLAzQtUBlDrHfKjNNBecn4rT6eoapt/HdBmvLhc0BKjh8LoJxN8CduKZtMbC
-	 vSVB1mAtARje2Av1REumGMmt2dIxvEcB4WpDghapwlh9NF5IDL2CodSQW7KIfio3HcFf2
-	 qhYp69BiH9PgSceTfHNcxEjblW9iTa/W0LCR6YNJ6DLdMotmNoPZII8DtOewvfmxzAQ==
+	t=1793655347;
+	b=eRsISG12Ys1aV11hcBfI6QO/rf2lOnGkhyX1ubnaeqK658yg6RhYbrEz+/CZ5Ovefi45
+	 Ff8lr8IWyCgh0TXw7WlpUc/zGFJ/OBf/D4XtbaFNe5aRiPE0H8/4xoIle31zQrUjBKCpH
+	 KGcTyUZuddJbTl0iKJ88gj6DA+1+PjVpAgnTYgbdaCN4ZCiCnmZr23goJhZY/bxsbyYXZ
+	 tdalETAh0brZtCmEV3hs87O8c4Cz6ch5PbZ+TyhufTH5+79Y1psxxlJ7tK5Dh4ysg9zcm
+	 Gc2NeBKGnN6BlgxyKNwG8VIb5yiMjPkbZBJ9Z4vCjaUKMpeRIuFVI7h7r96ZKvAjo0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793655340;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793655347;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Ph63pIapK/Oi0jQftYWPnDgvG3tpuV/CW0Q/GMRXUhc=;
-	b=r4Ukv5LCH/2/X7sfRbXSH3jlz8rqLN8wzuZhVANdLIVY+4okRjDyd+/vmabLqt26TQHs
-	 f6FdXiDdPEzufWaUGueAYPB1b0rUPy1hKSJS7prEEQrDgFNYfaUB6MYdn44mV1s/dPfMQ
-	 uEb5b81frh8lG14PC3mYPZTeNMY5bQ7k1iNbQvvaq9hRjNY1OEg/vrqsZC8ia4Y4BFLod
-	 DuY4AiEgkNFmPo5pmmuyeC6InXurOdHTlDu06R7gbhbY47dYuE9UHclm5M6hid1Ahy8hU
-	 FXfU2INZn0jhr0sP5SInhi5dO6ha2c7SylyDVuiFZjbEKO9YICCtvtgwP5GdVPvjYbA==
+	bh=dnGiv57fSB8tRBhHO4hTxTN8Igh7JurugZ2Ga57Y1Oc=;
+	b=QIaMG9+7z/Y8ErEwNwyHf7AH29U15TZv3xLKeAN85/YvOH34pDkxZaR3lCzuH/tDBd4w
+	 dcDrJRUBAk0pb5BJ+CfwSnIg6ja3NVyYbJHkqG4mR5NcnvVCv9HxWGnJB/RPeT3aAViVq
+	 gdB9Ny00upOofFQyFGocdxEoXXTHFnHrthEU0Tp9Cbw4ZBNdP4qZMU8O/hVvoIaKOPfiD
+	 UvVi/vNletmcjS/80s2HEB8aK2KxSSMQYvLnLajqEsg52zlZUqALJreEEFe2kswWuyOri
+	 bS83+I+5zhTCTNDQr4p7YlsinSZ1ANI6wd+P+WECuRm/uZmGqJzB9OiVBG0rC+6dvAg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=DHxj4pvi;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HlJDW6u8;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC326083635
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 21:35:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBC326083635
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AF6606D806
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 21:35:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44AF6606D806
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=DHxj4pvi
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HlJDW6u8
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B2841595;
-	Mon,  2 Nov 2026 13:35:36 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A51941595;
+	Mon,  2 Nov 2026 13:35:43 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6CAF3F673;
-	Mon,  2 Nov 2026 13:35:37 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9E8A83F673;
+	Mon,  2 Nov 2026 13:35:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793655339; bh=yjBWfAzTzu7cyp4c6c4m2tl0EMMFBBETllhL3u+i548=;
+	t=1793655346; bh=a0AmMyXowohuDt4LPdeW03BlhZ/e81olal2W92DqvQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHxj4pviYIomFwpKCXlPWsImmpMdUATqNSIY/oTaQs+TtMendL9c7nV4YxmElU4iL
-	 p4ebodaZtRSF44QYkEKCafTovlFmEp7shSxIIGz1XCOwdlB8eRx1Xs33gNTOxMPXzl
-	 KQmEoM2zKY+NizL9mvyVa7KZVavQww0PgRhPQyPs=
+	b=HlJDW6u8WHgis9UUZ6I21UhiZT8ikTYoNOnvaTgEMhHCN7zdmdi6MHarYMDFwbsgo
+	 5SXKx5Yyx/WqgIb55tPwFF7JGJxYFRJa9fRqm3CGL+XEV0pNBSm5wAtPf6q8LV/tHb
+	 v8zlYS1wuNdjR77Q0yGGbffDaIpz5TwHQs5MpT98=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -51,9 +51,9 @@ Cc: vladimir.murzin@arm.com,
 	kvmarm@lists.linux.dev,
 	timothy.hayes@arm.com,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v4 19/23] arm64: Add proposed GICv5 ITS UAPI definitions
-Date: Mon,  2 Nov 2026 21:34:09 +0000
-Message-Id: <20261102213413.4136118-20-sascha.bischoff@arm.com>
+Subject: [PATCH kvmtool v4 21/23] arm64: Describe the GICv5 ITS in the DT
+Date: Mon,  2 Nov 2026 21:34:11 +0000
+Message-Id: <20261102213413.4136118-22-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261102213413.4136118-1-sascha.bischoff@arm.com>
 References: <20261102213413.4136118-1-sascha.bischoff@arm.com>
@@ -68,44 +68,81 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Mirror the GICv5 ITS device type, address type and size from the posted
-KVM GICv5 ITS series. These definitions are not part of the v7.4-rc1
-UAPI header sync.
+Add an ITS node below the GICv5 IRS node with the CONFIG frame as its
+register region. Add an MSI controller child node for the TRANSLATE
+frame, with a phandle and one MSI cell carrying the DeviceID.
 
 Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 ---
- arm64/include/asm/kvm.h | 2 ++
- include/linux/kvm.h     | 2 ++
- 2 files changed, 4 insertions(+)
+ arm64/gic.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/arm64/include/asm/kvm.h b/arm64/include/asm/kvm.h
-index 65ee09bd..8c701173 100644
---- a/arm64/include/asm/kvm.h
-+++ b/arm64/include/asm/kvm.h
-@@ -99,8 +99,10 @@ struct kvm_regs {
+diff --git a/arm64/gic.c b/arm64/gic.c
+index fca99aef..9a928e23 100644
+--- a/arm64/gic.c
++++ b/arm64/gic.c
+@@ -565,6 +565,7 @@ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+ 		reg_prop[2] = cpu_to_fdt64(gic_redists_base);
+ 		reg_prop[3] = cpu_to_fdt64(gic_redists_size);
+ 		break;
++	case IRQCHIP_GICV5_ITS:
+ 	case IRQCHIP_GICV5:
+ 		return gic__generate_gicv5_fdt_nodes(fdt, kvm);
+ 	default:
+@@ -612,6 +613,16 @@ static void gic__generate_gicv5_fdt_nodes(void *fdt, struct kvm *kvm)
+ 		cpu_to_fdt64(ARM_GICV5_IRS_SETLPI_SIZE)
+ 	};
  
- /* Supported VGICv5 address types  */
- #define KVM_VGIC_V5_ADDR_TYPE_IRS	6
-+#define KVM_VGIC_V5_ADDR_TYPE_ITS	7
++	u64 its_config_reg_prop[] = {
++		cpu_to_fdt64(ARM_GICV5_ITS_CONFIG_BASE),
++		cpu_to_fdt64(ARM_GICV5_ITS_CONFIG_SIZE),
++	};
++
++	u64 its_trans_reg_prop[] = {
++		cpu_to_fdt64(ARM_GICV5_ITS_TRANSL_BASE),
++		cpu_to_fdt64(ARM_GICV5_ITS_TRANSL_SIZE)
++	};
++
+ 	_FDT(fdt_begin_node(fdt, "gicv5-cpuif"));
+ 	_FDT(fdt_property_string(fdt, "compatible", "arm,gic-v5"));
+ 	_FDT(fdt_property_cell(fdt, "#interrupt-cells", GIC_FDT_IRQ_NUM_CELLS));
+@@ -646,6 +657,36 @@ static void gic__generate_gicv5_fdt_nodes(void *fdt, struct kvm *kvm)
+ 	_FDT(fdt_property(fdt, "cpus", cpus, sizeof(u32) * kvm->nrcpus));
+ 	_FDT(fdt_property(fdt, "arm,iaffids", iaffids, sizeof(u16) * kvm->nrcpus));
  
- #define KVM_VGIC_V5_IRS_SIZE		(2 * SZ_64K)
-+#define KVM_VGIC_V5_ITS_SIZE		(2 * SZ_64K)
++	if (kvm->cfg.arch.irqchip == IRQCHIP_GICV5_ITS) {
++		/*
++		 * GICv5 ITS node
++		 */
++		snprintf(node_at_addr, sizeof(node_at_addr), "its@%llx",
++			 (unsigned long long)ARM_GICV5_ITS_CONFIG_BASE);
++		_FDT(fdt_begin_node(fdt, node_at_addr));
++		_FDT(fdt_property_string(fdt, "compatible", "arm,gic-v5-its"));
++		_FDT(fdt_property_cell(fdt, "#address-cells", 2));
++		_FDT(fdt_property_cell(fdt, "#size-cells", 2));
++		_FDT(fdt_property(fdt, "ranges", NULL, 0));
++
++		_FDT(fdt_property(fdt, "reg", its_config_reg_prop, sizeof(its_config_reg_prop)));
++		_FDT(fdt_property_string(fdt, "reg-names", "ns-config"));
++
++		snprintf(node_at_addr, sizeof(node_at_addr), "msi-controller@%llx",
++			 (unsigned long long)ARM_GICV5_ITS_TRANSL_BASE);
++		_FDT(fdt_begin_node(fdt, node_at_addr));
++		_FDT(fdt_property_cell(fdt, "phandle", PHANDLE_MSI));
++		_FDT(fdt_property(fdt, "msi-controller", NULL, 0));
++		_FDT(fdt_property_cell(fdt, "#msi-cells", 1));
++
++		_FDT(fdt_property(fdt, "reg", its_trans_reg_prop, sizeof(its_trans_reg_prop)));
++		_FDT(fdt_property_string(fdt, "reg-names", "ns-translate"));
++
++		_FDT(fdt_end_node(fdt));
++
++		_FDT(fdt_end_node(fdt));
++	}
++
+ 	_FDT(fdt_end_node(fdt));
  
- #define KVM_ARM_VCPU_POWER_OFF		0 /* CPU is started in OFF state */
- #define KVM_ARM_VCPU_EL1_32BIT		1 /* CPU running a 32bit VM */
-diff --git a/include/linux/kvm.h b/include/linux/kvm.h
-index 8dff2fc1..c0e11993 100644
---- a/include/linux/kvm.h
-+++ b/include/linux/kvm.h
-@@ -1239,6 +1239,8 @@ enum kvm_device_type {
- #define KVM_DEV_TYPE_LOONGARCH_DMSINTC	KVM_DEV_TYPE_LOONGARCH_DMSINTC
- 	KVM_DEV_TYPE_ARM_VGIC_V5,
- #define KVM_DEV_TYPE_ARM_VGIC_V5	KVM_DEV_TYPE_ARM_VGIC_V5
-+	KVM_DEV_TYPE_ARM_VGIC_V5_ITS,
-+#define KVM_DEV_TYPE_ARM_VGIC_V5_ITS	KVM_DEV_TYPE_ARM_VGIC_V5_ITS
- 
- 	KVM_DEV_TYPE_MAX,
- 
+ 	_FDT(fdt_end_node(fdt));
 -- 
 2.34.1
 
