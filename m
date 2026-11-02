@@ -1,56 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793629820;
-	b=hnTeC+G489azlSeW7L93Hg99K1jOAVM9UHGXEQlELYPlm8V9fM23e+AMpalAbgXMv+P7
-	 FCqnK8TwrjU3OU1SuaF10xRWQmQiBn5a40w0S7/mQLoTwazkWLNgtCBDHnHqoy/gF08/T
-	 39Mu+Mb0Ofubvo47wdZcplNMesfhTGZVxz0n9vCwYCE0pPcxlJVfV6TcoVeDoxAkfAjYm
-	 FX7ruUN5TR3FB5NLQAHA30Hi571H/WYhNShXX3ie0lyKlg0JDDfXH9sYgvzzuSWRrXf9M
-	 6VcG5a/r/huAKaXwyBNgbVnpxdanX+mnBBvFijbQmxfKejMWylvoZ7e2n5eXLFudJIA==
+	t=1793630061;
+	b=BHuaqO45MqK2JKuBDtJElj3kCzrx9sc8EGLj3l9zwg5WhlWb6KY5BnKLHMksLFEU+Cu3
+	 v3DtACSpwZcWn7PCrOwCrioJ0AadujwvsC+i2H7SHSf/7PGvVur7VE2nTVzu8i3g/PM3j
+	 /UxRYuR/OL6BwQrqoVTzckaFWKKvVtBEyfr93XtMdOOi20bJGFHxv6BpFsLhbRPEfx3gi
+	 I1/PHeZ6hnHLTqcxr43oUp7dBfkaDGoiRXuTF/V6C3DudlVB7Z5H9aieTu//FO1s6fU+v
+	 b8r58vZi9k5oXSxDjY2EnMk2gJKJiKRmWZTY7aORdk/6062/IvI560D2HbmnYy/Rnmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793629820;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=IAwTGmEn4+E645f2RaNayW8NYkiS2vD6urhgC0twxhQ=;
-	b=yVwu3VgKt+zWlUYVFXjklvsAPm/vrNSXHa7b8NPMFR0UIg7rQYQeCOA8iofIF5Jm3U3P
-	 P2jFb1DlnAKgiBuXMIuyeYKUuY4DtQ6LiIAZBNZhWU4ARsUSQC8lB5MH3FtRM+jeovEsS
-	 ls+yY5MXCQmhVjRe0Sg0uv3kusdulPYZjeUV6zEVnuzYi6qrKMCNaSHdvZjAYTwtuqo/m
-	 TsWeTXWXja/F7Y7dhwOGfg0cBRY7XS0y/GNnizClbDD3K2yeNY9eHX8L9vDyHpKFKHl0o
-	 FFUuYtcpcVr7Oz1m2plFZmI5wM55TqAtRkKlgG78aFLO+MXZYYjgJka05XDVzHWpBFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793630061;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=mnbEcy9yAD6phXCBWi7ToEYZPml/PD9q0TObYO3iXg0=;
+	b=gd3D69qfRdCKL/R4m43d2B7pfsvntHWp19Kf9k3hnqRVIB7UhqeX3sYGz0k0q+mzFHaL
+	 wj89ldLkyukkQi/4Qn/j3GNMJLD+3OjktvTBMCz2BCAZTpsalKZhPi7ZAetP5BtpbwTEN
+	 c7JKQaHNU2NGZcKWXiZmFVNlC9cSiqVqk5mPQ4ZkaASJuoE7LrqCCAD006AQlRnzBxn0X
+	 E4Tb5yPPaD7QSF7OUOepP3jSRf088ZIEa50gwIvDQVXwCipz2klBHGfZyPOS3nMAZLtP+
+	 nUe7Wy8aHrfDdiph3HKBaSPRdkKmfSBCNkpFkf35yvAY51Mg5IEGxDxfnpXXVaHdKHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9HHfd4R;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB9D60716EF;
-	Mon,  2 Nov 2026 14:30:20 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OrR46o0z;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53808606B0ED;
+	Mon,  2 Nov 2026 14:34:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53808606B0ED
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9HHfd4R
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53411F00A1F;
-	Mon,  2 Nov 2026 14:30:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629819;
-	bh=IAwTGmEn4+E645f2RaNayW8NYkiS2vD6urhgC0twxhQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M9HHfd4RCe3AAOrQbSQCUwDs5WdjsNMqgMbGKMeBNsT/NzetivNK0Vpq6QmdwSgtg
-	 IkHOHz20d1+AxWfyuGx38Tu4ib6W5u7r12sqlDbLIGfgWO7nvEwWCmlSBfPtUOgcOO
-	 xvkVFsctWhgnVqfvheiPCqcKB18d5cGTwcxdnhmquaYA2fg9l9dd8ns++Q2yF01+oM
-	 b6tyzQh3ru4RFBTamqh5Rg1GJiBjwlCQjJMWfZUM+7sS0gVTSKSq915/yNFHBPKuHc
-	 410oTO9xzupIAQYD1SN6PRA32j2X//P9Qdr1qBplSeaeh4b6G1oE6ggeeoCpey/PhU
-	 2avWmvdVDv31g==
-Message-ID: <sashiko-outbox-193575@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 02/11] KVM: arm64: CCA: Introduce Realms
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steven Price" <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
-In-Reply-To: <20261102141304.126883-3-steven.price@arm.com>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-3-steven.price@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 14:30:19 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OrR46o0z
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7C1CD1576;
+	Mon,  2 Nov 2026 06:34:16 -0800 (PST)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3F42D3F59E;
+	Mon,  2 Nov 2026 06:34:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793630059; bh=sSMXuhaToN1bbAGIonxsHXOHufl/pcpSiAvNaSVjj+o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OrR46o0zexxiwk2zJWR5KHZn9xMWBWhTC1MviO+EetdzupvPVTzTZsZ4QeJxUM3+L
+	 XJ3Rvwgg9U7dRNVQm62aibAmTq/cDOGknoI2kI+vuyt/LJ4BLAFCf3NvpYpeOAekuo
+	 u7A3xYfqid7T5oZMMXLVocyyLHQU439ZM9ugRbeM=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 09/15] KVM: arm64: Handle HDBSS faults
+Date: Mon,  2 Nov 2026 14:34:03 +0000
+Message-ID: <auifWrY1u72afXfJ@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20260929103655.85107-10-zhengtian10@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-10-zhengtian10@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,120 +88,131 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] KVM: arm64: premature kvm_arch_has_private_mem() breaks gmem check=
-s and caps
-- [Low] KVM: arm64: duplicate kvm_arm_vcpu_finalize() declarations in kvm_h=
-ost.h
---
+On Tue, Sep 29, 2026 at 06:36:49PM +0800, Tian Zheng wrote:
+> From: Eillon <yezhenyu2@huawei.com>
+> 
+> Once the buffer is full, hardware stops promoting writable-clean
+> descriptors and raises a stage-2 Permission fault with
+> ESR_EL2.ISS2.HDBSSF instead. Failed HDBSS accesses, such as external
+> aborts and granule protection faults, are reported the same way.
+> 
+> Dispatch from kvm_handle_guest_abort() via the new esr_iss2_is_hdbssf()
+> helper. FSC == OK means the exit path already flushed, so resume the
+> guest; any other FSC is an error - clear it and report -EFAULT.
+> 
+> Signed-off-by: Eillon <yezhenyu2@huawei.com>
+> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> ---
+>  arch/arm64/include/asm/esr.h           |  5 +++++
+>  arch/arm64/include/asm/kvm_dirty_bit.h |  1 +
+>  arch/arm64/kvm/dirty_bit.c             | 29 ++++++++++++++++++++++++++
+>  arch/arm64/kvm/mmu.c                   |  4 ++++
+>  4 files changed, 39 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+> index f816f5d77f1a..4b3ccd407faa 100644
+> --- a/arch/arm64/include/asm/esr.h
+> +++ b/arch/arm64/include/asm/esr.h
+> @@ -437,6 +437,11 @@
+>  #ifndef __ASSEMBLER__
+>  #include <asm/types.h>
+> 
+> +static inline bool esr_iss2_is_hdbssf(unsigned long esr)
+> +{
+> +	return !!(ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF);
+> +}
+> +
+>  static inline unsigned long esr_brk_comment(unsigned long esr)
+>  {
+>  	return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;
+> diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+> index d828e6b43fe9..eb2039820777 100644
+> --- a/arch/arm64/include/asm/kvm_dirty_bit.h
+> +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+> @@ -39,5 +39,6 @@ static inline bool vcpu_hdbss_enabled(struct kvm_vcpu *vcpu)
+>  int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu);
+>  void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
+>  void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu);
+> +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu);
+> 
+>  #endif /* __ARM64_KVM_DIRTY_BIT_H__ */
+> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> index be0d12555c84..893a8c4248bc 100644
+> --- a/arch/arm64/kvm/dirty_bit.c
+> +++ b/arch/arm64/kvm/dirty_bit.c
+> @@ -98,3 +98,32 @@ void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu)
+>  	vcpu->arch.hdbss.hdbssprod_el2 = prod;
+>  	isb();
+>  }
+> +
+> +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu)
+> +{
+> +	u64 prod;
+> +	u64 fsc;
+> +
+> +	if (WARN_ON_ONCE(!system_supports_hdbss()))
+> +		return -EFAULT;
+> +
+> +	if (WARN_ON_ONCE(!vcpu_hdbss_enabled(vcpu)))
+> +		return -EFAULT;
+> +
+> +	prod = read_sysreg_s(SYS_HDBSSPROD_EL2);
+> +	fsc = FIELD_GET(HDBSSPROD_EL2_FSC_MASK, prod);
+> +
+> +	if (fsc == HDBSSPROD_EL2_FSC_OK)
+> +		/* Buffer full: the exit path drained it before handle_exit. */
+> +		return 1;
+> +
+> +	if (fsc != HDBSSPROD_EL2_FSC_ExternalAbort &&
+> +	    fsc != HDBSSPROD_EL2_FSC_GPF)
+> +		WARN_ONCE(1,
+> +			  "Unexpected HDBSS fault type, FSC: 0x%llx (prod=0x%llx, vcpu=%d)\n",
+> +			  fsc, prod, vcpu->vcpu_id);
 
-commit d7e08ee0dbb02a4cf114f13c026edc843145fe6e
-Author: Suzuki K Poulose <suzuki.poulose@arm.com>
+Any reason for using if() before warn_once, given the first parameter is a 
+condition? I mean, why not use, instead:
 
-KVM: arm64: CCA: Introduce Realms
-
-This commit adds foundational infrastructure for Arm CCA Realm VMs,
-including the VM_REALM flavor, a static key for RMI availability,
-per-VM Realm state tracking in struct kvm_arch, and initial feature and
-memslot checks.
-
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/k=
-vm_host.h
-> index ccd2dc8f73c3a..7d0222047ca1e 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-[ ... ]
-> @@ -1572,30 +1584,43 @@ struct kvm *kvm_arch_alloc_vm(void);
-[ ... ]
-> +#define kvm_vm_is_realm(kvm)		((kvm)->arch.vm_flavor =3D=3D VM_REALM)
-> +#define vcpu_is_rec(vcpu)		kvm_vm_is_realm((vcpu)->kvm)
-> =20
->  #define kvm_vm_hyp_is_distrusting(kvm)	((kvm)->arch.vm_flavor >=3D __VM_=
-DISTRUSTING_HYP)
-> =20
-> -#endif	/* __KVM_NVHE_HYPERVISOR__ */
-> +#define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
-
-[Severity: High]
-Does defining kvm_arch_has_private_mem(kvm) here cause a regression in
-guest_memfd memslot validation and capability reporting across arm64?
-
-Because CONFIG_KVM_PRIVATE_MEMATTR_VM is not selected on arm64, defining
-kvm_arch_has_private_mem activates the preprocessor branch in
-include/linux/kvm_host.h that sets gmem_in_place_conversion to true at
-compile time:
-
-include/linux/kvm_host.h:
-    #elif defined kvm_arch_has_private_mem
-    #define gmem_in_place_conversion true
-    #define kvm_is_private_gfn kvm_gmem_is_private_gfn
-
-With gmem_in_place_conversion unconditionally true,
-kvm_gmem_prepare_memory_region() in virt/kvm/guest_memfd.c sets
-KVM_MEMSLOT_GMEM_ONLY on every guest_memfd memslot even when
-GUEST_MEMFD_FLAG_MMAP is not set:
-
-virt/kvm/guest_memfd.c:kvm_gmem_prepare_memory_region() {
-    ...
-    if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
-        slot->flags |=3D KVM_MEMSLOT_GMEM_ONLY;
-}
-
-As a result, the check in kvm_arch_prepare_memory_region() in
-arch/arm64/kvm/mmu.c that rejects non-mappable guest_memfd memslots:
-
-arch/arm64/kvm/mmu.c:kvm_arch_prepare_memory_region() {
-    ...
-    if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
-        return -EINVAL;
-}
-
-is bypassed for non-Realm VMs, allowing userspace to bind a private
-guest_memfd created with flags =3D=3D 0 via KVM_SET_USER_MEMORY_REGION2 and
-fault those pages into non-Realm stage-2 page tables through gmem_abort().
-
-In addition, when userspace queries
-KVM_CHECK_EXTENSION(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES) on the /dev/kvm
-fd (where kvm is NULL), kvm_vm_ioctl_check_extension_generic() in
-virt/kvm/kvm_main.c calls kvm_supports_private_mem(NULL):
-
-virt/kvm/kvm_main.c:kvm_supports_private_mem() {
-    return !kvm || kvm_arch_has_private_mem(kvm);
-}
-
-virt/kvm/kvm_main.c:kvm_vm_ioctl_check_extension_generic() {
-    ...
-    case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
-        if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
-            return 0;
-
-        return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-}
-
-This advertises KVM_MEMORY_ATTRIBUTE_PRIVATE on all arm64 hosts even when
-KVM_MODE_RMM is not active and while kvm_gmem_set_attributes() in
-virt/kvm/guest_memfd.c rejects KVM_SET_MEMORY_ATTRIBUTES2 with -EINVAL on
-every creatable VM.
++	WARN_ONCE(fsc != HDBSSPROD_EL2_FSC_ExternalAbort &&
++		  fsc != HDBSSPROD_EL2_FSC_GPF,
++		  "Unexpected HDBSS fault type, FSC: 0x%llx (prod=0x%llx, vcpu=%d)\n",
++		  fsc, prod, vcpu->vcpu_id);
 
 > +
-> +int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
-> +bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
+> +	/* Clear FSC so hardware dirty state updates can resume. */
+> +	write_sysreg_s(prod & ~HDBSSPROD_EL2_FSC_MASK, SYS_HDBSSPROD_EL2);
+> +	return -EFAULT;
+> +}
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 85a98d2c23a9..7bf82d65041c 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -15,6 +15,7 @@
+>  #include <asm/pgalloc.h>
+>  #include <asm/cacheflush.h>
+>  #include <asm/kvm_arm.h>
+> +#include <asm/kvm_dirty_bit.h>
+>  #include <asm/kvm_mmu.h>
+>  #include <asm/kvm_pgtable.h>
+>  #include <asm/kvm_pkvm.h>
+> @@ -2315,6 +2316,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+> 
+>  	is_iabt = kvm_vcpu_trap_is_iabt(vcpu);
+> 
+> +	if (esr_iss2_is_hdbssf(esr))
+> +		return kvm_handle_hdbss_fault(vcpu);
+> +
+>  	if (esr_fsc_is_translation_fault(esr)) {
+>  		/* Beyond sanitised PARange (which is the IPA limit) */
+>  		if (fault_ipa >= BIT_ULL(get_kvm_ipa_limit())) {
 
-[Severity: Low]
-This isn't a bug, but commit df6a70516adec8 already moved the declarations
-of kvm_arm_vcpu_finalize() and kvm_arm_vcpu_is_finalized() earlier in
-arch/arm64/include/asm/kvm_host.h right below VCPU_PKVM_FINALIZED:
+I did not get the criteria used to positioning it here:
+Why placed before is_abt, if not using the result before returning?
+What is the rationale to putting it here?
 
-arch/arm64/include/asm/kvm_host.h:
-    #define VCPU_PKVM_FINALIZED	__vcpu_single_flag(cflags, BIT(2))
-
-    int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
-    bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
-
-Can these duplicate declarations be dropped?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102141304.1268=
-83-1-steven.price@arm.com?part=3D2
+Thanks!
+Leo 
