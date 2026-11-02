@@ -1,122 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793654916;
-	b=MzzVaqWUNRxzY2yeXEGFqa2Fdah9pVkyJXr+bfj/tySViBPOMmGREYOWrcboDaGb9t7L
-	 4GjNdmbGmK+lX6+JibIty1cQrihejbyYzgDKFjZVvO8R4k8je3GIcXSzpkxtv++q+97vm
-	 py9l4Y8/dn3VarrXyq5Gz312gmi9wiaBnyf3KqJJM++qFA0nde5nbp38zCEWtBig0SyA4
-	 zX84p+RJPd0vgeDx52Qm4Nwa6vu/IosmpWvF2bMi3NoZ8iuxPROJCJDIcU2SEohLKIfla
-	 wLew6cbb1f8xTEutF1Uo1f35Hr75xJIU9JwxhrNi+7fhKwkrE4tLSWUsG+s4mZIY0iQ==
+	t=1793654990;
+	b=R8gbtGgRBVRL/W8Gjr9btknF8r8ulf0szuzbcdaKcrFmLOW7+y9wsT2Sq5+mCr0JV5Y9
+	 yqwgBN9ous5dTFBDl2f9xpZrURs83WrTnVZwOiEc96zDj2R3QvwcO1AwiuYLQxQEs0gHf
+	 zlg2IT17JQbprKqjC8OVSwkbUFqkkcEBiuJuKTKrlHxoxFon9xlshCwddq5IdAns/IAiy
+	 shtCfvzKVhYgtK/EIhJavySBqrufksv1QvfwaXpxxBtKJe/MFT46cpRuv7gkgVOq7fUw4
+	 BV32st0/iL8VesCQu2x1xdceuQg3opKAbYCWTC9e7SQ3hasH3oF/JM8Zj6Z+W1wz31A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793654916;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=TGm7htG/ot06XVnjyNlWivSivtfZ8/BMdXWpNsPs7Uc=;
-	b=Qe2U6MNCHgLUqyAkTQMHeQ+cWZPf3cBa9YtqgAJBDIZLfJ4Hx39FuDC2PSlDGKo9TYty
-	 1/M5bG3qdxmTOjcyO/BkuZ3FQRFph6HCkrd3IQikkMNB4k+ZrIEekXkcshoJbEG6D+9CT
-	 LNGErdqFwKECiGmeE9pmYXhk4k7wf/dDtZClwcHmDlj6PTwsBQn2eYJajC29nSC5UU34u
-	 rhvbvsBCnkNfOG0mlgD387b+8n35rIC75PhosIP188lQoG+1IWTIh3U7LGnySLQzESxSm
-	 JUWSpp8wRWUsAaHYEmZPIgx0DvNzC7IazCljRxd0R8VA9gsX2QmIXQSduzCdsxNk23w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793654990;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=4x/8m1FBYoP1cRclqzCfOrS0dYnbYeqPVhu7UPr9Vg4=;
+	b=x66ksIDFtZ6fnFAKCLYy9mHDDUIqamtBSvavTf7n2bUPq+RmCO+2m6BBS9LvVAhwPtxD
+	 X6yxbQF8n3dEe45gdHx6gJXqcy5z26BXVUdDAx5QnfqIfTQUNqGlsXKZVsX9nxRtOB30o
+	 UEE6DdMJ5xlA9u85s+PUB+CPNs9/3nL15SRFhrKUPxfHRKO1zDpW1oP9EBGJ3Q26Neh39
+	 3Ag93K+v/yzw1kgm+gx4Qv8zcooAXJlbeHssH3E8kChLYcVQz1e/szYzIgC1WFcxvaUNS
+	 5M0Xgw4++hm1rlG5ysoXQKHvFfjp/4jgJbEcXV0yOx/RpVxg3Sr9NWL4bp42UPQuHYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b="QXwOH/vh";
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=HH36+inY;
-	arc=none smtp.remote-ip=202.12.124.149
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QveWtzFP;
+	arc=none smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31522606A330
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 21:28:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31522606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E290606EE82;
+	Mon,  2 Nov 2026 21:29:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E290606EE82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=QXwOH/vh;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=HH36+inY
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 8B3651D00105
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 16:28:34 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 02 Nov 2026 16:28:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793654913;
-	 x=1793741313; bh=TGm7htG/ot06XVnjyNlWivSivtfZ8/BMdXWpNsPs7Uc=; b=
-	QXwOH/vhIXfDrZu1Qk0CXDGEmKgZr+WwAzEg+cvHEXzetsuX9JdR+BdqRSuKTid4
-	Vp6RJ6SHWh41j1555UWZWGqftlT6lmGsfqm5lVvaoBkehPj84W0LcqH8krim03Aw
-	2GRZ+hcPUrIpcBGVtNXW/1GTQWi685KoY8dLM62sJU8SidG0/lYc8zWS0Jqrpc4y
-	gVuThcfHE9YlGhBn02Y0aV24YDUilm0XuKpmNw4e1tIPOLyCxHBBzr7dr+P9Fqd8
-	+x1V4IvCdMvUf1EzrLbC1Gw+Q2OBvAqXzbN2n2pc44dreYCE0jE0IJ7J6FOG+nLq
-	oNCaOAnGF9vqkVwZQus+9Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793654913; x=
-	1793741313; bh=TGm7htG/ot06XVnjyNlWivSivtfZ8/BMdXWpNsPs7Uc=; b=H
-	H36+inYiqZpVrJhWM4r4Set9S7Y4ecVfD3KC9SBzFOeuIATeMgTNSZe1/VUhrhRl
-	l5oAehtsBMUbneRsAFWQm47S0abvQhhbVR6m1qf7RxL0GVEH8dnT5ob8FxsPQ0SU
-	A1ri3f89G13AGaonzDa2Bqt1vw4d6Fxn+JMJWfU1vRCfYz7SgIBnNQj33mc66Fez
-	C76AEZViI0DlkCzdPh3jrj7IFZeSRukAuky52tEx3sVuwUmFI57OGKjM5Bv2ASQ9
-	hgnLA4Xd5B4N1WuPj2ScXvw6UtUcNhvDgKg8gWvobCYh05lJ/RFOpyBINHP2ZZXO
-	sMBNwIjtrq7kDLXnAyyrA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793654913; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:ZO+EnlpYKN5lXx7jw0PGUl7qAB0puvLLlnXvtyGOSl6tSQq
-	BGx+DwNrWSngJ6ycZgL737Ltl2/z0wC8GFSV5egSWQ3Bun5BAubqHvwqypD58+X3
-	1Qj93qKM5SGMw+r1Or8tkT4xxA7a6Uc9/rKwPtAd3Ip7vusOjjym59O76LohhNtV
-	+BDvg48yNvfoLzOjfei95Y7qOPSAIAD+lNZxavoDmNEymSSSu23MlbVzmB8zqsCN
-	9SxonDMcv3ZdrjyNpDnq8EyUeAdCmWlKPkDs/ro/Pr289XTKcZydLqaaYlRkMwq6
-	10icipT3ZkCZqfSMGfLyQsDFkTwa/tSkWQvD9FA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:fQhjXTHMSCFYw82lY+M39SpFziaJ40laPfR8sjV9ybc=:VH8M0/nV+qAehY48+/GbRvb8YZKsrkDGqiOxbaCH9ik=;
-X-ME-Sender: <xms:gQDpaqYkap5dV1xYYNADSvp4Z3UNhjDNSABOhEieUdidqhs-O8e6TQ>
-    <xme:gQDpapa83m0I5gvdO46VDbmb2EfL0pDKK7nRpkDexLegaBgc9pMSD51r2y08buktn
-    p7p98c5EZWNpD_Y5ayuvr3J6e8akUsUSQi40hYcBL5RR-8WyRjotKI>
-X-ME-Received: <xmr:gQDpanJgUFbHZJ8g0bcdKSJFkZy7_6o0w5ber55-us4st-mwBFS4h3PiwmfKgg>
-X-ME-Proxy-Cause: dmFkZTFaV+nXhVHS6u0I3Y+aHKbNt6XALkJlLTBxMAabrrMdV5swgz6nfNQeankIE4dplL
-    LR6XkZiaMnvltcX+zyCbZ/oNz4dopBkT2ix67Uk6FdBOB1EDVE3SQDs07ZfrQFHhUR39py
-    /wwMJDDKnpXDxMZXp0dy73waqetBx4SKOPOAb62nCDyV1Zn4inenhvmC/Om9mledTlkx0t
-    Pgi1p/YXbomzjqB7spBwHngbXpEG+IREMkqFw+vUSN/b2InXRHhoNBRfl5FMed8HJoUA3j
-    gV44Ci8CfEA/YkPfxX7IAn/zkr3AYtuuCPiHktW6lw4uNnf1BUjZ1jyfJYqM7SAsQsbyjs
-    qwoybRBeAuUeNEZa9+VaF50ftTC+dNauZCIyfdb7vzugHnJPlujkhcaTEh4X5/RqimjiF+
-    yeFImqTOz3TW+4A2nODTuIn9Mc1+FJVMiGXaLrZMi3wBF/Qn9Or/bLOkYhoqSlDE+SvATS
-    VxjDAyej2l7uv8SlufK/+8m2D+4Bx8v1F5y2EVl+KtO+onRrOolmiOWL2I4aBeGIP8N/6u
-    OiW4Rog6UdRa2OWjoHKyYVHRZlSVYdhcFGDTEurTrRv21sxdXz/mviz3HtFe9HHzzUxXwW
-    MNjPbK/RU5mHR5WqWI5RoNABfq8lZ7NimBDHjX9Z62ovYDZytxpLNknzCigQ
-X-ME-Proxy: <xmx:gQDpattcq-4Rt1y3w2gdouMexBSCcf2rHzhABtxastocGZ7xefxZeg>
-    <xmx:gQDpajUgZZ-BBuAoKzbw77I_rPYeUCb2O2Kii7v3Tt9WwbVgqihphQ>
-    <xmx:gQDpaggKZ22ohq8vIE4znStmFqNNFrM8ie4cOYCmEvpWXAkUs3QZWw>
-    <xmx:gQDpajqlwtiOSwvhk4cddDc8QchfPxh1uPPf8TbugLJFaDd0t3mOFg>
-    <xmx:gQDpakRHb22PhEfHh9AJ4g4BbtSffoPZXELItrMuJd4EkIfK_QL8BMvg>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Nov 2026 16:28:32 -0500 (EST)
-Date: Mon, 2 Nov 2026 14:28:29 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: Kyle Zeng <kylebot@openai.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org, Kevin Tian
- <kevin.tian@intel.com>, outbounddisclosures@openai.com, alex@shazbot.org,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH 1/2] vfio: Publish the container after all fallible
- initialization
-Message-ID: <20261102142829.3e2018c8@shazbot.org>
-In-Reply-To: <20261031042527.6418-1-kylebot@openai.com>
-References: <20261031042527.6418-1-kylebot@openai.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QveWtzFP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793654989; x=1825190989;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=0AAFSmAsu+r5QOHMwFL7eRdGUJum5paaN98p+0Untmo=;
+  b=QveWtzFPcU0bKo7AACZdVHSna2zqOqEiK/doJ0fLg/pN54x3ObU6AJAV
+   KbYjvznxqOFxDGRie4V2CnBzimhsrNTjLwsxLv7s9yDAossgexPyb/7HY
+   k0uwGZ1CLjl8iMVS1luvMjbq8LLadPxGEYVKdKxVKd8/gmbZnwtqy07u3
+   zOlsYGOvVXwhNBIrA0S2NcZMoMl9WArEWxeBhaQtI8543To+L0tBjx1QE
+   gXC/+9Z8gEWy1XnHzRU30PmsfJTvPn7EhDtx/QwT9kUBHOkEgGMDiNLtf
+   apd7qfnDE7Ev4HG9R/GTXmnf7t3qfbC7h9iMQh+vdoWwuWUa8FiVMMilU
+   g==;
+X-CSE-ConnectionGUID: 2mqCq7e7TseLa8vUklzSGg==
+X-CSE-MsgGUID: PZxR0wkxQGeP/JVjgrhj5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2267939"
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="2267939"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 13:29:49 -0800
+X-CSE-ConnectionGUID: mWTKvRJCQNmJHbv6HnNaYg==
+X-CSE-MsgGUID: ZPuqtrRKRJq4bNnpGs5Xtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="6342739"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 13:29:48 -0800
+Message-ID: <6c9a13c9-e6c1-4540-a8ca-1f0e800f3571@intel.com>
+Date: Mon, 2 Nov 2026 15:29:47 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -126,178 +72,118 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>, Sean Christopherson
+ <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+ <20260827223755.143247-12-zide.chen@intel.com>
+ <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
+ <auUQgRVFASkWtkoK@google.com>
+ <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
+ <CAO9r8zMxQnRLKGrW69rX7703AatWMp6KOXMObL9baHRPs4dW8A@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CAO9r8zMxQnRLKGrW69rX7703AatWMp6KOXMObL9baHRPs4dW8A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 30 Oct 2026 21:25:26 -0700
-Kyle Zeng <kylebot@openai.com> wrote:
 
-> vfio_group_init() publishes /dev/vfio/vfio before vfio_init() has
-> finished. The optional no-IOMMU backend is also registered after the
-> misc device. A concurrent open can therefore obtain a container while
-> the module is still COMING, even if a later initialization step fails.
+
+On 11/2/2026 12:49 PM, Yosry Ahmed wrote:
+>>>> OTOH, what about PerfMon v4 bits 58 (GLOBAL_STATUS_LBRS_FROZEN), 59
+>>>> (GLOBAL_STATUS_COUNTERS_FROZEN), and 61 (GLOBAL_STATUS_OVF_UNCORE)?  Per
+>>>> Intel SDM Vol. 4, Table 2-2, those bits are valid in
+>>>> IA32_PERF_GLOBAL_STATUS, IA32_PERF_GLOBAL_STATUS_RESET, and
+>>>> IA32_PERF_GLOBAL_STATUS_SET when CPUID.0AH:EAX[7:0] > 3.
+>>>>
+>>>> When those MSRs are passed through in mediated mode, the guest can set bits
+>>>> 58, 59, or 61 in hardware via IA32_PERF_GLOBAL_STATUS_SET. Leaving those
+>>>> bits set in pmu->global_status_rsvd for pmu->version >= 4 will break
+>>>> KVM_SET_MSRS(MSR_CORE_PERF_GLOBAL_STATUS) as well as any intercepted guest
+>>>> writes to GLOBAL_OVF_CTRL / GLOBAL_STATUS_SET.
+>>>>
+>>>> As I pointed out in patch 04/16, we can't pass through the PMU global
+>>>> controls unless their reserved bits match hardware.
+>>>
+>>> I think there are two other relevant (but pre-existing) problems here:
+>>>
+>>> 1. GLOBAL_STATUS_TRACE_TOPAPMI_BIT can leak from the host into the
+>>> guest. If a host PT PMI arrives while the guest context is loaded, bit
+>>> 55 will be set for the guest, and the guest won't be able to clear it if
+>>> OVF_CTRL is intercepted (it will #GP as it is reserved for the guest).
+>>> Similarly, the value can't be restored through KVM_SET_MSRS.
+>>
+>> I think mediated vPMU assumes that no host PMIs can be generated while
+>> guest PMU state is loaded.
+>>
+>> If PT state can leak into the guest via bit 55, similar leakage can also
+>> occur for other status bits, e.g. when the guest exposes fewer
+>> general-purpose or fixed counters than the host.
+>>
+>> The scenario where both host and guest can be active simultaneously is
+>> handled by the perfmon_mask case, where intel_mediated_pmu_{load,put}()
+>> filter guest-owned status bits.
 > 
-> The failed-module-init path frees the module without waiting for these
-> open files. misc_deregister() prevents new opens, but does not revoke
-> existing files, leaving their vfio_fops and callbacks in freed module
-> memory. An unprivileged first-autoload race can trigger this by exhausting
-> the global task limit before the IRQFD workqueue creates its rescuer.
-> A subsequent VFIO_GET_API_VERSION ioctl reports:
+> Looking at the code:
 > 
->   BUG: KASAN: vmalloc-out-of-bounds in __se_sys_ioctl+0xaf/0x120
->   Read of size 8 at addr ffffffffc089df70 by task vfio_race/1484
+> kvm_mediated_pmu_load() -> perf_load_guest_context() ->
+> perf_ctx_disable() will iterate PMUs with for_each_epc() and disable
+> them, which skips PMUs without PERF_PMU_CAP_MEDIATED_VPMU.
 > 
-> Move container initialization out of vfio_group_init() and make it the
-> last fallible step in vfio_init(). Register the no-IOMMU backend before
-> the misc device, and unwind both resources in reverse order. Once an
-> open can reach vfio_fops, module initialization can no longer fail.
+> Same for kvm_mediated_pmu_load() -> perf_load_guest_context()
+> ->ctx_sched_out(), it also uses for_each_epc() to iterate PMUs and
+> schedule them out.
 > 
-> Fixes: cba3345cc494 ("vfio: VFIO core")
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> ---
->  drivers/vfio/container.c | 22 +++++++++++++---------
->  drivers/vfio/group.c     |  9 +--------
->  drivers/vfio/vfio_main.c |  8 ++++++++
->  3 files changed, 22 insertions(+), 17 deletions(-)
+> pt_init() does not set PERF_PMU_CAP_MEDIATED_VPMU on pt_pmu.pmu.capabilities
 > 
-> diff --git a/drivers/vfio/container.c b/drivers/vfio/container.c
-> index 003281dbf8bc..bd245e23a55d 100644
-> --- a/drivers/vfio/container.c
-> +++ b/drivers/vfio/container.c
-> @@ -577,29 +577,33 @@ int __init vfio_container_init(void)
->  	mutex_init(&vfio.iommu_drivers_lock);
->  	INIT_LIST_HEAD(&vfio.iommu_drivers_list);
->  
-> +	if (IS_ENABLED(CONFIG_VFIO_NOIOMMU)) {
-> +		ret = vfio_register_iommu_driver(&vfio_noiommu_ops);
-> +		if (ret)
-> +			goto err_mutex;
-> +	}
-> +
->  	ret = misc_register(&vfio_dev);
->  	if (ret) {
->  		pr_err("vfio: misc device register failed\n");
-> -		return ret;
-> +		goto err_noiommu;
->  	}
->  
-> -	if (IS_ENABLED(CONFIG_VFIO_NOIOMMU)) {
-> -		ret = vfio_register_iommu_driver(&vfio_noiommu_ops);
-> -		if (ret)
-> -			goto err_misc;
-> -	}
+> Please correct me if I am wrong.
 
-This looks wrong to me, an error loading the vfio-noiommu IOMMU backend
-shouldn't cause the subsystem to fail.
+My apologies, this bug is indeed real because pt_pmu lacks the
+PERF_PMU_CAP_MEDIATED_VPMU capability.
 
-I think this is fallout from a13b1e472b93 ("vfio: check
-vfio_register_iommu_driver() return value") that had no other
-justification for inducing this failure than the fact the registration
-function can return an error.
+Adding this capability to pt_pmu seems intuitive, but unlike
 
-The error return is necessary for the module init use cases, not here.
+                       the core PMU (which merely toggles enable bits),
+Intel PT is an AUX-based PMU. Stopping and restarting it on every VM
+transition is heavier, and I'm not sure whether it could introduce a
+noticeable performance penalty.
 
-Unwrapping that as an unchecked error avoids the re-ordering here and
-in vfio_container_cleanup() below, and this unnecessary unwind
-collateral.
+However, whether the solution is adding PERF_PMU_CAP_MEDIATED_VPMU or
+some other mechanism to enforce mutual exclusion between pt_pmu and
+mediated vPMU, we can address that in a separate patch.
 
-This should be a separate patch, and use the correct lists per the
-MAINTAINERS file (mising kvm@vger for vfio).
+To immediately protect guest state and live migration in this series,
+I'm thinking of adding the following defensive filter in
+intel_mediated_pmu_put():
 
->  	return 0;
->  
-> -err_misc:
-> -	misc_deregister(&vfio_dev);
-> +err_noiommu:
-> +	if (IS_ENABLED(CONFIG_VFIO_NOIOMMU))
-> +		vfio_unregister_iommu_driver(&vfio_noiommu_ops);
-> +err_mutex:
-> +	mutex_destroy(&vfio.iommu_drivers_lock);
->  	return ret;
->  }
->  
->  void vfio_container_cleanup(void)
->  {
-> +	misc_deregister(&vfio_dev);
->  	if (IS_ENABLED(CONFIG_VFIO_NOIOMMU))
->  		vfio_unregister_iommu_driver(&vfio_noiommu_ops);
-> -	misc_deregister(&vfio_dev);
->  	mutex_destroy(&vfio.iommu_drivers_lock);
->  }
->  
-> diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-> index b2299e5bc6df..dc8f8a38723f 100644
-> --- a/drivers/vfio/group.c
-> +++ b/drivers/vfio/group.c
-> @@ -898,14 +898,10 @@ int __init vfio_group_init(void)
->  	mutex_init(&vfio.group_lock);
->  	INIT_LIST_HEAD(&vfio.group_list);
->  
-> -	ret = vfio_container_init();
-> -	if (ret)
-> -		return ret;
-> -
->  	/* /dev/vfio/$GROUP */
->  	ret = class_register(&vfio_class);
->  	if (ret)
-> -		goto err_group_class;
-> +		return ret;
->  
->  	ret = alloc_chrdev_region(&vfio.group_devt, 0, MINORMASK + 1, "vfio");
->  	if (ret)
-> @@ -914,8 +910,6 @@ int __init vfio_group_init(void)
->  
->  err_alloc_chrdev:
->  	class_unregister(&vfio_class);
-> -err_group_class:
-> -	vfio_container_cleanup();
->  	return ret;
->  }
->  
-> @@ -925,5 +919,4 @@ void vfio_group_cleanup(void)
->  	ida_destroy(&vfio.group_ida);
->  	unregister_chrdev_region(vfio.group_devt, MINORMASK + 1);
->  	class_unregister(&vfio_class);
-> -	vfio_container_cleanup();
->  }
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 423ead48aafe..dfc48a9e0fe6 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-> @@ -1852,10 +1852,17 @@ static int __init vfio_init(void)
->  	if (ret)
->  		goto err_alloc_dev_chrdev;
->  
-> +	/* Publish /dev/vfio/vfio only after all other fallible setup. */
-> +	ret = vfio_container_init();
-> +	if (ret)
-> +		goto err_container;
-> +
->  	vfio_debugfs_create_root();
->  	pr_info(DRIVER_DESC " version: " DRIVER_VERSION "\n");
->  	return 0;
->  
-> +err_container:
-> +	vfio_cdev_cleanup();
->  err_alloc_dev_chrdev:
->  	class_unregister(&vfio_device_class);
->  err_dev_class:
-> @@ -1868,6 +1875,7 @@ static int __init vfio_init(void)
->  static void __exit vfio_cleanup(void)
->  {
->  	vfio_debugfs_remove_root();
-> +	vfio_container_cleanup();
->  	ida_destroy(&vfio.device_ida);
->  	vfio_cdev_cleanup();
->  	class_unregister(&vfio_device_class);
++ /*
++  * Scrub bits that are not virtualized for the guest to prevent
++  * possible host state from leaking into guest state and breaking
++  * live migration.
++  */
++  pmu->global_status &= ~pmu->global_status_rsvd;
+
 > 
-> base-commit: 70dd4ee72eb2d5793c62e71c14e3aba78e5a4e56
+>>
+>> https://lore.kernel.org/kvm/20260821222002.54907-1-zide.chen@intel.com/T/#m90394fda6d71ed0dd539a579abfb0c1df1e044fe
+>>
+>>> (I think the PMI may also be lost as LVTPC points at the mediated vPMU
+>>> vector)
+>>>
+>>> 2. On AMD, bit 58 and 59 have a similar problem. HW accepts those bits
+>>> but they are reserved for the guest, so the guest can set them if
+>>> GLOBAL_STATUS_SET is passed through, but userspace cannot restore them.
+>>
+>> Right. That seems orthogonal to this series and could be addressed with
+>> follow-up fixes.
+> 
+> Maybe AMD folks on the thread will take a look :)
 
-Jason additionally asked[1] whether the try_module_get() via misc_open()
--> fops_get() should be the real barrier, preventing open until the
-module has fully initialized.  That seems a valid question here as well.
-Thanks,
-
-Alex
-
-[1]https://lore.kernel.org/all/20261030120845.GA3889730@ziepe.ca/
