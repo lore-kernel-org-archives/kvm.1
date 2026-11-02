@@ -1,97 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793655924;
-	b=IxjkXh4OuuBo00PV2033473lX1DmEHhxkmYqCPaSLCqwGPx3Is59QsHGEZ++JlRBLicO
-	 vqHS4pjRmNvHrnyrEvgtn+mrcBiM0dr+hy1kttKplmihl5mLE+/BvwO+9gwNOuHXkAY2v
-	 cvh4iwChiwUwaxnPC9X2PibCFnwGF/X1TlEsTs+ZvLQOlLA50OAWpq4kgAMsnoJHOxLKu
-	 OfZGeeEVW5GDo1G1DmmmaPOPYmW+LMXdLBHClc3vPXsc7ISUpZnbsO+24ag9YXz1Yw++k
-	 Rtap5oPLhZs7pzOjnTFCxIkNa8mxTMLCGHAsbHACjlTgjIBmyt4gceGYMpjHn28ynrQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793655924;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793657020;
+	b=F+0xga9JDdaYHQsiPd3dbX+bCETGaeD4R8MMJymnJLx4JJMn3ljH5POAR+h1tC777qs+
+	 z9FdPfy8LiV2jEVcG5jFdVPxw5h/Eaf3nMk8u5eH+W/F8NpHTM0+pGEfH2oo/nirAZiGx
+	 kalyJs/77B8ioSG93Hok5x/eXyYwesGD7nZbki1f3wmwrKJZFHxiLAoVAomQ0gavYtSzy
+	 0RJ4oyM7Xqc7g/bRKtCMLucjjsAT3Q3VEbpfVlOnKRN8aCEJbSrYW+auJDSoz1WqGjA4v
+	 M7KbyEWdul4dXEhma6HRfrq5hdR0f+IKz9l1FEFSeGeDFH1sdORFN+59rA9290ZP4Jw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793657020;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=q5JdWOppAER7/sVf+/wRTQ5JltDoWihbM3Khp4hBQTg=;
-	b=kjuF30ovitUI+zd85b04S+ckc/v6szve56LWBjhwJ+K+e70a63Uu2+8ZUwTvmpEoJGrI
-	 5q3Gmfu0KtOjH8ub95VnOit6rVJe8487j+tEx1JtonitdG7jChltwyM1ftW6r6vnFdxrF
-	 n34JbWQuAD8SCIs+jXI5queR0SyMu4ObfP6UZH/nKzbfs/n2o9vZksauWJFfIpNKDPw+3
-	 s7qB27dV1LfcUJP/smCKo/eCv79wKRXmtw7ieZIzzrzix1HwxdYA+plellSvA1Qjj/98J
-	 mTuRbfYUzewW/oYyBERVw65Qw4TX7Ccewauve1Pu2n1ccbtgemPthN0z/BJdU8inkTA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
+	b=Z3sL7ItnHA1ULDD775lX3nKe/DGe851MfdlYMxRBxArDPsZees7I0l7f63XAsvXwr34F
+	 7JmbG1PK9T3UWyPuPePSQG5URS8Ag26dP7OPIzHvWuCQ5L8Ee/a42WFT+ln7q0cTb9fFW
+	 W5/I6MQYsI/3WY4tUaH+QZIJzn+m2uQ+0ahml45nwhYTzhHQbH5i6LSG4cZRoZj1h1iff
+	 +YDh0DYGwiosRtmOQgzrezycYnVCEhpc5997XtrkRRy/Cci0BGElFCRRF0kFozOWq2W+7
+	 e1m0Soz6SqkO6A69DivbvQXcXUnnZUNdHnmhe44vGTlePTtOMhj0WovgsKTKHUUBw9A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=de9Kt5CT;
-	arc=none smtp.remote-ip=209.85.214.181
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eKIjyL9t;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42529606A32E
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 21:45:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42529606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD61E606A326
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 22:03:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD61E606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=de9Kt5CT
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e946155442so31367675ad.3
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 13:45:24 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eKIjyL9t
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so3093a12.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 14:03:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793657018; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Mmg142NcgWXk9fqAEtUgZS1rCdF2TA3ssATARFagSU7BtJbxaNhjZMFMgyHs8wIJI7
+         G8ajLGZ/imEjgQlNP1OJ316ihRF0nyx744odgCI4vqhfWeRw073Moy5kNjmCHXTpOQ8j
+         RPU47gqfIEEAWQJw2qT84fEwq/NJZsoZfkVHfX5aiYZ4HfjzpQ+ge67xQsY1XCuC6q2g
+         Q/9J4vMpBJ+h1UOSR90EMNv+1XZ1hxRlNXjkaIUxsDfhbzxTKIgmdOO/idnDjnv+4gkb
+         ufHGhi5N9Edbydcw9etju/3mmwL50FPQEYmszLSTSHn6DzFUwgWFWqwfhG/eixSE9g1g
+         WJCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
+        fh=OAu4jDtxRdlpD9DC7Y68/Xswor39swnViLJwWokWQBc=;
+        b=gqbJRtu9jw31NnCD+hqGpd8YI6F1MCUYMEzkuPFMGrDfglZ5fQaHqXPdxxYNqmpDjo
+         T/VcdYwXK9zNpXOFHzLhD1chJlTkNqCNtDqcTCvIQEBbJC8EEqEKF/SXaoBYixyvfNJk
+         H4hqdzZHvjErJBjejqxRU3eDdVWR4cOa5WaSQSfmb7K0RWkdmM3SDbL9f+JiYYUdqOgs
+         4r1Qe/Pu2Rh5mgdnevNUCRV6I89MhUZpCHrmarL4ivVUvKGIY6uhzYw54pXg3AhiQkDu
+         woAES0G9JDh8OPSJ4fylyaLxBRpYVyo7KuAcYi5Y4YqPMnpTYJJy2jvDhNIX2A7ha9a/
+         yDOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793655923; x=1794260723; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20260707; t=1793657018; x=1794261818; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=q5JdWOppAER7/sVf+/wRTQ5JltDoWihbM3Khp4hBQTg=;
-        b=de9Kt5CTxtyWM3N06gzLlqXfbp5WOfVOsPd00ZIGyw+wLuZ53xAn15Kk9DrPwuPHHs
-         fqE8vlRJK1sQeilEUi25dESfhuamVK9XQzSx4kR6tLrBwKa045VhrLvjuJgPoT46RAe5
-         oec9+BvmtL3okDCIy7/mIZG3G89p6/+5+fxEoBv0F/NtEqD3gwDjjDIakfu3ZwEurTNW
-         TBw9rBECj30cN2V+b0GpDdTaitNKwdkubnG0T61VGsweH5YHf9lDCUkS3N86PXJNysJT
-         fC9I0paRdU/SU79hCANwvz+CwQMjRF0lYJcexmHs//wji5d4xerIXda6STzf7i5OTCh+
-         VL0w==
+        bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
+        b=eKIjyL9tJJgkUM84z/AEYuKFdq2F89MguOg4/JVV770xf+cFqZnUOCaDRGoGs17CVK
+         5LsH3tiIEzTZrwgawdNY/w/0rnY1/NNaBZUDy13IjciYwldh5bZov4HLLdr/VTUqxe50
+         WIpzFdEtlxh7vlkRwrK2NbO/Dm//tNglyyJ7bzZgaGwUwgRRV5oMpsKtl9RA3inBJuG1
+         AbSeB2f5on544dmM+ku70U8aTDcmI+TX80ZvCRJVCjx3w1EyLvs8wdqT9a2Ga9mYhwZm
+         bHfRrTu2gSB5GCI46FK0Y22BQRXK4p7A8dFCIIWFFGB+uhp8r3AkeZwNcuTITCDriyYu
+         3R5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793655923; x=1794260723;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793657018; x=1794261818;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=q5JdWOppAER7/sVf+/wRTQ5JltDoWihbM3Khp4hBQTg=;
-        b=Ntn9GVHrOogM/XOkUhsoeEjyk4owiAzY9fZVZwn4RkMzfbkMVpMZ2fbcNPXvA8Qqug
-         AEWkx/hISytijRY6bzoPIi7rnL85aT5t2hGt+l3QS5OmBtkyR5UblKoql4p1z6EnZL1Z
-         Sm2QmuiPpd114n060cYqci88jaN0TI0z7S0C/2M6MJb3ZhzAeNM7x2TfjtsSnxPeCgT/
-         sHfx039TtROeHFkVM+sGWSXI9q9vQ9jn6lwhWEOgGW/aj/jZ6/QgRv25e3QCuEaQkLeL
-         fjAtMSXKVwO6+8QR/iy876i7UGbof6MS8ZWQUZ3cxxlQiyGavCT+VPBJT7PPaG7rwMhk
-         UUaw==
-X-Forwarded-Encrypted: i=1; AKwUvBxavsK0QETtb/i5aqtcwEK/JJhJ87CnCWDXRdEnpt8hNqLr9NLtiKzCxFNjALVnwHCZm/s=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/qQgxwPxjBEJ+rrFKl8R50Q+MVi/8CcJHRv09uVsaIjeZ0My/G
-	Eoiw3VaszQqrDh9uA8Ycc0C3dnrmxwUJY6bJsue62V3WiXrnj2X3Oe1B5uXIoR5lJw==
-X-Gm-Gg: AYBFou3BhGldEPJa+Y7VjxIUs+e/CIV9GzMUzDHVcvXtMOX14bO8fvrwM3pU8EjO9YA
-	VRo61+RD2JByHcOxAJZuiSRGZHG0lMaS+RuyYh+pS9cQMHPWEkFoftzP9MJDwdILlWb2s3vkUNY
-	uLgE08nkXm2QRDeeqb2BLbn1zUqNol2YxJfG9ZBwH+7loT6NI7rv2egze9rKm4g92sEvZRcMZU9
-	BLuKo5ULxG/qJG3CzHgC2kIIMrTTJ/XjUwgqm1IyZs8ykX/33QjdzlRruOCsoK+21EhkNqP3f0k
-	ss3iSUAcA1lvsKayAwCO7qX4hT51W9PigcOBxHfPwjZsGj+On9k4lO3jEzBINKed5vUDGP5YeHp
-	S8ooDkcY+wDMaiOQ8Jhzpd2VDrXFIllsv1aLUTnXjh2NBwepHutJKDQrcNUgcBnR1lpeaMCGXZU
-	hR6Gwkm3qsdeLWo2yUkVzjtGA50SzX+FIwxBCk15fkgoQIWlAKpeI5qzfXglbef16oO4lReRt+E
-	iVQlsexfVvmEyBR1ODjlt31ki2ZHozyi8WWWexIBDA+c5c1LkcQ60KP4P6wndxxy93N9NvauphM
-	YWcF8MVaCAzbfkWoPslGVh0PY+YMyxy9tG7oYMC8+O9wf3bwr3KcwFks/H8CgrYh
-X-Received: by 2002:a17:90b:570c:b0:3ac:8897:7ba9 with SMTP id 98e67ed59e1d1-3ae8985d52dmr10189518a91.56.1793655923061;
-        Mon, 02 Nov 2026 13:45:23 -0800 (PST)
-Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c29e619sm1046130a91.0.2026.11.02.13.45.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 13:45:22 -0800 (PST)
-Date: Mon, 2 Nov 2026 21:45:18 +0000
-From: David Matlack <dmatlack@google.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Shuah Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Matt Evans <matt@ozlabs.org>
-Subject: Re: [PATCH v2 2/2] vfio: selftests: Test BAR write faults after
- clear_refs
-Message-ID: <aukEbs9W2rnjb1jQ@google.com>
-References: <20261101062049.998160-1-almasrymina@google.com>
- <20261101062049.998160-3-almasrymina@google.com>
+        bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
+        b=EFdhicXvz1Q3ihedgmFBiZoAgHZ8aadP3U/5/Kpx+39997aUwuMjAhT7mbPHCegSuI
+         a0spNOnlHjSA7IakViJmaFK1HwA1xEsHycrIhTRuTbZDiGHLUus0NDgnqkrRj3+ctmJj
+         37zGwKqbY6F863ASgLD/TipKsHGzSWJtN7z/JuzPNNmJKQbwWv3an9vxnMcvcnpDhWbA
+         NwqW5nLd9Jg/K52St5evhGK6eO9VMyMFVQrb3AXp745wKYubGkcbpwvSL75VvBalP9Ny
+         9m0crHsB+Z9+1nWkd+2Fkg3Mp1KLqXs7llHijrIrv+F5f0dqofyBUfbejmQ2tyBytqGy
+         azAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw+dkbwhg55YH5R8DwiGut/O8NpaVrLR0DAhCKkhgwrPxEoXZkPlTm0lqwTTklNgOyehGA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9mg++H5TwtIpMOJca6aCxX6RPthdvZBJdZ3dUKei1W8M0yUyE8
+	QpXRgOiXwMeh1b8PFE2xy60aCVf2B+4kbKDaeJgTY5F6yPIS673RIhj4xhqurGrtnp1k1hbujQL
+	u1V4wK/dTNeNlQwXHrRxCJo/52DVTvxrah3Y165kc
+X-Gm-Gg: AYBFou2dQW+VF7glRLRYzDvwqasu7UqY6Oayx6c6o7ZsqHsCTjI6TSCxkmXzyffiyl8
+	I3LaDe+uBMRd2fXmQsCuZmLuK3VsuES5lU7ywyxCFJK6mao4S7OCT1HEq4cCunAXdRITHfmAGjd
+	6ksAetpBegLv66WFW1LxeiynlQD+KuU5gNW6guQexgfOipiDqeiLrbvdzLvLjx6/s9ucaH2P8/f
+	jp3jDwmQ9M6DBJ2v9Wtli3UOmeRGGzjL8Y1lXvXbkBBswJeYT1Lg4JxRAH1Ky7ryBc27GC1MBPs
+	6QNxaWu+iCaQHec3xwUK/M+5EdtdQRZAhUmi+o80biswxmJf9wF5A8YajpOKjp5dhSbwCQWYhX7
+	8Iyxx3+FZl9Q2xddO5kIJUBXuIM8qgUYeyFU3zA==
+X-Received: by 2002:a05:6402:2750:b0:6a6:7dff:61ab with SMTP id
+ 4fb4d7f45d1cf-6b53e7796a1mr3987a12.15.1793657017608; Mon, 02 Nov 2026
+ 14:03:37 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,158 +104,117 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261101062049.998160-3-almasrymina@google.com>
+References: <20261030212112.2598640-1-seanjc@google.com> <20261030212112.2598640-3-seanjc@google.com>
+In-Reply-To: <20261030212112.2598640-3-seanjc@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 2 Nov 2026 14:03:25 -0800
+X-Gm-Features: AclHuK_pbmXvVHoGFvB48dY3tOJxijbO3CKujkx_4ml0ueoZxbb4z5FYesg9juM
+Message-ID: <CALMp9eR-di2U5QZzDHh7CjnVg20ZnBcTBu0CKbbWh9QCxYiJdQ@mail.gmail.com>
+Subject: Re: [PATCH v4 02/23] KVM: nVMX: Don't force a full nested VM-Exit
+ when destroying a vCPU
+To: Sean Christopherson <seanjc@google.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>, 
+	Chris Mason <mason@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-11-01 06:20 AM, Mina Almasry wrote:
+On Fri, Oct 30, 2026 at 2:21=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> For all intents and purposes, revert commit b4b65b5642d6 ("KVM: x86: clea=
+nup
+> freeing of nested state") and go back to manually tearing down nested sta=
+te
+> when freeing a vCPU.
+>
+> When a vCPU is destroyed while L2 is active, KVM synthesizes a nested
+> VM-Exit, which flushes the cached shadow VMCS12 back to guest memory:
+>
+>   vmx_vcpu_free()
+>   |-> nested_vmx_free_vcpu()
+>       |-> vmx_leave_nested()
+>           |-> nested_vmx_vmexit(vcpu, -1, 0, 0)
+>               |-> nested_flush_cached_shadow_vmcs12()
+>                   |-> kvm_write_guest_cached()
+>                       |-> __copy_to_user(ghc->hva, ...)
+>
+> Accessing user memory via a memslot during VM destruction is broken, as
+> there are no guarantees that current->mm =3D=3D kvm->mm when the VM is dy=
+ing,
+> because the last reference to the VM can be put from a different process
+> than the original creating processes.
+>
+> And even if the original process does put the final reference, during
+> process exit, do_exit() calls exit_mm() before closing file descriptors, =
+so
+> vCPU destruction runs with current->mm =3D=3D NULL on a borrowed lazy TLB
+> active_mm.  If the borrowed address space has a writable mapping at the
+> to-be-written userspace address, KVM will corrupt an unrelated task's
+> memory since uaccess APIs, including __copy_to_user(), don't sanity check
+> current->mm (and *can't* sanity perform KVM's current->mm =3D=3D kvm->mm =
+check
 
-> +TEST_F(vfio_pci_device_test, bar_write_fault_after_clear_refs)
-> +{
-> +	const u32 rw_mmap_flags = VFIO_REGION_INFO_FLAG_MMAP |
-> +				  VFIO_REGION_INFO_FLAG_READ |
-> +				  VFIO_REGION_INFO_FLAG_WRITE;
-> +	struct vfio_pci_bar *bar;
-> +	bool tested = false;
-> +	int ret, i;
-> +	u32 val;
-> +
-> +	ret = clear_soft_dirty_refs();
-> +	if (ret == -ENOENT || ret == -EINVAL)
-> +		SKIP(return, "soft-dirty clear_refs unsupported (%d)\n", ret);
-> +	ASSERT_EQ(0, ret);
-> +
-> +	vfio_pci_cmd_set(self->device, PCI_COMMAND_MEMORY);
-> +
-> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-> +		void *vaddr;
-> +
-> +		bar = &self->device->bars[i];
-> +		if ((bar->info.flags & rw_mmap_flags) != rw_mmap_flags)
-> +			continue;
-> +
-> +		ASSERT_NE(NULL, bar->vaddr);
-> +
-> +		/*
-> +		 * clear_soft_dirty_refs() stripped write permissions from
-> +		 * vma->vm_page_prot on the unpopulated BAR mapping created by
+s/sanity//
 
-Sashiko's finding here is right. The BAR mappings may be populated
-already at this point. You can reliably zap the BAR mappings by clearing
-PCI_COMMAND_MEMORY. e.g.
+> since that is firmly a KVM-only concept).
+>
+> Furthermore, the shadow VMCS flaw is only the tip of the iceberg, as the
+> MSR load/store lists mean that emulating a nested VM-Exit can read or wri=
+te
+> an arbitrary set of MSRs, e.g. if MSR_KVM_SYSTEM_TIME_NEW is in L1's MSR
+> load list:
+>
+>       kvm_arch_vcpu_destroy()
+>         kvmclock_reset() - takes pv_time off kvm->gpc_list
+>         vmx_vcpu_free()
+>           nested_vmx_free_vcpu()
+>             vmx_leave_nested()
+>               nested_vmx_vmexit()
+>                 __nested_vmx_vmexit()
+>                   load_vmcs12_host_state()
+>                     nested_vmx_load_msr() - writes the MSRs that L1 liste=
+d
+>                   kvm_cpu_has_injectable_intr() - reads Xen's vcpu_info
+>         kvm_xen_destroy_vcpu() - deactivates the vcpu_info cache
+>
+> processing the MSR write puts the "pv_time" cache back on kvm->gpc_list,
+> and the next list_del() writes into the freed vCPU.  And as effectively
+> pointed out by syzbot[*], attempting to fix each case individually is a
+> losing game of whack-a-mole.
+>
+> Deliberately leave "nested_run_pending" as-is, because even though doing =
+so
+> creates potentitally inconsistent state, KVM should *never* consume said
 
-  static void zap_bar_mappings(struct vfio_pci_device *device)
-  {
-          vfio_pci_cmd_clear(device, PCI_COMMAND_MEMORY);
-          vfio_pci_cmd_set(device, PCI_COMMAND_MEMORY);
-  }
+s/potentitally/potentially/
 
-Then you can also use this instead of mmap()+madvise() below.
-
-> +		 * vfio_pci_device_init(). Fault it read-only first, then write
-> +		 * to exercise in-place write-upgrade (wp_huge_pmd/wp_huge_pud).
-> +		 */
-> +		val = READ_ONCE(*(u32 *)bar->vaddr);
-> +		WRITE_ONCE(*(u32 *)bar->vaddr, val);
-
-Writing to offset 0 of every read/write BAR isn't necessarily safe. It
-could be a doorbell, a write-1-to-clear status register, the MSI-X
-table, etc.
-
-There's no way to trigger the write fault without actually writing to
-the BAR (e.g. MADV_POPULATE_WRITE fails on VM_PFNMAP VMAs), so the test
-needs to know where it's safe to write.
-
-To solve this, I propose adding a helper to the VFIO selftests library
-that finds a BAR (or range within a BAR) that behaves like memory, i.e.
-every location can be read and written with arbitrary values without
-side effects. Something like:
-
-  bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
-                             struct vfio_pci_mem_bar *mem_bar);
-
-Detection would be based on a table of known devices, and tests SKIP()
-when no such BAR is found. Your test would then ask for a mem BAR of at
-least PMD_SIZE and run both cases on it.
-
-This came up recently with Matt's DMABUF mmap() test as well [1], so I
-think it belongs in the library rather than in vfio_pci_device_test.c.
-It shouldn't be much more work than a test-local helper (but please add
-it in a separate commit).
-
-My suggestion would be for QEMU's pci-testdev (1b36:0005) to be the
-first device in the table, since anyone can run it in a VM without any
-special hardware. With membar-backed=on, pci-testdev's BAR2 is a 64-bit
-prefetchable BAR backed by plain RAM, so it's safe to read and write
-anywhere in it. membar-backed requires QEMU 10.1 or newer. For example:
-
-  qemu-system-x86_64 \
-    -machine q35,accel=kvm,kernel-irqchip=split \
-    -device intel-iommu,intremap=on \
-    -device pci-testdev,membar=1G,membar-backed=on \
-    ...
-
-Then boot the guest and run the test against the device:
-
-  $ BDF=$(lspci -D -d 1b36:0005 | awk '{print $1}')
-  $ ./scripts/setup.sh $BDF
-  $ ./vfio_pci_device_test $BDF
-
-membar=1G is large enough to exercise both PMD and PUD mappings, since
-vfio_pci_bar_map() aligns the mapping to min(size, 1G). If 1G of host
-RAM for the BAR is too much, membar=2M still covers the PMD case.
-
-If you want to also add the device you reproduced on to the table, that
-works for me too. More devices can be added later as needed.
-
-This could also be added to the vfio_pci_driver framework, but I'm not
-sure that is a good idea. Devices that have large memory-like BARs
-aren't necessarily the same devices that can implement memcpy and send
-MSIs.
-
-Would you be open to adding vfio_pci_find_mem_bar() as part of this
-series?
-
-[1] https://lore.kernel.org/kvm/CALzav=cGtmkBBpfUA8nP7AQ3azB_Hn7_8jJL=J+E+h61CpOFrw@mail.gmail.com/
-
-> +
-> +		/*
-> +		 * Replace the VMA with a fresh unpopulated mapping at the same
-> +		 * hugepage-aligned address, clear soft-dirty again, and fault
-> +		 * with an immediate store to exercise initial write insertion
-> +		 * (vmf_insert_pfn_pmd/pud with write=true).
-> +		 */
-> +		vaddr = mmap(bar->vaddr, bar->info.size, PROT_READ | PROT_WRITE,
-> +			     MAP_SHARED | MAP_FIXED, self->device->fd,
-> +			     bar->info.offset);
-> +		ASSERT_EQ(bar->vaddr, vaddr);
-> +		madvise(bar->vaddr, bar->info.size, MADV_HUGEPAGE);
-> +
-> +		ASSERT_EQ(0, clear_soft_dirty_refs());
-> +
-> +		WRITE_ONCE(*(u32 *)bar->vaddr, val);
-> +		(void)READ_ONCE(*(u32 *)bar->vaddr);
-> +
-> +		tested = true;
-
-Should only BARs >= PMD_SIZE be considered tested?
-
-> +	}
-> +
-> +	vfio_pci_cmd_clear(self->device, PCI_COMMAND_MEMORY);
-
-This should restore PCI_COMMAND_MEMORY to whatever it was at the start
-of the test. Or just leave PCI_COMMAND_MEMORY enabled (that would also
-be harmless).
-
-> +
-> +	if (!tested)
-> +		SKIP(return, "No mappable read/write BAR on %s\n", device_bdf);
-> +}
-> +
->  FIXTURE(vfio_pci_irq_test) {
->  	struct iommu *iommu;
->  	struct vfio_pci_device *device;
-> -- 
-> 2.56.0.385.gac671c819a-goog
-> 
+> state while freeing a vCPU.  I.e. if leaving nested_run_pending set trips=
+ a
+> sanity check or bug, then that just means there's more fixing to be done.
+>
+> Open code only the "free vCPU" path, i.e. keep emulating a nested VM-Exit
+> when forcing a vCPU out of L2 via vmx_leave_nested(), as there are a numb=
+er
+> of updates buried in the nested VM-Exit flow that are needed if the vCPU =
+is
+> going to run in L1, e.g. clearing pending exceptions and MTF traps, setti=
+ng
+> the TSC offset+scale information back to L1, and so on and so forth.  Not=
+e,
+> this means svm_leave_nested() is all but guaranteed to be buggy, but that=
+'s
+> basically an open secret at this point and at least any bugs "only" break
+> L1, i.e. don't corrupt host state as is the case for abusing nested VM-Ex=
+it
+> when freeing a vCPU.
+>
+> Link: https://lore.kernel.org/all/6ac0145f.34119e79.2f92f3.0003.GAE@googl=
+e.com [*]
+> Fixes: b4b65b5642d6 ("KVM: x86: cleanup freeing of nested state")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
