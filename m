@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793653674;
-	b=axqaJIgQ6K3U9cjA4EORQ8a3cXKpj3mY4javbiG3bp7KnMqoKvnraWrEsbpHoRfzsijz
-	 PMxq4Gq0SQ5b2a/qH0VgczJ7i8x1VTHL3xPeX/W8oRHKoBBLS1PT79yOFk8r1XXWHjkhU
-	 7R7UvOXVJIYzPY4F7sxzunhJKy76iDctVL6Gl0ge7r6xYHpBH+jj/B9eHU3DB+swPKJOK
-	 SzjjHGMpZQ2K1auCm7nUXsCK652zzZO3c4T1RNg2hxGhdG8caXWe6OIzVENLj5a7McHDt
-	 DKavm7MgNCLkC1v1jUu4zjD1nakksHMhpA8ZYxQfL4vuHbps2iwWcD+tgQOS/kaLciA==
+	t=1793654231;
+	b=qb5QxD5CwXX2kUS+rxI5BXd7wYy+qYpcYxx0Jf1CMuXViF39RA+/7EolqnWHDIUuaoBs
+	 L0itkyD0Ph6ByWtv5/BnITwygnEFZacofE+IezODE60TXOi/Dcn/ebkqbNMRLbtx8Z1+i
+	 h4BWWx0RKRHceEPuYytuD5btoryB5y50pLZdVKIXuvGU3/M8wQkDrgWInRB0q5r5MiBt1
+	 uicH0oKxvfygshEFE/XpS7xYn3qBlf4UUVgY5R28zynZeKt6myhyvLSRz2F9I6qZf2nib
+	 rzMsyw+WSBYnMdCCoix5A8dye/06bpb35qHCSgFHx0MUoXpIuc84Etik/J1nozwjSFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793653674;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793654231;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=34wlRtXrl139Acrqe2fqnsN5SeBEhgrFeZH0Z1UsZxA=;
-	b=GNS7rOsuT4dMwmBVtUOfBNAxO60mxRQFKVQfK1x6325AGeXZNJbcJckF78hwQ4O2WfRl
-	 8jwqDaGoqdLP9HOdk/hU4QDv7uLTOyRKdOrqtRvNqFcMPG9mlzMZ4LyHhyE+luV1iRI5H
-	 W6/qsMsoJopMZ0V82XBprHRl1pUZ7CisgxkmM99auYIe3w9jMG834CbXZM0BzoH/QmC1f
-	 ltVxh8Pd8Zze43fZhN+YfXihQkLn3CNpex8xneG4Dlwuis2NGyQuL9a9WlV2b9tLZVBF1
-	 V7aTaesOpNoNhtjR4M0Rfn8PChUQVlhfL5SaF+YfofEEZw7wXkAxBA+qrgh8FUXG+8g==
+	bh=xg0Hmc9WjDODyegDoJutnIFb7L7GGDsGX7TLmjShcJE=;
+	b=1OzBfgTAEZqSY8XT98dQN6xhSBaGcCIw5wxpOvbVlVv3qVkGifzgOXr/98EkoeiC7320
+	 TlzQzPCTLmuLZwVi2JGQJ+JNFJNqaW5H8NpgcgTjzariplmh/b3tA+QHh+R72QswFwkd6
+	 sJqBg98gmnBQzPCA1pf3qwG2o4yNNM5YQqz7zr50/Evlxa0N3rRezvpS3AloQQNRDe0CO
+	 r/aRMs/3jJm5gr8e/BqDnClcdkDRoI7SImKW0dmCDp5OsnOhIhJbH2FCgd6tRoirqxUI+
+	 CiS9onz1MNmsrIbw4v89tzCQ1E86MJYSCtNJ/Cll31oa7fREm7u2h2L4TBMBOWbUGzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S9s3KK1z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mrGqEAZL;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E0A606A326;
-	Mon,  2 Nov 2026 21:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D35606A327;
+	Mon,  2 Nov 2026 21:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S9s3KK1z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E95C1F00A16;
-	Mon,  2 Nov 2026 21:07:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mrGqEAZL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA231F00A16;
+	Mon,  2 Nov 2026 21:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793653673;
-	bh=34wlRtXrl139Acrqe2fqnsN5SeBEhgrFeZH0Z1UsZxA=;
+	s=k20260515; t=1793654230;
+	bh=xg0Hmc9WjDODyegDoJutnIFb7L7GGDsGX7TLmjShcJE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S9s3KK1zyF7gcU6hb7fRG1Ga3n834wg0djiFSacPVzRj9cp8BBgRlvi+djcPYSJld
-	 kicjbR/OCs0faegJjqrfd02NWVl6HWSTiwmtFHd9VVqENvrENgJWLhHS0TfJ3yNylX
-	 XyGaySP3TlnRRVhYJfbHhtZayFN1zVjHJRgBZRFDijzbLzZh6GxL6TkdjROmmIGP0u
-	 nRLC5zv8tLxi6BPoyQgp4tVx9MlfALrYbTZGfCwkdDbZ8AXVUKWG1gHdIUbyhLCjNI
-	 gm8HDWM8CAQl1rZhge/wI7+gvQ2XOPkxIUuPIamzv6mhg2BsfnpAwwXYa0r9U/zLIw
-	 oQDUyezSKJjeQ==
-Message-ID: <sashiko-outbox-194181@kernel.org>
+	b=mrGqEAZLbcw4qI03o7BkeAD4d9KCHi/u6IO5tEOVrX1sMVQAFJVgBqzR27xZS8+Xc
+	 KWjtFTqrsOBa/OCHRZ0sXT+8Vm3krID/5YTXFZhst5lTlOWxROLISXIk4K7RFJ1YoQ
+	 PuibKD89ZIHL7Q7sXQiNcDsZDy5EB2PuikQ+MOTl0TDdd0WKuSABzgl2wLy5MZzyw6
+	 j7USlJ8186yfmkgAYHmBdtDcxWQi1mMdXnahFDLaN+yvgsnxAOkhlv0hQg6JQt73An
+	 lAwtx2kL/bhBZNC091RXSmTgHDCLGYRAFYqECjxOJapsuzgRkC4YWj/2afEwxNYO+K
+	 PhVUtCSB9k9iA==
+Message-ID: <sashiko-outbox-194187@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 15/16] KVM: selftests: Add VGICv5 ITS translation
- cache tests
+Subject: Re: [PATCH v2 13/16] KVM: arm64: gic-v5: Implement irq forwarding
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sascha Bischoff" <sascha.bischoff@arm.com>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
 Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
-In-Reply-To: <20261102194454.4086911-16-sascha.bischoff@arm.com>
+In-Reply-To: <20261102194454.4086911-14-sascha.bischoff@arm.com>
 References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
- <20261102194454.4086911-16-sascha.bischoff@arm.com>
+ <20261102194454.4086911-14-sascha.bischoff@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 21:07:52 +0000
+Date: Mon, 02 Nov 2026 21:17:09 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,146 +60,268 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Medium] KVM: selftests: IDR1 narrowing clears cache before ITS disable i=
-n vgic_v5
+- [High] KVM: arm64: gic-v5: sleep in atomic context when disabling direct =
+injection
+- [High] KVM: arm64: gic-v5: stale host_irq and leaked LPI on unforward fai=
+lure
+- [High] KVM: arm64: gic-v5: unserialized physical ITS MMIO in gicv5_its_it=
+t_cache_inv()
+- [Low] KVM: arm64: gic-v5: unused VGIC_V5 check in vgic_supports_direct_ms=
+is()
 --
 
-commit a7e0ed97dc0fc966b7b8a5fa6982c6d6e3d8240f
+commit deaf3d7036edf849d625db99977af89a6c3e3411
 Author: Sascha Bischoff <sascha.bischoff@arm.com>
 
-KVM: selftests: Add VGICv5 ITS translation cache tests
+KVM: arm64: gic-v5: Implement irq forwarding
 
-This commit adds a KVM selftest for VGICv5 ITS translation caching, guest
-invalidation commands, register width accesses, and negative KVM_SIGNAL_MSI
-paths.
+This commit implements direct interrupt injection (IRQ forwarding) for GICv5
+via the ITS, placing the GICv4 and GICv5 forwarding hooks behind common
+kvm_vgic_set_forwarding() and kvm_vgic_unset_forwarding() shims. It also
+tracks the translation cache entry that owns forwarding on each LPI and uses
+access_remote_vm() when resolving guest DT/ITT entries from another
+process's address space.
 
->     KVM: selftests: Add VGICv5 ITS translation cache tests
->    =20
->     Add end-to-end coverage for VGICv5 ITS translation and cache
->     invalidation. The ITS attribute test only checks the userspace API
->     surface; this test verifies that KVM can parse guest-provided linear
->     DT and ITT state and use it to deliver LPIs through guest GEN_EVENTR
->     and KVM_SIGNAL_MSI.
->    =20
->     Build a two-VPE VM with IRS, ITS and an LPI IST. VPE0 programs a
->     linear device table and interrupt translation table, enables the
->     virtual ITS, enables two LPIs targeting VPE1, and sends GEN_EVENTR to
->     populate the translation cache with EventID to LPI A. VPE1 reports the
->     LPI identity it consumed.
->    =20
->     VPE0 then rewrites the ITT to point at LPI B without invalidation, and
->     a host KVM_SIGNAL_MSI injection verifies that the stale cached LPI A
->     translation is reused. VPE0 invalidates the event with ITS_INV_EVENTR
->     and the host verifies that LPI B is delivered.
->    =20
->     VPE0 then rewrites the ITT back to LPI A, invalidates the device with
->     ITS_INV_DEVICER, and the host verifies that LPI A is delivered again.
->     This exercises the guest-side event and device invalidation paths
->     rather than invalidating translations directly from the test host.
->    =20
->     Also cover negative MSI paths by checking that KVM_SIGNAL_MSI rejects=
- a
->     message without KVM_MSI_VALID_DEVID and rejects a message whose addre=
-ss
->     does not target the GICv5 ITS. Finally, inject once before guest-side
->     ITS disable to prove delivery still works, then have VPE0 disable the
->     ITS and verify that a cached KVM_SIGNAL_MSI delivery is rejected with
->     ENXIO.
->    =20
->     Check 32-bit accesses to both halves of DT_BASER and preservation of
->     the untouched half. Verify that guest writes to the ITS ID registers
->     and READ_EVENT_DATAR are ignored, and that READ_EVENT_DATAR can be re=
-ad
->     at both 32-bit and 64-bit widths.
->    =20
->     Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
->=20
-> diff --git a/tools/testing/selftests/kvm/arm64/vgic_v5.c b/tools/testing/=
-selftests/kvm/arm64/vgic_v5.c
-> index 92da9753ce8e6..a9b0bca24ec08 100644
-> --- a/tools/testing/selftests/kvm/arm64/vgic_v5.c
-> +++ b/tools/testing/selftests/kvm/arm64/vgic_v5.c
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic=
+-its-v5.c
+> index 638ee47f6e27d..3648d3f7c1b29 100644
+> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> @@ -38,7 +39,35 @@ static void its_cache_drop_translation(struct kvm *kvm,
+>  				       struct its_cache_translation_entry *entry)
+>  {
+>  	struct vgic_irq *irq =3D entry->irq;
+> +	unsigned long flags;
+> +	bool drop_forwarding_ref =3D false;
+> =20
+> +	/*
+> +	 * Multiple translations can share an LPI as we have no way of stopping
+> +	 * the guest from doing so. Only the entry associated with direct injec=
+tion
+> +	 * may tear down the IRQ's forwarding state, as otherwise we can end up
+> +	 * accidentally tearing something down. Realistically, this only would
+> +	 * result in a performance degradation, but we might as well avoid that
+> +	 * in the first place if we can.
+> +	 *
+> +	 * Keep the lock until the host IRQ is restored, so the producer cannot
+> +	 * free it while we are using its IRQ number.
+> +	 */
+> +	raw_spin_lock_irqsave(&irq->irq_lock, flags);
+> +	if (irq->forwarding_owner =3D=3D entry) {
+> +		/* The entry is about to be freed, even if unforwarding fails. */
+> +		irq->forwarding_owner =3D NULL;
+> +		if (irq->hw &&
+> +		    !WARN_ON_ONCE(gicv5_its_disable_direct_injection(irq->host_irq))) {
+> +			irq->hw =3D false;
+> +			irq->host_irq =3D 0;
+> +			drop_forwarding_ref =3D true;
+> +		}
+> +	}
+> +	raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
+
+[Severity: High]
+Can calling gicv5_its_disable_direct_injection() here and in
+kvm_vgic_v5_unset_forwarding() sleep in atomic context?
+
+Both its_cache_drop_translation() and kvm_vgic_v5_unset_forwarding() hold
+raw_spin_lock_irqsave(&irq->irq_lock, flags) (and
+kvm_arch_update_irqfd_routing() -> kvm_vgic_unset_forwarding() is also
+invoked under spin_lock_irq(&kvm->irqfds.lock)). The call chain is:
+
+  gicv5_its_disable_direct_injection()
+    -> irq_set_vcpu_affinity(virq, NULL) [acquires desc->lock raw_spinlock]
+      -> gicv5_its_set_vcpu_affinity(d, NULL)
+        -> gicv5_irs_syncr()
+          -> gicv5_wait_for_op(..., GICV5_IRS_SYNC_STATUSR,
+                               GICV5_IRS_SYNC_STATUSR_IDLE)
+
+In drivers/irqchip/irq-gic-v5-irs.c, gicv5_irs_syncr() uses the sleeping
+gicv5_wait_for_op() macro (which expands to readl_poll_timeout() with a 1 us
+sleep and calls might_sleep() and usleep_range()) rather than
+gicv5_wait_for_op_atomic().
+
+Should gicv5_irs_syncr() use gicv5_wait_for_op_atomic() since it is called
+under desc->lock and irq->irq_lock?
 
 [ ... ]
 
-> @@ -2312,6 +2644,183 @@ static void test_vgic_v5_ist_save_restore(void)
+> diff --git a/arch/arm64/kvm/vgic/vgic-mmio.c b/arch/arm64/kvm/vgic/vgic-m=
+mio.c
+> index 3c0c858608752..3268e3d3d5170 100644
+> --- a/arch/arm64/kvm/vgic/vgic-mmio.c
+> +++ b/arch/arm64/kvm/vgic/vgic-mmio.c
+> @@ -1144,6 +1144,8 @@ int vgic_register_dist_iodev(struct kvm *kvm, gpa_t=
+ dist_base_address,
+> =20
+>  bool vgic_supports_direct_msis(struct kvm *kvm)
+>  {
+> +	const struct vgic_dist *dist =3D &kvm->arch.vgic;
+> +
+>  	/*
+>  	 * Deliberately conflate vLPI and vSGI support on GICv4.1 hardware,
+>  	 * indirectly allowing userspace to control whether or not vPEs are
+> @@ -1152,7 +1154,13 @@ bool vgic_supports_direct_msis(struct kvm *kvm)
+>  	if (system_supports_direct_sgis() && !vgic_supports_direct_sgis(kvm))
+>  		return false;
+> =20
+> -	return kvm_vgic_global_state.has_gicv4 && vgic_has_its(kvm);
+> +	if (kvm_vgic_global_state.has_gicv4 && vgic_has_its(kvm))
+> +		return true;
+> +	if (kvm_vgic_global_state.type =3D=3D VGIC_V5 && vgic_has_its(kvm) &&
+> +	    dist->vgic_model =3D=3D KVM_DEV_TYPE_ARM_VGIC_V5)
+> +		return true;
+> +
+> +	return false;
+>  }
+
+[Severity: Low]
+This isn't a bug, but is the new VGIC_V5 check in vgic_supports_direct_msis=
+()
+ever reached?
+
+In arch/arm64/kvm/vgic/vgic.h, vgic_supports_direct_irqs() already returns
+true early when vgic_is_v5(kvm) is true before calling
+vgic_supports_direct_msis(kvm). The only other callers of
+vgic_supports_direct_msis() are kvm_vgic_v4_set_forwarding() and
+kvm_vgic_v4_unset_forwarding(), whereas kvm_vgic_v5_set_forwarding() and
+kvm_vgic_v5_unset_forwarding() check !vgic_has_its(kvm) directly.
+
+Should kvm_vgic_v5_set_forwarding() and kvm_vgic_v5_unset_forwarding() (or
+the common kvm_vgic_set_forwarding() and kvm_vgic_unset_forwarding() shims)
+call vgic_supports_direct_msis(kvm) instead of vgic_has_its(kvm)?
 
 [ ... ]
 
-> +static void test_vgic_v5_its_translation_cache(void)
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
+> index 18184020e188b..c2ae7b0fb3a7f 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
+> @@ -1635,3 +1635,151 @@ unsigned long vgic_v5_handle_guest_coresight_idre=
+g_read(u32 offset)
+> +int kvm_vgic_v5_set_forwarding(struct kvm *kvm, int virq,
+> +			       struct kvm_kernel_irq_routing_entry *irq_entry)
 > +{
 
 [ ... ]
 
+> +	ret =3D gicv5_its_enable_direct_injection(virq, vgic_v5_vm_id(kvm),
+> +						vgic_v5_get_hwirq_id(irq->intid));
+
+[Severity: High]
+What serializes concurrent physical ITS MMIO register accesses in
+gicv5_its_itt_cache_inv() when forwarding or unforwarding interrupts?
+
+Enabling and disabling direct injection calls:
+
+  gicv5_its_enable_direct_injection() / gicv5_its_disable_direct_injection()
+    -> irq_set_vcpu_affinity() [locks per-IRQ desc->lock]
+      -> gicv5_its_set_vcpu_affinity()
+        -> gicv5_its_itt_cache_inv()
+
+In drivers/irqchip/irq-gic-v5-its.c, gicv5_its_itt_cache_inv() writes the
+shared physical ITS registers and waits for completion without a per-ITS lo=
+ck
+in struct gicv5_its_chip_data:
+
+	its_writeq_relaxed(its, didr, GICV5_ITS_DIDR);
+	its_writel_relaxed(its, eidr, GICV5_ITS_EIDR);
+	its_writel_relaxed(its, eventr, GICV5_ITS_INV_EVENTR);
+
+	return gicv5_its_cache_sync(its);
+
+Because irq_set_vcpu_affinity() only holds the per-IRQ desc->lock and
+kvm_vgic_v5_unset_forwarding() only holds the per-LPI irq->irq_lock (without
+its->its_lock), two CPUs forwarding, unforwarding, or invalidating different
+IRQs on the same physical ITS (within the same VM, across VMs, or racing wi=
+th
+host gicv5_its_map_event() / gicv5_its_unmap_event()) can interleave writes
+to GICV5_ITS_DIDR and GICV5_ITS_EIDR before GICV5_ITS_INV_EVENTR is written.
+
+Could one CPU overwrite GICV5_ITS_DIDR or GICV5_ITS_EIDR so that the physic=
+al
+ITS invalidates the wrong DeviceID/EventID entry while gicv5_its_cache_sync=
+()
+still sees GICV5_ITS_STATUSR_IDLE and returns success, leaving a stale
+virtual or host ITTE cached in the physical ITS?
+
+> +	if (ret) {
+> +		if (ret !=3D -ETIMEDOUT) {
+> +			vgic_put_irq(kvm, irq);
+> +			return 0;
+> +		}
+
+[ ... ]
+
+> +void kvm_vgic_v5_unset_forwarding(struct kvm *kvm, int virq)
+> +{
+> +	struct vgic_irq *irq;
+> +	bool drop_forwarding_ref =3D false;
+> +
+> +	if (!vgic_has_its(kvm))
+> +		return;
+> +
 > +	/*
-> +	 * Device invalidation must cover all cached EventIDs for the
-> +	 * DeviceID. The guest has again re-written the event to translate to
-> +	 * LPI A.
+> +	 * Note: We don't remove the entry from our translation cache here. It
+> +	 * is up to the guest to invalidate the old translations, and hence the
+> +	 * removal path is tied into ITS_INV_DEVICER and ITS_INV_EVENTR, rather
+> +	 * than being explicitly called here.
 > +	 */
-> +	ret =3D run_vcpu(vcpus[0]);
-> +	TEST_ASSERT(!ret, "Failed to run GICv5 ITS device invalidation");
-> +	vgic_v5_expect_sync(vcpus[0], GUEST_CMD_ITS_DEVICE_INVALIDATED,
-> +			    "GICv5 ITS guest did not invalidate device");
-> +	vgic_v5_expect_its_lpi(&v, vcpus[1], ITS_TEST_LPI_A);
+> +	irq =3D vgic_v5_host_irq_get_lpi(kvm, virq);
+> +	if (!irq)
+> +		return;
 > +
-> +	/* A narrower userspace IDR1 must invalidate the cached DeviceID. */
-> +	ret =3D __kvm_device_attr_get(v.its_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
-> +				    GICV5_ITS_IDR1, &idr1);
-> +	TEST_ASSERT(!ret, "GICv5 ITS_REGS failed to read IDR1");
-> +	idr1 =3D (idr1 & ~GICV5_ITS_IDR1_DEVICEID_BITS) |
-> +		FIELD_PREP(GICV5_ITS_IDR1_DEVICEID_BITS, 2);
-> +	ret =3D __kvm_device_attr_set(v.its_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
-> +				    GICV5_ITS_IDR1, &idr1);
-> +	TEST_ASSERT(!ret, "GICv5 ITS_REGS failed to narrow DeviceID width");
-> +	ret =3D __vgic_v5_signal_msi(v.vm, GICV5_ITS_BASE_GPA +
-> +				   GICV5_ITS_TRANSLATER,
-> +				   ITS_TEST_DEVICE_ID, ITS_TEST_EVENT_ID,
-> +				   KVM_MSI_VALID_DEVID);
-> +	TEST_ASSERT(ret =3D=3D 0,
-> +		    "GICv5 ITS did not block MSI after DeviceID width changed");
+> +	scoped_guard(raw_spinlock_irqsave, &irq->irq_lock) {
+> +		if (irq->hw && irq->host_irq =3D=3D virq &&
+> +		    !WARN_ON_ONCE(gicv5_its_disable_direct_injection(virq))) {
+> +			irq->hw =3D false;
+> +			irq->host_irq =3D 0;
+> +			irq->forwarding_owner =3D NULL;
+> +			drop_forwarding_ref =3D true;
+> +		}
+> +	}
 > +
-> +	/* Disabling the ITS must also prevent delivery from cached entries. */
-> +	ret =3D run_vcpu(vcpus[0]);
-> +	TEST_ASSERT(!ret, "Failed to run GICv5 ITS disable");
-> +	vgic_v5_expect_sync(vcpus[0], GUEST_CMD_ITS_DISABLED,
-> +			    "GICv5 ITS guest did not disable ITS");
+> +	if (drop_forwarding_ref)
+> +		vgic_put_irq(kvm, irq);
 > +
-> +	/*
-> +	 * We should fail to inject this MSI. Use the raw call to ensure we
-> +	 * catch the return value.
-> +	 */
-> +	ret =3D __vgic_v5_signal_msi(v.vm, GICV5_ITS_BASE_GPA +
-> +				   GICV5_ITS_TRANSLATER,
-> +				   ITS_TEST_DEVICE_ID, ITS_TEST_EVENT_ID,
-> +				   KVM_MSI_VALID_DEVID);
-> +	TEST_ASSERT(ret < 0 && errno =3D=3D ENXIO,
-> +		    "GICv5 ITS accepted cached MSI while disabled");
+> +	vgic_put_irq(kvm, irq);
+> +}
 
-[Severity: Medium]
-Does this final check in test_vgic_v5_its_translation_cache() actually test
-disabling the ITS while a valid entry is present in the translation cache?
+[Severity: High]
+If gicv5_its_disable_direct_injection(virq) fails in
+kvm_vgic_v5_unset_forwarding(), can a subsequent cache eviction operate on a
+freed or reallocated host Linux IRQ number, or leak the LPI and reuse the VM
+ID at teardown?
 
-In the preceding block, writing GICV5_ITS_IDR1 via
-KVM_DEV_ARM_VGIC_GRP_ITS_REGS to narrow GICV5_ITS_IDR1_DEVICEID_BITS to 2
-causes vgic_v5_uaccess_write_its_idr() -> its_cache_clear_translations() to
-flush the translation cache, and leaves ITS_TEST_DEVICE_ID (5) out of range
-so the subsequent __vgic_v5_signal_msi() call fails in get_itt() without
-repopulating the cache.
+1. kvm_arch_irq_bypass_del_producer() returns void to __disconnect() in
+   virt/lib/irqbypass.c, so producer unregistration cannot be aborted when
+   gicv5_its_disable_direct_injection(virq) fails. Once
+   irq_bypass_unregister_producer() returns, the producer (e.g. VFIO) tears
+   down and frees virq, which can then be reallocated to another device.
+   Because irq->forwarding_owner, irq->hw, and irq->host_irq remain set her=
+e,
+   a later guest invalidation or vgic_v5_its_destroy() ->
+   its_cache_clear_translations() -> its_cache_drop_translation() will call
+   gicv5_its_disable_direct_injection(irq->host_irq) on that freed or
+   reallocated virq.
 
-Because GICV5_ITS_IDR1 is not restored and vgic_v5_expect_its_lpi() is not
-called again before VCPU0 runs to GUEST_CMD_ITS_DISABLED, the cache is
-already empty when the ITS is disabled, which also differs from the sequence
-described in the commit message ("Finally, inject once before guest-side ITS
-disable to prove delivery still works, then have VPE0 disable the ITS and
-verify that a cached KVM_SIGNAL_MSI delivery is rejected with ENXIO").
+2. Similarly, if kvm_arch_update_irqfd_routing() calls
+   kvm_vgic_unset_forwarding() when an irqfd routing entry changes from
+   KVM_IRQ_ROUTING_MSI to a non-MSI type and
+   gicv5_its_disable_direct_injection() fails, a subsequent
+   kvm_arch_irq_bypass_del_producer() sees irq_entry->type !=3D
+   KVM_IRQ_ROUTING_MSI and returns early without retrying
+   kvm_vgic_unset_forwarding().
 
-Should GICV5_ITS_IDR1 be restored and the translation cache repopulated via
-vgic_v5_expect_its_lpi() before disabling the ITS (and should the commit
-message also mention the IDR1 narrowing, read-only DT register, and DeviceID
-cap checks)?
+3. If gicv5_its_disable_direct_injection() fails in both
+   its_cache_drop_translation() and kvm_vgic_v5_unset_forwarding(),
+   drop_forwarding_ref is never set. When the VM is destroyed,
+   kvm_vgic_dist_destroy() runs xa_destroy(&dist->lpi_xa) and leaks the
+   struct vgic_irq, while vgic_v5_teardown() unconditionally calls
+   vgic_v5_release_vm_id(kvm) even though a physical ITS virtual ITTE may
+   still reference that VM ID.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102194454.4086=
-911-1-sascha.bischoff@arm.com?part=3D15
+911-1-sascha.bischoff@arm.com?part=3D13
