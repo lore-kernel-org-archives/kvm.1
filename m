@@ -1,68 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793654990;
-	b=R8gbtGgRBVRL/W8Gjr9btknF8r8ulf0szuzbcdaKcrFmLOW7+y9wsT2Sq5+mCr0JV5Y9
-	 yqwgBN9ous5dTFBDl2f9xpZrURs83WrTnVZwOiEc96zDj2R3QvwcO1AwiuYLQxQEs0gHf
-	 zlg2IT17JQbprKqjC8OVSwkbUFqkkcEBiuJuKTKrlHxoxFon9xlshCwddq5IdAns/IAiy
-	 shtCfvzKVhYgtK/EIhJavySBqrufksv1QvfwaXpxxBtKJe/MFT46cpRuv7gkgVOq7fUw4
-	 BV32st0/iL8VesCQu2x1xdceuQg3opKAbYCWTC9e7SQ3hasH3oF/JM8Zj6Z+W1wz31A==
+	t=1793655265;
+	b=NC29OPP1ZmTTMMp/0cR8/BcPROqD7FThJDKtMhL6lPA0F2ysJZ5OUUw8gY5vO0Vb2zyK
+	 5W6z4uYXntMQjNptkdDE17pd4Kn/ovv/dzBH2Z+4sQsP3u0GOHwBRNCmoC9IOhfphJtsy
+	 am4JBm9Id8V2jA8bxLyFjKEFxO3gjBnuOjOYPOsuJ/RfKvJBge3eFNTGZJnVyaIxXoGK7
+	 bThRmk02QvOkw+tuVuts99ZFfNELeSSdJWDWT2EDYNHB5cqVesF+MIVgvI8QtrwfTiaEu
+	 ZpFVZql1JN2H4NoEgCBmhxZg4CInOFP+HCmj5Xscd4dLpSotmFAqfbudGkzmvtsgUmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793654990;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=4x/8m1FBYoP1cRclqzCfOrS0dYnbYeqPVhu7UPr9Vg4=;
-	b=x66ksIDFtZ6fnFAKCLYy9mHDDUIqamtBSvavTf7n2bUPq+RmCO+2m6BBS9LvVAhwPtxD
-	 X6yxbQF8n3dEe45gdHx6gJXqcy5z26BXVUdDAx5QnfqIfTQUNqGlsXKZVsX9nxRtOB30o
-	 UEE6DdMJ5xlA9u85s+PUB+CPNs9/3nL15SRFhrKUPxfHRKO1zDpW1oP9EBGJ3Q26Neh39
-	 3Ag93K+v/yzw1kgm+gx4Qv8zcooAXJlbeHssH3E8kChLYcVQz1e/szYzIgC1WFcxvaUNS
-	 5M0Xgw4++hm1rlG5ysoXQKHvFfjp/4jgJbEcXV0yOx/RpVxg3Sr9NWL4bp42UPQuHYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793655265;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=NAqLT7kufGBP+nHopW6HfGaMZzWNBLYiNONYUHr0zWU=;
+	b=YRL3oCoeYl+FOFnxQMsu2nbGrpJDfp7Gd/0vm6bq2jBzul7Lbo1Y0AF90+xwBQmR5pOf
+	 1S4yoF4HV6ThdTr1ImhiU6U3nMX/twEKPvHJGHxk6ebejitgs7RbxgRuGF8oapmzjdLAO
+	 kqRMSr+titqxn16X4Zzdh9Z0LaMtcS00iTqRE2rQbnItULFBu36Unf8Ehb0gvPEtfAMAs
+	 FIM0vxDyvr09ZrwZkgF/CJtHUF3lKY2fg+tlgsapQ/C0H2hYTBMAndgm3Kl/RwuOW1oKe
+	 qWtS9OeAtU6nfB0kLnWeV65pkqnmh2tskP2/CfYPrInQTa4/vAgwmakUO1w1kgOMT/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QveWtzFP;
-	arc=none smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E290606EE82;
-	Mon,  2 Nov 2026 21:29:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E290606EE82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=f1vchbCM;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33B9606A326
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 21:34:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E33B9606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QveWtzFP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793654989; x=1825190989;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0AAFSmAsu+r5QOHMwFL7eRdGUJum5paaN98p+0Untmo=;
-  b=QveWtzFPcU0bKo7AACZdVHSna2zqOqEiK/doJ0fLg/pN54x3ObU6AJAV
-   KbYjvznxqOFxDGRie4V2CnBzimhsrNTjLwsxLv7s9yDAossgexPyb/7HY
-   k0uwGZ1CLjl8iMVS1luvMjbq8LLadPxGEYVKdKxVKd8/gmbZnwtqy07u3
-   zOlsYGOvVXwhNBIrA0S2NcZMoMl9WArEWxeBhaQtI8543To+L0tBjx1QE
-   gXC/+9Z8gEWy1XnHzRU30PmsfJTvPn7EhDtx/QwT9kUBHOkEgGMDiNLtf
-   apd7qfnDE7Ev4HG9R/GTXmnf7t3qfbC7h9iMQh+vdoWwuWUa8FiVMMilU
-   g==;
-X-CSE-ConnectionGUID: 2mqCq7e7TseLa8vUklzSGg==
-X-CSE-MsgGUID: PZxR0wkxQGeP/JVjgrhj5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2267939"
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2267939"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 13:29:49 -0800
-X-CSE-ConnectionGUID: mWTKvRJCQNmJHbv6HnNaYg==
-X-CSE-MsgGUID: ZPuqtrRKRJq4bNnpGs5Xtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="6342739"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 13:29:48 -0800
-Message-ID: <6c9a13c9-e6c1-4540-a8ca-1f0e800f3571@intel.com>
-Date: Mon, 2 Nov 2026 15:29:47 -0600
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=f1vchbCM
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F39C1595;
+	Mon,  2 Nov 2026 13:34:20 -0800 (PST)
+Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18F613F673;
+	Mon,  2 Nov 2026 13:34:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793655263; bh=oeFbh4Ag3sXbqQJgqRvzofhpTB/CMCVWpRHbdCqYVZs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f1vchbCMISYmNt2Q4LDcegVknWk84LDlDVMIrh2AN5whZIxvsZPMm2TqfD1LV+vA4
+	 coACQpVSX8WPy7j0kTsZN2juIycDvC8nqnjFcYzkPvYUSU/9SbC0L62wP1PAfEdc+b
+	 OiIdikBizvzDZRd3dKQB6Nw3dviSflxZD0g+uDiY=
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+To: will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: vladimir.murzin@arm.com,
+	maz@kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	timothy.hayes@arm.com,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH kvmtool v4 00/23] arm64: Support GICv5-based guests
+Date: Mon,  2 Nov 2026 21:33:50 +0000
+Message-Id: <20261102213413.4136118-1-sascha.bischoff@arm.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,118 +63,107 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
- GLOBAL_INUSE MSRs
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Jim Mattson <jmattson@google.com>, Sean Christopherson
- <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260827223755.143247-1-zide.chen@intel.com>
- <20260827223755.143247-12-zide.chen@intel.com>
- <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
- <auUQgRVFASkWtkoK@google.com>
- <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
- <CAO9r8zMxQnRLKGrW69rX7703AatWMp6KOXMObL9baHRPs4dW8A@mail.gmail.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CAO9r8zMxQnRLKGrW69rX7703AatWMp6KOXMObL9baHRPs4dW8A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+This series adds support for GICv5-based VMs to kvmtool. These are
+exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
+only creates a vGICv5 device and the latter adds in a GICv5 ITS. The
+GICv5 specification can be found at [1].
 
+The GICv5 support in KVM needed by --irqchip=gicv5 can be found as of
+Linux v7.4-rc1. KVM support for GICv5 ITS has been posted at
+[2]. Thus, --irqchip=gicv5 works with the corresponding KVM changes,
+while --irqchip=gicv5-its cannot yet be used with upstream KVM.
 
-On 11/2/2026 12:49 PM, Yosry Ahmed wrote:
->>>> OTOH, what about PerfMon v4 bits 58 (GLOBAL_STATUS_LBRS_FROZEN), 59
->>>> (GLOBAL_STATUS_COUNTERS_FROZEN), and 61 (GLOBAL_STATUS_OVF_UNCORE)?  Per
->>>> Intel SDM Vol. 4, Table 2-2, those bits are valid in
->>>> IA32_PERF_GLOBAL_STATUS, IA32_PERF_GLOBAL_STATUS_RESET, and
->>>> IA32_PERF_GLOBAL_STATUS_SET when CPUID.0AH:EAX[7:0] > 3.
->>>>
->>>> When those MSRs are passed through in mediated mode, the guest can set bits
->>>> 58, 59, or 61 in hardware via IA32_PERF_GLOBAL_STATUS_SET. Leaving those
->>>> bits set in pmu->global_status_rsvd for pmu->version >= 4 will break
->>>> KVM_SET_MSRS(MSR_CORE_PERF_GLOBAL_STATUS) as well as any intercepted guest
->>>> writes to GLOBAL_OVF_CTRL / GLOBAL_STATUS_SET.
->>>>
->>>> As I pointed out in patch 04/16, we can't pass through the PMU global
->>>> controls unless their reserved bits match hardware.
->>>
->>> I think there are two other relevant (but pre-existing) problems here:
->>>
->>> 1. GLOBAL_STATUS_TRACE_TOPAPMI_BIT can leak from the host into the
->>> guest. If a host PT PMI arrives while the guest context is loaded, bit
->>> 55 will be set for the guest, and the guest won't be able to clear it if
->>> OVF_CTRL is intercepted (it will #GP as it is reserved for the guest).
->>> Similarly, the value can't be restored through KVM_SET_MSRS.
->>
->> I think mediated vPMU assumes that no host PMIs can be generated while
->> guest PMU state is loaded.
->>
->> If PT state can leak into the guest via bit 55, similar leakage can also
->> occur for other status bits, e.g. when the guest exposes fewer
->> general-purpose or fixed counters than the host.
->>
->> The scenario where both host and guest can be active simultaneously is
->> handled by the perfmon_mask case, where intel_mediated_pmu_{load,put}()
->> filter guest-owned status bits.
-> 
-> Looking at the code:
-> 
-> kvm_mediated_pmu_load() -> perf_load_guest_context() ->
-> perf_ctx_disable() will iterate PMUs with for_each_epc() and disable
-> them, which skips PMUs without PERF_PMU_CAP_MEDIATED_VPMU.
-> 
-> Same for kvm_mediated_pmu_load() -> perf_load_guest_context()
-> ->ctx_sched_out(), it also uses for_each_epc() to iterate PMUs and
-> schedule them out.
-> 
-> pt_init() does not set PERF_PMU_CAP_MEDIATED_VPMU on pt_pmu.pmu.capabilities
-> 
-> Please correct me if I am wrong.
+The series teaches kvmtool to create the GICv5 irqchip and ITS KVM
+devices. It describes the GICv5 CPU interface, IRS and ITS in the
+guest DT, updates the timer and PMU interrupt descriptions, and
+generates GICv5 interrupt specifiers for platform devices and PCI. It
+also maps PCI MSI requester IDs to the ITS.
 
-My apologies, this bug is indeed real because pt_pmu lacks the
-PERF_PMU_CAP_MEDIATED_VPMU capability.
+Since [3], there have been a lot of changes to the core plumbing
+introduced by the GICv5 support. Thanks to Vladimir's suggestions, it
+has been somewhat decoupled from the GICv5 support itself, and the
+split is now much cleaner. Thanks, Vladimir! The IRS support is built
+up and exposed before the ITS support is added, as was the case
+previously. This allows, for example, the --irqchip=gicv5 config to be
+merged while leaving the ITS changes under review.
 
-Adding this capability to pt_pmu seems intuitive, but unlike
+Compared with v3 [3]:
 
-                       the core PMU (which merely toggles enable bits),
-Intel PT is an AUX-based PMU. Stopping and restarting it on every VM
-transition is heavier, and I'm not sure whether it could introduce a
-noticeable performance penalty.
+* Split GIC device address setup into CPU interface, redistributor and
+  distributor helpers. The existing MSI helper now uses the global MSI
+  base, and the GICv2 PPI CPU-mask check uses irqchip ordering.
 
-However, whether the solution is adding PERF_PMU_CAP_MEDIATED_VPMU or
-some other mechanism to enforce mutual exclusion between pt_pmu and
-mediated vPMU, we can address that in a separate patch.
+* Split IRQ-offset support into generic infrastructure and separate
+  GICv5 configuration.
 
-To immediately protect guest state and live migration in this series,
-I'm thinking of adding the following defensive filter in
-intel_mediated_pmu_put():
+* Use configured SPI/PPI bases and FDT types in interrupt and DT code,
+  with a helper for encoding the PMU's GICv5 PPI INTID. Remove the
+  unused GICv5 state.
 
-+ /*
-+  * Scrub bits that are not virtualized for the guest to prevent
-+  * possible host state from leaking into guest state and breaking
-+  * live migration.
-+  */
-+  pmu->global_status &= ~pmu->global_status_rsvd;
+* Give GICv5 FDT interrupt types distinct names and emit CPU phandles
+  for all arm64 guests; the GICv5 IRS references those phandles.
 
-> 
->>
->> https://lore.kernel.org/kvm/20260821222002.54907-1-zide.chen@intel.com/T/#m90394fda6d71ed0dd539a579abfb0c1df1e044fe
->>
->>> (I think the PMI may also be lost as LVTPC points at the mediated vPMU
->>> vector)
->>>
->>> 2. On AMD, bit 58 and 59 have a similar problem. HW accepts those bits
->>> but they are reserved for the guest, so the guest can set them if
->>> GLOBAL_STATUS_SET is passed through, but userspace cannot restore them.
->>
->> Right. That seems orthogonal to this series and could be addressed with
->> follow-up fixes.
-> 
-> Maybe AMD folks on the thread will take a look :)
+* Sync the UAPI headers with v7.4-rc1.
+
+The v7.4-rc1 header sync includes GICv5 IRS UAPI, but not GICv5 ITS
+UAPI. Patch 19 mirrors the ITS definitions from the pending KVM series
+[2]. Once that UAPI lands upstream, the headers should be resynced
+against the latest Linux headers before merging the ITS support.
+
+Thanks,
+Sascha
+
+[1] https://developer.arm.com/documentation/aes0070/latest
+[2] https://lore.kernel.org/all/20261102194454.4086911-1-sascha.bischoff@arm.com/
+[3] https://lore.kernel.org/all/20261016153939.913764-1-sascha.bischoff@arm.com/
+
+Sascha Bischoff (23):
+  arm64: Propagate IRQ routing initialisation errors
+  arm64: Close the ITS descriptor when setup fails
+  arm64: Split GIC device setup
+  Sync kernel UAPI headers with v7.4-rc1
+  arm64: Add GICv5 irqchip device support
+  arm64: Configure GIC interrupt bases
+  irq: Allow the initial interrupt line number to be set
+  arm64: Start GICv5 SPI line allocation at zero
+  arm64: Configure the GICv5 IRS
+  arm64: Define GICv5 interrupt types
+  arm64: Describe the PMU interrupt for GICv5
+  arm64: Describe timer PPIs for GICv5
+  arm64: Assign CPU DT phandles
+  arm64: Describe the GICv5 CPU interface in the DT
+  arm64: Describe the GICv5 IRS in the DT
+  arm64: Generate GICv5 SPI specifiers for platform devices
+  arm64: Generate GICv5 PCI INTx specifiers
+  arm64: Expose the GICv5 irqchip option
+  arm64: Add proposed GICv5 ITS UAPI definitions
+  arm64: Add GICv5 ITS device support
+  arm64: Describe the GICv5 ITS in the DT
+  arm64: Map PCI MSI requester IDs to the GICv5 ITS
+  arm64: Expose the GICv5 ITS irqchip option
+
+ arm64/fdt.c                         |  13 +-
+ arm64/gic.c                         | 361 ++++++++++++++++++++++++----
+ arm64/include/asm/kvm.h             |  18 ++
+ arm64/include/kvm/fdt-arch.h        |   1 +
+ arm64/include/kvm/gic.h             |  15 ++
+ arm64/include/kvm/kvm-arch.h        |  16 ++
+ arm64/include/kvm/kvm-config-arch.h |   2 +-
+ arm64/pci.c                         |  16 +-
+ arm64/pmu.c                         |  13 +-
+ arm64/timer.c                       |   9 +-
+ include/kvm/irq.h                   |   1 +
+ include/linux/kvm.h                 |  23 ++
+ include/linux/virtio_console.h      |   2 +-
+ include/linux/virtio_ids.h          |   1 +
+ irq.c                               |  15 +-
+ powerpc/include/asm/kvm.h           |  18 ++
+ riscv/include/asm/kvm.h             |  17 ++
+ x86/include/asm/kvm.h               |   4 +-
+ 18 files changed, 475 insertions(+), 70 deletions(-)
+
+-- 
+2.34.1
 
