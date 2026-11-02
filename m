@@ -1,56 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793663144;
-	b=MIBHaeu9X53ip9M3MTFkKiHi7UfYN8ZUYrCQIF/BGgdMAkQqvb4bhlsXYu6mNfp++ms5
-	 IYfwjUlH9tke4jUodPF34wReQ3Y+YMzW53WU2GWqGWKUwjqOCEY/YtUVpWLV+46af+1sI
-	 eIEEXG+b22p1UHfIixEwAHpTZIuZXMrrcxyTKcw0n1+SFplxiUZEGpdJEACr1fjaC1vmB
-	 Ef1/ZQkubK1uyuKb0auOE46WjKRxour+37pMV7XGNCrrJzaQFhC/5WQ5MFTKT7jUjspn1
-	 Oc1JiyyDEntaDk4ZGG6od7dM1AK0FMfYEGKlRe6Qu6DtvokaRPRlqeAeRosq3KTgynQ==
+	t=1793663372;
+	b=DpYiO+h34fM6+zWjqYYABxDfY1AdeSV5mZZ0WBdB6PPp4CkPKs9j5VMf6Q3isv1yUnLv
+	 ZBeSE4yxoDqnDMWN/ww2uKarNnioibARb6pyKh2RLOmhDp9ORZ4oBgNF0BJVMByEuOE/e
+	 D36C6lKUJVkx9fAyulxGVG55fKh7ssEgJXpDt64VteJyFDJqwFh9dwX9VMdota76vShjQ
+	 pZ/BONtsqwG2rsjmlPxKdab0O362vfGbvqP7zL5lwp+YMBk4pyMLDsF+Pe9yyxcu6RH9I
+	 Z4P95ie89WmB2sMB5KlQf0X81Cui4k09x8iorw55kNlfgi/6WTs5EEifvFCqFY4fp6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793663144;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=cydPqjS7zIpdqX/JZBUqb3TvWHb6Ds1pOCgWILuFeBg=;
-	b=Xdm5gMMc9K4343Z/yEDxeDgedEA/R1NP0FVbrqF+ideS2ETrcMLtxMPR6F1kPwfOEndM
-	 OTLzmKxuuFOQOrMoKYmF2seVziA7h52Q6mbNU7w4BaIaqbIZEqZOipIWTI88hhW9H9tmL
-	 tg0fiQbFZh+KNncoeDP77921mPHGYP9DtMLvJ0pNElKpb6UyPm/r8DAoGCzs8Zd2olNLe
-	 CcoSHjRzJtXTxu2ljJYiTHOFq39hk8kb713wB9zF5KlhwAFrvNgFtKbP6k5f1C+21iLba
-	 qgBvXOUa3y/lSotMIcAGc+qx8xu8Olc0EmuJfbK8KRusHdkU+kth6ArlKWvrt97r83Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793663372;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=+5ayfBBADbSXVO+eg5fhbmtgjn7ckRAVi9w3JeSSink=;
+	b=4FDm+nYwYTCSuc5wl5FyfrjJujtPsUhajeqVJxeUlHoP+TtiCjB3nsOGJo0SxMfSVL6c
+	 J/QEYQZ81GLoUEQIbgBKEeHngnE6b44iPwZchE0RduWOjCIfkEjIo0MaXoPZG/1TRQE8k
+	 VzOYfBCYKjjpOrYfK3TR+aycmtYIpu/+C/32M/sabACesOf6ElRNPuv54eKusCaQS/wQn
+	 CzOPzIyIFAoyknLHRxbfVYkKaVeut5Hlp5P/0jTs0o/Cs5zQcwwDg6nKO7bT93DNDTxqq
+	 Bu8dtJ7j4n+9PYNi208Pf97wOaJvkCO0+Zo3Gqw+3OBeR4+JYc8b+6Qbrsulj21cpyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nD9VEwfi;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE5E606A324
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 23:45:43 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="Ogq7K/NR";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAC8606A326;
+	Mon,  2 Nov 2026 23:49:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFAC8606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nD9VEwfi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E52E1F00A16;
-	Mon,  2 Nov 2026 23:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793663143;
-	bh=cydPqjS7zIpdqX/JZBUqb3TvWHb6Ds1pOCgWILuFeBg=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=nD9VEwfiZwn0RI/6YTIOI1EFW21xC6bYlPbwp5Ybyam1iX7nexmKZRvmb/UhANItI
-	 ddyNMvYBYfkMpp41TgkYLrV3gRnA0F/vy+RATWh9CKi+iRqUcVuBDyGL5hoXkYjgxr
-	 puLagiJABC1iQPBXBmceJmbFtJ8pEyw35ps/RzJPyAKrvClAcXxo1v/kIZyWXhxroQ
-	 lJpLXrBvFanpUOiy3G+CJ8RDR9BRCW9/DwPXSGoAdqfmd6w3M/vYl7QCf8pvaYIE/o
-	 TTIxDx0aCTmBABaMLAnUvbm+WE0ott0rmFjNUAZqoJ50jS04jTG+IgCG/Oj/iLnbje
-	 AX8HabNHkPyMA==
-Message-ID: <sashiko-outbox-194340@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/7] KVM: nSVM: Check validity of vmcs01 save area
- copied from SMRAM on RSM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261102231428.13523-2-pbonzini@redhat.com>
-References: <20261102231428.13523-1-pbonzini@redhat.com>
- <20261102231428.13523-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 23:45:43 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Ogq7K/NR
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B750E16A3;
+	Mon,  2 Nov 2026 15:49:26 -0800 (PST)
+Received: from [10.57.66.79] (unknown [10.57.66.79])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5BA063F673;
+	Mon,  2 Nov 2026 15:49:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793663369; bh=alebyCC8ucd9nKIf6KiLwM7p1T8ro5s0+5R+DzxK1x4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ogq7K/NRj3ZtTzBg6VE+G5KuBv6rnWTie/UUaE8+2mBsG01dhkFc2eV6JorfEeoM3
+	 ZexUIvkA6wXgj/3qwzuC4XW9Imb87Us2ZE8TMKlj9sYG59AroPN00Bs7EJK9nrNAqU
+	 UyZGsJGgN6wHKbjiY22gBO69bbtgEzdTnrhBSNe8=
+Message-ID: <4304d0c7-2220-4add-9c71-e6dc6b4fbc11@arm.com>
+Date: Mon, 2 Nov 2026 23:49:24 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,125 +52,357 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/11] KVM: arm64: CCA: Add basic infrastructure for
+ creating a realm
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-7-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261102141304.126883-7-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] KVM: nSVM: missing EFER.LMA =3D=3D EFER.LME check in nested_svm_ch=
-eck_vmcb01_save()
-- [Medium] KVM: nSVM: svm_leave_smm() clobbers active vmcb01 save area befo=
-re validation
---
+Hi Steven
 
-commit c828fbc1de480891becf95d339311e3eed500e73
-Author: Sean Christopherson <seanjc@google.com>
-
-KVM: nSVM: Check validity of vmcs01 save area copied from SMRAM on RSM
-
-This commit factors out a helper to validate the vmcb01 save area and calls
-it in svm_leave_smm() after copying L1's state from SMRAM when returning fr=
-om
-SMM into L2.
-
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index af0ef678433d7..07554089ec05b 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -1889,6 +1889,21 @@ static void nested_copy_vmcb_cache_to_control(stru=
-ct vmcb_control_area *dst,
->  	/* 'clean' and 'hv_enlightenments' are not changed by KVM */
->  }
-> =20
-> +bool nested_svm_check_vmcb01_save(struct kvm_vcpu *vcpu,
-> +				  struct vmcb_save_area *save)
-> +{
-> +	struct vmcb_save_area_cached save_cached;
+On 02/11/2026 14:12, Steven Price wrote:
+> Introduce the skeleton functions for creating and destroying a realm.
+> The IPA size requested is checked against what the RMM supports.
+> 
+> The actual work of constructing the realm will be added in future
+> patches.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>   arch/arm64/include/asm/kvm_rmi.h | 20 ++++++++++++
+>   arch/arm64/kvm/arm.c             |  9 +++++
+>   arch/arm64/kvm/mmu.c             | 18 ++++++++--
+>   arch/arm64/kvm/rmi.c             | 56 ++++++++++++++++++++++++++++++++
+>   4 files changed, 101 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 3194daaacf2b..f1a1ed6b91f5 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -6,6 +6,9 @@
+>   #ifndef __ASM_KVM_RMI_H
+>   #define __ASM_KVM_RMI_H
+>   
+> +#include <linux/arm-smccc-rmi.h>
+> +#include <linux/kvm.h>
 > +
-> +	if (!(save->cr0 & X86_CR0_PG) ||
-> +	    !(save->cr0 & X86_CR0_PE) ||
-> +	    (save->rflags & X86_EFLAGS_VM) ||
-> +	    ((save->efer & EFER_LMA) && !(save->efer & EFER_LME)))
-> +		return false;
+>   /**
+>    * enum realm_state - State of a Realm
+>    *
+> @@ -50,12 +53,29 @@ enum realm_state {
+>   /**
+>    * struct realm - Additional per VM data for a Realm
+>    *
+> + * @rd: Kernel mapping of the RMM-managed Realm Descriptor (RD) granule
+> + * @sro: Preallocated SRO state context for Realm MMU operations
+>    * @state: The lifetime state machine for the realm
+> + * @ia_bits: Number of valid Input Address bits in the IPA
+>    */
+>   struct realm {
+> +	void *rd;
+> +	/*
+> +	 * Reused by RTT map/unmap SRO commands. Those commands are only
+> +	 * issued from Realm stage-2 map/unmap paths while kvm->mmu_lock is
+> +	 * held for write, including Realm fault handling where
+> +	 * kvm_fault_lock() takes the write side, so concurrent use is
+> +	 * serialized.
+> +	 */
+> +	struct rmi_sro_state *sro;
+>   	enum realm_state state;
+> +	unsigned int ia_bits;
+>   };
+>   
+>   void kvm_init_rmi(void);
+> +u32 kvm_rmm_ipa_limit(void);
+> +
+> +int kvm_init_realm(struct kvm *kvm);
+> +void kvm_destroy_realm(struct kvm *kvm);
+>   
+>   #endif /* __ASM_KVM_RMI_H */
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index c8599fed5902..9a7bbfaf9675 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -303,6 +303,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>   
+>   	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
+>   
+> +	/* Initialise the realm bits after the generic bits are enabled */
+> +	if (kvm_vm_is_realm(kvm)) {
+> +		ret = kvm_init_realm(kvm);
+> +		if (ret)
+> +			goto err_uninit_mmu;
+> +	}
+> +
+>   	return 0;
+>   
+>   err_uninit_mmu:
+> @@ -367,6 +374,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>   
+>   	kvm_destroy_nested(kvm);
+>   	kvm_arm_teardown_hypercalls(kvm);
+> +	if (kvm_vm_is_realm(kvm))
+> +		kvm_destroy_realm(kvm);
+>   }
+>   
+>   static bool kvm_has_full_ptr_auth(void)
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 1301c563d705..b049ea67d9af 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -981,10 +981,14 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
+>   
+>   static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
+>   {
+> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   	u32 kvm_ipa_limit = get_kvm_ipa_limit();
+>   	u64 mmfr0, mmfr1;
+>   	u32 phys_shift;
+>   
+> +	if (kvm_vm_is_realm(kvm))
+> +		kvm_ipa_limit = kvm_rmm_ipa_limit();
+> +
+>   	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
+>   	if (is_protected_kvm_enabled()) {
+>   		phys_shift = kvm_ipa_limit;
+> @@ -1034,9 +1038,18 @@ static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t addr,
+>   
+>   static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>   {
+> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+>   	unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
+>   
+> -	stage2_destroy_range(pgt, 0, BIT(ia_bits));
+> +	/*
+> +	 * Realm RTTs are inaccessible to the host and may contain stale data
+> +	 * after the RMM has released them. The non-root RTTs are explicitly
+> +	 * destroyed through RMI before the RD is destroyed; only the root PGD
+> +	 * pages remain to be freed here.
+> +	 */
+> +	if (!kvm_vm_is_realm(kvm))
+> +		stage2_destroy_range(pgt, 0, BIT(ia_bits));
+> +
+>   	KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
+>   }
 
-[Severity: High]
-Since nested_svm_check_vmcb01_save() requires save->cr0 & X86_CR0_PG to be
-set, should this check also reject !(save->efer & EFER_LMA) &&
-(save->efer & EFER_LME) (and CS.L=3D1 when EFER_LMA=3D0)?
+This looks like a good candidate for another callback for vm_s2_ops ? 
+Something like (incomplete functionally, but this should work).
+As a bonus, we can remove two instances of KVM_PGT_FN()
 
-nested_vmcb_check_save() does not check EFER_LMA against CR0.PG && EFER_LME,
-so a vmcb01 save area with CR0.PG=3D1, CR4.PAE=3D1, EFER_LME=3D1, and EFER_=
-LMA=3D0
-passes nested_svm_check_vmcb01_save() when reached from svm_leave_smm() or
-svm_set_nested_state().
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 5e9c2919c509..96685c52fb6e 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1048,35 +1048,52 @@ static int kvm_init_ipa_range(struct kvm_s2_mmu 
+*mmu, unsigned long type)
+   * cond_resched() periodically to prevent hogging the CPU for a long time
+   * and schedule something else, if required.
+   */
+-static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t addr,
+-				   phys_addr_t end)
++static void stage2_destroy_range(struct kvm_pgtable *pgt,
++				 void (*pgt_destroy_range_fn)(struct kvm_pgtable *pgt,
++							  u64 addr, u64 size))
+  {
++	u64 addr = 0;
++	u64 end = BIT(VTCR_EL2_IPA(pgt->mmu->vtcr));
+  	u64 next;
 
-When entering L2 with nested NPT enabled, nested_svm_init_mmu_context()
-passes svm->vmcb01.ptr->save.efer directly into kvm_init_shadow_npt_mmu():
+  	do {
+  		next = stage2_range_addr_end(addr, end);
+-		KVM_PGT_FN(kvm_pgtable_stage2_destroy_range)(pgt, addr,
+-							     next - addr);
++		pgt_destroy_range_fn(pgt, addr, next - addr);
+  		if (next != end)
+  			cond_resched();
+  	} while (addr = next, addr != end);
+  }
 
-arch/x86/kvm/svm/nested.c:nested_svm_init_mmu_context() {
-	...
-	kvm_init_shadow_npt_mmu(vcpu, svm->vmcb01.ptr->save.cr4,
-				svm->vmcb01.ptr->save.efer,
-				svm->nested.ctl.nested_cr3,
-				svm->nested.ctl.misc_ctl);
-	...
-}
++static void kvm_vm_stage2_destroy(struct kvm_pgtable *pgt)
++{
++	stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
++	kvm_pgtable_stage2_destroy_pgd(pgt);
++}
++
++static void pkvm_stage2_destroy(struct kvm_pgtable *pgt)
++{
++	stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
++	pkvm_pgtable_stage2_destroy_pgd(pgt);
++}
++
++/*
++* Realm RTTs are inaccessible to the host and may contain stale data
++* after the RMM has released them. The non-root RTTs are explicitly
++* destroyed through RMI before the RD is destroyed; only the root PGD
++* pages remain to be freed here.
++*/
++static void realm_stage2_destroy(struct kvm_pgtable *pgt,
++				 u64 start, u64 end)
++{
++	kvm_pgtable_destroy_pgd(pgt);
++}
++
+  static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+  {
+  	struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+  	unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
 
-Because kvm_calc_cpu_role() checks EFER_LMA via ____is_efer_lma(regs) rather
-than EFER_LME, the nested NPT shadow MMU gets initialized as 32-bit PAE
-paging instead of 64-bit 4/5-level paging.
+-	/*
+-	 * Realm RTTs are inaccessible to the host and may contain stale data
+-	 * after the RMM has released them. The non-root RTTs are explicitly
+-	 * destroyed through RMI before the RD is destroyed; only the root PGD
+-	 * pages remain to be freed here.
+-	 */
+-	if (!kvm_vm_is_realm(kvm))
+-		stage2_destroy_range(pgt, 0, BIT(ia_bits));
+-
+-	KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
++	kvm->arch.vm_s2_ops->stage2_destroy(pgt, 0, BIT(ia_bits));
+  }
 
-In addition, on a subsequent nested #VMEXIT from L2 to L1,
-nested_svm_vmexit() restores vmcb01->save.efer and vmcb01->save.cr0:
 
-arch/x86/kvm/svm/nested.c:nested_svm_vmexit() {
-	...
-	svm_set_efer(vcpu, vmcb01->save.efer);
-	svm_set_cr0(vcpu, vmcb01->save.cr0 | X86_CRCR0_PE);
-	svm_set_cr4(vcpu, vmcb01->save.cr4);
-	...
-}
 
-Since svm_set_cr0() only sets EFER_LMA when transitioning from
-!is_paging(vcpu) to CR0.PG=3D1, if L2 had CR0.PG=3D1, L1 is left running wi=
-th
-CR0.PG=3D1, EFER_LME=3D1, and EFER_LMA=3D0 in vcpu->arch.efer.
 
-[ ... ]
 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 136069dfcd44f..e30ee80624b72 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -5223,6 +5223,8 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, con=
-st union kvm_smram *smram)
->  	 */
-> =20
->  	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, m_save.map.hva + 0x4=
-00);
-> +	if (!nested_svm_check_vmcb01_save(vcpu, &svm->vmcb01.ptr->save))
-> +		return 1;
+> @@ -1084,6 +1097,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   		return -EINVAL;
+>   	}
+>   
+> +	mmu->arch = &kvm->arch;
+> +
+>   	err = kvm_init_ipa_range(mmu, type);
+>   	if (err)
+>   		return err;
+> @@ -1092,7 +1107,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   	if (!pgt)
+>   		return -ENOMEM;
+>   
+> -	mmu->arch = &kvm->arch;
+>   	err = KVM_PGT_FN(kvm_pgtable_stage2_init)(pgt, mmu, &kvm_s2_mm_ops);
+>   	if (err)
+>   		goto out_free_pgtable;
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 5b07beff8bc9..45ecbaa467d1 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -6,6 +6,8 @@
+>   #include <linux/arm-rmi-cmds.h>
+>   #include <linux/kvm_host.h>
+>   
+> +#include <asm/kvm_emulate.h>
+> +#include <asm/kvm_mmu.h>
+>   #include <asm/kvm_pgtable.h>
+>   #include <asm/virt.h>
+>   
+> @@ -14,6 +16,60 @@ static bool rmi_has_feature(int reg, unsigned long feature)
+>   	return !!u64_get_bits(rmi_feat_reg(reg), feature);
+>   }
+>   
+> +u32 kvm_rmm_ipa_limit(void)
+> +{
+> +	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+> +}
+> +
+> +void kvm_destroy_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> +
+> +	if (!kvm_realm_is_created(kvm)) {
+> +		kfree(realm->sro);
+> +		realm->sro = NULL;
+> +		return;
+> +	}
 
-[Severity: Medium]
-Can copying the untrusted HSAVE state directly into svm->vmcb01.ptr->save
-before validating it leave vcpu->arch and the active VMCB01 out of sync if
-nested_svm_check_vmcb01_save() (or nested_svm_check_cached_vmcb12()) fails?
+Do we leak memory of the stage2 PGD if the Realm was never created ?
+Should we have something like on top ?
 
-Before calling svm_leave_smm(), emulator_leave_smm() transitions vcpu->arch
-to unpaged real mode while !is_guest_mode(vcpu) and svm->vmcb points to
-svm->vmcb01.ptr.
+@@ -1646,11 +1645,8 @@ void kvm_destroy_realm(struct kvm *kvm)
 
-If svm_leave_smm() returns 1 after svm_copy_vmrun_state() has already
-overwritten svm->vmcb01.ptr->save, emulator_leave_smm() aborts with
-X86EMUL_UNHANDLEABLE and em_rsm() requests KVM_REQ_TRIPLE_FAULT, exiting to
-userspace with KVM_EXIT_SHUTDOWN while still in L1.
+         guard(mutex)(&kvm->arch.config_lock);
 
-At that point, vcpu->arch and vcpu->arch.root_mmu reflect unpaged real mode,
-while the active svm->vmcb->save holds the rejected HSAVE state (including
-segment registers, CR0, CR3, CR4, and EFER). Unlike svm_set_nested_state(),
-which validates the temporary save buffer before calling
-svm_copy_vmrun_state(), a subsequent KVM_GET_SREGS or KVM_RUN on the vCPU
-will see the clobbered vmcb01 save area and copy svm->vmcb->save.cr0 and cr3
-into vcpu->arch in svm_vcpu_run().
+-       if (!kvm_realm_is_created(kvm)) {
+-               kfree(realm->sro);
+-               realm->sro = NULL;
+-               return;
+-       }
++       if (!kvm_realm_is_created(kvm))
++               goto free_pgd;
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102231428.1352=
-3-1-pbonzini@redhat.com?part=3D1
+         kvm_set_realm_state(kvm, REALM_STATE_DYING);
+
+@@ -1684,6 +1680,7 @@ void kvm_destroy_realm(struct kvm *kvm)
+
+         kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+
++free_pgd:
+         /* Now that the realm is destroyed, free the entry-level RTTs. */
+         kvm_free_stage2_pgd(&kvm->arch.mmu);
+
+
+Suzuki
+
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DYING);
+> +
+> +	if (realm->rd) {
+> +		phys_addr_t rd_phys = virt_to_phys(realm->rd);
+> +
+> +		if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
+> +			return;
+> +
+> +		if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
+> +			return;
+> +		rmi_free_delegated_page(rd_phys);
+> +		realm->rd = NULL;
+> +	}
+> +
+> +	if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
+> +					 pgd_size)))
+> +		return;
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+> +
+> +	/* Now that the realm is destroyed, free the entry-level RTTs. */
+> +	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +
+> +	kfree(realm->sro);
+> +	realm->sro = NULL;
+> +}
+> +
+> +int kvm_init_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +
+> +	realm->sro = kmalloc_obj(*realm->sro);
+> +	if (!realm->sro)
+> +		return -ENOMEM;
+> +
+> +	return 0;
+> +}
+> +
+>   static int rmm_check_features(void)
+>   {
+>   	if (kvm_lpa2_is_enabled() &&
+
