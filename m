@@ -1,173 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=3.65.3.180
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793621175;
-	b=r0XRGBH3VWWDh5fBnMUGKVhOR0yvXG6Khc5+7U2b+4T7/5IG3HBv86GHurIuGpWAKFQ6
-	 xMRFxkc4xG15tGfq0zkib75oA1MLlTj9lThVN0LF6D6eYDNRc3fQGXJRTmzXVQMSF6dTa
-	 8vtyNd56c8fGubiLy/eNX/DUaXErpMa9quDH0VBNVR0Hys6cWLmMabT4GG5ZKPRTuw+eB
-	 DVxuwZgOLK+lcbtY0ulii8lo/AJ7ThFelhLXP3TtMmI7w0AVJ7igMUS+aCkVpDqzC6wCk
-	 Mx4rVX8X19AcFrE6UeOU6bwK6apPTDxIcuE7zpon+A1R2EeTRQE4gDlhM4FBIiqVxNQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793621175;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:Subject:Thread-Topic:Received:Received:
-	 X-Farcaster-Flow-ID:Received:Received:Received:Received:From:To:CC:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:msip_labels:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=/Zl5Gt7d/bO90KpwAirLLT1yHC4y6iB9Lhyhpiuu4hA=;
-	b=xv701hR+p5rnlBKxbK9Gaf1odcie9hzaPYDFa5zykX1+faawzrzIY70dwSxFa/WgO1MU
-	 2fdDHSiX4YOtghbQNPjD3mUCMxsxsfqvIX+9uJ2xDb/lP8LiQtKp+hxzls3eplfQy1Lxl
-	 DlW8PtjjHqLudQp9CCQgr3p20KwuWXNqcg+hmcCWtTMYAzg7If4NV4+PS/mdXoTCL76Xl
-	 T4DJLPisIs+fESUJm2vmuP67cLQy3lUw1qFKDYydJXMga4NNWzl8Uu2O39ELaygXWr4nu
-	 XCqmbJdM0HqHSFmRG8qxmXHAqnoXXQgDAOPIuE2hrJxPrfAZgLF1BZyezOXzSRIY9nw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amazon.com;
-	spf=pass smtp.mailfrom=amazon.com;
-	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=VO8HGGAW;
-	arc=fail smtp.remote-ip=3.65.3.180
-Received: from fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.65.3.180])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793621227;
+	b=uYA0TEcHq5GWEpum91f/WDgs4izi+A+w88m1lMpVKMnqDlnV7E2KtH5zf4OxIbqou8WS
+	 eRQITeVCjiPeLhrgfGs6rG/m90EGbhANdsWQWjcFxZO0v++I3aQTQEeVf2YxFQ2b9EB/i
+	 q0xzzxkSklft5f3CYiKEGKpSJzVK4B6AK2rm3td/U9pceL+G7bzI5yoZ8Irew0TRis/2A
+	 MmDQrndof2VrsQY/Qlx8b/8jrKmy4xQNF8wj1q1ebGq4QetQy8PKXgF5vpYewbsVM0JXe
+	 NpPLCaqH3fGMy3jgkGpZiBRsFaKigfcYXCoMfOc/9J/X6t8BYWY02L7DGWB20NtuY5w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793621227;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=eie875xNMkWFXic9T7Jr0GRsawAWRJxR8/5JjlWGlhY=;
+	b=goTNQmJIDC4kVIbPQI2t9kErY/u7sGcMuqhBOLeF2q6tXelPu+6SYgicOlSLadGjFlET
+	 StpePzRG35Bh5EA6iB9Yac3P7oYGfu1iGLzs+AXAZc4/uP5Dp1RnnxVJH5KANIE4QflTb
+	 9y8LUNKy0sxDs8MhGbKmDt/X6dZUdXJLVNKV/9NMqrVUWi6WNMQRUtNITUI5XXBVL0FAo
+	 jfZ5Cqa0hqtKA8U43cdipBNzPhDg0wWSjSSsCz02k29QviHeMyV0rMWnr6kU0Hb5+MoKw
+	 0B5xvrMdfaxsT1Q0dd7lD6i4jOs9NL6F41bt5hUxuRXU9jxzY0SbOXu2nra/GtC051Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oPpHJhIP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91D2606A335;
-	Mon,  2 Nov 2026 12:06:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E91D2606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE75606A324
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 12:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=VO8HGGAW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1793621174; x=1825157174;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=/Zl5Gt7d/bO90KpwAirLLT1yHC4y6iB9Lhyhpiuu4hA=;
-  b=VO8HGGAWfqh00wsX8SHieRgfJc8F0/yMHayiBcNY+ZZb9pOZO/9wKbC3
-   plT+AhddC9c5z7KoK91jjzQXYyaLfSwvEu+vMsd1FwvGZYIa1lnGvJz/c
-   hP2fNK9XkI7CiUAOL7U9Mb+zn6HPE9/Cb/cWIN4WWkSXNcOsQOf1FkSEM
-   2TZ+0pwOP5tBuqMT7nFLadUx6f0ef2dD1zBdsNJ3JIJLtbSHb9LoJkj2C
-   SvQSyancf0T3vtevx6jU9fVOnEgY3fzDDO36GRD/7HNHLUQwV0IFyHlKO
-   UAgL7rpypuyx9Bz0Y6wpv3SFROruugYMdhvLB23i+a6zNmj4pfA2Ff+ZZ
-   g==;
-X-CSE-ConnectionGUID: H/MJHDNZRGmoK3Whfnfo7w==
-X-CSE-MsgGUID: HQhQpeGQSKWQUD/Ruc79rg==
-X-IronPort-AV: E=Sophos;i="6.27,191,1787011200"; 
-   d="scan'208";a="22157955"
-Subject: Re: [PATCH 3/4] KVM: x86/mmu: Add automatic prefaulting/prefetching for TDP
- MMU faults
-Thread-Topic: [PATCH 3/4] KVM: x86/mmu: Add automatic prefaulting/prefetching for TDP MMU
- faults
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 12:06:09 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:17680]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.11.178:2525] with esmtp (Farcaster)
- id b9af0f3e-a27d-458b-83c3-7b68ca350143; Mon, 2 Nov 2026 12:06:09 +0000 (UTC)
-X-Farcaster-Flow-ID: b9af0f3e-a27d-458b-83c3-7b68ca350143
-Received: from EX19EXOEUA001.ant.amazon.com (10.252.50.110) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Mon, 2 Nov 2026 12:06:08 +0000
-Received: from DUZPR08CU001.outbound.protection.outlook.com (10.252.51.94) by
- EX19EXOEUA001.ant.amazon.com (10.252.50.110) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56
- via Frontend Transport; Mon, 2 Nov 2026 12:06:08 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XYKGj9RegHU+JSEGvMxIzUpKim5b28CWLAzhSUi335Y71S9MWauxpu3qS3SzKHVkBKgWJ0tfAp7qI1kyT/qinmNVYIpWf7rGr9MXkl5R30UAgAQKO9Mx+pnCRJnBQlc2KTfdZUpldGp1KSiPX0/x5Yd7MPuZlxNenuoM+/Un45RTF+ryM2rWK0gLBqaqmBqeYKcQDHEr3Te2y2EDbYwGtIoEIx0RxpziXeKi6ei8c4TXrcqI4bD91wQ2kzb/7m60CaJbMbY3DOtAoRpi+IPtm2td2+CKWBhWQBgknNC0hYVzjtB3T9GQzG5LXNluXT54V9lS6QWNxBFje8vnSpNM9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/Zl5Gt7d/bO90KpwAirLLT1yHC4y6iB9Lhyhpiuu4hA=;
- b=rVSkiY/RZZvB/T90IKVMGpi50aeGDbPtHbbQhKjzMRTW/D5B1A1lfyyvF3r3oPlCkTIrXgXsQ5B+2q7zKVDYWidFdMKj9ER+tSzmoQZJ6QWi0vxYyi0f7lj2AxX6k+5/pauvUixHUclX9uCyYaynI5LMJRMZ4onyL+2R5M+zWyyVKjDgw0Xx2zqfuzFUR6Ed0IRsyGL4L9YYt2Y4Kcx+a83WTEsbXQAzMtsr/ecC4xtSIPJB7DgxZbMF5BxxGPUIqNae8Vdw5wwV+WmOHRWE44ds+WvGjDALlwc45Pf+RDzN0GPljbTdG9fPKomVH62IoQK62NMrzxwcOd0RwMHKiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
- dkim=pass header.d=amazon.com; arc=none
-Received: from GV2PR06MB10711.eurprd06.prod.outlook.com
- (2603:10a6:150:2fa::20) by PAWPR06MB8858.eurprd06.prod.outlook.com
- (2603:10a6:102:386::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 12:06:07 +0000
-Received: from GV2PR06MB10711.eurprd06.prod.outlook.com
- ([fe80::ef79:3e5a:90ef:ae71]) by GV2PR06MB10711.eurprd06.prod.outlook.com
- ([fe80::ef79:3e5a:90ef:ae71%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 12:06:06 +0000
-From: "Marangoni, Marco" <mamarang@amazon.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "cc-open-source@amazon.com"
-	<cc-open-source@amazon.com>, James Houghton <jthoughton@google.com>
-Thread-Index: AQHdZxq2NIaSsqoYoE6jc7QaLU6KRLcTftSAgAFBcU6AAEUJgIAA7/ClgAB/D4CABEE4Dg==
-Date: Mon, 2 Nov 2026 12:06:06 +0000
-Message-ID: <GV2PR06MB1071106653A4E128AB904BF66B96A2@GV2PR06MB10711.eurprd06.prod.outlook.com>
-References: <20261028202607.1844883-4-seanjc@google.com>
- <20261028215143.2913059-1-jthoughton@google.com>
- <GV2PR06MB10711171A7A8F225207FACD6BB96E2@GV2PR06MB10711.eurprd06.prod.outlook.com>
- <auO1_YE89Q0T0hfI@google.com>
- <MRWPR06MB107263BB1EF5464326E45DCD7B96D2@MRWPR06MB10726.eurprd06.prod.outlook.com>
- <auTp2Yp2qtqtiPkX@google.com>
-In-Reply-To: <auTp2Yp2qtqtiPkX@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amazon.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR06MB10711:EE_|PAWPR06MB8858:EE_
-x-ms-office365-filtering-correlation-id: 7320df66-1963-450e-c8b7-08df38d9acd6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|376014|38070700021|261026121527099003|4143699003|11063799006|10067099003|56012099006|18002099003|22082099003;
-x-microsoft-antispam-message-info: eXd5+hXuvYN9pgzAzOzqJB3oEzVDI83S7OIDQ5lsI6eXxQ8817s5vS0VwJvmcWK29TdUbSevgfUFy9zX6y+KvOe0SxLwqppjo2kCP5qMOIvRedd+aJbZ4OJetiY2nGa2P2iDq/bGc3PYicak0PYMW/rW0EGwH1VzbXrPTW/TKZKEB3TrbGVP27B9XLGXYjsuAvgUIciNNr2GCM47HE9vmO/0zy+vvB+dsmmPR5xCJUIVkiEcUG9UTYPygiVDhh0ZBwbEQbZLxSVuHolT1MGIblzP200FKNREH2MSSgxFI5gJGtGgfQIc15bg0N7J2tOIcVmNYyX8fYGSPFewsK9M4znvaAfODbswCMcHHU07n4FF9fpR9sdtPLSJjTy2Y6hk1iWzz580O4r++MxSiCIj1QceW91ogXVzwiBR3R02bFkig9C54C1od/KB1Mw0kIl4HhgLrFav0oxPV8KCElEYpnxWv8ECN44ywBnN9avWT1fVJwdV0jp3ionXP3+b5fQyJlVQYtVCPGRQhdXZuEBnzsM6eUr6McJ9iJgamq843s/tCtcUiKpKc65v6COIHOEEJrvL05x6MsGgyz6elVdSLBQxnDRbbIMP+J6py2d35O+cqQ91DcUft9RUD1gvaaZ8ut53nbCaYG0cKWyt11zq7vqGv3/d0wtNbLsXRakhs9l2fe9T/MSIqk9sCsJoykqra+JAGoFiVieC6jI24ggXwSpm9GzKUXuGyi8inLv8x7E=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR06MB10711.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(376014)(38070700021)(261026121527099003)(4143699003)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?V7X3QbFanW1ruNpxllC/eRfe1pGjVdbvlhcN7SM6ecHz7Pcs1uKbMHRG5V?=
- =?iso-8859-1?Q?jRtKAhkDm/UJHE57NzjbSEJpWXNHvCGzGA07ektjydlnrsgp9MshMocKAu?=
- =?iso-8859-1?Q?Vl9LxH+l+FaYKH5CZptuzyJeFfh9HNWZl8pN/i2qWocUbhMzzLV+8y5M8a?=
- =?iso-8859-1?Q?y/MdVBo1DtBNR3wWoQhg+wI27HkeVRbEyr1R8i01O7Wo1AEH2PgPDxXuUK?=
- =?iso-8859-1?Q?SbeZyqqE9m4SP7HYZP10KHtEZfuSUd3AkCnW7zmp+QDuogXC4s2mRcHRZx?=
- =?iso-8859-1?Q?6/1eIO2fo+dk/4gpK9GqFo7ftFZeH/u8P7xVOh4wyt1idPXpeOPpAQjXjI?=
- =?iso-8859-1?Q?3xX9SLzPyw4MjVwKArFAHo9Dqb+4d/SUvpVHhxZpC1aK0AelTCiOv7lT5O?=
- =?iso-8859-1?Q?M6HLcLpNDvGwpBq5Z0ebrYyg/XHf/5eA3KLRnuLRxj0CsaDE5ygZaIJRE7?=
- =?iso-8859-1?Q?ekP2gNpYQ/xKfB1uTiSOk9055oX2P7gjH0xfqIUH29SAYTIor0mE3KaXxW?=
- =?iso-8859-1?Q?TQ516AX0GNWav4GZkwhPjJmBGHotTIix2i3Y3P1ZaAEVihYs4cV/ZpBM6z?=
- =?iso-8859-1?Q?jm9dEa998lwP72t8MXNev6dIzLQohSigkVrBz7ylYGM2LAVLGTNcUlmit0?=
- =?iso-8859-1?Q?Q+NNGy5a/2bYDzzWqL4SKeUpoDPuug+8avbBmmqvnQITpLqyKKFlR+jYCd?=
- =?iso-8859-1?Q?1JUlU3E8/rZH70tA+/utvfVWiPM+qJntBSgRWxq06GR6vxOuc16Q+lTBPk?=
- =?iso-8859-1?Q?YJmRzMHG7Nc3r29Clm4HWp827uR8sW00KAXqT1T2PUIX944mN3r2yJyh8y?=
- =?iso-8859-1?Q?lDS46Cb/fn33lwqPChv23/r+E/Dy7vRM2Qz4xk+XZzW/RqipDEsS+cEfJ5?=
- =?iso-8859-1?Q?FauJq0I+32cFCPRylcaDpABakP5FenQStRGX8ZMkLwXqqDgqDlRUf0awQa?=
- =?iso-8859-1?Q?hxkAJ2Z3hhr1yMS6mondY+si70MhNk9o8oJwh99Zfz22ebJSPXVpajBD6i?=
- =?iso-8859-1?Q?Yzkmg3LFbOeGgAH1XviTy1HCApXCRyH35spFrODItnHAZbFemqXbGcKu8h?=
- =?iso-8859-1?Q?HrmD3yYXB8/CYu9WKncQEH8zdcpjQRDNq7xoZB5epHDAxMkYgMgSqKB1xG?=
- =?iso-8859-1?Q?yYBQ7ZB5gp6v2i/ZiK3asXTv1TPkKcLh6L09lczsW+jeDOEY1T6J4NMurf?=
- =?iso-8859-1?Q?+tg0gaMZ+PsZVsf8eC9FR+sejGA4QOnwfMn851/WGZnROLjPXd9uB1bpiE?=
- =?iso-8859-1?Q?vLvCQfywqOtQ0Ccq5iOcDy+Ij7zJrBz4N2GudxwgfEPkSxcqvIoOwJcuzS?=
- =?iso-8859-1?Q?rECdHL/TKUyk/zfMiN9xH8hxOO5mKVS35+sw57dOogcroO3HV/tS3bW0WZ?=
- =?iso-8859-1?Q?NysiFzRi7rIyifH522OHqc2vQAabg68AI8gptfW49fmquImQ1JIL4k2hJb?=
- =?iso-8859-1?Q?joxwcoO3Y4I2Y2A5AoIEJlDAYi8RBI0DerDLFRkRdAMJmSjhm7arrl91a6?=
- =?iso-8859-1?Q?+V/tjRMHdFlgU1va7HGYU+JYkocQQw2EQ/4JIL8OI0ED1M9o3SHFN9LEfZ?=
- =?iso-8859-1?Q?Bii0moBW+o59pHJ1vU5RTaboXyi3pbdCizmaAXecx5inwXQ3t2m0YNGgmz?=
- =?iso-8859-1?Q?+AAmydCRBM/MOytrH6kaeCke8lSP5mQlnpvlrSOIS3lrWkxdtlsjv0Clrt?=
- =?iso-8859-1?Q?M5WS3LC6uPYuAnkw9htDPz+5L52vBPZK4vRGRwYs5445PATMo6KbTroJqb?=
- =?iso-8859-1?Q?tDwbSADJwm9SF/QvcFVrS6t1q5wtodffO0VFGmA0bBaibTE4VjaPWKqwA4?=
- =?iso-8859-1?Q?ddW6CV5f3Rvn5xCK/Icb6HKRFgT/AUUcnafBLx7zOoC9ONfhplni?=
-Content-Type: text/plain; charset="iso-8859-1"
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oPpHJhIP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2101F00A1B;
+	Mon,  2 Nov 2026 12:07:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793621226;
+	bh=eie875xNMkWFXic9T7Jr0GRsawAWRJxR8/5JjlWGlhY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oPpHJhIPHbnqIBcefnniQaWWWijq3ZJNuv7DQmpq1Y4szaFdlAE6FQO4fulC0cIHw
+	 YVkwaEGsOVtSqSxYwqis3LR/dUrcyDUy5jAlXG7zXLf8OgbpPP+iYWCfQVCkzckuQi
+	 TVoU/4+ILJWQQzQYLEa0kp5Wx4saJAX69GTx4oZfd1weW0kLlt0Dv+sLzfzdJkyVRp
+	 PV9/FO0fG3grAB4ZUg8F2gKIQpefWWRXQPP4UggEmf5YLLeDowulu0lV3HnWYh4Fo3
+	 +BVpW4u7jr5xMm6+8o9i4+OuJQqXIRknMTPwJL8k4tHl3ahfNb40h1dvzInhonu/Xz
+	 7a1XzXzJEc+eg==
+Message-ID: <sashiko-outbox-193369@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 6/8] KVM: SEV: Add SNP vCPU state get and set
+ commands
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261102114137.1198982-7-joro@8bytes.org>
+References: <20261102114137.1198982-1-joro@8bytes.org>
+ <20261102114137.1198982-7-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 12:07:06 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -176,29 +60,409 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: YfR2B7fiPFFj1keNWQBNx9d/lTWzlFGInE9YvLcfJ61S7FslpgMONCFviAsZnRch/vgiXrpJqExaeOk+fR7o+gecy/F5y/bYOkEqZwZtBokF5ymYZ3+Cda32QC3oqDc82EKTJnu2nUpqhA8JgRfkCSKS251EcFTM/xC2gg5H6G5g2E5UkUGfjLF6LByoBBGdkyBFpiAi3QRgQZXHxwyI4yUnzBiD5bfkakfwZL9zTFlyrO1b/BVGtBh7/DwdNZujtTYOKCDtaS76gBrEnTw9p6BC76wxfhYRX6zUgpYVmW3AMk2HqUSic2PFCX+RChPU3NcSTs65UoVP9wCkCF9mFA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR06MB10711.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7320df66-1963-450e-c8b7-08df38d9acd6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Nov 2026 12:06:06.8203
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 25wro+BE13ilwhsVCoYco+ntDj2xStBWmkWZe8aso54/zjPgrUrBaucbRiqKq0JinqiQtAV8YSEksuld3MaiWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR06MB8858
-X-OriginatorOrg: amazon.com
 
-On Fri, Oct 30, 2026, Sean Christopherson wrote:=0A=
-> Oh, that's easy enough to "fix", the only question is whether or not that=
- would=0A=
-> be a net positive.=0A=
-=0A=
-The only patterns for UFFD we've seen in Firecracker (both internally and e=
-xternally) is to use fixed chunks on `UFFD_COPY`. There's some variability =
-in the chunk size, we've seen it range from 512kiB to 4MiB, however it's al=
-ways fixed.=0A=
-So I agree, in this scenario, the approach of stopping at the first miss wo=
-rks and is not an issue when the prefault window is smaller or equal to the=
- UFFD chunk size.=0A=
+Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+s) to consider:
+- [High] KVM: SEV: misuse of INVALID_PAGE for ghcb_gpa in snp_set/get_vcpu_=
+state()
+- [High] KVM: SEV: premature gmem fault-in and RMP update in snp_set_vcpu_s=
+tate()
+- [High] KVM: SEV: missing guest_state_protected check in snp_set_vcpu_stat=
+e()
+- [High] KVM: SEV: setting vmsa_pa in snp_set_vcpu_state() bypasses pre_sev=
+_run()
+- [Medium] KVM: SEV: unlocked sev->snp_context read in snp_get/set_vcpu_sta=
+te()
+- [Medium] KVM: SEV: stale VMSA state in snp_get_vcpu_state() on pending re=
+load request
+- [Medium] KVM: SEV: snp_get_vcpu_state() hides VMSA GPA when VMSA reload i=
+s pending
+--
+
+commit 58d63c955c7c0bdc5747b6eafd39cb3beae4ba9d
+Author: Joerg Roedel <joerg.roedel@amd.com>
+
+KVM: SEV: Add SNP vCPU state get and set commands
+
+This commit adds KVM_SEV_SNP_GET_VCPU_STATE and KVM_SEV_SNP_SET_VCPU_STATE
+as vCPU-scoped KVM_MEMORY_ENCRYPT_OP commands and advertises
+KVM_CAP_SNP_VCPU_STATE so userspace can configure and query guest-owned VMSA
+and GHCB GPAs per vCPU.
+
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 974651a70a7dd..ff696e21fe41b 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+
+[ ... ]
+
+> @@ -2606,6 +2608,89 @@ static int snp_launch_update_vmsa(struct kvm *kvm,=
+ struct kvm_sev_cmd *argp)
+>  	return ret;
+>  }
+> =20
+> +static int snp_get_vcpu_state(struct kvm_vcpu *vcpu,
+> +			      struct kvm_sev_cmd *argp)
+> +{
+> +	struct vcpu_svm *svm =3D to_svm(vcpu);
+> +	struct kvm *kvm =3D vcpu->kvm;
+> +	struct kvm_sev_snp_vcpu_state state =3D {};
+> +
+> +	if (!is_sev_snp_guest(vcpu))
+> +		return -ENOTTY;
+> +	if (!to_kvm_sev_info(kvm)->snp_context)
+> +		return -EINVAL;
+
+[Severity: Medium]
+Is it safe for snp_get_vcpu_state() and snp_set_vcpu_state() to read
+sev->snp_context under vcpu->mutex without holding kvm->lock?
+
+In snp_launch_start(), sev->snp_context is assigned under kvm->lock before
+SEV_CMD_SNP_LAUNCH_START and snp_bind_asid() execute, and cleared via
+snp_decommission_context() if either step fails:
+
+arch/x86/kvm/svm/sev.c:snp_launch_start() {
+	...
+	sev->snp_context =3D snp_context_create(kvm, argp);
+	if (!sev->snp_context)
+		return -ENOTTY;
+	...
+e_free_context:
+	snp_decommission_context(kvm);
+	return rc;
+}
+
+If userspace invokes KVM_SEV_SNP_GET_VCPU_STATE or
+KVM_SEV_SNP_SET_VCPU_STATE concurrently with KVM_SEV_SNP_LAUNCH_START, can
+snp_set_vcpu_state() observe a transiently non-NULL sev->snp_context and
+install state (including calling kvm_gmem_get_pfn() ->
+sev_gmem_make_private()) before snp_bind_asid() has bound the asid or while
+snp_launch_start() is failing and decommissioning the context?
+
+> +
+> +	guard(mutex)(&svm->sev_es.snp_vmsa_mutex);
+> +
+> +	if (VALID_PAGE(svm->sev_es.snp_guest_vmsa_gpa) &&
+> +	    VALID_PAGE(svm->vmcb->control.vmsa_pa)) {
+> +		state.vmsa_gpa =3D svm->sev_es.snp_guest_vmsa_gpa;
+> +		state.valid_fields |=3D KVM_SEV_SNP_VCPU_STATE_VMSA_VALID;
+> +	}
+
+[Severity: Medium]
+As reported by Sashiko on v2 [1], does checking
+VALID_PAGE(svm->vmcb->control.vmsa_pa) here cause snp_get_vcpu_state() to
+hide a valid snp_guest_vmsa_gpa whenever a deferred reload is pending?
+
+Every path that clears or fails to install a guest-owned vmsa already sets
+svm->sev_es.snp_guest_vmsa_gpa to INVALID_PAGE. The only case where
+VALID_PAGE(svm->sev_es.snp_guest_vmsa_gpa) is true while
+VALID_PAGE(svm->vmcb->control.vmsa_pa) is false is in
+__sev_snp_reload_vmsa() when mmu_invalidate_retry_gfn() triggers a deferred
+reload via KVM_REQ_VMSA_PAGE_RELOAD:
+
+arch/x86/kvm/svm/sev.c:__sev_snp_reload_vmsa() {
+	...
+	svm->sev_es.snp_guest_vmsa_gpa =3D gpa;
+	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+		kvm_make_request(KVM_REQ_VMSA_PAGE_RELOAD, vcpu);
+	else
+		svm->vmcb->control.vmsa_pa =3D pfn_to_hpa(pfn);
+}
+
+If the vCPU exits to userspace before vcpu_enter_guest() services
+KVM_REQ_VMSA_PAGE_RELOAD, won't KVM_SEV_SNP_GET_VCPU_STATE omit
+KVM_SEV_SNP_VCPU_STATE_VMSA_VALID and report vmsa_gpa as 0?
+
+[Severity: Medium]
+Conversely, what happens if the backing guest_memfd range or memslot is
+invalidated while the vCPU is in userspace?
+
+When sev_gmem_invalidate_range() runs, it reads snp_guest_vmsa_gpa via
+READ_ONCE() and queues KVM_REQ_VMSA_PAGE_RELOAD without clearing
+snp_guest_vmsa_gpa or vmsa_pa until the next KVM_RUN calls
+sev_snp_reload_vmsa() in vcpu_enter_guest():
+
+arch/x86/kvm/svm/sev.c:sev_gmem_invalidate_range() {
+	...
+	gpa_t gpa =3D READ_ONCE(to_svm(vcpu)->sev_es.snp_guest_vmsa_gpa);
+
+	if (VALID_PAGE(gpa) &&
+	    gpa_to_gfn(gpa) >=3D range->start &&
+	    gpa_to_gfn(gpa) < range->end)
+		kvm_make_request_and_kick(KVM_REQ_VMSA_PAGE_RELOAD, vcpu);
+}
+
+Because snp_get_vcpu_state() does not service pending
+KVM_REQ_VMSA_PAGE_RELOAD (or KVM_REQ_UPDATE_PROTECTED_GUEST_STATE) requests,
+won't KVM_SEV_SNP_GET_VCPU_STATE report stale vmsa state if called before
+KVM_RUN?
+
+Also, in snp_set_vcpu_state(), the else branch clears
+svm->sev_es.snp_guest_vmsa_gpa =3D INVALID_PAGE outside mmu_lock without
+WRITE_ONCE(), and neither branch clears a pending KVM_REQ_VMSA_PAGE_RELOAD
+request. Should snp_set_vcpu_state() use WRITE_ONCE() and clear
+KVM_REQ_VMSA_PAGE_RELOAD when updating or invalidating the vmsa?
+
+> +
+> +	if (VALID_PAGE(svm->vmcb->control.ghcb_gpa)) {
+> +		state.ghcb_gpa =3D svm->vmcb->control.ghcb_gpa;
+> +		state.valid_fields |=3D KVM_SEV_SNP_VCPU_STATE_GHCB_VALID;
+> +	}
+> +
+> +	if (copy_to_user(u64_to_user_ptr(argp->data), &state, sizeof(state)))
+> +		return -EFAULT;
+> +
+> +	return 0;
+> +}
+> +
+> +static int snp_set_vcpu_state(struct kvm_vcpu *vcpu,
+> +			      struct kvm_sev_cmd *argp)
+> +{
+> +	struct vcpu_svm *svm =3D to_svm(vcpu);
+> +	struct kvm *kvm =3D vcpu->kvm;
+> +	struct kvm_sev_info *sev =3D to_kvm_sev_info(kvm);
+> +	struct kvm_sev_snp_vcpu_state state;
+> +	int ret;
+> +
+> +	if (!is_sev_snp_guest(vcpu))
+> +		return -ENOTTY;
+> +	if (!sev->snp_direct_vmsa)
+> +		return -EINVAL;
+> +	if (!sev->snp_context || kvm->arch.pre_fault_allowed)
+> +		return -EINVAL;
+
+[Severity: High]
+Does checking kvm->arch.pre_fault_allowed under vcpu->mutex actually
+serialize snp_set_vcpu_state() against launch finalization?
+
+In snp_launch_finish(), snp_launch_update_vmsa() locks all vCPUs, sets
+vcpu->arch.guest_state_protected =3D true, and immediately unlocks all vCPUs
+before snp_launch_finish() copies the user blobs, issues
+SEV_CMD_SNP_LAUNCH_FINISH, and sets kvm->arch.pre_fault_allowed =3D true:
+
+arch/x86/kvm/svm/sev.c:snp_launch_update_vmsa() {
+	...
+protect_vcpu:
+		svm->vcpu.arch.guest_state_protected =3D true;
+		svm_enable_lbrv(vcpu);
+	}
+
+out:
+	kvm_unlock_all_vcpus(kvm);
+	return ret;
+}
+
+Once kvm_unlock_all_vcpus() releases the vCPU mutexes (either while
+SEV_CMD_SNP_LAUNCH_FINISH is in flight, or if snp_launch_finish() fails
+before setting pre_fault_allowed), another thread calling
+KVM_SEV_SNP_SET_VCPU_STATE can acquire vcpu->mutex, see
+kvm->arch.pre_fault_allowed =3D=3D false, and overwrite vmsa_pa,
+snp_guest_vmsa_gpa, and ghcb_gpa on an already-protected vCPU.
+
+Should snp_set_vcpu_state() check vcpu->arch.guest_state_protected instead?
+
+> +
+> +	if (copy_from_user(&state, u64_to_user_ptr(argp->data), sizeof(state)))
+> +		return -EFAULT;
+> +
+> +	if (memchr_inv(state.pad, 0, sizeof(state.pad)) ||
+> +	    state.valid_fields & ~(KVM_SEV_SNP_VCPU_STATE_VMSA_VALID |
+> +				   KVM_SEV_SNP_VCPU_STATE_GHCB_VALID))
+> +		return -EINVAL;
+> +
+> +	if (state.valid_fields & KVM_SEV_SNP_VCPU_STATE_VMSA_VALID) {
+> +		if (!PAGE_ALIGNED(state.vmsa_gpa) ||
+> +		    !page_address_valid(vcpu, state.vmsa_gpa) ||
+> +		    IS_ALIGNED(state.vmsa_gpa, PMD_SIZE))
+> +			return -EINVAL;
+> +	}
+> +
+> +	guard(mutex)(&svm->sev_es.snp_vmsa_mutex);
+> +
+> +	if (state.valid_fields & KVM_SEV_SNP_VCPU_STATE_VMSA_VALID) {
+> +		ret =3D sev_snp_install_guest_vmsa(svm, state.vmsa_gpa);
+> +		if (ret)
+> +			return ret;
+> +	} else {
+> +		svm->sev_es.snp_has_guest_vmsa =3D true;
+> +		svm->sev_es.snp_guest_vmsa_gpa =3D INVALID_PAGE;
+> +		svm->vmcb->control.vmsa_pa =3D INVALID_PAGE;
+> +	}
+> +
+> +	if (state.valid_fields & KVM_SEV_SNP_VCPU_STATE_GHCB_VALID)
+> +		svm->vmcb->control.ghcb_gpa =3D state.ghcb_gpa;
+> +	else
+> +		svm->vmcb->control.ghcb_gpa =3D INVALID_PAGE;
+
+[Severity: High]
+Does using INVALID_PAGE (~0ULL) for svm->vmcb->control.ghcb_gpa break GHCB
+protocol handling and state reporting in snp_set_vcpu_state() and
+snp_get_vcpu_state()?
+
+svm->vmcb->control.ghcb_gpa backs MSR_AMD64_SEV_ES_GHCB, which is
+initialized during vCPU reset in sev_es_init_vmcb() to the architectural
+GHCB_MSR_SEV_INFO value:
+
+arch/x86/kvm/svm/sev.c:sev_es_init_vmcb() {
+	...
+	if (!init_event)
+		set_ghcb_msr(svm, GHCB_MSR_SEV_INFO((__u64)sev->ghcb_version,
+						    GHCB_VERSION_MIN,
+						    sev_enc_bit));
+}
+
+And sev_handle_vmgexit() inspects control->ghcb_gpa as follows:
+
+arch/x86/kvm/svm/sev.c:sev_handle_vmgexit() {
+	...
+	ghcb_gpa =3D control->ghcb_gpa;
+	if (ghcb_gpa & GHCB_MSR_INFO_MASK)
+		return sev_handle_vmgexit_msr_protocol(svm);
+
+	if (!ghcb_gpa) {
+		...
+	}
+
+	if (is_sev_snp_guest(vcpu) &&
+	    !ghcb_gpa_is_registered(svm, control->ghcb_gpa)) {
+		...
+		svm_vmgexit_bad_input(svm, GHCB_ERR_NOT_REGISTERED);
+		return 1;
+	}
+}
+
+This appears to cause three regressions:
+
+1. When KVM_SEV_SNP_SET_VCPU_STATE is called without
+KVM_SEV_SNP_VCPU_STATE_GHCB_VALID (for example, to set only the vmsa),
+setting control.ghcb_gpa =3D INVALID_PAGE overwrites the GHCB_MSR_SEV_INFO
+reset value with 0xffffffffffffffffULL, which has low 12 bits 0xfff and will
+be misinterpreted by sev_handle_vmgexit() as a GHCB MSR protocol request.
+
+2. When KVM_SEV_SNP_SET_VCPU_STATE is called with
+KVM_SEV_SNP_VCPU_STATE_GHCB_VALID, snp_set_vcpu_state() writes
+svm->vmcb->control.ghcb_gpa =3D state.ghcb_gpa without updating
+svm->sev_es.ghcb_registered_gpa, so subsequent non-MSR VMGEXITs fail
+ghcb_gpa_is_registered() with GHCB_ERR_NOT_REGISTERED.
+
+3. In snp_get_vcpu_state(), VALID_PAGE(svm->vmcb->control.ghcb_gpa) only
+tests !=3D INVALID_PAGE, which evaluates to true for the initial
+GHCB_MSR_SEV_INFO reset value, 0, and any GHCB MSR protocol value.
+
+> +
+> +	vmcb_mark_all_dirty(svm->vmcb);
+> +	return 0;
+> +}
+
+[ ... ]
+
+> @@ -4080,6 +4194,54 @@ static int snp_begin_psc(struct vcpu_svm *svm)
+>  	return snp_do_psc(svm);
+>  }
+> =20
+> +/*
+> + * Install a guest-owned VMSA.  The caller must serialize against AP cre=
+ation
+> + * and destruction with snp_vmsa_mutex.
+> + */
+> +static int sev_snp_install_guest_vmsa(struct vcpu_svm *svm, gpa_t gpa)
+> +{
+> +	struct kvm *kvm =3D svm->vcpu.kvm;
+> +	struct kvm_memory_slot *slot;
+> +	unsigned long mmu_seq;
+> +	kvm_pfn_t pfn;
+> +	gfn_t gfn;
+> +	int idx;
+> +	int ret;
+> +
+> +	lockdep_assert_held(&svm->sev_es.snp_vmsa_mutex);
+> +
+> +	gfn =3D gpa_to_gfn(gpa);
+> +	idx =3D srcu_read_lock(&kvm->srcu);
+> +	slot =3D gfn_to_memslot(kvm, gfn);
+> +	if (!slot) {
+> +		ret =3D -EINVAL;
+> +		goto out_unlock;
+> +	}
+> +
+> +	mmu_seq =3D kvm->mmu_invalidate_seq;
+> +	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+> +	smp_rmb();
+> +
+> +	/* Guest-owned VMSAs are backed by guest_memfd private memory. */
+> +	ret =3D kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, NULL);
+> +	if (ret)
+> +		goto out_unlock;
+
+[Severity: High]
+What happens if userspace calls KVM_SEV_SNP_SET_VCPU_STATE before populating
+the vmsa page with KVM_SEV_SNP_LAUNCH_UPDATE?
+
+In virt/kvm/guest_memfd.c, kvm_gmem_get_pfn() faults in an unpopulated folio
+via FGP_CREAT and, if kvm_gmem_is_private_mem() is true, calls
+kvm_arch_gmem_make_private() -> sev_gmem_make_private() ->
+rmp_make_private(pfn, gpa, PG_LEVEL_4K, sev->asid, false):
+
+virt/kvm/guest_memfd.c:kvm_gmem_get_pfn() {
+	...
+	folio =3D __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+	...
+	if (kvm_arch_has_gmem_convert() &&
+	    kvm_gmem_is_private_mem(file_inode(file), index))
+		r =3D kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+					       (kvm_pfn_t)1 << *max_order);
+}
+
+That transitions the unpopulated page's rmp entry to an unmeasured private
+data page (Assigned=3D1, VMSA=3D0), causing a subsequent
+KVM_SEV_SNP_LAUNCH_UPDATE on that gfn to fail in sev_gmem_post_populate()
+with -EEXIST when snp_lookup_rmpentry() sees assigned =3D=3D true.
+
+In addition, kvm_gmem_get_pfn() returns -EFAULT if the memslot does not have
+a guest_memfd (whereas !slot returns -EINVAL), and succeeds without error if
+the gfn is currently marked shared in guest_memfd. Should
+sev_snp_install_guest_vmsa() verify kvm_slot_has_gmem(slot),
+kvm_mem_is_private(kvm, gfn), and that the page has already been populated =
+as
+a vmsa page rather than faulting it in via kvm_gmem_get_pfn()?
+
+> +
+> +	read_lock(&kvm->mmu_lock);
+> +	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn)) {
+> +		ret =3D -EAGAIN;
+> +	} else {
+> +		svm->sev_es.snp_has_guest_vmsa =3D true;
+> +		WRITE_ONCE(svm->sev_es.snp_guest_vmsa_gpa, gpa);
+> +		svm->vmcb->control.vmsa_pa =3D pfn_to_hpa(pfn);
+> +	}
+
+[Severity: High]
+Does setting svm->vmcb->control.vmsa_pa =3D pfn_to_hpa(pfn) here allow
+userspace to invoke KVM_RUN before KVM_SEV_SNP_LAUNCH_FINISH completes?
+
+In direct-vmsa mode, KVM_SEV_SNP_LAUNCH_UPDATE with
+KVM_SEV_SNP_PAGE_TYPE_VMSA already marks the page as a valid vmsa in the rm=
+p.
+Once sev_snp_install_guest_vmsa() sets svm->vmcb->control.vmsa_pa to a valid
+address, neither sev_vcpu_needs_initialization() nor pre_sev_run() blocks
+KVM_RUN before KVM_SEV_SNP_LAUNCH_FINISH:
+
+arch/x86/kvm/svm/sev.c:sev_vcpu_needs_initialization() {
+	return to_kvm_sev_info(vcpu->kvm)->need_init;
+}
+
+arch/x86/kvm/svm/sev.c:pre_sev_run() {
+	...
+	if (is_sev_es_guest(vcpu) && !VALID_PAGE(svm->vmcb->control.vmsa_pa))
+		return -EINVAL;
+}
+
+Can userspace call KVM_RUN right after KVM_SEV_SNP_SET_VCPU_STATE and enter
+the guest before snp_launch_finish() has set
+vcpu->arch.guest_state_protected =3D true and enabled lbr virtualization?
+
+[1] https://lore.kernel.org/r/20260908103338.427254-7-joro@8bytes.org
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102114137.1198=
+982-1-joro@8bytes.org?part=3D6
