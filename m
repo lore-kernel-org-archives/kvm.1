@@ -1,121 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793643403;
-	b=WQgdCCsENkFW0uAysA2NurtbkI1JNfIDC+/uxjL7u8QucHf5OL6ZIt1e3legvF8RMQfp
-	 QN4f3GNeDYsVSl302mEZ4GbZBVwUU7B5utUWIDStX2c55j5LPhHMs0nhKCjHuyGqKFZGD
-	 QSGaFIsiqn8+J/uVM0Ogf1T1P6oZouyTZ0KtLZGJYLlmR9n20EZXfpRrnz90pZd6XINxm
-	 J5NT4vyK8LQlXr9udqX/bXf8QgYK7xLI4P2g1C8YvR3S5J+x2pBH+qGwLcvwB283dbbUL
-	 vERRogJUE7bKmCEomSge+YV6thohWXhiu+JSNBlqkwDihXgjjHNUKshNDvoi1+QPdxg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793643403;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Vr76CxOCRE/GBSNADyNpvIHyisaI2BQrg6w5s2zNVBI=;
-	b=E9NYv8vUxh3Ti3YO1YJqtfVj+pBn6g2cTch9N8t3xtGT1elgF+CXLEvlDalhS8ua2MXi
-	 fA9/Zs8gkpHbgRo7tKUUzoi46lFbijWBidccbw/kJvxF27i6V4ybgHC2KcDANMhkzDMPA
-	 mfzhLTMwQObIttXCVNeRbx0YdKKHyebRihCdsyo8AWqpxV5XkQxmvehbLnIzov5z3mlZ3
-	 Lu60aUVg4kNNgxiBBXqLsYc/8XnKLMME2VcEXtDYUk9XyOGWRuxAC+8PbXuwXIQ/2qFkd
-	 5iDGX7xLn7929dhncH6jUsntXrHn6GGuLLIPrx5C8+KjpDGEXAt3SvaESiqaFKWlwYA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="csX2/Mq6";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RBtItvv9;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793643537;
+	b=2uijZBByTK7X71rustxO9/dt5iGmU3Uc28tvv6Mwgu4lks9Znf50RigkdwYNCtvpYEcV
+	 hSZJ+64cbKhSZ6mzTVUjgsoA2BH/2lNMTaQNOa7/s7A4onsccPu7x5lJuyM8/Y2835BH6
+	 z8MULPIAwopkNuemOz0Q1e7uYlZ4ohsMwFF2RD2yWnt4BY0E9C3CO5LFZ6crc2ewp50GQ
+	 qzubNRloT3ZsSibsmk+iF1oui00ufq3nTKQAdA+9+WgoCTBmu5VebmzvSBOKt0Xad6a8H
+	 Vpl13bztcj/spHH/yLtSHXhgDWB2I09nWpkflqdLLOn+5DEfnHqIhfwgZXxMGRxqH7g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793643537;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=f7zbsWkaqW+a0SziUgDx6s6qgKwzaAVqMVt4sik8qmU=;
+	b=nNInpSCEI0lV3SAEOkchJlgfzLM6sVsvHXhigZqD6srB9xicFxuPzhTN/dY2pkrCzpci
+	 IyXc+mbGni1sdXaNVVO25LaOj4eSwg9eZj0ut/th9LiAIOuC5r1ImhToF2wnF2b44izUo
+	 qVdXYEP6G+Xmgxk2Ka7uhyFM1EZPwPZy9FBfFR0yHeRGJwazdESDkcjUidZ6b4dAq6idD
+	 sw/16Wxoa0Zi+2LxX0YFo7+D8dbL9/LwxiHOAKW4oB6CWIpCQpytayuonFyn58I2Eii68
+	 4UT5/XyNUedv6sPXkpP8Nc2omtNtLNeGizXDpc/koxMm57X32y66GCQcKnUsP0wAg4A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Crvygeom;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF49606A324
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:16:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CF49606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924E9606A327
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=csX2/Mq6;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RBtItvv9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793643402;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vr76CxOCRE/GBSNADyNpvIHyisaI2BQrg6w5s2zNVBI=;
-	b=csX2/Mq60dvyOmYe2W62vesMdP3+xSz+18C6eRNKpvRyNm7yqLGwds4gJ0s53AwcL0H+UG
-	S2daqYnNH+4mX09JF38CEzp2AlUaWfw9JNSXfti0O638tJ/XFZpKDnSwkGyJ7J/+6oEmU1
-	ys0TFgNseD0xCL92jpYcuS5f4sEijSs=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-ZDHyuHX3Mqq1rp8O6E6vKQ-1; Mon, 02 Nov 2026 13:16:40 -0500
-X-MC-Unique: ZDHyuHX3Mqq1rp8O6E6vKQ-1
-X-Mimecast-MFC-AGG-ID: ZDHyuHX3Mqq1rp8O6E6vKQ_1793643399
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e17d30a79so1704825f8f.3
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 10:16:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793643399; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EeTUKj7m7FQxJh1QJaqJfaoJQ42lS44kDxqtIT2DHOVQtN/yWWQ1sjnzWiGuPGXexK
-         Q6uoFQVcEmjjA2ZXGqUvuro74YFvZkaS+E85TkInqMsp9apKoktFzUypyRgwWyX5IjLD
-         IcXlGUe1ZnipKRpVQtiIRu0T/PWyD8YufMiT05xstIFACTMTh5zgJj/L49DpfV2nxsQK
-         YrjFelBQ+wWwW+uFvxWNdTveieVYlHC3fzeE0GGYdeRZdAk9806EVVz4W+LS5kj7pQEh
-         6+GzxCv2hJCzNuTgJxQdD8k69mdrK8191ksWDgxT30EIc8bWife7r4CDoW45ZHeHErs1
-         7/KQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Vr76CxOCRE/GBSNADyNpvIHyisaI2BQrg6w5s2zNVBI=;
-        fh=45HxpdruTs1JGgLxThRQyyP3y8DEMM2jIzZxidPzRRQ=;
-        b=RcX6QICOExV+QDeLS8txaZYCjnar9JXcad+CNAPUMMYIiT2cIbo4C+plF71zykGDAJ
-         VtcyX28o8n37pTJr1hdO0dM96/vBOjSL0amFh0DEFRj/0vK5/mR9DSkztISmuhBxkXEP
-         reYX+e1OwphfVFBB6IyR4TDQZxkihGa9I4JUQY4LGKeZ/PvJ6BlcpEh/rZXQygQTaiWM
-         3RroEx4eZePhzig2OPxTf9o2gzBQL+C1sDgjTR4LhXBpI/Ja+tTFz68TEwQ+ZRLhG1Hs
-         UKpZ3uwxZVakf9Qrrfog3CxkVMONezR3X/wMa/SDxSVk8qAOtxjERY8G2lP1ea34tjOh
-         cyqw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793643399; x=1794248199; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Vr76CxOCRE/GBSNADyNpvIHyisaI2BQrg6w5s2zNVBI=;
-        b=RBtItvv9B31dT2u7K4qBo7ogPBqQBFRekOBj8c2AW1B8qU2YCNuRIjXmM1K8DsfXll
-         lJYoOB4vePKBeQNejFV0l//LOLpiI8BuhWCtMoABEyhiwWuGXY0KVfomlq8Miz1B6eg2
-         9DD7Sg08tmOMONPu9o17SRBvmkerPrUo+/j+Zo80Q5b8hekKMGtK/ioCm9nlT8ofQynJ
-         kpQz56YhxC8SQvzBrPbX/GTJfjWi35GOpmH/LwWJ4zJRFeLPGwk8z5jx8RNovaPSfTVa
-         pwyBqUhHgQoKyfpNGry1Mgf7F5y9xq4GVbLsQam4EsJ+/j5R+GuwHFGqt3vPcTofwCjV
-         PRIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793643399; x=1794248199;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vr76CxOCRE/GBSNADyNpvIHyisaI2BQrg6w5s2zNVBI=;
-        b=sI0TE30YwjzvOeHfNEIe57BzJ1M6n4NizW2R0lL9FSTlJXDOqB0ViKYi5V6jo5OKhL
-         e08nfNVQslADWzWfkYTU1uLuLD+sC0vJgSJeJ8OJ+J0ZcY7PthuexczanJ61Rt4T+RjS
-         n4svIA7P1jFDMR0ITSk38ZQA9fbxZqFtHxFRszwTGYMr2Vj781qZlamMME+Y8ICEwbmj
-         fTcYO8mNJKZRiyVYq4krRlwBQgHXt4F2QnPqC/r0VZE3C63FV2IJdfTki9j8TcLbB4Qi
-         Qnh74sffoji6wwtsPABSCWzyu/aMumjqry4LRguaVkFU8OrZu69kGu5ip0LVWaJOdlBx
-         eoDw==
-X-Forwarded-Encrypted: i=1; AKwUvBy2T6RIOxAcY6nu/qdvbRSR5lKLwrV/cVjXXyz5N+6jC2wkW2acoiD4yp4xBxXyDHK9M8Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+pTfyHNklaLlfQXgcGpdarnInCgUp+Zf83/hZbRdgQINhKWS/o
-	usKZcP35EA1XwaYinkuVDQ4ZMukNblt+kOdEoKIjIe93z6cXXcujqDrvLn4fjnQkD+uTFhnx/rh
-	UYl+VQptfknA2EcpRkAnB5nuIRdtZxLAbvCZowghGAIFVpo41xgijttn0OB297AuC/jY8SBu0Zg
-	6jJibvyHCof4YX8kyTrSNG4hD/2erM
-X-Gm-Gg: AYBFou21gq1iQkvE2ZbqXlJAnNGwUUaOq9vkblxEqlWM4k8htZdVHUqo+LOncLU5WIa
-	9ldJ6GpEN1UlLmTZVI2PYdl0a+10VZKIwX3Y7WZveheWaRx5oES1e5M2B624Kvm8VsZvhG+KkUj
-	Wv0P4dyvgK7y8Vw8gJ00PKia7JJIJ3oNAKQ7ODterIvpWRDjBc0Xp6h1+QmeTECmsfJ3jN83pmI
-	ICmCD5CCL1rRkTaUHzxsn+kX9Me5xXFuuoEBwfk8+MLbufXAjzEg3ctIsVV
-X-Received: by 2002:adf:e003:0:10b0:48d:ffa3:714 with SMTP id ffacd0b85a97d-48e6e2f2964mr20349184f8f.19.1793643399445;
-        Mon, 02 Nov 2026 10:16:39 -0800 (PST)
-X-Received: by 2002:adf:e003:0:10b0:48d:ffa3:714 with SMTP id
- ffacd0b85a97d-48e6e2f2964mr20349156f8f.19.1793643399087; Mon, 02 Nov 2026
- 10:16:39 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Crvygeom
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40B31F00A1C;
+	Mon,  2 Nov 2026 18:18:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793643537;
+	bh=f7zbsWkaqW+a0SziUgDx6s6qgKwzaAVqMVt4sik8qmU=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=Crvygeomm/UDnIg/0GMgh7vSzzhBXXFcTEscbpvI29BvE3gx58eDmUPPYnBfDn2vn
+	 icv0Qwj+gdrEGIg5R96mdnifL8piT7RzUMRLCbStLZxFGYAsHdwp2zx9pp/QqMbhr0
+	 tUSLqsq1YT/Gqk4xQcZlHkmmsC4rTw61Vzn79V7vHvRJnxo0bCM7SyogJ+tEiiHAi7
+	 9p95staH5S474LCzEUpyRgbTfYRH30e4UfFBxhiMsWOVBjoEzTtBQV8iIc0FLwFC8e
+	 9dfF45yNtc8WsfbBLHxW9o9gyDiJISkT530D+H17lpO9EGEMdjIEr7w97TTX5RN89C
+	 +0UbCSHUJUU9w==
+Message-ID: <sashiko-outbox-193922@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 31/45] KVM: x86: "Handle" failed decode when skipping
+ instructions
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
+In-Reply-To: <20261102174512.8903-15-pbonzini@redhat.com>
+References: <20261102174130.8779-1-pbonzini@redhat.com>
+ <20261102174512.8903-15-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 18:18:56 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -124,49 +59,188 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <kuph5i8x2d0.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb> <20261031090529.65240-1-amirmohammad.eftekhar@cispa.de>
-In-Reply-To: <20261031090529.65240-1-amirmohammad.eftekhar@cispa.de>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 2 Nov 2026 19:16:27 +0100
-X-Gm-Features: AclHuK_YXcxMZDa_2uVf-DOKYVLREH6PFG-uQQ0h0kF_GFc_0-Dn7EAhewjC8OI
-Message-ID: <CABgObfYZde9RhwbPkq95uy6pNdyPFS48k9HvzCdGPggQ6reHSQ@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: VMX: Add array_index_nospec() to evmcs_field_offset()
-To: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-Cc: seanjc@google.com, vkuznets@redhat.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, amirmohammadeftekhar@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 31, 2026 at 10:05=E2=80=AFAM Amirmohammad Eftekhar
-<amirmohammad.eftekhar@cispa.de> wrote:
->
-> evmcs_field_offset() bounds-checks the guest-supplied field index against
-> nr_evmcs_1_fields and then indexes vmcs_field_to_evmcs_1[] without an
-> array_index_nospec() clamp, unlike its vmcs12 counterpart
-> get_vmcs12_field_offset().
->
-> A regular VMREAD instruction is allowed while an enlightened VMCS is acti=
-ve
-> since 6cbbaab60ff3 ("KVM: nVMX: Allow VMREAD when Enlightened VMCS is in
-> use"), and it reaches evmcs_field_offset() with a guest-supplied field
-> encoding. Because the index is not clamped, the guest may be able to
-> speculatively access past the bound check and read out of bounds of
-> vmcs_field_to_evmcs_1[] (Spectre v1). The leaked value is only the u16
-> 'offset', so the exposure is limited.
->
-> The other callers of evmcs_field_offset() are not under direct guest
-> control, but the array_index_nospec() clamp does not hurt them.
->
-> Clamp the index with array_index_nospec(), mirroring
-> get_vmcs12_field_offset().
->
-> Fixes: 6cbbaab60ff3 ("KVM: nVMX: Allow VMREAD when Enlightened VMCS is in=
- use")
-> Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-> ---
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] KVM: x86: skip_emulated_instruction() returns 0 with KVM_EXIT_MEMO=
+RY_FAULT
+- [Medium] KVM: SVM: __svm_skip_emulated_instruction() kills VM on soft int=
+ RIP update
+--
 
-Queued, thanks.
+commit 7e42aaabee05dd2baa14946c524ae1b2af0f0bd1
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-Paolo
+KVM: x86: "Handle" failed decode when skipping instructions
 
+This commit marks the VM dead when kvm_emulate_instruction() returns a
+negative error code while skipping an emulated instruction in SVM and VMX,
+and updates kvm_skip_emulated_instruction() and ICEBP handlers to check
+for failure.
+
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index ece8d13c18a70..669bf8b36bb63 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -304,6 +304,7 @@ static int __svm_skip_emulated_instruction(struct kvm=
+_vcpu *vcpu,
+>  {
+>  	struct vcpu_svm *svm =3D to_svm(vcpu);
+>  	unsigned long old_rflags;
+> +	int r;
+> =20
+>  	/*
+>  	 * SEV-ES does not expose the next RIP. The RIP update is controlled by
+> @@ -321,7 +322,10 @@ static int __svm_skip_emulated_instruction(struct kv=
+m_vcpu *vcpu,
+>  		if (unlikely(!commit_side_effects))
+>  			old_rflags =3D svm->vmcb->save.rflags;
+> =20
+> -		if (!kvm_emulate_instruction(vcpu, emul_type))
+> +		r =3D kvm_emulate_instruction(vcpu, emul_type);
+> +		if (r < 0)
+> +			kvm_vm_dead(vcpu->kvm);
+> +		if (r <=3D 0)
+>  			return 0;
+> =20
+>  		if (unlikely(!commit_side_effects))
+
+[Severity: Medium]
+Should __svm_skip_emulated_instruction() really mark the VM dead when called
+from svm_update_soft_interrupt_rip()?
+
+Prior to VM-Entry, kvm_check_and_inject_events() invokes
+svm_inject_exception() or svm_inject_irq() -> svm_update_soft_interrupt_rip=
+()
+to compute NextRIP before injecting a software exception or software
+interrupt:
+
+arch/x86/kvm/svm/svm.c:svm_update_soft_interrupt_rip() {
+	const int emul_type =3D EMULTYPE_SKIP | EMULTYPE_SKIP_SOFT_INT |
+			      EMULTYPE_SET_SOFT_INT_VECTOR(vector);
+	...
+	if (!__svm_skip_emulated_instruction(vcpu, emul_type, !nrips))
+		return -EIO;
+
+In that path, no instruction side effects have been performed yet (and when
+nrips is enabled, commit_side_effects is false). As noted in the comment in
+svm_update_soft_interrupt_rip(), decoding is not guaranteed to succeed, and=
+ a
+failure returns -EIO so the caller drops the event injection and lets the
+guest retry the instruction.
+
+If the guest page at CS:RIP has restrictive memory attributes (such as
+KVM_MEMORY_ATTRIBUTE_NX), kvm_emulate_instruction() returns -EFAULT and
+__svm_skip_emulated_instruction() now calls kvm_vm_dead(vcpu->kvm),
+terminating the VM instead of aborting the injection.
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index b4a42785ff727..57be93198d335 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -1809,6 +1809,7 @@ static int skip_emulated_instruction(struct kvm_vcp=
+u *vcpu)
+>  	union vmx_exit_reason exit_reason =3D vt_get_exit_reason(vcpu);
+>  	unsigned long rip, orig_rip;
+>  	u32 instr_len;
+> +	int r;
+> =20
+>  	/*
+>  	 * Using VMCS.VM_EXIT_INSTRUCTION_LEN on EPT misconfig depends on
+> @@ -1857,7 +1858,10 @@ static int skip_emulated_instruction(struct kvm_vc=
+pu *vcpu)
+>  #endif
+>  		kvm_rip_write(vcpu, rip);
+>  	} else {
+> -		if (!kvm_emulate_instruction(vcpu, EMULTYPE_SKIP))
+> +		r =3D kvm_emulate_instruction(vcpu, EMULTYPE_SKIP);
+> +		if (r < 0)
+> +			kvm_vm_dead(vcpu->kvm);
+> +		if (r <=3D 0)
+>  			return 0;
+>  	}
+> =20
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 5f7f87ff4d17c..5818101d1d8ae 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -6235,8 +6235,8 @@ int kvm_skip_emulated_instruction(struct kvm_vcpu *=
+vcpu)
+>  	int r;
+> =20
+>  	r =3D kvm_x86_call(skip_emulated_instruction)(vcpu);
+> -	if (unlikely(!r))
+> -		return 0;
+> +	if (unlikely(r <=3D 0))
+> +		return r;
+> =20
+>  	kvm_pmu_instruction_retired(vcpu);
+> =20
+
+[Severity: High]
+Won't clamping r < 0 to 0 in __svm_skip_emulated_instruction() and VMX's
+skip_emulated_instruction() cause KVM_RUN to return 0 with exit_reason set =
+to
+KVM_EXIT_MEMORY_FAULT, while also making the r < 0 case in
+kvm_skip_emulated_instruction() unreachable?
+
+When an instruction fetch hits a guest page with non-executable or
+non-readable memory attributes during kvm_emulate_instruction() ->
+x86_emulate_instruction() -> x86_decode_emulated_instruction() ->
+x86_decode_insn() -> kvm_fetch_guest_virt(), kvm_prepare_memory_fault_exit()
+sets vcpu->run->exit_reason =3D KVM_EXIT_MEMORY_FAULT, and
+x86_emulate_instruction() returns -EFAULT before reaching
+handle_emulation_failure():
+
+arch/x86/kvm/x86.c:x86_emulate_instruction() {
+		r =3D x86_decode_emulated_instruction(vcpu, emulation_type,
+						    insn, insn_len);
+		if (r =3D=3D EMULATION_MEMORY_FAULT)
+			return -EFAULT;
+
+In both __svm_skip_emulated_instruction() and VMX's
+skip_emulated_instruction(), the check:
+
+		if (r < 0)
+			kvm_vm_dead(vcpu->kvm);
+		if (r <=3D 0)
+			return 0;
+
+returns 0 when r is negative, so kvm_x86_call(skip_emulated_instruction)(vc=
+pu)
+never returns a negative value to kvm_skip_emulated_instruction().
+
+When 0 is propagated back to vcpu_enter_guest() -> vcpu_run() (or through
+vcpu->arch.complete_userspace_io in kvm_arch_vcpu_ioctl_run()), the run loop
+exits to userspace immediately on r <=3D 0 without re-entering
+vcpu_enter_guest() where KVM_REQ_VM_DEAD is checked and converted into -EIO.
+As a result, ioctl(KVM_RUN) returns 0 to userspace with vcpu->run->exit_rea=
+son
+left as KVM_EXIT_MEMORY_FAULT, violating the KVM_EXIT_MEMORY_FAULT UAPI
+contract (which requires a -1 return with errno set to EFAULT or EHWPOISON).
+In addition, in callers such as kvm_emulate_halt() and
+kvm_emulate_ap_reset_hold() with a userspace irqchip, __kvm_emulate_halt()
+overwrites exit_reason with KVM_EXIT_HLT or KVM_EXIT_AP_RESET_HOLD before
+returning 0.
+
+Note that if the vendor callbacks are changed to return a negative error co=
+de
+(such as -EIO) when r < 0, callers that test the return value as a boolean =
+--
+such as !svm_skip_emulated_instruction(vcpu) in icebp_interception(),
+task_switch_interception(), nested_svm_vmrun(), and
+svm_update_soft_interrupt_rip(); !skip_emulated_instruction(vcpu) in
+handle_exception_nmi() and handle_task_switch();
+!kvm_skip_emulated_instruction(vcpu) in kvm_emulate_wrmsr(); and
+ret && kvm_skip_emulated_instruction(vcpu) in kvm_fast_pio(),
+kvm_emulate_halt(), and kvm_emulate_ap_reset_hold() -- would also need to
+check <=3D 0 so they do not treat a negative errno as success.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174130.8779=
+-1-pbonzini@redhat.com?part=3D31
