@@ -1,49 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793637053;
-	b=piFvquYYF3Z5Q81y2wRkREqayIUUV+KISIhp3EnTFNqWSsazYW0CQMKDEIoHSmFTVE10
-	 eFbjazitBBv/P5Grt+NfaS/g4vg6Y+aqDAdRWbvoWKmjOrW+4NAqcUnb1abG1CqZk3hjw
-	 MwUCrjGWvavOkgvFJ1UyDOEDXjn99QfSkV7TzrFkVtwFdXVPmMXfIphm9R+QsV75E9UVB
-	 bc4L3cH45nX1Dos9Uk6UP5RCItOBgdHsi6B2KR+kok41xxXLiNOMYTBYbRm6yeSkN2KtH
-	 qW/+LGFHWFRLQiqoN0Gtz5Bh0HLzh/yF5u6/OU8ePSCZ1DCRVSBcYh8CJkUIeR6jjrQ==
+	t=1793637138;
+	b=tq5KCjtd4BDJHxd4rYR9AzapYiubBgPUBIxMnNIAu+IE0Xm+Yrq4Qi/ThfeJaOzI09tq
+	 XqYXo3HFXoRJ2uIjkgQaMsLws4ylVgrelHCI2ZuedIJdmSM6rj1z+ZTCBDOWpqq4V+jmH
+	 x2VKyt3A5I2gWU3tnmN5KV+Un4EIL8owcodi8hUjr2UBYkTaEMF9zWHd4QpyUlpId2xAW
+	 zlNvG19DgkfLeohbft9IZrzezPbLon2hYKgE+4hWYUEybd87y/IbD5wV/SDbwJB8R3ikF
+	 FGWjNZFi3N4SsNcpRTfUG9BJCEzrj9KQrwlqqZBt6CmGzlNGiSBsO7OdREA3z3cGJjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793637053;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=vszagCFvroPFMLIl+2ABLgqy3VgoUCB3AvNbWtA9TAY=;
-	b=1++j/V1owOv2htSEdiHrc2HBBnxnBw0wrU6gVS/oYsK9hylSpPRlmz87MQoDj5WvE+bo
-	 u+nMmAfNNZaEmkLesgbm9NdU7pBrlUBoAQaZxGNGXJ2mwDIUAVWLXnyjvxRIbvENoGi1S
-	 0tZrh7GZDgbVA02TJxKY2IN1cl6Cr+JINrrnuWIAVefTwC39q5k8lpGgMH8lDmlW/rf7G
-	 fu7a206rNwLpRW+vkg9Qyz1jHasQQkHC+9Qu91kx5NIuA9WKtde2akxXuDoExiFeoUeW2
-	 LeuDwtyFTNT4LmVLkyPvc2HYSstzWH1rA7BH0BR/4qt8B8ODIx872Y3y+y2FD9yph9g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793637138;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=BHtTtcYi04zl9O9bzQ6Ir6M454wMIOiUEHs4hDmq31Q=;
+	b=jGSfYPpx/AgFIkAtDs6UHnJgY3+Q/VLu6cwGA1C2RcHidpDk05HspO8G9wii4wXBmq86
+	 YPVO5i6Q7Nl4/ZE6zXSEu/Vl0WRiUi+R5sYQUCADDSgmBTRjNphQVfeq6reGIIOwaVicl
+	 wS8XhUTotX38LYffMrWR2EB6p1O9y5e5D5+npbxqnzikgNlDEFnqCdTXDAYp5flr4kbau
+	 DParjwrg9/V+RWpDylZDb5e6XHsVE2cwng9dU6CW4yB2O0yio2R0sqcOEdFYETZDPwklq
+	 pwrIffE00qYBVGJ948fBeQSycvp5PpSO1Ti1KdX2bY2EkV8+n9dWDr308Fkt7wLcTDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bVhYLBVG;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BF2606B0D0
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 16:30:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40BF2606B0D0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CKJr2l4P;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB36606A931;
+	Mon,  2 Nov 2026 16:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bVhYLBVG
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E1301691;
-	Mon,  2 Nov 2026 08:30:48 -0800 (PST)
-Received: from [10.0.136.93] (M0PRX50XMG.cambridge.arm.com [10.0.136.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B8E703F59E;
-	Mon,  2 Nov 2026 08:30:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793637051; bh=quNqfZHic1kQ6BfsW5fPVu0AftbAMEX7Da64qYRILgE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bVhYLBVG58rqaq20trU4hYORM2raA+rWn/gXGxP4vMQ4+RFns0mxgSyx73if7Plku
-	 VqKCXYWUm8knoc+F9diCjUBVoCTn60pyLG8ekitOwRXdVtuldZuWnwOyf9D3Ph11WM
-	 UD7Emjevs2t0Hl012KDi4OU5/l7QayTDD1osQ/O8=
-Message-ID: <8d3e0dec-0458-40d6-b966-6be220c41caf@arm.com>
-Date: Mon, 2 Nov 2026 16:30:49 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CKJr2l4P
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECC11F00A17;
+	Mon,  2 Nov 2026 16:32:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793637137;
+	bh=BHtTtcYi04zl9O9bzQ6Ir6M454wMIOiUEHs4hDmq31Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CKJr2l4PA81b2Y85JkPHb/1cQONsqqb+wWp9X1zK8VEdjeWhVHJuE/l2fW1e/5JSm
+	 EEifwfj0LvfA6OULLPzkiW7CfNHylYIlMXyJlDCEg7oYY/8henabr1bxbTFFrdvQUp
+	 zPMN5KyBqHiR/XqVrTrQGYT5Cd5Ros+5k2YTFEl+9Vqnooy2ft/PWx0t86dTyZjcon
+	 s9x3W48SxqcgnyH81mTR7qM83BNXhfKyaCx0IvSkOCyAJ0Uqv3Qgqd3B79RbtpSdyf
+	 q1ZMTR9b/6AMYRmUPb5isoAp4x4DymNyvc+ENCwV9VIyj1f4F3mzjqZqZiT+KFtMRj
+	 cy7RYx2iWxiiA==
+Message-ID: <sashiko-outbox-193752@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11 07/14] s390/vfio-ap: File ops called to save the
+ vfio device migration state
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261102151604.2150055-8-akrowiak@linux.ibm.com>
+References: <20261102151604.2150055-1-akrowiak@linux.ibm.com>
+ <20261102151604.2150055-8-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 16:32:17 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,112 +61,189 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/16] KVM: arm64: vgic: Split out common LPI allocation
-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261016155741.979985-1-sascha.bischoff@arm.com>
- <20261016155741.979985-2-sascha.bischoff@arm.com>
- <sashiko-outbox-174615@kernel.org>
-Content-Language: en-GB
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <sashiko-outbox-174615@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 16/10/2026 17:14, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] kvm: data race on irq->group due to unlocked assignment after publication
-> --
-> 
-> commit 0cabb3a5e012e80ff468a8654506c83304b15486
-> Author: Sascha Bischoff <sascha.bischoff@arm.com>
-> 
-> KVM: arm64: vgic: Split out common LPI allocation
-> 
-> The GICv3 ITS code currently owns vgic_add_lpi(), even though the
-> first half of the helper is not ITS specific. It allocates or finds
-> the VM-wide vgic_irq object in lpi_xa and initializes the common LPI
-> state before the GICv3 ITS code reads the property table and pending
-> state.
-> 
->> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
->> index e5657cb603567..8e7bee1bae95d 100644
->> --- a/arch/arm64/kvm/vgic/vgic-its.c
->> +++ b/arch/arm64/kvm/vgic/vgic-its.c
->> @@ -66,77 +66,22 @@ static int update_lpi_config(struct kvm *kvm, struct vgic_irq *irq,
-> [ ... ]
->> -	irq = kzalloc_obj(struct vgic_irq, GFP_KERNEL_ACCOUNT);
->> -	if (!irq)
->> -		return ERR_PTR(-ENOMEM);
-> [ ... ]
->> +	irq = vgic_add_lpi(kvm, intid, vcpu);
->> +	if (IS_ERR(irq))
->> +		return irq;
->>   
->> -	irq->config = VGIC_CONFIG_EDGE;
->> -	refcount_set(&irq->refcount, 1);
->> -	irq->intid = intid;
->> -	irq->target_vcpu = vcpu;
->>   	irq->group = 1;
-> 
-> [Severity: High]
-> Does this code introduce a data race on irq->group in vgic_its_add_lpi()?
-> 
-> Since vgic_add_lpi() now publishes the object to the globally visible
-> lpi_xa xarray and drops the locks, a concurrent thread (e.g., another vCPU
-> writing to GICR_INVLPIR or mapping the same LPI on another ITS) can
-> retrieve the LPI and access irq->group under irq_lock before we set it here.
-> 
-> This can misroute or drop the LPI if it is evaluated by vgic_irq_cmp()
-> as Group 0 instead of Group 1. Should we set the group before publishing,
-> or hold irq->irq_lock when assigning it?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] s390/vfio-ap: use-after-free of mig_file in vfio_ap_stop_copy_=
+read()
+--
 
-In the posted patch, vgic_add_lpi() publishes the new LPI before the 
-GICv3 ITS sets its group to 1, so another vCPU can observe Group 0. I've 
-moved the Group 1 initialisation into vgic_add_lpi(), before 
-publication, and removed the later assignment. This does, however, leave 
-the group as 1 in the GICv5 case too (although it is meaningless in that 
-context).
+commit 6f641fc7194e9bced026956cec2ed8bc278c6d77
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-> 
->> diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
->> index c2726d4c06e6e..bc0171c479a95 100644
->> --- a/arch/arm64/kvm/vgic/vgic.c
->> +++ b/arch/arm64/kvm/vgic/vgic.c
->> @@ -79,6 +79,78 @@ static struct vgic_irq *vgic_get_lpi(struct kvm *kvm, u32 intid)
-> [ ... ]
->> +/*
->> + * Creates a new (reference to a) struct vgic_irq for a given LPI.
->> + * If this LPI already exists, we increase its refcount and return it.
->> + * If this is a "new" LPI, we allocate and initialize a new struct vgic_irq.
->> + * This function returns a pointer to the _unlocked_ structure.
->> + */
->> +struct vgic_irq *vgic_add_lpi(struct kvm *kvm, u32 intid,
->> +			      struct kvm_vcpu *vcpu)
->> +{
-> [ ... ]
->> +		/*
->> +		 * The entry is either empty or contains a dead LPI (refcount=0)
->> +		 * from the deferred release path, pending cleanup by
->> +		 * vgic_release_deleted_lpis(). Evict and free it if present.
->> +		 */
->> +		oldirq = __xa_store(&dist->lpi_xa, intid, irq,
->> +				    GFP_NOWAIT | __GFP_ACCOUNT);
-> 
-> [Severity: High]
-> Is it safe to publish the new LPI here while its group field is still
-> uninitialized (0)?
-> 
-> As mentioned above, doing this in vgic_add_lpi() makes the LPI accessible to
-> concurrent lookups in vgic_get_irq() before vgic_its_add_lpi() has finished
-> setting up the group field.
-> 
+s390/vfio-ap: File ops called to save the vfio device migration state
 
-See my comment above.
+This commit implements the vfio_ap_stop_copy_read() callback for the migrat=
+ion
+file created when transitioning from STOP to STOP_COPY, snapshotting and
+copying the guest's AP configuration and queue hardware information to
+userspace.
 
-Thanks,
-Sascha
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 48028b12b26f9..b64ce092a41b1 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
 
+[ ... ]
+
+> @@ -167,6 +160,269 @@ static int vfio_ap_release_mig_file(struct inode *f=
+ile_inode, struct file *filp)
+>  	return 0;
+>  }
+> =20
+> +/**
+> + * validate_stop_copy_read_parms: Validate the input parameters to the
+> + *                                vfio_ap_stop_copy_read function
+> + *
+> + * @mig_file:	Pointer to the object used for storing the vfio-ap device =
+state
+> + * @filp:	File stream to which to write source guest's AP configuration
+> + * @len:	The length of the data to be read
+> + *
+> + * Verify the following:
+> + * - @filp is the instance opened when state transitioned from STOP to S=
+TOP_COPY
+> + * - @filp->f_pos + @len does not cause integer overflow
+> + * - @mig_file->matrix_mdev is not NULL
+> + * - @mig_file->matrix_mdev->mig_data is not NULL
+> + *
+> + * Returns: 0 if the parameters pass validation; otherwise returns an er=
+ror
+> + */
+> +static int validate_stop_copy_read_parms(struct vfio_ap_migration_file *=
+mig_file,
+> +					 struct file *filp,
+> +					 size_t len)
+> +{
+> +	loff_t total_len;
+> +
+> +	lockdep_assert_held(&mig_file->lock);
+> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
+> +
+> +	if (filp !=3D mig_file->filp)
+> +		return -EINVAL;
+> +
+> +	if (check_add_overflow((loff_t)len, filp->f_pos, &total_len))
+> +		return -EIO;
+> +
+> +	if (!mig_file->matrix_mdev || !mig_file->matrix_mdev->mig_data)
+> +		return -ENODEV;
+> +
+> +	return 0;
+> +}
+
+[ ... ]
+
+> +static ssize_t vfio_ap_stop_copy_read(struct file *filp, char __user *bu=
+f,
+> +				      size_t len, loff_t *pos)
+> +{
+> +	struct vfio_ap_migration_file *mig_file;
+> +	void *bounce;
+> +	ssize_t ret;
+> +
+> +	/*
+> +	 * This file was opened with stream_open(), so pos should be NULL for
+> +	 * sequential read() calls; a non-NULL pointer will be passed only
+> +	 * for positional pread() calls in which case we return an error
+> +	 * indicating broken pipe/illegal seek on a non-seekable file
+> +	 */
+> +	if (pos)
+> +		return -ESPIPE;
+> +
+> +	/*
+> +	 * mig_file is guaranteed live here: vfio_ap_open_file_stream() took
+> +	 * a vfio_device registration reference that is held until
+> +	 * vfio_ap_release_mig_file() runs, so the embedding mig_file cannot
+> +	 * be freed while this file descriptor is open.
+> +	 */
+> +	mig_file =3D filp->private_data;
+> +	mutex_lock(&mig_file->lock);
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +
+> +	ret =3D validate_stop_copy_read_parms(mig_file, filp, len);
+> +	if (ret) {
+> +		mutex_unlock(&matrix_dev->mdevs_lock);
+> +		mutex_unlock(&mig_file->lock);
+> +		return ret;
+> +	}
+
+[ ... ]
+
+> +	memcpy(bounce, (char *)mig_file->ap_config + *pos, len);
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> +
+> +	if (copy_to_user(buf, bounce, len)) {
+> +		kfree(bounce);
+> +		mutex_unlock(&mig_file->lock);
+> +		return -EFAULT;
+> +	}
+> +
+> +	*pos +=3D len;
+> +	mutex_unlock(&mig_file->lock);
+> +	kfree(bounce);
+> +	return len;
+> +}
+
+[Severity: Critical]
+As reported by Sashiko on v6 [1], can closing the vfio device file descript=
+or
+while the migration file descriptor remains open cause a use-after-free of
+mig_file in vfio_ap_stop_copy_read() and vfio_ap_release_mig_file()?
+
+The comment in vfio_ap_stop_copy_read() notes that vfio_ap_open_file_stream=
+()
+takes a vfio_device registration reference via
+vfio_device_try_get_registration() until vfio_ap_release_mig_file() runs.
+However, that reference only keeps matrix_mdev alive; stop_copy_mig_file is
+embedded inside struct vfio_ap_migration_data (matrix_mdev->mig_data), which
+is allocated separately in vfio_ap_init_migration_data().
+
+When userspace closes the vfio device file descriptor,
+vfio_ap_mdev_close_device() -> vfio_ap_release_migration_data() runs under
+matrix_dev->mdevs_lock:
+
+drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_release_migration_data() {
+	if (!matrix_mdev->mig_data)
+		return;
+
+	vfio_ap_release_mig_files(matrix_mdev);
+	mutex_destroy(&matrix_mdev->mig_data->stop_copy_mig_file.lock);
+	mutex_destroy(&matrix_mdev->mig_data->resuming_mig_file.lock);
+	kfree(matrix_mdev->mig_data);
+	matrix_mdev->mig_data =3D NULL;
+}
+
+Because filp->private_data on the still-open migration file descriptor poin=
+ts
+to &mig_data->stop_copy_mig_file, freeing matrix_mdev->mig_data frees
+mig_file itself:
+
+1. If vfio_ap_stop_copy_read() runs after vfio_ap_mdev_close_device(),
+   mig_file =3D filp->private_data points into freed memory.
+   mutex_lock(&mig_file->lock) operates on a destroyed mutex in freed slab
+   memory, and validate_stop_copy_read_parms() dereferences mig_file->filp =
+and
+   mig_file->matrix_mdev from freed memory before checking
+   !mig_file->matrix_mdev->mig_data.
+
+2. If vfio_ap_stop_copy_read() is already in progress and drops
+   matrix_dev->mdevs_lock before copy_to_user() while holding mig_file->lock
+   (or is waiting to acquire matrix_dev->mdevs_lock after locking
+   mig_file->lock), a concurrent vfio_ap_mdev_close_device() ->
+   vfio_ap_release_migration_data() will destroy mig_file->lock while it is
+   locked and kfree(matrix_mdev->mig_data), causing the subsequent
+   mutex_unlock(&mig_file->lock) in vfio_ap_stop_copy_read() to write to fr=
+eed
+   memory.
+
+3. When the migration file descriptor is later closed,
+   vfio_ap_release_mig_file() dereferences mig_file->matrix_mdev from the
+   freed mig_data structure.
+
+[1] https://lore.kernel.org/r/20260727180224.027021F000E9@smtp.kernel.org
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102151604.2150=
+055-1-akrowiak@linux.ibm.com?part=3D7
