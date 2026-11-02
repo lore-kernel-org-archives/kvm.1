@@ -1,114 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793622662;
-	b=3zJRquv2zHht3psSSNplCiYHTyvW8a7Rd3Sah9QQTAhHKTuXt2g8Vr2060CNaavMTyxv
-	 hoWfzBIiyRnpz6TsjvindvHiAQv6wB7M9UNw9oudt4R7xKEHCFjLKMB9K9GdU5tKdA3h+
-	 z/Sqa0T2oRiifJPLXcyDZ5QRdFqoDKRM8pUj1vS0UThXoeqV8IoX3x6KtsIBd/8PFSvKe
-	 wsNWI+ZrxmeQ8fofsR5tlcwVfwMQu7Wi9I3CCoOLn3bS+LAdJZuqD3ZCWiK5OsAHHX022
-	 UCjbyYCik8Bo8VxCNM2PsenZeW9NlViducSU2Hj5Xz5AXy16e1D2Pjf4wQmIzbFKeQQ==
+	t=1793623756;
+	b=xENqzXy9ABejM6nSgtsN1gpOZBnDtz5R8d96S9kuy+w7R71Ot75Jfpexn2W1hhcVEfYr
+	 W3qLJ7113LptYmAYy6JWiY86J7cbQ/a10akKRq1Vngz4JL0gL2A1L29BzeMFkcloSRpP4
+	 KBT2v9A7d4H/634c9HlbRYpP43GbVl+/4P/pyb8YFkFFaVuekVvrpsY5ef12znCAGQULc
+	 xDtlJAsgB+uBlDuDksXtRURNrs5E+GrbE7tc0pnGNCvVal57toLamSSDvEsdXUho1cFWD
+	 AfJAbQbulyRrtaWgbfsiij/xkApqgji4BRH2obMpNmAllPRuxpjgun1Y0MD5FjzNsrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793622662;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=atoeJGeqv0Z1R919+9aEtspWeeQpp92iU9wLTusAw7c=;
-	b=C+ZUjvkfitl0l8KE9GI6Tr7eJfPlx5oIyfkZUoa6M4YaEpMKrQUjIJOGm/DFmjwg61TX
-	 oWPDfH5TK9dmAXX4pQxwFiFCAI9J6xUbZ/g0JDDb/mw+jOnvgd/AJNC3m/z7BV115rBz/
-	 sGNyGPuDmLkPNSyiZo195pDbwaH+wn8vaSvAPH1WO83MGECvBQZ/MANWy9+/YsWKcoVU7
-	 4gdd10ucYKB5D8Lx8hFB8sS1YX9jSq4fleslJqa4NJE5544wqtsh3Nj1tFScsmSHOakQN
-	 TO7fLw754wVwMboeA1sCbwvkcYvWG2WrNCzLXyacYCrd8SBxmbRJGGViwHBhQb4sDMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793623756;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=i8NTQB3dN2QpIdebJsLSmUNNG/IYt0L9NmfBKr3dfDw=;
+	b=4wyuWNanRxpWvaejpXFAVpR0MXvG2QD1vkhK3DTr6K9NX9yLWZj2STYYcuKotBIKf2Mq
+	 0tLX0Du/cgPk3AetvOCc8jNQgeZPglrvYwsJpe3xTMyNbuddwcr/xR4w8Fd4f3/HcAfNl
+	 48J4099pvjBiI6WFkVwNX1u5czfZFPPzC2r1+rFZuaSHANHUehMdX3/lD59yTRgkdS4ZW
+	 iZAoe+sN/IH/V0QWWndsw7D2I5FUE/R9DIRGLIgAFyNXsbEOT+0QOSyvgWBsOWaoq6Gh8
+	 Ey19EohYxXIjNlkn2s7EZLL6KTikoKE3ZBmNPErJpFiTkeXug4PHylUU+7gjoLwkwwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="C1/bICTA";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=tHkkBVgk;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=NpuobCOD;
+	arc=none smtp.remote-ip=209.85.167.48
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B40606A32D
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 12:31:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6B40606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6445B60A3839
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 12:49:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6445B60A3839
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C1/bICTA;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=tHkkBVgk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793622660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=atoeJGeqv0Z1R919+9aEtspWeeQpp92iU9wLTusAw7c=;
-	b=C1/bICTAYpte2qvtWrJIsZou86NsUUJTzVjvLX/W2MWXllXtuVGKTZT32JwLmiYoT41BGj
-	EUsuNpufXTLC4W0+yMp4BFJiKgW2ab7JnjZkggAWtwWGl3XiiGWPlFfUOo8mFb5HWXPNO6
-	cUBidB5EREvYw2u1+wM45PiCa2OuJJo=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-218-XwHC3HrdNomNzfar1ep5wg-1; Mon, 02 Nov 2026 07:30:59 -0500
-X-MC-Unique: XwHC3HrdNomNzfar1ep5wg-1
-X-Mimecast-MFC-AGG-ID: XwHC3HrdNomNzfar1ep5wg_1793622658
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6b3f840cb9cso3396786a12.1
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 04:30:59 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=NpuobCOD
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bfa686881fso2294538e87.2
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 04:49:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793622658; x=1794227458; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=atoeJGeqv0Z1R919+9aEtspWeeQpp92iU9wLTusAw7c=;
-        b=tHkkBVgk1kPNtiXn6WtX4rqK92JR8Am41RtJwPI73VtvC7mnnuRVxLfwCQUf3OZpay
-         x15CdqrBs2D3qSsh1vGvVrSyV/6yRlwjQFvcamZkEDq9wASOIu51WaKedwTQBYSk/2+e
-         29fAX8QYV1sazvSiS6z0VdKDIX87i4BbpBmiS0pY33BLjo8vFltmNdXJcFowZy1ArBHS
-         gVhq156qpSsPR+dY43sfzqKxkXoMeTSy1qQ56sS3qRHSkKTm/eJC5Ux5fvDOrgzVyObR
-         RsbQvxaLVgVJP/iOqC4Kzlc7G8sYbxZAP2ByldzDKcodYt9xJWbRVTl9HM7HiEsbQZ7e
-         cjWA==
+        d=resnulli.us; s=google; t=1793623749; x=1794228549; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i8NTQB3dN2QpIdebJsLSmUNNG/IYt0L9NmfBKr3dfDw=;
+        b=NpuobCODsaeMaWK3KSJ7CYeFzFjejBe/CdpSaMImxO/psFfYWNgksAz6IaQBHVoGnw
+         yG4TCf9GwWszKn5P0wcTjS5/F7bSf5w6P8cLbEzmHkhdfS4xOg4xf7JMiocrxffE62mH
+         DVHo0o1CX5jLPh/fOcr4yzR01YrMQb2/9QMO2M4askf2lmuroalMbTS/uP0jeYTWWaUI
+         MeE6SgTJTPiWBhC9AUU5hmVaAXjzy50bPM6LOV17JjqC+4inRl/4yDJxVhRxuDK40T5A
+         vGvZhmz6TCJp+zWhB42LV9spfusWTm3gQ9YT7of8ECrFocRAwvhVwM0uOZ6rJaD5eZkE
+         XJ3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793622658; x=1794227458;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=atoeJGeqv0Z1R919+9aEtspWeeQpp92iU9wLTusAw7c=;
-        b=x/k9JhGIHBmEtwdFqpYQ/l6Kgd4l2fZ9XkFRMHEOpGOkEqEUT2LbLL/vOdGyTZ5qx/
-         evWvHyubqU1nhWi3ERtoHNndQGulmnHTxgwDmK6UYxwq6PzwSXX1kvvfCE/+lYkSCFZg
-         wo0elgmCNDFJyrjY0GZKcENu1pYdXBzskE326ud1AQEizcktCIm2gUML5+A4leQOw5y6
-         rwJq74BQFwrnbtGZxGHkr7LTZFLTtyHDuhvznYmjVKpUpe3Qo9ChMrASPgDV1X584nve
-         tIVHgFw4eMYy6+c+Eh2zkM7S1jTIi0YJ3QMLcWwg5DVkfNdZvZr3lxvjF8T7inJxrGh3
-         QIWg==
-X-Forwarded-Encrypted: i=1; AKwUvBwNR2JBV6WkpvUJjzgfc2J8jhA0zRvHn740hIwxmLrm2ScONihwiK4YXN81vC+3riUQ7vM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/K2+mVOzb+LZF2nZoA5X95/OgT6dH6744mEGt2DBr0bp9J4zTJ
-	Q03JtfnayJWh/7btno86Evkc0nTNdtdezad86nzzJA3/RL69qexiuWyQMklub0eN7xNqtS6u4zY
-	AOj+Nc011ChYIPtXPANVHzilt7gyXNPIwvSdZcnERzxu9qkv39jH/UQ==
-X-Gm-Gg: AYBFou0cqMlXqBBVUyEsClbHI4RZguYagzVS3RCxmsqgj4Jz9/NrzkzGXebk1q0g+As
-	NVirEkHxRHH0rZ3SEf54B59Ub/+UVob0B3DBG7t1uR+96Pi0n1ONpQboOC+UPycrvF1Gb1Akp5y
-	DjnKLmTFSjS7MY0vB11N9OgeHEI6Gt7HyhsfHJpGojNp+tSA63DUZbaKPr0vDA3NTytsRmd6DTP
-	ZWg6VWHe7ieMJdk4IDzcuNiFBkYmUpdHSkA+CcYgj/NGIb3dIh9vhiiD3TJEhM9eghddX84PViV
-	rDO9fpF2xnUg1ZGf2I7+xrB4XzUcFp6pHDTf1v0ZxvGJ6bLIkG8eAs8abE0ALUxUSYofaNFOTo/
-	BpH7nvTQTBHX37g8G/mgRoCNWEg7Eghei8jZ+Q2t38Q==
-X-Received: by 2002:aa7:c0d7:0:b0:6b3:d0a0:39e5 with SMTP id 4fb4d7f45d1cf-6b4d438bdb7mr5044952a12.9.1793622658338;
-        Mon, 02 Nov 2026 04:30:58 -0800 (PST)
-X-Received: by 2002:aa7:c0d7:0:b0:6b3:d0a0:39e5 with SMTP id 4fb4d7f45d1cf-6b4d438bdb7mr5044928a12.9.1793622657746;
-        Mon, 02 Nov 2026 04:30:57 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1501:b100:9ea2:fd21:b361:8dab])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b51adb58e0sm1095546a12.12.2026.11.02.04.30.56
+        d=1e100.net; s=20260707; t=1793623749; x=1794228549;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i8NTQB3dN2QpIdebJsLSmUNNG/IYt0L9NmfBKr3dfDw=;
+        b=zzDlPayYVrgwv/RUjrtMOJYCk5jP88Un1jIGsRNXUDQiFdlkwqKesd3gVFZtmGLS5h
+         QTv8mRDLuG92gemvZJgehWJr1JbXUf3xjYWhDHY/RlGCNDVSy+nLBY0PdhuBvGugS0X5
+         Gv/rWk1DSVEHwlWOo+bLJ6lp9HDhopHGyeAmm7um00JsANaKCBZltNu9TYd7R3qLJIqf
+         8ZGHe9TJ+NNJj74hSgtWmbWbByU95gCql5CuNa7m2moXwincFq8LPm1PEyDSrjIlEwl4
+         5F1E+SnLdp5+LQuFaSOX9CqsyoslOlKYiiNJxQQrPipCn0g1oz93RiGjjWZSQLD0xoFY
+         opzw==
+X-Forwarded-Encrypted: i=1; AKwUvByl41uZGf8DmU1YwQ1+InruOMiJ3G0IfMwYFrl6ECmm1+qOSr1yyynLH6RHzt4rtl5Hp+8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+MgcBX5oWIGlyH/uDh213bF9dPtuqu+xKbHcjdEQgpoWJ8xNNK
+	YFjoiTb4/8UegXCUkojBK1LPwtR17du0EPHsMO852fHROCqo+Et904YsCGcI/jbF02M=
+X-Gm-Gg: AYBFou3g0Ot9DzMy/truEvHBgdgIEgdWfCu2qXMU59U4ok8CZOdNAy9Pmcq43zeL9n3
+	XdP+yj6NuEnSQ1BK2kWe/mn9zbrD95wIOIWOzfkbHPUSh83686XfovWsMhRBQsI70sDpf/sZ10g
+	yKVDbclUQ3ixAujmif52wANn8MgkwWmwClBMa4+G2Y8uF/4q4rWYObBo1wg0A95SPB+0xVeJ63i
+	+mhkK4Gth+CvZD/eXUkYsQHZTtUXgbxqy7EzGYp9+vzixUOXS04IxtUEwTTSXjAb9VMJOOnvULn
+	LcfuaNBxUBa4zOiUP9ynpI9zxS0b9NdGZDQr+bQMdTAeV89nPw+dYtAPKhiuJjb+CzupFzJg11G
+	MWHs7m/YiiSKbIYpfmENMNVs7vK7alKbrovBt8SN+acgQx0fXSS6CruqMXHeiMRlYXelLnjRbjt
+	qMpP+2UjVqTgIiDhfBKuWX1LDUICG3YbRd3oGFA/jOD6/lLT3WOXk/lCTtcdql40IPvpLK7votx
+	Szgnoy/Rj5Erkz/JgJ0s2ajuC+/+6/X4tkIHKvZ8YWNttqFclUqzkZCbOcbl0OIfhUVUsZUheJb
+	FcmygDrCCHHQ/wiugNRadKiqw3AKy4UjZvp6auw=
+X-Received: by 2002:a05:6512:158d:b0:5bf:e799:c7f3 with SMTP id 2adb3069b0e04-5bfe799c920mr1589103e87.61.1793623749527;
+        Mon, 02 Nov 2026 04:49:09 -0800 (PST)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe04ee003sm1638014e87.7.2026.11.02.04.49.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 04:30:57 -0800 (PST)
-Date: Mon, 2 Nov 2026 07:30:54 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Karthikeyan KS <karthiproffesional@gmail.com>,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	Eugenio Perez <eperezma@redhat.com>
-Subject: Re: [PATCH RESEND] vhost-scsi: use FOLL_PIN for DMA page pinning
-Message-ID: <20261102073033-mutt-send-email-mst@kernel.org>
-References: <20261020182640.2048506-1-karthiproffesional@gmail.com>
- <sashiko-outbox-180555@kernel.org>
+        Mon, 02 Nov 2026 04:49:09 -0800 (PST)
+Date: Mon, 2 Nov 2026 13:49:05 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 10/20] ctlv: Prepare event queue support
+Message-ID: <auiGL-Xq72i5K8FT@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-11-jiri@resnulli.us>
+ <auCbPdoaMq9oWoQ_@e129823.arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,134 +105,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-180555@kernel.org>
+In-Reply-To: <auCbPdoaMq9oWoQ_@e129823.arm.com>
 
-On Wed, Oct 21, 2026 at 06:27:00PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] vhost-scsi: page pin leak in vhost_scsi_map_to_sgl() error path
+Tue, Oct 27, 2026 at 01:38:21PM +0100, yeoreum.yun@arm.com wrote:
+>Hi Jiri,
+>
+>
+>[...]
+>
+>> +int ctlv_event_emit(struct ctlv_op_ctx *ctx)
+>> +{
+>> +	struct ctlv_device *ctlvdev = ctx->ctlvdev;
+>> +	struct ctlv_event_record *rec, *next;
+>> +	struct ctlv_file *cfile;
+>> +	u32 len, wanted = 0;
+>> +	LIST_HEAD(spare);
+>> +	int ret;
+>> +
+>> +	if (WARN_ON_ONCE(ctx->file))
+>> +		return -EINVAL;
+>> +	ret = ctlv_event_finish(ctx);
+>> +	if (ret)
+>> +		goto out_free;
+>> +
+>> +	len = sizeof(struct ctlv_event_hdr) + CTLV_ALIGN(ctx->output.root->len);
+>> +	scoped_guard(spinlock, &ctlvdev->events_lock) {
+>> +		if (ctlvdev->dead_announced)
+>> +			goto out_free;
+>> +		list_for_each_entry(cfile, &ctlvdev->files, node)
+>> +			if (test_bit(ctx->op->event_index, cfile->subscribed))
+>> +				wanted++;
+>> +	}
+>
+>Suppose at the time of here, the number of subscriber is 1.
+>However, before calling the ctlv_event_deliver(), another task hold the
+>event_lock() to register new subscriber. for example:
+>
+>
+>Task 1 (emit)					Task 2 (new subscriber B)
+>
+>wanted = 1
+>unlock events_lock.
+>						Register subscription.
+>allocate one record
+>ctlv_event_delver()
+>
+>  grab events_lock.
+>    Deliver former subscribe event to old one.
+>    new subscriber B will call ctlv_event_queue_event() with NULL.
+>
+>When this happens, new subscriber B would receive overflow event
+>via ctlv_event_queue_dropped() though it was registered right before.
+>
+>Is this intended? It doesn't make sense that subscribe B receives
+>the overflow event in this situation...
 
+Not intended. Will fix.
 
-Karthikeyan were you going to address this review?
-
-> --
-> 
-> commit 1042924e4de0195bca9a4409c2fafbb0c7c58e45
-> Author: Karthikeyan KS <karthiproffesional@gmail.com>
-> 
-> vhost-scsi: use FOLL_PIN for DMA page pinning
-> 
-> This commit switches vhost-scsi from iov_iter_get_pages2() (FOLL_GET) to
-> iov_iter_extract_pages() (FOLL_PIN) when mapping guest I/O buffers into
-> scatterlists, and updates the teardown and error paths to unpin the pages
-> with unpin_user_page().
-> 
-> > diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> > index 885fac5ed042e..8162d83bdfcc9 100644
-> > --- a/drivers/vhost/scsi.c
-> > +++ b/drivers/vhost/scsi.c
-> 
-> [ ... ]
-> 
-> > @@ -842,9 +851,9 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
-> >  	size_t offset;
-> >  	unsigned int n, npages = 0;
-> >  
-> > -	bytes = iov_iter_get_pages2(iter, pages, LONG_MAX,
-> > -				VHOST_SCSI_PREALLOC_UPAGES, &offset);
-> > -	/* No pages were pinned */
-> > +	bytes = iov_iter_extract_pages(iter, &pages, LONG_MAX,
-> > +				VHOST_SCSI_PREALLOC_UPAGES, 0, &offset);
-> > +	/* No pages were extracted */
-> >  	if (bytes <= 0)
-> >  		return bytes < 0 ? bytes : -EFAULT;
-> >  
-> > @@ -867,7 +876,7 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
-> >  		    cmd->tvc_sgl_count > BIO_MAX_VECS) {
-> >  			WARN_ONCE(true,
-> >  				  "vhost-scsi detected misaligned IO. Performance may be degraded.");
-> > -			goto revert_iter_get_pages;
-> > +			goto revert_iter_extract_pages;
-> >  		}
-> >  
-> >  		sg_set_page(sg, pages[npages++], n, offset);
-> > @@ -879,14 +888,17 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
-> >  	*sgl = sg;
-> >  	return npages;
-> >  
-> > -revert_iter_get_pages:
-> > -	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg);
-> > +revert_iter_extract_pages:
-> > +	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg,
-> > +			is_prot ? cmd->tvc_prot_need_unpin : cmd->tvc_need_unpin);
-> >  
-> >  	iov_iter_revert(iter, bytes);
-> >  	while (bytes) {
-> >  		n = min_t(unsigned int, PAGE_SIZE, bytes);
-> >  
-> > -		put_page(pages[npages++]);
-> > +		if (is_prot ? cmd->tvc_prot_need_unpin : cmd->tvc_need_unpin)
-> > +			unpin_user_page(pages[npages]);
-> > +		npages++;
-> >  		bytes -= n;
-> >  	}
-> >  
-> 
-> [Severity: High]
-> Can the cleanup loop at revert_iter_extract_pages in vhost_scsi_map_to_sgl()
-> leak a FOLL_PIN page pin on the last page in pages[] when the misaligned-IO
-> check triggers on the first iteration with a non-zero offset?
-> 
-> In vhost_scsi_map_to_sgl(), iov_iter_extract_pages() extracts and pins
-> DIV_ROUND_UP(offset + bytes, PAGE_SIZE) pages into pages[], where pages[0]
-> only covers min_t(unsigned int, PAGE_SIZE - offset, bytes) bytes starting at
-> offset:
-> 
-> 	while (bytes) {
-> 		n = min_t(unsigned int, PAGE_SIZE - offset, bytes);
-> 		...
-> 		if (!is_prot &&
-> 		    (offset & (SECTOR_SIZE - 1) || n & (SECTOR_SIZE - 1)) &&
-> 		    cmd->tvc_sgl_count > BIO_MAX_VECS) {
-> 			WARN_ONCE(true,
-> 				  "vhost-scsi detected misaligned IO. Performance may be degraded.");
-> 			goto revert_iter_extract_pages;
-> 		}
-> 
-> 		sg_set_page(sg, pages[npages++], n, offset);
-> 		sg = sg_next(sg);
-> 		bytes -= n;
-> 		offset = 0;
-> 	}
-> 
-> If this check fails on the first page (npages == 0) when offset > 0, it jumps
-> to revert_iter_extract_pages before bytes is reduced by PAGE_SIZE - offset
-> and before offset is reset to 0.
-> 
-> At revert_iter_extract_pages, the loop steps by PAGE_SIZE instead of
-> PAGE_SIZE - offset:
-> 
-> 	while (bytes) {
-> 		n = min_t(unsigned int, PAGE_SIZE, bytes);
-> 
-> 		if (is_prot ? cmd->tvc_prot_need_unpin : cmd->tvc_need_unpin)
-> 			unpin_user_page(pages[npages]);
-> 		npages++;
-> 		bytes -= n;
-> 	}
-> 
-> When offset + bytes crosses an extra page boundary (for example, offset = 3840
-> and bytes = 512, which pins 2 pages across the boundary while bytes <=
-> PAGE_SIZE), the loop only runs DIV_ROUND_UP(bytes, PAGE_SIZE) iterations
-> instead of DIV_ROUND_UP(offset + bytes, PAGE_SIZE) iterations, leaving the
-> last page in pages[] pinned.
-> 
-> Should the cleanup loop account for offset on the first iteration (using
-> min_t(unsigned int, PAGE_SIZE - offset, bytes) and then setting offset = 0),
-> matching the main loop?
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261020182640.2048506-1-karthiproffesional@gmail.com?part=1
-
+>
+>
+>> +	if (wanted) {
+>> +		ctlv_event_copies(ctx, len, &spare, wanted);
+>> +		ctlv_event_deliver(ctx, &spare);
+>> +		list_for_each_entry_safe(rec, next, &spare, node)
+>> +			kfree(rec);
+>> +	}
+>> +
+>> +out_free:
+>> +	ctlv_event_free(ctx);
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(ctlv_event_emit, "CTLV");
+>> +
+>
+>[...]
+>
+>Thanks!
+>
+>-- 
+>Sincerely,
+>Yeoreum Yun
