@@ -1,115 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793640613;
-	b=5UeaaiP+7NyzTSGQK5Hj8IZ+XpdFwmndMkVbNRUIjHVrJVU3V8IG977VerbQwXgP9xw5
-	 +ZWoBXyC92jsKlcu6Dniz2GL9IaZwkIyd90xSC2RFuz2HqGCYNVCCH21cjPkyLEU5Kmxt
-	 Ztm5eQj9LNf0kuJnskFMOpoXu9mkYSYhj6nYSysPhbEAucXmQfGazngwRnCR323JiMd9W
-	 /DMcsI8c9Y+BpJiT/uL3rDu4RXO49EXYXghQjowgSrCHwGedTTelSdiKr+vb+tlCklV+P
-	 wcaDibDSsPhV9QOGR0EDsBP+z5akKECni8NatIbj0bZB8J7eHXow7jUFgL5WI2EK1qg==
+	t=1793640768;
+	b=QPZUeNtZ2CYSy5vOgHYTRWwITLrdttYOnSN7mNxbbwcXs/7rpfLQTkkxZHOv+H0H2ZV+
+	 AkXqZuKElXPv0b4NBuzqp0AjnS0473Q0Zj4JmulQfaaHsg7OZrISmQ9ayiLbgh5jUMg/I
+	 IQlZ5T8TKoCgZx6gFCBzqKWtYdoFdfbTF1171hPxe5Rwafe24wmAO3Qbd10rvo4yuvAWA
+	 Gqt0i6RHeuCU4o1AhTTggpf0xr4i/BLZfIMxVYlL7/cY7aMAEzhwd/P2QrBioIQ1WwxPi
+	 Aaly+VaslE82EXEv2euCO8LBsh9yfq0/TzmEJ9eSg+uWcL1/ZUGLylazoGLL4bS9AVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793640613;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
-	b=slcZ2Ts67rhM0Ua4tuD+5dK0jKr8cTcxhQZIXfQdRCvQoNdgmtrpLjueySTZXzhQPAF/
-	 jbH4I2EFJ1FOia+m95MeEMKNiTMaFy+nskuWuAJxwrIU1/PhrRVvJSDacTg4u4oyQYXp1
-	 Ts/AdmRct8EcxDRnw0Fs3eyxXy9ZPH1pb07X2aWqJGYv6ZWNBDoYdIa0Da6JZ8w3/wr4C
-	 8Ft616HH3JvuMIlhMk5VVH+rAm/56G5ItpPQo9CqoS/kz3korp9RU4MyejrLuc5NXbNUo
-	 av7/TqpHAFob/VH1GUbObRpyoS40lJqgqnOsrrRRnzsy01jAipPUfir10NoqMuW3CEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793640768;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=IkAPkFLbTRtEJ98IuWKTdP6Q3cksIi32J1uYLTtOYaQ=;
+	b=Ox3DvKpvOxq/N/dzKpE8aegGi6+QGhjeAr0w/dTFKVQ4mNqw9/1J8Q7DuUT8G5Ab74z6
+	 VScD7vsCGi9HUFEHXUZQsSrJASmEtuliNM9TWWXlbbqlPVzC1/RdGUYYmxl+Pmt9wWYQ+
+	 uZqP8T9ISvEDTwzCba2S7i3ZSS5rmqFC1di+D1wrl7z7G8azYoH+I26g0b9NAKqYqNjmu
+	 jVmck2uSyIadrAQTocFpToKyev2+KSt/fmjgPfn1uBzo+w3ZWtlb/YCo9YL8NR8JtSH5b
+	 XuKhBLVDtNxcFVFV0PiFSetk7UYGzuCV/X9b1fr2bFywveh3a2e1RILZNXRY8evDLJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="D7OX9rf/";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=O4pI9YlU;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=U9u6NCxj;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D36606E026
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:30:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9D36606E026
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B08D606A595
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:32:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B08D606A595
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D7OX9rf/;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=O4pI9YlU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793640612;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
-	b=D7OX9rf//5YzUCNe5WHvsdWYy4QUBKI9EewIG2bPgMolg1hblOBpsfReBWKvdO+2LfXnlM
-	BelE1qsCNjMEYLRLNqoieGQ0EB+Pmyb404uGRoawTQ1FoBUAIrNnsozudssRT3MFwj8fMJ
-	bv5qEKgJp3E9ksdZ7eDMHQSu3xYZsH8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-QNmJbN7SN_Wh86jZ1rjQ-Q-1; Mon, 02 Nov 2026 12:30:10 -0500
-X-MC-Unique: QNmJbN7SN_Wh86jZ1rjQ-Q-1
-X-Mimecast-MFC-AGG-ID: QNmJbN7SN_Wh86jZ1rjQ-Q_1793640609
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e4d1e29f3so2944281f8f.3
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 09:30:09 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=U9u6NCxj
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ad704d4760so2963629a91.3
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 09:32:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793640609; x=1794245409; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
-        b=O4pI9YlU92DDxrrSy6abElpco/qX3degbuogWx2SVyZyGnQ8Ljm8FwI4vtxoPyfDyC
-         rhCe1JAnalublysmvZ6emIRr4ywccBIFc/TvwrdeH/FMuISwOSIg5cHb6MSYJ7MzZu0y
-         yFsgAi16SjhXDtpLRy7vETL/sUyNwc/N2NMNodNJ1l9y/dGEvLTF4VA2p5XJdmE7+kzQ
-         kEebFLK9C9ODAhgFXrTA1Gqx4IU7k9Bj9P3/jQPyW7Kmze2YxH2EFHVfP2KGGOCElP4M
-         G9zeKnZ7EUvP59V4zJiHeV/v/BkOMR99FE1/Bjog31DElcdlOg1M5UQSgwPTzPtD52Vm
-         ZixA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793640609; x=1794245409;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793640767; x=1794245567; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
-        b=T7G6479ed56GR3VXV8R5eEa2HQmX4DQTbGYcPGrS5vBR2PXKsjoH6qmsYs8mUCmaTe
-         qRqWR1EMFd8Sbl87ZAsba216za4Nxgb7W4iYt2gO+GfbJLZtrOqdqiqJ/HDLLNRszM+j
-         Qf8PHkj9+R+KaaE92CVdmL5HQW/vsQaM7BGa4qHIVL3IxZuTKN0ngIt0R96EGnaIpHi0
-         DViuxcG4qAqOJ2xx0fSC4VW3ZvjvMyXff9ndD6xaK04sU+mpzdanPlMNuiU5GIbI2aUv
-         kPvr4N/E7V47iet77ZI84BH9Pb0fl4IeczI47bv5xvIcGzMTH8gJP9i0gCVLUu0V7Lcg
-         YBJw==
-X-Forwarded-Encrypted: i=1; AKwUvBwWrAw8MQl12gdGb9GR8e/Dlf76Go0WKfrcagi/QD0fxgPbpxWn6Ti6XxiH/2T9KRfkvdc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLhpQAIBOtSDSnuv2x1so6rqE/5NNhUu1Cvz/FHBlSmOLifwlSH
-	cDpQ0n2uhyjfFAlnGTTNdUWJdwCYTHeqkADDg4qY/zuA3K8VmW+9O7N++sPC7yhWiaY9VJ4Diey
-	NsND0+i3dZUy6NrXM/C736QPYOiF0bpwn4e1KWdKzwXwstBmO4yw4tw==
-X-Gm-Gg: AYBFou1gjNW7f9VkCsi1m+eM0LuycI5MwB9c/GIw0FPCqhka+llcv2UYczPtws4Y0hH
-	eJJclHi1euRONjHJ07o7YQyVhoMyGtuVRwfkCei1TdFkcUwfj+TH4xpCO8BABA1YlZji+B/fYw8
-	sWUb4Gu0JxqVtCBy7EgAoVp3rlA4negllvp40Ypw8RxkH2HBkl5qVrj5QlIf5WcE0tMcNEMZ0l3
-	2cRKqeAA4+RqhAsQnXQuE6XUxKKgnFUP1FkOxp2IrUKch07SbCX0aptU5slQ+jmUFDEdQchUIKc
-	AnTUYbRJdw6d0FVmWJAewaAxs861zyDj+BTo9MYQ45QLkPZC4p2OKugyWtntvDh6wck1Ajdw2GM
-	OtlSGYUED2nBFX/3/tlYr7JaSUy8gtW+FEww0xYIRxw==
-X-Received: by 2002:a05:600c:c088:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4acda922e24mr165297225e9.1.1793640608968;
-        Mon, 02 Nov 2026 09:30:08 -0800 (PST)
-X-Received: by 2002:a05:600c:c088:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4acda922e24mr165296615e9.1.1793640608457;
-        Mon, 02 Nov 2026 09:30:08 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a8d60ca0sm1461205e9.7.2026.11.02.09.30.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 09:30:07 -0800 (PST)
-Date: Mon, 2 Nov 2026 12:30:04 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Fang Xieyan <fangxy@xiaopeng.com>
-Cc: Jason Wang <jasowang@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Guanglei Zhu <zhugl3@xiaopeng.com>
-Subject: Re: [PATCH] vhost/vringh: reject zero-length indirect descriptor
- tables
-Message-ID: <20261102122942-mutt-send-email-mst@kernel.org>
-References: <20261021070242.75009-1-fangxy@xiaopeng.com>
+        bh=IkAPkFLbTRtEJ98IuWKTdP6Q3cksIi32J1uYLTtOYaQ=;
+        b=U9u6NCxjVhkQwuGcWx66GAOCDWPiOPNc0aRhBiHc6EdbEc0Wd0uvKTupJIGhp41tRt
+         jdvKM8tqp2sTK7mylRgtAYxWR4iGLC9RS9/zFsUU7L6b3ZPr4Wl+7DG3P/KziQYvM+Yj
+         x2NWnUpMMIW44ep+gzdRlBZUjE4DJNiACdZxMM+jqKdTLzYC/VEWW+6Q+3KWc/+mF6q9
+         A0xr04gIiSd2s4IPtnLolaEb9YGHxe6Cziu67tyl1qFyItm3n4JXU1OG2mjAv+VPgst/
+         X6Ki18eBlFIP41C6JFzBogJ1VxsK+RmPrySxVDe0gXmlO7u1oJufLiYzogOoVBzFk2XM
+         F3GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793640767; x=1794245567;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IkAPkFLbTRtEJ98IuWKTdP6Q3cksIi32J1uYLTtOYaQ=;
+        b=L/+8AhlmyyP6F7cwZWnR/6MKMOhjBXHUOokSnd9sC9tLuphADMCQF3yizTJ/hMEl/g
+         xrSrrhLcgXg4qy29//WLuGuMcol8Se9DgLKbCADxsbh++ARkwtKEErpgsQBPX39R6+Hf
+         gtLBe68kOPYeZ21DYjHn8wd6I2ZTKMeI3Ywn/M/5qOiqDwFeqh+7B/FMBfEcj0D40nWe
+         84mx3uyT2n3BOiBXgaBTyqxX7QssZ0fiCYdSq1/Pdb9iwYPSBwlROIrefl0Pzq50PDTD
+         SgLgDrnwPRHhPFx7Hrr5KmvXo8SGNAoq1/GOJeafe6CzpdCWPoVhmlRyuZYOCbbxKzBw
+         fCPg==
+X-Forwarded-Encrypted: i=1; AKwUvByzSfTYGirUg1+SSIf/7xXR3VtbdEvU4VfAr2kdREtRDQDZuWQHs9/4utiq7YXLlWWMWlk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+HmMIZOR9YlxVOLt8wWK//MAw9ux5MY4ivxBLtGRhUC1eikOPp
+	4AcnGAzqa1+Vh28k1Pja9asR2kPcU1+56gEgCcakM+UV2h9a1j04mh0duzSxwqVEWdDl1wFYFfg
+	Uu8Q4YQ==
+X-Received: from pjbir4.prod.google.com ([2002:a17:90b:4684:b0:3a8:74c5:5a5c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a8a:b0:39e:6c69:7777
+ with SMTP id 98e67ed59e1d1-3ae8976c86fmr8030769a91.32.1793640766778; Mon, 02
+ Nov 2026 09:32:46 -0800 (PST)
+Date: Mon, 2 Nov 2026 09:32:46 -0800
+In-Reply-To: <20261030103643.573356-4-doebel@amazon.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,50 +77,77 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021070242.75009-1-fangxy@xiaopeng.com>
+Mime-Version: 1.0
+References: <20261030103643.573356-1-doebel@amazon.de> <20261030103643.573356-4-doebel@amazon.de>
+Message-ID: <aujJPohZEMZMdWFW@google.com>
+Subject: Re: [PATCH 6.18.y 3/3] KVM: VMX: Synthesize nested EPT violation
+ GVA_IS_VALID/GVA_TRANSLATED bits
+From: Sean Christopherson <seanjc@google.com>
+To: Bjoern Doebel <doebel@amazon.de>
+Cc: stable@vger.kernel.org, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	Kevin Cheng <chengkev@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Oct 21, 2026 at 03:02:42PM +0800, Fang Xieyan wrote:
-> move_to_indirect() accepts an indirect descriptor with a zero length,
-> setting desc_max to 0. __vringh_iov() then reads descs[0] before
-> checking the descriptor bounds, resulting in an out-of-bounds read.
+On Fri, Oct 30, 2026, Bjoern Doebel wrote:
+> From: Kevin Cheng <chengkev@google.com>
 > 
-> Reject a zero-length indirect table in move_to_indirect() so the
-> caller returns -EINVAL before dereferencing the table. Also use the
-> converted length in the warning to report invalid lengths correctly
-> when the vring byte order differs from the CPU byte order.
+> [ Upstream commit 96b067b59ad9ccede585fcadab27543188353bff ]
 > 
-> Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
-> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
-
-
-Isn't this already addressed by
-Subject: [PATCH v2] vringh: reject empty / undersized indirect descriptor tables
-that you posted previously?
-
-> ---
->  drivers/vhost/vringh.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> When injecting an EPT Violation into L2 in response to a fault detected
+> while emulating an L2 GVA access, synthesize the GVA_IS_VALID and
+> GVA_TRANSLATED bits using information provided by the walker, instead of
+> pulling the bits from vmcs02.EXIT_QUALIFICATION.  The information in
+> vmcs02.EXIT_QUALIFICATION is valid/correct if and only if the fault being
+> injected into L1 is the direct result of an EPT Violation VM-Exit from L2.
 > 
-> diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-> index 9066f9f12ba1..ce4f5a02c8d2 100644
-> --- a/drivers/vhost/vringh.c
-> +++ b/drivers/vhost/vringh.c
-> @@ -197,8 +197,8 @@ static int move_to_indirect(const struct vringh *vrh,
->  	}
+> E.g. if KVM is emulating an I/O instruction and the memory operand's
+> translation through L1's EPT fails, using vmcs02.EXIT_QUALIFICATION is
+> wrong as the semantics for EXIT_QUALIFICATION would be for an I/O exit,
+> not an EPT Violation exit.
+> 
+> Opportunistically clean up the formatting for creating the mask of bits
+> to pull from vmcs02.EXIT_QUALIFICATION.
+> 
+> Signed-off-by: Kevin Cheng <chengkev@google.com>
+> [sean: use plumbed in @access bits, massage changelog]
+> Link: https://patch.msgid.link/20260522232701.3671446-5-seanjc@google.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [doebel: no advanced EPT vmexit info here, so the mask keeps only the two
+> GVA bits; set GVA_TRANSLATED via !(access & PFERR_GUEST_PAGE_MASK)]
+
+...
+
+> @@ -509,6 +509,21 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+>  		if (fetch_fault)
+>  			walker->fault.exit_qualification |= EPT_VIOLATION_ACC_INSTR;
 >  
->  	len = vringh32_to_cpu(vrh, desc->len);
-> -	if (unlikely(len % sizeof(struct vring_desc))) {
-> -		vringh_bad("Strange indirect len %u", desc->len);
-> +	if (unlikely(!len || len % sizeof(struct vring_desc))) {
-> +		vringh_bad("Strange indirect len %u", len);
->  		return -EINVAL;
->  	}
->  
-> -- 
-> 2.50.1
+> +		/*
+> +		 * KVM doesn't emulate features that access GPAs directly, e.g.
+> +		 * Intel Processor Trace.  Assume the GVA is always valid; when
+> +		 * propagating faults from hardware, KVM will discard this info
+> +		 * and use the EXIT_QUALIFICATION bits from the VMCS.
+> +		 */
+> +		walker->fault.exit_qualification |= EPT_VIOLATION_GVA_IS_VALID;
+> +
+> +		/*
+> +		 * Accesses to guest paging structures are not the translation of
+> +		 * a guest linear address, i.e. GVA_TRANSLATED must be left clear.
+> +		 */
+> +		if (!(access & PFERR_GUEST_PAGE_MASK))
+> +			walker->fault.exit_qualification |= EPT_VIOLATION_GVA_TRANSLATED;
 
+Yeesh, I was going to say I'd prefer to keep the original:
+
+		/*
+		 * Accesses to guest paging structures are either "reads" or
+		 * "read+write" accesses, so consider them the latter if write_fault
+		 * is true.
+		 */
+		if (access & PFERR_GUEST_PAGE_MASK)
+			walker->fault.exit_qualification |= EPT_VIOLATION_ACC_READ;
+		else
+			walker->fault.exit_qualification |= EPT_VIOLATION_GVA_TRANSLATED;
+
+but I don't really want to decipher whether or not that's needed and/or correct
+without upstream commit a8827c1961462 ("KVM: x86/mmu: introduce ACC_READ_MASK").
+So yeah, this seems like the way to go.
