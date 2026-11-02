@@ -1,49 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641291;
-	b=AahUSMFgeOj03zIuTDgAI/ANzcoOjT3vS53SlgxrCYPzvziUMzpT9TXMDM+7HRCnpJiq
-	 cmS+VZP9NS7RZFPImRC9ejKPIjUD44NY1WBD9/YPb7qRXVqZZstHp8+zKpDxqgsUPmxUl
-	 YqbjTwjo/32ENQB5nexC/jx88vSXOShoMP497bmPipw9vnZuKws2bW4VJkqtdn0ZWLZQ9
-	 VPFEOzJXS86/1qhKXrP0M6I8Mrjd9kst/PYDiTjDOrgLLHpITKCvt8mfw9Qsy49eSn3RQ
-	 5SKikGIcSZCPDTofYsZYYSe/IwuwBOELq8eezl1OCqMfj3F3H/WRt7VNAWWQ/UCrvrQ==
+	t=1793641295;
+	b=nTUuQZKWgWHF/b/AT5qffcx+wrBwdU+5rYvCvEtGjS02a7OSH/p1n1lmAbQ1RACjL4M9
+	 VWr9zu6OiiVGmKCnAlRdxj2mYCeB8tLbnjBMMKrJfHK0cMeD0yelX1SPUN0Ybf6Zw5D/7
+	 xBhUknoz5E7X+awBEUMaSG16pcDtjGsVEL+wW8IqfcuUKLHNGjewXWmZ0Fwk4KGCZP2wE
+	 1skHF8kx4ZCu3tqsA8BE3P7QL5h92NlmrMFXXhddoMoxygugALr5vtqvMGrkwdYoPVCUr
+	 2CHzD8pgz3Oewm+F2aLnGQv6D0VcN7aM+6hFjngCHfoGEEogW7SGAOKH0EfosoVX0DA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641291;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=PBEIXDYSZhPvi+xwUi+57gi1esg8AVh0L9UwO82CfuA=;
-	b=a0BvvjLigpFU9zNtgNH6q/HhSItiMgoFPAp6Xj83kcZxFGIG6/DLugE7uPZrWVKtQCpD
-	 rmrr3snEvujTlmfLjrzj88ZGQcBVYo2HZUFh7tFX9uiD41Z4tecJACwf1OHL62tOaa4T6
-	 zyJK+jSQt5IkjcxiGQfSaEuupzr67fcqW+vOWFHLeoijxaJjG1tzwKWkqnu+ZEWL/yZ3K
-	 d16pryBL4FYM6NIeFzyp/lCS3RpuBOknDedP/fXYlMcv+LPdqurqnO8aTkN9eAVRglFJ0
-	 EMDvD/RrlgOsM4MaUsPZ7fhbwSRhALZzlQL7qCi9jt/eFrjC/hwLisVhkbpnF3M2Gqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641295;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Subject:Date:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Scanned-By;
+	bh=xpVf0GisYiooIupLoMQqPECRdo7eVWxHU83ROCqRz1k=;
+	b=Obi1fCs0PMuteos4iZWNG0on8mzXaxdSZNvAq1ulsoHGByy9wmGjK/e9MHxuOzsbhjoN
+	 NbKSOdbN59okZvRbo7cBWBQSIkLewUzjFGUNYDAMd8JS+/9sTjX84MhXyB9SfcIpAZTSl
+	 3CrEWuoHvnAhOKfRvLbtq0bMe5Me/J5KUudKFesdxYUsyS8aQQ0OYyLu+jXHnnotqhGHP
+	 LsuhaVSp2yU9nhdNyyomZsU8a9Seqa28k4a4GKaiip5mVT27itESfmcBsqlsoguvEh7Qs
+	 /9Kt7DWGmCSKrpNJd0iSkI+bzlWbWRPrXiCJaKt0OQwczGUK+DqtNRQFBuH7kPD3BWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JMLUDvhk;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C196606B0F5
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C196606B0F5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NSGvhRBs;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8083E606BA45
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8083E606BA45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JMLUDvhk
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55AAC16F3;
-	Mon,  2 Nov 2026 09:41:27 -0800 (PST)
-Received: from [10.0.136.93] (M0PRX50XMG.cambridge.arm.com [10.0.136.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CFADB3F59E;
-	Mon,  2 Nov 2026 09:41:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793641290; bh=MKrsrXvnksc9uVbWgxUeFRcvdgMBazd2ajdJ/vsY5cw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JMLUDvhkSzgz/cwRz6Odw7weRfBS3JjnVQfE5M6ZCeONxMJgBHHI67mzfX9h0ZhNN
-	 g3jm9BlMK7eauloURX5Y+GS5E82C3dTQtfGnoKxQyNx2vLITKCgHBKU6Lt1Uxl3am6
-	 I7GdioFswVzqToAhxYWirSOyRW0ACN34ZXm45VAo=
-Message-ID: <5f14af71-45ae-4175-9ba0-22b873d12f15@arm.com>
-Date: Mon, 2 Nov 2026 17:41:28 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NSGvhRBs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793641293;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xpVf0GisYiooIupLoMQqPECRdo7eVWxHU83ROCqRz1k=;
+	b=NSGvhRBsOA+NhdpXpQTIVAJmBr6vVErMbn5TxoWyDdD2Pj0D2duFdl3wTPfVfseH1C8Yz8
+	+yQxU3ZOIoExTOeAD0LyHcnBV0LSI17UMrqbNQDhaLc/KRRWHrcAMt06bofQjPUo8M7RGC
+	6k6Ng5YWHB/7/RUjdtsNUxhQrmroEV8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-XmERt2bwPHG4AC8aYgaGyA-1; Mon,
+ 02 Nov 2026 12:41:32 -0500
+X-MC-Unique: XmERt2bwPHG4AC8aYgaGyA-1
+X-Mimecast-MFC-AGG-ID: XmERt2bwPHG4AC8aYgaGyA_1793641291
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 375CB18009B9;
+	Mon,  2 Nov 2026 17:41:31 +0000 (UTC)
+Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C747030001A2;
+	Mon,  2 Nov 2026 17:41:30 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [PATCH v4 00/45] KVM: x86: Introduce memory protection attributes
+Date: Mon,  2 Nov 2026 12:40:44 -0500
+Message-ID: <20261102174130.8779-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,252 +74,154 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/16] KVM: arm64: gic-v5: Add ITS userspace register
- access
-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261016155741.979985-1-sascha.bischoff@arm.com>
- <20261016155741.979985-11-sascha.bischoff@arm.com>
- <sashiko-outbox-174627@kernel.org>
-Content-Language: en-GB
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <sashiko-outbox-174627@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 16/10/2026 17:19, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
-> - [High] gic-v5: userspace override omits guest-side guard without post-restore validation
-> - [High] gic-v5: userspace writes to stateful and capability registers are silently discarded
-> - [Medium] gic-v5: missing state rollback on kvm_io_bus_register_dev failure
-> - [Medium] kvm: arm64: KVM_HAS_DEVICE_ATTR fails on ITS registers before base address is set
-> - [Medium] kvm: arm64: gic-v5: userspace writes to ITS ID registers are silently discarded
-> --
-> 
-> commit 2fb8c28d93170f4ea49aeb17c5091f5d920592c9
-> Author: Sascha Bischoff <sascha.bischoff@arm.com>
-> 
-> KVM: arm64: gic-v5: Add ITS userspace register access
-> 
-> This commit exposes the GICv5 ITS register frame to userspace for inspection
-> and restoration around VM reset and migration. It applies userspace access
-> constraints and adds control handling for reset while preserving ITS
-> defaults.
-> 
->> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
->> index 5920fa1bcb2cf..62c1ca8004007 100644
->> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
->> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
->> @@ -851,6 +851,19 @@ static u64 vgic_v5_read_its_dt_baser(struct vgic_v5_its *its)
->>   			  its->dt_baser.addr >> GICV5_ITS_DT_BASER_ADDR_SHIFT);
->>   }
->>   
->> +static int vgic_v5_uaccess_write_its_dt_itt(struct kvm *kvm, void *dev,
->> +					    gpa_t addr, unsigned int len,
->> +					    unsigned long val)
->> +{
->> +	struct vgic_v5_its *its = dev;
->> +	size_t offset = addr & (SZ_64K - 1);
->> +
->> +	guard(mutex)(&its->its_lock);
->> +
->> +	vgic_v5_write_its_dt_reg(its, offset, val);
->> +	return 0;
->> +}
-> 
-> [Severity: High]
-> This userspace override in arch/arm64/kvm/vgic/vgic-its-v5.c intentionally
-> omits the guest-side !its->enabled guard, which makes sense for permitting
-> out-of-order restoration. However, when a guest-side refusal is omitted, a
-> final validation step is required at the end of the restore sequence to
-> re-establish the invariant.
-> 
-> Because KVM_DEV_ARM_VGIC_CTRL_INIT is handled as a no-op below and there
-> are no RESTORE_TABLES controls exposed for GICv5, KVM never validates the
-> final configuration. Could this allow userspace to leave the device in an
-> illegal state (e.g., base address modified while active) that the guest
-> could never produce?
+This series introduces a mechanism to let userspace block read,
+write or execute access to individual GFNs via KVM's memory
+attribute mechanism, and have them reported via KVM_EXIT_MEMORY_FAULT.
 
-GICv5's ITS works differently to the GICv3 ITS. The tables are in guest 
-memory only, and there's no additional work required to restore them. As 
-long as guest memory is correctly saved/restored and we retain the 
-ITS_DT_BASER/IRS_DT_CFGR then we can recover all translations the guest 
-has set up.
+KVM needs to check the attributes anytime KVM takes GPAs as input for any
+action initiated by the guest; if the memory attributes are incompatible
+with such action, it should be stopped.  This means that there are quite
+a lot of cases to handle, and while in most cases they occur before
+committing to the execution of an instructions (for example, page walks),
+there are other cases where a full implementation of attributes would
+basically require an implementation of transactional memory accesses:
+notably (from inevitable to where I finally drew the line) nested
+virtualization, emulation, SMM switch, task switch.  In the worst case,
+the processor might have executed the instruction before issuing a
+trap-like vmexit - and if the instruction length is not provided and
+the instruction is not accessible, there's no practical alternative
+to returning -EIO and marking the VM as dead.
 
-A guest can (well, MUST) program the table registers while the ITS is 
-disabled and then enable the ITS; userspace can restore that same state 
-in another order. Changes to table configuration or ITS enable state 
-clear cached translations, and there is no decoded table state to 
-rebuild. I've left CTRL_INIT as a no-op.
+For this reason, documentation now clarifies that invalid accesses may not be
+recoverable and may be reported in the same way as MMIO.
 
-> 
-> [ ... ]
->> @@ -1018,6 +1031,13 @@ static void vgic_v5_mmio_write_its_wi(struct kvm *kvm, void *dev, gpa_t addr,
->>   		.its_read = rd, .its_write = wr,                       \
->>   	}
->>   
->> +#define REGISTER_ITS_V5_DESC_UACCESS(off, rd, wr, uwr, length, acc)    \
->> +	{                                                              \
->> +		.reg_offset = off, .len = length, .access_flags = acc, \
->> +		.its_read = rd, .its_write = wr,                       \
->> +		.uaccess_its_write = uwr,                              \
->> +	}
->> +
->>   static const struct vgic_register_region vgic_v5_its_registers[] = {
->>   	REGISTER_ITS_V5_DESC(GICV5_ITS_IDR0, vgic_v5_mmio_read_its_misc,
->>   			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
-> 
-> [Severity: Medium]
-> IDR0 is registered without a userspace write override, falling back to the
-> guest's write-ignore handler vgic_v5_mmio_write_its_wi(). Because userspace
-> writes are silently discarded here in arch/arm64/kvm/vgic/vgic-its-v5.c, a
-> VM migrated to a new host will adopt the destination host's physical ITS
-> capabilities (like pa_range in vgic_v5_its_reset()) rather than retaining
-> its original configuration.
-> 
-> Will this break migration for heterogeneous clusters since capability
-> mismatches are swallowed instead of rejected or applied?
+Along the way, the patches fix some issues in the memory attributes code,
+that surfaced due to having more than one attribute.  Still, no matter
+how careful I tried to be, I'm ready for the absolute massacre that
+Sashiko will make of this stuff.
 
-This was a bug. I've added userspace-only write handlers for IDR0–IDR2: 
-they restore supported fields and return -EINVAL for unsupported 
-configurations or attempts to set RES0 bits. Guest MMIO writes remain 
-ignored as these are RO from the guest's point of view.
+Paolo
 
-> 
-> [ ... ]
->>   	REGISTER_ITS_V5_DESC(GICV5_ITS_READ_EVENT_DATAR,
->>   			     vgic_v5_mmio_read_its_dt_itt,
->>   			     vgic_v5_mmio_write_its_wi, 8,
->>   			     VGIC_ACCESS_64bit | VGIC_ACCESS_32bit),
-> 
-> [Severity: High]
-> Stateful registers like READ_EVENT_DATAR also lack a uaccess_its_write
-> override in vgic_v5_its_registers and use the guest write-ignore handler
-> vgic_v5_mmio_write_its_wi().
-> 
-> Since the write-ignore handler silently accepts the write and discards the
-> value, wouldn't pending event data be permanently lost during migration?
-> 
-> [ ... ]
->> +static int vgic_v5_its_has_attr_regs(struct kvm_device *dev,
->> +				     struct kvm_device_attr *attr)
->> +{
->> +	struct vgic_v5_its *its = dev->private;
->> +	const struct vgic_register_region *region;
->> +	gpa_t offset = attr->attr;
->> +	int align;
->> +
->> +	if (IS_VGIC_ADDR_UNDEF(its->vgic_v5_its_base))
->> +		return -ENXIO;
-> 
-> [Severity: Medium]
-> This runtime state check in vgic_v5_its_has_attr_regs() enforces a base
-> address requirement during a purely capability-probing ioctl.
-> 
-> Userspace VMMs probing for supported GICv5 ITS registers via
-> KVM_HAS_DEVICE_ATTR will receive -ENXIO if they probe before configuring
-> the ITS base address. Could this cause the VMM to incorrectly assume the
-> registers or device capabilities are unsupported, breaking device
-> initialization or migration setup? Other VGIC implementations explicitly
-> omit the base address check in their has_attr handlers to permit capability
-> probing without prior configuration.
+v3->v4:
+- New patch "KVM: nVMX/nSVM: check unconditionally whether CR3 is valid"
+- New patch "KVM: x86/emulate: Check TSS busy-bit writes during task switches"
+- Rebase on top of new VM memory attributes code
+- Use kvm_check_gen in Longarch
+- New patches to surface memory faults from the emulator and from nested
+  GPA translation (15, 29-36, 38-39)
+- Clarify in the docs that memory faults in some cases may not be recoverable
 
-This was a mistake. The HAS path incorrectly required the ITS base to be 
-set. I've removed that check from KVM_HAS_DEVICE_ATTR while retaining it 
-for GET and SET, and updated the selftests and documentation accordingly.
+Anish Moorthy (1):
+  KVM: Define and communicate KVM_EXIT_MEMORY_FAULT RWX flags to
+    userspace
 
-> 
-> [ ... ]
->> +static int vgic_v5_its_attr_regs_access(struct kvm_device *dev,
->> +					struct kvm_device_attr *attr,
->> +					u64 *reg, bool is_write)
->> +{
-> ...
->> +	if (is_write) {
->> +		if (region->uaccess_its_write)
->> +			ret = region->uaccess_its_write(dev->kvm, its, addr,
->> +							len, *reg);
->> +		else
->> +			region->its_write(dev->kvm, its, addr, len, *reg);
->> +	} else {
->> +		*reg = region->its_read(dev->kvm, its, addr, len);
->> +	}
-> 
-> [Severity: High]
-> As mentioned above, userspace writes to several registers (IDR0, CR1,
-> SYNCR, READ_EVENT_DATAR) fall back to the guest-side its_write handler in
-> vgic_v5_its_attr_regs_access() when no override is provided. Because these
-> guest handlers silently accept the write and discard the value, mutable
-> guest state is lost across migration and invalid capability settings are
-> silently ignored instead of being rejected.
+Nicolas Saenz Julienne (11):
+  KVM: selftests: Take into account mixed memory fault flags
+  KVM: x86/mmu: Init memslot hugepage information for non-private_mem
+    VMs too
+  KVM: Introduce NR/NW/NX memory attributes
+  KVM: Include memory protections in result of gfn->hva conversion
+  KVM: Take memory protections into account for memory read/write/fetch
+  KVM: Encapsulate memattrs array into anonymous struct
+  KVM: Introduce a generation number for memory attributes
+  KVM: Take memory protections into account for accesses with cached
+    gfn->hva
+  KVM: pfncache: Fail to refresh if it contains memory protections
+  KVM: x86/mmu: Do not prefetch sptes on gfns backed by memory
+    attributes
+  KVM: x86/mmu: Take memory protection attributes into account during
+    faults
 
-Yeah, as above this was a mistake. I've added restore handlers for the 
-ID registers and READ_EVENT_DATAR. These reject unsupported ID values 
-for the ID registers. CR1 already stores its readable state. ITS_SYNCR 
-has no retained state and reads as zero, so there's nothing to do here.
+Paolo Bonzini (33):
+  KVM: nVMX/nSVM: check unconditionally whether CR3 is valid
+  KVM: x86/hyperv: do not overwrite hc->ingpa for SIGNAL_EVENT hypercall
+  KVM: x86: apply nGPA->GPA translation to KVM_HC_CLOCK_PAIRING
+  KVM: x86/emulate: Check TSS busy-bit writes during task switches
+  KVM: loongarch: do full validity check on the gfn-to-hva cache
+  KVM: selftests: Test address translation for Hyper-V direct L2
+    hypercalls
+  selftests: kvm: drop TEST_ASSERT_SUPPORTED_ATTRIBUTES
+  KVM: x86: Introduce memory fault on invalid hypercalls reads/writes
+  KVM: selftests: test hypercall memory fault exits
+  KVM: x86/mmu: intersect writability from __kvm_faultin_pfn with
+    fault->map_writable
+  KVM: x86/mmu: Extend map_writable to a full ACC_* mask
+  KVM: VMX: return error from kvm_set_cr*
+  KVM: adjust for presence of more than one attribute
+  KVM: Introduce kvm_fetch_guest_page() and use it for x86
+  KVM: Take memory protections into account for __kvm_vcpu_map
+  KVM: Introduce kvm_check_gen()/kvm_memslots_check_gen()
+  KVM: x86/emulate: change return value of emulator_io_permitted to int
+  KVM: x86/emulate: Propagate memory faults to userspace
+  KVM: x86: "Handle" failed decode when skipping instructions
+  KVM: vmx/sgx: make return value of sgx_gva_to_gpa consistent with its
+    callers
+  KVM: x86: Allow page fault fixup to return errors
+  KVM: x86/mmu: Adjust gva_to_gpa to allow returning an error
+  KVM: x86/mmu: Propagate errors from nested GPA translation
+  KVM: x86: Propagate memory faults through load_pdptrs()
+  KVM: x86/mmu: Issue memory fault exit if walk failed due to memory
+    attribute
+  KVM: x86: mark VM as dead after KVM_SET_SREGS fails to load PDPTRs
+  KVM: VMX: mark VM dead on shadow VMCS or eVMCS access failures
+  KVM: let kvm_arch_post_set_memory_attributes drop mmu_lock
+  KVM: x86/mmu: Obsolete all roots if memattr contains gPTEs
+  KVM: x86: selftests: Introduce memory protection attributes test
+  KVM: x86: selftests: Introduce memory attributes PTE test
+  KVM: x86: selftests: Introduce memory attributes side-channel tests
+  KVM: x86: split out parts of load_pdptrs
 
-> 
-> [ ... ]
->> +static int vgic_v5_its_ctrl(struct kvm *kvm, struct vgic_v5_its *its, u64 attr)
->> +{
->> +	int ret = 0;
->> +
->> +	if (attr == KVM_DEV_ARM_VGIC_CTRL_INIT)
->> +		return 0;
-> 
-> [Severity: High]
-> The initialization/finalization control in vgic_v5_its_ctrl() is a no-op,
-> meaning no end-of-restore validation is performed to check the invariants
-> that were bypassed by the userspace overrides (like the !its->enabled
-> check).
+ Documentation/virt/kvm/api.rst                |  57 ++-
+ arch/loongarch/kvm/vcpu.c                     |  12 +-
+ arch/x86/include/asm/kvm_host.h               |  18 +-
+ arch/x86/kvm/Kconfig                          |   2 +-
+ arch/x86/kvm/emulate.c                        |  82 +++-
+ arch/x86/kvm/hyperv.c                         | 174 +++++--
+ arch/x86/kvm/kvm_emulate.h                    |   3 +
+ arch/x86/kvm/mmu.h                            |  28 +-
+ arch/x86/kvm/mmu/mmu.c                        | 200 +++++++--
+ arch/x86/kvm/mmu/mmu_internal.h               |  21 +-
+ arch/x86/kvm/mmu/mmutrace.h                   |  36 ++
+ arch/x86/kvm/mmu/paging_tmpl.h                |  63 ++-
+ arch/x86/kvm/mmu/spte.c                       |  12 +-
+ arch/x86/kvm/mmu/spte.h                       |  13 +-
+ arch/x86/kvm/mmu/tdp_mmu.c                    |   2 +-
+ arch/x86/kvm/regs.c                           | 103 +++--
+ arch/x86/kvm/regs.h                           |   9 +
+ arch/x86/kvm/svm/nested.c                     |  51 +--
+ arch/x86/kvm/svm/svm.c                        |  19 +-
+ arch/x86/kvm/vmx/hyperv.c                     |   7 +-
+ arch/x86/kvm/vmx/nested.c                     |  53 ++-
+ arch/x86/kvm/vmx/sgx.c                        |  35 +-
+ arch/x86/kvm/vmx/vmx.c                        |  59 ++-
+ arch/x86/kvm/x86.c                            | 204 ++++++---
+ arch/x86/kvm/x86.h                            |   2 +-
+ include/linux/kvm_host.h                      | 133 +++++-
+ include/linux/kvm_types.h                     |   6 +-
+ include/trace/events/kvm.h                    |  14 +-
+ include/uapi/linux/kvm.h                      |   7 +
+ tools/include/uapi/linux/kvm.h                |   3 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   2 +
+ .../testing/selftests/kvm/include/kvm_util.h  |  37 +-
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ .../testing/selftests/kvm/lib/x86/processor.c |   5 +
+ .../testing/selftests/kvm/memory_attributes.c | 424 ++++++++++++++++++
+ tools/testing/selftests/kvm/x86/hcall_fault.c | 246 ++++++++++
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  |  16 +-
+ .../selftests/kvm/x86/hyperv_svm_test.c       |  15 +-
+ .../selftests/kvm/x86/memory_attributes.c     | 415 +++++++++++++++++
+ .../kvm/x86/private_mem_kvm_exits_test.c      |   5 +-
+ virt/kvm/kvm_main.c                           | 315 +++++++++++--
+ virt/kvm/pfncache.c                           |  30 +-
+ 42 files changed, 2498 insertions(+), 441 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/memory_attributes.c
+ create mode 100644 tools/testing/selftests/kvm/x86/hcall_fault.c
+ create mode 100644 tools/testing/selftests/kvm/x86/memory_attributes.c
 
-The guest can configure the tables while disabled and then enable the 
-ITS, reaching the same final state. Any changes to the table 
-configuration clear cached translations. There is no decoded table state 
-to rebuild, so I've left CTRL_INIT as a no-op.
+-- 
+2.52.0
 
-> 
-> [ ... ]
->> +static int vgic_v5_its_set_attr(struct kvm_device *dev,
->> +				struct kvm_device_attr *attr)
->> +{
-> ...
->> +		ret = vgic_check_iorange(dev->kvm, its->vgic_v5_its_base,
->> +					 addr, SZ_64K, KVM_VGIC_V5_ITS_SIZE);
->> +		if (ret)
->> +			return ret;
->> +
->> +		return vgic_v5_register_its_iodev(dev->kvm, its, addr);
-> 
-> [Severity: Medium]
-> In vgic_v5_register_its_iodev() in arch/arm64/kvm/vgic/vgic-its-v5.c,
-> its->vgic_v5_its_base is populated with the requested addr before
-> attempting to register the IO bus device. If kvm_io_bus_register_dev()
-> fails (e.g. due to ENOMEM), the error path fails to clear
-> its->vgic_v5_its_base upon failure:
-> 
-> 	its->vgic_v5_its_base = addr;
-> 	...
-> 	ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, iodev->base_addr,
-> 				      KVM_VGIC_V5_ITS_SIZE, &iodev->dev);
-> out:
-> 	mutex_unlock(&kvm->slots_lock);
-> 
-> 	return ret;
-> 
-> Will this leave the ITS permanently unusable? Subsequent attempts by
-> userspace to correctly set the base address will fail with -EBUSY because
-> IS_VGIC_ADDR_UNDEF() evaluates to false, leaving the ITS permanently
-> unmapped.
-> 
-
-A failed registration does leave the base set, and a later address SET 
-returns -EEXIST. The existing GICv3 ITS path behaves the same way. This 
-follows a resource failure during ITS setup, when userspace cannot 
-realistically continue running the VM as configured, so I have left this 
-path unchanged.
-
-Thanks,
-Sascha
