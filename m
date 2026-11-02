@@ -1,85 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793612578;
-	b=GMRKYxdN/dTnWqEURoaFflMshtEytDjqVeB2TfEu0jk8Qr/ltsc6UHcPbqxXDffLDd2W
-	 YzuomcDOugtm67+GXwUDsYE4svTftae96PNEXN1s8LxmVNqgmtDLTrcn2/5sCEYQ8EzIU
-	 bFuNaeKNqaRENrKBEKmCZUWK63xWT7pMnpKDANa2Tvh+/yDDFho12N1xno5RGCuYT8XOr
-	 Wdangh2NoyMnjDEnKvkRVfc3pVRSg++tUEaXTjPVoefEj31pCOvGSwjK9QpGbmEqFbXwG
-	 eFKk1ibZdL3bg8b72Q4/lKUSaaQ6cT5gSIO/JkKkJJCI22arY/3jlc40+m2Yhshl78Q==
+	t=1793614387;
+	b=1bZwKo/48YKbEd01V54GWiQ236gfR3S6i8EeXy9tv3pFJlmrGyBn+mOiT278FU7+VO44
+	 VvY8sx6hx7O/1PpUOdnqTAHRsOAR7/LdYhmEcipYXl+8IA7IDqtGDNoEL0rj8UTocfbXB
+	 Zpnnb7XyQgghfl7dD7SV6NjnVQ4aqgljwBRqNxPzFluDa25zCpZP1EbkrYjTKJrLRcWxE
+	 cr8yoemSqyLe5nJK8aKTO9jOWx/Zk2VxnCaxVvLUDqMcGAvrNIzZ61bgaxUN4438MhSNb
+	 wqeCeXpdFJoHOwgUwpB/Gnnh2MeD0CAQ6BWWz8i4DLlNkH5erLydn5n/PKzzfy2MroQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793612578;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=s7UqG3TpVMZULsSsKNu6N4cz1DW5BOeuUtIPS6QDAis=;
-	b=PJ9b9m3v5uKjJi3wjFR9euIfryQ+vgzWD0s8lbEW8hpAvZ6VJ7JoMwtAMVpSMahE8+lj
-	 hV4CYaqqFo+TxReG4ypmbiyCRxa9rCr2lsHTEnB6AwPdJtS+9YBh/0E3qNg7MHtLV1Mk7
-	 Gb4de8lyaStxPc2cpK0Ic2PVPuVNHYIOGUbdXnjBmMOHti1pIyyknH5rUi2biKiWPeR+L
-	 itygxCyA0gEmjcrGAckIN09aR3KOqB0yShDSy83T2MOW1V+2GwIZE4N+/U45vUpstWN4o
-	 1S2trQfygvfj+/pz2d68zP1OMvONyBe2piXsRjF00afIrbCxGrss2oNIRjb6CX6KfCg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793614387;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=yI9ETbLZiGkZ1PIenI8hYf34x5l1KL1WOI/mwt8fqfI=;
+	b=e6z9aNibjDneWgE+3GR0/YYKIKU8vb1sdtgfE/5Q9sslVaHSHr1LpE6QqoJLZeQNHsWj
+	 Qpg2NjGOABwI5adBp5AA2mmJx1YMEI3dgKDOF5EtCa/rLg0t9QBUgdOH1uzj+Qg8z/NN+
+	 mX7k376EjEd1BKct1uPoRce01t6zCIHF7xM50TFJqDCMSGdOyFSVw6KRPiZGkDXwvruNn
+	 NtubnQpJKseJ5vTPDGEfS6omuz7NSk7WmVuuafG+qfYnDtcoXFywZ4SmF57/sPWIuIV3I
+	 yJQH4V1UA/4GtYql7OXEV+/R0mOwwI+BfBmk/E7yxS4xnbne1utu6505ZLmsy4w8rIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HewBOeCl;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Eyck3Tpx;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C9C606A331;
-	Mon,  2 Nov 2026 09:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC53606A331;
+	Mon,  2 Nov 2026 10:13:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBC53606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HewBOeCl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3806B1F00919;
-	Mon,  2 Nov 2026 09:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793612577;
-	bh=s7UqG3TpVMZULsSsKNu6N4cz1DW5BOeuUtIPS6QDAis=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HewBOeCl5pz79CSpkijwZTiI4ct1J5rEbJ6byoh4SHSvMl1udzw0FO1BHpGwylJBV
-	 uQE3hkho4oZ6QlQocfKIuuc8l394gcmQ8wuHAeCL2XgV1A9KugxD/fiEpaSFNYpKqU
-	 uUTElwPtEawTRD3xI+Otjo3vn6ED47Idnim/MdJJrqU7Jp7OR8txfJtiFhj67yaeXQ
-	 jlD6EpdAJ3lxJ1cVqN9b1vnREtkrDzgTWh1fgCZ9mvEuzYIW1kgtmGhtVD/zjFYPEQ
-	 IS6teisJNdU3jtV1ZP0D8IJWyItQrRzS7exF6tsDig8VLw6ZDt7G5QZprDG0UAoZ5V
-	 26oGGOnjookOg==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.ams.internal (Postfix) with ESMTP id B5D5F198004A;
-	Mon,  2 Nov 2026 04:42:52 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Mon, 02 Nov 2026 04:42:54 -0500
-X-ME-Sender: <xms:G1voajdT0_ST4aQr5srb36ML8tbnQydvXNDb1Wa0pglc3-bl__0YRw>
-    <xme:G1voamoeTNZ_tLBRDKp4twtHfohRjjLY4Xdgxca7BPM58xswyriI0uPrLDxUcPrGJ
-    Ezolv1sTUcr7-5o0NIrPwaOZweizPE15Oa4Gu575E_BOCfeZSmZZDJm>
-X-ME-Received: <xmr:G1voasfqxLXbh9XEw9fIfqRJKKZl5m2OFKwZnoCvtkwLsethhHA1tzFqAMI>
-X-ME-Proxy-Cause: dmFkZTGUOybRtx7YsTcBd5eNLK4m3Fkm/Ey/0xNm/0ciR+HWLydMlnFcbPmj41D+Y1M07r
-    Sge36pJQ3Qh+uHPDZOt/Z0sw/zsNNy1zqLH6KQvtPBB7yRjuoI07tRUvZSKeBRtG7B1sD0
-    uAMxb5LPpw1ft4DgUZO3C8U4DLm5LSGomrKiANeik8BfMUm7H1eDcnAULVGAG4HLh4jZMz
-    ngg87BfUvwo2om0W0IDhfELBej4BrrIUZDHHWL61OWFhiKNr8MV2yCZ9saruXg5vczc+sN
-    56+11nmDJ3E6+gjErvQq7eGSpVe+dO5PhqG3Qe7j+bLHcDRWh4Xh7mITAz11RYl23v9FNE
-    9WySUbJ+jWj8Ngudc6sIePDxuGI+T/pG7YC5TIoUgGstZcw1h8NKcrBTIvaG3VWxSW1vmw
-    fgHGNcQRfeqJVryEov4ON6A5qd73Jtl3FkZhFcF8E0cJSOOaXI9bg8it/xzDBUw9aSRrWv
-    OnaDSuZ4s2b7vbpy8V2NHpB0dML1teWBFvRl5gk63Z8q8FbTPFM2KWPijasMF0zidFe8bK
-    08j54SKtHXyfp4NXSnpoIp949Lvt1fzxEg4CxmQCL/Z0ChfLObP0gnAmQqc8O3pdmwrrKZ
-    r+seW0vgXh4jOQejglUudMHx7CMpM2RrChQF3ctdHz/9mo0qPfwkJ8aIjPFA
-X-ME-Proxy: <xmx:G1voamlZf7s0DTyUWpxwvlxGs6f2Q_7BgepitSo_USDSMTdr-ErkkQ>
-    <xmx:G1voavu_HeXJX7iywt4AiOTqV54DB5KKlTYfIjCXVCp-mJCzZgf7QQ>
-    <xmx:G1voapxx6N7ltWYBSw6C5B7w4IbKrl_5MbI5rXH-QcW7rx_qsUlclA>
-    <xmx:G1voaqzwqwzR_zITWWZaT7wJMmOSAzFgKSFAW3C2pdC4o69fl8QrtA>
-    <xmx:HFvoan5gDyq0b69Nhm1DONlarQjnMvSSx45oTUCz0rkzanScX9i30Ews>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Nov 2026 04:42:51 -0500 (EST)
-Date: Mon, 2 Nov 2026 09:42:50 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Challvy Tee <challvy.tee@gmail.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org, dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com, 
-	vishal.l.verma@intel.com, kai.huang@intel.com, seanjc@google.com
-Subject: Re: [PATCH v4] x86/virt/tdx: Skip TDH.SYS.DISABLE if the TDX module
- is not initialized
-Message-ID: <auhbCeeG-hX6tLZ_@thinkstation>
-References: <07cfa95a-e766-411b-8765-33352a04c0be@intel.com>
- <20261102073244.919864-1-challvy.tee@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Eyck3Tpx
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A29ERni1334231;
+	Mon, 2 Nov 2026 10:13:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=yI9ETbLZiGkZ1PIenI8hYf34x5l1KL
+	1WOI/mwt8fqfI=; b=Eyck3TpxudnvOAuxGX+aeomS1QVVPSsSDCqdtaVifxLm0b
+	9dOQ3G8UyHEvp0l45R9RUu7k9u62Tcuw364Tub7ea48SO5mrMFQDaHj/MRNVkxNl
+	q/4WsCmMyEXLub2MZGi2SG+9PQWJibX+nNCO4s+YmmXslKEB8Oi7UCT6G8WJ1r3J
+	JmE1xYNCBJTH/vjx4HoFj96XE1OUsMyS/GIrK+WrRu6dWK4xoUeOFJpR0ZnrfZP6
+	v6PZofjxdtw23Y9TgPqxaEr1kLCTa2+xc0C0yfXw0aMcjTw++8ZhXi6/SGkN6f0Z
+	SWYJimQSlQb1XkLUKSbzQlk6sHQeTwTzMsu0VZ/g==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn6rcyx29-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 10:13:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A29K26T744393;
+	Mon, 2 Nov 2026 10:13:03 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hnwbxw1yg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 10:13:03 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A2ACxmF45744474
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 2 Nov 2026 10:13:00 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCA4920043;
+	Mon,  2 Nov 2026 10:12:59 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4BCDF20067;
+	Mon,  2 Nov 2026 10:12:59 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.138.96])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  2 Nov 2026 10:12:59 +0000 (GMT)
+Date: Mon, 2 Nov 2026 11:12:57 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Omar Elghoul <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, hca@linux.ibm.com,
+        gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+        farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
+        frankja@linux.ibm.com, imbrenda@linux.ibm.com
+Subject: Re: [PATCH v11 5/5] vfio-pci/zdev: Add VFIO FMB device features
+Message-ID: <689e23a6-dcbf-4fee-bdcf-13d333db2e85-agordeev@linux.ibm.com>
+References: <20261028154352.15108-1-oelghoul@linux.ibm.com>
+ <20261028154352.15108-6-oelghoul@linux.ibm.com>
+ <20261030161146.5af10847@shazbot.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -91,39 +98,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102073244.919864-1-challvy.tee@gmail.com>
+In-Reply-To: <20261030161146.5af10847@shazbot.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ndDsZI2lgL3rn1GVI79iu_XZLq5vKVuH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDAzOCBTYWx0ZWRfX4O9t8Ltm7VaO
+ 6wlDc1o1p1VWlKVCHXFC992bJ3DU8L9uCL3J3oryNzL7FJ0FfvhjBuce5f3oD/ttLCDLRx4q7A5
+ nHZgQWqxP0vOK0EvcZRT9QL2PY09KNl98A0XhaMPynz2lhLf9sQz00QKxGNwegzyVcaxDZxIaUf
+ 645ZlCfxr01RADm+aWdf9diYwOEVJ27yLpdkfOcEU99quO2NS//WrHYnagLgTVsU6ewOPSZnoDl
+ 69YXMjXJxy03lZkhBqMN/xt0USfibhfhWr9ZIC7YghmxSZ0A8hDUsoP/3oVuW4t3f1EmG37K2Iz
+ xXWa0cq0WtZ/I7rTbEvbQJoAuadY4oopIRy1AgTyCEwN4fq86it2F4n2hVJXP8KQSIbiujmVbzf
+ BIPPYwXWYSeU1owj7FuA5pMrS7nYOP3409OSWmRQVZbV00TF5HJuP++YOF/cYXplYpqr7XF5rf9
+ wA7lOyfr4CeacH8LgUg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDAzOCBTYWx0ZWRfXwtTLxj+hPKvk
+ kxUn64w8otQSiJ1jttlN3ac55RTUBeN+9vhcV4jA5OAFNwic+e3lwSgulzAp0oKaV7OWHIfLQhg
+ wNdsEZoroCmPamSQSH0Iu2tkagg+Hpk=
+X-Authority-Analysis: v=2.4 cv=QK391QLL c=1 sm=1 tr=0 ts=6ae86230 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=kbR4MaXf9azrtOfwTQsA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: ndDsZI2lgL3rn1GVI79iu_XZLq5vKVuH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_03,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611020038
 
-On Mon, Nov 02, 2026 at 03:32:44PM +0800, Challvy Tee wrote:
-> Commit 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and
-> kdump") made native_machine_crash_shutdown() call tdx_sys_disable(),
-> whose only gate is compile time (CONFIG_INTEL_TDX_HOST).  A kernel that
-> never initialized the TDX module therefore still issues
-> TDH.SYS.DISABLE.
+On Fri, Oct 30, 2026 at 04:11:46PM -0600, Alex Williamson wrote:
+> >  drivers/vfio/pci/vfio_pci_core.c |  4 ++
+> >  drivers/vfio/pci/vfio_pci_priv.h | 18 +++++++++
+> >  drivers/vfio/pci/vfio_pci_zdev.c | 64 ++++++++++++++++++++++++++++++++
+> >  include/uapi/linux/vfio.h        | 30 +++++++++++++++
+> >  4 files changed, 116 insertions(+)
 > 
-> In VMX non-root operation on a SEAM-capable host, SEAMCALL causes a VM
-> exit instead of a native #UD.  KVM injects #UD only since
-> commit 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute
-> SEAMCALL or TDCALL"), first released in v6.18.  On an older host the
-> VMM gets KVM_EXIT_INTERNAL_ERROR and the vCPU never resumes, so
-> machine_kexec() is never reached and no vmcore is written.  Kdump is
-> thus broken only in guests on SEAM-capable hosts whose hypervisor does
-> not handle the exit; plain kexec is unaffected because tdx_shutdown()
-> only runs as a syscore op, registered after init_tdx_module() succeeds.
-> 
-> Gate the SEAMCALL on X86_FEATURE_TDX_HOST_PLATFORM before issuing it,
-> the way paddr_is_tdx_private() already guards its own SEAMCALL in this
-> file.  Without that feature the module is never initialized, so there
-> is nothing to disable; on a TDX host the gate is a no-op.
-> 
-> It also decouples kdump from the host KVM version -- a guest cannot
-> require its host to inject the #UD.
-> 
-> Fixes: 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and kdump")
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Challvy Tee <challvy.tee@gmail.com>
+> I think the only thing we never closed on from the vfio side is the
+> merge plan.  If this goes in via s390 I'd want a topic branch against
+> rc1 since there are a couple series floating around contesting for the
+> same feature numbers.  Thanks,
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Hi Alex,
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Yes, I can create the branch once all patches are reviewed.
+
+Thanks!
+
+> Alex
