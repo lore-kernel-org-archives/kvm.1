@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633830;
-	b=s9nRBwujFdvwpVgHotwK2Nt9SG5wIiqAbeS95cW3qoFinCkWbS6V+l26++nDqWcvfll3
-	 sbiaAGVzetU5mtJ1t+1TpxloHsvsKy3R9fPUOzpliRqRHBhTMYnMwLebcZLGPRcEJdytA
-	 ZIFunzZxcxw4PhBWFcy/hzVnzMtD8Kzr4/cBeQaYUebxNyDVr7yubMqyRG8JcCvVJjQFO
-	 448Zd9GGj6Fqsj8et69x7RMaxwSTARENWJ4uu9ozbNBw/qneJX8XdTqus1uccmKS2jYDa
-	 ajj/v3LgeyEt6J+y19tWRa+9FAM2w7O6EgzI6rZFnkIUx3zlAVQdksvbj2+vbNlE1gQ==
+	t=1793633846;
+	b=k7QQ/+VsjtlqePVjAEM3SYAb9jfczXILr4l6MjYsSiPNjd+9x4oswp3Vw0xyKNZT85Nh
+	 6npGTOBfBQumVr3cR2qYd8sDfj3bahnV8osYLw2pWwEoorVr63qS0ktFPRy9JUTnR7Cp7
+	 64bm3vecWNPZdQGcVEIToX5MjAF9t/DxOr8BDBI6D/7htA8ftt212Ieme0Moj/Jkl9DCO
+	 oroYoQYAltqYoTddXaZQ+AUarsdu10xLqYGBRTh7ffjqMGEv7TVrzl1a5FjSVgdsiE1p4
+	 XtAi20DSeHfmYywN0HieSlRuJRTDoD3ESV0kEq3JpGeqNzN/dulEy6NRMHB04vEqp+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633830;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633846;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=pFxb2pGGK5d/5u3ztQ0HXWgDjFCUjhybBWe4UV79dXc=;
-	b=ytJMxrKJrIjuSfw5eHZ1s4lMiMO4kzBPrB20Vt9d0EIdoZ0nBCVmwaUEvt7rEQnqEpWM
-	 sXyj+m25/d2goX7ln3FJTAhp0MKm0Np1asl2JxkePNzLpvgM+sUxrk4js32RwykvvSxJS
-	 CwukvYMiBQNCeQIBCQI81p5c3RXHE+51ZiIpVDxZeJM95hG/yTS8ovMEOTmplg1TIuQnx
-	 Cu4t8mgskTca1v9Z9RwmKXDNAlum8+ZiHGGg9EnGIsYIAdkrjIYf7x02v+X/ZNf6kd0ko
-	 WGyAJTcLBHAwrUR1wn/1vZ6qiOe6ZAEQxXogLoneuqayNxp4YbZpStIKrVInSu9voww==
+	bh=P5Sj6s4WCpHUP3cSZIKUa0LCg/XSbNt4xz/AARSS1Lk=;
+	b=M24dEhJ6QojZGFoFSEIrrpUs55Ur1q+UHougLnzYPPhdXmzP+D5NEBTDVVaZ67/Ekypm
+	 Q4D9oMBFtPezAut2/bbLDHPVhz2G1vozstf+CgGv0XPjlz2IeTxLH2DvjsPB757kdmaXj
+	 9s3g24KkL1uX28yEZoAv27psxY1wo3W6MkSXwKxlV4DuqPX+3/7M4jxhf/X9x2Dn62DR/
+	 YS9WQX0tLtPDnbiqpKdcVnExJztJcYXC/3rHUsibvVRRhNqG+MA6gI60r7McLKS/ZpPxy
+	 swQES0/fVK+48HWrhOTQ53ti4UArjERjoYy5cSCEZ5OebgBtkQp/OY8KqALMOtLVaBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ocSt77Sz;
-	arc=none smtp.remote-ip=209.85.215.200
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i3TJBwA3;
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0944B60E40B1
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0944B60E40B1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5204860ED0E3
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5204860ED0E3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ocSt77Sz
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc7e92f36f9so2369560a12.3
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:07 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i3TJBwA3
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc4216aee8fso3322352a12.1
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633827; x=1794238627; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793633846; x=1794238646; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pFxb2pGGK5d/5u3ztQ0HXWgDjFCUjhybBWe4UV79dXc=;
-        b=ocSt77SzvjHMg7fa0b+ulw/5P3/XwDkD1TZ1JYLpai13tBNclvhooaryhbGIIGuqfh
-         aVhsufdlHwGauzybtCGh5moV/urDgVIrzrRRiv35kxVji2UjyAHLLRkOlZiVa5i8VK76
-         nuTvhhlVUBUj58LtevcWhdZkoERCQzzZ/QJ7DqxK2kma/waLOnhI8tBGnxm57eX51gLW
-         3WpNqcGgGGvVVmBNhepfvWIhNmo4YmjU/WsaBES3EqjS6/7oCFls3At9NJheh4if3+Ni
-         2f2nU3qKQLEWliB1AqJ39ClF0BHxDDp1MkuicFLDcBHhilXwSGwO/YVsnMG2OJmYrOW0
-         Ep/w==
+        bh=P5Sj6s4WCpHUP3cSZIKUa0LCg/XSbNt4xz/AARSS1Lk=;
+        b=i3TJBwA3K6IxqO6/unMjfy1bgQPYGEzbRnEMK7TsnfQVGXtmDN4FYN3JAcUE+swkE0
+         /Xz/YkUcKm45miwLQtvwUdswFvcWmvdOVNf7DYsNGPYulBagCkFPitFspcuejeeO+RIS
+         oiZsHv93mZBioFJEPetcUMQwW1w3ZKhXN/QO8637BKjkyNPUZ11m2uSgdhVbNYTbohS1
+         UF9ksPq62N2vRB1VEUuKSXr8ppjPz17WW53TV69+YtKgyXdKBcpS+xHZee8zMUFM2GU5
+         12gjX96oRF0tpUiNJZYOwxR0MoK8C9zrSQJvlm2gyzj1XASX/Vogo8yk60AHQlCVjCQX
+         Ag+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633827; x=1794238627;
+        d=1e100.net; s=20260707; t=1793633846; x=1794238646;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pFxb2pGGK5d/5u3ztQ0HXWgDjFCUjhybBWe4UV79dXc=;
-        b=z/zniOm657MCnYKs1PaEi81u+Mn6b8o2Tqhi4LXzBr457F2Oti7oJsKG5C9e9aQevT
-         B6wE7sgGjbVYI6p6vMIWmyqsYebs1Jz98Vevilswj0jvt62LeP799+pzpkmZsvNXzgEE
-         eirz9EmNTw4CJpAXa9rkO7lCJvVctK9nl12NMp0bnX76sZvWwnZnbZnZETsyoKXCU4xM
-         c6+RJycpPJ+n2mxSfSEzSrPnJ1lKBxOuw1J7mESftcDXzR36Ij3SGEYjvaEJ4fOxhyyA
-         Ij3J90c8VzjNb1piFjU4RQK+Ym3b+eMas24YjB5CjM4XoCC/8Qx/thrRB01QTVzaKiax
-         i2Eg==
-X-Forwarded-Encrypted: i=1; AKwUvBwz2JxElJZ6qNI911um8YxURbMq56FbpiIAo2eqmZ0rIvi8qd6U2cTCYcMot3w7UjVFsOE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJAcDNST3U2CEb8anqjdfjCyLA659WHBHg+SHNNbVwhB3noq+82
-	WCdssPxXRmNPHyFct4PAVQCMclQFh4tpBrcCD3DKM3K8knbBGXRGMlxl2hCun6dpEVx2fjeMMMe
-	02RagT2maWQ==
-X-Received: from pgig3.prod.google.com ([2002:a63:f403:0:b0:cd8:b9f1:e118])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3b44:b0:3e2:9f41:9f63
- with SMTP id adf61e73a8af0-3e92873ca2emr7733836637.1.1793633827224; Mon, 02
- Nov 2026 07:37:07 -0800 (PST)
-Date: Mon,  2 Nov 2026 07:36:36 -0800
+        bh=P5Sj6s4WCpHUP3cSZIKUa0LCg/XSbNt4xz/AARSS1Lk=;
+        b=uSuda2mc9fzGW4HxryjY907yfj13WLCsMgbBFsflbzspGUpEuCks/IHVhBqDsYRHPb
+         RJMX3HvVMN6hdzcmz4bqLAWiGyPEt2dTJzrVDaS7Qr0NunbCI+8eOWTkuNw1hqvGZlke
+         UcEnJSZDwpvkuOlwJyQr8+YPg9Dpy2iPHmyV0VYJKE0iqzOyzoSdL9YgKRhx1Ag16Blr
+         Ehu05SVsmtwnLpkXzthNAP4uInwDTWevAtgksdxTrgkUVtGb+qiNwpoEvhuR3EqcnMGd
+         LZ+Mlf0e8N/pVBagHy+RW1dD/EoqQCCcnzGXcelgF0nPGjdl1IEx8B2Lb4ExlrfCvA8U
+         OmYg==
+X-Forwarded-Encrypted: i=1; AKwUvByALXuR1q9FUAHtw0QREBkMpITV4dN5+ly/eHwA+jjxAN2+Jihi94Xrv0A0Mf8HZgpXCQ4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIAOptVyGd3/+3z1w2MDYN/nMZ2QF4h/rxTvl96ipiA0qgmRqu6
+	w535IiKMqVCjbbDO4VcPEtnSrjvfH6fEmLE4hHLbdkVkRQKyCui19ezkmc7RoJgFCUIoebRrByT
+	dA60bZwIvzw==
+X-Received: from pgy32.prod.google.com ([2002:a63:1860:0:b0:cd6:1e1f:43b])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:b58b:b0:3e1:9220:9d10
+ with SMTP id adf61e73a8af0-3e928986bcemr8116448637.35.1793633845567; Mon, 02
+ Nov 2026 07:37:25 -0800 (PST)
+Date: Mon,  2 Nov 2026 07:36:53 -0800
 In-Reply-To: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261102153656.1431701-8-vipinsh@google.com>
-Subject: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across Live Update
+Message-ID: <20261102153656.1431701-25-vipinsh@google.com>
+Subject: [PATCH v6 24/27] vfio: selftests: Test preserving noiommu devices in vfio_pci_liveupdate_uapi_test
 From: Vipin Sharma <vipinsh@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
@@ -102,749 +102,183 @@ Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
 	yanjun.zhu@linux.dev, yi.l.liu@intel.com
 Content-Type: text/plain; charset="UTF-8"
 
-Implement the Live Update file handler callbacks to preserve a vfio-pci
-device in noiommu mode across a Live Update while keeping it running
-across kexec. Subsequent commits will enable userspace to retrieve and
-take over this file after the Live Update.
+Add the iommufd_noiommu fixture variant to vfio_pci_liveupdate_uapi_test
+and detect at startup whether the target device is bound to vfio-pci in
+noiommu mode so that variants not matching the device cleanly skip, in
+addition to skipping iommufd variants when probing
+luo_session_preserve_fd() in FIXTURE_SETUP reports -ENOENT (e.g. on an
+SR-IOV VF or when CONFIG_VFIO_PCI_LIVEUPDATE=n).
 
-State about each device is serialized into struct vfio_pci_core_device_ser
-using Kexec-Handover (KHO) to preserve the pages holding the struct and
-the Live Update Orchestrator (LUO) to preserve the physical address of
-the struct.
+When the device is in noiommu mode, verify that preserving its bound
+VFIO cdev FD succeeds, and add tests verifying that:
+- preserving an unbound second cdev FD fails with -ENOENT without
+  affecting the bound FD (preserve_unbound_fd_fails),
+- preserving a cdev FD that was never bound fails with -ENOENT
+  (preserve_never_bound_fails), and
+- closing the Live Update session unpreserves the device so that it can
+  be preserved again in a new session (preserve_after_unpreserve).
 
-Key design notes and constraints:
-
- * Noiommu-only policy and bound cdev requirement: can_preserve() verifies
-   that the preserved file is a bound vfio-pci cdev file descriptor via
-   vfio_file_is_bound_cdev(), and preserve() requires the device to be in
-   noiommu mode via vfio_device_is_noiommu() (returning -EOPNOTSUPP
-   otherwise). CONFIG_VFIO_PCI_LIVEUPDATE now depends on
-   CONFIG_VFIO_DEVICE_CDEV and CONFIG_VFIO_NOIOMMU.
-
- * Serialized state: During preserve(), serialize the PCI domain, BDF,
-   config space size, reset_works flag, and the initial pci_saved_state
-   captured when the device was first opened. During freeze(), snapshot
-   the virtualized PCI config space (vconfig) and capability map
-   (pci_config_map).
-
- * Keep-running freeze and unfreeze: Do not reset the device, clear
-   PCI_COMMAND_MASTER, zap BAR mappings, or revoke dma-bufs during
-   freeze(). Validate that VFIO interrupts are disabled, that the device
-   is in PCI_D0 (and not in VFIO runtime PM low-power mode), and that
-   SR-IOV is not enabled, as VFs are not preserved and the next kernel
-   disables SR-IOV on the running device. Then mask physical INTx
-   (recording the prior state) and mark the device frozen. If the
-   Live Update is aborted after freeze(), unfreeze() restores the physical
-   INTx state and clears liveupdate_frozen so the existing FD remains
-   usable.
-
- * TOCTOU synchronization: vfio_pci_dev_is_frozen() is checked locklessly
-   on entry to the ioctl, read/write and mmap paths, and re-checked under
-   a lock that freeze() holds before any operation that could change the
-   device or vconfig: under vdev->igate in vfio_pci_ioctl_set_irqs() and
-   around every config-space write in vfio_pci_config_rw_single(), under
-   vdev->memory_lock in vfio_pci_runtime_pm_entry(),
-   vfio_pci_ioctl_reset() and the SR-IOV enable path of
-   vfio_pci_core_sriov_configure(), and under dev_set->lock in
-   vfio_pci_dev_set_hot_reset(). A racing operation thus either completes
-   before freeze() takes its snapshot or fails, while existing BAR mmaps,
-   ioeventfds and dma-bufs keep working. Serializing config writes on
-   igate covers the PCI_COMMAND, INTx disable emulation, power state and
-   FLR paths at one point (the INTx disable emulation now uses the
-   igate-held __vfio_pci_intx_mask() and __vfio_pci_intx_unmask()
-   helpers), and also serializes the irq_type and virq_disabled accesses
-   of config writes with VFIO_DEVICE_SET_IRQS.
-
-Co-developed-by: David Matlack <dmatlack@google.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Vipin Sharma <vipinsh@google.com>
 ---
- drivers/vfio/pci/Kconfig               |   2 +-
- drivers/vfio/pci/vfio_pci_config.c     |  19 +-
- drivers/vfio/pci/vfio_pci_core.c       |  49 +++-
- drivers/vfio/pci/vfio_pci_intrs.c      |   4 +-
- drivers/vfio/pci/vfio_pci_liveupdate.c | 303 ++++++++++++++++++++++++-
- drivers/vfio/pci/vfio_pci_priv.h       |  13 ++
- include/linux/kho/abi/vfio_pci.h       |  52 ++++-
- include/linux/vfio_pci_core.h          |   4 +
- 8 files changed, 434 insertions(+), 12 deletions(-)
+ .../vfio/vfio_pci_liveupdate_uapi_test.c      | 103 +++++++++++++++++-
+ 1 file changed, 102 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-index e8285ad93a69..71289d8908f6 100644
---- a/drivers/vfio/pci/Kconfig
-+++ b/drivers/vfio/pci/Kconfig
-@@ -45,7 +45,7 @@ config VFIO_PCI_IGD
+diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c
+index da25ea4e2b1e..46e97caf1f54 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c
+@@ -1,10 +1,13 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
- config VFIO_PCI_LIVEUPDATE
- 	bool "VFIO PCI support for Live Update in no-iommu mode"
--	depends on PCI_LIVEUPDATE && VFIO_NOIOMMU
-+	depends on PCI_LIVEUPDATE && VFIO_NOIOMMU && VFIO_DEVICE_CDEV
- 	help
- 	  Support for preserving devices bound to vfio-pci in no-iommu mode
- 	  across a Live Update. It enables a device to continue working (DMA)
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 9914f3ac69ae..1f1ac7a798aa 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -644,10 +644,10 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
++#include <fcntl.h>
++#include <linux/pci_regs.h>
+ #include <libliveupdate.h>
+ #include <libvfio.h>
+ #include <kselftest_harness.h>
  
- 		if (virt_intx_disable && !vdev->virq_disabled) {
- 			vdev->virq_disabled = true;
--			vfio_pci_intx_mask(vdev);
-+			__vfio_pci_intx_mask(vdev);
- 		} else if (!virt_intx_disable && vdev->virq_disabled) {
- 			vdev->virq_disabled = false;
--			vfio_pci_intx_unmask(vdev);
-+			__vfio_pci_intx_unmask(vdev);
- 		}
- 	}
+ static const char *device_bdf;
++static bool device_is_noiommu;
  
-@@ -1957,7 +1957,20 @@ ssize_t vfio_pci_config_rw_single(struct vfio_pci_core_device *vdev,
- 		if (copy_from_user(&val, buf, count))
- 			return -EFAULT;
- 
--		ret = perm->writefn(vdev, *ppos, count, perm, offset, val);
-+		/*
-+		 * Serialize with Live Update freeze(), which holds igate, so a
-+		 * write that passed the lockless frozen check in vfio_pci_rw()
-+		 * cannot change the device or vconfig after freeze() has
-+		 * snapshotted vconfig and masked INTx.  The INTx disable
-+		 * emulation in vfio_basic_config_write() relies on igate too.
-+		 */
-+		mutex_lock(&vdev->igate);
-+		if (vfio_pci_dev_is_frozen(vdev))
-+			ret = -EIO;
-+		else
-+			ret = perm->writefn(vdev, *ppos, count, perm, offset,
-+					    val);
-+		mutex_unlock(&vdev->igate);
- 	} else {
- 		if (perm->readfn) {
- 			ret = perm->readfn(vdev, *ppos, count,
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 7b003c3e5a3a..5f8c882d5778 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -369,6 +369,8 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
- 	return ret;
+ FIXTURE(vfio_pci_liveupdate_uapi_test) {
+ 	int luo_fd;
+@@ -45,10 +48,19 @@ FIXTURE_VARIANT_ADD(vfio_pci_liveupdate_uapi_test, _iommu_mode) {	\
  }
  
-+static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev);
-+
- static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
- 				     struct eventfd_ctx *efdctx)
+ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES();
++FIXTURE_VARIANT_ADD_IOMMU_MODE(iommufd_noiommu);
+ #undef FIXTURE_VARIANT_ADD_IOMMU_MODE
+ 
+ FIXTURE_SETUP(vfio_pci_liveupdate_uapi_test)
  {
-@@ -376,7 +378,12 @@ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
- 	 * The vdev power related flags are protected with 'memory_lock'
- 	 * semaphore.
- 	 */
--	vfio_pci_zap_and_down_write_memory_lock(vdev);
-+	down_write(&vdev->memory_lock);
-+	if (vfio_pci_dev_is_frozen(vdev)) {
-+		up_write(&vdev->memory_lock);
-+		return -EIO;
-+	}
-+	vfio_pci_zap_bars(vdev);
- 	vfio_pci_dma_buf_move(vdev, true);
- 
- 	if (vdev->pm_runtime_engaged) {
-@@ -1142,6 +1149,9 @@ int vfio_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
- 	struct pci_dev *pdev = vdev->pdev;
- 	int i, ret;
- 
-+	if (vfio_pci_dev_is_frozen(vdev))
-+		return -EIO;
++	bool variant_is_noiommu;
 +
- 	switch (info->index) {
- 	case VFIO_PCI_CONFIG_REGION_INDEX:
- 		info->offset = VFIO_PCI_INDEX_TO_OFFSET(info->index);
-@@ -1309,9 +1319,15 @@ static int vfio_pci_ioctl_set_irqs(struct vfio_pci_core_device *vdev,
- 
- 	mutex_lock(&vdev->igate);
- 
-+	if (vfio_pci_dev_is_frozen(vdev)) {
-+		ret = -EIO;
-+		goto out_unlock;
-+	}
++	variant_is_noiommu = !strcmp(variant->iommu_mode, MODE_IOMMUFD_NOIOMMU);
++	if (variant_is_noiommu != device_is_noiommu)
++		SKIP(return, "%s does not apply to a %s device",
++		     variant->iommu_mode,
++		     device_is_noiommu ? "noiommu" : "non-noiommu");
 +
- 	ret = vfio_pci_set_irqs_ioctl(vdev, hdr.flags, hdr.index, hdr.start,
- 				      hdr.count, data);
+ 	self->luo_fd = luo_open_device();
+ 	ASSERT_GT(self->luo_fd, 0);
  
-+out_unlock:
- 	mutex_unlock(&vdev->igate);
- 	kfree(data);
+@@ -77,6 +89,7 @@ FIXTURE_TEARDOWN(vfio_pci_liveupdate_uapi_test)
  
-@@ -1326,7 +1342,12 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
- 	if (!vdev->reset_works)
- 		return -EINVAL;
- 
--	vfio_pci_zap_and_down_write_memory_lock(vdev);
-+	down_write(&vdev->memory_lock);
-+	if (vfio_pci_dev_is_frozen(vdev)) {
-+		up_write(&vdev->memory_lock);
-+		return -EIO;
-+	}
-+	vfio_pci_zap_bars(vdev);
- 
- 	/*
- 	 * This function can be invoked while the power state is non-D0. If
-@@ -1565,6 +1586,9 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
- 	void __user *uarg = (void __user *)arg;
- 
-+	if (vfio_pci_dev_is_frozen(vdev))
-+		return -EIO;
-+
- 	switch (cmd) {
- 	case VFIO_DEVICE_GET_INFO:
- 		return vfio_pci_ioctl_get_info(vdev, uarg);
-@@ -1619,6 +1643,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
- 	struct vfio_pci_core_device *vdev =
- 		container_of(device, struct vfio_pci_core_device, vdev);
- 
-+	if (vfio_pci_dev_is_frozen(vdev))
-+		return -EIO;
-+
- 	switch (flags & VFIO_DEVICE_FEATURE_MASK) {
- 	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY:
- 		return vfio_pci_core_pm_entry(vdev, flags, arg, argsz);
-@@ -1645,6 +1672,9 @@ static ssize_t vfio_pci_rw(struct vfio_pci_core_device *vdev, char __user *buf,
- 	unsigned int index = VFIO_PCI_OFFSET_TO_INDEX(*ppos);
+ TEST_F(vfio_pci_liveupdate_uapi_test, preserve_device)
+ {
++	int expected;
  	int ret;
  
-+	if (vfio_pci_dev_is_frozen(vdev))
-+		return -EIO;
+ 	ret = luo_session_preserve_fd(self->session_fd, self->device->fd, 0);
+@@ -85,7 +98,84 @@ TEST_F(vfio_pci_liveupdate_uapi_test, preserve_device)
+ 	 * Only VFIO cdev files of devices in noiommu mode can be preserved;
+ 	 * device files obtained through a VFIO group never can.
+ 	 */
+-	ASSERT_EQ(ret, self->iommu->iommufd ? -EOPNOTSUPP : -ENOENT);
++	if (device_is_noiommu)
++		expected = 0;
++	else
++		expected = self->iommu->iommufd ? -EOPNOTSUPP : -ENOENT;
 +
- 	if (index >= VFIO_PCI_NUM_REGIONS + vdev->num_regions)
- 		return -EINVAL;
- 
-@@ -1828,6 +1858,9 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
- 	u64 phys_len, req_len, pgoff, req_start;
- 	void __iomem *bar_io;
- 
-+	if (vfio_pci_dev_is_frozen(vdev))
-+		return -EIO;
-+
- 	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
- 
- 	if (index >= VFIO_PCI_NUM_REGIONS + vdev->num_regions)
-@@ -2393,6 +2426,13 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
- 			goto out_del;
- 
- 		down_write(&vdev->memory_lock);
-+		/* A device frozen for Live Update must not change. */
-+		if (vfio_pci_dev_is_frozen(vdev)) {
-+			up_write(&vdev->memory_lock);
-+			pm_runtime_put(&pdev->dev);
-+			ret = -EBUSY;
-+			goto out_del;
-+		}
- 		vfio_pci_set_power_state(vdev, PCI_D0);
- 		vdev->sriov_active = true;
- 		up_write(&vdev->memory_lock);
-@@ -2537,6 +2577,11 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
- 	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list) {
- 		bool owned;
- 
-+		if (vfio_pci_dev_is_frozen(vdev)) {
-+			ret = -EBUSY;
-+			break;
-+		}
-+
- 		/*
- 		 * Test whether all the affected devices can be reset by the
- 		 * user.
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 64f80f64ff57..07ae0caec44b 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -99,7 +99,7 @@ static void vfio_send_intx_eventfd(void *opaque, void *data)
- }
- 
- /* Returns true if the INTx vfio_pci_irq_ctx.masked value is changed. */
--static bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
-+bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
- {
- 	struct pci_dev *pdev = vdev->pdev;
- 	struct vfio_pci_irq_ctx *ctx;
-@@ -203,7 +203,7 @@ static int vfio_pci_intx_unmask_handler(void *opaque, void *data)
- 	return ret;
- }
- 
--static void __vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
-+void __vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
- {
- 	struct vfio_pci_irq_ctx *ctx = vfio_irq_ctx_get(vdev, 0);
- 
-diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-index 8fd5af4f4b83..ac77241ffb1e 100644
---- a/drivers/vfio/pci/vfio_pci_liveupdate.c
-+++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-@@ -6,28 +6,325 @@
-  * David Matlack <dmatlack@google.com>
-  */
- 
-+/**
-+ * DOC: VFIO PCI Preservation via LUO
-+ *
-+ * VFIO PCI devices in noiommu mode can be preserved over a kexec using the Live
-+ * Update Orchestrator (LUO) file preservation while keeping the device running
-+ * and performing DMA across the kexec transition. This allows userspace (such
-+ * as a VMM or userspace driver) to transfer an in-use device to the next kernel
-+ * without resetting it.
-+ *
-+ * .. note::
-+ *    This support is enabled by ``CONFIG_VFIO_PCI_LIVEUPDATE`` and is limited
-+ *    to devices in noiommu mode (see Restrictions below).
-+ *
-+ * Usage Example
-+ * =============
-+ *
-+ * VFIO PCI devices can be preserved across a kexec by preserving the bound
-+ * character device file associated with the device in a LUO session::
-+ *
-+ *   device_fd = open("/dev/vfio/devices/noiommu-vfioX", O_RDWR);
-+ *   ioctl(device_fd, VFIO_DEVICE_BIND_IOMMUFD, &bind);
-+ *   ...
-+ *   ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, { ..., device_fd, ...});
-+ *
-+ * .. note::
-+ *    LUO will hold an extra reference to the device file for as long as it is
-+ *    preserved, so there is no way for the file to be destroyed or the device
-+ *    to be unbound from the vfio-pci driver while it is preserved.
-+ *
-+ * Retrieving the file after kexec is not yet supported.
-+ *
-+ * Restrictions
-+ * ============
-+ *
-+ * The kernel imposes the following restrictions when preserving VFIO devices:
-+ *
-+ *  * The device must be bound to the ``vfio-pci`` driver (not a variant driver)
-+ *    and registered in **noiommu** mode (``vfio.enable_unsafe_noiommu_mode=1``
-+ *    with no IOMMU group attached to the device). Attempting to preserve an
-+ *    IOMMU-backed device fails with ``-EOPNOTSUPP``.
-+ *
-+ *  * The device file descriptor must be obtained by opening the VFIO character
-+ *    device (``/dev/vfio/devices/noiommu-vfioX``) and not via
-+ *    ``VFIO_GROUP_GET_DEVICE_FD``, and ``VFIO_DEVICE_BIND_IOMMUFD`` must have
-+ *    completed on that file descriptor before it is preserved.
-+ *
-+ *  * ``CONFIG_VFIO_PCI_ZDEV_KVM`` must not be enabled. This may be relaxed in
-+ *    the future.
-+ *
-+ *  * The device must not be an Intel display device or SR-IOV Virtual Function
-+ *    (VF). This may be relaxed in the future.
-+ *
-+ *  * The device must meet the following conditions prior to kexec, without
-+ *    which the ``reboot(LINUX_REBOOT_CMD_KEXEC)`` syscall (to initiate the
-+ *    kexec) will fail with ``-EINVAL`` and abort the Live Update:
-+ *
-+ *    - All VFIO interrupts on the device must be disabled.
-+ *    - The device must be in the ``PCI_D0`` power state and not in VFIO
-+ *      low-power mode (``VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY``).
-+ *    - SR-IOV must not be enabled on the device.
-+ *
-+ * In addition, the device must meet all of the restrictions imposed by the
-+ * core PCI layer documented at :doc:`/PCI/liveupdate`.
-+ *
-+ * Preservation Behavior
-+ * =====================
-+ *
-+ * During ``LIVEUPDATE_SESSION_PRESERVE_FD``, VFIO serializes the device's PCI
-+ * domain and BDF, its ``reset_works`` capability flag, and the initial
-+ * ``struct pci_saved_state`` captured when the device was first opened.
-+ *
-+ * During the ``reboot(LINUX_REBOOT_CMD_KEXEC)`` freeze phase, VFIO validates
-+ * that interrupts are disabled and the device is in ``PCI_D0``, snapshots the
-+ * virtualized PCI configuration space (``vconfig``) and capability map
-+ * (``pci_config_map``), masks physical INTx (`PCI_COMMAND_INTX_DISABLE`), and
-+ * marks the device frozen so subsequent userspace accesses return ``-EIO``.
-+ *
-+ * VFIO ioctls and config-space writes that race with the freeze phase are
-+ * serialized with it: those that could change the device or ``vconfig``
-+ * either complete before the snapshot is taken or fail with ``-EIO``
-+ * (``-EBUSY`` for ``VFIO_DEVICE_PCI_HOT_RESET``). Userspace should still
-+ * quiesce them before invoking ``reboot(LINUX_REBOOT_CMD_KEXEC)``. Existing
-+ * BAR mmaps, ioeventfds and dma-bufs keep working while the device is frozen
-+ * because the device keeps running.
-+ *
-+ * The device is **not** reset and ``PCI_COMMAND_MASTER`` is left untouched so
-+ * the device continues running and performing DMA across kexec. If the Live
-+ * Update is aborted after freeze (for example, if a later file fails to freeze),
-+ * the ``unfreeze()`` callback restores the physical INTx mask and clears the
-+ * frozen state, leaving the existing file descriptor immediately usable again.
-+ *
-+ * DMA Memory Ordering Contract
-+ * ============================
-+ *
-+ * Because a preserved noiommu device continues performing DMA using physical
-+ * addresses across kexec, any memory buffer targeted by device DMA must remain
-+ * at the same physical address in both kernels and must not be freed to the
-+ * page allocator while the device can still access it:
-+ *
-+ *  * When using a LUO-preserved ``memfd``, userspace **must** preserve the
-+ *    ``memfd`` in the **same** LUO session as the VFIO device and **before**
-+ *    preserving the VFIO device. LUO finishes files within a session in reverse
-+ *    preservation order (LIFO), guaranteeing that if the device is not taken
-+ *    over in the new kernel, VFIO's ``finish()`` callback stops bus mastering
-+ *    and resets the device before the ``memfd``'s ``finish()`` callback releases
-+ *    its folios. Cross-session ordering is the responsibility of userspace.
-+ *
-+ *  * After retrieving a preserved ``memfd`` in the new kernel, its folios are
-+ *    ordinary unpinned shmem page cache until pinned again; userspace must keep
-+ *    the ``memfd`` alive and re-pin/map it before finishing the session, and
-+ *    must not rely on a ``memfd`` whose ``LIVEUPDATE_SESSION_RETRIEVE_FD`` call
-+ *    failed (failed ``memfd`` retrieval frees its folios immediately).
-+ */
-+
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/cleanup.h>
- #include <linux/errno.h>
-+#include <linux/kexec_handover.h>
- #include <linux/kho/abi/vfio_pci.h>
- #include <linux/liveupdate.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
-+#include <linux/pci.h>
-+#include <linux/pci_liveupdate.h>
-+#include <linux/string.h>
-+#include <linux/vfio.h>
- 
- #include "vfio_pci_priv.h"
- 
- static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
- 					     struct file *file)
- {
--	return false;
-+	struct vfio_device *device = vfio_device_from_file(file);
-+	struct vfio_pci_core_device *vdev;
-+	struct pci_dev *pdev;
-+
-+	if (!device)
-+		return false;
-+
-+	if (device->ops != &vfio_pci_ops)
-+		return false;
-+
-+	guard(mutex)(&device->dev_set->lock);
-+
-+	/* Live Update support is limited to bound cdev files. */
-+	if (!vfio_file_is_bound_cdev(file))
-+		return false;
-+
-+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-+	pdev = vdev->pdev;
-+
-+	/*
-+	 * Don't support specialized vfio-pci devices for now since they haven't
-+	 * been tested.
-+	 */
-+	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM) || vfio_pci_is_intel_display(pdev))
-+		return false;
-+
-+	/* Only non-VFs are supported for now. */
-+	if (pdev->is_virtfn)
-+		return false;
-+
-+	return true;
- }
- 
- static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
- {
--	return -EOPNOTSUPP;
-+	struct vfio_device *device = vfio_device_from_file(args->file);
-+	struct vfio_pci_core_device_ser *ser;
-+	struct vfio_pci_core_device *vdev;
-+	size_t saved_size = 0, total_size;
-+	struct pci_dev *pdev;
-+	u16 cfg_size;
-+	int err;
-+
-+	if (!vfio_device_is_noiommu(device))
-+		return -EOPNOTSUPP;
-+
-+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-+	pdev = vdev->pdev;
-+	cfg_size = pdev->cfg_size;
-+
-+	if (cfg_size != PCI_CFG_SPACE_SIZE && cfg_size != PCI_CFG_SPACE_EXP_SIZE)
-+		return -EINVAL;
-+
-+	guard(mutex)(&device->dev_set->lock);
-+
-+	if (!vfio_file_is_bound_cdev(args->file))
-+		return -EINVAL;
-+
-+	if (vdev->pci_saved_state) {
-+		saved_size = pci_liveupdate_saved_state_ser_size(vdev->pci_saved_state);
-+		if (!saved_size)
-+			return -EINVAL;
-+	}
-+
-+	total_size = size_add(sizeof(*ser),
-+			      size_add(size_mul(2, cfg_size), saved_size));
-+	if (total_size > U32_MAX)
-+		return -EOVERFLOW;
-+
-+	ser = kho_alloc_preserve(total_size);
-+	if (IS_ERR(ser))
-+		return PTR_ERR(ser);
-+
-+	if (saved_size) {
-+		void *dst = ser->data + 2 * (size_t)cfg_size;
-+
-+		err = pci_liveupdate_serialize_saved_state(vdev->pci_saved_state,
-+							   dst, saved_size);
-+		if (err) {
-+			kho_unpreserve_free(ser);
-+			return err;
-+		}
-+	}
-+
-+	err = pci_liveupdate_preserve(pdev);
-+	if (err) {
-+		kho_unpreserve_free(ser);
-+		return err;
-+	}
-+
-+	ser->domain = pci_domain_nr(pdev->bus);
-+	ser->bdf = pci_dev_id(pdev);
-+	ser->cfg_size = cfg_size;
-+	ser->size = total_size;
-+	ser->flags = vdev->reset_works ? VFIO_PCI_SER_RESET_WORKS : 0;
-+	ser->saved_state_size = saved_size;
-+	ser->reserved = 0;
-+
-+	args->serialized_data = virt_to_phys(ser);
-+	return 0;
- }
- 
- static void vfio_pci_liveupdate_unpreserve(struct liveupdate_file_op_args *args)
- {
-+	struct vfio_device *device = vfio_device_from_file(args->file);
-+
-+	pci_liveupdate_unpreserve(to_pci_dev(device->dev));
-+	kho_unpreserve_free(phys_to_virt(args->serialized_data));
++	ASSERT_EQ(ret, expected);
 +}
 +
-+static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
++TEST_F(vfio_pci_liveupdate_uapi_test, preserve_unbound_fd_fails)
 +{
-+	struct vfio_pci_core_device_ser *ser = phys_to_virt(args->serialized_data);
-+	struct vfio_device *device = vfio_device_from_file(args->file);
-+	struct vfio_pci_core_device *vdev;
-+	struct pci_dev *pdev;
-+	u16 cmd;
++	const char *cdev_path;
++	int unbound_fd;
++	int ret;
 +
-+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-+	pdev = vdev->pdev;
++	if (!self->iommu->iommufd)
++		SKIP(return, "Only iommufd modes use VFIO cdev files");
 +
-+	guard(mutex)(&device->dev_set->lock);
-+	guard(mutex)(&vdev->igate);
-+	guard(rwsem_write)(&vdev->memory_lock);
++	cdev_path = __vfio_pci_get_cdev_path(device_bdf, device_is_noiommu);
++	ASSERT_NE(cdev_path, NULL);
 +
-+	if (!vdev->vconfig || !vdev->pci_config_map ||
-+	    ser->cfg_size != pdev->cfg_size)
-+		return -EINVAL;
++	unbound_fd = open(cdev_path, O_RDWR);
++	ASSERT_GE(unbound_fd, 0);
++	free((void *)cdev_path);
 +
 +	/*
-+	 * Userspace must disable interrupts on the device prior to freeze so
-+	 * that the device does not send any interrupts until new interrupt
-+	 * handlers have been established by the next kernel.
++	 * A second cdev FD that has not been bound via VFIO_DEVICE_BIND_IOMMUFD
++	 * must be rejected even while another FD for the same device is bound.
 +	 */
-+	if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
-+		pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
-+		return -EINVAL;
-+	}
++	ret = luo_session_preserve_fd(self->session_fd, unbound_fd, 0);
++	ASSERT_EQ(ret, -ENOENT);
++	ASSERT_EQ(close(unbound_fd), 0);
 +
-+	if (pdev->current_state != PCI_D0 || vdev->pm_runtime_engaged) {
-+		pci_err(pdev, "Freeze failed! Device not in D0 state.\n");
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * VFs are not preserved, and the next kernel disables SR-IOV on the
-+	 * device while it keeps running. vfio_pci_core_sriov_configure() sets
-+	 * sriov_active under memory_lock, and does not enable SR-IOV once the
-+	 * device is frozen.
-+	 */
-+	if (vdev->sriov_active) {
-+		pci_err(pdev, "Freeze failed! SR-IOV is enabled.\n");
-+		return -EINVAL;
-+	}
-+
-+	memcpy(ser->data, vdev->vconfig, ser->cfg_size);
-+	memcpy(ser->data + ser->cfg_size, vdev->pci_config_map, ser->cfg_size);
-+
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	vdev->liveupdate_intx_disabled = !!(cmd & PCI_COMMAND_INTX_DISABLE);
-+	if (!vdev->liveupdate_intx_disabled)
-+		pci_intx(pdev, 0);
-+
-+	/*
-+	 * Disable ioctl, read, write and mmap access to the device while it is
-+	 * frozen. If the Live Update is aborted, unfreeze() re-enables access.
-+	 */
-+	smp_store_release(&vdev->liveupdate_frozen, true);
-+	return 0;
++	/* Verify the failed attempt had no side effects on the bound FD. */
++	ret = luo_session_preserve_fd(self->session_fd, self->device->fd, 0);
++	ASSERT_EQ(ret, device_is_noiommu ? 0 : -EOPNOTSUPP);
 +}
 +
-+static void vfio_pci_liveupdate_unfreeze(struct liveupdate_file_op_args *args)
++TEST_F(vfio_pci_liveupdate_uapi_test, preserve_never_bound_fails)
 +{
-+	struct vfio_device *device = vfio_device_from_file(args->file);
-+	struct vfio_pci_core_device *vdev =
-+		container_of(device, struct vfio_pci_core_device, vdev);
++	const char *cdev_path;
++	int unbound_fd;
++	int ret;
 +
-+	guard(mutex)(&device->dev_set->lock);
-+	guard(mutex)(&vdev->igate);
-+	guard(rwsem_write)(&vdev->memory_lock);
++	if (!self->iommu->iommufd)
++		SKIP(return, "Only iommufd modes use VFIO cdev files");
 +
-+	if (!vdev->liveupdate_intx_disabled)
-+		pci_intx(vdev->pdev, 1);
++	vfio_pci_device_cleanup(self->device);
++	self->device = NULL;
 +
-+	/* Pairs with smp_load_acquire() in vfio_pci_dev_is_frozen(). */
-+	smp_store_release(&vdev->liveupdate_frozen, false);
++	cdev_path = __vfio_pci_get_cdev_path(device_bdf, device_is_noiommu);
++	ASSERT_NE(cdev_path, NULL);
++
++	unbound_fd = open(cdev_path, O_RDWR);
++	ASSERT_GE(unbound_fd, 0);
++	free((void *)cdev_path);
++
++	ret = luo_session_preserve_fd(self->session_fd, unbound_fd, 0);
++	ASSERT_EQ(ret, -ENOENT);
++	ASSERT_EQ(close(unbound_fd), 0);
++}
++
++TEST_F(vfio_pci_liveupdate_uapi_test, preserve_after_unpreserve)
++{
++	u16 vendor_id;
++
++	if (!device_is_noiommu)
++		SKIP(return, "Only noiommu devices can be preserved");
++
++	ASSERT_EQ(luo_session_preserve_fd(self->session_fd, self->device->fd, 0), 0);
++
++	ASSERT_EQ(close(self->session_fd), 0);
++	self->session_fd = luo_create_session(self->luo_fd, "session2");
++	ASSERT_GT(self->session_fd, 0);
++
++	ASSERT_EQ(luo_session_preserve_fd(self->session_fd, self->device->fd, 0), 0);
++
++	vendor_id = vfio_pci_config_readw(self->device, PCI_VENDOR_ID);
++	ASSERT_NE(vendor_id, 0xffff);
  }
  
- static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
-@@ -43,6 +340,8 @@ static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
- 	.can_preserve = vfio_pci_liveupdate_can_preserve,
- 	.preserve = vfio_pci_liveupdate_preserve,
- 	.unpreserve = vfio_pci_liveupdate_unpreserve,
-+	.freeze = vfio_pci_liveupdate_freeze,
-+	.unfreeze = vfio_pci_liveupdate_unfreeze,
- 	.retrieve = vfio_pci_liveupdate_retrieve,
- 	.finish = vfio_pci_liveupdate_finish,
- 	.owner = THIS_MODULE,
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index 872b01bcb5a3..2c732cb1c189 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -25,7 +25,9 @@ struct vfio_pci_ioeventfd {
- 	bool			test_mem;
- };
+ TEST_F(vfio_pci_liveupdate_uapi_test, preserve_group_fails)
+@@ -112,6 +202,7 @@ TEST_F(vfio_pci_liveupdate_uapi_test, preserve_container_fails)
  
-+bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
- bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
-+void __vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
- void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
+ int main(int argc, char *argv[])
+ {
++	const char *cdev_path;
+ 	int fd;
  
- int vfio_pci_eventfd_replace_locked(struct vfio_pci_core_device *vdev,
-@@ -151,6 +153,12 @@ static inline void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev,
- #ifdef CONFIG_VFIO_PCI_LIVEUPDATE
- int __init vfio_pci_liveupdate_init(void);
- void vfio_pci_liveupdate_cleanup(void);
+ 	fd = luo_open_device();
+@@ -122,5 +213,15 @@ int main(int argc, char *argv[])
+ 	close(fd);
+ 
+ 	device_bdf = vfio_selftests_get_bdf(&argc, argv);
 +
-+static inline bool vfio_pci_dev_is_frozen(struct vfio_pci_core_device *vdev)
-+{
-+	/* Written in VFIO PCI Liveupdate during freeze()/unfreeze() */
-+	return smp_load_acquire(&vdev->liveupdate_frozen);
-+}
- #else
- static inline int vfio_pci_liveupdate_init(void)
- {
-@@ -160,6 +168,11 @@ static inline int vfio_pci_liveupdate_init(void)
- static inline void vfio_pci_liveupdate_cleanup(void)
- {
++	cdev_path = __vfio_pci_get_cdev_path(device_bdf, true);
++	if (cdev_path) {
++		device_is_noiommu = true;
++	} else {
++		cdev_path = vfio_pci_get_cdev_path(device_bdf);
++		device_is_noiommu = false;
++	}
++	free((void *)cdev_path);
++
+ 	return test_harness_run(argc, argv);
  }
-+
-+static inline bool vfio_pci_dev_is_frozen(struct vfio_pci_core_device *vdev)
-+{
-+	return false;
-+}
- #endif /* CONFIG_VFIO_PCI_LIVEUPDATE */
- 
- #endif
-diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
-index 67e8199eec59..725043a44b55 100644
---- a/include/linux/kho/abi/vfio_pci.h
-+++ b/include/linux/kho/abi/vfio_pci.h
-@@ -9,14 +9,19 @@
- #ifndef _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
- #define _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
- 
-+#include <linux/bits.h>
-+#include <linux/compiler.h>
-+#include <linux/types.h>
-+
- /**
-  * DOC: VFIO PCI Live Update ABI
-  *
-  * VFIO uses the ABI defined below for preserving device files across a kexec
-  * reboot using LUO.
-  *
-- * Device metadata is serialized into memory which is then handed to the next
-- * kernel via KHO.
-+ * Device metadata, virtualized PCI configuration space, VFIO's capability map,
-+ * and the initial PCI saved state captured when the device was first opened are
-+ * serialized into memory which is then handed to the next kernel via KHO.
-  *
-  * This interface is a contract. Any modification to any of the serialization
-  * structs defined here constitutes a breaking change. Such changes require
-@@ -25,4 +30,47 @@
- 
- #define VFIO_PCI_LUO_FH_COMPATIBLE "vfio-pci-v1"
- 
-+/**
-+ * define VFIO_PCI_SER_RESET_WORKS - Device supports function reset.
-+ *
-+ * Set in &vfio_pci_core_device_ser.flags when the preserved device had
-+ * ``vdev->reset_works == true`` prior to kexec.
-+ */
-+#define VFIO_PCI_SER_RESET_WORKS	BIT(0)
-+
-+#define VFIO_PCI_SER_KNOWN_FLAGS	VFIO_PCI_SER_RESET_WORKS
-+
-+/**
-+ * struct vfio_pci_core_device_ser - Serialized state of a single VFIO PCI
-+ * device.
-+ *
-+ * @domain: The device's PCI domain number (segment).
-+ * @bdf: The device's PCI bus, device, and function number.
-+ * @cfg_size: Size in bytes of the device's PCI configuration space
-+ *            (``PCI_CFG_SPACE_SIZE`` or ``PCI_CFG_SPACE_EXP_SIZE``).
-+ * @size: Total size in bytes of this serialized buffer, equal to
-+ *        ``sizeof(struct vfio_pci_core_device_ser) + 2 * @cfg_size + @saved_state_size``.
-+ * @flags: Bitmask of ``VFIO_PCI_SER_*`` flags; unknown bits are rejected.
-+ * @saved_state_size: Size in bytes of the serialized &struct pci_saved_state_ser
-+ *                    blob stored in @data after ``config_map``, or 0 if none.
-+ * @reserved: Reserved for future use; must be 0.
-+ * @data: Variable-length payload containing, in order:
-+ *        1. ``u8 vconfig[@cfg_size]`` - VFIO virtualized config space snapshot
-+ *           captured during ``freeze()``.
-+ *        2. ``u8 config_map[@cfg_size]`` - VFIO capability map snapshot
-+ *           captured during ``freeze()``.
-+ *        3. ``u8 saved_state[@saved_state_size]`` - serialized
-+ *           &struct pci_saved_state_ser captured during ``preserve()``.
-+ */
-+struct vfio_pci_core_device_ser {
-+	u32 domain;
-+	u16 bdf;
-+	u16 cfg_size;
-+	u32 size;
-+	u32 flags;
-+	u32 saved_state_size;
-+	u32 reserved;
-+	u8 data[];
-+} __packed;
-+
- #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 9a1674c152aa..6bae7581f4f4 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -149,6 +149,10 @@ struct vfio_pci_core_device {
- 	struct notifier_block	nb;
- 	struct rw_semaphore	memory_lock;
- 	struct list_head	dmabufs;
-+#ifdef CONFIG_VFIO_PCI_LIVEUPDATE
-+	bool			liveupdate_frozen;
-+	bool			liveupdate_intx_disabled;
-+#endif
- };
- 
- enum vfio_pci_io_width {
 -- 
 2.56.0.317.g454f8302e1-goog
 
