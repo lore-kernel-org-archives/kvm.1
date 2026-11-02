@@ -1,99 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793648646;
-	b=YrraTWZG5ua25kd5p6ZwACxUB7whPXLky1ccIe5OafCZe+mkFwWzCMS2+8n8TXs4FVPr
-	 bx+RdEWdqVVcOkZ4hOjme1BUMz6SU9i5ZiQX5xEB28u/VQQ6LsqSdTiAxT1RaBVKMmLwy
-	 UdDSaDaxCXTASp2rUuPxSzjTIAd7Kb8ZLwbi9Z/NzAU4MsVikzynQp6FqExJ0LS6rXewl
-	 YARQR8obZYkKgzgCP2/WOZzojbrej2Frz1Gz0HDxfUrKvJ27gfSY7Rs0xewc4hOt7xEWq
-	 yvvR7mHJi4GiTw6DxtaARpvqzVPzC9NRzYFfIscfMK8bq8sDaUoDQYKiNHKOSHhl1wQ==
+	t=1793648705;
+	b=wu1ng4oUAP1cAyXogTRMAH9dA0cnGVi4z6GQF7eid7f0AzElFjEDNo5Dm2XwPrQS2XxI
+	 tO5AjLKVgY7WTDeGWlG5uSGcnaN6El2AKQnCt56jNwhAOP0xCFuy32fbs7Kcuh6SnZo6Y
+	 Tgzzb/7mexMUOkcrDyrtsbIlaocttQ77b3yz8orEMKxQOL8ysDskKFtRUL0368yRtSh8M
+	 h/foSSDqdkd/5Yvhr1p4fC0Iq1ejUVfrFa2BT4FMVjBeYlsCWut8po6QJ1NgKhtdfGiWB
+	 NiwxTTPUwnQUCofm5d/S8/uz/VioA9RypIgq5cdkqbUv43CKECa+YVDLRbRsocEcvmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793648646;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version;
-	bh=Xs/bknxSjUD992DcwA52sYwD2HmK67B3GQnMd3KGXmA=;
-	b=306C/nc87W1Gv9iMjt66t+nM6PjnZw4eRcRwW+jiz5tVQ/Sis2xEmuOn9tnTcTMYnv6k
-	 rKlNH0PHvQxMafJH/030/TBdcN1HoIqeUKyp6d/g/e5SSYGd8hqstSTCEUA4aWtzqF8ND
-	 vT1138QX2hqS7TEzBxnSGs32HvbgvxlkBBs2vhaV9fvYPMHcdFWhaxfJxe2ebMU4xH4JI
-	 1WH5GWyGY8Pxsm0WG4GnNyIcC27s7OzGEE2AQW+y3Q2BTsnRNVCW2Pexft9MXg42ZfV9y
-	 BIXyRy06xaCxVKFH/g+CpHgmuTnoLkA6PBSAaTnC0rTBT3q2Ttab0riyyqp+upoG3eA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793648705;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=b8ykW9KPLcaIcZvWtgJoASK+Yo/mXwwP8pWBtC51TXQ=;
+	b=PCB0ql2HRQ4cZkzBg0HSoBr8U0j5n8hFlc0Yghcqa8hoW1TODTb3ajCeLIrrUUG6Y4p1
+	 WDTi2yIPVq4+qD/qpRC6odClvMvTBy7hDX7XXj0YyPYp6A64klBBLrBoOx9yv0zjWIh8M
+	 D6+sxMPK6iNi+KfAd+7c8THoEatFn8WcrFKETBQvlHTolz2sYK1pLOcffrwjwFz6Ps5I4
+	 hiqyZdc0wiPCFGt6Y9aRTu0D/PHBPH4WAhf14YHjH3w74RILAePCZjaZu0yxsNAnXZAQa
+	 Co6+2VeSV29vUE+eczPIixZ+gzMzyAG0BuXICH36Fgr7/RIXryTSuQqSvTW5oC2tlig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Xz6MZ6Q5;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8917A606A329;
-	Mon,  2 Nov 2026 19:44:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8917A606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=j9ZkicYC;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF158606A32D
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 19:45:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF158606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Xz6MZ6Q5
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2IhL6b3944200;
-	Mon, 2 Nov 2026 11:43:38 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=Xs/bknxSjUD
-	992DcwA52sYwD2HmK67B3GQnMd3KGXmA=; b=Xz6MZ6Q55LH2h5+cH8Uv9SYwyhG
-	fqA0wCgtCeQ2MLDJE5lEOYNeF2tBmMxf/Ozjov+u3E3gde/WflZJDwBao7xj7sS8
-	x+YiE+yvgTc53YY5b89vpl2L1l5FAQsyGao1lBjvZhO8LmPpCMJBYfR3WLhJRaz2
-	Ju7xsfJ+U1/q/2/dM4jxfqRL6Ri1wUnlzo7YVwGCzoLAfU43sEFrXSNt0sPjpgP5
-	gLVtCwSquAWEu6Ibk9k1YodRwN+FMA10HHh0dhV5VT1HmU1Ongvi3dFQqWf18xtd
-	P9ElzdgxTJCRynqy7J0zQLiia8LoN7NTX3cEsjNE3ribWcsz5OF/7y+21Dg==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hne57ca7n-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 02 Nov 2026 11:43:37 -0800 (PST)
-Received: from localhost (2620:10d:c085:208::7cb7) by mail.thefacebook.com
- (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Mon, 2 Nov
- 2026 19:43:36 +0000
-Date: Mon, 2 Nov 2026 11:43:35 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Michal Luczaj <mhal@rbox.co>
-CC: Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang
-	<jasowangio@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio
- =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-        Shuah Khan
-	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-        Donald Hunter
-	<donald.hunter@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>, <virtualization@lists.linux.dev>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-kselftest@vger.kernel.org>, <sargun@sargun.me>,
-        <jlinbox@meta.com>
-Subject: Re: [PATCH net-next v4 4/7] vsock: add a netlink command to assign
- the g2h device to a netns
-Message-ID: <aujn5/nm9f9YX6bM@devvm29614.prn0.facebook.com>
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
- <20261020-vsock-guest-ns-v4-4-047527cfccfc@meta.com>
- <atjZZP2ebhXKzMxL@sgarzare-redhat>
- <atld3+5LKmGxJ8+s@devvm29614.prn0.facebook.com>
- <atnjOZjKUBagRVWq@sgarzare-redhat>
- <d946003a-8bec-4e8b-89a3-05eeb96780cc@rbox.co>
- <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
- <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=j9ZkicYC
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1975A16A3;
+	Mon,  2 Nov 2026 11:45:00 -0800 (PST)
+Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60AE73F673;
+	Mon,  2 Nov 2026 11:45:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793648703; bh=LKycxJwdqBPls6Zote9opLCnQI+1WQCo59QObvax/Ro=;
+	h=From:To:Cc:Subject:Date:From;
+	b=j9ZkicYC/zXxj3W43V0qg0DyPe1/T4BGqYFMNiIiO02JMG6NsQJHyHn9RVm07D3Lp
+	 9b+YPzqYDFl/p1NvgEjSgAJsWTWmZwpjyE0bDhjFri1ZUxOVKqqWmVat/GGEzpiRNw
+	 cB4zaCxRhblOryuYXaXD0A4THOlFaJD3PfxZQY7U=
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: maz@kernel.org,
+	oliver.upton@linux.dev,
+	joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	peter.maydell@linaro.org,
+	lpieralisi@kernel.org,
+	timothy.hayes@arm.com,
+	fuad.tabba@linux.dev
+Subject: [PATCH v2 00/16] KVM: arm64: Add GICv5 ITS support
+Date: Mon,  2 Nov 2026 19:44:38 +0000
+Message-Id: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,166 +67,160 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
-X-Proofpoint-GUID: QR2S-efKBO6QdYqmIxgc6lAyUaLaTRaV
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA3OCBTYWx0ZWRfX/+ZJayM1LQ+r
- 9CV/sgjbk1pFruMf2Sg0Afqz45bxdOm/q1kCI1B+bg8HW4Cjn7g4Lr79nb2RdSW2Xmzq4dF0XOW
- GqQjtLSbwrhVrlFabcgVpqZqM5ZWyic=
-X-Authority-Analysis: v=2.4 cv=SJ/Xx+vH c=1 sm=1 tr=0 ts=6ae8e7e9 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=wpfVPzegXHpEFt3DAXn9:22 a=VwQbUJbxAAAA:8
- a=BjZWFOVnn3HtxxQ2TYoA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: QR2S-efKBO6QdYqmIxgc6lAyUaLaTRaV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA3OCBTYWx0ZWRfX2ea4iepLya8e
- u/RHH1/wfHIKJZ8+Jf7wOY4wj8XR9xzoUNBYjnpFjO47yzsaKfjU/XN8j7g82pGNcHLIAuDVzMJ
- KMGfZDToKxladXb1lbLFhLwt5iGVw3LJBtrZsMaVjskGsjdSEfVKQXCCYwA5zkPm482GMtvPwN3
- jyJIuvtvK2eZdI8VGkblCf8zlVF/GyFNxFgJDRGQUE4YhkD6gz6U8H7oeeXXITLS0LjBEBIQkVd
- hciJv6mh5dbOOr8WbBAG68O9jPfYLSopCyL97moXfPwULj4fUglw2KjlroxFs7mDRTA3fUU1qXY
- XulWKBv1MwarGtHmsJHqll9CuwDtloBZZGQW/RsUBi0kqUJ/29Ugn3cBOSVu/19P+N8EkFP2I+3
- RQ+4KR1LzEbgliAqZ8kR4kJ2WqGwZjinnsOjv8iLgk7AxJ9WUGp/AjfY+5pp07gMXMNbiYKu5YO
- VcLFK14qbwpeW4bMkfw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_05,2026-11-02_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 02, 2026 at 02:21:27AM +0100, Michal Luczaj wrote:
-> On 10/30/26 21:30, Bobby Eshleman wrote:
-> >>>> Yeah its all kind of a pain. The problem is that we need to hold
-> >>>> sock_lock to set sk_state and sk_err, but can't acquire it under the
-> >>>> table lock. Instead, we grab the socket ref sock_hold under the table
-> >>>> lock to guarantee it stays alive between releasing the table lock and
-> >>>> grabbing the socket lock.
-> >>>>
-> >>>> I was really tempted to not do this lock_sock dance though. The race
-> >>>> condition I'm avoiding here is that if this reset races with an RST
-> >>>> receive, then the socket could end up with TCP_CLOSING + sk_err
-> >>>> ECONNRESET... but I'm not sure this actually propagates up into a real
-> >>>> problem for any potential user.
-> >>
-> >> Right, vsock_connect() is fragile. Two things to be cautious about:
-> >> 1. Don't let it reset the already connected socket. Because that would
-> >> allow user to "re-connect()" and make mess in connected_table.
-> >> 2. Don't let it re-assign transport of an already connected socket. Because
-> >> that breaks the contract in few places.
-> >>
-> >> State 1 is not an issue: vsock_g2h_reset_unreachable() calls
-> >> __vsock_remove_connected().
-> >>
-> >> State 2 may be problematic: if vsock_g2h_reset_unreachable() sets TCP_CLOSE
-> >> when connect() is scheduled out, then after the wake-up sock may get reset
-> >> to SS_UNCONNECTED. Then user re-connect()s and hits the transport
-> >> re-assignment logic. I'm worried that, as we re-assign, someone may be
-> >> holding a reference to such "connected" (even if not in connected_table
-> >> anymore) vsock.
-> > 
-> > I see path you're looking at... after vsock_connect() gets scheduled
-> > back in we set TCP_CLOSE/SS_UNCONNECTED if sock_error returns non-zero.
-> > Could you elaborate on your last concern there about someone holding a
-> > reference? I'm not sure I fully understood.
-> 
-> Ah, sorry, let me explain. This case reminded me of the vsock's TCP_CLOSING
-> bug[1]: reporter mentioned vsk->trans getting freed when skb was still in
-> flight. I did not reproduce the exact scenario, but it did sound plausible
-> and I thought it applies here: virtio_transport_destruct() frees vsk->trans
-> the moment vsock_loopback_work() invokes virtio_transport_consume_skb_sent().
-> 
-> Now, to get there let's start with vsock_connect() setting SS_UNCONNECTED
-> (on a connected) socket after vsock_g2h_reset_unreachable(). Then user is
-> able to re-assign the transport, which involves
-> virtio_transport_destruct(). But since we're dealing with a connected
-> socket, (before the reset) some send() might have triggered
-> vsock_loopback_work(). Does this make sense to you?
+Hi all,
 
-Ah you're right. I think that your approach of making vsock_connect()
-more robust is probably the right way to go...
+This is the second posting of my GICv5 KVM ITS series.
 
-I think this is the new race...
+This series builds on the GICv5 IRS support now in 7.4-rc1 and adds
+support for the GICv5 ITS, as described by the GICv5 specification
+[1]. It allows a GICv5 guest to receive LPIs generated by MSIs,
+including those from physical PCI devices mapped into the guest via
+VFIO.
 
-1) vsock_connect(cid=VMADDR_CID_HOST)
-   -> enqueue pkt
-   -> sleep
+The ITS is exposed as a separate KVM device, alongside the VGICv5
+device. The guest owns the device table and interrupt translation
+tables. KVM walks these tables to resolve a DeviceID and EventID to an
+LPI, and caches the result until the guest invalidates the relevant
+translation or changes the table configuration.
 
-2) rx worker receives OP_RESPONSE
-   ->  sets TCP_ESTABLISHED/SS_CONNECTED
+The main pieces are:
 
-   (vsock_connect() still asleep)
+* An emulated GICv5 ITS CONFIG_FRAME, including table configuration,
+  event generation, and invalidation registers.
 
-2) sendmsg()
-   -> sees SS_CONNECTED
-   -> enqueues skb
+* Guest table walking for linear and two-level device and interrupt
+  translation tables, together with a disposable XArray-based
+  translation cache.
 
-3) netns reset sets TCP_CLOSE and sk_err=ECONNRESET
+* MSI injection through KVM_SIGNAL_MSI and irqfd. GICv5 requires a
+  DeviceID for each MSI, and the virtual ITS supports 16-bit EventIDs.
 
-4) vsock_connect()
-   -> scheduled back in
-   -> sees sk_err != 0
-   -> sets SS_UNCONNECTED
+* Direct injection through the host ITS when an interrupt is forwarded
+  to a vCPU. Forwarding teardown restores the host translation.
 
-5) vsock_connect(CID=VMADDR_CID_LOCAL) call #2
-   -> sees SS_UNCONNECTED
-   -> frees old vsk->trans
+* Userspace attributes to configure the ITS address, access its
+  registers, and reset the emulated state, together with ABI
+  documentation.
 
-6) sendmsg's skb tx completes
-   -> tx worker dereferences vsk->trans for the UAF
+* Selftests for the ITS attributes, guest table translation, MSI
+  delivery, and guest-driven cache invalidation.
 
-If connect() checks for SS_CONNECTING before setting SS_UNCONNECTED,
-then in step 4 sock->state stays as SS_CONNECTING and the second
-connect() call will hit -EISCONN instead of freeing vsk->trans.
+The guest tables remain the authoritative translation state. KVM's
+cache can be discarded and rebuilt from guest memory; there is no
+separate ITS table data for the VMM to save/restore.
 
-Seems to work for a racing vsock_shutdown() too, where sock->state would
-become SS_DISCONNECTING, and the second connect() would hit -EINVAL
-instead of freeing the vsk->trans.
+Lorenzo's GICv5 Linux software enablement guide [2] describes how to
+set up the GICv5 software stack. These changes have been tested on an
+Arm FVP 11.32 release [3].
 
-I guess the rule would be that vsock_connect() sets SS_CONNECTING before
-sleeping and only changes it to SS_UNCONNECTED after waking if and only
-if it is still SS_CONNECTING.
+These changes are based on v7.4-rc1. The corresponding kvmtool patches
+have been posted separately [4]. I plan to post an updated kvmtool
+series shortly.
 
-WDYT?
+These changes are also available as a branch at [5]. For reference, v1
+of this series can be found at [6].
 
-> 
-> Another thing is this feature of vsock_assign_transport(): in some
-> re-assign failure paths you may end up with vsk->transport = NULL. In the
-> past this caused issues with sockmap: see WARN_ON_ONCE in
-> vsock_bpf_recvmsg(). Problem here is that normally vsock gets removed from
-> sockmap on close(), but in our (reset+reassign) case close() is never invoked.
-> 
-> [1]: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
-> 
-> >> So I don't know, maybe it's vsock_connect() that should be fixed/hardened
-> >> instead?
-> >>
-> >> Or at least disallow transport *re*-assignment? Does the "re-" part have a
-> >> use case?
-> >>
-> >> Hope it's not too off-topic.
-> >>
-> >>>> It also avoided some racing with the tx path, but now that send_pkt()
-> >>>> also checks reachability I think that path is safe.
-> >>>>
-> >>>> What do you think about doing the below hunk (TCP_CLOSE, ECONNRESET,
-> >>>> sk_error_report) with no lock_sock?
-> >>>
-> >>> Looking at the code, it seems that in all the places where we close all 
-> >>> connections (virtio_vsock_reset_sock, vhost_vsock_reset_orphans) we do 
-> >>> with no lock_sock but with vsock_table_lock.
-> >>>
-> >>> So, makes sense to me.
-> >>
-> >> virtio_vsock_reset_sock() and vhost_vsock_reset_orphans() are my pet
-> >> peeves: state switcheroo without taking lock_sock(). Which, again, races
-> >> vsock_connect().
-> > 
-> > True, I don't love that either, but I feel the impact is at least
-> > constrained by the fact that it only happens when the module or device
-> > is already going away.
-> 
-> Doesn't it happen on suspend as well? Is so, with a poorly timed connect()
-> things can go south on resume.
+This series applies independently of the host GICv5 fixes [7], but
+concurrent use may encounter the host driver issues described there. A
+branch with both series is available at [8]. Both series need to be
+merged for the ITS support to be complete.
 
-Ah that's true.
+The main changes since v1 are:
+
+* Rebased onto v7.4-rc1.
+
+* Reused upstream ITS model tracking, removing the separate has_its
+  state.
+
+* Sashiko flagged some races for GICv3 LPIs, which were caused by me
+  making the allocation common to both vITSes. Group 1 is set before
+  adding the LPI to the tracking XArray. The GICv3 ITS path performs
+  one initial lookup before allocating a new LPI.
+
+* Replaced the translation cache hash table with an XArray. This
+  avoids the locking/lockup issues raised by Sashiko. Furthermore, it
+  is no longer possible for a malicious guest to force all LPI
+  mappings into one hashtable bucket.
+
+* Tightened translation and MSI handling: enforce advertised DeviceID
+  and EventID limits, report invalid guest translations as blocked
+  MSIs, and allow software injection to proceed if caching fails.
+
+* Expanded ITS register handling and the userspace ABI: serialise
+  register access, support 32-bit accesses to 64-bit registers, and
+  validate restoration of IDR0-IDR2 and READ_EVENT_DATAR while keeping
+  them read-only to the guest.
+
+* Hardened direct injection teardown: track which translation owns
+  forwarding, synchronise host translation restoration, and retain the
+  IRQ association when a timeout requires a later retry.
+
+* Extended selftests for register access widths, read-only behaviour,
+  ID limits, malformed MSIs, and cache invalidation.
+
+Thanks for taking the time to look at these changes!
 
 Thanks,
-Bobby
+Sascha
+
+[1] https://support.arm.com/documentation/111701/latest
+[2] https://linaro.atlassian.net/wiki/x/CQAF-wY
+[3] https://support.arm.com/tools-and-software/fixed-virtual-platforms/arm-architecture-fvps
+[4] https://lore.kernel.org/all/20261016153939.913764-1-sascha.bischoff@arm.com
+[5] https://gitlab.arm.com/linux-arm/linux-sb/-/tree/gicv5_kvm_its_support_v2
+[6] https://lore.kernel.org/all/20261016155741.979985-1-sascha.bischoff@arm.com/
+[7] https://lore.kernel.org/all/20261102-host_gicv5_fixes-v1-0-743b61626fc5@arm.com/
+[8] https://gitlab.arm.com/linux-arm/linux-sb/-/tree/gicv5_kvm_its_support_v2_with_host_fixes
+
+Sascha Bischoff (16):
+  KVM: arm64: vgic: Split out common LPI allocation
+  KVM: arm64: vgic: Pass opaque device pointer to ITS MMIO callbacks
+  KVM: arm64: gic-v5: Share CoreSight ID register emulation
+  irqchip/gic-v5: Add ITS MMIO register definitions
+  KVM: arm64: gic-v5: Add ITS device skeleton
+  KVM: arm64: gic-v5: Add ITS MMIO state emulation
+  KVM: arm64: gic-v5: Add ITS guest table translation emulation
+  KVM: arm64: gic-v5: Add ITS translation cache maintenance
+  KVM: arm64: gic-v5: Add ITS MSI injection
+  KVM: arm64: gic-v5: Add ITS userspace register access
+  irqchip/gic-v5: Enable direct injection in ITS
+  KVM: arm64: vgic: Move direct MSI support helper to common MMIO code
+  KVM: arm64: gic-v5: Implement irq forwarding
+  KVM: selftests: Add VGICv5 ITS attribute tests
+  KVM: selftests: Add VGICv5 ITS translation cache tests
+  KVM: arm64: gic-v5: Document ITS userspace ABI
+
+ .../virt/kvm/devices/arm-vgic-v5-its.rst      |  111 ++
+ Documentation/virt/kvm/devices/index.rst      |    1 +
+ arch/arm64/include/uapi/asm/kvm.h             |    2 +
+ arch/arm64/kvm/Makefile                       |    1 +
+ arch/arm64/kvm/arm.c                          |    6 +-
+ arch/arm64/kvm/vgic/vgic-irqfd.c              |    8 +
+ arch/arm64/kvm/vgic/vgic-irs-v5.c             |   75 +-
+ arch/arm64/kvm/vgic/vgic-its-v5.c             | 1562 +++++++++++++++++
+ arch/arm64/kvm/vgic/vgic-its.c                |  130 +-
+ arch/arm64/kvm/vgic/vgic-kvm-device.c         |    4 +
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c            |   20 -
+ arch/arm64/kvm/vgic/vgic-mmio.c               |   34 +
+ arch/arm64/kvm/vgic/vgic-mmio.h               |    6 +-
+ arch/arm64/kvm/vgic/vgic-v5.c                 |  182 ++
+ arch/arm64/kvm/vgic/vgic.c                    |   99 ++
+ arch/arm64/kvm/vgic/vgic.h                    |   20 +
+ drivers/irqchip/irq-gic-v5-its.c              |  141 ++
+ include/kvm/arm_vgic.h                        |  107 +-
+ include/linux/irqchip/arm-gic-v5.h            |  136 +-
+ include/uapi/linux/kvm.h                      |    2 +
+ tools/include/uapi/linux/kvm.h                |    2 +
+ tools/testing/selftests/kvm/arm64/vgic_v5.c   |  882 +++++++++-
+ .../selftests/kvm/include/arm64/gic_v5.h      |   88 +
+ 23 files changed, 3384 insertions(+), 235 deletions(-)
+ create mode 100644 Documentation/virt/kvm/devices/arm-vgic-v5-its.rst
+ create mode 100644 arch/arm64/kvm/vgic/vgic-its-v5.c
+
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.34.1
+
