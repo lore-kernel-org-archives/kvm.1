@@ -1,117 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793628913;
-	b=uF7BnpouV0OrYYm4cVkgt7WmUkn+yAPaDC4TrIdwkU5Kj8L3UIUcHv9SXP9Aj4fy//Zt
-	 Bkxmghbsw5y/Lr9UFOvh0NIf+eI16qudKfmXu0vod7OeESWSNimMiShh9ZZbqlUZ8rwff
-	 pZvcSpXmTnID238ZujEJSt2ZR2HI/RYBWqc5n3G99DHzEpjog8eyTij/jqquuWQoyQnfk
-	 xdYLor5YKS4FIwUTWHARtOoLnb9BqzcGq5vSuAoCkMTfbfhyMPjUFVvLMFt6XiyWUzQQc
-	 GhjI5rEnbRC0wXacEwDth0+vjdWgPa7Txr0/WD7JU2NUt2PaudT8gRrkcRoNHc0l9eg==
+	t=1793629091;
+	b=pFsbmSTFFay601t1zQsC35heoxlERDN82wFUd/26Lvo/N8zKu3igSYs72QI838bupNH+
+	 ihDQZOXIJW7m1LuMloR1OVbbwUZhwvaIm0LkFRZKmQGw/rpEhf8fEJuqPZeLdNsf7+4Vp
+	 SWeF6gQ3oP24//HNYEsh8CkO1AmCtoa20100k+RLuRrw3VzpVAPUf/K8LwHgRAEAH2wTW
+	 RJryYSiZySVT7CiQAYsXB8CcxOVQefWQyys702z8Ob7u+zvfyUCgNyJUKCWs1hT0X6kZQ
+	 y6uX8NC+KQ/zckgwNcjCd91/4uyABZTCO6J9kEbu1aEQ7bKlTnjADMY103iwbzinZjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793628913;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=sl0xAa/SyZWrBp9CL5o2SaCOERZeomQ7Ndnf7a0XFec=;
-	b=XdseWho+AiWpv0d0TcvUmb7iVVHK/14RuftQl8AaTOaVpuSBXBybAoUgJSLkzdoZ8VMw
-	 fxnUFp8K6SVRbPvV5mzcZuYyzGzHCaE3IiujymxTL/7wtPvALoZ0UVGaXwj5J460UCQPI
-	 tCPd+L1MTN35adlctYlSI17ewQI0FWDbejBOB/UxDQELWCsgZU31au3P8srvezgnG2yH8
-	 nqXbrPtzl/N+T5PhrgXVOcH5ToIcE8BaC314UHh4M/1d4/UQf4fg+WuIqt5UhHI5yHr0r
-	 5w6KdjqiKwr2h0Z+QA677fYVFlZxD9xjfOiV9Scij8bR9VYs70N8k4HM4R5Wyoymo3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793629091;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=8eW9phS8sj7+2ncq+kortnmMQd52WyTjCVvQHyuNmaw=;
+	b=t7R/PnlyZa1IABg5PfXwJY5nNOox5Je5tVAOLle8bk6Z7N9brO0r/0RROmweuu7VkoyZ
+	 +/+XMEWZXydxV0643IcdpG+gUixKQsezzSVETJ+elwpDWTF7HkA4AUaUURLVQHBTC7KbG
+	 zqcSZuq5LHMmuT2gVrXZdBBfVpVUKAA9WZLyW950dusTARlZdNza78me+i/SAmfgtSV1Z
+	 LnnNX9i4TFxjF+gGFHd1zJAdDOTO3/8LfSB9X0WP58Uhcy4Wxed0GCl30s8R4cTuR3E4m
+	 pi6cUOVixKK0VT/sshqr0yV3Pb1xjdyU7h12o3dj/I/N+2QiPbyNR7/kHKgtaLo1Eqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ANkl6KIk;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="Z/xjjXfH";
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="O/GI6FrS";
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF0960A2622
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 14:15:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EF0960A2622
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B181606B5D7;
+	Mon,  2 Nov 2026 14:18:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B181606B5D7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ANkl6KIk;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Z/xjjXfH
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793628912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sl0xAa/SyZWrBp9CL5o2SaCOERZeomQ7Ndnf7a0XFec=;
-	b=ANkl6KIkamagzMsOQc7bzoUE/7vT1PeZf4X9EEl4VvwRoD5/G0MZOrgM4GXUPaA5wxkf9l
-	bu4bVZb09DuYT+AEoxgjDdbKaxp9nL5F92b9nrA+MwCvCd13em41iJkj21uUDTm/xPfYm2
-	oDzx/Fi7wFQBR1OxEyZLz8/12VI3HwE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-x4V988tLPR2LuqbFpQf6CA-1; Mon, 02 Nov 2026 09:15:11 -0500
-X-MC-Unique: x4V988tLPR2LuqbFpQf6CA-1
-X-Mimecast-MFC-AGG-ID: x4V988tLPR2LuqbFpQf6CA_1793628910
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48c415561aaso2078888f8f.1
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 06:15:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793628910; x=1794233710; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sl0xAa/SyZWrBp9CL5o2SaCOERZeomQ7Ndnf7a0XFec=;
-        b=Z/xjjXfHAg5mHAeeadaHPosdzhuRIhd/JdCRjAAxO684gICcOzzz1n4AkNfKUc2KxP
-         9l2KjCcLHWS4qY7vvUzP1MCjID1QzBE9mCWDT/2InZlzNMy37WGBea/pBOVx1IuwuqUK
-         2LHeVK07QyKj8buNErt3n1Ee0McP3CRTQY2i5etscsCxnCFzCAIwp5oPQtY1AOSrFse8
-         9KjxM5t6Bl+T0XMuDD7psiTCjI0FzaIs6r9k3sCBuwJTXKycueQlZjbuVIGNCdwMSqrz
-         DJL54Uo8rOFDfYdJUA+sV6LwKdYVDePIktHj7xf0AC7NRC1ckDQskSrX8CH9XxKgKZuD
-         yeNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793628910; x=1794233710;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sl0xAa/SyZWrBp9CL5o2SaCOERZeomQ7Ndnf7a0XFec=;
-        b=NBZl1vafip/4gOHSJMF/FuqiF2bIeEF0WHIIFPTejLIsc03JCgpnAfy4YgWRN72pxd
-         svaEUpzTKLn7rgEcskqJwDnQNddVlrqggp6XjQStuxYVq04MG5XddUV+I/nNzT9d65Rf
-         4HPlQK6A0iZSiEFn/NVSU/yZA+5fSZaslD9yqykO4VFdwnRKtxeH6xp1gQwe/pxc/OUs
-         MUCrcCndvaQBdFornXSNUzfAtTW+QKAbcJ5FJDLFYO15OEzQBs9DF6MITHJIxM3Mz3Y9
-         3wibehbqElEVZnCGGBB87azgsQuo3WEzF3vun4qa/xloYGBHHK1k3jHk+RE5BIy8pMkJ
-         o9QQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw2HAvA/mWytNNOwbjl6Ns7KlxIMiX5K5rXteJxWO/E5w236Nzqrl/AdpmBVUncvTastV0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z97JITxDzI71zzlPsLkq61ZoSX2VAplqGIY9A60NpZ6hDjnBSLH
-	ML+BrFD4It7wjI2voJb4tMAiem65cO2n12uwd9eHfGolzl/J8fVsBngcFyeDluN8sT+NVpU1XiZ
-	GeEgjjOiWhBba36bv645eHt9h7x/p0WCwO7RZngtWKZtaeNH+cl4LYQ==
-X-Gm-Gg: AYBFou21wI/NEvO4wrqq8M17l/QKA1SKYUOYTReSUMZW5oN/QTXCzQN4fVgb7uD6528
-	B0tjJuv37lxwE0+K5/DkYfehUCJwfkTKN1BbNUBVVpK1BwcSgeocVR1AU/QBMhqCZ7aogsXYqLI
-	mej5vBzfrR6n752UF1KwmcPE6JjQnK6i+veGkwjxU00oQBCyuzNvEgcyeZBK2te/SS/KOX1wdAk
-	nvDOHh4e8ChiRVpU/cBqzdlhs7x4O9N+NHWHnGDvvWpy72ILNhqDcWgT+MAwXJ2SI7uX02g4pen
-	IuVUB5jL60ugeqBl0/xa1AkmprLe/ATy+wAlS4dBdf+F6clgLKIbV+HN+xIGpFQ3aYf0FLKhg2/
-	NAJBAXgnFRVy4YkajP+T7+OktYi0KGpXm1HIBkPprNg==
-X-Received: by 2002:a05:6000:25c3:b0:48b:db7:86a7 with SMTP id ffacd0b85a97d-48e6e517f2bmr20529289f8f.50.1793628909018;
-        Mon, 02 Nov 2026 06:15:09 -0800 (PST)
-X-Received: by 2002:a05:6000:25c3:b0:48b:db7:86a7 with SMTP id ffacd0b85a97d-48e6e517f2bmr20529177f8f.50.1793628908269;
-        Mon, 02 Nov 2026 06:15:08 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1501:b100:9ea2:fd21:b361:8dab])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71a4d425sm20775864f8f.1.2026.11.02.06.15.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 06:15:07 -0800 (PST)
-Date: Mon, 2 Nov 2026 09:15:04 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: Jason Wang <jaswangio@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Nicholas Bellinger <nab@linux-iscsi.org>,
-	Asias He <asias@redhat.com>, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost-scsi: fix event queue iov out-of-bounds
-Message-ID: <20261102091441-mutt-send-email-mst@kernel.org>
-References: <20260904005240.502787-1-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O/GI6FrS
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2EEjkE3114971;
+	Mon, 2 Nov 2026 14:18:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=8eW9ph
+	S8sj7+2ncq+kortnmMQd52WyTjCVvQHyuNmaw=; b=O/GI6FrSwQXVaTh1n3KCRl
+	H/lVHGWwnWoYjjg0Dj6BGodZaPMdTnkzOww+9pV6/oRbxgvmDDdA3SiHU8AMvpEY
+	styBxBShDCYFGjeNNPrF/k51U0nXvL3AlbbK7NFd8gdVA7kjNyW9u2i+OIjfGRCs
+	oJsgCo2NYKnfhtRuekD1BaAtp2DEzcqYUjJdxY6oAUnG2INEujVLdtAvtb+33bPN
+	kwgccw6f6lYzoNzfGQa1S3SPiKGTWvl/kYeBjuub7XYicmBfgK9pYUsZuJU1iYLX
+	qr7aSUqMYswoqSDXw8hac917H96XwQ8Eaco03MXAPDP7Gn1mYdGclsyJR7yZFwlg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn7yrrtsk-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 14:18:06 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2DpOPv4016040;
+	Mon, 2 Nov 2026 14:18:06 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hnvvfp149-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 14:18:06 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A2EI04x43909490
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 2 Nov 2026 14:18:00 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F4DF20043;
+	Mon,  2 Nov 2026 14:18:00 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 335ED20040;
+	Mon,  2 Nov 2026 14:17:59 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.111.14.46])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon,  2 Nov 2026 14:17:59 +0000 (GMT)
+Date: Mon, 2 Nov 2026 15:17:56 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com
+Subject: Re: [PATCH v4 1/7] KVM: s390: Fix UCONTROL inconsistencies
+Message-ID: <20261102151756.0625f117@p-imbrenda>
+In-Reply-To: <73347a6b-1224-415d-905a-aec1a62dd13a@linux.ibm.com>
+References: <20261028185422.272146-1-imbrenda@linux.ibm.com>
+	<20261028185422.272146-2-imbrenda@linux.ibm.com>
+	<73347a6b-1224-415d-905a-aec1a62dd13a@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -121,67 +98,124 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904005240.502787-1-physicalmtea@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Mcr5KJ/f c=1 sm=1 tr=0 ts=6ae89b9e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=KJou_Y6U8xQNuixg6DQA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA1NiBTYWx0ZWRfX7dDK15ZLh4VN
+ PjFR30I3cCKE6frw0BGYf1Yjz4mWbNsUTRc2ZZ/oELTzEg2B5uwLFE/X9AbOrRRxlBvAZ1YxCfa
+ ska49DYxoSX0KV1mT78B5VU52vd63K0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA1NiBTYWx0ZWRfXyc567bhszyCD
+ h1mMvi1ahvBR+EpQ0PihPG+oujvbFlCwoHMaA2sbzYvxa96xUFPeT3A/qGoabbQuWFzmnwiOPhZ
+ e3La6aJtOrvF58ZQeyEqTKG1jsaqcx68j60lNE/A2a53XgmiAGJOrorOD6Y4ZTa0PISBH93F/qH
+ p+6yJfISWHDvVq+8CjyN1TWNzQa+SM1i0+KsyZZsff7xuvsMu6EsMT+vHW5UaC90VGCpXr420Jd
+ BRZtvPxgtWNQZt3AwdLyWQeXABJkkPX954Y4ooNJovMDzn+vZXZa5aso6q74+6jtCNFrNgzEHvD
+ ENXAAFvrOhGmrRVyTXGkXgzzhk7HoGRClQz1MV3fnbukjhVGDG+R+ODAkOb81/L3H/XyJNcTS4X
+ nn69B+hN1nEeCNkBHbVYVI6jZ0Rq2ruxwm2RIHMJwC3aRC/53u22NTJphofv8Ozr30TxQyOa3ke
+ 1BmlmvVyIAHCXlWg10Q==
+X-Proofpoint-GUID: RTdD8L1UkI4V_M4hYAzPRTaNqgbPFz9O
+X-Proofpoint-ORIG-GUID: RTdD8L1UkI4V_M4hYAzPRTaNqgbPFz9O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_04,2026-11-02_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020056
 
-On Fri, Sep 04, 2026 at 08:52:40AM +0800, Jia Jia wrote:
-> vhost_scsi_do_evt_work() uses vq->iov[out] after vhost_get_vq_desc()
-> without checking that the descriptor chain contains an input segment.
-> vq->iov has UIO_MAXIOV entries (1024).  A chain of 1024 output-only
-> descriptors yields out == 1024 and in == 0, so the length check reads
-> one past the end of the array.
-> 
-> With a host-side harness that sets VHOST_SCSI_SET_EVENTS_MISSED and
-> kicks an event queue filled with 1024 OUT descriptors, UBSAN reports:
-> 
->   UBSAN: array-index-out-of-bounds in drivers/vhost/scsi.c:611:14
->   index 1024 is out of range for type 'iovec [1024]'
-> 
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0x5f/0x90
->    dump_stack+0x10/0x18
->    ubsan_epilogue+0x9/0x39
->    __ubsan_handle_out_of_bounds.cold+0x50/0x55
->    vhost_scsi_complete_events+0x55f/0x5a0 [vhost_scsi]
->    vhost_scsi_evt_work+0x17/0x30 [vhost_scsi]
->    vhost_run_work_list+0x8e/0xd0 [vhost]
->    vhost_task_fn+0xe1/0x210
->    ret_from_fork+0x348/0x540
->    ret_from_fork_asm+0x1a/0x30
->    </TASK>
-> 
-> Require at least one input descriptor before indexing iov[out], and
-> treat a pure-output chain as a missed event like other invalid event
-> buffers.
-> 
-> Fixes: a6c9af87363c ("tcm_vhost: Add hotplug/hotunplug support")
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+On Mon, 2 Nov 2026 14:45:48 +0100
+Janosch Frank <frankja@linux.ibm.com> wrote:
 
-Applied an alternative more comprehensive patch, credited you.
-
-> ---
->  drivers/vhost/scsi.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> On 10/28/26 7:54 PM, Claudio Imbrenda wrote:
+> > For UCONTROL VMs, when a vCPU segment entry is mapped but unallocated,
+> > the tl field was set to 1. This collides with the present bit, which
+> > means that other parts of gmap would mistake the entry for a present
+> > one.
+> > 
+> > Refactor the code to use a different combination of flags to indicate a
+> > mapped but unallocated segment.
+> > 
+> > The new flags combination will result in several functions returning
+> > -EFAULT when used on UCONTROL guests. This is fine, since those
+> > interfaces should not be used for UCONTROL guests to begin with.
+> > 
+> > Proper fencing of the interfaces that are not allowed for UCONTROL
+> > guests is outside the scope of this patch.
+> > 
+> > Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
+> > Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> > Cc: stable@vger.kernel.org # 7.0+
+> > ---
+> >   arch/s390/kvm/gmap/dat.h  | 16 +++++++++++-
+> >   arch/s390/kvm/gmap/gmap.c | 54 +++++++++++++++++++--------------------
+> >   2 files changed, 41 insertions(+), 29 deletions(-)
+> > 
+> > diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
+> > index 90389d47ba4e..4665c1112bb9 100644
+> > --- a/arch/s390/kvm/gmap/dat.h
+> > +++ b/arch/s390/kvm/gmap/dat.h
+> > @@ -109,6 +109,8 @@ union pte {
+> >   #define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
+> >   #define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
+> >   #define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
+> > +#define _UCAS_ENTRY_LENGTH	0
+> > +#define _UCAS_ENTRY_OFFSET	3  
 > 
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index 9a1253b9d8c5..9b5f07f52b0c 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -608,9 +608,10 @@
->  		return;
->  	}
->  
-> -	if ((vq->iov[out].iov_len != sizeof(struct virtio_scsi_event))) {
-> +	if (!in ||
-> +	    vq->iov[out].iov_len != sizeof(struct virtio_scsi_event)) {
->  		vq_err(vq, "Expecting virtio_scsi_event, got %zu bytes\n",
-> -				vq->iov[out].iov_len);
-> +		       in ? vq->iov[out].iov_len : 0);
->  		vs->vs_events_missed = true;
->  		return;
->  	}
-> -- 
-> 2.43.0
+> Both of these together in combination with tt=segment are essentially a 
+> flag for a ucontrol mapping that's mapped but not allocated?
+
+correct
+
+> 
+> >   
+> >   /* Soft dirty, needed as macro for atomic operations on ptes */
+> >   #define _PAGE_SD 0x002
+> > @@ -421,6 +423,17 @@ static inline union crste _crste_fc0(kvm_pfn_t pfn, int tt)
+> >   	return res;
+> >   }
+> >   
+> > +static inline union crste _crste_ucas(kvm_pfn_t pfn)
+> > +{
+> > +	union crste res = { .val = PFN_PHYS(pfn) };
+> > +
+> > +	res.h.i = 1;
+> > +	res.h.tt = TABLE_TYPE_SEGMENT;
+> > +	res.h.fc0.tl = _UCAS_ENTRY_LENGTH;
+> > +	res.h.fc0.tf = _UCAS_ENTRY_OFFSET;  
+> 
+> You're missusing this field in order to get to bits 57 and 58 which 
+> aren't actually the tf field for a segment, right?
+
+yes
+
+> If so, then this might be easier on the eyes since you don't use a 
+> bitmask but it's horrible for the brains of anyone other than yourself. 
+
+you're assuming that I don't find it horrible just because I wrote it ;D
+
+> Especially since there's no comment explaining the shenanigans.
+
+comments will be added
+
+> 
+> > +	return res;
+> > +}
+> > +
+> >   /**
+> >    * _crste() - Useful constructor for union crste with FC=1
+> >    * @pfn: the pfn this pte should point to.
+> > @@ -985,7 +998,8 @@ static inline int dat_create_slot(struct kvm_s390_mmu_cache *mc, union asce asce
+> >   
+> >   static inline bool crste_is_ucas(union crste crste)
+> >   {
+> > -	return is_pmd(crste) && crste.h.i && crste.h.fc0.tl == 1 && crste.h.fc == 0;
+> > +	return is_pmd(crste) && crste.h.i && !crste.h.fc &&
+> > +	       crste.h.fc0.tl == _UCAS_ENTRY_LENGTH && crste.h.fc0.tf == _UCAS_ENTRY_OFFSET;
+> >   }
+> >     
 
