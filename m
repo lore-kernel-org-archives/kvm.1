@@ -1,56 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793643759;
-	b=1gRwQBkOenEDU3WcQrkCwUCoeQ95gdGGpN0eBSkZl2PRaFG73Lbo9j52uddVBw+TjWSW
-	 C132463Tcykp3GpkTVq/KA0tKB6i/S/aeuefSlVWStqMGed5NPimQXcjKj9LYgICQfymz
-	 j7s3LMPTgiTJufLFIXzqqiKaoMN7BLpw+cUMLNAjP5HDnYXhy5TGoJAgjFn7MeNY08AaN
-	 xqtBM7Ww+huLVwfN7/UA9R4RYhyIUxhLInykMvpHl8t2vVpHs4bZTGj4Kye4gMF0YVUtS
-	 3AIzUOwk/AG1nEvbcdfBXU4Fkn18Q18EwWCcRbIlwq+/jFxmutuD/F9Sh0wSA9hSmXQ==
+	t=1793643928;
+	b=N7xmbvTVEhJBiA0Atl+uqOx2fF8O5+QnS3j7VKbWOjPZig6ZDCH+BqyzabHnPJyOA9U9
+	 lLppPuRWt5/Xs6ijHHQssoFlYlgbs9YzgjhX5aP0n0T/2HasARcW8+s1bOE/s1m3KLo81
+	 OYJAxxOcyimutMwYq13TCQ7UiEaYrG5/AG53IGCxA7YxL7XxkUYrfWdJ+OleZTyPPolvz
+	 XhYYCUH1pYCX8yG89p3wtfD0PA/M8EAHLiF4gOtC/xVS07CMUA0zwEK9cZslv7MzELYWJ
+	 vt3BUoMCkCXrMIE2/CV6cknj99AbSyg169aPJhtfzxg96FICQzu41+LosJkaqz8apmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793643759;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=o2v7KyR5Jy369EvyzlCYc06TUNIYmlLmjDEtKZBaL9g=;
-	b=lC+LMzUaoESje85wXy6KOdlyhU6kxUy157PMW/R/XRTx9a8qJqA/pkQfHNO6+SFFA+LQ
-	 5v+6HVfj65IH0TzN1Vj8B9CSGhiBv0xEOl299kWSd5tJHIXy/J7W33WrsWYtHkffKIHCt
-	 6ERwYaptyMKVGsyPNF6tRYzBOJKtEr7rUHz9qe9pt5T9Amqeam+lfXY9z8iqRtxNmOwjm
-	 JEH5uavpD9MhWVJ5IlllL+qdCqvYMLi6S1CK4+QwcpeOtwnXI5QZ9D0oCD2jSWsF/dOlk
-	 hApZnLM8OMrWzLU5tj+ziPFzE5BnvN8KZ0VQD5Lapb1/uDejPHbBekk79QOCFZEv82w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793643928;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=j7pHsCqaqyqWpLQA4VpkVcNk0Xrxk81x9TDCYFBxSF8=;
+	b=k02MAC1NODUgPJiUxJbg3MU1LKa4bc+IOJomU1aX2scahyn60pJ/XljQoCeeMBOLyyW5
+	 ntS9491ajropvIrKEx5d9+uTMmDBBwQqQppdp60k0F1pv8908AYhiu25lqRLfCeK1q8vO
+	 jf4PladkDS1WpNoSWuM9HeqZo3npb7TQvSh+V3T1U2ppthi3O7p7GFjfOnl5BRzT/YruS
+	 PqpncbLSnQ6VLvNqcBznjJiL0lnRKOzzpFCkarL2Ind2fyjq7UmN3vDZMqdvo4wUdAYWV
+	 cs14nmCpYxhp+/6CMKEJ8O0StvIEZgOFfohw15LR0aSaL/Jmd9/IupbdaTCvSpwxkcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XRlji73s;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XqgLNhDS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5760606A326
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C2C606A326
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XRlji73s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9301F00A16;
-	Mon,  2 Nov 2026 18:22:38 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XqgLNhDS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15361F00A17;
+	Mon,  2 Nov 2026 18:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793643758;
-	bh=o2v7KyR5Jy369EvyzlCYc06TUNIYmlLmjDEtKZBaL9g=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=XRlji73sAprkdcIOEOw1fNEMzIO9X44smIKgna35mJ4AmJW5LH8JXDN2g6MBOmWUR
-	 JcnWQ25SLyITgXx35vE3zEgoXE94R9fZSMhMUhduKAb84PdIzW/2zk4jxGP+wA+Ef2
-	 NihCoUOzd9IjMdrf4xIigmffiHtpvDGFTbg8Ln7RZaiu6RMG4Z1a7QO0o1v8dD7IEu
-	 sWB6trj+Kzj4qnF/sNz2kKHYXqiaPyma+4dMHh1kNUsssaJZlAsXtSLLzetC7SflAi
-	 GYlDVd10G/h8Dnli4WWodm2oXiPWvZt0aKEf2fX3vK56LrpetaHiRpXN98QMPxK1Lo
-	 H+ua13ayCGFow==
-Message-ID: <sashiko-outbox-193930@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 04/45] KVM: x86/emulate: Check TSS busy-bit writes
- during task switches
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261102174130.8779-5-pbonzini@redhat.com>
-References: <20261102174130.8779-1-pbonzini@redhat.com>
- <20261102174130.8779-5-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 18:22:38 +0000
+	s=k20260515; t=1793643927;
+	bh=j7pHsCqaqyqWpLQA4VpkVcNk0Xrxk81x9TDCYFBxSF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XqgLNhDS5qr3aixeo+Z0ednB2OZDgQ2mluXCvzlFjutf8uBXLWntA/vfVqFQIn11m
+	 NALJvryxBx7+8E4AIidSDy4zTbdoMfJFBK+MMqcOkL81vMZ96nNfF7FbBhkxVnpP1F
+	 S8KoqtrwhdLgV7GBUR339dSiCKMrBNTGsxK1RzC1fC1crdRpx86QSS9FhOU8lCapFx
+	 l3tQR06nK4klBiidHyRD98i7DrULTdZKVeqezKqBpjExrrgPRqJ+F+OVSIVrQeZye0
+	 l3i2TGc2kfF5Ca+Ilx6dyBJNSp0Nm+6jI464ChzbG6hgUezRPVTR7IAkCkV8evwhSc
+	 uzjOBSDLbz9yA==
+Date: Mon, 2 Nov 2026 23:53:40 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sam H <sam.martin.howell@gmail.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
+Subject: Re: KVM: SVM: 32-bit PAE Windows 2000 guest crashes with AVIC on Zen
+ 2 (EPYC 7402), reproducible in seconds
+Message-ID: <aujQ9b3687Etdple@blrnaveerao1>
+References: <CA+qxPTe6Dh7Yafw5zRJg1HxU61z7SvZuCOHDrpY2xe5X+M68iQ@mail.gmail.com>
+ <auCrmeMslCWoiebJ@google.com>
+ <CA+qxPTfmTETd8Sr7Vfw8FrEpjybSiO6A0fjRbV6HBqW8aEorcA@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,156 +57,220 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+qxPTfmTETd8Sr7Vfw8FrEpjybSiO6A0fjRbV6HBqW8aEorcA@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] KVM: x86/emulate: unhandled write_segment_descriptor() error in ta=
-sk switch
-- [High] KVM: x86/emulate: task switch drops faults and IO_NEEDED on descri=
-ptor writes
---
+On Wed, Oct 28, 2026 at 11:34:04AM +1000, Sam H wrote:
+> >> I have a 32-bit Windows 2000 guest running the PAE kernel
+> >
+> > On purpose?  :-D
+> 
+> My face when I accidentally boot a Windows 2000 guest running the PAE
+> kernel again xD
+> 
+> Unfortunately, I inherited it. It's for a monolith app running on
+> servers older than I am. We are currently trying to strangler fig it
+> out of existence into microservices, but until the last vine closes in
+> it has to keep running. When they bought the replacement hypervisor
+> server, before I started, they didn't think (or know) to check for
+> things like this, so the old dying box with Intel CPU's works fine and
+> the new AMD one doesn't.
+> 
+> >> Host
+> >> - 2 x AMD EPYC 7402 (family 17h), microcode 0x830107d
+> >
+> > Do you have access to Zen4+ hardware?  If this only reproduces on Rome (Zen2),
+> > then unfortunately the answer is going to be "don't run AVIC on Rome".
+> 
+> Yes, and it reproduces on Zen 4 as well.
+> 
+> I copied the same disk clone to a Zen 4 host and ran it with the same
+> QEMU arguments and the same stress load. It crashed twice out of two
+> valid runs.
+> 
+> Zen 4 host
+> - AMD Ryzen Threadripper 7960X (family 19h, model 0x18), 1 socket,
+> microcode 0xa10810c, CPU flags avic and x2avic
+> - Ubuntu 24.04, kernel 7.0.0-38.38~24.04.4-generic (based on 7.0.14)
+> - QEMU 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)
+> - kvm_amd: avic=Y, enable_ipiv=Y, vnmi=Y, npt=Y
+> - AVIC confirmed active during the runs with kvm tracing, not only
+> from the module parameter
+> 
+> Guest (same as the Rome runs)
+> - Same disk clone, booted on a throwaway qcow2 overlay each run
+> - Windows 2000 Datacenter Server SP4 kernel (5.00.2195.6717), boot.ini
+> /PAE /3GB, CR4 0x6b1 on all 8 vCPUs
+> - -cpu kvm64, machine pc-i440fx-5.1, 2 sockets x 4 cores (8 vCPU),
+> 8192 MiB, numa on
+> - -machine hpet=off -rtc driftfix=slew -global kvm-pit.lost_tick_policy=discard
+> 
+> Results
+> - AVIC on, /PAE /3GB: crashed within 28 s of starting the stress
+>   STOP 0x0000004E PFN_LIST_CORRUPT (0x00000099, 0x0, 0x0, 0x00000000)
+> - AVIC on, /PAE /3GB, repeat: crashed 10 s after starting the stress
+>   STOP 0x0000004E PFN_LIST_CORRUPT (0x00000099, 0x0, 0x1, 0x00000000)
+> 
+> The stop code is different from Rome (0x0A there), but the pattern is
+> the same. Parameter 1 0x99 is a PTE pointing at an invalid PFN, and
+> the PFN is 0. That fits a page table read coming back as zero, which
+> is what the 0x0A crashes on Rome showed. At the time of the crash 7 of
+> the 8 vCPUs were stopped at the same EIP (0xDD431D87), and the
+> crashing vCPU was at 0xDD069C0E doing port I/O to 0x1F0 while it wrote
+> the dump. The EIPs differ from my first mail because this clone is now
+> on the SP4 kernel and not Update Rollup 1.
+> 
+> Things that differ from the Rome host, for completeness: QEMU 8.2.2
+> here against 11.0.3 there, enable_ipiv=Y here against N there, and
+> x2AVIC and vNMI are available here.
+> 
+> What I do not have yet
+> - A clean AVIC off control on the Zen 4 host. My one attempt did not
+> finish booting the guest and I stopped it before any stress ran, so I
+> am not counting it. I will rerun it and follow up with the result.
 
-commit 31629465ad13b50735702c0107b5866c7a5a5806
-Author: Paolo Bonzini <pbonzini@redhat.com>
+So, the guest boots only if AVIC is enabled?
 
-KVM: x86/emulate: Check TSS busy-bit writes during task switches
+> - A reproducer I can share. The disk clone holds company data and
+> Windows 2000 is not mine to redistribute. A Debian 12 i386 guest on
+> the 686-pae kernel, same QEMU machine plus kvm=off -x2apic, under a
+> fork/exec/exit storm (about 21,600 forks/s across 8 vCPUs) ran for
+> about 4 minutes without a crash. That is a short run, so I would not
+> call it conclusive. Next I will try a clean Windows 2000 SP4 install
+> with the same QEMU arguments and boot.ini. If that crashes, I can send
+> the full steps to rebuild it from your own media plus the stress
+> script, which is ours.
 
-This commit checks the return values of the write_segment_descriptor() calls
-that clear the old TSS busy bit and set the new TSS busy bit in
-emulator_do_task_switch(), returning early on failure so that failed writes
-stop the task switch.
+Did you get to try with a fresh image?
 
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index c1b21282187f3..711794592c2ca 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -2925,7 +2925,9 @@ static int emulator_do_task_switch(struct x86_emula=
-te_ctxt *ctxt,
-> =20
->  	if (reason =3D=3D TASK_SWITCH_IRET || reason =3D=3D TASK_SWITCH_JMP) {
->  		curr_tss_desc.type &=3D ~(1 << 1); /* clear busy flag */
-> -		write_segment_descriptor(ctxt, old_tss_sel, &curr_tss_desc);
-> +		ret =3D write_segment_descriptor(ctxt, old_tss_sel, &curr_tss_desc);
-> +		if (ret !=3D X86EMUL_CONTINUE)
-> +			return ret;
+> 
+> In the meantime the offer stands. I can run any patch or debug build
+> against the clone on either host, and I can send vCPU register
+> captures and KVM traces from the Zen 4 crashes. The full memory dumps
+> contain company data, so I can't post those, but I can pull anything
+> specific out of them on request.
+> 
+> Thanks,
+> Sam Howell
+> 
+> On Tue, 27 Oct 2026 at 23:48, Sean Christopherson <seanjc@google.com> wrote:
+> >
+> > On Tue, Oct 27, 2026, Sam H wrote:
+> > > Hey KVM Team,
+> > >
+> > > I have a 32-bit Windows 2000 guest running the PAE kernel
+> >
+> > On purpose?  :-D
+> >
+> > > that bugchecks within 15 to 134 seconds under a process churn load on an AMD
+> > > Zen 2 host with AVIC enabled. The same guest survives the same load with AVIC
+> > > off, or with PAE off. I have a disk clone that reproduces it on demand and
+> > > can test patches against it.
+> > >
+> > > Host
+> > > - 2 x AMD EPYC 7402 (family 17h), microcode 0x830107d
+> >
+> > Do you have access to Zen4+ hardware?  If this only reproduces on Rome (Zen2),
+> > then unfortunately the answer is going to be "don't run AVIC on Rome".
+> >
+> > > - Proxmox VE 9.2.21, kernel 7.0.14-25-pve, QEMU 11.0.3 (pve-qemu-kvm 11.0.3-4)
+> > > - kvm_amd: avic=Y, enable_ipiv=N, npt=Y
+> > > - Also crashes on 6.14.8-2-pve (no enable_ipiv parameter on that kernel)
+> > >
+> > > Guest
+> > > - Windows 2000 Datacenter Server SP4, boot.ini /PAE /3GB (ntkrpamp)
+> > > - Crashes on both the SP4 kernel (5.00.2195.6717) and the Update
+> > > Rollup 1 kernel (5.00.2195.7045)
+> > > - -cpu kvm64, machine pc-i440fx-5.1, 2 sockets x 4 cores (8 vCPU),
+> > > 8192 MiB, numa on
+> > > - Extra args: -machine hpet=off -rtc driftfix=slew -global
+> > > kvm-pit.lost_tick_policy=discard (the PIT policy is what keeps AVIC
+> > > active for this guest)
+> > >
+> > > Crash
+> > > - STOP 0x0000000A IRQL_NOT_LESS_OR_EQUAL, IRQL 2, always in ntkrnlpa.exe.
+> > > - SP4 kernel: 0x0A (0x00000154, 2, 0, 0xDD537EAF), ntkrnlpa+0x137EAF,
+> > > mov ecx,[ebx+0x154] with ebx = 0 or 0xF000FF53 (the real mode IVT
+> > > pattern, i.e. the contents of guest physical page 0).
+> > > - UR1 kernel: 0x0A (0x00000098, 2, 0, 0xDD53C9E6), ntkrnlpa+0x13C9E6,
+> > > read of [esi+0x98] with esi = 0.
+> > > - One write variant was also seen: 0x0A (0x00000098, 2, 1, 0xDD53C84C).
+> > > - The faulting code is the PAE memory manager's hyperspace page table
+> > > walk: it maps a page table page into a per-CPU hyperspace slot by
+> > > writing a PTE, then reads through the slot, and the read comes back
+> > > zero.
 
-[Severity: High]
-When write_segment_descriptor() fails in arch/x86/kvm/emulate.c:
-emulator_do_task_switch(), will returning the non-X86EMUL_CONTINUE status
-actually reach the emulation-failure exit in kvm_task_switch(), or does it
-cause emulator_task_switch() to return EMULATION_OK while skipping register
-writeback?
+I don't see how AVIC can possibly influence this.
 
-Tracing the call chain from write_segment_descriptor() ->
-linear_write_system() -> emulator_write_std() ->
-kvm_write_guest_virt_helper():
+> > > - When it crashes, 7 of the 8 vCPUs are stopped at the same EIP
+> > > (0xDD4335C3) and the crashing vCPU is at 0xDD06A1A6.
+> > >
+> > > Reproducer
+> > > 6 concurrent sessions, each looping 200 short cmd.exe processes plus
+> > > one debug.exe, so heavy process create and exit.
+> > >
+> > > Results on the clone (stress started after boot, same disk each time;
+> > > 8 vCPU 2x4, kvm64, numa on, 8192 MiB unless stated)
+> > > - AVIC on, /PAE /3GB (baseline): crashed at 134 s
+> > > - AVIC on, /3GB only, no /PAE: survived 300 s
+> > > - AVIC on, /PAE /3GB, 3584 MiB (no RAM above 4 GB): crashed at 26 s
+> > > - AVIC on, /PAE without /3GB: crashed at 30 s
+> > > - AVIC on, /PAE /3GB, QEMU vapic=off: crashed at 26 s
+> > > - AVIC off (PIT reinject), /PAE /3GB: survived 600 s, twice
 
-arch/x86/kvm/x86.c:kvm_write_guest_virt_helper() {
-	...
-		if (gpa =3D=3D INVALID_GPA)
-			return X86EMUL_PROPAGATE_FAULT;
-		ret =3D kvm_vcpu_write_guest(vcpu, gpa, data, towrite);
-		if (ret < 0) {
-			r =3D X86EMUL_IO_NEEDED;
-			goto out;
-		}
-	...
-}
+Do you need /3GB? Can you try AVIC off (inhibited rather) without /3GB?  
+I'll be interested to know if any AVIC off/inhibited scenarios with /PAE 
+can reproduce this.
 
-At this commit (prior to the later commit "KVM: x86/emulate: Propagate memo=
-ry
-faults to userspace" in the series), any write failure returns
-X86EMUL_PROPAGATE_FAULT or X86EMUL_IO_NEEDED (without setting
-vcpu->mmio_needed), and never returns X86EMUL_UNHANDLEABLE. Even after comm=
-it
-"KVM: x86/emulate: Propagate memory faults to userspace" wires up
-X86EMUL_MEMORY_FAULT to EMULATION_MEMORY_FAULT, non-memory-attribute failur=
-es
-still return X86EMUL_PROPAGATE_FAULT (for example, when the GDT page is
-mapped read-only in the guest page tables with CR0.WP=3D1) or
-X86EMUL_IO_NEEDED (for example, when the GDT is in a read-only memslot).
+> > > - AVIC on, /PAE /3GB, repeat with tracing: crashed at 15 s
+> > > - AVIC on, /PAE /3GB, 1 socket x 8 cores: crashed at 50 s
+> > > - AVIC on, no /PAE, 30 minute soak: survived 1800 s
+> > >
+> > > The production copy of the guest also crashed 3 times in one day on a
+> > > single vCPU with AVIC on (7.0.14-25, enable_ipiv=N), so one vCPU
+> > > lowers the rate but does not remove it. Setting the CPU vendor to
+> > > GenuineIntel made no difference. During a traced run the AVIC IRQ
+> > > window toggled about 1 to 2 times a second, so I do not think it is
+> > > the IRQ window inhibit issue.
 
-In arch/x86/kvm/emulate.c:emulator_task_switch():
+Right - if AVIC has any role here, it has to do with APIC Register 
+access acceleration.
 
-	if (rc =3D=3D X86EMUL_CONTINUE) {
-		ctxt->eip =3D ctxt->_eip;
-		writeback_registers(ctxt);
-	}
+> > >
+> > > The same guest image ran on an Intel Xeon E5-2620 v4 host (Proxmox VE
+> > > 5.4, kernel 4.15) for years and has no crash dumps on its disk from
+> > > that time.
 
-	return (rc =3D=3D X86EMUL_UNHANDLEABLE) ? EMULATION_FAILED : EMULATION_OK;
+That's an old kernel. If you have access to it, will you be able to try 
+a newer kernel/QEMU on it?
 
-And in arch/x86/kvm/x86.c:kvm_task_switch():
+In fact, it will be nice if you can try the above test matrix on an 
+Intel box too -- it will be good to understand if all those combinations 
+work well on Intel.
 
-	if (ret || vcpu->mmio_needed)
-		goto unhandled_task_switch;
+> > >
+> > > What I have not tested: npt=0, because AVIC needs NPT, so npt=0 would
+> > > also turn AVIC off and could not tell the two apart from the AVIC off
+> > > run above. It would also be a host wide change on a host running ~70
+> > > other production workloads/guests, and we can't risk performance
+> > > impacts. Also kernels other than 6.14 and 7.0.
+> > >
+> > > A possibly relevant difference: AMD APM Vol 2 section 15.25.10 says
+> > > that under nested paging the guest's PAE PDPTEs are not loaded at MOV
+> > > CR3 the way they are natively or under Intel EPT. I have not proven
+> > > that is the mechanism, and the AVIC off result says interrupt delivery
+> > > or timing plays a part as well.
+> > >
+> > > I can provide the two minidumps, register captures of all vCPUs at the
+> > > moment of a crash, and KVM traces, and I can run any patch against the
+> > > clone.
+> > >
+> > > Thanks,
+> > > Sam Howell
+> > >
 
-	kvm_rip_write(vcpu, ctxt->eip);
-	kvm_set_rflags(vcpu, ctxt->eflags);
-	return 1;
 
-When this first write_segment_descriptor() call fails on an IRET or JMP task
-switch, skip_emulated_instruction() has already advanced RIP, and
-emulator_task_switch() returns EMULATION_OK (0) with vcpu->mmio_needed fals=
-e.
-Doesn't kvm_task_switch() then silently turn the task switch into a no-op a=
-nd
-resume the guest without injecting an exception or exiting to userspace?
+- Naveen
 
->  	}
-> =20
->  	if (reason =3D=3D TASK_SWITCH_IRET)
-> @@ -2949,7 +2951,9 @@ static int emulator_do_task_switch(struct x86_emula=
-te_ctxt *ctxt,
-> =20
->  	if (reason !=3D TASK_SWITCH_IRET) {
->  		next_tss_desc.type |=3D (1 << 1); /* set busy flag */
-> -		write_segment_descriptor(ctxt, tss_selector, &next_tss_desc);
-> +		ret =3D write_segment_descriptor(ctxt, tss_selector, &next_tss_desc);
-> +		if (ret !=3D X86EMUL_CONTINUE)
-> +			return ret;
-
-[Severity: High]
-Similarly, if this second write_segment_descriptor() call in
-arch/x86/kvm/emulate.c:emulator_do_task_switch() fails with
-X86EMUL_PROPAGATE_FAULT or X86EMUL_IO_NEEDED (for instance, if the GDT page
-containing next_tss_desc is read-only or unmapped under the new CR3 just
-loaded by load_state_from_tss32() when segment descriptors are VM86/NULL or
-already have the Accessed bit set, or if the GDT resides in a read-only
-memslot), can returning early here leave the vCPU in a half-switched state?
-
-At this point in emulator_do_task_switch(), task_switch_16() or
-task_switch_32() has already committed the new task's CR3, ctxt->eflags, and
-segment registers (LDTR, ES, CS, SS, DS, FS, GS). Returning early skips
-setting X86_CR0_TS, loading VCPU_SREG_TR, pushing error_code, and updating
-dr7 in emulator_do_task_switch(), and skips updating ctxt->eip =3D ctxt->_e=
-ip
-and calling writeback_registers(ctxt) in emulator_task_switch().
-
-Because emulator_task_switch() still translates X86EMUL_PROPAGATE_FAULT and
-X86EMUL_IO_NEEDED into EMULATION_OK without setting ctxt->have_exception, a=
-nd
-arch/x86/kvm/x86.c:kvm_task_switch() neither checks ctxt->have_exception nor
-takes the unhandled_task_switch path when ret is 0 and vcpu->mmio_needed is
-false:
-
-	ret =3D emulator_task_switch(ctxt, tss_selector, idt_index, reason,
-				   has_error_code, error_code);
-
-	/*
-	 * Report an error userspace if MMIO is needed, as KVM doesn't support
-	 * MMIO during a task switch (or any other complex operation).
-	 */
-	if (ret || vcpu->mmio_needed)
-		goto unhandled_task_switch;
-
-	kvm_rip_write(vcpu, ctxt->eip);
-	kvm_set_rflags(vcpu, ctxt->eflags);
-	return 1;
-
-Won't kvm_task_switch() drop the architectural fault or write failure and
-resume the guest with the new task's CR3, EFLAGS, and segments but the old
-task's TR, RIP, and general-purpose registers?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174130.8779=
--1-pbonzini@redhat.com?part=3D4
