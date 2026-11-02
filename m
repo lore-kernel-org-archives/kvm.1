@@ -1,57 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793649933;
-	b=3ZGWROT61vPFCMiKV+Up9SLJbQQaWTpVtZ6SXW41FBNvxRcVMY6n8CPDhl2dEVWU4IWe
-	 k560ZKOG1xxmxGgJUq8+uz2kxldqnEKOhpyiqvzxGnNrjkspECUAy7xb3u2oJTk401KBR
-	 /mkg4QG5QyNInV6nfwhO1LOJ8TtOFgfI31xukHFzD8xwqYRn8mEZc3M4We+9J43wGoa0Q
-	 RseTdb8mZ5X9mvMmMsOZhG/+1RQKKH6Yn1isCvTq/QNV0FI4POffjc/M0sbiOZ58/Rjy2
-	 GHjWVekaQPx8ThP3xwCRbVrIJkoPDis7succEUbe3fuZ71vwOYR5gdlMYWjunihbU+g==
+	t=1793649989;
+	b=gTZKpDNDXxblWbOMolgclZFQibviAm934E2PU8+ptrOof1mmwJa1gOfMDFmEylSMRvw1
+	 O659+49Ycn4hKX3YBZzowz5ke9GC3JEy9w9SVzzRbc6Hk9AZfMP7unOVcLyYTHmOEbMsG
+	 pB1RcZ7jokuaSP+nRU5VHIjfZUCuHkdfGp8UmAF2l+3/ETN80aKBpZcbc6HBUG0/4OSyd
+	 2+n8HeIuqE6d2/QF6YSmYXXyJhnbtIxcLwKVtR1k0IK60aT6H2o6j7zqfRzZ+0+dx5zIo
+	 1IF1533d/CiUbHZddgS0/RHsq9e1M6xibkdGvRjVQJRHqHjWREIRuMVpYebZ3CiY3Qg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793649933;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=9HK/8271O9tRFDuPGRWAfiiNEO0MDZcci8EHSCzCM0Y=;
-	b=aftTaY8+NxOO/XUs3l3GmAkwU8TuHFB6Y4SyV9LH7ZXgHTelKeelEqhZP1dkLMZgyr/T
-	 qc2Eb2kClTm3JWgfqjAIcZEEJPECgUNQK7Dz2hHP9Cab0yC2Z+UAKPS74zdKG8wU8e+ym
-	 TQIxobxJuJeCYUDa8Sgk33hmALlqLSggOpU2X+gKk64vN63oPd87VJ86PttL/Tkn7GcAb
-	 NwbU7cbJGL97jzBBjg/Ym5cMSY0hj8bcyhkDPukhSaMQzE6Pbh5+IRMvOF2Dmy57qgf2M
-	 3dOg6dv5VP93zILpBanhSoJaEmREA/iRBFSQkZaOZW/YcmWW83hdBhf2+Rlz5Pz9zsw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793649989;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=zNXiOAtCffaAA2fqTojb2+8iN0aPYzLlWRJ/9iKFuRk=;
+	b=TYEiKlx1fpMDihR6as2ly//5m5BBcQPE7ZizgBZ6koR9AaUquo0oWNI+MpIEx3e7Ohlx
+	 zbB529tQ4It5LYJ9L+hHWea0cG19C/D19ImKGAt9VZP65DOmM9j6Nt2vkkrXYcX7gQNo+
+	 /qMpwWNsLMIVSrLsSIZ1iJa99yN/caEVvr4fDKZelgmiF/fNhtSxmZDQ3dLQxSO5hCryc
+	 dvcahrtsI8uU6K33Iy9IfEzp54lqmstJxczKcZY3YkD9EjDWqTzAdSNaMp/Ps4SZgI6iV
+	 ic7dhD7Hmbn0olweHpwZVbbQ8v4MiIXobC4mQW6glEMTIRfUECB3/LyVw3+35Lw5xjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cP1DKGNf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=h2tEebi8;
+	arc=none smtp.remote-ip=209.85.210.198
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003F1606A326;
-	Mon,  2 Nov 2026 20:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6DB606D821
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 20:06:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E6DB606D821
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cP1DKGNf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836481F00A16;
-	Mon,  2 Nov 2026 20:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793649932;
-	bh=9HK/8271O9tRFDuPGRWAfiiNEO0MDZcci8EHSCzCM0Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cP1DKGNfOlUxRruSgb9QrCzOU4ZvJ/yHz+wcURWl+dxrsp4aRzoJICjw46NHh3ROq
-	 so0tkGRN2OYVzWgoj8PXn1Zq2E2CLnVPmwAR9g2ytSCrXjST5+lTpdS7NCrgRynnO1
-	 GjMDgKvbzFyuVL/CsaNwanhOKZAs7VR7M7otk5bNsSFDcv2uYEZ42h866+5WgOfbLB
-	 E6/FYC/w141XZjqOsspcWKaqGzZUshaa9yvxkEgGGDgL6EfmnmAbpO9cYXcf6bTY2k
-	 5fn135FFoojG8SDVQzryh8Htpip64/8AeN8ynQkOX0MP5gYYaKLhe3XNGa/gpwGX5N
-	 YPqYTbH4GZzvQ==
-Message-ID: <sashiko-outbox-194056@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 06/16] KVM: arm64: gic-v5: Add ITS MMIO state
- emulation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <sascha.bischoff@arm.com>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
-In-Reply-To: <20261102194454.4086911-7-sascha.bischoff@arm.com>
-References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
- <20261102194454.4086911-7-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 20:05:32 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=h2tEebi8
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a0592d4539so4747364b3a.3
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 12:06:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793649989; x=1794254789; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zNXiOAtCffaAA2fqTojb2+8iN0aPYzLlWRJ/9iKFuRk=;
+        b=h2tEebi8FlhlcvgSGF+Nw/ZVewUA2y/5u0vJabVq7OkTIT3HMeELFE9IJdjSJCWHqL
+         8bWvBIE0icLkBRS1dkuUxeXd1ZFPvyWKOg6SU/fCfEfSN8xoRfs0ZdDoJgDJAcmoORYb
+         D+/OipMtTEeuyPRDjNy0D/5E7e/AyZgXuJZe7EzaVIVbWExIlJT/53qyXQRgz1c4R5c9
+         KmFQ3sBY1LHQtnO0XDwp+JDuHwsknqQJaINYhagN8WR0EnTUr4rf892ZcnTKhFPeXHRt
+         L9CSrjI7+nJNEWqPvrNd5ft3ixghCVbw3jpqySsZo/K5nB5WyCmh6DYeyyMtMwii5Rj8
+         Retg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793649989; x=1794254789;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zNXiOAtCffaAA2fqTojb2+8iN0aPYzLlWRJ/9iKFuRk=;
+        b=jDidYHtkUd51y1dnygAHbjaJ2tybbjHyE4nL3evDejx0aK5dYz+W+jecUJdry9h6+U
+         BwT5As8zbQyRqh5N9gsHTPNKRIARgxHnHCYsP9WvTXLHobKYCwmgjmxZzrU6F4e/dJau
+         P3feMTP8ZyUSjpl0OHFhFuR6DJBtZUt8t0SmHbogFV4D0Hs5FYZ4ho179EDGsy/egcyr
+         NyGFQoqM4SOYaa32rcayj9ECw+FKcHbLX5laZ46BHgsrsnWeKPMkE5Cawh74sk+yU+Rs
+         PvYoawV0gu9aEGjSOm1mNG1g2AkIs2qfZTfiEKoINX7ca3gOqzfRqqgZbo9u1g0XNdHn
+         uXxw==
+X-Forwarded-Encrypted: i=1; AKwUvBzFyr106Z1aNDDL0w125mhz03n8x5J0sE2NyfHYc9+jEmiMlg4nmHosyZCIJWMachJVnWk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+fTECiXUknSZF4qKLpEzeg5ZRML//phan4odPsKdfwV5vHxhl0
+	Pqq3OEJ8B0alDYKTsnsJ84twD9YXpI381VQWJxPvBUN84xEZUyxVJcDISSrF5gBp+z9qji/E2ZX
+	JwezTIrheV5hH8A==
+X-Received: from pffl1-n2.prod.google.com ([2002:a05:6a00:c341:20b0:8a1:d11:a833])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:71c7:b0:89f:6989:cb9c with SMTP id d2e1a72fcca58-8acb218bb8cmr3588221b3a.13.1793649988443;
+ Mon, 02 Nov 2026 12:06:28 -0800 (PST)
+Date: Mon,  2 Nov 2026 20:06:24 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,156 +75,165 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+Message-ID: <20261102200624.1570562-1-skhawaja@google.com>
+Subject: [PATCH v2] vfio: selftests: Remove libuuid dependency
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
+Cc: Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Samiullah Khawaja <skhawaja@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] KVM: arm64: gic-v5: GICV5_ITS_SYNCR registered as 32-bit instead=
- of 64-bit
-- [Medium] KVM: arm64: gic-v5: vgic_v5_its_reset() sets idr1.l2sz=3D0 for 2=
--level tables
---
+Libvfio depends on an external dependency libuuid for parsing vf_tokens.
+Building it in cross compilation environments gives the following error,
 
-commit 26a03544ad8ae134679e971108dc975221b2093a
-Author: Sascha Bischoff <sascha.bischoff@arm.com>
+ ld: cannot find -luuid: No such file or directory
 
-KVM: arm64: gic-v5: Add ITS MMIO state emulation
+It also complicates building with glibc alternatives like musl, see
+https://lore.kernel.org/kvm/c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com/
 
-This commit replaces the placeholder GICv5 ITS IODEV region with the
-architected register layout and adds MMIO read/write handlers and reset
-state for the ITS configuration and translation-control registers.
+As it is only used for parsing vf_tokens, remove the dependency by
+adding a minimal uuid_t and uuid_parse() to libvfio.
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic=
--its-v5.c
-> index 5790b029f09b6..f04161c315b78 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+Tested by running vfio_pci_sriov_uapi_test selftest.
 
-[ ... ]
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+---
+v2:
+- Move the parser to lib/uuid.c and lib/include/libvfio/uuid.h (David)
+- Drop the vfio_ prefixes and add a uuid_t (David)
+- Mention musl in the commit message (David)
 
-> +static void vgic_v5_mmio_write_its_dt_itt(struct kvm *kvm, void *dev,
-> +					  gpa_t addr, unsigned int len,
-> +					  unsigned long val)
-> +{
-> +	struct vgic_v5_its *its =3D dev;
-> +	size_t offset =3D addr & (SZ_64K - 1);
-> +
-> +	guard(mutex)(&its->its_lock);
-> +
-> +	switch (offset) {
+v1: https://lore.kernel.org/all/20260925013110.3447626-1-skhawaja@google.com/
+---
+ .../selftests/vfio/lib/include/libvfio.h      |  1 +
+ .../selftests/vfio/lib/include/libvfio/uuid.h | 11 +++++
+ tools/testing/selftests/vfio/lib/libvfio.mk   |  3 +-
+ tools/testing/selftests/vfio/lib/uuid.c       | 47 +++++++++++++++++++
+ .../selftests/vfio/lib/vfio_pci_device.c      |  2 -
+ 5 files changed, 60 insertions(+), 4 deletions(-)
+ create mode 100644 tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
+ create mode 100644 tools/testing/selftests/vfio/lib/uuid.c
 
-[ ... ]
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio.h b/tools/testing/selftests/vfio/lib/include/libvfio.h
+index 07862b470777..e9d513c3a08e 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio.h
+@@ -6,6 +6,7 @@
+ #include <libvfio/iommu.h>
+ #include <libvfio/iova_allocator.h>
+ #include <libvfio/sysfs.h>
++#include <libvfio/uuid.h>
+ #include <libvfio/vfio_pci_device.h>
+ #include <libvfio/vfio_pci_driver.h>
+ 
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
+new file mode 100644
+index 000000000000..52406f3409b7
+--- /dev/null
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
++#define SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
++
++#define UUID_SIZE	16
++
++typedef unsigned char uuid_t[UUID_SIZE];
++
++int uuid_parse(const char *in, uuid_t uu);
++
++#endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H */
+diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
+index eff95828719e..d1d1b2b05af1 100644
+--- a/tools/testing/selftests/vfio/lib/libvfio.mk
++++ b/tools/testing/selftests/vfio/lib/libvfio.mk
+@@ -7,6 +7,7 @@ LIBVFIO_C := iommu.c
+ LIBVFIO_C += iova_allocator.c
+ LIBVFIO_C += libvfio.c
+ LIBVFIO_C += sysfs.c
++LIBVFIO_C += uuid.c
+ LIBVFIO_C += vfio_pci_device.c
+ LIBVFIO_C += vfio_pci_driver.c
+ 
+@@ -30,8 +31,6 @@ $(LIBVFIO_O_DIRS):
+ 
+ CFLAGS += -I$(LIBVFIO_SRCDIR)/include
+ 
+-LDLIBS += -luuid
+-
+ $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c | $(LIBVFIO_O_DIRS)
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+ 
+diff --git a/tools/testing/selftests/vfio/lib/uuid.c b/tools/testing/selftests/vfio/lib/uuid.c
+new file mode 100644
+index 000000000000..378904d9340a
+--- /dev/null
++++ b/tools/testing/selftests/vfio/lib/uuid.c
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <string.h>
++
++#include <libvfio.h>
++
++/*
++ * Minimal replacement for libuuid's uuid_parse(). libuuid is part of
++ * util-linux and is routinely absent from cross-compilation sysroots, which
++ * makes the vfio selftests unbuildable for non-native architectures.
++ */
++#define UUID_STRING_LEN	36
++
++static int hexval(char c)
++{
++	if (c >= '0' && c <= '9')
++		return c - '0';
++	if (c >= 'a' && c <= 'f')
++		return c - 'a' + 10;
++	if (c >= 'A' && c <= 'F')
++		return c - 'A' + 10;
++	return -1;
++}
++
++int uuid_parse(const char *in, uuid_t uu)
++{
++	const char *p = in;
++	int i, hi, lo;
++
++	if (strlen(in) != UUID_STRING_LEN)
++		return -1;
++
++	for (i = 0; i < UUID_SIZE; i++) {
++		if (i == 4 || i == 6 || i == 8 || i == 10) {
++			if (*p++ != '-')
++				return -1;
++		}
++
++		hi = hexval(*p++);
++		lo = hexval(*p++);
++		if (hi < 0 || lo < 0)
++			return -1;
++
++		uu[i] = (hi << 4) | lo;
++	}
++
++	return 0;
++}
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index 4063a0e2b3df..4ae6ac1f8ed8 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -23,8 +23,6 @@
+ #include <linux/types.h>
+ #include <linux/vfio.h>
+ 
+-#include <uuid/uuid.h>
+-
+ #include "kselftest.h"
+ #include <libvfio.h>
+ 
 
-> +	case GICV5_ITS_INV_EVENTR:
-> +		its->inv_eventr.l1 =3D
-> +			FIELD_GET(GICV5_ITS_INV_EVENTR_L1, val);
-> +		its->inv_eventr.itt_l2sz =3D
-> +			FIELD_GET(GICV5_ITS_INV_EVENTR_ITT_L2SZ, val);
-> +		its->inv_eventr.i =3D FIELD_GET(GICV5_ITS_INV_EVENTR_I, val);
-> +		return;
-> +	case GICV5_ITS_SYNCR:
-> +	case GICV5_ITS_READ_EVENTR:
-> +		return;
+base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+-- 
+2.56.0.385.gac671c819a-goog
 
-[ ... ]
-
-> @@ -31,11 +298,153 @@ static void vgic_v5_mmio_write_its_wi(struct kvm *k=
-vm, void *dev, gpa_t addr,
->  	}
-> =20
->  static const struct vgic_register_region vgic_v5_its_registers[] =3D {
-
-[ ... ]
-
-> +	REGISTER_ITS_V5_DESC(GICV5_ITS_STATUSR, vgic_v5_mmio_read_its_dt_itt,
-> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
-> +	REGISTER_ITS_V5_DESC(GICV5_ITS_SYNCR, vgic_v5_mmio_read_its_raz,
-> +			     vgic_v5_mmio_write_its_dt_itt, 4,
-> +			     VGIC_ACCESS_32bit),
-
-[Severity: Medium]
-Should GICV5_ITS_SYNCR be registered as an 8-byte register with
-VGIC_ACCESS_64bit | VGIC_ACCESS_32bit (and handle GICV5_ITS_SYNCR + 4 in
-vgic_v5_mmio_write_its_dt_itt())?
-
-In include/linux/irqchip/arm-gic-v5.h, GICV5_ITS_SYNCR is a 64-bit register
-with GICV5_ITS_SYNCR_SYNC at BIT_ULL(63) and GICV5_ITS_SYNCR_SYNCALL at
-BIT_ULL(32):
-
-#define GICV5_ITS_SYNCR_SYNC			BIT_ULL(63)
-#define GICV5_ITS_SYNCR_SYNCALL			BIT_ULL(32)
-#define GICV5_ITS_SYNCR_DEVICEID		GENMASK_ULL(31, 0)
-
-In drivers/irqchip/irq-gic-v5-its.c, gicv5_its_syncr() performs a 64-bit MM=
-IO
-write to this register:
-
-	syncr =3D FIELD_PREP(GICV5_ITS_SYNCR_SYNC, 1) |
-		FIELD_PREP(GICV5_ITS_SYNCR_DEVICEID, its_dev->device_id);
-
-	its_writeq_relaxed(its, syncr, GICV5_ITS_SYNCR);
-
-With length 4 and VGIC_ACCESS_32bit in vgic_v5_its_registers[],
-vgic_get_mmio_region() -> check_region() rejects 64-bit guest accesses to
-GICV5_ITS_SYNCR, and vgic_find_mmio_region() fails to match 32-bit accesses=
- to
-the upper word at GICV5_ITS_SYNCR + 4. This also causes the
-KVM_DEV_ARM_VGIC_GRP_ITS_REGS userspace attribute access added later in the
-series to treat GICV5_ITS_SYNCR as a 32-bit register rather than a 64-bit
-register.
-
-[ ... ]
-
-> +static void vgic_v5_its_reset(struct vgic_v5_its *its)
-> +{
-> +	u64 mmfr0;
-> +
-> +	its->enabled =3D false;
-> +
-> +	mmfr0 =3D read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
-> +	its->idr0.pa_range =3D cpuid_feature_extract_unsigned_field(
-> +		mmfr0, ID_AA64MMFR0_EL1_PARANGE_SHIFT);
-> +	its->idr0.domain =3D GICV5_ITS_IDR0_DOMAIN_NON_SECURE;
-> +	its->idr0.mec =3D 0;
-> +	its->idr0.mpam =3D 0;
-> +	its->idr0.swe =3D 0;
-> +	its->idr0.its_id =3D 0;
-> +
-> +	its->idr1.dt_levels =3D 1;
-> +	its->idr1.itt_levels =3D 1;
-> +	its->idr1.l2sz =3D 0;
-
-[Severity: Medium]
-In vgic_v5_its_reset(), dt_levels and itt_levels are set to 1 to advertise
-2-level Device Tables and Interrupt Translation Tables, while its->idr1.l2sz
-is initialized to 0.
-
-In include/linux/irqchip/arm-gic-v5.h, GICV5_ITS_IDR1_L2SZ (bits [10:8]) is=
- a
-3-bit support bitmap rather than the 2-bit size encoding used in
-GICV5_ITS_DT_CFGR_L2SZ:
-
-#define GICV5_ITS_IDR1_L2SZ		GENMASK(10, 8)
-#define GICV5_ITS_IDR1_ITT_LEVELS	BIT(7)
-#define GICV5_ITS_IDR1_DT_LEVELS	BIT(6)
-#define GICV5_ITS_IDR1_DEVICEID_BITS	GENMASK(5, 0)
-
-#define GICV5_ITS_IDR1_L2SZ_SUPPORT_4KB(r)	FIELD_GET(BIT(8), (r))
-#define GICV5_ITS_IDR1_L2SZ_SUPPORT_16KB(r)	FIELD_GET(BIT(9), (r))
-#define GICV5_ITS_IDR1_L2SZ_SUPPORT_64KB(r)	FIELD_GET(BIT(10), (r))
-
-When a guest reads GICV5_ITS_IDR1 through vgic_v5_mmio_read_its_misc(),
-FIELD_PREP(GICV5_ITS_IDR1_L2SZ, its->idr1.l2sz) reports 0b000, indicating t=
-hat
-none of the 4KB, 16KB, or 64KB L2 granule sizes are supported. In
-drivers/irqchip/irq-gic-v5-its.c, gicv5_its_l2sz_two_level() checks those
-support bits and fails all of them (falling back to 4KB even on 16KB or 64KB
-page size guests, despite parse_two_level_dt() and parse_two_level_itt()
-supporting all three sizes).
-
-Should its->idr1.l2sz be initialized with the supported L2 table size bits =
-set
-instead of 0?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102194454.4086=
-911-1-sascha.bischoff@arm.com?part=3D6
