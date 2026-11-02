@@ -1,100 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793657020;
-	b=F+0xga9JDdaYHQsiPd3dbX+bCETGaeD4R8MMJymnJLx4JJMn3ljH5POAR+h1tC777qs+
-	 z9FdPfy8LiV2jEVcG5jFdVPxw5h/Eaf3nMk8u5eH+W/F8NpHTM0+pGEfH2oo/nirAZiGx
-	 kalyJs/77B8ioSG93Hok5x/eXyYwesGD7nZbki1f3wmwrKJZFHxiLAoVAomQ0gavYtSzy
-	 0RJ4oyM7Xqc7g/bRKtCMLucjjsAT3Q3VEbpfVlOnKRN8aCEJbSrYW+auJDSoz1WqGjA4v
-	 M7KbyEWdul4dXEhma6HRfrq5hdR0f+IKz9l1FEFSeGeDFH1sdORFN+59rA9290ZP4Jw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793657020;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793657186;
+	b=u3lq/lDyGIVR2KlFLqCB565MSeqR2325wAwf4uHhEkBnMmTWpq3Zz5rGCHMQqXjJrUP1
+	 gHTnc74LGoYPKbsZ60LY207OId1GIVSWv1T/+amrZeAgu0DidVdIxfKPS5dcS+jLgjojW
+	 WHzr8zKMQeitybs4pN4NAVvHJRAGt4qCuez9waM2Li54YmhHeeAokmG6rMMelbb3ZkO+9
+	 K5BaehLa8bcEEhIqVuVO927cT6xr7EEktff/3lcKdwkzP9lt7LwqkQ4l+qOFbpCkDrpL8
+	 xanr7qE47m6Mc3uKrieKrULru33qTccTXYCr05hQZqGOVeU2lM2iHSHyymtkJE1m5Hg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793657186;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
-	b=Z3sL7ItnHA1ULDD775lX3nKe/DGe851MfdlYMxRBxArDPsZees7I0l7f63XAsvXwr34F
-	 7JmbG1PK9T3UWyPuPePSQG5URS8Ag26dP7OPIzHvWuCQ5L8Ee/a42WFT+ln7q0cTb9fFW
-	 W5/I6MQYsI/3WY4tUaH+QZIJzn+m2uQ+0ahml45nwhYTzhHQbH5i6LSG4cZRoZj1h1iff
-	 +YDh0DYGwiosRtmOQgzrezycYnVCEhpc5997XtrkRRy/Cci0BGElFCRRF0kFozOWq2W+7
-	 e1m0Soz6SqkO6A69DivbvQXcXUnnZUNdHnmhe44vGTlePTtOMhj0WovgsKTKHUUBw9A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=NH6jz3WPUJHIT+J12ydGYZK6J+d3CqEgAa315HjW4cw=;
+	b=C4/lLxP4s02n8SK2ya+3Gs1UO6hpE7EQcfbDwtNIEmLrPZBd8om1bI/nmkZmP71JYN22
+	 /1Ux4BrmOJimBlMKsi3EzdrvgcyWA98zWYJ6yWSvP6c138bH3DEIsY+24gRNNpj/B3wrH
+	 j7No6Y4/JnBlMM2IzraGtkbe5Qiu/oeGG4uZoSWiIgofhr2/2cc/iv6rB2qwP/5baBsUq
+	 RZKlhTjbdaoEmLcFYYirEoYC5n6SczlQ/P/LXL1/6Xff0n260MR31bSkHip+8dXhl1oYx
+	 dt+aR/WACFqUGk54dn2LKlENLFKdomBqK4Nk1famLG3O3a2mad8yhBbTSKW1G3iwVbg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eKIjyL9t;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B1AD7UqS;
+	arc=none smtp.remote-ip=209.85.214.181
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD61E606A326
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 22:03:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD61E606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E539D606A32C
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 22:06:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E539D606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eKIjyL9t
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so3093a12.0
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 14:03:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793657018; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Mmg142NcgWXk9fqAEtUgZS1rCdF2TA3ssATARFagSU7BtJbxaNhjZMFMgyHs8wIJI7
-         G8ajLGZ/imEjgQlNP1OJ316ihRF0nyx744odgCI4vqhfWeRw073Moy5kNjmCHXTpOQ8j
-         RPU47gqfIEEAWQJw2qT84fEwq/NJZsoZfkVHfX5aiYZ4HfjzpQ+ge67xQsY1XCuC6q2g
-         Q/9J4vMpBJ+h1UOSR90EMNv+1XZ1hxRlNXjkaIUxsDfhbzxTKIgmdOO/idnDjnv+4gkb
-         ufHGhi5N9Edbydcw9etju/3mmwL50FPQEYmszLSTSHn6DzFUwgWFWqwfhG/eixSE9g1g
-         WJCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
-        fh=OAu4jDtxRdlpD9DC7Y68/Xswor39swnViLJwWokWQBc=;
-        b=gqbJRtu9jw31NnCD+hqGpd8YI6F1MCUYMEzkuPFMGrDfglZ5fQaHqXPdxxYNqmpDjo
-         T/VcdYwXK9zNpXOFHzLhD1chJlTkNqCNtDqcTCvIQEBbJC8EEqEKF/SXaoBYixyvfNJk
-         H4hqdzZHvjErJBjejqxRU3eDdVWR4cOa5WaSQSfmb7K0RWkdmM3SDbL9f+JiYYUdqOgs
-         4r1Qe/Pu2Rh5mgdnevNUCRV6I89MhUZpCHrmarL4ivVUvKGIY6uhzYw54pXg3AhiQkDu
-         woAES0G9JDh8OPSJ4fylyaLxBRpYVyo7KuAcYi5Y4YqPMnpTYJJy2jvDhNIX2A7ha9a/
-         yDOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B1AD7UqS
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ea94541adbso15348945ad.2
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 14:06:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793657018; x=1794261818; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=google.com; s=20260707; t=1793657185; x=1794261985; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
-        b=eKIjyL9tJJgkUM84z/AEYuKFdq2F89MguOg4/JVV770xf+cFqZnUOCaDRGoGs17CVK
-         5LsH3tiIEzTZrwgawdNY/w/0rnY1/NNaBZUDy13IjciYwldh5bZov4HLLdr/VTUqxe50
-         WIpzFdEtlxh7vlkRwrK2NbO/Dm//tNglyyJ7bzZgaGwUwgRRV5oMpsKtl9RA3inBJuG1
-         AbSeB2f5on544dmM+ku70U8aTDcmI+TX80ZvCRJVCjx3w1EyLvs8wdqT9a2Ga9mYhwZm
-         bHfRrTu2gSB5GCI46FK0Y22BQRXK4p7A8dFCIIWFFGB+uhp8r3AkeZwNcuTITCDriyYu
-         3R5A==
+        bh=NH6jz3WPUJHIT+J12ydGYZK6J+d3CqEgAa315HjW4cw=;
+        b=B1AD7UqSqrGX1/VZ9OPSvRwQQaY1cQeTHUa+6qKksae8nAaFO6w3T01WQxSAS5F9pr
+         3p3mBtKjiUnZw4iKOK+uwGkSkRA8Rx/rlSVfvuv1XSvkvMyiLlzoHOE2DOHXpivjkpHO
+         htLEikQv31Jn0Hyi6pbSQKcJQTV+ZlUcssFRrd7PJLhdXlbVw84gu2Z4D/xFcfnKNiDm
+         MlrIHQvplxHQEgqxKc+vHzBp0zIEgNH2xDIAARXoQmgTFLQ0X9PlbjR1qsFkCsL4LAoe
+         OQI33JJnV+fdOJz0LxWGRphXSw8FC4m5WltrkCBeEsddhd/jdWDedF4pmEKRg+SPdhTa
+         uafw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793657018; x=1794261818;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793657185; x=1794261985;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rrfVG2EGCWVcNVqJJ0w+zoLBPZPkVLhQgz0OvfGHs+s=;
-        b=EFdhicXvz1Q3ihedgmFBiZoAgHZ8aadP3U/5/Kpx+39997aUwuMjAhT7mbPHCegSuI
-         a0spNOnlHjSA7IakViJmaFK1HwA1xEsHycrIhTRuTbZDiGHLUus0NDgnqkrRj3+ctmJj
-         37zGwKqbY6F863ASgLD/TipKsHGzSWJtN7z/JuzPNNmJKQbwWv3an9vxnMcvcnpDhWbA
-         NwqW5nLd9Jg/K52St5evhGK6eO9VMyMFVQrb3AXp745wKYubGkcbpwvSL75VvBalP9Ny
-         9m0crHsB+Z9+1nWkd+2Fkg3Mp1KLqXs7llHijrIrv+F5f0dqofyBUfbejmQ2tyBytqGy
-         azAQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw+dkbwhg55YH5R8DwiGut/O8NpaVrLR0DAhCKkhgwrPxEoXZkPlTm0lqwTTklNgOyehGA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9mg++H5TwtIpMOJca6aCxX6RPthdvZBJdZ3dUKei1W8M0yUyE8
-	QpXRgOiXwMeh1b8PFE2xy60aCVf2B+4kbKDaeJgTY5F6yPIS673RIhj4xhqurGrtnp1k1hbujQL
-	u1V4wK/dTNeNlQwXHrRxCJo/52DVTvxrah3Y165kc
-X-Gm-Gg: AYBFou2dQW+VF7glRLRYzDvwqasu7UqY6Oayx6c6o7ZsqHsCTjI6TSCxkmXzyffiyl8
-	I3LaDe+uBMRd2fXmQsCuZmLuK3VsuES5lU7ywyxCFJK6mao4S7OCT1HEq4cCunAXdRITHfmAGjd
-	6ksAetpBegLv66WFW1LxeiynlQD+KuU5gNW6guQexgfOipiDqeiLrbvdzLvLjx6/s9ucaH2P8/f
-	jp3jDwmQ9M6DBJ2v9Wtli3UOmeRGGzjL8Y1lXvXbkBBswJeYT1Lg4JxRAH1Ky7ryBc27GC1MBPs
-	6QNxaWu+iCaQHec3xwUK/M+5EdtdQRZAhUmi+o80biswxmJf9wF5A8YajpOKjp5dhSbwCQWYhX7
-	8Iyxx3+FZl9Q2xddO5kIJUBXuIM8qgUYeyFU3zA==
-X-Received: by 2002:a05:6402:2750:b0:6a6:7dff:61ab with SMTP id
- 4fb4d7f45d1cf-6b53e7796a1mr3987a12.15.1793657017608; Mon, 02 Nov 2026
- 14:03:37 -0800 (PST)
+        bh=NH6jz3WPUJHIT+J12ydGYZK6J+d3CqEgAa315HjW4cw=;
+        b=rm/GP2v+UswsOsRYjHh54OqX+lsBdcRKF6RS8a8aCqkigEmp/+nRhQX4jz6o1uWube
+         u41hUPoJ45VTEyT47tJBytJbb+bY44Z6YLemJPzXfPfn7uJrBixB3uK2ekx2bxNmZHbG
+         900YY7zRGIAFXGdTRwsKkE/yv4SCsJIeoTO+/v/A3bR6Suqyh7dL7g3Dbw65L1QFjHRj
+         LcC12MJyyZ215snKeC0eTsICH4l0DnJtdai+rUr+RqJfsvKY3ZBhEwqkJvmjA4kfqZXc
+         pFjJZjdAqze6kXrbcW4G4e5QvSPWolYuWgd5Q3W0KviPu/patHl8MwhRIYcwBlT9DMWM
+         46Rg==
+X-Forwarded-Encrypted: i=1; AKwUvBxPmKzRt8PNJwyq0NKJpk7qBFA71nrlzGFcZIQmATCKMMf/FBjAepH0XkjUzoYIw1Ht5zg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Bw6zj6/LPJiK29m9UQlM3IXRKoNIFHyl0RSga43kG5/LxbNVN
+	3AlnjJASH/iinoMIifvdX5Owq0huXPujVJxJj33a17+rkRn9OJqu7YcZEadqIu9b1w==
+X-Gm-Gg: AYBFou24ctR5aePgl9OhTEymFD/DnVwAk8ajI6kqB1Y4VYTD0M7/+WN6F/JccBO5iFu
+	lAHeIWlEBR3vgGtlkR29bNx10jnhSLh20FI/Vj8sTRPFbSgy4+a/nyYqhUX24V4J2bkR8ptU38Y
+	sXmALL8tf9ZDSeE6odkfwbFThFkYhqdzRLCrcIphyDOuh9N3U75n56xAcrUAG5BBvdBKOHfbS2d
+	IhbmX6q3vXtGWRH7lKCavPXeEPGtpWwWiO4XScp1pRSaZkC2v3ukONU96BJIDnuz7KUHBrWyWbY
+	LpeBxogH85f/1vaULN/NT6SI/d85e4bUlZvGh4yFKVRRZhP0i7Z//8hqZt7lTMLHIvQVKskYJ4n
+	mjtIt8N86AYc2r8ftONkuwMwaBlK56Q6VEiwS8oaXNx7IH6kvgIWRZEW2WAhejLzoNlEmnQ+d4l
+	tiomvg4EDbjHR9NNfMZTa1tZI5l5Uid76+Xn668lk4znb6bY4w2Ez6hjg3Bn6NvQkgR+ZNyf+E3
+	79Fgf6zEaeRtpDa8c/tKSOt5HwDyiRWToZgGbqB2hZn7OOzucjl8ymP7CQFls6zxjFr1Ms17Oi4
+	Bd9ZOGlNoxuCcJ1irwOWlO6eIeD7H3Xp8u2vdNmNcdf3atVWYnO26ssJA4dSCiQhxcvZlvgG4cY
+	it9k92iu7Zw==
+X-Received: by 2002:a17:902:e54b:b0:2eb:250a:f4c0 with SMTP id d9443c01a7336-2eb364b121dmr103721415ad.33.1793657184617;
+        Mon, 02 Nov 2026 14:06:24 -0800 (PST)
+Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39248909sm32370385ad.33.2026.11.02.14.06.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 14:06:22 -0800 (PST)
+Date: Mon, 2 Nov 2026 22:06:19 +0000
+From: David Matlack <dmatlack@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vfio: selftests: Remove libuuid dependency
+Message-ID: <aukJW-svGhlH4Jut@google.com>
+References: <20261102200624.1570562-1-skhawaja@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,117 +98,207 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261030212112.2598640-1-seanjc@google.com> <20261030212112.2598640-3-seanjc@google.com>
-In-Reply-To: <20261030212112.2598640-3-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 2 Nov 2026 14:03:25 -0800
-X-Gm-Features: AclHuK_pbmXvVHoGFvB48dY3tOJxijbO3CKujkx_4ml0ueoZxbb4z5FYesg9juM
-Message-ID: <CALMp9eR-di2U5QZzDHh7CjnVg20ZnBcTBu0CKbbWh9QCxYiJdQ@mail.gmail.com>
-Subject: Re: [PATCH v4 02/23] KVM: nVMX: Don't force a full nested VM-Exit
- when destroying a vCPU
-To: Sean Christopherson <seanjc@google.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>, 
-	Chris Mason <mason@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102200624.1570562-1-skhawaja@google.com>
 
-On Fri, Oct 30, 2026 at 2:21=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> For all intents and purposes, revert commit b4b65b5642d6 ("KVM: x86: clea=
-nup
-> freeing of nested state") and go back to manually tearing down nested sta=
-te
-> when freeing a vCPU.
->
-> When a vCPU is destroyed while L2 is active, KVM synthesizes a nested
-> VM-Exit, which flushes the cached shadow VMCS12 back to guest memory:
->
->   vmx_vcpu_free()
->   |-> nested_vmx_free_vcpu()
->       |-> vmx_leave_nested()
->           |-> nested_vmx_vmexit(vcpu, -1, 0, 0)
->               |-> nested_flush_cached_shadow_vmcs12()
->                   |-> kvm_write_guest_cached()
->                       |-> __copy_to_user(ghc->hva, ...)
->
-> Accessing user memory via a memslot during VM destruction is broken, as
-> there are no guarantees that current->mm =3D=3D kvm->mm when the VM is dy=
-ing,
-> because the last reference to the VM can be put from a different process
-> than the original creating processes.
->
-> And even if the original process does put the final reference, during
-> process exit, do_exit() calls exit_mm() before closing file descriptors, =
-so
-> vCPU destruction runs with current->mm =3D=3D NULL on a borrowed lazy TLB
-> active_mm.  If the borrowed address space has a writable mapping at the
-> to-be-written userspace address, KVM will corrupt an unrelated task's
-> memory since uaccess APIs, including __copy_to_user(), don't sanity check
-> current->mm (and *can't* sanity perform KVM's current->mm =3D=3D kvm->mm =
-check
+On 2026-11-02 08:06 PM, Samiullah Khawaja wrote:
+> Libvfio depends on an external dependency libuuid for parsing vf_tokens.
+> Building it in cross compilation environments gives the following error,
+> 
+>  ld: cannot find -luuid: No such file or directory
+> 
+> It also complicates building with glibc alternatives like musl, see
+> https://lore.kernel.org/kvm/c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com/
+> 
+> As it is only used for parsing vf_tokens, remove the dependency by
+> adding a minimal uuid_t and uuid_parse() to libvfio.
+> 
+> Tested by running vfio_pci_sriov_uapi_test selftest.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 
-s/sanity//
+Please lead the commit message with what the patch does, and then follow
+up with the background and motivation. The VFIO selftests documentation
+(merged for 7.4-rc1) asks contributors to follow the KVM x86 guidelines
+for changelogs:
 
-> since that is firmly a KVM-only concept).
->
-> Furthermore, the shadow VMCS flaw is only the tip of the iceberg, as the
-> MSR load/store lists mean that emulating a nested VM-Exit can read or wri=
-te
-> an arbitrary set of MSRs, e.g. if MSR_KVM_SYSTEM_TIME_NEW is in L1's MSR
-> load list:
->
->       kvm_arch_vcpu_destroy()
->         kvmclock_reset() - takes pv_time off kvm->gpc_list
->         vmx_vcpu_free()
->           nested_vmx_free_vcpu()
->             vmx_leave_nested()
->               nested_vmx_vmexit()
->                 __nested_vmx_vmexit()
->                   load_vmcs12_host_state()
->                     nested_vmx_load_msr() - writes the MSRs that L1 liste=
-d
->                   kvm_cpu_has_injectable_intr() - reads Xen's vcpu_info
->         kvm_xen_destroy_vcpu() - deactivates the vcpu_info cache
->
-> processing the MSR write puts the "pv_time" cache back on kvm->gpc_list,
-> and the next list_del() writes into the freed vCPU.  And as effectively
-> pointed out by syzbot[*], attempting to fix each case individually is a
-> losing game of whack-a-mole.
->
-> Deliberately leave "nested_run_pending" as-is, because even though doing =
-so
-> creates potentitally inconsistent state, KVM should *never* consume said
+  https://docs.kernel.org/driver-api/vfio-selftests.html#contribution-guidelines
+  https://docs.kernel.org/process/maintainer-kvm-x86.html#changelog
 
-s/potentitally/potentially/
+Also please drop the "Tested by ..." line. Details about how you tested
+the patch are useful to reviewers, but they do not belong in the commit
+message. Put them below the "---" line (e.g. next to the v2 changelog)
+instead.
 
-> state while freeing a vCPU.  I.e. if leaving nested_run_pending set trips=
- a
-> sanity check or bug, then that just means there's more fixing to be done.
->
-> Open code only the "free vCPU" path, i.e. keep emulating a nested VM-Exit
-> when forcing a vCPU out of L2 via vmx_leave_nested(), as there are a numb=
-er
-> of updates buried in the nested VM-Exit flow that are needed if the vCPU =
-is
-> going to run in L1, e.g. clearing pending exceptions and MTF traps, setti=
-ng
-> the TSC offset+scale information back to L1, and so on and so forth.  Not=
-e,
-> this means svm_leave_nested() is all but guaranteed to be buggy, but that=
-'s
-> basically an open secret at this point and at least any bugs "only" break
-> L1, i.e. don't corrupt host state as is the case for abusing nested VM-Ex=
-it
-> when freeing a vCPU.
->
-> Link: https://lore.kernel.org/all/6ac0145f.34119e79.2f92f3.0003.GAE@googl=
-e.com [*]
-> Fixes: b4b65b5642d6 ("KVM: x86: cleanup freeing of nested state")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+How about something like this:
+
+  vfio: selftests: Remove libuuid dependency
+
+  Replace libuuid with a minimal uuid_t and uuid_parse() in libvfio, and
+  drop -luuid from the build. libvfio only uses libuuid to parse VF
+  tokens, so pulling in an external library is not worth it.
+
+  libuuid is often missing from cross-compilation sysroots, which causes
+  the VFIO selftests to fail to link:
+
+    ld: cannot find -luuid: No such file or directory
+
+  It also complicates building against glibc alternatives such as musl,
+  see https://lore.kernel.org/kvm/c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com/
+
+  Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+
+Other than the commit message and the minor comment nit below, the patch
+looks good. Feel free to add my R-b tag in v3.
+
+Reviewed-by: David Matlack <dmatlack@google.com>
+
+> ---
+> v2:
+> - Move the parser to lib/uuid.c and lib/include/libvfio/uuid.h (David)
+> - Drop the vfio_ prefixes and add a uuid_t (David)
+> - Mention musl in the commit message (David)
+> 
+> v1: https://lore.kernel.org/all/20260925013110.3447626-1-skhawaja@google.com/
+> ---
+>  .../selftests/vfio/lib/include/libvfio.h      |  1 +
+>  .../selftests/vfio/lib/include/libvfio/uuid.h | 11 +++++
+>  tools/testing/selftests/vfio/lib/libvfio.mk   |  3 +-
+>  tools/testing/selftests/vfio/lib/uuid.c       | 47 +++++++++++++++++++
+>  .../selftests/vfio/lib/vfio_pci_device.c      |  2 -
+>  5 files changed, 60 insertions(+), 4 deletions(-)
+>  create mode 100644 tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
+>  create mode 100644 tools/testing/selftests/vfio/lib/uuid.c
+> 
+> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio.h b/tools/testing/selftests/vfio/lib/include/libvfio.h
+> index 07862b470777..e9d513c3a08e 100644
+> --- a/tools/testing/selftests/vfio/lib/include/libvfio.h
+> +++ b/tools/testing/selftests/vfio/lib/include/libvfio.h
+> @@ -6,6 +6,7 @@
+>  #include <libvfio/iommu.h>
+>  #include <libvfio/iova_allocator.h>
+>  #include <libvfio/sysfs.h>
+> +#include <libvfio/uuid.h>
+>  #include <libvfio/vfio_pci_device.h>
+>  #include <libvfio/vfio_pci_driver.h>
+>  
+> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
+> new file mode 100644
+> index 000000000000..52406f3409b7
+> --- /dev/null
+> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
+> @@ -0,0 +1,11 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
+> +#define SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
+> +
+> +#define UUID_SIZE	16
+> +
+> +typedef unsigned char uuid_t[UUID_SIZE];
+> +
+> +int uuid_parse(const char *in, uuid_t uu);
+
+Note that this differs from the kernel's uuid_t, which is a struct, and
+the kernel's uuid_parse(), which takes a uuid_t *. I think matching the
+libuuid API is the right call since this is userspace code (and it keeps
+the callers unchanged), but it would be good to call that out here. The
+"Minimal replacement for libuuid's uuid_parse()" comment in uuid.c could
+move to this header and mention that uuid_t and uuid_parse() mirror
+libuuid, so readers familiar with the kernel API aren't surprised that
+uu is not a pointer.
+
+> +
+> +#endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H */
+> diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
+> index eff95828719e..d1d1b2b05af1 100644
+> --- a/tools/testing/selftests/vfio/lib/libvfio.mk
+> +++ b/tools/testing/selftests/vfio/lib/libvfio.mk
+> @@ -7,6 +7,7 @@ LIBVFIO_C := iommu.c
+>  LIBVFIO_C += iova_allocator.c
+>  LIBVFIO_C += libvfio.c
+>  LIBVFIO_C += sysfs.c
+> +LIBVFIO_C += uuid.c
+>  LIBVFIO_C += vfio_pci_device.c
+>  LIBVFIO_C += vfio_pci_driver.c
+>  
+> @@ -30,8 +31,6 @@ $(LIBVFIO_O_DIRS):
+>  
+>  CFLAGS += -I$(LIBVFIO_SRCDIR)/include
+>  
+> -LDLIBS += -luuid
+> -
+>  $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c | $(LIBVFIO_O_DIRS)
+>  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+>  
+> diff --git a/tools/testing/selftests/vfio/lib/uuid.c b/tools/testing/selftests/vfio/lib/uuid.c
+> new file mode 100644
+> index 000000000000..378904d9340a
+> --- /dev/null
+> +++ b/tools/testing/selftests/vfio/lib/uuid.c
+> @@ -0,0 +1,47 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <string.h>
+> +
+> +#include <libvfio.h>
+> +
+> +/*
+> + * Minimal replacement for libuuid's uuid_parse(). libuuid is part of
+> + * util-linux and is routinely absent from cross-compilation sysroots, which
+> + * makes the vfio selftests unbuildable for non-native architectures.
+> + */
+> +#define UUID_STRING_LEN	36
+> +
+> +static int hexval(char c)
+> +{
+> +	if (c >= '0' && c <= '9')
+> +		return c - '0';
+> +	if (c >= 'a' && c <= 'f')
+> +		return c - 'a' + 10;
+> +	if (c >= 'A' && c <= 'F')
+> +		return c - 'A' + 10;
+> +	return -1;
+> +}
+> +
+> +int uuid_parse(const char *in, uuid_t uu)
+> +{
+> +	const char *p = in;
+> +	int i, hi, lo;
+> +
+> +	if (strlen(in) != UUID_STRING_LEN)
+> +		return -1;
+> +
+> +	for (i = 0; i < UUID_SIZE; i++) {
+> +		if (i == 4 || i == 6 || i == 8 || i == 10) {
+> +			if (*p++ != '-')
+> +				return -1;
+> +		}
+> +
+> +		hi = hexval(*p++);
+> +		lo = hexval(*p++);
+> +		if (hi < 0 || lo < 0)
+> +			return -1;
+> +
+> +		uu[i] = (hi << 4) | lo;
+> +	}
+> +
+> +	return 0;
+> +}
+> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> index 4063a0e2b3df..4ae6ac1f8ed8 100644
+> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> @@ -23,8 +23,6 @@
+>  #include <linux/types.h>
+>  #include <linux/vfio.h>
+>  
+> -#include <uuid/uuid.h>
+> -
+>  #include "kselftest.h"
+>  #include <libvfio.h>
+>  
+> 
+> base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+> -- 
+> 2.56.0.385.gac671c819a-goog
+> 
