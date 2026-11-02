@@ -1,73 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632166;
-	b=h2RlUt0fxTgZ42rF3AzJqXLrtKdhra0+W2zrMHKPUneF8D7mTIT8g6zJ3D+Lg6gykjuF
-	 K4l2FIO4TxW4yrV20Up+uirtsVPtRVL5xO6loW+RvBAsW6VtqLmHRYrxnvKXe6jVaXr4C
-	 Ry5dzwPhCCbhK91TV69VXUO2W1wZf/wb3ioke12X1xeFvSiUC68qEfU7TIAEuhEu9O97N
-	 rMNCL0kEw5PeRjQZ03MvaGYT0I6dRCUSPc9kLqcaO3An4DESG4tSL399+Hsm2R7BAK1qX
-	 gqrrbqhAjBLvWOFWOx6f4juL5ktZqQEm8VNevi5pPqW8A4+Q3ah+ZQf+XCloU3OzyZQ==
+	t=1793632333;
+	b=xHfAXoKmm10SMZe2o2Z5Bc0tHnGAfXeXBLY6kzEmOklaG9gZwBuOayGhxVCbUMAK90fK
+	 dVuG1pLq9z+cMZLkRbqH0WUvz2+meuCzzBDuJ/gMIvq6I6z8dfL0KIbYwY5fBZ7hFTTgb
+	 /PoJcAxBEmrSxImiop6qRAvMpqhkGxJbk6k0RbYF96MKSCeGn33UujThIDnuTz262Ngx1
+	 WcykLwVM+7iK0vodhcFiJ3zWJRY+/BlvqT+oHtY6x9UQVJAEI2tyO/cjLSsEzfToYgPQz
+	 u88nHRjC4tft0qwTVbLlJTaGPb71iZRnAfg3EAjR7Oq68KBE/RSqXsX2R65/AUXT2AA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632166;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=o4IgxgpOO75bp0sEBS0oXx8YKo2RRQODNqfIXlf0zNM=;
-	b=Ct3gee7SaaxkE8WQMYoTcOBBGNtLQ7yJZ/4fBrPgXWp6ppowQY0zAJx+aR9HweUodQI9
-	 iMnoaGhNZt4gk7Xv1zOX4fqOxbpMVlbaJztir0a8Z3lOFsA3DCOLppy4ilyQKRqYg87ly
-	 PUw/0vSn4/f4HqDSSn/xFcdu6hQAx4ezl1huEFGQOXaSh7r75x3Se7VMaWhoSihhvHSTx
-	 oEkH1871MXDRKkQO8k37+R2dQ4NuUZlOp3rl/vs1SBuOPNf8MzHkP+eamiNsplrELFM1p
-	 fcRoodDCYLA7MPwF6Bu+b3k0NDy9Jn6kwZw3JcJ90axQXqIGMy35JT54HACsOPJvksQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632333;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=s7ppLZMAjyyuilbixYy866dZSoM5/UMmIQ8fY8VwQIM=;
+	b=1Dle2zAiRlbSd4Vg94BKAwrnV6dfV1vVSSiaiyOecVR2PjEuV2vYGCAgluyRfxvaRa2s
+	 1ENkOyx5pg86DLFze25A33y6l33LsGRXiVhtudV5nJwoRNV2tHHFA0w/AU9DCsbbNToNA
+	 +1axIrR8wsmBG7DESwxzHpllkNFE8Zk7biLjISm5TGG7S+B2aV6Bxjn9hQ9vEbm8LMCkJ
+	 B4rAWCJnMEtVS+Qo/0th9uOGwyLmy2SfZNh6gwvk3CmAq7OhJEV7Pi/7fR2YXYWsO5DsG
+	 wOB2Xi1pfFUOPXCOXC24YWl3ph8qZ1vJwjsaqm47JUMEf0S0ziYbFBLPuu2Mk31TxnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=G1VbHq7o;
-	arc=none smtp.remote-ip=209.85.215.198
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9291F606B903
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:09:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9291F606B903
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d5U+AbfK;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9F360771E0;
+	Mon,  2 Nov 2026 15:12:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB9F360771E0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=G1VbHq7o
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cd633da24f8so3364525a12.2
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:09:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793632166; x=1794236966; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o4IgxgpOO75bp0sEBS0oXx8YKo2RRQODNqfIXlf0zNM=;
-        b=G1VbHq7onzFVI6iV/KeCFXFFlbyvkiA9SY36CdPNhjdYsXmPoObJ+5LxmnTp4hgxMY
-         1egvPRwlAtbp0AaJRJm3vDmTV5XfmZYol5ccc41eIXolKOcxY3sXrAukXUWRHfxt8qbw
-         WhqrERk1nhrNwXAHLCdyeEhq4Bur9TqnZbLlHueqb7T6c/Q7EWSAskY5OajDQKmVaJ4X
-         L6SemLcogIWnhDK+i3lu3lLUJztWu8l2Hn8kCspLVRHLBvQvMipAZL5WQz1pR3rUFt5c
-         Th5QoQLcVzdByR8A2aDtl2XsNn/SQjhdze3wIXTSI9fk2fqTwyaNqNP3JAcb++fOF67T
-         uL0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793632166; x=1794236966;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o4IgxgpOO75bp0sEBS0oXx8YKo2RRQODNqfIXlf0zNM=;
-        b=KMwDf8AJk6isF+Lyd9diK3HHzLIHJEpOaYZaNlKY3NSYQZhnl5yJNv4ZnmDFTga90G
-         hP58F2b4PAOH2jOSL1tn80LYaa2/4sAI4UwJI9M8gf0xJZlStGneM2B/JAXnWNQabR8h
-         IB64TaUOit+s5K6LXNySni03vzKC+Hnv0oAv37MjN0yXzBfpy0W7Nq3TRwpiLn41TqhS
-         l/+oIWfMif//7hyEQzddDLn0w5m9lpAGy0X7/0dbqkY9g52y8qcvPMeezxS3tV+wd62m
-         yYVdV9iilIDb1jxFhHkjsZTS5nM8t3EOJJ80Wvb8TU0CdNF9Rwofug4Issii0X8kXZl2
-         9KHg==
-X-Gm-Message-State: AFq9FYKyrCDVyLYkTfJ9vq+KCKtdTgZ+dBqQNeAXLFPPntnptJkU2PPF
-	8nvbaKKENX2+Zs4ePks1faeVxvWhF1Mkf8SH8LIsk661TupPNGEsNRS3wb2cpP0PDErCoocXuLl
-	89V6f1w==
-X-Received: from pgve15.prod.google.com ([2002:a65:648f:0:b0:cc7:caf5:50f3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7747:b0:3e2:8513:a1a
- with SMTP id adf61e73a8af0-3e928c5dcbfmr7462789637.15.1793632165658; Mon, 02
- Nov 2026 07:09:25 -0800 (PST)
-Date: Mon, 2 Nov 2026 07:09:24 -0800
-In-Reply-To: <20261029221710.1871112-4-dmatlack@google.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d5U+AbfK
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BED8B1595;
+	Mon,  2 Nov 2026 07:12:08 -0800 (PST)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8053F3F871;
+	Mon,  2 Nov 2026 07:12:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793632331; bh=m3wJSJtQD9D+ud0ZiYqt81AP0zFjBodMC7qvifLjgJM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=d5U+AbfKMQ+WQ+H64mUgHOPj+0VxOmTroJphZ7yU3xRTnKcSzCeOPvCZ51upxaez9
+	 1zseJ0VSVrE65X5rYLfPftuaGKIecMKJ7UMt38Z8i6G17tBccd47v2kL5UbnRkZwv2
+	 FGg9aEze2odeZX47fJ5ayfhbvGDPwmGheoxz4Lw0=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 13/15] KVM: arm64: Add HDBSS buffer size ioctl for dirty-bitmap mode
+Date: Mon,  2 Nov 2026 15:12:04 +0000
+Message-ID: <auioRICO9Frhk-zT@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20260929103655.85107-14-zhengtian10@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-14-zhengtian10@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,103 +88,95 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261029221710.1871112-1-dmatlack@google.com> <20261029221710.1871112-4-dmatlack@google.com>
-Message-ID: <auinpIEk6FdGwDS8@google.com>
-Subject: Re: [PATCH 3/3] KVM: selftests: Use VFIO selftests library to pick
- IOMMU mode in IRQ test
-From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Alex Williamson <alex@shazbot.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 29, 2026, David Matlack wrote:
-> Use the VFIO selftests library to pick the IOMMU mode in the IRQ test and
-> drop probe_iommu_type(). Pass NULL to iommu_init() when the user does not
-> specify a mode with -t, and skip the test if the requested mode (or, if
-> NULL, any mode) is not available.
+On Tue, Sep 29, 2026 at 06:36:53PM +0800, Tian Zheng wrote:
+> In dirty-bitmap mode, a larger HDBSS buffer lets the guest dirty more
+> pages between VM exits, at the cost of memory. The default of one page
+> per vCPU is a reasonable starting point, so allow userspace to opt
+> into a larger buffer via KVM_CAP_ARM_HDBSS_BUFFER_SIZE.
 > 
-> The VFIO selftests library now automatically picks the IOMMU mode that is
-> most likely to work on the current system, so there is no need for each
-> test to probe for a mode itself.
+> The size is specified in bytes through KVM_ENABLE_CAP and must be a
+> power of two in [PAGE_SIZE, SZ_2M]: the upper bound is the largest
+> HDBSSBR_EL2.SZ encoding, and the power-of-two requirement matches the
+> buddy allocator. It must be set before any vCPU is created: -EINVAL
+> after vCPUs exist, -EBUSY if already set.
 > 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Link: https://lore.kernel.org/kvm/aiIG2L_KdPwuxYA1@google.com/
-> Signed-off-by: David Matlack <dmatlack@google.com>
+> The capability is rejected in dirty-ring mode, where the size is
+> pinned by kvm_arch_dirty_ring_size_updated().
+> 
+> KVM_CHECK_EXTENSION returns the configured size for a VM, or SZ_2M
+> when queried globally with a NULL kvm.
+> 
+> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
 > ---
->  tools/testing/selftests/kvm/irq_test.c | 19 +------------------
->  1 file changed, 1 insertion(+), 18 deletions(-)
+>  arch/arm64/kvm/arm.c     | 34 ++++++++++++++++++++++++++++++++++
+>  include/uapi/linux/kvm.h |  1 +
+>  2 files changed, 35 insertions(+)
 > 
-> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-> index 791e576c334c..f9c11d80a306 100644
-> --- a/tools/testing/selftests/kvm/irq_test.c
-> +++ b/tools/testing/selftests/kvm/irq_test.c
-> @@ -148,22 +148,6 @@ static void kvm_set_empty_gsi_routing(struct kvm_vm *vm)
->  	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing);
->  }
->  
-> -static const char *probe_iommu_type(void)
-> -{
-> -	int io_fd;
-> -
-> -	io_fd = open("/dev/iommu", O_RDONLY);
-> -	if (io_fd >= 0) {
-> -		close(io_fd);
-> -		return MODE_IOMMUFD;
-> -	}
-> -
-> -	io_fd = __open_path_or_exit("/dev/vfio/vfio", O_RDONLY,
-> -				    "Is VFIO (or IOMMUFD) loaded and enabled?");
-> -	close(io_fd);
-> -	return MODE_VFIO_TYPE1_IOMMU;
-> -}
-> -
->  static void help(const char *name)
->  {
->  	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-m] [-n] [-t iommu_type] [-v nr_vcpus] [-x]\n", name);
-> @@ -266,8 +250,7 @@ int main(int argc, char **argv)
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 5a7046acb62e..eadbf3a88d31 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/kvm.h>
+>  #include <linux/kvm_irqfd.h>
+>  #include <linux/irqbypass.h>
+> +#include <linux/log2.h>
+>  #include <linux/sched/stat.h>
+>  #include <linux/psci.h>
+>  #include <trace/events/kvm.h>
+> @@ -203,6 +204,31 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>  		r = 0;
+>  		set_bit(KVM_ARCH_FLAG_EXIT_SEA, &kvm->arch.flags);
+>  		break;
+> +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE: {
+> +		u64 size = cap->args[0];
+> +
+> +		if (!system_supports_hdbss())
+> +			break;
+> +		if (kvm->dirty_ring_size)
+> +			break;
+> +		if (size < KVM_ARM_HDBSS_DEFAULT_SIZE ||
+> +		    size > KVM_ARM_HDBSS_MAX_SIZE)
+> +			break;
+> +		if (!is_power_of_2(size))
+> +			break;
+> +
+> +		mutex_lock(&kvm->lock);
+> +		if (kvm->created_vcpus) {
+> +			r = -EINVAL;
+> +		} else if (kvm->arch.hdbss_buffer_size) {
+> +			r = -EBUSY;
+> +		} else {
+> +			kvm->arch.hdbss_buffer_size = size;
+> +			r = 0;
+> +		}
+> +		mutex_unlock(&kvm->lock);
+> +		break;
+> +	}
+>  	default:
+>  		break;
 >  	}
->  
->  	if (device_bdf) {
-> -		if (!iommu_type)
-> -			iommu_type = probe_iommu_type();
-> +		TEST_REQUIRE(iommu_mode_is_available(iommu_type));
+> @@ -500,6 +526,14 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>  		else
+>  			r = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+>  		break;
+> +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE:
+> +		if (!system_supports_hdbss())
+> +			r = 0;
+> +		else if (kvm)
+> +			r = kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
 
-This is very unhelpful when neither IOMMUFD nor VFIO is available, especially
-why the user doesn't explicitly provide the desired mode:
+This whole thing of allowing hdbss_buf_size to be set only once makes 
+everything more complex. Why do we have this limitation again?
 
-  # ./irq_test -d 0000:6f:01.0 -i 10000
-  Random seed: 0x79d386bd
-  1..0 # SKIP - Requirement not met: iommu_mode_is_available(iommu_type)
+I mean, if we want to restrict size changes after the first hdbss buffer 
+gets allocated, it makes sense, other than that, I would like to understand 
+the reason for that.
 
-I helped write the test and I had to go read the code to figure out what iommu_type
-would be, and then read the VFIO library to see how it reacted to a NULL pointer.
-
-How about something like this as fixup:
-
-diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-index f9c11d80a306..63205afc04d1 100644
---- a/tools/testing/selftests/kvm/irq_test.c
-+++ b/tools/testing/selftests/kvm/irq_test.c
-@@ -250,7 +250,9 @@ int main(int argc, char **argv)
- 	}
- 
- 	if (device_bdf) {
--		TEST_REQUIRE(iommu_mode_is_available(iommu_type));
-+		__TEST_REQUIRE(iommu_mode_is_available(iommu_type),
-+			       "IOMMU mode(s) '%s' not available",
-+			       iommu_type ? iommu_type : "IOMMU and/or VFIO");
- 		iommu = iommu_init(iommu_type);
- 		device = vfio_pci_device_init(device_bdf, iommu);
- 		msix = vfio_setup_msi(device);
-
-to yield:
-
-  # ./irq_test -d 0000:6f:01.0 -i 10000 -t vfio_type1_iommu
-  Random seed: 0x14e21328
-  1..0 # SKIP - IOMMU mode(s) 'vfio_type1_iommu' not available
-  # ./irq_test -d 0000:6f:01.0 -i 10000
-  Random seed: 0x160225ae
-  1..0 # SKIP - IOMMU mode(s) 'IOMMU and/or VFIO' not available
+Thanks!
+Leo
