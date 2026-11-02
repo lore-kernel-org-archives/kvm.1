@@ -1,127 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793644773;
-	b=Fj9ugy745qky6pTQYLEj3TXqnhjzJmfiAwlNQYtMy4eTgeIIQGhSJDwPH0cbPGX+l6og
-	 JN6mehAiTq2tNxqdzFNupiY4xNH8cKXEbtOohZc9oEabHR1DnXADjK439qjtimb1RbyFc
-	 JnQIn8QCRP8mdtHMzxtzxM5pwsD/SG889M2thInMo4JcDM3qBJELBndwM5UqMn5ufZjOM
-	 2PF4pKxZO2uvWQ3jRaX6npllvmih1+h7O2APKY4rgiURBNPghZRLP7AViHLkrVf+prNVC
-	 1DTQyNCVnZ3fFb77MtjMhN92eLOHbwgBGjYLg5aCVY9dZ8Ke59Tf/qOzF5HCWwGKXPA==
+	t=1793644854;
+	b=G9sec3UUIrbjoWVL3H2HHq/6ihW/eBTCygH2t5ioaQHUT5Or+AP6Zm4KyqivvgrI+rTs
+	 yS4LQiBzB9JFuNFaf5TTaUYpJuQIwEw2mt0flJMAH6KI+vME5yA5aQkGNaV9hbF7h+CzY
+	 WSBe03SXy6yNhZO3dKcqtfxNBA28/SaanVEgSXS97J4CSTvC4bCUojQP5rSvYpOXDDqWL
+	 zRj6gSFFQnakHmfh3i2/tT+b2NHMgjz8GC8dfcfVSaLeCucnEBl0N0qOtEUB0bGGWxkg6
+	 5bHxW7JkrPtcAzg/1Pu7XS2tXEwqJ5+PF4zHHafGvrdKmt1a/bG7WmEfT47GPCxO/zQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793644773;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=PeaNE7dalZwV45zaReGeYmf1fDt50itIMVJ+XKn3L28=;
-	b=zzaJcfGjcII/GGv3t4U6pLJcghWr7bIAo+Z/ST2FxRnW9N80vXTIwhukZuwLOHAScF4m
-	 NjCYB1gpIkD+wE3EWGpyPt9iY89wGhtHYiB1eo/GrhzxJREDyJ/+YmCsqTPuX5O8+15mq
-	 pKZ1lCNNDvPAkQahv9xLR2/Ehhhr4lk9SyNvqa1iKd0M8diS2U9ljwHz07ZqDfhf1sBFF
-	 wuJW/uN/rghQYbSaPu7gvb/z/4x7sMNJfqr1N4sLcY5/qGYK1xmC8pHzBJl5ujUpO4joB
-	 BrXGQe2Q7KoWOMDCj4Gzcrl2A06V3ab/ZyxLMC+Pw477vpsP0ondOLGha5CGjUYv4zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793644854;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=SCJfazg0W6gykNDKfMJlboCEpsDR+rIE5jy8OqATsg8=;
+	b=NcQhbSh4vEmTIPSePs+CqIwBW45fmXuANTwHHFj2r4DfHq364ie1g0/N3QjLRqCY1JG7
+	 28+Cy/dlzkW7mj4U/6BsEJ9reSz0qIR2gleaIT0Gucj2tcfjeEpIgLJoILfPta5I9RGw2
+	 TuWMWmkODk03rcPMxg3jil75SvYTsW0tiCBT/c9qkZrsouvfcgKdnAUv/yhTisTIwFwMY
+	 xEqcDCqo7PNwg1oRYgJO0WS6F5niKOdVj8xE3aMaQkmlepz+4paiHvkoXr4Be/WWvcNVv
+	 ksiF+6S9SVUkL7nFzqXVFBydQgg+7eN5dLNtIbU+6d6llhzJaMloDCby/vYfOShRWzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=OHabTl7l;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qoDzDGIY;
-	arc=none smtp.remote-ip=202.12.124.156
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="HkyVTo//";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618E0606A329
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:39:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 618E0606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D500A606A324
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=OHabTl7l;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qoDzDGIY
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A2AF87A00CC
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 13:39:31 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 02 Nov 2026 13:39:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793644770;
-	 x=1793731170; bh=PeaNE7dalZwV45zaReGeYmf1fDt50itIMVJ+XKn3L28=; b=
-	OHabTl7l+viCbt0xnKbWjHRYOp9fqLBvx01Ncz7r0plvc+DQ6XbooW1G14AzTGtj
-	3+FD6jIqolqFwJD6m1xAK6O1ncVZjCtSOgyvyvgZeMVz25OLtdnEMZjdFvyxpsPL
-	EIKjwe1oukO9BCs3ozOxAjWK4xbUN6sEnckOWigxgh5RA/53l70kLPurAFZPuVL7
-	lCkgGIU4zijvKYUQCmNfyrnIGe7Zqjt1HGZRMsL6n0lYe+frjP5shHrAm6Y3GetV
-	t/59MqwQJlghYjwmcT0qddwVy40bq2yY4tx+6Dsozh1C6xjk3umGXPHfgaV2L8ZD
-	y1CSgaygG0STLQCQKkh3IQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793644770; x=
-	1793731170; bh=PeaNE7dalZwV45zaReGeYmf1fDt50itIMVJ+XKn3L28=; b=q
-	oDzDGIY8iT/DzXfWJ01ViDQqoe/9TlstXBRx2KOisUcIbG7x5dRWNDrugMweHfIs
-	oz6PK8yLnEAa8e2GgxBR1Gmmsv+qZKD1FQKv3h8Wu7yFvjqprYhAd2s1T43+8ALr
-	/wIholWrnkjKgKVtSW7BOIjXPbWMOZKSZohWImrQDrwhbYNFfRvLeaaGIhxOwebZ
-	z9M+VByPVzzVgpOAyP35DZ7Z2rcrtAJ146JEhtIlJFh4nz26N3PhXlXUYbs0tBY+
-	hi9XZgIb8cFxoWvoLZwf9fmBGuZH7iQXOYymDsoef/ooDKMrn08n14swVNR5NV+f
-	rPN3o4hnkaWXanNAIfQAQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793644770; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:gmqT/hqFpjBt8syStl6a2O3O00M2KEbAyzt1zC48bJQwokU
-	huMHiBLwp2fp/4aurTkL+9/H69uBdkCqNTf6dxvAfUZhLULo+iNtrzvoxxOEyvr5
-	m1pIfDLTOwn9/sVo3Gkppdjim/6ElmSn6rmBhJqdNNaV8J/qYPhrbt+4Tdc8OnSk
-	k3ipT3uYdbo3cBohhOQ77L6dLYvtpg/4A/k1s2H4rawJF8GZMc3kq2LD1aP9WSP8
-	eKPNl2Vgfxilcgq+7zTc+hHLcrWPVGKYv0vCyyLkYyoRpJXcnqMu4x8yIgFEq8XJ
-	NtqluzWYTsx0wD8cO5u4V/ywDVXtFCpoUiUJF0w==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:Fp2eSHsfZ1U36xYwtr7TUfbdq1XH0H8D0Sny0UeoCPA=:x7kQmzhCXKWd5h3q6Q0WiLpfxi+SiRly4NhaLANohPw=;
-X-ME-Sender: <xms:4tjoatFx3m_WF4kZHh_fNtu6TfPtp7WtjI1vi6R5ZytBGwSwSeqdpw>
-    <xme:4tjoaviS3LxaEeprsq-CcUaF_EutNSM0TkM7yHIDcRoa2bZR14WtxQ2agzLTgrhmf
-    2FH5bDtE-Ny3f9GWgI6aZp3_USt0_3H1F3OJXR_x7_3ujIBJsWXCJKz>
-X-ME-Received: <xmr:4tjoajrcTBpTxBpGl4xbYV5xzxjbNnSnQtjWUD6sPObGFDnkWdzw0wIaFuDqig>
-X-ME-Proxy-Cause: dmFkZTGJBkKxJZJvDgvB9LxD8g6UoLB0N8oShSmK73J69dm5gDlx+vLtLfqQOEaAYkL8aH
-    6+6Aq8uMp4Cu4dkR7iPVYfuOMMAUtnqsoN/78CaROPLdOUxJQFAqbk/y54ZSo7H5Wo1ngN
-    TX4H4na2S3nfdVrVyFW44vzULM3GH8bNEC+BpRLVEGToyCRkuVnkCHO5RxKCxd2YDjodBv
-    IgEr60QqAnX/Ufv/ebmmgUdN8leSNNXBCXEotS2o4VRO/JxjltRwUEtaFqV8gueG9R/nrB
-    Pf1AkYvtZywbiwEZXwJdwO5NkkAngzZC67zRSJ9nnk/bRg+zFSbKXvlA0E9InSTmcbyeAd
-    0ur2YYA4s5C9khY7Rb7cGia7H3365CtUkRTf2eDfEAmUqKnA1sYcdVAe4E/9xM5ALmyGJ0
-    hzbubFZpN7xxaGoLAGcrWJY/CrYbAqe7ORrvAIVwDS9OuzFinuv1qwZ5fodcXd6NRx6n4E
-    pGOPCqCXoUhbv6rpyJEldx+GM0ioe5nHWvZNZa3dD64hkJlYeGldRsYuPSbz4eHNgtkvpY
-    7rb5czCyt9TdjzJWDx6EvLu7jYfRkIhNjWR9WwYQA2O46jvQBa5EoNbjT5Bj/t1i4H1+U0
-    57weZuvKSrza6xNGisFErBiFggM/4Zf2u8T8uUyzNt+VALEB4CG5mIRgNGWA
-X-ME-Proxy: <xmx:4tjoavTn1qcWVULxj1spTrnUjFcY9RY1qXPeaJKlCVhqqkLgV9qB7A>
-    <xmx:4tjoakTgl16KHnMGc_D4x11opFdHIvbcsf743V8KO9Q1pnsJNnSY8A>
-    <xmx:4tjoatU76TbOr8DdfBhneaTActkH6PQr8SNYVSkR8lJYRiDngJEJog>
-    <xmx:4tjoah10ZpkHu1gU19ucHFEPXip5yBD2McgkpSIHSf9JO70Q7Ip4dA>
-    <xmx:4tjoagZlSQ2D6iIMOobjOPoR3rC2ay3ZNnB5TPKn-Abr_9zDiznn9EJZ>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Nov 2026 13:39:29 -0500 (EST)
-Date: Mon, 2 Nov 2026 11:39:26 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Omar Elghoul <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, hca@linux.ibm.com,
- gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
- farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
- frankja@linux.ibm.com, imbrenda@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v11 5/5] vfio-pci/zdev: Add VFIO FMB device features
-Message-ID: <20261102113926.19518a8e@shazbot.org>
-In-Reply-To: <689e23a6-dcbf-4fee-bdcf-13d333db2e85-agordeev@linux.ibm.com>
-References: <20261028154352.15108-1-oelghoul@linux.ibm.com>
-	<20261028154352.15108-6-oelghoul@linux.ibm.com>
-	<20261030161146.5af10847@shazbot.org>
-	<689e23a6-dcbf-4fee-bdcf-13d333db2e85-agordeev@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HkyVTo//
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566791F00A16;
+	Mon,  2 Nov 2026 18:40:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793644853;
+	bh=SCJfazg0W6gykNDKfMJlboCEpsDR+rIE5jy8OqATsg8=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=HkyVTo//O+zyyTFsu/L2DBG8u27f0kLcG4ZP+7bDHHCj4US6a5p5Pvq17WgXkAqYY
+	 bkvEY8PHmxd4T+c6vWLv9SHKlQTjo5r55/CJF/7ZVT4mw3lxpUhdhT9McZ8qGtbtl6
+	 fanmhx2NJdofnTXDM7hdYhisa9EGtf3nnLIicdMcEa/h4bU1WeDCQU5N/hI25I53Lq
+	 XSpQjQo+5uWu1oyG6RIRHXuiJ71b4dsRjaiJk2RBbC1stvS5nED2FsFyrkwIdPV9Px
+	 GPGhleG+b436w+85e6QHBJDdOwVtBQnp3+3QkCyBbrnN9UEXWacj3ZUXg2kHFo74CM
+	 LmNre4ZjrclBw==
+Message-ID: <sashiko-outbox-193956@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 39/45] KVM: VMX: mark VM dead on shadow VMCS or eVMCS
+ access failures
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
+In-Reply-To: <20261102174512.8903-23-pbonzini@redhat.com>
+References: <20261102174130.8779-1-pbonzini@redhat.com>
+ <20261102174512.8903-23-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 18:40:52 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -130,30 +59,303 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 2 Nov 2026 11:12:57 +0100
-Alexander Gordeev <agordeev@linux.ibm.com> wrote:
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
+- [High] KVM: VMX: nested_get_evmcs_page() ignores EVMPTRLD_DISABLED and hi=
+ts WARN_ON
+- [High] KVM: VMX: MSR_KVM_PV_EOI_EN write breaks nested_get_evmptr() and k=
+ills VM
+- [Medium] KVM: VMX: nested_get_evmptr() error return disables eVMCS in cal=
+lers
+- [Medium] KVM: VMX: nested_vmx_run() blocks vCPU after nested_cache_shadow=
+_vmcs12() fails
+- [Medium] KVM: VMX: __nested_vmx_vmexit() marks VM dead during vmx_leave_n=
+ested()
+--
 
-> On Fri, Oct 30, 2026 at 04:11:46PM -0600, Alex Williamson wrote:
-> > >  drivers/vfio/pci/vfio_pci_core.c |  4 ++
-> > >  drivers/vfio/pci/vfio_pci_priv.h | 18 +++++++++
-> > >  drivers/vfio/pci/vfio_pci_zdev.c | 64 ++++++++++++++++++++++++++++++++
-> > >  include/uapi/linux/vfio.h        | 30 +++++++++++++++
-> > >  4 files changed, 116 insertions(+)  
-> > 
-> > I think the only thing we never closed on from the vfio side is the
-> > merge plan.  If this goes in via s390 I'd want a topic branch against
-> > rc1 since there are a couple series floating around contesting for the
-> > same feature numbers.  Thanks,  
-> 
-> Hi Alex,
-> 
-> Yes, I can create the branch once all patches are reviewed.
+commit 6832da53d677d8f33bf223e6c9407f718e6f9f02
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-Great, thanks.  I'll try not to step on these feature numbers in the
-meantime.
+KVM: VMX: mark VM dead on shadow VMCS or eVMCS access failures
 
-Acked-by: Alex Williamson <alex@shazbot.org>
+This commit marks the VM dead when initializing the HVA cache or accessing
+guest memory fails for shadow VMCS12, enlightened VMCS, or an enabled
+Hyper-V VP assist page.
+
+> diff --git a/arch/x86/kvm/vmx/hyperv.c b/arch/x86/kvm/vmx/hyperv.c
+> index fa41d036acd49..746540e503e32 100644
+> --- a/arch/x86/kvm/vmx/hyperv.c
+> +++ b/arch/x86/kvm/vmx/hyperv.c
+> @@ -18,9 +18,14 @@ u64 nested_get_evmptr(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_vcpu_hv *hv_vcpu =3D to_hv_vcpu(vcpu);
+> =20
+> -	if (unlikely(kvm_hv_get_assist_page(vcpu)))
+> +	if (unlikely(!kvm_hv_assist_page_enabled(vcpu)))
+>  		return EVMPTR_INVALID;
+> =20
+> +	if (unlikely(kvm_hv_get_assist_page(vcpu))) {
+> +		kvm_vm_dead(vcpu->kvm);
+> +		return EVMPTR_INVALID;
+> +	}
+
+[Severity: High]
+Can an unprivileged L1 guest trigger a host kernel WARN_ON_ONCE and kill
+the VM here without any host memory protection attributes?
+
+HV_X64_MSR_VP_ASSIST_PAGE and MSR_KVM_PV_EOI_EN share
+vcpu->arch.pv_eoi.msr_val and the vcpu->arch.pv_eoi.data cache via
+kvm_lapic_set_pv_eoi():
+
+arch/x86/kvm/hyperv.c:kvm_hv_assist_page_enabled() {
+	if (!(hv_vcpu->hv_vapic & HV_X64_MSR_VP_ASSIST_PAGE_ENABLE))
+		return false;
+	return vcpu->arch.pv_eoi.msr_val & KVM_MSR_ENABLED;
+}
+
+arch/x86/kvm/lapic.c:kvm_lapic_set_pv_eoi() {
+	if (data & KVM_MSR_ENABLED) {
+		if (addr =3D=3D ghc->gpa && len <=3D ghc->len)
+			new_len =3D ghc->len;
+		else
+			new_len =3D len;
+
+		ret =3D kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, addr, new_len);
+		if (ret)
+			return ret;
+	}
+}
+
+If the guest enables HV_X64_MSR_VP_ASSIST_PAGE at one GPA (initializing
+ghc->len to sizeof(struct hv_vp_assist_page)) and then writes
+MSR_KVM_PV_EOI_EN with a different valid GPA and KVM_MSR_ENABLED,
+kvm_lapic_set_pv_eoi() reinitializes vcpu->arch.pv_eoi.data with
+new_len =3D 1 while kvm_hv_assist_page_enabled() remains true.
+
+Alternatively, if the guest writes MSR_KVM_PV_EOI_EN with an unmapped GPA
+and KVM_MSR_ENABLED, kvm_gfn_to_hva_cache_init() sets ghc->hva to
+KVM_HVA_ERR_BAD and returns -EFAULT without clearing KVM_MSR_ENABLED in
+vcpu->arch.pv_eoi.msr_val.
+
+When the guest then executes VMCLEAR, VMLAUNCH, or VMRESUME,
+nested_get_evmptr() -> kvm_hv_get_assist_page() ->
+kvm_read_guest_offset_cached() either hits:
+
+	if (WARN_ON_ONCE(len + offset > ghc->len))
+		return -EINVAL;
+
+or returns -EFAULT, and nested_get_evmptr() calls kvm_vm_dead(vcpu->kvm).
+
+[Severity: Medium]
+Also in nested_get_evmptr(), when kvm_hv_get_assist_page() fails, does
+returning EVMPTR_INVALID still cause callers to continue the current
+instruction as if enlightened VMCS were disabled before KVM_REQ_VM_DEAD is
+serviced?
+
+In handle_vmclear() -> nested_evmcs_handle_vmclear():
+
+	if (!guest_cpu_cap_has_evmcs(vcpu) ||
+	    !evmptr_is_valid(nested_get_evmptr(vcpu)))
+		return false;
+
+returning EVMPTR_INVALID causes nested_evmcs_handle_vmclear() to return
+false, so handle_vmclear() falls through to the non-eVMCS path and writes
+zero to vmptr + offsetof(struct vmcs12, launch_state) in guest memory.
+
+Similarly, in nested_vmx_run() -> nested_vmx_handle_enlightened_vmptrld():
+
+	evmcs_gpa =3D nested_get_evmptr(vcpu);
+	if (!evmptr_is_valid(evmcs_gpa)) {
+		nested_release_evmcs(vcpu);
+		return EVMPTRLD_DISABLED;
+	}
+
+returning EVMPTR_INVALID releases the eVMCS and returns EVMPTRLD_DISABLED
+instead of EVMPTRLD_ERROR, allowing nested_vmx_run() to proceed with eVMCS
+disabled.
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index b26909dd4d79d..87c9954132c6f 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -861,10 +861,13 @@ static void nested_cache_shadow_vmcs12(struct kvm_v=
+cpu *vcpu,
+>  	if (ghc->gpa !=3D vmcs12->vmcs_link_pointer &&
+>  	    kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc,
+>  				      vmcs12->vmcs_link_pointer, VMCS12_SIZE))
+> -		return;
+> +		goto error;
+> =20
+> -	kvm_read_guest_cached(vcpu->kvm, ghc, get_shadow_vmcs12(vcpu),
+> -			      VMCS12_SIZE);
+> +	if (!kvm_read_guest_cached(vcpu->kvm, ghc, get_shadow_vmcs12(vcpu),
+> +				   VMCS12_SIZE))
+> +		return;
+> +error:
+> +	kvm_vm_dead(vcpu->kvm);
+>  }
+
+[Severity: Medium]
+What happens in nested_vmx_run() when nested_cache_shadow_vmcs12() (or
+nested_get_evmptr() when vmx->nested.current_vmptr is valid) marks the VM
+dead and vmcs12->guest_activity_state is GUEST_ACTIVITY_HLT or
+GUEST_ACTIVITY_WAIT_SIPI?
+
+In arch/x86/kvm/vmx/nested.c:nested_vmx_run():
+
+	nested_cache_shadow_vmcs12(vcpu, vmcs12);
+
+	switch (vmcs12->guest_activity_state) {
+	case GUEST_ACTIVITY_HLT:
+		if (!(vmcs12->vm_entry_intr_info_field & INTR_INFO_VALID_MASK) &&
+		    !nested_cpu_has(vmcs12, CPU_BASED_NMI_WINDOW_EXITING) &&
+		    !(nested_cpu_has(vmcs12, CPU_BASED_INTR_WINDOW_EXITING) &&
+		      (vmcs12->guest_rflags & X86_EFLAGS_IF))) {
+			vcpu->arch.nested_run_pending =3D 0;
+			return kvm_emulate_halt_noskip(vcpu);
+		}
+		break;
+	case GUEST_ACTIVITY_WAIT_SIPI:
+		vcpu->arch.nested_run_pending =3D 0;
+		kvm_set_mp_state(vcpu, KVM_MP_STATE_INIT_RECEIVED);
+		break;
+
+Because nested_cache_shadow_vmcs12() does not return an error to abort
+nested_vmx_run(), the vCPU transitions to KVM_MP_STATE_HALTED or
+KVM_MP_STATE_INIT_RECEIVED and returns 1.
+
+On the next iteration of vcpu_run():
+
+	if (kvm_vcpu_running(vcpu)) {
+		r =3D vcpu_enter_guest(vcpu);
+	} else {
+		r =3D vcpu_block(vcpu);
+	}
+
+vcpu_run() calls vcpu_block() instead of vcpu_enter_guest(), where
+KVM_REQ_VM_DEAD is checked, so could the vCPU block on a dead VM (or exit
+with KVM_EXIT_HLT when the LAPIC is in userspace) and later flush the
+uncached shadow_vmcs12 back to guest memory on wakeup?
+
+> @@ -880,10 +883,13 @@ static void nested_flush_cached_shadow_vmcs12(struc=
+t kvm_vcpu *vcpu,
+>  	if (ghc->gpa !=3D vmcs12->vmcs_link_pointer &&
+>  	    kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc,
+>  				      vmcs12->vmcs_link_pointer, VMCS12_SIZE))
+> -		return;
+> +		goto error;
+> =20
+> -	kvm_write_guest_cached(vcpu->kvm, ghc, get_shadow_vmcs12(vcpu),
+> -			       VMCS12_SIZE);
+> +	if (!kvm_write_guest_cached(vcpu->kvm, ghc, get_shadow_vmcs12(vcpu),
+> +				    VMCS12_SIZE))
+> +		return;
+> +error:
+> +	kvm_vm_dead(vcpu->kvm);
+>  }
+> =20
+>  /*
+> @@ -5093,7 +5099,8 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32=
+ vm_exit_reason,
+>  		 * do that when something is forcing L2->L1 exit prior to
+>  		 * the first L2 run.
+>  		 */
+> -		(void)nested_get_evmcs_page(vcpu);
+> +		if (!nested_get_evmcs_page(vcpu))
+> +			kvm_vm_dead(vcpu->kvm);
+>  #endif
+>  	}
+
+[Severity: High]
+When kvm_hv_get_assist_page() fails in nested_get_evmptr() while
+vmx->nested.hv_evmcs_vmptr is EVMPTR_MAP_PENDING, won't
+nested_get_evmcs_page() still return true and trigger a host WARN_ON?
+
+The call chain is:
+
+nested_get_evmcs_page()
+  -> nested_vmx_handle_enlightened_vmptrld()
+       -> nested_get_evmptr()
+
+When nested_get_evmptr() fails and returns EVMPTR_INVALID,
+nested_vmx_handle_enlightened_vmptrld() resets vmx->nested.hv_evmcs_vmptr
+to EVMPTR_INVALID via nested_release_evmcs() and returns EVMPTRLD_DISABLED.
+
+However, nested_get_evmcs_page() only checks for EVMPTRLD_VMFAIL and
+EVMPTRLD_ERROR:
+
+	if (guest_cpu_cap_has_evmcs(vcpu) &&
+	    vmx->nested.hv_evmcs_vmptr =3D=3D EVMPTR_MAP_PENDING) {
+		enum nested_evmptrld_status evmptrld_status =3D
+			nested_vmx_handle_enlightened_vmptrld(vcpu, false);
+
+		if (evmptrld_status =3D=3D EVMPTRLD_VMFAIL ||
+		    evmptrld_status =3D=3D EVMPTRLD_ERROR)
+			return false;
+
+		vmx->nested.need_vmcs12_to_shadow_sync =3D true;
+	}
+
+	return true;
+
+In __nested_vmx_vmexit(), if nested_vmx_handle_enlightened_vmptrld()
+returns EVMPTRLD_DISABLED (either because reading the VP assist page
+failed, or because the VP assist page or enlighten_vmentry was disabled),
+nested_get_evmcs_page() returns true and bypasses the kvm_vm_dead() check.
+
+Furthermore, in vcpu_enter_guest(), KVM_REQ_VM_DEAD is checked before
+KVM_REQ_GET_NESTED_STATE_PAGES:
+
+	if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
+		return -EIO;
+
+	if (kvm_check_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu)) {
+		if (unlikely(!kvm_x86_call(get_nested_state_pages)(vcpu))) {
+			r =3D 0;
+			goto out;
+		}
+	}
+
+When vmx_get_nested_state_pages() -> nested_get_evmcs_page() sees
+EVMPTRLD_DISABLED, it sets vmx->nested.need_vmcs12_to_shadow_sync =3D true
+and returns true. Execution continues into vmx_prepare_switch_to_guest() ->
+nested_sync_vmcs12_to_shadow():
+
+	if (nested_vmx_is_evmptr12_valid(vmx))
+		copy_vmcs12_to_enlightened(vmx);
+	else
+		copy_vmcs12_to_shadow(vmx);
+
+Because hv_evmcs_vmptr is now EVMPTR_INVALID, this falls back to
+copy_vmcs12_to_shadow(vmx) and hits WARN_ON(!shadow_vmcs) when shadow VMCS
+is not enabled. Should nested_get_evmcs_page() check
+evmptrld_status !=3D EVMPTRLD_SUCCEEDED instead?
+
+[Severity: Medium]
+Also in __nested_vmx_vmexit(), could calling kvm_vm_dead() in
+nested_get_evmcs_page() and nested_flush_cached_shadow_vmcs12() kill the VM
+during host-initiated teardown via vmx_leave_nested()?
+
+arch/x86/kvm/vmx/nested.c:vmx_leave_nested() {
+	if (is_guest_mode(vcpu)) {
+		vcpu->arch.nested_run_pending =3D 0;
+		nested_vmx_vmexit(vcpu, -1, 0, 0);
+	}
+	free_nested(vcpu);
+}
+
+When vmx_leave_nested() is called (for example during vCPU reset, clearing
+MSR_IA32_FEAT_CTL, SMM transitions in KVM_SET_VCPU_EVENTS, or
+KVM_SET_NESTED_STATE), __nested_vmx_vmexit() runs with vm_exit_reason =3D=
+=3D -1
+right before free_nested() discards all nested state. If the pending eVMCS
+or shadow VMCS GPA in guest memory is unmapped or not writable at that
+point, should __nested_vmx_vmexit() avoid accessing guest memory and
+marking the VM dead when vm_exit_reason =3D=3D -1?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174130.8779=
+-1-pbonzini@redhat.com?part=3D39
