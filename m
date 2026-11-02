@@ -1,100 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793618457;
-	b=xZkVpD4zYIyC3FERDyJ55Gvtl7fDbRo80bDmSEyau49QKXgeyySST0KCEqZvAuHDFA0G
-	 BWJwB4ccEfCyqNdIZuyH1luCjuB27ely0BOVJv0jXT5SOF9KheLAn8yXt3RBhIwUS0u+F
-	 a6wvr0VHrRU2xu3tiEq8bORf8oBqAA0uYmx2qIITNMmB+aCt87LKwhmhE59r117RN5MU6
-	 6Ik6CBbtenHR/M+h3j5YwMbVKxQUY9ArzowyhooJsTEMuAmGLaCn8UP2nWRrIJxFGjzkF
-	 fwHpt1AnYSCxhvgxjRjbNwGCw/Z1VGcDDN9jS+agNshiSsZCeLvb60PUMevsxzRsfLA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793618457;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=606lkFpezYKYJdK+zrK/Eu7/dLW3DvaWcJV8piNdwZg=;
-	b=kMiTLuVbNsoQFJQzLyyacmHi+4Bmr52UC1+EmK8JAZeIGLiIOld+UbJi48kxsmZkoAUu
-	 4OVTYwId6GBVHTdnSDUriYm9zBmIODM+ncHZWgyeFwjNV+QqoS6RCRUebWV12HYaVnQQi
-	 O1WGt27Lri3G03cvuZp40J1j+z7XtQxJn/uMOKmyBwFYc5EWtIwxSyW/Au3PKTe2vIw8y
-	 DmBGkFYjI1yCWJl5ON73cUBQrS7tVjsnQloTRb/Re5vLGzYLUiQJ+St0Fnj7q0/CtTDxA
-	 bY5nqqJqlLikkhRDe7t2PJCwcITFdc/dD//pF8jdvvmp5ujeQ2uDdx/taid/mBVXSAg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Cz8kvan9;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74897606A32E
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 11:20:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74897606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793618499;
+	b=wbwAlHC+fFH0cWnZ0sQdeV67xTvZw0uDDchjwZFHgZ2NtJdD1swVBM0s63Zy4lkFxWT/
+	 I9oUZbKLtrFEie3ezFysgnTAiGczZUE0YBKLFkK0rS9BH69iVXLaPF/eU9TkFLI+B39ch
+	 gRfxbXrfepqcC2BkFCdtXTHSpEviLm4LLiDQDPdF64RtYeO1uEbefeT54OeEZn4jRKjKI
+	 JXUzobGcGi6CuW0qLoXKsuNLtFHuUMy2pbASfRoXegBOr7+VSm+YDEEfqTGWCcB3KwnnM
+	 Wn1gZVSiJBRdJUIYdM0FrCu/ObSjoNDBNx2dKqDgr4e5xuDs+OeaSgbS3oE1WpKxScg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793618499;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=cVUAn3Erh6GVaXy4+Ny9Vsau+0XQpUr/dkWQ56dYm2c=;
+	b=TAqzHIfsZ5NLvE+CYXxZM9BdPvkpOaSp+Nu2MeyGGBpGTC7ythJb/BPumKeMDWane7qO
+	 mQDuLzyp97WN8zchHzrsMC9kCM0V0TqQ7JWdP48ct1kp9AnV214XXHwo7MvGmUrULhNnW
+	 A3WyqKVED9hIwZuRq/UFA9SbgA6Kg2OYFzo/AI3lPGbHwbY2yvTDayVr52dtHio7G1que
+	 Lwr6qfh6ZuLKqYneL6ZjaQXBtBklMTHaZACacwLr48rKpzFnuTsPPDuzK3BbmmfUAqTlk
+	 YI33unTn5WcbQoSO43lq6fcBFIv3N04up3HM0tZbjW34+BguiT09zGKYlnOQlbVIOPw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=V7VvM+lW;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2612A60A260E
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 11:21:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2612A60A260E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Cz8kvan9
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b413b0a974so4432928a12.2
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 03:20:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793618456; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YZ/edSIuASDvKDqY1RkqKpXlHNilSDVMeiVWsiZt8JL4VXYlSDccmhnaQbcpBQdGwE
-         cwhrEGY/2TGoiGD+LGQXpBLVOKrZiot5NkIO/0ayyEh4cJq/MPbET3ds9Vlt+4nPdcZK
-         PHDNsgqE9l+vOAGcLN1Ti8cFiLfhb3E06lIQCiQ3KLrsSocY6yJqJquiYIsEe075P/R2
-         L8OA9vIOEN4fHI7yjbaLXKGjqO1/aWTkYu2BDRIlrv5guRnAhOeEXPTlAsqMLl+tqP3K
-         NU3RgPoW2rlMQtcnfXvYFH6orxCRN8mFFq8ybthTQS+y+Ni56spfRr9px8UzXxby0kSJ
-         ReLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=606lkFpezYKYJdK+zrK/Eu7/dLW3DvaWcJV8piNdwZg=;
-        fh=iDG6dxF45Ui0gr+N6GGP0vb7VYV7ZaGnw35zrvA3qb8=;
-        b=J/SL/o0wXkYN/6UpOXI7/8DDOXZh7bQHWgrCASt7XdvS0DEYgQTtbukB+YmaNmWtZh
-         tLoDQHVQ7LzSp+FpfwpLRQWerAb/PlF211FGI16YO/cV6sLUzW04ANhvdGeJvLRzlq18
-         IivAsc+EhTBo/69jL4EAe1tQj7o4wTlXwYp+cD3BivhsEDYHUrr0Im+StLbvZ6OjJmX2
-         R78pFr7uilY6dVPfypHuy6FUj6DU+30Tuq6s69dupaPKZsgTU1v7t5IeewnGGGLejWAM
-         3f9WnUAyH2RgteFIeHZhQ6j8ifIv0q1z1f0lkD6Q2YNqZJHKsf1bqax+Lb24m0+mpx/s
-         7VBQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793618456; x=1794223256; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=606lkFpezYKYJdK+zrK/Eu7/dLW3DvaWcJV8piNdwZg=;
-        b=Cz8kvan9U7ghHmfRmsbOeJpVu5wzp5B/h08oQ14OfR4KbP21dIs7vuolbU22MO04IS
-         S3kvGSujcyQRwEQaUpX7zC/gNpfqynK9yOUymmrv4wriSn6nshxGSd9/mrDY6yjupicd
-         s5krV55vS4JyoDGFiiv7Bh8RCXGXVKCe39BBOdSafGJHGnALhJwBX+AB+eIPeOBJFl/J
-         Pkm/kPz2x1JYWTPKKcvUi3kr9eeK7rNzy+ZtUEvs4BzJp1JuXBvLioWtAgNgTCB0S+tO
-         fOJPIQVgXcksBrjMKcU9+b7G58rEYWvNjuOEQT+NyGg/FtCnYe2piFSecvzj1r799aC0
-         u5Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793618456; x=1794223256;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=606lkFpezYKYJdK+zrK/Eu7/dLW3DvaWcJV8piNdwZg=;
-        b=FJtCpDbpPxC35greC3VAxl23PeM00m9pSAZyma0YWxL24mYOO4h6FFzIhREvIau3Sp
-         gyA7TudFnz4G3MQ0+A21JXqNtXkhMGOWIPjLmOheBZLODryAB/aZxjGwyOwyYg4OvOZI
-         a96kbF0Uquc7OWeAFo9BKiEfHXQZVv7gZB5NdmV6GpBEK9o5tQdJ895kO1wIdCjHieF6
-         L96qh8jYoAM9FwXRNkY+Iy5mNb60D8/Wxq3cni3vtoqWsDphtMdi932epAWYMxwSez2T
-         uw3wJCLd4aC+KF7L69Y97qsnD3t1ZXkW62zFQ9VC9K4xpCDFT4bGAQWJyLKSotc6dElG
-         1RWw==
-X-Forwarded-Encrypted: i=1; AKwUvBxR7/4ydoV9Zkp0xk6BPgmkeklgS+A1CLmgBDauC9BOUpNk9Jet3wAaLGztOpfuVAlp1Lc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJJAdqjoj/Ox30y69auHbsbTb3b77jXFp0NJGCZ3SKBNMOEQT7D
-	d7TqoHB/OtCkwjnK9KO8GPI3XrnjQ03t7Wu7Qbxyah0cQt6spgaOCqV58XACxpzsKwlbEACGH10
-	j1dfKEk+cmGpHUtidWPckWz/9ia9vckU=
-X-Gm-Gg: AYBFou1lsR/iluW3LzVA1qC/C2kAIGe/IFq1Dvr//pieuBJ/WMP0Hb59OjCApShg5w1
-	6Ml/TnVhGMMJHMbT5XS1PXkyJXYkqncF6OZF4x3t/A6w06knhjYIqE1P+HZ0QP3SoI0XTC6H75y
-	2YhuzqYBYHESAxoCNPvzrYuhsvc4xyd7JM4RyyjifRNAt6AjCjaYXzsMoxor1+EnOUxtw4EpIs8
-	54A1qVWFzUnd7zmLzjHkUkSTCBEY6MZsJvGzaEgAodq5YTbwAiVK8MeBsH+09HYBe+XCOknqI+i
-	aEmHQU7uP8O1kLun7EQCyayIXjgtzolJW5UFtRvkZhfPmlWxiU952TjGVhO6WEn+8EflMN/kfcU
-	hdjJxcIbCux/vBua2qBGxxFoPPSJS7LZBTmUgGw==
-X-Received: by 2002:a17:906:eec8:b0:c41:4964:90b6 with SMTP id
- a640c23a62f3a-c4ca7ab11b3mr826426566b.36.1793618455509; Mon, 02 Nov 2026
- 03:20:55 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=V7VvM+lW
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0834F1691;
+	Mon,  2 Nov 2026 03:21:33 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9ED443F632;
+	Mon,  2 Nov 2026 03:21:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793618496; bh=/ruFYOoOTay1qEU1I9vLoOZvo4kBoLe4bydBgAUldIM=;
+	h=From:Subject:Date:To:Cc:From;
+	b=V7VvM+lWDJekSuT/hkgXofb9gun7LFwcNGEYS37jK1NqeJtv8R48/P7bPp7Ar0Coo
+	 I1UBkdVSh0gbZAonjF7NLsmikGhfOqvpNeUInVXZAIF3YAdtMttuR2fHAEXfJNOFIr
+	 UfRZl0BVyhYGHjWllmIqZTcqHdC7vJ+opOCIygrA=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH RESEND v2 00/21] mm: change behavior of
+ pXdp_get()/pXd_page() in compile-time folded pgtable
+Date: Mon, 02 Nov 2026 11:21:13 +0000
+Message-Id: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,289 +56,268 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAHCio2jc9++n2Qoa0-sNkObZsWOybSwK1X2aBjFirchjRTBZsQ@mail.gmail.com>
- <CAHCio2hpL+Y0iYdGXs5zKA-81+w_9pHs+tZPe2uaYKs8yOCz_w@mail.gmail.com>
- <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
- <CAO9r8zOmH6yzcNbUOF3FoNsac8rtx47rp5wByOFfGgaBPaLxug@mail.gmail.com>
- <CAHCio2hTSuTf4HcJ=+wb=_EQvi2as9QMwfRMG5tUkdCmex=yJg@mail.gmail.com> <auNvmlmXeWPh_HKT@google.com>
-In-Reply-To: <auNvmlmXeWPh_HKT@google.com>
-From: Jackie Yu <ufo19890607@gmail.com>
-Date: Mon, 2 Nov 2026 19:20:44 +0800
-X-Gm-Features: AclHuK_Vt_8677gatmhuZp3hBbCkC_mRm_NI_r0ysp6uGX788AWs5GAwddQIgy4
-Message-ID: <CAHCio2gdqdyGcGHN+dN9hzoj_0-XSKYFS4ruFrLU+DMG-4XooQ@mail.gmail.com>
-Subject: Re: Some options abort RFC: KVM: SVM: Rework ASID management
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, jmattson@google.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mlevitsk@redhat.com, pbonzini@redhat.com, 
-	thomas.lendacky@amd.com, vkuznets@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACly6GoC/23QTU/DMAwG4L8y5bwix/nmxIFdOcARIZQ6yZZD1
+ 6od1aZp/52oEmyQHe3oeR37zKY45jixx9WZjXHOU+73pcD1itHO77exyaHUDAE1GMQmfHXd6XM
+ 4HAfRCCN5MJbIQGJFDGNM+bikvbPXzdvm5Zl9lP4uT4d+PC1DZlxe7+bN2EATXJStD4JH8E9+7
+ B6o75aUWdxK+1eKIlvS0CaPMYrwK9c/fxe8FtaTcEFayxVVwoKshdHBCQBrIKZa8DsiUtlHgVD
+ BQy1Q1YILo4lrZwXVMxxgLVSwSbXcEN7ssdyMX2/m8N8FeJEUJFDSFiXGq7xcLt+3EQ0LGgIAA
+ A==
+To: Russell King <linux@armlinux.org.uk>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+ Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
+ Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jonas Bonn <jonas@southpole.se>, 
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+ Stafford Horne <shorne@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ linux-openrisc@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+ Yeoreum Yun <yeoreum.yun@arm.com>, Sohil Mehta <sohil.mehta@intel.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9979; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=/ruFYOoOTay1qEU1I9vLoOZvo4kBoLe4bydBgAUldIM=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIu8iIogGpWNmbGycs83LrN4wqYzMOwUWq+P
+ 2GNvhAAinSJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyLgAKCRBt1cPRWsUx
+ M1ByC/kBIkBwShwNjoaNGzcdmLl/xxFhoSzIJmefzm5Xe9CleW6f41U4wOe9hbpWNEXEsWUnyav
+ k+4T8+9Ege+ooH+lUXgpiNSpKtlBXTbp+s532UaXDc33iJZ+9hLCTdQOy64HeSdiusYTT0qnwGT
+ nRrutkljrlVQv7aFrt1tUuBI9zItCbGE+LhqbLyY96YmJ59W4SYX4qQrUQKK7+Vheqw6fnrxMEf
+ ObkxQMS2sWd+xrLrlsFUMd+uUWcfv1SKBWr/R5KmAGiM1FEmxa3r8oP/1xq1QVaeOFeNxoSkrbT
+ +Fj1YTNWK2OojSmkKy0ZgpqilzPW12eT15OGR37rpHDAswe6QuPvkVYmYxu4R3DRtrkcO38Pa9L
+ oy70CHn/JrUxCWyI729qJ0uhWYdk9FD2hHEKMuAwWOqrAnIafmQC4/6VtFTEy9rM6LoBXthH4GW
+ qvmtkBwX145zHNkac+J9tIDyKxaUjPX3+YyKA0wedux8BSYWYZCzwWLDXf5v7U0VTAlLE=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
 
-Hi Sean, Yosry, and KVM folks,
+Using ptep_get() and its counterparts in common code is suboptimal on
+kernel configurations with generic compile-time folded page tables.
+By default, ptep_get() and its friends expands to READ_ONCE(),
+forcing the compiler to emit a load even when the value is not used afterwards.
 
-Sean, thank you for the reminder. Sorry about the earlier formatting.
-We will use plain text for future mailing-list replies.
+This issue was recently reported by Christophe Leroy [1] for ppc32
+preventing futher code conversion to ptep_get()/pmdp_get()/... helper
+and the same behavior can also be observed on arm64 when built with
+2- or 3-level page tables
 
-Yosry, thanks for clarifying. We understand that by "missing
-emulation" you meant the INVLPGB handling needed with distinct
-per-vCPU ASIDs, not a bug in an existing emulation path in our tree.
+e.g) perf_get_page_size() in arm64 with CONFIG_PGTABLE_LEVEL=3:
 
-We agree that intercepting each guest INVLPGB and issuing a separate
-invalidation for every ASID in a large VM may undermine the benefit
-we are seeking. Using per-VM ASIDs consistently, rather than
-switching ASID allocation models based on nested usage, sounds like
-a promising direction. Our production guests do not run nested VMs,
-so direct execution before nested use would cover our use case.
+00000000000052a0 <perf_get_page_size>:
+    ...
+    52dc: d53b4234     	mrs	x20, DAIF
+    52e0: d50343df     	msr	DAIFSet, #0x3
+    ...
+    52fc: d35e9a69     	ubfx	x9, x19, #30, #9        /* pud_offset_lockless() */
+    5300: f9403508     	ldr	x8, [x8, #0x68]
+    5304: f869790a     	ldr	x10, [x8, x9, lsl #3]   /* pudp_get() */
+    5308: f90007ea     	str	x10, [sp, #0x8]
+    530c: f8697908     	ldr	x8, [x8, x9, lsl #3]    /* pudp_get() */
+    ...
+    5360: 90000009     	adrp	x9, 0x5000 <perf_prepare_sample+0x548>
+    5364: 92746908     	and	x8, x8, #0x7ffffff000
+    5368: d3557675     	ubfx	x21, x19, #21, #9       /* pmd_offset_lockless() */
+    ...
+    5394: f8757ac8     	ldr	x8, [x22, x21, lsl #3]  /* pmdp_get() */
 
-Your suggestion to change the INVLPGB interception policy when
-nested virtualization is first used is helpful. If EFER.SVME can be
-set before a guest runs a nested VM, the first VMRUN seems like a
-more precise trigger. Would KVM catch that VMRUN before entering L2
-and enable the necessary intercepts across the VM before any vCPU
-can execute an INVLPGB requiring nested handling? Could those
-intercepts then remain enabled for the VM's lifetime, rather than
-switching back when the guest leaves nested mode? We realize that
-interception would still require correct nested instruction handling.
+Though PGTABLE_LEVEL=3, since the pudp_get() still remain with
+READ_ONCE(), there's redundant load for the pud which is folded.
 
-For context, our experimental KVM4 configuration used a VM-shared
-ASID and separate, out-of-tree guest INVLPGB passthrough. The
-madvise() latency measurements were:
+To prevent generating suboptimal code, make pXdp_get() return a dummy
+entry for compile-time folded page tables, make the helpers such as
+pXd_offset()/pXd_offset_lockless(), set_pXd() validate dummy entries
+at compile time to catch the wrong usage and prohibit calls to
+pXd_page() in pgtable-nopXd.h.
 
-  Workers             INVLPGB off      INVLPGB on
-  64 mean              21.624 ms        12.505 ms
-  64 P99               32.760 ms        21.518 ms
-  128 mean             29.553 ms        20.459 ms
-  128 P99              39.628 ms        28.160 ms
+This series does not change the behaviour of existing code that directly
+manipulates folded page-table levels using set_pgd(), pgd_page_vaddr(), and
+related helpers. Those helpers continue to behave as before.
 
-These were single sequential A/B runs with 64 allowed CPUs; the
-128-worker run was oversubscribed. The results measure madvise()
-syscall latency, not IPI counts, and do not quantify any additional
-flushes from vCPU switches on a physical CPU under per-VM ASIDs.
+The new restrictions only apply to code that adopts the pXdp_get()-based
+access model for compile-time folded page tables.
 
-We can share the benchmark source and run further comparisons to
-help evaluate that trade-off. Would the maintainers consider
-consistent per-VM ASIDs, with direct guest INVLPGB execution before
-nested use and interception once nested use begins, a direction
-worth pursuing?
+As the pXdp_get() can return *dummy* entry, some of code using
+the stack value where saves the pXdp_get() could be a problematic:
+
+  1. Passing address of stack value where saves the pXdp_get() result
+     to pXd_offset() for example:
+
+       pud_t *pudp, pud;
+       pmd_t *pmdp;
+
+       pud = pudp_get(pudp, address);
+       pmdp = pmd_offset(&pud, pud, address);
+
+     (e.g. host_pfn_mapping_level() in loongarch).
+
+  2. Using the pXdp_get() result to use as argument of pXd_val() and
+     to check prot without checking pgtable is folded.
+     for example, x86's effective_prot().
+
+  3. Using set_pXd() with pXdp_get() will set problematic dummy entry
+     in folded page table like:
+
+       set_pXd(pxdp, pXdp_get(pxdp_k));
+
+  4. Using pgd_page_vaddr() to get the first-level pgtable.
+     passing dummy pxdp_get() for pgd_page_vaddr() will return wrong
+     address. Therefore, make pgd_page_vaddr() and pXd_pgtable() to
+     trigger the error for improper usage with folded dummy entry in the
+     generic compile-time folded pgtable.
+
+Thanksfully, above cases are rare since (1) most of usage using
+pXd_offset() with result of upper pXd_offset(), (2) it's extreamely
+rare to use pXd_val() for non-leaf entry in the kernel,
+(3) is to handle the vmalloc_fault or set the first level of page table
+and (4) to setup early page table and etc.
+
+Therefore, properly handle this uncommon and problematic pattern, and
+document the current design of compile-time folded page tables.
+
+This patch is based on mm-unstable.
+
+Future work
+===========
+ - print_bad_page_map() and show_pte() still prints dummy values
+   instead of printing the same content for all generic compile-time
+   folded page tables. We might want to skip printing dummy values later.
+
+ - We currently catch abuse of dummy values on the stack at compile-time by
+   relying on constant propagation by the compiler. Usama's work [3] on using
+   distinct types for sw vs. hw PTEs could help here as well."
+
+ - Clean up vmalloc fault handling by synchronizing the vmalloc entry on
+   32-bit architectures. This code is almost identical across architectures.
+
+ - Unfortunately, the current design of compile-time folded page tables appears
+   to be internally consistent but confusing. For example,
+   when CONFIG_PGTABLE_LEVELS is 2, p4d, pud, and pmd are expected to
+   be folded into pgd. However, the architecture code uses set_pmd()
+   to update the top-level page-table entry, even though it includes pgtable-nopmd.h.
+
+   In the future, it would be good to eliminate this source of confusion,
+   possibly by treating all folded upper levels consistently as dummy wrappers
+   around the highest real page-table level:
+
+         NOPGD
+   --> +------+           P4D
+       | ptr0 |-------> +------+           PUD
+       +------+         | ptr0 |-------> +-----+
+                        | ptr1 |-        | ptr | -------> ...
+                        | ptr2 | \       | ptr |
+                        | ptr3 |  \        ...
+                          ...      \
+                                    \        PUD
+                                     +----> +-----+
+                                            | ptr | -------> ...
+                                            | ptr |
+                                              ...
+
+Link: [1] https://lore.kernel.org/all/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org/
+Link: [2] https://lore.kernel.org/all/20251113014656.2605447-1-samuel.holland@sifive.com/
+Link: [3] https://lore.kernel.org/r/74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com
+
+Patch History
+=============
+from v1 to v2:
+  - fix docutils warning.
+  - Link to v1: https://lore.kernel.org/r/20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com
+
+from RFC v3 to v1:
+  - Drop and rebase for CONFIG_X86_DIRECT_GBPAGES and use the Dave's
+    patch (https://lore.kernel.org/all/20260902194718.E1FF3041@davehans-spike.ostc.intel.com/)
+  - Link to RFC v3: https://lore.kernel.org/r/20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com
+
+from RFC v2 to RFC v3:
+  - repasre commit message
+  - move ptdump_pgtable_first_level() into pgalloc.h
+  - skip the huge pud operation when CONFIG_X86_DIRECT_GBPAGES is disabled
+  - docuemtns compile-time folded page table
+  - drop the applied patch.
+  - Link to RFC v2: https://lore.kernel.org/all/20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com/
+
+from RFC v1 to RFC v2:
+  - Restore slient fallback to next pXd in set_pXd() and pXd_pgtable()
+    and add check whether they're called with dummy entry.
+  - Add some comment for returning first entry of pgd in arm with
+    2 pgtable-level
+  - Link to RFC v1: https://lore.kernel.org/all/20260713135614.1618183-1-yeoreum.yun@arm.com/
+
+---
+Dave Hansen (1):
+      x86/mm: Introduce helper for checking direct map 1G page support
+
+David Hildenbrand (Arm) (13):
+      ARM: mm: make nommu pgd_t a scalar
+      ARM: mm: make 2-level pgd_t a scalar
+      ARM: mm: remove custom pgdp_get()
+      LoongArch: mm: define pud_leaf() only when PUD exists
+      MIPS: mm: define pud_leaf() only when PUD exists
+      mm/pgtable: define (pgd|p4d|pud)_leaf() for folded page tables
+      mm/pgtable: define (pgd|p4d|pud)_offset_lockless() for folded page tables
+      openrisc/pgtable: drop __pmd_offset()
+      mm/pgtable: optimize pmdp_get() and friends for folded pagetable levels
+      mm/pgtable: catch abuse of folded dummy pgd_t/p4d_t/pud_t
+      mm/pgtable: disallow calling (pgd|p4d|pud)_page, pgd_page_vaddr() and (p4d|pud)_pgtable with dummy
+      mm/pgtable: disallow calling folded set_pgd/set_p4d/set_pud with dummy
+      Documentation: mm: clarify behaviour of compile-time folded page tables
+
+Yeoreum Yun (7):
+      mm: vmscan: remove stack copy address of pud/pmd pass in walk_pud/pmd_range()
+      loongarch: kvm: remove stack copy address of pXd in pXd_offset()
+      riscv: kvm: remove stack copy address of pXd in pXd_offset()
+      riscv: mm: use proper set_pXd() for generic compile-time folded patable in vmalloc_fault()
+      mm/pgtable: redefine PGTABLE_LEVEL enum with ascend order from PGD
+      x86: mm: use pgtable_level enum in effective_prot_pXd()
+      x86: mm: carve out the generic compile-time folded pgtable case in effective_prot()
+
+ Documentation/mm/page_tables.rst            | 84 +++++++++++++++++++++++++----
+ arch/arm/include/asm/page-nommu.h           |  4 +-
+ arch/arm/include/asm/pgtable-2level-types.h | 20 +++++--
+ arch/arm/include/asm/pgtable.h              |  2 -
+ arch/arm64/include/asm/pgtable.h            | 23 --------
+ arch/loongarch/include/asm/pgtable.h        |  2 +
+ arch/loongarch/kvm/mmu.c                    | 20 ++++---
+ arch/mips/include/asm/pgtable.h             |  2 +
+ arch/openrisc/include/asm/pgtable.h         |  3 --
+ arch/riscv/kvm/mmu.c                        | 20 ++++---
+ arch/riscv/mm/fault.c                       | 52 +++++++++++-------
+ arch/x86/include/asm/pgtable.h              | 14 +++++
+ arch/x86/kernel/cpu/common.c                |  2 +-
+ arch/x86/kernel/machine_kexec_64.c          |  2 +-
+ arch/x86/mm/dump_pagetables.c               | 18 ++++---
+ arch/x86/mm/init.c                          |  2 +-
+ arch/x86/mm/pat/set_memory.c                |  6 +--
+ include/asm-generic/pgtable-nop4d.h         | 54 +++++++++++++++----
+ include/asm-generic/pgtable-nopmd.h         | 54 +++++++++++++++----
+ include/asm-generic/pgtable-nopud.h         | 56 +++++++++++++++----
+ include/linux/pgtable.h                     | 69 +++++++++++++++++-------
+ mm/vmscan.c                                 |  4 +-
+ 22 files changed, 371 insertions(+), 142 deletions(-)
+---
+base-commit: 34f88a114888c9dba49e45f2b0c2a3e83c4c871c
+change-id: 20260722-dummy_ptxp3-3741d78cc70f
 
 Best regards,
+-- 
+Sincerely,
+Yeoreum Yun
 
-
-Sean Christopherson <seanjc@google.com> =E4=BA=8E2026=E5=B9=B410=E6=9C=8830=
-=E6=97=A5=E5=91=A8=E4=BA=94 00:09=E5=86=99=E9=81=93=EF=BC=9A
->
-> Please send mails as plain text, otherwise they get ignored by the mailin=
-g lists
-> and don't get archived by lore.
->
-> On Thu, Oct 29, 2026, Jackie Yu wrote:
-> > Subject: Re: [PATCH v2 00/29] KVM: nSVM: Optimize nSVM TLB flushes
-> >
-> > Hi Yosry,
-> >
-> > Thank you for the quick response. Two clarifications from our side:
-> >
-> > 1. About the boot failures: no emulation is involved in our
-> > experiment. Our out-of-tree changes enable direct guest
-> > INVLPGB/TLBSYNC execution by clearing the KVM intercepts, without any
-> > software emulation of the instruction. The failures occur with this
-> > unintercepted passthrough combined with static per-vCPU ASIDs, so they
-> > are not missing cases in an emulation path. Under the per-vCPU design
-> > we did not attempt to intercept and emulate INVLPGB at all.
-> >
-> > 2. We do not use nested virtualization in our deployments. L1 guests
-> > in our production scenarios run without nested guests. Therefore, the
-> > ASID-replacement behavior you quoted from the APM does not affect our
-> > current use case: with one shared ASID per non-nested VM, an
-> > unintercepted guest INVLPGB would be scoped to that VM's ASID, which
-> > matches what our per-VM configuration relies on today.
-> >
-> > Regarding the direction: we understand that with per-vCPU ASIDs,
-> > correct handling would require intercepting INVLPGB and re-issuing a
-> > flush for every ASID in use by the VM, which you note is unlikely to
-> > perform well on large VMs. We also note your point that as long as any
-> > vCPU uses nested, KVM must intercept INVLPGB anyway because the
-> > hardware replaces the requested ASID with the current ASID.
-> >
-> > If we read the situation correctly, the practical options seem to be
-> > either (a) a per-VM shared ASID mode restricted to non-nested VMs,
-> > with unintercepted guest INVLPGB, plus mandatory interception whenever
-> > nested is in use, or (b) always intercepting and virtualizing INVLPGB
-> > under per-vCPU ASIDs. Either way, direct passthrough would at most
-> > cover the non-nested case. We would appreciate Sean's and Paolo's
-> > input on which direction upstream prefers; we are glad to provide more
-> > details of our configuration or run tests that would help decide
-> > between these options.
-> >
-> > Thanks,
-> >
-> > Jackie
-> >
-> >
-> > Yosry Ahmed <yosry@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=8829=E6=
-=97=A5=E5=91=A8=E5=9B=9B 14:08=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > > On Wed, Oct 28, 2026 at 1:15=E2=80=AFPM Yosry Ahmed <yosry@kernel.org=
-> wrote:
-> > > >
-> > > > On Wed, Oct 28, 2026 at 6:37=E2=80=AFAM Jackie Yu <ufo19890607@gmai=
-l.com> wrote:
-> > > > >
-> > > > > Hi, guys!
-> > > > >
-> > > > > Jackie Yu <ufo19890607@gmail.com> =E4=BA=8E2026=E5=B9=B410=E6=9C=
-=8828=E6=97=A5=E5=91=A8=E4=B8=89 21:36=E5=86=99=E9=81=93=EF=BC=9A
-> > > > >>
-> > > > >> Hi Yosry and KVM folks,
-> > > > >>
-> > > > >> We would appreciate your guidance on supporting INVLPGB in ordin=
-ary
-> > > (non-SEV)
-> > > > >> L1 guests alongside the proposed static per-vCPU ASIDs.
-> > > > >>
-> > > > >> The 2025 ASID rework RFC proposed one static ASID per L1 VM and =
-listed
-> > > > >> "enabling INVLPGB virtualization" among its motivations [1]. The=
- June
-> > > > >> 2026 RFC v2 changed the design from per-VM to per-vCPU ASIDs [2]=
-. In
-> > > > >> the October v2 series, patches 2-11 establish static per-vCPU AS=
-IDs,
-> > > > >> while the remaining patches primarily address nested TLB flushes=
- [3].
-> > > > >> Our question is how guest INVLPGB should be supported under the
-> > > > >> per-vCPU design.
-> > > > >>
-> > > > >> Some of our workloads frequently discard and repopulate memory u=
-sing
-> > > > >> patterns involving madvise() and memset(). Broadcast IPI-based T=
-LB
-> > > > >> shootdowns are expensive for these workloads, so we are interest=
-ed in
-> > > > >> making AMD INVLPGB available to guests. We use a small benchmark=
- to
-> > > > >> approximate the resulting shared-address-space pressure:
-> > > > >>
-> > > > >>     region =3D mmap(256 MiB, MAP_SHARED | MAP_ANONYMOUS);
-> > > > >>     memset(region, 0xab, 256 MiB);       // Initial population
-> > > > >>     start N workers, pinned across 64 allowed CPUs;
-> > > > >>     each worker repeatedly reads pages in its own slice of regio=
-n;
-> > > > >>
-> > > > >>     repeat 500 warmup + 2,000 measured iterations:
-> > > > >>         start =3D clock_gettime(CLOCK_MONOTONIC);
-> > > > >>         madvise(region, 256 MiB, MADV_DONTNEED);
-> > > > >>         record elapsed madvise() time;
-> > > > >>         write one page in every 64 pages to repopulate part of r=
-egion;
-> > > > >>
-> > > > >>     stop and join the workers;
-> > > > >>
-> > > > >> The benchmark uses memset() for initial population; subsequent
-> > > > >> iterations re-touch pages rather than repeatedly calling memset(=
-).
-> > > > >> The numbers below measure the advisor thread's madvise() syscall
-> > > > >> latency, not worker throughput.
-> > > > >>
-> > > > >> In our experimental KVM4 configuration with a VM-shared ASID and=
- our
-> > > > >> separate guest INVLPGB passthrough changes, we observed:
-> > > > >>
-> > > > >>                          INVLPGB off     INVLPGB on    Differenc=
-e
-> > > > >>     64 workers  mean       21.624 ms       12.505 ms     -42.17%
-> > > > >>                 P99        32.760 ms       21.518 ms     -34.32%
-> > > > >>     128 workers mean       29.553 ms       20.459 ms     -30.77%
-> > > > >>                 P99        39.628 ms       28.160 ms     -28.94%
-> > > > >>
-> > > > >> These are single, sequential A/B runs for each worker count, wit=
-h
-> > > > >> 500 warmup and 2,000 measured calls per run. The process had 64
-> > > > >> allowed CPUs, so the 128-worker case was oversubscribed. The
-> > > > >> measurements show a useful latency difference, but do not by
-> > > > >> themselves establish INVLPGB instruction counts or IPI reduction=
-s.
-> > > > >>
-> > > > >> We then experimentally combined the October per-vCPU ASID change=
-s for
-> > > > >> ordinary guests with our existing, out-of-tree L1 INVLPGB/TLBSYN=
-C
-> > > > >> passthrough. With guest INVLPGB enabled, a one-vCPU guest boots,=
- but
-> > > > >> otherwise comparable two-vCPU and 64-vCPU guests fail early duri=
-ng
-> > > > >> boot. Keeping QEMU's +invlpgb setting while adding clearcpuid=3D=
-419
-> > > > >> to the same guest kernel allows the multi-vCPU guest to boot; th=
-e
-> > > > >> guest logs "Clearing CPUID bits: invlpgb".
-> > > >
-> > > > I imagine for INVLPGB to work correctly with per-vCPU ASIDs, you ne=
-ed
-> > > > to intercept INVLPGB and basically issue an INVLPGB for each ASID u=
-sed
-> > > > by this VM (nr_vcpus or 2 * nr_vcpus with nested). I can't imagine
-> > > > this would perform well on large VMs, not sure if virtualizing INVL=
-PGB
-> > > > would still make sense.
-> > > >
-> > > > Regarding the boot failure, I would guess there are some missing ca=
-ses
-> > > > due to the complexity of emulating INVLPGB without a shared per-VM
-> > > > ASID.
-> > > >
-> > > > >> These controlled boot comparisons identify a problem with combin=
-ing
-> > > > >> static per-vCPU ASIDs and direct guest INVLPGB/TLBSYNC passthrou=
-gh:
-> > > > >> the multi-vCPU guest fails to boot when it uses INVLPGB, but boo=
-ts
-> > > > >> when its INVLPGB CPUID bit is cleared. A one-vCPU guest also boo=
-ts
-> > > > >> with INVLPGB enabled.
-> > > > >>
-> > > > >> In this configuration, an unintercepted guest INVLPGB targets th=
-e
-> > > > >> invoking vCPU's hardware ASID, while sibling vCPUs have distinct
-> > > > >> ASIDs.
-> > > >
-> > > > It's neat that INVLPGB will automatically use the current ASID and =
-not
-> > > > ASID=3D0 for guest usage.
-> > >
-> > > Hmm, actually, how is this supposed to work with nested
-> > > virtualization? The APM says:
-> > >
-> > >     A guest that executes a legal INVLPGB that is not intercepted wil=
-l have
-> > >     the requested ASID field replaced by the current ASID and the val=
-id
-> > >     ASID bit set before doing the broadcast invalidation.
-> > >
-> > > If any ASID passed by an L1 guest is replaced by its own ASID, then i=
-f
-> > > L1 is flushing L2's ASID (i.e. a non-zero ASID), passing through
-> > > INVLPGB would do the wrong thing and flush L1's ASID instead, right?
-> > >
-> > > Seems like if the VM is using nested (on any vCPU), KVM must intercep=
-t
-> > > INVLPGB anyway to correctly handle the ASID?
-> > >
-> > > The APM also says:
-> > >
-> > >     Two forms of INVLPGB intercepts, conditional and unconditional, a=
-re
-> > >     available to the hypervisor. The unconditional intercept traps al=
-l
-> > > guest
-> > >     usage of INVLPGB. The conditional intercept traps only
-> > >     illegally-specified INVLPGB instructions.
-> > >
-> > > When I read "conditional", I was really hoping it was conditional on
-> > > the ASID being zero or non-zero, as KVM really only needs to intercep=
-t
-> > > INVLPGB with non-zero ASIDs (assuming the ASID is shared to begin
-> > > with).
-> > >
-> > > Am I missing something?
-> > >
