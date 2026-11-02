@@ -1,102 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633600;
-	b=vV9GiJ15rlevqByeVy6CuGW19yG3CBgdtm1HsYRH84p956hk+XOebt28RSnXX5sXHjNZ
-	 Qjv3so9n3oLBt/94u3XtmVYxzB2hJygu3wrJnrWyoq/nwrqVJATbwiEl+xYoXsOR6tL4W
-	 EY8bsiewLhNuSNbBJVpgyVDhbVyVMmE0kIbCj/itYZuDQcFRjPr+R0bfGtRk34wD4EQ+n
-	 Qx2SEQVbH4XniAt8ELKZGf0x5Pr8fyrD5/6vSwyrlcN4+TQjJUks/8R/8BernFKvcczUQ
-	 0rf3WY+dmV933En7WwzMahW6Scb127xDzlVHJgokzSEqqELfJJ9qUKyp/zSevpIifdw==
+	t=1793633628;
+	b=tGtvttyDHW5VRNuwOW8HRoMaqGUa2Jt5ilJLvuHT4bI4Psdc7l9y9+wQ9lqpkgAN0faw
+	 8IOU0TYb5LfXuZ43Z8MEtSk9y+xyDMOy6bt8exqdXCpqM4+ct6Hwff45z2ezAdl4NMopT
+	 MzEIneBK+H/clX73cJCXLIP3DCOO06rNMigI8XgesHf8kFaMaNzOTU4rreHxXY34ixi1A
+	 lonFm1E/yNBhgHZqsVmKVPvZ33IUrMwGESiZv9okZj216cjbwN5HhIh2GfsVPKkjnnfpV
+	 hG84rrF8m0zA6eyJs6w/9ubMpbaFcM264EqpLUFBvn/TNrR6aO7aA6oOFGqxCDBeNmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633600;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Reinject:X-Authority-Analysis:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=BQsaASFcwTR98Ua/j2/w7tivjnC0NUs/EPQM2iEIWxg=;
-	b=Oy3TvJZk79vZjcvXmFQahJnFiHrUzAqufVaunCwYtUdQTL6KKwIlDa28fhCebErCrIbr
-	 Qi61aiq7wuB7Z5CIcY+s7Mde33LAuUzUIFN3ffG2jAroWObVqx1KfMWXC/c5xk0vo5mP8
-	 NZzIUbQbGLzRoW2bRGKAPbD8Hf6N6QvK0USjBBWggzsnRDlQH2BVkXmaHdGwlARtiYsxv
-	 SGXbyGd5Efnk+vtF5VOiiwvje2DpP9YBmMwcXmfQgq0eERy2xpyDH0LGJSGEPhFR3e6Lj
-	 OV+Sqp5JdJFmyJrMR4FseUl6yCXCHJLNnCzkv/PZe6K0LTHFTGWrQ4GJWE3kVus26Ug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633628;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=TUC01fxFkyGA6yFwHL7rirhUUtJ+C7CbbSnK6VkA0MA=;
+	b=TohXON0jSFLjb//kG3rZHyLUPTwdj8LLAzUNvlWvusFJQCxDx486aHCJ9BKAHfy+vdM2
+	 gLQd0b2p1I2chnndI2AqETubvCUo/Sik6HuQ8/3PxY46I9P9LkO85uONLMPyfks/9TVc/
+	 hDckQBDzJ4xSHSWIXSnVppG7kq8rYAHT9yCeZNZhM9Wh/ZQjAd2qy+dGEx7tee1MCzPjR
+	 wd9OOYBBbzVzI4P8T+nwtlAQByIKEzimmzfLG/pfQTfCb5QQj/YAGSSFGXxeK/b+LkwZt
+	 DiKUo8ZkC2vI7qEc8fRyTIdeM+eSAV6hf71a3+0lW0OeYPOB/LEm3RqJCroTikB4Otg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=km0KRzyr;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZFlbIGvN;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C61608A354;
-	Mon,  2 Nov 2026 15:33:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6C61608A354
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C886A609FDA1
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:33:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C886A609FDA1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=km0KRzyr
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2EEFDH3333621;
-	Mon, 2 Nov 2026 15:32:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=BQsaASFcwTR98Ua/j2/w7tivjnC0NU
-	s/EPQM2iEIWxg=; b=km0KRzyrvJCvYWGvdxZLIQtpVChnlJb09PzDpSMrjXB+y2
-	EiEtQfSUoklr4D7ZLh98AvH4myEMejuvNotugTEDk+hc9IH7sBGPC4XNbh+CkmJ0
-	+HzZAOHhqosaf7waExH3cFRGjqkQNjEd0VW5D8xQYNU0LzVZLt5HMxuwvff3/IMA
-	+ggupIXDvaRZDKuTLLD+rCJzOSj/A6/UD9excoqDFlPSHXeO2LkSAXr/cwZ77ksM
-	U09ej/4wKCOvha+VgMWDi+xIuMLlni3IjPdfdnlGlxcl+MezqxSHAKNIL2e7VSx/
-	D0jSPesAcXu/7UJmjIE5DJyVdWwxoxvrPRwtBKhQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn7u39cp5-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 15:32:35 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2Dp3k8932188;
-	Mon, 2 Nov 2026 15:32:34 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hnunjxhmn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 15:32:34 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A2FWUrY45220142
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Nov 2026 15:32:30 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DAF120043;
-	Mon,  2 Nov 2026 15:32:30 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6387620040;
-	Mon,  2 Nov 2026 15:32:29 +0000 (GMT)
-Received: from osiris (unknown [9.87.153.156])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  2 Nov 2026 15:32:29 +0000 (GMT)
-Date: Mon, 2 Nov 2026 16:32:28 +0100
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-        Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Paolo Bonzini <pbonzini@redhat.com>, Fuad Tabba <fuad.tabba@linux.dev>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
-        Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        kvm@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>
-Subject: Re: [PATCH 1/7] KVM: s390: Drop unused and unreachable
- kvm_arch_vcpu_should_kick()
-Message-ID: <20261102153228.240804-H-seiden@linux.ibm.com>
-References: <20261028190259.1819571-1-seanjc@google.com>
- <20261028190259.1819571-2-seanjc@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZFlbIGvN
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e93e2f72bfso53651965ad.3
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793633627; x=1794238427; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=TUC01fxFkyGA6yFwHL7rirhUUtJ+C7CbbSnK6VkA0MA=;
+        b=ZFlbIGvNZK++z9i7Ef9M3Lts5+mhjELqChWtTNzX7naRDDHhxWhVpiCbxMAYXELwHA
+         XqUuHHIHRWx+/ZrqDHx3/+0poo/8s3SXXL4AcNg1kW6zh/dUh+BfSYSK/rIjBa3FXACq
+         EUyuTtJaak+y7eMle0v9fg7eC3HSzeZwScYN3+5RXD95nVvvj6b8cGCCsSZ2gC6najfw
+         3MMtILykbBmQdGcCot1TZJyBRinqjOJ0atTaX9qcAx6Wwc3QKTNZXAgaqyIbkKpzelMA
+         aXeSGxZCTqj0VFzzPmAJrwziqvUFjxh40xr1ZS37G5cET2BoWOw5B8lA2MWJBj0pnM9m
+         Vneg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793633627; x=1794238427;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TUC01fxFkyGA6yFwHL7rirhUUtJ+C7CbbSnK6VkA0MA=;
+        b=iz2xKAyGKUOUreWnT+WG0GQfIWeXHA85VahCl41q4/QqzmnecVk0eo8k/IGCNQtxQd
+         jVeau+6bkJP58zhHKGfTJT8A7IuLI5nvBnp2ItHhrQfB9y3RfgpEbLs+8IDINIGPjOQo
+         3Zbni3O4Q+mwRDyVf2TRByyibAoZikmpb6ebBwMtenBfs9df/P4ALx4RT4rZU4G6ZrxV
+         /sdq+IHK1NxbsU/WP/9KstE9nypC2FcyY5/zNZocC73nGEou5pk002dUz8uUETnC586M
+         OpJYNjm29DO/a2CLQjpdcB6iDQyeUU5UjIeNCNidRC3mMklz45NNqMa+2vj5lI30LZm2
+         r+lA==
+X-Gm-Message-State: APuU4Z8q0PJrKegTetimYm8Fz3EvEjIyLjSd5yCen/miYR1BgLM5bH5x
+	+sAI96jXYlKUCAPuG7t7ilZgsgook8DTKPhnOA2StCn5vLXJE3upPKMPAkGIlGt1sK2hXBGAwpb
+	Sv71n1g==
+X-Received: from plgv20.prod.google.com ([2002:a17:902:e8d4:b0:2ea:3bc:770d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:24b:b0:2e9:776f:66b4
+ with SMTP id d9443c01a7336-2eb364f6eafmr93325065ad.44.1793633625745; Mon, 02
+ Nov 2026 07:33:45 -0800 (PST)
+Date: Mon, 2 Nov 2026 07:33:45 -0800
+In-Reply-To: <sashiko-outbox-191627@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,76 +78,153 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028190259.1819571-2-seanjc@google.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Zsp4uN7G c=1 sm=1 tr=0 ts=6ae8ad13 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=1XWaLZrsAAAA:8
- a=e2WrUwKQfGWSWgw8ceQA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: TmxCuOpzq6vA5Vx27S-wl8VaUu08c3rl
-X-Proofpoint-GUID: KVXVtrhgD1GJzUOP0CvMGutz2Xg2IILr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA2MCBTYWx0ZWRfX7bqvyy+G4IRi
- YuDNWW2rtZhIuWgYthjFwF9+9BvaQqjUd0NCjGgytPI2kgitQSqHnwzde0DvmKT5ekh2NyjS0Nq
- F9Z/Zdzj1pOgrZG2yR5VLS36NId8bM3pN7WDBUKOt9UCD+QFNKQAZu+Jyci2pVHVvCbSWlrBtzk
- 4AIduMbPdqh6wI13eR6unsEG4RU8A4ZAJXpBquIr8jswWYP5JT1UMzhOQVTUhyasVm3yKq19/37
- g8IQ6IsFUU0CmiqM7aH5od6K0UDK4Pufp7iAip5do5FEjWgMz0BL8a8ds/SYC3EFA4Du3R6hGdA
- 0zHdfqn6psBiKyEKCPFmlpIxWnmBKc5C9d6tL8dsAaGzrFS280m4gYPAHt09nU+p77BxB+4etoO
- zPcjuUT7rpSjV4uYvQkRwMMejfxArhysp1beSjd8DEChKl+d8KSwLwvy9Sujp9ZrxPVJILSraLV
- unHwMnZGlBbuYsnY1Xg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA2MCBTYWx0ZWRfXzMWFCRCaICBW
- YVdaYUPRVlAbXrli6ZNZR2sTDTrenRk6sxAut1SiSIk+5dhzpZRcRftKd34+qSoKLUq5b5QITXp
- q7EjnwMhcLT8GbXDC7vsw0JN8N6I7PQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_04,2026-11-02_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
- impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020060
+Mime-Version: 1.0
+References: <20261030212112.2598640-1-seanjc@google.com> <20261030212112.2598640-13-seanjc@google.com>
+ <sashiko-outbox-191627@kernel.org>
+Message-ID: <auitWWkOopYYbBH3@google.com>
+Subject: Re: [PATCH v4 12/23] KVM: Destroy memslots immediately after
+ mmu_notifiers are unregistered
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2026 at 12:02:53PM -0700, Sean Christopherson wrote:
-> Drop s390's kvm_arch_vcpu_should_kick() stub as the one and only call site
-> is wrapped with "#ifndef CONFIG_S390".
++Gautam and PPC lists/maintainers
 
-In the somehow near future I'll remove those #ifdefs and use the kick
-stuff for kvm_arm64. The native s390 KVM then must at least keep an
-(unused) symbol at hand. It seems that the compiler could not optimize
-those calls away. So let's keep it there so I do not have to re-add it
-soon.
+On Fri, Oct 30, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Medium] KVM: PPC: Book3S HV: rmap_nested memory leak in kvmhv_release_=
+all_nested()
+> --
+>=20
+> commit 9c25a1b4a76e8526eb8a2b11e1b9e63893b0de80
+> Author: Sean Christopherson <seanjc@google.com>
+>=20
+> KVM: Destroy memslots immediately after mmu_notifiers are unregistered
+>=20
+> This commit replaces active memslots with an empty memslot set and frees =
+all
+> memslots immediately after unregistering the MMU notifier in kvm_destroy_=
+vm(),
+> prior to calling kvm_arch_destroy_vm().
+>=20
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index fa548b12228ff..2eda12a52bf4b 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+>=20
+> [ ... ]
+>=20
+> > @@ -1310,12 +1329,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
+> >  		kvm->mn_active_invalidate_count =3D 0;
+> >  	else
+> >  		WARN_ON(kvm->mmu_invalidate_in_progress);
+> > +	kvm_destroy_memslots(kvm);
+> > +
+> >  	kvm_arch_destroy_vm(kvm);
+> >  	kvm_destroy_devices(kvm);
+> > -	for (i =3D 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+> > -		kvm_free_memslots(kvm, &kvm->__memslots[i][0]);
+> > -		kvm_free_memslots(kvm, &kvm->__memslots[i][1]);
+> > -	}
+>=20
+> [Severity: Medium]
+> Does hoisting kvm_destroy_memslots() above kvm_arch_destroy_vm() leak
+> struct rmap_nested allocations in slot->arch.rmap on PowerPC Book3S HV wh=
+en
+> destroying a VM with nested virtualization enabled?
 
-	Steffen
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/s390/kvm/s390/s390.c | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
-> index 18fb200f854a..9900a1a1c148 100644
-> --- a/arch/s390/kvm/s390/s390.c
-> +++ b/arch/s390/kvm/s390/s390.c
-> @@ -3922,13 +3922,6 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
->  	return false;
->  }
->  
-> -int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
-> -{
-> -	/* kvm common code refers to this, but never calls it */
-> -	BUG();
-> -	return 0;
-> -}
-> -
->  static int kvm_arch_vcpu_ioctl_get_one_reg(struct kvm_vcpu *vcpu,
->  					   struct kvm_one_reg *reg)
->  {
-> -- 
-> 2.56.0.313.g2479322e68-goog
-> 
+I don't think so?  Patch 3[*], "KVM: PPC: Flush/zap all memslots on kvm_arc=
+h_flush_shadow_all()",
+should free the rmaps in response to kvm_arch_flush_shadow_all().   From wh=
+at I
+can tell, the page tables have to be in radix mode, and so the rmaps are fr=
+eed via:
+
+  kvmppc_radix_flush_memslot()
+  |
+  -> kvmppc_unmap_pte()
+     |
+     -> kvmhv_remove_nest_rmap_range()
+        |
+        -> kvmhv_remove_nest_rmap_list()
+
+And if that doesn't work, it means memslot deletion on an active VM is comp=
+letely
+broken.
+
+However, it means the memslot code in kvmhv_release_all_nested() is dead co=
+de, so
+this as follow-up to patch 3?  Or maybe folded in?
+
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_=
+hv_nested.c
+index a6ff42d7666c..27985210f972 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -802,8 +802,6 @@ void kvmhv_release_all_nested(struct kvm *kvm)
+ 	int lpid;
+ 	struct kvm_nested_guest *gp;
+ 	struct kvm_nested_guest *freelist =3D NULL;
+-	struct kvm_memory_slot *memslot;
+-	int srcu_idx, bkt;
+=20
+ 	spin_lock(&kvm->mmu_lock);
+ 	idr_for_each_entry(&kvm->arch.kvm_nested_guest_idr, gp, lpid) {
+@@ -820,11 +818,6 @@ void kvmhv_release_all_nested(struct kvm *kvm)
+ 		freelist =3D gp->next;
+ 		kvmhv_release_nested(gp);
+ 	}
+-
+-	srcu_idx =3D srcu_read_lock(&kvm->srcu);
+-	kvm_for_each_memslot(memslot, bkt, kvm_memslots(kvm))
+-		kvmhv_free_memslot_nest_rmap(memslot);
+-	srcu_read_unlock(&kvm->srcu, srcu_idx);
+ }
+=20
+ /* caller must hold gp->tlb_lock */
+		=09
+
+[*] https://lore.kernel.org/all/20261030212112.2598640-4-seanjc@google.com
+
+> In virt/kvm/kvm_main.c, kvm_destroy_memslots() replaces kvm->memslots[i]
+> with kvm_empty_memslots and frees each memslot via
+> kvm_free_memslot() -> kvm_arch_free_memslot() -> kvmppc_core_free_memslot=
+_hv()
+> in arch/powerpc/kvm/book3s_hv.c:
+>=20
+>     static void kvmppc_core_free_memslot_hv(struct kvm_memory_slot *slot)
+>     {
+>             vfree(slot->arch.rmap);
+>             slot->arch.rmap =3D NULL;
+>     }
+>=20
+> which frees the slot->arch.rmap array without freeing the linked
+> struct rmap_nested entries.
+>=20
+> Previously, those entries were freed before memslot destruction via
+> kvm_arch_destroy_vm() -> kvmppc_core_destroy_vm_hv() ->
+> kvmhv_release_all_nested() in arch/powerpc/kvm/book3s_hv_nested.c:
+>=20
+>     srcu_idx =3D srcu_read_lock(&kvm->srcu);
+>     kvm_for_each_memslot(memslot, bkt, kvm_memslots(kvm))
+>             kvmhv_free_memslot_nest_rmap(memslot);
+>     srcu_read_unlock(&kvm->srcu, srcu_idx);
+>=20
+> With kvm_destroy_memslots() running before kvm_arch_destroy_vm(),
+> kvm_memslots(kvm) now returns kvm_empty_memslots and the memslots have
+> already been freed when kvmhv_release_all_nested() runs, so
+> kvmhv_free_memslot_nest_rmap() is never called. Any struct rmap_nested
+> entries remaining in slot->arch.rmap at teardown (for example, when
+> KVMPPC_SECURE_INIT_DONE causes kvmppc_radix_flush_memslot() to return ear=
+ly,
+> or when 4KB PTEs were replaced by a huge page in kvmppc_unmap_free_pte())
+> will be leaked.
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030212112.25=
+98640-1-seanjc@google.com?part=3D12
+>=20
