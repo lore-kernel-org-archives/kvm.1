@@ -1,74 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633674;
-	b=N3OpRtkdMWjfBc90dlweOQ6VVBkc7fl2CyafNMOZF9fwCLDpcPSxIr/MLQPCg9tgvMGO
-	 snG3u9RNWrfR5Z8IBaCVL3wOT0M7YI/VeagkCQfyHpgrNkE9fmA6GzSXQclTfOBbpSqVG
-	 czwcFWepEVlrd68zKMJd5ydPmsxTOKaSBaqVhqcPv2B2LmJOqXgCL2i0d1RFyK5+tZnRQ
-	 aQgbrFzPQSjyrrAbE3l+1GdaI1KRXidMP+TkFdkBQju5OQN/wdOWGF2vtuvUxYxpWw6Xv
-	 CBQP8TJvI3ID2pB2npDejdFxxWLDflED2ExFAHETSrDRZ8uoGjdhIIOj2YN3XExn4kw==
+	t=1793633748;
+	b=gwvDxsEJjwYLCxztWOMLVzDesBThFSOB7NslnlJ9WMX4603uqeb3KUzon6+7ZvgJFdDI
+	 RVbKGyLdVkBta1KZgHXWQqH7uPSiG4wpT/dN7cVROZ9Oyx8+JLyHfwikJUBDkAjlrTIwL
+	 bRuNnYVzSPqsbFmizVtKDmNHanldI2fEEGYX5A5tjzM9lvRgxcmII07GENLlzq3pIQixs
+	 yqWYlo2GcJfNrOC5diBwAE/4iZLVbLmpi/UO1jHQZAZa0DFbnaxOxuKBUp05BVd+j4HrS
+	 s6bw2dsc9qqfRZNjhDjG547egBOosSJY6TcvzB+KVo/aTTn2JVcjZ5dajSb+/Vm9NCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633674;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633748;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=s4vRCplgEoCQN3eUv6q9zSWbIbV1TXU7YJjG5+iZQYY=;
-	b=DGnyd5PdoUTz9jpobHvf9CbFza3W+x/4XTX7tJpv7nA4qTe7c6xYfilyspMCOoPMLTuM
-	 qxHdK4vrst1DGDLQPsey8IO0yTWdDu2+yu4Y4wtHdF0dtXKgsM9ZY2OaJyPbqivZZEJC+
-	 YbUil5vMh/PB77akMoMcCrYgcTxgimgw7e3Sj8Hh8Nz/SX1ia7LHdaLWCmhuPkN9myUX/
-	 7moms5o1aVaNKfQcmPiipMxIAVtIkUSd6jtLUKhGENJFea6Umg2u9rMcasOmy73s+4NY0
-	 7Kyz7+/aAKN1Wo6GuPciPGaJ2IKVvdU8HxHzai1SNAaCs+nq8O6wFZ5WhGOp2JKf1eQ==
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=uTBY7+w3GJYj4zEYkLCYx6G9HqVrLIEyic17+kRkINY=;
+	b=zLuUDD4aT70ANzGeXbi8uGdywrn0xDv30MOikcMJ44rpbykuS+rF4Rx0mEkDpYHEPMD2
+	 huS+gx1ccPk02JTaR4RXpB3U4501T7ZhHCTlK//WPxvcAjr8B2evBrFXwpf/zu+2x8RMQ
+	 Ce9NQTnHWaawPddpCWV+mSVxKwvbeK28HDKWKLEYLbuLhUZCDRaSXHsxizyzxNCu1QA9b
+	 PR/4Onu/FBbWdoKRGiGrNAiEcRZXvCEOeOd1DRFb42xPnn3sH1zvztnToNukuP4khtY9S
+	 6PZxLQc3ONuozDeC3NHM3PN+LrwokFXl6XPhOpSayDqVor563lGgFvHKPE30SFx0HaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kN4K3wOz;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BlmVTSs6;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF708606B0E5
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:34:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF708606B0E5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73AA60A188C
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:35:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B73AA60A188C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kN4K3wOz
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ac8f449d1bso2537075a91.3
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:34:33 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BlmVTSs6
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a030e0f9c1so3244748b3a.2
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:35:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633673; x=1794238473; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793633747; x=1794238547; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=s4vRCplgEoCQN3eUv6q9zSWbIbV1TXU7YJjG5+iZQYY=;
-        b=kN4K3wOzdV/W3kh8g+0fWAyOvSiocNX5hF6muy3fNL2kjHr2M0/m0NeBbA46ErY+rZ
-         4lwnFHaV76Ds1818iOmiumDby839pjrL7KUgmytU2s2ruLqPCQEdGMQiahueohZNK2CQ
-         aZz+3LuceSS/uv0cOYZMcLdkxRdLklQru/+a0zKfV1/M0IkFBCMCos7Aid6/1xuPJPq+
-         gC2sptDx87uD98TtLWKiqixhLdtOVmTcNXsElhyxVgNyyygHKGSpa+ZJ8/AGPxIhXEPm
-         ORcsu3pZVRWhuMiy9Pfuo/mA2BsZSMU/dta3J0iquXF5cMKuKDFP9NnK0pNaii8py6jp
-         HsGA==
+        bh=uTBY7+w3GJYj4zEYkLCYx6G9HqVrLIEyic17+kRkINY=;
+        b=BlmVTSs6+8o5sfMbktnXRJo79MWSCnhJCKAoKhAbRQ8bSIpJFiwulmzOLhAWahp646
+         BsnUOI4d6ANJJUu+YsiQN3+st++LgVoVRAjB67Q2gUzV+X6JB1BzEuMmyChazFLbIJwm
+         +1tXtAr5r3ZPNL/UA3s/L9d/8C/OCoBFw3B2S/Rx092lPvMJjvkrSCwoQHtYk3BaQy7r
+         LvT4HBuvfbEJC8sDDzCbuieOV0pAJ5ck/XnXONH948n65c6oj70iWGTC19BI5BLf6RPL
+         iFel2n5OR68U7V2FfaNuWr9KY4HZE2Ig3R7yKM8ckCNkvNZS2/4uPzjqLofCaZc6J2D6
+         nJsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633673; x=1794238473;
+        d=1e100.net; s=20260707; t=1793633747; x=1794238547;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=s4vRCplgEoCQN3eUv6q9zSWbIbV1TXU7YJjG5+iZQYY=;
-        b=S+Wlm0s8Fvts1S+FeiqGSxYy72nkXLo62g9F/RanwbQZIwtY0TiKCxNvoBUNJHWJug
-         innrYTBexyh9YqZjst3cgiLA0afBD7SNBbsGlZap9FTEC8uWdM65jFxm5i8XohyEtfUy
-         TnoRaib7iLM3S4UBngxd2k3GGGhCZx2jASTrIcxRXOr5NMYUm8J3KdNA4Q+9z7IACTy5
-         gWY3Xh9Ylrcv+l5xr08XmKOJuD6jKQE44h52QGPWeP2UJzWkmBAzOFflPYfD7uSl4c7f
-         OntMM3lKeeIkEY1gJNN59Xx+4wZQ5Wbzu1sRL/bcbhglVLGno6dO61opzHBuPbNSampx
-         oTSw==
-X-Forwarded-Encrypted: i=1; AKwUvBz/TwMoYNMJEbt9p9z4mblmjttjGIx+GZ7dWM3FMEM8LM8Q5Q9TmbRC/cm0RAuW2HtWeTA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z//zUt56mqT0+ExQa8s6mO6tfZlEkjIRW75BbA+9nsuG2QMLiZA
-	0itDwK/La0dyHcj9c4dF4f7D99MrhaNQomiMApyXhVyBm9/DXNND8T1SvfxwXHMkDq1+PMOdFZp
-	WzrnEpg==
-X-Received: from pjso1.prod.google.com ([2002:a17:90a:c081:b0:3a8:211b:6c8b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2749:b0:3ad:43c1:7d41
- with SMTP id 98e67ed59e1d1-3ae897429b9mr7590262a91.33.1793633673063; Mon, 02
- Nov 2026 07:34:33 -0800 (PST)
-Date: Mon, 2 Nov 2026 07:34:32 -0800
-In-Reply-To: <20261102153228.240804-H-seiden@linux.ibm.com>
+        bh=uTBY7+w3GJYj4zEYkLCYx6G9HqVrLIEyic17+kRkINY=;
+        b=fNK5vbRhpdbdZtEfHvrmQL9pPU1ms6xuZwVb7kP3czgCb8dLVYBVQxYrPQPeeKVaaC
+         oiOusc9gDgbpwNV9qtyVUI5cY0KkG5a3cIPylbCXZ7OcQNwQFeOY58pIUvXUoXrivbq9
+         rWE7j2HzoDlqmzdkBtPChka9Y3suoNUgEfjpu6wFmOEVzOrpsH9TPoTKpJd9PYd30do4
+         Ksx4LZKXmSgATp1PWFt5+iEiokItAniJ9Xs2JTTeAmpowaE9LiuEqNtqKhNoT2KEhOFz
+         UphhWzWG7TwPgwTdp5XBfOR8rn2HKPBUEy/tR8iQLf1zAvvGsVPbH5/mbqE4bmdSwuax
+         kc+g==
+X-Gm-Message-State: AFq9FYI8rW+sk7yQSjh8nVYw4X5r35djVhWH48DJRWhU/iEaNixqE59M
+	eKC5yUOp/OnGInVgDL8eDu9PCiEaMctbK5ps0nmW/AMdlbD25GbXWEhYK1jkoUAg9mvUrm0T6ox
+	gmntZVQ==
+X-Received: from pgdo12-n2.prod.google.com ([2002:a05:6a02:620c:20b0:cc7:e6a9:8fe1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9185:b0:3e2:6ee4:a751
+ with SMTP id adf61e73a8af0-3e928a5a7e7mr9816324637.60.1793633746886; Mon, 02
+ Nov 2026 07:35:46 -0800 (PST)
+Date: Mon, 2 Nov 2026 07:35:46 -0800
+In-Reply-To: <auinpIEk6FdGwDS8@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,38 +77,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261028190259.1819571-1-seanjc@google.com> <20261028190259.1819571-2-seanjc@google.com>
- <20261102153228.240804-H-seiden@linux.ibm.com>
-Message-ID: <auitiPKnFueBJzPA@google.com>
-Subject: Re: [PATCH 1/7] KVM: s390: Drop unused and unreachable kvm_arch_vcpu_should_kick()
+References: <20261029221710.1871112-1-dmatlack@google.com> <20261029221710.1871112-4-dmatlack@google.com>
+ <auinpIEk6FdGwDS8@google.com>
+Message-ID: <auit0kVkAaWcNUvk@google.com>
+Subject: Re: [PATCH 3/3] KVM: selftests: Use VFIO selftests library to pick
+ IOMMU mode in IRQ test
 From: Sean Christopherson <seanjc@google.com>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Alex Williamson <alex@shazbot.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Nov 02, 2026, Steffen Eiden wrote:
-> On Wed, Oct 28, 2026 at 12:02:53PM -0700, Sean Christopherson wrote:
-> > Drop s390's kvm_arch_vcpu_should_kick() stub as the one and only call site
-> > is wrapped with "#ifndef CONFIG_S390".
+On Mon, Nov 02, 2026, Sean Christopherson wrote:
+> On Thu, Oct 29, 2026, David Matlack wrote:
+> >  static void help(const char *name)
+> >  {
+> >  	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-m] [-n] [-t iommu_type] [-v nr_vcpus] [-x]\n", name);
+> > @@ -266,8 +250,7 @@ int main(int argc, char **argv)
+> >  	}
+> >  
+> >  	if (device_bdf) {
+> > -		if (!iommu_type)
+> > -			iommu_type = probe_iommu_type();
+> > +		TEST_REQUIRE(iommu_mode_is_available(iommu_type));
 > 
-> In the somehow near future I'll remove those #ifdefs and use the kick
-> stuff for kvm_arm64. The native s390 KVM then must at least keep an
-> (unused) symbol at hand. It seems that the compiler could not optimize
-> those calls away. So let's keep it there so I do not have to re-add it
-> soon.
+> This is very unhelpful when neither IOMMUFD nor VFIO is available, especially
+> why the user doesn't explicitly provide the desired mode:
+> 
+>   # ./irq_test -d 0000:6f:01.0 -i 10000
+>   Random seed: 0x79d386bd
+>   1..0 # SKIP - Requirement not met: iommu_mode_is_available(iommu_type)
+> 
+> I helped write the test and I had to go read the code to figure out what iommu_type
+> would be, and then read the VFIO library to see how it reacted to a NULL pointer.
+> 
+> How about something like this as fixup:
+> 
+> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+> index f9c11d80a306..63205afc04d1 100644
+> --- a/tools/testing/selftests/kvm/irq_test.c
+> +++ b/tools/testing/selftests/kvm/irq_test.c
+> @@ -250,7 +250,9 @@ int main(int argc, char **argv)
+>  	}
+>  
+>  	if (device_bdf) {
+> -		TEST_REQUIRE(iommu_mode_is_available(iommu_type));
+> +		__TEST_REQUIRE(iommu_mode_is_available(iommu_type),
+> +			       "IOMMU mode(s) '%s' not available",
+> +			       iommu_type ? iommu_type : "IOMMU and/or VFIO");
+>  		iommu = iommu_init(iommu_type);
+>  		device = vfio_pci_device_init(device_bdf, iommu);
+>  		msix = vfio_setup_msi(device);
+> 
+> to yield:
+> 
+>   # ./irq_test -d 0000:6f:01.0 -i 10000 -t vfio_type1_iommu
+>   Random seed: 0x14e21328
+>   1..0 # SKIP - IOMMU mode(s) 'vfio_type1_iommu' not available
+>   # ./irq_test -d 0000:6f:01.0 -i 10000
+>   Random seed: 0x160225ae
+>   1..0 # SKIP - IOMMU mode(s) 'IOMMU and/or VFIO' not available
 
-Please read the rest of the series.  kvm_arch_vcpu_should_kick() goes away
-entirely.
+Side topic, it would be nice if iommu_mode_lookup() printed out the known modes
+when this is hit:
+
+	VFIO_FAIL("Unrecognized IOMMU mode: %s\n", iommu_mode);
