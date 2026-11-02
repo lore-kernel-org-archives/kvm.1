@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793603914;
-	b=qGQt+VZ7rUeaGJc//ffDq25AmJE1XuXTSNkpY3TsEb/seUkPi7VXMcjm9yHcZO7rPr0l
-	 0B3cwlYPCBUd8St5iHLGwK5G4/l6eKDY1PRoSuvADOXyE3oInmVYJaH7McZnw6A7GQvu4
-	 sw60TQpR5VgBRo93RvKe3V2VkrhY23LNWAPPv5VkjBL5EvSpLfYjB8z2Y+zLUKKE9RE/w
-	 /VI055zsQltTBi7SZnOivQKT/CM3Ww65yxEBJki3AMQhenbpYb1UoTgXVqbHOX2MUXIN5
-	 9mK+PZMtO5Bo1KDo5aQwnnc/Vqdce9jYXs6qzUIMWMla6zI/CtvMo9z2hMdLvNAFgBQ==
+	t=1793604781;
+	b=tzRuyrMOBpGD1EIoXOI+ej3EFBaYTlt1kGziqng2uVX3aK6/Rw2Vmxih+VM0XhZX3Ret
+	 umbMzpay8D5M/VghSgurnQjgecWulT4nND1sjh887eaWOZM8F7oLVaOm5GYl/fcT+ve5S
+	 pTBZAfejL4Z6qozrFYIXmk3DcS0VfhvmEWri/5DdSqVaQU2plbCYPUGJzbnbHaAe3cCeB
+	 uUFuwi+Kplu9pWCqj25juKXmOAJEGLYyNj5DVkGmczE9wbXKATwgPJY4FKR8S5Ehbp+ay
+	 RJLG8W4hOQdwaNT9PXJN5AJJWeU0bUCg2I8NnLVf6oG/vMNDvosUPeWSv/ZyCoo/gwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793603914;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604781;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=AKYpB2+zrqXiyOQva5RgKPct/7/kmoifdAd8IOoSraE=;
-	b=rnAg95zMbFJbvyHVPLbGaTjbwAxG9UBCnjLAxD6BYwGS6A+7sV4JuZlTMESTmmrtQgG4
-	 z35DsKwF98ptFSRsoE/3/5SMPvLQHynJ8gMp6qc8E5COhiVBYsfLv9SDaDCck2X3F3KgM
-	 LUhdnnxJKnupiAbwbTCPscCsM4zxIIBNTOHql9rRwRqiQRoZ3vwAFQ+gRTOOiMIMQYONI
-	 tdIZWFaMRsniWw1cvf9PFEGcXZUJrE8siOTA/Ota/sw32LFjN2uK23/ruhRl7j/avpD+k
-	 ShPJM9bEpIL33PjgwcU+1OhYLT+WrjQOW9Dc4PslbhenJ2iPWPpYXp2aA+bm1SxW+rA==
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=yjKLHHzS10n4wGDXarJMvF0fOdP5JcGYaK0RuRwho0s=;
+	b=g4XaGdF8552gxNRIAuK0VVEQOPOZvPz3FCSobUi5CgM1x968gWshHDo1j45WvAzH69Wa
+	 G5MGwDDbLYoQLMqCqcbMqw63prwud5Uh5zFBSHLI+Y6aamC/Wq6+jhrneSXBi04Gik3pP
+	 D7TaBtEJeSxZ24H26aZAS3LvZQDha7a2fTocAiz4r3eTcSuHkqoJNWb6EsHWw/rSnAaSo
+	 YX4jiziveONSFipXLpvOlah+fkdSNGQUk3c0PoTEvbwO5ptRzwVPh/erYXLrkUlMwY4me
+	 7su1Dr9eytfaJ03tr3DPfaRDt7ad9lbAHv7FqMeLseq3F/vRy7Tw8aJ1hCadXUq+WfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="fZdW/tZS";
-	arc=none smtp.remote-ip=198.175.65.16
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JyBHoWUA;
+	arc=none smtp.remote-ip=198.175.65.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E1D606A324;
-	Mon,  2 Nov 2026 07:18:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01E1D606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC82606A326;
+	Mon,  2 Nov 2026 07:33:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BC82606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fZdW/tZS
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JyBHoWUA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793603913; x=1825139913;
+  t=1793604781; x=1825140781;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=KudH8oFsImGYL7mGO6FDNrAM7eIjgonP8sHENv5RJ7A=;
-  b=fZdW/tZSE4YOQKKt3qHrLrLSuiJ0R/lGg3tXDW8QrDb4yGmci+C6Jk2/
-   9n8m+Pn1L55v3wNwxd4l4e1vg0EyDB15z1bht4IhKxIvDTZvf8CFxTKGK
-   0dkXQuUXl+9x09w/3mN0xe4HxONWGISdyvYHaE9kOrNoHHL9zfjqLl8Md
-   zuq7Cofx2GxWG9bIZpfw2/imPHmNs9pdVOmzkEXOvZX80uAQNNkdxBC9u
-   3UgjmL1jRpkOdw9l298k1WA975eN/Iv7/elRtvVjoENXckFFn4N/Uo76K
-   QC/gVrcezh7Fkuz5pMMIdeun/CMah+fBY2c83JuQJ7OomqXksLoxC/sH6
-   w==;
-X-CSE-ConnectionGUID: HxjchbWsSZ2PBXxmYpIpTA==
-X-CSE-MsgGUID: ocBQx4SkR9eJYTzOEBJZfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2278284"
+  bh=kCW91QP6kziHBH5nmJbj/L70gH2j0FXLHyWiHf3tiRQ=;
+  b=JyBHoWUAzChv0NkKTa/hyIf+JC9LRVRcCRSiBnNOgru/MSQAGIJj5XMA
+   gdwBDq/Ve4d0sFgg6FwO7LL6LCYPqDV7asDL5LNLcRBf2SkcRAUJwYt2X
+   M9rJMmNaewd1IDOK2mM5Xt3uKFnrtmoaqnv/9qaqy+LBtihiOfUA8dUyN
+   ekxroAOSyHD+DmWAb1gHL7Cpj4/Gk/qN89FNG18gLMjv494OUVP+mvkL2
+   yrtC/H28Fj6Fxt//9wHNntZVtrj44cjl1pTJFA39DReExH2UMHb2h3y8w
+   XNlEZncABipAj/iatYTzyNpgR6ECpZTjt4pIYYg+1lLJ33DqV/NKZmDJi
+   A==;
+X-CSE-ConnectionGUID: Okj9089pRtusxwyj3vpnlA==
+X-CSE-MsgGUID: Uw9imQ2LTamzyQSdlEPkMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2174758"
 X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2278284"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:18:33 -0800
-X-CSE-ConnectionGUID: bvHAe9u6QVeycrZfagHV7g==
-X-CSE-MsgGUID: Wvv3PDsyQwOVjQMSyYeJdQ==
+   d="scan'208";a="2174758"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:33:00 -0800
+X-CSE-ConnectionGUID: 4RPUP8gfTXyAuUQuVakVWg==
+X-CSE-MsgGUID: /Tc03w7gTjWtUuHOZbVydQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="5873618"
-Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:18:29 -0800
-Message-ID: <061b1963-7288-4f9f-97f7-54fab5b95ecd@intel.com>
-Date: Mon, 2 Nov 2026 15:18:26 +0800
+   d="scan'208";a="6368915"
+Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2026 23:32:54 -0800
+Message-ID: <14447223-008f-49e1-824b-9f6e8a4aa0c1@linux.intel.com>
+Date: Mon, 2 Nov 2026 15:32:50 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,84 +73,80 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/virt/tdx: Do not print error message on
- non-present feature
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, dave.hansen@linux.intel.com
-Cc: x86@kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Nikolay Borisov <nik.borisov@suse.com>,
- Sean Christopherson <seanjc@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Chao Gao <chao.gao@intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org>
+Subject: Re: [PATCH v10 19/28] KVM: x86: Advertise support for FRED
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
+ David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-20-sohil.mehta@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org>
+In-Reply-To: <20260911213659.2025974-20-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/2/2026 2:51 PM, Jiri Slaby (SUSE) wrote:
-> Before commit 165e77353831 below, the kernel did not print anything
-> during boot if X86_FEATURE_TDX_HOST_PLATFORM was not present, unless TDX
-> enablement was explicitly requested via a module parameter.
+On 9/12/2026 5:36 AM, Sohil Mehta wrote:
+> From: "Xin Li (Intel)" <xin@zytor.com>
 > 
-> After the commit, when attempting to load TDX automatically, this is
-> emitted to the log:
->   virt/tdx: TDX not supported by the host platform
+> Advertise support for FRED to userspace after changes required to enable
+> FRED in a KVM guest are in place.
 > 
-> It is emitted with the "error" level, hence it is disturbing. It is not
-> an error to run CPUs without the feature.
-> 
-> Drop this silent-boot-breaking error message for the automatic
-> initialization path.
-> 
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Reviewed-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+> Reviewed-by: Chao Gao <chao.gao@intel.com>
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+The code change itself looks good to me.
+But this patch should be moved after patch 25.
 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Chao Gao <chao.gao@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> 
+X86_CR4_FRED is added to nested.msrs.cr4_fixed1 in patch 25, before that
+if the L1 guest enables FRED, it will break the nested case when do VMXON,
+which checks nested_host_cr4_valid() and it will fail during the bisect
+window before patch 25.
+
 > ---
-> 
-> [v3] add reviewed-by tags and resend
-> [v2] update the commit message.
-> 
-> Cc: Thomas Gleixner <tglx@kernel.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: x86@kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-coco@lists.linux.dev
-> Cc: kvm@vger.kernel.org
+> v10:
+>  - kvm_cpu_cap_clear(X86_FEATURE_FRED) in svm_set_cpu_caps() (Chao).
 > ---
->  arch/x86/virt/vmx/tdx/tdx.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  arch/x86/kvm/cpuid.c   | 1 +
+>  arch/x86/kvm/svm/svm.c | 3 +++
+>  2 files changed, 4 insertions(+)
 > 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 680e5178a86f..d910a290ac50 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1276,10 +1276,8 @@ static __init int tdx_enable(void)
->  	enum cpuhp_state state;
->  	int ret;
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index ddb022cb203a..5682bacdfd32 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+> @@ -1034,6 +1034,7 @@ void kvm_initialize_cpu_caps(void)
+>  		F(FSRS),
+>  		F(FSRC),
+>  		F(WRMSRNS),
+> +		X86_64_F(FRED),
+>  		X86_64_F(LKGS),
+>  		F(AMX_FP16),
+>  		F(AVX_IFMA),
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index f254a5ff570d..dd19c7b4e904 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -5518,6 +5518,9 @@ static __init void svm_set_cpu_caps(void)
 >  
-> -	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
-> -		pr_err("TDX not supported by the host platform\n");
-> +	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM))
->  		return -ENODEV;
-> -	}
+>  	kvm_cpu_cap_clear(X86_FEATURE_IBT);
 >  
->  	if (!cpu_feature_enabled(X86_FEATURE_XSAVE)) {
->  		pr_err("XSAVE is required for TDX\n");
+> +	/* SVM FRED virtualization not implemented yet */
+> +	kvm_cpu_cap_clear(X86_FEATURE_FRED);
+> +
+>  	/* CPUID 0x80000001 and 0x8000000A (SVM features) */
+>  	if (nested) {
+>  		kvm_cpu_cap_set(X86_FEATURE_SVM);
 
