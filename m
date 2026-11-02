@@ -1,76 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793650041;
-	b=qJK/Gw+XEd52kgpGhtl9wl3CWYX9ihiE11aWyBAUI7vK3wwIqor6poEmhsvvA8VcmL/0
-	 P98I2DElPlmZX6VMr+GXOWhAgmDxodkIX+8BDRWixbQELxMQIJ35EC1mTmKwwxzoHG/NR
-	 UttXjWLXJe1a1AkwYDaUcsArPvUG9Adi/mjzPPxB7wMtPqJLBenTpKwsOQmBkxgTzHy9I
-	 UPu2zq8xhFIZP9y+HIZp9Mz7RLBvhNoZVanY16GArDC1aDDpk2R9xof9oO6BtFKgSh6Pa
-	 zfdpIaWmnr+uyA+eneXFh7DPgQXqf23rkw+ngH411+hHeHp4z0fnqfNdkyO3gJmXo3w==
+	t=1793650112;
+	b=SiepblLEdLMn3mAXBoZ7HpGf2QJWQ05bZ7V1/CUQoSELEOgqS+jbtBq0DrSqVKaykOdM
+	 9MnwBC9HmIbtKWXucJs6XR+BeHKzReEEUuVk8YDjKxWhAWWDYqySQz+z6+QJTXYCCpL2E
+	 Q1l4dNKG8Dndx4I5w3+MGHl9S/SC//lTFrFJQ/jqBPB6NWXpOlQWPs9vUiqsPzU9nUnZP
+	 yKPaUGEWf2vKpiKMDZa0LzsQoK1KOJQv5+fiUfpJouICgSBI8tGkV1q9bbtcWgHsSYOJt
+	 xBa/TmVYIanPsJdaFkQ70PNfBkfiyydnx7l8Jv2JLl6YfbJnF2ydYKhLy6gQVE3D5UQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793650041;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=nNfm4rH6eQ2Oj47JrfSVJCEhe2McbXnswnFij5qW64Y=;
-	b=VXqQETHMno65r4m3imO8N/5AZ+AisJQFOV5Naz3IW7cl0iMOgg3chfRNv1A0Q2Az6sIr
-	 Sga8BdfZ4wb9DsKtgvdDHTysDmLXkQreQgYxRqzHGYg3QDmZtT+ugECFYT9dT+kcQo312
-	 FrE8pYIrmcrqTsx3Jhok3X5c09ZwDUBK4sJK7GlHUMid7WmiEZw2HwLQIsGZzeyiS/A9D
-	 CGzcUwvCCOLJ1VMcnNrUV3K9M+DgVkA/Hld6R/WfR8it+t/BF5iTkFQm7QjEPiaDGzQ5R
-	 HGr4IWYD9U6auITSxtGW7ZQdloZAT4wyy0m+VqLvSEkxtMVpdY1gen+X66I2fRzQ5Rg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793650112;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=wPiOj6Ramt3ftxK4C2lZHrvYb9x8b9IA7sKO2384dFo=;
+	b=05A/kI3/3XfM7TruSPvS2MM9ENIMzcxDKGvIj8GLMNcFtfoGta1vH3xK275ssSLepuqD
+	 +ukmAcJZ/NQ35KN7L9D2+OMD6eSGH5eoeFhFj0poU6tMKGWLqKL0lM06/84GK6kmXbgGE
+	 XS9ZHLKGmdjRJIQPzJBAFB6B9VLAVmrgeuNP0j2vyBUEZmGjkGPcaDz39rSI624VSHxNZ
+	 PMgFNN3k2wyHjC/8fk0pAnuwD2ug5IMzJN/WGcrgkIUeh9790vIMsk6dKXOj3cWZOKoKx
+	 5w+Hw5WB/Cblf9IgVzqeG+AfwJT2wOcibALrCBFL322zpKPNqlGAXVEVXaqJrEdri1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ckpGuMv7;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CqSoXnRP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811C4606A329
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 20:07:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 811C4606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2E3606A324;
+	Mon,  2 Nov 2026 20:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ckpGuMv7
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3aed1b64104so1056422a91.0
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 12:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793650040; x=1794254840; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nNfm4rH6eQ2Oj47JrfSVJCEhe2McbXnswnFij5qW64Y=;
-        b=ckpGuMv7zO3B8SDR4ofmLGE5IZmRvz6MfHgSdQXThAu2Q9bhPx5NM4gY52stRxZTVE
-         z+NHbcRvOPk6UGebzuGiZbI5R4wh8RyisAjrQR+cz1NpeM5T2OSwbpg77iVRzKyBEJTl
-         BMdlxG5YX5oMQTihNRuQJ9jRTRhOst6271mHsjDQd3Pwt7Ih8d7jVCYWoXr8MHfVKnJJ
-         niyf/n/HD+77i2PetyVMF2K0KO2HQ2yHtduKaggxhBsfqVnigRMPSaTnOQSIg1dAl9Kf
-         YROm3diLAFEDadbQZSIEoEbDxhCNW7/OgieUGSBIkYDcmDr5wPtknt0PS+z1FyvUOQUR
-         2gHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793650040; x=1794254840;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nNfm4rH6eQ2Oj47JrfSVJCEhe2McbXnswnFij5qW64Y=;
-        b=kjNsGNiXUGAlKLY+6T6xIIaFfM8wii0VI2yvAcp0TU05sbyHRw13z3DAcVJRFeSs6/
-         LL7s1fOEqFPyjYpiM0tukKPShsghSfSc1kIKrSfhcgL5Z/qk3/lKGwkwVW7B/gqZBXLZ
-         V21rxd/HglQZb8RSM8kdS/dMO1/aN9kNkO2PevvQ0wjqryyLQ/OQM/+XQsQFMpQqX2e0
-         9D2H9+b3NcAxB6DieZ5ycbugLIZsTQRYr+sQtsOKmaOXQYXA/Y2cR277iGodQLgqC9Hp
-         Hr6CfBFx6a5kWLMjLBPS+S05ilMqtp3qKOtHMq5gaU4iNZeQo86L4/4QJGeEhR+mNcCo
-         B96Q==
-X-Forwarded-Encrypted: i=1; AKwUvBz5mX62PNupeqbFORDY9eudovuJcaNwB/MOAYki9OxGRtf34xVZkDhkD97JvDunC9uFOGI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8G9yKf76jidj8/VwwSClU19b5SP/2RkcLqiHWhtKK9JR74E+nH
-	LtTdD0LusevBws5P6Gl+fGf8xV3HJvul9UMKCvAhEOcMaOYUaZR4koDkA+dQDgWGSbWhqanvq+t
-	2ehiuYA==
-X-Received: from pjwo8.prod.google.com ([2002:a17:90a:d248:b0:3ac:16a7:52de])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d44:b0:3ac:9d83:885e
- with SMTP id 98e67ed59e1d1-3ae898392a1mr8899415a91.52.1793650039539; Mon, 02
- Nov 2026 12:07:19 -0800 (PST)
-Date: Mon, 2 Nov 2026 12:07:18 -0800
-In-Reply-To: <953b3d774dc281bf13f5025041d4434f560cf776.camel@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CqSoXnRP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AF31F00A16;
+	Mon,  2 Nov 2026 20:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793650112;
+	bh=wPiOj6Ramt3ftxK4C2lZHrvYb9x8b9IA7sKO2384dFo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CqSoXnRPMJgqKQRTji8LJguf4Gk6viJOwdIrrHd+MQeVI6kprG5MOa51HeAcOyYV9
+	 9yrH/vUxcG1gEXwjtmctK2AwBziwDlCLFFOFRxfGmQwK2EtZrue9/A26gntIW1Nljy
+	 k1xFshYZs3Qui0n+qLNO4BukrWh9+/4BE8fFfqFqAa3uLQvhvNeaVNVDEVdOFHLN2j
+	 GZ0NekRLWHAYAEx5lwyhNKUS99IE/9+XqZeXxcFjG7kI9R8Pobb1gqMySz8sj+i5gm
+	 4NdvMB8bb4yF4cdkJI8KlMaAzjj082g0qJ5UqUP5fV6F4hAW4LCofZpc4rdIlh59q7
+	 RtqC3e2lysM+Q==
+Message-ID: <sashiko-outbox-194065@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 05/16] KVM: arm64: gic-v5: Add ITS device skeleton
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sascha Bischoff" <sascha.bischoff@arm.com>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
+In-Reply-To: <20261102194454.4086911-6-sascha.bischoff@arm.com>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+ <20261102194454.4086911-6-sascha.bischoff@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 20:08:31 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,105 +59,153 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <TY3PR01MB113468FBD8E5EFA65C4B4E5EB86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <072dd88c-4ca1-4c8a-98b1-7783bc43c1c5@kernel.org> <TY3PR01MB11346BAE55FF22F66E86A6F8B86602@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <afdf1864-4721-4177-bc18-2a5821d97559@kernel.org> <20261027205411.GAauEPc4AtLwvrDfFr@fat_crate.local>
- <7b0a2e98-c614-4cdd-8604-3b5b21e8474f@kernel.org> <20261028154743.GCauIZH3pZm24jCX9b@fat_crate.local>
- <20261030023338.GGauQCAuYyXGwIhlqX@fat_crate.local> <20261031030112.GHauVZ-OI2KjdkjrcY@fat_crate.local>
- <953b3d774dc281bf13f5025041d4434f560cf776.camel@intel.com>
-Message-ID: <aujtdn73XnWH5g-i@google.com>
-Subject: Re: [PATCH -v2] MAINTAINERS: Fix Intel TDX kernel file patterns
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "kas@kernel.org" <kas@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"krzk@kernel.org" <krzk@kernel.org>, "au.dang.jx@renesas.com" <au.dang.jx@renesas.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"biju.das.jz@bp.renesas.com" <biju.das.jz@bp.renesas.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, 
-	"biju.das.au@gmail.com" <biju.das.au@gmail.com>, "jirislaby@kernel.org" <jirislaby@kernel.org>, 
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 02, 2026, Rick P Edgecombe wrote:
-> On Fri, 2026-10-30 at 20:01 -0700, Borislav Petkov wrote:
-> > From: "Borislav Petkov (AMD)" <bp@alien8.de>
-> >=20
-> > A K: is a content regex file pattern which matches any text in a patch
-> > so if a commit message contains "tdx" as in
-> >=20
-> > =C2=A0 has_tdxe_auto_clear
-> >=20
-> > for example, see
-> >=20
-> > =C2=A0 https://lore.kernel.org/r/20261026-g2ul_sci-v3-3-b3097163edd5@bp=
-.renesas.com
-> >=20
-> > get_maintainer.pl erroneously adds the x86 gang to the Cc list for what
-> > obviously is a completely unrelated patch.
-> >=20
-> > The same happens when someone uses it to check
-> >=20
-> > =C2=A0 drivers/power/reset/tdx-ec-poweroff.c
-> >=20
-> > patches.
-> >=20
-> > So switch the x86 TDX patterns to files and directories (F:) wildcard
-> > type patterns and group them by path, for less false positives.
-> >=20
-> > Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> > Link:
-> > https://lore.kernel.org/r/20261027055750.GBauA9XlPykc1c1Xhv@fat_crate.l=
-ocal
-> > ---
-> > =C2=A0MAINTAINERS | 7 +++++--
-> > =C2=A01 file changed, 5 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 7a162e9bcab1..015cf66afb96 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -30347,8 +30347,11 @@ L:	linux-coco@lists.linux.dev
-> > =C2=A0L:	kvm@vger.kernel.org
-> > =C2=A0S:	Supported
-> > =C2=A0T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git =
-x86/tdx
-> > -N:	tdx
-> > -K:	\b(tdx)
-> > +F:	arch/x86/**/*tdx*
-> > +F:	Documentation/**/*tdx*
-> > +F:	drivers/virt/coco/tdx*/
-> > +F:	include/uapi/linux/tdx
-> > +F:	tools/testing/selftests/tdx/
->=20
-> This drops arch/x86/kvm/vmx/tdx.c. Not that we are sending any PRs based =
-on this
-> maintainer entry, but I'd like to continue to keep tabs on that code.
->=20
-> Sean do you have any thoughts about how this entry applies to the KVM sid=
-e of
-> TDX? I'm not sure we actually ever had a specific discussion.
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [Medium] KVM: arm64: gic-v5: unrestored base address in vgic_v5_register_=
+its_iodev()
+- [Low] KVM: arm64: gic-v5: missing tools UAPI header sync for GICv5 ITS de=
+finitions
+- [Low] KVM: arm64: gic-v5: dead code in vgic_v5_register_its_iodev()
+- [Low] KVM: arm64: gic-v5: stale GICv3 ITS description in commit message
+--
 
-Honestly, it annoys me.  I often temporarily delete the TDX MAINTAINERS ent=
-ry when
-sending patches that affect arch/x86/kvm/vmx/tdx.c, because many, if not mo=
-st, of
-the KVM changes are purely mechanical and/or KVM-internal that don't have m=
-uch to
-do with TDX as a whole.  Although maybe that's just a reflection of the typ=
-es of
-patches I tend to send.
+commit bdded985e667a6d1396b4ac9faceeadebc56557f
+Author: Sascha Bischoff <sascha.bischoff@arm.com>
 
-But I do that purely to try and not pollute x86@ and linux-coco@ with stuff=
- I'm
-99.9% certain they don't care about.  If y'all want to sign up for spam, I =
-won't
-stop you. :-D
+KVM: arm64: gic-v5: Add ITS device skeleton
 
-> In practice it has been a cross subsystem wrangler role. With TDX connect=
- it
-> will likely grow more tentacles.
+This commit introduces the initial KVM device plumbing for a GICv5 ITS,
+including the UAPI device type and address attribute, struct vgic_v5_its
+state, and a RAZ/WI MMIO region placeholder registered when userspace sets
+the ITS base address.
+
+>     KVM: arm64: gic-v5: Add ITS device skeleton
+>    =20
+>     Introduce the basic KVM device plumbing for a GICv5 ITS. This adds the
+>     GICv5 ITS device type and address attribute, registers the device ops,
+>     and wires a GICv5 ITS IODEV into the generic VGIC MMIO dispatch path.
+>    =20
+>     Add struct vgic_v5_its to hold the ITS base address, the IODEV plumbi=
+ng,
+>     the backing KVM device pointer, and the general ITS mutex. Allocate t=
+his
+>     state from the KVM device create path, initialise the mutex and base
+>     address, and mark the VM as having an ITS. GICv5 MSIs require a Devic=
+eID,
+>     so set msis_require_devid when the ITS is created.
+>    =20
+>     Record the VGIC model required by an ITS and reject mismatched device
+>     creation in either order. Check GICv3 ITS creation as well, so the two
+>     ITS models cannot be combined in one VM.
+>    =20
+>     The MMIO region is registered once userspace provides the ITS base
+>     address through KVM_VGIC_V5_ADDR_TYPE_ITS. For now the IODEV only
+>     provides a RAZ/WI placeholder region; the actual ITS register emulati=
+on
+>     is added separately.
+>    =20
+>     Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+
+[Severity: Low]
+This isn't a bug, but is the third paragraph of the commit message stale?
+struct vgic_dist::its_model, the check in kvm_vgic_create(), and the GICv3
+ITS creation check in vgic_its_create() were already introduced in commit
+05620a314219 ("KVM: arm64: vgic: Require matching VGIC and ITS models"),
+whereas this commit only checks and sets its_model in vgic_v5_its_create().
+
+> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/=
+asm/kvm.h
+> index 65ee09bd14636..8c701173a2d88 100644
+> --- a/arch/arm64/include/uapi/asm/kvm.h
+> +++ b/arch/arm64/include/uapi/asm/kvm.h
+> @@ -99,8 +99,10 @@ struct kvm_regs {
+> =20
+>  /* Supported VGICv5 address types  */
+>  #define KVM_VGIC_V5_ADDR_TYPE_IRS	6
+> +#define KVM_VGIC_V5_ADDR_TYPE_ITS	7
+> =20
+>  #define KVM_VGIC_V5_IRS_SIZE		(2 * SZ_64K)
+> +#define KVM_VGIC_V5_ITS_SIZE		(2 * SZ_64K)
+> =20
+>  #define KVM_ARM_VCPU_POWER_OFF		0 /* CPU is started in OFF state */
+>  #define KVM_ARM_VCPU_EL1_32BIT		1 /* CPU running a 32bit VM */
+
+[Severity: Low]
+Should tools/arch/arm64/include/uapi/asm/kvm.h also be updated with
+KVM_VGIC_V5_ADDR_TYPE_ITS and KVM_VGIC_V5_ITS_SIZE so that
+tools/perf/check-headers.sh does not report an out-of-sync header warning
+during tools builds?
+
+[ ... ]
+
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic=
+-its-v5.c
+> new file mode 100644
+> index 0000000000000..5790b029f09b6
+> --- /dev/null
+> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> @@ -0,0 +1,186 @@
+
+[ ... ]
+
+> +static int vgic_v5_register_its_iodev(struct kvm *kvm, struct vgic_v5_it=
+s *its,
+> +				      u64 addr)
+> +{
+> +	struct vgic_io_device *iodev =3D &its->iodev;
+> +	int ret;
+> +
+> +	mutex_lock(&kvm->slots_lock);
+> +	if (!IS_VGIC_ADDR_UNDEF(its->vgic_v5_its_base)) {
+> +		ret =3D -EBUSY;
+> +		goto out;
+> +	}
+> +
+> +	if (!IS_ALIGNED(addr, SZ_64K)) {
+> +		kvm_err("ITS Base address is not aligned to 64k\n");
+> +		ret =3D -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	its->vgic_v5_its_base =3D addr;
+> +	iodev->base_addr =3D addr;
+> +	iodev->regions =3D vgic_v5_its_registers;
+> +	iodev->nr_regions =3D ARRAY_SIZE(vgic_v5_its_registers);
+> +	iodev->iodev_type =3D IODEV_GICV5_ITS;
+> +	iodev->redist_vcpu =3D NULL;
+> +	iodev->v5its =3D its;
+
+[Severity: Low]
+This isn't a bug, but since vgic_v5_its_set_attr() is the only caller of
+vgic_v5_register_its_iodev() and already checks SZ_64K alignment in
+vgic_check_iorange(), is the !IS_ALIGNED(addr, SZ_64K) check here needed?
+
+Also, redist_vcpu and v5its are members of the same anonymous union in
+struct vgic_io_device, so setting iodev->redist_vcpu =3D NULL is immediately
+overwritten by iodev->v5its =3D its.
+
+> +	kvm_iodevice_init(&iodev->dev, &kvm_io_gic_ops);
+> +
+> +	ret =3D kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, iodev->base_addr,
+> +				      KVM_VGIC_V5_ITS_SIZE, &iodev->dev);
+> +out:
+> +	mutex_unlock(&kvm->slots_lock);
+> +
+> +	return ret;
+> +}
+
+[Severity: Medium]
+If kvm_io_bus_register_dev() fails in vgic_v5_register_its_iodev() (for
+example with -ENOMEM or -ENOSPC), should its->vgic_v5_its_base be reset to
+VGIC_ADDR_UNDEF before returning?
+
+Leaving its->vgic_v5_its_base set to addr on failure causes
+vgic_v5_its_get_attr() to report the address as configured even though the
+MMIO device was never registered on KVM_MMIO_BUS, and causes any subsequent
+retry of KVM_SET_DEVICE_ATTR via vgic_v5_its_set_attr() to fail with
+-EEXIST in vgic_check_iorange().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102194454.4086=
+911-1-sascha.bischoff@arm.com?part=3D5
