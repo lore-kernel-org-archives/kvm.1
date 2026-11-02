@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793638042;
-	b=aL/oXmH6Tuwjaxl+grjd0OJLCMyqfuRLcXjwbsxyUnuOKnr7qr8zzPdwxyMbnbIFI47x
-	 GXrMpxwTxmladTn47KcQe7FuVcJnh7HcGKUzPQj8IDU8ACcx1V73VZWy8OvEAqyfTWwuv
-	 GVksRlP5LH9AIKGEAgiegxx0phXbG21QQU+4JkiT5LbsMKopv90rLLNuZKMP6n70TRvWQ
-	 TDk/MwsRV+pwmiCuUWw8FZt/FFz5bADWwHBi2ENEjo27nEsLyk1rGC9uvC09AodGYzsA1
-	 H+/zev2o3hf32EcoDka/+C6EG0tLd3Hvlkna+t23Rpfqsn3w5DFEpf9DNbcAqyI+23A==
+	t=1793638923;
+	b=gMb/Rme7KOdC6tneURAwrfOAkicU/GgTtyDr3iz7CORRjv+MbQ+tbKy6kbB84H1VMbzU
+	 ipIj+oKEg9PFg6m4gh0pDtVwG5kShv8Em/13INfi/6c2VVIZsZT5hxwZpHb+sz+bnKuSH
+	 IQVw1mQzGkhlSEYO0N2rSBrIPPqW5m9fXzYmY7GX3UQ743sxM1rxXDWlXF7sEj/zdXJ/L
+	 l9p+TXt8IHVPEKfg0A+V072GMJqqd8WiNmXnpMYIq5cqmbt7iFCfbMy05WyIaYMaf1C/7
+	 Kk3g31w86Xdy1o3oU0POs05OjjJQ7R53OYU3ICy1r6zC313Yok1XBKFlqGjzi9r1EnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793638042;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793638923;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=xYFV2sIJXPeD/UT86NX1VHxUCYIwQd37eGSUNeH+Dsg=;
-	b=NGazxNjtq/WhXMr5uqxnQzLCYq1Ouji+rp73iIzvPFZHcem9D3+rHIb9A/3zRULQVsT0
-	 N6MhYH75nHrnopE4fYMLAJBIHKaL2rCrr5LgbSIdfvNuTkbusxi4QN2wNRsOobuzqwxMn
-	 iWFCRGTMt5y/XhBI+Vg/U2T4AWzpHimAHbxOaHRyZz2Ss4ZSu0RudKbOJeDx2OoU6zO4l
-	 7I/zKrSUS5nQKJ+oEyKROSdrpvZsk66BUO7GgzL6f5U/EOpmlDznDG92gzH/UPvefRprF
-	 cV1suIZOoOmXLbZFJfRLD4R8fQ2Q2CB90fyXNlVz8xIh/YrOPf/C5IhPhhoUaVF7sfg==
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=bpH9MkRAZiC53uZXlhyRKBkxR5xRQR1vmni4kZzNvpA=;
+	b=p6lAbKhrtbEmoEZJcxjQCotkpOTLkw9SfOY0ntLOqmIsoNf5ICYUQSZqrQeiJAuhD/aE
+	 CCevnbuek7WlKqjW+n+lv9HwbtXUlpn+sq9S4YNQXaleEsyGmQXVbQtZyyHj+I8bqkAvr
+	 IMwHBCjlqPM5ykILXncsktUqN4J6e6eXy11F6D4vVFpCeAxq6utjdTmqkDbJx8XPPQDPM
+	 P3DAtrSZif3p4D6RxZiihpQ1BRsbpb4voq8wqED8GOEXUXHvk65pe/W9jgBEepatG++yf
+	 Z/QEZSqiMvXjeu+X9pMsiL/oEW2bgtfcAiVBX0NanArOj8K8o6XDI8lz0A+m2j5axfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ItFSL5XZ;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nYDGH9IB;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53D9606B0EF
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 16:47:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A53D9606B0EF
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E998B606F3DF
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:02:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E998B606F3DF
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ItFSL5XZ
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nYDGH9IB
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E99A116F3;
-	Mon,  2 Nov 2026 08:47:17 -0800 (PST)
-Received: from [10.0.136.93] (M0PRX50XMG.cambridge.arm.com [10.0.136.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3ABB03F59E;
-	Mon,  2 Nov 2026 08:47:20 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE33A16F3;
+	Mon,  2 Nov 2026 09:01:58 -0800 (PST)
+Received: from [10.57.58.9] (unknown [10.57.58.9])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F10C83F59E;
+	Mon,  2 Nov 2026 09:02:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793638041; bh=NUIUbAV/c1P3Ein5UfxzQaJacNrd5uuAdVMFA2B5968=;
+	t=1793638921; bh=E9jNczzchk5nHtI0CgVSTbFnwcvfP7xLsfmDy95J5TI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ItFSL5XZ7whxs+V8JGslOJ4W3a0QhLN9KOslux0PmbV1HvS7s3rir1P/NcJX3m3A9
-	 Pk/0aoT94mdXvYKZ5ai8Pseyr9+kFDmLd9lXU+01fX2q9WzVXXGETiy3E3YJc0dn+t
-	 rru7/rqR8KK6cebQKQ8Vd07daiPj9XLuh/TvtMuY=
-Message-ID: <8dfbbe68-f381-4aaf-8c1e-801b2c1a6a93@arm.com>
-Date: Mon, 2 Nov 2026 16:47:18 +0000
+	b=nYDGH9IBV5B8LPpqW6tP4xAjJO9W19nd1DYv9I4nTTI5W+6UCqTuKXWi/Qst8LFSi
+	 hP7+J/AsSNIRBGUquck3lr3ycA04Ut4VYaal8plplh1VkM9n+ASRvMm3zumxl6gEdP
+	 7nqaO74SBk+j5J9Xi984sCJl9sU2t6KRNdSScrCI=
+Message-ID: <be11184a-909c-4fed-83b7-90ff6d3aac28@arm.com>
+Date: Mon, 2 Nov 2026 17:01:58 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,125 +54,233 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/16] KVM: arm64: gic-v5: Add ITS MMIO state emulation
-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org
+Subject: Re: [PATCH 07/11] KVM: arm64: CCA: Tear down RTTs
+To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
 Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261016155741.979985-1-sascha.bischoff@arm.com>
- <20261016155741.979985-7-sascha.bischoff@arm.com>
- <sashiko-outbox-174609@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-8-steven.price@arm.com>
+ <sashiko-outbox-193650@kernel.org>
+From: Steven Price <steven.price@arm.com>
 Content-Language: en-GB
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <sashiko-outbox-174609@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-193650@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 16/10/2026 17:11, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] kvm: arm64: Data race and TOCTOU due to missing its_lock in MMIO handlers
-> - [High] kvm: arm64: gic-v5: Userspace writes to ITS READ_EVENT_DATAR and ID registers are silently dropped
+On 02/11/2026 15:18, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+> - [High] KVM: arm64: stage-2 PGD leak for uncreated Realms in kvm_destroy_realm()
+> - [High] KVM: arm64: unclamped stage-2 levels in get_start_level() breaks 64K RTT teardown
+> - [High] KVM: arm64: free_rtt() accounts page table pages after freeing the page
+> - [Medium] KVM: arm64: kvm_realm_uninit_stage2() ignores REALM_STATE_NEW
 > --
 > 
-> commit cda638a2b9c74f59afeb5648c53ce1083d96d5c3
-> Author: Sascha Bischoff <sascha.bischoff@arm.com>
+> commit 5954ac2ccf8825a659e2f39dc0db05d96c40be84
+> Author: Steven Price <steven.price@arm.com>
 > 
-> KVM: arm64: gic-v5: Add ITS MMIO state emulation
+> KVM: arm64: CCA: Tear down RTTs
 > 
-> In order to expose a virtual GICv5 ITS to the guest, KVM needs to
-> emulate the ITS CONFIG_FRAME and its translation-control registers.
-> Replace the placeholder ITS IODEV region with the GICv5 ITS register
-> layout and handlers for the architected MMIO state.
+> This commit adds stage-2 page table and Realm Translation Table (RTT)
+> teardown for arm64 CCA realms. It unmaps the Realm IPA space during stage-2
+> teardown and walks non-root RTTs during final Realm destruction to destroy
+> and undelegate them before destroying the Realm Descriptor.
 > 
->> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
->> index f8184b4ae0ccd..fda75314229a5 100644
->> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
->> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index b049ea67d9af3..51fda7b2ff7f3 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1145,9 +1145,24 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>>  	return err;
+>>  }
+>>  
+>> +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
+>> +{
+>> +	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>> +
+>> +	mutex_lock(&kvm->arch.config_lock);
+>> +	if (kvm_realm_state(kvm) == REALM_STATE_ACTIVE) {
+>> +		kvm_set_realm_state(kvm, REALM_STATE_DYING);
+>> +		WARN_ON(kvm_realm_teardown_stage2(kvm));
+>> +	}
+>> +	mutex_unlock(&kvm->arch.config_lock);
+>> +}
+> 
+> [Severity: Medium]
+> What happens if kvm_uninit_stage2_mmu() is called via
+> kvm_mmu_notifier_release() -> kvm_flush_shadow_all() ->
+> kvm_arch_flush_shadow_all() while the Realm is in REALM_STATE_NEW?
+> 
+> According to enum realm_state in arch/arm64/include/asm/kvm_rmi.h, the Realm
+> Descriptor has already been created and stage-2 memory may already be
+> populated in REALM_STATE_NEW. Unlike kvm_destroy_realm(), which checks
+> kvm_realm_is_created(kvm), sets REALM_STATE_DYING, and unmaps stage-2 for
+> both REALM_STATE_NEW and REALM_STATE_ACTIVE, kvm_realm_uninit_stage2() only
+> checks for REALM_STATE_ACTIVE.
+> 
+> Should kvm_realm_uninit_stage2() also handle REALM_STATE_NEW (for example by
+> checking kvm_realm_is_created(kvm)) so that stage-2 mappings are unmapped
+> before exit_mmap() finishes and the Realm transitions to REALM_STATE_DYING?
+
+Yes we should handle REALM_STATE_NEW. I'm not convinced about using
+kvm_realm_is_created(). That would include REALM_STATE_DYING.
+
+>>  void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>>  {
+>> -	kvm_free_stage2_pgd(&kvm->arch.mmu);
+>> +	if (kvm_vm_is_realm(kvm))
+>> +		kvm_realm_uninit_stage2(&kvm->arch.mmu);
+>> +	else
+>> +		kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>  	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>>  }
+> 
+> [Severity: High]
+> Does skipping kvm_free_stage2_pgd() here leak mmu->pgt, the root stage-2 PGD
+> pages (mmu->pgt->pgd), and the per-CPU mmu->last_vcpu_ran allocation when a
+> Realm VM is destroyed before the Realm is created in the RMM?
+> 
+> During VM creation, kvm_arch_init_vm() calls kvm_init_stage2_mmu() while the
+> Realm state is still REALM_STATE_NONE. If userspace closes the VM file
+> descriptor without creating the Realm in the RMM, kvm_destroy_realm() takes
+> its early return before reaching kvm_free_stage2_pgd(&kvm->arch.mmu):
+> 
+> arch/arm64/kvm/rmi.c:kvm_destroy_realm() {
+> 	...
+> 	if (!kvm_realm_is_created(kvm)) {
+> 		kfree(realm->sro);
+> 		realm->sro = NULL;
+> 		return;
+> 	}
+> 	...
+> 	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> }
+> 
+> Similarly, if kvm_init_nested() or kvm_init_realm() fails in
+> kvm_arch_init_vm() after kvm_init_stage2_mmu() succeeds:
+> 
+> arch/arm64/kvm/arm.c:kvm_arch_init_vm() {
+> 	...
+> 	ret = kvm_init_nested(kvm);
+> 	if (ret)
+> 		goto err_uninit_mmu;
+> 
+> 	if (kvm_vm_is_realm(kvm)) {
+> 		ret = kvm_init_realm(kvm);
+> 		if (ret)
+> 			goto err_uninit_mmu;
+> 	}
+> 
+> 	return 0;
+> 
+> err_uninit_mmu:
+> 	kvm_uninit_stage2_mmu(kvm);
+> 	return ret;
+> }
+> 
+> the error path only calls kvm_uninit_stage2_mmu(kvm) and never calls
+> kvm_destroy_realm(), leaking the stage-2 PGD allocations there as well.
+
+Here I think using kvm_realm_is_created() make sense. Once the realm is
+up we want to "skip" kvm_free_stage2_pgd() because we need the RMM to
+tear things down first.
+
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index 45ecbaa467d1d..f190143b33ba5 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
 > 
 > [ ... ]
 > 
->> +static void vgic_v5_mmio_write_its_misc(struct kvm *kvm, void *dev, gpa_t addr,
->> +					unsigned int len, unsigned long val)
+>> @@ -21,11 +29,180 @@ u32 kvm_rmm_ipa_limit(void)
+>>  	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+>>  }
+>>  
+>> +static int get_start_level(struct realm *realm)
 >> +{
->> +	struct vgic_v5_its *its = dev;
->> +	size_t offset = addr & (SZ_64K - 1);
->> +
->> +	switch (offset) {
->> +	case GICV5_ITS_CR0:
->> +		its->enabled = FIELD_GET(GICV5_ITS_CR0_ITSEN, val);
->> +		return;
->> +	case GICV5_ITS_CR1:
->> +		its->cr1.sh = FIELD_GET(GICV5_ITS_CR1_SH, val);
->> +		its->cr1.oc = FIELD_GET(GICV5_ITS_CR1_OC, val);
->> +		its->cr1.ic = FIELD_GET(GICV5_ITS_CR1_IC, val);
->> +		its->cr1.dt_ra = FIELD_GET(GICV5_ITS_CR1_DT_RA, val);
->> +		its->cr1.itt_ra = FIELD_GET(GICV5_ITS_CR1_ITT_RA, val);
->> +		return;
->> +	default:
->> +		return;
->> +	}
+>> +	return 4 - stage2_pgtable_levels(realm->ia_bits);
 >> +}
 > 
 > [Severity: High]
-> Does this code introduce a data race or TOCTOU vulnerability?
+> Can get_start_level() return a level that mismatches the stage-2 page table
+> configuration on 64KB page kernels and cause realm_destroy_rtts() to fail?
 > 
-> The vgic_v5_mmio_write_its_misc() function modifies the its->enabled flag
-> and its->cr1 fields without acquiring its->its_lock. Concurrently,
-> vgic_v5_mmio_write_its_dt_itt() uses guard(mutex)(&its->its_lock) to safely
-> evaluate !its->enabled and modify table bases.
+> When kvm_init_ipa_range() configures mmu->vtcr via kvm_get_vtcr(), the
+> number of stage-2 levels is clamped to at least 2:
 > 
-> Allowing lockless modification of its->enabled could bypass the check
-> if another vCPU is simultaneously writing to translation base registers.
-> Additionally, this permits torn reads of the multi-field cr1 struct. Should
-> this function acquire its->its_lock?
+> arch/arm64/kvm/hyp/pgtable.c:kvm_get_vtcr() {
+> 	...
+> 	lvls = stage2_pgtable_levels(phys_shift);
+> 	if (lvls < 2)
+> 		lvls = 2;
+> 	...
+> }
+> 
+> Under CONFIG_ARM64_64K_PAGES with a 32-bit or 33-bit IPA,
+> stage2_pgtable_levels(realm->ia_bits) evaluates to 1, so get_start_level()
+> returns 3 (KVM_PGTABLE_LAST_LEVEL) instead of 2.
+> 
+> When kvm_destroy_realm() -> realm_destroy_rtts() ->
+> realm_tear_down_rtt_range() then calls:
+> 
+> 	realm_tear_down_rtt_level(realm, get_start_level(realm) + 1,
+> 				  start, end);
+> 
+> it passes level 4 into realm_tear_down_rtt_level(), hitting
+> WARN_ON(level > KVM_PGTABLE_LAST_LEVEL) and returning -EINVAL. That in turn
+> causes kvm_destroy_realm() to warn and return early, leaking the delegated
+> RD, RTT granules, root stage-2 PGD pages, and realm->sro.
 
-Agreed, this was an issue. I've updated the code to take its->its_lock 
-for IRS_CR0 and IRS_CR1 reads and writes, so these will never be torn, 
-and hence things should remain consistent for a single vCPU's view of 
-the state.
+Good spot - yes get_start_level() should do the same clamping to a min of 2.
 
-> 
-> [ ... ]
-> 
->>   static const struct vgic_register_region vgic_v5_its_registers[] = {
->> -	REGISTER_ITS_V5_DESC(0, vgic_v5_mmio_read_its_raz,
->> -			     vgic_v5_mmio_write_its_wi, KVM_VGIC_V5_ITS_SIZE,
->> +	REGISTER_ITS_V5_DESC(GICV5_ITS_IDR0, vgic_v5_mmio_read_its_misc,
->> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
->> +	REGISTER_ITS_V5_DESC(GICV5_ITS_IDR1, vgic_v5_mmio_read_its_misc,
->> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
->> +	REGISTER_ITS_V5_DESC(GICV5_ITS_IDR2, vgic_v5_mmio_read_its_misc,
->> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
-> 
-> [ ... ]
-> 
->> +	REGISTER_ITS_V5_DESC(GICV5_ITS_READ_EVENT_DATAR,
->> +			     vgic_v5_mmio_read_its_dt_itt,
->> +			     vgic_v5_mmio_write_its_wi, 8,
->> +			     VGIC_ACCESS_64bit | VGIC_ACCESS_32bit),
+>> +
+>> +static void free_rtt(phys_addr_t phys)
+>> +{
+>> +	if (rmi_free_delegated_page(phys))
+>> +		return;
+>> +
+>> +	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>> +}
 > 
 > [Severity: High]
-> Are userspace writes to restore migration state being silently dropped?
+> Does calling kvm_account_pgtable_pages() after rmi_free_delegated_page()
+> access the page after it has already been freed and uncharged from its
+> memcg?
 > 
-> Both the ID registers (e.g. IDR0) and READ_EVENT_DATAR are configured
-> with the vgic_v5_mmio_write_its_wi write-ignore handler. Since there is no
-> explicit userspace override provided for these registers, a userspace write
-> will fall back to the guest MMIO write handler, accepting the write and
-> returning success (0) but discarding the value.
+> In drivers/firmware/arm_rmm/rmi.c, rmi_free_delegated_page() undelegates the
+> granule and immediately frees the page back to the page allocator:
 > 
-> For ID registers, ignoring the write prevents the VMM from detecting
-> incompatibility across migration. For READ_EVENT_DATAR, the result of an
-> inflight READ_EVENTR command is lost. Does this violate the ABI contract
-> that userspace writes must either take effect or return an error?
+> drivers/firmware/arm_rmm/rmi.c:rmi_free_delegated_page() {
+> 	if (WARN_ON_ONCE(rmi_undelegate_page(phys))) {
+> 		/* Undelegate failed: leak the page */
+> 		return -EBUSY;
+> 	}
+> 
+> 	free_page((unsigned long)phys_to_virt(phys));
+> 
+> 	return 0;
+> }
+> 
+> Because free_page() clears page->memcg_data in __free_pages_prepare() and
+> releases the page for reallocation, the subsequent call to
+> kvm_account_pgtable_pages(phys_to_virt(phys), -1) ->
+> mod_lruvec_page_state() operates on a freed struct page and sees a NULL
+> folio_memcg(), failing to decrement the memory cgroup's
+> NR_SECONDARY_PAGETABLE counter (or racing with a concurrent reallocation of
+> that page).
+> 
+> Should kvm_account_pgtable_pages(phys_to_virt(phys), -1) be called before
+> freeing the page, matching kvm_s2_free_pages_exact() and kvm_s2_put_page()
+> in arch/arm64/kvm/mmu.c?
 > 
 
-This is not an issue with the current patch we are looking at, but is an 
-issue for Patch 10 in this series.
+Yes. The issue here is that rmi_free_delegated_page() could fail and
+then the accounting is wrong. I guess we can decrement the account,
+attempt the free and increment the account again if it fails.
 
-Nevertheless: I've added userspace-only handlers (to patch 10) to 
-restore the supported IDR0–IDR2 fields and READ_EVENT_DATAR. It returns 
--EINVAL for unsupported ID values,i.e., we sanity check what userspace 
-writes against what we can/want to provide. Guest writes to the RO 
-registers remain ignored, as they should be.
+        kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+        if (rmi_free_delegated_page(phys))
+                kvm_account_pgtable_pages(phys_to_virt(phys), 1);
 
 Thanks,
-Sascha
+Steve
+
