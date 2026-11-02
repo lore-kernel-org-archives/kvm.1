@@ -1,56 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793643630;
-	b=C34y7ih5Wy+mhxpBrMu2fIPTpDwvKimxs1hXOKE3On6QalOOdM8m/sYSJ4+BOdS7WfjB
-	 xI2Volv/BPQMTKAW/KmNHJopsZrBdNmldYRBpMrWCf5AtBqIkAXSkgUkGme8/bw1G18Oj
-	 KuRQAoAoDm3fmDPPQyg3YyT3eKGK/ChywGBHGT3tVn7/umTiVDQeJJ89lhEqbYzuIPK8A
-	 7haxRVJ+V+npAUkSXaXEPJGemMTMAwqsB/cqFJzfLLRjJZKjcAwrSa1Ary0M6qrWck1Yw
-	 DCQFxSDWm5VVSKckycsD1cUeBcZKYxSuvb8JytlxlGHkq8+adY/8iTu29DonV8D7v0w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793643630;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=c3RvMiH8zEpbb9fLf9ZNY7C5HF4Ghz8wOHw7OfoAcKM=;
-	b=4zgNs5WOfgXmG3amxZYgiXxh7og06T9q8C17yBEmrEyH5fH2qjpv8YMr+oqy6sNmpPgJ
-	 cykV7qG3EPhrEPUbOQUafomk8lgBPlmACO+ZbZUNIdV0kNln9p4OT0SGRWmrZlE2+raat
-	 SJ0una8+YgYVu9eyCFIpvoTqqHAJvG9mNYcVsZSOX9nahDn8K9Ik1/U0DRhEcBXK8guPq
-	 pnDSsAH9PrCj8CWzFcL9dzj7qoKEg+wMIdD7Izv7kzQcZiJgP8LkfxQPzRPqGVgLsKrk4
-	 b2GgQ44Ji/lgCh6aGrvPm9E0m7lPlq/q/Fjpxti9RHk7+y6fj7A1ke+8U+QPI6H852g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFNJbTcd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793643710;
+	b=Vq3OgKYRxyi8ySRRpegATFQUxwsL/Yp2Ui/AaTPb3VhZfo7jxCJDFlLJkbm3ZL+046W8
+	 AbPHZjZTXqTjKj/m9KT+xNgohz5Csx//GIVV3b9Qwyu5Esw/bI95r4zqbAUkSPTYY2bXY
+	 od14PNkD8IHkPKHkUNuCeGziAS8V8+UnmouOP5DxJHjqFQwP+AiHCxycjYjVS4nltjdi6
+	 5/p49mtHcGbtjNhPZuXPYnF9C5BYhMl42GW5SWLFNwFsO0IDqNCcLC8THLghxFU5Midwt
+	 ZiI9OmxlYsbKgBEM7fwBX62yrDGEP7lx93bdmmTBVeMHF3rQzoiid4W0rb6VzhcbY3Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793643710;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=6odvKjJX5uaeX8gp4PjtCpDvxv131iO0vErthI5phGU=;
+	b=ZmCPJ/2/2dCFfwewa3QebHJ9x2JHkJOJ2govpGW3eQkzJ5zvlZE7c8Y3nIYOnfLmKiN6
+	 eY/bd8ERzUZ7r1uZ6fv/+JQTpbk3aabfg0wsi2Zc58NOWofXxtL+YGzVolK8PPHJFPfb2
+	 2rK8PAlrVfPkBrYEEy/ZiD78Th0j8NDvqGqALsC8PLPWgNcSpJ3J1aZKzaKTza1TqzO67
+	 S0Gz/UelqBdHoa5ySYi/k/IxE/zdaqUfA2LS1hbzCLxRVh/pP60ztUCiXSA7rXX16YM4b
+	 UnepcPJ6sTTWkU19QMvLLvL4leJ9+FPmBIsc3w2kLEizhgimyoqu+8AeOqcYWtWapow==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RLvyEPiI;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AdvNFd+Q;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62165606A324
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70686606A326
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:21:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70686606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFNJbTcd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4C81F00A16;
-	Mon,  2 Nov 2026 18:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793643630;
-	bh=c3RvMiH8zEpbb9fLf9ZNY7C5HF4Ghz8wOHw7OfoAcKM=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=iFNJbTcdN70llmoXeDpDmgoH5YWfw8VqCJGZHQNIOg1Gfb3+xh617HhChNpTacMqv
-	 65N8NiIrXOnFeUblEnrI/aB3oyAt2gW//gjT4bz5WUovyheULQ2PaDEHKeSRxslP9f
-	 g92uUdCXrhnoRvyAuk4qyd8Ni4/Lh6YzRd7mvJ0xL3FJiks430KN3/WSwwnDFfGsrv
-	 /0bu71VN/00i70PNDYA+YBdJ3skKlzXrVxBZExRuBCE+6bKhPYe/HxVuXbihbxg15u
-	 Cn45cV3MHquJPJ3djMCDILM+eiy1LrFomhir7i7VyWWopiTdMf9raXJaI6t92ZQoJb
-	 NjGYoV+7cU9iQ==
-Message-ID: <sashiko-outbox-193927@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 24/45] KVM: Introduce a generation number for memory
- attributes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261102174512.8903-8-pbonzini@redhat.com>
-References: <20261102174130.8779-1-pbonzini@redhat.com>
- <20261102174512.8903-8-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 18:20:29 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RLvyEPiI;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AdvNFd+Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793643708;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6odvKjJX5uaeX8gp4PjtCpDvxv131iO0vErthI5phGU=;
+	b=RLvyEPiIC6XxUI62HLhY5vn8MF5RdNTuLVHcZVkETa91e8J6/3hVROK6CqioUpLQ+blE3v
+	TTaYVdhdghbP2OfYBmVye0zyuvgEyhjL/mns08jWFvfFEPWtAD+Wuhftu9pdGva/ilM90O
+	4pW+mtlXznd8dH91Z1eNwJqUcI8K6LM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-JUdcf0cTOa-XxoA0BJjioQ-1; Mon, 02 Nov 2026 13:21:47 -0500
+X-MC-Unique: JUdcf0cTOa-XxoA0BJjioQ-1
+X-Mimecast-MFC-AGG-ID: JUdcf0cTOa-XxoA0BJjioQ_1793643706
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48df5b058ddso2218859f8f.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 10:21:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793643705; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Lc5NmUuZuBRCaAPuUUNt9HeiaE157V3OARMDCm8VYUP2CcyIQR+1NsY991Hpcfs+E0
+         9r/81zcTC6FO9v6DuKZv/vbAUCGzU1NEyXqmUVA/hLTBipbeF5BuX+Krmz0vSEX62t5v
+         H2g+Xxkdp6WkwycCpAgb7KSYuIe7wXkEJKUsk0ElzZJL8SpuiCbEjAhNymrb2RcdZFNH
+         WqJnl+3bGHeFWI1a0/8iTNNTstEDXgLnXdewLXRjXlSqMTxdFR5NaTosEi+OH1ITrlY2
+         Lt2o8gs9cZa/jhm2PVQ6tfqV2KvolE6h7yQOpo/sGAZvz3Y/nOK80J353CpXeetWKKIU
+         2wcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6odvKjJX5uaeX8gp4PjtCpDvxv131iO0vErthI5phGU=;
+        fh=dSMssGXK1RsiqZjydXQmAH1Rrz2KdEezlgLVNB+1oaY=;
+        b=Pgf8I56gK4Et8DlkDRzGsb0obPb7Qwyxp7nP7elNc+OgMN/QQ96+dsvqE0y09SZaCd
+         1q6CAgyc//3zL6N0aZvEShxfO1ai51yFgVATdWnGfQpWEh2bfpWfqotitkhWO1XQTrY6
+         nmYrnu6UB/8aggfnsHAB+25EYZttnuFKcodvjJRNw9YCMiWNOrWwmvOFtJOp/3S3WFo/
+         SwAeoq5fIy5YTz7bbNTfe608b2eYMdmIhRkZk5xhPTXi9JaVX2n5OU9nFik24lPa87CW
+         NL0yjMShn9tFkdQBQ1+3EJCcnm9lTmKgS0G50OxUJs/Dp01doNOtiaJtcw7/83CPbGUC
+         npgQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793643705; x=1794248505; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6odvKjJX5uaeX8gp4PjtCpDvxv131iO0vErthI5phGU=;
+        b=AdvNFd+Qp5s56ThcrRXPY51RUzsx7WTKHs1dZxlWqOvdJskt8ls5VuDJpN8MxxW4ms
+         yu9nb3NceMKlmZBWv/2nyUcPw5ROysQ3zZOEy7G2Y1qZjnIRE/Lr5lu8JtU4eAoOUQst
+         g2nGOUi3YDwAsNbrU/QkxB3hVdDkEoe0IC1D+0Q67intbztlbduUjiy4TMA4bdXd5gHI
+         eQZluXMjZgD/2X/relRb0cqd6yz286g+9998yxW7SG0iO8BbRiQ+xcH8Iy+etqLQubEj
+         UTAwchB+pnGlVOaq/d6o3nT1fHKjFImkwBxnkPADSnYjSvRnBNyOul7xcDlNOdEwlLJd
+         lz/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793643705; x=1794248505;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6odvKjJX5uaeX8gp4PjtCpDvxv131iO0vErthI5phGU=;
+        b=FbcduOZ4n1gYJNw4yg4usaD4zp5fxSbCaSOUPSDBqTl9OfSB4cWZJg6tSl785T7gE6
+         wa1PbeOhh2NfrFYtTr633A39TS0iHs8jKKECnLJEO7RwWyvQnMkh1uwdhGCC3mps2dSz
+         oA7Ie9+v6vTjJIvs/GIxA5oTt4QFPrB3AMEbqlHPh4JDQv6Nms7o02mTLHhtGcVDmPag
+         xDPLYSfIzdrmWNjtzHpzKuHS2LU6Tq8wy2K63sfZ9UIbDM5Bh6og9FcopjqBhqMDq93u
+         JsW+88YIZphZd2mbUeBfqU/OwB5bUekuhDVCfroyS6nVVDEFEy++gBqggAvmfnYVEKF+
+         gWSA==
+X-Forwarded-Encrypted: i=1; AKwUvBziBCeoja+nAkIesLjDjpHiYrWgI4RNlB2x2MT/4v8b+EV9SsEsjzQZrDXmIstCWB0SjDc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8vbnlaE6FVUYGRz4pgjsnKEuxCnnsowBM1ALfD4QtBjuw5aOYe
+	2j0A1s4/xgACNW+PXriwLVCJUgw3QaMR6yfe0f5RaHSWSAq+xG5RauiWV8vjUDuxliYoboLw1C6
+	KEXFZyJVSB6pOdCxo4mJPtTzjhwM0wPPFi68N2jPXZUbi8G+8RhMqzu31ScbLLwGYOT6r3s9bLk
+	dqCvQlSUo3L64M+GoHdyn/PqfLWXCX
+X-Gm-Gg: AYBFou2dk0nLAdj+B5sn9Y5/KIeYanrRPVVLyGP3hOWL02A8CSJfx3KTafBQD/UPFvg
+	cweqLNh093QnGEDzr/5//JNwKXLRjp27u+uJ0movwMN5jIsQMcW5CVhKkaDayIdhYyiNdUb1vzx
+	TfMsICXHN9s3Z/wO04il6WB9OO3x+hCMk3uijtilmDV4vZbaCiCG8RolcQpwmuDzsK7klaRgHEr
+	3ZfSwbfAZIE7IhdUADvoq18ouwRkezogtvFHE6wBwZ+4g3mLDk+f32qgGAA
+X-Received: by 2002:a5d:64c4:0:b0:48c:6fa4:fc89 with SMTP id ffacd0b85a97d-48e6e3072d7mr26355762f8f.12.1793643705692;
+        Mon, 02 Nov 2026 10:21:45 -0800 (PST)
+X-Received: by 2002:a5d:64c4:0:b0:48c:6fa4:fc89 with SMTP id
+ ffacd0b85a97d-48e6e3072d7mr26355729f8f.12.1793643705320; Mon, 02 Nov 2026
+ 10:21:45 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,291 +124,46 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+References: <20261016235221.33726-2-amirmohammad.eftekhar@cispa.de>
+ <atpGGKVAL3bAnmnk@google.com> <atqdBFgoztW0nhoC@google.com>
+In-Reply-To: <atqdBFgoztW0nhoC@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 2 Nov 2026 19:21:33 +0100
+X-Gm-Features: AclHuK-M5UTgxV4aiMUN9HCDx78On7qRFnJSTS_KiHaFMNraEqE7Xlhs5LdbZek
+Message-ID: <CABgObfb0=KB-TvSWJaerc6ZABB8-tjyxBdFwwnLNDjhPsv_27Q@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nSVM: Reset the virtual VMLOAD/VMSAVE bit in vmcb02
+ on every nested VMRUN
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] KVM: RCU stall in kvm_range_has_any_vm_memory_attributes() via xas=
-_next()
-- [Medium] KVM: unconditional generation bump and error-path sync in kvm_se=
-t_vm_mem_attributes()
-- [Low] KVM: loongarch: missing closing parenthesis in kvm_check_gen() cond=
-itions
-- [Low] KVM: stale attrs_generation on error in __kvm_gfn_to_hva_cache_init=
-()
---
+On Fri, Oct 23, 2026 at 1:45=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+> Actually, looking at nested_vmsave_vmload_test.c, I make sure that the
+> intercepts are honored (in L1) *even* if VLS is enabled. I also *think*
+> that in that test, KVM will end up setting both the intercepts and VLS:
+> 1. nested_vmcb_needs_vls_intercept() will return false because the guest
+>    supports VLS, has NPT, and enables VLS.
+> 2. KVM still copies the intercepts from vmcb12 anyway, including VMSAVE
+>    and VMLOAD, see nested_vmcb02_recalc_intercepts(). KVM (correctly)
+>    doesn't clear VMSAVE/VMLOAD intercepts if VLS is enabled by L1 (but
+>    it does the opposite).
+>
+> So this test case passing should be confirming my allegation that
+> intercepts take precedence over VLS.
 
-commit c500cbe0be12ea140c87b086c8905238fbefe1ea
-Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Yes, absolutely. The APM is very unclear but I am pretty sure I tested
+it on bare metal too.
 
-KVM: Introduce a generation number for memory attributes
+The only clue is that the "attempted execution of a VMLOAD or VMSAVE
+in the guest will result in a #VMEXIT with a VMSAVE/VMLOAD exit code",
+meaning that VMSAVE/VMLOAD vmexits can still happen and - like other
+intercepts, for example IRET - the hypervisor can turn them on and off
+at will.
 
-This commit introduces a generation number for VM memory attributes so that
-KVM components using gfn_to_hva_cache and gfn_to_pfn_cache can detect memory
-attribute updates and synchronize via KVM SRCU when attributes requiring
-synchronization are modified.
+Paolo
 
-Link: https://patch.msgid.link/20260918135030.171564-22-pbonzini@redhat.com
-
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index c3e71ef983bcb..6301e726a536f 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -163,7 +163,8 @@ static void kvm_update_stolen_time(struct kvm_vcpu *v=
-cpu)
->  		return;
-> =20
->  	gpa &=3D KVM_STEAL_PHYS_MASK;
-> -	if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa !=3D ghc=
-->gpa ||
-> +	if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->slots_generation, ghc->attr=
-s_generation) ||
-> +		     gpa !=3D ghc->gpa ||
->  		     kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
->  		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
->  			ghc->gpa =3D INVALID_GPA;
-> @@ -1817,7 +1818,8 @@ static void kvm_vcpu_set_pv_preempted(struct kvm_vc=
-pu *vcpu)
-> =20
->  	gpa &=3D KVM_STEAL_PHYS_MASK;
->  	ghc =3D &vcpu->arch.st.cache;
-> -	if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa !=3D ghc=
-->gpa ||
-> +	if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->slots_generation, ghc->attr=
-s_generation) ||
-> +		     gpa !=3D ghc->gpa ||
->  		     kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
-
-[Severity: Low]
-As reported by Sashiko on v2 [1], does this fail to build on LoongArch due =
-to
-a missing closing parenthesis in both kvm_update_stolen_time() and
-kvm_vcpu_set_pv_preempted()?
-
-Both conditions open two parentheses at if (unlikely( before calling
-!kvm_check_gen(vcpu->kvm, ghc->slots_generation, ghc->attrs_generation), but
-only close one parenthesis after !ghc->memslot before the opening brace.
-
-[ ... ]
-
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index da12f4d43c911..6aa6a0a55b070 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-
-[ ... ]
-
-> @@ -2558,6 +2559,53 @@ bool kvm_range_has_vm_memory_attributes(struct kvm=
- *kvm, gfn_t start, gfn_t end,
->  	return true;
->  }
-> =20
-> +/*
-> + * Returns true if _any_ gfns in the range [@start, @end) have attribute=
-s that
-> + * match _any_ bit in @mask.
-> + */
-> +bool kvm_range_has_any_vm_memory_attributes(struct kvm *kvm, gfn_t start=
-, gfn_t end,
-> +					unsigned long mask)
-> +{
-> +	XA_STATE(xas, &kvm->mem_attrs.array, start);
-> +	void *entry;
-> +
-> +	mask &=3D kvm_supported_vm_mem_attributes(kvm);
-> +	if (!mask)
-> +		return false;
-> +
-> +	if (end =3D=3D start + 1)
-> +		return !!(kvm_get_vm_memory_attributes(kvm, start) & mask);
-> +
-> +	guard(rcu)();
-> +	for (;;) {
-> +		do {
-> +			entry =3D xas_next(&xas);
-> +		} while (xas_retry(&xas, entry));
-> +
-> +		if (xas.xa_node =3D=3D XAS_BOUNDS || xas.xa_index >=3D end)
-> +			break;
-> +
-> +		if (xa_to_value(entry) & mask)
-> +			return true;
-> +	}
-
-[Severity: High]
-Can kvm_range_has_any_vm_memory_attributes() trigger an RCU CPU stall or so=
-ft
-lockup when userspace invokes KVM_SET_MEMORY_ATTRIBUTES over a large sparse=
- or
-unassigned GFN range?
-
-Unassigned GFNs are represented as NULL entries in kvm->mem_attrs.array, wh=
-ere
-xa_to_value(NULL) is 0, so NULL entries do not match mask and do not termin=
-ate
-the loop. However, the loop uses xas_next(&xas), which increments xas.xa_in=
-dex
-by 1 on every call across NULL slots and empty xa_node subtrees whenever the
-XArray has an entry at an index >=3D end keeping xas.xa_node from reaching
-XAS_BOUNDS.
-
-Because the entire loop runs inside guard(rcu)() without rescheduling,
-scanning a large sparse range will step through every empty GFN index one by
-one while holding the RCU read lock. Should this use xas_next_entry(&xas,
-end - 1) or xas_for_each(&xas, entry, end - 1) to skip empty slots?
-
-> +
-> +	return false;
-> +}
-> +
-> +#define KVM_MEMORY_ATTRIBUTE_NEEDS_SYNC_MASK KVM_MEMORY_ATTRIBUTE_PROT
-> +
-> +static bool kvm_range_memory_attributes_need_sync(struct kvm *kvm,
-> +						  gfn_t start, gfn_t end,
-> +						  unsigned long attributes)
-> +{
-> +	u64 mask =3D KVM_MEMORY_ATTRIBUTE_NEEDS_SYNC_MASK;
-> +
-> +	if (attributes & mask)
-> +		return true;
-> +
-> +	return kvm_range_has_any_vm_memory_attributes(kvm, start, end, mask);
-> +}
-> +
->  static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
->  						 struct kvm_mmu_notifier_range *range)
->  {
-> @@ -2648,20 +2696,25 @@ static int kvm_set_vm_mem_attributes(struct kvm *=
-kvm, gfn_t start, gfn_t end,
->  		.on_lock =3D kvm_mmu_invalidate_end,
->  		.may_block =3D true,
->  	};
-> +	bool sync =3D false;
->  	unsigned long i;
->  	void *entry;
->  	int r =3D 0;
-> =20
->  	entry =3D attributes ? xa_mk_value(attributes) : NULL;
-> =20
-> -	trace_kvm_set_vm_mem_attributes(start, end, attributes);
-> -
->  	mutex_lock(&kvm->slots_lock);
-> =20
->  	/* Nothing to do if the entire range has the desired attributes. */
->  	if (kvm_range_has_vm_memory_attributes(kvm, start, end, ~0, attributes))
->  		goto out_unlock;
-> =20
-> +	sync =3D kvm_range_memory_attributes_need_sync(kvm, start, end,
-> +						     attributes);
-> +
-> +	trace_kvm_set_vm_mem_attributes(start, end, attributes, sync,
-> +					kvm->mem_attrs.generation + 1);
-> +
->  	/*
->  	 * Reserve memory ahead of time to avoid having to deal with failures
->  	 * partway through setting the new attributes.  Storing NULL never
-> @@ -2684,10 +2737,16 @@ static int kvm_set_vm_mem_attributes(struct kvm *=
-kvm, gfn_t start, gfn_t end,
->  		cond_resched();
->  	}
-> =20
-> +	/* Pairs with acquire in kvm_mem_attributes_generation() */
-> +	smp_store_release(&kvm->mem_attrs.generation,
-> +			  kvm->mem_attrs.generation + 1);
-> +
->  	kvm_handle_gfn_range(kvm, &post_set_range);
-> =20
->  out_unlock:
->  	mutex_unlock(&kvm->slots_lock);
-> +	if (sync)
-> +		synchronize_srcu_expedited(&kvm->srcu);
-
-[Severity: Medium]
-Should kvm->mem_attrs.generation only be incremented when sync is true, and
-should synchronize_srcu_expedited() be skipped if xa_reserve() fails?
-
-The commit message notes that for memory attributes that do not require
-synchronization, the attributes generation will always remain unchanged.
-However, kvm_set_vm_mem_attributes() unconditionally increments
-kvm->mem_attrs.generation via smp_store_release() even when sync is false,
-which invalidates all gfn_to_hva_cache and gfn_to_pfn_cache entries across =
-the
-VM (and causes non-refreshing cache checks such as
-kvm_steal_time_set_preempted() to bail out) when toggling attributes like
-KVM_MEMORY_ATTRIBUTE_PRIVATE.
-
-In addition, because sync is computed and trace_kvm_set_vm_mem_attributes()=
- is
-called with kvm->mem_attrs.generation + 1 before the xa_reserve() loop:
-
-	for (i =3D start; entry && i < end; i++) {
-		r =3D xa_reserve(&kvm->mem_attrs.array, i, GFP_KERNEL_ACCOUNT);
-		if (r)
-			goto out_unlock;
-
-		cond_resched();
-	}
-
-if xa_reserve() fails and jumps to out_unlock while sync is true,
-kvm_set_vm_mem_attributes() still runs synchronize_srcu_expedited(&kvm->src=
-u)
-even though no attributes or generation numbers were updated.
-
-[ ... ]
-
-> @@ -3582,7 +3641,8 @@ int kvm_vcpu_write_guest(struct kvm_vcpu *vcpu, gpa=
-_t gpa, const void *data,
->  }
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_write_guest);
-> =20
-> -static int __kvm_gfn_to_hva_cache_init(struct kvm_memslots *slots,
-> +static int __kvm_gfn_to_hva_cache_init(struct kvm *kvm,
-> +				       struct kvm_memslots *slots,
->  				       struct gfn_to_hva_cache *ghc,
->  				       gpa_t gpa, unsigned long len)
->  {
-> @@ -3592,8 +3652,8 @@ static int __kvm_gfn_to_hva_cache_init(struct kvm_m=
-emslots *slots,
->  	gfn_t nr_pages_needed =3D end_gfn - start_gfn + 1;
->  	gfn_t nr_pages_avail;
-> =20
-> -	/* Update ghc->generation before performing any error checks. */
-> -	ghc->generation =3D slots->generation;
-> +	/* Update ghc->slots_generation before performing any error checks. */
-> +	ghc->slots_generation =3D slots->generation;
-> =20
->  	if (start_gfn > end_gfn) {
->  		ghc->hva =3D KVM_HVA_ERR_BAD;
-> @@ -3612,6 +3672,8 @@ static int __kvm_gfn_to_hva_cache_init(struct kvm_m=
-emslots *slots,
->  			return -EFAULT;
->  	}
-> =20
-> +	ghc->attrs_generation =3D kvm_mem_attributes_generation(kvm);
-
-[Severity: Low]
-Should ghc->attrs_generation be updated alongside ghc->slots_generation bef=
-ore
-the error checks in __kvm_gfn_to_hva_cache_init()?
-
-ghc->slots_generation is updated before checking start_gfn > end_gfn or
-running the gfn_to_hva_many() loop so that when an invalid GPA sets ghc->hva
-to KVM_HVA_ERR_BAD, subsequent calls to kvm_read_guest_offset_cached() or
-kvm_write_guest_offset_cached() pass kvm_memslots_check_gen() and immediate=
-ly
-hit the fast-path kvm_is_error_hva(ghc->hva) check.
-
-Because ghc->attrs_generation is only updated after those error returns (wh=
-ich
-remains the case after the follow-up commit "KVM: Take memory protections i=
-nto
-account for accesses with cached gfn->hva"), if a cached range fails in the
-memslot lookup loop after kvm->mem_attrs.generation has advanced,
-ghc->attrs_generation remains stale and every subsequent cached access will
-repeatedly fail kvm_memslots_check_gen() and re-run
-__kvm_gfn_to_hva_cache_init().
-
-[1] https://lore.kernel.org/r/20260918081543.139871-19-pbonzini@redhat.com
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174130.8779=
--1-pbonzini@redhat.com?part=3D24
