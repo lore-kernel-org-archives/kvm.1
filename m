@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793655320;
-	b=aignFFtTMulh0M28dgzoUcMO5bzddLSNeImu9DxemBrND1oKamSN0A3s8BFSandACVNY
-	 IrE+ebEZLM3c68vCQFKEqNj5yKX6WM6o7/0d0KI8j9t/ySj9nQF2iHzLWqvfWNR0KozgW
-	 59ActpkoZutVOxFs9zk+lJI6zU5sZXoBzgFvj/HXG5cf8QI3qFjc/r5WxFLh+bcPKVPPZ
-	 6HI4WeDVbMm8eEVPjFpvqy5+gWjy7P9XzjeKmuL/AYIrSS/ByXhQ20SnQ968shJPUJ+Pj
-	 3X847vXZiEhLE4lOg3Dp84ve94CphLt0kyisJJ3tA54uN7R3dBsmqaRCZtgvXl13L5w==
+	t=1793655328;
+	b=wo8xH05q+DTDt8140BX6lFuL/7qi0m8AVqrq85TexumjeMTLts/aje+Dt4vB6YGAIFPf
+	 rvQXSPf95l2pTKtHFaMONWj5noYvox4di4EqqxkbE3/PNQGAJGJrebsx8u5U2J2HD0z2q
+	 NsK1KhGluutNQFoVUCwX8NOX7DJ0Rw+e1Jzze/3lNTVvK450+1B7is5/0Q0MmjG8xzXAO
+	 +OFQDoqDKTOouoEqtKN0XytMrm9uEZ+co7HivDLIkXcGGGDw3/56Q1K2HiJZHgL5q0pRD
+	 jeB9xhivf1aLlhA5BD5e3aKTW6wx6mYiitbGqq2QYpM98Z27bUTC67tMGABJAxACt5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793655320;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793655328;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=VWYChX7kVt/Ar56jjF+RKO7ELBcmjLBSAMNrkQ/Jaus=;
-	b=FiMEa93T9pR1A1LPuEaC1GUTW3o8W/dMvHwi0blWyUujVQtZEkvrnrrBVVU4hj5Ff4zk
-	 ba8RWgE2n+nDHqWiwPMOJ7kvP40gMrXKJhUY4sNwO+nWenXl5bTeoPOkwZ1rf534uONkf
-	 qev8iVzjyx/Vq+9nvefkKTIxNEygPoKcCgAwhDAP3BNm34PFFqXWpqXHO9hwOr22sjxI3
-	 NW9TGreroYdJD6ULEX2PzLHH7w4v9jb8XC51oG4yfvlGscetiwZce3hT1cUTn0oPBLONJ
-	 2dl/W5+BUWSExY4+UqN3Oiq9J1uCjLwOcFYFEccaxmwhHspQh6IwsV6yLpMdg5bZtWw==
+	bh=foE+8Kof6LbdOYig+diwcHlzAv8+58dS/mpVZgTxm2I=;
+	b=yutJu9QYZglhrAGEkIrfjiAvAhYaym71mG4xo9C9DYah20WaExChPf+3uQlFSUDXHZ+O
+	 DsixuRbg5rAJaIkp8PobAhwDVOwI1aujt6LAbP35rX0cGrOYSBrE/i68tFdPutjVJi36j
+	 PZrGLwaVMivVDJrekLAfzhhqRKAyU32V/NBZgzDiEaC1uoLqll+AVShNjTveViGYLak+8
+	 /j5ViEk58H0EYYJuRE1UbZ9yPKPjcL2GsvtznNwwE+xS55tl1XQI1VpTkh3T3eaaeOglW
+	 PfqEN+M15/7EHZbDJ8WD14AYxee7VYAoCje6TlOBlWaVUYaqIcI7TaLmdtpm/lYtgsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tGjTpjVH;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RBkRfBHs;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2389A606A330
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 21:35:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2389A606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A64B606EE83
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 21:35:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A64B606EE83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tGjTpjVH
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RBkRfBHs
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96BD6175D;
-	Mon,  2 Nov 2026 13:35:15 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 060241595;
+	Mon,  2 Nov 2026 13:35:24 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6046A3F673;
-	Mon,  2 Nov 2026 13:35:17 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C486D3F673;
+	Mon,  2 Nov 2026 13:35:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793655318; bh=23FGpU3RZnZT1Fk+XNyEo0eetgU0rZWJJZKZU7OHS7E=;
+	t=1793655327; bh=Iv/VwfIyikLXQy5eCHqhGt1VBnwP/NThFwcmk19S6/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGjTpjVHwzxNCXaCHp7hcgK3PPtZJEk2PP9Twrhx7ut3GIG3FjzfGkMtY9EBnCN4V
-	 XeOKcTbyGI0OV7yGi0S2BwC1uoQw0nFaDUhNijo1JVsIQV+Ys8bQpWKHpYFJ8umH8+
-	 5lq2XVP9gASb3RLfIgDbwdCZ5KL4iPGzyC6JfUCM=
+	b=RBkRfBHsKw2CwQGDZ3qlAHYwapQ6FRrlinZmK31EVDlVCXmiHlZXbn3QjPb4DkThJ
+	 O6SSsIzhDK80+ergehFfHuvAHgUAP2POCuKpAyNzy1AqFIF+siCcKJbZjIVYiZzC7d
+	 lGAPDYroPBQHVISS7PnXMPN/scAA57H+nnN2ToNk=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -51,9 +51,9 @@ Cc: vladimir.murzin@arm.com,
 	kvmarm@lists.linux.dev,
 	timothy.hayes@arm.com,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v4 14/23] arm64: Describe the GICv5 CPU interface in the DT
-Date: Mon,  2 Nov 2026 21:34:04 +0000
-Message-Id: <20261102213413.4136118-15-sascha.bischoff@arm.com>
+Subject: [PATCH kvmtool v4 16/23] arm64: Generate GICv5 SPI specifiers for platform devices
+Date: Mon,  2 Nov 2026 21:34:06 +0000
+Message-Id: <20261102213413.4136118-17-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261102213413.4136118-1-sascha.bischoff@arm.com>
 References: <20261102213413.4136118-1-sascha.bischoff@arm.com>
@@ -68,61 +68,38 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Emit an interrupt-controller node for the GICv5 CPU interface. This
-provides the interrupt parent and allows guests to use PPIs.
+Use the GICv5 interrupt type and absolute SPI number for platform
+devices. Preserve the legacy GICv2/v3 DT encoding for other VMs.
 
-Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 ---
- arm64/gic.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arm64/fdt.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arm64/gic.c b/arm64/gic.c
-index a025464d..e69f2742 100644
---- a/arm64/gic.c
-+++ b/arm64/gic.c
-@@ -518,6 +518,8 @@ static int gic__init_gic(struct kvm *kvm)
- }
- late_init(gic__init_gic)
+diff --git a/arm64/fdt.c b/arm64/fdt.c
+index 5413956d..e92ae044 100644
+--- a/arm64/fdt.c
++++ b/arm64/fdt.c
+@@ -63,11 +63,13 @@ static void generate_cpu_nodes(void *fdt, struct kvm *kvm)
  
-+static void gic__generate_gicv5_fdt_nodes(void *fdt, struct kvm *kvm);
-+
- void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+ static void generate_irq_prop(void *fdt, u8 irq, enum irq_type irq_type)
  {
- 	const char *compatible, *msi_compatible = NULL;
-@@ -548,6 +550,8 @@ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
- 		reg_prop[2] = cpu_to_fdt64(gic_redists_base);
- 		reg_prop[3] = cpu_to_fdt64(gic_redists_size);
- 		break;
-+	case IRQCHIP_GICV5:
-+		return gic__generate_gicv5_fdt_nodes(fdt, kvm);
- 	default:
- 		return;
- 	}
-@@ -581,6 +585,22 @@ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
- 	_FDT(fdt_end_node(fdt));
- }
+-	u32 irq_prop[] = {
+-		cpu_to_fdt32(GIC_FDT_IRQ_TYPE_SPI),
+-		cpu_to_fdt32(irq - GIC_SPI_IRQ_BASE),
+-		cpu_to_fdt32(irq_type)
+-	};
++	u32 irq_prop[3];
++	u32 type = gic__get_spi_fdt_type();
++	u32 intid = irq - gic__get_spi_base();
++
++	irq_prop[0] = cpu_to_fdt32(type);
++	irq_prop[1] = cpu_to_fdt32(intid);
++	irq_prop[2] = cpu_to_fdt32(irq_type);
  
-+static void gic__generate_gicv5_fdt_nodes(void *fdt, struct kvm *kvm)
-+{
-+	_FDT(fdt_begin_node(fdt, "gicv5-cpuif"));
-+	_FDT(fdt_property_string(fdt, "compatible", "arm,gic-v5"));
-+	_FDT(fdt_property_cell(fdt, "#interrupt-cells", GIC_FDT_IRQ_NUM_CELLS));
-+	_FDT(fdt_property(fdt, "interrupt-controller", NULL, 0));
-+	_FDT(fdt_property_cell(fdt, "#address-cells", 2));
-+	_FDT(fdt_property_cell(fdt, "#size-cells", 2));
-+	_FDT(fdt_property(fdt, "ranges", NULL, 0));
-+
-+	/* Use a hard-coded phandle for the GIC to help wire things up */
-+	_FDT(fdt_property_cell(fdt, "phandle", PHANDLE_GIC));
-+
-+	_FDT(fdt_end_node(fdt));
-+}
-+
- u32 gic__get_fdt_irq_cpumask(struct kvm *kvm)
- {
- 	/* Only for GICv2 */
+ 	_FDT(fdt_property(fdt, "interrupts", irq_prop, sizeof(irq_prop)));
+ }
 -- 
 2.34.1
 
