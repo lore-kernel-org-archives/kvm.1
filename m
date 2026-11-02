@@ -1,49 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793571434;
-	b=Zn2WMrfdR7uoDG6cdtg43Q/EwHQr3KNkAcoDEG0zfj8rLIChQmbkxcZs+Kuyi7pM3ouw
-	 54qW5TkWxM2bjSr3MS4N9v/I5NkJVfzWAbPf/Jj9y/98bkOuMieuzVxmHi22KYhIjr1UN
-	 GTLUAEjfbIyExKF1zxj+jjA1yzU9ALWDcn+a0kp3uogsRh29zJYZ2KxyWvM4f2JSHr2PK
-	 qv0P+E/UrSz/fizrWIOfAuSoSK97zpEYWcYDCOJ25lcBx6UtHne32E7rmpKHU5rzXdTuG
-	 TULyTPDl1MC0EmK8jNxL5rARM+FxUF89AnpcMSjjK4tXh7KOl+lkUdlm1zAfTKgpxUA==
+	t=1793578968;
+	b=EM9WICkJRAmeGPLEp2JeEjMQ6GVATAUN5VFfly+G3kftIOhQ3zVIJ9Mk1rjIH+Hv449+
+	 VJu2GK/ab0H7dX+uHutf1qj7BdNdfIeaZTBMX5dr+SBVrABvzqGDMVkJlR2EaixmAm1W/
+	 Srd85rt5RsxF2O0MbfN3f3R8l0eVJaOjMyJWLbfIotnV1QFnfa5HH2/7q7RJSepEq98M/
+	 kzRjQZqPwZg9PnIq2BWcyJeq7TOicCMabaTCjgbN1LPIQQXpOmoiCoKx3FJeYYM5mrAZf
+	 1bbzxdyGTU5i/oYpceCSdM7a2KzgBbsq6tQQr0hRWjlVodQvahEc25YB/358lKSyeYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793571434;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=cjatygCmxk8XIyEbtr4pyzKJ6E60G4Tfi3euF78nVXA=;
-	b=PJYFLGwy40sd5ZZg5KfKibhhzNoZ+CkH1Wt4VFtSCF3yj8Dfe+qL6Y2KQt9KeSyNQ60T
-	 yT+d8ri1iDLVjVrn4FhFVv9+vH4eAzyefY4AqhMID6vIvqQoxGStPtKpFReLDOFJs8yO9
-	 limKCWjRtleFq1dR79l6FGN5sizV7V8sCp3ALp+6/xtTsOOJc+uqR9gC1TQat5XxeIA0P
-	 QGMPQm3KaThB9d52/hVtt+VkKr/vk6K5mvrSXclwLfIG9MQtIvLx43DfuP31tYQNzUIQS
-	 x6vyBPiABzZqzoTZtfnMJD/BzhnEZAffeijNZxp1RVMfPU5XjIHIBDPcypnx3dNRs/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793578968;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
+	b=qPKfXvWeSdeaEThXSLpfcgIYaS1VszBbEQhTQ7bSVkZVt/gm6Slx7iD+8wtOz+b2PjEP
+	 /k8FjIhekE5A4DpIDfqms46sswqMY4gyPxki0TxF2Bth/D7WAbloygzxbIwKWLLgv7Ziz
+	 o13D6mHQ5hp1gGC7cu3Phup3li/yolfb/GjMmHrAtD/eU6cz6/NmrLdsVNZlXqVQh9RrY
+	 6pEC4t/aFNe0e62jNuE3CNj5gNy8YYZnXQhpOZJzfaiU6A1kwf5uLS5J9wOAJYrxxHhTZ
+	 DnbXEpBY4Mq+YUZ6iAjmwRA9iM7S0B2rkoiIeJK2KZX0T7lUzNR1v01nJZfkM5SSilQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B37CRQpc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NAmYoCUe;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=i3IM+YbR;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D13606F2CD;
-	Sun,  1 Nov 2026 22:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C71606A326
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 00:22:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23C71606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B37CRQpc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF4C1F0093A;
-	Sun,  1 Nov 2026 22:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793571434;
-	bh=cjatygCmxk8XIyEbtr4pyzKJ6E60G4Tfi3euF78nVXA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=B37CRQpcdmmwCy32vZHgPCWMyUptn49raCX3hJZVcxsEUYOsqHqKCUFeSZMmdrHar
-	 P973m1II/ofRE5pnWqeiZvqWMGVRqsLIUP1n1XIX0nFBkKS0IRka2D7KopquB77g6O
-	 Mp/unwfBnH0l1eqg07ua7p0Vs/LC2MTS3vGGD6h6owSUEaRNT6q1AXW/x5xBnzEQnc
-	 EmKj7qUuyXmc8mBTkvUCHpgFrpk8n5Uq59fpbStEBh5xRF1iBXEyBMchINku/sQN+X
-	 GTmMdu6UOejRm4ya75HKvjJSDVBqFLUssCE8lSC7D/wzZYaWR0EmUh/OpuxZjzWe5k
-	 ui1FC15h7AaNQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 403AC38003B8;
-	Sun,  1 Nov 2026 22:17:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NAmYoCUe;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=i3IM+YbR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793578967;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
+	b=NAmYoCUeHojKJL4HlPl4u3dwQ1W+d+ZevazbKbCMN1SoUHcUOZBR5RrtpTBE38zXw8UtA/
+	sT9+XZRcbax1pZRV3y4eSZGfkNR04YNtDMRlnw2HfahEtUxS+bTPXKKNN90Z3uK/zEo/I+
+	hOcWDR4k0ARe6/bR1B/1jlQXEKQlwlE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-500-lhACc4jPN9S4CRe9nJlqOw-1; Sun, 01 Nov 2026 19:22:46 -0500
+X-MC-Unique: lhACc4jPN9S4CRe9nJlqOw-1
+X-Mimecast-MFC-AGG-ID: lhACc4jPN9S4CRe9nJlqOw_1793578965
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48dfaaea30cso1717428f8f.0
+        for <kvm@vger.kernel.org>; Sun, 01 Nov 2026 16:22:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793578965; x=1794183765; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
+        b=i3IM+YbRTEO2DjGr7HDtpuqLZvF1Ln88dImlEcAIGSWu8+yijEvIFl+Av8d9Jqy9II
+         QnhBehQn9mrrTUbaH4x0IOZnmqVCvfN8dyWp6QCobQML0HbIYiOg7vrP6qjmoLPM8F6v
+         tyVhQvQDGWbNJkaiMcUWuW/pHwzkp2pyluw06rd8kfiUJvnpANUIBZm4ltZHVXtnmWlY
+         n8NKwJriKOBgeZAmVY+P5EO1bAgFaUKXrb+068Kb57qDDujJpT4SYb5T5EuA2vwW77wS
+         X2jmCXjhoCubd16Q9Vt3NSKD6u3QdtQ9+J5RgWNigOsqIQ27oZRJoeIvtG73Uz/dZKdo
+         Tupg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793578965; x=1794183765;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
+        b=Fk034wPtybTeyaipnBPBEgURoQyaQUeyhqmdo2kWj3DLFySIFgT42vV6wAisAj8TBZ
+         dKKDqqWhHZA12dpxiY88erwKCfrxyiHeeL1S4zPwsquC0hCbVnzlJx4qcCPmXxNn0Aru
+         3iQkuGSaWwE6OK/jYoQ6y6gUNsm3qs8sJbac19nd9Y99/dH+PWyw509CEL9d9Ph5jN8T
+         wIzDFcup5gABJZtB8cA84AaHz/Otf+XMsiZDTd0M+bdxWYiBxg1zgLcd1pmhGQRKvDxm
+         Zgzim1QgoyKaq8pFXl1u9hQOqhs5NgpZBs74FcXEkSaO6TUewvQAGWrWVoopYrp/gNZZ
+         H0DQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxBe7+XXf3ALrFD037tSB2AmKMxRkrZ4hvMUPfXeStz2MKGwP8KkBliCsf6LbjK8Su10OE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIffk3XLJHGEbiZaK4nwOAPxbvhmtCC4lh+EGW8fUKvVTqahExf
+	y3WErHcWWnmUrlTLO9+81qmkLIeSYV10y+3+0nmDZ9cvwvLAD89Bu1uzii1ntS8VoC1Be3glcGE
+	OU6SI1LAChSpqIbB7ASN0Tn8XWF2TU4jteTf2FjJvAHvWZz1GcWhjWA==
+X-Gm-Gg: AYBFou0qDBhuGUVaoV6ujcBscWPlBi+i6Eqi15+WRnatYfXk/sYy8RQoNX4ghBHSfXU
+	87/4PkHbUq4RWEgy/dcqeaBJflUKCdxwpM0SoGpiyWwzBOWsrURVPOd6dUtYeFRV/hnstn216Xx
+	ADSKK7rUJd2sYtLnIEUXMG/+Yv/Df6afkyQp/2C3KUSvLBKPFegcg67rpMPKU1Qnfi3hx6XySsU
+	lC1Qt5vX/K3EoTw81XFsFGYS+BWdxiwyx4tlcGAdoK154/Iz69UVD/oQo6p3akNOXqIPjNg9nkV
+	1Yoc/BFJY39fJty+tj/+0/hYSJlRBx+1aQojabaXYlGLblaMLsCfXThAiw2795h9OEFiEbmAsVj
+	q9E4sgLqAziJPqQpq0RjDd3cXxknECzRE4BMyEh1I7g==
+X-Received: by 2002:a05:600c:1f87:b0:4a1:f68a:9736 with SMTP id 5b1f17b1804b1-4ac17b2be08mr197874425e9.26.1793578964618;
+        Sun, 01 Nov 2026 16:22:44 -0800 (PST)
+X-Received: by 2002:a05:600c:1f87:b0:4a1:f68a:9736 with SMTP id 5b1f17b1804b1-4ac17b2be08mr197874195e9.26.1793578964162;
+        Sun, 01 Nov 2026 16:22:44 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1501:b100:9ea2:fd21:b361:8dab])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf67aa704sm220328625e9.8.2026.11.01.16.22.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 16:22:43 -0800 (PST)
+Date: Sun, 1 Nov 2026 19:22:40 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Linfeng Sun <linfeng.sun.dev@gmail.com>,
+	Eugenio Perez <eperezma@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH v2] vhost-vdpa: initialize state before publishing cdev
+Message-ID: <20261101192214-mutt-send-email-mst@kernel.org>
+References: <20261011-fix-null-pointer-in-vhost_vdpa_release-v2-1-66ba929971ce@gmail.com>
+ <sashiko-outbox-167170@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,55 +118,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH RESEND] sched: Convert paravirt_steal to new static key
- APIs
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <179357143279.2624073.7781801497885838332.git-patchwork-notify@kernel.org>
-Date: Sun, 01 Nov 2026 22:17:12 +0000
-References: <20260819081207.12150-1-hongyan.xia@transsion.com>
-In-Reply-To: <20260819081207.12150-1-hongyan.xia@transsion.com>
-To: Hongyan Xia <hongyan.xia@transsion.com>
-Cc: linux-riscv@lists.infradead.org, jgross@suse.com, ajay.kaher@broadcom.com,
- alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
- kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- pbonzini@redhat.com, vkuznets@redhat.com, sstabellini@kernel.org,
- oleksandr_tyshchenko@epam.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- kprateek.nayak@amd.com, jiazi.li@transsion.com,
- virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
+In-Reply-To: <sashiko-outbox-167170@kernel.org>
 
-Hello:
+On Sun, Oct 11, 2026 at 10:39:26AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] vhost_vdpa: spurious -EBUSY on open() due to uevent race during probe
+> --
 
-This patch was applied to riscv/linux.git (fixes)
-by Peter Zijlstra <peterz@infradead.org>:
 
-On Wed, 19 Aug 2026 08:12:09 +0000 you wrote:
-> From: Hongyan Xia <hongyan.xia@transsion.com>
+Linfeng do you want to address the bot review on list pls?
+
+> commit cef3a58744e8aa0a22f86fbbe577797fa0a78e31
+> Author: Linfeng Sun <linfeng.sun.dev@gmail.com>
 > 
-> paravirt_steal_rq_enabled and paravirt_steal_enabled use raw static_key
-> APIs which are now deprecated. Use the new API instead.
+> vhost-vdpa: initialize state before publishing cdev
 > 
-> No functional change.
+> Initialize the completion and as hash buckets before cdev_device_add()
+> makes the device accessible.
 > 
-> [...]
-
-Here is the summary with links:
-  - [RESEND] sched: Convert paravirt_steal to new static key APIs
-    https://git.kernel.org/riscv/c/a5576ebce920
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+> > diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> > index ff7d907191712..6cff1ed2004ee 100644
+> > --- a/drivers/vhost/vdpa.c
+> > +++ b/drivers/vhost/vdpa.c
+> > @@ -1655,7 +1655,7 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
+> >  		return minor;
+> >  	}
+> >  
+> > -	atomic_set(&v->opened, 0);
+> > +	atomic_set(&v->opened, 1);
+> >  	spin_lock_init(&v->config_lock);
+> >  	v->minor = minor;
+> >  	v->vdpa = vdpa;
+> > @@ -1678,16 +1678,17 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
+> >  
+> >  	cdev_init(&v->cdev, &vhost_vdpa_fops);
+> >  	v->cdev.owner = THIS_MODULE;
+> > +	init_completion(&v->completion);
+> > +	for (i = 0; i < VHOST_VDPA_IOTLB_BUCKETS; i++)
+> > +		INIT_HLIST_HEAD(&v->as[i]);
+> >  
+> >  	r = cdev_device_add(&v->cdev, &v->dev);
+> >  	if (r)
+> >  		goto err;
+> >  
+> > -	init_completion(&v->completion);
+> >  	vdpa_set_drvdata(vdpa, v);
+> >  
+> > -	for (i = 0; i < VHOST_VDPA_IOTLB_BUCKETS; i++)
+> > -		INIT_HLIST_HEAD(&v->as[i]);
+> > +	atomic_set_release(&v->opened, 0);
+> 
+> [Severity: Medium]
+> Will this cause a spurious -EBUSY for userspace orchestration tools like udev?
+> 
+> When cdev_device_add() registers the character device, it fires a KOBJ_ADD
+> uevent. If userspace reacts immediately by calling open(), it will hit
+> vhost_vdpa_open():
+> 
+> drivers/vhost/vdpa.c:vhost_vdpa_open() {
+> 	...
+> 	opened = atomic_cmpxchg(&v->opened, 0, 1);
+> 	if (opened)
+> 		return -EBUSY;
+> 	...
+> }
+> 
+> Since v->opened was artificially set to 1 earlier in probe, open() will be
+> rejected with -EBUSY until atomic_set_release() clears it, which might
+> break normal userspace orchestration that attempts to open the device right
+> after the uevent.
+> 
+> >  
+> >  	return 0;
+> >
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261011-fix-null-pointer-in-vhost_vdpa_release-v2-1-66ba929971ce@gmail.com?part=1
 
