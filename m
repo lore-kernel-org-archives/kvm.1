@@ -1,55 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793662659;
-	b=j4tuuuqoKvPYBQvDXnEGmJLFqXDH6KqNKKdtFOzqCWIRZomrSGMPHALUxwavMABOUKoN
-	 y7pv1yaNZURXp/fAvK+Azhf0gfRDKCDPudEz9P+0uDub9UjmS3OiU+28vgUVdk0eXCHwk
-	 Mzqa3UxqbgrXH+zlPCKf/ggH0vidgsWR4x2Q97xXBG+8HlIu8ZGZszQSMyN+HDk/4TnEJ
-	 MZ8M4oqjj2CR4heT0couLMUgSsCeGJ0tqgFMMZMV97We4OW/zcm7/HQ6eMt7Rt56dkvuH
-	 fimXzklC73MJOpGz7gOVbQb0VPYCSJWZTNsh0Dpgf3V+B3SJYf+RqmEsMjNN0Z3bySQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793662659;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=oBbOwdv7HQAsh6m0z82QEjFn2nZEMVYTw6CIehV5US8=;
-	b=KJR3t2NbC+I2kYzEilVhw/unOaaHHDcl0pM4G+hjxFsxdJYmAMpULIYTQmj90wUGaB9h
-	 8L4oky5O9Z8CEEQH12KiHKm/I6si5lf8YCMqUl3S652qCMFAZPALQF7ayg0GtsxTchl/O
-	 o6bG7dC7qicnXh1dgUYclJGrLzEwfljV9GckCxD595tElK8FELfDmONIdlh1pBMfyrB0c
-	 hFOW2QWGWgDD5ndrAWtS+6fKv39snnjOt3QMaU41fXWoxWv51ytMMoVlqb9UXgE+jiQeV
-	 scHix6oVgD7vXtm9ri5fV+NBIAY+mfqAcM7sVEas1B6khbh9RGSah1yMvqB5REwSuKg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mk1Cjqsd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793662777;
+	b=a7cTqgwrmuaUP5HygHK+w5ywHfVnVMN7DdE3G915qc5KAFHMzwjfSOylm70urWO5Iqgd
+	 wuJq0ifc7GiXeEx3bCcypnhI3BrLhU0r5Qy3utKExuJt+ox6mCFTdkS1pKgeLytEmuuNN
+	 CJJPNT5XTzzmPkLX2p/+a3lsYzOwwtchTaGscHhSbmvxf50GFZfUss1zcxo5coFzSEmTH
+	 Ja7ngpfYmrbTi/IYxdrG+5q5BVfvz5eKMP/PNm9vcKlVaYlMSDOP+5a0zblFocEZ7C9VI
+	 6jqGgmNOngvNbAW7tIRgDkwr5IQxvMXyma9GJLxwu98Ye93C1Fwew+bPn88HjoWltqQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793662777;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=+q4epD+/kjYFUHxTaUaWiSwNZ7dSox/dJ3V0P9S7xc4=;
+	b=WvTCvdH7KS+DF/jsnjh5SmNJqvdA4kgk7+bjO/hqp8rWpLHhk3zv3XoE1dHXf1AbVMLP
+	 vgqpXePYKhwkJwrawaaitHYv7F3l0rpvH+fpWC6fpFWb+FDyF03a50r5+FvVhnrpr6hTq
+	 ZNcVkMhxgNQ2ZPxy/7nmpI20t9bLhrtcpmq2lxr1LmGm/EpK6Mm7YwAFhH1EYZKyZQ5Mi
+	 H1dtbSCb0/ORQeBsCjeP9r9VlBOZOWGwc5Fs5KoI5h/8uRn3u8j4H0w8fY3JjV+CMxqoN
+	 MWg2h/t6IFxOEuR6flRplrAmj79npoEAIML0vehkJGmvEqVxXVfrhVHVdosOipi14Fg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XUVIaN0k;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78510606A326
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 23:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F0B606A327
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 23:39:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7F0B606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mk1Cjqsd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7F01F00A16
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 23:37:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793662659;
-	bh=oBbOwdv7HQAsh6m0z82QEjFn2nZEMVYTw6CIehV5US8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Mk1CjqsdB5MHIBfkvJAnrnLbWPw1mcXNGh18LyKHVNCWARR2ZuM9QifSTS2FL2M1K
-	 3gOx+MDAblO6LMyrMmCD5SMsyZ9184ru/m56WKcOC0U+3D4UeMIWSYR/2fPiUCKb2C
-	 Y1wbc3nQ84HFQwA1cAHAzKu+cqnr9NoTo1eHzEMMIQVIRdDwq7UoiX9L1uGqDLeErG
-	 oP71RYNGLLTe9Xb1uqsf0ZaacqIH3kROq0mfyieMBkylFpQe7qkxVq7FHr4U3l/GxM
-	 7PxiRRJwQU4IZXc7QtjhRCdDIDiYv5IEv4PN/ABemcOgVz12UEaxL6U2Mpx1TCo+TM
-	 Jw8+NqsxKTayA==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4550d8ab15so430808266b.2
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 15:37:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzRwgTlsjIaqmOLI0tKbrGCEH7h76irq5KE88DtYP+QSG7Ikter0n7cg/cyBdfzVd8svB8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/R4UeRQZMXyzFgk4690wWdQMkuhZzRLQz/hngMx/8NMfvfgo+F
-	geZ1PuUdEdMGkBa/eYEsdokuUT0IS37Szusw1XHoV4PGO8e1i6CPwOblvfIfulwitOecH83gz9+
-	Afju4aN/AsI1fkrtGIbYOCqVQx+Q9rMI=
-X-Received: by 2002:a17:906:ef0b:b0:c25:91bc:ff55 with SMTP id
- a640c23a62f3a-c4ca7a878bamr1000724766b.23.1793662658028; Mon, 02 Nov 2026
- 15:37:38 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XUVIaN0k
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so3813a12.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 15:39:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793662775; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WtRywPd1ELyWXSbfsZJsfsyJbzKQrK5wSFegfX8U9U4jrg3Bar6UfC07WqADeKmPtV
+         TWWI1cGtGRx+UjGuxiITiec2cmVJBtqDDInNWEZGm0lljJuNFEOoJqDl+GPxU8DyyQTv
+         /xGLDLASTNhVjew3HVz7M6nMWo0dgIw9K+lVGzmMRe9gID+OiqYZJJ40nGA8pK/wrxAq
+         dzn+oS1w9EAk98mKhCgWnbLbbuEmQIkGLOu2kc9+bm1ttKV4fUgWgmFEI+Kv1nIGQTSw
+         ThTlB/dw6mQ2dJ9CyFGFryW6qO4/bFr5fnd4flsuBB7Ql6uW+vMDUo1JsTOm4eZkivzV
+         hWmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+q4epD+/kjYFUHxTaUaWiSwNZ7dSox/dJ3V0P9S7xc4=;
+        fh=b0hTt2Bc9xBsY+TIIpWF7KpGl3umGBJ+5YrH3lxqyTE=;
+        b=on6Ho3hOURaOWjYtVDPurwGZ9tYFV2UeiD4Tx3RuifrcX0SZ3vuHBxY09SNkHQwfuy
+         9dhChCuHgZP22G9T6EyIJhLZvIP9Sjq0xGEILDIwzx/JIWUOxnBhfoNkp2nqi8jZ1GkP
+         L5UiryJZVgphgzYnwBK75njJVns36U+vFoukIR37BMbAA0rfkuT4OJ142zQvKYbDMcNk
+         7m3OvCsvJFUvVzJboiVaGc+0o1SBt1mOAPHGQaCJ9/kjsLTROU9lfgszRi5bTBzzGtSt
+         7idFy//dVM15BJEd/gJlWkTH3WNQQM4DbD9O+Dg2kXyGWZ47mdlIvWR2aaAc3cSe5AGy
+         NSkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793662775; x=1794267575; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+q4epD+/kjYFUHxTaUaWiSwNZ7dSox/dJ3V0P9S7xc4=;
+        b=XUVIaN0kG8xdtu5h2ZGfO1duG7NUeb3NlnGwuDdCm7+GDP4sti5i3GtIgh/wGANS3v
+         iLG4FWeU/XVJ6RmDWvjMsWFVP2ETCkzWNm6dvkWqmBfIMStsQjPPeFKt9onzqxRkV+9n
+         SZqobE0JlV574RoDGd+Fk3S5HJchvZj1nbns4BOgjX5kWZ5+GqfI504FWg8QCZ3CduVA
+         txlnmutgVLylcu9Kvuo57PytOMdh+52MKoLswapw8HS3LbMVWaZ+aOYTma39FPnOIL3v
+         aolVSsmSvffPjE/n/j/IztRqZzgXtwiE2epckEY/tLPgbodm7hh+EjAE4BoQUwHS5z0y
+         K9QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793662775; x=1794267575;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+q4epD+/kjYFUHxTaUaWiSwNZ7dSox/dJ3V0P9S7xc4=;
+        b=cZl7ts7vfsWU1zeoupeLhR65hxnuDq8KcKMir8vAXpLLDExKnYtrNJ2qS//ajgdiiG
+         Lu/noxdrl4SHTmJaVDD0XckrhVU8mR9K8yXkgJsLA8a526xUL7/tR+W4KKyF1fgIOrwQ
+         DiFV3iqQJNPfZ/Crv7E1+pjpZTD/dR81O+djeDg9ekgMWP04CH8Jm5qSeWFyMpFUWNZM
+         s8UUz4pFqOyVYMBf/23+7IyXtGpsSZgZjJuO0MX+XOkIfCr2k9TmZ/4oX02EEGbGDLbm
+         KuTtmagGfQ4+8Nr5VHayXP6+7kmWMXGLwiYrMzlWfT4ov+Ycc8Z0I7sSLcwZKdFV19tt
+         inmA==
+X-Forwarded-Encrypted: i=1; AKwUvBx5cUl3JDnSAXV5A52llrx1bCDE9UYl10pVoWG3ypiAN2XD4IFxbVA4x9AwvyLq4aYk/Wc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/jqExnf4ozGi6+VkaP7dC7LvM5rEXqWy7tLkQe+xWkRW+PFV4d
+	TMJLJ07Bfl2J2RnX89lYYP/UoIesTOLx/a0VgJU4UNbhycIDvCaQh1tgbJOXGrO/c1ZqQd2EGUA
+	3+WCxnqLdb4425gJqTxTd7eYN6a1JHLBFC7MeIwQ5
+X-Gm-Gg: AYBFou1mv+6jmbNDDjfAndwnf5MA5eVzS1jHjKEjSl2H46lR4qFwnFAO5HlhXWqn/3q
+	v0/pxwwHOZmgMX+BKmGmaYL6mwGpf9NT4ByodJmaJJFya4A460dxwriOhLjm32gv+7yS2RlSlde
+	3j4wlRen6NDmwAJpKBfW26wAxh0r9AMuoz+Gi3zEIgTB3rl4sOYT90RCqrqNWg8+MKCjmF2JadO
+	DTzg6kWcrLcEt6omGy8K8/NdSCE6ITPJk7cINYvuGRzOFITSKNOT8ji7Lo/7KvJDAqR4E/GeKfk
+	Pn40Y3MeAmjOoRoAD/0eCLbDXlkhlZC3bsbUetHUFhi2C6rzU9OC4M34O12ifBbTJHt6vj/tcMd
+	feRBAJNDHxkQgTpvy9dFxRgj9j4f0lB83gO0a
+X-Received: by 2002:a05:6402:10c9:b0:6aa:128c:36ad with SMTP id
+ 4fb4d7f45d1cf-6b53e764c47mr10361a12.10.1793662774603; Mon, 02 Nov 2026
+ 15:39:34 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,58 +104,96 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-12-zide.chen@intel.com>
- <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
- <auUQgRVFASkWtkoK@google.com> <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
- <CAO9r8zMxQnRLKGrW69rX7703AatWMp6KOXMObL9baHRPs4dW8A@mail.gmail.com>
- <6c9a13c9-e6c1-4540-a8ca-1f0e800f3571@intel.com> <CAO9r8zOWzr61pkkF01AvEp+YSOo6bA1N=L91RYiM=ETtK5+D9w@mail.gmail.com>
- <69c428d7-239a-485e-9494-32b8aa82da05@intel.com> <CALMp9eRsR8xaUmQyVu5QmYx1cZ2qFGGk+31bMymhmN9_iaPuMg@mail.gmail.com>
- <f7213eba-5b61-4514-a315-bce64823fad5@intel.com> <CAO9r8zM4eWD538L3osqSVoB0VHnjgRREtv2k419a1Vvuq+Q9rw@mail.gmail.com>
- <6d84ab57-a702-4ac0-9e29-579449b3d826@intel.com>
-In-Reply-To: <6d84ab57-a702-4ac0-9e29-579449b3d826@intel.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 2 Nov 2026 15:37:26 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zMvkGzxUR7jBPVFWK+Fry4wk49J3WdwFqa22bSgGaS4YQ@mail.gmail.com>
-X-Gm-Features: AclHuK_Ks2MMA5FQP6XHgCe9LxJ4b9bkprLfwSiy6MqT83PaLeo4sR9HyA3cRUY
-Message-ID: <CAO9r8zMvkGzxUR7jBPVFWK+Fry4wk49J3WdwFqa22bSgGaS4YQ@mail.gmail.com>
-Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
- GLOBAL_INUSE MSRs
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Jim Mattson <jmattson@google.com>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
+References: <20261102231428.13523-1-pbonzini@redhat.com> <20261102231428.13523-5-pbonzini@redhat.com>
+In-Reply-To: <20261102231428.13523-5-pbonzini@redhat.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 2 Nov 2026 15:39:22 -0800
+X-Gm-Features: AclHuK_llZQOnCwx54tZ59oMjrQu1r-_j_89HC5UjrdUh8dhwsQ0SoPYuUVmetM
+Message-ID: <CALMp9eT7cnBf6kSXZLWuMyG9a52QveWjzzLz3Z9E=kPuX_ahVg@mail.gmail.com>
+Subject: Re: [PATCH 4/7] KVM: nVMX: Process each host MSR entry at most once
+ when unwinding failed VM-Entry
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org, 
+	David Woodhouse <dwmw2@infradead.org>, Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> >> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> >> index 38c7a4fa1007..3849b3f5234a 100644
-> >> --- a/arch/x86/kvm/pmu.c
-> >> +++ b/arch/x86/kvm/pmu.c
-> >> @@ -862,6 +862,8 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct
-> >> msr_data *msr_info)
-> >>         switch (msr) {
-> >>         case MSR_CORE_PERF_GLOBAL_STATUS:
-> >>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
-> >> +               if (msr_info->host_initiated)
-> >> +                       pmu->global_status &= ~pmu->global_status_rsvd;
-> >>
-> >> The underlying issue still requires proper mutual exclusion between
-> >> Intel PT and mediated vPMU, which I think can be addressed separately.
-> >
-> > Or maybe handle the host PT while the guest is running? Not sure if
-> > that would be correct.
+On Mon, Nov 2, 2026 at 3:19=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
 >
-> Since KVM switches APIC LVTPC in guest context, it seems difficult to
-> correctly handle host PT PMIs while the guest is running.
-
-One hacky way to do it is to make perf_guest_handle_mediated_pmi()
-handle host PT before calling into KVM. This doesn't completely stop
-the guest from seeing the bit tho. Also, I think we may have no way of
-finding out if we still need to inject a PMI into the guest for a
-different reason or not :/
-
+> From: Sean Christopherson <seanjc@google.com>
 >
-> I guess Intel PT virtualization could be re-enabled sooner or later, and
-> addressing the exclusion issue would be a must at that point anyway.
+> Add a missing "break" in the inner for-loop of the open coded mess that
+> unwinds MSRs back to the pre-VM-Enter state when VMLAUNCH/VMRESUME VM-Fai=
+ls
+> due to a consistency check that is caught by hardware but missed by KVM.
+
+That sentence does not accurately describe what the code does.
+
+> I.e. move on to the next MSR in the VM-Entry load list after performing a
+> write using a value found in the VM-Exit load list.  Processing *every*
+> matching entry in the VM-Exit load list makes the processing quadratic,
+> which is problematic if the load lists are full of MSRs that are expensiv=
+e
+> to emulate.  E.g. writing APIC_BASE triggers kvm_recalculate_apic_map() a=
+nd
+> a whole pile of unnecessary work.
+>
+> Functionally, arbitrarily restoring the value of the first matching entry
+> is "fine", because none of this is architecturally correct: the load list=
+s
+> are never supposed to have been used in the first place.  In practice, it=
+'s
+> likely a moot point as no well-behaved VMM will have multiple, diverging
+> entries in the load lists.
+
+This isn't "fine." This is disgusting.
+
+The assumption that the VM-exit MSR-load list will "undo" every
+assignment made by the VM-entry MSR-load list is misguided and wrong.
+
+Xen, for instance, puts SPEC_CTRL on the VM-entry MSR-load list, but
+it does not put it on the VM-exit MSR-load list. Instead, after a
+normal VM-exit, it restores the host value in
+vmx_asm_vmexit_handler():
+
+        /*
+         * Restore Xen's MSR_SPEC_CTRL setting.  The guest's value resides =
+in
+         * the MSR load/save list.  For Legacy IBRS, this flushes/inhibits
+         * indirect predictions and does not flush the RSB.  For eIBRS, thi=
+s
+         * prevents CALLs/JMPs using predictions learnt at a lower predicto=
+r
+         * mode, and it flushes the RSB.  On eIBRS parts that also suffer f=
+rom
+         * PBRSB, the prior RSB stuffing suffices to make the RSB safe.
+         */
+        .macro restore_spec_ctrl
+            mov    $MSR_SPEC_CTRL, %ecx
+            mov    CPUINFO_xen_spec_ctrl(%rsp), %eax
+            xor    %edx, %edx
+            wrmsr
+        .endm
+        ALTERNATIVE "", restore_spec_ctrl, X86_FEATURE_SC_MSR_HVM
+
+After VM-entry failure, Xen executes this code:
+
+.Lvmx_vmentry_fail:
+        sti
+        PUSH_AND_CLEAR_GPRS
+
+        /*
+         * SPEC_CTRL_ENTRY notes
+         *
+         * If we end up here, no guest code has executed.  The MSR lists ha=
+ve
+         * not been processed, so we still have Xen's choice of MSR_SPEC_CT=
+RL
+         * in context, and the RSB is unchanged.
+         */
+
+        call vmx_vmentry_failure
+
+KVM needs to do better.
