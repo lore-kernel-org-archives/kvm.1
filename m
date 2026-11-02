@@ -1,49 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793640552;
-	b=0EnjNNtHYkXXO8B6bK8a+yQMrdobudk3Doz9g3bjhZ/FElG8jCQ0XAowLQ4WVuB2rpga
-	 v/JlKkkNPV+/17IP7OCj0X6jxOcq1lZMnmUeZb+Xlc4f0kd/7dvSm5AyJzq25HM6Biagf
-	 fn2kaddSbNcaeYPgZbRENmM0KfRTAcUKrhjYORZAB3MsV6fxO7//Lgr5AsS2J6y04bUVA
-	 RqMIrQnt2A5wY4vzUQVl1GGNPG4Z0bEO6mExNpxcBKQ3IwRNghU5Q4Zlufj3PFKg/Os6c
-	 oVjB2Q9EIHjEqGDlkMVm+qgfkSCzXgaSU6jpxrYRvamBsuEB5PLaM7yiIeY81c2Go9Q==
+	t=1793640613;
+	b=5UeaaiP+7NyzTSGQK5Hj8IZ+XpdFwmndMkVbNRUIjHVrJVU3V8IG977VerbQwXgP9xw5
+	 +ZWoBXyC92jsKlcu6Dniz2GL9IaZwkIyd90xSC2RFuz2HqGCYNVCCH21cjPkyLEU5Kmxt
+	 Ztm5eQj9LNf0kuJnskFMOpoXu9mkYSYhj6nYSysPhbEAucXmQfGazngwRnCR323JiMd9W
+	 /DMcsI8c9Y+BpJiT/uL3rDu4RXO49EXYXghQjowgSrCHwGedTTelSdiKr+vb+tlCklV+P
+	 wcaDibDSsPhV9QOGR0EDsBP+z5akKECni8NatIbj0bZB8J7eHXow7jUFgL5WI2EK1qg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793640552;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=bLJCblaC6p74X0djr/s7k+NpLQHxJXC32OYuLH+pEfk=;
-	b=lHnm2TYvS5zi+Hzl/fnLjprAAwuRLZcL8aBB+1+k/zfLhcy8D8IQjirtca+psajbZTOV
-	 vBQ1IkMAECinG3VPO2YEQB5Jx4s+YKupnqA0Fl85MFjuxllX32khIkGmJwrspHIe4iSdk
-	 f51bgAs3TlSz4upbvrdIXmvGbjkCaI/WUM5mv75xs3iTgFmEPXtcKL1oyKy4qpUUBVqef
-	 nU0EmrjP+OM8iph3eBOYdlzrX9cTZH0VKJUxhoHesAdoNegexzAfQzcjk/jBLMHzwuxVO
-	 L39+OIHlfS773xCRmOzJNurLT1LVmbe6UxUaFU3wFa1cOTUMpTZ2GLwsvjgl47F5d1w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793640613;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+	b=slcZ2Ts67rhM0Ua4tuD+5dK0jKr8cTcxhQZIXfQdRCvQoNdgmtrpLjueySTZXzhQPAF/
+	 jbH4I2EFJ1FOia+m95MeEMKNiTMaFy+nskuWuAJxwrIU1/PhrRVvJSDacTg4u4oyQYXp1
+	 Ts/AdmRct8EcxDRnw0Fs3eyxXy9ZPH1pb07X2aWqJGYv6ZWNBDoYdIa0Da6JZ8w3/wr4C
+	 8Ft616HH3JvuMIlhMk5VVH+rAm/56G5ItpPQo9CqoS/kz3korp9RU4MyejrLuc5NXbNUo
+	 av7/TqpHAFob/VH1GUbObRpyoS40lJqgqnOsrrRRnzsy01jAipPUfir10NoqMuW3CEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vdnNkLzw;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D703606E02E
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:29:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D703606E02E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="D7OX9rf/";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=O4pI9YlU;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D36606E026
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:30:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9D36606E026
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vdnNkLzw
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A72A716F3;
-	Mon,  2 Nov 2026 09:29:07 -0800 (PST)
-Received: from [10.0.136.93] (M0PRX50XMG.cambridge.arm.com [10.0.136.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A18F3F59E;
-	Mon,  2 Nov 2026 09:29:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793640550; bh=ZlHYnqiU00gksrwMlhvvPkWAHmYQOGltgW8sZDyoCXo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vdnNkLzwOmkpdJGKhWTBsOK9HdfAJx8FDNmhV+Nio/h04lbIvSgm9v5ndCwQd8Z6+
-	 4Fvxg6Rm4tWYOBDjT3xSyEG6D6J7NIjij++stxkXIZrydT81vhZLy8WeO/KzTnNcOv
-	 NexeDzHHWZ47qbqocYmkYKMNEIdMOqIEnlshIrqM=
-Message-ID: <909ce27c-524d-4206-93bb-113711c8ca11@arm.com>
-Date: Mon, 2 Nov 2026 17:29:08 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D7OX9rf/;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=O4pI9YlU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793640612;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+	b=D7OX9rf//5YzUCNe5WHvsdWYy4QUBKI9EewIG2bPgMolg1hblOBpsfReBWKvdO+2LfXnlM
+	BelE1qsCNjMEYLRLNqoieGQ0EB+Pmyb404uGRoawTQ1FoBUAIrNnsozudssRT3MFwj8fMJ
+	bv5qEKgJp3E9ksdZ7eDMHQSu3xYZsH8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-117-QNmJbN7SN_Wh86jZ1rjQ-Q-1; Mon, 02 Nov 2026 12:30:10 -0500
+X-MC-Unique: QNmJbN7SN_Wh86jZ1rjQ-Q-1
+X-Mimecast-MFC-AGG-ID: QNmJbN7SN_Wh86jZ1rjQ-Q_1793640609
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e4d1e29f3so2944281f8f.3
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 09:30:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793640609; x=1794245409; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+        b=O4pI9YlU92DDxrrSy6abElpco/qX3degbuogWx2SVyZyGnQ8Ljm8FwI4vtxoPyfDyC
+         rhCe1JAnalublysmvZ6emIRr4ywccBIFc/TvwrdeH/FMuISwOSIg5cHb6MSYJ7MzZu0y
+         yFsgAi16SjhXDtpLRy7vETL/sUyNwc/N2NMNodNJ1l9y/dGEvLTF4VA2p5XJdmE7+kzQ
+         kEebFLK9C9ODAhgFXrTA1Gqx4IU7k9Bj9P3/jQPyW7Kmze2YxH2EFHVfP2KGGOCElP4M
+         G9zeKnZ7EUvP59V4zJiHeV/v/BkOMR99FE1/Bjog31DElcdlOg1M5UQSgwPTzPtD52Vm
+         ZixA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793640609; x=1794245409;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+        b=T7G6479ed56GR3VXV8R5eEa2HQmX4DQTbGYcPGrS5vBR2PXKsjoH6qmsYs8mUCmaTe
+         qRqWR1EMFd8Sbl87ZAsba216za4Nxgb7W4iYt2gO+GfbJLZtrOqdqiqJ/HDLLNRszM+j
+         Qf8PHkj9+R+KaaE92CVdmL5HQW/vsQaM7BGa4qHIVL3IxZuTKN0ngIt0R96EGnaIpHi0
+         DViuxcG4qAqOJ2xx0fSC4VW3ZvjvMyXff9ndD6xaK04sU+mpzdanPlMNuiU5GIbI2aUv
+         kPvr4N/E7V47iet77ZI84BH9Pb0fl4IeczI47bv5xvIcGzMTH8gJP9i0gCVLUu0V7Lcg
+         YBJw==
+X-Forwarded-Encrypted: i=1; AKwUvBwWrAw8MQl12gdGb9GR8e/Dlf76Go0WKfrcagi/QD0fxgPbpxWn6Ti6XxiH/2T9KRfkvdc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLhpQAIBOtSDSnuv2x1so6rqE/5NNhUu1Cvz/FHBlSmOLifwlSH
+	cDpQ0n2uhyjfFAlnGTTNdUWJdwCYTHeqkADDg4qY/zuA3K8VmW+9O7N++sPC7yhWiaY9VJ4Diey
+	NsND0+i3dZUy6NrXM/C736QPYOiF0bpwn4e1KWdKzwXwstBmO4yw4tw==
+X-Gm-Gg: AYBFou1gjNW7f9VkCsi1m+eM0LuycI5MwB9c/GIw0FPCqhka+llcv2UYczPtws4Y0hH
+	eJJclHi1euRONjHJ07o7YQyVhoMyGtuVRwfkCei1TdFkcUwfj+TH4xpCO8BABA1YlZji+B/fYw8
+	sWUb4Gu0JxqVtCBy7EgAoVp3rlA4negllvp40Ypw8RxkH2HBkl5qVrj5QlIf5WcE0tMcNEMZ0l3
+	2cRKqeAA4+RqhAsQnXQuE6XUxKKgnFUP1FkOxp2IrUKch07SbCX0aptU5slQ+jmUFDEdQchUIKc
+	AnTUYbRJdw6d0FVmWJAewaAxs861zyDj+BTo9MYQ45QLkPZC4p2OKugyWtntvDh6wck1Ajdw2GM
+	OtlSGYUED2nBFX/3/tlYr7JaSUy8gtW+FEww0xYIRxw==
+X-Received: by 2002:a05:600c:c088:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4acda922e24mr165297225e9.1.1793640608968;
+        Mon, 02 Nov 2026 09:30:08 -0800 (PST)
+X-Received: by 2002:a05:600c:c088:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4acda922e24mr165296615e9.1.1793640608457;
+        Mon, 02 Nov 2026 09:30:08 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a8d60ca0sm1461205e9.7.2026.11.02.09.30.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 09:30:07 -0800 (PST)
+Date: Mon, 2 Nov 2026 12:30:04 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Fang Xieyan <fangxy@xiaopeng.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Guanglei Zhu <zhugl3@xiaopeng.com>
+Subject: Re: [PATCH] vhost/vringh: reject zero-length indirect descriptor
+ tables
+Message-ID: <20261102122942-mutt-send-email-mst@kernel.org>
+References: <20261021070242.75009-1-fangxy@xiaopeng.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,211 +119,49 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/16] KVM: arm64: gic-v5: Add ITS MSI injection
-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261016155741.979985-1-sascha.bischoff@arm.com>
- <20261016155741.979985-10-sascha.bischoff@arm.com>
- <sashiko-outbox-174632@kernel.org>
-Content-Language: en-GB
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <sashiko-outbox-174632@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021070242.75009-1-fangxy@xiaopeng.com>
 
-On 16/10/2026 17:23, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
-> - [High] kvm/vgic: raw_spinlock deadlock due to missing IRQ disable in its_cache_add_translation
-> - [High] kvm/vgic: userspace-triggerable WARN_ON_ONCE causes host DoS in vgic_v5_its_inject_msi
-> - [High] arm64: vgic-v5: User-triggerable WARN_ON_ONCE in MSI injection
-> - [High] kvm: arm64: ABI violation on guest-driven MSI mapping errors
-> - [Medium] kvm: arm64: gic-v5: MSI injection aborted on translation cache allocation failure
-> - [Medium] arm64: vgic-v5: MSI injection fails if ITS cache insertion fails
-> --
+On Wed, Oct 21, 2026 at 03:02:42PM +0800, Fang Xieyan wrote:
+> move_to_indirect() accepts an indirect descriptor with a zero length,
+> setting desc_max to 0. __vringh_iov() then reads descs[0] before
+> checking the descriptor bounds, resulting in an out-of-bounds read.
 > 
-> commit 65afd53542f7c52bea1da09f7e70c85b22c50b33
-> Author: Sascha Bischoff <sascha.bischoff@arm.com>
+> Reject a zero-length indirect table in move_to_indirect() so the
+> caller returns -EINVAL before dereferencing the table. Also use the
+> converted length in the warning to report invalid lengths correctly
+> when the vring byte order differs from the CPU byte order.
 > 
->      KVM: arm64: gic-v5: Add ITS MSI injection
->      
->      Now that KVM can resolve GICv5 ITS translations from guest memory,
->      allow userspace and irqfd MSI injection to target a virtual GICv5 ITS.
-> 
->> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
->> index e4c0415137605..5920fa1bcb2cf 100644
->> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
->> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
-> 
-> [ ... ]
-> 
->>   static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its *its,
->>   				     u32 device_id, u16 event_id,
->>   				     struct vgic_irq *irq)
->>   {
->>   	u64 key = ((u64)device_id << 16) | (u64)event_id;
->>   	struct its_cache_translation_entry *entry;
->>   	struct its_cache_translation_entry *old;
->>   	struct hlist_node *tmp;
->>   	HLIST_HEAD(removed);
->>   
->>   	entry = kzalloc_obj(*entry, GFP_KERNEL);
->>   	if (!entry)
->>   		return -ENOMEM;
->>   
->>   	entry->key = key;
->>   	entry->irq = irq;
->>   
->>   	scoped_guard(raw_spinlock, &its->translation_cache_lock) {
-> 
-> [Severity: High]
-> Could this lock acquisition deadlock?
-> 
-> The translation_cache_lock is a raw_spinlock_t that is also acquired in
-> hardirq context by its_cache_look_up_translation(). Since
-> scoped_guard(raw_spinlock) does not disable local interrupts, a hardirq could
-> preempt this process-context section and attempt to acquire the same lock,
-> spinning forever.
-> 
-> Should this use the raw_spinlock_irqsave variant?
-
-I think it should have, if I'd not reworked the code to use XArrays 
-instead. The original cache lock could be interrupted by a hardirq 
-trying to take the same lock.
-
-I've removed translation_cache_lock as part of the XArray conversion, so 
-I think that this is now addressed.
-
-> 
-> [ ... ]
-> 
->>   static int its_cache_look_up_translation(struct vgic_v5_its *its,
->>   					 u32 device_id, u16 event_id,
->>   					 struct vgic_irq **irq)
->>   {
->>   	u64 key = ((u64)device_id << 16) | (u64)event_id;
->>   	struct its_cache_translation_entry *entry;
->>   
->>   	guard(raw_spinlock)(&its->translation_cache_lock);
-> 
-> [Severity: High]
-> Does this also need to disable interrupts?
-> 
-> Since this is called from the fast path (kvm_arch_set_irq_inatomic) which can
-> run in hardirq context, and the same lock is taken in process context, should
-> both sides use the irqsave/irqrestore variants to prevent deadlocks?
-
-As above, the translation_cache_lock has now been dropped. We now do RCU 
-lookups in the XArray instead.
-
-> 
-> [ ... ]
-> 
->> @@ -531,7 +572,8 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
->>   		return PTR_ERR(*irq);
->>   
->>   	vgic_get_irq_ref(*irq);
->> -	ret = its_cache_add_translation(kvm, its, device_id, event_id, *irq);
->> +	ret = its_cache_add_translation(kvm, its, device_id, (u16)event_id,
->> +					 *irq);
->>   	if (ret) {
->>   		vgic_put_irq(kvm, *irq);
->>   		vgic_put_irq(kvm, *irq);
->>   		*irq = NULL;
->>   	}
->>   
->>   	return ret;
->>   }
-> 
-> [Severity: Medium]
-> Is it correct to abort the injection if the translation cache insertion fails?
-> 
-> The translation cache is intended to be a best-effort optimization. If
-> its_cache_add_translation() fails (e.g., due to -ENOMEM), propagating the
-> error and dropping the successfully resolved LPI will silently lose the
-> interrupt, which could hang guest drivers under host memory pressure.
-> 
-> Should the error be swallowed here instead so that injection proceeds?
-
-I've made cache insertion best effort for software MSI injection, so the 
-interrupt is still injected on that failure. That said, we realistically 
-shouldn't be hitting this case unless we're under very high memory 
-pressure, at which point all sorts of things will be going wrong!
-
-> 
-> [ ... ]
-> 
->> +int vgic_v5_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
->> +{
->> +	struct vgic_v5_its *its;
->> +	struct vgic_irq *irq;
->> +	bool borrowed_mm = false;
->> +	int ret;
->> +
->> +	ret = vgic_v5_check_msi(kvm, msi);
->> +	if (ret)
->> +		return ret;
->> +
->> +	its = vgic_v5_msi_to_its(kvm, msi);
->> +	if (IS_ERR(its))
->> +		return PTR_ERR(its);
->> +
->> +	/* An irqfd cache miss is resolved by a worker outside the VM's mm. */
->> +	if (current->mm != kvm->mm) {
->> +		if (WARN_ON_ONCE(current->mm || !(current->flags & PF_KTHREAD)))
->> +			return -EWOULDBLOCK;
-> 
-> [Severity: High]
-> Could this WARN_ON_ONCE be triggered by unprivileged userspace?
-> 
-> If a normal user process (other than the VM creator) calls the KVM_SIGNAL_MSI
-> ioctl, current->mm will not equal kvm->mm, and since it is a user thread,
-> current->mm is non-NULL and it lacks PF_KTHREAD. Triggering a kernel warning
-> can crash the host if panic_on_warn is enabled, leading to a Denial of Service.
-
-Can we realistically reach that case?
-
-kvm_vm_ioctl() rejects a userspace caller whose mm differs from the VM's 
-mm before KVM_SIGNAL_MSI reaches this code.
-
-The irqfd worker is a kernel thread using the VM's mm struct.
-
-How can we reach this code? I've not changed anything to address this!
-
-> 
->> +
->> +		if (!mmget_not_zero(kvm->mm))
->> +			return -EFAULT;
->> +
->> +		kthread_use_mm(kvm->mm);
->> +		borrowed_mm = true;
->> +	}
->> +
->> +	ret = vgic_v5_its_resolve_lpi(kvm, its, msi->devid, msi->data, &irq);
->> +	if (borrowed_mm) {
->> +		kthread_unuse_mm(kvm->mm);
->> +		mmput(kvm->mm);
->> +	}
->> +
->> +	if (ret)
->> +		return ret;
-> 
-> [Severity: High]
-> Does this violate the KVM_SIGNAL_MSI ABI by returning negative error codes?
-> 
-> When the guest provides an invalid mapping (like an out-of-bounds Event ID),
-> vgic_v5_its_resolve_lpi() returns errors like -E2BIG or -EINVAL. Propagating
-> these directly to the ioctl caller instead of returning 0 (to indicate the
-> guest blocked or unmapped the MSI) can cause the VMM to abort, creating a
-> guest-to-host Denial of Service.
-> 
-
-Ah, yes. This was a mistake, and those shouldn't be returned. I've 
-changed these to return 0 to the caller instead. We still return 
-negative error codes for malformed MSIs, allocation failures, and when 
-the ITS itself is disabled.
+> Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
+> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
 
 
-Thanks,
-Sascha
+Isn't this already addressed by
+Subject: [PATCH v2] vringh: reject empty / undersized indirect descriptor tables
+that you posted previously?
+
+> ---
+>  drivers/vhost/vringh.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+> index 9066f9f12ba1..ce4f5a02c8d2 100644
+> --- a/drivers/vhost/vringh.c
+> +++ b/drivers/vhost/vringh.c
+> @@ -197,8 +197,8 @@ static int move_to_indirect(const struct vringh *vrh,
+>  	}
+>  
+>  	len = vringh32_to_cpu(vrh, desc->len);
+> -	if (unlikely(len % sizeof(struct vring_desc))) {
+> -		vringh_bad("Strange indirect len %u", desc->len);
+> +	if (unlikely(!len || len % sizeof(struct vring_desc))) {
+> +		vringh_bad("Strange indirect len %u", len);
+>  		return -EINVAL;
+>  	}
+>  
+> -- 
+> 2.50.1
+
