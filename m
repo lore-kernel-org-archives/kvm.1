@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793648705;
-	b=wu1ng4oUAP1cAyXogTRMAH9dA0cnGVi4z6GQF7eid7f0AzElFjEDNo5Dm2XwPrQS2XxI
-	 tO5AjLKVgY7WTDeGWlG5uSGcnaN6El2AKQnCt56jNwhAOP0xCFuy32fbs7Kcuh6SnZo6Y
-	 Tgzzb/7mexMUOkcrDyrtsbIlaocttQ77b3yz8orEMKxQOL8ysDskKFtRUL0368yRtSh8M
-	 h/foSSDqdkd/5Yvhr1p4fC0Iq1ejUVfrFa2BT4FMVjBeYlsCWut8po6QJ1NgKhtdfGiWB
-	 NiwxTTPUwnQUCofm5d/S8/uz/VioA9RypIgq5cdkqbUv43CKECa+YVDLRbRsocEcvmg==
+	t=1793648715;
+	b=u9R5mQqIosfE2C3cxVKY7KArI+nS2j8sXqbIb/GSebFWFlh5LVV2YOZKVuVgVNsQhWZ4
+	 toFBsgHJTSskD9Fzf4nzLFXLVFOVPGDMkpOor8eZoJkT1wKsSo2YJ1FunJLMmogPZU5qn
+	 tEbNVcKDjnRQpzKxrgkZKDRjDM9XHdAeqaDYJU4gCPpvLyvfyhNmyUFqoIkmfOviD3SvW
+	 bFpVqQdAVQXsvCkzqMasyp2SBEr2iTpzq1kPeAL5aaiR01Lo9/5cV9nM20VgQG2sJHvTT
+	 E+r755UEw8WwQwNi1+5FlUK6fuDXIiUvyrHSH6i5pU9akYjjfCYafLAbC0AoRdIUFqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793648705;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793648715;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=b8ykW9KPLcaIcZvWtgJoASK+Yo/mXwwP8pWBtC51TXQ=;
-	b=PCB0ql2HRQ4cZkzBg0HSoBr8U0j5n8hFlc0Yghcqa8hoW1TODTb3ajCeLIrrUUG6Y4p1
-	 WDTi2yIPVq4+qD/qpRC6odClvMvTBy7hDX7XXj0YyPYp6A64klBBLrBoOx9yv0zjWIh8M
-	 D6+sxMPK6iNi+KfAd+7c8THoEatFn8WcrFKETBQvlHTolz2sYK1pLOcffrwjwFz6Ps5I4
-	 hiqyZdc0wiPCFGt6Y9aRTu0D/PHBPH4WAhf14YHjH3w74RILAePCZjaZu0yxsNAnXZAQa
-	 Co6+2VeSV29vUE+eczPIixZ+gzMzyAG0BuXICH36Fgr7/RIXryTSuQqSvTW5oC2tlig==
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=SxDeP+VVrehaEoxAacbpEcDKEnQestaQVUxckwi1z4Q=;
+	b=j0xF1/k8nNbuF9/1pO2jQZ+d+HNcVSB5CbfnonTuOwJ14g2OebFR4ElhLm3zNhNf8+wo
+	 r8OV3ljKqL984gqI0AAkuEE0gc8mf3xTWHb4moHnOI9XJWPkokhBZXDnKElIQBuJF2AmX
+	 iuVEhCeYDIdkCmD13X5oFQ1RThBHxjDQgNOpSyllYVO6zH4/vZDwvdkwwUFQY3CtjIyMn
+	 L1xbjyoRA763Bxib/uUjiV3VmMx5bkJjb3X5DPY72Yi740564CRcjdKzWo781UoHBZgw8
+	 rAZOKtlCz1U7sa+vBeYfRnbLIzjpN2ZV6GY7mO/81FGhaxmWwXfSjj69/HL/+vLyl6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=j9ZkicYC;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Yq44rYbu;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF158606A32D
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 19:45:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF158606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E4F606D83C
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 19:45:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81E4F606D83C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=j9ZkicYC
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Yq44rYbu
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1975A16A3;
-	Mon,  2 Nov 2026 11:45:00 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D4CC16A3;
+	Mon,  2 Nov 2026 11:45:09 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60AE73F673;
-	Mon,  2 Nov 2026 11:45:01 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D98B63F673;
+	Mon,  2 Nov 2026 11:45:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793648703; bh=LKycxJwdqBPls6Zote9opLCnQI+1WQCo59QObvax/Ro=;
-	h=From:To:Cc:Subject:Date:From;
-	b=j9ZkicYC/zXxj3W43V0qg0DyPe1/T4BGqYFMNiIiO02JMG6NsQJHyHn9RVm07D3Lp
-	 9b+YPzqYDFl/p1NvgEjSgAJsWTWmZwpjyE0bDhjFri1ZUxOVKqqWmVat/GGEzpiRNw
-	 cB4zaCxRhblOryuYXaXD0A4THOlFaJD3PfxZQY7U=
+	t=1793648712; bh=amDiy+/ROWpP26/w1KGH5V47ch5HrMmB725iyWflZog=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Yq44rYbu5yvylisult486QxQUL3jSeYkEcobdMl251Kz5R75syCv5ICA26XR9Dd0i
+	 7BMBMo1ZiSBQJNTRKH/bLIOzbDQqQzIPywdNUneIPtGis2al1NtHvgNzYqcbV8DAFy
+	 9pT5++s+Os+RyAFJrjy1V4llCOme+aHHj/7z5mAM=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	kvmarm@lists.linux.dev,
@@ -54,10 +55,12 @@ Cc: maz@kernel.org,
 	lpieralisi@kernel.org,
 	timothy.hayes@arm.com,
 	fuad.tabba@linux.dev
-Subject: [PATCH v2 00/16] KVM: arm64: Add GICv5 ITS support
-Date: Mon,  2 Nov 2026 19:44:38 +0000
-Message-Id: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+Subject: [PATCH v2 02/16] KVM: arm64: vgic: Pass opaque device pointer to ITS MMIO callbacks
+Date: Mon,  2 Nov 2026 19:44:40 +0000
+Message-Id: <20261102194454.4086911-3-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,158 +72,232 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+The ITS MMIO callbacks currently take a struct vgic_its pointer,
+which ties them to the GICv3 ITS. GICv5 needs to use the same MMIO
+dispatch path with a different device structure.
 
-This is the second posting of my GICv5 KVM ITS series.
+Pass an opaque device pointer to the callbacks and cast it in the
+GICv3 handlers. This does not change GICv3 behaviour.
 
-This series builds on the GICv5 IRS support now in 7.4-rc1 and adds
-support for the GICv5 ITS, as described by the GICv5 specification
-[1]. It allows a GICv5 guest to receive LPIs generated by MSIs,
-including those from physical PCI devices mapped into the guest via
-VFIO.
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+---
+ arch/arm64/kvm/vgic/vgic-its.c  | 55 +++++++++++++++++----------------
+ arch/arm64/kvm/vgic/vgic-mmio.h |  6 ++--
+ 2 files changed, 32 insertions(+), 29 deletions(-)
 
-The ITS is exposed as a separate KVM device, alongside the VGICv5
-device. The guest owns the device table and interrupt translation
-tables. KVM walks these tables to resolve a DeviceID and EventID to an
-LPI, and caches the result until the guest invalidates the relevant
-translation or changes the table configuration.
-
-The main pieces are:
-
-* An emulated GICv5 ITS CONFIG_FRAME, including table configuration,
-  event generation, and invalidation registers.
-
-* Guest table walking for linear and two-level device and interrupt
-  translation tables, together with a disposable XArray-based
-  translation cache.
-
-* MSI injection through KVM_SIGNAL_MSI and irqfd. GICv5 requires a
-  DeviceID for each MSI, and the virtual ITS supports 16-bit EventIDs.
-
-* Direct injection through the host ITS when an interrupt is forwarded
-  to a vCPU. Forwarding teardown restores the host translation.
-
-* Userspace attributes to configure the ITS address, access its
-  registers, and reset the emulated state, together with ABI
-  documentation.
-
-* Selftests for the ITS attributes, guest table translation, MSI
-  delivery, and guest-driven cache invalidation.
-
-The guest tables remain the authoritative translation state. KVM's
-cache can be discarded and rebuilt from guest memory; there is no
-separate ITS table data for the VMM to save/restore.
-
-Lorenzo's GICv5 Linux software enablement guide [2] describes how to
-set up the GICv5 software stack. These changes have been tested on an
-Arm FVP 11.32 release [3].
-
-These changes are based on v7.4-rc1. The corresponding kvmtool patches
-have been posted separately [4]. I plan to post an updated kvmtool
-series shortly.
-
-These changes are also available as a branch at [5]. For reference, v1
-of this series can be found at [6].
-
-This series applies independently of the host GICv5 fixes [7], but
-concurrent use may encounter the host driver issues described there. A
-branch with both series is available at [8]. Both series need to be
-merged for the ITS support to be complete.
-
-The main changes since v1 are:
-
-* Rebased onto v7.4-rc1.
-
-* Reused upstream ITS model tracking, removing the separate has_its
-  state.
-
-* Sashiko flagged some races for GICv3 LPIs, which were caused by me
-  making the allocation common to both vITSes. Group 1 is set before
-  adding the LPI to the tracking XArray. The GICv3 ITS path performs
-  one initial lookup before allocating a new LPI.
-
-* Replaced the translation cache hash table with an XArray. This
-  avoids the locking/lockup issues raised by Sashiko. Furthermore, it
-  is no longer possible for a malicious guest to force all LPI
-  mappings into one hashtable bucket.
-
-* Tightened translation and MSI handling: enforce advertised DeviceID
-  and EventID limits, report invalid guest translations as blocked
-  MSIs, and allow software injection to proceed if caching fails.
-
-* Expanded ITS register handling and the userspace ABI: serialise
-  register access, support 32-bit accesses to 64-bit registers, and
-  validate restoration of IDR0-IDR2 and READ_EVENT_DATAR while keeping
-  them read-only to the guest.
-
-* Hardened direct injection teardown: track which translation owns
-  forwarding, synchronise host translation restoration, and retain the
-  IRQ association when a timeout requires a later retry.
-
-* Extended selftests for register access widths, read-only behaviour,
-  ID limits, malformed MSIs, and cache invalidation.
-
-Thanks for taking the time to look at these changes!
-
-Thanks,
-Sascha
-
-[1] https://support.arm.com/documentation/111701/latest
-[2] https://linaro.atlassian.net/wiki/x/CQAF-wY
-[3] https://support.arm.com/tools-and-software/fixed-virtual-platforms/arm-architecture-fvps
-[4] https://lore.kernel.org/all/20261016153939.913764-1-sascha.bischoff@arm.com
-[5] https://gitlab.arm.com/linux-arm/linux-sb/-/tree/gicv5_kvm_its_support_v2
-[6] https://lore.kernel.org/all/20261016155741.979985-1-sascha.bischoff@arm.com/
-[7] https://lore.kernel.org/all/20261102-host_gicv5_fixes-v1-0-743b61626fc5@arm.com/
-[8] https://gitlab.arm.com/linux-arm/linux-sb/-/tree/gicv5_kvm_its_support_v2_with_host_fixes
-
-Sascha Bischoff (16):
-  KVM: arm64: vgic: Split out common LPI allocation
-  KVM: arm64: vgic: Pass opaque device pointer to ITS MMIO callbacks
-  KVM: arm64: gic-v5: Share CoreSight ID register emulation
-  irqchip/gic-v5: Add ITS MMIO register definitions
-  KVM: arm64: gic-v5: Add ITS device skeleton
-  KVM: arm64: gic-v5: Add ITS MMIO state emulation
-  KVM: arm64: gic-v5: Add ITS guest table translation emulation
-  KVM: arm64: gic-v5: Add ITS translation cache maintenance
-  KVM: arm64: gic-v5: Add ITS MSI injection
-  KVM: arm64: gic-v5: Add ITS userspace register access
-  irqchip/gic-v5: Enable direct injection in ITS
-  KVM: arm64: vgic: Move direct MSI support helper to common MMIO code
-  KVM: arm64: gic-v5: Implement irq forwarding
-  KVM: selftests: Add VGICv5 ITS attribute tests
-  KVM: selftests: Add VGICv5 ITS translation cache tests
-  KVM: arm64: gic-v5: Document ITS userspace ABI
-
- .../virt/kvm/devices/arm-vgic-v5-its.rst      |  111 ++
- Documentation/virt/kvm/devices/index.rst      |    1 +
- arch/arm64/include/uapi/asm/kvm.h             |    2 +
- arch/arm64/kvm/Makefile                       |    1 +
- arch/arm64/kvm/arm.c                          |    6 +-
- arch/arm64/kvm/vgic/vgic-irqfd.c              |    8 +
- arch/arm64/kvm/vgic/vgic-irs-v5.c             |   75 +-
- arch/arm64/kvm/vgic/vgic-its-v5.c             | 1562 +++++++++++++++++
- arch/arm64/kvm/vgic/vgic-its.c                |  130 +-
- arch/arm64/kvm/vgic/vgic-kvm-device.c         |    4 +
- arch/arm64/kvm/vgic/vgic-mmio-v3.c            |   20 -
- arch/arm64/kvm/vgic/vgic-mmio.c               |   34 +
- arch/arm64/kvm/vgic/vgic-mmio.h               |    6 +-
- arch/arm64/kvm/vgic/vgic-v5.c                 |  182 ++
- arch/arm64/kvm/vgic/vgic.c                    |   99 ++
- arch/arm64/kvm/vgic/vgic.h                    |   20 +
- drivers/irqchip/irq-gic-v5-its.c              |  141 ++
- include/kvm/arm_vgic.h                        |  107 +-
- include/linux/irqchip/arm-gic-v5.h            |  136 +-
- include/uapi/linux/kvm.h                      |    2 +
- tools/include/uapi/linux/kvm.h                |    2 +
- tools/testing/selftests/kvm/arm64/vgic_v5.c   |  882 +++++++++-
- .../selftests/kvm/include/arm64/gic_v5.h      |   88 +
- 23 files changed, 3384 insertions(+), 235 deletions(-)
- create mode 100644 Documentation/virt/kvm/devices/arm-vgic-v5-its.rst
- create mode 100644 arch/arm64/kvm/vgic/vgic-its-v5.c
-
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 34c1c89bfbfe1..c6e069af7c614 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -386,10 +386,10 @@ static int its_sync_lpi_pending_table(struct kvm_vcpu *vcpu)
+ 	return ret;
+ }
+ 
+-static unsigned long vgic_mmio_read_its_typer(struct kvm *kvm,
+-					      struct vgic_its *its,
++static unsigned long vgic_mmio_read_its_typer(struct kvm *kvm, void *dev,
+ 					      gpa_t addr, unsigned int len)
+ {
++	struct vgic_its *its = dev;
+ 	const struct vgic_its_abi *abi = vgic_its_get_abi(its);
+ 	u64 reg = GITS_TYPER_PLPIS;
+ 
+@@ -408,10 +408,10 @@ static unsigned long vgic_mmio_read_its_typer(struct kvm *kvm,
+ 	return extract_bytes(reg, addr & 7, len);
+ }
+ 
+-static unsigned long vgic_mmio_read_its_iidr(struct kvm *kvm,
+-					     struct vgic_its *its,
++static unsigned long vgic_mmio_read_its_iidr(struct kvm *kvm, void *dev,
+ 					     gpa_t addr, unsigned int len)
+ {
++	struct vgic_its *its = dev;
+ 	u32 val;
+ 
+ 	val = (its->abi_rev << GITS_IIDR_REV_SHIFT) & GITS_IIDR_REV_MASK;
+@@ -419,11 +419,11 @@ static unsigned long vgic_mmio_read_its_iidr(struct kvm *kvm,
+ 	return val;
+ }
+ 
+-static int vgic_mmio_uaccess_write_its_iidr(struct kvm *kvm,
+-					    struct vgic_its *its,
++static int vgic_mmio_uaccess_write_its_iidr(struct kvm *kvm, void *dev,
+ 					    gpa_t addr, unsigned int len,
+ 					    unsigned long val)
+ {
++	struct vgic_its *its = dev;
+ 	u32 rev = GITS_IIDR_REV(val);
+ 
+ 	if (rev >= NR_ITS_ABIS)
+@@ -433,7 +433,7 @@ static int vgic_mmio_uaccess_write_its_iidr(struct kvm *kvm,
+ }
+ 
+ static unsigned long vgic_mmio_read_its_idregs(struct kvm *kvm,
+-					       struct vgic_its *its,
++					       void *dev,
+ 					       gpa_t addr, unsigned int len)
+ {
+ 	switch (addr & 0xffff) {
+@@ -1496,17 +1496,18 @@ static u64 vgic_sanitise_its_cbaser(u64 reg)
+ 	return reg;
+ }
+ 
+-static unsigned long vgic_mmio_read_its_cbaser(struct kvm *kvm,
+-					       struct vgic_its *its,
++static unsigned long vgic_mmio_read_its_cbaser(struct kvm *kvm, void *dev,
+ 					       gpa_t addr, unsigned int len)
+ {
++	struct vgic_its *its = dev;
+ 	return extract_bytes(its->cbaser, addr & 7, len);
+ }
+ 
+-static void vgic_mmio_write_its_cbaser(struct kvm *kvm, struct vgic_its *its,
++static void vgic_mmio_write_its_cbaser(struct kvm *kvm, void *dev,
+ 				       gpa_t addr, unsigned int len,
+ 				       unsigned long val)
+ {
++	struct vgic_its *its = dev;
+ 	/* When GITS_CTLR.Enable is 1, this register is RO. */
+ 	if (its->enabled)
+ 		return;
+@@ -1564,10 +1565,11 @@ static void vgic_its_process_commands(struct kvm *kvm, struct vgic_its *its)
+  * protects our ring buffer variables, so that there is only one user
+  * per ITS handling commands at a given time.
+  */
+-static void vgic_mmio_write_its_cwriter(struct kvm *kvm, struct vgic_its *its,
++static void vgic_mmio_write_its_cwriter(struct kvm *kvm, void *dev,
+ 					gpa_t addr, unsigned int len,
+ 					unsigned long val)
+ {
++	struct vgic_its *its = dev;
+ 	u64 reg;
+ 
+ 	if (!its)
+@@ -1588,25 +1590,25 @@ static void vgic_mmio_write_its_cwriter(struct kvm *kvm, struct vgic_its *its,
+ 	mutex_unlock(&its->cmd_lock);
+ }
+ 
+-static unsigned long vgic_mmio_read_its_cwriter(struct kvm *kvm,
+-						struct vgic_its *its,
++static unsigned long vgic_mmio_read_its_cwriter(struct kvm *kvm, void *dev,
+ 						gpa_t addr, unsigned int len)
+ {
++	struct vgic_its *its = dev;
+ 	return extract_bytes(its->cwriter, addr & 0x7, len);
+ }
+ 
+-static unsigned long vgic_mmio_read_its_creadr(struct kvm *kvm,
+-					       struct vgic_its *its,
++static unsigned long vgic_mmio_read_its_creadr(struct kvm *kvm, void *dev,
+ 					       gpa_t addr, unsigned int len)
+ {
++	struct vgic_its *its = dev;
+ 	return extract_bytes(its->creadr, addr & 0x7, len);
+ }
+ 
+-static int vgic_mmio_uaccess_write_its_creadr(struct kvm *kvm,
+-					      struct vgic_its *its,
++static int vgic_mmio_uaccess_write_its_creadr(struct kvm *kvm, void *dev,
+ 					      gpa_t addr, unsigned int len,
+ 					      unsigned long val)
+ {
++	struct vgic_its *its = dev;
+ 	u32 cmd_offset;
+ 	int ret = 0;
+ 
+@@ -1630,10 +1632,10 @@ static int vgic_mmio_uaccess_write_its_creadr(struct kvm *kvm,
+ }
+ 
+ #define BASER_INDEX(addr) (((addr) / sizeof(u64)) & 0x7)
+-static unsigned long vgic_mmio_read_its_baser(struct kvm *kvm,
+-					      struct vgic_its *its,
++static unsigned long vgic_mmio_read_its_baser(struct kvm *kvm, void *dev,
+ 					      gpa_t addr, unsigned int len)
+ {
++	struct vgic_its *its = dev;
+ 	u64 reg;
+ 
+ 	switch (BASER_INDEX(addr)) {
+@@ -1652,11 +1654,11 @@ static unsigned long vgic_mmio_read_its_baser(struct kvm *kvm,
+ }
+ 
+ #define GITS_BASER_RO_MASK	(GENMASK_ULL(52, 48) | GENMASK_ULL(58, 56))
+-static void vgic_mmio_write_its_baser(struct kvm *kvm,
+-				      struct vgic_its *its,
++static void vgic_mmio_write_its_baser(struct kvm *kvm, void *dev,
+ 				      gpa_t addr, unsigned int len,
+ 				      unsigned long val)
+ {
++	struct vgic_its *its = dev;
+ 	const struct vgic_its_abi *abi = vgic_its_get_abi(its);
+ 	u64 old, entry_size, table_type;
+ 	u64 reg, *regptr, clearbits = 0;
+@@ -1711,10 +1713,10 @@ static void vgic_mmio_write_its_baser(struct kvm *kvm,
+ 	}
+ }
+ 
+-static unsigned long vgic_mmio_read_its_ctlr(struct kvm *vcpu,
+-					     struct vgic_its *its,
++static unsigned long vgic_mmio_read_its_ctlr(struct kvm *vcpu, void *dev,
+ 					     gpa_t addr, unsigned int len)
+ {
++	struct vgic_its *its = dev;
+ 	u32 reg = 0;
+ 
+ 	mutex_lock(&its->cmd_lock);
+@@ -1727,10 +1729,11 @@ static unsigned long vgic_mmio_read_its_ctlr(struct kvm *vcpu,
+ 	return reg;
+ }
+ 
+-static void vgic_mmio_write_its_ctlr(struct kvm *kvm, struct vgic_its *its,
++static void vgic_mmio_write_its_ctlr(struct kvm *kvm, void *dev,
+ 				     gpa_t addr, unsigned int len,
+ 				     unsigned long val)
+ {
++	struct vgic_its *its = dev;
+ 	mutex_lock(&its->cmd_lock);
+ 
+ 	/*
+@@ -1776,8 +1779,8 @@ static void vgic_mmio_write_its_ctlr(struct kvm *kvm, struct vgic_its *its,
+ 	.uaccess_its_write = uwr,				\
+ }
+ 
+-static void its_mmio_write_wi(struct kvm *kvm, struct vgic_its *its,
+-			      gpa_t addr, unsigned int len, unsigned long val)
++static void its_mmio_write_wi(struct kvm *kvm, void *dev, gpa_t addr,
++			      unsigned int len, unsigned long val)
+ {
+ 	/* Ignore */
+ }
+diff --git a/arch/arm64/kvm/vgic/vgic-mmio.h b/arch/arm64/kvm/vgic/vgic-mmio.h
+index 38ed730d68ac3..c3b6d3e752d8d 100644
+--- a/arch/arm64/kvm/vgic/vgic-mmio.h
++++ b/arch/arm64/kvm/vgic/vgic-mmio.h
+@@ -13,13 +13,13 @@ struct vgic_register_region {
+ 	union {
+ 		unsigned long (*read)(struct kvm_vcpu *vcpu, gpa_t addr,
+ 				      unsigned int len);
+-		unsigned long (*its_read)(struct kvm *kvm, struct vgic_its *its,
++		unsigned long (*its_read)(struct kvm *kvm, void *dev,
+ 					  gpa_t addr, unsigned int len);
+ 	};
+ 	union {
+ 		void (*write)(struct kvm_vcpu *vcpu, gpa_t addr,
+ 			      unsigned int len, unsigned long val);
+-		void (*its_write)(struct kvm *kvm, struct vgic_its *its,
++		void (*its_write)(struct kvm *kvm, void *dev,
+ 				  gpa_t addr, unsigned int len,
+ 				  unsigned long val);
+ 	};
+@@ -28,7 +28,7 @@ struct vgic_register_region {
+ 	union {
+ 		int (*uaccess_write)(struct kvm_vcpu *vcpu, gpa_t addr,
+ 				     unsigned int len, unsigned long val);
+-		int (*uaccess_its_write)(struct kvm *kvm, struct vgic_its *its,
++		int (*uaccess_its_write)(struct kvm *kvm, void *dev,
+ 					 gpa_t addr, unsigned int len,
+ 					 unsigned long val);
+ 	};
 -- 
 2.34.1
 
