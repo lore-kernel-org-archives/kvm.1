@@ -1,100 +1,127 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793644372;
-	b=329GdOWiA5C1oFU3zMJTr5QcMN47uaNhTNpmD33S8SbrgOcJDJSFtSXTSHzesiv0askX
-	 K8gOuKVvNpkh03DseTnL9PkdY3fQztrI6tb6g/jkeqoo0YIwU3oMHERHtEYgoN/6IMdbO
-	 IYy2d8dlMw8NbLnigT/Ld28ZzHqv8JwdD2AxL4xsC2yFgETPJvOz9F8Yg85FJBRn05/G4
-	 kB1ekvJHXDcLh9hhVXz1aMg34CJyLDE29wzhrt42w+jR/lzQQjs08M92a2ViOGXacx4YZ
-	 4Q53IcEHKliTwKfp1aAx6l3YWojY4HCeqleyRwLnQF3gK9jexLdc5alFQK49BUem2XQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793644372;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=YB3c0VJ2rpFd4tVqUs/wI8HYHytn5yPy0WZ3W2zVxqk=;
-	b=cm3vg+tGzRzunbvcnpSirHodiRtUAAQpu9j7c5Uk928kyjn0CYim853KYUmO7njr59hR
-	 AeQ66Lnwr041H4SZuJPxzDXNEmS6CRHzh3yqEb1I0Xz5TG+HAozzQVztNrW8Oit9YxC4W
-	 mho/OPECDAkntZTwD/VCTIbfyLoXn2uxkXLLNXzmzPo9tJIug7HNWNR/C0FNN2OQWJmF/
-	 C0HfqB1Yn8IJGJaVgOygtentHwwsJhKvogvfABccgf/eYfv3Nt4qkdFMING1kGT8oXhh1
-	 KGNKf1dxCkURSzDts2uK6Oyose2QUv//aioVKa8Vyn7HEVQidi/+IMJ33aPMPzli1ww==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Wjptjc4z;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.156
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793644773;
+	b=Fj9ugy745qky6pTQYLEj3TXqnhjzJmfiAwlNQYtMy4eTgeIIQGhSJDwPH0cbPGX+l6og
+	 JN6mehAiTq2tNxqdzFNupiY4xNH8cKXEbtOohZc9oEabHR1DnXADjK439qjtimb1RbyFc
+	 JnQIn8QCRP8mdtHMzxtzxM5pwsD/SG889M2thInMo4JcDM3qBJELBndwM5UqMn5ufZjOM
+	 2PF4pKxZO2uvWQ3jRaX6npllvmih1+h7O2APKY4rgiURBNPghZRLP7AViHLkrVf+prNVC
+	 1DTQyNCVnZ3fFb77MtjMhN92eLOHbwgBGjYLg5aCVY9dZ8Ke59Tf/qOzF5HCWwGKXPA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793644773;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=PeaNE7dalZwV45zaReGeYmf1fDt50itIMVJ+XKn3L28=;
+	b=zzaJcfGjcII/GGv3t4U6pLJcghWr7bIAo+Z/ST2FxRnW9N80vXTIwhukZuwLOHAScF4m
+	 NjCYB1gpIkD+wE3EWGpyPt9iY89wGhtHYiB1eo/GrhzxJREDyJ/+YmCsqTPuX5O8+15mq
+	 pKZ1lCNNDvPAkQahv9xLR2/Ehhhr4lk9SyNvqa1iKd0M8diS2U9ljwHz07ZqDfhf1sBFF
+	 wuJW/uN/rghQYbSaPu7gvb/z/4x7sMNJfqr1N4sLcY5/qGYK1xmC8pHzBJl5ujUpO4joB
+	 BrXGQe2Q7KoWOMDCj4Gzcrl2A06V3ab/ZyxLMC+Pw477vpsP0ondOLGha5CGjUYv4zg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=OHabTl7l;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qoDzDGIY;
+	arc=none smtp.remote-ip=202.12.124.156
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DA8606A326
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:32:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68DA8606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618E0606A329
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:39:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 618E0606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Wjptjc4z
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso44a12.0
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 10:32:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793644371; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kgc7T3ZHfXkOqfixl2wm88HIGbe2Me/sTag27sVjvy5GT/RFpHwWZJQyELnsLVIydI
-         p3GPvJOtykQA7SLw/U8XkGZp2kSRthcAnKeiE3eRfhvk3GafHhojj46DCUOJG72UvMDg
-         glJOb1TluAVgdHVhYPtwHb6uFjVFnLKyKgLik4OcpmPXubNVUpkckh2mKZ0W0b8vBn1a
-         2vw/YW2mmXyy/9ujLNUJ6c7nPZ2SkGPXDRzhm3QSzFOlspGRJg6Q0VgIaeSZvX7TMh23
-         1QiWp+gM6sfuzFZokba2oAI7t8LoJDExwbpdCOtCMVEvHV6e1hBr8tFPt8DDveBlCLVd
-         Bzhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YB3c0VJ2rpFd4tVqUs/wI8HYHytn5yPy0WZ3W2zVxqk=;
-        fh=0CYiuMkGwcgjzmNwchTZMcjOfHFNkaEADA22QIHcU8k=;
-        b=HtQIKm2hONkY4POBhjcVuwnxUUZBbE9JrIGRwFIAGrECa3oSBZ8KSZTMhB3XyGxiKK
-         GBwpG+MeoHJAIiex7nKVVw8AJ/xQuZV8WoO4IN60/aq103Dlk1YRHfH3zanRAiZjz7DZ
-         5jis1ZfTYbmfNPAqhfNo+JMULN/B29qfzTG4telTXaRF4dhqBH9fiUVNJqEhWasjWYby
-         apNHQp/T4XmG73mj9lOLO7ELNETJ64c3vT/3plkE/0oqmIuw83e5uSRWD7QiIrEqYpC+
-         nK4WjffdqvnMYihUR480a/ISuGkVn0iIs8YvFnd3mVcf54EEpAwSgHLxpzWIUNo8Xo6F
-         vcSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793644371; x=1794249171; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YB3c0VJ2rpFd4tVqUs/wI8HYHytn5yPy0WZ3W2zVxqk=;
-        b=Wjptjc4zJZSx2STlK1NxCVRYDtRciqfYpzSJqPY1hypYzaOZRsWxmF8Wh8zT0UiypU
-         slhcjtoaPPnaXkg6jwnRWi50ip4LreVUYPMYbcTT4bnhnT2AwhQ2/EbH4JI7JW9denj+
-         AFBbcqwrQjhZwdrcuyqrfn/QdUwKCNqV147jCWsnM20K3h19yoEPoAnb5da4blLg8jqd
-         gOWAUDcCvCmFi8CwpBe0KQ865xVXSHrsx2XTRIHcqIIaO24zeyiQOYFF/0lRcB+d3u3j
-         ipJZP3jvalHJM9IJvvozebnsJbpFL4PV9WZP8SBBLaDTgiZheO/5oPRjCOtLfPBsxqAF
-         4H7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793644371; x=1794249171;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YB3c0VJ2rpFd4tVqUs/wI8HYHytn5yPy0WZ3W2zVxqk=;
-        b=w24yVhZjv/n7x1qVxQlKW0kjwhoNMZLmDDzpEAev4aqt+lApOruzWiCa2VY8kvxJcS
-         h0upUe6jzXY8tYjOvbCRNeWljI8+RyYjIEyjvvaWajc/pzz9+toZPphNlyJCypVmY9Fw
-         9R28LfM1kLcsOVb6lBL/5hfbdrnQUxhqrTiYUyVnler+IKM0vIrcTK3Z93j2rcUlDsxs
-         gFrTVkqbYRR6bPge78i2mMGYfqceN0b1VspatQVv8xaz5x3blrigSoRfDxtf4KINH6g3
-         Q4OFUrc3IoGiCmPJdpBHheF8sPmkOtCdMtE61KdgG/iJ+dZrOuq6bgNOHXY17k6xyS6k
-         t6Sw==
-X-Forwarded-Encrypted: i=1; AKwUvBxYQVI3/Zz6pbTTBSgdqBj7ZzelSYI6gdk0ybwHZ42rBpY3gmsbm5HOah/Za6d0uFiQz40=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8G0bWxTImdDDYG0mNPIHGbibCRCZ1jUv9QdmFmQr3oNU5eTgSN
-	l8hT+R7OyvbNzSbnAbuYfQjWjrFbzyYXYttZq+D9n3SSiymNYSrkrTKQkIhlQhqMY3fHLdN3JWv
-	Fn4jwCtFMgUS2HhOVd4pgr2mEPuNw2MgDfB1s1ltk
-X-Gm-Gg: AYBFou0HDOXuq9/kpXZ2AMns1GRstQtDo47BxDD81UPzh4pq8pXieeOrr2HJOnTr4rK
-	10FbTYqEctPM2sEBbN88chqpLyTA9AbeCh/n8S5LFFRAKgeZUKolTHGMbMxjbVFsqR8KySP1+8x
-	adO28jUwj8Appvc6ct6YMuvpsGoJZva2ru8GfF4uJs60efpH+mX5HePIesY9A41cNNgmUBw9Txd
-	iVey+cQAw5PPKpsgQB4coIz2IU14DX9Yxq7+QKxs7giUx11wr/oiTWHoTePY5G16m0/Hv9QRcZN
-	+ZUcnGfGwVdLthpCzvR9osOMCKLz9wzn+VYVikCEZrg434rn2F43LSK6QWuKIIs8gUv0fd0r0th
-	E2yH9SSDDkpWW8UWPdm7etP2U0EiJ+ms3YjNC
-X-Received: by 2002:a05:6402:460e:20b0:6b1:aa31:a627 with SMTP id
- 4fb4d7f45d1cf-6b4b10df53amr314955a12.4.1793644370270; Mon, 02 Nov 2026
- 10:32:50 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=OHabTl7l;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qoDzDGIY
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A2AF87A00CC
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 13:39:31 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 02 Nov 2026 13:39:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793644770;
+	 x=1793731170; bh=PeaNE7dalZwV45zaReGeYmf1fDt50itIMVJ+XKn3L28=; b=
+	OHabTl7l+viCbt0xnKbWjHRYOp9fqLBvx01Ncz7r0plvc+DQ6XbooW1G14AzTGtj
+	3+FD6jIqolqFwJD6m1xAK6O1ncVZjCtSOgyvyvgZeMVz25OLtdnEMZjdFvyxpsPL
+	EIKjwe1oukO9BCs3ozOxAjWK4xbUN6sEnckOWigxgh5RA/53l70kLPurAFZPuVL7
+	lCkgGIU4zijvKYUQCmNfyrnIGe7Zqjt1HGZRMsL6n0lYe+frjP5shHrAm6Y3GetV
+	t/59MqwQJlghYjwmcT0qddwVy40bq2yY4tx+6Dsozh1C6xjk3umGXPHfgaV2L8ZD
+	y1CSgaygG0STLQCQKkh3IQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793644770; x=
+	1793731170; bh=PeaNE7dalZwV45zaReGeYmf1fDt50itIMVJ+XKn3L28=; b=q
+	oDzDGIY8iT/DzXfWJ01ViDQqoe/9TlstXBRx2KOisUcIbG7x5dRWNDrugMweHfIs
+	oz6PK8yLnEAa8e2GgxBR1Gmmsv+qZKD1FQKv3h8Wu7yFvjqprYhAd2s1T43+8ALr
+	/wIholWrnkjKgKVtSW7BOIjXPbWMOZKSZohWImrQDrwhbYNFfRvLeaaGIhxOwebZ
+	z9M+VByPVzzVgpOAyP35DZ7Z2rcrtAJ146JEhtIlJFh4nz26N3PhXlXUYbs0tBY+
+	hi9XZgIb8cFxoWvoLZwf9fmBGuZH7iQXOYymDsoef/ooDKMrn08n14swVNR5NV+f
+	rPN3o4hnkaWXanNAIfQAQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793644770; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:gmqT/hqFpjBt8syStl6a2O3O00M2KEbAyzt1zC48bJQwokU
+	huMHiBLwp2fp/4aurTkL+9/H69uBdkCqNTf6dxvAfUZhLULo+iNtrzvoxxOEyvr5
+	m1pIfDLTOwn9/sVo3Gkppdjim/6ElmSn6rmBhJqdNNaV8J/qYPhrbt+4Tdc8OnSk
+	k3ipT3uYdbo3cBohhOQ77L6dLYvtpg/4A/k1s2H4rawJF8GZMc3kq2LD1aP9WSP8
+	eKPNl2Vgfxilcgq+7zTc+hHLcrWPVGKYv0vCyyLkYyoRpJXcnqMu4x8yIgFEq8XJ
+	NtqluzWYTsx0wD8cO5u4V/ywDVXtFCpoUiUJF0w==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:Fp2eSHsfZ1U36xYwtr7TUfbdq1XH0H8D0Sny0UeoCPA=:x7kQmzhCXKWd5h3q6Q0WiLpfxi+SiRly4NhaLANohPw=;
+X-ME-Sender: <xms:4tjoatFx3m_WF4kZHh_fNtu6TfPtp7WtjI1vi6R5ZytBGwSwSeqdpw>
+    <xme:4tjoaviS3LxaEeprsq-CcUaF_EutNSM0TkM7yHIDcRoa2bZR14WtxQ2agzLTgrhmf
+    2FH5bDtE-Ny3f9GWgI6aZp3_USt0_3H1F3OJXR_x7_3ujIBJsWXCJKz>
+X-ME-Received: <xmr:4tjoajrcTBpTxBpGl4xbYV5xzxjbNnSnQtjWUD6sPObGFDnkWdzw0wIaFuDqig>
+X-ME-Proxy-Cause: dmFkZTGJBkKxJZJvDgvB9LxD8g6UoLB0N8oShSmK73J69dm5gDlx+vLtLfqQOEaAYkL8aH
+    6+6Aq8uMp4Cu4dkR7iPVYfuOMMAUtnqsoN/78CaROPLdOUxJQFAqbk/y54ZSo7H5Wo1ngN
+    TX4H4na2S3nfdVrVyFW44vzULM3GH8bNEC+BpRLVEGToyCRkuVnkCHO5RxKCxd2YDjodBv
+    IgEr60QqAnX/Ufv/ebmmgUdN8leSNNXBCXEotS2o4VRO/JxjltRwUEtaFqV8gueG9R/nrB
+    Pf1AkYvtZywbiwEZXwJdwO5NkkAngzZC67zRSJ9nnk/bRg+zFSbKXvlA0E9InSTmcbyeAd
+    0ur2YYA4s5C9khY7Rb7cGia7H3365CtUkRTf2eDfEAmUqKnA1sYcdVAe4E/9xM5ALmyGJ0
+    hzbubFZpN7xxaGoLAGcrWJY/CrYbAqe7ORrvAIVwDS9OuzFinuv1qwZ5fodcXd6NRx6n4E
+    pGOPCqCXoUhbv6rpyJEldx+GM0ioe5nHWvZNZa3dD64hkJlYeGldRsYuPSbz4eHNgtkvpY
+    7rb5czCyt9TdjzJWDx6EvLu7jYfRkIhNjWR9WwYQA2O46jvQBa5EoNbjT5Bj/t1i4H1+U0
+    57weZuvKSrza6xNGisFErBiFggM/4Zf2u8T8uUyzNt+VALEB4CG5mIRgNGWA
+X-ME-Proxy: <xmx:4tjoavTn1qcWVULxj1spTrnUjFcY9RY1qXPeaJKlCVhqqkLgV9qB7A>
+    <xmx:4tjoakTgl16KHnMGc_D4x11opFdHIvbcsf743V8KO9Q1pnsJNnSY8A>
+    <xmx:4tjoatU76TbOr8DdfBhneaTActkH6PQr8SNYVSkR8lJYRiDngJEJog>
+    <xmx:4tjoah10ZpkHu1gU19ucHFEPXip5yBD2McgkpSIHSf9JO70Q7Ip4dA>
+    <xmx:4tjoagZlSQ2D6iIMOobjOPoR3rC2ay3ZNnB5TPKn-Abr_9zDiznn9EJZ>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Nov 2026 13:39:29 -0500 (EST)
+Date: Mon, 2 Nov 2026 11:39:26 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Omar Elghoul <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, hca@linux.ibm.com,
+ gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+ farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
+ frankja@linux.ibm.com, imbrenda@linux.ibm.com, alex@shazbot.org
+Subject: Re: [PATCH v11 5/5] vfio-pci/zdev: Add VFIO FMB device features
+Message-ID: <20261102113926.19518a8e@shazbot.org>
+In-Reply-To: <689e23a6-dcbf-4fee-bdcf-13d333db2e85-agordeev@linux.ibm.com>
+References: <20261028154352.15108-1-oelghoul@linux.ibm.com>
+	<20261028154352.15108-6-oelghoul@linux.ibm.com>
+	<20261030161146.5af10847@shazbot.org>
+	<689e23a6-dcbf-4fee-bdcf-13d333db2e85-agordeev@linux.ibm.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,110 +131,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260827223755.143247-1-zide.chen@intel.com> <20260827223755.143247-12-zide.chen@intel.com>
- <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
- <auUQgRVFASkWtkoK@google.com> <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
-In-Reply-To: <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 2 Nov 2026 10:32:38 -0800
-X-Gm-Features: AclHuK-Bo4Ydf5I9_TcA3ok2eQLscUvZDzf1qXDouSZiHdDa6pavu3yPyZGjv9E
-Message-ID: <CALMp9eTiAMLsH7cO9Mc982WwDTAFcYOua+32Ykpj3gR_Oscfww@mail.gmail.com>
-Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
- GLOBAL_INUSE MSRs
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 2, 2026 at 9:38=E2=80=AFAM Chen, Zide <zide.chen@intel.com> wro=
-te:
->
->
->
-> On 10/30/2026 5:13 PM, Yosry Ahmed wrote:
-> >>> @@ -865,6 +867,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct=
- msr_data *msr_info)
-> >>>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-> >>>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
-> >>>         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
-> >>> +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> >>>                 msr_info->data =3D 0;
-> >>>                 break;
-> >>>         default:
-> >>> @@ -931,6 +934,12 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struc=
-t msr_data *msr_info)
-> >>>                 if (!msr_info->host_initiated)
-> >>>                         pmu->global_status &=3D ~data;
-> >>>                 break;
-> >>> +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> >>> +               if (data & pmu->global_status_rsvd)
-> >>> +                       return 1;
-> >>> +               if (!msr_info->host_initiated)
-> >>> +                       pmu->global_status |=3D data;
-> >>> +               break;
-> >>
-> >> According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"),
-> >> IA32_PERF_GLOBAL_STATUS.CondChgd[bit 63] cannot be set by writing to
-> >> IA32_PERF_GLOBAL_STATUS_SET, because IA32_PERF_GLOBAL_STATUS_SET[bit 6=
-3] is
-> >> reserved.  In other words, it is not possible to save/restore
-> >> IA32_PERF_GLOBAL_STATUS when bit 63 is set.
-> >>
-> >> Because bit 63 is clear in pmu->global_status_rsvd:
-> >>
-> >> 1. An intercepted guest WRMSR(MSR_CORE_PERF_GLOBAL_STATUS_SET, BIT_ULL=
-(63))
-> >>    succeeds instead of injecting #GP(0) and sets bit 63 in
-> >>    pmu->global_status.
-> >> 2. When bit 63 is set in pmu->global_status (whether it was set by
-> >>    kvm_pmu_set_msr() or by intel_mediated_pmu_put()), the next
-> >>    intel_mediated_pmu_load() will try to write an illegal value to
-> >>    MSR_CORE_PERF_GLOBAL_STATUS_SET. I don't think we get a #GP, becaus=
-e
-> >>    every wrmsr is "safe" these days, but the write will be ignored.
-> >
-> > On SPR, it does produce a #GP that gets ignored (and logged) and the bi=
-t
-> > is not set.  Interestingly, on CLX, the write goes through and the bit
-> > is set. Didn't check other CPUs.
->
-> Good catch! I tested a few more CPUs (DMR/CWF/SRF/GNR/NVL/LNL), and all
-> of them #GP on writes that set bit 63.
->
-> However, SKX, CLX, and ICX accept writes with bit 63 set and do not
-> generate #GP. On those systems, bit 63 also becomes visible when reading
-> back GLOBAL_STATUS. This behavior is documented in their errata:
->
-> SKX95/CLX89/ICX166. Bit 63 of IA32_PERF_GLOBAL_STATUS_SET MSR (391H) is
-> reserved. Due to this erratum, setting the bit will not result in #GP.
->
-> SKX:
-> https://cdrdv2-public.intel.com/336065/336065_Intel%20Xeon%20Processor%20=
-Scalable%20Family%20Public%20Specification%20Update_rev17.pdf
->
-> CLX:
-> https://cdrdv2-public.intel.com/338848/338848_2nd%20Gen%20Intel%C2%AE%20X=
-eon%C2%AE%20Scalable%20Processors%20Specification%20Update_Rev028US.pdf
->
-> ICX:
-> https://cdrdv2-public.intel.com/637780/637780_3rd_Gen_Xeon_Scalable_Spec_=
-Update_026US.pdf
->
-> Given that SKX95/CLX89/ICX166 document this behavior as an erratum,
-> while SPR and newer CPUs appear to follow the SDM and #GP, should KVM
-> continue to inject #GP for writes that set bit 63?
+On Mon, 2 Nov 2026 11:12:57 +0100
+Alexander Gordeev <agordeev@linux.ibm.com> wrote:
 
-Ugh. It seems like we have two options, neither of them all that appealing.
+> On Fri, Oct 30, 2026 at 04:11:46PM -0600, Alex Williamson wrote:
+> > >  drivers/vfio/pci/vfio_pci_core.c |  4 ++
+> > >  drivers/vfio/pci/vfio_pci_priv.h | 18 +++++++++
+> > >  drivers/vfio/pci/vfio_pci_zdev.c | 64 ++++++++++++++++++++++++++++++++
+> > >  include/uapi/linux/vfio.h        | 30 +++++++++++++++
+> > >  4 files changed, 116 insertions(+)  
+> > 
+> > I think the only thing we never closed on from the vfio side is the
+> > merge plan.  If this goes in via s390 I'd want a topic branch against
+> > rc1 since there are a couple series floating around contesting for the
+> > same feature numbers.  Thanks,  
+> 
+> Hi Alex,
+> 
+> Yes, I can create the branch once all patches are reviewed.
 
-1. KVM fixes the errata and raises #GP. To ensure consistency, KVM
-always intercepts the MSR on affected CPUs.
-2. KVM mimics the errata and allows writes to bit 63 when virtualizing
-affected CPUs. This allows the MSR to be passed through, unless an
-unaffected CPU masquerades as an affected one.
+Great, thanks.  I'll try not to step on these feature numbers in the
+meantime.
 
-Sean? WDYT?
+Acked-by: Alex Williamson <alex@shazbot.org>
