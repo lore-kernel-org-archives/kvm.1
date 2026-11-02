@@ -1,52 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793602293;
-	b=4kRd71Y3ut3ZGFAxxTfPop+py9fTUNj/O3xuLFBK5LdG01uGjFbis3nRIwLsCRymwlUk
-	 EXp5M2U24tmkeetEY2z0hrHGqMhjKcv0ajDOlwCfMwpDiFsIEwbGdXmgIZkhCVpsneOww
-	 pLpmXPrhgPEaj6nYfSpQfEAi9TVdbrk9NPN5upIKQMR5+voekChG8Y5nlIhdvY+gIwya3
-	 E7q9WxFH0/GQBEQnwqf6E7WTTPIqvt46jsAXVqLBUYYsSzktPSDTaDgNuauB4HhVZcMFl
-	 J7iBhgb65/GM7fzwcENsbrh6pFldS1dNiKq2WoO0tcv0sNqMIJF55bRIgZgr9Ib7DKg==
+	t=1793602304;
+	b=Zt2YD5Qd811rtzZM+88WN1+Hs6GiM9zAah6lbIp96nfP17H/oaIMbXEYiHbkb+PLgHGC
+	 E0gF6svQGJZuYx0PZfdjgXt+aDObVysWlKDA53AN6KFTqquNXQt8C3wrTevPbenupqFkC
+	 x17uH5imY80xLIsm/LPNJjOpU+iJSDiB9R1N51qyG/iN7MghoaILmZ37nmz+Qxwn2wxTw
+	 CMG+k0OEq4zCWnRnC2OfbsfLAnyGfNyOuTY17hV+H9/kboKWy27DL120zflOrnbtS1hNk
+	 uvSLNJ4vv8RZczD0eeonjmI4OTU9TR2cnRqI4v5POg5HYv03W6JOysV24ZXj/EYjqnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793602293;
-	h=DMARC-Filter:Received:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:Content-Transfer-Encoding:User-Agent:
-	 MIME-Version:X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:
-	 X-CM-SenderInfo;
-	bh=ZZevhdRaCUZLV5SuEqAfvFvDHw+5jeMC9GpYafkUYlY=;
-	b=AkX+XvlYOx0pwMbVfo4Ct8W+HiiEwozgAPRZrB+cwEUa8smMHe9/Q/MaJm8tcFo6U2Us
-	 he9et4NI2dKPMe1NJ6LnKG5w1wvuJnEhREBGPXumGSmK8c+2XGZkWCudUC+kG+fCiasbR
-	 ktVAkf07+BzB1KLB0nK/bK8oupH3Q3yyP1rcG77EWtI9LCmUKPZPuw7zFUhQvrZ6tawRG
-	 +mtg70PlWs4gO2YqqzhAtZWuMrsiCQ0jy+DdGJMgVstX5B3sqpYiuFjojNfrw5W43wnPM
-	 cXhI7M6BkbPccuMzSZXqb4xnD7UB1ldTXmSkWJJ1XY/BtzuUcNbt+wn4wn1oBibZB7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793602304;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=FR3UiyaSHlkxp6xWAqbVQ4BBB6v1t+2E2Jo22ZIjrS4=;
+	b=AV6iAM5qeMYwmHLEs69TbSqnWDOpS2zj+Vp81hGcCne9RyEzkFRmKVqajUf10QCCu4BH
+	 Jfj5DB4kGtTcscutf4OL0R63vcuiR+gD/JYixvC9P7p3y0D7HP+T7e9Km7ircKOW4Dmku
+	 lgorH7TWj3SgbrMgmmrSbTi7OWErq+SMUGNG3BAFq3hxKYxode3byUc1ABBt5+SSFVA5x
+	 uP0T2NYu0aDQiaswt/nQYNUOEk58Y0tXGhwWRk6BqfEPhGyA5oQzP0jvtO5HhPjSUqKAG
+	 gs4xBDb0GFQtxfiQenvVgUBTdyc+A1ZnC7oKQUwFa8oWz3Ry4Cfg8mYtrsV9aN9xV4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nVOks+dI;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA6D606A324
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 06:51:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CA6D606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [127.0.0.1] (unknown [122.194.100.204])
-	by APP-03 (Coremail) with SMTP id rQCowAA3R5jkMuhqxeIsAA--.45599S2;
-	Mon, 02 Nov 2026 14:51:16 +0800 (CST)
-Message-ID: <27862416b42dd8c13a0266700d361edcd97910e1.camel@iscas.ac.cn>
-Subject: Re: [kvm-unit-tests PATCH 0/7] riscv: ACPI boot and BRS-I SBI tests
-From: Xiang W <wangxiang@iscas.ac.cn>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, pbonzini@redhat.com,
- 	thuth@redhat.com, sunilvl@oss.qualcomm.com, tech-brs@lists.riscv.org
-Date: Mon, 02 Nov 2026 14:51:16 +0800
-In-Reply-To: <syzvrpkpdg5gjo4q6fgeypshwc33vzlzy3r6bvu5pqwm5iogl6@gewf5shwul3k>
-References: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
-	 <syzvrpkpdg5gjo4q6fgeypshwc33vzlzy3r6bvu5pqwm5iogl6@gewf5shwul3k>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5880606A324;
+	Mon,  2 Nov 2026 06:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nVOks+dI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075E91F000C1;
+	Mon,  2 Nov 2026 06:51:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793602303;
+	bh=FR3UiyaSHlkxp6xWAqbVQ4BBB6v1t+2E2Jo22ZIjrS4=;
+	h=From:To:Cc:Subject:Date;
+	b=nVOks+dIwgWZK+5TVKuV1WwNZ85TghKB2OlvPfYUMolT1hAosO31QRcmEOKS/VkrO
+	 5ODqJUYgQQDfhCu2pblvmTccR6sZwJcjlRZWczTlzjAXJuGZqlbQcv8yNudtn6r94i
+	 D9F6cyMhB31VCuGRBfnZjk2iWMq862ptJnVJh/TOHG16mIl2Buqr1+VW1uvhnR/q66
+	 XwH7Yz26DVFU7xkrkEqEn3C7PMVTjbbphKRrfIbkyuZst8wsgU9oQQFyKNQzwPwWbB
+	 7TzLkLwWUwnOaPvoBMJVrg6joMLmzJMyhfHfVniYI7JcoH7d0KlKXNvCYd6cGIpI27
+	 jFIzFTMPv9kQA==
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+To: dave.hansen@linux.intel.com
+Cc: x86@kernel.org,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: [PATCH v3] x86/virt/tdx: Do not print error message on non-present feature
+Date: Mon,  2 Nov 2026 07:51:38 +0100
+Message-ID: <27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -56,91 +69,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-CM-TRANSID:rQCowAA3R5jkMuhqxeIsAA--.45599S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw1kKryrZr18Zw43uFyDJrb_yoW8uF18pa
-	y8Ga1jkws3JF18Zws29w47ur1xuws5Ar43J3WrJ3y7Wrs0vF1IyrZ2qw4q9r4UWr4kW3yq
-	v3ZIvFsYg3WUZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1lc2xS
-	Y4AK67AK6r47MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWU
-	twCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUyw
-	ZcUUUUU
-X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
+Content-Transfer-Encoding: 8bit
 
-=E5=9C=A8 2026-09-30=E4=B8=89=E7=9A=84 13:22 +0200=EF=BC=8CAndrew Jones=E5=
-=86=99=E9=81=93=EF=BC=9A
->=20
-> Thanks for this series, Xiang. I'm glad to see kvm-unit-tests getting
-> used. But please make sure you work with the RVI BRS community to ensure
-> your work is aligned with their plans.
->=20
-> Thanks,
-> drew
->=20
-Hi Drew,
+Before commit 165e77353831 below, the kernel did not print anything
+during boot if X86_FEATURE_TDX_HOST_PLATFORM was not present, unless TDX
+enablement was explicitly requested via a module parameter.
 
-Thanks for the review.
+After the commit, when attempting to load TDX automatically, this is
+emitted to the log:
+  virt/tdx: TDX not supported by the host platform
 
-As requested, I have reached out to the RVI BRS community (tech-brs@lists.r=
-iscv.org) to align this work. The mail I sent is included below (also
-CC'ed on this reply):
+It is emitted with the "error" level, hence it is disturbing. It is not
+an error to run CPUs without the feature.
+
+Drop this silent-boot-breaking error message for the automatic
+initialization path.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
 
 ---
-Hi BRS TG,
 
-I=E2=80=99m Xiang W from the OpenRuyi team (https://openruyi.cn/). We are w=
-orking on promoting standardized server firmware for RISC-V and are
-particularly interested in making BRS-I practical to implement and test.
+[v3] add reviewed-by tags and resend
+[v2] update the commit message.
 
-As part of this effort we have been contributing BRS-I related tests in two=
- places:
-
-1. FWTS (ACPI / SMBIOS)
-   - https://github.com/fwts/fwts/pull/43
-   - https://github.com/fwts/fwts/pull/47
-   - https://github.com/fwts/fwts/pull/48
-
-2. kvm-unit-tests (SBI requirements)
-   - https://lore.kernel.org/kvm-riscv/20260924033945.176581-1-wangxiang@is=
-cas.ac.cn/T/
-   - (current branch: https://github.com/openRuyi-Project/kvm-unit-tests/tr=
-ee/brs-i)
-
-Andrew Jones reviewed the kvm-unit-tests series and asked us to make sure t=
-he work is aligned with the RVI BRS community=E2=80=99s plans. That is the
-main reason for this mail.
-
-We would like to:
-
-- Confirm that the direction we are taking (BRS-I ACPI/SMBIOS checks in fwt=
-s + SBI requirement tests in kvm-unit-tests) matches the TG=E2=80=99s
-expectations.
-- Understand whether there is already planned or ongoing work on BRS-I test=
- coverage that we should coordinate with.
-- Get guidance on the known discrepancy in OE_SBI_060_010 (brs_tests.adoc l=
-ists Smcsrind + Smcdeleg, while the normative text only mentions the
-S-mode extensions, and S-mode ISA strings do not normally contain M-mode ex=
-tensions).
-
-Any feedback on priorities, existing test plans, or preferred places to con=
-tribute would be very helpful.
-
-Thanks,
-Xiang W
-OpenRuyi / ISCAS
-wangxiang@iscas.ac.cn
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-coco@lists.linux.dev
+Cc: kvm@vger.kernel.org
 ---
+ arch/x86/virt/vmx/tdx/tdx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Please let me know if anything else is needed.
-
-Thanks,
-Xiang
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 680e5178a86f..d910a290ac50 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1276,10 +1276,8 @@ static __init int tdx_enable(void)
+ 	enum cpuhp_state state;
+ 	int ret;
+ 
+-	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
+-		pr_err("TDX not supported by the host platform\n");
++	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM))
+ 		return -ENODEV;
+-	}
+ 
+ 	if (!cpu_feature_enabled(X86_FEATURE_XSAVE)) {
+ 		pr_err("XSAVE is required for TDX\n");
+-- 
+2.56.0
 
