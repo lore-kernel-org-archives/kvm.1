@@ -1,56 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793644351;
-	b=SC8rrg4vaA074mbNltZoFyDqxx/zTnSz5ky1c97ESEbXF+OHQfUrLMBO6eyLUVDf41Bf
-	 SgMExZkV71TYJLQ71Ctru6bZ7bGws7M4cLT/iy2k0lzk901v+M9kp4lM+Qx66DYN6EaZ4
-	 IsuZpieU4dm6gjfABHRxFamPQETByXaw20hux+ZPaVP3FojEEOgjO+Qa+tRjvtHJuAhBz
-	 6xoXP51zYUvX+bX+yCe5Qznh7Di4IpfS50BVo7d31mu7RQyjm+djocOagbEf0kJF4AGAx
-	 7opwBfKTkYzviIxBuPY+luPKL5ldiKwz5pT8EkcEGAU0XvDkfaZEhPO13M2R2TZtGZg==
+	t=1793644359;
+	b=yFvdbgs3bsWdf9biZdD9S0ufUP57taEmVRovrp8Msmo4QHpbMZduY84xJQzrxMGLvgwF
+	 6noSlCZDbeKFHEnYK6wYpMn/ULAjDDX6nP1JwvyV3NlvWnnpZM7n2rGfRkEKhT5KYhQsd
+	 QGIzRBgRt0Rj7Tmm2vEBQiR6f+0Gg23Zzhrt1gcDRN2mPWtRG/HLP9aI9C+zRPRre4k3r
+	 pwkU+9QyIRQiCD5L10w6rx/qZu+9M/8jUpCzlJedDWsDGb58i0K6rbaVuKnN7Y4W+sm3V
+	 RZczsrZy43YTMlosvaX5PJQ1usjAnGS/gjDsqpbD2yWdJINPSIG+hQrmn+d3kGyF4IA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793644351;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=hnvhsCnFUfY5g4nBFrUfzwuVb+JP7T/ybxkBZk1UUcA=;
-	b=wOSdAwSiKZxxlAZqDczgiPV/AoBAcNNMmXcRl+TuoUlgb3yLwdHe6EgLwUwsVzTWiyvO
-	 RHNVEOQh6ImKCWb8/QoAKWpu4Is4c2W6KP0Jr/Z4fa6e9A2AtTSnfAfsLSE5yj4u2Uwp9
-	 x7k7E7ex4/qQptRM0Ze4QZvfRMixHBWAO7rRG17Oygy3Ciq10rQCRWj9Fm4DgQl5j44mY
-	 COpnXdvA59X4IlEbtnxvIL7fYHUa9cca+K7+qnqD9/UHqtKirDE7ecuG+1S6Ce02sQD4U
-	 OCUnrHFFvx/TLQkM4PJwFbEmoSTP9CuFgl3EnEGopX7PXnnW4DkCeZi+pzU6UFN00KQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793644359;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=d6Zs7hYlOcAb9GpTpzgd4RT7Z8RUJLNrzQEbBotUN6E=;
+	b=1QOXqu659V1bSxwUT+BShHOOmHOk2wMSvdGe1DbfXC8gslsfV8vWk42EMaycfnh2TZOJ
+	 lwvBSCWHeGjLtckVsqvcbckK5s08qdZMxNsPJCSykxKd59u3Ohzqm8HraTtef6us3YBPD
+	 hUdDqKlIqt90W62D9Af/jkG6Ivf84OfYVOTHlk+TndgH5S/93A4TQQcqmobezF9Oc8g9M
+	 Ut6oYo4KLahRRNsQpi/g39MmhTd0FInPUSObZfdBqTnJ4J5rT/imcd/NL4Ro9xVaC/tz/
+	 sR8WaownChwkLvhiFV8t56rcsUjSMVMyayfjEzQUvGHTbhkhbv26Hi7Ol2hYUsZWEGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="QQ/GKYRk";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBE9606A324
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:32:31 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dtYbcMk9;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD2B606A33A
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:32:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1BD2B606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QQ/GKYRk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1220D1F00A16;
-	Mon,  2 Nov 2026 18:32:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793644351;
-	bh=hnvhsCnFUfY5g4nBFrUfzwuVb+JP7T/ybxkBZk1UUcA=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=QQ/GKYRknsmJ/LFLSE6zdaGdwqrjoFD1xVyl9qSw2ro9HmUwSA16t7TYPgftbQXO/
-	 9j8u2e5oR2kso46xYAbPNOkBRa76z+ysEb4p5xS3oy85oWnvXuUMhb0WR2vRsdHP9i
-	 Z2XgZXCvZmsZ/9Ks9bkGJX/OBk9kFKTAPeZrC+MT3vHc6oYoRonWLvjlCPysVgBLo2
-	 daL1n9bWCyNwKDo2nisnB7XLtm9NYY0jo8ztLhCyRUXQcWNBsM4qD1/uM9EDYCFZYm
-	 8Kn7KgWmhkwfjeeOq6MOCVD29xSzbX4FcDvMGp9PiU8vPPnYyjHmJXH9oZIWAtERaq
-	 vnyNXzKkPMkZg==
-Message-ID: <sashiko-outbox-193947@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 30/45] KVM: x86/emulate: Propagate memory faults to
- userspace
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261102174512.8903-14-pbonzini@redhat.com>
-References: <20261102174130.8779-1-pbonzini@redhat.com>
- <20261102174512.8903-14-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 18:32:30 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dtYbcMk9
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 447D41C14;
+	Mon,  2 Nov 2026 10:32:34 -0800 (PST)
+Received: from [10.57.89.36] (unknown [10.57.89.36])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CA6C3F673;
+	Mon,  2 Nov 2026 10:32:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793644357; bh=nI0YXxpb9UJqKj3m7hjIKI17k4V7uhAOorjJL+Fywkg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dtYbcMk9SJkWCbo6y4hdjHWxZOwL9CpwtcA2b4elAGjGLsZeaCJN663iacuO5uYbO
+	 XLI0yB1qxIUfPQOvxrnkTtNZ2VAro4Kl3tyrcL3mo936a2wRfsoA2DtOWK2+2IiEU9
+	 mEbbnIYtqLnx8pJ63j9bC3J5QzCb8Ceqa7joSIw4=
+Message-ID: <1a069f22-64ac-44f3-9eb0-bd4b9416d2bf@arm.com>
+Date: Mon, 2 Nov 2026 18:32:34 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,228 +52,346 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/16] KVM: arm64: gic-v5: Implement irq forwarding
+To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261016155741.979985-1-sascha.bischoff@arm.com>
+ <20261016155741.979985-14-sascha.bischoff@arm.com>
+ <sashiko-outbox-174635@kernel.org>
+Content-Language: en-GB
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+In-Reply-To: <sashiko-outbox-174635@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] KVM: x86: x86_emulate_instruction() fails to exit on EMULATION_MEM=
-ORY_FAULT
-- [Medium] KVM: x86: handle X86EMUL_MEMORY_FAULT in kvm_handle_memory_failu=
-re()
-- [Medium] KVM: x86: emulator_read_write_onepage() faults on MMIO with mem =
-attributes
---
+On 16/10/2026 17:25, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> - [High] kvm: passing full typed INTID to hardware VDPEND instruction
+> - [High] kvm: use of undefined macro kzalloc_obj
+> - [High] kvm: ABBA deadlock due to translation_cache_lock acquired without disabling IRQs
+> - [High] kvm/vgic: TOCTOU race in its_cache_drop_translation disables wrong host IRQ
+> - [Medium] kvm: data race from lockless read of irq->hw bitfield
+> - [Low] cleanup: mixing goto-based cleanup with guard() declarations
+> --
+> 
+> commit 3a376f5ffceb9df2e3023c6def306e4b00a9eba1
+> Author: Sascha Bischoff <sascha.bischoff@arm.com>
+> 
+>      KVM: arm64: gic-v5: Implement irq forwarding
+> 
+>      GICv5, like GICv4, supports direct injection of interrupts via the
+>      ITS. Move the existing GICv4 interface behind a common shim that selects
+>      the appropriate implementation. For GICv5 forwarding, the ITS driver
+>      replaces a host ITTE with one targeting a guest. The host no longer
+>      receives that interrupt until forwarding is removed and the host ITTE is
+>      restored.
+> 
+>> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+>> index 62c1ca8004007..e71cd67652bae 100644
+>> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+>> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> [ ... ]
+>> @@ -31,7 +32,41 @@ static void its_cache_drop_translation(struct kvm *kvm,
+>>   				       struct its_cache_translation_entry *entry)
+>>   {
+>>   	struct vgic_irq *irq = entry->irq;
+>> +	unsigned long flags;
+>> +	int virq = 0;
+>> +	bool hw = false;
+>> +	bool drop_forwarding_ref = false;
+>>   
+>> +	/*
+>> +	 * Multiple translations can share an LPI as we have no way of stopping
+>> +	 * the guest from doing so. Only the entry associated with direct injection
+>> +	 * may tear down the IRQ's forwarding state, as otherwise we can end up
+>> +	 * accidentally tearing something down. Realistically, this only would
+>> +	 * result in a performance degradation, but we might as well avoid that
+>> +	 * in the first place if we can.
+>> +	 */
+>> +	raw_spin_lock_irqsave(&irq->irq_lock, flags);
+>> +	if (irq->forwarding_owner == entry) {
+>> +		/* The entry is about to be freed, even if unforwarding fails. */
+>> +		irq->forwarding_owner = NULL;
+>> +		virq = irq->host_irq;
+>> +		hw = irq->hw;
+>> +	}
+>> +	raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
+>> +
+>> +	if (hw && !WARN_ON_ONCE(gicv5_its_disable_direct_injection(virq))) {
+> 
+> [Severity: High]
+> Is there a TOCTOU race here when the lock is dropped before calling
+> gicv5_its_disable_direct_injection?
+> 
+> While the lock is released, a concurrent host unbind operation could invoke
+> irq_bypass_del_producer, unset the forwarding, and free the host IRQ. The Linux
+> IRQ number could then be immediately reallocated to a different device. When
+> this thread resumes, it would unconditionally disable hardware direct injection
+> for the newly assigned device/VM using the stale virq identifier, potentially
+> causing lost interrupts.
 
-commit bb98c6118897ded1d558925a185b73b85f254506
-Author: Paolo Bonzini <pbonzini@redhat.com>
+I agree that this is an issue with the commit as posted here. I've 
+re-worked this to keep the lock held while disabling direct injection. 
+This prevents a concurrent unbind from freeing or reusing the host IRQ 
+until we're done with the disable operation. At the point where the lock 
+is release, we no longer use the host IRQ.
 
-KVM: x86/emulate: Propagate memory faults to userspace
+> 
+>> +		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+>> +		if (irq->hw && irq->host_irq == virq &&
+>> +		    !irq->forwarding_owner) {
+>> +			irq->hw = false;
+>> +			irq->host_irq = 0;
+>> +			drop_forwarding_ref = true;
+>> +		}
+>> +		raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
+>> +	}
+> [ ... ]
+>> @@ -50,7 +85,8 @@ static void its_cache_drop_removed_translations(struct kvm *kvm,
+>>   
+>>   static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its *its,
+>>   				     u32 device_id, u16 event_id,
+>> -				     struct vgic_irq *irq)
+>> +				     struct vgic_irq *irq,
+>> +				     void **owner)
+>>   {
+>>   	u64 key = ((u64)device_id << 16) | (u64)event_id;
+>>   	struct its_cache_translation_entry *entry;
+>> @@ -78,6 +114,8 @@ static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its *its,
+>> +	struct its_cache_translation_entry *old;
+>> +	struct hlist_node *tmp;
+>> +	HLIST_HEAD(removed);
+>>
+>> -	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+>> +	entry = kzalloc_obj(*entry, GFP_KERNEL);
+> 
+> [Severity: High]
+> Is kzalloc_obj defined anywhere in the tree? It looks like this might be a
+> typo for kzalloc(sizeof(*entry), GFP_KERNEL) which will cause compilation
+> failures.
 
-This commit introduces X86EMUL_MEMORY_FAULT and EMULATION_MEMORY_FAULT to
-propagate guest memory attribute faults through the x86 instruction emulator
-and out to userspace as -EFAULT or an emulation failure.
+Uh, yes. I certainly hope so! kzalloc_obj is defined in 
+include/linux/slab.h, which this file includes, and this allocation 
+predates this commit. I'm not fixing this non-issue.
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index caff8534267db..5f7f87ff4d17c 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -4865,7 +4865,6 @@ static int kvm_read_guest_virt_helper(gva_t addr, v=
-oid *val, unsigned int bytes,
->  {
->  	struct kvm_pagewalk *gva_walk =3D &vcpu->arch.gva_walk;
->  	void *data =3D val;
-> -	int r =3D X86EMUL_CONTINUE;
-> =20
->  	while (bytes) {
->  		gpa_t gpa =3D gva_walk->gva_to_gpa(vcpu, gva_walk, addr, access, excep=
-tion);
-> @@ -4878,16 +4877,16 @@ static int kvm_read_guest_virt_helper(gva_t addr,=
- void *val, unsigned int bytes,
->  		ret =3D kvm_vcpu_read_guest_page(vcpu, gpa >> PAGE_SHIFT, data,
->  					       offset, toread);
->  		if (ret < 0) {
-> -			r =3D X86EMUL_IO_NEEDED;
-> -			goto out;
-> +			if (kvm_prepare_memory_fault_exit_for_range(vcpu, gpa, toread, false))
-> +				return X86EMUL_MEMORY_FAULT;
-> +			return X86EMUL_IO_NEEDED;
->  		}
-> =20
->  		bytes -=3D toread;
->  		data +=3D toread;
->  		addr +=3D toread;
->  	}
-> -out:
-> -	return r;
-> +	return X86EMUL_CONTINUE;
->  }
-[ ... ]
-> @@ -4969,16 +4975,16 @@ static int kvm_write_guest_virt_helper(gva_t addr=
-, void *val, unsigned int bytes
->  			return X86EMUL_PROPAGATE_FAULT;
->  		ret =3D kvm_vcpu_write_guest(vcpu, gpa, data, towrite);
->  		if (ret < 0) {
-> -			r =3D X86EMUL_IO_NEEDED;
-> -			goto out;
-> +			if (kvm_prepare_memory_fault_exit_for_range(vcpu, gpa, towrite, true))
-> +				return X86EMUL_MEMORY_FAULT;
-> +			return X86EMUL_IO_NEEDED;
->  		}
+> 
+>>   	if (!entry)
+>>   		return -ENOMEM;
+>>   
+>>   	entry->key = key;
+>>   	entry->irq = irq;
+>>   
+>> -	raw_spin_lock(&its->translation_cache_lock);
+>> +	scoped_guard(raw_spinlock, &its->translation_cache_lock) {
+> 
+> [Severity: High]
+> Should this use the irqsave variant of scoped_guard? Acquiring
+> translation_cache_lock in process context without disabling local hardware
+> interrupts could lead to an ABBA deadlock. If irqfd_wakeup runs in HardIRQ
+> context on a CPU that already holds this lock, the interrupt handler might
+> spin forever trying to acquire it.
 
-[Severity: Medium]
-Should kvm_handle_memory_failure() in arch/x86/kvm/x86.c also check for
-X86EMUL_MEMORY_FAULT and return -EFAULT?
+With the series as posted, this is an issue. Now that I've reworked it 
+to use an XArray to track the translations it is no longer an issue. The 
+lookup is now using RCU for the XArray.
 
-When a guest executes INVPCID, VMXON, VMCLEAR, VMPTRLD, VMREAD, VMWRITE,
-VMPTRST, INVEPT, or INVVPID with a memory operand backed by a page that has
-KVM_MEMORY_ATTRIBUTE_NR or KVM_MEMORY_ATTRIBUTE_NW set,
-kvm_read_guest_virt() or kvm_write_guest_virt_system() calls
-kvm_prepare_memory_fault_exit_for_range() (setting vcpu->run->exit_reason to
-KVM_EXIT_MEMORY_FAULT) and returns X86EMUL_MEMORY_FAULT.
+> 
+>>   		hash_for_each_possible_safe(its->translation_cache, old, tmp,
+>>   					    node, key) {
+>>   			if (old->key == key) {
+> [ ... ]
+>> @@ -129,7 +167,8 @@ static void its_cache_clear_translations(struct vgic_v5_its *its)
+>>   
+>>   static int its_cache_look_up_translation(struct vgic_v5_its *its,
+>>   					 u32 device_id, u16 event_id,
+>> -					 struct vgic_irq **irq)
+>> +					 struct vgic_irq **irq,
+>> +					 void **owner)
+>>   {
+>>   	u64 key = ((u64)device_id << 16) | (u64)event_id;
+>>   	struct its_cache_translation_entry *entry;
+>>
+>> -	raw_spin_lock(&its->translation_cache_lock);
+>> +	guard(raw_spinlock)(&its->translation_cache_lock);
+> 
+> [Severity: High]
+> Similarly here, acquiring translation_cache_lock without disabling interrupts
+> leaves the system vulnerable to the same ABBA deadlock if the lock is
+> contended by HardIRQ context.
 
-Callers such as kvm_handle_invpcid() in arch/x86/kvm/x86.c and
-nested_vmx_get_vmptr(), handle_vmread(), handle_vmwrite(), handle_vmptrst(),
-handle_invept(), and handle_invvpid() in arch/x86/kvm/vmx/nested.c pass that
-return value to kvm_handle_memory_failure():
+This is the same issue as reported above. The translation_cache_lock has 
+now been removed, and we're not taking any lock on the XArray itself. 
+Therefore, this is no longer an issue with the upcoming repost.
 
-arch/x86/kvm/x86.c:kvm_handle_memory_failure() {
-	if (r =3D=3D X86EMUL_PROPAGATE_FAULT) {
-		if (KVM_BUG_ON(!e, vcpu->kvm))
-			return -EIO;
+> 
+>>   	hash_for_each_possible(its->translation_cache, entry, node, key) {
+>>   		if (entry->key == key) {
+> [ ... ]
+>> @@ -657,8 +735,8 @@ int vgic_v5_its_inject_cached_translation(struct kvm *kvm, struct kvm_msi *msi)
+>>   static void vgic_v5_its_inject_lpi(struct kvm *kvm, struct vgic_irq *irq)
+>>   {
+>>   	kvm_call_hyp(__vgic_v5_vdpend, irq->intid, true,
+>>   		     kvm->arch.vgic.gicv5_vm.vm_id);
+>>   }
+> 
+> [Severity: High]
+> Does this pass the full typed INTID directly to the hardware GIC VDPEND
+> instruction?
+> 
+> GICv5 INTIDs encode the type in bits [31:29]. The architecture limits hardware
+> instructions to expecting a raw hardware ID. Should this be masked using
+> vgic_v5_get_hwirq_id(irq->intid) to avoid feeding the type bits into the
+> hardware operand?
 
-		kvm_inject_emulated_page_fault(vcpu, e);
-		return 1;
-	}
+Yes, of course this is passing the typed INTID directly to GIC VDPEND! 
+We need to tell the GIC which type of interrupt we are injecting, so 
+that's absolutely by design. We could arguably split this into type and 
+ID, but what's the point? All we'd do is reconstrut that again on the 
+other side.
 
-	kvm_prepare_emulation_failure_exit(vcpu);
+Leaving this as is.
 
-	return 0;
-}
+> 
+> [ ... ]
+>> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
+>> index c90e00f56b298..970df3f41cf24 100644
+>> --- a/arch/arm64/kvm/vgic/vgic-v5.c
+>> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
+> [ ... ]
+>> +int kvm_vgic_v5_set_forwarding(struct kvm *kvm, int virq,
+>> +			       struct kvm_kernel_irq_routing_entry *irq_entry)
+>> +{
+>> +	struct vgic_v5_its *its_data;
+>> +	struct vgic_irq *irq;
+>> +	void *owner;
+>> +	bool hw;
+>> +	int ret;
+>> +
+>> +	if (!vgic_has_its(kvm))
+>> +		return 0;
+>> +
+>> +	/* Look up the ITS; bail out if we can't look it up */
+>> +	its_data = vgic_v5_get_its(kvm, irq_entry);
+>> +	if (IS_ERR(its_data))
+>> +		return 0;
+>> +
+>> +	/*
+>> +	 * Look up and cache the translation. Bail out if we failed to look up
+>> +	 * the translation at this stage. If the translation becomes valid at a
+>> +	 * later stage, we should fall back to software-based injection.
+>> +	 */
+>> +	guard(mutex)(&its_data->its_lock);
+>> +
+>> +	ret = vgic_v5_its_resolve_lpi_locked(kvm, its_data,
+>> +					     irq_entry->msi.devid,
+>> +					     irq_entry->msi.data, &irq, &owner);
+>> +	if (ret)
+>> +		return 0;
+>> +
+>> +	scoped_guard(raw_spinlock_irqsave, &irq->irq_lock) {
+>> +		hw = irq->hw;
+>> +	}
+>> +
+>> +	if (hw)
+>> +		goto out_put_irq;
+> 
+> [Severity: Low]
+> Does this mix goto-based error handling with scope-based cleanup helpers like
+> guard() and scoped_guard()? The kernel cleanup guidelines strongly discourage
+> mixing these in the same function to avoid confusing ownership semantics.
+> Should this function be standardized to use only one of the approaches?
 
-Because kvm_handle_memory_failure() does not handle X86EMUL_MEMORY_FAULT, it
-calls kvm_prepare_emulation_failure_exit(), overwriting the prepared
-KVM_EXIT_MEMORY_FAULT in vcpu->run with KVM_EXIT_INTERNAL_ERROR and returni=
-ng
-0 instead of -EFAULT.
+Yeah, agreed that the posted code is confusing and does mix those two 
+styles. I've dropped the gotos and have replaced them with explcit 
+reference drops and returns, instead. The scoped_guard()s remain.
 
-Similarly, in handle_ud() in arch/x86/kvm/x86.c, if force_emulation_prefix =
-is
-enabled and reading the 5-byte prefix via kvm_read_guest_virt() hits a
-KVM_MEMORY_ATTRIBUTE_NR page and returns X86EMUL_MEMORY_FAULT, won't
-handle_ud() ignore the prepared memory fault exit and fall through to inject
-a #UD into the guest instead of returning -EFAULT?
+> 
+> [ ... ]
+>> +static struct vgic_irq *vgic_v5_host_irq_get_lpi(struct kvm *kvm, int host_irq)
+>> +{
+>> +	struct vgic_irq *irq;
+>> +	unsigned long idx;
+>> +
+>> +	guard(rcu)();
+>> +	xa_for_each(&kvm->arch.vgic.lpi_xa, idx, irq) {
+>> +		if (!irq->hw || irq->host_irq != host_irq)
+>> +			continue;
+> 
+> [Severity: Medium]
+> Is it safe to locklessly read the irq->hw bitfield here?
+> 
+> This bitfield is modified concurrently by kvm_vgic_v5_set_forwarding and
+> kvm_vgic_v5_unset_forwarding under irq_lock. Concurrent read and write access
+> to a C bitfield is undefined behavior and can result in torn reads or
+> corrupted data.
 
-[ ... ]
-> @@ -5151,8 +5159,14 @@ static int emulator_read_write_onepage(unsigned lo=
-ng addr, void *val,
->  	 * i.e. if accessing host user memory failed, but this has been KVM's
->  	 * historical ABI for decades.
->  	 */
-> -	if (!ret && ops->read_write_guest(vcpu, gpa, val, bytes))
-> -		return X86EMUL_CONTINUE;
-> +	if (!ret) {
-> +		ret =3D ops->read_write_guest(vcpu, gpa, val, bytes);
-> +		if (!ret)
-> +			return X86EMUL_CONTINUE;
-> +	}
-> +
-> +	if (kvm_prepare_memory_fault_exit_for_range(vcpu, gpa, bytes, write))
-> +		return X86EMUL_MEMORY_FAULT;
+These now happen under irq_lock, and therefore concurrent updates are no 
+longer possible. We hold the lock when setting up and tearing down the 
+forwarding, so these should not be able to unexpectedly change 
+underneath us.
 
-[Severity: Medium]
-What happens here in emulator_read_write_onepage() when a guest accesses an
-emulated MMIO region (such as the local APIC at APIC_DEFAULT_PHYS_BASE or a
-GPA with no memslot) while KVM_MEMORY_ATTRIBUTE_NR or KVM_MEMORY_ATTRIBUTE_=
-NW
-is set on that GPA range?
+> 
+>> +
+>> +		if (!vgic_try_get_irq_ref(irq))
+>> +			return NULL;
+>> +
+>> +		return irq;
+>> +	}
+>> +
+>> +	return NULL;
+>> +}
+>> +
+>> +void kvm_vgic_v5_unset_forwarding(struct kvm *kvm, int virq)
+>> +{
+>> +	struct vgic_irq *irq;
+>> +	bool drop_forwarding_ref = false;
+>> +
+>> +	if (!vgic_has_its(kvm))
+>> +		return;
+>> +
+>> +	/*
+>> +	 * Note: We don't remove the entry from our translation cache here. It
+>> +	 * is up to the guest to invalidate the old translations, and hence the
+>> +	 * removal path is tied into ITS_INV_DEVICER and ITS_INV_EVENTR, rather
+>> +	 * than being explicitly called here.
+>> +	 */
+>> +	irq = vgic_v5_host_irq_get_lpi(kvm, virq);
+>> +	if (!irq)
+>> +		return;
+>> +
+>> +	if (WARN_ON_ONCE(gicv5_its_disable_direct_injection(virq)))
+>> +		goto out_put_irq;
+>> +
+>> +	scoped_guard(raw_spinlock_irqsave, &irq->irq_lock) {
+> 
+> [Severity: Low]
+> This is another instance of mixing goto-based error handling alongside
+> scoped_guard(). Should we convert this completely to scope-based cleanup or
+> stick entirely to traditional goto labels?
 
-In arch/x86/kvm/mmu/mmu.c, both kvm_mmu_faultin_pfn() and
-kvm_faultin_memory_protections() skip memory attribute checks when !slot,
-allowing MMIO SPTE creation and returning RET_PF_EMULATE.
+I've done the same as I said above - the gotos are now gone and have 
+been replaced with explicit returns instead. scoped_guard() is still 
+used to handle the locking.
 
-However, in emulator_read_write_onepage(),
-kvm_prepare_memory_fault_exit_for_range() is called both when ret =3D=3D 1 =
-(the
-GPA was already identified as MMIO by vcpu_is_mmio_gpa() or
-vcpu_mmio_gva_to_gpa()) and when ops->read_write_guest() fails due to a
-missing memslot.
+> 
+>> +		if (irq->hw && irq->host_irq == virq) {
+>> +			irq->hw = false;
+>> +			irq->host_irq = 0;
+>> +			irq->forwarding_owner = NULL;
+>> +			drop_forwarding_ref = true;
+>> +		}
+>> +	}
+>> +
+>> +	if (drop_forwarding_ref)
+>> +		vgic_put_irq(kvm, irq);
+>> +
+>> +out_put_irq:
+>> +	vgic_put_irq(kvm, irq);
+>> +}
+> 
 
-Because kvm_prepare_memory_fault_exit_for_range() in virt/kvm/kvm_main.c
-checks kvm_mem_attributes_may_read_gfn() and
-kvm_mem_attributes_may_write_gfn() without checking whether a memslot exists
-for the GFN, won't it return X86EMUL_MEMORY_FAULT and abort MMIO emulation
-before reaching ops->read_write_mmio()?
-
-[ ... ]
-> @@ -6528,7 +6546,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, =
-gpa_t cr2_or_gpa,
->  	if (r =3D=3D EMULATION_INTERCEPTED)
->  		return 1;
-> =20
-> -	if (r =3D=3D EMULATION_FAILED) {
-> +	if (r =3D=3D EMULATION_MEMORY_FAULT || r =3D=3D EMULATION_FAILED) {
->  		if (kvm_unprotect_and_retry_on_failure(vcpu, cr2_or_gpa,
->  						       emulation_type))
->  			return 1;
-
-[Severity: High]
-When x86_emulate_insn() returns EMULATION_MEMORY_FAULT in
-x86_emulate_instruction(), routing it through
-kvm_unprotect_and_retry_on_failure() and handle_emulation_failure() seems to
-prevent the memory fault from reaching userspace in several cases:
-
-arch/x86/kvm/x86.c:handle_emulation_failure() {
-	...
-	if (emulation_type & EMULTYPE_VMWARE_GP) {
-		kvm_queue_exception_e(vcpu, GP_VECTOR, 0);
-		return 1;
-	}
-
-	if (kvm->arch.exit_on_emulation_error ||
-	    (emulation_type & EMULTYPE_SKIP)) {
-		prepare_emulation_ctxt_failure_exit(vcpu);
-		return 0;
-	}
-
-	kvm_queue_exception(vcpu, UD_VECTOR);
-
-	if (!is_guest_mode(vcpu) && kvm_x86_call(get_cpl)(vcpu) =3D=3D 0) {
-		prepare_emulation_ctxt_failure_exit(vcpu);
-		return 0;
-	}
-
-	return 1;
-}
-
-1. If EMULTYPE_ALLOW_RETRY_PF is set, kvm_unprotect_and_retry_on_failure()
-   will unprotect the shadow page and return true, causing
-   x86_emulate_instruction() to return 1 and re-enter the guest instead of
-   exiting to userspace.
-
-2. If kvm->arch.exit_on_emulation_error is false (the default) and
-   !(emulation_type & EMULTYPE_SKIP), handle_emulation_failure() queues a #=
-UD
-   into the guest and, whenever is_guest_mode(vcpu) is true or
-   get_cpl(vcpu) !=3D 0, returns 1 to resume the guest without exiting to
-   userspace. In particular, emulator_io_port_access_allowed() in
-   arch/x86/kvm/emulate.c is only called when emulator_bad_iopl(ctxt) is tr=
-ue
-   (which requires CPL > 0), so returning X86EMUL_MEMORY_FAULT from
-   emulator_io_port_access_allowed() will always have get_cpl(vcpu) > 0 and
-   inject #UD (or #GP for EMULTYPE_VMWARE_GP) into the guest instead of
-   exiting to userspace.
-
-3. Even when handle_emulation_failure() does exit to userspace by returning
-   0, prepare_emulation_ctxt_failure_exit() overwrites the
-   KVM_EXIT_MEMORY_FAULT prepared by kvm_prepare_memory_fault_exit_for_rang=
-e()
-   with KVM_EXIT_INTERNAL_ERROR, and still queues #UD if
-   !kvm->arch.exit_on_emulation_error.
-
-Should EMULATION_MEMORY_FAULT be handled separately from EMULATION_FAILED so
-that it always exits to userspace (for example by returning -EFAULT when no
-partial state changes have occurred, or preparing the failure exit without
-retrying or injecting #UD/#GP into the guest)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174130.8779=
--1-pbonzini@redhat.com?part=3D30
+Thanks,
+Sascha
