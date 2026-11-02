@@ -1,52 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793618612;
-	b=1HftajZv4Zx0Fd4CJdL1g4CNgS7+W/p6POl62AS1XMwlTPIFmmZM5k+YbVLs2hXpAl3q
-	 oPzK0Bn4wtWfYPcM44RNxVroDmfJXx1D0eFtTUh8eyrYUvS3UlhR/Dlux7x4hbhRtSjMi
-	 4dGy6e41weDfsR4aNcc0Ogia5DcdHpOByVwAlm2VMvJqu+ogsOaz11ibxSfTV16oOMw5T
-	 wpzgyFGgTfhTOtMVeCtOo+KZMs8WpEgjkFpovUNWnUjxRMc01Rfkp5YWpjlYOAU2YN3SX
-	 ckDB1S9FQ0yEkkcUVD/p2dBNBtw2la6D/CfWPoc2B7nKVpBzpNAEILolbktejS4VNnw==
+	t=1793618631;
+	b=VtY4b1ZsM7fuWiiGD6jUUXx9cqH9+t2sLOjZPfxj1mP6Boe0yOyMK6UOVd+TuVwNDsvD
+	 e+3us8huX9cAK0yrhmdvO32nSB2OIql4ZW4pgn8uN8wtpKW3OGEJcLUfKOvz2XmTpMY73
+	 1jx70+3kud6psunHnLL0RaViOh0qkiY7fW3839LETMJS072vsU3pxLRZuDFUOiuM5ABC3
+	 +bUYVMvxMYDgBAoeQ32vpeMm2VtyVYZyA3av7GkaCP1hY9Bi7ShhHAC0MqLz+bPVS7vwr
+	 MFKVpjoBmfqrtBdflK2m5Uz1/9iuD3eMtUkRK9XihG+FDv8Jt0uA1oSUkE+mryWVTFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793618612;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793618631;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=IeiusvcN//HYTYvtTON+UwfbtKPYQ1WsySCM+ju+JhY=;
-	b=LDjUnVAlh/VG4W0buTciXnhathaznU53DYhSdR8+EFbaZmMSJPhmKLuGMlHABqAotNGe
-	 uT5RLa78Nt9HBuj1LXCFjZ+o+xNqy53XHnxmTmSd5hQP+49FlJgybr4SH1zqkyXskzFHy
-	 HKVyMca8lSLUBt/NriyF4m1pZoYgGQvg8ToSP9ZunDBeUrHUg5aeA9lUVKd3ONi0O6veG
-	 mgRiUgyjnWGy73SeyBf0Bd5+07ftBkpqawbcPI/MqXDFzcWopi8kJYLT2tuyZ4Bs3m2nT
-	 LfnV2POqjptsdgLuQpGW2gsRpw4//CZTx/jxnq+a8FbO0PCa/dK6eJbyyJHfeoE840g==
+	bh=9Ysg6MEwVS7VKLwJjiHL7ib19j0E2bn6/f5G51dOAL0=;
+	b=Ukyt7ODUvcpQxi+C61od70irIaxKrzqeSxp7jJMbgdrjtxL64X0HoNIrqQLc88/c86/l
+	 d9NfKyc+EsDzHovx/1V24NJgrxzgo8eDoLgvESUN/3mj6t+58vs0lz1n9moGjmQQMt852
+	 HheOK/mBDdK8YwJ7bGJR7LCP8pHvZSMHC+C0g9xH2cPhzTRpWJOtkxPPa/PbzkDzvLNcr
+	 bK2xrVYqD5mXpIjVYcymeVpMcdu3A3F92y+Fa39zmd/osqgVmE5VhDRwauvlielWgT+eM
+	 kCVFhqXpcxVYbanHG/4WOPg2M69SVLH4h7AV7NrrCMhuZXWlf70qHJiRFRzbG0tnPIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=L5j3S2qm;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BrPb0hXu;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC8860A2613;
-	Mon,  2 Nov 2026 11:23:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EC8860A2613
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC4C606C42D;
+	Mon,  2 Nov 2026 11:23:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FC4C606C42D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=L5j3S2qm
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BrPb0hXu
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 79DD42A31;
-	Mon,  2 Nov 2026 03:23:27 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 91B02293B;
+	Mon,  2 Nov 2026 03:23:46 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 89B4C3F632;
-	Mon,  2 Nov 2026 03:23:24 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A4ED03F632;
+	Mon,  2 Nov 2026 03:23:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618610; bh=9p0dJer5accV7E9pXDd7DTUz4Dg0mJc0MW7cEdf4VMA=;
+	t=1793618629; bh=iiExwLtobXiDRkDzhCd4KbgedHi6eyqTW5J2A3p/GoY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=L5j3S2qm8erUkEnuGpQ+xZoox86f9aM0Yh+vfWn9rT6rT3HYiCekGcPdgKtV/eHGU
-	 cOzdKjfWTtmrj2Yem7njZ9d/jGjmN11KDgzoGy2hRRBQ/O0+Lj5Zuab/DFFScOf59K
-	 4X4dWPJh/ihgTTm3pK0IjJ/JoVR7h8Xos6Wr3vBo=
+	b=BrPb0hXuYg5FDqnQoxAoQEPqwy35W9QWkiKSZbg3KsrD0XEabz16DkjubK7JqGSV0
+	 OPWT8B5k/j69iFU4lw32ZN1FbqKVhYkgINnZSpuVpHWynTxUVdsXn3n2gXh0w8vpHx
+	 C1xoy3anV4D+fDsKAX6O+jB+JolHrc1sf7sWdpz8=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:31 +0000
-Subject: [PATCH RESEND v2 18/21] mm/pgtable: catch abuse of folded dummy
- pgd_t/p4d_t/pud_t
+Date: Mon, 02 Nov 2026 11:21:34 +0000
+Subject: [PATCH RESEND v2 21/21] Documentation: mm: clarify behaviour of
+ compile-time folded page tables
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,7 +58,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-18-78840b2ec73c@arm.com>
+Message-Id: <20261102-dummy_ptxp3-v2-21-78840b2ec73c@arm.com>
 References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -91,189 +91,129 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
  linux-openrisc@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5536; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=RaNq1OzclUEkYVVkonyr81I//WUCo0pQ53h1961FIzo=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI35LQrwLJTJ6JHFqKa5WNjGsjc9SCCBxZ91
- V5ViWPS3ImJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNwAKCRBt1cPRWsUx
- M5CXDAC5wcFzP5HHs/20OLo/fEv0r+XaQDjC0DAJwcDl0jfQa5A9j234lqJcFQ2J3UF5aj4jVZu
- sJe0FGfp6mVD4y/ZdJeadQTJG7x1t6cxs1VGc83wL1G2NdN8NdBoAP/23a+KrO9hojG2crw1zYL
- NH41zJ6inULqk0Asfw/J56fwREX6K4F1nLJtPYEG0xHwUyzRwjcKPZjgVrim6gRiPDFwl77zT1O
- BNcM/4sON+rTiP1b0OpoP14EccvL7OJTp1JfCll/KJJhbQZwz27DVDNfzVMaYlHiFjrGlE7AFSI
- Z3TqFvckPUPKqoY1QqjnCxoiLaVuX7/WWlCKdmj08IOVAohulKhFiI/GNdhN6RO+JCtKNNuwE3T
- oVyP2vI/YF3KVazeRdNDp8yHcZg6ZR3ZYTDyWbtlojKD1zkvrm59hNA/XTxs1Us/8BWMvAe45tF
- P0TXfrBvEC9mSeI50hhAF8Kdgc8z5fNItEOx7/JZB/e8FiFZCY+RGyoyOH/SvHTY+ufFc=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5250; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=we33pLaWTEXUzxN2eli55cmCuITu+4r4z0c6wIrOlvY=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI5puhw5lGPEsqL2+0oxYQ14ZUvSogy1dQY7
+ mbhixVweFqJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyOQAKCRBt1cPRWsUx
+ M0LeC/9Cq0L+HoSCeEcxKHvRuuTb6eN/i826KAV+hkrcMfVFIULPPvwRKY9kYk3gsbK8opHg/qM
+ eDSlKtSYplqrFvRLwGt/ddDHCU47Hi1VZGw8A2j1HDaCHffEGl6C5FzzdErrZCIBrMIUlrZZARQ
+ u4fy1wwWXQu9IYjXnyF3BI07Y05Is6jHXzw5ApmalBxBp85sr1oFlR45kHuQxi8Ma67ye23pU+i
+ 0ZfEc1HgiqWjEanyJvQQFiIUwn7+lmt+sYCHqncaafdCYo3KHgQaHetYAneCx7X14vidrudgq+u
+ C2LEDT0pu3GVJlMya52voqvBocPv07v+yrOMkc2yrVlibFvy72hf8cXhXucoMOtYi9Ac6p0nTbH
+ UBsr8OB8/MJYoiHCzkYACf6uE2qyNGCqCwApVpfGBocJ8Tm4THZDDTv79sd4Sr7B2Fo2BrLYn9V
+ xgmHiHS71tqPIlx4VRSha2GekLQlQUXLnzYAP7xJLSeoiFrOZwyfxUMXye+TMGvJSDGiQ=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
 
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-Catch and prevent all abuse with dummy values on the stack
-similar to:
+Compile-time folded page tables are not necessarily easy to understand, and even
+people the were once familiar with the concept might need to refresh their memory.
 
-	pud_t pud = pudp_get(pudp);
-	pmd_t *pmdp = pud_offset(&pud, addr);
-
-While this approach relies on the compiler propagating constants, it
-should catch most of the issues in practice. It would have caught all
-the issues were found through manual inspection.
-
-To avoid build issues particularly on x86, where pgd_val() might not be
-around in some inclusion paths, perform the new checks from wrapper
-macros.
+Add proper documentation, including a nice diagram, for the current design.
+Mention details about dummy functions, including the recently changed pXdp_get()
+helpers.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/asm-generic/pgtable-nop4d.h | 23 ++++++++++++++++++-----
- include/asm-generic/pgtable-nopmd.h | 24 ++++++++++++++++++------
- include/asm-generic/pgtable-nopud.h | 24 ++++++++++++++++++------
- 3 files changed, 54 insertions(+), 17 deletions(-)
+ Documentation/mm/page_tables.rst | 84 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 75 insertions(+), 9 deletions(-)
 
-diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pgtable-nop4d.h
-index acd62ee233536..2d86325235da5 100644
---- a/include/asm-generic/pgtable-nop4d.h
-+++ b/include/asm-generic/pgtable-nop4d.h
-@@ -34,7 +34,7 @@ static inline bool pgd_leaf(pgd_t pgd)		{ return false; }
-  */
- #define set_pgd(pgdptr, pgdval)	set_p4d((p4d_t *)(pgdptr), (p4d_t) { pgdval })
+diff --git a/Documentation/mm/page_tables.rst b/Documentation/mm/page_tables.rst
+index 126c876282509..d4f3e2e343ca2 100644
+--- a/Documentation/mm/page_tables.rst
++++ b/Documentation/mm/page_tables.rst
+@@ -143,15 +143,81 @@ pointers on each level is architecture-defined.::
+ Page Table Folding
+ ==================
  
--static inline pgd_t pgdp_get(pgd_t *pgdp)
-+static __always_inline pgd_t pgdp_get(pgd_t *pgdp)
- {
- 	pgd_t dummy = { 0 };
- 
-@@ -42,17 +42,30 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
- }
- #define pgdp_get pgdp_get
- 
--static inline p4d_t *p4d_offset(pgd_t *pgd, unsigned long address)
-+#define pgd_check_dummy(pgd) BUILD_BUG_ON(__builtin_constant_p(pgd_val(pgd)))
+-If the architecture does not use all the page table levels, they can be *folded*
+-which means skipped, and all operations performed on page tables will be
+-compile-time augmented to just skip a level when accessing the next lower
+-level.
+-
+-Page table handling code that wishes to be architecture-neutral, such as the
+-virtual memory manager, will need to be written so that it traverses all of the
+-currently five levels. This style should also be preferred for
+-architecture-specific code, so as to be robust to future changes.
++Not all architectures support 5-level page tables; while for some of them
++the exact number of supported page table levels is known at compile time,
++others can determine the number of page table levels at runtime based on
++hardware support and address space sizes.
 +
-+static __always_inline p4d_t *__p4d_offset(pgd_t *pgdp, unsigned long address)
- {
--	return (p4d_t *)pgd;
-+	return (p4d_t *)pgdp;
- }
- 
--static inline p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd,
-+#define p4d_offset(pgdp, address)					\
-+({									\
-+	pgd_check_dummy(*(pgdp));					\
-+	__p4d_offset(pgdp, address);					\
-+})
++Generic page table walking code always assumes that 5 levels of page table
++exist. To make page table walking code not have to worry about that,
++`compile-time folding` and `runtime folding` of page tables are used.
++Compile-time folding is mostly handled in common code, whereas runtime folding
++is exclusively handled in architecture code.
 +
-+static __always_inline p4d_t *__p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd,
- 		unsigned long address)
- {
- 	return (p4d_t *)pgdp;
- }
--#define p4d_offset_lockless p4d_offset_lockless
++This description focuses on generic compile-time folded page tables; for
++architecture-specific variants, some details can vary, however, without
++affecting common page table walkers.
 +
-+#define p4d_offset_lockless(pgdp, pgd, address)				\
-+({									\
-+	pgd_check_dummy(*(pgdp));					\
-+	__p4d_offset_lockless(pgdp, pgd, address);			\
-+})
- 
- #define p4d_val(x)				(pgd_val((x).pgd))
- #define __p4d(x)				((p4d_t) { __pgd(x) })
-diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
-index 9322f07ddf1ef..bd40d3a5743ff 100644
---- a/include/asm-generic/pgtable-nopmd.h
-+++ b/include/asm-generic/pgtable-nopmd.h
-@@ -43,7 +43,7 @@ static inline void pud_clear(pud_t *pud)	{ }
-  */
- #define set_pud(pudptr, pudval)			set_pmd((pmd_t *)(pudptr), (pmd_t) { pudval })
- 
--static inline pud_t pudp_get(pud_t *pudp)
-+static __always_inline pud_t pudp_get(pud_t *pudp)
- {
- 	pud_t dummy = { 0 };
- 
-@@ -51,18 +51,30 @@ static inline pud_t pudp_get(pud_t *pudp)
- }
- #define pudp_get pudp_get
- 
--static inline pmd_t * pmd_offset(pud_t * pud, unsigned long address)
-+#define pud_check_dummy(pud) BUILD_BUG_ON(__builtin_constant_p(pud_val(pud)))
++When walking folded page tables, all upper page table levels up to the supported
++level are skipped in page table walkers: this is achieved by (a) treating
++entries in upper page table levels as present and pointing at a page table; and
++(b) having page table walkers cast the entry pointer to the next-level entry
++instead of dereferencing that table. From the perspective of a page table
++walker, the entry points at itself.
 +
-+static __always_inline pmd_t *__pmd_offset(pud_t *pudp, unsigned long address)
- {
--	return (pmd_t *)pud;
-+	return (pmd_t *)pudp;
- }
--#define pmd_offset pmd_offset
- 
--static inline pmd_t *pmd_offset_lockless(pud_t *pudp, pud_t pud,
-+#define pmd_offset(pudp, address)					\
-+({									\
-+	pud_check_dummy(*(pudp));					\
-+	__pmd_offset(pudp, address);					\
-+})
++Assuming compile-time folded 4-level page tables, to achieve (a), pgd_present()
++and pgd_leaf() are hard-coded to indicate a present page table entry that
++points at a page table, and to achieve (b) p4d_offset() and
++p4d_offset_lockless() simply cast the page table entry pointer to the next
++lower level.
 +
-+static __always_inline pmd_t *__pmd_offset_lockless(pud_t *pudp, pud_t pud,
- 		unsigned long address)
- {
- 	return (pmd_t *)pudp;
- }
--#define pmd_offset_lockless pmd_offset_lockless
++In the current design, this is further modeled by having the P4D have a
++single page table entry::
 +
-+#define pmd_offset_lockless(pudp, pud, address)				\
-+({									\
-+	pud_check_dummy(*(pudp));					\
-+	__pmd_offset_lockless(pudp, pud, address);			\
-+})
- 
- #define pmd_val(x)				(pud_val((x).pud))
- #define __pmd(x)				((pmd_t) { __pud(x) } )
-diff --git a/include/asm-generic/pgtable-nopud.h b/include/asm-generic/pgtable-nopud.h
-index 8f01abbb00503..7475d0bd0f2e0 100644
---- a/include/asm-generic/pgtable-nopud.h
-+++ b/include/asm-generic/pgtable-nopud.h
-@@ -41,7 +41,7 @@ static inline bool p4d_leaf(p4d_t p4d)		{ return false; }
-  */
- #define set_p4d(p4dptr, p4dval)	set_pud((pud_t *)(p4dptr), (pud_t) { p4dval })
- 
--static inline p4d_t p4dp_get(p4d_t *p4dp)
-+static __always_inline p4d_t p4dp_get(p4d_t *p4dp)
- {
- 	p4d_t dummy = { 0 };
- 
-@@ -49,18 +49,30 @@ static inline p4d_t p4dp_get(p4d_t *p4dp)
- }
- #define p4dp_get p4dp_get
- 
--static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
-+#define p4d_check_dummy(p4d) BUILD_BUG_ON(__builtin_constant_p(p4d_val(p4d)))
++        PGD
++  --> +------+          NOP4D
++      | ptr0 |-------> +------+           PUD
++      | ptr1 |-        | ptr0 |-------> +-----+
++      | ptr2 | \       +------+         | ptr |-------> ...
++      | ptr3 |  \                       | ptr |
++        ...      \                        ..
++                  \        NOP4D
++                   +----> +------+           PUD
++                          | ptr1 |-------> +-----+
++                          +------+         | ptr |-------> ...
++                                           | ptr |
++                                             ...
 +
-+static __always_inline pud_t *__pud_offset(p4d_t *p4dp, unsigned long address)
- {
--	return (pud_t *)p4d;
-+	return (pud_t *)p4dp;
- }
--#define pud_offset pud_offset
- 
--static inline pud_t *pud_offset_lockless(p4d_t *p4dp, p4d_t p4d,
-+#define pud_offset(p4dp, address)					\
-+({									\
-+	p4d_check_dummy(*(p4dp));					\
-+	__pud_offset(p4dp, address);					\
-+})
++Note that the arrows from PGD to NOP4D represent page-table-walker
++transitions, not pointers stored in the pgd entries.
 +
-+static __always_inline pud_t *__pud_offset_lockless(p4d_t *p4dp, p4d_t p4d,
- 		unsigned long address)
- {
- 	return (pud_t *)p4dp;
- }
--#define pud_offset_lockless pud_offset_lockless
++Using p4d as an example, `nop4d`/`p4d folded` translates to the following:
 +
-+#define pud_offset_lockless(p4dp, p4d, address)				\
-+({									\
-+	p4d_check_dummy(*(p4dp));					\
-+	__pud_offset_lockless(p4dp, p4d, address);			\
-+})
++- p4d is considered folded into pgd; both are operating on the same page
++  table.
++
++- Most pgd_* helpers are hard-coded dummy functions that ignore the passed
++  pgd_t values entirely. Exceptions are pgd_val() and low-level helpers
++  set_pgd() + pgd_page_vaddr(), which effectively translate to set_p4d()/
++  p4d_pgtable() to keep existing arch code working.
++
++  Architectures must provide p4d_* helpers (unless further common
++  compile-time folding applies).
++
++- PTRS_PER_P4D is hard-coded to 1. Architectures must define PTRS_PER_PGD.
++
++To avoid reading a value that will never be used but cannot be entirely
++optimized out, compile-time folded page table code also makes pXdp_get()
++return a constant dummy value.
++
++In common code, this only affects pXd_val() when used for printing page
++table entries for debugging purposes. As we don't want architecture code
++that uses set_pXd(), pgd_page_vaddr() or pXd_pgtable() to accidentally
++operate on dummy values, the compiler will error out if it detects that the
++helpers are used with dummy values. For a folded level, pXd_page() must not
++be used and unconditionally triggers a compiler error. Architecture code must
++instead call the helpers on the proper first page table level: e.g., set_p4d()
++instead of set_pgd().
  
- #define pud_val(x)				(p4d_val((x).p4d))
- #define __pud(x)				((pud_t) { __p4d(x) })
+ 
+ MMU, TLB, and Page Faults
 
 -- 
 2.43.0
