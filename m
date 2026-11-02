@@ -1,71 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641308;
-	b=Ma5rdMObUZtFXmXhMv976ILJ/KnfqJCNF6YTTb8BkjKw5LppjVmJ4L30vrjStQ6zR838
-	 5KKPlxRuF11nugnMe6yL/3LaoDR62ukbreh0cd9mgrKusI4l9RGssjddz/OSLU+r2iCvo
-	 YIUoU1EFfQy95QlmGqVS9gwtN11NSo1Mmgs2u38chCOIbWEFWQx1D9ar3r0eOTyRmKoiX
-	 lZNs69IO1yoxB1Yf2913fTe0Ruzc7aMYDEMivsSO8otM0MS8SAyyCqsrrZgMc1fzn+nLN
-	 lVL5yGx2u3FsTjU3QXi1tTJzq4TpuUWSR8fkAv0j4MXdMftYVcOoV1Q8xzT0jUB881Q==
+	t=1793641418;
+	b=eAFCtHOPAOstjU9EiER5kwcI0CCnkFmoLh+NvtwkgkWgHAgLMTVnttqfin4J1NfIMWLS
+	 8SVLgefTpoiJeUdTwSzwR1aXjnqjE7GDLz/nlz5ha9y3Cf1uz/BRRAjnKSzy31EXOzfOM
+	 8FYIZSj23VAt7hk3g43SYZvXeVY5WUVrApppV/UeaMMIrTQi0bdbOk2lri/E937nEtEUU
+	 Kmu8G4kO0iRn2VzNhUryEwh5ETRRDPW3rHAt0kcm1Q6eCsj+BN1EG5xmXVO98t29v+L/Z
+	 os5RoaankQAzPu66q6PawIuZke94YDDToJ8M73e/VYRFDzkQ5RNH3k6gs1/e12NT5/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641308;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=oR7ZcEBZ2uCS6fsotuLYhfpaNZc9tC2TAXHqT1bx+zI=;
-	b=szWb+EMHHekjBtiFLFZKiENY1E0D+SgwskIg/sRPl4RJnXSMRWz1e0sXu5qWfMu/nMLD
-	 175V3gDqwEcXJH8JYues0enVmn6Hp1jP7tgTlSoBW5t5znCyGLMhP+/K+AQzuAwoDiG2f
-	 P1uM9gZz//psHiwZDjgejfJYq8PBCL4ADFa6CL2L4aSLB8UA8Yi2dPSmJhCXMsG3RmL05
-	 +nVD8Pk9+4UZGGfo8k5vjwVjFlRGzd3Ytmlaab1Yib+uI5LDMfeAbXE9oHhRH4qYHulcB
-	 MWyCDmvx1Sahr54NpC/EgR7gi1GPkE9yNt8LAqvo19Tq8TQlzn/IC9/Xd7prEYcG1eQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641418;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=raeJlK9yYBGSF7+QYGBqsG5Ux8i2znTMcBRplAhhHPo=;
+	b=CO4CX4jCQWpMtif6R6b99RjNjHOfT+Upcc3SG2TqKbDMIhODEnQabl5wkIB5zKvGgrc0
+	 lD6wcHu+Y9rnLRz3cSmaASx7y2upRYYpSx1n1oZ8P11WpuO6kNKVnR24+n4LHdlQp/Q7X
+	 /ogb4AZd8yB3R3Gc3bV9GLxZM/zY/HQLrUAJis/aV89lUY5GLbloCWrmTWOCxWmRaqFzl
+	 NkuVL4cP+/t9zII6fKQcmPrM1/P4bmEUAKjEYnGuGKIQatIWwFQA/Eq0ATK+CoX9ZiTAL
+	 ipPGUE7/d7bok1+qUDvgDeC510VuQVpQumBxW5M2vffahqHvyaBTRkWnSN4dp9/pRkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZXoHB5P1;
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD25D607222C
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD25D607222C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793641302;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oR7ZcEBZ2uCS6fsotuLYhfpaNZc9tC2TAXHqT1bx+zI=;
-	b=VBU5CEVodNfdtR3XLa3u7rGAR7yML4c8juJMbEk7ry6KoUnRJAgS01fMH83a9WH+EXDyuf
-	MD/9/eCs6ROSE+oeMszpS9ED6W5bTkPDwfW9IQdSH6ksGdP9AJ2GHOvP6NYoTo9v1drbuW
-	j/yizG2Q5w/ZX6LYI+3XLYnpNKkLVLo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-245-syg0cX10PwOh9lXufVcDzQ-1; Mon,
- 02 Nov 2026 12:41:38 -0500
-X-MC-Unique: syg0cX10PwOh9lXufVcDzQ-1
-X-Mimecast-MFC-AGG-ID: syg0cX10PwOh9lXufVcDzQ_1793641297
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9669F1800BE6;
-	Mon,  2 Nov 2026 17:41:37 +0000 (UTC)
-Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 25084180057F;
-	Mon,  2 Nov 2026 17:41:37 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Subject: [PATCH 10/45] KVM: x86: Introduce memory fault on invalid hypercalls reads/writes
-Date: Mon,  2 Nov 2026 12:40:54 -0500
-Message-ID: <20261102174130.8779-11-pbonzini@redhat.com>
-In-Reply-To: <20261102174130.8779-1-pbonzini@redhat.com>
-References: <20261102174130.8779-1-pbonzini@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D85606B1C9
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:43:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28D85606B1C9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZXoHB5P1
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e9821ca96fso52967315ad.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 09:43:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793641416; x=1794246216; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=raeJlK9yYBGSF7+QYGBqsG5Ux8i2znTMcBRplAhhHPo=;
+        b=ZXoHB5P16CVQnJEKWlY1C+JYQkR9IGnrndtLEV0HUTpNsJGR5cOx1j0chdxtDl0m3c
+         l4CCXWO6z+yw/UwSXmykAZXrfUNH0zmmA/WWGjQn2ZLs643b8PnE0q8uOhHOmxGirlIQ
+         D1u3EQPHs0HeB/YoqkcLx64+1dqCUl97Oce3r+0LwOlhtqcNV8Nls56QRHYn32a6EHdW
+         O1G1aWDP5xVwHbs2m/wnM02zsLOMTjs0DeSjK5yEsF3P0Zc7BOAT5uQPbXCYQWy2uF6m
+         zzM8iLuw54yW7eBSsKm4tEx2Zr5UzWhD6NVlgJxoHN/S+1auQpxinQRogfD6/YpCBkkY
+         S2Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793641416; x=1794246216;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=raeJlK9yYBGSF7+QYGBqsG5Ux8i2znTMcBRplAhhHPo=;
+        b=Io+MdcSYX26WsweHr2uMpzQGqHFLZ6jSOIDvDSbnTV6YEch+KA/egEq+auAaTFoEBu
+         lX3fbN7j9aUkuMEYb1sdzuOGLTx1ICi35BQm2Sd3axMmmYPvYB49BLW5/G+z+Ul78Pju
+         Os64V4xut+ISc7SeDtkBMbNHwMA2Ug8K4g4pF39wK/BNl10Fn5hlz8/0JPYEoJHwivtf
+         hYZ89mPhvEZTTZHJujZOHYz9aduaKJAbNBaTymsfbtDQw+VVe8rKWCT2D9m6Su7X1wR4
+         U2WDV3mY6M80JssxWkhukdYMaQGpVN42mtoSQA5nii0TAJNR34bixNKlbG8e/JZfpCTj
+         GE7g==
+X-Forwarded-Encrypted: i=1; AKwUvBx9Lqn3pNMZoTwmv6y2d750yrN63NkDkGdzF14TVDxDBxCrngSFww7yXmrgcr3dkn/vaGA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Wz3abHOO3d05QpshY7mUO/5+KClaUnO0DKqEpTH86epLShnVo
+	Fm9/L6SVtd71BeAIWFGOxS4NmzdHFagRp4355mSTiHvbfWaAril0kJPBJbsWPaHATeo7Gx3EsGy
+	6P4Y4WQ==
+X-Received: from plkg13.prod.google.com ([2002:a17:903:19cd:b0:2e8:1f84:7c18])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ea0d:b0:2e8:1d5c:f6f9
+ with SMTP id d9443c01a7336-2eb364715ddmr105628745ad.46.1793641416165; Mon, 02
+ Nov 2026 09:43:36 -0800 (PST)
+Date: Mon, 2 Nov 2026 09:43:35 -0800
+In-Reply-To: <20261027163929.2bb28d5b@gandalf.local.home>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,456 +77,152 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Mime-Version: 1.0
+References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com> <20261026224305.1254-1-hdanton@sina.com>
+ <auCucDdZb8mig7UZ@google.com> <auDvUyfzg6nLtVox@thinkstation> <20261027163929.2bb28d5b@gandalf.local.home>
+Message-ID: <aujLx1FOc12E72rF@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+From: Sean Christopherson <seanjc@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Harry Yoo <harry@kernel.org>, Hillf Danton <hdanton@sina.com>, Boqun Feng <boqun@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	linux-rt-devel@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Allow userspace to perform arbitrary actions when a hypercall refers to an
-invalid address, by exiting with KVM_EXIT_MEMORY_FAULT.  This will for
-example allow userspace to perform a VTL call.
++Paolo
 
-Co-developed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://patch.msgid.link/20260918135030.171564-7-pbonzini@redhat.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- Documentation/virt/kvm/api.rst  |  19 ++++
- arch/x86/include/asm/kvm_host.h |   1 +
- arch/x86/kvm/hyperv.c           | 157 +++++++++++++++++++++++++-------
- arch/x86/kvm/x86.c              |  34 +++++--
- include/uapi/linux/kvm.h        |   1 +
- 5 files changed, 173 insertions(+), 39 deletions(-)
+On Tue, Oct 27, 2026, Steven Rostedt wrote:
+> On Tue, 27 Oct 2026 18:48:28 +0000
+> Harry Yoo <harry@kernel.org> wrote:
+> 
+> > [+Cc RT folks]
+> > 
+> > On Tue, Oct 27, 2026 at 07:00:16AM -0700, Sean Christopherson wrote:
+> > > +slub folks
+> > > 
+> > > On Tue, Oct 27, 2026, Hillf Danton wrote:  
+> > > > Ask the locking people to shed light on the warning.  
+> > > 
+> > > get_partial_node_bulk() is waiting on a non-raw spinlock while in hard IRQ context,
+> > > and it looks like __refill_objects_node() would do the same later on.  On PREEMPT_RT,
+> > > those spinlocks become sleepable locks, which is what triggers the splat.
+> > > 
+> > > The alloction coming from KVM-as-a-guest code is GFP_ATOMIC, so I think that wonky
+> > > code is fine.  
+> > 
+> > But memory allocation w/ GFP_ATOMIC is fine only on non-RT?
+> 
+> Correct. GFP_ATOMIC is meaningless on RT. It still cannot be called with
+> preemption disabled. Most places that disable preemption in the non-RT case
+> do not disable it in the RT case. For example, spin_lock() disables
+> preemption on non-RT but does not in RT. Same for interrupt handlers, as in
+> RT interrupt handlers are run in task context.
+> 
+> That is, in RT only "special" places disable preemption for real.
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 7123d021bdbb..d0f91687bdb9 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -9186,6 +9186,25 @@ enabled, cmma can't be enabled anymore and pfmfi and the storage key
- interpretation are disabled. If cmma has already been enabled or the
- hpage_2g module parameter is not set to 1, -EINVAL is returned.
- 
-+7.48 KVM_CAP_HCALL_FAULT_EXIT
-+------------------------------------
-+
-+:Architectures: x86
-+:Parameters: args[0] is 0 to disable, 1 to enable
-+
-+When enabled, KVM checks the memory that is read or written by
-+hypercalls (including slow Hyper-V hypercalls and KVM_HC_CLOCK_PAIRING).
-+An inaccessible input page causes a KVM_EXIT_MEMORY_FAULT with
-+KVM_MEMORY_EXIT_FLAG_READ.  An inaccessible or read-only output page causes
-+a KVM_EXIT_MEMORY_FAULT with KVM_MEMORY_EXIT_FLAG_WRITE.  The reported
-+range identifies the page containing the parameter GPA.
-+
-+Hypercall parameters that are unused by the selected hypercall are not checked.
-+
-+For Hyper-V, unknown hypercalls are passed to userspace without checking their
-+parameter pages.  The fault GPA is in the physical address space of the
-+VM managed by userspace, after nested GPA translation.
-+
- 8. Other capabilities.
- ======================
- 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 0378577d9d8b..25256d59cfde 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1178,6 +1178,7 @@ struct kvm_arch {
- 	bool has_protected_eoi;
- 	bool has_protected_pmu;
- 	bool pre_fault_allowed;
-+	bool hcall_fault_exit;
- 	struct hlist_head *mmu_page_hash;
- 	struct list_head active_mmu_pages;
- 	struct kvm_possible_nx_huge_pages possible_nx_huge_pages[KVM_NR_MMU_TYPES];
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 798baa9eaafb..ee5189815a06 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2034,7 +2034,68 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
- 	return -ENOSPC;
- }
- 
--static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-+static int kvm_hv_hypercall_check_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
-+				      bool write)
-+{
-+	bool writable = true;
-+	gfn_t gfn = gpa_to_gfn(gpa);
-+	unsigned long addr;
-+
-+	addr = kvm_vcpu_gfn_to_hva_prot(vcpu, gfn, &writable);
-+	if (!kvm_is_error_hva(addr) && (!write || writable))
-+		return 0;
-+
-+	kvm_prepare_memory_fault_exit(vcpu, gfn_to_gpa(gfn), PAGE_SIZE,
-+				      write, false, false);
-+	return -EFAULT;
-+}
-+
-+static unsigned int kvm_hv_hypercall_mem_access(u16 code)
-+{
-+	switch (code) {
-+	case HVCALL_SIGNAL_EVENT:
-+	case HVCALL_POST_MESSAGE:
-+	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST:
-+	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_EX:
-+	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE:
-+	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE_EX:
-+	case HVCALL_SEND_IPI:
-+	case HVCALL_SEND_IPI_EX:
-+		return KVM_MEMORY_EXIT_FLAG_READ;
-+	case HVCALL_POST_DEBUG_DATA:
-+	case HVCALL_RETRIEVE_DEBUG_DATA:
-+		return KVM_MEMORY_EXIT_FLAG_READ | KVM_MEMORY_EXIT_FLAG_WRITE;
-+	case HVCALL_RESET_DEBUG_SESSION:
-+	case HV_EXT_CALL_QUERY_CAPABILITIES:
-+		return KVM_MEMORY_EXIT_FLAG_WRITE;
-+	}
-+
-+	return 0;
-+}
-+
-+static int kvm_hv_hypercall_check_params(struct kvm_vcpu *vcpu,
-+					 struct kvm_hv_hcall *hc)
-+{
-+	unsigned access;
-+	int r;
-+
-+	if (hc->fast || !vcpu->kvm->arch.hcall_fault_exit)
-+		return 0;
-+
-+	access = kvm_hv_hypercall_mem_access(hc->code);
-+	if (access & KVM_MEMORY_EXIT_FLAG_READ) {
-+		r = kvm_hv_hypercall_check_gpa(vcpu, hc->ingpa, false);
-+		if (r)
-+			return r;
-+	}
-+
-+	if (access & KVM_MEMORY_EXIT_FLAG_WRITE)
-+		return kvm_hv_hypercall_check_gpa(vcpu, hc->outgpa, true);
-+
-+	return 0;
-+}
-+
-+static s64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- {
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
- 	unsigned long *vcpu_mask = hv_vcpu->vcpu_mask;
-@@ -2054,6 +2115,19 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 	struct kvm_vcpu *v;
- 	unsigned long i;
- 	bool all_cpus;
-+	int r;
-+
-+	/* Slow direct hypercalls from L2 provide a nested GPA. */
-+	if (!hc->fast) {
-+		hc->ingpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, hc->ingpa,
-+					      PFERR_GUEST_FINAL_MASK, NULL, 0);
-+		if (unlikely(hc->ingpa == INVALID_GPA))
-+			return HV_STATUS_INVALID_HYPERCALL_INPUT;
-+	}
-+
-+	r = kvm_hv_hypercall_check_params(vcpu, hc);
-+	if (r)
-+		return r;
- 
- 	/*
- 	 * The Hyper-V TLFS doesn't allow more than HV_MAX_SPARSE_VCPU_BANKS
-@@ -2062,20 +2136,6 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 	 */
- 	BUILD_BUG_ON(KVM_HV_MAX_SPARSE_VCPU_SET_BITS > HV_MAX_SPARSE_VCPU_BANKS);
- 
--	/*
--	 * 'Slow' hypercall's first parameter is the address in guest's memory
--	 * where hypercall parameters are placed. This is either a GPA or a
--	 * nested GPA when KVM is handling the call from L2 ('direct' TLB
--	 * flush).  Translate the address here so the memory can be uniformly
--	 * read with kvm_read_guest().
--	 */
--	if (!hc->fast) {
--		hc->ingpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, hc->ingpa,
--					      PFERR_GUEST_FINAL_MASK, NULL, 0);
--		if (unlikely(hc->ingpa == INVALID_GPA))
--			return HV_STATUS_INVALID_HYPERCALL_INPUT;
--	}
--
- 	if (hc->code == HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST ||
- 	    hc->code == HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE) {
- 		if (hc->fast) {
-@@ -2243,7 +2303,7 @@ static void kvm_hv_send_ipi_to_many(struct kvm *kvm, u32 vector,
- 	}
- }
- 
--static u64 kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-+static int kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- {
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
- 	u64 *sparse_banks = hv_vcpu->sparse_banks;
-@@ -2253,6 +2313,11 @@ static u64 kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 	u64 valid_bank_mask;
- 	u32 vector;
- 	bool all_cpus;
-+	int r;
-+
-+	r = kvm_hv_hypercall_check_params(vcpu, hc);
-+	if (r)
-+		return r;
- 
- 	if (!lapic_in_kernel(vcpu))
- 		return HV_STATUS_INVALID_HYPERCALL_INPUT;
-@@ -2433,11 +2498,16 @@ static int kvm_hv_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
- 	return kvm_hv_hypercall_complete(vcpu, vcpu->run->hyperv.u.hcall.result);
- }
- 
--static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-+static int kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- {
- 	struct kvm_hv *hv = to_kvm_hv(vcpu->kvm);
- 	struct eventfd_ctx *eventfd;
- 	u64 conn_id;
-+	int ret;
-+
-+	ret = kvm_hv_hypercall_check_params(vcpu, hc);
-+	if (ret)
-+		return ret;
- 
- 	if (unlikely(!hc->fast)) {
- 		int ret;
-@@ -2551,11 +2621,30 @@ static bool hv_check_hypercall_access(struct kvm_vcpu_hv *hv_vcpu, u16 code)
- 	return true;
- }
- 
-+static int kvm_hv_hypercall_userspace_exit(struct kvm_vcpu *vcpu,
-+					   struct kvm_hv_hcall *hc)
-+{
-+	int r;
-+
-+	r = kvm_hv_hypercall_check_params(vcpu, hc);
-+	if (r)
-+		return r;
-+
-+	vcpu->run->exit_reason = KVM_EXIT_HYPERV;
-+	vcpu->run->hyperv.type = KVM_EXIT_HYPERV_HCALL;
-+	vcpu->run->hyperv.u.hcall.input = hc->param;
-+	vcpu->run->hyperv.u.hcall.params[0] = hc->ingpa;
-+	vcpu->run->hyperv.u.hcall.params[1] = hc->outgpa;
-+	vcpu->arch.complete_userspace_io = kvm_hv_hypercall_complete_userspace;
-+	return 0;
-+}
-+
- int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
- 	struct kvm_hv_hcall hc;
- 	u64 ret = HV_STATUS_SUCCESS;
-+	s64 r;
- 
- 	/*
- 	 * hypercall generates UD from non zero cpl and real mode
-@@ -2623,7 +2712,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
- 			break;
- 		}
--		ret = kvm_hvcall_signal_event(vcpu, &hc);
-+		r = kvm_hvcall_signal_event(vcpu, &hc);
-+		if (r < 0)
-+			return r;
-+		ret = r;
- 		if (ret != HV_STATUS_INVALID_PORT_ID)
- 			break;
- 		fallthrough;	/* maybe userspace knows this conn_id */
-@@ -2633,7 +2725,7 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
- 			break;
- 		}
--		goto hypercall_userspace_exit;
-+		return kvm_hv_hypercall_userspace_exit(vcpu, &hc);
- 	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST:
- 		if (unlikely(hc.var_cnt)) {
- 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
-@@ -2645,7 +2737,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
- 			break;
- 		}
--		ret = kvm_hv_flush_tlb(vcpu, &hc);
-+		r = kvm_hv_flush_tlb(vcpu, &hc);
-+		if (r < 0)
-+			return r;
-+		ret = r;
- 		break;
- 	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE:
- 		if (unlikely(hc.var_cnt)) {
-@@ -2658,7 +2753,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
- 			break;
- 		}
--		ret = kvm_hv_flush_tlb(vcpu, &hc);
-+		r = kvm_hv_flush_tlb(vcpu, &hc);
-+		if (r < 0)
-+			return r;
-+		ret = r;
- 		break;
- 	case HVCALL_SEND_IPI:
- 		if (unlikely(hc.var_cnt)) {
-@@ -2671,7 +2769,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
- 			break;
- 		}
--		ret = kvm_hv_send_ipi(vcpu, &hc);
-+		r = kvm_hv_send_ipi(vcpu, &hc);
-+		if (r < 0)
-+			return r;
-+		ret = r;
- 		break;
- 	case HVCALL_POST_DEBUG_DATA:
- 	case HVCALL_RETRIEVE_DEBUG_DATA:
-@@ -2692,14 +2793,14 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 			ret = HV_STATUS_OPERATION_DENIED;
- 			break;
- 		}
--		goto hypercall_userspace_exit;
-+		return kvm_hv_hypercall_userspace_exit(vcpu, &hc);
- 	}
- 	case HV_EXT_CALL_QUERY_CAPABILITIES ... HV_EXT_CALL_MAX:
- 		if (unlikely(hc.fast)) {
- 			ret = HV_STATUS_INVALID_PARAMETER;
- 			break;
- 		}
--		goto hypercall_userspace_exit;
-+		return kvm_hv_hypercall_userspace_exit(vcpu, &hc);
- 	default:
- 		ret = HV_STATUS_INVALID_HYPERCALL_CODE;
- 		break;
-@@ -2708,14 +2809,6 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- hypercall_complete:
- 	return kvm_hv_hypercall_complete(vcpu, ret);
- 
--hypercall_userspace_exit:
--	vcpu->run->exit_reason = KVM_EXIT_HYPERV;
--	vcpu->run->hyperv.type = KVM_EXIT_HYPERV_HCALL;
--	vcpu->run->hyperv.u.hcall.input = hc.param;
--	vcpu->run->hyperv.u.hcall.params[0] = hc.ingpa;
--	vcpu->run->hyperv.u.hcall.params[1] = hc.outgpa;
--	vcpu->arch.complete_userspace_io = kvm_hv_hypercall_complete_userspace;
--	return 0;
- }
- 
- void kvm_hv_init_vm(struct kvm *kvm)
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ec151374ca9e..1fcef4a8ac22 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2253,6 +2253,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_HYPERV_ENFORCE_CPUID:
- 	case KVM_CAP_SYS_HYPERV_CPUID:
- #endif
-+	case KVM_CAP_HCALL_FAULT_EXIT:
- 	case KVM_CAP_PCI_SEGMENT:
- 	case KVM_CAP_DEBUGREGS:
- 	case KVM_CAP_X86_ROBUST_SINGLESTEP:
-@@ -4252,6 +4253,10 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		mutex_unlock(&kvm->lock);
- 		break;
- 	}
-+	case KVM_CAP_HCALL_FAULT_EXIT:
-+		kvm->arch.hcall_fault_exit = cap->args[0];
-+		r = 0;
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -7252,25 +7257,28 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x86_vendor_exit);
- 
- #ifdef CONFIG_X86_64
- static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
--			        unsigned long clock_type)
-+			        unsigned long clock_type, unsigned long *ret)
- {
- 	struct kvm_clock_pairing clock_pairing;
- 	struct timespec64 ts;
- 	size_t offset = 0;
-+	bool writable;
-+	unsigned long hva;
- 	u64 cycle;
- 
-+	*ret = -KVM_EOPNOTSUPP;
- 	if (clock_type != KVM_CLOCK_PAIRING_WALLCLOCK)
--		return -KVM_EOPNOTSUPP;
-+		return 0;
- 
- 	/*
- 	 * When tsc is in permanent catchup mode guests won't be able to use
- 	 * pvclock_read_retry loop to get consistent view of pvclock
- 	 */
- 	if (vcpu->arch.tsc_always_catchup)
--		return -KVM_EOPNOTSUPP;
-+		return 0;
- 
- 	if (!kvm_get_walltime_and_clockread(&ts, &cycle))
--		return -KVM_EOPNOTSUPP;
-+		return 0;
- 
- 	clock_pairing.sec = ts.tv_sec;
- 	clock_pairing.nsec = ts.tv_nsec;
-@@ -7278,6 +7286,7 @@ static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
- 	clock_pairing.flags = 0;
- 	memset(&clock_pairing.pad, 0, sizeof(clock_pairing.pad));
- 
-+	*ret = -KVM_EFAULT;
- 	while (offset < sizeof(clock_pairing)) {
- 		gpa_t gpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, paddr + offset,
- 					      PFERR_WRITE_MASK | PFERR_GUEST_FINAL_MASK, NULL, 0);
-@@ -7285,12 +7294,22 @@ static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
- 				   PAGE_SIZE - offset_in_page(gpa));
- 
- 		if (gpa == INVALID_GPA)
--			return -KVM_EFAULT;
-+			return 0;
-+		if (vcpu->kvm->arch.hcall_fault_exit) {
-+			hva = kvm_vcpu_gfn_to_hva_prot(vcpu, gpa_to_gfn(gpa), &writable);
-+			if (kvm_is_error_hva(hva) || !writable) {
-+				kvm_prepare_memory_fault_exit(vcpu, gpa & PAGE_MASK, PAGE_SIZE,
-+							      true, false, false);
-+				return -EFAULT;
-+			}
-+		}
- 		if (kvm_write_guest(vcpu->kvm, gpa, (u8 *)&clock_pairing + offset, len))
--			return -KVM_EFAULT;
-+			return 0;
- 
- 		offset += len;
- 	}
-+
-+	*ret = 0;
- 	return 0;
- }
- #endif
-@@ -7449,7 +7468,8 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 		break;
- #ifdef CONFIG_X86_64
- 	case KVM_HC_CLOCK_PAIRING:
--		ret = kvm_pv_clock_pairing(vcpu, a0, a1);
-+		if (kvm_pv_clock_pairing(vcpu, a0, a1, &ret))
-+			return -EFAULT;
- 		break;
- #endif
- 	case KVM_HC_SEND_IPI:
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 229b3bdb7aed..4e0bab3db95c 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1003,6 +1003,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_PPC_COMPAT_CAPS 250
- #define KVM_CAP_ARM_PMU_V3_STRICT 251
- #define KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES 252
-+#define KVM_CAP_HCALL_FAULT_EXIT 253
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
--- 
-2.52.0
+...
 
+> > > > > =============================
+> > > > > [ BUG: Invalid wait context ]
+> > > > > syzkaller #0 Tainted: G S                 
+> > > > > -----------------------------
+> > > > > syz-executor177/6041 is trying to lock:
+> > > > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: get_partial_node_bulk mm/slub.c:3831 [inline]
+> > > > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> > > > > other info that might help us debug this:
+> > > > > context-{2:2}
+> > > > > locks held by syz-executor177/6041: 1, last CPU#1:
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_read_lock security/tomoyo/common.h:1112 [inline]
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_check_open_permission+0x169/0x3c0 security/tomoyo/file.c:772
+> > > > > stack backtrace:
+> > > > > CPU: 1 UID: 0 PID: 6041 Comm: syz-executor177 Tainted: G S                  syzkaller #0 PREEMPT(full) 
+> > > > > Tainted: [S]=CPU_OUT_OF_SPEC
+> > > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> > > > > Call Trace:
+> > > > >  <IRQ>
+> > > > >  __dump_stack lib/dump_stack.c:94 [inline]
+> > > > >  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+> > > > >  print_lock_invalid_wait_context kernel/locking/lockdep.c:4874 [inline]
+> > > > >  check_wait_context kernel/locking/lockdep.c:4946 [inline]
+> > > > >  __lock_acquire+0xfcc/0x1f40 kernel/locking/lockdep.c:5238
+> > > > >  lock_acquire kernel/locking/lockdep.c:5942 [inline]
+> > > > >  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+> > > > >  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:155 [inline]
+> > > > >  _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:181
+> > > > >  get_partial_node_bulk mm/slub.c:3831 [inline]
+> > > > >  __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> > > > >  refill_objects+0x58/0x410 mm/slub.c:7405
+> > > > >  refill_sheaf mm/slub.c:2885 [inline]
+> > > > >  __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
+> > > > >  alloc_from_pcs mm/slub.c:4850 [inline]
+> > > > >  slab_alloc_node mm/slub.c:4984 [inline]
+> > > > >  __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
+> > > > >  _kmalloc_noprof include/linux/slab.h:991 [inline]
+> > > > >  _kzalloc_noprof include/linux/slab.h:1312 [inline]
+> > > > >  kvm_async_pf_task_wake arch/x86/kernel/kvm.c:224 [inline]
+> 
+> Hmm, this part is OK:
+> 
+>                 if (!dummy) {
+>                         raw_spin_unlock(&b->lock);
+>                         dummy = kzalloc_obj(*dummy, GFP_ATOMIC);
+> 
+> As it releases the raw_spin_lock() before calling kzalloc_obj().
+> 
+> So something else must have disabled preemption/interrupts.
 
+Heh, yeah, the IRQ that kicked all of this off.
+
+> > > > >  __sysvec_kvm_asyncpf_interrupt+0x334/0x610 arch/x86/kernel/kvm.c:338
+> 
+> DEFINE_IDTENTRY_SYSVEC(sysvec_kvm_asyncpf_interrupt)
+> {       
+>         struct pt_regs *old_regs = set_irq_regs(regs);
+>         u32 token;
+>                 
+>         apic_eoi();
+> 
+>         inc_irq_stat(HYPERVISOR_CALLBACK);
+> 
+>         if (__this_cpu_read(async_pf_enabled)) {
+>                 token = __this_cpu_read(apf_reason.token);
+>                 kvm_async_pf_task_wake(token);
+>                 __this_cpu_write(apf_reason.token, 0);
+>                 wrmsrq(MSR_KVM_ASYNC_PF_ACK, 1);
+>         }
+> 
+>         set_irq_regs(old_regs);
+> }
+> 
+> 
+> Is that run in hard interrupt context?
+
+Yep.
+
+> If so, we need to make that a thread for RT kernels if you want to call
+> kzalloc_obj().
+
+Eww.  I can't imagine there's a sane usecase for memory overcommitting a real-time
+guest.  I'd rather just disable PV async #PF support, e.g.
+
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 6b0a5861ccb8..b14b03720525 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -51,7 +51,7 @@
+ 
+ DEFINE_STATIC_KEY_FALSE_RO(kvm_async_pf_enabled);
+ 
+-static int kvmapf = 1;
++static int kvmapf = !IS_ENABLED(CONFIG_PREEMPT_RT);
+ 
+ static int __init parse_no_kvmapf(char *arg)
+ {
