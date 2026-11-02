@@ -1,85 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632333;
-	b=xHfAXoKmm10SMZe2o2Z5Bc0tHnGAfXeXBLY6kzEmOklaG9gZwBuOayGhxVCbUMAK90fK
-	 dVuG1pLq9z+cMZLkRbqH0WUvz2+meuCzzBDuJ/gMIvq6I6z8dfL0KIbYwY5fBZ7hFTTgb
-	 /PoJcAxBEmrSxImiop6qRAvMpqhkGxJbk6k0RbYF96MKSCeGn33UujThIDnuTz262Ngx1
-	 WcykLwVM+7iK0vodhcFiJ3zWJRY+/BlvqT+oHtY6x9UQVJAEI2tyO/cjLSsEzfToYgPQz
-	 u88nHRjC4tft0qwTVbLlJTaGPb71iZRnAfg3EAjR7Oq68KBE/RSqXsX2R65/AUXT2AA==
+	t=1793632573;
+	b=hp3+h99mce1jsrkOjOR6cGNzjEw5hu6rCltx3sfH9BAIzPZj7kn4hl38Xr1FkvDi88JX
+	 r3g4WP5CADUistd5q3XPCaWrWdSxLLOcauL7JOimo4CnJMQw31FQ0hbOKDftlr75N1m46
+	 yfnPrg22FMe7r40WR38B+4XSj2XrvdWBRqSQm8kwqOMGVl7JOP7I+9AunIP1jGTKUkhtZ
+	 TPnzYbiSIBBszD9bK0B/pW5kD+gEwpqLM3qkWwd+iW80AKKaJT68SS5hRsOhWPc/RPPkS
+	 8NPkQT9GFHABT8LHR0TPTHsuFoBdQcwBNsK64w209iCqpEc+wSgQyG3q3Imt52SQQQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632333;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=s7ppLZMAjyyuilbixYy866dZSoM5/UMmIQ8fY8VwQIM=;
-	b=1Dle2zAiRlbSd4Vg94BKAwrnV6dfV1vVSSiaiyOecVR2PjEuV2vYGCAgluyRfxvaRa2s
-	 1ENkOyx5pg86DLFze25A33y6l33LsGRXiVhtudV5nJwoRNV2tHHFA0w/AU9DCsbbNToNA
-	 +1axIrR8wsmBG7DESwxzHpllkNFE8Zk7biLjISm5TGG7S+B2aV6Bxjn9hQ9vEbm8LMCkJ
-	 B4rAWCJnMEtVS+Qo/0th9uOGwyLmy2SfZNh6gwvk3CmAq7OhJEV7Pi/7fR2YXYWsO5DsG
-	 wOB2Xi1pfFUOPXCOXC24YWl3ph8qZ1vJwjsaqm47JUMEf0S0ziYbFBLPuu2Mk31TxnA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632573;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=4FwtvuIAIzzf1W6DoLcxSMo6B2sr2GRT8crxL/9cXAs=;
+	b=RuPiDwg5YhZpz9vKIgkOSTZq7ocBHqK1Kklz1wNM5O/rp5DPA6AldaJOq4LpwdjAvNQK
+	 kj+9ydZ0TPQbnU869Wz/QNa2k1QS4zzLlRz3XMs2XV/YDbSRUfxhcXX3ygJrlCNKYbQGT
+	 DUFxH7EBq/RoDas6G2xZw5dPiVkZWhx1M9OSpXO73HhzO5mWcKDG3jrFTJUUL6k/AjuJE
+	 Wti+iwqtkAlDfaoNyGB+P8LwFno/2jNblqc1WF9I/HlMbFPZQUOqSEMAtLo0DJVCsC3tY
+	 j97glDiQoYnCG9+JzZ/8NYzdcjAnv+lKXtDUxquXYYxNzX+Oqx3laERNTFSwfW8pRGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d5U+AbfK;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9F360771E0;
-	Mon,  2 Nov 2026 15:12:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB9F360771E0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B8XxKZt6;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEB9607B46B;
+	Mon,  2 Nov 2026 15:16:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DEB9607B46B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d5U+AbfK
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BED8B1595;
-	Mon,  2 Nov 2026 07:12:08 -0800 (PST)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8053F3F871;
-	Mon,  2 Nov 2026 07:12:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793632331; bh=m3wJSJtQD9D+ud0ZiYqt81AP0zFjBodMC7qvifLjgJM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5U+AbfKMQ+WQ+H64mUgHOPj+0VxOmTroJphZ7yU3xRTnKcSzCeOPvCZ51upxaez9
-	 1zseJ0VSVrE65X5rYLfPftuaGKIecMKJ7UMt38Z8i6G17tBccd47v2kL5UbnRkZwv2
-	 FGg9aEze2odeZX47fJ5ayfhbvGDPwmGheoxz4Lw0=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	maz@kernel.org,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	tangchengchang@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com,
-	fuad.tabba@linux.dev,
-	mark.rutland@arm.com,
-	seanjc@google.com,
-	rdunlap@infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH v5 13/15] KVM: arm64: Add HDBSS buffer size ioctl for dirty-bitmap mode
-Date: Mon,  2 Nov 2026 15:12:04 +0000
-Message-ID: <auioRICO9Frhk-zT@LeoBrasDK>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20260929103655.85107-14-zhengtian10@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-14-zhengtian10@huawei.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B8XxKZt6
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2EEgfh1950773;
+	Mon, 2 Nov 2026 15:16:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=4FwtvuIAIzzf1W6Do
+	LcxSMo6B2sr2GRT8crxL/9cXAs=; b=B8XxKZt6nTCaYPBYmTv9RR7Oi3FyNYWWM
+	1oUdmMN+yi129AS30WU17SK9ZAiIiXCRc/ubtXhBkCmt+eonyIi2pAxPz7whuezr
+	tkQKHafTvtefMAJ5ILhGpY5L/VOTql173F0CcFJY2VUOB9imHUO8vBemCx4pNrLg
+	XlBLvGvZkvbLpb2zbi0LgO7ujVgnjUvTQA0Mx8nRFKJjBaERejwyZaAbtMKXhva0
+	81z2RRSEDBYLgEzt9bLHlbaz30dnc1YhdmhK7/rCqjkq8lY1YWxTzImkYgoAE/0C
+	62loAQydu1i+uC4UmSbDtiIiQbFhqtlwYwic8+UHHIaofF5pNypnA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn6rd19e6-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 15:16:09 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2Dp8MC932246;
+	Mon, 2 Nov 2026 15:16:09 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hnunjxf4f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 15:16:09 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A2FFJMq22741624
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 2 Nov 2026 15:15:19 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A96F75805A;
+	Mon,  2 Nov 2026 15:16:07 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 720825805C;
+	Mon,  2 Nov 2026 15:16:06 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.57.150])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  2 Nov 2026 15:16:06 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, freude@linux.ibm.com, borntraeger@de.ibm.com,
+        cohuck@redhat.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex.williamson@redhat.com, kwankhede@nvidia.com, fiuczy@linux.ibm.com
+Subject: [PATCH v11 01/14] s390/vfio-ap: Provide function to get the number of queues assigned to mdev
+Date: Mon,  2 Nov 2026 10:14:41 -0500
+Message-ID: <20261102151604.2150055-2-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261102151604.2150055-1-akrowiak@linux.ibm.com>
+References: <20261102151604.2150055-1-akrowiak@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,94 +94,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: xpYKbzNFAAmSo4fXS5gIO6Srwvxfs-VX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA2MCBTYWx0ZWRfX8zm2Iq6gb1uG
+ gMROOw8P9GmMnzLw95F0aQ9eL+JZvyKJl4kOfgkL0CzlyW2osV3Pxt2Wzu5B+UfceM7LE6Ap5uM
+ KapjD5YxMnrsJ3K/WqYjPcj0RJmb1bcsEz63Zy+ey+/mysDLGWyO9UzBmvKxP29tvhiJAE8vNTZ
+ DyhJzrEUmc+QIYuF/6CgSEZelGDiApqAb0pOmE68srmjf0Ot13/VLrfPskXIFgsS2ys44ba1vUf
+ gt90LQuAZ6CH8dlQD3FypKrcH98/bH0WyFS1VAWp2NC0/cewBnKAbvaELD1a/bRehUVE5E9i4CK
+ g6hoip2vZOnMaKx4dZ8pdviOZGEX/DKNtQBe+Yv3jOshZLjHTZRiFNQpPM0QcmLjYQxg/Kj8fCp
+ 6lXqDoFIysZVsi2LERqqesCu2YG9eDdukhfFM8j85Zl11t2ABSOcXLPVa2bTTMGp0002NjjWwNp
+ TGuRINajwLf58bzjYlg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA2MCBTYWx0ZWRfX2UPOQo+ewdtt
+ CgDXOsoHZllELMu9fzfdbINKTa+Xft32qntVt3dj10cisiafAPpXxedzMJz95bj68B8/yq+Tx7S
+ shoqQ+pAdAhn+ccZaNXr7B+XpHvzQQU=
+X-Authority-Analysis: v=2.4 cv=QK391QLL c=1 sm=1 tr=0 ts=6ae8a939 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=yQsB-kB7boqL7geEApIA:9
+X-Proofpoint-ORIG-GUID: xpYKbzNFAAmSo4fXS5gIO6Srwvxfs-VX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_04,2026-11-02_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611020060
 
-On Tue, Sep 29, 2026 at 06:36:53PM +0800, Tian Zheng wrote:
-> In dirty-bitmap mode, a larger HDBSS buffer lets the guest dirty more
-> pages between VM exits, at the cost of memory. The default of one page
-> per vCPU is a reasonable starting point, so allow userspace to opt
-> into a larger buffer via KVM_CAP_ARM_HDBSS_BUFFER_SIZE.
-> 
-> The size is specified in bytes through KVM_ENABLE_CAP and must be a
-> power of two in [PAGE_SIZE, SZ_2M]: the upper bound is the largest
-> HDBSSBR_EL2.SZ encoding, and the power-of-two requirement matches the
-> buddy allocator. It must be set before any vCPU is created: -EINVAL
-> after vCPUs exist, -EBUSY if already set.
-> 
-> The capability is rejected in dirty-ring mode, where the size is
-> pinned by kvm_arch_dirty_ring_size_updated().
-> 
-> KVM_CHECK_EXTENSION returns the configured size for a VM, or SZ_2M
-> when queried globally with a NULL kvm.
-> 
-> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> ---
->  arch/arm64/kvm/arm.c     | 34 ++++++++++++++++++++++++++++++++++
->  include/uapi/linux/kvm.h |  1 +
->  2 files changed, 35 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 5a7046acb62e..eadbf3a88d31 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -19,6 +19,7 @@
->  #include <linux/kvm.h>
->  #include <linux/kvm_irqfd.h>
->  #include <linux/irqbypass.h>
-> +#include <linux/log2.h>
->  #include <linux/sched/stat.h>
->  #include <linux/psci.h>
->  #include <trace/events/kvm.h>
-> @@ -203,6 +204,31 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
->  		r = 0;
->  		set_bit(KVM_ARCH_FLAG_EXIT_SEA, &kvm->arch.flags);
->  		break;
-> +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE: {
-> +		u64 size = cap->args[0];
-> +
-> +		if (!system_supports_hdbss())
-> +			break;
-> +		if (kvm->dirty_ring_size)
-> +			break;
-> +		if (size < KVM_ARM_HDBSS_DEFAULT_SIZE ||
-> +		    size > KVM_ARM_HDBSS_MAX_SIZE)
-> +			break;
-> +		if (!is_power_of_2(size))
-> +			break;
-> +
-> +		mutex_lock(&kvm->lock);
-> +		if (kvm->created_vcpus) {
-> +			r = -EINVAL;
-> +		} else if (kvm->arch.hdbss_buffer_size) {
-> +			r = -EBUSY;
-> +		} else {
-> +			kvm->arch.hdbss_buffer_size = size;
-> +			r = 0;
-> +		}
-> +		mutex_unlock(&kvm->lock);
-> +		break;
-> +	}
->  	default:
->  		break;
->  	}
-> @@ -500,6 +526,14 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->  		else
->  			r = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
->  		break;
-> +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE:
-> +		if (!system_supports_hdbss())
-> +			r = 0;
-> +		else if (kvm)
-> +			r = kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
+Provides a function that returns the number of queues that are or will be
+passed through to a guest when the mdev is attached to a guest.
 
-This whole thing of allowing hdbss_buf_size to be set only once makes 
-everything more complex. Why do we have this limitation again?
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
+---
+ drivers/s390/crypto/vfio_ap_ops.c     | 8 ++++++++
+ drivers/s390/crypto/vfio_ap_private.h | 2 ++
+ 2 files changed, 10 insertions(+)
 
-I mean, if we want to restrict size changes after the first hdbss buffer 
-gets allocated, it makes sense, other than that, I would like to understand 
-the reason for that.
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 373ce574c431..83ba4193bdc3 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -2113,6 +2113,14 @@ static void vfio_ap_mdev_request(struct vfio_device *vdev, unsigned int count)
+ 	release_update_locks_for_mdev(matrix_mdev);
+ }
+ 
++unsigned int vfio_ap_mdev_get_num_queues(struct ap_matrix *ap_matrix)
++{
++	lockdep_assert_held(&matrix_dev->mdevs_lock);
++
++	return bitmap_weight(ap_matrix->apm, AP_DEVICES) *
++	       bitmap_weight(ap_matrix->aqm, AP_DOMAINS);
++}
++
+ static int vfio_ap_mdev_get_device_info(unsigned long arg)
+ {
+ 	unsigned long minsz;
+diff --git a/drivers/s390/crypto/vfio_ap_private.h b/drivers/s390/crypto/vfio_ap_private.h
+index 9bff666b0b35..12d7d240addd 100644
+--- a/drivers/s390/crypto/vfio_ap_private.h
++++ b/drivers/s390/crypto/vfio_ap_private.h
+@@ -152,6 +152,8 @@ struct vfio_ap_queue {
+ 	struct work_struct reset_work;
+ };
+ 
++unsigned int vfio_ap_mdev_get_num_queues(struct ap_matrix *ap_matrix);
++
+ int vfio_ap_mdev_register(void);
+ void vfio_ap_mdev_unregister(void);
+ 
+-- 
+2.53.0
 
-Thanks!
-Leo
