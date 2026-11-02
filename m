@@ -1,97 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=40.107.209.59
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793599941;
-	b=JXaiJNquxK6fFUf4a1LyiYku9n8SlDOUB4OZWeA7rteZL5GNLQ0kpJS9Q+GQBhg4bJj4
-	 /Fr0xxV5ftSAHu6TpfxOWSI+EBVDkNgwOOuRv9zj1Tp2qjhNJ8c/kZdEgVjElryBpxjtE
-	 joVaoZhuJ70iOikiwhMOg3nvn18fNYmikVJOHzzgm+nduQdaYrjBJ+vtnHJUWNSks1X8Q
-	 BeMh4q51USSBDUaF9o8JODGTn8OTdR0I603HttO5Yd0hOj5Xz5S1lnClx5YiZNOX21Ssp
-	 mnuEF3nwaoEYtEVPXbh2do81zBc57IJNt20QLAJ8Yqa+Ok31hyfZl3plKR+1HZWE7qw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793599941;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=2BkXiysxqpfAtecds8Nir9eSmmd2A//cnazFZ3HDBwA=;
-	b=poE0lWg9u1j34Fv3Qf3d9XqWShQsg/+tFZbTFZr7PJWsLT2eD44ix5xOhZ9KWPumifEu
-	 W2jzGWivhRAq5UmVURgAiNI1hAFLHA94PuzyDNcC9WuLJeEi/3ywcAy1wqGRfoCm3NE6b
-	 I262aRemYw58hJv4wpri1u7Z6tB+RxHtRL4tCnLUv3Xbc07l5LRUa7eDIBEbbJepJW1Li
-	 13RWI7mq3q0Dla+OTyUTDWu8T5ab9qM2PuuaClYIaWlg/taRDBa49OLmuzYYTARCgyn+k
-	 40T23Ya+zmi/9qRbmzxSGCkthcSu1fob+bi6QFzIdn5a8yQqfc67SuwmHXlqFDv+8Lg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=ArrFIUSq;
-	arc=fail smtp.remote-ip=40.107.209.59
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012059.outbound.protection.outlook.com [40.107.209.59])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793602293;
+	b=4kRd71Y3ut3ZGFAxxTfPop+py9fTUNj/O3xuLFBK5LdG01uGjFbis3nRIwLsCRymwlUk
+	 EXp5M2U24tmkeetEY2z0hrHGqMhjKcv0ajDOlwCfMwpDiFsIEwbGdXmgIZkhCVpsneOww
+	 pLpmXPrhgPEaj6nYfSpQfEAi9TVdbrk9NPN5upIKQMR5+voekChG8Y5nlIhdvY+gIwya3
+	 E7q9WxFH0/GQBEQnwqf6E7WTTPIqvt46jsAXVqLBUYYsSzktPSDTaDgNuauB4HhVZcMFl
+	 J7iBhgb65/GM7fzwcENsbrh6pFldS1dNiKq2WoO0tcv0sNqMIJF55bRIgZgr9Ib7DKg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793602293;
+	h=DMARC-Filter:Received:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:User-Agent:
+	 MIME-Version:X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:
+	 X-CM-SenderInfo;
+	bh=ZZevhdRaCUZLV5SuEqAfvFvDHw+5jeMC9GpYafkUYlY=;
+	b=AkX+XvlYOx0pwMbVfo4Ct8W+HiiEwozgAPRZrB+cwEUa8smMHe9/Q/MaJm8tcFo6U2Us
+	 he9et4NI2dKPMe1NJ6LnKG5w1wvuJnEhREBGPXumGSmK8c+2XGZkWCudUC+kG+fCiasbR
+	 ktVAkf07+BzB1KLB0nK/bK8oupH3Q3yyP1rcG77EWtI9LCmUKPZPuw7zFUhQvrZ6tawRG
+	 +mtg70PlWs4gO2YqqzhAtZWuMrsiCQ0jy+DdGJMgVstX5B3sqpYiuFjojNfrw5W43wnPM
+	 cXhI7M6BkbPccuMzSZXqb4xnD7UB1ldTXmSkWJJ1XY/BtzuUcNbt+wn4wn1oBibZB7A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=iscas.ac.cn;
+	spf=pass smtp.mailfrom=iscas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.81
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB49A606A326;
-	Mon,  2 Nov 2026 06:12:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB49A606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=ArrFIUSq
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PHy8sxJVWGy5qlCWGJR/hjGtiZDmXmzECR4Tz8CikL7AGW2fh5xWomM8RBk2QZc2Dqma2mtjpxOrF7d4CZsl+maU6z+Y5027V3K8dIDWuU3yAQGgil51wwHnaxh0FtVt+niHOkQhBZiLLKzQZuU5A5J9NO6dNy6ICFD55X5+TLWJFx0NeuPCtZjZ3Lt67UN4+ZidfkSouNhSOI6LMeYFfzlarz8dtisZbHp92pEfeIA3H6+VnmVUA8DvtqQnZ4wxCEwfxK1SHpFhp8pPZ1lz5l5bK7UCXHG2ZiRu9LDLYBQ0NaSqu3FbkQ9aCBNXK9XkMOmjO/GxgKCB6n2r/tlOew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2BkXiysxqpfAtecds8Nir9eSmmd2A//cnazFZ3HDBwA=;
- b=R9jbGZktRxVmzPs6HVNkrG8YArkMXtfMywGKeBmQATnA0VcXavj+T6sjcqWL/Je/oZPp4XrTalsDwPk24BOnha832DqPOQ6NDhG7yNn9QBtBB8wvFapTnO3Ccy7S+8b3vm6VmsnIBSKBlyIFF8h1pQwV/YuRP2/mrH2dLS+U2jkLbMeruOtp0nmr2PLMetHOSqkN5EK2AuG0cTBLNyYsGAcxanmDBmijPWOgdPxSaKgILTLHsK5g7OQdN2KAcMVgvNTg4WLIB5u49Bjss773OH11ukK0rAB5THYBYb0NCiaEvO6sLp6oK9ge2KLk/sxht6W5Fg+NlYEN2v+ooYhUoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2BkXiysxqpfAtecds8Nir9eSmmd2A//cnazFZ3HDBwA=;
- b=ArrFIUSqy8FvTyDAxSYdqj/PvxN9UIHqSxRg6/UNh1pP+BPXy9/jPjfibr9YpGXke3p0JysgCbDBmCxFZxBYj7apKo7fSxqeBisM01YiQlR7QAQoPxZlqf6XLkKzAheZ1WTZLeLwwY6XSduGSGtSlAVgEJJSvTKFtkOdsbClNO8=
-Received: from PH0PR07CA0024.namprd07.prod.outlook.com (2603:10b6:510:5::29)
- by DSSPR12MB999235.namprd12.prod.outlook.com (2603:10b6:8:377::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Mon, 2 Nov
- 2026 06:12:17 +0000
-Received: from PH4PEPF0000B60C.namprd21.prod.outlook.com
- (2603:10b6:510:5:cafe::42) by PH0PR07CA0024.outlook.office365.com
- (2603:10b6:510:5::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.12 via Frontend Transport; Mon, 2
- Nov 2026 06:12:17 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- PH4PEPF0000B60C.mail.protection.outlook.com (10.167.243.87) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.0 via Frontend Transport; Mon, 2 Nov 2026 06:12:17 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 2 Nov
- 2026 00:12:16 -0600
-Received: from [10.136.33.166] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Mon, 2 Nov 2026 00:12:06 -0600
-Message-ID: <69ed0d93-f96d-4baa-a587-fade5a0a3262@amd.com>
-Date: Mon, 2 Nov 2026 11:42:05 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA6D606A324
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 06:51:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CA6D606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [127.0.0.1] (unknown [122.194.100.204])
+	by APP-03 (Coremail) with SMTP id rQCowAA3R5jkMuhqxeIsAA--.45599S2;
+	Mon, 02 Nov 2026 14:51:16 +0800 (CST)
+Message-ID: <27862416b42dd8c13a0266700d361edcd97910e1.camel@iscas.ac.cn>
+Subject: Re: [kvm-unit-tests PATCH 0/7] riscv: ACPI boot and BRS-I SBI tests
+From: Xiang W <wangxiang@iscas.ac.cn>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, pbonzini@redhat.com,
+ 	thuth@redhat.com, sunilvl@oss.qualcomm.com, tech-brs@lists.riscv.org
+Date: Mon, 02 Nov 2026 14:51:16 +0800
+In-Reply-To: <syzvrpkpdg5gjo4q6fgeypshwc33vzlzy3r6bvu5pqwm5iogl6@gewf5shwul3k>
+References: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
+	 <syzvrpkpdg5gjo4q6fgeypshwc33vzlzy3r6bvu5pqwm5iogl6@gewf5shwul3k>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,133 +56,91 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
- disabled by firmware
-To: Borislav Petkov <bp@alien8.de>, Ashish Kalra <Ashish.Kalra@amd.com>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <darwi@linutronix.de>,
-	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>
-References: <cover.1793216372.git.ashish.kalra@amd.com>
- <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
- <20261102052841.GBaugfibOXxGorZKgq@fat_crate.local>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20261102052841.GBaugfibOXxGorZKgq@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH4PEPF0000B60C:EE_|DSSPR12MB999235:EE_
-X-MS-Office365-Filtering-Correlation-Id: d928838a-aeeb-48ee-366c-08df38a83ef7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|376014|7416014|1800799024|6133799003|10067099003|22082099003|18002099003|13003099007|11063799006|4143699003|261021121427099003|261026121527099003|261026140227099003|261022075727099003|261022105027099003|261009223027099003|261028144727099003|261021123027099003|56012099006|260925022911599003|260925021311599003|260925021911599003;
-X-Microsoft-Antispam-Message-Info:
-	lK2LFxPIeN+thkPQjpA8xUgZGq8QW4naMfBspou7JPYLrwa1mxdR2CxpALFuOdt7MejDpKKCyg6Q0Z9RGhnGUcXhZAxgiyItjVgcl8Fs36EGMcm3B2sZSrnhbLMh0c23bbksSyVKK6DZUSLpRYZTPWOi1RuKQ20TLOTrLZozKxZxu1YRNSeZEMRykzNf0o+Ar7MHVMFgGKr8+9a6I97l/eAdF1JASN7EPzJECBw5EdnzFewZ3ePFxKvbGwxQamjfGnzkNXjPAVpH4eQb6VOu8dzIYhH+p40p9A7ou8aZJtzMGnRIsfvElXuAABkLUl04knPrJ5YjFVlPmkizBxI41xf8ssU7JcofkycX+UeND4+DksLfP0p3EhL835/6w8zi0wHI0/KPXdOZw4Px5hYf6ouIXEuojyZOEbrwoJVN5rQc9LLJYzS/Zlbe3SDMxPFRCBsI3B/cacKFzDwfftksN6BtonOqV8Q5oo4wv28zvWd6YSmjL980kwcP1mODeepSReeutPAML6vsIZY5GtZlGyPjm2htY5RTovGJV/bPHFLBOtRHh2lTw8Z7nLAXFBhStSOUqk8K8/Bp3P2e/NkK7U1A9lDr9YNUHO3RiUPutoFNekiK7eOI346fWN7nLoxgiUpAWW3J7zUGtPI08z/jtmUw++JhZfLA6GacVIOcImI=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(376014)(7416014)(1800799024)(6133799003)(10067099003)(22082099003)(18002099003)(13003099007)(11063799006)(4143699003)(261021121427099003)(261026121527099003)(261026140227099003)(261022075727099003)(261022105027099003)(261009223027099003)(261028144727099003)(261021123027099003)(56012099006)(260925022911599003)(260925021311599003)(260925021911599003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	XXKlp3xhjY7QcrYwhZVHn04RnH9Z8LyMHGKs5EtKCagxxa3lFe4Bo6mfOH58Yuf/7gw9jDippSBaEPDyk+An2mpXVtlXRiztOi6A7l0KaX569SSb2VY8IXin86Xv/JxoVQNPdvFGpAVfwevhalI0ITjXfbsm+OR4qsLlis3xiNyDFL9FZd56EqfehnyHGEr+4KQZtyBQPegABF+iOr7V/tprGcKB/2tnRFR2dY/9LRYnETAP9UFf7Kmw5kS/C75sKplzD+G7kow0hq/x8xMFYer5LX55lN67NcbS8qxr/XQxKgM1C5EXNIG3m1K6VjuOOmIpi3K0JB+r7TdEIptfWcQERdck/tINghxSawF2Dyusj1mnouhMkzwylwFiKuPG3boJcFv12UPgFcBegP7SbOKCrabe6KPop7XocnK+RdiZlSWSOAD2Ot7voPJdh7g2
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 06:12:17.0821
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d928838a-aeeb-48ee-366c-08df38a83ef7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	PH4PEPF0000B60C.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSSPR12MB999235
+X-CM-TRANSID:rQCowAA3R5jkMuhqxeIsAA--.45599S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw1kKryrZr18Zw43uFyDJrb_yoW8uF18pa
+	y8Ga1jkws3JF18Zws29w47ur1xuws5Ar43J3WrJ3y7Wrs0vF1IyrZ2qw4q9r4UWr4kW3yq
+	v3ZIvFsYg3WUZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvjb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
+	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1lc2xS
+	Y4AK67AK6r47MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWU
+	twCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUyw
+	ZcUUUUU
+X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
 
-Hello Boris,
+=E5=9C=A8 2026-09-30=E4=B8=89=E7=9A=84 13:22 +0200=EF=BC=8CAndrew Jones=E5=
+=86=99=E9=81=93=EF=BC=9A
+>=20
+> Thanks for this series, Xiang. I'm glad to see kvm-unit-tests getting
+> used. But please make sure you work with the RVI BRS community to ensure
+> your work is aligned with their plans.
+>=20
+> Thanks,
+> drew
+>=20
+Hi Drew,
 
-On 11/2/2026 10:58 AM, Borislav Petkov wrote:
-> Segmented RMP support is advertised via X86_FEATURE_SEGMENTED_RMP, and the
-> firmware enables it via MSR_AMD64_RMP_CFG[SEG_RMP_ENABLED]. The latter can be
-> cleared in platform BIOS by the user, in which case the system runs in
-> contiguous RMP setting.
+Thanks for the review.
 
-nit. In the latter case, SNP is disabled entirely in bsp_determine_snp and
-the system won't continue with contiguous RMP.
+As requested, I have reached out to the RVI BRS community (tech-brs@lists.r=
+iscv.org) to align this work. The mail I sent is included below (also
+CC'ed on this reply):
 
-> snp_probe_rmptable_info() does not clear X86_FEATURE_RMPOPT in the
-> advertised-but-firmware-disabled case.
-> 
-> As a result, this does not prevent snp_enable_rmpopt() from trying to program
-> MSR_AMD64_RMPOPT_BASE, which raises a #GP on the MSR access.
-> 
-> Make sure X86_FEATURE_RMPOPT is cleared in all cases where segmented RMP is
-> not enabled.
-> 
->   [ bp:
->    - Put the commit message on Ozempic
->    - Flip the logic in the function so that the segmented RMP disabled
->      case goes first and the flow gets simpler this way. ]
-> 
-> Fixes: 15d974be0a3b ("x86/sev: Initialize RMPOPT configuration MSRs")
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Link: https://patch.msgid.link/56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com
+---
+Hi BRS TG,
 
-Feel free to include:
+I=E2=80=99m Xiang W from the OpenRuyi team (https://openruyi.cn/). We are w=
+orking on promoting standardized server firmware for RISC-V and are
+particularly interested in making BRS-I practical to implement and test.
 
-Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
+As part of this effort we have been contributing BRS-I related tests in two=
+ places:
 
-> ---
->  arch/x86/virt/svm/sev.c | 21 ++++++++++-----------
->  1 file changed, 10 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index bd70c4d0b774..ff6d17795054 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-> @@ -817,21 +817,20 @@ static bool probe_segmented_rmptable_info(void)
->  
->  bool snp_probe_rmptable_info(void)
->  {
-> -	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
-> -		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
-> +		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
->  
-> -		if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
-> -			if (probe_segmented_rmptable_info())
-> -				return true;
-> +		return probe_contiguous_rmptable_info();
-> +	}
->  
-> -			setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-> -			return false;
-> -		}
-> -	} else {
-> -		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-> +	rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
-> +	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
-> +		if (probe_segmented_rmptable_info())
-> +			return true;
->  	}
->  
-> -	return probe_contiguous_rmptable_info();
-> +	setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-> +	return false;
->  }
->  
->  /*
+1. FWTS (ACPI / SMBIOS)
+   - https://github.com/fwts/fwts/pull/43
+   - https://github.com/fwts/fwts/pull/47
+   - https://github.com/fwts/fwts/pull/48
 
--- 
-Thanks and Regards,
-Prateek
+2. kvm-unit-tests (SBI requirements)
+   - https://lore.kernel.org/kvm-riscv/20260924033945.176581-1-wangxiang@is=
+cas.ac.cn/T/
+   - (current branch: https://github.com/openRuyi-Project/kvm-unit-tests/tr=
+ee/brs-i)
+
+Andrew Jones reviewed the kvm-unit-tests series and asked us to make sure t=
+he work is aligned with the RVI BRS community=E2=80=99s plans. That is the
+main reason for this mail.
+
+We would like to:
+
+- Confirm that the direction we are taking (BRS-I ACPI/SMBIOS checks in fwt=
+s + SBI requirement tests in kvm-unit-tests) matches the TG=E2=80=99s
+expectations.
+- Understand whether there is already planned or ongoing work on BRS-I test=
+ coverage that we should coordinate with.
+- Get guidance on the known discrepancy in OE_SBI_060_010 (brs_tests.adoc l=
+ists Smcsrind + Smcdeleg, while the normative text only mentions the
+S-mode extensions, and S-mode ISA strings do not normally contain M-mode ex=
+tensions).
+
+Any feedback on priorities, existing test plans, or preferred places to con=
+tribute would be very helpful.
+
+Thanks,
+Xiang W
+OpenRuyi / ISCAS
+wangxiang@iscas.ac.cn
+---
+
+Please let me know if anything else is needed.
+
+Thanks,
+Xiang
 
