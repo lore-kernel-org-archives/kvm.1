@@ -1,72 +1,72 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641522;
-	b=UZ2Dw+wbTwTEOd2Ar6DcKkYBWpNIAttHzRrW/IT2c2Y9jFeO1cKK7uRgUtcMPNgZoXra
-	 5Eqvb2CLhKmTfHMLgnPPiec3SRMAsAGxT2g0SjH/FboOI4LRGzMutrYX96QVZ9NcLIUUJ
-	 5pbInWIz7EHIcGQWqXE7cpNz85b73LgdYMItxJArmdbWcSj3OyhT2ry8+zJ+eMZqIK2dw
-	 SPXzIi/ApeqR/dIsi8UMxT/r3TFBfgHNG7GUIddOJfUz8GH3qxzOhDzw3dlJ+qoVqLFTd
-	 d7ip6WhIUSWCOrZRQMg/F7+rZFpHZK0mZmWyng7s6/H8pAerq1sKao990XZk8P/L8Hw==
+	t=1793641533;
+	b=flbNbnrJpgdG5jDHSVUd4kejnCskqAImVy21H6yr3phqXd+woJrufs9v0QLV+JIG7udm
+	 15udSHYJ2IQ0koqOWkkoCOxthi30Dm8zHI/7HzumoLc+uKj5bsi8QWWd+RUj8a/nZx1VA
+	 n0niGvgecn0ndcb73v6iV+qK+orUEMLLWMXhh9gr7yPWzQH32su9SKq45UPrp8ZrC1gQj
+	 pqsiDot922jRKFwDCXcLmNqpCWFGh2ifNoqKm4k84aEt+dTtT19lcbBxrrgxRhxoESD6v
+	 v0R2XpVzYKKetcVSUAOgGCL+gciLl/CvbTn//i3VdZY6IRj336CUOifLc8IytkkieMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641522;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641533;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=2r8eubFmvp9jwY6M2KhztrbWPT112O9jaAuVTtb9jAk=;
-	b=HHpm/V64qHYEuXggT7UuWiByt6T7piKPhljvOHuktO7X0TfjkPkacV69OZY5q4deYFCV
-	 a5+lDNsjlaIiNhVoKYyOXA27QSAp2/AnPVTgTCFF3QXdkSRUxgLirQ0uW8BRq/cgineqg
-	 wATnAJLtbEbQ4DswCNM1Dttp4jOgHJBR/cPtcL2a+bp/SGwJYC1dNTPvodKUnq7s75Hlp
-	 +PcnEjn+QthEv1Jo5LpEsYiUlQ4H4im4KdsaQVyGNANq9jSrhQQ1JP+/wDd0qNasyKddm
-	 EF/9L0HuwUAl/6mVnaWSaPMW7wgR7Q0tdRzf+iHjjPl1nYpCCqp+DsBC+YN9g3wvQLw==
+	bh=hivwqgp4LiwM4/VjEYMpC9tUrV6b8nagwQwd5M6FXY0=;
+	b=QIPkwK2K6rAUEVEEv/3PKqN+PY7yGjH/s8K9mbcx90blJ43LEA4oYjuCReyr2uSeZuAe
+	 JvFmvrvNv0JNnfpCiqox42f5LyNcaC5Imy0QsC89ZuVAgh5lSHL2wmhSjINCzG7DaDWb0
+	 vDMGnZOd3JYqzQmWS/36FsKckv4+3b+h/ESc6N+A3bsimOgNeDNB3ZVy7FD1FtkybV0JN
+	 f+j8encPB+xENOEj8Fj0fM9WOG4GaQkFHsAoXkagKRmxLYT9yk/vzS7gnpnjyKJf40mXS
+	 tfKcjCaNs+f+qBuxMc3EoK1osSeJTp7mqRDZlpt/rQcKZdA/LWG1eO89aPMQbCN8w6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Uwhw6Slh;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gnt6CG3P;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C1A6087601
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:45:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9C1A6087601
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47A36072C6C
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:45:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A47A36072C6C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Uwhw6Slh
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gnt6CG3P
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793641521;
+	s=mimecast20190719; t=1793641531;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2r8eubFmvp9jwY6M2KhztrbWPT112O9jaAuVTtb9jAk=;
-	b=Uwhw6SlhXqEcMW8r/YcGx50SlCdRPlu6w0+p90q3jH0QrkPX6scdC2+i12yX/7OeXVDsbj
-	XfpIJUcFvhqkXCpZwFEPX0iREfJBTjkTjbz/F8X7LcraBmmA108+E4tIaKMsgGv16nHR3j
-	v9RRvYY9Al3gJOI5WVXC0JP/tM85cEQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=hivwqgp4LiwM4/VjEYMpC9tUrV6b8nagwQwd5M6FXY0=;
+	b=gnt6CG3PY6+FXCPk0Ccv5TA8OY94HoKblijwQTwszWnfsP8EDHOcsuhvwHRY4Uucdj+pvX
+	RZASDR6EfffictrBzQiuhRdnB3JQxIdf2ZLu1SCI6KPaLTkzJDRni5ti7qCOaKXfp1DgkQ
+	2MWQX5E38YffT2TM8od1uUVVFlD2a0s=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-b_GAFknNNdex6iDpLfwtzQ-1; Mon,
- 02 Nov 2026 12:45:18 -0500
-X-MC-Unique: b_GAFknNNdex6iDpLfwtzQ-1
-X-Mimecast-MFC-AGG-ID: b_GAFknNNdex6iDpLfwtzQ_1793641517
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-mc2VB7-cNeavdXdt5hy-bA-1; Mon,
+ 02 Nov 2026 12:45:27 -0500
+X-MC-Unique: mc2VB7-cNeavdXdt5hy-bA-1
+X-Mimecast-MFC-AGG-ID: mc2VB7-cNeavdXdt5hy-bA_1793641526
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 00B2B1956070;
-	Mon,  2 Nov 2026 17:45:17 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47E40195606A;
+	Mon,  2 Nov 2026 17:45:26 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7FAAA1956087;
-	Mon,  2 Nov 2026 17:45:16 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C8D5F26C;
+	Mon,  2 Nov 2026 17:45:25 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Subject: [PATCH 22/45] KVM: Encapsulate memattrs array into anonymous struct
-Date: Mon,  2 Nov 2026 12:44:49 -0500
-Message-ID: <20261102174512.8903-6-pbonzini@redhat.com>
+Subject: [PATCH 36/45] KVM: x86: Propagate memory faults through load_pdptrs()
+Date: Mon,  2 Nov 2026 12:45:03 -0500
+Message-ID: <20261102174512.8903-20-pbonzini@redhat.com>
 In-Reply-To: <20261102174130.8779-1-pbonzini@redhat.com>
 References: <20261102174130.8779-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -80,98 +80,201 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+load_pdptrs() returns a 0/1 value, and therefore its callers do not
+distinguish memory attribute errors (including from nested GPA
+translation) from other failures.  Change them to propagate
+negative errno.
 
-The metadata surrounding memory attributes is about to grow, so
-encapsulate the memory attributes array within an anonymous struct to
-provide namespacing.
-
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://patch.msgid.link/20260918135030.171564-19-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/linux/kvm_host.h |  8 +++++---
- virt/kvm/kvm_main.c      | 10 +++++-----
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ arch/x86/kvm/regs.c       | 43 ++++++++++++++++++++++++++++-----------
+ arch/x86/kvm/svm/nested.c | 10 +++++----
+ arch/x86/kvm/svm/svm.c    |  4 ++--
+ arch/x86/kvm/vmx/nested.c |  6 ++++--
+ 4 files changed, 43 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 1974cd8d361f..4a1985fe2737 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -876,8 +876,10 @@ struct kvm {
- 	struct notifier_block pm_notifier;
- #endif
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
--	/* Protected by slots_lock (for writes) and RCU (for reads) */
--	struct xarray mem_attr_array;
-+	struct {
-+		/* Protected by slots_lock (for writes) and RCU (for reads) */
-+		struct xarray array;
-+	} mem_attrs;
- #endif
- 	char stats_id[KVM_STATS_NAME_SIZE];
- };
-@@ -2609,7 +2611,7 @@ static inline bool kvm_mem_attributes_may_exec(u64 attrs)
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- static inline unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
- {
--	return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
-+	return xa_to_value(xa_load(&kvm->mem_attrs.array, gfn));
- }
+diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+index 3969b769f1c1..b7c25b16ffca 100644
+--- a/arch/x86/kvm/regs.c
++++ b/arch/x86/kvm/regs.c
+@@ -176,7 +176,12 @@ int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3)
+ 	/* Note the offset, PDPTRs are 32 byte aligned when using PAE paging. */
+ 	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(real_gpa), pdpte,
+ 				       cr3 & GENMASK(11, 5), sizeof(pdpte));
+-	if (ret < 0)
++	if (ret == -EFAULT) {
++		kvm_prepare_memory_fault_exit(vcpu, real_gpa & PAGE_MASK, PAGE_SIZE,
++					      false, false, false);
++		return ret;
++	}
++	if (ret)
+ 		return 0;
  
- bool kvm_vm_mem_attributes_valid(struct kvm *kvm, unsigned long attrs);
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index c7b8d1bcf893..635730b5930c 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1135,7 +1135,7 @@ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
- 	rcuwait_init(&kvm->mn_memslots_update_rcuwait);
- 	xa_init(&kvm->vcpu_array);
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
--	xa_init_flags(&kvm->mem_attr_array, XA_FLAGS_ACCOUNT);
-+	xa_init_flags(&kvm->mem_attrs.array, XA_FLAGS_ACCOUNT);
- #endif
- 
- 	INIT_LIST_HEAD(&kvm->gpc_list);
-@@ -1320,7 +1320,7 @@ static void kvm_destroy_vm(struct kvm *kvm)
- 	srcu_barrier(&kvm->srcu);
- 	cleanup_srcu_struct(&kvm->srcu);
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
--	xa_destroy(&kvm->mem_attr_array);
-+	xa_destroy(&kvm->mem_attrs.array);
- #endif
- 	kvm_arch_free_vm(kvm);
- 	preempt_notifier_dec();
-@@ -2504,7 +2504,7 @@ u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
- bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 					unsigned long mask, unsigned long attrs)
+ 	for (i = 0; i < ARRAY_SIZE(pdpte); ++i) {
+@@ -264,6 +269,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_post_set_cr0);
+ int kvm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
  {
--	XA_STATE(xas, &kvm->mem_attr_array, start);
-+	XA_STATE(xas, &kvm->mem_attrs.array, start);
- 	unsigned long supported_attrs;
- 	unsigned long index;
- 	void *entry;
-@@ -2668,7 +2668,7 @@ static int kvm_set_vm_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 	 * allocates, so no reservations are needed when clearing.
+ 	unsigned long old_cr0 = kvm_read_cr0(vcpu);
++	int r;
+ 
+ 	if (!kvm_is_valid_cr0(vcpu, cr0))
+ 		return 1;
+@@ -286,9 +292,11 @@ int kvm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
+ 	}
+ #endif
+ 	if (!(vcpu->arch.efer & EFER_LME) && (cr0 & X86_CR0_PG) &&
+-	    is_pae(vcpu) && ((cr0 ^ old_cr0) & X86_CR0_PDPTR_BITS) &&
+-	    !load_pdptrs(vcpu, kvm_read_cr3(vcpu)))
+-		return 1;
++	    is_pae(vcpu) && ((cr0 ^ old_cr0) & X86_CR0_PDPTR_BITS)) {
++		r = load_pdptrs(vcpu, kvm_read_cr3(vcpu));
++		if (r <= 0)
++			return r ?: 1;
++	}
+ 
+ 	if (!(cr0 & X86_CR0_PG) &&
+ 	    (is_64_bit_mode(vcpu) || kvm_is_cr4_bit_set(vcpu, X86_CR4_PCIDE)))
+@@ -315,6 +323,7 @@ int kvm_set_cr3(struct kvm_vcpu *vcpu, unsigned long cr3)
+ {
+ 	bool skip_tlb_flush = false;
+ 	unsigned long pcid = 0;
++	int r;
+ #ifdef CONFIG_X86_64
+ 	if (kvm_is_cr4_bit_set(vcpu, X86_CR4_PCIDE)) {
+ 		skip_tlb_flush = cr3 & X86_CR3_PCID_NOFLUSH;
+@@ -335,8 +344,11 @@ int kvm_set_cr3(struct kvm_vcpu *vcpu, unsigned long cr3)
+ 	if (!kvm_vcpu_is_legal_cr3(vcpu, cr3))
+ 		return 1;
+ 
+-	if (is_pae_paging(vcpu) && !load_pdptrs(vcpu, cr3))
+-		return 1;
++	if (is_pae_paging(vcpu)) {
++		r = load_pdptrs(vcpu, cr3);
++		if (r <= 0)
++			return r ?: 1;
++	}
+ 
+ 	if (cr3 != kvm_read_cr3(vcpu))
+ 		kvm_mmu_new_pgd(vcpu, cr3);
+@@ -411,6 +423,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_post_set_cr4);
+ int kvm_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ {
+ 	unsigned long old_cr4 = kvm_read_cr4(vcpu);
++	int r;
+ 
+ 	if (!kvm_is_valid_cr4(vcpu, cr4))
+ 		return 1;
+@@ -420,10 +433,12 @@ int kvm_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 			return 1;
+ 		if ((cr4 ^ old_cr4) & X86_CR4_LA57)
+ 			return 1;
+-	} else if (is_paging(vcpu) && (cr4 & X86_CR4_PAE)
+-		   && ((cr4 ^ old_cr4) & X86_CR4_PDPTR_BITS)
+-		   && !load_pdptrs(vcpu, kvm_read_cr3(vcpu)))
+-		return 1;
++	} else if (is_paging(vcpu) && (cr4 & X86_CR4_PAE) &&
++		   ((cr4 ^ old_cr4) & X86_CR4_PDPTR_BITS)) {
++		r = load_pdptrs(vcpu, kvm_read_cr3(vcpu));
++		if (r <= 0)
++			return r ?: 1;
++	}
+ 
+ 	if ((cr4 & X86_CR4_PCIDE) && !(old_cr4 & X86_CR4_PCIDE)) {
+ 		/* PCID can not be enabled when cr3[11:0]!=000H or EFER.LMA=0 */
+@@ -579,7 +594,7 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 			      int *mmu_reset_needed, bool update_pdptrs)
+ {
+-	int idx;
++	int idx, r;
+ 	struct desc_ptr dt;
+ 
+ 	if (!kvm_is_valid_sregs(vcpu, sregs))
+@@ -616,7 +631,11 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	if (update_pdptrs) {
+ 		idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		if (is_pae_paging(vcpu)) {
+-			load_pdptrs(vcpu, kvm_read_cr3(vcpu));
++			r = load_pdptrs(vcpu, kvm_read_cr3(vcpu));
++			if (r < 0) {
++				srcu_read_unlock(&vcpu->kvm->srcu, idx);
++				return r;
++			}
+ 			*mmu_reset_needed = 1;
+ 		}
+ 		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 73f1f40aad47..a512e0e8dd93 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -720,7 +720,7 @@ static int nested_svm_load_cr3(struct kvm_vcpu *vcpu, unsigned long cr3,
+ 	if (reload_pdptrs && is_pae_paging(vcpu)) {
+ 		if (nested_npt)
+ 			kvm_register_mark_for_reload(vcpu, VCPU_REG_PDPTR);
+-		else if (CC(!load_pdptrs(vcpu, cr3)))
++		else if (CC(load_pdptrs(vcpu, cr3) <= 0))
+ 			return -EINVAL;
+ 	}
+ 
+@@ -2132,11 +2132,13 @@ static bool svm_get_nested_state_pages(struct kvm_vcpu *vcpu)
+ 		 * nGPA translation. For !nNPT, reload eagerly unless userspace
+ 		 * already supplied authoritative PDPTRs via KVM_SET_SREGS2.
+ 		 */
+-		if (nested_npt_enabled(to_svm(vcpu)))
++		if (nested_npt_enabled(to_svm(vcpu))) {
+ 			kvm_register_mark_for_reload(vcpu, VCPU_REG_PDPTR);
+-		else if (!vcpu->arch.pdptrs_from_userspace &&
+-			 CC(!load_pdptrs(vcpu, vcpu->arch.cr3)))
++		} else if (!vcpu->arch.pdptrs_from_userspace &&
++			 CC(load_pdptrs(vcpu, vcpu->arch.cr3) <= 0)) {
++			kvm_prepare_emulation_failure_exit(vcpu);
+ 			return false;
++		}
+ 	}
+ 
+ 	if (!nested_svm_merge_msrpm(vcpu))
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 2601f8359137..a8b3d57aabef 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1587,8 +1587,8 @@ static void svm_cache_reg(struct kvm_vcpu *vcpu, enum kvm_reg reg)
+ 		 * When !npt_enabled, vcpu->pdptrs[] is already available since
+ 		 * it is always updated per SDM when moving to CRs.
+ 		 */
+-		if (npt_enabled)
+-			load_pdptrs(vcpu, kvm_read_cr3(vcpu));
++		if (npt_enabled && load_pdptrs(vcpu, kvm_read_cr3(vcpu)) < 0)
++			kvm_vm_dead(vcpu->kvm);
+ 		break;
+ 	default:
+ 		KVM_BUG_ON(1, vcpu->kvm);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index f6994a95523a..8c110f3d9cc3 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -1240,7 +1240,7 @@ static int nested_vmx_load_cr3(struct kvm_vcpu *vcpu, unsigned long cr3,
+ 	 * must not be dereferenced.
  	 */
- 	for (i = start; entry && i < end; i++) {
--		r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
-+		r = xa_reserve(&kvm->mem_attrs.array, i, GFP_KERNEL_ACCOUNT);
- 		if (r)
- 			goto out_unlock;
+ 	if (reload_pdptrs && !nested_ept && is_pae_paging(vcpu) &&
+-	    CC(!load_pdptrs(vcpu, cr3))) {
++	    CC(load_pdptrs(vcpu, cr3) <= 0)) {
+ 		*entry_failure_code = ENTRY_FAIL_PDPTE;
+ 		return -EINVAL;
+ 	}
+@@ -3454,8 +3454,10 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+ 		 * the guest CR3 might be restored prior to setting the nested
+ 		 * state which can lead to a load of wrong PDPTRs.
+ 		 */
+-		if (CC(!load_pdptrs(vcpu, vcpu->arch.cr3)))
++		if (CC(load_pdptrs(vcpu, vcpu->arch.cr3) <= 0)) {
++			kvm_prepare_emulation_failure_exit(vcpu);
+ 			return false;
++		}
+ 	}
  
-@@ -2678,7 +2678,7 @@ static int kvm_set_vm_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 	kvm_handle_gfn_range(kvm, &pre_set_range);
  
- 	for (i = start; i < end; i++) {
--		r = xa_err(xa_store(&kvm->mem_attr_array, i, entry,
-+		r = xa_err(xa_store(&kvm->mem_attrs.array, i, entry,
- 				    GFP_KERNEL_ACCOUNT));
- 		KVM_BUG_ON(r, kvm);
- 		cond_resched();
 -- 
 2.52.0
 
