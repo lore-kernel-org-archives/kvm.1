@@ -1,62 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.113
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793582531;
-	b=jvyV/hxyg8rEZbLDE7cJXmQ/tPmRoHtTHWXl829RiEkfmTme5vDLYF6HADZt8lLX7mSt
-	 PwOWPx1Js/2LHdlXSvPeDqXXQ4jQGcbKWmIWahTAiDFA/Y8Wlf2x9lmh//QAC03tZBkp+
-	 GuE+c2PWbHDTR2JZIeGg9jn8nD8Ebf8dQII2k8eAATVAQjDWwmrYlLZPXhm+Aymd5mbQM
-	 TJd1DzQLi6cTwJ2C45Ap895fZIugraEWnh4HOTd46l8Yyt9U+WHEQLMmU9TgE+FyT8UbF
-	 IRL9No2jWeCuD55zbQc65d7m2pwuG3r6GP8wPRvjhARsQ6oaNLzpgwgtcQhS/nUYGbw==
+	t=1793583948;
+	b=5tU+29zVPy4kFtsJvsvLBDrEq+AK4PWkpIlvd5Uwn1wMjRGr8jug8W6f4YODcxxpHlTt
+	 bSh6p1hWUbzE6d+Z2GxHxhB3rLOUtDX5BmnzFZ2MuRVuEVnSqKHSyp/+wkxHfCSaQ6Beb
+	 uVw230G3c8SkcIoZCWfISDLdlm+PB7XIKxAdof+LPoLeSd+knQIdw6lMyppxIx7RVar+b
+	 Ch4bRPezuXUt/rB00vUIaSaNQ5KTfAyyvTUsZSW7uSCiQug/ibt5KPdnVGfEgq6DYTGP/
+	 LdYSWP2q5ET1zmqEdPvMpF37LaaSKgp8lmYH7tIxc7xxqkEwgFaAUzFsmDnSEy98ppQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793582531;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:From:Subject:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=C5gqpTOgkDU//zQkGOQKjOKsqsvBDDMS+gbejxMeVdk=;
-	b=r1jk7OLvcBx//RbsjTw+M51BupX6xk1APaIKGgw4oiraqYGsVxNEcKk9/VmV8YdF67m+
-	 6muAyAFYhp07T/6hpsDAMzotn0UuY+i4Z8caFLZCHa5GclZTHgbyTPJiBm3o21tca7Lst
-	 gnNHBkXKvLcLjW1jUYFDiLMEZMYKYyCybXm3g7Ks2jA/dD3m2ojyeUkMCFVuRFjeGcysY
-	 7nfDzhxcAh5RXUKY+Qq2Ao+87aqn77FyBhE7Ean4ofmaA4rU7TpQZufJUVusWAM1SkjdN
-	 g0BSvQW1nrqtZa0BTHYLs2QdNG4ldoPq1+fUt/oTXc+ft041LP4R1rxJCs9kPI1aztQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793583948;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=9uLkggi5jeL9sGYQHyTyByYxkgZ/xZRTq5JwmLkTNLA=;
+	b=m2VRvwF79Up3VW2lnaFWOi+y6HNnbIPUiUmCbiSgKOx0d8ThSNomIBjuSY4uY52QVX4m
+	 kCMR2hhD3enTQq/FQXrrhvAkhgEbt7UN+EwzqvuS8GCRxKQ41MAJtf1hXHRXngbrtPGRV
+	 lI7SBqYAfSi8FYhl9arkSyrGB6wgXxGWoPUgGztAoPubzUZcLHzcZMCgLcH0N0/jRYlP1
+	 8e+OS+F6QdsY0JdJrTi3jx7jluSwTy544lJxYKgEU4R0wVQvLOFGrQcyCcfT7E9UPhBcV
+	 lttIlMNcRRn5EFyh+b0YIH2yT5AjmRumYKX94tdWQlrbJXzOgTRysG4zD3Iik9VVz3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rbox.co;
-	spf=pass smtp.mailfrom=rbox.co;
-	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=I2EnYMrr;
-	arc=none smtp.remote-ip=185.226.149.37
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=CRggC1mK;
+	arc=none smtp.remote-ip=115.124.30.113
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF74606A324;
-	Mon,  2 Nov 2026 01:22:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BF74606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31300606A329;
+	Mon,  2 Nov 2026 01:45:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31300606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=I2EnYMrr
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1xNgkL-008BKP-AU; Mon, 02 Nov 2026 02:22:01 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=C5gqpTOgkDU//zQkGOQKjOKsqsvBDDMS+gbejxMeVdk=; b=I2EnYMrrFCOKTtqiYFvChN8tuO
-	Cy6ULEkHqZw8Q+rhppEMB19ro7BO6VuN7dn5ELjJpjzLDnCsLnHAmJUg76QVbr15RlNupVPczMgOt
-	WYkrmzXN0jXh8lEMvXbiTMmKmjoXOSWj46V1Cq2SE+xjtzOUeBeI2TCoF+OAImGTyva3Ujp36uUn2
-	+OMa3CNuLMCPwwJtY0Kp5TaNEtIzTJgcWZ1rDSglQuY4CGsVryG5zGIVdAkk8GgEeZN9Yd8LC/G5i
-	eU1Z+j1RLVNA9qCUpGXnxdd7hU17+050tLzAXhcYSJFagJ/wJ9TbMYxkYmr5DaiWwyI0KVcfok/4+
-	uvU/cxWw==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1xNgk3-00069h-Pc; Mon, 02 Nov 2026 02:21:43 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1xNgjp-00AfUJ-El;
-	Mon, 02 Nov 2026 02:21:29 +0100
-Message-ID: <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
-Date: Mon, 2 Nov 2026 02:21:27 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=CRggC1mK
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793583938; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=9uLkggi5jeL9sGYQHyTyByYxkgZ/xZRTq5JwmLkTNLA=;
+	b=CRggC1mKI3N/yLDnJQssAlkLaGzOBYcNXxkFOVWxQUwTZQhKilcFns2xyB7Oo85zrYIZb3MsDDpIXvFAY8V9yY0pMDI0S96YNUditCm8Tj8V34CR7c3BjNqEGE3ZUcVLgLzledZQsihRjHP+qStlFuTcUD9xRzNGY3FbYjFBw74=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R741e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0XDrYjc._1793583936;
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0XDrYjc._1793583936 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 02 Nov 2026 09:45:36 +0800
+Date: Mon, 2 Nov 2026 09:45:36 +0800
+From: Yao Yuan <yaoyuan@linux.alibaba.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, Zhou Wang <wangzhou1@hisilicon.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] KVM: arm64: Add ACCDATA_EL1 to the sysreg array
+Message-ID: <7s5ptzeolghvb6aplrf4cy3kwxeh6hvca5clneexutbvz3u3rr@g5ejdynebrnk>
+References: <20261025075138.2919734-1-fuad.tabba@linux.dev>
+ <20261025075138.2919734-3-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,119 +66,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH net-next v4 4/7] vsock: add a netlink command to assign
- the g2h device to a netns
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Donald Hunter
- <donald.hunter@gmail.com>, Eric Dumazet <edumazet@kernel.org>,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, sargun@sargun.me,
- jlinbox@meta.com
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
- <20261020-vsock-guest-ns-v4-4-047527cfccfc@meta.com>
- <atjZZP2ebhXKzMxL@sgarzare-redhat>
- <atld3+5LKmGxJ8+s@devvm29614.prn0.facebook.com>
- <atnjOZjKUBagRVWq@sgarzare-redhat>
- <d946003a-8bec-4e8b-89a3-05eeb96780cc@rbox.co>
- <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261025075138.2919734-3-fuad.tabba@linux.dev>
 
-On 10/30/26 21:30, Bobby Eshleman wrote:
->>>> Yeah its all kind of a pain. The problem is that we need to hold
->>>> sock_lock to set sk_state and sk_err, but can't acquire it under the
->>>> table lock. Instead, we grab the socket ref sock_hold under the table
->>>> lock to guarantee it stays alive between releasing the table lock and
->>>> grabbing the socket lock.
->>>>
->>>> I was really tempted to not do this lock_sock dance though. The race
->>>> condition I'm avoiding here is that if this reset races with an RST
->>>> receive, then the socket could end up with TCP_CLOSING + sk_err
->>>> ECONNRESET... but I'm not sure this actually propagates up into a real
->>>> problem for any potential user.
->>
->> Right, vsock_connect() is fragile. Two things to be cautious about:
->> 1. Don't let it reset the already connected socket. Because that would
->> allow user to "re-connect()" and make mess in connected_table.
->> 2. Don't let it re-assign transport of an already connected socket. Because
->> that breaks the contract in few places.
->>
->> State 1 is not an issue: vsock_g2h_reset_unreachable() calls
->> __vsock_remove_connected().
->>
->> State 2 may be problematic: if vsock_g2h_reset_unreachable() sets TCP_CLOSE
->> when connect() is scheduled out, then after the wake-up sock may get reset
->> to SS_UNCONNECTED. Then user re-connect()s and hits the transport
->> re-assignment logic. I'm worried that, as we re-assign, someone may be
->> holding a reference to such "connected" (even if not in connected_table
->> anymore) vsock.
-> 
-> I see path you're looking at... after vsock_connect() gets scheduled
-> back in we set TCP_CLOSE/SS_UNCONNECTED if sock_error returns non-zero.
-> Could you elaborate on your last concern there about someone holding a
-> reference? I'm not sure I fully understood.
+On Sun, Oct 25, 2026 at 07:51:35AM +0800, Fuad Tabba wrote:
+> From: Marc Zyngier <maz@kernel.org>
+>
+> Make ACCDATA_EL1 a first-class citizen, and add it to the sysreg
+> array. Visibility is conditioned on the feature being enabled.
+>
 
-Ah, sorry, let me explain. This case reminded me of the vsock's TCP_CLOSING
-bug[1]: reporter mentioned vsk->trans getting freed when skb was still in
-flight. I did not reproduce the exact scenario, but it did sound plausible
-and I thought it applies here: virtio_transport_destruct() frees vsk->trans
-the moment vsock_loopback_work() invokes virtio_transport_consume_skb_sent().
+Hi Tabba,
 
-Now, to get there let's start with vsock_connect() setting SS_UNCONNECTED
-(on a connected) socket after vsock_g2h_reset_unreachable(). Then user is
-able to re-assign the transport, which involves
-virtio_transport_destruct(). But since we're dealing with a connected
-socket, (before the reset) some send() might have triggered
-vsock_loopback_work(). Does this make sense to you?
+LGTM.
+Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
 
-Another thing is this feature of vsock_assign_transport(): in some
-re-assign failure paths you may end up with vsk->transport = NULL. In the
-past this caused issues with sockmap: see WARN_ON_ONCE in
-vsock_bpf_recvmsg(). Problem here is that normally vsock gets removed from
-sockmap on close(), but in our (reset+reassign) case close() is never invoked.
-
-[1]: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
-
->> So I don't know, maybe it's vsock_connect() that should be fixed/hardened
->> instead?
->>
->> Or at least disallow transport *re*-assignment? Does the "re-" part have a
->> use case?
->>
->> Hope it's not too off-topic.
->>
->>>> It also avoided some racing with the tx path, but now that send_pkt()
->>>> also checks reachability I think that path is safe.
->>>>
->>>> What do you think about doing the below hunk (TCP_CLOSE, ECONNRESET,
->>>> sk_error_report) with no lock_sock?
->>>
->>> Looking at the code, it seems that in all the places where we close all 
->>> connections (virtio_vsock_reset_sock, vhost_vsock_reset_orphans) we do 
->>> with no lock_sock but with vsock_table_lock.
->>>
->>> So, makes sense to me.
->>
->> virtio_vsock_reset_sock() and vhost_vsock_reset_orphans() are my pet
->> peeves: state switcheroo without taking lock_sock(). Which, again, races
->> vsock_connect().
-> 
-> True, I don't love that either, but I feel the impact is at least
-> constrained by the fact that it only happens when the module or device
-> is already going away.
-
-Doesn't it happen on suspend as well? Is so, with a poorly timed connect()
-things can go south on resume.
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/20240815125959.2097734-4-maz@kernel.org
+> [Fuad: rebased]
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+> ---
+>  arch/arm64/include/asm/kvm_host.h |  3 +++
+>  arch/arm64/kvm/sys_regs.c         | 12 +++++++++++-
+>  2 files changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 27fe0cd5b2d7a..5b1cd1f502b7d 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -498,6 +498,9 @@ enum vcpu_sysreg {
+>  	GCR_EL1,	/* Tag Control Register */
+>  	TFSRE0_EL1,	/* Tag Fault Status Register (EL0) */
+>
+> +	/* Random stuff */
+> +	ACCDATA_EL1,	/* Accelerator Data */
+> +
+>  	POR_EL0,	/* Permission Overlay Register 0 (EL0) */
+>
+>  	/* FP/SIMD/SVE */
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index 44aae52c473d7..40f8be41da3a4 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -2914,6 +2914,15 @@ static unsigned int sve_el2_visibility(const struct kvm_vcpu *vcpu,
+>  	return __el2_visibility(vcpu, rd, sve_visibility);
+>  }
+>
+> +static unsigned int accdata_visibility(const struct kvm_vcpu *vcpu,
+> +				       const struct sys_reg_desc *rd)
+> +{
+> +	if (kvm_has_feat(vcpu->kvm, ID_AA64ISAR1_EL1, LS64, LS64_ACCDATA))
+> +		return 0;
+> +
+> +	return REG_HIDDEN;
+> +}
+> +
+>  static unsigned int vncr_el2_visibility(const struct kvm_vcpu *vcpu,
+>  					const struct sys_reg_desc *rd)
+>  {
+> @@ -3601,7 +3610,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	{ SYS_DESC(SYS_CONTEXTIDR_EL1), access_vm_reg, reset_val, CONTEXTIDR_EL1, 0 },
+>  	{ SYS_DESC(SYS_TPIDR_EL1), NULL, reset_unknown, TPIDR_EL1 },
+>
+> -	{ SYS_DESC(SYS_ACCDATA_EL1), undef_access },
+> +	{ SYS_DESC(SYS_ACCDATA_EL1), undef_access, reset_val, ACCDATA_EL1, 0,
+> +	  .visibility = accdata_visibility},
+>
+>  	{ SYS_DESC(SYS_SCXTNUM_EL1), undef_access },
+>
+> --
+> 2.47.3
+>
