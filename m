@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793642593;
-	b=LGkfR6WALO1pCS7x1vbrOO/XzUks3RyPuramMNnBBRo/D5JuclujNocoRPcaFBmsgUMs
-	 ExErhviJfu0Q6yFVpXZbx4Pabrn4PqQqN732DD9gPhXXFmLMmjvD12zk3IFsMzC6lEcbI
-	 opdFeuTUVC8KQ/4UyTo5+OoQArRqlxrPLmedWZSetNWJedoGZ2K6DgtmywoXdXKpQnrmW
-	 n1VPTkiJ096ts2zm/u1RMD52B/rUPpoiXvWWyoRDJnBTfZR77BJXnAaoUMZvQvfL7ZCiq
-	 Bb1yz2yHt4JB9LdFDCi8Op7jLQrGAZZgRxteSbQIqYT2nf6zNYxGPQTDoU6DnHFHZxg==
+	t=1793642644;
+	b=bM88cvtcPRgLj02mWRuWY1VaWdv3W7AM1vHlVVxK3ewU6j9wm8aBCJWo/ZKMRVCKiUVD
+	 po1DYLExwS8QC523VcM/e02pdVZufAE0nIokpUi851FbFfV7k3Z2MsOEhzWtOwuqK01BY
+	 w8QkigfDxpJbdoPkSnN9h8PGVP8yuxF8RfHwKQJeemmadFHCsKSPmX7cyXQjg1UvNQ/OO
+	 RDJiDKZEDj9K2BERqR48UN2pB9TTyIQy0gGNsYLCi8DPoyNjd+OwryWfGK2GSr/CqaKcY
+	 O5APDKsgNUsLsqCJ0F5YrXPjHRM2mYKIhczdefKqBV9/u0Xz4UNvPkAuQa4RmsDByKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793642593;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793642644;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=GFarWWkVDJzLp4ZQDuxhq9I/g4bchvjdHZA4b6v+VPA=;
-	b=ayRQGGOV9MVZrEj04SyiWTBfH10x+Mb13IVVj0hetaWO5gmRcEXz1wwItT9vh4N3+Dpn
-	 SWA+R/a8GwRst/MD+3IpEYcDBGeko0yuVoKDbVhkcRlDbFekmgBUBiANN/oY4WHvFJvWv
-	 ebdCqZd7aDV5BiJpINjBURfREJfmz1ypxGiWHMszyzTGDf9IY8NZHhm3FZADZXwH30CIA
-	 Y/pe+Lc7CqHyp7WJgvjODauS11WJHlpf6IGjDQ2dCdBPETHFQdC4oNCI0Cm+Dx8Mgn6UV
-	 eQkOCGd+MmNjktioeZW+UlqOM5KF4qzDZqH84G4PZL/jeaZP8se9BGZF/zIxbSJshxQ==
+	bh=ggCp4O2HjoiHT3eumzlptAA5I+LbWK1iv/S3HzcrHO8=;
+	b=19DArdrkrMLEDx5qTlec0rtqSJeNTvcNYFVcL/8Ph87+67DDvx7nFbuJxa7CDFYo65iE
+	 HRAgPLEYU1v6+6boz4NlEmTOX9+TLFmgtFSzqKZe2bRVPDl5AGKeYIuj0OJ238UjDN1xN
+	 u330Uhha+Mil8a3NcOMO3VLCNHuzTAIuaRZnMNYA7wibbgG2xQ8roZ6yTOHvgnRyJ2vHG
+	 Gb29bXy8S382OgPvbuzGTXiB9QDyzbkn20xSDDTPQGlHohFg/nDnSBy8cCAxpG6rPggku
+	 a6aHJx6bMOLgGOEi9ChmYglR2m0T2wpgQjUVaSUm6pDkAyXJD4F3YSCJWw1t7AjwuCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f9Rvtr+j;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibYvdm3V;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD091606A591
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AA7606D81B
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f9Rvtr+j
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8611F00A16;
-	Mon,  2 Nov 2026 18:03:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ibYvdm3V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642C01F00A16;
+	Mon,  2 Nov 2026 18:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793642592;
-	bh=GFarWWkVDJzLp4ZQDuxhq9I/g4bchvjdHZA4b6v+VPA=;
+	s=k20260515; t=1793642643;
+	bh=ggCp4O2HjoiHT3eumzlptAA5I+LbWK1iv/S3HzcrHO8=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=f9Rvtr+j9jkAjGZUH5rgv+1Np2aZ2G3AXn9LVCOIAcvx1FFn54WGoeSfZ6995qBsx
-	 QOSl9JEez7HlsWfoj/6mX2kNG9fYw9kWKpD2S2CWbfTZasX+QFx3KY5F6JMI1M8IgK
-	 FHvufn9NiEGuMpYM3+nICRx2WBbg2Yz5NkHxafRxtnfV9P1psFaDHlDRDQ6t6ciAkE
-	 4qDjPIob78k5RAkPs+Kd1V0YtFLCycSd1FiYec2uLlxXgv1jHZRQp91b3LKvdSI0Yq
-	 +5i6e7fwgzlKrZMtK9HEZiWxmT0fKCCVdciH3wz6O2C3VS85PypKM3PYMn5hSFZR71
-	 mcK0cex1e5WCA==
-Message-ID: <sashiko-outbox-193897@kernel.org>
+	b=ibYvdm3Vzf7HeGuqeLWa1lf5VZV3gTWd59XIODpLtIcyzZ3T+/14lYd3MylIo9MLK
+	 Me3ayQpLPAJ4n5EON4jmIbnzfALObxHuWY79wdVPeVgKyIXNP/DdVHF0RLyfMXa/57
+	 9FYnTvjepeebCBFeLb2aWMt7dVTfkhRxOdOVQv+PprmNitXH51CYAuQoe/FpXBuaXk
+	 kU+R1JwhhsNYbEKY5EfRtauJUFHw+giBaDjCgnVnhxE193io7qik8wA/raXhm6mwBa
+	 ng/4SBV0h0B9UDYVB09DeKrN+aakcqxSTe780jMQ5ny9wQvJjbbUQoFPD8hrsDN+TI
+	 8kWdWeWbbvlfQ==
+Message-ID: <sashiko-outbox-193899@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 16/45] KVM: adjust for presence of more than one
- attribute
+Subject: Re: [PATCH 23/45] KVM: Introduce
+ kvm_check_gen()/kvm_memslots_check_gen()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261102174130.8779-17-pbonzini@redhat.com>
+In-Reply-To: <20261102174512.8903-7-pbonzini@redhat.com>
 References: <20261102174130.8779-1-pbonzini@redhat.com>
- <20261102174130.8779-17-pbonzini@redhat.com>
+ <20261102174512.8903-7-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 18:03:12 +0000
+Date: Mon, 02 Nov 2026 18:04:02 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,92 +62,86 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] KVM: premature true return in kvm_range_has_vm_memory_attributes=
-()
+- [Low] KVM: loongarch: missing closing parenthesis in steal time if condit=
+ions
 --
 
-commit bc4dd6682729ee9a313a549f79ade166886ce9b6
+commit 12eefe95ee8b4f21b2235f3a2ed98ccc73873acc
 Author: Paolo Bonzini <pbonzini@redhat.com>
 
-KVM: adjust for presence of more than one attribute
+KVM: Introduce kvm_check_gen()/kvm_memslots_check_gen()
 
-This commit removes private-memory WARN checks in x86 MMU code and adjusts
-kvm_range_has_vm_memory_attributes() so it no longer assumes
-KVM_MEMORY_ATTRIBUTE_PRIVATE is the only valid memory attribute.
+This commit introduces the kvm_check_gen() and kvm_memslots_check_gen()
+helper functions to check the memslot generation and optionally return the
+kvm_memslots pointer, converting several callers across KVM to use them.
 
-Link: https://patch.msgid.link/20260918135030.171564-13-pbonzini@redhat.com
+Link: https://patch.msgid.link/20260918135030.171564-21-pbonzini@redhat.com
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 2fd595a901bd1..17341c689d11a 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2490,10 +2490,12 @@ bool kvm_range_has_vm_memory_attributes(struct kv=
-m *kvm, gfn_t start, gfn_t end,
->  					unsigned long mask, unsigned long attrs)
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 059a6d605de77..c3e71ef983bcb 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -154,7 +154,6 @@ static void kvm_update_stolen_time(struct kvm_vcpu *v=
+cpu)
+>  	u32 version;
+>  	u64 steal;
+>  	gpa_t gpa;
+> -	struct kvm_memslots *slots;
+>  	struct kvm_steal_time __user *st;
+>  	struct gfn_to_hva_cache *ghc;
+> =20
+> @@ -164,9 +163,8 @@ static void kvm_update_stolen_time(struct kvm_vcpu *v=
+cpu)
+>  		return;
+> =20
+>  	gpa &=3D KVM_STEAL_PHYS_MASK;
+> -	slots =3D kvm_memslots(vcpu->kvm);
+> -	if (unlikely(slots->generation !=3D ghc->generation || gpa !=3D ghc->gp=
+a ||
+> -		     kvm_is_error_hva(ghc->hva) || !ghc->memslot)) {
+> +	if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa !=3D ghc=
+->gpa ||
+> +		     kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
+>  		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
+>  			ghc->gpa =3D INVALID_GPA;
+>  			return;
+> @@ -1803,7 +1801,6 @@ static void kvm_vcpu_set_pv_preempted(struct kvm_vc=
+pu *vcpu)
 >  {
->  	XA_STATE(xas, &kvm->mem_attr_array, start);
-> +	unsigned long supported_attrs;
->  	unsigned long index;
->  	void *entry;
+>  	gpa_t gpa;
+>  	struct gfn_to_hva_cache *ghc;
+> -	struct kvm_memslots *slots;
+>  	struct kvm_steal_time __user *st;
 > =20
-> -	mask &=3D kvm_supported_vm_mem_attributes(kvm);
-> +	supported_attrs =3D kvm_supported_vm_mem_attributes(kvm);
-> +	mask &=3D supported_attrs;
->  	if (attrs & ~mask)
->  		return false;
+>  	gpa =3D vcpu->arch.st.guest_addr;
+> @@ -1820,9 +1817,8 @@ static void kvm_vcpu_set_pv_preempted(struct kvm_vc=
+pu *vcpu)
 > =20
-> @@ -2522,8 +2524,10 @@ bool kvm_range_has_vm_memory_attributes(struct kvm=
- *kvm, gfn_t start, gfn_t end,
->  	 */
->  	for (index =3D start; index < end; index++) {
->  		do {
-> -			entry =3D attrs ? xas_next(&xas) :
-> -					xas_next_entry(&xas, end - 1);
-> +			if (!attrs && mask =3D=3D supported_attrs)
-> +				entry =3D xas_next_entry(&xas, end - 1);
-> +			else
-> +				entry =3D xas_next(&xas);
->  		} while (xas_retry(&xas, entry));
-> =20
->  		if (!entry)
+>  	gpa &=3D KVM_STEAL_PHYS_MASK;
+>  	ghc =3D &vcpu->arch.st.cache;
+> -	slots =3D kvm_memslots(vcpu->kvm);
+> -	if (unlikely(slots->generation !=3D ghc->generation || gpa !=3D ghc->gp=
+a ||
+> -		     kvm_is_error_hva(ghc->hva) || !ghc->memslot)) {
+> +	if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa !=3D ghc=
+->gpa ||
+> +		     kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
+>  		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
+>  			ghc->gpa =3D INVALID_GPA;
+>  			return;
 
-[Severity: Medium]
-When attrs =3D=3D 0 and mask !=3D supported_attrs, doesn't switching to
-xas_next(&xas) cause kvm_range_has_vm_memory_attributes() to return true
-prematurely on the first GFN that has no entry in kvm->mem_attr_array?
+[Severity: Low]
+In both kvm_update_stolen_time() and kvm_vcpu_set_pv_preempted() in
+arch/loongarch/kvm/vcpu.c, replacing the generation check dropped one of
+the closing parentheses at the end of !ghc->memslot)) {, leaving the outer
+if condition unclosed and breaking the LoongArch KVM build.
 
-Unlike xas_next_entry(&xas, end - 1), which scans forward up to end - 1 for
-the next present entry, xas_next(&xas) only inspects the single slot at the
-current index and returns NULL as soon as that single GFN has no attributes.
+Note that a later commit in the series (c500cbe0be12) updates the arguments
+to kvm_check_gen() at both sites without restoring the missing closing
+parenthesis.
 
-Immediately after the loop in kvm_range_has_vm_memory_attributes():
-
-		if (!entry)
-			return !attrs;
-
-		WARN_ON_ONCE(!xa_to_value(entry));
-
-		if (xas.xa_index !=3D index ||
-		    (xa_to_value(entry) & mask) !=3D attrs)
-			return false;
-
-Because !entry returns !attrs (which is true when attrs =3D=3D 0), encounte=
-ring
-any empty slot in [start, end) immediately returns true without checking the
-remaining GFNs in [index + 1, end).
-
-Additionally, if xas_next(&xas) encounters a reserved XA_ZERO_ENTRY while
-attrs =3D=3D 0, xas_retry(&xas, entry) returns true without resetting xas, =
-so
-the next xas_next(&xas) call in the do-while loop advances xas.xa_index to
-index + 1 and can fail the xas.xa_index !=3D index check.
-
-Since empty and XA_ZERO_ENTRY slots have effective attributes of 0 and
-always satisfy (0 & mask) =3D=3D 0 for any mask, should this still use
-xas_next_entry(&xas, end - 1) whenever !attrs, and instead only check
-xas.xa_index !=3D index when attrs !=3D 0 (or advance index to xas.xa_index=
-)?
+Should both conditions end with !ghc->memslot)) { instead?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174130.8779=
--1-pbonzini@redhat.com?part=3D16
+-1-pbonzini@redhat.com?part=3D23
