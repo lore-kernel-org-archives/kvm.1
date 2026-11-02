@@ -1,104 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793630358;
-	b=qAd/l0IptMFpL5cFEK6XGeOiu1waSD/gETXc9TIuO9/kOYW/z/rteyoUwodOYTxyPtMG
-	 N6fdr3M8ict8UrOrF7PoHgHfeBv9rQuIUN5g3fpQ48fQF3WrA6qhNwb3jBgLTvGs4l36+
-	 L+ATS05iPILXQ6XlfNTcLgYuGz1TO3oSW2J+UcKuRffEGWgpAf7rr9D0Prr2odeBwMK7L
-	 /Dp+SOgu1SdueF2WNjLK7QjQy0eGe5qF2jon5V1SCTJkkuQ3c9BeyoNf95OLGCIfX+hSy
-	 LDvQI3gfvhhbB6O2L1HLtMM3py9Kqyc6p4ElllC2/owKSPIqW+v+6DtR9uH14RIGiew==
+	t=1793630929;
+	b=NL1qS29Fi0svbsgbywMeLT8ogBINrjAdX9eXGhhZDtNUTW8k/NsLya7HK068siEf0UNp
+	 MDCKSR8+Pi7hNFWJiNoOyC8hE57fZd4/4v7bwGjbSZo7kts2aw5c5APz0RzSVABuoH/xX
+	 HDM7grF/44roXqNRUV6fEf4nV8t0wQOQ1AEqBCkz57A9ZmoQ+u3fBmn+TM6kMeanBu9N7
+	 wDhu/zpl37oOLjPH8q18ui+F02JJLpcwT+ILOlUNw2uiYGVeqtYnZH+7lJXHZ+trChNGH
+	 UJIoS+WiGxfad4jFpXJlPvz8fmHMYFaN+9qnYNdJ+NcpUwT5HAWjfdB9GRyMDeKF6tQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793630358;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=t3uMzKFF0fpXKNPzeuZqcP8SHbCjBILits3drrR5UAs=;
-	b=LZp/w/RmvwH8Tqq2CMaydDTHxtPldRM5hdsOtVNCycpui8L9Rmh6TRHvhiKSxdZRs79Q
-	 J1R9W4VUIyy/WSI+/YIMRquOX4i4mlDrUOAD2lpq6dCaoYmvz06a3TQ7sj3ABoSaMIkfi
-	 8EVrJaVKfwDMwfk0zrtuVVRHsNXKdEowwb66PDDc7wt7eeunXu+bLKjZdZBne/i8b2mWJ
-	 bVOtGWyv5m4vbZUw/J3WDU67BJZCx8x9MvKip0o0LfByYNe9U2rRyrYqGM8OqDc3A2+X8
-	 XRpKZSXJVpM1RGk/0sDqgAE7o40+xzx9Y1gPF5ABgJqkq88iO7oE0LLo4oos5nih3Iw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793630929;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=kTl2tYFK2rIvSoC4+0aJLJGloAG0Iver2j5Lm+e9Iik=;
+	b=oZDT6caOSZ1c/qI7JXOeIFSVYsxKU5XfzO3eH1NjBRrP9xkLVMxYdiwCQBMPAFM4hVh2
+	 LCMSTW548yZVi5tYlur8w2gZI9mW4vFmbSNRmbLReNIUjnUiGIz3vey5kbFjHuqX4v8hc
+	 RBJLeJTZU1aolomhDUUm8Ct7saYhM2csQS5+EAil1oXeY0mFDKP6ach5KMHUg9P2AmNT3
+	 /VNb/dLuKE1zA1Z7NS+W07uxXOqbYiCoKqTj9DPbWcbloXhAQAXb4525TuG73y2lZ6t5M
+	 z3YUxW41e2fSDRZlJlwqq6i9cOFoDgmxCBs9ZrrlL7LAjGeaY/cfegJM+3cOS3bpQZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jrsDzUSF;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=kNFL8Leu;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDF8606A58A;
-	Mon,  2 Nov 2026 14:39:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EEDF8606A58A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77B5606ABA8;
+	Mon,  2 Nov 2026 14:48:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B77B5606ABA8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jrsDzUSF
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2EEEvg3103442;
-	Mon, 2 Nov 2026 14:38:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=t3uMzKFF0fpXKNPzeuZqcP8SHbCjBI
-	Lits3drrR5UAs=; b=jrsDzUSF/OggKdN81wWhb4EQ3nK8LML9mgaSnR8qAY70jz
-	0DbJXtS4PJuv8PQiLy7abs+fG7sndfj6ShOJulStFvMaB4jzVmChtTE0sAet0Vm3
-	A1+30vWOdajDQi0XubC1JRA8+Z0IFqBUkwIt3tZHqrS7135+dwCfgEZ9oFFGPewC
-	l25ok0YfFnDEr9VN3wS8SYboK6sKCmQ6lfAwbRcX9ljp4AV5DyeSlhrCxiJoEWty
-	Y1DzMBTvPDR+g06pwD9FhYxvyUDi1W8x+t9hc8THVHlowf7A2mNVTcdtd7GnSpo3
-	aFq1FAonyVk3KK0s0pDgB8L2nMIRTSxdOjGsR3jA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn826h1td-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 14:38:33 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2E5w6Q1034496;
-	Mon, 2 Nov 2026 14:38:32 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hnu1vebv3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 14:38:32 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A2EcS5845613524
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Nov 2026 14:38:28 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A89912004D;
-	Mon,  2 Nov 2026 14:38:28 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A5D02004E;
-	Mon,  2 Nov 2026 14:38:22 +0000 (GMT)
-Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.39.25.78])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  2 Nov 2026 14:38:21 +0000 (GMT)
-Date: Mon, 2 Nov 2026 20:08:19 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-        Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Paolo Bonzini <pbonzini@redhat.com>, Fuad Tabba <fuad.tabba@linux.dev>,
-        Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
-        Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        kvm@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>
-Subject: Re: [PATCH 3/7] KVM: PPC: Explicitly force IPIs when directly
- kicking vCPUs
-Message-ID: <auiZYdVzhFbnj0iy@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
-References: <20261028190259.1819571-1-seanjc@google.com>
- <20261028190259.1819571-4-seanjc@google.com>
- <auStM0rbFol79h5o@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
- <auTohixp3V5-vNsB@google.com>
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=kNFL8Leu
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C2C0840E03FF;
+	Mon,  2 Nov 2026 14:48:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LXL3UopgkXRM; Mon,  2 Nov 2026 14:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793630922; bh=kTl2tYFK2rIvSoC4+0aJLJGloAG0Iver2j5Lm+e9Iik=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kNFL8Leu+qyoWZWcejy2EkZ4B6XrgXCuWGQjIlku/BCZLjD7tbCav0+UqrhjlXbSd
+	 Ee2/AETOZQ+jWeQk12Pv4JLq9Q588l+nn+XJQ9PIXf1BXDzvtJGuBqxwqq+fTKW75E
+	 0ZDmJRZkjcyePUub+AttHlbBLgFdBta2aIeE8DJ1B3HlQgthWfWmENzgkE3CS2pivd
+	 RmbeaSz9UQf32FLtbLxf5gO5Xp11K9qPyynRL35n632cVq1QA4m49YIGneDIPaB6Cp
+	 0gQPq6JznE4XCRaGDY3qKR509+h2DZ+9BeAhHFNhbV8lNUH3v5kwdEYphpTxN8a/+u
+	 sKKWpLHQ4FBMpYpQbNfdCIolwn1RztsUVy150FVi6ivi02cHm7VIl9ymBdrMTjGo93
+	 3OpuKo04RkWwd+yEsJ7m3XOibqcKQ7Vt3K2eXOQ/f9pwSoTCmcyBAQbFmSBgwLxuNT
+	 Q66AYINwtJNM+6t5hHEDtMDuEuSdzSandJM0qBwpTC4WXP95T7PL4ahyqxOERuDplp
+	 vQ3TBPP0bVu7sTYbQTdclQ4JgAJSZPY7qV411F9ACTkkL2Cfhc7GWVVasxxaf/xKyo
+	 TFYBZSRZpCVR+ooGgGfeC4AD3mFBldaNU9l7C2wkEfSuaybtpuVx0tgiCyBJuLokkJ
+	 Q5vXGtNR2dsA1IC5h2ysu+ew=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A7C6940E03BE;
+	Mon,  2 Nov 2026 14:48:08 +0000 (UTC)
+Date: Mon, 2 Nov 2026 06:48:05 -0800
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
+	Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+	ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+	rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com,
+	dyoung@redhat.com, nikunj@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
+ disabled by firmware
+Message-ID: <20261102144805.GCauiipTaEXcg6Lr59@fat_crate.local>
+References: <cover.1793216372.git.ashish.kalra@amd.com>
+ <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
+ <20261102052841.GBaugfibOXxGorZKgq@fat_crate.local>
+ <69ed0d93-f96d-4baa-a587-fade5a0a3262@amd.com>
+ <414b2fc2-a55a-4b2d-ac70-4def101c4aee@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -108,102 +95,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <auTohixp3V5-vNsB@google.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: MVuzkhZ7vtCvo0_kidGaNnCzUH4z2Q5t
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA1NiBTYWx0ZWRfX9NPC/owi16S7
- 9yPcxDuxCXAVRis8gROnpHUQtX1lgGRd8hAKUnleFK3QWlX1SdAjhFR8oEvK54MRQDdismPxh+K
- SQ8loUK3UQRzfSLpS9uRj+aWjubkYTlbIquMNg8PhpfWVJkZ76O3xxEXr80qfN6IOD19XJfjKtr
- 634hKk5awadYPmt24Ux7BsSNM3cqVRZujAolWeljDDPrwops7bov/t92bCk4p83QwKy6YXStSnl
- 0VsEIPP7bIE5T7r4zJSL0tKzTIgSYx+WFY3Qwo3DYgWTx5sTM9UVeBsh0rxrl31K1IM0pQFj1A7
- gw+VtvRxiUYjK/87Jg4SStypE42sXR/2o22pNseu+/r/yDHR8uGSsjBtiHv4st3RTmohj8hx7JP
- UCE4D1U1IEi/wr/eFIXPrL9wTCpxRXnB0VIgaijskvnY1QOUMWWKwaAo3sk8IykSUxckF0V1iQL
- y3XMeya+tQcv90pkeiQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA1NiBTYWx0ZWRfX/Jv0f66eb8FC
- gBsCZTcz1I/pV05gMEXUAwMes48ABsD2pbDotd5Qxpz6XqvBunVHHDSaqleBJACDat+c8lSkusL
- mmZ2c5c7i5Q1tgycd0AKgoXZ+Q680vQ=
-X-Proofpoint-GUID: 3_YY6ZYXsy9uBgG-NjaOA9L9V7gYRG4x
-X-Authority-Analysis: v=2.4 cv=EsJHPicA c=1 sm=1 tr=0 ts=6ae8a06a cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8 a=duh_M4KPJp97uAtK-N0A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_04,2026-11-02_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
- definitions=main-2611020056
+In-Reply-To: <414b2fc2-a55a-4b2d-ac70-4def101c4aee@amd.com>
 
-On Fri, Oct 30, 2026 at 11:57:10AM -0700, Sean Christopherson wrote:
-> On Fri, Oct 30, 2026, Gautam Menghani wrote:
-> > On Wed, Oct 28, 2026 at 12:02:55PM -0700, Sean Christopherson wrote:
-> > > Explicitly force an IPI when invoking kvm_vcpu_kick() directly instead of
-> > > relying on kvm_arch_vcpu_should_kick() to unconditionally return 1/true.
-> > > This will allow dropping kvm_arch_vcpu_should_kick() in favor of
-> > > kvm_request_needs_ipi().
-> > > 
-> > > No functional change intended (1 || 1 == true).
-> > > 
-> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > > ---
-> > >  arch/powerpc/include/asm/kvm_ppc.h | 13 ++++++++++++-
-> > >  arch/powerpc/kvm/book3s.c          |  4 ++--
-> > >  arch/powerpc/kvm/book3s_pr.c       |  2 +-
-> > >  arch/powerpc/kvm/booke.c           |  6 +++---
-> > >  arch/powerpc/kvm/e500_emulate.c    |  2 +-
-> > >  arch/powerpc/kvm/powerpc.c         |  2 +-
-> > >  6 files changed, 20 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> > > index 169ea6a7fbad..bbe7378ad0ef 100644
-> > > --- a/arch/powerpc/include/asm/kvm_ppc.h
-> > > +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> > > @@ -30,6 +30,17 @@
-> > >  #endif
-> > >  #include <asm/inst.h>
-> > >  
-> > > +/*
-> > > + * TODO: For unknown reasons, KVM PPC has historically ignored vcpu->mode when
-> > > + *       determining if kicking a vCPU needs an IPI.  Either document why that
-> > > + *       behavior is necessary, or drop this helper and the @force param from
-> > > + *       __kvm_vcpu_kick().
-> > > + */
-> > > +static inline void kvmppc_vcpu_kick(struct kvm_vcpu *vcpu)
-> > > +{
-> > > +	__kvm_vcpu_kick(vcpu, false, true);
-> > > +}
-> > > +
-> > 
-> > AFAICS, there is no reason for PPC to always return 1. I was looking at
-> > the old patches on mailing list and found this - https://lore.kernel.org/kvm/0FEE585F-5E21-47F2-A3F0-AD0DE05EBB43@suse.de
-> > 
-> > ```
-> > How about we return 1 for kvm_arch_vcpu_in_guest_mode() on !x86 always, just
-> > like it's done today basically? Then we can worry about needless IPIs later
-> > and don't regress from the respective current kick implementations.
-> > ```
-> 
-> FWIW, I found that as well, but there are a metric ton of kvm_vcpu_kick() calls
-> that have been added since then, and they scared me.
-> 
-> > However, I'll do some testing and get back by mid next week to make sure
-> > there are no suprises.
-> 
-> Thanks!  If we can drop the PPC behavior, that would be wonderful!  Though if
-> we do that, it should be for 7.5 in a follow-up (this series really should go
-> into 7.4 due to the SNP issue).
+On Mon, Nov 02, 2026 at 08:12:16AM -0600, Tom Lendacky wrote:
+> Heh, I don't think that is a nit, it is broken.
+>
+> I think the code as it was read fine, but that's just my opinion.
 
+Lemme see if you like this more (pasting it in applied form because the diff
+is unreadable):
 
-Yeah I looked into it and realized that the newer variants of KVM on PPC
-are not even using vcpu->mode at all. So that has to be fixed from our
-end.
+bool snp_probe_rmptable_info(void)
+{
+        if (!cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP))
+                goto out;
+        
+        rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
+        if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
+                if (probe_segmented_rmptable_info())
+                        return true;
+        }       
 
-For this series,
-Reviewed-by: Gautam Menghani <gautam@linux.ibm.com> # PPC
+out:
+        setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+        return probe_contiguous_rmptable_info();
+}
+
+No repeated code, no if-else conditionals, just what needs to happen.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
