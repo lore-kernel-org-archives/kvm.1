@@ -1,71 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641299;
-	b=oSJj4STYWxHExOn4BFE45/zPjWrHEOeEYWWk6jkxmkgb2eoxXSwbrwElXAOO3j3RvhTO
-	 h/c1pEDoxUIjaj4RglmubUdl/Gy27ZYiBgns0TTwoQyitdyCB/dxhFa0kfNLxtkmIXVFY
-	 22O50S3NQsZvjNT7+4vwa71SpMdycQdcN8bP82d63VMoXth6amutU8LcmE6gLHsxz63VS
-	 8HPZNUO1yQa71/nEEZr7ilQTCaaR7f4AuL3H5DqZo8fn6jLyCuVZx99hYuaQGwrydcqmo
-	 gpQ8Nmhsr5wAXZMKRi+DxYvk9ZsFoDFzKe560E76Q+2p9JaQ2POcsRu3pLqfa64VPfA==
+	t=1793641304;
+	b=H0i5gWDg9jAgL/qIAMSLwgCgIA9QPjq5lSQSzt1Fl8XqMeBt6WaZpi2tYb3M2u3xw/HQ
+	 rk8+ACX5JfHZPLhtDGR2vNXJob6TUy0LyPqIdvHYvUmLZ4DlULr5pEXs1TULx+zA/Zjo0
+	 Y7rli433W+WQxcr47FBJul6eiza7DmYme95RkMMjvghdBgcFfFfT3SOrck0BAj+KabHna
+	 jPVB2qjaybfowAsLHsFIvHQd0L/eUNaBStyMjpQMy3LIA+Jxhcj2qCPLmsqzdZAgnxwVh
+	 aFQKLzlwqsaYmm7juEoZiesYBu4z3mWhxX9YLAcLgtunU40a1oEUzN+WvE7GdLYewfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641299;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641304;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=UMANxSC73tO0YEmg0ke+8t+NbPcvHz8AyBEapv8SX8c=;
-	b=kIerWW6CSiFjIdpnjm49YjpAOUIstIS42NnegQ/k5mXSYs2juSqtYvX6C3UnzHaCRjie
-	 VkoQaVEP15h8FSGyDd6h1mdOwpMoIviZc+lx/nrDBqoZUPuT4HtWCvc1Pjqi13CEV+u3D
-	 yUvn1DD53XKkkbOJPFJWRpD0Wpyoh+xH+MCGZlYH+vwHhjgxsSj3JfoUMaOQLPfID8HMt
-	 R92NEcNWZ96+le9AkjlZJ/BWesQVA2gOyPdMbgcJ2edMhNOiqEsEKNXFIcLCdV5iczsuJ
-	 Pb3LaOxUyAorjvf5bYgEMtXZHWUil+/7AcERA4EfuJgtlv7zhbEBjfX/JZ8MAV5jQTg==
+	bh=EqxyoET/vrXjZknrR8NjGDfGHRmxTCNSAyAL413nJJg=;
+	b=2L8R4hNWFwce9BPgRgynh0wMY/zuxE28gJrqE4l7mfx6ikgi7TSj8oacHR0d5oik912G
+	 V0klcYYMZOt//cKnbM3FvRkg3nNgXwnq1sKPtigsNbhhMKQ811sYQbnLCxTWbp/CyyKoN
+	 usC5kDOJQsh4InGeYkYrHXdYjdBbWZd2NOdzJMkhq15v+Tu+lSYb6ge1rSQ/lR3iCzstO
+	 Sd5vqNbZTzeGMPiZbByJkgT3dA7KzY2FMsEpn5GuS9JRLw0tgCpdAN8GZa9CHyTkcd6+z
+	 sbMktAlJSMLLDbYwJSJk2KLSdCPqyn+LdcgMr4qW4+VsQv6+jKudSQ/qbeF5lVQRKOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dCUNsWP+;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b1zpXm7V;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0486070CBC
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B0486070CBC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F11A6072C4C
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F11A6072C4C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dCUNsWP+
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b1zpXm7V
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793641297;
+	s=mimecast20190719; t=1793641302;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UMANxSC73tO0YEmg0ke+8t+NbPcvHz8AyBEapv8SX8c=;
-	b=dCUNsWP+2U4p+xCP7HD5ZEWxPxfVS3D2f2fiyuw3kV1EcAEZEq7hYhrzpMykkKu8I3AYIw
-	Qck5oxZ3rs6mhJZ2FQ+YhUqRX6A6bwvw86oFdLhP+yaPG+QRAsAXxKfr0cAaBT53o2lct0
-	NwBtvIjF3cPaAy8umAfh0ZXfjFNPzI4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=EqxyoET/vrXjZknrR8NjGDfGHRmxTCNSAyAL413nJJg=;
+	b=b1zpXm7VufAP42AkcQjHcn/SdzoEfyKjQVyOvEAnijqhkEK4X739dkUTwJJAEnCH2CzigD
+	VAUF6usK871VskI/s2qZwg8aOSJatqEJ+9b9XpRvAZapLbRBZOLYBkRtcygTRX3UolwkZu
+	QIugO4F1DXr9l4wEEjKxBKFSyBnFZuc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-113-jZD9R2wwOI-FZar1kA1WRg-1; Mon,
- 02 Nov 2026 12:41:34 -0500
-X-MC-Unique: jZD9R2wwOI-FZar1kA1WRg-1
-X-Mimecast-MFC-AGG-ID: jZD9R2wwOI-FZar1kA1WRg_1793641293
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-177-CcUz92dqNeWJWhy9uKjt6A-1; Mon,
+ 02 Nov 2026 12:41:41 -0500
+X-MC-Unique: CcUz92dqNeWJWhy9uKjt6A-1
+X-Mimecast-MFC-AGG-ID: CcUz92dqNeWJWhy9uKjt6A_1793641300
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8515D195605A;
-	Mon,  2 Nov 2026 17:41:33 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 874151802661;
+	Mon,  2 Nov 2026 17:41:40 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2666A30000E3;
-	Mon,  2 Nov 2026 17:41:33 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0EA681800586;
+	Mon,  2 Nov 2026 17:41:39 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [PATCH 04/45] KVM: x86/emulate: Check TSS busy-bit writes during task switches
-Date: Mon,  2 Nov 2026 12:40:48 -0500
-Message-ID: <20261102174130.8779-5-pbonzini@redhat.com>
+Subject: [PATCH 15/45] KVM: VMX: return error from kvm_set_cr*
+Date: Mon,  2 Nov 2026 12:40:59 -0500
+Message-ID: <20261102174130.8779-16-pbonzini@redhat.com>
 In-Reply-To: <20261102174130.8779-1-pbonzini@redhat.com>
 References: <20261102174130.8779-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -79,47 +79,72 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Task switching ignores failures when clearing the old TSS descriptor's
-busy bit and setting the new descriptor's busy bit.  A memory attribute
-restriction can therefore drop either write while the task switch
-continues with inconsistent descriptor state.
-
-Check both writes and stop the task switch on failure.  Memory attribute
-faults reach the existing emulation-failure exit in kvm_task_switch().
+This is already done by svm.c, copy it over to vmx.c so
+that kvm_complete_insn_gp() can return -EFAULT on PDPTR
+loads.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/emulate.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 12 ++++++++----
+ arch/x86/kvm/x86.c     |  2 ++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index c1b21282187f..711794592c2c 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -2925,7 +2925,9 @@ static int emulator_do_task_switch(struct x86_emulate_ctxt *ctxt,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b341af4c6057..fe43718b751b 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5630,6 +5630,7 @@ static int handle_set_cr0(struct kvm_vcpu *vcpu, unsigned long val)
+ 	if (is_guest_mode(vcpu)) {
+ 		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+ 		unsigned long orig_val = val;
++		int r;
  
- 	if (reason == TASK_SWITCH_IRET || reason == TASK_SWITCH_JMP) {
- 		curr_tss_desc.type &= ~(1 << 1); /* clear busy flag */
--		write_segment_descriptor(ctxt, old_tss_sel, &curr_tss_desc);
-+		ret = write_segment_descriptor(ctxt, old_tss_sel, &curr_tss_desc);
-+		if (ret != X86EMUL_CONTINUE)
-+			return ret;
- 	}
+ 		/*
+ 		 * We get here when L2 changed cr0 in a way that did not change
+@@ -5642,8 +5643,9 @@ static int handle_set_cr0(struct kvm_vcpu *vcpu, unsigned long val)
+ 		val = (val & ~vmcs12->cr0_guest_host_mask) |
+ 			(vmcs12->guest_cr0 & vmcs12->cr0_guest_host_mask);
  
- 	if (reason == TASK_SWITCH_IRET)
-@@ -2949,7 +2951,9 @@ static int emulator_do_task_switch(struct x86_emulate_ctxt *ctxt,
+-		if (kvm_set_cr0(vcpu, val))
+-			return 1;
++		r = kvm_set_cr0(vcpu, val);
++		if (r)
++			return r;
+ 		vmcs_writel(CR0_READ_SHADOW, orig_val);
+ 		return 0;
+ 	} else {
+@@ -5656,12 +5658,14 @@ static int handle_set_cr4(struct kvm_vcpu *vcpu, unsigned long val)
+ 	if (is_guest_mode(vcpu)) {
+ 		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+ 		unsigned long orig_val = val;
++		int r;
  
- 	if (reason != TASK_SWITCH_IRET) {
- 		next_tss_desc.type |= (1 << 1); /* set busy flag */
--		write_segment_descriptor(ctxt, tss_selector, &next_tss_desc);
-+		ret = write_segment_descriptor(ctxt, tss_selector, &next_tss_desc);
-+		if (ret != X86EMUL_CONTINUE)
-+			return ret;
- 	}
+ 		/* analogously to handle_set_cr0 */
+ 		val = (val & ~vmcs12->cr4_guest_host_mask) |
+ 			(vmcs12->guest_cr4 & vmcs12->cr4_guest_host_mask);
+-		if (kvm_set_cr4(vcpu, val))
+-			return 1;
++		r = kvm_set_cr4(vcpu, val);
++		if (r)
++			return r;
+ 		vmcs_writel(CR4_READ_SHADOW, orig_val);
+ 		return 0;
+ 	} else
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 1fcef4a8ac22..c7970bcfdc24 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -580,6 +580,8 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_requeue_exception);
  
- 	ops->set_cr(ctxt, 0,  ops->get_cr(ctxt, 0) | X86_CR0_TS);
+ int kvm_complete_insn_gp(struct kvm_vcpu *vcpu, int err)
+ {
++	if (err < 0)
++		return err;
+ 	if (err)
+ 		kvm_inject_gp(vcpu, 0);
+ 	else
 -- 
 2.52.0
 
