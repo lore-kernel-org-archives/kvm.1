@@ -1,72 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641298;
-	b=LIVqgcZ58NyRrK2lGA0yUSQZYlcRgzjM6pZs/XSNzReTT9sAKW592wzIPtD0VcBPMFxz
-	 TOvVQ9nNMe4BbSjIGQfOY76a2Qsx9qaKN9YPtPTlTA5DBQAMkXWgmNONoJ8wSeeM4fUW5
-	 vopzs7+fJFHnWIE7KMzjVQJzernHI4mpJDRkFIJ0g+eYyrv5xAEBbCWgkyOdPDLXp39o8
-	 i3hzK/HI6Lo92/lEwZ0mA9F65UDY+EnewMQEUrUl+6HqZTRUkWi1JbVXnSNIO9Q/ptBlX
-	 UVpX+yQpShdtwva8/NYApgVRVDsRrWXcLz9WuptWmO4BpBMX0azvDQ4bSubyAS2pDQg==
+	t=1793641303;
+	b=TmCRW7y99Sbt63kD6qpIggQF9ZXupkdbYBT3TpFCFLG2WkFL5IFpEw1lsctVkaBxQYgf
+	 mM0DYWm30rJKslFYiS8dCfyvlbSqC/W9AjE8oN3JnHczJPeaxXAEzq+OYLDONZC0TJ8af
+	 OLa+CvkRz2Xy+wNYbBxMw7MpDAkDKUbazfYmUGR1Wdw96H9Yzi53euFpI3Oxpcz7jgdHZ
+	 gE3QKJWpQzZ/VhGblAOTZwWT9RUqUpKl/577G1bdt5xRCwaj4gvp3dAehx+OMLMNyLlWl
+	 ZbtVKBFaBFz9NFS7YCaK0YQbvwECI4ov7Xe4GrOFDC5MYrm85aJrstYcB+f2Ym81jDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641298;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641303;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=8QRJSjFRhFjsEIrLMUF/Qbq9FSRASB71Ae5rA38ygI4=;
-	b=dO5syv1/3c8Vye5nAfp5RzwWjmpbRzZ1l9B2vqGsp90Ht8tVCp8ml0jm3BU4xieBkeCL
-	 31/2+muZaRASWlwONlXbvL2mF1nxBsk98Oy5NVIeQ3N5/oXR2ICC+r7d0/EHaQaWwZSRH
-	 ASlqH/smYr8dBwm37smsUpVeneMEIWuLlEV/8hqC45w7vlEP5uMcguzuIKNzxNmp9DAtA
-	 KTCKKO8BQtP7+FGAiEhiqStj5y7BPDdGfliHsEu7DiXSQUcXumi2Eefdtod91DAedYG4d
-	 tqpbsHhtLtAiPEOIDAQ8S5xWH/gRvNzg7cIP+IGc56gujh1DwllGWG0TK7ra+jFdhmQ==
+	bh=lHnANvxJyXsLw0XejdY5Eq/QOaFEXa11Lq5TyxWMu2s=;
+	b=HSKYD7FXDQNagAlVi08Kv+EzkrErqMsoYELypA4tKCNal7G+ciPw/6d8IHzq4U9CFa8O
+	 G6tTYsRnFvOBVYt3XbannH5/goSDk1gUetXgeLpu6zx9NrpOylAAFDAAh1JH2zfccXD+p
+	 l+63Om2IOFKFjwdCeMkFSP/340x1Fmzy/9hI6SuV4yQ4qErKJol8jnXzA8RQOUd7PjJrJ
+	 CrcF1/m2vDym1CtYpA22vTfTATQrMAW+x+s13dl38O6PyiZDsEHnM3LDAKCgV+AZMQU49
+	 y876JEasfmz2LHKeaOy5Lbhk+QOQTnaOnpEyVQvKu75zimH3OFTyQ418Tt4m298pd+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gJ8oxcq5;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A0zRQCFc;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8626070C98
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E8626070C98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADF66072213
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BADF66072213
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gJ8oxcq5
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A0zRQCFc
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793641296;
+	s=mimecast20190719; t=1793641301;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8QRJSjFRhFjsEIrLMUF/Qbq9FSRASB71Ae5rA38ygI4=;
-	b=gJ8oxcq5qU3gFbUhfptehc4JORRx2gxuC4VhaBpdiAfOrUKP/ms8QqFKxFV+gcYHfpiSA5
-	e/OmAUxbfT9dpq+zPlqBUqavJ2yMJM+6ZSXcTopHzqsFcnlx70SJdZG2mNdMXcEFoirLYE
-	zLEPkri1Ftbehpm3GWGi/ENG2+enV1E=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=lHnANvxJyXsLw0XejdY5Eq/QOaFEXa11Lq5TyxWMu2s=;
+	b=A0zRQCFcu8tq7P6YG1DJKHbEm5KH66jI8dWwec2E3cQeSAXm48ABqs2lDfur/B55DkFlLn
+	d+d1d595y2M45raWw/vzdiN3w68WPIHQI1+pxbGmzh7B8mIh71UFjlSAhoBzHdGFbRYZM1
+	Eijaa5Si9hOjXJ237hfQbpZpE7HdwaE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-30-84tavbVfN-2gsjiu0x5Y8w-1; Mon,
- 02 Nov 2026 12:41:33 -0500
-X-MC-Unique: 84tavbVfN-2gsjiu0x5Y8w-1
-X-Mimecast-MFC-AGG-ID: 84tavbVfN-2gsjiu0x5Y8w_1793641292
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-250-xq5ET86oNkukWUBrvqlgKA-1; Mon,
+ 02 Nov 2026 12:41:39 -0500
+X-MC-Unique: xq5ET86oNkukWUBrvqlgKA-1
+X-Mimecast-MFC-AGG-ID: xq5ET86oNkukWUBrvqlgKA_1793641298
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 700C219560AB;
-	Mon,  2 Nov 2026 17:41:32 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA1941800EF7;
+	Mon,  2 Nov 2026 17:41:38 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E8DF030000E3;
-	Mon,  2 Nov 2026 17:41:31 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4E6AD1800347;
+	Mon,  2 Nov 2026 17:41:38 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 02/45] KVM: x86/hyperv: do not overwrite hc->ingpa for SIGNAL_EVENT hypercall
-Date: Mon,  2 Nov 2026 12:40:46 -0500
-Message-ID: <20261102174130.8779-3-pbonzini@redhat.com>
+Subject: [PATCH 12/45] KVM: x86/mmu: intersect writability from __kvm_faultin_pfn with fault->map_writable
+Date: Mon,  2 Nov 2026 12:40:56 -0500
+Message-ID: <20261102174130.8779-13-pbonzini@redhat.com>
 In-Reply-To: <20261102174130.8779-1-pbonzini@redhat.com>
 References: <20261102174130.8779-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -80,75 +79,90 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-When a guest makes a HVCALL_SIGNAL_EVENT hypercall that is not fast
-(i.e. has arguments in memory), kvm_hvcall_signal_event() reads the
-connection ID and overwrites hc->ingpa.
+fault->map_writable is currently a pure output of __kvm_faultin_pfn(),
+which is the only thing that restricts it.  This will no longer hold once
+memory protections derived from memory attributes are applied: those
+compute their own access permissions that combine with those from
+__kvm_faultin_pfn().
 
-If the connection ID that is valid in userspace but not registered in the
-kernel conn_to_evt, KVM exits to userspace; however, hc->param still
-signals that the hypercall was not fast, and userspace will then treat
-the connection ID as an address.
+Applying them *before* faulting in the pfn lets a fault that violates
+the attributes exit to userspace without the cost of gup and/or an
+async #PF; but it means that permissions will then be restricted in two
+independent steps, first by memory attributes and then by __kvm_faultin_pfn().
+Switch fault->map_writable to that model by letting kvm_mmu_faultin_pfn()
+only clear bits rather than assign them.
 
-Cc: stable@vger.kernel.org
-Fixes: bd38b32053eb ("KVM: hyper-v: Collect hypercall params into struct")
+No functional change intended: nothing writes fault->map_writable between
+the initializer and __kvm_mmu_faultin_pfn() yet, so the AND is equivalent
+to the assignment it replaces.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://patch.msgid.link/20260918135030.171564-2-pbonzini@redhat.com
+Link: https://patch.msgid.link/20260918135030.171564-9-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/hyperv.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 5d2e3617c952..798baa9eaafb 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2437,19 +2437,22 @@ static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *h
- {
- 	struct kvm_hv *hv = to_kvm_hv(vcpu->kvm);
- 	struct eventfd_ctx *eventfd;
-+	u64 conn_id;
- 
- 	if (unlikely(!hc->fast)) {
- 		int ret;
- 		gpa_t gpa = hc->ingpa;
- 
--		if ((gpa & (__alignof__(hc->ingpa) - 1)) ||
--		    offset_in_page(gpa) + sizeof(hc->ingpa) > PAGE_SIZE)
-+		if ((gpa & (__alignof__(conn_id) - 1)) ||
-+		    offset_in_page(gpa) + sizeof(conn_id) > PAGE_SIZE)
- 			return HV_STATUS_INVALID_ALIGNMENT;
- 
- 		ret = kvm_vcpu_read_guest(vcpu, gpa,
--					  &hc->ingpa, sizeof(hc->ingpa));
-+					  &conn_id, sizeof(conn_id));
- 		if (ret < 0)
- 			return HV_STATUS_INVALID_ALIGNMENT;
-+	} else {
-+		conn_id = hc->ingpa;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 5a2cc6a17a9b..38a4583d1ec2 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4688,7 +4688,7 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
+ 		return r;
  	}
  
- 	/*
-@@ -2457,15 +2460,15 @@ static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *h
- 	 * have no use for it, and in all known usecases it is zero, so just
- 	 * report lookup failure if it isn't.
- 	 */
--	if (hc->ingpa & 0xffff00000000ULL)
-+	if (conn_id & 0xffff00000000ULL)
- 		return HV_STATUS_INVALID_PORT_ID;
- 	/* remaining bits are reserved-zero */
--	if (hc->ingpa & ~KVM_HYPERV_CONN_ID_MASK)
-+	if (conn_id & ~KVM_HYPERV_CONN_ID_MASK)
- 		return HV_STATUS_INVALID_HYPERCALL_INPUT;
+-	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
++	fault->map_writable &= !(fault->slot->flags & KVM_MEM_READONLY);
+ 	fault->max_level = kvm_max_level_for_order(max_order);
  
- 	/* the eventfd is protected by vcpu->kvm->srcu, but conn_to_evt isn't */
- 	rcu_read_lock();
--	eventfd = idr_find(&hv->conn_to_evt, hc->ingpa);
-+	eventfd = idr_find(&hv->conn_to_evt, conn_id);
- 	rcu_read_unlock();
- 	if (!eventfd)
- 		return HV_STATUS_INVALID_PORT_ID;
+ 	return RET_PF_CONTINUE;
+@@ -4698,13 +4698,14 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+ 				 struct kvm_page_fault *fault)
+ {
+ 	unsigned int foll = fault->write ? FOLL_WRITE : 0;
++	bool writable;
+ 
+ 	if (fault->is_private || kvm_memslot_is_gmem_only(fault->slot))
+ 		return kvm_mmu_faultin_pfn_gmem(vcpu, fault);
+ 
+ 	foll |= FOLL_NOWAIT;
+ 	fault->pfn = __kvm_faultin_pfn(fault->slot, fault->gfn, foll,
+-				       &fault->map_writable, &fault->refcounted_page);
++				       &writable, &fault->refcounted_page);
+ 
+ 	/*
+ 	 * If resolving the page failed because I/O is needed to fault-in the
+@@ -4713,7 +4714,7 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+ 	 * other failures are terminal, i.e. retrying won't help.
+ 	 */
+ 	if (fault->pfn != KVM_PFN_ERR_NEEDS_IO)
+-		return RET_PF_CONTINUE;
++		goto out_pf_continue;
+ 
+ 	if (!fault->prefetch && kvm_can_do_async_pf(vcpu)) {
+ 		trace_kvm_try_async_get_page(fault->addr, fault->gfn);
+@@ -4734,8 +4735,10 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+ 	foll |= FOLL_INTERRUPTIBLE;
+ 	foll &= ~FOLL_NOWAIT;
+ 	fault->pfn = __kvm_faultin_pfn(fault->slot, fault->gfn, foll,
+-				       &fault->map_writable, &fault->refcounted_page);
++				       &writable, &fault->refcounted_page);
+ 
++out_pf_continue:
++	fault->map_writable &= writable;
+ 	return RET_PF_CONTINUE;
+ }
+ 
+@@ -5054,6 +5057,7 @@ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 		.is_private = err & PFERR_PRIVATE_ACCESS,
+ 
+ 		.pfn = KVM_PFN_ERR_FAULT,
++		.map_writable = true,
+ 	};
+ 	int r;
+ 
 -- 
 2.52.0
 
