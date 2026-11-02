@@ -1,49 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793645534;
-	b=NihUAC77POQM2J0WM5LFTfVPLjTSPZ5lKWPeSDoHR3/p1xRWOTSREL2gudb+0I66LYU6
-	 VH5w7xs4/S703ZYe4SOLbzP6o+g3rwHaNKYgoH3MfyeJsU0rbKqzih1gwnvclx2vxuUiy
-	 nVhtPTYKVgtxEeB0XB6qxfIsgN5EWuRJIRS0pKiBGTDxmWfwS1HL1ITDcdKYUcNkBsbzz
-	 fpCd9A5JontQHZHHo4FIKYbeqoBjubmeQe8PzzFc90jptbTv56D7C4OYOEcyRpKZIH57F
-	 VhEdNgBdR1oIjsR/a5xvRaJGTFwOWFYF0lC4Cum9RXRxi7EvLc3KJ3p2A9HWNGn7Bww==
+	t=1793645720;
+	b=FyqiBby99kUAnvfQjasdsmK/uPehwIL+ldhagd4kzbqItSYJ/pSitD5Qx8C1nx7cNbjC
+	 iNKv6l56iKOyq8hWSp8lQzNG6J04YKPmQD+T+kzGid0q+zhvvHDqQIXzUFp4U8KKtdbyU
+	 29es/CCXJzTy4HLxUh3MaTwwEaFH02qBBzqfyHfhLwHzxBAQTowA/oGT+3pkTh2dP0Zng
+	 neEmwzqS7R5Eld15jBy2mCca1pTLc+X9Di475SvJEya/TwZXNY3N8hWc6b4SJbi7WrCaA
+	 t2I0rG5x0vjTrFdbhBChVfYVWQqNqZ1kEkLEh/g/JNZZysKr/iOq93g/sZOXjKANEdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793645534;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=IK5p9/oAjFQaLEk4iOn+2jSpIJGhuFIILB+nKJjM5W4=;
-	b=IGBi1lm1JgKQKs96dutdKgRIxJrX7vrUV6Mt0qlveke7Q/+3ZeEyre7X5frkAg33iSsX
-	 jt5PVzh1L3vW7xFRWiyRn7o3YFUtVWC6NCP5oJPToEefJqTpePg6NjQ97mk3glRkHD68m
-	 pq+y1nCQ/QZ7/+ysv4dP0yGQlXSSVAPhBON5EOhdEVhGD1wMN7ogm0wH7oLDZ5Xs0E66J
-	 VLCH91rpM38vdvaYtzaaM0LcozpGH4re1vbnzhozyfddFQqeZlrsBu6wkEKZyc4SgKKyC
-	 8Hr3wAqVLAkvzOpxloTatSeVXNZbZO7wW87h2HyR3onUFi4NGgjFkX5bUKK2m1oD3KA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793645720;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=q+a6d1VrvhVSJwinXzVZd6V4L8Mih7bk8gcaP4YRihk=;
+	b=xZ4B7wt3b6T+/X8AtVTbTUjLSwsmnAXkN4Em0OjLse2Q2V0wheK/DFokUuX/zR0kRJun
+	 LQbJ9qFEUSF22ucOFHVlAT5tSFkOweDDHI3G7TyFRG2wfWGkO5JiErEEnMLPJqWYG/aaZ
+	 /EQDm5nA+J2kjz2/EmA+sCUL8RLGDnKR8Qhds/TWNtCXxLFrkkQkkhIjwrqB88a/ZwpgU
+	 Kz22jWpNsRYac5H7stPp9s6irL/gc1vGaKRKkr/q0LI7aA1BccGxKIsm9gUX8kGCLebNk
+	 OQm/Dv1fMrNy02/b/t7n6T4oohGYn/HZSh8RaDaqhofQ3ADNRPuqpIs78vgIZMGTuaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=rpf7QTW0;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40264606A326
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 18:52:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40264606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VglL4fs7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E91606A324;
+	Mon,  2 Nov 2026 18:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=rpf7QTW0
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 721EF1FC4;
-	Mon,  2 Nov 2026 10:52:09 -0800 (PST)
-Received: from [10.57.89.36] (unknown [10.57.89.36])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D17523F673;
-	Mon,  2 Nov 2026 10:52:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793645532; bh=eRT8EPlGmj8VVlfVMAD9ve9ebI+67LjsP9Gf4hzofTg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rpf7QTW00lwV9uTdlfHmVNFktsConMIdlqcqODPOVAoWzTp/3ZRQLmYqIG/rB3/O2
-	 B43c7J+phQXwSkzgHrVn+KcB5LCXoLOCtrWx8k8KB+MD49amIYjt2Wg0OljbJdEkDw
-	 nQjecks+ITNlOMcG9zeZ9omftVPNSf4vFKcf0l94=
-Message-ID: <ab0d81a4-da63-4f36-8412-0649153ebd49@arm.com>
-Date: Mon, 2 Nov 2026 18:52:10 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VglL4fs7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FB01F00A16;
+	Mon,  2 Nov 2026 18:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793645719;
+	bh=q+a6d1VrvhVSJwinXzVZd6V4L8Mih7bk8gcaP4YRihk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VglL4fs7480mcJ92S08Hi5fuXYtW/GFNLFIzyF2BMe2RReH9hPsRkqGB2qUnI0kcp
+	 hWMC/bX571paRKhGlOKsSf5JgG/faMJ4UFGFGIlnUFe/r2TFHzGtPEvSr1+Cnx/ErJ
+	 uCvcCoL7n3MXcNyuJnqVQn2bumMNjj2XmTQ1Nbc4rP39IrJsJ+iKT570c5f2TN+G3l
+	 tNE14seAOJ1i6sn7RxHH9w3sKjPIGl7x2gBBzfwxm2AA4HLFiQYg5NiUJWH4b9hE1N
+	 vBdzpp/rZRLTqtzC69GzNOwZae/AEUuR36dwz1wZkAgIgoQ6xV6CNqO34oOYrRhiIf
+	 AZ56LYyBzMhnQ==
+Date: Tue, 3 Nov 2026 00:15:52 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Tianyu Lan <tiala@microsoft.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [RFC PATCH v3 02/27] x86/apic: Drop savic_eoi() in favor of
+ native_apic_msr_eoi() for Secure AVIC
+Message-ID: <aujZ6BuUPcKMzWZZ@blrnaveerao1>
+References: <cover.1783490022.git.naveen@kernel.org>
+ <36c039713c4b03c87b636635cb4c1f8b98c15eff.1783490022.git.naveen@kernel.org>
+ <5f6bcceb-1c48-43e5-bafc-8f86676c4092@amd.com>
+ <alX59ewiXXSx7J3R@blrnaveerao1>
+ <asSSU2huZDlusYdG@google.com>
+ <asXlwARv1cE1RREu@blrnaveerao1>
+ <atDVyVCeUFafWPHm@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,81 +66,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/16] KVM: arm64: gic-v5: Document ITS userspace ABI
-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261016155741.979985-1-sascha.bischoff@arm.com>
- <20261016155741.979985-17-sascha.bischoff@arm.com>
- <sashiko-outbox-174640@kernel.org>
-Content-Language: en-GB
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <sashiko-outbox-174640@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atDVyVCeUFafWPHm@google.com>
 
-On 16/10/2026 17:27, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] kvm: arm64: gic-v5: userspace writes to READ_EVENT_DATAR are silently ignored causing state loss
-> --
+On Thu, Oct 15, 2026 at 06:31:53AM -0700, Sean Christopherson wrote:
+> On Thu, Oct 08, 2026, Naveen N Rao wrote:
+> > On Mon, Oct 05, 2026 at 11:16:51PM -0700, Sean Christopherson wrote:
+> > > On Tue, Jul 14, 2026, Naveen N Rao wrote:
+> > > > On Mon, Jul 13, 2026 at 12:43:45PM -0500, Tom Lendacky wrote:
+> > > > > On 7/8/26 01:32, Naveen N Rao (AMD) wrote:
+> > > > > > Drop savic_eoi() in favor of using the native helper that writes to the
+> > > > > > APIC_EOI MSR. savic_eoi() was added mainly to be able to handle
+> > > > > > level-triggered interrupts. However, it relies on APIC_TMR indicating a
+> > > > > > vector to be level-triggered, but APIC_TMR can never have a bit set
+> > > > > > since it is only updated when the LAPIC accepts a level-triggered
+> > > > > > interrupt. In the case of a Secure AVIC SEV-SNP guest, all
+> > > > > > level-triggered interrupt sources are in the VMM (emulated IOAPIC
+> > > > > > primarily) and KVM accepts them on behalf of the guest resulting in the
+> > > > > > APIC_TMR in KVM APIC backing page having a bit set. This is never seen
+> > > > > > by the guest, which has its own private APIC backing page. As such, the
+> > > > > > savic_eoi() handler is dead code. Remove it.
+> > > > > > 
+> > > > > > Fixes: 43b6687ac877 ("x86/apic: Handle EOI writes for Secure AVIC guests")
+> > > > > > Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> > > > > 
+> > > > > Another guest change which should be separate from this series.
+> > > > 
+> > > > Yes, I have called this out in the cover letter. I see now that I should 
+> > > > have used a better subject for the cover letter though.
+> > > > 
+> > > > > 
+> > > > > Is this causing issues with this hypervisor support or is just code that
+> > > > > is never invoked? Do other hypervisors behave the same way and will
+> > > > > removing this break them?
+> > > > 
+> > > > This is code that is never invoked and is independent of the hypervisor.  
+> > > > No impact to hypervisor code.
+> > > 
+> > > Doesn't that mean level-triggered interrupts are fundamentally incompatible with
+> > > Secure AVIC?
+> > 
+> > I think so, at least from the hypervisor front. Secure AVIC uses a 
+> > guest-private, encrypted APIC backing page. KVM's APIC_TMR is not 
+> > visible to the guest and the only injection mechanism is via 
+> > VMCB->Requested_IRR field, which can only carry vectors. This means 
+> > APIC_TMR in the guest backing page will never be set. So, all guest 
+> > writes to APIC_EOI are accelerated and do not cause an exit.
+> > 
+> > The guest could track level-triggered interrupts and notify the 
+> > hypervisor though. But, it isn't clear to me that is necessarily better.  
+> > Linux already seems to have a fallback which works for I/O APIC (see 
+> > below).
+> > 
+> > I believe TDX has similar restrictions?
 > 
-> commit 3a4606444ec9f90ae2360e066a229c789d9eca15
-> Author: Sascha Bischoff <sascha.bischoff@arm.com>
-> 
-> KVM: arm64: gic-v5: Document ITS userspace ABI
-> 
-> Document the GICv5 ITS device and its userspace ABI, including the
-> MMIO address, reset control, register attributes, and MSI requirements.
-> 
->> diff --git a/Documentation/virt/kvm/devices/arm-vgic-v5-its.rst b/Documentation/virt/kvm/devices/arm-vgic-v5-its.rst
->> new file mode 100644
->> index 0000000000000..250057e4445d7
->> --- /dev/null
->> +++ b/Documentation/virt/kvm/devices/arm-vgic-v5-its.rst
-> 
-> [ ... ]
-> 
->> +KVM_DEV_ARM_VGIC_GRP_ITS_REGS
->> +-----------------------------
->> +
->> +  Attributes:
->> +    The attr field of kvm_device_attr contains the ITS register offset from
->> +    the control frame base address. kvm_device_attr.addr points to a __u64,
->> +    regardless of whether the register is 32 or 64 bits wide. A 64-bit
->> +    register must be addressed at its base offset; userspace cannot access
->> +    its upper or lower half separately. Guest MMIO may use aligned 32-bit
->> +    accesses to DT_BASER, DIDR, READ_EVENT_DATAR, and GEN_EVENT_DIDR.
->> +
->> +    The ITS base address must be configured before this group can be used.
->> +    Writes to read-only registers are ignored. Writes to DT_CFGR and DT_BASER
-> 
-> [Severity: Medium]
-> Does this design violate the rule that read-only attributes must return an
-> error on set?
-> 
-> A device attribute documented as read-only whose set path does not return an
-> error can lead to silent migration state loss. For example, READ_EVENT_DATAR
-> is a stateful register that holds the result of the READ_EVENTR command. If
-> userspace restores this state during migration, but the write path returns 0
-> while ignoring the value, the restored state is silently dropped, corrupting
-> the guest's view of the command result upon resume.
-> 
-> Looking at the implementation, READ_EVENT_DATAR is defined without a uaccess
-> write override in vgic_v5_its_registers() and uses vgic_v5_mmio_write_its_wi.
-> The userspace attribute set path in vgic_v5_its_attr_regs_access() defaults
-> to calling the guest its_write handler, which invokes the Write Ignore stub
-> and successfully returns 0 instead of returning -EINVAL or -EPERM.
-> 
+> No.  VMX lets the hypervisor select exactly which vectors will trigger a VM-Exit
+> on EOI, via a dedicated bitmap.  Only SVM's approach of keying off the TMR is
+> problematic.  FWIW, SVM's approach is flawed in general because it makes assumptions
+> about hypervisor behavior that don't hold true, e.g. see the games that have to
+> be played to deal with RTC tick stuffing when it's wired up as an edge-triggered
+> interrupt.
 
-The posted userspace access patch in this series (patch 10) silently 
-discarded READ_EVENT_DATAR, which was a mistake on my part.
+Agreed w.r.t VMX vs. SVM.
 
-I've added its restore handler in patch 10, and a read-back test in 
-patch 14, and ABI text in this patch documenting that userspace can 
-(read: must) restore it. Guest MMIO writes remain ignored, as this is a 
-RO register from the guest's point of view, but it must persist across 
-save/restore.
+However, as far as I can tell, for TDX guests, the EOI exit bitmap is 
+not honored and so, level-triggered interrupts are incompatible with 
+those too, no?
 
-Thanks,
-Sascha
+
+- Naveen
