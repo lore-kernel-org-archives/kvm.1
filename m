@@ -1,74 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793661282;
-	b=EqR4NTe+YYX/WxllkLVd2lROxQ9qnX1WKKJ7r6PMnyVoy+MIW14ZfOlnNKoL4sliQD9B
-	 xmsB3z7c4cs2xJbkINbgmB2z/V5Cwofvc4qVzcqhNQ65KIyX6WQKB2SIvrAjMcLtQoa/1
-	 3X5ToB1BkXR6yeSk0hbA8TLloXxdPwdK8NArkg2OqVBHGyY003OKwo/+i/tbNYOWf7BYD
-	 cAIcXSHO/l9TaLytAalcfuZvNmbnMsjRFvFEpFnpvnR23jtWKcSoHTrWHFBWlVlTa+y6M
-	 /EKWAO8Grsmy7IMVFmcC1HFsQ9vY/0FZ7jAR/10IAp2D7AjNcQmHN+1W88fyWKL7Bsw==
+	t=1793661972;
+	b=VKta+FVQeLWrog7zpTPTcFw8NQvyY6JRlcvrezPglwFYhWsCQT9ejS0nqu70zXuczLhk
+	 IzvcW2d/JbkBhB6IhJNnxKZ6UJd5+EpzZW/3KbcnigugXASF3r0htClPuvQUw3aveQ4SR
+	 r/e8e/bmqX0lpbv/35mGTmpJ7vgyxBC8YOabkMOXqa4Vpw6BbfA/BvX6VIR64+2NBRoYT
+	 QmdmYvw6vyPREeo8QZGVzB2gRvYU40hgMGJT/gGcNPVnW4vpW+pucxXxQuwHDS4s3rQOb
+	 yolBZ+ZLNPN3EC0Ly69IGBWQ6Ul0UNCsVDowtNozlF9Ab2d3/vdmu3QMmdA6JTCB4aA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793661282;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=Dpgu43PluQhmidL1+OiMat/XHlPZOfkRXaB+xajzqbU=;
-	b=hDw0LHCouAEQByoza2PfvImThKg99wMxDFvKqUh1s1coH3L3F2g1jxn+EP3lXu9l9mfn
-	 OO8YCiP9AQrCjF+qMue3p2ZZ9gPO/XkB6NNVi/C0T/TxsWdKujJaUXUMXpDTM74Swkrfj
-	 ve73ta8GmVNftj1oEgswd+KnTIHmiHWj2P7/udQkRvxCtpk/3P+vk38TnXIcZ5JysSMzr
-	 02lq2RMf8A6dgzf/D+40LLIsknkdC2cAxYQEX4wMqYeXyWG/yFRSt8k9PFayWsceomzEN
-	 tvNWbjF1R4ACgM8GLBVDV8XD9cNPVEIdJuIBobrqmUmqI3IWy8XAXCEGgYzIjytU72A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793661972;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=W6JHpSmxxXi4wrtj47YYY3ABNffhQA0kAKjpuUyzWMk=;
+	b=Lzbn8zlOt7r4loxTCT2Ui4jEYGiVprKEGxb0N2H0tNqgGJ9y7muoJFlxWJ2Gb9IUDjhY
+	 o4+dH/xOGSuxUioktNsmEC3p8l0namVBoypEoRjSvLcTfN4nmHIqgIu/Wb3zXsVzdoG1Y
+	 v4Vmpi+dZipbXG5GuwP5ClOukzL31LDJS0ll51NiS0u6Z0C9SLPlKqSROX/AjfXkhon9o
+	 vwDNz9n7iilws4WM1MPYsc7CP6gkW56wHWdKDCdude9uL6o4ejL7IJAFgGzRmu1Tl/CKl
+	 jhvKG1N5TIr9MON3CmJkWnNTNHrP1l6hMfUf8N6OGP1M7BytSXwwuJm1dFIgblCckmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ElWKqKSG;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UDrUqwDh;
+	arc=none smtp.remote-ip=198.175.65.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AA5606EEA5
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 23:14:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9AA5606EEA5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CE6606A330;
+	Mon,  2 Nov 2026 23:26:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6CE6606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ElWKqKSG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793661281;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dpgu43PluQhmidL1+OiMat/XHlPZOfkRXaB+xajzqbU=;
-	b=ElWKqKSGGPQ9FgHvQVDT2wam1A3k2vE4/+2zA3HyH/rllDdwUHvwRAHsDswKDhefpMddEo
-	IremPS5qcj7PRGvhzr7TBL9AHAVe2xhZ7X+JtbU8HquW74ukHjRtSFB6ClF9apnJo15Z2L
-	Im9/kQtPYCQduPGciHezjkJS3+zwxrQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-KW5uyDlnN52UOKS-oFDcVQ-1; Mon,
- 02 Nov 2026 18:14:37 -0500
-X-MC-Unique: KW5uyDlnN52UOKS-oFDcVQ-1
-X-Mimecast-MFC-AGG-ID: KW5uyDlnN52UOKS-oFDcVQ_1793661276
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CE787180065B;
-	Mon,  2 Nov 2026 23:14:36 +0000 (UTC)
-Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5B34A26C;
-	Mon,  2 Nov 2026 23:14:36 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7/7] KVM: x86: Flush guest TLB when emulating a RESET to strictly honor the spec
-Date: Mon,  2 Nov 2026 18:14:28 -0500
-Message-ID: <20261102231428.13523-8-pbonzini@redhat.com>
-In-Reply-To: <20261102231428.13523-1-pbonzini@redhat.com>
-References: <20261102231428.13523-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UDrUqwDh
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793661971; x=1825197971;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=di2LeUKhy5cTvKnuGF32Eef9G54E0Zhn+genGk97NTo=;
+  b=UDrUqwDhRwGMSi9TWUZ8t0MryNZ0Kek4NQpKA4b+OBobwW2HxdweaPeR
+   ULbr6coovXNoDI/YDywALoq0UgZeeTDn7xbiRBazR4nmxmu3wUDSFGVdg
+   HaVYybyw+9dhuaweMrEMOu2i1e53yaYDAgFax86YM2ZjLsyRlsIi9R9Lv
+   DxuEzHFPRSdhN6KepC//pvltPRTaV1LZZZky1Y1z6oYkKXlcRDLzP8IAJ
+   5FCEsxQU1fq+sf1Pf7OmwgrUFfCJalxIhtgycW2FJuM4xFYrmi1gJ3DWR
+   PMUS7TPhvlxyDrAJ+Un74oqeX6WO6wRgG3ZKIHiGKH8HlwXsIfEX0L4D3
+   g==;
+X-CSE-ConnectionGUID: 6/vr/grcTySDgyQIvEdKzg==
+X-CSE-MsgGUID: Ap0okXiQQ8eq+OGEaPNouw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2261195"
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="2261195"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 15:26:11 -0800
+X-CSE-ConnectionGUID: iBTOuXN2SZidv0DJJwKzvg==
+X-CSE-MsgGUID: 0k4Ax+ttSNWLuaIQDIrdQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="6255708"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 15:26:10 -0800
+Message-ID: <6d84ab57-a702-4ac0-9e29-579449b3d826@intel.com>
+Date: Mon, 2 Nov 2026 17:26:08 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,67 +72,152 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>, Sean Christopherson
+ <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+ <20260827223755.143247-12-zide.chen@intel.com>
+ <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
+ <auUQgRVFASkWtkoK@google.com>
+ <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
+ <CAO9r8zMxQnRLKGrW69rX7703AatWMp6KOXMObL9baHRPs4dW8A@mail.gmail.com>
+ <6c9a13c9-e6c1-4540-a8ca-1f0e800f3571@intel.com>
+ <CAO9r8zOWzr61pkkF01AvEp+YSOo6bA1N=L91RYiM=ETtK5+D9w@mail.gmail.com>
+ <69c428d7-239a-485e-9494-32b8aa82da05@intel.com>
+ <CALMp9eRsR8xaUmQyVu5QmYx1cZ2qFGGk+31bMymhmN9_iaPuMg@mail.gmail.com>
+ <f7213eba-5b61-4514-a315-bce64823fad5@intel.com>
+ <CAO9r8zM4eWD538L3osqSVoB0VHnjgRREtv2k419a1Vvuq+Q9rw@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CAO9r8zM4eWD538L3osqSVoB0VHnjgRREtv2k419a1Vvuq+Q9rw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-From: Sean Christopherson <seanjc@google.com>
 
-Flush the guest TLB when emulating a RESET even though such a flush should
-be completely unnecessary since KVM only performs a RESET when creating a
-vCPU, and so it should be impossible for the vCPU to have any accrued TLB
-state.  Making the flush unconditional aligns KVM's behavior with both the
-SDM and APM (ignoring that both specifications contradict themselves), and
-avoids having to worry about hypotheticals like "what if KVM did provide a
-way to emulate RESET after a vCPU is created?".
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20261022015407.279870-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/x86.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+On 11/2/2026 4:51 PM, Yosry Ahmed wrote:
+> On Mon, Nov 2, 2026 at 2:48 PM Chen, Zide <zide.chen@intel.com> wrote:
+>>
+>>
+>>
+>> On 11/2/2026 4:25 PM, Jim Mattson wrote:
+>>> On Mon, Nov 2, 2026 at 2:13 PM Chen, Zide <zide.chen@intel.com> wrote:
+>>>>
+>>>>
+>>>> On 11/2/2026 3:36 PM, Yosry Ahmed wrote:
+>>>>>>>>> 1. GLOBAL_STATUS_TRACE_TOPAPMI_BIT can leak from the host into the
+>>>>>>>>> guest. If a host PT PMI arrives while the guest context is loaded, bit
+>>>>>>>>> 55 will be set for the guest, and the guest won't be able to clear it if
+>>>>>>>>> OVF_CTRL is intercepted (it will #GP as it is reserved for the guest).
+>>>>>>>>> Similarly, the value can't be restored through KVM_SET_MSRS.
+>>>>>>>> I think mediated vPMU assumes that no host PMIs can be generated while
+>>>>>>>> guest PMU state is loaded.
+>>>>>>>>
+>>>>>>>> If PT state can leak into the guest via bit 55, similar leakage can also
+>>>>>>>> occur for other status bits, e.g. when the guest exposes fewer
+>>>>>>>> general-purpose or fixed counters than the host.
+>>>>>>>>
+>>>>>>>> The scenario where both host and guest can be active simultaneously is
+>>>>>>>> handled by the perfmon_mask case, where intel_mediated_pmu_{load,put}()
+>>>>>>>> filter guest-owned status bits.
+>>>>>>> Looking at the code:
+>>>>>>>
+>>>>>>> kvm_mediated_pmu_load() -> perf_load_guest_context() ->
+>>>>>>> perf_ctx_disable() will iterate PMUs with for_each_epc() and disable
+>>>>>>> them, which skips PMUs without PERF_PMU_CAP_MEDIATED_VPMU.
+>>>>>>>
+>>>>>>> Same for kvm_mediated_pmu_load() -> perf_load_guest_context()
+>>>>>>> ->ctx_sched_out(), it also uses for_each_epc() to iterate PMUs and
+>>>>>>> schedule them out.
+>>>>>>>
+>>>>>>> pt_init() does not set PERF_PMU_CAP_MEDIATED_VPMU on pt_pmu.pmu.capabilities
+>>>>>>>
+>>>>>>> Please correct me if I am wrong.
+>>>>>> My apologies, this bug is indeed real because pt_pmu lacks the
+>>>>>> PERF_PMU_CAP_MEDIATED_VPMU capability.
+>>>>>>
+>>>>>> Adding this capability to pt_pmu seems intuitive, but unlike
+>>>>>>
+>>>>>>                        the core PMU (which merely toggles enable bits),
+>>>>>> Intel PT is an AUX-based PMU. Stopping and restarting it on every VM
+>>>>>> transition is heavier, and I'm not sure whether it could introduce a
+>>>>>> noticeable performance penalty.
+>>>>>>
+>>>>>> However, whether the solution is adding PERF_PMU_CAP_MEDIATED_VPMU or
+>>>>>> some other mechanism to enforce mutual exclusion between pt_pmu and
+>>>>>> mediated vPMU, we can address that in a separate patch.
+>>>>>>
+>>>>>> To immediately protect guest state and live migration in this series,
+>>>>>> I'm thinking of adding the following defensive filter in
+>>>>>> intel_mediated_pmu_put():
+>>>>>>
+>>>>>> + /*
+>>>>>> +  * Scrub bits that are not virtualized for the guest to prevent
+>>>>>> +  * possible host state from leaking into guest state and breaking
+>>>>>> +  * live migration.
+>>>>>> +  */
+>>>>>> +  pmu->global_status &= ~pmu->global_status_rsvd;
+>>>>> This doesn't prevent the leakage, it just clears it on the guest->host
+>>>>> switch. So it helps live migration but I am not sure if it's better or
+>>>>> worse if the guest sees the bit unexpectedly appear AND then
+>>>>> unexpectedly disappear.
+>>>> Right, as long as the GLOBAL_STATUS is passthru, the leak can't be
+>>>> prevented.
+>>>>> We can clear it when the MSR is read by userspace, which should fix
+>>>>> live migration, but the guest will still see the bit, and it will
+>>>>> still disappear unexpectedly but only during live migration.
+>>>>>
+>>>>> The guest still won't be able to clear it when OVF_CTRL is intercepted.
+>>>> GLOBAL_STATUS and OVF_CTRL share the same interception policy. If they
+>>>> are passed through, the guest can see the bit and clear it; if both are
+>>>> intercepted, then bit 55 can't leak to the guest.
+>>>>
+>>>> It's not perfect, but at least the guest won't observe bit 55 and then
+>>>> get an unexpected #GP when attempting to clear it.
+>>> I'm not sure what imperfect solution you are referring to, but Yosry's
+>>> proposal that the bit gets cleared on a guest->host switch is a
+>>> non-starter. MSR bits must not vanish unpredictably.
+> 
+> I don't think I proposed this? :)
+> 
+>>
+>> Agree, then maybe Yosry's suggestion is what we can do for now: filter
+>> out unsupported bits when the MSR is read by userspace.
+> 
+> This I did propose, but I also noted that the MSR bit will still
+> vanish unpredictable, just on save/restore instead of guest->host
+> switch, which should be better.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 09c6df00ebb6..26e7beaff8a0 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9731,9 +9731,6 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	kvm_x86_call(set_efer)(vcpu, 0);
- 	kvm_x86_call(update_exception_bitmap)(vcpu);
- 
--	if (old_cr0 & X86_CR0_PG)
--		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
--
- 	/*
- 	 * Unconditionally reset the MMU, even though super strictly speaking,
- 	 * a MMU reset is only necessary if and only one of the page role bits
-@@ -9750,16 +9747,16 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	kvm_mmu_reset_context(vcpu);
- 
- 	/*
--	 * Intel's SDM states that all TLB entries are flushed on INIT.  AMD's
--	 * APM states the TLBs are untouched by INIT, but it also states that
--	 * the TLBs are flushed on "External initialization of the processor."
--	 * Flush the guest TLB regardless of vendor, there is no meaningful
--	 * benefit in relying on the guest to flush the TLB immediately after
--	 * INIT.  A spurious TLB flush is benign and likely negligible from a
--	 * performance perspective.
-+	 * Intel's SDM states that all TLB entries are flushed on INIT "as with
-+	 * a hardware reset", and AMD's APM states the TLBs are flushed on
-+	 * "External initialization of the processor".  Flush the guest TLB for
-+	 * both RESET and INIT, regardless of vendor, even though both the SDM
-+	 * and APM contradict the above statements in other tables.  There is
-+	 * no meaningful benefit in relying on the guest to flush the TLB, and
-+	 * a spurious TLB flush is benign and likely negligible from a
-+	 * performance perspective (especially for RESET).
- 	 */
--	if (init_event)
--		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
-+	kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_reset);
- 
--- 
-2.52.0
+Yes.
+>>
+>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>> index 38c7a4fa1007..3849b3f5234a 100644
+>> --- a/arch/x86/kvm/pmu.c
+>> +++ b/arch/x86/kvm/pmu.c
+>> @@ -862,6 +862,8 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct
+>> msr_data *msr_info)
+>>         switch (msr) {
+>>         case MSR_CORE_PERF_GLOBAL_STATUS:
+>>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+>> +               if (msr_info->host_initiated)
+>> +                       pmu->global_status &= ~pmu->global_status_rsvd;
+>>
+>> The underlying issue still requires proper mutual exclusion between
+>> Intel PT and mediated vPMU, which I think can be addressed separately.
+> 
+> Or maybe handle the host PT while the guest is running? Not sure if
+> that would be correct.
 
+Since KVM switches APIC LVTPC in guest context, it seems difficult to
+correctly handle host PT PMIs while the guest is running.
+
+I guess Intel PT virtualization could be re-enabled sooner or later, and
+addressing the exclusion issue would be a must at that point anyway.
