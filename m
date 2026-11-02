@@ -1,76 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633491;
-	b=r61VaifL/bCU3IIfCgC3hqmv4IE4M2G9gEng1ztuyO5fVHTbXs2gJRVUuAgce/kHDepq
-	 dIhlFVtEpjDZGn3srzLxfBsmD+jzKqoCyE5zmGwoTIMq4Y5FnI1JK2Di3GUYmoXh+b5/O
-	 Npq7S9jwLEggpkynrM4L8I5I2NjvgFpbyfJ2EmScCvd1jyoMYNAS+dfDSYr7cCqsq+UmV
-	 GDeF9mO3MOrOAChC/eHFAPru438YSsqHzq65T5PX5zLbJWT//xMlWM3Zg3hlru9TZRgIg
-	 iYtkzXxIoQNnhN+ju5+4LuYEymON/SsVn1nRMhZhvMCSAxcMCXMrLHp6aOPlhMQLj7g==
+	t=1793633600;
+	b=vV9GiJ15rlevqByeVy6CuGW19yG3CBgdtm1HsYRH84p956hk+XOebt28RSnXX5sXHjNZ
+	 Qjv3so9n3oLBt/94u3XtmVYxzB2hJygu3wrJnrWyoq/nwrqVJATbwiEl+xYoXsOR6tL4W
+	 EY8bsiewLhNuSNbBJVpgyVDhbVyVMmE0kIbCj/itYZuDQcFRjPr+R0bfGtRk34wD4EQ+n
+	 Qx2SEQVbH4XniAt8ELKZGf0x5Pr8fyrD5/6vSwyrlcN4+TQjJUks/8R/8BernFKvcczUQ
+	 0rf3WY+dmV933En7WwzMahW6Scb127xDzlVHJgokzSEqqELfJJ9qUKyp/zSevpIifdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633491;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Q7x6yP+yOfvdzdlAu2HNp3jLSAowdMqE0gkj3ywLMGc=;
-	b=tWk5FqdM4utM/M04H0uRNARYasXYHzcJ+lCPRfUu38UtsBSzVuSpqqpvMTYzu8nfnQHB
-	 ebc4dCxhJF2CzmovbqHYhYqxjiLbirfgyjODUxX/f5g0wtG1lC1+lME03ZbqaSJQVvidT
-	 W0mVhz+X0VyfnCmGt9nWClufZ6+CS6fnzKAiUbxW41+45T+8da3Q/V7Lve0Ki4ljG2NrM
-	 IshGOP1MsKteoQ+QZfqu/E4XEW0F9ZbXZ65S/5T9gk71PjbA9ZRxhsFOt3Ua/zb1HWfQE
-	 DNcKIgAnpbxlCcdyagRX9X3UkN0fsRUZES9cVQWoTejK2jN4PncuQchAHZ8m0UzaqqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633600;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Reinject:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=BQsaASFcwTR98Ua/j2/w7tivjnC0NUs/EPQM2iEIWxg=;
+	b=Oy3TvJZk79vZjcvXmFQahJnFiHrUzAqufVaunCwYtUdQTL6KKwIlDa28fhCebErCrIbr
+	 Qi61aiq7wuB7Z5CIcY+s7Mde33LAuUzUIFN3ffG2jAroWObVqx1KfMWXC/c5xk0vo5mP8
+	 NZzIUbQbGLzRoW2bRGKAPbD8Hf6N6QvK0USjBBWggzsnRDlQH2BVkXmaHdGwlARtiYsxv
+	 SGXbyGd5Efnk+vtF5VOiiwvje2DpP9YBmMwcXmfQgq0eERy2xpyDH0LGJSGEPhFR3e6Lj
+	 OV+Sqp5JdJFmyJrMR4FseUl6yCXCHJLNnCzkv/PZe6K0LTHFTGWrQ4GJWE3kVus26Ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Nl7hY7qt;
-	arc=none smtp.remote-ip=209.85.215.200
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=km0KRzyr;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CAD60D3CAF
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:31:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01CAD60D3CAF
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C61608A354;
+	Mon,  2 Nov 2026 15:33:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6C61608A354
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Nl7hY7qt
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd6969473a4so1849003a12.0
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:31:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633490; x=1794238290; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Q7x6yP+yOfvdzdlAu2HNp3jLSAowdMqE0gkj3ywLMGc=;
-        b=Nl7hY7qtUztBhR/ooRIbWQrpDZI/7LILqgN2jjYhmkN3vQXLtzeLV4vEMKt94sHvKV
-         PK/QHGLZu2w+eBthbWQB50Z4/APFytDDHvtopEIAPq7ULoH08xM7FtCHvqcuqIs2u7SW
-         Y8jpOMQ3XojwhK2WuR6Du+deA9fXL+9TM4AEe0VD+f5VzpbAsYlnODdaVRUU0CpGTCZ0
-         P7JWfjXujnz/UDl31W0DlBylHteLD0uz9hyOw21rLARZIKGFHJ03bRUkP5NOXR7x47ZG
-         f6pWfc5F61E9/QzeY2Y7ufsIK4g0NXR9X11nHQOdAm5ybpoJa52pxwQffWB8d86GeFXO
-         GpHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633490; x=1794238290;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q7x6yP+yOfvdzdlAu2HNp3jLSAowdMqE0gkj3ywLMGc=;
-        b=IWE5+bvAHf7EF9tfzzonfsAF1fuiazIueLXKysql1CwDsHLTAwWxnBtzyJlH6ZayN6
-         Hsnp1gjKviacHv1UrMF+B41Kr1ucf5L8vWn98nLJCAe79c6a96JTHsf81tcckPWzQNbS
-         lG1bbM1RmGKqhYuW8BqsI6i6gII9estTMlcttfWmKN3emXuDeLEqwwhttLFOr28Ht/D1
-         uYItvdfUd3KkrDQ8wwhXlyuehYQkxmoL2C7O3yIuTtgYyYqgYaaNclNCN8yZjHMd8ZJu
-         RHI3Vf7rkW3aL8SZU5zE33iJ8BdWEsZWpfP2i3v5J6D5UeRYa6uM8DpFHef40c9LQmeT
-         D/Ig==
-X-Forwarded-Encrypted: i=1; AKwUvBw6R6Tr+jW2bx720fFqHTkb7HS766RfXmjQGslUS2v3eTnMj8XNwJANHvW+urgAbNq7i8Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z80+M30jPEvR+aKBS6VjXMBm5ft63yw8QBRmq/YZMijYut50FZj
-	pl9mGwMDvq1/xXMQiRez19A/idcmyNqCWRt8A13rPaYK0cJAf7DPjrHtEYrR+Cnh3qInu5/3ThU
-	eazu6Wg==
-X-Received: from pjbgo15.prod.google.com ([2002:a17:90b:3cf:b0:3b0:7a3d:ca4b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:33ce:b0:3ac:ffb8:1809
- with SMTP id 98e67ed59e1d1-3ae897e230bmr7958871a91.39.1793633490047; Mon, 02
- Nov 2026 07:31:30 -0800 (PST)
-Date: Mon, 2 Nov 2026 07:31:29 -0800
-In-Reply-To: <20261030133939.630e29af@p-imbrenda>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=km0KRzyr
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2EEFDH3333621;
+	Mon, 2 Nov 2026 15:32:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=BQsaASFcwTR98Ua/j2/w7tivjnC0NU
+	s/EPQM2iEIWxg=; b=km0KRzyrvJCvYWGvdxZLIQtpVChnlJb09PzDpSMrjXB+y2
+	EiEtQfSUoklr4D7ZLh98AvH4myEMejuvNotugTEDk+hc9IH7sBGPC4XNbh+CkmJ0
+	+HzZAOHhqosaf7waExH3cFRGjqkQNjEd0VW5D8xQYNU0LzVZLt5HMxuwvff3/IMA
+	+ggupIXDvaRZDKuTLLD+rCJzOSj/A6/UD9excoqDFlPSHXeO2LkSAXr/cwZ77ksM
+	U09ej/4wKCOvha+VgMWDi+xIuMLlni3IjPdfdnlGlxcl+MezqxSHAKNIL2e7VSx/
+	D0jSPesAcXu/7UJmjIE5DJyVdWwxoxvrPRwtBKhQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn7u39cp5-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 15:32:35 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2Dp3k8932188;
+	Mon, 2 Nov 2026 15:32:34 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hnunjxhmn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Nov 2026 15:32:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A2FWUrY45220142
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 2 Nov 2026 15:32:30 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3DAF120043;
+	Mon,  2 Nov 2026 15:32:30 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6387620040;
+	Mon,  2 Nov 2026 15:32:29 +0000 (GMT)
+Received: from osiris (unknown [9.87.153.156])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  2 Nov 2026 15:32:29 +0000 (GMT)
+Date: Mon, 2 Nov 2026 16:32:28 +0100
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+        Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Paolo Bonzini <pbonzini@redhat.com>, Fuad Tabba <fuad.tabba@linux.dev>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
+        Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        kvm@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>
+Subject: Re: [PATCH 1/7] KVM: s390: Drop unused and unreachable
+ kvm_arch_vcpu_should_kick()
+Message-ID: <20261102153228.240804-H-seiden@linux.ibm.com>
+References: <20261028190259.1819571-1-seanjc@google.com>
+ <20261028190259.1819571-2-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,50 +105,76 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261029143336.390231-3-clopez@suse.de> <20261029175203.5bdd51d7@p-imbrenda>
- <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de> <20261030133939.630e29af@p-imbrenda>
-Message-ID: <auis0SaMkRB6odsK@google.com>
-Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
- permission upgrade
-From: Sean Christopherson <seanjc@google.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028190259.1819571-2-seanjc@google.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=Zsp4uN7G c=1 sm=1 tr=0 ts=6ae8ad13 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=1XWaLZrsAAAA:8
+ a=e2WrUwKQfGWSWgw8ceQA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: TmxCuOpzq6vA5Vx27S-wl8VaUu08c3rl
+X-Proofpoint-GUID: KVXVtrhgD1GJzUOP0CvMGutz2Xg2IILr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA2MCBTYWx0ZWRfX7bqvyy+G4IRi
+ YuDNWW2rtZhIuWgYthjFwF9+9BvaQqjUd0NCjGgytPI2kgitQSqHnwzde0DvmKT5ekh2NyjS0Nq
+ F9Z/Zdzj1pOgrZG2yR5VLS36NId8bM3pN7WDBUKOt9UCD+QFNKQAZu+Jyci2pVHVvCbSWlrBtzk
+ 4AIduMbPdqh6wI13eR6unsEG4RU8A4ZAJXpBquIr8jswWYP5JT1UMzhOQVTUhyasVm3yKq19/37
+ g8IQ6IsFUU0CmiqM7aH5od6K0UDK4Pufp7iAip5do5FEjWgMz0BL8a8ds/SYC3EFA4Du3R6hGdA
+ 0zHdfqn6psBiKyEKCPFmlpIxWnmBKc5C9d6tL8dsAaGzrFS280m4gYPAHt09nU+p77BxB+4etoO
+ zPcjuUT7rpSjV4uYvQkRwMMejfxArhysp1beSjd8DEChKl+d8KSwLwvy9Sujp9ZrxPVJILSraLV
+ unHwMnZGlBbuYsnY1Xg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA2MCBTYWx0ZWRfXzMWFCRCaICBW
+ YVdaYUPRVlAbXrli6ZNZR2sTDTrenRk6sxAut1SiSIk+5dhzpZRcRftKd34+qSoKLUq5b5QITXp
+ q7EjnwMhcLT8GbXDC7vsw0JN8N6I7PQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_04,2026-11-02_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
+ impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020060
 
-On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
-> On Fri, 30 Oct 2026 12:11:07 +0100
-> Carlos L=C3=B3pez <clopez@suse.de> wrote:
->=20
-> [...]
->=20
-> > > regarding this series:
-> > >=20
-> > > on x86 you don't care what the new permissions are, because you're
-> > > updating when re-faulting (if I understood correctly). =20
-> >=20
-> > Correct.
-> >=20
-> > > for s390 it might be beneficial to know what the new permissions are;
-> > > of course we could look up the vma and find out, but since you are
-> > > already checking the permissions, maybe you can find a way to also
-> > > convey the new permission bits?
-> > >=20
-> > > that would make our life on s390 easier :) =20
-> >=20
-> > Right, getting the new bits from vma->flags should be trivially done
-> > from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
-> > this series though.  The rest of architectures still need the notifier =
-to
-> > tell them if the change is an upgrade, since they don't have an easy wa=
-y
-> > to grab the old RWX bits. Passing the old RWX bits from the MMU notifie=
-r
-> > does not seem trivial to me either.
+On Wed, Oct 28, 2026 at 12:02:53PM -0700, Sean Christopherson wrote:
+> Drop s390's kvm_arch_vcpu_should_kick() stub as the one and only call site
+> is wrapped with "#ifndef CONFIG_S390".
 
-But why is core MM even doing mmu_notifier_invalidate_range_{start,end}() i=
-n the
-first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip the
-"invalidation".
+In the somehow near future I'll remove those #ifdefs and use the kick
+stuff for kvm_arm64. The native s390 KVM then must at least keep an
+(unused) symbol at hand. It seems that the compiler could not optimize
+those calls away. So let's keep it there so I do not have to re-add it
+soon.
+
+	Steffen
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/s390/kvm/s390/s390.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
+> index 18fb200f854a..9900a1a1c148 100644
+> --- a/arch/s390/kvm/s390/s390.c
+> +++ b/arch/s390/kvm/s390/s390.c
+> @@ -3922,13 +3922,6 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
+>  	return false;
+>  }
+>  
+> -int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+> -{
+> -	/* kvm common code refers to this, but never calls it */
+> -	BUG();
+> -	return 0;
+> -}
+> -
+>  static int kvm_arch_vcpu_ioctl_get_one_reg(struct kvm_vcpu *vcpu,
+>  					   struct kvm_one_reg *reg)
+>  {
+> -- 
+> 2.56.0.313.g2479322e68-goog
+> 
