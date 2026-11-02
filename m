@@ -1,71 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641296;
-	b=D/60XPy0D+q7EGSU1vp76vlDog7MOfE2RuPJzo1ro9qQ8bt/DpP31d4exejSo4qkG7tP
-	 wvfEqEHGxxXzV0lx+/36vYJt45bYWa0xayHQLDGiOQTa9jWdAXuQqpZGyKthg76E7/H+t
-	 yr4o+Zfz4cjVfmz7FBL4S14KWrpDpryIr1HUYWj91jYzirCcraWqpdeb7hqoH+HOeaCRY
-	 rNVTi4w4ip0Mbc3Vt8H8GiulYwbn2kROoBlCESXHq7QQX0RzlutfCOwKNz5/0AdOJljZA
-	 g4MHds8jchdl6PJ7ekd9AvKZM2tnjUwLnU8Dnc9lHPyu4Mom03W0Uugue5g2PAmJazw==
+	t=1793641299;
+	b=N3ZtWjroyfp8fu6DASCW5Ez/MKwB1I9yEfrExoYCCL6pPRWYvqnjY1f1QfRH/ENe76he
+	 L6b2XY6XAMuR3l6a48TJlbcYJb3Jh2XImAyOQLGqgAg/CLC6UEb1+dsID20tGI1sAYP4+
+	 aOim+dWLMf2vDko0Jl+zHN0enM8HVyZ3LlNkZF2peM9OPQYRVB8K5ra4Dd+sXSvpEw3A1
+	 uzVm9M04B6/WTKwWbMyFdysYh+kAHSmAprG3jPH0Ra197bYL70nRSBjjQ/6k3JrhggwPM
+	 cRGuDXTwf/GkVcraCqZ07n/06l3Akb86WhwepOBmz91Jm5W41XZ14AczMe8KdNzMMIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641296;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641299;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=p3IG+nUKXuxbgUw7WUKWXDkB6yF68LxYxq24wEK1Vhs=;
-	b=xzjBWy3n5YHMk4agQSO3knZewFBX67drrG0Wi47fdwP/XE1arkpNawjo17frFTp4f8ew
-	 0ie2bcNDLzBRY41F434oodXVXcQuDz5XmXWKAXf0zHIO353/T3ZflbBV0oW263L45Nt1u
-	 aLIIJpoFs7wuRx1Bla94ZtDEfUj+ZGW/OW4YSB/ywtm4khWolHBDPs+WJ3XgS6vw0wKIm
-	 alNV1BROKDn8LLtp9yj2sadC/yUOb1DVI8r+jYuxDQ83Ze4hLB8OXWVK7gGnvfgTiKhpR
-	 TT2CGgcvqBusGr3NYpzi2RyUBc74PvYZUDr9j4NqeipNML88FkLIyCQ6ow97HfoXXvA==
+	bh=72RIaK6aXLHgfma0uiOrirWKKCJa/+350CoGr5VmFLw=;
+	b=lMf2XXxzYHGSWsUda3r0Nij8lT4Y9n7epRHxVQch9xoRIKoQhTbRSjEKpSaXCSYa9Uf6
+	 YcyC7ptVdXKjgZssOY+GpG5nIxY3BKYFeOzFEKDWEzpIatvlZgk/Bh14m+GBgMfY0Mbbh
+	 iseXBd+jsvG2xhQYxp6+yMuLrBbmqmSOiuYK2xm+/1PedJhySqv9CScNITrKRX1+u+pPH
+	 PN8jMfMyHPgS4Y+N3s5Ip6+7J+r/8e/K+vhUW7PWmozSIgSwgbOfs4Ga5v/gxTMcdFIhQ
+	 CYRKkEmSA+OhEHZ4TCUFRpVzFSQTLh2NKVm6suHsyE3d1YDGk6tcFF0ebj3MlSVfz8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Mc2IsVb6;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XjOV2me6;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E50607039F
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17E50607039F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C860716C7
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:41:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B7C860716C7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Mc2IsVb6
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XjOV2me6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793641295;
+	s=mimecast20190719; t=1793641298;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p3IG+nUKXuxbgUw7WUKWXDkB6yF68LxYxq24wEK1Vhs=;
-	b=Mc2IsVb6U4KI03CHFEot29RF1wXIRA7zeFczYm+JIM4BWFeF9DDTObKmyg4GAp0nz2JQWx
-	QNTOreCzuiNDEyMzhDiH7uIZTDFTwDGpu8JJdTBzNOQgNxsTzZckH8hwyLoP1ftAHOAUoQ
-	+a3iNEn+F+Rd+aTYH8zubQSP7bogjeI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=72RIaK6aXLHgfma0uiOrirWKKCJa/+350CoGr5VmFLw=;
+	b=XjOV2me64O37gp4+QxSVRPKZTQ4cFcXweGFtZHvUABMW2MjLMRDMPq3J+dDSagmRmsaLge
+	V9qTUvYA026uqzZEdZmU9LB/cB+qPLy3yZ4/l3759TzYrIb7pIBGvW7Gx6rgR6lhFHliTi
+	AO3T5jsHAsqFsyCKIX+RK1G/KHI2kys=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-v6qnrRePOlq3c2cpy7KUCQ-1; Mon,
- 02 Nov 2026 12:41:34 -0500
-X-MC-Unique: v6qnrRePOlq3c2cpy7KUCQ-1
-X-Mimecast-MFC-AGG-ID: v6qnrRePOlq3c2cpy7KUCQ_1793641293
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-65-0J1UfUYlPYG_6y8CqGFdAQ-1; Mon,
+ 02 Nov 2026 12:41:35 -0500
+X-MC-Unique: 0J1UfUYlPYG_6y8CqGFdAQ-1
+X-Mimecast-MFC-AGG-ID: 0J1UfUYlPYG_6y8CqGFdAQ_1793641294
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F35A41955DE8;
-	Mon,  2 Nov 2026 17:41:32 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 160FA1956070;
+	Mon,  2 Nov 2026 17:41:34 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 95D3A30000E3;
-	Mon,  2 Nov 2026 17:41:32 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AB2DA30001A2;
+	Mon,  2 Nov 2026 17:41:33 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [PATCH 03/45] KVM: x86: apply nGPA->GPA translation to KVM_HC_CLOCK_PAIRING
-Date: Mon,  2 Nov 2026 12:40:47 -0500
-Message-ID: <20261102174130.8779-4-pbonzini@redhat.com>
+Subject: [PATCH 05/45] KVM: loongarch: do full validity check on the gfn-to-hva cache
+Date: Mon,  2 Nov 2026 12:40:49 -0500
+Message-ID: <20261102174130.8779-6-pbonzini@redhat.com>
 In-Reply-To: <20261102174130.8779-1-pbonzini@redhat.com>
 References: <20261102174130.8779-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -81,60 +81,39 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-KVM_HC_CLOCK_PAIRING writes to a guest physical addresses.  Treat it
-as an L2 address when running nested, which is consistent with the
-Hyper-V TLB flush hypercalls for example.
-
-This is technically backwards incompatible, but it should be extremely
-unlikely to happen in the wild and thus we can treat it as a bugfix, I think.
+If the HVA or the memslots are invalid, reinitialize the cache.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://patch.msgid.link/20260918135030.171564-6-pbonzini@redhat.com
+Link: https://patch.msgid.link/20260918135030.171564-20-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/x86.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/loongarch/kvm/vcpu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 32563a91fba9..ec151374ca9e 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7256,8 +7256,8 @@ static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
- {
- 	struct kvm_clock_pairing clock_pairing;
- 	struct timespec64 ts;
-+	size_t offset = 0;
- 	u64 cycle;
--	int ret;
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 4026b9bf9f2d..059a6d605de7 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -165,7 +165,8 @@ static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
  
- 	if (clock_type != KVM_CLOCK_PAIRING_WALLCLOCK)
- 		return -KVM_EOPNOTSUPP;
-@@ -7278,12 +7278,20 @@ static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
- 	clock_pairing.flags = 0;
- 	memset(&clock_pairing.pad, 0, sizeof(clock_pairing.pad));
- 
--	ret = 0;
--	if (kvm_write_guest(vcpu->kvm, paddr, &clock_pairing,
--			    sizeof(struct kvm_clock_pairing)))
--		ret = -KVM_EFAULT;
-+	while (offset < sizeof(clock_pairing)) {
-+		gpa_t gpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, paddr + offset,
-+					      PFERR_WRITE_MASK | PFERR_GUEST_FINAL_MASK, NULL, 0);
-+		size_t len = min_t(size_t, sizeof(clock_pairing) - offset,
-+				   PAGE_SIZE - offset_in_page(gpa));
- 
--	return ret;
-+		if (gpa == INVALID_GPA)
-+			return -KVM_EFAULT;
-+		if (kvm_write_guest(vcpu->kvm, gpa, (u8 *)&clock_pairing + offset, len))
-+			return -KVM_EFAULT;
-+
-+		offset += len;
-+	}
-+	return 0;
- }
- #endif
- 
+ 	gpa &= KVM_STEAL_PHYS_MASK;
+ 	slots = kvm_memslots(vcpu->kvm);
+-	if (slots->generation != ghc->generation || gpa != ghc->gpa) {
++	if (unlikely(slots->generation != ghc->generation || gpa != ghc->gpa ||
++		     kvm_is_error_hva(ghc->hva) || !ghc->memslot)) {
+ 		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
+ 			ghc->gpa = INVALID_GPA;
+ 			return;
+@@ -1820,7 +1821,8 @@ static void kvm_vcpu_set_pv_preempted(struct kvm_vcpu *vcpu)
+ 	gpa &= KVM_STEAL_PHYS_MASK;
+ 	ghc = &vcpu->arch.st.cache;
+ 	slots = kvm_memslots(vcpu->kvm);
+-	if (slots->generation != ghc->generation || gpa != ghc->gpa) {
++	if (unlikely(slots->generation != ghc->generation || gpa != ghc->gpa ||
++		     kvm_is_error_hva(ghc->hva) || !ghc->memslot)) {
+ 		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
+ 			ghc->gpa = INVALID_GPA;
+ 			return;
 -- 
 2.52.0
 
