@@ -1,75 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793660689;
-	b=dxOtJ2LGfgHefKJUwoGzELYRb5MXcr7WhuLPNnYkxQKUCJgO84VO//tX1bXU9dEsNcwP
-	 i122SOVcgUQM/7OdzrWEGxwhSv957mkKgCDcVL1iI6+rTffayrT0A7fGmMdJswLLrH4o9
-	 3isrrCLDWzrnBBoJYBPSHvW+Atq3ML/GwJvRv46BeqGG7hEkhoGy2y02lm8XfSZjzYZMk
-	 WsXbYgM7ukkZy6RBx91tSw89Ni8BQdKZIU4/lgPgImNyjO4SxnuTIwfFTAyvbXqXEtBWO
-	 bMg5oeD+uUMSaHhwszVqM9Q8BR8IOmKqIngAWD5iEFiq0T1uId9oNhhLObZMXtYLPjQ==
+	t=1793660786;
+	b=w9309LfwX4RD2jfJ44bxo4nXNYRUSrgVP7Coo6VvgwxKPGTXednudN6mZrY2Ucbvlvvu
+	 6Iu44mq5rOaVqaRtkPxuMTKP2JwU0Lybocy0NYkHzQ41KDpw66CSpgc56CG4+0+1NYRIg
+	 IhE2zSqg7FYuryzLR5TBOhytutRaE2qSntESevQ2KnOCiLD2q0uLmQAXu0AuPP8Iif/5A
+	 rlren6ne5aXD6zT6lqhtemTeOFtjbD/s3n3dUjDMwCzJXCznBZofUaV//MtEjA49JmA59
+	 MVVQ9o4bq47XcpMl3FaftuOPPsZtz9uwTv4FDBpgT1QfKFx07RssFnCAt7JQlaTnQjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793660689;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=qdpAw2CeVyl2O4/SsZKsGMa/ZVARBuLoVGSK/7j1CNs=;
-	b=ak8OeRuE1MDIW4wW0aTDunTNdBpdmRc39rtwlm3ZpzoZb7WlrEmDixSoSkZTVxdJlMgs
-	 nym1tp/1Zsuu8p4n8D9ReHACSuIeuXMInB5WOjfjU3/5zz+s5nMl2/Kmhjzb83F0eHLfw
-	 qOiF/2xI+gRmA086hy3Q5J2z5EW4V2HD/QyN89F6TuhPNxqb6zSBfI01zxVFB1t5ZY1DA
-	 /iDjJOhmVl2Sr4mx1CE/Kd05loWL4u83R+Y/9wnXfjMtK9LiXLSRkmv4IGIKFiqCM53R7
-	 TV46BXcK2Bpv51vIQoQCH6SILAP3p9sRwZxSvO29/pYnqK3P3t5MVAlFXquvVOEk4pg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793660786;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=adIUxbBUAhPoTEgVJ2ZdQQ0sIkUjRLbD7ye6beWxzTc=;
+	b=f2vSFgl0gr6+7OuhdfwC+rtg15N23DYKxmG4kPTj33Xj/cuUJdNkEQm6u4S095KO0gcn
+	 KWdACu05ja9s3ftRnNYHARzUXIDgX8qBqKkDWohI9z4QZDYsaXwcg/IPa24C/q2yHw5w5
+	 SKOY6z1qj4UINHCrxIyddf8pwpRHPez5igzG97Ed6iV8u8w36OGiaESuSSsGCLJ5c8ovj
+	 CFCjUu6UuXnjdTUUXU90ljvEIBn+Dum4cDX9I1nbk31vbuP09fnEVFigtvXW9jovcTzN2
+	 0cej/6gaTLY0PzPzmxZH+4MBH9/LD/k6ENUD48UD0nXha68u9fxzUgxBPXUH+gBLx2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hah3TSoG;
-	arc=none smtp.remote-ip=74.125.82.200
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ojb3Czh8;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07EA606A327
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 23:04:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E07EA606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117CF606A324;
+	Mon,  2 Nov 2026 23:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hah3TSoG
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30c0d568830so6788620eec.1
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 15:04:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793660688; x=1794265488; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qdpAw2CeVyl2O4/SsZKsGMa/ZVARBuLoVGSK/7j1CNs=;
-        b=hah3TSoGUiSjnJ9CjCJ0hl31I4MkPtW5OjjUoE0rfgwTX8MmuuVLCwXkqDjKeSLV2o
-         AcfUqTPlyBGVeB4pvirfmOt8VpkKRarpjE3aSCD+w23EEjCNL8r02oMSELAnax0wVtHq
-         3OGKFddD5fCW4TCLPpU5SyijQD+7E6XaRkVJBA2tAfQo6I4Xz54UD4GOzBddKwLHNxfm
-         kfS/DPvarpF/CztXwG7ze0dVXR1hgBhMHqxjJhD2pbCUi5KyNHdUzgZSJHxZzxT9c9tf
-         n3LM0XFiplDKDKO7OoTmrHStiYcgSLSW5wDErJ3IBLkTRjDrFmd/sJnN/shK40lItCwT
-         POYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793660688; x=1794265488;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qdpAw2CeVyl2O4/SsZKsGMa/ZVARBuLoVGSK/7j1CNs=;
-        b=F9SEpu+jIY/27XW9pLWEAJSHI/JCewD280euFj/gU6edsWybllUc3A+Oir969N7yvm
-         Jm1GujhATZNzojHQt6E8Gllah9jL6uZnlSdcSQLKMbKsMQDToSyIX9zU+qwZeW88vRIX
-         wAyBAcm3Mbeff7kx1b4SsXQsrsBq3/JVIqhV6MjVKAjmLTavX3Y3/R1vPWsl913kR9+w
-         dfcdPNk5eFEU95T4jeMDI2LlnMNXKaEZa33CAS4kSicIL99woOMbcX3lW7IcvosbtU1y
-         gTW/qwcKZmhXsOIaX2l0RQMjRY9mAIt/Wk5Br8ZKOdGMHceQ1jEq3sAcxXF6DknCUuWl
-         ixSg==
-X-Forwarded-Encrypted: i=1; AKwUvBwJLG+LwstmjKGLrZIcwIuD3grIV0t+5mmD4D1AAsO41wduKZF+v12eEPLlwheZTxWF1o4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8BBLmiVOcKOTwbBPTd98VRL7fYuY/elyHQhWYs5gwe+A0i62SM
-	GqnzwEWmkldUHJqzsQOCDzTd19QqgARJSSWgZEHTsGnivw+VFf97cmXTEopFrfVVs1sEay+iu2l
-	XRFhMeK5mqOxTc/k2D38Fx2NcIQ==
-X-Received: from dyki13.prod.google.com ([2002:a05:7300:7c0d:b0:369:f67f:7a43])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:41dc:10b0:366:9f06:3c4c with SMTP id 5a478bee46e88-36a423f8794mr17637350eec.32.1793660687421;
- Mon, 02 Nov 2026 15:04:47 -0800 (PST)
-Date: Mon,  2 Nov 2026 23:04:43 +0000
-In-Reply-To: <20261102230445.3993629-1-almasrymina@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ojb3Czh8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1F21F00A16;
+	Mon,  2 Nov 2026 23:06:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793660785;
+	bh=adIUxbBUAhPoTEgVJ2ZdQQ0sIkUjRLbD7ye6beWxzTc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=ojb3Czh8KMIoL/VvdgllPD/Rn4ll3vpd8bSHNaVcp9Gk0+6ToD6NDryr4AR11vpi1
+	 XUxes3z4YCAm3nOVrM3z7fdOjZ+HdIJ58YE/s2Bvb3wYsSit40e6UpvA6SIWF3sftX
+	 Jc3/DQgmwFDC5HZv5EWJ0QdlR3mDmib6RntK/oytFM9qo31kP5HL6/YpxOxRsFiyEb
+	 YKTj6bbE/tAD2kBNwtfYEJPKAnI40oa2cJi9+zwtSQdFyTroKpSGQHcGuNo68X+NyM
+	 mmbQ8UKB15V9j5BA3mPSpinaIx19MwiqSRLws1EJRYkagmH16Q9QXcp38qBD646Zhd
+	 Jwbd2cKRXDFHQ==
+Date: Mon, 2 Nov 2026 17:06:24 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+	chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com,
+	jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com,
+	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com,
+	leon@kernel.org, leonro@nvidia.com, lukas@wunner.de,
+	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com,
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org,
+	rananta@google.com, rdunlap@infradead.org, rientjes@google.com,
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+	schnelle@linux.ibm.com, skhan@linuxfoundation.org,
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com,
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 05/27] PCI: liveupdate: Add helpers to preserve struct
+ pci_saved_state
+Message-ID: <20261102230624.GA1038787@bhelgaas>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,100 +70,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261102230445.3993629-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261102230445.3993629-2-almasrymina@google.com>
-Subject: [PATCH v3 1/3] vfio/pci: pass FAULT_FLAG_WRITE to vmf_insert_pfn_pmd/pud()
-From: Mina Almasry <almasrymina@google.com>
-To: Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, David Matlack <dmatlack@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>, Alex Mastro <amastro@fb.com>, 
-	stable@vger.kernel.org, Ankit Agrawal <ankita@nvidia.com>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102153656.1431701-6-vipinsh@google.com>
 
-vfio_pci_vmf_insert_pfn() is the only caller of vmf_insert_pfn_pmd() and
-vmf_insert_pfn_pud() in the kernel that hardcodes write=false instead of
-passing vmf->flags & FAULT_FLAG_WRITE (unlike drm, panthor, and mshv).
+On Mon, Nov 02, 2026 at 07:36:34AM -0800, Vipin Sharma wrote:
+> Drivers that keep a device running across Live Update need to hand the
+> state they captured with pci_store_saved_state() to the next kernel,
+> since the next kernel never sees the device in that state. VFIO, for
+> example, captures it at first open and uses it to restore the device
+> when the last user closes it.
+> 
+> struct pci_saved_state is private to the PCI core and its in-memory
+> layout is not a stable ABI. Add helpers to serialize it into a
+> caller-provided buffer and rebuild it in the next kernel with a stable
+> struct pci_saved_state_ser ABI. Using caller-provided buffers allows
+> drivers to embed the serialized saved state directly in their own
+> KHO-preserved data with a single allocation and lifetime.
+> 
+> Validate the serialized buffer and verify that the saved standard
+> configuration header matches the live device before rebuilding the
+> state: the vendor and device IDs must match, only Type 0 (Normal)
+> headers are accepted, and BAR0-5 and the expansion ROM BAR address must
+> equal the current hardware values. This ensures that restoring the
+> saved state cannot write stale BAR addresses if resources were
+> reassigned in the new kernel. Only the address bits of the ROM BAR are
+> compared, since its enable and validation status bits may legitimately
+> differ.
+> 
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
 
-On x86_64, normal MAP_SHARED | PROT_WRITE VFIO BAR mappings usually mask
-this bug because vma->vm_page_prot already has _PAGE_RW set. However,
-when vma->vm_page_prot starts read-only, insert_pmd() and insert_pud()
-with write=false install a read-only huge entry without calling
-pmd_mkdirty()/maybe_pmd_mkwrite() (and similarly for PUD). Subsequent
-write-protection faults enter wp_huge_pmd() or wp_huge_pud(), which call
-vma->vm_ops->huge_fault() to upgrade the entry in place. Because
-vfio_pci_vmf_insert_pfn() passes write=false, insert_pmd() and
-insert_pud() see !pmd_none(*pmd) with !write, do nothing, and return
-VM_FAULT_NOPAGE, causing an unrecoverable infinite write page-fault loop
-and host CPU soft lockup on the next userspace or KVM guest MMIO store.
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-In practice, vma->vm_page_prot is read-only on a writable MAP_SHARED BAR
-mapping in two situations:
+A few nits below.
 
-1. Userspace soft-dirty tracking (CONFIG_MEM_SOFT_DIRTY) when a process
-   such as CRIU (during pre-dump/checkpoint), a VMM live-migration loop,
-   a memory profiler, or an unprivileged process holding a VFIO device
-   fd writes "4" (CLEAR_REFS_SOFT_DIRTY) to /proc/<pid>/clear_refs. That
-   clears VM_SOFTDIRTY on all VMAs (including VM_PFNMAP) and calls
-   vma_set_page_prot(), stripping _PAGE_RW from vma->vm_page_prot for
-   subsequent huge faults.
+> +static const struct pci_cap_saved_data *pci_saved_cap_next(const struct pci_cap_saved_data *cap)
+> +{
+> +	return (const void *)cap + sizeof(*cap) + cap->size;
+> +}
+> +
+> +/**
+> + * pci_liveupdate_saved_state_ser_size() - Size needed to serialize a saved state
 
-2. Architectures where shared writable mappings start read-only for
-   software dirty tracking, such as arm64 without hardware DBM
-   (CONFIG_ARM64_HW_AFDBM off or FEAT_HAFDBS absent), where _PAGE_SHARED
-   sets PTE_RDONLY | PTE_WRITE and pgprot_noncached() preserves
-   PTE_RDONLY on MT_DEVICE_nGnRnE mappings until pmd_mkdirty() clears
-   it on a write fault.
+Wrap to fit in 80 columns (75 or so is even nicer because it's a
+little more relaxed to read and typo fixes are less likely to rewrap).
 
-This bug was found by code inspection while auditing huge_fault handlers
-and reproduced with a VFIO PCI selftest on a 2 MiB-aligned BAR mapping
-after writing "4" to /proc/self/clear_refs.
+> + * @state: Saved state returned by pci_store_saved_state(), or NULL.
+> + *
+> + * Return: Number of bytes needed by pci_liveupdate_serialize_saved_state(), or
+> + * 0 if @state is NULL.
+> + */
+> +size_t pci_liveupdate_saved_state_ser_size(const struct pci_saved_state *state)
 
-Pass vmf->flags & FAULT_FLAG_WRITE to vmf_insert_pfn_pmd() and
-vmf_insert_pfn_pud() so write faults properly mark huge PFNMAP entries
-dirty and writable.
+I think pci_liveupdate_saved_state_ser_size() is connected with
+pci_liveupdate_serialize_saved_state() and
+pci_liveupdate_deserialize_saved_state().
 
-Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-Cc: stable@vger.kernel.org
-Cc: Ankit Agrawal <ankita@nvidia.com>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: David Matlack <dmatlack@google.com>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- drivers/vfio/pci/vfio_pci_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Would be nice if that were obvious from the names.
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index fcbb2da860e2..204d959086e9 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1745,6 +1745,8 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
- 				   unsigned long pfn,
- 				   unsigned int order)
- {
-+	bool write = vmf->flags & FAULT_FLAG_WRITE;
-+
- 	lockdep_assert_held_read(&vdev->memory_lock);
- 
- 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
-@@ -1754,10 +1756,10 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
- 		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
- 
- 	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
--		return vmf_insert_pfn_pmd(vmf, pfn, false);
-+		return vmf_insert_pfn_pmd(vmf, pfn, write);
- 
- 	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PUD_ORDER)
--		return vmf_insert_pfn_pud(vmf, pfn, false);
-+		return vmf_insert_pfn_pud(vmf, pfn, write);
- 
- 	return VM_FAULT_FALLBACK;
- }
--- 
-2.56.0.385.gac671c819a-goog
+They're also pretty long, which makes prototypes and uses very likely
+to wrap in awkward spots.
 
+> + * struct pci_cap_saved_data_ser - A saved capability in a struct pci_saved_state_ser
+> + * @cap_nr: Capability ID (PCI_CAP_ID_* or PCI_EXT_CAP_ID_*).
+> + * @extended: 1 if @cap_nr is an extended capability ID, 0 otherwise.
+> + * @size: Size of @data in bytes, never 0.
+> + * @data: The saved registers.
+> + */
+> +struct pci_cap_saved_data_ser {
+> +	u16 cap_nr;
+
+Maybe "cap_id" to avoid confusion with "nr_caps" or indexes into
+"caps[]" below?
+
+> +	u16 extended;
+> +	u32 size;
+> +	u8 data[];
+> +} __packed;
+> +
+> +/**
+> + * struct pci_saved_state_ser - Serialized struct pci_saved_state
+> + * @size: Size in bytes of this struct, including all entries in @caps.
+> + * @flags: Features a kernel must support to restore the state. None defined.
+> + * @nr_caps: Number of entries in @caps.
+> + * @config_space: The saved standard configuration header.
+> + * @caps: @nr_caps struct pci_cap_saved_data_ser entries.
+> + */
+> +struct pci_saved_state_ser {
+> +	u32 size;
+> +	u32 flags;
+> +	u32 nr_caps;
+> +	u32 config_space[16];
+> +	u8 caps[];
+
+I think it would be helpful if the names of "config_space[]" and
+"caps[]" hinted at the connection between them (both are in config
+space).  "config_space[]" by itself suggests it's complete, which it's
+not, so maybe there's a place for "hdr" or similar in it.
