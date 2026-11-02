@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633841;
-	b=3Ovu4DvMtCEVh7YhvVtJMN/5TbhOMhbKHkdZMoolJ4s4wukARi/aG68fbw747ASi7nKF
-	 lVy8X9BeC5p6PJZUoX/j6g0wqay8I+QhnkYmmHozSwkx42oINPwFMVvLh11g9UsJuBEHv
-	 pDiW8crdLjcXHdYrflBf13CxGjmJtfhyGY6sMR2cmGhswqGog32SesUx1XY8J2QcYnM5b
-	 w7paZKHpvjFzxkL6gs7ae97GQ8/ri/WM0CbxrIIg+j+pI4luAlxU23mi2ylQO6REHRGtW
-	 EOCskHTY+YR2hk9eSXbMumNbpZjHe+5RYhWKYOvI7ZNISWW+g4t40ZM3/UVBvj5VX6A==
+	t=1793633837;
+	b=V1k0fFaZaG6dSB3Jk0Rj51PdPxk7eeX8SX5WI+RP3nnhR45iK6R3YstHsCmd2/TW5k13
+	 Xjg+8nfGsy8/Exvuarf+SklXDjiMcas9FGrmuZyo3CEFMVByr+7uVjr1atZXTW1VqmBWt
+	 W/LGevQwNE4z9p6YNseONPzkPJP64XwgX3ZkpAnwzBc3JIydL2ujwLqbHD2G8uK2iuiSB
+	 ZDmDO+yyCFVbYUBUvOj52vBaIrTETTk5YMqf7hfB3R2hep5jWp7+uU3ceViGMQCHPbX+T
+	 TxkKAnLKAGTB5bZZAml8MyLzfWjbW48Z16K1fnSuyuvOabq2m4CvQLlJuAaykvoU91g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633841;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633837;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=HVnfWSj8ZzZvrderQaZLMWS7UwjUc+ra7btm+XE8Eyg=;
-	b=U6BCor9vTBD45szsc+rUFXp6j08lgfQUwDPvGUJK+6tX8ETUpOoEJ28nBHJo//KngVvA
-	 +a5sEEzgLGZxaR4Eg6gsmo48kC8JnOTInf8oE7pwEKRxvXpvEYLvRMdufDldwSlRnkjPH
-	 BLMPSQztx9DpfwJ9gK7tP2RVDufa1Arn2HPRFRBTqRJdkklgDLHDrfBvQ6yOLpJX8ucBS
-	 yPQxMrgCPOfYdBfDtvvvMfFkPGQi2/9k4qkHtFqI4zqeBbwqih/ljyWyCLVUypOl5pGLg
-	 VnfdUIYebDHdVeIPPQYpZcK+KaM7WcPXaakj0OXlb7oGUC5KYV96U38xf2bp4Ylh+VA==
+	bh=WePLvWtT/WZKO7Unx2RTF+SOz/N+MuUr8ckMVHiMFxQ=;
+	b=yx8FqVJVDxobZBRO0YVDV2r1lUHE1ZS+EMQ1atQC4MSGkf+McmZARb1DdFYD+kunkgWE
+	 LI4Axzr/+dgi5CJh1aHDL3IA+uG6btpBpK4aXDGf3t2yStc75BipR3KZQj3iq/7vOirN3
+	 Q7AEt2zV3KPxUerTAwCfLGtMSfa5sCqVr0N70508DT7gTXkPhnZuCtD8bJN3IUUE8Elfn
+	 XYstEME7N8J7kXdaqgbNQ+rYcvDj2retx6mV4JuvJ5ecbPL/bjDlYhbxdhyhwP5gc6cYl
+	 r+FqttpS1WJtnTsMGcjTaSRXRVU7XUTnxkRZwdy8BRumYa7R0Po+Ex/4VgOQ3SzIBxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YuNUml4z;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bnp2TJZB;
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A03A606BA57
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A03A606BA57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F7E60E7EF1
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 15:37:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7F7E60E7EF1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YuNUml4z
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab67ff8ec3so2145606a91.0
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:19 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bnp2TJZB
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cdac99e77d0so1338071a12.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 07:37:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633839; x=1794238639; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793633836; x=1794238636; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HVnfWSj8ZzZvrderQaZLMWS7UwjUc+ra7btm+XE8Eyg=;
-        b=YuNUml4zH5ZHRF+F04Y7wZI2Du7rDKxyBW+kJiSWbxaOMaxfx2YJgwtnteKndFaeMU
-         98s6w51k5AYecfjYWhc3MYYHhUtImK75pts8pb+0GFwvFi7w0vtp9tj1PZmkGZsV84gJ
-         xPCJPb4d3wfZIT4to5hUUq9Ao2dMaNm77qyY/QVJWg7pFYQ7A/yDVdNKewYByOOnTmhL
-         t6zR/lVN3HCZ8Incyv+jQRM9rZdS/VIMvk8nWsYXE51hvqRk+W0ZvCwFPcmUuoMMAiNd
-         0YrrXkQ+z9u3VqHi+8vh4p49Wncxt6fL/niRcmmRcPZMou2OxoCHoSmc018ApFcTj0RM
-         vI2Q==
+        bh=WePLvWtT/WZKO7Unx2RTF+SOz/N+MuUr8ckMVHiMFxQ=;
+        b=Bnp2TJZBhnZ3Fomnoglqh4+l87hRvNmKBCiTZ6jAjRxWpXxYXsMgUH/cOuHl2dUEDC
+         wJ28FoKeqWp3KhY3kQlFAu+HbXoVoKpftFYkfXzXm+aF5o8Yxg5mtJZ1b0uFCxMBxDgm
+         KFvTzBa3lyHrYP+mRgVoI+h7ot0pIJHFTheHL5nZjIDui8mUz6RHgdkN1TSB/BqCPeqi
+         xhJKJ+mimCLZP0IRb9FUgMCvIugwFwsw6AR1wrMrfwro8rW1hqu/148Rc/p7atFwmIRe
+         ZtvNYcFiobuA1Z5LTkhQZGhi14HkwUC/IuKyXu15Eajkx7JixVLOz31OkOV9Cyb4Hcko
+         IIXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633839; x=1794238639;
+        d=1e100.net; s=20260707; t=1793633836; x=1794238636;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HVnfWSj8ZzZvrderQaZLMWS7UwjUc+ra7btm+XE8Eyg=;
-        b=VHmJcPzWI4PBFnRoOGRhO7KNaGI1qdoTWhHkoKiguImSclZA14JjlSOV0jANAbRslB
-         HQTpjOklm/yCR4px/yAudJ8ZdqN9G/Bm20+gXULDJOmeQOLhV9TodCbyViQXwix1RLHK
-         gbb9Ye+KcsfSwWSLP18ykwqwsJhwzD6d1EdKrLf6WXpSvS4MaJYQ6pe9h2aiQhcidYFX
-         Hfv/P8DU1oiZHkFkf+aGtvX0bCl/vrE/33pwiq5JqY9x4j0wumWHADveFyUMG0TwMRz1
-         R2p9Y+GSDcRYqLbltOXbMiPcGsNUsXZtAGfYzbF51/+d754tpEkwXwW6py47BtazIuXl
-         0LpA==
-X-Forwarded-Encrypted: i=1; AKwUvBwUM+3dM/w3DOJNmfXnVNYTvkbn8AlG6FZnNv/C6oQIjV1EIV8NcMyz3A8+IfiixeJIfBg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/gfC9uUmxrUut3XBVEwQmEVVfU4VzPiJKRM2HyorJTWMIZBFy1
-	5EzIsvLoIhAY9ycDPjGRratz9YT3Woh+0JGbqjbXGYCdfEXJW1k8GbDyAUVBlPkDUIsIVjpPAP1
-	fymOZ+1GywQ==
-X-Received: from pjat8.prod.google.com ([2002:a17:90a:d08:b0:3ac:3195:12b4])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5870:b0:3ad:6090:a189
- with SMTP id 98e67ed59e1d1-3ae8983e2f3mr7697277a91.45.1793633839167; Mon, 02
- Nov 2026 07:37:19 -0800 (PST)
-Date: Mon,  2 Nov 2026 07:36:47 -0800
+        bh=WePLvWtT/WZKO7Unx2RTF+SOz/N+MuUr8ckMVHiMFxQ=;
+        b=w4m+TEI+Yfhl4dJ57U5l2EKRLxaCM2cwYxr6PfXyolUHoIyp0gy9RQEz1PMLF4t/CF
+         SNUnPu4YmvOTHjV4z9a6Fj2EFGO6HwANvr9z0OfOdb3IOoP9P+yyLe7rBw6aXPuW9x5X
+         gyVWrmRQ0X8GqeJcjN+r8Ayh718IIWnreOQ4hYz2Oxx0r4B+kTwQ9B8vqJekg+9cakDs
+         T+AJGpe6Jd+F3i1DcS/7HXRLE3R9jyQg+WX2Kyax5UpdCwQYIzPRpBQtyZZqXKt4slcC
+         UynWN6INB0qaTQYZz9k/dkfbs9sT3MmTltiKaj03Jm7x/04JS+5LCgIxxuQ0QyTMrjTS
+         mf+w==
+X-Forwarded-Encrypted: i=1; AKwUvBzuz9PClr4BB7pQPVlHMwANBhdgA/5QvKG+bm/gFTQZ/leZevA3/LjM7DffYd+2rWN4DvM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8z48Jb96nRjZMy8Lbw9AX2uTfPi6w50q7tZcAe//q7sJx8e60t
+	Z4w/+AtclXO0gkyXVr5zMKCGEh7V+r59UwMgWWB65IQTrxluJ0k2VgJTlCgdO6gipql5LieYBak
+	Y7CQOXSiolA==
+X-Received: from pjbcm14.prod.google.com ([2002:a17:90a:fa0e:b0:3a6:f87a:f3e1])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3807:b0:3ad:a232:403f
+ with SMTP id 98e67ed59e1d1-3ae897aa79emr9013104a91.56.1793633835815; Mon, 02
+ Nov 2026 07:37:15 -0800 (PST)
+Date: Mon,  2 Nov 2026 07:36:44 -0800
 In-Reply-To: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,9 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261102153656.1431701-19-vipinsh@google.com>
-Subject: [PATCH v6 18/27] vfio: selftests: Initialize vfio_pci_device using a
- VFIO cdev FD
+Message-ID: <20261102153656.1431701-16-vipinsh@google.com>
+Subject: [PATCH v6 15/27] docs: liveupdate: Add documentation for VFIO PCI
 From: Vipin Sharma <vipinsh@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
@@ -103,93 +102,75 @@ Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
 	yanjun.zhu@linux.dev, yi.l.liu@intel.com
 Content-Type: text/plain; charset="UTF-8"
 
-Use the given VFIO cdev FD to initialize vfio_pci_device in VFIO
-selftests. Add the assertion to make sure that passed cdev FD is not
-used with legacy VFIO APIs. If VFIO cdev FD is provided then do not open
-the device instead use the FD for any interaction with the device.
+From: David Matlack <dmatlack@google.com>
 
-This API will allow writing selftests where VFIO device FD is preserved
-using liveupdate and retrieved later using liveupdate ioctl after kexec.
+Add documentation for preserving VFIO device files across a Live Update,
+generated from the kernel-doc comments in the code.
 
-Co-developed-by: David Matlack <dmatlack@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Vipin Sharma <vipinsh@google.com>
 ---
- .../lib/include/libvfio/vfio_pci_device.h     |  3 +++
- .../selftests/vfio/lib/vfio_pci_device.c      | 25 ++++++++++++++-----
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ Documentation/core-api/liveupdate.rst         |  1 +
+ .../driver-api/vfio_pci_liveupdate.rst        | 25 +++++++++++++++++++
+ MAINTAINERS                                   |  1 +
+ 3 files changed, 27 insertions(+)
+ create mode 100644 Documentation/driver-api/vfio_pci_liveupdate.rst
 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-index e19bd94b8dd2..9a62bfb6b440 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-@@ -40,6 +40,9 @@ struct vfio_pci_device {
+diff --git a/Documentation/core-api/liveupdate.rst b/Documentation/core-api/liveupdate.rst
+index 2bce2644eba2..20f1d2e20508 100644
+--- a/Documentation/core-api/liveupdate.rst
++++ b/Documentation/core-api/liveupdate.rst
+@@ -38,6 +38,7 @@ The following types of file descriptors can be preserved
+    :maxdepth: 1
  
- struct vfio_pci_device *vfio_pci_device_alloc(const char *bdf, struct iommu *iommu);
- void vfio_pci_device_free(struct vfio_pci_device *device);
-+struct vfio_pci_device *__vfio_pci_device_init(const char *bdf,
-+					       struct iommu *iommu,
-+					       int device_fd);
- struct vfio_pci_device *vfio_pci_device_init(const char *bdf, struct iommu *iommu);
- void vfio_pci_device_cleanup(struct vfio_pci_device *device);
+    ../mm/memfd_preservation
++   ../driver-api/vfio_pci_liveupdate
  
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index 4063a0e2b3df..af789c859586 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -457,9 +457,13 @@ void vfio_pci_cdev_open(struct vfio_pci_device *device, const char *bdf)
- }
- 
- static void vfio_pci_iommufd_setup(struct vfio_pci_device *device,
--				   const char *bdf, const char *vf_token)
-+				   const char *bdf, int device_fd,
-+				   const char *vf_token)
- {
--	vfio_pci_cdev_open(device, bdf);
-+	if (device_fd >= 0)
-+		device->fd = device_fd;
-+	else
-+		vfio_pci_cdev_open(device, bdf);
- 	vfio_device_bind_iommufd(device->fd, device->iommu->iommufd, vf_token);
- 	vfio_device_attach_iommufd_pt(device->fd, device->iommu->ioas_id);
- }
-@@ -482,16 +486,20 @@ void vfio_pci_device_free(struct vfio_pci_device *device)
- 	free(device);
- }
- 
--struct vfio_pci_device *vfio_pci_device_init(const char *bdf, struct iommu *iommu)
-+struct vfio_pci_device *__vfio_pci_device_init(const char *bdf,
-+					       struct iommu *iommu,
-+					       int device_fd)
- {
- 	struct vfio_pci_device *device;
- 
- 	device = vfio_pci_device_alloc(bdf, iommu);
- 
--	if (iommu->mode->container_path)
-+	if (iommu->mode->container_path) {
-+		VFIO_ASSERT_EQ(device_fd, -1);
- 		vfio_pci_container_setup(device, bdf, NULL);
--	else
--		vfio_pci_iommufd_setup(device, bdf, NULL);
-+	} else {
-+		vfio_pci_iommufd_setup(device, bdf, device_fd, NULL);
-+	}
- 
- 	vfio_pci_device_setup(device);
- 	vfio_pci_driver_probe(device);
-@@ -499,6 +507,11 @@ struct vfio_pci_device *vfio_pci_device_init(const char *bdf, struct iommu *iomm
- 	return device;
- }
- 
-+struct vfio_pci_device *vfio_pci_device_init(const char *bdf, struct iommu *iommu)
-+{
-+	return __vfio_pci_device_init(bdf, iommu, /*device_fd=*/-1);
-+}
+ Public API
+ ==========
+diff --git a/Documentation/driver-api/vfio_pci_liveupdate.rst b/Documentation/driver-api/vfio_pci_liveupdate.rst
+new file mode 100644
+index 000000000000..81077ea173d1
+--- /dev/null
++++ b/Documentation/driver-api/vfio_pci_liveupdate.rst
+@@ -0,0 +1,25 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
 +
- void vfio_pci_device_cleanup(struct vfio_pci_device *device)
- {
- 	int i;
++====================================
++VFIO PCI Device Preservation via LUO
++====================================
++
++.. kernel-doc:: drivers/vfio/pci/vfio_pci_liveupdate.c
++   :doc: VFIO PCI Preservation via LUO
++
++VFIO PCI Preservation ABI
++=========================
++
++.. kernel-doc:: include/linux/kho/abi/vfio_pci.h
++   :doc: VFIO PCI Live Update ABI
++
++.. kernel-doc:: include/linux/kho/abi/vfio_pci.h
++   :internal:
++
++See Also
++========
++
++- :doc:`/core-api/liveupdate`
++- :doc:`/core-api/kho/index`
++- :doc:`/PCI/liveupdate`
++- :doc:`/driver-api/vfio`
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 167aa9d66ce8..2b62a0b8a48c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -28661,6 +28661,7 @@ T:	git https://github.com/awilliam/linux-vfio.git
+ F:	Documentation/ABI/testing/debugfs-vfio
+ F:	Documentation/ABI/testing/sysfs-devices-vfio-dev
+ F:	Documentation/driver-api/vfio.rst
++F:	Documentation/driver-api/vfio_pci_liveupdate.rst
+ F:	drivers/vfio/
+ F:	include/linux/kho/abi/vfio_pci.h
+ F:	include/linux/vfio.h
 -- 
 2.56.0.317.g454f8302e1-goog
 
