@@ -1,56 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793642136;
-	b=vptjhwFtOLfrNC8dLR55dw7juYeglDLXYfUItK/V67O1oZ/KMZcpyZDQ3dBE0hkG+4OM
-	 UNZb4moR9V7durLQP34KVeMCP47ZJtccj1IWfXTsJnKikldDzEYVtRNXv6dGP5TnGGg2C
-	 G3cQEt4FcJsMEiH5oAQYobIfSt8T4YBC9UWr/LPscW9eJG/ZuG/3d3uww14ZUfkDRt7Xc
-	 JWxJn/bXSIjm+s24tb5QaFYAbCea+Ii665Pr2J+UWUz5OB1szBUSTmgnQLnIZYsYtLFKe
-	 iKOgIn1doF87sxBLkB7mPUH3TachAWDfL5V7g5WhsVBuYOXS3bJeOU2LrRcI2EpBZnQ==
+	t=1793642229;
+	b=S4oV2Yvx1pn1sabQl5ucUOnYXjZp3vgTms6jJmJnK56nnMY5FIv+KNwdUevnHWO+ribz
+	 dKOt1pIZmIIEMp8RhPWiinzf17GPY6RM4AuIWldAFGQc0E/NTJhtNvZoUVN1yiYaLHWhB
+	 /qlego9kuDLzuwFkYN5dIALmyyz2/jLFDfWi/Ak9+jT/x9HZwvBeqV4nWZqT+PkJpIXZ0
+	 1DqJX1n5wTWH7FbgnD/wqiEzq8qXLdeZDToD4++yg0ajYcDca0nmvuOtRDbqLI2wm1cgN
+	 CWOincnM+vW4WdP/EwH9u6OEBNS/TtDwaOFxF38zR6KHqvsXtPl+zp+kLMSsdgNIG1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793642136;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=nfpcDvIfW+PqEgEIC4pgr6+hGE9CZr3GnkXbBZuUWCg=;
-	b=O10q2aLxSjWXP06hcRZx/48/ESRxHzH8g+qnIzLcmDyku4sgCquV4wu6VY6U80v7U3wv
-	 TBEL0QC29n6VpCjWMHI7xu8zsHqeVpGvQnSQPv/JqkfyqabCYtUVD3/QVDkN/c0e0JNKD
-	 PAmW92LWf86x6udypIv51XLEWFKtP70CXaMB36tWV319N9vGcI5GOu18/j/FTHYi0AM3z
-	 RKOqONXaOJXfI13c/ZHbGCUSDkRuJ0YoPYqDvGozv3QFoxZaY1oyXhb5U9uONZvBQ25o0
-	 oB8Fq2RTOqViP2xNzMbGDN0nKE5BabOYOIIDxAxLswNaGMMDjxn2whHwyKNpfNog1qQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793642229;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=xjyTXjB2wAHAAsP40xGjOOv4kKPxaKWcHukk2jT9TJs=;
+	b=FxKc2m4znp36bcMnBkl2d6Dxo42QnXntPC9C6G0ZM8yILkGc2AeyWk/lo33o8Mw4FzZQ
+	 6lqCNbsniH1tYQ0Si/x5sEmG8cvZea0B0n1uisDal1OkmqYmDXZZUSVulWA+B7rEQvhYs
+	 CxANtka1b0MwglmkPQbtFB9Fn5XGDBpkdK/vigvzF+LVvVWfHRLCdg39JKD0VOkQIxDrz
+	 +QDkVvB6QdZhch538+anBpL+ZOwxIeul9PvHx2zQuX0QJ1rqGfQuksfFYMro8OkS42XEj
+	 30aeRULzDtc5s6fnVJXsdYjoZv4Vm9bI7lRd0hUgQy2qOojf2cAQ//OrJyocfJ32nXA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qxw6oE6a;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292F0606BA5C
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:55:35 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BKE84h0E;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407D2606D825
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:57:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 407D2606D825
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qxw6oE6a
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353251F00A16;
-	Mon,  2 Nov 2026 17:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793642135;
-	bh=nfpcDvIfW+PqEgEIC4pgr6+hGE9CZr3GnkXbBZuUWCg=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=Qxw6oE6a2q911N6ljG6mqpMK+WX/L0/rzdoWIZ5Y+XAUkzDp+JKgJ+PLln613oEDG
-	 mk2Zi/DkI4A3bFZgBRVJ0u6+bAC6bd66qcBbrjp/m/S9xgCbst1/OqCKtei73KAj5h
-	 pFateP0Y2QOY8n7zUaNAC6aFC1lAnSJVbjuxtsl0w6WMR6t2wfweMqWkMkcXoGV+71
-	 iVdh7sF+wbvHoSi1sbzXuG39z3Re5JyWkRis3HeSpjrHbkHq4etNuIRMjyghoMkPqQ
-	 +cYOfakGKjweuh/y8qobrIzrNI93Il6E3O+XZYs5hPpQyI61f8aNr/nE2zezlfN3/R
-	 MUKK/mjQ/QJ8g==
-Message-ID: <sashiko-outbox-193884@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 09/45] KVM: Define and communicate KVM_EXIT_MEMORY_FAULT
- RWX flags to userspace
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261102174130.8779-10-pbonzini@redhat.com>
-References: <20261102174130.8779-1-pbonzini@redhat.com>
- <20261102174130.8779-10-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 17:55:34 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BKE84h0E
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57C2F1C14;
+	Mon,  2 Nov 2026 09:57:04 -0800 (PST)
+Received: from [10.0.136.93] (M0PRX50XMG.cambridge.arm.com [10.0.136.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D567A3F59E;
+	Mon,  2 Nov 2026 09:57:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793642227; bh=Bt0frdHKGBbUPamp1w+4GcmozA3dEEooJHfwDzZsC4k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BKE84h0EpGmT3Zx5XyqXfCDcKZzHDVUGBKr9tKzGVdesA2PfPUkbRDcVw7q+Eeurl
+	 9u9pyG3I24g5JsUrwnzDi9av3uOXHBTtGyVhhvp6SvHJ/QeeTCQmTlqHwB1uCHWic2
+	 I/P6IARqEpV08Zc5nFlTrTeHYYZiA3h0fR9hNZig=
+Message-ID: <1e3c0416-283d-4768-a0e6-01e036e099b9@arm.com>
+Date: Mon, 2 Nov 2026 17:57:05 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,82 +52,128 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/16] irqchip/gic-v5: Enable direct injection in ITS
+To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261016155741.979985-1-sascha.bischoff@arm.com>
+ <20261016155741.979985-12-sascha.bischoff@arm.com>
+ <sashiko-outbox-174629@kernel.org>
+Content-Language: en-GB
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+In-Reply-To: <sashiko-outbox-174629@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] KVM: flag change in kvm_prepare_memory_fault_exit() breaks selft=
-est
---
+On 16/10/2026 17:22, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] irqchip/gic-v5: Racy ITS MMIO invalidation sequence
+> - [High] irqchip/gic-v5: missing event drain in set_vcpu_affinity causes cross-VM interrupt
+> --
+> 
+> commit 4f462ff132c79e74a3a82cf356a72402e7a44799
+> Author: Sascha Bischoff <sascha.bischoff@arm.com>
+> 
+> irqchip/gic-v5: Enable direct injection in ITS
+> 
+> This commit introduces an irq_chip callback to allow KVM to install and remove
+> virtual translations for direct interrupt injection. It replaces a host ITTE
+> with a virtual translation and disables lazy masking while the interrupt is
+> forwarded.
+> 
+>> diff --git a/drivers/irqchip/irq-gic-v5-its.c b/drivers/irqchip/irq-gic-v5-its.c
+>> index 28e39b065de0e..7de40a7cff403 100644
+>> --- a/drivers/irqchip/irq-gic-v5-its.c
+>> +++ b/drivers/irqchip/irq-gic-v5-its.c
+> [ ... ]
+>> @@ -723,6 +765,95 @@ static void gicv5_its_compose_msi_msg(struct irq_data *d, struct msi_msg *msg)
+>>   	msi_msg_set_addr(irq_data_get_msi_desc(d), msg, addr);
+>>   }
+>>   
+>> +#ifdef CONFIG_KVM
+>> +static int gicv5_its_set_vcpu_affinity(struct irq_data *d, void *int_data)
+>> +{
+> [ ... ]
+>> +invalidate:
+>> +	/* Make the change ITS-visible */
+>> +	dsb(st);
+>> +	ret = gicv5_its_itt_cache_inv(its, dev_id, event_id);
+> 
+> [Severity: High]
+> Does this new KVM callback expose the gicv5_its_itt_cache_inv() sequence
+> to concurrent execution?
+> 
+> This callback appears to only be serialized by the per-IRQ lock, but
+> gicv5_its_itt_cache_inv() writes to the global shared ITS MMIO registers:
+> 
+> drivers/irqchip/irq-gic-v5-its.c:gicv5_its_itt_cache_inv() {
+>      ...
+>      its_writeq_relaxed(its, didr, GICV5_ITS_DIDR);
+>      its_writel_relaxed(its, eidr, GICV5_ITS_EIDR);
+>      its_writel_relaxed(its, eventr, GICV5_ITS_INV_EVENTR);
+> 
+>      return gicv5_its_cache_sync(its);
+> }
+> 
+> Without an ITS-wide spinlock, concurrent configuration of different IRQs/vCPUs
+> from the same or different guests could freely interleave their MMIO writes on
+> the shared physical ITS.
+> 
+> Could this result in the ITS hardware receiving corrupted invalidation commands
+> (e.g. invalidating the wrong device/event while leaving another stale), leading
+> to dropped or misrouted interrupts?
 
-commit 97c15077daea43ee7bc4ecb13d9cec2a636fe69e
-Author: Anish Moorthy <amoorthy@google.com>
+This is definitely an issue. I've posted a fix for the host driver to 
+address this:
 
-KVM: Define and communicate KVM_EXIT_MEMORY_FAULT RWX flags to userspace
+https://lore.kernel.org/all/20261102-host_gicv5_fixes-v1-4-743b61626fc5@arm.com/
 
-This commit defines KVM_MEMORY_EXIT_FLAG_READ, KVM_MEMORY_EXIT_FLAG_WRITE,
-and KVM_MEMORY_EXIT_FLAG_EXEC in the UAPI header and updates
-kvm_prepare_memory_fault_exit() to populate vcpu->run->memory_fault.flags
-with the corresponding access type flag.
+> 
+> 
+> [Severity: High]
+> Are in-flight events drained here when direct injection is disabled?
+> 
+> When disabling direct injection (where data is NULL), the ITTE is updated to
+> the host LPI and the ITS cache is invalidated. However, there is no call to
+> gicv5_its_syncr() or gicv5_irs_syncr() to drain accepted events before
+> returning.
+> 
+> If KVM subsequently tears down the VM and reuses the VM ID for a new guest,
+> could an in-flight event reach the IRS and be injected into the new VM's IST
+> using the old translation?
+> 
+> Disabling forwarding would likely need to drain events before returning to
+> safely reuse the resources.
 
-Link: https://lore.kernel.org/kvm/ZR4N8cwzTMDanPUY@google.com/
-Link: https://patch.msgid.link/20260918135030.171564-4-pbonzini@redhat.com
+We were missing a called to the IRS_SYNCR, which has now been added. The 
+ITS_INV_EVENTR that is already present should be sufficient on the ITS side:
 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index e7fc94e2910a8..5e386c3d24957 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2556,8 +2556,15 @@ static inline void kvm_prepare_memory_fault_exit(s=
-truct kvm_vcpu *vcpu,
->  	vcpu->run->memory_fault.gpa =3D gpa;
->  	vcpu->run->memory_fault.size =3D size;
-> =20
-> -	/* RWX flags are not (yet) defined or communicated to userspace. */
->  	vcpu->run->memory_fault.flags =3D 0;
-> +
-> +	if (is_write)
-> +		vcpu->run->memory_fault.flags |=3D KVM_MEMORY_EXIT_FLAG_WRITE;
-> +	else if (is_exec)
-> +		vcpu->run->memory_fault.flags |=3D KVM_MEMORY_EXIT_FLAG_EXEC;
-> +	else
-> +		vcpu->run->memory_fault.flags |=3D KVM_MEMORY_EXIT_FLAG_READ;
+R_ZXXJF: When ITS_STATUSR.IDLE transitions from 0 to 1, any ITS event 
+that used information from ITS translation structure entries prior to 
+the invalidate have been Accepted by the IRS.
 
-[Severity: Medium]
-Does setting KVM_MEMORY_EXIT_FLAG_READ here break
-test_private_access_memslot_deleted() in
-tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c when
-!kvm_has_gmem_attributes?
+Successful VM teardown removes the translations, so incoming events 
+should not be injected into a new guest's IST.
 
-In that test, the vCPU runs guest_repeatedly_read() on private guest memory
-while the backing memslot is deleted, causing kvm_handle_noslot_fault() ->
-kvm_mmu_prepare_memory_fault_exit() -> kvm_prepare_memory_fault_exit() to s=
-et
-vcpu->run->memory_fault.flags to KVM_MEMORY_EXIT_FLAG_PRIVATE |
-KVM_MEMORY_EXIT_FLAG_READ.
+> 
+>> +	if (ret) {
+>> +		/* Keep a failed restoration distinguishable from a clean host ITTE. */
+>> +		if (!data)
+>> +			irqd_set_forwarded_to_vcpu(d);
+>> +		return ret;
+>> +	}
+>> +
+>> +	if (data)
+>> +		irqd_set_forwarded_to_vcpu(d);
+>> +	else
+>> +		irqd_clr_forwarded_to_vcpu(d);
+>> +
+>> +	return 0;
+>> +}
+>> +#endif /* CONFIG_KVM */
+> 
 
-Earlier commit 628770546898 ("KVM: selftests: Take into account mixed memory
-fault flags") added a bitwise check in test_private_access_memslot_deleted(=
-),
-but left the exact equality assertion in place right above it:
-
-tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c:test_private_a=
-ccess_memslot_deleted() {
-	...
-	} else {
-		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVAT=
-E);
-		TEST_ASSERT(vcpu->run->memory_fault.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE,
-			    "Memory fault didn't occur on a private memory access");
-		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-	}
-	...
-}
-
-Should that leftover TEST_ASSERT_EQ(vcpu->run->memory_fault.flags,
-KVM_MEMORY_EXIT_FLAG_PRIVATE) be removed so the selftest does not fail once
-KVM_MEMORY_EXIT_FLAG_READ is set?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174130.8779=
--1-pbonzini@redhat.com?part=3D9
+Thanks,
+Sascha
