@@ -1,58 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793640219;
-	b=KI1b5qY1Nj7ltEIExvuzl12AEUkTHEvoY6hjYyU+nBYnrbxfuhw7KMij+a01PFTcfm7k
-	 UYu4r5nYJSTp3MlXkCdwOus6vVcbeRmiZGgjdacwBezHUKnn8Bd5ctPPR8o6FkDNR9WpM
-	 mwPEO1tSrc66ETuXm2Jn/XdVaWy0vs6Obixxozn48o4OEsqsNUooNkME/RTaRwQkjy/0u
-	 q/iHsDeQIWucA1DuYlfi5FynqoZRtpiEj6V+UFsZGK+NkuuEK38kiVbithUkN5VgrGW6H
-	 JhpfWn+ri90HTI3qBGoSlAG6tPtzP4XUtSxS0UU9wBRRcZwL5IlFUvsOaTS+zBVIQPg==
+	t=1793640552;
+	b=0EnjNNtHYkXXO8B6bK8a+yQMrdobudk3Doz9g3bjhZ/FElG8jCQ0XAowLQ4WVuB2rpga
+	 v/JlKkkNPV+/17IP7OCj0X6jxOcq1lZMnmUeZb+Xlc4f0kd/7dvSm5AyJzq25HM6Biagf
+	 fn2kaddSbNcaeYPgZbRENmM0KfRTAcUKrhjYORZAB3MsV6fxO7//Lgr5AsS2J6y04bUVA
+	 RqMIrQnt2A5wY4vzUQVl1GGNPG4Z0bEO6mExNpxcBKQ3IwRNghU5Q4Zlufj3PFKg/Os6c
+	 oVjB2Q9EIHjEqGDlkMVm+qgfkSCzXgaSU6jpxrYRvamBsuEB5PLaM7yiIeY81c2Go9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793640219;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=VxerWY3W23ia/Jh47/CR89uHx8mpniCBvQqevt8gLJQ=;
-	b=FkXA4udP3912aTpaJDKk0mPazorqQdojhfff1mz/YX/r/FypBydxvlYUjxKuyu/Oswu6
-	 1Z8Aq6oGbD6i9nRIwTfPY3F6S4JrnD6vTZdtvYdRSJI9u/voQyTeAib+7/VtJKgaKp2Ha
-	 eGOF0ZkNyaeRVtFH/m/jmnmheDJfy5nWpPQCwBEOzp3tY/vphq9TI/HNWXpPXj9xhx4MQ
-	 uEJUQZ2wFGO/F0H1/AHRJ35AinvNLASaTug4SUcgULMfuln4q+kbB+bZLUCPi6jgHq/om
-	 3c15juQAsAC18sihgGSz133mdY2lBV5Q4FPjFRokHEye2OOKYWbe1Bz+QkP5XuBaFOQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793640552;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=bLJCblaC6p74X0djr/s7k+NpLQHxJXC32OYuLH+pEfk=;
+	b=lHnm2TYvS5zi+Hzl/fnLjprAAwuRLZcL8aBB+1+k/zfLhcy8D8IQjirtca+psajbZTOV
+	 vBQ1IkMAECinG3VPO2YEQB5Jx4s+YKupnqA0Fl85MFjuxllX32khIkGmJwrspHIe4iSdk
+	 f51bgAs3TlSz4upbvrdIXmvGbjkCaI/WUM5mv75xs3iTgFmEPXtcKL1oyKy4qpUUBVqef
+	 nU0EmrjP+OM8iph3eBOYdlzrX9cTZH0VKJUxhoHesAdoNegexzAfQzcjk/jBLMHzwuxVO
+	 L39+OIHlfS773xCRmOzJNurLT1LVmbe6UxUaFU3wFa1cOTUMpTZ2GLwsvjgl47F5d1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Y/sCGi+L";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45108606A32E;
-	Mon,  2 Nov 2026 17:23:39 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vdnNkLzw;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D703606E02E
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 17:29:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D703606E02E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y/sCGi+L
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E141F00A16;
-	Mon,  2 Nov 2026 17:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793640219;
-	bh=VxerWY3W23ia/Jh47/CR89uHx8mpniCBvQqevt8gLJQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Y/sCGi+LGLHgPmRhU/8My2TGM4mv+sKf3OXpr8Z2oBz72cjGw6QEmlbtA1UO5bkl3
-	 CQRup4eI6eZotBC+RyIGE/UrhZBHnyLBOgFOhsJAHDW6KEdVi4xygdwIZCRxR9/cje
-	 mZKGgIH31Q58s6Y6Xh4fbBD4FWwht1KUvUfSDD2xZc7+wyn06p2Htvg1t91/Es4R3V
-	 4ihKpj5vIPMFCOIFpR9EU2C2Km7P/t75qeMkMNtWN+exyp5Ead2MhcuoLkm6z8kqkH
-	 KGSFJ090r2ysbwMiK0EykyW74sdF5czLPNZ7rnHwZykTVQ4f6SXnnmNjTCsVEkXmg4
-	 zmNBiY3IvQRtA==
-Message-ID: <sashiko-outbox-193825@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 10/14] s390/vfio-ap: Transition device migration
- state to from/to STOP
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261102151604.2150055-11-akrowiak@linux.ibm.com>
-References: <20261102151604.2150055-1-akrowiak@linux.ibm.com>
- <20261102151604.2150055-11-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 17:23:38 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vdnNkLzw
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A72A716F3;
+	Mon,  2 Nov 2026 09:29:07 -0800 (PST)
+Received: from [10.0.136.93] (M0PRX50XMG.cambridge.arm.com [10.0.136.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A18F3F59E;
+	Mon,  2 Nov 2026 09:29:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793640550; bh=ZlHYnqiU00gksrwMlhvvPkWAHmYQOGltgW8sZDyoCXo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vdnNkLzwOmkpdJGKhWTBsOK9HdfAJx8FDNmhV+Nio/h04lbIvSgm9v5ndCwQd8Z6+
+	 4Fvxg6Rm4tWYOBDjT3xSyEG6D6J7NIjij++stxkXIZrydT81vhZLy8WeO/KzTnNcOv
+	 NexeDzHHWZ47qbqocYmkYKMNEIdMOqIEnlshIrqM=
+Message-ID: <909ce27c-524d-4206-93bb-113711c8ca11@arm.com>
+Date: Mon, 2 Nov 2026 17:29:08 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,172 +52,212 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/16] KVM: arm64: gic-v5: Add ITS MSI injection
+To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261016155741.979985-1-sascha.bischoff@arm.com>
+ <20261016155741.979985-10-sascha.bischoff@arm.com>
+ <sashiko-outbox-174632@kernel.org>
+Content-Language: en-GB
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+In-Reply-To: <sashiko-outbox-174632@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] s390/vfio-ap: use-after-free of mig_data when device FD closes=
- before data FD
-- [High] s390/vfio-ap: fortify panic on chunked writes in vfio_ap_resuming_=
-write()
---
+On 16/10/2026 17:23, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> - [High] kvm/vgic: raw_spinlock deadlock due to missing IRQ disable in its_cache_add_translation
+> - [High] kvm/vgic: userspace-triggerable WARN_ON_ONCE causes host DoS in vgic_v5_its_inject_msi
+> - [High] arm64: vgic-v5: User-triggerable WARN_ON_ONCE in MSI injection
+> - [High] kvm: arm64: ABI violation on guest-driven MSI mapping errors
+> - [Medium] kvm: arm64: gic-v5: MSI injection aborted on translation cache allocation failure
+> - [Medium] arm64: vgic-v5: MSI injection fails if ITS cache insertion fails
+> --
+> 
+> commit 65afd53542f7c52bea1da09f7e70c85b22c50b33
+> Author: Sascha Bischoff <sascha.bischoff@arm.com>
+> 
+>      KVM: arm64: gic-v5: Add ITS MSI injection
+>      
+>      Now that KVM can resolve GICv5 ITS translations from guest memory,
+>      allow userspace and irqfd MSI injection to target a virtual GICv5 ITS.
+> 
+>> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+>> index e4c0415137605..5920fa1bcb2cf 100644
+>> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+>> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> 
+> [ ... ]
+> 
+>>   static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its *its,
+>>   				     u32 device_id, u16 event_id,
+>>   				     struct vgic_irq *irq)
+>>   {
+>>   	u64 key = ((u64)device_id << 16) | (u64)event_id;
+>>   	struct its_cache_translation_entry *entry;
+>>   	struct its_cache_translation_entry *old;
+>>   	struct hlist_node *tmp;
+>>   	HLIST_HEAD(removed);
+>>   
+>>   	entry = kzalloc_obj(*entry, GFP_KERNEL);
+>>   	if (!entry)
+>>   		return -ENOMEM;
+>>   
+>>   	entry->key = key;
+>>   	entry->irq = irq;
+>>   
+>>   	scoped_guard(raw_spinlock, &its->translation_cache_lock) {
+> 
+> [Severity: High]
+> Could this lock acquisition deadlock?
+> 
+> The translation_cache_lock is a raw_spinlock_t that is also acquired in
+> hardirq context by its_cache_look_up_translation(). Since
+> scoped_guard(raw_spinlock) does not disable local interrupts, a hardirq could
+> preempt this process-context section and attempt to acquire the same lock,
+> spinning forever.
+> 
+> Should this use the raw_spinlock_irqsave variant?
 
-commit 6775fb7f340ff449dd183124e50a9831181c55db
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+I think it should have, if I'd not reworked the code to use XArrays 
+instead. The original cache lock could be interrupted by a hardirq 
+trying to take the same lock.
 
-s390/vfio-ap: Transition device migration state to from/to STOP
+I've removed translation_cache_lock as part of the XArray conversion, so 
+I think that this is now addressed.
 
-This commit implements the VFIO migration state transitions to and from
-VFIO_DEVICE_STATE_STOP in vfio_ap_transition_to_state(), releasing
-migration file state when leaving RESUMING, STOP_COPY, or STOP.
+> 
+> [ ... ]
+> 
+>>   static int its_cache_look_up_translation(struct vgic_v5_its *its,
+>>   					 u32 device_id, u16 event_id,
+>>   					 struct vgic_irq **irq)
+>>   {
+>>   	u64 key = ((u64)device_id << 16) | (u64)event_id;
+>>   	struct its_cache_translation_entry *entry;
+>>   
+>>   	guard(raw_spinlock)(&its->translation_cache_lock);
+> 
+> [Severity: High]
+> Does this also need to disable interrupts?
+> 
+> Since this is called from the fast path (kvm_arch_set_irq_inatomic) which can
+> run in hardirq context, and the same lock is taken in process context, should
+> both sides use the irqsave/irqrestore variants to prevent deadlocks?
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> index 47f05e43b9e0e..c5534c6ee3cef 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+As above, the translation_cache_lock has now been dropped. We now do RCU 
+lookups in the XArray instead.
 
-[ ... ]
+> 
+> [ ... ]
+> 
+>> @@ -531,7 +572,8 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+>>   		return PTR_ERR(*irq);
+>>   
+>>   	vgic_get_irq_ref(*irq);
+>> -	ret = its_cache_add_translation(kvm, its, device_id, event_id, *irq);
+>> +	ret = its_cache_add_translation(kvm, its, device_id, (u16)event_id,
+>> +					 *irq);
+>>   	if (ret) {
+>>   		vgic_put_irq(kvm, *irq);
+>>   		vgic_put_irq(kvm, *irq);
+>>   		*irq = NULL;
+>>   	}
+>>   
+>>   	return ret;
+>>   }
+> 
+> [Severity: Medium]
+> Is it correct to abort the injection if the translation cache insertion fails?
+> 
+> The translation cache is intended to be a best-effort optimization. If
+> its_cache_add_translation() fails (e.g., due to -ENOMEM), propagating the
+> error and dropping the successfully resolved LPI will silently lose the
+> interrupt, which could hang guest drivers under host memory pressure.
+> 
+> Should the error be swallowed here instead so that injection proceeds?
 
-> @@ -1170,20 +1172,46 @@ vfio_ap_transition_to_state(struct ap_matrix_mdev=
- *matrix_mdev,
->  		return filp;
->  	}
-> =20
-> -	if ((cur_state =3D=3D VFIO_DEVICE_STATE_RESUMING &&
-> -	     new_state =3D=3D VFIO_DEVICE_STATE_STOP) ||
-> -	    (cur_state =3D=3D VFIO_DEVICE_STATE_STOP_COPY &&
-> -	     new_state =3D=3D VFIO_DEVICE_STATE_STOP)) {
-> -		/* TODO */
-> -		return ERR_PTR(-EOPNOTSUPP);
-> +	/*
-> +	 * Terminates the data transfer session of the vfio-ap device state
-> +	 * to the destination guest.
-> +	 */
-> +	if (cur_state =3D=3D VFIO_DEVICE_STATE_RESUMING &&
-> +	    new_state =3D=3D VFIO_DEVICE_STATE_STOP) {
-> +		if (!mig_data->resuming_mig_data_complete)
-> +			return ERR_PTR(-EINVAL);
-> +
-> +		/* Set resuming_mig_data_complete to false for clean reuse */
-> +		matrix_mdev->mig_data->resuming_mig_data_complete =3D false;
-> +		vfio_ap_release_resuming_file(matrix_mdev->mig_data);
-> +		return NULL;
-> +	}
-> +
-> +	/*
-> +	 * Terminates the transfer session of the vfio-ap device state from
-> +	 * the source guest.
-> +	 */
-> +	if (cur_state =3D=3D VFIO_DEVICE_STATE_STOP_COPY &&
-> +	    new_state =3D=3D VFIO_DEVICE_STATE_STOP) {
-> +		vfio_ap_release_stop_copy_file(matrix_mdev->mig_data);
-> +		return NULL;
-> +	}
-> +
-> +	/*
-> +	 * These states indicate migration has either not been initiated or
-> +	 * has completed and the vfio-ap device is operating normally. Since the
-> +	 * vfio-ap device does not virtualize a DMA device, there is no internal
-> +	 * device state to incorporate into the vfio-ap device on the target.
-> +	 */
-> +	if (cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
-> +	    new_state =3D=3D VFIO_DEVICE_STATE_RUNNING) {
-> +		vfio_ap_release_mig_files(matrix_mdev);
-> +		return NULL;
->  	}
-> =20
-> -	if ((cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
-> -	     new_state =3D=3D VFIO_DEVICE_STATE_RUNNING) ||
-> -	    (cur_state =3D=3D VFIO_DEVICE_STATE_RUNNING &&
-> -	     new_state =3D=3D VFIO_DEVICE_STATE_STOP)) {
-> -		/* TODO */
-> -		return ERR_PTR(-EOPNOTSUPP);
-> +	if (cur_state =3D=3D VFIO_DEVICE_STATE_RUNNING &&
-> +	    new_state =3D=3D VFIO_DEVICE_STATE_STOP) {
-> +		return NULL;
->  	}
+I've made cache insertion best effort for software MSI injection, so the 
+interrupt is still injected on that failure. That said, we realistically 
+shouldn't be hitting this case unless we're under very high memory 
+pressure, at which point all sorts of things will be going wrong!
 
-[Severity: Critical]
-As reported by Sashiko on v5 [1], with the transitions to and from
-VFIO_DEVICE_STATE_STOP enabled in vfio_ap_transition_to_state(), userspace =
-can
-now enter VFIO_DEVICE_STATE_STOP_COPY or VFIO_DEVICE_STATE_RESUMING and ope=
-n a
-migration stream file descriptor.
+> 
+> [ ... ]
+> 
+>> +int vgic_v5_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
+>> +{
+>> +	struct vgic_v5_its *its;
+>> +	struct vgic_irq *irq;
+>> +	bool borrowed_mm = false;
+>> +	int ret;
+>> +
+>> +	ret = vgic_v5_check_msi(kvm, msi);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	its = vgic_v5_msi_to_its(kvm, msi);
+>> +	if (IS_ERR(its))
+>> +		return PTR_ERR(its);
+>> +
+>> +	/* An irqfd cache miss is resolved by a worker outside the VM's mm. */
+>> +	if (current->mm != kvm->mm) {
+>> +		if (WARN_ON_ONCE(current->mm || !(current->flags & PF_KTHREAD)))
+>> +			return -EWOULDBLOCK;
+> 
+> [Severity: High]
+> Could this WARN_ON_ONCE be triggered by unprivileged userspace?
+> 
+> If a normal user process (other than the VM creator) calls the KVM_SIGNAL_MSI
+> ioctl, current->mm will not equal kvm->mm, and since it is a user thread,
+> current->mm is non-NULL and it lacks PF_KTHREAD. Triggering a kernel warning
+> can crash the host if panic_on_warn is enabled, leading to a Denial of Service.
 
-When vfio_ap_open_file_stream() creates that file descriptor, it sets
-filp->private_data to &matrix_mdev->mig_data->stop_copy_mig_file or
-&matrix_mdev->mig_data->resuming_mig_file and pins the registration of
-matrix_mdev->vdev via vfio_device_try_get_registration(). However, Both
-stop_copy_mig_file and resuming_mig_file are embedded inside struct
-vfio_ap_migration_data (matrix_mdev->mig_data) rather than struct
-ap_matrix_mdev:
+Can we realistically reach that case?
 
-struct vfio_ap_migration_data {
-	enum vfio_device_mig_state	mig_state;
-	bool				resuming_mig_data_complete;
-	struct vfio_ap_migration_file	resuming_mig_file;
-	struct vfio_ap_migration_file	stop_copy_mig_file;
-};
+kvm_vm_ioctl() rejects a userspace caller whose mm differs from the VM's 
+mm before KVM_SIGNAL_MSI reaches this code.
 
-When the VFIO device file descriptor is closed while the migration stream f=
-ile
-descriptor is still open (including during process exit, since close_files()
-closes file descriptors in ascending order), vfio_ap_mdev_close_device() ca=
-lls
-vfio_ap_release_migration_data(), which destroys the mutexes and frees
-matrix_mdev->mig_data:
+The irqfd worker is a kernel thread using the VM's mm struct.
 
-void vfio_ap_release_migration_data(struct ap_matrix_mdev *matrix_mdev)
-{
-	lockdep_assert_held(&matrix_dev->mdevs_lock);
+How can we reach this code? I've not changed anything to address this!
 
-	if (!matrix_mdev->mig_data)
-		return;
+> 
+>> +
+>> +		if (!mmget_not_zero(kvm->mm))
+>> +			return -EFAULT;
+>> +
+>> +		kthread_use_mm(kvm->mm);
+>> +		borrowed_mm = true;
+>> +	}
+>> +
+>> +	ret = vgic_v5_its_resolve_lpi(kvm, its, msi->devid, msi->data, &irq);
+>> +	if (borrowed_mm) {
+>> +		kthread_unuse_mm(kvm->mm);
+>> +		mmput(kvm->mm);
+>> +	}
+>> +
+>> +	if (ret)
+>> +		return ret;
+> 
+> [Severity: High]
+> Does this violate the KVM_SIGNAL_MSI ABI by returning negative error codes?
+> 
+> When the guest provides an invalid mapping (like an out-of-bounds Event ID),
+> vgic_v5_its_resolve_lpi() returns errors like -E2BIG or -EINVAL. Propagating
+> these directly to the ioctl caller instead of returning 0 (to indicate the
+> guest blocked or unmapped the MSI) can cause the VMM to abort, creating a
+> guest-to-host Denial of Service.
+> 
 
-	vfio_ap_release_mig_files(matrix_mdev);
-	mutex_destroy(&matrix_mdev->mig_data->stop_copy_mig_file.lock);
-	mutex_destroy(&matrix_mdev->mig_data->resuming_mig_file.lock);
-	kfree(matrix_mdev->mig_data);
-	matrix_mdev->mig_data =3D NULL;
-}
+Ah, yes. This was a mistake, and those shouldn't be returned. I've 
+changed these to return 0 to the caller instead. We still return 
+negative error codes for malformed MSIs, allocation failures, and when 
+the ITS itself is disabled.
 
-Doesn't this cause a use-after-free when the open migration file descriptor=
- is
-subsequently read in vfio_ap_stop_copy_read(), written in
-vfio_ap_resuming_write(), or closed in vfio_ap_release_mig_file(), where
-filp->private_data (mig_file) is dereferenced and mig_file->lock is locked =
-or
-unlocked after matrix_mdev->mig_data has been freed?
 
-[Severity: High]
-In addition, with VFIO_DEVICE_STATE_RESUMING now reachable via
-vfio_ap_transition_to_state(), can chunked writes in vfio_ap_resuming_write=
-()
-trigger a fortify_panic() when CONFIG_FORTIFY_SOURCE is enabled?
-
-In struct vfio_ap_config, qinfo[] is annotated with __counted_by(num_queues=
-).
-While vfio_ap_resuming_init() initializes ap_config->num_queues to
-MAX_AP_QUEUES when the stream is opened, vfio_ap_resuming_write() copies
-incoming chunks directly into ap_config before checking whether *pos exceeds
-expected_sz:
-
-	ap_config =3D mig_file->ap_config;
-	memcpy((char *)ap_config + *pos, kbuf, len);
-	*pos +=3D len;
-
-If an earlier write chunk overwrites ap_config->num_queues with a smaller
-value (or splits the 4-byte num_queues field across two write calls so that
-its upper bytes are zeroed first) and a subsequent write chunk writes past
-sizeof(struct vfio_ap_config) + ap_config->num_queues *
-sizeof(struct vfio_ap_queue_info), won't fortified memcpy() evaluate the
-updated ap_config->num_queues and call fortify_panic() before the bounds ch=
-eck
-after memcpy() is reached?
-
-[1] https://lore.kernel.org/r/20260724182949.EA9C51F000E9@smtp.kernel.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102151604.2150=
-055-1-akrowiak@linux.ibm.com?part=3D10
+Thanks,
+Sascha
