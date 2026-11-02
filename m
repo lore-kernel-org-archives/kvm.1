@@ -1,114 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793578968;
-	b=EM9WICkJRAmeGPLEp2JeEjMQ6GVATAUN5VFfly+G3kftIOhQ3zVIJ9Mk1rjIH+Hv449+
-	 VJu2GK/ab0H7dX+uHutf1qj7BdNdfIeaZTBMX5dr+SBVrABvzqGDMVkJlR2EaixmAm1W/
-	 Srd85rt5RsxF2O0MbfN3f3R8l0eVJaOjMyJWLbfIotnV1QFnfa5HH2/7q7RJSepEq98M/
-	 kzRjQZqPwZg9PnIq2BWcyJeq7TOicCMabaTCjgbN1LPIQQXpOmoiCoKx3FJeYYM5mrAZf
-	 1bbzxdyGTU5i/oYpceCSdM7a2KzgBbsq6tQQr0hRWjlVodQvahEc25YB/358lKSyeYg==
+	t=1793582531;
+	b=jvyV/hxyg8rEZbLDE7cJXmQ/tPmRoHtTHWXl829RiEkfmTme5vDLYF6HADZt8lLX7mSt
+	 PwOWPx1Js/2LHdlXSvPeDqXXQ4jQGcbKWmIWahTAiDFA/Y8Wlf2x9lmh//QAC03tZBkp+
+	 GuE+c2PWbHDTR2JZIeGg9jn8nD8Ebf8dQII2k8eAATVAQjDWwmrYlLZPXhm+Aymd5mbQM
+	 TJd1DzQLi6cTwJ2C45Ap895fZIugraEWnh4HOTd46l8Yyt9U+WHEQLMmU9TgE+FyT8UbF
+	 IRL9No2jWeCuD55zbQc65d7m2pwuG3r6GP8wPRvjhARsQ6oaNLzpgwgtcQhS/nUYGbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793578968;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
-	b=qPKfXvWeSdeaEThXSLpfcgIYaS1VszBbEQhTQ7bSVkZVt/gm6Slx7iD+8wtOz+b2PjEP
-	 /k8FjIhekE5A4DpIDfqms46sswqMY4gyPxki0TxF2Bth/D7WAbloygzxbIwKWLLgv7Ziz
-	 o13D6mHQ5hp1gGC7cu3Phup3li/yolfb/GjMmHrAtD/eU6cz6/NmrLdsVNZlXqVQh9RrY
-	 6pEC4t/aFNe0e62jNuE3CNj5gNy8YYZnXQhpOZJzfaiU6A1kwf5uLS5J9wOAJYrxxHhTZ
-	 DnbXEpBY4Mq+YUZ6iAjmwRA9iM7S0B2rkoiIeJK2KZX0T7lUzNR1v01nJZfkM5SSilQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793582531;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:From:Subject:To:Cc:References:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=C5gqpTOgkDU//zQkGOQKjOKsqsvBDDMS+gbejxMeVdk=;
+	b=r1jk7OLvcBx//RbsjTw+M51BupX6xk1APaIKGgw4oiraqYGsVxNEcKk9/VmV8YdF67m+
+	 6muAyAFYhp07T/6hpsDAMzotn0UuY+i4Z8caFLZCHa5GclZTHgbyTPJiBm3o21tca7Lst
+	 gnNHBkXKvLcLjW1jUYFDiLMEZMYKYyCybXm3g7Ks2jA/dD3m2ojyeUkMCFVuRFjeGcysY
+	 7nfDzhxcAh5RXUKY+Qq2Ao+87aqn77FyBhE7Ean4ofmaA4rU7TpQZufJUVusWAM1SkjdN
+	 g0BSvQW1nrqtZa0BTHYLs2QdNG4ldoPq1+fUt/oTXc+ft041LP4R1rxJCs9kPI1aztQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NAmYoCUe;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=i3IM+YbR;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=rbox.co;
+	spf=pass smtp.mailfrom=rbox.co;
+	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=I2EnYMrr;
+	arc=none smtp.remote-ip=185.226.149.37
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C71606A326
-	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 00:22:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23C71606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF74606A324;
+	Mon,  2 Nov 2026 01:22:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BF74606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NAmYoCUe;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=i3IM+YbR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793578967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
-	b=NAmYoCUeHojKJL4HlPl4u3dwQ1W+d+ZevazbKbCMN1SoUHcUOZBR5RrtpTBE38zXw8UtA/
-	sT9+XZRcbax1pZRV3y4eSZGfkNR04YNtDMRlnw2HfahEtUxS+bTPXKKNN90Z3uK/zEo/I+
-	hOcWDR4k0ARe6/bR1B/1jlQXEKQlwlE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-500-lhACc4jPN9S4CRe9nJlqOw-1; Sun, 01 Nov 2026 19:22:46 -0500
-X-MC-Unique: lhACc4jPN9S4CRe9nJlqOw-1
-X-Mimecast-MFC-AGG-ID: lhACc4jPN9S4CRe9nJlqOw_1793578965
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48dfaaea30cso1717428f8f.0
-        for <kvm@vger.kernel.org>; Sun, 01 Nov 2026 16:22:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793578965; x=1794183765; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
-        b=i3IM+YbRTEO2DjGr7HDtpuqLZvF1Ln88dImlEcAIGSWu8+yijEvIFl+Av8d9Jqy9II
-         QnhBehQn9mrrTUbaH4x0IOZnmqVCvfN8dyWp6QCobQML0HbIYiOg7vrP6qjmoLPM8F6v
-         tyVhQvQDGWbNJkaiMcUWuW/pHwzkp2pyluw06rd8kfiUJvnpANUIBZm4ltZHVXtnmWlY
-         n8NKwJriKOBgeZAmVY+P5EO1bAgFaUKXrb+068Kb57qDDujJpT4SYb5T5EuA2vwW77wS
-         X2jmCXjhoCubd16Q9Vt3NSKD6u3QdtQ9+J5RgWNigOsqIQ27oZRJoeIvtG73Uz/dZKdo
-         Tupg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793578965; x=1794183765;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JOVQ4ASZFEh46dK4HlVqM/YOvdjeg+7exp1HRpI2jDQ=;
-        b=Fk034wPtybTeyaipnBPBEgURoQyaQUeyhqmdo2kWj3DLFySIFgT42vV6wAisAj8TBZ
-         dKKDqqWhHZA12dpxiY88erwKCfrxyiHeeL1S4zPwsquC0hCbVnzlJx4qcCPmXxNn0Aru
-         3iQkuGSaWwE6OK/jYoQ6y6gUNsm3qs8sJbac19nd9Y99/dH+PWyw509CEL9d9Ph5jN8T
-         wIzDFcup5gABJZtB8cA84AaHz/Otf+XMsiZDTd0M+bdxWYiBxg1zgLcd1pmhGQRKvDxm
-         Zgzim1QgoyKaq8pFXl1u9hQOqhs5NgpZBs74FcXEkSaO6TUewvQAGWrWVoopYrp/gNZZ
-         H0DQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxBe7+XXf3ALrFD037tSB2AmKMxRkrZ4hvMUPfXeStz2MKGwP8KkBliCsf6LbjK8Su10OE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIffk3XLJHGEbiZaK4nwOAPxbvhmtCC4lh+EGW8fUKvVTqahExf
-	y3WErHcWWnmUrlTLO9+81qmkLIeSYV10y+3+0nmDZ9cvwvLAD89Bu1uzii1ntS8VoC1Be3glcGE
-	OU6SI1LAChSpqIbB7ASN0Tn8XWF2TU4jteTf2FjJvAHvWZz1GcWhjWA==
-X-Gm-Gg: AYBFou0qDBhuGUVaoV6ujcBscWPlBi+i6Eqi15+WRnatYfXk/sYy8RQoNX4ghBHSfXU
-	87/4PkHbUq4RWEgy/dcqeaBJflUKCdxwpM0SoGpiyWwzBOWsrURVPOd6dUtYeFRV/hnstn216Xx
-	ADSKK7rUJd2sYtLnIEUXMG/+Yv/Df6afkyQp/2C3KUSvLBKPFegcg67rpMPKU1Qnfi3hx6XySsU
-	lC1Qt5vX/K3EoTw81XFsFGYS+BWdxiwyx4tlcGAdoK154/Iz69UVD/oQo6p3akNOXqIPjNg9nkV
-	1Yoc/BFJY39fJty+tj/+0/hYSJlRBx+1aQojabaXYlGLblaMLsCfXThAiw2795h9OEFiEbmAsVj
-	q9E4sgLqAziJPqQpq0RjDd3cXxknECzRE4BMyEh1I7g==
-X-Received: by 2002:a05:600c:1f87:b0:4a1:f68a:9736 with SMTP id 5b1f17b1804b1-4ac17b2be08mr197874425e9.26.1793578964618;
-        Sun, 01 Nov 2026 16:22:44 -0800 (PST)
-X-Received: by 2002:a05:600c:1f87:b0:4a1:f68a:9736 with SMTP id 5b1f17b1804b1-4ac17b2be08mr197874195e9.26.1793578964162;
-        Sun, 01 Nov 2026 16:22:44 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1501:b100:9ea2:fd21:b361:8dab])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf67aa704sm220328625e9.8.2026.11.01.16.22.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 16:22:43 -0800 (PST)
-Date: Sun, 1 Nov 2026 19:22:40 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Linfeng Sun <linfeng.sun.dev@gmail.com>,
-	Eugenio Perez <eperezma@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH v2] vhost-vdpa: initialize state before publishing cdev
-Message-ID: <20261101192214-mutt-send-email-mst@kernel.org>
-References: <20261011-fix-null-pointer-in-vhost_vdpa_release-v2-1-66ba929971ce@gmail.com>
- <sashiko-outbox-167170@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=I2EnYMrr
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1xNgkL-008BKP-AU; Mon, 02 Nov 2026 02:22:01 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=C5gqpTOgkDU//zQkGOQKjOKsqsvBDDMS+gbejxMeVdk=; b=I2EnYMrrFCOKTtqiYFvChN8tuO
+	Cy6ULEkHqZw8Q+rhppEMB19ro7BO6VuN7dn5ELjJpjzLDnCsLnHAmJUg76QVbr15RlNupVPczMgOt
+	WYkrmzXN0jXh8lEMvXbiTMmKmjoXOSWj46V1Cq2SE+xjtzOUeBeI2TCoF+OAImGTyva3Ujp36uUn2
+	+OMa3CNuLMCPwwJtY0Kp5TaNEtIzTJgcWZ1rDSglQuY4CGsVryG5zGIVdAkk8GgEeZN9Yd8LC/G5i
+	eU1Z+j1RLVNA9qCUpGXnxdd7hU17+050tLzAXhcYSJFagJ/wJ9TbMYxkYmr5DaiWwyI0KVcfok/4+
+	uvU/cxWw==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1xNgk3-00069h-Pc; Mon, 02 Nov 2026 02:21:43 +0100
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1xNgjp-00AfUJ-El;
+	Mon, 02 Nov 2026 02:21:29 +0100
+Message-ID: <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
+Date: Mon, 2 Nov 2026 02:21:27 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,83 +66,119 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-167170@kernel.org>
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net-next v4 4/7] vsock: add a netlink command to assign
+ the g2h device to a netns
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Donald Hunter
+ <donald.hunter@gmail.com>, Eric Dumazet <edumazet@kernel.org>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, sargun@sargun.me,
+ jlinbox@meta.com
+References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
+ <20261020-vsock-guest-ns-v4-4-047527cfccfc@meta.com>
+ <atjZZP2ebhXKzMxL@sgarzare-redhat>
+ <atld3+5LKmGxJ8+s@devvm29614.prn0.facebook.com>
+ <atnjOZjKUBagRVWq@sgarzare-redhat>
+ <d946003a-8bec-4e8b-89a3-05eeb96780cc@rbox.co>
+ <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 11, 2026 at 10:39:26AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] vhost_vdpa: spurious -EBUSY on open() due to uevent race during probe
-> --
+On 10/30/26 21:30, Bobby Eshleman wrote:
+>>>> Yeah its all kind of a pain. The problem is that we need to hold
+>>>> sock_lock to set sk_state and sk_err, but can't acquire it under the
+>>>> table lock. Instead, we grab the socket ref sock_hold under the table
+>>>> lock to guarantee it stays alive between releasing the table lock and
+>>>> grabbing the socket lock.
+>>>>
+>>>> I was really tempted to not do this lock_sock dance though. The race
+>>>> condition I'm avoiding here is that if this reset races with an RST
+>>>> receive, then the socket could end up with TCP_CLOSING + sk_err
+>>>> ECONNRESET... but I'm not sure this actually propagates up into a real
+>>>> problem for any potential user.
+>>
+>> Right, vsock_connect() is fragile. Two things to be cautious about:
+>> 1. Don't let it reset the already connected socket. Because that would
+>> allow user to "re-connect()" and make mess in connected_table.
+>> 2. Don't let it re-assign transport of an already connected socket. Because
+>> that breaks the contract in few places.
+>>
+>> State 1 is not an issue: vsock_g2h_reset_unreachable() calls
+>> __vsock_remove_connected().
+>>
+>> State 2 may be problematic: if vsock_g2h_reset_unreachable() sets TCP_CLOSE
+>> when connect() is scheduled out, then after the wake-up sock may get reset
+>> to SS_UNCONNECTED. Then user re-connect()s and hits the transport
+>> re-assignment logic. I'm worried that, as we re-assign, someone may be
+>> holding a reference to such "connected" (even if not in connected_table
+>> anymore) vsock.
+> 
+> I see path you're looking at... after vsock_connect() gets scheduled
+> back in we set TCP_CLOSE/SS_UNCONNECTED if sock_error returns non-zero.
+> Could you elaborate on your last concern there about someone holding a
+> reference? I'm not sure I fully understood.
 
+Ah, sorry, let me explain. This case reminded me of the vsock's TCP_CLOSING
+bug[1]: reporter mentioned vsk->trans getting freed when skb was still in
+flight. I did not reproduce the exact scenario, but it did sound plausible
+and I thought it applies here: virtio_transport_destruct() frees vsk->trans
+the moment vsock_loopback_work() invokes virtio_transport_consume_skb_sent().
 
-Linfeng do you want to address the bot review on list pls?
+Now, to get there let's start with vsock_connect() setting SS_UNCONNECTED
+(on a connected) socket after vsock_g2h_reset_unreachable(). Then user is
+able to re-assign the transport, which involves
+virtio_transport_destruct(). But since we're dealing with a connected
+socket, (before the reset) some send() might have triggered
+vsock_loopback_work(). Does this make sense to you?
 
-> commit cef3a58744e8aa0a22f86fbbe577797fa0a78e31
-> Author: Linfeng Sun <linfeng.sun.dev@gmail.com>
-> 
-> vhost-vdpa: initialize state before publishing cdev
-> 
-> Initialize the completion and as hash buckets before cdev_device_add()
-> makes the device accessible.
-> 
-> > diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-> > index ff7d907191712..6cff1ed2004ee 100644
-> > --- a/drivers/vhost/vdpa.c
-> > +++ b/drivers/vhost/vdpa.c
-> > @@ -1655,7 +1655,7 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
-> >  		return minor;
-> >  	}
-> >  
-> > -	atomic_set(&v->opened, 0);
-> > +	atomic_set(&v->opened, 1);
-> >  	spin_lock_init(&v->config_lock);
-> >  	v->minor = minor;
-> >  	v->vdpa = vdpa;
-> > @@ -1678,16 +1678,17 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
-> >  
-> >  	cdev_init(&v->cdev, &vhost_vdpa_fops);
-> >  	v->cdev.owner = THIS_MODULE;
-> > +	init_completion(&v->completion);
-> > +	for (i = 0; i < VHOST_VDPA_IOTLB_BUCKETS; i++)
-> > +		INIT_HLIST_HEAD(&v->as[i]);
-> >  
-> >  	r = cdev_device_add(&v->cdev, &v->dev);
-> >  	if (r)
-> >  		goto err;
-> >  
-> > -	init_completion(&v->completion);
-> >  	vdpa_set_drvdata(vdpa, v);
-> >  
-> > -	for (i = 0; i < VHOST_VDPA_IOTLB_BUCKETS; i++)
-> > -		INIT_HLIST_HEAD(&v->as[i]);
-> > +	atomic_set_release(&v->opened, 0);
-> 
-> [Severity: Medium]
-> Will this cause a spurious -EBUSY for userspace orchestration tools like udev?
-> 
-> When cdev_device_add() registers the character device, it fires a KOBJ_ADD
-> uevent. If userspace reacts immediately by calling open(), it will hit
-> vhost_vdpa_open():
-> 
-> drivers/vhost/vdpa.c:vhost_vdpa_open() {
-> 	...
-> 	opened = atomic_cmpxchg(&v->opened, 0, 1);
-> 	if (opened)
-> 		return -EBUSY;
-> 	...
-> }
-> 
-> Since v->opened was artificially set to 1 earlier in probe, open() will be
-> rejected with -EBUSY until atomic_set_release() clears it, which might
-> break normal userspace orchestration that attempts to open the device right
-> after the uevent.
-> 
-> >  
-> >  	return 0;
-> >
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261011-fix-null-pointer-in-vhost_vdpa_release-v2-1-66ba929971ce@gmail.com?part=1
+Another thing is this feature of vsock_assign_transport(): in some
+re-assign failure paths you may end up with vsk->transport = NULL. In the
+past this caused issues with sockmap: see WARN_ON_ONCE in
+vsock_bpf_recvmsg(). Problem here is that normally vsock gets removed from
+sockmap on close(), but in our (reset+reassign) case close() is never invoked.
 
+[1]: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
+
+>> So I don't know, maybe it's vsock_connect() that should be fixed/hardened
+>> instead?
+>>
+>> Or at least disallow transport *re*-assignment? Does the "re-" part have a
+>> use case?
+>>
+>> Hope it's not too off-topic.
+>>
+>>>> It also avoided some racing with the tx path, but now that send_pkt()
+>>>> also checks reachability I think that path is safe.
+>>>>
+>>>> What do you think about doing the below hunk (TCP_CLOSE, ECONNRESET,
+>>>> sk_error_report) with no lock_sock?
+>>>
+>>> Looking at the code, it seems that in all the places where we close all 
+>>> connections (virtio_vsock_reset_sock, vhost_vsock_reset_orphans) we do 
+>>> with no lock_sock but with vsock_table_lock.
+>>>
+>>> So, makes sense to me.
+>>
+>> virtio_vsock_reset_sock() and vhost_vsock_reset_orphans() are my pet
+>> peeves: state switcheroo without taking lock_sock(). Which, again, races
+>> vsock_connect().
+> 
+> True, I don't love that either, but I feel the impact is at least
+> constrained by the fact that it only happens when the module or device
+> is already going away.
+
+Doesn't it happen on suspend as well? Is so, with a poorly timed connect()
+things can go south on resume.
