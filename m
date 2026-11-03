@@ -1,55 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793693555;
-	b=OzE6uwW9uFa1mOLSn2NHKYaCG8Knt0ewlbAt1UfH6Qbn9OZcJdSr/RVptdJhrwwSkA+7
-	 YAHG6oLdEEA/zroaVm3T1DhNs5ORurupAwQD1ClIGzLOIjR2CoX/OxB2wnhGzucMSiZ0h
-	 4HMxD4GnCQcUMD67onr513gH4XdsOHX6Fl6WcO4xwYfIwHgBcmee7LnYCGNJ7x3o3Df5Z
-	 H2IRWqlaAucFUgOQbxxkKDJ8yK1j9gCoIzUkahLb9/t7jz50sfPDGkrgFxk2xy2GETcSS
-	 KABYLfs5J78cLN+ZanDG+T1y5dLr+Vv2+CWnKp1qixSHPOkhvEIK2BSoVtowCjUZo3A==
+	t=1793694610;
+	b=LJHDTTZIBRtAeijtTQGTPBAK+LAaj3ucMSZccB4EibcPdstBUwlYvFJfL7PfO11KJFy1
+	 nlc2tODwXO8j9vKMeHd4Qk3XbHuqUMK+gXijc1URMF7Mb3uhUv3lF7jsuxyKY8w2MBmn3
+	 YPcGGQhVE2SUEUWmst98I0aSH22KRmFv6izFjgacykJCj++EJxWlw5/rzzDUmKOR6yXXA
+	 m0/detDchCxQfYYPi6isSbYNWFuEiBilg6kX/6NyW0odkHiwMIJZkt7k8OwXNL0TtDSmY
+	 ga3E36/HNL2F5xWlFQYEG8FFSHMjRPvsqtguSHimo0rNr1QXw6qtI0ahQtw1/92CV2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793693555;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:MIME-Version:Content-Type:Content-Disposition:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=T/kadnwxfBNSyR/Mset15OVFKhbYdpPuDrRt+FmbkBE=;
-	b=uMnYM1u83pv7X7au44Q+hHj55wqT7kZRXf2H7+0wV/dkFQJ4rOol/bdJoO76LTjDo4DT
-	 iqNuaoSeB/Pg4atoYhYqNYeDtLk/DBc23wpmapkeNF/MIZKCApk7ng5iur1P1nrgFEhyk
-	 Y1rDmDM9U39EbQfTASMZil8uL07N+fLPQ1tZ49gW1jYCdHra4BtTNgDQvb14T56laxsbb
-	 XtNf8djqTh07UT2s5dWx4Apo29ZWqESLNsj9vAgg6kaUxtrRKE+YmKU6dZET1vEsRaLrY
-	 9J9WSpgQjakP999a1NtlD5R1cyVspH0wUWMVxv/BfAnbbqrtDKNzAeF1j1aSGOZyRqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793694610;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:X-Change-ID:X-Mailer:
+	 Content-Transfer-Encoding;
+	bh=upNUkJyXoLVAUbVayP9rfwiDE1A46jbcDOisdU9woW4=;
+	b=pJ/VbPxYJUbndKG/XYMkzVFjY+qSkSQjf/rW8YqSEg/yTTWtW57KVMowI39Xr7c3iEDs
+	 l2utCFKsjRQagayHkbQqIsbCgAAK61hWA2MfKVE7EX/jLg2CTOMzpHnpMGzEal9oN+hkA
+	 m9eTspaFRYNbor9lE1aM1mBZxfRAQdCsshzSYSG2Uv0G8c9u3R4oYi0S3GwRVAPPl+1bd
+	 GZHeTcZHoEY11K/GoyvSysbfwVScRnAtYqwAZ4+E8kILliIYcAryilhDepnjT+MNROgwR
+	 T7Tt4HNYQQe8JjGrOC+Yob7Mjt/nljUbAtf44TzU0U47ANpnc//qORvJ3LEjKr0RqrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=B8lBxWPv;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=obBzRYe6;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05B6606A329;
-	Tue,  3 Nov 2026 08:12:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A05B6606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD61606A339;
+	Tue,  3 Nov 2026 08:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=B8lBxWPv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=T/kadnwxfBNSyR/Mset15OVFKhbYdpPuDrRt+FmbkBE=;
-	b=B8lBxWPv3SdCGdktOC1Au0ChtzM3oPo8/pNhoACzdd1NZilwGf2o8F/GqfSlRp
-	CSCqn89+UzTcjGiBoOc/BdfD24FOMyF4OED4G/F01uimkJlXmXe1JWr9+zGdqJVc
-	41XFZAxqMaqQyibVo8KYW0WB/D7yuXrwQ8CG6EUhFEVc0=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3fyxgl+lq01lUEw--.29294S2;
-	Tue, 03 Nov 2026 16:12:16 +0800 (CST)
-Date: Tue, 3 Nov 2026 16:12:16 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: x86/mmu: Batch masked dirty clearing within leaf page
- tables
-Message-ID: <aumXYMB45obYzXoY@192.168.1.215>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=obBzRYe6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D921F00A15;
+	Tue,  3 Nov 2026 08:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793694609;
+	bh=upNUkJyXoLVAUbVayP9rfwiDE1A46jbcDOisdU9woW4=;
+	h=From:To:Cc:Subject:Date;
+	b=obBzRYe6fJ+bAS01CeQuLw1S7ubUvpxw3IkivGbYaX0e6gG0KpaG149RzyU1X0D4n
+	 4A6Uu6p4Hm1k33qHUk8n+XNy2Z0F1DFTICWeISCsMqe6E55U5bYxWbFJym3aiSp9gE
+	 mNOB2nZVoOdDOuxl217WMRhKKQyETsIGQTkCIJ5KcoLmNblqArGtP+B5DvTCFgx7pR
+	 E8YwO5tjTR+RXyU4aif8YrtMcovkOKsS5urFn99V+Eloemv/Bg0gbYC/Z5WOtZP790
+	 ZYrqD26iXuKRjApWD3eZDHOwqmNlJRFks/URSe01BPwX1IRHHcXcDj5ry5V+W47t2o
+	 jWpOjEQkf/yjw==
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org,
+	kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: [PATCH v12 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
+Date: Tue,  3 Nov 2026 10:29:39 +0200
+Message-ID: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,220 +82,188 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-CM-TRANSID:_____wD3fyxgl+lq01lUEw--.29294S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtF47XFyxuw1DWw1UZFy3twb_yoW3tF13pF
-	Z7AFyYqr4vq34FyrZ7Aa1DuFyYvr4kXrWrGrW8KF95Xan8Cr1qga4Iga4rXayDWryvq34a
-	vrs0vw1Uua1DAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U_sqZUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+gATBmrpl2AeOAAA39
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260821-fix-p2p-acs-v4-0-e72455e3a261
+X-Mailer: b4 0.15-dev-18f8f
+Content-Transfer-Encoding: 8bit
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+PCI P2PDMA applies Request and Completion Redirect throughout both paths.
+This misclassifies asymmetric and nested switches, and reports one answer
+for every kind of TLP.
 
-Walk the TDP page tables down to L2 when clearing a dirty-log bitmap word,
-and update the selected 4KiB SPTEs directly in each child page table.
+Three ACS controls act on TLP attributes the Requester chooses rather
+than on the topology: Translation Blocking and Direct Translated P2P act on
+a Request's Address Type, and Completion Redirect skips Completions carrying
+Relaxed Ordering.
 
-clear_dirty_pt_masked() currently uses the generic TDP iterator to visit
-individual leaf mappings. For a densely populated bitmap word, this repeats
-the iterator's traversal and entry checks for adjacent SPTEs in the same
-page table. Sparse masks can also cause unselected entries to be visited.
+Evaluate each direction at the path divergence, decide every class from the
+one walk, and treat a client with ATS enabled as translating unless its
+driver declares per-mapping ATS.
 
-Use the existing minimum-level iterator to locate each L1 page table
-through its parent. The GFN range covered by a bitmap word can cross a
-2MiB boundary. Clip a private copy of the mask to each table's coverage,
-keeping bit indices relative to the original GFN.
+This completes the P2PDMA side; dma-buf and mlx5 follow separately.
 
-Locate the first covered SPTE once per batch, then use relative offsets for
-the selected bits. This avoids recomputing the SPTE index in the inner loop
-and avoids reading and checking unselected 4KiB entries.
-
-The write side of mmu_lock keeps the parent-child link stable, and the RCU
-read-side critical section protects the page-table memory. Retain the
-existing SPTE update helper and tracing semantics. Continue to skip huge
-mappings, as before. Preserve the generic iterator and the caller's TLB
-flush behavior.
-
-For an 8-vCPU dirty-log benchmark with a 768MiB tracked region, reduce
-KVM_CLEAR_DIRTY_LOG time by approximately 42-51% on the tested Intel host
-with PML enabled.
-
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
-Benchmark and testing details:
+Changes in v12:
+- Rebaed to v7.4-rc1
+- Link to v11: https://patch.msgid.link/20261013-fix-p2p-acs-v4-0-v11-0-72cf8c96e617@nvidia.com
 
-Base commit: 3857c2fe5449541e24afc5efdb0f81a8a8f9a3a0
+Changes in v11:
+- Applied the client ATS policy in pci_p2pdma_distance_many() too, as
+  local Sashiko pointed out.
+- Read the ATS Enable bit once per query, so the class and the ATS policy
+  always agree.
+- Documented that pcim_p2pdma_set_ats_per_mapping() needs a successful
+  pcim_p2pdma_init().
+- The path diagnostics no longer read ACS Control or the bridge bus range,
+  and they report a failed cache store.
+- Added a KUnit case for Direct Translated P2P without a redirect.
+- Clarified the Relaxed Ordering and diagnostics commit messages.
+- Honored device-specific ACS redirection, such as Zhaoxin Downstream
+  Ports, in a new first patch with a KUnit case, as local Sashiko
+  pointed out. Relaxed Ordering Completions are redirected at such a
+  port too.
+- Clarified in the documentation that a quirk also redirects Relaxed
+  Ordering Completions and that Translation Blocking applies only to
+  upstream Requests, and labelled the ACS routing debug line with its
+  class, as local Sashiko pointed out.
+- Treated ACS registers that read as all ones as unreadable, and named
+  ports that a quirk redirects instead of suggesting
+  pci=disable_acs_redir= for them, as local Sashiko pointed out.
+- Ignored ACS quirks of endpoints, which only describe traffic between
+  their own functions.
+- Link to v10: https://patch.msgid.link/20261012-fix-p2p-acs-v4-0-v10-0-6ffe7b7a4517@nvidia.com
 
-Test setup:
-  - Intel Xeon E5-2680 v4 @ 2.40GHz, two sockets, 14 cores per socket,
-    two threads per core, 56 logical CPUs.
-  - Approximately 31GiB host memory, all on NUMA node1; node0 has no memory.
-  - GCC (Debian 12.2.0-14) 12.2.0, x86_64, CONFIG_PREEMPT=y.
-  - kvm_intel.pml=Y, kvm.tdp_mmu=Y, kvm.eager_page_split=Y.
-  - CPU governor=performance, THP=madvise, NUMA balancing=1.
+Changes in v10:
+- Fixed the Relaxed Ordering description: a Completion carries the
+  attribute of its Request (PCIe r7.0 sec 2.2.9.1).
+- Used the PCIe terms Requester and Completer for TLPs, ACS and ports;
+  client and provider remain for P2PDMA objects.
+- Rebased on pci/p2pdma, which includes the prerequisite P2PDMA fixes.
+- Added a topology example to the path divergence patch.
+- Removed a repeated sentence from the disable_acs_redir documentation.
+- Explained the path divergence in the documentation.
+- Link to v9: https://patch.msgid.link/20261001-fix-p2p-acs-v4-0-v9-0-1a8e0f50ddd9@nvidia.com
 
-Measured with a modified dirty_log_perf_test that allows selecting
-MANUAL_DIRTY_LOG_PROTECT2 flags independently. The modified test is named
-dirty_log_clear_probe in the commands below.
+Changes in v9:
+- Removed dmabuf patches for now.
+- Removed mlx5 per-mapping ATS declaration for now; it comes back with
+  the dmabuf patches.
+- Link to v8: https://patch.msgid.link/20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com
 
-Representative commands, with the executable path relocated:
+Changes in v8:
+- Added extra Reviewed-by from Logan.
+- Added patches to take care of ATS per-device vs. per-mapping option
+- Link to v7: https://patch.msgid.link/20260920-fix-p2p-acs-v4-0-v7-0-ca0828ab697c@nvidia.com
 
-  CLEAR_MANUAL_CAPS=1 numactl --membind=1 \
-    dirty_log_clear_probe \
-    -v 8 -b 96M -c 3,5,7,9,11,13,15,17,27 -i 50 -w 100 -r 1
+Changes in v7:
+- Removed "Document pdev->p2pdma lifetime rules" patch, it gives nothing
+  after p2pmem fix.
+- Split dmabuf patch.
+- Tushar retested the series, so added his Tested-by.
+- Added Logan's ROB tags and fixed minor documentation issues pointed
+  by him.
+- Link to v6: https://lore.kernel.org/all/20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com/
 
-  CLEAR_MANUAL_CAPS=3 numactl --membind=1 \
-    dirty_log_clear_probe \
-    -v 8 -b 96M -c 3,5,7,9,11,13,15,17,27 -i 50 -w 100 -r 1
+Changes in v6:
+- Changed DMABUF to use callbacks and not directly stored pointer.
+- Link to v5: https://patch.msgid.link/20260910-fix-p2p-acs-v4-0-v5-0-856087f63c0d@nvidia.com
 
--b specifies per-vCPU tracked memory: 8 * 96MiB = 768MiB total. vCPU
-threads are pinned to CPUs 3,5,...,17; the main thread is pinned to CPU27.
-Memory is bound to node1. -w 100 makes all workload accesses writes,
-and -r 1 fixes the random seed. Each vCPU accesses a disjoint range in
-one anonymous-backed memslot, using 4KiB guest pages and sequential
-page-stride accesses. This is not a full-region byte-write bandwidth test.
-Adapt CPU/NUMA IDs on other machines. caps=1 enables MANUAL_PROTECT_ENABLE;
-caps=3 also enables INITIALLY_SET.
+Changes in v5:
+- Rebase on the posted fixes.
+- Dropped tags from changed patches.
+- Remove Egress Control Vector interpretation and coverage.
+- Keep enabled Egress Control conservative as a Request redirect.
+- Use pci_dbg()/dev_dbg() for diagnostics and drop the "debug" prefix.
+- Removed code comments from "Document the pdev->p2pdma lifetime and RCU
+  rules" patch and reduced description to actual lifetime explanation.
+- Added note that Linux assumes that TLPs are in strict-ordering and
+  untranslated.
+- Added code to calculate p2p paths per-TLP type.
+- Converted mlx5 to use that new proposed API.
+- Link to https://patch.msgid.link/20260821-fix-p2p-acs-v4-0-v4-0-94426b96de73@nvidia.com
 
-Run each configuration seven times in fresh processes on each kernel.
-The caps order alternates between repetitions (3,1 then 1,3). The recorded
-runs interleaved these cases with other vCPU counts and region sizes.
+Changes in v4:
+- Reject ACS Violations and unreadable routing state instead of treating
+  them as host-bridge redirects
+- Added Tested-by tags from Tushar Dave
+- Added support to asymmetric ACS routing
+- Limited redirect checks to the two ports at the path divergence
+- Added standalone ACS routing diagnostics for hardware retesting
+- Dropped " PCI: Account for Direct Translated P2P in ACS isolation checks" patch
+- Link to v3: https://patch.msgid.link/20260811-fix-p2p-acs-v3-0-efc488ee7c03@nvidia.com
 
-The guest first populates the region. Each iteration waits for the vCPUs
-to finish dirtying it, gets the dirty bitmap, and then clears it. CLEAR
-timing uses CLOCK_MONOTONIC around memstress_clear_dirty_log() for the
-single workload memslot. It includes helper/ioctl overhead, not only the
-in-kernel SPTE loop. Populate, dirty-log enable, guest dirtying, GET, and
-disable time are excluded. vCPUs wait for the next iteration during CLEAR;
-this does not measure continuous-writer concurrency or guest pause latency.
+Changes in v3:
+- Fixed pci_p2pdma_add_resource() error unwinding
+- Made pdev->p2pdma teardown wait unconditionally for RCU readers
+- Restricted pci_p2pmem_find_many() to pool-backed providers
+- Documented the pdev->p2pdma lifetime and RCU rules
+- Fixed calc_map_type_and_dist() handling of the verbose argument
+- Required the ACS port and target to share a bus before indexing the
+  Egress Control Vector
+- Gave pci_acs_enabled() and pci_acs_path_enabled() a scope, so the ACS
+  Direct Translated P2P rule no longer stops pci_enable_pasid() from
+  enabling PASID
+- Dropped "Report ACS ports when the paths share no upstream bridge":
+  the mapping type cannot change without a shared upstream bridge, so
+  the pci=disable_acs_redir= hint was not actionable there and the ACS
+  walk only cost config space reads
+- Folded the Request Redirect rule into pci_acs_rr_ineffective(), so
+  pci_acs_flags_enabled() and the Intel SPT PCH quirk share one copy
+- Renamed pci_acs_egress_ctrl_set() to pci_acs_egress_ctrl_is_set(), it
+  reads the bit rather than setting it
+- Reworded the blocked-path warning: ACS may also leave the direct route
+  indeterminate rather than blocked
+- Added KUnit coverage for the shared-bus guard, a device with no ACS
+  capability and an unreadable ACS Control register
+- Added the missing Fixes: tags, a second one on the
+  pci_p2pdma_add_resource() unwinding fix (the dangling devres action
+  dates to f58ef9d1d135) and one on the Egress Control isolation change
+- Link to v2: https://patch.msgid.link/20260806-fix-p2p-acs-v2-0-0cec14812965@nvidia.com
 
-Discard iteration 1 from each 50-iteration process. Take the median of the
-remaining 49 CLEAR timings, then the median of the seven process medians.
-Do not use the probe's printed overall average.
+Changes in v2:
+- Added Logan's ROB tags
+- Added commas in Documentation patch
+- Link to v1: https://patch.msgid.link/20260802-fix-p2p-acs-v1-0-a7c5eb64fff6@nvidia.com
 
-Results for 8 vCPUs and a 768MiB tracked region:
+---
+Leon Romanovsky (19):
+      PCI/P2PDMA: Honor device-specific ACS redirection
+      PCI/P2PDMA: Document the TLP attribute assumptions
+      PCI/P2PDMA: Derive routing from directional ACS controls
+      PCI: Reject unreadable ACS controls in isolation checks
+      PCI/P2PDMA: Evaluate ACS controls at the path divergence
+      PCI/P2PDMA: Document directional ACS routing
+      PCI/P2PDMA: Collect the path's ACS controls before deciding
+      PCI/P2PDMA: Answer routing per TLP class
+      PCI/P2PDMA: Route Relaxed Ordering Completions directly
+      PCI/P2PDMA: Reject Translated Requests blocked by Translation Blocking
+      PCI/P2PDMA: Route Translated Requests under Direct Translated P2P
+      PCI/P2PDMA: Log detailed ACS routing diagnostics
+      PCI/P2PDMA: Add KUnit tests for the ACS routing decisions
+      PCI/P2PDMA: Test the ACS P2P routing walk
+      PCI: Add KUnit coverage for ACS isolation checks
+      PCI/P2PDMA: Document TLP-class routing
+      PCI/P2PDMA: Let a client declare that it selects ATS per mapping
+      PCI/P2PDMA: Evaluate the ATS path for clients with ATS enabled
+      PCI/P2PDMA: Test the routing of clients with ATS enabled
 
-  INITIALLY_SET    Before (ms)    After (ms)    Reduction
-  disabled          2.280414      1.128757        50.5%
-  enabled           2.752557      1.607395        41.6%
+ Documentation/admin-guide/kernel-parameters.txt |   11 +-
+ Documentation/driver-api/pci/p2pdma.rst         |  105 ++
+ drivers/pci/Kconfig                             |   15 +
+ drivers/pci/Makefile                            |    1 +
+ drivers/pci/p2pdma.c                            |  942 +++++++++++++++--
+ drivers/pci/pci.c                               |    8 +-
+ drivers/pci/pci.h                               |   57 ++
+ drivers/pci/pci_acs_test.c                      | 1225 +++++++++++++++++++++++
+ drivers/pci/quirks.c                            |    8 +-
+ include/linux/pci-p2pdma.h                      |   12 +-
+ 10 files changed, 2292 insertions(+), 92 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260821-fix-p2p-acs-v4-0-e72455e3a261
 
-Ranges of the seven process medians, in ms (not confidence intervals):
-  disabled: before 2.277870..2.290569; after 1.125377..1.141876
-  enabled:  before 2.750839..2.758421; after 1.601551..1.618283
-
-CPU affinity, NUMA placement, kernel configuration and benchmark parameters
-were held fixed. Timing runs did not enable perf or tracing; separate
-profiles were excluded from these numbers. No new dmesg messages, kernel
-taint, swap, or reclaim scanning were observed in the final measurement
-window.
-
-The original and final kernels were measured on separate boots, without
-alternating between kernels. These results are CLEAR latency measurements,
-not end-to-end migration throughput. Runtime coverage is limited to the
-tested Intel/PML-enabled host; AMD and PML-disabled paths were not tested.
-
-dirty_log_test -i 32 -I 10, nested_dirty_log_test, and 80 selective-clearing
-cases covering same-table/cross-2MiB boundaries, sparse masks, bit63,
-nonzero first_page and slot tails passed on the patched kernel.
-
- arch/x86/kvm/mmu/tdp_mmu.c | 71 +++++++++++++++++++++++++++++++++-------------
- 1 file changed, 51 insertions(+), 20 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 44dad106fad1..e11b41c1890d 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1668,6 +1668,48 @@ void kvm_tdp_mmu_clear_dirty_slot(struct kvm *kvm,
- 				      slot->base_gfn + slot->npages);
- }
- 
-+static void clear_dirty_leaf_pt_masked(const struct tdp_iter *parent,
-+				       gfn_t gfn, unsigned long mask, u64 dbit)
-+{
-+	tdp_ptep_t pt, sptep;
-+	unsigned int first, last;
-+	unsigned long offset;
-+	u64 old_spte;
-+
-+	/* Keep the mask in the original bitmap word coordinates. */
-+	first = max(gfn, parent->gfn) - gfn;
-+	last = min(gfn + BITS_PER_LONG,
-+		   parent->gfn + KVM_PAGES_PER_HPAGE(PG_LEVEL_2M)) - gfn - 1;
-+	mask &= GENMASK(last, first);
-+	if (!mask)
-+		return;
-+
-+	pt = spte_to_child_pt(parent->old_spte, parent->level);
-+	/* Anchor at the first covered bit, including for cross-table masks. */
-+	pt += SPTE_INDEX(((gfn + first) | parent->gfn_bits) << PAGE_SHIFT,
-+			 PG_LEVEL_4K);
-+	while (mask) {
-+		offset = __ffs(mask);
-+		mask &= mask - 1;
-+		sptep = pt + (offset - first);
-+		old_spte = kvm_tdp_mmu_read_spte(sptep);
-+		if (!is_shadow_present_pte(old_spte))
-+			continue;
-+
-+		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
-+				spte_ad_need_write_protect(old_spte));
-+
-+		if (!(old_spte & dbit))
-+			continue;
-+
-+		old_spte = tdp_mmu_clear_spte_bits(sptep, old_spte, dbit,
-+						   PG_LEVEL_4K);
-+		trace_kvm_tdp_mmu_spte_changed(parent->as_id, gfn + offset,
-+					       PG_LEVEL_4K, old_spte,
-+					       old_spte & ~dbit);
-+	}
-+}
-+
- static void clear_dirty_pt_masked(struct kvm *kvm, struct kvm_mmu_page *root,
- 				  gfn_t gfn, unsigned long mask, bool wrprot)
- {
-@@ -1679,30 +1721,19 @@ static void clear_dirty_pt_masked(struct kvm *kvm, struct kvm_mmu_page *root,
- 
- 	rcu_read_lock();
- 
--	tdp_root_for_each_leaf_pte(iter, kvm, root, gfn + __ffs(mask),
--				    gfn + BITS_PER_LONG) {
--		if (!mask)
--			break;
--
--		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
--				spte_ad_need_write_protect(iter.old_spte));
--
--		if (iter.level > PG_LEVEL_4K ||
--		    !(mask & (1UL << (iter.gfn - gfn))))
-+	for_each_tdp_pte_min_level(iter, kvm, root, PG_LEVEL_2M,
-+				   gfn + __ffs(mask), gfn + __fls(mask) + 1) {
-+		if (!is_shadow_present_pte(iter.old_spte))
- 			continue;
- 
--		mask &= ~(1UL << (iter.gfn - gfn));
--
--		if (!(iter.old_spte & dbit))
-+		if (is_last_spte(iter.old_spte, iter.level)) {
-+			KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
-+					spte_ad_need_write_protect(iter.old_spte));
- 			continue;
-+		}
- 
--		iter.old_spte = tdp_mmu_clear_spte_bits(iter.sptep,
--							iter.old_spte, dbit,
--							iter.level);
--
--		trace_kvm_tdp_mmu_spte_changed(iter.as_id, iter.gfn, iter.level,
--					       iter.old_spte,
--					       iter.old_spte & ~dbit);
-+		if (iter.level == PG_LEVEL_2M)
-+			clear_dirty_leaf_pt_masked(&iter, gfn, mask, dbit);
- 	}
- 
- 	rcu_read_unlock();
-
-base-commit: 3857c2fe5449541e24afc5efdb0f81a8a8f9a3a0
--- 
-2.15.0
+Best regards,
+--  
+Leon Romanovsky <leonro@nvidia.com>
 
