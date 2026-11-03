@@ -1,62 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793706472;
-	b=3c+LO1YN2PUnAZ36uzBB511L/JUU35ag2OzKIT8i/E8Po3a7CydUPANH5caJB79tkMxj
-	 XL23s76JRLT3LfY99/+0fMGKFHxjKPAwz+bKcGCq/PAKYUZIef1Ks0Qr2HLX0ZhWFPD2O
-	 ej40xvJlebkK5LD5urT2qjSYL9IRyG6KNO77nZSZKV172P10lOtJ4rr3MES9SfrVu6wm3
-	 DbCrbVowy/WUqdl5G/briP8HOPYDlo2JSsMWlCKXmnF+VgtHvm5GaDL4wPpnDQ6mJF6sJ
-	 kT7PILrNA+fGBZUaKVQUp5J0EmpG/iAMUcnv5WpmSVSCxxbU5NWhkCD9DJOZ26Ad6aA==
+	t=1793710180;
+	b=wMhF73s0vfLvq7xRMwL1WSdCJN2QsDykr0O4np9D/f3Z2PftLJHzPkXhHOuWfzKldkzz
+	 7rmzZbvJ92vFkcQWOVCpTDqTAEHWQHCN5dM6PvvJaiRm2Yk0KCkFBalqhzHDlO16SdKqz
+	 2rxtCUeXCkRKXZfeuaFqiaY5xa1DZNXsoCcDoLSMj/24IaItWot5PjnBRKNGbImylCYfe
+	 YWgwa7zSsaH/dTJmrT2rm4n2UpWZJJo900Jvms1dT/D1Bu07LLT/DSirdfuS2M8Pp0EDr
+	 8Incw/aFUmrdOluhjdPWD141ysPJt+MVg2kBeW+SN9XaZCv6HGkqPq2M0NvLkIdcOCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706472;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Date:From:To:CC:Subject:
-	 In-Reply-To:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=dYjrImbKjvTgduATVWv6BpAbZVCe/ugP8SgqQZOZVmk=;
-	b=y9qZ0+/W1f5T3KYoC+GxbyLq8hBAa6/jAmhaexJzybb6B/LfxUiOO0GXBuuyKgaAw74I
-	 AFBHk/fsBHmABmLoyBEBnrOWnzIwczfMMsvAgLGHKQBaOzdhZlZJeY9gFbMj3RXgDloIP
-	 JFRyYjmiH1h0tpGvIhSqolxIiWI3czsyT93X0x8rQ/loVZmQ9Hnxo7tLdO5c0v+vl54RA
-	 Qts17m1wlxE4yfjNHb9JH0kaPdknez18rCALwhhsa7SNfaXk7NT6e3UhgeohIq01dh9c9
-	 KY378dsgZCQa+8ehLwj3n5jNGYJFMTeHZYqez+/pBupP+i9F0Ephm99c8ghRTFCVwYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793710180;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=a0Lm1vXPbpXrZZMrNcubolRKf55hgxzUId1YVKIzCUk=;
+	b=4p0CVxce9WdlzbMUN1xPIOXGkW54MY0xyynDo0A406X6honl7qPHmnHbJuwrwYb6RCLn
+	 hH+ByCautNucdygjQkHyfN7crvidhM1x9eqCOqkKFPSnJ4Y1CL4i4lUiZpozOW8eH3VLA
+	 aDNHDfF2c+VZjoN6DKEL611iBKWkJY1+jmIYtg5TtMaVJbzJGkpm6MQ14HTohW0a8y40x
+	 tyYZpSr6Mdt2t9sCwZc+M39aLk1bdUmve13jRKOxafl6FPiUX/t7Obc8OJwIxVHcEtald
+	 a3bBC641u/QTLqkp5CYniFUAvv7S2ZUaM05EULb0L3SHMnOkLaKqN61mvIzz6sXA0NQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mainlining.org;
-	spf=pass smtp.mailfrom=mainlining.org;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b="L0/vJzZ4";
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=pZLy0L9d;
-	arc=none smtp.remote-ip=5.75.144.95
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GZ+S4ruF;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8409606D802;
-	Tue,  3 Nov 2026 11:47:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8409606D802
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F0A606A326
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 12:49:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05F0A606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b=L0/vJzZ4;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=pZLy0L9d
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1793706468; bh=dYjrImbKjvTgduATVWv6BpA
-	bZVCe/ugP8SgqQZOZVmk=; b=L0/vJzZ4PDtJUHg/9NqgCyT0SCD06oYuI6ze0WnUX2pIj/7J4F
-	ZbWF/ZVJW1netL6/+CyF7HHGjNbR10UKgZxVd57fwVGpyfBaeUibpZiUUZvUYglKsZAqD7/Ovu7
-	AOyLeaPlb6rm0glrzY/ROrF5LqKP58CRb/BnKyD/IlBtlJARmOmtDDkQVi5tQkRI/In+McyHa/o
-	05zYhdfjwzXRs0IrtfIgfoYAGfA2Gq0mCOxmmwpIeNZTIZzz1GQAgAMgZgMfjGomNWeJ4krK6qr
-	oLVLZC1JK7b6CxJi4fx9S8JUfNGoD8Usn9LPYHaaQNirxNqxU+QnRJh3AMHzNP6IuPA==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1793706468; bh=dYjrImbKjvTgduATVWv6BpA
-	bZVCe/ugP8SgqQZOZVmk=; b=pZLy0L9dPusggIsjur5QpHR6mAHsN/+75f0GGHYOixwM7qv5W1
-	9xBFzkcLjYgY7EZNH0amXuLEKQMJf+DPKrBg==;
-Date: Tue, 03 Nov 2026 11:47:50 +0000
-From: Bradley Morgan <brads@mainlining.org>
-To: elb12345@hotmail.co.uk
-CC: eperezma@redhat.com, jasowangio@gmail.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, mst@redhat.com, netdev@vger.kernel.org,
- peterz@infradead.org, shakeel.butt@linux.dev, stable@vger.kernel.org,
- virtualization@lists.linux.dev, vschneid@redhat.com, ziqianlu@bytedance.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_vhost=3A_Run_TIF=5FNOTIF?=
- =?US-ASCII?Q?Y=5FRESUME_work_in_the_vhost=5Ftask_loop?=
-In-Reply-To: <AS8P251MB0001F1EACBED6E7A2AFA8A96C8692@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-Message-ID: <8DACE49B-4588-4419-BB47-4C35F7600AE2@mainlining.org>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GZ+S4ruF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793710178;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a0Lm1vXPbpXrZZMrNcubolRKf55hgxzUId1YVKIzCUk=;
+	b=GZ+S4ruF0T42UIZGKV/fVgVmlElSPDguXnYfjwOnrFBqjO8Iaqjm3V6B4ogzPJIUJPkfVl
+	6WqSrgJuLO+j1NZQLFF/jJ03A7Lp5h0+y6NYaFHtf5bRbAVC23c7ZynRL28FbVbolLDvhf
+	zsHBLHOmIylc8lo+QDEah30P0YO9SAg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-428-IqaLT1HiMjmdCfHLKqsn8Q-1; Tue,
+ 03 Nov 2026 07:49:35 -0500
+X-MC-Unique: IqaLT1HiMjmdCfHLKqsn8Q-1
+X-Mimecast-MFC-AGG-ID: IqaLT1HiMjmdCfHLKqsn8Q_1793710174
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BEF571955D95;
+	Tue,  3 Nov 2026 12:49:33 +0000 (UTC)
+Received: from pbonzini-thinkpadx1carbon6th.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A66271956087;
+	Tue,  3 Nov 2026 12:49:31 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Harry Yoo <harry@kernel.org>
+Subject: [PATCH 0/2] KVM: remove the dummy allocation case from async page fault handling
+Date: Tue,  3 Nov 2026 13:49:28 +0100
+Message-ID: <20261103124930.2278671-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,83 +77,38 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On 3 November 2026 10:54:40 GMT, Aamir Ahmed <elb12345@hotmail.co.uk>
-wrote:
->Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
->model"), a throttled task is only dequeued when TWA_RESUME task_work
->runs on its way back to user mode.
->
->vhost workers never return to user mode, and vhost_task_fn() only runs
->task_work via get_signal() when a signal is pending. A busy vhost worker
->therefore ignores its cgroup's cpu.max, while its runtime is still
->charged to the group, throttling the group's other tasks (typically the
->VM's vCPUs) harder.
->
->This also fixes memory.high and block cgroup throttling for vhost
->workers, which are handled in resume_user_mode_work() as well.
->
->Run pending notify-resume work at the top of the worker loop, as io-wq
->does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
->generic xfer to guest work function") fixed the same problem for KVM.
->
->Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
->Cc: stable@vger.kernel.org # 6.18+
->Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
->Tested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Asynchronous page fault handling is supposedly able to detect page
+ready notifications that are sent before the waiter is registered,
+but this code is broken for PREEMPT_RT because it tries to allocate in
+hardirq-disabled context.
 
-Reviewed-by: Bradley Morgan <brads@mainlining.org>
+This code however is almost dead, because page ready notification will
+happen on the same vCPU as the waiter and not until after the waiter
+enables interrupts.  Outside guest mode, interrupts are only enabled once
+the waiter has registered itself, and this guarantees that an outstanding
+(non-spurious) waiter will always be found.  This unfortunately is not
+the case for asynchronous page faults that are delivered while in guest
+mode, but that can be fixed and the dubious code removed.
 
->Assisted-by: LLM
->Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
->---
->v2:
->- Also describe the memory.high and block cgroup throttling fixes
->  (Shakeel)
->- Add Shakeel's Reviewed-by and Tested-by
->- Update the code comment to match
->- v1: https://lore.kernel.org/AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
->
->Tested on x86_64 with a vhost_task-based reproducer: in a 0.2-CPU cgroup
->a busy worker drops from 100% to 19% of a CPU. Reproducer available on
->request.
->
-> kernel/vhost_task.c | 9 +++++++++
-> 1 file changed, 9 insertions(+)
->
->diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
->index 3717885a599..f63ac005214 100644
->--- a/kernel/vhost_task.c
->+++ b/kernel/vhost_task.c
->@@ -6,6 +6,7 @@
-> #include <linux/completion.h>
-> #include <linux/sched/task.h>
-> #include <linux/sched/vhost_task.h>
->+#include <linux/resume_user_mode.h>
-> #include <linux/sched/signal.h>
-> 
-> enum vhost_task_flags {
->@@ -31,6 +32,14 @@ static int vhost_task_fn(void *data)
-> 	for (;;) {
-> 		bool did_work;
-> 
->+		/*
->+		 * We never return to user mode, so TWA_RESUME task_work and
->+		 * memory.high/blkcg throttling would otherwise never run. Run
->+		 * them here, where no locks are held, like io-wq workers do.
->+		 */
->+		if (test_thread_flag(TIF_NOTIFY_RESUME))
->+			resume_user_mode_work(NULL);
->+
-> 		if (signal_pending(current)) {
-> 			struct ksignal ksig;
-> 
->
->base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
->
+Paolo
 
+Paolo Bonzini (2):
+  KVM: register asynchronous page fault waits with interrupts disabled
+  x86: KVM: remove the dummy allocation case from async page fault
+    handling
 
---- Thanks!
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/include/asm/kvm_para.h | 20 ++++++-
+ arch/x86/kernel/kvm.c           | 97 +++++++++------------------------
+ arch/x86/kvm/mmu.h              | 14 +++++
+ arch/x86/kvm/mmu/mmu.c          |  4 +-
+ arch/x86/kvm/svm/svm.c          |  3 +-
+ arch/x86/kvm/vmx/main.c         |  2 +-
+ 7 files changed, 65 insertions(+), 76 deletions(-)
+
+-- 
+2.56.0
+
