@@ -1,124 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793745359;
-	b=zvvcWEegB82sknLmVgm2j56w0Q/sZSAMCHi1sbtJPapB4aCfesfaciHhpUT6lgORHDG+
-	 HgTDy8CMMmVo855NTeeKLzKlyIQM789NYsBJRP0Wlhhd6X7uxUVBERLUmWPQfJTjZPanI
-	 Q+q5LzDgUUmtnlP8tSSGxK3mQoCgbMp3GU/KXblJHTsUgnblvAZN7jM71cInbOOUOew6L
-	 PgTmXU6Z6H3H7g10r+39SbKGl3N87A70+SoauUyKx0yXLyFU6+ZtUKKCI1twYsQ0GoiY0
-	 dQnmClPaJxqtBl8qxfOXXJb/pC4SeB+hJfBFigruuxktswp2BHA/QjFJWrBSb0P0vLA==
+	t=1793745923;
+	b=2icyiVr1n9iDf2jquLZX3uMYqI4mwzaXzkBjUGjCi1cl5Gb5V6UdxCG0DBCH+6d0lIcc
+	 KYy3bSLqvEpwNk9sJqIBRiK/hZFa+ZImOlnGCVAp44VWkZnvgy37cp+A9FeM8U8qc1FvB
+	 FZW5sHccMYHqrf7RgO/yKAgEypvh5zeA5VSz1hsJU7myN/k1OnowOHRF24cCYKr+/9eX4
+	 caXAfayvhuQYFOIKb9T4WfUofBZQLM5i3HaylW/grPw9MaL3mg0a8AZ1aCJnAlCUdxTkY
+	 IgoqESHHtGE/YrEl+QdqtFEXMCYdo/L1SgZm8LvKlsTWVF50X344XXzWtO50RpaqWWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793745359;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=TPqHx/cU/fq4H9wkiHqa3VQQRQQa86H0rWb12bSD8zU=;
-	b=il8nnoHTWBKQuU9k8UAqtYdANX5hedbxJ4FXmOFZC/g44+BXBfBxTJphdivpyr0848HZ
-	 1uhsuM4VdY0t3sE8uTPQcnMNQRGHhJXYgu2tNJXOacUb4iuCg/cdV5M1AbCmyTDS5/DXz
-	 PeV69wZGdrYjdZj61iK+/Kd7zUvxp9A3nAxnrszOKeg1ZO5wfFufRovsR8JFDYRBWYIcf
-	 68yoXs02vw666JA0o7eMeWUKpqUSVYfs7SaiUjEotW/u5ZKLaccSS7hMa7os26bMqA70U
-	 XE9ePtrxryy2wSxOy2YbuhpvtiMH831MbqTVsp8LQrBdNnYZItoo+i4eF1qyEcA7rBA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793745923;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=/GO2ExICahF7BId12law/TW5FYBAReP12IVhUOS5pJg=;
+	b=p0WL8EHkc2r63tVsaAL+C1GDpVkGkCSakDYA9uLRw0KjSQYX8/CQjFEw44EZ+M8lks7S
+	 ViANDAkyxUY30A+qYJ9u1HBIFBYuZHk5C5FQK/01ZeQaKSIyg5Qi+qylGcES5KWKYRu0n
+	 RyO9V7394+mUyR6Pu7r/omyS8w19cPYrPTUC6L4uymZgnPI3BAw7nOYK29lrpcrIosMXC
+	 rHXPjXgweggbzr/lTlGvf9Xsnr0C26fAoS++bqK4huFbT3YL+U1qDXymlDrEKfI4i/cKU
+	 P8ITKhmYr0+TJ3TxVfK4lo9d39z5I979FhPScBDGSpubnZrGdjHMSUZkatQwiLJqiFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=IGTPazC6;
-	dkim=temperror header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=KlANgHAH;
-	arc=none smtp.remote-ip=103.168.172.147
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EaHGzLNS;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A31606A31B
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 22:35:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46A31606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C51606A329;
+	Tue,  3 Nov 2026 22:45:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16C51606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=IGTPazC6;
-	dkim=temperror header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=KlANgHAH
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 46AEAEC07D5
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 17:35:57 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 03 Nov 2026 17:35:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793745357;
-	 x=1793831757; bh=TPqHx/cU/fq4H9wkiHqa3VQQRQQa86H0rWb12bSD8zU=; b=
-	IGTPazC6xy0M58vzjx+JMD+W/XqY0vU7KCETdJmNajTLiiLiNtdicG6viC1P3Q5X
-	+7holxI4BILs6EvMqaxHPtYwnnCLc9MK5KChqNGQjKcAmRTHkfIe2kNVqZHZSf3Z
-	IaOD2wskcYeXenEccKXYTRbJPk0E4zhYqMjiYt00NIfT+NTmQyjC2rMlZohGRQic
-	4qEWsrVlu584kqWSAMwiC8HcUhHZVHhyioxgT3dttyXw/XE7C56h6KL4avz7AmDS
-	ZQExdPLtI9zpBODYfRN2Y2s/1UbUzNAPPC1+zJJnipcKOkjUx9yvpdaZFwZmwR1i
-	aobMI4Zez2s6930XuBb3KQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793745357; x=
-	1793831757; bh=TPqHx/cU/fq4H9wkiHqa3VQQRQQa86H0rWb12bSD8zU=; b=K
-	lANgHAHVasq8yLCrxnHyltI/29AjvR8kMipRGuUdMycKDNdYRetGjZpx0nXu4U5Y
-	3ZxMEGSjla0dSYF82ae8UuH30X9RNRLwkhNafPnyFZHeNzjiVuGQYY7aWN+INY39
-	QO1vibN/JPQOAE1l/j3V3qIsZ9FsEQnyucEG2mTGX7DwuJrGKcgq78sp6I+BJh0h
-	hfYDElzmPYrCpsbAz4s0skinura8ynB0BHfGX4UYFRwE+NFeesfJCZATuu0xbfTJ
-	7NJh2NjmDMC74VOZXl/G4wW5OIDNSo2BZqhVJY+ToWQ5IqDFjKRmFUIhNzQfhPL5
-	yMPetsULrHbhpCer25Ftg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793745357; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:y9unOaq9s7bHIPGmJ7qIfeH1Fcf3pCf7kS0gAZs23eKt/7Q
-	oeTVuMvYgWzezM6mhZuScElabvENPrliE5VVlg0sa427PGueJoxwTLdj/u2p8Y2E
-	3F/3JhZ3sbCeGCd2a7UTCG8XnoCdcANhlhhPiQBZFDQHpkm01pYIWv4GR92gS9Pq
-	hzgtIKXOXv67xfrIF489dLwqe9bUwjlvOcEJ+/nDABmqveTVGj4p/zqn3FzmQTL9
-	xA6wTm0YvSy9zThgDOHfFwOMeHwM9bKYjF4iEULOTsYZhlhJdniew0J7055Wq/3M
-	4YpB9QWS99mbmeZ8IjPas3CmvYJrVis17ItEEzg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:eAT+53BcZGsO6bsWh4DIkgOl3GszBJNp7CsO8VE5dxg=:tSVY1u0kwJzKuDCzne2np0L26kae7IHeO6zV5GRD6XA=;
-X-ME-Sender: <xms:zGHqaqDAaaGox9leGsWQqkVY5CqLLqXGbGUZjKlyBhIp1_zSRGEMpg>
-    <xme:zGHqahGrYohptLzOBz3vmqtzmT-Owvk-YX08LtJaV3ELzoxhTUCT1HnqZp00B_BmR
-    ko1sE4u8EIJMVZEisAbBRdvx973R6q6bG-7EIZduXkgwMHU4X4-gBA>
-X-ME-Received: <xmr:zGHqaiBVBp37714ASGQLG1FqYyshCRMxtmiauSxcdgvDLTiWmW4IWJYFPEIp8g>
-X-ME-Proxy-Cause: dmFkZTEWuavI98npZyJd5hGbCm3gmnPP2dElHheiEi3bgLGrOZg9pyjbzXfSDwZjjgcO4w
-    U3vFMoXwy1uUO2fihKGEUsRiLxnsse9WZHGg5Ezm0QidUnsW68dPy3vOA7lcuAKOAXK3Gi
-    zYvmcJtdErAyHG0SbkJzF7oprUSLqBkjjYYNZbwEe5oUXNKzvqXd67PkdiUUsSn+asqfgv
-    huLk0RTugANZcEqyEZHyeIW6wpZ3XVwcYI6l7/j3p9OrzNxyp3ZNbPnQ+vtDfRw6uvQY4r
-    Zkzdl/n4jLMNVLYd3TpwZn+UqToQLCk89WYhttwK7/UYPkcF4UVJQbuRhbPoNhLlrMycHi
-    kfjyverQ830dJfhtW/lTTx65qMmGI/f1W+uN4DECy4YqJpGS7t2KGc1FyK6cnuxzlIxD+F
-    fwd3526Wt8M7CeBPbIH76gwSHu1t+WjBmI1jYrY7CoS1PRuTkEFUrQKfoQfIF0Wy0AEaII
-    OkFMSe79oQjRLYtAGZ2vax4wvs52P2lg+HK/k2M9WSWE8ePdE7opF+jkvRfmbbZ6zJim3K
-    hNJXgjIAIRzL/67cnB9r7dHOlirwvZpPnd9uZZQ7GRmK2QVWr6D0DbEnBsa/S9H+LbHIWY
-    ti8+hz6zknslcqy1Qn3Z4PYZ7JPzKSCYpMsBI0ZlCjCBgCDxFPmCpk3CgbLw
-X-ME-Proxy: <xmx:zGHqavn_IfY0Zep3N-ll48-WlE6NBwbByPLRAwZIDZbxe7tzACxd5w>
-    <xmx:zGHqagOLHZxgk5HXKRDjFaOBCsupC6urbyxkuLYiP8O3nJYkKFeUoQ>
-    <xmx:zGHqas9ZP53Cha5AF72aQqgKdSs_52vxcO2nhtxC1r2rSUTouxr5fg>
-    <xmx:zGHqaiGgPb9Sh6HOomnip8DkUR4hG9JuW0q7o6dQyqxfXUSaBchLlg>
-    <xmx:zWHqaswAAp8m_hflg8Bcdgn3Dm7RJ2AIq2JiWd8oxOA6hNmBeqtIJ_J7>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Nov 2026 17:35:56 -0500 (EST)
-Date: Tue, 3 Nov 2026 15:35:53 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org, Abhishek Sahu
- <abhsahu@nvidia.com>, Raghavendra Rao Ananta <rananta@google.com>, Shuah
- Khan <shuah@kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH 5/5] vfio: selftests: Add test for device power state
- transitions
-Message-ID: <20261103153553.6caa7d7d@shazbot.org>
-In-Reply-To: <20261029203324.1637772-6-dmatlack@google.com>
-References: <20261029203324.1637772-1-dmatlack@google.com>
-	<20261029203324.1637772-6-dmatlack@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EaHGzLNS
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A3Licp91361207;
+	Tue, 3 Nov 2026 22:45:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=/GO2Ex
+	ICahF7BId12law/TW5FYBAReP12IVhUOS5pJg=; b=EaHGzLNS48ceBLvv5Sq3Tf
+	c/Tiv3nb2e8bcMsJ9d5V3fKmjnMY5GuthfZkkOfyamr8OgnY/T/aolqqqVH9yBTR
+	IgKX2HrM6ik9Va+Tcd02xpsPOZGVxQMqLBDooKNwBjY6PGSiOvgsdYF0THB1w9Kd
+	JYyie8CJuG77C0suLCtIlCYpZEv81HIIIzkLWdA4lwfNAL4+ixvFPyP4BA5Md/Gw
+	h+QUplE6PdYCSWdIHoJFK/Ec6WbE8JcedVnZsoPb8CDA1l4LV80T/MqPtNkLgZmK
+	mzLX38tsLnOgKaGkIDrRYx6otvgJReRfgjtimG/skauVAOmN4LOBRZmbAcD2PWTg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn80srs5v-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 03 Nov 2026 22:45:20 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A3LMdKq3061459;
+	Tue, 3 Nov 2026 22:45:19 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hqcrcbd9f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Nov 2026 22:45:19 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A3MjHaE18874960
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Nov 2026 22:45:18 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D425A58054;
+	Tue,  3 Nov 2026 22:45:17 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 465145805D;
+	Tue,  3 Nov 2026 22:45:16 +0000 (GMT)
+Received: from [9.61.96.67] (unknown [9.61.96.67])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Nov 2026 22:45:16 +0000 (GMT)
+Message-ID: <bfac1711-65a2-40ec-8506-790661351530@linux.ibm.com>
+Date: Tue, 3 Nov 2026 17:45:15 -0500
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -128,33 +86,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 5/5] vfio-pci/zdev: Add VFIO FMB device features
+To: Niklas Schnelle <schnelle@linux.ibm.com>,
+        Omar Elghoul <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, alifm@linux.ibm.com,
+        farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, frankja@linux.ibm.com, imbrenda@linux.ibm.com
+References: <20261103150114.68873-1-oelghoul@linux.ibm.com>
+ <20261103150114.68873-6-oelghoul@linux.ibm.com>
+ <15fbeb951c380ba6a200651d6ff69b783c96a375.camel@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <15fbeb951c380ba6a200651d6ff69b783c96a375.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: eQOide1Nl49tr_hewoghzcQktMMQdVdC
+X-Proofpoint-ORIG-GUID: eQOide1Nl49tr_hewoghzcQktMMQdVdC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDA5MCBTYWx0ZWRfXxIIcUsO4Xe64
+ WpHb9oAyqT0tf7Q6FoZoQyu4h/Bb520VTlbU92RM8pCj1qA5Zgqy8wlWRc80tfZ+XFWBwjoc4jD
+ zVEY22wqpijjlBdrqukYAl7eMpxo28FX4BpPRunTb8/AKUyciaNNewGy7iBNkrnBXGqMQhbFr7E
+ Btt/vUmrU/CjcyPEwCR8XmwDdoaXqXCOMUUsi+HOBmP7tVM11Gg4oJzUXhoxhtIehXzabLlQ/uJ
+ JNu/0SPuR+1R1fcWI8vWspJgd4oU9uu9R9rBvf/4jSycJVWwbrNgb4CQ2IpSYrOwaUbaWStvHzY
+ JGJH/sUCLJd9jejv4nGRpotfWFHVkAfAWiL83Tg8IaY1SDOOSydF6wrroBlq/j92aSLlcIeORer
+ EKknDLg9MH5L55jemp5goRH5bHdFdcG6O2GmiDDsr0+YUTf622cgPFXef61g0cXzRcljbCJcgyY
+ ESYAqpEfnywdiZJOBcA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDA5MCBTYWx0ZWRfX7TuInsBj410L
+ lnVrZ6IT5Go31JGZ7A3cIHe4U02TnaFJDx/fhcWTTe/CFPVxptRNuBfBPOJM4elmefwQBN3AwDe
+ WVEiEf8gCd7RjfXbA68W8GI/HktQOo4=
+X-Authority-Analysis: v=2.4 cv=FIqOVOos c=1 sm=1 tr=0 ts=6aea6400 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=r1p2_3pzAAAA:8 a=F7dn7BFMEDAEK2aV7o8A:9 a=QEXdDO2ut3YA:10
+ a=r_pkcD-q9-ctt7trBg_g:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-03_05,2026-11-03_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611030090
 
-On Thu, 29 Oct 2026 20:33:24 +0000
-David Matlack <dmatlack@google.com> wrote:
-> +/*
-> + * Put the device into D3hot via config space and then close it. VFIO must
-> + * return the device to D0 when it is closed.
-> + */
-
-But we're only testing that it's re-opened into D0, there are multiple
-ways that could have happened.  It's pretty common that a guest
-shutdown might put devices into a low power state and it's brought back
-to D0 on close, on reset, on the next open, or even on the reset in
-open.  So I don't think we're testing what we claim to test here.  I'm
-not sure this specific D0 transition is observable, even if we were to
-resort to pci-sysfs.  Thanks,
-
-Alex
-
-> +TEST_F(vfio_pci_power_state_test, close_in_d3hot)
-> +{
-> +	power_state_set(self->device, self->pm_cap, D3HOT);
-> +	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-> +
-> +	vfio_pci_device_cleanup(self->device);
-> +
-> +	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-> +	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
-> +}
+On 11/3/26 4:08 PM, Niklas Schnelle wrote:
+> On Tue, 2026-11-03 at 10:01 -0500, Omar Elghoul wrote:
+>> Introduce new VFIO features for zPCI devices to provide FMB passthrough to
+>> userspace.
+>>
+>> Allow the user to enable or disable the FMB using the SET-only feature
+>> VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE. Likewise allow the user to read the
+>> latest FMB using the GET-only feature VFIO_DEVICE_FEATURE_ZPCI_FMB_READ
+>> in the case when the FMB is enabled.
+>>
+>> Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
+>> Acked-by: Alex Williamson <alex@shazbot.org>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
