@@ -1,76 +1,125 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.145
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793664635;
-	b=benKFQ3bgMTjooYLXTXKjNF7d44a7c8sj3bvMtvn2MlXIbU3wOiL8DX+NENaEkhPHJmw
-	 Ng/UEpKW+6NgpZWHXInjJXm4C28PJoAlDlNBAYOQG61atm5+Fnkb4Wcy6KmCn0/3EWiu0
-	 KMo6aCNxHuLoSMwVDt+C9SrGHY6BHY36I+KN4MG3TVs9g2SRcYZkH9CFMO/iu8CCzT1Wo
-	 0W/sPvJ99vyHIZvvbLI28ppuDwwkEm/w9zPhesZoEHLLZB5L+JLCKsJb9GfeVVjz6+mgX
-	 ZGahllEGqiex7asdjdkRpY5+QLA1anM1cZHY8HhzGJMdsDqGjkdwLc/zVRRiAKk0G7Q==
+	t=1793664715;
+	b=TcJsgyY6d/lplnTjzOXOd5c4IyPMmTLI1A6s8Ef8MUaoZGrJY37m27oUv664f+py8QbB
+	 GukHHpZVWAk2nM7O0uTNKwwyMVUC4KmgEmIYWLbVXxd1mABo5xZ2ussqBRy12C7gpTqZF
+	 o5KI5mPSiVhltQjzAT66m5Za3H9SqJU+i0RT+xuWJ8MUf6k2zk6g82pt4rT/u5Lxsq9F/
+	 pZwGi1p5eT92kAG3PizCTSXqQ6b05sHrCGbTU+LZF0PiR6RI8NVo9WJ/L1rloRy+79iZz
+	 p2AnF2JbKL1/JWKb8eQdCO9LugPWtqHFjNxz6hw4BrmDTfQZ0yKlXgU/PCl6GRz7twQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793664635;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=J6L8mY31MNtz95VGUAtfNyYMcOeErTGfjG4txWKjWTE=;
-	b=4gJ9+5wwgyblCoypR73yMAwuaQQvWCFKg39XKhU1UgGtpRxKs29byVDo+6HIjUgHmfZD
-	 T5NyuW3b9dJJaCNnWX+VtXWS+9uOtP2amCkwWRBP4jRwY0+kdFfbBBRRAtCEuDoSHN7fn
-	 J2EKsBkjj0nnwQ8OxM1tHyCDlOWB7cCso8nZqBq1Cq/Jbbm70KH9ef9brOSlak5dSvpTc
-	 MQD0OBvyhTyFffJ8PqT/qntcOv+9DBg2MLiU9q84D37oq62j+9YBY+xv3HJ2vGVVxfyvR
-	 51zpY5j8Nm0HfATnJ++2ZSlNXM3Kb5+EbAOpigDad+JRU0VhmJGvifk18z+SyWdVO2g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793664715;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=nAYlfopKplFpCvjeBoKRW2i4VXzCq65tChw/Zjl0dY4=;
+	b=Mz/lgIn57n8elQux9opQyb2Ut+rSePzxp/68L4VrcJd8k7LrQonwlNfx89E1yb/MAOuy
+	 MgsRzlNVUMJyqrJZr4BaVDHSc/olJ1awR2v82ClMbafn8+Y9XQUC0a+0/XpYIF4VXUZhe
+	 /RFSKEVOTldPZKQy5JajjR70GyLycELX96cme0mU48/5A0y2tIn4qJWI74dyWsnzVqlZe
+	 P3bkLjZ8mq5NDZKZcP96865+kEsSz/A8F9o2Lv4KXN5lXF5eZ5LF/AkqoFjdQThKwjzk1
+	 JrG0qBQJBVSPXsl6LATVKgTOuHbTR5sMjpIlTJVeg/vbP2kNPQQNeWKOuSUMyTfuXBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ehVpHByY;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=EWqjTzRU;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=CGBEru57;
+	arc=none smtp.remote-ip=202.12.124.145
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199C5606A326
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 00:10:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 199C5606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77163606D80C
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 00:11:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77163606D80C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ehVpHByY
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89e96c03cd0so2940236b3a.1
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 16:10:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793664634; x=1794269434; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=J6L8mY31MNtz95VGUAtfNyYMcOeErTGfjG4txWKjWTE=;
-        b=ehVpHByYYF2DK9rR/bSPBeu58DBwDQ4nrUyGNi9vI0lfJ7BQa41cOtPIazX8pL4Q7x
-         U4kKinUUgvsFQDFBkmqv9T14DpG3DG5iPDfjEQX4geYGzX0SNEyA/ZMvnKAltqaRKvbM
-         AbAtm3VMq+LfszI+ln2vBRayeWn7xX/cT/ioXUaEvIXpHBD2zOMDcjRtV+4/pAdvLZs7
-         HDR1BPNFlvYgnoDcTnkNm+K40M2ojo+mJGYX9/Ei5p82ARUgcYcY0EmjtiEkwXdEL9xX
-         NlaqjSQ7VlXc9mbhexOQC5Ji0NE/Y37yvdPT1z10f9EI4xII66hJL1hsRS1mUaRWPQLD
-         YNTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793664634; x=1794269434;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J6L8mY31MNtz95VGUAtfNyYMcOeErTGfjG4txWKjWTE=;
-        b=FOMtKt2Ismjbdt8t5BF9mMVGUpSerhVR5MQh+f97g0uTkNdE/7BcSAfmxj1kfALtHI
-         SO5g+3cRS9qOzALACpot3is6HXda6SKfyDd5x9oidAESRWziI83SXXbOKa/qC/4GvobF
-         A13fi6FcDvT0lX+KvT/7/QjhYn9UUcLsyp9HxyqjRUvBSewXctpa+rbIpn5vD3v6fceh
-         GyXPVaP45ztVGl1I8Ac4wBJBkYeJbma8QrOiAbkavSbt84BIY5B4o/D/+jZlMStqHwKk
-         Nz7BQDFZ6BwGec5VVWekV2ELg2MTdMehbs1hx+pi/sl+0wJrvjLWpAME7VFhkI6SK4J4
-         OWuw==
-X-Forwarded-Encrypted: i=1; AKwUvBxMSZ/nwz13mpYsrfSsQhF3J/VCBmcRTYUjHtnTThityPwNJoevBAOl2eIfTY4Lg2j/VNw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z98P9qA7qIn4mvI4DfqWCse6Z3JHw/huWCiiq67P6tN2eg9DvKk
-	V0NV1qZgkrZHOxKwlGrRUmqT7ocX/lUAcG86KhFMigbjm5I4LQ9+BN6wNujGju8p1lxWi37RC8/
-	fO842wQ==
-X-Received: from pfhx5.prod.google.com ([2002:a05:6a00:1885:b0:8a0:9321:5329])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ab05:b0:886:9078:546
- with SMTP id d2e1a72fcca58-8a9be96509amr9968061b3a.26.1793664634176; Mon, 02
- Nov 2026 16:10:34 -0800 (PST)
-Date: Mon, 2 Nov 2026 16:10:33 -0800
-In-Reply-To: <CALMp9eT7cnBf6kSXZLWuMyG9a52QveWjzzLz3Z9E=kPuX_ahVg@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=EWqjTzRU;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=CGBEru57
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 9A7081D000D9
+	for <kvm@vger.kernel.org>; Mon,  2 Nov 2026 19:11:52 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 02 Nov 2026 19:11:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793664712;
+	 x=1793751112; bh=nAYlfopKplFpCvjeBoKRW2i4VXzCq65tChw/Zjl0dY4=; b=
+	EWqjTzRUMCSlXkFm/qHNJt2WYDzbJtU+3zVCFQOJEbKYfeIQs/euI7/NsHeUTUuc
+	MLk6Tbssr5r8EHudUe0Oi7iVGCdvRiqOMz/hk5ZOGljqjicxdURb9sjKjKKSJ2hB
+	yp+Y/uAHoFeCibQF03TzpejhJQS1kw6nXCw7bRuTBCARCTmsAW/pbBUpoG7QycmG
+	AYdCZBknmI65WPu9q46Id84i2biz+14bH/grLQHDTub3hKAq7jBD53pDgJbOqSE1
+	DX0QiJnSOei/q+94BMCqEYoKMyZYN7zrvlZUQscp3aLXXaBbKWFpX+jASsya61Gn
+	O/HpIBRltIHT5z9cCj3qmQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793664712; x=
+	1793751112; bh=nAYlfopKplFpCvjeBoKRW2i4VXzCq65tChw/Zjl0dY4=; b=C
+	GBEru57NEjJ6zEnaA/s3EIUI3aPlGmG/pAEregPm5wc6mHMbRLmtkamFH6seghnm
+	LeFCzR7G3tGYE0xExNw4tR/20RaElOLwwuFEAhXIS4NKWEdMu42t3QZLHFv+lc/c
+	W4WfQ60scjhI2RQPr/SKdf0Tl8/+7BAzyodhFduaXvgitbvbrsW7cIA5Irci4hvc
+	AR1m7IbtdHkoWYHPirkYttAa+hlRExfHWY0Vug2yxfAWzLwKId2t877gj3DgIY6t
+	UiS5llybi467MaKcYcZcms3gxwnc5XMEEfWzcGbKtf+3uZrmSdS7ecIjnuCRGKma
+	898CGzOwBhkw4fkFzneXg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793664712; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:nAlctaKp9/p1041UDli+s8cfl94Ex0IVP0AYdJ9BaMBOc8v
+	NvNN/dy9dN9tioVuDYCFCVIsH0Cib5Gm8l8gC1ryVnqgmgG1QaTE6CkI53xNJKAm
+	BH393XFewyJnjYxy8c0BFQghx7P1CLi5KLdVvp3o2yA0KxO6a3eSNJl4zV3Y4Ge1
+	jbvrk+8/HeEkVhrI5HwuzJEALYwZdZBIkVVW12KSuIG7G+Ztbn4bUy1L3xDTQ10x
+	ZIhql6JEgDDov2XtA5Bm6ApG7L6dEQ6mkdr+zfgNLl1gVPPgU+cE5LYlxem8Q363
+	s0NNiJCVtpyBtohX/FHyda3kiUugYwXYLU2reRg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:ib1t8J7HIPjzcbaZLgDmo/S57AG8FFWKbLaEUAQkbF4=:zK6xMzgqMIjtNl7Qhz3cYyMrvTIOUJ7JryNKniSNlhU=;
+X-ME-Sender: <xms:xybpatN3nQAp7QPYzH0wgeoEnvFG2dnvFnf9HKbwANOiSYKDfjDl2w>
+    <xme:xybpar1pHCT9adN5rW0WHIV6zZXCYYmEGQgcPJxM0lIUlJaz7VeYPKVp8kITLcYoQ
+    Bd1bbk2YCI4BaVaT2P3egpW19O3yx9ZhWwaO-pvL8yAYEARYxkXI_th>
+X-ME-Received: <xmr:xybpapTuHxewKOQrbVrg0fLzvBDRF8xKrFVz9ld8VaMaeNh9CvYVSbj9EwChBA>
+X-ME-Proxy-Cause: dmFkZTF8SRv5LTr0bKOnRmaCpL3IXr8QyK44csVcumPgbXUJKzwO6qj90HElaIqZj6Sbw5
+    BlqP7qlQ31TVW0XeIQsoS0kLaluG5E5gQIy/LqC8pfIUyeBKs4IDzqt4lXJXV0OMnxa0Bu
+    KGqrGWZnL5TlXEQj5TDi6EZBrQjNdWJAMnoCqtig8KTzwoumcmz0WDKnoUzjRAn6KaggE1
+    oGrVPEExI31142Sx+/mPwdixYE342dJEur+yURNKSGHWQ1w/XJpGUWnysJHcQXcAgzcRix
+    e2yRmWUdGFWsMGhFnQq6XW3MjKgFt3+162/wvdiQgzHrtyJ0ldBAxkPGCmCyvetm5PpykQ
+    +cenZSYyi2nbRwKNbqTxJ5Rfz3PEf8p1RH5EsIuCWyDVpkeFyNsC9ZFCKjTpNfZKbYiLqA
+    mv7pPrOnhSmFvoxpt/U1bZB8YccViG+jeTxlZaVfQ2atsmb3rGj1hLu51Yxyz1xho4I0SK
+    /PdUOCGZ11MdUcKzT1I14pSzUvp5QOWD/r72hR6wvdw/szYAjYH2j8OhtTuy23kWsnWhg9
+    JscAAv2E9BEDLM48MCyKMdYbMjowUtly4kyr6SaLwTT3/1xe+ap+3quwrtM9GciNoo96Nq
+    JptV8LIGhDq8tQpvXb9T97GOk4q5Uxb/WcYBSe2u7u2Qb+2FUzFUbJJMKZgw
+X-ME-Proxy: <xmx:xybpaun3ko6mTuDTVd0HLAfSi1pvedrzl8M8aHOzCUc0iTDd7kQj3Q>
+    <xmx:xybpaqMdbCD11pLmhLVP44f6nIEwNGgTou8QLnToBNnd_xSW0LgKxA>
+    <xmx:xybpaqhNm8-8kYvqmRjMvPuU5Yeauhsv_OXJ5nqd01vEay7mJq3YQQ>
+    <xmx:xybpagiXT3q4xre88zdBaYsV-aoafPS3PgDha1ROqV8l0fVhcjz5xg>
+    <xmx:yCbpalAX22tVfHT8wEautQEQ2wx8RRpBaOUxKdlkd6-ftoMHrdxFNfwn>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Nov 2026 19:11:50 -0500 (EST)
+Date: Mon, 2 Nov 2026 17:11:49 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, David Matlack <dmatlack@google.com>, Shuah
+ Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, alex@shazbot.org
+Subject: Re: [PATCH v2 2/2] vfio: selftests: Test BAR write faults after
+ clear_refs
+Message-ID: <20261102171149.5d4ed369@shazbot.org>
+In-Reply-To: <20261101062049.998160-3-almasrymina@google.com>
+References: <20261101062049.998160-1-almasrymina@google.com>
+	<20261101062049.998160-3-almasrymina@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,109 +128,174 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261102231428.13523-1-pbonzini@redhat.com> <20261102231428.13523-5-pbonzini@redhat.com>
- <CALMp9eT7cnBf6kSXZLWuMyG9a52QveWjzzLz3Z9E=kPuX_ahVg@mail.gmail.com>
-Message-ID: <aukmeb9mV8b504T6@google.com>
-Subject: Re: [PATCH 4/7] KVM: nVMX: Process each host MSR entry at most once
- when unwinding failed VM-Entry
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 02, 2026, Jim Mattson wrote:
-> On Mon, Nov 2, 2026 at 3:19=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
-> wrote:
-> >
-> > From: Sean Christopherson <seanjc@google.com>
-> >
-> > Add a missing "break" in the inner for-loop of the open coded mess that
-> > unwinds MSRs back to the pre-VM-Enter state when VMLAUNCH/VMRESUME VM-F=
-ails
-> > due to a consistency check that is caught by hardware but missed by KVM=
-.
->=20
-> That sentence does not accurately describe what the code does.
+On Sun,  1 Nov 2026 06:20:49 +0000
+Mina Almasry <almasrymina@google.com> wrote:
 
-"attempts to unwind MSRs back to the pre-VM-Enter state"
+> Add a regression test in vfio_pci_device_test to verify that huge_fault
+> on writable MAP_SHARED VFIO PCI BAR mappings handles write faults after
+> soft-dirty tracking clears VM_SOFTDIRTY and downgrades vma->vm_page_prot
+> to read-only via /proc/self/clear_refs ("4").
+> 
+> Specifically, for each mappable read/write BAR (already aligned up to
+> SZ_1G by vfio_pci_bar_map() with MADV_HUGEPAGE), verify both:
+> 
+> 1. Read-then-write fault sequence after clear_refs, exercising in-place
+>    huge PMD/PUD write-protection upgrade via wp_huge_pmd()/wp_huge_pud().
+> 2. Direct initial write fault on a freshly mapped unpopulated BAR VMA
+>    after clear_refs, exercising vmf_insert_pfn_pmd()/vmf_insert_pfn_pud()
+>    with FAULT_FLAG_WRITE set.
+> 
+> Skip gracefully when /proc/self/clear_refs is absent or soft-dirty
+> tracking (CONFIG_MEM_SOFT_DIRTY) is disabled, or when the device exposes
+> no mappable read/write BARs.
+> 
+> Cc: David Matlack <dmatlack@google.com>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> ---
+>  .../selftests/vfio/vfio_pci_device_test.c     | 83 +++++++++++++++++++
+>  1 file changed, 83 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/vfio/vfio_pci_device_test.c b/tools/testing/selftests/vfio/vfio_pci_device_test.c
+> index 93c11fd5e081..75ccc557efb9 100644
+> --- a/tools/testing/selftests/vfio/vfio_pci_device_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_pci_device_test.c
+> @@ -1,10 +1,13 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+> +#include <errno.h>
+>  #include <fcntl.h>
+>  #include <stdlib.h>
+> +#include <unistd.h>
+>  
+>  #include <sys/ioctl.h>
+>  #include <sys/mman.h>
+>  
+> +#include <linux/compiler.h>
+>  #include <linux/limits.h>
+>  #include <linux/pci_regs.h>
+>  #include <linux/sizes.h>
+> @@ -102,6 +105,86 @@ TEST_F(vfio_pci_device_test, validate_bars)
+>  	}
+>  }
+>  
+> +static int clear_soft_dirty_refs(void)
+> +{
+> +	ssize_t ret;
+> +	int fd;
+> +
+> +	fd = open("/proc/self/clear_refs", O_WRONLY);
+> +	if (fd < 0)
+> +		return -errno;
+> +
+> +	ret = write(fd, "4\n", 2);
+> +	if (ret < 0)
+> +		ret = -errno;
+> +	else
+> +		VFIO_ASSERT_EQ(ret, 2);
+> +
+> +	VFIO_ASSERT_EQ(close(fd), 0);
+> +	return ret < 0 ? ret : 0;
+> +}
+> +
+> +TEST_F(vfio_pci_device_test, bar_write_fault_after_clear_refs)
+> +{
+> +	const u32 rw_mmap_flags = VFIO_REGION_INFO_FLAG_MMAP |
+> +				  VFIO_REGION_INFO_FLAG_READ |
+> +				  VFIO_REGION_INFO_FLAG_WRITE;
+> +	struct vfio_pci_bar *bar;
+> +	bool tested = false;
+> +	int ret, i;
+> +	u32 val;
+> +
+> +	ret = clear_soft_dirty_refs();
+> +	if (ret == -ENOENT || ret == -EINVAL)
+> +		SKIP(return, "soft-dirty clear_refs unsupported (%d)\n", ret);
 
-> > I.e. move on to the next MSR in the VM-Entry load list after performing=
- a
-> > write using a value found in the VM-Exit load list.  Processing *every*
-> > matching entry in the VM-Exit load list makes the processing quadratic,
-> > which is problematic if the load lists are full of MSRs that are expens=
-ive
-> > to emulate.  E.g. writing APIC_BASE triggers kvm_recalculate_apic_map()=
- and
-> > a whole pile of unnecessary work.
-> >
-> > Functionally, arbitrarily restoring the value of the first matching ent=
-ry
-> > is "fine", because none of this is architecturally correct: the load li=
-sts
-> > are never supposed to have been used in the first place.  In practice, =
-it's
-> > likely a moot point as no well-behaved VMM will have multiple, divergin=
-g
-> > entries in the load lists.
->=20
-> This isn't "fine." This is disgusting.
+-ENOENT seems to map to the open() when /proc/self/clear_refs is not
+present.  We can't clear soft-dirty by virtue that the file is absent.
+Fine.
 
-The "fine" here refers to what is being changed in *this* patch, which is t=
-o
-load each MSR at most once, and to use the first value encountered, e.g. ve=
-rsus
-the last value.  IMO, that claim stands: in the context of the existing cod=
-e,
-this change is "fine".
+-EINVAL seems to be intended to catch:
 
-> The assumption that the VM-exit MSR-load list will "undo" every
-> assignment made by the VM-entry MSR-load list is misguided and wrong.
+clear_refs_write():
 
-No one is assuming that.  The comment even says *exactly* what you're sayin=
-g:
+        if (type < CLEAR_REFS_ALL || type >= CLEAR_REFS_LAST)
+                return -EINVAL;
 
-	/*
-	 * This nasty bit of open coding is a compromise between blindly
-	 * loading L1's MSRs using the exit load lists (incorrect emulation
-	 * of VMFail), leaving the nested VM's MSRs in the software model
-	 * (incorrect behavior) and snapshotting the modified MSRs (too
-	 * expensive since the lists are unbound by hardware).  For each
-	 * MSR that was (prematurely) loaded from the nested VMEntry load
-	 * list, reload it from the exit load list if it exists and differs
-	 * from the guest value.  The intent is to stuff host state as
-	 * silently as possible, not to fully process the exit load list.
-	 */
+But that's only testing for a known type, not that it's supported.
+This is never triggered, which can lead to a false pass if soft-dirty
+really isn't supported and silently does nothing.
 
-> Xen, for instance, puts SPEC_CTRL on the VM-entry MSR-load list, but
-> it does not put it on the VM-exit MSR-load list. Instead, after a
-> normal VM-exit, it restores the host value in
-> vmx_asm_vmexit_handler():
 
-...
+> +	ASSERT_EQ(0, ret);
+> +
+> +	vfio_pci_cmd_set(self->device, PCI_COMMAND_MEMORY);
+> +
+> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> +		void *vaddr;
+> +
+> +		bar = &self->device->bars[i];
+> +		if ((bar->info.flags & rw_mmap_flags) != rw_mmap_flags)
+> +			continue;
 
-> KVM needs to do better.
+Where do we filter out BARs that wouldn't trigger a PMD/PUD fault?  If
+we're only testing sub-PMD BARs, this is another false pass.
 
-Meh, KVM is doing pretty darn good, all things considered.  Yeah, this code=
- sucks.
-But I'm not convinced the alternatives suck less.  We've gotten the set of =
-missed
-consistency checks down to effectively zero, module the TPR mess that I do =
-test
-by running warn_on_missed_cc=3Dtrue.
+If we do find a BAR to trigger a PMD/PUD mapping, what's the value in
+continuing to exhaustively search and test the remaining BARs?
 
-E.g. for Xen to run afoul of a misbehaving guest, Xen would have botch its
-handling of vTPR.
+> +
+> +		ASSERT_NE(NULL, bar->vaddr);
+> +
+> +		/*
+> +		 * clear_soft_dirty_refs() stripped write permissions from
+> +		 * vma->vm_page_prot on the unpopulated BAR mapping created by
+> +		 * vfio_pci_device_init(). Fault it read-only first, then write
+> +		 * to exercise in-place write-upgrade (wp_huge_pmd/wp_huge_pud).
+> +		 */
+> +		val = READ_ONCE(*(u32 *)bar->vaddr);
+> +		WRITE_ONCE(*(u32 *)bar->vaddr, val);
 
-I'm not opposed to trying to figure out a not-horrible way to snapshot a li=
-mited,
-hardcoded number of MSRs to make KVM less wrong.  But I sure as hell ain't =
-going
-to spend cycles on it at this point, because potentially clobbering L1 MSRs=
- when
-L1 itself has already screwed up is firmly in "don't care" territory right =
-now.
+Sashiko notes[1] an issue here that might be a false positive, but the
+comment should at least note that a matching driver could already have
+touched the BAR via read/write but doesn't invalidate the test... if so.
+Thanks,
+
+Alex
+
+[1]https://sashiko.dev/#/patchset/20261101062049.998160-1-almasrymina@google.com
+
+> +
+> +		/*
+> +		 * Replace the VMA with a fresh unpopulated mapping at the same
+> +		 * hugepage-aligned address, clear soft-dirty again, and fault
+> +		 * with an immediate store to exercise initial write insertion
+> +		 * (vmf_insert_pfn_pmd/pud with write=true).
+> +		 */
+> +		vaddr = mmap(bar->vaddr, bar->info.size, PROT_READ | PROT_WRITE,
+> +			     MAP_SHARED | MAP_FIXED, self->device->fd,
+> +			     bar->info.offset);
+> +		ASSERT_EQ(bar->vaddr, vaddr);
+> +		madvise(bar->vaddr, bar->info.size, MADV_HUGEPAGE);
+> +
+> +		ASSERT_EQ(0, clear_soft_dirty_refs());
+> +
+> +		WRITE_ONCE(*(u32 *)bar->vaddr, val);
+> +		(void)READ_ONCE(*(u32 *)bar->vaddr);
+> +
+> +		tested = true;
+> +	}
+> +
+> +	vfio_pci_cmd_clear(self->device, PCI_COMMAND_MEMORY);
+> +
+> +	if (!tested)
+> +		SKIP(return, "No mappable read/write BAR on %s\n", device_bdf);
+> +}
+> +
+>  FIXTURE(vfio_pci_irq_test) {
+>  	struct iommu *iommu;
+>  	struct vfio_pci_device *device;
+
