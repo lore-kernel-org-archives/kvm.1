@@ -1,126 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793690612;
-	b=ovzpANuJeZOqryXfGqp/CgX0KkRBEvqgalTESEmwdTcXe/j3SWmNpywKAoF9uMfENyJY
-	 fXZ/FjPhCPZF8u3NIMqCOOoQiNr1HF+OPQXM+N5T1MRePjEbD9v+wiV9aoquPIYo32ngH
-	 lN6EPJYmrFGkj9Klw8jskHRNQU8HgdW9FmfwjSwMSRgXofcBuQN/7MV3SUC0YiVtqW4d9
-	 NecN43rTqw7hha9v7VieNfYdiBUq/LYxhmppZ8H5o3he2DsQW9TrIDmvWyjf85fV/BLV6
-	 AlQBM4AzCUSHt5f/75OeisS+uNIa5wM8ZYIiKm9rj5dTZmIsi/cWQp2WFHrWxCXU1Pg==
+	t=1793691260;
+	b=mpuQ/zup41ef6dF492+BHtMlmCBzs12UKm82HLDTvFnb8mZq4x3FQYpn+tWnU0+Jns6x
+	 cv24YpIWP5t9SGNv4VN4WHXtTxKwGgjjM57/GW3KR2Fx6EAL11k8Mo7JhWQMo5h+WLert
+	 Gm4IiAbZLbVtOP9Ey3c4mm69RUykWR8booOYH+Rs4+1yjQdR+Y+jVeQB8VZasfuxEd4UA
+	 yXpdVgjFoNee+13x/XLEnDENz5gOcQS8eeeRz7cCTNxOscbhE1+f0BYgynAd2ymS/ouRr
+	 hR6AXWII6rrFTmLpLFlYAdDWb4qnAH10RTXZcJIBhs5/4l+/3oxK3bjqIACa8lU+t3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793690612;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Received:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=j/Bcqh1Ir2ox5ZHSRD7plS8yIHsdPIl+LjTttxcCQ1U=;
-	b=KaLoh1aMNr1UG++ZYJV7q6f/58UhdjUkBbWs6zk86g60hLYwKOyPBBCTaU1uM/tjbaiG
-	 73SPldmornQSEsaKNY1K9sXNnfvpiKSrENpp7KSvW+VOdc0v+3rXEdtI+n86SH3AGDirl
-	 Ur7BlGUKZx27JfcZyn97L1DVpdxNp4gGxDEhptvKoQ2kzBnlDrU4MPN12LAzua4ZtzmF6
-	 LTI7DGaaWi9EBC1p+b9S97yX1AGtFl32HysIVzK/j94AVM7hDVAbgtumcoI+HF6aYdOWP
-	 oKTh/ZTohk3DJz3Qf3oewiS8cJTvWGfb32+adHW8S+wUKnXrh5Ydjn6+KGV9Xi4t7cg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793691260;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=XfKNC2NE9YSYVP2MPnS+smvI8z2Ige3tMx497tBdQho=;
+	b=afroWfwhv69JD63mBtiv4UCrQYsc4xMNDELFqKtHVUuXe53WSTsfn9G8zIWikWDZE+JB
+	 skgiS+erkC7Fr2eYX0nrpWr4BPjt9OgIYkIrE3Snjlv4HlllUPzdiVzOxgJZWTvNmYkLP
+	 UbwBmAm4DjRUtCYHu8oMqKUfmgZRDa7nxMzDzG9x3UU7Odgl3g0lBUjFMJcxNAh4Va0v7
+	 PSdS0tpHXyDXXNAvSKfJDAXeMXlKez3udX+mOWaYXVWk3UKHlQJ6SbxA2rX2AIYIgIR4B
+	 vwNOciGyg7+HdTs2Acm0w/OEwZhiX0eDCMjuidwHG98JERvtikezeLN96zqFEgabE2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="gLA4O/R6";
-	arc=none smtp.remote-ip=209.85.216.98
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l3dfCqjQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE09606A329
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 07:23:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEE09606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30406606A324;
+	Tue,  3 Nov 2026 07:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=gLA4O/R6
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3ab752f6244so4181766a91.2
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 23:23:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793690611; x=1794295411;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=j/Bcqh1Ir2ox5ZHSRD7plS8yIHsdPIl+LjTttxcCQ1U=;
-        b=r5Znc9iyR9JPkL7clIg5Ne2fNCj+irKWNY4pAudtcDMTzSTZ4HNz+85xD0kmh2bmoD
-         +6jQBnqCmmoqSAqUpy3d5nVLQu5KOuFl7NJxoCSfoJdSgxEbbB9dlV5pC8jFTpCy6IOp
-         mWOCp78tb+RHtFxevfpIhoA3dQLmjZPQJaW2NY8WlRlGHEumpDSJEUHqvFC8fduoH8Ki
-         6FqVTLmSgTXJCRnVePo1CtOiQeUOLYOOl9IhRqgpA83FsD6sdftbHZeBvuIwP0rK3ej1
-         2h0UqhE2VA9T0q2YmTyjDOzQDONExmBPpQoAQ66arCxIwC8/zX9KyO1G1LmzwG8MJVhn
-         2i9A==
-X-Forwarded-Encrypted: i=1; AKwUvBwpwtKh+nnv46RAZp3tNiACRw6NdTaBn4aaAHFfT7mYbbF30vUFYhSJcl67DeNmQudBYCM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/iWaY0IA0ZKk7ob0hsu+xrz/AwN6EfvXW06NRqXPEFP2m9F26I
-	wzOX67E1rGuwNOq/jRtEOH61e8WMkSxVJm0oo4rBNobe7fAWNNPd9hLYmZCg94m/dAbhlpx4C8d
-	/f/GI3xa+qaewq++U+ULoSsjzk7V+0wjfqAO1o8MQ7VCRaqDK4zBkf6GNmbz5TexM++W90wHMm6
-	HJ4TVROCbadZtIHGmOzfYQzeKyueBy5x4DFvgvkbFRzNpFFUF77i6Av7ZIb+Un+Y1ZcfbvkDkh4
-	Bt+
-X-Gm-Gg: AYBFou1qDsxf9JqOASUQUDBV301zgMI8YE//UN5Pvo/tPh+ynQnSNqoOrMs+4GDGyjz
-	wdwBR646DVU9WP3TAsnvkJXUAcEzj5U9CJeHJHHtMcT9zgOin/INNrBTKofrwklvYCO3B/oLjl8
-	Uoh5oMQk0VIPutI2pkcMMx0f6NpEBY8L24f2GNvjZlz9fTGkpL6ZNN4gOPSs1XYnfCX6Dt7em0l
-	OlcFctyRfkO/tVVJNYz0uNEBasHyk/34YAseXkkljkzaZ47GOabOBO+hP/hc0JDDMuS5e/MyEDT
-	2KlB+7aflPaaLfZeZXszZN729d1eHhXrxZaY8YBlsnPjHkDvqlzLnjttqPqBdRVq+CEZLKtFZT6
-	sj21nPUPTh3LUBUDUE9MrrK6j1g7XmyfOhpmvKoH7ciuq9IrVM/jSVOy/vhHRhFijDrzN6hhItg
-	x9zNzSioNvjcVN18Q+u6Wf65jQOi7b08/G
-X-Received: by 2002:a17:90b:2e52:b0:3ab:24b2:9016 with SMTP id 98e67ed59e1d1-3ae897ec759mr10084058a91.25.1793690611026;
-        Mon, 02 Nov 2026 23:23:31 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b07cab84edsm1245916a91.7.2026.11.02.23.23.30
-        for <kvm@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Nov 2026 23:23:31 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e941532594so43405755ad.3
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 23:23:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793690609; x=1794295409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=j/Bcqh1Ir2ox5ZHSRD7plS8yIHsdPIl+LjTttxcCQ1U=;
-        b=gLA4O/R6bR8E/M917zNE57f9vD2ITpZY3T3ftCkbPZeduXxw0QyTwdbBdkPRa9nP0+
-         FAcm7DVxZc6VNIc4G2HXT/31Ebcb1ajO5G2E0MAq5888B1Qh/p+sKOsvwp2K1tzRfEpS
-         enKnNIkwM7pPxLBrPO8+LEaIW7m7kTWMXlLbY=
-X-Forwarded-Encrypted: i=1; AKwUvByiqtt0UHwup+nvrrxc0HHAy60SEiNlD5fypkJtbucBBQlf4PwnjJhnR4tTpVk+x24MWlo=@vger.kernel.org
-X-Received: by 2002:a05:620a:4044:b0:93f:3163:3e37 with SMTP id af79cd13be357-944216b1af2mr2136143785a.28.1793690144072;
-        Mon, 02 Nov 2026 23:15:44 -0800 (PST)
-X-Received: by 2002:a05:620a:4044:b0:93f:3163:3e37 with SMTP id af79cd13be357-944216b1af2mr2136140385a.28.1793690143503;
-        Mon, 02 Nov 2026 23:15:43 -0800 (PST)
-Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9442581b2d2sm1018334585a.15.2026.11.02.23.15.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 23:15:41 -0800 (PST)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: Borislav Petkov <bp@alien8.de>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	x86@kernel.org
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	virtualization@lists.linux.dev,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH v3 0/3] x86/vmware: Clean up the hypercall code
-Date: Tue,  3 Nov 2026 02:14:55 -0500
-Message-ID: <cover.1793685318.git.zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l3dfCqjQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701041F00919;
+	Tue,  3 Nov 2026 07:34:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793691259;
+	bh=XfKNC2NE9YSYVP2MPnS+smvI8z2Ige3tMx497tBdQho=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=l3dfCqjQj+DS0DEcJftio2F2cN6tjiUPYQ+Qap3FvZ5+5uPKlDOS0Ug87r+5GuC7y
+	 e9+K0KJZoyu4NP7LK5uVodgS2dzgEQz3hV6fmmNiAEcdJ3535CZY1GTcqmiD/kKSHE
+	 4Rb/ADET5SOCZmEvmMdMJ09KKRDCB9B4++tmKzNeShhRrru7uU6Oewtih2VGEd4qGM
+	 i4KiEifWR2oXo5ZNdE+NYRGBG9Jntbr42sREOT3NtidrDBhLN5oCyjQ/k2mMGH0RJB
+	 IRzuIffVomlseS+D+pWJYUIQiZ0gqBNiFABt/QWUg4pWDGvbeGScrmQ7wfmCGBwjUW
+	 6Ex7BILm4/gVQ==
+Message-ID: <sashiko-outbox-194717@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/3] x86/vmware: Route low-bandwidth hypercalls
+ through a static call
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zack Rusin" <zack.rusin@broadcom.com>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, "Michael
+ S. Tsirkin" <mst@redhat.com>, "Eugenio Perez" <eperezma@redhat.com>
+In-Reply-To: <70ce0c2c18008fb25399125fc81eb368d8e824ad.1793685318.git.zack.rusin@broadcom.com>
+References: <cover.1793685318.git.zack.rusin@broadcom.com>
+ <70ce0c2c18008fb25399125fc81eb368d8e824ad.1793685318.git.zack.rusin@broadcom.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 07:34:19 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -129,63 +61,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Move VMware hypercall assembly out of vmware.h and select the
-low-bandwidth backend with a static call, following Linus's request:
-https://lore.kernel.org/all/CAHk-=wivx7pi+h+hGmvNFAJm6StQLiQ-b8DdsE5J=LMOWae8Ng@mail.gmail.com/
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] x86/vmware: broken TDX hypercall guard when vmware_init_hypercal=
+l() is skipped
+--
 
-Patch 1 moves the high-bandwidth helpers out of line and removes the
-redundant vmwgfx caller annotations. Patch 2 uses input and result
-structures for the four low-bandwidth backends, selects the backend
-during VMware platform setup, and removes the early dispatcher. Patch 3
-retires the unused VMware feature bits.
+commit fc9641d4edae98b08577710c597ef17cc2f5765e
+Author: Alexey Makhalov <alexey.makhalov@broadcom.com>
 
-The caller API is unchanged. The I/O-port backdoor remains the initial
-target for early DMI probing. Modules use the exported high-bandwidth
-helpers and static-call trampoline; the static-call key stays private.
+x86/vmware: Route low-bandwidth hypercalls through a static call
 
-This v3 replaces patch 1 of Alexey's v2:
-https://lore.kernel.org/all/20260309235250.2611115-1-alexey.makhalov@broadcom.com/
-Its panic logging patches and steal-time fix were reposted separately:
-https://lore.kernel.org/r/cover.1790014793.git.zack.rusin@broadcom.com
-https://lore.kernel.org/r/20260929040256.543767-1-zack.rusin@broadcom.com
+This commit consolidates the low-bandwidth VMware hypercall inline assembly
+into four backend functions dispatched via a static call, passing arguments
+and results through structures rather than nullable pointers.
 
-It is based on tip's x86/urgent branch, which has the i386
-high-bandwidth fix this series builds on: e0e022004bbe ("x86/vmware:
-Fix i386 high-bandwidth hypercall arguments").
+Link: https://lore.kernel.org/r/20260309235250.2611115-2-alexey.makhalov@br=
+oadcom.com
+Link: https://lore.kernel.org/all/CAHk-=3Dwivx7pi+h+hGmvNFAJm6StQLiQ-b8DdsE=
+5J=3DLMOWae8Ng@mail.gmail.com/
 
-Please route this through tip. As the vmwgfx maintainer, I agree that
-its small annotation removal should go through tip with the assembly
-move. DRM maintainers and dri-devel are copied. I'll make sure there are
-no conflicts in that code while the trees merge.
+[Severity: Medium]
+In arch/x86/kernel/cpu/vmware.c, vmware_init_hypercall() (around line 510)
+updates the vmware_hypercall static call to vmware_tdx_hypercall() when
+X86_FEATURE_TDX_GUEST is enabled, while the link-time default for
+vmware_hypercall is vmware_backdoor_hypercall().
 
-And yes, this code is a bit like me, meaning it gets on everyone's nerves
-and likely looks awkward in shorts, so we're just trying to make the best
-out of what a politician would call a less-than-ideal situation.
+Previously, vmware_hypercall1() through vmware_hypercall7() in
+arch/x86/include/asm/vmware.h checked cpu_feature_enabled(X86_FEATURE_TDX_G=
+UEST)
+directly and called vmware_tdx_hypercall(), which rejected non-VMware TDX
+guests via !hypervisor_is_type(X86_HYPER_VMWARE) (around line 633 of
+arch/x86/kernel/cpu/vmware.c) and returned ULONG_MAX.
 
-Changes since v2:
-- Replace the ten-argument backend interface with input/result structures.
-- Move the high-bandwidth assembly out of the header as well.
-- Preserve all low-bandwidth outputs and the backend-specific %dx flags.
-- Export the callable trampoline without exporting its key.
-- Correct the ABI documentation and retire unused feature bits.
-- Keep the backportable i386 fix in its separate posting.
+With this change, vmware_init_hypercall() is only invoked from
+vmware_platform_setup(), which only runs when VMware is the detected
+hypervisor. On a TDX guest running under KVM (where x86_hyper_type is
+X86_HYPER_KVM), vmware_platform_setup() does not run, leaving the
+vmware_hypercall static call pointing at vmware_backdoor_hypercall().
 
-Alexey Makhalov (1):
-  x86/vmware: Route low-bandwidth hypercalls through a static call
+When vmmouse_detect() in drivers/input/mouse/vmmouse.c (line 323) runs on a
+KVM TDX guest (since vmmouse_supported_hypervisors[] includes X86_HYPER_KVM)
+and calls vmware_hypercall3(VMWARE_CMD_GETVERSION, ...), won't it execute
+the port I/O instruction inl (0x5658) in vmware_backdoor_hypercall() instead
+of being blocked by vmware_tdx_hypercall()? In a TDX guest, executing inl
+triggers a #VE exception and issues a TDG.VP.VMCALL<Instruction.IO> to the
+VMM, which will raise a kernel #GP(0) fault via ve_raise_fault() if the VMM
+rejects port 0x5658 I/O.
 
-Zack Rusin (2):
-  x86/vmware: Move high-bandwidth hypercalls out of line
-  x86/cpufeatures: Remove unused VMware hypercall feature bits
+Additionally, since vmware_tdx_hypercall() is now only installed after
+x86_hyper_type has already been set to X86_HYPER_VMWARE, doesn't the
+!hypervisor_is_type(X86_HYPER_VMWARE) check inside vmware_tdx_hypercall()
+become unreachable?
 
- arch/x86/include/asm/cpufeatures.h  |   4 +-
- arch/x86/include/asm/vmware.h       | 371 +++++++++++-----------------
- arch/x86/kernel/cpu/vmware.c        | 299 +++++++++++++++-------
- drivers/gpu/drm/vmwgfx/vmwgfx_msg.c |   3 -
- 4 files changed, 351 insertions(+), 326 deletions(-)
-
-
-base-commit: e0e022004bbedc7caf1c18770980eb5372019189
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793685318.gi=
+t.zack.rusin@broadcom.com?part=3D2
