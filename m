@@ -1,101 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701849;
-	b=kBxk/yFqkGaQqwju8CaOvLPuYDvMxX4iClfvUDKHYZYGIGc7d6Gci7KWpMowekVk9ouQ
-	 2hpxXWXeJSmuukbYYg573OyT4whklXQ9hmzsjGhUG0FXcg0EGHmJ0xzEH0y2aHKCfff5z
-	 INKNwC8BcmvoSH+3I0odmTBcEqXSSxp+jvz9aSQQVRIQaHo7abEm3TxgiFLHcrtKIMauh
-	 axhJA+pjmRBmdd6f0DaRDY5L1n6HyvXHWlJ8RonB2fKbdVvXwuzeU8TBChteTX9CrcAcb
-	 vGLsd/1zcmiNP0p45OSR+ltMay/4c2fFWx9bKCP2ot7IuNrY2k2YkiYtxeOJEVO6uCw==
+	t=1793702095;
+	b=LhOEhYVcn3HxW4L4h+KqcRrf9Q3RRLhvScIpsocjtsFp16MHQ5MxMcNAgGY5moL/tSas
+	 2qw7kjmrQZpvjtz1K1eYV9F9TwCPyAUhn6tkua742kWtD1Ee9PuifVAoM74JPKsvsHQtT
+	 bWRel4XJrR1ftJUicrrI3fShKO4Wiounggn8HA9FemH+FtjmAc1JZpWPyZCl3Ad3rNo8a
+	 qgvQ6Nl1ve+YDyEfpm+X8QLny5WNPSdeA9nLzpQdpbr7+ja7Q1o/DVNKOfTOmecG3Quim
+	 41nK7NLSftrGUx8B1AQkSov2I7sbDndko9JaeTV8U9YVsrFT0pN5MNED6QBPKW3BplQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701849;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=rUKedcpVkiNEfx49bKB2qoAIuRwcwKKFeuE1z3r00s0=;
-	b=NQb7pTVRGG8jnX2hhT7yl7VvRFfdhh/6JQ52uJDp2k/legc0YZVfkWzVwqBPtbhFtLdq
-	 aWWorK5kVLPHjdUwoTYVWHrJ5pR2C4iQ4lnMiWVmESpcb+VfOI0dggmgF7pH0fikMocMy
-	 n5smb2jOv+8KcKjQmWhHxKrvAYkB8pmm+CKJmD74+6DIlxG2vX/O3Dv/bVriD5qjYrWdh
-	 N/caTBqgPydCI/xFNrWLWiftffZ/eAq7TBX901iYc13K9XLiDHxfmE6RKrjgi1WkR7ml8
-	 HUmBVZz+Vz+AnhlLD0XenpzURs4/ZyB+VgNuWXWe4Mofc2c/q5RhR8BNuD/2cXVQOaQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793702095;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=ukxvASRQHPXLmCBtFGTm4r2/mUdWWRyPzw9bZSdLupc=;
+	b=qNawMgpsW+HBFQbfguIcxJyfOB0hOIbX/uox3O7839yKLTqvBJ96ypBjrFJZkV7n6zVk
+	 U+/lcONZKfloNpdD862OFBFNFo2jP3CHx2ieCm4+xT6PG5Lz7CPTqn5gLlSbGzbS4+dKY
+	 krThdCOyViTFUp83mGyI45I56vR3M77O+LTWo6psmxpujTc1zJVQZUXxgeEtW0tPQVPhI
+	 Tc64Yh+XVWM1wNY/76TBbgjLEiqQ6UKHtk+WRvOZ5kxRkViged1QjOedYdUKEDGqby3kj
+	 CNDSzxOAez4xLJlLy+PZ7ywhzaBwN4whIgMSROQ5Y5Q1YgPeuzloe3pW5bqh9vdb17g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b="lGHJ2/7A";
-	arc=none smtp.remote-ip=209.85.167.41
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PU8IZPSG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE791606A335
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 10:30:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE791606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99993607379D;
+	Tue,  3 Nov 2026 10:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=lGHJ2/7A
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba328513b9so3750871e87.1
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 02:30:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793701846; x=1794306646; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rUKedcpVkiNEfx49bKB2qoAIuRwcwKKFeuE1z3r00s0=;
-        b=lGHJ2/7A+c8PAoafyItHPUKePCeXbliM9fGrD5xJcz3JpBqpvmtWUxQjud4v3HS62O
-         o56E7Kb9SRzktK6NhMfa+6ZtWZSbmJt5LWEKR7WrQ7rUzzjWF1A7JanQ/LBl9m+BcH5b
-         Hzj2p5p+gNiDVEYaUnNESbOXtEC6L+gDN07LWsuh2VkoM20HAjPss5X+ikBTBh7+8MSb
-         fRowcjM7MMC/xob+HTP4ofXA99I7jUj/tlGctRB3e4cl8CR6CwYX4+wvJ9ZFiDNJ6clq
-         hOUOuJC6Bn7TKlqDLYFX4IfP9cuODLqnkxgxEbNnyzV5lAWIst7n/Yu3jEY4/fh8qwN6
-         4tdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793701846; x=1794306646;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rUKedcpVkiNEfx49bKB2qoAIuRwcwKKFeuE1z3r00s0=;
-        b=dizTRxQQ/tZaMWo/TwaVRUlyIb0sc2+NXbmmFAALixlHkqb9Jf7qgBcR//ASj/xu7J
-         uzPtfcsqDNDh1Dg+VdF/1gVqqvmbLJDLKD2fDf3L0UKm2l6ZDnvzQ+fa7QtqMC//tTd0
-         bJkXRNyb3eiavJ5byukM3w1SOezowlHHC4w8Cn7PeXu6PdleMU6ZgltFn+14XyNULszW
-         t/OCbqOm/gcoH99L1TgqZfCACF+9B4fNvkNbXBuWIhCVlFoT4SYq72p0YLjKMpLvVb1l
-         QvLBgF9p/yLKiGMiLHn+VRXgb3gp/wL4hQFEbwa9a36kxARHZaSa11xr04vm8hGZslG+
-         7bxg==
-X-Forwarded-Encrypted: i=1; AKwUvBxCbirr8LoxlUVuxZD/14PGRhP57HeCqz1ji21R0NiTf/fJSPhlqfVayElywDBGyV4ak8c=@vger.kernel.org
-X-Gm-Message-State: APuU4Z86UwGk18gOOlhc5jWyJf6W3Y7m0aIA43OgS4CWMh7Flg/xCAGE
-	ZmskP1+DVTJMhxQjJ67LTu5ckXnwLkp430pgHQbzXBTFPySNUWisP7dy1qevVMdNqBQ=
-X-Gm-Gg: AYBFou3Qzf3rFq4RzPbkoz353DIOQUizVJ0q1Jgh/ZivYBF2AE2EaNr276SU2bK6vaU
-	Vi2z5eGRSWj3ZmtYBNQS4FafkVX9KW5OyfGKwJIy5l6dgGvwoUJZYkaM3kywUJRTtVnwvIMpa0W
-	D0OfToTPxXt8BAPIVRIAVbr68Pwvc7ANiolIKq6F1iiOaCqs2vkPmtOHewZehk7xMfa3rTBafTd
-	MsBFqlQsgcMBZRd33CCZnzSrZwwONjkYH+qGfjKuEPoIzBJE26GpnY4f+KbAEasEQmrkDQ1J3VH
-	IeYWBIyPWvdC2iqBqmHw6haDWKLpaH4x9uExOuwf/ir2C6fIx9iXP0cengKi6VSJHoM9mNCZHL+
-	+rms1qxnnG674sdnZtRM/dD8qjmqTeUaDT1sSphhClA0eeRo8Eyz94eX2UKSOKPOxFehKemnrIa
-	D/P5ZLgrgILIg++DRzanVKBYbmu16qbFfxuisZgRQYCAh6joLXuGNEYRCVB5hTqMsDHqv+NV0yp
-	T/F2FLd3605LuR+PCi4lMr575jqhQYl64DJNU4keLFEscAQoC6k1wSO9INEOb+aqe+mQp7GUUrv
-	OiBiPqm4bA99j6DmoIVFzv8Nncb9sVHMvm6z
-X-Received: by 2002:a05:6512:3da9:b0:5be:41a1:d2c3 with SMTP id 2adb3069b0e04-5bfd958d569mr4093510e87.49.1793701845873;
-        Tue, 03 Nov 2026 02:30:45 -0800 (PST)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe074aad9sm2132213e87.75.2026.11.03.02.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 02:30:45 -0800 (PST)
-Date: Tue, 3 Nov 2026 11:30:39 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Sergii Dmytruk <sergii.dmytruk@3mdeb.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 04/20] Documentation: ctlv: Add userspace ABI
-Message-ID: <aum3xbO4lbiBWUtL@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-5-jiri@resnulli.us>
- <auOWFzX5N7HBbcH3@MjU3Nj>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PU8IZPSG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CEE1F0093A;
+	Tue,  3 Nov 2026 10:34:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793702095;
+	bh=ukxvASRQHPXLmCBtFGTm4r2/mUdWWRyPzw9bZSdLupc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PU8IZPSGt48klsHyuHjT7L1E2JvLVmsEQ6PK0DqG4rF/WsF7i6K8VIfUhkjjLlD12
+	 pEda7JdJaQhDXlZpEsUj035g5MbG4Og8GuSiMLaibizZc3S4iGeriU4d3lMxgyu+ZW
+	 wQL6eN7ok3I0WhTcU/W5oNpSMyofRZYrPVYOXUEIw5bLt40vWC6ZSlCoekl2l42u3H
+	 l48AoNe4PHEJqCTHHRJ1ThfWuY+6xmUu3k24iHi3h3hlqqBQWA6Lfr7GUwqQReJ+h9
+	 +tzJFhoPHu+Tl2mk9sNHtzGCECAYPcErIrWOsJalpI9jWKQVeKnRpdkdgmCK4ES05O
+	 m+ZP6GiADl+Ag==
+Message-ID: <sashiko-outbox-195058@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v12 10/19] PCI/P2PDMA: Reject Translated Requests
+ blocked by Translation Blocking
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leon Romanovsky" <leon@kernel.org>
+Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, kvm@vger.kernel.org, media-ci@linuxtv.org
+In-Reply-To: <20261103-fix-p2p-acs-v4-0-v12-10-912101f93517@nvidia.com>
+References: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
+ <20261103-fix-p2p-acs-v4-0-v12-10-912101f93517@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 10:34:54 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,98 +60,115 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auOWFzX5N7HBbcH3@MjU3Nj>
 
-Thu, Oct 29, 2026 at 07:53:11PM +0100, sergii.dmytruk@3mdeb.com wrote:
->On Thu, Oct 15, 2026 at 04:50:37PM +0200, Jiri Pirko wrote:
->> From: Jiri Pirko <jiri@nvidia.com>
->>
->> Describe the CTLV transport, discovery, wire format and userspace
->> compatibility rules.
->>
->> Assisted-by: Cursor: GPT-5.6 Sol
->> Assisted-by: Cursor: Claude Opus 5.5
->> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
->> ---
->>  Documentation/userspace-api/ctlv.rst  | 507 ++++++++++++++++++++++++++
->>  Documentation/userspace-api/index.rst |   1 +
->>  MAINTAINERS                           |   1 +
->>  3 files changed, 509 insertions(+)
->>  create mode 100644 Documentation/userspace-api/ctlv.rst
->>
->> diff --git a/Documentation/userspace-api/ctlv.rst b/Documentation/userspace-api/ctlv.rst
->> new file mode 100644
->> index 000000000000..5ebca3d4d94a
->> --- /dev/null
->> +++ b/Documentation/userspace-api/ctlv.rst
->
->[...]
->
->> +Errors
->> +------
->> +
->> +A failed operation returns a negative errno. Where the failure is a rule the
->> +message broke and the caller offered a reply buffer, CTLV also writes
->> +error information there in TLV form: a ``validation-reason`` value, a
->> +human-readable message, the offset of the offending attribute, the offset of
->> +the nest it was in, the ID of a missing attribute, and for a stale query the
->> +expected and the current generation. A buffer too small leaves it unwritten;
->> +the errno is authoritative either way.
->> +
->> +What the transport answers with, as against a family's own callback:
->
->It seems like this mixes results of several syscalls (e.g., `open()` and
->`ioctl()`).  Does it?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] PCI/P2PDMA: missing Intel SPT PCH ACS Control offset check for P=
+CI_ACS_TB
+--
 
-Right, will split.
+commit b8a9e833dab26624045a5e241b8edb8d281747c8
+Author: Leon Romanovsky <leon@kernel.org>
 
+PCI/P2PDMA: Reject Translated Requests blocked by Translation Blocking
 
->
->> +
->> +``ENOTTY``
->> +    Not ``CTLV_IOC_OP_EXEC``; this transport has one ioctl.
->> +
->> +``EINVAL``
->> +    A reserved field was not zero, ``op_id`` was zero, ``generation`` or
->> +    ``cursor`` was set on something that is not a query, or the message broke
->> +    a rule of the format or of the schema.
->> +
->> +``EFAULT``
->> +    The structure, the request or the reply was not accessible.
->> +
->> +``EOPNOTSUPP``
->> +    The device does not publish the operation, publishes it but has it
->> +    disabled, or the operation is an event, which is read rather than executed.
->> +
->> +``EACCES``
->> +    The fd lacks the operation's declared authority, or an ``O_WRONLY`` open
->> +    was attempted.
->> +
->> +``EMSGSIZE``
->> +    ``reply_len`` is smaller than the smallest fragment the operation can
->> +    answer with. Nothing was executed.
->> +
->> +``ESTALE``
->> +    A continuation whose ``generation`` no longer matches. Start the query
->> +    again.
->> +
->> +``ENODEV``
->> +    The device was unregistered. Descriptors stay open and every operation on
->> +    them fails this way.
->> +
->> +``EBADF``, ``EIO``
->> +    A blob descriptor named something that is not a file, or the file refused
->> +    the transfer.
->> +
->> +``ENOMEM``
->> +    The kernel could not allocate what the operation needed.
->> +
->> +``read()`` answers ``EAGAIN`` when no record is queued on a non-blocking
->> +description, ``EINTR`` when a blocking read was interrupted, ``EMSGSIZE`` when
->> +the buffer cannot hold the record at the head of the queue, and ``ENODEV``
->> +once a removed device's queue has been drained.
->
->[...]
+This commit teaches P2PDMA to check ACS Translation Blocking across the
+ports traversed by a peer-to-peer route and reject Translated Requests
+when any port along the path blocks them.
+
+> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> index 785e4668a2af5..fc4dea28c8606 100644
+> --- a/drivers/pci/p2pdma.c
+> +++ b/drivers/pci/p2pdma.c
+[ ... ]
+> @@ -678,6 +691,39 @@ pci_acs_p2pdma_no_upstream_forwarding(struct pci_dev=
+ *common)
+>  	return NULL;
+>  }
+> =20
+> +/*
+> + * Report whether any port between @client and @common rejects Translated
+> + * addresses. If @common is NULL, every port up to the host bridge is wa=
+lked.
+> + * A port whose ACS Control cannot be read counts as blocking, which wit=
+hdraws
+> + * only the Translated classes because an Untranslated Request is routed=
+ by the
+> + * redirect controls instead.
+> + */
+> +static bool pci_p2pdma_path_blocks_translation(struct pci_dev *client,
+> +					       struct pci_dev *common)
+> +{
+> +	struct pci_dev *pdev;
+> +	u16 ctrl;
+> +
+> +	/*
+> +	 * @common is @client itself when the provider is the client or sits
+> +	 * below it. The Request never travels upstream then, so no port sees
+> +	 * it and none can reject its Address Type.
+> +	 */
+> +	if (client =3D=3D common)
+> +		return false;
+> +
+> +	for (pdev =3D pci_upstream_bridge(client); pdev && pdev !=3D common;
+> +	     pdev =3D pci_upstream_bridge(pdev)) {
+> +		if (!pci_acs_p2pdma_ctrl(pdev, &ctrl))
+> +			return true;
+> +
+> +		if (ctrl & PCI_ACS_TB)
+> +			return true;
+> +	}
+
+[Severity: Medium]
+When calc_map_type_and_dist() calls pci_p2pdma_path_blocks_translation()
+with common set to NULL (either when path.no_common_bridge is true or
+when checking path.tb_above_divergence from b_child up to the root bus),
+this loop walks all the way up to the Root Port.
+
+On Intel Sunrise Point, Union Point, and 7th/8th Gen Mobile PCH Root
+Ports matched by pci_quirk_intel_spt_pch_acs_match(), pdev->acs_cap is
+non-zero, but due to hardware errata the ACS Capability and Control
+registers are 32-bit dwords rather than 16-bit words. As a result,
+pci_quirk_enable_intel_spt_pch_acs() programs PCI_ACS_TB into
+pos + INTEL_SPT_ACS_CTRL (offset 8):
+
+drivers/pci/quirks.c:pci_quirk_enable_intel_spt_pch_acs() {
+	...
+	pci_read_config_dword(dev, pos + PCI_ACS_CAP, &cap);
+	pci_read_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, &ctrl);
+	...
+	if (pci_ats_disabled() || dev->external_facing || dev->untrusted)
+		ctrl |=3D (cap & PCI_ACS_TB);
+
+	pci_write_config_dword(dev, pos + INTEL_SPT_ACS_CTRL, ctrl);
+	...
+}
+
+However, pci_acs_p2pdma_ctrl() reads the 16-bit word at pos + PCI_ACS_CTRL
+(offset 6), which on these Root Ports is the upper 16 bits of the 32-bit
+ACS Capability register (reading as 0):
+
+drivers/pci/p2pdma.c:pci_acs_p2pdma_ctrl() {
+	...
+	if (pci_read_config_word(pdev, pos + PCI_ACS_CTRL, ctrl) ||
+	    PCI_POSSIBLE_ERROR(*ctrl))
+		return false;
+
+	*ctrl =3D pci_acs_p2pdma_quirk_redirect(pdev, *ctrl);
+	return true;
+}
+
+Unlike pci_acs_p2pdma_no_upstream_forwarding(), which consults
+pci_dev_specific_acs_enabled() when walking to the Root Port,
+pci_p2pdma_path_blocks_translation() only inspects ctrl from
+pci_acs_p2pdma_ctrl().
+
+Won't pci_p2pdma_path_blocks_translation() miss PCI_ACS_TB on these
+Intel PCH Root Ports and allow calc_map_type_and_dist() to return
+PCI_P2PDMA_MAP_THRU_HOST_BRIDGE instead of
+PCI_P2PDMA_MAP_NOT_SUPPORTED for Translated Requests that the Root Port
+will reject?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-fix-p2p-ac=
+s-v4-0-v12-0-912101f93517@nvidia.com?part=3D10
