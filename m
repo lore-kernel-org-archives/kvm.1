@@ -1,101 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.26
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793728794;
-	b=NAtxhB4Im3+iHQQCRw301US44rFBKn8wer6lfUjrGWTLSzBTcKTGEzvW/Bf1RgXS4lw5
-	 SZSXcdYilCizBsHuWddEU+MtNuGZFD+DAAtNmUhOzxpY+M4O1wU9OgUJ8yatOTAQK/Kki
-	 T1yT2XqdOcLnMa23mMvlANIWuPfJSG/HqyHmaysIhd/B/9flfL5GWs8+yiDx90HMXkPta
-	 Hz8KY6kAPVCv2qUk2toCYygqykC7S6naVsM4/hCGrBM9LnJjz3DtJ2Xh8GMoV1X6xq3Xi
-	 gLfJn2R8dgVWiMyO1054ZOU7K8bRW+Wj5X7LBpf9DygpRs81D1I2+/qmICrh5T3ykIQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793728794;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
-	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=XSd/kZHOTMUu8JepUTuGmlqbSevS1EhVWuLV8ybmGWQ=;
-	b=4i+YeS2gAlIs2Bkgq0i76ckE5KKpB/eW6tRkfriJyFsZp9iGHChw4oZ4xWRGSBLRyYQj
-	 tuVPkMZkFlH8aNS3rJ5FM7mLKJRkewwDQWs2aNwVjdlmVuVrOsZMFPCL0fHfMFBzh83Pc
-	 KbeYO8/7QS/Pq7VrT1N053zIPjsN1TfsCrVoNAQXO7oK8UUvpwuvD7PQz5Vuh9+O/bur7
-	 HB4zrqRDZQa4olEW6eftmLUpW5Xb/XZmA/2BTvLZp28Dtpi+2Pt1JTt+eQFjhhb4E1wEQ
-	 SHrohadZUmouPSBZB3zSYP8dlIW3LSYIlpJB9me2dGionVdwucl7bGO2XL7MksyNrTA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=p1oO8PdC;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.26
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012026.outbound.protection.outlook.com [40.93.195.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793729247;
+	b=P9LKuYXqjoqcHHqie8uOFKXYpJkqtvFMoHwogj8wwlW4fZV/GeQR8BxNCpifekV29V5c
+	 P8dM4XOzZYhEZtMg44KwZripaRN9MgjLcJrX+OUETTmoI1pBgN1ACC8NvcfSP9xZQTb/t
+	 6Ftzy2NgLy/by9eVite/MNts418yOr7bHJ/KzaKKF5zz1edjmcY+hFSyCEgz1LJzLmuD1
+	 0EZf1jOxqTvIlsqL/Njq27D3UIlUIHO9iPBeAZzIHt5DdSZ5fOvcCfr8r8wp0HfIrLKdb
+	 5KKGHoPJR1rTU8r1Swab/+GWCHOBjuVg/KhPkvKA9EwuHymTjl5Stz3p7CaduFEnedA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793729247;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=zK/MHfvWSgBGdmyh4OG7p06HHkO8iMce8c9q7NLU0+E=;
+	b=v3Bl87wOBr5iMKpz01Hsd65n5t0Th9wuigaXARK3vYCLX/EYpHBhJTMjRXTJl3dyohCc
+	 Ept5GmvuLBMhiRQLGTj1ifTxrE2hkISQZdj3ml5izVgTHMBvldPD3qR5s9+afOoCUV3MD
+	 /NR0Cb/Mo+NUGhQ2A4x8Djipx6LfGw2D7O6zIKIhZefSgn2e9wwDOit+9sdRhFyGK1fNi
+	 b1oc7fRFLts9Hcn9er7DGLSpskV/lW+iKEwAeSVXU52Y1TbGJSpH3lKfd14qyD/is90LG
+	 cEHw7hdjJPzr0D6fv+/PNEhM5eMUpCCypyHK58iqhQkiJD/xbOVslPS0La3gDapyVkQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F5o7VD9W;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B28F606A32C;
-	Tue,  3 Nov 2026 17:59:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B28F606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E04606A32F;
+	Tue,  3 Nov 2026 18:07:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1E04606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=p1oO8PdC
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xa5mXNupT8QnwB8A18T+VkxK51dbxhX+bW3flJ+XPAGb3NRTKqQnI+2SEFP8Of9ifMDoJLfN6VvaZrWSW0Wxd8WqIXMrij1MLWND0iECQHcjObrsll1IBdTvK+7EOSG0Vfa1wZ97bpX61JbNTtKcHV22iirZS8QsBjJzpszohPyxZQk8Ow8AWv/7R/98gxXklmsgBn9VoAzlYv7FQCIyExN9pyJq5jgfDNtJfwM3aEaltMTJVwC5EQktdCpkmsXVJFHi7+dwgo3/xuXHVouMf2hJ+hRdbL+Y2dc7fcXRuot70quEMFA8d0lJxP8mpDOBgYFCcAwe33AyICvE2K6egw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XSd/kZHOTMUu8JepUTuGmlqbSevS1EhVWuLV8ybmGWQ=;
- b=l563pwx3YElt2/1qlXHdvpAkqg3mEUM2fpQTJh77oKgIoICl2Eqdm+SXEcmcai1X5dfpbtkeBN9obeq75zohNyL4eqHtofyHmCjnTHhWPAr4DdrDXVDEOr2AdKMfi101kdULniIS9hOs3SsUOC65hyphhphU3f2HLXGKC3jKyHEmLaeYJbHW1m62ACh9DGJM97DEXnb8c64A4LQCH+JxwKPeDjtekXeiOesGsGTFmwTN1k2f/6hmPifbwM0FOy7V/NqjAH5Ne4li4iEK5IJynhwoP3QCXcAzvJEBDBxO/ofN3R/NJ+8QE0F24arQ7fd24VVJzcu/Ru03TZT6sOmxzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XSd/kZHOTMUu8JepUTuGmlqbSevS1EhVWuLV8ybmGWQ=;
- b=p1oO8PdCIfh/AjtAIzo4R3qpAWgeNPCXruJ1Si0xaFhnjp/T9gZohqNARTlHlLTs4zDegOtGfVetsT5Z2cLLFiZuEwzn80STvwUAqresOAKP8QhQ864V+HVItTDL2DcBe12duHnb62dsdZMWhzr0AmQJNLTrSYaHVd3q0qfwOek=
-Received: from BL1PR13CA0240.namprd13.prod.outlook.com (2603:10b6:208:2bf::35)
- by SA1PR12MB6895.namprd12.prod.outlook.com (2603:10b6:806:24e::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 17:59:47 +0000
-Received: from BN1PEPF00018073.namprd04.prod.outlook.com
- (2603:10b6:208:2bf:cafe::a1) by BL1PR13CA0240.outlook.office365.com
- (2603:10b6:208:2bf::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.8 via Frontend Transport; Tue, 3
- Nov 2026 17:59:47 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN1PEPF00018073.mail.protection.outlook.com (10.167.245.201) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 17:59:47 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 3 Nov
- 2026 11:59:46 -0600
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 3 Nov
- 2026 11:59:46 -0600
-Received: from [192.168.0.226] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Tue, 3 Nov 2026 11:59:38 -0600
-Message-ID: <e95e438b-8806-4c58-a176-57dc53861066@amd.com>
-Date: Tue, 3 Nov 2026 23:29:31 +0530
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F5o7VD9W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793729246; x=1825265246;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=b64n/ALy9ONkgf58cbPGHTwkxpkalkyb2b0ByEQyLoY=;
+  b=F5o7VD9Wuq7AuNCiHZbvb9znmI3oqNgxzilz9qLCfjF4sVFXyhNwHdFJ
+   T0DsoRVVr5vpMq4367xcrJUaFUWHRLvHJG9jL9E1tpNzQ2a1s34f0kYVa
+   Q0RvTCSazRZrc3gBBFg+tjZzGWtwkj23CWF1GslSc+2CO48wrPn6jklNE
+   x0pKd5P5g8GzKL3DETaAQHIrIWnkgK0Z1ub2805o5h0GjyenObpAMELFP
+   1Mr6PsGd4tMIvraYAM2UlOZpcPh4jO01CO9+QpRzFqlX6SvkhsGpfnxO+
+   fKO54miWyFzRyaAU1pUr5V1T8ASSyPSI2RLp6TT1ynG0T6vCNVLiKtJpM
+   g==;
+X-CSE-ConnectionGUID: aa1tNM9fQR+aybWBhV5OOg==
+X-CSE-MsgGUID: iQwIrZ/aSK6guoNX8m5zrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2478666"
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="2478666"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 10:07:26 -0800
+X-CSE-ConnectionGUID: smG6AWmqT/KMhf5xtzl5sQ==
+X-CSE-MsgGUID: FFMi16GtTlixeZXBGVCi4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="6643639"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 03 Nov 2026 10:07:24 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xOIun-00000000j71-0RuF;
+	Tue, 03 Nov 2026 18:07:21 +0000
+Date: Wed, 4 Nov 2026 02:07:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Nicolas Saenz Julienne <nsaenz@amazon.com>
+Subject: Re: [PATCH 23/45] KVM: Introduce
+ kvm_check_gen()/kvm_memslots_check_gen()
+Message-ID: <202611040108.LHPSqkKE-lkp@intel.com>
+References: <20261102174512.8903-7-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,96 +84,103 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] x86/sev: Clear RMPOPT when segmented RMP is
- disabled by firmware
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
-CC: Tom Lendacky <thomas.lendacky@amd.com>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	<hpa@zytor.com>, <seanjc@google.com>, <peterz@infradead.org>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <darwi@linutronix.de>,
-	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>
-References: <56da047d63b22f03a7e709fc172a5543da894d67.1793216372.git.ashish.kalra@amd.com>
- <20261102052841.GBaugfibOXxGorZKgq@fat_crate.local>
- <69ed0d93-f96d-4baa-a587-fade5a0a3262@amd.com>
- <414b2fc2-a55a-4b2d-ac70-4def101c4aee@amd.com>
- <20261102144805.GCauiipTaEXcg6Lr59@fat_crate.local>
- <d81f6807-26ac-49b9-a205-c89c394ec1d4@amd.com>
- <20261102193116.GDaujlBJc3XjG3xzLj@fat_crate.local>
- <9ebcb83a-1c0e-423a-8730-eff6b710634b@amd.com>
- <20261102214343.GFaukED8ep3EMmQxfx@fat_crate.local>
- <30947e17-bffc-4c70-b19c-56504771c9fa@amd.com>
- <20261103004531.GEaukuq9sXbCs_PjfL@fat_crate.local>
- <4543f87c-cd29-4d5c-be8f-eb6b5477f4a1@amd.com>
- <be98c0de-e104-4c4c-8346-12f8b9e847f6@amd.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <be98c0de-e104-4c4c-8346-12f8b9e847f6@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00018073:EE_|SA1PR12MB6895:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa3287ca-fac7-4e09-f84f-08df39d43f94
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|36860700016|82310400026|376014|1800799024|23010399003|10067099003|22082099003|18002099003|56012099006|4143699003|11063799006|261026140227099003|261022105027099003|261009223027099003|261028144727099003;
-X-Microsoft-Antispam-Message-Info:
-	3ruPqunNJZLNfPPU0ibJIcwKFnShw2mDXQSgU6wQmcdEImLaoKlqRzSB70L0JP6l6sPiaqeMz6T90eLlsg6RY8gVk/01ro0DGkHMtQgyMGuP7K/pL+VJj/N5l/HRz2bNB7kcroadqrAF5pzXCRM9kIJPugbmHVAXm197DtupvOAbfN+yrQPeu6xGZwMTjBgR2UndfK4gvfFRvo8zR7FDVvrGDebsjc4wt9iv/pAYQSIoWMjzIhkalf7PLgC2M+tDwIG49BMK5yMQZSVqiO4oDW69UHHqX5xY0BI9oSVwuXzaMZ6IAfgLRlaUoQjCZpXm+1gk/XagevTQS6yrZtXkVJyoJ5436yXwvXmXQ4tRrdSFq9OxwIsoiUjw/k6Qxdx/hxC7UOXnrPYmCOBor21yIUbCunicZrTGDmvU5NAiiHApr1bl4PJtTIOV4F33VIfjMs37L0QbJ/W3Zq6HR5StnXfIQElZqdo/qlniK8S6LFUTg46BLGJdaxwTSKU5DQBbSBe9O6jfmbqH4wES/mun2r0SomDE4ou9GPi84cNKqD4K/Mg+bycTjK0N/4Cg7WK+9Z7GU+4ECwLIalgy9X6pRYEIrL9urqJ7VzA+HlkjxqsKKFBLzNcnUYinUQd16uF0H/YkHTmpeWeW2a/W/K77WXFzvFGxZ70YVF3CML0fpho8MDjgeGiumfxo+h5IwErZiqYXP2Bq6XYEVcpvUs5WhQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(82310400026)(376014)(1800799024)(23010399003)(10067099003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(261026140227099003)(261022105027099003)(261009223027099003)(261028144727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	0FaH22s9gMOu3RKrw0y9xrdjYHBDGYVbLTYCroT4AgIGEwM/VvupqcUl0wIUrii/Bdv51rZk7V+yKyOj88iHTHqmBT22WojBRbTK4q4Q5u2mK1D7bMqvWglqgSCJOjRaWFHbu24dQeu2eAoQ6w/EyZ1w7J4DXaPpXfkptsIAL9CyzhqMCiSiiPTz6V0ywpmp+aOHM58aomxKHtwQoxsBYkEVqdM4F/+deU+lUi0iC0newPj/J41WMHuejx6bB+KEK69UamTrzTgBINX6wnbC+kiW+7fr8Sa54Cpqrd/cat3gYiJlMU5MDGch8yr/YS0fn3kdzMoDZpIJyrsjWaSbVp2n2folDM6jB88iATkl0MuvoBpVuoil0hR+ZZFSM5/ono81COXSVL1hxJBcYMES+OZ70Mhsyi4/OuLuVnNWShBsaffbZwZ0RXsgtKPkXygU
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 17:59:47.2050
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa3287ca-fac7-4e09-f84f-08df39d43f94
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00018073.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6895
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102174512.8903-7-pbonzini@redhat.com>
 
-Hello Ashish,
+Hi Paolo,
 
-On 11/3/2026 8:10 PM, Kalra, Ashish wrote:
-> On 11/2/2026 8:58 PM, K Prateek Nayak wrote:
->> On 11/3/2026 6:15 AM, Borislav Petkov wrote:
->>> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
->>> index bd70c4d0b774..417e6a41ac60 100644
->>> --- a/arch/x86/virt/svm/sev.c
->>> +++ b/arch/x86/virt/svm/sev.c
->>> @@ -669,10 +669,10 @@ void snp_enable_rmpopt(void)
->>>  	u64 base;
->>>  	int cpu;
->>>  
->>> -	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
->>> +	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
->>>  		return;
->>
->> nit. We should check CC_ATTR_HOST_SEV_SNP in rmpopt_init() too
->> now to prevent an unnecessary workqueue allocation if
->> probe_segmented_rmptable_info() failed early.
-> 
-> As rmpopt_init() is now called from snp_rmptable_init() (in patch 2/2), and there is 
-> already a CC_ATTR_HOST_SEV_SNP check in snp_rmptable_init(), there should be no need
-> to check this in rmpopt_init().
+kernel test robot noticed the following build errors:
 
-True that! I forgot the second patch existed (facepalm).
-Sorry for the noise.
+[auto build test ERROR on kvm/queue]
+[also build test ERROR on kvm/next linus/master next-20261030]
+[cannot apply to mst-vhost/linux-next kvm/linux-next v7.3]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
--- 
-Thanks and Regards,
-Prateek
+url:    https://github.com/intel-lab-lkp/linux/commits/Paolo-Bonzini/KVM-nVMX-nSVM-check-unconditionally-whether-CR3-is-valid/20261102-124045
+base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
+patch link:    https://lore.kernel.org/r/20261102174512.8903-7-pbonzini%40redhat.com
+patch subject: [PATCH 23/45] KVM: Introduce kvm_check_gen()/kvm_memslots_check_gen()
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20261104/202611040108.LHPSqkKE-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 65303e81f481bbfe386b8596423f94c43198ba94)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261104/202611040108.LHPSqkKE-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611040108.LHPSqkKE-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/loongarch/kvm/vcpu.c:167:53: error: expected ')'
+     167 |                      kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
+         |                                                                   ^
+   arch/loongarch/kvm/vcpu.c:166:5: note: to match this '('
+     166 |         if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa != ghc->gpa ||
+         |            ^
+   arch/loongarch/kvm/vcpu.c:1821:53: error: expected ')'
+    1821 |                      kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
+         |                                                                   ^
+   arch/loongarch/kvm/vcpu.c:1820:5: note: to match this '('
+    1820 |         if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa != ghc->gpa ||
+         |            ^
+   2 errors generated.
+
+
+vim +167 arch/loongarch/kvm/vcpu.c
+
+   151	
+   152	static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
+   153	{
+   154		u32 version;
+   155		u64 steal;
+   156		gpa_t gpa;
+   157		struct kvm_steal_time __user *st;
+   158		struct gfn_to_hva_cache *ghc;
+   159	
+   160		ghc = &vcpu->arch.st.cache;
+   161		gpa = vcpu->arch.st.guest_addr;
+   162		if (!(gpa & KVM_STEAL_PHYS_VALID))
+   163			return;
+   164	
+   165		gpa &= KVM_STEAL_PHYS_MASK;
+   166		if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa != ghc->gpa ||
+ > 167			     kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
+   168			if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
+   169				ghc->gpa = INVALID_GPA;
+   170				return;
+   171			}
+   172		}
+   173	
+   174		st = (struct kvm_steal_time __user *)ghc->hva;
+   175		if (kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_PREEMPT)) {
+   176			unsafe_put_user(0, &st->preempted, out);
+   177			vcpu->arch.st.preempted = 0;
+   178		}
+   179	
+   180		unsafe_get_user(version, &st->version, out);
+   181		if (version & 1)
+   182			version += 1; /* first time write, random junk */
+   183	
+   184		version += 1;
+   185		unsafe_put_user(version, &st->version, out);
+   186		smp_wmb();
+   187	
+   188		unsafe_get_user(steal, &st->steal, out);
+   189		steal += current->sched_info.run_delay - vcpu->arch.st.last_steal;
+   190		vcpu->arch.st.last_steal = current->sched_info.run_delay;
+   191		unsafe_put_user(steal, &st->steal, out);
+   192	
+   193		smp_wmb();
+   194		version += 1;
+   195		unsafe_put_user(version, &st->version, out);
+   196	out:
+   197		mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
+   198	}
+   199	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
