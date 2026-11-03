@@ -1,68 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793749064;
-	b=r/rQhe0JfnAm8CO8dkb63y+Eqqnt/9W1EajzMGaUJg4psFKTNhM3G6xTHYnhS5vAwDR6
-	 lieIoiFd/cor4HFBcy/JWr7sU43AwtsCtTz6iR3APh8Rcx42cyXjwkuKN1lHdlUQyYekx
-	 70b3Yw+Ppif6X4cMEze4TEKA/9/L+bq79CY6Mm54Z6XZ1XxH3a3DQXvVfxofroChlc2V6
-	 /ixQJyvPXhK33RgmUnBJ0OuiD4moHt2gSVDHqPrbaXmvmeuF4TZEl1YkaOKfL51ZCet87
-	 cdfk0x3BSrdcl8LSUTVXpTtfOnjNjqUswVDaVRtQSTr5vcEkRue5bVm6cLct+WgwgYQ==
+	t=1793749478;
+	b=qs5JbQ6popttnyqf5IdKsHa3K5LLpHGcCf2Sd2RAvd42TyTYV5QEvYfnrQL6M3+mVjE+
+	 AzvQFeL3UISiaq1M2owx/qjRUCoe1B/pbvXWK5WlEt1SAJMKAdF3Zl7+sbv32w0HYgVNy
+	 yFb0mqhij/C08IvedC7DqQQGDCoXCOO0FDBp9ienbiPA1Xzv4TXhxOOSOhSV8fjXKBhsV
+	 dWoHYkf1/C1sFkNcwzcETX2FuVIBG5XcilBOubS9WIt30mLMarzA8lUcFheNs9TtgP1Ss
+	 B8ZGrz2slS5N3dixX5h8r/pJsxnhzXWPke7Hd+shKUpbDrbhWx4XPgOqkcB+Q/P7yPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793749064;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=4wfqiCZwxR1HfUPAhThr9gcJLD7YNx6kTBnqWyt9+bI=;
-	b=njvtOnwKJMW3FN6E5VQCdBguP09Ds5pf9MJKCtR9pJ0zGAyCuxqqdUOWV7AMIln08NMF
-	 UJGW2oP5jvEROg6J/XLt0muBhBopftNVP8rdOa97GTyO7WzaYagYKvuXRi/F//7UQ6w88
-	 pPCrMUlIEz6L8fM2NRPFm2loz87MBSNXswdnlmbvRF9OVqgoo2DqXIlmLNhL6s2hNDFEQ
-	 7MjdcE5yv/8ZqjWREXJLXK7jAdIveMBuafqu6yQ8mtiwREX2AY1HluswfrzeoPIpEBEG9
-	 Z8Ib6qJgHqwzRL5hh1FjKKIa2G1+KoReQfqdc+NUQ4FTL27qD+FJ5MJ40AAWbcq7GaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793749478;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=7wnNtEMgD0M+oBpBG326/EN92FbWy2Xr5oUepLmnESo=;
+	b=eWCsgfXmbef7flYA0nnhXdaZ2PPJnOB/B5ikD94AKaI44SJgrtuvk9qksEfL+qDWiwj/
+	 Cjohv1bjv05/s6PLyTJNXMr+Ph2Gj0GyH3XYlTKngT01m+TcigTiRfNmE4DOOw40sIxAp
+	 tzyoU+0kt6cobP2G+LWmEgCavqpjstTnhsPKs3OV15th2mITqyRcYu0IzrEoIn2XfDf3K
+	 6CQbuJ+rJdJF9Bnks/UrPYU+TnOApcfEKjwV6bY9LY1LryD49hpwm7hNrsJ/I1YnrV+E8
+	 TbTYS226OsuQq7zxOCWRAk2Oawjl9TR1coBuQiXeCGbSEGx4SPX31C/3fHZ2nYmAw6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OF6RH6Xa;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PFEyTPSF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC412606A31B;
-	Tue,  3 Nov 2026 23:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0ACE606A329
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 23:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OF6RH6Xa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFB01F000C1;
-	Tue,  3 Nov 2026 23:37:43 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PFEyTPSF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8711F000C1;
+	Tue,  3 Nov 2026 23:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793749063;
-	bh=4wfqiCZwxR1HfUPAhThr9gcJLD7YNx6kTBnqWyt9+bI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=OF6RH6XajejLEaRO0+BM9d4/sTm6iiR9bIeg3XYuSSa2A+LO5xgR2HmpjIEdeX6fW
-	 z3bMl5cSQIuuqrSouIOdJl+uCkv3nwz/KMTQPQT2lUg+vSbaQPIJ/CvQ83rOichkfM
-	 FwPnVMVNVwXi/9aVHMXY+pwwAcjESqhFUUmYjYdkPZbGWAntl3YDAvxuii2TG2PTMW
-	 +/GU17Tr0k9A7KTV7Q9vDfe/2OquHv4t5UckT5Psg3Q5BV26x76amGq8GcXRaGtN6Z
-	 3SmkHQLYucXN4npjf7JIu12aZwxaQ+1PB+0lCVi6LmUqhF5VtFlf2/NaOLxuO/uUMD
-	 9QxoYKERoXfwg==
-Date: Tue, 3 Nov 2026 17:37:42 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v12 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
-Message-ID: <20261103233742.GA1162403@bhelgaas>
+	s=k20260515; t=1793749477;
+	bh=7wnNtEMgD0M+oBpBG326/EN92FbWy2Xr5oUepLmnESo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PFEyTPSFU5+a5fVZmWbnSTfOhukC0pDMSfXxkW4VnsImjzwYpyP7Zs4mBU9/Dp9tP
+	 fP0nrcZ1bLBdBBg5VE5k8J1yEJJiLOC9JdHHO49ZHeaDWE9hZKtpq2qxzF3ouAWpSo
+	 c6Aw3O9uqFlk+b1NLN9oBCnoceZaDTkGfRrg/YkmZaGzWsbD107DvcnXxTPAAa7d6X
+	 nsLKPeQiOGKnmMmq5x2BQya3TRke9Jvq4AaJr/VPeaTsChIRKD/PgZqMiP1mp8HnsV
+	 aBRDHU+b+1wZfRtHM9cFxJHhMV4inkBr3Q2nMXpMknB93DCNE0GX5fTl/yMgQTCDsT
+	 oAdK0Wu+g9AMA==
+Message-ID: <sashiko-outbox-196231@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: nSVM: Validate L1 host save state restored on RSM
+ from SMM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Abdelali Maddane" <ma.08@web.de>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261103230750.1843-1-ma.08@web.de>
+References: <20261103230750.1843-1-ma.08@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 23:44:36 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,30 +59,86 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
 
-On Tue, Nov 03, 2026 at 10:29:39AM +0200, Leon Romanovsky wrote:
-> PCI P2PDMA applies Request and Completion Redirect throughout both paths.
-> This misclassifies asymmetric and nested switches, and reports one answer
-> for every kind of TLP.
-> 
-> Three ACS controls act on TLP attributes the Requester chooses rather
-> than on the topology: Translation Blocking and Direct Translated P2P act on
-> a Request's Address Type, and Completion Redirect skips Completions carrying
-> Relaxed Ordering.
-> 
-> Evaluate each direction at the path divergence, decide every class from the
-> one walk, and treat a client with ATS enabled as translating unless its
-> driver declares per-mapping ATS.
-> 
-> This completes the P2PDMA side; dma-buf and mlx5 follow separately.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] KVM: nSVM: svm_leave_smm() clobbers vmcb01 save area before vali=
+dation
+--
 
-Is there a one- or two-sentence explainer of why we want this?  I'm
-thinking in terms of what Linus will want in the merge request: a fix
-for something that's broken or some new functionality.  It sounds like
-this is solving a problem, but I don't know enough to translate the
-nitty-gritty details to the higher-level user-visible problem or
-feature.
+commit 01dc0fd5f011d2d987b3ef7b232d855ee26c4055
+Author: Abdelali Maddane <ma.08@web.de>
+
+KVM: nSVM: Validate L1 host save state restored on RSM from SMM
+
+This commit factors out the L1 host save state validation from
+svm_set_nested_state() into nested_svm_check_l1_save() and calls it in
+svm_leave_smm() to reject invalid L1 state restored from the guest HSAVE
+area on RSM.
+
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 136069dfcd44f..9de22fa928efa 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -5224,6 +5224,13 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, co=
+nst union kvm_smram *smram)
+> =20
+>  	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, m_save.map.hva + 0x4=
+00);
+> =20
+> +	/*
+> +	 * The HSAVE area is guest memory; validate the restored L1 state before
+> +	 * it is used to build the nested MMU, same as KVM_SET_NESTED_STATE.
+> +	 */
+> +	if (nested_svm_check_l1_save(vcpu, &svm->vmcb01.ptr->save))
+> +		return 1;
+
+[Severity: Medium]
+In arch/x86/kvm/svm/svm.c, svm_leave_smm() calls svm_copy_vmrun_state() to
+copy the untrusted guest HSAVE state into svm->vmcb01.ptr->save before
+validating it with nested_svm_check_l1_save() (and before
+nested_svm_check_cached_vmcb12()).  Unlike svm_set_nested_state() in
+arch/x86/kvm/svm/nested.c, which validates the candidate save area before
+calling svm_copy_vmrun_state(), doesn't returning early here leave the
+rejected HSAVE state in the active vmcb01 save area out of sync with
+vcpu->arch?
+
+Before calling svm_leave_smm(), rsm_interception() ->
+kvm_emulate_instruction_from_buffer() -> em_rsm() -> emulator_leave_smm()
+in arch/x86/kvm/smm.c transitions vcpu->arch and vmcb01 to 32-bit real mode:
+
+	cr0 =3D kvm_read_cr0(vcpu);
+	if (cr0 & X86_CR0_PE)
+		kvm_set_cr0(vcpu, cr0 & ~(X86_CR0_PG | X86_CR0_PE));
+
+When nested_svm_check_l1_save() fails in svm_leave_smm(), em_rsm() queues
+KVM_REQ_TRIPLE_FAULT and exits to userspace with KVM_EXIT_SHUTDOWN, leaving
+svm->vmcb01.ptr->save populated with the unvalidated HSAVE fields while
+vcpu->arch reflects 32-bit real mode.
+
+If userspace then calls KVM_GET_SREGS, __get_sregs_common() reads segment
+registers, GDT, and IDT from svm->vmcb01.ptr->save (such as cs.l =3D 1) whi=
+le
+reading cr0, cr4, and efer from vcpu->arch (efer =3D 0, cr0.PG =3D 0),
+producing an inconsistent kvm_sregs structure that KVM_SET_SREGS rejects
+with -EINVAL.  Furthermore, if userspace invokes KVM_RUN again without a
+full KVM_SET_SREGS reset, svm_vcpu_run() in arch/x86/kvm/svm/svm.c will
+sync the rejected vmcb01 cr0 and cr3 back into vcpu->arch without updating
+vcpu->arch.root_mmu:
+
+		if (!svm_is_intercept(svm, INTERCEPT_CR0_WRITE))
+			vcpu->arch.cr0 =3D svm->vmcb->save.cr0;
+		if (npt_enabled)
+			vcpu->arch.cr3 =3D svm->vmcb->save.cr3;
+
+And when npt_enabled is false, svm_copy_vmrun_state() will have overwritten
+the mandatory shadow-paging bits (X86_CR0_PG | X86_CR0_WP and X86_CR4_PAE)
+in svm->vmcb01.ptr->save.cr0 and cr4 with raw guest HSAVE values.
+
+Should nested_svm_check_l1_save() validate m_save.map.hva + 0x400 (and
+should nested_svm_check_cached_vmcb12() also run) before
+svm_copy_vmrun_state() modifies svm->vmcb01.ptr->save?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103230750.1843=
+-1-ma.08@web.de?part=3D1
