@@ -1,89 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793729308;
-	b=vEXd9fOe6RWsufueTrEE8eEASdV6Q2qya0m12xpYCC/iYKzSBlB5x6H2gf+dM5wayrU7
-	 iH2+jZcuMAtNBJgMgBpf4o4tS0hbLiGdOexCzmVkjzOGbOoM/4Cxxkp3amg6v8/5/5H5b
-	 T/nvEARszLsOY8oyPG14us6OmMXpReLecUH2WqGnPJ8gwEJadL4bHVzV9yb/CsNRlsF2Q
-	 uxa8kOqFzIC9oztDBJSf6n0/a6Rf6rNWrHIqz63/lJgDB9nPr2UET8vwqvFOhh2U1T1UR
-	 oWyld6N1osSVvNkd34z6UNyEVS2ZPz3MdWD7sE842dwUJLt8yG/wD31ae0Zcsu4A3zg==
+	t=1793730051;
+	b=olmEiqIhFY0eS6nEaPDACnwnrexdWHM1fsLUFVT+wglAIZ+UfwaECAJzndUY5KzByGDX
+	 OhkKfd00mff2x4MSP3dexAViyEc9++6Ns1jZbaqQ0gcfj2Xi6gviT0uw7zX+ggathzigo
+	 H/x8DPEWQHBlVcSW5mCfwOgqRd+QJKe2qqdNibSIG2TFb7VhMRChDR97T7u5CaMNbt/ZB
+	 hovW7lJlZJ2co4OQgVgC86NKMQ3rHanq8HKTpDevP2jlctlzI9Ntm7I9hyAJRSYhB22th
+	 1JyUZOucbyX7ouVG6Fn04zsGRln3iCc2BzsYDClooyuJZpDf+OK8ZXFzmDDfzVv3+Hg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793729308;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References;
-	bh=aIKiDgYd/jXgONymQ12SSZ5b8e5yxBJKR0/jjx24Mc0=;
-	b=jqW1+q2xMLvM9mcaqIDN9Tuhi9softpPkbP5pSuOFPb8TkbCWAzVoFvC26y6yeKLHSor
-	 9HzKIyXnDIoKn8tBjTPf0upYFUI4UbzK+suaKzUgEzYpnbW6uKX4JNtaDOMmSV/Odd7Q5
-	 WlVah2Bj5pV0tReO1wDDKWj6qdQIPVm2xwSA4TAqTTzNOgvhWqvdnwu6DmnEZsfAYv675
-	 tAchDTb6Yd/fsWHKxLCWHWgOWeMSSv7eGYKZMFE+vztrZ93aiBx8pR8IyjqDVYVLNCvR6
-	 ny+hVKo5xSo1QdsrMXKLzHJP2EZbO4ZXO6+n7O9Yt8MJsG7+T6v7bNbBCjGj9hmi0EQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793730051;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=FPwk+Obv3JX7khvwqPN/UuLuPSKvZ6g9lKWJcYLlWQk=;
+	b=bSb7T+ExCb8g+WraSfr9M2GVa2W03OhZ4cNtqtRRtb9CQA98QDzXOgzxo2tG4YT80FTW
+	 ks2Rs0KDSl1gv/hHoW1mvL8QrQXA2gsa8c0ZRVfRV3na0reTwgT6XNRGwgvgmc9SnMgQL
+	 VJz0D3tVZGN7c+6t3sUDsTXBLTUxhUi8lJhypUL7FJvH3zwZvm40nRiCk+egPxNWLwGPM
+	 YCbjqdQAT3dK9aFhE2HAiRzJW+ahl79fvwHLlPgFN/2vzN2/imTi3v6cIfTST5iVjPXco
+	 BbkFHBLJ6e74xAt7PHrRgnc6DWeEWMSKrxd14muUrbY9XKE2l2KJP4YaPM/vMJV0+cA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pjM0am6+;
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H5g8y4HA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE85606A324
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 18:08:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCE85606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B72C606A326;
+	Tue,  3 Nov 2026 18:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pjM0am6+
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso7455806eec.0
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 10:08:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793729307; x=1794334107; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=aIKiDgYd/jXgONymQ12SSZ5b8e5yxBJKR0/jjx24Mc0=;
-        b=pjM0am6+Rgo2yftlp1GqexQpoRm3ayyV/7AWG7PKMkJQsjd0PErZQhxXQs8yZ3P2d2
-         F1LWKPTElCoMg80tzCyajDHBoIWj2AQkTCcyJYnUlH86v+UcMcNf16aie6lFnMqLck4r
-         ISoVW7lI99boYuR9+B2t2FVY3vFtWHb4tBMi5+HvUznELrAetM/zlvxol9iIGYuuypw+
-         ks1JGzr/mVGXvfIouELVug9utfJaibpL6i+BkTYBTVi92Ps58z6e3ujbzFZslHVUyKTD
-         +z6bxcR6JbaDl3e6mipTVr080MF4zDSGdLS6yvZY+n5wX3ELSPeu5Np4nSvBDiOVHtZ6
-         jYFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793729307; x=1794334107;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aIKiDgYd/jXgONymQ12SSZ5b8e5yxBJKR0/jjx24Mc0=;
-        b=HvwdC/fKdUXDhs7Aitcqb+T1QXjqJ7UY1Bw8tZo79k5Q7TdileM6qkfTTQ+mAuRDNU
-         2uAehtVWDupLUqdbBjyGLcY3jCmrVTJ35AJWq0QRURbaflc4Cnba3s4+NQNzqbNh65H+
-         BHi+gAqua3k0yoE9Gk2BYRe9lr4QkppgIKNsSBRUbMhTefmL6i4otIrxClZbU6Un57zT
-         /wWlMJCr4Pr9rLAlFHwNC6PETjyLZmQgzVubITeMZXy+jzzeP65Inui261ZUB03wURxN
-         +TpQGnGAL4DzzfPps8EgXD1BnDObUz0qqhUc38bKOPIUm+38FdRd0WztoHAVPSM+2Hgm
-         VgJA==
-X-Forwarded-Encrypted: i=1; AKwUvBxjPoePGm6sfttqi2e+7pbNWjrju8esFFCkm02wMeqBmEF+M+HL7LABjefjEOvbDsUE66U=@vger.kernel.org
-X-Gm-Message-State: APuU4Z978nkd0sysXOL2Tn85lBTMhSnUopragpYFBUXuZAX0iCftPj3t
-	XFLEd7JipUByXKUzUwt3FHkVTl9G3Rdq5tSxYdvNZYj85Bt73d1Chdv0
-X-Gm-Gg: AYBFou3e8nJidPrn+lt/lXFr41u3bRPxDG8UJS36/zrnSTudfNlDIc2DpjesTDs/Fos
-	GWeTrP1arhyQ7vjCKz0MsqZAEi9y3LqDlUvD+ffKRVc1wf1HcXPoTnXgESICsv7j0aGP6f5Kxy6
-	aqPWb+xuaJ3YFDPpvIDd2uIqKGmuFhvFUGopeJZ3hxJisWbkk46WYP58TXPJ5kUIupOeUU5Xa8w
-	8+9eN5mOUPPd7Cj8n37JErWoKuHAhTSI3EzwuYsO0hAly82bI63G1rKaFSs8SSE929XmAoQt0Vo
-	/lG94FjaymetvSnukjpnr1lp0/cvUY1WvEbTZ78Mr9Gjbzx8xFnrXpq53mewzI7kGVCliVztBk8
-	la/ONtFuB3MEr57j3ABtdYcUfEyOwfTpxKz+L+8pvs3U5bKyy/u4oGsk7Z8sXtgvMnF7wd0EGrW
-	HByXgi5VnWnAdG4i5nw4uJvCFQdk1Df/SqlKhjHYfd3xMxKdpIdREHKRid6xIdwWwB8f5izoDgv
-	2tgd2wxpIS2tcsSsxkeVBZ1IzNr1xaiwguQrupWC9LW3BXIIsVOJHUMO3i0/UOmscBWrNqAcuRV
-	7Kj2GTc7EuX2KvvVBUXK5eASFf2TorU7TTT0y8zkK9hUXZiy
-X-Received: by 2002:a05:693c:87c6:10b0:367:5e31:ce29 with SMTP id 5a478bee46e88-36a42404ab3mr21838555eec.20.1793729306698;
-        Tue, 03 Nov 2026 10:08:26 -0800 (PST)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42a96172sm44904557eec.27.2026.11.03.10.08.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 10:08:25 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Sean Christopherson <seanjc@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>, James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH v4 03/23] KVM: PPC: Flush/zap all memslots on kvm_arch_flush_shadow_all()
-In-Reply-To: <20261030212112.2598640-4-seanjc@google.com>
-Date: Tue, 03 Nov 2026 22:51:44 +0530
-Message-ID: <tslx6dav.ritesh.list@gmail.com>
-References: <20261030212112.2598640-1-seanjc@google.com> <20261030212112.2598640-4-seanjc@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H5g8y4HA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EF71F000C1;
+	Tue,  3 Nov 2026 18:20:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793730050;
+	bh=FPwk+Obv3JX7khvwqPN/UuLuPSKvZ6g9lKWJcYLlWQk=;
+	h=From:Subject:Date:To:Cc;
+	b=H5g8y4HAdMcsyMgO7MOqQ7BuM7LXnzIK+xJ3SWXbf7IAmivibRHPYgmSiUZ243K3o
+	 xuWunLgtOHqbrBnOvLZbfi128Hd2EqEGcsBWaZKMUaop6dKuKjVS2YZmtRELp7IXYl
+	 h1DGNIlHCuXUtyihEW3rpzB7JWXvLE8xMbchZD2EiWSPEZZcceQ5rXTV/7IkNSvNmF
+	 od7d8WVYID0QNkeqoC0ubXbh6Ide9beDyteguOycx9bUBjjIcANmN65D9INpW/sTft
+	 eX9PPc26rBBh/MPvac7EftUKHdd/s6M7sPg5bQg6N7ikd14uDW+Ie3Yis9JU2NE26u
+	 Eno1+FFFIK8kA==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH v9 0/3] KVM: selftests: arm64: Improve diagnostics from
+ set_id_regs
+Date: Tue, 03 Nov 2026 18:19:20 +0000
+Message-Id: <20261103-kvm-arm64-set-id-regs-aarch64-v9-0-ab32bc79fa9c@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -92,67 +53,97 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKkl6moC/4XPz07DMAwG8FeZcibIdvN3J94DcUhSZ6vGOpROF
+ Wjau5NOoIJ6yPH7LP1s38TEZeBJ7Hc3UXgepuEy1uCfdiIdw3hgOfQ1CwLSCOTkaT7LUM5GyYm
+ vdSgLHyYZQknH2nGM1nrjFWAS1fgonIfPh//6VvNxmK6X8vVYN+PS/sgdNOQZJUhvMkNPEa3jl
+ xOXkd+fL+UgFnqmlUNULY4qZyxlQpUVxrzhupUj9C2uq1zMQVnFqSN0G079cgYQTItTlUuWs9I
+ aQ47dhtMr16FtcbpywUCm6LVhog1nVs62nzWVs6TI2awzwvZZu3IesMXZhYtgdITYBx82nPvDU
+ fM6VzntQohMiXJI/7j7/f4Nq5c/dvQCAAA=
+X-Change-ID: 20251028-kvm-arm64-set-id-regs-aarch64-ebb77969401c
+To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+ Oliver Upton <oupton@kernel.org>
+Cc: Ben Horgan <ben.horgan@arm.com>, linux-arm-kernel@lists.infradead.org, 
+ kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2800; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=4ky2ZC0HdjDT4ejqM8lZ1oDOfp+5HqQ3XaDMShmtQSc=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJeqf5b/ddyypdmNuNDU6bLP3ELdL7t9ux9kmWocKLp+
+ r2sX3Yd6ShlYRDjYpAVU2SJy+J+WV/yeg3fwYVtMHNYmUCGMHBxCsBEGB4x/M+65vjVp6jt04RJ
+ c97bTN424Ye/xP+gp2nCaaq/NPWTfscw/E+s+lVn97I7KWzdNcdVxz/aaMp/fZ64xPZX/w6Hc93
+ ijMwA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Sean Christopherson <seanjc@google.com> writes:
+While debugging issues related to aarch64 only systems I ran into
+speedbumps due to the lack of detail in the results reported when the
+guest register read and reset value preservation tests were run, they
+generated an immediately fatal assert without indicating which register
+was being tested. Update these tests to non-fatally report a standard
+kselftest result per register, making it much easier to see what the
+problem being reported is.
 
-> Flush/zap every memslot in kvm_arch_flush_shadow_all(), i.e. when the
-> owning userspace process is exiting, as KVM must ensure all associated
-> memory is unmapped from the guest.
->
+A similar issue exists with the validation of the individual bitfields
+in registers due to the use of immediately fatal asserts. Update those
+asserts to be standard kselftest reports.
 
-That's true and yes, this looks like a miss. I guess it must have gone
-unnoticed because after the owning process exits, and when the vmfd is
-closed it will issue a teardown. So the escape is only until the vmfd is
-closed...
-  kvm_arch_destroy_vm() -> kvmppc_free_radix()
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+Changes in v9:
+- Rebase onto v7.4-rc1.
+- Link to v8: https://patch.msgid.link/20260929-kvm-arm64-set-id-regs-aarch64-v8-0-58aabe2c2fac@kernel.org
 
-The change looks good to me. I have only tested this on my qemu+dev
-setup for now. But will give it a try on real hardware as well.
+Changes in v8:
+- Convert another assert.
+- Link to v7: https://patch.msgid.link/20260901-kvm-arm64-set-id-regs-aarch64-v7-0-7b065b0bda9a@kernel.org
 
-Thanks for taking care of this. Please feel free to add:
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Changes in v7:
+- Rebase onto v7.3-rc1.
+- Link to v6: https://patch.msgid.link/20260719-kvm-arm64-set-id-regs-aarch64-v6-0-724287f5f108@kernel.org
 
+Changes in v6:
+- Rebase onto v7.2-rc3.
+- Drop changes to handling of aarch32 related registers on 64 bit only
+  systems, an in kernel solution is preferred for those.
+- Use a define to count the non-test_regs registers.
+- Link to v5: https://patch.msgid.link/20260317-kvm-arm64-set-id-regs-aarch64-v5-0-a60f2b956e22@kernel.org
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/powerpc/include/asm/kvm_host.h |  1 -
->  arch/powerpc/kvm/powerpc.c          | 11 +++++++++++
->  2 files changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-> index 708a32f89776..50a42f80e5f1 100644
-> --- a/arch/powerpc/include/asm/kvm_host.h
-> +++ b/arch/powerpc/include/asm/kvm_host.h
-> @@ -910,7 +910,6 @@ struct kvm_vcpu_arch {
->  #define __KVM_HAVE_CREATE_DEVICE
->  
->  static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
-> -static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
->  static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
->  static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
->  
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 9194cf492d1c..9e9d0865c2f6 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -764,6 +764,17 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->  	kvmppc_core_commit_memory_region(kvm, old, new, change);
->  }
->  
-> +void kvm_arch_flush_shadow_all(struct kvm *kvm)
-> +{
-> +	struct kvm_memory_slot *slot;
-> +	struct kvm_memslots *slots;
-> +	int bkt;
-> +
-> +	slots = kvm_memslots(kvm);
-> +	kvm_for_each_memslot(slot, bkt, slots)
-> +		kvmppc_core_flush_memslot(kvm, slot);
-> +}
-> +
->  void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
->  				   struct kvm_memory_slot *slot)
->  {
-> -- 
-> 2.56.0.385.gac671c819a-goog
+Changes in v5:
+- Rebase onto v7.0-rc1.
+- Link to v4: https://patch.msgid.link/20260106-kvm-arm64-set-id-regs-aarch64-v4-0-c7ef4551afb3@kernel.org
+
+Changes in v4:
+- Correct check for 32 bit ID registers.
+- Link to v3: https://patch.msgid.link/20251219-kvm-arm64-set-id-regs-aarch64-v3-0-bfa474ec3218@kernel.org
+
+Changes in v3:
+- Rebase onto v6.19-rc1.
+- Link to v2: https://patch.msgid.link/20251114-kvm-arm64-set-id-regs-aarch64-v2-0-672f214f41bf@kernel.org
+
+Changes in v2:
+- Add a fix for spurious failures with 64 bit only guests.
+- Link to v1: https://patch.msgid.link/20251030-kvm-arm64-set-id-regs-aarch64-v1-0-96fe0d2b178e@kernel.org
+
+---
+Mark Brown (3):
+      KVM: selftests: arm64: Report set_id_reg reads of test registers as tests
+      KVM: selftests: arm64: Report register reset tests individually
+      KVM: selftests: arm64: Make set_id_regs bitfield validity checks non-fatal
+
+ tools/testing/selftests/kvm/arm64/set_id_regs.c | 130 ++++++++++++++++++------
+ 1 file changed, 98 insertions(+), 32 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+change-id: 20251028-kvm-arm64-set-id-regs-aarch64-ebb77969401c
+
+Best regards,
+--  
+Mark Brown <broonie@kernel.org>
+
