@@ -1,58 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793710902;
-	b=JYocwJFvVkMlaUPC86rsMFawyZN2LnLOHd1n+KrQRY4u4c9EigA9VkuODAIA2XeYa5M2
-	 yX3Icf0XM9bLaDaojCQ3TWbdQSPQ5BBUD+iVTP0cRrAAoisjBhgqOZPPeY1ZtD0W6Ap11
-	 ka6mRG9P951QKQA6Ho6kky3mQilq5/Uib2esPfJWi6Rb8RWFwRZ3XRXjoW3oI+zQxwn82
-	 dLG7DljnT/qmQXuhwtwV9oAEy335N8omLQIqZgrh39phcszsqiQzhrUR+e/j5w9qK5pHU
-	 e1kdlKX24hYRtn6tV8OeyuyKZQOcMoF1lt37n2ox7nsjTPw8aqhXMNY6HKn87+lEfyg==
+	t=1793711182;
+	b=PQolzVcgGJXfEwWyxEiz9MZxk4OOSy+9fSdgBNGiFIbnJwFTFW3Jzv8l4IYwAy2KqjBJ
+	 GAGVSwXTgWbMKPJBSpoKSRnw3R3y0dtlqlrC2xUVa4jJPEhHBZQTOX8W1xZxFjtRsvQkH
+	 yJg8x1GwF3D11QQ+YAv3S6dqp6uly7zJbAV5KJLt7SXY8GK4gh1T3jFOqnckXJ/9nsr7j
+	 uGctKnaBkde3Aj9tE4L0U596XeCXCak4kDxpnyx+sdMv0hBaGWs2GJKpxUOwElGO2XwK5
+	 UjJ8LWiSLNXt2VDJ0apnaSxRvYxl6TqMNAZpFF/Xdl0P28Px3fjQhspLEyyVkfxUUHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793710902;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=Fe/sqjXMQ0febl707jCaRDDCk+kBQa1AqavEoYmb1Z4=;
-	b=FtomAO+ASWizSiomKAcIIBOAb1floO+slq4Tn4dkCQLMD4dCqIF3V7Segzzvkly72PaN
-	 4g0LAgqcZ/3zylwimdrP3xnpSarzZj4aXKHpeaeSh6aK5XhZ2OuD3IHSPBxvXYWsC+rqW
-	 mCwrELWE0DnqOcV60o6apbf9c0KLLUKE8lUrjEOLW+MzdCYl3a/dFjxGFNTYKqOBJbQyv
-	 WUJd7GXVX84KPILgBIh728d+MKyKu/mko0R1MSjKgUpdktQMwomrL4SiYIG7ZJWrP45HU
-	 ROPMjBTKKNC0hrJxb+PkCm8mnFV5eYx6bWZMP51qtDjVhh4NWxixbdZ82ftgI0yimjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793711182;
+	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:
+	 X-SA-Exim-Mail-From:X-SA-Exim-Scanned;
+	bh=vCbJtWSQWA+dOppoLln3XQQI8iTRF07B0RxyzIkvfdc=;
+	b=3yw9O23hOQCNE3ilLP19zXRHcxSlm8VcnhbdOGCFHxOSW1iUidoo5OA/Ro/vWdyrKRLs
+	 sT0YdQ39Rn4OkwTzG+oTdkKgxrJ5D1mFD6DSZpnJQEA+FJD/iB2cM6yKGcyu6aIdeb3aO
+	 hUgtc/0OqJLv8F/LphGEcEN+cVJ41ltdWrjJIw3bEfvBKrrPdXE4/wDbDY5/7FPHrUv8I
+	 LdgTFDVVUtwAhKXQ9AJKKWRtuzKGCRfI8Un5Rlq0aV0+n4U0kQjPXVtv5uchnhcBMuLNh
+	 3Vrj451EFKn2qwFArSwJK4V1zoFJ4RnU4Rz8HVHiWr38FGCkgKzIjOqq5qTwiDKD8Qw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="m/vZWMbJ";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QBbfLRUi;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D141606D816;
-	Tue,  3 Nov 2026 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE67606D83E;
+	Tue,  3 Nov 2026 13:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m/vZWMbJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F7B1F00A02;
-	Tue,  3 Nov 2026 13:01:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QBbfLRUi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E851F00A27;
+	Tue,  3 Nov 2026 13:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793710901;
-	bh=Fe/sqjXMQ0febl707jCaRDDCk+kBQa1AqavEoYmb1Z4=;
+	s=k20260515; t=1793711182;
+	bh=vCbJtWSQWA+dOppoLln3XQQI8iTRF07B0RxyzIkvfdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m/vZWMbJt3cDh9eL99gNJuNRONQT43DsPpfv8plS88iDEHGa6/mVi/lCY7UzNmeMd
-	 2V3p70NZontT/epfe/naILnfxpYjfChhL/e2z9ytL4ZrmQO1TL0q03UPRoVxGBKR2j
-	 yRyZOkHnbmtMGK+c1/g27MHtxnaEm3ZCYct+95Fu712Eqhniqe2BUd9oCirgy6Z8kp
-	 GzuYNIP21+eGxAZTUYDR0Obu9/Gur4ymqLdYxcKp8ffhJ24YYdmW1W0F/5uityO0dY
-	 kHIEgLMfPsfFtLCbTap5mYPzgLw2DB4MWD+VODgWrbeeI5CXgkTL9imAqtcZLNSEfL
-	 IRWHDenfVlbEg==
-From: Sasha Levin <sashal@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Shuah Khan <shuah@kernel.org>,
+	b=QBbfLRUiPpiCX6Fgou3CvHgZue94Mcmz5/yGZPxQwvZlXGb/5yhGuBKNC8FB4xvwZ
+	 JL8SF1aFcUvfyulmDMwjCP2erGQpbn53D2cU8Yl80yS3FPdp+M3/XJ6xPnxEtxzz8h
+	 gM+jbu8sK5xGqcOn0+7hzQ4ylcHb45bjcy6o9NmwLv0cnd1ygqP3Sc9PqBUsCJxqnD
+	 tbsDK1V0TojW9vS43YezrF6i3peXHhwymukFNBDcLuh2Y0LC1NTyM0g2mlIsR8+f5S
+	 3skV73lZgAa/gQKm2LvzH5XRlVuqx8s6DFsy0kJ8w8YGn/CNhU9gr+2DVsGWHA8kRa
+	 fqnCmlLDKgyig==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xOEDU-0000000ATWs-2dNj;
+	Tue, 03 Nov 2026 13:06:20 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
 	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: selftests: Provide empty installation rules on unsupported ARCHs
-Date: Tue,  3 Nov 2026 08:01:27 -0500
-Message-ID: <20261103130131.4069212-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261014200152.1365147-1-sashal@kernel.org>
-References: <20261014200152.1365147-1-sashal@kernel.org>
+	linux-arm-kernel@lists.infradead.org,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: nd <nd@arm.com>,
+	oupton@kernel.org,
+	fuad.tabba@linux.dev,
+	Joey Gouly <Joey.Gouly@arm.com>,
+	seiden@linux.ibm.com,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	yuzenghui@huawei.com,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH] KVM: arm64: vgic: Serialise CTRL_INIT against vCPU creation
+Date: Tue,  3 Nov 2026 13:05:42 +0000
+Message-ID: <179371111236.2844725.3353773125671356763.b4-ty@b4>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260904174419.76057-1-sascha.bischoff@arm.com>
+References: <20260904174419.76057-1-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,13 +75,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Sascha.Bischoff@arm.com, nd@arm.com, oupton@kernel.org, fuad.tabba@linux.dev, Joey.Gouly@arm.com, seiden@linux.ibm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, sashiko-bot@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Ping, this still applies on 7.4-rc1. On architectures the KVM
-selftests don't support, like 32-bit arm in KernelCI, installing the
-selftests still stops at the kvm suite with "No rule to make target
-'install'".
+On Fri, 04 Sep 2026 17:44:20 +0000, Sascha Bischoff wrote:
+> vgic_init() compares created_vcpus with online_vcpus to detect a vCPU
+> being created. However, CTRL_INIT only holds config_lock, while
+> admission of new vCPUs and updates to created_vcpus are protected by
+> kvm->lock.
+> 
+> A concurrent KVM_CREATE_VCPU can therefore increment created_vcpus
+> after vgic_init() checks the counters, then block on config_lock before
+> publishing the new vCPU. For a GICv4 VM, vgic_v4_init() consequently
+> sizes its vPE array using a stale online_vcpus value, leaving no vPE
+> entry for the new vCPU once its creation completes. The upcoming GICv5
+> IRS support would hit the same issue when sizing its doorbell domain.
+> 
+> [...]
 
+Applied to fixes, thanks!
+
+[1/1] KVM: arm64: vgic: Serialise CTRL_INIT against vCPU creation
+      commit: 5f54835d94db2e896ec27415b9de2e81cb56009a
+
+Cheers,
+
+	M.
 -- 
-Thanks,
-Sasha
+Without deviation from the norm, progress is not possible.
+
+
