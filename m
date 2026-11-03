@@ -1,57 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793718930;
-	b=ADq6uVslqoQZT3vAZJtJmabcPZW6U6NIKzB9XbrL9uzzeixQz0CLNZNTB8c2Pbj2RXlO
-	 LaNMkZ39eMLbA4mLnKzcB359wrk1Ra+xo2IsP6z5Kld0ty6SsOMAcxNGmGfWFZQLQjzyf
-	 F25iBh7XscAzKzOrahicypmLpK/R/iCMpal3kOCS7rO+CWr8DlbwoH2/8g4i2mrf6eAHR
-	 mk49PFdc9gc82zptJd5tMniBaCsHUar5+ALZU8gVYTQDftzhewx3OmdErRCJ/7UjfF+nW
-	 GpxgXp3MLmah9mRYEGlDT/7Tn969q8foyaCGLuzRmw7u3kjcWHLdnH8Czaw9yyAUUag==
+	t=1793719026;
+	b=Vi7FM9yFLz4mLP6hDAcEOlxQCj81IWXa7joNCwttUlunqJnsttf4YCxz+iWfotDIRYrs
+	 0ShI59GGUaPouhAJzlycREE+dFfY7oozTvIb/Ol3pHXj1a6E58ID5y2PeagXrygZdqbuG
+	 FQzVBmIRs19Mk4z/QseBRng7X0TWar9GYPYCKv2dwWrTzd0XfPyi4/MIfcqoZqdW4euEy
+	 TScjfmUq6M1iyJBVOJh/YfjYKpxR9L81AIHrcxvVAJvfIVzr+RlydqIs+5MO/o/dsjJ55
+	 HphB3W5gI2YqzWIw30ptWIqsAc+UxQuEnndeTF782WNCrMiB3vih5FKBH1TG4JzIS5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793718930;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=mI3CFwUuzvcIOODehtEbWIXPGEGMeTOZrw8tS2JfCIQ=;
-	b=mFYkBAuJMpx6VC+1t9up32/izP6vPESg2vU/vJOK/BATH4OVGR4En7Iu6Y3r67u9npkv
-	 GdW1Ke+LxdkMUTWYWEIeGNFJxXbLgvz4I3ZJFNZ7nTh4davx8zKd+oyml52L3/UQ3MnvD
-	 rhjrMO5c/aXjAw81XUQl59XLuXMzg93t7dx6/Ro8J1Y/Cz0F129f8HU5eaMCb7vkIESnC
-	 FiVFCdJslZbJOsR4DwPtH6VI9aNZcbmBAZLbxDkSotUkxu9yR07aDxWMvFgaY5wDhcabv
-	 2TlGNp7GfUzBzjZpPU2wpUTjO4aDIUC0jW8tqPKiwHuQjzaTcv662TFgoptIS8c++AA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793719026;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=gZPyGNb7zpjaaj961jv5er4Nb77WoHldzauRxys7WyE=;
+	b=Q/CbZWJabNNgM6Bi3d1E+06C3H7XRAEfxr10WyP0he9vSXteRCa11LsPxCB76imiz0MF
+	 xNuB2/icg1skapdF0inl2zBsRs7r3Nf31NcZBFdtakozRfNKlc4PCy+E3N9N5tt3uqC/M
+	 QwRqJuW+q0BNynK4rOzquFx8Q+MsH2c7mYw8argKzukcCylPZxJfxiz7CPn08cYzSJkAH
+	 nmIyhL0KT6lCSkHbcuQ2avQ8duS4nkiI6wGfOnUUdxgutbsG/QHO1S2GRBFLi59zfGf+d
+	 usR4fVdBujbrX7R7NQ4AqH6XX9GGV6wrZERJxexmcsrc3Pzc3A16LgUnqGQQN2l2bOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P9D89k5W;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mW6b0k6t;
+	arc=none smtp.remote-ip=209.85.214.198
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D176606EEAA;
-	Tue,  3 Nov 2026 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE6C606D2F5
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 15:17:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAE6C606D2F5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P9D89k5W
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D256B1F00A23;
-	Tue,  3 Nov 2026 15:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793718930;
-	bh=mI3CFwUuzvcIOODehtEbWIXPGEGMeTOZrw8tS2JfCIQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=P9D89k5W4gPRK3aF36dQI9RlWFxgCfl7QijD7Dpl9kLItprnRnowYqyKdVAoqhgQv
-	 omCdEgq7z7JLY3eByFNwRHwDsnUQKkKJ2PeTTGmbfu34ddZTkO3sh2Nd61UmiQqEJm
-	 J9ETrMB4D/yiQNXhbYg97UDRPIhrGVkHgjxPJBg/Zj1FLgcfqSYrtKOYiQAZHT+jja
-	 byMgwl885xClqDM2ivNS7sRA3+neRYvA8T5dOrdR9mnP/HxEhNhh3kOKCsUKKNdSJn
-	 iqFpQj/0q6zr3yxG7JJtbXmMXaV5Q7cJ/DUxZgn8JkxOxBDLNtoFZcIc2+V6aOLGYp
-	 EZ66JFGQ0S8gQ==
-Message-ID: <sashiko-outbox-195573@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 3/5] s390/pci: Improve FMB memory management
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Omar Elghoul" <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261103150114.68873-4-oelghoul@linux.ibm.com>
-References: <20261103150114.68873-1-oelghoul@linux.ibm.com>
- <20261103150114.68873-4-oelghoul@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 15:15:29 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mW6b0k6t
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e9d52f684fso42299645ad.2
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 07:17:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793719025; x=1794323825; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gZPyGNb7zpjaaj961jv5er4Nb77WoHldzauRxys7WyE=;
+        b=mW6b0k6tkcAmvwTsiyUyrFOG0yYgxbMyq/CyLo0GBeVGkS+weCWHMTorKB4Qjre1c7
+         PO0M2SjA5Sg21rXACBzADNYx3Q1wHocgyf2w1QU/jmNFDjP1hc9iHbstkkvCwf1DcJXX
+         MGvGihb0mOoIGRo7aHflVO0L9IbYmO/JjAwc1i+h79nYEYcGZq70VG9ydwyjXGJjuHCb
+         k3cTWif9RVMoLMyXIhBHMgEUoh0vm7o8L03BIUKfk9B7JKFdX/afmGGG4q2oFhEXOlbZ
+         wipwtdfJNgS9uX7yUDZkedGmdCzauAaxEIAu8NXAb55FFTKLBaNv+5O74Tr5CB7ydWsW
+         oq0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793719025; x=1794323825;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gZPyGNb7zpjaaj961jv5er4Nb77WoHldzauRxys7WyE=;
+        b=HQ465/2zVn0gMioRAJqUzwBVJzcPheRBskPfAC8/tTkZ8OwBudsJCJsmjZGXkYK2H1
+         lGGfKv5MqnvlZZe5wV55g2Oog7OKMuhwuNpwSiIHSLWPsWAKdJKzJdKPwbDBWwXoAWVK
+         e94PrxxymqlqT02EcCCb97b0BLUNNXM7/VEPzwHfmDDfLW5LB+cSplmm55mWky6rJYZP
+         whX9EaO0l9qqQOep8ryOC/Us4/cWPKTbaiPZLE5b7tTnMaJH3ws+jOLiF1rmxcKX5QNZ
+         66qNHlns5wFByZg491I5A7+l+oRgE0Xu/98V/5eRIbyQ3hd7zJbu2zHR102EAl5yPMvw
+         +cdQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwvfkmA6yeOkytqRgXa6UJ43Nl1GeteHi8MjUiOvN/RvmaYOPI7+9B83xNB6Ugt8V1jY3g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/UpqIbo7kOGFQbwrGzs/b956V4oX6OhjFOUwEpeHV2pgmAiJHL
+	pGmdfZnL1c+qcs+K593oAoiXehPajE4W/o3+qPMwk1/Iye8kduZItL6DPDjLYSLPUQuGKiMN4A3
+	vawL5lA==
+X-Received: from plsr11.prod.google.com ([2002:a17:902:be0b:b0:2ea:d63d:f2c5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c3:b0:2e5:334f:f47e
+ with SMTP id d9443c01a7336-2eb36489c9bmr122626395ad.21.1793719024883; Tue, 03
+ Nov 2026 07:17:04 -0800 (PST)
+Date: Tue, 3 Nov 2026 07:17:04 -0800
+In-Reply-To: <CABgObfZ9mHj7Fsq7Z2S5vFy8R2Gkh2tHBATGJN2BpH=6Waks9w@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,113 +79,65 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com> <20261026224305.1254-1-hdanton@sina.com>
+ <auCucDdZb8mig7UZ@google.com> <auDvUyfzg6nLtVox@thinkstation>
+ <20261027163929.2bb28d5b@gandalf.local.home> <aujLx1FOc12E72rF@google.com> <CABgObfZ9mHj7Fsq7Z2S5vFy8R2Gkh2tHBATGJN2BpH=6Waks9w@mail.gmail.com>
+Message-ID: <aun68Iv_z6Xiz9mc@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
+	Hillf Danton <hdanton@sina.com>, Boqun Feng <boqun@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	linux-rt-devel@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] s390/pci: fmb_enabled not cleared when function is already disab=
-led
---
+On Tue, Nov 03, 2026, Paolo Bonzini wrote:
+> On Mon, Nov 2, 2026 at 6:43=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> > > If so, we need to make that a thread for RT kernels if you want to ca=
+ll
+> > > kzalloc_obj().
+> >
+> > Eww.  I can't imagine there's a sane usecase for memory overcommitting =
+a real-time
+> > guest.
+>=20
+> While I agree with the feeling, the dummy allocation path should be
+> mostly dead, because page fault should never (?) enable interrupts
+> before waiting:
+>=20
+> #PF interrupt gate
+>   exc_page_fault()
+>     kvm_handle_async_pf()
+>       __kvm_handle_async_pf()
+>         irqentry_enter()
+>         kvm_async_pf_task_wait_schedule()
+>           kvm_async_pf_queue_task() <- registers waiter
+>           prepare_to_swait_exclusive()
+>           local_irq_enable()
+>=20
+> The dummy allocation path is only reachable if it's an L1 hypervisor
+> that is getting an async page fault while L2 is running, because it
+> enables irq before the call to kvm_async_pf_task_wait_schedule(). I
+> think we can drop the dummy allocation for good, which would be even
+> better.
 
-commit ca3a9f4958dfbbed1e7f4c289498cd7e117c52ca
-Author: Omar Elghoul <oelghoul@linux.ibm.com>
++1, I completely forgot what this code is doing (although that implies I ev=
+er
+knew in the first place...).
 
-s390/pci: Improve FMB memory management
+> Whether you would still want to disable APF for RT kernels is up to you.
 
-This commit replaces the dedicated kmem_cache for Function Measurement
-Blocks (FMB) with kzalloc_obj() and retains the allocated FMB buffer across
-disable cycles until device release. Because a non-NULL zdev->fmb pointer no
-longer indicates whether measurement is active, it adds a zdev->fmb_enabled
-flag to track FMB state.
-
-> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-> index f49736386eb7c..f066a7ffc35c1 100644
-> --- a/arch/s390/pci/pci.c
-> +++ b/arch/s390/pci/pci.c
-[ ... ]
-> @@ -205,13 +203,17 @@ int zpci_fmb_enable(struct zpci_dev *zdev)
-> =20
->  	lockdep_assert_held(&zdev->fmb_lock);
-> =20
-> -	if (zdev->fmb || sizeof(*zdev->fmb) < zdev->fmb_length)
-> +	if (zdev->fmb_enabled || sizeof(*zdev->fmb) < zdev->fmb_length)
->  		return -EINVAL;
-[ ... ]
-> @@ -802,6 +805,12 @@ int zpci_disable_device(struct zpci_dev *zdev)
->  	} else {
->  		rc =3D -EIO;
->  	}
-> +
-> +	if (!rc) {
-> +		guard(mutex)(&zdev->fmb_lock);
-> +		zdev->fmb_enabled =3D 0;
-> +	}
-> +
->  	return rc;
->  }
->  EXPORT_SYMBOL_GPL(zpci_disable_device);
-
-[Severity: Medium]
-Can zdev->fmb_enabled remain set to 1 when the PCI function is disabled by
-firmware during reset or error recovery, preventing zpci_reenable_device()
-from re-enabling FMB measurement?
-
-In zpci_disable_device(), when clp_disable_fh() returns
-CLP_RC_SETPCIFN_ALRDY because the function is already disabled in firmware,
-clp_refresh_fh() updates zdev->fh to the disabled handle and sets rc to
--EINVAL:
-
-arch/s390/pci/pci.c:zpci_disable_device() {
-	cc =3D clp_disable_fh(zdev, &fh);
-	if (!cc) {
-		zpci_update_fh(zdev, fh);
-	} else if (cc =3D=3D CLP_RC_SETPCIFN_ALRDY) {
-		...
-		rc =3D clp_refresh_fh(zdev->fid, &fh);
-		if (!rc) {
-			zpci_update_fh(zdev, fh);
-			rc =3D -EINVAL;
-		}
-	} else {
-		rc =3D -EIO;
-	}
-
-	if (!rc) {
-		guard(mutex)(&zdev->fmb_lock);
-		zdev->fmb_enabled =3D 0;
-	}
-}
-
-Because zdev->fmb_enabled is only cleared when rc is 0, it stays set to 1 on
-the -EINVAL path. Similarly, when a platform error event disables the
-function on LPAR, __zpci_event_error() updates zdev->fh to the disabled
-handle via zpci_update_fh() without clearing zdev->fmb_enabled.
-
-When zpci_hot_reset_device() (or _do_recover() in pci_sysfs.c) then runs:
-
-arch/s390/pci/pci.c:zpci_hot_reset_device() {
-	if (zdev_enabled(zdev)) {
-		rc =3D zpci_disable_device(zdev);
-		if (rc =3D=3D -EINVAL)
-			rc =3D 0;
-		if (rc)
-			return rc;
-	}
-
-	rc =3D zpci_reenable_device(zdev);
-}
-
-zpci_reenable_device() re-enables the function in firmware (where FMB
-measurement starts disabled) and calls zpci_fmb_enable(zdev). However,
-since zdev->fmb_enabled is still 1, zpci_fmb_enable() immediately returns
--EINVAL without calling zpci_mod_fc() to register the FMB address with
-firmware, leaving FMB measurement disabled in firmware while
-zdev->fmb_enabled reports it as enabled.
-
-Should zdev->fmb_enabled also be cleared when the function is confirmed
-disabled on the CLP_RC_SETPCIFN_ALRDY path (or whenever zpci_update_fh()
-observes a disabled function handle, or before zpci_fmb_enable() in
-zpci_reenable_device())?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103150114.6887=
-3-1-oelghoul@linux.ibm.com?part=3D3
+Nah, on second thought there are use cases for async #PF other than memory
+overcommit.  Whether or not they coincide with PREEMPT_RT is debatable, but=
+ I
+don't think it makes sense to go looking for trouble.
