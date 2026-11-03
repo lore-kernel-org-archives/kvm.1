@@ -1,62 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.127
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.232
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793713515;
-	b=LXNRCBMJqZ+LafwYKTVKxLTHtfOGEpvJW5V+NBwpsNJ340Q2EpwR2+49Y1iR96GJ4Z1D
-	 AVWxQxJPCxid9p4CiUqCZxfIYrFgauhIKG7XddZzmNxcLbarE2p4bnlOcG9jFsfME1dtI
-	 e3WHOZ2gwsf72JgzAEgAnPXRlkfpl5Shvh/VOOOwU6N5MO2lr9XOsEYC5WYVHFwJgop6w
-	 DWJjQFMBMzk1suPxRu1+3DxdPfzzHZsYSD1TiYubcXBWxjhc8Fin7O6C4POxrzUESMB1e
-	 8qv60mRRcB2whbgGrzfQNlqEYbbu7dY0fLH/G0wvE5JlLRjNd6lJi9wdnzV+cN7qEVQ==
+	t=1793713763;
+	b=gDLaTX59NHz2ElBhyH/fUm26jzZDLS3jb9U68d23YZU6riMV2e49i9ozep2bjIOR+uaC
+	 eAgedflkzMXE//7GHa6rSWzoilK/QgLFzLX6Yhj7sxSp5w/fiB6q/eD+mSV/2UZW0DgGt
+	 1brL7FWNZau29JY5jKa9an5LC5PWTXBPTEOKzJXAqk/HoE86aRPgnUnohOjqdoNTjmOJr
+	 IfxVc9m/XcNBtsouB7ktPq0pfrzTKH97b0Kue4RjKaQoJwCTl+UAHFAe7xjRyDVSc+AOg
+	 rcbJUn/VWEEI7ilyx9CSiMLtYxBMqW271MRu/I5eR4fCMV0nMVnHzji2/V8womyWHPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793713515;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793713763;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type;
-	bh=7JATDHeSysjhrflLAzQ9XRWSKRJGHXy+wbdwm4zZP4o=;
-	b=o+M16iws0+bpYUgmXcZH5uktoi0dMIFy33ITLEkkBRq7dn6FLJbn/BwwTcX0/KH50vpp
-	 cV+0OzceQEmTWKuUMuxjtGV/WNFTaxPBvvgFFBKsuAeN2+C6vDXQ8qXgkKy/Sfs+lQW+U
-	 Nk52aP9byVtmicBvxcV63WLUhScCQezPW7CPxMVULjbgMhNF7CLkI9hmTO/NrBiR0E3fr
-	 M2qUrTroZvLs31Il9ONDjSRK3R0uN/+9uY9oY6hKR7U6RKzVqGnV3AUJaOlzhpTAZxhKg
-	 OC351m95gVYE4LEagpJLTUjQ4FmqUL1jxvQcSDjb9b3N6yFMQW+knQKP6Fy5BIcuaiQ==
+	bh=Vj7nnf3+hX6pDD4kkVdX7ATUkAs5lwT8YtIid3wScRU=;
+	b=QSydo86ufcM7uQUjBkp9AaCsdPPqGfFi4o1UMV19LyVCLpH8E5WI/7yo7ztorL5YP2qA
+	 FUxtHq8KPYjLKrLoE+aqiKnRBSN7BhiaE1VWmXj2dMh2Cfmzp+Xz3TJ+mZ4TpGV0KXDX/
+	 TunGhAxIlAUFmBSjDHBUvb+Xgsbl+juXVE9Nxv+ZMiqKS0jHXL3IjPQk5vhGWfY39uXMD
+	 Iv62SOc064w1aFSkCDKvJ7UkQ83aAT5bVDS5j+Jb54BoJWyJfYSyk/tt79fj8bpbFFiNI
+	 4T6YCzb3CJ80oOUOxfz5z4ojtjR5/HTL+TSBjMiip88aQix60ma1pH3GE/CezbcEOww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="G69lKP/E";
-	arc=none smtp.remote-ip=91.218.175.127
-Received: from mta0.migadu.com (out-127.mta0.migadu.com [91.218.175.127])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=r7JWYG3c;
+	arc=none smtp.remote-ip=91.218.175.232
+Received: from mta0.migadu.com (out-232.mta0.migadu.com [91.218.175.232])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C947D606A330
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 13:45:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C947D606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDA3606A329
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 13:49:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EDA3606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=G69lKP/E
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=r7JWYG3c
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=7JATDHeSysjhrflLAzQ9XRWSKRJGHXy+wbdwm4zZP4o=;
+DKIM-Signature: a=rsa-sha256; bh=lJFSAvh/s8cWO+ylQ8b65jdqU55xiRLoOy5tUADRJVg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793713512; v=1; x=1794318312;
- b=G69lKP/EZ+LNWB+iaC5oKH2GdBCOw5/Top3VNudCX3t0ZgHD6rlY8R4FBun/Slo08Zn+QDqr
- 3WVn15U3mtnMPMuLUnzsMsqjDL5jPmHK4sNKGymeaGlsZpIEjZEOMDQ2Epc3dEOo/GAQJxwtGOX
- GhIevum2eDq+2w2eJQLtQp/M=
+ t=1793713760; v=1; x=1794318560;
+ b=r7JWYG3c7BIrxkAljVzNY1DrJacPoGeZT55URSD98a4Ue5l68T5oJX0XieZbwiizBRRluoeX
+ TP35iDJf9wLFVVoHJq6HIpaZNq3yzdbLoM7RzfYVs3LZZXrhktTG/riU6eIXDoOxuuwiknAdBU5
+ j7iOZT67AC1JegSFAkrrFtuM=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 29762eed316c4973;
-	Tue, 03 Nov 2026 13:45:12 +0000
-X-Mizu-Trace-ID: 29762eed316c4973
+Received: by smtp.migadu.com with ESMTPS id 36182067f2dee993;
+	Tue, 03 Nov 2026 13:49:20 +0000
+X-Mizu-Trace-ID: 36182067f2dee993
 X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5be58ad9600so7349e87.0
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 05:45:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzVUWb6Mw+cdxLcqlVT5zC08BvY6HN/TI4w1xVk9cFoFoq+Iuyk1COyJWi1B3lQ3Cy6MIw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9SSyLsmJwEfBYTOy+01TWsm3rSN0IYtecQiTxP5UMrv9Re7IcS
-	CjhSo/TcEkGV4x1iorve3TqeIUFFaFxOBrm+8WeijIqDoeNAIFNZtTDOT0A5+2NmhzUyMjoVZRb
-	AeULt3KfhB//t73g/sLH5JzBt21bYcm1hqAvkDTor
-X-Received: by 2002:a05:6512:3e06:b0:5bf:a49c:ddde with SMTP id
- 2adb3069b0e04-5bff0efce9emr111926e87.10.1793713507212; Tue, 03 Nov 2026
- 05:45:07 -0800 (PST)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be58ad9600so7390e87.0
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 05:49:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBznygdHUHA4BrOp+sWYpvqeVM0jh7TTyPL5XpgM8KrM1mRYfMNf8LqiH3cXp2/pcYsN9Uw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9IEv2PDm3wg+yCsf/X5/cq5MltLceEW1IKQL2r6sM1nRhPwn0u
+	wySdeLnqsDen5zwnq1YImnmbofp+lbvtjDvm0MgRGtjHsdbmjlV14cjWyBelZIGVr0IpTLJxLbO
+	OwfLXrax7rk3FcZq6X8HEEVMAo7XgnTvhdmTESgj1
+X-Received: by 2002:a05:6512:4013:b0:5be:b32e:c309 with SMTP id
+ 2adb3069b0e04-5bff0f075b2mr105344e87.13.1793713759125; Tue, 03 Nov 2026
+ 05:49:19 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,14 +66,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102194454.4086911-1-sascha.bischoff@arm.com> <20261102194454.4086911-5-sascha.bischoff@arm.com>
-In-Reply-To: <20261102194454.4086911-5-sascha.bischoff@arm.com>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com> <20261102194454.4086911-7-sascha.bischoff@arm.com>
+In-Reply-To: <20261102194454.4086911-7-sascha.bischoff@arm.com>
 From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 3 Nov 2026 13:44:30 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTx6RuEs7gP=kUMJEJ-ktC_p0UNxG38rq3P68Xyo8xOMag@mail.gmail.com>
-X-Gm-Features: AclHuK_8x91av0-bAi-LcSEBarsfA-5SHr6ALUzPfLF0-91WlZxDuJwLvudbzOc
-Message-ID: <CA+EHjTx6RuEs7gP=kUMJEJ-ktC_p0UNxG38rq3P68Xyo8xOMag@mail.gmail.com>
-Subject: Re: [PATCH v2 04/16] irqchip/gic-v5: Add ITS MMIO register definitions
+Date: Tue, 3 Nov 2026 13:48:42 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTwWFobMXrVcm2iFhWXoWfudk6dGL8ed5mCs7u9LTsTpKQ@mail.gmail.com>
+X-Gm-Features: AclHuK9t40SuunANo3L6wQKi_X9nYoI88mdBFeXlfd2RawDyjQ21UrVXIFQXO9Y
+Message-ID: <CA+EHjTwWFobMXrVcm2iFhWXoWfudk6dGL8ed5mCs7u9LTsTpKQ@mail.gmail.com>
+Subject: Re: [PATCH v2 06/16] KVM: arm64: gic-v5: Add ITS MMIO state emulation
 To: Sascha Bischoff <sascha.bischoff@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
 	kvm@vger.kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
@@ -81,16 +81,22 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
 	peter.maydell@linaro.org, lpieralisi@kernel.org, timothy.hayes@arm.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 02 Nov 2026 19:44:42 +0000, Sascha Bischoff
+On Mon, 02 Nov 2026 19:44:44 +0000, Sascha Bischoff
 <sascha.bischoff@arm.com> wrote:
 [...]
-> Keeping the ITS register frame definitions together avoids spreading
-> register-definition churn across the subsequent KVM ITS emulation
-> patches.
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+[...]
+> +static void vgic_v5_its_reset(struct vgic_v5_its *its)
+> +{
+[...]
+> +        its->idr1.dt_levels = 1;
+> +        its->idr1.itt_levels = 1;
+> +        its->idr1.l2sz = 0;
 
-nit: the re-tab and the XDMN_EVENTs rename worth a mention here?
-
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+L2SZ 0 is reserved in the spec when either LEVELS bit is set. Could
+this advertise 0b111, as the spec recommends? (Sashiko [1])
 
 Thanks!
 /fuad
+
+[1] https://lore.kernel.org/all/sashiko-outbox-194056@kernel.org/
