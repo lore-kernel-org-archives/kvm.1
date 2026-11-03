@@ -1,103 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793698199;
-	b=CskyAWbfXqdGp/S3LbXDLKnkeMFpyklF5aBTTetbq+YPeNHelLZaEHHs9yr4Bfw7nYaL
-	 ZWAXlzygqwt/IeXRDXspj8EKEvBQrasTDvPJKzxPhT1zAwhZam5Nl4abGMa+W7pZve/Yy
-	 N9HKC/FUd1TMbBsdU2j26BAY+iabiltupLU9xysZU3A5jXqeT+IGbeCs+lElk5e7EsR8c
-	 1wHfX82EIT/69fXbTXdHICpGOFvzP+ERnN2VqylL0BrdH+qtxfLDMu3vMiYk+nC3SLHXQ
-	 Fza1jcmKtVMHl45jtnt5VT8i26eXZLRqxZKB5ZVq9nemZlYvGBGWD+LXNPIL8A0rpPQ==
+	t=1793698295;
+	b=q1jpWl35tVa4vfXbXOyLeiksUp3SP5EXGO6mY4rauUpBm3gsuPorbGTLK8T4/PqUxgWd
+	 YXI3ZOVn9nexrndOJCAIR2J7mcomL0ISpjjQ6i+6V6aqh70jqes0rmKw3B3RchiDCfYKk
+	 64zWptHRAy8M3p2XDY0vBh6lMZLL7b8OE4bj4bMlzWwkjdt01FUBZ/38sPkO9FESk8l62
+	 AF1Yx59BVdMm+eUu//zLXs2CJXDT6vPMyMjMxxG1eJWMgiKgqmdBOCaQC+NZHhAijOMhg
+	 zaqXbFrEyw/I5ff8JRIZ+9VdCwNKDSkhbODtAO1vtt6m3JccN0EM1jl2od1uupiK0GA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793698199;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=CkFM9E5nfWdnLbDGQzZA+rThnrcRob04z1+EqW99MTE=;
-	b=h90l4qN5x+CDcJnTxQWpZZTsuEJ7WO9iZQzMY4p3EKVrBNrnFXN9cFY7dDRtH2C4gCos
-	 O0PS6uXzV+BE3VjbVGutxMNUQbNRXSon8gCQO/PkEvvrrXr+PJKIWVfbWfRhszzEXDjzX
-	 qkpm91TrOzgp0vpar4L2H3Nj5vYurqQKcGANuSCRK75KP14sMDh6OEpM/X175vug2GRrb
-	 5vWuA6UN+kwQsH4QiiBO+FyrCU/Fk8beEGr2odBOCLkwYMTlnRIeoqsLenqOO6yrfDdkf
-	 iNNpA0Sr6yW6JM5kGg63FiBreHgzcq9xuzlIyhbRE7ICm5/8KfOH7FQPjqdvhjsMGEw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793698295;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=fC16NdxBHdU0srh0OABsgzxxvlgydqQxXjKWclcHTvI=;
+	b=38aqcCLQsvd56QZ1mfr1U7Lv6x9wGIQDyXbzh6M6ISUUjaYatYgfxhmatZuZ/JKv4jON
+	 jRrPO5zXFkqidkv8koP3CLuPDW8P5h9qSmcSJQ8COTHaVeHuskHJ1K7XHgHEnLE9I6a+L
+	 ZQeohIvDo5Ww6HTrmhwvcEloCKSvFSafAabHUgsFt7G3PENR55t3rdA0KTXuXdqFFbKFN
+	 GlbX1MtkLwHakFVXzm5q9766uWVoQ9FhmtCFLg5WfHV6fIinCnf3haDplx8bqJCMVe9mb
+	 1LGFbgqB9c5sPDDA0hsgG1uBQDvBb6iDK/Fbl62vpIwN/5Qt7TYGKE1V2xrEmUnSxMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=nD17MX4V;
-	arc=none smtp.remote-ip=209.85.221.44
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jfTFfzgg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C69606A326
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 09:29:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10C69606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB73606A324;
+	Tue,  3 Nov 2026 09:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=nD17MX4V
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48e4831c028so3430645f8f.0
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 01:29:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793698191; x=1794302991; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CkFM9E5nfWdnLbDGQzZA+rThnrcRob04z1+EqW99MTE=;
-        b=nD17MX4VzW88+nrnz9SgdcaYPQcOIkfh/S0yrXnMfUgiGGl0fkKSlltWyjDbQPyYMJ
-         eyJkJVCpvVbC4gP0OT8sEk1TVUj+BlCLU49pQgURFggfuzWLnbpspFwvtmXmiSM7p97k
-         Avk1+QdCZOKyymL8Xg/4fiDOAl4JzMdXU+h4yuR2KLxssHGZ1M6W1XKjWStlpIxt+gQG
-         EFvhWnv2HNS5oUqS9tj0RFT7ennBps/r5yNAsEvJLGB++paTLGgKMOvxgHjaZHrL2mF/
-         ShzDEeNLBnaPa9J3paZGOvdsYyNmHo4uMXZnKOLeuiZJYrrkShVMAtnqhblAA5vTMEZM
-         xpHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793698191; x=1794302991;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CkFM9E5nfWdnLbDGQzZA+rThnrcRob04z1+EqW99MTE=;
-        b=JB01Gx0KS0azQI5nFtlPwJMnKaDSO7quKjzCSPSqIIqOydF3lxyEcI8nSvWrOBtL1P
-         2w9xs96yToc5O+8LTmly9u7Y0BvImDCHyx2guSwzxmwF6qSJ9FVBw8rrrqo9q4YJ2XyU
-         CTyKkA/ukWZwwc0PWp5Thza6fa8rWIw8CdfSxj2CvF33u7nlZ3juIDmbwo38fMcBBGZ7
-         wyQ9Bxv5a0ps6Xlr0CIZBlnwd1FAPemhOkXqdDUeUO9+qxdi50mIrIeRzp9pyi3wfO6+
-         lJZjcruhIAfn4bfbdYzb5TKNSe84c0JtwtvvPVUgqkoAvgpU/D315ByuJHLwS/4GY+5j
-         2Jcw==
-X-Forwarded-Encrypted: i=1; AKwUvByLEN9ta1jbu9Z244N3As/srl0oOp3t7o59LJQr0RAjR40nilKpFSpvZxd5vd9Or9bln6w=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/1cQ1cNuh6aAljNzd/eprmC59+amYUp4F6/6KPJsvtYbMmPRAP
-	R18COVD3axquzZy51ynLYyzdO402QspZ8qz5CXVEfR9qEBdC8ms38bskhX9lxBbQewM=
-X-Gm-Gg: AYBFou0sj65z05GhcjmDW3fC3Qnvm63NdXGCXrSG8r2JIRdLMtAmyPL/OZ3RqHqiW20
-	mHrM0kFJk5SGTsLRjUB4jOluGZnNflL/g92/Rf+hYe3FSE00lxlIAmNoTS/5epULko7TA/VKSCs
-	tlNCN7BFj92MrhdjExiq8N2VeLyQQ0sxOvtLMzNhFOKZWO1kXv9xOTnhnpZPGUozryE2B/q5ZiG
-	oZDdMuIM02KX4+ZL1l3EXKzxWpD4b8141w57M+wyGoN6ldDRCpIdKApftkqjqOm2UzccCBjSZAE
-	qdvJrYzc6CPO2fKLnZC4TEUrbE42aS0PyRJ0nArvfQTiOD3ZO90523Jw08veArmfrgOGxWQd0kZ
-	x7fTRdPdptGu6p7qLKo1aRbQgikIEIzTvaohUnKtFQF5Eulqf58QNJAx5+OIJ5TKyhtjJzqdprk
-	6dfwGYC40CeHBYKtkVji4Ai2RVEZKOhUfa+6mBOICrfKWuwzncCWSl7T6ts+WFV9PPjfO+Yu5Ie
-	1NzyxFjCFqWqO9coIqGh9bZ7Q+0V3MRuB/sVXdEyA0tjNUiJL8xkuub04avpVFpRvap6iFa62mw
-	7HuGWzbyt6RpRr9+rVDBBfjf0f/Lpze+jEOg
-X-Received: by 2002:a05:6000:26c1:b0:48e:870:7791 with SMTP id ffacd0b85a97d-48e6e30b824mr25816174f8f.26.1793698190820;
-        Tue, 03 Nov 2026 01:29:50 -0800 (PST)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80eb1sm25441683f8f.34.2026.11.03.01.29.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 01:29:50 -0800 (PST)
-Date: Tue, 3 Nov 2026 10:29:45 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
-	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
-Message-ID: <aumogVKtYnY0QJ2r@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-12-jiri@resnulli.us>
- <179302367452.58760.11808905856343064399.b4-review@b4>
- <auRmMPfaFINUIchi@FV6GYCPJ69>
- <20261103010537.GI3889730@ziepe.ca>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jfTFfzgg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8761F000C1;
+	Tue,  3 Nov 2026 09:31:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793698294;
+	bh=fC16NdxBHdU0srh0OABsgzxxvlgydqQxXjKWclcHTvI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jfTFfzggyFUYRSqQAC3fPC/fCK0uFwNV0+C/UmQCj3cQj9oGHSUEWcknZXrqYwo/h
+	 pgBYuek31bOMwCaJIha47Ec6TS+x0gAzn9MITt5UPoM1FOK5+t5a444KeH2Q+Hlu+v
+	 Q+lUOGobMEsrIr+cQvgQWFOIiKUJ9MtgiOdqyhjDB+DYpZrsWYlSwBwfU6vRwWw8G9
+	 +934LwqjVhNGgSwcXXa7mrKQZqOaAqMv6PojVEBC0nMsaxJOvajKQQtn99/00H+lAc
+	 Pp1B2msamp+a0ST+4mBxEB/opq/FNoIlfscr1jblLuqLzJfqN7BHlqQXLQZC+mpiip
+	 WOsXFFyVxYcIQ==
+Message-ID: <sashiko-outbox-194956@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v12 05/19] PCI/P2PDMA: Evaluate ACS controls at the path
+ divergence
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leon Romanovsky" <leon@kernel.org>
+Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, kvm@vger.kernel.org, media-ci@linuxtv.org
+In-Reply-To: <20261103-fix-p2p-acs-v4-0-v12-5-912101f93517@nvidia.com>
+References: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
+ <20261103-fix-p2p-acs-v4-0-v12-5-912101f93517@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 09:31:33 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,55 +60,189 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103010537.GI3889730@ziepe.ca>
 
-Tue, Nov 03, 2026 at 02:05:37AM +0100, jgg@ziepe.ca wrote:
->On Fri, Oct 30, 2026 at 10:53:11AM +0100, Jiri Pirko wrote:
->> >So.. how about could we drop the sets, use a direct description of the
->> >layout and do something else for the ID numbering? Maybe the numbering
->> >can be solved directly by only listing the names in:
->> >
->> >numbering:
->> >  - device-get.reply
->> >  - device-get.reply.caps
->> >  - device-get.caps.evidence
->> >  -[..]
->> >
->> >?
->> 
->> I'm still committed to implicit numbering. For "inline records" I
->> resolved it by having it encoded as a tree with 4 levels:
->> 
->>  63         48 47 46 45        32 31  28 27  24 23  20 19  16 15               0
->> +-------------+-----+------------+------+------+------+------+------------------+
->> |   family    |kind |   index    |  L1  |  L2  |  L3  |  L4  |      field       |
->> +-------------+-----+------------+------+------+------+------+------------------+
->>               |<------------------ record ------------------>|
->
->Fascinating idea. Sort of like an oid
->
->I guarentee we will run out of bits someday :) I saw recently we ran
->out of bits in RDMA :\ 3 bits seems like quite a small number..
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] PCI/P2PDMA: missing upstream forwarding check in calc_map_type_and=
+_dist()
+- [Medium] PCI/P2PDMA: masked redirect and read warnings in calc_map_type_a=
+nd_dist()
+--
 
-Well, this is just for inlines. I think if user comes to the point this
-will not be enough, he can use named record, as he probably should with
-more than 8 inline records anyway :) Also, we can introduce "mapping"
-mechanism to allow inline conversion to named record without breaking
-userspace. I just didn't bother to implement now as it is a theoretical
-problem now as I see it.
+commit ae19e046716c7bc5dbb292aa22e00859ce94d08e
+Author: Leon Romanovsky <leon@kernel.org>
 
+PCI/P2PDMA: Evaluate ACS controls at the path divergence
 
->
->Maybe increasing op to 128 bits?
->
->Maybe family/kind/index/field spread over the first 64 and then the
->Lx's over the second?
->
->At the very least there should be an escape hatch so that if this
->becomes too small there is a way to opt into some new layout and fix
->it without breaking everything.
->
->Jason
+This commit updates calc_map_type_and_dist() to evaluate ACS directional
+redirect controls at the path divergence rather than below it. It also
+checks for internal routes between functions sharing a PCIe link, verifies
+ACS Upstream Forwarding on shared downstream ports, and rejects unreadable
+ACS Control registers.
+
+> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> index dbab955dcbdbb..8ca0c9ba87c23 100644
+> --- a/drivers/pci/p2pdma.c
+> +++ b/drivers/pci/p2pdma.c
+> @@ -589,6 +590,65 @@ static bool pci_acs_p2pdma_ctrl(struct pci_dev *pdev=
+, u16 *ctrl)
+
+[ ... ]
+
+> +static struct pci_dev *
+> +pci_acs_p2pdma_no_upstream_forwarding(struct pci_dev *common)
+> +{
+> +	struct pci_dev *pdev;
+> +	u16 ctrl;
+> +
+> +	for (pdev =3D common; pdev; pdev =3D pci_upstream_bridge(pdev)) {
+> +		if (!pci_acs_p2pdma_downstream_port(pdev))
+> +			continue;
+> +
+> +		if (!pci_acs_p2pdma_ctrl(pdev, &ctrl))
+> +			return pdev;
+> +
+> +		/*
+> +		 * Include Root Ports here. The PCIe port type check excludes
+> +		 * the legacy AMD southbridge quirk, which may sleep.
+> +		 */
+> +		if (pci_dev_specific_acs_enabled(pdev, PCI_ACS_UF) > 0)
+> +			continue;
+> +
+> +		if (!(pdev->acs_cap && pdev->acs_capabilities & ctrl & PCI_ACS_UF))
+> +			return pdev;
+> +	}
+> +
+> +	return NULL;
+> +}
+
+[ ... ]
+
+> @@ -865,57 +932,106 @@ calc_map_type_and_dist(struct pci_dev *provider, s=
+truct pci_dev *client,
+
+[ ... ]
+
+> +check_paths_acs:
+> +	*dist =3D dist_a + dist_b;
+> =20
+> +	/*
+> +	 * ACS P2P routing controls apply where a TLP can route toward the peer
+> +	 * or upstream. Below that divergence, its only route toward the other
+> +	 * branch is upstream, so redirect controls do not affect the path.
+> +	 */
+> +	if (a_child && b_child) {
+> +		if (pci_acs_p2pdma_ctrl(a_child, &ctrl))
+> +			state =3D pci_acs_p2pdma_completion(ctrl);
+> +		if (state !=3D PCI_ACS_P2PDMA_DIRECT) {
+> +			pci_p2pdma_list_redir(&acs_list, &quirk_list, a_child);
+> +			if (state =3D=3D PCI_ACS_P2PDMA_REDIRECT)
+> +				acs_redirect_cnt++;
+> +			else if (!acs_unreadable)
+> +				acs_unreadable =3D a_child;
+> +		}
+> =20
+> +		state =3D PCI_ACS_P2PDMA_NOT_SUPPORTED;
+> +		if (pci_acs_p2pdma_ctrl(b_child, &ctrl))
+> +			state =3D pci_acs_p2pdma_request(ctrl);
+> +		if (state !=3D PCI_ACS_P2PDMA_DIRECT) {
+> +			pci_p2pdma_list_redir(&acs_list, &quirk_list, b_child);
+> +			if (state =3D=3D PCI_ACS_P2PDMA_REDIRECT)
+> +				acs_redirect_cnt++;
+> +			else if (!acs_unreadable)
+> +				acs_unreadable =3D b_child;
+> +		}
+> +		/*
+> +		 * Two children of one Downstream or Root Port share a link.
+> +		 * Use topology rather than slot numbers or the multifunction
+> +		 * bit, since ARI functions and VFs need not share those.
+> +		 */
+> +		if (pci_acs_p2pdma_downstream_port(a)) {
+> +			req_upstream =3D
+> +				pci_acs_p2pdma_no_internal_route(b_child, PCI_ACS_RR);
+> +			cpl_upstream =3D
+> +				pci_acs_p2pdma_no_internal_route(a_child, PCI_ACS_CR);
+> +			uf_blocked =3D pci_acs_p2pdma_no_upstream_forwarding(a);
+> +		}
+>  	}
+
+[Severity: High]
+When provider and client sit behind different Switch Downstream Ports of a
+PCIe Switch, their lowest common ancestor a in calc_map_type_and_dist() is
+the Switch Upstream Port (PCI_EXP_TYPE_UPSTREAM), where
+pci_acs_p2pdma_downstream_port(a) is false.
+
+If b_child has PCI_ACS_RR or PCI_ACS_EC enabled, or a_child has PCI_ACS_CR
+enabled, the switch redirects traffic upstream out of the Switch Upstream
+Port a toward the host bridge. That redirected TLP then arrives on the
+secondary interface of every shared Switch Downstream Port (in a cascaded
+switch topology) and Root Port above a with its target also behind that same
+secondary interface, requiring PCI_ACS_UF on those shared ports to reach the
+host bridge.
+
+Although pci_acs_p2pdma_no_upstream_forwarding() already walks up
+pci_upstream_bridge() while skipping Switch Upstream Ports, calling it only
+inside if (pci_acs_p2pdma_downstream_port(a)) skips checking the shared
+Downstream and Root Ports above a when a is a Switch Upstream Port. Can this
+cause calc_map_type_and_dist() to return PCI_P2PDMA_MAP_THRU_HOST_BRIDGE
+instead of PCI_P2PDMA_MAP_NOT_SUPPORTED when an ancestor port above the
+switch lacks PCI_ACS_UF or has an unreadable ACS Control register?
+
+> +	/*
+> +	 * Below a shared upstream bridge, a path whose divergence ports do not
+> +	 * redirect routes the request directly.
+> +	 */
+> +	if (!acs_unreadable && !acs_redirect_cnt &&
+> +	    !req_upstream && !cpl_upstream) {
+>  		map_type =3D PCI_P2PDMA_MAP_BUS_ADDR;
+>  		goto done;
+>  	}
+> =20
+> +	if (verbose) {
+> +		if (acs_unreadable)
+> +			pci_warn(client, "ACS Control is unreadable for provider %s at %s\n",
+> +				 pci_name(provider), pci_name(acs_unreadable));
+> +		else if (uf_blocked)
+> +			pci_warn(client,
+> +				 "cannot forward peer-to-peer DMA for provider %s upstream at %s\n",
+> +				 pci_name(provider), pci_name(uf_blocked));
+> +		else if (req_upstream || cpl_upstream)
+> +			pci_warn(client,
+> +				 "peer-to-peer DMA with provider %s requires the host bridge; no int=
+ernal route between functions\n",
+> +				 pci_name(provider));
+> +		else
+> +			pci_p2pdma_warn_redir(client, provider, &acs_list,
+> +					      &quirk_list);
+> +	}
+
+[Severity: Medium]
+How are diagnostics handled here when sibling functions under a Downstream
+Port or Root Port a DO support internal peer-to-peer routing (!req_upstream
+&& !cpl_upstream), but have PCI_ACS_RR, PCI_ACS_EC, or PCI_ACS_CR enabled on
+the functions themselves (acs_redirect_cnt > 0)?
+
+In that case, disabling ACS redirect on the functions via
+pci=3Ddisable_acs_redir=3D would allow them to use their internal route
+(PCI_P2PDMA_MAP_BUS_ADDR) without traversing port a. However, because
+uf_blocked =3D pci_acs_p2pdma_no_upstream_forwarding(a) is evaluated
+unconditionally and checked before the final else branch in the verbose
+block, if port a or an ancestor port does not have PCI_ACS_UF enabled,
+calc_map_type_and_dist() only warns about upstream forwarding at uf_blocked
+and suppresses pci_p2pdma_warn_redir().
+
+Additionally, pci_acs_p2pdma_no_upstream_forwarding() is called before the
+PCI_P2PDMA_MAP_BUS_ADDR check (reading PCI_ACS_CTRL up the hierarchy even
+when the functions route directly), and when pci_acs_p2pdma_ctrl() fails on
+an upstream port, it returns that port as uf_blocked rather than
+acs_unreadable, logging an upstream-forwarding message instead of an
+unreadable ACS Control warning. Should pci_acs_p2pdma_no_upstream_forwardin=
+g()
+only be evaluated after the direct-route check, distinguish unreadable ACS
+Control registers from missing PCI_ACS_UF, and still emit
+pci_p2pdma_warn_redir() when programmable redirect bits blocked a valid
+direct route?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-fix-p2p-ac=
+s-v4-0-v12-0-912101f93517@nvidia.com?part=3D5
