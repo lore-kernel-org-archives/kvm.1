@@ -1,100 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793700196;
-	b=UmIgRY82Ku33fNXWwOIv7JQ4nE2/ZRwIcSmsI4Zp8Jr9MMKVrygy/Z52P/BlDycg9W/L
-	 Rqnisik7oJSJmVyyZQyP3+hg3bbJgKTia1gcnhur+Q+ExO+sBuCYhbeG8P3nokgo8Cz0G
-	 eQqwskv8fI8L3JtP5v74dCk9n8xApX6DLHgMMW9ETIJvMWNwlPnEZ1906FL325vaZJh+H
-	 QnO90aHhaiddkGXPqQFxR7eLJ5exYxOcMjsLXfdEl1t8uV+WoPZQaqpA0ooFZ0HOohO2d
-	 wvPVJqTsL7s0SaHkICtGNRhnW+qkSSJJ8h/YCei4FPRwdf0m7lT+I8/DL88bU4XIDzg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700196;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793700613;
+	b=qqmjVPClWNdIlN7NG3VMx3d4pVLWP+gLTUv3DyCDwCnUcTOg4EtWn8xBquAhSLvWNQpU
+	 cnRWy1jCWKC4y78HlsJbXwgObgjrmKvjidq4x7jf5+xd0s2i8vnD2en7/vq567GLNfEek
+	 ZgWxfMLmBr7urM5nyzyKRQ5RBeMNl7qbnHMsLvLr63WMKCoAKDxcYjGC8SWCP1YUEkbe+
+	 udFosML5I3ssQC0cV3KgwZAaijd91DiuF0+zmVYK0mxRYcLIdXBJ4vkYMPHIRBmc3ogbl
+	 ioEf1RJ5K0V4ujaegxg83/zVWsgdJKVGxZQQao2OYVZa6YHGY7T78avSL7xw0V0DI1A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700613;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=LEg0SrmO/VhGhY9o8Sggz15O+9RUdwZIrLUomDbcYAw=;
-	b=UeuGTXe6BlRPZ8B60XqXxLYpkh8r4ViwGBPfuQeZvRETV1HdcrjspCsv4hHKaLL1U4dw
-	 DpLWzwOtYQobHZH8ugqjpHnBaMKEaOTl4pLuXpVe5pSdt0/drhggUix/cpq0VPj10xRha
-	 O6Rp3cdoH05A/bepnzB49YMd4qaEP8A+t6XRwYy1jWg8SsqW1DN3xDueV9uoI2yCO4jSa
-	 Q49uhe/f8B/epq7K6T78mnL51AhnTeivuRMk7uE/bcE0E2S7Pf7N2JfbsiRiR8UqnvzNx
-	 Mao9seuKWW1HlyZ0fc044svrGlxsquXGSoXWbUEXs2VyteSxSGujQunJMzokOVU6a2w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=flashbots.net;
-	spf=pass smtp.mailfrom=flashbots.net;
-	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b="Wc/5StHW";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.52
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=amuDM1XErH3iNEOGYc3quFOh2xV3FDKDTqioT+ZE0VY=;
+	b=Jf2J4FkPSfSJRqGDLAm9VgoBi4vdzpWtWJCXVF72xyX9t+ASHnWZfCf7LzI6h/N52XGF
+	 k3k8uWK03djMElGkiaUG13kUBEREUUopP2pVofreeFPKHxH59SliovkKoXU3eosclxIT/
+	 hNs+eLaVKFSFcBHdiKokjezi/9EXpns6MY/IbKTtzK87lwNu+coGP+AYx+YB/SOhs+SrM
+	 SUCFogIGG/yIEioUVN6lxFhJZZafzXeyyc2k9f+2ZTee08CPBHtJTb1QvrNs/mE1Q+1xg
+	 k5TikGyl4eaPLjQfhkrzAxRG42PRw/E5OS6tyMrdhZ+F1/SNYOI+qCgcWoWJ4Xb9sYw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=D3lfzvgl;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F239606A329
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 10:03:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F239606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87060606FACF
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 10:10:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87060606FACF
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=Wc/5StHW
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6dd4f3f696aso1863741eaf.1
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 02:03:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793700195; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pv6tAImq+l2vSkl36MeLtkzRWYYnZF576vhjFJGs65YgF4k5EIx3ipT7pWMCZtOJuG
-         s7yuV6YVoyF+Z7b4nKRHPLeehygROm7HmlB2qAq4NFGlixy8l7vs0GaVzg03/5Olv5OO
-         qtp3FiYU928QHOUSD+IrBam/qTDDDZTwXWziMeJsVu0TyoiPgwMd4n1TpfBQDeUJBxOq
-         iHT+4A8B0pzTgs7c0qFK7L9XorZYnJOWDh34HEeALimcg/kc+TW/8wjHfqHvCsWTuVIN
-         86AASYXjUFGb2WeKURuSO62oArG1t+Odj1QTaLQSxygH8U/XgQKODOFm0OdIpLrH5RUW
-         4UEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=LEg0SrmO/VhGhY9o8Sggz15O+9RUdwZIrLUomDbcYAw=;
-        fh=aVTK3ziiKKMjMYpALQ81QX1vHnZDcFNq3sxXVctZEFQ=;
-        b=n3Pw0AF4QwjUbHV4ilkL2XBa/2k6J+ce0qm8YHdjQ72JS+zJq1z9DD+mXnAHYKo2Se
-         eGDlDhtQloVybuBzPcTmiB6Z0O/G6tfapiHoM8XNTbTLBqEq6JTsMZu970cmhP3+k60P
-         CIwVeZhVdCxIeQcKAf+x1rry7VgXfSJEGLDAJNFqtuErqxsLXnJnYQ6JldcBia7PgBr+
-         xjXG6OSI2SFG3ItnrTl4lu8aEJ4P/8MbBX1ff/9M5hdRzOvmiJWAuDCXcMQWobGstsGj
-         KwOIq8UpJebVr//w1THCbkXdItTo1+p7/VmSVtQKztZsrRME8kHLfcBiUiUulSHrq4IP
-         Jd9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=D3lfzvgl
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a5036bbac7so24757145e9.3
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 02:10:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flashbots.net; s=google; t=1793700195; x=1794304995; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LEg0SrmO/VhGhY9o8Sggz15O+9RUdwZIrLUomDbcYAw=;
-        b=Wc/5StHWz/UU9XkyUuuCGSsONbSwRWNH+t8cv7xyqKudZUFa4tlQC+w3SGxyO/Nq9T
-         4do6QEKfbIeEypOeEAtv/sYQ0cGZqFy4OMkume/DWkFe2WHy9eB9biunFqQ/lnfQ40oc
-         EhlFRme0I5PWYZFF2OegWlVsn9UVWa0WGI4FEaxPU23s/ko4XPGoo922QLfCpNXvig9F
-         Yh/VIj0WNpSzd7YPRIjA+83AwUXndI8net6S3CpzRpyCfNC5rN+XHWpyjYfcxEEBJuR5
-         h8ZcDCll2NtULcexdSKQLqYGuh89uRFZdLVAG3l6PIwUyHEX42vEqhORQeQitL73La3E
-         +KFg==
+        d=resnulli.us; s=google; t=1793700606; x=1794305406; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=amuDM1XErH3iNEOGYc3quFOh2xV3FDKDTqioT+ZE0VY=;
+        b=D3lfzvgllAy66yjpM83+uVVVcHqBsQmU2iC+S50qheFJh6Z6HrWBQnekbhCeCv4G+Z
+         Ra7rGFAhRkwcMI7hBAHXNoP+sPC5vG81oHR9q31T72khBBTfIVMX4B3zofHI7kIbBEYg
+         x+ofObQJpGGSsUuCYsnXliGlh2v3iYfKt1YEeEpM69NKsfEhZ00em3D/KLP+xKWYAs5t
+         l3Dlm0C34JuOlxS+MkHfDJ08Gz+4l4agLbQLAO6e8QdvGnDMiAv01PEoXmcOePIVwn0a
+         3um1Fgk+lesN7MsnVgbsjCzOTGy7nwX2/fPB5f80Md8TlWs4k1hIrlA3TGvR85RBYNO8
+         /sDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793700195; x=1794304995;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LEg0SrmO/VhGhY9o8Sggz15O+9RUdwZIrLUomDbcYAw=;
-        b=Ff2mw76cyxKqj1VKZsbBsP3GZFz2HJnS+l0aqk+HHmXeYYYd8LcKFgV7DUBbd6U5lY
-         zss2CmaN8iUSAgxad4oaHBRZaZnYQ6UoyzdOM7bG3L/JpIPk86Qw1libGKaBRdjL5RnF
-         Lv+cjInR4AQHxhUmUy5CtKPs4IEx8T3yq4w+FJiqMAiIDCu4G+4RovMNDg+2FdMbmPdi
-         Z2lglhx9Bz5LBfxcagjtRpNu4c88qefwzbqNQ/75yx6nZksqxfBmVYaG2xsUN9v1gzu2
-         koN+j7jPIEfMZ16wzWT24Zm3VThXICQzMSA1R10Vfb2tWUt06BmAPBNjWGBtiQ+BWfLy
-         31RQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzZvnWjHB4AtRvzaucBzgECGJ85yhfgaeURSW4pBYi7y+vFbhjztffjr+Y9Wq48/K1749w=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8f9102r8IJxilL7g7h8SynrNZSykcZzP66oi2gWA3jiSC9rR5A
-	58+5Wdis/cCr8iJBrosfK9qRygGIs5MJKK9V6voujFlwsJYzZrHL+ZIjSJC9V3HeIU/rCOc8C0t
-	iox2HCtGTRXSUP3WpulKbaFBCy68HPU74TnzT4ZYf4A==
-X-Gm-Gg: AYBFou0BkPsRJ6xa/B3MgRMVArQuVyAJRz46+zLpSHdAbypSpWEXmwqRwMnSJW1JcaS
-	kStLtF5NdmxZKw8WjZXCVgYBt+in8zJA5OIvJZ0hz1Ddp3tVFvKx5DzkRUTVGsvjOfLFUZYrQ3W
-	ymG/diRpKQPf4ggpE+/5jCwwaoXsWIQJ8vrjwKOdZ08dfWGYk3xHU63PRdSBkGVBrbttXcLF59d
-	Heiohcun4Zr3A4XT4EPsAUwZDCxWOERSWFPfJYmdBtSiHzWcdvMXrBe6Ls+3Qogh114UmgVbNce
-	GvTzDJx9TOTJmd0ITc2V90ThUVAr/9U7Zrm9UkCLWFn7oFCagjfTS7iDb95s1NfRzMjxpAgzV2e
-	/aNwPuGW7TXL4OyaEWE4x6+1bsdswzZ1n5zcPQdkdA98ptPyphP2x+4VKyi8YLru/bjgj+lsAbb
-	5qovUOPYkesdNyywuXMAbkHCQClpM8PAq2QwzKeCXRGIyT2ZCXg2ox05Dkpg==
-X-Received: by 2002:a05:6820:340e:20b0:703:10f3:89f1 with SMTP id
- 006d021491bc7-714f2965e33mr4202725eaf.40.1793700195111; Tue, 03 Nov 2026
- 02:03:15 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793700606; x=1794305406;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=amuDM1XErH3iNEOGYc3quFOh2xV3FDKDTqioT+ZE0VY=;
+        b=tCDRc4o+IXhwhbroUXEbCBVAP3ltcqTaEuXHWF/18qJIPMzX3XjEIyWt82rMnyXoCq
+         eUenAR02HC5WdZueMq7JtFqCCwxmWB1sg67+/GP+OAwkGyf8apO2A6c5XoAPUDYuvxKx
+         fyQDg6nFOfpNnk6OrqEfr1GEA3Yglwg/L8fcnM3bBNQXt56o984pzwcCLIdwAPb84sRv
+         tI0l5gB79r1Vg32UfBMTSg2y1cc9Ku3fPW9mZtT8wOyN1qSfJaLPREGkL2VsDT9NbUD/
+         z53D5/f0wkoCuTKjkWx5PL2uF7cvKzLYiubDgi+tiUl0gPm5p3tgqnTtrScqZghAG5Sd
+         LlXw==
+X-Forwarded-Encrypted: i=1; AKwUvBz0h4Ps5fzknHnBjh/01Il5wW+ljKaZiC2qO7udZ0t3Rko1FZfIoCn3H+WuS1+KtIPpi3A=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+O52BE4diIdbrCAnTpPPUvcJucBXXVo3Nc6JqNB0bLcmOxz1wm
+	3AJ0cyHH2k1YUARHA7wccJEFc/YQO4W/L/ZAVMxpb2Ija/B99QRqCSj/jbfZcnwmxf0=
+X-Gm-Gg: AYBFou313Ff51JLXltrxFSyxaRWw2Np89ub5382oGy4dAAGU7WTQYZOqUsY6pq5yV7r
+	V98WO6+y0JZHiNOlqdGVKW4Ughuw93Y9SpR/IEkZIbrjP0IklZrqJZa0loA4OIyKhFhBrE9kW6g
+	W911LO/CONuB4swUneYMhSpNSUoNqAN/zglb1XI17pThb52+Z0KK7RohO/n3XIZFU30AIccOpCm
+	vrCqEKDmrTgDWRaX4EAUAyzGueBBsfuTFN+oVv51gO6BfUp4OjcIcF4aFMtklP/bxqB8UeYTrI7
+	lUlNHODNE7jCadd9Y2k3sww5SoXeeD83yIuxfGo8AFucpWyscHiVHMJRlyib6qQPyQheOUHe6rP
+	Njnchzg83qYqlBnv6DzcG0Oq/fTceM5uIbuOwWu0LXWnTAsDspiEY+26gSTlrdiw0WZ5f5MHWmE
+	jEI4xsqQYolVFRu7XP+sVnTzG1eHBGtEQgtJqDYLoxRu9kGqq9B888qLN9Dl579jGomkdEncE9H
+	oULT3ja5LiRTl7GJrkujXeTP4NHqf2SM87D7C8LB3KQZTo89T4QO9O9CrmbztZCl+Q/sKp9rBV2
+	bPriEw8jR7KloEeYesqGO984TnA5Qvw6c91U
+X-Received: by 2002:a05:600c:3110:b0:4a2:883:4adb with SMTP id 5b1f17b1804b1-4ac18b7e059mr294027715e9.22.1793700605595;
+        Tue, 03 Nov 2026 02:10:05 -0800 (PST)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abeb77c132sm231363455e9.1.2026.11.03.02.10.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 02:10:05 -0800 (PST)
+Date: Tue, 3 Nov 2026 11:10:00 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Sergii Dmytruk <sergii.dmytruk@3mdeb.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <aumpp4VptzmasuX8@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <auOT1UwdNt67XfTq@MjU3Nj>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,36 +105,349 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
- <20261024-tdx-guest-quote-poll-v3-2-6a83bb767314@flashbots.net> <7a832e5c-eaff-426f-adff-7935be265bbd@intel.com>
-In-Reply-To: <7a832e5c-eaff-426f-adff-7935be265bbd@intel.com>
-From: Moe Mahhouk <moe@flashbots.net>
-Date: Tue, 3 Nov 2026 10:03:03 +0000
-X-Gm-Features: AclHuK8r2SlXD9z5feGLL3zqeEwt_maaNYZRrrX02gKnp7mXSTM9MjCJhTQJcWI
-Message-ID: <CAKV3HMNEi6aU8GhLuszn8Tmn4aOZBb9i0Ueq_-xre6KUBYssGA@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v3_2=2F2=5D_virt=3A_tdx=2Dguest=3A_Po?=
-	=?UTF-8?Q?ll_Quote_status_with_exponential_backoff?=
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Dan Williams <djbw@kernel.org>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Jun Miao <jun.miao@intel.com>, 
-	x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auOT1UwdNt67XfTq@MjU3Nj>
 
-On 10/27/2026 10:08 PM, Xiaoyao Li wrote:
-> I think it's possible that the host VMM completes the GetQuote request
-> before the first check in wait_for_quote_completion()
+Thu, Oct 29, 2026 at 07:43:33PM +0100, sergii.dmytruk@3mdeb.com wrote:
+>On Thu, Oct 15, 2026 at 04:50:33PM +0200, Jiri Pirko wrote:
+>> From: Jiri Pirko <jiri@nvidia.com>
 
-Right, the loop checks the status before it first sleeps. I'll reword
-the first paragraph in v4 to:
-"...checks the status of a GetQuote request and, while it is still in
-flight, sleeps a full second before checking again. Unless the VMM
-completes the request before the first check, every Quote request
-therefore takes at least one second, however quickly the host answers."
+[..]
 
-I'll send v4 once the discussion with Rick on the cover letter settles
-how patch 2 should go forward.
+>
+>Hi,
+>
+>I have no say in kernel development and wasn't trying to do a proper
+>review of the changes (was mostly understanding them with regard to
+>DRTM), so take my comments with a grain of salt, but I do think most of
+>them are valid.  I also get this is an RFC/PoC type of thing and
 
-Thanks for the review.
+They are, thanks for the careful read.
+
+
+
+>sometimes generalizing from multiple locations, those types of comments
+>do not apply to all instances and specify a general direction that seems
+>helpful.
+>
+>Overall impression
+>------------------
+>
+>I was surprised to find that 80% of the changes in an attestation RFC
+>are about a new kernel interface, which is also proposed as a potential
+>future API for many other things.  The cover letter mentions it, but
+>doesn't do justice to its scale: YAML specifications, code generation,
+>serialization, deserialization, actions, events, etc.  Things like
+>CORBA, COM, or D-Bus come to mind, even though they are different in
+>many ways.
+>
+
+Fair, CTLV is the bigger part (with the generator and generated files
+too), and it is meant to be general, with attestation as its first user.
+It is closer to netlink than to an RPC system though: no objects,
+proxies or daemon, just a device fd, one ioctl, and messages the kernel
+checks against the family's schema before the driver sees them.
+Ment to be easy to use and error prone as much as possible.
+
+RFCv2 will be smaller too: it will leave out the events and the
+MR journal as well.
+
+
+>I feel that something this size needs to be motivated more thoroughly:
+>
+>1. State goals of what an interface aims to achieve, why it can't be
+>   done with existing measures, or how bad it would look when using only
+>   what's already there.
+>
+>   This is mentioned briefly in the cover letter and has surfaced in
+>   various responses, but it should be stated explicitly given the
+>   objective of proposing a long-term interface.
+>
+>2. Maybe try defining conditions where CTLV is applicable and when it
+>   doesn't make sense.
+>
+>   I saw changes to this effect in replies, but it could be done more
+>   systematically and compare CTLV against existing alternatives to show
+>   where it fits among them.
+
+Agreed, RFCv2's CTLV doc and cover letter will open with that.
+
+
+>
+>3. Specify elements of the design (e.g., schema, actions, events, a tree
+>   of attributes, a single `ioctl()` operation) and how they serve the
+>   stated goals.
+>
+>   For example, what use cases are enabled by partial responses?
+
+Will do.
+
+
+>
+>4. Explain how the elements are to be represented, produced, and
+>   consumed.
+>
+>   That is, the actual tree structure, information about padding,
+>   generation of the boilerplate, what parts are to be provided by the
+>   programmer, etc.  This is what existing documentation contains,
+>   although not very structured.
+
+Okay.
+
+
+>
+>5. Possibilities of future extensions (compatible and not).
+>
+>   I haven't noticed versioning, but suspect that a different `ioctl()`
+>   could be used.  Types or fields can be added and ignored or can fail
+>   parsing if unrecognized, but this has its limits.  The stance on such
+>   changes should be documented, so it's clear what one might expect
+>   going forward.
+
+There are no versions, on purpose. The ioctl struct carries its size
+and grows only at its end. A family grows by new ops and
+new optional fields: an old program skips what a newer kernel
+adds to a reply, a newer program marks what an older kernel may skip in
+a request, and op-schema-get tells it which fields the kernel acts on.
+Anything incompatible is a new op. Each family also has a checked-in
+ABI snapshot, so a uAPI change is a visible change of that file, and
+the checker refuses removing anything, narrowing a bound or making a
+field required.
+
+
+>
+>Having experience with parsing and producing TPM commands and event
+>logs, I understand the motivation for CTLV and see how it can remove the
+>most unpleasant parts of dealing with data of this sort.  However, the
+>machinery necessary on both kernel- and user-space sides is quite
+>elaborate.  It can end up making even trivial interactions hard (try
+>using `dbus-send` to retrieve some information or see its C API to get
+>what I mean).  That's why I feel like the motivational part is very much
+
+For a trivial interaction there is ctlvctl, which needs no generated
+code, only the family's YAML for the names; the cover letter has a few.
+In RFCv2, reading an MR will be:
+
+  ctlvctl query /dev/attestation/attestation0 mr-read id=1
+
+with CTLV_SPEC_DIR pointing at Documentation/ctlv/specs.
+
+
+>lacking here.  Describing the approach in terms of goals and how they
+>are fulfilled is also partially aimed at making it easier to assess
+>applicability of CTLV to other subsystems by reviewers.
+>
+>CTLV specification
+>------------------
+>
+>The schema description is machine-oriented and is hard to use for
+>humans.  At some point, a textual version will be needed, if only to
+>introduce the most commonly used subset.  It has already been mentioned
+>that names of attributes aren't descriptive enough, and comments or some
+>kind of embedded help would be nice to see.
+>
+>"attr-groups" vs. "attr-sets" confusion has also been mentioned.
+>Knowing that groups are part of IDs helps, but doesn't make it much
+>easier to read ("groups" and "sets" don't suggest different levels in a
+>hierarchy).
+
+Agreed, that design is unfortunate. I was attached to the netlink and
+netlink yaml too much. But RFCv2 will have the YAML in the layout
+Jason suggested on 11/20. Groups and sets will be gone: a spec will
+have records and ops, each op the tree of its request and reply, and
+the comment above an item will be its doc, in the uapi header and the
+rendered docs too:
+
+  # One MR's values, and the MR generation they belong to.
+  mr-read:
+    type: query
+    fd-access: read
+    optional: true
+    suggested-reply-length: 4K
+    request:
+      id: uint(..u32-max)
+      device-generation?: record
+      options?: extension mr-options
+    reply:
+      device-generation: record
+      mr-generation: record
+      mr-values: record
+
+The generator will also print each op as a call, and RFCv2's cover
+letter will list them so:
+
+  mr-read(id, device-generation?, options?: mr-options) ->
+      { device-generation, mr-generation, mr-values[23]: mr-value }
+
+>
+>Documentation and comments
+>--------------------------
+>
+>Right now, it mostly covers implementation details rather than concepts
+>and how they fit together.  This makes it hard to review the changes, as
+>the reviewer needs to discern high-level stuff from the code to assess
+>that code.  Having a more abstract description that's also mapped to a
+>particular representation would allow checking the overall design and
+>more fine-grained details.
+
+Right, intention is to change it in RFCv2.
+
+
+>
+>There is also not much information about how the user-space is expected
+>to use this (i.e., encode and decode structures).  I suppose there is a
+>user-space library for that (saw `libctlv` mentioned), but the kernel
+>part isn't complete without giving an idea of how it's expected to be
+>used.
+>
+>I was trying to compensate for the lack of documentation by reading some
+>comments, but many that I've seen (excluding comments on functions or
+>structures, those were sensible) restate what the code is doing or
+>repeat other comments.  Some others seem to say something important, but
+>do not place it in the context necessary to understand the statement,
+>and thus do not fulfill the purpose of explaining the code (i.e., why
+>it's written in a specific way).  It's worth revisiting them in some
+>future version.
+
+Okay.
+
+
+>
+>Code
+>----
+>
+>Quite a lot of functions are comprised of two blocks of lines with no
+>newlines or comments within them: declarations and the rest.  That's
+>fine if the body is small or uniform, but larger functions often have
+>identifiable steps with conditions and loops.  I'm not saying those
+>should always be extracted as helper functions, but some kind of visual
+>structure helps to understand the code.  Given that there are many
+>thousands of lines in here, that seems like a desirable property for
+>review as well.
+>
+>Terminology
+>-----------
+>
+>It may be just me, but I found some of it rather confusing, and the
+>absence of a glossary didn't help.
+>
+>It took a while to figure out that "family" means a single-instance
+>class-like construct (data, methods, inheritance with virtual methods).
+>I also initially thought that "nest" meant a subtree, but it seems to
+>apply to a top-level tree as well, so it's actually just a tree called
+
+Yeah, confusing a bit, agreed. Will change to "records" in RFCv2.
+
+
+>differently (why?).  "stub" also looked weird, but that can be remedied
+>by documenting it better; not sure if there is a better word.
+
+In RFCv2 the stub will go, and the YAML will name the extension point
+directly: "info: extension device-info".
+
+
+>
+>Other terms seemed just weird, like "file description" instead of "file
+>descriptor", mentioning of "wire" and "physical something" (no wire
+>transmissions and nothing physical here).  Still unsure what "placement"
+>means in various places.
+
+Right, will check those.
+
+
+>
+>If the terms come from netlink, their use needs to be explained here
+>too, or the reader needs to be referred to the relevant netlink's
+>documentation, if borrowing of the terms is intentional and meant to
+>stay.
+
+Agreed.
+
+
+>
+>TPM event log and MR log
+>------------------------
+>
+>I know this will be dropped from this series, but it's still relevant to
+>keep in mind and will return at some point anyway.
+>
+>What about measurements taken outside of the kernel?  I've seen the
+>discussion about extensions done in parallel, with the likely outcome of
+>not handling this in any way.  But there are also measurements done
+>before the kernel has started, for both SRTM and DRTM cases.  A way to
+>import measurements is needed.  Am I correct that nothing should prevent
+>doing it later?
+
+Correct. The MR values are the hardware's, so they already hold what
+firmware extended; what is missing is the kernel's record of it, and
+RFCv2 will leave the journal out. An import will belong to the series
+that brings the journal back, as an op or a provider callback, and
+adding either is compatible.
+
+
+>
+>DRTM perspective
+>----------------
+>
+>While there is no TPM/DRTM attestation provider yet, an RFC seems like a
+>good place to make sure this can be accounted for by the final design.
+>
+>All the crucial measurements happen before running the kernel and then
+>by the kernel.  The interesting operations in the user-space are
+>obtaining the log and having the ability to replay it.  Also, locality
+>change can block further PCR updates, so the user-space part doesn't
+>seem to be that important for this use case.
+>
+>Linux currently doesn't extend the PCR measurements it makes to the
+>event log, so misalignment of the PCRs and the log won't be something
+>new.  However, if there is a log, it should be correct at least before
+>any user-space measurements are taken (IMA breaks this for PCR-10, but
+>would be nice to avoid this for DRTM or similarly limit the effects to a
+>specific PCR).  Again, relinquishing locality can be the answer here,
+>and I suppose that an attestation provider can handle that on its side.
+
+Yes. Each MR says whether it may be extended, and the core refuses
+mr-extend on one that may not, so a provider can keep the DRTM PCRs out
+of userspace's reach.
+
+
+>
+>Some of the replies suggest the intention for the kernel to do
+>measurements using the attestation subsystem.  Combined with importing
+>measurements, this seems to be enough to cover the needs of DRTM in
+>terms of data.
+>
+>What remains is whether postponing extending PCRs until attestation is
+>online is considered acceptable and by how much they get postponed
+>compared to doing it early.  In principle, delaying extending the
+>measurements isn't all that new.  coreboot does exactly that on a lot of
+>boards, assuming that nothing will mess with its log until devices are
+>initialized.  DRTM is supposed to enter DLME in an isolated state, so it
+>may as well rely on it.  However, what does the use of this attestation
+>subsystem actually buy the kernel for the DRTM case?  And are there
+>reasons for all DRTM implementations to extend PCRs at the same point if
+>some can do it earlier?
+
+Nothing here makes DRTM extend later. What has to be measured before
+the subsystem is up, at module_initcall(), can be measured as it is
+today, and how early a TPM provider takes over is for the TPM series.
+For DRTM's own measurements the subsystem buys little. What it gives is
+the rest: userspace would read the PCRs, get a quote and fetch the logs
+the same way on a TPM as on TDX, and later, kernel users such as IMA
+would extend through one API whatever the root of trust. And no, I see
+no reason for all implementations to extend at the same point.
+
+
+>
+>Also, is the attestation log expected to be the way of publishing the
+>DRTM log?  That may make consuming it more difficult due to requiring
+>CTLV-specific tooling.  A TPM2.0 event log requires its own tooling, but
+>it's the same format SRTM uses.
+
+No. In RFCv2, evidence objects will carry logs in their own formats:
+TDX will return the CCEL as an event-log object, the bytes as firmware
+wrote them, and a DRTM log would be one in its TCG format, read with
+the tools that already parse it.
+
+[..]
