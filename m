@@ -1,80 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793715148;
-	b=jrepdKO/yYA48JfPE58LzwdCV+gLfkNFdbHHY3kVhgYHIMnEPhhooPIsM3ikcnJQfdZC
-	 ChPTjT4v6UoutOvjKT/FG90ngsu1o6PxctjD/P8+mxGA8YgquAjKr7kES/tQd7LULmZlu
-	 tr/FwANsCKe7eFkEpm4LghkAYWXTzxDSSfYBi7bPrj6E4wjR99dcO7Y2avBrSiGoVpwOE
-	 9+Sbcpdt6Ac0pILyJ5Yp1vC05hEkQhR5S79N1FQfkQZW5jKa/7q71iL9CGcB+wf6mQAoS
-	 qlWIwr0bxKgKDe5BX7ozuoGnT3YCQDpzHkSY9F4bpa2BQRDPnxtRTgj5yxM10YZlHQw==
+	t=1793715801;
+	b=dXWppOCSUoX2UdMcve+Vx7oJvBWseaqFQgZKB69LWsq+F1RnMe2JM1xXCQU3YOlw7xSA
+	 vkvBIIPlZ/8d+rqZiPSdnxZBDSd2KP/GlBKaHgig0sEK1kIf2u0LYlCl+2Y4cpiT8TSwn
+	 OhoVWNSz2+r78HFnrvWpQn0HwLGjLP44daTEqXUeCpNQg46uC2g1OcW3RGKjlgDLu+RPI
+	 /AYCI7RrDjYYJ46y++X1/uKZjjM3UIsmgHJusr5GOpJCm4hY2CC+A573cjRte5+gJCSte
+	 2FK/1+8kY6iOkABHDR2L5fAz9jh/rvknNBLKWS8AAJJJTkN8reYmUSgJT0lVBtotG/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793715148;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=Eesf9lxozUdMnetwmPu754uA3KVkBfzDrE0eDVDJ2UA=;
-	b=qOA6eiifRPrWOIK3Adl3voHQDfOeRUmjj9nWoP5aKDLmgCVGMKZOV9F97/zPyxm45V7+
-	 h9SWJkmwgmhwjSfp6UoItWB64u/bMukCHPGccL2oqaraqK6HbIYV79l+i+NTi4CtavTXf
-	 r0POsk7ayoAYcMYOLAJIWfEKnPq4dQjnu5IxYJJjnRWkq7D7BUrlu+zg9qoUhKCTse49w
-	 XReP9t3yLPTsPKa/hTSkb05mCB/19y8NOP50A3JgVhWUrvTvgabaRLnY8S3Fpc7+uDSNP
-	 HAAxmWFkrLdVVq9rYxK11XyjU19j97ScTJbWuvg1zBFM4G/QW1Qc8DekOz5ZiLO3gKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793715801;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=FH5m2ZfhAKsc7ESTr6aXIlmL3H0K88jNbIy7JznNN8U=;
+	b=YRJa3kzQXxmrCauZ1o7odgXuNt5x4EJo3PYBjY22GUahbu8q4r9BH7DPPjBcqfQk4Ms1
+	 yduMOPIz7kI+OIJwHmiyPeUy6sn7vnbH+ToTZm+5t9zREW2NjrH29OFnWG3VKHrD+Hz1/
+	 EI5b85miH/HuBt3e7FPbY47OOJsctheQYTPxuVbd7QkT+Ewt8tqwtj609aQVWrO6D00vr
+	 E0T6Ll9N9RoKU0e7NfLuHp+AaZRqiKegyzv8ySYtonG6DBia5iBI7fl/JwVcjWZtVxY1m
+	 4zWm7d7wPg7kVWHmMvBsxUjDbbzCAogzzBtL6ga3YKNsgDdTJR7dB4cI78oFl9fIMiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ao9p2MRl;
-	arc=none smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=liCMhAUk;
+	arc=none smtp.remote-ip=91.218.175.4
+Received: from mta0.migadu.com (out-4.mta0.migadu.com [91.218.175.4])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FD3606A327;
-	Tue,  3 Nov 2026 14:12:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29FD3606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4907F606A326
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 14:23:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4907F606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ao9p2MRl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793715147; x=1825251147;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AG9SejqizuSU9dqiGUfetYq9cDG0DMmqEfppslJdVyQ=;
-  b=ao9p2MRlVc+rEMMS7zGs4/BkK9K1gel2XDzq21nLsul8sQEv8xum1xiX
-   eqCZkA80LaNUjjG4+kBiyrYMmD4NDdtUe0CA/Kj7P5FEB3Q08WJmeCD53
-   Wb2zyiYn+YLIuDm+As+1kIJtXdMH2WCHvT38+PqnvPbz+8f6pGREOMJP/
-   R3DKO0VSxKoiKVTL2A6Psus5z81nRpqID8rDuB11dng5s/p3JLljDJ+PW
-   T3zh0nADi6oh8IlTBHdR/up1Q8ED7TPgmA4D7QwI7aHiB5JeUNm085dOX
-   KzCkTa2LIHABKPAo2NChA84vSx5LpsLgBAyt79ordxJNODxjipdlFuq6u
-   Q==;
-X-CSE-ConnectionGUID: Q6NQfskeQi+IjOdqTv+60w==
-X-CSE-MsgGUID: GFU0r7K/Q4OgiC+MYvdT6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2330219"
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2330219"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:12:26 -0800
-X-CSE-ConnectionGUID: XVV0O7VQRoGkq64OU6944Q==
-X-CSE-MsgGUID: p799BbrCSLmxgZkZbDe1pA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="6759732"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 03 Nov 2026 06:12:25 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xOFFO-00000000iou-2DnN;
-	Tue, 03 Nov 2026 14:12:22 +0000
-Date: Tue, 3 Nov 2026 22:11:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>
-Subject: Re: [PATCH 24/45] KVM: Introduce a generation number for memory
- attributes
-Message-ID: <202611032129.t2hEI0s4-lkp@intel.com>
-References: <20261102174512.8903-8-pbonzini@redhat.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=liCMhAUk
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=j/giMBDl/7wt+voQgZBnLNS9pFqFZnvjPU0eYzrRGeU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793715795; v=1; x=1794320595;
+ b=liCMhAUkWSB84e1v+3HNlwy7TQLfOQfgEG0s53xWPWiZ3+/dDBEdLyF7HKYticGoDMOuWSaH
+ ik1LasPk6ciE+4aGM+zPrU/sb/eV6UXxHfigN2qOjAReniLvzzibvgv7UMyyEOOBx40SzKZSVsB
+ 4RqWcZGY/3M5ZP2OB8+06MUY=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 48a2cdbce5f37674;
+	Tue, 03 Nov 2026 14:23:15 +0000
+X-Mizu-Trace-ID: 48a2cdbce5f37674
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5bcbb378fc9so7047e87.0
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 06:23:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvByOgx3j8XCjSywTfmHOTUOSsXzf8q3Jb5leA3J/bhjlZtMjsWdMOzWyXaG63X/uo6FYYb0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+xmCRGh98IA75rMDZGVRf4lIvFTPlkquw1sqUTtFRoNTXXoC55
+	1EdzBpznZXhcBGlp+vqzPwIQQCJHUe3tquRmtxjvcC7tme6jqI6Mqkl24rdDWubYhSf9Re+pcA6
+	Co0NmBxR2NP0mFTbdr7uaw469uH+6KRtEogkGxMqo
+X-Received: by 2002:a05:6512:3c8e:b0:5bf:c17c:93a0 with SMTP id
+ 2adb3069b0e04-5bff0579302mr159986e87.14.1793715792546; Tue, 03 Nov 2026
+ 06:23:12 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,124 +66,45 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102174512.8903-8-pbonzini@redhat.com>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com> <20261102194454.4086911-11-sascha.bischoff@arm.com>
+In-Reply-To: <20261102194454.4086911-11-sascha.bischoff@arm.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 3 Nov 2026 14:22:36 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTyX4RO2zDEhuJAu_iu8BsXkNvFBAh2i01fy0Mf=QQ+Tjw@mail.gmail.com>
+X-Gm-Features: AclHuK_IkcYbSwt6PamGBhm58rJBGW9RD9jT6VqmMt5IUNnlWXOrPHQFDe_cukI
+Message-ID: <CA+EHjTyX4RO2zDEhuJAu_iu8BsXkNvFBAh2i01fy0Mf=QQ+Tjw@mail.gmail.com>
+Subject: Re: [PATCH v2 10/16] KVM: arm64: gic-v5: Add ITS userspace register access
+To: Sascha Bischoff <sascha.bischoff@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	peter.maydell@linaro.org, lpieralisi@kernel.org, timothy.hayes@arm.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Paolo,
+On Mon, 02 Nov 2026 19:44:48 +0000, Sascha Bischoff
+<sascha.bischoff@arm.com> wrote:
+[...]
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+[...]
+> +static int vgic_v5_its_attr_regs_access(struct kvm_device *dev,
+> +                                        struct kvm_device_attr *attr,
+> +                                        u64 *reg, bool is_write)
+> +{
+[...]
+> +        if (IS_VGIC_ADDR_UNDEF(its->vgic_v5_its_base)) {
+> +                ret = -ENXIO;
+> +                goto out;
+> +        }
 
-kernel test robot noticed the following build errors:
+This lets userspace set CR0.ITSEN before the vgic is initialised,
+while the VM ID is still VGIC_V5_VM_ID_INVAL. An MSI (KVM_SIGNAL_MSI
+or an irqfd) then reaches EL2 with VM ID 0xffff, and forwarding writes
+the same into the ITTE. With 16 VM ID bits and every lower ID in use,
+that lands in another VM. Could enabling the ITS be rejected until the
+vgic is initialised? The existing its->enabled checks then cover
+injection and forwarding. (Sashiko raised this on patch 7 [1])
 
-[auto build test ERROR on kvm/queue]
-[also build test ERROR on kvm/next linus/master next-20261030]
-[cannot apply to mst-vhost/linux-next kvm/linux-next v7.3]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks!
+/fuad
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Paolo-Bonzini/KVM-nVMX-nSVM-check-unconditionally-whether-CR3-is-valid/20261102-124045
-base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-patch link:    https://lore.kernel.org/r/20261102174512.8903-8-pbonzini%40redhat.com
-patch subject: [PATCH 24/45] KVM: Introduce a generation number for memory attributes
-config: i386-randconfig-1010-20261103 (https://download.01.org/0day-ci/archive/20261103/202611032129.t2hEI0s4-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261103/202611032129.t2hEI0s4-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611032129.t2hEI0s4-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from <command-line>:
-   include/linux/kvm_host.h: In function 'kvm_mem_attributes_generation.isra':
->> include/linux/compiler_types.h:702:45: error: call to '__compiletime_assert_523' declared with attribute error: Need native word sized stores/loads for atomicity.
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:683:25: note: in definition of macro '__compiletime_assert'
-     683 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:9: note: in expansion of macro 'compiletime_assert'
-     705 |         compiletime_assert(__native_word(t),                            \
-         |         ^~~~~~~~~~~~~~~~~~
-   arch/x86/include/asm/barrier.h:69:9: note: in expansion of macro 'compiletime_assert_atomic_type'
-      69 |         compiletime_assert_atomic_type(*p);                             \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-     176 | #define smp_load_acquire(p) __smp_load_acquire(p)
-         |                             ^~~~~~~~~~~~~~~~~~
-   include/linux/kvm_host.h:2640:16: note: in expansion of macro 'smp_load_acquire'
-    2640 |         return smp_load_acquire(&kvm->mem_attrs.generation);
-         |                ^~~~~~~~~~~~~~~~
---
-   In file included from <command-line>:
-   include/linux/kvm_host.h: In function 'kvm_mem_attributes_generation.isra':
->> include/linux/compiler_types.h:702:45: error: call to '__compiletime_assert_523' declared with attribute error: Need native word sized stores/loads for atomicity.
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:683:25: note: in definition of macro '__compiletime_assert'
-     683 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:9: note: in expansion of macro 'compiletime_assert'
-     705 |         compiletime_assert(__native_word(t),                            \
-         |         ^~~~~~~~~~~~~~~~~~
-   arch/x86/include/asm/barrier.h:69:9: note: in expansion of macro 'compiletime_assert_atomic_type'
-      69 |         compiletime_assert_atomic_type(*p);                             \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-     176 | #define smp_load_acquire(p) __smp_load_acquire(p)
-         |                             ^~~~~~~~~~~~~~~~~~
-   include/linux/kvm_host.h:2640:16: note: in expansion of macro 'smp_load_acquire'
-    2640 |         return smp_load_acquire(&kvm->mem_attrs.generation);
-         |                ^~~~~~~~~~~~~~~~
-   In function 'kvm_vm_ioctl_set_mem_attributes',
-       inlined from 'kvm_vm_ioctl' at arch/x86/kvm/../../../virt/kvm/kvm_main.c:5624:7:
-   include/linux/compiler_types.h:702:45: error: call to '__compiletime_assert_804' declared with attribute error: BUILD_BUG_ON failed: sizeof(attrs->attributes) != sizeof(unsigned long)
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:683:25: note: in definition of macro '__compiletime_assert'
-     683 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:40:37: note: in expansion of macro 'compiletime_assert'
-      40 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:51:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      51 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-         |         ^~~~~~~~~~~~~~~~
-   arch/x86/kvm/../../../virt/kvm/kvm_main.c:2795:9: note: in expansion of macro 'BUILD_BUG_ON'
-    2795 |         BUILD_BUG_ON(sizeof(attrs->attributes) != sizeof(unsigned long));
-         |         ^~~~~~~~~~~~
-
-
-vim +/__compiletime_assert_523 +702 include/linux/compiler_types.h
-
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  688  
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  689  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  690  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  691  
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  692  /**
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  693   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  694   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  695   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  696   *
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  697   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  698   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  699   * compiler has support to do so.
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  700   */
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  701  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21 @702  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  703  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] https://lore.kernel.org/all/sashiko-outbox-194102@kernel.org/
