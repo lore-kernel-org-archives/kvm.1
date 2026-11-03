@@ -1,112 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793703022;
-	b=MtdMN3SeNPlCqdBD1eLWdGM4iCA9fwSPzBbOILOOcB9KEqTuLWVlyaEin7RhdkXZb8gD
-	 qpngiPxN+DBVqvuu6B8o1RZueQjOWALT8/ml9LCeKp+4LXayNH8dLrU+4/f5DGNh2UQpp
-	 yqEj3jVzWPdxpurHa6KoQ4lVaJM38qUMdP3JeNwZPX6OShtg9NHa/S4S35t/370Q0IoH+
-	 s7at8TNkGeuWxYFr9HK8/x7oRAodlwDbzugC/MZUm2S0CO50VdCeEtkSFXpxwiSLDa4BZ
-	 nNkCsa9DDWhoiA6wjBPMuF0HCXndtXIvQrMRkmQ30oXC5ri0W7ohzxJZfRildnvfZYg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793703022;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=S1P/TNuQuERpEWgykrKJgkkLFK4NaeGks/VarCvkYtc=;
-	b=0qhIjj+YraOX4PPkK3wUSTFyVuNmw7ggFLABmNhhpZMKC1K/jEhzNT9f5WLUZwiIqSMG
-	 5H118KBIrGf33RmhGrAg15OakxOQ6dbEFvOvLykzVBHmRuQvP9X5NCLTvkhaA8LgivLFj
-	 ucqkkVbdJsBVRAJsJUx447sC64/peh9ogQJLoS2fAwWjMG8UaEQXush+4OUhYGBPx1J7c
-	 JA6PIGnNGvZmSRBhltX2LxoRVtPwxa4+KRRHsLj0qJbCvrJfE5x13cMTjH4ZpSmdt9oTR
-	 oSEOGa5DMuNGpeHHeZobA5+C2nJkfLv5LC0rTv0fXdd+7daTEe9XI0d0971UXZKuA1A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="QiTNc/ry";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=QuKIFX4B;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.39.30
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793703288;
+	b=ntsY6EtsrieJ3AQYZ4MUEdUGxIPFhekqiUtIDbGRAptNOcke8hhyq8y59b0gkewHH/3+
+	 9sRRiXYlEBVGom/sSB9P4kh6/wIzBdZqd/3b79FbM+eSS0R4i8rXFZyKIkVoB+XeAj3Rp
+	 Va4yAR5q4dn+dxaTJy5iY836a9IsCSKbgGmhgvhIGEb43K4i576J4N48jceQNHa7skR2P
+	 cvOOxkwne0quT56PLVOberINGofDXngLp7Sxm49ZIkG9NDMRuHgQ+s3gOrXmwcrFmWHuk
+	 L/EnOSyUrB9V+2lJQhJvoVc3qWOnJB5hSGAl9rAA95oBO4c3a6JDaZdva4jQ46e9CCA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793703288;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:X-Microsoft-Original-Message-ID:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=HxnYJdkI/LkidTPK0wZKlrXpcgyWDOY5sDKRwEUsxcQ=;
+	b=XBqdaUJcTNfJrbaFPkUA+ELLWo0ff/CKZg0tXZm/0DwNiRvcqYA97lh23mORJZpKcsBu
+	 0+V7M8GaF+yEoiU5DIHdJHYJPObVExBCPpTgGRnlIXm1v0nB3OxWwMZ85cNh4BMEk7kHk
+	 r6gvC2CSrLtqMvrggpBy8n4w41YHCRt5p28mK17ZRQZ2lrRHjfGqM4eipoO+qD423cIei
+	 qrT6tWwtJPGwZKg/ymH3DZr2EQ+suyAjSWb5RQi9apdq8UWoM8ds+xosTjaiQVwFx2SVM
+	 voFOHw4kkdJxhhfAGgTo8DBx/V7+ekDcEJoAU/lR9tHkWvKNDDmCmXMo5EmffCZaukQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=hotmail.co.uk;
+	spf=pass smtp.mailfrom=hotmail.co.uk;
+	dkim=pass header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=rL6nr1EU;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.39.30
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazolkn19011030.outbound.protection.outlook.com [52.103.39.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613DF60737BC
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 10:50:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 613DF60737BC
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD198606D811;
+	Tue,  3 Nov 2026 10:54:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD198606D811
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QiTNc/ry;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=QuKIFX4B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793703020;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S1P/TNuQuERpEWgykrKJgkkLFK4NaeGks/VarCvkYtc=;
-	b=QiTNc/ryXo2b2/z8xL+NfGc33WEMvBj/kfgBBUGOICalx4Q9TJqAAPPHqJT9u3H7kUyVpm
-	lp26tRIl/GT9ozWHae+qHcOB7bUJeT03azDRigjiy+cZwGV5D3Nu7V+Q5RPhf+rFr3yP53
-	vsVJ8rtmomO3gufvjgAXBM0ny4tb5c0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-LoX3hdLeMwOCzHkwU3_-Ng-1; Tue, 03 Nov 2026 05:50:18 -0500
-X-MC-Unique: LoX3hdLeMwOCzHkwU3_-Ng-1
-X-Mimecast-MFC-AGG-ID: LoX3hdLeMwOCzHkwU3_-Ng_1793703017
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c46582442so2443688f8f.0
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 02:50:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793703017; x=1794307817; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=S1P/TNuQuERpEWgykrKJgkkLFK4NaeGks/VarCvkYtc=;
-        b=QuKIFX4BAdtqPlWepmqaKo0an9NPZbjZslotqzBq5SNGl4L1Njsy7fKs0d4CO2tQJE
-         AUQzLvzaZPuGELmO+T+LGLwK4Jyx8iUir9xAILM3kSP9Cz7wENClVJ39gp6a0XeR8q0h
-         6XPgqoklLP16W3ywg0FtIGGBnH6OzXXgsNAifZEARdmOn46cVhbcu20GSkbbIVQpCz/w
-         gDQpp7bkaX8/t4imx3umRs3R2nTVOO/LNYhSnCY1lsVLtvyYloTmHTVtly+EGzYRuDjI
-         wxegjzt8+ZmNgM+xaa4neOk1cH7xEbLNM8li3XHy0sBoE6xoIPV6uvq0XGiN+dJuAkYS
-         hVfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793703017; x=1794307817;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S1P/TNuQuERpEWgykrKJgkkLFK4NaeGks/VarCvkYtc=;
-        b=dMWlRaldvy+ETcRuMnbigNyO0zA74+UIJuquF632tjuBrEyITgZr7uLhn26crq5Okd
-         FAIRtoYKXFYzaiCNL7zBNs0QGwwXuntQqy0RRqslrAzr+FNyVo9CVjtcCj7b0P4z0Fhc
-         AxCYajN9iJKM2yMt0j/5Kf8ZK/GyF3DOWTySIj+x0cp1dJ2DaTXkUxLykiS8YOUiyei3
-         OjOKUbAwJGeuNhu0fRtXUhSG2zsHS3Zon1dynpsx8x2W0A1amNDrv/NDsmXwUB5dMp8I
-         makfFpeo2ADS72eg/X9eRr6CME58t3qEwr8OSRX/cLmo7H/wBZw7AbH52GZaJIuTUwV/
-         KrJA==
-X-Forwarded-Encrypted: i=1; AKwUvBx2OhJFO9h+5Z/epy5vO3Fw68TiY8WZXuVHOZyfXN8sNK2HhG1lCpbCcwab04kX5kATCq4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+nSqdM5jYrwaT76BY11Pebr4yetj2HDwEhBxg94kLTAAnMn5s5
-	ldIZ7sITxExcM+a/IR5v2SN101WcjiUCfYvAiQ5ZcD1vKA01sZz04iNABMPFRP7N/o8G0pvq4Ht
-	S5Vg1VHgO/Kxb0rhfqlgc/+I549/EetW01ywrFeUxNHRuAXBhNiQ9fbo7Aj6JuQ==
-X-Gm-Gg: AYBFou1Z8Q4ANOnQSVoJZ8hmT2MEPmdTAuCFDFmQ+8AXtTOcfzjz9iVQyl4qxUd8it2
-	/g45Us4yS33jK1WOVZ91iht7MI2zE/4EzL+bvSKQaTsm3M41xoeMm9qFoR7CQwb1S/UyHI4qOp8
-	CydHsxuIj/F4hu3nlTi1sranF9LuVfGSPyXYa31D/RfgTEf/ozHq43AzK9zCg/kchBmxNPCmevN
-	zqML2wh6e5yidqhVq7SrLvwOWWlwVKTAuD/2vJ9+LT+of4kxYG5UU+knDQ1hfMFVXnEMYa8BctV
-	BFu9EGmXQnJMv81DwiZjjO3dbURzqGZgMkW3MSHAkvwzhL9YARUi3UqeJAFxzVZObe6lF7nJQJ+
-	M5lY+olZKmwYbkpllfVSSLxBEepubonxSGaXLgjrIaw==
-X-Received: by 2002:a05:6000:2610:b0:48e:3647:c35d with SMTP id ffacd0b85a97d-48e6e2fcdfcmr29960972f8f.21.1793703016547;
-        Tue, 03 Nov 2026 02:50:16 -0800 (PST)
-X-Received: by 2002:a05:6000:2610:b0:48e:3647:c35d with SMTP id ffacd0b85a97d-48e6e2fcdfcmr29960901f8f.21.1793703015821;
-        Tue, 03 Nov 2026 02:50:15 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71bab1a8sm24016704f8f.57.2026.11.03.02.50.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 02:50:14 -0800 (PST)
-Date: Tue, 3 Nov 2026 05:50:12 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Shmuel Fomberg <shmuelfomberg@gmail.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, zhao1.liu@intel.com,
-	mtosatti@redhat.com, pierrick.bouvier@oss.qualcomm.com,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH] Adding support for hyper-v enlightments hv-extcalls and
- hv-memory-hint
-Message-ID: <20261103044347-mutt-send-email-mst@kernel.org>
-References: <20261102155804.39426-1-shmuelfomberg@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=rL6nr1EU
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vMxVKpgmuLg75CQgn8Z6CeC236T+4wsX8+TwAVKNPX63Kz+KmHi3gM1ZjXDVI8AS4Pw1SjS6+YYDzF9BTSqiFowID9/UosaBXvlwJV9f1OcbvAI6BkGiGXKiemc4fcKchbVLsL74/0c6ANn0YRST50pJYYVzlm4p3Dr+uk4YZEBVCJHvNrC1RBzEDo64ADsZ7jMvpkNW3PkYYuG1KKQt9MEiHM+z/COpjJIoFVuHAH3Tq4MPc3zgLfkdULoAlgK/GNUuRGUfZlGeDvKjJQu3wN/zO3BqWlBNcncuV48aq07rML/KttQVdXZfyWQgMOmQ38nRJxjOXb3jNwJLxxZJZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HxnYJdkI/LkidTPK0wZKlrXpcgyWDOY5sDKRwEUsxcQ=;
+ b=rWiynT1gYOeR1ZfBpxlRShZWUCGBFWwX5ZAsvdWgQZcO1RwCt0fnEAt1HYFP0M37FJhz08Lg8N4EZHzV5m70F8kW3FDWVzxOECEJIxXusu1Y/fmdAglBNdZjrTAEwRUlWxdMhHOCM8qLRl4JQzAHYAqnONPs1q5tYruT3W+4ZqtM/TyomarTILnFans4G9G5wtfSB+0HhiG7zXeWlRB92FdWIIh4wBqlN1flB7H9MnPV3xyJ5UTXTl2X+wyiSEn5JDQgi5s8H2GOMjvRwT4OJrB7tT6HT4aOeabvsb0eFIO6EHu7i1K/c84QKUtKWKKkkr/568DdFJUfx+/iWAa8YQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HxnYJdkI/LkidTPK0wZKlrXpcgyWDOY5sDKRwEUsxcQ=;
+ b=rL6nr1EUnZex/JoatO9Ln9cVYVMZZ4fu73ZYrZzQOxJ39PQ61pAowoYsGgntt65/CPgR5ydlhOhDpsjd2g9QsqwTwScvQmJH5Lu3nmJyfR1m/VoYOWltEhjIeDPJU5YM4hboyC3QKXlUZmgyrarckC4KRbpYpeD/AAehfbug6JskImnsNqB+nb/NVs5z1ZaCSrR2T7VlGW/1bSrieveVls7FNkUXEfZ6XFAP0RQA8qR5eLbXgAthWsTHe6B4d4Aryj9nuy4bBoBzM/KqQQIrO1g1TRfxvjMumEkIkz0jWgVxcPnemYcPOxRnlYUbN0OFnKsldSykozdbBNvdz4OJyQ==
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
+ by MIWP251MB810810.EURP251.PROD.OUTLOOK.COM (2603:10a6:290:aa::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 10:54:42 +0000
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
+ 10:54:42 +0000
+From: Aamir Ahmed <elb12345@hotmail.co.uk>
+To: "Michael S . Tsirkin" <mst@redhat.com>
+Cc: shakeel.butt@linux.dev,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	vschneid@redhat.com,
+	ziqianlu@bytedance.com,
+	peterz@infradead.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] vhost: Run TIF_NOTIFY_RESUME work in the vhost_task loop
+Date: Tue,  3 Nov 2026 10:54:40 +0000
+Message-ID:
+ <AS8P251MB0001F1EACBED6E7A2AFA8A96C8692@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO4P123CA0412.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:189::21) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:344::22)
+X-Microsoft-Original-Message-ID:
+ <20261103105440.43028-1-elb12345@hotmail.co.uk>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -116,534 +102,138 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102155804.39426-1-shmuelfomberg@gmail.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|MIWP251MB810810:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84a396da-cb30-467f-a13e-08df3998dd3d
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|8060799015|25010399006|260925184616899003|19110799012|15080799012|5072599009|25031999004|37011999003|5062599005|23021999003|24021099003|55001999006|51005399006|41001999006|1602099012|10035399007|40105399003|26104999009|3412199025|4302099013|440099028;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?QXFWINgzTSl3xsIAyY2z79kWIy+BUtBPO2dbOGDevjR1rAEHQUzvAC2RV8f+?=
+ =?us-ascii?Q?CSB6XyZZu9M/VEucxulgbZgAhVCLyZ4iz+OTwYUrNeEMhNzh4RHcq9vaoAKM?=
+ =?us-ascii?Q?9IK8Qd/MUJLvF+kJ6MYN+br2WHi0hqk78hjlfdo++dyjEiEen3NEkEe2wm5I?=
+ =?us-ascii?Q?d9CwOVXu70PilTFdopFVwpxms+EWLP8gLk+VFvk+E1X+nfWfglGKVXpCmful?=
+ =?us-ascii?Q?r29y6Uw+qIj2pCHoS9N++/ZV9ndG5uGkw8sopYANPY4WEtMzkasN/hfAV43y?=
+ =?us-ascii?Q?ILaWQzuvdUAPkX5MkW3QF/wa4xHsMQwn4i4aa1DAc+G6Ze5g2VfMSOIuidIO?=
+ =?us-ascii?Q?B6W2jnofso5BCpAGkqjkmF9yPZDc2EAbt4sC4M8XhTCB3QjrXfdPpVKtrE6w?=
+ =?us-ascii?Q?+ndpfMiB53UkpA7mQ9Q7xk5FV1yM+SX6S70G+9QjK71/6yQa/9DEC+18r2k2?=
+ =?us-ascii?Q?6QDfhh5L1iJ+ka365WlGa+IQ6GZwBbl1waE5SJS3x3QjgY2lYkNj2PDXrrgx?=
+ =?us-ascii?Q?lmvokv7bz4EhExLTTMTqJZBEzl2+0/jAGa4kQ67WGFR23cixS5apApO8T4bm?=
+ =?us-ascii?Q?jEluxgSh2ARXBHWiie/jgfPyxHnqaCisfv/kvoinZYBz8OOrLpWct0EUfvWe?=
+ =?us-ascii?Q?yHwtkBAWJINY7DV6k4y3Od9EMCfCpL9K3oWxYshAKK5+Z/3U4OvfWbrD/lnt?=
+ =?us-ascii?Q?u9WCw42vabDCdb6l/pjFq2iVoC0FRuJj9ZAGbwqbF5IUxUa2sb+Mq7843JX3?=
+ =?us-ascii?Q?gG5UEim7+IhdtDgtemoc6HzfY10xC43Yn0fYYXXv9aME/OVnWVmlp6RvlZFW?=
+ =?us-ascii?Q?VeVWT9m9m5hhXyhH1PDTw2Mzpes1Bpqopm58SN9p13ZzxlbgZ22wpJd+g9p2?=
+ =?us-ascii?Q?D022HMAS6qRacUDuII5PPKrIEHVYYeFxtkJtgsCEn8BwWMbkLD4G9BC81fXm?=
+ =?us-ascii?Q?wDPEHdAQsKJrNxWf/KmS8cOdmg0VPQlpzG5UAnNpjJrbZfDvzwCeiSFXVTcN?=
+ =?us-ascii?Q?/dGVAdNjv3kDDDxmS9I/6WAT0oloc5xD+qgkRfZ72LsW3TOgUUQKbOJPSuF6?=
+ =?us-ascii?Q?sByH2m6nXJ8Z9wQ/BXIFAW0Dtccx7U3gTR9HodQX5V5DjjXFByG3dmgP/JDW?=
+ =?us-ascii?Q?aHzgbrG9DSLo?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?He3TDZgL6sdYTEgDMLVT1FL+FK+ck9MlGJcMjYUHfzgSSIMKX695yw/bvr78?=
+ =?us-ascii?Q?mJ0n6ExWZkVqVigY6vhRseYpf7Qs7tCMYCqFf3or0yN7i4wD+oiMi2PB73bi?=
+ =?us-ascii?Q?f0CkMSSHFD4rWByBhHHJi9jChIRIdoo/susTUImv4H7Rts/6ahfClnKyHb6a?=
+ =?us-ascii?Q?4o+ST34qeJO+wMOw4ReGwJCZSJ4XK7cp4rFOdGn8s3c4cJ6yr2VP0voT8Z9q?=
+ =?us-ascii?Q?UWqrycu5hTyPqo0pHCgs/xdXaJtOdzZw7+4JedaII/im9FdgiKBT/rlJtt/t?=
+ =?us-ascii?Q?0z7gm/vkgtqTjd/SLDXEAYUvAYDoxeAhs42GBJUV6MlPz0VDqEJQauzJJzwN?=
+ =?us-ascii?Q?qTiQ7O9GBAVuuwJaKsON4AmM9bXk+n4V4qttfeIgQlIU2l2MM3Ge2k6/dsX4?=
+ =?us-ascii?Q?++GYx9wspnZ21oRv60aTH/aAiEgidLr7EnCoUQnPCEGThiGcNbrHeVGcpBV7?=
+ =?us-ascii?Q?vT9x5oHMvPOK4pEUri7ZQmV7Dvtpx2GAqrbRxz1p7lfh3iYafzhXTW1bp9/u?=
+ =?us-ascii?Q?cZOgHoxkf/zy4MhRbva7NkFjdd3ziQqkSe7jsQck21wzOkF5DDWsFSDfyjeK?=
+ =?us-ascii?Q?71rgfY/tE12J28KYrx8RJcevM7fxYCTtm40jrHMzBHdq83izva8oD88mcv5H?=
+ =?us-ascii?Q?q2CSZRjfosBltRX9Wl5R0fowUnTFHnffcavuS1M5A24Be2Q80O0HTWj7/iEa?=
+ =?us-ascii?Q?PG9N7+BwmT0p4DX9hQ/Rf6kO6v2Y3bgcUUk4OUicP4adfXJs9c2MqKPGCU3e?=
+ =?us-ascii?Q?vh8I15lPBYdPYTx8p0UxyxdF9cTx68ci6bhhzkubu0cFJqtHyI/jiN9Kkfk9?=
+ =?us-ascii?Q?0XMdq6j4SxwE4WYqOCFywCX0ftDguiXsu6G7LRvCM+lqs/hwzUerbHOi0Uz2?=
+ =?us-ascii?Q?fZdPx1iOgNeEfYa8LD9cqLruQ1dLu8gU7P+Dk/SAhEyo9b8r62Ovh9bpOho8?=
+ =?us-ascii?Q?CTdlNOVnhs4wiOxAsif4H4Vco+TqM0/euIVa9c3e/JH+0OL+a74CwRlNTKWn?=
+ =?us-ascii?Q?mv7iWQy3gfjT/ybZpcGKroDp7mIPUaTMhj7F8+VhOmg+eB0qztkCZzXkL8iK?=
+ =?us-ascii?Q?9+LjSE/umdFmm0I7wYYeZuso96vOqGBkSiilJfliL8sujEpmXz46QT9D05wU?=
+ =?us-ascii?Q?gKdCP738HAaPJijIOhHesTCHqT2WjDe+hMRn68GzlXyFOXwd04A5oI0gxXED?=
+ =?us-ascii?Q?LltmZj8eBjrGTKYA1QpKOacvuEl39bstXuUe+qkU0dptDmDvlTM4UDUwKpov?=
+ =?us-ascii?Q?0ZyyefNYjVqkKC//HLBlOegVeZdSPf2B20STu+RBlHaKhvjvXhNaRdkfgd5e?=
+ =?us-ascii?Q?DIdsmB5Xbg7E71/ASistye+AZJNJr8QotCdICA285GmG2v2U/mItfuMf0FtC?=
+ =?us-ascii?Q?P3ey6w7TfdD0E3OU6a9IuNrlkkQFr88e/CEEmsfK3Di9/Dwe/8IJbjltnbbX?=
+ =?us-ascii?Q?jerZ1QrqFKKqoVd8D0f4MRaKAax1At0o?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84a396da-cb30-467f-a13e-08df3998dd3d
+X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 10:54:42.2645
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MIWP251MB810810
 
-Thanks for the patch! yet something to improve:
+Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
+model"), a throttled task is only dequeued when TWA_RESUME task_work
+runs on its way back to user mode.
 
-On Mon, Nov 02, 2026 at 05:58:04PM +0200, Shmuel Fomberg wrote:
-> hv-memory-hint (hypercall HvExtCallMemoryHeatHint) allow a guest to
-> notify host which memory pages will be needed in the near future.
-> This is not a replacement for the balloon functionality, but can
-> help the kernel
+vhost workers never return to user mode, and vhost_task_fn() only runs
+task_work via get_signal() when a signal is pending. A busy vhost worker
+therefore ignores its cgroup's cpu.max, while its runtime is still
+charged to the group, throttling the group's other tasks (typically the
+VM's vCPUs) harder.
 
-given this is supposed to be an optimization, I expect to see
-some performance numbers showing it actually helps, and some
-documentation explaining when it does and when it doesn't.
+This also fixes memory.high and block cgroup throttling for vhost
+workers, which are handled in resume_user_mode_work() as well.
 
-e.g. does it work with vhost-user (shmem)? hugetlb?
+Run pending notify-resume work at the top of the worker loop, as io-wq
+does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
+generic xfer to guest work function") fixed the same problem for KVM.
 
-pls document which configs were tested, with linux and windows guests.
+Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
+Cc: stable@vger.kernel.org # 6.18+
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Tested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Assisted-by: LLM
+Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+---
+v2:
+- Also describe the memory.high and block cgroup throttling fixes
+  (Shakeel)
+- Add Shakeel's Reviewed-by and Tested-by
+- Update the code comment to match
+- v1: https://lore.kernel.org/AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
 
-> make better decisions when memory is scare.
+Tested on x86_64 with a vhost_task-based reproducer: in a 0.2-CPU cgroup
+a busy worker drops from 100% to 19% of a CPU. Reproducer available on
+request.
 
-scarse?
+ kernel/vhost_task.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-> 
-> Signed-off-by: Shmuel Fomberg <shmuelfomberg@gmail.com>
-> ---
->  docs/system/i386/hyperv.rst      |  14 +++
->  hw/hyperv/hyperv.c               | 158 +++++++++++++++++++++++++++++++
->  include/hw/hyperv/hyperv-proto.h |  25 +++++
->  include/hw/hyperv/hyperv.h       |  13 +++
->  include/qemu/madvise.h           |   7 ++
->  target/i386/cpu.c                |   3 +
->  target/i386/cpu.h                |   2 +
->  target/i386/kvm/hyperv-proto.h   |   1 +
->  target/i386/kvm/hyperv.c         |  24 +++++
->  target/i386/kvm/kvm.c            |   7 ++
->  10 files changed, 254 insertions(+)
-> 
-> diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
-> index e1babffb0f..1e164f1863 100644
-> --- a/docs/system/i386/hyperv.rst
-> +++ b/docs/system/i386/hyperv.rst
-> @@ -259,6 +259,15 @@ Existing enlightenments
->  
->    Recommended: ``hv-evmcs`` (Intel)
->  
-> +``hv-extcalls``
-> +  Advertises extended Hyper-V hypercalls (call codes 0x8000 and above) to
-> +  the guest.
-> +
-> +``hv-memory-hint``
-> +  Enables guest memory heat hints (HvExtCallMemoryHeatHint).
-> +
-> +  Requires: ``hv-extcalls``
-> +
->  Supplementary features
->  ----------------------
->  
-> @@ -276,6 +285,11 @@ Supplementary features
->    Windows guests from booting when used without proper configuration. If needed,
->    ``hv-syndbg`` can be enabled additionally.
->  
-> +  Note: ``hv-passthrough`` enables ``hv-extcalls`` when the host KVM advertises
-> +  it. It does not enable ``hv-memory-hint``, which is implemented in QEMU and
-> +  has no KVM CPUID bit. Enable ``hv-memory-hint`` explicitly when guest heat
-> +  hints should reach the host.
-> +
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 3717885a599..f63ac005214 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -6,6 +6,7 @@
+ #include <linux/completion.h>
+ #include <linux/sched/task.h>
+ #include <linux/sched/vhost_task.h>
++#include <linux/resume_user_mode.h>
+ #include <linux/sched/signal.h>
+ 
+ enum vhost_task_flags {
+@@ -31,6 +32,14 @@ static int vhost_task_fn(void *data)
+ 	for (;;) {
+ 		bool did_work;
+ 
++		/*
++		 * We never return to user mode, so TWA_RESUME task_work and
++		 * memory.high/blkcg throttling would otherwise never run. Run
++		 * them here, where no locks are held, like io-wq workers do.
++		 */
++		if (test_thread_flag(TIF_NOTIFY_RESUME))
++			resume_user_mode_work(NULL);
++
+ 		if (signal_pending(current)) {
+ 			struct ksignal ksig;
+ 
 
-I'm not sure what all this means.
-"KVM CPUID" is also obscure.
-
-Can you pls rewrite? Maybe along the lines of:
-
-if .... and .... then ... results in ...
-if .... and .... then ... is ignored
-
-
-
-
->    Note: ``hv-passthrough`` effectively prevents migration as the list of enabled
->    enlightenments may differ between target and destination hosts.
->  
-> diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
-> index 900ff80213..b3fce7b563 100644
-> --- a/hw/hyperv/hyperv.c
-> +++ b/hw/hyperv/hyperv.c
-> @@ -20,7 +20,9 @@
->  #include "system/physmem.h"
->  #include "qemu/bitops.h"
->  #include "qemu/error-report.h"
-> +#include "qemu/int128.h"
->  #include "qemu/lockable.h"
-> +#include "qemu/madvise.h"
->  #include "qemu/queue.h"
->  #include "qemu/rcu.h"
->  #include "qemu/rcu_queue.h"
-> @@ -646,6 +648,162 @@ unmap:
->      return ret;
->  }
->  
-> +uint16_t hyperv_hcall_ext_capabilities(uint64_t outgpa, bool fast,
-> +                                       bool memory_hint)
-> +{
-> +    uint16_t ret;
-> +    hwaddr len;
-> +    uint64_t *caps = NULL;
-> +
-> +    if (fast) {
-> +        return HV_STATUS_INVALID_HYPERCALL_CODE;
-> +    }
-> +    if (outgpa & (__alignof__(*caps) - 1)) {
-> +        return HV_STATUS_INVALID_ALIGNMENT;
-> +    }
-> +
-> +    len = sizeof(*caps);
-> +    caps = physical_memory_map(outgpa, &len, 1);
-> +    if (!caps || len < sizeof(*caps)) {
-> +        ret = HV_STATUS_INSUFFICIENT_MEMORY;
-> +        goto unmap;
-> +    }
-> +
-> +    *caps = 0;
-> +    if (memory_hint) {
-> +        *caps = HV_EXT_CAP_MEMORY_HEAT_HINT;
-> +        if (QEMU_MADV_COLD != QEMU_MADV_INVALID) {
-> +            *caps |= HV_EXT_CAP_MEMORY_HEAT_HINT_COLD;
-> +        }
-> +    }
-> +    ret = HV_STATUS_SUCCESS;
-> +
-> +unmap:
-> +    if (caps) {
-> +        physical_memory_unmap(caps, len, 1, ret == HV_STATUS_SUCCESS ? len : 0);
-> +    }
-> +    return ret;
-> +}
-> +
-> +static bool hv_decode_gpa_page_range(uint64_t raw, hwaddr *gpa, hwaddr *len)
-> +{
-> +    uint64_t pages = (raw & HV_GPA_PAGE_RANGE_ADDITIONAL_MASK) + 1;
-
-shouldn't we check alignment and error out rather than force it?
-
-
-> +
-> +    if (raw & HV_GPA_PAGE_RANGE_LARGEPAGE) {
-> +        if (raw & HV_GPA_PAGE_RANGE_PAGE_SIZE_1GB) {
-> +            *gpa = raw & HV_GPA_PAGE_RANGE_1G_GPA_MASK;
-> +            *len = pages << 30;
-> +        } else {
-> +            *gpa = raw & HV_GPA_PAGE_RANGE_2M_GPA_MASK;
-> +            *len = pages << 21;
-> +        }
-> +    } else {
-> +        *gpa = raw & HV_GPA_PAGE_RANGE_4K_GPA_MASK;
-> +        *len = pages << 12;
-> +    }
-> +
-> +    return *len != 0;
-
-how can len be 0?
-
-
-
-
-> +}
-> +
-> +static void hv_madvise_gpa_range(hwaddr gpa, hwaddr len, int advice)
-> +{
-> +    while (len) {
-> +        MemoryRegionSection section;
-> +        hwaddr chunk, start, skip;
-> +        void *host;
-> +
-> +        section = memory_region_find(get_system_memory(), gpa, len);
-> +        if (!section.mr) {
-> +            break;
-
-why break? we could have an unmapped hole followed by a mapped one.
-
-> +        }
-> +
-> +        start = section.offset_within_address_space;
-> +        chunk = int128_get64(section.size);
-> +
-> +        if (!chunk || start < gpa) {
-
-
-is this dead code? we got the mr from find can start be before?
-
-> +            memory_region_unref(section.mr);
-> +            break;
-> +        }
-> +
-> +        skip = start - gpa;
-> +        if (skip >= len || chunk > len - skip) {
-
-can this trigger? or more dead code?
-
-> +            memory_region_unref(section.mr);
-> +            break;
-> +        }
-> +
-> +        gpa = start + chunk;
-> +        len -= skip + chunk;
-> +
-> +        if (memory_region_is_ram(section.mr) &&
-> +            !memory_region_is_rom(section.mr) &&
-> +            !memory_region_is_romd(section.mr)) {
-> +            host = memory_region_get_ram_ptr(section.mr) +
-> +                   section.offset_within_region;
-> +            qemu_madvise(host, chunk, advice);
-> +        }
-> +        memory_region_unref(section.mr);
-> +    }
-> +}
-> +
-> +uint16_t hyperv_hcall_memory_hint(uint64_t in_gpa, uint16_t rep_count,
-> +                                  bool fast)
-> +{
-> +    uint16_t ret = HV_STATUS_SUCCESS;
-> +    hwaddr in_len, needed;
-> +    struct hyperv_memory_heat_hint *in = NULL;
-> +    unsigned int i;
-> +    uint64_t heat_type;
-> +    int advice;
-> +
-> +    if (fast) {
-> +        return HV_STATUS_INVALID_HYPERCALL_CODE;
-> +    }
-> +    if (rep_count < 1 || rep_count > HV_EXT_MEMORY_HEAT_HINT_MAX_RANGES) {
-> +        return HV_STATUS_INVALID_HYPERCALL_INPUT;
-> +    }
-> +    if (in_gpa & (__alignof__(*in) - 1)) {
-> +        return HV_STATUS_INVALID_ALIGNMENT;
-> +    }
-> +
-> +    needed = sizeof(in->heat_type) + sizeof(in->ranges[0]) * rep_count;
-> +    in_len = TARGET_PAGE_SIZE;
-> +    in = physical_memory_map(in_gpa, &in_len, 0);
-> +    if (!in || in_len < needed) {
-> +        ret = HV_STATUS_INSUFFICIENT_MEMORY;
-> +        goto unmap;
-
-needed can be 4096 with rep_count 511, can it not? if the input
-is not page aligned or end of page is not ram, will this not fail?
-why not just map needed bytes?
-
-> +    }
-> +
-> +    heat_type = in->heat_type & 3;
-
-I would add
-	#define HV_EXTMEM_HEAT_HINT_MASK      3
-or
-	(HV_EXTMEM_HEAT_HINT_HOT|HV_EXTMEM_HEAT_HINT_COLD|HV_EXTMEM_HEAT_HINT_COLD_DISCARD)
-
-also are you really supposed to just ignore rest of bits?
-add a code comment explaining why.
-
-
-> +    switch (heat_type) {
-> +    case HV_EXTMEM_HEAT_HINT_HOT:
-> +        advice = QEMU_MADV_WILLNEED;
-> +        break;
-> +    case HV_EXTMEM_HEAT_HINT_COLD:
-> +    case HV_EXTMEM_HEAT_HINT_COLD_DISCARD:
-> +        advice = QEMU_MADV_COLD;
-> +        break;
-> +    default:
-> +        ret = HV_STATUS_INVALID_PARAMETER;
-> +        goto unmap;
-> +    }
-
-Pls document what are these things supposed to do, with code comments.
-
-For example "discard" sounds like MADV_DONTNEED, MADV_REMOVE or
-MADV_FREE or a combination of these to me?
-
-"COLD" sounds kinda like MADV_COLD but there's also MADV_PAGEOUT
-which is same but more aggressive.
-
-
-
-> +
-> +    for (i = 0; i < rep_count; i++) {
-> +        hwaddr gpa, len;
-> +        uint64_t raw = in->ranges[i];
-> +
-> +        if (!hv_decode_gpa_page_range(raw, &gpa, &len)) {
-> +            continue;
-
-what's the point of this? does it ever trigger?
-
-> +        }
-> +        hv_madvise_gpa_range(gpa, len, advice);
-> +    }
-> +
-> +unmap:
-> +    if (in) {
-> +        physical_memory_unmap(in, in_len, 0, 0);
-> +    }
-> +    return ret;
-> +}
-> +
->  static int set_event_flag_handler(uint32_t conn_id, EventNotifier *notifier)
->  {
->      int ret;
-> diff --git a/include/hw/hyperv/hyperv-proto.h b/include/hw/hyperv/hyperv-proto.h
-> index fffc5ce342..67e6f72a90 100644
-> --- a/include/hw/hyperv/hyperv-proto.h
-> +++ b/include/hw/hyperv/hyperv-proto.h
-> @@ -35,7 +35,32 @@
->  #define HV_POST_DEBUG_DATA                    0x0069
->  #define HV_RETRIEVE_DEBUG_DATA                0x006a
->  #define HV_RESET_DEBUG_SESSION                0x006b
-> +#define HV_EXT_CALL_QUERY_CAPABILITIES        0x8001
-> +#define HV_EXT_CALL_MEMORY_HEAT_HINT          0x8003
->  #define HV_HYPERCALL_FAST                     (1u << 16)
-> +#define HV_HYPERCALL_REP_COMP_OFFSET          32
-> +#define HV_HYPERCALL_REP_COMP_MASK            0xfff
-> +
-> +#define HV_EXT_CAP_MEMORY_HEAT_HINT           (1ull << 1)
-> +#define HV_EXT_CAP_MEMORY_HEAT_HINT_COLD      (1ull << 2)
-
-Here:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/include/hyperv/hvgdk_ext.h
-
-
-I see:
-#define HV_EXT_CAPABILITY_MEMORY_COLD_DISCARD_HINT BIT(8)
-
-
-
-> +#define HV_EXT_MEMORY_HEAT_HINT_MAX_RANGES    511
-> +
-> +#define HV_EXTMEM_HEAT_HINT_COLD              0
-> +#define HV_EXTMEM_HEAT_HINT_HOT               1
-> +#define HV_EXTMEM_HEAT_HINT_COLD_DISCARD      2
-> +
-> +struct hyperv_memory_heat_hint {
-> +    uint64_t heat_type;
-> +    uint64_t ranges[HV_EXT_MEMORY_HEAT_HINT_MAX_RANGES];
-> +};
-> +
-> +/* HV_GPA_PAGE_RANGE in each heat-hint range qword */
-> +#define HV_GPA_PAGE_RANGE_ADDITIONAL_MASK     0x7ffull
-> +#define HV_GPA_PAGE_RANGE_LARGEPAGE           (1ull << 11)
-> +#define HV_GPA_PAGE_RANGE_PAGE_SIZE_1GB       (1ull << 12)
-> +#define HV_GPA_PAGE_RANGE_4K_GPA_MASK         (~0xfffull)
-> +#define HV_GPA_PAGE_RANGE_2M_GPA_MASK         (~0x1fffffull)
-> +#define HV_GPA_PAGE_RANGE_1G_GPA_MASK         (~0x3fffffffull)
->  
-
-Can you try to move the linux bits out to a uapi file and import from there,
-instead of duplicating?
-
->  /*
->   * Message size
-> diff --git a/include/hw/hyperv/hyperv.h b/include/hw/hyperv/hyperv.h
-> index 23091301d0..8cccbb91ba 100644
-> --- a/include/hw/hyperv/hyperv.h
-> +++ b/include/hw/hyperv/hyperv.h
-> @@ -70,6 +70,19 @@ uint16_t hyperv_hcall_post_message(uint64_t param, bool fast);
->   * the connection as specified in @param.
->   */
->  uint16_t hyperv_hcall_signal_event(uint64_t param, bool fast);
-> +/*
-> + * Process HV_EXT_CALL_QUERY_CAPABILITIES hypercall: list supported ext hcall
-> + * fill the capabilities bit array in @outgpa.
-> + */
-> +uint16_t hyperv_hcall_ext_capabilities(uint64_t outgpa, bool fast,
-> +                                       bool memory_hint);
-> +/*
-> + * Process HV_EXT_CALL_MEMORY_HEAT_HINT hypercall: receive a list of hot/cold
-> + * pages and call madvice on them.
-
-
-madvise
-
-> + */
-> +uint16_t hyperv_hcall_memory_hint(uint64_t in_gpa, uint16_t rep_count,
-> +                                  bool fast);
-> +
->  
->  static inline uint32_t hyperv_vp_index(CPUState *cs)
->  {
-> diff --git a/include/qemu/madvise.h b/include/qemu/madvise.h
-> index e155f59a0d..fd638c2254 100644
-> --- a/include/qemu/madvise.h
-> +++ b/include/qemu/madvise.h
-> @@ -59,6 +59,11 @@
->  #else
->  #define QEMU_MADV_POPULATE_WRITE QEMU_MADV_INVALID
->  #endif
-> +#ifdef MADV_COLD
-> +#define QEMU_MADV_COLD MADV_COLD
-> +#else
-> +#define QEMU_MADV_COLD QEMU_MADV_INVALID
-> +#endif
->  
->  #elif defined(CONFIG_POSIX_MADVISE)
->  
-> @@ -73,6 +78,7 @@
->  #define QEMU_MADV_NOHUGEPAGE  QEMU_MADV_INVALID
->  #define QEMU_MADV_REMOVE QEMU_MADV_DONTNEED
->  #define QEMU_MADV_POPULATE_WRITE QEMU_MADV_INVALID
-> +#define QEMU_MADV_COLD QEMU_MADV_INVALID
->  
->  #else /* no-op */
->  
-> @@ -87,6 +93,7 @@
->  #define QEMU_MADV_NOHUGEPAGE  QEMU_MADV_INVALID
->  #define QEMU_MADV_REMOVE QEMU_MADV_INVALID
->  #define QEMU_MADV_POPULATE_WRITE QEMU_MADV_INVALID
-> +#define QEMU_MADV_COLD QEMU_MADV_INVALID
->  
->  #endif
->  
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index e65eca0459..263523d052 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -10824,6 +10824,9 @@ static const Property x86_cpu_properties[] = {
->                        HYPERV_FEAT_TLBFLUSH_EXT, 0),
->      DEFINE_PROP_BIT64("hv-tlbflush-direct", X86CPU, hyperv_features,
->                        HYPERV_FEAT_TLBFLUSH_DIRECT, 0),
-> +    DEFINE_PROP_BIT64("hv-extcalls", X86CPU, hyperv_features,
-> +                      HYPERV_FEAT_EXT_HYPERCALLS, 0),
-> +    DEFINE_PROP_BOOL("hv-memory-hint", X86CPU, hyperv_memory_hint, false),
->      DEFINE_PROP_ON_OFF_AUTO("hv-no-nonarch-coresharing", X86CPU,
->                              hyperv_no_nonarch_cs, ON_OFF_AUTO_OFF),
->  #ifdef CONFIG_SYNDBG
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 3945e90371..3c9da61e17 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1489,6 +1489,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->  #define HYPERV_FEAT_XMM_INPUT           18
->  #define HYPERV_FEAT_TLBFLUSH_EXT        19
->  #define HYPERV_FEAT_TLBFLUSH_DIRECT     20
-> +#define HYPERV_FEAT_EXT_HYPERCALLS      21
->  
->  #ifndef HYPERV_SPINLOCK_NEVER_NOTIFY
->  #define HYPERV_SPINLOCK_NEVER_NOTIFY             0xFFFFFFFF
-> @@ -2374,6 +2375,7 @@ struct ArchCPU {
->      uint32_t hyperv_spinlock_attempts;
->      char *hyperv_vendor;
->      uint64_t hyperv_features;
-> +    bool hyperv_memory_hint;
->      bool hyperv_passthrough;
->      OnOffAuto hyperv_no_nonarch_cs;
->      uint32_t hyperv_vendor_id[3];
-> diff --git a/target/i386/kvm/hyperv-proto.h b/target/i386/kvm/hyperv-proto.h
-> index a9f056f2f3..e88913fd37 100644
-> --- a/target/i386/kvm/hyperv-proto.h
-> +++ b/target/i386/kvm/hyperv-proto.h
-> @@ -66,6 +66,7 @@
->   * HV_CPUID_FEATURES.EBX bits
->   */
->  #define HV_PARTITION_DEBUGGING_ALLOWED          (1u << 12)
-> +#define HV_ENABLE_EXTENDED_HYPERCALLS           (1u << 20)
->  
->  /*
->   * HV_CPUID_ENLIGHTMENT_INFO.EAX bits
-> diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
-> index 420c76b5ff..9d97f5cb4e 100644
-> --- a/target/i386/kvm/hyperv.c
-> +++ b/target/i386/kvm/hyperv.c
-> @@ -97,6 +97,13 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
->          bool fast = exit->u.hcall.input & HV_HYPERCALL_FAST;
->          uint64_t in_param = exit->u.hcall.params[0];
->          uint64_t out_param = exit->u.hcall.params[1];
-> +        uint64_t rep_count = (exit->u.hcall.input >> 32) & 0xFFF;
-> +
-> +        if ((code & 0x8000) &&
-> +            !hyperv_feat_enabled(cpu, HYPERV_FEAT_EXT_HYPERCALLS)) {
-> +            exit->u.hcall.result = HV_STATUS_INVALID_HYPERCALL_CODE;
-> +            return 0;
-> +        }
->  
->          switch (code) {
->          case HV_POST_MESSAGE:
-> @@ -117,6 +124,23 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
->              exit->u.hcall.result =
->                  hyperv_hcall_reset_dbg_session(out_param);
->              break;
-> +        case HV_EXT_CALL_QUERY_CAPABILITIES:
-> +            exit->u.hcall.result = hyperv_hcall_ext_capabilities(
-> +                out_param, fast, cpu->hyperv_memory_hint);
-> +            break;
-> +        case HV_EXT_CALL_MEMORY_HEAT_HINT:
-> +            if (!cpu->hyperv_memory_hint) {
-> +                exit->u.hcall.result = HV_STATUS_INVALID_HYPERCALL_CODE;
-> +                break;
-> +            }
-> +            exit->u.hcall.result =
-> +                hyperv_hcall_memory_hint(in_param, rep_count, fast);
-> +            if (exit->u.hcall.result == HV_STATUS_SUCCESS) {
-> +                exit->u.hcall.result |=
-> +                    (rep_count & HV_HYPERCALL_REP_COMP_MASK) <<
-> +                    HV_HYPERCALL_REP_COMP_OFFSET;
-> +            }
-> +            break;
->          default:
->              exit->u.hcall.result = HV_STATUS_INVALID_HYPERCALL_CODE;
->          }
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 072da8b9f1..46c983f963 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -1137,6 +1137,13 @@ static struct {
->          },
->          .dependencies = BIT(HYPERV_FEAT_VAPIC)
->      },
-> +    [HYPERV_FEAT_EXT_HYPERCALLS] = {
-> +        .desc = "enable extended hypercalls (hv-extcalls)",
-> +        .flags = {
-> +            {.func = HV_CPUID_FEATURES, .reg = R_EBX,
-> +             .bits = HV_ENABLE_EXTENDED_HYPERCALLS}
-> +        }
-> +    },
->  };
->  
->  static struct kvm_cpuid2 *try_get_hv_cpuid(CPUState *cs, int max,
-> -- 
-> 2.54.0 (Apple Git-157)
-> 
-> 
-
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+-- 
+2.55.0
