@@ -1,106 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793679163;
-	b=bINnEDO98KWPU3or2165D8Ahld0xv6ogG2JPqcgQogeb8qQx7xYAdf8DS2z1liSugi9+
-	 HXOwyCBpGPhRURWfAxrktynnqqsLwa8bdBjK2uODv6n20rbiiWpCPD7hXGwUQGVtGOhd0
-	 VbXIXHqBKH6h3uRh38E15hIrjAsntYv8IoykFheXRNoOcfn2S4HmzTu46bJhVz6DziP2l
-	 5IcijMrpwNqdnMgFocnlQHsXchSTLS3Qt36owstWctMCY0vhvvWN6Di5iqh2D8otrFjaS
-	 Iwx7UPMxjZhg0eMzXRYREivXVEu3SpbxaoU3aKskFPhnvLFJYxOYwZmHNW+Ccvy66YA==
+	t=1793680367;
+	b=40ImkQU2/0CaPru9HmeW66402d3Sk0gXVkKSw5iQ6n4Xb/oJw500JzMztHm8+4SYRw2D
+	 xYnMGiC9Z2Z1HZjuErEz9lvG1o/BktEDq866AaxNaCl9EetUtpKzmo3nbcDdpSjTtjLhQ
+	 yF9J8os3OZr+Mvfise9qbO8Gln50nTNtGB0QxGWuiGSEThjFjMx0DtMjpatmVHlHSREuz
+	 XKWK0sZL9TlA/fZWhP5z171Tb+oLL98RHDJ0atDYAP6v1nOZcsaw0+mkdYMbGkOC11+un
+	 I7jjnfhzWtRwj32YhLT0+4W1KBYI3N84tTzVuB2lChAZebEfH0GKdv6vUjwNgDQ2NsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793679163;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=AoK1tSvrGC/yGpo34e5d7pEB1O9R0LQE99Bs7YS2fkw=;
-	b=104R8W7x4jzauRKyzBGmpE9ZlZpVJ8A1WHQ/iktu7oorVvk9dsMH9TGmnwL5ZoGNF7WU
-	 ALt2O9foihVGoKTY4YbwvkzYNdBgC7mU2K4WAeSu1djlSSKVqWZPDJ/1Um47hYHohI5Bx
-	 olUghO62aUMO2QK3FMGkal+T4imQy4JTi1yM5CXMKs9GNu9frin2sRZMT4e9Dn24JXAxC
-	 Z8Q2dpY2EkMPbrks/TI6rlxx6TSlHy41B/4T4zxtk8b0Byf1EGeeEb2JMfNHSuy6Px6r7
-	 a6G3nXnCpHaonPxwh4S+uo/JlXaP9TFxfJxn4SKsNyry9MRe1MOLXAsgg9FyzzNV6UQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793680367;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=bKcFirAF39uZbnuW51SyDLYv9Pwoa6/JIHY31d45d68=;
+	b=nb7FU1FtCpCvtLGjjv4kUv+a8/FyCvXWG9ph9lVKxf1m8QmN7U8Q+CgW0PCQChq6WlPa
+	 XkQ5d8m5PfoI4gfiV/YRo1rDPZlXClktEIYzjq/zaMNWrUzLAT49RkUAMb8ny1CgLgooS
+	 IkHdT3SeBD+EZb1JtwuTmiG5dh+v1iStQj4GuAReH8URwTjGXD/+gMUKHNixu4cm0zmXG
+	 5edpL2vyI3UnSZb6Ug2ELGfmfvBzt9/z7lztxodHKBV+S1azKX7suWvu4VAKiqze35zG+
+	 jMkcCLpSnj07wGIAk/5QeRfjl2q4r3P8PDJYkzQTE96t7ECHj4IgDuhpOU1f4ttY1nw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yNb5JtGr;
-	arc=none smtp.remote-ip=209.85.216.47
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XIiTU1Zr;
+	arc=none smtp.remote-ip=198.175.65.12
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4511C606A327
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 04:12:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4511C606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79F8606A326;
+	Tue,  3 Nov 2026 04:32:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C79F8606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yNb5JtGr
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3a4b3ac8fb7so2235585a91.0
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 20:12:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793679162; x=1794283962; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AoK1tSvrGC/yGpo34e5d7pEB1O9R0LQE99Bs7YS2fkw=;
-        b=yNb5JtGr8cWg5rgW1J6E4bnifWYrSmlFuU4BFB4PrdDiock0WoXQJSnoDQ/L5yHiTC
-         LxrnCsVRpGrSizZV6gvhHqJ6thD5TD1LQc8Ayb7CQbdyA/KtE2Sq0Ti6NDl/LvpTd9PW
-         6jA7il4MedAFpJDcCBW/Bo3jG2g1JGqf/V89cymLwPJHMqMgYWi2hhFhkC2/i2Pe9KI5
-         6Yi7LxTM6A8eAZe1HLf7xYUKKkr9y+jD72q5Ah4F+3V1EVQUTGDhgHEmPeFghvzzzfVB
-         KReqJ0ql86WwSd9wmCovyUBASO8+BIMWferu3vt5faIJSUtJzjFUy+4E5B5ysKlWtSao
-         wCug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793679162; x=1794283962;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AoK1tSvrGC/yGpo34e5d7pEB1O9R0LQE99Bs7YS2fkw=;
-        b=w4xFjGYziYCKbC+nMWQMOsksnV9pxGUk3d+1JvYFY27VOW+Co7BhJLlZIflCcAihMN
-         0i7sH2CVtkOniWUYtEfGZIs8euVhn0ZnILnAn6BrVaihRuTHf1QasUx3eSFY3gv3Fd32
-         zXLogbxTowbzpCdarw8lh0Oxf788TFc5BW4Ue4JWHaQXPY9hRnaW/5QI5VcJRQwMp8s7
-         HatWecpaISxWEa7nH5Rjh8Y6CVLkJU3cLuCuRXAjWixai6+lSfUsUG6XreC8n9rQvPAb
-         HHrf4DZBWmlhwObK4ad/bZ7d7eoRPTnw8LWhgOD+deEmefjUXgsOjcMaHQhZeo9SzNgN
-         8kVg==
-X-Forwarded-Encrypted: i=1; AKwUvBwphjmGNkzvMvZtpXkMF0xaaZKDLZtOnwJaHAG7b9MT2xzEn4UydGlT8/F3o47TDEil+7k=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/WoAAiJTC2wJunaRrYL4GhH8QCI4ev76ZA0Sh2IARBYJyfwmtG
-	w67qmKqJaZDvg+fNPwg3VKRAGJ+z4pNCpp07VH7E/Neb3o9FwVls2Gsm
-X-Gm-Gg: AYBFou0JiISmTHjkeBJWSs02MqEoWKZTLoYTjnVqm20bBLlkGBqysULILZc5ORXqkgI
-	a4uxlGNPcJahTztDBjdNi+AWVMcoaf2MHa581pszDmqFI/UQAE9f+OXU007eJl6Jz/YHRuHyE5k
-	xVC2xtjhZLb6e7ifo7LQbt1f+T1d2vOIhPM71lohoAcdM2tY9S9cao7GlM1UNfKWhFOXb9en1ik
-	O7PaCdmSlxBBlZEAE32n0TITwNC4D21eVYGWIk2NXvZaYdfoSh8fzC825gnDuYrBBfmiFzpugRB
-	kX0wvIc+WVEDbyccUWBHmFI1f6Mz0OF/Iwbw5cs0eiV0XQQKynzXpPMbxKTARCiDhZonzvEKaDZ
-	aOXPGxjw6TN+IDB44+Y3Ng5B7AAplA5DfwD6nmJvDxT1qFoUdaNf2Z4RN70ScGS+W1Ybz6jMred
-	xylotj0LJkJB2YfyEnNCFAqXnQrPOpOYYRt2kRXNeFNU+IyF9aIp+3zbYdkw6oLEkO9Z6xalCYX
-	d+AHqBwqgfk9ZU6rncZlk2qkfTq1eXMVDEyfkQ/OHk18BXzRSQ+6By+ag1L18GYIFM6/kKUgr2Z
-	TReQFM44
-X-Received: by 2002:a17:90b:4d01:b0:3a7:cffb:8b96 with SMTP id 98e67ed59e1d1-3ae8970ef3fmr9559326a91.18.1793679161371;
-        Mon, 02 Nov 2026 20:12:41 -0800 (PST)
-Received: from gmail.com ([2407:cdc0:f00f::117])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c6f010asm1941708a91.15.2026.11.02.20.12.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 20:12:41 -0800 (PST)
-From: Jia Jia <physicalmtea@gmail.com>
-To: netdev@vger.kernel.org
-Cc: stefanha@redhat.com,
-	sgarzare@redhat.com,
-	bobbyeshleman@gmail.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 4/5] vsock/virtio: coalesce native RX write-space notifications
-Date: Tue,  3 Nov 2026 12:11:33 +0800
-Message-Id: <20261103041134.33310-5-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261103041134.33310-1-physicalmtea@gmail.com>
-References: <20261103041134.33310-1-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XIiTU1Zr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793680364; x=1825216364;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=01cwiDYw9D/1HXGWVgOQw2fwkbYM11LyL5vI8HvrFmM=;
+  b=XIiTU1ZrK7ZfcI0/WhFwXIFICA+SDLYI/5bVVPyb4GmscrWx4QcVzUah
+   gHct4c4njCuRw4E01hiZ1dG/qGsHGymSkKpWveAiVXjXstUfQkx2UuGL1
+   Mi+l7YRRTQGddRYkYYE9zBKetSAcsSMQXJxfdiyvFefePXoYm5gtWhuYp
+   xdnVHv5/W7wgYcDn/xLXChsJhH/dDMrvHvjgmrTK6CIxhoYLWH9Xl5w6Q
+   LjogkR1651obCFuLCb9CU2sQLgqrPc5KFF3gPFtIKhMhSzVoJbzD+aq1D
+   xM5PA7EMT6vJOtB+Ov0ZI+uOW9r1eDIn1UnzUNxuwWyXb7ibeapGJF8Uk
+   Q==;
+X-CSE-ConnectionGUID: 87zcPNmlSBWZ9fEqabGIxw==
+X-CSE-MsgGUID: zeXjcKK3SDqY8yiUmZmmhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2271050"
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="2271050"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 20:32:44 -0800
+X-CSE-ConnectionGUID: X8lunzdmS4KBJA6twSG7vQ==
+X-CSE-MsgGUID: FMF0UBQtSRetJZR57Yoa5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="6314594"
+Received: from jstevens-mobl.amr.corp.intel.com (HELO [10.246.165.69]) ([10.246.165.69])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 20:32:42 -0800
+Message-ID: <62504426-a365-4523-8f58-804f5fe1c1d1@intel.com>
+Date: Mon, 2 Nov 2026 22:32:42 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,291 +72,139 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+To: Jim Mattson <jmattson@google.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
+ <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+ <20260827223755.143247-12-zide.chen@intel.com>
+ <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
+ <auUQgRVFASkWtkoK@google.com>
+ <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
+ <CAO9r8zMxQnRLKGrW69rX7703AatWMp6KOXMObL9baHRPs4dW8A@mail.gmail.com>
+ <6c9a13c9-e6c1-4540-a8ca-1f0e800f3571@intel.com>
+ <CAO9r8zOWzr61pkkF01AvEp+YSOo6bA1N=L91RYiM=ETtK5+D9w@mail.gmail.com>
+ <69c428d7-239a-485e-9494-32b8aa82da05@intel.com>
+ <CALMp9eRsR8xaUmQyVu5QmYx1cZ2qFGGk+31bMymhmN9_iaPuMg@mail.gmail.com>
+ <f7213eba-5b61-4514-a315-bce64823fad5@intel.com>
+ <CAO9r8zM4eWD538L3osqSVoB0VHnjgRREtv2k419a1Vvuq+Q9rw@mail.gmail.com>
+ <CALMp9eQPaGG+-wsfp541OTJAP2G0Pq9L2aDeRG0_MFHoa67x0w@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CALMp9eQPaGG+-wsfp541OTJAP2G0Pq9L2aDeRG0_MFHoa67x0w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Each received packet can update peer credit and call sk_write_space(). A
-writer cannot consume that credit while the virtio RX worker retains the
-socket lock, so repeated native write-space notifications in one RX batch
-are unnecessary.
 
-This patch coalesces write-space notifications on the native AF_VSOCK path;
-data-ready remains per-packet here.
 
-The batching patch establishes batch ownership before its first packet.
-This lets this patch record a pending notification for that packet and
-flush it even if the packet immediately ends the batch. Deliver it while
-holding the socket lock to preserve the callback context of the existing
-receive path. A following patch changes that timing together with
-data-ready handling.
+On 11/2/2026 5:44 PM, Jim Mattson wrote:
+> On Mon, Nov 2, 2026 at 2:52 PM Yosry Ahmed <yosry@kernel.org> wrote:
+>>
+>> On Mon, Nov 2, 2026 at 2:48 PM Chen, Zide <zide.chen@intel.com> wrote:
+>>>
+>>>
+>>>
+>>> On 11/2/2026 4:25 PM, Jim Mattson wrote:
+>>>> On Mon, Nov 2, 2026 at 2:13 PM Chen, Zide <zide.chen@intel.com> wrote:
+>>>>>
+>>>>>
+>>>>> On 11/2/2026 3:36 PM, Yosry Ahmed wrote:
+>>>>>>>>>> 1. GLOBAL_STATUS_TRACE_TOPAPMI_BIT can leak from the host into the
+>>>>>>>>>> guest. If a host PT PMI arrives while the guest context is loaded, bit
+>>>>>>>>>> 55 will be set for the guest, and the guest won't be able to clear it if
+>>>>>>>>>> OVF_CTRL is intercepted (it will #GP as it is reserved for the guest).
+>>>>>>>>>> Similarly, the value can't be restored through KVM_SET_MSRS.
+>>>>>>>>> I think mediated vPMU assumes that no host PMIs can be generated while
+>>>>>>>>> guest PMU state is loaded.
+>>>>>>>>>
+>>>>>>>>> If PT state can leak into the guest via bit 55, similar leakage can also
+>>>>>>>>> occur for other status bits, e.g. when the guest exposes fewer
+>>>>>>>>> general-purpose or fixed counters than the host.
+>>>>>>>>>
+>>>>>>>>> The scenario where both host and guest can be active simultaneously is
+>>>>>>>>> handled by the perfmon_mask case, where intel_mediated_pmu_{load,put}()
+>>>>>>>>> filter guest-owned status bits.
+>>>>>>>> Looking at the code:
+>>>>>>>>
+>>>>>>>> kvm_mediated_pmu_load() -> perf_load_guest_context() ->
+>>>>>>>> perf_ctx_disable() will iterate PMUs with for_each_epc() and disable
+>>>>>>>> them, which skips PMUs without PERF_PMU_CAP_MEDIATED_VPMU.
+>>>>>>>>
+>>>>>>>> Same for kvm_mediated_pmu_load() -> perf_load_guest_context()
+>>>>>>>> ->ctx_sched_out(), it also uses for_each_epc() to iterate PMUs and
+>>>>>>>> schedule them out.
+>>>>>>>>
+>>>>>>>> pt_init() does not set PERF_PMU_CAP_MEDIATED_VPMU on pt_pmu.pmu.capabilities
+>>>>>>>>
+>>>>>>>> Please correct me if I am wrong.
+>>>>>>> My apologies, this bug is indeed real because pt_pmu lacks the
+>>>>>>> PERF_PMU_CAP_MEDIATED_VPMU capability.
+>>>>>>>
+>>>>>>> Adding this capability to pt_pmu seems intuitive, but unlike
+>>>>>>>
+>>>>>>>                        the core PMU (which merely toggles enable bits),
+>>>>>>> Intel PT is an AUX-based PMU. Stopping and restarting it on every VM
+>>>>>>> transition is heavier, and I'm not sure whether it could introduce a
+>>>>>>> noticeable performance penalty.
+>>>>>>>
+>>>>>>> However, whether the solution is adding PERF_PMU_CAP_MEDIATED_VPMU or
+>>>>>>> some other mechanism to enforce mutual exclusion between pt_pmu and
+>>>>>>> mediated vPMU, we can address that in a separate patch.
+>>>>>>>
+>>>>>>> To immediately protect guest state and live migration in this series,
+>>>>>>> I'm thinking of adding the following defensive filter in
+>>>>>>> intel_mediated_pmu_put():
+>>>>>>>
+>>>>>>> + /*
+>>>>>>> +  * Scrub bits that are not virtualized for the guest to prevent
+>>>>>>> +  * possible host state from leaking into guest state and breaking
+>>>>>>> +  * live migration.
+>>>>>>> +  */
+>>>>>>> +  pmu->global_status &= ~pmu->global_status_rsvd;
+>>>>>> This doesn't prevent the leakage, it just clears it on the guest->host
+>>>>>> switch. So it helps live migration but I am not sure if it's better or
+>>>>>> worse if the guest sees the bit unexpectedly appear AND then
+>>>>>> unexpectedly disappear.
+>>>>> Right, as long as the GLOBAL_STATUS is passthru, the leak can't be
+>>>>> prevented.
+>>>>>> We can clear it when the MSR is read by userspace, which should fix
+>>>>>> live migration, but the guest will still see the bit, and it will
+>>>>>> still disappear unexpectedly but only during live migration.
+>>>>>>
+>>>>>> The guest still won't be able to clear it when OVF_CTRL is intercepted.
+>>>>> GLOBAL_STATUS and OVF_CTRL share the same interception policy. If they
+>>>>> are passed through, the guest can see the bit and clear it; if both are
+>>>>> intercepted, then bit 55 can't leak to the guest.
+>>>>>
+>>>>> It's not perfect, but at least the guest won't observe bit 55 and then
+>>>>> get an unexpected #GP when attempting to clear it.
+>>>> I'm not sure what imperfect solution you are referring to, but Yosry's
+>>>> proposal that the bit gets cleared on a guest->host switch is a
+>>>> non-starter. MSR bits must not vanish unpredictably.
+>>
+>> I don't think I proposed this? :)
+>>
+>>>
+>>> Agree, then maybe Yosry's suggestion is what we can do for now: filter
+>>> out unsupported bits when the MSR is read by userspace.
+>>
+>> This I did propose, but I also noted that the MSR bit will still
+>> vanish unpredictable, just on save/restore instead of guest->host
+>> switch, which should be better.
+> 
+> I will reject any proposal that involves MSR bits vanishing unpredictably.
 
-Capture the native write-space callback before socket publication and
-access it through AF_VSOCK helpers. Sockmap can change the protocol,
-write-space callback, and psock marker without the socket lock. Serialize
-each batch eligibility check with sk_callback_lock; if a packet boundary
-observes a replacement, finish the batch and use the regular per-packet
-path.
+In that case, perhaps the simplest approach is to leave this issue out
+of this series and fix the Intel PT mutual exclusion issue separately?
 
-Packets admitted on the native path use the saved native callback at batch
-finish. Reloading a current sockmap callback would not synchronize its
-invocation with teardown; a wrapper seen before teardown need not forward
-the native wakeup after its psock is gone.
+Also, once that issue is fixed, filtering out pmu->global_status_rsvd
+bits feels mostly defensive anyway, and I'm not sure it solves any
+additional problem by itself.
 
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- include/linux/virtio_vsock.h            |  4 +-
- include/net/af_vsock.h                  |  7 +++
- net/vmw_vsock/af_vsock.c                | 16 +++++
- net/vmw_vsock/virtio_transport_common.c | 78 +++++++++++++++++--------
- 4 files changed, 81 insertions(+), 24 deletions(-)
-
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 748633aa0cc81..bf28e8e32e280 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -287,12 +287,14 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
-  * Initialize a batch to zero before use. A non-empty batch owns @sk's socket
-  * lock and the reference returned by vsock_find_connected_socket_net(). The
-  * caller retains both until it calls virtio_transport_rx_batch_finish(). An
-- * empty batch owns neither.
-+ * empty batch owns neither. A pending native write-space notification belongs
-+ * to the lock holder and is delivered by virtio_transport_rx_batch_finish().
-  */
- struct virtio_transport_rx_batch {
- 	struct sock *sk;
- 	unsigned int pkts;
- 	size_t bytes;
-+	bool write_space_pending;
- };
- 
- static inline bool
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 5549298c1ec6b..b76ab565ea58b 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -63,6 +63,11 @@ struct vsock_sock {
- 	u32 peer_shutdown;
- 	bool sent_request;
- 	bool ignore_connecting_rst;
-+	/*
-+	 * Captured before the socket is published. This identifies AF_VSOCK's
-+	 * native write-space callback after a consumer has replaced it.
-+	 */
-+	void (*native_write_space)(struct sock *sk);
- 
- 	/* Protected by lock_sock(sk) */
- 	u64 buffer_size;
-@@ -78,6 +83,8 @@ s64 vsock_stream_has_data(struct vsock_sock *vsk);
- s64 vsock_stream_has_space(struct vsock_sock *vsk);
- struct sock *vsock_create_connected(struct sock *parent);
- void vsock_data_ready(struct sock *sk);
-+bool vsock_write_space_is_native(const struct sock *sk);
-+void vsock_call_native_write_space(struct sock *sk);
- 
- /**** TRANSPORT ****/
- 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 44cee74519555..e39567990539f 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
- 		sk->sk_type = type;
- 
- 	vsk = vsock_sk(sk);
-+	vsk->native_write_space = sk->sk_write_space;
- 	vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
- 	vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
- 
-@@ -1122,6 +1123,21 @@ void vsock_data_ready(struct sock *sk)
- }
- EXPORT_SYMBOL_GPL(vsock_data_ready);
- 
-+bool vsock_write_space_is_native(const struct sock *sk)
-+{
-+	const struct vsock_sock *vsk = vsock_sk(sk);
-+
-+	return READ_ONCE(sk->sk_write_space) ==
-+	       READ_ONCE(vsk->native_write_space);
-+}
-+EXPORT_SYMBOL_GPL(vsock_write_space_is_native);
-+
-+void vsock_call_native_write_space(struct sock *sk)
-+{
-+	vsock_sk(sk)->native_write_space(sk);
-+}
-+EXPORT_SYMBOL_GPL(vsock_call_native_write_space);
-+
- /* Dummy callback required by sockmap.
-  * See unconditional call of saved_close() in sock_map_close().
-  */
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index f83e5b2edce35..af26344678e41 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1865,31 +1865,55 @@ virtio_transport_rx_batch_can_continue(struct virtio_transport *t,
- 	       !virtio_transport_rx_buf_full(vvs);
- }
- 
--/* The caller holds sk's socket lock. */
-+/* The caller holds sk's socket and callback locks. */
- static bool
--virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
--				      struct sock *sk, u32 len)
-+__virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
-+					struct sock *sk, u32 len)
- {
- 	if (!virtio_transport_rx_batch_can_continue(t, sk, len))
- 		return false;
- 
- 	/*
--	 * Sockmap can replace sk_prot and publish a psock without the socket lock.
--	 * Check both at each packet boundary; a boundary that sees a replacement
--	 * returns to the existing per-packet path.
-+	 * Sockmap can replace sk_prot or sk_write_space, and publish a psock,
-+	 * without the socket lock. Coalescing is safe only for the native
-+	 * write-space callback, so a boundary that sees a replacement returns to
-+	 * the existing per-packet path.
- 	 */
- 	return READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
-+	       vsock_write_space_is_native(sk) &&
- 	       !virtio_transport_sock_has_psock(sk);
- }
- 
-+/*
-+ * Sockmap teardown restores the native protocol and write-space callback
-+ * under sk_callback_lock. Serialize each packet admission check with those
-+ * updates.
-+ */
-+static bool
-+virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
-+				      struct sock *sk, u32 len)
-+{
-+	bool batchable;
-+
-+	read_lock_bh(&sk->sk_callback_lock);
-+	batchable = __virtio_transport_rx_batch_can_receive(t, sk, len);
-+	read_unlock_bh(&sk->sk_callback_lock);
-+
-+	return batchable;
-+}
-+
- /*
-  * The caller holds sk's socket lock. If @batchable is non-NULL, update it
-  * after processing @skb to say whether a native STREAM/RW batch can continue.
-+ * When @batch is non-NULL, record a native write-space notification for batch
-+ * finish. A writer cannot consume the updated credit until this lock is
-+ * released.
-  */
- static void
- virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 				 struct sk_buff *skb, struct sock *sk,
--				 struct net *net, bool *batchable)
-+				 struct net *net, bool *batchable,
-+				 struct virtio_transport_rx_batch *batch)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1921,8 +1945,12 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 	if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
- 		vsk->local_addr.svm_cid = le64_to_cpu(hdr->dst_cid);
- 
--	if (space_available)
--		sk->sk_write_space(sk);
-+	if (space_available) {
-+		if (batch)
-+			batch->write_space_pending = true;
-+		else
-+			sk->sk_write_space(sk);
-+	}
- 
- 	switch (sk->sk_state) {
- 	case TCP_LISTEN:
-@@ -1947,7 +1975,7 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 	}
- 
- 	if (batchable)
--		*batchable = virtio_transport_rx_batch_can_receive(t, sk, 0);
-+		*batchable = virtio_transport_rx_batch_can_continue(t, sk, 0);
- }
- 
- /* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
-@@ -1991,7 +2019,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 		goto free_pkt;
- 
- 	lock_sock(sk);
--	virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL);
-+	virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL, NULL);
- 
- 	release_sock(sk);
- 
-@@ -2008,20 +2036,31 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
- 
- /*
-  * Release an active RX batch. A non-empty batch holds the socket lock and the
-- * reference returned by vsock_find_connected_socket_net(). An empty batch
-- * holds neither.
-+ * reference returned by vsock_find_connected_socket_net(). Deliver any
-+ * deferred native write-space notification while holding the lock, preserving
-+ * the callback context of the regular receive path. An empty batch holds
-+ * neither.
-  */
- void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
- {
-+	bool write_space_pending = batch->write_space_pending;
- 	struct sock *sk = batch->sk;
- 
- 	batch->sk = NULL;
- 	batch->pkts = 0;
- 	batch->bytes = 0;
-+	batch->write_space_pending = false;
- 
- 	if (!sk)
- 		return;
- 
-+	/*
-+	 * The packet was admitted with the native callback. Do not reload a current
-+	 * callback here: sockmap can replace or remove its wrapper independently.
-+	 */
-+	if (write_space_pending)
-+		vsock_call_native_write_space(sk);
-+
- 	release_sock(sk);
- 	sock_put(sk);
- }
-@@ -2080,7 +2119,8 @@ virtio_transport_rx_batch_process(struct virtio_transport *t,
- 		return;
- 	}
- 
--	virtio_transport_recv_pkt_locked(t, skb, batch->sk, net, &batchable);
-+	virtio_transport_recv_pkt_locked(t, skb, batch->sk, net, &batchable,
-+					 batch);
- 	if (!batchable) {
- 		virtio_transport_rx_batch_finish(batch);
- 		return;
-@@ -2158,16 +2198,8 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 	}
- 
- 	lock_sock(sk);
--	/*
--	 * Serialize initial admission with sockmap's callback updates. Later
--	 * packet boundaries recheck native state and end a batch when they
--	 * observe a replacement.
--	 */
--	read_lock_bh(&sk->sk_callback_lock);
- 	batchable = virtio_transport_rx_batch_can_receive(t, sk, len);
--	read_unlock_bh(&sk->sk_callback_lock);
- 	if (!batchable) {
--		/* State or receive-buffer failures keep the regular lookup path. */
- 		if (!virtio_transport_rx_batch_can_continue(t, sk, len)) {
- 			release_sock(sk);
- 			sock_put(sk);
-@@ -2176,7 +2208,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 
- 		virtio_transport_trace_recv_pkt(hdr, &src, &dst);
- 		if (virtio_transport_recv_pkt_set_owner(skb, sk))
--			virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL);
-+			virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL, NULL);
- 		else
- 			kfree_skb(skb);
- 
--- 
-2.53.0
