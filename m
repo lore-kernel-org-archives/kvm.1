@@ -1,127 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793732372;
-	b=Oh5duHY+LGU5YHOaHXybzTEp2PJCszz/iKq1MfIQqfoedwIqR5pYWozc8tICuaxIVUHq
-	 +44QSdwRTdnXMu9SlyFzxQrVNL5i/gmK61jBXJo8bMr4YvOAvinVQYxI3jYgLumoH+4Or
-	 uz8pL6gupuuI1gxov8/K700uKrWDMfz5RqxNKG0VSfXunyurWT90vUwprn/BUBhN6w4tw
-	 JVoVz6fgDWCNkpUpvHKqiLsJBu5pbRc1OTQ4aLnXEU5oO81oaJXUppaz0RnhW7HGH7MlS
-	 NGSpN6yGsUTMMNG8kW/Ta664XgBZNbdnSERTQnJn0/M5N5wRHC8DiXrqpjo4Wcks43g==
+	t=1793734733;
+	b=t5PSR0ZD4sebEYznAQEZgpko3w2rQ4b0KFTOhvXiV3aBhOp6BSf85Cpo16ilreW4R90E
+	 XO1tlqhq3zMWtpxC3vUVXsCf5yrjc22BgsSRlHCGHUZrUVIpY6TKR5gZ7cZFsnRCybPqP
+	 mIVwsUcWR+Xv59uyV9qA13Dge47WZPmDx8YCd7qa3L50XQSQNfM5GznkY+q6Co78XmQgr
+	 ApYTm+DOUMCq5YyapANiBSdQOoxeI0R2k1j042CQ+vs31K/3ciJvA9WWaCoA8CVF15UvN
+	 /+FNJlD9kWjwS5Xw/jWO7Vp7xV6DJM1l0g4Edk18iDQHXgLUQdnFDKW7cZCGY1piqng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793732372;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=9uUHBQoWHu2fwTWcMgZXDotchEuaMSHRKHPGekT9dqE=;
-	b=NEVCQLco8Mg3nrnmYMd97cdY+oIBZ3lYt0Cb252lBjSJrSAmOmcOk18aKfU4jwMqM3r3
-	 T4cB0XAjD91UcIwB33i95YfAfQOq4+A4b7x9RWWiY7o/9uMlTldnkUq2PuZYCJ8Fpe/jH
-	 Bdi4srnvTIq5kMtIMut0slObWGgxamf6vYYfkShj4rz4qDQ1VXz8hCy9nF58WuHqJqj9W
-	 epMHy/VVhNGgy3F25DqgvtSPUyeoLKuzh6Z5UYOVsocXDjt0V1K61N6NdIcRvNym/lJw9
-	 kF/7W1Gs6SZb27S7Kti7r6nZuQ1gipYCnR98ujadlJJ2BhGMA1UnA7iN6DkorNv+sJg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793734733;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=TK3utwnIPX37GwcC6jBJrNjTtS9pS+ECr0ZBshoSLgk=;
+	b=iBQp3lSSgdczsy91oRyh8ck5KaJ3Hk4VL+Ks6N6gmNbh7uHKgte8iLimjMfxe1I8XubV
+	 Ga8LbwQFcYYgEEilHVJK45GTM4gmasEy9Bfu482pZaTp9oXfDoer7TUD+0d7Ot32eMXes
+	 roSOrOiuUId0yJ3RuepqI8yClXyI/bM/uWlpAEluLvClV4m/PssSz93BnvN9Yqs64qdV9
+	 NFKgTrMk7SPemKwwW3RNBBIkaivK6Ulme8S2XB536XV377C0z2U2EKitsFhmVAU7oCilX
+	 qHGH+Bd+daJMqG3ppOYU5UwbPYWNYhu+QmUpfablcULYKZ89tF4SY3cR1qyWhDFyaJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=MY30eZ8q;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=KIASToQz;
-	arc=none smtp.remote-ip=103.168.172.148
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kTewroxn;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6A9606A329
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 18:59:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D6A9606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6500606A31B
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 19:38:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6500606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=MY30eZ8q;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=KIASToQz
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfout.phl.internal (Postfix) with ESMTP id 49453EC064B
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 13:59:30 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Tue, 03 Nov 2026 13:59:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793732370;
-	 x=1793818770; bh=9uUHBQoWHu2fwTWcMgZXDotchEuaMSHRKHPGekT9dqE=; b=
-	MY30eZ8qvY+Fny7Husj85CkoubyF0L8X/RK3C/ZDaq7wuAc6SAHgClCTE6lWNxaH
-	AiTtY20LUyTpyLKIQxQMXp+GXuVxRMCrrjcO9MnqI+znArxe/2nzv8eUbdqHOkOv
-	311ZqVV4x1bDwv3aEijzVu3vuM81CmsMYN2vnZZaqGh6RV6X+pwgQt5zqE7F+GpQ
-	ChgEbuwAipfplUWSIKwPG/AnD5pHNKofsAGFLzZLk8vn8NdA/+x0uFGQTPki5hHC
-	P+82JSN5uq+hpHfK44Wzg9cUtlggVmDWulS3u9oKAbPar6uz6Oh6/mD9O4/vfY/9
-	L+K18sqzQ8EOMNWVza3gOQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793732370; x=
-	1793818770; bh=9uUHBQoWHu2fwTWcMgZXDotchEuaMSHRKHPGekT9dqE=; b=K
-	IASToQzVQm2GXnHxqcTEmWsl/1tW7CoX/eIvm9wZPp+A6p2Bh3H/4jhEum2nq/mF
-	o9ISg2OaxiLoVtSsbs0ISDDVKIdfFGXr6gwdVT2dELGGMluwFoEKU2X105Mi9wro
-	S/2IZHFpgcjWkIa442TFX066nrUpEdqIl9hL+nRzYg7hG0mJ7jSSnfcHjsF2e4MR
-	DorCrQh6Fg5SbqiaX3wtTJqPDUBVgujA1Zx2H/xE46XVBzqYECEjlSNwU4q5FfH3
-	NmgieHo9Z0Dy1sRhxRlTnXN9YuqcP1vqbvDHd29AXmkdTFsTltcbcY1nkBru4U9o
-	9vnvQNFrXwm9U6zFxXXyw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793732370; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:BSOEWpLwE5vkoGTZFzGhAL7GNr/5dHI3jcyOUzS5bKD8ON3
-	Rtn0ZBfvIdqrV4RFtFWxmBPsH5b35DVe99oTXV73dfr5XnxjMrVG7nkD8+aSshqB
-	nctcBs0DwZtg8jjfhheF9dxEKGQC9Yi0sNMRTzxnsM9ftHPxU4jTJ9aWnqR7LH8x
-	8aXc/iVwwf602Z15YAUcwfIYtojUxSicXsgTAbF1o1uq2E9/mcHkt95kY8yNrno0
-	2dYGwHBsEnaED/tuj1PEgqfdcHqD2e5+ay/1hYq/GRsGa0X/t2XIfuIuoooQG6Mq
-	Mbr/+97MW49oxIDDLuz6B7m02X/Ne+M8IsKJ7Gw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:zDqmUyDhbw4TSHzQfeu/wRUhq1QCWUKLvvNR1Kslhzs=:QM7rQEK6TyYmnGgEPloLheqtEqu1IrzPSIQFwRMIAGU=;
-X-ME-Sender: <xms:ES_qaoX4qs6K2UmWra3n9HapAh0eMJqkUrZwSZVe_PunoJEFNy3PaA>
-    <xme:ES_qasByFiYaaAg5yT34M5ZC-h9SKObqKnOkfQbUlSAn9fMRuwbKGdotDxPu0Ubm0
-    -BbEaQnLaMu-OkETI80QOLpAdBkvn4ywETWbFFSE2_jG2R7lfCbYw>
-X-ME-Received: <xmr:ES_qatdg0j9d8XL3plhUiXZgzKVs6YUrD8uI1-4o9xvmaSxVXwMSLcXTdYxUGQ>
-X-ME-Proxy-Cause: dmFkZTFbA/NjBu8a6DXhPDuHTwswxz0MafSRuwI+pA5pQJSphE8apiGMPgMFjCLWGC8bEh
-    uwY+2Ovrjdo0KXWHO6Q2Y0pVIRHju1PLiJ5LlbWKEoosOrjUHNc79DHSINjQpzUflr1clw
-    Ssi1wlgxwYFCsy0kaUEnKIP73NzKGydfeq88YTpVQjW90DSfe9/OKXBhdN2DRYxOZF/x2n
-    PR4N+Q3Q/WhI6ctiGEvfMl5ueZJAzs2qPhjfVBIq9kb5skVrkyqAIrYkTXfg3s9KpS1fet
-    N2zcc5oIKtfWT+JuYfo9m7GE7Q2+DqsZn+OQP7lj498RZhaXitq/XxojEEN9rpcV7qLLW2
-    AJvYLbM4YUIa0KzuEaG12RaU+PQJZC8H5MvkofS5DOUyX51p4Q8OC/fEgEeFvBrE2vRmmW
-    5VuiwkB8CSDab/q7cRKoT606TszCRS5oh433xkmhe2c743FRkjBbSFJPmkl9pa+siwUBt+
-    oDp5ENYxZPH8JOvQ8p4sNi4W+4n7cKyea20X12NeFJkVDC553KcBYHM6JbUG/Bxnkxl5gh
-    p8SR2CPb4T9bv/Rr/GzrrInsr9drweqhhfJtDwLLb8103JwQx1alcz9T/5LXoFsSxpS2OU
-    RdGoHfI+TmOAyhaeFqBCnjx7y0NXQqj01npnrNA7oR8bQmGbDcjwl1HkhGaA
-X-ME-Proxy: <xmx:ES_qarrYchthmKAfEi2zhJ25CrFTyYZqIHobFe5gy3pvsimCaReVnQ>
-    <xmx:ES_qamTT-Fafq4sOVrt5GXFfMkzsv_OWy_ITcHrU40RN6ykUvTX00Q>
-    <xmx:ES_qajWpn4TjMdlvvbQxMAMcKJWQ0IHCzRgrMSMqNReiyXSc0iBSmQ>
-    <xmx:ES_qaje0h_duwSJEbgvjFlVP5W3ZmwLGgiVZKj1Bsn9M8jJ-2krvhA>
-    <xmx:Ei_qakRNiTZATV2bZ2_1b79q6793DugdswgYaupO-YI2zm2WMYabCb6A>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Nov 2026 13:59:28 -0500 (EST)
-Date: Tue, 3 Nov 2026 11:59:26 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, David Matlack <dmatlack@google.com>, Shuah
- Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe
- <jgg@ziepe.ca>, Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma
- <vipinsh@google.com>, Alex Mastro <amastro@fb.com>, Matt Evans
- <matt@ozlabs.org>, alex@shazbot.org
-Subject: Re: [PATCH v3 2/3] vfio: selftests: Add vfio_pci_find_mem_bar()
- helper
-Message-ID: <20261103115926.39e092b8@shazbot.org>
-In-Reply-To: <20261102230445.3993629-3-almasrymina@google.com>
-References: <20261102230445.3993629-1-almasrymina@google.com>
-	<20261102230445.3993629-3-almasrymina@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kTewroxn
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so13886695e9.1
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 11:38:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793734731; x=1794339531; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TK3utwnIPX37GwcC6jBJrNjTtS9pS+ECr0ZBshoSLgk=;
+        b=kTewroxnzRnLBGJm9KK6T0Qt9e8811SKcmrY/TyCHzgqB+Jc0PNoEc4vAc8TXYU7G5
+         qLTz1H0bAvYkkGVyAiZH1BEJ5Z3+v23XnQFSOXUuo9TN/GCAikRmDgcXO+/BrxjYMNmA
+         gCXJ+MIwmYCOjW+Ris/YH26x85NTU3DDhGEjc9qbUFxFAV589uV2MjZMVB2lqYKP9HOC
+         fcLgUwPQqQkymjtTRmVJUok9pUwfAAy+r3ZN9JnoEp4Rh4/vU8DnmbcSWrm8FNt0tDkO
+         Cf6HsE5DA46vef7hgrHOagfPTs+LpmMp7bmn10q10nl8hc6EK9JyITLFE24CdmUh3jI/
+         2NDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793734731; x=1794339531;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TK3utwnIPX37GwcC6jBJrNjTtS9pS+ECr0ZBshoSLgk=;
+        b=xD7vltdY6R4eB28vAG9gqYZKTsU5n1SLGRuf4j1+4T38s1UA+v6fS2OnbThO7cqB1D
+         TyBwfGsQXShPP7Fs5LTqwWO8/asxtf7AcYwjn32TwYKGkZfbBrI7clVD21Nj0ZuhJ0p9
+         B0EjO5bvfva9oJ6+WcgbrlEekpaJp1hFtPP/mUnlWohSvu2TZ0W80lMzwDIsfzdLP7Zj
+         O6P55Q6ob87Obi0MpcQVTmmNR2Yr7Y1gZ63Gs8iRy++2RxuaW7WkTOvwLf8V1YYdIyF3
+         qp+cPSFsxNpedHxKDJqzMWu5W9XQv0XgcK21PZet4Zpy++tQFZbEP5LRNU/PJRV3LlIp
+         mF1w==
+X-Forwarded-Encrypted: i=1; AKwUvBygoSd/Pycb1tAC94VP3QYBtP3vNa114uGswbVBlKLHjveVh5tgbgUshNE8vqFtB4jZhpc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8yn08sqPBo5T5MZJ7rY4GOgEynXSJOQGfNWyOqbG1AMyGwGDX2
+	WJar+d9Ji1hGxVkq5kAM0ZX/pDkjoTSb1nraTGiSt8zD6UX9XlOVdJyz
+X-Gm-Gg: AYBFou2lBNuV2m/oNbeVh17RyCNk0cbwP+a4sB4iFqZjdpTvq9ib9/ABWQc95r72Ogf
+	SPwt9FlJAJpcGjyKDmaXO+B83IREO3QVt4PXO+qkaRnkGNHQxy1k2dpJGB/cFaq/D+zlGsE2Bf4
+	JyVbfLJ6DPiZRJAYVLG6puHu+jGCfUNWbXo7qk3sOshbFeGfPy2d9ju88efEWOE2cv+JBDmY7nu
+	GAghWIKo5lC7PWwFUYrsS98LqOfjp4FVon+ewKVs6woDLYIxMkRMWVDx1xTqK4PMO/iuV4mQyU2
+	Q54QqiIGu+eI90HFWLnwrlCiegWwytxhB4hmFH5pO3e1iN8FslBFtuUOeeVfI0op7U264gKoV9h
+	CwwQzEoaZ+bipFeRd0Ed8TMvm0PRRh/5y0b9W4UuBXULRHSe8pqskh5u3Xi7uc6E7ui3h5b25th
+	YY+UaQ23cbnN30D7dtEb6NsvHxTpWtHw3LUkaLKsoPfRQkJmYJX1CNpTwZOZaH348V8fvvF8U27
+	CNMVWboooM933XNcrYFvTH+kfdrAS1DKSvXRD8h0ermwY61ObhvRh5eyQAalsZfgsue9jQdZNts
+	7tJfagdoOfGzjfCSgW/OSSXYs5kd3Lnc3pi6wcb6a6zNHnja8LmrqiEGjP3TZ+y2DNRBDxezLS2
+	bvNMck0BG3JS8ddRHM7NTr1XTUF16bZIhPdtiwuB5ebW4NUO/eQXmXZpW5KrfT3PCGg==
+X-Received: by 2002:a05:600c:848c:b0:4a3:5da2:38ae with SMTP id 5b1f17b1804b1-4ac17a3628emr326325635e9.14.1793734731206;
+        Tue, 03 Nov 2026 11:38:51 -0800 (PST)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a5372d8bsm87303325e9.0.2026.11.03.11.38.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Nov 2026 11:38:50 -0800 (PST)
+From: Fred Griffoul <griffoul@gmail.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev
+Cc: Ackerley Tng <ackerleytng@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Will Deacon <will@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	iommu@lists.linux.dev,
+	kvm@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [RFC PATCH v3 07/13] KVM: guest_memfd: Support private/shared conversion of device memory
+Date: Tue,  3 Nov 2026 19:38:50 +0000
+Message-ID: <20261103193850.15363-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261101071928.2462549-8-aneesh.kumar@kernel.org>
+References: <20261101071928.2462549-8-aneesh.kumar@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -131,156 +116,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon,  2 Nov 2026 23:04:44 +0000
-Mina Almasry <almasrymina@google.com> wrote:
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
 
-> Add vfio_pci_find_mem_bar() to libvfio to locate a BAR (or range within
-> a BAR) of at least min_size bytes that behaves like ordinary memory and
-> can be safely read and written without device-specific side effects.
-> 
-> Detection is backed by a table of known devices, starting with QEMU's
-> pci-testdev (1b36:0005) BAR 2 when configured with membar=<size> and
-> membar-backed=on.
+> +			if (!slot)
+> +				return -EINVAL;
 
-Should we test for this?
+[...]
 
-We could toggle memory decode around writing a short, unique pattern
-with read-back verification.  This might be unnecessary for a physical
-device, but per the definition of this function it should also be
-harmless.  For the pci-testdev, which is our only match in this
-proposal, it validates the BAR is backed by real memory and not handled
-as an unimplemented memory range.
+> +			ret = kvm_arch_gmem_device_map(gi->device.kvm, slot, gpa,
+> +						       (u64)(high - first) << PAGE_SHIFT,
+> +						       PFN_PHYS(pfn));
+> +			if (ret)
+> +				return ret;
 
-For the use case in patch 3/ it doesn't matter, but for future use
-cases I'd rather see that we generate a skip or failure based on the
-test here rather than debug failures in the test case consumers.
-Thanks,
+Unless I'm missing something, these returns leave the pieces already
+mapped in place, while the attributes stay shared. A later conversion
+to shared would then find nothing to do, and a retry of this
+conversion would run into the pieces that are mapped.
 
-Alex
- 
-> Suggested-by: David Matlack <dmatlack@google.com>
-> Cc: David Matlack <dmatlack@google.com>
-> Cc: Matt Evans <matt@ozlabs.org>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
-> ---
->  .../lib/include/libvfio/vfio_pci_device.h     | 10 +++
->  .../selftests/vfio/lib/vfio_pci_device.c      | 67 +++++++++++++++++++
->  2 files changed, 77 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-> index 007adc322c1e..19d458adba1a 100644
-> --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-> @@ -15,6 +15,13 @@ struct vfio_pci_bar {
->  	void *vaddr;
->  };
->  
-> +struct vfio_pci_mem_bar {
-> +	struct vfio_pci_bar *bar;
-> +	void *vaddr;
-> +	u64 offset;
-> +	u64 size;
-> +};
-> +
->  struct vfio_pci_device {
->  	const char *bdf;
->  	int fd;
-> @@ -162,6 +169,9 @@ static inline bool vfio_pci_device_match(struct vfio_pci_device *device,
->  		(device_id == vfio_pci_config_readw(device, PCI_DEVICE_ID));
->  }
->  
-> +bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
-> +			   struct vfio_pci_mem_bar *mem_bar);
-> +
->  const char *vfio_pci_get_cdev_path(const char *bdf);
->  
->  void vfio_pci_group_setup(struct vfio_pci_device *device, const char *bdf);
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> index 4063a0e2b3df..d5308fe61490 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> @@ -19,6 +19,7 @@
->  #include <linux/log2.h>
->  #include <linux/mman.h>
->  #include <linux/overflow.h>
-> +#include <linux/pci_ids.h>
->  #include <linux/sizes.h>
->  #include <linux/types.h>
->  #include <linux/vfio.h>
-> @@ -245,6 +246,72 @@ static void vfio_pci_bar_unmap_all(struct vfio_pci_device *device)
->  	}
->  }
->  
-> +#define PCI_DEVICE_ID_REDHAT_TEST	0x0005
-> +
-> +struct vfio_pci_mem_bar_desc {
-> +	u16 vendor_id;
-> +	u16 device_id;
-> +	u8 bar_index;
-> +	u64 offset;
-> +	u64 size;
-> +};
-> +
-> +static const struct vfio_pci_mem_bar_desc mem_bar_descs[] = {
-> +	/* QEMU pci-testdev with membar=<size>,membar-backed=on */
-> +	{
-> +		.vendor_id = PCI_VENDOR_ID_REDHAT,
-> +		.device_id = PCI_DEVICE_ID_REDHAT_TEST,
-> +		.bar_index = 2,
-> +	},
-> +};
-> +
-> +bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
-> +			   struct vfio_pci_mem_bar *mem_bar)
-> +{
-> +	const u32 rw_mmap_flags = VFIO_REGION_INFO_FLAG_MMAP |
-> +				  VFIO_REGION_INFO_FLAG_READ |
-> +				  VFIO_REGION_INFO_FLAG_WRITE;
-> +	size_t i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(mem_bar_descs); i++) {
-> +		const struct vfio_pci_mem_bar_desc *desc = &mem_bar_descs[i];
-> +		struct vfio_pci_bar *bar;
-> +		u64 size;
-> +
-> +		if (!vfio_pci_device_match(device, desc->vendor_id,
-> +					   desc->device_id))
-> +			continue;
-> +
-> +		VFIO_ASSERT_LT(desc->bar_index, PCI_STD_NUM_BARS);
-> +		bar = &device->bars[desc->bar_index];
-> +
-> +		if ((bar->info.flags & rw_mmap_flags) != rw_mmap_flags)
-> +			continue;
-> +
-> +		VFIO_ASSERT_NOT_NULL(bar->vaddr);
-> +
-> +		if (bar->info.size <= desc->offset)
-> +			continue;
-> +
-> +		size = bar->info.size - desc->offset;
-> +		if (desc->size)
-> +			size = min(size, desc->size);
-> +
-> +		if (size < min_size)
-> +			continue;
-> +
-> +		*mem_bar = (struct vfio_pci_mem_bar){
-> +			.bar = bar,
-> +			.vaddr = bar->vaddr + desc->offset,
-> +			.offset = desc->offset,
-> +			.size = size,
-> +		};
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
->  void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
->  			    size_t config, size_t size, void *data)
->  {
+Would it make sense for the error path to unmap what was mapped, e.g.
+with kvm_gmem_invalidate_start() and KVM_FILTER_PRIVATE on the range?
 
+Fred
