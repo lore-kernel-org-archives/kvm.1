@@ -1,102 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793704165;
-	b=zqHgS1AWeB0LX1Xun7kB/C2PV/gexrzJIYvnV12QNqluedLcxaEfN4h/ISJSjc9qd0TH
-	 RBtwkrgNg4kvPs/6Kk+bvDMpUTdpMbMNXJ7KdQGXHTf+YLuYRi7m+Woi7iDPVJSqU9g6u
-	 Vfb6jE8xjtRp2fM2916iXF5MB+1x2qSYOsb7T5xf17aT5C/t2YWRGWzcDlbrzH7Jsjh8F
-	 XxWFuSDk/EeNjunWEzLmXF3VYkCZDpwgkznpJRDr6W8UhJ6/E37qR5LRIsINE+0yRX5Ms
-	 OwxmFDklrM6A/BzWNn7H0j9yMiXqSogeLJrC93GMBFgyK35PBkMWDtDOxSAne3PjA4A==
+	t=1793704271;
+	b=Wx0rc4jtxghCftA6xh/Vxs/aDcQzSExV/hBLwW/x9J5M50HV66nIJUdH3eqGCXW+1UTY
+	 xY4disppScVbKo96NqEq0HYHBQt31g3KdTgIXqt7wxFNO8iF1EnEx+anTUfSBW5dFeibb
+	 XGijw2H3CAFuiP5h+gBZqgs+HQ4ise46jIodgcgDrVrxsf7LlPWtDHk8kEEA8sErNQJnj
+	 IVXQ/JRfjUSTz99GSgoWHF8FywBCTUCdawICFBMC7bKaEb+mzP+YuHPIi2Al5ZM00ThJs
+	 /pca0+R9oHSNhSmZvEE6QWZsRWH35WX3hlXGHpodoMxNOdZ47iottm0FOz48/gXVVfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793704165;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:From:Subject:To:Cc:References:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
-	 X-Spamd-Result:X-Spam-Score;
-	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
-	b=zXueHGTl4Vxd6vq5Ctxtsi1X88qFJOJcSVLAWKInFgbpXOW1z757JGI3srvLaKX24wwJ
-	 4pgsMeGcuWlCQ2x13PsZNunMaXsouBwhQ4Re/S6zUE14Rs5ye23B+VqYagDhI4/NOm2YG
-	 B6rV+wszZ4WSFnasE/yfbGxyVGSW+r7biYqvuGPp61DKrxd6oWT90ODer3dBcvOw41ozH
-	 H96JxeBC727zTFI04P+nk89q4Np39AMJGcNgajib5ZnIRzKHfstoHsW5XUUyoabthT+5l
-	 qdmUdW5bQOGPHLapI9qUCnclaen44SEtvmqARYybtTWJVliJyAA4MQOp6mUX2p30+WQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793704271;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=ywwUAKa1nCAbjT7Xu8wZ5Kot6vkSOvPDdhJKT7WlCes=;
+	b=KQdgHaPU/k2nc69m8nnpi/D/C01xXQNPyHcolmV0gC9t0jBKDLlDP/1ptzyfnZkhAr0P
+	 o+NNsmV9seZ+Fgaz+HI+9O2GYYhhMtPHmZoAF3f031kAT6Pzs+ch058xquynnZf+BgzKN
+	 g4aovPNwjG2hC+H7WUN1gkgxnwYL5IQalPmOW5v3Z2yz24c/e9mgm+liMIPeYZPeZL4Ux
+	 Wy3cRaUAPMiEUNVQLN36ABpE7C66c8ZTGqNVbeYzJGvTbM6weyvy8rhwHVdtjtYbNO1Ld
+	 vy1Gw4cz2LDXH8X/4duOCAdXgeyZCXOp71dQ0aFnyXo/ZzZt4GKKi1o3AK8Hmv1gA0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ln7e1AWP;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rhPGPUCZ;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wTzFlnuf;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zfj8vy6k;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=anqu3ch+;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89F6606B11D;
-	Tue,  3 Nov 2026 11:09:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E89F6606B11D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CBE606FAE9;
+	Tue,  3 Nov 2026 11:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ln7e1AWP;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rhPGPUCZ;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wTzFlnuf;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zfj8vy6k
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A7D801F851;
-	Tue,  3 Nov 2026 11:09:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793704163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
-	b=Ln7e1AWPqeO8tey/St9gMxw10zhgzRhc1E0p2nvZhQtEV14ZmWpJVgF+m29cCeKL+vMeWh
-	AwxNYUaIHh8FuS4VEVaDKyYdAJIarC9nSWLtPrfutX1ksDb927/ks7ay3EOxy9Qq02+LJh
-	1er4GydxR8h3wKecEqyfOQ/nozZFjvQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793704163;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
-	b=rhPGPUCZar1qg51irSrmQHzi+MOh+2VhGXgHXgsGqvA7LbbTMBC/EfNjrbW398wrMLlMC2
-	jxxEwL2u6nJXhDCw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793704162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
-	b=wTzFlnufB/O28OfM/In9u0tun+XTcYCPxKNYphDoQxX/q1Wn0QyGWGwN5TH10K+vvmZLRQ
-	9UZZrAEtROwLE/zMUGXnBzPvqru88IfWaDbjzjYe1FsRoKeFMifbNZ3XKx8oShGxAhJWKp
-	zUPqtsbpDv+D0knpvzWDGE+7xh/os5Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793704162;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
-	b=zfj8vy6kaGRbelluWH4W02FeRwUOKocR4zt+QWcBMhrTWP/MobG6BkLFjqU1YdkyottYX1
-	oquHdH72L94+peCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2DF861350A;
-	Tue,  3 Nov 2026 11:09:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jOBJAOLA6WrZLgAAD6G6ig
-	(envelope-from <clopez@suse.de>); Tue, 03 Nov 2026 11:09:22 +0000
-Message-ID: <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
-Date: Tue, 3 Nov 2026 12:09:17 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=anqu3ch+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2F01F00919;
+	Tue,  3 Nov 2026 11:11:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793704271;
+	bh=ywwUAKa1nCAbjT7Xu8wZ5Kot6vkSOvPDdhJKT7WlCes=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=anqu3ch+a+QVzGboMFM7Xbz+NlsiZjDpCKAaDxO9/ZnqJcfsvq22AFFh+InK24gnn
+	 SoOrh8yoSmD5KSFYljB7JFEi+Gy3pcgbhA9jFwfRm/AIWeKz4XL4JuUp2wKNJ2KLz9
+	 or0T8Pbl3Qm4Zca4Q4QORVp7Y5yIceIZnOvlmo0fSPIdAon0jx107nc2B0qh89d9Mo
+	 ieZC1oMkZV5SwKjskyESCfsNjb6D5BuCJVcS6c/dKuhncVaviqCwSryZvIb/ftBiaZ
+	 Zh8hhS1VcFEZBeUoHdDL/2XApkFNO2PO4yjEYmzDvpuIVh2SJ+p4MgifYOnjyn7Thk
+	 XUEWsviA2P15A==
+Message-ID: <sashiko-outbox-195118@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v12 15/19] PCI: Add KUnit coverage for ACS isolation
+ checks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leon Romanovsky" <leon@kernel.org>
+Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, kvm@vger.kernel.org, media-ci@linuxtv.org
+In-Reply-To: <20261103-fix-p2p-acs-v4-0-v12-15-912101f93517@nvidia.com>
+References: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
+ <20261103-fix-p2p-acs-v4-0-v12-15-912101f93517@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 11:11:10 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,87 +60,90 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
- permission upgrade
-To: Sean Christopherson <seanjc@google.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com,
- linux-s390@vger.kernel.org
-References: <20261029143336.390231-3-clopez@suse.de>
- <20261029175203.5bdd51d7@p-imbrenda>
- <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de>
- <20261030133939.630e29af@p-imbrenda> <auis0SaMkRB6odsK@google.com>
-Content-Language: en-US
-In-Reply-To: <auis0SaMkRB6odsK@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-13.29 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-0.998];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -13.29
 
-On 11/2/26 4:31 PM, Sean Christopherson wrote:
-> On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
->> On Fri, 30 Oct 2026 12:11:07 +0100
->> Carlos López <clopez@suse.de> wrote:
->>
->> [...]
->>
->>>> regarding this series:
->>>>
->>>> on x86 you don't care what the new permissions are, because you're
->>>> updating when re-faulting (if I understood correctly).  
->>>
->>> Correct.
->>>
->>>> for s390 it might be beneficial to know what the new permissions are;
->>>> of course we could look up the vma and find out, but since you are
->>>> already checking the permissions, maybe you can find a way to also
->>>> convey the new permission bits?
->>>>
->>>> that would make our life on s390 easier :)  
->>>
->>> Right, getting the new bits from vma->flags should be trivially done
->>> from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
->>> this series though.  The rest of architectures still need the notifier to
->>> tell them if the change is an upgrade, since they don't have an easy way
->>> to grab the old RWX bits. Passing the old RWX bits from the MMU notifier
->>> does not seem trivial to me either.
-> 
-> But why is core MM even doing mmu_notifier_invalidate_range_{start,end}() in the
-> first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip the
-> "invalidation".
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] PCI: duplicated mock device setup in pci_acs_flags_enabled_test()
+--
 
-I briefly mention this in the cover letter, but in short, denying other
-users the notification seems like an overly intrusive change for KVM's
-benefit. A flag allows users to opt in instead.
+commit cd21c328560f2b4befdb418098279304a429237f
+Author: Leon Romanovsky <leon@kernel.org>
 
-It is also not clear to me that secondary MMUs are not relying on the
-notification in some subtle way. In fact, Sashiko points out in reply to
-patch 4 that the notification lets KVM retry the APIC access page reload
-in case userspace shoots itself in the foot by calling
-mprotect(PROT_READ) on it. This would require a really weird VMM, as it
-would need to go looking for the page's address, but breaking this would
-be a "regression" nonetheless. I will address this in v2.
+PCI: Add KUnit coverage for ACS isolation checks
+
+This commit exposes pci_acs_flags_enabled() when KUnit is enabled and adds
+KUnit tests in drivers/pci/pci_acs_test.c using mock config-space operations
+to verify ACS isolation checks, missing capabilities, and failed config rea=
+ds.
+
+> diff --git a/drivers/pci/pci_acs_test.c b/drivers/pci/pci_acs_test.c
+> index 18c697226762d..369444d2a04a0 100644
+> --- a/drivers/pci/pci_acs_test.c
+> +++ b/drivers/pci/pci_acs_test.c
+> @@ -103,10 +103,145 @@ static void pci_acs_p2pdma_completion_test(struct =
+kunit *test)
+
+[ ... ]
+
+> +static void pci_acs_flags_enabled_test(struct kunit *test)
+> +{
+> +	const struct acs_isolation_case *c =3D test->param_value;
+> +	struct acs_ctrl_cfg cfg =3D {
+> +		.devfn =3D PCI_DEVFN(0, 0),
+> +		.cap =3D ACS_TEST_CAP,
+> +		.ctrl =3D c->ctrl,
+> +	};
+> +	struct pci_bus *bus =3D kunit_kzalloc(test, sizeof(*bus), GFP_KERNEL);
+> +	struct pci_dev *pdev =3D kunit_kzalloc(test, sizeof(*pdev), GFP_KERNEL);
+> +
+> +	KUNIT_ASSERT_NOT_NULL(test, bus);
+> +	KUNIT_ASSERT_NOT_NULL(test, pdev);
+> +
+> +	bus->ops =3D &acs_ctrl_ops;
+> +	bus->sysdata =3D &cfg;
+> +
+> +	pdev->bus =3D bus;
+> +	pdev->devfn =3D cfg.devfn;
+> +	pdev->acs_cap =3D ACS_TEST_CAP;
+> +	pdev->acs_capabilities =3D ACS_ALL_CAPS;
+> +
+> +	KUNIT_EXPECT_EQ(test, pci_acs_flags_enabled(pdev, c->req), c->expect);
+> +}
+> +
+> +static bool acs_isolated(struct kunit *test, struct acs_ctrl_cfg *cfg,
+> +			 u16 acs_cap, u16 acs_flags)
+> +{
+> +	struct pci_bus *bus =3D kunit_kzalloc(test, sizeof(*bus), GFP_KERNEL);
+> +	struct pci_dev *pdev =3D kunit_kzalloc(test, sizeof(*pdev), GFP_KERNEL);
+> +
+> +	KUNIT_ASSERT_NOT_NULL(test, bus);
+> +	KUNIT_ASSERT_NOT_NULL(test, pdev);
+> +
+> +	bus->ops =3D &acs_ctrl_ops;
+> +	bus->sysdata =3D cfg;
+> +
+> +	pdev->bus =3D bus;
+> +	pdev->devfn =3D cfg->devfn;
+> +	pdev->acs_cap =3D acs_cap;
+> +	pdev->acs_capabilities =3D ACS_ALL_CAPS;
+> +
+> +	return pci_acs_flags_enabled(pdev, acs_flags);
+> +}
+
+[Severity: Low]
+This isn't a bug, but in drivers/pci/pci_acs_test.c,
+pci_acs_flags_enabled_test() open-codes the same mock struct pci_bus and
+struct pci_dev allocation and initialization that acs_isolated() performs
+immediately below it.
+
+Also, struct acs_ctrl_cfg already carries the cap field, which every caller
+initializes to the same value passed as the separate acs_cap argument to
+acs_isolated().
+
+Could acs_isolated() set pdev->acs_cap from cfg->cap directly, and could
+pci_acs_flags_enabled_test() call acs_isolated() to avoid duplicating the
+setup?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-fix-p2p-ac=
+s-v4-0-v12-0-912101f93517@nvidia.com?part=3D15
