@@ -1,102 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793672221;
-	b=CymLvJujkW4PY2LzZ0r/fiKpIDOWcTW9cCsiTVR+X6tBHdHfn9MRi4gW4o8qeH/AkP19
-	 nBYUgpXsg4H3xkzUJlFpt/AOKBpSRJIAUoIlxoJaznvBgH1lMkG4FOaAd2qTO3iD0bLNj
-	 Mrv5Wv2PG5XIMldtVwgQv8SCAfB1sYp9+PvUOmmH4Y1bB+aEgfjjlSH4nVVEfX4MQVbSy
-	 VE9BAdRumrn5r5NQY3oa2zty3YleY/tL8M5e3jW+ifs/pWNUyUbAuA+eHUrZPjCcKpzLb
-	 jzRYlDii737VpaEwV4z/A2KOg4KQR7UG7dOLhPmBNGzDqz4BO7KHOQxfx973vPOTpmQ==
+	t=1793672711;
+	b=fXG+ks1h/rTpg5WFFDrlrvqHGPLiQz4/A3MAluDcnScjIFygUCxsgY54x/8WcYEELLsK
+	 xZvczCDqaXwQ0k0lC4QpoRTuLHYI0BeUuZR/uil3w+v+lEnir2dSFVL7MXPE9Haz8kb45
+	 gqZFsZpLz7IkdXgQwzrygR6MgqP+Lk7HeWCmx8qz+PGx6KJsJB+f9rNJ2jE2hj/HcAykW
+	 +MRjyyvaX50aVP1t+Zj7Opoqc+C4qFc4CAHvv0suBvjYHf5uUISpCO/F0xuPQAdmcEti6
+	 71FbIIdKdrp5nAiqBxFsiQ8LBqCzIqVtR1h0DPtsJBjIyAgy/eJLOXbOZlCL1Qw4n7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793672221;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=IOGgt4lAkAMwt4N6sT0llhti/KNul9J7tc5dogJ2lwc=;
-	b=YcugbR9+v8sd05uwVyt6ec0107xsrzE9N1/QSVv/SDA1VUVJCbZgjWD3R3gmpkOBMQvH
-	 2NsUF6alUw301lYamm74wIwP0HYzpn7LTZPX3pXBMAa5TMgaQKniSeSvKbJteXcGa7Nu1
-	 M+32/DeXmRv00cgYec3a3P+xg8JaQ1yD2moyS/8JvUCheU/HOs/aoL5som+uKsW8gc+57
-	 Pz7x81FKvL1fcXrllxFeHMpnTkpZhBxMboz7nPVjJYpy5Ss9V/izGR4z1EolIgOscGNru
-	 PQJ9gVBAqQ0YJsLvla0OBImQ0K3dndhWUUejmf2Fb4lLFwfeLesP7JEg1muu3PEnJDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793672711;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=CWwu4nFmuifwtyi15MIPpVhu29b6mqsKR5ygqP1PcsE=;
+	b=joJcEJsINq2qQOQF5zCQdLRv4eE3I8R6srOZ9buA7kcW+47ozyI37pk+TEn8RJgKI9fB
+	 /bGjnpFtgAKgZa4dlJ7hUvcAEAncvH9GOn1EPRGQSxgfwVV7IhJzl6skx5sWEZvJQbZt+
+	 GRV9KPeqU98JJsOMakDIyjAqg39xqrD6MzBbRAo9/nnvyEpl0Dn+TQgvAlZoCIXjgPM+G
+	 KRc6f/YCkeGrFaznOVHxe21OB87zHlTpPBmhAqgVTSWk+zE9UR2r212VfJ2Aujx4h4Osb
+	 iFjOGP0IfUl2fbeiLPVODwo8ZR1WPP55kIxQF/9APy9UCZYOrhgEjBlz67KV98XMRhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xFeGi6oK;
-	arc=none smtp.remote-ip=209.85.210.176
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=T3WeYxLR;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B29C606A326
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 02:17:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B29C606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAF3606A324;
+	Tue,  3 Nov 2026 02:25:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDAF3606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xFeGi6oK
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8a06c60065fso2544669b3a.1
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 18:17:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793672221; x=1794277021; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IOGgt4lAkAMwt4N6sT0llhti/KNul9J7tc5dogJ2lwc=;
-        b=xFeGi6oKTGL99bE6SUlm0Mom52pPJKiBe5UZEoYi7l9ccEdN2Bz6NpeweBzDsGuWsA
-         SZOmR5SwuDI5YXvjLMiHEZszX7RJ9i3D6Gumrg6kkHP3aNH1oLtxI6nw6dOkY6q2Tn0G
-         oRhB7RrweZcmspQuF6ZWJmXlAjGru4eUEWXSfutDspaqzyWdsg7YwKu0UJYECUeyixYm
-         3ZyF78/chjzNXBaSnLpa8hM+u9tyA3m6zEB4CCHnwkUlGjBpcwIQx1znQB7Gkfu6ICrF
-         BUY7NwMTOg/viqnq93m2jXCqCYiUGlt2kYDVC3PK3hOnLp4kp5CnzZ06NYzX/kZdir+B
-         dSXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793672221; x=1794277021;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IOGgt4lAkAMwt4N6sT0llhti/KNul9J7tc5dogJ2lwc=;
-        b=e726qG6ryp9bnXzKcRyVMLrfJOAB13Si1YLBFZb4Q6vEfmsiu6bfAvnOYqV+PMEnMn
-         /YXBlU2emcy6D/nxiSniqfrRdXYnJNcuthJiK4kHN4AlsHfRAAhKGvJdT9fHY3wshfHv
-         bd6M9fq4PCcP6vXzh018D+avzzqGHxQAw0eWa8+Mhgc5feJznYLz/RnFi15O+evRMFmh
-         u4V/J8bhYdD0w8u+EVevcZKeS2Qt1d2lnNJ4Xq11kc0eGq9fL8ia9RTKGLUNG9x8NF6b
-         Ihh4+U+HBxIrZ22CdyN903DwvOfDhSidoXDaBk4v00LdDtY4qP0O4eDWBl6laJ8wkGnw
-         hsLg==
-X-Forwarded-Encrypted: i=1; AKwUvByh5Jl2XtmkT/YlZUgU3H8MUzhW3A24yH9glJYj/fFsrg6zDz413gFWjwf8OxYJ8Ivy5eQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+q1XCQdjn90S+no2AGstEZT/IjK39St9pf0hMTZAk47CQvQ7L0
-	7B8m+aTYYfN47F194F1+LhxTHwoPVGE43z2U2f6B8XOHJnMrv4PcHNRT
-X-Gm-Gg: AYBFou2tI1oh7G0uBBf8LYgk6a6saVgpE+LK0c2NEiyIAuQ8nGXrHJ1s6MRHlJUzlFs
-	TmdDAp9rltTP8/2+Q6h6R6vIRPfyDu1DdBycU9Jg4+s0VZV92ToOi+NDu6hSwLnZzDvujwbFyga
-	6dWIdVCWuGpELfB4+uK96yIrd8SFJBdHM2//fgkO7+BEbVFF0oj0LmDWvtyv4CzLQrBOZisjJMj
-	+dm363uYxnDOSXOp6FGDFp+iVst1gjoFmL8Vk1vzhzXfkqENLOWnkijedaJZQW3thj1yGCaoxIR
-	o7tCJL4Jz2/UTY1zcQ/z/B0/Mz62b/W6Q3cv+CvleUiH93B8Gynu34Vbhmev9WypkR7jNH5VSqY
-	0y2LGWA89Jd7NJQbYqHMHodTZ/GAT5wkRNIbnVzNOkmL2s60B0vDPpHAxHX1YI32+pkJ5oK4fWz
-	pV587ZenG21aAx3uNP1U+2Oq5bIIGbMw2VRR26MdfM25YDWqiX1/HT6Xz60iyS1kvSk2FCRO4sr
-	xfBwcKeDdiCxF7X3j6Bg+4477P63gehL5VPZ8js+x+NVsAGgL2n5h+YP9yXYLn/DeTWms6LfoDn
-	zCt/3A+8WJwjiZAnYQd9I8TWRQJ1E4hQJ76rUhzyvUE=
-X-Received: by 2002:a05:6a21:3b49:b0:3e1:d379:f3b3 with SMTP id adf61e73a8af0-3e928fe8569mr7948733637.77.1793672220726;
-        Mon, 02 Nov 2026 18:17:00 -0800 (PST)
-Received: from iZj6c0kydq3fvfrtx5kta5Z ([47.86.51.122])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb36448182sm490457a12.6.2026.11.02.18.16.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 18:17:00 -0800 (PST)
-From: Challvy Tee <challvy.tee@gmail.com>
-To: x86@kernel.org,
-	linux-coco@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	regressions@lists.linux.dev,
-	stable@vger.kernel.org,
-	kas@kernel.org,
-	dave.hansen@linux.intel.com,
-	rick.p.edgecombe@intel.com,
-	vishal.l.verma@intel.com,
-	kai.huang@intel.com,
-	seanjc@google.com
-Subject: [PATCH v5] x86/virt/tdx: Gate TDH.SYS.DISABLE on X86_FEATURE_TDX_HOST_PLATFORM
-Date: Tue,  3 Nov 2026 10:16:50 +0800
-Message-ID: <20261103021650.924302-1-challvy.tee@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <09c311c6aae214c04a9a55ff6456d7abfe82c319.camel@intel.com>
-References: <09c311c6aae214c04a9a55ff6456d7abfe82c319.camel@intel.com>
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=T3WeYxLR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=CW
+	wu4nFmuifwtyi15MIPpVhu29b6mqsKR5ygqP1PcsE=; b=T3WeYxLRfHANdLoLbz
+	Er6loyW5qQ0nyJA9nSRtN2BzhlTYqi1WKGaK7XTXayvllUsqR/HdYbj03mr+QdM9
+	pgtoOnuQS1FvIzGJeGJgdPhOPMzi+mk6xlnsFiqvVkY/fEf0hZLGGa1weeLaFOge
+	42I/cgUQ3DN/BGQ9YQyoRaum4=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCHTc32RelqB+r1EQ--.18526S2;
+	Tue, 03 Nov 2026 10:24:55 +0800 (CST)
+From: Wenmei Wang <wangwenmei0618@163.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wenmei Wang <wangwenmei0618@163.com>
+Subject: [PATCH] KVM: coalesced_mmio: Sanity check the size of writes
+Date: Tue,  3 Nov 2026 10:26:21 +0800
+Message-Id: <20261103022621.39109-1-wangwenmei0618@163.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -107,64 +62,40 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCHTc32RelqB+r1EQ--.18526S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKr17Gw4xJw48Kw45tw4Utwb_yoWfKwb_ur
+	sYywn7AFyxGr1DtwsrA3yfXFykGw1Dua18WrsxJrZ7Ar1kZan5Xw1DJr95A3srWrsrGrsr
+	trZ5Za4rKw17CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjPC7UUUUUU==
+X-CM-SenderInfo: 5zdqw45hqpvxaqwrmqqrwthudrp/xtbC5hejS2rpRfeoLAAA3s
 
-Commit 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and
-kdump") made native_machine_crash_shutdown() call tdx_sys_disable(),
-whose only gate is compile time (CONFIG_INTEL_TDX_HOST).  A kernel that
-never initialized the TDX module therefore still issues
-TDH.SYS.DISABLE.
+Each ring entry has a fixed 8-byte data buffer, but the write path only
+checks that the access falls within the zone, not that it fits in the
+buffer.  All in-tree users of the MMIO bus cap accesses at 8 bytes, so
+this cannot be triggered today.  Reject oversized writes anyway instead
+of trusting every caller to uphold that limit.
 
-In VMX non-root operation on a SEAM-capable host, SEAMCALL causes a VM
-exit instead of a native #UD.  KVM injects #UD only since
-commit 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute
-SEAMCALL or TDCALL"), first released in v6.18.  On an older host the
-VMM gets KVM_EXIT_INTERNAL_ERROR and the vCPU never resumes, so
-machine_kexec() is never reached and no vmcore is written.  Kdump is
-thus broken only in guests on SEAM-capable hosts whose hypervisor does
-not handle the exit; plain kexec is unaffected because tdx_shutdown()
-only runs as a syscore op, registered after init_tdx_module() succeeds.
+Found by reading the code.
 
-Gate the SEAMCALL on X86_FEATURE_TDX_HOST_PLATFORM before issuing it,
-the way paddr_is_tdx_private() already guards its own SEAMCALL in this
-file.  Without that feature the module is never initialized, so there
-is nothing to disable; on a TDX host the gate is a no-op.
-
-It also decouples kdump from the host KVM version -- a guest cannot
-require its host to inject the #UD.
-
-Fixes: 5b25f249be32 ("x86/tdx: Disable the TDX module during kexec and kdump")
-Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Challvy Tee <challvy.tee@gmail.com>
+Signed-off-by: Wenmei Wang <wangwenmei0618@163.com>
 ---
-v4 -> v5:
- - Update the subject to name the X86_FEATURE_TDX_HOST_PLATFORM check,
-   as requested in review.  No code change.
- - Add the Reviewed-by tags collected on v4.
-
-The reproduction data and the host-side KVM log are unchanged from v4:
-https://lore.kernel.org/all/20261102073244.919864-1-challvy.tee@gmail.com/
-
- arch/x86/virt/vmx/tdx/tdx.c | 3 +++
+ virt/kvm/coalesced_mmio.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 96ced0494b68..9b01131f7b7b 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2321,6 +2321,9 @@ void tdx_sys_disable(void)
- 	struct tdx_module_args args = {};
- 	u64 ret;
+diff --git a/virt/kvm/coalesced_mmio.c b/virt/kvm/coalesced_mmio.c
+index 3b5430036cae..fce38f1c8054 100644
+--- a/virt/kvm/coalesced_mmio.c
++++ b/virt/kvm/coalesced_mmio.c
+@@ -53,6 +53,9 @@ static int coalesced_mmio_write(struct kvm_vcpu *vcpu,
+ 	if (!coalesced_mmio_in_range(dev, addr, len))
+ 		return -EOPNOTSUPP;
  
-+	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
-+		return;
++	if (len > sizeof_field(struct kvm_coalesced_mmio, data))
++		return -EOPNOTSUPP;
 +
+ 	spin_lock(&dev->kvm->ring_lock);
+ 
  	/*
- 	 * Don't loop forever.
- 	 *
 -- 
-2.52.0
+2.25.1
 
