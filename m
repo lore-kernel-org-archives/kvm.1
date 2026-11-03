@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793665331;
-	b=fiCBgkxicU2hKD3nYPGV+ySMKVab5ekTLUaRQhKSBFYJVpPMSNn33KtyREBLZqWG733i
-	 g3eZsFetD1gyAEajktP54E/7pviYVi4srnhO+NmXFfksm2+eEeudHzcVBxhgZ2hc6ip/G
-	 FQjTfjZC/kcQWMSOA31Hjq80Y4sEH9LkMIw/DcWHVf5QEZfrx64AQZtkCdoXBu+10mjo1
-	 BnzNrj38lA3rbsJDCVQ/PGava0jbJbFqwCs8nd9erN3DLYvEoAlmKbL/izp8E1Rodufu4
-	 LB0oG1DyALaYSWW4q05R8oW/P6D7NZXMhQ+QkMUNqRkrTupk/VHEuByldwt3Ud79yUw==
+	t=1793665332;
+	b=o8ZK4eiXlOvcBJkLUZYauBsyZQ132zRWzGw4vWvWDEcZu8yUU2Txs+MgnDQY1ms/LLPy
+	 bP+FzlVttPyLgjkPkT9SOYetCb9Wl9K8aeH4mLOXiTp2nvnhUiM5f98VLfMiZg2mz1qoF
+	 I/6cI75ZXE9EoZ6T6KnQRnKtTfjW0JqgQRVbGtvmzK72wbJB8U2VyPFuQfpONUMkkxQvz
+	 lLQAmXehG/hUv5+mKaYkOqN2ZbQT9AQWwUeePqg24uD0SA3z6gmJ/47SariawA9uXzZvp
+	 tI8VwB4IeZ24o+yKWrPbc5WFd/b94/HAjte+2/igaSdaFi5BMLoQ0Z8XmbB4BUS1XCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793665331;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793665332;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=GnhmkL3sHgBajA/tFiWhkmxN54BhG8qxI7na8JnF6t4=;
-	b=nzrMsoN7TQVq4Ao4xOPBNDFy4om3OZlZ5NJfOaSqiorUuCNeLdcCbr3QFn3k3WuLmdjf
-	 srpuZo4KtlOkTjDiHHOc+ByLVMflI/UvakSuBshsuGL5yadiOkFyqKku4jkx8RmFN0wIF
-	 5H8Ewglg8cJ9eUG0Jlou99V6uIHKmPuvUWpskaaBl5zG87XdbjaelHn8B66jGvPYlvfpU
-	 QggH8SoYsCQrurODKjHaI8G7ZrzLRlfBYLlXCH+PfZ3d64gsf6GQN+fUx+bHRXugTgNT5
-	 xPZ4/5c9XLhsiJt8fpI1SIXEDlj8ygWzbxYdF9bCQ9AERU4t63EowhOVsU/bpioRbNg==
+	bh=Go21w0LdVBqY6FPfPI/Y6M16uSx3gBaNjR6JdWqO5xk=;
+	b=qrJ4wqrDrpRZQAlMizMAxTZvyGz1MCr3dIx2af+llbTM4UGjTkkVkORsu+8RueNlIGt2
+	 EmPEMpScFPRFStoDypB+tFSpKUddik1RyaHfcZKhhL/enrm2AICfvbBR9CGWULie8QKUn
+	 47iKs7Jl+oA1fkMJFHGE6drz3NLD5kAbeZ9y7fMUU4u5i8TVXR5JKLqBUOnVCtWfVsxFH
+	 nyyH1/kp5D9DY6o2AgaQMk/W1H8VXAtMzlsf2u79IHG/4427nj6VnG4Sba5yVFHru8PVe
+	 CONSqv3kpqy/iXJoBqLnibZER/oFMKnLQ/OSioe9DGMlUs1lnMFI+8mbZSAHEVUpVUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DLf+Y9s4;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jUoLQ2xJ;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE09606D80E
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 00:22:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BE09606D80E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754A7606D832
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 00:22:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 754A7606D832
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DLf+Y9s4
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3abfcf726dcso4715086a91.2
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 16:22:11 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jUoLQ2xJ
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e93e2f72bfso59690665ad.3
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 16:22:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793665331; x=1794270131; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793665332; x=1794270132; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GnhmkL3sHgBajA/tFiWhkmxN54BhG8qxI7na8JnF6t4=;
-        b=DLf+Y9s4cg8dY94ixNKufGvp9EgW7E1eziXIR53jM1PZL7X/tYfWWjwG0JdV6xCBZ3
-         6mtDWr7KQ6SEGwZfIosZkL6rAba736wMqqE2ABQMe7PvimSYBt20AEtAlptUUqQB4Jeu
-         nyL09EIMOW8Fcu4vr/I1ZvjUjegTCY5c6rEhKA/NulQtqGGfEKSePP3RYcEVMQKOOEjq
-         Z1byyCmG5XttNdcTvKK31CPRdMeNEmGt7agUHhOi/gDJgSi5LknPJGTNqQqSoPA1MGiu
-         EdCMs+1XhgkQBU6zARfTLJTGaT9lo5I4MHKDS+bZEhTZt2W1ju6QF2J30wOhhtvoZuAL
-         3Ajw==
+        bh=Go21w0LdVBqY6FPfPI/Y6M16uSx3gBaNjR6JdWqO5xk=;
+        b=jUoLQ2xJ1uKcy+mkG/rXIDATkyV05kgRWar4BDUeTEnfrdhv06zzth71BahSfNyH8D
+         7QqhIWhSKFQErkT4B2kRI180+02pD+YX32igh1MJmdlcnh2s9jBJaYd5YSEZ0GVgyxD7
+         fE8epssf+fSNZS/Zropkq2FlUxhMkg5zA+NC4GTMUZjyRJKBX0lbeBD922vjniamU5Bq
+         AhjUl+dyGEj3Lxy4Fq4MVbVcj1gb6RLzXT+0dVigVyFK2xHwSuoB70HVW/dntuopR7vy
+         Kv19rJOMr7o3J3rgy1QmkhiXjGnwreNDi6xxdAO5DmGYJRd+zzmcDvYl88vXFm8LjGla
+         WQMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793665331; x=1794270131;
+        d=1e100.net; s=20260707; t=1793665332; x=1794270132;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GnhmkL3sHgBajA/tFiWhkmxN54BhG8qxI7na8JnF6t4=;
-        b=XkbRBNaNQtgumy+RKTW7GEEJA3+J9MWNDElPRBJPL5gDgxE2CZjBvW2my8m6hwqfdo
-         qZS49IBjIt8SNtze0xZHdkgYf7GeFGw3pa8aWndFR1TiUbLwlWggaUfWlfdY2a6NnigW
-         Bc+ywSu9tEf3GMH7Zzv7nx1RsoY44ltz39+ivcivm79jG4smu0+bX5CnXCUflbODXVRs
-         u/Ir1I4VMcveXvMMCrK6/EGFOhFiWiJAhX6biJ3L5+wVXVrV8ZXPdcWphg2vW/tvocQh
-         D59k9aJ1cYbEHbq0VUn/6iQh6Nt9DEFAXPPIe/2B3vov/E6ZQvnXt/r4Fy/fwCsuy267
-         wl/w==
-X-Gm-Message-State: APuU4Z/pmCLzy+nOiYbuhdWvUASykJp0VLFJPjABiqrUzOtmKWfNDVgU
-	n0MMjAR9FHyjLVbnacyPOHp3nOk3g3HO/9z7nyJTW4fQfogn5AKdH2Ap3naM0GamrRPfRw1Z6N+
-	NjCzjMStnnSE2PDFucubk6jRYzUauRfLhxHG1ZJ00uGDEvezEtJqMQuuI2ga30oqAvH7Bkw15kU
-	8v1Np3QIVgz+Z4nvcnpdM6bA1FkqzyDW2XuIcw01DsVaY=
-X-Received: from pgbx21-n1.prod.google.com ([2002:a05:6a02:63d5:10b0:cca:8b09:717])
+        bh=Go21w0LdVBqY6FPfPI/Y6M16uSx3gBaNjR6JdWqO5xk=;
+        b=w7vq/lp5jf2LEMWavTVUeVXG0NU9ecI8QjZnHZ4vs0Vk8DcYYZyLdb5wc6flA9DwiI
+         TXGLM8mz7LgwVMnWc235Tvs2sJvJKpuyyNPQFOpc6Dmef5j8Bk1Q8aAc1KCs2XDCjxX6
+         hAsAx3NhWDwSQtRx7FDOuk4F/mXggeUmd1Mc99Kldx1CZQY8A3cph6Nl1GEDDeHcXxiJ
+         +O9aevyQUGPj4I1an6k5z+c8tvJnZzcuiEMg5igbWfXNh/UfBA2ua1AGObxc7v3QsHhA
+         e+2bZs+4uRP3dvnhRPghX4f+egoPzhZvjuTSwqkIxtig5JdbDxuiLV/L1JvCNi7E8+7Q
+         4czA==
+X-Gm-Message-State: APuU4Z+vhhaxFtk7pWHQzBUDvNF8ih7EiiN6eFEfouq77Pgf3nOhtL6Q
+	q6G6vRvWg5V0nFPaDo8qAN0NdrL8eG1ir1BkaoOyPSG+burMDMvec7bqJjvLuOr8vVAdvZIBrkP
+	AFTDNJ2UV25bcqgdlDDb6qJDmwoNboFagtV0190upFe7kkxKU17dGfvGqoYzMg7Fy6X6gylXA02
+	t066exKCv4dMwVcqft23q3GHWWWFURenGy+5mPMwVGrcU=
+X-Received: from plek1.prod.google.com ([2002:a17:903:4501:b0:2e9:8ef0:cf73])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3c8c:b0:3ac:c23f:cf51 with SMTP id 98e67ed59e1d1-3ae8983126bmr10794595a91.49.1793665330510;
- Mon, 02 Nov 2026 16:22:10 -0800 (PST)
-Date: Tue,  3 Nov 2026 00:22:03 +0000
+ 2002:a17:902:f549:b0:2e9:5eee:e071 with SMTP id d9443c01a7336-2eb3652ddf9mr104229635ad.57.1793665331267;
+ Mon, 02 Nov 2026 16:22:11 -0800 (PST)
+Date: Tue,  3 Nov 2026 00:22:04 +0000
 In-Reply-To: <20261103002205.3348519-1-dmatlack@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,9 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261103002205.3348519-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261103002205.3348519-4-dmatlack@google.com>
-Subject: [PATCH v2 3/5] vfio: selftests: Print the known IOMMU modes on an
- unrecognized mode
+Message-ID: <20261103002205.3348519-5-dmatlack@google.com>
+Subject: [PATCH v2 4/5] KVM: selftests: Use VFIO selftests library to pick
+ IOMMU mode in irq_test
 From: David Matlack <dmatlack@google.com>
 To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org
@@ -90,75 +90,60 @@ Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Print the names of all known IOMMU modes when iommu_init() is passed an
-unrecognized IOMMU mode, and expose the list of names via
-iommu_mode_names() so that tests can also print it, e.g. in their help
-output.
+Use the VFIO selftests library to pick the IOMMU mode in irq_test and drop
+probe_iommu_type(). Pass NULL to iommu_init() when the user does not
+specify a mode with -t, and skip the test if the requested mode (or, if
+NULL, any mode) is not available.
 
-Users can specify the IOMMU mode for some tests on the command line (e.g.
-irq_test -t), and so a typo or unsupported mode should tell the user what
-the valid options are rather than leaving them to go read the library.
+The VFIO selftests library now automatically picks the IOMMU mode that is
+most likely to work on the current system, so there is no need for each
+test to probe for a mode itself.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/kvm/auit0kVkAaWcNUvk@google.com/
+Link: https://lore.kernel.org/kvm/aiIG2L_KdPwuxYA1@google.com/
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- .../vfio/lib/include/libvfio/iommu.h          |  3 +++
- tools/testing/selftests/vfio/lib/iommu.c      | 20 ++++++++++++++++++-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/irq_test.c | 20 ++------------------
+ 1 file changed, 2 insertions(+), 18 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-index f204c71494fe..42d1de742c0c 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-@@ -51,6 +51,9 @@ bool iommu_mode_is_available(const char *iommu_mode);
-  */
- const char *iommu_mode_unavailable_msg(const char *iommu_mode);
- 
-+/* Returns a comma-separated list of the names of all IOMMU modes. */
-+const char *iommu_mode_names(void);
-+
- int __iommu_map(struct iommu *iommu, struct dma_region *region);
- 
- static inline void iommu_map(struct iommu *iommu, struct dma_region *region)
-diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
-index 526bb21f2766..64614325c49b 100644
---- a/tools/testing/selftests/vfio/lib/iommu.c
-+++ b/tools/testing/selftests/vfio/lib/iommu.c
-@@ -90,6 +90,23 @@ static const struct iommu_mode *iommu_mode_detect(void)
- 	return NULL;
+diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+index 791e576c334c..8a345472df5f 100644
+--- a/tools/testing/selftests/kvm/irq_test.c
++++ b/tools/testing/selftests/kvm/irq_test.c
+@@ -148,22 +148,6 @@ static void kvm_set_empty_gsi_routing(struct kvm_vm *vm)
+ 	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing);
  }
  
-+const char *iommu_mode_names(void)
-+{
-+	static char names[256];
-+	int i, len = 0;
-+
-+	if (names[0])
-+		return names;
-+
-+	for (i = 0; i < ARRAY_SIZE(iommu_modes); i++) {
-+		len += snprintf(names + len, sizeof(names) - len, "%s%s",
-+				i ? ", " : "", iommu_modes[i].name);
-+		VFIO_ASSERT_LT(len, (int)sizeof(names));
-+	}
-+
-+	return names;
-+}
-+
- /*
-  * Returns the IOMMU mode with the given name, or if iommu_mode is NULL, the
-  * most preferred IOMMU mode that is available (or NULL if none).
-@@ -108,7 +125,8 @@ static const struct iommu_mode *iommu_mode_lookup(const char *iommu_mode)
- 		return &iommu_modes[i];
+-static const char *probe_iommu_type(void)
+-{
+-	int io_fd;
+-
+-	io_fd = open("/dev/iommu", O_RDONLY);
+-	if (io_fd >= 0) {
+-		close(io_fd);
+-		return MODE_IOMMUFD;
+-	}
+-
+-	io_fd = __open_path_or_exit("/dev/vfio/vfio", O_RDONLY,
+-				    "Is VFIO (or IOMMUFD) loaded and enabled?");
+-	close(io_fd);
+-	return MODE_VFIO_TYPE1_IOMMU;
+-}
+-
+ static void help(const char *name)
+ {
+ 	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-m] [-n] [-t iommu_type] [-v nr_vcpus] [-x]\n", name);
+@@ -266,8 +250,8 @@ int main(int argc, char **argv)
  	}
  
--	VFIO_FAIL("Unrecognized IOMMU mode: %s\n", iommu_mode);
-+	VFIO_FAIL("Unrecognized IOMMU mode: %s (known modes: %s)\n",
-+		  iommu_mode, iommu_mode_names());
- }
- 
- bool iommu_mode_is_available(const char *iommu_mode)
+ 	if (device_bdf) {
+-		if (!iommu_type)
+-			iommu_type = probe_iommu_type();
++		__TEST_REQUIRE(iommu_mode_is_available(iommu_type), "%s",
++			       iommu_mode_unavailable_msg(iommu_type));
+ 		iommu = iommu_init(iommu_type);
+ 		device = vfio_pci_device_init(device_bdf, iommu);
+ 		msix = vfio_setup_msi(device);
 -- 
 2.56.0.385.gac671c819a-goog
 
