@@ -1,76 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793718214;
-	b=zySmwlGzZj/1XDhDM/jSzKIlKlZ6n7Dry3YQj6i2rtsCPCvsqW0R2OfAz8qbvDuO8Kfy
-	 0nEKl1bC+PRwJczXRrU6ykf7zGiOb90KtOO0qPUXVPQX3Y29zdxqYtN6rla4U2RRbrK7j
-	 H2u9klm1pdHlToDiYjyLweWS7JQZIVAMC3ElNafTWhF9//XBTdqvSLRMwHFOuDYBkfK/N
-	 lInOM8eZ4qVQSmeghADtVDT4DZtvY/Rg0pM8x7I9YZnTGAHjdTB2oI0gOyedeJypWHWzD
-	 tzlHq3oqOsnhnq4xkJkAFI085bAvxajh8JmrM1LenR95pSnk1CLHwRlCNGR27bXWXMg==
+	t=1793718930;
+	b=ADq6uVslqoQZT3vAZJtJmabcPZW6U6NIKzB9XbrL9uzzeixQz0CLNZNTB8c2Pbj2RXlO
+	 LaNMkZ39eMLbA4mLnKzcB359wrk1Ra+xo2IsP6z5Kld0ty6SsOMAcxNGmGfWFZQLQjzyf
+	 F25iBh7XscAzKzOrahicypmLpK/R/iCMpal3kOCS7rO+CWr8DlbwoH2/8g4i2mrf6eAHR
+	 mk49PFdc9gc82zptJd5tMniBaCsHUar5+ALZU8gVYTQDftzhewx3OmdErRCJ/7UjfF+nW
+	 GpxgXp3MLmah9mRYEGlDT/7Tn969q8foyaCGLuzRmw7u3kjcWHLdnH8Czaw9yyAUUag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793718214;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
-	b=ACdD2C0H7WRG/l6RDEsgr3fJ3Xh45OFnlMtRPjw03M7ke6dCV+/0oVyP76ONkTCjAYTP
-	 /63Palunctl98dVBcCLAY7ee/4e1tw4X8sTuav7+OUnVUJuoYAP8bjy9vwvwf0Fq+z9Qc
-	 ZAk47fYNop9R6httiU7FLYMvUmmoggtPqYKeOxxj31Is+mHfhvsd186ZQRokPCVMx/A9I
-	 UWs/aC+iKs6goxdkbh/xPvgrPu+Z5J7WgV4PcUv0K6+oNKPOSAYchSujgQe2+EcCI4Hw7
-	 BqpL3SmNzx6PSsyxZCOfW3Ks9mBJa1/O+eUtNY3869RDRq7bAXOLlKK7fFDvRRDMDEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793718930;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=mI3CFwUuzvcIOODehtEbWIXPGEGMeTOZrw8tS2JfCIQ=;
+	b=mFYkBAuJMpx6VC+1t9up32/izP6vPESg2vU/vJOK/BATH4OVGR4En7Iu6Y3r67u9npkv
+	 GdW1Ke+LxdkMUTWYWEIeGNFJxXbLgvz4I3ZJFNZ7nTh4davx8zKd+oyml52L3/UQ3MnvD
+	 rhjrMO5c/aXjAw81XUQl59XLuXMzg93t7dx6/Ro8J1Y/Cz0F129f8HU5eaMCb7vkIESnC
+	 FiVFCdJslZbJOsR4DwPtH6VI9aNZcbmBAZLbxDkSotUkxu9yR07aDxWMvFgaY5wDhcabv
+	 2TlGNp7GfUzBzjZpPU2wpUTjO4aDIUC0jW8tqPKiwHuQjzaTcv662TFgoptIS8c++AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WYSLWugz;
-	arc=none smtp.remote-ip=209.85.215.198
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P9D89k5W;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29838606B269
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 15:03:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29838606B269
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D176606EEAA;
+	Tue,  3 Nov 2026 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WYSLWugz
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbb92868263so2308549a12.2
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 07:03:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793718213; x=1794323013; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
-        b=WYSLWugzFuNm4Kq224vW+Mtkvsl2neSTgZBMrPgSmEKac3ov2ufcElfcvoyepJJn6f
-         JxnkQBp8SHxk8VB+L0keiYB1AMoFJ5f9ba1S8NanI1pf6f4huAEPxuLXeTJgl2gQ60a+
-         HQhmM5JqlPBt8lVUK8hIOVtUdNfOWTZvu8F5RWqWzRLAhu0TcdpXLYqO6fNF2oREz7k3
-         XryMJ/6DA3O6a1N/l8ybWr85Ta3prQYffWP0qlmXpH+hrTSSzsilEM/FEcVJ7On+Y9zh
-         3VAKC5vThgpSeJT17ky9XTa3Ll3OdZ5oakw8OkcxH7BQzM+uqaA5T97fOsetveJ1XdD/
-         oQfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793718213; x=1794323013;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
-        b=qQ0uDSZKFlxmXKw1PXV3pSzuNB1EPXopiOYyFsQLYex34z5MKjo1hpLWUFV15dax+j
-         5vdRYJnJEdOOFSv3nVb90VQdkVFsjD5+KuNwhOy5m71mNWqaiRb5BK9XH1q36/SsBdXP
-         reAwyBAWlOywsy3Tz7LoAGAuwHWkjYk2WD85imUy7l3kEblSm2VwHuDD+ZvhLmf8iMno
-         ZunqluF1Z40GH8DdhvwuhCdcecTI/hHv+645iLnPJSa5ahZVOTKvXFX1OCEAEl/6ALc3
-         Eo6w1CcRBl5e9ro/KvU5ws/jWtjuyGw4jqy6xSL/oFsUUcJLoi/FrYe3zzYs9lkY3lxT
-         9uRg==
-X-Forwarded-Encrypted: i=1; AKwUvBxeMN25vW5xJzRBw4NFi3UY/ScoKGDlnD1KV0m6RiOflZqweQB+a5V2uBtd5WLOdlT1P7U=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+dDoZOECbFU4855uxexIQG6/IO5Bj1Z1RHCpaIPvlQsjbbwwLP
-	Zh+zGi6tXZXJN+1dJOz09fzMJiIzS//aQ3tOMF8PFt1XteNBfd2lUiStU+PMa600LSuCR7KyKAU
-	kl52h0Q==
-X-Received: from pjdn32.prod.google.com ([2002:a17:90a:2ca3:b0:3a8:837d:95c7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:52c5:b0:3ac:a11a:7c79
- with SMTP id 98e67ed59e1d1-3ae89776aebmr10680806a91.16.1793718213083; Tue, 03
- Nov 2026 07:03:33 -0800 (PST)
-Date: Tue, 3 Nov 2026 07:03:31 -0800
-In-Reply-To: <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P9D89k5W
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D256B1F00A23;
+	Tue,  3 Nov 2026 15:15:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793718930;
+	bh=mI3CFwUuzvcIOODehtEbWIXPGEGMeTOZrw8tS2JfCIQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=P9D89k5W4gPRK3aF36dQI9RlWFxgCfl7QijD7Dpl9kLItprnRnowYqyKdVAoqhgQv
+	 omCdEgq7z7JLY3eByFNwRHwDsnUQKkKJ2PeTTGmbfu34ddZTkO3sh2Nd61UmiQqEJm
+	 J9ETrMB4D/yiQNXhbYg97UDRPIhrGVkHgjxPJBg/Zj1FLgcfqSYrtKOYiQAZHT+jja
+	 byMgwl885xClqDM2ivNS7sRA3+neRYvA8T5dOrdR9mnP/HxEhNhh3kOKCsUKKNdSJn
+	 iqFpQj/0q6zr3yxG7JJtbXmMXaV5Q7cJ/DUxZgn8JkxOxBDLNtoFZcIc2+V6aOLGYp
+	 EZ66JFGQ0S8gQ==
+Message-ID: <sashiko-outbox-195573@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v12 3/5] s390/pci: Improve FMB memory management
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Omar Elghoul" <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261103150114.68873-4-oelghoul@linux.ibm.com>
+References: <20261103150114.68873-1-oelghoul@linux.ibm.com>
+ <20261103150114.68873-4-oelghoul@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 15:15:29 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,135 +60,113 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261029143336.390231-3-clopez@suse.de> <20261029175203.5bdd51d7@p-imbrenda>
- <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de> <20261030133939.630e29af@p-imbrenda>
- <auis0SaMkRB6odsK@google.com> <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
-Message-ID: <aun3w8gxwlmRy-GW@google.com>
-Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
- permission upgrade
-From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 03, 2026, Carlos L=C3=B3pez wrote:
-> On 11/2/26 4:31 PM, Sean Christopherson wrote:
-> > On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
-> >> On Fri, 30 Oct 2026 12:11:07 +0100
-> >> Carlos L=C3=B3pez <clopez@suse.de> wrote:
-> >>
-> >> [...]
-> >>
-> >>>> regarding this series:
-> >>>>
-> >>>> on x86 you don't care what the new permissions are, because you're
-> >>>> updating when re-faulting (if I understood correctly). =20
-> >>>
-> >>> Correct.
-> >>>
-> >>>> for s390 it might be beneficial to know what the new permissions are=
-;
-> >>>> of course we could look up the vma and find out, but since you are
-> >>>> already checking the permissions, maybe you can find a way to also
-> >>>> convey the new permission bits?
-> >>>>
-> >>>> that would make our life on s390 easier :) =20
-> >>>
-> >>> Right, getting the new bits from vma->flags should be trivially done
-> >>> from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
-> >>> this series though.  The rest of architectures still need the notifie=
-r to
-> >>> tell them if the change is an upgrade, since they don't have an easy =
-way
-> >>> to grab the old RWX bits. Passing the old RWX bits from the MMU notif=
-ier
-> >>> does not seem trivial to me either.
-> >=20
-> > But why is core MM even doing mmu_notifier_invalidate_range_{start,end}=
-() in the
-> > first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip =
-the
-> > "invalidation".
->=20
-> I briefly mention this in the cover letter, but in short, denying other
-> users the notification seems like an overly intrusive change for KVM's
-> benefit.=20
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] s390/pci: fmb_enabled not cleared when function is already disab=
+led
+--
 
-There are all of two other users:
+commit ca3a9f4958dfbbed1e7f4c289498cd7e117c52ca
+Author: Omar Elghoul <oelghoul@linux.ibm.com>
 
-  $ git grep -w "\.invalidate_range_start"
-  drivers/gpu/drm/nouveau/nouveau_svm.c:  .invalidate_range_start =3D nouve=
-au_svmm_invalidate_range_start,
-  drivers/infiniband/hw/hfi1/mmu_rb.c:    .invalidate_range_start =3D mmu_n=
-otifier_range_start,
-  virt/kvm/kvm_main.c:    .invalidate_range_start =3D kvm_mmu_notifier_inva=
-lidate_range_start,
+s390/pci: Improve FMB memory management
 
-and AFAICT neither of them wants an invalidation even for protection upgrad=
-es
-either.
+This commit replaces the dedicated kmem_cache for Function Measurement
+Blocks (FMB) with kzalloc_obj() and retains the allocated FMB buffer across
+disable cycles until device release. Because a non-NULL zdev->fmb pointer no
+longer indicates whether measurement is active, it adds a zdev->fmb_enabled
+flag to track FMB state.
 
-> A flag allows users to opt in instead.
->=20
-> It is also not clear to me that secondary MMUs are not relying on the
-> notification in some subtle way. In fact, Sashiko points out in reply to
-> patch 4 that the notification lets KVM retry the APIC access page reload
-> in case userspace shoots itself in the foot by calling
-> mprotect(PROT_READ) on it. This would require a really weird VMM,
+> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+> index f49736386eb7c..f066a7ffc35c1 100644
+> --- a/arch/s390/pci/pci.c
+> +++ b/arch/s390/pci/pci.c
+[ ... ]
+> @@ -205,13 +203,17 @@ int zpci_fmb_enable(struct zpci_dev *zdev)
+> =20
+>  	lockdep_assert_held(&zdev->fmb_lock);
+> =20
+> -	if (zdev->fmb || sizeof(*zdev->fmb) < zdev->fmb_length)
+> +	if (zdev->fmb_enabled || sizeof(*zdev->fmb) < zdev->fmb_length)
+>  		return -EINVAL;
+[ ... ]
+> @@ -802,6 +805,12 @@ int zpci_disable_device(struct zpci_dev *zdev)
+>  	} else {
+>  		rc =3D -EIO;
+>  	}
+> +
+> +	if (!rc) {
+> +		guard(mutex)(&zdev->fmb_lock);
+> +		zdev->fmb_enabled =3D 0;
+> +	}
+> +
+>  	return rc;
+>  }
+>  EXPORT_SYMBOL_GPL(zpci_disable_device);
 
-s/weird/misbehaving
+[Severity: Medium]
+Can zdev->fmb_enabled remain set to 1 when the PCI function is disabled by
+firmware during reset or error recovery, preventing zpci_reenable_device()
+from re-enabling FMB measurement?
 
-> as it would need to go looking for the page's address, but breaking this
-> would be a "regression" nonetheless. I will address this in v2.
+In zpci_disable_device(), when clp_disable_fh() returns
+CLP_RC_SETPCIFN_ALRDY because the function is already disabled in firmware,
+clp_refresh_fh() updates zdev->fh to the disabled handle and sets rc to
+-EINVAL:
 
-Nah, there's zero chance any real VMM is doing mprotect() on the APIC acces=
-s page.
+arch/s390/pci/pci.c:zpci_disable_device() {
+	cc =3D clp_disable_fh(zdev, &fh);
+	if (!cc) {
+		zpci_update_fh(zdev, fh);
+	} else if (cc =3D=3D CLP_RC_SETPCIFN_ALRDY) {
+		...
+		rc =3D clp_refresh_fh(zdev->fid, &fh);
+		if (!rc) {
+			zpci_update_fh(zdev, fh);
+			rc =3D -EINVAL;
+		}
+	} else {
+		rc =3D -EIO;
+	}
 
-More importantly, doing nothing if updating the mapping fails and APICv is =
-enabled
-is wrong.  KVM needs to ensure vmcs.APIC_ACCESS_ADDR is fresh when running =
-a vCPU
-with APICv enabled, even if that means putting the vCPU into an infinite lo=
-op.
-VMX doesn't support "inhibiting" the APIC access page, i.e. the memslot can=
-'t
-disappear while the VM is alive, and if userspace mucks with the VMA, then =
-KVM
-needs to prevent running the vCPU until the mapping is restored, irrespecti=
-ve of
-mmu_notifiers.
+	if (!rc) {
+		guard(mutex)(&zdev->fmb_lock);
+		zdev->fmb_enabled =3D 0;
+	}
+}
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 464d6ed862d5..11b24a42e482 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6928,8 +6928,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *=
-vcpu)
- 	 * APICv is enabled, but paranoia won't hurt in this case.
- 	 */
- 	slot =3D id_to_memslot(slots, APIC_ACCESS_PAGE_PRIVATE_MEMSLOT);
--	if (!slot || slot->flags & KVM_MEMSLOT_INVALID)
-+	if (WARN_ON_ONCE(!slot || slot->flags & KVM_MEMSLOT_INVALID)) {
-+		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
- 		return;
-+	}
-=20
- 	/*
- 	 * Ensure that the mmu_notifier sequence count is read before KVM
-@@ -6946,8 +6948,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *=
-vcpu)
- 	 * if APICv is permanently inhibited, i.e. the memslot won't reappear.
- 	 */
- 	pfn =3D __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_p=
-age);
--	if (is_error_noslot_pfn(pfn))
-+	if (is_error_noslot_pfn(pfn)) {
-+		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
- 		return;
-+	}
-=20
- 	read_lock(&vcpu->kvm->mmu_lock);
- 	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+Because zdev->fmb_enabled is only cleared when rc is 0, it stays set to 1 on
+the -EINVAL path. Similarly, when a platform error event disables the
+function on LPAR, __zpci_event_error() updates zdev->fh to the disabled
+handle via zpci_update_fh() without clearing zdev->fmb_enabled.
+
+When zpci_hot_reset_device() (or _do_recover() in pci_sysfs.c) then runs:
+
+arch/s390/pci/pci.c:zpci_hot_reset_device() {
+	if (zdev_enabled(zdev)) {
+		rc =3D zpci_disable_device(zdev);
+		if (rc =3D=3D -EINVAL)
+			rc =3D 0;
+		if (rc)
+			return rc;
+	}
+
+	rc =3D zpci_reenable_device(zdev);
+}
+
+zpci_reenable_device() re-enables the function in firmware (where FMB
+measurement starts disabled) and calls zpci_fmb_enable(zdev). However,
+since zdev->fmb_enabled is still 1, zpci_fmb_enable() immediately returns
+-EINVAL without calling zpci_mod_fc() to register the FMB address with
+firmware, leaving FMB measurement disabled in firmware while
+zdev->fmb_enabled reports it as enabled.
+
+Should zdev->fmb_enabled also be cleared when the function is confirmed
+disabled on the CLP_RC_SETPCIFN_ALRDY path (or whenever zpci_update_fh()
+observes a disabled function handle, or before zpci_fmb_enable() in
+zpci_reenable_device())?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103150114.6887=
+3-1-oelghoul@linux.ibm.com?part=3D3
