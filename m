@@ -1,57 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793698295;
-	b=q1jpWl35tVa4vfXbXOyLeiksUp3SP5EXGO6mY4rauUpBm3gsuPorbGTLK8T4/PqUxgWd
-	 YXI3ZOVn9nexrndOJCAIR2J7mcomL0ISpjjQ6i+6V6aqh70jqes0rmKw3B3RchiDCfYKk
-	 64zWptHRAy8M3p2XDY0vBh6lMZLL7b8OE4bj4bMlzWwkjdt01FUBZ/38sPkO9FESk8l62
-	 AF1Yx59BVdMm+eUu//zLXs2CJXDT6vPMyMjMxxG1eJWMgiKgqmdBOCaQC+NZHhAijOMhg
-	 zaqXbFrEyw/I5ff8JRIZ+9VdCwNKDSkhbODtAO1vtt6m3JccN0EM1jl2od1uupiK0GA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793698295;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=fC16NdxBHdU0srh0OABsgzxxvlgydqQxXjKWclcHTvI=;
-	b=38aqcCLQsvd56QZ1mfr1U7Lv6x9wGIQDyXbzh6M6ISUUjaYatYgfxhmatZuZ/JKv4jON
-	 jRrPO5zXFkqidkv8koP3CLuPDW8P5h9qSmcSJQ8COTHaVeHuskHJ1K7XHgHEnLE9I6a+L
-	 ZQeohIvDo5Ww6HTrmhwvcEloCKSvFSafAabHUgsFt7G3PENR55t3rdA0KTXuXdqFFbKFN
-	 GlbX1MtkLwHakFVXzm5q9766uWVoQ9FhmtCFLg5WfHV6fIinCnf3haDplx8bqJCMVe9mb
-	 1LGFbgqB9c5sPDDA0hsgG1uBQDvBb6iDK/Fbl62vpIwN/5Qt7TYGKE1V2xrEmUnSxMA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jfTFfzgg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793699807;
+	b=ytIL2jEMYEuApJxe0ozqWA5k0U4FGLwjbUIqsG0IY3kyMGeo/8rnH6SbeTaJ8Q096obo
+	 azGt22D3R9x0ytRWZW2lvW9PzYTqqmzRNyhBoe8h63fqtiplx3DhMLW9lylTUaYOwBI5j
+	 aZlWBgxma7i2wHrcfLzxT4bwO5kscNmbCINMFr13j6NnTUGbMD2mCRY20F6Nl/sTvj7/B
+	 y9/6nA+YP6THgQxxQzo+mOVYcZ7oiL0ClTONFMQ9x21y7mEXUBXqq4moz/uJXHlArW9ax
+	 43XmdymRPIEwRQOazzUz6IXFe6v5H8zPzEWpMCEJ/VrUqhTz+J9W/riebjL2dJUTmWg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793699807;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=iqwD6eaHeERb7Ot7SCnGyIPnO7ssTxQvxGidKCgiKP8=;
+	b=FXz3tqaLtmabA0OGUr767USBBEB9Jin3+eq/DJpS3qcwPiYSCnkHngaolkh+gcU8yScC
+	 XkCEPyIBP/Rac58MB7mYZRaVlRMFl7AZmSz0ASOGMD7euxXMJBr+HcSA+Ycfeo5ljEVTC
+	 MkIqIQKP/2fmmteLeEoOxFDf/Yl7bEF/aWg40zjZXA4UgtT18kY803jqh6f2RFME/kBfZ
+	 swbI/h9me5RhdsJyAbbCzHQGC4lNDbug43FtWRJC4MLD5qMrWIKWoCIGmhkVyLjSQ61Wo
+	 frk98BU9O1SJmJnroG4WhdPBes6QaPitr4YN7FAAeR2V3qEKVEGm1ESJQyQ+vxU7fLA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=flashbots.net;
+	spf=pass smtp.mailfrom=flashbots.net;
+	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=S2+DZbZG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.44
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB73606A324;
-	Tue,  3 Nov 2026 09:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D576E606A336
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 09:56:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D576E606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jfTFfzgg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8761F000C1;
-	Tue,  3 Nov 2026 09:31:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793698294;
-	bh=fC16NdxBHdU0srh0OABsgzxxvlgydqQxXjKWclcHTvI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jfTFfzggyFUYRSqQAC3fPC/fCK0uFwNV0+C/UmQCj3cQj9oGHSUEWcknZXrqYwo/h
-	 pgBYuek31bOMwCaJIha47Ec6TS+x0gAzn9MITt5UPoM1FOK5+t5a444KeH2Q+Hlu+v
-	 Q+lUOGobMEsrIr+cQvgQWFOIiKUJ9MtgiOdqyhjDB+DYpZrsWYlSwBwfU6vRwWw8G9
-	 +934LwqjVhNGgSwcXXa7mrKQZqOaAqMv6PojVEBC0nMsaxJOvajKQQtn99/00H+lAc
-	 Pp1B2msamp+a0ST+4mBxEB/opq/FNoIlfscr1jblLuqLzJfqN7BHlqQXLQZC+mpiip
-	 WOsXFFyVxYcIQ==
-Message-ID: <sashiko-outbox-194956@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 05/19] PCI/P2PDMA: Evaluate ACS controls at the path
- divergence
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Leon Romanovsky" <leon@kernel.org>
-Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, kvm@vger.kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261103-fix-p2p-acs-v4-0-v12-5-912101f93517@nvidia.com>
-References: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
- <20261103-fix-p2p-acs-v4-0-v12-5-912101f93517@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 09:31:33 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=S2+DZbZG
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-844a8bf7e25so2729344a34.1
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 01:56:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793699806; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JcORzk+q23l8LSsYXhSNzFVvHr+6b1W0adnwdpqkDiWTXqeFalYgbw6FH6bwNJhFmS
+         JeZdqfAUTmsRfJz+skiAuDqg447mmAXHJjV/4303RmXdG4aF7RCCcoEB1luJNVyf14lP
+         j2CQD864o6UBMJ6Yz0iCDgiolSPwb6lYwVB5qdOeZJvUaFmOpKppZrerAkIeG/slxuUl
+         z9rJ8JJ5rjNI2QWwRvie+irCLLgN9l614t0TMuGoqU2Ao8uWqYEDvDh2p3CCtMUeNOJ1
+         w07CVqP+bc7P0Hh+wE21KWBdgWAILUhRmXY/Pc7KPPaUL8HrPEZca/r13Pj+RAh3tRyi
+         jTOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=iqwD6eaHeERb7Ot7SCnGyIPnO7ssTxQvxGidKCgiKP8=;
+        fh=J+XFRYHiWb7GOyK3fFcPbYoo75X61ldcaS8kBtEPh1E=;
+        b=pGbRa9d8WJjCF95py8GOLL1CAdHKw81g70c6reLVCI/s4FYjp+rrbvt0I7SniCxtJP
+         AQ007t20EphnPEZ0c/gbAmzXraSj35tG2iJQTu3el268Ab+syW2jJpzm8/ONu3DugLOp
+         mysx/MFsUbwyHkN3JorGh8gqzP34RE3hG224Cu+RzfG9exfk9Pnj4Qxh4B1rrY9P6vSd
+         cMJSZC40JPqYx1OKFWcFoNBRNrmaeMTmBXRXM++jnuKbdGZYxWG9MXNvu6OMeT+Edj/I
+         1Py8FfdG7Cpi6537XU6c7IEfSfWeugRihKDuOcLXvi+YvmQV8wGkNdtH4Y7RZ2t8hK/K
+         GlVQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flashbots.net; s=google; t=1793699806; x=1794304606; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iqwD6eaHeERb7Ot7SCnGyIPnO7ssTxQvxGidKCgiKP8=;
+        b=S2+DZbZGfkGYEUmOM4H6oUoDwS149KfIEKV9z2GMh3SdJF1ippnDz9fJUMrELY+kyB
+         LlweaK1g0h5miifipylhvsV5b5/c5N7UCaWG91bNx3gpSwIzMlcACIf6ueuZIKx7e3tH
+         M2OMexqbCPpTzN0KJt54O4mXO7XNVmdWtH2vNvG9OIcUpDvFd2hrRODF78IpSrNArOZd
+         bSHFrVIM/QCOX4kCnFTHqVj3qh3R2iCdZk8nwnv1EOlbXHASU8S6sv73a9+ucLz3quc8
+         JMRD6KEkaPW/e+C3LXJ0zrPHbq5+EjYx3Rhl291JfJyoLFEPkQf5weN/WDQkDd/SyC0Y
+         vLlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793699806; x=1794304606;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=iqwD6eaHeERb7Ot7SCnGyIPnO7ssTxQvxGidKCgiKP8=;
+        b=TZ38fVBjcBbnxxyd0S3bul8AnOKZjSxf5/GLCyT+qi5svjFwpH4Zi6GU2IHj0Rlkf0
+         MQEyk7hkFKYmmXJPmRmL4NAZY4HHh9Bh7glcqBTxqEbTPnW4x89ZTJ36sa/ivY/Cj5vi
+         IKjkh6CnGzQJSMU0S2F+TdbW6fv/piTxEqwkVDhDJZs/Qw0oKd8Zw7JTX5SSlXjCC5Lu
+         X7vpnFsd1sBttEAA3r07OstLBO/G6d/4zJ4UAAQFLXZvKKzIAS8syfdJ8KkxyexPt0O0
+         6S8nqZkaNg0xQt233zp5cKkbhlTXCiqx4m88khClQIjk7voOCo7fTbXyXNctU0ajb655
+         Ys6A==
+X-Forwarded-Encrypted: i=1; AKwUvBzZnUWgk/qymmAM06F+ymVcRCkPIBvCarAUFQA2BXqSMfKfp3FudukOpqinhHm2Kwnwu18=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/tGrkK6ZQpfrQb59hUaJFv69MYOP4MJyV3Hy5eGP9LsjVKUdw9
+	7XQlxg3veR6wlUTvh9kFIHYkKHtxOo1lzTIr9EtrOf+n46eVykoe4DrDgRd4xExvE5BHH734A7P
+	WUeFThAjnp8IYzZRdoXwiUuGShAp8jRGtc9sr1WYeLA==
+X-Gm-Gg: AYBFou0jbi2pu4pWur1Imym2m1hGduPHlQH0NPbQIZGI6NtfFDSWWvH/dD5801yiYoT
+	wqwgNPzlMGrIxlD5hWdxH2Aqu7cefrCfsD0uPDtIZxPX4HybgMd3boC4y/ogq/8Rs+/9+xaHAjB
+	jG6avx83KZbQBawuSLrxmWXdon6wXJxwkm7w4ln432tTY9b1G8i1DhfhuLPgDp/GcTYQA96CCTo
+	NFsKfLZ7TgXGnpq/pmbQEYi6TCmO7i0CDCmtA0uJ1Aq9SPMQvvt0D2eJPkMaj35NNboLtLKaTVz
+	ADNGldFXhZtdCraDPHJLK+mP9JSKPjNryAEG4qms04jVyxdGT6nzy+eBd7KpaQFTiNiy56Td/SR
+	nDI/RvrzVRLuWrUSJAjf0JgTuExUdYYk4xZZZ17Y2ArF1qnZutb1OL1ayDoEnHAVAJI+eXre4A2
+	sBRkVH6kuNJMAKbQuRQHiWAYfunS+jnDnYca62
+X-Received: by 2002:a05:6830:4c05:b0:844:4959:e855 with SMTP id
+ 46e09a7af769-85d3636d94emr9384433a34.6.1793699805932; Tue, 03 Nov 2026
+ 01:56:45 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,189 +103,54 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net> <3b582cdcfe37f1d01ee71611ab2611f845261089.camel@intel.com>
+In-Reply-To: <3b582cdcfe37f1d01ee71611ab2611f845261089.camel@intel.com>
+From: Moe Mahhouk <moe@flashbots.net>
+Date: Tue, 3 Nov 2026 09:56:35 +0000
+X-Gm-Features: AclHuK8Doz0oEKFnQPO1b0h9OeAQOCO7SR7lLXwryMRNxDi7qBGsHP1Qzst1PTE
+Message-ID: <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v3_0=2F2=5D_virt=3A_tdx=2Dguest=3A_Fi?=
+	=?UTF-8?Q?x_and_speed_up_the_wait_for_a_Quote?=
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "Aktas, Erdem" <erdemaktas@google.com>, 
+	"djbw@kernel.org" <djbw@kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Miao, Jun" <jun.miao@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] PCI/P2PDMA: missing upstream forwarding check in calc_map_type_and=
-_dist()
-- [Medium] PCI/P2PDMA: masked redirect and read warnings in calc_map_type_a=
-nd_dist()
---
+On Mon, 2026-11-02 at 19:55 +0000, Edgecombe, Rick P wrote:
+> Long term though, isn't this a better option? This patch is
+> essentially a performance optimization.
 
-commit ae19e046716c7bc5dbb292aa22e00859ce94d08e
-Author: Leon Romanovsky <leon@kernel.org>
+Agreed that interrupt-driven completion is the better end state where the
+VMM supports it. But I don't think it can replace polling.
+SetupEventNotifyInterrupt is optional in the GHCI and enumerated through
+GetTdVmCallInfo. KVM only forwards it to userspace (since v6.16), and a
+VMM that doesn't implement it returns SUBFUNC_UNSUPPORTED. So the guest
+still needs a polling fallback for older KVM/QEMU and for other VMMs.
+Patch 2 is about that fallback.
 
-PCI/P2PDMA: Evaluate ACS controls at the path divergence
+> Polling is always going to be weird. And when the attestation speed
+> changes (possible in the many upcoming attestation plans) this tuning
+> could again be suboptimal.
 
-This commit updates calc_map_type_and_dist() to evaluate ACS directional
-redirect controls at the path divergence rather than below it. It also
-checks for internal routes between functions sharing a PCIe link, verifies
-ACS Upstream Forwarding on shared downstream ports, and rejects unreadable
-ACS Control registers.
+The fixed one-second interval is the tuning that ages badly. It puts a
+one-second floor on each Quote and, with quote_lock, caps a TD at about
+one Quote per second. The backoff assumes no speed: a fast Quote is
+seen within a tick or two, and a slow one at most 100 ms after it
+completes, with at most ten wakeups per second.
 
-> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> index dbab955dcbdbb..8ca0c9ba87c23 100644
-> --- a/drivers/pci/p2pdma.c
-> +++ b/drivers/pci/p2pdma.c
-> @@ -589,6 +590,65 @@ static bool pci_acs_p2pdma_ctrl(struct pci_dev *pdev=
-, u16 *ctrl)
+Polling was originally chosen (f4738f56d1dc) because Quote generation
+was "not time-critical or frequently used". That no longer holds for
+users that bind a fresh Quote to every connection, such as attested TLS.
 
-[ ... ]
-
-> +static struct pci_dev *
-> +pci_acs_p2pdma_no_upstream_forwarding(struct pci_dev *common)
-> +{
-> +	struct pci_dev *pdev;
-> +	u16 ctrl;
-> +
-> +	for (pdev =3D common; pdev; pdev =3D pci_upstream_bridge(pdev)) {
-> +		if (!pci_acs_p2pdma_downstream_port(pdev))
-> +			continue;
-> +
-> +		if (!pci_acs_p2pdma_ctrl(pdev, &ctrl))
-> +			return pdev;
-> +
-> +		/*
-> +		 * Include Root Ports here. The PCIe port type check excludes
-> +		 * the legacy AMD southbridge quirk, which may sleep.
-> +		 */
-> +		if (pci_dev_specific_acs_enabled(pdev, PCI_ACS_UF) > 0)
-> +			continue;
-> +
-> +		if (!(pdev->acs_cap && pdev->acs_capabilities & ctrl & PCI_ACS_UF))
-> +			return pdev;
-> +	}
-> +
-> +	return NULL;
-> +}
-
-[ ... ]
-
-> @@ -865,57 +932,106 @@ calc_map_type_and_dist(struct pci_dev *provider, s=
-truct pci_dev *client,
-
-[ ... ]
-
-> +check_paths_acs:
-> +	*dist =3D dist_a + dist_b;
-> =20
-> +	/*
-> +	 * ACS P2P routing controls apply where a TLP can route toward the peer
-> +	 * or upstream. Below that divergence, its only route toward the other
-> +	 * branch is upstream, so redirect controls do not affect the path.
-> +	 */
-> +	if (a_child && b_child) {
-> +		if (pci_acs_p2pdma_ctrl(a_child, &ctrl))
-> +			state =3D pci_acs_p2pdma_completion(ctrl);
-> +		if (state !=3D PCI_ACS_P2PDMA_DIRECT) {
-> +			pci_p2pdma_list_redir(&acs_list, &quirk_list, a_child);
-> +			if (state =3D=3D PCI_ACS_P2PDMA_REDIRECT)
-> +				acs_redirect_cnt++;
-> +			else if (!acs_unreadable)
-> +				acs_unreadable =3D a_child;
-> +		}
-> =20
-> +		state =3D PCI_ACS_P2PDMA_NOT_SUPPORTED;
-> +		if (pci_acs_p2pdma_ctrl(b_child, &ctrl))
-> +			state =3D pci_acs_p2pdma_request(ctrl);
-> +		if (state !=3D PCI_ACS_P2PDMA_DIRECT) {
-> +			pci_p2pdma_list_redir(&acs_list, &quirk_list, b_child);
-> +			if (state =3D=3D PCI_ACS_P2PDMA_REDIRECT)
-> +				acs_redirect_cnt++;
-> +			else if (!acs_unreadable)
-> +				acs_unreadable =3D b_child;
-> +		}
-> +		/*
-> +		 * Two children of one Downstream or Root Port share a link.
-> +		 * Use topology rather than slot numbers or the multifunction
-> +		 * bit, since ARI functions and VFs need not share those.
-> +		 */
-> +		if (pci_acs_p2pdma_downstream_port(a)) {
-> +			req_upstream =3D
-> +				pci_acs_p2pdma_no_internal_route(b_child, PCI_ACS_RR);
-> +			cpl_upstream =3D
-> +				pci_acs_p2pdma_no_internal_route(a_child, PCI_ACS_CR);
-> +			uf_blocked =3D pci_acs_p2pdma_no_upstream_forwarding(a);
-> +		}
->  	}
-
-[Severity: High]
-When provider and client sit behind different Switch Downstream Ports of a
-PCIe Switch, their lowest common ancestor a in calc_map_type_and_dist() is
-the Switch Upstream Port (PCI_EXP_TYPE_UPSTREAM), where
-pci_acs_p2pdma_downstream_port(a) is false.
-
-If b_child has PCI_ACS_RR or PCI_ACS_EC enabled, or a_child has PCI_ACS_CR
-enabled, the switch redirects traffic upstream out of the Switch Upstream
-Port a toward the host bridge. That redirected TLP then arrives on the
-secondary interface of every shared Switch Downstream Port (in a cascaded
-switch topology) and Root Port above a with its target also behind that same
-secondary interface, requiring PCI_ACS_UF on those shared ports to reach the
-host bridge.
-
-Although pci_acs_p2pdma_no_upstream_forwarding() already walks up
-pci_upstream_bridge() while skipping Switch Upstream Ports, calling it only
-inside if (pci_acs_p2pdma_downstream_port(a)) skips checking the shared
-Downstream and Root Ports above a when a is a Switch Upstream Port. Can this
-cause calc_map_type_and_dist() to return PCI_P2PDMA_MAP_THRU_HOST_BRIDGE
-instead of PCI_P2PDMA_MAP_NOT_SUPPORTED when an ancestor port above the
-switch lacks PCI_ACS_UF or has an unreadable ACS Control register?
-
-> +	/*
-> +	 * Below a shared upstream bridge, a path whose divergence ports do not
-> +	 * redirect routes the request directly.
-> +	 */
-> +	if (!acs_unreadable && !acs_redirect_cnt &&
-> +	    !req_upstream && !cpl_upstream) {
->  		map_type =3D PCI_P2PDMA_MAP_BUS_ADDR;
->  		goto done;
->  	}
-> =20
-> +	if (verbose) {
-> +		if (acs_unreadable)
-> +			pci_warn(client, "ACS Control is unreadable for provider %s at %s\n",
-> +				 pci_name(provider), pci_name(acs_unreadable));
-> +		else if (uf_blocked)
-> +			pci_warn(client,
-> +				 "cannot forward peer-to-peer DMA for provider %s upstream at %s\n",
-> +				 pci_name(provider), pci_name(uf_blocked));
-> +		else if (req_upstream || cpl_upstream)
-> +			pci_warn(client,
-> +				 "peer-to-peer DMA with provider %s requires the host bridge; no int=
-ernal route between functions\n",
-> +				 pci_name(provider));
-> +		else
-> +			pci_p2pdma_warn_redir(client, provider, &acs_list,
-> +					      &quirk_list);
-> +	}
-
-[Severity: Medium]
-How are diagnostics handled here when sibling functions under a Downstream
-Port or Root Port a DO support internal peer-to-peer routing (!req_upstream
-&& !cpl_upstream), but have PCI_ACS_RR, PCI_ACS_EC, or PCI_ACS_CR enabled on
-the functions themselves (acs_redirect_cnt > 0)?
-
-In that case, disabling ACS redirect on the functions via
-pci=3Ddisable_acs_redir=3D would allow them to use their internal route
-(PCI_P2PDMA_MAP_BUS_ADDR) without traversing port a. However, because
-uf_blocked =3D pci_acs_p2pdma_no_upstream_forwarding(a) is evaluated
-unconditionally and checked before the final else branch in the verbose
-block, if port a or an ancestor port does not have PCI_ACS_UF enabled,
-calc_map_type_and_dist() only warns about upstream forwarding at uf_blocked
-and suppresses pci_p2pdma_warn_redir().
-
-Additionally, pci_acs_p2pdma_no_upstream_forwarding() is called before the
-PCI_P2PDMA_MAP_BUS_ADDR check (reading PCI_ACS_CTRL up the hierarchy even
-when the functions route directly), and when pci_acs_p2pdma_ctrl() fails on
-an upstream port, it returns that port as uf_blocked rather than
-acs_unreadable, logging an upstream-forwarding message instead of an
-unreadable ACS Control warning. Should pci_acs_p2pdma_no_upstream_forwardin=
-g()
-only be evaluated after the direct-route check, distinguish unreadable ACS
-Control registers from missing PCI_ACS_UF, and still emit
-pci_p2pdma_warn_redir() when programmable redirect bits blocked a valid
-direct route?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-fix-p2p-ac=
-s-v4-0-v12-0-912101f93517@nvidia.com?part=3D5
+I'm happy to work on event-notify support as a follow-up: use it when
+GetTdVmCallInfo reports it, and keep the backoff as the fallback. Would
+you take patch 1 now (a standalone fix, Cc: stable) and patch 2 as the
+fallback improvement? Or would you rather see patch 2 together with the
+event-notify series?
