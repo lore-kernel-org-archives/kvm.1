@@ -1,67 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793745972;
-	b=T/1Gy9epxLhn/QHQ8fYa+dUdREyRgn782WA1clu9UZfKoUwpu6rrOUp8HNfDGhTEviuv
-	 d061k8mxV/VNb2lHyZxbJkSUMxQvQwSijE0ELufTBLNq3Vavk+bKZIVL3UEc1YLhOIdtM
-	 nBHzP0eRNh6xes92ItdQyJvh4JEShuq6YP2uU6/N7VX3rnphTzLWBSobrvDSpgcsOEdI7
-	 xbShKqYbBWSS4L4FI6gwuUxjx0qVlJLy1lHC37CBlwkJqCZuQpXZfoWPIMxrX4zwwPA+s
-	 dKEwihI90Kz1sf3tK1ADUSJNEm+nyq/5aleNo5C3FSz7U40N34SBMFPYiuGTSMLbVkg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793745972;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:User-Agent:MIME-Version:
-	 X-SRS-Rewrite;
-	bh=SW+H1oQAG6+C1UV1QXUZBx0mp8+1Q+96MkXbGjIrqQ8=;
-	b=vtEeHb8ta1SifBD8mQIwVH5AFZo5Gm/0rqhtg5hM9WxdeSWdTdCSI8pXIVEJhSUgArwg
-	 e7qlWuchfYavIK4+hOItOUWkbtniNaHelMIE3MbO+w2u+05ZD58tK5licg1yY2fK2HnWI
-	 tayESHdSMY7/FBwj3xT9LwhhRr6Jk49lPyrA3QHgcNcGaLnopbU5zJfw0DT0NdXcZYqTV
-	 cuAw1dsUg6hPGofZvacWbVYpCiEJ6yhS+mFcKk0U/MovwdHpbd11z84NQtk8mKhaWKC0n
-	 9kN2XCp/YyVMvEGdE2rd1jG/uYIDoneK4RbeGQ01KCbRafk93wRG23KcnuPlmo/f5Sw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=rFkirl4L;
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793746379;
+	b=VHgICBS/oQ1zzbU2MCPyWpFK8hKtkc+ESHJhyTDzQN/AGbn/F5WpBYEmI8iobPjKE8es
+	 Nz455WenYNO0SYQ2CjM37e7ObJ1S4uuJB4nlNOJ4dXvabm0/63VMqPmzbLFxKOXlRVAaO
+	 1Or4MxlHiOF0vVZrK7uCU4Plc2BLL+kW41d79xnMKIN4U8WkvfZ7Y+OJf+kdnQShj3UT9
+	 JMcLFC84f/Axi5Fc6WCI6icT2cOspCacIfAOg0k8xWd7kNxsGxtk26UGuDUXELPy2J8HD
+	 7r+HLhdLury+pLi968yz55d5jzYaWskSQuG6E6cO/UFcpG8Jac0YxQn7CHiKfFMK65w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793746379;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=wU8VIKFjJ28dxbK4Nnp3pL9e9+Uyw+0nyAWTkSUuFuQ=;
+	b=M+HbRdvn0ef3nsbTUWgYk6b1zuqnkyf98rRhSD2GgPJzK1fUpmQLMGWWfZURCwvxgqQ7
+	 s3jPLht+Yhe2bfmloelj9v1N5D+Xr5ujHiiG6fZ31Nt2NC+/XPUmBwD3xRIfC7h8hUNAf
+	 9CBgG58iqXMok9m/dVauYCvshtN8ZmKJtCX5KvVshRmxDMtJVuGqhWMuHmdtcZ9/F4GeY
+	 8H4zWJ1U7pv6ctCozf9LsqcOi4mNGmm0OwMXa64HH9zHk/HVjbRqPNtn1TDUoi6tg+99o
+	 OmGPyb9W6VCWnpNz1ObC7uVEQD9GtTSNGFPYqdXQ/bNWgQYK88gOi2xiNorTu1Hkz7Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eNGImLt6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DF4606A328;
-	Tue,  3 Nov 2026 22:46:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90DF4606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D69F606A336
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 22:52:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D69F606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=rFkirl4L
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SW+H1oQAG6+C1UV1QXUZBx0mp8+1Q+96MkXbGjIrqQ8=; b=rFkirl4LxlFNFCxeVQS1yCbIQu
-	E/Y+QETwxa+P8NvC7G4xhVNxztG4ySnY5X8fddLhyd/Pou1bF+jMbGRzn9ll1h3HfWxerDxfPJtPi
-	ga9iigUaleV9mX9ljmZ80X/Bseh8wouS+Rr0BbWlq5/jdxw1hg4yMvLhjA+TjpAIamKVRWZDVjjxh
-	J5Id2LzEQZMZlP8JMd0HSLP0Dlvxgxgvzg1YH9t4S6vknkIdj4D2+bwtce8A7WEzGKbZV8z3Z5rvL
-	Io+2tR2ux4LXhTW2DMIv7feAPAHm/T19NLGmQG6lI0rPWaSt+jQ4Y/jwYOeb9b2pg7UhZ8U5dJYSO
-	NOI+8JWA==;
-Received: from [205.251.233.53] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xONGY-0000000Esmf-2IYk;
-	Tue, 03 Nov 2026 22:46:06 +0000
-Message-ID: <ac6b1891d6bdf3a855a5b840c462a6e7d464a146.camel@infradead.org>
-Subject: Re: [PATCH v4 00/12] KVM: x86/xen: Don't drop event deliveries
- which race memslot updates
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Paolo
- Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
- Paul Durrant <paul@xen.org>,  Vitaly Kuznetsov <vkuznets@redhat.com>, Fred
- Griffoul <fgriffo@amazon.co.uk>
-Date: Tue, 03 Nov 2026 14:46:03 -0800
-In-Reply-To: <20261019162445.37219-1-dwmw2@infradead.org>
-References: <20261019162445.37219-1-dwmw2@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-TMKbachTfgC66fheUqHv"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eNGImLt6
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso1720a12.1
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 14:52:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793746378; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LTA3oLD1Q5dkbM/3Q3EloE8qvE/1CM1o9noqK6tLyNqwOGiaFSrmAy3Alw6apiYIRj
+         SHQyhNQMQmsMVQBrE9Fpj3RDwvmccNFjfhdwoAWOq21k96kCvxtt2fTDREtR4BBARzGN
+         2AOqbKdgu9XXlLmXuEzhSTzSJa6IjiDxADZEtizUYfORJryPj5cu953xNsJf+S3pZbUX
+         +kSS/yP/8oJfoB40MAqbbmUjUgSMTkKIr+mQawXkdJF2GfGVPyz2hga2JBBGPJ1b3cFu
+         eyh9ctelbZiMi0i0N6G57uU9iyYi2u4h7cxwZbaAZxD8GkxbgTHB35fFowfwhSn0//2F
+         R0yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wU8VIKFjJ28dxbK4Nnp3pL9e9+Uyw+0nyAWTkSUuFuQ=;
+        fh=2NRBKq7Y9nWKI4itTHoiKNYWuST5hwEkqHnb0H68c3I=;
+        b=dTvTgRxhdnMpq5ps9siHOskTYxTbt9k/k17X4Z8jYOd1T0Qw9KEN1J1/jtrn2a0twk
+         1kW8pCol0m68XIRrh5tR+LXqw7/GM/pYwC+x4UmtV6Ef6EYnIuBv4ii2X/kvvGsWYnl/
+         tBZeP7xATvFQOgqvRNs+PEHJbCzqC1MdIaUjsR5jE1KJUCypsV2mxq0t263idD44Poy+
+         E7IaD7A9quvAlGrB1HQopSfYIOFZQzxLL+kpOKuqXC8l8bsNYaVibBXeEeQ//+XBTG1G
+         kh30ulq+6aabYawVc2atdGOk7dwHiHu7Nv/96+J/IG2vyw3GbhKcJdOSUZq+Nxsdz/Nc
+         wCAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793746378; x=1794351178; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wU8VIKFjJ28dxbK4Nnp3pL9e9+Uyw+0nyAWTkSUuFuQ=;
+        b=eNGImLt609/blukDHj+qIScHQh00PJevkjX3mOAgLa5iI/zNT/9ZVwf7BvzZ3MWt9E
+         UGNWsaFthxVOeBQOZmvYjIqQtaWMKVFtVBHnJJHEfOhPJ4TQIOh4hwZCCNkEgzGFQNny
+         iAyfqYKaBvouXJOxXlq/xRAzQBYVxsVVa1NvpILAnHkCORsuj13nMGb4GsOhCnRKx0Li
+         UPqngc+U18phoHm9bPxQDopmqX/WqOMgvZCW0bb5kxfLQ4xupEeOZT4Q6q4BsQxuBX0V
+         TsA9YPykslpZNErJZCYVnQNxm4L8C4nF2XEkCvdMQ6bgUFSXsu1kfQ5r8YBQAiWKQz36
+         YvgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793746378; x=1794351178;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wU8VIKFjJ28dxbK4Nnp3pL9e9+Uyw+0nyAWTkSUuFuQ=;
+        b=GIvR2ls93Dv8ywoQv18cRyHfpZ2NiAMpEGZsTOoMYEOkNR8D8xVTvtdQnfSM7AXorS
+         RXdKoQmk3Xe69KG9dX9ubDLDZe4ouXQ3BQIh/Ve0GOdt7rVft7DyBi3TG8C56GAd5/ma
+         7N6rKkU19CSu03vb+ELF5Bw/j+uKqNZX/dn5P4uT5FuP7Ke6deM9gNvVeCvn2Qfo/c4z
+         PcaoiSfCS1ylwNQ5+91rjDsl+uygwL8K9ZHGlCETT/D11R4up4wc9aD3FUIJ3irzS7oH
+         6RjRVQ1GhqeKvWNR37CtNdApr8mPOyVSna/atK6BuSgf7e9hgRI/DbNvBjpM9rNKeWfS
+         KmGw==
+X-Forwarded-Encrypted: i=1; AKwUvByNVMelP1OOjVayrQMqJSmiTqgAgciDEJOqB392UVgjBjGdCNaWiQr/xEs4Zia0w1GFpmQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Su0pmLL62/GOOrerW2m+cEq9HXivywHx7lzPrSNvpN1aI02au
+	zToTx5o8cJlke2A0LWCRzIDLZQqNf1PIXQLC31X58iJ+p/JxxLbyMxKBkm0DcyOVjzLkDWoeDlN
+	XRbhga6QA7OKUr+jf7ftjVjIgn5i2T/M8A38qz9DmfdDvS1aSeYg5t2iYXuc=
+X-Gm-Gg: AYBFou3dxh3FQaIL3UIO6z+cfKGfvNzvz/9qTSd4XvZDuVKcEwszXT+KEbiw733CAvx
+	OV3yN8FMS7XFfpRpfYTdTR8gMPgI3EqA/CzjF+k1FylAOtZW7CrrsU6gmIjvp9JPTiW4WfO3HZY
+	ghNfT59kC+VjzRvQtm7Mk/slpFfMliT6BcyTPuxCb1o36GPjzFAa7Lrfu+Dgc7xBom2d6MhvTYE
+	R4UBVG19epgPNvlWKZTewEBIEYGHoMCDfwUN+7tQ/k+ar2bgXQway0lAfbmRR0+f5PRKpYBzgZZ
+	JgKbu9n4d8RuNba2+qCzILHcApgaJH/bcFuzsqihJEsKfztNXkOsRREc5w/jrdM5sa04uBB/L0T
+	MwfpgQzdz/hilNvamzgmvUE7VTo57wQsdxbnU
+X-Received: by 2002:a05:6402:c103:b0:6ae:188e:e119 with SMTP id
+ 4fb4d7f45d1cf-6b55ab86764mr7858a12.9.1793746377460; Tue, 03 Nov 2026 14:52:57
+ -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,158 +104,110 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-TMKbachTfgC66fheUqHv
+References: <20261102231428.13523-1-pbonzini@redhat.com> <20261102231428.13523-5-pbonzini@redhat.com>
+ <CALMp9eT7cnBf6kSXZLWuMyG9a52QveWjzzLz3Z9E=kPuX_ahVg@mail.gmail.com>
+ <aukmeb9mV8b504T6@google.com> <CALMp9eTdY3=1BrOYgov852VeAy3+Os7bvhWogvB0YF-JQrmtig@mail.gmail.com>
+ <aupLRleTJSIDTE9M@google.com>
+In-Reply-To: <aupLRleTJSIDTE9M@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 3 Nov 2026 14:52:45 -0800
+X-Gm-Features: AclHuK-Z7OQBlFOF2zRwnhwZ_UDz9nzcNqJTQa47B2hjAbqqScBEB0lSSXwokYA
+Message-ID: <CALMp9eR9=JTv80HuG5zAcSj91tJos2ecFA_Sc5Qbs4s5XetKHQ@mail.gmail.com>
+Subject: Re: [PATCH 4/7] KVM: nVMX: Process each host MSR entry at most once
+ when unwinding failed VM-Entry
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	stable@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>, 
+	Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-10-19 at 17:24 +0100, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
->=20
-> Sashiko analysis and torture testing of the upcoming conversion of the
-> gfn_to_pfn_cache from rwlock to atomic SRCU=C2=B9 highlighted a pre-exist=
+On Tue, Nov 3, 2026 at 12:59=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Tue, Nov 03, 2026, Jim Mattson wrote:
+> > On Mon, Nov 2, 2026 at 4:10=E2=80=AFPM Sean Christopherson <seanjc@goog=
+le.com> wrote:
+> > >
+> > > On Mon, Nov 02, 2026, Jim Mattson wrote:
+> > > > KVM needs to do better.
+> > >
+> > > Meh, KVM is doing pretty darn good, all things considered.  Yeah, thi=
+s code sucks.
+> > > But I'm not convinced the alternatives suck less.  We've gotten the s=
+et of missed
+> > > consistency checks down to effectively zero, module the TPR mess that=
+ I do test
+> > > by running warn_on_missed_cc=3Dtrue.
+> >
+> > I don't understand the TPR mess. The SDM says, "With the exception of
+> > fields corresponding to virtualized APIC registers (defined in Section
+> > 32.1.1), software may modify the virtual-APIC page referenced by the
+> > current VMCS of a logical processor in VMX non-root operation. (This
+> > is an exception to the general requirement given in Section 27.11.4.)"
+>
+> Oh, I wasn't aware of that.  I agree, that gives us an "out" for vTPR, mo=
+stly.
+>
+> > I would argue that this prohibits changes to VTPR between KVM's
+> > software VM-entry checks and hardware VM-entry to VMCS02. If the
+> > hardware VM-entry fails because VTPR has changed, section 27.11.4
+> > gives KVM the freedom to implement whatever "unpredictable behavior"
+> > we like. Yes, that probably does include loading MSR values from the
+> > VM-exit MSR-load list, but why complicate things?
+> >
+> > Something like returning to userspace with
+> > KVM_INTERNAL_ERROR_EMULATION following a prohibited write to an active
+> > VTPR seems far easier--and cleaner. What am I missing?
+>
+> My biggest concern is that KVM could kill L1 if an L2 coerces L1 into try=
 ing
-> problem: refreshing a cache can fail while a memslot is briefly marked
-> KVM_MEMSLOT_INVALID during a memslot update, causing kvm_gpc_refresh() to
-> return -EFAULT. The Xen event channel and timer delivery paths silently
-> dropped events when this happened.
+> VMLAUNCH/VMRESUME with invalid state.  KVM simply can't *know* that an un=
+expected
+> VM-Fail was due to the vTPR wrinkle.  Even if KVM re-checked state, it's =
+possible
+> for the vTPR to be "restored" to a good value.
 
-Meh, it isn't even just GPC that's affected by this =E2=80=94 anything that
-uses kvm_write_guest() can get a spurious -EFAULT if it happens during
-a memslot update.
+The only way that I can see for L2 to coerce L1 into trying VM-entry
+with invalid control fields or invalid host-state fields is by
+exploiting an L1 nested virtualization bug (i.e. L2 is running an L3).
+In any case, if L0 has already performed the checks in software, then
+failure of the checks in hardware implies either (a) misbehavior on
+the part of L1 or (b) an emulation error in L0.
 
-I just think that until I started torture-testing the GPC SRCU
-conversion, nobody ever cared because in practice we *don't* delete or
-split the memslots which KVM is actually trying to write to.
+> I.e. if KVM exits to userspace with KVM_INTERNAL_ERROR_EMULATION, then th=
+ere's a
+> non-zero chance of a false positive.  KVM could exit to userspace if and =
+only if
+> it caught the guest red-handed, but then we'd still need this horrific co=
+de for
+> the other cases, so that seems rather pointless.
 
-I'm tempted to drop the whole -EAGAIN part of the series and the retry
-attempts, and continue our historical stance of not caring.
+Let's go back to the Xen example, since by your argument any L1 can be
+victimized. If an L2 VM somehow coerced L1 Xen into trying VM-entry
+with invalid control fields or invalid host-state fields, and somehow
+L0's software checks passed, but the hardware checks on VMCS02 failed,
+you would continue to run the L1 VCPU with L2's SPEC_CTRL MSR. Surely,
+the possibility of a malicious L2 exfiltrating data from L1 with the
+assistance of L0 has to be worse than the abnormal termination of L1?
 
-I'll just keep the other incidental bugfixes I've found along the way
-(especially the SCHEDOP_poll vs. srcu one).
+(Note that I'm just playing devil's advocate here. I don't actually
+buy your argument.)
 
-The Xen use case is actually the easy one, as userspace really ought to
-be using KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA for that anyway and
-shouldn't be affected by memslots at all. I can update the GPC-SRCU
-torture testing to do that, and pretend I never spotted the transient
-invalidity...
+> warn_on_missed_cc helps, but in practice it can't detect cases for which =
+we don't
+> have test coverage.  So *if* there was a bug that could be exploited by L=
+2 to DoS
+> L1, odds are good warn_on_missed_cc didn't catch that hypothetical bug ei=
+ther.
+>
+> Maybe with AI we can be 100% confident that KVM performs all of the VM-Fa=
+il
+> consistency checks?  Again, I'm not opposed to alternative approaches, bu=
+t at the
+> same time I don't feel a sense of urgency.
 
---=-TMKbachTfgC66fheUqHv
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-SQ2wotPVUkr4FR2ir4jEo2oAAAAAAAA=
-
-
---=-TMKbachTfgC66fheUqHv--
+KVM *must* perform all of the control field and host-state field
+consistency checks. Otherwise, we risk priority inversion with
+"illegal guest state." If KVM is missing any of these checks, then it
+has an "internal error."
