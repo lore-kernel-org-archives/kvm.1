@@ -1,113 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793731023;
-	b=aZHWcup9GESeyCK0g6yxXz2oY/9MuWkeDQn+rDj1antxG3JtPbk2g8d4xCsKDYRjp6Te
-	 QTPynnq1hlzbhJ71i72F2MuLvDi8b+HP1FCUUmN41w9ZG7+iJpBGZU7d5fyaiDGwskPql
-	 kfhKZuE/TmTPBl5qeFQ/u/HOLWtae3CPjSVVRiBun2xFjvOeeNoCNvcrNcZGRq6AyorLi
-	 9w3wqCOrlxEf+WPFwBL4K6x1H6E2iPYsHFdxGNdpL/b4XM/Jgfwp7Fz0lAOus7LeL7Le0
-	 lHdyeAeUWcDS13+istOfAHkkKKp+65sELV79VQSXs5BLsjohUJCKYVeGoCmuUpDipkA==
+	t=1793731091;
+	b=n0ccDlyDDtoTyzXqAkIc2vU2M/dqLqqwNfqfJGOzqNGvT9+jI8EGJ7h4COAtplXLSqjc
+	 XNHWvB5Ed7htIn963Q2cdfC7svXJ6+IU20zEK8jU/h2YDqAm/QZPvknNhUZoyfqF0gQp3
+	 O7Fecoj3lzuxmofFk2vjlrED9h+yJMoymo2qVOZBYWTLnDsHkDVX8GDHsfFmZq4gCcdw5
+	 n8Y+aRtuK9OXUU5YJCJV/XAr8lY2Avhrf7Ltm0vOEHCnNk6+JYEtFpiVB0BDdr8RaDG3z
+	 OORJvw8gso5bwdRQrF2+ABriPdq87pq9b7ah6scwBfSDT1k8tWjltrkys6ISCK1Z+tQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793731023;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793731091;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=MtYqIPmCoO6r7ieWdDjT3mJHSPCz3ZeRLZvBXwBPxaI=;
-	b=06aUceGaTBJp9iONBpd36Im3lbki+P2vGUw2mFwZFWQUe+JPErzyLTERnuLXjlaAMhp9
-	 GBCoFLZhf7Fw96mNMnkixsWMBlUOzQ0P8vHedZqkZplt2+5v4DckED+smj7KB3nJIZKb5
-	 Fyt+Nb9lrzfqMFC42By2Y0A3wJmSGGBRkznJOseWe9gb91OaZiO0gFfSarTxK9Yah6wO1
-	 lSq8ngIPiO9/9F4T9lkkLabgVz4W4uEHeDJcuYjQGuQVNTVhaV0rT7spgXcdaepaB34VN
-	 rXPwnuwFKV284FvO+7YeYX5iYzcHTVLYEEk2zXMb07fntQ8eGWPgb15Mksx4RRuMWtQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 In-Reply-To:Date:Message-ID:References:MIME-version:Content-type:
+	 Content-Transfer-Encoding;
+	bh=CGbm9EJEB5hNXXRNfY8Hb9YZuJsenYM7BZIV4eVSx/k=;
+	b=f9PddPPyFig9Nbm3PvC7b64G2GOdMlzU7W9K7PfZhdk9LYqI8hwVROjnIsjKbkU1/gmB
+	 k6051WgX9lpoUevAJ+8qZHmDK2ERo2Mzd+b3hfIoilhkPqWGeaDwk8nd5oOekevrfRXmk
+	 Ys/ejjJH+WIiDU9TPew1PJQuZOdc2rAIUiLbczFl+VN5a1e9g4mVmdje7NT78uXpuLYwL
+	 9cUvP+JlkwyRPOZU+s5q0P82XbNlNLpeyOOF6J8V23CdHesMaPibv9EhE1JfPjqk+qJg+
+	 XnEVF/sgwi901X00xI3zFMouuaD+q6IqMlqhop54T9yp1xE0qFp2T0KWLYHYrhfSjRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="BQL/b/eL";
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=N77tECFO;
+	arc=none smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7225606A328
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 18:37:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7225606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBADC606A332
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 18:38:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBADC606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BQL/b/eL
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a5087a5348so36734795e9.0
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 10:37:02 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=N77tECFO
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso5567637eec.1
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 10:38:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793731021; x=1794335821; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MtYqIPmCoO6r7ieWdDjT3mJHSPCz3ZeRLZvBXwBPxaI=;
-        b=BQL/b/eLVITLd4UmF+Oph9l1+/n1PjUoywo1PaTaxLXhfTMks4LRR95gFd7fke+p5j
-         jM8eoaI+cL2iX1rM8HJJuxyrMb1YAy2MPG93Bz2Vf/TNiZp6x3Hu79S/ivtKSfnEoBQi
-         GA8V5fmkIOmSSxklZfRjoJc/Rl5EwXP9Pre83e6OIqma6AHGl2gM1ladxMXCBt6XlSQo
-         XK6L8gV/xOi7zCnaZWgulWoECy91fEbBUQ5vIJmTkqrZZjZ/l5gwC7quRHDnXkJlxJTc
-         uDOunS4siQnctExCcF+qqF7dpZxboOqwolJLZmxEFg/wWOConckrPM9hYyv/bI8bFWFz
-         zZLQ==
+        d=gmail.com; s=20260707; t=1793731090; x=1794335890; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CGbm9EJEB5hNXXRNfY8Hb9YZuJsenYM7BZIV4eVSx/k=;
+        b=N77tECFOK+jFc4mrx0DzrYcG5T2MhGgENcgEIM2Ky4hBvuFW3J/DIfDguu08+Jv6Ta
+         iw4FfIvRGKou3uAeOqUdh22iN6tkoPKLg2LBST01In8gq6R4P7o+iRoEGLDULSKrwsD4
+         dUu0GupdU5be0+79svQotANZW5jxyKHvlfYVYFLjuNsRCXraR6uTDKFiW6p/fTF2usUP
+         LNTNYImbXbYY+cxuRbFMzcRXFHq4MjniKOzxn3jsb37F783OpzlDoYYvN/SFvmhc5Sq3
+         14G/mYUxCTk+rcupAe2nQEsNojujYFVHYrBa5LzTWer4RZqDQaYm3f5FlmmAJq4o3FUf
+         2Dlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793731021; x=1794335821;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MtYqIPmCoO6r7ieWdDjT3mJHSPCz3ZeRLZvBXwBPxaI=;
-        b=lPKDd7vSV8t5k7EnjtcR2hRAFP7r0/VlJjdkjWDeJt8KQcApdyLPC6H0nP1Eb6zGB+
-         tsaLCb1g3LA5Iq01aukYThfwRs0kjS8P/pttua+73P58UvmfqFJYJjqn/oJzCJK7Iv3A
-         +1M/sT+q4orkTR+uFGen2dfNdCL/GH/0XshwxxUjrq9Y2JjHVzLfjMBEjaQ14FBH6MMQ
-         +LLrrMjjgka1FK+6tpZkyXxUax7P1JqDVr+UOP99IowJVTj7lJ01l/+37ChGvYWvStPz
-         Pz1fNfMiZF3gV2v8Q2rB+Anrwe1NLRG35FnBgf+JDQaI5Vn+4Qz+NPZ7iiU+L2jSB31J
-         SviA==
-X-Forwarded-Encrypted: i=1; AKwUvBzCdC9X3nbEfMH+8s32JclpmvSkRYnVqr/jzs/fQ8mzx8WFwjZe37qgpVMbBewfSUe0xeA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Q2jRCa6yAqc9K+gfaFZjMiPDtURguf7X1UZZ7Hoauag/ahbPU
-	4WD4ylKPcIM5dOuHGRcCPUDzqWTYq75avyIP0NTyzgKpuFxykkZaO/86
-X-Gm-Gg: AYBFou2hrP3VsjE4UX2nR661gLXOCLOuCwQGtrzkJPlBQCes1nTnqVnp5YLeYr21EBk
-	QMuTmfugsJe8B3XPIHXJfPnyx1ZWLH6d566M7nmLeKRiw4R/ZEto2R6berWnzpFKtNoy3tZh2S8
-	yo6iA39K7p/DfOzlkPzVIrKe+1GVC41vLxoMlKwBdK4FEv/svnvw6f9fIYippHpGU9bFwQrO9/G
-	cgefrqYywHUBUW3jJWd4xzpW3p5H4JOksnu2EUWpHQz9HZPjeYCOc90P2jKYVlFJF+tJqcKktS4
-	sLLu/WtazCUQRQ70d4QveI20lpRtqLVfVMbOtowfU+xpnYa+fqMt0ApOeRimbkkXcQWqx38Xhvi
-	X3f00QADVMtFCfZwdxcbNS4MF17vHKs6h4ydA7TSfNizfartX/ode/ZZ8bjQIJty0kVjwSpSAnV
-	Rva6OjQ5zJpyXIayu46yX8cHYBQTGq97waIJRiWSCsEXvXxg29C/PW8lg88crf6cq+UeJEXfLtE
-	QvwBsRdOqyVn5IVi0joZeNEgEHu78bnh6Kum4aiW3KrEZJQKc7xX3UepXZlsNNZntIIu8VtYDI/
-	f9UfV2N0ixKb47Nq3CwbaW8HyU0GVdDBRSvRD8Y571jOclZDAg813wRUIHm1/tIMdoBH8SOycG6
-	CeeiWXDzmz+de6j0Z6fcmnPDRxdB+KXXYX+WtechKkEA4CH4+oFM1kM5+5k6E3KOzZE7MD2rHhv
-	CvD/ylovXlo8k=
-X-Received: by 2002:a05:600c:470d:b0:4a2:191f:7cb8 with SMTP id 5b1f17b1804b1-4ac1899378bmr308379315e9.17.1793731020767;
-        Tue, 03 Nov 2026 10:37:00 -0800 (PST)
-Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b78a1dsm25588404f8f.24.2026.11.03.10.36.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Nov 2026 10:37:00 -0800 (PST)
-From: Fred Griffoul <griffoul@gmail.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	Alex Williamson <alex@shazbot.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Will Deacon <will@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	iommu@lists.linux.dev,
-	kvm@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: Re: [RFC PATCH v3 00/13] KVM: guest_memfd: Add a common framework for device memory providers
-Date: Tue,  3 Nov 2026 18:36:59 +0000
-Message-ID: <20261103183659.82433-1-griffoul@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261101071928.2462549-1-aneesh.kumar@kernel.org>
-References: <20261101071928.2462549-1-aneesh.kumar@kernel.org>
+        d=1e100.net; s=20260707; t=1793731090; x=1794335890;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CGbm9EJEB5hNXXRNfY8Hb9YZuJsenYM7BZIV4eVSx/k=;
+        b=jCj0uHr91Y+SuOWcPqWw0QUgIdnkZMRsbI3V09jMMsZwTYl15XYbRslBlBfNRfsZe0
+         /dEsrLNcoWih98lnlI+y5FRvzi0eha5b5kfYtQkJVgPvmjuz2j9XMDXL+BFsn36mkGHv
+         m186yPFBANWjLoWXJgqAuk9ZkYREh6cE+s+82Liyoh0loq2UituC2jKVSB1v61qd4a+J
+         Y4lLvdqvTyOg0A+j3l4NpawGai2NWfykg+SSJJKkB3OogHBscdmaWB0F8y70qvBAgm3+
+         l0kAv/jzxT72E43rdqof5YT5GMuJN8SG1Fz6mbuP7PU+h2FbpSxOCZNGRGDzITbhYtso
+         FM5w==
+X-Gm-Message-State: APuU4Z9Br42FOhnQ8t5/OfgMn8TWsNNdAsqsitVur/87OTPaCKguEjwi
+	GBWpBPze5trg6mv/cLiES+o+cYLOPKy1UKfdbTPXn6X2nGe1Uyz3XzWR
+X-Gm-Gg: AYBFou0uJKr82Poh5U+WRI6Zdla73RH8ct15aKL2U20voeayN3wGi7USb+GyGRQsV/+
+	ZtZSmXHfs5n0H0VKO5LbcCWmgpDwb9ZC1Hi3237eW4L/+VL4eXVXTPjkwduDprs34ZL8GhO6muX
+	f4Rsu+BFarMewG2yUEklJ8PtRiDQg3izGdERTSx6AblszwnKx4ejcAqkGmS7qD6KRWmKq8IzfRD
+	Upz2gcIYaoQQe73OzRrLxL62ypjYgOvrI+Pj32GPj3a6r6DkkjCxXnfhM9Etj6caj1XlzmAUgLD
+	zL+QfDQy6fpYPkpHjImMRBIraFG81gos1u/KhxZ/kXLcv1fsCCLaVfU6wYKnzVdxNWNtIslJK8r
+	2rmWQX5aoEurXw6y0yabY/mKWZyTi08OsbEsFxUUCzclp1pXsSxeiDCP2OFTURi5wwk+LndLeS9
+	dHoN8VtqKBIgKYMeRnmGHzGHD6l4NbJfJC6t4WdUgU7JmNSuBVjkdORw9jTyyS/MBn6BU2n/JN0
+	Bqenz19l7ooykvJVYLwEd0Yfc2f9H4N7teMqBBfqUow+SW0p33hEJH0A4+7vr+IdLvyAdMcRtAo
+	iNp3/hnXf32xhbshG/+VToWQ1QY=
+X-Received: by 2002:a05:693c:4153:20b0:358:8f02:e0ca with SMTP id 5a478bee46e88-36a4236903fmr21434174eec.9.1793731089637;
+        Tue, 03 Nov 2026 10:38:09 -0800 (PST)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42a6f7f9sm58473902eec.25.2026.11.03.10.38.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 10:38:08 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sean Christopherson <seanjc@google.com>, sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4 12/23] KVM: Destroy memslots immediately after mmu_notifiers are unregistered
+In-Reply-To: <auitWWkOopYYbBH3@google.com>
+Date: Tue, 03 Nov 2026 23:38:34 +0530
+Message-ID: <se1h6b4t.ritesh.list@gmail.com>
+References: <20261030212112.2598640-1-seanjc@google.com> <20261030212112.2598640-13-seanjc@google.com> <sashiko-outbox-191627@kernel.org> <auitWWkOopYYbBH3@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -116,62 +94,160 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+Sean Christopherson <seanjc@google.com> writes:
 
-> This series adds the common guest_memfd support needed by device memory
-> providers. It builds on the resource-provider API [1] and the existing
-> folio and RAM PFN backing support.
+> +Gautam and PPC lists/maintainers
+>
+> On Fri, Oct 30, 2026, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+>> - [Medium] KVM: PPC: Book3S HV: rmap_nested memory leak in kvmhv_release_all_nested()
+>> --
+>> 
+>> commit 9c25a1b4a76e8526eb8a2b11e1b9e63893b0de80
+>> Author: Sean Christopherson <seanjc@google.com>
+>> 
+>> KVM: Destroy memslots immediately after mmu_notifiers are unregistered
+>> 
+>> This commit replaces active memslots with an empty memslot set and frees all
+>> memslots immediately after unregistering the MMU notifier in kvm_destroy_vm(),
+>> prior to calling kvm_arch_destroy_vm().
+>> 
+>> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+>> > index fa548b12228ff..2eda12a52bf4b 100644
+>> > --- a/virt/kvm/kvm_main.c
+>> > +++ b/virt/kvm/kvm_main.c
+>> 
+>> [ ... ]
+>> 
+>> > @@ -1310,12 +1329,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
+>> >  		kvm->mn_active_invalidate_count = 0;
+>> >  	else
+>> >  		WARN_ON(kvm->mmu_invalidate_in_progress);
+>> > +	kvm_destroy_memslots(kvm);
+>> > +
+>> >  	kvm_arch_destroy_vm(kvm);
+>> >  	kvm_destroy_devices(kvm);
+>> > -	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+>> > -		kvm_free_memslots(kvm, &kvm->__memslots[i][0]);
+>> > -		kvm_free_memslots(kvm, &kvm->__memslots[i][1]);
+>> > -	}
+>> 
+>> [Severity: Medium]
+>> Does hoisting kvm_destroy_memslots() above kvm_arch_destroy_vm() leak
+>> struct rmap_nested allocations in slot->arch.rmap on PowerPC Book3S HV when
+>> destroying a VM with nested virtualization enabled?
+>
+> I don't think so?  Patch 3[*], "KVM: PPC: Flush/zap all memslots on kvm_arch_flush_shadow_all()",
+> should free the rmaps in response to kvm_arch_flush_shadow_all().   From what I
+> can tell, the page tables have to be in radix mode, and so the rmaps are freed via:
+>
+>   kvmppc_radix_flush_memslot()
+>   |
+>   -> kvmppc_unmap_pte()
+>      |
+>      -> kvmhv_remove_nest_rmap_range()
+>         |
+>         -> kvmhv_remove_nest_rmap_list()
+>
 
-Hi Aneesh,
+That's correct. Maybe, I think Sashiko didn't consider patch-3 of the series
+during review of this patch-12.
 
-We both build on Ackerley's PFN mode [1], so here is where my export
-series [2] stands and what I think it would take for the two to fit.
+> And if that doesn't work, it means memslot deletion on an active VM is completely
+> broken.
+>
+> However, it means the memslot code in kvmhv_release_all_nested() is
+> dead code,
 
-The export lets iommufd map a guest_memfd file without pinning it:
-iommufd looks up the frame behind each shared page, and guest_memfd
-calls back on every change, so the IOMMU mapping follows conversions,
-punch holes and provider revokes. In the next version, the lookup
-only uses lookup_pfn_range(), since it runs outside the invalidate
-lock, and frames carry attributes (read only for now), which Ackerley
-has offered to take into his PFN mode series.
+Not really. I do see a caller of this, for when we switch from radix
+to HPT. So we still need it.
 
-Your patches 01-05 fit well with this: the backing ops table is the
-internal provider table Ackerley's base left as a TODO, and the export
-hooks stay in the common paths you keep. I tried my series on top of
-yours and the conflicts are mechanical.
+INCOMING CALLS
+- f kvmhv_release_all_nested
+  - f kvmppc_switch_mmu_to_hpt    [arch/powerpc/kvm/book3s_hv.c:5591]
+    + f kvmppc_alloc_reset_hpt    [arch/powerpc/kvm/book3s_64_mmu_hv.c:144]
+    + f kvmhv_configure_mmu       [arch/powerpc/kvm/book3s_hv.c:6330]
+  + f kvmppc_core_destroy_vm_hv   [arch/powerpc/kvm/book3s_hv.c:5930]
 
-For device memory, I see three things to align:
 
-1) lookup_pfn_range(). 06/13 makes it optional for device providers,
-   but it is the only lookup that works outside KVM's fault path. The
-   export needs it, and 07/13 would benefit too, instead of calling
-   get_pfn() page by page to find contiguous runs. For vfio-pci it is
-   the same BAR start plus offset as get_pfn(). Could it stay
-   mandatory for all PFN mode providers?
 
-2) The memory type. The IOMMU needs to know a frame is MMIO, and a
-   prefetchable BAR may want write combining, which the fixed
-   noncached mapping does not allow. A frame attribute, next to read
-   only, would carry it to KVM, the VMM mapping and the export.
+So FWIW patch-12 as such looks good to me from PowerPC perspective,
+since those rmap entries will get freed up as part of the
+mmu_notifier_unregister() (after patch-3). Agreed that Sashiko
+comment does not look correct.
 
-3) vfio-pci for ordinary VMs. Today a device provider needs a realm
-   (kvm_arch_gmem_device_supported()) and gets the VM and an RMM
-   binding at attach. vfio-pci is probably what will make the case for
-   PFN mode upstream, and that is easier if it first works as a plain
-   provider for any VM, x86 included, shared pages only, with the
-   realm parts (private conversion, binding, lock()/unlock()) on top.
-   It would also bring back P2P: vfio-pci refuses to attach while a
-   dma-buf of the device exists, and with the export iommufd can map
-   the shared BAR pages through guest_memfd instead.
+Thanks for looking into this.
 
-I'd be glad to see v4 posted, or I can wait for 7.4-rc1. I'll reply
-to a couple of patches separately.
+-ritesh
 
-Thanks,
-Fred
 
-[1] https://lore.kernel.org/all/20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com/
-[2] https://lore.kernel.org/all/20261027154649.91571-1-griffoul@gmail.com/
+> so this as follow-up to patch 3?  Or maybe folded in?
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+> index a6ff42d7666c..27985210f972 100644
+> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+> @@ -802,8 +802,6 @@ void kvmhv_release_all_nested(struct kvm *kvm)
+>  	int lpid;
+>  	struct kvm_nested_guest *gp;
+>  	struct kvm_nested_guest *freelist = NULL;
+> -	struct kvm_memory_slot *memslot;
+> -	int srcu_idx, bkt;
+>  
+>  	spin_lock(&kvm->mmu_lock);
+>  	idr_for_each_entry(&kvm->arch.kvm_nested_guest_idr, gp, lpid) {
+> @@ -820,11 +818,6 @@ void kvmhv_release_all_nested(struct kvm *kvm)
+>  		freelist = gp->next;
+>  		kvmhv_release_nested(gp);
+>  	}
+> -
+> -	srcu_idx = srcu_read_lock(&kvm->srcu);
+> -	kvm_for_each_memslot(memslot, bkt, kvm_memslots(kvm))
+> -		kvmhv_free_memslot_nest_rmap(memslot);
+> -	srcu_read_unlock(&kvm->srcu, srcu_idx);
+>  }
+>  
+>  /* caller must hold gp->tlb_lock */
+> 			
+>
+> [*] https://lore.kernel.org/all/20261030212112.2598640-4-seanjc@google.com
+>
+>> In virt/kvm/kvm_main.c, kvm_destroy_memslots() replaces kvm->memslots[i]
+>> with kvm_empty_memslots and frees each memslot via
+>> kvm_free_memslot() -> kvm_arch_free_memslot() -> kvmppc_core_free_memslot_hv()
+>> in arch/powerpc/kvm/book3s_hv.c:
+>> 
+>>     static void kvmppc_core_free_memslot_hv(struct kvm_memory_slot *slot)
+>>     {
+>>             vfree(slot->arch.rmap);
+>>             slot->arch.rmap = NULL;
+>>     }
+>> 
+>> which frees the slot->arch.rmap array without freeing the linked
+>> struct rmap_nested entries.
+>> 
+>> Previously, those entries were freed before memslot destruction via
+>> kvm_arch_destroy_vm() -> kvmppc_core_destroy_vm_hv() ->
+>> kvmhv_release_all_nested() in arch/powerpc/kvm/book3s_hv_nested.c:
+>> 
+>>     srcu_idx = srcu_read_lock(&kvm->srcu);
+>>     kvm_for_each_memslot(memslot, bkt, kvm_memslots(kvm))
+>>             kvmhv_free_memslot_nest_rmap(memslot);
+>>     srcu_read_unlock(&kvm->srcu, srcu_idx);
+>> 
+>> With kvm_destroy_memslots() running before kvm_arch_destroy_vm(),
+>> kvm_memslots(kvm) now returns kvm_empty_memslots and the memslots have
+>> already been freed when kvmhv_release_all_nested() runs, so
+>> kvmhv_free_memslot_nest_rmap() is never called. Any struct rmap_nested
+>> entries remaining in slot->arch.rmap at teardown (for example, when
+>> KVMPPC_SECURE_INIT_DONE causes kvmppc_radix_flush_memslot() to return early,
+>> or when 4KB PTEs were replaced by a huge page in kvmppc_unmap_free_pte())
+>> will be leaked.
+>> 
+>> -- 
+>> Sashiko AI review · https://sashiko.dev/#/patchset/20261030212112.2598640-1-seanjc@google.com?part=12
+>> 
