@@ -1,72 +1,124 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.147
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793743421;
-	b=UfFZZG7c1SkgD5Q4raZVWFcj/XfRG7xPu6SoFs08IQ5EBUuJwQrlPsFoz765BVkFqP/I
-	 0b4OqbRR+SWat6SksgUi3TWCbiKP56UtNLIHtIa1EXG4WddndBu8603GkV57GywwWHPUo
-	 TjYg9eh5NxI1TEhhA0M8UBcEVFNUslNbGyNi0G0POXemxseioNmmkmgr9Ze/CgiPQSJZR
-	 1+LdZ22gfQgeFShljxJKaks6FdhFRWgK2uyXG7bFfcmTjDWi54ct8c8Sz39H9cacvAY55
-	 I/hBou8pLSAGcFSmeu+dRia0FUjPhdFnj/GqfdPWv+WUVrHL7RPJK1PWixkMIdGWnhg==
+	t=1793745359;
+	b=zvvcWEegB82sknLmVgm2j56w0Q/sZSAMCHi1sbtJPapB4aCfesfaciHhpUT6lgORHDG+
+	 HgTDy8CMMmVo855NTeeKLzKlyIQM789NYsBJRP0Wlhhd6X7uxUVBERLUmWPQfJTjZPanI
+	 Q+q5LzDgUUmtnlP8tSSGxK3mQoCgbMp3GU/KXblJHTsUgnblvAZN7jM71cInbOOUOew6L
+	 PgTmXU6Z6H3H7g10r+39SbKGl3N87A70+SoauUyKx0yXLyFU6+ZtUKKCI1twYsQ0GoiY0
+	 dQnmClPaJxqtBl8qxfOXXJb/pC4SeB+hJfBFigruuxktswp2BHA/QjFJWrBSb0P0vLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793743421;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=lT95gwxqijZuWNZmAFyry0p0ILAiPcgM7CWPA1WXiYY=;
-	b=itUbuh4kvC3tka22gkEFQxGmFlF1OYSAjfgvzneNika7w3J4R2NlrfmmIIJkCgxz4n/U
-	 xeiE5VJ+sBSpEQok90eVVnpwh7heuHuyK1Y4KrmeTwr5jSmbSkrOlGN/IiChVws+sXFZk
-	 4B2hNcSYvO5jZjsVTnxn3qUmlOckXWRA6+ppyIo5PGCgMsjm6SelWC7Ae6WkIXUeW8QDL
-	 4huBDd6JVNFVAUwM9cgkZKgHx6b3j0rH6WOF1zioAWzKNqzYDL4RtpGtPE4EKzjT2JB0m
-	 EGoVbuMshJ6qyEAUl9jLInT3tcEQ5QS5m1n2j+HjoEHE4MXpaF9CisFn5GseJm4eU7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793745359;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=TPqHx/cU/fq4H9wkiHqa3VQQRQQa86H0rWb12bSD8zU=;
+	b=il8nnoHTWBKQuU9k8UAqtYdANX5hedbxJ4FXmOFZC/g44+BXBfBxTJphdivpyr0848HZ
+	 1uhsuM4VdY0t3sE8uTPQcnMNQRGHhJXYgu2tNJXOacUb4iuCg/cdV5M1AbCmyTDS5/DXz
+	 PeV69wZGdrYjdZj61iK+/Kd7zUvxp9A3nAxnrszOKeg1ZO5wfFufRovsR8JFDYRBWYIcf
+	 68yoXs02vw666JA0o7eMeWUKpqUSVYfs7SaiUjEotW/u5ZKLaccSS7hMa7os26bMqA70U
+	 XE9ePtrxryy2wSxOy2YbuhpvtiMH831MbqTVsp8LQrBdNnYZItoo+i4eF1qyEcA7rBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="Drx3/q69";
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=IGTPazC6;
+	dkim=temperror header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=KlANgHAH;
+	arc=none smtp.remote-ip=103.168.172.147
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513FD606A32F
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 22:03:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 513FD606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A31606A31B
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 22:35:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46A31606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Drx3/q69
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ada6ccd402so91168a91.2
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 14:03:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793743421; x=1794348221; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lT95gwxqijZuWNZmAFyry0p0ILAiPcgM7CWPA1WXiYY=;
-        b=Drx3/q697RAG8GJwAL4vdlcy35CqUij62vlkFFuPQtFthDv4O93OtI/eX0+eiJg2Id
-         JVBR5dyBO9fbqsO3+NmmK8eg2EQnvMSbBTKZZNkVOH9LvSbOIYfuyYcaNJGO9OiEPr02
-         6cqZDa8J52yq3METTbCX9TKCv8QTSnBiQRwgjqkTCM3pGdPQnGE4e0YpoBvs1O4xdyq5
-         eG2LciuLtDmCcUnEbXReSXZvqnUVOnJHfHB81/CsrEsBjnEP2xAuEJHln8vdYUIiv7Uj
-         gpQFmiPrR0GO1sUA9p+hwW3nICewz3xtL753K0dbVMFFZyyH175bu06OwW7CCKRwcqDI
-         Hksg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793743421; x=1794348221;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lT95gwxqijZuWNZmAFyry0p0ILAiPcgM7CWPA1WXiYY=;
-        b=XlhmMUT1W+gJrItfISX+TFX6AP+i10BMhfxdN2z49zQHHywR6Oi5TnLNUFkaNsLIiU
-         5Utye1gDi7EhhZSKjU2B9fzYwGA9foiflKxDIqFnooQMhRehl9VhLhYBh+IdxLrcMY8t
-         HkJZWjb/NB8GmLXKAWDYcLrI98sE5Mpstthw7wtQdZDPlZSZpsHswqxilMUDHJmt50LC
-         +WYgwjSFMbU0Sse5LPKh9xqpmCd8iZ276DOW9gZa864oJfPm55+VrwfJ8TNgJ1wtVmfy
-         3foXaIvO/yLYoUPHNI22qVQoJD6tEI2i7+u7SeI8I+e+mcxq76xI2zh8bsuas9yteBXN
-         H/lQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw3N1RuiLcbPNuV9i2uo4BnwE9zVElctI87k1BT+ZP82M7Mi6bewHSL9Zp2MuOjh6nTtYg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z93fdVO5G1f6hqr7zPWGEze5j9fSmRq/uGj/4PMt9M60HtQbD/X
-	ljy0FzOIibrMce9FOm5/tbIvwfZuNduVWOOur15U0QrE4QXypZ6/Qn2u2ANbOyOKJ2lUwGAq9QN
-	xHKLCXfFZ/VDSQg==
-X-Received: from pgbdw19.prod.google.com ([2002:a05:6a02:4493:b0:cc9:f793:b980])
- (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e397:b0:3b0:96ce:104f with SMTP id 98e67ed59e1d1-3b096ce1144mr146764a91.5.1793743420343;
- Tue, 03 Nov 2026 14:03:40 -0800 (PST)
-Date: Tue,  3 Nov 2026 22:03:37 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=IGTPazC6;
+	dkim=temperror header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=KlANgHAH
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 46AEAEC07D5
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 17:35:57 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 03 Nov 2026 17:35:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793745357;
+	 x=1793831757; bh=TPqHx/cU/fq4H9wkiHqa3VQQRQQa86H0rWb12bSD8zU=; b=
+	IGTPazC6xy0M58vzjx+JMD+W/XqY0vU7KCETdJmNajTLiiLiNtdicG6viC1P3Q5X
+	+7holxI4BILs6EvMqaxHPtYwnnCLc9MK5KChqNGQjKcAmRTHkfIe2kNVqZHZSf3Z
+	IaOD2wskcYeXenEccKXYTRbJPk0E4zhYqMjiYt00NIfT+NTmQyjC2rMlZohGRQic
+	4qEWsrVlu584kqWSAMwiC8HcUhHZVHhyioxgT3dttyXw/XE7C56h6KL4avz7AmDS
+	ZQExdPLtI9zpBODYfRN2Y2s/1UbUzNAPPC1+zJJnipcKOkjUx9yvpdaZFwZmwR1i
+	aobMI4Zez2s6930XuBb3KQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793745357; x=
+	1793831757; bh=TPqHx/cU/fq4H9wkiHqa3VQQRQQa86H0rWb12bSD8zU=; b=K
+	lANgHAHVasq8yLCrxnHyltI/29AjvR8kMipRGuUdMycKDNdYRetGjZpx0nXu4U5Y
+	3ZxMEGSjla0dSYF82ae8UuH30X9RNRLwkhNafPnyFZHeNzjiVuGQYY7aWN+INY39
+	QO1vibN/JPQOAE1l/j3V3qIsZ9FsEQnyucEG2mTGX7DwuJrGKcgq78sp6I+BJh0h
+	hfYDElzmPYrCpsbAz4s0skinura8ynB0BHfGX4UYFRwE+NFeesfJCZATuu0xbfTJ
+	7NJh2NjmDMC74VOZXl/G4wW5OIDNSo2BZqhVJY+ToWQ5IqDFjKRmFUIhNzQfhPL5
+	yMPetsULrHbhpCer25Ftg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793745357; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:y9unOaq9s7bHIPGmJ7qIfeH1Fcf3pCf7kS0gAZs23eKt/7Q
+	oeTVuMvYgWzezM6mhZuScElabvENPrliE5VVlg0sa427PGueJoxwTLdj/u2p8Y2E
+	3F/3JhZ3sbCeGCd2a7UTCG8XnoCdcANhlhhPiQBZFDQHpkm01pYIWv4GR92gS9Pq
+	hzgtIKXOXv67xfrIF489dLwqe9bUwjlvOcEJ+/nDABmqveTVGj4p/zqn3FzmQTL9
+	xA6wTm0YvSy9zThgDOHfFwOMeHwM9bKYjF4iEULOTsYZhlhJdniew0J7055Wq/3M
+	4YpB9QWS99mbmeZ8IjPas3CmvYJrVis17ItEEzg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:eAT+53BcZGsO6bsWh4DIkgOl3GszBJNp7CsO8VE5dxg=:tSVY1u0kwJzKuDCzne2np0L26kae7IHeO6zV5GRD6XA=;
+X-ME-Sender: <xms:zGHqaqDAaaGox9leGsWQqkVY5CqLLqXGbGUZjKlyBhIp1_zSRGEMpg>
+    <xme:zGHqahGrYohptLzOBz3vmqtzmT-Owvk-YX08LtJaV3ELzoxhTUCT1HnqZp00B_BmR
+    ko1sE4u8EIJMVZEisAbBRdvx973R6q6bG-7EIZduXkgwMHU4X4-gBA>
+X-ME-Received: <xmr:zGHqaiBVBp37714ASGQLG1FqYyshCRMxtmiauSxcdgvDLTiWmW4IWJYFPEIp8g>
+X-ME-Proxy-Cause: dmFkZTEWuavI98npZyJd5hGbCm3gmnPP2dElHheiEi3bgLGrOZg9pyjbzXfSDwZjjgcO4w
+    U3vFMoXwy1uUO2fihKGEUsRiLxnsse9WZHGg5Ezm0QidUnsW68dPy3vOA7lcuAKOAXK3Gi
+    zYvmcJtdErAyHG0SbkJzF7oprUSLqBkjjYYNZbwEe5oUXNKzvqXd67PkdiUUsSn+asqfgv
+    huLk0RTugANZcEqyEZHyeIW6wpZ3XVwcYI6l7/j3p9OrzNxyp3ZNbPnQ+vtDfRw6uvQY4r
+    Zkzdl/n4jLMNVLYd3TpwZn+UqToQLCk89WYhttwK7/UYPkcF4UVJQbuRhbPoNhLlrMycHi
+    kfjyverQ830dJfhtW/lTTx65qMmGI/f1W+uN4DECy4YqJpGS7t2KGc1FyK6cnuxzlIxD+F
+    fwd3526Wt8M7CeBPbIH76gwSHu1t+WjBmI1jYrY7CoS1PRuTkEFUrQKfoQfIF0Wy0AEaII
+    OkFMSe79oQjRLYtAGZ2vax4wvs52P2lg+HK/k2M9WSWE8ePdE7opF+jkvRfmbbZ6zJim3K
+    hNJXgjIAIRzL/67cnB9r7dHOlirwvZpPnd9uZZQ7GRmK2QVWr6D0DbEnBsa/S9H+LbHIWY
+    ti8+hz6zknslcqy1Qn3Z4PYZ7JPzKSCYpMsBI0ZlCjCBgCDxFPmCpk3CgbLw
+X-ME-Proxy: <xmx:zGHqavn_IfY0Zep3N-ll48-WlE6NBwbByPLRAwZIDZbxe7tzACxd5w>
+    <xmx:zGHqagOLHZxgk5HXKRDjFaOBCsupC6urbyxkuLYiP8O3nJYkKFeUoQ>
+    <xmx:zGHqas9ZP53Cha5AF72aQqgKdSs_52vxcO2nhtxC1r2rSUTouxr5fg>
+    <xmx:zGHqaiGgPb9Sh6HOomnip8DkUR4hG9JuW0q7o6dQyqxfXUSaBchLlg>
+    <xmx:zWHqaswAAp8m_hflg8Bcdgn3Dm7RJ2AIq2JiWd8oxOA6hNmBeqtIJ_J7>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Nov 2026 17:35:56 -0500 (EST)
+Date: Tue, 3 Nov 2026 15:35:53 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org, Abhishek Sahu
+ <abhsahu@nvidia.com>, Raghavendra Rao Ananta <rananta@google.com>, Shuah
+ Khan <shuah@kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH 5/5] vfio: selftests: Add test for device power state
+ transitions
+Message-ID: <20261103153553.6caa7d7d@shazbot.org>
+In-Reply-To: <20261029203324.1637772-6-dmatlack@google.com>
+References: <20261029203324.1637772-1-dmatlack@google.com>
+	<20261029203324.1637772-6-dmatlack@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,171 +127,34 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261103220337.3578111-1-skhawaja@google.com>
-Subject: [PATCH v3] vfio: selftests: Remove libuuid dependency
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
-Cc: Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Samiullah Khawaja <skhawaja@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Replace libuuid with a minimal uuid_t and uuid_parse() in libvfio, and
-drop -luuid from the build. libvfio only uses libuuid to parse VF
-tokens, so pulling in an external library is not worth it.
+On Thu, 29 Oct 2026 20:33:24 +0000
+David Matlack <dmatlack@google.com> wrote:
+> +/*
+> + * Put the device into D3hot via config space and then close it. VFIO must
+> + * return the device to D0 when it is closed.
+> + */
 
-libuuid is often missing from cross-compilation sysroots, which causes
-the VFIO selftests to fail to link:
+But we're only testing that it's re-opened into D0, there are multiple
+ways that could have happened.  It's pretty common that a guest
+shutdown might put devices into a low power state and it's brought back
+to D0 on close, on reset, on the next open, or even on the reset in
+open.  So I don't think we're testing what we claim to test here.  I'm
+not sure this specific D0 transition is observable, even if we were to
+resort to pci-sysfs.  Thanks,
 
-  ld: cannot find -luuid: No such file or directory
+Alex
 
-It also complicates building against glibc alternatives such as musl, see
-https://lore.kernel.org/kvm/c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com/
-
-Reviewed-by: David Matlack <dmatlack@google.com>
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
----
-
-v3:
-- Reword the changelog and drop the testing note from it (David)
-- Move the libuuid comment to uuid.h and explain how it differs from
-  the kernel API (David)
-
-v2: https://lore.kernel.org/all/20261102200624.1570562-1-skhawaja@google.com/
-- Move the parser to lib/uuid.c and lib/include/libvfio/uuid.h (David)
-- Drop the vfio_ prefixes and add a uuid_t (David)
-- Mention musl in the commit message (David)
-
-v1: https://lore.kernel.org/all/20260925013110.3447626-1-skhawaja@google.com/
----
- .../selftests/vfio/lib/include/libvfio.h      |  1 +
- .../selftests/vfio/lib/include/libvfio/uuid.h | 16 +++++++
- tools/testing/selftests/vfio/lib/libvfio.mk   |  3 +-
- tools/testing/selftests/vfio/lib/uuid.c       | 42 +++++++++++++++++++
- .../selftests/vfio/lib/vfio_pci_device.c      |  2 -
- 5 files changed, 60 insertions(+), 4 deletions(-)
- create mode 100644 tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
- create mode 100644 tools/testing/selftests/vfio/lib/uuid.c
-
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio.h b/tools/testing/selftests/vfio/lib/include/libvfio.h
-index 07862b470777..e9d513c3a08e 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio.h
-@@ -6,6 +6,7 @@
- #include <libvfio/iommu.h>
- #include <libvfio/iova_allocator.h>
- #include <libvfio/sysfs.h>
-+#include <libvfio/uuid.h>
- #include <libvfio/vfio_pci_device.h>
- #include <libvfio/vfio_pci_driver.h>
- 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
-new file mode 100644
-index 000000000000..5c4ebe5ae3d3
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
-+#define SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
-+
-+/*
-+ * Minimal replacement for libuuid's uuid_t and uuid_parse(). These mirror
-+ * the libuuid API, not the kernel's: uuid_t is a byte array (not a struct)
-+ * and uuid_parse() fills it in place (it does not take a uuid_t pointer).
-+ */
-+#define UUID_SIZE	16
-+
-+typedef unsigned char uuid_t[UUID_SIZE];
-+
-+int uuid_parse(const char *in, uuid_t uu);
-+
-+#endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H */
-diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
-index eff95828719e..d1d1b2b05af1 100644
---- a/tools/testing/selftests/vfio/lib/libvfio.mk
-+++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-@@ -7,6 +7,7 @@ LIBVFIO_C := iommu.c
- LIBVFIO_C += iova_allocator.c
- LIBVFIO_C += libvfio.c
- LIBVFIO_C += sysfs.c
-+LIBVFIO_C += uuid.c
- LIBVFIO_C += vfio_pci_device.c
- LIBVFIO_C += vfio_pci_driver.c
- 
-@@ -30,8 +31,6 @@ $(LIBVFIO_O_DIRS):
- 
- CFLAGS += -I$(LIBVFIO_SRCDIR)/include
- 
--LDLIBS += -luuid
--
- $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c | $(LIBVFIO_O_DIRS)
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
- 
-diff --git a/tools/testing/selftests/vfio/lib/uuid.c b/tools/testing/selftests/vfio/lib/uuid.c
-new file mode 100644
-index 000000000000..906a5db70ce1
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/uuid.c
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <string.h>
-+
-+#include <libvfio.h>
-+
-+#define UUID_STRING_LEN	36
-+
-+static int hexval(char c)
-+{
-+	if (c >= '0' && c <= '9')
-+		return c - '0';
-+	if (c >= 'a' && c <= 'f')
-+		return c - 'a' + 10;
-+	if (c >= 'A' && c <= 'F')
-+		return c - 'A' + 10;
-+	return -1;
-+}
-+
-+int uuid_parse(const char *in, uuid_t uu)
-+{
-+	const char *p = in;
-+	int i, hi, lo;
-+
-+	if (strlen(in) != UUID_STRING_LEN)
-+		return -1;
-+
-+	for (i = 0; i < UUID_SIZE; i++) {
-+		if (i == 4 || i == 6 || i == 8 || i == 10) {
-+			if (*p++ != '-')
-+				return -1;
-+		}
-+
-+		hi = hexval(*p++);
-+		lo = hexval(*p++);
-+		if (hi < 0 || lo < 0)
-+			return -1;
-+
-+		uu[i] = (hi << 4) | lo;
-+	}
-+
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index 4063a0e2b3df..4ae6ac1f8ed8 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -23,8 +23,6 @@
- #include <linux/types.h>
- #include <linux/vfio.h>
- 
--#include <uuid/uuid.h>
--
- #include "kselftest.h"
- #include <libvfio.h>
- 
-
-base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
--- 
-2.56.0.385.gac671c819a-goog
-
+> +TEST_F(vfio_pci_power_state_test, close_in_d3hot)
+> +{
+> +	power_state_set(self->device, self->pm_cap, D3HOT);
+> +	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
+> +
+> +	vfio_pci_device_cleanup(self->device);
+> +
+> +	self->device = vfio_pci_device_init(device_bdf, self->iommu);
+> +	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
+> +}
