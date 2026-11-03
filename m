@@ -1,100 +1,128 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793667301;
-	b=Fx5sDGOxCMnK9GwWRiYD2V6JkxRYMNxkl9L0iZCAXrbU0ntDcPOnDx/WdxTMkd6a0jKv
-	 LBD4C+8eRR15ouKv2GwxUFJ3WScjOUsl7HLQYvpr+xcuG5V44jKlzNN7D/gphhzLLZeYW
-	 ay1abrhRVF6WaE0pwt8bIW79yMlEs93MytoQwS/46IQMm+TlcqOVT7AaB4TOK3lG33O3x
-	 wATnd6BrprYNlvPcc5vpfztgRJ45Z6mp8cnBlwFVWjHmeywwa6yQuA5Gc6Lj9V27fzlP5
-	 CmxT8gert5ezCITQR/K3pSl2HXNMMAILUZJc81RLpjmBdLQfvQGECwNWnmwL6OO3Ztg==
+	t=1793667535;
+	b=V7RHf0SI8UKJcql5b8kunYjcstUzndaw/hJqKfhxaMGZmQpIKNzJvldRMr1RmJp+KJER
+	 kEuXVjdo6QJ5IBxEvOVNvpHBcFkIZWTq5ZaG33dI/OdW/HmhUi2gD2R7+dsg5gURHFjUC
+	 1i8OS6lslqGJMu7A73GxIjn/Eit4U54PVFk03L2TUNMm9XQZtpJaNV7gUnea61dDe8KsS
+	 lT2pkA5CqpGpFrNX/aPOcKrbWPng+8nkHkW6SaqEPvTey+T/LyRJAQuq2GeacRk71PUov
+	 SCqXmxEjUvrkFMsbxtnafjcW+Nk9STuQdL/qS70bKsfiW0O4dSpuXskuwop5VV9Go5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793667301;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793667535;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=utYETJ5rHiqNuCeYbazrvQTxJbHnffVJ+WGLRhPpEcM=;
-	b=FIV18EY0mbcasH2mqSb2YLhbkROzSXsPwE0/JMUpvYdGuJ9wk7TwnBnbtbJtFe1f8sFA
-	 sDWvIReh9iolOBHe94Opv/NEsdKT0JeLeXcOASlk66Ev8caczApNP5K14dOi8HyyhlwVv
-	 E0XM5KIvSER9x1xpG4n2B2HMbiRMtpPIFsmcuO1gExWsMk8j7rknSJpG7S4Z9N3OQ090T
-	 XURhrXztbPz+AAwhlr94E9BMU7ByDBRhDsOaDS3ClwjULRAXvREU6yz/13lrk1x0U3tt5
-	 IJC7w8FHeNctBpHdsUefsZUs7vEQovnotsv/y+Gyn1YDvZStqBrshHjUeUK622zZYWg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=QoYRJANCltXIHssksq3+ydkfr4I2KVxvqmMBU8nH1QA=;
+	b=JWdE99c4NcwRLmYs9JFoAmSU5jgU+TC9wNheHkLvyNvKlhhQmVDx/wO/X7OjU+fCH2Wt
+	 pHfH/ZquMLdtmvmSk8pvK1EJ9bWYNOU5MNlrofs3A7uE+T2Xxabb61+j0/zIqMP/tIP/Q
+	 Nuz1DnpynC5jlln0ZfGIF2+XX6Ow/m/3OR5NzVTyspEe0t/bDBYPHK1PoEFm8ZvXlvLMx
+	 GeabD8IEsf0nAkK8cUzn1o7s8jUvTN5c+ZKYT2GbCg/TTYeKRcVkijayuIZWo9OtpOe2/
+	 Z3EYQ7L0i1tseg3b42WXpX/xY06GqdD76uflANQlhQ3omhvlwCTCw4FGTnfDQ9Td8QQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mDxlUQbx;
-	arc=none smtp.remote-ip=209.85.214.179
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=H1zPRlIe;
+	arc=none smtp.remote-ip=209.85.160.173
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D54D606A324
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 00:55:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D54D606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBDB606A324
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 00:58:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DBDB606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mDxlUQbx
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso22021165ad.0
-        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 16:55:00 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=H1zPRlIe
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5363c8de563so44739741cf.0
+        for <kvm@vger.kernel.org>; Mon, 02 Nov 2026 16:58:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793667300; x=1794272100; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=utYETJ5rHiqNuCeYbazrvQTxJbHnffVJ+WGLRhPpEcM=;
-        b=mDxlUQbxsLKooZ1+O0OFTCvjBlA/exBlT61vu6XWQY1i3FoERgcSmYgmy00W3bs2u/
-         6dSQ8IiE95puZ8l8pLfIrbjxqjzd78CsCOdANjsHRM0OZqR0v9JOv6eNGpNU98Jy1iuz
-         Bb/2MJDQ873SPx8Dwfe8nWB5yjj1xaNXu4JIERwXrqyAHAEWrnqLUulatudPktTbo49z
-         BK+BI1UrrjDzEZg2vIBqcJDsyJ3duvRoVG21c95GEuf2Ufy620sh49g7YRlPnDhxXDWA
-         jaqrW42hNowdcuRQGBr+VpZexu0XpuSxc3gQf5ts/Ss6FV2vte2g7oJ7KInhTI3NGNNc
-         iqyA==
+        d=ziepe.ca; s=google; t=1793667533; x=1794272333; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QoYRJANCltXIHssksq3+ydkfr4I2KVxvqmMBU8nH1QA=;
+        b=H1zPRlIek7ds8M6NQOXwrD7lOc3bluGthhRv4XKpDgzkRsAQZQ9QpELH7lynxKitrC
+         iAK3y/NLEfzWZg/zLhxLIfDoe3wG0Zi0g7uRxjIB5PHRUoAwVJYqdwPM5ma8QgTsDzzE
+         A1YlDOQMCvdTjJvkcVq/n8F/g3cxTcOLvq0rFJUC7KCBYjJ3KGXhiwuXhH17l0Swl0ek
+         aliTnEwJ2nESBRVL7qU/uR1nVs17I8sEP39YljjfAB04uP1vgKV3xHgqnt9dYYqWPGUi
+         9LoVzZmGLFBycgB8TaF7d/PDBIFGxvyUNueK0pVkswaKoLaJV6OK4ikoFARC+YUNYP5F
+         F/uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793667300; x=1794272100;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=utYETJ5rHiqNuCeYbazrvQTxJbHnffVJ+WGLRhPpEcM=;
-        b=J3Ed0h6HSoKKOEey6/qJCqYJCLdpUVBL1H+KYn/rlwahgsbZ0nxxoxphRfaDU6yCAy
-         UL53Eq9EaJmtv5+OEqCifOv03mr3gmc8Gqzf2EvcdSnfbdXVwovzCzYy+3SxRQI6mGA3
-         DNLOfuGRofQU5lsNl7TqeBZeILeZiBRXE7mzBJgJyBYiSwB8PG2nkOedzLxASIbO8Kcl
-         eTcCbAOXbEjQCvo1bbyU6tDtbaYOzyBTk4UEynaHpajnyHf7kI6ryWF2zxLRo1E05Xl2
-         WAfXMJnTSzT9p8yTbb8g7x635z03VvP5V/o+f6P/lDph42wZPaWpuLExfrqWcB+QmZDG
-         vIqQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy3inYYknX319hxz/7rU4/mq2forTYA/aSIQpIPnCxXt9q90W32Y5TLbepcr3GJ4uHlSnQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8VflUzlagtJbuMyIU1DDDYpNvTDBhkxPLqEEDoTcHF0dlRM2D5
-	XMyynFIW0itMjT0YcG0Yj5c+dyTOC9n/x36kjbMqFqPFcZUoEyBCh2FeVw+WB1FEvg==
-X-Gm-Gg: AYBFou1Pv61vkO8ci0xNF6iIOB3gORobfq32B3wFD5LYKmXfRasQeegDyXFb6JBg9By
-	uhLeewHzSVz+OvI4ursrpoEWNPFkn8SyCsQ5qhkOgJ39EIAc+eioO9T47cx+pAujup1YUTTSAAg
-	LmytwmNzpro0nVbFHDYC0RM+/c9wTBjWsUXnI4B1/cjrTPzo8IJvaNnmzWoMzQhqY2mh0Q9LCh5
-	EE9i/jGfAEKBqUgS+FkMUGksG0f1i0WozOwLRSh2ZSaO3VtZoLjEoY9paYjwpAi2PBOH+fKPGO5
-	+9RqxzVVZnyugymr/8JqVQTgeBH87wEUgoukDn0rtKKhmytPxBh64ZLwKsAkMDbUs21aGLQYoPf
-	Df3rDSqMsiis7Y0JXAbK49jKluZMkBD+Ro8OEujv5gzNAgfaeSMeG796XTBrQKaQ3J9MOmsPJhz
-	ZkdbF4kWmmQsIdIkU2kTJ2eTHstk6ebCMoUPcGx6fYd9cXAEEM9iiL6Dd4Rbji1XHQ/2Q3sh7kc
-	tWnn5CHFsalKO6KA/ru3pTxqeM3CKhR4fnPxF+NpMcjwBrJAwBC5vXeXyFulFuux1qOZWHAUxi3
-	EGB97Sgw4fKvjxE5WeZ/1kMyar52hdphYCh3Bl1ySFyt9HG1j5UPOSYeXHLe0Dit
-X-Received: by 2002:a17:90b:4b12:b0:3a8:5fd6:cb6 with SMTP id 98e67ed59e1d1-3ae89173bedmr9255823a91.0.1793667299847;
-        Mon, 02 Nov 2026 16:54:59 -0800 (PST)
-Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae87fc548fsm10138264a91.4.2026.11.02.16.54.57
+        d=1e100.net; s=20260707; t=1793667533; x=1794272333;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=QoYRJANCltXIHssksq3+ydkfr4I2KVxvqmMBU8nH1QA=;
+        b=CYC38wLDy6oIgkJrs0et/e3NTVCZviKuNq3hqh4r7tXD2k22/rxCF9mgOKVPWsQRI1
+         3SFS4XRwE7MqUbV0FO1/dMnzRVfjZvPIXYRQo9an5D+gyoRL3ptyzL+86iZEFgl0aKSe
+         L5xUmmSDGQopq2WA34rn4ExBRt7Dp7al6UR8BZDbTj5omWPhlTeNtt3QMSgk7pD52jlK
+         pjGXyBblURxdAo0nE+cL+/YVjoNy0WJHpG9PlvR2vwwiU6feJXhe9iL3rtYTbS6QiKUj
+         8MjpzADBxKXdO8NLFE1zrKBemc+rD6O0vWIXFaN2JUeavOCRqUDakkzdWjkUYmiGW2AX
+         X0Nw==
+X-Gm-Message-State: AFq9FYIUUrkxEjLNe6jMxLtukdORzkY7N6oefplDhguZ2agTblQ8rNFS
+	UeVnsASp9Vy6ytwdGv3GuWt15Ky0O0tSOPUjrGr4FavOBSIVAcm7VmEjoDHLpgBObPc=
+X-Gm-Gg: AYBFou0o932y+7ygeSpezznuc1QKdDHlMl3+aZ8vLej12PLQm5gDtg4eMjdba1WJGVb
+	Z2ULJL6szBQ8AjTWxqPFmqE3lc1gYqZBXUjY5QVDe60nTcFKlfIjA0lVRtUwxe144NLcI1ahyq0
+	nthxO9DMC8LWrab1VQc6u6LbmmAr0QHl29EuNhOpxRI58aTU2Ti2fV9s0EinyOWbk/TU/ENzkCc
+	q4he7TdSFnJ483EHvnVne4lMRIziMxcKJb1SDCqgzRyU6kBXEW/IwlsB0kNaUa7dB4qrEKzYQnN
+	9S1sNm2/RH9jDnmPBHEm0jozQ7mqNZaTKkbSyO1p7wZwhg4RjW7vR0V3IcSU8qABvHFUdlFCjhn
+	WrrD/LZ3IU7+tczotTwdUcOYt8in+dqZ4dJBont74JKAcYeCi45cf2Ad/+vlriyKL4lntfTctSK
+	1UgP2LDNTwp/ec8UsULY1cHjtQjI1xX4ZoXBJCgKNnFaAYzH7jZdsQfB89d9qUkKy7HFRuJUvYm
+	+jZTdfSQh55HoL4Awfurvl4z4lf4qCNEkqhY0n2KAOTckloIlqKSb00Jimu3yDfglTxR7CfWG1m
+	GX47foEv7ht90f809Hex5bhyB8HSG5bXIBXNno2xXxRBcdtusJd2GtDz0D4CBiIe2LwQAtakRNR
+	6pCBtRfaFfg==
+X-Received: by 2002:ac8:5f92:0:b0:533:a4a:8826 with SMTP id d75a77b69052e-542b6595288mr197108781cf.19.1793667533172;
+        Mon, 02 Nov 2026 16:58:53 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5498b49d8efsm12193441cf.7.2026.11.02.16.58.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 16:54:59 -0800 (PST)
-Date: Tue, 3 Nov 2026 00:54:54 +0000
-From: David Matlack <dmatlack@google.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>,
-	Andrew Morton <akpm@linux-foundation.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Shuah Khan <shuah@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Vipin Sharma <vipinsh@google.com>, Alex Mastro <amastro@fb.com>,
-	Matt Evans <matt@ozlabs.org>
-Subject: Re: [PATCH v3 3/3] vfio: selftests: Test BAR write faults after
- clear_refs
-Message-ID: <aukw3s0IR689RYYG@google.com>
-References: <20261102230445.3993629-1-almasrymina@google.com>
- <20261102230445.3993629-4-almasrymina@google.com>
+        Mon, 02 Nov 2026 16:58:52 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xO2rT-0000000BHob-1A7Z;
+	Mon, 02 Nov 2026 20:58:51 -0400
+Date: Mon, 2 Nov 2026 20:58:51 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+	"drdeeglaze@gmail.com" <drdeeglaze@gmail.com>,
+	"James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Xing, Cedric" <cedric.xing@intel.com>,
+	"alistair.francis@wdc.com" <alistair.francis@wdc.com>,
+	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"ankita@nvidia.com" <ankita@nvidia.com>,
+	"jiri@resnulli.us" <jiri@resnulli.us>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"Quigley, David" <david.quigley@intel.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"jpiotrowski@nvidia.com" <jpiotrowski@nvidia.com>,
+	"Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
+	"lukas@wunner.de" <lukas@wunner.de>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"jic23@kernel.org" <jic23@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"sameo@meta.com" <sameo@meta.com>, "aik@amd.com" <aik@amd.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"ksinyuk@kernel.org" <ksinyuk@kernel.org>,
+	"qinkun@google.com" <qinkun@google.com>
+Subject: Re: [PATCH RFC 20/20] attestation: Add the TDX family implementation
+Message-ID: <20261103005851.GH3889730@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-21-jiri@resnulli.us>
+ <ed52bb6d48c87ab8023bf2165cadffa259e21725.camel@intel.com>
+ <20261023141218.GD3977851@ziepe.ca>
+ <343e4a12f2fdbb4e9a19c4afe49cf2b8908d6739.camel@intel.com>
+ <20261023220030.GM3977851@ziepe.ca>
+ <7843a833723e3aad40f8fc4de3a83f5a5059280f.camel@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,33 +132,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261102230445.3993629-4-almasrymina@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7843a833723e3aad40f8fc4de3a83f5a5059280f.camel@intel.com>
 
-On 2026-11-02 11:04 PM, Mina Almasry wrote:
-> Add a regression test in vfio_pci_device_test to verify that huge_fault
-> on writable MAP_SHARED VFIO PCI BAR mappings handles write faults after
-> soft-dirty tracking clears VM_SOFTDIRTY and downgrades vma->vm_page_prot
-> to read-only via /proc/self/clear_refs ("4").
+On Mon, Nov 02, 2026 at 07:02:37PM +0000, Edgecombe, Rick P wrote:
+> > Though I am planning/hoping to have a sane admin tool here as we agree
+> > to things, so admin can do like:
+> > 
+> > $ attest report
+> >    TDX Report:
+> >      Xyz 
+> >      Abc
+> >    TPM Report:
+> >      124
+> >      435
 > 
-> Use vfio_pci_find_mem_bar() to locate a memory-backed BAR of at least
-> 2 MiB that is safe to read and write, and zap existing BAR mappings via
-> PCI_COMMAND_MEMORY before each sub-test to verify both:
-> 
-> 1. Read-then-write fault sequence after clear_refs, exercising in-place
->    huge PMD/PUD write-protection upgrade via wp_huge_pmd()/wp_huge_pud().
-> 2. Direct initial write fault on an unpopulated BAR VMA after clear_refs,
->    exercising vmf_insert_pfn_pmd()/vmf_insert_pfn_pud() with
->    FAULT_FLAG_WRITE set.
-> 
-> Skip gracefully when the device has no known memory-backed BAR >= 2 MiB
-> or when /proc/self/clear_refs soft-dirty tracking (CONFIG_MEM_SOFT_DIRTY)
-> is unavailable.
-> 
-> Suggested-by: Alex Williamson <alex@shazbot.org>
-> Cc: David Matlack <dmatlack@google.com>
-> Cc: Matt Evans <matt@ozlabs.org>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> Hmm. TPM report is a signed thing right? But "TDX report" is not. Or "TDX
+> report" is really the TDX quote?
 
-Reviewed-by: David Matlack <dmatlack@google.com>
+Yeah, the signed thing.
+
+Sounds like in the TDX language it is TDX quote. ARM CCA calls their
+signed thing report. systemd calls the entire aggregate bundle the
+report. I think TPM called it quote. Isn't it nice everyone has their
+own words?
+
+Jiri, I suppose we should meditate on what word you use in the schema
+to try to be clear.
+
+> I still don't see the need to expose the TDX report (TDX definition
+> of report) through a generic interface.
+
+Great, let's not do that. Signed things only is what I was expecting,
+because that is what systemd needs when it generates its aggregated
+"report" to send to verification.
+
+> Are you thinking about having any kind of community
+> call for TSM? Maybe we could walk people through TDX attestation.
+
+If we have to, but it is more inclusive if the mailing list has a
+record of such things..
+
+I was thinking of trying to organize some smallish summit type call of
+a longer duration when this is more solidified and everyone has time
+to digest it so we can go over *everything* and confirm people are
+happy. This would be a 'come prepared' kind of call, instead of a
+physical conference. Let's see
+
+> > > On the TDX side we would have to work through how to ask for a
+> > > specific type of quote. In the initial set we have planned, the host
+> > > will decide.
+> > 
+> > That's fine. Broadly the "default" report format should be set by the
+> > VM's instance type, eg defined by the CSP. It should not change
+> > launch to launch of the same VM.
+> 
+> In the attestation space, it seems there are people who want many
+> slightly different things. And it has been generating option
+> complexity on top of the TDX legacy baggage.
+
+Yeah, I am aware.. Above has been my view as the only logical position
+for a CSP to take. If you change the format of the TDX quote from
+launch to launch you risk ABI breakage with the customer's
+verifier. You will have angry customers if one day their VMs boot and
+they don't verify anymore.
+
+> > If you also want to have a way to query specific types, like AMD's
+> > guid thing, then that's fine too. But I think integrating into systemd
+> > report might be a bit tricky so I'm not sure it is a great idea.
+> > 
+> > In all cases the format of the report is labled, passed to userspace
+> > and given to the verifier. I see Intel already defined DICE format as
+> > 'larger than 8k'.
+> 
+> I'll have to check (or maybe Peter can chime in) if there is some easy label to
+> look at.
+> 
+> > We'd probably want to give that a dedicated label in
+> > CTLV land.
+> 
+> Not following what you mean exactly. A CTLV format that contains the report? Or
+> a user ABI way to request a certain format?
+
+The CTVL output will always be something like {label, data blob}, for
+everything so it is self described.
+
+Since the DICE and non-DICE TDX quotes sound non-interoperable they
+should have different labels.. I guess? I really don't know the
+details of TDX enough to say.
+
+> > One of the things I'm quite adament about on the data labeling is that
+> > if something sees Blob type A then it should at least be able to
+> > verify the signature. Further format variation should be self
+> > describing data within the signed payload. If it is so different that
+> > you can't verify the signature then you have to give it a different
+> > label too.
+> 
+> I'll make sure this made it back to our attestation people. (probably someone
+> already picked it up)
+
+Yeah, I'm quite adament about this. I don't want this to turn into a
+funnel for undefined binary blobs that nobody can understand. At a
+minimum the signature has to parse, and at the maximum I'd love to
+insist on a userspace implementation to dump the contents. We will
+see.
+
+This will naturally force people to use the right labels since they
+won't be able to make a dumper if they don't.
+
+Jason
