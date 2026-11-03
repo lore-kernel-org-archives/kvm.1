@@ -1,59 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793738244;
-	b=HDwRjTHW9OhR/OQh8HVcvqQ6NUG9P7NRV73CnSLPsH79tP/Ouw+jAPCKtWYA/cHTn3cP
-	 uHa61OyFu41i3KGqO3yzt/Di7cEb7kXRv+oEOOSSsVkc5af4pbvnT0LgDQ9ks1TiLbB1u
-	 sl/AuvHGNI5vXa5LYo7vFza9AG7aCNYX1JGJhenW0jqv8lGSaGO1OcL7dk2JooioA+Nl9
-	 HPpRpt9IidqP4WNVwGfSV3Mj2tn+1svLEo12AQZ4BPKM/6NagTH61th+7L2m27FES4w38
-	 CNQLyQtGITUQ9kwLMY1MMpFZUh1EMi/Yhggvvg//m8IXxlpxX0UykHjVwwwJ+mdPBKQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793738244;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=vWPeCnUz1sDUCuvHzgsNmQLP6HqKKH7oPoJSrsTWm8A=;
-	b=If9YRSGwF53bL4QICE3oYmI90HcH+Cbdmv1jk4RaGbteO4E1DmcQZdlkCeYjbdfPXrrL
-	 zsY9mjk11y0vASddRZQ1FZBcHfBZjjyAFKM5ZEUpEYyGC3PGAp4q1UPIJI/u+Qt+9830C
-	 6xheyqbpiYvlq0bvWUBJZXsYsBjQ0WxEKAjLDW6lmgzA0mHzIRBsMcXzNDULqOLKiKuku
-	 TbKSVMMzkWbjSTPJynWEqLSMHWpsro4M64eYSXBipEnjbWYN1LmDekij1XWAAFan9z2ll
-	 aBAS2zhtQPGPiMYJV82SBLme3E7NU8qy5aip0zdMqnu6CXutCmuGSTNw19rYEDRayJQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WIwAUoRY;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4147606A31B
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 20:37:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F4147606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793739372;
+	b=bIvKQC755dvoqJBYzU+S4Q8tdW9/EYmpfYPm/l45NrrviZWtyqXjcxiG1d5cp1NsCIiz
+	 IPNDvk9v3vchHZ5BKX17qr86/QxlBbYJSv8EG5AXnPUmh3/5LqcXm6z+5adm37njR+kIH
+	 4RKEhuUChQ92/GjevtR8iQ/ql+8nxLLogO0PCp9B/2Zw5b7XISTHJaPLTojgYUbT4yq0Q
+	 159B/wR8M+DJn5xGOu/c46mCOulQZfM+wVxEkgSSn6iTYMLwUtG/ZAcXpqYYrbr0Vqkb1
+	 FTSpTJRJQYToMLuCGkPpRR2tScBA7X4Ly1dicfQL8J8PwxjO0rUe79YsdvwHFhY872g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793739372;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
+	b=lEIn4GgFsegMYxID9Cs1IQUEZ4rrElzaoCu9FeQQ3k+TBjwVIy4au9fLFV1iu/nPV9Ba
+	 uiQ3hFhrkGyUISxJyB0a/0zNuqqhqjK7qzK/1lKma4ZgCIYWqn/OAbE6S/gP2Uv441Y8O
+	 MryhU+YKukgHA/4lZd8dCiZ8zXa3rbWOQaNYsrEqvNKnR3BNu2aEkLhqMe0EMPKClUh1V
+	 MSLRFoPh+4UXC4bJnzPIZI7s5D1SQnRTIYpOMTNuFXkg+AolEEAlVfDQ4a+Kiy650ZLE/
+	 N2CEhKG9b+qnEfcfSqrxpChmfSc1aNSvj8EPNts4+JXa1SUHId1zg6icZFHi5LswOXQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=temperror header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K2U+Oy10;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EvRt06rc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AA6606A326
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 20:56:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7AA6606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WIwAUoRY
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 277021595;
-	Tue,  3 Nov 2026 12:37:19 -0800 (PST)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 900353F628;
-	Tue,  3 Nov 2026 12:37:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793738242; bh=XNxs1q7RvEvtnhfmFbzH+UCtgdjM+7kwwuvH4wf38QM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WIwAUoRYbdxoJrZAO4JhML2zcaHQrSFnQStEcdCxEEz3QsJYEAS3Xx5mxpTwxHrq8
-	 H/qwyh5aWqxrCkV+u4L9w3gADSoY9lDcJYkgeA4mwUXTEUcF38b216uxNICrkSVxH2
-	 6STMjkgsZkkQlNJ2J+tLf5WMqhwcZMK+FlhL4hCM=
-Date: Tue, 3 Nov 2026 20:37:07 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Sascha Bischoff <sascha.bischoff@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, 
-	lpieralisi@kernel.org, timothy.hayes@arm.com, fuad.tabba@linux.dev
-Subject: Re: [PATCH v2 03/16] KVM: arm64: gic-v5: Share CoreSight ID register
- emulation
-Message-ID: <4lhdtngikzekvcvhkd4zknnnqdh7a3mih7i72smfzwsnnjcmfh@ri2clwyj4nqm>
-References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
- <20261102194454.4086911-4-sascha.bischoff@arm.com>
+	dkim=temperror header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K2U+Oy10;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EvRt06rc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793739360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
+	b=K2U+Oy10KM7Fc26c+kfydX9SUQLUfffKBND5sj+eSD0LEY9d9YqukUSYgwBvZBi+KxXuM+
+	87vykFB79Bv01VmS7OQaMhjr7NcQaHvgky6swFzN7C6lyODuQGy9IqX9WliehVpLyd2btC
+	0GGrxq5Cxr6fUedADKPHWhzuYJrrHjg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-Wl5UNATINwSighYXAmz4HA-1; Tue, 03 Nov 2026 15:55:59 -0500
+X-MC-Unique: Wl5UNATINwSighYXAmz4HA-1
+X-Mimecast-MFC-AGG-ID: Wl5UNATINwSighYXAmz4HA_1793739358
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48af5a07314so8794f8f.2
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 12:55:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793739358; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hsaV9jiAr76J2Bu6uJT2ybfCnjNJTvClEvvghEsQou8XRk+VybjhB4a9TSgQdHAFZP
+         8QC/lLD2XJmUjPxyUYSxKvA+ZtSOygodbL1dZjwrf9r0zlKFycsuEUWNLBFr8E1B1x+g
+         Q93DEvyjmpc94Sr0zmNU170HKj0awX4rsUoOnDEUHXG1Mgc3KRtL2v4SnnR3DHbvky8X
+         uskDmkylXR2iFti9RRn1+/jK0K2GIzxpCO+IGoeiGGqqeelnfVzMGzYp1DGu9vWtw4pQ
+         ppCjfggoDWhrkqbxhvU0bkB21lPkPrtPSsyoB5e6g3EKZB5qId2TpUraYhZRYC0Lcj9r
+         ak5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
+        fh=iEIkph2cRxSC+Sn884Mz2bIiXVWbXPngMtDjczTeepk=;
+        b=QaawTTUFcSY6E5DqZlEUw8/szmpXQzIobk0qp4W/+JEcLdBcSH0ie242+R0Kobeut9
+         tSO2G08A9AEGCzVcRwMO/8LvUN02xB9SYAolbjSQAxRUcSWWWvfssuNZsa9gF/MjgcEo
+         Y6F6YVgLO5HJW88f/PC9WCoXgMvq3xQ28FH7FFtuYwQiUq5Opuutj56qXhXl144Dlc3k
+         kHI1w8dNoljXUd8JMfuFCkbtM/j6SDkqXc2Chc/5Z488VJz+RYLsAPGO6asLcNsYb9yZ
+         CgccJx5OgXEGiWRbT7LGZwPG8NWLcSyGY0ZhzVzTvdLQTFJDNjaoicB+sJnq6yA8APWX
+         djVw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793739358; x=1794344158; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
+        b=EvRt06rcENLPGZTISqugrXcti/3DIXMpcTLyZXzDagPNxAays0a7NDHqvSUKlLvkuG
+         dtwiPancTukm9o29Jik0KyD/5j2pnfNEuT88IyFwbIpsrYwexGaOccAVHzpvcLvEUjhF
+         qLgjuLFApK7lAfd5NNegmmGvpeeusEvbZfSQ8u/k/qODM8oTHxkzACvOdLPixBlZlDin
+         ZtQgLJCWcCIrAAZGhydl1CeQNR01MV/wFfJmk7VpFb7RSwugdN/8u8dEeUM5g5/5Ns6B
+         U1sTGln7qQHmzmEkBb/uG5Qrpb1wsj9GlG5rrGwULFuDwR7wJJPxkw1kNSs+IoMEt7Vw
+         +qDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793739358; x=1794344158;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
+        b=2yuy5XmtGclSyLUvAgw/p9ZjKlpZ2AR61wywv+BdBrO/IQLRi9o1jk7VMPrzehdtew
+         ZJqegZ7lb3WGwA/JHjcF7OWL/zHc/sl5knwIFli6Z6629Ml8Ov5FSqTifeM8J+H7nIU+
+         RGSrm0s2sMnolGFtRq/907acsvdgfPH4zfQrfwfW6vA+V0UMphgsfb3Gki7sf9jEVk/q
+         50lgGSRKHgBMXl6EpeD2GHEE1igPgGsdQ4bL/ySQ8s3t98RIV+opzW2cunod6CjC5cHh
+         OCp2IfWxTLdRWyf3pjK99KZSvRPpQkOm2Y6UIRxD/r7OK3BsLgU0SgHooG3702TMNlVa
+         1qtg==
+X-Forwarded-Encrypted: i=1; AKwUvBy3cYhma5gQrDa+j+V2dzErIlvxsSeRosBfxkrCrl8iVzI25JINtai4480W1CzXfo0n0Ck=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+4tISSj1q9m3ke+LxwDosFT3trs9f8M1UlqBAhBPjBJGeASBcD
+	JxxHsJo+/I09Ucbu9AH4Dd9ItMVAvtojUAtECGUwH7gtctcj+TXM6UFoCFJSCv4KY+fuUm0pZbQ
+	i1jvl9PTDAZLw75dVkyRurY08qqx6F/qzvJ3SBsoh2cnxc3412DnbhmV+4apdNJkjih4xBBhOLn
+	Cve1NoFu0TOgOIaNyIBaZSPx+Cmuzj
+X-Gm-Gg: AYBFou3Gc8/qxiqc0plq8EQa7ArUv+cGqt/ZXGDkaA3Db3RTeB2yrMc3qsNwqQ9xPty
+	KMleUJ4xIj3l7PJ/8GJMIVwywcA0141lOAyPgRQY8Ikbwtd+r2BLkhmUKdCa+EYgy1Sov+cppEF
+	TgNfPtM9L2AGhc6giakl5MiWs8Y/Hc7frk0IuRcfO8+wL6SjggVv5dt4fOYt+gr9GpjQ+LASTdJ
+	p72pUh3ED868ukWGxJPvtMTCZDJV/8XlERZYfj/phCYeDO2IYJlvasr0WSv
+X-Received: by 2002:a05:600c:811a:b0:4a6:b49f:9ae5 with SMTP id 5b1f17b1804b1-4ac18e5dac8mr298620525e9.34.1793739358099;
+        Tue, 03 Nov 2026 12:55:58 -0800 (PST)
+X-Received: by 2002:a05:600c:811a:b0:4a6:b49f:9ae5 with SMTP id
+ 5b1f17b1804b1-4ac18e5dac8mr298620325e9.34.1793739357803; Tue, 03 Nov 2026
+ 12:55:57 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,131 +122,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102194454.4086911-4-sascha.bischoff@arm.com>
+References: <20261103124930.2278671-1-pbonzini@redhat.com> <20261103124930.2278671-2-pbonzini@redhat.com>
+ <aunzE4yywHJOqsk4@google.com>
+In-Reply-To: <aunzE4yywHJOqsk4@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 3 Nov 2026 21:55:45 +0100
+X-Gm-Features: AclHuK9NbLFeA4rOMmjWiElPvRKkJKekyTJisFXX1WKeTFZUAYkS3xpedGH9E5s
+Message-ID: <CABgObfbvv-fQnC35EU+TxEtNMyYA0wgJ-nA_2B1eqKrZ_2qqkQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: register asynchronous page fault waits with
+ interrupts disabled
+To: Sean Christopherson <seanjc@google.com>
+Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
+	Hillf Danton <hdanton@sina.com>, Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, 
+	stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 02, 2026 at 07:44:41PM +0000, Sascha Bischoff wrote:
-> The GICv5 IRS and ITS expose the same CoreSight identification register
-> block. Move the register-value switch into a shared helper and describe
-> the contiguous ID register range with one register-region descriptor.
-> 
-> This keeps the IRS behaviour unchanged while giving the ITS MMIO
-> emulation a helper it can reuse when it is added in the following commit.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-irs-v5.c  | 75 +++---------------------------
->  arch/arm64/kvm/vgic/vgic-v5.c      | 34 ++++++++++++++
->  arch/arm64/kvm/vgic/vgic.h         |  1 +
->  include/linux/irqchip/arm-gic-v5.h |  2 +
->  4 files changed, 44 insertions(+), 68 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-irs-v5.c b/arch/arm64/kvm/vgic/vgic-irs-v5.c
-> index 8d0ad74ebc64a..d0ebed2e1663b 100644
-> --- a/arch/arm64/kvm/vgic/vgic-irs-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-irs-v5.c
-> @@ -520,38 +520,9 @@ static void vgic_v5_mmio_write_irs_ist(struct kvm_vcpu *vcpu, gpa_t addr,
->  static unsigned long vgic_v5_coresight_read(struct kvm_vcpu *vcpu,
->  					    gpa_t addr, unsigned int len)
->  {
-> -	const size_t offset = addr & (SZ_64K - 1);
-> +	u32 offset = addr & (SZ_64K - 1);
+Il mar 3 nov 2026, 15:43 Sean Christopherson <seanjc@google.com> ha scritto:
+>
+> On Tue, Nov 03, 2026, Paolo Bonzini wrote:
+> > KVM cannot use a node on the stack like kvm_async_pf_task_wait_schedule() does
+>
+> Oh!  Yes, KVM can!  If we fully handle the PV async #PF in vcpu_enter_guest(),
+> then the node can be put on the stack, right?  Juggling preemption and guest
+> timing is heinous, but on the plus side it consolidates the PV async #PF code,
+> so I think it's a net positive?  Especially when factoring in the node stuff.
+>
+> Fully handle PV async #PFs (when running as a KVM guest) before enabling
+> IRQs so that it's impossible for the current task, i.e. the vCPU task, to
+> be preempted before invoking kvm_async_pf_task_wait_schedule().  This will
+> allow the guest-side async #PF code to eliminate its dummy allocation,
+> which is needed only to handle the case where the page ready notification
+> is delivered before handling the not-present #PF.
+>
+> Add dedicated handling for PV async #PFs instead of wrapping/piggybacking
+> kvm_x86_ops.handle_exit_irqoff(), as the act of handling an async #PF may
+> enable IRQs and schedule out the current task, i.e. needs to be done just
+> before KVM itself explicitly enables IRQs, and needs to enable preemption
+> before calling into the kernel's PV async #PF handler.
+>
+> Opportunistically wrap the code with CONFIG_KVM_GUEST to help document the
+> context, and drop the CONFIG_KVM_GUEST=n stubs.
+>
+> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 
-nit: I think we can keep the const here?
+More like Instigated-by. :)
 
->  
-> -	switch (offset) {
-> -	case GICV5_CORESIGHT_DEVARCH:
-> -		return GICV5_CORESIGHT_DEVARCH_VAL;
-> -	case GICV5_CORESIGHT_PIDR4:
-> -		return GICV5_CORESIGHT_PIDR4_JEP106_CONT;
-> -	case GICV5_CORESIGHT_PIDR5:
-> -		return GICV5_CORESIGHT_PIDR5_RES0;
-> -	case GICV5_CORESIGHT_PIDR6:
-> -		return GICV5_CORESIGHT_PIDR6_RES0;
-> -	case GICV5_CORESIGHT_PIDR7:
-> -		return GICV5_CORESIGHT_PIDR7_RES0;
-> -	case GICV5_CORESIGHT_PIDR0:
-> -		return GICV5_CORESIGHT_PIDR0_PART_0;
-> -	case GICV5_CORESIGHT_PIDR1:
-> -		return GICV5_CORESIGHT_PIDR1_DES_0_PART_1;
-> -	case GICV5_CORESIGHT_PIDR2:
-> -		return GICV5_CORESIGHT_PIDR2_DES_1;
-> -	case GICV5_CORESIGHT_PIDR3:
-> -		return GICV5_CORESIGHT_PIDR3_REVAND_CMOD;
-> -	case GICV5_CORESIGHT_CIDR0:
-> -		return GICV5_CORESIGHT_CIDR0_VAL;
-> -	case GICV5_CORESIGHT_CIDR1:
-> -		return GICV5_CORESIGHT_CIDR1_VAL;
-> -	case GICV5_CORESIGHT_CIDR2:
-> -		return GICV5_CORESIGHT_CIDR2_VAL;
-> -	case GICV5_CORESIGHT_CIDR3:
-> -		return GICV5_CORESIGHT_CIDR3_VAL;
-> -	default:
-> -		return 0;
-> -	}
-> +	return vgic_v5_handle_guest_coresight_idreg_read(offset);
->  }
->  
->  static unsigned long vgic_v5_mmio_uaccess_read_irs_status(struct kvm_vcpu *vcpu,
-> @@ -903,45 +874,13 @@ static const struct vgic_register_region vgic_v5_irs_registers[] = {
->  				  vgic_mmio_read_raz, vgic_mmio_write_wi, 8,
->  				  VGIC_ACCESS_64bit | VGIC_ACCESS_32bit),
->  
-> -	/* CoreSight identification registers */
-> +	/* Split the ranges so KVM_HAS_DEVICE_ATTR only reports actual registers. */
+The main advantage would be that it bypasses the missing lock issue
+that Sashiko reported, but I don't know... That;s surely nice, but at
+the same time it is not great having to add a new callback, and to
+duplicate the guest_time_exit/preempt_enable code into
+kvm_handle_pv_async_pf().
 
-Would "Split the CoreSight range into two to account for the gap
-between DEVARCH and PIDR/CIDR registers." be clearer?
+Not that the extra field in vcpu->arch is beautiful, I admit that, but
+it seems extra unwarranted complexity.
 
-Thanks,
-Wei-Lin Chang
+Unless you insist I will send a v2 that takes the lock properly.
 
->  	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_DEVARCH,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> +				  vgic_v5_coresight_read, vgic_mmio_write_wi,
-> +				  4, VGIC_ACCESS_32bit),
->  	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR4,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR5,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR6,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR7,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR0,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR1,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR2,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_PIDR3,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_CIDR0,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_CIDR1,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_CIDR2,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> -				  VGIC_ACCESS_32bit),
-> -	REGISTER_DESC_WITH_LENGTH(GICV5_CORESIGHT_CIDR3,
-> -				  vgic_v5_coresight_read, vgic_mmio_write_wi, 4,
-> +				  vgic_v5_coresight_read, vgic_mmio_write_wi,
-> +				  GICV5_CORESIGHT_PIDR_CIDR_SIZE,
->  				  VGIC_ACCESS_32bit),
->  };
->  
+Paolo
 
-[...]
