@@ -1,118 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793739372;
-	b=bIvKQC755dvoqJBYzU+S4Q8tdW9/EYmpfYPm/l45NrrviZWtyqXjcxiG1d5cp1NsCIiz
-	 IPNDvk9v3vchHZ5BKX17qr86/QxlBbYJSv8EG5AXnPUmh3/5LqcXm6z+5adm37njR+kIH
-	 4RKEhuUChQ92/GjevtR8iQ/ql+8nxLLogO0PCp9B/2Zw5b7XISTHJaPLTojgYUbT4yq0Q
-	 159B/wR8M+DJn5xGOu/c46mCOulQZfM+wVxEkgSSn6iTYMLwUtG/ZAcXpqYYrbr0Vqkb1
-	 FTSpTJRJQYToMLuCGkPpRR2tScBA7X4Ly1dicfQL8J8PwxjO0rUe79YsdvwHFhY872g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793739372;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
-	b=lEIn4GgFsegMYxID9Cs1IQUEZ4rrElzaoCu9FeQQ3k+TBjwVIy4au9fLFV1iu/nPV9Ba
-	 uiQ3hFhrkGyUISxJyB0a/0zNuqqhqjK7qzK/1lKma4ZgCIYWqn/OAbE6S/gP2Uv441Y8O
-	 MryhU+YKukgHA/4lZd8dCiZ8zXa3rbWOQaNYsrEqvNKnR3BNu2aEkLhqMe0EMPKClUh1V
-	 MSLRFoPh+4UXC4bJnzPIZI7s5D1SQnRTIYpOMTNuFXkg+AolEEAlVfDQ4a+Kiy650ZLE/
-	 N2CEhKG9b+qnEfcfSqrxpChmfSc1aNSvj8EPNts4+JXa1SUHId1zg6icZFHi5LswOXQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=temperror header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K2U+Oy10;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EvRt06rc;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793739592;
+	b=2qkectSVUD4/H/MQjovTvg7VYxRz6ZwaRka9y/+hBnJWxAdikCGY8wIKjV8dNUZNZ5Q7
+	 d/zDQWFItKLkmtZpDuqrlh+IOwHBCo+bEUI2fCthWFJqhfEwFYOyQW0uMfd6BS5BSsswu
+	 nLzM4xA6EBgShff1DckT3JFNQhgeU59GoT7QAuBhe2/J9qIjir9anCIdWkTnbh3E5V4T5
+	 v8kN9GiYImOksEVqrmUPHRRA1/Sac0oTrPtR4xT0YKSO4Q5c5EwHg3lIs7+R/1Lp7xqyE
+	 7KWG+eSJ4buOTRXKAZllFUtX0XZxg8HiJ1hrkdgO0j5qCZx56VltlqnGpQbdQoJdO/g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793739592;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=2lqPU1i/NYd7KL1kWuqVHp4WfF9iJW5OIp18EbwlBIc=;
+	b=f2tkLnyNxq6zbBoOUgLyqzhj9ZL1h3EJzx5+3dws1ivR250yTwOAXSf2FUxnjY9L492z
+	 y+gXfPQxdwqg2Y8ieao1sf/rKT8QyrFG7GsXGrQxOFwaEhjndzwOsKEiWndzl/k2mjz/a
+	 pb1igJHClGIfXN5I4R3vYrpXs1kiNDtEtc2gcuac0rCe7AXAzFsZxH9iws1y8sTUFSDpN
+	 n84JX+ikBcFPXq77nbypH0r0GUC8MUHy48kPeXeNGvZs2iR7T8zvKK9iUy+WSecaZ9udr
+	 BI7X8Qe44eCUlRLbmYtZyK4ATQooFzEMcdo18qkuIulmHbpE6omeqfRYS95V8MWoxGQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NBd+gJib;
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AA6606A326
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 20:56:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7AA6606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B683606A32E
+	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 20:59:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B683606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K2U+Oy10;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EvRt06rc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793739360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
-	b=K2U+Oy10KM7Fc26c+kfydX9SUQLUfffKBND5sj+eSD0LEY9d9YqukUSYgwBvZBi+KxXuM+
-	87vykFB79Bv01VmS7OQaMhjr7NcQaHvgky6swFzN7C6lyODuQGy9IqX9WliehVpLyd2btC
-	0GGrxq5Cxr6fUedADKPHWhzuYJrrHjg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-Wl5UNATINwSighYXAmz4HA-1; Tue, 03 Nov 2026 15:55:59 -0500
-X-MC-Unique: Wl5UNATINwSighYXAmz4HA-1
-X-Mimecast-MFC-AGG-ID: Wl5UNATINwSighYXAmz4HA_1793739358
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48af5a07314so8794f8f.2
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 12:55:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793739358; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hsaV9jiAr76J2Bu6uJT2ybfCnjNJTvClEvvghEsQou8XRk+VybjhB4a9TSgQdHAFZP
-         8QC/lLD2XJmUjPxyUYSxKvA+ZtSOygodbL1dZjwrf9r0zlKFycsuEUWNLBFr8E1B1x+g
-         Q93DEvyjmpc94Sr0zmNU170HKj0awX4rsUoOnDEUHXG1Mgc3KRtL2v4SnnR3DHbvky8X
-         uskDmkylXR2iFti9RRn1+/jK0K2GIzxpCO+IGoeiGGqqeelnfVzMGzYp1DGu9vWtw4pQ
-         ppCjfggoDWhrkqbxhvU0bkB21lPkPrtPSsyoB5e6g3EKZB5qId2TpUraYhZRYC0Lcj9r
-         ak5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
-        fh=iEIkph2cRxSC+Sn884Mz2bIiXVWbXPngMtDjczTeepk=;
-        b=QaawTTUFcSY6E5DqZlEUw8/szmpXQzIobk0qp4W/+JEcLdBcSH0ie242+R0Kobeut9
-         tSO2G08A9AEGCzVcRwMO/8LvUN02xB9SYAolbjSQAxRUcSWWWvfssuNZsa9gF/MjgcEo
-         Y6F6YVgLO5HJW88f/PC9WCoXgMvq3xQ28FH7FFtuYwQiUq5Opuutj56qXhXl144Dlc3k
-         kHI1w8dNoljXUd8JMfuFCkbtM/j6SDkqXc2Chc/5Z488VJz+RYLsAPGO6asLcNsYb9yZ
-         CgccJx5OgXEGiWRbT7LGZwPG8NWLcSyGY0ZhzVzTvdLQTFJDNjaoicB+sJnq6yA8APWX
-         djVw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NBd+gJib
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd0cf3b1c70so29315a12.3
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 12:59:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793739358; x=1794344158; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
-        b=EvRt06rcENLPGZTISqugrXcti/3DIXMpcTLyZXzDagPNxAays0a7NDHqvSUKlLvkuG
-         dtwiPancTukm9o29Jik0KyD/5j2pnfNEuT88IyFwbIpsrYwexGaOccAVHzpvcLvEUjhF
-         qLgjuLFApK7lAfd5NNegmmGvpeeusEvbZfSQ8u/k/qODM8oTHxkzACvOdLPixBlZlDin
-         ZtQgLJCWcCIrAAZGhydl1CeQNR01MV/wFfJmk7VpFb7RSwugdN/8u8dEeUM5g5/5Ns6B
-         U1sTGln7qQHmzmEkBb/uG5Qrpb1wsj9GlG5rrGwULFuDwR7wJJPxkw1kNSs+IoMEt7Vw
-         +qDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793739358; x=1794344158;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+        d=google.com; s=20260707; t=1793739592; x=1794344392; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=wXKDb0shvTVmV3AagAoa11gS9VL7nY0cemZyFZyr2hY=;
-        b=2yuy5XmtGclSyLUvAgw/p9ZjKlpZ2AR61wywv+BdBrO/IQLRi9o1jk7VMPrzehdtew
-         ZJqegZ7lb3WGwA/JHjcF7OWL/zHc/sl5knwIFli6Z6629Ml8Ov5FSqTifeM8J+H7nIU+
-         RGSrm0s2sMnolGFtRq/907acsvdgfPH4zfQrfwfW6vA+V0UMphgsfb3Gki7sf9jEVk/q
-         50lgGSRKHgBMXl6EpeD2GHEE1igPgGsdQ4bL/ySQ8s3t98RIV+opzW2cunod6CjC5cHh
-         OCp2IfWxTLdRWyf3pjK99KZSvRPpQkOm2Y6UIRxD/r7OK3BsLgU0SgHooG3702TMNlVa
-         1qtg==
-X-Forwarded-Encrypted: i=1; AKwUvBy3cYhma5gQrDa+j+V2dzErIlvxsSeRosBfxkrCrl8iVzI25JINtai4480W1CzXfo0n0Ck=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+4tISSj1q9m3ke+LxwDosFT3trs9f8M1UlqBAhBPjBJGeASBcD
-	JxxHsJo+/I09Ucbu9AH4Dd9ItMVAvtojUAtECGUwH7gtctcj+TXM6UFoCFJSCv4KY+fuUm0pZbQ
-	i1jvl9PTDAZLw75dVkyRurY08qqx6F/qzvJ3SBsoh2cnxc3412DnbhmV+4apdNJkjih4xBBhOLn
-	Cve1NoFu0TOgOIaNyIBaZSPx+Cmuzj
-X-Gm-Gg: AYBFou3Gc8/qxiqc0plq8EQa7ArUv+cGqt/ZXGDkaA3Db3RTeB2yrMc3qsNwqQ9xPty
-	KMleUJ4xIj3l7PJ/8GJMIVwywcA0141lOAyPgRQY8Ikbwtd+r2BLkhmUKdCa+EYgy1Sov+cppEF
-	TgNfPtM9L2AGhc6giakl5MiWs8Y/Hc7frk0IuRcfO8+wL6SjggVv5dt4fOYt+gr9GpjQ+LASTdJ
-	p72pUh3ED868ukWGxJPvtMTCZDJV/8XlERZYfj/phCYeDO2IYJlvasr0WSv
-X-Received: by 2002:a05:600c:811a:b0:4a6:b49f:9ae5 with SMTP id 5b1f17b1804b1-4ac18e5dac8mr298620525e9.34.1793739358099;
-        Tue, 03 Nov 2026 12:55:58 -0800 (PST)
-X-Received: by 2002:a05:600c:811a:b0:4a6:b49f:9ae5 with SMTP id
- 5b1f17b1804b1-4ac18e5dac8mr298620325e9.34.1793739357803; Tue, 03 Nov 2026
- 12:55:57 -0800 (PST)
+        bh=2lqPU1i/NYd7KL1kWuqVHp4WfF9iJW5OIp18EbwlBIc=;
+        b=NBd+gJibaoQYskPfAkbrVrOzpoeJtBC0rrW8GDF0IBN1coriGAYyV3e0AbtkVf8ZLc
+         Z2H/K+jEUURxrbtPMgHIauEZTbxBvOW5MLkHkmtPLyB1eoN82pwSBZd4WKLnGpmRQJXZ
+         iAXrOnxAf7BYMZb4sAb0d75Bt0tHEk+Bsi/cBLhmBP/Lr6+Vq5cSbjKL5rnltGpxGIFg
+         RnvMIDH61RKmoVIi9jt0zL66xhgG6RWkYWtCbWdKlkwM+9EqGTFw0qYaVCMP/KXYcYuM
+         m3azISPBoD7KwfGcXGvtfKXxNTpJoOcntsXWd+ovflAEtitTrb9Qplazlalg+tDBSQB4
+         qxXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793739592; x=1794344392;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2lqPU1i/NYd7KL1kWuqVHp4WfF9iJW5OIp18EbwlBIc=;
+        b=2kHbroviwOoMYvNt0aSWreaiQxIV1Gwwv8IRx58wrMCnUfv3HxDV0T4dydS+VxsxWQ
+         3a0vcDOKnpw9cGve+IqMoXPUs2hlFBtCnmOSY/yBKuNkvhkbkgP+waa4/C7vrpPwet7e
+         ZSTYi9i3ul8nESPgh7rshMuDD8TC+b4nGrooKAkP/Frz2juQAhVqDimLqvC8UnIifhvI
+         tfIJxvfobtfGnpj/OsYHMbfQX+D/eRwZWW3cBVQ1kQYJjRADv1ARrHZHRCMjdGx3BRpB
+         mzdBYKeEEyjRJzjrRfEBEpaLR/+4Y43Y7vBWTa/bi2ug1jAixQMfxLwXZF5rC1O2ScQF
+         B9Ag==
+X-Forwarded-Encrypted: i=1; AKwUvByYQ6TTSwwaSC68oal2C12iLDdJRks/d25Vt/mWVGWzEGE2B/yS1wcuW4l4SGbyPnLqt3E=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8bdYaa4owTjki1FbsEA7PEXZD5oiQQOfCS7QdH7i6PW6N9KijU
+	zKvFvqIJhT43yITwNHVEx9k8EPeTjfbEf/v1Cc4lHP5W26ZtjapRUSleWoW3tgazT3idy3C1ntI
+	WkMiVjg==
+X-Received: from pjhw8.prod.google.com ([2002:a17:90a:5288:b0:3ae:c401:753])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d887:b0:3ac:8af9:4a77
+ with SMTP id 98e67ed59e1d1-3ae897c94e8mr12522138a91.10.1793739591455; Tue, 03
+ Nov 2026 12:59:51 -0800 (PST)
+Date: Tue, 3 Nov 2026 12:59:50 -0800
+In-Reply-To: <CALMp9eTdY3=1BrOYgov852VeAy3+Os7bvhWogvB0YF-JQrmtig@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -121,63 +79,80 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261103124930.2278671-1-pbonzini@redhat.com> <20261103124930.2278671-2-pbonzini@redhat.com>
- <aunzE4yywHJOqsk4@google.com>
-In-Reply-To: <aunzE4yywHJOqsk4@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 3 Nov 2026 21:55:45 +0100
-X-Gm-Features: AclHuK9NbLFeA4rOMmjWiElPvRKkJKekyTJisFXX1WKeTFZUAYkS3xpedGH9E5s
-Message-ID: <CABgObfbvv-fQnC35EU+TxEtNMyYA0wgJ-nA_2B1eqKrZ_2qqkQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] KVM: register asynchronous page fault waits with
- interrupts disabled
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
-	Hillf Danton <hdanton@sina.com>, Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
-	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, 
-	stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20261102231428.13523-1-pbonzini@redhat.com> <20261102231428.13523-5-pbonzini@redhat.com>
+ <CALMp9eT7cnBf6kSXZLWuMyG9a52QveWjzzLz3Z9E=kPuX_ahVg@mail.gmail.com>
+ <aukmeb9mV8b504T6@google.com> <CALMp9eTdY3=1BrOYgov852VeAy3+Os7bvhWogvB0YF-JQrmtig@mail.gmail.com>
+Message-ID: <aupLRleTJSIDTE9M@google.com>
+Subject: Re: [PATCH 4/7] KVM: nVMX: Process each host MSR entry at most once
+ when unwinding failed VM-Entry
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	stable@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Il mar 3 nov 2026, 15:43 Sean Christopherson <seanjc@google.com> ha scritto:
->
-> On Tue, Nov 03, 2026, Paolo Bonzini wrote:
-> > KVM cannot use a node on the stack like kvm_async_pf_task_wait_schedule() does
->
-> Oh!  Yes, KVM can!  If we fully handle the PV async #PF in vcpu_enter_guest(),
-> then the node can be put on the stack, right?  Juggling preemption and guest
-> timing is heinous, but on the plus side it consolidates the PV async #PF code,
-> so I think it's a net positive?  Especially when factoring in the node stuff.
->
-> Fully handle PV async #PFs (when running as a KVM guest) before enabling
-> IRQs so that it's impossible for the current task, i.e. the vCPU task, to
-> be preempted before invoking kvm_async_pf_task_wait_schedule().  This will
-> allow the guest-side async #PF code to eliminate its dummy allocation,
-> which is needed only to handle the case where the page ready notification
-> is delivered before handling the not-present #PF.
->
-> Add dedicated handling for PV async #PFs instead of wrapping/piggybacking
-> kvm_x86_ops.handle_exit_irqoff(), as the act of handling an async #PF may
-> enable IRQs and schedule out the current task, i.e. needs to be done just
-> before KVM itself explicitly enables IRQs, and needs to enable preemption
-> before calling into the kernel's PV async #PF handler.
->
-> Opportunistically wrap the code with CONFIG_KVM_GUEST to help document the
-> context, and drop the CONFIG_KVM_GUEST=n stubs.
->
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+On Tue, Nov 03, 2026, Jim Mattson wrote:
+> On Mon, Nov 2, 2026 at 4:10=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> >
+> > On Mon, Nov 02, 2026, Jim Mattson wrote:
+> > > KVM needs to do better.
+> >
+> > Meh, KVM is doing pretty darn good, all things considered.  Yeah, this =
+code sucks.
+> > But I'm not convinced the alternatives suck less.  We've gotten the set=
+ of missed
+> > consistency checks down to effectively zero, module the TPR mess that I=
+ do test
+> > by running warn_on_missed_cc=3Dtrue.
+>=20
+> I don't understand the TPR mess. The SDM says, "With the exception of
+> fields corresponding to virtualized APIC registers (defined in Section
+> 32.1.1), software may modify the virtual-APIC page referenced by the
+> current VMCS of a logical processor in VMX non-root operation. (This
+> is an exception to the general requirement given in Section 27.11.4.)"
 
-More like Instigated-by. :)
+Oh, I wasn't aware of that.  I agree, that gives us an "out" for vTPR, most=
+ly.
 
-The main advantage would be that it bypasses the missing lock issue
-that Sashiko reported, but I don't know... That;s surely nice, but at
-the same time it is not great having to add a new callback, and to
-duplicate the guest_time_exit/preempt_enable code into
-kvm_handle_pv_async_pf().
+> I would argue that this prohibits changes to VTPR between KVM's
+> software VM-entry checks and hardware VM-entry to VMCS02. If the
+> hardware VM-entry fails because VTPR has changed, section 27.11.4
+> gives KVM the freedom to implement whatever "unpredictable behavior"
+> we like. Yes, that probably does include loading MSR values from the
+> VM-exit MSR-load list, but why complicate things?
+>=20
+> Something like returning to userspace with
+> KVM_INTERNAL_ERROR_EMULATION following a prohibited write to an active
+> VTPR seems far easier--and cleaner. What am I missing?
 
-Not that the extra field in vcpu->arch is beautiful, I admit that, but
-it seems extra unwarranted complexity.
+My biggest concern is that KVM could kill L1 if an L2 coerces L1 into tryin=
+g
+VMLAUNCH/VMRESUME with invalid state.  KVM simply can't *know* that an unex=
+pected
+VM-Fail was due to the vTPR wrinkle.  Even if KVM re-checked state, it's po=
+ssible
+for the vTPR to be "restored" to a good value.
 
-Unless you insist I will send a v2 that takes the lock properly.
+I.e. if KVM exits to userspace with KVM_INTERNAL_ERROR_EMULATION, then ther=
+e's a
+non-zero chance of a false positive.  KVM could exit to userspace if and on=
+ly if
+it caught the guest red-handed, but then we'd still need this horrific code=
+ for
+the other cases, so that seems rather pointless.
 
-Paolo
+warn_on_missed_cc helps, but in practice it can't detect cases for which we=
+ don't
+have test coverage.  So *if* there was a bug that could be exploited by L2 =
+to DoS
+L1, odds are good warn_on_missed_cc didn't catch that hypothetical bug eith=
+er.
 
+Maybe with AI we can be 100% confident that KVM performs all of the VM-Fail
+consistency checks?  Again, I'm not opposed to alternative approaches, but =
+at the
+same time I don't feel a sense of urgency.
