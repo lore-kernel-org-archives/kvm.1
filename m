@@ -1,100 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793809864;
-	b=kGB7bCu5u/WlTB29uJ2ZGkhUAntYwQ5iaJdjFqUPqoIyVxNLUk0zTdmJXMXQ3tMlEABX
-	 rYhcKot/IbOslF3qxlUYxJBlvMhq04hunGAxjCeFecEE+zj6xAhQ3leAlY9ylIakfMXAt
-	 G00sLIo56TaaXvAXCM26PvevhLneQ2b/ZEzj7GoqGEIrlNGyggbAjyuT4IRFDqELdp4Ex
-	 +1AHVK0vVYf2R/3U42UZpMhxjM6w1FjjQVt8q4prVef7Dcr7UYINPIyR1ExrlsVlMT6Zx
-	 Kqo7hhBy6EBW+pmA6pUAZPtyfwmZl1NkQed+GVMgQZL1rU/f0mBwtUbgQhDV+snzhFA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793809864;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=NyjRNFEeE3nmYhNk8vaSRwH7n51z01zX9N7rg1mXM0E=;
-	b=PkMvzi8l4m6W0WFG5bj0y442Z5QfM7iuWQehCp/1utqe71liQcLSmv0vRkkbRakhnUId
-	 S5H742i9bQleUhVkFrjiNzrTdH79j171V3FC8KiTzCK6eruhJoywmtXemyo79NIcHn3al
-	 3SRnmFqAvIfeacRGYFYwVmCGqZuFEoajw6be6423BAOWKro7veZEvwPcFMTj9DzP+4+3L
-	 DNhXI/ObU9HD7w93X8SfW3QNuRZRH4h1jgz+hZQczO33/Yi2zR3irJcLAPg/ahhQhT+wf
-	 kxlbDIMrbRD6eXecwHc9mm2m1EzYVXO5fldZ8RZyWS7gg2GDpina3oGViypJtEe3tcw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OdxaJB4E;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793809980;
+	b=2cUYjC91f/HQ3T15JApfloT5LEthmt4l5gF5x479a/oFq7J1w9iGlHiTRlMgpcc+JpvX
+	 F74bvoQo7RjG1o2K1IvhWTdzjpts2wwhe7OBsJKBA2CfY7LlTnDFI3R0hnEccE9HJfHwZ
+	 Tf1H5ppjOezNoTBEuRjl7s5HuMdZ8/2JNhdZhRgvbsCVBeKEOVECUZs5/ugrwrS4TKZEH
+	 CNe4xCRW69KpGbF+1aufa4HQ3rwx0xCoLSFvqPTCrDwPLAvR+oFXSDsPbkhj4KLoyxiH/
+	 aWOn/l//s51/PdiWk4X8U1kDq+pY/HdeXgKvSyxDf8zwx2KUuhnb+51DMMtnc9HIUOg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793809980;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=qb2WFKlZgqsUyH8T4+nO5ZP9tYd2yloKMSgnPw3KZOQ=;
+	b=aTJsgDmznNftNxZP4jlcyIR0uRRzgZkXu5RfKU5aJqGBwhrLQJaFzyvhP6/uwlq0Tt+H
+	 YSuQdrkcePnEZyRfmDw8YRrn5Ef6o3tNeYeqAveFA4AP+s2LFOyQNQl0789skmsquw6Uj
+	 A/n83Cp3pHIGoWob9AZmM/rF0u/QEclvbdU9ACFgFYq8HvF6DJPdJ/AOSIadwPxD/7x4n
+	 7kq3W0UWZh1s8ydJWQGua5OO8vxL9FKZtjj29yC5tZQCQv639OF6G95xpNOEmdiIlSCar
+	 MaPjDOu5E5Bpvh3kymXaATPYqRDC2ak7R9HOr7a7UQzzMr3ZW7CQO6WnfLQCkSmr92g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L3b4XGg4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111C3606A329
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 16:31:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 111C3606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3930F606A31B;
+	Wed,  4 Nov 2026 16:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OdxaJB4E
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso12248a12.1
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 08:31:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793809862; cv=none;
-        d=google.com; s=arc-20260327;
-        b=epXpdjtQTNNm33yHkmjpVrgHJIG3wk0C9Xxi0qW35izbngdGckEOXI7Cyi6SgM5bEv
-         5SdzFQhmUMBICKoBZbgwUd0+HpJlj3qPyH427jRtnSIIj2tUnTtzVcoBKjORyBXhnifX
-         +66am/ADXMz8agfsf0p/hNUPjf5aT5xFb0IPnmOIrULDthUWwxCPa9T9b1f6ZH9aatAN
-         nbl+h+oChtSaFjC0pSZpDlL3XCibkQGPpkpBhei0lEmLG3S3y8Cfqw/9IwBjN/KnoxEm
-         jV9dnHQ7xYUAxZMEtrWoIsr54ILTLos237LW0imVm8YRCoUAHWeYFLEwFT7yFoQAjr/U
-         vMmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NyjRNFEeE3nmYhNk8vaSRwH7n51z01zX9N7rg1mXM0E=;
-        fh=/O9Xqg1uVfGnt9m8i56nQljtAWU0hjCRwdWu0X3mLhU=;
-        b=rwcAZu8zYiivuOdMN9k13bolJaprKcJV4Q5oHtrr2kA0y9RITgkNVcgC157nBJOzEv
-         OL1ugqALS0nF5qIJrt71QE7T8UYbOAum5KSMzVb5aTlqMag2kMGnxeMsu/T02Q3nhTvl
-         xSDbFVgVRIel2UomnmhnzzrUSOkrEv0cvODMgkekGHk1wyIB67w/UQ08c6fqnIk9Px/l
-         kwGlZd8BSnURc20/Q2tY6dzS2eaTe2/YQdeXAeer17QF6Wbb74umd0Vkmy17a3fJWMF8
-         noBZo+6yDt5ROzG7Hz8KuI6lkmutEbzYKZMdDxjFcgQL4BR/vHQc47eJSMAOG3sZs5VJ
-         vKDA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793809862; x=1794414662; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NyjRNFEeE3nmYhNk8vaSRwH7n51z01zX9N7rg1mXM0E=;
-        b=OdxaJB4EnDuV4Hidcru6kJitmdCqTBvMRu1+/AxM8mR29nxWHSzf1TGPtq08Q/FyeM
-         BqiQ5UWsRtRzykRX9dHeDcMk+iJsYuP0Kdmb/FZTBnu31lJYAGiEwb2qv4bwAIm5qaGL
-         IAHFIVaAlQ6RQHbPq3KVPxtIMj+aqGjGQz6ZxauYWKTClbyEeG1+dphKJcJLdKuhRKSF
-         u+0Tycys46CnLNZ0EObmu0V61pUHh0NUS71EPx9l3Ys2ZgQT5SXC5pwkna3a5yBsZ+cn
-         xLnBUt5xe4nNJKHPDJ61g3w9xSDjOZtQz1k8hoiXujknHw3C9rCYb8zZUkZTFkbh4cdD
-         ADBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793809862; x=1794414662;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NyjRNFEeE3nmYhNk8vaSRwH7n51z01zX9N7rg1mXM0E=;
-        b=PxpNHZvoyof7iJbtKj+poaL59L9NQleyZbcHMs6RknxkgZlKb+UAuymH2rp8K4NbvV
-         hVfZr/qqHN3C1UmlH09Y9s1Zfx3uQ99Y1nmBbj/WGVHa0nfO28JOVGy5TM0aqch2IIIK
-         okkA5W6oybIzb1ekW9kItKBYuHmR8zI+VteZOjhOeo12mak2zheAtOiZxaoj/Ieo+xXM
-         wlRfFKsK9S2nIvYBsvAs0lh/av2QkHf+9xypWOSRw+ZVSXhZzaoXznaaV6adqGwuTVLm
-         XuofxgMvo2f2CRmvpRDkweEkoWCdTHW6kfigBT09mK2jMgHZIPv/XSNiZRakwlw0T5uh
-         GSuA==
-X-Forwarded-Encrypted: i=1; AKwUvBwCS2jtt7WywMgJ1QuPkxhNWdZMQndTCnND/4zoTECoJgE5NnqE/fT/28/hPHVSAiKo7ww=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/ixhwHWbR9G80A95a3yy1NSIkyGNPA7ij3oHeZLYeBfIpbplf3
-	LpYeky1vn3nWz2Kel8cmj/SJEOP0jHxwOcY2JxMPbh0ru1eDq8uQTam1lNi32gjMIcd1t8xdWny
-	9KupYwOQywBrF4KLwcpTPBrezqCvkhgLchdUtkbkl
-X-Gm-Gg: AYBFou0hWCeC6VyWfLco18Ui69zvN2ltfb8ahHxd5PbZmAB37SNuQXil+mDYNgm/ugp
-	otOxa0JQEtoedl52T+iXyfcnN5oA/Fol3xe8gd0/BcKUNTi9rZwRxcH0LLx+kePVitOkmtZxFRu
-	Vslpn9sGan1p3VPLpn4TKWJJCqAwaobvIYPFiUILZr6sAAT8wlJrr6AOe3zlF1HRruYQ72lffzE
-	9o8ONj7H66RBvLuTsI/ltSgy7hmkYeO9yliL5rIV26TvjsWxWbCaMbnTBDgj+punm8gY58CKR2X
-	9fUajdlrnoR6ngWTxe0DXq/Q9pnZjIQJ0gbOo0PT+qb8+BFPNHvDDuQ8JkXjkUG7wVChpF55gL/
-	FcNqEFypHbJRvAZ6pFoAZJGxx8rSAeaBFtsjQmxKgdHi7nzV1Cpn102T4QWfpJwMnkA==
-X-Received: by 2002:aa7:d647:0:b0:6b4:629a:6352 with SMTP id
- 4fb4d7f45d1cf-6b556219774mr85656a12.5.1793809861709; Wed, 04 Nov 2026
- 08:31:01 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L3b4XGg4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998031F000C1;
+	Wed,  4 Nov 2026 16:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793809979;
+	bh=qb2WFKlZgqsUyH8T4+nO5ZP9tYd2yloKMSgnPw3KZOQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=L3b4XGg4cIXjPIFn26VIa1dZGLo81odtlbJIP/eQOkI2sUf4U+fdgkNBks0F9vkfn
+	 jna47/hYUwgEym35NMspZNn8hBNf6L/g1pWGjVTb5ThWs9I3kORYE6VF+Vu8D+aNzI
+	 frxzqJSBaq/J1xzNzDZjSqq737aTdX8favRQbY/ShUiNMrqvuyPSdU3HTbyQzWX1sO
+	 h+CmghBVaijtaTp2FsohSG7Df10xY7MR3eY/B/OyQQgBrFGSqs8WneblOPlP1GeW5E
+	 6deE3iu3IzugaOOEuPvQ7kq1vOgMdYnYd7It5J7fgCKkAwok1ZLESQuzIZExHO7tlK
+	 0Pjpz8139JnWw==
+Message-ID: <sashiko-outbox-197622@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 03/15] virt: coco: tsm: Complete PCI registration
+ before publishing the device
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20261104161632.3547423-4-aneesh.kumar@kernel.org>
+References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
+ <20261104161632.3547423-4-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Nov 2026 16:32:59 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,138 +60,112 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261102230445.3993629-1-almasrymina@google.com>
- <20261102230445.3993629-4-almasrymina@google.com> <20261103102721.5d76c471@shazbot.org>
-In-Reply-To: <20261103102721.5d76c471@shazbot.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 4 Nov 2026 08:30:50 -0800
-X-Gm-Features: AclHuK-9GylVYqo-TMtSosiXb5Ui2K5HFBRmFtb7498f4BCUrjDMBqO1v8NJ_60
-Message-ID: <CAHS8izPfFpNQWLFW4Xgf_=vF5j37_Z7XDcuPMJXHj-KQzo=8jQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] vfio: selftests: Test BAR write faults after clear_refs
-To: Alex Williamson <alex@shazbot.org>
-Cc: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>, Alex Mastro <amastro@fb.com>, 
-	Matt Evans <matt@ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 3, 2026 at 9:27=E2=80=AFAM Alex Williamson <alex@shazbot.org> w=
-rote:
->
-> On Mon,  2 Nov 2026 23:04:45 +0000
-> Mina Almasry <almasrymina@google.com> wrote:
->
-> > Add a regression test in vfio_pci_device_test to verify that huge_fault
-> > on writable MAP_SHARED VFIO PCI BAR mappings handles write faults after
-> > soft-dirty tracking clears VM_SOFTDIRTY and downgrades vma->vm_page_pro=
-t
-> > to read-only via /proc/self/clear_refs ("4").
-> >
-> > Use vfio_pci_find_mem_bar() to locate a memory-backed BAR of at least
-> > 2 MiB that is safe to read and write, and zap existing BAR mappings via
-> > PCI_COMMAND_MEMORY before each sub-test to verify both:
-> >
-> > 1. Read-then-write fault sequence after clear_refs, exercising in-place
-> >    huge PMD/PUD write-protection upgrade via wp_huge_pmd()/wp_huge_pud(=
-).
-> > 2. Direct initial write fault on an unpopulated BAR VMA after clear_ref=
-s,
-> >    exercising vmf_insert_pfn_pmd()/vmf_insert_pfn_pud() with
-> >    FAULT_FLAG_WRITE set.
-> >
-> > Skip gracefully when the device has no known memory-backed BAR >=3D 2 M=
-iB
-> > or when /proc/self/clear_refs soft-dirty tracking (CONFIG_MEM_SOFT_DIRT=
-Y)
-> > is unavailable.
-> >
-> > Suggested-by: Alex Williamson <alex@shazbot.org>
-> > Cc: David Matlack <dmatlack@google.com>
-> > Cc: Matt Evans <matt@ozlabs.org>
-> > Signed-off-by: Mina Almasry <almasrymina@google.com>
-> > ---
-> >  .../selftests/vfio/vfio_pci_device_test.c     | 65 +++++++++++++++++++
-> >  1 file changed, 65 insertions(+)
-> >
-> > diff --git a/tools/testing/selftests/vfio/vfio_pci_device_test.c b/tool=
-s/testing/selftests/vfio/vfio_pci_device_test.c
-> > index 93c11fd5e081..323a316f59e7 100644
-> > --- a/tools/testing/selftests/vfio/vfio_pci_device_test.c
-> > +++ b/tools/testing/selftests/vfio/vfio_pci_device_test.c
-> > @@ -1,10 +1,13 @@
-> >  // SPDX-License-Identifier: GPL-2.0-only
-> > +#include <errno.h>
-> >  #include <fcntl.h>
-> >  #include <stdlib.h>
-> > +#include <unistd.h>
-> >
-> >  #include <sys/ioctl.h>
-> >  #include <sys/mman.h>
-> >
-> > +#include <linux/compiler.h>
-> >  #include <linux/limits.h>
-> >  #include <linux/pci_regs.h>
-> >  #include <linux/sizes.h>
-> > @@ -102,6 +105,68 @@ TEST_F(vfio_pci_device_test, validate_bars)
-> >       }
-> >  }
-> >
-> > +static void zap_bar_mappings(struct vfio_pci_device *device)
-> > +{
-> > +     vfio_pci_cmd_clear(device, PCI_COMMAND_MEMORY);
-> > +     vfio_pci_cmd_set(device, PCI_COMMAND_MEMORY);
-> > +}
-> > +
-> > +static int clear_soft_dirty_refs(void)
-> > +{
-> > +     ssize_t ret;
-> > +     int fd;
-> > +
-> > +     fd =3D open("/proc/self/clear_refs", O_WRONLY);
-> > +     if (fd < 0)
-> > +             return -errno;
-> > +
-> > +     ret =3D write(fd, "4\n", 2);
-> > +     if (ret < 0)
-> > +             ret =3D -errno;
-> > +     else
-> > +             VFIO_ASSERT_EQ(ret, 2);
-> > +
-> > +     VFIO_ASSERT_EQ(close(fd), 0);
-> > +     return ret < 0 ? ret : 0;
-> > +}
-> > +
-> > +TEST_F(vfio_pci_device_test, bar_write_fault_after_clear_refs)
-> > +{
-> > +     struct vfio_pci_mem_bar mem_bar;
-> > +     int ret;
-> > +     u32 val;
-> > +
-> > +     if (!vfio_pci_find_mem_bar(self->device, SZ_2M, &mem_bar))
-> > +             SKIP(return, "No memory-backed BAR >=3D 2M on %s\n", devi=
-ce_bdf);
-> > +
-> > +     zap_bar_mappings(self->device);
-> > +
-> > +     ret =3D clear_soft_dirty_refs();
-> > +     if (ret =3D=3D -ENOENT || ret =3D=3D -EINVAL)
-> > +             SKIP(return, "soft-dirty clear_refs unsupported (%d)\n", =
-ret);
->
-> My comment on v2 that this doesn't accurately test whether soft-dirty
-> is supported, potentially leading to a false pass still stands.
->
-> Please also have the courtesy to give reasonable time for review before
-> a respin.  Personally I would expect self review and testing to take
-> longer than the 80 minutes between David's feedback and v3.  Thanks,
->
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] virt: coco: tsm: stale sysfs update and commit reference in comm=
+it log
+--
 
-Ack, my apologies. Will do.
+commit 5fae6df00051f68d8e86275946ecd6ac727fb344
+Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+
+virt: coco: tsm: Complete PCI registration before publishing the device
+
+This commit moves PCI TSM registration ahead of device_add() in tsm_registe=
+r()
+so that a TSM device is not discoverable through class lookup while PCI
+registration can still fail, and rolls back PCI registration if device_add()
+fails.
+
+>     virt: coco: tsm: Complete PCI registration before publishing the devi=
+ce
+>    =20
+>     tsm_register() calls device_add() before initializing and validating =
+the
+>     PCI operations. This makes the new TSM discoverable through the class
+>     lookup while PCI registration can still fail. This ordering was intro=
+duced
+>     by commit 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link
+>     Encryption").
+>    =20
+>     An existing link TSM can keep the PCI connect attribute visible during
+>     registration of another TSM. A concurrent write naming the new TSM can
+>     therefore reach it through:
+>    =20
+>       connect_store()
+>         find_tsm_dev()
+>           class_find_device()
+>         is_link_tsm()
+>         pci_tsm_connect()
+>    =20
+>     If the new backend supplies both link and device security operations,
+>     pci_tsm_register() rejects it before taking pci_tsm_rwsem. The regist=
+ration
+>     thread then follows:
+>    =20
+>       tsm_register()
+>         tsm_register_pci()
+>           pci_tsm_register() -> -EINVAL
+>           tsm_dev->pci_ops =3D NULL
+>         device_del()
+>         put_tsm_dev() [cleanup guard]
+>    =20
+>     If connect has already attached a PCI context, its temporary device
+>     reference does not protect the stored tsm_dev pointer after the call
+>     returns. Registration cleanup can then free a TSM still referenced by
+>     that context. The original tsm_register_pci_or_reset() error path also
+>     had this problem: device_unregister() removed the class device and dr=
+opped
+>     its reference without tearing down an attached PCI context.
+>    =20
+>     Commit 37a73b0448ad ("tsm: Remove the device from lookup before PCI
+>     teardown") subsequently added the unlocked pci_ops reset shown above.
+>     That reset can also race with the connect path's accesses to pci_ops.
+>    =20
+>     Complete PCI registration before device_add() publishes the class dev=
+ice.
+>     On PCI registration failure, the TSM remains undiscoverable. If
+>     device_add() fails instead, unregister the PCI operations to roll back
+>     the counters and PCI sysfs visibility before releasing the device.
+>    =20
+>     With pci_ops initialized before device_add(), the class PCI attributes
+>     are created with the correct visibility, so remove the subsequent sys=
+fs
+>     group update. Keep the PCI change notification after successful device
+>     publication.
+>    =20
+>     Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Enc=
+ryption")
+>     Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+
+[Severity: Medium]
+Does the commit message match the actual changes in
+drivers/virt/coco/tsm-core.c?
+
+The final paragraph states that class PCI attributes are created with the
+correct visibility and that a subsequent sysfs group update is removed.
+However, in drivers/virt/coco/tsm-core.c, tsm_class only defines .name and
+.dev_release without any class PCI attributes or attribute groups:
+
+static const struct class tsm_class =3D {
+	.name		=3D "tsm",
+	.dev_release	=3D tsm_release
+};
+
+Neither tsm_register_pci() nor tsm_register() contained or removed a
+sysfs_update_group() call; the patch only reorders tsm_register_pci() before
+device_add(), adds pci_tsm_unregister() on the device_add() error path, and
+moves kobject_uevent(&dev->kobj, KOBJ_CHANGE) from tsm_register_pci() into
+tsm_register() after device_add().
+
+Also, the commit message references commit 37a73b0448ad ("tsm: Remove the
+device from lookup before PCI teardown"), which does not exist in the commit
+history because the preceding commit in the series is 2ae926219f58 ("virt:
+coco: tsm: Remove the device from lookup before PCI teardown"). Could the
+commit message be updated to remove the stale sysfs group description and
+reference the right commit?
 
 --=20
-Thanks,
-Mina
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104161632.3547=
+423-1-aneesh.kumar@kernel.org?part=3D3
