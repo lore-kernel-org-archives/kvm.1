@@ -1,109 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.131
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793792428;
-	b=QvdBdOJ5Rdm5QWdUJOUcT1oqAFWyH4XQKy019NIC6iMA8eoM1GICyIxjNui+arD2BDwZ
-	 h8rg75VG0AUsIrYUCxEMG9bHTVeOHwHec4whacnYpjiwY7mj/pSaH5mBsWIPE9rddfiX2
-	 wTmaFi+8n77XJRZqkN10PHVeXFdtLtrQjJTiV8C/wMVckT6be5O7RWiXhuK2UloGAfHiw
-	 44+TcU29rqPkx0Ek2ptw90YvOdXhxkyhJYPGMwpnMZ0jKvUPOOCNtku/Gw2seLFcfgH5d
-	 +ND4Vd38mPONZtGg+0YEeOKqhshX6wrhtpxDjs3pZSUA2F/rQSAGpjtD56u5RqhCIRA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793792428;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=tEpyqlnZnD5VvYTqFQOq2w5jDINj/Ab94LVMAq5qpNk=;
-	b=vmW5Jz/A/LSh12S2z+x06LUuRz2crDq3Tn/U3xRDo68UmZMlkYPpfsnvYLLnIe8yO/rr
-	 pXuz2378Arcthh7BVzWIjt2NxPds7QCUTdZngv57jBB8vyY/dGzZZYi88Cp8Vpsb2YCKT
-	 OaVEwnnSwIuCZRZatxXYZFAMUK787+uMSuNzseUymkazcGJCVsBBGaMOBkTe2Mt8heyLX
-	 0yG8gU34M9ZmMO7004Bva3TaHmG7kzFkx+x7gv0dHuxhBcZMIc6wH/EZSrJvb7nhhqFjQ
-	 LachcHX4A2kvkyAVDn4vZh5LRvY6HsnkkfBfhlIV8mfYbBICF7F8fXx8yVanqFplRiw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=virtuozzo.com;
-	spf=pass smtp.mailfrom=virtuozzo.com;
-	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=VZpptrcm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.131
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023131.outbound.protection.outlook.com [40.107.162.131])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793793330;
+	b=TdPGn+tCxOnjOAnKB8EuwTXKQF46x3O6kpGp51l6dU1ODJkSDcsalYyzWFXaF9IMD9GR
+	 SJVutqLCu9MFkEYruZqxR+eOJ1MFkVspzDSAQs3UxK/JqtU5YzEDsQZTDnRqkpJYeZn0+
+	 xM3ftPCJx/ZG43rUz7qOIz0yS9yxaqXzHWXnTLbCmRJlvkyYleEZHUkuAh2IKwSPaBZWj
+	 DMEiOKIPF0OUKw4Wr4QUgSl+s37nyHJg6U/xsW6tOHLnzBqs4NhqbsYH1F88D/l7JXXio
+	 QfQdedAHdTuWVBSqvWT7OM1TpR1hFhp+oythvhkbeoLc5qcJuLlUaXBktynIUCoERyg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793793330;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+	b=ZSvJUWnA1GmKv9JB9gj/84skjD8y1be8TKgvkMdfkhq8C9Xtl3IYYKN3BAXHHj7uL5dP
+	 Z58jxUWvVQpab+/q4OrvH00w8AEM7fDIQDKymq7otMqFd5j6AewzkVRkdsnM6Y8H/845L
+	 loIBreyZCBmoOwbGRIj1dZK9uqdqCj8pnfcsfRC7aEAtOBhYXXiqvQFrTaI2Q5YyYlszE
+	 VMtkB1+3IYovc3I2iwD+xCKDjHvYwxFul6uu4nh/ywi6ZiGRfbCftwjLg7WbXNkv+B7gz
+	 HyDK6RJ4G8N9HRccX1JrpvWyQRRs8upmnqHUu9G8NT7T8lkIYb5+TTXwFc3K7aRylGg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TVaEdkDf;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=OB90n+T6;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A012606A328;
-	Wed,  4 Nov 2026 11:40:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A012606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9CF606A329
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 11:55:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF9CF606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=VZpptrcm
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AhoMmdRUJj5P+qSS5cR9UvmWtU5iYiwbeXLlEYOX55c9hiZCNh8cOSflqf1Ywj5+0PzRFKAoQLEthJQwYVPXm7YYu8uxwYzTQpFLhGzUpigjwc6Vi7xE+VJdbtHTGWngGt3nv4u9VoXkw3qCJAQUDqTGfLNA6Omo8ax/2fhM0t++CJgz2LL1dh8oO3vV59+HoqOZ/My61xSWZqyLTIv4EDChg2E2J+rqC+vhZLwxkyprY1LmNKGguTr2xZw1cnBZQoBg7uK4FoSwQAVbNIYRTWcUbuSRILQKCWzuG5PDnRpGTOLVcpPRuL3hamtzHDGbR3qwhIRF3LPcSxfIK7LEug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tEpyqlnZnD5VvYTqFQOq2w5jDINj/Ab94LVMAq5qpNk=;
- b=IC9x1mzEFdcqMo0KwWvxRHxj5kOIiOIFrMI+Wg3o3Fu2r31wakKFHckSrB3JOLkqrtUBJokogxT6sZCcRhhPeBkvdppJyWFlmVDTnM1DkZa49CvrQoMwjKdeRZ39uYBm93EQ9VfkNRgwN3WHNxsn05HJ+WZyombsK9Fz2LKw25fir1II4XCGoJbEmug2ec7X95YZf3VQs9iML/wGlIl1LE0nEY7m7GjzL2rwtYsknbU1EaZNjvMJBLezmvN67/EqpwXjIDbdgAkgxMnW6DZ4Zw17Ik9Z+VsSeoLfCM8omB9WGZuUGUiN75L6sn7or4vv5s0Ijfx8UDxdXd3kSgeKnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tEpyqlnZnD5VvYTqFQOq2w5jDINj/Ab94LVMAq5qpNk=;
- b=VZpptrcmUdbrmRO2IagexqilVSYUFvzNYNK0TFUwk3+8HOtV5sdPwr9TANwpxj3j3nl+KQVxO9OGRZh5ZSp/Eo/n8FXhZXxMfMZ0WZF/1U7WFRI7ajbj6Ut/ISg0zd6xbg5vzL8Rw0rxUtc6r8ov04vHBuF6360nwPegpBT7p4Ibq58ZZaUgwoHQ+hFKMnAOm3L10PsW2nFgmzqvHCkCFrxrJogQuO75V6bB30eP9MO55VLO2XHaow47y3VHx+sPx1yjvvRK7pV3ZCCa17l0h+bEw6wPyjVzYPJmqjDMvPlv+npAPaEthMb6P/1fOCViDQfGaXBpBI8KAXatQ6jBFA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::9)
- by AM8PR08MB5698.eurprd08.prod.outlook.com (2603:10a6:20b:1c6::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Wed, 4 Nov 2026
- 11:40:23 +0000
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8]) by AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8%4]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
- 11:40:23 +0000
-Message-ID: <dd966816-a83d-47ea-8faf-bf80d3b2642e@virtuozzo.com>
-Date: Wed, 4 Nov 2026 12:40:21 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] mm/huge_memory: copy file THPs at fork like
- copy_present_ptes() does
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
- <8c164738-8025-482f-828a-3f919150a930@kernel.org>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <8c164738-8025-482f-828a-3f919150a930@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P251CA0020.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d3::9) To AS2PR08MB9075.eurprd08.prod.outlook.com
- (2603:10a6:20b:5ff::9)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TVaEdkDf;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=OB90n+T6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793793328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+	b=TVaEdkDfxu+ttcd49UN3hpPiddciRLBGKnCDr4WmMnvOSugZToqS2KUzwAa04Bg4Y4QyiH
+	0lOlD0LTy0F+jnjte0DVJSTswhGbPlLIMIGcGRwHFKzzjTYWTBZlTGQObCUt6KmXfluLON
+	NSE4d45xge7HYiNrXWRjVOz2gzypc1M=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-601-5zXneLTsPjq46qZ9COEj2Q-1; Wed, 04 Nov 2026 06:55:27 -0500
+X-MC-Unique: 5zXneLTsPjq46qZ9COEj2Q-1
+X-Mimecast-MFC-AGG-ID: 5zXneLTsPjq46qZ9COEj2Q_1793793326
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a2065a2ef9so6732945e9.3
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 03:55:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793793326; x=1794398126; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+        b=OB90n+T6u+KhZNTtac+ncEBveC4daHUIoBoha2vSI4QkWS+WGVy9IMvcMaJ4JMHjI+
+         YqAKfwIMs0Vg+0WR2zTiS/vl73B0hZ/Yh3JuJxBwwJWerUE9RQfYQUj+h+VSdyQw9lMJ
+         Q6ObvVZjyp2vU6UX7emvwNjEPiIh2UKVL0OPLQPZLOqSKi5dgO9b24ZYT1Q49yx+SNIH
+         VaUOaxqz8Och2oLTf3UIJE4x9rmje3Qxtu12sRPesPjJjLMd5/0rMVmTM3kSZtYV1Xpc
+         xLdAJqtsqvMUd5SXKDQGD1II6/vZprJjGateT3zlX+pLHIl8pqEQh5pKie60eB/FAJ5r
+         c6bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793793326; x=1794398126;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+        b=XeFWJkN7CKFz2iJpKFrbCBRWetiRVhmfT4cirTNk1/bEz5O/LsdjDx/C4BqDe/gQEa
+         DEhz0U/xlaaUABkJbFS/Lth3WIIIdQEj8Rekeu844xqvwFJQr54l0witOiXXQZidC2Fh
+         kzjq41P5uS79aRIbZ/uxMN0Bmu75iQwAuG9av2z0z64uK1FDu/MQUsKoZlvFwPJg90FB
+         OAvf7ASw9yVSc6rIsYVmoUuzJBgHrKfycD8Pa8codspmb4DDNScNg/TFNSQ6jNwpi5rH
+         QlEeEZWc8VuwLk5V4dwUIsd+52MmsCaRLbnvsxwZboDgycrNoywdHZdjNlp+zrYhK7JY
+         wa7w==
+X-Forwarded-Encrypted: i=1; AKwUvBz1PJgBJolNx8MYU4hwFu+AOOeyj66jwEUQUPilF7Co550quMqd4UPQXc9U5QeNasj6WSU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/1g9PxurmxWzTfEdgHSB/cFmfAHagmqHuGpfoNx/SDAec46Zqd
+	8wS/aX0Jh/vzWsiR2d0wNDdLllU6jgEeZ0wk29ANY56uo/+NDFznxwksEmphYRjrW0AZw+sVKkM
+	L4atWjmANcayCxzQApC/t6/nRI8j29RIA9BDFvoDnC6mHkBzOarsd6w==
+X-Gm-Gg: AYBFou3DlCAZJjah1lvtV76tBKURT7Wc/tsoaRzq7VM8Ln2029rAVXWms80wPQfcodv
+	PfkxpgvnIOb76ofjA5gVVuH8mo/27iYQruQJxURnkfpybQ7e8Cjc2qV/txMKizSwkDA00Oab6e0
+	8ElF976BwHQeWclLLuVPeZYSyrkoi+sgxRyH674RgodvkH6ts8VakC8pMtrr9qEHfkd9Ca3KmFp
+	0K6+9NN2oe1Kip6RxP8OQ03kP99VQLjcWqiNkosLOd4EfUw2DsjshxWVB9QxOjeIwCuXitb4SSf
+	KpZ8fP93dE2TOyE5UJANZMIckNcljTar6IMvK/6wT4H87awWnL3mDLgIT438olLWzypEHiv0OR8
+	pOWlebTibSukToXmV9jFkcLmWKuFyhXaEdquTW3Y+tA==
+X-Received: by 2002:a05:600c:1d28:b0:4a2:1612:637a with SMTP id 5b1f17b1804b1-4ac1793fb6bmr421627915e9.16.1793793326196;
+        Wed, 04 Nov 2026 03:55:26 -0800 (PST)
+X-Received: by 2002:a05:600c:1d28:b0:4a2:1612:637a with SMTP id 5b1f17b1804b1-4ac1793fb6bmr421627415e9.16.1793793325683;
+        Wed, 04 Nov 2026 03:55:25 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b4533873f0sm45067805e9.4.2026.11.04.03.55.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 03:55:24 -0800 (PST)
+Date: Wed, 4 Nov 2026 06:55:22 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Bobby Eshleman <bobby.eshleman@bytedance.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] vhost/vsock: size receive SKBs from declared
+ payload
+Message-ID: <20261104065405-mutt-send-email-mst@kernel.org>
+References: <20261004235101.1464007-1-4ncienth@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,119 +123,129 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS2PR08MB9075:EE_|AM8PR08MB5698:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c75a77a-1e0c-41b7-7d78-08df3a6869b2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|921020|261028144727099003|261022075727099003|261026121527099003|261009223027099003|4143699003|56012099006|261022105027099003|261026140227099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	du0WDII6tD1QtRG4Es493qUpdO0KTSKmDc83kboGkEgcTaXsuDczK5pjicAldwOk8vOIxDHCyeHcHbrQCl0LS8urebhLUuO8L5qu8+GCPmy0TMPJ4jOZZfR6ywf/7aQLofJ2OZSxqe8rg10UIeCAIoyvHhsFRZhT103KHHtYfDKK/yRl11xLpMNQIvwfdxeYBTaEfjCIpO+ksVoXUNteIuLXSIsAQ0gcA3VAx33HX7Rl4IR6mNOwbKZJ2h1LE7owuAQOR0LPMCZUUqs10of8RvQWTdOc/wsMEMCbpfZFcTaafeJzZLr7vzF4N7+pVOgPjBJwgig+9FguzuaHPX72/M+exZbswMIu2Rh4S72TXnwaGnMB8l/jLBgoL/44hxBzx3dRYjW3AZ9UdoyUYihutvwpyU6rYVMUYXpAA3x6F1OoCiwXXLnfaoL2kTV5tEnhZyjIF+WDx5WUE2eAiBwXwONzcieXOR8UquqGll0cOqB52op09OqO46JNmzSKYb6rB5RO+se4KzRkeI0nZEWXgFFA68ngaIZB7sZfjZUeBXc1C56UOl2cPHyDJmEmt+yMvxnK4jW79nQyFYlav9sZDuvPPsexKoq2KYNqRksrlbOPliDXatu3WDaCysvdiphDD+hpsjMeu6qG91s3+bk5zlJ2fXiVbkyobnjiLwMjYlSqVd0pR+khBi8dxik9TiT8t+dSAKIsyERwMlRap3RuYQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9075.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(921020)(261028144727099003)(261022075727099003)(261026121527099003)(261009223027099003)(4143699003)(56012099006)(261022105027099003)(261026140227099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Smw5V1RNTnVUa0sxTkQ1VytJQkdtaFBpemZVOGNaemZhMEl6RjZZdTlnV1Yv?=
- =?utf-8?B?aUZyWFpYcEFqOUxtb3ZjcTc3Vkt1dHF1UENTM3JJSTNoaEg4akU0VDVpZGhY?=
- =?utf-8?B?QmxQVm5yY1ByNzkyOFNFaCtBV3Y5RytTaER1Q3VhMUhMcFV2R0ZKTjI5ZEh3?=
- =?utf-8?B?S1FLdjBxR000Z2p3NU5xd3h2cEpPUXgvc2ZWMlhRUjdEZndpU0w2Z2pRa3hn?=
- =?utf-8?B?NFYzOXF0YzRRU2VoaEZrNkFRSzVMN3JRZ1V3Z0gxdGx6dU1KKzJSYitwWmI2?=
- =?utf-8?B?eUU5SzFTcm9UbE1iOTFzODhEZThOVTBGb0hybUE4cWh4UEYzTVZlNTRiNzYr?=
- =?utf-8?B?ZGVsbGdyS2t0a1M5TjVZSHVobGRmcXFMUFBkaGJSaU1JZ3pEK3FMQnRTVnEv?=
- =?utf-8?B?RjQ4djEvRUtNZVJ2blFuUlZxVDZ6WGoxdXM4LzhVakp5RVU0MlZvaUVPbUN3?=
- =?utf-8?B?b1VYZE9BQ3RRVEZvMWlyNDYrSXIzTTA4WWxGN3hSb2p3RmZhQWZ2WkxMSlJW?=
- =?utf-8?B?SUp5NklYOXJhY0lNMVRTcUM3MXFLcVZyOGdaZzdsbFNDOVRxdkt3c0dydmlP?=
- =?utf-8?B?S3l1QVRTZW1BQnIxUENBYXA4SGsycHZpY2RBcS9WclRhcDhlbkIwS0tKVjAy?=
- =?utf-8?B?dEk5SEtxWkpScVdKanJ0V3FvWU1MNkNFenVCdzM3MUhUQThpQmZra21xQjNQ?=
- =?utf-8?B?NkRHS20wZHhuODJWZTQvaFIySDhCaWs4enQwL1U4dUdtbVpqcjNSdDdZKzVz?=
- =?utf-8?B?NmFSeEZhbHAvTTV2bER4eWgxYTVBckpyQ2xRRjBFRDh2aEREVTFQTEZkd2VT?=
- =?utf-8?B?UkhKWDRNQlFLbDU5cDRXVjg3TS9Lc2lHR0MwcVJHR3puQmlvVGQ2Q1ZKOEUv?=
- =?utf-8?B?S0l3NGZpcEh0Z1J4UlN4L0NaWGpFeGdjOUhqSUxIdlBtR1BQS1FYU1AyekdW?=
- =?utf-8?B?UWprcDRLbmYxYjhjNXlnUUEyTXMrMHlPMHgrcHkrT2lKbDhaaHc2RmNvUlFY?=
- =?utf-8?B?bVk4OG81ZTdqcFBRNytpYVUvc25ReUdOY3htMm9pTSs5SUE4RHVTMTFsNndV?=
- =?utf-8?B?TFZUdXlWTUdlWjFJQnNsSWVOZ1NPOTArOHluMndYODQrdTdZNFFzcmZtdmdR?=
- =?utf-8?B?SjlRekpCRnZOT2tucUdMMDlCYlYwV1Z3SDlYRTZHYkZtZkZyNUhZZ1RMSjEx?=
- =?utf-8?B?eXBUOEluU25YNlpVS2I5WTYxcDdORzBrWFpmZ3ZxSStpOERIOEozb29WclhN?=
- =?utf-8?B?MGg5U1VjV0lzbTk0Y3p1THNGSHMwd1hMQk9YeC91YXltd2JGaEJocXBCTFRn?=
- =?utf-8?B?RnhPaCtpMEN1WDZSUzFKSmJVdUxTOVhaNUtuWXZXUWdpYTVZVk1aYitMdW1m?=
- =?utf-8?B?c0lXQ0FuNzlzYXBpNUhuSEtJWFBObUJzNFVCU3VtRitLOXpDUTFCMzJ5Zllh?=
- =?utf-8?B?bmxNWDZxQ3pNRlo2SExKTTRkWTZJRXhlaXd3NW5WZVBsRXljMHpYVVJENlo2?=
- =?utf-8?B?OEp6M0lRak1Va2Q0dkFuTTFhMU5paUZSM2pPd09hNlFwdDFjOElpNTl0RmFq?=
- =?utf-8?B?Wm1iWjhFbkxERENTSmVRTFVxVFNFdjdwVXBSNy9TMHBkQ2szNFkyZytDNnlU?=
- =?utf-8?B?Z2xBTVhBYlIrRzZqYlIyZmhOZXRicnl6VXpXbkU5V1I1L1lFWnNaeURCQ3pv?=
- =?utf-8?B?eXhwdmk0T2gydk1PaUU4OEsydzJuY210eDBIOTdURHRCd00xaFJsMnczaFcv?=
- =?utf-8?B?eGhlcnFyQXlRWUMzVURubW94V2xDVkFNWXIwT1I5eVhRQXJJbnl0azRrNVFE?=
- =?utf-8?B?eFBNc2JkaHFaUXVPa3N1T3oyMUVKSmMxNlV4bnZwUG9WZUNDMHRvK3BMQ0ZR?=
- =?utf-8?B?Wjl1dFNzVXRiL2M1dGlVWmxJUnNxR2ZFcVdQYmM2RElJdndhZGlnTWpjLzNr?=
- =?utf-8?B?SU5zZEVOYnFmOWQ5bm1vVXMzOENSNEdYVlA0WWVBZVRzazh6SzFUWnY5Ylo3?=
- =?utf-8?B?S0Z0UW51cEs2bEx5alZuQnpDUGR0U1RiTzgxMUJtQ2JSTG1aVmtQMk9EeVF2?=
- =?utf-8?B?ZlFacXY2cDFvM2U5eTdPRkNmeHRBa09jaGpoK1lWK0taUVJyeVR2WVhvRVp0?=
- =?utf-8?B?RzJQSXpGU1RDeEsyRng1YUhRR0kvTm5rdldxbU55S3NndEp2NzlFYzA2a0ZN?=
- =?utf-8?B?RndLOHlTZUlYL3BURWhLYVJQMnBKMGNtR1p4V2I2ZlZqcWNoZ3ZoUVdSQmRJ?=
- =?utf-8?B?cXl6SzRJbmh4dTdXei8xRENnYjlmeEc0aGxTQjJNQkhyRnFOSlhoK2lhbWx0?=
- =?utf-8?B?VkFjQkh5bVpNRTVwMVpxZUhHOGdMbEtOZWVFenhMOGhhRGZHUzhxZz09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c75a77a-1e0c-41b7-7d78-08df3a6869b2
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR08MB9075.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 11:40:23.5671
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P3eSZaW3NPD/Cs6l241/n5QE/ciGrsPY7UyL0q7Y7hd+U4YcOmwUhdzmRxXvq+3EqPEfjCb6Wcstp1mYUw5ziQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5698
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261004235101.1464007-1-4ncienth@gmail.com>
 
-On 10/27/26 15:39, David Hildenbrand (Arm) wrote:
-> Any reason we're not adding the vma_is_cow_mapping() check on the
-> softleaf_is_device_private_write() path as well?
->
-> (I think they are all anonymous ... just for consistency)
+On Mon, Oct 05, 2026 at 08:51:01AM +0900, Daehyeon Ko wrote:
+> vhost_vsock_alloc_skb() sizes the skb from iov_length(), the total guest
+> descriptor length.  virtio_transport_inc_rx_pkt() instead adds hdr->len to
+> rx_bytes and buf_used, and budgets each queued skb as SKB_TRUESIZE(0).  The
+> guest controls the descriptor length and hdr->len independently.
+> 
+> A guest can therefore provide a 64 KiB descriptor while declaring a zero
+> payload.  The descriptor-sized skb remains queued, rx_bytes and buf_used
+> remain unchanged, and only the fixed queue-entry budget limits retention.
+> This is not a lifetime leak: the skb is freed when dequeued or at socket
+> teardown.  Repeating this across connections can nevertheless exhaust host
+> memory.  On Linux v7.2, 455 such descriptors retained 30,255,680 bytes for
+> a 262,144-byte receive buffer; a full-payload control retained 265,984
+> bytes.
+> 
+> Vhost previously read hdr->len and allocated pkt->buf from that value.  The
+> conversion from virtio_vsock_pkt to sk_buff instead allocated receive skbs
+> from the descriptor length, introducing the allocation-accounting mismatch.
+> 
+> Copy the header into a stack object and validate hdr->len before allocating
+> the skb.  Size the allocation as sizeof(hdr) + payload_len so descriptor
+> capacity no longer determines queued memory.  Check payload_len against
+> len - sizeof(hdr) to avoid addition overflow on 32-bit hosts.
+> 
+> Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 
-No reason, copy_nonpresent_pte() has it there too. Will add in v5.
 
-> Is the fallthrough:
->
->       add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR)
->
-> really expected?
+Weird that this wasn't applied in net yet.
 
-Yes: copy_nonpresent_pte() counts migration and device private entries
-in the child's RSS as well. File folios reach it now, so the hunk below
-switches it to mm_counter(src_folio), as the PTE path does.
-zap_huge_pmd_folio() subtracts a file folio from mm_counter_file(), so
-MM_ANONPAGES there would leave the child's counters unbalanced.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
->> +    bool writable;
->
-> Why do we need this variable?
+let me know if you want me to apply this.
 
-It copies __copy_present_ptes(), which snapshots pte_write() before
-the uffd-rwp branch. Looking at it again, that branch only rewrites an
-RWP marker, which is PAGE_NONE and never writable, and vm_page_prot of
-a CoW mapping has no write bit either. So the snapshot looks redundant
-both here and in __copy_present_ptes().
+> ---
+> Changes in v3:
+> - clarify that queued skb memory is under-accounted rather than leaked, and
+>   explain why a zero payload is the strongest case;
+> - remove v1-to-v2 implementation rationale from the permanent changelog;
+> - correct the Fixes tag from ab9aa2f3afc2 to 71dc9ec9ac7d; and
+> - make no code changes.
+> 
+> v2: https://lore.kernel.org/netdev/20261004073419.4039011-1-4ncienth@gmail.com/
+> 
+> The issue was identified during an LLM-assisted source audit and confirmed
+> with a focused in-kernel probe on Linux v7.2.  The code diff is
+> byte-identical to v2, so its existing build and runtime results remain
+> applicable.
+> 
+>  drivers/vhost/vsock.c | 34 ++++++++++++++++------------------
+>  1 file changed, 16 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index abed1fbcf66cc5..35f75e23c7497e 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -364,7 +364,7 @@ static struct sk_buff *
+>  vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+>  		      unsigned int out, unsigned int in)
+>  {
+> -	struct virtio_vsock_hdr *hdr;
+> +	struct virtio_vsock_hdr hdr;
+>  	struct iov_iter iov_iter;
+>  	struct sk_buff *skb;
+>  	size_t payload_len;
+> @@ -382,34 +382,32 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+>  	    len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
+>  		return NULL;
+>  
+> -	/* len contains both payload and hdr */
+> -	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+> -	if (!skb)
+> -		return NULL;
+> -
+>  	iov_iter_init(&iov_iter, ITER_SOURCE, vq->iov, out, len);
+>  
+> -	hdr = virtio_vsock_hdr(skb);
+> -	nbytes = copy_from_iter(hdr, sizeof(*hdr), &iov_iter);
+> -	if (nbytes != sizeof(*hdr)) {
+> +	nbytes = copy_from_iter(&hdr, sizeof(hdr), &iov_iter);
+> +	if (nbytes != sizeof(hdr)) {
+>  		vq_err(vq, "Expected %zu bytes for pkt->hdr, got %zu bytes\n",
+> -		       sizeof(*hdr), nbytes);
+> -		kfree_skb(skb);
+> +		       sizeof(hdr), nbytes);
+>  		return NULL;
+>  	}
+>  
+> -	payload_len = le32_to_cpu(hdr->len);
+> +	payload_len = le32_to_cpu(hdr.len);
+> +
+> +	/* The pkt is too big or the length in the header is invalid */
+> +	if (payload_len > len - sizeof(hdr))
+> +		return NULL;
+> +
+> +	/* Allocate only for the payload declared in the header. */
+> +	skb = virtio_vsock_alloc_skb(payload_len + sizeof(hdr), GFP_KERNEL);
+> +	if (!skb)
+> +		return NULL;
+> +
+> +	memcpy(virtio_vsock_hdr(skb), &hdr, sizeof(hdr));
+>  
+>  	/* No payload */
+>  	if (!payload_len)
+>  		return skb;
+>  
+> -	/* The pkt is too big or the length in the header is invalid */
+> -	if (payload_len + sizeof(*hdr) > len) {
+> -		kfree_skb(skb);
+> -		return NULL;
+> -	}
+> -
+>  	virtio_vsock_skb_put(skb, payload_len);
+>  
+>  	if (skb_copy_datagram_from_iter(skb, 0, &iov_iter, payload_len)) {
+> 
+> base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
+> -- 
+> 2.55.0
 
-I'd keep it in this series so the PMD path matches the PTE one, and
-drop it from both in the cleanup together with the gotos.
-
-Kiryl, does that match your understanding of the PTE path?
-
->> +            goto copy_pmd;
->>      }
->
-> Likely we should clean this up later to avoid the gotos.
-
-No problem, but let's do it later, on top of this series.
-
-And on your stable question in 3/4: v5 will carry Cc: stable on patches
-1-3.
-The backport to 6.12 won't apply as is, so I'll do the backports once we
-get a failure mail on stable re-apply attempt.
-(or I need to do backports in advance? Need an advice here.)
-
-Thanks for the review!
-
---
-Konstantin Khorenko
