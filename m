@@ -1,111 +1,111 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793836515;
-	b=ZUcRdY8SL45zOEBh9WehPjNoM86sLkiFK5Vliwmb+qqk2+FRFcySAysFQFR9LSVVOzxI
-	 nZTWe4MAeM9p52Q21qR89V35t8Nyb5iQ5rRGjxDTZWvYZIOdbyz2U/5kUr5YYqrYfhGo+
-	 j//lhAnFYauf6flaipxH55y6B+CqlY7d+gyqU90RAlPH71qw03i78nhwmAnLDKIZQwPUa
-	 EVgpaF4m69wwlFQIZfn/zYePbVN8eqElymJDQq5AuwZvNw4R1UkdhRXiTAikvNWTQ4nX6
-	 geRzWYRvx/8LAkWnfwYQr/xXYzq97wMNtwjg6LidLDKOpuejD2AkVnD5V3oFP6IYN6A==
+	t=1793836510;
+	b=SFCMl46L+RemAvd+6IwQu+5PU2uNCpMF4tAnlKSdvVdjEPEVFUdEa9oRsVKUN1CyFp7K
+	 9/aSQysSFu2msySiXpY7sadOGNVtsKFKXJglW00r+n+06GCKPdwq1R5uQVwlZ1sdTlTB2
+	 TUmI0+xpeHP93cju4OkFZgyyvWeRhvucAcT+6J6NEMcCX/gvjUnat+qXcS3Ai+1xDikVC
+	 CLs+xFxf1+ry1ygYS4vYcr4AZtlsA3MtWpeYc1sCaIajYputKNwYhBdUNJ+SUimIQQSid
+	 4zMIoAsKngNXsC2yN7PLAlKKN2MY/OFiFuAzwfHIIC3ACIPc2lT+JDErdr7oW+KaRLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793836515;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793836510;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
 	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
 	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
 	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
 	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=xyvNsYmFNsUNSiZ3/Smohdj7Psl5Ao/dpxmOcpWvGGs=;
-	b=3EqG/lvKJS9P/M7ULlIHZ0zOfXNH2u21QstuivqYQBfj+5wemvbXGMdYijktS+McKO7T
-	 /SgyOGGb2hB/5jlp4OcJ9b6VDkMFFuHnLAACmIta5oIpsO64cU41QFQ4uprt63IVXc0LW
-	 P8cJMuE4V2DxUbK2c3qlG7CenvMwQFzzIm2Vl2fbDZq/pymcEQDurdLlVFInlHJoxoFs3
-	 t83+U7IePAFBkIbDC5D2DHZSZb8/rcfaHetx5gerPftnCcnkeUwttoVxE1dkYYpoutREd
-	 siZeaEINsI6IxnERkWfBEbuQwaEODXZHQZOlM+Fc+722SxB2gFalEVlmXJdOWSYDZTQ==
+	bh=66HAmcjm61KlBHZ1ai2pj7fj2H6IVPJsxsxVZkqPIko=;
+	b=nv0B9ina0tRUJpYYHY/Q9XwPR0ZIL/4wYsm+G+6aduqnM0XUhLI2HjszVTdSJ8EnEogD
+	 TukmzOivVoXwmY//e1YnY2U8BXTqCC6HIwrNtajZ5wULHGdTKaPde1xicCPJAvN+FB6xu
+	 CZNe9lCOEhj4K4+vuWpbk08cUdSk0SDSVNogtnzmHUS4q8N+t09KzKpN0ae9TvHNUxBfF
+	 05cKULs4P1ehQf5YgqNrjJRtFvjoGK7amAJVmtazXOnvSE6VYRHY2LuExAHzGLxG4ylQX
+	 MknWioF7lvxrsXxn2NToYPc42nVHDTiP45MnsP1SM376QLudcwKrIEy/C8RkmCSF1DA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=shazbot.org;
 	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=ra4LhgH+;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=4jePVdpi;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=T5A2jWbP;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=lZjcmoFi;
 	arc=none smtp.remote-ip=103.168.172.156
 Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCE1606EE8A
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 23:55:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DCE1606EE8A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EB4606D80A
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 23:55:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5EB4606D80A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=ra4LhgH+;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=4jePVdpi
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id BD03D14001D1
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 18:55:13 -0500 (EST)
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=T5A2jWbP;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=lZjcmoFi
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 0DA4A14001CE
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 18:55:08 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Wed, 04 Nov 2026 18:55:13 -0500
+  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 18:55:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793836513;
-	 x=1793922913; bh=xyvNsYmFNsUNSiZ3/Smohdj7Psl5Ao/dpxmOcpWvGGs=; b=
-	ra4LhgH+nnm9HL0r4Kq59C62hb3VYK40doxbMOXHOEKcj7TDDYwyaz3Dy4hPg37o
-	Yv/0FIWZjqiMNhwkSth9pPFPd1TGgknkeStau0MmW3Fz7lOut6SKdogCHQEngGBi
-	VxSPpQlXm7ZwitmMSLfj/dRFXLAu4ghaoEbPw6+hTaSNTe+c+USqeAZKb1QzfYZ+
-	2qIBBeyPQV+1/yEBJTpt8uLK6PtkFztkST1foKlZEV5+sitVMCHlZDgg7dcrqqPm
-	0bVmLJayHbl3FChqVlRMUXdt+IFBPB4a0FX+l2mE2QosfNZdJnvIXR6q3jQ3435K
-	fVZn+xPyXxvAgYUoOZS9Zg==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793836507;
+	 x=1793922907; bh=66HAmcjm61KlBHZ1ai2pj7fj2H6IVPJsxsxVZkqPIko=; b=
+	T5A2jWbPWxl1lhbv32cmhILFdkUju8r/nrlpeFHVCVMFc9sdcN9aX5giN24i7CdL
+	kYME6gExVwjrQ636Szu1lvN2nu6giIEBiQM+Ai2ponsE85xrXfB+4t/1UcxnU69P
+	ZxIci707rmaePQcgc6Go8wY3DTjvyLEdlLEjrID10DF2sNjc2bL7CSE+Tz2uW2KS
+	rbCts8oU+znTiJ9OVIX7XQCkqpu6Fvij94YYhZTOGZwK3GKyOny097D+gonfLCnx
+	eTmIq3bgE5h7uFS3nc13Jo8zTKqKzUToMoOd94MkBC14DuVUYR89icWa5cQWSY6D
+	Jzm8vFCtWlqcePDC7w3uHA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793836513; x=
-	1793922913; bh=xyvNsYmFNsUNSiZ3/Smohdj7Psl5Ao/dpxmOcpWvGGs=; b=4
-	jePVdpiHXZ+OlWMIA/eiDp2le+x9kR18UoXQigTFASWeLiktFCWP1YsTW93/ZYmk
-	Kj7N+6owOSq+oEW5ydT8FI1TPwp4n6ci3iuuycuWkPOPbooTnyNDVpdRYv7ubN4G
-	YPjYzWke6LFCxtA5b1SAsRLn3y1QB3OLTmIa6+r+s2UJWV3i1V/JMgW/A21sMiLZ
-	UU+ut/kjoW20xPNqb6e+wUbe5RpdqgJLNxp/o/z3PNZtled6HXnUqs75srlYny2l
-	CnK/tWQvkFaqeizZBu+obABK1zuLeMg1TKpNzeIEnZ1wm6DAxNcbhFW2Sw0ASCG7
-	fM3eiGp9hc/mqUueHpT1w==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793836507; x=
+	1793922907; bh=66HAmcjm61KlBHZ1ai2pj7fj2H6IVPJsxsxVZkqPIko=; b=l
+	ZjcmoFi6xNq27AkG3IKOKHO3+LBKOFQ+o/7zs8930WxWBAQm15W0JlpO1Dp77ZfY
+	IjCI8sbSP3ks3i+DPvEFtS7ru6w6y9dUuGRlYqwYtv4P5+hS0X+i6DUtrmX8OIc/
+	gWKOaI2VUjJCcZ7J5nJxZRq9/YWmO2FG6Hsbrx6QzM7jqP45+6Jd76uLz1YGqoXA
+	SKcL0ADr9CnB4ht245rqUlPvMOBENhcm7ACY/q0rE+Q6RN8h6WM8SbkhzR7EWraG
+	MLTYq4fAcSbvwjJjNxKxWY4Vh/oohuBcOJpeYe+h5lFVxg3+CAGXP9jDyKE1x/I3
+	UUxmuPxeqcpxObAypYYJA==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
 	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
 	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793836513; d=shazbot.org;
+DKIM2-Signature: i=1; m=1; t=1793836507; d=shazbot.org;
 	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:g4n8l2tROf11xPWY6fwg2zpgcb5CnC+Hyc5+V5807+HmOPB
-	ejVUOthU1du/XL2I6He9rXnI6g0ngFt04ByZnb1e3CftLu8X/wJiOUpPcph0BT9W
-	rY55VDyocyNozIHYfNXYTCONdpkKOJ6LpQHt4YwyRppHrLJtcKXjN1MHyAO1rTYX
-	vDeNwXj+jpy62/WO6q4pZDdlj2QU6IE3w2H5DE2yBaK9vAlsvaoYD117uyFhljPT
-	8kECX3qNEwuDSWdF3gzEL+8myjIO34psjU0R1/yrR48j1NA1lcjYksgD7NtbatkR
-	5XSQDRKGdE4pRzRH9bUZlKD3DQDY1HFwk3fnpVQ==;
+	s=fm2:rsa-sha256:c4CBdO38xUL+WCWF3uC8tYh7SheMDtGF/ZIjkIa6uwuWaAg
+	n+bA4/Wcs7xn5n8y/T8twLwiZflurigjcASTwt4isZ09IfpQ04E5Kc7lwUrqqLBS
+	NUrj/qr0bbaLSW0TpaMD7vChzqtXSuc1PHgVAkKX5IJblJYgIMnKdPHB2VAgWHH3
+	WaXTBXBCirhMl+s1onEcdnuJp+EAoHocukhS3z+MsrAzctJk27wOU8uRokD1xbLd
+	kNPOadB2B+s7jtGWKwWEU130UltCUkvlsD5PP39A7OtNVQ5vSAG2e1B3GLH9i0x9
+	iCBlAHZ9MeNXMAr7Kf40hjJh+ldlxEceTMi1SCQ==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
 	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:BFA6DzJRVbejRPsMtMGO7th9U5+CnPb9AdCAKmA81Dw=:eDJ673P+K7pXjeoYHUiCjGcd3eSJ7KyiyH+Qd3kASlc=;
-X-ME-Sender: <xms:4cXramENO_fsgYYYuY_qLyUUCvMfItdpol56Z9DQ6pn6-t-lwWCyQw>
-    <xme:4cXrak-TNRM0gzoJSsjhoeDIxvP3k6c_EJQWi3yais9qouyMO8zYSFi1X4avJTB8-
-    BeQo7b4sWOG9dd_LxXVlkiYsgiRB7vsZuATwHlT7ntY_ZMa0n6c2Q>
-X-ME-Received: <xmr:4cXranhENW5uJ8QSrF27bPfQ1FQsp2rAm8A1EQcCEa0KOhW8my2EzRWOc1BBvQ>
-X-ME-Proxy-Cause: dmFkZTEUHmheM4TcN+Ui8oQAaPhaKxerACcrI4xYNFFZjMdVkcrl+kfgjT+qjdO+axagJl
-    de8mhNEJkxV2kzZBLKbQndIfVb5IFJ/p6vurCUW/JOVryts3u07cSI8Gb/5xUPlmB1m/YV
-    4K9RW+A4z0s1YhrvlG7ljI0lSgm6afsSqoALqBtHK4gkQg0hCi50liWNSoS/3Ck7T5mFCy
-    r1UCn0YFuxZx8X7Od33cVvVcSc9v8K1ilBB81b/UpFkHTQ1ZoBceS3Zjt8L+EzU7VUYIWD
-    GrEoDZTARxtu0PWDLP8UjMDxfvkZ1iJrKvbH20hKIKapvnjQJUBDfz0t3IV0KAHcwHnqTA
-    pe33gmFL0p+HSniZZd7T4wQmk81p5kyxFaBQ/As17Tzx9CFPdnhtFVilc95eWQCz6AqULE
-    +3XQpVAHWG1hL0L4LBSmI4h+01J5odaMpMjj9YNtaemeWO/o/nfNh99Gjs1D2GqM4fXLqr
-    2S8oTnLqX7jnyMF4Rei1eMsELeE94SiCAnjjkg1B8CLaCTcZMW0oChMgE+5RHuL6ddphea
-    d3z3zpmBkYCX0D2feByiU9aTqZtST65+BO4RQ8IUg15G2d+UbHYLYzGFPfWWd4tCRED3aF
-    fk37t7mZA2uf9NbuBMqudK4/ZduN64NoO9BNU9+Ud5+uzXxFLPmn63G1opjQ
-X-ME-Proxy: <xmx:4cXraoTD-cidcQ4ZNNowVdLS6QAn67oi4M4wfCaE2bRi8MpUOr4yOg>
-    <xmx:4cXrakCPmLdRtZHG_FdxG2UvyRII_KGk59zo2FUobaau1Gih13NsKw>
-    <xmx:4cXrai__N69Pv4ISasF0w9Wg3JOmJgvCbgoJhZH5kqXh9-u3Ou0pfQ>
-    <xmx:4cXrau0rTvb7Ilg2MEaHZpImAWPvETHvaV5sYW6_C1TLKK-j4oR6cg>
-    <xmx:4cXragMf-31R0NJ7Mlj8baVQS7eamMC_96fwP5v6eWAMW8nxsj8M9kbj>
+Message-Instance: m=1; h=sha256:TaSBnqbZbFLM+Lcqo9/30tsl6PtBjEh1Y44sA86R2VU=:GAg/5X0ELH1fFkpwU6TyWBYPUjHgBmFWX4gfN3/zjf0=;
+X-ME-Sender: <xms:28Xrar1vcGz5hoWdK6WSGM_BjyIpAKV-WCMEbuLzfAmZKahcMTAlXQ>
+    <xme:28XranscH2bLu1DdyOx4EU5v0YeM5uP92IDcFtxf_6qCw3TYz0zNrHvOJlhmDtRTR
+    aMLKAVM09GKB9_fk_tRmvWiEHmo5GvhoOrEf8AZGtDn1JrjmJpsrQ>
+X-ME-Received: <xmr:28XrajQ0cimyNjhnUZjMktQOErZM-A9YWdptd3a9Jbk1rF4mEf8aOKONXnBVeA>
+X-ME-Proxy-Cause: dmFkZTFU/kbVOsWxOTPcCpe6x61hsj1WNmmGso+RiYOPL9PXBn0IITeBo+AW6SFW+G4ekC
+    /hzYoF162vC7PC2Mtt2USNZ/eCRzPfnSvLH4GpnZYykCQlv/g/2dfaxUihNQ2PdVnmznVt
+    eyzTFpFT8ROSV9PpSF+vkXBd8GjUZhM6/FJB6rHUdJL+IEmDIn9qqg8D9AaoFAEgqB3zaI
+    LQuuKEKLXGp7sIkYnu8IYt8f4dndp/+v360R0jn1bNCYEbWntuZR9TDLjZCVdVdTAj6SKy
+    IHj9Y41QEBh5Iv1k5SCIJDAY7TVRfrnmdQbz1lqnEzzeOazcj9kVYNjTrGiFbntAEPcYl6
+    TKBbrTXANfvWTMkaMpvDouK0nzivONDFKOWARUqEboCnjjVdCMk0QyhDc4UUCvxFdNStFg
+    Vo6LEu54fLMLt9c0n2ZHRvjwLiOSNH4p6jVHDo/NV0Faa9C0UsBdgZn8CqgJJu/Hszj3V8
+    /5yLo17S+fbLb5dKziy4uV16Co+sdK4wpCVw3G06D76G2djKZu9Hqri38F97xkpVW4EBOL
+    Rg/VDUMD7hVhR4+/l6Fplv+0GCDa1sX3N1EpkJ7L2k6T7rX0JXaRstLFQszvI2v/3beYtM
+    D3MH2O82NCghIHq8TgN2f5PAVJev24JlCJur5Ym48kxNWbsPRk8k8qlhVd/g
+X-ME-Proxy: <xmx:28XrapC-nkreJMq4NBOiyw4aFyn48dxFw5ud_Viq9v8EVSn7b7ATSg>
+    <xmx:28Xralw7dPudntJ-jeqi6r5HJYZQm7bSsqRUVI_Har0BcG2wI1XJlA>
+    <xmx:28XrahtvMeIb26vgGA4r8WpzXjHzjrgoPrk-3ah1iuSLwjK2A-QQIA>
+    <xmx:28XramnboJoFtpuAQJ4Bpo3EjxPIfYkKwag4mnzgt0CzaCkJ1ytflg>
+    <xmx:28XraoCa0Avt3ySiAMG8D60JgtMYFNcmfHHBNnjOw1BT-DLJXJkTHrRu>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 18:55:10 -0500 (EST)
-Date: Wed, 4 Nov 2026 16:53:04 -0700
+ 4 Nov 2026 18:55:05 -0500 (EST)
+Date: Wed, 4 Nov 2026 16:54:22 -0700
 From: Alex Williamson <alex@shazbot.org>
 To: <mhonap@nvidia.com>
 Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
@@ -121,12 +121,12 @@ Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
  <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
  <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
  alex@shazbot.org
-Subject: Re: [PATCH v6 07/31] vfio/pci: Detect CXL devices and load the CXL
- provider on demand
-Message-ID: <20261104165304.2563f4ae@shazbot.org>
-In-Reply-To: <20261016161839.2765592-8-mhonap@nvidia.com>
+Subject: Re: [PATCH v6 04/31] PCI/CXL: Let the driver that owns the HDM
+ range run CXL Reset
+Message-ID: <20261104165422.64b53bc4@shazbot.org>
+In-Reply-To: <20261016161839.2765592-5-mhonap@nvidia.com>
 References: <20261016161839.2765592-1-mhonap@nvidia.com>
-	<20261016161839.2765592-8-mhonap@nvidia.com>
+	<20261016161839.2765592-5-mhonap@nvidia.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -140,254 +140,353 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Oct 2026 21:48:14 +0530
+On Fri, 16 Oct 2026 21:48:11 +0530
 <mhonap@nvidia.com> wrote:
 
 > From: Manish Honap <mhonap@nvidia.com>
 > 
-> A CXL device needs the vfio-cxl callbacks, but pulling vfio-cxl and the
-> CXL core in unconditionally would bloat every vfio-pci setup. Detect a
-> CXL Type-2 device at bind and request_module("vfio-cxl") only then, then
-> hand the device to the registered ops.
+> vfio-cxl passes a CXL Type-2 device to a guest and must run CXL Reset at
+> the vfio reset points. The cxl_reset PCI reset method does not fit that
+> caller:
 > 
-> Each bound CXL device pins the provider through
-> vfio_pci_get_cxl_ops() (try_module_get) and drops it with
-> vfio_pci_put_cxl_ops() at release, so vfio-cxl can unload once no CXL
-> device is bound.
+> - It requests every HPA range the device decodes. vfio-cxl holds that
+>   range with request_mem_region_exclusive() while it exposes the memory,
+>   so the request fails with -EBUSY.
+> - When the reset cannot run, the method returns -ENOTTY and the PCI core
+>   moves on to the next method. That is FLR, which leaves device memory
+>   intact for the next user.
+> - The snapshot and restore helpers that vfio-cxl needs after a bus reset
+>   and on return from low power are not exported.
 > 
-> If the provider is absent the device is bound without the CXL
-> extensions. A built-in provider whose initcall has not run yet is waited
-> for with -EPROBE_DEFER; the deferred-probe machinery will retry the bind
-> once the provider registers.
+> Let cxl_hdm_quiesce_prepare() take the resource the caller already holds
+> and skip the request for ranges inside it. pci_cxl_reset_owned() accepts
+> only a resource marked busy and exclusive, as
+> request_mem_region_exclusive() leaves it. The CPU caches are still
+> written back and invalidated for every range before and after the reset,
+> as the reset method does.
 > 
-> The provider .init() can return -EPROBE_DEFER when the device is not
-> ready yet, for example when its CXL port has not enumerated. Propagate
-> it so the bind is retried later. Any other init failure is non-fatal: a
-> CXL Type-2 device is also a valid vfio-pci device, so log the error, drop
-> the provider reference, leave cxl_ops NULL and continue without CXL
-> support.
+> Add:
+> - pci_cxl_reset_owned(): runs the reset method's sequence for a caller that
+>   holds the device lock and returns any failure to that caller
+> 
+> - pci_cxl_reset_capable(): checks the cached HDM state and the CPU cache
+>   invalidation that the reset-method probe skips.
+> 
+> - pci_cxl_hdm_snapshot(): copies the HDM state cached at enumeration
+>   without requiring the device lock. A driver needs this copy in probe,
+>   which the PCI core may run in a worker on the device's NUMA node, where
+>   device_lock_assert() would warn although the binding task holds the
+>   lock. pci_cxl_reset_prepare() becomes that copy plus the lock assertion.
+> 
+> Export:
+> - pci_cxl_reset_owned()
+> - pci_cxl_reset_capable()
+> - pci_cxl_hdm_snapshot()
+> - cxl_restore_state_after_pci_reset()
+> 
+> to the vfio-cxl module only, and declare them in include/cxl/pci.h.
+> 
+> CXL Reset always clears memory, so there is no caller Memory Clear choice.
 > 
 > Assisted-by: LLM
 > Signed-off-by: Manish Honap <mhonap@nvidia.com>
 > ---
->  drivers/vfio/pci/vfio_pci_core.c | 101 +++++++++++++++++++++++++++++++
->  include/linux/vfio_pci_core.h    |   3 +
->  2 files changed, 104 insertions(+)
+>  drivers/cxl/core/hdm_state.c |  22 ++++--
+>  drivers/pci/cxl.c            | 136 ++++++++++++++++++++++++++++-------
+>  drivers/pci/pci.h            |  18 +----
+>  include/cxl/hdm.h            |   3 +-
+>  include/cxl/pci.h            |  39 ++++++++++
+>  5 files changed, 171 insertions(+), 47 deletions(-)
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 2cc5dd20396c..e50b36751d9a 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -2202,6 +2202,101 @@ void vfio_pci_core_unregister_cxl_ops(const struct vfio_cxl_ops *ops)
+> diff --git a/drivers/cxl/core/hdm_state.c b/drivers/cxl/core/hdm_state.c
+> index 95daeda0ef80..9452047e3b97 100644
+> --- a/drivers/cxl/core/hdm_state.c
+> +++ b/drivers/cxl/core/hdm_state.c
+> @@ -267,7 +267,8 @@ static int cxl_hdm_ranges_collect(struct cxl_hdm_quiesce *q, struct device *dev,
+>  	return 0;
 >  }
->  EXPORT_SYMBOL_GPL(vfio_pci_core_unregister_cxl_ops);
 >  
-> +static const struct vfio_cxl_ops *vfio_pci_get_cxl_ops(void)
-> +{
-> +	guard(rwsem_read)(&vfio_pci_cxl_ops_rwsem);
+> -static int cxl_hdm_ranges_request(struct cxl_hdm_quiesce *q)
+> +static int cxl_hdm_ranges_request(struct cxl_hdm_quiesce *q,
+> +				  const struct resource *owned)
+>  {
+>  	struct cxl_hdm_range *range;
+>  
+> @@ -275,6 +276,12 @@ static int cxl_hdm_ranges_request(struct cxl_hdm_quiesce *q)
+>  
+>  	list_for_each_entry(range, &q->ranges, list) {
+>  		const struct range *hpa_range = &range->hpa_range;
+> +		struct resource res = DEFINE_RES_MEM(hpa_range->start,
+> +						     range->len);
 > +
-> +	if (vfio_pci_cxl_ops && try_module_get(vfio_pci_cxl_ops->owner))
-> +		return vfio_pci_cxl_ops;
-> +
-> +	return NULL;
-> +}
-> +
-> +static void vfio_pci_put_cxl_ops(const struct vfio_cxl_ops *ops)
-> +{
-> +	module_put(ops->owner);
-> +}
-> +
-> +/*
-> + * A CXL Type-2 device advertises both CXL.cache and CXL.mem in its CXL DVSEC.
-> + * pcie_is_cxl() is also true for Type-1 (cache only) and Type-3 (mem only)
-> + * devices, which the vfio-cxl provider does not handle, so confirm the Type-2
-> + * identity before engaging it.
+> +		/* The caller already holds this range exclusively. */
+> +		if (owned && resource_contains(owned, &res))
+> +			continue;
+>  
+>  		range->res = request_mem_region(hpa_range->start, range->len,
+>  						"cxl_reset");
+> @@ -316,15 +323,20 @@ static int cxl_hdm_ranges_invalidate(struct cxl_hdm_quiesce *q)
+>   * @dev: device for error messages
+>   * @q: quiesce state to initialize
+>   * @snapshot: HDM state from cxl_hdm_cache_snapshot()
+> + * @owned: resource the caller holds exclusively over the ranges, or NULL
+>   *
+>   * Reserve every enabled system-physical range in @snapshot exclusively, then
+> - * write back and invalidate CPU caches for them. Call
+> - * cxl_hdm_quiesce_destroy() afterwards whether or not this succeeds.
+> + * write back and invalidate CPU caches for them. A range inside @owned is
+> + * not requested again; the caller's reservation already excludes other
+> + * users.
+> + *
+> + * Call cxl_hdm_quiesce_destroy() afterwards whether or not this succeeds.
+>   *
+>   * Return: 0 on success, or a negative errno.
+>   */
+>  int cxl_hdm_quiesce_prepare(struct device *dev, struct cxl_hdm_quiesce *q,
+> -			    const struct cxl_hdm_info *snapshot)
+> +			    const struct cxl_hdm_info *snapshot,
+> +			    const struct resource *owned)
+>  {
+>  	int rc;
+>  
+> @@ -340,7 +352,7 @@ int cxl_hdm_quiesce_prepare(struct device *dev, struct cxl_hdm_quiesce *q,
+>  	if (rc)
+>  		return rc;
+>  
+> -	rc = cxl_hdm_ranges_request(q);
+> +	rc = cxl_hdm_ranges_request(q, owned);
+>  	if (rc)
+>  		return rc;
+>  
+> diff --git a/drivers/pci/cxl.c b/drivers/pci/cxl.c
+> index ed0b6f619c70..b4d467506c54 100644
+> --- a/drivers/pci/cxl.c
+> +++ b/drivers/pci/cxl.c
+> @@ -372,9 +372,32 @@ static int cxl_reset_save_restored_state(struct pci_dev *pdev, u16 command)
+>  	return rc;
+>  }
+>  
+> +/**
+> + * pci_cxl_hdm_snapshot() - copy the HDM state cached at enumeration
+> + * @pdev: CXL device
+> + *
+> + * The cache is read under cxl_rwsem.dpa, so the caller needs no device
+> + * lock. A driver can call this from probe, which the PCI core may run in a
+> + * worker on the device's NUMA node while the binding task holds the lock.
+> + *
+> + * Return: a copy to free with kfree(); NULL when @pdev has no cached HDM
+> + * state; or an ERR_PTR() on failure.
 > + */
-
-Probably another AI comment, it's only describing what the function is
-obviously doing.  Drop it.
-
-> +static bool vfio_pci_is_cxl_type2(struct pci_dev *pdev)
+> +struct cxl_hdm_info *pci_cxl_hdm_snapshot(struct pci_dev *pdev)
 > +{
-> +	u16 dvsec, cap;
+> +	struct cxl_hdm_info *snapshot;
 > +
-> +	if (!pcie_is_cxl(pdev))
-> +		return false;
+> +	snapshot = cxl_hdm_cache_snapshot(&pdev->hdm);
+> +	if (IS_ERR(snapshot) && PTR_ERR(snapshot) == -ENXIO)
+> +		return NULL;
 > +
-> +	dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_CXL,
-> +					  PCI_DVSEC_CXL_DEVICE);
-> +	if (!dvsec)
-> +		return false;
-> +
-> +	if (pci_read_config_word(pdev, dvsec + PCI_DVSEC_CXL_CAP, &cap))
-> +		return false;
-> +
-> +	return (cap & PCI_DVSEC_CXL_CACHE_CAPABLE) &&
-> +		(cap & PCI_DVSEC_CXL_MEM_CAPABLE);
+> +	return snapshot;
 > +}
+> +EXPORT_SYMBOL_FOR_MODULES(pci_cxl_hdm_snapshot, "vfio-cxl");
+
+Why are any of these module locked?  What great risk do they expose
+that only vfio-cxl should have access to versus just a NS export?
+
+We shouldn't set a precedent for vfio specific APIs and I certainly
+don't want to be defending such a thing down the road.
+
+It's unfortunate that we're intermixing "snapshot" from CXL but using
+it like a "save state" from PCI.  Maybe we could bridge the gap at the
+PCI API?
+
 > +
-> +/*
-> + * Load vfio-cxl on demand for a CXL Type-2 device and hand the device to its
-> + * ops. If the provider is absent the device is bound without the CXL
-> + * extensions; a built-in provider whose initcall has not run yet is waited for with
-> + * -EPROBE_DEFER.
-> + */
-> +static int vfio_pci_core_cxl_init(struct vfio_pci_core_device *vdev)
-> +{
-> +	const struct vfio_cxl_ops *ops;
-> +	int ret;
-> +
-> +	if (!vfio_pci_is_cxl_type2(vdev->pdev))
-> +		return 0;
-> +
-> +	request_module("vfio-cxl");
-
-A local sashiko run questions:
----
-[Severity: High]
-Could request_module() in vfio_pci_core_cxl_init(), in
- drivers/vfio/pci/vfio_pci_core.c, deadlock when a matching Type-2 device
-is probed asynchronously and vfio-cxl is an unloaded module whose own
-async_probe setting remains false?
-
-Asynchronous probing can be selected with vfio-pci's async_probe=1 module
-argument or driver_async_probe=vfio-pci. The resulting wait cycle is:
-
-    __driver_attach_async_helper()
-        vfio_pci_core_cxl_init()
-            request_module("vfio-cxl")
-                waits for modprobe to exit
-
-    do_init_module() for vfio-cxl
-        async_synchronize_full()
-            waits for the outstanding vfio-pci probe
-
-In kernel/module/main.c, do_init_module() performs this synchronization
-after the provider initializer returns. Successfully registering the
-operations therefore does not break the cycle. The provider's async_probe
-setting is independent of vfio-pci's setting.
-
-The warning in __request_module(), in kernel/module/kmod.c, does not
-abort loading. Dispatch through pci_call_probe(), in
- drivers/pci/pci-driver.c, also preserves the cycle because the originating
-async callback waits in flush_work(). The global async wait has no timeout.
-
-The final series retains this synchronous request. Could provider loading
-be moved outside the outstanding async probe, with binding deferred until
-the operations are available?
----
-
-AIUI, this could be resolved if we do the request_module() on bind and
-the CXL init on open, but CXL expects that we use the devm interfaces
-that have a bind->release lifetime.  But then...
-
-> +	ops = vfio_pci_get_cxl_ops();
-> +	if (!ops)
-> +		return IS_BUILTIN(CONFIG_VFIO_CXL) ? -EPROBE_DEFER : 0;
-> +
-> +	ret = ops->init(vdev);
-> +	/*
-> +	 * A provider that is not ready yet (for example its CXL port has not
-> +	 * enumerated) returns -EPROBE_DEFER. Propagate it so the bind retries
-> +	 * rather than continuing without CXL support.
-> +	 */
-> +	if (ret == -EPROBE_DEFER) {
-> +		vfio_pci_put_cxl_ops(ops);
-> +		return ret;
-> +	}
-> +	/*
-> +	 * Any other failure is non-fatal: a CXL device that cannot be brought
-> +	 * up as Type-2 still works without the CXL extensions, so log and
-> +	 * continue rather than failing the bind.
-> +	 */
-> +	if (ret) {
-> +		pci_warn(vdev->pdev,
-> +			 "CXL init failed (%d), continuing without CXL support\n",
-> +			 ret);
-> +		vfio_pci_put_cxl_ops(ops);
-> +		return 0;
+>  /**
+>   * pci_cxl_reset_prepare() - allocate HDM state storage ahead of a bus reset
+> - * @pdev: device about to be reset
+> + * @pdev: device about to be reset, with its device lock held
+>   *
+>   * Copy the cached HDM state before the reset, so that restoring cannot fail
+>   * for lack of memory. The decoder settings are refreshed when the state is
+> @@ -386,14 +409,8 @@ static int cxl_reset_save_restored_state(struct pci_dev *pdev, u16 command)
+>   */
+>  struct cxl_hdm_info *pci_cxl_reset_prepare(struct pci_dev *pdev)
+>  {
+> -	struct cxl_hdm_info *snapshot;
+> -
+>  	device_lock_assert(&pdev->dev);
+> -	snapshot = cxl_hdm_cache_snapshot(&pdev->hdm);
+> -	if (IS_ERR(snapshot) && PTR_ERR(snapshot) == -ENXIO)
+> -		return NULL;
+> -
+> -	return snapshot;
+> +	return pci_cxl_hdm_snapshot(pdev);
+>  }
+>  
+>  /**
+> @@ -433,6 +450,7 @@ int cxl_restore_state_after_pci_reset(struct pci_dev *pdev,
+>  	cxl_region_quiesce_unlock();
+>  	return rc;
+>  }
+> +EXPORT_SYMBOL_FOR_MODULES(cxl_restore_state_after_pci_reset, "vfio-cxl");
+>  
+>  /*
+>   * CXL r4.0 sec 9.7.2 defines the reset completion timeout encodings.
+> @@ -642,7 +660,8 @@ static int __cxl_reset_execute(struct pci_dev *pdev, int dvsec, u16 cap,
+>  	return rc;
+>  }
+>  
+> -static int cxl_reset_quiesced(struct pci_dev *pdev, int dvsec, u16 cap)
+> +static int cxl_reset_quiesced(struct pci_dev *pdev, int dvsec, u16 cap,
+> +			      const struct resource *owned)
+>  	__must_hold(cxl_region_quiesce)
+>  {
+>  	struct cxl_hdm_info *snapshot __free(kfree) = NULL;
+> @@ -663,7 +682,7 @@ static int cxl_reset_quiesced(struct pci_dev *pdev, int dvsec, u16 cap)
+>  		return PTR_ERR(snapshot);
+>  	}
+>  
+> -	rc = cxl_hdm_quiesce_prepare(&pdev->dev, &q, snapshot);
+> +	rc = cxl_hdm_quiesce_prepare(&pdev->dev, &q, snapshot, owned);
+>  	if (rc) {
+>  		cxl_hdm_quiesce_destroy(&q);
+>  		return rc;
+> @@ -686,32 +705,40 @@ static int cxl_reset_quiesced(struct pci_dev *pdev, int dvsec, u16 cap)
+>  	return cxl_reset_save_restored_state(pdev, command);
+>  }
+>  
+> -static int cxl_reset_execute(struct pci_dev *pdev, int dvsec, u16 cap)
+> +static int cxl_reset_execute(struct pci_dev *pdev, int dvsec, u16 cap,
+> +			     const struct resource *owned)
+>  {
+>  	int rc;
+>  
+> +	/* Raw reset callers may not have saved the PCI state needed for restore. */
+> +	if (!pdev->state_saved) {
+> +		pci_err(pdev, "CXL reset requires saved PCI state\n");
+> +		return -EINVAL;
 > +	}
 > +
-> +	vdev->cxl_ops = ops;
+>  	cxl_region_quiesce_lock();
+> -	rc = cxl_reset_quiesced(pdev, dvsec, cap);
+> +	rc = cxl_reset_quiesced(pdev, dvsec, cap, owned);
+>  	cxl_region_quiesce_unlock();
+>  
+>  	return rc;
+>  }
+>  
+> -int cxl_reset_function(struct pci_dev *pdev, bool probe)
+> +static int cxl_reset_check(struct pci_dev *pdev, bool probe, u16 *dvsec,
+> +			   u16 *cap)
+>  {
+> -	u16 dvsec, cap, ctrl;
+> +	u16 ctrl;
+>  	int rc;
+>  
+> -	rc = cxl_pci_device_dvsec(pdev, &dvsec, &cap);
+> +	rc = cxl_pci_device_dvsec(pdev, dvsec, cap);
+>  	if (rc)
+>  		return probe ? -ENOTTY : rc;
+> -	if (!(cap & PCI_DVSEC_CXL_CACHE_CAPABLE) ||
+> -	    !(cap & PCI_DVSEC_CXL_MEM_CAPABLE) ||
+> -	    !(cap & PCI_DVSEC_CXL_RST_CAPABLE) ||
+> -	    !(cap & PCI_DVSEC_CXL_RST_MEM_CLR_CAPABLE))
+> +	if (!(*cap & PCI_DVSEC_CXL_CACHE_CAPABLE) ||
+> +	    !(*cap & PCI_DVSEC_CXL_MEM_CAPABLE) ||
+> +	    !(*cap & PCI_DVSEC_CXL_RST_CAPABLE) ||
+> +	    !(*cap & PCI_DVSEC_CXL_RST_MEM_CLR_CAPABLE))
+>  		return -ENOTTY;
+>  
+> -	rc = pci_read_config_word(pdev, dvsec + PCI_DVSEC_CXL_CTRL, &ctrl);
+> +	rc = pci_read_config_word(pdev, *dvsec + PCI_DVSEC_CXL_CTRL, &ctrl);
+>  	if (rc)
+>  		return probe ? -ENOTTY : pcibios_err_to_errno(rc);
+>  	if (PCI_POSSIBLE_ERROR(ctrl))
+> @@ -737,11 +764,70 @@ int cxl_reset_function(struct pci_dev *pdev, bool probe)
+>  	if (!cpu_cache_has_invalidate_memregion())
+>  		return -ENOTTY;
+>  
+> -	/* Raw reset callers may not have saved the PCI state needed for restore. */
+> -	if (!pdev->state_saved) {
+> -		pci_err(pdev, "CXL reset requires saved PCI state\n");
 > +	return 0;
 > +}
 > +
-> +static void vfio_pci_core_cxl_release(struct vfio_pci_core_device *vdev)
+> +int cxl_reset_function(struct pci_dev *pdev, bool probe)
 > +{
-> +	if (!vdev->cxl_ops)
-> +		return;
+> +	u16 dvsec, cap;
+> +	int rc;
 > +
-> +	vdev->cxl_ops->release(vdev);
-> +	vfio_pci_put_cxl_ops(vdev->cxl_ops);
+> +	rc = cxl_reset_check(pdev, probe, &dvsec, &cap);
+> +	if (rc || probe)
+> +		return rc;
+> +
+> +	return cxl_reset_execute(pdev, dvsec, cap, NULL);
 > +}
 > +
->  int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
->  {
->  	struct vfio_pci_core_device *vdev =
-> @@ -2223,6 +2318,10 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
->  	init_rwsem(&vdev->memory_lock);
->  	xa_init(&vdev->ctx);
->  
-> +	ret = vfio_pci_core_cxl_init(vdev);
-> +	if (ret)
-> +		return ret;
+> +/**
+> + * pci_cxl_reset_capable() - check whether CXL Reset can run on a device now
+> + * @pdev: CXL device
+> + *
+> + * Unlike the reset-method probe, this also checks the cached HDM state and
+> + * the CPU cache invalidation that the reset needs.
+> + *
+> + * Return: true when pci_cxl_reset_owned() can attempt the reset.
+> + */
+> +bool pci_cxl_reset_capable(struct pci_dev *pdev)
+> +{
+> +	u16 dvsec, cap;
 > +
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(vfio_pci_core_init_dev);
-> @@ -2232,6 +2331,8 @@ void vfio_pci_core_release_dev(struct vfio_device *core_vdev)
->  	struct vfio_pci_core_device *vdev =
->  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +	return !cxl_reset_check(pdev, false, &dvsec, &cap);
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(pci_cxl_reset_capable, "vfio-cxl");
+> +
+> +/**
+> + * pci_cxl_reset_owned() - CXL Reset for the driver that owns the HDM range
+> + * @pdev: CXL device, with its device lock held and PCI state saved
+> + * @owned: resource the caller reserved over the device's HPA range with
+> + *	   request_mem_region_exclusive(), or NULL
+> + *
+> + * Run the same sequence as the cxl_reset method. Ranges inside @owned are not
+> + * requested again, so a driver that keeps the HPA range reserved while it
+> + * exposes the memory can reset the device. The CPU caches are still
+> + * invalidated for every range before and after the reset.
+> + *
+> + * Return: 0 on success, or a negative errno. Unlike the reset method, a
+> + * device that cannot be reset returns an error to the caller instead of
+> + * falling through to another reset method. -EINVAL if @owned is not a busy,
+> + * exclusive reservation.
+> + */
+> +int pci_cxl_reset_owned(struct pci_dev *pdev, const struct resource *owned)
+> +{
+> +	const unsigned long held = IORESOURCE_BUSY | IORESOURCE_EXCLUSIVE;
+> +	u16 dvsec, cap;
+> +	int rc;
+> +
+> +	device_lock_assert(&pdev->dev);
+> +
+> +	/* Only a busy, exclusive reservation keeps other users off the range. */
+> +	if (owned && WARN_ON_ONCE((owned->flags & held) != held))
+>  		return -EINVAL;
+> -	}
 >  
-> +	vfio_pci_core_cxl_release(vdev);
+> -	return cxl_reset_execute(pdev, dvsec, cap);
+> +	rc = cxl_reset_check(pdev, false, &dvsec, &cap);
+> +	if (rc)
+> +		return rc;
+> +
+> +	return cxl_reset_execute(pdev, dvsec, cap, owned);
+>  }
 
-Sashiko has a doozy regarding the resulting lifecycle teardown:
+There's a lot of asymmetric sketchiness through this path.
+pdev->state_saved is required to be set by the caller, but the state
+gets restored and state_saved invalided deep inside
+cxl_restore_pci_state_for_hdm_restore() on this path. That's not at all
+symmetric to the PCI conventions and the split ownership model is poor.
+Even worse, it's vfio-pci-core doing the pci_save_state() on behalf of
+the cxl_ops.reset callback.
 
----
-[Severity: Critical]
-Can vfio_pci_core_release_dev(), in drivers/vfio/pci/vfio_pci_core.c,
-invoke provider teardown after device-managed cleanup has freed vdev->cxl
-when final object destruction is delayed during unbind?
-
-In the final series, vfio_cxl_create_memdev(), in
- drivers/vfio/pci/cxl/vfio_cxl_core.c, allocates the provider state through
-devm_cxl_dev_state_create() against pdev->dev. This release hook instead
-runs at final vfio object destruction, which can follow driver removal
-and device-managed cleanup.
-
-Device-cdev close and unbind can interleave as follows:
-
-    vfio_device_fops_release()
-        drops the last registration reference
-        completes the unregister wait
-
-    vfio_pci_remove()
-        finishes unregistering
-        drops its vfio device reference
-        returns while the cdev still retains the vfio object
-
-    device_unbind_cleanup()
-        devres_release_all() frees the provider state
-
-    __fput()
-        cdev_put() drops the remaining parent reference
-        vfio_pci_core_release_dev() calls provider teardown
-
-Enabling delayed kobject release provides another path without an open
-file. The module pin preserves the provider callback text, but does not
-preserve its device-managed state.
-
-vfio_cxl_release_device(), in drivers/vfio/pci/cxl/vfio_cxl_core.c, then
-reads the freed cxl->hpa_range and cxl->hdm to release the reservation and
-free the decoder snapshot. Reuse of that allocation can cause an incorrect
-reservation release or an invalid free. The final series retains both the
-managed allocation and this final-release hook.
-
-Could provider teardown run before device-managed cleanup, or could the
-provider state remain allocated through final vfio release?
----
-
-So perhaps trying to shoehorn CXL's devm lifecycle into vfio-pci is
-biting us anyway.  Thanks,
+Where does bus-master get cleared?  Seems we've only got half of
+pci_dev_save_and_disable() implemented here and the save has become the
+caller's responsibility.  Thanks,
 
 Alex
