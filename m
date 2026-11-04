@@ -1,77 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.243
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793782248;
-	b=CwqgHIXaluUzTE3vHkthEiy/KNzoI3vFQ4Fvy4lTLcsUK/oMy8sxM7LH8xmlimsxbKKP
-	 VP0LUQiku9Y3XLmE/qa5N8zW2UwDQhoIORPZ+yN7eUSErjfq3pdFpxIKDGitfTZdndY0L
-	 QaBxTmgQUyBDo5umlvgy8K2c8/nMX2ONVTFKnxMAJFCW96WIFoN/kNol1+8sWVp2rgN8d
-	 3WBSTB/o+dKouRjeSnyYD7t7KGplOY9U1ExLp6rHve+82GDG3cMdSmeWZ23dRkIcYsjMW
-	 GNd6LH1vbxf5DnlXqBx/mOr1XD2bzlO/0fFBFXsZoN1rNhYX+14UBgjoaK3v6aZqarA==
+	t=1793782633;
+	b=sQze9K7pHgklIP78V/QtmxJTrC57/l2K3zKR/HB6cJuOFGqaywuoDEyb+fY5lIScbmMj
+	 wr/s/gLgog5cBAAaRbpbF08dRKpQXSBu1GkB3YdY7xxidRYhOlynnha5gstAdxeXFEvy7
+	 b+eMUccFg0hFZgNbXqtgbbh/p9bxaDsUxqld4WZMZFWpOl2YLnvwmGZNWrbay3h/WfHu3
+	 SAKZiV8Gz3q6BEJSsTCPqCMI94TLtGm/NUe4xytw63aBzmG10vOep0agob8E+1BzL+uoX
+	 fZQ1rw9K4nhRsKAvDjJiFSiFIqrGdZVYylIi8NgweSVL5txIXcD507Qu7iwO08et9Hg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793782248;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=YYtZXvG9+UdS+4Z9GxZSoWsbkG0GwWt2msV5s/Y8pAo=;
-	b=YFcwm6dPuVvvkcBChND3JraT+BIO/tKXASuPUSDNtnCt59yDk+LE49O/Jew4MLg9gWRP
-	 zbbIvQOweY/F6aoyXpO2wn9XO8NQyOuVAsusdhDJ2tGZ/vp0dKWiFRA4Q/oLblz5nVkHr
-	 WoH9K7JyJhC0sO0jQzV8inLCIwXlSlImC1Bjk80cjpzBTAjiX9aBOJ7DRCYo53B7CFrpO
-	 kVZWWRsHoAwIQDPmlcEF2ZS2/56uSeev0a7Yn2A1chDUGyJY9taBZbG/zF2WPhWyq5F6k
-	 SV6riziDN52d9LwTBuY1QnZoslWS+sEaYOVAw5i/TFKJMO19BC7wJWp8jno6Coy6A1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793782633;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=gYu4safrZFRZxRz3PMkEnVIGx9pn9PlCpDYcYD2NAIg=;
+	b=0ba8iMdRX+sU3Nycgnj73P6gz7Tt+kqmIXvjrbGvgguApMMCJJZ1IrJ18oeaE/m4rmNF
+	 UGLeFzNxGXKgGMamGjcL5wMP6Uv6Th91kLnxmVd/EM8zAUEiLThpbI6fT+MQeVpZjOXzA
+	 FBjRyk1Q6r8nZTL1ieI7ZaWPHunKNDtIfhL2cLD2HXR+AE4w4q9rQi0lBw/thUZy7ebBU
+	 nnBJvP3CFi13z76Rq8stmuMe11LH66z95TG3UMFK/uger/TdPm0y9uCVsLA5434ehVhRo
+	 QJI7Z+6Hv0z9flEDgQRGmPVBPoHl6tW8YsC7vH9bfUAMe6C4Ej5xSuwtYQUknYH8dSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="phcI9/rK";
-	arc=none smtp.remote-ip=95.215.58.243
-Received: from mta1.migadu.com (out-243.mta1.migadu.com [95.215.58.243])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="acu/8cdQ";
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF714606D80C
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 08:50:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF714606D80C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC02C606A328;
+	Wed,  4 Nov 2026 08:57:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC02C606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=phcI9/rK
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Ia4ROUhNRdc6AFPTEZfdVXbpoKxOmfz2LXLKwxYl31Q=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793782245; v=1; x=1794387045;
- b=phcI9/rKxlOSpz5zlsSr4yNnVqAYZwezIzSGB3yDKYoTKTLeyRDJRVNPlVQgDjHWTrUCRfBQ
- MmHPJkztcGO+aTRitHsXqMgHolxmrL0g+GAsvq+XVEVmOKvwETHesP0OPve8WPOwOz5F7DVYvL8
- LLds8dZ/Y0uYZX9u6M9uAGA8=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 3647c177266f6c99;
-	Wed, 04 Nov 2026 08:50:44 +0000
-X-Mizu-Trace-ID: 3647c177266f6c99
-X-Migadu-Flow: FLOW_OUT
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Cc: Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 16/16] KVM: arm64: selftests: Add pkvm_exceptions debug and SError test
-Date: Wed,  4 Nov 2026 08:48:42 +0000
-Message-ID: <20261104084842.132944-17-fuad.tabba@linux.dev>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261104084842.132944-1-fuad.tabba@linux.dev>
-References: <20261104084842.132944-1-fuad.tabba@linux.dev>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=acu/8cdQ
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A48iZvq018674;
+	Wed, 4 Nov 2026 08:56:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=gYu4sa
+	frZFRZxRz3PMkEnVIGx9pn9PlCpDYcYD2NAIg=; b=acu/8cdQTElSAXHjKK3Kmi
+	J8oR+9CUek+J0EBJ3HjStbc7GCefEs+glquVxZ4iGZaS5IFughXOq5edyiwXXaTY
+	8ovS/FB46i7KjaT1HOAwce3OcY0F3r5IIhi7kKMCXSp9YWUNUy6gcG7y8kqWHOmZ
+	lwR5YzZUK5jhcL8ZNYtXN4ldDz/CwIiMDvSyH+1sjQAVCFmUtrOBu3/Kwo+GT64o
+	zWIy2Ub5kyhOoR+YMtpWDYIKBJpu9LwwhbAdqm4vbhGm1GH1f1ZcXXFAL+2QR98O
+	RO7BPNrFiv0hZ/GmMGsDarg/juQRZp0yyo89IoVE3C45h257gZYG2PD6l4n3/TWg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn5rhtqvn-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 04 Nov 2026 08:56:59 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A48K3Un2676482;
+	Wed, 4 Nov 2026 08:56:58 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hqsf59qkr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Nov 2026 08:56:58 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A48uu0w50921730
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 4 Nov 2026 08:56:56 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7AF9C20040;
+	Wed,  4 Nov 2026 08:56:56 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A970D2005A;
+	Wed,  4 Nov 2026 08:56:54 +0000 (GMT)
+Received: from [9.123.5.65] (unknown [9.123.5.65])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  4 Nov 2026 08:56:54 +0000 (GMT)
+Message-ID: <5bd7e8e9-3614-4006-a3d7-a51416ba5507@linux.ibm.com>
+Date: Wed, 4 Nov 2026 14:26:53 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,304 +85,134 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/23] KVM: PPC: Flush/zap all memslots on
+ kvm_arch_flush_shadow_all()
+To: Sean Christopherson <seanjc@google.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jim Mattson <jmattson@google.com>,
+        James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
+References: <20261030212112.2598640-1-seanjc@google.com>
+ <20261030212112.2598640-4-seanjc@google.com>
+Content-Language: en-US
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+In-Reply-To: <20261030212112.2598640-4-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: D3HtbIrHYhFBVkH1Qk3wWusLux_I87WB
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDAzNCBTYWx0ZWRfX+75I8chF9UB1
+ cZ5RrnTSgZK+fW7yAb1FBW2kbxEDnxzKKm7KoFykscUKCm96SAL2vDM8XvDhAJsxzUTSFaYQ4uh
+ RkruX2BfqtdJJfB503dMEyI5HDd/QU4=
+X-Authority-Analysis: v=2.4 cv=LokHWXdc c=1 sm=1 tr=0 ts=6aeaf35b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=1XWaLZrsAAAA:8 a=1QS-1g0Vr6wPOSXTiQ0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDAzNCBTYWx0ZWRfX4eN8xeQe6Zf3
+ ywbSZRXK9eMRl41agjGOMGmBmcZMIuf1c/GWQqDLHoTCm5GKkwFkjM2+aViHgMBVIGDMXyBt94u
+ /5z4DAc3/evePjhod1tLEDxdchMzSy6epOlo+4dKGjO8g88sDgslDYx7lNKts5jO4ZlNdvuaQZP
+ waBEWWwaFU8yswTLM4sEdY2DrBobeCJ/fjcIMNT1gjU4BmcRKYrcVlaY8OIg1z2aUfjydnA82AU
+ nFIi/RCq4xt6rIPr62l0wWE+NgkO5HyU6aHYIMGwc1oQ1qqKUZQAem7Ugv8ZffPGihxRDTDqdDD
+ 89b8ZEX9HB4TDUc3uhY1e+uTIxt13vMvmsAj4JyF+c1gFG9CCCJADpFmxTXkvKvC0rlkodc47BF
+ 6c1b/b65727gRzZfde/SwMKxPPDqlfR8uO4R2RTaC+ZtDLPnQmSeZCZ68q5cDy+3mvLGBVv5kqC
+ umz9a3kyq1vcMPzuUjg==
+X-Proofpoint-GUID: Ay8acS_dMbzIo1IyKYWuxL5J_zhW18KV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-04_02,2026-11-03_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 clxscore=1011 impostorscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 malwarescore=0 bulkscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611040034
 
-pKVM can hide self-hosted debug from a protected guest, which then reads
-ID_AA64DFR0_EL1.DebugVer as 0. A virtual SError the host injects has to
-be delivered by EL2, since the host can't see whether the guest has it
-masked.
+Hi Sean,
 
-Verify that the guest's own handler takes a hardware breakpoint, a
-watchpoint and a single step, and that an injected SError is pending in
-ISR_EL1.A while PSTATE.A masks it and is taken once unmasked. The debug
-cases skip while ID_AA64DFR0_EL1.DebugVer is 0.
+On 31/10/26 2:50 AM, Sean Christopherson wrote:
+> Flush/zap every memslot in kvm_arch_flush_shadow_all(), i.e. when the
+> owning userspace process is exiting, as KVM must ensure all associated
+> memory is unmapped from the guest.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   arch/powerpc/include/asm/kvm_host.h |  1 -
+>   arch/powerpc/kvm/powerpc.c          | 11 +++++++++++
+>   2 files changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+> index 708a32f89776..50a42f80e5f1 100644
+> --- a/arch/powerpc/include/asm/kvm_host.h
+> +++ b/arch/powerpc/include/asm/kvm_host.h
+> @@ -910,7 +910,6 @@ struct kvm_vcpu_arch {
+>   #define __KVM_HAVE_CREATE_DEVICE
+>   
+>   static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+> -static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
+>   static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+>   static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+>   
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 9194cf492d1c..9e9d0865c2f6 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -764,6 +764,17 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+>   	kvmppc_core_commit_memory_region(kvm, old, new, change);
+>   }
+>   
+> +void kvm_arch_flush_shadow_all(struct kvm *kvm)
+> +{
+> +	struct kvm_memory_slot *slot;
+> +	struct kvm_memslots *slots;
+> +	int bkt;
+> +
+> +	slots = kvm_memslots(kvm);
+> +	kvm_for_each_memslot(slot, bkt, slots)
+> +		kvmppc_core_flush_memslot(kvm, slot);
 
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/arm64/pkvm_exceptions.c     | 261 ++++++++++++++++++
- 2 files changed, 262 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_exceptions.c
+For Book3S HV/hash, I am not sure the existing flush_memslot helper can
+be used on an active memslot like this.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 214f38e3f67a7..1045136aacc16 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -190,6 +190,7 @@ TEST_GEN_PROGS_arm64 += arm64/nv_pre_fault_memory_test
- TEST_GEN_PROGS_arm64 += arm64/external_aborts
- TEST_GEN_PROGS_arm64 += arm64/mmio_sign_ext
- TEST_GEN_PROGS_arm64 += arm64/page_fault_test
-+TEST_GEN_PROGS_arm64 += arm64/pkvm_exceptions
- TEST_GEN_PROGS_arm64 += arm64/pkvm_host_abi
- TEST_GEN_PROGS_arm64 += arm64/pkvm_id_regs
- TEST_GEN_PROGS_arm64 += arm64/pkvm_irq
-diff --git a/tools/testing/selftests/kvm/arm64/pkvm_exceptions.c b/tools/testing/selftests/kvm/arm64/pkvm_exceptions.c
-new file mode 100644
-index 0000000000000..f7f9b666dd089
---- /dev/null
-+++ b/tools/testing/selftests/kvm/arm64/pkvm_exceptions.c
-@@ -0,0 +1,261 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * pkvm_exceptions - debug exceptions and a virtual SError in a protected VM.
-+ *
-+ * Copyright (C) 2026 Google LLC
-+ * Author: Fuad Tabba <fuad.tabba@linux.dev>
-+ */
-+
-+#include "kvm_util.h"
-+#include "pkvm.h"
-+#include "processor.h"
-+#include "test_util.h"
-+
-+/* Debug register programming bits, as debug-exceptions.c has them. */
-+#define DBGBCR_LEN8	(0xff << 5)
-+#define DBGBCR_EXEC	(0x0 << 3)
-+#define DBGBCR_EL1	(0x1 << 1)
-+#define DBGBCR_E	(0x1 << 0)
-+
-+#define DBGWCR_LEN8	(0xff << 5)
-+#define DBGWCR_RD	(0x1 << 3)
-+#define DBGWCR_WR	(0x2 << 3)
-+#define DBGWCR_EL1	(0x1 << 1)
-+#define DBGWCR_E	(0x1 << 0)
-+
-+#define SPSR_SS		(1 << 21)
-+
-+#define NR_STEPS	3
-+
-+enum { CMD_INJECT_SERROR, CMD_CHECK_SERROR };
-+
-+extern unsigned char hw_bp, ss_start;
-+
-+static volatile u64 ex_pc, ex_addr;
-+static volatile u64 ss_addr[NR_STEPS + 1];
-+static volatile int ss_idx;
-+static volatile char write_data;
-+static volatile bool serror_taken;
-+
-+static bool debug_exposed;
-+
-+/* Masks debug on return so the breakpointed instruction runs. */
-+static void hw_bp_handler(struct ex_regs *regs)
-+{
-+	ex_pc = regs->pc;
-+	regs->pstate |= PSR_D_BIT;
-+}
-+
-+/* Records FAR, the accessed address, and masks debug on return so the access completes. */
-+static void wp_handler(struct ex_regs *regs)
-+{
-+	ex_pc = regs->pc;
-+	ex_addr = read_sysreg(far_el1);
-+	regs->pstate |= PSR_D_BIT;
-+}
-+
-+/* Records the stepped PC and sets SPSR.SS so that the next instruction is stepped too. */
-+static void ss_handler(struct ex_regs *regs)
-+{
-+	__GUEST_ASSERT(ss_idx <= NR_STEPS, "step %d past the stepped range", ss_idx);
-+	ss_addr[ss_idx++] = regs->pc;
-+	regs->pstate |= SPSR_SS;
-+}
-+
-+static void reset_debug_state(void)
-+{
-+	asm volatile("msr daifset, #8");
-+
-+	/* Clear the OS lock and double lock so debug exceptions are permitted. */
-+	write_sysreg(0, osdlr_el1);
-+	write_sysreg(0, oslar_el1);
-+	isb();
-+
-+	write_sysreg(0, mdscr_el1);
-+	write_sysreg(0, dbgbcr0_el1);
-+	write_sysreg(0, dbgbvr0_el1);
-+	write_sysreg(0, dbgwcr0_el1);
-+	write_sysreg(0, dbgwvr0_el1);
-+	isb();
-+
-+	ex_pc = 0;
-+	ex_addr = 0;
-+}
-+
-+/* A zero DebugVer means EL2 hides self-hosted debug, so the case has nothing to test. */
-+static bool guest_debug_exposed(void)
-+{
-+	bool exposed = SYS_FIELD_GET(ID_AA64DFR0_EL1, DebugVer, read_sysreg(id_aa64dfr0_el1));
-+
-+	GUEST_SYNC(exposed);
-+	return exposed;
-+}
-+
-+static void enable_monitor_debug(void)
-+{
-+	asm volatile("msr daifclr, #8");
-+	write_sysreg(read_sysreg(mdscr_el1) | MDSCR_EL1_KDE | MDSCR_EL1_MDE, mdscr_el1);
-+	isb();
-+}
-+
-+static void guest_hw_breakpoint(void)
-+{
-+	pkvm_guest_init();
-+	if (!guest_debug_exposed())
-+		GUEST_DONE();
-+
-+	reset_debug_state();
-+	write_sysreg(DBGBCR_LEN8 | DBGBCR_EXEC | DBGBCR_EL1 | DBGBCR_E, dbgbcr0_el1);
-+	write_sysreg((u64)&hw_bp, dbgbvr0_el1);
-+	enable_monitor_debug();
-+	asm volatile("hw_bp: nop");
-+	GUEST_ASSERT_EQ(ex_pc, (u64)&hw_bp);
-+
-+	reset_debug_state();
-+	GUEST_DONE();
-+}
-+
-+static void guest_watchpoint(void)
-+{
-+	pkvm_guest_init();
-+	if (!guest_debug_exposed())
-+		GUEST_DONE();
-+
-+	reset_debug_state();
-+	write_sysreg(DBGWCR_LEN8 | DBGWCR_RD | DBGWCR_WR | DBGWCR_EL1 | DBGWCR_E, dbgwcr0_el1);
-+	/*
-+	 * BAS = 0xff watches all eight bytes only from a doubleword-aligned DBGWVR.
-+	 * FAR still holds the byte's address.
-+	 */
-+	write_sysreg((u64)&write_data & ~7UL, dbgwvr0_el1);
-+	enable_monitor_debug();
-+	write_data = 'x';
-+	GUEST_ASSERT_EQ(write_data, 'x');
-+	GUEST_ASSERT_EQ(ex_addr, (u64)&write_data);
-+
-+	reset_debug_state();
-+	GUEST_DONE();
-+}
-+
-+static void guest_single_step(void)
-+{
-+	pkvm_guest_init();
-+	if (!guest_debug_exposed())
-+		GUEST_DONE();
-+
-+	reset_debug_state();
-+	write_sysreg(read_sysreg(mdscr_el1) | MDSCR_EL1_KDE | MDSCR_EL1_SS, mdscr_el1);
-+	isb();
-+	ss_idx = 0;
-+	/* Unmasking makes the step active-pending, so the first one is taken at ss_start. */
-+	asm volatile("msr daifclr, #8\n"
-+		     "ss_start:\n"
-+		     "mrs x0, esr_el1\n"
-+		     "add x0, x0, #1\n"
-+		     "msr daifset, #8\n"
-+		     : : : "x0");
-+	GUEST_ASSERT_EQ(ss_addr[0], (u64)&ss_start);
-+	GUEST_ASSERT_EQ(ss_addr[1], (u64)&ss_start + 4);
-+	GUEST_ASSERT_EQ(ss_addr[2], (u64)&ss_start + 8);
-+
-+	reset_debug_state();
-+	GUEST_DONE();
-+}
-+
-+static void serror_handler(struct ex_regs *regs)
-+{
-+	GUEST_ASSERT_EQ(ESR_ELx_EC(read_sysreg(esr_el1)), ESR_ELx_EC_SERROR);
-+	serror_taken = true;
-+}
-+
-+/*
-+ * The guest sees the injected SError in ISR_EL1.A while PSTATE.A masks it, and
-+ * takes it on unmasking. EL2 has to deliver it through HCR_EL2.VSE, because the
-+ * host can't read a protected guest's PSTATE.A for serror_is_masked().
-+ */
-+static void guest_serror(void)
-+{
-+	pkvm_guest_init();
-+
-+	GUEST_SYNC(CMD_INJECT_SERROR);
-+	GUEST_ASSERT(read_sysreg(isr_el1) & ISR_EL1_A);
-+	GUEST_ASSERT(!serror_taken);
-+
-+	local_serror_enable();
-+	isb();
-+	local_serror_disable();
-+
-+	GUEST_ASSERT(serror_taken);
-+	GUEST_SYNC(CMD_CHECK_SERROR);
-+	GUEST_DONE();
-+}
-+
-+static void serror_sync(struct kvm_vcpu *vcpu, struct ucall *uc)
-+{
-+	struct kvm_vcpu_events events = {};
-+
-+	switch (uc->args[1]) {
-+	case CMD_INJECT_SERROR:
-+		events.exception.serror_pending = true;
-+		vcpu_events_set(vcpu, &events);
-+		memset(&events, 0, sizeof(events));
-+		vcpu_events_get(vcpu, &events);
-+		TEST_ASSERT(events.exception.serror_pending, "vSError not pending after injection");
-+		break;
-+	case CMD_CHECK_SERROR:
-+		vcpu_events_get(vcpu, &events);
-+		TEST_ASSERT(!events.exception.serror_pending, "vSError still pending once taken");
-+		break;
-+	}
-+}
-+
-+static void test_serror(void)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+
-+	vm = pkvm_vm_create_with_one_vcpu(&vcpu, guest_serror);
-+	vm_install_exception_handler(vm, VECTOR_ERROR_CURRENT, serror_handler);
-+	pkvm_run_loop(vcpu, serror_sync);
-+	kvm_vm_free(vm);
-+}
-+
-+static void debug_sync(struct kvm_vcpu *vcpu, struct ucall *uc)
-+{
-+	debug_exposed = uc->args[1];
-+}
-+
-+static void run_debug_guest(void *guest_code, int ec, handler_fn handler, const char *name)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+
-+	vm = pkvm_vm_create_with_one_vcpu(&vcpu, guest_code);
-+	vm_install_sync_handler(vm, VECTOR_SYNC_CURRENT, ec, handler);
-+	pkvm_run_loop(vcpu, debug_sync);
-+	kvm_vm_free(vm);
-+
-+	if (debug_exposed)
-+		ksft_test_result_pass("%s\n", name);
-+	else
-+		ksft_test_result_skip("%s: self-hosted debug not exposed to protected guests\n",
-+				      name);
-+}
-+
-+int main(void)
-+{
-+	TEST_REQUIRE(pkvm_supported());
-+
-+	ksft_print_header();
-+	ksft_set_plan(4);
-+
-+	run_debug_guest(guest_hw_breakpoint, ESR_ELx_EC_BREAKPT_CUR, hw_bp_handler,
-+			"hardware breakpoint");
-+	run_debug_guest(guest_watchpoint, ESR_ELx_EC_WATCHPT_CUR, wp_handler, "watchpoint");
-+	run_debug_guest(guest_single_step, ESR_ELx_EC_SOFTSTP_CUR, ss_handler, "single step");
-+
-+	test_serror();
-+	ksft_test_result_pass("virtual SError taken on unmasking\n");
-+
-+	ksft_finished();
-+}
--- 
-2.47.3
+The normal memslot invalidation path seems to deliberately establish
+the opposite ordering.  kvm_invalidate_memslot() first installs an
+INVALID slot and makes it active:
 
+	invalid_slot->flags |= KVM_MEMSLOT_INVALID;
+	kvm_replace_memslot(kvm, old, invalid_slot);
+	kvm_swap_active_memslots(kvm, old->as_id);
+and only then does kvm_arch_flush_shadow_memslot(kvm, old);.
+
+The comment there explicitly states:
+/*
+  * From this point no new shadow pages pointing to a deleted,
+  * or moved, memslot will be created.
+  */
+
+Similarly, kvmppc_core_flush_memslot_hv() in
+arch/powerpc/kvm/book3s_64_mmu_hv.c relies on the memslot already being 
+invalid when testing KVMPPC_RMAP_PRESENT without locking, as no new 
+HPTEs can be created.
+
+However, kvm_arch_flush_shadow_all() in arch/powerpc/kvm/powerpc.c now 
+invokes the same helper while walking active memslots.
+
+Is there any serialization in the mmu_notifier.release() path that 
+provides the same guarantee against new HPTE creation?
+
+Otherwise, couldn't an H_ENTER or fault path create a new HPTE while the 
+rmap is being scanned, or after it has already been examined?
+
+> +}
+> +
+>   void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+>   				   struct kvm_memory_slot *slot)
+>   {
+
+Thanks,
+Narayana Murty.
