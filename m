@@ -1,76 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793830557;
-	b=Pq4hQoyMzyhp28ox6YIbFTpcuMDtqm5oGSw6HQxHdiK7zNaN7gu7beidSRLtxxg3eljm
-	 xut/k+AAqJ7Fwure934rGambXPNiSvtleRR7kXrKuG0Ip93giLyH6mU3Mc4lxKYspOYoo
-	 Me/YbOXIkKFa4/g9j5Dmprj2+yzMVx88PpLRA8quu/9l3TAiPnMJ9nsBA+FRqYGs4RmQj
-	 q7uUUMSVNc63EfeFacrGSKXazFgesLKytVDVK3BPURJoz0uGNr5NrO8uyK+b9LMDM54Ql
-	 2YcZqZKrq52NbVGaVrKL0Qz9anumNgnZKtOf2NdItMzPS++kjbFtFTNf69uvSWK78xw==
+	t=1793832385;
+	b=rW/4r4qxmg1cdaA9xg0PrlSFIB57J/q7ETg7pRR3U9KFfbBQvm0jcv2NFvpo2cdF8r9e
+	 Efd65ABwunkh/3duBMvc3mkn4ZxZkX4CHGo3VcS5ncmwuYYoC++I22UlMFclaNiW4sFxH
+	 GnNWm2WdgcxHceu1Ah8ocHtJvPBaWfHrfrYska2bpF3kppYi3fA16ImEMhQz0phgSuWgG
+	 WMeaOgZgpxADLpOXn7r9EXATFw/AKsEbvbjjFoVUgiBFDgy99TFlrhb2drTc+FainZYLa
+	 /BzkpN30VRmIWLq2SFKStLlt1MYzZbcO6Fhwt6EjNLeayhdlvDxua2ZtJsFfrssXn4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793830557;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=e9Al2DEvIWLb6MWcheqyXmrjikqbykjExztYBLPRPTY=;
-	b=suW6C4wL9ZbHXc+xnGk7tc9liYRTidbZm/jzoRJ92GNmJnUyoRsiq/wFO0PEypH0o01S
-	 JGPN8RwC8a4mtj2Y5sNo6ZdpVkrbe3yVgOzI+V6JEwkvvFuoT6gSxhJqGxvezCtUOqHjE
-	 keUaxqqeWm+QQDdIQYMGMPjHhqhjtbsqHK5fCYS8lRI+bdmKW89WaYB71J4oeQs8Sf6eA
-	 QhNCP+O/rO92+A+8BrLk5YMKzs67s5lSidawycmKsMsAaq+14QY03EB0QLFRsGmCTjaWY
-	 ZAbMosmv4LOVPt+tpyz7CvteI+OgmkWfzca92lIE8QhAYib1ROTY8Wf2PMpMYEdThmA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793832385;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=DMdL19ia1MseF42JJfTaNBjB6MPN2f0VB+2HLKGRGcw=;
+	b=fjG0p3mK/xIx/L6koDm4us7yx0Rgrg06i/+tpH1udt/H7rNvVfaBPWmaeY8jeCWrqut6
+	 /32Fd7vU9MF8chsfoj5Lh9bfUPYDjscWpU4HaYwVZHq18ntav337/SQZ94IJx0TLtIcnN
+	 ua3BxTEuAy6b/FGrDa+7ER3ITn6fbVcCcOAHZB7UmiDm09WwN3vYClJM2cZs8Fuod52Om
+	 arLJCJMCrmAlpuUOVuv9KugjryOqe3CcAKZnG7gUNagFhUV183qx7PKp3dKLo+NnFAgAh
+	 yPW9Jj7XHdspxwc+UxPzsWpPR6Tol2BWT/RrFz6Wcbq6BylI0FnUotBjOkJQFs1HvZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LPrGVcha;
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464D1606AB04
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 22:15:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 464D1606AB04
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ac29vcO0;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE601606D820
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 22:46:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE601606D820
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LPrGVcha
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ed276af91dso1916375ad.3
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 14:15:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793830557; x=1794435357; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=e9Al2DEvIWLb6MWcheqyXmrjikqbykjExztYBLPRPTY=;
-        b=LPrGVchao38f/SC+Kx9VugPICoxtMEPaCao5/c92/o1Bs8B/BIu+4gtCfeX3e3gyLd
-         Z3o4jqUFbAXFK8HujH66pWdUMmxYxgsf9SPw7Jt8ZoxqoUcCbMikYmtlnXQpBH+3J1m2
-         3aENwqZ/9DjS/k2WO1q8pfqKv39uVLlxNH0jxS28STi/1Xd21DJKH3xPRWKsLl3E6Bz3
-         GtlxX9Y0PJST+9xpuRkwGl6OBrdTOUBsKEn2pwrUsAWWb7PRRY5zxpE7upKmJ7i63xxH
-         gmqBGFhGgh7SC4GyfSoyTO5KEs+GXPKuJ9gsaTciS/Ww6PWriMd+2GzOaeuqEf0qbLG0
-         tGnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793830557; x=1794435357;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=e9Al2DEvIWLb6MWcheqyXmrjikqbykjExztYBLPRPTY=;
-        b=GMzJDXQqch6yO0WPkbcWhUVRIgU2Y5ievqN5NZJ+pVRiqvnmO0s4O7SppH3dCHFSFW
-         K4IrUjkq8q85oCJ3kh3oh0TfR/E6noSvLvzWdQwQ93zohLJ8Y2a6QeKQXnf9BS/L9ejw
-         0Nm/Nw0jlDEIW8USnZXAjN1dBDSFrnp1F9aWttW2nfwZjxNHHYYia/OARkzzF/+tsbsv
-         YCquiGJdVSOFFiJiolQv9kVbEGjMkHIOBC8ErN5HbEqDKHePW74J0RhnXwvBBhzG0mrv
-         NL83j/Lw2XNQ4VhSpcZcpgwIbgrgB//M6iAcE/Da+Ydqj5qiibG3tzd0MiGiYQNYGolq
-         hUmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxJhODIMAB7K45lrR9ONAu5WHkYlTyxV5TBp/OO+RlrstyliIa1RJYLHIFykA1lT0eLxZk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8U35K3IBcIdM9kaDen1qqX6voLNpHjbAWGFhKDaU2ZgzT+ZR/2
-	wYFXO2AoSpEKK2mXzApenjkeHB9wIAFNWvIlAzPf+r5yOHbcC0Gs6fmq2IUg74fxeNwFD5CMvwM
-	eK/xjCA==
-X-Received: from plbmc12.prod.google.com ([2002:a17:903:2b0c:b0:2ea:7f9c:2ce])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e84c:b0:2e9:4008:6fda
- with SMTP id d9443c01a7336-2eb364b5c4bmr178143285ad.28.1793830556445; Wed, 04
- Nov 2026 14:15:56 -0800 (PST)
-Date: Wed, 4 Nov 2026 14:15:55 -0800
-In-Reply-To: <CAO9r8zOa315UTmR4fbGzyHMtKDfUjW=6ehTrdA9js+JOAb3d7w@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ac29vcO0
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6953C169C;
+	Wed,  4 Nov 2026 14:46:19 -0800 (PST)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7D983F632;
+	Wed,  4 Nov 2026 14:46:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793832382; bh=gA3RjhcnUbX3FeD3ZQ9T2a1Q2l8A9c0Kc7zUbAxh5FE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ac29vcO02ijqYFN1QbLQkbGJ71LNaDm+oDI6B3SR0IYbRhaVs8PzsnE4o8GnYyfE7
+	 Rpm/vTICVO+eyFhZ0JE8nX1bzhcMf+LOt03/NZCT9XQgkrY2zaPpprrPsBSzTQYy1I
+	 5eW4Rf1jwXnU6KoNJawv2swSuQKfiYKaqiMxTrxw=
+Date: Wed, 4 Nov 2026 22:46:16 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Sascha Bischoff <sascha.bischoff@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, 
+	lpieralisi@kernel.org, timothy.hayes@arm.com, fuad.tabba@linux.dev
+Subject: Re: [PATCH v2 08/16] KVM: arm64: gic-v5: Add ITS translation cache
+ maintenance
+Message-ID: <7sk6tikltw7bsrpes7p2hv2vufwua77xxfdbdmlpyas2pjyu5e@j42zu3b536t6>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+ <20261102194454.4086911-9-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,96 +62,233 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <CALMp9eSuH1xe7PQ_WtE9DjqWjnKanFD_AFiiR9rEYkSV+sj45w@mail.gmail.com>
- <CAO9r8zOa315UTmR4fbGzyHMtKDfUjW=6ehTrdA9js+JOAb3d7w@mail.gmail.com>
-Message-ID: <auuum7Dq0w-swARW@google.com>
-Subject: Re: [PATCH v3 00/27] KVM: nSVM: Optimize nSVM TLB flushes
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102194454.4086911-9-sascha.bischoff@arm.com>
 
-On Wed, Oct 14, 2026, Yosry Ahmed wrote:
-> On Wed, Oct 14, 2026 at 6:23=E2=80=AFAM Jim Mattson <jmattson@google.com>=
- wrote:
-> >
-> > On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
-wrote:
-> > >
-> > > This series optimizes TLB flushes for nested SVM by using and maintai=
-ning
-> > > a separate ASID for L2 for each vCPU (similar to VMX's handling of VP=
-IDs),
-> > > rather than sharing the same ASID and flushing everything on every ne=
-sted
-> > > transition.
-> > >
-> > > The series also drops the dynamic ASID allocation scheme and uses a
-> > > static ASID per vCPU (or two if using nested), bringing it closer to =
-how
-> > > VMX handles VPIDs. Modern CPUs (Rome, Milan, Genoa, Turin) advertise =
-32K
-> > > ASIDs, so there is no need for dynamic allocation.
-> >
-> > I'm not convinced that this is the right direction. It's almost always
-> > better to do things locally when possible. Why not keep the per-CPU
-> > generational allocation, but allocate two ASIDs per vCPU=E2=80=94one fo=
-r each
-> > VMCB?
->=20
-> This is what a much older version of this series did:
-> https://lore.kernel.org/lkml/20250205182402.2147495-1-yosry.ahmed@linux.d=
-ev/
->=20
-> Then we moved on to per-VM fixed ASIDs to align with SEV, but the
-> tracking of "which vCPU used this ASID last" was annoying, so we
-> settled on per-vCPU fixed ASIDs, similar to VPIDs, with the caveat of
-> not being able to disable ASID (Hence the fallback ASID thing).
->=20
-> Other than alignment, dynamic allocation of ASIDs means that we need
-> to handle the possibility of ASID reuse, which imo introduces more
-> complexity than the fallback ASID logic, patch 10 lists three very
-> recent fixups that we need to handle corner cases with dynamic ASID
-> allocations:
-> https://lore.kernel.org/kvm/20261012233638.2546339-11-yosry@kernel.org/
->=20
-> There is a 4th one that was sent after patch 10.
->=20
-> Also, the dynamic ASID allocations give the VMs more noisy neighbor
-> power, I think the ASID is reallocated on INIT, so a VM can trigger
-> running out of ASIDs on a pCPU and flushing the ASIDs of all other
-> VMs. Yes, we can handle this in INIT, but the problem is completely
-> side-stepped by using static ASIDs.
->=20
-> > This would eliminate the need for a fallback ASID and remove any
-> > possible concerns about contention for a global bitmap.
->=20
-> The fallback ASID logic is annoying, yes, but it's only in a few
-> places. I don't think there's a risk of real contention in most
-> practical use cases, we can run 32k vCPUs per pCPU before we run into
-> issues. I think we will hit other scalability limits before the
-> fallback ASID becomes a problem.
->=20
-> > Moreover, it would be much simpler to implement.
->=20
-> The delta is smaller and simpler, yes. But I think the static ASIDs
-> code ends up being simpler to reason about.
+On Mon, Nov 02, 2026 at 07:44:46PM +0000, Sascha Bischoff wrote:
+> Walking the guest DT and ITTs on every MSI or ITS event is unnecessary
+> once a DeviceID/EventID pair has been resolved. Add an XArray indexed
+> by the DeviceID/EventID pair to cache resolved translations as a
+> disposable acceleration structure, avoiding repeated walks of guest
+> memory.
+> 
+> Cache entries hold references to the resolved struct vgic_irq objects
+> stored in the VM-wide LPI xarray. Lookups use RCU to access entries in
+> interrupt context without taking a raw spinlock, and take an IRQ
+> reference before returning an entry to the caller. Cache eviction drops
+> the reference held by the cache and defers freeing the entry until RCU
+> readers have finished. This keeps the cache tied to the normal LPI
+> object lifetime instead of storing raw LPI numbers.
+> 
+> Invalidate cached translations when the table configuration or guest
+> invalidation commands make them stale. Changes to DT_BASER or DT_CFGR
+> drop the entire cache, while writes of unchanged values leave it intact.
+> INV_EVENTR removes either one event or the events covered by an L1 ITT
+> entry, and INV_DEVICER removes the translations covered by either an L2
+> DT entry or an L1 DT entry.
+> 
+> The cache is not part of any userspace ABI and is never authoritative:
+> entries can always be rebuilt from guest memory on the next lookup.
+> 
+> The vgic_irq objects for LPIs track valid translations rather than
+> mirror interrupt state. Mirroring that state would require querying
+> the GIC on every guest exit. Once direct injection is added, the
+> objects also record whether an LPI is mapped into the host ITT.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-its-v5.c | 219 ++++++++++++++++++++++++++++--
+>  include/kvm/arm_vgic.h            |   3 +
+>  2 files changed, 208 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> index caa68c4680d02..9f4783b243221 100644
+> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> @@ -4,6 +4,7 @@
+>   */
+>  
+>  #include <linux/kvm_host.h>
+> +#include <linux/rcupdate.h>
+>  #include <linux/slab.h>
+>  
+>  #include <asm/kvm_arm.h>
+> @@ -19,6 +20,153 @@
+>  #define VITS_V5_DEVICE_ID_BITS		16
+>  #define VITS_V5_EVENT_ID_BITS		16
+>  
+> +struct its_cache_translation_entry {
+> +	struct rcu_head rcu;
+> +	struct vgic_irq *irq;
+> +};
+> +
+> +/* Put EventID in the low bits so each device's events form one range. */
+> +static unsigned long its_cache_key(u32 device_id, u16 event_id)
+> +{
+> +	return ((unsigned long)device_id << VITS_V5_EVENT_ID_BITS) | event_id;
+> +}
+> +
+> +static void its_cache_drop_translation(struct kvm *kvm,
+> +				       struct its_cache_translation_entry *entry)
+> +{
+> +	struct vgic_irq *irq = entry->irq;
+> +
+> +	vgic_put_irq(kvm, irq);
+> +	/* An interrupt-context lookup may still be using the erased entry. */
+> +	kfree_rcu(entry, rcu);
+> +}
+> +
 
-+1.  The per-pCPU tracking might require less code, but OMG is it hard to r=
-eason
-about.  I also hate having completely different schemes for VMX vs. SVM, it=
- makes
-it extra difficult to reason about TLB stuff when looking at KVM x86 as a w=
-hole.
+drop and erase sound very similar, would its_cache_release_entry() make
+this clearer?
 
-The other big argument for per-vCPU ASIDs is that it will allow us to elide=
- TLB
-flushes on task migration[*], which might not be a major performance win fo=
-r bare
-metal, but it can be a significant win when running nested.
+> +static void its_cache_erase_translation(struct vgic_v5_its *its,
+> +					unsigned long key)
+> +{
+> +	struct its_cache_translation_entry *entry;
+> +
+> +	entry = xa_erase(&its->translation_cache, key);
+> +	if (entry)
+> +		its_cache_drop_translation(its->dev->kvm, entry);
+> +}
+> +
+> +static void its_cache_erase_range(struct vgic_v5_its *its,
+> +				  unsigned long first, unsigned long last)
+> +{
+> +	struct its_cache_translation_entry *entry;
+> +	unsigned long key;
+> +
+> +	xa_for_each_range(&its->translation_cache, key, entry, first, last)
+> +		its_cache_erase_translation(its, key);
+> +}
+> +
+> +static void its_cache_erase_span(struct vgic_v5_its *its,
+> +				unsigned long key, unsigned int bits)
+> +{
+> +	unsigned long mask = (1UL << bits) - 1;
 
-https://lore.kernel.org/all/aHWjPSIdp5B-2UBl@google.com
+nit:                         GENMASK(bits - 1, 0) ?
+
+> +	unsigned long first = key & ~mask;
+> +
+> +	its_cache_erase_range(its, first, first | mask);
+> +}
+> +
+> +static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its *its,
+> +				     u32 device_id, u16 event_id,
+> +				     struct vgic_irq *irq)
+> +{
+> +	unsigned long key = its_cache_key(device_id, event_id);
+> +	struct its_cache_translation_entry *entry;
+> +	struct its_cache_translation_entry *old;
+> +
+> +	entry = kzalloc_obj(*entry, GFP_KERNEL_ACCOUNT);
+> +	if (!entry)
+> +		return -ENOMEM;
+> +
+> +	entry->irq = irq;
+> +
+> +	old = xa_store(&its->translation_cache, key, entry,
+> +		       GFP_KERNEL_ACCOUNT);
+> +	if (xa_is_err(old)) {
+> +		kfree(entry);
+> +		return xa_err(old);
+> +	}
+> +
+> +	if (old)
+> +		its_cache_drop_translation(kvm, old);
+> +
+> +	return 0;
+> +}
+> +
+> +static void its_cache_clear_translations(struct vgic_v5_its *its)
+> +{
+> +	struct its_cache_translation_entry *entry;
+> +	unsigned long key;
+> +
+> +	xa_for_each(&its->translation_cache, key, entry)
+> +		its_cache_erase_translation(its, key);
+> +}
+> +
+> +static int its_cache_look_up_translation(struct vgic_v5_its *its,
+> +					 u32 device_id, u16 event_id,
+> +					 struct vgic_irq **irq)
+> +{
+> +	unsigned long key = its_cache_key(device_id, event_id);
+> +	struct its_cache_translation_entry *entry;
+> +	int ret = -ENXIO;
+> +
+> +	rcu_read_lock();
+> +	entry = xa_load(&its->translation_cache, key);
+> +	if (entry && vgic_try_get_irq_ref(entry->irq)) {
+> +		*irq = entry->irq;
+> +		ret = 0;
+> +	}
+> +	rcu_read_unlock();
+> +
+> +	return ret;
+> +}
+> +
+> +static int its_cache_l2sz_bits(u8 l2sz)
+> +{
+> +	if (l2sz > GICV5_ITS_DT_ITT_CFGR_L2SZ_64k)
+> +		return -EINVAL;
+> +
+> +	/* L2SZ 0, 1, and 2 encode 4K, 16K, and 64K tables of 8-byte entries. */
+> +	return 9 + 2 * l2sz;
+> +}
+> +
+> +static void its_cache_handle_inv_devicer(struct vgic_v5_its *its)
+> +{
+> +	unsigned int bits = its->inv_devicer.event_id_bits;
+> +	int l2_bits;
+> +
+> +	if (its->inv_devicer.l1 && its->dt_cfgr.structure) {
+> +		l2_bits = its_cache_l2sz_bits(its->dt_cfgr.l2sz);
+> +		if (l2_bits < 0)
+> +			return;
+> +		/* An L1 DTE covers the L2 DT's devices and all their EventIDs. */
+> +		bits = l2_bits + VITS_V5_EVENT_ID_BITS;
+> +	} else if (bits > VITS_V5_EVENT_ID_BITS) {
+> +		bits = VITS_V5_EVENT_ID_BITS;
+> +	}
+> +
+> +	its_cache_erase_span(its, its_cache_key(its->didr.device_id, 0), bits);
+> +}
+> +
+> +static void its_cache_handle_inv_eventr(struct vgic_v5_its *its)
+> +{
+> +	int bits = 0;
+> +
+> +	if (its->inv_eventr.l1) {
+> +		/* An L1 ITTE covers the EventIDs in its L2 ITT. */
+> +		bits = its_cache_l2sz_bits(its->inv_eventr.itt_l2sz);
+> +		if (bits < 0)
+> +			return;
+> +	}
+
+For the ITT_L2SZ field in the spec there is:
+
+When programming a reserved value or an unsupported value, the ITS
+behavior is CONSTRAINED UNPREDICTABLE to any behavior which could be
+achieved by programming a valid and supported value.
+
+So I think we should still invalidate when a ITT_L2SZ is programmed to
+a reserved value, maybe just arbitrarily pick a defined value when this
+happens?
+
+Thanks,
+Wei-Lin Chang
+
+> +
+> +	its_cache_erase_span(its, its_cache_key(its->didr.device_id,
+> +						  its->eidr.event_id), bits);
+> +}
+> +
+>  static int parse_linear_dt(struct kvm *kvm, gpa_t dt_base, u32 device_id,
+>  			   gpa_t *itt_base, bool *two_level_itt,
+>  			   unsigned int *event_id_bits, unsigned int *itt_l2sz)
+
+[...]
