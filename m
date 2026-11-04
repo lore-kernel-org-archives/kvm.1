@@ -1,59 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793832385;
-	b=rW/4r4qxmg1cdaA9xg0PrlSFIB57J/q7ETg7pRR3U9KFfbBQvm0jcv2NFvpo2cdF8r9e
-	 Efd65ABwunkh/3duBMvc3mkn4ZxZkX4CHGo3VcS5ncmwuYYoC++I22UlMFclaNiW4sFxH
-	 GnNWm2WdgcxHceu1Ah8ocHtJvPBaWfHrfrYska2bpF3kppYi3fA16ImEMhQz0phgSuWgG
-	 WMeaOgZgpxADLpOXn7r9EXATFw/AKsEbvbjjFoVUgiBFDgy99TFlrhb2drTc+FainZYLa
-	 /BzkpN30VRmIWLq2SFKStLlt1MYzZbcO6Fhwt6EjNLeayhdlvDxua2ZtJsFfrssXn4g==
+	t=1793832916;
+	b=x/K+/DFtNHMTINU6E0ItuRdiZuuVAVuJ/EJSMO0xYCtFv4YQ1HClRmtpm1I03I4cLvC/
+	 GtinD/gDd4Irzj9IgTAwQaiVqVkPya5GFCWS4lb650lUOMKMErUz/mhDH9IiSjDnEIChs
+	 m3Q6bEF0FIlYvAK3mN8MzyfS/wngOZmQJFvUEMVpSJHtHRBEbcZ2qXgrSdxIxE5rdp5j5
+	 RrU47gbDGh2HsxaCmb3F52LfeLQUDu2pJsW8TP4WIbOXtc3hq9WN48tIjxCNR86GCxHqj
+	 TcGdU/j4/AE1PNGq/DHULZbWblaOVSFrJeNB3ZHJylPUFNhn0Jix2cNlfcNun0txw+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793832385;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=DMdL19ia1MseF42JJfTaNBjB6MPN2f0VB+2HLKGRGcw=;
-	b=fjG0p3mK/xIx/L6koDm4us7yx0Rgrg06i/+tpH1udt/H7rNvVfaBPWmaeY8jeCWrqut6
-	 /32Fd7vU9MF8chsfoj5Lh9bfUPYDjscWpU4HaYwVZHq18ntav337/SQZ94IJx0TLtIcnN
-	 ua3BxTEuAy6b/FGrDa+7ER3ITn6fbVcCcOAHZB7UmiDm09WwN3vYClJM2cZs8Fuod52Om
-	 arLJCJMCrmAlpuUOVuv9KugjryOqe3CcAKZnG7gUNagFhUV183qx7PKp3dKLo+NnFAgAh
-	 yPW9Jj7XHdspxwc+UxPzsWpPR6Tol2BWT/RrFz6Wcbq6BylI0FnUotBjOkJQFs1HvZg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793832916;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
+	b=R+fxX3/auTIWfVMF1YI6Ahop6oK/iht+Nja+K7TPqquRGOSh7vsl0gS9sVSZ7a75c9sY
+	 Yo8VykyeNtEqHSlKHZ718REbfRKqqSyWtpIY4fm8vVMSjHdIFVA66IdmMY6Ddo5BG1ISl
+	 WSfoXJvOrWTuf1b90lYaa4qn4fyj25wGpCy3fAFTs65pU9EiVZSiYyr+zzotuuvRc+iKy
+	 uWAZSjfhZo97qndNCFjbKCni0y2yi9SLn/KAomQfZeHvL2pZSm/sUQDiT/4ml99e4rHRD
+	 0kQFBa2lt//CfyzgRNI0KhParJIk63+8dcdk0Ce/r+4y3Boy3CXWnIVcOPVCRkjLoVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ac29vcO0;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE601606D820
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 22:46:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE601606D820
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iX8ZqbG5;
+	arc=none smtp.remote-ip=209.85.214.173
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22234606A32E
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 22:55:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 22234606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ac29vcO0
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6953C169C;
-	Wed,  4 Nov 2026 14:46:19 -0800 (PST)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7D983F632;
-	Wed,  4 Nov 2026 14:46:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793832382; bh=gA3RjhcnUbX3FeD3ZQ9T2a1Q2l8A9c0Kc7zUbAxh5FE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ac29vcO02ijqYFN1QbLQkbGJ71LNaDm+oDI6B3SR0IYbRhaVs8PzsnE4o8GnYyfE7
-	 Rpm/vTICVO+eyFhZ0JE8nX1bzhcMf+LOt03/NZCT9XQgkrY2zaPpprrPsBSzTQYy1I
-	 5eW4Rf1jwXnU6KoNJawv2swSuQKfiYKaqiMxTrxw=
-Date: Wed, 4 Nov 2026 22:46:16 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Sascha Bischoff <sascha.bischoff@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, 
-	lpieralisi@kernel.org, timothy.hayes@arm.com, fuad.tabba@linux.dev
-Subject: Re: [PATCH v2 08/16] KVM: arm64: gic-v5: Add ITS translation cache
- maintenance
-Message-ID: <7sk6tikltw7bsrpes7p2hv2vufwua77xxfdbdmlpyas2pjyu5e@j42zu3b536t6>
-References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
- <20261102194454.4086911-9-sascha.bischoff@arm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iX8ZqbG5
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ea7f9c11e6so21205ad.0
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 14:55:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793832915; x=1794437715; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
+        b=iX8ZqbG5kGhk9C7VPkqjhx2OKZ5xbfR9h1Aef/l6k3JjEk7yu0t/FYe5ycxHHDWtQ0
+         19wFv+lPRy1qGjlmTyU9yKNwh5CIs+A9xxTyv83krzQuMbIjXC4SjI9bZkZEQQLYjav7
+         o8p8FC8HgUrU9sHGmblpdCUujQZ1DCxQEmwArqz5qYpThbmIErnb4BXQbe4ojBPuf6GI
+         BQ1dQdM4HGHcxxDGx0eDNq0a80qflOL4oBs83Fg7eL55XCcCPExeCxPxKS4WGjOYke96
+         XTkOCjNPK5gQ2pwUT4Rzu2ckbqOm/PMxytwGmeVeJVL0CWqD87AJemcrP//eGcQkeQC8
+         F0Cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793832915; x=1794437715;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
+        b=v5h+e25poJFC1TcLTT7V5jr8kcGvWHbIh5aUtR466TzjiwqM7UnEd1jN7nKU22/jtC
+         0yfFy0UkDC2IGIvNSD/YXaIy25fpjVPwTFBOiEaF0V4Cim0wSTWNr21ABOtxLwR02zO9
+         FAXQJQ5OtKv7vJ6d/RpNR/BUTRqzJNkJenmUikb2ybp++EztxNS1nxbh/s/tPBKCLgsn
+         USAbJVTiTWYuf1oScUoUJTHZD3ImQhcnTn94y3D3unaUGTErTbzDeUT3q+797tp1ydtm
+         AedaVaQK5noaomMEMsobR1A0nobtx6UC6XQCubW6aQEPpBQPZdGgOrT0WxtKNPyInf4z
+         LXVA==
+X-Forwarded-Encrypted: i=1; AKwUvBxK/QCZslbQp2buEBfVsMrlD7aDKrAzFlXjiMhVY9chByeqaEWpJ4N5lVLDoaeZ8oCP1XM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8nPI4uCRD5fUBpii4XG6YqoHRhgYjZuI2MppnykiS9pWTojoMt
+	ZsefCy3LFupyGyYd2mEH5oVPa8IpZSXiK2KzgKtmi9lfLmO/87DluxpI2NwO20Ih8g==
+X-Gm-Gg: AYBFou2/wjSwkUsLg2WKVhB+9vbb1DjQiJUrW0Cobalbqbs9mooTUBRBxS8bum7MvzT
+	etOnW/gocX2tbhgTarcn2YwTIpxD1X3kbhhrHmwVCEdql4uTYyNXbIr293ShpSHS/rv7g2eLgXF
+	KeE/s1IH5S3FSYZn37PFGO4ZpuqoOI2jZ7RN4+8TffRctYY/jzJOVnFMNmz8+Gj4FqSgrzXVYQm
+	dF2k2kIsqaofY7Fu4S6vTQsIEd+01eQoi9nXZj2sHn55V+GqYkU2pRt9zk9H6D5lUMs4HUI41A/
+	KiR2JvNiJ6F6Pe6ngyxm86+6jjQls2OOKW9n7HLNFzW1k4NqXSrb/PJ9OSizyYR4BOOxE3QnnqV
+	+Ig+Jft/O7vuVnmAjRmCgwwj8nhrjABLYxT4ParJedvCcKAke0xJBgMpSxoi+bczKxZHBW9hfue
+	0fmdIX1rMC7kkzFvCZu6sNw21qcINXmsjneMqKd3tVeVdeL4W6QVg4Foc5ZByEvlaYtsVDFO73B
+	BCoXA9iZxzEiulOiHyjIzoFmW6WX4f7dnkAoVhtCOqDmE88WhdhZZ75FHyxwZBR52yo8Mm3QAWX
+	tmfrSUYfXDmwy1e51KitpWB2sHRCiHwqqrNRctyzcGErv9pcyRdapn4VP6LZ5n+xAA==
+X-Received: by 2002:a17:902:db11:b0:2dd:3a08:d47b with SMTP id d9443c01a7336-2ed27e06d7bmr1039485ad.13.1793832914948;
+        Wed, 04 Nov 2026 14:55:14 -0800 (PST)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b09455fbdasm2528714a91.0.2026.11.04.14.55.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 14:55:14 -0800 (PST)
+Date: Wed, 4 Nov 2026 14:55:07 -0800
+From: Vipin Sharma <vipinsh@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, 
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, 
+	apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, 
+	corbet@lwn.net, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
+	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
+	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
+	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
+	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, 
+	yi.l.liu@intel.com
+Subject: Re: [PATCH v6 05/27] PCI: liveupdate: Add helpers to preserve struct
+ pci_saved_state
+Message-ID: <20261104222438.GB511751.vipinsh@google.com>
+References: <20261102153656.1431701-6-vipinsh@google.com>
+ <20261102230624.GA1038787@bhelgaas>
+ <aukvTvnfyAvahb51@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -65,230 +113,89 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102194454.4086911-9-sascha.bischoff@arm.com>
+In-Reply-To: <aukvTvnfyAvahb51@google.com>
 
-On Mon, Nov 02, 2026 at 07:44:46PM +0000, Sascha Bischoff wrote:
-> Walking the guest DT and ITTs on every MSI or ITS event is unnecessary
-> once a DeviceID/EventID pair has been resolved. Add an XArray indexed
-> by the DeviceID/EventID pair to cache resolved translations as a
-> disposable acceleration structure, avoiding repeated walks of guest
-> memory.
+On Tue, Nov 03, 2026 at 12:48:14AM +0000, David Matlack wrote:
+> On 2026-11-02 05:06 PM, Bjorn Helgaas wrote:
+> > On Mon, Nov 02, 2026 at 07:36:34AM -0800, Vipin Sharma wrote:
+> > > struct pci_saved_state is private to the PCI core and its in-memory
+> > > layout is not a stable ABI. Add helpers to serialize it into a
+> > > caller-provided buffer and rebuild it in the next kernel with a stable
+> > > struct pci_saved_state_ser ABI. Using caller-provided buffers allows
+> > > drivers to embed the serialized saved state directly in their own
+> > > KHO-preserved data with a single allocation and lifetime.
+> >
+> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 > 
-> Cache entries hold references to the resolved struct vgic_irq objects
-> stored in the VM-wide LPI xarray. Lookups use RCU to access entries in
-> interrupt context without taking a raw spinlock, and take an IRQ
-> reference before returning an entry to the caller. Cache eviction drops
-> the reference held by the cache and defers freeing the entry until RCU
-> readers have finished. This keeps the cache tied to the normal LPI
-> object lifetime instead of storing raw LPI numbers.
+> We discussed this patch off-list this morning. I'll sharing the context
+> here since you were not there Bjorn.
 > 
-> Invalidate cached translations when the table configuration or guest
-> invalidation commands make them stale. Changes to DT_BASER or DT_CFGR
-> drop the entire cache, while writes of unchanged values leave it intact.
-> INV_EVENTR removes either one event or the events covered by an L1 ITT
-> entry, and INV_DEVICER removes the translations covered by either an L2
-> DT entry or an L1 DT entry.
+> The ABI added by this patch is not actually stable across kernel
+> versions.
 > 
-> The cache is not part of any userspace ABI and is never authoritative:
-> entries can always be rebuilt from guest memory on the next lookup.
+> struct pci_saved_state_ser is stable, but the contents of each
+> capability entry are not:
 > 
-> The vgic_irq objects for LPIs track valid translations rather than
-> mirror interrupt state. Mirroring that state would require querying
-> the GIC on every guest exit. Once direct injection is added, the
-> objects also record whether an LPI is mapped into the host ITT.
+> > > +struct pci_cap_saved_data_ser {
+> > > +	u16 cap_nr;
+> > > +	u16 extended;
+> > > +	u32 size;
+> > > +	u8 data[];
+> > > +} __packed;
 > 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-its-v5.c | 219 ++++++++++++++++++++++++++++--
->  include/kvm/arm_vgic.h            |   3 +
->  2 files changed, 208 insertions(+), 14 deletions(-)
+> @data is a memcpy() of the per-capability save buffer, and the layout
+> of that buffer is not defined by the device or the spec. It is whatever
+> registers that capability's pci_save_*_state() function happens to
+> read, in whatever order it reads them. 
 > 
-> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
-> index caa68c4680d02..9f4783b243221 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
-> @@ -4,6 +4,7 @@
->   */
->  
->  #include <linux/kvm_host.h>
-> +#include <linux/rcupdate.h>
->  #include <linux/slab.h>
->  
->  #include <asm/kvm_arm.h>
-> @@ -19,6 +20,153 @@
->  #define VITS_V5_DEVICE_ID_BITS		16
->  #define VITS_V5_EVENT_ID_BITS		16
->  
-> +struct its_cache_translation_entry {
-> +	struct rcu_head rcu;
-> +	struct vgic_irq *irq;
-> +};
-> +
-> +/* Put EventID in the low bits so each device's events form one range. */
-> +static unsigned long its_cache_key(u32 device_id, u16 event_id)
-> +{
-> +	return ((unsigned long)device_id << VITS_V5_EVENT_ID_BITS) | event_id;
-> +}
-> +
-> +static void its_cache_drop_translation(struct kvm *kvm,
-> +				       struct its_cache_translation_entry *entry)
-> +{
-> +	struct vgic_irq *irq = entry->irq;
-> +
-> +	vgic_put_irq(kvm, irq);
-> +	/* An interrupt-context lookup may still be using the erased entry. */
-> +	kfree_rcu(entry, rcu);
-> +}
-> +
+> None of that is described in include/linux/kho/abi/pci.h, so this patch
+> implicitly turns the private layout of every capability save buffer in
+> drivers/pci/ into Live Update ABI. Someone changing
+> pci_save_pcie_state() or pci_save_aer_state() has no way of knowing they
+> just broke Live Update compatibility.
+> 
+> And these layouts do change. Commit 898585172fa7 ("PCI: save and restore
+> PCIe 2.0 registers") grew the PCIe buffer from 4 to 7 registers, and the
+> AER, LTR, L1SS, PTM, TPH and DPC buffers were all added over time.
+> 
+> This is the problem I was trying to solve with:
+> 
+>   https://lore.kernel.org/linux-pci/20260924173501.856380-1-dmatlack@google.com/
+> 
+> That series replaces the per-capability buffers with a single store
+> indexed by config space offset.
+> 
+> Where a saved value goes is then determined by the device's config
+> space, not by the kernel that saved it, so the PCI core can change which
+> registers it saves without changing what the data means. Serializing
+> that for Live Update should be trivial (a size/flags header plus the
+> bitmap and the values). The cross-kernel compatibility question also
+> becomes explicit and per-register ("the previous kernel saved offset X
+> and this kernel doesn't restore it") instead of a size mismatch on an
+> opaque blob.
+> 
+> Bjorn, this is also related to your last comment:
+> 
+> > I think it would be helpful if the names of "config_space[]" and
+> > "caps[]" hinted at the connection between them (both are in config
+> > space).
+> 
+> With the offset-indexed layout the two are no longer separate. The
+> header and the capability registers are all just DWORDs in the same
+> config space map in struct pci_saved_state.
+> 
+> So I'd suggest that we land the saved state series first and then rebase
+> this patch on top of it.
+> 
+> I can send a v2 of that series this week that addresses Josh's feedback,
+> rebases on top of the PCI Live Update v10 series, and includes the
+> serialization helpers. We can use that as the basis for the next version
+> of this series.
+> 
 
-drop and erase sound very similar, would its_cache_release_entry() make
-this clearer?
-
-> +static void its_cache_erase_translation(struct vgic_v5_its *its,
-> +					unsigned long key)
-> +{
-> +	struct its_cache_translation_entry *entry;
-> +
-> +	entry = xa_erase(&its->translation_cache, key);
-> +	if (entry)
-> +		its_cache_drop_translation(its->dev->kvm, entry);
-> +}
-> +
-> +static void its_cache_erase_range(struct vgic_v5_its *its,
-> +				  unsigned long first, unsigned long last)
-> +{
-> +	struct its_cache_translation_entry *entry;
-> +	unsigned long key;
-> +
-> +	xa_for_each_range(&its->translation_cache, key, entry, first, last)
-> +		its_cache_erase_translation(its, key);
-> +}
-> +
-> +static void its_cache_erase_span(struct vgic_v5_its *its,
-> +				unsigned long key, unsigned int bits)
-> +{
-> +	unsigned long mask = (1UL << bits) - 1;
-
-nit:                         GENMASK(bits - 1, 0) ?
-
-> +	unsigned long first = key & ~mask;
-> +
-> +	its_cache_erase_range(its, first, first | mask);
-> +}
-> +
-> +static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its *its,
-> +				     u32 device_id, u16 event_id,
-> +				     struct vgic_irq *irq)
-> +{
-> +	unsigned long key = its_cache_key(device_id, event_id);
-> +	struct its_cache_translation_entry *entry;
-> +	struct its_cache_translation_entry *old;
-> +
-> +	entry = kzalloc_obj(*entry, GFP_KERNEL_ACCOUNT);
-> +	if (!entry)
-> +		return -ENOMEM;
-> +
-> +	entry->irq = irq;
-> +
-> +	old = xa_store(&its->translation_cache, key, entry,
-> +		       GFP_KERNEL_ACCOUNT);
-> +	if (xa_is_err(old)) {
-> +		kfree(entry);
-> +		return xa_err(old);
-> +	}
-> +
-> +	if (old)
-> +		its_cache_drop_translation(kvm, old);
-> +
-> +	return 0;
-> +}
-> +
-> +static void its_cache_clear_translations(struct vgic_v5_its *its)
-> +{
-> +	struct its_cache_translation_entry *entry;
-> +	unsigned long key;
-> +
-> +	xa_for_each(&its->translation_cache, key, entry)
-> +		its_cache_erase_translation(its, key);
-> +}
-> +
-> +static int its_cache_look_up_translation(struct vgic_v5_its *its,
-> +					 u32 device_id, u16 event_id,
-> +					 struct vgic_irq **irq)
-> +{
-> +	unsigned long key = its_cache_key(device_id, event_id);
-> +	struct its_cache_translation_entry *entry;
-> +	int ret = -ENXIO;
-> +
-> +	rcu_read_lock();
-> +	entry = xa_load(&its->translation_cache, key);
-> +	if (entry && vgic_try_get_irq_ref(entry->irq)) {
-> +		*irq = entry->irq;
-> +		ret = 0;
-> +	}
-> +	rcu_read_unlock();
-> +
-> +	return ret;
-> +}
-> +
-> +static int its_cache_l2sz_bits(u8 l2sz)
-> +{
-> +	if (l2sz > GICV5_ITS_DT_ITT_CFGR_L2SZ_64k)
-> +		return -EINVAL;
-> +
-> +	/* L2SZ 0, 1, and 2 encode 4K, 16K, and 64K tables of 8-byte entries. */
-> +	return 9 + 2 * l2sz;
-> +}
-> +
-> +static void its_cache_handle_inv_devicer(struct vgic_v5_its *its)
-> +{
-> +	unsigned int bits = its->inv_devicer.event_id_bits;
-> +	int l2_bits;
-> +
-> +	if (its->inv_devicer.l1 && its->dt_cfgr.structure) {
-> +		l2_bits = its_cache_l2sz_bits(its->dt_cfgr.l2sz);
-> +		if (l2_bits < 0)
-> +			return;
-> +		/* An L1 DTE covers the L2 DT's devices and all their EventIDs. */
-> +		bits = l2_bits + VITS_V5_EVENT_ID_BITS;
-> +	} else if (bits > VITS_V5_EVENT_ID_BITS) {
-> +		bits = VITS_V5_EVENT_ID_BITS;
-> +	}
-> +
-> +	its_cache_erase_span(its, its_cache_key(its->didr.device_id, 0), bits);
-> +}
-> +
-> +static void its_cache_handle_inv_eventr(struct vgic_v5_its *its)
-> +{
-> +	int bits = 0;
-> +
-> +	if (its->inv_eventr.l1) {
-> +		/* An L1 ITTE covers the EventIDs in its L2 ITT. */
-> +		bits = its_cache_l2sz_bits(its->inv_eventr.itt_l2sz);
-> +		if (bits < 0)
-> +			return;
-> +	}
-
-For the ITT_L2SZ field in the spec there is:
-
-When programming a reserved value or an unsupported value, the ITS
-behavior is CONSTRAINED UNPREDICTABLE to any behavior which could be
-achieved by programming a valid and supported value.
-
-So I think we should still invalidate when a ITT_L2SZ is programmed to
-a reserved value, maybe just arbitrarily pick a defined value when this
-happens?
+Agree with David here. I think David's series will make things more
+explicit in saving PCI state and easier to find changes. I will review
+your series provide my feedback but don't stop your v2 on it.
 
 Thanks,
-Wei-Lin Chang
-
-> +
-> +	its_cache_erase_span(its, its_cache_key(its->didr.device_id,
-> +						  its->eidr.event_id), bits);
-> +}
-> +
->  static int parse_linear_dt(struct kvm *kvm, gpa_t dt_base, u32 device_id,
->  			   gpa_t *itt_base, bool *two_level_itt,
->  			   unsigned int *event_id_bits, unsigned int *itt_l2sz)
-
-[...]
+Vipin
