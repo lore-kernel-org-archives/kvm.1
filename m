@@ -1,57 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793809980;
-	b=2cUYjC91f/HQ3T15JApfloT5LEthmt4l5gF5x479a/oFq7J1w9iGlHiTRlMgpcc+JpvX
-	 F74bvoQo7RjG1o2K1IvhWTdzjpts2wwhe7OBsJKBA2CfY7LlTnDFI3R0hnEccE9HJfHwZ
-	 Tf1H5ppjOezNoTBEuRjl7s5HuMdZ8/2JNhdZhRgvbsCVBeKEOVECUZs5/ugrwrS4TKZEH
-	 CNe4xCRW69KpGbF+1aufa4HQ3rwx0xCoLSFvqPTCrDwPLAvR+oFXSDsPbkhj4KLoyxiH/
-	 aWOn/l//s51/PdiWk4X8U1kDq+pY/HdeXgKvSyxDf8zwx2KUuhnb+51DMMtnc9HIUOg==
+	t=1793810164;
+	b=J7/xGyC8uP0QFu8YH8QjE6bntI23KujeYpLKqzTeU1CCrWwWTXRSfK0yofD2rTQ4LPqW
+	 VuRZTQuPxIdnNR9xUzBTNBPb9JKSndGx7mmU8iIL6PjqmJIhDTgiYKuwVEIwK/9tVNw5x
+	 PDsx32iEYLpGEraXmMykrP8/nlwjz34+EJ3LT+pMO5DYGeoX/6jn9GMsIIAxjup5vg+Mr
+	 HQjsE3nxr2CRAwKrNLydduqMu1mgZ5DhYBeXCIkahCT4FyGUSAtdAXV3VnXCh/WfIMqi6
+	 USucBlrh7KK6lU4jIqurBYWYXaE6gM0XlPIdWFlrt3hQNnVLxE/ai/qy0rx66ajTCUg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793809980;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=qb2WFKlZgqsUyH8T4+nO5ZP9tYd2yloKMSgnPw3KZOQ=;
-	b=aTJsgDmznNftNxZP4jlcyIR0uRRzgZkXu5RfKU5aJqGBwhrLQJaFzyvhP6/uwlq0Tt+H
-	 YSuQdrkcePnEZyRfmDw8YRrn5Ef6o3tNeYeqAveFA4AP+s2LFOyQNQl0789skmsquw6Uj
-	 A/n83Cp3pHIGoWob9AZmM/rF0u/QEclvbdU9ACFgFYq8HvF6DJPdJ/AOSIadwPxD/7x4n
-	 7kq3W0UWZh1s8ydJWQGua5OO8vxL9FKZtjj29yC5tZQCQv639OF6G95xpNOEmdiIlSCar
-	 MaPjDOu5E5Bpvh3kymXaATPYqRDC2ak7R9HOr7a7UQzzMr3ZW7CQO6WnfLQCkSmr92g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793810164;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=M+FVUGQeTnDaP8dcVVOqRxcNzHLQ2s/YnEy8ffSa8ug=;
+	b=yQUcPj+Bt5umwYMjBENepZdKYy7kYoIrAxpn62uxqedA0l7luXwZDzqfI8dJZ+ezwFqp
+	 Q17uA8ZhPGMazHOLcKKofGlWnZjtjqXdlJecArhZMzdWgYW8Oz7ctfvxZGCmH9bTKQwyX
+	 JQeLQTF25xcywG6iJ6hEi+v7IBrY9TOXWprTKvHtmS8Jqmij2wxLOFRIbUgzqRSEC6KaP
+	 3lhTNy+GWr9is/eKfLtT4DYSCfyfgnkX9PcX7NgxKR4IUmZbyWR2c4pFMbqf2WHeeqqmb
+	 6oQ4YuYsOM7k5Ow7x2UwwvTew4B0Mh10f3TJ5xg/LUkNW0P4orAmhZbbdoB2noyE+kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L3b4XGg4;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3930F606A31B;
-	Wed,  4 Nov 2026 16:32:59 +0000 (UTC)
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=i4i+j7cT;
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9D606A32C;
+	Wed,  4 Nov 2026 16:36:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1A9D606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L3b4XGg4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998031F000C1;
-	Wed,  4 Nov 2026 16:32:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793809979;
-	bh=qb2WFKlZgqsUyH8T4+nO5ZP9tYd2yloKMSgnPw3KZOQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=L3b4XGg4cIXjPIFn26VIa1dZGLo81odtlbJIP/eQOkI2sUf4U+fdgkNBks0F9vkfn
-	 jna47/hYUwgEym35NMspZNn8hBNf6L/g1pWGjVTb5ThWs9I3kORYE6VF+Vu8D+aNzI
-	 frxzqJSBaq/J1xzNzDZjSqq737aTdX8favRQbY/ShUiNMrqvuyPSdU3HTbyQzWX1sO
-	 h+CmghBVaijtaTp2FsohSG7Df10xY7MR3eY/B/OyQQgBrFGSqs8WneblOPlP1GeW5E
-	 6deE3iu3IzugaOOEuPvQ7kq1vOgMdYnYd7It5J7fgCKkAwok1ZLESQuzIZExHO7tlK
-	 0Pjpz8139JnWw==
-Message-ID: <sashiko-outbox-197622@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 03/15] virt: coco: tsm: Complete PCI registration
- before publishing the device
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261104161632.3547423-4-aneesh.kumar@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=i4i+j7cT
+Received: from localhost (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 9C34420B7169;
+	Wed,  4 Nov 2026 08:35:35 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9C34420B7169
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1793810147;
+	bh=M+FVUGQeTnDaP8dcVVOqRxcNzHLQ2s/YnEy8ffSa8ug=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=i4i+j7cTR141SF+ryi2A1rilwpQLlb1tWKZCllB4w4XggXR2rgpH/PKKL5oXWsGME
+	 lUINehj74XCkboWP0/L1izrZBW2klf+04xYS6ecyyUJlqckWhiCPuAG6I0kD0nY7oS
+	 O5loheQsjIK3IuR1x6djo8hJJCGWR7oEGE+iZLH8=
+Date: Wed, 4 Nov 2026 08:35:45 -0800
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>, Alexey
+ Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Joerg
+ Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>, Jonathan
+ Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, Krishna
+ Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Nicolin Chen
+ <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>, Samuel Ortiz
+ <sameo@rivosinc.com>, Shameer Kolothum
+ <shameerali.kolothum.thodi@huawei.com>, Steven Price
+ <steven.price@arm.com>, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>, Vasant Hegde
+ <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>, Xu Yilun
+ <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+ jacob.pan@linux.microsoft.com
+Subject: Re: [PATCH v8 07/15] iommufd/viommu: Keep a reference to the KVM
+ file
+Message-ID: <20261104083545.00003624@linux.microsoft.com>
+In-Reply-To: <20261104161632.3547423-8-aneesh.kumar@kernel.org>
 References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-4-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 16:32:59 +0000
+	<20261104161632.3547423-8-aneesh.kumar@kernel.org>
+Organization: LSG
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,112 +79,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] virt: coco: tsm: stale sysfs update and commit reference in comm=
-it log
---
+Hi Aneesh,
 
-commit 5fae6df00051f68d8e86275946ecd6ac727fb344
-Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+On Wed,  4 Nov 2026 21:46:24 +0530
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
 
-virt: coco: tsm: Complete PCI registration before publishing the device
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> 
+> The TSM vDevice operations need access to the KVM associated with the
+> device's vIOMMU. Save the device's KVM file in the iommufd_viommu
+> when the vIOMMU is allocated, and take a file reference so it remains
+> valid for the lifetime of the vIOMMU.
+> 
+> Release the reference when the vIOMMU is destroyed.
+> 
+> Reject vdevice allocation when the device's KVM association differs
+> from the vIOMMU's, including when only one has a KVM association.
+> Allow allocation when both associations are NULL.
+> 
+> Based on an original patch by
+> Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> 
+> [nicolinc: hold kvm's users_count]
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> [aneesh.kumar: Switch to use kvm_file]
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  drivers/iommu/iommufd/viommu.c | 10 ++++++++++
+>  include/linux/iommufd.h        |  1 +
+>  2 files changed, 11 insertions(+)
+> 
+> diff --git a/drivers/iommu/iommufd/viommu.c
+> b/drivers/iommu/iommufd/viommu.c index f7951057a1e5..0dbd382eeb98
+> 100644 --- a/drivers/iommu/iommufd/viommu.c
+> +++ b/drivers/iommu/iommufd/viommu.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /* Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
+>   */
+> +#include <linux/file.h>
+>  #include "iommufd_private.h"
+>  
+>  void iommufd_viommu_destroy(struct iommufd_object *obj)
+> @@ -11,6 +12,8 @@ void iommufd_viommu_destroy(struct iommufd_object
+> *obj) if (viommu->ops && viommu->ops->destroy)
+>  		viommu->ops->destroy(viommu);
+>  	refcount_dec(&viommu->hwpt->common.obj.users);
+> +	if (viommu->kvm_file)
+> +		fput(viommu->kvm_file);
+>  	xa_destroy(&viommu->vdevs);
+>  }
+>  
+> @@ -82,6 +85,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd
+> *ucmd) }
+>  
+>  	xa_init(&viommu->vdevs);
+> +	if (idev->kvm_file)
+> +		viommu->kvm_file = get_file(idev->kvm_file);
+>  	viommu->type = cmd->type;
+>  	viommu->ictx = ucmd->ictx;
+>  	viommu->hwpt = hwpt_paging;
+> @@ -171,6 +176,11 @@ int iommufd_vdevice_alloc_ioctl(struct
+> iommufd_ucmd *ucmd) goto out_put_viommu;
+>  	}
+>  
+> +	if (idev->kvm_file != viommu->kvm_file) {
+> +		rc = -EINVAL;
+> +		goto out_put_idev;
+> +	}
+> +
+>  	iommu_dev = iommufd_device_get_iommu_dev(idev);
+>  	if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
+>  		rc = -EINVAL;
+> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
+> index b03ce0187454..c15d80f611b9 100644
+> --- a/include/linux/iommufd.h
+> +++ b/include/linux/iommufd.h
+> @@ -103,6 +103,7 @@ struct iommufd_viommu {
+>  	struct iommufd_ctx *ictx;
+>  	struct iommu_device *iommu_dev;
+>  	struct iommufd_hwpt_paging *hwpt;
+> +	struct file *kvm_file;
+>  
+>  	const struct iommufd_viommu_ops *ops;
+>  
+Reviewed-by: Jacob Pan <jacob.pan@linux.microsoft.com>
 
-This commit moves PCI TSM registration ahead of device_add() in tsm_registe=
-r()
-so that a TSM device is not discoverable through class lookup while PCI
-registration can still fail, and rolls back PCI registration if device_add()
-fails.
-
->     virt: coco: tsm: Complete PCI registration before publishing the devi=
-ce
->    =20
->     tsm_register() calls device_add() before initializing and validating =
-the
->     PCI operations. This makes the new TSM discoverable through the class
->     lookup while PCI registration can still fail. This ordering was intro=
-duced
->     by commit 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link
->     Encryption").
->    =20
->     An existing link TSM can keep the PCI connect attribute visible during
->     registration of another TSM. A concurrent write naming the new TSM can
->     therefore reach it through:
->    =20
->       connect_store()
->         find_tsm_dev()
->           class_find_device()
->         is_link_tsm()
->         pci_tsm_connect()
->    =20
->     If the new backend supplies both link and device security operations,
->     pci_tsm_register() rejects it before taking pci_tsm_rwsem. The regist=
-ration
->     thread then follows:
->    =20
->       tsm_register()
->         tsm_register_pci()
->           pci_tsm_register() -> -EINVAL
->           tsm_dev->pci_ops =3D NULL
->         device_del()
->         put_tsm_dev() [cleanup guard]
->    =20
->     If connect has already attached a PCI context, its temporary device
->     reference does not protect the stored tsm_dev pointer after the call
->     returns. Registration cleanup can then free a TSM still referenced by
->     that context. The original tsm_register_pci_or_reset() error path also
->     had this problem: device_unregister() removed the class device and dr=
-opped
->     its reference without tearing down an attached PCI context.
->    =20
->     Commit 37a73b0448ad ("tsm: Remove the device from lookup before PCI
->     teardown") subsequently added the unlocked pci_ops reset shown above.
->     That reset can also race with the connect path's accesses to pci_ops.
->    =20
->     Complete PCI registration before device_add() publishes the class dev=
-ice.
->     On PCI registration failure, the TSM remains undiscoverable. If
->     device_add() fails instead, unregister the PCI operations to roll back
->     the counters and PCI sysfs visibility before releasing the device.
->    =20
->     With pci_ops initialized before device_add(), the class PCI attributes
->     are created with the correct visibility, so remove the subsequent sys=
-fs
->     group update. Keep the PCI change notification after successful device
->     publication.
->    =20
->     Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Enc=
-ryption")
->     Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-
-[Severity: Medium]
-Does the commit message match the actual changes in
-drivers/virt/coco/tsm-core.c?
-
-The final paragraph states that class PCI attributes are created with the
-correct visibility and that a subsequent sysfs group update is removed.
-However, in drivers/virt/coco/tsm-core.c, tsm_class only defines .name and
-.dev_release without any class PCI attributes or attribute groups:
-
-static const struct class tsm_class =3D {
-	.name		=3D "tsm",
-	.dev_release	=3D tsm_release
-};
-
-Neither tsm_register_pci() nor tsm_register() contained or removed a
-sysfs_update_group() call; the patch only reorders tsm_register_pci() before
-device_add(), adds pci_tsm_unregister() on the device_add() error path, and
-moves kobject_uevent(&dev->kobj, KOBJ_CHANGE) from tsm_register_pci() into
-tsm_register() after device_add().
-
-Also, the commit message references commit 37a73b0448ad ("tsm: Remove the
-device from lookup before PCI teardown"), which does not exist in the commit
-history because the preceding commit in the series is 2ae926219f58 ("virt:
-coco: tsm: Remove the device from lookup before PCI teardown"). Could the
-commit message be updated to remove the stale sysfs group description and
-reference the right commit?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104161632.3547=
-423-1-aneesh.kumar@kernel.org?part=3D3
+We may need to enable non-kvm file (such as mshv) eventually, but
+until then this looks good to me.
