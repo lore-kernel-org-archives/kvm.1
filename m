@@ -1,97 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793816160;
-	b=dkzxGFUJQ/S00HsaL4JyM8OHlAABhy1FWlP5ULpNPAR1PZ54ArRf5d8l3ALOoe/gRPei
-	 E144MZkZfH0SR5KSheCLGoRBNFpsV/VoWB9nX03jZPps5akDH1honDERKHTc9ezJdrWrk
-	 vwuJ3/yeE75ABnePb0bhBYDv/Z7v6WZZNLYLRpLnKUXaPrhocTo3/RyPwnwYsztOfKvKs
-	 OS77SJ1Qb5UATK+VLj3pLfxpkhX/e7qW6qmHPzynwTcFrNmoOVlLszqal2LwQ2Ec+Acyl
-	 4NClvohut4MAFIoLdCjlXaOUooGE2ZN7ltsOmSIwixoe1umJDn4CJTSSpB9vRLkctTQ==
+	t=1793817477;
+	b=hD+Z7bRfWeuleWB7Orw91bbJjEYG22kcx4EhVx4Zg7rP37ZKYEsl65+C3FnDj7ZINKW2
+	 kBEK7cOTqGpE2Hx4XtpdswJkmJBowzN1G4FN7SlaPBi9fBv6BNXnhZH/Alzg7UycWjAfj
+	 WCE4BZ9CVN3hdygDZ9tfgaPc+q7hI5j4qsJNRDrOyT16lDXuwr/J+UuxvA5EimEH/GesZ
+	 VS8yI63hr2YgVI8kuRi9rcO6Fo1H4s4reKegueak5Ed7NXVJAAJg8xe2bcPt7TmE/iZND
+	 FdOgKnTHGBEcvuFcXB0sun0tfWlHajuBPbTxsqqMEuBgqVKNsyr76Fhs1x0VsTfOLAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793816160;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793817477;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=DnkyCFwfTEyghMwBbYx5eIEahNaTNIOnK3R3J4LlqI0=;
-	b=ToyV6sAz8PYiKyQHa1Dne8d1LGMvB1iuqWV4oSck59OK/5aU/7iCOzVMlSdPmVCS5ITy
-	 3KivDDscG/re6MgAFUZK/UeetnWR33NIzOKOYusZZAiayMoFlj6j1ZCarkqH88NJwe53F
-	 tF3wKO1d+4mDa6jHnWiiRT1Cpu7mmLClNt1LBkq6bJLwVeKGqYXQS5dJP66+liTPWoRaT
-	 ftmswYSpApP8+07S3q+Gv032fVvbVVfm4agFlXoGibxT2bhCcnPuQEp/hppHI1bo2RON3
-	 eHD4eBzp4RJiawLd+dyJgLJmyziZVDlWPtZ0/YOx1KMma/qhU0LXAxD6HWySab3GYcw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
+	b=2bBR7wSyat91WGBDBRFK2mdkutDoCXyDPiVWj3/8h2SAaA6+gAnhz2qXP3V2TNE7hsfU
+	 w57CLVVLG4SYSJxFfSgqKpEsWngkDB8irImPWhUJEPZfRS/OcaMIkMvBx1Z15wTxvq/BU
+	 E811fgpG5AzV2owsXT5GBKestdsoQN0lNkch3gxjbHtwXooNw3WrVyT0Oz6SIlG8uJuKj
+	 Qemkb7HppxdvZzw8QEXpdtu//7mTvtUTDNiiGJ8fCdhj5tWFAWiYs9JxhzYlEMZ1spoE2
+	 hrXrr8izTHKw54na+RAV2ptSacCHYjKQhG2nYxMuaxwr/GNbGxprIARSyW5uwg0jyaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dh++Upn4;
-	arc=none smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SJTFhGMv;
+	arc=none smtp.remote-ip=209.85.128.41
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C195606A32D
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 18:16:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C195606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A886606A335
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 18:37:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A886606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dh++Upn4
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a05e3f0d23so540407b3a.0
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 10:16:00 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SJTFhGMv
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a2000d5fb1so6518595e9.1
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 10:37:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793816160; x=1794420960; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DnkyCFwfTEyghMwBbYx5eIEahNaTNIOnK3R3J4LlqI0=;
-        b=dh++Upn4ZWf7TCTz0JkNT4qSQSDu2Uaew4OU6cXSrs7FN7XOMXZsdZov0rgiApzPdc
-         j/ns2tZ0F2dx8nx41mTa8X6jql6kq29Him+xrNExnL/EM7kKeBV8ig+90HaAGgqZAnT0
-         LMettOORnr9NA//uos5+vFkmDNagJBGWiOQsed3rCndc7d9bJkQuY7waS+JLgLTTTOOy
-         mBOzI23pKm7CIAMKMPrEoPNirsQWVh5aoYVmAVqFVvbXlVpht9LmGTxRgpyaAIIXSUp/
-         oTAYhipNNWLuQs/zyCPXYHTZAnXDgPYTakhqHWuy2hrQCEQL/YrC2pcCxPGbjZ7j36ME
-         pQzA==
+        d=gmail.com; s=20260707; t=1793817476; x=1794422276; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
+        b=SJTFhGMv7ixpbqd5/AooMmFq1Tqx0QwAQ5sx5WSk+kmzdAv++WxlnenqWZqmC6LIBf
+         XlYJ6R5d1DPl+iHWve1QooVnwOP6TqiNx38vdvZ9fHhLfgA19nR5AuxMwWVIyGmV464T
+         6VMZ4/9uszyEqMJJERE5qk4Kkhwi9a3QCvZHAJxwReCYsCBXmDKLvsqyTeMSUDpsBjyo
+         cM3QrxMXHAHWZdU5rPIOqnO46kIy7lG+KPS426bMJsVVCJK5p29d7pkWo+wiVQ9WmJIk
+         3SMU2CW0v5vUak9yMArXb8dOlqT7qNWmLgcFEz3DF+UWWP2fwAkCI1XHfjfKHeZ7fbMo
+         HcxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793816160; x=1794420960;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DnkyCFwfTEyghMwBbYx5eIEahNaTNIOnK3R3J4LlqI0=;
-        b=uQSgv/Rp6WG418lxUgaGGWuVT0iXmIIRvLU09kdTd198p1mDNmYy9YSZvqgKQ7Y43U
-         XhFUrfEYLDAFzUF1S5c4MN439oTAPM0VlVQTyahxTMFJtxVYU3KEvdIv2+MwVWq2/STU
-         TFj6cxx7KuQG4YW3ZyzFjsXRZ/H2r1sFKLvxDLdZ2Aug/RhdTTjFuFTW23jN0NGLDRvD
-         FSV/byZTYL7DZJEyHzVfNcLLfWudKq7w47d3R6+wFHeSBUVjCh3ySQ2n1ymT5WM9ne2h
-         iVtpoLlOKf4O3pMYHL4BpRWiGUNfWw00hVS3cDTDApX8UHxviQwWbsdRZgFOMf20ReSx
-         YFNQ==
-X-Gm-Message-State: APuU4Z88idbRHfnbN3q5k3NdMxhaNYbTAEQy0d+uJP2EFLomlb7WNmzG
-	WG3TpX7cEseCCRJ7sKlVTd8MfYDrwA8Nndnhcgtni71KNLKJKxP0zDFBna7AgKprvQ==
-X-Gm-Gg: AYBFou2sNWOIFu9mNDujhAzqRrsBOlw4cPyEkhXCuRtpINX9KAMDeDQmj70jLcYwM80
-	L8PHCaVKSoK/7BPemv6LTmtI++wtJwJ5c4YPiIy9QuY78DB5exPOENBPVUv+akacbrIdIxhyoI0
-	dxWz7U88uKvQ+0jYryB7LazSXt4Umf4dy69K8of8nKBddDJ/aSVBL0PA7x7wigGxd5pNGxr+Yhh
-	UEhgBpgJDT7TMJecEA8XF0LqQ0wGBi0U1h0W0Ap9qQmA7xhu3boR2bd8SHnyldCpsza+WDDZwTa
-	sQq0Qw8ihmOXixhCygjmPYEpFdi44LG+qFvwh0ECR7eJhFWZd3yxDGgZ+2OXS6ZGoCDGIC9nXNG
-	HJKfhQzghPmOn+ul+MGdZkGUbeYpgCYmf+bygYaxArqmD3MUA2jc7NrtL+u+QJxiVjo3PGiIAaW
-	67DwTkt8O88PIiEVkwS4XAGpOEIG+SDZgVXGrRwN4Plp4R4cgPUFBce0Ac8TElcy5TiC5CIey47
-	TtiJs/phgWfeEPOesPwg1PTXcIWryQR9jIoXm8u7n38Uuiacq4r0l1ELyxLfwZ9TZp1thN+xQBt
-	TruPh8XHD/Lk5ZQPWl6G+umy7gexw/ezm8bRqpiP/ECt0jV1/hoRGDGZFS632FlW
-X-Received: by 2002:a05:6a00:3c89:b0:886:46c:8a1f with SMTP id d2e1a72fcca58-8a9bf0466d7mr13529775b3a.35.1793816159117;
-        Wed, 04 Nov 2026 10:15:59 -0800 (PST)
-Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b09bd3ad6fsm1246841b3a.55.2026.11.04.10.15.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 10:15:58 -0800 (PST)
-Date: Wed, 4 Nov 2026 18:15:54 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-	Abhishek Sahu <abhsahu@nvidia.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH 5/5] vfio: selftests: Add test for device power state
- transitions
-Message-ID: <aut2WmTGY9M8BM4U@google.com>
-References: <20261029203324.1637772-1-dmatlack@google.com>
- <20261029203324.1637772-6-dmatlack@google.com>
- <20261103153553.6caa7d7d@shazbot.org>
+        d=1e100.net; s=20260707; t=1793817476; x=1794422276;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zP0FWmOJm/guqpM9jttc05RQpe78thW+WHjsEUvp+/0=;
+        b=ECbWUFPfmgOnl20grMACNMWeuga8k50HODcD8QR/5BVJ/r78pBihnHj0JP7PNT4VcW
+         dT38xj474OkIBXowTtxvkncz67DDOJeI0nA2bONMntlrpRgaqmD/z2GIgbqGGKYSGUnN
+         sJ4D8nN8zsdDVeah//8cZ/w1ArXbIBFarB/rHvgN0nCeM7g0pcsv0n8IwzCzqjX3Ej2+
+         UN8/Q8bYWSmittREsS+7GtELo+oRG/FfSQ7RCh+G+5kRFtZaioEl8KNZIsySf9nOh7v4
+         OJtJHEn8EMQk4ZsA7s0kJaAW2jAYNYroM2QwlsC2jVXzxUqfFzHE96M66fPY+65WoYE9
+         KKlw==
+X-Forwarded-Encrypted: i=1; AKwUvBxkquk52A1hGBioXlfmvNHTo565ijfHNW9nVkOnZ2D+YyOGm1lIDSgWWzSjjbb/ur1FezQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/dnVXqLgvh3vQHY9FAbWg5iIHsMEggSnk/9d410Gst9mmcMO2H
+	31QqAjJ3ye7NEEI0COxcUn8Z0VpKohoRErYhCdFkU94eJq1K9jAG0LTq
+X-Gm-Gg: AYBFou1FQx6dh4EDd/3+BhA3jHmQnL1LPHI1DsZ9/71YUdXOdVgwpYinpgf95oe/R0N
+	uYsUk5nruzRWXlNexgr4E6iarZex5GSSt9+WKV3VTafm8PnYGxgnXgn5gRo7YzUi+z0okBvwvCK
+	z+ifw0T5uy71HfdNyXn49OJGg/8Qe3Mi0sEIWX7UhmDP91zaJ/3XAS2xEwrEh7/oL6fwgyKErxd
+	BFoRg778s+Ny7FddHU2Oc6Cep9VOHb4PNG1uhNLRecGHXrBzkZ/yXEx84TouodtHDwso0xHjmwi
+	lFPqaXHWdtsGC1XufweTGGA03g2Ji2fwy0mqce2tywl9bvampxEm8RIN3pRr99ABqnXE0qmx26M
+	H9LEtYaC2agf8znXfXKvu3hxxb5xr+fNGzFZr2/BlIHsZWki5Gxmrc/moGu6vQp22CFXEGXUHLZ
+	uPQnAzE29d8J059Ie3CACLlSd9q1C6uBUTF6pAOemJ96BgAt71QhGAiyWb2thhGPiIovLcGZrGw
+	wGONY2lSriugQC57PbtpMJA1D/8QI4npEpaENKkQRVNEGueXwj0moKBpF9PyFlwyPXCjc6CL3N0
+	CLPw8gTACF/Uwd2vfYWIcCsUaceZvS6sf+/gVB9Sb/MbBN4hRHrTh2UqhPN+1RdwPwelCwacL7+
+	nuRpTZQsVQkI8QQvE9fLtIt78V70Jo5QU7w67nyrkTbtcFCurnSqS7uOS/dA0dD8vVw==
+X-Received: by 2002:a05:600c:8b85:b0:4a1:cd83:b23e with SMTP id 5b1f17b1804b1-4ac122897a8mr438143715e9.0.1793817475572;
+        Wed, 04 Nov 2026 10:37:55 -0800 (PST)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56fca22e1sm4198665e9.14.2026.11.04.10.37.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Nov 2026 10:37:54 -0800 (PST)
+From: Fred Griffoul <griffoul@gmail.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev
+Cc: Ackerley Tng <ackerleytng@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	iommu@lists.linux.dev,
+	kvm@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [RFC PATCH v4 06/25] KVM: guest_memfd: Support device-backed PFN providers
+Date: Wed,  4 Nov 2026 18:37:54 +0000
+Message-ID: <20261104183754.10457-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261104150322.3516320-7-aneesh.kumar@kernel.org>
+References: <20261104150322.3516320-1-aneesh.kumar@kernel.org> <20261104150322.3516320-7-aneesh.kumar@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,30 +115,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103153553.6caa7d7d@shazbot.org>
+Content-Transfer-Encoding: 8bit
 
-On 2026-11-03 03:35 PM, Alex Williamson wrote:
-> On Thu, 29 Oct 2026 20:33:24 +0000
-> David Matlack <dmatlack@google.com> wrote:
-> > +/*
-> > + * Put the device into D3hot via config space and then close it. VFIO must
-> > + * return the device to D0 when it is closed.
-> > + */
-> 
-> But we're only testing that it's re-opened into D0, there are multiple
-> ways that could have happened.  It's pretty common that a guest
-> shutdown might put devices into a low power state and it's brought back
-> to D0 on close, on reset, on the next open, or even on the reset in
-> open.  So I don't think we're testing what we claim to test here.  I'm
-> not sure this specific D0 transition is observable, even if we were to
-> resort to pci-sysfs.
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
 
-You are right, this comment is not accurate. The goal of this test is
-to exercise closing a device while it is in D3hot. The close should
-succeed and the device should be in D0 after it is next opened. The
-transition from D3hot to D0 could happen during close, open, or anywhere
-in the middle, without changing the uAPI.
+> Device resources such as PCI BARs supply PFNs directly and cannot use
+> the folio allocation path. Store the mapping owner and device ID in the
+> core context during attach(), and use them when preparing device
+> memslots. Keep device memory separate from ordinary PFN-backed RAM.
 
-I'll fixup the comment, changelog, and test name in v2.
+The device rules you wrote down in api.rst and locking.rst helped a
+lot. If I read v4 right, the device backing differs from the RAM PFN
+backing in these places:
+
+  1. PFN mode calls RAM arch hooks: kvm_arch_gmem_make_shared() at
+     conversion, kvm_arch_gmem_make_private() at fault, and
+     kvm_arch_gmem_reclaim() on revoke and release. The device path
+     has to skip them.
+  2. lookup_pfn_range() only feeds those hooks, so the device path
+     does not need it.
+  3. The host mmap and stage-2 need a device memory type.
+  4. In PFN mode, a conversion to private only updates the attributes,
+     and the guest fault maps the page later. CCA has to map device
+     memory at conversion, because the guest validates the mapping
+     before it touches it.
+  5. The device provider needs lock()/unlock(), the private range
+     summary and prepare_memory_region().
+  6. The provider gets the VM and the vDEVICE binding at attach.
+
+Would these changes to PFN mode be enough to drop the device table?
+
+  1. The arch hooks take the frame attributes. For RAM the arch does
+     the RMP work. For MMIO it skips it, or does the RMM work instead.
+  2. lookup_pfn_range() stays required. For vfio-pci it is the BAR
+     start plus the offset.
+  3. get_pfn() and lookup_pfn_range() report a memory type (MMIO) in
+     their attributes, next to read only. The core mmap and the KVM
+     fault path use it.
+  4. A conversion calls an arch hook in both directions, and the hook
+     can fail. CCA maps the private device range there.
+  5. lock()/unlock(), the private range summary and
+     prepare_memory_region() become optional ops for any PFN provider.
+     A provider that moves RAM between guests needs them too: it has
+     to order its moves with conversions and leave private pages
+     alone.
+
+I'm less sure about 6. Could KVM ask the provider for the vDEVICE when
+the memslot is created, passing the VM? The provider would then not
+need to keep a VM pointer.
+
+Is there something in the device path that this would not cover?
+
+Thanks,
+Fred
