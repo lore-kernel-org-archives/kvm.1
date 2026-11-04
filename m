@@ -1,94 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=139.138.61.252
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793789252;
-	b=dnqWJZB0tfKzHZWEZGZwKmP7bDYzu8XzYJt+Dt5m0BgMV2BYjHIJhf9MlbrHyO0o8f0r
-	 1M06Q819siVkPqROKQtOhJzGtTr94cRELMUuw2XwzNWVcUL8usM/JcGIN2DxTI46K0FR6
-	 30G0AVIayIMbo4KOPYkqEJg+ZjNrT5AlW3l/V0R7rcG8rcd13lYIdhz42ESvxBTPTxg78
-	 Dr0OOb07Vp0zOangUL2o7L+U89VySAGx6b7zArGN1aN2V7WtZTXDYQfpPOGoKTN4caz8u
-	 ImY1Bfrc1gBK/t/DzhGiWhJPy+lflbKVzN4hwrRTlRlAAxgyCTeD1Oa/Jf8y9QbpX2w==
+	t=1793790963;
+	b=FolvloJlOWtfs4cat0W0GhQ/6kL4qWLznaUjvyN1o4EoH2GbHjgKFujaw8k9bwQOgFX5
+	 ZjyjODaMLxItGEQkckVHyfD9MbFUOqwYSGDV1Lr+yYRRlQJRnfsQ+pZmFZNAhPRmOZZGG
+	 utI0wtqnjhy0Ie8IXq2eUFOSCeMDbc8SXhIKjBSvJFeiwMIhFDaLHJjgByDKeGiw1WAzC
+	 9UgAAPQWP8BNvsGbwIgCKdA0W0SE/PppRMu2eQV+eym1ScD+Z+oBDc8rfFknBD9NYbyU4
+	 xzu7K94nOt73fUOgaf0dd2RKlYnQQ2HRaRWVOMV1U+qeastmYWtcUyh+8pv6+g2Yh5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793789252;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=22l6K0vc3gDu3+b6teU5yRSj5i9d0PgiGkuk6VorJmM=;
-	b=gpMD/ykEZ+wiKcd4f1BkGMr/EW69GRU8+JN59ISio8qLaubTt3gXe5HPk3OkuhSLGYmQ
-	 qnVYaj9q5kcj3yYcRXVVt5ux9X5TBCZDXFUNmjuEifdeCfAwLwdyvb3pOcUDq6JcwYwdw
-	 +T0lo9fbSFPo2Ko67VyTfqDG9yqfoVE8/SSAMvJDXnhgK6hfXlQjWL7rbCFPap0hTRMkH
-	 uR//lahZSXzTG/bWEoqh9lRZvphdKxqcwyJnG9UfgPkF3Id9xAOHziYUrykgKxesiAdPC
-	 zk+beBKXJdbz/xWQZE7FWM20UBxo2SsZsElO1QIqUe9Pk38MFl2ToaKWSnkTi2/0nrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793790963;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=eiOg2MAhenDRU05DYhPV4wcEx3dEmInNUCVn3k09uGs=;
+	b=Ie3mKg+iLrUMxUqkb5aiutP6ItwbGrKfFQRyCVxcjuACugKcP/TCTxCLG6WwWNzFEb9T
+	 PWhkEpYk0tC3GOt3R2lZm0XYOBCEf2M6EwbcZ0d9L++i9PHeuLbxB/iBNZAa2iKpZYU0Y
+	 8hqEIpqgEhwbjT1lKoqcOwEmh8M7sPcJ91e/LHo4jwJAEi4gIZ2fGsN14peLmVrBpXd/E
+	 RD0wcJYmVjoM5NSNnyywipheoazId0TE7PVuFwWl7BpTdhsfI5Md/CPnlAW4QJ0xTnOSx
+	 PrhspjqadKDzp+9/8hbF69Auo7WGK7MA1CJSxBi7mbRj2BZYQTArI9WNFr1cnssqi7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=OCMRmMCT;
-	arc=none smtp.remote-ip=139.138.61.252
-Received: from esa7.hc1455-7.c3s2.iphmx.com (esa7.hc1455-7.c3s2.iphmx.com [139.138.61.252])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B374606A331;
-	Wed,  4 Nov 2026 10:47:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B374606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=GBc4Kszk;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F265606A32C
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 11:16:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F265606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=OCMRmMCT
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1793789251; x=1825325251;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bX+/GudjC/kKj8X2pfBeTqIEajpanRfKGl78WAKq9sc=;
-  b=OCMRmMCTniiJX89CtofPAk1XkvlkxlUlukGasjd5EBvB1EiuNGcdTn10
-   gWTGD3aRoLoLagJDSaKC2d7z78g7RUrVBbYcP8T3FzmGJaJqTsNUK1ko6
-   DMzQn5lNTx9hSstw7cVub+Yli9rV+H6/Gr8T0UjqMtlLi/tTavdJxfGqi
-   mS7P/YKOdNyfZHRKFrrSFAn+7t131Y0cYC0tt5rUSL4kIxRioWNMlD6W6
-   PVvziNp8rZWWoMXCmT49mv++7274fIyfU3YQYb5FzmJzqRO4nSdcHdL22
-   0KmyS98cFYpFMm2EMy/G80JkOqVykgH/I4DPq/Oprgy7qZsy7OWxDpdbN
-   g==;
-X-CSE-ConnectionGUID: 7FHHPqQXTP2joOQKyp/UJw==
-X-CSE-MsgGUID: lqi9HaqMQpa2Cel04XkqhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="239465831"
-X-IronPort-AV: E=Sophos;i="6.27,195,1786978800"; 
-   d="scan'208";a="239465831"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa7.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 19:47:23 +0900
-Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 9F2AD1C00643;
-	Wed,  4 Nov 2026 10:47:23 +0000 (UTC)
-Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id 4DCC01000864;
-	Wed,  4 Nov 2026 10:47:23 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.61.160])
-	by az2nlsmom3.fujitsu.com (Postfix) with SMTP id 246CD100A6C9;
-	Wed,  4 Nov 2026 10:47:13 +0000 (UTC)
-Date: Wed, 4 Nov 2026 19:47:12 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH 03/11] KVM: arm64: CCA: Check for RMI support at KVM init
-Message-ID: <ausMpjow5k9wnO_Q@FCCLS0092175.localdomain>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-4-steven.price@arm.com>
- <ausEnXB1TE_moI0E@FCCLS0092175.localdomain>
- <ausIgejq7Io9VjZL@FCCLS0092175.localdomain>
- <415f6a96-9ac2-4256-a9b9-e976bd0e73a8@arm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=GBc4Kszk
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D4EB1576;
+	Wed,  4 Nov 2026 03:15:59 -0800 (PST)
+Received: from [10.57.59.2] (unknown [10.57.59.2])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 324AB3F632;
+	Wed,  4 Nov 2026 03:16:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793790962; bh=cflYTwlnX/LQKRuXIK+Nr6/tiZUt0ss+xE+1fUqXsIY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GBc4KszkPtmLUrVuRxdXpxKasJFaPFjvfTJOAdshl0CMWVb+tbMNvUTE/u7e3aVEj
+	 FhZLSr2QECxb7Z7SkvNRB77DJ3Lpo8s3iAavtoAGLNwXsNo2pZ65AEKY7gjU/HrYPh
+	 xVrhCat+0wKZV7RRM1E3/rxAjAH/kFra+nJVaRRk=
+Message-ID: <3231e650-87ca-4a23-b46f-d10d79eb8674@arm.com>
+Date: Wed, 4 Nov 2026 11:15:58 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -98,69 +53,309 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <415f6a96-9ac2-4256-a9b9-e976bd0e73a8@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/11] KVM: arm64: CCA: Add Realm RTT mapping and
+ invalidation helpers
+To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-9-steven.price@arm.com>
+ <sashiko-outbox-193686@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <sashiko-outbox-193686@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 11/04 10:39, Suzuki K Poulose wrote:
-> Hi Kohei
+On 02/11/2026 15:37, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] KVM: arm64: uninitialized next_addr in realm_unmap_private_range()
+> - [High] KVM: arm64: broken address alignment and recursion in realm_fold_rtt_level()
+> - [Medium] KVM: arm64: page accounting after free_page() in free_rtt()
+> --
 > 
-> On 04/11/2026 10:27, Kohei Enju wrote:
-> > On 11/04 19:23, Kohei Enju wrote:
-> > > Hi Steven,
-> > > 
-> > > On 11/02 14:12, Steven Price wrote:
-> > > > Check if the RMI support is sufficient for using in KVM. Specifically, we
-> > > > will only support creating realm VMs when KVM is set to 'rmm' mode.
-> > > > 
-> > > > Signed-off-by: Steven Price <steven.price@arm.com>
-> > > > ---
-> > > >   arch/arm64/kvm/Kconfig | 1 +
-> > > >   arch/arm64/kvm/rmi.c   | 4 +++-
-> > > >   2 files changed, 4 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> > > > index cecea0820e52..d067063a3686 100644
-> > > > --- a/arch/arm64/kvm/Kconfig
-> > > > +++ b/arch/arm64/kvm/Kconfig
-> > > > @@ -34,6 +34,7 @@ menuconfig KVM
-> > > >   	select GUEST_PERF_EVENTS if PERF_EVENTS
-> > > >   	select KVM_GUEST_MEMFD
-> > > >   	select KVM_GENERIC_PRE_FAULT_MEMORY
-> > > > +	select ARM_RMM_RMI
-> > > >   	help
-> > > >   	  Support hosting virtualized guest machines.
-> > > > diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> > > > index 5ecc8b349869..9d118768550d 100644
-> > > > --- a/arch/arm64/kvm/rmi.c
-> > > > +++ b/arch/arm64/kvm/rmi.c
-> > > > @@ -3,6 +3,7 @@
-> > > >    * Copyright (C) 2023-2026 ARM Ltd.
-> > > >    */
-> > > > +#include <linux/arm-rmi-cmds.h>
-> > > >   #include <linux/kvm_host.h>
-> > > >   #include <asm/virt.h>
-> > > > @@ -12,7 +13,8 @@ void kvm_init_rmi(void)
-> > > >   	if (kvm_get_mode() != KVM_MODE_RMM)
-> > > >   		return;
-> > > > -	/* TODO: Check if the RMI is available */
-> > > > +	if (!is_rmi_available())
-> > > > +		return;
-> > > 
-> > >  From an admin/operator's perspective, kvm_rmi_is_available would
-> > > silently remain FALSE in either of the following cases:
-> > > - kvm-arm.mode=rmm is set, but RMI is not available for some reason.
+> commit cc0b24728b73f60b1dd39eb4cc60fe5eb12322c6
+> Author: Steven Price <steven.price@arm.com>
 > 
-> We could add a kvm_info() message for this.
+> KVM: arm64: CCA: Add Realm RTT mapping and invalidation helpers
 > 
-> > > - RMI is available, but the admin forgot to set kvm-arm.mode=rmm.
+> This commit adds Realm Management Interface (RMI) Realm Translation Table
+> (RTT) creation, folding, and unmap helpers needed for CCA Realm stage-2
+> memory operations.
 > 
-> But not this one. We are additionally planning to move the RMM
-> activation to gate on kvm-arm.mode=rmm. I will send out a patch
-> soon.
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index f190143b33ba5..1066f767f85d9 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -34,6 +34,83 @@ static int get_start_level(struct realm *realm)
+> 
+> [ ... ]
+> 
+>> +static phys_addr_t alloc_delegated_granule(struct kvm_mmu_memory_cache *mc)
+>> +{
+>> +	phys_addr_t phys;
+>> +	void *virt;
+>> +
+>> +	if (mc) {
+>> +		virt = kvm_mmu_memory_cache_alloc(mc);
+>> +	} else {
+>> +		virt = (void *)__get_free_page(GFP_ATOMIC | __GFP_ZERO |
+>> +					       __GFP_ACCOUNT);
+>> +	}
+>> +
+>> +	if (!virt)
+>> +		return PHYS_ADDR_MAX;
+>> +
+>> +	phys = virt_to_phys(virt);
+>> +	if (rmi_delegate_page(phys)) {
+>> +		free_page((unsigned long)virt);
+>> +		return PHYS_ADDR_MAX;
+>> +	}
+>> +
+>> +	return phys;
+>> +}
+>> +
+>> +static phys_addr_t alloc_rtt(struct kvm_mmu_memory_cache *mc)
+>> +{
+>> +	phys_addr_t phys = alloc_delegated_granule(mc);
+>> +
+>> +	if (phys != PHYS_ADDR_MAX)
+>> +		kvm_account_pgtable_pages(phys_to_virt(phys), 1);
+>> +
+>> +	return phys;
+>> +}
+>> +
+>>  static void free_rtt(phys_addr_t phys)
+>>  {
+>>  	if (rmi_free_delegated_page(phys))
+>> @@ -42,6 +119,32 @@ static void free_rtt(phys_addr_t phys)
+>>  	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>>  }
+> 
+> [Severity: Medium]
+> Does free_rtt() leak the NR_SECONDARY_PAGETABLE counter in the memory cgroup
+> lruvec (or touch a reallocated page) by calling kvm_account_pgtable_pages()
+> after rmi_free_delegated_page()?
+> 
+> In alloc_rtt(), RTT pages are allocated via alloc_delegated_granule() with
+> __GFP_ACCOUNT and accounted with kvm_account_pgtable_pages(..., 1). However,
+> when free_rtt() frees an RTT, rmi_free_delegated_page() already calls
+> free_page() before returning:
+> 
+> drivers/firmware/arm_rmm/rmi.c:rmi_free_delegated_page() {
+> 	if (WARN_ON_ONCE(rmi_undelegate_page(phys))) {
+> 		/* Undelegate failed: leak the page */
+> 		return -EBUSY;
+> 	}
+> 
+> 	free_page((unsigned long)phys_to_virt(phys));
+> 
+> 	return 0;
+> }
+> 
+> Because free_page() uncharges the page and clears page->memcg_data (and
+> returns the page to the allocator where another CPU can immediately
+> reallocate it), the subsequent kvm_account_pgtable_pages(phys_to_virt(phys),
+> -1) in free_rtt() operates on a freed page whose memcg association has been
+> cleared.
 
-I wasn't aware of that plan. In that case, this scenario will be
-unreachable, so I have no concerns.
+This was covered in the previous patch.
+
+> [ ... ]
+> 
+>> @@ -161,6 +301,64 @@ static int realm_tear_down_rtt_range(struct realm *realm,
+>>  					 start, end);
+>>  }
+>>  
+>> +/*
+>> + * Returns 0 on successful fold, a negative value on error, a positive value if
+>> + * we were not able to fold all tables at this level.
+>> + */
+>> +static int realm_fold_rtt_level(struct realm *realm, int level,
+>> +				unsigned long start, unsigned long end)
+>> +{
+>> +	int not_folded = 0;
+>> +	ssize_t map_size;
+>> +	unsigned long addr, next_addr;
+>> +
+>> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+>> +		return -EINVAL;
+>> +
+>> +	map_size = rmi_rtt_level_mapsize(level - 1);
+>> +
+>> +	for (addr = start; addr < end; addr = next_addr) {
+>> +		phys_addr_t rtt_granule;
+>> +		long ret;
+>> +		unsigned long align_addr = ALIGN(addr, map_size);
+>> +
+>> +		next_addr = ALIGN(addr + 1, map_size);
+>> +
+>> +		ret = realm_rtt_fold(realm, align_addr, level, &rtt_granule);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +
+>> +		switch (RMI_RESULT_STATUS(ret)) {
+>> +		case RMI_SUCCESS:\
+>> +			free_rtt(rtt_granule);
+>> +			break;
+>> +		case RMI_ERROR_RTT:
+>> +			if (level == KVM_PGTABLE_LAST_LEVEL ||
+>> +			    RMI_RESULT_DATA_LEVEL(ret) < level) {
+>> +				not_folded++;
+>> +				break;
+>> +			}
+>> +			/* Recurse a level deeper */
+>> +			ret = realm_fold_rtt_level(realm,
+>> +						   level + 1,
+>> +						   addr,
+>> +						   next_addr);
+>> +			if (ret < 0) {
+>> +				return ret;
+>> +			} else if (ret == 0) {
+>> +				/* Try again at this level */
+>> +				next_addr = addr;
+>> +			}
+>> +			break;
+>> +		default:
+>> +			WARN_ON(1);
+>> +			return -ENXIO;
+>> +		}
+>> +	}
+>> +
+>> +	return not_folded;
+>> +}
+> 
+> [Severity: High]
+> In realm_fold_rtt_level(), align_addr is computed using ALIGN(addr, map_size)
+> before calling realm_rtt_fold(realm, align_addr, level, &rtt_granule).
+> 
+> When addr is not aligned to map_size, ALIGN(addr, map_size) rounds addr up
+> to the next RTT boundary (equal to next_addr), defeating the ALIGN_DOWN()
+> inside realm_rtt_fold(). As a result, realm_rtt_fold() folds the next RTT
+> instead of the RTT covering addr, and if addr lies in the final map_size
+> block below BIT(realm->ia_bits), align_addr rounds up to BIT(realm->ia_bits),
+> which is out of bounds for rmi_rtt_fold() and triggers the default WARN_ON(1)
+> path.
+> 
+> Additionally, in the RMI_ERROR_RTT case:
+> 1. The recursive call passes next_addr instead of min(next_addr, end),
+>    scanning up to a full parent map_size beyond end while holding
+>    kvm->mmu_lock for write.
+> 2. When the recursive call returns a positive value (some child tables were
+>    not folded), not_folded is not incremented at the current level. If this
+>    level returns 0 to its caller, the caller sees ret == 0, sets
+>    next_addr = addr to retry, and can loop indefinitely.
+> 3. Conversely, when recursing to level + 1 across [addr, next_addr), any
+>    entry at level that is already a leaf entry (such as UNASSIGNED) has no
+>    table at level + 1, so rmi_rtt_fold() returns RMI_ERROR_RTT with
+>    RMI_RESULT_DATA_LEVEL(ret) < level + 1 and increments not_folded,
+>    preventing the parent table at level from being retried and folded even if
+>    all of its child RTTs were folded. And if ret == 0 is returned when the
+>    table at level still cannot be folded (because entries in [addr, next_addr)
+>    are non-homogeneous or align_addr targeted the next block), setting
+>    next_addr = addr will retry and recurse on the same range in an infinite
+>    loop.
+> 
+> Should realm_fold_rtt_level() pass addr directly to realm_rtt_fold() (which
+> already aligns down to map_size), clamp the recursive end to
+> min(next_addr, end), and avoid retrying in a loop when the parent table
+> itself cannot be folded?
+
+Yes this looks broken. And I think the suggestion provided should work.
+I'll fix this up in the next posting.
+
+>> @@ -196,6 +394,154 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
+> 
+> [ ... ]
+> 
+>> +static void realm_unmap_private_range(struct kvm *kvm,
+>> +				      unsigned long start,
+>> +				      unsigned long end,
+>> +				      bool may_block)
+>> +{
+>> +	struct realm *realm = &kvm->arch.realm;
+>> +	unsigned long rd = virt_to_phys(realm->rd);
+>> +	unsigned long next_addr, addr;
+>> +	long ret;
+>> +
+>> +	for (addr = start; addr < end; addr = next_addr) {
+>> +		unsigned long out_range;
+>> +		unsigned long flags = RMI_ADDR_TYPE_SINGLE;
+>> +		/* TODO: Optimise using RMI_ADDR_TYPE_LIST */
+>> +
+>> +retry:
+>> +		ret = rmi_rtt_data_unmap(rd, addr, end, flags, 0,
+>> +					 &next_addr, &out_range, NULL);
+>> +		if (WARN_ON(ret < 0))
+>> +			return;
+>> +
+>> +		if (RMI_RESULT_STATUS(ret) == RMI_ERROR_RTT) {
+>> +			phys_addr_t rtt;
+>> +
+>> +			if (next_addr > addr)
+>> +				continue; /* UNASSIGNED */
+>> +
+>> +			rtt = alloc_rtt(NULL);
+>> +			if (WARN_ON(rtt == PHYS_ADDR_MAX))
+>> +				return;
+>> +			ret = realm_rtt_create(realm, addr,
+>> +					       RMI_RESULT_DATA_LEVEL(ret) + 1, rtt);
+>> +			if (WARN_ON(ret)) {
+>> +				free_rtt(rtt);
+>> +				return;
+>> +			}
+>> +			goto retry;
+>> +		} else if (WARN_ON(ret)) {
+>> +			continue;
+>> +		}
+> 
+> [Severity: High]
+> What happens in realm_unmap_private_range() when rmi_rtt_data_unmap() returns
+> RMI_ERROR_RTT or another non-zero status?
+> 
+> Looking at rmi_rtt_data_unmap() in include/linux/arm-rmi-cmds.h:
+> 
+> 	ret = rmi_sro_execute(&regs);
+> 
+> 	if (ret != RMI_SUCCESS)
+> 		return ret;
+> 
+> 	if (out_top)
+> 		*out_top = regs.a1;
+> 
+> *out_top (&next_addr) is only written when ret == RMI_SUCCESS.
+> 
+> When rmi_rtt_data_unmap() returns RMI_ERROR_RTT on the first iteration
+> (addr == start), next_addr is uninitialized on the stack when evaluated by:
+> 
+> 	if (next_addr > addr)
+> 		continue; /* UNASSIGNED */
+> 
+> If the uninitialized stack value happens to be greater than start, the loop
+> advances addr to that garbage address and skips unmapping the range.
+> 
+> If next_addr <= addr on the first iteration (or on any subsequent iteration
+> where addr == next_addr from the loop header), next_addr > addr is false even
+> when the entry is UNASSIGNED. The code then allocates RTTs and calls
+> realm_rtt_create(realm, addr, RMI_RESULT_DATA_LEVEL(ret) + 1, rtt) in a retry
+> loop until RMI_RESULT_DATA_LEVEL(ret) reaches KVM_PGTABLE_LAST_LEVEL (3),
+> where it attempts to create an RTT at level 4, hits WARN_ON(ret), and returns
+> early without unmapping the remaining range.
+> 
+> Similarly, in the else if (WARN_ON(ret)) continue; branch, next_addr was not
+> updated by rmi_rtt_data_unmap(), so continuing either jumps to uninitialized
+> stack memory on the first iteration or repeats the same addr in an infinite
+> loop while holding kvm->mmu_lock for write.
+> 
+> Should this handle RMI_ERROR_RTT in the same way as
+> realm_unmap_shared_range(), using find_map_level(realm, addr, end) and
+> advancing next_addr by rmi_rtt_level_mapsize(err_level) when err_level >=
+> level?
+> 
+
+Again, makes sense - I'll fix this in the next posting.
 
 Thanks,
-Kohei
+Steve
+
