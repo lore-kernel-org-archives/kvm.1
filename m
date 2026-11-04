@@ -1,121 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.117
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793798148;
-	b=kM/AS1/MIdWvhBGiDlT5fEo72LDNb46gVVq7MJ3LTUqxadhm0rdg09DbBBrQno2oVD1h
-	 Ktv1j8qGYvutMSZrkEpjX3AriaKcfI9eBllALtW6zBz/1PjXh5pe6Q1C5PXlvgpO0j7Mr
-	 QlUWloaVagth/jidfMobtF3WioPVy+2m3JlQ/KRC5vQXqdm88dEZIpEoHF1malxYFkErP
-	 Ox59PRp4dgCuR6DVKzWe1PerLv42L+6DZC9KdQKI22aZXwrkCM5O7mdDzYOtOxI4vuwmP
-	 iHsVpQ5izCddGwXjZ4u4VG2Gfc1Iw1u/MYisESHv9UMzCAvsdncs5gu1YbBK0jcGEyw==
+	t=1793798839;
+	b=vBLNTshmG9fPUryrQPIm0pX1m0Uwqeyizu23ynSp9dU5x42LqJ3L1h+tJc2cbzw6cXBa
+	 1PGcRT0wwpEEHjs3/ePYaX3JUcIqtkrRZcCn33vnvCidn6up/B3ClICzqGq5xxFIohb6n
+	 Wfcv6sWVgPxeQYUDxnZ7fEBSoZ+43Yk+Tq+iSyKFYt2LwEe2kQ+ra0xoFcgntl9eGa2RC
+	 CM2JbdZCchcI3trIV6HNV4xnfoHUBNv0u8OnfRy3H6cGZhSNbHSWG3DzO4syVXD1TjmZQ
+	 F3BbH2Pxu+t03nAB6zD9QAz9Sw/AR6W5Hpga5POG1eNcfRybYsHo4mKltzdQ1EIQnLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793798148;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:X-Mutt-Fcc;
-	bh=cweYKUfQfPNBI8VU6FrLwRgYq4BFUF09qYh0EQWkf/Y=;
-	b=ux2GofcHW6DVvksbDQxE6lFn3AWkEyzC1Kx5NKH4NECNMkElu2XJMGUEJ03w37dLrPpJ
-	 JPPNjrkNcjmlUfoODlM4e7rvZvDtVCJP+YSCp1B6a2Rl7p8Vbj2hi96DkdBo1QAni2brJ
-	 1Y7aIHzUBAQz9ywod3/vUQ7PAgQPi3SDNTWO0oVpnUC5n/xYerGGjYLSyat1qBkopWcpd
-	 OFEXN2m3Qmanqu4GDRiMoAr5+dq5WhQFetGeuK8H0qAQG1TTYo8/X7i1CFs7U491uCc+B
-	 5+F4phX3/FkmwnSG097j7lQUPVU9PDhfpITKCitZRnZGXUsUbLZTMRZizxyysyOENtw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793798839;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=hhq5EOa6Odz+K2vaBaOuOYmvWaBTRJ+kEF4fefMeYnQ=;
+	b=DxrA0qn8VCgj2gUKnl5uO6reMVVYSkY7K5G+XmwNWMvB4SCeyBCk9SWqa3ED8pA8+NhY
+	 FHu64fvL8ztdmpjoyKJ49eobXmWRBYnQyf1v2rxZ3oEvwcO3YX7cMGKfjmbMB+Rw4cNKp
+	 AyCy41WRziPtBt9t55leiBSEoWe8JtA6N50PyIHmp0PcFmMGftJpiTeA3QFFdqwcTfPCs
+	 TIGSYgSmqFb1Y38Sc94FIFuD0CTvdhC7MZS8oxOvfmnfxjLjbkDHH8MerRTxr6KXucULG
+	 /G7H0JZjKNyqhRYYM+Jwlhzro6jNV+/8ew/dlFWEWK//zgDaj9XVl5akYqWKTXlUVig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GgtSTrNO;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VOVSISbG;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=LokHz1aa;
+	arc=none smtp.remote-ip=79.135.106.117
+Received: from mail-106117.protonmail.ch (mail-106117.protonmail.ch [79.135.106.117])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68587606D812
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 13:15:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68587606D812
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81FD606A326;
+	Wed,  4 Nov 2026 13:27:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C81FD606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GgtSTrNO;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VOVSISbG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793798146;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=cweYKUfQfPNBI8VU6FrLwRgYq4BFUF09qYh0EQWkf/Y=;
-	b=GgtSTrNOgB32X3CPBVhcmskGTGXQhCazhfZZJr4a61ZdXP5xfL11Jvv3qckWdFhfKxMQOL
-	9LHvV876xhij9dvJNLqAfQBkVcKr4o2oVJ00dWvuMM9CiqahYMS2+W0X8XYLithNZB0GqE
-	Kov0X3hTRwlaH7dEOcJAwUDnWQP2MBo=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-534-p2aX4DHdOh6oAKlGa79MLQ-1; Wed, 04 Nov 2026 08:15:42 -0500
-X-MC-Unique: p2aX4DHdOh6oAKlGa79MLQ-1
-X-Mimecast-MFC-AGG-ID: p2aX4DHdOh6oAKlGa79MLQ_1793798141
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c407a17919aso90520266b.0
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 05:15:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793798141; x=1794402941; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cweYKUfQfPNBI8VU6FrLwRgYq4BFUF09qYh0EQWkf/Y=;
-        b=VOVSISbGoBrQReIGqksyUICgNy+eJf4wMReAqEH46PcS8PAFArdrRqVJ9+kYaebWjk
-         nLcgy/OgDP8pc9BPvjxtKwkVvfEl7E18th6JpsVZtvNJGwO7diitmJzSSdE+ZmumLkqV
-         FXP7VqeijeAN96Zk7UrAAYSCeLaf7Q9jt14waqw160Dx2uu2QsTFb2Ycp6zE6LpuiHSQ
-         Iojgf4t6UtoQycLHDacI4iwEQ7G2E1hPPQrTYdJNje8iUoMm6xiwvDnUJ4v/0aawwuXr
-         obx0SJ9dKCOepT3cgfVjCY+dIcL7xXxRjVy/ntXKofAKG36j+AOM+QPgNZzeh3UpBSS+
-         niQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793798141; x=1794402941;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cweYKUfQfPNBI8VU6FrLwRgYq4BFUF09qYh0EQWkf/Y=;
-        b=e4C87laO7ub+J1aj06VR7z1HDEzz7a0ilNpJ2jXLTIVaglkON2gxYablUBeaQgQUpi
-         X32+iLbaMjWcf7eQaV9Ele7hyHzv2+xRFahsxhrkGOVuAFpYXu46aZJrurEcf2GPowHf
-         CuyfXEYqWTN0MjsmZ/bJLWwRQIyy4xG/740/zivm1rhMVW4n1FRTWnAVCBgkC10rt0eC
-         it981F9AIKYunaTbDZOVVF2l6PpisPUhhG3wtzYBvvFwEbfcD2/umCOiagArzxK9O+Jp
-         5ofbi5JfTf1IGXTGgfdPkOSUWfGkPJnJcjGl4c2m6VR4qscME4GCBIGW2tVv7im/3VQw
-         DasA==
-X-Gm-Message-State: APuU4Z+NWqqj/u4/dFkDj1FUt33TbifbpdjMcOmQ+sTWSqll4ZpkA2TI
-	75Ss8m53zigAR12nj9tdqdpHABqdeWwEIhKCl0E4TqFCwxuM3l/GmGSK//I/u4Zbst7Al5nuVCw
-	SbpvkLjuC3aPEc7yUV7vN+oyGZuxQvYJulfveuamDvb77iFBKUKwL7g==
-X-Gm-Gg: AYBFou3ucAOIWZ/GnUoVhvnGrI4GaTP6MiL+RWSlUTmJcAZESAo5tpKZw7iEqtYq3zB
-	ynvS8bBe8/pu5ZYxNrhMSZ2wxQvRwwTxwRvSFxq+ac9fGIOXRl4B2bgD1T4nPc9dK6xezNPV4YD
-	/4NXIUkQB02MW1AEZIhjGfV4F9t3FEOT3VUWesltf6ot5VV/nOJ0oaUR6MohxW+E1fL4OTuXLOK
-	M8iTCiExF4ylsVKgjZwjBhO0WeTAt7j1nljsBgEJQuYxumu63SE2lxIQFAysTi25uJeHT5QIm6j
-	oxOTeie1ngj0fRy6F9wUpCK3/JcDdpepMAv5Yhf6WYD3xbVDPIjSGEs+aE3pruqKfLPFQJOOskV
-	+f971l04v5Ze8Tb8ZLVBU7gMdX6S2n0j9YeiEr2sw6g==
-X-Received: by 2002:a17:907:96ac:b0:c49:b8ec:a9e3 with SMTP id a640c23a62f3a-c4ca7abe67amr1635744466b.43.1793798140902;
-        Wed, 04 Nov 2026 05:15:40 -0800 (PST)
-X-Received: by 2002:a17:907:96ac:b0:c49:b8ec:a9e3 with SMTP id a640c23a62f3a-c4ca7abe67amr1635741066b.43.1793798140297;
-        Wed, 04 Nov 2026 05:15:40 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d0e48d0dcsm68849166b.70.2026.11.04.05.15.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 05:15:39 -0800 (PST)
-Date: Wed, 4 Nov 2026 08:15:35 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	2312891301@qq.com, blum@kernel.org, co+6dcbccedc9ec6452@bugs.sh,
-	eperezma@redhat.com, fangxy@xiaopeng.com, jasowangio@gmail.com,
-	kmehltretter@gmail.com, linfeng.sun.dev@gmail.com,
-	lirongqing@baidu.com, longpareto@gmail.com, mst@redhat.com,
-	oss.patchbox@gmail.com, p@1g4.org, phx0fer@gmail.com,
-	physicalmtea@gmail.com, sergiiushakov@google.com,
-	shubham@octane.security, stable@vger.kernel.org,
-	stjepan.poljak@gmail.com,
-	syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com,
-	tavhadia@gmail.com, tjdqudcks0424@naver.com, tz2294@columbia.edu,
-	xieyongji@bytedance.com, xmei5@asu.edu, yuz08559@gmail.com,
-	zenghui.yu@linux.dev, zhaimingbing@cmss.chinamobile.com,
-	zhangjiao2@cmss.chinamobile.com
-Subject: [GIT PULL] vhost,virtio,vdpa: bugfixes
-Message-ID: <20261104081535-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=LokHz1aa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1793798828; x=1794058028;
+	bh=hhq5EOa6Odz+K2vaBaOuOYmvWaBTRJ+kEF4fefMeYnQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LokHz1aag6PaSNFE8C27kBJ0WZ6M+UPGHXO+rQSR0cNM/2otH80f1ijoMEGuR55gW
+	 b4QL7QYt40r1A8rSZ8mzFMAVGBkEd24hvQwLCMm6b9DUZ6oO38XXyaeHg/Zqg/w9Mr
+	 Xuzjd10Gz32YbH9HD3+dR2GhiETXDW2tWFiKkRse7s5HA+nLsh+tlNfkFT6xTRz7OH
+	 B7Of+E4TFuHrasbBSkEP4d0F18omzemN55swOa82ZMF3ORRlcHiCmy96DQ2IPNw7RB
+	 /58u7U5RPNRi7lV3nvfCIDzzkKizj1Kur0hi39lOpH+lVckEaQkoQjOVtZalGAswbE
+	 M2/BI/0Nr6GVQ==
+Date: Wed, 04 Nov 2026 13:26:56 +0000
+To: "Michael S. Tsirkin" <mst@redhat.com>
+From: Paul Moses <p@1g4.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 2312891301@qq.com, blum@kernel.org, co+6dcbccedc9ec6452@bugs.sh, eperezma@redhat.com, fangxy@xiaopeng.com, jasowangio@gmail.com, kmehltretter@gmail.com, linfeng.sun.dev@gmail.com, lirongqing@baidu.com, longpareto@gmail.com, oss.patchbox@gmail.com, phx0fer@gmail.com, physicalmtea@gmail.com, sergiiushakov@google.com, shubham@octane.security, stable@vger.kernel.org, stjepan.poljak@gmail.com, syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com, tavhadia@gmail.com, tjdqudcks0424@naver.com, tz2294@columbia.edu, xieyongji@bytedance.com, xmei5@asu.edu, yuz08559@gmail.com, zenghui.yu@linux.dev, zhaimingbing@cmss.chinamobile.com, zhangjiao2@cmss.chinamobile.com
+Subject: Re: [GIT PULL] vhost,virtio,vdpa: bugfixes
+Message-ID: <boz9jnakQM6uAhZfWbN75Fy90K5NZ8XCEXBRlhjkqDryEgBVXwJzIPrq1giWoitEnsZPiK4FyKlYBVHioGorKSw4JzSVd8kxw9RIhEz0-kE=@1g4.org>
+In-Reply-To: <20261104081535-mutt-send-email-mst@kernel.org>
+References: <20261104081535-mutt-send-email-mst@kernel.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: e60a96041563db78786d8f092c9f5e833f03cb84
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -126,131 +65,112 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Mutt-Fcc: =sent
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
+On Thu, Mar 12, 2026 at 06:56:40AM +0000, Paul Moses wrote:
+> > On Wed, Mar 11, 2026 at 08:00:45PM -0400, Michael S. Tsirkin wrote:
+> > > On Wed, Mar 11, 2026 at 02:12:17PM +0000, Paul Moses wrote:
+> > > > >
+> > > > > Indeed, seems legit, thanks!
+> > > > >
+> > > > > The only thing is that I dislike two error handling paths here.
+> > > > > So I wonder why isn't this as simple as fixing the double free
+> > > > > directly:
+> > > > >
+> > > >
+> > > > That works for me, should I send it out?
+> > > >
+> > > > Thanks,
+> > > > Paul
+> > >
+> > >
+> > > Please do.
+> > >
+> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> >
+> > Oh and I forgot
+> >
+> > Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+> >
+> >
+> > >
+> > > --
+> > > MST
+> >
+> >
+>
+> Considering that this pattern has occurred in multiple independent source=
+ files,
+> maybe it is worth it to make intent more clear? What about this?
+>
+> >From c3b9431dc736cec60c0b288b13d9fa718341f46a Mon Sep 17 00:00:00 2001
+> From: Paul Moses <p@1g4.org>
+> Date: Tue, 10 Mar 2026 15:23:58 -0500
+> Subject: [PATCH] vdpa: don't free reply skb after genlmsg_reply()
+>
+> genlmsg_reply() hands the reply skb to netlink, and
+> netlink_unicast() consumes it on all return paths, whether the
+> skb is queued successfully or freed on an error path.
+>
+> vdpa_nl_cmd_dev_config_get_doit() currently jumps to nlmsg_free(msg)
+> after genlmsg_reply() fails, which can hit the same skb twice.
+>
+> Return the genlmsg_reply() error directly and keep nlmsg_free()
+> only for pre-reply failures.
+>
+> Fixes: ad69dd0bf26b ("vdpa: Introduce query of device config layout")
+> Cc: stable@vger.kernel.org
+>
+> Signed-off-by: Paul Moses <p@1g4.org>
 
-  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
+I like crediting people for their work.  Let's do this. Pls post as a
+proper patch starting a new thread, so all 0day tooling catches this,
+and I'll apply. I'll then apply a rework removing the duplication, on
+top.  Thanks!
 
-are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+> ---
+>  drivers/vdpa/vdpa.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
+> index 34874beb0152e..702d3a7772219 100644
+> --- a/drivers/vdpa/vdpa.c
+> +++ b/drivers/vdpa/vdpa.c
+> @@ -1352,15 +1352,19 @@ static int vdpa_nl_cmd_dev_config_get_doit(struct=
+ sk_buff *skb, struct genl_info
+>  =09}
+>  =09err =3D vdpa_dev_config_fill(vdev, msg, info->snd_portid, info->snd_s=
+eq,
+>  =09=09=09=09   0, info->extack);
+> -=09if (!err)
+> -=09=09err =3D genlmsg_reply(msg, info);
+> +=09if (err)
+> +=09=09goto mdev_err;
+> +
+> +=09put_device(dev);
+> +=09up_read(&vdpa_dev_lock);
+> +
+> +=09return genlmsg_reply(msg, info);
+>
+>  mdev_err:
+>  =09put_device(dev);
+>  dev_err:
+>  =09up_read(&vdpa_dev_lock);
+> -=09if (err)
+> -=09=09nlmsg_free(msg);
+> +=09nlmsg_free(msg);
+>  =09return err;
+>  }
+>
+> --
+> 2.53.GIT
+>
 
-for you to fetch changes up to 1a577f9402c1780cc1e663f48d5dd54c02051b09:
 
-  virtio_pci: don't take the MSI mutex under cpu_hotplug_lock (2026-11-03 07:32:14 -0500)
+It's obvious now your intention was always to diminish my=20
+contribution. This really only reflects negatively on you.
 
-----------------------------------------------------------------
-vhost,virtio,vdpa: bugfixes
-
-Just a bunch of fixes all over the place.
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Dudu Lu (1):
-      vhost/vringh: Fix IOTLB permission in putu16_iotlb()
-
-Eugenio Pérez (1):
-      MAINTAINERS: add missing virtio/vdpa/vduse/vhost headers
-
-Fang Xieyan (4):
-      vringh: bound top-level re-entry into indirect tables
-      vringh: add regression test for cyclic indirect descriptor
-      vringh: reject empty / undersized indirect descriptor tables
-      vhost: fix used ring index wrap in vhost_add_used_n_in_order
-
-Jia Jia (5):
-      vhost-scsi: preserve event ordering
-      vhost-scsi: do not relock event vq mutex on send_evt fallback
-      vduse: avoid infinite loop when no affinity CPU is online
-      vhost-scsi: do not count PI bytes in the data length
-      vhost-scsi: fix page reference leak in misaligned I/O fallback
-
-Karl Mehltretter (1):
-      virtio-spi: Fix virtio_spi_config kernel-doc
-
-Li RongQing (1):
-      virtio_ring: reset IN_ORDER state in virtqueue_init()
-
-Linfeng Sun (8):
-      vdpa_sim: serialize IOTLB updates with dataplane access
-      vdpa: invalidate DMA mappings before releasing memory
-      vhost: fix dirty logging for in-order used ring entries
-      vhost: reject invalid IOTLB update permissions
-      vhost-scsi: validate event queue descriptor direction
-      vhost-scsi: reject delayed virtqueue setup
-      vhost: reject backend enable without a kick file
-      vhost-vdpa: initialize state before publishing cdev
-
-Maoxia (1):
-      virtio_pci: add missing newline to the pmcsr error message
-
-Mingbing Zhai (1):
-      virtio_balloon: initialize wakeup_lock before virtqueues are set up
-
-Sergii Ushakov (1):
-      virtio-blk: clamp max_segments to virtqueue ring size
-
-Shubham Antil (1):
-      vhost-scsi: zero misaligned I/O bounce pages
-
-Tal Zussman (2):
-      vhost-vdpa: fix pinned page leak in vhost_vdpa_pa_map() error path
-      vhost-vdpa: unpin mappings by range
-
-Thorsten Blum (1):
-      hwrng: virtio - prevent use-after-free after a failed restore
-
-Wei-Shuo Chen (1):
-      virtio: use consistent virtqueue terminology
-
-Xiang Mei (1):
-      vdpa: fix double free of the reply skb in vdpa_nl_cmd_dev_config_get_doit()
-
-Yu Zhang (1):
-      vhost-vdpa: drop the parent's vq callback before the call fd is released
-
-Yuho Choi (3):
-      virtio_blk: Reset device on probe error paths after DRIVER_OK
-      iommu/virtio: Reset device before deleting virtqueues on probe failure
-      vdpa/snet: Don't discard the DPU error in snet_send_ctrl_msg()
-
-Zenghui Yu (Huawei) (1):
-      virtio_pci: don't take the MSI mutex under cpu_hotplug_lock
-
-chenglong.ma (1):
-      vduse: fix VA/PA confusion in the coherent page fault path
-
-sungbyeongchan (1):
-      virtio_ring: use shadow flags when detaching split descriptors
-
-zhang jiao (1):
-      virtio_ring: Initialize id field in packed indirect descriptors
-
- MAINTAINERS                          |   4 ++
- drivers/block/virtio_blk.c           |  45 +++++++++++++-
- drivers/char/hw_random/virtio-rng.c  |   7 +++
- drivers/iommu/virtio-iommu.c         |   6 +-
- drivers/vdpa/mlx5/net/mlx5_vnet.c    |  10 ++-
- drivers/vdpa/solidrun/snet_ctrl.c    |   3 +-
- drivers/vdpa/vdpa.c                  |   7 ++-
- drivers/vdpa/vdpa_sim/vdpa_sim.c     |   7 +++
- drivers/vdpa/vdpa_user/iova_domain.c |  11 +++-
- drivers/vdpa/vdpa_user/vduse_dev.c   |  15 +++--
- drivers/vhost/scsi.c                 |  68 +++++++++++++++++----
- drivers/vhost/test.c                 |   4 ++
- drivers/vhost/vdpa.c                 | 115 ++++++++++++++++++++++++-----------
- drivers/vhost/vhost.c                |  36 ++++++++---
- drivers/vhost/vringh.c               |  29 ++++-----
- drivers/virtio/virtio_balloon.c      |   3 +-
- drivers/virtio/virtio_mmio.c         |   2 +-
- drivers/virtio/virtio_pci_common.c   |  12 +++-
- drivers/virtio/virtio_pci_common.h   |   5 +-
- drivers/virtio/virtio_ring.c         |  13 +++-
- include/uapi/linux/virtio_spi.h      |   2 +-
- tools/virtio/vringh_test.c           |  41 +++++++++++++
- 22 files changed, 347 insertions(+), 98 deletions(-)
-
+You or claude didn't even disassemble it. It's slop. My
+patch is objectively superior both in human readability
+and performance.
