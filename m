@@ -1,70 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.207
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793781812;
-	b=jMcI174m7pNh7q9xa7hCDc9J3VYz3LDZv1+ywiCu7hL2P3vBjgMpNeuGG8Bc67BC0quc
-	 MDkW+gU/f5mWZL7sum7mMBc+iuc5sLWb59FTjpJEzjkZNVUNoXSsswzUpRbEZ0JFh16Jy
-	 xDnPZ9xqKhI6wfEfnpqFaRcy0bo3HdrG/FngHa4jrw3RiPu1WfW0NDzezZOS4O46giOgx
-	 qqnAR0LJsyD4k2P8PkomNzbt5jxNHOfbdFragNKkfycTx2AFi3DCqVxiko4jc9CYK3CUz
-	 4lLqFXIP3r9heDXsAX3ZUPo+uv9v0ffVmpGSPoDlDAzKSUkTMBRMoKqX+rQxuGy863w==
+	t=1793782130;
+	b=MPXdp3m2Pm7nSC5YS0hwiqS/rKZMWltul4wBjRWwh2lRNXBFW02kWURnSLIYawvNFmEm
+	 lIn6ZRR/iHHQC2rc1OZGWAK8QBn+HsOb3cvKaHIrmMaJyJfYbwslhwRCUAxtuMBYxSZkO
+	 3qeqolzgn/UzQU/FTdCYycM8+WDrz48gxm58MZVX0+LbQs4slzfjs5Xhn7IgwLczWg7i9
+	 XuV4MgJ+OrjCdKmkD8J2DKWbEBu6NKy5JFsS78NoHGdk3Ed1ZwYPdQ3obU8q7EQw7hes3
+	 79Ryuhe0YPvRKtLwtTZprXBH2/RtWLtVc73gbT/VhDjUwr7EJMllZOE7CtnPk4FoxTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793781812;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Xigaf6imL+kX8Ty8pKWbPmcjBYxPKbcCFWKP/SbOV1w=;
-	b=CP8037IFjVT+/rfWzNvY0WmRl60eddDNmMnr6nH/cNLvIdNPtCsoIc960fGO5R2zg3fS
-	 XseCBUH6bOf0MPf23l/PjWogYe5o9EUBZ0wZigmFuk/+ZxdIcAqeLWFTj9E650i1nAxlK
-	 +EitrDzr9ELVRA8pPv9iyzWrGCzu0YjQrbDRrLyB+Wphuj2Y+0K7itRjDTYZutgn0Vb3P
-	 UvcEJIMRCAeLMCHKrzOSi0MOZc9XYumibNFEL62IGAv8/4OIOUMOXABLLXPXOi2ah0HDM
-	 vT8Z0ZevE7G7K7PvJ8CgEgZhjIglaZmIPw1rvBUZjuARhlaAs0VgtGQuRT/LxlwUcbQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793782130;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=tVLelWtOiKs5gOhdKa6hRa5lDxrUmzH5vqTxLffuKAk=;
+	b=UvH9pHsstUxMYOb92+knDDuptG1InEKJyMu9/LHEp1Gtkln0NAWzHiwBAkL/sKnLuZbw
+	 ozNc/ZUeZFLGToWOz9+EgfeJ7pi6WAVAgQfK4fGtoLYP0/ITbMBjvkVqocMrjpzvXTosm
+	 0gbzPied7/Bo/nO1dxBf6T1Yc+oELEPDN/O0V0h5cxUXgPQq7EbNnoLamw6apPnR+5waX
+	 771rA0y7VJIIrzpRXAVvFtamz6IF/jaLqZiLYHFF9eRIt2mc/UONgHDcgZbB7ckkkNR64
+	 Za0/mZJmnxExHefd6hevTOg4+0g5ORXYNjNodl/gQIC7KjGukLBXVxLxVxxMFS5uG0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SYR7aZGr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YFufWwhi;
+	arc=none smtp.remote-ip=91.218.175.207
+Received: from mta0.migadu.com (out-207.mta0.migadu.com [91.218.175.207])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82513606A31B;
-	Wed,  4 Nov 2026 08:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4873F606A329
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 08:48:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4873F606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SYR7aZGr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C38B1F000C1;
-	Wed,  4 Nov 2026 08:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793781812;
-	bh=Xigaf6imL+kX8Ty8pKWbPmcjBYxPKbcCFWKP/SbOV1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SYR7aZGruhoHnrfiwYjxfz5dGJoVSDEEik/0zvtgRpyReS9Wbk26VTR5vN0qCQv9W
-	 y5RgeyQPrjeHzKvEKu3Nj6jBffjhDpTmnwyQGZXiRJo7gLVwI59jqv/i+zM+oj6vAv
-	 XCbuh4sq0+rIxSCKsxgyClZj/VKu/TMwKvhA+mlxcgS8e9HDpAfjHFF5N0ch2h4Tc0
-	 91rCYp2anJnZ1Hiuv0L5HqP32okJmg5j6P0tXnAVKH/eX/fag0H8xHDlOK0j49OtPC
-	 UPBAX3K5anx7jwggHKh+KlcKCY13k/bSK1Uxj2oAxM+0aLBf0g1XyGTX6dgAPwD0QJ
-	 dk69OhqIE6k4Q==
-Date: Wed, 4 Nov 2026 10:43:28 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v12 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
-Message-ID: <20261104084328.GP264423@unreal>
-References: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
- <20261103233742.GA1162403@bhelgaas>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YFufWwhi
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Le2HnV1cWaxWKIp2IUyJdv0RZTylQe/ImxfQDvmHubg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793782127; v=1; x=1794386927;
+ b=YFufWwhil8zG4Fa3kITYq+rKwV4Ack7CtQ+xPrM9cvVg58wzeiLIp5Lo1qFw/deOO5V6JwDz
+ XJZz9vt5rSdTSLc4dkVk7ylGm5Q4ZosUvNWaIgf/OGq46+uLf41F1APHXRyRixWipHxHv/2fahj
+ edGLy5mExidRDZqzasyUF760=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 293ca65f55a86fc9;
+	Wed, 04 Nov 2026 08:48:47 +0000
+X-Mizu-Trace-ID: 293ca65f55a86fc9
+X-Migadu-Flow: FLOW_OUT
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>
+Cc: Will Deacon <will@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Fuad Tabba <tabba@google.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/16] KVM: arm64: selftests: Tests for protected VMs
+Date: Wed,  4 Nov 2026 08:48:26 +0000
+Message-ID: <20261104084842.132944-1-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,52 +78,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103233742.GA1162403@bhelgaas>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 03, 2026 at 05:37:42PM -0600, Bjorn Helgaas wrote:
-> On Tue, Nov 03, 2026 at 10:29:39AM +0200, Leon Romanovsky wrote:
-> > PCI P2PDMA applies Request and Completion Redirect throughout both paths.
-> > This misclassifies asymmetric and nested switches, and reports one answer
-> > for every kind of TLP.
-> > 
-> > Three ACS controls act on TLP attributes the Requester chooses rather
-> > than on the topology: Translation Blocking and Direct Translated P2P act on
-> > a Request's Address Type, and Completion Redirect skips Completions carrying
-> > Relaxed Ordering.
-> > 
-> > Evaluate each direction at the path divergence, decide every class from the
-> > one walk, and treat a client with ATS enabled as translating unless its
-> > driver declares per-mapping ATS.
-> > 
-> > This completes the P2PDMA side; dma-buf and mlx5 follow separately.
-> 
-> Is there a one- or two-sentence explainer of why we want this?  I'm
-> thinking in terms of what Linus will want in the merge request: a fix
-> for something that's broken or some new functionality.  It sounds like
-> this is solving a problem, but I don't know enough to translate the
-> nitty-gritty details to the higher-level user-visible problem or
-> feature.
+Hi folks,
 
-Not AI; these are my own words with grammar fixes from AI:
+This series adds selftests for protected VMs. A test skips on a host
+without pKVM, and so does any case where the host doesn't have the
+required feature, e.g., PtrAuth, SVE or hugetlb pages.
 
-"The existing implementation of PCI peer-to-peer assumed that all PCI TLPs were
-the same: ordered and carrying untranslated addresses. It did not account for
-the variety of traffic types defined by the PCI specification. As a result,
-only simple systems supported peer-to-peer transfers in the upstream kernel;
-real-world systems required out-of-tree patches and careful platform design.
+A couple of points:
 
-The new code will allow peer-to-peer transfers between any two devices, for all
-types of PCI traffic, as long as the PCI path between them supports
-peer-to-peer.
+- Each area gets its own test rather than cases folded into existing
+  tests such as psci_test, hypercalls, set_id_regs, etc. A protected
+  guest requires its own boot path, and has to share the ucall pool
+  before its first ucall. On top of that, a protected guest gets the
+  opposite result for many of those tests' checks.
 
-This paves the way for PCI peer-to-peer support in VMs, which the upstream
-kernel does not currently support."
+- pkvm_exceptions skips its breakpoint, watchpoint and single-step cases
+  while a protected guest's ID_AA64DFR0_EL1.DebugVer is 0. pkvm_id_regs
+  reads the same field to choose between the hidden and the exposed
+  debug view. With the patch that adds self-hosted debug to protected
+  guests [1], both tests run the debug cases with no change.
 
-BTW:
-1. The patch "PCI/P2PDMA: Document the TLP attribute assumptions" attempts to
-   explain the current situation.
-2. The change is too large to present as a fix.
+The series is structured as follows:
 
-Thanks
+  01:     external_aborts: an abort injected before a vCPU's first run.
+  02-04:  Generic selftest changes: creating a protected VM, the pKVM
+          function IDs and the ucall pool's address.
+  05-06:  Protected-VM library: boot trampoline and helpers.
+  07-16:  The tests, one per area.
+
+Based on Linux 7.4-rc1 (6628e7d4c6b25).
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/20261102093950.2922035-1-fuad.tabba@linux.dev/
+
+Fuad Tabba (16):
+  KVM: arm64: selftests: Inject an abort before a vCPU's first run
+  KVM: selftests: Allow arm64 tests to create protected VMs
+  tools: arm-smccc: Add the pKVM memory sharing function IDs
+  KVM: selftests: Export the ucall pool's guest physical address
+  KVM: arm64: selftests: Add protected-VM boot trampoline
+  KVM: arm64: selftests: Add protected-VM library helpers
+  KVM: arm64: selftests: Add pkvm_host_abi host-interface test
+  KVM: arm64: selftests: Add pkvm_psci multi-vCPU PSCI test
+  KVM: arm64: selftests: Add pkvm_mem_share hypercall test
+  KVM: arm64: selftests: Add pkvm_smccc hypercall test
+  KVM: arm64: selftests: Add pkvm_id_regs register and trap test
+  KVM: arm64: selftests: Add pkvm_vcpu_regs register-state test
+  KVM: arm64: selftests: Add pkvm_irq interrupt test
+  KVM: arm64: selftests: Add pkvm_isolation host-access test
+  KVM: arm64: selftests: Add pkvm_lifecycle teardown test
+  KVM: arm64: selftests: Add pkvm_exceptions debug and SError test
+
+ tools/include/linux/arm-smccc.h               |  22 +
+ tools/testing/selftests/kvm/Makefile.kvm      |  12 +
+ .../selftests/kvm/arm64/external_aborts.c     |  21 +
+ .../selftests/kvm/arm64/pkvm_exceptions.c     | 261 ++++++++
+ .../selftests/kvm/arm64/pkvm_host_abi.c       | 428 ++++++++++++
+ .../selftests/kvm/arm64/pkvm_id_regs.c        | 306 +++++++++
+ tools/testing/selftests/kvm/arm64/pkvm_irq.c  | 268 ++++++++
+ .../selftests/kvm/arm64/pkvm_isolation.c      | 225 +++++++
+ .../selftests/kvm/arm64/pkvm_lifecycle.c      | 110 +++
+ .../selftests/kvm/arm64/pkvm_mem_share.c      | 394 +++++++++++
+ tools/testing/selftests/kvm/arm64/pkvm_psci.c | 632 ++++++++++++++++++
+ .../testing/selftests/kvm/arm64/pkvm_smccc.c  | 117 ++++
+ .../selftests/kvm/arm64/pkvm_vcpu_regs.c      | 221 ++++++
+ .../selftests/kvm/include/arm64/pkvm.h        |  74 ++
+ .../selftests/kvm/include/ucall_common.h      |   1 +
+ tools/testing/selftests/kvm/lib/arm64/pkvm.c  | 245 +++++++
+ .../selftests/kvm/lib/arm64/pvm-entry.S       |  58 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c    |   5 +-
+ .../testing/selftests/kvm/lib/ucall_common.c  |   9 +-
+ 19 files changed, 3406 insertions(+), 3 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_exceptions.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_host_abi.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_id_regs.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_irq.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_isolation.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_lifecycle.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_mem_share.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_psci.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_smccc.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_vcpu_regs.c
+ create mode 100644 tools/testing/selftests/kvm/include/arm64/pkvm.h
+ create mode 100644 tools/testing/selftests/kvm/lib/arm64/pkvm.c
+ create mode 100644 tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
+
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.47.3
+
