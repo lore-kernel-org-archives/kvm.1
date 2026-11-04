@@ -1,95 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793826546;
-	b=0O7FP/ceFMG8vWqDcEcFMYOt1EqcKwWXBF744wlDhqQb3MyxcEzPiHS9mroHM/F5EtS3
-	 oIciav+hbYB8jSpUdjFQvWYv2Lo1sr2ttGo228Px48NDBX7VjTs4pAvipwY5UI6wHVi6p
-	 6t1vwHY/zZEt6sBOmmXhnJOjwdamdj4kvXueFt3CTASitKK7BTgAqTkOG+S9QrcCXT8ed
-	 mL5aI8N3N+sDwCkQJZsSqdqX3lMDJO1mH4LOu16MG/ArmzHxmik4G94zkcgrzWJVxVJa9
-	 VIfqO9bqs99M8tlU2abhE3oWBRUiOi9jj+r3Y/MGHiUBKVx0PtKK5jpCdoxyxDOaz5g==
+	t=1793826796;
+	b=H8XryllfTB3QKXLbh+3WakkOPzKXiola5f+sfW6Vra7/DL7bjPGOj9GztBTe90n1ljW4
+	 p/NmzCNUhni+TeQ73/yj6/XKEDYGNKwD53YzB97BsZtWC+ywMdxzDQunohSw7/rZxaEzi
+	 8BJb9dzcC+lHrNy8buQVAvxIWCsJoYT4zqhoP9GV8Nky8D3qwCsbgOlZMYC/h0DZT2J+A
+	 WU4xn0SP7wF8DS+xcpgrUplUzcHgYbNV9jns/zV0CB3ry2wzB1S4x/oZCjXeWt0xsrEcY
+	 sfydGUgu0SiaWdDYLm0fLRhIfCQVWAN4Tqi+4uoq4B+uRC7JEWpo9veJvRDmbu8cMtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793826546;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=yDPvcxyyAFu2o0bBlGBxdTvgOqGA8W9gBnR8fryqjt4=;
-	b=po8+A7f/4r2taD3pDauf4tGoIUWjDjxMOWc7fnKDPtyd3r3nrH7/kfvBkfstLgjN44fo
-	 /Zjk3rqJtlDPpMUSRpZQ1UgfqcOMjwAPXJLpfw5CBISlrEFN98pixCmQi9zkjh8wWTIpu
-	 W11q6JbyM3jbP5piORX9PVs0a6gb8RtpdzkRSs1gI/lEKU6hGuIEFR8YlnzYWAj6ZVeVo
-	 /3M7YW7hw8lFdtc0nM6NaiXR3V9ck/cHa5pcGoMz1xsBeRbDtRZvcEzffO8TAgcHfSY+k
-	 XAy7qdW59MSKIue/pfYcEhXJlfCtHT5jIeg1WNe+/b+ad+AuuuOmLOBjsBt6PTpgl5A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793826796;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:CC:Subject:User-Agent:In-Reply-To:References:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=0j7BAmeDQwwtoMBbI3yPl2jkhlbza1J7ZyqEZwxFy/Q=;
+	b=uVMS0n5ZLUi31R4L64KJcPd5dpimOefaFXFG+JH2RbxJrvuKyxI5Hsk4X5dGOy0WqBiD
+	 TsCOPLiwz0T14+yD6++PA+435kEDrcFvWClvasy5BMWLCwQopEq3ULrefYfRVLaNea8Or
+	 UMWtMfD4YpDPcPEI8UAyXsnqvdhQsq8yY9RFeUmdbR5i+zDWIUK/9vHerqL1Plk98loW9
+	 UnCoQ1O+/5lrqPsR3nH9qQuv0OmeN1CR+v5o8xvXKS3KHqBY6xpPifi+9o5AgZQ+Cm6ms
+	 gh9EWvNyILw/PZvY2/ge282ISaWqvlKxPbDWyA5KrBEg50m0KeH7k21OWHdkcqaF/Rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Pr6A0HKM;
-	arc=none smtp.remote-ip=209.85.215.174
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=U2D3wB8g;
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7610D60A16C8
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 21:09:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7610D60A16C8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF236070F21;
+	Wed,  4 Nov 2026 21:13:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EEF236070F21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Pr6A0HKM
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cdaefe02d5dso726243a12.1
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 13:09:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793826546; x=1794431346; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yDPvcxyyAFu2o0bBlGBxdTvgOqGA8W9gBnR8fryqjt4=;
-        b=Pr6A0HKMR+uacVoDnXqObCt7qtZxWvHFtdVrtZp/Hzd2nIVLH9iN4ZoAMZQJx452RL
-         yb1CrGhUxcRSrysdnqKgt+cJcwB1t9GaqEu+plJDv9PLO/k9h6aaFGOb+XpuyMZCmbxz
-         u9tVCymVpq3MZFEfnyb04nwaJd8pMf5vCSIKrzRCh5gl8LPnKig9qdtExSW+JGSavch6
-         SVwYcqt8THLnEU7mpwJPtPzxGwqCkdzVZwBlQx+sIWghElVmdyWN9sa/htWBxJuJAyLr
-         AjI4n96YJJ0FeU6f/5rDHlght4AY5M7c0WHNXkEMeMTW2BYhGAtay3zKpI9aJdNvpjci
-         8njw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793826546; x=1794431346;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yDPvcxyyAFu2o0bBlGBxdTvgOqGA8W9gBnR8fryqjt4=;
-        b=QxsGL3jlgJGA1blZ9oguZfn65Uag2W0ecUWTuoAjaxGoeCybIjIVUHkW0x377fhNUf
-         yfJZ6KwFfCcOnZkHXx71OXIK/5RcyXHG6KZgLR5GmW8hdvR6mJmDAbMGko+YTf99tfOt
-         NNRWK6aWGqv1EiC8RPZntuFL+/aPhptKtY0t5zirxJMmn/t9Ryz6vGD9MppCE78Ez+4D
-         j/XLM+DRBMetFowJUDUhRoq6MxBC8+wqqb4gCR1jfB2Gw5DMh9cma2EzJWYjHZNsH/7X
-         Hsnf670mj/AAdFnLKMA8YPNXg8FID+M3yKOYLKYmqxOpVzWb4IstVGOid5k1EXcl1aEv
-         bSow==
-X-Gm-Message-State: APuU4Z8ic8r5EcaYLRbomVNaWosKBC+dChkE0s6WKubQILrfpEQiYBBt
-	udNqCZkjImenwkesBh0+uNtEG2DdzexmsBnUuz74xKe4tWet+oiOY/gbqDlzR72YvA==
-X-Gm-Gg: AYBFou2phWYGMDBlHWrX/9TYbnZFl+dTvsSRGTMMywyrjMyWA4bAvZpG9BFpQSt/328
-	3c2Vt6FQMm+ucJLq+ze4CbDTr6GqIYPdlorbRCQkPA6ht4a6xbZHmaEMOubYl0TLU0AC2kIs1e2
-	e7XW8vbSpiK3kyrLbyTK8Jul+v6bq51C4eZUyMf0mMeEt6Z2JDGq+e5TRELzsg63ifFvJpvw2Zt
-	e2zyflEH5KyeiBkFtqK3bdFZMvJQqYL2vJoRibrDqE/467sLdAK2TV9MPcfPW/arC5R7ZzPKl/z
-	Ri2g++64VkDKT6RhA9IDdbRFHP26aBE2eufzRfwEcrD79YUcBPPvyxC3zbUSKYQuf0NDfG8mGW8
-	EIz3dzW1xRVRj6xuHZXsaUAkJ4IRANUE0rbfkofkQGJVuAu/AqGtsLmLKIkTxdsVjSSJ7A1lok7
-	U6QtMvBCt0RInINUSlq8z5dq+nC8/WvkS8322EyDpxJaGQTFs/4yMNLTn4lGkxg07pPudpfXeF4
-	F1aX48xCBahbtI/7BuaOCOBXeOr1VVRb1M5vKZ9Rt+h95Vv6xSH1tNEKSFqemFKEzm2MQgze2hj
-	YOXQ9+NwfVQLFB2Oi1514NEaI1LeEo+HpeZ6QJiE5bu/bdtZxJS3CT8+OYwiG4qk
-X-Received: by 2002:a17:90b:4c81:b0:3ab:188b:c5bf with SMTP id 98e67ed59e1d1-3ae897c85e6mr14503462a91.18.1793826545271;
-        Wed, 04 Nov 2026 13:09:05 -0800 (PST)
-Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b312e45dsm668723a91.3.2026.11.04.13.09.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 13:09:04 -0800 (PST)
-Date: Wed, 4 Nov 2026 21:09:01 +0000
-From: David Matlack <dmatlack@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Alex Williamson <alex@shazbot.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v2 5/5] KVM: selftests: List the known IOMMU modes in
- irq_test's help output
-Message-ID: <auue7S_vdnGtTM3c@google.com>
-References: <20261103002205.3348519-1-dmatlack@google.com>
- <20261103002205.3348519-6-dmatlack@google.com>
- <autHA6aNrg4s5PkV@google.com>
+	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=U2D3wB8g
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6CD5940E015B;
+	Wed,  4 Nov 2026 21:13:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3U2b1QxYClr0; Wed,  4 Nov 2026 21:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1793826783; bh=0j7BAmeDQwwtoMBbI3yPl2jkhlbza1J7ZyqEZwxFy/Q=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=U2D3wB8gdl4a43Fm64mNA6ZM2USpJCLIwCtamRC4PcjkbT+N3A+hed3l9E18bhVyX
+	 oyhZdr4pmbZ9eFP5+UCjaiCqxDqDEyCl5ThDEaSCrWe2xKlb2DMAun1RtooMcmRDqa
+	 eDsyzK2506LRm7jgiN+z6u0Z1GSJ6mRPPgSKdtbyccDShhNEccOFW/K62qudpbnOHO
+	 SuXkb4mORY7livXLiDQ5+Ip3dhFyNLyBkSYk8+E/lcB8GyQjyDz6I/LGeYT5wFvdBj
+	 FKYmI/T9PuFn7AWswVv0APe7rfg2hIcSKMRF4R3nCwdF87X5HfcAZi2pnEz6WA2+8k
+	 bEgan0ne6CSX6MMOvrHt4UoxaCLJIB74x5NpPo5jrHn7UD+kmGPkTKobaONv8p8eym
+	 lsXxoQ+Iw1u25zQiuWo2B+I6nBcwQfZxDqWFuXkh0s8suZoS+fsGW5BIXPFwGHmCjW
+	 h9d+gKicHVqg9hI1B/pB8JJ71qDvalixTPqVIl6tG+dSHRTJSU8ENCPsEW7V+RMGV9
+	 f+p4oTHAT38MTk38E04WDhaktVkQ3/v2M/KgowJqc897S71W4JCMPk05g3RqtWVczr
+	 14fNyyPqp67ozGOUyRQEtaJDemz2FCPZ+WTgKsrUg+W0CM0uspv1CtxXXyYzxM65w5
+	 7jyZ1iDKDaNuk1lF+8s1+8zs=
+Received: from ehlo.thunderbird.net (mobile-166-137-178-199.mycingular.net [166.137.178.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A83DE40E0184;
+	Wed,  4 Nov 2026 21:12:25 +0000 (UTC)
+Date: Wed, 04 Nov 2026 21:12:19 +0000
+From: Borislav Petkov <bp@alien8.de>
+To: Sean Christopherson <seanjc@google.com>,
+ David Woodhouse <dwmw2@infradead.org>
+CC: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, John Stultz <jstultz@google.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Stephen Boyd <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
+ x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Michael Kelley <mhklinux@outlook.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v6 00/51] x86: Try to wrangle PV clocks vs. TSC
+User-Agent: K-9 Mail for Android
+In-Reply-To: <auuJjiowddGlysWI@google.com>
+References: <20260806233609.212337-1-seanjc@google.com> <aqLv9GwBNymyHs8q@google.com> <c9a6455eb88c24d4271b7a7c86f7a4e90799e40a.camel@infradead.org> <auuJjiowddGlysWI@google.com>
+Message-ID: <375997C1-577B-440C-B347-B8D256FA84B3@alien8.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -99,100 +101,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <autHA6aNrg4s5PkV@google.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-11-04 06:53 AM, Sean Christopherson wrote:
-> On Tue, Nov 03, 2026, David Matlack wrote:
-> > @@ -159,7 +159,8 @@ static void help(const char *name)
-> 
-> If you're going to do s/type/mode below, then the initial help lines should also
-> use iommu_mode.
+On November 4, 2026 7:37:50 PM UTC, Sean Christopherson <seanjc@google=2Eco=
+m> wrote:
+>On Thu, Sep 10, 2026, David Woodhouse wrote:
+>> On Thu, 2026-09-10 at 10:59 -0700, Sean Christopherson wrote:
+>> > On Thu, Aug 06, 2026, Sean Christopherson wrote:
+>> > > The primary goal of this series to fix flaws with SNP and TDX guest=
+s where a
+>> > > PV clock provided by the untrusted hypervisor is used instead of th=
+e secure
+>> > > TSC that is controlled by trusted firmware=2E
+>> > >=20
+>> > > The secondary goal is modernize running under KVM=2E=C2=A0 Currentl=
+y, KVM guests will
+>> > > use TSC for clocksource, but not sched_clock=2E=C2=A0 And Linux-as-=
+a-KVM-guest doesn't
+>> > > support paravirt enumeration of the TSC/APIC frequencies, even thou=
+gh QEMU
+>> > > provides that information by default=2E
+>> > >=20
+>> > > The tertiary goal is to clean up the PV clock code to deduplicate l=
+ogic across
+>> > > hypervisors, and to hopefully make it all easier to maintain going =
+forward=2E
+>> > >=20
+>> > > The quaternary goal is to clean up the TSC calibration code, which =
+was made
+>> > > stupidly hard to follow by hypervisor code mixing in with the nativ=
+e
+>> > > calibration routines, instead of being implemented as a pure altern=
+ative=2E
+>> > >=20
+>> > > Note, the VMware and Xen changes still probably should get acks fro=
+m those
+>> > > maintainers, as my understanding of what they're trying to do may b=
+e flawed=2E
+>> >=20
+>> > This (thankfully) still applies cleanly=2E=C2=A0 What can I do to hel=
+p move this forward?
+>>=20
+>> Nudge Thomas to spot that this is guest-side and we want him to pick it=
+ up, I guess?
+>
+>Amazingly, still applies cleanly on 7=2E4-rc1 and tip/master=2E  I know w=
+e're shortly
+>after the merge window, but this has been sitting idle for months and add=
+resses
+>issues that are impacting a variety of end users=2E
+>
+>Note, this also provides meaningful hardening for SNP and TDX=2E  /me sta=
+res intently
+>in the direction of Dave and Boris=2E
 
-Will do. I'll also rename the iommu_type variable in main() to
-iommu_mode.
+Would you believe me if I told you you're in the "review" mbox?
 
-> > -	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
-> > +	printf("-t	Override the IOMMU mode to use instead of auto-detecting it (%s)\n",
-> 
-> IMO, the "auto-detecting" blurb does more harm than good.  It makes the code harder
-> to read, and for me at least it's just extra noise in understanding what the '-t'
-> option does.  It also makes the line reaaaaaaally long.
-> 
-> I know the parentheses are pre-existing, but that was somewhat ok when there were
-> only two options.  With a big list, it's again noisy to reach the end and have to
-> think about that the closing ')' is terminating.
+The damn thing just keeps growing constantly :-/
 
-Agreed that the auto-detect blurb and the parentheses are just noise.
-I went with a slight variation, see below.
+I would love it if we had a review scoring thing like the net folks - whoe=
+ver reviews others' patches, gets looked at first=2E=2E=2E and no, I don't =
+mean you with that=2E
 
-> This really should spit out only the available modes.  For the internal assert,
-> it makes sense to print all modes since that's just doing a lookup, but it's
-> annoying to have to manually probe to see what's available.
-> 
-> Juggling all vs. available is mildly tricky to avoid having to dynamically
-> allocate, but not that hard in the end.  And IMO, it's totally ok to print a
-> misleading message if a mode becomes (un)available mid-test, especially since
-> this helper is unlikely to be used except in terminal situations.
-> 
-> E.g.
-> 
-> static const char *__iommu_mode_names(bool include_unavailable)
-> {
-> 	static char all_names[256];
-> 	static char avl_names[sizeof(all_names)];
-> 	char *names = include_unavailable ? all_names : avl_names;
-> 	int i, len = 0;
-> 
-> 	if (names[0])
-> 		return names;
-> 
-> 	for (i = 0; i < ARRAY_SIZE(iommu_modes); i++) {
-> 		if (!include_unavailable && !iommu_mode_probe(&iommu_modes[i]))
-> 			continue;
-> 
-> 		len += snprintf(names + len, sizeof(all_names) - len, "%s%s",
-> 				names[0] ? ", " : "", iommu_modes[i].name);
-> 		VFIO_ASSERT_LT(len, (int)sizeof(all_names));
-> 	}
-> 
-> 	if (!names[0])
-> 		return NO_IOMMU_MODE_AVAILABLE_MSG;
-> 
-> 	return names;
-> }
-> 
-> const char *iommu_mode_names(void)
-> {
-> 	return __iommu_mode_names(false);
-> }
-
-How about listing both? That keeps -h consistent with how other KVM
-selftests list the options for their arguments (e.g. backing_src_help()
-lists every backing src type), while also showing which modes can
-actually be used. e.g. on a system with only the legacy VFIO container:
-
-  # ./irq_test -h
-  ...
-  -t	Override the IOMMU mode to use
-  	Options: iommufd, vfio_type1v2_iommu, vfio_type1_iommu, iommufd_compat_type1v2, iommufd_compat_type1
-  	Available: vfio_type1v2_iommu, vfio_type1_iommu
-
-The available modes also get printed when the requested mode is not
-available, i.e. when the __TEST_REQUIRE() fails:
-
-  # ./irq_test -d 0000:01:00.0 -t iommufd
-  1..0 # SKIP - IOMMU mode 'iommufd' is not available.  Available modes: vfio_type1v2_iommu, vfio_type1_iommu.
-
-libvfio exposes iommu_mode_names_all() and iommu_mode_names_available()
-for this, built on your helper for juggling all vs. available.
-
-> Coupled with the above, how about this:
-> 
-> 	VFIO_FAIL("Unrecognized IOMMU mode '%s'.  Known modes: %s.\n",
-> 		  iommu_mode, __iommu_mode_names(true));
-
-Will do.
-
-Thanks!
+:)
+--=20
+Small device=2E Typos and formatting crap
