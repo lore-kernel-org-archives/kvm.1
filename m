@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793804676;
-	b=nvyNsCOik9ETEaGzmyx8dlPTrcEdVThKf+RAWBqQLiL+eWL80axp/L7xCB5E+0UT1T06
-	 KTXHgREYzx7OrteZYBJj+QW1mdh5pje4+zo16Lgn/VqcWkztKwHkHxR6hz3X+jpta1CKo
-	 BsmjGBy1vlRbwDEBOFH5n+62tgCIj0/kv4HccuBcyc1cd3RGXWuNSB9zMfiM8zLv6Z5AT
-	 gxX5ZtQ+/qM2SXl/7SNMDLxW5RX/zs69N9oKaUkyTSoBogRZn3XJYdZ6gwarsWYNOwxop
-	 41ZPYE76dCs84QPKE3TgVpuMSMUG1U5tZl6SV1IALkrBHDBaiEApApMxftkihP0l1bA==
+	t=1793804688;
+	b=oNFGtAqg/52YwugogggWhdlbEDKZ7v5O3Oq5yQaHIBZPPbP5QArkw5aXpsFVlahNR4nu
+	 nnaDPD0EX2/nn3//tU5GAEhck144/fPAAstGTnYlRefnaYUB3g0EqWE51OqOyYRSE/6b9
+	 j6q8pE435oMg1wItrKLunKzdwE+qQFz+zC8alHYdHLCqgZS3JhF7P8kqZvac5Cla7UYxT
+	 9jhme0DaufoenWk4PzmsIQThaOK0GDFjOnGIeIZUtNIBCxbqaxcF2cfeenrqC4e7Gu8BH
+	 7BFbzQQ34/ix2HILFkvyPC4Vte9F/Z1E6ASjlblYIJLcqjFjtqMyOOsetGavekKUONg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793804676;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793804688;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=/x8hRIpTYzYyQIW2Q3UrPTsZpptUaMdavbZCuJVUe98=;
-	b=T3x9IyPXSEiByLe8UJ6sRtW4DiJMBBMM6Ss86DyoS0aFcc23W8sKnbyrHdIKuOy4WVbl
-	 rQD/gvCDXUOxZUwHSc0M9yTtX7mkbv9/DNgCqrZhb3YIxnmkjJebpBpx9LBs8iP5amalI
-	 J86l0oXu+eGGolGLyNPmNOeR110U/s7JGKRkNYjAf3VwII0Uvb4HO3MBaMhwV7X8ZLmcN
-	 udZY4SjiQ0pWOL4vXTDIPLOPUmCPv4inLWDDoV8MWnzK1n/SwNjKF9SL8KYL3m9aMVuvX
-	 pWaCihF6BahnBJkY0qfY+zBDrpqbSfLGyEiF3IKDOZoDxs/mU2ncdC4NKYcNIYEsYZA==
+	bh=rS40NRoMRb1Axjjj6DLrLlKdWsMdXuRqZ21vY/yTWC4=;
+	b=CZhR48wDA43P/0qfAVjGw3jkHsin6rsw7UlUhFAPa5SFjsCp2q/3gB2vl9xNP2WgilJq
+	 HBsviBnpvf2mG7RCUspaNYUYYixzgrWi8OEFlVq6sV6GR1d8dOrjSgBJIMkzvzkloAZvr
+	 zMXPplqSzDhliaGc4TEeXIYRMYVm8lzahH9UXWeRUV2o0rr4WnAxwQ8pCBG+T9ves4hmV
+	 EUkgPxhBdqQqfkH+GoHMncbpAPpvEh3tKgqpvbqpjTXjQ156iUJeMvIE42479L7CW18+u
+	 nx+BbZy/LTt5zqQp2cGrG8uVr2rmfuhvP/eOCUFPZ8+wMrRdrnSFKEsX2TUq4rfRQXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ej8SzOTI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=krUATiSa;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464EC606A334;
-	Wed,  4 Nov 2026 15:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86482606A33E;
+	Wed,  4 Nov 2026 15:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ej8SzOTI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578F01F0093A;
-	Wed,  4 Nov 2026 15:04:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=krUATiSa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D86B1F000C1;
+	Wed,  4 Nov 2026 15:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793804675;
-	bh=/x8hRIpTYzYyQIW2Q3UrPTsZpptUaMdavbZCuJVUe98=;
+	s=k20260515; t=1793804688;
+	bh=rS40NRoMRb1Axjjj6DLrLlKdWsMdXuRqZ21vY/yTWC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ej8SzOTI6N/u4eGV7if0aADrVBdOMCh5E+TXxA2XOyNfSMGljOM04sUfaRpq31tdJ
-	 HL3kkWUlLtiCEsr8cx9TallBWblzjzYouwq2w7no3tB/9/8s/1IgEW9ZjusbFiKNhG
-	 rlk+kE343MESEPNcf6p51f76i/j9sC3lZz5wlMDX4aYCcCRSbVxADDapzUFLfOwMg1
-	 ezLfM1yV/gE/14pYLpfGcGvAKNXocE9mqSBK5OaaKjmMlDvDQqeYL6I8uUVYEGGh60
-	 lI2X6lc6yyTdyXA9Nv2x3nhXPI4n76ZaRvfsQYPqkdHvz5OkMrimxOq6h+fZP2z6do
-	 +fxWK+DepfIFw==
+	b=krUATiSaTdc5CcZdzxygeRGDWGOF+1KIfBcpsteqisvuJzbk/ZRcl8A5IMmjEfKbD
+	 DqBpYtxQNQktX1ttfPg1DcfUGCCpZ3Z8m9XIBmN70PKQ60pI2ZjrKwkvZoru7OfuHF
+	 1qI4JMj07swSks4IW4xh025Xa6upRn4/ht+zwOcGRkU5qlf7k/N2POfepYAE37Z6Bi
+	 pVecfsaLIB/HhJCPlu5ZsPp3sym/iHk5ekIcosNYx1EmSbsUo/9uS5OhQkrPdj/a7S
+	 HQDOiORokzmOAtD2m9H72Ou3aK+mXkCs6uYolzoq0f+9J6bI/uXskIvaWjhXVIP1bh
+	 utXPeW4f8x9jQ==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -61,9 +61,9 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	iommu@lists.linux.dev,
 	kvm@vger.kernel.org,
 	patches@lists.linux.dev
-Subject: [RFC PATCH v4 10/25] KVM: guest_memfd: Add shared device mmap through PFN providers
-Date: Wed,  4 Nov 2026 20:33:07 +0530
-Message-ID: <20261104150322.3516320-11-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v4 12/25] KVM: guest_memfd: Invalidate mappings before memslot unbind
+Date: Wed,  4 Nov 2026 20:33:09 +0530
+Message-ID: <20261104150322.3516320-13-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
 References: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
@@ -78,13 +78,17 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Map shared device memory through the existing get_pfn callback. Set
-device VMA flags and protections in the core, and retain inode exclusion
-through PFN lookup and PTE insertion. Validate BAR access at fault time;
-memslot creation validates the complete interval separately.
+Use the generic invalidate_start/end helpers to remove shared and
+private device mappings before removing the memslot's guest_memfd
+binding.
 
-Private pages remain inaccessible to userspace. Conversion revokes host
-mappings before changing attributes. VFIO fd mmap remains excluded.
+Hold gmem_provider_lock() across invalidation and binding removal to
+prevent device unlock from racing with teardown.
+
+Keep the file attributes and has_private_ranges unchanged. Deleting a
+memslot removes mappings but does not share the backing range. Device
+unlock remains blocked until userspace shares the private ranges or
+closes the last guest_memfd reference.
 
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Sean Christopherson <seanjc@google.com>
@@ -93,73 +97,44 @@ Cc: kvm@vger.kernel.org
 Cc: patches@lists.linux.dev
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- include/linux/guest_memfd.h |  6 +++++-
- virt/kvm/guest_memfd.c      | 18 +++++++++++++++---
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ virt/kvm/guest_memfd.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-index 9869e2ffb4a2..88c9102b21fa 100644
---- a/include/linux/guest_memfd.h
-+++ b/include/linux/guest_memfd.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_GUEST_MEMFD_H
- #define _LINUX_GUEST_MEMFD_H
- 
-+#include <linux/mm_types.h>
- #include <linux/types.h>
- 
- struct file;
-@@ -45,7 +46,10 @@ struct guest_memfd_device {
-  *          in the device argument, which is NULL for other providers.
-  * @release: Release provider context and unpin any resources. Must not access
-  *           the VM here; its file reference may be gone.
-- * @device_memory: Backing is device MMIO rather than RAM.
-+ * @device_memory: Backing is device MMIO rather than RAM. The core maps its
-+ *                 userspace VMAs noncached and decrypted, with device flags.
-+ *                 Shared userspace faults are resolved through @get_pfn, with
-+ *                 the same error handling as RAM providers.
-  * @prepare_memory_region: Optional check of a memory range and preparation of
-  *                         access to its backing memory. Called after common
-  *                         file checks and before publishing the memslot.
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 4c9ac047d06f..dd567979d938 100644
+index d3de2e7bb9f5..870fe11c1c5c 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -949,12 +949,16 @@ static const struct vm_operations_struct kvm_gmem_vm_ops = {
- #endif
- };
+@@ -1873,6 +1873,8 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+ 	unsigned long start = slot->gmem.pgoff;
+ 	unsigned long end = start + slot->npages;
+ 	struct gmem_file *f;
++	struct gmem_inode *gi;
++	enum kvm_gfn_range_filter filter;
  
-+static const struct vm_operations_struct kvm_gmem_device_vm_ops = {
-+	.fault = kvm_gmem_fault_user_mapping,
-+};
-+
- static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
- {
--	struct gmem_inode *gi = GMEM_I(file_inode(file));
-+	struct inode *inode = file_inode(file);
-+	struct gmem_inode *gi = GMEM_I(inode);
+ 	/*
+ 	 * Nothing to do if the underlying file was _already_ closed, as
+@@ -1892,8 +1894,13 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+ 	 * drops slots_lock, so there's no need to verify the file is live.
+ 	 */
+ 	f = file->private_data;
++	gi = GMEM_I(file_inode(file));
++	filter = kvm_gmem_get_all_gfns_filter(file_inode(file));
  
--	if (gmem_provider_is_device(gi) ||
--	    !kvm_gmem_supports_mmap(file_inode(file)))
-+	if (!kvm_gmem_supports_mmap(inode))
- 		return -ENODEV;
+ 	filemap_invalidate_lock(file->f_mapping);
++	gmem_provider_lock(gi);
++	__kvm_gmem_invalidate_start(f, start, end, filter);
++	__kvm_gmem_invalidate_end(f, start, end);
+ 	xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
  
- 	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=
-@@ -965,6 +969,14 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
- 	if (kvm_gmem_is_pfn_mode(gi))
- 		vm_flags_set(vma, VM_PFNMAP);
+ 	/*
+@@ -1902,6 +1909,7 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+ 	 * to guarantee kvm_gmem_get_pfn() can't see the slot+file.
+ 	 */
+ 	WRITE_ONCE(slot->gmem.file, NULL);
++	gmem_provider_unlock(gi);
+ 	filemap_invalidate_unlock(file->f_mapping);
+ }
  
-+	if (gmem_provider_is_device(gi)) {
-+		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-+		vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
-+		vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
-+		vma->vm_ops = &kvm_gmem_device_vm_ops;
-+		return 0;
-+	}
-+
- 	vma->vm_ops = &kvm_gmem_vm_ops;
- 
- 	return 0;
 -- 
 2.43.0
 
