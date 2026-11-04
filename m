@@ -1,57 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793811266;
-	b=UJV/PTzI9/ih7akXAbaeaTGFnTNutXmgB7MbE/aazwJWnAjQRj9tL/b3YKe0pKv1tMIt
-	 FZLZHmUyob6Rh5V8RVD6T4+aljEjIONKQ3tq05k17YDe59D+rUNHWgZit7TiUVhCCcuQ4
-	 T8popz3dxpRDkIa2alJAqmaWQLMnEMu5pp7uarmb5cmkFyjmbXANIE1kJ6jJ++A+pZz1G
-	 GV0GrF82musxhrw9PHRVNP+nVINFX983rGXWNUCRvjB4o2l1oSHo7FtmfbrY5NKsALaxi
-	 53oZafPTJXTDCClsL9mdYq/gK4w2gjNoebUka+lbd7fFLfRmKueJh1OmEBGI1efj+mA==
+	t=1793812454;
+	b=5J+U+E6XBrVbppxWIdcU1lUousvXIVYmn1vfPfwkju+FHQ/y+hMu35iQ16Zm9TqhtrhS
+	 FJy5Woodi4jnY7VuWMRFJM4Z/Kz1p3OsOOVil8rzYIfcT9sf8mKhjmPEjXmewRETcRvIW
+	 tL+nBwTBtR8FKMzTeqBnYU2eSMSuDCUEkNckj9g2bzwWt71p5odXmeA8d81P5m3BK8Bc7
+	 zTel3PTtAwgRu0vZBwpD8XhBL+IeQUFdFHDEQCQyD7gcumAc1UAqY29XPm0dsnGyxJ5qg
+	 8+MfRqyleTXZtTy2tWbexw5Mggn9U0e5EQdJt1vhCI8pHJq2+KohazjgroRDhrSosyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793811266;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=MTd+CsQvxBtxolnJ49k0wVN8fdtPwZuTne+6T1M5bdE=;
-	b=Pmze7m9QSfBOe+gjj3eqSaB7ov+DDZRYO1VznFTcYpJqWc3zeE19Ttpj7FeWhjoYrLJl
-	 YBoKoNsEYvaWkcEKGaSOR2DBinjWE5sC7aXUdXFKUH25qUwQQJuPTzUtCMfGkO4Al3wjd
-	 LKmrrmYOUwTp2tx+cWxQ6X/lqVEtUVe/tvGDPYTCQbfDkANMN2WHzj1sEy6TwgRyXSslX
-	 1EIYp/TF/Qp/iJINBnCrKcA8tmdfmnwWMqCMnQtWn/FVOz4QuS8PHonMTsS6S3iWe1yGZ
-	 Cq27rfBkhawEuO0LEseWr6rhBpl9yNyghPB15Bz6IM/iMboMjodhHTISwngU2NedmEg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793812454;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=yRj5WHRR9aenXyRIm39ayvCyj4WS0PCwSsf2eEii3y4=;
+	b=Og/655bErGQA6K7cY9zjPg78G50LlM65hJO3gWic0La/83JmrG3kfB5qM1bh1jVEfcZl
+	 XK0Wr3oTrpMxeXk7STsK1juGabOgIIFQMT9Me1pKs2uJKtwEmPVt1rEGhU1R4/X4eXEG8
+	 kaeTpw40XqIyQ4qdY5TAJUMNICV7kQJBd5LGfpo5SMQP4zXlukwEXE//G4IZ/fEH91ziO
+	 RGu+FTvfBYGLtWk01hhbnLvsTvpo8MEX/vvAbtyVWPcDveqtPlWuJZ4hW7uaCYqpd903Z
+	 o/0ykeexjLU7e1+Zhr+uYrul23C9Jaz8obfEag6juAKjYF8N92oZ3Lt9VjTKjbOccfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dHBuWsFB;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MegOdnKy;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676C3606A31B;
-	Wed,  4 Nov 2026 16:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076D0606A333;
+	Wed,  4 Nov 2026 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dHBuWsFB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B741F000C1;
-	Wed,  4 Nov 2026 16:54:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MegOdnKy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8F31F00A02;
+	Wed,  4 Nov 2026 17:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811265;
-	bh=MTd+CsQvxBtxolnJ49k0wVN8fdtPwZuTne+6T1M5bdE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dHBuWsFBhNz6CyOYhF9FxWsaqIwiHqs0vw729yXQio5917JXGVM+I+ylYaKDqgYjR
-	 8wXJg8qtqaATjbqB9rhBEJIxC9awhEcb1kPdGaCMfzde2eHJqvUQnx3VgtUzKJQMKG
-	 wX0poGPB4PrEsWwxbzynUmeSFMlBiX8G7HE1ANCxdlwITYW1PdocYWTGxSoqEwbLHX
-	 PoLg2zHhKLLJ1vDo/RYHla2lxmm/WN2q6xqHh0z0n7VL2mn18FdidmYuFJUrvmdAuv
-	 Ov1TXKci/wD1MTJtrhDT+APM7DqOnyfLJwdzDYQjit7riWA5r1A00srCkU00SwOn6D
-	 DJ1H7GGrTWzoQ==
-Message-ID: <sashiko-outbox-197698@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 08/15] iommufd: Add a vDEVICE operation ioctl
- framework
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261104161632.3547423-9-aneesh.kumar@kernel.org>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-9-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 16:54:25 +0000
+	s=k20260515; t=1793812453;
+	bh=yRj5WHRR9aenXyRIm39ayvCyj4WS0PCwSsf2eEii3y4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=MegOdnKydykexyvjNSUghj/PsKL4AWwXsoL9hALI5tejJXpkO/xsHyu21RDFBo2Ap
+	 g/+z8Huc0yO/L+WHUj72LxQyh5okcc08FsQ10yoO3Px95mA6OktbE6mnVmy/4Cky1L
+	 aAF3DhJr/zKFC01irxMQjmK7n4EaAXSBeDxvk2tN51bMgRg8z2vFkBPB4ub/+Cnthi
+	 lzwlssUrRXqQCCtsPPsnFsuZZ46nLtg4wdEFrdJo+zgdmcl6ju7ExhulS8CBIQJ2xD
+	 Pru/TDbrbCwwj2+/8zZEQZ3tL9L52LeO+6dA4kUjeOk+LIGxfJct3Kt33lcTF9zMcj
+	 /Z/vjBicYWD7Q==
+Date: Wed, 4 Nov 2026 11:14:12 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v12 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
+Message-ID: <20261104171412.GA1247928@bhelgaas>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,78 +71,65 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104084328.GP264423@unreal>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] iommufd: iommufd_vdevice_op_ioctl() returns -EINVAL for non-zero=
- reserved field
---
+On Wed, Nov 04, 2026 at 10:43:28AM +0200, Leon Romanovsky wrote:
+> On Tue, Nov 03, 2026 at 05:37:42PM -0600, Bjorn Helgaas wrote:
+> > On Tue, Nov 03, 2026 at 10:29:39AM +0200, Leon Romanovsky wrote:
+> > > PCI P2PDMA applies Request and Completion Redirect throughout
+> > > both paths.  This misclassifies asymmetric and nested switches,
+> > > and reports one answer for every kind of TLP.
+> > > 
+> > > Three ACS controls act on TLP attributes the Requester chooses
+> > > rather than on the topology: Translation Blocking and Direct
+> > > Translated P2P act on a Request's Address Type, and Completion
+> > > Redirect skips Completions carrying Relaxed Ordering.
+> > > 
+> > > Evaluate each direction at the path divergence, decide every
+> > > class from the one walk, and treat a client with ATS enabled as
+> > > translating unless its driver declares per-mapping ATS.
+> > > 
+> > > This completes the P2PDMA side; dma-buf and mlx5 follow
+> > > separately.
+> > 
+> > Is there a one- or two-sentence explainer of why we want this?
+> > I'm thinking in terms of what Linus will want in the merge
+> > request: a fix for something that's broken or some new
+> > functionality.  It sounds like this is solving a problem, but I
+> > don't know enough to translate the nitty-gritty details to the
+> > higher-level user-visible problem or feature.
+> 
+> Not AI; these are my own words with grammar fixes from AI:
+> 
+> "The existing implementation of PCI peer-to-peer assumed that all
+> PCI TLPs were the same: ordered and carrying untranslated addresses.
+> It did not account for the variety of traffic types defined by the
+> PCI specification. As a result, only simple systems supported
+> peer-to-peer transfers in the upstream kernel; real-world systems
+> required out-of-tree patches and careful platform design.
 
-commit 02d0f32280b8147168fe9f8c2300f3939bdda343
-Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Can we be any more specific?  E.g., what makes real-world systems
+different from simple ones?  What does careful platform design mean?
+Something about ordering beyond what PCIe requires?
 
-iommufd: Add a vDEVICE operation ioctl framework
+ACS P2P Completion Redirect affects Relaxed Ordering (RO) Completions.
+Translation Blocking and Direct Translated P2P affect Requests with
+Translated addresses.
 
-This commit introduces the IOMMU_VDEVICE_OP ioctl and its dispatcher
-iommufd_vdevice_op_ioctl() to execute operations on a vDEVICE object using
-request and response buffers. It adds a supported_ops bitmask to struct
-iommufd_vdevice and returns -EOPNOTSUPP by default when no operations are
-defined.
+So I assume the existing P2P implementation breaks somehow when RO or
+Translated addresses are used?  How does it break?
 
-> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viomm=
-u.c
-> index 0dbd382eeb981..cdbb597f35888 100644
-> --- a/drivers/iommu/iommufd/viommu.c
-> +++ b/drivers/iommu/iommufd/viommu.c
-[ ... ]
-> @@ -121,6 +125,38 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *=
-ucmd)
->  	return rc;
->  }
-> =20
-> +int iommufd_vdevice_op_ioctl(struct iommufd_ucmd *ucmd)
-> +{
-> +	struct iommu_vdevice_op *cmd =3D ucmd->cmd;
-> +	struct iommufd_object *obj;
-> +	struct iommufd_vdevice *vdev;
-> +	int ret;
-> +
-> +	if (cmd->reserved)
-> +		return -EINVAL;
-
-[Severity: Medium]
-Should iommufd_vdevice_op_ioctl() return -EOPNOTSUPP instead of -EINVAL when
-cmd->reserved is non-zero?
-
-The general ioctl format documentation in include/uapi/linux/iommufd.h
-specifies that -EOPNOTSUPP is returned when a known field has a value the
-kernel does not understand or support, whereas -EINVAL indicates a field is
-not correct:
-
-include/uapi/linux/iommufd.h:
- *  - EOPNOTSUPP: The IOCTL number is supported, and the structure is
- *    understood, however a known field has a value the kernel does not
- *    understand or support.
- *  - EINVAL: Everything about the IOCTL was understood, but a field is not
- *    correct.
-
-All other ioctl handlers across drivers/iommu/iommufd/ return -EOPNOTSUPP w=
-hen
-a reserved field is non-zero so userspace can detect whether a future kernel
-extension repurposing that field is supported.
-
-Additionally, in include/uapi/linux/iommufd.h, struct iommu_vdevice_op names
-this member reserved:
-
-struct iommu_vdevice_op {
-	...
-	__u32 reserved;
-	...
-};
-
-Should this member be named __reserved to match the other UAPI structures in
-include/uapi/linux/iommufd.h?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104161632.3547=
-423-1-aneesh.kumar@kernel.org?part=3D8
+> The new code will allow peer-to-peer transfers between any two
+> devices, for all types of PCI traffic, as long as the PCI path
+> between them supports peer-to-peer.
+> 
+> This paves the way for PCI peer-to-peer support in VMs, which the
+> upstream kernel does not currently support."
+> 
+> BTW:
+> 1. The patch "PCI/P2PDMA: Document the TLP attribute assumptions"
+>    attempts to explain the current situation.
+> 2. The change is too large to present as a fix.
