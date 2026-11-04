@@ -1,66 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793757268;
-	b=Xc9um7Z3ZcZVFGKYi5Hx61+CkkNMaHXMjNeWCuBkTHEwGKsKP+1Ljg8/880Xu5ZMSOSO
-	 4hIC+4++iUHqWmp2Neha9SbXeqYHh4EQXkYz7zDDUpCaT8Zd9WvFrnrWrQIBO2Sc++v+N
-	 eHUgHn87gFLocNW1xu/kwXbmTpszXyME1W2b2BN9/QgMwTMzM/ayxT9p12AzvhXxPykgQ
-	 MbguI0td7V6LMwor+C3MtQwX7cBcVTFCsEsHvL2AdAHXOPEkwoyCFi/AFUyhOcC7+4AVD
-	 CmdBsC4J+Fo1aiBoMnlZlhI2qZJzpijvedW3akpaIRRWWUc/eQVyOU+bHO/Yq5fQ2Hg==
+	t=1793759279;
+	b=0ByhIHHBkO5gYcEx8+ImZikJqilnRmweR5C8C/HN8Qjc3+MF/b4QiWs6yDhNKF0jBkVA
+	 rmeF4puAPUUQDwbUOSAk+La4p4tZvMLMkT1hW0v4l2Xd7gpXdI9hoWT0KtL/VZncAVpCO
+	 2ys/ylsJOowZAZMkSwMWP7u2LxN2KAScPRhShoUXjPfcaXmVpzFvMdIOHcXXFyqFXlTPc
+	 ED1d98/MASoc28GnySWSEoG9M5bx1CeP3p2WjNI3KCN+MAFB5NnpdCo5pLVFAJ6Zwgpa1
+	 Xs4FqjcEpWcCYguwzIOfqWNoyXLeID8jCOIkZGgiFAgJaX3dtRFXhW9r2E8YsuaMBnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793757268;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version;
-	bh=GxkdG/Dl3xWarXPL1wkKFiT3BqGEfgSBRQnLy3BPbNo=;
-	b=Zi9c3A/UdYw+Y6h70tOPH7k48NIyTrl9iBF7XAO6zIv78mHgwrQLFwFR9xQqVXHIfBWu
-	 qZVX0gH5JG+55sHG1v7388XY23Foj2E9eYy/xF6DtRJXumtQ6O8VO1Xuz5JG8I1cLfu/V
-	 0rg190gT4OKVgNxVmq42Urgje4E8WUNZH4LfBWQjE+Fu65DiVvXLhM9umJPuwPsrZPuD4
-	 3yU6TurvztDa7q5+y28tWldbZTUxsV1PYdaNaO2mYvp+dgNomGQIRLrErgmi2E2Njiy0L
-	 rHIkHWas9EeDOT5rvDvhLI3kokmODn6zV+zoOlvPA7a6vo1DnQpkDK6DOTq48jnF6Kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793759279;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=r4jCs72EuhtOBTKvGiR0+q5learbp+wZHBZt+KVXQMk=;
+	b=4chVLUSP33oOJP57f52r1xBokY/iOEKOw/KrYBZoIWXDF6xKha3mA3nRASM0l06jUmKM
+	 +zWoWSSq3h2hWwuJd8+5eE5UDVri40bczKudjGM06Y9CXIFA2AlH8TJVwSFrBNTxtk0WJ
+	 D73zm/9VosUsi4KAqNSkrswHac+FdudPGYNzCq6Cd3de0e99iBOxXgIjrvP0Vm0hpELmS
+	 NQb9zjRokCvnUSv2P7NOTlABl5HDBljPpI4PjOfuEHy8zwmOlvPTo4WFFiBVoMOg6xY2f
+	 6IOAjN/PNBDh8RtqW4lkCZgy71PmJFAwMWq37taujvZknT0tFHYxODgOIT5FILX02xg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=apj00lgk;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B47D606A33A;
-	Wed,  4 Nov 2026 01:54:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B47D606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="r/2/hGlZ";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E290A606A31B
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 02:27:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E290A606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=apj00lgk
-Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A40T5RK2662374;
-	Tue, 3 Nov 2026 17:54:09 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=GxkdG/Dl3xWarXPL1wkKFiT3BqGEfgSBRQnLy
-	3BPbNo=; b=apj00lgk1l4t497TVZOOiAUGyhFhVebkivUEUtTnPLEN+csm0pqZI
-	w4HFKbRFXZtGowSz6BrvwjVMQOiRE3AXxyLpsWeNjZeCI1vyxPuUiO9PYTM5MDoh
-	b4lFPvDJDkkxQM9vdEG6SDmGV80hx1bk+tkXy1a8/3NJV9Z1TD5lJXnJPBi1L9Zi
-	/c0curquiGV9d3/YCP5eP5+defLXXrEtQN6PYttkLSAhMuw4JiGVJRhqPzVisRKm
-	U40/SYrKxwVnTMT7t2ySCRTqqeo5/EeIIZyr6YLJcKyD9zlJvAtUOeWqNT0Kwyqk
-	DtLzeh/PZg6yzwGjmHs0BULYiy9r+8Lbg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hqmyv2s9m-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 03 Nov 2026 17:54:08 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Wed, 4 Nov
- 2026 01:54:07 +0000
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-Date: Tue, 3 Nov 2026 17:53:22 -0800
-Subject: [PATCH net-next v5 7/7] selftests/vsock: test the netns assign
- privilege checks
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=r/2/hGlZ
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DB311595;
+	Tue,  3 Nov 2026 18:27:47 -0800 (PST)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D03F3F632;
+	Tue,  3 Nov 2026 18:27:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793759270; bh=uPS8PXWZrhiAbB8M6M7/D3ItbI2lV1sC9YDKdYIAV4c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r/2/hGlZGZPIceFJDaC63LXIj2sTcSmwr3B96efGXXwDfcXtRkeHNaU5jaNhWLx/C
+	 u9yV8/juuF3ET9+fS7JT5tEI95jMsTrBaOpdJlbE1Dp+8sefGoHc2x2N17+MyGdujG
+	 7/TjXjtQsK0ZH3Fc1+zG6SO71B3stct/6QaDtxCg=
+Date: Wed, 4 Nov 2026 02:27:39 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Sascha Bischoff <sascha.bischoff@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, 
+	lpieralisi@kernel.org, timothy.hayes@arm.com, fuad.tabba@linux.dev
+Subject: Re: [PATCH v2 06/16] KVM: arm64: gic-v5: Add ITS MMIO state emulation
+Message-ID: <avrdx6thdaqq3p52qra3obx6w3q5p7j7nxikep7lr6bzhu32dn@vzpnfdv53l67>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+ <20261102194454.4086911-7-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,190 +62,274 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261103-vsock-guest-ns-v5-7-48179b9b66b8@meta.com>
-References: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
-In-Reply-To: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang
-	<jasowangio@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-        Shuah Khan
-	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-        Donald Hunter
-	<donald.hunter@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>,
-        Eric Dumazet
-	<edumazet@kernel.org>
-CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-        <sargun@sargun.me>, <jlinbox@meta.com>,
-        Bobby Eshleman <bobbyeshleman@gmail.com>,
-        Bobby Eshleman
-	<bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: g_Khp4yoyHnOrq95vI6ikEayXZLLDvJQ
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfX5R9ymhi7InlR
- ml/giaOY81l93eAOvw64w4pY6LP9dof/3fyefeRlby3QAEMgXaoPh7H5ZEMCPHNfff6HZXRisyv
- LuSzgpMYrQSb4nnTB50NgNRdPKBAHbY=
-X-Authority-Analysis: v=2.4 cv=VcFir1p9 c=1 sm=1 tr=0 ts=6aea9040 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8
- a=ehl-fRECcIfF51WkWLIA:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: g_Khp4yoyHnOrq95vI6ikEayXZLLDvJQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfX7PsGX/WNNqKd
- q/JdnZ01mBQsB0xmeajxB12TeiCis8LTnuKeTTgD5aP+wkS7O+kA8+VFbratg1tb30Iv/QOvfUn
- 9ZcHJfRKd0x29Wl9jibZJgmp1ljZX4rIYffiwWWhtaIbgOR3FU2HuXrzYrT/phoi7JMvnthRwAH
- y1J7AYj2+M96VRC7hA4z192k3sMAmxWOh8YUn/90rjZbjg7HSMkmSGiVvBG02uLfGpDe63slrj6
- 6tMri1ppmgSxTyOKeQiiuynUnpf6gOBsG3tuiMXNFSaXmFB4uix3K2k5DE02VjtSNH8x5t6DpM1
- An2lRBFIKGB1D62kQ1Qi/zwPgl4DehWN6gua1m6c9Kr+kXZXkkEYWjeJQXyYq/3OfqGPoLbe446
- oCohXE9WwAw60mXJRkJWXpP6VGyDYRWJPEtsbgHeZ9j6KFEVnAR7Cz9/l3zCCtWRHE0qar0jW3j
- ZYruxuhhXG//bidKefA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-04_01,2026-11-03_04,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102194454.4086911-7-sascha.bischoff@arm.com>
 
-VSOCK_CMD_DEV_NETNS_SET refuses callers without CAP_NET_ADMIN in the
-init user namespace.
+Hi Sascha,
 
-Add two tests: one confirms that CAP_NET_ADMIN is required even by a
-privileged user and the other confirms that CAP_NET_ADMIN in an
-unprivileged user ns alone is insufficient.
+On Mon, Nov 02, 2026 at 07:44:44PM +0000, Sascha Bischoff wrote:
+> In order to expose a virtual GICv5 ITS to the guest, KVM needs to
+> emulate the ITS CONFIG_FRAME and its translation-control registers.
+> Replace the placeholder ITS IODEV region with the GICv5 ITS register
+> layout and handlers for the architected MMIO state.
+> 
+> Provide read/write emulation for the ITS ID registers, IIDR, AIDR,
+> CR0, CR1, DT_BASER, DT_CFGR, DIDR, EIDR, invalidation registers,
+> READ_EVENT, GEN_EVENT, status registers, and the RAZ/WI MMIO
+> registers that KVM does not implement. Reuse the shared CoreSight
+> identification-register helper so the ITS reports the same component
+> identification values as the IRS.
+> 
+> At this stage the translation-triggering registers only record state.
+> Walking the guest's DT/ITT, generating READ_EVENT results, and
+> injecting GEN_EVENT LPIs are added by later commits.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-its-v5.c | 415 +++++++++++++++++++++++++++++-
+>  include/kvm/arm_vgic.h            |  77 ++++++
+>  2 files changed, 490 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> index 5790b029f09b6..f04161c315b78 100644
+> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> @@ -6,19 +6,286 @@
+> +
 
-CONFIG_USER_NS is needed to test the CAP_NET_ADMIN + unprivileged user
-ns case.
+[...]
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
-Changes in v4:
-- Require EPERM in the privilege tests, cli.py does print the errno, and
-  probe unshare -Urn so a setup failure skips (Sashiko)
+> +static void vgic_v5_mmio_write_its_misc(struct kvm *kvm, void *dev, gpa_t addr,
+> +					unsigned int len, unsigned long val)
+> +{
+> +	struct vgic_v5_its *its = dev;
+> +	size_t offset = addr & (SZ_64K - 1);
+> +
+> +	guard(mutex)(&its->its_lock);
+> +
+> +	switch (offset) {
+> +	case GICV5_ITS_CR0:
+> +		its->enabled = FIELD_GET(GICV5_ITS_CR0_ITSEN, val);
+> +		return;
+> +	case GICV5_ITS_CR1:
+> +		its->cr1.sh = FIELD_GET(GICV5_ITS_CR1_SH, val);
+> +		its->cr1.oc = FIELD_GET(GICV5_ITS_CR1_OC, val);
+> +		its->cr1.ic = FIELD_GET(GICV5_ITS_CR1_IC, val);
+> +		its->cr1.dt_ra = FIELD_GET(GICV5_ITS_CR1_DT_RA, val);
+> +		its->cr1.itt_ra = FIELD_GET(GICV5_ITS_CR1_ITT_RA, val);
+> +		return;
 
-Changes in v3:
-- Require setpriv only for the ns_guest_ tests, not the whole script
+Should this change be ignored if its->enabled == 1?
 
-Changes in v2:
-- Assert only that the command fails, not EPERM: ynl's cli.py does not
-  report the errno (Sashiko)
-- Use ynl cli.py for the assign
----
- tools/testing/selftests/vsock/config    |  1 +
- tools/testing/selftests/vsock/vmtest.sh | 50 ++++++++++++++++++++++++++++++++-
- 2 files changed, 50 insertions(+), 1 deletion(-)
+> +	default:
+> +		return;
+> +	}
+> +}
+> +
 
-diff --git a/tools/testing/selftests/vsock/config b/tools/testing/selftests/vsock/config
-index 5f0a4f17dfc9..4b31085558fa 100644
---- a/tools/testing/selftests/vsock/config
-+++ b/tools/testing/selftests/vsock/config
-@@ -109,3 +109,4 @@ CONFIG_FS_DAX=y
- CONFIG_MEMORY_HOTPLUG=y
- CONFIG_MEMORY_HOTREMOVE=y
- CONFIG_ZONE_DEVICE=y
-+CONFIG_USER_NS=y
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index f8aee1336a09..5bd90a0c2380 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -93,6 +93,8 @@ readonly TEST_NAMES=(
- 	ns_guest_assign_g2h_netns_host_connect_ok
- 	ns_guest_assign_g2h_netns_pins_ns_ok
- 	ns_guest_assign_g2h_netns_old_conn_send_fails
-+	ns_guest_assign_g2h_netns_no_cap_net_admin_fails
-+	ns_guest_assign_g2h_netns_unpriv_user_ns_fails
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -187,6 +189,12 @@ readonly TEST_DESCS=(
- 
- 	# ns_guest_assign_g2h_netns_old_conn_send_fails
- 	"Check connections made before the assign stop sending once they lose the device."
-+
-+	# ns_guest_assign_g2h_netns_no_cap_net_admin_fails
-+	"Check assigning the guest's vsock device to a namespace needs CAP_NET_ADMIN."
-+
-+	# ns_guest_assign_g2h_netns_unpriv_user_ns_fails
-+	"Check an unprivileged user cannot claim the guest's vsock device via a user ns."
- )
- 
- readonly USE_SHARED_VM=(
-@@ -199,6 +207,8 @@ readonly USE_SHARED_VM=(
- 	ns_guest_assign_g2h_netns_host_connect_ok
- 	ns_guest_assign_g2h_netns_pins_ns_ok
- 	ns_guest_assign_g2h_netns_old_conn_send_fails
-+	ns_guest_assign_g2h_netns_no_cap_net_admin_fails
-+	ns_guest_assign_g2h_netns_unpriv_user_ns_fails
- )
- readonly NS_MODES=("local" "global")
- 
-@@ -368,7 +378,7 @@ check_ns_guest_deps() {
- 		return 0
- 	fi
- 
--	for dep in unshare python3; do
-+	for dep in unshare setpriv python3; do
- 		if [[ ! -x $(command -v "${dep}") ]]; then
- 			log_host "no ${dep} for test ${tname}"
- 			return 1
-@@ -1909,6 +1919,44 @@ test_ns_guest_assign_g2h_netns_pins_ns_ok() {
- 	return "${KSFT_PASS}"
- }
- 
-+check_assign_g2h_eperm() {
-+	local wrapper=$1
-+	local out
-+
-+	if out=$(vm_ssh "init_ns" -- "${wrapper}" python3 /root/ynl/cli.py \
-+		--no-schema --spec /root/ynl/vsock.yaml \
-+		--do dev-netns-set 2>&1); then
-+		log_host "assign unexpectedly succeeded under '${wrapper}'"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if [[ "${out}" != *"Operation not permitted"* ]]; then
-+		log_host "no EPERM under '${wrapper}': [${out}]"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails() {
-+	check_assign_g2h_eperm "unshare -n setpriv --bounding-set=-net_admin"
-+}
-+
-+test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
-+	local unpriv_uid=65534
-+	local unpriv
-+
-+	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
-+	unpriv="${unpriv} --clear-groups"
-+
-+	if ! vm_ssh "init_ns" -- "${unpriv} unshare -Urn true"; then
-+		log_host "unprivileged user namespaces unavailable, skipping"
-+		return "${KSFT_SKIP}"
-+	fi
-+
-+	check_assign_g2h_eperm "${unpriv} unshare -Urn"
-+}
-+
- shared_vm_test() {
- 	local tname
- 
+[...]
 
--- 
-2.53.0-Meta
+> +
+> +static void vgic_v5_mmio_write_its_dt_itt(struct kvm *kvm, void *dev,
+> +					  gpa_t addr, unsigned int len,
+> +					  unsigned long val)
+> +{
+> +	struct vgic_v5_its *its = dev;
+> +	size_t offset = addr & (SZ_64K - 1);
+> +
+> +	guard(mutex)(&its->its_lock);
+> +
+> +	switch (offset) {
+> +	case GICV5_ITS_DT_CFGR:
+> +		if (!its->enabled)
+> +			vgic_v5_write_its_dt_reg(its, offset, val);
+> +		return;
+> +	case GICV5_ITS_DT_BASER:
+> +	case GICV5_ITS_DT_BASER + 4:
+> +		if (!its->enabled) {
+> +			u64 baser = vgic_v5_read_its_dt_baser(its);
+> +
+> +			baser = update_64bit_reg(baser, offset & 4, len, val);
+> +			vgic_v5_write_its_dt_reg(its, GICV5_ITS_DT_BASER,
+> +						 baser);
+> +		}
+> +		return;
+> +	case GICV5_ITS_INV_DEVICER:
+> +		its->inv_devicer.l1 =
+> +			FIELD_GET(GICV5_ITS_INV_DEVICER_L1, val);
+> +		its->inv_devicer.event_id_bits =
+> +			FIELD_GET(GICV5_ITS_INV_DEVICER_EVENTID_BITS, val);
+> +		its->inv_devicer.i =
+> +			FIELD_GET(GICV5_ITS_INV_DEVICER_I, val);
+> +		return;
+> +	case GICV5_ITS_DIDR:
+> +	case GICV5_ITS_DIDR + 4:
+> +		if (offset & 4)
+> +			return;
+> +		its->didr.device_id = FIELD_GET(GICV5_ITS_DIDR_DEVICEID, val);
+> +		return;
+> +	case GICV5_ITS_EIDR:
+> +		its->eidr.event_id = FIELD_GET(GICV5_ITS_EIDR_EVENTID, val);
+> +		return;
+> +	case GICV5_ITS_INV_EVENTR:
+> +		its->inv_eventr.l1 =
+> +			FIELD_GET(GICV5_ITS_INV_EVENTR_L1, val);
+> +		its->inv_eventr.itt_l2sz =
+> +			FIELD_GET(GICV5_ITS_INV_EVENTR_ITT_L2SZ, val);
+> +		its->inv_eventr.i = FIELD_GET(GICV5_ITS_INV_EVENTR_I, val);
+> +		return;
+> +	case GICV5_ITS_SYNCR:
+> +	case GICV5_ITS_READ_EVENTR:
+> +		return;
+> +	case GICV5_ITS_GEN_EVENT_EIDR:
+> +		its->gen_event_eidr.event_id =
+> +			FIELD_GET(GICV5_ITS_GEN_EVENT_EIDR_EVENTID, val);
+> +		return;
+> +	case GICV5_ITS_GEN_EVENT_DIDR:
+> +	case GICV5_ITS_GEN_EVENT_DIDR + 4:
+> +		if (offset & 4)
+> +			return;
+> +		its->gen_event_didr.device_id =
+> +			FIELD_GET(GICV5_ITS_GEN_EVENT_DIDR_DEVICEID, val);
+> +		return;
+> +	case GICV5_ITS_GEN_EVENTR:
+> +		return;
+> +	default:
+> +		return;
+> +	}
 
+Aside from DT_CFGR and DT_BASER, shouldn't we also check its->enabled
+for all these registers before emulating the write?
+
+> +}
+> +
+>  static unsigned long vgic_v5_mmio_read_its_raz(struct kvm *kvm, void *dev,
+>  					       gpa_t addr, unsigned int len)
+>  {
+>  	return 0;
+>  }
+>  
+> +static unsigned long vgic_v5_its_coresight_read(struct kvm *kvm, void *dev,
+> +						gpa_t addr, unsigned int len)
+> +{
+> +	u32 offset = addr & (SZ_64K - 1);
+> +
+> +	return vgic_v5_handle_guest_coresight_idreg_read(offset);
+> +}
+> +
+>  static void vgic_v5_mmio_write_its_wi(struct kvm *kvm, void *dev, gpa_t addr,
+>  				      unsigned int len, unsigned long val)
+>  {
+> @@ -31,11 +298,153 @@ static void vgic_v5_mmio_write_its_wi(struct kvm *kvm, void *dev, gpa_t addr,
+>  	}
+>  
+>  static const struct vgic_register_region vgic_v5_its_registers[] = {
+> -	REGISTER_ITS_V5_DESC(0, vgic_v5_mmio_read_its_raz,
+> -			     vgic_v5_mmio_write_its_wi, KVM_VGIC_V5_ITS_SIZE,
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_IDR0, vgic_v5_mmio_read_its_misc,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_IDR1, vgic_v5_mmio_read_its_misc,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_IDR2, vgic_v5_mmio_read_its_misc,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_IIDR, vgic_v5_mmio_read_its_misc,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_AIDR, vgic_v5_mmio_read_its_misc,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_CR0, vgic_v5_mmio_read_its_misc,
+> +			     vgic_v5_mmio_write_its_misc, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_CR1, vgic_v5_mmio_read_its_misc,
+> +			     vgic_v5_mmio_write_its_misc, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_DT_BASER,
+> +			     vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_dt_itt, 8,
+> +			     VGIC_ACCESS_64bit | VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_DT_CFGR,
+> +			     vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_DIDR, vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_dt_itt, 8,
+> +			     VGIC_ACCESS_64bit | VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_EIDR, vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_INV_EVENTR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_INV_DEVICER, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_READ_EVENTR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_READ_EVENT_DATAR,
+> +			     vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_wi, 8,
+> +			     VGIC_ACCESS_64bit | VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_STATUSR, vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_SYNCR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+
+ITS_SYNCR is an 8-byte register. (Sashiko also flagged this)
+
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_SYNC_STATUSR,
+> +			     vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_GEN_EVENT_DIDR,
+> +			     vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_dt_itt, 8,
+> +			     VGIC_ACCESS_64bit | VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_GEN_EVENT_EIDR,
+> +			     vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_GEN_EVENTR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_dt_itt, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_GEN_EVENT_STATUSR,
+> +			     vgic_v5_mmio_read_its_dt_itt,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_MEC_IDR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_MEC_MECID_R, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_MPAM_IDR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_MPAM_PARTID_R,
+> +			     vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 4, VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_SWERR_STATUSR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 8, VGIC_ACCESS_64bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_SWERR_SYNDROMER0,
+> +			     vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 8, VGIC_ACCESS_64bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_SWERR_SYNDROMER1,
+> +			     vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 8,
+> +			     VGIC_ACCESS_64bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_ITS_MPAM_PMGR, vgic_v5_mmio_read_its_raz,
+> +			     vgic_v5_mmio_write_its_wi, 8, VGIC_ACCESS_64bit),
+
+ITS_MPAM_PMGR is a 4-byte register.
+
+Thanks,
+Wei-Lin Chang
+
+> +	/* Split the ranges so KVM_HAS_DEVICE_ATTR only reports actual registers. */
+> +	REGISTER_ITS_V5_DESC(GICV5_CORESIGHT_DEVARCH,
+> +			     vgic_v5_its_coresight_read,
+> +			     vgic_v5_mmio_write_its_wi, 4,
+> +			     VGIC_ACCESS_32bit),
+> +	REGISTER_ITS_V5_DESC(GICV5_CORESIGHT_PIDR4,
+> +			     vgic_v5_its_coresight_read,
+> +			     vgic_v5_mmio_write_its_wi,
+> +			     GICV5_CORESIGHT_PIDR_CIDR_SIZE,
+>  			     VGIC_ACCESS_32bit),
+>  };
+>  
+
+[...]
