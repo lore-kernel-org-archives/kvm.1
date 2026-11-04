@@ -1,67 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793785317;
-	b=MEbUeroKuewtg/nHc04mHjuq86mNeBSr+05uRyyq//d0ihfKrBcGwoYlKW1o4lTCqmR4
-	 ud217GJHfcLPq0+MBVwmavkrAOBLo30cD7rGVAdORMKPQREwkAP2D6WU3nsi82jk5UjdA
-	 lx76arbiFEDTIxAEoJyVsx+xmie3EcEzqW7TJXgNyD81hYbTvaHUDvrfdXrY7qtr8lGL6
-	 qu6G/RYX+849d9R+/2LUFcwBUVwy7i9+ORazDW2Q/XyEGd10yFgUFcxwcPHLgac1ffezD
-	 qrXkotLmXFS3ezQy5Xb2XQGChxxoN96Mr0MwhREcz8oILaU3r8l/iJmsGkz5jYtBJeA==
+	t=1793785368;
+	b=HJQ8rpvevGA+Vo3I1dA0hyFe966nIgOqCYLsGVweuQsaqY//1HoNooF6RHYOwtmzWOMc
+	 bl+Y7GV73IFPCgw+lI7HWAp3AcaBhfXSwOOA1sTWyryn3v9MpdkoZfBIbUpvpsgdKmGjb
+	 sf52xvLefcg3zsfw3eFC8wbF+8b6j9Obd82nL6HBz0mo1Y2vdlFPL8+OuyoqzqfX8rGKR
+	 YC44KhsdnpTQqceI0pJLd1iMqqyZWDKCMCkRHCvdCm2ZlzD71ZO8BbCS6cNjpGBB4TZzJ
+	 k2NxwdcNLKRVBakfwig7s04T125vWMnW/UloaaCDPvA9IylraQ+ZN17FlGjnznvRBHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793785317;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=i9f4/D8qb9HDyCMKjqmdspRjwlPIs06U9VQOHDxE7bQ=;
-	b=ZK+NIXzxFA9/gzsAN/GX9QME7l+y3KSwPPImb3eiK82CNDjYvdw1FFxBVrepjz04tnHR
-	 uZGHiIBFKOcQjdE6GEz9ysLxjq3zwBiQ56plGWsYrFuzD5+FmA6J7Ew0YLenG2/W7P2rT
-	 ToBR9C25NVZ/czmWER/Zl4yrNgCoC/xUI83oS+Z7uPUjtoyRYBKozxIxIhe38S721ReUn
-	 zANK531tIVFBwaq2cFpbWJZVNRziNY7S/gUzNqYE6qbH7g4Dmo7WQdVe0Vb2VC0OSpPc1
-	 DVwaFzue5OxafQWcSi3A51zP25NdC7kJepCVD1eBIExGe44WwRUfkw92+Z5xM5REF+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793785368;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=MZsEByVFetaWVfcIa8bmUSPeNNMI6WT6JYcjMZoscw0=;
+	b=FV1Nd4GEHuw3FBCRU+RwMjGE99PLBPBDe37pC1V3alUYUVPk2hs4Vjro8PHa8bKyOiop
+	 SSkh3JRIDKbMw9z3zGXqA7W5Medi5fSx4GKK5itIJJzDtX1tOIkhwWveIPdLMLzwioGHT
+	 +uL/RtpC2daJGsRE6Cyhzr7Mr05tHDgY/RfeGsqJiyr6na+SNi/DLJCRsMcrMPrwrtza2
+	 MRobXbjGqgBPHlNp+NTPzC4+f2oo0gTaAJUUD/Yz/b9cQ550ZItf6CmrXB9NNDZR3A5S3
+	 MwHfWnxxYbmdUy6rNxhiRhanmpfSuoW714vpwYk7S1+GzcRceyXWZycbLQXm0d7HJ7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zEAqlhug;
-	arc=none smtp.remote-ip=111.22.67.135
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E590606A328;
-	Wed,  4 Nov 2026 09:41:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E590606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aXJafjbT;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VLcMq8w7;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5ED606A329
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 09:42:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C5ED606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zEAqlhug
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aXJafjbT;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VLcMq8w7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793785367;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MZsEByVFetaWVfcIa8bmUSPeNNMI6WT6JYcjMZoscw0=;
+	b=aXJafjbT7H4OqzEMgsF1+yzcsgWy5doA494RWx0/MZN6rVyZ627kSbteQzoUbj1LGKZ1ZB
+	GyMK1Yyc3d3QNeqs77H49a6hGNntABHrQgH0SIPrcbz4rc2R14r9Un/NhOuTm5cyKMos3I
+	84AWRdkaSXPh0VwF0daByu3xyY8UjXw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-110-DIU4YSfrP3WAz8m9LYw3Ew-1; Wed, 04 Nov 2026 04:42:46 -0500
+X-MC-Unique: DIU4YSfrP3WAz8m9LYw3Ew-1
+X-Mimecast-MFC-AGG-ID: DIU4YSfrP3WAz8m9LYw3Ew_1793785365
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49febef74e3so12100355e9.0
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 01:42:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=zEAqlhugg/Erujm437DOximgHfbI6Uyp8Z8rNTW5DVEICar6aZpPbAqDOU8wXtYAdut9lOXnCdmFJ
-	 XRE9YNNTph8/AQhoi4A1PUglPuSsAHu/+3pY77WMcSLfO6a/DY4bFQO7NbF1upt7CwYyIBulbNs01L
-	 K/X1wEYDxKdCU0FA=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36aeafde29bd-68d59;
-	Wed, 04 Nov 2026 17:41:54 +0800 (CST)
-X-RM-TRANSID:2ee36aeafde29bd-68d59
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from desktop-eb75daa8a6be458c-20260816004526035 (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56aeafde040e-1d94a;
-	Wed, 04 Nov 2026 17:41:54 +0800 (CST)
-X-RM-TRANSID:2ee56aeafde040e-1d94a
-From: zhangchujun <zhangchujun@cmss.chinamobile.com>
-To: oupton@kernel.org,
-	maz@kernel.org
-Cc: fuad.tabba@linux.dev,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	zhangchujun <zhangchujun@cmss.chinamobile.com>
-Subject: [PATCH] selftests/kvm: arm64: get-reg-list: fix format specifiers
-Date: Wed,  4 Nov 2026 17:41:46 +0800
-Message-ID: <20261104094147.2252-1-zhangchujun@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.50.1.windows.1
+        d=redhat.com; s=google; t=1793785365; x=1794390165; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MZsEByVFetaWVfcIa8bmUSPeNNMI6WT6JYcjMZoscw0=;
+        b=VLcMq8w7NjA2seEl+JweYwYbf3dFqMh5ATN+rXrN1ocdvXoR+o9tOUiTCIf1sDgJbe
+         0ZLgwNVv+cM4P7T8o/rWL90k7KUO96QvBSkJMsHsSzy+s/QKEx5p05PXiR9E7Hzb02j8
+         0cZA7Fx4oe8weJJy6MLMtw46lzRnGNYN8rv86oQZnVVCe1FN/V6Dv6Bdm/W+SLwOfyHs
+         6dwvyDNHpBSyPgZM1yyKhaxbzOsMJ34b/A4gqpBqDFYeffHXvEgxLH4IjGeNqHHs6R7/
+         JdzxUOJ7bQaIxaRllZtcdFynh/cugCIMqnXB/ZUyCmDN4ujkN+EULfjHwJfardfLm9wp
+         QzYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793785365; x=1794390165;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MZsEByVFetaWVfcIa8bmUSPeNNMI6WT6JYcjMZoscw0=;
+        b=rszsNaPChg/m2n6A2JQlAtOrPN7A3yikAqCd85MiTjQmC1KiGtmO1ITxZr8uENozaF
+         X1Zcmp0iln1XLDtl345b2b6TCiLV6nMUyKeY97Tz2H+Fgzulzdyvj3u6H6dfam7H9oKZ
+         iRY04dqztYfLHOaIiSsUWafbLa7C6ahw2GDXNvM6AHeuLfnyxtvZ2brgK9SBRRbRuL57
+         MUYxN3VYAVkHQxU+Tr2wR0xXq7Q731EaCmzq5YEZ60Q+reuKVuF923D4bRcAoQNxh/Qc
+         AMsm84zp5eo7syFW/DWevVebdvWvsDDU9umHV8ee8RhkbJ0ipJw2DHdnCPCDNso47O5N
+         vvhg==
+X-Forwarded-Encrypted: i=1; AKwUvBzwNfHGUWFolZxFIK/k4mWC+2W5QlDGxUpHi3PkfTC6lQK3eAyyV1+p/S4+JXQuGpUYGTc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/nXSaeM/OTSR+pp258EcfvUKTbWu4aCaLb8HmbCRp5JIJCL0Kf
+	74Saw87ONSk26CCHio7KiFD3bcCVOpBMjp13Pl2ICEgXh6fum++DWRbboNkqZv6F/Jwlb63bOTp
+	gCCqKO17Go7g4EqIkG1+pdO+NML7ih+l+TehjCEp3bTt9HSZzsWomWg==
+X-Gm-Gg: AYBFou32zwWFB56PfruyQv9Gtd859LI5x5A2XduJkA37ocBBv6ghE+ooMxwMHtYOgy6
+	DXhMkerh2ehlvmqi96kT+aXVT87H04abHIpTa9JV0GkF4lLvKepddWEaml7waQwYmFGcmV/dAp/
+	kaonQ6mxRjzHicyzGS4lA3ggv7/0fKuGnUrk4p8lbPpExMgzC+hy6ojxhjexJ3Sb/fblxRJARJt
+	j/3kjcr7jbhH8WcECmnpNpVbpYryzgbCncf8c0HPw0YzFx2NTBTfiyOykvjYmOmGkmJB6hVjL4q
+	M9rhiBK7nMaPn7AvR+WCBdaEDNeRbE0wR8uiBP+3//dDz+bZwC7zWAe1e9x1rRT/pUfQaETPHCZ
+	9VdfpOF4gQ5tfpyV5O7QkiFdjHw2dcQDIbAoBrbnPMdOgWm3zxv+m
+X-Received: by 2002:a05:600c:37c8:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4ac16acd93cmr363922265e9.6.1793785364739;
+        Wed, 04 Nov 2026 01:42:44 -0800 (PST)
+X-Received: by 2002:a05:600c:37c8:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4ac16acd93cmr363921935e9.6.1793785364240;
+        Wed, 04 Nov 2026 01:42:44 -0800 (PST)
+Received: from sgarzare-redhat ([80.116.143.202])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a9faff90sm144133585e9.5.2026.11.04.01.42.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 01:42:43 -0800 (PST)
+Date: Wed, 4 Nov 2026 10:42:39 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Bobby Eshleman <bobby.eshleman@bytedance.com>, "David S . Miller" <davem@davemloft.net>, 
+	Will Deacon <will@kernel.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] vhost/vsock: size receive SKBs from declared
+ payload
+Message-ID: <aur96eHKMVO5zMml@sgarzare-redhat>
+References: <20261004235101.1464007-1-4ncienth@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,91 +119,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261004235101.1464007-1-4ncienth@gmail.com>
 
-The core_id_to_str(), sve_id_to_str() and print_reg() functions
-print __u64 values (idx, n and masked id) with the %lld
-conversion, which expects a signed long long. Use %llu
-instead, matching the unsigned type of the arguments and
-silencing the -Wformat warnings.
+On Mon, Oct 05, 2026 at 08:51:01AM +0900, Daehyeon Ko wrote:
+>vhost_vsock_alloc_skb() sizes the skb from iov_length(), the total guest
+>descriptor length.  virtio_transport_inc_rx_pkt() instead adds hdr->len to
+>rx_bytes and buf_used, and budgets each queued skb as SKB_TRUESIZE(0).  The
+>guest controls the descriptor length and hdr->len independently.
+>
+>A guest can therefore provide a 64 KiB descriptor while declaring a zero
+>payload.  The descriptor-sized skb remains queued, rx_bytes and buf_used
+>remain unchanged, and only the fixed queue-entry budget limits retention.
+>This is not a lifetime leak: the skb is freed when dequeued or at socket
+>teardown.  Repeating this across connections can nevertheless exhaust host
+>memory.  On Linux v7.2, 455 such descriptors retained 30,255,680 bytes for
+>a 262,144-byte receive buffer; a full-payload control retained 265,984
+>bytes.
+>
+>Vhost previously read hdr->len and allocated pkt->buf from that value.  The
+>conversion from virtio_vsock_pkt to sk_buff instead allocated receive skbs
+>from the descriptor length, introducing the allocation-accounting mismatch.
+>
+>Copy the header into a stack object and validate hdr->len before allocating
+>the skb.  Size the allocation as sizeof(hdr) + payload_len so descriptor
+>capacity no longer determines queued memory.  Check payload_len against
+>len - sizeof(hdr) to avoid addition overflow on 32-bit hosts.
+>
+>Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+>Cc: stable@vger.kernel.org
+>Assisted-by: LLM
+>Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>---
 
-Signed-off-by: zhangchujun <zhangchujun@cmss.chinamobile.com>
+Oooops, I missed this, LGTM, thanks for the fix!
 
-diff --git a/tools/testing/selftests/kvm/arm64/get-reg-list.c b/tools/testing/selftests/kvm/arm64/get-reg-list.c
-index 912590f9b0c2..2b85189862e5 100644
---- a/tools/testing/selftests/kvm/arm64/get-reg-list.c
-+++ b/tools/testing/selftests/kvm/arm64/get-reg-list.c
-@@ -145,8 +145,8 @@ static const char *core_id_to_str(const char *prefix, __u64 id)
- 	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
- 	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
- 		idx = (core_off - KVM_REG_ARM_CORE_REG(regs.regs[0])) / CORE_REGS_XX_NR_WORDS;
--		TEST_ASSERT(idx < 31, "%s: Unexpected regs.regs index: %lld", prefix, idx);
--		return strdup_printf("KVM_REG_ARM_CORE_REG(regs.regs[%lld])", idx);
-+		TEST_ASSERT(idx < 31, "%s: Unexpected regs.regs index: %llu", prefix, idx);
-+		return strdup_printf("KVM_REG_ARM_CORE_REG(regs.regs[%llu])", idx);
- 	case KVM_REG_ARM_CORE_REG(regs.sp):
- 		return "KVM_REG_ARM_CORE_REG(regs.sp)";
- 	case KVM_REG_ARM_CORE_REG(regs.pc):
-@@ -160,13 +160,13 @@ static const char *core_id_to_str(const char *prefix, __u64 id)
- 	case KVM_REG_ARM_CORE_REG(spsr[0]) ...
- 	     KVM_REG_ARM_CORE_REG(spsr[KVM_NR_SPSR - 1]):
- 		idx = (core_off - KVM_REG_ARM_CORE_REG(spsr[0])) / CORE_SPSR_XX_NR_WORDS;
--		TEST_ASSERT(idx < KVM_NR_SPSR, "%s: Unexpected spsr index: %lld", prefix, idx);
--		return strdup_printf("KVM_REG_ARM_CORE_REG(spsr[%lld])", idx);
-+		TEST_ASSERT(idx < KVM_NR_SPSR, "%s: Unexpected spsr index: %llu", prefix, idx);
-+		return strdup_printf("KVM_REG_ARM_CORE_REG(spsr[%llu])", idx);
- 	case KVM_REG_ARM_CORE_REG(fp_regs.vregs[0]) ...
- 	     KVM_REG_ARM_CORE_REG(fp_regs.vregs[31]):
- 		idx = (core_off - KVM_REG_ARM_CORE_REG(fp_regs.vregs[0])) / CORE_FPREGS_XX_NR_WORDS;
--		TEST_ASSERT(idx < 32, "%s: Unexpected fp_regs.vregs index: %lld", prefix, idx);
--		return strdup_printf("KVM_REG_ARM_CORE_REG(fp_regs.vregs[%lld])", idx);
-+		TEST_ASSERT(idx < 32, "%s: Unexpected fp_regs.vregs index: %llu", prefix, idx);
-+		return strdup_printf("KVM_REG_ARM_CORE_REG(fp_regs.vregs[%llu])", idx);
- 	case KVM_REG_ARM_CORE_REG(fp_regs.fpsr):
- 		return "KVM_REG_ARM_CORE_REG(fp_regs.fpsr)";
- 	case KVM_REG_ARM_CORE_REG(fp_regs.fpcr):
-@@ -195,13 +195,13 @@ static const char *sve_id_to_str(const char *prefix, __u64 id)
- 		n = (id >> 5) & (KVM_ARM64_SVE_NUM_ZREGS - 1);
- 		TEST_ASSERT(id == KVM_REG_ARM64_SVE_ZREG(n, 0),
- 			    "%s: Unexpected bits set in SVE ZREG id: 0x%llx", prefix, id);
--		return strdup_printf("KVM_REG_ARM64_SVE_ZREG(%lld, 0)", n);
-+		return strdup_printf("KVM_REG_ARM64_SVE_ZREG(%llu, 0)", n);
- 	case KVM_REG_ARM64_SVE_PREG_BASE ...
- 	     KVM_REG_ARM64_SVE_PREG_BASE + (1ULL << 5) * KVM_ARM64_SVE_NUM_PREGS - 1:
- 		n = (id >> 5) & (KVM_ARM64_SVE_NUM_PREGS - 1);
- 		TEST_ASSERT(id == KVM_REG_ARM64_SVE_PREG(n, 0),
- 			    "%s: Unexpected bits set in SVE PREG id: 0x%llx", prefix, id);
--		return strdup_printf("KVM_REG_ARM64_SVE_PREG(%lld, 0)", n);
-+		return strdup_printf("KVM_REG_ARM64_SVE_PREG(%llu, 0)", n);
- 	case KVM_REG_ARM64_SVE_FFR_BASE:
- 		TEST_ASSERT(id == KVM_REG_ARM64_SVE_FFR(0),
- 			    "%s: Unexpected bits set in SVE FFR id: 0x%llx", prefix, id);
-@@ -259,7 +259,7 @@ void print_reg(const char *prefix, __u64 id)
- 	case KVM_REG_ARM_DEMUX:
- 		TEST_ASSERT(!(id & ~(REG_MASK | KVM_REG_ARM_DEMUX_ID_MASK | KVM_REG_ARM_DEMUX_VAL_MASK)),
- 			    "%s: Unexpected bits set in DEMUX reg id: 0x%llx", prefix, id);
--		printf("\tKVM_REG_ARM64 | %s | KVM_REG_ARM_DEMUX | KVM_REG_ARM_DEMUX_ID_CCSIDR | %lld,\n",
-+		printf("\tKVM_REG_ARM64 | %s | KVM_REG_ARM_DEMUX | KVM_REG_ARM_DEMUX_ID_CCSIDR | %llu,\n",
- 		       reg_size, id & KVM_REG_ARM_DEMUX_VAL_MASK);
- 		break;
- 	case KVM_REG_ARM64_SYSREG:
-@@ -275,12 +275,12 @@ void print_reg(const char *prefix, __u64 id)
- 	case KVM_REG_ARM_FW:
- 		TEST_ASSERT(id == KVM_REG_ARM_FW_REG(id & 0xffff),
- 			    "%s: Unexpected bits set in FW reg id: 0x%llx", prefix, id);
--		printf("\tKVM_REG_ARM_FW_REG(%lld),\n", id & 0xffff);
-+		printf("\tKVM_REG_ARM_FW_REG(%llu),\n", id & 0xffff);
- 		break;
- 	case KVM_REG_ARM_FW_FEAT_BMAP:
- 		TEST_ASSERT(id == KVM_REG_ARM_FW_FEAT_BMAP_REG(id & 0xffff),
- 			    "%s: Unexpected bits set in the bitmap feature FW reg id: 0x%llx", prefix, id);
--		printf("\tKVM_REG_ARM_FW_FEAT_BMAP_REG(%lld),\n", id & 0xffff);
-+		printf("\tKVM_REG_ARM_FW_FEAT_BMAP_REG(%llu),\n", id & 0xffff);
- 		break;
- 	case KVM_REG_ARM64_SVE:
- 		printf("\t%s,\n", sve_id_to_str(prefix, id));
--- 
-2.50.1.windows.1
-
-
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
