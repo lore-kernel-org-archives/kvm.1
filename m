@@ -1,81 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793784015;
-	b=RUbED7I1RO4IowspYiZ0GZ1u7AV5XTY4XmKG2nWqDD6IJ3oy47vgj3gejDUXcECu+/Yn
-	 uNZFw0Z/v8r8vZffW4jQaSC2m1M9RDO2Ua5tiUfrkos1LS+IOupiGaRXFazsb+e5327y8
-	 hQkhlv3p92lS3myQiGwy7ijiLnCPZasj6PkTQREbGRHFAVvIxP7znpou7TBHic5M6hPDa
-	 EdNroiGaYrhMUW+JBZSGuhJsLk1m9OwDASVUuVUWfv5aXPJArABmSpPzNLjsdrZZ0g7jw
-	 klv+4UeO33AVaj4AwTZZMEYpNwyp0t4MD/xfEWzDaCECP7ji8kHnYr/Iufgr3dVnD/A==
+	t=1793785317;
+	b=MEbUeroKuewtg/nHc04mHjuq86mNeBSr+05uRyyq//d0ihfKrBcGwoYlKW1o4lTCqmR4
+	 ud217GJHfcLPq0+MBVwmavkrAOBLo30cD7rGVAdORMKPQREwkAP2D6WU3nsi82jk5UjdA
+	 lx76arbiFEDTIxAEoJyVsx+xmie3EcEzqW7TJXgNyD81hYbTvaHUDvrfdXrY7qtr8lGL6
+	 qu6G/RYX+849d9R+/2LUFcwBUVwy7i9+ORazDW2Q/XyEGd10yFgUFcxwcPHLgac1ffezD
+	 qrXkotLmXFS3ezQy5Xb2XQGChxxoN96Mr0MwhREcz8oILaU3r8l/iJmsGkz5jYtBJeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793784015;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=3UCPB24rTuITEeSTMB5srYO/uaFE0fKZn4zwyU1cyOM=;
-	b=Y5Jug83Jt/RV7woiajU2InuDgHblpbgPBk9IrT4F2xlDuejmU45qJPyLDcRnd1ox8YjZ
-	 eBfodXSKenVi/CiqOxofeMgJGXtgaJq9E8f5XuGHTkbaWHJG8G94tQzLeZl0knmnlEFmQ
-	 y+N/qo5F0CQ8p8lBNSaYKHFTCLnaw7hnBxJQuNfh++tcAlxD5j8VImoXzZshjJT5G9xu/
-	 r6rW5amwFiZHHiSwVhw/2MYK5uArmsq9nuk2VaAWaQRCNGngs9kh+0w/gx1/O+w3GLulJ
-	 WIzDsu/r4acARwZyDFDOj54fXpmcpykJ0Vk4UnN3rKWg1hBOF/bMqL45FUhZuJwaQwQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793785317;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=i9f4/D8qb9HDyCMKjqmdspRjwlPIs06U9VQOHDxE7bQ=;
+	b=ZK+NIXzxFA9/gzsAN/GX9QME7l+y3KSwPPImb3eiK82CNDjYvdw1FFxBVrepjz04tnHR
+	 uZGHiIBFKOcQjdE6GEz9ysLxjq3zwBiQ56plGWsYrFuzD5+FmA6J7Ew0YLenG2/W7P2rT
+	 ToBR9C25NVZ/czmWER/Zl4yrNgCoC/xUI83oS+Z7uPUjtoyRYBKozxIxIhe38S721ReUn
+	 zANK531tIVFBwaq2cFpbWJZVNRziNY7S/gUzNqYE6qbH7g4Dmo7WQdVe0Vb2VC0OSpPc1
+	 DVwaFzue5OxafQWcSi3A51zP25NdC7kJepCVD1eBIExGe44WwRUfkw92+Z5xM5REF+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d4IiwFK+;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA954606A31B;
-	Wed,  4 Nov 2026 09:20:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA954606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zEAqlhug;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E590606A328;
+	Wed,  4 Nov 2026 09:41:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E590606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d4IiwFK+
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A48iKoj086668;
-	Wed, 4 Nov 2026 09:20:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3UCPB2
-	4rTuITEeSTMB5srYO/uaFE0fKZn4zwyU1cyOM=; b=d4IiwFK+fhaUR97qI6lD3h
-	l5FREBA39pqLyKp0thRnJlVEvKFCchy/+DNRXRUv713T03UG0rfJYxT2ElZlh1yI
-	jnVKs5kT6wkZD5swrdWR73EQTt9PdIosfsqEaZDuomMTkBwuVtzlLaJnT1eqJR1f
-	yM6uLcU+n1ldNCybBqWcKZDLe/8zzLwvhl1ykpgjcj7MQEGm+n2kR9DTdEhYGgiM
-	9MkM5mh4ECY6jR5KjhexM54RAPekAb0PInCkFx3//m5T8q0416jWlbpvBehEH/JI
-	CXOh2r4jhrDM/havp1GWVbKZ+K9ixrhZO+Gsdy1oTlTDH58u3mw8quBymvAX3kYA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn826twm7-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 04 Nov 2026 09:20:12 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A48K3M53844324;
-	Wed, 4 Nov 2026 09:20:12 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hqbqkdn47-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Nov 2026 09:20:11 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A49K83Q37618128
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Nov 2026 09:20:08 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 640C820043;
-	Wed,  4 Nov 2026 09:20:08 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E36C620040;
-	Wed,  4 Nov 2026 09:20:07 +0000 (GMT)
-Received: from [9.68.16.159] (unknown [9.68.16.159])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Nov 2026 09:20:07 +0000 (GMT)
-Message-ID: <73075ede-e9c7-45a4-ab03-5acc2f5f4dd2@linux.ibm.com>
-Date: Wed, 4 Nov 2026 10:20:07 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zEAqlhug
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=zEAqlhugg/Erujm437DOximgHfbI6Uyp8Z8rNTW5DVEICar6aZpPbAqDOU8wXtYAdut9lOXnCdmFJ
+	 XRE9YNNTph8/AQhoi4A1PUglPuSsAHu/+3pY77WMcSLfO6a/DY4bFQO7NbF1upt7CwYyIBulbNs01L
+	 K/X1wEYDxKdCU0FA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36aeafde29bd-68d59;
+	Wed, 04 Nov 2026 17:41:54 +0800 (CST)
+X-RM-TRANSID:2ee36aeafde29bd-68d59
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from desktop-eb75daa8a6be458c-20260816004526035 (unknown[10.55.1.72])
+	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56aeafde040e-1d94a;
+	Wed, 04 Nov 2026 17:41:54 +0800 (CST)
+X-RM-TRANSID:2ee56aeafde040e-1d94a
+From: zhangchujun <zhangchujun@cmss.chinamobile.com>
+To: oupton@kernel.org,
+	maz@kernel.org
+Cc: fuad.tabba@linux.dev,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	zhangchujun <zhangchujun@cmss.chinamobile.com>
+Subject: [PATCH] selftests/kvm: arm64: get-reg-list: fix format specifiers
+Date: Wed,  4 Nov 2026 17:41:46 +0800
+Message-ID: <20261104094147.2252-1-zhangchujun@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,84 +71,91 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] KVM: s390: arm64: Declare enum vcpu_sysreg
-To: Andreas Grapentin <gra@linux.ibm.com>,
-        Steffen Eiden <seiden@linux.ibm.com>, Marc Zyngier <maz@kernel.org>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20261103-s390_arm64_kvm_fixups-v1-0-21c36fedd878@linux.ibm.com>
- <20261103-s390_arm64_kvm_fixups-v1-2-21c36fedd878@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20261103-s390_arm64_kvm_fixups-v1-2-21c36fedd878@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3_plcpZZddRqFPpDlvAFRFi_J3DHDAAh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDAzNiBTYWx0ZWRfX+QrevJsU6Nto
- tU9/7+BOFSmgoeZBVFFa3tawciXQwn0PvriAe+N8uyjWDckSwLjPmpptSolt7V5qXcEJxl15WAy
- zyd2QP0Ibcxk/3ToqUpxP3DyEltb8dRiqPjDDzHi+TNWKMpmTn0fPIZcz9nt17je0e8WO8AsoiA
- e9b3KEcyF7ss0vS0ERjLN3ejPm42rQnOWGE6B0JbmLErxKKZAYzs/P3CkzczxJ2hoTjYKNG6G5D
- YEtY1Q9P5sD+7nCzrhTaUK07x/zQglmUfa8prEqBlkm/6VX29W/ecgLtIyW347+kjJ1Lz3vARlo
- +BD85VN4vxsyYD/wTV+6MiEynENdf1uvZavMgIwUhBw0+frY9/1z/Q4fQbSTfvbdks9rLACE/9V
- DIW2rfQMQOFeZiuZCLJR3qOhtpE1/wR7hr7pLcGWitQ57D7C4Z0gUe+58EwKq7Kj4pPoXQaRxG2
- Kl73vaJZaVmMSFtyOVQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDAzNiBTYWx0ZWRfX7G9U+49YnujR
- 6SOGQfkCGnUhRLPhtOsntqJhkQ6ZwpnxRxIRbNHwhxJh4XjwZSZ28iVblDWNwdFrOflzpRNKFqt
- 07UJZWDFs9Ltwc4zkBC+xjkKH/mwI64=
-X-Proofpoint-GUID: 3_plcpZZddRqFPpDlvAFRFi_J3DHDAAh
-X-Authority-Analysis: v=2.4 cv=EsJHPicA c=1 sm=1 tr=0 ts=6aeaf8cc cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=3tMoE_lpgaAus7QnUx0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-04_02,2026-11-03_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
- definitions=main-2611040036
+Content-Transfer-Encoding: 8bit
 
-Am 03.11.26 um 17:37 schrieb Andreas Grapentin:
-> Forward-declare enum vcpu_sysreg in kvm_host_arm64.h. This should have
-> been included in the first iteration of the header, since we will need
-> it to talk about system registers.
-> 
-> Since the definition of enum vcpu_sysreg is not shared yet, and not used
-> on the s390 side, this should not cause any functional changes.
-> 
-> Fixes: e6c329180d1d ("KVM: s390: arm64: Introduce host definitions")
-> Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+The core_id_to_str(), sve_id_to_str() and print_reg() functions
+print __u64 values (idx, n and masked id) with the %lld
+conversion, which expects a signed long long. Use %llu
+instead, matching the unsigned type of the arguments and
+silencing the -Wformat warnings.
 
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: zhangchujun <zhangchujun@cmss.chinamobile.com>
+
+diff --git a/tools/testing/selftests/kvm/arm64/get-reg-list.c b/tools/testing/selftests/kvm/arm64/get-reg-list.c
+index 912590f9b0c2..2b85189862e5 100644
+--- a/tools/testing/selftests/kvm/arm64/get-reg-list.c
++++ b/tools/testing/selftests/kvm/arm64/get-reg-list.c
+@@ -145,8 +145,8 @@ static const char *core_id_to_str(const char *prefix, __u64 id)
+ 	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
+ 	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
+ 		idx = (core_off - KVM_REG_ARM_CORE_REG(regs.regs[0])) / CORE_REGS_XX_NR_WORDS;
+-		TEST_ASSERT(idx < 31, "%s: Unexpected regs.regs index: %lld", prefix, idx);
+-		return strdup_printf("KVM_REG_ARM_CORE_REG(regs.regs[%lld])", idx);
++		TEST_ASSERT(idx < 31, "%s: Unexpected regs.regs index: %llu", prefix, idx);
++		return strdup_printf("KVM_REG_ARM_CORE_REG(regs.regs[%llu])", idx);
+ 	case KVM_REG_ARM_CORE_REG(regs.sp):
+ 		return "KVM_REG_ARM_CORE_REG(regs.sp)";
+ 	case KVM_REG_ARM_CORE_REG(regs.pc):
+@@ -160,13 +160,13 @@ static const char *core_id_to_str(const char *prefix, __u64 id)
+ 	case KVM_REG_ARM_CORE_REG(spsr[0]) ...
+ 	     KVM_REG_ARM_CORE_REG(spsr[KVM_NR_SPSR - 1]):
+ 		idx = (core_off - KVM_REG_ARM_CORE_REG(spsr[0])) / CORE_SPSR_XX_NR_WORDS;
+-		TEST_ASSERT(idx < KVM_NR_SPSR, "%s: Unexpected spsr index: %lld", prefix, idx);
+-		return strdup_printf("KVM_REG_ARM_CORE_REG(spsr[%lld])", idx);
++		TEST_ASSERT(idx < KVM_NR_SPSR, "%s: Unexpected spsr index: %llu", prefix, idx);
++		return strdup_printf("KVM_REG_ARM_CORE_REG(spsr[%llu])", idx);
+ 	case KVM_REG_ARM_CORE_REG(fp_regs.vregs[0]) ...
+ 	     KVM_REG_ARM_CORE_REG(fp_regs.vregs[31]):
+ 		idx = (core_off - KVM_REG_ARM_CORE_REG(fp_regs.vregs[0])) / CORE_FPREGS_XX_NR_WORDS;
+-		TEST_ASSERT(idx < 32, "%s: Unexpected fp_regs.vregs index: %lld", prefix, idx);
+-		return strdup_printf("KVM_REG_ARM_CORE_REG(fp_regs.vregs[%lld])", idx);
++		TEST_ASSERT(idx < 32, "%s: Unexpected fp_regs.vregs index: %llu", prefix, idx);
++		return strdup_printf("KVM_REG_ARM_CORE_REG(fp_regs.vregs[%llu])", idx);
+ 	case KVM_REG_ARM_CORE_REG(fp_regs.fpsr):
+ 		return "KVM_REG_ARM_CORE_REG(fp_regs.fpsr)";
+ 	case KVM_REG_ARM_CORE_REG(fp_regs.fpcr):
+@@ -195,13 +195,13 @@ static const char *sve_id_to_str(const char *prefix, __u64 id)
+ 		n = (id >> 5) & (KVM_ARM64_SVE_NUM_ZREGS - 1);
+ 		TEST_ASSERT(id == KVM_REG_ARM64_SVE_ZREG(n, 0),
+ 			    "%s: Unexpected bits set in SVE ZREG id: 0x%llx", prefix, id);
+-		return strdup_printf("KVM_REG_ARM64_SVE_ZREG(%lld, 0)", n);
++		return strdup_printf("KVM_REG_ARM64_SVE_ZREG(%llu, 0)", n);
+ 	case KVM_REG_ARM64_SVE_PREG_BASE ...
+ 	     KVM_REG_ARM64_SVE_PREG_BASE + (1ULL << 5) * KVM_ARM64_SVE_NUM_PREGS - 1:
+ 		n = (id >> 5) & (KVM_ARM64_SVE_NUM_PREGS - 1);
+ 		TEST_ASSERT(id == KVM_REG_ARM64_SVE_PREG(n, 0),
+ 			    "%s: Unexpected bits set in SVE PREG id: 0x%llx", prefix, id);
+-		return strdup_printf("KVM_REG_ARM64_SVE_PREG(%lld, 0)", n);
++		return strdup_printf("KVM_REG_ARM64_SVE_PREG(%llu, 0)", n);
+ 	case KVM_REG_ARM64_SVE_FFR_BASE:
+ 		TEST_ASSERT(id == KVM_REG_ARM64_SVE_FFR(0),
+ 			    "%s: Unexpected bits set in SVE FFR id: 0x%llx", prefix, id);
+@@ -259,7 +259,7 @@ void print_reg(const char *prefix, __u64 id)
+ 	case KVM_REG_ARM_DEMUX:
+ 		TEST_ASSERT(!(id & ~(REG_MASK | KVM_REG_ARM_DEMUX_ID_MASK | KVM_REG_ARM_DEMUX_VAL_MASK)),
+ 			    "%s: Unexpected bits set in DEMUX reg id: 0x%llx", prefix, id);
+-		printf("\tKVM_REG_ARM64 | %s | KVM_REG_ARM_DEMUX | KVM_REG_ARM_DEMUX_ID_CCSIDR | %lld,\n",
++		printf("\tKVM_REG_ARM64 | %s | KVM_REG_ARM_DEMUX | KVM_REG_ARM_DEMUX_ID_CCSIDR | %llu,\n",
+ 		       reg_size, id & KVM_REG_ARM_DEMUX_VAL_MASK);
+ 		break;
+ 	case KVM_REG_ARM64_SYSREG:
+@@ -275,12 +275,12 @@ void print_reg(const char *prefix, __u64 id)
+ 	case KVM_REG_ARM_FW:
+ 		TEST_ASSERT(id == KVM_REG_ARM_FW_REG(id & 0xffff),
+ 			    "%s: Unexpected bits set in FW reg id: 0x%llx", prefix, id);
+-		printf("\tKVM_REG_ARM_FW_REG(%lld),\n", id & 0xffff);
++		printf("\tKVM_REG_ARM_FW_REG(%llu),\n", id & 0xffff);
+ 		break;
+ 	case KVM_REG_ARM_FW_FEAT_BMAP:
+ 		TEST_ASSERT(id == KVM_REG_ARM_FW_FEAT_BMAP_REG(id & 0xffff),
+ 			    "%s: Unexpected bits set in the bitmap feature FW reg id: 0x%llx", prefix, id);
+-		printf("\tKVM_REG_ARM_FW_FEAT_BMAP_REG(%lld),\n", id & 0xffff);
++		printf("\tKVM_REG_ARM_FW_FEAT_BMAP_REG(%llu),\n", id & 0xffff);
+ 		break;
+ 	case KVM_REG_ARM64_SVE:
+ 		printf("\t%s,\n", sve_id_to_str(prefix, id));
+-- 
+2.50.1.windows.1
 
 
-> ---
->   arch/s390/include/asm/kvm_host_arm64.h | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/s390/include/asm/kvm_host_arm64.h b/arch/s390/include/asm/kvm_host_arm64.h
-> index a3e40650d75d..3e69724f17c9 100644
-> --- a/arch/s390/include/asm/kvm_host_arm64.h
-> +++ b/arch/s390/include/asm/kvm_host_arm64.h
-> @@ -8,6 +8,7 @@
->   #include <asm/debug.h>
->   
->   #define vcpu_gp_regs(v)		((v)->arch.sae_block.gpr)
-> +enum vcpu_sysreg;
->   
->   #include <arm64/kvm_host.h>
->   #include <arm64/ptrace.h>
-> 
 
