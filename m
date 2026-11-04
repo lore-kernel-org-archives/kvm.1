@@ -1,82 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793813745;
-	b=tgDtIKyInFbPjoSjT4EgPYTSXUPzFUWJeyNk/qh65MUu+ShT8ZMpfQ22fRiX27s6DBRj
-	 ELe9oLoKWcSpy8i3eYdSQhxQFBJ2EDa1aqTHwUI/2UD0Jr3ZaDF6e5Kpl5khKTkua3ac2
-	 BVsPR+WsmPrSXHV4QtSlz8oyOU0BiaMfi9SiaeaLQNPCkDdPsLIAaQ9+ZCOwIYSAQR91g
-	 mxOpAgNjspDfeVfTiw6YAXpbMaIwEzSPFT6EEY9oIdPgYZJGkbLjnu6iqtI9xqUz9B6P3
-	 umVaS1Ya7qnL9ZvDsPodbmmZpHF480u31jOPkH4cJmcI9dayzYPeaWIbtuwNWRbOF1Q==
+	t=1793814888;
+	b=dN89tQoktEGBjG/w0diH1RC+iqBvU9T4vM6DT5fK2lAvoKzdxbBTI2E1NKuVRqg8+xP7
+	 pFnFitviNu9xefJOW3TmCMKVx2w2y6OePD7QK6eK/f59lbKuNa6X6bw8GsvMUDAqd4LsX
+	 WjKPYQw/SimJWnA8y3hTrg3GwH4Wt+dcbJZrLXEqYYnjzmFs8580U4d8rTiOPy/TXCu3H
+	 hKj0TUOMJnUwLZk9QtEl5f9J6rgizkFYImmi4+9+2p3MniQ7fY5hBmuqNWkCqB6oWUyu5
+	 s9E4V20y9xjKtvNXRehnAbs1pGR5W+pzlEJjcC2vsQ4O0n/LBBZRhfTgCYAR1PQbFiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793813745;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=m06/Z+wSj59Lj3STeXezEGxBP0eygnMgmS4pExrvRFg=;
-	b=PlIEqZ4n4iQN6E66k6Aj4xCb2xjgH2JWe256Mf7MpyciywjjZeO92OXGy3rFQAr7PorA
-	 pqHRZyVhV3gEOmpWqvIAvVFvzglfoTmRcgqcwfaBBIO9MYZw9R+97TNGzxpCgNBYLs0uk
-	 P4GIEDWKd+GVaPwXkTUgkF39zFOSMO1Gyk2tisNxJ8wm6gJdxCoOFdC6P6E52bR6U5WxN
-	 Lhpk87puEOx4Z+jkM1VMZCHQGvft1JzWYWuVxPkl2t9ZqjUciRjk7UEnnA1n8N0nU54Cb
-	 VsFwqjnIepvSncj6tAVILJEQ/vV/JaxJgZPYxsPmLiLDvMbqgYRZ1DtG23bKm9e/D2g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793814888;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=a8PVgr6ypDrmvyZQYT+mIAJLHr75TSjPc21F4dgd8gQ=;
+	b=BgLs9Xca+36WQg9jw6RlaVupPgCCPRytCgYQC2C9yKu4Mti0cY3FFlOL+2X3H+fdANmk
+	 tYjwA1OjOpSjfe7NB3GWVU8u7/t1wxCWA5tHicYWdCaIs6OKn498JTJX6ucmxk2flTMAD
+	 m9fI4To3pOOcrVNOpMzCHZ4Ssv9LXJyfFhdAKhSjf5vo8/gQvucIiZfhtcOIukmjn2sJJ
+	 uDfcycqnnaPoIN7oMBCtcnmgPWko7dO2Xtg5fkbwHFZO92IzPYeuMDUhip76rIGIdo6Tl
+	 LwrhuV4xmD6YHM8JAwBtJW+WmQ1sKYAhhhgG0ZGw3887+jAXAusLgaIW5sVT5nUXISQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DjXlxgd5;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=INpwrSmc;
+	arc=none smtp.remote-ip=209.85.222.169
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33949606ECCB;
-	Wed,  4 Nov 2026 17:35:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33949606ECCB
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6864C606CFCA
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 17:54:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6864C606CFCA
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DjXlxgd5
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4FiAJD966810;
-	Wed, 4 Nov 2026 17:35:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=m06/Z+
-	wSj59Lj3STeXezEGxBP0eygnMgmS4pExrvRFg=; b=DjXlxgd5MWc41a4+sgXoZu
-	8todMlWfwXpkdM30W1AmcMbcIhlJc0MAgdISIE7vh2Mlf7rBM+7QePhUzJaolCIy
-	2lCJiaCGz/sht0YqGR4voYiVJTQUJqK7Vo26tjJfzcj3eQJblZFOInADce2O6XoN
-	cTSzb50Dj8/pjd79lmZoSz8OFnbcl5zjsyT9EVbqEQGrxKNM2o4V7caIMbzGt3ny
-	egxPiZ947dWQ6bHOVI925c8f+grOsfqaZkSRampTf6UfwxVUE0iTLgzpabGCjhCJ
-	TafzDNhqUBlu/+Hmvw+sclQFUWzj6tsTxWSTJ9DN1awcNbmDHYf1CoJMAo0n312g
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn7ys4yvp-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 04 Nov 2026 17:35:37 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4Fnxva204445;
-	Wed, 4 Nov 2026 17:35:36 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hqf0geskx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Nov 2026 17:35:36 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A4HZY9W52560158
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Nov 2026 17:35:34 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1E8802004D;
-	Wed,  4 Nov 2026 17:35:34 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C8FCA20040;
-	Wed,  4 Nov 2026 17:35:31 +0000 (GMT)
-Received: from [9.39.27.115] (unknown [9.39.27.115])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Nov 2026 17:35:31 +0000 (GMT)
-Message-ID: <54afe357-b6f0-4d72-a2eb-474087aa880c@linux.ibm.com>
-Date: Wed, 4 Nov 2026 23:05:30 +0530
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=INpwrSmc
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93e635220b4so92229885a.1
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 09:54:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1793814886; x=1794419686; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=a8PVgr6ypDrmvyZQYT+mIAJLHr75TSjPc21F4dgd8gQ=;
+        b=INpwrSmcSZ3/FfNbUp3Zcr+7zlKzli+O6Uz28XKAuaFHCd6G1aFXVW+Kr3yO5Ukz+j
+         ffDXRlN6wtFTSSL1fI87DbOCN5vN+Dc416Nx6rDo4BG87l6cEysDdTsz9/v6agED2t+J
+         az1Qc3jEPHGJciuqX8c8qHkclvi7nCxDnvEXRAWlfbwS4b/tczJBghfuvNFFt5Sen/Eu
+         CngVW0iXdQ5aqtzO5S5pQGC/GojetaWvMaM/79HB0aZi9AGJnQGdsr25FTscWCuemx6V
+         59aB6uINYARVi1TbzM33RDdQMxcq9J/VGqC7mlwisFA76vBco1Plqb7SMZBj/4wLB/55
+         +vlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793814886; x=1794419686;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=a8PVgr6ypDrmvyZQYT+mIAJLHr75TSjPc21F4dgd8gQ=;
+        b=0lSX3NEn+W2D0MoF8aAg0zKs+18sBaCyPYmcBy9JC2zil3B80wOM3t4xcFxWnHZynZ
+         ZUSkqfWSZzs+juZFjiWUlcQMcsZRhgW8wWHHAbWXWkh/Texkg3taNBLhE3db2/2XXeQL
+         f6PDmHWiwzz8CwtRB3i3cRw9TwDIp8Z/sDE9wjBT8l/p2pWXcWrrE4dXY9c7H7r/X7py
+         tW6RTKmJV9B3NuXu1l5bfAJ8TGjSZrL5DZrCqRs1GJOZS3ADmOHSr0LESN7E8bdIt2X1
+         NWAABn8mtpMAk8k0BJln8bb+N+RlQULWC4BJi5QyiNkpGpM4FxrEQv7JhwJBr0ez0PBv
+         OfEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBysG5o2LdeOOqt/I0FOV4blxNT5UgOZZeJymazFtCiCcpIDkLWfY1M/oqmUtVZo2gMAues=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8LwAmINkkr0XrSx9+42Kbuj8IzcR9eDy3IEvuJy+dv6ItAVRp8
+	2BDDNQRtdTq2v4bnE1QG0sRCkX6S3TpA5L/5pUbe8ExJoOt2K4n7U33CZdNy05GhciA=
+X-Gm-Gg: AYBFou2oDuKYGLSHMrwDxqt7mya8Fu2lenuqlkpVz3Lyv/jXl/k+VNeW6blgyx9CQmo
+	ND8eC+2ZauzEvQbH9Aa3IhEYL5gWUZGvX7wsBbXGea+QPunMS3PWkXXzv3JxMS6myI7eaGJKqTW
+	3J7+0Uc8UVBtMy0O5zFrRvbUsew95exrf7RXMaNm9dD0S68tJu7Z1Zm4OW+4K9hRZDvYOSUiFlg
+	3Oq6OSS44GYcq3WztpwFxr2F/MUWmC9WDVOTgYybtHGtir/3ZVjcXHtoZt3pITd0tCQNcp/iGgm
+	iv/X/87exZD+dxCGnULEBm4vU0NpkoNTuimnr8UjFur0QaU8yq1pU47bzsOiRk9iyFVV5eaULz2
+	9rZRo9pChfBhS5ixhmm78BcmZFgTTkPBbERq3ci/N8S91a7uQVUT+vWjh71aWNCgz4PBhc+hJ4l
+	BnbTUgGTjdrit/eXLblMmC27C7TEITwE3fiu9CfHT+MCOdWorWNqKBQeJDl4kfOisrL3dfwOa1h
+	bCXOBeBP8K3L6gjizeKk4oNg+WIkXyjQgFHhWm60YATGj3fkztx84tK/OcGgpo43Bs8odwjJF4e
+	tVoUstWFlLBYiQc60XD0oItKv77wKgTeb9YuS6/8FiT3tGyMZ9H1oiY5a64ztxIqGH9Ev5vjK5R
+	ks8K04OGrzA==
+X-Received: by 2002:a05:620a:4155:b0:93e:d364:c9fe with SMTP id af79cd13be357-944216970cemr2702179085a.40.1793814886203;
+        Wed, 04 Nov 2026 09:54:46 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-945d479a7easm257041185a.12.2026.11.04.09.54.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 09:54:44 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xOfC1-0000000H1Y6-00br;
+	Wed, 04 Nov 2026 13:54:37 -0400
+Date: Wed, 4 Nov 2026 13:54:36 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 14/20] attestation: Add the base family specification
+ and generated files
+Message-ID: <20261104175436.GZ3889730@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-15-jiri@resnulli.us>
+ <179302367452.58760.3782556786585774917.b4-review@b4>
+ <auSxxPM5z8BzgNm3@FV6GYCPJ69>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,153 +114,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/23] KVM: PPC: Flush/zap all memslots on
- kvm_arch_flush_shadow_all()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jim Mattson <jmattson@google.com>,
-        James Houghton <jthoughton@google.com>, Chris Mason <mason@kernel.org>
-References: <20261030212112.2598640-1-seanjc@google.com>
- <20261030212112.2598640-4-seanjc@google.com>
- <5bd7e8e9-3614-4006-a3d7-a51416ba5507@linux.ibm.com>
- <ausz4VZWa_4Vr03v@google.com>
-Content-Language: en-US
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-In-Reply-To: <ausz4VZWa_4Vr03v@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Mcr5KJ/f c=1 sm=1 tr=0 ts=6aeb6ce9 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=6Y2wuOs38zrcC-dcLCAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDA2OCBTYWx0ZWRfX6zr4fUBHmFzo
- xy+p4saVE8hRJAQb0i89tY29WU0L7JKvwsHhtRfT/ReA/vC8wvXYN+z3T/b7EZw+FkAduyVF9FI
- 15ZYGrzyDLVkU+IIlAG7ofbdzBbxEl4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDA2OCBTYWx0ZWRfX2oXXojsH1RnK
- DJlJ1/FLSJwZicC1aLKjh1HDAayBinpqsb+pXCc3B0eotXovHOjGKjrYrxaZuqaHmuKBvsj/HYC
- btwqXGZ7x6V02Yb8vThO2rHX5tzmQpqAiqPi+ZjZsyXMMy5UPqRMjxKaVrYzjS5UVc4vcbz3Xix
- iRLXpFpGURIqtFaZZYV7TQgED+HEjFQXAkqFt3hd9JFwFjs9zUdpszo83T6BcZRr9QvehjaNmlf
- NyI35HrHmqqd37dk3aGXGC4SleZN+BFbHYy1EYtlRRzuReRvNvuz2VxRDKegruQnWUHS4YkOZoa
- XS8/BxNMLZ0uLZQbsQNLNEygsaV6r7AKiCDzxW0QV8m08IU5BxTIQnwzRg333CYeCS+E/OAc4Fx
- RBjWFppagwUyLMHqEXt3P0Cr4YrytOu+qZ+ZjIJx3q3tyPres1mFz/ftuANsz4uQZDa1sG0LCqW
- dw2JPcagYbnG+fZBNQA==
-X-Proofpoint-GUID: la8gAgS5o34WXMxf9_vSgnP6iEte2qja
-X-Proofpoint-ORIG-GUID: udZeEeBj7KLIqpRh3DUf2gkqGXZD_-8L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-04_05,2026-11-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 impostorscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611040068
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auSxxPM5z8BzgNm3@FV6GYCPJ69>
 
-Thanks Sean,
-
-On 04/11/26 7:02 PM, Sean Christopherson wrote:
-> On Wed, Nov 04, 2026, Narayana Murty N wrote:
->> Hi Sean,
->>
->> On 31/10/26 2:50 AM, Sean Christopherson wrote:
->>> Flush/zap every memslot in kvm_arch_flush_shadow_all(), i.e. when the
->>> owning userspace process is exiting, as KVM must ensure all associated
->>> memory is unmapped from the guest.
->>>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Sean Christopherson <seanjc@google.com>
->>> ---
->>>    arch/powerpc/include/asm/kvm_host.h |  1 -
->>>    arch/powerpc/kvm/powerpc.c          | 11 +++++++++++
->>>    2 files changed, 11 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
->>> index 708a32f89776..50a42f80e5f1 100644
->>> --- a/arch/powerpc/include/asm/kvm_host.h
->>> +++ b/arch/powerpc/include/asm/kvm_host.h
->>> @@ -910,7 +910,6 @@ struct kvm_vcpu_arch {
->>>    #define __KVM_HAVE_CREATE_DEVICE
->>>    static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
->>> -static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
->>>    static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
->>>    static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
->>> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
->>> index 9194cf492d1c..9e9d0865c2f6 100644
->>> --- a/arch/powerpc/kvm/powerpc.c
->>> +++ b/arch/powerpc/kvm/powerpc.c
->>> @@ -764,6 +764,17 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->>>    	kvmppc_core_commit_memory_region(kvm, old, new, change);
->>>    }
->>> +void kvm_arch_flush_shadow_all(struct kvm *kvm)
->>> +{
->>> +	struct kvm_memory_slot *slot;
->>> +	struct kvm_memslots *slots;
->>> +	int bkt;
->>> +
->>> +	slots = kvm_memslots(kvm);
->>> +	kvm_for_each_memslot(slot, bkt, slots)
->>> +		kvmppc_core_flush_memslot(kvm, slot);
->>
->> For Book3S HV/hash, I am not sure the existing flush_memslot helper can
->> be used on an active memslot like this.
->>
->> The normal memslot invalidation path seems to deliberately establish
->> the opposite ordering.  kvm_invalidate_memslot() first installs an
->> INVALID slot and makes it active:
->>
->> 	invalid_slot->flags |= KVM_MEMSLOT_INVALID;
->> 	kvm_replace_memslot(kvm, old, invalid_slot);
->> 	kvm_swap_active_memslots(kvm, old->as_id);
->> and only then does kvm_arch_flush_shadow_memslot(kvm, old);.
->>
->> The comment there explicitly states:
->> /*
->>   * From this point no new shadow pages pointing to a deleted,
->>   * or moved, memslot will be created.
->>   */
->>
->> Similarly, kvmppc_core_flush_memslot_hv() in
->> arch/powerpc/kvm/book3s_64_mmu_hv.c relies on the memslot already being
->> invalid when testing KVMPPC_RMAP_PRESENT without locking, as no new HPTEs
->> can be created.
->>
->> However, kvm_arch_flush_shadow_all() in arch/powerpc/kvm/powerpc.c now
->> invokes the same helper while walking active memslots.
->>
->> Is there any serialization in the mmu_notifier.release() path that provides
->> the same guarantee against new HPTE creation?
+On Fri, Oct 30, 2026 at 04:05:13PM +0100, Jiri Pirko wrote:
+> Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
 > 
-> There can't be any outstanding *usable* references to vCPUs at this point.
-> mmu_notifier.release() is only invoked if the process is exiting or the VM is
-> dying (which requires the associated file to have been released).
+> [..]
 > 
-> If the process is existing, KVM_RUN (and most ioctls) are unreachable due to the
-> "dev->kvm->mm != current->mm" checks.  Not to mention that if the process is
-> exiting, doing anything with a memslot is completely broken because it means
-> things like hva_to_pfn() are somehow operating on the wrong mm.
+> >> +
+> >> +/* attrs of group cap */
+> >> +#define _CTLV_ATTESTATION_ATTR_CAP(_attr) \
+> >> +	_CTLV_ATTESTATION_ATTR(CTLV_ATTESTATION_GROUP_CAP, _CTLV_ATTESTATION_ATTR_CAP_##_attr)
+> >> +
+> >> +enum _ctlv_attestation_attr_cap {
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_EVIDENCE = 1,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_MR,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_MIN_CHALLENGE_LENGTH,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_MAX_CHALLENGE_LENGTH,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_MAX_TOTAL_OUTPUT_LENGTH,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_MR_FLAGS,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_OBJECT,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_BLOB_CLASS,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_FORMAT,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_REPRESENTATION,
+> >> +	_CTLV_ATTESTATION_ATTR_CAP_MAX_LENGTH,
+> >> +};
+> >> +
+> >> +#define CTLV_ATTESTATION_ATTR_CAP_EVIDENCE _CTLV_ATTESTATION_ATTR_CAP(EVIDENCE)
+> >
+> >I feel like there are too many layers here for a code generator..
+> >
+> >enum ctvl_attestation_attributes {
+> >   CTLV_ATTESTATION_ATTR_CAP_EVIDENCE = CTLV_ATTR(CTLV_FAMILY_ATTESTATION, 2, 1),
+> >}
+> >
+> >Do the intermediate constants add anything?
 > 
-> If the VM is dying, there can't be any references to vCPU FDs, because each vCPU
-> holds a reference to the VM.
-That makes sense.
+> True. I originally had it like you suggest, I changed to enums to avoid
+> the explicit numbers. But you are right, does not add anything.
+> Changed back.
 
-I was considering the normal memslot invalidation path, where vCPUs
-can still be running, and overlooked the lifecycle guarantees of
-mmu_notifier.release().
+I was also thinking that having the explicit numbers makes it more
+robust if someone does backport. We should try to have everything
+explicitly numbered in these generated files to prevent subtle errors
+like that.
 
-Given that KVM_RUN cannot be invoked once the owning mm is gone, and
-that VM destruction requires all vCPU references to be dropped, there
-should be no path to create new HPTEs while the flush is in progress.
-
-That addresses my concern about the unlocked rmap check.
-
-Thanks,
-Narayana.>
->> Otherwise, couldn't an H_ENTER or fault path create a new HPTE while the
->> rmap is being scanned, or after it has already been examined?
-
+Jason
