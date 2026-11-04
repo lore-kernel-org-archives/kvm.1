@@ -1,99 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793821326;
-	b=2jUsEwXgbZ4IT3wctVAt6ideCU+tNghmjAdPT9gLYJT/OXHgFpXQKc+LrFw5Bf3oqOpy
-	 GP1+Xvvh2tbWi9AxzOTDTDOATq/s+QlQwVX9AOVX9lqHezqN85aW2J7pdOsoPlj78MuvK
-	 oEwZDtiG4zbDhy/OCi9BqJO25bmU+Tu/ZtVcPZOi7GZWXcXbFVLtXgq2OdqqTgCw95Syx
-	 C5crJT7c8lLkczqnH1sTEOSow+vHFnyZ+etbpi2AihgU11xmKJkpjnwNqDi7bHBb6etXi
-	 fa9I8YC5tJHdrve+7tJ53UFXHyk7+ClbKoWWVBpYHYgPMBbiGqzl2JXHOrKdgWcuSag==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793821326;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793821585;
+	b=ZT0vYNJkgKzuqQwT6+LQzLf3Aa1xVqGsgk1VBhvwIOhTUu3HRhNSUINg2i4DNNijyIW5
+	 irWySfeRGmeMi1JyHtxmQwDJ4eAabXI+TQGglJE5nxJG4dxPWpARMncxv9PdIdHosqMpP
+	 tsi/OTMmS6+4wfXEKuFGELxgfGPnCHUTrGBRAGc6OL4eK1CH/rZhXZ+Q6iud2tDiroHGu
+	 N4xHHEVrk933pK8xrRMigbCPA8gk+3GIK4gIRQ1lcJbrGwUSbPxGyI9D1aFnplV8bekRo
+	 LI9vHTB/o/pNVHVdtYE2vvyy2yW0IE7CEARszLGzMPuk3x9brP4PnpIhdoZrKon8x9w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793821585;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Bv+92c01P1xFA5T4dnNNXL4Yn3gyyGMmodh6TXZQ/F0=;
-	b=ioQ1/3qT9f16PdtmfaFrRKG4VmOlqGTIE99Bo/vw7EuiuS+DsstWgZe1H9bX6oU6cYhL
-	 63tYIn7xu1P4KaydBDa5Vb0XPK73gr8yflCWwHrpvRVftphl+EanoT1Q0aumy8ortq1oo
-	 FtVQIIRCpZet6ddGJ85KQxPTUFvoI3NGTF4ZeUwwSgLiqtICwuAyAdXMlQTrfeAsqkVZe
-	 LEPMNW1JArGGBSITv9QHctfH5YTLq2a9NFxr/qKeCOCOumRRNmxNzqC94fHnP5uD/9p8N
-	 yTvGyPM9jv+8Fz+SpSC30rL7yAjUv1o9oucWdoSXagzFEeZzERwAl8XmTUCrp05seKA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IYJCJ3+v;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.46
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=/iOiQOUFj+ZNXsxkV0W7K4UHGpRKtOzL2hr1OPDdR9w=;
+	b=tIxuR2dbuAz2qfovL+VjTpftCO7Kv25RXxL363wK80kS0wcBhInprFb5LBQjXy64OsjK
+	 HqNox45Cx0KPPelCEJG+CMF/wXhSh6eiQUjXdfl9UOcn10/0yznfbiW3g3+f2NpBYbOcJ
+	 /nGTKj/e6ZX81g4MCIc8kvW8ajpe9no2yv1EAS5+yKvESf1d28vO8HSuRtopVs6IcqeMC
+	 34ZwP5gxSfuw0jO5yiPm9C9ifbISFjzlANWbsLT9H/ZoxOeKDHYnVGB8M59NnzVDKSScE
+	 +3gN5kQIYsAsuZL3yYALrdvSFe1mGq7kVTnFuHlJ0SW6w+EJk4GKTcGrdBVjFuKPxzg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=WRBm+GQF;
+	arc=none smtp.remote-ip=209.85.160.173
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789746072814
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 19:42:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 789746072814
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A83B608CABE
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 19:46:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A83B608CABE
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IYJCJ3+v
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c49b431f022so186191966b.1
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 11:42:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793821325; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o8uHw50uvQ1KaTxXl+8JzJA+3HTZpclmzkTI0QmkwIfEP76O+oE9x/g7sBle1WO1LV
-         q0d+gXZb1VGrqPKjPu39N9MRveWsXWmtOaFgncLcU7/CpDoyAtxM47cfpfkSk15hPJcM
-         38FAGaJ6YYpfcKMZyYCIFxssnUDU1SgdlIb1De9KoR9jOJBgJWbmvFfuL/jwXw+w0IxT
-         PfjQ/CPvaC/+3dka4DI818aEekMdQ3y/L8q7lB/3hxEdr4kfl3kOTAyj5Pbb7x2uukbA
-         DAlhHd8xjWOjLxN/i+YMFJJZ4zPVWUNMHygTufshjisO6uWYpd6+akVAU2KBHkOjgya7
-         y3rA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Bv+92c01P1xFA5T4dnNNXL4Yn3gyyGMmodh6TXZQ/F0=;
-        fh=fItrUtV5UsY1KSNx1ZNnzv3miYMbODbRRQWQ18AP5Zc=;
-        b=NiMH0Oni4ROUwqt/TopZx83HwmOdj1l5AZi9UH5kbosxBKYwCJpWzGfNj2lPdsf5J1
-         6kWf0EE+kp2RoLGhf1qGdTj9KCp3kIsk3/6oXsSI7HqF6qY+cFec9bkzM5js2FFOGmn+
-         7fRd64Whcsp4CwEfVoV5DfqR4sN4TQH0m21qTsa4fxfQqlOcNA9aYIra2+wzrbX88KsD
-         MWPdEhg2/ETAh/3Zbz3NKqlMx9iUC4SBkDdvrSZDe/dtphwdUfeMXinitxvwms1d/9ov
-         b+rSZymUj8XOZThUH+djlARKBeHhDOCnr6MslYkamRUk9JxPc7jfr2C4bd5NaDcpE4JQ
-         k0QQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=WRBm+GQF
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-53bb57f1310so10783561cf.2
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 11:46:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793821325; x=1794426125; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=ziepe.ca; s=google; t=1793821584; x=1794426384; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Bv+92c01P1xFA5T4dnNNXL4Yn3gyyGMmodh6TXZQ/F0=;
-        b=IYJCJ3+vQpq3bkHiQ8vshcCLmMUBDJsNV/EseC+XrJEst5yp2dEgBfCRA4iGfQS28b
-         ywk1VFJzFvde2CBaUwCCgvCRsGbbo6V8Gxb4A8ehthCECFbk3kqNyLbp4tM9qoOCCKMp
-         4H4RtXqd8uu54YXAfU40yneuL5bj0+sIaRjbh6xdjLoJBOavEwpvWpNIxw9zPqcVBqax
-         gTfgJCn0KTZJibiCdXg69BVKocOZkCW78vfpDyOuM16hfcO1oJTcyiJ8BcSdQiwCINn0
-         V5n4H7syvAsAfqHaqgWoyEfoCMH+i83n0bKOhXgGF57pEcxr49mnteU+iL+SramAbZh2
-         dUNw==
+        bh=/iOiQOUFj+ZNXsxkV0W7K4UHGpRKtOzL2hr1OPDdR9w=;
+        b=WRBm+GQFrwS5Zas3ZL99mrACnUfCSQ6IoeXlzzeD5KKnBqHHgtxYl2c9wviBwKfOJD
+         qtN+ZFY9uOU0mlzNZCuwr0exw/fYbp1g7ho5/pM/xUO2KAdWMlMV2RV+eo8CzwSP0PK1
+         MgVCvd6blq74OYN7OPzEIJ01+NGUqyNVGsk9oJ9gJnGaU9hlo5GRil1NKdsf3xy0EYAo
+         KWR5bpoPTgSvX2xINyPwl/GgNSWpYL76GMZPxcwzp8e6CZ+A0tOfzm6uN9XILruejEOn
+         jmRIHZ7FemA5lobw30d7bQdTmz2Zgu/15vEm4Imf92NuvMQXWpZlg1Y/yMPrwX5t4FVQ
+         NW8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793821325; x=1794426125;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793821584; x=1794426384;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Bv+92c01P1xFA5T4dnNNXL4Yn3gyyGMmodh6TXZQ/F0=;
-        b=qqPb7NqAVheJNlp2TsA9OWxhk+8x4zC9i0TzlaZfle+weGxS5GtSvs/892CbSLuoo6
-         +WLuEE5hzSX4vZL/c4IYH/DH4nwz8eo76rT8F/XO2wi6a51vsy6InqxTq9/sNLp9dzjG
-         ml4UqxCc/DzmC39PWinO8hvcDi+zv/1au+rH0IcVG2nI7AHU83lO8e3jmoUynQ4cXHEs
-         D9nzeo5E9umkRpSCOQ3AUZj1QCsz5CNUPtc/qX1VoDxJTUKVaajYppe5mAjfvYW+jxWH
-         Z61mb2G5H5jIwucuHBaGDhw3OBW8B/yAOPhkDuv6ZVx5h+0kv7yHkHeWN8dxVimd3ChY
-         jDww==
-X-Gm-Message-State: APuU4Z+6ypbCMxwbidYqdx1kAHpxYlYoiT6H5/9bTaMIm/r+0wt/Ws5N
-	At60kxLFCsb6ftowakSbKVjrFO5Lhcf/+988G7/eAtXBZd829jK4uZtJ+zmaDzSpbIBkhFphBiR
-	SPHnKho86J8sDNeHmHs3tnYkN7VRpyxUGqIOlhJ9Zz6A0dyty6EoKlHSJ
-X-Gm-Gg: AYBFou2SKvdlOUnJT5/gKgSIdpQXlyZ1m/MtueMu/9Zp4XKjM4kxsG0gpyfRtEN/W2B
-	vQzp9ekj63NqyTjo5h57i3UuBqg0+b0oqi0bLaiciCMiaP4ieZHFXUtjJiVVmGHGlFh+0+qW1+x
-	S4yYSuFasicWipU/Q1y2UqfTBHm5QH9x5WJtnwZi40+z7IF+zLlfAm4Dmuze1d5hRrWbarqFBgZ
-	mQblVdj7pgagc4WtSIaC5GkEr+oiGsAb2bbgLi6/jn6hsizRs3Qu/57LFfoajYKR2eA+NEeDSyg
-	Kse5Kuhfp/5NHTRni9bEH0LecFkuUSxGZTnv9RqnxJk+rfxiZ9HAqvyE6rt2XEi7Mlcq/rWGzOT
-	fXli4azjbNWUQH1ZB+32D2EtZC/Dl97AYdxxV1KVqpNd4SLMxYVfd0XiAg+o=
-X-Received: by 2002:a17:906:ef03:b0:c2e:350b:7220 with SMTP id
- a640c23a62f3a-c4ca7a4b5dcmr1479602866b.9.1793821324322; Wed, 04 Nov 2026
- 11:42:04 -0800 (PST)
+        bh=/iOiQOUFj+ZNXsxkV0W7K4UHGpRKtOzL2hr1OPDdR9w=;
+        b=bp5P97r9zfeblycy6gD4+Y3eYMkKuL53b1eD8smL3Dy4x9B3NkLU2K9EGRvxNqZDTY
+         bE6HVrQtG1qaniZkut0YJXvU0GAyFUnkqKqsSWKgz+u7FQBG+YENYNlAlOwvehrK4urc
+         Ke0P6cJ1o1uJp+ShThTcTG9e4fPAiaKVt0r6tjyvI46Oy+wgBGKMWQAnWZcO1BeFBh5R
+         /X+ghpkJ+Vmb7tEX8eoNRtSUKyFtAPcnRAW7/pBU75IjQuP+09wvB2tAMHQ5H8162SQr
+         HO/Pn64ZqBOAhwViaHwd0L5GvcwWwlJ2qUTR5toEdRmxD5O0qQB9rpYHyPO5s1h1BB5K
+         X3tg==
+X-Forwarded-Encrypted: i=1; AKwUvBwcXV9AJrDhUQF0Om2noMVV0xA3gaknlzHjjHwyI8rSOVhaEgahf1DJWJVS/jWKyvlgYIk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+grY4E0EpVFA0iCypVf0Rz0z1Rs8TQQtM3MpWNqhKvlhMKbAUG
+	qpUn5V6LMAh3UgfEgD4sip6e3xwJ5Xpz4quzuDde3CgtI00XqJCki903zxCgBJF1g88=
+X-Gm-Gg: AYBFou3aoeXC6YxPCJh6H45PTdtXV3C8dungvn8nrt1SpGOklvlAY0+TGrARIouZxoI
+	sRm7Fed0MaGrEsQmvGB036Kh24y5kJ2LjDtSxx5zkKF17fREsqbcuQLmJd8ACXgrmZj4iuRRvwl
+	bIhRHGTs4xUPoPeWUOJqFS3Q2+Feqx/Y7/8o4Q1u0glSF5V0zHnToSCmFhdpROELTIUBqXe7u/B
+	HPMe0yxmJYtdCntNIwgHjWuv948M84p2+fxiIAY9lDBvHTqYrK+ZLt/6aqzc4WezdIp95/bNvHq
+	vi1QLeBXTQr8dF9OxEYRphP7CT6XZ19jnLVD+eUBorvFolPX0ITYeMuRAdlPBCdL/3jWfnpSMhk
+	M/OsOd7MAeunmnqwMjeWZP3QBruRra75xEo2zhjEq0dvGYN4Bno0xO6VPqhXhJsc0sKt1JT177n
+	An9n6vw+nwQkyChH1lpcW6ijCQUffwbimh9vHqHUfWkRaSZ1wxts23PBMzU08ZnDUdarmoTA3om
+	W57HUK0WTaV2EcTzHUooVHrUOoq1TGvre0CXuvGz9jr4qJgrVJmY94WPXeHFp14+drVx3BADCES
+	W7En2aXdlf4vIYsGaNJXkLovTdAekLZQansSDoUj7Dsjc6Gvqj2ROOnESJ/KQ+BHFGC8W56PnOW
+	+BO4Se1o+Myf/Es4tUmcEVgOO1HDMhCU=
+X-Received: by 2002:a05:622a:98b:b0:535:be07:f31c with SMTP id d75a77b69052e-542b83f684dmr276665021cf.74.1793821583898;
+        Wed, 04 Nov 2026 11:46:23 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54b100aba28sm32315511cf.9.2026.11.04.11.46.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 11:46:23 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xOgwA-0000000HIFZ-2f1S;
+	Wed, 04 Nov 2026 15:46:22 -0400
+Date: Wed, 4 Nov 2026 15:46:22 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
+	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
+Message-ID: <20261104194622.GC3889730@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-18-jiri@resnulli.us>
+ <auuDcABX27EeTApl@e129823.arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,60 +113,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103002205.3348519-1-dmatlack@google.com> <20261103002205.3348519-3-dmatlack@google.com>
- <sashiko-outbox-194380@kernel.org>
-In-Reply-To: <sashiko-outbox-194380@kernel.org>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 4 Nov 2026 11:41:37 -0800
-X-Gm-Features: AclHuK_VLO359ovTghTiGGyUy0_jJXc-n2zdfwttkbViK28RoUHrb7gt43Eq9pw
-Message-ID: <CALzav=eZuhAFoYm5s8j9ei+6Zhf7zAWKHXRug+No9o0=rHUypA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] vfio: selftests: Skip tests when the IOMMU mode is
- not available
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auuDcABX27EeTApl@e129823.arm.com>
 
-On Mon, Nov 2, 2026 at 4:30=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
+> [..snip..]
+> 
+> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
+> > +					       const struct ctlv_cursor *request,
+> > +					       struct attestation_evidence_request *decoded,
+> > +					       struct attestation_evidence_object_request **objects)
+> > +{
+> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
+> > +	u32 challenge_length;
+> > +
+> > +	decoded->challenge =
+> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
+> > +	decoded->challenge_length = challenge_length;
+> > +	if (challenge_length < caps->min_challenge_length ||
+> > +	    challenge_length > caps->max_challenge_length)
+> 
+> Hmm, I'm not sure whether this check is required for
+> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
+> 
+> for example, if the provider provides two evidence:
+>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
+>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
+> 
+> might challenge is reuiqred for generating the token
+> and this would be marked at min/max_challenge_size in evidence_cap.
+> 
+> However, in case of eventlog, it wouldn't require challenge.
+> for example, TPM event log or CCEL event log.
 
-> [Severity: Medium]
-> Can iommu_mode_is_available() return true for iommufd_compat_type1,
-> iommufd_compat_type1v2, and NULL when CONFIG_VFIO_GROUP is disabled (for
-> example on a cdev-only VFIO kernel with CONFIG_IOMMUFD=3Dy and
-> CONFIG_VFIO_DEVICE_CDEV=3Dy) or when the vfio module is not loaded?
->
-> In tools/testing/selftests/vfio/lib/iommu.c, iommu_mode_probe() only chec=
-ks
-> for /dev/vfio/devices when !mode->container_path:
->
->         /* iommufd mode requires VFIO device cdevs (CONFIG_VFIO_DEVICE_CD=
-EV). */
->         if (!mode->container_path && access("/dev/vfio/devices", F_OK))
->                 return false;
->
->         fd =3D open(path, O_RDWR);
->         if (fd < 0)
->                 return false;
->
->         available =3D !mode->container_path ||
->                     ioctl(fd, VFIO_CHECK_EXTENSION, mode->iommu_type) > 0=
-;
->
-> For iommufd_compat_type1 and iommufd_compat_type1v2, mode->container_path
-> is "/dev/iommu". Because drivers/iommu/iommufd/vfio_compat.c is compiled
-> into iommufd unconditionally regardless of CONFIG_VFIO_GROUP, opening
-> /dev/iommu and calling VFIO_CHECK_EXTENSION succeeds whenever iommufd is
-> present.
->
-> However, vfio_pci_device_init() and device_init() in
-> vfio_pci_sriov_uapi_test.c route all modes with a non-NULL
-> mode->container_path through vfio_pci_container_setup() ->
-> vfio_pci_group_setup(), which opens /dev/vfio/<group_id> and asserts on
-> failure when CONFIG_VFIO_GROUP is disabled.
->
-> Should iommu_mode_probe() also verify that VFIO group support is availabl=
-e
-> (such as checking access("/sys/class/vfio", F_OK) =3D=3D 0) when
-> mode->container_path is non-NULL?
+Right
 
-Good catch. I will add a check for /sys/class/vfio in the next version.
+> Do we need some field on attestation_evidence_supported_object whether
+> it requires challenge or not and applies this sanity check per the object?
+> 
+> Otherwise, to get eventlog, it would need to send *dummy* challenge
+> always.
+
+I wonder if we should have two interfaces here for signed and unsigned
+evidence? It would be clearer for userspace then when it needs to
+provide a challenge or not.
+
+Jason
