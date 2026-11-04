@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793804682;
-	b=hHg5SsbrL5ar8QSx8ikRQ+Zmw07VkFxxKEvX+o2a1o0Rfq+n7SRKdKwYYfpDkZ7mS7al
-	 jy1CphuK4uVQkYThpqnKsEK3R7nM57z5EujIQpqoPHzoCYI68k8e/rYwRR2P3kJKiETye
-	 JtObXrxIZiJgaQY2eeTnp165e8PRUhLKBq403ixVWjA040jUxoUVH8UcfD0gajRE6D+Rq
-	 KVZFGWRS/Wz5n2h6kajMaCSK7nUkcmuGgGK4eTXCbxNjQr2NLmxmW5/LXHqV4cuycN/W4
-	 fM8dQHuiQv2UMJJwS0rc61NUeRH3OCEFYNvbUpNBd+gSPOLNiuT8y02tjVYzW5R1ZKg==
+	t=1793804700;
+	b=XWwo2Yphm49N8iytCvcXv92IqOku4gWEGNup/ZlYJ5KjJoe5T4JGCrxMBAF18drLEBSa
+	 MUgu2C/WbVjzd+geMTuq+cnoQ6FCBfsv+N2X/Bo5wCOI6bSGGQJpwhRTc8Ouun3ns5YE/
+	 rxsdsW2f3HyEpNZ8U2Eaaiy3wGv0eEY2x738BABxcHXeZwanyZzOvrPpCgIoC/Z1eAwcn
+	 /q3cpUmuPgh25YtknGcAA7Z08MK7NhMGUraw1rDEbxjMQ1zOF/spwZUXlEXyGtLugLzHq
+	 OB9fsFMD9gyRw7HdfaoUtfNroDxhPkb2XIoPNYkM16AFH9Xo/DXg0+QRxcBzO3M1wbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793804682;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793804700;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=1ezqaL5YD96duRGS4vjO9PfU32AuIITUbuJkJoKchdQ=;
-	b=Yw3Sc3S2g9TrBQTx8HareJZNJYxTkHxrhbCQfDPovXNnQq8rLFksdJX1fih8ka26uadz
-	 eeHbFf22hYRprC362ZjEAXv8CVQq2J0nMyc+8CZjgzlhPv07HX8xgmb06S9u2la2FliCX
-	 fARYL7ekvIXKxaFxzEXq6kAjnJ52EZaMGrAqI2vzeucB1IcNY25xIn0fj5Td/XPU3L5U+
-	 sJNIAURFQ7mJoSxR41vdNRZOrfLs4ZZxAN5+cOBDBu+VL9t/fgl7wJlUNbN9wa4O9xkd9
-	 q5KB1WXzXZ2ihtg6dBlAYGRRihBFE6Y1sT1sfCbiT7DRQUiFy5qREabxh7sS8QrM4+w==
+	bh=EKP4DTD309tHMKd0ry1eHcsj3cMGURG0sNGypb1ziDM=;
+	b=ybb52ZupfPEe9UArq25M6bRiaGXD9qCyHkfq4RFyl7eZUHPBe9T7N2WK5W+feXU22TWo
+	 VCwXpRDlGCxx2gcUMDadmlufmPPnRUC3Fk5jpZk6NBbNHuK/V6l9hFcpfPGLicn8zHppJ
+	 QkdYIAWGIfNd7vXweakWB2sFGCsSEMX+x0R0SYpDzmUdtInOwBlfXTjW2Bqk4Nl1jPI03
+	 plzvRTanl5sUeYRUolmetYC1M7u/GPtCQvc+6C4XQGP0vHTFC8BeZVVNRB5XoyQagy0yd
+	 gDaBlKhXTYeqlMlVT41ivaKDQmMfWG6mwZnYLDiJCsXaE+a7CRnKQyYjoh40g9/pd+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k2rCylQT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=liSetdsK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2E5606A334;
-	Wed,  4 Nov 2026 15:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1616606EE82;
+	Wed,  4 Nov 2026 15:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k2rCylQT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEEB1F000C1;
-	Wed,  4 Nov 2026 15:04:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=liSetdsK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13561F000C1;
+	Wed,  4 Nov 2026 15:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793804682;
-	bh=1ezqaL5YD96duRGS4vjO9PfU32AuIITUbuJkJoKchdQ=;
+	s=k20260515; t=1793804700;
+	bh=EKP4DTD309tHMKd0ry1eHcsj3cMGURG0sNGypb1ziDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k2rCylQToQBALP5dXjvWVnmedyrtLWNAfqslsUAKennkoQN5ZzpvnqZ1b1bZdInpK
-	 KcoWdmv5OtKBzFjg00jxiEAVA8Y7aklnDAhyZJ5emsVBqH+6Cvy1Qt42yQzl3YjDyx
-	 qCjXrig4PG7nEHP84DVP1GLbWOiC7tR1pYFB1SpIw1jHXUIIgsnqGJrjS5M3TshOfb
-	 ppZloNGWY43TmzXRCATJ1Qo1m26BcRHPnMJjUECVDYL6Z3qTndEnjoR8XVsCaDW5Ux
-	 m65ydbYgVv1ybdUNWN3Bi0PzlHF9ykRcqdJqoNOw0i8DCYy6lurnNEajFmhTX+ApEG
-	 +5gRa1RGUJdqw==
+	b=liSetdsKSqWdd0U3yRaSUI0RsrQAYb+Z6deM9fVZXaUR/yrGfg92W7rmQsX1BiZL6
+	 CeWDlDUXBWMjjugHzgUilCOk4I/NetPjZEC+ZXExVL2iAdrZnw1t1pQuoAWT27O07j
+	 hLbbuQgPRNoDf7QIf39tJ3MPKdoZBA8kTJekc1OfXFQNrC5/7HH2ammrLZKU5yznkA
+	 HObvfkObsgMKVgcb7AWfC/xw8G7EyBu/owSLXjy5Y7csiIvhVtrZ+T1rvgbc7SCcva
+	 WSQQX2PyeHin9WLUB9Sybrw7aVTlaQI7dCFMo+uMIJ6IzTb3B+vA/z4u7ESps/87sG
+	 3Ova+1k8hG5bg==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -61,9 +61,9 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	iommu@lists.linux.dev,
 	kvm@vger.kernel.org,
 	patches@lists.linux.dev
-Subject: [RFC PATCH v4 11/25] KVM: guest_memfd: Clear private device state on final close
-Date: Wed,  4 Nov 2026 20:33:08 +0530
-Message-ID: <20261104150322.3516320-12-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v4 14/25] vfio/pci: Add helpers to check and serialize BAR state changes
+Date: Wed,  4 Nov 2026 20:33:11 +0530
+Message-ID: <20261104150322.3516320-15-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
 References: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
@@ -78,110 +78,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add an optional backing release() callback after the generic
-file-release path invalidates guest mappings. Device backing uses it to
-clear has_private_ranges so device cleanup can proceed after the last
-file user is gone.
+Add vfio_pci_begin_bar_state_change() to check whether a BAR state
+change is allowed before taking vdev->memory_lock for write and removing
+existing BAR mappings with vfio_pci_zap_bars(). Return -EBUSY if the
+check fails, before removing mappings or changing hardware.
 
-Hold the provider lock across invalidation and the release callback so
-device unlock cannot race with mapping removal and summary updates.
+Keep memory_lock held on success until the caller finishes the hardware
+operation and calls vfio_pci_end_bar_state_change().
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
+vfio_pci_bar_state_change_allowed() initially returns true. Later
+patches use these helpers for command-register writes, reset and power
+changes, then reject those operations while the device supplies
+guest_memfd backing.
+
+Cc: Alex Williamson <alex@shazbot.org>
 Cc: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: David Hildenbrand <david@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: patches@lists.linux.dev
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- virt/kvm/guest_memfd.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/vfio/pci/vfio_pci_core.c | 15 +++++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h | 10 ++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index dd567979d938..d3de2e7bb9f5 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -65,6 +65,12 @@ struct kvm_gmem_backing_ops {
- 			   kvm_pfn_t nr_pages, u64 attrs);
- 	/* Called after the common code stores the new attributes. */
- 	void (*update_attributes)(struct inode *inode);
-+	/*
-+	 * Finish file cleanup after invalidation. Caller holds kvm->slots_lock
-+	 * and inode->i_mapping->invalidate_lock for write, between calls to
-+	 * gmem_provider_lock() and gmem_provider_unlock().
-+	 */
-+	void (*release)(struct inode *inode);
- };
- 
- struct gmem_inode {
-@@ -104,6 +110,7 @@ static bool gmem_provider_is_device(struct gmem_inode *gi)
- static void kvm_gmem_device_update_attributes(struct inode *inode);
- static int kvm_gmem_device_convert_attributes(struct inode *inode, pgoff_t start,
- 					      pgoff_t end, u64 attrs);
-+static void kvm_gmem_device_release(struct inode *inode);
- 
- static bool kvm_gmem_is_pfn_mode(struct gmem_inode *gi)
- {
-@@ -751,9 +758,11 @@ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
- static int kvm_gmem_release(struct inode *inode, struct file *file)
- {
- 	struct gmem_file *f = file->private_data;
-+	struct gmem_inode *gi = GMEM_I(inode);
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = f->kvm;
- 	unsigned long index;
-+	enum kvm_gfn_range_filter filter = kvm_gmem_get_all_gfns_filter(inode);
- 
- 	/*
- 	 * Prevent concurrent attempts to *unbind* a memslot.  This is the last
-@@ -766,6 +775,8 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 
- 	filemap_invalidate_lock(inode->i_mapping);
- 
-+	gmem_provider_lock(gi);
-+
- 	/*
- 	 * Note!  synchronize_srcu() is _not_ needed after nullifying memslot
- 	 * bindings as slot->gmem.file cannot be set back to a non-null value
-@@ -815,13 +826,15 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 		WRITE_ONCE(slot->gmem.file, NULL);
- 
- 	/*
--	 * All in-flight operations are gone and new bindings can be created.
-+	 * All in-flight operations are gone and no new bindings can be created.
- 	 * Zap all SPTEs pointed at by this file.  Do not free the backing
- 	 * memory, as its lifetime is associated with the inode, not the file.
- 	 */
--	__kvm_gmem_invalidate_start(f, 0, -1ul,
--				    kvm_gmem_get_all_gfns_filter(inode));
-+	__kvm_gmem_invalidate_start(f, 0, -1ul, filter);
- 	__kvm_gmem_invalidate_end(f, 0, -1ul);
-+	if (gi->backing_ops && gi->backing_ops->release)
-+		gi->backing_ops->release(inode);
-+	gmem_provider_unlock(gi);
- 
- 	list_del(&f->entry);
- 
-@@ -1228,6 +1241,7 @@ static const struct kvm_gmem_backing_ops kvm_gmem_device_backing_ops = {
- 	.prepare_attributes = kvm_gmem_pfn_prepare_attributes,
- 	.convert_attributes = kvm_gmem_device_convert_attributes,
- 	.update_attributes = kvm_gmem_device_update_attributes,
-+	.release = kvm_gmem_device_release,
- };
- 
- static const struct kvm_gmem_backing_ops *
-@@ -1638,6 +1652,12 @@ static int kvm_gmem_device_convert_attributes(struct inode *inode, pgoff_t start
- 	return 0;
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index fcbb2da860e2..99778cf0cc3c 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1709,6 +1709,21 @@ void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
+ 	vfio_pci_zap_bars(vdev);
  }
  
-+/* No file users remain, so private attributes cannot create new mappings. */
-+static void kvm_gmem_device_release(struct inode *inode)
++int vfio_pci_begin_bar_state_change(struct vfio_pci_core_device *vdev)
 +{
-+	WRITE_ONCE(GMEM_I(inode)->device.has_private_ranges, false);
++	if (!vfio_pci_bar_state_change_allowed(vdev))
++		return -EBUSY;
++
++	down_write(&vdev->memory_lock);
++	vfio_pci_zap_bars(vdev);
++	return 0;
 +}
 +
- static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags, int resource_fd)
++void vfio_pci_end_bar_state_change(struct vfio_pci_core_device *vdev)
++{
++	up_write(&vdev->memory_lock);
++}
++
+ u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev)
  {
- 	static const char *name = "[kvm-gmem]";
+ 	u16 cmd;
+diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+index 4e7162234a2e..0af93f6d9a8a 100644
+--- a/drivers/vfio/pci/vfio_pci_priv.h
++++ b/drivers/vfio/pci/vfio_pci_priv.h
+@@ -11,6 +11,13 @@
+ /* Cap maximum number of ioeventfds per device (arbitrary) */
+ #define VFIO_PCI_IOEVENTFD_MAX		1000
+ 
++/* Later patches reject BAR state changes while guest_memfd uses the device. */
++static inline bool
++vfio_pci_bar_state_change_allowed(struct vfio_pci_core_device *vdev)
++{
++	return true;
++}
++
+ struct vfio_pci_ioeventfd {
+ 	struct list_head	next;
+ 	struct vfio_pci_core_device	*vdev;
+@@ -69,6 +76,9 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev,
+ 			     pci_power_t state);
+ 
+ void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev);
++/* Success retains memory_lock through the hardware operation. */
++int vfio_pci_begin_bar_state_change(struct vfio_pci_core_device *vdev);
++void vfio_pci_end_bar_state_change(struct vfio_pci_core_device *vdev);
+ u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev);
+ void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev,
+ 					u16 cmd);
 -- 
 2.43.0
 
