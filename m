@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793809091;
-	b=epK3nMmQ/aikkac7zqPFIOwu2ZPaFDDqTbGvMaUakteGIhMBwTFZPPYLC21qsgTRfX8D
-	 yJ9kQaWKbDxMkQQBkyKaqFsXhBoc9TcxIf/5qRUS7G/zQxLCCKQ/DqFpdn+q8U91wJZk/
-	 qdnWniIV7gxMjdI/qE6cyg1pvv5iDvDtGmJfIwHX/36pmjlJN2Wf5r1acfwkQ62XjzqVE
-	 mJ0McDP3MyMFAbioIrG8Y4AXjFVRgU1O8l6RQNhN+q68rKIjncdAMJn/W9lR9aJCksDdS
-	 ZLVBh1boShdQYLImuCLEof1PRmwOKwZpgSNM30+wPK/LWM7R2EuzFLdJkz4CKZJpePg==
+	t=1793809111;
+	b=natXsPef57/2Dj5+V1xXYizPOpaucDrRoZDQXwSou4VzKvqDmMJKnRDJT0Wouad0Nb94
+	 JxPyU6Oq4P9IuYTETEa0DKN0yuLOguyNem5o217iL/pQbigyJZDjfqhIrwo+ZA5x8cB1q
+	 pkLcHoNNBibADmFDz1Y1k/UVOsz07SfqTfD8o/tEyBz29xdhS2skw8WVGGHqzkw4yR0b2
+	 /RAMyQdzdOzoxYskO1dGq+xek9+k+wTv2nW82hrjTUZmfLKVzXjVo2kuTFQewH0Y5zCi9
+	 IfrT8MCEhz0DAyjYJLL2dyAFyh935Zx+TXoQ8Ug0DYzNJrvo9hDjo1unaH895z+2rBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793809091;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793809111;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=LyppPZNwxzZCDS704wCfWMjkL1sHrZGQgJ+n1Lrwr9E=;
-	b=jKTgLeEZqij4Ux6JN63S5nlMRMVrHBW59cRj9QqErmDiMFIxp61ZAs+8lOdEuQji67u9
-	 tQcD+Gev3N/+sR14a3+MFP6TlgBIv1EOLnLa3Rbuf5rjExz9vClDXES1eMjraGnJVPtAW
-	 JbQsjLhqMr/9vzpCgTIE/6F+lNl1nasAAbgtyv1WE4ZWDssLd/i/ceJqT2k6fAKH32OFG
-	 vdtZ5Swqofla0J3mWUkHNPmHlH6/gPhYbET3R6bkIih7Q2zOEFZnLvCqFBMPGLfUJbN97
-	 76KizrPK0C6r4lQTNEDVioVHkuDDVwrWz0vBNzOZj5eJZ8MciWYTNmkaQJqgefhPHuw==
+	bh=RMe8aHaw0FTFxQYLN2j4STX0i2Z9ay78NOti+/xTdIo=;
+	b=DusGusi+XCVCHX+lbOCLNlwR3WQB+YX0QAz4DKCl+/DHFqTphUUklqP7AISVp2/Z0wnB
+	 A5/n4DaKBqyEOVsKjEOGDzkxXaR4HYCvtsJOgknVkwkPyVAH4MDZL6f3AqLS1P2IzmUzk
+	 kGorRj73qx3GCfbsD5IhnYdYyRV7kqB8j8U7Bfk1D7p95+vDtnO5cyB+Fp8AjT9jFCuWG
+	 IuE3iJN7Uks7JxinaaNEktlgrJNBP+1e+cAS3CXL7KszIpbwjUqREa9XKgLIAEMvT9Bhq
+	 RmNHWnwuwOtNb55wiu0h9KtpxjWp6UMfpVNdMvc8nwZ/atMrEMM6Tpk9xOe+C6m81Tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lFIa5Cs6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XZL3q4+u;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A742606A33B;
-	Wed,  4 Nov 2026 16:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163E160A5BC9;
+	Wed,  4 Nov 2026 16:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lFIa5Cs6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D7E1F000C1;
-	Wed,  4 Nov 2026 16:18:01 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XZL3q4+u
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF781F00A16;
+	Wed,  4 Nov 2026 16:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793809091;
-	bh=LyppPZNwxzZCDS704wCfWMjkL1sHrZGQgJ+n1Lrwr9E=;
+	s=k20260515; t=1793809110;
+	bh=RMe8aHaw0FTFxQYLN2j4STX0i2Z9ay78NOti+/xTdIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lFIa5Cs6PjeJrs6dRTVYe0S7/VMsiUwYUuy+NoOl9nl6KqLVaIG/kTfcumisaG2a6
-	 W7ZW1yIwhFk8XJjaFeTv7LNCuSKa3HjAC7QKeTxug/sBmR3c8O4hv8FoK+GYn6/Wo2
-	 mh4N85TefQPwKQj7N53rZcnSvTmjNr6+QL1fiLzFqhTu2R86d2WsARnhP+Y6LXNVk5
-	 UoWII9n4AwUNaPcR07GOYX5zRi9XKiPw5Y+sQR7Ch4wKYtCxNZU/nYri//5CoxMEZA
-	 RR845wfaDqMNNw5Shp3oJVvJxvIk/KM/xziqmpZAjuG7avR7WWnUpMFH0pCv3Gn5bt
-	 2bkg1kGuKXTAA==
+	b=XZL3q4+ulBRueBqGYR8Pg6fxeRopoQ7VIzjwUGjS9dH/X1LwtxO+3TRQbBl/e2alo
+	 7E1etCbEAv0csczXaxMDFiqX6tN+m/gp7r2rlPn+GEwWiD3QW/X5SjtHiT2P8gZatM
+	 FWrRZkOn0Ux+Pkr1gg0xqW4+xSH+vohhoM5SDQLq5epR3Gu7FCEYkTnCdMpiPFyl10
+	 9CxzH+S8cKIxGLPb3Sv6z249cHPfEWlHqF3rX8WOPCT0VBvnuAdHBkAGUOum+UE8dW
+	 WgBR1FmL+sohvyx+DcpmhXIMwCxk+lOmjusTw8gIITwqRZWAS8lW2JqF6ptnLs2yqD
+	 fTJwg/RwoP4jQ==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: iommu@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -71,9 +71,9 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-tegra@vger.kernel.org
-Subject: [PATCH v8 08/15] iommufd: Add a vDEVICE operation ioctl framework
-Date: Wed,  4 Nov 2026 21:46:25 +0530
-Message-ID: <20261104161632.3547423-9-aneesh.kumar@kernel.org>
+Subject: [PATCH v8 10/15] PCI/TSM: Add vIOMMU-bound device contexts
+Date: Wed,  4 Nov 2026 21:46:27 +0530
+Message-ID: <20261104161632.3547423-11-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
 References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
@@ -88,209 +88,545 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add IOMMU_VDEVICE_OP to execute operations on a vDEVICE using separate
-request and response buffers. Each operation defines its request and
-response formats, with response capacity checked before changing device
-state.
+An IOMMUFD vDEVICE represents a physical device within a virtual IOMMU
+(vIOMMU) for a guest. It must use the same TEE Security Manager as its
+vIOMMU. Pinning the vIOMMU backend keeps its tsm_dev registered, but
+does not preserve the connection between the physical function 0 (PF0)
+PCI device and that TSM.
 
-Look up the vDEVICE and check its supported_ops mask before dispatching
-an operation. Reject out-of-range operation numbers before testing the
-corresponding bit. Backends set the mask during vdevice_init().
+Add a per-vDEVICE PCI TSM context. Verify that the PCI device and the
+vIOMMU use the same tsm_dev, and account active contexts on PF0. Reject
+disconnect with -EBUSY until all dependent vDEVICEs release their
+contexts.
 
-This patch defines no operations. The default dispatch returns
--EOPNOTSUPP; later patches can add operations independently.
+With vDEVICE binding handled by the backend, PCI/TSM no longer has
+generic bind state to report. Remove the legacy bind and unbind
+interface. The sysfs "bound" attribute reported the state maintained by
+that interface. Remove the attribute and its ABI documentation as well.
 
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Kevin Tian <kevin.tian@intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-pci@vger.kernel.org
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- drivers/iommu/iommufd/Makefile          |  1 +
- drivers/iommu/iommufd/iommufd_private.h |  1 +
- drivers/iommu/iommufd/main.c            |  3 +++
- drivers/iommu/iommufd/viommu.c          | 36 +++++++++++++++++++++++++
- include/linux/iommufd.h                 |  3 +++
- include/linux/tsm.h                     |  1 +
- include/uapi/linux/iommufd.h            | 33 +++++++++++++++++++++++
- 7 files changed, 78 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-pci |  15 +-
+ drivers/pci/tsm/core.c                  | 230 ++++++++++--------------
+ include/linux/pci-tsm.h                 |  71 +++++---
+ 3 files changed, 135 insertions(+), 181 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
-index 67207914bb6e..2b0ab70ab236 100644
---- a/drivers/iommu/iommufd/Makefile
-+++ b/drivers/iommu/iommufd/Makefile
-@@ -11,6 +11,7 @@ iommufd-y := \
- 	viommu.o
+diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
+index be9126e56894..ab9083f3b0d3 100644
+--- a/Documentation/ABI/testing/sysfs-bus-pci
++++ b/Documentation/ABI/testing/sysfs-bus-pci
+@@ -660,6 +660,7 @@ Contact:	linux-coco@lists.linux.dev
+ Description:
+ 		(WO) Write the name of the TSM device that was specified
+ 		to 'connect' to teardown the connection.
++		The write fails with EBUSY if the TSM is in use.
  
- iommufd-$(CONFIG_IOMMUFD_NOIOMMU) += hwpt_noiommu.o
-+
- iommufd-$(CONFIG_IOMMUFD_TEST) += selftest.o
+ What:		/sys/bus/pci/devices/.../tsm/dsm
+ Contact:	linux-coco@lists.linux.dev
+@@ -677,20 +678,6 @@ Description:	(RO) Return PCI device name of this device's DSM (Device
+ 		PCIe switch port. This is a "link" TSM attribute, see
+ 		Documentation/ABI/testing/sysfs-class-tsm.
  
- obj-$(CONFIG_IOMMUFD) += iommufd.o
-diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-index 63a6dcee21dc..0b336d6430f1 100644
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -730,6 +730,7 @@ void iommufd_vdevice_destroy(struct iommufd_object *obj);
- void iommufd_vdevice_abort(struct iommufd_object *obj);
- int iommufd_hw_queue_alloc_ioctl(struct iommufd_ucmd *ucmd);
- void iommufd_hw_queue_destroy(struct iommufd_object *obj);
-+int iommufd_vdevice_op_ioctl(struct iommufd_ucmd *ucmd);
- 
- #ifdef CONFIG_IOMMUFD_TEST
- int iommufd_test(struct iommufd_ucmd *ucmd);
-diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-index 9a921b153162..e3a49897dac5 100644
---- a/drivers/iommu/iommufd/main.c
-+++ b/drivers/iommu/iommufd/main.c
-@@ -453,6 +453,7 @@ union ucmd_buffer {
- 	struct iommu_veventq_alloc veventq;
- 	struct iommu_vfio_ioas vfio_ioas;
- 	struct iommu_viommu_alloc viommu;
-+	struct iommu_vdevice_op vdevice_op;
- #ifdef CONFIG_IOMMUFD_TEST
- 	struct iommu_test_cmd test;
- #endif
-@@ -516,6 +517,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
- 		 __reserved),
- 	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
- 		 struct iommu_viommu_alloc, out_viommu_id),
-+	IOCTL_OP(IOMMU_VDEVICE_OP, iommufd_vdevice_op_ioctl,
-+		 struct iommu_vdevice_op, resp_uptr),
- #ifdef CONFIG_IOMMUFD_TEST
- 	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
- #endif
-diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-index 0dbd382eeb98..cdbb597f3588 100644
---- a/drivers/iommu/iommufd/viommu.c
-+++ b/drivers/iommu/iommufd/viommu.c
-@@ -1,7 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /* Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
-  */
-+#include <linux/bits.h>
- #include <linux/file.h>
-+#include <linux/cleanup.h>
-+#include <linux/tsm.h>
-+
- #include "iommufd_private.h"
- 
- void iommufd_viommu_destroy(struct iommufd_object *obj)
-@@ -121,6 +125,38 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
- 	return rc;
+-What:		/sys/bus/pci/devices/.../tsm/bound
+-Contact:	linux-coco@lists.linux.dev
+-Description:	(RO) Return the device name of the TSM when the device is in a
+-		TDISP (TEE Device Interface Security Protocol) operational state
+-		(LOCKED, RUN, or ERROR, not UNLOCKED). Bound devices consume
+-		platform TSM resources and depend on the device's configuration
+-		(e.g. BME (Bus Master Enable) and MSE (Memory Space Enable)
+-		among other settings) to remain stable for the duration of the
+-		bound state. This attribute is only visible for devices that
+-		support TDISP operation, and it is only populated after
+-		successful connect and TSM bind. The TSM bind operation is
+-		initiated by VFIO/IOMMUFD. This is a "link" TSM attribute, see
+-		Documentation/ABI/testing/sysfs-class-tsm.
+-
+ What:		/sys/bus/pci/devices/.../authenticated
+ Contact:	linux-pci@vger.kernel.org
+ Description:
+diff --git a/drivers/pci/tsm/core.c b/drivers/pci/tsm/core.c
+index 24d4dd4f1b96..96ba5a8be8af 100644
+--- a/drivers/pci/tsm/core.c
++++ b/drivers/pci/tsm/core.c
+@@ -12,6 +12,7 @@
+ #include <linux/pci.h>
+ #include <linux/pci-doe.h>
+ #include <linux/pci-tsm.h>
++#include <linux/slab.h>
+ #include <linux/sysfs.h>
+ #include <linux/tsm.h>
+ #include <linux/xarray.h>
+@@ -292,96 +293,94 @@ static int remove_fn(struct pci_dev *pdev, void *data)
+ 	return 0;
  }
  
-+int iommufd_vdevice_op_ioctl(struct iommufd_ucmd *ucmd)
-+{
-+	struct iommu_vdevice_op *cmd = ucmd->cmd;
-+	struct iommufd_object *obj;
-+	struct iommufd_vdevice *vdev;
-+	int ret;
-+
-+	if (cmd->reserved)
-+		return -EINVAL;
-+
-+	obj = iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-+				 IOMMUFD_OBJ_VDEVICE);
-+	if (IS_ERR(obj))
-+		return PTR_ERR(obj);
-+	vdev = container_of(obj, struct iommufd_vdevice, obj);
-+
-+	if (cmd->op >= BITS_PER_TYPE(vdev->supported_ops) ||
-+	    !(vdev->supported_ops & BIT_ULL(cmd->op))) {
-+		ret = -EOPNOTSUPP;
-+		goto out_put_object;
-+	}
-+
-+	switch (cmd->op) {
-+	default:
-+		ret = -EOPNOTSUPP;
-+	}
-+
-+out_put_object:
-+	iommufd_put_object(ucmd->ictx, obj);
-+	return ret;
-+}
-+
- void iommufd_vdevice_abort(struct iommufd_object *obj)
+-/*
+- * Note, this helper only returns an error code and takes an argument for
+- * compatibility with the pci_walk_bus() callback prototype. pci_tsm_unbind()
+- * always succeeds.
+- */
+-static int __pci_tsm_unbind(struct pci_dev *pdev, void *data)
++bool pci_tsm_is_configured(struct pci_dev *pdev)
  {
- 	struct iommufd_vdevice *vdev =
-diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
-index c15d80f611b9..d1fd7888fc91 100644
---- a/include/linux/iommufd.h
-+++ b/include/linux/iommufd.h
-@@ -125,6 +125,9 @@ struct iommufd_vdevice {
- 	 */
- 	u64 virt_id;
+-	struct pci_tdi *tdi;
+-	struct pci_tsm_pf0 *tsm_pf0;
+-
+-	lockdep_assert_held(&pci_tsm_rwsem);
+-
+-	if (!pdev->tsm)
+-		return 0;
+-
+-	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
+-	guard(mutex)(&tsm_pf0->lock);
+-
+-	tdi = pdev->tsm->tdi;
+-	if (!tdi)
+-		return 0;
+-
+-	to_pci_tsm_ops(pdev->tsm)->unbind(tdi);
+-	pdev->tsm->tdi = NULL;
++	guard(rwsem_read)(&pci_tsm_rwsem);
  
-+	/* Supported vDEVICE operations; set by vdevice_init(). */
-+	u64 supported_ops;
+-	return 0;
++	return !!pdev->tsm;
+ }
++EXPORT_SYMBOL_GPL(pci_tsm_is_configured);
+ 
+-void pci_tsm_unbind(struct pci_dev *pdev)
+-{
+-	guard(rwsem_read)(&pci_tsm_rwsem);
+-	__pci_tsm_unbind(pdev, NULL);
+-}
+-EXPORT_SYMBOL_GPL(pci_tsm_unbind);
++struct pci_tsm_context {
++	struct pci_tsm_pf0 *pf0;
++	struct pci_dev *pdev;
++	struct pci_dev *dsm_dev;
++};
+ 
+-/**
+- * pci_tsm_bind() - Bind @pdev as a TDI for @kvm
+- * @pdev: PCI device function to bind
+- * @kvm: Private memory attach context
+- * @tdi_id: Identifier (virtual BDF) for the TDI as referenced by the TSM and DSM
+- *
+- * Returns 0 on success, or a negative error code on failure.
+- *
+- * Context: Caller is responsible for constraining the bind lifetime to the
+- * registered state of the device. For example, pci_tsm_bind() /
+- * pci_tsm_unbind() limited to the VFIO driver bound state of the device.
+- */
+-int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
++struct pci_tsm_context *pci_tsm_context_get(struct pci_dev *pdev,
++					    struct tsm_dev *viommu_tsm_dev)
+ {
+-	struct pci_tsm_pf0 *tsm_pf0;
+-	struct pci_tdi *tdi;
+-
+-	if (!kvm)
+-		return -EINVAL;
++	struct pci_tsm_context *context;
++	struct pci_tsm_pf0 *pf0;
+ 
+ 	guard(rwsem_read)(&pci_tsm_rwsem);
++	if (!pdev->tsm || !is_link_tsm(pdev->tsm->tsm_dev))
++		return ERR_PTR(-EOPNOTSUPP);
++	/*
++	 * The vdevice can use a different PCI function from VIOMMU_ALLOC. The
++	 * module pin keeps the vIOMMU's TSM registered, but does not freeze this
++	 * function's link. Match its current TSM before pinning the link below.
++	 */
++	if (pdev->tsm->tsm_dev != viommu_tsm_dev)
++		return ERR_PTR(-EXDEV);
+ 
+-	if (!pdev->tsm)
+-		return -EINVAL;
++	pf0 = to_pci_tsm_pf0(pdev->tsm);
++	if (!pf0)
++		return ERR_PTR(-ENXIO);
+ 
+-	if (!is_link_tsm(pdev->tsm->tsm_dev))
+-		return -ENXIO;
++	context = kzalloc_obj(*context);
++	if (!context)
++		return ERR_PTR(-ENOMEM);
+ 
+-	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
+-	guard(mutex)(&tsm_pf0->lock);
++	guard(mutex)(&pf0->lock);
++	pf0->context_users++;
++	context->pf0 = pf0;
++	context->pdev = pci_dev_get(pdev);
++	context->dsm_dev = pci_dev_get(pf0->base_tsm.pdev);
++	return context;
++}
++EXPORT_SYMBOL_GPL(pci_tsm_context_get);
+ 
+-	/* Resolve races to bind a TDI */
+-	if (pdev->tsm->tdi) {
+-		if (pdev->tsm->tdi->kvm != kvm)
+-			return -EBUSY;
+-		return 0;
+-	}
++void pci_tsm_context_put(struct pci_tsm_context *context)
++{
++	struct pci_tsm_pf0 *pf0 = context->pf0;
+ 
+-	tdi = to_pci_tsm_ops(pdev->tsm)->bind(pdev, kvm, tdi_id);
+-	if (IS_ERR(tdi))
+-		return PTR_ERR(tdi);
++	down_read(&pci_tsm_rwsem);
++	mutex_lock(&pf0->lock);
++	if (!WARN_ON(!pf0->context_users))
++		pf0->context_users--;
++	mutex_unlock(&pf0->lock);
++	up_read(&pci_tsm_rwsem);
+ 
+-	pdev->tsm->tdi = tdi;
++	pci_dev_put(context->pdev);
++	pci_dev_put(context->dsm_dev);
++	kfree(context);
++}
++EXPORT_SYMBOL_GPL(pci_tsm_context_put);
+ 
+-	return 0;
++struct pci_tsm_pf0 *pci_tsm_context_pf0(struct pci_tsm_context *context)
++{
++	return context->pf0;
+ }
+-EXPORT_SYMBOL_GPL(pci_tsm_bind);
++EXPORT_SYMBOL_GPL(pci_tsm_context_pf0);
+ 
+-static void pci_tsm_unbind_all(struct pci_dev *pdev)
++struct pci_dev *pci_tsm_context_dsm_dev(struct pci_tsm_context *context)
+ {
+-	pci_tsm_walk_fns_reverse(pdev, __pci_tsm_unbind, NULL);
+-	__pci_tsm_unbind(pdev, NULL);
++	return context->dsm_dev;
++}
++EXPORT_SYMBOL_GPL(pci_tsm_context_dsm_dev);
 +
- 	/* Clean up all driver-specific parts of an iommufd_vdevice */
- 	void (*destroy)(struct iommufd_vdevice *vdev);
- };
-diff --git a/include/linux/tsm.h b/include/linux/tsm.h
-index 381c53244c83..19dedf971f14 100644
---- a/include/linux/tsm.h
-+++ b/include/linux/tsm.h
-@@ -6,6 +6,7 @@
- #include <linux/types.h>
- #include <linux/uuid.h>
- #include <linux/device.h>
-+#include <uapi/linux/iommufd.h>
++bool pci_tsm_context_match_device(struct pci_tsm_context *context,
++				  struct pci_dev *pdev)
++{
++	guard(rwsem_read)(&pci_tsm_rwsem);
++
++	return pdev->tsm && is_link_tsm(pdev->tsm->tsm_dev) &&
++	       to_pci_tsm_pf0(pdev->tsm) == context->pf0;
+ }
++EXPORT_SYMBOL_GPL(pci_tsm_context_match_device);
  
- #define TSM_REPORT_INBLOB_MAX 64
- #define TSM_REPORT_OUTBLOB_MAX SZ_16M
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 010f47f7d3d2..3f7422e7cd91 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -58,6 +58,7 @@ enum {
- 	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
- 	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
- 	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
-+	IOMMUFD_CMD_VDEVICE_OP = 0x96,
+-static void __pci_tsm_disconnect(struct pci_dev *pdev)
++static int __pci_tsm_disconnect(struct pci_dev *pdev)
+ {
+ 	struct pci_tsm_pf0 *tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
+ 	const struct pci_tsm_ops *ops = to_pci_tsm_ops(pdev->tsm);
+@@ -389,21 +388,29 @@ static void __pci_tsm_disconnect(struct pci_dev *pdev)
+ 	/* disconnect() mutually exclusive with subfunction pci_tsm_init() */
+ 	lockdep_assert_held_write(&pci_tsm_rwsem);
+ 
+-	pci_tsm_unbind_all(pdev);
+-
+ 	/*
+-	 * disconnect() is uninterruptible as it may be called for device
+-	 * teardown
++	 * A vdevice holds a context for its lifetime. Refuse to tear down the
++	 * link until userspace destroys all dependent vdevices.
++	 *
++	 * disconnect() is uninterruptible as it may also be called for device
++	 * teardown.
+ 	 */
+ 	guard(mutex)(&tsm_pf0->lock);
++	if (tsm_pf0->context_users)
++		return -EBUSY;
+ 	pci_tsm_walk_fns_reverse(pdev, remove_fn, NULL);
+ 	ops->disconnect(pdev);
++	return 0;
+ }
+ 
+-static void pci_tsm_disconnect(struct pci_dev *pdev)
++static int pci_tsm_disconnect(struct pci_dev *pdev)
+ {
+-	__pci_tsm_disconnect(pdev);
++	int ret = __pci_tsm_disconnect(pdev);
++
++	if (ret)
++		return ret;
+ 	tsm_remove(pdev->tsm);
++	return 0;
+ }
+ 
+ static ssize_t disconnect_store(struct device *dev,
+@@ -425,38 +432,13 @@ static ssize_t disconnect_store(struct device *dev,
+ 	if (!sysfs_streq(buf, dev_name(&tsm_dev->dev)))
+ 		return -EINVAL;
+ 
+-	pci_tsm_disconnect(pdev);
++	rc = pci_tsm_disconnect(pdev);
++	if (rc)
++		return rc;
+ 	return len;
+ }
+ static DEVICE_ATTR_WO(disconnect);
+ 
+-static ssize_t bound_show(struct device *dev,
+-			  struct device_attribute *attr, char *buf)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	struct pci_tsm_pf0 *tsm_pf0;
+-	struct pci_tsm *tsm;
+-	int rc;
+-
+-	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
+-	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &lock)))
+-		return rc;
+-
+-	tsm = pdev->tsm;
+-	if (!tsm)
+-		return sysfs_emit(buf, "\n");
+-	tsm_pf0 = to_pci_tsm_pf0(tsm);
+-
+-	ACQUIRE(mutex_intr, ops_lock)(&tsm_pf0->lock);
+-	if ((rc = ACQUIRE_ERR(mutex_intr, &ops_lock)))
+-		return rc;
+-
+-	if (!tsm->tdi)
+-		return sysfs_emit(buf, "\n");
+-	return sysfs_emit(buf, "%s\n", dev_name(&tsm->tsm_dev->dev));
+-}
+-static DEVICE_ATTR_RO(bound);
+-
+ static ssize_t dsm_show(struct device *dev, struct device_attribute *attr,
+ 			char *buf)
+ {
+@@ -511,13 +493,6 @@ static umode_t pci_tsm_attr_visible(struct kobject *kobj,
+ 	if (pci_tsm_link_group_visible(kobj)) {
+ 		struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
+ 
+-		if (attr == &dev_attr_bound.attr) {
+-			if (is_pci_tsm_pf0(pdev) && has_tee(pdev))
+-				return attr->mode;
+-			if (pdev->tsm && has_tee(pdev->tsm->dsm_dev))
+-				return attr->mode;
+-		}
+-
+ 		if (attr == &dev_attr_dsm.attr) {
+ 			if (is_pci_tsm_pf0(pdev))
+ 				return attr->mode;
+@@ -544,7 +519,6 @@ DEFINE_SYSFS_GROUP_VISIBLE(pci_tsm);
+ static struct attribute *pci_tsm_attrs[] = {
+ 	&dev_attr_connect.attr,
+ 	&dev_attr_disconnect.attr,
+-	&dev_attr_bound.attr,
+ 	&dev_attr_dsm.attr,
+ 	NULL
+ };
+@@ -634,22 +608,6 @@ static struct pci_dev *find_dsm_dev(struct pci_dev *pdev)
+ 	return NULL;
+ }
+ 
+-/**
+- * pci_tsm_tdi_constructor() - base 'struct pci_tdi' initialization for link TSMs
+- * @pdev: PCI device function representing the TDI
+- * @tdi: context to initialize
+- * @kvm: Private memory attach context
+- * @tdi_id: Identifier (virtual BDF) for the TDI as referenced by the TSM and DSM
+- */
+-void pci_tsm_tdi_constructor(struct pci_dev *pdev, struct pci_tdi *tdi,
+-			     struct kvm *kvm, u32 tdi_id)
+-{
+-	tdi->pdev = pdev;
+-	tdi->kvm = kvm;
+-	tdi->tdi_id = tdi_id;
+-}
+-EXPORT_SYMBOL_GPL(pci_tsm_tdi_constructor);
+-
+ /**
+  * pci_tsm_link_constructor() - base 'struct pci_tsm' initialization for link TSMs
+  * @pdev: The PCI device
+@@ -729,12 +687,6 @@ int pci_tsm_register(struct tsm_dev *tsm_dev)
+ 	return 0;
+ }
+ 
+-static void pci_tsm_fn_exit(struct pci_dev *pdev)
+-{
+-	__pci_tsm_unbind(pdev, NULL);
+-	tsm_remove(pdev->tsm);
+-}
+-
+ /**
+  * __pci_tsm_destroy() - destroy the TSM context for @pdev
+  * @pdev: device to cleanup
+@@ -768,10 +720,12 @@ static void __pci_tsm_destroy(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
+ 	else if (tsm_dev != tsm->tsm_dev)
+ 		return;
+ 
+-	if (is_link_tsm(tsm_dev) && is_pci_tsm_pf0(pdev))
+-		pci_tsm_disconnect(pdev);
+-	else
+-		pci_tsm_fn_exit(pdev);
++	if (is_link_tsm(tsm_dev) && is_pci_tsm_pf0(pdev)) {
++		if (pci_tsm_disconnect(pdev))
++			pci_warn(pdev, "TSM connection is still in use\n");
++	} else {
++		tsm_remove(pdev->tsm);
++	}
+ }
+ 
+ void pci_tsm_destroy(struct pci_dev *pdev)
+diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+index 6fe3d0ea875f..eaf0199d01f7 100644
+--- a/include/linux/pci-tsm.h
++++ b/include/linux/pci-tsm.h
+@@ -5,8 +5,8 @@
+ #include <linux/pci.h>
+ 
+ struct pci_tsm;
++struct pci_tsm_context;
+ struct tsm_dev;
+-struct kvm;
+ 
+ /*
+  * struct pci_tsm_ops - manage confidential links and security state
+@@ -30,16 +30,12 @@ struct pci_tsm_ops {
+ 	 * @connect: establish / validate a secure connection (e.g. IDE)
+ 	 *	     with the device
+ 	 * @disconnect: teardown the secure link
+-	 * @bind: bind a TDI in preparation for it to be accepted by a TVM
+-	 * @unbind: remove a TDI from secure operation with a TVM
+ 	 *
+ 	 * Context: @probe, @remove, @connect, and @disconnect run under
+ 	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
+ 	 * mutual exclusion of @connect and @disconnect. @connect and
+ 	 * @disconnect additionally run under the DSM lock (struct
+ 	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
+-	 * @bind and @unbind run under pci_tsm_rwsem held for read
+-	 * and the DSM lock.
+ 	 */
+ 	struct_group_tagged(pci_tsm_link_ops, link_ops,
+ 		struct pci_tsm *(*probe)(struct tsm_dev *tsm_dev,
+@@ -47,9 +43,6 @@ struct pci_tsm_ops {
+ 		void (*remove)(struct pci_tsm *tsm);
+ 		int (*connect)(struct pci_dev *pdev);
+ 		void (*disconnect)(struct pci_dev *pdev);
+-		struct pci_tdi *(*bind)(struct pci_dev *pdev,
+-					struct kvm *kvm, u32 tdi_id);
+-		void (*unbind)(struct pci_tdi *tdi);
+ 	);
+ 
+ 	/*
+@@ -69,25 +62,12 @@ struct pci_tsm_ops {
+ 	);
+ };
+ 
+-/**
+- * struct pci_tdi - Core TEE I/O Device Interface (TDI) context
+- * @pdev: host side representation of guest-side TDI
+- * @kvm: TEE VM context of bound TDI
+- * @tdi_id: Identifier (virtual BDF) for the TDI as referenced by the TSM and DSM
+- */
+-struct pci_tdi {
+-	struct pci_dev *pdev;
+-	struct kvm *kvm;
+-	u32 tdi_id;
+-};
+-
+ /**
+  * struct pci_tsm - Core TSM context for a given PCIe endpoint
+  * @pdev: Back ref to device function, distinguishes type of pci_tsm context
+  * @dsm_dev: PCI Device Security Manager for link operations on @pdev
+  * @tsm_dev: PCI TEE Security Manager device for Link Confidentiality or Device
+  *	     Function Security operations
+- * @tdi: TDI context established by the @bind link operation
+  *
+  * This structure is wrapped by low level TSM driver data and returned by
+  * probe()/lock(), it is freed by the corresponding remove()/unlock().
+@@ -103,18 +83,20 @@ struct pci_tsm {
+ 	struct pci_dev *pdev;
+ 	struct pci_dev *dsm_dev;
+ 	struct tsm_dev *tsm_dev;
+-	struct pci_tdi *tdi;
  };
  
  /**
-@@ -1398,4 +1399,36 @@ struct iommu_hw_queue_alloc {
- 	__aligned_u64 length;
+  * struct pci_tsm_pf0 - Physical Function 0 TDISP link context
+  * @base_tsm: generic core "tsm" context
+  * @lock: mutual exclustion for pci_tsm_ops invocation
++ * @context_users: live per-function contexts on this PF0; a nonzero count
++ *	blocks link disconnect
+  * @doe_mb: PCIe Data Object Exchange mailbox
+  */
+ struct pci_tsm_pf0 {
+ 	struct pci_tsm base_tsm;
+ 	struct mutex lock;
++	unsigned int context_users;
+ 	struct pci_doe_mb *doe_mb;
  };
- #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
+ 
+@@ -161,10 +143,14 @@ int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
+ void pci_tsm_pf0_destructor(struct pci_tsm_pf0 *tsm);
+ int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
+ 			 size_t req_sz, void *resp, size_t resp_sz);
+-int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id);
+-void pci_tsm_unbind(struct pci_dev *pdev);
+-void pci_tsm_tdi_constructor(struct pci_dev *pdev, struct pci_tdi *tdi,
+-			     struct kvm *kvm, u32 tdi_id);
++bool pci_tsm_is_configured(struct pci_dev *pdev);
++struct pci_tsm_context *pci_tsm_context_get(struct pci_dev *pdev,
++					    struct tsm_dev *viommu_tsm_dev);
++void pci_tsm_context_put(struct pci_tsm_context *context);
++struct pci_tsm_pf0 *pci_tsm_context_pf0(struct pci_tsm_context *context);
++struct pci_dev *pci_tsm_context_dsm_dev(struct pci_tsm_context *context);
++bool pci_tsm_context_match_device(struct pci_tsm_context *context,
++				  struct pci_dev *pdev);
+ #else
+ static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
+ {
+@@ -173,12 +159,39 @@ static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
+ static inline void pci_tsm_unregister(struct tsm_dev *tsm_dev)
+ {
+ }
+-static inline int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id)
 +
-+/**
-+ * struct iommu_vdevice_op - ioctl(IOMMU_VDEVICE_OP)
-+ * @size: sizeof(struct iommu_vdevice_op)
-+ * @vdevice_id: vDEVICE ID returned by IOMMU_VDEVICE_ALLOC
-+ * @op: Operation number; no operations are currently defined
-+ * @req_len: Size in bytes of the request at @req_uptr
-+ * @resp_len: Response buffer capacity in bytes on input; bytes written on success
-+ * @reserved: Must be zero
-+ * @req_uptr: Userspace pointer to the operation-specific request
-+ * @resp_uptr: Userspace pointer to the operation-specific response buffer
-+ *
-+ * Execute an operation on a vDEVICE. Each operation defines its request and
-+ * response formats. Requests may be extended by appending fields; bytes beyond
-+ * the kernel's supported request size must be zero. Response capacity must be
-+ * checked before changing device state. The ioctl returns 0 on success or a
-+ * negative error code.
-+ *
-+ * No operations are currently supported; the ioctl returns -EOPNOTSUPP.
-+ */
-+struct iommu_vdevice_op {
-+	__u32 size;
-+	__u32 vdevice_id;
-+	__u32 op;
-+	__u32 req_len;
-+	__u32 resp_len;
-+	__u32 reserved;
-+	__aligned_u64 req_uptr;
-+	__aligned_u64 resp_uptr;
-+};
++static inline bool pci_tsm_is_configured(struct pci_dev *pdev)
+ {
+-	return -ENXIO;
++	return false;
+ }
+-static inline void pci_tsm_unbind(struct pci_dev *pdev)
 +
-+#define IOMMU_VDEVICE_OP _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_OP)
++static inline struct pci_tsm_context *
++pci_tsm_context_get(struct pci_dev *pdev, struct tsm_dev *viommu_tsm_dev)
++{
++	return ERR_PTR(-EOPNOTSUPP);
++}
++
++static inline void pci_tsm_context_put(struct pci_tsm_context *context)
++{
++}
++
++static inline struct pci_tsm_pf0 *
++pci_tsm_context_pf0(struct pci_tsm_context *context)
++{
++	return NULL;
++}
++
++static inline struct pci_dev *
++pci_tsm_context_dsm_dev(struct pci_tsm_context *context)
++{
++	return NULL;
++}
++
++static inline bool
++pci_tsm_context_match_device(struct pci_tsm_context *context,
++			     struct pci_dev *pdev)
+ {
++	return false;
+ }
  #endif
+ #endif /*__PCI_TSM_H */
 -- 
 2.43.0
 
