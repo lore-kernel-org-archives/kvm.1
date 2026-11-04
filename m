@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.221
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.39
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793782140;
-	b=RDdbhuJovxtMwp8ue9ESGVwtvpsiB2Kf0jLcyaKWw5r6yWzMLcru+hOycFecvbEDbu3w
-	 dM5jw+7I0oGIs1e+MVxltSsE1Fmdbkb1a5cra4gbBrSbMMj8zNqT8672Xnc4fLzDMhRVu
-	 /lnNjClHRF7TmI1jBYYvy58TVYEAdGI6kHky9radRpS1HhwTEa0xrFr5KVb6pBj1YUCWc
-	 xwc8tvwO9SWYAioSJ4uL27blqeiW5PRiyTFRWWa9zAKesalB6buCYY0XqqPCcXxz8cxMN
-	 zNivh6XMcrpFV9M8ohmYdHUv28uCAWiUl8AwWHLRwshae9tle2AjPneh3MCNQijKIoA==
+	t=1793782141;
+	b=O/dnGUHcCM2Jwm5hkryE42KdQ9QnaG9qYhUe0NSyNoKAzdLgnRUzGFEwWO1vsDJJWoKK
+	 D48gPBQMsEUAiCCpyVHukqy5bv1vmD5Y8v5bVY4IUyPomOLuqTsnk87uK/gOXQ0TaMuPb
+	 wOA6ao5xwQPPkBru8aB8eQRlTSJwwq9Qb0WTxbuI5Ldzby9lD4qaZYjxjvrES1x4aMFlw
+	 AvXmjaG7N+mkldFkIyG6A72MssEk2NZF21cRGyUOU+PLzXK9NcgC0/5mhi9oiHp/62djK
+	 BePDPRYRcInCB3B7eV5DA/ObhML7vVttxfcLygqEdlss5cEvqqq1Ou4wwz9ejk0d1tw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793782140;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793782141;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=lHuHnqCqF6K6uaueK6Sr4c00lW3mD3+MLoiZXuZlni4=;
-	b=ghPPoookHFxX/0LXSXXtMwlfHm30fAQzpC4zNvQQErsIcTcRHFp3MfIEMv88xoT5l5wE
-	 n/p+wSO4IF8GQmUTa7fjPmtPTj3pnnnZ7V39Gd2VkmHZ7QXym6ZvB6k8vqI/6j/ZJ9i3v
-	 b3F6b80vMoPNprG5S3NVsmOVLsvs8cXKEavkAo1IULbU7UjXbu6nMNihPZwhuHCbBuc1C
-	 jFRxYiIMz0bK95h2lYv2F4QnS6nsc7Y7IvMD3CZpsOF+kgy9s7pv006Al6uZarGucBf7/
-	 6SEcvqql/CQ8xEFe0cOVPgwsI5MhkNgiEedmgZLMtQUBg4GanRCgrUKPDtYcwQOVkPQ==
+	bh=Wgtb9kfhJDQT6OIlDEFANW5PARd8orgbcoPjl6TcZEI=;
+	b=lB7d7Nw40ojo/Kaj8Tp8LvYY+I4a8YTmF13bqYaq81XcPFfiD8atnLW01N02JfSHtyWt
+	 mLst398eEjYHjH20skzo2kngHeLkNQxpjUgVydIK2nAaMYBpBLDZ0mz8bxRTGZFVHb9bM
+	 NFc0FiNEzOALQ4wT2wNCwN4w0hXjQW4i3o3yLQVeKFa7tgVb3/qcCNMcbkpINagPzuF5S
+	 xGyHMET1PsdlBZbdyKN7VKo83yJj6P520o+Gh8LXLuHtlz+onXIRSJbZVr4vFW2C6Ie0n
+	 Vn6f0jKd0ZEAh+Yh+AxwBpW766/I0njG5H/oa5oV/dACPAy01OBqZ6a7wb9pAyff0wQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=k8mGENjt;
-	arc=none smtp.remote-ip=91.218.175.221
-Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q0lFkMvJ;
+	arc=none smtp.remote-ip=95.215.58.39
+Received: from mta1.migadu.com (out-39.mta1.migadu.com [95.215.58.39])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A643606A328
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 08:48:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A643606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EE5606D801
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 08:49:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03EE5606D801
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=k8mGENjt
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q0lFkMvJ
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=cCLqiN/2yb0grwWK9kGanBFuqdVWEkSHBIBzeKIBjnY=;
+DKIM-Signature: a=rsa-sha256; bh=zy9OoZoEVLZKrHt/PA6PNvYObGqJuDPk1PHvlEStbBI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793782137; v=1; x=1794386937;
- b=k8mGENjt6dpqYvnBkvT/loF7Zxaf3ScEyYErTu3eE+QxXOcDNiFhEVco2fqWxrsACR0kKJa3
- 1R7OoXPvewqN2DBVVdOmm2wYkdK6PgiIcDMQ7W9OkmOD3cmvt0/KvI1IV8/toDTmyv/vBhvEU5i
- 9uav8D7+ZITB93Tnjtqs3nak=
+ t=1793782139; v=1; x=1794386939;
+ b=q0lFkMvJ6aldS90vGPX8Tae1McejmsXzlrjf3IcLe1lPgX422iXCunXCI26VYMDPQOUR5Gh4
+ rtcfT+rB+0SYffDNWlwahAWRYclzDTmXBA3zmFch3OLEhvvydC9wnrXaHsReMK6v68tqB6f8s4A
+ Jlz53TVC+NpFkWmEieQcwVl8=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id afd5417ac097421f;
-	Wed, 04 Nov 2026 08:48:57 +0000
-X-Mizu-Trace-ID: afd5417ac097421f
+Received: by smtp.migadu.com with ESMTPS id adf1661c24975b7e;
+	Wed, 04 Nov 2026 08:48:59 +0000
+X-Mizu-Trace-ID: adf1661c24975b7e
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -66,9 +66,9 @@ Cc: Will Deacon <will@kernel.org>,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 02/16] KVM: selftests: Allow arm64 tests to create protected VMs
-Date: Wed,  4 Nov 2026 08:48:28 +0000
-Message-ID: <20261104084842.132944-3-fuad.tabba@linux.dev>
+Subject: [PATCH 03/16] tools: arm-smccc: Add the pKVM memory sharing function IDs
+Date: Wed,  4 Nov 2026 08:48:29 +0000
+Message-ID: <20261104084842.132944-4-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261104084842.132944-1-fuad.tabba@linux.dev>
 References: <20261104084842.132944-1-fuad.tabba@linux.dev>
@@ -83,36 +83,59 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On arm64, the VM type passed to KVM_CREATE_VM carries the IPA size,
-which the selftest library fills in. The library rejects any type a test
-provides in vm_shape.type. A protected VM is created by setting
-KVM_VM_TYPE_ARM_PROTECTED in that type, so a test can't create one.
+The tools copy of arm-smccc.h lacks the pKVM guest hypercalls that the
+protected-VM selftests make.
 
-Accept KVM_VM_TYPE_ARM_PROTECTED from the test, and add the IPA size to
-it as for any other VM.
+The kernel's arm-smccc.h defines the vendor-hyp UID with UUID_INIT(),
+which requires linux/uuid.h, and tools doesn't have one. So rather than
+sync the whole header, copy the function numbers and IDs of HYP_MEMINFO,
+MEM_SHARE and MEM_UNSHARE from include/linux/arm-smccc.h.
 
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/include/linux/arm-smccc.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index d42e201eba763..96c1e70dba3d3 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -400,9 +400,10 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
- 	}
+diff --git a/tools/include/linux/arm-smccc.h b/tools/include/linux/arm-smccc.h
+index 63ce9bebccd32..8c8f4ad639018 100644
+--- a/tools/include/linux/arm-smccc.h
++++ b/tools/include/linux/arm-smccc.h
+@@ -111,6 +111,10 @@
+ /* KVM "vendor specific" services */
+ #define ARM_SMCCC_KVM_FUNC_FEATURES		0
+ #define ARM_SMCCC_KVM_FUNC_PTP			1
++/* Start of pKVM hypercall range */
++#define ARM_SMCCC_KVM_FUNC_HYP_MEMINFO		2
++#define ARM_SMCCC_KVM_FUNC_MEM_SHARE		3
++#define ARM_SMCCC_KVM_FUNC_MEM_UNSHARE		4
+ #define ARM_SMCCC_KVM_FUNC_FEATURES_2		127
+ #define ARM_SMCCC_KVM_NUM_FUNCS			128
  
- #ifdef __aarch64__
--	TEST_ASSERT(!vm->type, "ARM doesn't support test-provided types");
-+	TEST_ASSERT(!(vm->type & ~KVM_VM_TYPE_ARM_PROTECTED),
-+		    "ARM supports only KVM_VM_TYPE_ARM_PROTECTED as a test-provided type");
- 	if (vm->pa_bits != 40)
--		vm->type = KVM_VM_TYPE_ARM_IPA_SIZE(vm->pa_bits);
-+		vm->type |= KVM_VM_TYPE_ARM_IPA_SIZE(vm->pa_bits);
- #endif
+@@ -133,6 +137,24 @@
+ 			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
+ 			   ARM_SMCCC_KVM_FUNC_PTP)
  
- 	vm_open(vm);
++#define ARM_SMCCC_VENDOR_HYP_KVM_HYP_MEMINFO_FUNC_ID			\
++	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
++			   ARM_SMCCC_SMC_64,				\
++			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
++			   ARM_SMCCC_KVM_FUNC_HYP_MEMINFO)
++
++#define ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID			\
++	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
++			   ARM_SMCCC_SMC_64,				\
++			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
++			   ARM_SMCCC_KVM_FUNC_MEM_SHARE)
++
++#define ARM_SMCCC_VENDOR_HYP_KVM_MEM_UNSHARE_FUNC_ID			\
++	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
++			   ARM_SMCCC_SMC_64,				\
++			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
++			   ARM_SMCCC_KVM_FUNC_MEM_UNSHARE)
++
+ /* ptp_kvm counter type ID */
+ #define KVM_PTP_VIRT_COUNTER			0
+ #define KVM_PTP_PHYS_COUNTER			1
 -- 
 2.47.3
 
