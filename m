@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793809082;
-	b=KI+CWR/g6k71HxtoqTgXMQi7UZ4L1fltaEg5RyPeqnpGr9dkXEEtQtLvlNcodBv9yq6Q
-	 jk/8uZcq4Gy+ZeI0WQwl0xKo7MtJGCTma7qWikB4IZqzsg5zgkTW9QtwjfxbvNld96IoE
-	 KTw0P7NlHGiOTlLrOCHwssJSW5sRGx8y76fAer7/7+QEtuHItorzYAsiGPUXlvc+RqJfC
-	 gX61hH1e2bWggQN0ZHVFElI/9r5PSNZoqhqXHn5XU09VKe/s0UNE0JtTajl8vKNDSKEIe
-	 QD6ArQg1yNRLwthpjV3KHyeA5G/EIGxSGzQpWQe4dCcWLWQ67zuZC4J3FgWVOoY3I8A==
+	t=1793809101;
+	b=Xa0LQ7AiEeRl0B54NMzUFydnwF9i/hcBM4TiceBCUw5LLYQ+LwsmvGNqhTxRgMkPQrz3
+	 dFTqqW+oIYTpHYCBIdZuvA/Gm7myZ+2XlKAId/LALcW4UP6vnEW01MmAHXwVmql2jJgNi
+	 d6AFK8XkfY6XjAmHT2FJFz8TyXoqZZz983Xls7k6Xx08+pKx62sSygtFmYRUziEoqle4O
+	 BpkHDCAFdA4M8a/hIfU7AtmJR6+C1D+F2RaK6wGghZzfF5jeG/WhuaP7EcObwVsI+iuIQ
+	 MWwzH2XaYZiQm00MvFX0RvxqhtOk49jgkOVZhi+Fmc8vWhraCB9gOsl8ff0TNw9ueQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793809082;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793809101;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=/f1LcAxGZ5k1BEQm6UZwU+tsAlnjik5nw5Pm2FDN7hg=;
-	b=2tt3D9tVGkofIeA2EoSE4XDMVitnrJNFFRA50RqsK42+HecpTE3KldvdbAhBv0joAs7E
-	 N8p9JE0CzK3fEjlTN+cBSQa+TcWeJCopMuioN5V6XeGqVRjjYlWQI42vr4zXemW4wctXa
-	 nXdzELBnHarUY51cX/Y6Wl5zcgOhDd1kABGznuGR05ob2On+eCj1tTWwzPYQxdeCM+JRg
-	 3NmdtXRsYG/q2XDB0zQzdGV6kdII4xYQDM77ZFX0ZcUAEOj8u4lDtwjoAp/UoN6UvIXV0
-	 4Df/Mcoh8WAqHgjK4PUGJi7vpWyzLC/PcHcoB2S11nr3yaZgnHkti7YNAg352O/VMaA==
+	bh=v4eLBTIE0PrwMKmYvfQ7OJz6gyrp/0lltf8Tb/jDjzM=;
+	b=u7SdR32R0q4jwEz902Fq88tT+dtK83ftZFPF5QkYzXGtNgHrVK9HtOLkYvor0Rswrt5d
+	 kmHRLRpxoCEyz/B6FxHZMlinwGzCE+14rqNUu5t11W/m7Ahtc0SKhMCJRh3s1yt7iQJ0v
+	 engBEESO6o46AwBKDfYXEzIo1MJ8u9Y6hgHt80YbiXFNmcpW6IuCn25epmgi8AdGZhJ3s
+	 zzgDd7fa0a3+7vFSbR4/JO8a0Cs2HpS58vIVokLlWL+LTXAo82DbN3w3d78Qx7n1lkSdy
+	 lTxaBypC9krgqoBSwecn8PU0KbBXIBQexCh/oMaalZzzyIlxycgvNXih5kww+0qjnZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c6Y6Owlb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jv5SHSQJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2BC606D809;
-	Wed,  4 Nov 2026 16:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64325606A331;
+	Wed,  4 Nov 2026 16:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c6Y6Owlb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F4D1F00A15;
-	Wed,  4 Nov 2026 16:17:51 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jv5SHSQJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BB51F00A23;
+	Wed,  4 Nov 2026 16:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793809081;
-	bh=/f1LcAxGZ5k1BEQm6UZwU+tsAlnjik5nw5Pm2FDN7hg=;
+	s=k20260515; t=1793809101;
+	bh=v4eLBTIE0PrwMKmYvfQ7OJz6gyrp/0lltf8Tb/jDjzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c6Y6OwlboTn+mTB9qvAVKe0sIDapv7oSyuynqmDIbzugR+GnSyxwrkgR1bp445XIa
-	 WRz0q4vjTAnvgyy/rn0kEB49xRTFaWWi8UF+5ag5itjxmAd96n0jCW5ui8qcJE8yNC
-	 65tkqxVGDtt3n3ORY2YooiwldyhFVlEVlHgx8wCmD9m+6UIENgvZ50xEQG1odjkLfG
-	 iHx/E3WjmvJj9ffCvuCKazhhm1BjDY7gMf+jTwefDLz3xyhXAQ3Ld0tquiYjMdG1C4
-	 TP+TL6Bz+bW9AX7Q5X2LKx41dgXewvuPzYWN29XHJmCy+TrQ73eqb92o3nZi1t9tFm
-	 yqqT69LR6xnQQ==
+	b=jv5SHSQJgij06SsT4UlYod/ZruZyBGPEjDlNluT1/qzYmqIPtjkm2fDRR34XmDZn6
+	 pD1LtAuNH460X4qZWO3sySzb4NwXRh+vJIKE3aPtvmryjPTE1e3VjJv4Ca3VeX4+9r
+	 DVX+rUZNG0nF1pYxPfWgbHPTjXNNUU0weLFJrFhl6akpEzuWcLdOHTX8BS29WahUX/
+	 hZ0+YVZFKDqCXJH6U17HETEkqwzkpPCSpg1MIj7fqUSs2uu2p4nGz3sga4aTC33qUe
+	 UB2xVJXCl/iGfqHQsaedxDzpjK/8s6pa0zVGWKwX/yXsGuVliqVpqTmtvcHKr2X1c0
+	 5mm7bUsetBbyA==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: iommu@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -72,9 +72,9 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-pci@vger.kernel.org,
 	linux-tegra@vger.kernel.org,
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v8 07/15] iommufd/viommu: Keep a reference to the KVM file
-Date: Wed,  4 Nov 2026 21:46:24 +0530
-Message-ID: <20261104161632.3547423-8-aneesh.kumar@kernel.org>
+Subject: [PATCH v8 09/15] PCI/TSM: Remove the legacy guest request interface
+Date: Wed,  4 Nov 2026 21:46:26 +0530
+Message-ID: <20261104161632.3547423-10-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
 References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
@@ -89,91 +89,207 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+Guest TSM requests can now be dispatched through the IOMMUFD
+IOMMU_VDEVICE_OP ioctl. Remove the PCI-device-based guest request entry
+point, its scope enum and the corresponding PCI/TSM driver callback.
 
-The TSM vDevice operations need access to the KVM associated with the
-device's vIOMMU. Save the device's KVM file in the iommufd_viommu when the
-vIOMMU is allocated, and take a file reference so it remains valid for the
-lifetime of the vIOMMU.
 
-Release the reference when the vIOMMU is destroyed.
-
-Reject vdevice allocation when the device's KVM association differs from
-the vIOMMU's, including when only one has a KVM association. Allow
-allocation when both associations are NULL.
-
-Based on an original patch by
-Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-
-[nicolinc: hold kvm's users_count]
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-[aneesh.kumar: Switch to use kvm_file]
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Kevin Tian <kevin.tian@intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-pci@vger.kernel.org
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- drivers/iommu/iommufd/viommu.c | 10 ++++++++++
- include/linux/iommufd.h        |  1 +
- 2 files changed, 11 insertions(+)
+ drivers/pci/tsm/core.c  | 60 ----------------------------------------
+ include/linux/pci-tsm.h | 61 +----------------------------------------
+ 2 files changed, 1 insertion(+), 120 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-index f7951057a1e5..0dbd382eeb98 100644
---- a/drivers/iommu/iommufd/viommu.c
-+++ b/drivers/iommu/iommufd/viommu.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /* Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
-  */
-+#include <linux/file.h>
- #include "iommufd_private.h"
+diff --git a/drivers/pci/tsm/core.c b/drivers/pci/tsm/core.c
+index 76ef03a1b3ec..24d4dd4f1b96 100644
+--- a/drivers/pci/tsm/core.c
++++ b/drivers/pci/tsm/core.c
+@@ -375,66 +375,6 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
+ }
+ EXPORT_SYMBOL_GPL(pci_tsm_bind);
  
- void iommufd_viommu_destroy(struct iommufd_object *obj)
-@@ -11,6 +12,8 @@ void iommufd_viommu_destroy(struct iommufd_object *obj)
- 	if (viommu->ops && viommu->ops->destroy)
- 		viommu->ops->destroy(viommu);
- 	refcount_dec(&viommu->hwpt->common.obj.users);
-+	if (viommu->kvm_file)
-+		fput(viommu->kvm_file);
- 	xa_destroy(&viommu->vdevs);
+-/**
+- * pci_tsm_guest_req() - helper to marshal guest requests to the TSM driver
+- * @pdev: @pdev representing a bound tdi
+- * @scope: caller asserts this passthrough request is limited to TDISP operations
+- * @req_in: Input payload forwarded from the guest
+- * @in_len: Length of @req_in
+- * @req_out: Output payload buffer response to the guest
+- * @out_len: Length of @req_out on input, bytes filled in @req_out on output
+- * @tsm_code: Optional TSM arch specific result code for the guest TSM
+- *
+- * This is a common entry point for requests triggered by userspace KVM-exit
+- * service handlers responding to TDI information or state change requests. The
+- * scope parameter limits requests to TDISP state management, or limited debug.
+- * This path is only suitable for commands and results that are the host kernel
+- * has no use, the host is only facilitating guest to TSM communication.
+- *
+- * Returns 0 on success and -error on failure and positive "residue" on success
+- * but @req_out is filled with less then @out_len, or @req_out is NULL and a
+- * residue number of bytes were not consumed from @req_in.  On success or
+- * failure @tsm_code may be populated with a TSM implementation specific result
+- * code for the guest to consume.
+- *
+- * Context: Caller is responsible for calling this within the pci_tsm_bind()
+- * state of the TDI.
+- */
+-ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
+-			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
+-			  size_t out_len, u64 *tsm_code)
+-{
+-	struct pci_tsm_pf0 *tsm_pf0;
+-	struct pci_tdi *tdi;
+-	int rc;
+-
+-	/* Forbid requests that are not directly related to TDISP operations */
+-	if (scope > PCI_TSM_REQ_STATE_CHANGE)
+-		return -EINVAL;
+-
+-	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
+-	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &lock)))
+-		return rc;
+-
+-	if (!pdev->tsm)
+-		return -ENXIO;
+-
+-	if (!is_link_tsm(pdev->tsm->tsm_dev))
+-		return -ENXIO;
+-
+-	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
+-	ACQUIRE(mutex_intr, ops_lock)(&tsm_pf0->lock);
+-	if ((rc = ACQUIRE_ERR(mutex_intr, &ops_lock)))
+-		return rc;
+-
+-	tdi = pdev->tsm->tdi;
+-	if (!tdi)
+-		return -ENXIO;
+-	return to_pci_tsm_ops(pdev->tsm)->guest_req(tdi, scope, req_in, in_len,
+-						    req_out, out_len, tsm_code);
+-}
+-EXPORT_SYMBOL_GPL(pci_tsm_guest_req);
+-
+ static void pci_tsm_unbind_all(struct pci_dev *pdev)
+ {
+ 	pci_tsm_walk_fns_reverse(pdev, __pci_tsm_unbind, NULL);
+diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+index a6435aba03f9..6fe3d0ea875f 100644
+--- a/include/linux/pci-tsm.h
++++ b/include/linux/pci-tsm.h
+@@ -3,12 +3,10 @@
+ #define __PCI_TSM_H
+ #include <linux/mutex.h>
+ #include <linux/pci.h>
+-#include <linux/sockptr.h>
+ 
+ struct pci_tsm;
+ struct tsm_dev;
+ struct kvm;
+-enum pci_tsm_req_scope;
+ 
+ /*
+  * struct pci_tsm_ops - manage confidential links and security state
+@@ -34,14 +32,13 @@ struct pci_tsm_ops {
+ 	 * @disconnect: teardown the secure link
+ 	 * @bind: bind a TDI in preparation for it to be accepted by a TVM
+ 	 * @unbind: remove a TDI from secure operation with a TVM
+-	 * @guest_req: marshal TVM information and state change requests
+ 	 *
+ 	 * Context: @probe, @remove, @connect, and @disconnect run under
+ 	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
+ 	 * mutual exclusion of @connect and @disconnect. @connect and
+ 	 * @disconnect additionally run under the DSM lock (struct
+ 	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
+-	 * @bind, @unbind, and @guest_req run under pci_tsm_rwsem held for read
++	 * @bind and @unbind run under pci_tsm_rwsem held for read
+ 	 * and the DSM lock.
+ 	 */
+ 	struct_group_tagged(pci_tsm_link_ops, link_ops,
+@@ -53,11 +50,6 @@ struct pci_tsm_ops {
+ 		struct pci_tdi *(*bind)(struct pci_dev *pdev,
+ 					struct kvm *kvm, u32 tdi_id);
+ 		void (*unbind)(struct pci_tdi *tdi);
+-		ssize_t (*guest_req)(struct pci_tdi *tdi,
+-				     enum pci_tsm_req_scope scope,
+-				     sockptr_t req_in, size_t in_len,
+-				     sockptr_t req_out, size_t out_len,
+-				     u64 *tsm_code);
+ 	);
+ 
+ 	/*
+@@ -159,46 +151,6 @@ static inline bool is_pci_tsm_pf0(struct pci_dev *pdev)
+ 	return PCI_FUNC(pdev->devfn) == 0;
  }
  
-@@ -82,6 +85,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
- 	}
- 
- 	xa_init(&viommu->vdevs);
-+	if (idev->kvm_file)
-+		viommu->kvm_file = get_file(idev->kvm_file);
- 	viommu->type = cmd->type;
- 	viommu->ictx = ucmd->ictx;
- 	viommu->hwpt = hwpt_paging;
-@@ -171,6 +176,11 @@ int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd)
- 		goto out_put_viommu;
- 	}
- 
-+	if (idev->kvm_file != viommu->kvm_file) {
-+		rc = -EINVAL;
-+		goto out_put_idev;
-+	}
-+
- 	iommu_dev = iommufd_device_get_iommu_dev(idev);
- 	if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
- 		rc = -EINVAL;
-diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
-index b03ce0187454..c15d80f611b9 100644
---- a/include/linux/iommufd.h
-+++ b/include/linux/iommufd.h
-@@ -103,6 +103,7 @@ struct iommufd_viommu {
- 	struct iommufd_ctx *ictx;
- 	struct iommu_device *iommu_dev;
- 	struct iommufd_hwpt_paging *hwpt;
-+	struct file *kvm_file;
- 
- 	const struct iommufd_viommu_ops *ops;
- 
+-/**
+- * enum pci_tsm_req_scope - Scope of guest requests to be validated by TSM
+- *
+- * Guest requests are a transport for a TVM to communicate with a TSM + DSM for
+- * a given TDI. A TSM driver is responsible for maintaining the kernel security
+- * model and limit commands that may affect the host, or are otherwise outside
+- * the typical TDISP operational model.
+- */
+-enum pci_tsm_req_scope {
+-	/**
+-	 * @PCI_TSM_REQ_INFO: Read-only, without side effects, request for
+-	 * typical TDISP collateral information like Device Interface Reports.
+-	 * No device secrets are permitted, and no device state is changed.
+-	 */
+-	PCI_TSM_REQ_INFO = 0,
+-	/**
+-	 * @PCI_TSM_REQ_STATE_CHANGE: Request to change the TDISP state from
+-	 * UNLOCKED->LOCKED, LOCKED->RUN, or other architecture specific state
+-	 * changes to support those transitions for a TDI. No other (unrelated
+-	 * to TDISP) device / host state, configuration, or data change is
+-	 * permitted.
+-	 */
+-	PCI_TSM_REQ_STATE_CHANGE = 1,
+-	/**
+-	 * @PCI_TSM_REQ_DEBUG_READ: Read-only request for debug information
+-	 *
+-	 * A method to facilitate TVM information retrieval outside of typical
+-	 * TDISP operational requirements. No device secrets are permitted.
+-	 */
+-	PCI_TSM_REQ_DEBUG_READ = 2,
+-	/**
+-	 * @PCI_TSM_REQ_DEBUG_WRITE: Device state changes for debug purposes
+-	 *
+-	 * The request may affect the operational state of the device outside of
+-	 * the TDISP operational model. If allowed, requires CAP_SYS_RAW_IO, and
+-	 * will taint the kernel.
+-	 */
+-	PCI_TSM_REQ_DEBUG_WRITE = 3,
+-};
+-
+ #ifdef CONFIG_PCI_TSM
+ int pci_tsm_register(struct tsm_dev *tsm_dev);
+ void pci_tsm_unregister(struct tsm_dev *tsm_dev);
+@@ -213,9 +165,6 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id);
+ void pci_tsm_unbind(struct pci_dev *pdev);
+ void pci_tsm_tdi_constructor(struct pci_dev *pdev, struct pci_tdi *tdi,
+ 			     struct kvm *kvm, u32 tdi_id);
+-ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
+-			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
+-			  size_t out_len, u64 *tsm_code);
+ #else
+ static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
+ {
+@@ -231,13 +180,5 @@ static inline int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id
+ static inline void pci_tsm_unbind(struct pci_dev *pdev)
+ {
+ }
+-static inline ssize_t pci_tsm_guest_req(struct pci_dev *pdev,
+-					enum pci_tsm_req_scope scope,
+-					sockptr_t req_in, size_t in_len,
+-					sockptr_t req_out, size_t out_len,
+-					u64 *tsm_code)
+-{
+-	return -ENXIO;
+-}
+ #endif
+ #endif /*__PCI_TSM_H */
 -- 
 2.43.0
 
