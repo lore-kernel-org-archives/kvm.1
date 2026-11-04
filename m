@@ -1,68 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793805601;
-	b=AVZxxNXrvVVwUsdUcA+O99aEtWAYRSx+PnzxLzbJfm6AOW2EiR9R7VhvEKmYpb0YyOCo
-	 1zZk0I34EaFUTaZzgNraKhz63pbAbH92dzaLeDVEf14GpIcBaOpPBusMql5fIK/XyVPoD
-	 AUkePnqkY5Ehs1/qphzmWmOBxRBib5Xj9k8bTaVqMTvfPNUMXEnIM5HQLWGZStPT5cLSZ
-	 Zv996FqY9qrx4FjgK/Q1NsXMeI4nYl6cEY1HU2SMfLnbtQqkYTM/TVpWN0GaEd88OFhUC
-	 FyzdDucjPlMPWD8qV58sgWxFLSAQEZnruhf7M5pxntbWATOKofcY/MZ7WXAILkT3tgw==
+	t=1793806727;
+	b=tNMNT1fKsR++l7dqlfHAF3zdsHAaxt0NzStT6tzeyhR7iOI/qCguihnBJMXr+gheSkET
+	 NVAaq84yLVK0itJGHHPILeJjwl4RPIej5r6qHvGRnJAHGe4HQpDlnLNEcMLGUa/y6bEwB
+	 zCQ53alYGMQGvA+Gp0Wn2cQ4Tr11f/B94mSNzlkmaQAU9PHSTjhkxohq6SFthpGY+QmLq
+	 6bV6Jjlc7r7QIR8FwpVEr0CW/aULewXNALaEGxbUV7+rVf/vJOiK7bfE6VXbAH+FkD4nH
+	 5PFcO5bQGi4MSglbjpTbmaEXDpn+5bIRr25VVSywSqiuXXF4FYBy5CUy0h2LxJkWClA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793805601;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=sQJfLyQzxTgltNdCGCLoY8dC0UuRGGX7WaXv/CVim2k=;
-	b=mFaP7Nwn+CA4G0b0VH0rIfQUD7h2MdvYH5AVFzCl1IHEsC/jJyyHSDSOkABvOSsA1Cfe
-	 RHVkP1qUn23uFPAEiYnqeZKCF8Z/cY4zP/Z2hWTrG2ORRjpdzgNt6X3id+CcnZipGcpH0
-	 3X2KzGiozmpO5iFN8ba/wzFeL9fPoJEqXBg6AOy8Te1L0w+RVLD8LyRJAJ9AHop1Iu62i
-	 jkINUcaHIY3oOIutbQBMEWZmrfL1Gx9IU8h1epHeNP9ln7hfxqrQCFj32fjZDk7YDbwIG
-	 HD4T/9U71T3QQlperhXRlSNsbuyVEO8TVUi6V56poZi8a01Vl+i067cLgA/9cCnipxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793806727;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=BgXz8h+/nQ9U/ZFrmreR3nTmSbeRNY7GAtat9khBnZw=;
+	b=lXBYuHoadiAHTdPdLkgXJ4sAhAWJkeb126T12Whrz7X/OCCgJF5U496gLaAY+KGKJ5mO
+	 cRVOzSjXzAdQI+czmRMwlkFfBppqvJ9i9j53WMwj4VjxC97N3c1aU1dbUpPmwqUrt0lLF
+	 YGnOrsQTCZ2bjYNoVL7qTkUpDnoZr/ADoM/Y6qHIB6h6SEnu2o/+OFqe6VS1cSh1sPb6d
+	 HtWJJftDObmsQzsNGK/H56Rbz96Rh93FgZZXL7iQZLVlbkxYWooCIG2m15wtkI6kanqbd
+	 qqBb3Usjad3hSn84LjdTX5zJqXwWQTQICsTypsE/38Yks+Emdk7A60VuPgNU2jPqOxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="mtcn/p5n";
-	arc=none smtp.remote-ip=198.175.65.14
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="k60/cWcu";
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87776082BE7;
-	Wed,  4 Nov 2026 15:19:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D87776082BE7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CC96083636
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 15:38:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38CC96083636
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mtcn/p5n
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793805600; x=1825341600;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VRitswM6EnswGaj+ZpC1cTr4Nyj2vom0BR4pl7bFx/s=;
-  b=mtcn/p5nY/Gn+QCqsndzKGuBmpRRneKSSCA5Fn9lfJVxUHOUPQEqvr8g
-   OeRijjRzIHLrK4U1rMwVb30E/KjjOSyNM60MkpWIcd3mfOSlwCGBF3s2F
-   iBlVhQZy/HlEXLcmXdZcugM44PEmE0F4xOx+U/Iow0H8RB7+4n4r0JuYK
-   q6A/PwJ3+viK8cGwWxGTiWv7MbLnGm88/5f2q2JlDoS1UOxBsTeCJrppZ
-   xMFAyBb4XD9DbRd5es3F9fUwzqIVYNWqe11oHyLNCS3hIADN4g96Fwjol
-   8DhqJptjn+8Y0pN3slfcHS8OQdHxIPU4CyrpVBvvrhmyhgQnp+uuARd4j
-   Q==;
-X-CSE-ConnectionGUID: rayA/blwQ/SIQ8dkHcgs1w==
-X-CSE-MsgGUID: eB2EP2WhTFmXpVzkAIXI8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2451211"
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2451211"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 07:20:00 -0800
-X-CSE-ConnectionGUID: yc4EIq36T0K7t95NHNVq7g==
-X-CSE-MsgGUID: gvJweND8S7KvSNvY1UPqaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="6605792"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 07:19:58 -0800
-Message-ID: <d97ab0ff-a6a5-408b-b2be-78d9c3352dc6@intel.com>
-Date: Wed, 4 Nov 2026 09:19:57 -0600
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=k60/cWcu
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ac76132001so730521a91.0
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 07:38:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793806726; x=1794411526; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BgXz8h+/nQ9U/ZFrmreR3nTmSbeRNY7GAtat9khBnZw=;
+        b=k60/cWcu0pkGc7cd1FnzHVa4LKXDGgriJrIpz1RFwsEIJOnw5JFHmCUyNY0IOHskiZ
+         bartBh1Ruag9njIoguxRQCRQqBZQBg2lwfP6pCE/RGNCFlRFdcsH7YnkSoh332dXiqSC
+         4kbSa7ySDV3T3LRz20vpcFwFraHll8xZ5FDqQe5Q5ADOQW0Wyq70+MF+Y8njcwlUa3/y
+         4oZMutPoVESQuQfvz1SSB9ZoBciidOm2pq3RdgJnNQQLN61QxmRmFdyKEcpQ1ZWIIP5E
+         9sXwEOYyQBagULkULsPq/YttZCiZkM3zuFQUT5DT96+KBqE1/VGvmfO+QisrcDSJsJ6m
+         YZFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793806726; x=1794411526;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BgXz8h+/nQ9U/ZFrmreR3nTmSbeRNY7GAtat9khBnZw=;
+        b=VV1CJTVcii4eusIioxM5holln01wwXITnqnikpQ4SOMdx2Yr7M9zQK/WVa1EXTX7SS
+         vqy+uDrs+uFnt8jkeED4vO2MDDOnh7uE5bvYdKX2khvLf+K1H7U8KLMcSAf41TUjEK9o
+         faHHPnyFEwrbsPp93UBwHqm0BO1xhmq/qWkIak8uvr+mMApDWkB0ZM2SnLItk19Kys9q
+         ODPYNRwgA1eezaULrXsBbHAEtg+RSDoODqz8xAwsPO7mJdaNtErqCRt67mi9HK18Yrk5
+         t7vbQiQp6OaWFEAE7OPCMO71NS0dAMVy7NhAsuS+/R3qsdDCt7Hl9AUy+TnmpUd+HxnF
+         v+rA==
+X-Forwarded-Encrypted: i=1; AKwUvBx+4gw8u3ytawGUhE2sMc6253FkQErgpHwJBCrNxK703NvX4kzBGvZoyIx6b8aC+xoQun4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/gw4AQxFwYrNa0ARGRh0Tbkb9KoBaimlDFXjNanclNf3+CR+WP
+	A+aAYgROEufv3asMe8Acr/OeXq9oMi/hHmqXgCOFPq4n3jjPgzqYE7hWlizvmk+ChyfAHSd2p0E
+	pRjWvyw==
+X-Received: from pjbnc12.prod.google.com ([2002:a17:90b:37cc:b0:3ab:5803:73a5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3806:b0:39d:f08e:e6e7
+ with SMTP id 98e67ed59e1d1-3ae89574d67mr12860378a91.9.1793806726299; Wed, 04
+ Nov 2026 07:38:46 -0800 (PST)
+Date: Wed, 4 Nov 2026 07:38:45 -0800
+In-Reply-To: <7ba2ca65-1eab-40fd-ae4c-f7cd9e156d8c@suse.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,137 +79,148 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/16] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
- GLOBAL_INUSE MSRs
-To: Jim Mattson <jmattson@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260827223755.143247-1-zide.chen@intel.com>
- <20260827223755.143247-12-zide.chen@intel.com>
- <CALMp9eRvQ+iQdw_dWPLqZCrO7zpLut+O27pb-EPNa33hkegaBw@mail.gmail.com>
- <auUQgRVFASkWtkoK@google.com>
- <3276824d-f6a0-455a-bf0c-703fc6d52cf1@intel.com>
- <CALMp9eTiAMLsH7cO9Mc982WwDTAFcYOua+32Ykpj3gR_Oscfww@mail.gmail.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CALMp9eTiAMLsH7cO9Mc982WwDTAFcYOua+32Ykpj3gR_Oscfww@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261029143336.390231-3-clopez@suse.de> <20261029175203.5bdd51d7@p-imbrenda>
+ <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de> <20261030133939.630e29af@p-imbrenda>
+ <auis0SaMkRB6odsK@google.com> <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
+ <aun3w8gxwlmRy-GW@google.com> <7ba2ca65-1eab-40fd-ae4c-f7cd9e156d8c@suse.de>
+Message-ID: <autRhZjOfLyw2OXo@google.com>
+Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
+ permission upgrade
+From: Sean Christopherson <seanjc@google.com>
+To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	pbonzini@redhat.com, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Nov 04, 2026, Carlos L=C3=B3pez wrote:
+> On 11/3/26 4:03 PM, Sean Christopherson wrote:
+> > On Tue, Nov 03, 2026, Carlos L=C3=B3pez wrote:
+> >> On 11/2/26 4:31 PM, Sean Christopherson wrote:
+> >>> On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
+> >>>> On Fri, 30 Oct 2026 12:11:07 +0100
+> >>>> Carlos L=C3=B3pez <clopez@suse.de> wrote:
+> >>>>
+> >>>> [...]
+> >>>>
+> >>>>>> regarding this series:
+> >>>>>>
+> >>>>>> on x86 you don't care what the new permissions are, because you're
+> >>>>>> updating when re-faulting (if I understood correctly). =20
+> >>>>>
+> >>>>> Correct.
+> >>>>>
+> >>>>>> for s390 it might be beneficial to know what the new permissions a=
+re;
+> >>>>>> of course we could look up the vma and find out, but since you are
+> >>>>>> already checking the permissions, maybe you can find a way to also
+> >>>>>> convey the new permission bits?
+> >>>>>>
+> >>>>>> that would make our life on s390 easier :) =20
+> >>>>>
+> >>>>> Right, getting the new bits from vma->flags should be trivially don=
+e
+> >>>>> from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users i=
+n
+> >>>>> this series though.  The rest of architectures still need the notif=
+ier to
+> >>>>> tell them if the change is an upgrade, since they don't have an eas=
+y way
+> >>>>> to grab the old RWX bits. Passing the old RWX bits from the MMU not=
+ifier
+> >>>>> does not seem trivial to me either.
+> >>>
+> >>> But why is core MM even doing mmu_notifier_invalidate_range_{start,en=
+d}() in the
+> >>> first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just ski=
+p the
+> >>> "invalidation".
+> >>
+> >> I briefly mention this in the cover letter, but in short, denying othe=
+r
+> >> users the notification seems like an overly intrusive change for KVM's
+> >> benefit.=20
+> >=20
+> > There are all of two other users:
+> >=20
+> >   $ git grep -w "\.invalidate_range_start"
+> >   drivers/gpu/drm/nouveau/nouveau_svm.c:  .invalidate_range_start =3D n=
+ouveau_svmm_invalidate_range_start,
+> >   drivers/infiniband/hw/hfi1/mmu_rb.c:    .invalidate_range_start =3D m=
+mu_notifier_range_start,
+> >   virt/kvm/kvm_main.c:    .invalidate_range_start =3D kvm_mmu_notifier_=
+invalidate_range_start,
+> >=20
+> > and AFAICT neither of them wants an invalidation even for protection up=
+grades
+> > either.
+>=20
+> There are more users that register for notifications via
 
+Ugh, I didn't realize we gained a variant of .invalidate_range_{start,end}(=
+),
+I thought those were for what is now arch_invalidate_secondary_tlbs().
 
-On 11/2/2026 12:32 PM, Jim Mattson wrote:
-> On Mon, Nov 2, 2026 at 9:38 AM Chen, Zide <zide.chen@intel.com> wrote:
->>
->>
->>
->> On 10/30/2026 5:13 PM, Yosry Ahmed wrote:
->>>>> @@ -865,6 +867,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>>>>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
->>>>>         case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
->>>>>         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
->>>>> +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
->>>>>                 msr_info->data = 0;
->>>>>                 break;
->>>>>         default:
->>>>> @@ -931,6 +934,12 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>>>>                 if (!msr_info->host_initiated)
->>>>>                         pmu->global_status &= ~data;
->>>>>                 break;
->>>>> +       case MSR_CORE_PERF_GLOBAL_STATUS_SET:
->>>>> +               if (data & pmu->global_status_rsvd)
->>>>> +                       return 1;
->>>>> +               if (!msr_info->host_initiated)
->>>>> +                       pmu->global_status |= data;
->>>>> +               break;
->>>>
->>>> According to Intel SDM Vol. 4, Table 2-2 ("IA-32 Architectural MSRs"),
->>>> IA32_PERF_GLOBAL_STATUS.CondChgd[bit 63] cannot be set by writing to
->>>> IA32_PERF_GLOBAL_STATUS_SET, because IA32_PERF_GLOBAL_STATUS_SET[bit 63] is
->>>> reserved.  In other words, it is not possible to save/restore
->>>> IA32_PERF_GLOBAL_STATUS when bit 63 is set.
->>>>
->>>> Because bit 63 is clear in pmu->global_status_rsvd:
->>>>
->>>> 1. An intercepted guest WRMSR(MSR_CORE_PERF_GLOBAL_STATUS_SET, BIT_ULL(63))
->>>>    succeeds instead of injecting #GP(0) and sets bit 63 in
->>>>    pmu->global_status.
->>>> 2. When bit 63 is set in pmu->global_status (whether it was set by
->>>>    kvm_pmu_set_msr() or by intel_mediated_pmu_put()), the next
->>>>    intel_mediated_pmu_load() will try to write an illegal value to
->>>>    MSR_CORE_PERF_GLOBAL_STATUS_SET. I don't think we get a #GP, because
->>>>    every wrmsr is "safe" these days, but the write will be ignored.
->>>
->>> On SPR, it does produce a #GP that gets ignored (and logged) and the bit
->>> is not set.  Interestingly, on CLX, the write goes through and the bit
->>> is set. Didn't check other CPUs.
->>
->> Good catch! I tested a few more CPUs (DMR/CWF/SRF/GNR/NVL/LNL), and all
->> of them #GP on writes that set bit 63.
->>
->> However, SKX, CLX, and ICX accept writes with bit 63 set and do not
->> generate #GP. On those systems, bit 63 also becomes visible when reading
->> back GLOBAL_STATUS. This behavior is documented in their errata:
->>
->> SKX95/CLX89/ICX166. Bit 63 of IA32_PERF_GLOBAL_STATUS_SET MSR (391H) is
->> reserved. Due to this erratum, setting the bit will not result in #GP.
->>
->> SKX:
->> https://cdrdv2-public.intel.com/336065/336065_Intel%20Xeon%20Processor%20Scalable%20Family%20Public%20Specification%20Update_rev17.pdf
->>
->> CLX:
->> https://cdrdv2-public.intel.com/338848/338848_2nd%20Gen%20Intel%C2%AE%20Xeon%C2%AE%20Scalable%20Processors%20Specification%20Update_Rev028US.pdf
->>
->> ICX:
->> https://cdrdv2-public.intel.com/637780/637780_3rd_Gen_Xeon_Scalable_Spec_Update_026US.pdf
->>
->> Given that SKX95/CLX89/ICX166 document this behavior as an erratum,
->> while SPR and newer CPUs appear to follow the SDM and #GP, should KVM
->> continue to inject #GP for writes that set bit 63?
-> 
-> Ugh. It seems like we have two options, neither of them all that appealing.
-> 
-> 1. KVM fixes the errata and raises #GP. To ensure consistency, KVM
-> always intercepts the MSR on affected CPUs.
-> 2. KVM mimics the errata and allows writes to bit 63 when virtualizing
-> affected CPUs. This allows the MSR to be passed through, unless an
-> unaffected CPU masquerades as an affected one.
-> 
-> Sean? WDYT?
+> mmu_interval_notifier_insert():
+>=20
+>   $ git grep -l -e "mmu_interval_notifier_insert(" \
+>           -e "mmu_interval_notifier_insert_locked(" -- drivers/ | wc -l
+>   12
+>=20
+> I haven't audited all of them, but I'd say that at least amdkfd relies
+> on the invalidation for upgrades. Without XNACK, GPU page faults are not
+> retried, so the driver maps ranges up front with the VMA permissions
+> (svm_range_validate_and_map()) and relies on an invalidation to remap
+> them when those change. So mprotect(PROT_READ) followed by
+> mprotect(PROT_READ|PROT_WRITE) would cause the GPU mapping to stay
+> read-only and the next GPU write to fault. Unlike the APIC access page,
+> this is the application's own memory, mprotect() should be perfectly vali=
+d.
+>=20
+> This is the kind of subtle reliance that I mentioned before, and why I'd
+> rather not open that can of worms.
 
-After looking into this more closely, I think KVM should simply reject
-guest writes to bit 63 (CondChgd).
+Yeah, agreed.
 
-In platform-specific documentation (EDS for SPR, ICX, DMR, PTL, etc.),
-this bit is explicitly described as: "Set in case of a change to
-IA32_MISC_ENABLES.PERFMON_AVAILABLE (bit 7)", clarifying the SDM
-wording "changes to the state of performance monitoring hardware", or
-"CondChgd: Status bits of this register have changed.".
+> >> A flag allows users to opt in instead.
+> >>
+> >> It is also not clear to me that secondary MMUs are not relying on the
+> >> notification in some subtle way. In fact, Sashiko points out in reply =
+to
+> >> patch 4 that the notification lets KVM retry the APIC access page relo=
+ad
+> >> in case userspace shoots itself in the foot by calling
+> >> mprotect(PROT_READ) on it. This would require a really weird VMM,
+> >=20
+> > s/weird/misbehaving
+> >=20
+> >> as it would need to go looking for the page's address, but breaking th=
+is
+> >> would be a "regression" nonetheless. I will address this in v2.
+> >=20
+> > Nah, there's zero chance any real VMM is doing mprotect() on the APIC a=
+ccess page.
+> >=20
+> > More importantly, doing nothing if updating the mapping fails and APICv=
+ is enabled
+> > is wrong.  KVM needs to ensure vmcs.APIC_ACCESS_ADDR is fresh when runn=
+ing a vCPU
+> > with APICv enabled, even if that means putting the vCPU into an infinit=
+e loop.
+> > VMX doesn't support "inhibiting" the APIC access page, i.e. the memslot=
+ can't
+> > disappear while the VM is alive, and if userspace mucks with the VMA, t=
+hen KVM
+> > needs to prevent running the vCPU until the mapping is restored, irresp=
+ective of
+> > mmu_notifiers.
+>=20
+> Fair point. Should I just carry the diff below in v2 with your
+> Signed-off-by?
 
-This is also consistent with my testing, where I was unable to trigger
-CondChgd on the host while exercising other PMU functionality that sets
-GLOBAL_STATUS bits.
+Nah, I'll send a standalone patch.  It doesn't have a direct relationship t=
+o your
+series, and the bug is pre-existing despite what Sashiko thinks.
 
-Since IA32_MISC_ENABLE is intercepted by KVM and is read-only for the
-guest, CondChgd should never be set on GLOBAL_STATUS in the guest.
-
-KVM cannot preserve this bit on GLOBAL_STATUS across vPMU context
-switches, since it cannot be restored through GLOBAL_STATUS_SET.
-That is fine, however, since CondChgd is not set on the guest.
-
-BTW, the history on early CPUs is somewhat messy. As mentioned earlier,
-some CPUs have errata that accept writing to bit 63 without #GP
-(SKX95, CLX89, CPX89, ICX166, ICL019, etc.). Additionally, the reset
-value of this bit is not consistent on some early CPUs, as noted in
-commit b292d7a10487 ("perf/x86/intel: ignore CondChgd bit to avoid
-false NMI handling").
-
-I'd suggest splitting this into two separate patches: one patch
-to emulate each MSR, for clarity.
+Thanks!
