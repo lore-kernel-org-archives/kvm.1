@@ -1,74 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793753267;
-	b=nCILuSUYQhcqCKDq6ibSObeXUqhRqJpKWZAvqjVWE6viQO66S/DInAJMnnrFAYAsZGS0
-	 a7lK0bAhmY/xVSfau5kG1DXQ3VafKafVYVgQnRMnmPDZtzA4RW6nlD0a3/YXulRVUNuzk
-	 lwf7nrVwoBb8sbJcLt0gsklB3S4w1lORD2nAF3NlCWaw63UtQrKrpo3YZKW7oylhRwdJd
-	 g01dsUtAUswdmkxKYgEcfvvkyiPfvZQtZLkteNAyiWdbIP83wYLgoTOUIhGLSalW4fATO
-	 zmLa3ZJQzb11H7od/Sy6QemvuCgjSh29zintfLVbRkUFidyXiGlJQsrmWdxykhxYCqw==
+	t=1793753614;
+	b=oxqZnjc8zHv/XEvZP7eUVc3kg94OtYS3esY5o4I8y3o2ydA9N/Ada/k1lqC8f05m0I5e
+	 i2sy2+lbSWbXyLDCopaFZVUPcygLbgcPB30IFDaALAJss9NE+LYPX5M3WFP26dWTiUZFs
+	 CZJfWPc0Q1diR5knhmvRFuOYUKhPShrLYJ8AKtceejR4xGgsIsRFnijWsMU3iqmKPDFgg
+	 KkGIJnxxaUsB7EMdBxSy4S3G3qyyk95NikeCMwrIOHdlkV7EF5ddcznLLFQv7hiYmh+PX
+	 T208u5CnU2qZBr1/APvbPweH0WlHE/k/powimByr/HhzblsgBETy+OlWaqnCM41R1FA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793753267;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793753614;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=Ma0BJNPiyw5G435eYcqXLhH2XcRvaZWBudt7erlHK0w=;
-	b=tdCr62yeU3zzNZYvbzw/nvdpfgw49NvupFNMSKbmcQwTCCCJpvnZrsBrZnTdYKpnOd2R
-	 W/uRYp2wgw7GaK68UuxrshGskHllhr3GdkZE40ZkF5ldgHRaT9CTo45FvaZ20DGb6WOQU
-	 XiBFPEnjAfMELqqxCqjYHCqq09PQBCExr3AywyhEigqpTOtKkWTLBL5bjaq6XJcX1JNrA
-	 413qCXx40dSBFXvaWaHPi2mgQdxUmReewBi8CRygp1HJPwxRn0Dv0Z0CAN73R1spf7jWe
-	 vYir3oYmvLXhnIE03fhvlK6xUCLE/yhbOYbPCFfyNatCJGUoGA5BWaX2JVR3pZKV9xA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=S1SsyVWmFN/K3FnAnSvhcSztrShloDWtZn+HQ2qgOL8=;
+	b=BLdpTVL29FUHBx+l0yV+6mzcr+VG273NuTikyB+DxhhbiZNoEnbRPx7nFq9uPjd29YZA
+	 clUQIGWa1O/fOEc9M2YNK0L4mZG0W0kxbuQvJJTy0vFHIzqqBsOHgQRxlJrzMH7+GbruN
+	 iGwiPjQ8ZIvu1s62PE3Sub0/C9W55AbuNIwkyDidy0b8rca4oLACRCCQ5tCy1iOw5g+jk
+	 VqJ/0eh1WCgnWjpD0snTqwyv9vzfbY9L47chUFouPKVIKo+LuTZBRhepoTJ1HzoV6gUL7
+	 a7Ogmk0ExfDzz67qesn8c9fVdl7A8Rf5sPFk/BEDtNCvtYQ8uJ5QEAYid1IVbcNK/Nw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=edO4FVds;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TpZWTHSp;
+	arc=none smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C44606A326
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 00:47:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71C44606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60B0606A31B
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 00:53:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D60B0606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=edO4FVds
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a0619b1fe5so202331b3a.3
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 16:47:46 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TpZWTHSp
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4b4571ff080so792465e9.1
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 16:53:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793753266; x=1794358066; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ma0BJNPiyw5G435eYcqXLhH2XcRvaZWBudt7erlHK0w=;
-        b=edO4FVdsKE+3sVvI0/R/flGkQfInhnICkLqzSL1RMpjIThGh+vA/Ub3j/KpnzLs20h
-         uROAcj8j0vxd/MQQJVUdsIVzDn7C6Rx9yAtAtqtN7qo3PRlj9kXTvyNUMfsDmrFggbW6
-         iyQH7kaueU7Vzf2DA+90gQoqYvDT/Xm+VASoc+04Mw9dBn38rg7t2bZibBrbDThrAgJZ
-         tkyRsgV9naVd01RBfk8VUWa3J6hkiJCsbSa0aTyuv7H9UIDhwxgTv9c8fIITjItF7Vqt
-         KmyTSbv4V2NkOEDNgCd6QGVPqKBk1wLeNfsRVtxlAzpHRt28OR7oB0skqgpAAGZx2D0j
-         IjBg==
+        d=gmail.com; s=20260707; t=1793753612; x=1794358412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=S1SsyVWmFN/K3FnAnSvhcSztrShloDWtZn+HQ2qgOL8=;
+        b=TpZWTHSp3XI2HlV5SyPj702wB3fTkW5MoFJcmd3OwxRVxd5x+fnWfkQYGk7jGXrh4U
+         LYDX9f/LcVtY3i5adkOhw0DJ2h7+p3bI8jxmh9p+FQnRejjtNa6drOPtf8VitgdEtbos
+         Dog5iOXEYcYmE/O1IMhgaxe/Knm0NP9ry5WU0woP0DMXuEUPteDeSV7MDqaodonxMIdo
+         F7F19GbBl6UqYo0iuaKrCJ+9oCJ9SWYoou5St0p4kuI5/u4CfgZLDy8tW94GjH3k9xPf
+         bnjYiGtPTQzCBmp1ouVs7cBeFIY8r7geyHbt5ycGwhGBrjCmtx/c95B92R+p+VzvSKQe
+         PdWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793753266; x=1794358066;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793753612; x=1794358412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ma0BJNPiyw5G435eYcqXLhH2XcRvaZWBudt7erlHK0w=;
-        b=Q01vcjIEOSAmZqoRRaJn5+b1WzKsuxp6+Cd/owUzucSUY7X8CZwNTSHWV48m7BAciA
-         mkGYPoWSTmMeTMqOSqUNvfjtoHwLhj60N7IYoQi7JsMXJTh7/f65r3DdLsMScnDaXFPw
-         1Vp4Gyxo4fY9F7CNcAsGtuZEC6cVuMcGwWR/fBXXQrpXgY02brNK9Y50piVhhYgcahX0
-         ZMzg4bkdSRim1UCjx+Q14J8Nh3IRUE1Ne7LhyCqFw+sN6RDqNP52FnNkX2cX9hU1MdXn
-         ZD3S1hZOleLjsUqGbJMYAVuAoTa6gR0xTHrwbp1Z7oJKJINVBYbcEEtsU5J4wiHAeksm
-         lGCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy2zXstQOeKBAx2QMjeqQwHUZfM177QIyhaata2AuIgjpuGhxmjz2JQqbh8wdQuxe9iXxs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8MNosL0NWd0lV9flKV4jpKWh2mhIyK/X5K3H3wpsSo9aXi14Na
-	lBoCRJ+pALL6qgWD4tHjH3SwDT5vDtgDKz1JbJXSaD4YYN88i1/IlmoUP+pIk2L5Zka48myuJx+
-	fXfAoJg==
-X-Received: from pgbdw7.prod.google.com ([2002:a05:6a02:4487:b0:cd6:261d:5bde])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3945:b0:3e2:9b5:b167
- with SMTP id adf61e73a8af0-3e928a51dc8mr11965695637.58.1793753265612; Tue, 03
- Nov 2026 16:47:45 -0800 (PST)
-Date: Tue, 3 Nov 2026 16:47:44 -0800
-In-Reply-To: <CABgObfbvv-fQnC35EU+TxEtNMyYA0wgJ-nA_2B1eqKrZ_2qqkQ@mail.gmail.com>
+        bh=S1SsyVWmFN/K3FnAnSvhcSztrShloDWtZn+HQ2qgOL8=;
+        b=DYK/DN+gsa++4x6MgquHxaRDP/ODgLfbaKTjImeQaw+JSc5PIsP8GBWnz0nxmOolkm
+         0ztIUN2sAGCZivoNn/ByOcFrhU9MREFbuSGsvayd93scjsh5gJDcG+cr+RfD2ocX22jG
+         7VWcC66ArNbs+tAeONf5TbCjHUsM11unTu4/vXTCF1WIUrxCzBsMHijVwNxdnL+86vYm
+         NwumpWUo0+Z4VJqP+uVJ16f08aE2AN2Int8pLE2oco4IXrkhA83ndiXblKMuqDvuOZHI
+         taIUijmC8iGfkweKZSIIvU/edlo/3eLPNodt4pqfcnKYFsuSreNR9F6rzdndrQ9DEu5f
+         FCGA==
+X-Forwarded-Encrypted: i=1; AKwUvBxFW8xTxEjGaZHdc0w5fN9x7drFCnQDMKflbcl/38uT2GBtoH5brBX32TOzxEh5x+r5ctI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9fixt2QeGFsBpH7thD8EexJiNu4XsEhdoF72E/brA7bvSbUSp1
+	/oat58wI80UTrQXQVT4RzJQ539ut7y1IFVQGbF5E0rEQbpsfAbp3Ts2S
+X-Gm-Gg: AYBFou3k4mRIpgdHRtNdyJeUXFKuzoahVIE/M8iyr7WqX3nOOR9ldsh/UIZ8fcPApqX
+	ndHJfhPAeZscbOn1D+oCrHh0PH42ZXNdoBdoKJ48KPwRF00L9bunnSFeT9H7d6xSMfPknf7F7t6
+	XFD5NJ/IYoa2iZVjtOBf7RL2IcHSCO6EABVhvMumyCQQpi5Prvq47qzrQpP1NTuVvS+ZVjKQgM5
+	Q2cL3zhXTJPd2pz7FxkqA/Vg+s6WxKAjYfhE1qjqdltPq26kttKkNrL0Nu/RBawz5f6gVzy+tfp
+	1duYWpWZAVxTjgxOXk4i+f0Omm9sCRVJttgRsMLJY3hnuKgIznrwPzbo+UG5Mi3NfFkTULSug7H
+	j3uiAuWlLkn5KaAeDJ2f2597IXYx0xLrQLHz7prSSNehGb97HbxWsfZoXQnpy8/8qBKayfitovI
+	6BMXmYJkwpxh3knz64oWC4F7yjB8PKCpyvyno1rBTH908jO4N0UtjfsdT1VArrZqHQfY96AHrES
+	XcJJxrT9K1Pe+ge/y2sN4kEQroEjVpyzZMdud/CanuGbgUU+ChYfCVj0X4RGS+zNdDI1mWhOtBX
+	7El6OiAP6q70m9nFoqcxgDuTkZOK6cccmJFI1tKiCBrBScRCYJzowtn/SMsQQ08F7wnjGCp+hRd
+	ByUvUEYdZJT+6ZqtVz2j/3u9XWket6yxxZ//syZafN2FWIBQ098KFJutJjAILJyZA1w==
+X-Received: by 2002:a05:600c:609a:b0:4a1:7c56:d4e2 with SMTP id 5b1f17b1804b1-4ac1709aa77mr317867705e9.16.1793753612056;
+        Tue, 03 Nov 2026 16:53:32 -0800 (PST)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b43c17ed95sm11899275e9.4.2026.11.03.16.53.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Nov 2026 16:53:31 -0800 (PST)
+From: Fred Griffoul <griffoul@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Mushahid Hussain <hmushi@amazon.co.uk>,
+	James Houghton <jthoughton@google.com>,
+	nh-open-source@amazon.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/5] KVM: x86/mmu: Allocate memslot rmaps on demand
+Date: Wed,  4 Nov 2026 00:53:26 +0000
+Message-ID: <20261104005331.50600-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,335 +98,72 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261103124930.2278671-1-pbonzini@redhat.com> <20261103124930.2278671-2-pbonzini@redhat.com>
- <aunzE4yywHJOqsk4@google.com> <CABgObfbvv-fQnC35EU+TxEtNMyYA0wgJ-nA_2B1eqKrZ_2qqkQ@mail.gmail.com>
-Message-ID: <auqAsEk9o6buPNiR@google.com>
-Subject: Re: [PATCH 1/2] KVM: register asynchronous page fault waits with
- interrupts disabled
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
-	Hillf Danton <hdanton@sina.com>, Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
-	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, 
-	stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 03, 2026, Paolo Bonzini wrote:
-> Il mar 3 nov 2026, 15:43 Sean Christopherson <seanjc@google.com> ha scritto:
-> >
-> > On Tue, Nov 03, 2026, Paolo Bonzini wrote:
-> > > KVM cannot use a node on the stack like kvm_async_pf_task_wait_schedule() does
-> >
-> > Oh!  Yes, KVM can!  If we fully handle the PV async #PF in vcpu_enter_guest(),
-> > then the node can be put on the stack, right?  Juggling preemption and guest
-> > timing is heinous, but on the plus side it consolidates the PV async #PF code,
-> > so I think it's a net positive?  Especially when factoring in the node stuff.
-> >
-> > Fully handle PV async #PFs (when running as a KVM guest) before enabling
-> > IRQs so that it's impossible for the current task, i.e. the vCPU task, to
-> > be preempted before invoking kvm_async_pf_task_wait_schedule().  This will
-> > allow the guest-side async #PF code to eliminate its dummy allocation,
-> > which is needed only to handle the case where the page ready notification
-> > is delivered before handling the not-present #PF.
-> >
-> > Add dedicated handling for PV async #PFs instead of wrapping/piggybacking
-> > kvm_x86_ops.handle_exit_irqoff(), as the act of handling an async #PF may
-> > enable IRQs and schedule out the current task, i.e. needs to be done just
-> > before KVM itself explicitly enables IRQs, and needs to enable preemption
-> > before calling into the kernel's PV async #PF handler.
-> >
-> > Opportunistically wrap the code with CONFIG_KVM_GUEST to help document the
-> > context, and drop the CONFIG_KVM_GUEST=n stubs.
-> >
-> > Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> More like Instigated-by. :)
-> 
-> The main advantage would be that it bypasses the missing lock issue
-> that Sashiko reported, but I don't know... That;s surely nice, but at
-> the same time it is not great having to add a new callback, 
+From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-Agreed, though IMO it's better than adding another vCPU field.  E.g. we could
-just as easily add apf.host_cr2 instead of host_apf_node.
+When an L1 guest runs a nested guest, KVM allocates rmaps for all of
+L1's memory the first time it creates a shadow root, one 8-byte head
+per 4 KiB page. For an L1 with 4 TiB of memory that is 8 GiB, allocated
+at once on the first nested VM-Enter, whether L2 maps 1% or all of L1's
+memory. Sean pointed at this cost on Mushahid's lpage_info patch [1].
 
-> duplicate the guest_time_exit/preempt_enable code into kvm_handle_pv_async_pf().
+This RFC allocates rmaps in page-sized chunks instead, when the first
+SPTE in a chunk's range is added. Each memslot keeps a per-level
+directory of chunks, 8 bytes per 2 MiB at the 4 KiB level, so the 4 TiB
+L1 above allocates 16 MiB on the first nested VM-Enter. A missing chunk
+reads as empty rmaps and slot walks skip it. When L2 maps every gfn,
+rmaps cost what they did before plus the directory.
 
-Yeah, I was all excited about the idea, and that excitement definitely fizzled
-when I realized preemption needed to be enabled.
+Patches 1 and 2 prepare the slot walk and the debugfs rmap statistics,
+with no functional change. Patch 3 does the chunking. Patches 4 and 5
+add a selftest in which L2 writes pages around chunk boundaries and
+checks the dirty log after the memslot is write-protected, including
+eager splitting of nested huge pages.
 
-> Not that the extra field in vcpu->arch is beautiful, I admit that, but
-> it seems extra unwarranted complexity.
-> 
-> Unless you insist I will send a v2 that takes the lock properly.
+I would like feedback on:
+  - The data structure. A directory of page-sized chunks keeps lookups
+    to one extra load. An xarray would be simpler to grow but adds a
+    tree walk to every rmap lookup.
+  - Freeing chunks once they are empty. That would let the shadow MMU
+    page limit bound rmap memory too, but lockless aging reads chunks
+    without mmu_lock, so freeing needs an RCU grace period. I left it
+    out of this RFC.
+  - Doing the same for gfn_write_track, 2 bytes per 4 KiB page, which
+    is still allocated for every memslot on the first shadow root.
 
-I don't insist, I agree the guest_time_exit() and preempt_enable() code is too
-ugly.  And the part that I actually care about cleaning up is not having a bunch
-of apf.host_apf_flags checks sprinkled all over, especially in the nested code.
-Which definitely doesn't require fully handling async #PF with IRQs disabled, we
-just need to handle them before calling into vendor code (I think).
+Limitations:
+  - Chunks are only freed with the memslot.
+  - Eager page splitting on dirty-log enable splits L2's huge mappings,
+    so every 2 MiB that L2 mapped with a huge page then gets a chunk.
 
-E.g. something like this?  Though to land it on top of your patch to add
-host_apf_node, we'd want to define pass a struct, but that should only make the
-code prettier.
+The series is based on kvm.git next.
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 0378577d9d8b..09416d3588d0 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -959,7 +959,6 @@ struct kvm_vcpu_arch {
- 		u64 msr_int_val; /* MSR_KVM_ASYNC_PF_INT */
- 		u16 vec;
- 		u32 id;
--		u32 host_apf_flags;
- 		bool pageready_pending;
- 	} apf;
- 
-@@ -1688,7 +1687,8 @@ struct kvm_x86_ops {
- 			       struct x86_instruction_info *info,
- 			       enum x86_intercept_stage stage,
- 			       struct x86_exception *exception);
--	void (*handle_exit_irqoff)(struct kvm_vcpu *vcpu);
-+	void (*handle_exit_irqoff)(struct kvm_vcpu *vcpu, u32 *async_pf_flags,
-+				   unsigned long *async_pf_cr2);
- 
- 	void (*update_cpu_dirty_logging)(struct kvm_vcpu *vcpu, bool enable);
- 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index f4b12d6aef55..3cc4bf506cb1 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4954,9 +4954,6 @@ static int nonpaging_page_fault(struct kvm_vcpu *vcpu,
- int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
- 				u64 fault_address, char *insn, int insn_len)
- {
--	int r = 1;
--	u32 flags = vcpu->arch.apf.host_apf_flags;
--
- #ifndef CONFIG_X86_64
- 	/* A 64-bit CR2 should be impossible on 32-bit KVM. */
- 	if (KVM_BUG_ON(fault_address >> 32, vcpu->kvm))
-@@ -4977,21 +4974,9 @@ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
- 	BUILD_BUG_ON(lower_32_bits(PFERR_SYNTHETIC_MASK));
- 
- 	kvm_request_l1tf_flush_l1d();
--	if (!flags) {
--		trace_kvm_page_fault(vcpu, fault_address, error_code);
-+	trace_kvm_page_fault(vcpu, fault_address, error_code);
- 
--		r = kvm_mmu_page_fault(vcpu, fault_address, error_code, insn,
--				insn_len);
--	} else if (flags & KVM_PV_REASON_PAGE_NOT_PRESENT) {
--		vcpu->arch.apf.host_apf_flags = 0;
--		local_irq_disable();
--		kvm_async_pf_task_wait_schedule(fault_address);
--		local_irq_enable();
--	} else {
--		WARN_ONCE(1, "Unexpected host async PF flags: %x\n", flags);
--	}
--
--	return r;
-+	return kvm_mmu_page_fault(vcpu, fault_address, error_code, insn, insn_len);
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_handle_page_fault);
- 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 07554089ec05..d4951dc8b1f7 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1818,10 +1818,6 @@ int nested_svm_exit_special(struct vcpu_svm *svm)
- 		if (svm->vmcb01.ptr->control.intercepts[INTERCEPT_EXCEPTION] &
- 		    excp_bits)
- 			return NESTED_EXIT_HOST;
--		else if (exit_code == SVM_EXIT_EXCP_BASE + PF_VECTOR &&
--			 svm->vcpu.arch.apf.host_apf_flags)
--			/* Trap async PF even if not shadowing */
--			return NESTED_EXIT_HOST;
- 		break;
- 	}
- 	case SVM_EXIT_VMMCALL:
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 581bc3a23c95..5a92a22e8e6a 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3811,7 +3811,6 @@ static void svm_get_entry_info(struct kvm_vcpu *vcpu, u32 *intr_info,
- 		*error_code = control->event_inj_err;
- 	else
- 		*error_code = 0;
--
- }
- 
- static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
-@@ -4758,11 +4757,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 			       vcpu_to_pmu(vcpu)->global_ctrl);
- 	}
- 
--	/* if exit due to PF check for async PF */
--	if (svm->vmcb->control.exit_code == SVM_EXIT_EXCP_BASE + PF_VECTOR)
--		vcpu->arch.apf.host_apf_flags =
--			kvm_read_and_reset_apf_flags();
--
- 	kvm_clear_available_registers(vcpu, SVM_REGS_LAZY_LOAD_SET);
- 
- 	trace_kvm_exit(vcpu, KVM_ISA_SVM);
-@@ -5088,9 +5082,15 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
- 	return ret;
- }
- 
--static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu)
-+static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu, u32 *async_pf_flags,
-+				   unsigned long *async_pf_cr2)
- {
- 	switch (to_svm(vcpu)->vmcb->control.exit_code) {
-+	case SVM_EXIT_EXCP_BASE + PF_VECTOR:
-+		*async_pf_flags = kvm_read_and_reset_apf_flags();
-+		if (*async_pf_flags)
-+			*async_pf_cr2 = to_svm(vcpu)->vmcb->control.exit_info_2;
-+		break;
- 	case SVM_EXIT_EXCP_BASE + MC_VECTOR:
- 		svm_handle_mce(vcpu);
- 		break;
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index d75170a6199e..05e1d600dbd8 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -912,17 +912,21 @@ static void handle_nm_fault_irqoff(struct kvm_vcpu *vcpu)
- 		rdmsrq(MSR_IA32_XFD_ERR, vcpu->arch.guest_fpu.xfd_err);
- }
- 
--static void handle_exception_irqoff(struct kvm_vcpu *vcpu, u32 intr_info)
-+static void handle_exception_irqoff(struct kvm_vcpu *vcpu, u32 intr_info,
-+				    u32 *async_pf_flags,
-+				    unsigned long *async_pf_cr2)
- {
--	/* if exit due to PF check for async PF */
--	if (is_page_fault(intr_info))
--		vcpu->arch.apf.host_apf_flags = kvm_read_and_reset_apf_flags();
- 	/* if exit due to NM, handle before interrupts are enabled */
--	else if (is_nm_fault(intr_info))
-+	if (is_page_fault(intr_info)) {
-+		*async_pf_flags = kvm_read_and_reset_apf_flags();
-+		if (*async_pf_flags)
-+			*async_pf_cr2 = vt_get_exit_qual(vcpu);
-+	} else if (is_nm_fault(intr_info)) {
- 		handle_nm_fault_irqoff(vcpu);
- 	/* Handle machine checks before interrupts are enabled */
--	else if (is_machine_check(intr_info))
-+	} else if (is_machine_check(intr_info)) {
- 		kvm_machine_check();
-+	}
- }
- 
- static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
-@@ -941,7 +945,8 @@ static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
- 	vcpu->arch.at_instruction_boundary = true;
- }
- 
--static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
-+static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu, u32 *async_pf_flags,
-+				  unsigned long *async_pf_cr2)
- {
- 	if (to_vt(vcpu)->emulation_required)
- 		return;
-@@ -951,7 +956,8 @@ static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
- 		handle_external_interrupt_irqoff(vcpu, vt_get_intr_info(vcpu));
- 		break;
- 	case EXIT_REASON_EXCEPTION_NMI:
--		handle_exception_irqoff(vcpu, vt_get_intr_info(vcpu));
-+		handle_exception_irqoff(vcpu, vt_get_intr_info(vcpu),
-+					async_pf_flags, async_pf_cr2);
- 		break;
- 	case EXIT_REASON_MCE_DURING_VMENTRY:
- 		kvm_machine_check();
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index f0d75f5a968c..087c12e11d74 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -6500,8 +6500,7 @@ static bool nested_vmx_l0_wants_exit(struct kvm_vcpu *vcpu,
- 		if (is_nmi(intr_info))
- 			return true;
- 		else if (is_page_fault(intr_info))
--			return vcpu->arch.apf.host_apf_flags ||
--			       vmx_need_pf_intercept(vcpu);
-+			return vmx_need_pf_intercept(vcpu);
- 		else if (is_debug(intr_info) &&
- 			 vcpu->guest_debug &
- 			 (KVM_GUESTDBG_SINGLESTEP | KVM_GUESTDBG_USE_HW_BP))
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b341af4c6057..15f54474382b 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5396,9 +5396,6 @@ static int vmx_handle_page_fault(struct kvm_vcpu *vcpu, u32 error_code)
- {
- 	unsigned long cr2 = vt_get_exit_qual(vcpu);
- 
--	if (vcpu->arch.apf.host_apf_flags)
--		goto handle_pf;
--
- 	/* When using EPT, KVM intercepts #PF only to detect illegal GPAs. */
- 	WARN_ON_ONCE(enable_ept && !allow_smaller_maxphyaddr);
- 
-@@ -5429,7 +5426,6 @@ static int vmx_handle_page_fault(struct kvm_vcpu *vcpu, u32 error_code)
- 		return 1;
- 	}
- 
--handle_pf:
- 	return kvm_handle_page_fault(vcpu, error_code, cr2, NULL, 0);
- }
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 26e7beaff8a0..57aff240cdb6 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8118,6 +8118,19 @@ static void kvm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
- 	kvm_x86_call(update_cpu_dirty_logging)(vcpu, enable);
- }
- 
-+static void kvm_handle_pv_async_pf(u32 flags, unsigned long cr2)
-+{
-+	if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_KVM_GUEST)))
-+		return;
-+
-+	if (WARN_ON_ONCE(!(flags & KVM_PV_REASON_PAGE_NOT_PRESENT)))
-+		return;
-+
-+	local_irq_disable();
-+	kvm_async_pf_task_wait_schedule(cr2);
-+	local_irq_enable();
-+}
-+
- /*
-  * Called within kvm->srcu read side.
-  * Returns 1 to let vcpu_run() continue the guest execution loop without
-@@ -8130,9 +8143,10 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	bool req_int_win =
- 		dm_request_for_irq_injection(vcpu) &&
- 		kvm_cpu_accept_dm_intr(vcpu);
-+	unsigned long async_pf_cr2;
- 	fastpath_t exit_fastpath;
- 	u64 run_flags, debug_ctl;
--
-+	u32 async_pf_flags = 0;
- 	bool req_immediate_exit = false;
- 
- 	if (kvm_request_pending(vcpu)) {
-@@ -8506,7 +8520,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	if (vcpu->arch.xfd_no_write_intercept)
- 		fpu_sync_guest_vmexit_xfd_state();
- 
--	kvm_x86_call(handle_exit_irqoff)(vcpu);
-+	kvm_x86_call(handle_exit_irqoff)(vcpu, &async_pf_flags, &async_pf_cr2);
- 
- 	if (vcpu->arch.guest_fpu.xfd_err)
- 		wrmsrq(MSR_IA32_XFD_ERR, 0);
-@@ -8568,6 +8582,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	if (vcpu->arch.apic_attention)
- 		kvm_lapic_sync_from_vapic(vcpu);
- 
-+	if (async_pf_flags && !WARN_ON_ONCE(exit_fastpath != EXIT_FASTPATH_NONE)) {
-+		kvm_handle_pv_async_pf(async_pf_flags, async_pf_cr2);
-+		exit_fastpath = EXIT_FASTPATH_EXIT_HANDLED;
-+	}
-+
- 	r = kvm_x86_call(handle_exit)(vcpu, exit_fastpath);
- 	return r;
+[1] https://lore.kernel.org/all/arr1VgGZmgUmY4hc@google.com/
+
+Fred
+
+
+Fred Griffoul (5):
+  KVM: x86/mmu: Walk memslot rmaps by index
+  KVM: x86: Count rmaps per level in a debugfs helper
+  KVM: x86/mmu: Allocate memslot rmaps in on-demand chunks
+  KVM: selftests: Declare __tdp_map() in the x86 processor header
+  KVM: selftests: Test dirty logging of sparse nested mappings
+
+ arch/x86/include/asm/kvm_host.h               |  22 +-
+ arch/x86/kvm/debugfs.c                        |  46 ++-
+ arch/x86/kvm/mmu/mmu.c                        | 126 +++++++-
+ arch/x86/kvm/x86.c                            |  22 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ .../kvm/x86/nested_dirty_log_sparse_test.c    | 275 ++++++++++++++++++
+ 7 files changed, 460 insertions(+), 33 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/nested_dirty_log_sparse_test.c
+
+
+base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
+-- 
+2.47.3
+
