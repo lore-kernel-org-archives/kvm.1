@@ -1,98 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793753614;
-	b=Eexon9ExLwOZamGS8NRUUjFh4DFKWyiGEhAzfpPkEFr0t1yl2LKS76MIdK6VJZE034Z3
-	 Fn+sQqBQTwOB+uZQXFWMCYZqn5Yx9vhsRJyMMwY5CbrrwGSESVZjtNfRKlncnCYzm4Aqn
-	 rng8o5LLxGmYYB0Ar94HreS5CpC4vhOlMNjWeDNjPvIk1QeHNWQWFoERbRekOtvv7j++D
-	 7QM/X0hcVGPlRuqvDIhpmeU5m8wOiy+P15MAk/J65cD/sS7UWOssXe3f/K+mZKU9F4WpH
-	 o+dtMVwmcsN96rDGtfxu4j0VRnG//31oU5KLH0BMsu0usqSEbceFU0vhOOuUXz86kmA==
+	t=1793754628;
+	b=sH/lcKI+v4/SyN6oIPIy6buAhg2kC4lC16a1QMddNGgtl7hAH6+uhSspnTACMBpsB6Uk
+	 9rowPIEKBrqLNMZj+rppDR33BC8/HPL8FTWXhUyQmqzTfncmQ70rR3yVPKvTmXLSG3LPm
+	 OWiWN/z7R5XxaGA69t2Z1jXUGPrNQHEsZQjjPORVMdo8f5wqCks/gUC8Fj6wsvesQ3Mbk
+	 Is1shawAdgJbTfsobU+/i8VjMSNas5fyP/dhgytjgf+4Nk/BBOFqj5BdrQYbYxNe+mpE/
+	 gQzbzVOvKh6AMXLKVJHwr/NLHYuzR/BEBq01ppyfSjHlbbJdBvyW9mkjpSWw1d9gKAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793753614;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=Noyht4TuZWh1NE3NpPCNH4SGr3Qu8mV0olkuMsgHzks=;
-	b=KjRFPxfwXiCsIducw2bM4GWQ4XajP3af78+xR4bA6M6unJRJyLVs9s3jfxo2u5b/ix/2
-	 5tN68CiCeTfUiGwCyQXB8KIHzwgMHGO7MuG2VaekVCAFMk6r6SuPTmhGOZB2XyPvLdMQA
-	 oh8j/4W4aNyy3DUcwTWqoBnQOfzBo//9xSfFSNuqXLGSq/jZZJZn1eu3RypipySZx0vWb
-	 EFmyGCS1P0f+bY36aR67eDvIWmn0Xbjd1R/FE2KM5pgB2OaHp/xlbLac0nznboegafUm3
-	 srq+9eDfFxhJqwixXCmiNCDDe+e/XrvxxnAcerwctBvpTMS5bTDZKOR2zjwjFOo6+Eg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793754628;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=JM5gvFP69JqF3K0oOnuCvxk4ceV2ST4OL5LjMtOhOss=;
+	b=qvtYfqY+exKZbiJt3jNSBWccPZL12J1KiUQJdWsXaCO12ulLxFTs4/rZPwBnzCUPJqfa
+	 oZMprpPmndox4AV85SYeuJdWk0ILFha4JWres15cI5y8yLTO1OzYr06mCgh4kArCV0bHq
+	 5LQPqEYEdg58J2kRHLQO6T2TU5LXbYZLhwKLSbkcqoag1pK+7BvCOWV461+1WUKSVIzsc
+	 SejyAgYljwOXpmv7aiAGlohTalXpDR5WpLPCTwYaiN6KtNSAe97Cu+ouMxhmV5IJFx676
+	 dNNe/krbeEyGAdY1on7MrKhxta103sOIQmW9b4wvBM5T/gxMQiTNVR0MPy8qWCJYXtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RN2C0KHP;
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F5JqT5N7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58048606A329
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 00:53:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58048606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4A4606A31B
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 01:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RN2C0KHP
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a5720b0a57so7957415e9.0
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 16:53:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793753613; x=1794358413; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Noyht4TuZWh1NE3NpPCNH4SGr3Qu8mV0olkuMsgHzks=;
-        b=RN2C0KHPgGM+2f8SuD524sHUC+d5SrztGovvNaxe6Lma7wMD6m9ZJcwpAeou2IeAE+
-         KQLCt22JEXGsIIRekVf4EZZbAq/ZNSYNU6PnSNgCusUDsubM3IFg1etC8XuJ+u6aOSqe
-         wGlQN346RV6rDDbiTZgJRSQVrJW7LEKJWBZmCowZXzb6Cxhef8nJj3U4fyVj8FJvDCuv
-         4ZQhy/jzkbqheRrShgZai+iuxIIMaC0KgolG5oWvECYEdcomqxPv5z/alHTYcHEQLcP/
-         yUZXN11GnvFtNF088Si/dPtkfVLUUhJathHRFs8rhSCd1ZWlD8tp2thWrbkFqj9jsvkI
-         OCvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793753613; x=1794358413;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Noyht4TuZWh1NE3NpPCNH4SGr3Qu8mV0olkuMsgHzks=;
-        b=HBDO3JvK7UZGPoStzw+qGtNO2n1JLSP5dmBcDzoNt7naKJETTMKVorlszKv6BVILhR
-         Vq3Fp4Y5sti0pxVpzY19MEFcejmSIkWq+3LiRCJI6GJFwq+y7F6TY3pdzTFDLTFVB9yF
-         rpdOXQbh82coJit5FRanv68RQjZpmv9TiWXCQzepb0rhPAGZ9BYLUTM46+MisX+TvCEW
-         ap3uPi7W0usjhITkwBfNekYiEnDgubcywik8rYLe6RPHLwnw1XGfppnnGPPOxpgPe4GW
-         LWG1cqigwz2yYQYLRBeDosUzQYZPZvFDf0XQCLAiuLyLJiiWvs/FzTKL3O08yO44rcmI
-         SiRA==
-X-Forwarded-Encrypted: i=1; AKwUvBzkyZ5tFDKUBpSI/9jCzDkPqB17gEJlwjt714KO5X6nikt1ln19+70FzPPhGVvJqn5PA1Y=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8A2H2jhysLgg4NDMytYEvZnaCzbSpQBM+eK5xwDOCd1clfiOEn
-	r0ETTu9f3ncXWq3tEIl/s/K2SsjLIi/CKz9aC39PhkvroeDCFPtb4Yql
-X-Gm-Gg: AYBFou2BEPWloN6Aa9PxkKFbu6LBlEjAa+mtVwx5Gg72YW+ZLjNspg21zwX9gwy9lZo
-	AA8BJ7QYOlmtOHrDWuXyhMz8hWPx9QBU8EYmCNrUUG0YB/4gm86lY7qE5mbKHX7572UsHQV3kVe
-	jmdVOE1xLabVadZ/Ro18rtSOrSCaej/NY0HmTHAM/b0yCYTIMbTUIr6w1MNMVZ3CLzhDRZ9hn90
-	cmbpWoaLU+e1itcnC/TDB+hcqI0SC61Ic/ppGOwMlHJ9Na5b2zbQZ0iLHH4Fv3282L/ihlGhlth
-	s6raW4ARxVFeGvrYJ8e0AGaw5b1jacMnsCSa7Ct+mVSbIU83eqCUdyTzzgkYQFjCesH6hxzCiDu
-	moRh4h3nXE7iNSA0tV3Bm/e7eOUMc0nycDQjo9XHch3EPn6kOXmd/WtWDrC1rZTQ2pjiJ9/pLoi
-	qTu7j67EqjY2/0/ddi71SL2yDP+DBcTJns9IVGMWdLIS1pVu/hiF0Vza7ClPC5NYcSxpt/1g1lw
-	ns4Rwixjcpxmx0YOcvESndZgFW/FY0ZfoJ0cso6yn1i+zWLyA1rWPOI9KayjLhNv0flcw5xz+4D
-	LlmnN7j66Gif1exSNxaNMmZWmz48rRcUAMYB8TnZWto8gMUTRrElkyilxVsHFYujd30YTbpPCpM
-	J/1mORKc70XPsV36zQAZAoRYo3wU6vrr+GkB2vLK9J1Ndi3ANN4aNIGDJXNpiAkNazQ==
-X-Received: by 2002:a05:600c:4715:b0:49f:ffa2:1c72 with SMTP id 5b1f17b1804b1-4ac17567cc8mr323435835e9.11.1793753612715;
-        Tue, 03 Nov 2026 16:53:32 -0800 (PST)
-Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b43c17ed95sm11899275e9.4.2026.11.03.16.53.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Nov 2026 16:53:32 -0800 (PST)
-From: Fred Griffoul <griffoul@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Mushahid Hussain <hmushi@amazon.co.uk>,
-	James Houghton <jthoughton@google.com>,
-	nh-open-source@amazon.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 1/5] KVM: x86/mmu: Walk memslot rmaps by index
-Date: Wed,  4 Nov 2026 00:53:27 +0000
-Message-ID: <20261104005331.50600-2-griffoul@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261104005331.50600-1-griffoul@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F5JqT5N7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424BA1F000C1;
+	Wed,  4 Nov 2026 01:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793754627;
+	bh=JM5gvFP69JqF3K0oOnuCvxk4ceV2ST4OL5LjMtOhOss=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=F5JqT5N78ybuT4qPxQGhrWGlIfn2GEobmCKk7LzS0uCodVq4b4NrlDgx9wInpiccB
+	 7C8spkyMJoTO6Q/W27OaZtRKuar3G3SSf2KVz1I+apqGBGWbFFmVlBZTKMjch4aWUB
+	 ncBqla7xQ6uzM57hL0gzAKjSmJiHWSLxF7oN1347WHUo1PC6aQcuZc859EqoxHZxE3
+	 reXvRHUbhR39ZnQdIUUsEizIMngVm9Ivb31tathwaF+1rrw3cn6R0zNwdu5q82i4sb
+	 ucj3JVIgm9XISvaaRRVj2rKMti2q8t/sE/VhxshAJRRE0PHMGs7mgAneAJu6ZBv/7w
+	 N1pSjeeEy8/EA==
+Message-ID: <sashiko-outbox-196347@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 5/5] KVM: selftests: Test dirty logging of sparse
+ nested mappings
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Fred Griffoul" <griffoul@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261104005331.50600-6-griffoul@gmail.com>
 References: <20261104005331.50600-1-griffoul@gmail.com>
+ <20261104005331.50600-6-griffoul@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Nov 2026 01:10:26 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,95 +60,171 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Fred Griffoul <fgriffo@amazon.co.uk>
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] KVM: selftests: test_dirty_log() uses default HugeTLB pool inste=
+ad of 2M
+- [Low] KVM: selftests: free_2m_hugepages() duplicates get_free_hugepages()
+- [Low] KVM: selftests: test_dirty_log() pre-divides extra_mem_pages by 512
+--
 
-In preparation for storing memslot rmaps in chunks that are not
-contiguous in memory, walk a slot's rmaps by index instead of stepping
-a pointer through the array, and look each head up through a new
-__idx_to_rmap() helper.
+commit f746099353da91d06474f4e326f2f464849f22eb
+Author: Fred Griffoul <fgriffo@amazon.co.uk>
 
-No functional change intended.
+KVM: selftests: Test dirty logging of sparse nested mappings
 
-Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
----
- arch/x86/kvm/mmu/mmu.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+This commit adds an x86 KVM selftest that verifies dirty logging of sparsely
+mapped L2 memory across shadow MMU rmap chunk boundaries, as well as eager
+page splitting of 2 MiB nested TDP mappings when dirty logging is enabled.
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index f4b12d6aef55..b3fcd6f2a991 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -1236,13 +1236,17 @@ unsigned int pte_list_count(struct kvm_rmap_head *rmap_head)
- 	return desc->tail_count + desc->spte_count;
- }
- 
-+static struct kvm_rmap_head *__idx_to_rmap(const struct kvm_memory_slot *slot,
-+					   int level, unsigned long idx)
-+{
-+	return &slot->arch.rmap[level - PG_LEVEL_4K][idx];
-+}
-+
- static struct kvm_rmap_head *gfn_to_rmap(gfn_t gfn, int level,
- 					 const struct kvm_memory_slot *slot)
- {
--	unsigned long idx;
--
--	idx = gfn_to_index(gfn, slot->base_gfn, level);
--	return &slot->arch.rmap[level - PG_LEVEL_4K][idx];
-+	return __idx_to_rmap(slot, level,
-+			     gfn_to_index(gfn, slot->base_gfn, level));
- }
- 
- static void rmap_remove(struct kvm *kvm, u64 *spte)
-@@ -1577,17 +1581,21 @@ struct slot_rmap_walk_iterator {
- 	struct kvm_rmap_head *rmap;
- 	int level;
- 
--	/* private field. */
--	struct kvm_rmap_head *end_rmap;
-+	/* private fields. */
-+	unsigned long idx;
-+	unsigned long end_idx;
- };
- 
- static void rmap_walk_init_level(struct slot_rmap_walk_iterator *iterator,
- 				 int level)
- {
-+	const struct kvm_memory_slot *slot = iterator->slot;
-+
- 	iterator->level = level;
- 	iterator->gfn = iterator->start_gfn;
--	iterator->rmap = gfn_to_rmap(iterator->gfn, level, iterator->slot);
--	iterator->end_rmap = gfn_to_rmap(iterator->end_gfn, level, iterator->slot);
-+	iterator->idx = gfn_to_index(iterator->start_gfn, slot->base_gfn, level);
-+	iterator->end_idx = gfn_to_index(iterator->end_gfn, slot->base_gfn, level);
-+	iterator->rmap = gfn_to_rmap(iterator->gfn, level, slot);
- }
- 
- static void slot_rmap_walk_init(struct slot_rmap_walk_iterator *iterator,
-@@ -1611,11 +1619,17 @@ static bool slot_rmap_walk_okay(struct slot_rmap_walk_iterator *iterator)
- 
- static void slot_rmap_walk_next(struct slot_rmap_walk_iterator *iterator)
- {
--	while (++iterator->rmap <= iterator->end_rmap) {
-+	struct kvm_rmap_head *rmap_head;
-+
-+	while (++iterator->idx <= iterator->end_idx) {
- 		iterator->gfn += KVM_PAGES_PER_HPAGE(iterator->level);
- 
--		if (atomic_long_read(&iterator->rmap->val))
-+		rmap_head = __idx_to_rmap(iterator->slot, iterator->level,
-+					  iterator->idx);
-+		if (atomic_long_read(&rmap_head->val)) {
-+			iterator->rmap = rmap_head;
- 			return;
-+		}
- 	}
- 
- 	if (++iterator->level > iterator->end_level) {
--- 
-2.47.3
+> diff --git a/tools/testing/selftests/kvm/x86/nested_dirty_log_sparse_test=
+.c b/tools/testing/selftests/kvm/x86/nested_dirty_log_sparse_test.c
+> new file mode 100644
+> index 0000000000000..bc1c6b8760c96
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/nested_dirty_log_sparse_test.c
+> @@ -0,0 +1,275 @@
 
+[ ... ]
+
+> +static void test_dirty_log(bool nested_tdp, bool huge)
+> +{
+> +	u64 npages =3D huge ? HUGE_MEM_PAGES : SPARSE_MEM_PAGES;
+> +	enum vm_mem_backing_src_type src;
+> +	u64 pages_2m =3D 0, pages_4k =3D 0;
+> +	gva_t nested_gva =3D 0;
+> +	struct kvm_vcpu *vcpu;
+> +	unsigned long *bmap;
+> +	struct kvm_vm *vm;
+> +	struct ucall uc;
+> +
+> +	pr_info("Nested TDP: %s, L1 TDP page size: %s\n",
+> +		nested_tdp ? "enabled" : "disabled", huge ? "2M" : "4K");
+> +
+> +	/* Room for L1's page tables and TDP page tables of the test memory. */
+> +	vm =3D __vm_create_with_one_vcpu(&vcpu, 2 * (npages / 512 + 16),
+> +				       l1_guest_code);
+
+[Severity: Low]
+Does passing 2 * (npages / 512 + 16) as extra_mem_pages divide npages by 512
+twice?
+
+__vm_create_with_one_vcpu() passes extra_mem_pages to vm_nr_pages_required(=
+),
+which already divides extra_mem_pages by PTES_PER_MIN_PAGE (512):
+
+tools/testing/selftests/kvm/lib/kvm_util.c:vm_nr_pages_required() {
+    ...
+	nr_pages +=3D (nr_pages + extra_mem_pages) / PTES_PER_MIN_PAGE * 2;
+    ...
+}
+
+Because npages is pre-divided by 512 here, extra_mem_pages is 96 (or 40 when
+huge is true), so (nr_pages + extra_mem_pages) / 512 evaluates to 1 and adds
+no extra page-table pages beyond the default. Should this pass 2 * npages
+instead?
+
+> +	if (nested_tdp)
+> +		vm_enable_tdp(vm);
+> +
+> +	if (kvm_cpu_has(X86_FEATURE_VMX))
+> +		vcpu_alloc_vmx(vm, &nested_gva);
+> +	else
+> +		vcpu_alloc_svm(vm, &nested_gva);
+> +	vcpu_args_set(vcpu, 1, nested_gva);
+> +
+> +	src =3D huge ? VM_MEM_SRC_ANONYMOUS_HUGETLB : VM_MEM_SRC_ANONYMOUS;
+> +	vm_userspace_mem_region_add(vm, src, TEST_MEM_BASE, TEST_MEM_SLOT,
+> +				    npages, 0);
+
+[Severity: Medium]
+Should src use VM_MEM_SRC_ANONYMOUS_HUGETLB_2MB instead of
+VM_MEM_SRC_ANONYMOUS_HUGETLB when huge is true?
+
+In main(), the test checks specifically for four free 2 MiB hugepages in
+/sys/kernel/mm/hugepages/hugepages-2048kB/free_hugepages and sizes the regi=
+on
+to 8 MiB (HUGE_MEM_PAGES).
+
+However, VM_MEM_SRC_ANONYMOUS_HUGETLB uses the system default HugeTLB page
+size without MAP_HUGE_2MB:
+
+tools/testing/selftests/kvm/lib/test_util.c:get_backing_src_pagesz() {
+	switch (i) {
+    ...
+	case VM_MEM_SRC_ANONYMOUS_HUGETLB:
+	case VM_MEM_SRC_SHARED_HUGETLB:
+		return get_def_hugetlb_pagesz();
+	default:
+		return MAP_HUGE_PAGE_SIZE(flag);
+	}
+}
+
+On a host booted with default_hugepagesz=3D1G that has 2 MiB hugepages allo=
+cated
+in the 2048kB pool, get_def_hugetlb_pagesz() will check the 1 GiB pool in
+/proc/meminfo and either skip the test if HugePages_Total is 0, or return 1
+GiB and cause __kvm_mmap() in vm_mem_add() to fail with EINVAL because the 8
+MiB region is not 1 GiB aligned.
+
+[ ... ]
+
+> +static u64 free_2m_hugepages(void)
+> +{
+> +	u64 nr =3D 0;
+> +	FILE *f;
+> +
+> +	f =3D fopen("/sys/kernel/mm/hugepages/hugepages-2048kB/free_hugepages",=
+ "r");
+> +	if (!f)
+> +		return 0;
+> +	if (fscanf(f, "%lu", &nr) !=3D 1)
+> +		nr =3D 0;
+> +	fclose(f);
+> +
+> +	return nr;
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX) || kvm_cpu_has(X86_FEATURE_SV=
+M));
+> +
+> +	test_dirty_log(/*nested_tdp=3D*/false, /*huge=3D*/false);
+> +
+> +	if (!kvm_cpu_has_tdp())
+> +		return 0;
+> +
+> +	test_dirty_log(/*nested_tdp=3D*/true, /*huge=3D*/false);
+> +
+> +	if (free_2m_hugepages() >=3D HUGE_MEM_PAGES / HUGE_PAGES_PER_2M &&
+> +	    get_kvm_param_bool("tdp_mmu") && get_kvm_param_bool("eager_page_spl=
+it"))
+> +		test_dirty_log(/*nested_tdp=3D*/true, /*huge=3D*/true);
+
+[Severity: Low]
+This isn't a bug, but test_util.h already provides get_free_hugepages() in
+tools/testing/selftests/kvm/lib/test_util.c, which reads the same sysfs file
+and returns the free bytes:
+
+tools/testing/selftests/kvm/lib/test_util.c:get_free_hugepages() {
+	char path[128];
+	size_t free;
+
+	snprintf(path, sizeof(path),
+		 "/sys/kernel/mm/hugepages/hugepages-%zukB/free_hugepages",
+		 page_size >> 10);
+	if (!test_sysfs_path(path))
+		return 0;
+
+	free =3D get_sysfs_val(path);
+	return free * page_size;
+}
+
+Could main() use get_free_hugepages(SZ_2M) >=3D HUGE_MEM_PAGES * PAGE_SIZE
+instead of defining free_2m_hugepages()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104005331.5060=
+0-1-griffoul@gmail.com?part=3D5
