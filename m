@@ -1,55 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793780038;
-	b=nZYOeQFCAXKDVoPtqlfCRpE9mxAfCtFeE1FUjck5+vt6jTr9uZA3950+VKdc2xLCa7Ie
-	 C6tTP61B0ZvH2JipTD/unw6C9Pdv+828ulkl7LoN+5nr6y9Bk9m6FB5nGy+XX47qSq1KK
-	 KJuT1xxO7zbjA7Em+FfbQPVWNbrX9GMfBnYKsGasDSxPoHb9A/LLjrDxtUceH+px0wSi7
-	 20Z874OCeI2LvyQzF0XqctpOOscDpmgGrS8DEOgro2GlUZ9fUr3a9+ynjE2NmQL8dZp79
-	 oYVUOxTyH/oNX79pwdblOoT5aK3ht6kULwiY1e3ed2CHiJDxyvhP5P+DAey9C/eoX+Q==
+	t=1793780561;
+	b=y4A9XWnAxjOV0lav5pJyDrAVOSXk6/3YlBh4ibHValpj7Nvn8jkjIQHn+3FqGIieNg8t
+	 p5w6hi6Qa5dBksk/u4Jo31A4mgzuZpJXSHmTmddXGqQVgDzf2J1mznjGfdGipUBMUPuLD
+	 7+47iecxX1p/MkmzzvodXkcamP7/xs2fL2Nh+ft5aMyR/tS+8Oim//MikvoHJ0zLjJeh6
+	 FOV4ZNeJDfjo+NPIfBvu6AlkzXGHf8fiPNOUjUROnLG1CJA+qvmZUoA+TMcReIwR3Xwez
+	 zSyD93eozYj2b9FRpNfy0vbTrB0sTN1LCbU0fSJMedCHIgqlL0Zathh04KWbiuiBdPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793780038;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=eKFZVy2n3LpD6eaitlCGSWY/ds3vlQFngMN9WoLAsHQ=;
-	b=D3TTG2XNeTEa7yt0h7zq/+LnlUbM1VZzfkbhDVwJJJ0pOGw8M/vbIN0DnuEc7JHm71CX
-	 BIJYy1xmvoe58DYAS6aOtjgW0ewjyM195cWJdE2DuVcGH2ZFBBkftNW0iKGpUuixtEPEh
-	 UCktNAp8AgXli03KKwb1HuZ8qsxj7bghVrn/DhxHR2cVVa4VPw5L2K3pggrGC+AeUL+m0
-	 Mge3oxC+UtY97pebBmJJfqzASGX9WZcGhpjcVd+yGiR0YiDRVarA6LZswEfXE4DghaTNz
-	 7fQF3WX/ZTO4Wy4O5JOmBXbyZoUTvBdkFB354PHR4U0Bj2tzRYS22xsw04lb5OFcI1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793780561;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Zx8jHzDvw8va/CX+J+ppLsFj9mBNb+GyOOHFkDmbSlI=;
+	b=0lz0vppl0SY9y6B3AYZGO5BD2EEdIfFvJhmYo4yl08RQRLdgBi9GGXM9EhKq9DZ/DW6y
+	 oiEmndn43I+Uu84k5FuXsSx7pLDJqbbq5KygGLEuUSXgxpuwzEti0EaaTgKLbJK9SUsUT
+	 r2AjhuY3hOvj1Jx3R0yUNStCedKe4IQ0yDVyeW4T5Y/GrjPBSE+TwZ6+4IWBJiksrDUKN
+	 KX/LxuV28vpvZNfR91EVbHpsNZJsI6atfzOMd7BLu+HdIwHC22rpeiaHrLbmzzUF75BRk
+	 xYT5RrzaFgmhjxefvE6+4vaRmSEW5a0A0+R/6uj5jp64+BzxkxOj0//mZTrvwoC7JLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSFYw5jG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C020606A329
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 08:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSFYw5jG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CDC1F000C1;
-	Wed,  4 Nov 2026 08:13:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793780038;
-	bh=eKFZVy2n3LpD6eaitlCGSWY/ds3vlQFngMN9WoLAsHQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TSFYw5jGjrPWX85LK6zV2YRzzlZUOiZUw84q55IXiY2w7EJh/D+sG8XboMnl8Dlpx
-	 s4Obx1Iqokg8kwlCZtRApPau0cq690T7Af2iBJRKMKq+aicN2eW777DG8YsfayEtWZ
-	 9jhpBIY2edYrpi6YoYNII1auaYEknYlhEAw6YrmxISL5QpaPJTqPNYbjA3o+0DqIah
-	 2dw04usSwcy09AUqRvzw9XscTaDgBYVZtXGdB1aggMjIBiyt8Ycq+oQz06JIqcY2rM
-	 0aFTQ8BhwwpYtVdV6aJtnYL41wE/t3A1XkCZBWsh3fv0H7oA6mmoVVPAe+wjR7+ixG
-	 LOK09jG+zROew==
-Message-ID: <sashiko-outbox-196866@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] selftests/kvm: check fopen() return in get_run_delay()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: zhangchujun <zhangchujun@cmss.chinamobile.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261104080721.2169-1-zhangchujun@cmss.chinamobile.com>
-References: <20261104080721.2169-1-zhangchujun@cmss.chinamobile.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 08:13:57 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3E0606A328
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 08:22:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A3E0606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49d05d51553so2140205e9.2
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 00:22:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793780552; x=1794385352; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zx8jHzDvw8va/CX+J+ppLsFj9mBNb+GyOOHFkDmbSlI=;
+        b=stGCcKR2XDWs2JXEfhtZr7iLAW8lUux9SMxROW6OOCRA1mWbx8OrRo4JMyxUU+27jW
+         8c13+kyddkij1BwcIWUx304IGIDbLM01Ibc2QYWx3RFhyX7gUV0iwPgp0xCFVDf1vyxS
+         PETlqgBra90W+V/xUeB/QKZV9smQJ+N83Bar1G3ihYu5ExGkVz/eUj3qiP1q/iXdAaWO
+         iP95iXIz3iUqNRhfpusCP2d0spZdrly4qJazkBVuuot+aWl5mVhhuL+oA45dVpKNrgNX
+         ae4LyDG/ScCBOiSm9zbGcSHLDVtAEZ/lplpYpBpok5SQLo4JKTsqx5vxTu/N2nZBy+Hq
+         IERg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793780552; x=1794385352;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zx8jHzDvw8va/CX+J+ppLsFj9mBNb+GyOOHFkDmbSlI=;
+        b=PfnvGOY0ae283q3JU961jD6X76waNRIxsdeUD2tpoyqeU7b7HfXt1boab1HSLbanZY
+         5R88mtX8IzKsr6z7wPmz2YMjwQtT36wrR1oxr1z1rxp1V+AMzgeNdzkyyrA3So4hA6yu
+         cUg/6x7g1CP2ThX3FmwV4MdHH6lLWHNIrCIkmQtaVVlD08g2RlJLC5fhjqhVantHrK19
+         4vqAeqJNkQDJG9Qqmeey7fuADfgZGaq1R16d3Bfeun2No0knD4x9AO3MrMO17qiY3tpP
+         j9a5BOA3upr1hWfWwio1zVARstKAWJJsz7TRbCgtOblHZdms4ITCi7HfUHME6wvIwMhj
+         zqYw==
+X-Forwarded-Encrypted: i=1; AKwUvBxasmsz6u7jOQlji3hAN2orKMo+xfR0LMQfHccrg0vgmLU0bKYwOt/JJL8mNcQq9GSryZg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8SiwdOJ8ZJWF4DyUT/8G6zcl/qL9mxJjN3EmY+KlNk9n0hpaz7
+	yqe3K1W06D3zqWPba89bn/soOVQgUqyoY9giRq/yu0uWd3d+JfqlLUBc3xsg2bCxEOg=
+X-Gm-Gg: AYBFou0703631mKPtDDxJGtAwPk4UZ1MRRa9Hi0R3TtXcxvf2mvj/F0lEBi8+pILk5P
+	sLfRB4vd1iI2ixn3ayIwJrZSaJg10I0BAVTPsytWZgCNzg5EqQF4QqnHDPvGTdkFVkvDLRZTEr+
+	a2GJt7e1zcqna4IPS3tRfdJDahEV967F4Zn4g9FW0oluZqKiXfJeTWOir9Gu+pl1vdVrcWygzT4
+	dPNDopiwpqPotV3nR3cQykJgpgn8NuS6mR+WeUtwUJ3AK7eVeypvPfjgkJm7OlFUzjfIGKGhD9Q
+	UtfdnkuAV37K526wjL1tw2iDy7oRreAk22TCXVQv9lddPVITEozzkRS59gFj+tVV3gD1pmJcS9Q
+	fqAOzdB8z7NAOS+J+OIOFI05T2TiFm3jPHTOOKFCLVPfLYRCS2HJsf1ZTN+lyZHp75ijeqsgM1f
+	MmvDVy86T9jP9LcsLxDdPIYtWeYMk7hxP3vUXvu4FhiUIDHGgWP2f9ZrDsiosRE3RvZg/bE5puP
+	OV+AcixmC/5Q4W6T0HLR4x8KMx6j7By0sNrZRRAZI9eiK3nIoHamBKf+10hCTcXF3KBW0G9N9D1
+	YpWIWcAD9oOBlQ8/MoF5DeCQX2x8pDqL475V
+X-Received: by 2002:a05:600c:3554:b0:4a2:267:25b3 with SMTP id 5b1f17b1804b1-4ac18c7461emr379283885e9.35.1793780552290;
+        Wed, 04 Nov 2026 00:22:32 -0800 (PST)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fece99a5dsm2366556f8f.21.2026.11.04.00.22.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 00:22:31 -0800 (PST)
+Date: Wed, 4 Nov 2026 09:22:26 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Sergii Dmytruk <sergii.dmytruk@3mdeb.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 15/20] attestation: Prepare provider and instance core
+Message-ID: <aurpges1eUwSJUBE@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-16-jiri@resnulli.us>
+ <auOVbGYJjIQTN53z@MjU3Nj>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,79 +101,161 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auOVbGYJjIQTN53z@MjU3Nj>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] selftests/kvm: infinite loop when fopen() fails in get_run_delay=
-()
---
+Thu, Oct 29, 2026 at 07:50:20PM +0100, sergii.dmytruk@3mdeb.com wrote:
+>On Thu, Oct 15, 2026 at 04:50:48PM +0200, Jiri Pirko wrote:
+>> From: Jiri Pirko <jiri@nvidia.com>
 
-commit fed2657e5d999eb78e5e508f23ea617f2787e14a
-Author: zhangchujun <zhangchujun@cmss.chinamobile.com>
+[..]
 
-selftests/kvm: check fopen() return in get_run_delay()
+>> +/**
+>> + * struct attestation_mr_props - Immutable MR properties.
+>> + * @id: provider-unique MR ID
+>> + * @name: MR name
+>> + * @algorithms: ordered hash algorithms
+>
+>Why do these need to be sorted?  Is it just to make indexing easier?
 
-This commit adds a NULL check on the FILE pointer returned by fopen() in
-get_run_delay() so that it returns MIN_RUN_DELAY_NS instead of passing NULL=
- to
-fscanf() and fclose() when /proc/<tid>/schedstat cannot be opened.
+They don't. Will lift this limitation.
 
-> diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/=
-selftests/kvm/lib/test_util.c
-> index f5f7189f96a84..2827f7d7d905e 100644
-> --- a/tools/testing/selftests/kvm/lib/test_util.c
-> +++ b/tools/testing/selftests/kvm/lib/test_util.c
-> @@ -421,6 +421,8 @@ long get_run_delay(void)
->  	sprintf(path, "/proc/%ld/schedstat", (long)kvm_gettid());
->  	fp =3D fopen(path, "r");
->  	/* Return MIN_RUN_DELAY_NS upon failure just to be safe */
-> +	if (!fp)
-> +		return MIN_RUN_DELAY_NS;
 
-[Severity: Medium]
-If fopen() fails to open /proc/<tid>/schedstat (for instance, when
-CONFIG_SCHED_INFO is disabled in the host kernel), will returning the const=
-ant
-MIN_RUN_DELAY_NS here cause the callers of get_run_delay() to hang in an
-infinite loop?
+>
+>I see that the number of algorithms is also checked on extending.  Does
+>it mean that a situation when not all PCR banks are extended at the same
+>time is considered an invalid one?  That may be a problem at least for
+>DRTM which may extend only one bank even if several are active.
 
-get_run_delay() reads the calling thread's cumulative scheduler run_delay
-counter, and both callers in the tree wait for subsequent readings to advan=
-ce
-past an initial baseline.
+Great catch, I missed this usecase. Will allow extension of subset
+of banks.
 
-In tools/testing/selftests/kvm/steal_time.c:main():
 
-		run_delay =3D get_run_delay();
-		kvm_pthread_create(&thread, NULL, do_steal_time, NULL);
-		kvm_pthread_getaffinity(thread, &cpuset);
-		TEST_ASSERT(CPU_COUNT(&cpuset) =3D=3D 1 && CPU_ISSET(cpu, &cpuset),
-			    "Worker failed to inherit parent's CPU affinity");
+>
+>> + * @algorithms_count: number of algorithms
+>> + * @has_register_index: whether @register_index is valid
+>> + * @register_index: native register index
+>> + * @readable: MR can be read
+>> + * @extendable: MR can be extended
+>
+>At least with TPMs, whether a PCR can be extended depends on locality,
+>so this isn't necessarily a static property.  Is this flag expected to
+>always be accurate or it would be OK for a provider to declare an
+>extendable MR but then deny doing it?
 
-		do
-			sched_yield();
-		while (get_run_delay() - run_delay < MIN_RUN_DELAY_NS);
+Okay to declare it and return some appropriate error, like -EPERM. Will
+document it.
 
-When get_run_delay() returns MIN_RUN_DELAY_NS on every call,
-get_run_delay() - run_delay evaluates to 0, which is always less than
-MIN_RUN_DELAY_NS, causing this loop to spin forever.
 
-Similarly, in tools/testing/selftests/kvm/x86/xen_shinfo_test.c:main():
+>
+>> + */
+>> +struct attestation_mr_props {
+>> +	unsigned int id;
+>> +	const char *name;
+>> +	const enum hash_algo *algorithms;
+>> +	size_t algorithms_count;
+>> +	bool has_register_index;
+>> +	unsigned int register_index;
+>> +	bool readable;
+>> +	bool extendable;
+>> +};
+>> +
+>> +/**
+>> + * struct attestation_evidence_supported_object - Evidence output description.
+>> + * @format: evidence format name
+>> + * @max_length: maximum output bytes
+>> + * @binds_mrs: evidence validity depends on MR state
+>> + */
+>> +struct attestation_evidence_supported_object {
+>> +	const char *format;
+>> +	size_t max_length;
+>> +	bool binds_mrs;
+>> +};
+>> +
+>> +/**
+>> + * struct attestation_evidence_caps - Immutable evidence capabilities.
+>> + * @min_challenge_length: minimum challenge bytes
+>> + * @max_challenge_length: maximum challenge bytes
+>> + * @max_total_output_length: maximum bytes across all objects
+>> + * @objects: supported evidence objects
+>> + * @objects_count: number of objects
+>> + */
+>> +struct attestation_evidence_caps {
+>> +	size_t min_challenge_length;
+>> +	size_t max_challenge_length;
+>> +	size_t max_total_output_length;
+>> +	const struct attestation_evidence_supported_object *objects;
+>> +	size_t objects_count;
+>> +};
+>> +
+>> +/**
+>> + * struct attestation_evidence_object_request - One resolved output object.
+>> + * @supported_object: matching capability entry
+>> + * @output: resolved output blob
+>> + */
+>> +struct attestation_evidence_object_request {
+>> +	const struct attestation_evidence_supported_object *supported_object;
+>> +	struct ctlv_blob *output;
+>> +};
+>> +
+>> +/**
+>> + * struct attestation_evidence_request - Validated evidence request.
+>> + * @challenge: challenge bytes
+>> + * @challenge_length: challenge length
+>> + * @objects: requested output objects
+>> + * @objects_count: number of objects
+>> + */
+>> +struct attestation_evidence_request {
+>> +	const u8 *challenge;
+>> +	size_t challenge_length;
+>> +	const struct attestation_evidence_object_request *objects;
+>> +	size_t objects_count;
+>> +};
+>> +
+>> +/**
+>> + * struct attestation_evidence_result - Provider evidence result.
+>> + * @object_lengths: produced length for every requested object
+>> + */
+>> +struct attestation_evidence_result {
+>> +	size_t *object_lengths;
+>
+>No number of objects?  That would make this structure more
+>self-contained.  Copying `objects` from the request would allow passing
+>it around to handle results, but there may not be too much value in
+>doing it this way.
 
-				rundelay =3D get_run_delay() + MIN_STEAL_TIME;
-				do {
-					sched_yield();
-				} while (get_run_delay() < rundelay);
+Not really needed. This struct is only related got evidence_get cb and
+it is always used alongside with struct attestation_evidence_request
+which has the count. It would be redundant to have it here too.
 
-Here, rundelay becomes MIN_RUN_DELAY_NS + MIN_STEAL_TIME while get_run_dela=
-y()
-continues returning MIN_RUN_DELAY_NS, which also spins forever.
 
-Should get_run_delay() instead fail or skip via TEST_ASSERT() or
-TEST_REQUIRE() when fopen() fails, similar to other file-opening helpers in
-tools/testing/selftests/kvm/lib/test_util.c such as get_sysfs_val() and
-get_def_hugetlb_pagesz()?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104080721.2169=
--1-zhangchujun@cmss.chinamobile.com?part=3D1
+>
+>> +};
+>> +
+>> +/**
+>> + * struct attestation_provider - Immutable provider operations and properties.
+>> + * @evidence_get: produce requested evidence
+>> + * @mr_read: read one MR
+>> + * @mr_extend: extend one MR
+>> + * @evidence_caps: evidence capabilities, or NULL
+>> + * @mrs: fixed MR properties
+>> + * @mrs_count: number of fixed MRs
+>> + */
+>> +struct attestation_provider {
+>> +	int (*evidence_get)(struct attestation *att,
+>> +			    const struct attestation_evidence_request *request,
+>> +			    struct attestation_evidence_result *result);
+>> +	int (*mr_read)(struct attestation *att, unsigned int mr_id,
+>> +		       struct attestation_digest_set *values);
+>> +	int (*mr_extend)(struct attestation *att, unsigned int mr_id,
+>> +			 const struct attestation_digest_set *values);
+>> +	const struct attestation_evidence_caps *evidence_caps;
+>> +	const struct attestation_mr_props *mrs;
+>> +	size_t mrs_count;
+>> +};
+>> +
+>> +#endif /* _LINUX_ATTESTATION_H */
+>> -- 
+>> 2.56.0
