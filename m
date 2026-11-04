@@ -1,94 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793749658;
-	b=L9oWCAK97KSp+LkyXnLpCQW450ybGQs4bDaq17i14tvXsEsWJh7FeMzVQvLSfBU35Aq8
-	 +k2sywWeZxJT8Pf3Xmykpor20K7BTI3ItDDXVB4muKue8+45Uvp0I0h2IstWAAqWwlzwc
-	 UVGifl+MJOMGWjS/Bocul4GRhJcctNG47KniTJRbj5CFBEOGYtlKp1Wkmwo3tz8Yy4gAS
-	 kHvnYAdZIdM7puCdUUPYAOtgRjLgmmGikdzzJeGJBguh+tCRaO/lZV04Y9JuYLB6qSNwQ
-	 yq1PI++kje6pgn6HKmhdcFcymyYO1itEzaLI8LtHiRkcpLK+uat19IMZX3pvcFAs/Ug==
+	t=1793751123;
+	b=fCIND2mSlrv1YO/lxnNaDfFziA/SMYiE/KbTOF7s/q0pXaTtjH1Z2TfK/67fQI8weq/X
+	 fOrIlTvIBtGrmYjvjXRQ51ekE+dzIZrdkAZe9mcjtw91juU3QhZB2AQ7Pktyv6PCJ+HkL
+	 iCOmFQUr3LfWOINY3RujO0VQe+7TWxD4Z3BYvn+j7VLREmBgf1MvPBpivAycTmnBk9AHD
+	 BbNk5WDZdczgSiou4s1lOfwufQybO1DJ+Q1ezMf1fVuNG/matKXZdL+lGE667OGUH0qqS
+	 ifLkrb9Bc87P2yt4XSdT4fSTrgE8Sll0SxZcV5DmNyDPz2n6Bdv+4kUuOnNrNLrAKOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793749658;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793751123;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=AkKw4T5m37AkLEe85hcfetEiJRRZnmi/qOahhWII6+4=;
-	b=C61Fv/I6O/NjKNrvI4B9cu0NYF9hc8J6/mV04tJy/2S/B5hvhIzNk2IL1ZxEc+2TWn6n
-	 Q+iOIyHCJMIJc4q8k08qwKfqQ8h61A7RibdjxuQy/ObvU13tG9umlyJWfbBRzfw+QWjyb
-	 8WvBN1l6XyCBkGlny/1/Dih265Df8SPIudVjI5309VvUv6+Uc4O7TEo4NNITq/+s5Ib3I
-	 4YTlXV5Bt/BzgD6lPPlJpNqK7wnUtw8npOiWwETyc5bMViq93dFMIf1F7juzG2f6f05Zs
-	 H0r2jFU8AJ9o8vjhRW5p+mxZrP02deGAxy6NIq8TtWBuc2irVooAcIDAuqooDNUPQwA==
+	bh=5CGACUUg3rBEi7UMlfaanowNlMmekE/5bj9+aCr8KCE=;
+	b=KapCy5LEceNPUd4ZmssGzQ/Zwkk7c/xyfYrfiG0IL+UmQwOzepenW/ADOm8HmzfriURZ
+	 rojiB3y4+4Fpzeism6RFHlDsd7nXA+rF1QuCW9et/4vtZJfi1bNEjmC2vD++hzh7NyRES
+	 bfxG6byGzb1b9AhjDabuI7AD9DTTHHtC8H6/nRih4t6ezA/+Y2sgc0ztMiuiwHgMIx6Oe
+	 fYB/TRgHHH7C3XAy24qu5eNn4PF4DKavSwnRPkBKKZUValIdNjo5C7yF9/ZkqLUnmnS+L
+	 FnWPCqi/jSjwt+Fexk3pkIMDBdbtC/NC21rEGnvZwRwyYmEA+8BQjpg7S0kEz9Idf0Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ERXTcHWS;
-	arc=none smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OsArDVuJ;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FA606A328
-	for <kvm@vger.kernel.org>; Tue,  3 Nov 2026 23:47:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF3FA606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB8F606A31B
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 00:12:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFB8F606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ERXTcHWS
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso537365e9.1
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 15:47:37 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OsArDVuJ
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ae7faf4ff7so303416a91.3
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 16:12:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793749656; x=1794354456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AkKw4T5m37AkLEe85hcfetEiJRRZnmi/qOahhWII6+4=;
-        b=ERXTcHWSYCrkK2Qrh6f15zyBfRtOn/QeZy+UFHEqi3AW08uOHBNpKkrULsL3Qy3sN0
-         MfxlbOAAFb2//xkWF0ZAuksl8OCrXuixPN/k2+yuQ/BFQHCujTyaeact3H8+qco3HkPv
-         58U8g0M/vvgu7X7IeehrhIxJRca4IiiyXrFEDZksElVBfOIGiXl5K3BHyqX/xI+8Uc2R
-         8+Z0CDSfd9a7BSZjk8ncQaf4tJG2if7DHqpykhBy04YuBoD6+XKLd4s6+Y0FWNu70ZaC
-         sv2ZoLuUTg1xOPzQNnQyYzLaoEXlNCY3KZlZuTwvBw9v9jc3JR8UNViBdilNkXPtelLv
-         8d4Q==
+        d=google.com; s=20260707; t=1793751122; x=1794355922; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5CGACUUg3rBEi7UMlfaanowNlMmekE/5bj9+aCr8KCE=;
+        b=OsArDVuJLp6NUYXfYw238qc/P3CK3zuQ6BazvZ1EEdC7EMd6YFVzUNKOhukTzidjDI
+         S4qdNw1R5tS+bBycAL5J83vHTRz5RoyFfBUAQmo5ct8llMvTqJ+9I07ETINP7LdUzReS
+         9cKlszU3NzF4SQEfEaAywJp70+N6B8X1nW2H8nJVviu+LxNZ7rHDI6LIGGbkiywL9mHe
+         V6zsAsfFmG5636Ig4RcXmD9ff2j1sEbD1dlwsa7qCjJHFEiuvfMnjjiK1Rce817xDFAE
+         ewKxqOErzBvSKGh/F0l2FsjrUb5L0YmHPMjkPcyAzypQr6h8fbBm6fU35kHRKATZCtVm
+         2lYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793749656; x=1794354456;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AkKw4T5m37AkLEe85hcfetEiJRRZnmi/qOahhWII6+4=;
-        b=BAC/igPSpjYYftalomiyoIlOmmvRTA303XLBLKujsxC46duYIc6Mm5FEKPUulmmV5O
-         coJ9QPQKkT4ILx8ybSOu7hpGu4slNRYzN0p8AKzr3X8ea4/1fJaO/34UywrsiR/mbUaV
-         8Sm2gi0yUDFvg5wR5Rf3IyBU66D+ve3Z50R6LxzUhD+k4CFv7Fn5l6/pSpTJhOqNj2sF
-         TzRH5hzvkGUMzwLcq2tm3YplT4cI+NQ2fHEWiWWYJwdLnsiJY1qMBw8/qlN5LBSuPXNe
-         nN0/Th+0AKg9Uoa+m2UMQ3+6pi2kveib2Wqdj1CeVIfByu01Q1XsvWfKpPENuSgpU1sZ
-         q84g==
-X-Forwarded-Encrypted: i=1; AKwUvBzTUGaGYUk4nyqa+OOvX/mkhRJWrdEMSvsmt133XAgz/DkL+DS7iYaNeadqooBQ8OWAshQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9e6mRAQS6ijRlZiiXfGbX2qGSPw3JRsTYsVQbCJbKQnWZYsTsF
-	2oxrDR9QLPdOmYIiBs31SiRUTnqgNpzdOQdF0HJ7G2tMdRbBtL+ffath
-X-Gm-Gg: AYBFou0AWBg20ZGUtmkmfF0y4c8hx4minhpuxOWw8xtbMZ+Dy+Sox2nlWYkQAI4e0RY
-	41GeNfdjRZklijsFrJA9ihScx4Ovzj1Qb9tRIzJbvX2dhZWa4otEGVi1gd98pkMW6CPthgoDRUD
-	MzpD8sWdg/xBzPr2pCGVm+4j3pq8I+Jjhp0VBeXj3F1wxbLkKSrqm6tG5IHFlbeGgNOzsJq3uPn
-	NMTNe2v2fObtkdmd7Xj7Ty8dfRHCBa7gfn1IW/eO9dmNAxQWD+ar0Rw+vPAVvZBEyvyUgIYHYUZ
-	k9Y370k63WflKnYCLB+ik2df7NsUxHSlvIhJbzvjDPUpA0JaC+Yy9kAsCR+b3OlTvDJIVOLl1JN
-	u8xvyYF3mght7Cd2daa1gjVg5fr4F7AfljLBxmB0CtNvoUm43CZIjskxMP1XqGxnAE73Xm8Fj6W
-	tAnnrJJpc0x/lT4/MpCXbTFb8g67MQE/zj9cnR/LdEVihJZoHbBUpjYjTs59RemPBkd6oAWdtn3
-	B6Wl7dyW9AKQDn3LB6vRa9uAZy+t+SXmolSihWira46+of1p85lqcJPyIGzz5fud/9kxo95ir5m
-	qki2/TxgOhIftjgjon1+3W/isNbW8WHGb12Me9tQ3KI13jrHWTUhvJB8Fw8ZXzFW5tqZBZkljQ9
-	Zk8EOnl2EBS9GgH1C5aXU+wHS7uhWe4NGUmEqiaTjhXTNsugOmP5hQ8mzKhmBfBDRBQ==
-X-Received: by 2002:a05:6000:383:b0:48e:889b:5fe8 with SMTP id ffacd0b85a97d-48e889b6deamr11283948f8f.10.1793749656012;
-        Tue, 03 Nov 2026 15:47:36 -0800 (PST)
-Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48feea5d4e4sm550961f8f.57.2026.11.03.15.47.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Nov 2026 15:47:35 -0800 (PST)
-From: Fred Griffoul <griffoul@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Mushahid Hussain <hmushi@amazon.co.uk>,
-	nh-open-source@amazon.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: Add helpers to allocate memslot metadata
-Date: Tue,  3 Nov 2026 23:47:34 +0000
-Message-ID: <20261103234734.45413-1-griffoul@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20260707; t=1793751122; x=1794355922;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5CGACUUg3rBEi7UMlfaanowNlMmekE/5bj9+aCr8KCE=;
+        b=JMsLT9v5mcYzGMV0E5vRL/o/K8XOsRDszgPNmYBeLrnpOZ9WO1hM60spy3g+F3UhZJ
+         DyCpIj0iAvV62gl9mQ8fh+cFrA33jWNvWwm2SdDKppY4q23RGLah6JIGwY6HOFn+iV7V
+         9P4+7/HT3DLmR2IOBGCVKJPCDWfi40MHCb93c3cMtfQfGnDm7apB9kceuYXcThlBc58h
+         MNUcMOfLrUWchs2KefpVVI2530vNSckB2t0mNcl6XGbvBKhV0bqKm0QCdr0w30KtW3AV
+         AGLbJKLMxljNQtWPI7mz9mm/Rk9rj98yGU6QV4WCxLHd65z7XmVwUhlevQ8Da+wonb8P
+         i3wA==
+X-Forwarded-Encrypted: i=1; AKwUvBx3OPnkFifaQdYngh7uKiTaiN1u4jVBTAIXEPTJnE65dmD22ap4HiI9x+MggMciJdtrFqY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z81V0Wf/5ywvGFV1fGlT5FR5ByiRn1fyn6dfZN6kO6EK29ZfG0I
+	c4UkF7KsD+Mr1NjYiDhaf8di66DUJEgyPgfqYyyu59qP7EBbLtp4tA++yD1+4ak4FET+gHkcKaJ
+	mOKZhxw==
+X-Received: from pjbcm14.prod.google.com ([2002:a17:90a:fa0e:b0:3a6:f87a:f3e1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ec5:b0:3ac:a203:e0a5
+ with SMTP id 98e67ed59e1d1-3ae897eb741mr12643918a91.11.1793751122089; Tue, 03
+ Nov 2026 16:12:02 -0800 (PST)
+Date: Tue, 3 Nov 2026 16:12:01 -0800
+In-Reply-To: <CALMp9eR9=JTv80HuG5zAcSj91tJos2ecFA_Sc5Qbs4s5XetKHQ@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,176 +79,113 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261102231428.13523-1-pbonzini@redhat.com> <20261102231428.13523-5-pbonzini@redhat.com>
+ <CALMp9eT7cnBf6kSXZLWuMyG9a52QveWjzzLz3Z9E=kPuX_ahVg@mail.gmail.com>
+ <aukmeb9mV8b504T6@google.com> <CALMp9eTdY3=1BrOYgov852VeAy3+Os7bvhWogvB0YF-JQrmtig@mail.gmail.com>
+ <aupLRleTJSIDTE9M@google.com> <CALMp9eR9=JTv80HuG5zAcSj91tJos2ecFA_Sc5Qbs4s5XetKHQ@mail.gmail.com>
+Message-ID: <aup4UcK__je0wtp6@google.com>
+Subject: Re: [PATCH 4/7] KVM: nVMX: Process each host MSR entry at most once
+ when unwinding failed VM-Entry
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	stable@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Fred Griffoul <fgriffo@amazon.co.uk>
+On Tue, Nov 03, 2026, Jim Mattson wrote:
+> On Tue, Nov 3, 2026 at 12:59=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> > > Something like returning to userspace with
+> > > KVM_INTERNAL_ERROR_EMULATION following a prohibited write to an activ=
+e
+> > > VTPR seems far easier--and cleaner. What am I missing?
+> >
+> > My biggest concern is that KVM could kill L1 if an L2 coerces L1 into t=
+rying
+> > VMLAUNCH/VMRESUME with invalid state.  KVM simply can't *know* that an =
+unexpected
+> > VM-Fail was due to the vTPR wrinkle.  Even if KVM re-checked state, it'=
+s possible
+> > for the vTPR to be "restored" to a good value.
+>=20
+> The only way that I can see for L2 to coerce L1 into trying VM-entry
+> with invalid control fields or invalid host-state fields is by
+> exploiting an L1 nested virtualization bug (i.e. L2 is running an L3).
 
-__vcalloc() makes every allocation at least one page, so a memslot
-that spans a single page uses 8 KiB of vmalloc for 8 bytes of
-lpage_info, plus 4 KiB for a 16-byte dirty bitmap once dirty logging
-is enabled. The waste grows with the number of memslots and VMs on a
-host. kvcalloc() avoids it for small arrays, but refuses allocations
-above INT_MAX bytes, which the rmap and write-tracking arrays of a
-large memslot exceed.
+Hmm, I agree L2 would be a tall order, but L1 userspace running against KVM=
+ can
+definitely get bad state into the vCPU by abusing KVM ioctls.  So not a VM-=
+to-host
+DoS, but still an unprivileged DoS (given that /dev/kvm isn't usually locke=
+d down
+by default).  Of course that would still require L0 KVM to have a missing c=
+heck,
+or require L1 KVM to be buggy and let userspace modify vTPR.
 
-Add kvm_memslot_metadata_alloc() and kvm_memslot_metadata_free(),
-which use kvzalloc() up to INT_MAX bytes and vmalloc above, and route
-the dirty bitmap, rmaps, lpage_info and write-tracking arrays through
-them. That way, how KVM allocates memslot metadata is decided in one
-place instead of at each array.
+> In any case, if L0 has already performed the checks in software, then
+> failure of the checks in hardware implies either (a) misbehavior on
+> the part of L1 or (b) an emulation error in L0.
+>=20
+> > I.e. if KVM exits to userspace with KVM_INTERNAL_ERROR_EMULATION, then =
+there's a
+> > non-zero chance of a false positive.  KVM could exit to userspace if an=
+d only if
+> > it caught the guest red-handed, but then we'd still need this horrific =
+code for
+> > the other cases, so that seems rather pointless.
+>=20
+> Let's go back to the Xen example, since by your argument any L1 can be
+> victimized. If an L2 VM somehow coerced L1 Xen into trying VM-entry
+> with invalid control fields or invalid host-state fields, and somehow
+> L0's software checks passed, but the hardware checks on VMCS02 failed,
+> you would continue to run the L1 VCPU with L2's SPEC_CTRL MSR. Surely,
+> the possibility of a malicious L2 exfiltrating data from L1 with the
+> assistance of L0 has to be worse than the abnormal termination of L1?
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/all/arr1VgGZmgUmY4hc@google.com/
-Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
----
-Mushahid's patch [1] switched the lpage_info arrays and dirty bitmaps to
-kvcalloc(). Sean suggested dedicated helpers for memslot metadata
-instead [2], which this patch adds.
+Probably.
 
-[1] https://lore.kernel.org/all/20260815142218.85067-1-hmushi@amazon.co.uk/
-[2] https://lore.kernel.org/all/arr1VgGZmgUmY4hc@google.com/
----
- arch/x86/kvm/mmu/page_track.c |  6 +++---
- arch/x86/kvm/x86.c            | 10 +++++-----
- include/linux/kvm_host.h      |  2 ++
- virt/kvm/kvm_main.c           | 23 +++++++++++++++++++++--
- 4 files changed, 31 insertions(+), 10 deletions(-)
+> (Note that I'm just playing devil's advocate here. I don't actually
+> buy your argument.)
+>=20
+> > warn_on_missed_cc helps, but in practice it can't detect cases for whic=
+h we don't
+> > have test coverage.  So *if* there was a bug that could be exploited by=
+ L2 to DoS
+> > L1, odds are good warn_on_missed_cc didn't catch that hypothetical bug =
+either.
+> >
+> > Maybe with AI we can be 100% confident that KVM performs all of the VM-=
+Fail
+> > consistency checks?  Again, I'm not opposed to alternative approaches, =
+but at the
+> > same time I don't feel a sense of urgency.
+>=20
+> KVM *must* perform all of the control field and host-state field consiste=
+ncy
+> checks. Otherwise, we risk priority inversion with "illegal guest state."
 
-diff --git a/arch/x86/kvm/mmu/page_track.c b/arch/x86/kvm/mmu/page_track.c
-index f12558dfcd81..f33547964b98 100644
---- a/arch/x86/kvm/mmu/page_track.c
-+++ b/arch/x86/kvm/mmu/page_track.c
-@@ -43,7 +43,7 @@ bool kvm_page_track_write_tracking_enabled(struct kvm *kvm)
- 
- void kvm_page_track_free_memslot(struct kvm_memory_slot *slot)
- {
--	vfree(slot->arch.gfn_write_track);
-+	kvm_memslot_metadata_free(slot->arch.gfn_write_track);
- 	slot->arch.gfn_write_track = NULL;
- }
- 
-@@ -53,8 +53,8 @@ static int __kvm_page_track_write_tracking_alloc(struct kvm_memory_slot *slot,
- 	const size_t size = sizeof(*slot->arch.gfn_write_track);
- 
- 	if (!slot->arch.gfn_write_track)
--		slot->arch.gfn_write_track = __vcalloc(npages, size,
--						       GFP_KERNEL_ACCOUNT);
-+		slot->arch.gfn_write_track =
-+			kvm_memslot_metadata_alloc(npages, size);
- 
- 	return slot->arch.gfn_write_track ? 0 : -ENOMEM;
- }
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 26e7beaff8a0..dc716ad83c8f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10146,7 +10146,7 @@ static void memslot_rmap_free(struct kvm_memory_slot *slot)
- 	int i;
- 
- 	for (i = 0; i < KVM_NR_PAGE_SIZES; ++i) {
--		vfree(slot->arch.rmap[i]);
-+		kvm_memslot_metadata_free(slot->arch.rmap[i]);
- 		slot->arch.rmap[i] = NULL;
- 	}
- }
-@@ -10158,7 +10158,7 @@ void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
- 	memslot_rmap_free(slot);
- 
- 	for (i = 1; i < KVM_NR_PAGE_SIZES; ++i) {
--		vfree(slot->arch.lpage_info[i - 1]);
-+		kvm_memslot_metadata_free(slot->arch.lpage_info[i - 1]);
- 		slot->arch.lpage_info[i - 1] = NULL;
- 	}
- 
-@@ -10177,7 +10177,7 @@ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages)
- 		if (slot->arch.rmap[i])
- 			continue;
- 
--		slot->arch.rmap[i] = __vcalloc(lpages, sz, GFP_KERNEL_ACCOUNT);
-+		slot->arch.rmap[i] = kvm_memslot_metadata_alloc(lpages, sz);
- 		if (!slot->arch.rmap[i]) {
- 			memslot_rmap_free(slot);
- 			return -ENOMEM;
-@@ -10214,7 +10214,7 @@ static int kvm_alloc_memslot_metadata(struct kvm *kvm,
- 
- 		lpages = __kvm_mmu_slot_lpages(slot, npages, level);
- 
--		linfo = __vcalloc(lpages, sizeof(*linfo), GFP_KERNEL_ACCOUNT);
-+		linfo = kvm_memslot_metadata_alloc(lpages, sizeof(*linfo));
- 		if (!linfo)
- 			goto out_free;
- 
-@@ -10250,7 +10250,7 @@ static int kvm_alloc_memslot_metadata(struct kvm *kvm,
- 	memslot_rmap_free(slot);
- 
- 	for (i = 1; i < KVM_NR_PAGE_SIZES; ++i) {
--		vfree(slot->arch.lpage_info[i - 1]);
-+		kvm_memslot_metadata_free(slot->arch.lpage_info[i - 1]);
- 		slot->arch.lpage_info[i - 1] = NULL;
- 	}
- 	return -ENOMEM;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index e7fc94e2910a..11a6f501a78b 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1253,6 +1253,8 @@ enum kvm_mr_change {
- 
- int kvm_set_internal_memslot(struct kvm *kvm,
- 			     const struct kvm_userspace_memory_region2 *mem);
-+void *kvm_memslot_metadata_alloc(size_t n, size_t size);
-+void kvm_memslot_metadata_free(void *p);
- void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot);
- void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen);
- int kvm_arch_prepare_memory_region(struct kvm *kvm,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cf4cb586f140..ce872ffc779f 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -941,12 +941,31 @@ static void kvm_destroy_pm_notifier(struct kvm *kvm)
- }
- #endif /* CONFIG_HAVE_KVM_PM_NOTIFIER */
- 
-+void *kvm_memslot_metadata_alloc(size_t n, size_t size)
-+{
-+	size_t bytes;
-+
-+	if (unlikely(check_mul_overflow(n, size, &bytes)))
-+		return NULL;
-+
-+	/* kvzalloc() refuses sizes above INT_MAX, which large memslots need. */
-+	if (bytes <= INT_MAX)
-+		return kvzalloc(bytes, GFP_KERNEL_ACCOUNT);
-+
-+	return __vmalloc(bytes, GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-+}
-+
-+void kvm_memslot_metadata_free(void *p)
-+{
-+	kvfree(p);
-+}
-+
- static void kvm_destroy_dirty_bitmap(struct kvm_memory_slot *memslot)
- {
- 	if (!memslot->dirty_bitmap)
- 		return;
- 
--	vfree(memslot->dirty_bitmap);
-+	kvm_memslot_metadata_free(memslot->dirty_bitmap);
- 	memslot->dirty_bitmap = NULL;
- }
- 
-@@ -1449,7 +1468,7 @@ static int kvm_alloc_dirty_bitmap(struct kvm_memory_slot *memslot)
- {
- 	unsigned long dirty_bytes = kvm_dirty_bitmap_bytes(memslot);
- 
--	memslot->dirty_bitmap = __vcalloc(2, dirty_bytes, GFP_KERNEL_ACCOUNT);
-+	memslot->dirty_bitmap = kvm_memslot_metadata_alloc(2, dirty_bytes);
- 	if (!memslot->dirty_bitmap)
- 		return -ENOMEM;
- 
+Eh, not sure if that matters in practice though.
 
-base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
--- 
-2.47.3
+> If KVM is missing any of these checks, then it has an "internal error."
 
+I agree, but KVM has historically had a *lot* of those types of internal er=
+rors.
+Even now I genuinely don't know if we have 100% coverage and accuracy.  I s=
+uppose
+we could add a cap or quirk the existing behavior, but I'd prefer not to do=
+ that,
+because odds are good the restore code would eventually bitrot.
+
+I guess I'd be up for having AI audit the checks, and then ripping out
+nested_vmx_restore_host_state() in 7.5 in favor of kvm_prepare_emulation_fa=
+ilure_exit().
+That change is pretty darn easy, and would likely revert cleanly too if it =
+came
+to that.  Sashiko would probably even understand the implications without e=
+xtra
+guidance, i.e. would hopefully flag missed checks as new features are added=
+, so
+maybe my maintenance concerns are unfounded.
