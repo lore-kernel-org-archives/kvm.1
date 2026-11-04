@@ -1,73 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793829048;
-	b=EC+X6M8sMRjwIYcEluQ7ZnGv9Gi6y1LZayiQGcpGcQi8FKROere/GeJzucGv0qJ4Jylj
-	 GQjqgP8NdyPNx8LJPuHb2vLdn8gLhvZBIK1znI57/2xSNCG+UulAaaHVnjVKD7MvuOu2l
-	 jHm3ullN8LY9HhJ6PyJow/J0ZSBfbTQnE8JWF3exR1CQK2h0EZuNpRDjX8TU7SrPZh2nx
-	 T1E7gxYsVHFUIJWz9mN6Z6Hj0VVR6F2mlIwpXzaNV80DzbvXClK0UE0geXo/BWkqcWw/H
-	 BIol8A4RUF/Y4dVoJeYv4xaDmZdVLZQnz+Pzq5Gh39UjbEJKgIST+0WQNM0aNNCHWbA==
+	t=1793830557;
+	b=Pq4hQoyMzyhp28ox6YIbFTpcuMDtqm5oGSw6HQxHdiK7zNaN7gu7beidSRLtxxg3eljm
+	 xut/k+AAqJ7Fwure934rGambXPNiSvtleRR7kXrKuG0Ip93giLyH6mU3Mc4lxKYspOYoo
+	 Me/YbOXIkKFa4/g9j5Dmprj2+yzMVx88PpLRA8quu/9l3TAiPnMJ9nsBA+FRqYGs4RmQj
+	 q7uUUMSVNc63EfeFacrGSKXazFgesLKytVDVK3BPURJoz0uGNr5NrO8uyK+b9LMDM54Ql
+	 2YcZqZKrq52NbVGaVrKL0Qz9anumNgnZKtOf2NdItMzPS++kjbFtFTNf69uvSWK78xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793829048;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793830557;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=dFChQ0mLr2TKcvvcevcbTzUnz/dF2dQnZUL2ZukNc7M=;
-	b=OHSyU3OF/ETiDpu53WHyDVU/zLPrvYoWiveXmKNFreFO2KzzK568CNi9KUpwWo6s4fjV
-	 uojJU9Nu4ZgypP+1VCI4fxx83Yd8HT9roAUXDIp8Qg3EKPGlduffpHTZUZBHB45sAF+j3
-	 YjPiuUORKPYaHud/4OO9aV7TZ7zQJS0g5QWR8RnKmILt+ZHVFNGwTkev71EcdyuntPPwa
-	 /GjE3dKqQe9uwPBPI24m8YF2FRdAScdaJNb6FT4n+3GBvISNVYoaBFAVg9eOoORGymZZp
-	 RrltU9bj/xfDfh6EJLY2nzHy9azkYeLrz5KFa9YrXW5fhY7YEkF9KoQfjazBlgceq/g==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=e9Al2DEvIWLb6MWcheqyXmrjikqbykjExztYBLPRPTY=;
+	b=suW6C4wL9ZbHXc+xnGk7tc9liYRTidbZm/jzoRJ92GNmJnUyoRsiq/wFO0PEypH0o01S
+	 JGPN8RwC8a4mtj2Y5sNo6ZdpVkrbe3yVgOzI+V6JEwkvvFuoT6gSxhJqGxvezCtUOqHjE
+	 keUaxqqeWm+QQDdIQYMGMPjHhqhjtbsqHK5fCYS8lRI+bdmKW89WaYB71J4oeQs8Sf6eA
+	 QhNCP+O/rO92+A+8BrLk5YMKzs67s5lSidawycmKsMsAaq+14QY03EB0QLFRsGmCTjaWY
+	 ZAbMosmv4LOVPt+tpyz7CvteI+OgmkWfzca92lIE8QhAYib1ROTY8Wf2PMpMYEdThmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=M9S0tvwz;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LPrGVcha;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AB76070772
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 21:50:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70AB76070772
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464D1606AB04
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 22:15:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 464D1606AB04
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=M9S0tvwz
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc4216aee8fso1353192a12.1
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 13:50:48 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LPrGVcha
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ed276af91dso1916375ad.3
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 14:15:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793829048; x=1794433848; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dFChQ0mLr2TKcvvcevcbTzUnz/dF2dQnZUL2ZukNc7M=;
-        b=M9S0tvwzc3cQs/jygskQ5D8xUmXs1a229U7+1Z0I98bqqBjLA/pme3j2jrHJ/tu3dg
-         WXusFODXXGOllpNsB2M2bk++eeUlT5C/w6TJ8QxTlcWEVdsqHbnrTTwUeU/s3EZJREwQ
-         vz9ebxujUXuZPxkwjDmh45JnUTNAOsh6QgzIMILNDcRqrVURkI75NvEvHq0RMj7K4etr
-         PevPKnVPUQXSkiwaBr1C8NkgfhIYiMEcg77e78qhI9pZ5mF8LtDKZeNErJDulCMYsk4q
-         62/Fhyk5Pc3R6YSq8BzBkUxAbD6dM3rPXfV+iHgXBsHecd37xPL98lsIWlMNeS99nYSJ
-         hSCg==
+        d=google.com; s=20260707; t=1793830557; x=1794435357; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e9Al2DEvIWLb6MWcheqyXmrjikqbykjExztYBLPRPTY=;
+        b=LPrGVchao38f/SC+Kx9VugPICoxtMEPaCao5/c92/o1Bs8B/BIu+4gtCfeX3e3gyLd
+         Z3o4jqUFbAXFK8HujH66pWdUMmxYxgsf9SPw7Jt8ZoxqoUcCbMikYmtlnXQpBH+3J1m2
+         3aENwqZ/9DjS/k2WO1q8pfqKv39uVLlxNH0jxS28STi/1Xd21DJKH3xPRWKsLl3E6Bz3
+         GtlxX9Y0PJST+9xpuRkwGl6OBrdTOUBsKEn2pwrUsAWWb7PRRY5zxpE7upKmJ7i63xxH
+         gmqBGFhGgh7SC4GyfSoyTO5KEs+GXPKuJ9gsaTciS/Ww6PWriMd+2GzOaeuqEf0qbLG0
+         tGnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793829048; x=1794433848;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dFChQ0mLr2TKcvvcevcbTzUnz/dF2dQnZUL2ZukNc7M=;
-        b=VhIapzKNfDKuITtsedzp0cziKqsOi2a3D5qcXA+Unxo3uIvR1XpvlAyoxLSsnOZtKv
-         BsN73fq8mOt9LdMTszBZ9QrLtBKJJzOIRdAdh38FPYacFpCZd4uePW1D+iU0WG5cos+1
-         fOF8rqh4Z1cEHVoMjTYqhGgHkDKntbXxdyEE3SZqO9s0aXtgKu4euO5GerF2ONfjNj7n
-         cVfmwXy9Y1UEgxeyT65uOPmRBggMB0uqA8umDG04Mvwk7qsT7VMxSAJf2bxxw9trrqFl
-         ATSYAAINXNE09jB1McZbEWknShZegUaVErxXTiqnlZevglMCwwuqXtnf8KS2kjmw4/PY
-         C6bA==
-X-Gm-Message-State: APuU4Z+nTr0aBjKtdfPD+gUlEN7LGbZ+J0BzssCZ7xAyZuo8BYHU+wSX
-	i2ddcJyzuYO8Ik/2wocyx/dtH6kD8VyZj5oPYju6McASD+/PHR2U37INKOHnlYe9kuWDD2jNm+A
-	XvxiYbw==
-X-Received: from pleo5.prod.google.com ([2002:a17:903:2105:b0:2eb:15a2:31f2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef03:b0:2d9:216a:cdd3
- with SMTP id d9443c01a7336-2eb3649be94mr173739735ad.18.1793829047606; Wed, 04
- Nov 2026 13:50:47 -0800 (PST)
-Date: Wed, 4 Nov 2026 13:50:46 -0800
-In-Reply-To: <auue7S_vdnGtTM3c@google.com>
+        d=1e100.net; s=20260707; t=1793830557; x=1794435357;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e9Al2DEvIWLb6MWcheqyXmrjikqbykjExztYBLPRPTY=;
+        b=GMzJDXQqch6yO0WPkbcWhUVRIgU2Y5ievqN5NZJ+pVRiqvnmO0s4O7SppH3dCHFSFW
+         K4IrUjkq8q85oCJ3kh3oh0TfR/E6noSvLvzWdQwQ93zohLJ8Y2a6QeKQXnf9BS/L9ejw
+         0Nm/Nw0jlDEIW8USnZXAjN1dBDSFrnp1F9aWttW2nfwZjxNHHYYia/OARkzzF/+tsbsv
+         YCquiGJdVSOFFiJiolQv9kVbEGjMkHIOBC8ErN5HbEqDKHePW74J0RhnXwvBBhzG0mrv
+         NL83j/Lw2XNQ4VhSpcZcpgwIbgrgB//M6iAcE/Da+Ydqj5qiibG3tzd0MiGiYQNYGolq
+         hUmQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxJhODIMAB7K45lrR9ONAu5WHkYlTyxV5TBp/OO+RlrstyliIa1RJYLHIFykA1lT0eLxZk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8U35K3IBcIdM9kaDen1qqX6voLNpHjbAWGFhKDaU2ZgzT+ZR/2
+	wYFXO2AoSpEKK2mXzApenjkeHB9wIAFNWvIlAzPf+r5yOHbcC0Gs6fmq2IUg74fxeNwFD5CMvwM
+	eK/xjCA==
+X-Received: from plbmc12.prod.google.com ([2002:a17:903:2b0c:b0:2ea:7f9c:2ce])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e84c:b0:2e9:4008:6fda
+ with SMTP id d9443c01a7336-2eb364b5c4bmr178143285ad.28.1793830556445; Wed, 04
+ Nov 2026 14:15:56 -0800 (PST)
+Date: Wed, 4 Nov 2026 14:15:55 -0800
+In-Reply-To: <CAO9r8zOa315UTmR4fbGzyHMtKDfUjW=6ehTrdA9js+JOAb3d7w@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,43 +80,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261103002205.3348519-1-dmatlack@google.com> <20261103002205.3348519-6-dmatlack@google.com>
- <autHA6aNrg4s5PkV@google.com> <auue7S_vdnGtTM3c@google.com>
-Message-ID: <auuotv1vFpocCSeW@google.com>
-Subject: Re: [PATCH v2 5/5] KVM: selftests: List the known IOMMU modes in
- irq_test's help output
+References: <20261012233638.2546339-1-yosry@kernel.org> <CALMp9eSuH1xe7PQ_WtE9DjqWjnKanFD_AFiiR9rEYkSV+sj45w@mail.gmail.com>
+ <CAO9r8zOa315UTmR4fbGzyHMtKDfUjW=6ehTrdA9js+JOAb3d7w@mail.gmail.com>
+Message-ID: <auuum7Dq0w-swARW@google.com>
+Subject: Re: [PATCH v3 00/27] KVM: nSVM: Optimize nSVM TLB flushes
 From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Alex Williamson <alex@shazbot.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 04, 2026, David Matlack wrote:
-> On 2026-11-04 06:53 AM, Sean Christopherson wrote:
-> > const char *iommu_mode_names(void)
-> > {
-> > 	return __iommu_mode_names(false);
-> > }
-> 
-> How about listing both? That keeps -h consistent with how other KVM
-> selftests list the options for their arguments (e.g. backing_src_help()
-> lists every backing src type), while also showing which modes can
-> actually be used. e.g. on a system with only the legacy VFIO container:
-> 
->   # ./irq_test -h
->   ...
->   -t	Override the IOMMU mode to use
->   	Options: iommufd, vfio_type1v2_iommu, vfio_type1_iommu, iommufd_compat_type1v2, iommufd_compat_type1
->   	Available: vfio_type1v2_iommu, vfio_type1_iommu
+On Wed, Oct 14, 2026, Yosry Ahmed wrote:
+> On Wed, Oct 14, 2026 at 6:23=E2=80=AFAM Jim Mattson <jmattson@google.com>=
+ wrote:
+> >
+> > On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+> > >
+> > > This series optimizes TLB flushes for nested SVM by using and maintai=
+ning
+> > > a separate ASID for L2 for each vCPU (similar to VMX's handling of VP=
+IDs),
+> > > rather than sharing the same ASID and flushing everything on every ne=
+sted
+> > > transition.
+> > >
+> > > The series also drops the dynamic ASID allocation scheme and uses a
+> > > static ASID per vCPU (or two if using nested), bringing it closer to =
+how
+> > > VMX handles VPIDs. Modern CPUs (Rome, Milan, Genoa, Turin) advertise =
+32K
+> > > ASIDs, so there is no need for dynamic allocation.
+> >
+> > I'm not convinced that this is the right direction. It's almost always
+> > better to do things locally when possible. Why not keep the per-CPU
+> > generational allocation, but allocate two ASIDs per vCPU=E2=80=94one fo=
+r each
+> > VMCB?
+>=20
+> This is what a much older version of this series did:
+> https://lore.kernel.org/lkml/20250205182402.2147495-1-yosry.ahmed@linux.d=
+ev/
+>=20
+> Then we moved on to per-VM fixed ASIDs to align with SEV, but the
+> tracking of "which vCPU used this ASID last" was annoying, so we
+> settled on per-vCPU fixed ASIDs, similar to VPIDs, with the caveat of
+> not being able to disable ASID (Hence the fallback ASID thing).
+>=20
+> Other than alignment, dynamic allocation of ASIDs means that we need
+> to handle the possibility of ASID reuse, which imo introduces more
+> complexity than the fallback ASID logic, patch 10 lists three very
+> recent fixups that we need to handle corner cases with dynamic ASID
+> allocations:
+> https://lore.kernel.org/kvm/20261012233638.2546339-11-yosry@kernel.org/
+>=20
+> There is a 4th one that was sent after patch 10.
+>=20
+> Also, the dynamic ASID allocations give the VMs more noisy neighbor
+> power, I think the ASID is reallocated on INIT, so a VM can trigger
+> running out of ASIDs on a pCPU and flushing the ASIDs of all other
+> VMs. Yes, we can handle this in INIT, but the problem is completely
+> side-stepped by using static ASIDs.
+>=20
+> > This would eliminate the need for a fallback ASID and remove any
+> > possible concerns about contention for a global bitmap.
+>=20
+> The fallback ASID logic is annoying, yes, but it's only in a few
+> places. I don't think there's a risk of real contention in most
+> practical use cases, we can run 32k vCPUs per pCPU before we run into
+> issues. I think we will hit other scalability limits before the
+> fallback ASID becomes a problem.
+>=20
+> > Moreover, it would be much simpler to implement.
+>=20
+> The delta is smaller and simpler, yes. But I think the static ASIDs
+> code ends up being simpler to reason about.
 
-That'd be awesome!
++1.  The per-pCPU tracking might require less code, but OMG is it hard to r=
+eason
+about.  I also hate having completely different schemes for VMX vs. SVM, it=
+ makes
+it extra difficult to reason about TLB stuff when looking at KVM x86 as a w=
+hole.
 
-> The available modes also get printed when the requested mode is not
-> available, i.e. when the __TEST_REQUIRE() fails:
-> 
->   # ./irq_test -d 0000:01:00.0 -t iommufd
->   1..0 # SKIP - IOMMU mode 'iommufd' is not available.  Available modes: vfio_type1v2_iommu, vfio_type1_iommu.
-> 
-> libvfio exposes iommu_mode_names_all() and iommu_mode_names_available()
-> for this, built on your helper for juggling all vs. available.
+The other big argument for per-vCPU ASIDs is that it will allow us to elide=
+ TLB
+flushes on task migration[*], which might not be a major performance win fo=
+r bare
+metal, but it can be a significant win when running nested.
+
+https://lore.kernel.org/all/aHWjPSIdp5B-2UBl@google.com
