@@ -1,101 +1,137 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.172
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793794395;
-	b=VoTx4JpHfXiIH41q8VtVzDJSUrBBfmYYIKuUbNP8IyQ5ZqEF3YUH/sTqmjGCaSnUH4Vq
-	 Vcg6wnsHTxLHC1zrgmLuBMiopgP21i3I2wgE47zURCCP+V6Vb6xS8Lm3wOjEdiwtqCqfj
-	 Jov8ELQ4Fc+oTeOyLFjSKwklib15/JU/LCQt+2wsi5MCqU+2CiBCBq8Qc+CzJ18mahxZg
-	 afNxGJ/TxLNfBMsz/BHI4yy8mbwWHk8bv0uKyJYRyKS+mrtu3E64uHmqwbImQaZ7wNZd5
-	 SnqL2SoN0bd8K8zs4PFtfxQapZcFRq/4GofhMxnJ+tJqsAEVVWwXMlurdaUCgDFeQIQ==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793798072;
+	b=nAElC+g+b9+yWuTkaUPzMNvlsH0k//xk+MNcUZdpt27yZ0MzRriKmyXGUNenD9uzIABp
+	 9aKyOtOHoAiPDv7MVTTA99tcxDeMhp/M20vW4kQqThhrK8ozvm0KdspD+JPouL2eQs8XI
+	 wDl24Z2/Of8wjh9149lZlMkfGDDis0jAwdojUbBduhrjt+hTD4hYL3ICgvU/3CtZuJEUb
+	 zApNdT41uO252VLTkvxTWGteRnWdyvvpdbFz8zYLRuB6qk3To8DSzCnVwEa0X+XsQCM41
+	 1ICAXosx2a3LPswd7oLxLx7zIQBNM5zq8ZM7dXk9lxuHjPfy+JdjmQcGCyfwBfUB7kg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793794395;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=l29EI5/p6/DEhToAZfMpMUc9xElFfXdkOy19HxoMaLo=;
-	b=XAwBypfMzuYrgsqbCcXT1WFcBGwbIFIh4Aen2CvwocKXSSdJ/7n0thk7oip0GQsKF0Hz
-	 Poew7XijorRPZzxmFU69ABlVNK8tZqX3zqJpA38xx84nI5P8Muxjfyz5Maf2tsLK63qeT
-	 Eq5EDKUNXcKTAp4LC+U+DZosPLY8fmYr3ODHzDkBzGYyhf9Wcm2esHKDX5VNLSkPckoen
-	 xN7vLHXeAOG+nRzb9Pmraho3euuaUzLiq9OIsGAvLDZR4JTR87k/CENhpfNYFu9ZqKU4H
-	 4VTjSarQD4ay8b8VAwhwQKS88gGHbItsPlypt+32Gy+SuZ2p1cskZFNZ2JGMMoAnzOw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793798072;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=irA0fOOtzcsl9SNo83KmQaJNaa+NjGkrhdkXZTgEE2w=;
+	b=opda4wCNviNTanbrb5tbJZ4Wiy89rozWNdmaqyBpq3FvrAdZ3A+XpAOHw2Ye9mO7B3h9
+	 lcLEIC50MBSBG3zpo7IV0oaIwPIEKIa3ddK9jHZlH9UexRiw9woffx86d8GUpeXawTmW1
+	 EWHJW7pxwBHSMskMhQGn0BH2vABAUCfEUTQ9t5VykpilR/KXSPajeh5vm9BH2RcemYS70
+	 GS+kzP6+WXffk27SpVyTajBfpYWQmzBYFHUBOu9VZLoB2JVgtHlWMjioGFVM5Bs/WlgqW
+	 HP8vVr8PH+/1NwJACC2W4+UX9pkV0dzkpEIpbBWeBWZwgKjIi/oiR2w7MhRdMGYUrLw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=brainfault.org;
-	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=ffOgxxwq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.172
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ANDYa0i1;
+	arc=fail smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48594606A31B
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 12:13:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48594606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3CE606A326;
+	Wed,  4 Nov 2026 13:14:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B3CE606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=ffOgxxwq
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3a9a1ed66b9so5016211fa.2
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 04:13:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793794392; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AisvwOnOWu5CYPU4god6olDgnJf2ZYeleABOGjxF9ymsGbmjJn9yO8JpTln3qOfU1U
-         rZl5dgf8vZotTugNLUjF+ePmWbSMiPhdy5MKS7tbCkcsjiufrhqKhTSsL56aM2HU3DW8
-         0u153o/qiK4uJHGEDpRnqqF9zpkq/wtLeFc4yd3sBstrwL9ibpG4Tekq6ArZjish3M8w
-         96r8MQq7iWpXVjbsRFkKiuAdIcMe2Jer7s+P3Ff8D0ZQ8qC4MWlbcUH+9adNYy9mmdKn
-         aMBSuaTMenkjk9jHFypHjxwIEusc0pjuVCPxECKqPvmE0S0Kpemi7EOM0gW/Oavr7ZYm
-         pWww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=l29EI5/p6/DEhToAZfMpMUc9xElFfXdkOy19HxoMaLo=;
-        fh=0TdDGBeooqSlRX90gXBwkhO1djicPbgSDx7FSUdtcA0=;
-        b=KpQ/RmwhOLWwBe8DSx7K0x1GZz7aip6Tm9YKv1aaT9AHeaieEU8Zmzjs8MpqiquBIQ
-         lj4gGo6WluNzVe/B4242y6lg/VYfkaOEgbozyeJN5sIHSRbz9gh5Tx+4cnmZ4WMqriOv
-         VXqISEvOtvkZurcBuQtFBwa4XpxBmECRUOMkZ1LcNa+XvAc98OYn8A9IFQs1PN9SYJBu
-         HWayWS8u8LYyXsvYXE/zA/zdLAN4lB5qlpYC7tFVJq1Q+0/P8cwk9a/NX8M4muCSUJ2c
-         H+PfFzSGpcSMMUgE1ZxmwPtQWc7wV6YlnjG8krJ3NO8SxoCBvhlL86/tRry38PFkw5K8
-         ep8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1793794392; x=1794399192; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=l29EI5/p6/DEhToAZfMpMUc9xElFfXdkOy19HxoMaLo=;
-        b=ffOgxxwqisaC7QsYjh3DtjmPhetf9wQjxHtK9Xxua07hTZ0YdlX9vMPTmn5FibBE/7
-         MPW0P8RW8tFDV6l1EAwtVJAjfP8Uwb97ItQFHIdMHXpXIioIFIUUjGgFMS5eTO+Lvsfg
-         5b8GUdEeCzg0JYyPipJ6ivCNEWAF1XzpN7GrUMt07yqB33ykTPHAZ8GNpXK3KvIQhtgb
-         rnFZ2OektpaFjtp0avqK4iQh6UDvj57WThHQYAUnlycHmSmzqyPfcEM25SJLJLt/Vpi/
-         FgEqTeOPe9KRb8vuKLdNmJVlBKA7TjI3iTqYnS5ZYp8R4JihNOphjddlrGLsCcG2/CoG
-         +q3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793794392; x=1794399192;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=l29EI5/p6/DEhToAZfMpMUc9xElFfXdkOy19HxoMaLo=;
-        b=mKqoT7c0kofvP7LKloEv9I4bA+YAvef09g9ucNinRH27oTvESJCslb1Abj+VPMv9wu
-         MOGHYAaOy18WH0Xzt3sAg/4Gr6gkEMiL4cUeUJPtd6qT7udzHfUKqQWKxfXCEe4l0zBj
-         TvR635rN04gy6pWvxSOmboottJe0rQwSW+LNZxkgeEZMMxDw6FMlncp2VHug4kOQTmKG
-         HWoVyuvkc5ov4T3sqftPz8GncaDUBOhuE7G9LSkmUWYJl21Z1QILSq9gs27s5xkC9mDR
-         oBRk5AvsNFBw91UB9hdw50jjjK6vIGtquL7+6ehbc8jC49cOVSa/kr068e/I4QjxPMnn
-         5ByQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzVc/gLKRR69UQa+Ed18eMNIyeB7GRYaKrd+InAYa3qt7QGOb/UQwBtxCPjg8lRR1pBOdg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/HwEFTOogMSiwLfxhA+ddah1dwXRvfuGq+8oLPCTY2QEDr/Iis
-	3Bxs3KSJD4m+92vBV6vES/hD+pJ2e13wI//CahSQVqRt9ZtC/k/uMJDs1girz8mRP3RUkXLyRSJ
-	o5FpWmeyGv78ZNQ2i+bnSE2HNeJOZTFWBAieQTmRHIA==
-X-Gm-Gg: AYBFou2bsvW++BEBR9ZA8ifn3qo/Y+1GeJiFU4DirDRWg/4FrMYVMgUxMoB740w8IKz
-	8jOa//Ojv6DWu2H9Jdo2y97zuF7mNulceb3H+qygloigXPXAW7rZ5RHhTuK7ytTgkjgjJ1CRwiS
-	utkOzuWi0KSZePzCNLIG+uR4aI18Li/h9UtwkHx2Chz9KYnQW9yAFlIe5wxCIV8kBRqb3Om8Iav
-	no+Ux22aM6Vw0PDlbDvYxc+Geis4jtQBLNLzrQXrMY7HV45Hf9mTgRPRZZvUna/vsQd31JpuIJO
-	Rs/DeeJxOgCjR7RveMTVcyNlSb5TlPcBUTJuN8FOwya8Y1DGslFIObEWelDzGDveYrEK/gYCx0E
-	yxn6ZBiC/B91I6EBqWoU8ULe79ZH3n7rbOo4ZZqcnEB7XF9RHdOxI8RyEoXUxBqBxrUPAUz0D7w
-	c4jBHhp5zE8zIbP9M1QmwLReDUPIzdyZxl+wG/xhYkTPP3xD7C0dYcFT8=
-X-Received: by 2002:a2e:bc04:0:b0:3a7:6090:e0b3 with SMTP id
- 38308e7fff4ca-3acb7a99f7amr41249841fa.20.1793794391777; Wed, 04 Nov 2026
- 04:13:11 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ANDYa0i1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793798070; x=1825334070;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=M2Gr9zQ3qDkrSl1aSV9V9KCRE4CBNEM3hd41hmHPusg=;
+  b=ANDYa0i1A4gIKmN+Y9YYKWvp7hgdZJG1CMyXMJOLaRytfjOAY5ROnq+P
+   HqP0IrnCfZ+905HvjSR0Bxe3n/gLHRGCPWmjvjYOQ1QL4jck8TXAzXj2U
+   91WfYnKN3A6AIwD4lR0GdQat1u4O7qeLUUJVwTTzs7utSnfDTMLr0D6Fl
+   Lyd2xvVMTzmHlikwkj45Eb9Vc3PjGa/SakGLelBX/b0yTnAEe541X7iET
+   1LYnMd1D//McFHvWs1+yolMyOzGME+KwF0JICnJCyg4yf6/zuAodWLeGw
+   T15XsNzN43Mfm4OsOAF13FK520ln587srfZpI58P7MtLD93d5U/9ZbHnU
+   w==;
+X-CSE-ConnectionGUID: Td1iox6yQxKhyrxozoCgXA==
+X-CSE-MsgGUID: kFZOBbuEQyu/ko52i8nZWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2546619"
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="2546619"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 05:14:29 -0800
+X-CSE-ConnectionGUID: huHLXrBYS+Cy9DE3uB6Cvw==
+X-CSE-MsgGUID: d7Vc+DNLSIuCsiuf52xJTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="6580563"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 05:14:29 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 4 Nov 2026 05:14:27 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Wed, 4 Nov 2026 05:14:27 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.26) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 4 Nov 2026 05:14:27 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PCh2HwVb51KTL8YurVlPuEVg3FUT9JUz/IxvE4rrqoissBcpUpTjL7nBgGc7ZO7YOgM/ZaqgSL2t6cd+hTTZfUFnjGMuyMGS+Eboq+qzcM1gTbcwM1wkX6ziRTzJ8e8Lf7qwTv1SIFBvtvcVM63ca/wdrpV2TWgsiVAHPsfWXZLexicBpycZ/CJL5TNgWNOpOU4+vr3nUvT87aZAtGBajMLoI9hE4YCH+rR/Rn6/Ob1ue5cCggeObRGyORIwPC3jwfY6uAg0J3UCaz5jN4ABj0UgVTE8xZzsb0Ip+cZ7EWoP/9w2phcFIHN/w+xCOGSz9wKi9pGZSx9U9aj/tiepaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=irA0fOOtzcsl9SNo83KmQaJNaa+NjGkrhdkXZTgEE2w=;
+ b=HI082XRBnIfxMihFvkPzEj/rLkYosSHp3S34c7nSzDFt43NQZQZud+4LH3RWVEocjnI2kc5VnNPb4VPpksvHF8Z+cbBYvxKuDjXLLAvOoeHOz51Kb4hK28rdkFZHUwJqIWIiu3nT9Qd6YqTCTCYdsVsWZbHkieIy61K2W6688QR2vbImWsj0pPg96ZDsliuXZwIAqJ85LKvs2zp+MoRWeqp7Yz952E/fTo6B658qIF6HPnj+FE/DmsSgEyMJhft8aRe/AIUMJ3OPumjzkedQmpvVlrx9n/hiW6rc31KYhN7OICIWPaLTCa2VbmO2o9/BtYmW8SRnVFpCDLgLkvHXWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com (2603:10b6:208:485::21)
+ by LV8PR11MB8512.namprd11.prod.outlook.com (2603:10b6:408:1e7::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 4 Nov
+ 2026 13:12:42 +0000
+Received: from IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d]) by IA0PR11MB8380.namprd11.prod.outlook.com
+ ([fe80::ea8e:eec4:f8d3:f95d%5]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
+ 13:12:42 +0000
+Date: Wed, 4 Nov 2026 21:12:31 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Van De Ven, Arjan"
+	<arjan.van.de.ven@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com"
+	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
+	<bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>
+Subject: Re: [RFC PATCH v1 2/3] x86/virt/seamldr: Support large TDX module
+ binaries
+Message-ID: <ausvP4vrZ3PiXFT8@intel.com>
+References: <20261030085304.3886520-1-chao.gao@intel.com>
+ <20261030085304.3886520-3-chao.gao@intel.com>
+ <396de152b28fc1be18bfd61fd0ee7501c188e661.camel@intel.com>
+ <aumh_q8olQPwH0pe@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aumh_q8olQPwH0pe@intel.com>
+X-ClientProxiedBy: SI1PR02CA0004.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::12) To IA0PR11MB8380.namprd11.prod.outlook.com
+ (2603:10b6:208:485::21)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,306 +141,189 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260817102447.40259-1-guoyaxing@bosc.ac.cn> <CAAhSdy2qwdHE7SB2gRK3_PQ6m_bMSfWpvcuSG-31W2yd3-UTKg@mail.gmail.com>
- <285419e5-c4fc-4c75-a765-436165bdc8b9@bosc.ac.cn> <CAAhSdy1Q7a+54qn0xNBQBd1eV2ve+Nzqz9uRsWrGSmTn35z8=A@mail.gmail.com>
- <c050c85c-482a-4351-b627-ac074f7f7952@bosc.ac.cn> <CAAhSdy3XDEGfFJJnHfx2Q0w+dG4FombF3Lj5O_V4wBpkyAYTNg@mail.gmail.com>
- <504d1c51-857b-4f42-ad66-bea00ab9a03f@lanxincomputing.com>
-In-Reply-To: <504d1c51-857b-4f42-ad66-bea00ab9a03f@lanxincomputing.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Wed, 4 Nov 2026 17:42:55 +0530
-X-Gm-Features: AclHuK92DgwuSVb6_NyY9PQpGR8Bz8fkGq5phk_kH5NMdrxG2QcR7UNhbZ_LWKA
-Message-ID: <CAAhSdy1_fwKKPKfw24MeNoqVyL9WG=b_HM0T++P3fB6BMr9PtA@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Flush VS-stage TLB before reusing a host CPU
-To: BillXiang <xiangwencheng@lanxincomputing.com>
-Cc: guoyaxing <guoyaxing@bosc.ac.cn>, Atish Patra <atish.patra@linux.dev>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	majiuyue@bosc.ac.cn, anzoso@outlook.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8380:EE_|LV8PR11MB8512:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9190896-647f-449a-4339-08df3a754ef1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|11063799006|56012099006|4143699003|261021121427099003|261009223027099003|261102123227099003|261022105027099003|261022115727099003|261022075727099003|261026140227099003|261028144727099003|261026121527099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: toU9fJh+P7WDK6yeYxrzQanf66GZmB0PYgIrV+wNFNQ0EK794IgObRZKF++lm6rpzCEFPduOqwK0jIY5l/Yulus78J4C0gWnoAsiuTfzSHtUj/wePaCXcyoMcu11m7pAXa3t8004Qz2lBSrWsDmVo7PuzVxDEFwPxlpa3IrQM4zwtYJbR3VEo1vfGir2K2omk8oa097KLgOcoUSQelCq+pnOpWKv6LEUEUO0yVcWJLF2KnIH2NE9LyYxkpE4qra88g7PXAvmmgKwayISW9X/aUru1lfyTONcya9k50AJX2UdMmGgJeFVRN+DMAA6LqhdoQaYdoqDfeioLATt3SAyO5aWCCxo1i3bnIUFijrmqgfr4HPSUCsRliJsHvpzVgnYRpm/71+8Pr7cq3zj5Sy27AzS+QptwL5q5NMn+stoSv45wRRwPNDyosX4FWDDfM4Few+z3agfedgpZNQmDr7npOalH+pW5+Dv4ouCuu2lGO9K9siTsAobWuawqUQGxN4nidU+iqwK29Hp76FWo5kOeSBMGrIzN/vwlEy871IqNKfSOm5ngr3cYiwAUHRm70PvEMXtxAZ93YESlPOTZBOTQBhLgSAc/2pA01a1HCND2UbBaBfCF4LxzWfK9+lGmZj9+jnccXu5b7q9puT+NWHTmiXU5AC0a6vU4lL7x7/Eq+4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8380.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(11063799006)(56012099006)(4143699003)(261021121427099003)(261009223027099003)(261102123227099003)(261022105027099003)(261022115727099003)(261022075727099003)(261026140227099003)(261028144727099003)(261026121527099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Jn5WQ7guiv5rd+JsKwWlTao+hnv0r6LVnXk7+TIfhXAaTZz2h/Jo8f/aXXDG?=
+ =?us-ascii?Q?2pZnJUX1Yit9X0kXF/HejYcJddP2kybeFhiAbqgdQPg+LMI3PL2w6Oivj/RR?=
+ =?us-ascii?Q?gCZby7swWjAvrb4UBnwZtNQrnMQ21Pwd04ebbOlvRQwxBFlpHwozOa5qh7YT?=
+ =?us-ascii?Q?3NPG/hTIAsf8UNmyzNAs0s2JBM2GPvtD6iCDQ0v5XlbdVnxgGgtBDmYc8Ze1?=
+ =?us-ascii?Q?yE1Vo9URkBO5MgzaDzgj/K1bt7vsHRWZL3pDJhGl3Q+37EzDpHjwtlvEixZq?=
+ =?us-ascii?Q?Il3u7jygdr9AKxEnzG4HNBJQ4DjYSNScQLx9iPzYul4hYDMgyerSVfCReBaK?=
+ =?us-ascii?Q?7bHKqppoIR/h6EbQ/nzDM5Th8QoVjl8SAc1rnwYCF4fPtgb3Yb5KJjsowlCn?=
+ =?us-ascii?Q?ZQS/+O+U80Vbp185X1NyeTHBULmhOtdg+PocGXKx1k4Nn2dbTFabqhopBQnP?=
+ =?us-ascii?Q?TR0pdwMVgVb0v2GS89q9dM8UKTeIOhe/3rQ/+9Fnc7rMQBoRcWYrStbowEh+?=
+ =?us-ascii?Q?X8WiCkWETxuCgtDgHHjHNtj2xlyuEAbX5vZkq2S2JRXABVjb5mJa/wyvH+ts?=
+ =?us-ascii?Q?ulxhkkdGeTdOGWC2212dgai2OaYzJQ3qXXIpLFJRv+PDIFBWf1pgCUglqvhH?=
+ =?us-ascii?Q?HQAniaWCr0/f1yqFrWDV+T3Qu4tjmstjMMKDSonp9ENGh6C72cOO6P5HC09P?=
+ =?us-ascii?Q?m/0PiZb75qmbhdTw/TX6x4JYUcfhNqyOTf3KHQC09GbbwNUOTj7KDkkey2ol?=
+ =?us-ascii?Q?AbFZHh5OhDg5zGbklopMq96Pm7mk/hpHpZl8x7mlazvmGTcFQ0Ww2zPtoVxb?=
+ =?us-ascii?Q?S/Wgd2CL4Tkjlnq+IxwQhYU1cNORvWmxXtu9JYXJUhZTqNKWudawDlQD/4iC?=
+ =?us-ascii?Q?ZYmzWkJ/xakMVpydcNDwwiS49o9nWCn1uGjdHQ98ueyBvvjnfW3HKvx2wQqo?=
+ =?us-ascii?Q?H4IdegeAXLbcrB4F4NWB50KWKa8S18LPbEkbZJkpiD4ivhHPdMnv8ppvrnSo?=
+ =?us-ascii?Q?WiPdv7GNpvhdc6A/2bdyEY7f8dr0Hz+nMzO3ciqXK2Qh415xXBQkr3cQ/s3b?=
+ =?us-ascii?Q?2S96Hd5euBa0JdVPVd6dVvL9ZI3GoMijhmnUR7+vCiD2sjXBEgINmG11cGVI?=
+ =?us-ascii?Q?gKeEKVyh7mL2ydlokUluSGbwqHTICFVjzdPBLpT8fm1MTMXpVSVE7vxtoECA?=
+ =?us-ascii?Q?+9+dgtpQZhR6FUMteS5vlMMiUzdKQMDPjEKtADbQHfVUOsVxy1i6TnkdMS1u?=
+ =?us-ascii?Q?91LgNkkzSN43BfeJqC5wIKhpAWtSOzLOAUcmkXK0Y4pN1FBRCQVb0KW2lPqL?=
+ =?us-ascii?Q?jIK/r3E7gmE5gAqKxvhNDw1PIbkNGItw9aOoF/gidcLJyIhn/eUfG9n74JG1?=
+ =?us-ascii?Q?SC4xwPDJu5qTQvLhfn8H7dH9hzBv4j9GkqTAJDP9xLH4HD07KWODqVTcSJgg?=
+ =?us-ascii?Q?/DI+9IAfq9LqXINJCtl0XErxKUBK4yyd8LmQx0jk6ND1xrqzVEgOiEou5DZ6?=
+ =?us-ascii?Q?FDeIFsiAXrYggStVOha55sESwQv//jrCZR1ajB3AkdankNh8iVqlTEAtBWet?=
+ =?us-ascii?Q?Cw/RobB/+tDM8iixTO2HmbHpjirUnsUYjeEWdFpp4raTmzlt5pN0JYn3uQrp?=
+ =?us-ascii?Q?oLOQKJaTV785wK2VAbNxGQgz3XDrLKQu0vWkfl+lCNrcwJM5od0sQFLceljn?=
+ =?us-ascii?Q?3gk03MMOXudI/hNmgnqLLa6w0jWDsG1gUCjNJIce1whjYxW3sARX+U+YRo6p?=
+ =?us-ascii?Q?KiCzIHTu7Q=3D=3D?=
+X-Exchange-RoutingPolicyChecked: DmEc1fqgbPnTjg6MzdX8XYFBik/POushJs4LSmmlsSGrg/aUNN4EgHrQgg2lYxRVH6cgsJ3og7/Tr8SDZW5pD2Z0aY6314eGGWSL3APk028pSsM7X2j9214/Tdby2NWuBYsfkczCtJ8t4eZDRSgnr2yC+Xgz1pzvj55Hc6iOEePgmQFyXklcrITCArBU/PDVc+DNfmYZQCZd8tNiNDyS99PWQlTYOeOZYrdi9pIgjIzFi0TXGawrw85KvV+Nmxvf0cLWZj8ehRYdd0EevMlsxj9cStNnsU34xl8l7UxnONKgPwf7/mFsyg3N5pnR5l3x6N3fkVB/26zdzgd3N/robg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9190896-647f-449a-4339-08df3a754ef1
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8380.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 13:12:42.3317
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9ll7rZhtjUPDXGiefh8LenCgmLYER//xgJGqMqb7inj/Pr263DkgDLO4vF+4cb2vjf7RpqUb/bfb7wWkhZ1dSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8512
+X-OriginatorOrg: intel.com
 
-On Thu, Oct 29, 2026 at 9:35=E2=80=AFAM BillXiang
-<xiangwencheng@lanxincomputing.com> wrote:
->
-> On 10/24/2026 11:49 PM, Anup Patel wrote:
-> > On Sat, Oct 10, 2026 at 2:36=E2=80=AFPM guoyaxing <guoyaxing@bosc.ac.cn=
-> wrote:
-> >>
-> >>
-> >>
-> >> =E5=9C=A8 2026/10/10 15:50, Anup Patel =E5=86=99=E9=81=93:
-> >>> On Sat, Oct 10, 2026 at 4:12=E2=80=AFAM guoyaxing <guoyaxing@bosc.ac.=
-cn> wrote:
-> >>>>
-> >>>>
-> >>>>
-> >>>> =E5=9C=A8 2026/10/10 02:51, Anup Patel =E5=86=99=E9=81=93:
-> >>>>> On Mon, Aug 17, 2026 at 12:25=E2=80=AFPM Yaxing Guo <guoyaxing@bosc=
-.ac.cn> wrote:
-> >>>>>>
-> >>>>>> Guest Linux uses mm_cpumask to decide whether an sfence.vma needs =
-to be
-> >>>>>> local or remote. Under KVM that mask tracks guest CPUs, not the ho=
-st CPUs
-> >>>>>> that previously backed a vCPU.
-> >>>>>>
-> >>>>>> This can miss stale VS-stage TLB entries when a vCPU migrates acro=
-ss host
-> >>>>>> CPUs. For example:
-> >>>>>>
-> >>>>>>      - vcpu0 runs on host CPU1 and fills a VS-stage TLB entry.
-> >>>>>>      - vcpu0 migrates to host CPU0.
-> >>>>>>      - the guest updates the mapping on vcpu0 and issues a local s=
-fence.vma.
-> >>>>>>      - later, the guest task runs on vcpu1 while vcpu1 is backed b=
-y host CPU1.
-> >>>>>
-> >>>>> When the vcpu0 is brought back to host CPU1, the kvm_riscv_local_tl=
-b_sanitize()
-> >>>>> will ensure TLB entries associated with Guest/VM are nuked.
-> >>>>>
-> >>>>> By default, kvm_riscv_local_hfence_gvma_vmid_all() will only do HFE=
-NCE.GVMA
-> >>>>> for the associated VMID because most RISC-V H-extension implemenati=
-on will
-> >>>>> tag VS-stage TLB entries with VMID and HFENCE.GVMA must remove both
-> >>>>> G-stage and VS-stage TLB entries for given VMID.
-> >>>>>
-> >>>>> If your HW does not tag VS-stage TLB enteries with VMID then it bug=
-gy
-> >>>>> / inefficient
-> >>>>> so you have to set kvm_riscv_vsstage_tlb_no_gpa in
-> >>>>> kvm_riscv_setup_vendor_features()
-> >>>>> as work-around.
-> >>>>>
-> >>>>> NACK to this patch from myside.
-> >>>>>
-> >>>>> Regards,
-> >>>>> Anup
-> >>>>>
-> >>>> Hi Anup,
-> >>>>      Thanks for the review and clarification.
-> >>>>
-> >>>>      Regarding =E2=80=9CWhen the vcpu0 is brought back to host CPU1=
-=E2=80=9D: the failure
-> >>>> we hit is not caused by vcpu0 being brought back onto host CPU1. In =
-our
-> >>>> case, after vcpu0 has already migrated away, neither vCPU migrates
-> >>>> again. The guest process is later scheduled inside the multi-vCPU gu=
-est
-> >>>> onto vcpu1, which is still running on host CPU1. So the stale TLB is
-> >>>> re-hit without any further KVM vCPU migration, and
-> >>>> kvm_riscv_local_tlb_sanitize() is not involved on that path.
-> >>>>
-> >>>>      My commit message was a bit too terse on this point. The concre=
-te
-> >>>> sequence we observed was described earlier in the RFC discussion:
-> >>>>
-> >>>>
-> >>>> https://lore.kernel.org/kvm/0d15b098-b8f7-4080-9f33-e8c49c2331e1@bos=
-c.ac.cn/
-> >>>>
-> >>>>      In short, the issue is: because vcpu0 migrated away, cpu1 still=
- has
-> >>>> stale TLB entries while cpu0 has the new mapping. After that, neithe=
-r
-> >>>> vcpu migrated again, but the process was scheduled from vcpu0 to vcp=
-u1
-> >>>> (which is on cpu1), causing it to hit the stale TLB. Consider the
-> >>>> following scenario:
-> >>>>
-> >>>>      1. vcpu0 and vcpu1 are both running on cpu1. At this point, vcp=
-u0 is
-> >>>> on cpu1, and a process on it reads a page, which gets cached in the =
-TLB
-> >>>> (let's call this the "stale TLB entry").
-> >>>>
-> >>>>      2. vcpu0 migrates to cpu0, and then the process (on vcpu0, now =
-on
-> >>>> cpu0) does a CoW (copy-on-write) and establishes a new mapping.
-> >>>>
-> >>>>      3. Neither vcpu0 nor vcpu1 migrates again. At this point, the p=
-rocess
-> >>>> gets scheduled inside the VM onto vcpu1 (which is on cpu1), reads th=
-e
-> >>>> same page, and hits the stale TLB entry.
-> >>>
-> >>> This cannot happen because in step#2 when mapping was updated the
-> >>> Guest OS will do TLB flush for all its VCPUs which means vcpu1 on cpu=
-0
-> >>> will also receive TLB flush and the stale TLB will be removed. This m=
-eans
-> >>> when process is moved back to vcpu1 on cpu0, HW will fetch updated
-> >>> PTE and new TLB entry will be populated.
-> >>>
-> >>
-> >> Hi Anup,
-> >>
-> >> Thanks for the follow-up. I may be missing something, so I wanted to
-> >> double-check this against the guest TLB shootdown path.
-> >>
-> >> If I follow the Linux guest CoW path correctly, when the mapping is
-> >> updated in step#2 it goes through:
-> >>
-> >>     wp_page_copy()
-> >>       -> ptep_clear_flush()
-> >>         -> flush_tlb_page()
-> >>           -> __flush_tlb_range(mm, mm_cpumask(mm), ...)
-> >>
-> >> So the remote SFENCE.VMA appears to be targeted only at CPUs in
-> >> mm_cpumask(mm), rather than at all VCPUs of the guest. mm_cpumask is
-> >> updated in switch_mm()/set_mm() for guest CPUs that have actually run
-> >> that mm.
-> >>
-> >> In our case, before the CoW the process had only ever run on vcpu0. Fr=
-om
-> >> the guest's point of view it did not migrate: the host migration of
-> >> vcpu0 from cpu1 to cpu0 is not visible to guest Linux, which only sees
-> >> vCPUs. So at CoW time mm_cpumask still contains only vcpu0 (or at leas=
-t
-> >> does not contain vcpu1), and __flush_tlb_range() would not IPI vcpu1.
-> >> The local SFENCE on vcpu0 would only cover host cpu0, where vcpu0 is
-> >> currently running. The stale VS-stage TLB entry left on host cpu1 from
-> >> when vcpu0 previously ran there would then remain.
-> >>
-> >> Later, still without any further vCPU migration, the process is
-> >> scheduled inside the guest onto vcpu1, which remains on host cpu1, and
-> >> can hit that stale entry.
-> >>
-> >> This also seems more likely when the ASID allocator is enabled, becaus=
-e
-> >> set_mm_asid() does not always local_flush_tlb_all() on switch_mm(). So
-> >> even the first time the process lands on vcpu1, a stale ASID-tagged
-> >> entry on host cpu1 may still be present.
-> >>
-> >> In other words, I am not sure this case is covered by a full guest TLB
-> >> flush to all VCPUs on the mapping update. Guest shootdown looks
-> >> mm_cpumask-based, and host pCPU migration of a vCPU does not by itself
-> >> add other vCPUs that never ran the mm into that mask.
->
-> Hi Anup,
->
-> I have a few more questions about the issues and changes you raised.
->
-> >
-> > This makes sense now considering ASID allocator in Guest Linux is globa=
-l
-> > and not local. In any case, KVM RISC-V must not assume that the Guest O=
-S
-> > has local ASID allocator hence the kvm_riscv_local_tlb_sanitize() must =
-also
-> > santize TLB for other VCPUs of the same Guest which can potentially run
-> > on the previous host CPU where current VCPU ran.
-> >
-> > Having said the above, there are multiple issues with the current patch=
-:
-> > 1) The kvm_riscv_local_hfence_gvma_vmid_all() is sufficient for most
-> > implementations to sanitize both G-stage and VS-stage TLB entries
-> > because both G-stage and VS-stage TLB entries are generally tagged
-> > with VMID. The kvm_riscv_vsstage_tlb_no_gpa work-around is for
-> > implmentations which do not tag VS-stage TLB entries with VMID
-> > and this patch remove this work-around.
-> > 2) The other VCPUs on the previous host CPU may be already running
-> > and may still hit stale TLB entry before kvm_riscv_local_tlb_sanitize()
-> > gets a chance to sanitize TLB on previous host CPU.
->
-> First, the migrated vCPU have run on the previous host CPU before the
-> other vCPUs do, and kvm_riscv_local_tlb_sanitize() will have been called
-> before the other vCPUs run on that previous host CPU. Therefore, with
-> vcpu_switched in Yaxing's original patch, no stale TLB entries remain.
+On Tue, Nov 03, 2026 at 04:57:44PM +0800, Chao Gao wrote:
+>Most of the complexity came from sizing the allocation exactly. If we
+>over-allocate a little instead, the size calculation becomes much
+>simpler. Making module_pages_pa_list[] a flexible array also removes
+>the need to treat its entries differently from those in the chain
+>pages. And linking the pages while filling in the module page addresses
+>removes the separate linking loop.
 
-I am not going to explain again. Please refer point #1 which I mentioned
-previously.
+After an offline chat, Rick suggested going one step further. Instead
+of sizing the allocation from header->module_nr_pages at all, make
+module_pages_pa_list[] a fixed size that fits any module in practice,
+and let the existing header check reject anything bigger.
 
->
-> > 3) The per-CPU pointer in struct kvm_arch is racy because we
-> > may have two VCPUs on same host CPU which are migrated to
->
-> Seconed, kvm_riscv_local_tlb_sanitize() is called under
-> preempt_disabled() in kvm_arch_vcpu_ioctl_run, so it is not racy between
-> two vCPUs.
+That removes the size calculation entirely, and the prep patch that
+moved the allocation after header validation is no longer needed. The
+updated patch is below.
 
-Think about this more you will be able to come up with an example
-where per-CPU pointer table updated on a particular CPU is not
-seen correctly by other CPUs.
+commit f7f4359f4106df373449c0cf821f098453e36b9c
+Author: Chao Gao <chao.gao@intel.com>
+Date:   Tue Sep 29 23:20:35 2026 -0700
 
->
-> > other host CPUs. Instead, it is much simpler to have an atomic
-> > cpumask in each VCPU where any part of KVM can mark a host
-> > CPU in the cpumask of the VCPU to force TLB sanitization whenever
-> > the VCPU runs on that particular host CPU.
-> >
-> > How about the following change ?
-> >
-> > diff --git a/arch/riscv/include/asm/kvm_host.h
-> > b/arch/riscv/include/asm/kvm_host.h
-> > index a30600579231..c975eee7240c 100644
-> > --- a/arch/riscv/include/asm/kvm_host.h
-> > +++ b/arch/riscv/include/asm/kvm_host.h
-> > @@ -9,6 +9,7 @@
-> >   #ifndef __RISCV_KVM_HOST_H__
-> >   #define __RISCV_KVM_HOST_H__
-> >
-> > +#include <linux/cpumask.h>
-> >   #include <linux/types.h>
-> >   #include <linux/kvm.h>
-> >   #include <linux/kvm_types.h>
-> > @@ -184,6 +185,9 @@ struct kvm_vcpu_arch {
-> >       /* ISA feature bits (similar to MISA) */
-> >       DECLARE_BITMAP(isa, RISCV_ISA_EXT_MAX);
-> >
-> > +    /* Sanitize TLB host CPU mask */
-> > +    cpumask_t tlb_sanitize_mask;
-> > +
-> >       /* Vendor, Arch, and Implementation details */
-> >       unsigned long mvendorid;
-> >       unsigned long marchid;
-> > diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-> > index 2ae34632cdcb..b1387a00c8b0 100644
-> > --- a/arch/riscv/kvm/tlb.c
-> > +++ b/arch/riscv/kvm/tlb.c
-> > @@ -207,11 +207,31 @@ void kvm_riscv_local_hfence_vvma_all(unsigned lon=
-g vmid)
-> >
-> >   void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
-> >   {
-> > -    unsigned long vmid;
-> > +    struct kvm_vcpu *tvcpu;
-> > +    unsigned long i, vmid;
-> >
-> > -    if (!kvm_riscv_gstage_vmid_bits() ||
-> > -        vcpu->arch.last_exit_cpu =3D=3D vcpu->cpu)
-> > -        return;
-> > +    if (!cpumask_test_cpu(vcpu->cpu, &vcpu->arch.tlb_sanitize_mask)) {
-> > +        if (!kvm_riscv_gstage_vmid_bits() ||
-> > +            vcpu->arch.last_exit_cpu =3D=3D vcpu->cpu)
-> > +            return;
-> > +    }
-> > +
-> > +    /*
-> > +     * The VCPU might have left stale TLBs on the previous host CPU so
-> > +     * mark previous host CPU in the tlb_sanitize_mask of other VCPUs.
-> > +     */
-> > +    if (vcpu->arch.last_exit_cpu > -1 && vcpu->arch.last_exit_cpu !=3D
-> > vcpu->cpu) {
-> > +        kvm_for_each_vcpu(i, tvcpu, vcpu->kvm) {
-> > +            if (tvcpu =3D=3D vcpu)
-> > +                continue;
-> > +            cpumask_set_cpu(vcpu->arch.last_exit_cpu,
-> > +                    &tvcpu->arch.tlb_sanitize_mask);
-> > +            kvm_vcpu_kick(tvcpu);
->
-> Last, vcpu_kick is an asynchronous operation, so there is still a chance
-> that the other vCPUs will hit stale TLB entries.
->
+    x86/virt/seamldr: Support large TDX module binaries
+    
+    The module binary is handed to P-SEAMLDR as a list of page physical
+    addresses in 'struct seamldr_params'. The list has 496 entries, which
+    caps a module at 496 pages.
+    
+    TDX modules are gaining features and are about to outgrow that limit.
+    
+    The P-SEAMLDR ABI was extended to chain the list across 4KB pages. For
+    a module over 495 pages, the last of the 496 entries points to another
+    page of entries instead of to a module page. The last entry of that
+    page can point to yet another page, and so on, until every module page
+    is listed.
+    
+    Grow module_pages_pa_list[] so that 'struct seamldr_params' spans
+    multiple pages (16 for now), and use the extra pages as the chained
+    pages. The last entry of each page then points to the entry right after
+    it, which starts the next page. These link entries do not hold module
+    pages, so leave them out of the maximum module page count.
+    
+    The 16-page size is somewhat arbitrary. It fits modules of up to about
+    32MB, far above the roughly 2MB of current modules. It wastes 60KB for
+    today's modules, which is fine because the memory is freed right after
+    the update.
+    
+    Use a fixed size for module_pages_pa_list[] instead of sizing it to
+    each module. Sizing it per module would mean either moving the
+    allocation after the image header is validated, or allocating from an
+    unvalidated page count. Either way it is more code churn.
+    
+    Do not query P-SEAMLDR for chaining support. Userspace selects the update
+    image and is responsible for ensuring the module is compatible with
+    P-SEAMLDR.
+    
+    Thanks to Yilun for the idea of allocating the chain pages together
+    with 'struct seamldr_params'.
+    
+    AI was used under supervision to review code and workshop logs.
+    
+    Signed-off-by: Chao Gao <chao.gao@intel.com>
+    ---
+    v2:
+     - Make 'struct seamldr_params' a fixed 16 pages instead of sizing it
+       to each module, capping modules at about 32MB. [Rick]
+     - Drop the patch that moved the allocation after image validation. [Rick]
 
-There is zero chance that VCPUs on pervious host CPU will
-run in VS/VU mode before the migrated VCPU enters VS/VU-mode
-on the new host CPU because the kvm_vcpu_kick() causes an IPI
-at HS-level so if some VCPU was running in VS/VU mode it will be
-preempted immediately to HS-mode and result kvm_riscv_local_tlb_sanitize()
-on previous host CPU even.
+diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+index b1137ca6150d..087bdf10a9a7 100644
+--- a/arch/x86/virt/vmx/tdx/seamldr.c
++++ b/arch/x86/virt/vmx/tdx/seamldr.c
+@@ -24,7 +24,18 @@
+ #define P_SEAMLDR_INFO			0x8000000000000000
+ #define P_SEAMLDR_INSTALL		0x8000000000000001
+ 
+-#define SEAMLDR_MAX_NR_MODULE_PAGES	496
++/*
++ * module_pages_pa_list[] spans multiple pages. The last entry of each
++ * page points to the next page and does not hold a module page, so the
++ * maximum number of module pages is the array size minus one entry per
++ * page.
++ *
++ * SEAMLDR_PARAMS_NR_PAGES is somewhat arbitrary. It allows modules of
++ * up to about 32MB. Increase it if modules outgrow that.
++ */
++#define SEAMLDR_PARAMS_NR_PAGES		16
++#define SEAMLDR_NR_MODULE_PA_ENTRIES	(496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
++#define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
+ #define SEAMLDR_MAX_NR_SIG_PAGES	1
+ 
+ /*
+@@ -48,10 +59,10 @@ struct seamldr_params {
+ 	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
+ 	u8	reserved[104];
+ 	u64	module_nr_pages;
+-	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
++	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
+ } __packed;
+ 
+-static_assert(sizeof(struct seamldr_params) == 4096);
++static_assert(sizeof(struct seamldr_params) == SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE);
+ 
+ /*
+  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+@@ -129,17 +140,24 @@ struct tdx_image {
+ /*
+  * Given a vmalloc() allocation, write all of the backing physical
+  * addresses to pa_list[]. Caller guarantees that the array is big
+- * enough.
++ * enough. If pa_list[] spans multiple pages, point the last entry
++ * of each page to the next page.
+  */
+ static void populate_pa_list(u64 *pa_list, const u8 *vmalloc_addr, u32 vmalloc_len_pages)
+ {
+-	int i;
++	int i, j;
+ 
+-	for (i = 0; i < vmalloc_len_pages; i++) {
++	for (i = 0, j = 0; i < vmalloc_len_pages; i++) {
+ 		unsigned long offset = i * PAGE_SIZE;
+ 		unsigned long pfn = vmalloc_to_pfn(&vmalloc_addr[offset]);
+ 
+-		pa_list[i] = pfn << PAGE_SHIFT;
++		if (PAGE_ALIGNED(&pa_list[j + 1])) {
++			pa_list[j] = __pa(&pa_list[j + 1]);
++			j++;
++		}
++
++		pa_list[j] = pfn << PAGE_SHIFT;
++		j++;
+ 	}
+ }
+ 
 
-Regards,
-Anup
