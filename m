@@ -1,61 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793775346;
-	b=R+9S6wp5v5cNwnpoh1o1FNeTZSniR/VIzMqKX3plcE6OwKcf8ogH6FJjuwBXk2jYrXzm
-	 AKQPlMcezZ//Fsc5+N6OHZPhe5R1LUZFy5fJp9fLJoGCBnz5ZJ/WZpGIegQInbouifIfq
-	 n+XaEPdCnimYqCQV1hznB5UZVdo3JMxmIEWXYm8n9owTOMiCeXTSz/P/ACseBQM/6cRh1
-	 w6tua+n2/fyhzrllukBrjw64OW+grIM9M4N/hYRupPh9SM273lMOUCxJapwbPSKnTU3pW
-	 DYX5pEwuyVzwcRcyOQ+gHLWJCHJLAuAVMJGC/zGduqtx4H71n2v2s/StQQ7ALPATmJA==
+	t=1793775348;
+	b=nuarpRsvR4dmSDuObPMx3LTDAcOIlnXYBri3CycLvluEXHJsZ4yFl3hlbrDT6gZASRUz
+	 nwAcZ5bCbRpokIGRU8LD8qZ9qN5h36VZ6/FYUhA2YWS055NrwQl8vUaa5z+mwh4B5/WV3
+	 /2hcLv6NIAXX1epPDyb7WC78qkgpR/hkmyfzez5FSGDRqrXQG8HBYC+GrdDptmDXRLjA2
+	 w/9ZjiVWRwiFidHWqLq2lvGmCjD5S/qcYYYInDfJPvPmRQI3rK2qAaWmxTYhTFuzGl+64
+	 LckvQvPAvzh4hgkBDzMjRwXCafO4xzUP4N4CF1947mapElVC9CERZUWPlVFBs4j6Q0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793775346;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793775348;
 	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:X-Spam-Status:
 	 X-Spam-Checker-Version;
-	bh=dLOM69oEcX3XYvhv8IqlmOcdqCfrUReKtqubiXiscKY=;
-	b=kTFnJ43pUXbrFjtWjfHmqed+hwGBlLnFdEjRt0wztmNVEzJw5SWxswoZOmTckgm/pyIW
-	 MEea9+WcWMdrboEHnKoNf71m8ddn0mkoGxD8djGdjhD+e6WCm3dZ70t5HHItlhwCN5MBh
-	 QQp2H/hhca2cvccU1jTQpFSqL0aD8cFF/DAZJnIb7bkGb6KrfYTGb4IDVZGJBHTr5zPc6
-	 0ZmFvEy1PhXmetSSXBOJoBCbcZ8tpZsdmSlkPEpY/Y8idIySgZoCbeaSvur1Gq3tQFy62
-	 MEWQEkTHvn+3AVLtPDDFgw0kwpncY39ClFBhkujmsO+oDZviu+k3rGQDY2qC5gv3QQA==
+	bh=c6k2qUJ9gF1rzwHJ7gl52fstK0/Ilon2GwxyI9YSI3w=;
+	b=eK7OY5u/cUE4fZ2LAqG2ICf7flr1BaO9ft03qz3JjLmdLe0/IRrg2LYYyytSQVgPqvC8
+	 kvklXPPp/e1dqZ6l+yHYx5yNbsnHlpGRucnb2eu76x7QDxMMbBkyDD5NsyOqKjBN3FvVV
+	 kz6aNLoj2+9aBzzyO7aurPK2rBgLjd20ZiI912XaamDs95MQYtZBgH8L3h6Hr0jMkhrL5
+	 ELiajsObjTDbPJ1LgedQvzeqOS7VmvKme+pv9Wn1loJF9TDv6tXRy8QIcHNXctNlz3Ekb
+	 aF7R3RRxAxVaB49q48xz2MTinTxZ5E3WlvckTzqP9IXn2A5okz1puMp0dfzjfhat2tA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.microsoft.com;
 	spf=pass smtp.mailfrom=linux.microsoft.com;
-	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=lsEcuIRD;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b="IHmV/fD+";
 	arc=none smtp.remote-ip=13.77.154.182
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC8B606A326;
-	Wed,  4 Nov 2026 06:55:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CC8B606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34061606A338;
+	Wed,  4 Nov 2026 06:55:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34061606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=lsEcuIRD
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=IHmV/fD+
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.171.5])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 21E5020B7166;
-	Tue,  3 Nov 2026 22:55:23 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 21E5020B7166
+	by linux.microsoft.com (Postfix) with ESMTPSA id DDC1420B7167;
+	Tue,  3 Nov 2026 22:55:25 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DDC1420B7167
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1793775323;
-	bh=dLOM69oEcX3XYvhv8IqlmOcdqCfrUReKtqubiXiscKY=;
+	s=default; t=1793775326;
+	bh=c6k2qUJ9gF1rzwHJ7gl52fstK0/Ilon2GwxyI9YSI3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsEcuIRDx31ikhS0Ob7pyMLQo5Pt0vYbHmzRujVsAexNE4SXBI58sX6GuwlmUADX8
-	 4GkqTh2yZbakUcuJMTHCRsZJ4L1lyfaaeKvfonRu2t7h1LFwEpiA4G6DStjETxAOds
-	 2igCoTzBNaKXN/+z1wpiFYRUpLQBM71VN7OZosSU=
+	b=IHmV/fD+oya8ZMjsh5MqpvPpWdpcX7XqPMfjGsr2WmN0N0SbNvUtEANUd2xXfvAZd
+	 s0PmgUm2a7Vkb8Y54BXQajp6txMuP4mWhVbq4H9ziMhio9uSjd7gxLeEtyApPUzAAV
+	 LcRQYU3YU/igvpIl/GBhpzKNFifblVE+o+5AP2DQ=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: dwmw2@infradead.org
 Cc: kvm@vger.kernel.org,
 	linux-hyperv@vger.kernel.org,
-	pbonzini@redhat.com,
 	seanjc@google.com,
-	joro@8bytes.org,
-	tgopinath@linux.microsoft.com
-Subject: Re: [RFC PATCH 00/55] KVM: x86: Hyper-V VSM (Virtual Trust Levels) on VM planes
-Date: Tue,  3 Nov 2026 22:55:36 -0800
-Message-ID: <20261104065536.15232-1-snambakam@linux.microsoft.com>
+	pbonzini@redhat.com
+Subject: Re: [RFC PATCH 23/55] WIP: userspace VTL interrupt entry and register intercepts
+Date: Tue,  3 Nov 2026 22:55:39 -0800
+Message-ID: <20261104065539.15281-1-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261017122501.610248-1-dwmw2@infradead.org>
-References: <20261017122501.610248-1-dwmw2@infradead.org>
+In-Reply-To: <20261017122501.610248-24-dwmw2@infradead.org>
+References: <20261017122501.610248-1-dwmw2@infradead.org> <20261017122501.610248-24-dwmw2@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,52 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 Hi David,
 
-Thanks for posting this. I've been trying the series and the QEMU VSM
-implementation in my local integration trees. With the fixes below,
-Windows now reports "Virtualization-based security: Running" in msinfo32.
+I hit a Windows VBS boot failure involving hv_divert_dt_write() when OVMF
+was executing in SMM.
 
-This was on a v7.3-based kernel tree with existing local VM-planes/LVBS
-changes, rather than an otherwise unmodified copy of your v7.1-rc7-based
-tree. I don't want to imply that all of the integration changes were
-defects in the posted series.
+The helper was diverting firmware descriptor-table writes into the VTL
+register-intercept path. The failure trace showed a reflected #GP being
+delivered in an SMM context with IDT base and limit both zero, followed
+by a triple fault and guest reset.
 
-The main runtime issue I found was descriptor-table interception while
-OVMF was executing in SMM. hv_divert_dt_write() was diverting firmware
-descriptor-table writes through the VTL register-intercept path. The
-failure trace showed a reflected #GP delivered in SMM with IDT base and
-limit both zero, followed by a triple fault/reset. Adding an is_smm()
-exclusion to the helper fixed that boot failure. I'll reply to patch 23
-with the change.
+Excluding SMM from this helper lets those firmware descriptor-table
+updates proceed normally, without changing interception for ordinary
+VTL0 execution:
 
-On the QEMU side, I also changed vsm_glue_reset() to make plane 0 runnable
-when stopping plane 1. Otherwise a reset following a VTL switch can leave
-the normal-world vCPU userspace-stopped. I'll send that change separately
-in this thread, since the QEMU glue isn't part of the kernel posting.
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5884,7 +5884,7 @@ static bool hv_divert_dt_write(struct x86_emulate_ctxt *ctxt, u32 hv_reg,
+ 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
+ 
+ 	if (!hv_vcpu || vcpu->plane_level || is_guest_mode(vcpu) ||
+-	    !(hv_vcpu->reg_intercept_control & ctl_bit))
++	    is_smm(vcpu) || !(hv_vcpu->reg_intercept_control & ctl_bit))
+ 		return false;
+ 
+ 	hv_vcpu->reg_intercept.reg = hv_reg;
 
-Two build/header items from the newer kernel integration:
+The context above includes the is_guest_mode() check added later in the
+series by patch 50.
 
-  - In patch 49, I used cpu_feature_enabled(X86_FEATURE_DECODEASSISTS)
-    instead of static_cpu_has(), matching the current SVM code.
-  - I synchronized the tools UAPI header with the PLANE_PROT/INSN_VALID
-    flags and their field-validity comments, and the capability-version
-    requirement for KVM_HV_HCALL_RESULT_RAISE_UD.
-
-I also encountered an issue in the underlying planes dependency:
-"kvm: Make KVM_SIGNAL_MSI per plane" guards the VM-fd and plane-fd ioctl
-dispatch with CONFIG_HAVE_KVM_MSI. Those guards need to use __KVM_HAVE_MSI;
-otherwise KVM_SIGNAL_MSI is compiled out and returns ENOTTY. The existing
-test_plane_msi case exposed this in my tree. This isn't introduced by one
-of the 55 patches here.
-
-Finally, my older LVBS tree had raised the default plane count to two.
-I reverted that local change to respect the KVM_CAP_PLANES opt-in contract
-and added early opt-in for my LVBS userspace path. Your QEMU VSM path
-already has its own opt-in, so I am not reporting that as a missing VSM
-change.
-
-My runtime result here is the msinfo32 VBS-running status; I am not
-claiming separate Credential Guard, migration, or hibernate/resume
-validation.
+With this and the accompanying integration/QEMU fixes, msinfo32 reports
+VBS running. This was an integrated v7.3-based tree, not a test of patch
+23 in isolation.
 
 Thanks,
 Sriram
