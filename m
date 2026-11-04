@@ -1,129 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.8
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793753137;
-	b=kzEma2x4+NQDs9hgp2+RRKpkNL7OFIbMrrOyXeaCqFENfZnqFx8tQADaRN+HJmbCa1Jw
-	 mOFdqj/12Xb0u049UenQut0HJ6ocoxoRBg+H9GxuMT/3igdGVW5vJRqvPqqlzYPbVA0Du
-	 slpG/vTewiwggwPbQZEym10dcFXwqP42MKIeZ65FwozhSPKkOP9HjRVBpJHlrTnj6hQ2f
-	 p5aCTo4OiKC3BV8afRNlCdCb85c07SH/1hep95T33/x7wlkQ8St174ofJC7oizunW8elH
-	 Py0/ezugfcGYR0rPz8SRaNDHe8bpAZGQZemvyJgQ5GegsUcc/RMQFqJ4GTe24ADoH5A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793753137;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:From:Subject:To:
-	 CC:References:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=Ykhx8G1EVJmwAUb+w/xHU8M90jBEHgo0mnvR7CIkDao=;
-	b=vlx6xu/9JJBS4hodm/XjhYEUh6xwz4SU/fyHYhPlbsAHOE7Qp3IauMcPqgOYHh9bSTOk
-	 sAS4Y5UJalzueV6CeeHnuLJ6LvfyHAiRX/9En6Ii1+0D938YBIi9UAQhUGmEZU03NK6Qc
-	 mHtPuDg8Sc2PQLz7loGqhTtUh3xIksCIKezYrHNhG/QRO4Rg37OP+A+xfZpp3jj94zUKU
-	 /s3AOG8FcGw/bd6+B1EBOtHjgnOvqo7xxccwiyAVj+waRkTe3OGe/Q+pBuxHowi1RetS/
-	 d/bT8fNe4bQI+Nj6GcX0Dkrg3gLs/WmEuA9hIDh7oS0zffuRoX1f9KGXJjGRdJXjohA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lEpHhwP7;
-	arc=fail smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793753267;
+	b=nCILuSUYQhcqCKDq6ibSObeXUqhRqJpKWZAvqjVWE6viQO66S/DInAJMnnrFAYAsZGS0
+	 a7lK0bAhmY/xVSfau5kG1DXQ3VafKafVYVgQnRMnmPDZtzA4RW6nlD0a3/YXulRVUNuzk
+	 lwf7nrVwoBb8sbJcLt0gsklB3S4w1lORD2nAF3NlCWaw63UtQrKrpo3YZKW7oylhRwdJd
+	 g01dsUtAUswdmkxKYgEcfvvkyiPfvZQtZLkteNAyiWdbIP83wYLgoTOUIhGLSalW4fATO
+	 zmLa3ZJQzb11H7od/Sy6QemvuCgjSh29zintfLVbRkUFidyXiGlJQsrmWdxykhxYCqw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793753267;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=Ma0BJNPiyw5G435eYcqXLhH2XcRvaZWBudt7erlHK0w=;
+	b=tdCr62yeU3zzNZYvbzw/nvdpfgw49NvupFNMSKbmcQwTCCCJpvnZrsBrZnTdYKpnOd2R
+	 W/uRYp2wgw7GaK68UuxrshGskHllhr3GdkZE40ZkF5ldgHRaT9CTo45FvaZ20DGb6WOQU
+	 XiBFPEnjAfMELqqxCqjYHCqq09PQBCExr3AywyhEigqpTOtKkWTLBL5bjaq6XJcX1JNrA
+	 413qCXx40dSBFXvaWaHPi2mgQdxUmReewBi8CRygp1HJPwxRn0Dv0Z0CAN73R1spf7jWe
+	 vYir3oYmvLXhnIE03fhvlK6xUCLE/yhbOYbPCFfyNatCJGUoGA5BWaX2JVR3pZKV9xA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=edO4FVds;
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C17606A31B;
-	Wed,  4 Nov 2026 00:45:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79C17606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C44606A326
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 00:47:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71C44606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lEpHhwP7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793753135; x=1825289135;
-  h=message-id:date:from:subject:to:cc:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=/RcXGPXmkXUbeg3Va72ij99wdsDt/D5bwRUXbTWzbns=;
-  b=lEpHhwP7oU9dgNYnVuThjmtYHgqEZ2xM82E3U2k4HTMexfWgvwHbjebD
-   MiLXYWohpfnKf4NCM39jefK/krdwz4laQZN6JLdxs/m76DQhu1+jupnqZ
-   +8RY+NAqA+XVdT/1QtLdMT/yVpRWtlX4Evf8nOe12eBiJ6dWZU2fv3Z3d
-   AEVdKLqwBHz10PYzW4SGr+Z+A4kbXHnTylfXdBJGCxpmM5gNt48TJ/+sq
-   KmDmd9gUbm0B9UOOhtKzOfGFwFZSRU0M0mvc0Mg2gIACOaYWRNVvz9zfU
-   r9EXnuMHZJRCnP683Ihl8XHlpn5AtOPmtheQ5pgQTSFVuGTLwaHdAXTwI
-   w==;
-X-CSE-ConnectionGUID: PRGr60kCQZ+7UTZtYZhVAg==
-X-CSE-MsgGUID: S6bVJL4nSoeLxGnRjFPUPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2385302"
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2385302"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 16:45:34 -0800
-X-CSE-ConnectionGUID: gB8usrTKQga3Hi89aZ+gMg==
-X-CSE-MsgGUID: ea00RwfuS7+Sdnr45qIRVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="6397012"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 16:45:34 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 3 Nov 2026 16:45:34 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Tue, 3 Nov 2026 16:45:34 -0800
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.66) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 3 Nov 2026 16:45:33 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z3zbPPJSwQztGC9spfrl80VpvdQ6/5fAUQbJmzinSUqNdEPHXjKw9F1H7Kko7ugEXJs05hOVK9ETxaGglQ4thKUBCbfEzha6iHO2qsi2ptsSIM6PFPvo/gncCSgNk6OcLKwmaIGvIp0AiYo8fR766xPiKtBAibtNCWT4lYBWvI4wORm/0xqHvYZfypcHSTXWa9XQYeZWrC3CnMiSH7LoP9TYOi4fC2QdoE4IjgneASDTNtEOCMJnMaHnMIpsA0Nm+GlrbZLazP1lsC/OxA2gQbBizbtV3C63mJyzrg6wU2cB9Lrk9tqTMMm3ebRtPx7Ub/JlqhKllwKW+fQCt9JW2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ykhx8G1EVJmwAUb+w/xHU8M90jBEHgo0mnvR7CIkDao=;
- b=uaoI5uH6dz7N0X9GB4ifEkMxR5Z8MNQBS7jLAkc/LWrV474pOEvt71VcCTVnDlUG7r1/R9nRn8L9Lb8knUXXCTqfkHenzC5uQy4cJUWgeG64n0phNmybLEewYPvaRIUjoud4A75sXmuPKWbiLXiv+5UhugS2NavQLDcfLjZzzaj/Z6PIm1thrriFSj5IVXExs01p3+1769u2tllONWIRW7iwfuJl/Yj1U0N/P2eM/wXlbwivsoJ72Qmfs9MIcpyerWtzMXwuE1ab+L6DVTFVzanfiv9YsZLa8npPhGSDzSYKasblLa/mgh7+ohDmv/i+YHXaE0eMLtJ6qCVclctIMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
- DS7PR11MB7692.namprd11.prod.outlook.com (2603:10b6:8:ef::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.12; Wed, 4 Nov 2026 00:45:25 +0000
-Received: from DS0PR11MB7925.namprd11.prod.outlook.com
- ([fe80::60af:89a0:65dc:9c84]) by DS0PR11MB7925.namprd11.prod.outlook.com
- ([fe80::60af:89a0:65dc:9c84%7]) with mapi id 15.21.0569.011; Wed, 4 Nov 2026
- 00:45:25 +0000
-Message-ID: <3c63be88-a0b4-4e59-a671-ca089f0b3cb8@intel.com>
-Date: Tue, 3 Nov 2026 16:45:23 -0800
-User-Agent: Mozilla Thunderbird
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-Subject: Re: [PATCH v8 00/20] KVM: x86: Enable APX for guests
-To: <pbonzini@redhat.com>, <seanjc@google.com>
-CC: <kvm@vger.kernel.org>, <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<zhao1.liu@intel.com>
-References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
- <a288d79b-5cba-4c9a-940f-984a0b7412ea@intel.com>
-Content-Language: en-US
-In-Reply-To: <a288d79b-5cba-4c9a-940f-984a0b7412ea@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0200.namprd05.prod.outlook.com
- (2603:10b6:a03:330::25) To DS0PR11MB7925.namprd11.prod.outlook.com
- (2603:10b6:8:f8::18)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=edO4FVds
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a0619b1fe5so202331b3a.3
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 16:47:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793753266; x=1794358066; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ma0BJNPiyw5G435eYcqXLhH2XcRvaZWBudt7erlHK0w=;
+        b=edO4FVdsKE+3sVvI0/R/flGkQfInhnICkLqzSL1RMpjIThGh+vA/Ub3j/KpnzLs20h
+         uROAcj8j0vxd/MQQJVUdsIVzDn7C6Rx9yAtAtqtN7qo3PRlj9kXTvyNUMfsDmrFggbW6
+         iyQH7kaueU7Vzf2DA+90gQoqYvDT/Xm+VASoc+04Mw9dBn38rg7t2bZibBrbDThrAgJZ
+         tkyRsgV9naVd01RBfk8VUWa3J6hkiJCsbSa0aTyuv7H9UIDhwxgTv9c8fIITjItF7Vqt
+         KmyTSbv4V2NkOEDNgCd6QGVPqKBk1wLeNfsRVtxlAzpHRt28OR7oB0skqgpAAGZx2D0j
+         IjBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793753266; x=1794358066;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ma0BJNPiyw5G435eYcqXLhH2XcRvaZWBudt7erlHK0w=;
+        b=Q01vcjIEOSAmZqoRRaJn5+b1WzKsuxp6+Cd/owUzucSUY7X8CZwNTSHWV48m7BAciA
+         mkGYPoWSTmMeTMqOSqUNvfjtoHwLhj60N7IYoQi7JsMXJTh7/f65r3DdLsMScnDaXFPw
+         1Vp4Gyxo4fY9F7CNcAsGtuZEC6cVuMcGwWR/fBXXQrpXgY02brNK9Y50piVhhYgcahX0
+         ZMzg4bkdSRim1UCjx+Q14J8Nh3IRUE1Ne7LhyCqFw+sN6RDqNP52FnNkX2cX9hU1MdXn
+         ZD3S1hZOleLjsUqGbJMYAVuAoTa6gR0xTHrwbp1Z7oJKJINVBYbcEEtsU5J4wiHAeksm
+         lGCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy2zXstQOeKBAx2QMjeqQwHUZfM177QIyhaata2AuIgjpuGhxmjz2JQqbh8wdQuxe9iXxs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8MNosL0NWd0lV9flKV4jpKWh2mhIyK/X5K3H3wpsSo9aXi14Na
+	lBoCRJ+pALL6qgWD4tHjH3SwDT5vDtgDKz1JbJXSaD4YYN88i1/IlmoUP+pIk2L5Zka48myuJx+
+	fXfAoJg==
+X-Received: from pgbdw7.prod.google.com ([2002:a05:6a02:4487:b0:cd6:261d:5bde])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3945:b0:3e2:9b5:b167
+ with SMTP id adf61e73a8af0-3e928a51dc8mr11965695637.58.1793753265612; Tue, 03
+ Nov 2026 16:47:45 -0800 (PST)
+Date: Tue, 3 Nov 2026 16:47:44 -0800
+In-Reply-To: <CABgObfbvv-fQnC35EU+TxEtNMyYA0wgJ-nA_2B1eqKrZ_2qqkQ@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -132,89 +77,335 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|DS7PR11MB7692:EE_
-X-MS-Office365-Filtering-Correlation-Id: b84dfee3-2452-47a4-a4b0-08df3a0cea3c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|261026140227099003|4143699003|56012099006|11063799006|261028144727099003|261022105027099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: zNQ2jA5De22aCb+oVo/GBWTRmT+C0/SfHcmZwquLtGmDKr2UP9F09x8GT+WGEgzZpq2MRcRhwEQ8SZtjDEj7zKCmIeT1OTMGqUKqGPVGC+QpFzJU4jfdebybUJ1i6cA/+1WhDXWlJ0C3OEJSqd041ncjnx5Vv+hzcMStUrCwwIt34S3aA2DMQH1CEJc6FqEwUWHDCAQTSXkkuKRVuzDqBeXeu7KKAPzi+JCJ1Mz+O1fBziI/C0hZ4ZoClKPdapxJBVpKdOc9kD01oikdfRE+LI08FVYT50bVQ75xD5PBZ1LiAW97HqgqHMfP9MLV5KnqFJn2HJUk2pxcBlcK2kJQXglJ7IFMHWKa+klVdWVy1eIn/02BpP3LMaB0acq+nuZuQRHCKn0MVj18JyTAKMahsXjaGDkNRVhpQqu5Bpr05H0zg8iRxDmVSYcKiApbcvhkUaW5tUOIr7biEj1bcXmsR/R7bwHPVBa2O1Sujk+flUMWM9NC3khvxXRHRG6qPMhc0UzN4TYjD6cZB39FbH5VeXqUcGM1z4zIBz6c5ViPiZQXq9DAk/3dtFxAeyLQA7McdOhJpGhKUweBSKndBzycn+hfGHGQcKjay/e/98AT4oDPeM77NGZcj/AwgID12AOzxoiPzChrC39RuAaFOfEmHEgL9pAcHhQHflbdca3aF3w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(261026140227099003)(4143699003)(56012099006)(11063799006)(261028144727099003)(261022105027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?akhNdFArUDkrcjA5SFF2RDRIRTlFMlBVMkJYWXlYcGtvbmF3Zlh1TG1IcU5X?=
- =?utf-8?B?SGM5REJTVHBRTmd1TWZRTnM2L2VUY0NxRWI3U2w4alduZGtDWFlqa2xxSFlN?=
- =?utf-8?B?SStJVDhGTmhNSUFBOUY4QXBSdlJjc3BiZjAxMVg2ZExpZG43TzVyQldWZUJo?=
- =?utf-8?B?OVZIQ0xrajNSVCtlY3ZNOGxGTThUMUhVMHRLT3phSWpxdXhkeUZLekUyY0ti?=
- =?utf-8?B?OWMwM3RMdkkyOHZEQnVJZHJtTUJtZGZLUzJRQWdYVmVOY3FLMnpGMjhaKzZI?=
- =?utf-8?B?Vk5oTXhsZnJQMTB0ODQwMXE0YlNCVnNhSkFCdHBPVms0MFJmNGlyMUpPbklC?=
- =?utf-8?B?OGVYcmg0bUpnK0tteVR6dS84QWdYbnN6elN0VDB1UWdJYlFiTmNpZWt5TW96?=
- =?utf-8?B?MDg4Nm0vMjVyZmpFZktOU2tTK0Z6cXhYdVltbWZMQ1VER25XSjREZlV1Ymxp?=
- =?utf-8?B?QmJPOTc4dzgvSFVMY1kwdTJ6VGMzRnBsMkR5NVlaY0s0YXJLcmRhdExuUlNT?=
- =?utf-8?B?VC9UUmZOa1JHU09CazFQZXZpQm1qWEEraGd6d0ZNVHVnZFRHODFSczlRWUpT?=
- =?utf-8?B?b2pFeVVIalRoYWd4cGMySmE0cFBEYnMwRzkzMkdWblFGODZOTGRkRW5sT1R0?=
- =?utf-8?B?YlRwQWljMURNb2hPQmdHVksyOWxBdCtOSzN6cjVnUXo5dklaVWtiYU40Ynp6?=
- =?utf-8?B?VGVXcWIvdVY1NnVUUEFpYTlRRDR4SnE2U2dGamVDRXorR2xXRjl5Nll4WGFX?=
- =?utf-8?B?TnI3MFJOUnhSdWZUYUE5ZENmNWNxZElrb0tiVG9vZW1udUp3bmJqV29ITlN4?=
- =?utf-8?B?SUdXdkF6MWZ3V1ZXekdFd3B3RGIwVzU5SFQ4dHBxRlUrbmhOcmREZ0E2NDVC?=
- =?utf-8?B?T3hOZWQ0RTFkdnQ5UVUvVWdNMCt4M1dpbjhpTTJhdHBIRTYxVlNVd0NGeW12?=
- =?utf-8?B?VmtHelUwb3BBVUFaYnJqT2Q3OHZ4aVRaWE9GL3Y4WGd6MW1RVUZBYWRiNVZh?=
- =?utf-8?B?YTFOa0IzRmtQS1RNdVZqWjVEdGNqRm5UTGFHdzc3ZnNzeVFwOEd2TlBTQy9G?=
- =?utf-8?B?eDZ4UmxTVnd1c0E5OHlVMElOUGp3d2VxMXNkUmRPaDh0Ykg1K2ttckg3MzQx?=
- =?utf-8?B?TjZETGh1UEtLTzJNM09pNms0QStORndVUElnOWh1dnZET1J6MDZ4MmZiTGFD?=
- =?utf-8?B?SU5MdERZd1YyVy82RE5zZE9Fa2lQOUJNbG9scUE1UnNaazA5MmxKT2NmUjBp?=
- =?utf-8?B?OXJzN3dyUi9yREhtVDU2b0hwNWIrMm4vM0xUWFNHb2tqeDJiV0V1dWlFMTY4?=
- =?utf-8?B?eUUwRjNwR0FUSzVxcmtkQVd6dDNSQkJCN1hkQjI0Y1A4Y2lEYUtnemgyblB6?=
- =?utf-8?B?RUZZK2t4YTgxbXFTZU0zYzJwL1UrWHA2L3daVlpmVnhYUnI5Q2JURitIT0JL?=
- =?utf-8?B?a0ZQWnZhV1JWNUR3dFVNSGVKb210Vml1aHNQOGZvV3J6S2RKSm9CTjRYZkVY?=
- =?utf-8?B?a3pLQ2IrSFgvbEFNbmZVaENQVngrdW56RkdQN3pCMTBra01pQTQ0dUR0d3pV?=
- =?utf-8?B?MGNhb2lZUUhDYzhIYjRPMmVwS0t1SHBjc1BnTjlpekNpZGVYdGdiWEh0K1ZP?=
- =?utf-8?B?ZUpiaGkvaEg3eU40RjBkRUVqNnAvNUJLdkx5S01RZm5JSGc1M3JNQnZQT0lS?=
- =?utf-8?B?RnM3aEljMDJxRWZTVE9vWUZOYXpESWpEQVVGNFlNZUJPTTFKR3Y1Yjk0YnZk?=
- =?utf-8?B?WWUzTXNGN1FTbFpRdjVJUktMNVVibFZLdVhoMFF0clp3Vy9Qa3BXZzBKQ1hz?=
- =?utf-8?B?UFYySVVTRXh3WmNZSFAwb1VQWUNzUW1meDk4OUcrNHk3RnZPVGtTSmRGZGgz?=
- =?utf-8?B?dnVuRzhRblJFWU9WUlJhd1lHeFRERlZGTlkxWDZKMWRRYng3VUlseThDR2NS?=
- =?utf-8?B?a1ZCVWlxYStyS0tuUkZPakZncU9BK3FmRnZ1TTRwR1QwaHZCS1liWk13VFQ1?=
- =?utf-8?B?MU9CbkxnRmE4WVM1ZnBDdE5yQitnQzdaTVJUcVlIN1FDYkU0UjBnZEFUTDd1?=
- =?utf-8?B?Qi9kekVLZTNjTCtDVjBCNXEzY3dLSjd3YXgyQnZLSjArYVZHQmZ2blZKNEJ0?=
- =?utf-8?B?MHBzMUhnOE1BNG9VZzlOdnpzbkl4VTgwUzlUK0p6UHdlUVBUWjVLZUFmTWVR?=
- =?utf-8?B?ZTNwY1BpVDJERUQ0aUtLeDVPblRiTi9EeHZLSGpQQXIxQWl5eWJGVGhYV1Iz?=
- =?utf-8?B?MTJ2TGxFTEgwQkpWS3lWRmUxVEdRdkVLaHJPT2VtS0xabk9qZTl6Q2Rwbm5s?=
- =?utf-8?B?ZG0wZHBQNU5RR1B4SC9jUVVKOXNZMUdHK3M5SlQzZzZBKzhUVFdOQT09?=
-X-Exchange-RoutingPolicyChecked: HCOcby9lE2BAjXeL0bQUtGLC4XW28h706nXHSLXdYb/cqgt77qTqEytZe5HgWifKp+1V/N1jdEkKtHX3jcZ41yXdFIFyASVDIC/l6FnqFTQEq8zEjwTHSv9zR1QSuaOD3E9jXUMPjZbDN3R2blyXbWspA7ntTO1G2HGJfKgngVf02NV9oyFE+sCoRbSp14FUq/AxL6zYhCOY+D8BwOhMwk64K3P5bwFaFMl/oPNCLX/WGpsxrGFTwgriae7Qh2wSVUg6q+4lRLqhG4jTtKXqYhwMoVMWuVSpnzoevoswI7oGiVuCM6VatqefBztXBzRugKgTQEsI/v+YYHdnkSZGaw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b84dfee3-2452-47a4-a4b0-08df3a0cea3c
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 00:45:25.6370
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yrh+wSPTBTjslFoV3yqmpMa1abMer4vt36HYeIH2XPa7Qny8YvCLOeJCTV26A5s260f8SIwJyWcVq1drjqHiiobwwKbNRTFx6wBoPgX9LCA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7692
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <20261103124930.2278671-1-pbonzini@redhat.com> <20261103124930.2278671-2-pbonzini@redhat.com>
+ <aunzE4yywHJOqsk4@google.com> <CABgObfbvv-fQnC35EU+TxEtNMyYA0wgJ-nA_2B1eqKrZ_2qqkQ@mail.gmail.com>
+Message-ID: <auqAsEk9o6buPNiR@google.com>
+Subject: Re: [PATCH 1/2] KVM: register asynchronous page fault waits with
+ interrupts disabled
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
+	Hillf Danton <hdanton@sina.com>, Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, 
+	stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On 10/1/2026 1:29 PM, Chang S. Bae wrote:
-> On 9/30/2026 2:07 PM, Chang S. Bae wrote:
->>
->> I expect Sashiko to reply to a bunch of patches. I previously found some
->> false positives, so I will comment on them again in this posting.
-> Okay, I've provided my comments there.
+On Tue, Nov 03, 2026, Paolo Bonzini wrote:
+> Il mar 3 nov 2026, 15:43 Sean Christopherson <seanjc@google.com> ha scritto:
+> >
+> > On Tue, Nov 03, 2026, Paolo Bonzini wrote:
+> > > KVM cannot use a node on the stack like kvm_async_pf_task_wait_schedule() does
+> >
+> > Oh!  Yes, KVM can!  If we fully handle the PV async #PF in vcpu_enter_guest(),
+> > then the node can be put on the stack, right?  Juggling preemption and guest
+> > timing is heinous, but on the plus side it consolidates the PV async #PF code,
+> > so I think it's a net positive?  Especially when factoring in the node stuff.
+> >
+> > Fully handle PV async #PFs (when running as a KVM guest) before enabling
+> > IRQs so that it's impossible for the current task, i.e. the vCPU task, to
+> > be preempted before invoking kvm_async_pf_task_wait_schedule().  This will
+> > allow the guest-side async #PF code to eliminate its dummy allocation,
+> > which is needed only to handle the case where the page ready notification
+> > is delivered before handling the not-present #PF.
+> >
+> > Add dedicated handling for PV async #PFs instead of wrapping/piggybacking
+> > kvm_x86_ops.handle_exit_irqoff(), as the act of handling an async #PF may
+> > enable IRQs and schedule out the current task, i.e. needs to be done just
+> > before KVM itself explicitly enables IRQs, and needs to enable preemption
+> > before calling into the kernel's PV async #PF handler.
+> >
+> > Opportunistically wrap the code with CONFIG_KVM_GUEST to help document the
+> > context, and drop the CONFIG_KVM_GUEST=n stubs.
+> >
+> > Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> 
+> More like Instigated-by. :)
+> 
+> The main advantage would be that it bypasses the missing lock issue
+> that Sashiko reported, but I don't know... That;s surely nice, but at
+> the same time it is not great having to add a new callback, 
 
-Just for the record, for anyone interested in this series:
+Agreed, though IMO it's better than adding another vCPU field.  E.g. we could
+just as easily add apf.host_cr2 instead of host_apf_node.
 
-   Paolo at the last PUCK meeting also mentioned that he had reviewed
-   those comments and that we could move forward. So the next step is
-   Sean's review and his take, as things like this need to go through the
-   x86 KVM tree.
+> duplicate the guest_time_exit/preempt_enable code into kvm_handle_pv_async_pf().
 
-There are some minor conflicts in the VMX code on -rc1. While Sashiko is
-a very useful tool, the comment here has been largely repeating since 
-V5, so I would avoid another posting right now just not to repeat them 
-again.
+Yeah, I was all excited about the idea, and that excitement definitely fizzled
+when I realized preemption needed to be enabled.
 
-In the meantime, here is my rebase on top of 7.4-rc1:
-   git://github.com/intel/apx.git apx-kvm_v8-for-7.4-rc1
+> Not that the extra field in vcpu->arch is beautiful, I admit that, but
+> it seems extra unwarranted complexity.
+> 
+> Unless you insist I will send a v2 that takes the lock properly.
 
-Thanks,
-Chang
+I don't insist, I agree the guest_time_exit() and preempt_enable() code is too
+ugly.  And the part that I actually care about cleaning up is not having a bunch
+of apf.host_apf_flags checks sprinkled all over, especially in the nested code.
+Which definitely doesn't require fully handling async #PF with IRQs disabled, we
+just need to handle them before calling into vendor code (I think).
+
+E.g. something like this?  Though to land it on top of your patch to add
+host_apf_node, we'd want to define pass a struct, but that should only make the
+code prettier.
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 0378577d9d8b..09416d3588d0 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -959,7 +959,6 @@ struct kvm_vcpu_arch {
+ 		u64 msr_int_val; /* MSR_KVM_ASYNC_PF_INT */
+ 		u16 vec;
+ 		u32 id;
+-		u32 host_apf_flags;
+ 		bool pageready_pending;
+ 	} apf;
+ 
+@@ -1688,7 +1687,8 @@ struct kvm_x86_ops {
+ 			       struct x86_instruction_info *info,
+ 			       enum x86_intercept_stage stage,
+ 			       struct x86_exception *exception);
+-	void (*handle_exit_irqoff)(struct kvm_vcpu *vcpu);
++	void (*handle_exit_irqoff)(struct kvm_vcpu *vcpu, u32 *async_pf_flags,
++				   unsigned long *async_pf_cr2);
+ 
+ 	void (*update_cpu_dirty_logging)(struct kvm_vcpu *vcpu, bool enable);
+ 
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index f4b12d6aef55..3cc4bf506cb1 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4954,9 +4954,6 @@ static int nonpaging_page_fault(struct kvm_vcpu *vcpu,
+ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+ 				u64 fault_address, char *insn, int insn_len)
+ {
+-	int r = 1;
+-	u32 flags = vcpu->arch.apf.host_apf_flags;
+-
+ #ifndef CONFIG_X86_64
+ 	/* A 64-bit CR2 should be impossible on 32-bit KVM. */
+ 	if (KVM_BUG_ON(fault_address >> 32, vcpu->kvm))
+@@ -4977,21 +4974,9 @@ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+ 	BUILD_BUG_ON(lower_32_bits(PFERR_SYNTHETIC_MASK));
+ 
+ 	kvm_request_l1tf_flush_l1d();
+-	if (!flags) {
+-		trace_kvm_page_fault(vcpu, fault_address, error_code);
++	trace_kvm_page_fault(vcpu, fault_address, error_code);
+ 
+-		r = kvm_mmu_page_fault(vcpu, fault_address, error_code, insn,
+-				insn_len);
+-	} else if (flags & KVM_PV_REASON_PAGE_NOT_PRESENT) {
+-		vcpu->arch.apf.host_apf_flags = 0;
+-		local_irq_disable();
+-		kvm_async_pf_task_wait_schedule(fault_address);
+-		local_irq_enable();
+-	} else {
+-		WARN_ONCE(1, "Unexpected host async PF flags: %x\n", flags);
+-	}
+-
+-	return r;
++	return kvm_mmu_page_fault(vcpu, fault_address, error_code, insn, insn_len);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_handle_page_fault);
+ 
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 07554089ec05..d4951dc8b1f7 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1818,10 +1818,6 @@ int nested_svm_exit_special(struct vcpu_svm *svm)
+ 		if (svm->vmcb01.ptr->control.intercepts[INTERCEPT_EXCEPTION] &
+ 		    excp_bits)
+ 			return NESTED_EXIT_HOST;
+-		else if (exit_code == SVM_EXIT_EXCP_BASE + PF_VECTOR &&
+-			 svm->vcpu.arch.apf.host_apf_flags)
+-			/* Trap async PF even if not shadowing */
+-			return NESTED_EXIT_HOST;
+ 		break;
+ 	}
+ 	case SVM_EXIT_VMMCALL:
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 581bc3a23c95..5a92a22e8e6a 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3811,7 +3811,6 @@ static void svm_get_entry_info(struct kvm_vcpu *vcpu, u32 *intr_info,
+ 		*error_code = control->event_inj_err;
+ 	else
+ 		*error_code = 0;
+-
+ }
+ 
+ static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+@@ -4758,11 +4757,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 			       vcpu_to_pmu(vcpu)->global_ctrl);
+ 	}
+ 
+-	/* if exit due to PF check for async PF */
+-	if (svm->vmcb->control.exit_code == SVM_EXIT_EXCP_BASE + PF_VECTOR)
+-		vcpu->arch.apf.host_apf_flags =
+-			kvm_read_and_reset_apf_flags();
+-
+ 	kvm_clear_available_registers(vcpu, SVM_REGS_LAZY_LOAD_SET);
+ 
+ 	trace_kvm_exit(vcpu, KVM_ISA_SVM);
+@@ -5088,9 +5082,15 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
+ 	return ret;
+ }
+ 
+-static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu)
++static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu, u32 *async_pf_flags,
++				   unsigned long *async_pf_cr2)
+ {
+ 	switch (to_svm(vcpu)->vmcb->control.exit_code) {
++	case SVM_EXIT_EXCP_BASE + PF_VECTOR:
++		*async_pf_flags = kvm_read_and_reset_apf_flags();
++		if (*async_pf_flags)
++			*async_pf_cr2 = to_svm(vcpu)->vmcb->control.exit_info_2;
++		break;
+ 	case SVM_EXIT_EXCP_BASE + MC_VECTOR:
+ 		svm_handle_mce(vcpu);
+ 		break;
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index d75170a6199e..05e1d600dbd8 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -912,17 +912,21 @@ static void handle_nm_fault_irqoff(struct kvm_vcpu *vcpu)
+ 		rdmsrq(MSR_IA32_XFD_ERR, vcpu->arch.guest_fpu.xfd_err);
+ }
+ 
+-static void handle_exception_irqoff(struct kvm_vcpu *vcpu, u32 intr_info)
++static void handle_exception_irqoff(struct kvm_vcpu *vcpu, u32 intr_info,
++				    u32 *async_pf_flags,
++				    unsigned long *async_pf_cr2)
+ {
+-	/* if exit due to PF check for async PF */
+-	if (is_page_fault(intr_info))
+-		vcpu->arch.apf.host_apf_flags = kvm_read_and_reset_apf_flags();
+ 	/* if exit due to NM, handle before interrupts are enabled */
+-	else if (is_nm_fault(intr_info))
++	if (is_page_fault(intr_info)) {
++		*async_pf_flags = kvm_read_and_reset_apf_flags();
++		if (*async_pf_flags)
++			*async_pf_cr2 = vt_get_exit_qual(vcpu);
++	} else if (is_nm_fault(intr_info)) {
+ 		handle_nm_fault_irqoff(vcpu);
+ 	/* Handle machine checks before interrupts are enabled */
+-	else if (is_machine_check(intr_info))
++	} else if (is_machine_check(intr_info)) {
+ 		kvm_machine_check();
++	}
+ }
+ 
+ static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
+@@ -941,7 +945,8 @@ static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
+ 	vcpu->arch.at_instruction_boundary = true;
+ }
+ 
+-static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
++static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu, u32 *async_pf_flags,
++				  unsigned long *async_pf_cr2)
+ {
+ 	if (to_vt(vcpu)->emulation_required)
+ 		return;
+@@ -951,7 +956,8 @@ static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+ 		handle_external_interrupt_irqoff(vcpu, vt_get_intr_info(vcpu));
+ 		break;
+ 	case EXIT_REASON_EXCEPTION_NMI:
+-		handle_exception_irqoff(vcpu, vt_get_intr_info(vcpu));
++		handle_exception_irqoff(vcpu, vt_get_intr_info(vcpu),
++					async_pf_flags, async_pf_cr2);
+ 		break;
+ 	case EXIT_REASON_MCE_DURING_VMENTRY:
+ 		kvm_machine_check();
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index f0d75f5a968c..087c12e11d74 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -6500,8 +6500,7 @@ static bool nested_vmx_l0_wants_exit(struct kvm_vcpu *vcpu,
+ 		if (is_nmi(intr_info))
+ 			return true;
+ 		else if (is_page_fault(intr_info))
+-			return vcpu->arch.apf.host_apf_flags ||
+-			       vmx_need_pf_intercept(vcpu);
++			return vmx_need_pf_intercept(vcpu);
+ 		else if (is_debug(intr_info) &&
+ 			 vcpu->guest_debug &
+ 			 (KVM_GUESTDBG_SINGLESTEP | KVM_GUESTDBG_USE_HW_BP))
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b341af4c6057..15f54474382b 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5396,9 +5396,6 @@ static int vmx_handle_page_fault(struct kvm_vcpu *vcpu, u32 error_code)
+ {
+ 	unsigned long cr2 = vt_get_exit_qual(vcpu);
+ 
+-	if (vcpu->arch.apf.host_apf_flags)
+-		goto handle_pf;
+-
+ 	/* When using EPT, KVM intercepts #PF only to detect illegal GPAs. */
+ 	WARN_ON_ONCE(enable_ept && !allow_smaller_maxphyaddr);
+ 
+@@ -5429,7 +5426,6 @@ static int vmx_handle_page_fault(struct kvm_vcpu *vcpu, u32 error_code)
+ 		return 1;
+ 	}
+ 
+-handle_pf:
+ 	return kvm_handle_page_fault(vcpu, error_code, cr2, NULL, 0);
+ }
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 26e7beaff8a0..57aff240cdb6 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8118,6 +8118,19 @@ static void kvm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
+ 	kvm_x86_call(update_cpu_dirty_logging)(vcpu, enable);
+ }
+ 
++static void kvm_handle_pv_async_pf(u32 flags, unsigned long cr2)
++{
++	if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_KVM_GUEST)))
++		return;
++
++	if (WARN_ON_ONCE(!(flags & KVM_PV_REASON_PAGE_NOT_PRESENT)))
++		return;
++
++	local_irq_disable();
++	kvm_async_pf_task_wait_schedule(cr2);
++	local_irq_enable();
++}
++
+ /*
+  * Called within kvm->srcu read side.
+  * Returns 1 to let vcpu_run() continue the guest execution loop without
+@@ -8130,9 +8143,10 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 	bool req_int_win =
+ 		dm_request_for_irq_injection(vcpu) &&
+ 		kvm_cpu_accept_dm_intr(vcpu);
++	unsigned long async_pf_cr2;
+ 	fastpath_t exit_fastpath;
+ 	u64 run_flags, debug_ctl;
+-
++	u32 async_pf_flags = 0;
+ 	bool req_immediate_exit = false;
+ 
+ 	if (kvm_request_pending(vcpu)) {
+@@ -8506,7 +8520,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 	if (vcpu->arch.xfd_no_write_intercept)
+ 		fpu_sync_guest_vmexit_xfd_state();
+ 
+-	kvm_x86_call(handle_exit_irqoff)(vcpu);
++	kvm_x86_call(handle_exit_irqoff)(vcpu, &async_pf_flags, &async_pf_cr2);
+ 
+ 	if (vcpu->arch.guest_fpu.xfd_err)
+ 		wrmsrq(MSR_IA32_XFD_ERR, 0);
+@@ -8568,6 +8582,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 	if (vcpu->arch.apic_attention)
+ 		kvm_lapic_sync_from_vapic(vcpu);
+ 
++	if (async_pf_flags && !WARN_ON_ONCE(exit_fastpath != EXIT_FASTPATH_NONE)) {
++		kvm_handle_pv_async_pf(async_pf_flags, async_pf_cr2);
++		exit_fastpath = EXIT_FASTPATH_EXIT_HANDLED;
++	}
++
+ 	r = kvm_x86_call(handle_exit)(vcpu, exit_fastpath);
+ 	return r;
