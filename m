@@ -1,76 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793751123;
-	b=fCIND2mSlrv1YO/lxnNaDfFziA/SMYiE/KbTOF7s/q0pXaTtjH1Z2TfK/67fQI8weq/X
-	 fOrIlTvIBtGrmYjvjXRQ51ekE+dzIZrdkAZe9mcjtw91juU3QhZB2AQ7Pktyv6PCJ+HkL
-	 iCOmFQUr3LfWOINY3RujO0VQe+7TWxD4Z3BYvn+j7VLREmBgf1MvPBpivAycTmnBk9AHD
-	 BbNk5WDZdczgSiou4s1lOfwufQybO1DJ+Q1ezMf1fVuNG/matKXZdL+lGE667OGUH0qqS
-	 ifLkrb9Bc87P2yt4XSdT4fSTrgE8Sll0SxZcV5DmNyDPz2n6Bdv+4kUuOnNrNLrAKOw==
+	t=1793751437;
+	b=NxljycdBUWB4b/dU+umZx+cGSBGG2yOvpsENVfnlcanfgAr0YbRELzwx07In56aqIzTD
+	 VmoY33rxh9ESIiV1utgwKe4zvw/Pt66lo9ODieFgonJJqadB9WH+1g2XDKeXcOcmwkT+8
+	 +vdkODWqfh8/tKLNecW25GJ+nVDvQbFMNpncY/D+JQIU/JJ8ukzrPro8NSZ3V2uhECG3x
+	 fm9mMphid/ei+P8453NCkjrV26XS/tGBAI6sdkQbYuUqEWzrdJME2fyzumXkVzTxtzD2G
+	 CnxRn7LpFyzuSFJfrijJJeCbYxWcrbM4XpVZTFi7xWOgvjzZca8gbRZqgSv5tUeycgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793751123;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793751437;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=5CGACUUg3rBEi7UMlfaanowNlMmekE/5bj9+aCr8KCE=;
-	b=KapCy5LEceNPUd4ZmssGzQ/Zwkk7c/xyfYrfiG0IL+UmQwOzepenW/ADOm8HmzfriURZ
-	 rojiB3y4+4Fpzeism6RFHlDsd7nXA+rF1QuCW9et/4vtZJfi1bNEjmC2vD++hzh7NyRES
-	 bfxG6byGzb1b9AhjDabuI7AD9DTTHHtC8H6/nRih4t6ezA/+Y2sgc0ztMiuiwHgMIx6Oe
-	 fYB/TRgHHH7C3XAy24qu5eNn4PF4DKavSwnRPkBKKZUValIdNjo5C7yF9/ZkqLUnmnS+L
-	 FnWPCqi/jSjwt+Fexk3pkIMDBdbtC/NC21rEGnvZwRwyYmEA+8BQjpg7S0kEz9Idf0Q==
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=LhyvKds25xNhoCjxUA6XF46cL6FC3po2ea3t+x75DYw=;
+	b=hpl4edi1vowr97FCPy6S1usGL7gT1DMooue/l+v3Wx+qmF5jXFeotwuiOi6nBc8v9nLw
+	 XbJ+wTAWAwwi/1/8GiuxUeQOOHEjOAMvV1XlhTj7acd9fL4Tf5bFaLrkryMQjjiCkQ9Ou
+	 9fAhn5zW8EjMERSP/m8HOMDuE+vQ0ySflKSJz2psI7SKwbLf33niJPbg26LyqoIGlUoWM
+	 8Fwp9uShXlXYWLUORkqLNN82/0dlrWm8iwTfiIh/fOZD9wUDbPW3/XOuyEK3ye4Bokqou
+	 YbROMP8vrz4P3LQ5h7J/AjVwUAosisC/ygDoTdxwG8WQJrxmZ+fp5znCUi7yWKBbnKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OsArDVuJ;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dM37UUpx;
+	arc=none smtp.remote-ip=209.85.210.198
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB8F606A31B
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 00:12:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFB8F606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F42606A329
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 00:17:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21F42606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OsArDVuJ
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ae7faf4ff7so303416a91.3
-        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 16:12:02 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dM37UUpx
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-89e05d31e54so151076b3a.1
+        for <kvm@vger.kernel.org>; Tue, 03 Nov 2026 16:17:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793751122; x=1794355922; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=5CGACUUg3rBEi7UMlfaanowNlMmekE/5bj9+aCr8KCE=;
-        b=OsArDVuJLp6NUYXfYw238qc/P3CK3zuQ6BazvZ1EEdC7EMd6YFVzUNKOhukTzidjDI
-         S4qdNw1R5tS+bBycAL5J83vHTRz5RoyFfBUAQmo5ct8llMvTqJ+9I07ETINP7LdUzReS
-         9cKlszU3NzF4SQEfEaAywJp70+N6B8X1nW2H8nJVviu+LxNZ7rHDI6LIGGbkiywL9mHe
-         V6zsAsfFmG5636Ig4RcXmD9ff2j1sEbD1dlwsa7qCjJHFEiuvfMnjjiK1Rce817xDFAE
-         ewKxqOErzBvSKGh/F0l2FsjrUb5L0YmHPMjkPcyAzypQr6h8fbBm6fU35kHRKATZCtVm
-         2lYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793751122; x=1794355922;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793751436; x=1794356236; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5CGACUUg3rBEi7UMlfaanowNlMmekE/5bj9+aCr8KCE=;
-        b=JMsLT9v5mcYzGMV0E5vRL/o/K8XOsRDszgPNmYBeLrnpOZ9WO1hM60spy3g+F3UhZJ
-         DyCpIj0iAvV62gl9mQ8fh+cFrA33jWNvWwm2SdDKppY4q23RGLah6JIGwY6HOFn+iV7V
-         9P4+7/HT3DLmR2IOBGCVKJPCDWfi40MHCb93c3cMtfQfGnDm7apB9kceuYXcThlBc58h
-         MNUcMOfLrUWchs2KefpVVI2530vNSckB2t0mNcl6XGbvBKhV0bqKm0QCdr0w30KtW3AV
-         AGLbJKLMxljNQtWPI7mz9mm/Rk9rj98yGU6QV4WCxLHd65z7XmVwUhlevQ8Da+wonb8P
-         i3wA==
-X-Forwarded-Encrypted: i=1; AKwUvBx3OPnkFifaQdYngh7uKiTaiN1u4jVBTAIXEPTJnE65dmD22ap4HiI9x+MggMciJdtrFqY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z81V0Wf/5ywvGFV1fGlT5FR5ByiRn1fyn6dfZN6kO6EK29ZfG0I
-	c4UkF7KsD+Mr1NjYiDhaf8di66DUJEgyPgfqYyyu59qP7EBbLtp4tA++yD1+4ak4FET+gHkcKaJ
-	mOKZhxw==
-X-Received: from pjbcm14.prod.google.com ([2002:a17:90a:fa0e:b0:3a6:f87a:f3e1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ec5:b0:3ac:a203:e0a5
- with SMTP id 98e67ed59e1d1-3ae897eb741mr12643918a91.11.1793751122089; Tue, 03
- Nov 2026 16:12:02 -0800 (PST)
-Date: Tue, 3 Nov 2026 16:12:01 -0800
-In-Reply-To: <CALMp9eR9=JTv80HuG5zAcSj91tJos2ecFA_Sc5Qbs4s5XetKHQ@mail.gmail.com>
+        bh=LhyvKds25xNhoCjxUA6XF46cL6FC3po2ea3t+x75DYw=;
+        b=dM37UUpxJVzXkZ0mhV32s9w22jq5BNSFORhX99K+DghMAbLEB1S7xNYLXZKfmTlRiJ
+         +OyxNHQI13LXrL6H76G/VN+GLtLk/NH6vixFqOLbuu4OevAHc18NJkao45Tu++wo9Zi+
+         shgTlr2cTCeO/aKRt6NJEvxmt+WL0+yKyzrO6KqwFjZrHDRtsTnJawVRqgJ/k+PDcJxx
+         Da0uhSF8ULDol35fXSThz/snCQqwy24flrl4NWV3XTchk0iq1TMRDGTi+rssZUg5Co+q
+         OXAujGjTWy3i94qwDpXpKMRFnUtiR39Py0u8h+xLXXCD4806JeRfLcmFh4zzQ1GWbHP4
+         M72g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793751436; x=1794356236;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LhyvKds25xNhoCjxUA6XF46cL6FC3po2ea3t+x75DYw=;
+        b=r8BtKGsoASa3WE0f8zdaMGADAklWtcs9zJvk0Hb99DnQw6zEB1r8hko6R/0F1sEpPT
+         mFmYEOuwAuCvDkgAglteDD4v0e/D85axrSDoAxLzTxVQf+dfGYSxNWlViJpha49h5Mrm
+         eSsWwzThDLEiaLuMyuRT5gnNGAqZL8be0WiD+vJDVHM0utbfTi+IQRZy81BrQSW20LXu
+         lH/F9JY1iTiVaEG4ppe1WFEY5JKKlCaoQzN8tfsynPkm7jv2vCmgMPyArdiMi42zZP+t
+         KopugJHXpTA326UbpmCKjMZrcfYthvaXC4gJ8FEFtWAW4O8ybBwCrqWMuGzIYdsfn1FY
+         bWHQ==
+X-Forwarded-Encrypted: i=1; AKwUvByh1pgGeJe8PpITblRhJb6y0PTnIYmZ+4fJ50Q1pYw4IIF8woUeAf0+tGB10ZzwCM1kyR8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8piJvLjAQHm1gKUR2hMXZbKASQQFpHUo4LTuPyqYXYOblre82n
+	eH31EE9voJl4hIyqzLzynu0dq2zMfbPwCeWG+Z6Vg1heHx5L/H/D3TgarvkcneqTroal78O63bU
+	cVAos9w==
+X-Received: from pfgg3.prod.google.com ([2002:a05:6a00:bd83:b0:8a0:cc:2b89])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b4a:b0:89e:cfbb:e8af
+ with SMTP id d2e1a72fcca58-8a9ba8fb9c0mr10230607b3a.6.1793751436089; Tue, 03
+ Nov 2026 16:17:16 -0800 (PST)
+Date: Tue, 3 Nov 2026 16:17:15 -0800
+In-Reply-To: <se1h6b4t.ritesh.list@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,112 +78,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261102231428.13523-1-pbonzini@redhat.com> <20261102231428.13523-5-pbonzini@redhat.com>
- <CALMp9eT7cnBf6kSXZLWuMyG9a52QveWjzzLz3Z9E=kPuX_ahVg@mail.gmail.com>
- <aukmeb9mV8b504T6@google.com> <CALMp9eTdY3=1BrOYgov852VeAy3+Os7bvhWogvB0YF-JQrmtig@mail.gmail.com>
- <aupLRleTJSIDTE9M@google.com> <CALMp9eR9=JTv80HuG5zAcSj91tJos2ecFA_Sc5Qbs4s5XetKHQ@mail.gmail.com>
-Message-ID: <aup4UcK__je0wtp6@google.com>
-Subject: Re: [PATCH 4/7] KVM: nVMX: Process each host MSR entry at most once
- when unwinding failed VM-Entry
+References: <20261030212112.2598640-1-seanjc@google.com> <20261030212112.2598640-13-seanjc@google.com>
+ <sashiko-outbox-191627@kernel.org> <auitWWkOopYYbBH3@google.com> <se1h6b4t.ritesh.list@gmail.com>
+Message-ID: <aup5i73T5aOKqcYS@google.com>
+Subject: Re: [PATCH v4 12/23] KVM: Destroy memslots immediately after
+ mmu_notifiers are unregistered
 From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
+	Gautam Menghani <gautam@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Nov 03, 2026, Jim Mattson wrote:
-> On Tue, Nov 3, 2026 at 12:59=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > > Something like returning to userspace with
-> > > KVM_INTERNAL_ERROR_EMULATION following a prohibited write to an activ=
-e
-> > > VTPR seems far easier--and cleaner. What am I missing?
+On Tue, Nov 03, 2026, Ritesh Harjani wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > +Gautam and PPC lists/maintainers
+> > On Fri, Oct 30, 2026, sashiko-bot@kernel.org wrote:
+> >> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> >> - [Medium] KVM: PPC: Book3S HV: rmap_nested memory leak in kvmhv_release_all_nested()
+> >> > @@ -1310,12 +1329,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
+> >> >  		kvm->mn_active_invalidate_count = 0;
+> >> >  	else
+> >> >  		WARN_ON(kvm->mmu_invalidate_in_progress);
+> >> > +	kvm_destroy_memslots(kvm);
+> >> > +
+> >> >  	kvm_arch_destroy_vm(kvm);
+> >> >  	kvm_destroy_devices(kvm);
+> >> > -	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+> >> > -		kvm_free_memslots(kvm, &kvm->__memslots[i][0]);
+> >> > -		kvm_free_memslots(kvm, &kvm->__memslots[i][1]);
+> >> > -	}
+> >> 
+> >> [Severity: Medium]
+> >> Does hoisting kvm_destroy_memslots() above kvm_arch_destroy_vm() leak
+> >> struct rmap_nested allocations in slot->arch.rmap on PowerPC Book3S HV when
+> >> destroying a VM with nested virtualization enabled?
 > >
-> > My biggest concern is that KVM could kill L1 if an L2 coerces L1 into t=
-rying
-> > VMLAUNCH/VMRESUME with invalid state.  KVM simply can't *know* that an =
-unexpected
-> > VM-Fail was due to the vTPR wrinkle.  Even if KVM re-checked state, it'=
-s possible
-> > for the vTPR to be "restored" to a good value.
->=20
-> The only way that I can see for L2 to coerce L1 into trying VM-entry
-> with invalid control fields or invalid host-state fields is by
-> exploiting an L1 nested virtualization bug (i.e. L2 is running an L3).
-
-Hmm, I agree L2 would be a tall order, but L1 userspace running against KVM=
- can
-definitely get bad state into the vCPU by abusing KVM ioctls.  So not a VM-=
-to-host
-DoS, but still an unprivileged DoS (given that /dev/kvm isn't usually locke=
-d down
-by default).  Of course that would still require L0 KVM to have a missing c=
-heck,
-or require L1 KVM to be buggy and let userspace modify vTPR.
-
-> In any case, if L0 has already performed the checks in software, then
-> failure of the checks in hardware implies either (a) misbehavior on
-> the part of L1 or (b) an emulation error in L0.
->=20
-> > I.e. if KVM exits to userspace with KVM_INTERNAL_ERROR_EMULATION, then =
-there's a
-> > non-zero chance of a false positive.  KVM could exit to userspace if an=
-d only if
-> > it caught the guest red-handed, but then we'd still need this horrific =
-code for
-> > the other cases, so that seems rather pointless.
->=20
-> Let's go back to the Xen example, since by your argument any L1 can be
-> victimized. If an L2 VM somehow coerced L1 Xen into trying VM-entry
-> with invalid control fields or invalid host-state fields, and somehow
-> L0's software checks passed, but the hardware checks on VMCS02 failed,
-> you would continue to run the L1 VCPU with L2's SPEC_CTRL MSR. Surely,
-> the possibility of a malicious L2 exfiltrating data from L1 with the
-> assistance of L0 has to be worse than the abnormal termination of L1?
-
-Probably.
-
-> (Note that I'm just playing devil's advocate here. I don't actually
-> buy your argument.)
->=20
-> > warn_on_missed_cc helps, but in practice it can't detect cases for whic=
-h we don't
-> > have test coverage.  So *if* there was a bug that could be exploited by=
- L2 to DoS
-> > L1, odds are good warn_on_missed_cc didn't catch that hypothetical bug =
-either.
+> > I don't think so?  Patch 3[*], "KVM: PPC: Flush/zap all memslots on kvm_arch_flush_shadow_all()",
+> > should free the rmaps in response to kvm_arch_flush_shadow_all().   From what I
+> > can tell, the page tables have to be in radix mode, and so the rmaps are freed via:
 > >
-> > Maybe with AI we can be 100% confident that KVM performs all of the VM-=
-Fail
-> > consistency checks?  Again, I'm not opposed to alternative approaches, =
-but at the
-> > same time I don't feel a sense of urgency.
->=20
-> KVM *must* perform all of the control field and host-state field consiste=
-ncy
-> checks. Otherwise, we risk priority inversion with "illegal guest state."
+> >   kvmppc_radix_flush_memslot()
+> >   |
+> >   -> kvmppc_unmap_pte()
+> >      |
+> >      -> kvmhv_remove_nest_rmap_range()
+> >         |
+> >         -> kvmhv_remove_nest_rmap_list()
+> >
+> 
+> That's correct. Maybe, I think Sashiko didn't consider patch-3 of the series
+> during review of this patch-12.
+> 
+> > And if that doesn't work, it means memslot deletion on an active VM is completely
+> > broken.
+> >
+> > However, it means the memslot code in kvmhv_release_all_nested() is
+> > dead code,
+> 
+> Not really. I do see a caller of this, for when we switch from radix
+> to HPT. So we still need it.
 
-Eh, not sure if that matters in practice though.
+Oh, nice, I somehow missed that.  Yay, less work to do!
 
-> If KVM is missing any of these checks, then it has an "internal error."
-
-I agree, but KVM has historically had a *lot* of those types of internal er=
-rors.
-Even now I genuinely don't know if we have 100% coverage and accuracy.  I s=
-uppose
-we could add a cap or quirk the existing behavior, but I'd prefer not to do=
- that,
-because odds are good the restore code would eventually bitrot.
-
-I guess I'd be up for having AI audit the checks, and then ripping out
-nested_vmx_restore_host_state() in 7.5 in favor of kvm_prepare_emulation_fa=
-ilure_exit().
-That change is pretty darn easy, and would likely revert cleanly too if it =
-came
-to that.  Sashiko would probably even understand the implications without e=
-xtra
-guidance, i.e. would hopefully flag missed checks as new features are added=
-, so
-maybe my maintenance concerns are unfounded.
+> INCOMING CALLS
+> - f kvmhv_release_all_nested
+>   - f kvmppc_switch_mmu_to_hpt    [arch/powerpc/kvm/book3s_hv.c:5591]
+>     + f kvmppc_alloc_reset_hpt    [arch/powerpc/kvm/book3s_64_mmu_hv.c:144]
+>     + f kvmhv_configure_mmu       [arch/powerpc/kvm/book3s_hv.c:6330]
+>   + f kvmppc_core_destroy_vm_hv   [arch/powerpc/kvm/book3s_hv.c:5930]
+> 
+> 
+> 
+> So FWIW patch-12 as such looks good to me from PowerPC perspective,
+> since those rmap entries will get freed up as part of the
+> mmu_notifier_unregister() (after patch-3). Agreed that Sashiko
+> comment does not look correct.
