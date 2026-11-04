@@ -1,64 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801459;
-	b=fYUUt2CLfeKmKbRORK+yhw7WcnD+TD2ZtxZKVqhedOJb9EYPxNtRd+KS7f7aSmJep52u
-	 lC3pmIIuKwvex5yHvbeywdtrs/Rf3GwR9xceB/Kx9i5SgN+KxWxZN536UV5aHRiuA81yS
-	 vWlqfU9ChDwG71sd4NVtW75hGwAgoaOJ+Qi4vt3O3n634aADHJL7S7IYpK0rzar0nZxLB
-	 zwMgzzWuNOf9e+XzQgi6KU/+DqSe2gnyz+P3aKxr8rnAlZY4CxdnQ+k08QT2hUenII8he
-	 j/IerNFIb8pIzSOZas6xxJrAhKru8+wBzeqvaLFEYS+KVQ1Fxii/v7Gbb6Uy8mTdQXQ==
+	t=1793802495;
+	b=UJ6YR4ayAfijd3uHVqNf7RcYZwbWoyHhoynilGblf4ao+3j9OmmLgF7xQoiIeHuuf85W
+	 geINuOawP6neq/nyMWpCBSw1tqrjYX3FWfy36124SWsvQX6Klb6LHZLmAc9uEafEt928q
+	 21cygxlzGFik/ALiDpE7ray1NVaTqug8RfXuVyOVnYyLK1KG9cDAinm+Ghxcl7G3Icmhp
+	 yhsYqGQhXaBK9Z50p6HMFYRjK6ZFCOG78Ypc8LFLsYeQ8F5ZlQamuXzJ39ehMw0ueBwwf
+	 T0HmLbYnyCK6FVET3rOOg8Bpgqt6fcaL5lWCCmSjvsmdsBx7YbcTuqyyOpDORAUqrEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801459;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=bVcACiTZbNDhVU6xhENZ6o8aAhkqXOgSLVPaqMsdjow=;
-	b=CXktM9dT34BolYCBRDRtQ4eo1x099cTsZP0wFlnQMiXcjN3pcddDlMn4j5tI+STkBO8Z
-	 4C6fVsaXgnDJ5+qsbx4IA0c8JNl5yFPnoq/rLbwLyrg99yvHAbOgviXr2CnVnNr+XtItK
-	 Qw1imnKs9Ax9ILmR8tyYHEtRRvHSo1gsfLp7l6fz5qB775Oy5xLpP5e9aj9jt7UqotLPK
-	 zGNnWg9wFXQiiWVm1VdUA811urm232wKlpcBl7okoFY5ykMWh80sd9c0pJl4sqv4wKHK7
-	 SRLmM3tfg6l07nDZ/Ocx2Q5Unb1eWpsxRvGFUkp6jlA4iRcQdVC6zsNsW+ubCBAKupw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793802495;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=4/Evz9fjrrpCnCXycWC63zfKI3HUYi26oAG2Biknep0=;
+	b=q0DpAiBMshrlk/1E7aOkcYErND7Md89ns041aTzRxKX2F2zwPib4gm8OawNNZzQfiNtB
+	 Kpb1p1EpcokKG4IA6nlGWJbAOf8MYDNwbICVvX+UI98MNnULFKYoz92VhASPoGyaz9Yed
+	 W9+TnBXocCWYx8Us08O//kz1pb7iNSOWNtRV3ekaGPAEG5MJg2Q16V/25EqEEWeXJpq0k
+	 87QUVGCp7Vw+ePcGfqkmKnQxQ670sgUATP/aoUpmtLpv+pAPLdd0091TKOE38l8/Q/59E
+	 U2NNrcd3u2LIBgEwOGIfOhWiadCE4GWTo/qKmLrdOIIlI5P1v4K/I7ODvTJIF/4qZrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WULk1VAc;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88EE606A31B;
-	Wed,  4 Nov 2026 14:10:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B88EE606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UCCgpa0h;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="iaIe29/b";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B153606A32F
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 14:28:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B153606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WULk1VAc
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C13492247;
-	Wed,  4 Nov 2026 06:10:53 -0800 (PST)
-Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C8EE3F628;
-	Wed,  4 Nov 2026 06:10:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793801456; bh=sDhQxKPD1vSwIgQ2ErCUWBV8m6RtnHjEWH3mc/dFqzQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WULk1VAc+HzOBfaTnepFre3WCClsuYTx9JkrYFxlufYmpigJKEj8cwoxge34L9nKc
-	 SSd7nZLFd4dmbIGocT7OBeFFhvnXku+zHo4BXN766Ceqc0j6GajB4vi08PBW2hv+yt
-	 2XevTCqECkAH3RgQMYSwvjv75HxW68Q2ydhOHW+k=
-Date: Wed, 4 Nov 2026 14:10:45 +0000
-From: Joey Gouly <joey.gouly@arm.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Quentin Perret <qperret@google.com>, Fuad Tabba <tabba@google.com>,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/16] KVM: arm64: selftests: Tests for protected VMs
-Message-ID: <aus8xb_xT64WKHDu@e143914.arm.com>
-References: <20261104084842.132944-1-fuad.tabba@linux.dev>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UCCgpa0h;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=iaIe29/b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793802493;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4/Evz9fjrrpCnCXycWC63zfKI3HUYi26oAG2Biknep0=;
+	b=UCCgpa0h1y5+YbuN7Y9mcWyeMbYvSsWTkRRsjbxugC5r8oPcixNo2j0t0+l0nJrPbeB9xo
+	nwbUclSoDqXyo6cVKm4u0py2WzalOC+VGMxyhMM90ycDKgpIIsYFamqAVgtByNvLZlpMgU
+	4SGvFc87JltRAOQicXyH75IoPEmwx5c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-101-b-Jda3qqMI-miBrv0CFvMg-1; Wed, 04 Nov 2026 09:28:12 -0500
+X-MC-Unique: b-Jda3qqMI-miBrv0CFvMg-1
+X-Mimecast-MFC-AGG-ID: b-Jda3qqMI-miBrv0CFvMg_1793802491
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48b01a74792so680427f8f.0
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 06:28:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793802491; x=1794407291; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4/Evz9fjrrpCnCXycWC63zfKI3HUYi26oAG2Biknep0=;
+        b=iaIe29/b2YAJYfvUKG9cgMgWKhkRRPN6mzfVnfyEm8iti9EoypvstgW8Bw5glKA6UH
+         5Cw/+Ha578Ab+8w+SBkcDKs2Nx3V5dwxF0HoBVFOA3czWMkpL3WEvst7hz5u2qzBVSS2
+         YsNmt8+IetDIVVchHMvRPzn8XwBs1u+xW0VMv5IJEe5iyzHhR8MzAejjvga6/5BmXoth
+         Aa1HfCADmvVtrEOQsKoXJi61pO8gwhkYZW8IcTbYTxmPxks+k9F5Q9mbAmCIGcTTG8Rr
+         YrRPM3MfwQcokwlLRdP9zk+kdtGpuOIUw8dXhFbQC1xtLpQTJ7fDS9APT0nTu+NcMLyn
+         3Wtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793802491; x=1794407291;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4/Evz9fjrrpCnCXycWC63zfKI3HUYi26oAG2Biknep0=;
+        b=T+NNBnDdfxvfNjzbyK+GVgG0n9ASx3xmDXBhyE1oAoh3ZUuu81aYFn2QjQT006pQ0A
+         92RPvo/7BmGMmXykegvCi28BgbU60j3v/thVBsHUcABGAV/x7jHqSHsCfTeddQqFk7+y
+         aFxFsnZmHNSJ6ye+/tctx0Fyga3aN+jlJG/9S6+4vxuT8jumG5EGTKv1Tf2+K81c7BFh
+         nle6YNstolxcm07ZA6aWLcvgT3FFJUem8aLiyOHBPfIY58uNRdiBL5RPtsp4q4WHvxy+
+         kZ9anGuyIIKPurMDSHUXnZ+WcBYbbqQMPrG7Q2LXaxAM1gR/sfhm4J1uEkvAymg4/5eu
+         kjCg==
+X-Forwarded-Encrypted: i=1; AKwUvBzEN1tWc5e0CAXKbPLO28cbgLkfGl9qkLWDySFrzedcJGqMjSOeqVrR4Wv0NtRfacTEko4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8XE/QNctqLp48WGYntFyRDDTHPc/Z6vU7ubvQD1Hs5F8B1qAbm
+	CE7mL1S0WxgCh6ZdhTwamsfP/jtd00C5MaZgx7kgNjlIWKUwwncoYJ0gRb3pYTLKnbV0UiB3/H6
+	zndSDLgHMz/cPwTCvsnGJ7m1PJG9Gtqzv2y9z9450t25+UV076WSgag==
+X-Gm-Gg: AYBFou3lIA8O2Sh3ScOF5jcnYm9VaFlLHjenw0vpbIJgQ1YdHT2dLQu3KwIl7ST44MZ
+	VcPqedZf7ROj8Ls0JjzyovdTjTW8nJp4P6Qx1P/4CxU3ebmL8VbIkWRVgBAiXoWkDZVIw4VjMYp
+	gQ4OwkIvqd7In/EiBHVsqJdFB5pwyf7o2l1MLkvXvkU/D7pYBG+fPhhDiheGwSZ+1/RRMIIZnqY
+	0hP6fB7k1ftFDb8j1OIEM15vXuc3EBwU+v26I/Sys5ra0411i9pM0V5vVDvfHsRY/8yqhbLVhnR
+	AfduEQiHAWy6Q7T6vPXFZoXxmEACMJ1F6yt1u/92pbaid9HcqAgdRgy7l0s2YrruA6pXBiwhFI8
+	YuMRqpNFAT84q815NEyEUJiCFh+tR3UdUZEfs72894ecqPveuaG4Usu9L62FF5GjKZy0fTm9VEm
+	GiHXeqQcbCfhIcKPecWXT5XJmPaNgBGzjdc95IFWUvZJU=
+X-Received: by 2002:a05:600c:4e08:b0:4a1:ce33:1536 with SMTP id 5b1f17b1804b1-4ac1719112emr360222155e9.9.1793802490768;
+        Wed, 04 Nov 2026 06:28:10 -0800 (PST)
+X-Received: by 2002:a05:600c:4e08:b0:4a1:ce33:1536 with SMTP id 5b1f17b1804b1-4ac1719112emr360221625e9.9.1793802490212;
+        Wed, 04 Nov 2026 06:28:10 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a9faff90sm162472315e9.5.2026.11.04.06.28.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 06:28:09 -0800 (PST)
+Message-ID: <ae9abdea-6c34-4386-853a-862f5f16b031@redhat.com>
+Date: Wed, 4 Nov 2026 15:28:08 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,129 +112,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104084842.132944-1-fuad.tabba@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] vhost/vsock: size receive SKBs from declared
+ payload
+To: "Michael S. Tsirkin" <mst@redhat.com>, Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Bobby Eshleman <bobby.eshleman@bytedance.com>,
+ "David S . Miller" <davem@davemloft.net>, Will Deacon <will@kernel.org>,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261004235101.1464007-1-4ncienth@gmail.com>
+ <20261104065405-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261104065405-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 04, 2026 at 08:48:26AM +0000, Fuad Tabba wrote:
-> Hi folks,
+On 11/4/26 12:55, Michael S. Tsirkin wrote:
+> On Mon, Oct 05, 2026 at 08:51:01AM +0900, Daehyeon Ko wrote:
+>> vhost_vsock_alloc_skb() sizes the skb from iov_length(), the total guest
+>> descriptor length.  virtio_transport_inc_rx_pkt() instead adds hdr->len to
+>> rx_bytes and buf_used, and budgets each queued skb as SKB_TRUESIZE(0).  The
+>> guest controls the descriptor length and hdr->len independently.
+>>
+>> A guest can therefore provide a 64 KiB descriptor while declaring a zero
+>> payload.  The descriptor-sized skb remains queued, rx_bytes and buf_used
+>> remain unchanged, and only the fixed queue-entry budget limits retention.
+>> This is not a lifetime leak: the skb is freed when dequeued or at socket
+>> teardown.  Repeating this across connections can nevertheless exhaust host
+>> memory.  On Linux v7.2, 455 such descriptors retained 30,255,680 bytes for
+>> a 262,144-byte receive buffer; a full-payload control retained 265,984
+>> bytes.
+>>
+>> Vhost previously read hdr->len and allocated pkt->buf from that value.  The
+>> conversion from virtio_vsock_pkt to sk_buff instead allocated receive skbs
+>> from the descriptor length, introducing the allocation-accounting mismatch.
+>>
+>> Copy the header into a stack object and validate hdr->len before allocating
+>> the skb.  Size the allocation as sizeof(hdr) + payload_len so descriptor
+>> capacity no longer determines queued memory.  Check payload_len against
+>> len - sizeof(hdr) to avoid addition overflow on 32-bit hosts.
+>>
+>> Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 > 
-> This series adds selftests for protected VMs. A test skips on a host
-> without pKVM, and so does any case where the host doesn't have the
-> required feature, e.g., PtrAuth, SVE or hugetlb pages.
 > 
-> A couple of points:
+> Weird that this wasn't applied in net yet.
 > 
-> - Each area gets its own test rather than cases folded into existing
->   tests such as psci_test, hypercalls, set_id_regs, etc. A protected
->   guest requires its own boot path, and has to share the ucall pool
->   before its first ucall. On top of that, a protected guest gets the
->   opposite result for many of those tests' checks.
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 > 
-> - pkvm_exceptions skips its breakpoint, watchpoint and single-step cases
->   while a protected guest's ID_AA64DFR0_EL1.DebugVer is 0. pkvm_id_regs
->   reads the same field to choose between the hidden and the exposed
->   debug view. With the patch that adds self-hosted debug to protected
->   guests [1], both tests run the debug cases with no change.
-> 
-> The series is structured as follows:
-> 
->   01:     external_aborts: an abort injected before a vCPU's first run.
->   02-04:  Generic selftest changes: creating a protected VM, the pKVM
->           function IDs and the ucall pool's address.
->   05-06:  Protected-VM library: boot trampoline and helpers.
->   07-16:  The tests, one per area.
-> 
-> Based on Linux 7.4-rc1 (6628e7d4c6b25).
+> let me know if you want me to apply this.
+Someone change the patch status to 'Not applicable' likely assuming it
+was vhost stuff. The patch fell out our queue, but I just applied it.
+I'm not sure if the bot will catch it up, given that the patch is so old.
 
-Hi!
+/P
 
-I started to also write some realm tests a bit, you can check it out
-here:
-	https://gitlab.arm.com/linux-arm/linux-jg/-/tree/cca-kselftest
-
-It's WIP/prototype, but it may be good to have some sharing, if
-possible.
-For example I also added a 'pre-boot' stub, which looks like your
-pvm-entry.S:
-
-	https://gitlab.arm.com/linux-arm/linux-jg/-/commit/cd3ae35d89974b02b7051a0c45cc68b4df8f9d3e
-
-However I extracted the registers needed for the stub like this:
-
-	https://gitlab.arm.com/linux-arm/linux-jg/-/commit/f559d5b61fa1a37e2d7b23704bd367e079cf8eae
-
-This is because the current Realm branch I'm working on top of rejects
-writes to those system registers (TCR_EL1, CPACR_EL1 etc). Which is why
-I had to modify these functions, along with __aarch64_vcpu_add() and
-some others.
-
-I'm not sure how much there is to gain by sharing overall, but good to
-bring it up early!
-
-Thanks,
-Joey
-
-> 
-> Cheers,
-> /fuad
-> 
-> [1] https://lore.kernel.org/all/20261102093950.2922035-1-fuad.tabba@linux.dev/
-> 
-> Fuad Tabba (16):
->   KVM: arm64: selftests: Inject an abort before a vCPU's first run
->   KVM: selftests: Allow arm64 tests to create protected VMs
->   tools: arm-smccc: Add the pKVM memory sharing function IDs
->   KVM: selftests: Export the ucall pool's guest physical address
->   KVM: arm64: selftests: Add protected-VM boot trampoline
->   KVM: arm64: selftests: Add protected-VM library helpers
->   KVM: arm64: selftests: Add pkvm_host_abi host-interface test
->   KVM: arm64: selftests: Add pkvm_psci multi-vCPU PSCI test
->   KVM: arm64: selftests: Add pkvm_mem_share hypercall test
->   KVM: arm64: selftests: Add pkvm_smccc hypercall test
->   KVM: arm64: selftests: Add pkvm_id_regs register and trap test
->   KVM: arm64: selftests: Add pkvm_vcpu_regs register-state test
->   KVM: arm64: selftests: Add pkvm_irq interrupt test
->   KVM: arm64: selftests: Add pkvm_isolation host-access test
->   KVM: arm64: selftests: Add pkvm_lifecycle teardown test
->   KVM: arm64: selftests: Add pkvm_exceptions debug and SError test
-> 
->  tools/include/linux/arm-smccc.h               |  22 +
->  tools/testing/selftests/kvm/Makefile.kvm      |  12 +
->  .../selftests/kvm/arm64/external_aborts.c     |  21 +
->  .../selftests/kvm/arm64/pkvm_exceptions.c     | 261 ++++++++
->  .../selftests/kvm/arm64/pkvm_host_abi.c       | 428 ++++++++++++
->  .../selftests/kvm/arm64/pkvm_id_regs.c        | 306 +++++++++
->  tools/testing/selftests/kvm/arm64/pkvm_irq.c  | 268 ++++++++
->  .../selftests/kvm/arm64/pkvm_isolation.c      | 225 +++++++
->  .../selftests/kvm/arm64/pkvm_lifecycle.c      | 110 +++
->  .../selftests/kvm/arm64/pkvm_mem_share.c      | 394 +++++++++++
->  tools/testing/selftests/kvm/arm64/pkvm_psci.c | 632 ++++++++++++++++++
->  .../testing/selftests/kvm/arm64/pkvm_smccc.c  | 117 ++++
->  .../selftests/kvm/arm64/pkvm_vcpu_regs.c      | 221 ++++++
->  .../selftests/kvm/include/arm64/pkvm.h        |  74 ++
->  .../selftests/kvm/include/ucall_common.h      |   1 +
->  tools/testing/selftests/kvm/lib/arm64/pkvm.c  | 245 +++++++
->  .../selftests/kvm/lib/arm64/pvm-entry.S       |  58 ++
->  tools/testing/selftests/kvm/lib/kvm_util.c    |   5 +-
->  .../testing/selftests/kvm/lib/ucall_common.c  |   9 +-
->  19 files changed, 3406 insertions(+), 3 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_exceptions.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_host_abi.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_id_regs.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_irq.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_isolation.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_lifecycle.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_mem_share.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_psci.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_smccc.c
->  create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_vcpu_regs.c
->  create mode 100644 tools/testing/selftests/kvm/include/arm64/pkvm.h
->  create mode 100644 tools/testing/selftests/kvm/lib/arm64/pkvm.c
->  create mode 100644 tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
-> 
-> 
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-> -- 
-> 2.47.3
-> 
