@@ -1,54 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793824892;
-	b=Sz9BmmqavcxMa81C5fsu73N6pLI8mwdnaM+sB3c/w6In1i41XGL/06uYVbO4WivZcemt
-	 pg4SlfkMyUyKQRmReKeRyVhzC/aTZ3fY0Gb3tOM28vJsye6gKgsKu/ztoX/9IyUCLOatH
-	 QXUvYL2faL4PeAxGwF5cjun1OMSYMpUrSQRdTZ51pIB9JoGr00/DejLaRIuNHBLYpcSnJ
-	 NKPasaibm0b4pdzrzTWDtv0KJXKJX7YJj0LPx9NVir4MoVRzZLFxjTFIpUtcT7NFzsgCk
-	 Z3T3B4vCNpWxwVt3HBA2yGZerTgIYDeUcC1KVLI0nYi+3Fkvo0icV4CBGHfmB8p4qqA==
+	t=1793825139;
+	b=X42kMDi2VHasOSDne8g6kuyVJElVQsKDFK4hqS63kRGx3GRKoOKx6xoHzKVC/USrQSvi
+	 0j5lWH74a3J69daQ99nJvXejWVO+sgamg3neigPlNBiTZISp/BPk0xcFSIAfgitJYkTaj
+	 byHrQx2O3VeKj/nzUkNUeFLvaW9e8LoAW9EpmHT0h2csTGE5sIqeKQZ5Ny9eQzQfVmDfj
+	 3evmZWU3clZs/QKdvgoTrZ7f3Td/ZD53i9OrV/3Ldi60J/QqxSydNVyTw5EVUmhnOHDqv
+	 K7ZIB9+rkb4KifccJx0M4DEENpzONASnPSJVk//z/r6UXd26LSDT2+Xit0q81c8R9wQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793824892;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=/tuSpbmEkfR5NhcJw5pfnLX7U3UGQwCUamJk62bXk0k=;
-	b=EGdTmUBmFBTNroTs5PA1WlhdMmwh6TdGIsDKZbyFuKmIrP7jq1685g7GeuiVEdtXMa7K
-	 tSEon7uegTzp6D/LB9+9fXwzj3KJ5t6E7p+0kAj9JycMzKTHKsO9Vsontl6P1E4bLxCgk
-	 J+irBSE/dP8QFZ2bm7ClUO97L2Bi6gASmOlPTRPC+8zEjxbsYGV6fGdBKTMf4gzEvyBm1
-	 Vv5oNc4PuEfwWUQVYwxjkfOKSVmAHAb0n0s+0h6Gh6ATnf98//+8JXriRcJYgfhx2vvsP
-	 uzM9mszo6z2zLN1i9DIYFWubkbogv2bHCC5xy3dW2UMWdnnLjMhOeMXW/FVvZEG2wKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825139;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=m6RxhV28tVDd3IWEmU/52xEW4Trn9GkOrvqtd0+keQs=;
+	b=PJHTFaE5TRs5/2cfM3iH4c6uua865VlmiK13s2tImqK6t2rzsEopo/Lw4WGqKVEtvInE
+	 NdNfE/DNFV/DklmyuIUUDdNBaT8zdHrDbWNRTRy6Po5pQFVUsXsMhR9rZNs1Jp2cglB1q
+	 8I9uNf0vBb8uwr6dBzXd0kdC/6mq1Is0EcJaUh9odIZde72JhirBzE05IMjTNxDGjxz40
+	 3xXfKpz5M2IJuk/Zhf4LNEtusDxNjQDqIMvDLenuPefkRTXyyQrKgPRiWUC8jEwghVVjZ
+	 reHUJrA2//cDQjJ6eZ5QDPKGGMt5DMRpt7mcPjZrPtut7DzvYFRktJdeFJjnqFoLltQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=virtuozzo.com;
-	spf=pass smtp.mailfrom=virtuozzo.com;
-	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=YKg7EbzG;
-	arc=none smtp.remote-ip=130.117.225.111
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Kqm1ta0z;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20B9606AC03;
-	Wed,  4 Nov 2026 20:41:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D20B9606AC03
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF58D60952B2
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 20:45:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF58D60952B2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=YKg7EbzG
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=/tuSpbmEkfR5NhcJw5pfnLX7U3UGQwCUamJk62bXk0k=; b=YKg7EbzG6/xavxxD1EA
-	Cc0cWVxsIX2uHmopem/3753Spy4uPS8PsQM12VvGpFiq5JlHa5tcfMLIEatLA3tPocrno6c1lfPT4
-	eFGb37/eReeK/V7uCONKlPckJECrMXvWCXisZScIWV5eCcanY1/omDVS3U2mKQVj/s1hd0+hpuOd8
-	F2j7cTYKIT2sHzkZVPqMJmgCDxEQaS1lNF6pNQZSaxhTn9DE1SqreD9HHQe5INnkTM1lj1rvMg6K1
-	l5clWFtCexbQhaAE49j7srKdmpMwQpzVmA8DqjmQe8+cJ0gFlTEcnIfxRxqbYFtDuEZaDurRPz38q
-	rv9r5tiJJIiO3uQ==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xOhjB-0018X2-1g;
-	Wed, 04 Nov 2026 21:41:05 +0100
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Wed, 04 Nov 2026 21:40:58 +0100
-Subject: [PATCH v5 4/4] selftests/mm: test fork of PMD-mapped shmem THPs
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Kqm1ta0z
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ae72da2f57so1699730a91.1
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 12:45:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793825138; x=1794429938; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m6RxhV28tVDd3IWEmU/52xEW4Trn9GkOrvqtd0+keQs=;
+        b=Kqm1ta0zK7vn0YdeoBJpPK/M2kcB3iQP8Oyy+Aq5LPlVpfU3OXb2Kxp4F0rQ04uHBR
+         o2yUc06bDe28XDMBcHUk0g8+Z1hAXrlbc4ZFp80HURRCxKu/suNRPZsLQ3z7QuQujaZE
+         slCGGXPxf4zV/34kkmlUFZ4IikeoD8kX0mM7dBQymluM6ulD+Xg/QiOuvo/+qtT+onLF
+         CSgRQ6gHN70dBIdLMWND+DkHrVUR8hmNh6d3GhCQEJSI3l9Nb0SHO3qTCXdvXYrdj2qU
+         PqZZYPOkELGcQG3wnPxAxxuvMCpShuz8odIg+7WtpxSJZ+mm4qq6jCs2uhN4sjx8YfMO
+         aR2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793825138; x=1794429938;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=m6RxhV28tVDd3IWEmU/52xEW4Trn9GkOrvqtd0+keQs=;
+        b=B2/Eg1MhfSarF9MgE1X1/Yx2P9DnDioeM/0pc/AHyfJKMJn6cNHB/FO/H37+s6SAzI
+         rCTah7AjlzUYwSCpH4OyYisL8IbamtxYZy9ji8JLkkiBELa+lPz3b7uUw08HFbuFn6gf
+         3wzcv15dDDGYl+84H1Q935BziUPvbSKRWMYjotjeFiuM7XOrdOH9vn4N+edSSDY6PFFW
+         qympcx0fs0MSipfRiayl1D7h76vQY0FjIwIkpho2SnCgt+pomFdvPYwIXi4tyZUTQjfP
+         4XI2URQd3yB/LR++w5fUa4qc/FPLdpL8KNGNv5ATC4TFnfE1xy/UbEu31ZE7P/CYAUYO
+         1IBg==
+X-Forwarded-Encrypted: i=1; AKwUvBx0yzcQDzkQy0UeriGIi+p74uPIsAFirpt6zUcLwleVv8ntlqv5QTnOAlAaF+5W9Lu9y5k=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+BKtKsHc43aU5rTHBGDfDdQygqINOUeszNWpJBbekc4O3Y/e2S
+	BnySTQ2awPDGydG+N+8w0H5Qg5Y2r9IJG78nArjVYWYL0UGxlYs0Cft0KHalgbVvDkr3COUsjtG
+	k9dXAFg==
+X-Received: from pjhw22.prod.google.com ([2002:a17:90a:5296:b0:3ab:54fb:2a3d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2e52:b0:3ab:24b2:9016
+ with SMTP id 98e67ed59e1d1-3ae897ec759mr14634100a91.25.1793825137869; Wed, 04
+ Nov 2026 12:45:37 -0800 (PST)
+Date: Wed, 4 Nov 2026 12:45:37 -0800
+In-Reply-To: <20261020234535.3182385-3-jmattson@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,379 +77,102 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-4-c56d0d26f970@virtuozzo.com>
-References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
-In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
- =?utf-8?q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>, 
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11029;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=LaNJ6nRiIFQ71fZKaMjBG0yYeXmXdvJPv5bQ40ut68w=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq65hd6fqcGkyzLfAIDPqzv+f1a5VEmIZwnQ14T
- O4+pYZ5FCeJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCauuYXQAKCRBRlgpH+WFc
- Khy1D/wP2cJLtGEslEPmmjDv9/XG68s2H2LqCOIXfNehsv36X/rk9iag0kaBSloS4iVPwR+Ftrg
- wUQi/Lvxp1aaqY6LeA6e67RHqxpvmV/hiJrM7YEnfIWJQ+opB4Ff5NjfBYbd5ICGThBfFL+epiX
- AbO3BCCw8dOQ22FQNvasvFrNmJ4hkvyckqIX1HPj03art8FuaNnqp7IOudjKCd4Xzww5WoHpM2E
- TW1lEOk7E0wvpF0NOz17RnZBfuyaMypcBudp751/cK/ib+PNxyjJs2G95SF89IUASc4FMp0/HcV
- wEmSzoymWrTH6T1xkzs0GAbF1IqC9CLNAvPXNIDowJn4O0npnTdaHkG4m7fO/flZXBOE8bT2X5C
- XQTSyetg52IEIHZZ1CXo7PnnVEx/wSx4V04D84vmiByjxgSHMS311ZG9mgHHHuvBxrLPlblDTDT
- ZwU1p5cs0uID8pnzkT41N13j1aT7Paw5/p1Hvudic5UhNDG5kBQleOLQGWOO0x+eaRtv2i34xt+
- JvEcg3LWw8BQrKItCaUTYpB/jNj+NvrxqFeUv3nGc47KDU1mfCVa/bySGJSTXrNNYgtMB0Wgmtb
- vY86MpIOlJQpHR1A/RUJkAd79hWLjPp1Iv+YKOa0qNyoRWU0+wVcjskBH4z2SgIU8iWSN7u969g
- 09G50m1Sj75qywQ==
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
+Mime-Version: 1.0
+References: <20261020234535.3182385-1-jmattson@google.com> <20261020234535.3182385-3-jmattson@google.com>
+Message-ID: <auuZcZhBhrkZd9qM@google.com>
+Subject: Re: [PATCH 2/4] KVM: VMX: Refresh LBR MSR intercepts on full MSR
+ intercept recalc
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Like Xu <likexu@tencent.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Fork a process that maps shmem THPs with PMDs, in a VMA whose page
-tables fork copies: a private mapping with an anon_vma, and a shared
-one with a guard region. The child must find the PMDs before it
-touches the mapping, and its exit must leave the parent's mapping and
-the system-wide ShmemPmdMapped counter as they were.
+On Tue, Oct 20, 2026, Jim Mattson wrote:
+> Re-apply the LBR MSR intercepts in vmx_recalc_msr_intercepts() if the
+> LBRs are currently passed through, so that changes to userspace MSR
+> filters are reflected in the MSR bitmap.  Unlike SVM, which can simply
+> rewrite the intercepts in either direction, leave the bitmap alone if
+> the LBRs aren't passed through, as a filter can only force interception,
+> never prevent it, i.e. the bitmap is already correct.  Note, clearing
+> msr_passthrough to force vmx_passthrough_lbr_msrs() to re-apply the
+> intercepts on the next VM-Enter isn't an option, as doing so would
+> leave stale passthrough bits behind if the guest LBR event is no longer
+> active.
+> 
+> vmx_recalc_msr_intercepts() is invoked in response to
+> KVM_REQ_RECALC_INTERCEPTS, which is raised on MSR filter updates, but it
+> skips the LBR MSRs, and vmx_enable_lbr_msrs_passthrough() does nothing
+> if lbr_desc->msr_passthrough is already set.  If the LBR MSRs are passed
+> through when userspace installs a filter that denies them, they remain
+> passed through, and the guest can access them without exiting to
+> userspace.  Conversely, if a filter forced interception when the guest
+> LBR event became active, relaxing the filter leaves the MSRs needlessly
+> intercepted.  Either way, the bitmap remains stale until the guest LBR
+> event is torn down and recreated.
+> 
+> Only x2APIC MSRs are exempt from userspace filtering (see
+> kvm_msr_allowed() and the KVM_X86_SET_MSR_FILTER documentation), and the
+> filter is honored when LBR passthrough is first enabled, so KVM's
+> behavior shouldn't depend on whether the filter is set before or after
+> the guest enables LBRs.  Drop the LBR MSRs from the comment claiming
+> that they can't be filtered by userspace, and clarify that
+> lbr_desc.msr_passthrough tracks KVM's desired interception, which may
+> not match the MSR bitmap when userspace filters are in play.
+> 
+> Fixes: 9254beaafd12 ("KVM: vmx/pmu: Reduce the overhead of LBR pass-through or cancellation")
+> Cc: stable@vger.kernel.org
 
-With folio_dup_file_rmap_pmd() adding PTE mappings, the child's exit
-takes the parent's share off ShmemPmdMapped while the parent still maps
-the folios. Unmapping them drops it once more, so every mapping stays
-until exit, where the kernel reports "Bad page cache", or hits a
-VM_BUG_ON with CONFIG_DEBUG_VM. A kernel that leaves file THPs to a
-refault in the child skips the test.
+Meh, this isn't stable material.  Unlike SVM, where LBR virtualization is tied
+to a pile of other crud, if userspace wants to filter LBRs on Intel it should
+just not expose LBRs in the first place.
 
-ShmemPmdMapped is system-wide, and reclaim or NUMA balancing can take a
-PMD from the parent while the test runs. So the test makes up to three
-attempts, each on a fresh file, and fails only if all of them see the
-counter drop by exactly the parent's share: the bug does that on every
-fork, other processes only by chance. It passes on the first clean
-attempt and skips when none is clean.
+If it weren't for SVM, and the fact that avoiding the filters is actually more
+work, I probably would vote to fix the docs.
 
-The test mounts a tmpfs with huge=always over /tmp in a private mount
-namespace, so it leaves the THP settings and the host's mounts and
-files alone.
+> Signed-off-by: Jim Mattson <jmattson@google.com>
+> ---
+>  arch/x86/kvm/vmx/pmu_intel.c | 20 +++++++++++++++++++-
+>  arch/x86/kvm/vmx/pmu_intel.h |  7 ++++++-
+>  arch/x86/kvm/vmx/vmx.c       |  6 ++++--
+>  arch/x86/kvm/vmx/vmx.h       |  1 +
+>  4 files changed, 30 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+> index 70a8c4816135..b945213f0b68 100644
+> --- a/arch/x86/kvm/vmx/pmu_intel.c
+> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+> @@ -517,7 +517,8 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  	memset(&lbr_desc->records, 0, sizeof(lbr_desc->records));
+>  
+>  	/*
+> -	 * Setting passthrough of LBR MSRs is done only in the VM-Entry loop,
+> +	 * LBR MSRs are initially passed through only in the VM-Entry loop (a
+> +	 * full MSR intercept recalc merely refreshes an existing passthrough),
+>  	 * and PMU refresh is disallowed after the vCPU has run, i.e. this code
+>  	 * should never be reached while KVM is passing through MSRs.
+>  	 */
+> @@ -704,6 +705,23 @@ static inline void vmx_enable_lbr_msrs_passthrough(struct kvm_vcpu *vcpu)
+>  	lbr_desc->msr_passthrough = true;
+>  }
+>  
+> +/*
+> + * Refresh the LBR MSR intercepts if the LBRs are passed through, so that
+> + * changes to userspace MSR filters are reflected in the MSR bitmap.  There's
+> + * nothing to do if the LBRs are intercepted, as a filter can only force
+> + * interception, never prevent it.
 
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
- MAINTAINERS                                |   1 +
- tools/testing/selftests/mm/Makefile        |   1 +
- tools/testing/selftests/mm/fork_file_thp.c | 256 +++++++++++++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh  |   1 +
- 4 files changed, 259 insertions(+)
+Hmm, I don't love assuming that recalcs are only done for filter updates.  On the
+other hand, taking action if lbr_desc->msr_passthrough=false is nonsensical.
+Rather than immediately refresh the updates, what if we just disable passthrough
+and let vmx_passthrough_lbr_msrs() do the actual update?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 93abbb315065d..1e6c35a30a369 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17859,6 +17859,7 @@ F:	mm/collapse.h
- F:	mm/huge_memory.c
- F:	mm/khugepaged.c
- F:	mm/mm_slot.h
-+F:	tools/testing/selftests/mm/fork_file_thp.c
- F:	tools/testing/selftests/mm/khugepaged.c
- F:	tools/testing/selftests/mm/split_huge_page_test.c
- F:	tools/testing/selftests/mm/transhuge-stress.c
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 0ea72e9979347..2489027b2a36b 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -108,6 +108,7 @@ TEST_GEN_FILES += folio_split_race_test
- TEST_GEN_FILES += folio_order_check
- TEST_GEN_FILES += khugepaged_sync_check
- TEST_GEN_FILES += khugepaged_race
-+TEST_GEN_FILES += fork_file_thp
- TEST_GEN_FILES += soft-dirty
- 
- ifeq ($(ARCH),x86_64)
-diff --git a/tools/testing/selftests/mm/fork_file_thp.c b/tools/testing/selftests/mm/fork_file_thp.c
-new file mode 100644
-index 0000000000000..aaecf7ba6f406
---- /dev/null
-+++ b/tools/testing/selftests/mm/fork_file_thp.c
-@@ -0,0 +1,256 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * fork() of a process that maps shmem THPs with PMDs, in a VMA whose page
-+ * tables fork copies: a private mapping with an anon_vma, and a shared
-+ * mapping with a guard region.
-+ *
-+ * The child must get the PMDs without faulting, and its exit must leave the
-+ * parent's mapping and the system-wide ShmemPmdMapped counter as they were.
-+ * Kernels that leave file THPs to a refault in the child skip the test.
-+ */
-+#define _GNU_SOURCE
-+#include <asm-generic/mman.h> /* Force the import of the tools version. */
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <sched.h>
-+#include <sys/mman.h>
-+#include <sys/mount.h>
-+#include <sys/wait.h>
-+
-+#include "kselftest.h"
-+#include "vm_util.h"
-+
-+#define NR_PMDS		4
-+#define MAX_PMDSIZE	(32UL << 20)
-+/* Other processes, reclaim and NUMA balancing can disturb an attempt. */
-+#define ATTEMPTS	3
-+
-+static size_t pagesize, pmdsize, size;
-+
-+static long meminfo_kb(const char *key)
-+{
-+	char line[256];
-+	long kb = -1;
-+	FILE *f = fopen("/proc/meminfo", "r");
-+
-+	if (!f)
-+		return -1;
-+	while (fgets(line, sizeof(line), f))
-+		if (!strncmp(line, key, strlen(key))) {
-+			kb = strtol(line + strlen(key), NULL, 10);
-+			break;
-+		}
-+	fclose(f);
-+	return kb;
-+}
-+
-+/* Skips the last page, which may be a guard page, and @skip. */
-+static bool data_ok(const char *mem, size_t skip)
-+{
-+	size_t off;
-+
-+	for (off = 0; off < size - pagesize; off += pagesize)
-+		if (off != skip && mem[off] != (char)(off / pmdsize + 1))
-+			return false;
-+	return true;
-+}
-+
-+/* The last PMD is zapped by the setup, the others must be PMD-mapped. */
-+static bool pmds_ok(char *mem)
-+{
-+	return check_huge_file(mem, size - pmdsize, NR_PMDS - 1, pmdsize);
-+}
-+
-+/* Maps a fresh shmem file of NR_PMDS PMDs, PMD-aligned, until exit. */
-+static char *map_file(bool shared)
-+{
-+	char *area, *buf, *mem;
-+	size_t off;
-+	int fd;
-+
-+	fd = open("/tmp/fork_file_thp", O_RDWR | O_CREAT | O_TRUNC, 0600);
-+	if (fd < 0)
-+		ksft_exit_fail_perror("open");
-+	unlink("/tmp/fork_file_thp");
-+	buf = malloc(pmdsize);
-+	if (!buf)
-+		ksft_exit_fail_msg("malloc failed\n");
-+	for (off = 0; off < size; off += pmdsize) {
-+		memset(buf, off / pmdsize + 1, pmdsize);
-+		if (pwrite(fd, buf, pmdsize, off) != (ssize_t)pmdsize)
-+			ksft_exit_fail_perror("pwrite");
-+	}
-+	free(buf);
-+
-+	area = mmap(NULL, size + pmdsize, PROT_NONE,
-+		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (area == MAP_FAILED)
-+		ksft_exit_fail_perror("mmap");
-+	mem = (char *)(((unsigned long)area + pmdsize - 1) & ~(pmdsize - 1));
-+	mem = mmap(mem, size, PROT_READ | PROT_WRITE,
-+		   (shared ? MAP_SHARED : MAP_PRIVATE) | MAP_FIXED, fd, 0);
-+	if (mem == MAP_FAILED)
-+		ksft_exit_fail_perror("mmap");
-+	close(fd);
-+	for (off = 0; off < size; off += pmdsize)
-+		FORCE_READ(mem[off]);
-+	return mem;
-+}
-+
-+/* Child exit codes, apart from what kselftest helpers exit with. */
-+enum result { PASS, NO_PMDS = 10, FAIL_DATA, FAIL_COUNTER, FAIL_PARENT,
-+	      FAIL_KILLED, COUNTER_OFF, CHANGED, LOST_PMDS, NO_THP };
-+
-+static enum result fork_once(char *mem, bool shared, long *before, long *after)
-+{
-+	/* The parent alone maps this much with PMDs. */
-+	long own = (NR_PMDS - 1) * (pmdsize >> 10);
-+	bool parent_pmds;
-+	int status;
-+	pid_t pid;
-+
-+	*before = *after = meminfo_kb("ShmemPmdMapped:");
-+	if (*before < own)
-+		return COUNTER_OFF;
-+	fflush(stdout);
-+	pid = fork();
-+	if (pid < 0)
-+		ksft_exit_fail_perror("fork");
-+	if (!pid) {
-+		/* Look before touching anything: the PMDs must be there. */
-+		if (!pmds_ok(mem))
-+			_exit(NO_PMDS);
-+		if (!data_ok(mem, pmdsize))
-+			_exit(FAIL_DATA);
-+		mem[pmdsize] = 'c';
-+		_exit(PASS);
-+	}
-+	if (waitpid(pid, &status, 0) != pid)
-+		ksft_exit_fail_perror("waitpid");
-+	*after = meminfo_kb("ShmemPmdMapped:");
-+
-+	if (!WIFEXITED(status))
-+		return FAIL_KILLED;
-+	/* Reclaim or NUMA balancing took a PMD from the parent. */
-+	parent_pmds = pmds_ok(mem);
-+	if (WEXITSTATUS(status) == NO_PMDS && !parent_pmds)
-+		return LOST_PMDS;
-+	if (WEXITSTATUS(status) != PASS)
-+		return WEXITSTATUS(status);
-+	if (mem[pmdsize] != (shared ? 'c' : 2) || !data_ok(mem, pmdsize))
-+		return FAIL_PARENT;
-+	if (!parent_pmds)
-+		return LOST_PMDS;
-+	/* The child's exit took the parent's share off the counter. */
-+	if (*before - *after == own)
-+		return FAIL_COUNTER;
-+	if (*after != *before)
-+		return CHANGED;
-+	return PASS;
-+}
-+
-+static void test_fork(bool shared)
-+{
-+	const char *desc = shared ? "shared mapping with a guard region" :
-+				    "private mapping with an anon_vma";
-+	long before = 0, after = 0;
-+	enum result res = NO_THP;
-+	int i, drops = 0;
-+	char *mem;
-+
-+	for (i = 0; i < ATTEMPTS; i++) {
-+		mem = map_file(shared);
-+		/* Make fork copy the page tables; the last PMD gets zapped. */
-+		if (shared) {
-+			if (madvise(mem + size - pagesize, pagesize,
-+				    MADV_GUARD_INSTALL)) {
-+				ksft_test_result_skip("%s: MADV_GUARD_INSTALL: %s\n",
-+						      desc, strerror(errno));
-+				return;
-+			}
-+		} else {
-+			mem[size - pagesize] = 'p';
-+		}
-+
-+		res = pmds_ok(mem) ? fork_once(mem, shared, &before, &after) :
-+				     res == NO_THP ? NO_THP : LOST_PMDS;
-+		/* Later children get only their own mapping. */
-+		madvise(mem, size, MADV_DONTFORK);
-+		if (res == FAIL_COUNTER)
-+			drops++;
-+		else if (res != CHANGED && res != LOST_PMDS && res != NO_THP)
-+			break;
-+	}
-+	/* Other processes can mimic the bug's drop, but not on every attempt. */
-+	if (res == FAIL_COUNTER && drops < ATTEMPTS)
-+		res = CHANGED;
-+
-+	switch (res) {
-+	case PASS:
-+		ksft_test_result_pass("%s\n", desc);
-+		break;
-+	case NO_THP:
-+		ksft_test_result_skip("%s: shmem is not mapped with PMDs\n",
-+				      desc);
-+		break;
-+	case NO_PMDS:
-+		ksft_test_result_skip("%s: fork does not copy file THPs\n", desc);
-+		break;
-+	case COUNTER_OFF:
-+		ksft_test_result_skip("%s: ShmemPmdMapped %ld kB is below what this process maps\n",
-+				      desc, before);
-+		break;
-+	case CHANGED:
-+		ksft_test_result_skip("%s: ShmemPmdMapped keeps changing\n", desc);
-+		break;
-+	case LOST_PMDS:
-+		ksft_test_result_skip("%s: the parent keeps losing its PMDs\n",
-+				      desc);
-+		break;
-+	case FAIL_DATA:
-+		ksft_test_result_fail("%s: child sees wrong data\n", desc);
-+		break;
-+	case FAIL_COUNTER:
-+		ksft_test_result_fail("%s: ShmemPmdMapped %ld kB before fork, %ld kB after\n",
-+				      desc, before, after);
-+		break;
-+	case FAIL_PARENT:
-+		ksft_test_result_fail("%s: parent's mapping changed\n", desc);
-+		break;
-+	case FAIL_KILLED:
-+		ksft_test_result_fail("%s: child killed by a signal\n", desc);
-+		break;
-+	default:
-+		ksft_test_result_fail("%s: child error %d\n", desc, res);
-+		break;
-+	}
-+}
-+
-+int main(void)
-+{
-+	ksft_print_header();
-+	pagesize = getpagesize();
-+	pmdsize = read_pmd_pagesize();
-+	if (!pmdsize)
-+		ksft_exit_skip("THP is not supported\n");
-+	if (pmdsize > MAX_PMDSIZE)
-+		ksft_exit_skip("PMD size %zu MiB is too large\n", pmdsize >> 20);
-+	size = NR_PMDS * pmdsize;
-+	if (geteuid())
-+		ksft_exit_skip("needs root to mount tmpfs\n");
-+	/* The tmpfs over /tmp lives and dies with a private mount namespace. */
-+	if (unshare(CLONE_NEWNS) || mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL))
-+		ksft_exit_skip("private mount namespace: %s\n", strerror(errno));
-+	if (mount("tmpfs", "/tmp", "tmpfs", 0, "huge=always"))
-+		ksft_exit_skip("tmpfs with huge=always: %s\n", strerror(errno));
-+
-+	ksft_set_plan(2);
-+	test_fork(false);
-+	test_fork(true);
-+	ksft_finished();
-+}
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index a1b45a3dedaee..790a6b6746465 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -433,6 +433,7 @@ fi
- CATEGORY="thp" run_test ./transhuge-stress -d 20
- 
- CATEGORY="thp" run_test ./folio_split_race_test
-+CATEGORY="thp" run_test ./fork_file_thp
- 
- CATEGORY="migration" run_test ./migration
- 
+void vmx_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+{
+	if (WARN_ON_ONCE(!vcpu_to_lbr_desc(vcpu)))
+		return;
 
--- 
-2.43.0
+	/* Disable passthrough to force a recalc on the next VM-Entry. */
+	vmx_disable_lbr_msrs_passthrough(vcpu);
+}
 
