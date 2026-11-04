@@ -1,107 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793832916;
-	b=x/K+/DFtNHMTINU6E0ItuRdiZuuVAVuJ/EJSMO0xYCtFv4YQ1HClRmtpm1I03I4cLvC/
-	 GtinD/gDd4Irzj9IgTAwQaiVqVkPya5GFCWS4lb650lUOMKMErUz/mhDH9IiSjDnEIChs
-	 m3Q6bEF0FIlYvAK3mN8MzyfS/wngOZmQJFvUEMVpSJHtHRBEbcZ2qXgrSdxIxE5rdp5j5
-	 RrU47gbDGh2HsxaCmb3F52LfeLQUDu2pJsW8TP4WIbOXtc3hq9WN48tIjxCNR86GCxHqj
-	 TcGdU/j4/AE1PNGq/DHULZbWblaOVSFrJeNB3ZHJylPUFNhn0Jix2cNlfcNun0txw+w==
+	t=1793833072;
+	b=SCtQ5V/u972Mbo7KmvM5EFFfsONjzTqHEHjaek+0MaMf+LEFrNqopYNgQHj9q1HNaDAd
+	 9SSPF0IxuOxRvAJ2SLJ3IJ6s8PJ8+ppLNzVJHXeJOYhX3i1ick7f+SPWMNnwoPddcOYLc
+	 FvN9BcoQEC24RUdBkLCdnB3ZWfuLqaS0JSgmskuLfSiHwp4GbWKZx63uHQeSUQNECa7z1
+	 fMUalzU8M7K/bFEvNytKDTV5HfFhGjjtug15T1qd8089/a4VHfj3Su+q799Ilu6m3eSgf
+	 3ILy/3RIagMMBXo5sgqGkdK0budLIgkyAgWjQEjU3DyxyVsx2gJcxmWo5jz65ULM8TQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793832916;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793833072;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
-	b=R+fxX3/auTIWfVMF1YI6Ahop6oK/iht+Nja+K7TPqquRGOSh7vsl0gS9sVSZ7a75c9sY
-	 Yo8VykyeNtEqHSlKHZ718REbfRKqqSyWtpIY4fm8vVMSjHdIFVA66IdmMY6Ddo5BG1ISl
-	 WSfoXJvOrWTuf1b90lYaa4qn4fyj25wGpCy3fAFTs65pU9EiVZSiYyr+zzotuuvRc+iKy
-	 uWAZSjfhZo97qndNCFjbKCni0y2yi9SLn/KAomQfZeHvL2pZSm/sUQDiT/4ml99e4rHRD
-	 0kQFBa2lt//CfyzgRNI0KhParJIk63+8dcdk0Ce/r+4y3Boy3CXWnIVcOPVCRkjLoVA==
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=bZmm/fjciQHFDsHygF6gqzElYGHv0HpumcgfM0NGUjo=;
+	b=EGKwVKyQCZjVR6R5TWXyUKmJ5ni+WN1lrA38jbV83r6HLbK5zyhwjbD+eMD1zgvI8fS4
+	 Py1vrAItqyKJJdTIYb3/57uNKvzXDY7oeD9YXaSkis6etB514SyatjsP88vAohihuGvl2
+	 sU7LzZKJ5X4i45d1ZJ/HO4k19xLb4V79pcZvuYcn4levXGrZyIcYZYqxQ5IxfJJWbBSxZ
+	 hB1Or9Qek/YAXIwYrrIMohU4RQTxahNHNd+7jajRAFeQDgfj+icDHxr3YP1/OiydzfsXg
+	 y23HVMhzJ5WtlAc+WjUbT/W8KXTSeOAMLQPM74wnGl0PB2ovOhrYftLbEJ6pNje0EMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iX8ZqbG5;
-	arc=none smtp.remote-ip=209.85.214.173
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cDfTc7XW;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22234606A32E
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 22:55:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 22234606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0828606A31B
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 22:57:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0828606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iX8ZqbG5
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ea7f9c11e6so21205ad.0
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 14:55:16 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cDfTc7XW
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a20bde60a0so11071005e9.3
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 14:57:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793832915; x=1794437715; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
-        b=iX8ZqbG5kGhk9C7VPkqjhx2OKZ5xbfR9h1Aef/l6k3JjEk7yu0t/FYe5ycxHHDWtQ0
-         19wFv+lPRy1qGjlmTyU9yKNwh5CIs+A9xxTyv83krzQuMbIjXC4SjI9bZkZEQQLYjav7
-         o8p8FC8HgUrU9sHGmblpdCUujQZ1DCxQEmwArqz5qYpThbmIErnb4BXQbe4ojBPuf6GI
-         BQ1dQdM4HGHcxxDGx0eDNq0a80qflOL4oBs83Fg7eL55XCcCPExeCxPxKS4WGjOYke96
-         XTkOCjNPK5gQ2pwUT4Rzu2ckbqOm/PMxytwGmeVeJVL0CWqD87AJemcrP//eGcQkeQC8
-         F0Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793832915; x=1794437715;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1793833070; x=1794437870; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
-        b=v5h+e25poJFC1TcLTT7V5jr8kcGvWHbIh5aUtR466TzjiwqM7UnEd1jN7nKU22/jtC
-         0yfFy0UkDC2IGIvNSD/YXaIy25fpjVPwTFBOiEaF0V4Cim0wSTWNr21ABOtxLwR02zO9
-         FAXQJQ5OtKv7vJ6d/RpNR/BUTRqzJNkJenmUikb2ybp++EztxNS1nxbh/s/tPBKCLgsn
-         USAbJVTiTWYuf1oScUoUJTHZD3ImQhcnTn94y3D3unaUGTErTbzDeUT3q+797tp1ydtm
-         AedaVaQK5noaomMEMsobR1A0nobtx6UC6XQCubW6aQEPpBQPZdGgOrT0WxtKNPyInf4z
-         LXVA==
-X-Forwarded-Encrypted: i=1; AKwUvBxK/QCZslbQp2buEBfVsMrlD7aDKrAzFlXjiMhVY9chByeqaEWpJ4N5lVLDoaeZ8oCP1XM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8nPI4uCRD5fUBpii4XG6YqoHRhgYjZuI2MppnykiS9pWTojoMt
-	ZsefCy3LFupyGyYd2mEH5oVPa8IpZSXiK2KzgKtmi9lfLmO/87DluxpI2NwO20Ih8g==
-X-Gm-Gg: AYBFou2/wjSwkUsLg2WKVhB+9vbb1DjQiJUrW0Cobalbqbs9mooTUBRBxS8bum7MvzT
-	etOnW/gocX2tbhgTarcn2YwTIpxD1X3kbhhrHmwVCEdql4uTYyNXbIr293ShpSHS/rv7g2eLgXF
-	KeE/s1IH5S3FSYZn37PFGO4ZpuqoOI2jZ7RN4+8TffRctYY/jzJOVnFMNmz8+Gj4FqSgrzXVYQm
-	dF2k2kIsqaofY7Fu4S6vTQsIEd+01eQoi9nXZj2sHn55V+GqYkU2pRt9zk9H6D5lUMs4HUI41A/
-	KiR2JvNiJ6F6Pe6ngyxm86+6jjQls2OOKW9n7HLNFzW1k4NqXSrb/PJ9OSizyYR4BOOxE3QnnqV
-	+Ig+Jft/O7vuVnmAjRmCgwwj8nhrjABLYxT4ParJedvCcKAke0xJBgMpSxoi+bczKxZHBW9hfue
-	0fmdIX1rMC7kkzFvCZu6sNw21qcINXmsjneMqKd3tVeVdeL4W6QVg4Foc5ZByEvlaYtsVDFO73B
-	BCoXA9iZxzEiulOiHyjIzoFmW6WX4f7dnkAoVhtCOqDmE88WhdhZZ75FHyxwZBR52yo8Mm3QAWX
-	tmfrSUYfXDmwy1e51KitpWB2sHRCiHwqqrNRctyzcGErv9pcyRdapn4VP6LZ5n+xAA==
-X-Received: by 2002:a17:902:db11:b0:2dd:3a08:d47b with SMTP id d9443c01a7336-2ed27e06d7bmr1039485ad.13.1793832914948;
-        Wed, 04 Nov 2026 14:55:14 -0800 (PST)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b09455fbdasm2528714a91.0.2026.11.04.14.55.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 14:55:14 -0800 (PST)
-Date: Wed, 4 Nov 2026 14:55:07 -0800
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, 
-	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, 
-	apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, 
-	corbet@lwn.net, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
-	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
-	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
-	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
-	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
-	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, 
-	yi.l.liu@intel.com
-Subject: Re: [PATCH v6 05/27] PCI: liveupdate: Add helpers to preserve struct
- pci_saved_state
-Message-ID: <20261104222438.GB511751.vipinsh@google.com>
-References: <20261102153656.1431701-6-vipinsh@google.com>
- <20261102230624.GA1038787@bhelgaas>
- <aukvTvnfyAvahb51@google.com>
+        bh=bZmm/fjciQHFDsHygF6gqzElYGHv0HpumcgfM0NGUjo=;
+        b=cDfTc7XW0ifae+8M1LuPWAwdIdNKakZkFWFnJt6KL55fGa37RQmqkq2uRmhEY7B1n3
+         CaBTcgavNgfBak+NIwaNa3H5fTfJ9PIT5PgZQgH2MazyhDmo4aFllXX0SMasXGEEM9Fl
+         p/51Tb9ZeDWq1NeJnxB9QMyf1cDUO3GXJQBRKRgploH8Le81bwbGb+y13nOzQrXCWpNq
+         F42HKXSHEzc0A6bpTaknb/yOiq64kB0H1wCLiqtk4d1YdokCcUVaxOjocfuDaznMEOXl
+         BFMxyeOdRQgLkukh4xswNJohIqsIMfXRyH1cjs8NbBnWvzJr4LA0LYjw3tAYWNzSjLvS
+         MNIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793833070; x=1794437870;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bZmm/fjciQHFDsHygF6gqzElYGHv0HpumcgfM0NGUjo=;
+        b=hpMg0ry3iscIQJY1JLAQ6w7u1gn62j5/mJO783Uu9sQ3F1MeZmXPOthPHg5jeBbnON
+         9Py0Q/Y+5Go+AhKzadIC8sMA6mcx4/1L526kkEyOlVGs+/VAjodbpeEsERvUlPKdY2yp
+         byqtHmEPY+RobjQgttDz9HpUyF9c5K2NX9MCRM/FZDZKjt2B8cRwHcET50Hv7eWLP71W
+         yRj+baeoxiGQ0DMeBnm8uPZ4PDaVs16DrvUknTpUgFnyP0IW0ayaNbr2bCGcTAEcpbW3
+         zuEqV2h6xTvBx5f2mMpEANNOZGMdb6n486/YUL8FqaHH0moZ28w5Giix2nN5JpI8cCix
+         PpIw==
+X-Forwarded-Encrypted: i=1; AKwUvBzJaGbEDYxEbouttFra155wgDY4m2vFHo9P1ZOCEu9bbNFVkyHWko9FX5KuowuLlDoV3hQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8GKc1LG3WSLE9K+NlGa4fszMr/nzOBYt5jTWYjw14t041qtLt2
+	rfD6/tdaoxkm6SN7qDUEX41ZvlxmjatUVfm6I9AP/vhC3voBh6U4lDgP
+X-Gm-Gg: AYBFou1Lzrccp8wj5Stm0rWjwhvxQK58d7GH/0p0rqqvnorIXFUwW04nfM4MFm2Qc1X
+	T6HQyUmu5BJJrihknCvFRMe4QPUvVoBZKDPdwOFHsAehMPpCZMse4cEJ6I/pCaOjb02Rf+GZ3dE
+	fe8qZgHyApD0bKtB5uUfrFQqAvDun1t/H5CyAq1n/vqUVlu6UzNxQOc9tVvt1TIIqCJBW18orjw
+	mJuFrV+UY3cEeBb9i+GjzVO8hXlPu3ONxW4JHCqZuCkAqUXoM4hyVufSmJfaioH8SF/VA7QZKLI
+	SOsjRRgrhmVOvTrRAX4VUzRsd8NB+CWMSbxtABESAfCGBKWcQtgmJlQt1Z52douSH4c5I2CioEV
+	RFOuhgXP1XtSXY7sey0IB14J3V4udkQFkKfG9sXhA1pUbJF5syA+mWMII3Ol6Ge0Y8QPVWXkvuP
+	ShefCtlfJ34mGbiPIQyozolUDNQMD2IDy3swMCoru1soRT9yidMoJYT+Ap9Rb92etYF95Su8+hH
+	bWcSmhnCZpFIBLz4F/giJQ0tnpumjMQqScXvdyPoZgsa7SphLFAnPJvpg0pU2dJ0TJSvWI/iyF0
+	U01QUQezwJJacgLLOInODzQ=
+X-Received: by 2002:a05:600c:6212:b0:4b0:a7aa:843 with SMTP id 5b1f17b1804b1-4b0a7aa0a54mr222825565e9.25.1793833070285;
+        Wed, 04 Nov 2026 14:57:50 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b5725061e1sm17756545e9.7.2026.11.04.14.57.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 14:57:49 -0800 (PST)
+Message-ID: <93d13781-0c37-4a3c-8fca-6f8108eff35a@gmail.com>
+Date: Wed, 4 Nov 2026 23:57:47 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -111,91 +92,54 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aukvTvnfyAvahb51@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] mm/rmap: duplicate a PMD mapping as one in
+ folio_dup_file_rmap_pmd()
+To: Konstantin Khorenko <khorenko@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ stable@vger.kernel.org
+References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
+ <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-1-c56d0d26f970@virtuozzo.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-1-c56d0d26f970@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 03, 2026 at 12:48:14AM +0000, David Matlack wrote:
-> On 2026-11-02 05:06 PM, Bjorn Helgaas wrote:
-> > On Mon, Nov 02, 2026 at 07:36:34AM -0800, Vipin Sharma wrote:
-> > > struct pci_saved_state is private to the PCI core and its in-memory
-> > > layout is not a stable ABI. Add helpers to serialize it into a
-> > > caller-provided buffer and rebuild it in the next kernel with a stable
-> > > struct pci_saved_state_ser ABI. Using caller-provided buffers allows
-> > > drivers to embed the serialized saved state directly in their own
-> > > KHO-preserved data with a single allocation and lifetime.
-> >
-> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+On 11/4/26 9:40 PM, Konstantin Khorenko wrote:
+> folio_dup_file_rmap_pmd() passes PGTABLE_LEVEL_PTE to
+> __folio_dup_file_rmap() for HPAGE_PMD_NR pages, so it adds HPAGE_PMD_NR
+> PTE mappings to the folio instead of one PMD mapping.
 > 
-> We discussed this patch off-list this morning. I'll sharing the context
-> here since you were not there Bjorn.
+> The helper has no caller yet, the next patch adds the first one. Pass
+> PGTABLE_LEVEL_PMD, as folio_try_dup_anon_rmap_pmd() does.
 > 
-> The ABI added by this patch is not actually stable across kernel
-> versions.
-> 
-> struct pci_saved_state_ser is stable, but the contents of each
-> capability entry are not:
-> 
-> > > +struct pci_cap_saved_data_ser {
-> > > +	u16 cap_nr;
-> > > +	u16 extended;
-> > > +	u32 size;
-> > > +	u8 data[];
-> > > +} __packed;
-> 
-> @data is a memcpy() of the per-capability save buffer, and the layout
-> of that buffer is not defined by the device or the spec. It is whatever
-> registers that capability's pci_save_*_state() function happens to
-> read, in whatever order it reads them. 
-> 
-> None of that is described in include/linux/kho/abi/pci.h, so this patch
-> implicitly turns the private layout of every capability save buffer in
-> drivers/pci/ into Live Update ABI. Someone changing
-> pci_save_pcie_state() or pci_save_aer_state() has no way of knowing they
-> just broke Live Update compatibility.
-> 
-> And these layouts do change. Commit 898585172fa7 ("PCI: save and restore
-> PCIe 2.0 registers") grew the PCIe buffer from 4 to 7 registers, and the
-> AER, LTR, L1SS, PTM, TPH and DPC buffers were all added over time.
-> 
-> This is the problem I was trying to solve with:
-> 
->   https://lore.kernel.org/linux-pci/20260924173501.856380-1-dmatlack@google.com/
-> 
-> That series replaces the per-capability buffers with a single store
-> indexed by config space offset.
-> 
-> Where a saved value goes is then determined by the device's config
-> space, not by the kernel that saved it, so the PCI core can change which
-> registers it saves without changing what the data means. Serializing
-> that for Live Update should be trivial (a size/flags header plus the
-> bitmap and the values). The cross-kernel compatibility question also
-> becomes explicit and per-register ("the previous kernel saved offset X
-> and this kernel doesn't restore it") instead of a size mismatch on an
-> opaque blob.
-> 
-> Bjorn, this is also related to your last comment:
-> 
-> > I think it would be helpful if the names of "config_space[]" and
-> > "caps[]" hinted at the connection between them (both are in config
-> > space).
-> 
-> With the offset-indexed layout the two are no longer separate. The
-> header and the capability registers are all just DWORDs in the same
-> config space map in struct pci_saved_state.
-> 
-> So I'd suggest that we land the saved state series first and then rebase
-> this patch on top of it.
-> 
-> I can send a v2 of that series this week that addresses Josh's feedback,
-> rebases on top of the PCI Live Update v10 series, and includes the
-> serialization helpers. We can use that as the basis for the next version
-> of this series.
-> 
+> Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 
-Agree with David here. I think David's series will make things more
-explicit in saving PCI state and easier to find changes. I will review
-your series provide my feedback but don't stop your v2 on it.
+LGTM:
 
-Thanks,
-Vipin
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+
+-- 
+cheers,
+jose a. p-a
