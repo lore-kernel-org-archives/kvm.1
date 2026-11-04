@@ -1,97 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.6.135.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793826796;
-	b=H8XryllfTB3QKXLbh+3WakkOPzKXiola5f+sfW6Vra7/DL7bjPGOj9GztBTe90n1ljW4
-	 p/NmzCNUhni+TeQ73/yj6/XKEDYGNKwD53YzB97BsZtWC+ywMdxzDQunohSw7/rZxaEzi
-	 8BJb9dzcC+lHrNy8buQVAvxIWCsJoYT4zqhoP9GV8Nky8D3qwCsbgOlZMYC/h0DZT2J+A
-	 WU4xn0SP7wF8DS+xcpgrUplUzcHgYbNV9jns/zV0CB3ry2wzB1S4x/oZCjXeWt0xsrEcY
-	 sfydGUgu0SiaWdDYLm0fLRhIfCQVWAN4Tqi+4uoq4B+uRC7JEWpo9veJvRDmbu8cMtQ==
+	t=1793827531;
+	b=HDdn0bY7l/G73sGQzx0ayr0BshecibzoQrQWaGPnLrNwoHtg7fN0wQtXn8r8WgIauHHu
+	 dN71slFB4umTQg+TeEcton7hJ0L5B12W9MtiVYd2QtKgllAWW+N1mUblaBQkL9I7ur1yR
+	 1XgDRzXFwNW+dbccGmCMX5CS8hPYBhW2Z109k5Ad8lLSNa7gFTJpciE32rwhWkQtX0Kiq
+	 ekEUGKzrmpqHXiwFTXkdg8icWXAYLdMdjzjO9Iu6Jn3dKHdJI0b0XT4AqHhM3F/CbTvuL
+	 7knxA1u/8rIj/UzuWhOrFr/GZF1gGihFWw7RE108LCRtOv2jAly4QQ0aWhYDJ+xCM4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793826796;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:CC:Subject:User-Agent:In-Reply-To:References:
-	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=0j7BAmeDQwwtoMBbI3yPl2jkhlbza1J7ZyqEZwxFy/Q=;
-	b=uVMS0n5ZLUi31R4L64KJcPd5dpimOefaFXFG+JH2RbxJrvuKyxI5Hsk4X5dGOy0WqBiD
-	 TsCOPLiwz0T14+yD6++PA+435kEDrcFvWClvasy5BMWLCwQopEq3ULrefYfRVLaNea8Or
-	 UMWtMfD4YpDPcPEI8UAyXsnqvdhQsq8yY9RFeUmdbR5i+zDWIUK/9vHerqL1Plk98loW9
-	 UnCoQ1O+/5lrqPsR3nH9qQuv0OmeN1CR+v5o8xvXKS3KHqBY6xpPifi+9o5AgZQ+Cm6ms
-	 gh9EWvNyILw/PZvY2/ge282ISaWqvlKxPbDWyA5KrBEg50m0KeH7k21OWHdkcqaF/Rg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793827531;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:References;
+	bh=oiHsBoo4ax+JXNIAzYijKNsPhYtjWF/GsFDXyS6pIxM=;
+	b=S9i6yXi/z1Qvcz3pDXsULlUNMJmL2BU5v1s2XuRlfkZf0Z/lQZOaYH5jfE6VzlHo1hhS
+	 nND5NF6O+MezUxp8FDaupO+TZeRJIm06YjDOL64B8NC9BjAShC3Mw31KJ68o5CVCVD0uu
+	 Ikbl4n4oXWzOgf459Fr5uCw1rx+ZgXwbmniiyW91rQOb5LwVNUd3fUxkuLk2nz8XtrCqE
+	 KShEYaqxRHwU28QcWAzCB2Hu0TrlhUdRu+kgtKxiH4Jhul3UOt68+AH3F+pCNir3mqS0H
+	 DxaLU8U8PMhrd49RcSJL02xfofWc+dA9OxbKW9Vt6/CBlptLfJ9obE0pVXgRXRfa8gw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=U2D3wB8g;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=EAzI9AhA;
+	arc=none smtp.remote-ip=74.6.135.124
+Received: from sonic310-14.consmr.mail.bf2.yahoo.com (sonic310-14.consmr.mail.bf2.yahoo.com [74.6.135.124])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF236070F21;
-	Wed,  4 Nov 2026 21:13:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EEF236070F21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5BE606BA30
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 21:25:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B5BE606BA30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=U2D3wB8g
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6CD5940E015B;
-	Wed,  4 Nov 2026 21:13:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3U2b1QxYClr0; Wed,  4 Nov 2026 21:13:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1793826783; bh=0j7BAmeDQwwtoMBbI3yPl2jkhlbza1J7ZyqEZwxFy/Q=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=U2D3wB8gdl4a43Fm64mNA6ZM2USpJCLIwCtamRC4PcjkbT+N3A+hed3l9E18bhVyX
-	 oyhZdr4pmbZ9eFP5+UCjaiCqxDqDEyCl5ThDEaSCrWe2xKlb2DMAun1RtooMcmRDqa
-	 eDsyzK2506LRm7jgiN+z6u0Z1GSJ6mRPPgSKdtbyccDShhNEccOFW/K62qudpbnOHO
-	 SuXkb4mORY7livXLiDQ5+Ip3dhFyNLyBkSYk8+E/lcB8GyQjyDz6I/LGeYT5wFvdBj
-	 FKYmI/T9PuFn7AWswVv0APe7rfg2hIcSKMRF4R3nCwdF87X5HfcAZi2pnEz6WA2+8k
-	 bEgan0ne6CSX6MMOvrHt4UoxaCLJIB74x5NpPo5jrHn7UD+kmGPkTKobaONv8p8eym
-	 lsXxoQ+Iw1u25zQiuWo2B+I6nBcwQfZxDqWFuXkh0s8suZoS+fsGW5BIXPFwGHmCjW
-	 h9d+gKicHVqg9hI1B/pB8JJ71qDvalixTPqVIl6tG+dSHRTJSU8ENCPsEW7V+RMGV9
-	 f+p4oTHAT38MTk38E04WDhaktVkQ3/v2M/KgowJqc897S71W4JCMPk05g3RqtWVczr
-	 14fNyyPqp67ozGOUyRQEtaJDemz2FCPZ+WTgKsrUg+W0CM0uspv1CtxXXyYzxM65w5
-	 7jyZ1iDKDaNuk1lF+8s1+8zs=
-Received: from ehlo.thunderbird.net (mobile-166-137-178-199.mycingular.net [166.137.178.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A83DE40E0184;
-	Wed,  4 Nov 2026 21:12:25 +0000 (UTC)
-Date: Wed, 04 Nov 2026 21:12:19 +0000
-From: Borislav Petkov <bp@alien8.de>
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=EAzI9AhA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793827530; bh=oiHsBoo4ax+JXNIAzYijKNsPhYtjWF/GsFDXyS6pIxM=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=EAzI9AhAz849W/733rXBHW8LtMG/exgch0h+bjEEHpDZliKHXU3uIeHY5RRTB7212YB2AqMrSRbir4DVQlUZ/qEk4f56kM3AL+BBquGRLiZIK7fjcRx1jKvHAWheH6QjCqnMOzYNfxhz8twyCDcxwUo5c942ldvIolzGXSvU/XZUPz+32KYi8HUo/uF03JAA8ffmD+volo2qVMPKnPPFghibIU6jk+wKIixZOIXSiz7wo8A5SLNoru8Ed2P2//P9fa1W/flAA2RpUmEuyiAHoLdSfbaAPu8aNdgWybymaMqPn2mKG/Nj5YeU0bFPtjpXYRL6dMajPF/AaoyoEGW4pQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793827530; bh=T8FhAh/tGtqnklh57gs8VmPI99D1krVO7QP7NijeW5A=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=RZAOP73xbrZibaePOvX4rT04eV23kXQ3jmosnW7aOUn4ecs8WWCFEoj8Kg/tE7yj3kcohwR6hcNN9JSmqBBSSZIPGUlLTRBektBu6b57ytXxALKPiIqvWGeodZpz9QYWtBm9YHK8keznpkMjVmZKl8PSPv30ss9nZT+Wza172AXjPwvK3hQ8Q1DIGuVpOWpp4m3ijSS4V0W69J6wugeU7xhGnx2drN++ZEncSrD9rQcveGRzpBpQWQrfUrwCAS7YpmpMNN3Z1RxjFSdnJ2b5uQfAzxQ/j6Uj9Mdl6udIFZngiOipc9/mEHi7yE+EjQngL0rUWSP6SP+/VFhZiNKL2w==
+X-YMail-OSG: TyfXkFsVM1n3wg2js5.bePodlOJjDVyOUoI1ejGE3eGugWgBZ9BJfnAiIyBQxDY
+ 09Zjftc7tIDuAKwh1enpWZ8kc3xrJIdEAZ4MIV58SEk7dz6A4oX5ZRs_oYywyIaP6jSRQFDREPdZ
+ xxK3Nww59Jf6_n.1aXjgaN2swD5x5YeZgv1iwhpgx5VYZyN.hMH_pci02Mu7WYzmtEyLeIh5v._K
+ ze17S5aNB.Uz9RXvKvJD4TJqxVK0MSHSRaeF99nxV.P8vaiTvOEfWDFv1hFmkYeRzv_ilXf9frS4
+ S3cGQPS_nggRXW9hgnczad9dtd7atNdja.VzW5Tvdw3hhvxnP4Nin9bFP1pbE6xoQld4xAb5b1bk
+ 7ENDSveQD0UOO1QIe7jxWujVUQKr92DzB.rKlGoziZZcV.CXBxjTKgMeX1i3qvjOVgwQ3XuFcf.H
+ myf3yPGdgIixUmgTRkQbkOykeg3bDIyOufHShxYd7Z_ZWKd1Dfm0WXlRnEs8LyUb1FO8IMaxbAcV
+ 6kb2lMkdMMorgOtUrUU4AxAX.2GKQ3ChR33HNA03kJhC528IcU88Cu4NMHAwfeWrQpqhMUV9J8xR
+ RFBLglsN.MzUovb40wgXNVfEZNfLGZIqanf3GA5jlaum2ELPJizMDb7kJDe4jzNJFg4iCBkMd7HJ
+ ViLfT4ireUn6gBrgtVsx6PAKKBCD.72F2DWn6C5IbClaeHEK8QOV_4LPQC4CSIQ658EJo7L0Pe3_
+ vdLmk5obtnHMssHJhqA3.jDWkzw1qulrD_vdPSzs_a1kPVndbE84MQnKlJjbP8l_CH76rFH_F_tB
+ 9fdEAtMtUz983ip7NWU29XlJiqow6bg5QsmWhRlFhA5wRJbULIWLnX7LevZ2u_CTxwCWWqGB.TSU
+ HScopYv4tAuhiT8wRD_FP0732Zbj8z4a8xGMCXokHNYha_eKBtYbygEboPFcROQycpVGkVRD29LA
+ D7BJHAE62RR_CAbe0WSrx7itugZ70eJ97sa0_H6cSB98Yyr.jCJ7QF5pBl_eU.heibICW39Ppeh3
+ PBS7NmAulgI19hSmc0cyqrfXnNA9AOaTVKLDozlNovJIct9ylQOn8dwJxrtA5Vv7XokOH9NMdNGK
+ vtaNY_0wX9_2g30LNpSsS0xKB0kFj3ObQUXxRwKSOGGk7PGUt0h9vEVaPsWQOhCLiQNyN0ZJHeiY
+ 9hIKnLq5swjYF.efUVWMMRlOxTvgmmPMgc5jMph5ws4xp6dXxbQd_6QxURcgviK.OWa2vuGoW9vL
+ WDYX_XuGi43AayUrlJCiDldTP6yM48lctk1OVSc.ZneJ8N3sMDOMLQFXCedi2IhhYZN4piNQE29r
+ Vk120hCmaooYMpAtWJvTEKd9y2zt7xZq.JrTaUBs5WyhcDqxZiVymkFW_CZGqxYH9Rafrh44XBeD
+ 2uUiExC_bfA793Z7WCr4a7VSbUv_NPJGwAAlrtjevUHDv1y62rFHAuERfdru4HItnzkxE8qa2SQK
+ s6hzCUdv3FWWsE2mHO0dV.eENKtskzhERBDREgXblNrofmcM7AeD_Pyn5IPJVZeej4dp.CMDqTUd
+ uwXEhv.AdFdyalJvBc433KT_UgmaR0r9r2NUx1bIqWkbtuTwk7qn52FgMofCn4lzIGnIkGqE5fwt
+ 2KWa7tCXVwk6LD7.DmJpuqHyBjaC_jfefH78tUk1WRJjSop.xZVoOqtI1RQHqJMCZGMOaD7S.qeT
+ orPK_NAAhY03VmGn16GUeSbS19TMC8eQy10RTuVJY6DnPJzKJR.MFqbUoHIS6NNX9O5H8T3.MCB5
+ ozH_LJFqxRvj7DxUoX0XDWAQywH39jayLRRYOOk2ue.G4ra9umlaK45jP52n8mLDtwxKZ8XIsV7r
+ t6npaHdix4GaRwpXrWrcsSJ9POq2fsCi4AiU_nZ_nqHd4fY_Xo7g18fVRYwyHXdNM2Mcyc1aEAtm
+ LiH94LbcHwNt2Q8oCHDP2Z55flgks_oDJ.oen3UmqudZDDPlcHa9LJB4TJqNmIIwkeqWShruMgRL
+ 8yO3v2WiRRBo6Atstb1GikxkdTwaa9DAGwKDRxHF9oBsU4zcPx9pKeVUhxLQucu7CekPIfiOodsr
+ dQ8WT6Eyd2DInXj9pL8dcZAo4HlO7EXnASnIpvJ4FKsGScyd9sbjKTY8elHecRE7Dl8s5u4FPP.H
+ SDNcWdanHCESL3Ej0IO7XJPUwx0iYxFygZRZzT0_a9hmDM6ioRdcjHmWi2cLdCi18KvQu8DRfsca
+ 7wswaGx7ONaRWhNyVBqWzQhSK.VyEmT9tjO.t9hwtbLFxUC8b4KVpmayfYt1uaEwFAqG.ptIO6ND
+ 2SQ1x5Mkw9bQFFUKMY9YlAoUurZQ4K3ooIAJaPGm8N0A-
+X-Sonic-MF: <laurian.iacob@yahoo.com>
+X-Sonic-ID: 9a948739-927c-4462-b555-937ee80083ad
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.bf2.yahoo.com with HTTP; Wed, 4 Nov 2026 21:25:30 +0000
+Received: by hermes--production-ir2-5dd9bf4598-bgsl4 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4b63819bc2b89d88a33bcf362e7f8b93;
+          Wed, 04 Nov 2026 21:25:27 +0000 (UTC)
+From: Laurian Iacob <laurian.iacob@yahoo.com>
 To: Sean Christopherson <seanjc@google.com>,
- David Woodhouse <dwmw2@infradead.org>
-CC: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Jan Kiszka <jan.kiszka@siemens.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>,
- Daniel Lezcano <daniel.lezcano@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, John Stultz <jstultz@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Stephen Boyd <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
- x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
- Michael Kelley <mhklinux@outlook.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v6 00/51] x86: Try to wrangle PV clocks vs. TSC
-User-Agent: K-9 Mail for Android
-In-Reply-To: <auuJjiowddGlysWI@google.com>
-References: <20260806233609.212337-1-seanjc@google.com> <aqLv9GwBNymyHs8q@google.com> <c9a6455eb88c24d4271b7a7c86f7a4e90799e40a.camel@infradead.org> <auuJjiowddGlysWI@google.com>
-Message-ID: <375997C1-577B-440C-B347-B8D256FA84B3@alien8.de>
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Laurian Iacob <laurian.iacob@yahoo.com>
+Subject: [PATCH] KVM: x86: Fix spelling typo 'RECIEVED' to 'RECEIVED'
+Date: Wed,  4 Nov 2026 23:24:56 +0200
+Message-ID: <20261104212456.9835-1-laurian.iacob@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,70 +97,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+References: <20261104212456.9835-1-laurian.iacob.ref@yahoo.com>
 
-On November 4, 2026 7:37:50 PM UTC, Sean Christopherson <seanjc@google=2Eco=
-m> wrote:
->On Thu, Sep 10, 2026, David Woodhouse wrote:
->> On Thu, 2026-09-10 at 10:59 -0700, Sean Christopherson wrote:
->> > On Thu, Aug 06, 2026, Sean Christopherson wrote:
->> > > The primary goal of this series to fix flaws with SNP and TDX guest=
-s where a
->> > > PV clock provided by the untrusted hypervisor is used instead of th=
-e secure
->> > > TSC that is controlled by trusted firmware=2E
->> > >=20
->> > > The secondary goal is modernize running under KVM=2E=C2=A0 Currentl=
-y, KVM guests will
->> > > use TSC for clocksource, but not sched_clock=2E=C2=A0 And Linux-as-=
-a-KVM-guest doesn't
->> > > support paravirt enumeration of the TSC/APIC frequencies, even thou=
-gh QEMU
->> > > provides that information by default=2E
->> > >=20
->> > > The tertiary goal is to clean up the PV clock code to deduplicate l=
-ogic across
->> > > hypervisors, and to hopefully make it all easier to maintain going =
-forward=2E
->> > >=20
->> > > The quaternary goal is to clean up the TSC calibration code, which =
-was made
->> > > stupidly hard to follow by hypervisor code mixing in with the nativ=
-e
->> > > calibration routines, instead of being implemented as a pure altern=
-ative=2E
->> > >=20
->> > > Note, the VMware and Xen changes still probably should get acks fro=
-m those
->> > > maintainers, as my understanding of what they're trying to do may b=
-e flawed=2E
->> >=20
->> > This (thankfully) still applies cleanly=2E=C2=A0 What can I do to hel=
-p move this forward?
->>=20
->> Nudge Thomas to spot that this is guest-side and we want him to pick it=
- up, I guess?
->
->Amazingly, still applies cleanly on 7=2E4-rc1 and tip/master=2E  I know w=
-e're shortly
->after the merge window, but this has been sitting idle for months and add=
-resses
->issues that are impacting a variety of end users=2E
->
->Note, this also provides meaningful hardening for SNP and TDX=2E  /me sta=
-res intently
->in the direction of Dave and Boris=2E
+Signed-off-by: Laurian Iacob <laurian.iacob@yahoo.com>
+---
+ arch/x86/kvm/x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Would you believe me if I told you you're in the "review" mbox?
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 26e7beaff8a0..fee193487388 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9129,7 +9129,7 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
+ 
+ 	/*
+ 	 * SIPI_RECEIVED is obsolete and no longer used internally; KVM instead
+-	 * leaves the vCPU in INIT_RECIEVED (Wait-For-SIPI) and pends the SIPI.
++	 * leaves the vCPU in INIT_RECEIVED (Wait-For-SIPI) and pends the SIPI.
+ 	 * Translate SIPI_RECEIVED as appropriate for backwards compatibility.
+ 	 */
+ 	if (mp_state->mp_state == KVM_MP_STATE_SIPI_RECEIVED) {
+-- 
+2.43.0
 
-The damn thing just keeps growing constantly :-/
-
-I would love it if we had a review scoring thing like the net folks - whoe=
-ver reviews others' patches, gets looked at first=2E=2E=2E and no, I don't =
-mean you with that=2E
-
-:)
---=20
-Small device=2E Typos and formatting crap
