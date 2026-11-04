@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793804706;
-	b=py9uMV7aMaTC/ki8Pgl8/8LrtQUL8SBQ1OLNa1tGDt6/4FI9Wryux6V60YIIZYQ7o6mA
-	 4e2yUh/mc2vI7yesW+qu/zmKyGUKYaY1WPek6H3uy9hi1hj9znyVCto2g+AytPbfZLIVb
-	 qLPrprbSOwail6LR56qEQaSsr2MZacENApMTW7xxPrO9gHqiQufW1kL57v/3dIo8Re/8v
-	 6NsgIrx/h1xv9BIbHKDzF8abiYIjeALyOr13ttmr6Ol7NgJW3UkkW5gCsVi6gnaiwaykj
-	 16WTpO+4tVdXx0mMjNj4IXZTT5+v7MptSXfx7pHzgi0HbVHY2skTg5Y3lK9KNxGEuGg==
+	t=1793804719;
+	b=kVc94U0IM/Yy58CgXsrKByAsPism2DhAfpfVdhQgZgBg5t7UlbkunqZTDFNxIod+UbcH
+	 yvnxmPCb4Z8P6RvBHf0KPkzpRikCTaKR+iOKJIrqwaivifdyKuK0370WvgkROtGfQerF1
+	 d12LKv8aAUrUcK+U6MvEbuskpQyhM489665wr2QXlVGyQ4GgoeTY8A184iStyDJhddlo0
+	 fnxQlYU1w3Z8Eltnf5xzrGkZBB85qNkPs2mmmXrPpD9W46aSjIuNMuzRRTYiuR/ryDscY
+	 pqETSVjVGt33OfDjXOSJwix4pl0zEDpJIbe54KOtr+7W4Qx+DhDcZEdfgUcMW2qKEDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793804706;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793804719;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=/jO2+yG7mR8PKDjRNrY9hRdNgBZtsEVpFuVsq1VkCI4=;
-	b=QHtQb7ntY0iym0toNueLYiLuCc1OBAGz7aSZsXMBnTOvRNhOPNSfj0utGdzLUs4I4DPl
-	 UoOhAOm96MR7C28tCPi8r9Fce4Syr0y3MtP0kj+d+lSPlrh0qUnOIj/y49EK0iL/7c/vH
-	 sCxlWBzkCJnmpTjtZ5QmLzlBgHUH5NyaD8L1X/wpo/yBF8O26ZyqfRy60/yf4Nst9wabz
-	 5meZuM7TQOhlh2cYLZSHi61vUNsBBvxAYvrfTdD9fzmxR0YPC9f6pGJj2VOCCaaLwSxGQ
-	 Zt/21qAFqqZ5aRP8ilCNrfqum4SMsd+2W357s6j+DGtXm+KvI3ZU09mRVtYZmwhKoJw==
+	bh=yEOAYpdsXgUQ+4ToTTCgX4AT9YMGXDyDncVK6pNXM2Q=;
+	b=r/2nVK5b5TVJQl/QQzjT3U1E5GdeF2i5DTMke4mcDYriQbiL2Y28pnxzxP4Ib9Uap1v4
+	 HS9VOjoqziHvNdlMtBtH8T3mUIP0VysH8tXHP9uynVUbRc2nD1G/l4H+R9AeraR66l1E5
+	 1dI6hdv+i5uFXZvLB17nRo0vLzGg1wLnJr/yV+lVrzzcvqmA7KHmtKmxD1XWk0d/zMn35
+	 wnVWJ89fTndaJthY7NMfsWS4hTOXAQJmzLFtcM9jYlKj9b8pJUEIi/iBFXe6pK5riLHxU
+	 xT1fka9a0RkLjr2u0n89b/lTvgMrLjPI0RaC31XTYeYtVdI6fDnPiEqbPSJd/OJZyAg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jrc6DC2o;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Iqvx1CRl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EE8606D818;
-	Wed,  4 Nov 2026 15:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E41606A331;
+	Wed,  4 Nov 2026 15:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jrc6DC2o
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1A31F0093A;
-	Wed,  4 Nov 2026 15:05:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Iqvx1CRl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F9F1F00A02;
+	Wed,  4 Nov 2026 15:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793804706;
-	bh=/jO2+yG7mR8PKDjRNrY9hRdNgBZtsEVpFuVsq1VkCI4=;
+	s=k20260515; t=1793804718;
+	bh=yEOAYpdsXgUQ+4ToTTCgX4AT9YMGXDyDncVK6pNXM2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jrc6DC2okMgM8e9RVx6DxUOTfOdAM0MtwmPBXDJzQ+g+uDDrl3e+NndA2PjQiC4RU
-	 wT4P3D3YKMPjLXk64HaK72ptjBBW4AIu4dAmaY2Ii7gi8XoqxlHEJNmE0iz7m5qEB8
-	 +Wu37BYgFdDybsFytrtpPhgd4gSHWsWcG9i1Zk4rh64LzqoIl2n9MtaFNlI49m5U/s
-	 JIMgaIC+4WD++AohZF0q3dtiW4LPBLsXLt8+WVqJjGerLJ4yUBGvqMnKJpuVy7NYZ5
-	 PwbppPJrKri/OfLyXWdlWSdqcbC6Qj7O+CJ1hEc34aZjqA45tQM1S4POYn241o1Kb+
-	 FIdQ7Vhj3agNQ==
+	b=Iqvx1CRlN5QsMmowZd82bWm23biyoxv2z8ieQd6NZGIwNmCxaOCjImtkWu6mm4vEA
+	 bvQEEZigN2nNph3rLxeZL6di9ZqwNf2mx48oUzQ3J9lHXPb90HXKTCRPbK6IvfUT1Z
+	 oX9kopILynROiua6Y4UAmAyFyhS7db/2VB6RxXLUM3T0QKGNZaZ2ybkQICa3mXli7f
+	 /XoDNAqNRDxqi7nXnau8KduyOhZo2WlJSJZI5XQ9XjtPajrxilAQJ3QFKApd3eIQ4g
+	 dC/CtphNOP/mWruV5id69GaWl8n9DqFgcUjvLjbAUzEGJ4ftgeesA1BfgMFq2d18Js
+	 a7y0MzEKaC5GQ==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -61,9 +61,9 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	iommu@lists.linux.dev,
 	kvm@vger.kernel.org,
 	patches@lists.linux.dev
-Subject: [RFC PATCH v4 15/25] vfio/pci: Check command enable changes before updating device state
-Date: Wed,  4 Nov 2026 20:33:12 +0530
-Message-ID: <20261104150322.3516320-16-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v4 17/25] vfio/pci: Check low-power requests before updating device state
+Date: Wed,  4 Nov 2026 20:33:14 +0530
+Message-ID: <20261104150322.3516320-18-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
 References: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
@@ -78,20 +78,22 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add checks in vfio_basic_config_write() for changes to Bus Master Enable
-and Memory Enable. Move the existing acquisition of vdev->memory_lock
-before reading PCI_COMMAND so the read, checks and updates all occur
-while the lock is held for write.
+In vfio_pm_config_write(), check requests for D1, D2 or D3hot before
+vfio_default_config_write() updates vconfig. Return -EBUSY if
+vfio_pci_bar_state_change_allowed() returns false. D0 requests and
+writes to unrelated PMCSR fields retain their existing handling.
 
-Read Bus Master Enable from hardware and Memory Enable from vconfig,
-which also tracks the setting for VFs. If vfio_pci_bar_state_change_allowed()
-returns false, reject changes to either bit with -EBUSY before updating
-hardware or vconfig. Allow writes that leave both bits unchanged.
+Use vfio_pci_begin_bar_state_change() for D3hot transitions in
+vfio_lock_and_set_power_state(), and return its error to the config
+write caller. On success, retain the existing behavior
 
-Memory Enable controls BAR decoding, while Bus Master Enable controls
-device-initiated DMA. Later patches reject changes to both while the
-device supplies guest_memfd backing. The check currently returns true,
-preserving existing behavior.
+In vfio_pci_runtime_pm_entry(), reject explicit low-power entry before
+removing BAR mappings or dropping the runtime-PM reference.
+
+These checks currently allow all requests. Later patches reject
+low-power requests while the device supplies guest_memfd backing,
+because entering a lower power state can make mapped BAR PFNs
+inaccessible.
 
 Cc: Alex Williamson <alex@shazbot.org>
 Cc: Sean Christopherson <seanjc@google.com>
@@ -99,116 +101,160 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: David Hildenbrand <david@kernel.org>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_config.c | 64 +++++++++++++++++++++---------
- 1 file changed, 46 insertions(+), 18 deletions(-)
+ drivers/vfio/pci/vfio_pci_config.c | 30 ++++++++++++++++++++++++++----
+ drivers/vfio/pci/vfio_pci_core.c   | 30 +++++++++++++++++-------------
+ drivers/vfio/pci/vfio_pci_priv.h   |  1 -
+ 3 files changed, 43 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 9914f3ac69ae..5b97f64ab3ba 100644
+index 537e7f8bc884..014f865c1eaf 100644
 --- a/drivers/vfio/pci/vfio_pci_config.c
 +++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -568,19 +568,49 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
- 	struct pci_dev *pdev = vdev->pdev;
- 	__le16 *virt_cmd;
- 	u16 new_cmd = 0;
-+	bool zap_bars_required = false;
- 	int ret;
- 
- 	virt_cmd = (__le16 *)&vdev->vconfig[PCI_COMMAND];
- 
- 	if (offset == PCI_COMMAND) {
- 		bool phys_mem, virt_mem, new_mem, phys_io, virt_io, new_io;
--		u16 phys_cmd;
-+		bool enable_bits_changed;
-+		u16 phys_cmd, old_cmd;
+@@ -755,11 +755,15 @@ static bool vfio_af_flr_requested(int offset, __le32 val)
+  * It takes all the required locks to protect the access of power related
+  * variables and then invokes vfio_pci_set_power_state().
+  */
+-static void vfio_lock_and_set_power_state(struct vfio_pci_core_device *vdev,
++static int vfio_lock_and_set_power_state(struct vfio_pci_core_device *vdev,
+ 					  pci_power_t state)
+ {
++	int ret;
 +
-+		new_cmd = le32_to_cpu(val);
-+		new_mem = !!(new_cmd & PCI_COMMAND_MEMORY);
-+		zap_bars_required =
-+			vfio_pci_bar_state_change_allowed(vdev) && !new_mem;
+ 	if (state >= PCI_D3hot) {
+-		vfio_pci_zap_and_down_write_memory_lock(vdev);
++		ret = vfio_pci_begin_bar_state_change(vdev);
++		if (ret)
++			return ret;
+ 		vfio_pci_dma_buf_move(vdev, true);
+ 	} else {
+ 		down_write(&vdev->memory_lock);
+@@ -768,19 +772,34 @@ static void vfio_lock_and_set_power_state(struct vfio_pci_core_device *vdev,
+ 	vfio_pci_set_power_state(vdev, state);
+ 	if (__vfio_pci_memory_enabled(vdev))
+ 		vfio_pci_dma_buf_move(vdev, false);
+-	up_write(&vdev->memory_lock);
++	if (state >= PCI_D3hot)
++		vfio_pci_end_bar_state_change(vdev);
++	else
++		up_write(&vdev->memory_lock);
++	return 0;
++}
 +
-+		if (zap_bars_required) {
-+			ret = vfio_pci_begin_bar_state_change(vdev);
-+			if (ret)
-+				return ret;
-+			vfio_pci_dma_buf_move(vdev, true);
-+		} else {
-+			down_write(&vdev->memory_lock);
-+		}
++static bool vfio_pm_low_power_requested(int offset, __le32 val)
++{
++	return offset == PCI_PM_CTRL &&
++	       (le32_to_cpu(val) & PCI_PM_CTRL_STATE_MASK);
+ }
  
- 		ret = pci_user_read_config_word(pdev, PCI_COMMAND, &phys_cmd);
--		if (ret)
--			return ret;
-+		if (ret) {
-+			count = ret;
-+			goto out_unlock;
-+		}
- 
--		new_cmd = le32_to_cpu(val);
-+		/*
-+		 * Check BME and Memory Enable changes while holding memory_lock
-+		 * for write, before updating hardware or vconfig. Return an
-+		 * error rather than silently masking a rejected write.
-+		 */
-+		old_cmd = (phys_cmd & ~PCI_COMMAND_MEMORY) |
-+			  (le16_to_cpu(*virt_cmd) & PCI_COMMAND_MEMORY);
-+		enable_bits_changed = (old_cmd ^ new_cmd) &
-+				      (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-+		if (enable_bits_changed && !vfio_pci_bar_state_change_allowed(vdev)) {
-+			count = -EBUSY;
-+			goto out_unlock;
-+		}
- 
- 		phys_io = !!(phys_cmd & PCI_COMMAND_IO);
- 		virt_io = !!(le16_to_cpu(*virt_cmd) & PCI_COMMAND_IO);
-@@ -588,14 +618,6 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
- 
- 		phys_mem = !!(phys_cmd & PCI_COMMAND_MEMORY);
- 		virt_mem = !!(le16_to_cpu(*virt_cmd) & PCI_COMMAND_MEMORY);
--		new_mem = !!(new_cmd & PCI_COMMAND_MEMORY);
--
--		if (!new_mem) {
--			vfio_pci_zap_and_down_write_memory_lock(vdev);
--			vfio_pci_dma_buf_move(vdev, true);
--		} else {
--			down_write(&vdev->memory_lock);
--		}
- 
- 		/*
- 		 * If the user is writing mem/io enable (new_mem/io) and we
-@@ -614,11 +636,8 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
- 	}
- 
+ static int vfio_pm_config_write(struct vfio_pci_core_device *vdev, int pos,
+ 				int count, struct perm_bits *perm,
+ 				int offset, __le32 val)
+ {
++	if (vfio_pm_low_power_requested(offset, val) &&
++	    !vfio_pci_bar_state_change_allowed(vdev))
++		return -EBUSY;
++
  	count = vfio_default_config_write(vdev, pos, count, perm, offset, val);
--	if (count < 0) {
--		if (offset == PCI_COMMAND)
--			up_write(&vdev->memory_lock);
--		return count;
--	}
-+	if (count < 0)
-+		goto out_unlock;
+ 	if (count < 0)
+ 		return count;
  
- 	/*
- 	 * Save current memory/io enable bits in vconfig to allow for
-@@ -632,9 +651,18 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
+ 	if (offset == PCI_PM_CTRL) {
+ 		pci_power_t state;
++		int ret;
  
- 		if (__vfio_pci_memory_enabled(vdev))
- 			vfio_pci_dma_buf_move(vdev, false);
--		up_write(&vdev->memory_lock);
+ 		switch (le32_to_cpu(val) & PCI_PM_CTRL_STATE_MASK) {
+ 		case 0:
+@@ -797,7 +816,10 @@ static int vfio_pm_config_write(struct vfio_pci_core_device *vdev, int pos,
+ 			break;
+ 		}
+ 
+-		vfio_lock_and_set_power_state(vdev, state);
++		ret = vfio_lock_and_set_power_state(vdev, state);
++
++		if (ret)
++			return ret;
  	}
  
-+out_unlock:
-+	if (offset == PCI_COMMAND) {
-+		if (zap_bars_required)
-+			vfio_pci_end_bar_state_change(vdev);
-+		else
-+			up_write(&vdev->memory_lock);
-+	}
-+	if (count < 0)
-+		return count;
+ 	return count;
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index f31fbd980f3e..6612728a21a4 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -373,24 +373,30 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
+ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
+ 				     struct eventfd_ctx *efdctx)
+ {
++	int ret;
 +
- 	/* Emulate INTx disable */
- 	if (offset >= PCI_COMMAND && offset <= PCI_COMMAND + 1) {
- 		bool virt_intx_disable;
+ 	/*
+ 	 * The vdev power related flags are protected with 'memory_lock'
+ 	 * semaphore.
+ 	 */
+-	vfio_pci_zap_and_down_write_memory_lock(vdev);
++	ret = vfio_pci_begin_bar_state_change(vdev);
++	if (ret)
++		return ret;
+ 	vfio_pci_dma_buf_move(vdev, true);
+ 
+ 	if (vdev->pm_runtime_engaged) {
+-		up_write(&vdev->memory_lock);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto out_unlock;
+ 	}
+ 
+-	vdev->pm_runtime_engaged = true;
++	WRITE_ONCE(vdev->pm_runtime_engaged, true);
+ 	vdev->pm_wake_eventfd_ctx = efdctx;
+ 	pm_runtime_put_noidle(&vdev->pdev->dev);
+-	up_write(&vdev->memory_lock);
++	ret = 0;
+ 
+-	return 0;
++out_unlock:
++	vfio_pci_end_bar_state_change(vdev);
++	return ret;
+ }
+ 
+ static int vfio_pci_core_pm_entry(struct vfio_pci_core_device *vdev, u32 flags,
+@@ -445,7 +451,11 @@ static int vfio_pci_core_pm_entry_with_wakeup(
+ static void __vfio_pci_runtime_pm_exit(struct vfio_pci_core_device *vdev)
+ {
+ 	if (vdev->pm_runtime_engaged) {
+-		vdev->pm_runtime_engaged = false;
++		/*
++		 * Guest_memfd provider setup reads this flag with READ_ONCE()
++		 * without memory_lock; runtime resume can clear it concurrently.
++		 */
++		WRITE_ONCE(vdev->pm_runtime_engaged, false);
+ 		pm_runtime_get_noresume(&vdev->pdev->dev);
+ 
+ 		if (vdev->pm_wake_eventfd_ctx) {
+@@ -1705,12 +1715,6 @@ static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
+ 	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
+ }
+ 
+-void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
+-{
+-	down_write(&vdev->memory_lock);
+-	vfio_pci_zap_bars(vdev);
+-}
+-
+ int vfio_pci_begin_bar_state_change(struct vfio_pci_core_device *vdev)
+ {
+ 	if (!vfio_pci_bar_state_change_allowed(vdev))
+diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+index 0af93f6d9a8a..f7b3178cc890 100644
+--- a/drivers/vfio/pci/vfio_pci_priv.h
++++ b/drivers/vfio/pci/vfio_pci_priv.h
+@@ -75,7 +75,6 @@ void vfio_config_free(struct vfio_pci_core_device *vdev);
+ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev,
+ 			     pci_power_t state);
+ 
+-void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev);
+ /* Success retains memory_lock through the hardware operation. */
+ int vfio_pci_begin_bar_state_change(struct vfio_pci_core_device *vdev);
+ void vfio_pci_end_bar_state_change(struct vfio_pci_core_device *vdev);
 -- 
 2.43.0
 
