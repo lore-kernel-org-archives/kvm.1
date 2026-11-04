@@ -1,68 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793776235;
-	b=mFABDhoq+7px+u6Yaz8vDWOj594/9nW3Vms52U+18aNsNbv5Vt6WjMcTasaIQQ0FbD/I
-	 hlEL8V6ucAWlD8RGeyb6qxjhzKwHL/SCJvK8v6QyOmfIkNoTmQgVuC8MhOvgyXQ63iS34
-	 20fSnSkvWhKs4C+AhTpUfXKWH3hp9fkztspFhnWzcIaNFuhbFXBFwPQllvxocpQGrG7r4
-	 jcCsOGUL0wvhaLTNbPfMudkO7zAzNgDoV0WH+f/3x6+G3X/Q490z8OyEwBWB2jA3rAFT8
-	 2fcqZLGMsmM01ZDKeVWJ6h5iHBCNt4DjWOo1sFumXkagmyX8JjXX6GaVyvkQ2C5KGNw==
+	t=1793779172;
+	b=hpFj9LxAzem4/Y1zXsuCLzvnsW1h6QdrPQ0wvq1j4LnmablGwcWWtO1YTNh391aFa7NA
+	 OPOXoKMUv0fygfG6Ny4zY10sUSKLkl48wB8/3SqDyS4+3hFa5VYXmyq+8265Ill9kXbS6
+	 tT3Zf06SEHF1Le0uafW3Xe0l6KAn6H8VGeiucPtrKKOjW9fS2pvUZ9j0c++4Brg+9S9g0
+	 kwSbWasCQtCl6FS4uNKYv9CdX2GHltx+/8HlQbMXkQDdPO6PxA9LUX7ONrUOxd0ggkCht
+	 6VbPZD0MVI2CouzPKhM7AzovbyTxiaxcEFXtvgldq5au6AjGl2HuUYm3pZjVrA7QLAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776235;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=VqhqYv5xRCJh3PZJ4l1J28vhc8YpfgaLTAOZMf1YNvc=;
-	b=bST/Gd3zuwNm+GkPt7pU2taD3pIBfvOKd6IMFVNJnACp044vuSqHNdcVzkA+tY9BPGwz
-	 lLFcJEcAw4AlaZDgHkacUz7nugHKZN/wEeIfKPTV4CjuxbtwG0dMtiE84MRABKPFMRRxs
-	 ZQXDZDmQnbqxNqgd7ydeIQUZh/ry1l+8D3Du8Wii/dDhurNhj67GZqlQWrN34vKFQTiYv
-	 Tv/mSYEdI9Jjrf5cmWLWxVa52aVT/tuAjQK2Ho8ZLdd+JLcaPY85LnsBgfAeVPxo78lZW
-	 3dOloIpD16nwna9MgH+9jIcf61UEhEavKYzC0ZFnfm0kLIXSQ9GXK3Q9DV6WXwtowKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793779172;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=E5BFe2qGhYY+j7i/NDpJAV1R4OFOksaCpMvxwhppjRQ=;
+	b=qRrhQhHdkdtbnoPqly2yzmc1Brelu+5vNMn1gKcypyw7Pl/Srj/bo30GHBIdcYn3DhJB
+	 EsHDIrIieoDhbJITtreBRT1mScEwGjXgkcGdF32XmjR15smATWM7RqGg0DYpim0JHhRig
+	 JlRoIRXhmOgrS0DEtwX/O+aY9tV9fqL18iSWuQhypQjF+qmN90Ee3sY7g2+J639llBktv
+	 hkc7KwD6QX9fkFvFv3QbCu8/wO9t44vvm58H6JaPUACo8tBCMBwlU88NSNZhLh8Tm3sBQ
+	 4RogeTz8WNUt6z9/4io4Y4kslpiB/zPq9tli0JilhfYMwAe0OLlbit2FUeMhm1OXeug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UFlhlFnU;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c0vu2uZi;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDADF606A31B;
-	Wed,  4 Nov 2026 07:10:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDADF606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA7D606A31B;
+	Wed,  4 Nov 2026 07:59:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BA7D606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UFlhlFnU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793776235; x=1825312235;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Lb589BYUiqB+Eo3EFeccpweIuip/ffeL/F1y59tM/VU=;
-  b=UFlhlFnUfdnicz+mhSETKeTz5u+HQseEWUZErKWoHVCrX/dU6Cr9iYxT
-   UcSBz4AMjRwmqC8TNwM06JFRdHktjfppXer2iJlN/2dh2bb1UqM9eA2fA
-   w6WTGM8dk3/1JOWDfgDfe3d5cUNCrVUC3ObIWERH8og4v4dUAM3N17WAo
-   0X4jN43Yjbm0P5BvpJ0z2EN05f7C3yfLg5l1gDO5JaNsyvNX3JxGCjxTi
-   R3q7s7S88opHXJApLFhK49DFPRz7Sr56xcwOs73J5W3rGG2mcqSuJn2Nx
-   FqlnUEwOTdfmpLH4bIY34o+yiD0BHzQQoMt1ddQY1UYRjEzSjRbEGXp2m
-   A==;
-X-CSE-ConnectionGUID: I/sufF5lQvKPf8+W3lQ+ZA==
-X-CSE-MsgGUID: oRZkvDk3RhOnvjJEaWh6bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2554061"
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2554061"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 23:10:34 -0800
-X-CSE-ConnectionGUID: Z9dqWEFJRkmo0iqgeO6AoA==
-X-CSE-MsgGUID: RDgCXPhUQIq6gX05VrV3cQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="7201705"
-Received: from unknown (HELO [10.238.2.205]) ([10.238.2.205])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 23:10:29 -0800
-Message-ID: <bdf4c5dc-7532-4451-8b3e-0f6459be523d@linux.intel.com>
-Date: Wed, 4 Nov 2026 15:10:26 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c0vu2uZi
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A40iuH13336172;
+	Wed, 4 Nov 2026 07:59:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=E5BFe2qGhYY+j7i/NDpJAV1R4OFOks
+	aCpMvxwhppjRQ=; b=c0vu2uZicAo+3O3DYFXLgSyRqOF4Mg1YTgWirfg0suiZz7
+	14Xmn8xgqpfQuNs5wTzZmcJYgjxhjz3U15NKxe1PHuDjrqptLHeSI7FZUhuvprCv
+	2eE9lEWWHoB91QxfBbDBKhrmpFIoixnknM4UQkur4GBvqZ3UOJon9S6eTLoXMyuA
+	nZ3twFAYN1zRbm605QD0Nden64ZMI6H4a2d9PoyNiL/E2otFLuc8smVeY7pi0tUg
+	VgGQI6O+mH0VtE1zK96sx4OsvG+uUsgcYBYHRkDCv02TOLB+102J0IGt9ddlungo
+	LUB0YFT7oq+oSvVu5DXAsKzT29784JhWq7XcDw0w==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn7ys28nk-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 04 Nov 2026 07:59:29 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A45N7CZ3382714;
+	Wed, 4 Nov 2026 07:59:28 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hqf0gcj1x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Nov 2026 07:59:28 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A47xOX042008990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 4 Nov 2026 07:59:24 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F71D20040;
+	Wed,  4 Nov 2026 07:59:24 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6ECEB20043;
+	Wed,  4 Nov 2026 07:59:24 +0000 (GMT)
+Received: from osiris (unknown [9.68.29.29])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  4 Nov 2026 07:59:24 +0000 (GMT)
+Date: Wed, 4 Nov 2026 08:59:23 +0100
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Andreas Grapentin <gra@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] KVM: s390: arm64: Fixes for arm64 KVM support
+Message-ID: <20261104075923.8132-A-seiden@linux.ibm.com>
+References: <20261103-s390_arm64_kvm_fixups-v1-0-21c36fedd878@linux.ibm.com>
+ <864idx3gxo.wl-maz@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,68 +98,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 23/28] KVM: nVMX: Shadow ORIGINAL_EVENT_DATA and
- INJECTED_EVENT_DATA fields
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Shivansh Dhiman <shivansh.dhiman@amd.com>,
- David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
- David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-24-sohil.mehta@intel.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <20260911213659.2025974-24-sohil.mehta@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <864idx3gxo.wl-maz@kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Mcr5KJ/f c=1 sm=1 tr=0 ts=6aeae5e1 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=ggGzQnQN4awjNpwVzzEA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDAzMCBTYWx0ZWRfXxfVbup9GHinv
+ hKyu/+yefVgynynGZHZbNwhFhZ5SIsy72sBY+6DxmRX65JuctHDcn7aYpTCTIGUQoXXb4mvxF+L
+ wdG85g6A03aroNbUD0SLvtXi+oEaPV8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDAzMCBTYWx0ZWRfX4pk+606MSTy5
+ 3yDRzZc+Fec0v95akmR/Fxh50UNeWiU0qD1in4WHKzOHFjW//Cf+HiKJS1HmK51HQyKXuNx//KT
+ GxbJR97373ujTlhXBreYN/+Gf/ynitV+V7wfNHH9ZSJkfxD7e5ibOIgXnWawvlKABWb2JA2sGIm
+ iYexUhirrzQu5I20PsFIldxc+4+ZhWnTu7bTMqtAgqtiKKoq0Vsymxb5Rg4pNVj7yTni3VqZfFv
+ gXZPVG9UPxnDIikGmj72TLAKEOGWML7xKQlw27m1K86s1VFJ9EyIx1Khy8GuK7Pm+0UfFcpSi07
+ j0rb0x4d1vFiZMPnhWd8d5kFgH8BEV/1LcHdq/aFIEadgYDXfpYAqFPXa4RRN4OsaOfNvOIjH4Q
+ NJZPxw4QasrtVX9SPd8HGd32Uo5/RV97GGgypY+Mpo/+7qbkylRe3tV/+HQ/GfAwSECvE57p0eW
+ DD1MDrOz5dqh2AR1BOA==
+X-Proofpoint-GUID: AiZn8Ak7zH0UuNv5w0Eu3D4wJTsL4kwP
+X-Proofpoint-ORIG-GUID: AiZn8Ak7zH0UuNv5w0Eu3D4wJTsL4kwP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-04_01,2026-11-03_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611040030
 
-On 9/12/2026 5:36 AM, Sohil Mehta wrote:
-> From: "Xin Li (Intel)" <xin@zytor.com>
+On Tue, Nov 03, 2026 at 06:31:31PM +0000, Marc Zyngier wrote:
+> On Tue, 03 Nov 2026 16:37:01 +0000,
+> Andreas Grapentin <gra@linux.ibm.com> wrote:
+> > 
+> > Some fixups for the previous series that introduced arm64 KVM support on
+> > s390. Forward-declare enum vcpu_sysreg because we are definitely going
+> > to need that, then make the module naming consistent and iron out an
+> > inconsistency in the definition of vcpu->arch.pause between s390 and
+> > native arm64 KVM.
 > 
-> Add ORIGINAL_EVENT_DATA and INJECTED_EVENT_DATA to the list of shadowed
-> VMCS fields.
-> 
-> Shadowing these fields allows the L1 hypervisor to access them without
-> triggering a VM-exit to L0, optimizing performance for nested
-> virtualization workloads that frequently query or inject event data.
-> 
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+> It's an interesting one. Obviously, this wasn't caught by building the
+> upstream code. I guess this triggered with the rest of the patches?
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Yes, this was triggered by the rest of the patches. The field somehow
+got in the first batch although it is not needed. We'll need it later
+anyways so I did not delete it for this fixup.
 
-> ---
-> v10:
->  - Split out of "KVM: nVMX: Guard SHADOW_FIELD_R[OW] macros with VMX
->    feature checks" (Sean).
-> ---
->  arch/x86/kvm/vmx/vmcs_shadow_fields.h | 4 ++++
->  1 file changed, 4 insertions(+)
 > 
-> diff --git a/arch/x86/kvm/vmx/vmcs_shadow_fields.h b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
-> index 67e821c2be6d..bdd56f3ca6c3 100644
-> --- a/arch/x86/kvm/vmx/vmcs_shadow_fields.h
-> +++ b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
-> @@ -74,6 +74,10 @@ SHADOW_FIELD_RW(HOST_GS_BASE, host_gs_base)
->  /* 64-bit */
->  SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS, guest_physical_address)
->  SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS_HIGH, guest_physical_address)
-> +SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA, original_event_data)
-> +SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA_HIGH, original_event_data)
-> +SHADOW_FIELD_RW(INJECTED_EVENT_DATA, injected_event_data)
-> +SHADOW_FIELD_RW(INJECTED_EVENT_DATA_HIGH, injected_event_data)
->  #endif
->  
->  #undef SHADOW_FIELD_RO
+> > 
+> > No functional changes intended on either arm64 or s390.
+> > 
+> > Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+> > ---
+> > Andreas Grapentin (2):
+> >       KVM: s390: arm64: Declare enum vcpu_sysreg
+> >       KVM: s390: arm64: Fix kvm_arm64 module naming consistency
+> > 
+> > Steffen Eiden (1):
+> >       KVM: s390: arm64: Turn vcpu->arch.pause into a counter
+> > 
+> >  arch/s390/include/asm/kvm_host_arm64.h |  8 ++++----
+> >  arch/s390/kvm/arm64/Makefile           | 12 ++++++------
+> >  2 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> Looks all reasonable to me.
+> 
+> Acked-by: Marc Zyngier <maz@kernel.org>
+
+Thanks.
+
+	Steffen
 
