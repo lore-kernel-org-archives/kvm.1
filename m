@@ -1,100 +1,133 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793836192;
-	b=eACWpaN9P+A0vIHBqYwwHx7RA53jCweRwkJ3+wEXEHF9nss541+5o/LMW0g/e9f1rHOY
-	 ofth8neDt7tGHE0R7qHgK2e06lHSa4nr2nxcsBRc5IjRZXV8TCHxX+HIP0r1U3UWbMQO3
-	 jryzmnz6GQbWh3QQ47BO+c+s/21890UWhd05ufYIDqyyU09O47elyFrVCPI/6zovETtps
-	 BkkykXS95jlqhTyffED2iI40GYdPtZMRZ06J0owxxZbjTbKJxGqX9HCrHcTIGsIW4D2PU
-	 28A2Uw2thziP3ppL8P+BQiGReyLGQWi+HfcCM6LlrfAX+0flV/3S6xFq1sfdVrSwzSQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793836192;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=NUKXnf2zRVnphDvWIJPgNPk0+Yxezthn/bgjikrOQVU=;
-	b=H/dje+dcUUs3pnDIgVdgnLKFM9x2lk62Ng6PYrqku37yhMerD450aut6TVKTNCQjD7Rd
-	 4pYaw641Oz0V8P+yrvXLzV6W7xwFmtxRtzhdSHyDM6h9W9wa7RwWFzb9ICcWqdhmFvF4x
-	 2vs/9k7BriONJPOLioEhoXKhwEi/AsqXycEku/Fj/TuYsDwS4yzzjHpSlrlVSCWlDdtyn
-	 aZsUtm11HtnEdlo+UcTtdAR5pwLj0hfgVpst5xXhiQ0CgT/j9ThjYQXXz1SJjOF2yfOYE
-	 66xl+AzIQk6Ny7k326eKa8GR9MRptSUK8+58VMb3KCnzqSk7XGcuTEonYfXfNeG5W8Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LOCKWL1w;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.147
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793836507;
+	b=bfhHzHdKrhiWiDHGX44PTpAH8qUJ2d2DF8c2JlsnNIUjCT35Vo3zF9tITLYCGN0Pm7uI
+	 FByh3nAerrWOHZGRF+1c7ug2n0xhtflauwVIJcSQVqONFYEc04NBaEpgW2NxVEH5aHfjT
+	 bcU+kk/nY3apQGQG7e0FZFnKaGcmHIsub7a6ThNtVtaCo45g92ReeGTeTtjeS5d3TwIHv
+	 OTwcx2gezEKVCIDn4ttBfvsxP/JJ9Ibuszu+0WEOWjhgZ84AVSgmBkrLL14GnU6wCzmj/
+	 46kzJtzm/+1n9CR4JMyaughp5BE+7qa5PAXDKze4WyTnKE2UeFbAw4R+f2F2aYDeIEw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793836507;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=/LahQotUT6Zyx5GMdomeN9fJ6TxmksE/N+MzR4egS40=;
+	b=Iw9Fxu4mQfH/Yv8an5ZdirxipdWSj3maPo1JsQ83uXcPbYHHWML9fFEzkAMMliYsUbdz
+	 ex13eEhxOjdk/1OG3+bTz9VEVC0yz7wiWxlW/iQruZz6UfNP72E3VUX9OYKPk+z5rNjIg
+	 3de1r9j68rxqdOYIvZr8F+cB2sAI2Lgw1BG0kYS133wCege2zD2jk7o37LUURZ3yLZf1J
+	 Exg9Cz3bXjMEaZhQvOpaAN8QJxp//zYX5Wz6wipjr/Ao5te0fCi5cYsBIZPRog9Nn1aZ9
+	 i/gMLn2vk5+uLrjg68hNuH8m/C1QU1QfaiYBbNyjZa30XbjDKY3u0vJNn+uBJ65wtrw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=buTyPYNv;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=iVJy7dgy;
+	arc=none smtp.remote-ip=103.168.172.147
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5887606A337
-	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 23:49:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5887606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27CE606D812
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 23:55:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A27CE606D812
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LOCKWL1w
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2461a12.1
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 15:49:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793836190; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VDUNHL5cXlgbATdqef7rmzBl5LalK66boI9umLO+DGe5QiRosZCX4Z1m8yi+Tk90qy
-         bHBaudNLMMxCI4mAnLC7BjjmeQXdkF8ZPwReLltZB70XS7z7/tydpRTuG7gniuAp1OuW
-         hycjOSF5GAcLIbrekAQK/FbEJo5078kNzmLq4IlQ7MSbeAdR78hF6PAqz1SCYP3vS54v
-         RAjR6zRXqZwc6ZYVWl4Gmo4OeCcrbhymxe11GlmLaxVMenPdjkSY6lwpaVJOZlTRuWco
-         gCeTto8kz0ADyic9cXKk3ZLmwSpS4G3TETXbQQRKUGBms2sl/4rx9n7GVTua5VoNDpAD
-         KAlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NUKXnf2zRVnphDvWIJPgNPk0+Yxezthn/bgjikrOQVU=;
-        fh=Zx+7n7npImzgkbk5wPUA1uAKZHKLr2rkbnboHG/HjuU=;
-        b=IeDP1CO0WuJ8Ohf9PByVd4DAZ6+mfvHyz1jgPTg3nwKAc75TlbmJim8TQ5M1ll+//2
-         dYWv9gB0R0RfZoKQar2PCAAnxmQbnoFOAQJGlEcKq+EEx894XdeUBtWscift+5oBbWz/
-         KimbpW15Nb9SYJ6df9csVXf83S/IBmb04gwe3fwbewafmrVTpCgfqLk8I/ATwkQe7sfP
-         fVJAMHU7WFq6GHe3pfdzafVOEvavHPS5oeGwAxEEjW1ARKa3BKWDa/DnNcJ40L+ANudF
-         bTOo8ohN4UeWBDlXpfzEXr62w4Mi1+UL1kRxsxMXX42xjOA/87lxu3LzJo/6X1TxvpH0
-         MLtA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793836190; x=1794440990; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NUKXnf2zRVnphDvWIJPgNPk0+Yxezthn/bgjikrOQVU=;
-        b=LOCKWL1wvKSW1uuETVBSc+7qqp1PzGIzHAP+Uros1fuOIBAPEzBSwpC0UJ+I1tzFVX
-         f+gD9FJI+nKStfEI775giljQXjuR5F1aCTV/9gG71Dxtz/dNG9MddBnSJRJWFTC8pA1u
-         KsWWbOC32wZ1UHU0b7SVXbxwcH7M6CDM38v0UUeeF30VT7eGffugx7+gw6qupZcATfOU
-         crQGq8b5f8m5gVJt8wY/OMfA0BeZzHLvzdNvTvFOmCj5xJrQpWC4gJZK5rg6XLWD39y6
-         fgfK6Uah7rxjWM1xdj2/wGOtdElIqqEGxTGfOs+5FFTJhcNXih9IYUmo1ffThwpLZS9C
-         nEWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793836190; x=1794440990;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NUKXnf2zRVnphDvWIJPgNPk0+Yxezthn/bgjikrOQVU=;
-        b=QkW8Pby8pXNplo8a9m0K+VcsfvZoMbyPplaOsGDSXc9cUYEKDSW2IW1ihY1CY/vIvE
-         /ef8SVO1dd1EmmRaUcrMFDc6Xjq6eSl5sR/wtCfuYXSzFfiSCx0WnSF+8wFRkB9Y+VyF
-         Gh9YgW6FYZpFIrnMEawcQE5a/FUwa/9BBNNolpTsLgNzjeR7lipTP6LSSiHdUwbuw7pk
-         1CBLd01GE1nHdCE7s8SnrP1uPVJY3GAOqNjGxXFvd65WjY/64em9WCspm9cm3Ddc9Itv
-         uPPNjJ8jAfiWOZMvvKFu08tWw2PR8Pnh39jaey4kIxEWBbJw8RuZkJUJK4H7wT+EmCPi
-         bZbQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxgdz7ba3fYsPD8BI0B5OHFgXeut8foKfT+lA77l7erbgstr1o/Qao+75U8cvLmC9pc4vU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/lYdb2b3NMiCZ4QW3oqEUs9qTG88aH1/bSC8Mf9Y/jBDuqqMKz
-	kM3Ipyv34xZahs4B3uZLRk2S/9uToTHmVent3UAIhoJEDR9T4yD/zHgi5Wr4lDDVsKnZv4Q6W3W
-	T4luFuMmy4/a+ZsXyvO3IkEt4nhpWqwD4ztFNFdBy
-X-Gm-Gg: AYBFou1Tsk/Glt9bySwEK55FDKXLOgE4y3O0QYHeXvYjGXmR9ozAH3JIaHn+eXi47CI
-	a7uf8aeyOkoYNb401m3+csaNjBMz60ZaxgLlqw3sLnehQwW060QB6SBQGTk5MeRQxeK6/54EOLh
-	k8OeVSLLl6tXh0leIH5nO1RlFZXws/RUmDP4iFBraIZPMgIDGJus0TFACpOuuArwJcHxKYiMnSo
-	1kec/Go8rthollU7BEp+45K0VpUcv1iHMbqy2jq5M6GkJY8GLLjQoBzRCkF3N+8ytHJ8+eJahMy
-	7XcFpX4yKWjuT0UnbKPEV0rNbcGDw4Awv+uva4EbNDe/LaUkB3Y/Fe8xQEwCs59piFuJWXmUIdK
-	C+Q8GMv5+tgxF16Z/cn0bRIMb/ClgVybZHgtXoDKWe/GXLFuQo4umCwnsfQ==
-X-Received: by 2002:a05:6402:515b:b0:6af:b196:68bf with SMTP id
- 4fb4d7f45d1cf-6b57bf23d30mr13524a12.7.1793836189727; Wed, 04 Nov 2026
- 15:49:49 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=buTyPYNv;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=iVJy7dgy
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 638DDEC0196
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 18:55:05 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 04 Nov 2026 18:55:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793836505;
+	 x=1793922905; bh=/LahQotUT6Zyx5GMdomeN9fJ6TxmksE/N+MzR4egS40=; b=
+	buTyPYNvlbiHROFDb/B1KRniMHFQRqNL9BO9ZdqMJbKYngY7T7vpCBYI3Dc0VKRs
+	24TKn9HlbqQkagpR4XHMJ0/wNS9MzRHgxgINLE42r0Y683kslUcqH3ERJg+towPo
+	C8VGzYZvV/mQlyrLOIOfke04Vb3epJo+OuzDPdd3y79J83MyzefEskOvJSZ7pcL9
+	AQJi1hYNIsOcnYNx7pH/2gCzHwLZmTrw6vpu0jmGDE1OIeeabyUdgKz8ST6dK404
+	Mepv+wlIfRvVTIcvMF9uW0HB0foZD7Fs25M5tpM0TxwmN14NAiFl1HqAK+FtORhb
+	nqwE9Ew+WBxoWyywKq9O3g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793836505; x=
+	1793922905; bh=/LahQotUT6Zyx5GMdomeN9fJ6TxmksE/N+MzR4egS40=; b=i
+	VJy7dgyyyqcnVI0oqyGno4tq/f2Pr3g40HXqV/uy+/wvzM5rb8s9XlZLxYqK91I1
+	j4HrfsLIAiLxHrtjyLdC0mI/WKmnwxiVgLVDNGpDyzGGej5gDnItQYlfuTfqL8Ez
+	y5Hpz6F6C/BZdx6SSuNjSZSUZ2jkn68ncdsglW8YIZGgI6k4EkSEPPtmZ+tCTv/4
+	X0iiy4fI/ytFsqR/xa4rA80Hp9tRntjLQBQmxFd3lhxxvQ7us8/d6mUnChNrCURs
+	LGDaxdrXi0P6EaeaY/u9mS+zt82VGaHkR0sfdbfDXjl/UMSriiTeqe7jzqmA6IsH
+	beZpckWLC5yjoCsnJJHiQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793836505; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:tvPwuBJvT7jEVVrT7HematPHV2vR3/qTrh6vQAt506J1Tlq
+	dJiOgwFrFk0oeeP5eAHsN2I/pwh6mLqlyqvNSfgxCJauGgklm812lcyj3tuLpGLd
+	h0TH17VSzb6n/V0w2pTTR+n2v1j25/iq9/eLi/Z3wr4+YKsVo6GTRx1rink4dAxy
+	LIK8ohdLWCo7EJIKCELhVeEadqep9oiXkqPzGKOd5rbScj1nOsKxntCyk08z6UV5
+	4Y9DiVCPg9gMlVXTyz5PJ8Rq9dJHHa1nT8kh6bIy8tYJTX9RoUnbMiOUzPRbrJ+b
+	hDnp0n+dZFRqlG4aVgg2hWr9c1xpduLaEEbeEzg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:JPjNwY6qCG8gkmGdnKaaT7WOOaugHCgPKLtNMRngSF8=:q3h88itWQmyd3B+UEAY+TewhTtpVxOMFr4fng73e8eA=;
+X-ME-Sender: <xms:2MXrah1vKxEpQrIwA00nxHEDmu7CisZ5VoWFqj4x-ukPB3hEB8Rj7Q>
+    <xme:2MXralsYrjcHjK8UxNK3lZys5wFudqJ1z8wpEf_fo2Lpq41IUy6XvYS4YE4Cc8vgS
+    UqvmN1ZK_E8w2IeurjMzCfgMWJHaAAjlUBV9KRiSJBRwpHeDo_5>
+X-ME-Received: <xmr:2MXrapSyHkz1oY44oDaLouBXeON8YxgoHUh1RhyJ5GxipIg3LpcwExPEfaNHEQ>
+X-ME-Proxy-Cause: dmFkZTFU/kbVOsWxOTPcCpe6x61hsj1WNmmGso+RiYOPL9PXBn0IITeBo+AW6SFW+G4ekC
+    /hzYoF162vC7PC2Mtt2USNZ/eCRzPfnSvLH4GpnZYykCQlv/g/2dfaxUihNQ2PdVnmznVt
+    eyzTFpFT8ROSV9PpSF+vkXBd8GjUZhM6/FJB6rHUdJL+IEmDIn9qqg8D9AaoFAEgqB3zaI
+    LQuuKEKLXGp7sIkYnu8IYt8f4dndp/+v360R0jn1bNCYEbWntuZR9TDLjZCVdVdTAj6SKy
+    IHj9Y41QEBh5Iv1k5SCIJDAY7TVRfrnmdQbz1lqnEzzeOazcj9kVYNjTrGiFbntAEPcYZz
+    yvoTE1jZOdoqcWowBk4XbW649bNeEFTfrUhjVyt/eW3lRhhwgA+0KDJFQgg4VWGhyRJF06
+    C5WM/hjhnCrWmkZ/hL73tJNMnOsmdh4S3GzHN1s2u/d77FbVcc727FkO8mteMnIODcLJjl
+    PKgSTdOxY7vAu4s2vfIBQMfY04jfy1nRoNG6JxeEG0b1rEs6TOZikLjtcMBtJU2rkRKHmq
+    LQ591WVAtFQB9m+01Kf1tGQ6V40zJD81YuBCFrlE8Kx0MZ9Qj08mY62AtIvNf4HShJl4qf
+    EN+XasJAjiWbBLTyJiTyklqe0OS2AzoITqG4mNP9/ybtgy09tY37NOb7rzsQ
+X-ME-Proxy: <xmx:2MXranDNGshqPhNniWP3b87a6HSQ6kXjynPVKbyzx7ALSw-iR0YSpg>
+    <xmx:2MXrarzQI9XRJQfeR4BRfOQackSLy1fvvRUP-iq5SrVGrI8VTuksXQ>
+    <xmx:2MXravtIqEa_vwuoB0JdGZ8uGQJSff1N4o5dJOjQSY01YUj-YJXC5w>
+    <xmx:2MXrasnfekN83pLdQFxpgsJFOh7OhjapuHcQ4tCWWnhYPeqBsNv64g>
+    <xmx:2cXramBX-pVAAJf97im8lOAukEIzPL6Gf6hL30uR7iPPzrQjIsfDec24>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Nov 2026 18:55:02 -0500 (EST)
+Date: Wed, 4 Nov 2026 16:53:12 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v6 06/31] vfio/pci: Add the CXL provider ops
+ registration interface
+Message-ID: <20261104165312.647d930e@shazbot.org>
+In-Reply-To: <20261016161839.2765592-7-mhonap@nvidia.com>
+References: <20261016161839.2765592-1-mhonap@nvidia.com>
+	<20261016161839.2765592-7-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,69 +137,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020234535.3182385-1-jmattson@google.com> <20261020234535.3182385-3-jmattson@google.com>
- <auuZcZhBhrkZd9qM@google.com>
-In-Reply-To: <auuZcZhBhrkZd9qM@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 4 Nov 2026 15:49:37 -0800
-X-Gm-Features: AclHuK_NOce6L67eEel5xBWyuJ8EA4SaVhlYOcLwPr6ufXLfVFjSolSkCGb1uQw
-Message-ID: <CALMp9eTpWP6XSYPJQjBwPsNWmPzLNh+EDGivMFZsUnixqpGkVA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] KVM: VMX: Refresh LBR MSR intercepts on full MSR
- intercept recalc
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Like Xu <likexu@tencent.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 4, 2026 at 12:45=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Tue, Oct 20, 2026, Jim Mattson wrote:
-> > Re-apply the LBR MSR intercepts in vmx_recalc_msr_intercepts() if the
-> > LBRs are currently passed through, so that changes to userspace MSR
-> > filters are reflected in the MSR bitmap.  Unlike SVM, which can simply
-> > rewrite the intercepts in either direction, leave the bitmap alone if
-> > the LBRs aren't passed through, as a filter can only force interception=
-,
-> > never prevent it, i.e. the bitmap is already correct.  Note, clearing
-> > msr_passthrough to force vmx_passthrough_lbr_msrs() to re-apply the
-> > intercepts on the next VM-Enter isn't an option, as doing so would
-> > leave stale passthrough bits behind if the guest LBR event is no longer
-> > active.
-> >
-> > vmx_recalc_msr_intercepts() is invoked in response to
-> > KVM_REQ_RECALC_INTERCEPTS, which is raised on MSR filter updates, but i=
-t
-> > skips the LBR MSRs, and vmx_enable_lbr_msrs_passthrough() does nothing
-> > if lbr_desc->msr_passthrough is already set.  If the LBR MSRs are passe=
-d
-> > through when userspace installs a filter that denies them, they remain
-> > passed through, and the guest can access them without exiting to
-> > userspace.  Conversely, if a filter forced interception when the guest
-> > LBR event became active, relaxing the filter leaves the MSRs needlessly
-> > intercepted.  Either way, the bitmap remains stale until the guest LBR
-> > event is torn down and recreated.
-> >
-> > Only x2APIC MSRs are exempt from userspace filtering (see
-> > kvm_msr_allowed() and the KVM_X86_SET_MSR_FILTER documentation), and th=
-e
-> > filter is honored when LBR passthrough is first enabled, so KVM's
-> > behavior shouldn't depend on whether the filter is set before or after
-> > the guest enables LBRs.  Drop the LBR MSRs from the comment claiming
-> > that they can't be filtered by userspace, and clarify that
-> > lbr_desc.msr_passthrough tracks KVM's desired interception, which may
-> > not match the MSR bitmap when userspace filters are in play.
-> >
-> > Fixes: 9254beaafd12 ("KVM: vmx/pmu: Reduce the overhead of LBR pass-thr=
-ough or cancellation")
-> > Cc: stable@vger.kernel.org
->
-> Meh, this isn't stable material.  Unlike SVM, where LBR virtualization is=
- tied
-> to a pile of other crud, if userspace wants to filter LBRs on Intel it sh=
-ould
-> just not expose LBRs in the first place.
+On Fri, 16 Oct 2026 21:48:13 +0530
+<mhonap@nvidia.com> wrote:
 
-The functionality is not equivalent. For whatever reason, MSR
-filtering can be modified dynamically.
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> vfio-pci-core must stay free of any CXL header dependency, so CXL Type-2
+> handling lives in a separate vfio-cxl module that plugs in a set of
+> callbacks.
+> 
+> Add the registration interface:
+> - vfio-cxl registers a single struct vfio_cxl_ops at module_init
+> - vfio-pci-core stores it under an rwsem.
+> 
+> A second registration is refused with -EBUSY.
+> 
+> The owner field will be used to pin vfio-cxl for the lifetime of each
+> bound CXL device.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 24 ++++++++++++++++++++++++
+>  include/linux/vfio_pci_core.h    | 10 ++++++++++
+>  2 files changed, 34 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 6757054e9d87..2cc5dd20396c 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -2178,6 +2178,30 @@ static void vfio_pci_vga_uninit(struct vfio_pci_core_device *vdev)
+>  					      VGA_RSRC_LEGACY_MEM);
+>  }
+>  
+> +static const struct vfio_cxl_ops *vfio_pci_cxl_ops;
+> +static DECLARE_RWSEM(vfio_pci_cxl_ops_rwsem);
+> +
+> +int vfio_pci_core_register_cxl_ops(const struct vfio_cxl_ops *ops)
+> +{
+> +	guard(rwsem_write)(&vfio_pci_cxl_ops_rwsem);
+> +
+> +	if (vfio_pci_cxl_ops)
+> +		return -EBUSY;
+> +
+> +	vfio_pci_cxl_ops = ops;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_pci_core_register_cxl_ops);
+> +
+> +void vfio_pci_core_unregister_cxl_ops(const struct vfio_cxl_ops *ops)
+> +{
+> +	guard(rwsem_write)(&vfio_pci_cxl_ops_rwsem);
+> +
+> +	if (vfio_pci_cxl_ops == ops)
+> +		vfio_pci_cxl_ops = NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_pci_core_unregister_cxl_ops);
+> +
+>  int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+>  {
+>  	struct vfio_pci_core_device *vdev =
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 9a1674c152aa..9fe0d1a3a370 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -66,6 +66,16 @@ struct vfio_pci_device_ops {
+>  			       size_t nr_ranges);
+>  };
+>  
+> +struct vfio_cxl_ops {
+> +	int	(*init)(struct vfio_pci_core_device *vdev);
+> +	void	(*release)(struct vfio_pci_core_device *vdev);
+> +	/* Pinned per bound CXL device so vfio-cxl cannot unload under usage */
+> +	struct module *owner;
+> +};
+
+A forward declaration would be sufficient and cleaner here.  It doesn't
+buy us anything to start defining the structure until we begin to use
+it.  Thanks,
+
+Alex
+
+> +
+> +int vfio_pci_core_register_cxl_ops(const struct vfio_cxl_ops *ops);
+> +void vfio_pci_core_unregister_cxl_ops(const struct vfio_cxl_ops *ops);
+> +
+>  #if IS_ENABLED(CONFIG_VFIO_PCI_DMABUF)
+>  int vfio_pci_core_fill_phys_vec(struct phys_vec *phys_vec,
+>  				struct vfio_region_dma_range *dma_ranges,
+
