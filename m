@@ -1,49 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793803326;
-	b=ErP0x+1z1uKNirj+4xW0lDGK6h/JSxTr66S4LFRBMHzzyF7D7Rjfsy0bR6VmMmrysDG+
-	 fzvyQukWUZ/IDDx/tvobL03Sg0ZD4O5AAWN95sTJ0dVqTdr8I+aEoynyVSqni6JrXmgUX
-	 5uU9U8/C4q5BMR824xSJqFfyzLXQ8/nNSscr+DKOXF5mM4olJCLtumol5IzGupdOoaEdu
-	 HBPXzu6vROHDeQOFT2cpr3m+4QFAzA4o1C6x0Rqm6oF6zRxRblivH2KIGSGCBIXDJY7Vq
-	 S2w5KPdxf5uXOPIkYDjLwQZD+gzQ1g2fMVsTlje1BviaFz9gkHt+yn60Rjb2f/29odw==
+	t=1793804037;
+	b=HaTFo8TENwEe25UsUOghnj6xf3lWcKQfiydeUIwzqw82jUpZXFXS3lriEKnB1AiA8qQW
+	 ev0qgBFBOSyBg2s165vj0GSc8TM4eAC2xnrKpfPs3Z2yQmg8apDP+5jEiZU5wDX2rKQ9v
+	 8xKqX2qGNeKd4ICyi0iYv640orUbIQTtzPI5ouLi5kusCmyVYI2WzVbhisyCm1zW9Se4R
+	 vdYmXJiVtL726Jsz1/S4yvYM6hTUHPcOuTUYQztdfsfVIrE/t6AOQkRVa2npwoS/k7Y99
+	 z7/bwJNBo+v4ggaBl0atV/wNDlaAelHdqfGr780hXoaQ7JP70G6H0iG71bgomR7PJVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793803326;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=yEXOiGhgbR5kbYCDmjXy0GbChNz5nYoCzDv/8cG/g+Y=;
-	b=SVzgyNHoa005arGi9X1JZrh5aFxqwi+nCBm/i68DIKMkHuzNQXzn2ct9/zq/FT1S9B2e
-	 KyTJ22mjRHpUzswZCFN586Kl/NGFM/G2UCKcDDDKLz2b2/znXwlM/EAK3lk9cTxR49I/w
-	 GgWBOM9pQU9zrkVoArdQdlncX4Ok1KVdz8SENeIaaC0YFJVVyISsgXDFp3HJeIKyTT0vE
-	 Bqf6dydlTxQ0KOqme2MTOIh0GYPuIJ0r+KDwrI0LV/QDydCZFzwCMfrzQSKmr3iMuHxfn
-	 rnXlNL4cfB8ogiAq8oajL1vGBwI1f5eLv/EjyiWG1uW5FUv+jMk6A0ZInygHj2VXD1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793804037;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=Mg40lROHKMJpuheArNs1FLRBw+BpmUksYbkdM5o4WG8=;
+	b=yMELJj46BFIrd+ihAyqW4c2Vi8yeZostLhFkrWBInFixsDFIexWArCAU17I8Q0QFXZCT
+	 udt6BE4ST5FT5BfFah6QNdXy46sfiA6w9woiM7YCq8TCpD9eHQ6mKE2eqszS18Lpcd4Zy
+	 f7ErYq6Tzb3gxIyoUXbUzycXV/CLA6p6Uu9j1B0ikcL1YvTM50EQ+A/wq/RlByy7T3NCO
+	 uJ9HBIdogkvxyPzpuDKTPhfXEfcW5I6kDID1sQ2nvOp6agqoocRKCoBDFuM6Xvok58f3K
+	 oeE86fwh9mGLLZ/2TOuhLdZ2jKXHuy3mzAreaXVmuz4qoXwQpKHZpfcPR3NWZFvQRNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=luId+KEo;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528C3606A336;
-	Wed,  4 Nov 2026 14:42:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 528C3606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KcffofZ3;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5180E606A326
+	for <kvm@vger.kernel.org>; Wed,  4 Nov 2026 14:53:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5180E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=luId+KEo
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F5F31476;
-	Wed,  4 Nov 2026 06:42:01 -0800 (PST)
-Received: from [10.57.65.23] (unknown [10.57.65.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF6933F673;
-	Wed,  4 Nov 2026 06:42:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793803324; bh=OQ+6GXsnzNtECacWk2BjiQr1Za6EzTRmQxCpvw/0bo8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=luId+KEomiCYTx0zsDXfLF0NiGSbVJSZAawz5X649BNQCNK5aIrov6r7jQPa5f5G1
-	 /y7/Z1tTcJswVlprth41Zn/4fMIj1S2AkxetBjIo4WJhSSAHooaIdF0oJpfr07XKSr
-	 mYYkWIizutTHBEivTMuSApJZfPh5pMdZsop7CXg0=
-Message-ID: <80b69632-dbe1-405b-910a-c17a943d8fc2@arm.com>
-Date: Wed, 4 Nov 2026 14:41:59 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KcffofZ3
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a01e2962a1so774290b3a.2
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 06:53:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793804037; x=1794408837; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mg40lROHKMJpuheArNs1FLRBw+BpmUksYbkdM5o4WG8=;
+        b=KcffofZ364WrrhyE6ofKLqmFxmg7CSE9Fzkp3CVK0lCAv7ToKzakKxVlfCn7t5v6+D
+         LqGCMA7pOOgzLJgEUmrAxx5PTHeGfEuxgsXVEGChIFYv+nsEBoIK6Q/LUaWlD2yXlNJI
+         6zq4ydC3SpvhElqcDpD92ccQozcMG9NUKen3POCDbBqICjAUS3sYiCEnu1AYpSRK29ql
+         NAhGevLKC6y5saIcrtxiNDOnH5cGC1SJq0/+T842ohmsU/tpCYVCsirvIoKV5TpmalU2
+         MVu6izFD+BUMwnayWyyPYZ17XjYa/7o5BFYZhgQObtZf1clQq+CTSRcCZTnK4NXhQkhC
+         wkcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793804037; x=1794408837;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mg40lROHKMJpuheArNs1FLRBw+BpmUksYbkdM5o4WG8=;
+        b=0Jd2kPz8a/pSx4mk1KAN/dovkpAfj1A+yUzWy2NGJ7wQCmf1cw+Q+/9WdR40nzNQss
+         iF8if3/rwV7dL1cKfSR6S2QvUVUttWPOvwQgfu3bObVnqHK0o28kQgeqUGSy8upPanN7
+         4qUWTC1Yf2YoN5ABQaXF9olaB6db15z0aVCitVapWXAzf+K2wY9zf0R5de1oRQdhMbz0
+         9XqnXK8Iz8BNXtOrr3c0WUmMRRBnUZqXAb91k2VceQ84agOgv9narrgEMgwN8U52F7SE
+         2oBZqJz9rGpCnU2SuFWSv7CEw1so9+/Qc1fqEKuqOiCuB4PR9h53otNpxIow9BTaks51
+         TrBA==
+X-Gm-Message-State: APuU4Z9U/mGd5xElHBNqD9yot3v6lma+fXgA70y7ewYCU1gW7A6M7qev
+	inU9I8g7ulbBzR/YwzcgsQu0fE6uw0QqmpmWgX83cNgwFB23ub744797pmzeTV+yXtFmx1fjpEK
+	gBSB30w==
+X-Received: from pgjy16.prod.google.com ([2002:a63:e250:0:b0:cc7:85ef:361e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:485:b0:3e2:6daf:f7fc
+ with SMTP id adf61e73a8af0-3e928a7c910mr13865633637.4.1793804036471; Wed, 04
+ Nov 2026 06:53:56 -0800 (PST)
+Date: Wed, 4 Nov 2026 06:53:55 -0800
+In-Reply-To: <20261103002205.3348519-6-dmatlack@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,184 +76,130 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [BUMP] [RFC PATCH v2 00/15] Arm Core Local Accelerator Driver
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jean-Philippe Brucker <jpb@kernel.org>,
- Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
-References: <20261015142552.4128028-1-ryan.roberts@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20261015142552.4128028-1-ryan.roberts@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261103002205.3348519-1-dmatlack@google.com> <20261103002205.3348519-6-dmatlack@google.com>
+Message-ID: <autHA6aNrg4s5PkV@google.com>
+Subject: Re: [PATCH v2 5/5] KVM: selftests: List the known IOMMU modes in
+ irq_test's help output
+From: Sean Christopherson <seanjc@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Alex Williamson <alex@shazbot.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi All,
+On Tue, Nov 03, 2026, David Matlack wrote:
+> List the names of all known IOMMU modes in the help output for irq_test's
+> -t option, using iommu_mode_names() from the VFIO selftests library, and
+> clarify that the IOMMU mode is auto-detected by default.
+> 
+> The help output currently claims that the only valid modes are
+> vfio_type1_iommu and iommufd, which was never true, and would get stale
+> any time a mode is added to the VFIO selftests library.
+> 
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  tools/testing/selftests/kvm/irq_test.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+> index 8a345472df5f..ef69f9d7ac3d 100644
+> --- a/tools/testing/selftests/kvm/irq_test.c
+> +++ b/tools/testing/selftests/kvm/irq_test.c
+> @@ -159,7 +159,8 @@ static void help(const char *name)
 
-Just a polite bump; now that -rc1 is out, if anyone can spare any time to cast
-an eye and offer opinions, I'd be grateful. At this point, I'm most interested
-in feedback on the arm64 integration aspect; If you see blockers I'd like to
-discuss early.
+If you're going to do s/type/mode below, then the initial help lines should also
+use iommu_mode.
 
-Thanks,
-Ryan
+>  	printf("-i	The number of IRQs to generate during the test\n");
+>  	printf("-m	Pin target vCPU to random physical CPU before triggering interrupt\n");
+>  	printf("-n	Deliver 50 percent of IRQs as non-maskable interrupts\n");
+> -	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
+> +	printf("-t	Override the IOMMU mode to use instead of auto-detecting it (%s)\n",
 
+IMO, the "auto-detecting" blurb does more harm than good.  It makes the code harder
+to read, and for me at least it's just extra noise in understanding what the '-t'
+option does.  It also makes the line reaaaaaaally long.
 
-On 15/10/2026 15:25, Ryan Roberts wrote:
-> Hi All,
-> 
-> This is v2 of an RFC to introduce a driver for the Arm Core Local Accelerator
-> (CLA), a CPU-local interface for programming attached accelerators. While the
-> interface is agnostic to the accelerator type, the initial (and currently only)
-> target is a compute engine.
-> 
-> The RFC aims to engage the community and get feedback on some key aspects. This
-> will help plan our approach for eventual upstreaming. Based on feedback from
-> Will and Marc in RFCv1, the driver now supports both bare metal and virtualized
-> environments. I also have commitments to publish the CLA spec, a supporting FVP
-> and a representaive user space, all to support upstreaming the driver, as per
-> Will's feedback.
-> 
-> For now you can find documentation included with patch 1, which describes the HW
-> and driver design. Note that the CLA is not part of the Arm Architecture.
-> 
-> Patch 1 documents the hardware and driver design, and adds a driver skeleton.
-> Patches 2-5 initialize and probe the device. Patches 6-9 add context management
-> for switching the device between different users. Patches 10-12 add some (small)
-> changes to KVM and VFIO, which then enables patches 13-15 to expose the HW for
-> device assignment into a VM.
-> 
-> Aspects I'm seeking feedback for:
-> 
-> * The general structure of the driver: The current shape addresses the
->   performance requirements we have for the use cases, and is therefore our
->   preferred approach. But there are some unusual aspects due to the HW design.
-> 
-> * Driver interaction with architectural support: I've opted to treat the CLA as
->   a device rather than a CPU extension, so it's implemented as a (mostly)
->   self-contained driver. It has some unavoidable coupling to the arch code since
->   it needs to share page tables and ASIDs/VMIDs. All arm64 arch interaction is
->   contained in cla-mtc.c.
-> 
-> * The location of the driver: although most accelerators will likely be compute
->   ones, CLA is a generic MMIO interface that could handle any kind of
->   accelerator. It's currently implemented as a misc driver. accel is another
->   potential option, but given the current SVA approach, we would not use any of
->   the services (memory-management or otherwise) that accel provides.
-> 
-> * Virtualization support: since the HW uses the CPU's MMU, we introduced a new
->   VFIO_CPU_MMU group type, and added the kvm_arch_[get|put]_guest_mmu() API to
->   KVM/arm64 so that the CLA can share the stage2 pgtables and VMID. The CPU
->   pinning problem remains unsolved; the vCPU must be pinned to the pCPU that
->   owns the CLA in order to access it. If the pCPU goes offline or the vCPU is
->   otherwise unpinned, it would look to the guest like the HW is faulty. This
->   issue is therefore contained to the guest. I've additionally improved the
->   robustness of the core driver to deal with this eventuality gracefully.
-> 
-> I consider the core driver to be well tested and robust. The virtualization
-> portion is prototype and has known issues that would be addressed assuming the
-> approach gets positive feedback.
-> 
-> Changes since RFCv1 [1]
-> =======================
-> 
->  - Added KVM guest support through VFIO mdev, including exclusive domain
->    assignment, stage-2 memory translation and VMID pinning
->  - Changed the userspace ABI to expose one `/dev/cla/<class-id>` device per
->    accelerator class; `ARM_CLA_PARAM_DEV_ACCELS` now reports only accelerators
->    belonging to the opened class (per Arnd)
->  - Removed `ARM_CLA_UABI_VERSION` and the `ARM_CLA_PARAM_UABI_VERSION` query
->    (per Arnd)
->  - Various driver bug fixes and robustness improvements
-> 
-> 
-> Source, along with some tests, is available at [2]. Patches based on v7.3-rc5.
-> 
-> [1] https://lore.kernel.org/all/20260717104759.123203-1-ryan.roberts@arm.com/
-> [2] https://gitlab.arm.com/linux-arm/linux-rr/-/tree/features/cla-driver-v2-rfc-tests
-> 
-> Thanks,
-> Ryan
-> 
-> 
-> Jean-Philippe Brucker (10):
->   misc/arm-cla: Add driver skeleton and documentation
->   misc/arm-cla: Add launch operation helpers
->   misc/arm-cla: Probe firmware-described devices
->   misc/arm-cla: Initialize devices on CPU bringup
->   misc/arm-cla: Accelerator context save and restore
->   KVM: arm64: Export stage-2 MMU config
->   vfio: Support VFIO devices that access the CPU MMU
->   misc/arm-cla: Add stage-2 MTC and VM context switch
->   misc/arm-cla: Support exclusive context assignment
->   misc/arm-cla: Add vfio-mdev user interface
-> 
-> Ryan Roberts (4):
->   dt-bindings: misc: Add Arm Core Local Accelerator
->   misc/arm-cla: Set up memory translation context
->   misc/arm-cla: Manage domain contexts
->   misc/arm-cla: Add userspace interface
-> 
-> Shameer Kolothum (1):
->   KVM: arm64: Introduce support to pin VMIDs
-> 
->  .../devicetree/bindings/misc/arm,cla.yaml     |  77 +++
->  Documentation/misc-devices/arm-cla.rst        | 217 +++++++
->  Documentation/misc-devices/index.rst          |   1 +
->  MAINTAINERS                                   |   9 +
->  arch/arm64/include/asm/kvm_host.h             |  14 +
->  arch/arm64/include/asm/kvm_mmu.h              |   1 +
->  arch/arm64/kvm/mmu.c                          | 102 ++++
->  arch/arm64/kvm/sys_regs.c                     |  14 +-
->  arch/arm64/kvm/vmid.c                         |  77 ++-
->  drivers/misc/Kconfig                          |   1 +
->  drivers/misc/Makefile                         |   1 +
->  drivers/misc/arm-cla/Kconfig                  |  26 +
->  drivers/misc/arm-cla/Makefile                 |  15 +
->  drivers/misc/arm-cla/arm-cla-regs.h           | 192 ++++++
->  drivers/misc/arm-cla/arm-cla.h                | 393 ++++++++++++
->  drivers/misc/arm-cla/cla-ctx.c                | 229 +++++++
->  drivers/misc/arm-cla/cla-init.c               | 562 ++++++++++++++++++
->  drivers/misc/arm-cla/cla-mdev.c               | 469 +++++++++++++++
->  drivers/misc/arm-cla/cla-mtc.c                | 335 +++++++++++
->  drivers/misc/arm-cla/cla-ops.c                | 417 +++++++++++++
->  drivers/misc/arm-cla/cla-regs.c               | 370 ++++++++++++
->  drivers/misc/arm-cla/cla-sched.c              | 474 +++++++++++++++
->  drivers/misc/arm-cla/cla-topology.c           | 202 +++++++
->  drivers/misc/arm-cla/cla-user.c               | 541 +++++++++++++++++
->  drivers/vfio/group.c                          |  37 +-
->  drivers/vfio/vfio.h                           |   5 +
->  drivers/vfio/vfio_main.c                      |  16 +-
->  include/linux/vfio.h                          |   1 +
->  include/uapi/linux/arm-cla.h                  | 198 ++++++
->  29 files changed, 4969 insertions(+), 27 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/misc/arm,cla.yaml
->  create mode 100644 Documentation/misc-devices/arm-cla.rst
->  create mode 100644 drivers/misc/arm-cla/Kconfig
->  create mode 100644 drivers/misc/arm-cla/Makefile
->  create mode 100644 drivers/misc/arm-cla/arm-cla-regs.h
->  create mode 100644 drivers/misc/arm-cla/arm-cla.h
->  create mode 100644 drivers/misc/arm-cla/cla-ctx.c
->  create mode 100644 drivers/misc/arm-cla/cla-init.c
->  create mode 100644 drivers/misc/arm-cla/cla-mdev.c
->  create mode 100644 drivers/misc/arm-cla/cla-mtc.c
->  create mode 100644 drivers/misc/arm-cla/cla-ops.c
->  create mode 100644 drivers/misc/arm-cla/cla-regs.c
->  create mode 100644 drivers/misc/arm-cla/cla-sched.c
->  create mode 100644 drivers/misc/arm-cla/cla-topology.c
->  create mode 100644 drivers/misc/arm-cla/cla-user.c
->  create mode 100644 include/uapi/linux/arm-cla.h
-> 
-> --
-> 2.43.0
-> 
+I know the parentheses are pre-existing, but that was somewhat ok when there were
+only two options.  With a big list, it's again noisy to reach the end and have to
+think about that the closing ')' is terminating.
 
+What about this?
+
+	printf("-t      Override the IOMMU mode.  Options: %s\n", iommu_mode_names());
+
+To go from:
+
+  -t	Override the IOMMU mode to use instead of auto-detecting it (iommufd, vfio_type1v2_iommu, vfio_type1_iommu, iommufd_compat_type1v2, iommufd_compat_type1)
+
+to
+
+  -t	Override the IOMMU mode.  Options: iommufd, vfio_type1v2_iommu, vfio_type1_iommu, iommufd_compat_type1v2, iommufd_compat_type1
+
+> +	       iommu_mode_names());
+
+This really should spit out only the available modes.  For the internal assert,
+it makes sense to print all modes since that's just doing a lookup, but it's
+annoying to have to manually probe to see what's available.
+
+Juggling all vs. available is mildly tricky to avoid having to dynamically
+allocate, but not that hard in the end.  And IMO, it's totally ok to print a
+misleading message if a mode becomes (un)available mid-test, especially since
+this helper is unlikely to be used except in terminal situations.
+
+E.g.
+
+static const char *__iommu_mode_names(bool include_unavailable)
+{
+	static char all_names[256];
+	static char avl_names[sizeof(all_names)];
+	char *names = include_unavailable ? all_names : avl_names;
+	int i, len = 0;
+
+	if (names[0])
+		return names;
+
+	for (i = 0; i < ARRAY_SIZE(iommu_modes); i++) {
+		if (!include_unavailable && !iommu_mode_probe(&iommu_modes[i]))
+			continue;
+
+		len += snprintf(names + len, sizeof(all_names) - len, "%s%s",
+				names[0] ? ", " : "", iommu_modes[i].name);
+		VFIO_ASSERT_LT(len, (int)sizeof(all_names));
+	}
+
+	if (!names[0])
+		return NO_IOMMU_MODE_AVAILABLE_MSG;
+
+	return names;
+}
+
+const char *iommu_mode_names(void)
+{
+	return __iommu_mode_names(false);
+}
+
+Side topic, the use of parantheses in iommu_mode_lookup() also yields hard to
+read output.  E.g. if there's a typo in the command line, the error message is
+rather hard to visually parse:
+
+  Unrecognized IOMMU mode: a (known modes: iommufd, vfio_type1v2_iommu, vfio_type1_iommu, iommufd_compat_type1v2, iommufd_compat_type1)
+
+Coupled with the above, how about this:
+
+	VFIO_FAIL("Unrecognized IOMMU mode '%s'.  Known modes: %s.\n",
+		  iommu_mode, __iommu_mode_names(true));
+
+to generate:
+
+  Unrecognized IOMMU mode 'a'.  Known modes: iommufd, vfio_type1v2_iommu, vfio_type1_iommu, iommufd_compat_type1v2, iommufd_compat_type1.
+
+Which to me makes it much easier to identify the bad input.
+
+>  	printf("-v	Number of vCPUS to run\n");
+>  	printf("-x	Use xAPIC mode instead of x2APIC mode in the guest\n");
+>  	printf("\n");
+> -- 
+> 2.56.0.385.gac671c819a-goog
+> 
