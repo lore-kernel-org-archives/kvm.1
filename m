@@ -1,118 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.17
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793841196;
-	b=wOf9ymLke5ANHNSUdNCTbDMqKwRAlqaR/3dKA1rZcxXSnOmf8SlmqNhN4E60os0WTzky
-	 0aOVKu8nbEBWskQ4rWFkcuxwxHQKVuG1zWHhBysVVNpPWw3rg2s4VLHjNPh4o1WGjI/n6
-	 eowVdk4PICwWrJCH8NK83o0o3uFwJ94ho2vfyX+7sjS6F/mREEXAYXatG2kNzxG28xmST
-	 AtXLUUNB6HEuX5mhQ8qbLOo1+2H8kbiPp5zTcb9MaZVr66lukbmiyOa7FRGHPH91o/LyS
-	 FGseHoyxlLnrLaCX+AzAM2EV7OGEfCXMp6VmR6JLRcELZ1hsXcn0NalyyJ2WQXd595Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793841196;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Date:From:To:CC:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=TyFvSUTyjkoHJH/xQeMvHXtCfqi5ncDEReaRkf6yS+k=;
-	b=JRR61E856i80kaF5xMSkuuDgwidexCxjII5icRVWAlXqNdvDrE4neKhOk/Pg74H/prXY
-	 tm5V8IGqHbEoeI/T0Hcr7f6Z1KcSkDiOekZhqypgmAfzonoXLYLdeaII2pTX2KX/5hPVQ
-	 IeLDuykD0aU3Jk3HJR4sQkwb695PQ/V8Ib/fJipgvfLy6I1IvM50jCmcod6fdX0faSlPw
-	 26M6N3nFxoVAKnP8DOcKdbJ1dq2P+JSLOdHkYJnPlEEwle9h6FK2jgWRQipU8jUz39TR1
-	 3sy6uRGTQLubzMXi2BQXHmjm5MkUki+VCiMzo+fAmj30tv/u4RqKoN7HJSaU9/cJ4Jg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="hA1H/Doc";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.17
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010017.outbound.protection.outlook.com [52.101.56.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793841854;
+	b=eSGt7IXr4yhlYDzHQKiNLw5u1RhEE1pDzCCOnLm/aO3tscxyt5zDM59LzgSGyoMFufvc
+	 jLrsJ11JXdQ+UQbxbR/2QXRQMZFchYi4M5S/o0kaIKGnOmSHEYRgqvtl9Qzlj1nwIb7iP
+	 /edff79zpbUiD25j+2U5bw3o8c6t45PJOn8vdyjVWx4PW/B3gzdwpYYoJ0vmSssgIFZeZ
+	 oUOj7um/xbBNmUD2P4fxF3Usq17SS6QZuT3eYt0bkA94BGa4qqd87Us6N05Pkgqu+9GTx
+	 nPaMRFVrobqjRRXYDAN/Q+kitBGagaqFGOFVKQcz3mMVBVAPU0FDJcBzEgcVlxwCcgA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793841854;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=aHZGNhfCHVFgkveUXMTOksl91+7DPQTNESRRKH+WZGg=;
+	b=I96yBWFoY0Wip8vR9ZPYDePmIkXlAKdESeAqTHUsvph3CqldWZisfeSDqe5btbbBAU1W
+	 Ln/2W5rEZJhTWVztft5HyM4mXlqSJjP3sz7tFVQyd/Dzn2R81JOzUR/OUAg3aelApA+ro
+	 l0MvF+TCTOTwRufBpxg18tLOl1DEl9MpH19TyRkjXzcfWSnK1Jps6siXP/EqRd68wTOGK
+	 NSTDX6PZrNiJLVPYud8h7AaZyOvWdrXZTKzhFX/zb/egYWVwVZ8G2WJQ4Gz8crvAPKZ2/
+	 yNIr7JF7ukTL07QrfX21miUAQoKmpqQDisT0Fh87jge7Pfq5cTIuRo8oG9FYXJSbPcg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jBmIZ3CU;
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39597606A326;
-	Thu,  5 Nov 2026 01:13:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39597606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6511606A32E
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 01:24:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6511606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hA1H/Doc
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JrGu3+yrZT6FB56m4vHvG6ajRhJB/9RrEFrHPuM/mT1MW5/8wAaNevW38K40AwPTpziMYesXZUoKvOuG23mXfQD4NSiLHjMqw1H5h42D4ngsrluEUDfQ9lZBHT1cQFLLS2W5WHrJCkLUPepBtL8ZTxzfXFMXfc8rlpnz4gYAz5t/NXLTFbvhGdZ3SmFqqDTRnE3e2VS93xdPZPt2dOV86wPP+omDtmzsZqoqOK8B3BxkSmpG1YjkHbKp0pg80g/qSDSg70rmdrdzBU/HxIuLiRpBG0/fegSXrpp4bomaAoP/DZi9hcEf46M7wsOavpkDL5cQhnxhSjZYt2g8/7lv8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TyFvSUTyjkoHJH/xQeMvHXtCfqi5ncDEReaRkf6yS+k=;
- b=tJcy0ensnmGDX351a8gA6eZ/xaaavphgELnAew5duh5P5zHGLNurZ5tZIqimxvMUHQKJJfsKsQ2mPtyrfnT4DX0VZCjV136kCos9UqrBtRMmGTz0Cwb1W78npMk0tkP0xsNd/IyIDDqZTvGn9smjhekMSyrsCJHtGvaZZYnS2CelrELJOwS5bYfueO2vQ/1tkvRzqy6OVLlUkJ1QIHsxlprQtG8AujZLpnbp61/uLmW7NL8Fz2TjKWOIQ12c9yw8cnLm3/ZGPGtpznbZRLzLYkELWmJWInAVOiEbQssF15LMYhoKuaVOY731dLIY/BTP32QWF2II3plCgKCYwygamA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TyFvSUTyjkoHJH/xQeMvHXtCfqi5ncDEReaRkf6yS+k=;
- b=hA1H/DocKiXIN0SOT184JZAoA+EbjjuWQi+r1a4re/sxiKTfOUKRlZ2MKqfCbRBY3GCzhXDc3xDblYNd6ZSokvrg+LyUqhFs1TsQFKhid8NxIoWZK97Elrtx1ElFs9grnPuNM44CYVythTO8dACZ/IEqHRIIePL5iVDPj+iFTnOVxRXFqu7/69EqqFb9mgzhhX0W3CvRQXpacLvID1ACnCZaqtqcTtwIlzHzurl/EpfaA6H3uq2MN41VoNRYtrmx73EIQz9GxnDdL/VbhddTQqY9QjeWcrX9Znq+IYRJ96DO26ZLf7zxk9rQ/FxfhihYgySeBn44qJznobzKshIOmg==
-Received: from BN9PR03CA0302.namprd03.prod.outlook.com (2603:10b6:408:112::7)
- by SN7PR12MB6671.namprd12.prod.outlook.com (2603:10b6:806:26d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Thu, 5 Nov 2026
- 01:13:09 +0000
-Received: from BN6PEPF00000070.namprd03.prod.outlook.com
- (2603:10b6:408:112:cafe::98) by BN9PR03CA0302.outlook.office365.com
- (2603:10b6:408:112::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Thu, 5
- Nov 2026 01:13:09 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN6PEPF00000070.mail.protection.outlook.com (10.167.248.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Thu, 5 Nov 2026 01:13:09 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 4 Nov
- 2026 17:12:53 -0800
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 4 Nov
- 2026 17:12:52 -0800
-Received: from nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56 via Frontend
- Transport; Wed, 4 Nov 2026 17:12:49 -0800
-Date: Wed, 4 Nov 2026 17:12:46 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: <joro@8bytes.org>, <will@kernel.org>, <robin.murphy@arm.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, <lenb@kernel.org>, <bhelgaas@google.com>,
-	<alex@shazbot.org>, <jgg@nvidia.com>, <kevin.tian@intel.com>,
-	<baolu.lu@linux.intel.com>, <linux-arm-kernel@lists.infradead.org>,
-	<iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <patches@lists.linux.dev>, <pjaroszynski@nvidia.com>,
-	<vsethi@nvidia.com>, <etzhao1900@gmail.com>, Danny Gonzalez
-	<digonzal@google.com>
-Subject: Re: [PATCH v8 5/5] PCI: Suspend iommu function prior to resetting a
- device
-Message-ID: <auvYDgFO3IZiUV9r@nvidia.com>
-References: <auvHyrZmMXLTFyz9@nvidia.com>
- <20261105001333.GA1478880@bhelgaas>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jBmIZ3CU
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b08364cdc7so1272937a91.0
+        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 17:24:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793841853; x=1794446653; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aHZGNhfCHVFgkveUXMTOksl91+7DPQTNESRRKH+WZGg=;
+        b=jBmIZ3CUT45RaBBUyjrVB+Q79krXovtcFNifPl3Xi4zaCLl3NJugHftPLIYAYIEfOB
+         azYKEUEp47Ebzd4snD2d3tb6fT5LYKoJS1BQ6qkzsYVPb1djl5omru4i05UYTBcs6m84
+         3eOU97D4sIn3B0drLGskysLtDq578i58ZghvodBYK14j2VnlcuZx52AkTO1LiOJjh+It
+         N5A/jNeFCuMlsEKzUN9heNfjaFQ7KXaw8FWDvSHkbAC9MQom2zVC7OwfvYPbcKMAeDRL
+         mIvGARwQQvBr/fGBK7AR9+g6siwOpP5rZc9jbi5pFsWS+hnClobTiqKR7evMdgREjGRV
+         XM8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793841853; x=1794446653;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aHZGNhfCHVFgkveUXMTOksl91+7DPQTNESRRKH+WZGg=;
+        b=TkFQZipJ9Q2EqJURm50ICnCZEoR268IvbNqpb6PGcks+tRADaeTPI0pjS2qa9CE/Bw
+         a3Mpy5fRWqHVtt04Br2wnXVGKQA7TrghkwsIiadTp3NzxDPOE/h0IqYBVJr9hPvUKrLA
+         7BKQEpmrWlXi4KmD10jlK3v9Cb3uv6N9nolLZlKYaa2j+Qa6AY6pXp1od7Wq4hgTdJD0
+         NJjXD27nq83wC1Z9pW7Kq3HODeA22h3L4JlZdd1hcnSvlabMLypJlNSG1NMukWtVZM2I
+         4cNxBh5UpDY4gvkwyRWKMbtPGND5Ix4vJB1QkJGwmrSlXW5GSREqI/QXu+5IADUQevU+
+         ESuA==
+X-Forwarded-Encrypted: i=1; AKwUvBz5+kh99xPdHNwF36P2k8hOVaJz0jJN7jU8eDXF2ezLfaB1J0tDb4ucatdotD7kkFkRyFs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8dHLDUv696f+6NVc0/onVjQJl49R+vii32V9kH8HBqYQu+GQbL
+	xpn+i+jTSxGM2w0qrYGGaJQhii92rP4V52GfHBoGGt+VF2xfBiqrOlJKxIIuC17dljm8QP7XxNx
+	9XuyBSg==
+X-Received: from pjbgn10.prod.google.com ([2002:a17:90a:c78a:b0:3b0:b36b:66fb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:164f:b0:3ac:9ed8:f310
+ with SMTP id 98e67ed59e1d1-3ae8984da7fmr16296612a91.49.1793841852497; Wed, 04
+ Nov 2026 17:24:12 -0800 (PST)
+Date: Wed, 4 Nov 2026 17:24:11 -0800
+In-Reply-To: <CAO9r8zO=_BEefcwX6vzP7own7EmhLwrRCD=hFOB+Lejm2B=BNA@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -121,77 +79,166 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261105001333.GA1478880@bhelgaas>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN6PEPF00000070:EE_|SN7PR12MB6671:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3013f8e3-1783-491c-45a2-08df3ad9f471
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|1800799024|82310400026|376014|7416014|261022075727099003|261022105027099003|261021121427099003|261021135927099003|261026140227099003|261026121527099003|261028144727099003|261102123227099003|4143699003|11063799006|56012099006|10067099003|260925021311599003|260925021911599003|18002099003|22082099003|261009223027099003|6133799003|260925022911599003;
-X-Microsoft-Antispam-Message-Info:
-	z3RG96APyyZDlab9qghSLri/DYcHjaoqCqeAMLzvzk3T1op0oSY1H9q8gsmvQTz7002Y3uvQLb3ncef4G8NlUMY6Nt2ncnwkBJV0615JdWoEw5GigtEx9JpNUJU7wveOFkNi/r2nTv5a+Ry+F+7pX8yTvwXJvXhhbH95KhrlCJcUdo5oYpMr/w5z3JwnCcyeYo+K00KHbJnRKv80xWYstYIqIqzHb0DS4toVomVVf8uWLfkaeCEc/B3Y/tT/Nze3QGPzjlxm8CT7BKCmcAW2NtVb9La4rxm54s+3M4RnNL8yyF+bnSRE3Af+hMGaVb04lYT4xCKJegwVvo7Q7cutS++/UCos8r9D0W/V99bP2OXIqtVZhRZf+ZfaPNKW6xVaZJg8rO/2Z+V4CN+6KEIkePkpGFX3MzAVq1s//l3UugU5XDMpn8ng5quztZzi71rFIPl/01YTb9v0NRSj45FGVZhbegpBKi/tqUaBzKWjx3nHGbL+P8/H3FALlqrE6czRdn7SL/ngapnJxvmM8dhKzZI2LUeBXxtIqiX3k+cD2jFI/oVcdntmVLeVTJ5pxN7Rne3N6Oa2hRKFb2qqE/QwXR13gAcvfyhhwY0Ta5TO/Vih1F8W40x5pQJb0PxuuiHoYbDFloc+KoCGciCMLFCxTIhpG7XGIv++xNGnThosNdokN1ZZdSYvP77jiwv/JT9t32TsKGDB/I/c6ovYZgxIbQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(1800799024)(82310400026)(376014)(7416014)(261022075727099003)(261022105027099003)(261021121427099003)(261021135927099003)(261026140227099003)(261026121527099003)(261028144727099003)(261102123227099003)(4143699003)(11063799006)(56012099006)(10067099003)(260925021311599003)(260925021911599003)(18002099003)(22082099003)(261009223027099003)(6133799003)(260925022911599003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	lvx8WWDsdT/k+dpo7nnJdrK2wXlEU3lWWwgafbJ6Q0H0sNXWy8RC4HI1ufac2VuX11IjqY+aMdN2IbfyUJV8Y2OH6WaIAmUSzbNF9Z0WFw98OVppGj9dyy8vdDj+rmeH8h6e06eegfmtO4nhfmQD1F/lHljR1u5zcktXhEpGIii0oZBwgwtX/jzz/8m9qodsygKnry7mbQJZqTlqpkAaNqmiMGThLfkF0m9lWo4HNMMS86E2erR7Zwh7ryLV8cdEYhjdWnR/1AkH675AXqT2LmGHZGISMA5y95tkfLykAq4945ZA1O1LAYxj+fR5wPVD6m/AP8yCy2UnaKoZ6jMBGOhPGXVnvBgycmZ3Pre0f9drcadShh9pjc3mdHbnktv+jiTodyDw7YZJRyAmv/kOz6ewsOmwtnabyes0T195rBjY/tXD3qCH3/wos+wDQZdd
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 01:13:09.1514
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3013f8e3-1783-491c-45a2-08df3ad9f471
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN6PEPF00000070.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6671
+Mime-Version: 1.0
+References: <CAHCio2jc9++n2Qoa0-sNkObZsWOybSwK1X2aBjFirchjRTBZsQ@mail.gmail.com>
+ <CAHCio2hpL+Y0iYdGXs5zKA-81+w_9pHs+tZPe2uaYKs8yOCz_w@mail.gmail.com>
+ <CAO9r8zMBcU_s3Dpc99jse=n7Njhy8Ly-daf6--YXVD+Cw_ed1w@mail.gmail.com>
+ <CAO9r8zOmH6yzcNbUOF3FoNsac8rtx47rp5wByOFfGgaBPaLxug@mail.gmail.com>
+ <CAHCio2hTSuTf4HcJ=+wb=_EQvi2as9QMwfRMG5tUkdCmex=yJg@mail.gmail.com>
+ <auNvmlmXeWPh_HKT@google.com> <CAHCio2gdqdyGcGHN+dN9hzoj_0-XSKYFS4ruFrLU+DMG-4XooQ@mail.gmail.com>
+ <CAO9r8zO=_BEefcwX6vzP7own7EmhLwrRCD=hFOB+Lejm2B=BNA@mail.gmail.com>
+Message-ID: <auvau8T6K5ZrUaTx@google.com>
+Subject: Re: Some options abort RFC: KVM: SVM: Rework ASID management
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Jackie Yu <ufo19890607@gmail.com>, jmattson@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mlevitsk@redhat.com, pbonzini@redhat.com, 
+	thomas.lendacky@amd.com, vkuznets@redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 04, 2026 at 06:13:33PM -0600, Bjorn Helgaas wrote:
-> On Wed, Nov 04, 2026 at 04:03:22PM -0800, Nicolin Chen wrote:
-> > On Wed, Nov 04, 2026 at 05:55:00PM -0600, Bjorn Helgaas wrote:
-> > > On Mon, Dec 15, 2025 at 01:42:20PM -0800, Nicolin Chen wrote:
-> > > > @@ -4885,10 +4919,20 @@ static int pci_reset_bus_function(struct pci_dev *dev, bool probe)
-> > > >  		return -ENOTTY;
-> > > >  	}
-> > > >  
-> > > > +	rc = pci_dev_reset_iommu_prepare(dev);
-> > > > +	if (rc) {
-> > > > +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", rc);
-> > > > +		return rc;
-> > > > +	}
-> > > 
-> > > Unlike the other reset functions, this one calls
-> > > pci_dev_reset_iommu_prepare() even when probe==true, i.e., we don't
-> > > want to actually perform the reset, we just want to know whether the
-> > > reset method might work.
-> > > 
-> > > It's at least unnecessary to call pci_dev_reset_iommu_prepare() and
-> > > pci_dev_reset_iommu_done() in that case, and maybe even problematic
-> > > because the pci_init_reset_methods() probe happens from
-> > > pci_init_capabilities(), which is pretty early during PCI enumeration
-> > > of the device.
-> > > 
-> > > I know this has already been merged as f5b16b802174 ("PCI: Suspend
-> > > iommu function prior to resetting a device"), and I'm not sure whether
-> > > we should do anything about it.  I wonder if we should just skip the
-> > > prepare/done when probe==true?
-> > 
-> > I've posted a fix for a few times actually. The latest one was
-> > posted yesterday after a split:
-> > https://lore.kernel.org/linux-iommu/c66d5221a8e4356316d4f614c8584a80dc9d71b6.1793729707.git.nicolinc@nvidia.com/
-> 
-> Well, that's embarrassing ;)
-> 
-> I acked the PCI patches there on the assumption that they'll go via
-> the IOMMU tree since the interesting bits are there.
+On Mon, Nov 02, 2026, Yosry Ahmed wrote:
+> On Mon, Nov 2, 2026 at 3:20=E2=80=AFAM Jackie Yu <ufo19890607@gmail.com> =
+wrote:
+> >
+> > Hi Sean, Yosry, and KVM folks,
+> >
+> > Sean, thank you for the reminder. Sorry about the earlier formatting.
+> > We will use plain text for future mailing-list replies.
+> >
+> > Yosry, thanks for clarifying. We understand that by "missing
+> > emulation" you meant the INVLPGB handling needed with distinct
+> > per-vCPU ASIDs, not a bug in an existing emulation path in our tree.
+> >
+> > We agree that intercepting each guest INVLPGB and issuing a separate
+> > invalidation for every ASID in a large VM may undermine the benefit
+> > we are seeking. Using per-VM ASIDs consistently, rather than
+> > switching ASID allocation models based on nested usage, sounds like
+> > a promising direction. Our production guests do not run nested VMs,
+> > so direct execution before nested use would cover our use case.
+> >
+> > Your suggestion to change the INVLPGB interception policy when
+> > nested virtualization is first used is helpful. If EFER.SVME can be
+> > set before a guest runs a nested VM, the first VMRUN seems like a
+> > more precise trigger. Would KVM catch that VMRUN before entering L2
+> > and enable the necessary intercepts across the VM before any vCPU
+> > can execute an INVLPGB requiring nested handling?
+>=20
+> Yeah we can do this. For example, we can have a static branch in the
+> VMRUN emulation path that flips between a synchronized path that
+> enables the INVLPGB intercept, and the normal path. The static branch
+> might be an overkill.
+>=20
+> > Could those
+> > intercepts then remain enabled for the VM's lifetime, rather than
+> > switching back when the guest leaves nested mode?
+>=20
+> Probably? I think we can only switch back when all vCPUs clear
+> EFER.SVME. I doubt it's worth optimizing.
+>=20
+> > We realize that interception would still require correct nested instruc=
+tion
+> > handling.
+> >
+> > For context, our experimental KVM4 configuration used a VM-shared
+> > ASID and separate, out-of-tree guest INVLPGB passthrough. The
+> > madvise() latency measurements were:
+> >
+> >   Workers             INVLPGB off      INVLPGB on
+> >   64 mean              21.624 ms        12.505 ms
+> >   64 P99               32.760 ms        21.518 ms
+> >   128 mean             29.553 ms        20.459 ms
+> >   128 P99              39.628 ms        28.160 ms
+> >
+> > These were single sequential A/B runs with 64 allowed CPUs; the
+> > 128-worker run was oversubscribed. The results measure madvise()
+> > syscall latency, not IPI counts, and do not quantify any additional
+> > flushes from vCPU switches on a physical CPU under per-VM ASIDs.
+> >
+> > We can share the benchmark source and run further comparisons to
+> > help evaluate that trade-off. Would the maintainers consider
+> > consistent per-VM ASIDs, with direct guest INVLPGB execution before
+> > nested use and interception once nested use begins, a direction
+> > worth pursuing?
+>=20
+> As I mentioned, I (not the maintainer) have no problem with per-VM
+> ASIDs. We probably want to make sure we don't regress workloads due to
+> the extra TLB flushes when multiple vCPUs run on the same pCPU tho.
 
-Thanks! The acks are in time.
+Short answer: no, I don't think per-VM ASIDs is a direction worth pursing.
 
-Nicolin
+I actually really like the *idea* of per-VM ASIDs, but in practice they jus=
+t
+don't work well.  Having to flush when running a different vCPU with the sa=
+me
+ASID is generally acceptable for SEV+, because those types of VMs aren't of=
+ten
+CPU overcommited, and they don't support running as nested VMs[1].  Neither=
+ of
+those holds true for "regular" VMs.
+
+E.g. when running KVM as L1, having to flush on every vCPU migration become=
+s a
+major pain point, because L0 typically has to intercept the flushes.  With =
+per-vCPU
+ASIDs, we have to line of sight to eliding those flushes[2].  That should b=
+e a
+win for KVM-as-L0 as well, as it'll remove any "artificial" TLB misses due =
+to
+technically-unnecessary flushing.  CPU overcommited vCPUs will still suffer=
+ more
+TLB misses due to cross-vCPU TLB pressure, but they won't get hit with a pi=
+le of
+misses if a vCPU is bouncing between a small set of CPUs (many setups affin=
+e vCPUs
+to a pool, versus doing a 1:1 pin).
+
+And despite ASIDs being per-VM for SEV+, that's more of a clever hack to av=
+oid
+having to add new ISA to manage encryption keys than anything else.  Maybe =
+AMD
+intended ASIDs to be per-VM, but the reality is they can't truly be per-VM =
+since
+there is no separate tag and invalidation mechanism for host-controlled map=
+pings.
+I.e. the ASID is basically VMX's EPT root and VPID rolled into one, and as =
+a result,
+it takes on the properties of both a per-VM thing and a per-vCPU thing.
+
+INVLPGB itself also has problems.  It's a broadcast to the *entire* system.=
+  Even
+if there's no work to be done, *all* other pCPUs still need to respond.  I =
+haven't
+done benchmarking, but I wouldn't be at all surprised if there are serious =
+noisy
+neighbor issues if a misbehaving guest is spamming INVLPGB in a tight loop.=
+  E.g.
+Maxim measured the impact of ringing the AVIC doorbell in a tight loop, and=
+ found
+he could degrade CPU througput by something like 40-50%.
+
+And then if the guest does something that forces KVM to intercept INVLPGB t=
+o do
+the right thing, I suspect Yosry is right and performance will tank.
+
+So, outside of very specific setups, per-VM ASIDs and INVLPGB passthrough s=
+eem
+like a lot of complexity for little-to-no benefit.  Add in that per-VM ASID=
+s will
+likely do more harm than good for most other use cases, and I'm not inclind=
+ed to
+take on maintaining per-VM ASIDs in upstream.
+
+Sorry :-/
+
+[1] It's actually possible to get KVM functional when running as an SEV gue=
+st,
+    but it's hilariously stupid and completely defeats the value added by S=
+EV.
+
+[2] https://lore.kernel.org/all/aHWjPSIdp5B-2UBl@google.com
+
+> Other than that, I don't want to rework my series to go back to per-VM
+> ASIDs. So if Sean and Paolo are okay with per-VM ASIDs, I think this
+> should be done as a follow up work on top. Just my 2c.
+>=20
