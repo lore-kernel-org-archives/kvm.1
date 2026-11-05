@@ -1,65 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793897152;
-	b=rC9LxllzPi8i4SAhJqgjjWxQl3Srvi/dxXNFcN3RmpYvsfi0/iw6dB+WtM61AxLG5gtV
-	 809D2SOT0vkFT2GaoC4AOD7DUxcSTAG2xE60836osW8qgPpfu9rKJO82sSqhJVX8pNvUv
-	 NvGHpYBPO5RuHTn9Bhxj968mKlE5NxEtAWePKyitt8jaLlHM6aceLj98vShgBbdsBv/TJ
-	 o47OlkrzNvESmX/9JJGd/nxPMBilmGvd7Qe4oJ9kpsR7kLxK4kAUZB0jbe36OFkqanfEK
-	 FVDFzCQSPtcR7ePaNh9tvqKgyOAYkNnola7CR6hSGuHPIGw2TJDnVbbHAJElPieeeiw==
+	t=1793897153;
+	b=B8FtJp/kgAxVnC0KwCMyRJxilViF+5NeSWy26ac+JH7YZHx5Biq7tWR/4cmqQgtIGEn6
+	 KO7AsSDgLZmXRVM3ZPsUK30sMOgcQIOam/cRjQkiB/XBV4WECTaUAG8fcB5i45XpkgZnb
+	 Y+egemQVgn9BLofs9rAYEcqo7Sl0WNo0AF/rn67QdYYIyfPol6h5gPM7fDFSTC+UB/30q
+	 BSJOlLzsGSYT/CcDrEDjoLbTFf/PWcYVYnAqjaiaT5qtMcwyWl3+2xtR8Ax75uo0M39ge
+	 cm1GFdsXhoTC/Asl4nLOql79w8tfPepZlQxBwlNvdl7FWn+k0YjCbmpqjt6wFcdc0ZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793897152;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793897153;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=/JZjrrQHueL4KzoOi+LM7Mo3djldPKioe/7B1wL57cE=;
-	b=aewd3+cGpe00XFCQQxDU/Jn956D9lEmcUO3qquMKppoiohmq4GxL577ZChrQBmw1D1cU
-	 TNOsdySxWBR8xJBz9+/7s8OaVf2vZ4lBjTVcNpEs02XrwdWIFFahH2izStV0xvEw+9vKs
-	 em8se5C6LX6IszY/YVvFHfGngVC3VjrFDVLQ8aN4zHjTnUOaxh71seoAL9golR8/oFsHY
-	 mpNQGKpaseS1VW9Wddn1dT9fXRAZqS7+YsGMT3Yj2RR/gl6S7owNgvsSdWcEMwsQxUZHL
-	 cIwig304c9JV53aK10wtqAcF8kgNp0GQ+OqDAzP8U4xbWx3oHD/zfaDzhZ3bceN1H8w==
+	bh=Tsvs5Btetkeg2XBEcp9aQr1tbtZtm0nAEQ211sW8+pI=;
+	b=Ds9lxkMEX4gz5j+AZ3nDv4RT0ZuiC7fD+egeBDil5AmcUWWXJc46eF5rv7KO1MivLmVg
+	 y5BBx62hMx7QNcxoy8B9ZxqmEmiL0dKePzyaeS0sjk5ePnfTQrpq7xDrhHpOMXj3R7EoF
+	 1eSYOCf2dwbFqgtyTkr4+8rYImq9PsZ65toVbopx/fT5SP8ujTMk7+HEM92ObnbKbBZj4
+	 ET8dbF51t+Ht8fo9ex67ve29Vfn0nka8O/ZRRbrZSGDqOBrJvQ0yBbGOsPBTKPObTicGn
+	 JbYnBp6YiPJ1Y7kbeE3QYvDolxDcalWMcMpYwRl+0oaZ20tyPte/QtKupoFNuGUn3Eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dA7Ih+Go;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KSzTDlLA;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA5E606A33D
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 16:45:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9DA5E606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADAF606A335
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 16:45:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ADAF606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dA7Ih+Go
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KSzTDlLA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793897150;
+	s=mimecast20190719; t=1793897152;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/JZjrrQHueL4KzoOi+LM7Mo3djldPKioe/7B1wL57cE=;
-	b=dA7Ih+GoOGjZv5uWayEeidHqzzx/QRPu6RkwbFMv4vejAvW5+fA1JOvwtl6CVFV7h5aJo4
-	WG9gRDl7qXXhuccFfLysXvd/0cU9jxxJDo2mn+4651/hPOcC9ltq5lkmWuLOveKH/isAr3
-	5Vvc2/T7qu2Y8/TtDKeQq8rhfTYsnOs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=Tsvs5Btetkeg2XBEcp9aQr1tbtZtm0nAEQ211sW8+pI=;
+	b=KSzTDlLAlGLNzM6qDh4GSwQtxEJL7IMOe6kkaAv55nGbZx6SAMGS3QMWcCTAngf8LzZbp8
+	1iX3DNbqD9GHvjHET3xS9P7TGJc6E/QFHEbedAM9QbDs8L9WZ8S7NsCVPBzC4tC4V2xnm6
+	SSpwrIufIIHWNzG/1Lxi//mDkPV5EUs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-EwkDLrSPN6-q0apJetQ4Hw-1; Thu,
- 05 Nov 2026 11:45:44 -0500
-X-MC-Unique: EwkDLrSPN6-q0apJetQ4Hw-1
-X-Mimecast-MFC-AGG-ID: EwkDLrSPN6-q0apJetQ4Hw_1793897143
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-68-Aj1LUtqYPY2aIJ_-yXLjHA-1; Thu,
+ 05 Nov 2026 11:45:46 -0500
+X-MC-Unique: Aj1LUtqYPY2aIJ_-yXLjHA-1
+X-Mimecast-MFC-AGG-ID: Aj1LUtqYPY2aIJ_-yXLjHA_1793897145
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01F171955D9B;
-	Thu,  5 Nov 2026 16:45:43 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5008B18001F0;
+	Thu,  5 Nov 2026 16:45:45 +0000 (UTC)
 Received: from pbonzini-thinkpadx1carbon6th.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 438A3195608B;
-	Thu,  5 Nov 2026 16:45:41 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 649A8195608A;
+	Thu,  5 Nov 2026 16:45:43 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -67,9 +67,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Hillf Danton <hdanton@sina.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Harry Yoo <harry@kernel.org>
-Subject: [PATCH 3/5] x86: KVM: remove the dummy allocation case from async page fault handling
-Date: Thu,  5 Nov 2026 17:45:29 +0100
-Message-ID: <20261105164531.313849-4-pbonzini@redhat.com>
+Subject: [PATCH 4/5] KVM: x86: allow handle_exit_irqoff to return EXIT_FASTPATH_*
+Date: Thu,  5 Nov 2026 17:45:30 +0100
+Message-ID: <20261105164531.313849-5-pbonzini@redhat.com>
 In-Reply-To: <20261105164531.313849-1-pbonzini@redhat.com>
 References: <20261105164531.313849-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -84,140 +84,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The page ready notification for asynchronous page faults is delivered as
-an interrupt to the same vCPU that received the not-present exception.
-As long as interrupts are not enabled before the page fault is registered
-in the sleepers' hash table, the page ready notification must happen
-after a prior registration.
-
-This is now the case indeed, so the dummy allocation case is dead and
-can be dropped.
-
-Note however that a write of the apf-enable MSR that goes from enabled
-to enabled might trigger *both* a broadcast notification interrupt
-and, later, individual interrupts for pending asynchronous page faults.
-While Linux will never do such a write, the host might do a KVM_SET_MSRS
-call that would result in the broadcast notification, so do not complain
-too loudly if the wait does not find a token and only do a pr_once().
+Let handle_exit_irqoff() pass what it did to vcpu_enter_guest() and/or
+handle_exit().  This will be needed to trigger async page fault handling,
+and to suppress reflection of APF #PF exceptions, once vcpu->arch
+will no longer have a host_apf_flags field.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/kvm_para.h |  1 -
- arch/x86/kernel/kvm.c           | 66 ++++++++-------------------------
- 2 files changed, 15 insertions(+), 52 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 2 +-
+ arch/x86/kvm/svm/svm.c          | 4 +++-
+ arch/x86/kvm/vmx/main.c         | 6 ++++--
+ arch/x86/kvm/x86.c              | 3 ++-
+ 4 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_para.h b/arch/x86/include/asm/kvm_para.h
-index 1e28c89b1405..b986edb1a225 100644
---- a/arch/x86/include/asm/kvm_para.h
-+++ b/arch/x86/include/asm/kvm_para.h
-@@ -123,7 +123,6 @@ struct kvm_task_sleep_node {
- 	struct swait_queue_head wq;
- 	u32 token;
- 	int cpu;
--	bool dummy;
- };
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 3f096a0f3387..93170c70a17c 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1681,7 +1681,7 @@ struct kvm_x86_ops {
+ 			       struct x86_instruction_info *info,
+ 			       enum x86_intercept_stage stage,
+ 			       struct x86_exception *exception);
+-	void (*handle_exit_irqoff)(struct kvm_vcpu *vcpu);
++	fastpath_t (*handle_exit_irqoff)(struct kvm_vcpu *vcpu);
  
- #ifdef CONFIG_KVM_GUEST
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index d3a0e0d7bb84..ad0b6a4ad097 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -111,26 +111,11 @@ bool kvm_async_pf_queue_task(u32 token, struct kvm_task_sleep_node *n)
- 	raw_spin_lock(&b->lock);
- 	e = _find_apf_task(b, token);
- 	if (e) {
--		struct kvm_task_sleep_node *dummy = NULL;
--
--		/*
--		 * The entry can either be a 'dummy' entry (which is put on the
--		 * list when wake-up happens ahead of APF handling completion)
--		 * or a token from another task which should not be touched.
--		 */
--		if (e->dummy) {
--			hlist_del(&e->link);
--			dummy = e;
--		}
--
- 		raw_spin_unlock(&b->lock);
--		kfree(dummy);
- 		return false;
- 	}
--
- 	n->token = token;
- 	n->cpu = smp_processor_id();
--	n->dummy = false;
- 	init_swait_queue_head(&n->wq);
- 	hlist_add_head(&n->link, &b->list);
- 	raw_spin_unlock(&b->lock);
-@@ -200,53 +185,32 @@ static void kvm_async_pf_task_wake(u32 token)
- {
- 	u32 key = hash_32(token, KVM_TASK_SLEEP_HASHBITS);
- 	struct kvm_task_sleep_head *b = &async_pf_sleepers[key];
--	struct kvm_task_sleep_node *n, *dummy = NULL;
-+	struct kvm_task_sleep_node *n;
+ 	void (*update_cpu_dirty_logging)(struct kvm_vcpu *vcpu, bool enable);
  
- 	if (token == ~0) {
- 		apf_task_wake_all();
- 		return;
- 	}
- 
--again:
- 	raw_spin_lock(&b->lock);
- 	n = _find_apf_task(b, token);
--	if (!n) {
--		/*
--		 * Async #PF not yet handled, add a dummy entry for the token.
--		 * Allocating the token must be down outside of the raw lock
--		 * as the allocator is preemptible on PREEMPT_RT kernels.
--		 */
--		if (!dummy) {
--			raw_spin_unlock(&b->lock);
--			dummy = kzalloc_obj(*dummy, GFP_ATOMIC);
- 
--			/*
--			 * Continue looping on allocation failure, eventually
--			 * the async #PF will be handled and allocating a new
--			 * node will be unnecessary.
--			 */
--			if (!dummy)
--				cpu_relax();
--
--			/*
--			 * Recheck for async #PF completion before enqueueing
--			 * the dummy token to avoid duplicate list entries.
--			 */
--			goto again;
--		}
--		dummy->token = token;
--		dummy->cpu = smp_processor_id();
--		dummy->dummy = true;
--		init_swait_queue_head(&dummy->wq);
--		hlist_add_head(&dummy->link, &b->list);
--		dummy = NULL;
--	} else {
-+	/*
-+	 * A broadcast wakeup, which can happen for example if the VMM calls
-+	 * KVM_SET_MSRS, might still leave the individual wakeups queued.
-+	 * In that case _find_apf_task() will not find the token when the
-+	 * individual wakeup comes, so just ignore the case where n is NULL.
-+	 * Nevertheless it *should* not happen, so print a message for the
-+	 * user in case something bad actually happens later.
-+	 */
-+	if (n)
- 		apf_task_wake_one(n);
--	}
--	raw_spin_unlock(&b->lock);
-+	else
-+		pr_info_once("Async page fault waiter not found. This is probably triggered "
-+			     "by the host and harmless. However, if a userspace task hangs, "
-+			     "please include this message in your bug report.\n");
- 
--	/* A dummy token might be allocated and ultimately not used.  */
--	kfree(dummy);
-+	raw_spin_unlock(&b->lock);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index e0ff458761cf..b720c1ff7134 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5091,7 +5091,7 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
+ 	return ret;
  }
  
- noinstr u32 kvm_read_and_reset_apf_flags(void)
+-static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu)
++static fastpath_t svm_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+ {
+ 	switch (to_svm(vcpu)->vmcb->control.exit_code) {
+ 	case SVM_EXIT_EXCP_BASE + MC_VECTOR:
+@@ -5103,6 +5103,8 @@ static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+ 	default:
+ 		break;
+ 	}
++
++	return EXIT_FASTPATH_NONE;
+ }
+ 
+ static void svm_setup_mce(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index b46f8f60ce70..b742e2370dd6 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -941,10 +941,10 @@ static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
+ 	vcpu->arch.at_instruction_boundary = true;
+ }
+ 
+-static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
++static fastpath_t vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+ {
+ 	if (to_vt(vcpu)->emulation_required)
+-		return;
++		return EXIT_FASTPATH_NONE;
+ 
+ 	switch (vt_get_exit_reason(vcpu).basic) {
+ 	case EXIT_REASON_EXTERNAL_INTERRUPT:
+@@ -959,6 +959,8 @@ static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+ 	default:
+ 		break;
+ 	}
++
++	return EXIT_FASTPATH_NONE;
+ }
+ 
+ static int vt_handle_exit(struct kvm_vcpu *vcpu,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 32563a91fba9..af8cdfd81180 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8504,7 +8504,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 	if (vcpu->arch.xfd_no_write_intercept)
+ 		fpu_sync_guest_vmexit_xfd_state();
+ 
+-	kvm_x86_call(handle_exit_irqoff)(vcpu);
++	if (exit_fastpath == EXIT_FASTPATH_NONE)
++		exit_fastpath = kvm_x86_call(handle_exit_irqoff)(vcpu);
+ 
+ 	if (vcpu->arch.guest_fpu.xfd_err)
+ 		wrmsrq(MSR_IA32_XFD_ERR, 0);
 -- 
 2.56.0
 
