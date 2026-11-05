@@ -1,51 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793866858;
-	b=ws5/paakKYOw695+nmrT4lHLCv4mMq3b3wXKd+6fHWzp3K+XnjaufkfuxzBAYz7Ptp0E
-	 w0AK+KY5vqQuJmwqUSF3TGqZe9OxZ3yD3zufQgGv82A5oWQa9b/k86f8JTwLO1lEBz5nk
-	 tgAx8ZU9RA/rWsvZdb+5f+n1fBpd+WQQGE4Pn5pmj2c8JI/rMmbHhpccIQXk7q9srwBW/
-	 +aX8biGabM5HT4vJmDDnmTG6X97TsC2S1Avpu6cHSYs65kv19RjiP3YRyrWBSWXxjuBSS
-	 GmmHMG3Gi+dkugY50KnkHuUWDO2jthLwKAasHp36ZebzhXg3BRHsjL4jrNS3NgNzJLw==
+	t=1793868142;
+	b=DXpHvBQHlRW5chf7iS+5XeYzTnjhHNAluEKvBNvOZBT+zAbcrSQiObH4Lho6RfwniEDA
+	 y3MaemOESzVxRfVoThKhrq9zFwsUCAXvETi6pPPkA4M2JKjI3hESKKCvq9f0fljYPK3U7
+	 E+H+ySlcYW+eu/s0PDHSPS9TNTW231XJX7NenHfp5qbQRYGR4s3k9FvPvYV3JiacE2bIl
+	 TlxEpxSFadhNYMRK0s/3iLN8JnqeTc0hfdETZa9jN1hGQ254Q0EvIU7+dT6es5r8X8CHF
+	 oIGAXcIOJJB+FWfmOjXqLtIvgmV7c7n6YcPua7lPcOfpqDOYqpHYKTwrOkXl9FbluJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793866858;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=T2FfoVqjwkfkSqA6qKb/AOlBch9f6WawwTs8MEUGzIM=;
-	b=2duEAOx2hbnJUyKzAC9DrAwfA6NNhxx8eVL4qTZKDdXPBWzpISBBr0MCxIKeFTsrHnQR
-	 QRj/fc5I+Kw6ZXNNQKjHyqSSz3BGYhQYmO26mOOa7r10fQxjBX8ixsZcs8Y3kYbsYX95j
-	 aVuES8G+u4SLXKnXSeuebcE3PQqQMJr0/ygeUIpP43TxUim9/xsGtiZ+Kdv0HemtJCR/M
-	 8etw82jLRt8PNVVL794EyHA1A5z7oZEh33pD6WNzGSQI/EuKGaGpRQjlDOp1PSp+JPSgc
-	 SA9TPjPW7rRR6dU2CO8Mu6/jOhNSufh9/OUy+ILKAQPBhk1H6JFvabHGlKhcdul0SQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793868142;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=rvsdMBspxxqECpjbAI42lx5NbPMQgGmPQp0lLwZaU7I=;
+	b=wg8kO/XShaVlRAy94BhAegIYCPYbnlUAWI7Q9c2MHeLRMy9jZAUPvJS7uV6OZl7yStCM
+	 b3ShtkflGvtZK2dpX7mSg9UUG1k9TgvLdCcoSumNIvOeRyQetH1E7lfNq8x7ldc/IDfzG
+	 ulUn1gYynnKbEW16Uw0V9B0pv7Ro/kgMhjzbOYd3FIujI1zMR8zX4csTNqNEJSSjSl9E5
+	 Q+fLchvvhoApwf+67JB5llVGYtZrmFu8rFMt5tGAxiSBx2UvcvSSe/VRJaHSZTSdppesq
+	 tmsabR5BJ6fguiexJQ9r5jKkpY+PQOmJyptf5PRQEIa/XHAaNoRqA8wtVMfp8djufOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.21
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="B41/EYZN";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410C4606A32F
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 08:20:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 410C4606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [122.194.100.204])
-	by APP-01 (Coremail) with SMTP id qwCowAC33vhaPOxq9ydRAA--.29171S2;
-	Thu, 05 Nov 2026 16:20:42 +0800 (CST)
-From: Xiang W <wangxiang@iscas.ac.cn>
-To: kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org
-Cc: andrew.jones@linux.dev,
-	Xiang W <wangxiang@iscas.ac.cn>,
-	pbonzini@redhat.com,
-	thuth@redhat.com
-Subject: [kvm-unit-tests PATCH v2 7/8] riscv: initialize ISA extensions for all harts in cpu_init
-Date: Thu,  5 Nov 2026 16:20:34 +0800
-Message-ID: <20261105082035.133680-8-wangxiang@iscas.ac.cn>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261105082035.133680-1-wangxiang@iscas.ac.cn>
-References: <20261105082035.133680-1-wangxiang@iscas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF3E606A32C;
+	Thu,  5 Nov 2026 08:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B41/EYZN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173321F000C1;
+	Thu,  5 Nov 2026 08:42:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793868141;
+	bh=rvsdMBspxxqECpjbAI42lx5NbPMQgGmPQp0lLwZaU7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=B41/EYZNq0qVnbGM0+UPdI+TmVYCH8wdptnRHUogjpZEWiWsVErfrqXjQp06oVawG
+	 XkincJ0pHFnuaEM4S79uEMbnoIXOr5JF0GT4VPqgOI9FQzCZoubKwAM24J8TfJAPfH
+	 hUOncuyRHxk4c6EiPBa5rceqbp5ZPMasjapX/5VDsie96uWO/FxPDZcj16EjXolUUy
+	 gzNzmnzhPNYVuHbTTmMDpFtrEpeZ1mSHeB1nbjfc2aZZEp+TAC3MLfd9fVf23UNflV
+	 syv8SL/fn92MXH9/15ucH1ODMGO3+yC0lC2OMmXW22DreMHPBIj3rkjoUEDjPllA+I
+	 6xcO7/dAsiVlA==
+Date: Thu, 5 Nov 2026 10:42:17 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	media-ci@linuxtv.org
+Subject: Re: [PATCH v12 15/19] PCI: Add KUnit coverage for ACS isolation
+ checks
+Message-ID: <20261105084217.GJ478286@unreal>
+References: <20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com>
+ <20261103-fix-p2p-acs-v4-0-v12-15-912101f93517@nvidia.com>
+ <sashiko-outbox-195118@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -55,71 +61,96 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC33vhaPOxq9ydRAA--.29171S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF4UJw1DCF18uFW8KF4UJwb_yoW8Jw13pF
-	yDCayjkrZxGFs7t3s7Ar1Sy34Sg3Z3C3WxtrW8Z3yFva1UA398XrWDJ340vFyUXFWkCa1a
-	9rW0kryrZa17XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
-	IFyTuYvjfU8a9aDUUUU
-X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
+In-Reply-To: <sashiko-outbox-195118@kernel.org>
 
-Move `isa_init()` from `thread_info_init()` to `cpu_init()`.
+On Tue, Nov 03, 2026 at 11:11:10AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] PCI: duplicated mock device setup in pci_acs_flags_enabled_test()
+> --
+> 
+> commit cd21c328560f2b4befdb418098279304a429237f
+> Author: Leon Romanovsky <leon@kernel.org>
+> 
+> PCI: Add KUnit coverage for ACS isolation checks
+> 
+> This commit exposes pci_acs_flags_enabled() when KUnit is enabled and adds
+> KUnit tests in drivers/pci/pci_acs_test.c using mock config-space operations
+> to verify ACS isolation checks, missing capabilities, and failed config reads.
+> 
+> > diff --git a/drivers/pci/pci_acs_test.c b/drivers/pci/pci_acs_test.c
+> > index 18c697226762d..369444d2a04a0 100644
+> > --- a/drivers/pci/pci_acs_test.c
+> > +++ b/drivers/pci/pci_acs_test.c
+> > @@ -103,10 +103,145 @@ static void pci_acs_p2pdma_completion_test(struct kunit *test)
+> 
+> [ ... ]
+> 
+> > +static void pci_acs_flags_enabled_test(struct kunit *test)
+> > +{
+> > +	const struct acs_isolation_case *c = test->param_value;
+> > +	struct acs_ctrl_cfg cfg = {
+> > +		.devfn = PCI_DEVFN(0, 0),
+> > +		.cap = ACS_TEST_CAP,
+> > +		.ctrl = c->ctrl,
+> > +	};
+> > +	struct pci_bus *bus = kunit_kzalloc(test, sizeof(*bus), GFP_KERNEL);
+> > +	struct pci_dev *pdev = kunit_kzalloc(test, sizeof(*pdev), GFP_KERNEL);
+> > +
+> > +	KUNIT_ASSERT_NOT_NULL(test, bus);
+> > +	KUNIT_ASSERT_NOT_NULL(test, pdev);
+> > +
+> > +	bus->ops = &acs_ctrl_ops;
+> > +	bus->sysdata = &cfg;
+> > +
+> > +	pdev->bus = bus;
+> > +	pdev->devfn = cfg.devfn;
+> > +	pdev->acs_cap = ACS_TEST_CAP;
+> > +	pdev->acs_capabilities = ACS_ALL_CAPS;
+> > +
+> > +	KUNIT_EXPECT_EQ(test, pci_acs_flags_enabled(pdev, c->req), c->expect);
+> > +}
+> > +
+> > +static bool acs_isolated(struct kunit *test, struct acs_ctrl_cfg *cfg,
+> > +			 u16 acs_cap, u16 acs_flags)
+> > +{
+> > +	struct pci_bus *bus = kunit_kzalloc(test, sizeof(*bus), GFP_KERNEL);
+> > +	struct pci_dev *pdev = kunit_kzalloc(test, sizeof(*pdev), GFP_KERNEL);
+> > +
+> > +	KUNIT_ASSERT_NOT_NULL(test, bus);
+> > +	KUNIT_ASSERT_NOT_NULL(test, pdev);
+> > +
+> > +	bus->ops = &acs_ctrl_ops;
+> > +	bus->sysdata = cfg;
+> > +
+> > +	pdev->bus = bus;
+> > +	pdev->devfn = cfg->devfn;
+> > +	pdev->acs_cap = acs_cap;
+> > +	pdev->acs_capabilities = ACS_ALL_CAPS;
+> > +
+> > +	return pci_acs_flags_enabled(pdev, acs_flags);
+> > +}
+> 
+> [Severity: Low]
+> This isn't a bug, but in drivers/pci/pci_acs_test.c,
+> pci_acs_flags_enabled_test() open-codes the same mock struct pci_bus and
+> struct pci_dev allocation and initialization that acs_isolated() performs
+> immediately below it.
+> 
+> Also, struct acs_ctrl_cfg already carries the cap field, which every caller
+> initializes to the same value passed as the separate acs_cap argument to
+> acs_isolated().
+> 
+> Could acs_isolated() set pdev->acs_cap from cfg->cap directly, and could
+> pci_acs_flags_enabled_test() call acs_isolated() to avoid duplicating the
+> setup?
 
-Previously it only ran for the current hart; now it is called for every
-hart so that ISA extensions are parsed for the whole system.
+Yes, I can combine them.
 
-Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
----
- lib/riscv/processor.c | 1 -
- lib/riscv/setup.c     | 4 ++++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+Thanks
 
-diff --git a/lib/riscv/processor.c b/lib/riscv/processor.c
-index b055acc9..ddecc25e 100644
---- a/lib/riscv/processor.c
-+++ b/lib/riscv/processor.c
-@@ -81,7 +81,6 @@ void thread_info_init(void)
- 	unsigned long hartid = csr_read(CSR_SSCRATCH);
- 	int cpu = hartid_to_cpu(hartid);
- 
--	isa_init(&cpus[cpu]);
- 	csr_write(CSR_SSCRATCH, &cpus[cpu]);
- }
- 
-diff --git a/lib/riscv/setup.c b/lib/riscv/setup.c
-index f1121573..8c16686f 100644
---- a/lib/riscv/setup.c
-+++ b/lib/riscv/setup.c
-@@ -16,6 +16,7 @@
- #include <on-cpus.h>
- #include <vmalloc.h>
- #include <asm/csr.h>
-+#include <asm/isa.h>
- #include <asm/mmu.h>
- #include <asm/page.h>
- #include <asm/processor.h>
-@@ -105,6 +106,9 @@ static void cpu_init(void)
- 		cpu_init_acpi();
- 	}
- 
-+	for (int cpu = 0; cpu < nr_cpus; cpu++)
-+		isa_init(&cpus[cpu]);
-+
- 	me = hartid_to_cpu(csr_read(CSR_SSCRATCH));
- 	assert(cpu_present(me));
- 	set_cpu_online(me, true);
--- 
-2.47.3
-
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com?part=15
