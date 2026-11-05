@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793845698;
-	b=4NqIi+17VsA3wdXVvvSwLBYwrFWWpOE5R5WKk38nXIV98N+wTKlQU529uSlO6D6+lmWl
-	 mTpeRcG9YLr3BqcAQWvVZPV13eD0mVl76FRsym1k7T7VYIqYd7GmqW9yoC7TN37CpfoaC
-	 FWBPlWPHrh3PlAMh8H5j9vsf/OC3A4evIWFmZkJzYb9FALPPZBOTG2UR9yIBBKAjnOIre
-	 LS0isKlTbI4a4U/EDBNIQK7zQjjXY1isX0usGNpddDl379rXC9a6hS/0TPtQaJVqYQvhq
-	 zW14pZMoZAsVuSXVXEVLrZJyUGcH4OBKRDe9gud+Dhkd57jE8gUAmwQxjrBloxeE76g==
+	t=1793845757;
+	b=yFQmJD4o/NMv2DU5ZQqa4JArQbAKhsMeyRdDg3rOtg3N1rHNQVUl/rDRx6LFq9TQnZRo
+	 S/5hN40vWPln5wIMaFF/PxDqb6ogn/2MQcmgvSGdwnpxNCCc2vGxmYuESdAriitPdjRR+
+	 MFRghiWcgjbTtinNwp7s07s0V1P6/b/Q/wqF60Hmj21FKVULQF7Yrg7ij4UNmZVO82WCq
+	 fnIJdmemUb9RarcfldUIS53D9A75r8G4QyixY/vSC9q5fM6Tr7eiC4s3LV2BjFlYae/Of
+	 ctxbrCQNY5xhHsBRnOhEOhrmHOG1IP5DBHeBjBrxRStVMfLx0dKHeC5mzpRFEUjlXUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793845698;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793845757;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=WAgLOtwFwdtiIlyIU6JoOcmyKs3LIDv5T6amKikVU+8=;
-	b=3ffZghQeOp0/WyuHhkBct8P+b9bD/5gaRHlEErCApT9wCJe/XdGejS7MSlrUZvYiTLkS
-	 +7XPDI0GsRiTf166zgH1AJ4jMuFhPWZTrinjbU3cwSikZVRKm7bRoTsegmkFFrlmW6gdI
-	 zFyeBRfci+Ehnj6PNH4w/OXs/kZSudkG7uqwltVbVw8FRcKu5fyfwC3qDsaiiLGpW4qi/
-	 IBX2auBArRSpgcvDP74HDKUCscmxisaaNKg9YOpV3HQEhzm3i6CBIBjMkOLRQAqF55QW0
-	 /kC01JMm8ehfXnWQhGHhurNVUKd5lQDSbj06snWuJstRQez8/pF0u93NlwYrEbnFtsQ==
+	bh=8bQIuq0EDapgRaeQlX3rx0MA1mdiNGFeQSBeDJ6I4dI=;
+	b=HQOaplw0BkbTC0qzUtAdPsXyh5z6DGOfCNbv4iOtqr3lukUWJKoUiQ5drHwCryY6TzWC
+	 /FNo5wNhWO3/pvIs9k5Prbb8jwsyGtyzeFCH/lvtcKqYDVrkXwKDX6ll5DXicOhnXR4AW
+	 bjnUTeFAsl7nnAYsBM9B0lat4VxQUnkut6CicY76nKYXUCi2rECVQDKkCWG14Z60PR5qo
+	 dZsZ07Ti1ywnPq1LLYIKXIBylIJn/epxket7LURnUAp1zdjuVsO1Hs4fynKPkQde8TV1L
+	 u4t90SOhdEuT/LAhpPob1Ws1Y2zJZANtsJUTiMxGyl6koznlvtSOOMiJiOmKqHJXzSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MsQ1uUDo;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnNB46O+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5C7606A326;
-	Thu,  5 Nov 2026 02:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7AB606A31B;
+	Thu,  5 Nov 2026 02:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MsQ1uUDo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B651F000C1;
-	Thu,  5 Nov 2026 02:28:16 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnNB46O+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36F1F000C1;
+	Thu,  5 Nov 2026 02:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793845697;
-	bh=WAgLOtwFwdtiIlyIU6JoOcmyKs3LIDv5T6amKikVU+8=;
+	s=k20260515; t=1793845756;
+	bh=8bQIuq0EDapgRaeQlX3rx0MA1mdiNGFeQSBeDJ6I4dI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MsQ1uUDoHHC1cZaClUvIGdQESMSqCRlS61RmH5rtG4WW0qEe9hSg2LyPB4EZ9kjBx
-	 kW9hPQM1OGeXjoQ+wpGvXjZY5LTpNQBaQHEpbTV/3F7IVEoVOmwoBGrD9MM3MwaKmo
-	 FTLq+P/Vyp4CE7khA/XWHXVQOiQFyr88CzaFcaxiXpg+AosmguxlmPENN2xoogI8LU
-	 r8SZjAit/aLjVwhp2dOj6UlCpfnh+omGFAeDDH7VZXiFzMJAuDrPEyzjbhPrdWV0AU
-	 3oYzbZqi7CK9Ix+NvdI1xYFSrShmc2Db6oZHjkFQ6/MpsiV36+fNKOqByYEbYt4T3H
-	 XRw/jzim5D0Yg==
-Message-ID: <sashiko-outbox-198461@kernel.org>
+	b=HnNB46O+pNHEoi370ZCHnnOjUx9o/bUJ55UMsIKbCExZmhAvyhhBBQE8/ihrH446o
+	 +d6v0zrJcCL8d37Wrlk7/vrSLyMizfUc3oc75X5of5cfwzeM9pGG34RBS/Cpl5t0BV
+	 +E1VC5hB29Y9YGmtDOaCDhlCe2LH8x/Ms1n9PmyVLytPlOKsShB+9xsMhfafWZ9CNs
+	 uR+amI9HncEvdrE+BAQ7HGFkDnO3ZjibTo/UXGbnY7q+aLZcrZJnrOWAA2FKfrL7ve
+	 +x3zy+oQKyJCCA9YeuXHQXALx4TzGTJVe5tgzmMjrXRTKYGha3exmWbsKIbzePK1CZ
+	 QyrB1F6OLERwA==
+Message-ID: <sashiko-outbox-198464@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 20/20] KVM: selftests: Add Xen evtchn vs mmu_notifier
- race test for HVA caches
+Subject: Re: [PATCH v2 10/20] KVM: pfncache: Add guest-mode pinning
+ (GUEST_USES_PFN successor)
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
 Cc: linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-In-Reply-To: <20261105020104.2507083-21-dwmw2@infradead.org>
+In-Reply-To: <20261105020104.2507083-11-dwmw2@infradead.org>
 References: <20261105020104.2507083-1-dwmw2@infradead.org>
- <20261105020104.2507083-21-dwmw2@infradead.org>
+ <20261105020104.2507083-11-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 02:28:16 +0000
+Date: Thu, 05 Nov 2026 02:29:14 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,161 +61,143 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] KVM: selftests: commit message claims 20000 sends but TEST_ITERATIO=
-NS is 5000
-- [Low] KVM: selftests: xen_evtchn_hva_notify_race_test duplicates memslot =
-race test
-- [Low] KVM: selftests: unchecked madvise() and raw mmap() in HVA race test
+- [Medium] KVM: pfncache: gpc_kick_pinned_vcpu() re-posts vcpu_req on self-=
+refresh
 --
 
-commit cf7aec0532723ffed105931f7f5b74967ac26723
+commit 9027e5fc5e4260b0089300dc0cf3173581bbcfed
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: selftests: Add Xen evtchn vs mmu_notifier race test for HVA caches
+KVM: pfncache: Add guest-mode pinning (GUEST_USES_PFN successor)
 
-This commit adds a KVM selftest racing a guest EVTCHNOP_send loop against a
-host thread invoking MADV_DONTNEED on the userspace page backing the
-HVA-based shared_info and vcpu_info caches.
+This commit adds guest-mode pinning support to gfn_to_pfn_cache so that
+caches whose pfn is used directly from guest mode force the vCPU out of
+guest mode and post a per-cache service request upon invalidation or
+mutation.
 
->     KVM: selftests: Add Xen evtchn vs mmu_notifier race test for HVA cach=
-es
->    =20
->     Race a guest EVTCHNOP_send loop against a host thread hammering
->     MADV_DONTNEED on the userspace page backing HVA-based shared_info and
->     vcpu_info caches. Every madvise zaps the PTE and invalidates both
->     gfn_to_pfn_caches; every delivery must refresh through the window
->     (hva_to_pfn_retry() retries until the invalidation has finished, then
->     faults the page back in) and must succeed. The caches are HVA-based,
->     so no memslot semantics excuse a drop: unlike
->     xen_evtchn_memslot_race_test, which only pins the no-deadlock claim,
->     this test asserts every one of the 20000 sends delivers, and any
->     hypercall bounce to userspace fails the test.
->    =20
->     This exercises the pfncache invalidation protocol itself =E2=80=94 the
->     invalidate_start walk, the reader draining for a cache mid-teardown,
->     and the handshake between a refresh publishing a new mapping and a
->     concurrent invalidation vetoing it =E2=80=94 which is where a lifetim=
-e bug
->     in the cache would live; on a debug kernel one is expected to
->     surface as a splat rather than a dropped event.
->    =20
->     Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-
-[Severity: Low]
-The commit message states that this test asserts every one of the 20000 sen=
-ds
-delivers, but in tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race=
-_test.c
-TEST_ITERATIONS is defined as 5000 and guest_code() runs TEST_ITERATIONS
-hypercalls:
-
-#define TEST_ITERATIONS		5000
-...
-	for (i =3D 0; i < TEST_ITERATIONS; i++) {
-		rc =3D __xen_hypercall(__HYPERVISOR_event_channel_op,
-				     EVTCHNOP_send, &s);
-
-Should the commit message say 5000 sends to match TEST_ITERATIONS and the
-runtime estimate comment in main()?
-
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
-ftests/kvm/Makefile.kvm
-> index c17408f8d61f5..19dc0744f25f8 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -150,6 +150,7 @@ TEST_GEN_PROGS_x86 +=3D x86/debug_regs
->  TEST_GEN_PROGS_x86 +=3D x86/tsc_msrs_test
->  TEST_GEN_PROGS_x86 +=3D x86/vmx_pmu_caps_test
->  TEST_GEN_PROGS_x86 +=3D x86/xen_evtchn_memslot_race_test
-> +TEST_GEN_PROGS_x86 +=3D x86/xen_evtchn_hva_notify_race_test
-
-[Severity: Low]
-This isn't a bug, but tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify=
-_race_test.c
-duplicates most of tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_=
-test.c,
-including the hypercall definitions, struct evtchn_send, VM and vCPU creati=
-on,
-KVM_XEN_HVM_CONFIG setup, KVM_XEN_ATTR_TYPE_LONG_MODE setup,
-KVM_XEN_ATTR_TYPE_EVTCHN IPI loopback routing, worker thread lifecycle,
-alarm() watchdog setup, and the vcpu_run() / get_ucall() loop in main().
-
-Since only the backing memory setup (HVA vs GPA/memslot), the churn thread
-body (madvise MADV_DONTNEED vs memslot update), and whether KVM_EXIT_XEN
-hypercall bounces are tolerated differ between the two tests, could this HVA
-mmu_notifier variant be folded into xen_evtchn_memslot_race_test.c as a test
-mode or parameter rather than adding a separate standalone binary?
-
-> diff --git a/tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_t=
-est.c b/tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_test.c
-> new file mode 100644
-> index 0000000000000..c105435f63577
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_test.c
+> diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+> index 1c98b7bdbf09c..5cb30525e577c 100644
+> --- a/virt/kvm/pfncache.c
+> +++ b/virt/kvm/pfncache.c
+> @@ -25,7 +25,9 @@
+>  void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long st=
+art,
+>  				       unsigned long end)
+>  {
+> +	DECLARE_BITMAP(vcpu_bitmap, KVM_MAX_VCPUS);
+>  	struct gfn_to_pfn_cache *gpc;
+> +	bool evict_vcpus =3D false;
+>  	bool cleared =3D false;
+> =20
+>  	spin_lock(&kvm->gpc_lock);
+> @@ -127,10 +129,60 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *=
+kvm, unsigned long start,
+>  			 */
+>  			if (old & (GPC_VALID | GPC_INVALIDATING))
+>  				cleared =3D true;
+> +
+> +			/*
+> +			 * If a vCPU has the pfn pinned for direct use from
+> +			 * guest mode, it must be forced out of guest mode
+> +			 * before the invalidation may complete. The pin bit
+> +			 * was set with a cmpxchg only while GPC_VALID held,
+> +			 * so this same read of 'old' cannot miss it. It is
+> +			 * NOT cleared here: only the vCPU itself (on request
+> +			 * service, before re-pinning) or a mutator's xchg
+> +			 * (which inherits the kick duty) may clear it. A
+> +			 * stale pin costs at most a spurious request bit:
+> +			 * kvm_make_vcpus_request_mask() only IPIs and waits
+> +			 * for targets actually in guest mode.
+> +			 */
+> +			if (old & GPC_GUEST_USING) {
+> +				if (!evict_vcpus) {
+> +					evict_vcpus =3D true;
+> +					bitmap_zero(vcpu_bitmap, KVM_MAX_VCPUS);
+> +				}
+> +				__set_bit(gpc->vcpu->vcpu_idx, vcpu_bitmap);
+> +				/*
+> +				 * Set this cache's own service request (what
+> +				 * the vCPU must do before re-entering); the
+> +				 * force-out below is common to all of them.
+> +				 */
+> +				__kvm_make_request(gpc->vcpu_req, gpc->vcpu);
+> +			}
+>  		}
+>  	}
+>  	spin_unlock(&kvm->gpc_lock);
 
 [ ... ]
 
-> +static void *backing_churn(void *arg)
+> @@ -224,6 +276,107 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, un=
+signed long len)
+>  	return true;
+>  }
+> =20
+> +/*
+> + * A mutator's xchg of the state word to zero may have consumed a live
+> + * GPC_GUEST_USING pin. Clearing that bit obliges the clearer to do what
+> + * the invalidation walk would have done: post the cache's service
+> + * request and force the vCPU out of guest mode, waiting until it has
+> + * left, before mutating or tearing down what the guest may be using.
+> + *
+> + * The service request is posted unconditionally: consuming a pin means
+> + * whatever physical address the vCPU had latched (e.g. into a hardware
+> + * control structure) is stale, and only the request handler makes that
+> + * good. That holds even when the pinning vCPU is the caller itself =E2=
+=80=94
+> + * a vCPU refreshing its own pinned cache may re-map at a different pfn,
+> + * and without the request nothing would rewrite the stale address
+> + * before the next guest entry. Only the waited force-out is skipped in
+> + * that case: a vCPU running a refresh is by definition not in guest
+> + * mode. (The vCPU's own unpin is the one silent path, in
+> + * kvm_gpc_unpin_for_guest(), because unpinning asserts the address is
+> + * no longer latched anywhere.)
+> + */
+> +static void gpc_kick_pinned_vcpu(struct gfn_to_pfn_cache *gpc, int old_s=
+tate)
 > +{
-> +	void *backing =3D arg;
+> +	DECLARE_BITMAP(vcpu_bitmap, KVM_MAX_VCPUS);
 > +
-> +	while (!atomic_load(&churn_stop))
-> +		madvise(backing, PAGE_SIZE, MADV_DONTNEED);
+> +	if (!(old_state & GPC_GUEST_USING))
+> +		return;
+> +	if (WARN_ON_ONCE(!gpc->vcpu))
+> +		return;
 > +
-> +	return NULL;
-> +}
+> +	__kvm_make_request(gpc->vcpu_req, gpc->vcpu);
 > +
-> +int main(int argc, char *argv[])
-> +{
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	pthread_t thread;
-> +	struct ucall uc;
-> +	void *backing;
-> +	int done =3D 0;
-> +
-> +	int xen_caps =3D kvm_check_cap(KVM_CAP_XEN_HVM);
-> +
-> +	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_SHARED_INFO_HVA);
-> +	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_EVTCHN_SEND);
-> +
-> +	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
-> +
-> +	/*
-> +	 * The shared_info page and the vcpu_info within it live in plain
-> +	 * anonymous VMM memory, not in any memslot: nothing but the
-> +	 * mmu_notifier churn below can perturb the caches.
-> +	 */
-> +	backing =3D mmap(NULL, PAGE_SIZE, PROT_READ | PROT_WRITE,
-> +		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	TEST_ASSERT(backing !=3D MAP_FAILED, "mmap of backing page failed");
+> +	if (kvm_get_running_vcpu() =3D=3D gpc->vcpu)
+> +		return;
 
-[ ... ]
+[Severity: Medium]
+When gfn_to_pfn_cache_invalidate_start() invalidates a pinned cache, it
+clears GPC_VALID, sets GPC_INVALIDATING, leaves GPC_GUEST_USING set in
+gpc->state, and posts gpc->vcpu_req to gpc->vcpu:
 
-> +	atomic_store(&churn_stop, true);
-> +	kvm_pthread_join(thread, NULL);
-> +	alarm(0);
-> +
-> +	kvm_vm_free(vm);
-> +	return 0;
-> +}
+	do {
+		new =3D old & ~(GPC_VALID | GPC_BECOMING_VALID);
+		if (old & GPC_VALID)
+			new |=3D GPC_INVALIDATING;
+	} while (!atomic_try_cmpxchg(&gpc->state, &old, new));
 
-[Severity: Low]
-In backing_churn(), madvise(backing, PAGE_SIZE, MADV_DONTNEED) does not che=
-ck
-for errors; if madvise() fails, the churn loop would spin without zapping P=
-TEs
-or triggering mmu_notifier invalidations, allowing the test to pass without
-exercising the race.
+When gpc->vcpu subsequently services gpc->vcpu_req on the next guest entry
+attempt, kvm_check_request() clears gpc->vcpu_req and the request handler
+calls kvm_gpc_refresh() (or kvm_gpc_activate()) before re-pinning with
+kvm_gpc_pin_for_guest(), as described in kvm_gpc_init_for_vcpu().
 
-In addition, main() open-codes mmap() + TEST_ASSERT() and exits after
-kvm_vm_free(vm) without unmapping backing.
+Because GPC_VALID is clear, __kvm_gpc_refresh() does not take the fast path
+and instead consumes the leftover GPC_GUEST_USING bit via atomic_xchg():
 
-Should backing_churn() and main() use the kvm_madvise(), kvm_mmap(), and
-kvm_munmap() helpers from kvm_syscalls.h instead?
+	old_state =3D atomic_xchg(&gpc->state, GPC_INVALIDATING);
+	gpc_kick_pinned_vcpu(gpc, old_state);
+
+Won't gpc_kick_pinned_vcpu() see GPC_GUEST_USING in old_state and
+unconditionally re-post gpc->vcpu_req to gpc->vcpu right in the middle of
+handling that very request, causing the subsequent guest entry to abort and
+run the request handler a second time (or loop if the handler does not hit
+the __kvm_gpc_refresh() fast path on the next pass)?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105020104.2507=
-083-1-dwmw2@infradead.org?part=3D20
+083-1-dwmw2@infradead.org?part=3D10
