@@ -1,76 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793838362;
-	b=nHpIRaKWmaXpXL3akx4RG1/Qko2pYYEDkH9RjdP6SoDpbTzIG8nOR3RzYriK9UdghzPR
-	 +nYOf59rxNMaaJAWDJ50CXkf++JQ+PT1sBSHwWMq9N8dfzMzB/B8IwBRWCqU7s7sQkccI
-	 JihhuyBJq+9Yze8xloCxMZg0o67swZ06OLHkzOyumfwovG/Lbl5OIKObZLBKc1dRnQGP7
-	 KoRKPrcS2GHRPgjrlsGt8szZ6Pq1F05KKmZQzY+hftsZSUK/vWTKWq96Fk+zdeJWucpNk
-	 BNWip/NOLOgeVHcAsSriuxdvuiwlTURLTbo/aaHG0uI3r+pYZad1O1VdTJnG4wyRswA==
+	t=1793838381;
+	b=aF10TZr6CaRNdqKdn3LYmX2NnsQAgDuZhNfgrL+WPfOrVIB6biSHziWL6moX3LOgbn9A
+	 KFOm8r7YUVcepBkty3LMP6QQ7zF59454ieS+ycCzWirlO2aYp4r6DbewliWp2l8Y8jkd3
+	 XcQGvvqA8w+lroA+3bLmUMSO8Cz6nxYHTrS8OU6kOMNlRmGwtwr5/63Z1pAairuarqAca
+	 q/kkskAc9Hkcx4tz+7OzpHa/NjcEoYMV0AdyXRVOOYwAgPP8hjcmmjlArsk6dgJHe077i
+	 veqQ63+3WyMUOBJSGt2u0529x65MGWLIG/XOlD7y+XSuIWlNG2ivnCQk8PmqajlJhXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793838362;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=9xJPZil9brVxmY/ifi9xfR018LsF43MA5zg17UL7UkA=;
-	b=Q3Si/8c/oReT57DFoJaYngWgayxv/PnplyAmdW3xAjU/z0OycOfhjOQL9aj5XpAvlw8c
-	 V9hnpVAsH9trku0Xpj0qCWxug3dVXsmPgsP1/IgM/yJLTghahu9hCn6whSahFMRvet/Ou
-	 SPNPuH+sfakqj9ZIsL4xhjrCofoiFkrapkBjbDqcoAxG8ltYAxjl+qixJqIbeFzNKG3me
-	 +ysIUd7mX3OX7uyGgZ4lYTzn5otum+MX1+YSKt3jSMcWUA9osmRuWAiAra3HRA4fMNB3c
-	 oFH/mMxpwGSOG/CuexJ0hyk9SCnE+jvPfOAm0KhlpZ4+yqCiIxhmpxf5DKMxsl5lchg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793838381;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=f1CvH+as+agX5N9iINX97/Uef8bnH6gfjICU40OR3xk=;
+	b=aDBwwzu9x6a+3fW4wT+9DwAdifDyqm1ZN7NzVhH8Bl5SWA1XLHd+U7zxD2/OM60WEtq5
+	 u1wOXoHbSfRfGosQnU3g8Z9JqJtJgzoCSNEOvupJvzo2+W1S8uPApVeFgyT89dEXoHAUU
+	 dFvhJVnU/RKIipDjXw1NL84l7o7+iA0b0cunvsFx5zS9njimmJX9W9nPHlDSJr3ilBldy
+	 +j8Xh74pgJY5QBAY1SFPsK+4eWXqpeV5Gq31DZNNZGTvOjt359oibcX95nXy/0Hc2letf
+	 F1Wh2P6Elj1zVniCxR/9fsnFnGSc0E3AGc4Aa8P/ni8Z6yMEpgZm71VIAGMrMW0+EAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PMLUgNL1;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NF6TE60S;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B8B606A31B
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 00:25:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05B8B606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B20D606A31B;
+	Thu,  5 Nov 2026 00:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PMLUgNL1
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a065e2933fso1715323b3a.3
-        for <kvm@vger.kernel.org>; Wed, 04 Nov 2026 16:25:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793838356; x=1794443156; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=9xJPZil9brVxmY/ifi9xfR018LsF43MA5zg17UL7UkA=;
-        b=PMLUgNL1dUmudPDpvtAPH2TTWxtNSP0FmllM7UZM2nnCiX92i9wXF6dmQXGeNrBzOl
-         fI5NA0tJfFm44VDfuvUc7ZJye9sQBZ0tJ4fN/vgjUGc3wRQDIfpjNkmv/SL2EKXrNZNy
-         5sjbEbvvuezc93+H2zYL3QlIrSYpTPJ0+rgoUuz24FqUnyTS1ZHucd1BItZo3PdMgQV/
-         sqFzaK0XAjVka4qHEKYe8c1GYWue6tlb2HT6dJatJVce7Qb+PXr4c6O15GjWd02HdwgA
-         uvool4PHIEjJtAzHYYeM5UitIx21g81fuT9JsVBFM0+7fscYuZmxU0rBNSCV+PvBhsb9
-         1ybg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793838356; x=1794443156;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9xJPZil9brVxmY/ifi9xfR018LsF43MA5zg17UL7UkA=;
-        b=J6ftFetWev2I7lTokBzSeTNkGjZSJ4lMAGoGG15491/b3CFpK7S2dhd8wK32iC7p/b
-         dEUb5MOvXHuFsH9CqJodXVygIJ8thVP9UgX2OABEo+EPNL5WusEX+dIFNTB8KjczepUl
-         zJVMKrOFxPGLOLL5TgcQbv4BaS7A9cqwGh2uskjsqtHGOWCpQVU0/P3/oNbiC/sF9Eza
-         LRCu/lB67CA7LsWV+5rSWb2GY3Jd2xkZMTyR1hfRUI/en8EDhchuWD38iwPnEReM/NQ7
-         nOa3jVC1BXbhZSZ/N5ocfWBKTE298yybNUdpdOIQCDXS9Cyg8gIgMbIJBXi090WoZh5S
-         1PKg==
-X-Forwarded-Encrypted: i=1; AKwUvBwny/RLBEN1Tvl43UgRBWJHTcGG0sj/qdEGXNsE0sq0cLWSTFrqMSNv3J6N8uRI0LVyuyE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/l5eHkUnYvcRDCqbfpUyMKVRQfm0bhXy020GZ04m1kmP2dCE9f
-	K/wRLScyaodeFDp/PLW9umoGV7Q/3rrVaQZ3+oetxq4sj6USzrMPvrWfRkirBxj6DepjJwlbj2B
-	AWbOxGA==
-X-Received: from pfbbv15.prod.google.com ([2002:a05:6a00:414f:b0:88b:e728:b55f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6de7:b0:89d:af47:905e
- with SMTP id d2e1a72fcca58-8a9bc34be56mr14519833b3a.25.1793838356026; Wed, 04
- Nov 2026 16:25:56 -0800 (PST)
-Date: Wed, 4 Nov 2026 16:25:55 -0800
-In-Reply-To: <CALMp9eRU6G-spTgzkKdh6E=U7omQsFDM_2nH4KEPZieg1e-zgQ@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NF6TE60S
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959D91F000C1;
+	Thu,  5 Nov 2026 00:26:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793838380;
+	bh=f1CvH+as+agX5N9iINX97/Uef8bnH6gfjICU40OR3xk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NF6TE60SuJ/RpFwiucFOH4X1hDTcm23WfZjdayPf3S5MdR7D8A4LtcLDyGwZlsJj/
+	 tFMRVv1bEZhd9KplPtlj2KEX7xVHjaGoh5CtZ62iYtrN0FZpdZXzT5gK7T+r8IwUt6
+	 yHMGgKutL9z9CKmcvit1aJntK3pn/Xd5Rs1B8Q4zfa5i7pICeiblBRKqUND87UlL14
+	 yvCJpLLqVTnQ/QpalBhaXXAT28o4U9GYx1o0bVnajYQmWJdzN9Wiaxg8GTzyTmqIoU
+	 fRIkiDx7963HmBvbc4Qy8VyeVz4ovn7ywyzXnsGLdL2sc/43TnN00Xjba0MOAXKnPR
+	 fL6Tgp7IDOk6w==
+Date: Wed, 4 Nov 2026 16:26:19 -0800
+From: Oliver Upton <oupton@kernel.org>
+To: Sascha Bischoff <sascha.bischoff@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, maz@kernel.org, oliver.upton@linux.dev,
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
+	peter.maydell@linaro.org, lpieralisi@kernel.org,
+	timothy.hayes@arm.com, fuad.tabba@linux.dev
+Subject: Re: [PATCH v2 08/16] KVM: arm64: gic-v5: Add ITS translation cache
+ maintenance
+Message-ID: <auvNK3FK7TxwGu8g@kernel.org>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+ <20261102194454.4086911-9-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,98 +60,167 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261020234535.3182385-1-jmattson@google.com> <20261020234535.3182385-3-jmattson@google.com>
- <auuZcZhBhrkZd9qM@google.com> <CALMp9eTpWP6XSYPJQjBwPsNWmPzLNh+EDGivMFZsUnixqpGkVA@mail.gmail.com>
- <CALMp9eRU6G-spTgzkKdh6E=U7omQsFDM_2nH4KEPZieg1e-zgQ@mail.gmail.com>
-Message-ID: <auvNE28Xx7IF6Tes@google.com>
-Subject: Re: [PATCH 2/4] KVM: VMX: Refresh LBR MSR intercepts on full MSR
- intercept recalc
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Like Xu <likexu@tencent.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102194454.4086911-9-sascha.bischoff@arm.com>
 
-On Wed, Nov 04, 2026, Jim Mattson wrote:
-> On Wed, Nov 4, 2026 at 3:49=E2=80=AFPM Jim Mattson <jmattson@google.com> =
-wrote:
-> >
-> > On Wed, Nov 4, 2026 at 12:45=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > On Tue, Oct 20, 2026, Jim Mattson wrote:
-> > > > Re-apply the LBR MSR intercepts in vmx_recalc_msr_intercepts() if t=
-he
-> > > > LBRs are currently passed through, so that changes to userspace MSR
-> > > > filters are reflected in the MSR bitmap.  Unlike SVM, which can sim=
-ply
-> > > > rewrite the intercepts in either direction, leave the bitmap alone =
-if
-> > > > the LBRs aren't passed through, as a filter can only force intercep=
-tion,
-> > > > never prevent it, i.e. the bitmap is already correct.  Note, cleari=
-ng
-> > > > msr_passthrough to force vmx_passthrough_lbr_msrs() to re-apply the
-> > > > intercepts on the next VM-Enter isn't an option, as doing so would
-> > > > leave stale passthrough bits behind if the guest LBR event is no lo=
-nger
-> > > > active.
-> > > >
-> > > > vmx_recalc_msr_intercepts() is invoked in response to
-> > > > KVM_REQ_RECALC_INTERCEPTS, which is raised on MSR filter updates, b=
-ut it
-> > > > skips the LBR MSRs, and vmx_enable_lbr_msrs_passthrough() does noth=
-ing
-> > > > if lbr_desc->msr_passthrough is already set.  If the LBR MSRs are p=
-assed
-> > > > through when userspace installs a filter that denies them, they rem=
-ain
-> > > > passed through, and the guest can access them without exiting to
-> > > > userspace.  Conversely, if a filter forced interception when the gu=
-est
-> > > > LBR event became active, relaxing the filter leaves the MSRs needle=
-ssly
-> > > > intercepted.  Either way, the bitmap remains stale until the guest =
-LBR
-> > > > event is torn down and recreated.
-> > > >
-> > > > Only x2APIC MSRs are exempt from userspace filtering (see
-> > > > kvm_msr_allowed() and the KVM_X86_SET_MSR_FILTER documentation), an=
-d the
-> > > > filter is honored when LBR passthrough is first enabled, so KVM's
-> > > > behavior shouldn't depend on whether the filter is set before or af=
-ter
-> > > > the guest enables LBRs.  Drop the LBR MSRs from the comment claimin=
-g
-> > > > that they can't be filtered by userspace, and clarify that
-> > > > lbr_desc.msr_passthrough tracks KVM's desired interception, which m=
-ay
-> > > > not match the MSR bitmap when userspace filters are in play.
-> > > >
-> > > > Fixes: 9254beaafd12 ("KVM: vmx/pmu: Reduce the overhead of LBR pass=
--through or cancellation")
-> > > > Cc: stable@vger.kernel.org
-> > >
-> > > Meh, this isn't stable material.  Unlike SVM, where LBR virtualizatio=
-n is tied
-> > > to a pile of other crud, if userspace wants to filter LBRs on Intel i=
-t should
-> > > just not expose LBRs in the first place.
-> >
-> > The functionality is not equivalent. For whatever reason, MSR
-> > filtering can be modified dynamically.
->=20
-> Oh, and, duh, MSR filtering doesn't disallow the LBRs; it just
-> reflects them to userspace.
+On Mon, Nov 02, 2026 at 07:44:46PM +0000, Sascha Bischoff wrote:
+> Walking the guest DT and ITTs on every MSI or ITS event is unnecessary
+> once a DeviceID/EventID pair has been resolved. Add an XArray indexed
+> by the DeviceID/EventID pair to cache resolved translations as a
+> disposable acceleration structure, avoiding repeated walks of guest
+> memory.
+> 
+> Cache entries hold references to the resolved struct vgic_irq objects
+> stored in the VM-wide LPI xarray. Lookups use RCU to access entries in
+> interrupt context without taking a raw spinlock, and take an IRQ
+> reference before returning an entry to the caller. Cache eviction drops
+> the reference held by the cache and defers freeing the entry until RCU
+> readers have finished. This keeps the cache tied to the normal LPI
+> object lifetime instead of storing raw LPI numbers.
+> 
+> Invalidate cached translations when the table configuration or guest
+> invalidation commands make them stale. Changes to DT_BASER or DT_CFGR
+> drop the entire cache, while writes of unchanged values leave it intact.
+> INV_EVENTR removes either one event or the events covered by an L1 ITT
+> entry, and INV_DEVICER removes the translations covered by either an L2
+> DT entry or an L1 DT entry.
+> 
+> The cache is not part of any userspace ABI and is never authoritative:
+> entries can always be rebuilt from guest memory on the next lookup.
+> 
+> The vgic_irq objects for LPIs track valid translations rather than
+> mirror interrupt state. Mirroring that state would require querying
+> the GIC on every guest exit. Once direct injection is added, the
+> objects also record whether an LPI is mapped into the host ITT.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-its-v5.c | 219 ++++++++++++++++++++++++++++--
+>  include/kvm/arm_vgic.h            |   3 +
+>  2 files changed, 208 insertions(+), 14 deletions(-)
 
-Right, but how many real world deployments actually enable vLBR *and* want =
-to
-intercept accesses *and* want to do so dynamically?  This isn't a particula=
-rly
-dangerous change by any means, but sending things to stable@ does incur som=
-e
-amount of downstream work.  Unless there's an actual end user that's affect=
-ed by
-this flaw, I'd much prefer not to create more work.
+Looking at the diffstat alone, I wonder why we can't share the
+translation cache implementation between GICv3 and GICv5 as they
+accomplish the exact same thing.
+
+> +struct its_cache_translation_entry {
+> +	struct rcu_head rcu;
+> +	struct vgic_irq *irq;
+> +};
+
+Err... So the vgic_irq struct is already RCU-protected in GICv3 at
+least. When the refcount drops to 0 no other observer can take a
+reference on the object and the memory itself is freed after a grace
+period.
+
+So now we're using RCU on a struct that only contains a pointer to
+another object subject to RCU protection?
+
+> +static void its_cache_erase_range(struct vgic_v5_its *its,
+> +				  unsigned long first, unsigned long last)
+> +{
+> +	struct its_cache_translation_entry *entry;
+> +	unsigned long key;
+> +
+> +	xa_for_each_range(&its->translation_cache, key, entry, first, last)
+> +		its_cache_erase_translation(its, key);
+> +}
+> +
+
+Optimizing invalidations can be added on as a follow-up patch. The GICv3
+ITS gets away with invalidating the entire cache any time it needs to
+make a change.
+
+> +static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its *its,
+> +				     u32 device_id, u16 event_id,
+> +				     struct vgic_irq *irq)
+> +{
+> +	unsigned long key = its_cache_key(device_id, event_id);
+> +	struct its_cache_translation_entry *entry;
+> +	struct its_cache_translation_entry *old;
+> +
+> +	entry = kzalloc_obj(*entry, GFP_KERNEL_ACCOUNT);
+> +	if (!entry)
+> +		return -ENOMEM;
+> +
+> +	entry->irq = irq;
+> +
+> +	old = xa_store(&its->translation_cache, key, entry,
+> +		       GFP_KERNEL_ACCOUNT);
+> +	if (xa_is_err(old)) {
+> +		kfree(entry);
+> +		return xa_err(old);
+> +	}
+> +
+> +	if (old)
+> +		its_cache_drop_translation(kvm, old);
+> +
+> +	return 0;
+> +}
+> +
+> +static void its_cache_clear_translations(struct vgic_v5_its *its)
+> +{
+> +	struct its_cache_translation_entry *entry;
+> +	unsigned long key;
+> +
+> +	xa_for_each(&its->translation_cache, key, entry)
+> +		its_cache_erase_translation(its, key);
+> +}
+> +
+> +static int its_cache_look_up_translation(struct vgic_v5_its *its,
+> +					 u32 device_id, u16 event_id,
+> +					 struct vgic_irq **irq)
+> +{
+> +	unsigned long key = its_cache_key(device_id, event_id);
+> +	struct its_cache_translation_entry *entry;
+> +	int ret = -ENXIO;
+> +
+> +	rcu_read_lock();
+> +	entry = xa_load(&its->translation_cache, key);
+> +	if (entry && vgic_try_get_irq_ref(entry->irq)) {
+> +		*irq = entry->irq;
+> +		ret = 0;
+> +	}
+> +	rcu_read_unlock();
+> +
+> +	return ret;
+> +}
+> +
+> +static int its_cache_l2sz_bits(u8 l2sz)
+> +{
+> +	if (l2sz > GICV5_ITS_DT_ITT_CFGR_L2SZ_64k)
+> +		return -EINVAL;
+> +
+> +	/* L2SZ 0, 1, and 2 encode 4K, 16K, and 64K tables of 8-byte entries. */
+> +	return 9 + 2 * l2sz;
+> +}
+> +
+> +static void its_cache_handle_inv_devicer(struct vgic_v5_its *its)
+> +{
+> +	unsigned int bits = its->inv_devicer.event_id_bits;
+> +	int l2_bits;
+> +
+> +	if (its->inv_devicer.l1 && its->dt_cfgr.structure) {
+> +		l2_bits = its_cache_l2sz_bits(its->dt_cfgr.l2sz);
+> +		if (l2_bits < 0)
+> +			return;
+
++1 to Wei-Lin's comment about the CONSTRAINED UNPREDICTABLE behavior.
+I don't think ignoring the invalidation is a valid option.
+
+> +	if (its->inv_eventr.l1) {
+> +		/* An L1 ITTE covers the EventIDs in its L2 ITT. */
+> +		bits = its_cache_l2sz_bits(its->inv_eventr.itt_l2sz);
+> +		if (bits < 0)
+> +			return;
+
+Same here.
+
+Overall, we need a very good explanation for why there isn't any code
+reuse. We've had plenty of bugs in this territory on GICv3 and adding
+another cache implementation doesn't seem particularly desirable.
+
+Thanks,
+Oliver
