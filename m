@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793912860;
-	b=lwyhyHnq+RTFLNV7We7IW28sO1tzo13z4zfP988/zQvsvkxOklW2MN+7cnQa7j3UiEre
-	 HFe1U+ASMnRij8un3rZ9gOayRqeHSYAoaf6RhCaWqX7bEUKANS7l3DqLl+Ei1ai8a2wEL
-	 7943bAqt7hjiW7kH1u0PpwEuP8KtQ4fph8NhL3DP4wf2BC65wDLiDXvet7Ps3qkP3Pdd+
-	 s3Ho1x+YM+4yKhYcG3sUsSSTnfbdZ9k0oAW33PG/s43wk7/pkPL7rOzDe43ajOrjnQ615
-	 QlvScbOR72xmW+g6f32jm6pzctCqMv6KjuBMv8HfunY6Ikf/aUbTIaN84NSu1yTRzhg==
+	t=1793912884;
+	b=ucN+kiwI6FEI90VERG575MGza2QKsOtCUy/lbeIaYTOiXUUrrjWHYUx2mnNQ4qvaC424
+	 gQHQQ07RQUZ0VpW4cmf8EQX+Y4tzRCNzZ3zhpZ1OqVjUAHkbjES1WZuEINsv4dEbXC6/X
+	 k4qcQhJgBWGVsdPQynSOFJQJAlRuKBPmzNJcFPsxnsUzUESGgpqo0yK7XpQf8hAoChf8K
+	 oTk+5M3lnJUz1SxP0TujgByi9Ln8/ekoyQKlBj/rgB2COz/+5ecDnM/xuGmYUTYtytiBw
+	 fPfs71cAnbuzkwDiFj4g4Lr3J4TUdTqv9/IzQEJORKmUi9qI/F5TU74okZlLNsNdDsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793912860;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793912884;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=8poJEEODdqpnj3NMXG7P61yssgyxm5Fvw3WLCRHvkPM=;
-	b=4wysxX8wSBJGU2hElOZLEeIzPhrZfyw5oUYESNuYE8qH2GxRBTE0IgrXGZXQxCzUGWdb
-	 RIUONg5E2nYZS3to56bBZm5RPMAg4A66BgXzKU1sNih9t/mZq0lrpkEdsllQzHhbiu0O4
-	 NFc95aj1QRWm8LZm6+PEZ2dCpHppvV3osP3+JKD3QxkHAWMFPmvYzxF6JrHc+RuMG2B6Z
-	 arQ689xYO+4MzOByD+rDdQ6Qr4Vv7CMDZamhXvxNi4aBduoXXi/UzZYPvei+iJDlVy29e
-	 zxcF4/u43l0nqWX7/+yeavFWRdzv13X5plGgKoELfwLHNXo7w1+7sCyhsZcJdor/oow==
+	bh=AH46OuGdtEt1nsUri8AEqTjCIJ9jhn5rP+r92fYTTuo=;
+	b=T6nmcKmtY8DCJLQXIh4aTk7FI7DTbK6NHK0AD30+a7NHw1msNi62XhiXCVW/EDEUH/hZ
+	 BS8+wBUP+gRWaoVpTVqfRzE+TN3TVbunMy7aelv+RiIrbEyCjwivCPrzHLi7l0JV85uD/
+	 pua4K8l7AsVBExrpKDntakWJWO0gn3UpkQvEu0GIi6v6W2JmSBlNY3HAtg779Hkpx6nRU
+	 aMo+Vot3FTZTm1NzkdisH1aTm4WyFbBKOBQ1wVD+VBzM1VHEHbN5VY+RFsOmB0X8uckqh
+	 sV5lgHOLyrGoJsmRM0vq21G/RYqWyKU41ltprO8mQL/l/C87NCM2LDL68foPt5AajtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="JJnEdLY/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gQXtnC+u;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A992C606D81F;
-	Thu,  5 Nov 2026 21:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518AA606EE98;
+	Thu,  5 Nov 2026 21:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JJnEdLY/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3BE1F008A2;
-	Thu,  5 Nov 2026 21:07:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gQXtnC+u
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DBB1F008AB;
+	Thu,  5 Nov 2026 21:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793912859;
-	bh=8poJEEODdqpnj3NMXG7P61yssgyxm5Fvw3WLCRHvkPM=;
+	s=k20260515; t=1793912884;
+	bh=AH46OuGdtEt1nsUri8AEqTjCIJ9jhn5rP+r92fYTTuo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JJnEdLY/zYN4DtzCvHaF3aYEDTJDbnUNcVAnof1QRCeGAgIIK28vUSZ89mm0DVgQW
-	 OZgvxlyxVwupAuJXa6fkzCza5MJNC5CF4+UERI+9chyH32S4KmfH+oQjkhWmNEnkdd
-	 NTmlWt8u9sG20yc7yM1IhHIB4PmnviY+RktBJ2Ws3RZfCWOEYw7MPWhPLvtrNgSrJJ
-	 CWHFd6q8LuEoPzf2MHgA9gMWZF6dm1M8eBYIEPRBAUhnXPyYf3T9oHdEZwrT2iaQPm
-	 QADKRVvIXSwjbnMPyLbtsx5qrxDCRLncA81Gon5WQXHiJDFej/hta0SbkuIGntrRJ5
-	 jkSY/KYBGfMXg==
+	b=gQXtnC+uGV3ca+q7ByIhTFttKWFz/mEPWtGFIHyr1U7eyA5UiL3F5di8hwOyKNKIF
+	 owKNBe70mg3Zo5esALsOGrB3Gu4dftp1gp/kDfIf8QLSYdragHGzq3le/t0ApgBOdt
+	 W9up1YKjS36n6toNIJ3j5acZKXZ8wWo1sMDx7UIrb0pziMl9w8OPwDPPoOYAZT36u2
+	 vi8ESoYJVVURVm/u4/xMe23aJwZSVnqx7/HIEZFlTMpz35L2uOhW7gv4mJl1kf17SO
+	 iv7fymeQuygUorjvcrauyoeA1G+MidvGijWcp/sEyevbIArziwLEOE45fNvfWtSV44
+	 zrRXpq/nRe5Qg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 05 Nov 2026 21:05:39 +0000
-Subject: [PATCH 08/14] xen: convert xenstore interface mmap hooks to
+Date: Thu, 05 Nov 2026 21:05:41 +0000
+Subject: [PATCH 10/14] soc: qcom: rmtfs_mem: convert mmap hook to
  mmap_prepare
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-late-2026-mmap_prepare-v1-8-c56aadfbab8a@kernel.org>
+Message-Id: <20261105-late-2026-mmap_prepare-v1-10-c56aadfbab8a@kernel.org>
 References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
 In-Reply-To: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
 To: Juergen Gross <jgross@suse.com>, 
@@ -100,101 +100,70 @@ Cc: ljs@kernel.org, xen-devel@lists.xenproject.org,
  linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
  op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2905; i=ljs@kernel.org;
- h=from:subject:message-id; bh=uh2Od35/LsvovUiSJhdcBoUQz0og1zoAftz4JcEDodw=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLevF+TGLFqhuIqraPTpP99SytgzPSUeCxyfgWbx3LzR
- b22OlPtOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRc4EMf6WepYU9X7CEe6LH
- mj+/A6Q+9k5zOmhSeGibH4fHZZXNfb2MDIdflcc7aDTorpSZ8Pb8zNq5Hef3JWZNCZGbx8VxZPM
- tdW4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2040; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=VZRnIpM2wCvIjSh9P+PGr0d/uBMnYJCKqKQo3RqP51A=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLevF/DcEy9Yf31Kzsm7ZGRmTflc4KO8ympbO+gxpqId
+ 5e4dnYId5SyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTGBDuDgFYCJ83owMN3b7GPFPClBsUdpb
+ 91BjyqODrGFXl9VPszke3LF79vZDiYwMd/fO2SCzWsEy+nRExp61KyZ+Xqt1rPVFwbrq23tKLII
+ esgIA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
-Move from the deprecated mmap hook to the new mmap_prepare hook for the
-xenfs xsd_kva file and the xenbus_backend device, both of which remap the
-xenstore interface page.
-
-Use the PFN remap mmap action to do so, retaining the -EAGAIN error on
-failure via the action error override.
+Move from the deprecated mmap hook to the new mmap_prepare hook, using the
+PFN remap mmap action to map the region.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- drivers/xen/xenbus/xenbus_dev_backend.c | 14 ++++++--------
- drivers/xen/xenfs/xenstored.c           | 14 ++++++--------
- 2 files changed, 12 insertions(+), 16 deletions(-)
+ drivers/soc/qcom/rmtfs_mem.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/xen/xenbus/xenbus_dev_backend.c b/drivers/xen/xenbus/xenbus_dev_backend.c
-index edba5fecde4d..3e4cb267f411 100644
---- a/drivers/xen/xenbus/xenbus_dev_backend.c
-+++ b/drivers/xen/xenbus/xenbus_dev_backend.c
-@@ -89,27 +89,25 @@ static long xenbus_backend_ioctl(struct file *file, unsigned int cmd,
+diff --git a/drivers/soc/qcom/rmtfs_mem.c b/drivers/soc/qcom/rmtfs_mem.c
+index 342c0845134e..5e2ac75f41d5 100644
+--- a/drivers/soc/qcom/rmtfs_mem.c
++++ b/drivers/soc/qcom/rmtfs_mem.c
+@@ -129,24 +129,22 @@ static const struct class rmtfs_class = {
+ 	.name           = "rmtfs",
+ };
+ 
+-static int qcom_rmtfs_mem_mmap(struct file *filep, struct vm_area_struct *vma)
++static int qcom_rmtfs_mem_mmap_prepare(struct vm_area_desc *desc)
+ {
+-	struct qcom_rmtfs_mem *rmtfs_mem = filep->private_data;
++	struct qcom_rmtfs_mem *rmtfs_mem = desc->file->private_data;
+ 
+-	if (vma->vm_end - vma->vm_start > rmtfs_mem->size) {
++	if (vma_desc_size(desc) > rmtfs_mem->size) {
+ 		dev_dbg(&rmtfs_mem->dev,
+ 			"vm_end[%lu] - vm_start[%lu] [%lu] > mem->size[%pa]\n",
+-			vma->vm_end, vma->vm_start,
+-			(vma->vm_end - vma->vm_start), &rmtfs_mem->size);
++			desc->end, desc->start, vma_desc_size(desc),
++			&rmtfs_mem->size);
+ 		return -EINVAL;
  	}
+ 
+-	vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
+-	return remap_pfn_range(vma,
+-			       vma->vm_start,
+-			       rmtfs_mem->addr >> PAGE_SHIFT,
+-			       vma->vm_end - vma->vm_start,
+-			       vma->vm_page_prot);
++	desc->page_prot = pgprot_writecombine(desc->page_prot);
++	mmap_action_remap_full(desc, rmtfs_mem->addr >> PAGE_SHIFT);
++
++	return 0;
  }
  
--static int xenbus_backend_mmap(struct file *file, struct vm_area_struct *vma)
-+static int xenbus_backend_mmap_prepare(struct vm_area_desc *desc)
- {
--	size_t size = vma->vm_end - vma->vm_start;
-+	size_t size = vma_desc_size(desc);
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
- 
--	if ((size > PAGE_SIZE) || (vma->vm_pgoff != 0))
-+	if ((size > PAGE_SIZE) || (desc->pgoff != 0))
- 		return -EINVAL;
- 
--	if (remap_pfn_range(vma, vma->vm_start,
--			    virt_to_pfn(xen_store_interface),
--			    size, vma->vm_page_prot))
--		return -EAGAIN;
-+	mmap_action_remap_full(desc, virt_to_pfn(xen_store_interface));
-+	desc->action.error_override = -EAGAIN;
- 
- 	return 0;
- }
- 
- static const struct file_operations xenbus_backend_fops = {
- 	.open = xenbus_backend_open,
--	.mmap = xenbus_backend_mmap,
-+	.mmap_prepare = xenbus_backend_mmap_prepare,
- 	.unlocked_ioctl = xenbus_backend_ioctl,
+ static const struct file_operations qcom_rmtfs_mem_fops = {
+@@ -156,7 +154,7 @@ static const struct file_operations qcom_rmtfs_mem_fops = {
+ 	.write = qcom_rmtfs_mem_write,
+ 	.release = qcom_rmtfs_mem_release,
+ 	.llseek = default_llseek,
+-	.mmap = qcom_rmtfs_mem_mmap,
++	.mmap_prepare = qcom_rmtfs_mem_mmap_prepare,
  };
  
-diff --git a/drivers/xen/xenfs/xenstored.c b/drivers/xen/xenfs/xenstored.c
-index f59235f9f8a2..0cf57c286adb 100644
---- a/drivers/xen/xenfs/xenstored.c
-+++ b/drivers/xen/xenfs/xenstored.c
-@@ -31,24 +31,22 @@ static int xsd_kva_open(struct inode *inode, struct file *file)
- 	return 0;
- }
- 
--static int xsd_kva_mmap(struct file *file, struct vm_area_struct *vma)
-+static int xsd_kva_mmap_prepare(struct vm_area_desc *desc)
- {
--	size_t size = vma->vm_end - vma->vm_start;
-+	size_t size = vma_desc_size(desc);
- 
--	if ((size > PAGE_SIZE) || (vma->vm_pgoff != 0))
-+	if ((size > PAGE_SIZE) || (desc->pgoff != 0))
- 		return -EINVAL;
- 
--	if (remap_pfn_range(vma, vma->vm_start,
--			    virt_to_pfn(xen_store_interface),
--			    size, vma->vm_page_prot))
--		return -EAGAIN;
-+	mmap_action_remap_full(desc, virt_to_pfn(xen_store_interface));
-+	desc->action.error_override = -EAGAIN;
- 
- 	return 0;
- }
- 
- const struct file_operations xsd_kva_file_ops = {
- 	.open = xsd_kva_open,
--	.mmap = xsd_kva_mmap,
-+	.mmap_prepare = xsd_kva_mmap_prepare,
- 	.read = xsd_read,
- 	.release = xsd_release,
- };
+ static void qcom_rmtfs_mem_release_device(struct device *dev)
 
 -- 
 2.56.0
