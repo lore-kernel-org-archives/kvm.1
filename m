@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793844071;
-	b=BnE4h1c7z1FCznGQPXdOSRFhW8LoMXpoKuCZzONIkvOXutCWlPAMwtpxcHFhC0zLHEG0
-	 1P7fBXC7WFJNR1Ud0fZnbLcCru/R5qb+SVZb7FIfr99VuYcX3NOKuAlyh6Bu0PYs/8zfb
-	 mkYaXk1JAR/rSzJnKOrrDN1ydiKGNSIDPSJeJtUFz864nu2BVmsIg5XWpCrDhgmO5TanE
-	 4YNd4iRTGUrj8GsAiGyltF95TfiSZIAq9+V05j+8E4fEFl7/X484g4FFOYbUgWf+I5foY
-	 mWe2UJY77qc0kjDJHMuGR6v0rrd+r67qF7y1+Jo4kUHAlQ8HtavRqApmWwUbrqzBCPQ==
+	b=nE9k4HbRRCK+2NkENcBFft5yCe6D1B6ihcxmryonjnW9CbKZeG322nwB1JFT9Iq5iS70
+	 seKXFrsbCYgnrbqS249y22EVNSo0heVsiV5rcZtviaw/DT+/I9FjR41m2tiGLJxg7BV4k
+	 tsAP+NOPZSLPc6CfmETdbx3NXMNJ265iaezxDv7DW0wY/V58cpWLMqkjvOrYRnqnSx+u5
+	 Naz1Jlxl9ujlQYfGi24HuwM0AGDZWKV6L3V1v3CdJ2+ORXt/Qv0b5by5osM1qhDe3CQ2O
+	 AxaWS8diq4xydNrKk6CieXP50LHOYaJsVQk5rcDahsdTccQHBhTnUCK+yQ2XaoyxYAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793844071;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=SyJB48g5d3dD51rFyA0ineUHrgUKJTcQUMy2B9WJ/Ig=;
-	b=2NkmevKPQNdZmNsZIXQqLTT0wtaPirmw7GX+u0OdRAfAmyFHZZCF5uplzIAKvXdiOxk3
-	 RFO2uc9q/Mal3HA4Nn6AL3LBHQoom0ogjOx7xntgO5yMq/7seBEJ7k8MXiHClUyOdAg1Q
-	 da2F0YfQdXYELapapD0aWlBlQMdBd+Zpcms8VDhwxCYaGGYtMteZKnv+tRn6kI57PeF/b
-	 4MwH2qnYpDo6s57zOBHxTpmHo0IZsUOcGwKLobL9eJoxPKJc3A7wCfpRd5FkTevjllfmD
-	 mv0CQoGruJgtB+eCm2PkHeACcXz0HiiXwBsTtRFEPRNdAEuTvBVT5FUc8F0o0DLcBdw==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=lQpJFDqY1tDguWTzIC8id9i9AgdhlJblnx5mnpydVTA=;
+	b=APvl0fvWH9KUj/axh4esBtPCb3WS5Xm9vpxCPRXmymt/anW48Wvt/kTU4vpMd9snQnKL
+	 LBnz9+B/1qIubZZX8SiIaJBybwT7WvA93RkClp1fnjab0nIY2g3hzGVP/Ow8Y3avNrn/A
+	 3fIDtLzHXVrzB6TzUFvvVcQI26fEDNCOV6IHzuGIEr1aGk75BnoasRA4wd46sFQ9W8gh0
+	 C9aFe2GbimTURqL7JJzUq460DbTfHM3Jn9+qUPiZfsaOzFIpbXRWJw/wenCN50ighrYfE
+	 oodCK2w+SQl/LtlogZXWZAcRahIqwYjuxh1Ohb891CqW7CvAqJBxvK5abLhvVMZsbyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=q+UEGOur;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=e6kFedoC;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA99B606A32D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD77B606A326;
 	Thu,  5 Nov 2026 02:01:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA99B606A32D
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD77B606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=q+UEGOur
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=e6kFedoC
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=SyJB48g5d3dD51rFyA0ineUHrgUKJTcQUMy2B9WJ/Ig=; b=q+UEGOuravXo/K331KrtFCNxgR
-	yGeICDKLCUqm4pZ4e7wxbFkTioNil0ej75YKEOWaR7o9JGSUiKSSw/uYJ02Gh5tf/sf59LLkzrdps
-	CS/0Kv3SBSE0zvu+omRqtwUiUha7fHrVv7SEDHCUPXIZfPbBJ9VAuR+kyNlpy/4E5IDZnPH33qCeq
-	rHOfz42T/bP9iPF9QLjw2Jf2Qnwp9m9G/EQs2ehl9LfbKvrOhe5kMmH2BhaIkcqVaSoF1U94dHX2/
-	/bs/rlx/iWVWaPr1zB18CDFWK6LSCVM1jXhL26m8ATaMahHBHzYDmnwigehz2o0/5577bD6jj1vHW
-	SBbQIFaA==;
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=lQpJFDqY1tDguWTzIC8id9i9AgdhlJblnx5mnpydVTA=; b=e6kFedoCnPOnMG/kv4EOQLJ86M
+	X42CkCMN+MJaMEOmD0bS5rLDo9/rYUYoW//Oh4S5CSvw6WI35jOX4HtJXeJlSNs0/6ByKAcBtsOc2
+	Ig6AI2MgKd7y3e7gV9GKkXgqjLSaE9dSHZNdHrSfzY9CrM22lwNYM3nxcKICSL8hi43rBfcIScjKn
+	daA54Zu+hG9Qdi7NPI4uXI1DL6cLpNX9ZZ3/bpgS1FDjTOtfggn0wFicpw7YEuZnvCTKQWz0ad8T2
+	7GkgBy8Ia2JHcFgUjSRShwosji2mOskOwzG4PlMXSxKr4D4uNcMtaLHcBSAsCPhL6P4VO2d8Phgr/
+	omRGpp/A==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOmmn-000000037jJ-1XPR;
+	id 1xOmmn-000000037j4-0EUg;
 	Thu, 05 Nov 2026 02:01:05 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOmmm-0000000AWDy-3aRK;
+	id 1xOmmm-0000000AWD1-0Djs;
 	Thu, 05 Nov 2026 02:01:04 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -66,12 +66,10 @@ Cc: linux-kernel@vger.kernel.org,
 	Kunwu Chan <kunwu.chan@gmail.com>,
 	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 15/20] KVM: nSVM: Use a gfn_to_pfn_cache for the vmcb12 page
-Date: Thu,  5 Nov 2026 02:00:57 +0000
-Message-ID: <20261105020104.2507083-16-dwmw2@infradead.org>
+Subject: [PATCH v2 00/20] KVM: Use atomic SRCU for gfn-to-pfn cache, reinstate guest mode for x86 nesting
+Date: Thu,  5 Nov 2026 02:00:42 +0000
+Message-ID: <20261105020104.2507083-1-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261105020104.2507083-1-dwmw2@infradead.org>
-References: <20261105020104.2507083-1-dwmw2@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -88,163 +86,146 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Replace the transient map/unmap of the vmcb12 page on every nested
-VMRUN (control/save copy-in) and nested VM-exit (state copy-back) with
-a gfn_to_pfn_cache keyed on vmcb12_gpa. With unmanaged guest memory
-the transient map is a memremap/memunmap cycle on every L1<->L2
-transition; the cache persists the kernel mapping for as long as the
-gPA and its translation are unchanged. An L1 which multiplexes
-several L2s on one vCPU re-keys the cache on each switch, paying a
-refresh; the common single-L2 case pays nothing.
+Based on v7.4-rc1 (kvm/next doesn't have the atomic SRCU flavour yet),
+this series:
 
-No pinning is needed, unlike the nVMX APIC pages: SVM never hands an
-L1-owned physical address to the CPU in vmcb02 (the merged MSRPM and
-the IOPM are kernel-owned pages), so the vmcb12 page is only ever
-accessed by KVM itself, under the SRCU read lock, with the usual
-check/refresh protocol.
+ • Converts the GPC to use atomic SRCU, ditching the rwlock which was a
+   scaling and latency problem, and which PREEMPT_RT hated because it
+   turned the rwlock into a sleeping lock¹.
 
-Dirty marking moves from unconditional-at-unmap to the actual write
-paths: the SVM_EXIT_ERR reflection in the VMRUN consistency-check
-failure path, and the copy-back at nested VM-exit.
+ • Fixes the pre-existing bugs which torture-testing that conversion
+   shook out: a guest-reachable dirty ring overflow from the hypercall
+   page write (128 pushes of the same gfn against 64 reserved entries,
+   without PML), and a lost TLB flush request in record_steal_time().
 
-The SMM enter/leave and VMLOAD/VMSAVE emulation paths keep the
-transient map: they are cold, and VMLOAD/VMSAVE takes an arbitrary
-gPA from RAX which would thrash a single-slot cache.
-svm_leave_smm() now validates the vmcb12 GPA it reads from SMRAM, as
-VMRUN does for RAX; the copy-back through the cache would otherwise
-fail on an unaligned address at the eventual nested VM-exit. The
-refused RSM still ends in TRIPLE_FAULT, but at the corrupt-SMRAM
-instruction itself, before any L2 state is committed, as for the
-other SMRAM consistency checks here.
+ • Adds KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE, for VMMs which
+   intercept the guest's MSR write and need to replay it from host
+   context².
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/x86/kvm/svm/nested.c | 27 ++++++++++++++++++++-------
- arch/x86/kvm/svm/svm.c    | 15 +++++++++++++++
- arch/x86/kvm/svm/svm.h    |  3 +++
- 3 files changed, 38 insertions(+), 7 deletions(-)
+ • Cleans up the intentional lack of dirty-tracking of Xen shinfo and
+   vcpu_info pages (Sean).
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index ab187abc11b5..32854c8b2bbc 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1098,12 +1098,13 @@ static int nested_svm_copy_vmcb12_to_cache(struct kvm_vcpu *vcpu, u64 vmcb12_gpa
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb12;
- 	int r = 0;
-+	int idx;
- 
--	CLASS(kvm_vcpu_map_local, m)(vcpu, gpa_to_gfn(vmcb12_gpa));
--	if (m.ret)
-+	idx = kvm_gpc_lock_page(&svm->nested.vmcb12_cache, vmcb12_gpa);
-+	if (idx < 0)
- 		return -EFAULT;
- 
--	vmcb12 = m.map.hva;
-+	vmcb12 = svm->nested.vmcb12_cache.khva;
- 	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
- 	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
- 
-@@ -1114,9 +1115,11 @@ static int nested_svm_copy_vmcb12_to_cache(struct kvm_vcpu *vcpu, u64 vmcb12_gpa
- 		vmcb12->control.event_inj = 0;
- 		vmcb12->control.event_inj_err = 0;
- 		svm_set_gif(svm, false);
-+		kvm_gpc_mark_dirty_in_slot(&svm->nested.vmcb12_cache);
- 		r = -EINVAL;
- 	}
- 
-+	kvm_gpc_unlock(&svm->nested.vmcb12_cache, idx);
- 	return r;
- }
- 
-@@ -1261,12 +1264,14 @@ static int nested_svm_vmexit_update_vmcb12(struct kvm_vcpu *vcpu)
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
- 	struct vmcb *vmcb12;
-+	int idx;
- 
--	CLASS(kvm_vcpu_map_local, m)(vcpu, gpa_to_gfn(svm->nested.vmcb12_gpa));
--	if (m.ret)
--		return m.ret;
-+	idx = kvm_gpc_lock_page(&svm->nested.vmcb12_cache,
-+				  svm->nested.vmcb12_gpa);
-+	if (idx < 0)
-+		return idx;
- 
--	vmcb12 = m.map.hva;
-+	vmcb12 = svm->nested.vmcb12_cache.khva;
- 
- 	vmcb12->save.es     = vmcb02->save.es;
- 	vmcb12->save.cs     = vmcb02->save.cs;
-@@ -1321,6 +1326,9 @@ static int nested_svm_vmexit_update_vmcb12(struct kvm_vcpu *vcpu)
- 				       vmcb12->control.exit_int_info_err,
- 				       KVM_ISA_SVM);
- 
-+	kvm_gpc_mark_dirty_in_slot(&svm->nested.vmcb12_cache);
-+	kvm_gpc_unlock(&svm->nested.vmcb12_cache, idx);
-+
- 	return 0;
- }
- 
-@@ -1506,6 +1514,9 @@ int svm_allocate_nested(struct vcpu_svm *svm)
- 		goto err_free_vmcb02;
- 
- 	svm->nested.vmcb02.cpu = -1;
-+
-+	kvm_gpc_init(&svm->nested.vmcb12_cache, svm->vcpu.kvm);
-+
- 	svm->nested.initialized = true;
- 	return 0;
- 
-@@ -1525,6 +1536,8 @@ void svm_free_nested(struct vcpu_svm *svm)
- 	svm_vcpu_free_msrpm(svm->nested.msrpm);
- 	svm->nested.msrpm = NULL;
- 
-+	kvm_gpc_deactivate(&svm->nested.vmcb12_cache);
-+
- 	__free_page(virt_to_page(svm->nested.vmcb02.ptr));
- 	svm->nested.vmcb02.ptr = NULL;
- 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 136069dfcd44..b78727cca9b1 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5206,6 +5206,21 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 	if (!(smram64->efer & EFER_SVME))
- 		return 1;
- 
-+	/*
-+	 * The vmcb12 GPA read back from SMRAM feeds the vmcb12 cache at
-+	 * the eventual nested VM-exit, whose copy-back would fail on an
-+	 * unaligned or illegal address. Refusing the RSM here ends in
-+	 * TRIPLE_FAULT just the same (em_rsm() shoots a refused RSM),
-+	 * but it fails before any L2 state has been committed, at the
-+	 * instruction whose SMRAM contents are corrupt, matching how
-+	 * this function already treats other inconsistent SMRAM state —
-+	 * rather than at an unrelated nested VM-exit later. VMRUN
-+	 * (#GP) and KVM_SET_NESTED_STATE (-EINVAL) police the same
-+	 * field on their own entry points.
-+	 */
-+	if (!page_address_valid(vcpu, smram64->svm_guest_vmcb_gpa))
-+		return 1;
-+
- 	CLASS(kvm_vcpu_map_local, m)(vcpu, gpa_to_gfn(smram64->svm_guest_vmcb_gpa));
- 	if (m.ret)
- 		return 1;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 1b8f3f2057d9..fe964a961305 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -219,6 +219,9 @@ struct svm_nested_state {
- 	u64 last_vmcb12_gpa;
- 	u64 last_bus_lock_rip;
- 
-+	/* Cached mapping of the vmcb12 page, keyed on vmcb12_gpa */
-+	struct gfn_to_pfn_cache vmcb12_cache;
-+
- 	/*
- 	 * The MSR permissions map used for vmcb02, which is the merge result
- 	 * of vmcb01 and vmcb12
+ • Converts steal-time / preempted status to use gfn_to_pfn_cache.
+   (Carsten)
+
+ • Reinstates guest-mode pinning: replacing the old GUEST_USES_PFN
+   mode, letting nested state pages be cached and pinned while in
+   guest context.
+
+ • nVMX: Uses GPC for the L1 MSR bitmap, and guest mode for APIC
+   access and vAPIC pages. (Fred)
+
+ • nSVM: Uses GPC for vmcb12 / MSR-permissions / IO-permissions pages.
+   This cuts the vmcb12 transition cost measurably (selftest included).
+
+ • Re-posts KVM_REQ_GET_NESTED_STATE_PAGES on memslot updates so the
+   pinned caches are revalidated lazily, riding out the transient
+   KVM_MEMSLOT_INVALID window of an in-flight update via the pending
+   request rather than ever entering L2 with a stale latched address.
+
+I had briefly split out some of the preliminary fixes and cleanups
+into a separate series which didn't depend on atomic SRCU. But I've
+joined it all back together now that atomic SRCU is merged. And I've
+ditched half of those 'fixes' as a bad idea anyway³.
+
+
+Tested: per-commit builds across the series; KVM selftests including
+the new invalidation, transition and race tests on 192-way AMD, and
+the applicable subset on Intel under PROVE_LOCKING + PROVE_RCU +
+DEBUG_ATOMIC_SLEEP (which catches the attribute-ioctl srcu fix on the
+very first xen_shinfo_test run when it's reverted; that config is now
+a standing part of the testing here). The new mmu_notifier race test
+asserts that every one of 5000 event channel deliveries into HVA-based
+caches survives continuous MADV_DONTNEED invalidation of the backing
+page, and soaks at 10/10.
+
+¹ https://syzkaller.appspot.com/bug?extid=208f7f3e5f59c11aeb90
+² https://lore.kernel.org/kvm/c855535b4262ecd41f67734d19e8f48a7f014c2a.camel@infradead.org/
+³ https://lore.kernel.org/kvm/ac6b1891d6bdf3a855a5b840c462a6e7d464a146.camel@infradead.org/
+
+v2: https://git.infradead.org/users/dwmw2/linux.git/shortlog/refs/heads/gpc-srcu-v2
+
+ • Absorb the fixes/cleanups which had been split out (and drop the
+   delivery-retry half of them³, plus the SCHEDOP_poll fix which Sean
+   is picking up separately)
+ • Fix the mmu_notifier walk to wait out a grace period still owed by
+   a concurrent mutator
+ • Keep kvm->srcu in the Xen attribute ioctls for the memslot lookups
+ • Pair smp_mb__after_atomic()/__after_spinlock() for the publish/veto
+   store->load ordering
+ • Nested: treat a refresh failure against a KVM_MEMSLOT_INVALID
+   placeholder as transient; re-set vmcs02 controls after a lazy
+   degradation heals; initialize caches once at vCPU creation
+ • New: dirty ring overflow fix, WRITE_HYPERCALL_PAGE attribute,
+   the two Xen race selftests
+
+v1: https://git.infradead.org/users/dwmw2/linux.git/shortlog/refs/heads/gpc-srcu
+    https://lore.kernel.org/kvm/20260920211920.928306-1-dwmw2@infradead.org/
+
+Carsten Stollmaier (1):
+  KVM: x86: Use gfn_to_pfn_cache for steal time / preempted status
+
+David Woodhouse (13):
+  KVM: x86/xen: Fill the hypercall page with a single guest write
+  KVM: x86/xen: Add KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
+  KVM: x86: Request the guest TLB flush from record_steal_time()
+  KVM: selftests: Actually deactivate the HVA-based shared_info cache in
+    xen_shinfo_test
+  KVM: pfncache: Use atomic SRCU for readers instead of a rwlock
+  KVM: pfncache: Add guest-mode pinning (GUEST_USES_PFN successor)
+  KVM: x86: Post KVM_REQ_GET_NESTED_STATE_PAGES on memslot updates
+  KVM: nSVM: Use a gfn_to_pfn_cache for the vmcb12 page
+  KVM: nSVM: Cache L1's MSR permissions map pages
+  KVM: nSVM: Cache L1's IO permissions map pages
+  KVM: selftests: Add nested transition benchmark
+  KVM: selftests: Add Xen evtchn vs memslot-update race test
+  KVM: selftests: Add Xen evtchn vs mmu_notifier race test for HVA
+    caches
+
+Fred Griffoul (3):
+  KVM: nVMX: Implement cache for L1 MSR bitmap
+  KVM: nVMX: Use pinned pfncache for L1 APIC virtualization pages
+  KVM: selftests: Add nested VMX APIC cache invalidation test
+
+Sean Christopherson (3):
+  KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
+  KVM: x86/xen: Explicitly tag "shared info" page as never being dirty
+    tracked
+  KVM: x86/xen: Don't dirty track "vCPU info" page
+
+ Documentation/virt/kvm/api.rst                |  27 +-
+ arch/x86/include/asm/kvm_host.h               |   2 +-
+ arch/x86/include/uapi/asm/kvm.h               |   3 +
+ arch/x86/kvm/msrs.c                           |   7 +-
+ arch/x86/kvm/svm/nested.c                     | 174 ++++-
+ arch/x86/kvm/svm/svm.c                        |  17 +
+ arch/x86/kvm/svm/svm.h                        |  29 +
+ arch/x86/kvm/vmx/nested.c                     | 517 +++++++++++--
+ arch/x86/kvm/vmx/nested.h                     |   1 +
+ arch/x86/kvm/vmx/vmx.c                        |  13 +-
+ arch/x86/kvm/vmx/vmx.h                        |  21 +-
+ arch/x86/kvm/x86.c                            | 209 ++++--
+ arch/x86/kvm/x86.h                            |  33 +
+ arch/x86/kvm/xen.c                            | 380 ++++++----
+ include/linux/kvm_host.h                      | 121 +++-
+ include/linux/kvm_types.h                     |  64 +-
+ include/linux/srcu.h                          |   7 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   4 +
+ .../kvm/x86/nested_transition_bench.c         | 210 ++++++
+ .../selftests/kvm/x86/vmx_apic_update_test.c  | 323 +++++++++
+ .../kvm/x86/xen_evtchn_hva_notify_race_test.c | 188 +++++
+ .../kvm/x86/xen_evtchn_memslot_race_test.c    | 232 ++++++
+ .../selftests/kvm/x86/xen_shinfo_test.c       |   2 +-
+ .../selftests/kvm/x86/xen_vmcall_test.c       | 118 +++
+ virt/kvm/kvm_main.c                           |   9 +
+ virt/kvm/pfncache.c                           | 677 +++++++++++++++---
+ 26 files changed, 2962 insertions(+), 426 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/nested_transition_bench.c
+ create mode 100644 tools/testing/selftests/kvm/x86/vmx_apic_update_test.c
+ create mode 100644 tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_test.c
+ create mode 100644 tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_test.c
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
 2.43.0
 
