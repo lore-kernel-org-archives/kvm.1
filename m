@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793893804;
-	b=ip3Db4ssZppVzjd4jcwmRYtipYDYdOP3PQLJdgBSUjjcD9eZTZSDVQ3kYCn2Yj7T87zi
-	 T0eTGP5j/qkli9A3q+JeYECMn3Ro4h05hM2sbyGyZfmiM6wf2xtciMUeNsjO18W0r8fAG
-	 UkSdC8LCZvLOo4iFNk1rWHWzc+sY1y9n8cNZnBlu+eYscdnRr9D7t2QDLAcueosrePLlE
-	 b+RPAJEdij8hoTx4TOhtOcep+XHI9k2wMo1ZsVe0FNMZREa3ZEArUERH01AzXn8CrK45J
-	 Mws1Bu7Pa2dvNoxU0Nv6mJ9BNRhi7LlTTilq/NRTKyCgLeY8WnagWv7Tc1qF3100SuQ==
+	t=1793893805;
+	b=nPjQOzaG6VfTTT6n5za6iX+No7c1O4QWvUWAKvapyogn/iKKT9WSDcIGIMhbR/i0O1sq
+	 RE5al6elotJ54kABBkxOjNcspbA1SWywEdilLtEeNj6a4feaNyfG5Lkf5AkAx5kAjj20x
+	 pD1+R5RDzpouiSzq/OYACcKcAo+6XJSfvsVHGJ66Mpnc3unGucQGN234K7Hk1P9UAJftm
+	 6fV4h14sJObbCBRyZ1aRtdLf5rlUtwUYGTpTaijY6Vy8G+K9j2U8iP207eQtXxbkPbkzM
+	 SHufYs6gAws7tKPFK0qqRaKNJiAqpneE69bUHNb84JGJ/QR6aXfIKaDUKokaEyMg/Mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793893804;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793893805;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=mKH9BxiVhD1hkWOxu0QRNvIl232YhI8uqiNY5R0UwSo=;
-	b=PeWD2Z5LnHmxvQqImyEchLh7tL1qFXfoRB+ZtI37ky3mAMx1Bk1/arbXedX+sNkQJ5lr
-	 xOyqMdV31xsvknswRtSpNCxbvykzlvqF/gAAIXgwUXep2gbIA6tuwM14gA68H/W8hkubA
-	 WLrxCrD9gnMobF2fYVyFtYXcibzKzJm54OMxuSccx7QGobZ8ufrHU4e7k+NHYxQwxPbIm
-	 72BE/rEkVnH3NWZP0+Hk60vfjPkfFNAGdD0s5rM9LdEbFAbPeCSmV8B1xPAYeMDkM3HhS
-	 Tfr5n+ujCKWaxZQIrUwhOvwfPpb7aT7NtR3eGdw9I9AiQt6U9NKLdE20vBXDWhTwkVA==
+	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=WVtfluigLHm+qCIoMwJls4zd6p70KJsFBBAO4EnPbSY=;
+	b=e8yHAy9whncDL40BYi+HjjCS9J3Ho9Vf9mdabFhPnhtu1KlZG0t+ZaOLmeFSyb8F7+jA
+	 7rLXtQOg6gVUi8FZthJ51IQtoeTN1bRK30pRLEmB5XTflCDZK5sZhUrbp5AqS/5A8zZOS
+	 oO+iSd0q/cSHfUqoOU/Kk4MAqnBXnxCrg3+TBrz8jNGaK1h+TARtoljcJB6U+HNVA6ib/
+	 fpK110oX6lE4cjx4cQxSFekUXNLykJBgfAyp/N9JRILljqBUKET3Wnec+R74MIOCJMTda
+	 Mk3ZTqkD6HgzceZKWuSUJGpm3hQmfyZTfW4ecGnClmGKiWc86gnGfe6wF5GIXsiKHGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=PS8heR5U;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=IPxuipau;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F5D606A32D;
-	Thu,  5 Nov 2026 15:50:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3F5D606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4070606A33C;
+	Thu,  5 Nov 2026 15:50:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4070606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=PS8heR5U
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=IPxuipau
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=mKH9BxiVhD1hkWOxu0QRNvIl232YhI8uqiNY5R0UwSo=; b=PS8heR5UfpzNGppFEyFnViA2DL
-	FRWZk3qRLQOMGVQFWIw5D/XcdpEnJVkMbTkQfVXe4hAXq0CqByd46FPAhCF/k4oM5IGvQPzLmQe0k
-	ajTJabtgEAwXls17arD8PDPJxchbIETuZhSsekBzV0Ps6XZc0/Qx3Obg7iISMggAf2QoIZWilTLzi
-	uYxiWORF261bI3SEiPfDd1loNVLFSa7d3eRwGRbfKgHQRbNNOVEomunG2rLQt8RGvscUb1SCb21mb
-	h42wQ9/0PEFxFJKniq3Xy+Unj6QBuN+m9Meb3YOhW5jbXXWURJp1UoA6k8aImvZ7GX6oP8q3A8aRT
-	xHYCUTxw==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=WVtfluigLHm+qCIoMwJls4zd6p70KJsFBBAO4EnPbSY=; b=IPxuipauPh1uxvLe8CbOPYLS4J
+	vfXdV83+56i8IGOPlQ1wOVhKkuA4BlHApMOlXaBrgLCP4Ls5amnO9shAQCuonKgetQda59SU4s4Fc
+	Upx0kZ2G5CVCxQd6ZlV+KzNcIozzfXizorRjZP18jrkGACtgQmR9tV99a1Z/fNVf0NHzj/rKsEIU2
+	/uobNRbQcM/wIpdn2fIYxt8k1cJcBy+J96/UH6V7Dx9LdQhJfXzuUsJ8ALytrIMiB80EpKGBnJrOu
+	BYX8Qfgw5WkCxv30CoQjKQ6BRoirOcT6Ihrx4OLh3ZZEhNA6vShpKTD9afezLI5K2d2ks4ozk/AbJ
+	3zdwgRMA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOziw-00000003Bo1-28cY;
+	id 1xOziw-00000003Bny-29bb;
 	Thu, 05 Nov 2026 15:49:58 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOziu-0000000AazW-0O4I;
+	id 1xOziu-0000000AazR-01Rb;
 	Thu, 05 Nov 2026 15:49:56 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -78,9 +78,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Dongli Zhang <dongli.zhang@oracle.com>,
 	joe.jin@oracle.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v11 12/23] UAPI: x86: Move pvclock-abi to UAPI for x86 platforms
-Date: Thu,  5 Nov 2026 07:49:43 -0800
-Message-ID: <20261105154955.2525419-13-dwmw2@infradead.org>
+Subject: [PATCH v11 11/23] KVM: x86: Activate master clock from kvm_arch_init_vm()
+Date: Thu,  5 Nov 2026 07:49:42 -0800
+Message-ID: <20261105154955.2525419-12-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261105154955.2525419-1-dwmw2@infradead.org>
 References: <20261105154955.2525419-1-dwmw2@infradead.org>
@@ -93,126 +93,175 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Jack Allister <jalliste@amazon.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-A subsequent commit will provide a new KVM interface for performing a
-fixup/correction of the KVM clock against the reference TSC. The
-KVM_[GS]ET_CLOCK_GUEST API requires a pvclock_vcpu_time_info, as such
-the caller must know about this definition.
+Initialize the TSC generation and master clock state at VM creation
+time, rather than relying on kvm_update_masterclock() from
+kvm_arch_vcpu_postcreate().
 
-Move the definition to the UAPI folder so that it is exported to
-usermode, change the type definitions to use the standard for UAPI
-exports, and add the Linux-syscall-note exception to the SPDX licence
-identifier as is conventional for exported headers.
+Set cur_tsc_generation=1, cur_tsc_khz, cur_tsc_scaling_ratio,
+cur_tsc_offset, cur_tsc_nsec and kvmclock_offset from an atomic
+ktime/TSC snapshot. This establishes a coherent epoch so that:
 
-Define __KERNEL__ in scripts/xen-hypercalls.sh: the UAPI header now
-pulls in linux/types.h, and the script's raw $CPP invocation with
-$LINUXINCLUDE does not define it, which would trigger the "attempt to
-use kernel headers from user space" warning from the UAPI type
-headers.
+ - The first vCPU synchronizes to the existing generation (getting
+   the pre-computed TSC offset) rather than computing its own.
+ - pvclock_update_vm_gtod_copy() succeeds immediately (no zero
+   tsc_hz from uninitialized cur_tsc_scaling_ratio).
+ - KVM_GET_CLOCK returns valid {host_tsc, realtime} fields as soon
+   as any vCPU exists.
+ - KVM_[GS]ET_CLOCK_GUEST works without a prior KVM_RUN.
+ - No O(N) iteration of all vCPUs on each vCPU creation.
 
-Signed-off-by: Jack Allister <jalliste@amazon.com>
+This replaces the KVM_REQ_MASTERCLOCK_UPDATE check and
+kvm_update_masterclock() call in kvm_arch_vcpu_postcreate(), which
+worked around the missing initialization. A masterclock refresh is
+still performed (synchronously, so that it is valid even for userspace
+which queries the clock before ever running a vCPU) when the first
+vCPU is created, since the VM-creation snapshot can go stale while the
+VM has no vCPUs: a clocksource change notifies only VMs with vCPUs,
+and a change back to TSC leaves nothing to disagree with the stale
+snapshot.
+
+The generation's recorded offset in kvm_synchronize_tsc() can now only
+be joined by a vCPU with the same scaling ratio it was recorded with:
+the initial generation's offset is recorded with the default ratio
+before any vCPU exists, and a vCPU with a different ratio opens a new
+generation with its own offset, keeping the generation's ratio and
+offset describing the same scaling domain.
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
 ---
- MAINTAINERS                                   |  4 +--
- arch/x86/include/{ => uapi}/asm/pvclock-abi.h | 27 ++++++++++---------
- scripts/xen-hypercalls.sh                     |  2 +-
- 3 files changed, 18 insertions(+), 15 deletions(-)
- rename arch/x86/include/{ => uapi}/asm/pvclock-abi.h (82%)
+ arch/x86/kvm/x86.c | 76 ++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 64 insertions(+), 12 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9fadc98d3c49..773f7c800f6a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14663,8 +14663,8 @@ S:	Supported
- T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
- F:	arch/um/include/asm/kvm_para.h
- F:	arch/x86/include/asm/kvm_para.h
--F:	arch/x86/include/asm/pvclock-abi.h
- F:	arch/x86/include/uapi/asm/kvm_para.h
-+F:	arch/x86/include/uapi/asm/pvclock-abi.h
- F:	arch/x86/kernel/kvm.c
- F:	arch/x86/kernel/kvmclock.c
- F:	include/asm-generic/kvm_para.h
-@@ -29780,8 +29780,8 @@ R:	Boris Ostrovsky <boris.ostrovsky@oracle.com>
- L:	xen-devel@lists.xenproject.org (moderated for non-subscribers)
- S:	Supported
- F:	arch/x86/configs/xen.config
--F:	arch/x86/include/asm/pvclock-abi.h
- F:	arch/x86/include/asm/xen/
-+F:	arch/x86/include/uapi/asm/pvclock-abi.h
- F:	arch/x86/platform/pvh/
- F:	arch/x86/xen/
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 940168528721..6dbdb60962fe 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1500,11 +1500,25 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *value, bool user_initiated)
  
-diff --git a/arch/x86/include/asm/pvclock-abi.h b/arch/x86/include/uapi/asm/pvclock-abi.h
-similarity index 82%
-rename from arch/x86/include/asm/pvclock-abi.h
-rename to arch/x86/include/uapi/asm/pvclock-abi.h
-index b9fece5fc96d..6d70cf640362 100644
---- a/arch/x86/include/asm/pvclock-abi.h
-+++ b/arch/x86/include/uapi/asm/pvclock-abi.h
-@@ -1,6 +1,9 @@
--/* SPDX-License-Identifier: GPL-2.0 */
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
- #ifndef _ASM_X86_PVCLOCK_ABI_H
- #define _ASM_X86_PVCLOCK_ABI_H
+ 		data = kvm->arch.cur_tsc_write + delta;
+ 
+-		if (!kvm_check_tsc_unstable())
+-			offset = kvm->arch.cur_tsc_offset;
+-		else
++		/*
++		 * The generation's offset can only be joined by a vCPU which
++		 * scales the TSC by the same ratio it was recorded with; the
++		 * initial generation's offset is recorded at VM creation
++		 * with the default ratio, before any vCPU exists. With a
++		 * different ratio, open a new generation (recording this
++		 * vCPU's own offset) rather than leave the generation's
++		 * ratio and offset describing different scaling domains.
++		 */
++		if (vcpu->arch.l1_tsc_scaling_ratio !=
++		    kvm->arch.cur_tsc_scaling_ratio) {
+ 			offset = kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
+-		matched = true;
++		} else {
++			if (!kvm_check_tsc_unstable())
++				offset = kvm->arch.cur_tsc_offset;
++			else
++				offset = kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
++			matched = true;
++		}
+ 	}
+ 
+ 	__kvm_synchronize_tsc(vcpu, offset, data, ns, matched, user_initiated);
+@@ -9645,8 +9659,15 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+ 		return;
+ 	vcpu_load(vcpu);
+ 	kvm_synchronize_tsc(vcpu, NULL, false);
+-	if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
 +
-+#include <linux/types.h>
++	/*
++	 * Refresh the VM-creation masterclock snapshot (see
++	 * kvm_arch_init_vm), synchronously so that it is valid even for
++	 * userspace which queries the clock before ever running a vCPU.
++	 */
++	if (vcpu->vcpu_idx == 0)
+ 		kvm_update_masterclock(vcpu->kvm, NULL);
 +
- #ifndef __ASSEMBLER__
+ 	vcpu_put(vcpu);
  
- /*
-@@ -24,20 +27,20 @@
-  */
+ 	/* poll control enabled by default */
+@@ -10065,6 +10086,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ {
+ 	int ret;
+ 	unsigned long flags;
++	u64 kvmclock_host_tsc;
++	s64 kvmclock_ns;
  
- struct pvclock_vcpu_time_info {
--	u32   version;
--	u32   pad0;
--	u64   tsc_timestamp;
--	u64   system_time;
--	u32   tsc_to_system_mul;
--	s8    tsc_shift;
--	u8    flags;
--	u8    pad[2];
-+	__u32   version;
-+	__u32   pad0;
-+	__u64   tsc_timestamp;
-+	__u64   system_time;
-+	__u32   tsc_to_system_mul;
-+	__s8    tsc_shift;
-+	__u8    flags;
-+	__u8    pad[2];
- } __attribute__((__packed__)); /* 32 bytes */
+ 	if (!kvm_is_vm_type_supported(type))
+ 		return -EINVAL;
+@@ -10096,9 +10119,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 	seqcount_raw_spinlock_init(&kvm->arch.pvclock_sc, &kvm->arch.tsc_write_lock);
+ 	ratelimit_state_init(&kvm->arch.kvmclock_update_rs, HZ, 10);
+ 	ratelimit_set_flags(&kvm->arch.kvmclock_update_rs, RATELIMIT_MSG_ON_RELEASE);
+-	kvm->arch.kvmclock_offset = -get_kvmclock_base_ns();
+-	kvm->arch.all_vcpus_matched_freq = true;
  
- struct pvclock_wall_clock {
--	u32   version;
--	u32   sec;
--	u32   nsec;
-+	__u32   version;
-+	__u32   sec;
-+	__u32   nsec;
- } __attribute__((__packed__));
++	kvm->arch.default_tsc_khz = max_tsc_khz ? : tsc_khz;
++	kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
++	kvm->arch.guest_can_read_msr_platform_info = true;
++	kvm->arch.enable_pmu = enable_pmu && !kvm->arch.has_protected_pmu;
++
++	kvm->arch.all_vcpus_matched_freq = true;
+ 	/*
+ 	 * Start with all (zero) vCPUs considered matched, so that a VM whose
+ 	 * vCPUs never reach kvm_track_tsc_matching() — notably when the guest
+@@ -10106,16 +10133,41 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 	 * returns early — is still eligible for PVCLOCK_TSC_STABLE_BIT.
+ 	 */
+ 	kvm->arch.all_vcpus_matched_tsc = true;
++	kvm->arch.cur_tsc_scaling_ratio = kvm_caps.default_tsc_scaling_ratio;
++	kvm->arch.cur_tsc_khz = kvm->arch.default_tsc_khz;
  
- #define PVCLOCK_TSC_STABLE_BIT	(1 << 0)
-diff --git a/scripts/xen-hypercalls.sh b/scripts/xen-hypercalls.sh
-index f18b00843df3..51a722198997 100755
---- a/scripts/xen-hypercalls.sh
-+++ b/scripts/xen-hypercalls.sh
-@@ -5,7 +5,7 @@ shift
- in="$@"
+ 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
++
++	/*
++	 * Establish the initial TSC generation for synchronization logic.
++	 * The first vCPU will sync to this, starting its guest TSC at the
++	 * number of cycles elapsed since VM creation rather than at zero.
++	 * This ensures coherence with the kvmclock epoch (also set here),
++	 * and the master clock snapshot taken below is immediately valid.
++	 * It is refreshed again when the first vCPU is created, in case
++	 * the host clocksource changed (and changed back) in between:
++	 * pvclock_gtod_update_fn() does not notify a VM with no vCPUs.
++	 */
++#ifdef CONFIG_X86_64
++	if (!kvm_get_time_and_clockread(&kvmclock_ns, &kvmclock_host_tsc))
++#endif
++	{
++		/*
++		 * If not simultaneous, we want the TSC to be zero slightly
++		 * *after* the kvmclock is zero.
++		 */
++		kvmclock_ns = get_kvmclock_base_ns();
++		kvmclock_host_tsc = rdtsc();
++	}
++	kvm->arch.cur_tsc_write = 0;
++	kvm->arch.cur_tsc_offset = -(s64)kvmclock_host_tsc;
++	kvm->arch.cur_tsc_nsec = kvmclock_ns;
++	kvm->arch.cur_tsc_generation = 1;
++	kvm->arch.kvmclock_offset = -kvmclock_ns;
++
+ 	pvclock_update_vm_gtod_copy(kvm);
+ 	raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
  
- for i in $in; do
--	eval $CPP $LINUXINCLUDE -dD -imacros "$i" -x c /dev/null
-+	eval $CPP -D__KERNEL__ $LINUXINCLUDE -dD -imacros "$i" -x c /dev/null
- done | \
- awk '$1 == "#define" && $2 ~ /__HYPERVISOR_[a-z][a-z_0-9]*/ { v[$3] = $2 }
- 	END {   print "/* auto-generated by scripts/xen-hypercall.sh */"
+-	kvm->arch.default_tsc_khz = max_tsc_khz ? : tsc_khz;
+-	kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
+-	kvm->arch.guest_can_read_msr_platform_info = true;
+-	kvm->arch.enable_pmu = enable_pmu && !kvm->arch.has_protected_pmu;
+-
+ #if IS_ENABLED(CONFIG_HYPERV)
+ 	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
+ 	kvm->arch.hv_root_tdp = INVALID_PAGE;
 -- 
 2.43.0
 
