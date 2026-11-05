@@ -1,89 +1,130 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793893037;
-	b=MLBzjfIxPM0yflnPXYh1Ty1AdquUbW9S2nisQ1rG78Ahs1HUpvgLpJKo1m+s68Zxdsiy
-	 jiCFyooTt9KD0y+p0+AWK9qCs+JtkfPTZLpR1qr8bnBzdpjtNCVm0lgTOEmNSBU8UyI/9
-	 w1JTaiJJLSofYCDT2vla1KyCDdwjuxVaDFJLAgp0z2A5re/C2hXvZPCMxr5fu3oomr0ef
-	 ojPHcGVPG1m0RDwdGN9nDIjXK3negWQVvJkOlGi9JtMnVA4h2Z3VsUoJ8o5QguBxUadoi
-	 jjI8NMWnS6NdEmjBAKhToOsHByyxUFd5jVhRAInofsKXu1FvUrxYIvWwXpAi42erSww==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793893037;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=Iw76mMMB93dHCVelA5y10fkWJaHjfd/A0VdbGgQy89A=;
-	b=xBw1JJpgAuhGHItkcYLLnOhzXHCJSYD/BanGbf6CuDBM/RkFv8aTrh05ZoNoeLBi0EpV
-	 c/l1n5fBPGYcLIYyFDIFd8tikRExi1H2G0al/4pGll+jl2Y3T0+WMm9AUvuryB43rU54r
-	 kfMOYLM3tPUwwNp5Y8l5W6hLSPKFign+oLnmUtXisLo3d1r4aQhHA+85PZhjUTcBlluLK
-	 gayb2ubR0L3o8EkyZZVwl5jVodLU/BlTXuGUS3A8fINj7qbjejuPha6LPPrpq1+w280M6
-	 cm9E5JFjIoJ6jYg/5CWXaCK+6aXzL6/koL+BrrHXNE9jSuwJJFpMXLgXaqqEXy51cOw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iz71zmbq;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.10
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793893118;
+	b=EEM0tsiyBh5+51BcalARqlhMENx2rMGnZjSSIHO+56DsYVEtKjV0wrIZ711HA0ni5Ja5
+	 3XU37aumyxJlOzfyd/nk3dbgycQoNiJ8XBRsTaIgv1JSBs21jGkXdHiS5kqq26kHzPBmP
+	 0eZ5+bYkICUQ6v1QC7fea4uvda5BvuDlgjBgkwCMJ181kSNkvvbiz/FyE6wb8ZtwLQpC9
+	 4lF0bjgA2hXEMU1M2BjdRbIXX1GI/CJY7xhnc/sLeVxSp9pAzckY5myfCWrtfTjez2qOH
+	 FsPTOJxnXtty3epL1gExA9yQcD9xVsNLHMDCyq6KaNt/MjGSfjDVdTdqXu4Ue2sH/lQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793893118;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:From:To:CC:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=nunMrOmifRBrmoX93ePw5jNWS1IKKEvoMXCbYMOwzEE=;
+	b=J5NkIjDr86/H3/WR8EQ97tnjGn77kGrf5feQN+K6LkNRYs9Po6k7g+ez9ISLaEMysgRd
+	 RulaxdTOZwAnJcnJaPZnahSYD7Ax5qHcAyTymqvNCT9r3+v8JbsTd041mE7yQbCcHGfiG
+	 ryWPy52b8Nfj0zfqJBqqsU8XDeYzNJRELwJk89P3Db/SQRfIQBMRDoLLxtINzgGT0iq1C
+	 /LGi5hHPLCaMxx5/X7T27n+AB23cA34tfkTeQogIYD962g7rCqBJmZdGPLXv5wTE5crg0
+	 JwH5wdzTtm2sz884dSBlvY8/Ew84t3NSABH5IzAtFlMTyTyqLigq8jt2Qjiqxx+rrAg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kFmgBCXX;
+	arc=fail smtp.remote-ip=198.175.65.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F2D606D804;
-	Thu,  5 Nov 2026 15:37:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7F2D606D804
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBEB606A31B
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 15:38:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DBEB606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iz71zmbq
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A5Ei8OF3787406;
-	Thu, 5 Nov 2026 15:37:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Iw76mMMB93dHCVelA
-	5y10fkWJaHjfd/A0VdbGgQy89A=; b=iz71zmbqGnHVZa1lAIO9eeh3UvZn1mIwe
-	q+dl7Qq5fsbgPt0skLFQt0T7AXaf1S5ySU0xs8hRQFbqJ4DVWw72W2Ctzt5HW0NY
-	IHgT6NFvHUtwoBaKKrPqGu0Q3kTTzgsL3QkvcfwV76zHLYUuVx/8ZhnxywYc0bV+
-	zYR823KPkZzRUv0B+qfnnSAvZpp61oxdx4gKHVqVOEomt28EHLzud6wPenkLRjkV
-	pDSg98TqZT43zgknx5FpKG1rrR8l47JnJ8vBmeSbyp3w2vjFo3jH3SUz26A8x1bk
-	aZ11rPsac0ODeCZGhF2+pG0Z9029xcSDY3REgmNeBcwBFlDOFXJqg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn82736ur-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 05 Nov 2026 15:37:13 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A5EZ1Xr1685877;
-	Thu, 5 Nov 2026 15:37:12 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hrmrejdkc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Nov 2026 15:37:12 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A5Fb6T917039736
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Nov 2026 15:37:07 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D220020040;
-	Thu,  5 Nov 2026 15:37:06 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA2AC2004D;
-	Thu,  5 Nov 2026 15:37:06 +0000 (GMT)
-Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.68.31.243])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Nov 2026 15:37:06 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
-        david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com
-Subject: [PATCH v6 5/5] KVM: s390: vsie: Fix pinning using the wrong flag
-Date: Thu,  5 Nov 2026 16:37:05 +0100
-Message-ID: <20261105153705.208516-6-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261105153705.208516-1-imbrenda@linux.ibm.com>
-References: <20261105153705.208516-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kFmgBCXX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793893115; x=1825429115;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=A4NhxFKNl76MjLP2tSemGl/aHePvOxPjnc1/m5PuTT4=;
+  b=kFmgBCXXHI4zgj8ZQLKAtJpCyZ6BcFC0w1/tc/SAuY9JZww26dOdJDTQ
+   U4lNzntHBMI0YczU0H33xshHXx1LHub4uFnZ/yMWAB/3K+DP9iOGELRX/
+   eIzUtTe5GXWn9CfAXbqTzpyLy8/ru8sKQR5ASbXqL7xhcnPl/9Z6w4+YK
+   8rzCJ3amJF7Y60SzoaW9yZ6zq3PeeYsbnRO29FU8044SxxLeAvBHwAz84
+   hC9/rcRvVryudKtlApmfOF9VPrg5xqBFDKrtKmwbgvTLlfd2y+fzBOH+k
+   alPcILBRRmHvBOzfOKXJOdi17hA5C/2qDobRm5nMGXt3UeVRhxx8thq5b
+   Q==;
+X-CSE-ConnectionGUID: 4kksztt5SbWM/lK+6uJ07Q==
+X-CSE-MsgGUID: 4EC7uNbJRy6GdrnOxZZmCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2587834"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2587834"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 07:38:34 -0800
+X-CSE-ConnectionGUID: RuxsJ0I4Tf6vKKdl+9EUnA==
+X-CSE-MsgGUID: 5Gh9UL5XRAiPZtkx5lZGqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="6870256"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 07:38:35 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 07:38:34 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Thu, 5 Nov 2026 07:38:34 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.67)
+ by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 07:38:33 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gtOsnm1Qm1pMuV3qCbNpyQaLK7CUfJGf0mcKKE+1tJ4yrKJOdne8lNm/gRwxOWaECAOMM44n+l6Oq8egSIiBonG+cJFSYGyjekb/0iGsO9p5tQIAnGyDqgfioGjcp6ew0SkKvRV2KkhLP/BGX0RCROstA7T/2LXHhnm2r73gnnK19GKoaaQ34/81kAqRwGJqSonpAKdv2Q5CstcHH24pIXO075An6uPtLOA9+hLOnBvmuvL4SRnirLJMIG77tDyOM2OirGXJJdMJi3uRC3cyI6lGZlPdlMxwe4GZQOm8usJZfWVz3G4vX+c3qT2BvjY7yNQweRszK7x/KbHMgrKvvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nunMrOmifRBrmoX93ePw5jNWS1IKKEvoMXCbYMOwzEE=;
+ b=uvewckpUHwPOyI77z7wcrD+snOBsUMDzP9LYwJBopkYmG/6b6wDRS6cvs0ngO2H+XLeLmsQE+c4RxIOAtX1CG+CQJMGd6AYzjF1Hlmu19nTtg3Q4HsHknyTjv+trfC10MlOvcpNBW7iZ2mTWlfKtJDDo23fka4I4Ex9W/vLwqppaU1kheNB9JwbN9jAaSDvTztDw4JYuK42cjC8V3xr1aa3pGoXlT6bDc9/Dg5FDs+bnt6WZQJX8vPqn6byw041uC2IJHUzf4I3Aqvz3cHZ+ILI3wCXN8gOM5Nnw5/Utr56WgJUi6Ok3K+qZt6jWAlY6AvvkEzy8jn5tXEu/ea9h9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8039.namprd11.prod.outlook.com (2603:10b6:510:25f::18)
+ by DS4PPFDB7809488.namprd11.prod.outlook.com (2603:10b6:f:fc02::56) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 15:37:57 +0000
+Received: from PH8PR11MB8039.namprd11.prod.outlook.com
+ ([fe80::42df:f465:90a8:df92]) by PH8PR11MB8039.namprd11.prod.outlook.com
+ ([fe80::42df:f465:90a8:df92%3]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
+ 15:37:57 +0000
+From: =?UTF-8?q?Pi=C3=B3rkowski=2C=20Piotr?= <piotr.piorkowski@intel.com>
+To: <alex@shazbot.org>, <kvm@vger.kernel.org>
+CC: <intel-xe@lists.freedesktop.org>, =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?=
+	<piotr.piorkowski@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas
+	<yishaih@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian
+	<kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>
+Subject: [RFC PATCH 1/4] vfio/pci: Move the excluded range handling out of vfio_pci_core_do_io_rw()
+Date: Thu, 5 Nov 2026 16:37:35 +0100
+Message-ID: <20261105153738.1938345-2-piotr.piorkowski@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261105153738.1938345-1-piotr.piorkowski@intel.com>
+References: <20261105153738.1938345-1-piotr.piorkowski@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DB9PR01CA0005.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:1d8::10) To PH8PR11MB8039.namprd11.prod.outlook.com
+ (2603:10b6:510:25f::18)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,301 +134,297 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6pHgacSmtDvv7M8V7D2vrzDQJn1MAbrs
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDA2MCBTYWx0ZWRfXxcOcl4wadRXw
- mEO/7W8gC5mLo7XXe97KmFNnhffz7b8WIUtlNr6jkcjmUraZnTDLDb6zXpLuWEiiX+PBq+aBM1h
- WS7Ua60K5AgXrMtGjdfrGummkW4hxhbm4scov1b1DLcq62zl3bNDmkQ4M9hzwrhZ2qGSGcnA7/3
- 9ZqO4FT0MBV30aDbwA3qkTFMP1cMWoPHndhRedPSeq9+ii/MNvW2vkIHlLf2W3ABPsAhpaQ5BXX
- Tv4qFJXeOcmEYAGDr2+Qrzz4yhwMIQR7m93pYj2Krm5Q2D3d7pXbVw4b1tMDwsk21MmJACcRWwN
- KE0PNsktlaAMBeERpOzgdiHEMaTrE2su8n0sWz6Ww0o3TPJHW0lACv92B+o1VDyKeVtCLHgIvRA
- Uo5znnumcZNOYQJ0wA/DoBMcWi6ZxLSj9e5z7p36UBlb7cfoTEeoBfm7C9I8gXYpmARm/BXAjM9
- vH8s/Zx0ilOmQgfE6MQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDA2MCBTYWx0ZWRfX1HK362puBd9t
- acIPfCs1s/DTL8u4GKnWE6I1nc29zjynaO9Mw5Lm4bE2b8XbqgGmRrG/ouam9OXvgvRbpj26CKj
- qpigoxDfM8k/uMMmLLHc9/WnoUw7boo=
-X-Proofpoint-GUID: 6pHgacSmtDvv7M8V7D2vrzDQJn1MAbrs
-X-Authority-Analysis: v=2.4 cv=EsJHPicA c=1 sm=1 tr=0 ts=6aeca2a9 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=ugznIdUm-YL1OzzZZBQA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-05_04,2026-11-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
- definitions=main-2611050060
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8039:EE_|DS4PPFDB7809488:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27d07e72-5511-4331-4d4f-08df3b52c408
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|10067099003|18002099003|22082099003|56012099006|5023799004|11063799006|261026121527099003|261102130727099003|261022105027099003|261026140227099003|261028144727099003|261102123227099003|261021123027099003|261021121427099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info: F2OMWn4YH7fDaVAts+3ymoPUTxL8ONvLMv0AakMDZBJ7Wc6AdyHQY1dHdgJluv3X6dw1psSnyt/uXuzeJ+nnJcYLoclQACGJ+78/IUHHD2GISEaY97NEsNxOQ2nqvP9AL6CbOXpFZoFcvl63kGxCjTvJcBWSg8rNsGk7d7Wbc/Jgj3koY/LlOs9QDMXB42AhTfuT7o04mOtCBhHGE2hUCqm08gr14TB/YPATDHhMiBdpBblK4fo15KKIYOk43m1ccC1Cxzw8g1s68o7ZwwvaZTfZWyrz5ItTI6Meu1QJ/+lyEW+MFUxxM4k1dVHoCLm48irPQFiCmW1pqdv8KOQTdmRPJ3OG0apUICLnuZ4jtoRitRv09uJZJ00Q2WBRzgeluOyKA6PMqgN2msj6g/UGQDGl6wPhjtNwy4p5mV5S6OQZigD3L6TvQQpFmhqh8FYFrrzwlJK5TGjrLAgYqrjBVpezi8Tmvs0XPc4MsH9KL1/BRZQk35mEAQUQPpG1TwpDxzBPikbP989iEygYJjA2hnZf6m2UzmIBQNDnjXKr13GSctlwTLAVKkE3Y7zK/LBx3qNaD1RQnD1phjYDZBu4QGyECv96u6MuZm48h0FyUkK2N8PLAIZ1tZiFtgkw0OvkBtrldX2tEiChDHjyqm1c1Rin22OvxhkYZmRlxQ5ZU/A=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8039.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(18002099003)(22082099003)(56012099006)(5023799004)(11063799006)(261026121527099003)(261102130727099003)(261022105027099003)(261026140227099003)(261028144727099003)(261102123227099003)(261021123027099003)(261021121427099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?amhjYWQxS1VxV0dYZXh3Z1pHOXpPUjJaL1hvdWdia0tCbktJYlF5VFNkUWJN?=
+ =?utf-8?B?S2Zzd0ZYUzNMS050aHNWTVdNREF5MUxkdDJ6OFhpUTBHZE51OXZ5cXkvakJh?=
+ =?utf-8?B?bWpFUkdwNHBRdklZbE1QSDg0ZFdDNEhaY3Jtdm9VRG1WSlNWUFV2VTNDbjlK?=
+ =?utf-8?B?S2VVZ2taNnhDTnpyMmF3RTRYVkphdFhCY1lWVEtiQTk0NnE1TzJHcVhMc1gx?=
+ =?utf-8?B?M0UvUUtMbEtBK08zSk1acngvMUYxRklOdVVnYVpVdG9zRjR6SWpDVGQ2TDFJ?=
+ =?utf-8?B?WTR6U1pKa1Z1SzVKdXdSMzBXQ1ZsaTFKK1o2NWpmQThhSUhXUW5XVXJsUEZl?=
+ =?utf-8?B?U05uMjRHQXN1RGlvVXFXVlhodHhTTHZ4U0dCdlVkcCtZK3VTSlFaa1JmUWxC?=
+ =?utf-8?B?T2hQNmprTnVBZ1F4Mk5pOEdxbUEzcmpzUGR0TkRLMm9jMWFBSm1oZjZuZFZL?=
+ =?utf-8?B?NWwzcXUrcWlPdTBaWS9mRkJkNkRIdEpBdEYxZkRIN0FYSVJGMksra1J5Ulc0?=
+ =?utf-8?B?ejNuUEVoK1NTdzI2QW1NZEtJTjdrMmZ6YUZidWlwT3Y3eWJhVTNpYlQrTEw4?=
+ =?utf-8?B?M2JEQUtFYi9DNGhDeW95UkorVmFDZ1JyV0Q2YU81TEN0cUhPdjg0UzZBeW51?=
+ =?utf-8?B?NkVmNU1qQjN5RWhwREdFNEJGNXZoeU9MK1drVzNraEtBZXpScjBIaFYrY0sz?=
+ =?utf-8?B?VkQ1NG9OckF3ei9ITldvc2oybzl2UkpZN0RuQTVVNUJMVkJYZFQxdVNqWkJP?=
+ =?utf-8?B?VHMvdWVjUTN6ZTFvazJOdVRCd216NGt0STJjcW1VaHliYUpkZktURm1FMlFz?=
+ =?utf-8?B?eGtCQktkNGV3OE0venNQVWJkelg0dkNtcEVDcTNHSXluNGR5cS9ZNXViOXov?=
+ =?utf-8?B?VVpuOWhXM0hadjdPeDE5dUozTk4yZmo3SXZkaGlQaDRjS2NrTmFRTU5iNkFj?=
+ =?utf-8?B?bnNOa2hHb1NsRjF5OE5ueE9iV2FrVTlVazNBemhWREYySVZVSVpkcjRwajN3?=
+ =?utf-8?B?SHJjVEJFdFZsNVFsS0poMXdiMFd3Q2dzaWQweFkzZTlIaDRrTTZOd3JiQVZ3?=
+ =?utf-8?B?SmRyR241ejNOVVdNL3krMkM1YmNxWVNDekl0bDFmbkFIRXV3d21lTytlRmlL?=
+ =?utf-8?B?ZkljZFgwZXR5MUt0UHhoc1RBTEVuNUpNZnpNaEgyNXZLUXV4ZGp4K2RFSjYy?=
+ =?utf-8?B?QkdncExXcyt4Ky9qNTUyMGhyOHNCWDNReFJjUW1ON2RZR1FoZUxsTnMybnp3?=
+ =?utf-8?B?Q3RpR1lSYm9IaHYvQnZVYStVbWUzV0M1YnMrbXV0UjhJK2k0ZXFMSlhCUGli?=
+ =?utf-8?B?VDNaZnNqcmViQWxBeHJIaFVjWnB6TVp3dlFvMzl5TVJ2VVhheVRVOVBOSGIr?=
+ =?utf-8?B?QmtMZWxoZ2dDdUFka1lUTFRycjVzN2FJeTY1ZTRiTmJQQzZxTTN2dmwrdW95?=
+ =?utf-8?B?OW9ISzhSd3J5ZGM5VUJpcm1Ma0w1L0Jwd1piWTNLbk1wditsYlVKc1RtUWFn?=
+ =?utf-8?B?Z0NYTTJIRnlHUUtVd3pRRnRPK0krNHVxQ1FaNkE4Wjc2OUVVc2ZuNzNoTDhT?=
+ =?utf-8?B?RU85aDgzTlQ5T016UGJaWHNGN2tGeXdKME5kTXVWMDRJNmo0d2kzZFZZeWZh?=
+ =?utf-8?B?WWo1bnM4T3BpL2J1QWNrNWcwb2FXeVhFQ1VVQjI0VG1TRUFPK0dwOEQ0SFg2?=
+ =?utf-8?B?ZlYxZFV2Y3A1WmFlSExhM3l4a1Nxci9aelUyWkZwU0lkUjVXTnhFTkwyUjQ1?=
+ =?utf-8?B?VmF6cXBNL2tQSEI5Wlc1S3F5a1dQTzA1SXVScm9xVUNVVFVSamZFR05vR0Z5?=
+ =?utf-8?B?emJiamJEZlFub3hWUlhHK2V3REdpM3JmdU1zT1RWRE1idjBpMUdYb2F2dU5r?=
+ =?utf-8?B?Vy95bDRrcVdUYmdRRnd2bmdrQlVjWkdYZ0l0SU5jcDNJcXpjMmlnMzhTNGdC?=
+ =?utf-8?B?M2VoeXpGNE42dnNpWWRXckU2VTZTU0hwczVWT2gzcTR0SlRzNTN4SExHU3Yz?=
+ =?utf-8?B?eklHcUgreHhwUDI0aHZrTmJOL2xXa2lsSE84UnV6VG84ODlPdGZIQWZ0alNt?=
+ =?utf-8?B?YmtmcDVRcHN4aGNhakpCd0oySWt0OC81TTY5U052Qlhsa3N6UFZzUUtiRk1Z?=
+ =?utf-8?B?QlRSKzh6NWpTeStsb29TemFNTGQzeVRSekJPL3pDa0VqaDNIWU9GaVRYRjNY?=
+ =?utf-8?B?M2lLUVF5bTBlSmRUZWhWanBZVW1TNU16TVEzdFo5VzFCYis5N1hmZUZXN0Jx?=
+ =?utf-8?B?bVpqeUJzR1hCMTMveHgyVDFoZjJNem04c3BFdk1ESkZGckxTdXpRMDgzSmU1?=
+ =?utf-8?B?Q2Rpbm54dmJhS1VMeGJpeElKNW0wcnRQSmJhNklrSnZxb2pLandGdU5wZmth?=
+ =?utf-8?Q?3T5C0VPaloWiYE6o=3D?=
+X-Exchange-RoutingPolicyChecked: PMQki7bedVnwnXLYG5GQVmIIZg/o4HWKlh8u6kVfjFgfjyrTKpvq++AnRbiZvswVLrFCiV45kf/eDVg2wWanMV4QWIQBbyOGJ5yl2CsxiI84WflIBbX6Kwm5cGQ/lSSKqBSOXbJp6qJDZyxNs48cy+s/RYjUZmu4Sj2cVNMPGfT2snJK2Iymv+z1KDIHmjHKOgIycUeTFfPCfrLg6c73z/uE+caytzzD90fPJudnschlXDLIGNoyM8U64byRSRtfZEF/xrp4fyvReejb94h5p5S1y9zbCKQNThnVvXgPWuoSMjKrSs2CpDShw45XgB6FOtX1BwJr3UkT5Dcjx2WMoA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27d07e72-5511-4331-4d4f-08df3b52c408
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8039.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 15:37:57.2964
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wyYvGqIgJDqcIUUeSWOObtnCnhk344nnyaCNmPKA7tnq2Aw0kGf9gknfJJnvGPYVIvwhClLri08W769ZAv9YgwcGBS/iCG+0MOK0VzbgfxU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFDB7809488
+X-OriginatorOrg: intel.com
 
-When pinning guest memory using pin_blocks(), gfn_to_page() was used,
-which under the hood uses FOLL_GET, which is the wrong type of flag for
-memory that is accessed directly by hardware.
+From: Piotr Piórkowski <piotr.piorkowski@intel.com>
 
-Fix by using kvm_vcpu_{,un}map(), which uses FOLL_PIN and is the
-correct thing to do.
+vfio_pci_core_do_io_rw() takes an excluded range, but only
+vfio_pci_bar_rw() uses it, for the MSI-X table and the unused tail of
+ROM BARs. Move that logic to vfio_pci_bar_rw(), so that
+vfio_pci_core_do_io_rw() just does the I/O, and let it skip more than
+one range. The next patch uses that to skip hidden BAR ranges.
 
-While technically a bugfix, the previous behaviour can only lead to
-guest corruption in extremely convoluted test scenarios that cannot
-happen in real/production systems.
+No functional change intended.
 
-Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: stable@vger.kernel.org #7.0+
+Cc: Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Yishai Hadas <yishaih@nvidia.com>
+Cc: Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Ankit Agrawal <ankita@nvidia.com>
+Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
 ---
- arch/s390/kvm/s390/vsie.c | 133 ++++++++++++++------------------------
- 1 file changed, 47 insertions(+), 86 deletions(-)
+ drivers/vfio/pci/nvgrace-gpu/main.c |  4 +-
+ drivers/vfio/pci/vfio_pci_rdwr.c    | 94 ++++++++++++++++++++---------
+ include/linux/vfio_pci_core.h       |  3 +-
+ 3 files changed, 67 insertions(+), 34 deletions(-)
 
-diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
-index 5926689fa226..3ce133f20fa2 100644
---- a/arch/s390/kvm/s390/vsie.c
-+++ b/arch/s390/kvm/s390/vsie.c
-@@ -49,20 +49,21 @@ struct vsie_page {
- 	/* address of the last reported fault to guest2 */
- 	unsigned long fault_addr;		/* 0x0228 */
- 	/* calculated guest addresses of satellite control blocks */
--	gpa_t sca_gpa;				/* 0x0230 */
--	gpa_t itdba_gpa;			/* 0x0238 */
--	gpa_t gvrd_gpa;				/* 0x0240 */
--	gpa_t riccbd_gpa;			/* 0x0248 */
--	gpa_t sdnx_gpa;				/* 0x0250 */
-+	struct kvm_host_map sca_map;		/* 0x0230 */
-+	struct kvm_host_map itdba_map;		/* 0x0260 */
-+	struct kvm_host_map gvrd_map;		/* 0x0290 */
-+	struct kvm_host_map riccbd_map;		/* 0x02c0 */
-+	struct kvm_host_map sdnx_map;		/* 0x02f0 */
-+	struct kvm_host_map scb_map;		/* 0x0320 */
- 	/*
- 	 * guest address of the original SCB. Remains set for free vsie
- 	 * pages, so we can properly look them up in our addr_to_page
- 	 * radix tree.
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index 5ddec340b73ba..432f6b9c2842b 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -787,7 +787,7 @@ nvgrace_gpu_map_and_read(struct nvgrace_gpu_pci_core_device *nvdev,
+ 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
+ 					     nvdev->resmem.ioaddr,
+ 					     buf, offset, mem_count,
+-					     0, 0, false, VFIO_PCI_IO_WIDTH_8);
++					     false, VFIO_PCI_IO_WIDTH_8);
+ 	}
+ 
+ 	return ret;
+@@ -925,7 +925,7 @@ nvgrace_gpu_map_and_write(struct nvgrace_gpu_pci_core_device *nvdev,
+ 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
+ 					     nvdev->resmem.ioaddr,
+ 					     (char __user *)buf, pos, mem_count,
+-					     0, 0, true, VFIO_PCI_IO_WIDTH_8);
++					     true, VFIO_PCI_IO_WIDTH_8);
+ 	}
+ 
+ 	return ret;
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index df88480876815..f3ab8d6531e8f 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -126,77 +126,108 @@ VFIO_IORDWR(16)
+ VFIO_IORDWR(32)
+ VFIO_IORDWR(64)
+ 
+-/*
+- * Read or write from an __iomem region (MMIO or I/O port) with an excluded
+- * range which is inaccessible.  The excluded range drops writes and fills
+- * reads with -1.  This is intended for handling MSI-X vector tables and
+- * leftover space for ROM BARs.
+- */
++/* Read or write from an __iomem region (MMIO or I/O port) */
+ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+ 			       void __iomem *io, char __user *buf,
+-			       loff_t off, size_t count, size_t x_start,
+-			       size_t x_end, bool iswrite,
++			       loff_t off, size_t count, bool iswrite,
+ 			       enum vfio_pci_io_width max_width)
+ {
+ 	ssize_t done = 0;
+ 	int ret;
+ 
+ 	while (count) {
+-		size_t fillable, filled;
+-
+-		if (off < x_start)
+-			fillable = min(count, (size_t)(x_start - off));
+-		else if (off >= x_end)
+-			fillable = count;
+-		else
+-			fillable = 0;
++		size_t filled;
+ 
+-		if (fillable >= 8 && !(off % 8) && max_width >= 8) {
++		if (count >= 8 && !(off % 8) && max_width >= 8) {
+ 			ret = vfio_pci_iordwr64(vdev, iswrite, test_mem,
+ 						io, buf, off, &filled);
+ 			if (ret)
+ 				return ret;
+ 
+-		} else if (fillable >= 4 && !(off % 4) && max_width >= 4) {
++		} else if (count >= 4 && !(off % 4) && max_width >= 4) {
+ 			ret = vfio_pci_iordwr32(vdev, iswrite, test_mem,
+ 						io, buf, off, &filled);
+ 			if (ret)
+ 				return ret;
+ 
+-		} else if (fillable >= 2 && !(off % 2) && max_width >= 2) {
++		} else if (count >= 2 && !(off % 2) && max_width >= 2) {
+ 			ret = vfio_pci_iordwr16(vdev, iswrite, test_mem,
+ 						io, buf, off, &filled);
+ 			if (ret)
+ 				return ret;
+ 
+-		} else if (fillable) {
++		} else {
+ 			ret = vfio_pci_iordwr8(vdev, iswrite, test_mem,
+ 					       io, buf, off, &filled);
+ 			if (ret)
+ 				return ret;
++		}
++
++		count -= filled;
++		done += filled;
++		off += filled;
++		buf += filled;
++	}
++
++	return done;
++}
++EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+ 
++struct vfio_pci_excl_range {
++	loff_t	start;
++	loff_t	end;
++};
++
++/*
++ * Read or write from a BAR with excluded ranges which are inaccessible.  The
++ * excluded ranges, sorted by their start and possibly overlapping, drop writes
++ * and fill reads with -1.  This is intended for handling MSI-X vector tables
++ * and leftover space for ROM BARs.
++ */
++static ssize_t vfio_pci_bar_do_io_rw(struct vfio_pci_core_device *vdev,
++				     bool test_mem, void __iomem *io,
++				     char __user *buf, loff_t off, size_t count,
++				     const struct vfio_pci_excl_range *x,
++				     unsigned int nr_x, bool iswrite,
++				     enum vfio_pci_io_width max_width)
++{
++	ssize_t done = 0, ret;
++
++	while (count) {
++		size_t len;
++
++		while (nr_x && off >= x->end) {
++			x++;
++			nr_x--;
++		}
++
++		if (!nr_x || off < x->start) {
++			len = nr_x ? min(count, (size_t)(x->start - off)) : count;
++			ret = vfio_pci_core_do_io_rw(vdev, test_mem, io, buf, off,
++						     len, iswrite, max_width);
++			if (ret < 0)
++				return ret;
+ 		} else {
+ 			/* Fill reads with -1, drop writes */
+-			filled = min(count, (size_t)(x_end - off));
++			len = min(count, (size_t)(x->end - off));
+ 			if (!iswrite) {
+ 				u8 val = 0xFF;
+ 				size_t i;
+ 
+-				for (i = 0; i < filled; i++)
++				for (i = 0; i < len; i++)
+ 					if (copy_to_user(buf + i, &val, 1))
+ 						return -EFAULT;
+ 			}
+ 		}
+ 
+-		count -= filled;
+-		done += filled;
+-		off += filled;
+-		buf += filled;
++		count -= len;
++		done += len;
++		off += len;
++		buf += len;
+ 	}
+ 
+ 	return done;
+ }
+-EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+ 
+ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 			size_t count, loff_t *ppos, bool iswrite)
+@@ -204,6 +235,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	loff_t pos = *ppos & VFIO_PCI_OFFSET_MASK;
+ 	int bar = VFIO_PCI_OFFSET_TO_INDEX(*ppos);
++	struct vfio_pci_excl_range x = {};
+ 	size_t x_start = 0, x_end = 0;
+ 	resource_size_t end;
+ 	void __iomem *io;
+@@ -261,8 +293,10 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 		x_end = vdev->msix_offset + vdev->msix_size;
+ 	}
+ 
+-	done = vfio_pci_core_do_io_rw(vdev, res->flags & IORESOURCE_MEM, io, buf, pos,
+-				      count, x_start, x_end, iswrite, max_width);
++	x.start = x_start;
++	x.end = x_end;
++	done = vfio_pci_bar_do_io_rw(vdev, res->flags & IORESOURCE_MEM, io, buf,
++				     pos, count, &x, 1, iswrite, max_width);
+ 
+ 	if (done >= 0)
+ 		*ppos += done;
+@@ -336,7 +370,7 @@ ssize_t vfio_pci_vga_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	 * to the memory enable bit in the command register.
  	 */
--	gpa_t scb_gpa;				/* 0x0258 */
-+	gpa_t scb_gpa;				/* 0x0350 */
- 	/* the shadow gmap in use by the vsie_page */
--	struct gmap_cache gmap_cache;		/* 0x0260 */
--	__u8 reserved[0x06f8 - 0x0278];		/* 0x0278 */
-+	struct gmap_cache gmap_cache;		/* 0x0358 */
-+	__u8 reserved[0x06f8 - 0x0370];		/* 0x0370 */
- 	struct kvm_s390_crypto_cb crycb;	/* 0x06f8 */
- 	__u8 fac[8 + S390_ARCH_FAC_LIST_SIZE_BYTE];/* 0x07f8 */
- };
-@@ -681,72 +682,43 @@ static int map_prefix(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page, struct
- }
+ 	done = vfio_pci_core_do_io_rw(vdev, false, iomem, buf, off, count,
+-				      0, 0, iswrite, VFIO_PCI_IO_WIDTH_4);
++				      iswrite, VFIO_PCI_IO_WIDTH_4);
  
- /*
-- * Pin the guest page given by gpa and set hpa to the pinned host address.
-+ * pin_guest_page() - Pin the given guest page and return its hpa.
-+ * @vcpu: the vCPU
-+ * @gpa: the gpa to pin
-+ * @map: the map representing this pinning.
-+ *
-  * Will always be pinned writable.
-  *
-- * Returns: - 0 on success
-- *          - -EINVAL if the gpa is not valid guest storage
-+ * Returns: - 0 if the gpa is not valid guest storage,
-+ *          - The host hpa of the pinned page in case of success
-  */
--static int pin_guest_page(struct kvm *kvm, gpa_t gpa, hpa_t *hpa)
--{
--	struct page *page;
--
--	page = gfn_to_page(kvm, gpa_to_gfn(gpa));
--	if (!page)
--		return -EINVAL;
--	*hpa = (hpa_t)page_to_phys(page) + (gpa & ~PAGE_MASK);
--	return 0;
--}
--
--/* Unpins a page previously pinned via pin_guest_page, marking it as dirty. */
--static void unpin_guest_page(struct kvm *kvm, gpa_t gpa, hpa_t hpa)
-+static hpa_t pin_guest_page(struct kvm_vcpu *vcpu, gpa_t gpa, struct kvm_host_map *map)
- {
--	kvm_release_page_dirty(pfn_to_page(phys_to_pfn(hpa)));
--	/* mark the page always as dirty for migration */
--	mark_page_dirty(kvm, gpa_to_gfn(gpa));
-+	if (kvm_vcpu_map(vcpu, gpa_to_gfn(gpa), map))
-+		return 0;
-+	return (hpa_t)PFN_PHYS(map->pfn) + (gpa & ~PAGE_MASK);
- }
+ 	vga_put(vdev->pdev, rsrc);
  
- /* unpin all blocks previously pinned by pin_blocks(), marking them dirty */
- static void unpin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- {
- 	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
--	hpa_t hpa;
- 
--	hpa = (u64) scb_s->scaoh << 32 | scb_s->scaol;
--	if (hpa) {
--		unpin_guest_page(vcpu->kvm, vsie_page->sca_gpa, hpa);
--		vsie_page->sca_gpa = 0;
--		scb_s->scaol = 0;
--		scb_s->scaoh = 0;
--	}
-+	kvm_vcpu_unmap(vcpu, &vsie_page->sca_map);
-+	scb_s->scaol = 0;
-+	scb_s->scaoh = 0;
- 
--	hpa = scb_s->itdba;
--	if (hpa) {
--		unpin_guest_page(vcpu->kvm, vsie_page->itdba_gpa, hpa);
--		vsie_page->itdba_gpa = 0;
--		scb_s->itdba = 0;
--	}
-+	kvm_vcpu_unmap(vcpu, &vsie_page->itdba_map);
-+	scb_s->itdba = 0;
- 
--	hpa = scb_s->gvrd;
--	if (hpa) {
--		unpin_guest_page(vcpu->kvm, vsie_page->gvrd_gpa, hpa);
--		vsie_page->gvrd_gpa = 0;
--		scb_s->gvrd = 0;
--	}
-+	kvm_vcpu_unmap(vcpu, &vsie_page->gvrd_map);
-+	scb_s->gvrd = 0;
- 
--	hpa = scb_s->riccbd;
--	if (hpa) {
--		unpin_guest_page(vcpu->kvm, vsie_page->riccbd_gpa, hpa);
--		vsie_page->riccbd_gpa = 0;
--		scb_s->riccbd = 0;
--	}
-+	kvm_vcpu_unmap(vcpu, &vsie_page->riccbd_map);
-+	scb_s->riccbd = 0;
- 
--	hpa = scb_s->sdnxo;
--	if (hpa) {
--		unpin_guest_page(vcpu->kvm, vsie_page->sdnx_gpa, hpa);
--		vsie_page->sdnx_gpa = 0;
--		scb_s->sdnxo = 0;
--	}
-+	kvm_vcpu_unmap(vcpu, &vsie_page->sdnx_map);
-+	scb_s->sdnxo = 0;
- }
- 
- /*
-@@ -783,13 +755,12 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 			 ((gpa + offsetof(struct bsca_block, cpu[0]) - 1) & PAGE_MASK))
- 			rc = set_validity_icpt(scb_s, 0x003bU);
- 		if (!rc) {
--			rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
--			if (rc)
-+			hpa = pin_guest_page(vcpu, gpa, &vsie_page->sca_map);
-+			if (!hpa)
- 				rc = set_validity_icpt(scb_s, 0x0034U);
- 		}
- 		if (rc)
- 			goto unpin;
--		vsie_page->sca_gpa = gpa;
- 		scb_s->scaoh = (u32)((u64)hpa >> 32);
- 		scb_s->scaol = (u32)(u64)hpa;
- 	}
-@@ -801,12 +772,11 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 			goto unpin;
- 		}
- 		/* 256 bytes cannot cross page boundaries */
--		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
--		if (rc) {
-+		hpa = pin_guest_page(vcpu, gpa, &vsie_page->itdba_map);
-+		if (!hpa) {
- 			rc = set_validity_icpt(scb_s, 0x0080U);
- 			goto unpin;
- 		}
--		vsie_page->itdba_gpa = gpa;
- 		scb_s->itdba = hpa;
- 	}
- 
-@@ -820,12 +790,11 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 		 * 512 bytes vector registers cannot cross page boundaries
- 		 * if this block gets bigger, we have to shadow it.
- 		 */
--		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
--		if (rc) {
-+		hpa = pin_guest_page(vcpu, gpa, &vsie_page->gvrd_map);
-+		if (!hpa) {
- 			rc = set_validity_icpt(scb_s, 0x1310U);
- 			goto unpin;
- 		}
--		vsie_page->gvrd_gpa = gpa;
- 		scb_s->gvrd = hpa;
- 	}
- 
-@@ -836,13 +805,12 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 			goto unpin;
- 		}
- 		/* 64 bytes cannot cross page boundaries */
--		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
--		if (rc) {
-+		hpa = pin_guest_page(vcpu, gpa, &vsie_page->riccbd_map);
-+		if (!hpa) {
- 			rc = set_validity_icpt(scb_s, 0x0043U);
- 			goto unpin;
- 		}
- 		/* Validity 0x0044 will be checked by SIE */
--		vsie_page->riccbd_gpa = gpa;
- 		scb_s->riccbd = hpa;
- 	}
- 	if (((scb_s->ecb & ECB_GS) && !(scb_s->ecd & ECD_HOSTREGMGMT)) ||
-@@ -866,12 +834,11 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 		/* Due to alignment rules (checked above) this cannot
- 		 * cross page boundaries
- 		 */
--		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
--		if (rc) {
-+		hpa = pin_guest_page(vcpu, gpa, &vsie_page->sdnx_map);
-+		if (!hpa) {
- 			rc = set_validity_icpt(scb_s, 0x10b0U);
- 			goto unpin;
- 		}
--		vsie_page->sdnx_gpa = gpa;
- 		scb_s->sdnxo = hpa | sdnxc;
- 	}
- 	return 0;
-@@ -881,13 +848,9 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- }
- 
- /* unpin the scb provided by guest 2, marking it as dirty */
--static void unpin_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
--		      gpa_t gpa)
-+static void unpin_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- {
--	hpa_t hpa = virt_to_phys(vsie_page->scb_o);
--
--	if (hpa)
--		unpin_guest_page(vcpu->kvm, gpa, hpa);
-+	kvm_vcpu_unmap(vcpu, &vsie_page->scb_map);
- 	vsie_page->scb_o = NULL;
- }
- 
-@@ -901,12 +864,10 @@ static int pin_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
- 		   gpa_t gpa)
- {
- 	hpa_t hpa;
--	int rc;
- 
--	rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
--	if (rc) {
--		rc = kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
--		WARN_ON_ONCE(rc);
-+	hpa = pin_guest_page(vcpu, gpa, &vsie_page->scb_map);
-+	if (!hpa) {
-+		WARN_ON_ONCE(kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING));
- 		return 1;
- 	}
- 	vsie_page->scb_o = phys_to_virt(hpa);
-@@ -1601,7 +1562,7 @@ int kvm_s390_handle_vsie(struct kvm_vcpu *vcpu)
- out_unshadow:
- 	unshadow_scb(vcpu, vsie_page);
- out_unpin_scb:
--	unpin_scb(vcpu, vsie_page, scb_addr);
-+	unpin_scb(vcpu, vsie_page);
- out_put:
- 	put_vsie_page(vsie_page);
- 
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 2f3fa2787737a..b7225be31e308 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -196,8 +196,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev);
+ void vfio_pci_core_finish_enable(struct vfio_pci_core_device *vdev);
+ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+ 			       void __iomem *io, char __user *buf,
+-			       loff_t off, size_t count, size_t x_start,
+-			       size_t x_end, bool iswrite,
++			       loff_t off, size_t count, bool iswrite,
+ 			       enum vfio_pci_io_width max_width);
+ bool __vfio_pci_memory_enabled(struct vfio_pci_core_device *vdev);
+ bool vfio_pci_core_range_intersect_range(loff_t buf_start, size_t buf_cnt,
 -- 
-2.56.0
+2.34.1
 
