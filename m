@@ -1,74 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793905702;
-	b=zq0G5MttlX1g/1xtDbZi4n8ypC4BXhWuGpUHyxftf0IyukPF41jlRLB+79/wXHRRWEA6
-	 C+J2+8BoWXe+tysApQY6YyOaOWZaO0VLdygb1c/CRTwRr231Z0JZFz+/4wLgFtFixjSe8
-	 9SqVrJuzU4LOdEzE93Y21Z4jYZKswtAydfVTgqdO7y6BjSSDYx1GgBO+xIoYifP9W4Ikr
-	 PkoyiZtmWiUPrFKfheeYNu7aXoABi38+2sgr0EM5l6YKnQSFAa5w4ryKHP1M5PWFLBJmy
-	 OP6y8fAoSFNTuiqFNeeVyyjBg/ab/k/mZZUjuZ4985u5Swp3gOjPa5nThpol1gvGkrg==
+	t=1793905943;
+	b=o+DofQ4FeF+W972BF7hBZEM/q7if1ML9FZTcRPbVMBJwFFf4PdZvcjppqjwqsLeUTfpj
+	 2UcdAR3h8aWzWKTpZs8DzwZSHCicNpE2NVznyYeRWz11Z4ZdLSaYXSe4yvYUpY+HMLpjL
+	 FEeUfjenmYt49XYElwg1G8TQvNbJbYUassC7GC7gziuy5UrM94Zl3H5AioItwcz+Yo/Ql
+	 E1/vycqmo3je0CHn+C46G42xEemZdD+5mMg0gGe6v7kc8AQtuA5xcJrRH5qj63rEhSGkU
+	 kDzrKwpVq1U54HLgi1j7IiQmVyo6/O4ZkApcewYJFNMHVypgUAUPqkUMrLwxkgS43+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793905702;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793905943;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=EgrEjWq1dkccGneJGxtKcBDSZQyn1idPPnv0strekvo=;
-	b=mwQLi6t0gOJI8N+uGD9gMLt/OdkmOmdgEqOqBT1g8kD0mxM3eRphiOcSg0jKZtEwX6Jw
-	 syynHeP6go0NpxnCXKnEQq1LB+8U1Ba3dhnUIf8sxIXjIabPp5zAFMywJ3bZ7hrLY2W5I
-	 M12bFG2F2omtIkKZN16jXNN6DKPTw4Jg23taN4Kcm71XCBGxBP91vBXf2uzx1JTIF6WBM
-	 YsmAGPkByuWBgLxJS9KN+2pobnFp6vhYdEK1n4w55Fazy2I3SJaSiXQYPt+o4duXUHLiG
-	 oUu3wc2+vejbHlv3fEDe/OCZ5QF4Y1fN7Nsy+Kds2bavn57gVd+BLUbahGL+M6FP2lw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=QH8EWm3WpJvKmm+3SH11RyockHxBeCCGhqou8vP+rPk=;
+	b=YIdf1/3TPBOE81qN1rikP5G0o5I9yGs8USI5izywjVgSgm+EfDsQSaCTSq6Q9wJIDsVn
+	 1DLwbDDn1sYzo+6CS79dJMmZ5dZs0tLC/CRG/r7/NR0dxYlOfFwe704bskUTbxIcqGHj9
+	 dG2uuMuplbvgv3AS9y975FOnCG6p7WfFZJM6snRZxMHU0H01PN0i8FvlWoprUVrV8lT+F
+	 PHu3MjK6tRwbeu/QVbSmaKgrP7ZkcOxjE1bJ5f0x+j0amoogCKC7OO8DZi+6QJXMupUIU
+	 gPhSIjbIsb3qw9PYZeNZJGqS0gFoXpwA9kV5CaJvQCJ+JD0gdlQ89nT17bYqDtvOIWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Z1t3HC4J;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B0MNLtWQ;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A1C606A326
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:08:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89A1C606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60BC606A329
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:12:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D60BC606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Z1t3HC4J
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ea381ce04fso13261275ad.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 11:08:22 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B0MNLtWQ
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso980196a91.1
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 11:12:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793905702; x=1794510502; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EgrEjWq1dkccGneJGxtKcBDSZQyn1idPPnv0strekvo=;
-        b=Z1t3HC4JPfaqY5QaOL1TJjLm2Yf8K3fz6vV0RGq//80ezjK0r8FvaUcvEGDJz83cjv
-         prpeOohIpU9/yXt/YPfd1Bi39Hh2QwZC8jzoXly0ZI5jRTrxKVvX31zF2oJQdkWdu4h4
-         crWCNQFLe0zGzMVrLw+B4jCGZvm4+8OBcqu0Je+R9clIwI0dqEw/OiT9VjKKhpWXa7gS
-         XGVPy6CRxOcVctae7OkBKgeSrrtGPcy07MRquXAlr5+elHzx0itjg4Gle0OzSUQY8/fg
-         N29D3GkDi0xB14axB4uWFjW7gZMdXkl619+h+Rnc6ycPTHexMkknQKYVgCUFSHwpUfPG
-         JfTQ==
+        d=google.com; s=20260707; t=1793905942; x=1794510742; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QH8EWm3WpJvKmm+3SH11RyockHxBeCCGhqou8vP+rPk=;
+        b=B0MNLtWQGjDmicRxY8nTu69DmYdME/D2jJN8rX+nGAlTMa5/iKX0Zivd7mhh+flPfs
+         xy3ZoNN4HgIKW4K4+mbAoNWhsSmDgb1P3WgIZCjZvecSakD2rB4XrTL8WwonQtbvNgZ8
+         h8p2WNu5k95YFljALG1jMJJ03s4qGmEUPwOwManEDxZ+GcL/xuiqjJVeLqmp+5UyzAW6
+         9EH7p2MmwcpUJDnOC5R25PxQkZi+0TuqQnMBjToaTQ/j5/LnlqaqNQd3J93XCaF2MN6H
+         E7WHw7qCt48+ehLyUoviWDEPPA7ju+e/24ge/Nj8T6fML4Ui3s4IgQMHHYqUJVnOXFuq
+         B5Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793905702; x=1794510502;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EgrEjWq1dkccGneJGxtKcBDSZQyn1idPPnv0strekvo=;
-        b=covUeUq4w2SPzxDbrou5z8hudNp+ouytWkTAJERa4vJ8mkQHLpbFJm1Um8QEKdVP+W
-         8cEC3FRh0tAgN1/bZCDGwUK6RthE3L/YZfbO2Sbjy17E2LfLROLBUInezKRVp6gcZ1kq
-         qPpngvbib/YewukZKXzkDNQYdn4p/09ee3igbhyBsUuxm3RToYHgviiRaaMAxIj9paIu
-         E6XGOUGaki7laQ28A7INFbB+ew3+YR/HfpFQZEWSLSZysOEYZgtAXsWGNVWILf5M9jW0
-         SGdx2vSOgGyI03BcoorUufUST7VVKGaevpRmga+qug2UwPf+6da3dQmJGu0MqFH1WJP2
-         ylFw==
-X-Forwarded-Encrypted: i=1; AKwUvBwq5sODYOjH60OvcAEgqhPQIW1djA/suOhbrJxO/vE+if+VSCpOpRbhgtXBgU3romD2R/w=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+uKYBg1GvtKUyuZU1toJ3fBzIXmk5OCzX+0lpLHxfParzR/61e
-	SwnxOzQbd/eQ/bMeGXMw8ieZpWixaI1GksQ6v7Jas/ylru8ZjCJsxCx7Ap7bzaEnCPpUAcD8NxX
-	Ut1yYXQ==
-X-Received: from plbay8.prod.google.com ([2002:a17:902:8b88:b0:2eb:337a:cac])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19c3:b0:2e7:67ad:8e9d
- with SMTP id d9443c01a7336-2ed40da6654mr4115955ad.30.1793905701489; Thu, 05
- Nov 2026 11:08:21 -0800 (PST)
-Date: Thu, 5 Nov 2026 11:08:20 -0800
-In-Reply-To: <20261105164531.313849-6-pbonzini@redhat.com>
+        d=1e100.net; s=20260707; t=1793905942; x=1794510742;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QH8EWm3WpJvKmm+3SH11RyockHxBeCCGhqou8vP+rPk=;
+        b=stCbxPFvC5+ojQPooazxXk7w94AfYBWeFkM/AEKgv27dF+T4NIibhVz+07PwzURENG
+         un0N2K6oMG69sXkvpNhZNA+ZVUVMMDZHQDzM3KNtPvK1D4F07uyrNuVefHvpMQR6wgEx
+         2wCRrZQFyTZxkVfeDLym5XpGp8QnbzBU93MAjEz2EoHaBZrxRTHbgmvyIpD2ADvfVi5g
+         u0d1LUlToo8fIDl2RFz0xMae/8o6j8gChkXO7LGKvptMRR6VmpqBIxmuU3cWuEBYnUm+
+         hd6C+T0TGeiEjvdoe4alYlCyyNQJ/gGm/7CqnFG/YsKqRephknnzD2O0qrC9W4uWMzko
+         2YDQ==
+X-Forwarded-Encrypted: i=1; AKwUvByxy/SM2QQywe7wyDKYRg4TsIkZVou+ATyjltDOYZjey0vFxmij24ugf41iDay0JvWXBt0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9x3MRJc238NopTbVWACv63xCUjX3sL7jXUMdZyfRmHtpS7tz3G
+	rfEklE2RYjAVBcTfoq+1/8KIROsIvss9aCLXfEgs/aJRj1dhXIOMo1nmX/3OjwKtlQ==
+X-Gm-Gg: AYBFou1T2w28T4kgdI1vxckjKUrFN3SljfPKJStq8mZyZcrZVK2VjLM/KQroVbmK8n1
+	9YRZL7Iqlavi18welL6J02WVmtkFKIj4Uz1skGPVf9EBOlrZYYv2sb5rpDEe6Pr7dvuv883XEY9
+	FA/Xd2foUnfCzT2NKHQYYYFPZnRx5R29LxqKHhgaciwd02AwncjwM014AnARR3mjF0y90KVjc/5
+	JRRhR4KfDvjnUAsI4Bg8/yqY7MCaANEaNBy3mTmyAs1GND1/zv1BVCUfAAjESqYqXgVDy8hYXms
+	524Bv+7WPrB8/4/UWm9nP/lrtzv8sUhk3MP3IGkH0DuP4M4EZWI7AzzqzUo1uAUIsZWAB77JAZo
+	Kws5h5XC03r9fCyq4G7RGoNDvK+TEnm8QxcOf109h/GYeuRVhMe8yp0srMqGBPAbwdnzeTqfLFS
+	wxaita+GVzR3rM5Y7JpOCDSS8SClc2FhwaaJKQpNU0JHjSHpP/6LGtCpFCTCmwq4JeOzkbTW09T
+	ZBmw6n7E2X7RFu587+2bHxzizxkgx1g9X4w0w+mzg/8UeVFpdBBB3txbRGm0FjlqioslpzfJU7z
+	/oIO8u9BZMfmRYGYUZL7/upY0Yp5bcmZF5VsHUvp2DM1X+OSrepYPoRIHdbeeP2k
+X-Received: by 2002:a17:90b:268a:b0:3ac:7c52:faeb with SMTP id 98e67ed59e1d1-3ae89769d66mr17879218a91.41.1793905941532;
+        Thu, 05 Nov 2026 11:12:21 -0800 (PST)
+Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944eb1d1sm5401592a91.0.2026.11.05.11.12.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 11:12:20 -0800 (PST)
+Date: Thu, 5 Nov 2026 19:12:17 +0000
+From: David Matlack <dmatlack@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+	chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com,
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
+	kees@kernel.org, kevin.tian@intel.com, leon@kernel.org,
+	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com,
+	michal.winiarski@intel.com, parav@nvidia.com,
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org,
+	rananta@google.com, rdunlap@infradead.org, rientjes@google.com,
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+	schnelle@linux.ibm.com, skhan@linuxfoundation.org,
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com,
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <auzVEUpFEoWltpVg@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-8-vipinsh@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,53 +112,117 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261105164531.313849-1-pbonzini@redhat.com> <20261105164531.313849-6-pbonzini@redhat.com>
-Message-ID: <auzUJOrdHz4pwMuL@google.com>
-Subject: Re: [PATCH 5/5] KVM: x86: move asynchronous page fault handling to vcpu_enter_guest()
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Hillf Danton <hdanton@sina.com>, Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
-	syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102153656.1431701-8-vipinsh@google.com>
 
-On Thu, Nov 05, 2026, Paolo Bonzini wrote:
-> Fully handle the PV async #PF in vcpu_enter_guest().  This has several
-> advantages; first of all nested async #PF code (which has more to do
-> with host page faults than nested MMU page faults) is moved away from
-> MMU page fault handling, second host_apf_flags is hidden (though only
-> partly so, because it is replaced by EXIT_FASTPATH_APF) and the node
-> put on the stack.
-> 
-> Reported-by: syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com
-> Link: https://patch.msgid.link/auqAsEk9o6buPNiR@google.com
-> Co-authored-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  arch/x86/include/asm/kvm_host.h |  6 +++---
->  arch/x86/kvm/mmu.h              | 21 ++++++++++++---------
->  arch/x86/kvm/mmu/mmu.c          | 21 ++-------------------
->  arch/x86/kvm/svm/nested.c       |  4 ----
->  arch/x86/kvm/svm/svm.c          | 14 +++++++-------
->  arch/x86/kvm/vmx/main.c         | 20 +++++++++++---------
->  arch/x86/kvm/vmx/nested.c       |  3 +--
->  arch/x86/kvm/vmx/vmx.c          |  6 +-----
->  arch/x86/kvm/x86.c              | 17 +++++++++++++++--
->  9 files changed, 52 insertions(+), 60 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 93170c70a17c..f72028efe2ca 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -209,6 +209,7 @@ enum exit_fastpath_completion {
->  	EXIT_FASTPATH_REENTER_GUEST,
->  	EXIT_FASTPATH_EXIT_HANDLED,
->  	EXIT_FASTPATH_EXIT_USERSPACE,
-> +	EXIT_FASTPATH_APF,
+On 2026-11-02 07:36 AM, Vipin Sharma wrote:
+>  * TOCTOU synchronization: vfio_pci_dev_is_frozen() is checked locklessly
+>    on entry to the ioctl, read/write and mmap paths, and re-checked under
+>    a lock that freeze() holds before any operation that could change the
+>    device or vconfig: under vdev->igate in vfio_pci_ioctl_set_irqs() and
+>    around every config-space write in vfio_pci_config_rw_single(), under
+>    vdev->memory_lock in vfio_pci_runtime_pm_entry(),
+>    vfio_pci_ioctl_reset() and the SR-IOV enable path of
+>    vfio_pci_core_sriov_configure(), and under dev_set->lock in
+>    vfio_pci_dev_set_hot_reset(). A racing operation thus either completes
+>    before freeze() takes its snapshot or fails, while existing BAR mmaps,
+>    ioeventfds and dma-bufs keep working. Serializing config writes on
+>    igate covers the PCI_COMMAND, INTx disable emulation, power state and
+>    FLR paths at one point (the INTx disable emulation now uses the
+>    igate-held __vfio_pci_intx_mask() and __vfio_pci_intx_unmask()
+>    helpers), and also serializes the irq_type and virq_disabled accesses
+>    of config writes with VFIO_DEVICE_SET_IRQS.
 
-Ha!  I had coded up EXIT_FASTPATH_PF too, but never proposed it because it wasn't
-useful since my approach used a dedicated kvm_x86_ops hook.
+I think there's a simpler way to do this. Checking the frozen flag
+locklessly and then re-checking it under whichever lock covers each
+path spreads the synchronization across igate, memory_lock and
+dev_set->lock. That makes it hard to convince yourself every path that
+can change the device is covered. It also makes every config space
+write take igate, for all vfio-pci users, even when
+CONFIG_VFIO_PCI_LIVEUPDATE=n.
 
-I'll take a close look at this series today or tomorrow.
+Instead, I suggest adding a per-device rw_semaphore to struct
+vfio_device in the VFIO core, e.g. liveupdate_rwsem, that protects a
+liveupdate_frozen flag:
+
+ - vfio_device_fops_unl_ioctl(), vfio_device_fops_read() and
+   vfio_device_fops_write() take liveupdate_rwsem for read and fail
+   with -EIO if the device is frozen. That covers every device ioctl in
+   one place, including the ones handled by the VFIO core
+   (VFIO_DEVICE_FEATURE, VFIO_DEVICE_GET_REGION_INFO and
+   VFIO_DEVICE_{ATTACH,DETACH}_IOMMUFD_PT). This patch doesn't block
+   the last two at all today.
+
+ - freeze() and unfreeze() take liveupdate_rwsem for write, before any
+   other lock, and flip the flag. preserve() doesn't need it since it
+   only serializes state that doesn't change after the device is
+   opened.
+
+Putting this in the VFIO core also means other VFIO drivers can reuse
+it if they add Live Update support in the future.
+
+The lock order then becomes:
+
+  liveupdate_rwsem -> dev_set->lock -> igate -> memory_lock
+
+freeze() can still take igate and memory_lock to check irq_type,
+pm_runtime_engaged and sriov_active. But the ioctl, read and write
+paths no longer need to re-check anything under those locks. So you
+can drop the igate change in vfio_pci_config_rw_single(), the
+open-coded vfio_pci_zap_and_down_write_memory_lock() in
+vfio_pci_runtime_pm_entry() and vfio_pci_ioctl_reset(), and the
+smp_load_acquire()/smp_store_release() pair.
+
+Two paths still need their own handling because they don't go through
+the device's file:
+
+ - vfio_pci_core_sriov_configure() is reached through sysfs. Take
+   liveupdate_rwsem for read around the frozen check and the
+   sriov_active update.
+
+ - VFIO_DEVICE_PCI_HOT_RESET issued on one device also resets the other
+   devices in its dev_set. Keep the check in
+   vfio_pci_dev_set_hot_reset() under dev_set->lock. freeze() sets the
+   flag while holding both liveupdate_rwsem and dev_set->lock, so
+   holding either one is enough to read it. Please don't take the other
+   devices' liveupdate_rwsem there, since that would invert the lock
+   order relative to freeze().
+
+I don't think mmap needs to be blocked at all. Creating a new mapping
+doesn't change the device or any of the state that gets preserved, and
+existing mappings already keep working while the device is frozen.
+Leaving mmap alone also avoids taking liveupdate_rwsem under mmap_lock,
+which could deadlock: the ioctl, read and write paths can fault on user
+memory (taking mmap_lock) while holding liveupdate_rwsem for read, and
+freeze() may be waiting for the write lock. Please update the comment
+in freeze() and the DOC section to match.
+
+> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+> index 9914f3ac69ae..1f1ac7a798aa 100644
+> --- a/drivers/vfio/pci/vfio_pci_config.c
+> +++ b/drivers/vfio/pci/vfio_pci_config.c
+> @@ -644,10 +644,10 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
+>  
+>  		if (virt_intx_disable && !vdev->virq_disabled) {
+>  			vdev->virq_disabled = true;
+> -			vfio_pci_intx_mask(vdev);
+> +			__vfio_pci_intx_mask(vdev);
+>  		} else if (!virt_intx_disable && vdev->virq_disabled) {
+>  			vdev->virq_disabled = false;
+> -			vfio_pci_intx_unmask(vdev);
+> +			__vfio_pci_intx_unmask(vdev);
+>  		}
+>  	}
+
+With the rwsem, config writes no longer need igate, so this change
+isn't needed. If config writes and VFIO_DEVICE_SET_IRQS really do race
+on irq_type and virq_disabled today, that's unrelated to Live Update.
+Please send it as a separate fix.
+
+Lastly, please add the freeze infrastructure and the checks in their
+own commit ahead of this one, e.g. "vfio: Add infrastructure to freeze
+devices for Live Update". Then this patch only has to implement
+freeze() and unfreeze() on top of it, which will make both easier to
+review.
