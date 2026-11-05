@@ -1,115 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793871542;
-	b=ydPzKiRaUpGJvgkFiDarpL2YXTHh8LVm14jnl3PoCcC9QXxNPQx2XcaX0AdM3FxpiRG0
-	 EtiucL/00yH/80sT5BFIt8ZTOOZgr5ZotyC7Ucf9FrbdJoDiGgX3RB+SAeWC4aXGP8bMS
-	 HZsvWYv8wll0I5DFfR8m/fa2ANQhwUDB8blX4jJEiB0UGdPE38eWb+dA/VlGBzFd8Cnia
-	 aS7AvSAEIFhCF8OvKzoDgjFiohfIK2tnB1hZOYbTRmTkQtSINbMLgV6dqhlP8h3gMHpAY
-	 4ENA38YRSAaf+IT1CWSDpMRHs63OAZXNoYBGwhtfu/oPsCyt4xlhhxPdiXRhg4ob9Eg==
+	t=1793873149;
+	b=GmKdWl2AYDRDy/OvyR8RGxYkUYTKNN1S7x5JJlOBiu1TpCYcPitR8QCUbGt9I0+gY1lE
+	 r0XcDc8ukvX6FwNmW8ebBUQwitGlZvp+Kk44+/5vu+DvWOAEvSm2wNWAg/3TYviAUCvhH
+	 WV2g3ilNv/+4XlrAscjX1NyDR0uWGgCLOowoq3Y6Fne1VlEKWGa+AzWcpXa3JAht5g5Ms
+	 gi8ZwllbfXRpLFmxMnv1TOy2jAsUTFjfWDryrNvX2eOXhChlsDz3SQbLtG6+Qz16zw7BD
+	 Txmdke7iQ7j327BcTiglh0cGglRA6rtRGi5Z2avz9FVMg2j+78OmrtvpD8DdpFTeBdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793871542;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=6sn1f1jWORyKv3besFYbn1oXeFyI4WIIT1pdKGKky2g=;
-	b=0qbbHXQXJzGtlpdH8AWTWdXT2yJQN6TJ86lDcK34GhFu7+M4Ij2AiVh1s0qGZQ0OpK3p
-	 gu6qKFdu0Bv3jRdAeblOl7lHkLnp2FW/VLG2drVX6EYWkOAVmZp1hrEYeByrM11paf6ue
-	 dL5V4G5Xf1voFZQZjPufG1ecmutBOqtuBq08FHUjmoBO7cEmM9Ts94T1hFasyIw2RZL5d
-	 PH1N/4XXYXNh2dQLUeMwx4+nxSSzruKOFn8d4IyeYRLIHOvkSa4315X38xyU4Xw38cdE3
-	 gRPqkSKZOj11GHQhNu/lgcmqUA3xTL4gqPSJk52lIr2ycwRB3gKOWohbtaTWny+cOJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793873149;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:X-Change-ID:X-Mailer:
+	 Content-Transfer-Encoding;
+	bh=H57ibmNlJKfA5VTS9n926s8nZL0rIRZmoGJQOQ7jq8Q=;
+	b=Ooh2ymxBtmYr1qjgnrQH/4XKlcY+n2nm9GNCetTM17b/ljdiX7ktduxl2lRKZ3cl8FXI
+	 AFUEHLnKxiRkh1+cAdkIdVMf9BkO9BwE8V0Q5ntflF9Ftr6xqBp9YULL6LpPRuK7oAsjR
+	 tLkXM9k7A6C870SOnwAOgyne42z5qMpKk7BMJbZHq7SB22t3HAS3RlU5cHPDbg55GKuDF
+	 lsnWLxNKrloRehec/Z8aIml3F8UHC6eUbpnWKOMbou2bd0XYjkHEV9F/5kj8xAodMlXx+
+	 Kt/21H+NDaV75znWmiG/vBj16mp/4NNwV0QaBol2r5Taq9p1MpEVGxBAF1usyLlHd5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MXffKtf9;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=gdP7Ftpk;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evXHy5+Z;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771DF606A329
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 09:39:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 771DF606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E347606A326;
+	Thu,  5 Nov 2026 10:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MXffKtf9;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=gdP7Ftpk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793871540;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6sn1f1jWORyKv3besFYbn1oXeFyI4WIIT1pdKGKky2g=;
-	b=MXffKtf9cJoRSCUSmhLavm9aXn7pKVxTtmDbW4efVNGZAxWf+TuFZHnIUOWas60CnVKBK/
-	3yO+sO8zyf2bkidCtlsG4Ygju9r/8f1QIHzvjdxLVCOZgG0bViGimwD0sNMzEtXPiJHaAy
-	d5L+XEC/PL94mdf5lGs4BQ1vooBN9cU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-3f3Ypv-HMMSu3gbJpcrTtQ-1; Thu, 05 Nov 2026 04:38:59 -0500
-X-MC-Unique: 3f3Ypv-HMMSu3gbJpcrTtQ-1
-X-Mimecast-MFC-AGG-ID: 3f3Ypv-HMMSu3gbJpcrTtQ_1793871538
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a318cd95e8so5036095e9.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 01:38:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793871538; x=1794476338; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6sn1f1jWORyKv3besFYbn1oXeFyI4WIIT1pdKGKky2g=;
-        b=gdP7Ftpkfdd25RqpgPauAyyQay/b6EAcllvZ8cRvrNOSdPHUqBMMMEYF6CvHWakYWy
-         AaCqfStc/JQXqjeQAs5zXxIRPAJyTpj1F+8L8Gt4O1rjM+nS8FbfajYLYJL+WSnhlHMT
-         KnmMbPCPNdhYQz//Tweh83XDmDAxcnKnzL7TgE6ImR1544RJwH9/F25yEyUDe5F/1NIE
-         Fv1FDyra97C5kI6N5wKoTBo7DFeKts4JEtUlT3uecW7ItfQRvUsfy8pEjGkSn30/SQU4
-         9tbSPnp8Zg8ccNoFP66NCAJ3C2nUNfCwfZxpZVWKrDGSopnMRcb7Ca0cC28W9JlmIVtA
-         4p4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793871538; x=1794476338;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6sn1f1jWORyKv3besFYbn1oXeFyI4WIIT1pdKGKky2g=;
-        b=V62usjlANuWsGkEWFrT9sblR2dVJ32nUGWFJqVVPDrdOt23U1r8tAwCmawr9d/vW+V
-         q80bZPR+8VFf6LgeNsO4Xh7mRFbrdiQPWL3vP5U0s8aODcW/4Oj6I9hH7bFP4fPeQghi
-         y4mk+UV1nmd8lQUTpbPRYOkG+/hgxj3fx/jrwHaPrsLxlNCjwe56FLfdAQBTVSYrvt5X
-         BBrl+pmmE+dqcBhg/bBIvMHqBNK325HERbmFCcr0/XbRmjvkwuwyGUDYr4ggBddGnN1+
-         WDqzBoQVvAODGYEp7b1+/5AYmIG9jMOFAQJ2+btQ18lQtsfVlui9/rVZu0XEAKVClMal
-         7LlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwxKMd6ofYEvPFKh4yCXECkHa3phjgLpku+B/OBfNwze5HQXUhiua7J8EFNg0AxrtF6Mzo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8ir0a4+aA4k9j88jk+BChbc3IaTSJ0NzTif/aQQ8ZKwdYqJu0Y
-	WA70ciqIH94Og1CFl9q6MgTRZYO7qXWuo9POtUzfmHyPH7F8tPU8RytjuFxPY9fZ7jm566L9Cr7
-	o4+VO9KSk7y9N2FC/PiXcHeD0VLis3P5uIJAMb3TEw/DCY4yoUOfWKA==
-X-Gm-Gg: AYBFou2s2KK8RTy2vINto9V75qFA7z8dSK58mJYhuvfy9nYyFReTCKOO59zwJBjo5eq
-	+vI4nEQ0tpjnp900cm9sq5mwntXyCUZKGXmYfl8yMVNNCTTf3zd+R9fA727K8rybktzhCNJccSW
-	06rxDFrGJyyyXzGmEM7+PZttZMBERzp/EJiFwETSDExh/T9mw88jF4vctB3x7KE4hekRpYJfHYZ
-	RY1u1Rtji/c1L5e42do9eD2TbwCrfGBzslZa0x1jMyAXg+KoCjuTwbBU5ylvIwZN/XerD3u211m
-	QT9cHmyj6qTiPlVwOb71xz7q+llldd14Shux0WO5+qMbuXpYIecGcIlk8UVhADCuSxZikDp1Lku
-	/Q9nPoN18JC7fvERD4+Lnx3nbHGF29Nim6JbYzKDliXAmiJWFqYAw
-X-Received: by 2002:a05:600c:1907:b0:4b4:a551:681a with SMTP id 5b1f17b1804b1-4b55c8743d8mr34861685e9.3.1793871537778;
-        Thu, 05 Nov 2026 01:38:57 -0800 (PST)
-X-Received: by 2002:a05:600c:1907:b0:4b4:a551:681a with SMTP id 5b1f17b1804b1-4b55c8743d8mr34861255e9.3.1793871537199;
-        Thu, 05 Nov 2026 01:38:57 -0800 (PST)
-Received: from sgarzare-redhat ([80.116.143.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56fca22e1sm61976075e9.14.2026.11.05.01.38.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 01:38:56 -0800 (PST)
-Date: Thu, 5 Nov 2026 10:38:51 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: netdev@vger.kernel.org, stefanha@redhat.com, bobbyeshleman@gmail.com, 
-	mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com, 
-	xuanzhuo@linux.alibaba.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 5/5] vsock/virtio: defer native RX readiness
- notifications until batch unlock
-Message-ID: <auxK5K_n2hYw0ahW@sgarzare-redhat>
-References: <20261103041134.33310-1-physicalmtea@gmail.com>
- <20261103041134.33310-6-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evXHy5+Z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2B31F000C1;
+	Thu,  5 Nov 2026 10:05:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793873149;
+	bh=H57ibmNlJKfA5VTS9n926s8nZL0rIRZmoGJQOQ7jq8Q=;
+	h=From:To:Cc:Subject:Date;
+	b=evXHy5+ZLTF56mPmr32t3SEsC93NaCtQViz4KJuaqFZKFxzOPZcWP5XUnwKE8Utwv
+	 LradAWvzlQ21G8o205/r5Hj7xh63O/IkGdMkNRndz1HWq2OaZPGbe4JeULvmvXexDd
+	 Dc6PnIovZGvRDJ8RBcREC0cYs7B7ziPBHttOwq3UGrrfCGISDSGj/XOHChpMnY6lO9
+	 K7Zc79w2Bk5fppF/54Nrx5+PjlM0fXEKvf7R9XpfpJrewj7hT41JfvHvJNsbyTM60F
+	 Sw7IbgLFrPbunepwcDSCtxFFiAqIbX/z/nZ3KiHujhB+1CIFTP/8Ykz5GUXbd3wCaR
+	 VH8kQVX8BI07g==
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org,
+	kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: [PATCH v13 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
+Date: Thu,  5 Nov 2026 12:04:31 +0200
+Message-ID: <20261105-fix-p2p-acs-v4-0-v13-0-3dd065907c3b@nvidia.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -119,412 +82,209 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261103041134.33310-6-physicalmtea@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260821-fix-p2p-acs-v4-0-e72455e3a261
+X-Mailer: b4 0.15-dev-18f8f
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 03, 2026 at 12:11:34PM +0800, Jia Jia wrote:
->An RX batch can make a socket readable while the RX worker retains its
->socket lock. Waking a blocked reader before release_sock() merely makes it
->wait for the same lock.
->
->P4 coalesces native sk_write_space notifications while retaining their
->under-lock callback context. This patch also coalesces native sk_data_ready
->notifications and moves both callbacks after release_sock(), so awakened
->tasks do not immediately block on the RX worker's socket lock.
->
->Save the native data-ready callback before the AF_VSOCK socket is
->published. Batch only while the native protocol and both native readiness
->callbacks are present and no psock is observed under sk_callback_lock. A
->socket with a replacement callback continues down the existing per-packet
->path.
->
->At batch finish, deliver write-space before data-ready and hold the
->connected lookup reference until both callbacks return. Packets admitted on
->the native path continue to use their saved native callbacks. Loading a
->current sockmap callback at finish would not serialize its invocation
->against sockmap teardown and could lose the native wakeup or invoke a stale
->data-ready wrapper.
->
->Extract the data-ready predicate from vsock_data_ready() so the deferred
->and regular paths share the low-watermark test.
->
->Performance:
->
->P4-P5 contribution (P1-P3 vs P1-P5):
+Punch line for Linus from Jason:
+"Enhance detecting if the PCI fabric can support a peer to peer path
+by evaluating the full bi-directional fabric path over each of the
+three traffic type ACS controls. Expand the number of fabric
+configurations where the P2P algorithm makes the correct determination
+of support to include non-uniform ACS and situations where translated
+takes different routes from untranslated."
 
-I'm still confused on the reason why P4-P5 are not squashed.
-This patch is essentially changing 90% of the previous patch...
+--------------------------------------------------------------------------
 
->
->End-to-end RX throughput (64K Guest recv() size, SO_RCVLOWAT=1; Gbit/s):
->
->  payload  P1-P3 RX  P1-P5 RX  throughput change (95% CI)
->           (Gbit/s)      (Gbit/s)
->  64B        0.2449       0.2463    +0.55% [-3.86%, +5.17%]
->  256B       0.9649       0.9931    +2.93% [+0.83%, +5.07%]
->  512B       1.8205       1.8260    +0.30% [-4.27%, +5.10%]
->  1K         3.3431       3.3420    -0.03% [-2.15%, +2.12%]
->  4K         5.6541       5.8428    +3.34% [+1.10%, +5.63%]
->  8K         5.4280       5.3364    -1.69% [-15.55%, +14.46%]
->  16K        5.5935       5.6701    +1.37% [-1.41%, +4.23%]
->  64K        5.6917       5.8351    +2.52% [-0.20%, +5.31%]
->
->Fixed-syscall stress test (receiver recv() size = sender write size;
->Gbit/s):
->
->  payload P1-P3 RX P1-P5 RX throughput change (95% CI)
->  recv() calls are listed as P1-P3/P1-P5.
->  64B      0.2553   0.2575   +0.87% [-3.68%, +5.63%]
->           1048577/1048577
->  256B     0.9069   0.9183   +1.26% [-3.96%, +6.76%]
->           1048577/1048577
->  512B     1.6048   1.6459   +2.56% [+0.98%, +4.18%]
->           1048577/1048577
->  1K       2.6939   2.7357   +1.55% [-1.35%, +4.54%]
->           1048577/1048577
->  4K       4.9168   4.9678   +1.04% [-1.84%, +4.00%]
->           524965/525283
->  8K       5.1476   5.2005   +1.03% [-4.02%, +6.34%]
->           262926/263156
->  16K      5.5964   5.6609   +1.15% [-2.86%, +5.33%]
->           131311/131475
->  64K      5.9439   5.9073   -0.62% [-3.00%, +1.83%]
->           32875/32937
->
->Guest CPU1 aggregate cycles per received byte
->(fixed 64K receiver, with perf):
->
->  payload     P1-P3     P1-P5  change (95% CI)
->  64B        60.281    58.258  -3.36% [-8.74%, +2.35%]
->  256B       14.242    13.648  -4.17% [-9.81%, +1.82%]
->  512B        7.547     7.211  -4.45% [-9.73%, +1.13%]
->  1K          3.987     3.853  -3.35% [-8.52%, +2.12%]
->  4K          1.983     1.880  -5.17% [-7.97%, -2.27%]
->  8K          1.665     1.620  -2.75% [-9.03%, +3.96%]
->  16K         1.409     1.346  -4.52% [-10.94%, +2.37%]
->  64K         1.322     1.281  -3.11% [-6.49%, +0.38%]
->
->Full-series cycles/B (baseline vs P1-P5):
->
->Guest CPU1 aggregate cycles per received byte
->(fixed 64K receiver, with perf):
->
->  payload  baseline     P1-P5  change (95% CI)
->  64B        65.282    57.843  -11.40% [-13.77%, -8.95%]
->  256B       14.710    13.813   -6.10% [ -7.89%, -4.28%]
->  512B        7.709     7.188   -6.75% [ -8.79%, -4.66%]
->  1K          4.075     3.862   -5.23% [ -6.80%, -3.63%]
->  4K          2.034     1.887   -7.21% [ -8.67%, -5.72%]
->  8K          1.664     1.568   -5.78% [ -7.83%, -3.69%]
->  16K         1.450     1.385   -4.48% [ -6.08%, -2.86%]
->  64K         1.338     1.317   -1.51% [ -3.21%, +0.22%]
->
->Signed-off-by: Jia Jia <physicalmtea@gmail.com>
->---
-> include/linux/virtio_vsock.h            |  5 ++-
-> include/net/af_vsock.h                  |  9 +++--
-> net/vmw_vsock/af_vsock.c                | 27 ++++++++++---
-> net/vmw_vsock/virtio_transport_common.c | 52 +++++++++++++++----------
-> 4 files changed, 62 insertions(+), 31 deletions(-)
->
->Tested:
->  Concurrent map-entry attach/detach during sequenced RX and duplex traffic
->  passed on baseline, P1-P3, P1-P4, and P1-P5. The active SK_PASS case also
->  passed on each state, with 200,000 verdict invocations. The concurrent
->  SK_PASS attach/detach case completed 1,000 insert/remove pairs per state;
->  its 10,000-record suffix after the final detach was verified. No kernel
->  diagnostic markers were found in successful runs.
->
->  Sockmap may replace sk_data_ready and sk_write_space. With non-native
->  callbacks, native RX batching must be declined and the ordinary per-packet
->  receive path used. The active SK_PASS case covers the condition expected to
->  trigger this fallback. The test does not trace each packet's internal
->  branch, so it verifies the fallback scenario without asserting that every
->  packet took that branch.
->
->  The duplex cases exercised write-space backpressure: the guest's nonblocking
->  send reached EAGAIN while the host was not reading. After the host began
->  draining data, the guest observed POLLOUT and resumed sending. Counts below
->  are observed EAGAIN/POLLOUT recoveries.
->
->    Test / result                              baseline   P1-P3   P1-P4   P1-P5
->    No-verdict RX churn: attach/detach pairs     433493  455507  430985  380351
->    No-verdict duplex: attach/detach pairs       229793  212410  214198  148755
->    No-verdict duplex: EAGAIN/POLLOUT            365/365  266/266  264/264  443/443
->    Active SK_PASS: EAGAIN/POLLOUT              2548/2548 3013/3013 3093/3093 4208/4208
->    SK_PASS attach/detach: intervals with verdict progress 705 616 631 692
->    SK_PASS attach/detach: verdict invocations  99747   99894   97475   82409
->    Post-detach SK_PASS suffix                 10,000/10,000 records per run
->
->diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->index bf28e8e32e280..2aa0e81e655d5 100644
->--- a/include/linux/virtio_vsock.h
->+++ b/include/linux/virtio_vsock.h
->@@ -287,14 +287,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->  * Initialize a batch to zero before use. A non-empty batch owns @sk's socket
->  * lock and the reference returned by vsock_find_connected_socket_net(). The
->  * caller retains both until it calls virtio_transport_rx_batch_finish(). An
->- * empty batch owns neither. A pending native write-space notification belongs
->- * to the lock holder and is delivered by virtio_transport_rx_batch_finish().
->+ * empty batch owns neither. Pending native readiness notifications belong to
->+ * the lock holder and are delivered by virtio_transport_rx_batch_finish().
->  */
-> struct virtio_transport_rx_batch {
-> 	struct sock *sk;
-> 	unsigned int pkts;
-> 	size_t bytes;
-> 	bool write_space_pending;
->+	bool data_ready_pending;
-> };
->
-> static inline bool
->diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
->index b76ab565ea58b..57ee545fdb496 100644
->--- a/include/net/af_vsock.h
->+++ b/include/net/af_vsock.h
->@@ -64,9 +64,10 @@ struct vsock_sock {
-> 	bool sent_request;
-> 	bool ignore_connecting_rst;
-> 	/*
->-	 * Captured before the socket is published. This identifies AF_VSOCK's
->-	 * native write-space callback after a consumer has replaced it.
->+	 * Captured before the socket is published. These identify AF_VSOCK's
->+	 * native readiness callbacks after a consumer has replaced them.
-> 	 */
->+	void (*native_data_ready)(struct sock *sk);
-> 	void (*native_write_space)(struct sock *sk);
->
-> 	/* Protected by lock_sock(sk) */
->@@ -83,7 +84,9 @@ s64 vsock_stream_has_data(struct vsock_sock *vsk);
-> s64 vsock_stream_has_space(struct vsock_sock *vsk);
-> struct sock *vsock_create_connected(struct sock *parent);
-> void vsock_data_ready(struct sock *sk);
->-bool vsock_write_space_is_native(const struct sock *sk);
->+bool vsock_data_ready_pending(struct sock *sk);
->+bool vsock_callbacks_are_native(const struct sock *sk);
->+void vsock_call_native_data_ready(struct sock *sk);
-> void vsock_call_native_write_space(struct sock *sk);
->
-> /**** TRANSPORT ****/
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index e39567990539f..0617073e99ed8 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
-> 		sk->sk_type = type;
->
-> 	vsk = vsock_sk(sk);
->+	vsk->native_data_ready = sk->sk_data_ready;
-> 	vsk->native_write_space = sk->sk_write_space;
-> 	vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
-> 	vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
->@@ -1113,24 +1114,38 @@ s64 vsock_stream_has_space(struct vsock_sock *vsk)
-> }
-> EXPORT_SYMBOL_GPL(vsock_stream_has_space);
->
->-void vsock_data_ready(struct sock *sk)
->+bool vsock_data_ready_pending(struct sock *sk)
-> {
-> 	struct vsock_sock *vsk = vsock_sk(sk);
->
->-	if (vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
->-	    sock_flag(sk, SOCK_DONE))
->+	return vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
->+	       sock_flag(sk, SOCK_DONE);
->+}
->+EXPORT_SYMBOL_GPL(vsock_data_ready_pending);
->+
->+void vsock_data_ready(struct sock *sk)
->+{
->+	if (vsock_data_ready_pending(sk))
-> 		sk->sk_data_ready(sk);
-> }
-> EXPORT_SYMBOL_GPL(vsock_data_ready);
->
->-bool vsock_write_space_is_native(const struct sock *sk)
->+bool vsock_callbacks_are_native(const struct sock *sk)
-> {
-> 	const struct vsock_sock *vsk = vsock_sk(sk);
->
->-	return READ_ONCE(sk->sk_write_space) ==
->+	return READ_ONCE(sk->sk_data_ready) ==
->+	       READ_ONCE(vsk->native_data_ready) &&
->+	       READ_ONCE(sk->sk_write_space) ==
-> 	       READ_ONCE(vsk->native_write_space);
-> }
->-EXPORT_SYMBOL_GPL(vsock_write_space_is_native);
->+EXPORT_SYMBOL_GPL(vsock_callbacks_are_native);
->+
->+void vsock_call_native_data_ready(struct sock *sk)
->+{
->+	vsock_sk(sk)->native_data_ready(sk);
->+}
->+EXPORT_SYMBOL_GPL(vsock_call_native_data_ready);
->
-> void vsock_call_native_write_space(struct sock *sk)
-> {
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index af26344678e41..9d02e81042c21 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -1598,7 +1598,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
->
-> static int
-> virtio_transport_recv_connected(struct sock *sk,
->-				struct sk_buff *skb)
->+				struct sk_buff *skb,
->+				bool *data_ready_pending)
-> {
-> 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> 	struct vsock_sock *vsk = vsock_sk(sk);
->@@ -1617,7 +1618,12 @@ virtio_transport_recv_connected(struct sock *sk,
-> 			vsock_remove_sock(vsk);
-> 			break;
-> 		}
->-		vsock_data_ready(sk);
->+		if (data_ready_pending) {
->+			if (!*data_ready_pending && 
->vsock_data_ready_pending(sk))
->+				*data_ready_pending = true;
->+		} else {
->+			vsock_data_ready(sk);
->+		}
-> 		return err;
-> 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
-> 		virtio_transport_send_credit_update(vsk);
->@@ -1874,20 +1880,19 @@ __virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
-> 		return false;
->
-> 	/*
->-	 * Sockmap can replace sk_prot or sk_write_space, and publish a psock,
->-	 * without the socket lock. Coalescing is safe only for the native
->-	 * write-space callback, so a boundary that sees a replacement returns to
->-	 * the existing per-packet path.
->+	 * Sockmap can replace sk_prot or either readiness callback, and publish a
->+	 * psock, without the socket lock. Coalescing is safe only for native
->+	 * callbacks, so a boundary that sees a replacement returns to the existing
->+	 * per-packet path.
-> 	 */
-> 	return READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
->-	       vsock_write_space_is_native(sk) &&
->+	       vsock_callbacks_are_native(sk) &&
-> 	       !virtio_transport_sock_has_psock(sk);
-> }
->
-> /*
->- * Sockmap teardown restores the native protocol and write-space callback
->- * under sk_callback_lock. Serialize each packet admission check with those
->- * updates.
->+ * Sockmap teardown restores the native protocol and callbacks under
->+ * sk_callback_lock. Serialize each packet admission check with those updates.
->  */
-> static bool
-> virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
->@@ -1905,9 +1910,8 @@ virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
-> /*
->  * The caller holds sk's socket lock. If @batchable is non-NULL, update it
->  * after processing @skb to say whether a native STREAM/RW batch can continue.
->- * When @batch is non-NULL, record a native write-space notification for batch
->- * finish. A writer cannot consume the updated credit until this lock is
->- * released.
->+ * When @batch is non-NULL, record native readiness notifications for batch
->+ * finish. A reader or writer cannot make progress until this lock is released.
->  */
-> static void
-> virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->@@ -1917,6 +1921,7 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-> {
-> 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> 	struct vsock_sock *vsk = vsock_sk(sk);
->+	bool *data_ready_pending;
-> 	struct sockaddr_vm src;
-> 	bool space_available;
->
->@@ -1926,6 +1931,8 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-> 	if (batchable)
-> 		*batchable = false;
->
->+	data_ready_pending = batch ? &batch->data_ready_pending : NULL;
+PCI P2PDMA applies Request and Completion Redirect throughout both paths.
+This misclassifies asymmetric and nested switches, and reports one answer
+for every kind of TLP.
 
-Can we just pass `batch` to virtio_transport_recv_connected and avoid 
-all of this complexity?
+Three ACS controls act on TLP attributes the Requester chooses rather
+than on the topology: Translation Blocking and Direct Translated P2P act on
+a Request's Address Type, and Completion Redirect skips Completions
+carrying Relaxed Ordering.
 
->+
-> 	/*
-> 	 * The socket may have been closed or reassigned after lookup but before
-> 	 * its socket lock was acquired. Listener sockets have no assigned
->@@ -1962,7 +1969,7 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-> 		kfree_skb(skb);
-> 		break;
-> 	case TCP_ESTABLISHED:
->-		virtio_transport_recv_connected(sk, skb);
->+		virtio_transport_recv_connected(sk, skb, data_ready_pending);
-> 		break;
-> 	case TCP_CLOSING:
-> 		virtio_transport_recv_disconnecting(sk, skb);
->@@ -2036,32 +2043,37 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
->
-> /*
->  * Release an active RX batch. A non-empty batch holds the socket lock and the
->- * reference returned by vsock_find_connected_socket_net(). Deliver any
->- * deferred native write-space notification while holding the lock, preserving
->- * the callback context of the regular receive path. An empty batch holds
->- * neither.
->+ * reference returned by vsock_find_connected_socket_net(). Release the lock,
->+ * deliver deferred native write-space and data-ready notifications in that
->+ * order, then drop the reference. An empty batch holds neither.
->  */
+Evaluate each direction at the path divergence, decide every class from the
+one walk, and treat a client with ATS enabled as translating unless its
+driver declares per-mapping ATS.
 
-Really, avoid comments that just describe what a function is doing. They 
-really don't add much value and we need to update them every time, like 
-this...
+This completes the P2PDMA side; dma-buf and mlx5 follow separately.
 
-Comments should explain reasons, hidden behaviours, etc.
-Something unclear just looking at the code.
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+Changes in v13:
+- Read the Intel SPT PCH ACS Control dword at its nonstandard offset so
+  Translation Blocking is honored on host routes, addressing the
+  Sashiko review of patch 10.
+- Distinguished unreadable forwarding controls from missing forwarding
+  and retained redirect advice when clearing controls restores a direct
+  route, addressing the Sashiko review of patch 5.
+- Updated the directional routing documentation for shared ancestors.
+- Reused the ACS isolation-test mock setup
+- Link to v12: https://patch.msgid.link/20261103-fix-p2p-acs-v4-0-v12-0-912101f93517@nvidia.com
 
-> void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
-> {
-> 	bool write_space_pending = batch->write_space_pending;
->+	bool data_ready_pending = batch->data_ready_pending;
-> 	struct sock *sk = batch->sk;
->
-> 	batch->sk = NULL;
-> 	batch->pkts = 0;
-> 	batch->bytes = 0;
-> 	batch->write_space_pending = false;
->+	batch->data_ready_pending = false;
->
-> 	if (!sk)
-> 		return;
->
+Changes in v12:
+- Rebaed to v7.4-rc1
+- Link to v11: https://patch.msgid.link/20261013-fix-p2p-acs-v4-0-v11-0-72cf8c96e617@nvidia.com
 
-Here should be nice to have a comment to explain WHY it's safe to 
-release in this new position...
+Changes in v11:
+- Applied the client ATS policy in pci_p2pdma_distance_many() too, as
+  local Sashiko pointed out.
+- Read the ATS Enable bit once per query, so the class and the ATS policy
+  always agree.
+- Documented that pcim_p2pdma_set_ats_per_mapping() needs a successful
+  pcim_p2pdma_init().
+- The path diagnostics no longer read ACS Control or the bridge bus range,
+  and they report a failed cache store.
+- Added a KUnit case for Direct Translated P2P without a redirect.
+- Clarified the Relaxed Ordering and diagnostics commit messages.
+- Honored device-specific ACS redirection, such as Zhaoxin Downstream
+  Ports, in a new first patch with a KUnit case, as local Sashiko
+  pointed out. Relaxed Ordering Completions are redirected at such a
+  port too.
+- Clarified in the documentation that a quirk also redirects Relaxed
+  Ordering Completions and that Translation Blocking applies only to
+  upstream Requests, and labelled the ACS routing debug line with its
+  class, as local Sashiko pointed out.
+- Treated ACS registers that read as all ones as unreadable, and named
+  ports that a quirk redirects instead of suggesting
+  pci=disable_acs_redir= for them, as local Sashiko pointed out.
+- Ignored ACS quirks of endpoints, which only describe traffic between
+  their own functions.
+- Link to v10: https://patch.msgid.link/20261012-fix-p2p-acs-v4-0-v10-0-6ffe7b7a4517@nvidia.com
 
->+	release_sock(sk);
->+
-> 	/*
->-	 * The packet was admitted with the native callback. Do not reload a current
->+	 * Packets were admitted with native callbacks. Do not reload a current
+Changes in v10:
+- Fixed the Relaxed Ordering description: a Completion carries the
+  attribute of its Request (PCIe r7.0 sec 2.2.9.1).
+- Used the PCIe terms Requester and Completer for TLPs, ACS and ports;
+  client and provider remain for P2PDMA objects.
+- Rebased on pci/p2pdma, which includes the prerequisite P2PDMA fixes.
+- Added a topology example to the path divergence patch.
+- Removed a repeated sentence from the disable_acs_redir documentation.
+- Explained the path divergence in the documentation.
+- Link to v9: https://patch.msgid.link/20261001-fix-p2p-acs-v4-0-v9-0-1a8e0f50ddd9@nvidia.com
 
-Why this change?
+Changes in v9:
+- Removed dmabuf patches for now.
+- Removed mlx5 per-mapping ATS declaration for now; it comes back with
+  the dmabuf patches.
+- Link to v8: https://patch.msgid.link/20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com
 
-Sorry, this series is really hard to review :-(
+Changes in v8:
+- Added extra Reviewed-by from Logan.
+- Added patches to take care of ATS per-device vs. per-mapping option
+- Link to v7: https://patch.msgid.link/20260920-fix-p2p-acs-v4-0-v7-0-ca0828ab697c@nvidia.com
 
-> 	 * callback here: sockmap can replace or remove its wrapper independently.
-> 	 */
-> 	if (write_space_pending)
-> 		vsock_call_native_write_space(sk);
->
->-	release_sock(sk);
->+	if (data_ready_pending)
->+		vsock_call_native_data_ready(sk);
->+
-> 	sock_put(sk);
-> }
-> EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
->-- 
->2.53.0
->
+Changes in v7:
+- Removed "Document pdev->p2pdma lifetime rules" patch, it gives nothing
+  after p2pmem fix.
+- Split dmabuf patch.
+- Tushar retested the series, so added his Tested-by.
+- Added Logan's ROB tags and fixed minor documentation issues pointed
+  by him.
+- Link to v6: https://lore.kernel.org/all/20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com/
+
+Changes in v6:
+- Changed DMABUF to use callbacks and not directly stored pointer.
+- Link to v5: https://patch.msgid.link/20260910-fix-p2p-acs-v4-0-v5-0-856087f63c0d@nvidia.com
+
+Changes in v5:
+- Rebase on the posted fixes.
+- Dropped tags from changed patches.
+- Remove Egress Control Vector interpretation and coverage.
+- Keep enabled Egress Control conservative as a Request redirect.
+- Use pci_dbg()/dev_dbg() for diagnostics and drop the "debug" prefix.
+- Removed code comments from "Document the pdev->p2pdma lifetime and RCU
+  rules" patch and reduced description to actual lifetime explanation.
+- Added note that Linux assumes that TLPs are in strict-ordering and
+  untranslated.
+- Added code to calculate p2p paths per-TLP type.
+- Converted mlx5 to use that new proposed API.
+- Link to https://patch.msgid.link/20260821-fix-p2p-acs-v4-0-v4-0-94426b96de73@nvidia.com
+
+Changes in v4:
+- Reject ACS Violations and unreadable routing state instead of treating
+  them as host-bridge redirects
+- Added Tested-by tags from Tushar Dave
+- Added support to asymmetric ACS routing
+- Limited redirect checks to the two ports at the path divergence
+- Added standalone ACS routing diagnostics for hardware retesting
+- Dropped " PCI: Account for Direct Translated P2P in ACS isolation checks" patch
+- Link to v3: https://patch.msgid.link/20260811-fix-p2p-acs-v3-0-efc488ee7c03@nvidia.com
+
+Changes in v3:
+- Fixed pci_p2pdma_add_resource() error unwinding
+- Made pdev->p2pdma teardown wait unconditionally for RCU readers
+- Restricted pci_p2pmem_find_many() to pool-backed providers
+- Documented the pdev->p2pdma lifetime and RCU rules
+- Fixed calc_map_type_and_dist() handling of the verbose argument
+- Required the ACS port and target to share a bus before indexing the
+  Egress Control Vector
+- Gave pci_acs_enabled() and pci_acs_path_enabled() a scope, so the ACS
+  Direct Translated P2P rule no longer stops pci_enable_pasid() from
+  enabling PASID
+- Dropped "Report ACS ports when the paths share no upstream bridge":
+  the mapping type cannot change without a shared upstream bridge, so
+  the pci=disable_acs_redir= hint was not actionable there and the ACS
+  walk only cost config space reads
+- Folded the Request Redirect rule into pci_acs_rr_ineffective(), so
+  pci_acs_flags_enabled() and the Intel SPT PCH quirk share one copy
+- Renamed pci_acs_egress_ctrl_set() to pci_acs_egress_ctrl_is_set(), it
+  reads the bit rather than setting it
+- Reworded the blocked-path warning: ACS may also leave the direct route
+  indeterminate rather than blocked
+- Added KUnit coverage for the shared-bus guard, a device with no ACS
+  capability and an unreadable ACS Control register
+- Added the missing Fixes: tags, a second one on the
+  pci_p2pdma_add_resource() unwinding fix (the dangling devres action
+  dates to f58ef9d1d135) and one on the Egress Control isolation change
+- Link to v2: https://patch.msgid.link/20260806-fix-p2p-acs-v2-0-0cec14812965@nvidia.com
+
+Changes in v2:
+- Added Logan's ROB tags
+- Added commas in Documentation patch
+- Link to v1: https://patch.msgid.link/20260802-fix-p2p-acs-v1-0-a7c5eb64fff6@nvidia.com
+
+---
+Leon Romanovsky (19):
+      PCI/P2PDMA: Honor device-specific ACS redirection
+      PCI/P2PDMA: Document the TLP attribute assumptions
+      PCI/P2PDMA: Derive routing from directional ACS controls
+      PCI: Reject unreadable ACS controls in isolation checks
+      PCI/P2PDMA: Evaluate ACS controls at the path divergence
+      PCI/P2PDMA: Document directional ACS routing
+      PCI/P2PDMA: Collect the path's ACS controls before deciding
+      PCI/P2PDMA: Answer routing per TLP class
+      PCI/P2PDMA: Route Relaxed Ordering Completions directly
+      PCI/P2PDMA: Reject Translated Requests blocked by Translation Blocking
+      PCI/P2PDMA: Route Translated Requests under Direct Translated P2P
+      PCI/P2PDMA: Log detailed ACS routing diagnostics
+      PCI/P2PDMA: Add KUnit tests for the ACS routing decisions
+      PCI/P2PDMA: Test the ACS P2P routing walk
+      PCI: Add KUnit coverage for ACS isolation checks
+      PCI/P2PDMA: Document TLP-class routing
+      PCI/P2PDMA: Let a client declare that it selects ATS per mapping
+      PCI/P2PDMA: Evaluate the ATS path for clients with ATS enabled
+      PCI/P2PDMA: Test the routing of clients with ATS enabled
+
+ Documentation/admin-guide/kernel-parameters.txt |   11 +-
+ Documentation/driver-api/pci/p2pdma.rst         |  106 ++
+ drivers/pci/Kconfig                             |   15 +
+ drivers/pci/Makefile                            |    1 +
+ drivers/pci/p2pdma.c                            |  961 ++++++++++++++--
+ drivers/pci/pci.c                               |    8 +-
+ drivers/pci/pci.h                               |   63 +
+ drivers/pci/pci_acs_test.c                      | 1409 +++++++++++++++++++++++
+ drivers/pci/quirks.c                            |   23 +-
+ include/linux/pci-p2pdma.h                      |   12 +-
+ 10 files changed, 2517 insertions(+), 92 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260821-fix-p2p-acs-v4-0-e72455e3a261
+
+Best regards,
+--  
+Leon Romanovsky <leonro@nvidia.com>
 
