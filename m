@@ -1,58 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793860178;
-	b=hHY3GaQSTc2rEnrHYt5E2k7F0TkfASHz3lzIDNVyAMrlA74pvIZlot5sDCA5M3ZkxYfY
-	 RLTKMHAfgV2h0VZXzO9p44M6eqvVLr405uuSDqryOySaxOi/EzP84ghzrsqS5Ri9kSr+K
-	 D46V6j+jSvVqMKZ4+Ftd/oyBPvoyP99XPbzmYlKYXflSr5b13lmkpZz2I34pOOydW//hC
-	 zVKp1xs5frOrUjoXkTnXYMTXY5YceuHgY0HrIFt7cMdPI+gOi57XRfEErXkZTbKF5l7Au
-	 EhOghxNEkfo2gTjqh2pgqpVudN7M2rnpzT2Kwfr3E/NVAOi35WZ27qtxy+EaCKQNirA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793860178;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=pENZISNm27I79cnldwyzcUX4RM9EpVrGDDlBoLAj3L0=;
-	b=Ldku9+dOKHaMsfjsC2psOcnLZEHQfuX4QjLSLNMV9ydIqRkt1f9K1DxhI+cawSmYJkGo
-	 5Jwt0MUWdeYA9p2gv2ACouaWfA68ISnKSduiPTCZea7WCdzvOAjIQgS9ZdnfP4KWtM27R
-	 Hjm12Jq5I00O1mSjzvK8nlzYpozUKtjv+XIkT6BuNEeivwQweal/1Tnl/Xz3aIz/SHjZK
-	 uVgOyINWh3m2pp5bV99q0vfxZWndfjU18fERI9P2EzP2N0K95IyZWXbUY+8eD+YHehoUD
-	 URf81Innv0wlM6b7TMLmkXOSya95TlUBZJQUn4MetK68Lq6ApEfCFi6B1zKeJYha9sw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=P8+ScmDW;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF675606A328
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 06:29:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF675606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.55
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793860403;
+	b=kFEPDwqsVZZrjKm8sXb/VXvNvUn4a6fZIXmEroN8ly7W3W/WrLgoG7y2tWT1qhAGCGQm
+	 O0W8K9rxJFN8HIQ2UI5cKnnqMRaGScNwxpXVRrCa6WrwohKLJEqVjHk7Kx/Qf732oir1Y
+	 pV0PwwL/+KxXMKQPbihCps5bb/FDOWiioyidehTYvO/MPY7YHFc3gMSTkm7ck00jnaQhQ
+	 /xRBOBHmJDNqZiiCX5WcOC3oJVafjjZWDcdXeOFPUbkjTitSaXUvXdy4aMZpsIW7+QBh0
+	 wrvcjRt5/KcY0xzdKKkS1xSn7W7Y9VSQHSikxlK7w6T4kWQ36GWSCBjbA0l2tZIDz5w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793860403;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
+	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=hulaaP/TIv6xQJ+aJhMFyA6B2Lkf4R1eF1P3Xw8q/ng=;
+	b=DgetFCKOjMPxHXro3rkHQ8y/VdRa0MToRVsEn+aMWh3Y4U9ZMbvxBdRZRSTL86oilOFC
+	 NNKZy1OK7DY/vD48Z5r8wvyH3OKXmvMCrpxaZkPA9meK3mabf4Ysh8MV58RPi6q9tMHlL
+	 IzsSyDbQPjXIjqJiVFifaFtUE/dx7UjRmUg/X7IFEykDAK9rMIHbKWjJFEooimSf2bP3Y
+	 u8kja0aIRNq5I4MqqarED2hSBR8T9bK+mRtlpnZdfPVWdMqHupfkS7Et5aBq73WZvVzAp
+	 k1+iNl+q9eO0qMU9tbOT1GiLsWkXZcfUKxIK9IG9k8lyj2mCgq46T+VzksRCoEN4YHw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="D5/286l2";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.55
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012055.outbound.protection.outlook.com [52.101.48.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB104606A31B
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 06:33:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB104606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=P8+ScmDW
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7BB421684;
-	Wed,  4 Nov 2026 22:29:32 -0800 (PST)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 584393F628;
-	Wed,  4 Nov 2026 22:29:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793860175; bh=tb27MMCCE80mTL2ZZW3uoQHDYnAm/KCNtoGC6jO8WZM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P8+ScmDWL0ejmrIdWtSEthP00Ljx67kHDRTxMc5THEVJvci1038gElifkR24P7LBU
-	 0oYFqnVcqHGJcC3KKhCh7YHLMNvjkOGsBHzD8/GCbHNx8RV4wM+OzNP6i4JBqThfAn
-	 UaxYi4Ry18L43ucDAF7qw8ZoPbA7eDkQVM/G792M=
-Date: Thu, 5 Nov 2026 06:29:25 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Sascha Bischoff <sascha.bischoff@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, 
-	lpieralisi@kernel.org, timothy.hayes@arm.com, fuad.tabba@linux.dev
-Subject: Re: [PATCH v2 09/16] KVM: arm64: gic-v5: Add ITS MSI injection
-Message-ID: <xgp6rwid6ew7t5x7plaesqzgskfdlc4b4ujgkbumtr6v5edjke@j7mkg6opkdf2>
-References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
- <20261102194454.4086911-10-sascha.bischoff@arm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=D5/286l2
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kc4z/xAlASyCM9ifPz/FcHVxwFQldnd3cxxK/vCzzCEFrVwS+8fNVC5dZYTxLvl9zcPFIph3h6fNn+xAAIfum8JVn3dh/ryeu3cGw+ag7JGEcVUCiO1ytNcK6kM47NB7Gq722EN0FFxSiSkNu/1YxdC9JKoSfNviGCi3DaFKfYp5Aujhv93eU+VAVAF3mzh+LCrDTIEloGoa3aTftYVep/tYfgL+gV7l0uNJT+bzb0QbgmQh2r/Yl749utBxHU/6Oe2aFpe3dKg0sTDN1MFV9jb6DSw0GeVziFKKl5b40FnjlO8+Szb6gcopS/rt6Ctw4+2FlF4L7RfW7f9OT2vMGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hulaaP/TIv6xQJ+aJhMFyA6B2Lkf4R1eF1P3Xw8q/ng=;
+ b=KlTF7EDniYv0DMGRrAa0AkWjsr1g3YMxiHYTZcT3FprvPWDF87qptEffSyY5wKihjZU6sq+TFGzttqkqTDxJ3Jnl97rIJpLkNij8913NvQwRTruBh8/7k1wcBWlY4VzUy4MQGr/nzNTAnbys58BMEvcLZFUEDc4XN7djNMfo6HHUF91gKI708SDL/HZaQ86Zrc1ss0CQKDN3dYCp8l8Ixc/HSZAhldaKLBFt5+5foLP0VyIzGsn6PzHTnIvycP16Kr69l60uf2uRL+NHffgS4UREMv0qO3I3NhBPh1+PPr8tyZY8K55ncGf27HccVABAqE8RyPSqko4YC5SKscafzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hulaaP/TIv6xQJ+aJhMFyA6B2Lkf4R1eF1P3Xw8q/ng=;
+ b=D5/286l2XgGJsE7KJM0eVIF2xhzrMvd5VVOPLulgAMoCZMQNq75FCGCfiQr7uFo/Elb+OBi0LxVjEbh1kA+lJJl+jZNGBstBIr75BER7T7QlkKHXUina1dGn4s1zT/1hLzi0UwFZHOPaEF3ofD7hhsQdg1JkUFlUymrgdSfrB3I=
+Received: from MW4P222CA0006.NAMP222.PROD.OUTLOOK.COM (2603:10b6:303:114::11)
+ by SJ2PR12MB9240.namprd12.prod.outlook.com (2603:10b6:a03:563::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 06:33:19 +0000
+Received: from BY1PEPF0002695A.namprd05.prod.outlook.com
+ (2603:10b6:303:114:cafe::9b) by MW4P222CA0006.outlook.office365.com
+ (2603:10b6:303:114::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Thu, 5
+ Nov 2026 06:33:19 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BY1PEPF0002695A.mail.protection.outlook.com (10.167.244.171) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.5 via Frontend Transport; Thu, 5 Nov 2026 06:33:19 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 5 Nov
+ 2026 00:33:19 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 5 Nov
+ 2026 00:33:19 -0600
+Received: from [192.168.29.217] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Thu, 5 Nov 2026 00:33:13 -0600
+Message-ID: <12522202-c7d5-4390-8726-86d8fe02ec7b@amd.com>
+Date: Thu, 5 Nov 2026 12:03:12 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,318 +105,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102194454.4086911-10-sascha.bischoff@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/12] KVM: SVM: Support LBRv2 virtualization for
+ SEV-ES guests
+To: Jim Mattson <jmattson@google.com>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <peterz@infradead.org>, <acme@kernel.org>,
+	<kvm@vger.kernel.org>, <x86@kernel.org>, <yosry@kernel.org>,
+	<thomas.lendacky@amd.com>, <nikunj.dadhania@amd.com>, <sandipan.das@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>
+References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
+ <20261019210532.378628-9-shivansh.dhiman@amd.com>
+ <CALMp9eSs3vhi1mmhK=Mj+8R9UXDzvDpHepyDESvQvNxg3YTOkA@mail.gmail.com>
+Content-Language: en-US
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <CALMp9eSs3vhi1mmhK=Mj+8R9UXDzvDpHepyDESvQvNxg3YTOkA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0002695A:EE_|SJ2PR12MB9240:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad0d732b-ea69-4c88-516b-08df3b06aeb2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|36860700016|82310400026|10067099003|261022113327099003|261022115727099003|56012099006|11063799006|4143699003|261028144727099003|261021133027099003|261009223027099003|261021135927099003|261021130227099003|261021121427099003|261022075727099003|261021123027099003|261022105027099003|261026135527099003|261026121527099003|261026140227099003|261026130827099003|261102123227099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	JAcKkOmlHgAC8OsJJ5QR4ZpCVq74uh5C5kW2vksFL04FsggkVd+jFlZ+nBXKw+f1xO/8zjr/TGGMlesILWAto80k5Ri67xGDgvWIZkhb1o9g3yLHfZaRwyj6dW+blwCy6B2uxaoGsAjkhAkFwd1Mhvp4iJy1TNRwFRiyBdSqcqVuwJblq+tM1Zfot/7yoUTfkXUUM9aYrIISLcuZSUuJyvj8dLCmnWmU+wjEy5gMAsF+W+RHIIRN661RxprBj+TxtQy04UYHapyn6DkYDx2joScUBVHuECU7ChCGIJ89sboinaDN8FEkkCHE7yA6+G7ul/qdNzbmkNK16VknUWPdIpM2uEquxIPODSEnFQZNxer25/bFh4rdgXAs8O6r9QLCAS7MLq0NpyBjWiOFuqhM8C+EieqMbOCbx6wWVxPLLiEKrVza0IZ+VVPackBQx/DIORA9JuB6bxsuL+ryS/vFI/vrWKXpr8ODXswwldDP6UyoES7DpJJSNSlVPVuq4BmGBXWTqeFRQylOBo7mbX7FcMI7LLm+RplxogBwT8oPptQ3rDjKUTls3onYJOE2I5PDK5k56um/wHEQiB836zD7j28z/S6qt9P+eDNoN7PtPiMML1Wv5OCcbWtrKakjG/GIUD+qcUcqWyRxqNaYoCUX0VRUT1fABIoKyB/p7v0w8EmH1COVNJ6gU8IgvkD5IU6w+jTv0Q4C+insVem/pWhhyQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(36860700016)(82310400026)(10067099003)(261022113327099003)(261022115727099003)(56012099006)(11063799006)(4143699003)(261028144727099003)(261021133027099003)(261009223027099003)(261021135927099003)(261021130227099003)(261021121427099003)(261022075727099003)(261021123027099003)(261022105027099003)(261026135527099003)(261026121527099003)(261026140227099003)(261026130827099003)(261102123227099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	toi6IR9963Yg2tXuNuGgGUcqYjkOXQxObSOTPN+qR6GqSElyIaELeLDzFao8cMPzHptDGbHo8u8JcviB5AwCh1T+P3zLmqsEeMqFmc/VUZr1aG0qPzupGyVas4Q6W2lKqENXgumIVEdAQP+hCNJ9rsu2aF6DNxwSzaMYYx0inswfcYoLVQM3lTddNokF0V+ZA1f0h+6g5Eyb7cTMTur/NAu0zfX9RmzQD71pcp848HgIt/D0wGSAHq/VId0J8UROttBH4yKypLYa8/9hzXE/NT2TF5XKhT5uKYvQFoUiSejc7kPWJmLtrKS2N5t5wUXEC0HykzYQAWdNXXHafXN2YacWfvMSSIZ8+o7ri8FF3CqN7o8GG7vtRFaOGlCjcQux/blA9NZ1A+NLXICSB/BIk/OCL+lyZxhR+jAggkZOhYmnsAaYyW9fz9rLuJwOtZAk
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 06:33:19.5635
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad0d732b-ea69-4c88-516b-08df3b06aeb2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0002695A.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9240
 
-On Mon, Nov 02, 2026 at 07:44:47PM +0000, Sascha Bischoff wrote:
-> Now that KVM can resolve GICv5 ITS translations from guest memory,
-> allow userspace and irqfd MSI injection to target a virtual GICv5 ITS.
+
+
+On 22-10-26 05:23, Jim Mattson wrote:
+> On Mon, Oct 19, 2026 at 2:08 PM Shivansh Dhiman <shivansh.dhiman@amd.com> wrote:
+>>
+>> Add the LBRv2 fields to the SEV-ES VMSA save area and treat LBRv2 as
+>> always active for SEV-ES+ guests, which run with LBR virtualization
+>> mandatorily enabled and keep DBG_EXTN_CFG in the encrypted VMSA.
+>>
+>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> ---
+>>
+>> Changes in v2:
+>> * New patch.
+>>
+>> ---
+>>  arch/x86/include/asm/svm.h | 12 +++++++++---
+>>  arch/x86/kvm/svm/svm.c     | 15 +++++++++++++--
+>>  2 files changed, 22 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+>> index fb42c6806655..0473e38e33bc 100644
+>> --- a/arch/x86/include/asm/svm.h
+>> +++ b/arch/x86/include/asm/svm.h
+
+
+>> @@ -598,7 +604,7 @@ static inline void __unused_size_checks(void)
+>>         BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0xd8);
+>>         BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x1c0);
+>>         BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x248);
+>> -       BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x298);
+>> +       BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x2a0);
+>>         BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x300);
+>>         BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x320);
+>>         BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x380);
 > 
-> Add helpers to validate that an MSI address resolves to a GICv5 ITS
-> IODEV, find the ITS for an MSI, resolve the DeviceID/EventID pair to a
-> vgic_irq, and inject the resulting LPI with the GICv5 VDPEND path.
-> GICv5 MSIs require KVM_MSI_VALID_DEVID, as the DeviceID is part of the
-> ITS translation key.
-> 
-> Although MSI data is 32 bits, GICv5 supports only 16-bit EventIDs.
-> Reject a nonzero upper half before narrowing the EventID for cache
-> lookups, so malformed MSI data cannot alias a valid translation.
-> 
-> Provide both the slow path, which resolves the translation from guest
-> memory and populates the ITS cache, and the inatomic cached path used
-> by irqfd. If the cached path misses, irqfd retries in a work item. The
-> worker borrows the VM's mm while walking the guest tables, then drops
-> it before injecting the LPI.
-> 
-> Wire kvm_set_msi() and kvm_arch_set_irq_inatomic() to use the GICv5
-> ITS injection helpers for GICv5 VMs, while keeping the existing GICv3
-> ITS path unchanged for GICv3 VMs.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-irqfd.c  |   8 ++
->  arch/arm64/kvm/vgic/vgic-its-v5.c | 132 ++++++++++++++++++++++++++++--
->  arch/arm64/kvm/vgic/vgic.h        |   6 ++
->  3 files changed, 139 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-irqfd.c b/arch/arm64/kvm/vgic/vgic-irqfd.c
-> index ee1a1b214f03c..c5f5ce8b80c1d 100644
-> --- a/arch/arm64/kvm/vgic/vgic-irqfd.c
-> +++ b/arch/arm64/kvm/vgic/vgic-irqfd.c
-> @@ -114,6 +114,10 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
->  		return -1;
->  
->  	kvm_populate_msi(e, &msi);
-> +
-> +	if (vgic_is_v5(kvm))
-> +		return vgic_v5_its_inject_msi(kvm, &msi);
-> +
->  	return vgic_its_inject_msi(kvm, &msi);
->  }
->  
-> @@ -135,6 +139,10 @@ int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
->  			break;
->  
->  		kvm_populate_msi(e, &msi);
-> +
-> +		if (vgic_is_v5(kvm))
-> +			return vgic_v5_its_inject_cached_translation(kvm, &msi);
-> +
->  		return vgic_its_inject_cached_translation(kvm, &msi);
->  	}
->  
-> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
-> index 9f4783b243221..b69a1d107c0ae 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
-> @@ -3,8 +3,10 @@
->   * Copyright (C) 2025 ARM Limited, All Rights Reserved.
->   */
->  
-> +#include <linux/kthread.h>
->  #include <linux/kvm_host.h>
->  #include <linux/rcupdate.h>
-> +#include <linux/sched/mm.h>
->  #include <linux/slab.h>
->  
->  #include <asm/kvm_arm.h>
-> @@ -19,6 +21,7 @@
->  
->  #define VITS_V5_DEVICE_ID_BITS		16
->  #define VITS_V5_EVENT_ID_BITS		16
-> +#define VITS_V5_UNMAPPED		1
->  
->  struct its_cache_translation_entry {
->  	struct rcu_head rcu;
-> @@ -359,8 +362,46 @@ static int get_itte(struct kvm *kvm, u32 event_id, gpa_t itt_base,
->  				   itt_l2_entry);
->  }
->  
-> +struct vgic_v5_its *vgic_v5_msi_to_its(struct kvm *kvm, struct kvm_msi *msi)
-> +{
-> +	struct kvm_io_device *kvm_io_dev;
-> +	struct vgic_io_device *iodev;
-> +	u64 address;
-> +
-> +	if (!vgic_has_its(kvm))
-> +		return ERR_PTR(-ENODEV);
-> +
-> +	if (!(msi->flags & KVM_MSI_VALID_DEVID))
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	/*
-> +	 * MSI data is 32 bits, but GICv5 limits EventIDs to 16 bits.
-> +	 * Match that limit in the vITS.
-> +	 */
-> +	if (msi->data >> VITS_V5_EVENT_ID_BITS)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	address = (u64)msi->address_hi << 32 | msi->address_lo;
-> +
-> +	guard(srcu)(&kvm->srcu);
-> +
-> +	kvm_io_dev = kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, address);
-> +	if (!kvm_io_dev)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	if (kvm_io_dev->ops != &kvm_io_gic_ops)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	iodev = container_of(kvm_io_dev, struct vgic_io_device, dev);
-> +	if (iodev->iodev_type != IODEV_GICV5_ITS)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	return iodev->v5its;
-> +}
-> +
-> +/* A positive return means the guest has no usable translation. */
->  static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
-> -				     u32 device_id, u16 event_id,
-> +				     u32 device_id, u32 event_id,
->  				     struct vgic_irq **irq)
->  {
->  	unsigned int itt_l2sz, event_id_bits;
-> @@ -372,13 +413,15 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
->  	int ret;
->  
->  	lockdep_assert_held(&its->its_lock);
-> +	if (event_id >> VITS_V5_EVENT_ID_BITS)
-> +		return -EINVAL;
->  
->  	if (!its->enabled) {
->  		kvm_debug("Cannot look up LPI; vITS is disabled\n");
->  		return -ENXIO;
+> I think the VMSA structure changes should be included in patch 1, with
+> the VMCB structure changes (or they can go ahead of patch 1), since
+> sev_es_sync_vmsa() does memcpy(save, &svm->vmcb->save,
+> sizeof(svm->vmcb->save)).
 
-Since the guest controls its->enabled, should we return VITS_V5_UNMAPPED
-here also?
 
->  	}
->  
-> -	ret = its_cache_look_up_translation(its, device_id, event_id, irq);
-> +	ret = its_cache_look_up_translation(its, device_id, (u16)event_id, irq);
->  	if (!ret)
->  		return 0;
->  
-> @@ -389,23 +432,23 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
->  		      &event_id_bits, &itt_l2sz);
->  	if (ret) {
->  		kvm_debug("Error parsing guest's DT\n");
-> -		return ret;
-> +		return VITS_V5_UNMAPPED;
->  	}
->  
->  	if (event_id >= 1UL << event_id_bits) {
->  		kvm_debug("Event ID out of range\n");
-> -		return -E2BIG;
-> +		return VITS_V5_UNMAPPED;
->  	}
->  
->  	ret = get_itte(kvm, event_id, itt_base, two_level_itt, itt_l2sz,
->  		       &itt_l2_entry);
->  	if (ret)
-> -		return ret;
-> +		return VITS_V5_UNMAPPED;
->  
->  	val = le64_to_cpu(itt_l2_entry);
->  	if (!FIELD_GET(GICV5_ITTL2E_VALID, val)) {
->  		kvm_debug("ITTE is not valid\n");
-> -		return -EINVAL;
-> +		return VITS_V5_UNMAPPED;
->  	}
->  
->  	lpi = FIELD_GET(GICV5_ITTL2E_LPI_ID, val);
-> @@ -415,7 +458,8 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
->  		return PTR_ERR(*irq);
->  
->  	vgic_get_irq_ref(*irq);
-> -	ret = its_cache_add_translation(kvm, its, device_id, event_id, *irq);
-> +	ret = its_cache_add_translation(kvm, its, device_id, (u16)event_id,
-> +					 *irq);
->  	if (ret) {
->  		vgic_put_irq(kvm, *irq);
->  		return 0;
-> @@ -424,12 +468,86 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
->  	return ret;
->  }
->  
-> +int vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
-> +			    u32 device_id, u32 event_id,
-> +			    struct vgic_irq **irq)
-> +{
-> +	guard(mutex)(&its->its_lock);
-> +
-> +	return __vgic_v5_its_resolve_lpi(kvm, its, device_id, event_id, irq);
-> +}
-> +
->  static void vgic_v5_its_inject_lpi(struct kvm *kvm, struct vgic_irq *irq)
->  {
->  	kvm_call_hyp(__vgic_v5_vdpend, irq->intid, true,
->  		     kvm->arch.vgic.gicv5_vm.vm_id);
->  }
->  
-> +int vgic_v5_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
-> +{
-> +	struct vgic_v5_its *its;
-> +	struct vgic_irq *irq;
-> +	bool borrowed_mm = false;
-> +	int ret;
-> +
-> +	its = vgic_v5_msi_to_its(kvm, msi);
-> +	if (IS_ERR(its))
-> +		return PTR_ERR(its);
-> +
-> +	/* An irqfd cache miss is resolved by a worker outside the VM's mm. */
-> +	if (current->mm != kvm->mm) {
-> +		if (WARN_ON_ONCE(current->mm || !(current->flags & PF_KTHREAD)))
-> +			return -EWOULDBLOCK;
-> +
-> +		if (!mmget_not_zero(kvm->mm))
-> +			return -EFAULT;
-> +
-> +		kthread_use_mm(kvm->mm);
-> +		borrowed_mm = true;
-> +	}
-> +
-> +	ret = vgic_v5_its_resolve_lpi(kvm, its, msi->devid, msi->data, &irq);
-> +	if (borrowed_mm) {
-> +		kthread_unuse_mm(kvm->mm);
-> +		mmput(kvm->mm);
-> +	}
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +	/* KVM_SIGNAL_MSI reports guest translation failures as blocked MSIs. */
-> +	if (ret)
-> +		return 0;
-> +
-> +	vgic_v5_its_inject_lpi(kvm, irq);
+You are correct, thanks. In v3, I will move the sev_es_save_area
+changes into patch 1, with the VMCB changes. Patch 8 will then
+only make LBRv2 always active for SEV-ES guests.
 
-Looks like the MSI translation (vgic_v5_its_resolve_lpi) and injection
-(vgic_v5_its_inject_lpi) are not protected by the its_lock together, so
-between the two a guest could:
+-Shivansh
 
-1. change the MSI translation
-2. invalidate the old translation and observe it complete
-3. synchronize and observe it complete
-
-and later still receive an interrupt from the old translation.
-
-Same issue exists for vgic_v5_its_inject_cached_translation() below, but
-it can't take the its_lock, not sure what the best solution is there..
-
-Thanks,
-Wei-Lin Chang
-
-> +	vgic_put_irq(kvm, irq);
-> +
-> +	return 1;
-> +}
-> +
-> +int vgic_v5_its_inject_cached_translation(struct kvm *kvm, struct kvm_msi *msi)
-> +{
-> +	struct vgic_v5_its *its;
-> +	struct vgic_irq *irq;
-> +	int ret;
-> +
-> +	its = vgic_v5_msi_to_its(kvm, msi);
-> +	if (IS_ERR(its))
-> +		return PTR_ERR(its);
-> +
-> +	if (!READ_ONCE(its->enabled))
-> +		return -EWOULDBLOCK;
-> +
-> +	ret = its_cache_look_up_translation(its, msi->devid, (u16)msi->data,
-> +					    &irq);
-> +	if (ret)
-> +		return -EWOULDBLOCK;
-> +
-> +	vgic_v5_its_inject_lpi(kvm, irq);
-> +	vgic_put_irq(kvm, irq);
-> +
-> +	return 0;
-> +}
-> +
->  static void vgic_v5_its_handle_read_event(struct kvm *kvm,
->  					  struct vgic_v5_its *its)
->  {
-> diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-> index 9e1cbcdedf3f5..64f6229fe555e 100644
-> --- a/arch/arm64/kvm/vgic/vgic.h
-> +++ b/arch/arm64/kvm/vgic/vgic.h
-> @@ -364,6 +364,12 @@ void vgic_v3_put(struct kvm_vcpu *vcpu);
->  bool vgic_has_its(struct kvm *kvm);
->  int kvm_vgic_register_its_device(void);
->  int kvm_vgic_v5_register_its_device(void);
-> +struct vgic_v5_its *vgic_v5_msi_to_its(struct kvm *kvm, struct kvm_msi *msi);
-> +int vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
-> +			    u32 device_id, u32 event_id,
-> +			    struct vgic_irq **irq);
-> +int vgic_v5_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi);
-> +int vgic_v5_its_inject_cached_translation(struct kvm *kvm, struct kvm_msi *msi);
->  void vgic_enable_lpis(struct kvm_vcpu *vcpu);
->  void vgic_flush_pending_lpis(struct kvm_vcpu *vcpu);
->  int vgic_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi);
-> -- 
-> 2.34.1
-> 
