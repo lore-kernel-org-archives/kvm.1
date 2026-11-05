@@ -1,106 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793903545;
-	b=xk7MZjn3v4TrLpemDBDcsLp5hq6/iVLwJJHLfrYH0hGXRpecKwYHKZdFWyrZjq8lNc4I
-	 hl9YXBz5txrq8sCnHovW8axFR9QCwqQ1pxK+SfN8C4vuXMv7uN0iEqvsEg78QgeShBQOR
-	 T8rqKYjtKk1oU04iev4+EMVr3gRIfw2z5mI+MhkatrUZm8fzRHdeLDm7Rdlw6S6lB8089
-	 k2IXGA0h2DHliRfaAiDpngxBNBfA93ex4hpLgwuuwIf7tanHXWTUOqaCenkvX4pW9OGBT
-	 WenfFqKATEbBRznY0scN1tplPFmVp+iZ7gt4keaDmn3zUZDDi0go8gAQi0ERVjuv7rg==
+	t=1793903965;
+	b=PTbXygD6ms3zdd45KnzX2ZVcTA5WNT6/06lHHEd2aCUUaJEclX7M/J9i1eHkADutMnpR
+	 9l6BKwVugu8Zi4cHLfONQqeluLN0ZP/878n/BeIJqr/dFUIIAh/6wu+0jiAxfI+t0LNLc
+	 Tv9SiBYgGP+/bIm4mev49bytfqDUx4CpafH9UCV22+h1ndGK+EG9uPisbE9l900IuNssf
+	 Gvgik20uRXUx9s68sfueALpzTARxfBkNm3de9Me3q/Kd+DIGmylBOdICf52YbUXL9gMJC
+	 rTyxPVDofABY2DYIAQnLdr2sW2W7L/Z/F2oEi7gi855VeC5W6gIQBdZWZLaNFWZpmvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793903545;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793903965;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=ZFFGdirTAMGtbCDF7cv9kKouCz6oxttoVV1PmG5xK7s=;
-	b=obCH8JJJAN9+zYuyRxFhRg58CwpEd6fnEVwLXIhJUYvtkAFxe54/iWhAIg6CF2l6rxIm
-	 HLYb0FqeVD1HQ92aWpiVIRaK3rVeTjJ3s+kPvIq7NT85Pg4U+L+xLnqxTx7tEnfrRHnqy
-	 6cNmkJzNhgx3nh1AqWjhHPZBAhzfAub2ht0mJCgSUtXL3ucvFDPfGwajCZX1rqMHYIPWL
-	 JmByhkEUgJQeaiMbdaAhIaJwMIxHBc+l0r/8iNMqP6f/DhkHPnP34akU/tCAYw9WTjaX1
-	 FZqRJbMXXrBGKh2AyWoQw3ZAjLict/TOGyWvFzg7TlVluNv3yJ9HgOHNzZ3yFAMnTIw==
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=EdX+hrQFFp3Ef43cGYEEIMpLtyOAGxMQqiQQxVrhHxE=;
+	b=lhhIm3zBkODcznQQrve9E8M9SFBrOFfQpa/fbve+9TBwS8ktZy8xYkb5HSAe9EiCOXSW
+	 xx5XbQBNs2MME+aeFrPMa4KkCtRfbnyptpzoMuERi5sRSiJqUrKCqw+4QI7jf/IwEY/Nj
+	 qNU/vSShCkkLtaupyBDSBfWwF4q8QSPFD7dUlZAclPwWAE5SN99x1OarrGv1wyf00mNay
+	 jeclS3W0GB4r7hTbhh/LNY+dwMDvODivQjThDxGVQoZuJ1dD2yL508P2SzpgwZU+Tqpnd
+	 fiIqq+iYxi8ivhk0wjbO86ZDKGBV42sjXBj5K5jg61J0zfYxUD26tg2VB8eznz37aYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=JvgOmnIL;
-	arc=none smtp.remote-ip=209.85.221.181
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=exG91NSf;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E008C606A32C
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 18:32:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E008C606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FC6606A331
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 18:39:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2FC6606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=JvgOmnIL
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5eafb65e204so722778e0c.1
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 10:32:24 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=exG91NSf
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc4216aee8fso2499815a12.1
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 10:39:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793903544; x=1794508344; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZFFGdirTAMGtbCDF7cv9kKouCz6oxttoVV1PmG5xK7s=;
-        b=JvgOmnILEp6JoB8exJAxxf1LyevYPecxPtWt07s45vFoiXwM/vGzxz6h7ok69LJvKi
-         EG52ZDyJHVw0E38MPTMnUjdz2EIndjE98ddI5PYY443VrBXbNSU0m7H/X+3OO+Zdmi+5
-         Iz1Vuq9QASKNq7xMUvH62KWgK4P5i0pxrd57CmQOSDlBm63qfSimGQqUxxt/ExN7d9dC
-         ueuY5vyFcxK4h/br9E+xv9+95pSwxQw8WSLoUPiXVVZQK6m4o//DKXX27ABQG0jxdnWR
-         vFohz0VzJ+eltDMQmzaWdmwM8rcgAklwdVrsH+3QrAqQX9OsIbT9QJy+ru/xOevv5Yck
-         CbfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793903544; x=1794508344;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793903964; x=1794508764; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZFFGdirTAMGtbCDF7cv9kKouCz6oxttoVV1PmG5xK7s=;
-        b=MvNxKdUc8MdC+qdSV909C0HI1ZPh8pr58S13N792UJ2NwJynJ4j4ZuEDMZcozXQwg1
-         QOnwBTRGKwUTLn8rnIfjOdt8bYoBFj5Idx0t5MwPDOI+0wedbU0h1QP7cjFA50FbkZXt
-         YYGnQKMv8ymFpCQ2gzfLfKYBo/rjIdVuYs3QRVVx3YgW76lqxYLDgA5lFlCSaEQIQIUI
-         pboUHNVLJQBy+YGv/Jsmd5Nqmv6yjXxKx3fPdzCsLqjhnE35FJiyabciWdyaOM1HEpeM
-         HTWnAtFQTNGjXldqBG9dJZsfF2hk4uVaGK+ktL007xBpA46OaOGE2lRzpgoCQyRcPDOF
-         sjVA==
-X-Forwarded-Encrypted: i=1; AKwUvBznlydtpzJaU8Z/+37YrGSyfr8cv17XL5cFK4QQ3/LhEXDbguvwomaP/9U4102zNXwF+Xs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/kyfIe0GZ5gT2knDkeSXg3At/7mx1bFWTdK+QiFah1vkBs/AWY
-	3UCEVCmjc3LLtoprIRF1O+VnEE43KMjE4YCxtaRHVzs3oPTfsaucmi/N1CGpR47smiA=
-X-Gm-Gg: AYBFou1uLY48DrcVtfEPdUNjkoOAfCoGf1Hck+Dg47i038E4ogs2e4j70wpZbf9F4gz
-	nUhDPfcGwjKd+c9rNwA7/k213xcvNT25Jwx0oE8L0vfDT1atCgRnDH/tz9iRXeIl8Ne/h9w7ktn
-	ukYESqb1qF7P1V9/ZflGMFm72O02uBrKDcL7QBHJXoU/og2nsFzhXyjNDKZkTclgyjlKudNbXiK
-	YeeuEHFT+XhmrdkorK1YIjq3DXhNkoevX0CCDT5wZfzb7fwiMCq3QhMeSn7+13bIJBLn5g6+P3D
-	kvjnjZGTgL4FzWLHi2cYGDoR1uSS1iBOuUUdBA4Fr2OXz2dFb6P6StLfA2hAcOFkFZUKtbpQREX
-	Anib2K5PRPr2BSoUMHwrp0EOR8dL2ZG90TrJNBAkwyRh88m2W0uHBxp+V3OSQjcJpCRiaLwAbyR
-	DPQMEeLJ4xxnLpuEYKMCi9L6QIU6EU79Wo0etOEG7z1ZEK/kttDg9kHm3pnxS46eQMS/oxyFt4d
-	GARWQpy1PTQJ9P+69zc5YfxaWmrfcyk5Ubb8BusQYaniRrJkGvK7oiYnli5qlvg6YsdleskNpvy
-	xvIQq/4JAIMJtkKy2GssqsTDZsjGDibumDeQZk4Cw0SkEFs2fG5gZnnmiMtab6TtOySjzNcQPQg
-	pMN7aPvR9xQ==
-X-Received: by 2002:a05:6122:1782:b0:5ea:e1cd:6e4a with SMTP id 71dfb90a1353d-5ecc446d6b1mr99753e0c.23.1793903543539;
-        Thu, 05 Nov 2026 10:32:23 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8d77c6esm5043981e0c.6.2026.11.05.10.32.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 10:32:22 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xP2G6-00000003Ng9-0h1l;
-	Thu, 05 Nov 2026 14:32:22 -0400
-Date: Thu, 5 Nov 2026 14:32:22 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Tan Chi <tanchi25@mails.ucas.ac.cn>
-Cc: gong.shuai@sanechips.com.cn, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	anup@brainfault.org, atish.patra@linux.dev, pjw@kernel.org,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-	tomasz.jeznach@linux.dev, joro@8bytes.org, will@kernel.org,
-	robin.murphy@arm.com, pbonzini@redhat.com, seanjc@google.com,
-	kevin.tian@intel.com, andrew.jones@oss.qualcomm.com,
-	fangyu.yu@linux.alibaba.com, wu.fei9@sanechips.com.cn,
-	zhao.qingye@sanechips.com.cn, gsh517025@gmail.com
-Subject: Re: [RFC PATCH v2 9/9] iommu/riscv: Add riscv_iommu_attach_dev_nested
-Message-ID: <20261105183222.GE663069@ziepe.ca>
-References: <20261029061131.584453-10-gong.shuai@sanechips.com.cn>
- <20261105144944.10193-1-tanchi25@mails.ucas.ac.cn>
+        bh=EdX+hrQFFp3Ef43cGYEEIMpLtyOAGxMQqiQQxVrhHxE=;
+        b=exG91NSfrf7D/lUoUk+qL9Vq6CSbsu3OPVgEe1YZ/7KBxI5ikBuz3lc6cW6ik709uf
+         20j/v0Z35zpjOcKx9eq8ANzy/Vyi2rM1ihx0/dQm5i9g/I0lwG5G+1aqbB7oEYIP5uYw
+         ixlbA+RN+dNoB0TMC4hfAx1+qm9UyRWMQwl8PqkVWyDyqAu49KgQquiumqya7sEBxiKB
+         l5VKmBDP7CQ+eav2ZeSYpaRUEzE8o2kJ8BFZoXAy46omNf2q4ImfOMXFqcO1k1zV6ovP
+         wI3wfnZV8C/nKq/SqubQGMQbYhlsyfaighCjFkgaGQ63bejU8dQUr0N3MGCIpi+FAG9B
+         T/EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793903964; x=1794508764;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EdX+hrQFFp3Ef43cGYEEIMpLtyOAGxMQqiQQxVrhHxE=;
+        b=gjrQXmSJ650cSZuSWEEZX9+2b90+nIw6rRFNITRTxlCcxFUbtKODwR0GP9QTzQ2MsE
+         lJ4cbJT6JVZrCv5Qv9jAy5vwEDNkNVmRSHMUckWyeWomy76rPJALsN3oGH/StH02SIkc
+         J6m/HXA4BIZdk0a3mOw25GjcEmS7VcdNcXDv8An4YibKtNPFlKwJCXDsQcRMY9O+TJEu
+         quNEXGO+0ASFZQ17CIU7tOm4ku8d6M+3j6mYhCAioDabvA4lkez5YqbbSQO6Qm+da8Uh
+         PmOWMXq4pr89KknwklAcsD9SLV4QJ85DHdEPDRY+j7na4E5nwlUNyEeCoKUgVM26Bvkx
+         0hig==
+X-Gm-Message-State: APuU4Z8uOg1ogIACkYIoP3EJM5FblxWQUsANYlh7iL76FtKc0fQkUTej
+	e+h2u7xBXZRoEzgDu3kNHQ+v6chNxaUNOWmC8n9dQ/J1O33xS1W1Uc8jy8qdH1k8QBtZMcXf9ut
+	ilmJojg==
+X-Received: from pghl2.prod.google.com ([2002:a63:f302:0:b0:cc7:8e37:71bc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9e95:b0:3e9:290d:9774
+ with SMTP id adf61e73a8af0-3ebb2a7e5dfmr373500637.44.1793903963836; Thu, 05
+ Nov 2026 10:39:23 -0800 (PST)
+Date: Thu, 5 Nov 2026 10:39:23 -0800
+In-Reply-To: <sashiko-outbox-199772@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,43 +76,82 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105144944.10193-1-tanchi25@mails.ucas.ac.cn>
+Mime-Version: 1.0
+References: <20261105181742.3718448-1-seanjc@google.com> <sashiko-outbox-199772@kernel.org>
+Message-ID: <auzNWz75JLF3VmV1@google.com>
+Subject: Re: [PATCH] KVM: VMX: Re-pend KVM_REQ_APIC_PAGE_RELOAD if getting
+ backing pfn fails
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Nov 05, 2026 at 10:49:44PM +0800, Tan Chi wrote:
-> Hi Shuai and Fei,
+On Thu, Nov 05, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] KVM: VMX: stale no-retry comment in vmx_set_apic_access_page_addr()
+> --
 > 
-> I noticed a potential issue with fixing the physical DC's PSCID to 0.
+> commit 635b83243ce9cf39c9f2bbd0198d7730dbb21505
+> Author: Sean Christopherson <seanjc@google.com>
 > 
-> In QEMU, different VFIO devices can have separate stage-1 HWPTs while
-> sharing the same vIOMMU and stage-2 parent. This means two devices may
-> have different first-stage page table roots but the same host GSCID
-> and PSCID=0.
+> KVM: VMX: Re-pend KVM_REQ_APIC_PAGE_RELOAD if getting backing pfn fails
 > 
-> According to the RISC-V IOMMU specification, DC.ta.PSCID identifies
-> the first-stage address space when PDTV=0 and the first stage is not
-> Bare. Could this cause the physical IOMMU to reuse cached translations
-> across different stage-1 address spaces? Even broader invalidations
-> would not prevent such cache aliasing.
+> This commit re-pends KVM_REQ_APIC_PAGE_RELOAD in
+> vmx_set_apic_access_page_addr() when looking up the APIC-access page memslot
+> or faulting in its backing pfn fails, preventing the vCPU from running with a
+> stale vmcs.APIC_ACCESS_ADDR. It also adds a WARN_ON_ONCE() if the private
+> memslot is missing or invalid.
 > 
-> There also seems to be a related issue in patch 6.
-> riscv_viommu_cache_invalidate() unconditionally forces PSCV=1 and
-> PSCID=0. However, an IOTINVAL.VMA with PSCV=0 also invalidates global
-> mappings, while PSCV=1 excludes them. This appears to narrow the
-> guest's requested invalidation scope and could leave stale global
-> translations cached.
+> > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> > index b341af4c6057a..13dcf9c12c83a 100644
+> > --- a/arch/x86/kvm/vmx/vmx.c
+> > +++ b/arch/x86/kvm/vmx/vmx.c
+> > @@ -6923,8 +6923,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+> >  	 * APICv is enabled, but paranoia won't hurt in this case.
+> >  	 */
+> >  	slot = id_to_memslot(slots, APIC_ACCESS_PAGE_PRIVATE_MEMSLOT);
+> > -	if (!slot || slot->flags & KVM_MEMSLOT_INVALID)
+> > +	if (WARN_ON_ONCE(!slot || slot->flags & KVM_MEMSLOT_INVALID)) {
+> > +		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
+> >  		return;
+> > +	}
+> >  
+> >  	/*
+> >  	 * Ensure that the mmu_notifier sequence count is read before KVM
+> > @@ -6941,8 +6943,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+> >  	 * if APICv is permanently inhibited, i.e. the memslot won't reappear.
+> >  	 */
+> >  	pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_page);
+> > -	if (is_error_noslot_pfn(pfn))
+> > +	if (is_error_noslot_pfn(pfn)) {
+> > +		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
+> >  		return;
+> > +	}
 > 
-> One possible approach might be to use the PSCID from the guest-provided
-> DC.ta when allocating the nested domain, and preserve the guest's PSCID
-> and PSCV settings during invalidation while substituting the host GSCID.
-> I'm not sure whether additional considerations are needed for PSCID
-> reuse or domain lifetime, though.
+> [Severity: Low]
+> This isn't a bug, but in vmx_set_apic_access_page_addr() in
+> arch/x86/kvm/vmx/vmx.c, the full comment immediately above
+> __kvm_faultin_pfn() still states:
+> 
+> 	/*
+> 	 * No need to retry if the memslot does not exist or is invalid.  KVM
+> 	 * controls the APIC-access page memslot, and only deletes the memslot
+> 	 * if APICv is permanently inhibited, i.e. the memslot won't reappear.
+> 	 */
+> 
+> Since both the invalid-memslot check and the is_error_noslot_pfn(pfn) check
+> now retry by calling kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu), and
+> VMX does not delete or inhibit the APIC-access page memslot while the VM is
+> alive, should this comment be updated or removed?
 
-If the guest is issuing invalidations you must always preserve the
-guests "ASID" or whatever your HW calls it. It can be virtualized and
-mapped from a guest view to physical, but it must be preserved and
-physical must be 1:1 with virtual.
+Gah, yeah, I'll fixup to this when applying:
 
-Jason
+
+	/*
+	 * Retry if faulting in the page fails (or the memslot is unexpectedly
+	 * invalid) even though KVM controls the APIC-access page memslot, and
+	 * never deletes memslot for a live VM when running on VMX.  Userspace
+	 * can modify the underlying VMA, and while doing so is beyond crazy,
+	 * the cost of supporting that behavior is to simply retry the reload,
+	 * which KVM should do anyways to avoid carrying a stale pfn pointer.
+	 */
