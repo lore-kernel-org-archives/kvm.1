@@ -1,68 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793859051;
-	b=lLg7mbabnXqLq2fCV04NpBUvD7zJnqAtMuQYYsI2TLgfqb6cE8IZNFemYNnoRmgZOaOS
-	 3uLSqGRm6KfaOiO3KaLiugSXPMeO9V8s0BwcIZmFQeudxGXNjX/Od6PwOcadQEPH8yvyu
-	 4+mRR/YVdp1X5uaVEEe7mGkrAwze66CUg1wmtu4d9uxR/g8xqVFhQ90TYrmnIgsceHa2q
-	 sINwYC0DyVFWB8h0wmq6+gF7Xij8/MPd6q+R07inO3o9Zuk9WaaGl4qnPm1CXDi7c09Dp
-	 zFSzohq5biMNQw2uYi4KmD/iXpNQj/HFtn+ylXZy58t9Jti1kHrnmAikkLuxdFbqXYg==
+	t=1793860178;
+	b=hHY3GaQSTc2rEnrHYt5E2k7F0TkfASHz3lzIDNVyAMrlA74pvIZlot5sDCA5M3ZkxYfY
+	 RLTKMHAfgV2h0VZXzO9p44M6eqvVLr405uuSDqryOySaxOi/EzP84ghzrsqS5Ri9kSr+K
+	 D46V6j+jSvVqMKZ4+Ftd/oyBPvoyP99XPbzmYlKYXflSr5b13lmkpZz2I34pOOydW//hC
+	 zVKp1xs5frOrUjoXkTnXYMTXY5YceuHgY0HrIFt7cMdPI+gOi57XRfEErXkZTbKF5l7Au
+	 EhOghxNEkfo2gTjqh2pgqpVudN7M2rnpzT2Kwfr3E/NVAOi35WZ27qtxy+EaCKQNirA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793859051;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=+5BTrBne3OQ1DvExgeoc8tKlSX9T8xOtBCF+DWKH+FQ=;
-	b=14AtpHR3bdE2jfQKH68GAMTFSxt9lbeFQgwRHExd1VdXbRERM+7hXL9dEorJ0gpfxLSR
-	 vuEYb/Dk2gPjblxY1i2MBz6Hdeh31EaiCQTHXlg+yxEXpfyjn/DHhNfP2ZnRAtH2Pp4Ib
-	 QMhRXc0Goi4c5s1aXJ8EvTJvBOZJR+GSJxCQRFPqta/QyENz64c/1HScZOOv15oodvZKO
-	 Q03V2STVhEviN+dSom+RR+LHiiz8zaph9NpqtYuQpep6j/it2AEKkYwogcfwGYeNDsFcF
-	 aXVCx+OUfaXODKafJ7/0zPBNNIKF/pwIFGvMaZknLkE5CvhlOjEP64JpjOEDFGaox8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793860178;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=pENZISNm27I79cnldwyzcUX4RM9EpVrGDDlBoLAj3L0=;
+	b=Ldku9+dOKHaMsfjsC2psOcnLZEHQfuX4QjLSLNMV9ydIqRkt1f9K1DxhI+cawSmYJkGo
+	 5Jwt0MUWdeYA9p2gv2ACouaWfA68ISnKSduiPTCZea7WCdzvOAjIQgS9ZdnfP4KWtM27R
+	 Hjm12Jq5I00O1mSjzvK8nlzYpozUKtjv+XIkT6BuNEeivwQweal/1Tnl/Xz3aIz/SHjZK
+	 uVgOyINWh3m2pp5bV99q0vfxZWndfjU18fERI9P2EzP2N0K95IyZWXbUY+8eD+YHehoUD
+	 URf81Innv0wlM6b7TMLmkXOSya95TlUBZJQUn4MetK68Lq6ApEfCFi6B1zKeJYha9sw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="mbdQ/Jn8";
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D65606A326;
-	Thu,  5 Nov 2026 06:10:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96D65606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=P8+ScmDW;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF675606A328
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 06:29:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF675606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mbdQ/Jn8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793859051; x=1825395051;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=baB3kBDGVPEF+a5Is1SFhYiKMmbqMXCz7Q2FtU0s8D4=;
-  b=mbdQ/Jn8gFZDv7m2fUMJ3pVxdKyqBgBUARfAUyCobuI1/WDkPFPaZho4
-   ENI/vR59xRtYzSPoRlbo+YSu+ZXkj3TnJC0w9uxteXNEQ7h3MPoCLssgb
-   ZlHX/TTVD29AUf50CF+RQ4Y0P2sQlahTolvXaEJ+QoJW+KEAdQ1Yyvk+6
-   4QJc99LIDTndn5uTIpjZCBuVAtAAjzMsseKxSFlHdj2LtxoxpN1bdLMe+
-   O0S4CDFoASpHPt49sezM/LYplWwV/79UY8c/LPd+AqsRRMdbPZIfsmCSM
-   kimSq4OU3R3+w0cONeicUVD9XP0wpOHAHH/MGnLHIgH6/DQfw2rJy4x8P
-   g==;
-X-CSE-ConnectionGUID: 5UFDd77BQ8ysJsKyCF6MSA==
-X-CSE-MsgGUID: 4MT8Ke5hReiyJsgaa6qGoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2672475"
-X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
-   d="scan'208";a="2672475"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 22:10:50 -0800
-X-CSE-ConnectionGUID: 2YwIL/d2QmiYsRKmhMHdQg==
-X-CSE-MsgGUID: pj4yiNuLRi6ZKOjNbx1kyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
-   d="scan'208";a="8688640"
-Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 22:10:46 -0800
-Message-ID: <f60d1d10-b2cb-465d-8588-a61d26bbd648@linux.intel.com>
-Date: Thu, 5 Nov 2026 14:10:44 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=P8+ScmDW
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7BB421684;
+	Wed,  4 Nov 2026 22:29:32 -0800 (PST)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 584393F628;
+	Wed,  4 Nov 2026 22:29:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793860175; bh=tb27MMCCE80mTL2ZZW3uoQHDYnAm/KCNtoGC6jO8WZM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P8+ScmDWL0ejmrIdWtSEthP00Ljx67kHDRTxMc5THEVJvci1038gElifkR24P7LBU
+	 0oYFqnVcqHGJcC3KKhCh7YHLMNvjkOGsBHzD8/GCbHNx8RV4wM+OzNP6i4JBqThfAn
+	 UaxYi4Ry18L43ucDAF7qw8ZoPbA7eDkQVM/G792M=
+Date: Thu, 5 Nov 2026 06:29:25 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Sascha Bischoff <sascha.bischoff@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, 
+	lpieralisi@kernel.org, timothy.hayes@arm.com, fuad.tabba@linux.dev
+Subject: Re: [PATCH v2 09/16] KVM: arm64: gic-v5: Add ITS MSI injection
+Message-ID: <xgp6rwid6ew7t5x7plaesqzgskfdlc4b4ujgkbumtr6v5edjke@j7mkg6opkdf2>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+ <20261102194454.4086911-10-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,72 +62,318 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, "iommu@lists.linux.dev"
- <iommu@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Kiryl Shutsemau
- <kas@kernel.org>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
- capable IOMMUs
-To: "Tian, Kevin" <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
- <20261015010705.1973284-5-baolu.lu@linux.intel.com>
- <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050> <20261015173707.GV14213@ziepe.ca>
- <5ca5f1c4-4c3c-47f1-b79c-c1fe06b20ee4@linux.intel.com>
- <CO1PR11MB4836E2CB05E1448BB42047458C9B2@CO1PR11MB4836.namprd11.prod.outlook.com>
- <23a3c630-a3ad-4874-b13c-b8795cd194a6@linux.intel.com>
- <CO1PR11MB48354B1C84A6BD16CA2FFCA88C652@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <CO1PR11MB48354B1C84A6BD16CA2FFCA88C652@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102194454.4086911-10-sascha.bischoff@arm.com>
 
-On 10/22/2026 12:07 PM, Tian, Kevin wrote:
->> From: Baolu Lu<baolu.lu@linux.intel.com>
->> Sent: Monday, October 19, 2026 4:12 PM
->>
->> On 10/16/2026 3:17 PM, Tian, Kevin wrote:
->>>>     - The TDX Connect architecture places requirements on the host
->>>>       iommu driver while the secure IOMMU is being set up. For example,
->>>>       the host iommu driver must block the enhanced command (ECMD)
->>>>       interface while the TDH.IOMMU.SETUP SEAMCALL runs, and it must
->>>>       reserve the upper half of the domain ID space. These steps have
->>>>       to happen atomically under the iommu driver's own locks. As a
->>>>       result, the Intel iommu driver needs to merge the two steps above
->>>>       into one.
->>> Didn't get this. Both ECMD and DID reservation are TDX specific things.
->>> How are they related to the two steps in the ARM sides and why calls
->>> for merging?
->>>
->>> and why are they must be done atomically? they are conditions to
->>> execute TDH.IOMMU.SETUP, but it is perfectly fine to reserve DID
->>> at an early point then block ECMD later...
->> You are right, "atomically" was too strong. Only the ECMD block has to
->> bracket TDH.IOMMU.SETUP. So I plan to restructure it as follows:
->>
->> - dmar_tdxcs_init_prepare(dev, &params): resolve the device's DRHD and
->>     take a reference on its secure-mode state. For the first user,
->>     validate the preconditions (TE/QI/SM enabled), reserve the upper half
->>     of the DID space (failing with -EBUSY if any of it is in use), block
->>     ECMD and return what tdx-host needs (register base, NUMA node, etc).
->>     If the unit is already in Secure TDX mode, just report that so
->>     tdx-host skips TDH.IOMMU.SETUP.
->>
->> - dmar_tdxcs_init_done(dev, result): unblock ECMD, then either mark the
->>     unit as being in Secure TDX mode or roll back (including the DID
->>     reservation), based on the SEAMCALL result. It must be called
->>     whenever init_prepare() returns success.
-> We should continue blocking ECMD after the IOMMU successfully
-> enters the TDX mode.
+On Mon, Nov 02, 2026 at 07:44:47PM +0000, Sascha Bischoff wrote:
+> Now that KVM can resolve GICv5 ITS translations from guest memory,
+> allow userspace and irqfd MSI injection to target a virtual GICv5 ITS.
+> 
+> Add helpers to validate that an MSI address resolves to a GICv5 ITS
+> IODEV, find the ITS for an MSI, resolve the DeviceID/EventID pair to a
+> vgic_irq, and inject the resulting LPI with the GICv5 VDPEND path.
+> GICv5 MSIs require KVM_MSI_VALID_DEVID, as the DeviceID is part of the
+> ITS translation key.
+> 
+> Although MSI data is 32 bits, GICv5 supports only 16-bit EventIDs.
+> Reject a nonzero upper half before narrowing the EventID for cache
+> lookups, so malformed MSI data cannot alias a valid translation.
+> 
+> Provide both the slow path, which resolves the translation from guest
+> memory and populates the ITS cache, and the inatomic cached path used
+> by irqfd. If the cached path misses, irqfd retries in a work item. The
+> worker borrows the VM's mm while walking the guest tables, then drops
+> it before injecting the LPI.
+> 
+> Wire kvm_set_msi() and kvm_arch_set_irq_inatomic() to use the GICv5
+> ITS injection helpers for GICv5 VMs, while keeping the existing GICv3
+> ITS path unchanged for GICv3 VMs.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-irqfd.c  |   8 ++
+>  arch/arm64/kvm/vgic/vgic-its-v5.c | 132 ++++++++++++++++++++++++++++--
+>  arch/arm64/kvm/vgic/vgic.h        |   6 ++
+>  3 files changed, 139 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-irqfd.c b/arch/arm64/kvm/vgic/vgic-irqfd.c
+> index ee1a1b214f03c..c5f5ce8b80c1d 100644
+> --- a/arch/arm64/kvm/vgic/vgic-irqfd.c
+> +++ b/arch/arm64/kvm/vgic/vgic-irqfd.c
+> @@ -114,6 +114,10 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
+>  		return -1;
+>  
+>  	kvm_populate_msi(e, &msi);
+> +
+> +	if (vgic_is_v5(kvm))
+> +		return vgic_v5_its_inject_msi(kvm, &msi);
+> +
+>  	return vgic_its_inject_msi(kvm, &msi);
+>  }
+>  
+> @@ -135,6 +139,10 @@ int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
+>  			break;
+>  
+>  		kvm_populate_msi(e, &msi);
+> +
+> +		if (vgic_is_v5(kvm))
+> +			return vgic_v5_its_inject_cached_translation(kvm, &msi);
+> +
+>  		return vgic_its_inject_cached_translation(kvm, &msi);
+>  	}
+>  
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> index 9f4783b243221..b69a1d107c0ae 100644
+> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> @@ -3,8 +3,10 @@
+>   * Copyright (C) 2025 ARM Limited, All Rights Reserved.
+>   */
+>  
+> +#include <linux/kthread.h>
+>  #include <linux/kvm_host.h>
+>  #include <linux/rcupdate.h>
+> +#include <linux/sched/mm.h>
+>  #include <linux/slab.h>
+>  
+>  #include <asm/kvm_arm.h>
+> @@ -19,6 +21,7 @@
+>  
+>  #define VITS_V5_DEVICE_ID_BITS		16
+>  #define VITS_V5_EVENT_ID_BITS		16
+> +#define VITS_V5_UNMAPPED		1
+>  
+>  struct its_cache_translation_entry {
+>  	struct rcu_head rcu;
+> @@ -359,8 +362,46 @@ static int get_itte(struct kvm *kvm, u32 event_id, gpa_t itt_base,
+>  				   itt_l2_entry);
+>  }
+>  
+> +struct vgic_v5_its *vgic_v5_msi_to_its(struct kvm *kvm, struct kvm_msi *msi)
+> +{
+> +	struct kvm_io_device *kvm_io_dev;
+> +	struct vgic_io_device *iodev;
+> +	u64 address;
+> +
+> +	if (!vgic_has_its(kvm))
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	if (!(msi->flags & KVM_MSI_VALID_DEVID))
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	/*
+> +	 * MSI data is 32 bits, but GICv5 limits EventIDs to 16 bits.
+> +	 * Match that limit in the vITS.
+> +	 */
+> +	if (msi->data >> VITS_V5_EVENT_ID_BITS)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	address = (u64)msi->address_hi << 32 | msi->address_lo;
+> +
+> +	guard(srcu)(&kvm->srcu);
+> +
+> +	kvm_io_dev = kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, address);
+> +	if (!kvm_io_dev)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	if (kvm_io_dev->ops != &kvm_io_gic_ops)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	iodev = container_of(kvm_io_dev, struct vgic_io_device, dev);
+> +	if (iodev->iodev_type != IODEV_GICV5_ITS)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	return iodev->v5its;
+> +}
+> +
+> +/* A positive return means the guest has no usable translation. */
+>  static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+> -				     u32 device_id, u16 event_id,
+> +				     u32 device_id, u32 event_id,
+>  				     struct vgic_irq **irq)
+>  {
+>  	unsigned int itt_l2sz, event_id_bits;
+> @@ -372,13 +413,15 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+>  	int ret;
+>  
+>  	lockdep_assert_held(&its->its_lock);
+> +	if (event_id >> VITS_V5_EVENT_ID_BITS)
+> +		return -EINVAL;
+>  
+>  	if (!its->enabled) {
+>  		kvm_debug("Cannot look up LPI; vITS is disabled\n");
+>  		return -ENXIO;
 
-Updated.
+Since the guest controls its->enabled, should we return VITS_V5_UNMAPPED
+here also?
+
+>  	}
+>  
+> -	ret = its_cache_look_up_translation(its, device_id, event_id, irq);
+> +	ret = its_cache_look_up_translation(its, device_id, (u16)event_id, irq);
+>  	if (!ret)
+>  		return 0;
+>  
+> @@ -389,23 +432,23 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+>  		      &event_id_bits, &itt_l2sz);
+>  	if (ret) {
+>  		kvm_debug("Error parsing guest's DT\n");
+> -		return ret;
+> +		return VITS_V5_UNMAPPED;
+>  	}
+>  
+>  	if (event_id >= 1UL << event_id_bits) {
+>  		kvm_debug("Event ID out of range\n");
+> -		return -E2BIG;
+> +		return VITS_V5_UNMAPPED;
+>  	}
+>  
+>  	ret = get_itte(kvm, event_id, itt_base, two_level_itt, itt_l2sz,
+>  		       &itt_l2_entry);
+>  	if (ret)
+> -		return ret;
+> +		return VITS_V5_UNMAPPED;
+>  
+>  	val = le64_to_cpu(itt_l2_entry);
+>  	if (!FIELD_GET(GICV5_ITTL2E_VALID, val)) {
+>  		kvm_debug("ITTE is not valid\n");
+> -		return -EINVAL;
+> +		return VITS_V5_UNMAPPED;
+>  	}
+>  
+>  	lpi = FIELD_GET(GICV5_ITTL2E_LPI_ID, val);
+> @@ -415,7 +458,8 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+>  		return PTR_ERR(*irq);
+>  
+>  	vgic_get_irq_ref(*irq);
+> -	ret = its_cache_add_translation(kvm, its, device_id, event_id, *irq);
+> +	ret = its_cache_add_translation(kvm, its, device_id, (u16)event_id,
+> +					 *irq);
+>  	if (ret) {
+>  		vgic_put_irq(kvm, *irq);
+>  		return 0;
+> @@ -424,12 +468,86 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+>  	return ret;
+>  }
+>  
+> +int vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+> +			    u32 device_id, u32 event_id,
+> +			    struct vgic_irq **irq)
+> +{
+> +	guard(mutex)(&its->its_lock);
+> +
+> +	return __vgic_v5_its_resolve_lpi(kvm, its, device_id, event_id, irq);
+> +}
+> +
+>  static void vgic_v5_its_inject_lpi(struct kvm *kvm, struct vgic_irq *irq)
+>  {
+>  	kvm_call_hyp(__vgic_v5_vdpend, irq->intid, true,
+>  		     kvm->arch.vgic.gicv5_vm.vm_id);
+>  }
+>  
+> +int vgic_v5_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
+> +{
+> +	struct vgic_v5_its *its;
+> +	struct vgic_irq *irq;
+> +	bool borrowed_mm = false;
+> +	int ret;
+> +
+> +	its = vgic_v5_msi_to_its(kvm, msi);
+> +	if (IS_ERR(its))
+> +		return PTR_ERR(its);
+> +
+> +	/* An irqfd cache miss is resolved by a worker outside the VM's mm. */
+> +	if (current->mm != kvm->mm) {
+> +		if (WARN_ON_ONCE(current->mm || !(current->flags & PF_KTHREAD)))
+> +			return -EWOULDBLOCK;
+> +
+> +		if (!mmget_not_zero(kvm->mm))
+> +			return -EFAULT;
+> +
+> +		kthread_use_mm(kvm->mm);
+> +		borrowed_mm = true;
+> +	}
+> +
+> +	ret = vgic_v5_its_resolve_lpi(kvm, its, msi->devid, msi->data, &irq);
+> +	if (borrowed_mm) {
+> +		kthread_unuse_mm(kvm->mm);
+> +		mmput(kvm->mm);
+> +	}
+> +
+> +	if (ret < 0)
+> +		return ret;
+> +	/* KVM_SIGNAL_MSI reports guest translation failures as blocked MSIs. */
+> +	if (ret)
+> +		return 0;
+> +
+> +	vgic_v5_its_inject_lpi(kvm, irq);
+
+Looks like the MSI translation (vgic_v5_its_resolve_lpi) and injection
+(vgic_v5_its_inject_lpi) are not protected by the its_lock together, so
+between the two a guest could:
+
+1. change the MSI translation
+2. invalidate the old translation and observe it complete
+3. synchronize and observe it complete
+
+and later still receive an interrupt from the old translation.
+
+Same issue exists for vgic_v5_its_inject_cached_translation() below, but
+it can't take the its_lock, not sure what the best solution is there..
 
 Thanks,
-baolu
+Wei-Lin Chang
+
+> +	vgic_put_irq(kvm, irq);
+> +
+> +	return 1;
+> +}
+> +
+> +int vgic_v5_its_inject_cached_translation(struct kvm *kvm, struct kvm_msi *msi)
+> +{
+> +	struct vgic_v5_its *its;
+> +	struct vgic_irq *irq;
+> +	int ret;
+> +
+> +	its = vgic_v5_msi_to_its(kvm, msi);
+> +	if (IS_ERR(its))
+> +		return PTR_ERR(its);
+> +
+> +	if (!READ_ONCE(its->enabled))
+> +		return -EWOULDBLOCK;
+> +
+> +	ret = its_cache_look_up_translation(its, msi->devid, (u16)msi->data,
+> +					    &irq);
+> +	if (ret)
+> +		return -EWOULDBLOCK;
+> +
+> +	vgic_v5_its_inject_lpi(kvm, irq);
+> +	vgic_put_irq(kvm, irq);
+> +
+> +	return 0;
+> +}
+> +
+>  static void vgic_v5_its_handle_read_event(struct kvm *kvm,
+>  					  struct vgic_v5_its *its)
+>  {
+> diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
+> index 9e1cbcdedf3f5..64f6229fe555e 100644
+> --- a/arch/arm64/kvm/vgic/vgic.h
+> +++ b/arch/arm64/kvm/vgic/vgic.h
+> @@ -364,6 +364,12 @@ void vgic_v3_put(struct kvm_vcpu *vcpu);
+>  bool vgic_has_its(struct kvm *kvm);
+>  int kvm_vgic_register_its_device(void);
+>  int kvm_vgic_v5_register_its_device(void);
+> +struct vgic_v5_its *vgic_v5_msi_to_its(struct kvm *kvm, struct kvm_msi *msi);
+> +int vgic_v5_its_resolve_lpi(struct kvm *kvm, struct vgic_v5_its *its,
+> +			    u32 device_id, u32 event_id,
+> +			    struct vgic_irq **irq);
+> +int vgic_v5_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi);
+> +int vgic_v5_its_inject_cached_translation(struct kvm *kvm, struct kvm_msi *msi);
+>  void vgic_enable_lpis(struct kvm_vcpu *vcpu);
+>  void vgic_flush_pending_lpis(struct kvm_vcpu *vcpu);
+>  int vgic_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi);
+> -- 
+> 2.34.1
+> 
