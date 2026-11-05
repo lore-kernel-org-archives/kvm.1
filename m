@@ -1,59 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793837615;
-	b=lRxrJi5Y05Yc3Dy57B1IHaDGb3hwS06XTDe0Dyl9GtWPkd8kyXPpRKjzcWr0ULkTS+wZ
-	 sU9W2ifGUwPfSfJzlab019Ej+1NNKrITzx1H/QNotzzaq6KNuVavBsA3uy5ZdbkYGgiHE
-	 deJLvbRxwRKVpEXvAhq+40k+yAmn1+1cniTrs4vPoQ4PHk83vKsGfdzGERlWHKeVPkjot
-	 Jd+wREh+Y9RXGmlaPRgNIO6B09PsWMOAMaaKUicJ6Ulj+5Pih8ntVUcNC4lRliHSp8C+7
-	 du8ottjgM3nb1Mdl7OsdHPqwiHhptXfACeh5OfePE2hV0ikbliK+YuZRS3QelcsO8sQ==
+	t=1793837970;
+	b=B8MHpP1B5Tn+qrZjnPx/3vCWuwhpb18A0yyPuSnMAkBvxJ/RoIwBtDKwWTJe2zFR5+BQ
+	 DETsyJTL6f7WFDbI4q4uByRMt9miBLAb7iL+dttdS6HUgVlA4BjL56YEw7DxV+50xlkR9
+	 ToxI/vOOQjg3zItsOD9WPfvH6Tja3+Tmhg4QIi/qt2AF2b7U932c/vo4O17f/RtBF2our
+	 Qek0QomjPUp64y//hiLmi0NmBkvzcrXcPNI3boDtHxldjME4+epKtRY0x6Ipc/QVo1tDi
+	 VJRZnDFjBZ5OlRd3rFyIqYIyoEbNgrAzDzs+xgGFoWNp795IrunBgozGXYML8N5R1Kg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793837615;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=orqNvCIr/GD7TIfy/qrX+MEjo8QabahDm8euaMSc6BA=;
-	b=EdVz1pUdlnOMOODZQ1UIypLPwPfyg9zls5dTr5hT9wA2m6ettm/4KKBOC5NnFk2WAJbq
-	 e1pV/+jkQ7YKA4ACGv2mTDCW33HksPUlcbRuqNVG0IWFsU04bYJ0ur0D+Ig4OuxE0/zu7
-	 TGHtRgSoLRj3fUOMGxnGDIlXebsc/2FuoPezNiCHCcWH+iSllQMxyaHM2BAzp28U7ATMq
-	 GwmlmnxwWktUOxFYja/Gt7pdlp9dDNesXb/fNGuY11+6aNQwJNN2rYwJWc7bkgUy4yJVB
-	 M46naarMZu1gV6QrL2oWmWHj/rSBFSUHGEwAUyrI41Za3FthnohHEGLDsnke21TqxTg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793837970;
+	h=DMARC-Filter:Received:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:User-Agent:
+	 MIME-Version:X-Spam-Status:X-Spam-Checker-Version;
+	bh=HN6TW/NKI9aCPvbwatGDME3QAnxBQ1uDv6eHyfYd4YM=;
+	b=EUIsLG5TJvn0UPTkU42O+SM3S8CoXtyth3g8z7/Glr33HewYz4wRD/ammedr7oKFBahz
+	 ubts3c2q68D9XoM1HkSMUUVzdEEniJsVGuuJU+j3MzwIfwivyGGgk70okPy4dv/dR3O8g
+	 UcwPpplgU/yxJ5O3BWlfiaqOu+hL1BqbBGL+VrTv2hEFbf7poC3cdXaeQItpLefGKzvMo
+	 FHvg0Iipzc3P2B3fsjxwXrk8YcPJbsOUxiO2DiZwsK6/0VlxzuNbmuZSBmckxjeiZl6vg
+	 v+STrHWNBRHcy4JrdM5o0sajm9TF25XkbE39mpmS/DhyMtwZQD4ZXM8Pc6UzCRIPHJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JT5VLO7c;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=linuxhacker.ru;
+	spf=none smtp.mailfrom=linuxhacker.ru;
+	arc=none smtp.remote-ip=159.69.87.85
+Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD43606A333;
-	Thu,  5 Nov 2026 00:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JT5VLO7c
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BADC1F00919;
-	Thu,  5 Nov 2026 00:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793837614;
-	bh=orqNvCIr/GD7TIfy/qrX+MEjo8QabahDm8euaMSc6BA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=JT5VLO7cllg7mmJOzhQ5x2Ody9G1mMMBNmw2jsxCje8IhTlkJVfJAk3hlf/pZznu8
-	 5FIsPH/ftaR4HBsCCHA2COCVqaXqkO50Fz0hbeKMHJbjmKjo8rblvMjeXToTy0FLwL
-	 XiKh/AwUxBshDk8b3WpuC77CzNb3pz5qx0PbxH2OgWDubJDqLYeLV6j7aQYOvd6rZN
-	 fy4nNviJ1u0gblzJK7MrFOr0ml1JyfeetmZXbQFHtt1aQuhnm+14OEmF0MnHe3nzJw
-	 mjGb1GvvQhU3QMNcrMgnBDPgC7+BvN/pLC4K3tIaCfhl4j1gU7gjVRy41Htog3pARf
-	 8bLfx9TaGkOBA==
-Date: Wed, 4 Nov 2026 18:13:33 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
-	"Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org,
-	bhelgaas@google.com, alex@shazbot.org, jgg@nvidia.com,
-	kevin.tian@intel.com, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
-	patches@lists.linux.dev, pjaroszynski@nvidia.com, vsethi@nvidia.com,
-	etzhao1900@gmail.com, Danny Gonzalez <digonzal@google.com>
-Subject: Re: [PATCH v8 5/5] PCI: Suspend iommu function prior to resetting a
- device
-Message-ID: <20261105001333.GA1478880@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4CA606A338;
+	Thu,  5 Nov 2026 00:19:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E4CA606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linuxhacker.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linuxhacker.ru
+Received: from [10.137.0.31] (unknown [162.81.204.199])
+	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id 35268BEE42;
+	Thu,  5 Nov 2026 00:19:25 +0000 (UTC)
+Message-ID: <b449646e2bc75923e846ee72bee7d72774c48275.camel@linuxhacker.ru>
+Subject: Re: [PATCH net 0/3] vsock/virtio: bound what a peer can make the
+ host queue
+From: Oleg Drokin <green@linuxhacker.ru>
+To: netdev-bot+sinfo@kernel.org
+Cc: sgarzare@redhat.com, stefanha@redhat.com, mst@redhat.com, 
+	jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com, 
+	bobbyeshleman@meta.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, 	pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, 	virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, 	linux-kernel@vger.kernel.org
+Date: Wed, 04 Nov 2026 19:19:23 -0500
+In-Reply-To: <179383703519.488859.4429490517306926733@kernel.org>
+References: <20261105000141.3617241-1-green@linuxhacker.ru>
+	 <179383703519.488859.4429490517306926733@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,44 +60,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auvHyrZmMXLTFyz9@nvidia.com>
 
-On Wed, Nov 04, 2026 at 04:03:22PM -0800, Nicolin Chen wrote:
-> On Wed, Nov 04, 2026 at 05:55:00PM -0600, Bjorn Helgaas wrote:
-> > On Mon, Dec 15, 2025 at 01:42:20PM -0800, Nicolin Chen wrote:
-> > > @@ -4885,10 +4919,20 @@ static int pci_reset_bus_function(struct pci_dev *dev, bool probe)
-> > >  		return -ENOTTY;
-> > >  	}
-> > >  
-> > > +	rc = pci_dev_reset_iommu_prepare(dev);
-> > > +	if (rc) {
-> > > +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", rc);
-> > > +		return rc;
-> > > +	}
-> > 
-> > Unlike the other reset functions, this one calls
-> > pci_dev_reset_iommu_prepare() even when probe==true, i.e., we don't
-> > want to actually perform the reset, we just want to know whether the
-> > reset method might work.
-> > 
-> > It's at least unnecessary to call pci_dev_reset_iommu_prepare() and
-> > pci_dev_reset_iommu_done() in that case, and maybe even problematic
-> > because the pci_init_reset_methods() probe happens from
-> > pci_init_capabilities(), which is pretty early during PCI enumeration
-> > of the device.
-> > 
-> > I know this has already been merged as f5b16b802174 ("PCI: Suspend
-> > iommu function prior to resetting a device"), and I'm not sure whether
-> > we should do anything about it.  I wonder if we should just skip the
-> > prepare/done when probe==true?
-> 
-> I've posted a fix for a few times actually. The latest one was
-> posted yesterday after a split:
-> https://lore.kernel.org/linux-iommu/c66d5221a8e4356316d4f614c8584a80dc9d71b6.1793729707.git.nicolinc@nvidia.com/
+Hello!
 
-Well, that's embarrassing ;)
+   This was discovered while working on porting a project from
+   xen to kvm hypervisor. One of the llm security reviews
+   demonstrated it as valid, so it's not purely a static analysis,
+   It was also discovered that a partial patch exists that already
+   was included yesterday, by Daehyeon Ko independently posted the same
+core fix - Commit: d5e912448cd9 "vhost/vsock: size receive SKBs from
+declared payload".
 
-I acked the PCI patches there on the assumption that they'll go via
-the IOMMU tree since the interesting bits are there.
+>=20
+On Thu, 2026-11-05 at 00:03 +0000, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+>=20
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>=20
+> =C2=A0- How the issue was discovered, e.g. hit in production, hit during
+> =C2=A0=C2=A0 development, syzbot report, manual code inspection, LLM or s=
+tatic
+> =C2=A0=C2=A0 analysis tool scan.
+>=20
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>=20
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
