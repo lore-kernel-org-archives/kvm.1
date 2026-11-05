@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793844072;
-	b=a+Fg0TBnMzyJUC1/Xleui5t+Lusgbq8geRrFY6/sYu8n+bDxHLFKPS/Hy+sBDYcfivcz
-	 eMeE0o/+CbrpAvjNcTls84eo7OXKAC3bvsOmbWZ8cwfBiVh06gJJLS36EVWFmb+cHI4Cg
-	 9qvNAMTEwDWgLBjcIGXuuNnhCtOMfYwY/qfJocN/j/HVGSpGODbYnwu8DHvBa2pl2lG4Q
-	 C/1WeMKjQ0CP2wt6i236nCmRsUc0IlVDkfW0cVhqvsxWMHyEqYrXYLpST3wNvvegoRj+a
-	 rLF/y+VDWxCVG0XbMpsmbrBXt65DuJshsgyxExlYlLUIZzV8LJVCEDRed1TqdP/Ye/Q==
+	b=zwqx1HHKjiQmp9Y4LUkENxr+NZ7WUMMojLTnyKiBNxVDkuC4n0YxXw7oui0GkJoBFhSe
+	 IIvNatZVKeMOpqVcarTeLNpYvgYYycmL2UxkZ7RaX97r3uzENJgF6X48KFJ7Wc83dOsxd
+	 2B60urUHP27U3eg6p9bB2L5E6LJ2QDXhrk30NRIQ0GPxF1++yceQmQevFs+6zBxgtpXyv
+	 /ce2HW/IY4TEQDXp5RsAT7wRfUlT0pAPTxz6lhr7s8jVkQ49X4qz651UBA8WRj51owxhQ
+	 mcWkO+g7XcqWWo5RGhKr3LfiK9DS2xiGxJi4h105t58FbzV/QyUjsuMVtC7a3jX7UPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793844072;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=YL+lBqDUJNOy/hv9jUl5JyMaYSXCWE0E46LaudV422w=;
-	b=M/PRonBBF6hK198TSEnqaZySW2DmfLRMCOLqLjqDwtL5DeDB+nMoAbLHYNPmJ/hyqH16
-	 lAiKL5TJ87FuKN2IxACtCvwRMvtrmy/Pb0qDSqMXw0QVUlbK42aMvkclUXF44Z2tqLGUa
-	 j4IsPlJMg36wxMTyxxqsidw++3z8Omq/e2N12SbSxxrGO5/9kFrD6XvoI075sC2/9sjGF
-	 WySuKoWsQxbqkVBzKaLf8RPtUmFStDgqfXOgJDdt3B6ktbUJaN915DsPR6GMEANCeiEA0
-	 3aNhRqhx1aDQL5y1KeeeXOBNCAEaRMT/VSL9FW5lgCdTmkvgZjszS4dDKReHqg1s1iw==
+	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=UgyLs6o4Orjp7r9TrZvgcRHUHKMCRka330m3aCKWdEQ=;
+	b=V0O40xGlelVl2O7tBdXxrewmAAxbKCBJ1zqCBvG3gsjsVuNDuQKqcYqOIcei5rj9lc1O
+	 kcEelcjwdVdxq5O0HSlrdd0NUZ1uTltVrNKPuXssGeMR/8tCNI4rhqMTPpA1pW10ztMCG
+	 gh0VT+0zgi2bb5bW4U/LNM1fC+pgGKZcfVAwWLR4CA16suEFRl/Ed3PBXKvstTa/dbHEt
+	 rk3GQKpNSagz3AFfch6c32iGYeewqz+GJwQ5UL93g5PdlclsCFvzuO4qvusxLtgNi0jVz
+	 ydZes2V0CE/jzA72SvQlZpVP+DUhLmEM14uwqDTG+WXzeEkLUhmrK9AEiJv3Bp34rfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=LHX+gf4e;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=MujwxWKs;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCCD606A33A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB18606A336;
 	Thu,  5 Nov 2026 02:01:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBCCD606A33A
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAB18606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=LHX+gf4e
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=MujwxWKs
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=YL+lBqDUJNOy/hv9jUl5JyMaYSXCWE0E46LaudV422w=; b=LHX+gf4esAQAwNNl+6sG/OPhfw
-	R0AS7Ypu1vuUXonqAi82K6sEU8nEQTohPmpglaMnfgujKbxMYtiZDwfnMc5RgxzYx9BXYeQiDAMZm
-	KWqJ0hLZCM7yO6mVf4/S1eBxkDQN8JLP9eLte98q8UKOmgmNqgFKAG4DyeC8mQi2hq/bNhNak04yX
-	xCAuPMY17KxtGBhqDlsyhA+eE5+JvKMghaoZ74/3CkRfTebGLS1uC/q109pOeaVTFbL2433a9qPFZ
-	ICHIJMOOlMylejLTkfMikIFaOfAmdTYrWZYSCrWJc+nbP5tagApWfND7A6iCHsnUn6i7xhsLhDESJ
-	6Ebd5+9w==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=UgyLs6o4Orjp7r9TrZvgcRHUHKMCRka330m3aCKWdEQ=; b=MujwxWKsiDg/pCHAc4bLWCV5Cg
+	7QHM7AcNwnwbTY80H3ZNP4o2CQ0jIkAmUbdvSl6Ml2XqU3IE947Ow+x5FsJreKPvBEoVdd80bfyXZ
+	5ChIZKpFWO5KujoGUe5MEDIWV40DaDY6V2DcQgdyqeZLI2nvYqrz8JXEm3UoIH0f/5bE3wN0xnX3K
+	q4IOiBPV/Uz0tLXn9farqxTLb/uh+AptumD61Zb5+UGWS+VhgK0IdvPJne/TV0O96Bmk9OAa6IOcl
+	ijX97daC6NziEYUSVQsUA78budms2uHb2dLCScJ54mU5MllRA1mfJRrL29TqZtf92qGI637kp/mVc
+	4oA/ephw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOmmn-000000037jD-0EW9;
+	id 1xOmmn-000000037jA-0D4N;
 	Thu, 05 Nov 2026 02:01:05 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOmmm-0000000AWDi-25oS;
+	id 1xOmmm-0000000AWDP-1ey4;
 	Thu, 05 Nov 2026 02:01:04 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Kunwu Chan <kunwu.chan@gmail.com>,
 	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 11/20] KVM: nVMX: Implement cache for L1 MSR bitmap
-Date: Thu,  5 Nov 2026 02:00:53 +0000
-Message-ID: <20261105020104.2507083-12-dwmw2@infradead.org>
+Subject: [PATCH v2 08/20] KVM: pfncache: Use atomic SRCU for readers instead of a rwlock
+Date: Thu,  5 Nov 2026 02:00:50 +0000
+Message-ID: <20261105020104.2507083-9-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261105020104.2507083-1-dwmw2@infradead.org>
 References: <20261105020104.2507083-1-dwmw2@infradead.org>
@@ -81,437 +81,1337 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Fred Griffoul <fgriffo@amazon.co.uk>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Introduce a gfn_to_pfn_cache to optimize L1 MSR bitmap access by
-replacing map/unmap operations. This optimization reduces overhead
-during L2 VM-entry where nested_vmx_prepare_msr_bitmap() merges L1's
-MSR intercepts with L0's requirements.
+Replace the per-cache rwlock with a dedicated per-VM atomic SRCU
+domain (kvm->gpc_srcu) for the read side. Readers now run under
+srcu_read_lock_atomic() alone: preemption disabled and non-blocking
+enforced, which every GPC read-side section already satisfied as a
+former rwlock critical section. It works in any context (including
+hardirq and sched-out paths) and never fails or spins, eliminating
+the read_trylock() contortions in the atomic paths, the double-lock
+dance with the lockdep subclass hack in the runstate update, and the
+PREEMPT_RT problems inherent to taking an rwlock in those contexts.
+In particular, kvm_xen_set_evtchn_fast() is called from hardirq
+context (timer callback, kvm_arch_set_irq_inatomic()), where taking
+gpc->lock is a sleeping-lock-in-atomic-context bug on PREEMPT_RT.
 
-The current implementation maps and unmaps the page on every bitmap
-merge, which is a significant performance impact with unmanaged guest
-memory (where the map is a memremap/memunmap cycle).
+The mutators' reader drains use synchronize_srcu_atomic(), which
+spins for the bounded readers instead of sleeping: no path waiting
+out GPC readers ever schedules. That satisfies the OOM-reaper
+non-blocking requirement in the invalidation walk, whose wait must
+happen even on unblockable ranges — GPC readers never allocate, take
+mmap_lock, or sleep, so waiting them out cannot deadlock against
+reclaim. SRCU rather than plain RCU so that wait covers only this
+VM's GPC readers, not a grace period across every pCPU in the
+system; the read-side cost is a this_cpu_inc() and a barrier.
 
-The cache is initialized once at vCPU creation and deactivated when
-VMX operation ends; re-entering VMX operation reactivates it through
-the normal check/activate path. Readers run under kvm->gpc_srcu,
-following the check/activate/retry pattern; KVM only ever reads the
-L1 bitmap, so the cache is mapped read-only (which L1 may
-legitimately demand for its bitmap) and never marked dirty.
+Without gpc->lock, the refresh can no longer rely on holding it to
+make its final invalidation check and its publish atomic with
+respect to the mmu_notifier walk, and can no longer treat "GPC_VALID
+already clear" as "no readers remain". Three state bits in a single
+atomic word replace it: GPC_BECOMING_VALID lets the walk veto an
+in-flight refresh's pending publish (the publish is a cmpxchg which
+fails if the bit was cleared, closing the window between the
+refresh's last check and its publish); GPC_INVALIDATING records that
+a grace period for the previously published mapping is still owed:
+whoever clears GPC_VALID leaves the marker standing until their
+grace-period wait completes, so that a later mutator — or a later
+mmu_notifier walk, whose return is what lets the primary MMU free
+the page — finding GPC_VALID already clear still performs a wait of
+its own rather than trusting one it cannot see finish. The comments
+in pfncache.c and kvm_types.h carry the full protocol.
 
-This exports the core pfncache API to kvm-intel.ko, which is its
-first modular user.
+As before, a refresh which resolves to the same uHVA in the same
+memslot leaves the cache valid and undisturbed, skipping the grace
+period: routine host memory management (page migration, NUMA
+balancing, KSM) usually re-backs the same uHVA, and a grace period
+in the reader's refresh path for each such event would add seconds
+to a guest boot.
 
-[dwmw2: Port from the rwlock-protected pfncache to the SRCU reader
-        protocol, rebase over the kvm_vcpu_map_local_readonly CLASS()
-        conversion, introduce the lock/unlock helpers in x86.h as
-        kvm_gpc_lock_page()/kvm_gpc_unlock() for later nSVM use, map
-        the cache read-only, init at vCPU creation.]
+Not suitable for stable backport despite the Fixes tag (it depends
+on the atomic SRCU reader flavour, new in this cycle); the tag
+documents where the PREEMPT_RT sleeping-lock problem was introduced.
 
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/all/20260920215613.1CC0C1F000FF@smtp.kernel.org
-Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
-Co-developed-by: David Woodhouse <dwmw@amazon.co.uk>
+Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+Reported-by: syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=208f7f3e5f59c11aeb90
+Reported-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
+Tested-by: syzbot+919877893c9d28162dc2@syzkaller.appspotmail.com
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/vmx/nested.c | 30 +++++++++++++++++++++++++----
- arch/x86/kvm/vmx/nested.h |  1 +
- arch/x86/kvm/vmx/vmx.c    |  2 ++
- arch/x86/kvm/vmx/vmx.h    |  2 ++
- arch/x86/kvm/x86.h        | 33 ++++++++++++++++++++++++++++++++
- arch/x86/kvm/xen.c        |  4 ++--
- include/linux/kvm_host.h  | 40 +++++++++++++++++++++++++++------------
- include/linux/kvm_types.h | 12 ++++++++++++
- virt/kvm/pfncache.c       | 37 +++++++++++++++++++++++++++++++-----
- 9 files changed, 138 insertions(+), 23 deletions(-)
+ arch/x86/kvm/x86.c        |  10 +-
+ arch/x86/kvm/xen.c        | 146 ++++++------
+ include/linux/kvm_host.h  |  26 ++-
+ include/linux/kvm_types.h |  37 ++-
+ include/linux/srcu.h      |   7 +
+ virt/kvm/kvm_main.c       |   9 +
+ virt/kvm/pfncache.c       | 481 ++++++++++++++++++++++++++++++--------
+ 7 files changed, 528 insertions(+), 188 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 516ba03bf608..bb0baa79c28c 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -370,6 +370,8 @@ static void free_nested(struct kvm_vcpu *vcpu)
- 	kfree(vmx->nested.cached_shadow_vmcs12);
- 	vmx->nested.cached_shadow_vmcs12 = NULL;
- 
-+	kvm_gpc_deactivate(&vmx->nested.msr_bitmap_cache);
-+
- 	nested_put_vmcs12_pages(vcpu);
- 
- 	kvm_mmu_free_roots(vcpu->kvm, &vcpu->arch.guest_mmu, KVM_MMU_ROOTS_ALL);
-@@ -390,6 +392,24 @@ void nested_vmx_free_vcpu(struct kvm_vcpu *vcpu)
- 	vcpu_put(vcpu);
- }
- 
-+/*
-+ * Initialize the nested gfn_to_pfn_caches, once per vCPU. Unlike the
-+ * allocations in enter_vmx_operation(), the caches persist across
-+ * VMXOFF/VMXON cycles: free_nested() only deactivates them, and reuse
-+ * goes through kvm_gpc_activate() without re-init.
-+ */
-+void nested_vmx_init_caches(struct kvm_vcpu *vcpu)
-+{
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+
-+	/*
-+	 * KVM only ever reads the L1 MSR bitmap, which L1 may keep in
-+	 * memory that its VMM maps read-only: map the cache read-only
-+	 * (which also means never marking it dirty).
-+	 */
-+	__kvm_gpc_init(&vmx->nested.msr_bitmap_cache, vcpu->kvm, false, true, NULL, 0);
-+}
-+
- #define EPTP_PA_MASK   GENMASK_ULL(51, 12)
- 
- static bool nested_ept_root_matches(hpa_t root_hpa, u64 root_eptp, u64 eptp)
-@@ -734,7 +754,7 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
- 						 struct vmcs12 *vmcs12)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 3c26c0eb9865..f5f3459ed4a5 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1747,18 +1747,18 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
  {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	int msr;
-+	int msr, idx;
- 	unsigned long *msr_bitmap_l1;
- 	unsigned long *msr_bitmap_l0 = vmx->nested.vmcs02.msr_bitmap;
+ 	struct pvclock_vcpu_time_info *guest_hv_clock;
+ 	struct pvclock_vcpu_time_info hv_clock;
+-	unsigned long flags;
++	int idx;
  
-@@ -759,11 +779,11 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
- 			return true;
+ 	memcpy(&hv_clock, ref_hv_clock, sizeof(hv_clock));
+ 
+-	read_lock_irqsave(&gpc->lock, flags);
++	idx = srcu_read_lock_atomic(&vcpu->kvm->gpc_srcu);
+ 	while (!kvm_gpc_check(gpc, offset + sizeof(*guest_hv_clock))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
++		srcu_read_unlock_atomic(&vcpu->kvm->gpc_srcu, idx);
+ 
+ 		if (kvm_gpc_refresh(gpc, offset + sizeof(*guest_hv_clock)))
+ 			return;
+ 
+-		read_lock_irqsave(&gpc->lock, flags);
++		idx = srcu_read_lock_atomic(&vcpu->kvm->gpc_srcu);
  	}
  
--	CLASS(kvm_vcpu_map_local_readonly, m)(vcpu, gpa_to_gfn(vmcs12->msr_bitmap));
--	if (m.ret)
-+	idx = kvm_gpc_lock_page(&vmx->nested.msr_bitmap_cache, vmcs12->msr_bitmap);
-+	if (idx < 0)
- 		return false;
+ 	guest_hv_clock = (void *)(gpc->khva + offset);
+@@ -1783,7 +1783,7 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
+ 	guest_hv_clock->version = ++hv_clock.version;
  
--	msr_bitmap_l1 = (unsigned long *)m.map.hva;
-+	msr_bitmap_l1 = (unsigned long *)vmx->nested.msr_bitmap_cache.khva;
+ 	kvm_gpc_mark_dirty_in_slot(gpc);
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	srcu_read_unlock_atomic(&vcpu->kvm->gpc_srcu, idx);
  
- 	/*
- 	 * To keep the control flow simple, pay eight 8-byte writes (sixteen
-@@ -843,6 +863,8 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
- 
- 	nested_vmx_merge_pmu_msr_bitmaps(vcpu, msr_bitmap_l1, msr_bitmap_l0);
- 
-+	kvm_gpc_unlock(&vmx->nested.msr_bitmap_cache, idx);
-+
- 	vmx->nested.force_msr_bitmap_recalc = false;
- 
- 	return true;
-diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
-index c6de848bd9ce..e27299b9f30b 100644
---- a/arch/x86/kvm/vmx/nested.h
-+++ b/arch/x86/kvm/vmx/nested.h
-@@ -24,6 +24,7 @@ __init int nested_vmx_hardware_setup(int (*exit_handlers[])(struct kvm_vcpu *));
- void nested_vmx_set_vmcs_shadowing_bitmap(void);
- int nested_vmx_check_restored_vmcs12(struct kvm_vcpu *vcpu);
- void nested_vmx_free_vcpu(struct kvm_vcpu *vcpu);
-+void nested_vmx_init_caches(struct kvm_vcpu *vcpu);
- enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- 						     bool from_vmentry);
- bool nested_vmx_reflect_vmexit(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 82eb891f684c..590095bcb665 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7613,6 +7613,8 @@ int vmx_vcpu_create(struct kvm_vcpu *vcpu)
- 		WRITE_ONCE(to_kvm_vmx(vcpu->kvm)->pid_table[vcpu->vcpu_id],
- 			   __pa(&vmx->vt.pi_desc) | PID_TABLE_ENTRY_VALID);
- 
-+	nested_vmx_init_caches(vcpu);
-+
- 	return 0;
- 
- free_vmcs:
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 74cd50f29fa4..c6827368c84a 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -146,6 +146,8 @@ struct nested_vmx {
- 	 * Guest pages referred to in the vmcs02 with host-physical
- 	 * pointers, so we must keep them pinned while L2 runs.
- 	 */
-+	struct gfn_to_pfn_cache msr_bitmap_cache;
-+
- 	struct kvm_host_map apic_access_page_map;
- 	struct kvm_host_map virtual_apic_map;
- 	struct kvm_host_map pi_desc_map;
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 436e2fb1396c..c48f3aeb4d64 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -14,6 +14,39 @@
- 
- #define KVM_MAX_MCE_BANKS 32
- 
-+/*
-+ * Map a single page of L1 guest memory at @gpa into a gfn_to_pfn_cache
-+ * and enter an SRCU read-side critical section protecting the mapping.
-+ * Returns the SRCU index (>= 0) to pass to kvm_gpc_unlock(), or a
-+ * negative error code. While locked, the cache's khva and pfn are
-+ * guaranteed to remain valid: an invalidation cannot complete until the
-+ * reader drains.
-+ */
-+static inline int kvm_gpc_lock_page(struct gfn_to_pfn_cache *gpc, gpa_t gpa)
-+{
-+	int idx, err;
-+
-+	if (!PAGE_ALIGNED(gpa))
-+		return -EINVAL;
-+retry:
-+	idx = srcu_read_lock_atomic(&gpc->kvm->gpc_srcu);
-+	if (!kvm_gpc_check(gpc, PAGE_SIZE) || gpc->gpa != gpa) {
-+		srcu_read_unlock_atomic(&gpc->kvm->gpc_srcu, idx);
-+		err = kvm_gpc_activate(gpc, gpa, PAGE_SIZE);
-+		if (err)
-+			return err;
-+
-+		goto retry;
-+	}
-+
-+	return idx;
-+}
-+
-+static inline void kvm_gpc_unlock(struct gfn_to_pfn_cache *gpc, int idx)
-+{
-+	srcu_read_unlock_atomic(&gpc->kvm->gpc_srcu, idx);
-+}
-+
- int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops);
- void kvm_x86_vendor_exit(void);
- 
+ 	trace_kvm_pvclock_update(vcpu->vcpu_id, &hv_clock);
+ }
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 132f0c379537..ecfeeea57c66 100644
+index e54988522b8b..13e287bc17bb 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -2465,7 +2465,7 @@ void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
+@@ -46,16 +46,17 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	u64 wall_nsec;
+ 	int ret = 0;
+ 	int idx = srcu_read_lock(&kvm->srcu);
++	int gpc_idx;
  
- 	kvm_gpc_init(&vcpu->arch.xen.runstate_cache, vcpu->kvm);
- 	kvm_gpc_init(&vcpu->arch.xen.runstate2_cache, vcpu->kvm);
--	__kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm, true, NULL, 0);
-+	__kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm, true, false, NULL, 0);
- 	kvm_gpc_init(&vcpu->arch.xen.vcpu_time_info_cache, vcpu->kvm);
- }
+-	read_lock_irq(&gpc->lock);
++	gpc_idx = srcu_read_lock_atomic(&kvm->gpc_srcu);
+ 	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
+-		read_unlock_irq(&gpc->lock);
++		srcu_read_unlock_atomic(&kvm->gpc_srcu, gpc_idx);
  
-@@ -2486,7 +2486,7 @@ void kvm_xen_init_vm(struct kvm *kvm)
+ 		ret = kvm_gpc_refresh(gpc, PAGE_SIZE);
+ 		if (ret)
+ 			goto out;
+ 
+-		read_lock_irq(&gpc->lock);
++		gpc_idx = srcu_read_lock_atomic(&kvm->gpc_srcu);
+ 	}
+ 
+ 	/*
+@@ -98,7 +99,7 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	smp_wmb();
+ 
+ 	wc->version = wc_version + 1;
+-	read_unlock_irq(&gpc->lock);
++	srcu_read_unlock_atomic(&kvm->gpc_srcu, gpc_idx);
+ 
+ out:
+ 	srcu_read_unlock(&kvm->srcu, idx);
+@@ -155,22 +156,21 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcpu,
+ 				 struct gfn_to_pfn_cache *gpc,
+ 				 unsigned int offset)
  {
- 	mutex_init(&kvm->arch.xen.xen_lock);
- 	xa_init(&kvm->arch.xen.evtchn_ports);
--	__kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm, true, NULL, 0);
-+	__kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm, true, false, NULL, 0);
+-	unsigned long flags;
+-	int r;
++	int idx, r;
+ 
+-	read_lock_irqsave(&gpc->lock, flags);
++	idx = srcu_read_lock_atomic(&vcpu->kvm->gpc_srcu);
+ 	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
++		srcu_read_unlock_atomic(&vcpu->kvm->gpc_srcu, idx);
+ 
+ 		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock));
+ 		if (r)
+ 			return r;
+ 
+-		read_lock_irqsave(&gpc->lock, flags);
++		idx = srcu_read_lock_atomic(&vcpu->kvm->gpc_srcu);
+ 	}
+ 
+ 	memcpy(hv_clock, gpc->khva + offset, sizeof(*hv_clock));
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	srcu_read_unlock_atomic(&vcpu->kvm->gpc_srcu, idx);
+ 
+ 	/*
+ 	 * Sanity check TSC shift+multiplier to verify the guest's view of time
+@@ -325,12 +325,12 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 	struct gfn_to_pfn_cache *gpc2 = &vx->runstate2_cache;
+ 	size_t user_len, user_len1, user_len2;
+ 	struct vcpu_runstate_info rs;
+-	unsigned long flags;
+ 	size_t times_ofs;
+ 	uint8_t *update_bit = NULL;
+ 	uint64_t entry_time;
+ 	uint64_t *rs_times;
+ 	int *rs_state;
++	int idx;
+ 
+ 	/*
+ 	 * The only difference between 32-bit and 64-bit versions of the
+@@ -417,20 +417,12 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 
+  retry:
+ 	/*
+-	 * Attempt to obtain the GPC lock on *both* (if there are two)
+-	 * gfn_to_pfn caches that cover the region.
++	 * Check *both* (if there are two) gfn_to_pfn caches that cover
++	 * the region, under a single SRCU read-side critical section.
+ 	 */
+-	if (atomic) {
+-		local_irq_save(flags);
+-		if (!read_trylock(&gpc1->lock)) {
+-			local_irq_restore(flags);
+-			return;
+-		}
+-	} else {
+-		read_lock_irqsave(&gpc1->lock, flags);
+-	}
++	idx = srcu_read_lock_atomic(&v->kvm->gpc_srcu);
+ 	while (!kvm_gpc_check(gpc1, user_len1)) {
+-		read_unlock_irqrestore(&gpc1->lock, flags);
++		srcu_read_unlock_atomic(&v->kvm->gpc_srcu, idx);
+ 
+ 		/* When invoked from kvm_sched_out() we cannot sleep */
+ 		if (atomic)
+@@ -439,7 +431,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 		if (kvm_gpc_refresh(gpc1, user_len1))
+ 			return;
+ 
+-		read_lock_irqsave(&gpc1->lock, flags);
++		idx = srcu_read_lock_atomic(&v->kvm->gpc_srcu);
+ 	}
+ 
+ 	if (likely(!user_len2)) {
+@@ -459,24 +451,11 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 	} else {
+ 		/*
+ 		 * The guest's runstate_info is split across two pages and we
+-		 * need to hold and validate both GPCs simultaneously. We can
+-		 * declare a lock ordering GPC1 > GPC2 because nothing else
+-		 * takes them more than one at a time. Set a subclass on the
+-		 * gpc1 lock to make lockdep shut up about it.
++		 * need to validate both GPCs simultaneously. They are both
++		 * covered by the single SRCU read-side critical section above.
+ 		 */
+-		lock_set_subclass(&gpc1->lock.dep_map, 1, _THIS_IP_);
+-		if (atomic) {
+-			if (!read_trylock(&gpc2->lock)) {
+-				read_unlock_irqrestore(&gpc1->lock, flags);
+-				return;
+-			}
+-		} else {
+-			read_lock(&gpc2->lock);
+-		}
+-
+ 		if (!kvm_gpc_check(gpc2, user_len2)) {
+-			read_unlock(&gpc2->lock);
+-			read_unlock_irqrestore(&gpc1->lock, flags);
++			srcu_read_unlock_atomic(&v->kvm->gpc_srcu, idx);
+ 
+ 			/* When invoked from kvm_sched_out() we cannot sleep */
+ 			if (atomic)
+@@ -575,13 +554,11 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 		smp_wmb();
+ 	}
+ 
+-	if (user_len2) {
++	if (user_len2)
+ 		kvm_gpc_mark_dirty_in_slot(gpc2);
+-		read_unlock(&gpc2->lock);
+-	}
+ 
+ 	kvm_gpc_mark_dirty_in_slot(gpc1);
+-	read_unlock_irqrestore(&gpc1->lock, flags);
++	srcu_read_unlock_atomic(&v->kvm->gpc_srcu, idx);
  }
  
- void kvm_xen_destroy_vm(struct kvm *kvm)
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 008012d74d58..c604b7bb0b4c 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1471,26 +1471,35 @@ int kvm_vcpu_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa, const void *data,
- /**
-  * __kvm_gpc_init - initialize gfn_to_pfn_cache.
-  *
-- * @gpc:	   struct gfn_to_pfn_cache object.
-- * @kvm:	   pointer to kvm instance.
-- * @never_dirty:   the cache never needs to mark its page dirty in its memslot.
-- * @vcpu:	   the vCPU which may pin this cache's pfn for direct use from
-- *		   guest mode, or NULL for a cache which is never pinned.
-- * @vcpu_req:	   service request posted to @vcpu when a pinned cache is
-- *		   invalidated; must be non-zero when @vcpu is given (request
-- *		   0 is a real request, so it cannot mean "none"). Most
-- *		   callers want the kvm_gpc_init_for_vcpu() wrapper.
-+ * @gpc:	 struct gfn_to_pfn_cache object.
-+ * @kvm:	 pointer to kvm instance.
-+ * @never_dirty: KVM never marks the cached page dirty in its memslot;
-+ *		 userspace must assume the page is always dirty (as for
-+ *		 the Xen shared_info page, written on every event channel
-+ *		 delivery). kvm_gpc_mark_dirty_in_slot() becomes a no-op.
-+ * @readonly:	 map without FOLL_WRITE; KVM must never write through
-+ *		 @gpc->khva. For guest pages KVM only reads, which the
-+ *		 guest may place in memory its VMM maps read-only.
-+ *		 Implies @never_dirty.
-+ * @vcpu:	 the vCPU which may pin this cache's pfn for direct use
-+ *		 from guest mode, or NULL. Callers use the
-+ *		 kvm_gpc_init() / kvm_gpc_init_for_vcpu() wrappers
-+ *		 rather than passing this directly.
-+ * @vcpu_req:	 service request posted to @vcpu when the cache is
-+ *		 invalidated while pinned; required (non-zero) when
-+ *		 @vcpu is given.
-  *
-  * This sets up a gfn_to_pfn_cache by initializing locks and assigning the
-  * immutable attributes.  Note, the cache must be zero-allocated (or zeroed by
-  * the caller before init).  Most callers want the kvm_gpc_init() wrapper.
-  */
- void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
--		    bool never_dirty, struct kvm_vcpu *vcpu, u32 vcpu_req);
-+		    bool never_dirty, bool readonly,
-+		    struct kvm_vcpu *vcpu, u32 vcpu_req);
- 
- static inline void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
+@@ -656,7 +633,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
  {
--	__kvm_gpc_init(gpc, kvm, false, NULL, 0);
-+	__kvm_gpc_init(gpc, kvm, false, false, NULL, 0);
- }
+ 	unsigned long evtchn_pending_sel = READ_ONCE(v->arch.xen.evtchn_pending_sel);
+ 	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
+-	unsigned long flags;
++	int idx;
  
- /**
-@@ -1511,7 +1520,7 @@ static inline void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
- static inline void kvm_gpc_init_for_vcpu(struct gfn_to_pfn_cache *gpc,
- 					 struct kvm_vcpu *vcpu, u32 req)
- {
--	__kvm_gpc_init(gpc, vcpu->kvm, false, vcpu, req);
-+	__kvm_gpc_init(gpc, vcpu->kvm, false, false, vcpu, req);
- }
- 
- /**
-@@ -2054,6 +2063,13 @@ static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
- 	RCU_LOCKDEP_WARN(!srcu_read_lock_held(&gpc->kvm->gpc_srcu),
- 			 "kvm_gpc_mark_dirty_in_slot() without kvm->gpc_srcu read lock");
- 
-+	/*
-+	 * Nobody may write through (and hence dirty) a read-only cache:
-+	 * its mapping was created without FOLL_WRITE and may lack write
-+	 * permission entirely.
-+	 */
-+	WARN_ON_ONCE(gpc->readonly);
-+
- 	if (!gpc->memslot || gpc->never_dirty)
+ 	if (!evtchn_pending_sel)
  		return;
- 
-diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-index bdee01f22a2d..193dd5b64c2a 100644
---- a/include/linux/kvm_types.h
-+++ b/include/linux/kvm_types.h
-@@ -122,7 +122,19 @@ struct gfn_to_pfn_cache {
- 	 * instead.
+@@ -666,14 +643,14 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	 * does anyway. Page it in and retry the instruction. We're just a
+ 	 * little more honest about it.
  	 */
- 	atomic_t state;
-+	/*
-+	 * KVM never marks the cached page dirty in its memslot; userspace
-+	 * must assume the page is always dirty (as for the Xen shared_info
-+	 * page, written on every event channel delivery).
-+	 */
- 	bool never_dirty;
-+	/*
-+	 * The cache is mapped without FOLL_WRITE and KVM must never write
-+	 * through khva: for guest pages KVM only reads (e.g. the L1 MSR
-+	 * bitmap), which the guest may legitimately place in memory its VMM
-+	 * maps read-only. Implies never_dirty (there is nothing to mark).
-+	 */
-+	bool readonly;
- };
+-	read_lock_irqsave(&gpc->lock, flags);
++	idx = srcu_read_lock_atomic(&v->kvm->gpc_srcu);
+ 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
++		srcu_read_unlock_atomic(&v->kvm->gpc_srcu, idx);
  
- /* The cache is valid: pfn and khva may be used by readers. */
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index 5cb30525e577..42adfdccd6fe 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -223,6 +223,20 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long start,
+ 		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info)))
+ 			return;
+ 
+-		read_lock_irqsave(&gpc->lock, flags);
++		idx = srcu_read_lock_atomic(&v->kvm->gpc_srcu);
+ 	}
+ 
+ 	/* Now gpc->khva is a valid kernel address for the vcpu_info */
+@@ -706,7 +683,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+ 	}
+ 
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	srcu_read_unlock_atomic(&v->kvm->gpc_srcu, idx);
+ 
+ 	/* For the per-vCPU lapic vector, deliver it as MSI. */
+ 	if (v->arch.xen.upcall_vector)
+@@ -716,8 +693,8 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ {
+ 	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
+-	unsigned long flags;
+ 	u8 rc = 0;
++	int idx;
+ 
+ 	/*
+ 	 * If the global upcall vector (HVMIRQ_callback_vector) is set and
+@@ -742,9 +719,9 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
  	 */
+ 	guard(srcu)(&v->kvm->srcu);
+ 
+-	read_lock_irqsave(&gpc->lock, flags);
++	idx = srcu_read_lock_atomic(&v->kvm->gpc_srcu);
+ 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
++		srcu_read_unlock_atomic(&v->kvm->gpc_srcu, idx);
+ 
+ 		/*
+ 		 * This function gets called from kvm_vcpu_block() after setting the
+@@ -764,11 +741,11 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ 			 */
+ 			return 0;
+ 		}
+-		read_lock_irqsave(&gpc->lock, flags);
++		idx = srcu_read_lock_atomic(&v->kvm->gpc_srcu);
+ 	}
+ 
+ 	rc = ((struct vcpu_info *)gpc->khva)->evtchn_upcall_pending;
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	srcu_read_unlock_atomic(&v->kvm->gpc_srcu, idx);
+ 	return rc;
+ }
+ 
+@@ -803,6 +780,13 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
+ 
+ 		mutex_lock(&kvm->arch.xen.xen_lock);
+ 
++		/*
++		 * The cache's own readers hold kvm->gpc_srcu, but activating
++		 * it resolves the gfn through kvm_memslots(), which is
++		 * protected by kvm->srcu. (Holding kvm->srcu across the
++		 * deactivation is also fine: its grace-period wait is on the
++		 * gpc_srcu domain, not this one.)
++		 */
+ 		idx = srcu_read_lock(&kvm->srcu);
+ 
+ 		if (data->type == KVM_XEN_ATTR_TYPE_SHARED_INFO) {
+@@ -937,6 +921,14 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 	int idx, r = -ENOENT;
+ 
+ 	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
++
++	/*
++	 * Activating the caches below resolves gfns through kvm_memslots(),
++	 * and the runstate cases read it via kvm_gpc_check(); both are
++	 * protected by kvm->srcu (the caches' readers hold kvm->gpc_srcu,
++	 * which does not cover the memslots, and whose grace-period waits
++	 * are safe to perform with kvm->srcu held).
++	 */
+ 	idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 
+ 	switch (data->type) {
+@@ -1532,14 +1524,13 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, bool has_64bit_shinfo,
+ 	struct kvm *kvm = vcpu->kvm;
+ 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+ 	unsigned long *pending_bits;
+-	unsigned long flags;
+ 	bool ret = true;
+-	int idx, i;
++	int idx, gpc_idx, i;
+ 
+ 	idx = srcu_read_lock(&kvm->srcu);
+-	read_lock_irqsave(&gpc->lock, flags);
++	gpc_idx = srcu_read_lock_atomic(&kvm->gpc_srcu);
+ 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
+-		goto out_rcu;
++		goto out_gpc_srcu;
+ 
+ 	ret = false;
+ 	if (has_64bit_shinfo) {
+@@ -1557,8 +1548,8 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, bool has_64bit_shinfo,
+ 		}
+ 	}
+ 
+- out_rcu:
+-	read_unlock_irqrestore(&gpc->lock, flags);
++ out_gpc_srcu:
++	srcu_read_unlock_atomic(&kvm->gpc_srcu, gpc_idx);
+ 	srcu_read_unlock(&kvm->srcu, idx);
+ 
+ 	return ret;
+@@ -1883,6 +1874,15 @@ static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
+ 	}
  }
  
 +/*
-+ * As gfn_to_hva_memslot(), but tolerate a KVM_MEM_READONLY slot for a
-+ * cache which promises never to write through its mapping.
++ * Called with kvm->srcu held, as kvm_gpc_check() consults the memslots.
++ *
++ * The caller passes its own has_64bit_shinfo snapshot, from which it also
++ * derived port_word_bit; re-reading the mode here could race with a
++ * concurrent mode flip and pair a 64-bit bit index with the compat
++ * evtchn_pending_sel offset (or vice versa), writing outside the intended
++ * field within the guest's vcpu_info.
 + */
-+static unsigned long gpc_gfn_to_hva_memslot(struct gfn_to_pfn_cache *gpc,
-+					    struct kvm_memory_slot *slot,
-+					    gfn_t gfn)
-+{
-+	if (gpc->readonly)
-+		return gfn_to_hva_memslot_prot(slot, gfn, NULL);
-+
-+	return gfn_to_hva_memslot(slot, gfn);
-+}
-+
- static bool kvm_gpc_is_valid_len(gpa_t gpa, unsigned long uhva,
- 				 unsigned long len)
+ static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_word_bit,
+ 				      bool has_64bit_shinfo)
  {
-@@ -275,6 +289,7 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len)
+@@ -1890,15 +1890,15 @@ static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_word_bit,
+ 	unsigned long vi_pending_sel_ofs;
+ 	bool inject_upcall = false;
+ 	bool kick_vcpu = false;
+-	unsigned long flags;
+ 	bool old;
++	int idx;
  
+ 	vi_pending_sel_ofs = has_64bit_shinfo ?
+ 		offsetof(struct vcpu_info, evtchn_pending_sel) :
+ 		offsetof(struct compat_vcpu_info, evtchn_pending_sel);
+ 
+ 	/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
+-	read_lock_irqsave(&gpc->lock, flags);
++	idx = srcu_read_lock_atomic(&vcpu->kvm->gpc_srcu);
+ 	if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+ 		/*
+ 		 * Could not access the vcpu_info. Set the bit in-kernel and
+@@ -1940,14 +1940,17 @@ static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_word_bit,
+ 	}
+ 
+ out_unlock:
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	srcu_read_unlock_atomic(&vcpu->kvm->gpc_srcu, idx);
+ 
+ 	/*
+ 	 * Deliver the upcall or kick the vCPU only after dropping the GPC
+ 	 * read lock. Both paths end up in kvm_vcpu_kick(), and the MSI
+ 	 * delivery also walks the APIC map and takes APIC locks; none of
+-	 * that wants to be nested inside the GPC read lock, which a
+-	 * concurrent invalidation may be waiting to take for write.
++	 * that wants to be nested inside the GPC read-side critical
++	 * section, which must be no longer than the accesses to gpc->khva
++	 * above. Invalidation waits for a grace period, so holding the
++	 * read lock across the kick would extend how long a memory
++	 * invalidation is blocked.
+ 	 */
+ 	if (!kick_vcpu)
+ 		return;
+@@ -1982,9 +1985,8 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(kvm);
+ 	unsigned long *pending_bits, *mask_bits;
+ 	struct kvm_vcpu *vcpu;
+-	unsigned long flags;
+ 	int port_word_bit;
+-	int vcpu_idx, idx, rc;
++	int vcpu_idx, idx, gpc_idx, rc;
+ 
+ 	vcpu_idx = READ_ONCE(xe->vcpu_idx);
+ 	if (vcpu_idx >= 0)
+@@ -2003,9 +2005,9 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 
+ 	idx = srcu_read_lock(&kvm->srcu);
+ 
+-	read_lock_irqsave(&gpc->lock, flags);
++	gpc_idx = srcu_read_lock_atomic(&kvm->gpc_srcu);
+ 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
+-		goto out_unlock;
++		goto out_gpc_srcu;
+ 
+ 	if (has_64bit_shinfo) {
+ 		struct shared_info *shinfo = gpc->khva;
+@@ -2037,12 +2039,12 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		rc = 1; /* Delivered to the bitmap in shared_info. */
+ 	}
+ 
+- out_unlock:
+-	read_unlock_irqrestore(&gpc->lock, flags);
++ out_gpc_srcu:
++	srcu_read_unlock_atomic(&kvm->gpc_srcu, gpc_idx);
+ 
+ 	/*
+ 	 * Both of these can kick the vCPU, so keep them outside the GPC
+-	 * read lock; an invalidation may be waiting to take it for write.
++	 * read-side critical section; invalidation waits for a grace period.
+ 	 */
+ 	if (rc == -ENOTCONN)
+ 		kvm_xen_check_poller(vcpu, xe->port);
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index cadd0318400e..3ed0b8c9c102 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -798,6 +798,16 @@ struct kvm {
+ 	/* For management / invalidation of gfn_to_pfn_caches */
+ 	spinlock_t gpc_lock;
+ 	struct list_head gpc_list;
++	/*
++	 * Protects the contents of active gfn_to_pfn_caches. Readers hold it
++	 * across kvm_gpc_check() and any subsequent access to gpc->khva; the
++	 * invalidation and refresh paths clear GPC_VALID in gpc->state and
++	 * then wait for a grace period before mutating anything a reader
++	 * might be looking at.
++	 * A dedicated domain (rather than kvm->srcu) keeps those waits from
++	 * being lengthened by unrelated memslot readers.
++	 */
++	struct srcu_struct gpc_srcu;
+ 
+ 	/*
+ 	 * created_vcpus is protected by kvm->lock, and is incremented
+@@ -1520,12 +1530,9 @@ int kvm_gpc_activate_hva(struct gfn_to_pfn_cache *gpc, unsigned long hva, unsign
+  * @return:	   %true if the cache is still valid and the address matches.
+  *		   %false if the cache is not valid.
+  *
+- * Callers outside IN_GUEST_MODE context should hold a read lock on @gpc->lock
+- * while calling this function, and then continue to hold the lock until the
+- * access is complete.
+- *
+- * Callers in IN_GUEST_MODE may do so without locking, although they should
+- * still hold a read lock on kvm->scru for the memslot checks.
++ * Callers must hold a read lock on @gpc->kvm->gpc_srcu across this function
++ * and any subsequent access to the target page, and must hold a read lock on
++ * kvm->srcu for the memslot checks.
+  */
+ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len);
+ 
+@@ -1542,8 +1549,8 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len);
+  * This will attempt to refresh a gfn_to_pfn_cache. Note that a successful
+  * return from this function does not mean the page can be immediately
+  * accessed because it may have raced with an invalidation. Callers must
+- * still lock and check the cache status, as this function does not return
+- * with the lock still held to permit access.
++ * still check the cache status under a kvm->gpc_srcu read lock, via
++ * kvm_gpc_check(), before accessing the target page.
+  */
+ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len);
+ 
+@@ -1984,7 +1991,8 @@ static inline bool kvm_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa)
+ 
+ static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
+ {
+-	lockdep_assert_held(&gpc->lock);
++	RCU_LOCKDEP_WARN(!srcu_read_lock_held(&gpc->kvm->gpc_srcu),
++			 "kvm_gpc_mark_dirty_in_slot() without kvm->gpc_srcu read lock");
+ 
+ 	if (!gpc->memslot || gpc->never_dirty)
+ 		return;
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index e850adc3f47e..22393f97266a 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -88,15 +88,48 @@ struct gfn_to_pfn_cache {
+ 	struct kvm_memory_slot *memslot;
+ 	struct kvm *kvm;
+ 	struct list_head list;
+-	rwlock_t lock;
+ 	struct mutex refresh_lock;
+ 	void *khva;
+ 	kvm_pfn_t pfn;
+ 	bool active;
+-	bool valid;
++	/*
++	 * GPC_VALID, GPC_BECOMING_VALID and GPC_INVALIDATING live in a
++	 * single atomic word so that a refresh can publish
++	 * (BECOMING_VALID => VALID) with a single conditional RMW, an
++	 * invalidation can veto that publish by clearing both of those bits
++	 * (setting INVALIDATING in the same operation if VALID was set, to
++	 * record that its grace period is still owed), and a mutator can
++	 * consume the whole state with one xchg to learn whether it must
++	 * wait for readers before touching anything they see. See the
++	 * comments in pfncache.c.
++	 *
++	 * 'active' deliberately stays separate: the invalidation and
++	 * mutation paths operate on the word without having to care about
++	 * racing with deactivation, which is ordered by refresh_lock
++	 * instead.
++	 */
++	atomic_t state;
+ 	bool never_dirty;
+ };
+ 
++/* The cache is valid: pfn and khva may be used by readers. */
++#define GPC_VALID		0x1
++/*
++ * A refresh is in flight and intends to publish. Set before the uhva is
++ * resolved, so an invalidation of that uhva can veto the publish even
++ * though the cache is not yet valid.
++ */
++#define GPC_BECOMING_VALID	0x2
++/*
++ * GPC_VALID has been cleared but the grace period for readers of the
++ * previously published mapping has not yet completed. Nothing may mutate
++ * reader-visible fields (pfn, khva, uhva, gpa, memslot) until whoever
++ * next needs to do so has waited it out. Set by whichever party clears
++ * GPC_VALID; cleared after a synchronize_srcu() which began after the
++ * VALID clear.
++ */
++#define GPC_INVALIDATING	0x4
++
+ #ifdef KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE
+ /*
+  * Memory caches are used to preallocate memory ahead of various MMU flows,
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index 1a8a465a5650..f7a6bbcabc4e 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -706,6 +706,13 @@ DEFINE_LOCK_GUARD_1(srcu, struct srcu_struct,
+ DECLARE_LOCK_GUARD_1_ATTRS(srcu, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
+ #define class_srcu_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu, _T)
+ 
++DEFINE_LOCK_GUARD_1(srcu_atomic, struct srcu_struct,
++		    _T->idx = srcu_read_lock_atomic(_T->lock),
++		    srcu_read_unlock_atomic(_T->lock, _T->idx),
++		    int idx)
++DECLARE_LOCK_GUARD_1_ATTRS(srcu_atomic, __acquires_shared(_T), __releases_shared(*(struct srcu_struct **)_T))
++#define class_srcu_atomic_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(srcu_atomic, _T)
++
+ DEFINE_LOCK_GUARD_1(srcu_fast, struct srcu_struct,
+ 		    _T->scp = srcu_read_lock_fast(_T->lock),
+ 		    srcu_read_unlock_fast(_T->lock, _T->scp),
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cf4cb586f140..a3b4ca1ae88d 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1160,6 +1160,8 @@ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
+ 		goto out_err_no_srcu;
+ 	if (init_srcu_struct(&kvm->irq_srcu))
+ 		goto out_err_no_irq_srcu;
++	if (init_srcu_struct_atomic(&kvm->gpc_srcu))
++		goto out_err_no_gpc_srcu;
+ 
+ 	r = kvm_init_irq_routing(kvm);
+ 	if (r)
+@@ -1240,6 +1242,8 @@ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
+ 		kfree(kvm_get_bus_for_destruction(kvm, i));
+ 	kvm_free_irq_routing(kvm);
+ out_err_no_irq_routing:
++	cleanup_srcu_struct(&kvm->gpc_srcu);
++out_err_no_gpc_srcu:
+ 	cleanup_srcu_struct(&kvm->irq_srcu);
+ out_err_no_irq_srcu:
+ 	cleanup_srcu_struct(&kvm->srcu);
+@@ -1316,6 +1320,11 @@ static void kvm_destroy_vm(struct kvm *kvm)
+ 		kvm_free_memslots(kvm, &kvm->__memslots[i][0]);
+ 		kvm_free_memslots(kvm, &kvm->__memslots[i][1]);
+ 	}
++	/*
++	 * All gfn_to_pfn_caches have been deactivated by kvm_arch_destroy_vm()
++	 * above, so there can be no readers or pending invalidations left.
++	 */
++	cleanup_srcu_struct(&kvm->gpc_srcu);
+ 	cleanup_srcu_struct(&kvm->irq_srcu);
+ 	srcu_barrier(&kvm->srcu);
+ 	cleanup_srcu_struct(&kvm->srcu);
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 17a30da00d40..1c98b7bdbf09 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -26,35 +26,149 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long start,
+ 				       unsigned long end)
+ {
+ 	struct gfn_to_pfn_cache *gpc;
++	bool cleared = false;
+ 
+ 	spin_lock(&kvm->gpc_lock);
++
++	/*
++	 * Order the caller's earlier mn_active_invalidate_count increment
++	 * (and gpc_invalidate_seq bump, for range_end) before the state
++	 * reads below. This is a store->load ordering, which neither the
++	 * unlock/lock the increment travelled through (RCtso) nor the
++	 * acquire on the state read provides generically. It pairs with
++	 * smp_mb__after_atomic() in hva_to_pfn_retry(): whichever side's
++	 * full barrier executes second guarantees that either this walk
++	 * observes GPC_BECOMING_VALID and vetoes the pending publish, or
++	 * the refresh observes the elevated count / bumped seq and
++	 * retries — closing the store-buffering window in which each
++	 * side misses the other and a stale pfn gets published. (On x86
++	 * both sides' locked RMW operations already provide this; generic
++	 * code must not rely on that.)
++	 */
++	smp_mb__after_spinlock();
++
+ 	list_for_each_entry(gpc, &kvm->gpc_list, list) {
+-		read_lock_irq(&gpc->lock);
++		/*
++		 * A cache covers only a single page, keyed by its uhva, so
++		 * there is no length to consider.
++		 *
++		 * The acquire pairs with the release-publish in
++		 * hva_to_pfn_retry() (for GPC_VALID) and with the
++		 * smp_mb__before_atomic() before the GPC_BECOMING_VALID
++		 * announce (for that bit): whichever is seen, the uhva read
++		 * below is guaranteed to see the value stored before it. A
++		 * stale uhva paired with a fresh state bit could otherwise
++		 * cause a cache whose new uhva is in the invalidated range
++		 * to be skipped.
++		 *
++		 * uhva is read once, with READ_ONCE(), and only after the
++		 * state (the acquire provides that ordering): it is written
++		 * (with WRITE_ONCE()) by __kvm_gpc_refresh() without holding
++		 * gpc_lock. Note the refresh only mutates uhva while the
++		 * state word is 0 — after its xchg, before its announce —
++		 * so this walk cannot observe a half-updated cache: if
++		 * either state bit is visible, the uhva is current.
++		 *
++		 * Keying on GPC_BECOMING_VALID as well as GPC_VALID means a
++		 * cache whose refresh is in flight is *not* skipped: its
++		 * uhva is already known at that point, and clearing the bit
++		 * vetoes the pending publish. Testing only GPC_VALID would
++		 * leave the window between the refresh's last invalidation
++		 * check and its publish unprotected. (For an invalidation
++		 * which begins before that check, this veto is belt and
++		 * braces: the mn_active_invalidate_count / gpc_invalidate_seq
++		 * check makes the refresh retry anyway. The window after
++		 * that check has only the veto.)
++		 *
++		 * Keying on GPC_INVALIDATING too means a cache whose
++		 * VALID-clearing party is still mid-grace-period is not
++		 * skipped either: see the comment at the 'cleared' update
++		 * below.
++		 */
++		unsigned long gpc_uhva;
++		int old, new;
+ 
+-		/* Only a single page so no need to care about length */
+-		if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
+-		    gpc->uhva >= start && gpc->uhva < end) {
+-			read_unlock_irq(&gpc->lock);
++		old = atomic_read_acquire(&gpc->state);
++		if (!(old & (GPC_VALID | GPC_BECOMING_VALID | GPC_INVALIDATING)))
++			continue;
+ 
++		gpc_uhva = READ_ONCE(gpc->uhva);
++		if (gpc_uhva >= start && gpc_uhva < end) {
+ 			/*
+-			 * There is a small window here where the cache could
+-			 * be modified, and invalidation would no longer be
+-			 * necessary. Hence check again whether invalidation
+-			 * is still necessary once the write lock has been
+-			 * acquired.
++			 * Clear VALID and BECOMING_VALID; if VALID was set,
++			 * also set INVALIDATING so that anyone else who wants
++			 * to mutate reader-visible fields before our grace
++			 * period below completes knows to wait for one of
++			 * their own. (A cache which was merely becoming
++			 * valid has no readers: the veto alone suffices.)
++			 *
++			 * 'old' is seeded from the read above; if the state
++			 * changed since (e.g. the refresh published), the
++			 * cmpxchg fails, reloads it, and goes around.
+ 			 */
++			do {
++				new = old & ~(GPC_VALID | GPC_BECOMING_VALID);
++				if (old & GPC_VALID)
++					new |= GPC_INVALIDATING;
++			} while (!atomic_try_cmpxchg(&gpc->state, &old, new));
+ 
+-			write_lock_irq(&gpc->lock);
+-			if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
+-			    gpc->uhva >= start && gpc->uhva < end)
+-				gpc->valid = false;
+-			write_unlock_irq(&gpc->lock);
+-			continue;
++			/*
++			 * Wait below not only when this walk itself cleared
++			 * GPC_VALID, but also when GPC_INVALIDATING alone
++			 * was found: the party which cleared GPC_VALID (a
++			 * concurrent walk, or a refresh/deactivation mid
++			 * grace-period — they keep the marker up until their
++			 * wait completes) may still be inside its own
++			 * synchronize, with readers outstanding on the old
++			 * mapping. Those readers are covered by *its* grace
++			 * period, which this walk's caller does not wait
++			 * for; it must begin (and finish) one of its own
++			 * before the caller frees the page.
++			 */
++			if (old & (GPC_VALID | GPC_INVALIDATING))
++				cleared = true;
+ 		}
+-
+-		read_unlock_irq(&gpc->lock);
+ 	}
+ 	spin_unlock(&kvm->gpc_lock);
++
++	/*
++	 * Readers may still be using the old mapping, having sampled
++	 * GPC_VALID before it was cleared. Wait for them all to drain
++	 * before the caller proceeds to zap the page tables; like a TLB
++	 * shootdown, this guarantees no access via the stale mapping
++	 * once the invalidation completes.
++	 *
++	 * This wait is safe even on unblockable ranges (the OOM reaper):
++	 * the constraint there is not "no sleeping" but "no blocking on
++	 * anything which may itself depend on memory allocation to make
++	 * progress" (see the reasoning in commit 312364f3534c and its
++	 * discussion). A GPC read-side critical section has no such
++	 * dependency: readers never allocate, never take mmap_lock, and
++	 * never sleep.
++	 *
++	 * The atomic variant: this stalls progress of the primary MMU
++	 * operation which triggered the invalidation, and the readers being
++	 * drained are bounded, short, non-sleeping sections, so the wait
++	 * spins (preemption disabled) rather than sleeping — and never
++	 * queues a callback, so it depends on no allocation at all. That
++	 * satisfies even the strictest reading of the OOM-reaper
++	 * requirement; it is also the only wait primitive permitted on a
++	 * domain whose readers are the atomic flavor.
++	 */
++	if (cleared)
++		synchronize_srcu_atomic(&kvm->gpc_srcu);
++
++	/*
++	 * Note the GPC_INVALIDATING markers set above are deliberately NOT
++	 * cleared here: this walk dropped gpc_lock before waiting, so it
++	 * cannot tell whether the marker it would clear is still the one
++	 * it set (consider a republish-and-reinvalidate cycle completing
++	 * entirely within this synchronize_srcu()). Leaving it standing is
++	 * merely conservative: a later walk over the same uhva pays a
++	 * redundant grace period, and the next mutation of the cache (a
++	 * refresh or deactivation, which performs its own wait) retires
++	 * it. Readers ignore the bit.
++	 */
+ }
+ 
+ static bool kvm_gpc_is_valid_len(gpa_t gpa, unsigned long uhva,
+@@ -74,14 +188,31 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len)
+ {
+ 	struct kvm_memslots *slots = kvm_memslots(gpc->kvm);
+ 
+-	if (!gpc->active)
++	RCU_LOCKDEP_WARN(!srcu_read_lock_held(&gpc->kvm->gpc_srcu),
++			 "kvm_gpc_check() without kvm->gpc_srcu read lock");
++
++	/*
++	 * Check valid *first*. The acquire pairs with the release-publish
++	 * in hva_to_pfn_retry(), so every field read below — and any use
++	 * of gpc->khva by the caller — is guaranteed to be from the
++	 * published generation, not a stale value reordered from before
++	 * the publish. The fields are then stable for the remainder of
++	 * the RCU read-side critical section, because every mutator
++	 * clears valid and waits a full grace period before changing
++	 * anything.
++	 */
++	if (!(atomic_read_acquire(&gpc->state) & GPC_VALID))
++		return false;
++
++	if (!READ_ONCE(gpc->active))
+ 		return false;
+ 
+ 	/*
+ 	 * If the page was cached from a memslot, make sure the memslots have
+ 	 * not been re-configured.
+ 	 */
+-	if (!kvm_is_error_gpa(gpc->gpa) && gpc->generation != slots->generation)
++	if (!kvm_is_error_gpa(gpc->gpa) &&
++	    READ_ONCE(gpc->generation) != slots->generation)
+ 		return false;
+ 
+ 	if (kvm_is_error_hva(gpc->uhva))
+@@ -90,9 +221,6 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len)
+ 	if (!kvm_gpc_is_valid_len(gpc->gpa, gpc->uhva, len))
+ 		return false;
+ 
+-	if (!gpc->valid)
+-		return false;
+-
  	return true;
  }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gpc_check);
  
- /*
-  * A mutator's xchg of the state word to zero may have consumed a live
-@@ -448,7 +463,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+@@ -134,8 +262,8 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long gpc_s
+ 	 * is elevated.
+ 	 *
+ 	 * Note, it does not matter that mn_active_invalidate_count
+-	 * is not protected by gpc->lock.  It is guaranteed to
+-	 * be elevated before the mmu_notifier acquires gpc->lock, and
++	 * is not protected by any lock the refresher holds.  It is
++	 * guaranteed to be elevated before the mmu_notifier walk, and
+ 	 * isn't dropped until after gpc_invalidate_seq is updated.
+ 	 */
+ 	if (kvm->mn_active_invalidate_count)
+@@ -156,10 +284,13 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ {
+ 	/* Note, the new page offset may be different than the old! */
+ 	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
++	void *old_khva_exact = gpc->khva;
++	kvm_pfn_t old_pfn = gpc->pfn;
+ 	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
+ 	void *new_khva = NULL;
+ 	unsigned long gpc_seq;
+ 	struct page *page;
++	int state;
+ 
  	struct kvm_follow_pfn kfp = {
  		.slot = gpc->memslot,
- 		.gfn = gpa_to_gfn(gpc->gpa),
--		.flags = FOLL_WRITE,
-+		.flags = gpc->readonly ? 0 : FOLL_WRITE,
- 		.hva = gpc->uhva,
- 		.refcounted_page = &page,
- 	};
-@@ -655,7 +670,7 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 			new_generation = slots->generation;
- 			new_slot = __gfn_to_memslot(slots, gfn);
- 			if (new_slot)
--				new_uhva = gfn_to_hva_memslot(new_slot, gfn) +
-+				new_uhva = gpc_gfn_to_hva_memslot(gpc, new_slot, gfn) +
- 					   offset_in_page(gpa);
+@@ -171,21 +302,42 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 
+ 	lockdep_assert_held(&gpc->refresh_lock);
+ 
+-	lockdep_assert_held_write(&gpc->lock);
+-
+-	/*
+-	 * Invalidate the cache prior to dropping gpc->lock, the gpa=>uhva
+-	 * assets have already been updated and so a concurrent check() from a
+-	 * different task may not fail the gpa/uhva/generation checks.
+-	 */
+-	gpc->valid = false;
++	WARN_ON_ONCE(atomic_read(&gpc->state) & GPC_VALID);
+ 
+ 	do {
++		/*
++		 * Announce the intent to publish before the uhva is resolved
++		 * and before any lock is dropped. From here on an
++		 * invalidation of this uhva will clear the bit, and the
++		 * cmpxchg below will then fail and send us around again.
++		 * This is what makes the check-and-publish atomic with
++		 * respect to the mmu_notifier walk without holding a lock
++		 * across it.
++		 *
++		 * The barrier orders the caller's gpc->uhva store before the
++		 * bit becoming visible (atomic_or() alone is unordered, and
++		 * x86's lock-or being a full barrier must not be relied on
++		 * in generic code). It pairs with the atomic_read_acquire()
++		 * in gfn_to_pfn_cache_invalidate_start(): a walker which
++		 * observes the bit observes the uhva this refresh is
++		 * resolving, and so aims its veto correctly.
++		 */
++		smp_mb__before_atomic();
++		atomic_or(GPC_BECOMING_VALID, &gpc->state);
++
++		/*
++		 * Order the announce store before the gpc_invalidate_seq
++		 * and mn_active_invalidate_count reads which follow
++		 * (store->load; atomic_or() alone is unordered). Pairs
++		 * with smp_mb__after_spinlock() in
++		 * gfn_to_pfn_cache_invalidate_start(); see the comment
++		 * there for the store-buffering window this closes.
++		 */
++		smp_mb__after_atomic();
++
+ 		gpc_seq = gpc->kvm->gpc_invalidate_seq;
+ 		smp_rmb();
+ 
+-		write_unlock_irq(&gpc->lock);
+-
+ 		/*
+ 		 * If the previous iteration "failed" due to an mmu_notifier
+ 		 * event, release the pfn and unmap the kernel virtual address
+@@ -213,9 +365,15 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 		/*
+ 		 * Obtain a new kernel mapping if KVM itself will access the
+ 		 * pfn.  Note, kmap() and memremap() can both sleep, so this
+-		 * too must be done outside of gpc->lock!
++		 * can sleep, which is fine: this path holds no spinning locks.
+ 		 */
+-		if (new_pfn == gpc->pfn)
++		/*
++		 * Compare against the *published* pfn captured at entry, via
++		 * a local: gpc->pfn must not be consulted mid-loop. (A
++		 * previous iteration's vetoed publish attempt must not be
++		 * able to leak its doomed pfn into this comparison.)
++		 */
++		if (new_pfn == old_pfn)
+ 			new_khva = old_khva;
+ 		else
+ 			new_khva = gpc_map(new_pfn);
+@@ -225,18 +383,39 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 			goto out_error;
  		}
  
-@@ -738,7 +753,8 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+-		write_lock_irq(&gpc->lock);
++		if (mmu_notifier_retry_cache(gpc->kvm, gpc_seq))
++			continue;
++
++		gpc->pfn = new_pfn;
++		gpc->khva = new_khva + offset_in_page(gpc->uhva);
+ 
+ 		/*
+-		 * Other tasks must wait for _this_ refresh to complete before
+-		 * attempting to refresh.
++		 * Publish: BECOMING_VALID => VALID, but only if the bit is
++		 * still set. If an invalidation of this uhva landed at any
++		 * point since it was set — including in the window after the
++		 * retry check just above — the bit is gone, the cmpxchg fails
++		 * and we go around again. The release ordering pairs with the
++		 * atomic_read_acquire() in kvm_gpc_check() so the pfn/khva
++		 * stores are visible before GPC_VALID is. (The stores must
++		 * precede the VALID publish; a reader which observes VALID
++		 * must observe the fields it covers.)
+ 		 */
+-		WARN_ON_ONCE(gpc->valid);
+-	} while (mmu_notifier_retry_cache(gpc->kvm, gpc_seq));
++		state = GPC_BECOMING_VALID;
++		if (atomic_try_cmpxchg_release(&gpc->state, &state, GPC_VALID))
++			break;
+ 
+-	gpc->valid = true;
+-	gpc->pfn = new_pfn;
+-	gpc->khva = new_khva + offset_in_page(gpc->uhva);
++		/*
++		 * Vetoed: an invalidation cleared GPC_BECOMING_VALID after
++		 * the retry check above. No reader ever saw the values just
++		 * stored (VALID was never set for them), but the loop's own
++		 * cleanup and aliasing logic must not see them either —
++		 * restore the published values. This runs under refresh_lock
++		 * with the cache unpublished, so it is single-writer plain
++		 * stores.
++		 */
++		gpc->pfn = old_pfn;
++		gpc->khva = old_khva_exact;
++	} while (1);
+ 
+ 	/*
+ 	 * Put the reference to the _new_ page.  The page is now tracked by the
+@@ -248,8 +427,19 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 	return 0;
+ 
+ out_error:
+-	write_lock_irq(&gpc->lock);
+-
++	/*
++	 * Withdraw the announcement: no publish is coming. Leaving the bit
++	 * set would be harmless — an invalidation walk would merely veto a
++	 * publish which was never going to happen, and the next refresh or
++	 * deactivation starts by xchg'ing the whole state word to zero —
++	 * but clearing it here keeps the invariant that GPC_BECOMING_VALID
++	 * means a refresh is between announce and publish. Only VALID can
++	 * have been set here by anyone else, and only by our own publish
++	 * (which didn't happen), and INVALIDATING only by whoever clears
++	 * VALID; the sole concurrent writer is an invalidation walk also
++	 * clearing this bit, so a plain andnot cannot lose an update.
++	 */
++	atomic_andnot(GPC_BECOMING_VALID, &gpc->state);
+ 	return -EFAULT;
+ }
+ 
+@@ -259,7 +449,7 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+ 	bool unmap_old = false;
+ 	unsigned long old_uhva;
+ 	kvm_pfn_t old_pfn;
+-	bool hva_change = false;
++	bool must_drain;
+ 	void *old_khva;
+ 	int ret;
+ 
+@@ -269,13 +459,103 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+ 
+ 	lockdep_assert_held(&gpc->refresh_lock);
+ 
+-	write_lock_irq(&gpc->lock);
++	if (!gpc->active)
++		return -EINVAL;
+ 
+-	if (!gpc->active) {
+-		ret = -EINVAL;
+-		goto out_unlock;
++	/*
++	 * Resolve the target uHVA (and memslot, for a GPA-based cache) before
++	 * deciding whether anything needs to be invalidated at all.
++	 *
++	 * If the cache is still valid and this refresh resolves to exactly the
++	 * same uHVA, in the same memslot, for the same GPA, then nothing which
++	 * a reader can observe is changing: the gPA => uHVA translation is
++	 * unchanged, and GPC_VALID being set is precisely the assertion that
++	 * the second stage (uHVA => PFN, and the kernel mapping of it) is
++	 * still good. No mapping is retired, so there is nothing for a grace
++	 * period to wait for. At most the memslot generation needs updating,
++	 * which no reader consults except via kvm_gpc_check() itself.
++	 *
++	 * All of the following must hold to take this shortcut:
++	 *
++	 *  - GPC_VALID: the PFN and its kernel mapping are still good.
++	 *  - the resolved uHVA is unchanged. kvm_gpc_check() validates
++	 *    'offset + len <= PAGE_SIZE' from gpc->uhva/gpa on the reader's
++	 *    behalf, and the reader then accesses gpc->khva for 'len' bytes
++	 *    with no recheck; moving the offset under a live reader would let
++	 *    it run off the end of the page.
++	 *  - the memslot is unchanged. kvm_gpc_mark_dirty_in_slot() uses
++	 *    gpc->memslot, so replacing it under a reader could mark the wrong
++	 *    slot dirty and thus lose a dirty page for live migration.
++	 *  - the gPA is unchanged, as it provides the gfn for dirty tracking.
++	 */
++	if (atomic_read(&gpc->state) & GPC_VALID) {
++		struct kvm_memory_slot *new_slot = gpc->memslot;
++		unsigned long new_uhva = KVM_HVA_ERR_BAD;
++		u64 new_generation = gpc->generation;
++
++		if (kvm_is_error_gpa(gpa)) {
++			new_uhva = uhva;
++		} else {
++			struct kvm_memslots *slots = kvm_memslots(gpc->kvm);
++			gfn_t gfn = gpa_to_gfn(gpa);
++
++			new_generation = slots->generation;
++			new_slot = __gfn_to_memslot(slots, gfn);
++			if (new_slot)
++				new_uhva = gfn_to_hva_memslot(new_slot, gfn) +
++					   offset_in_page(gpa);
++		}
++
++		if (!kvm_is_error_hva(new_uhva) && new_uhva == gpc->uhva &&
++		    new_slot == gpc->memslot && gpa == gpc->gpa) {
++			/*
++			 * Nothing to invalidate. A concurrent reader may be
++			 * using the cache right now and can safely continue
++			 * to do so; only the memslot generation, which is
++			 * read solely by kvm_gpc_check(), may need updating.
++			 */
++			if (new_generation != gpc->generation)
++				WRITE_ONCE(gpc->generation, new_generation);
++
++			return 0;
++		}
+ 	}
+ 
++	/*
++	 * Take the cache invalid and wait for all current readers to
++	 * drain before mutating anything they might be looking at. Once
++	 * the grace period has elapsed, this task (serialized by
++	 * refresh_lock) owns all the cache fields exclusively: readers
++	 * check valid (with an acquire load) inside their SRCU read-side
++	 * critical sections and back off. This mirrors what a TLB
++	 * shootdown does for the hardware page tables.
++	 *
++	 * The clear and the test are one operation on purpose, and the wait
++	 * triggers on GPC_INVALIDATING as well as GPC_VALID: an mmu_notifier
++	 * invalidation which cleared GPC_VALID a moment ago is not
++	 * necessarily finished — its grace period may still be running, with
++	 * readers which sampled GPC_VALID before the clear still
++	 * dereferencing gpc->khva. GPC_INVALIDATING is set by whoever clears
++	 * GPC_VALID precisely so that this path knows those readers may
++	 * exist. Our own grace-period wait below necessarily begins after
++	 * that clear, so waiting here covers them; only then may
++	 * reader-visible fields (uhva, gpa, memslot, and later pfn/khva) be
++	 * mutated or the old mapping torn down.
++	 *
++	 * The xchg leaves GPC_INVALIDATING *standing* (rather than clearing
++	 * the word outright) for the duration of the wait, for the same
++	 * reason it is tested: an mmu_notifier walk which arrives while
++	 * this grace period is still running must not read a zero state,
++	 * skip the cache, and let its caller free the page under readers
++	 * only this wait covers. The marker comes down only once the drain
++	 * is complete and the readers it advertised cannot exist.
++	 */
++	must_drain = atomic_xchg(&gpc->state, GPC_INVALIDATING) &
++		     (GPC_VALID | GPC_INVALIDATING);
++	if (must_drain)
++		synchronize_srcu_atomic(&gpc->kvm->gpc_srcu);
++	atomic_set(&gpc->state, 0);
++
+ 	old_pfn = gpc->pfn;
+ 	old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
+ 	old_uhva = PAGE_ALIGN_DOWN(gpc->uhva);
+@@ -285,10 +565,14 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+ 
+ 		gpc->gpa = INVALID_GPA;
+ 		gpc->memslot = NULL;
+-		gpc->uhva = PAGE_ALIGN_DOWN(uhva);
+-
+-		if (gpc->uhva != old_uhva)
+-			hva_change = true;
++		/*
++		 * uhva stores are WRITE_ONCE(): the invalidation walks read
++		 * it without holding refresh_lock. This mutation window is
++		 * safe because the state word is 0 here (cleared by the
++		 * xchg above, announced again only in hva_to_pfn_retry()
++		 * after these stores), so no walk will match this cache.
++		 */
++		WRITE_ONCE(gpc->uhva, PAGE_ALIGN_DOWN(uhva));
+ 	} else {
+ 		struct kvm_memslots *slots = kvm_memslots(gpc->kvm);
+ 
+@@ -301,43 +585,31 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
  			gpc->gpa = gpa;
  			gpc->generation = slots->generation;
  			gpc->memslot = __gfn_to_memslot(slots, gfn);
--			WRITE_ONCE(gpc->uhva, gfn_to_hva_memslot(gpc->memslot, gfn));
-+			WRITE_ONCE(gpc->uhva,
-+				   gpc_gfn_to_hva_memslot(gpc, gpc->memslot, gfn));
+-			gpc->uhva = gfn_to_hva_memslot(gpc->memslot, gfn);
++			WRITE_ONCE(gpc->uhva, gfn_to_hva_memslot(gpc->memslot, gfn));
  
  			if (kvm_is_error_hva(gpc->uhva)) {
  				ret = -EFAULT;
-@@ -801,9 +817,11 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len)
+ 				goto out;
+ 			}
+-
+-			/*
+-			 * Even if the GPA and/or the memslot generation changed, the
+-			 * HVA may still be the same.
+-			 */
+-			if (gpc->uhva != old_uhva)
+-				hva_change = true;
+ 		} else {
+-			gpc->uhva = old_uhva;
++			WRITE_ONCE(gpc->uhva, old_uhva);
+ 		}
+ 	}
  
- 	return __kvm_gpc_refresh(gpc, gpc->gpa, uhva);
- }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gpc_refresh);
- 
- void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
--		    bool never_dirty, struct kvm_vcpu *vcpu, u32 vcpu_req)
-+		    bool never_dirty, bool readonly,
-+		    struct kvm_vcpu *vcpu, u32 vcpu_req)
- {
- 	mutex_init(&gpc->refresh_lock);
- 
-@@ -813,7 +831,13 @@ void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
- 	gpc->uhva = KVM_HVA_ERR_BAD;
- 	gpc->active = false;
- 	atomic_set(&gpc->state, 0);
--	gpc->never_dirty = never_dirty;
-+	/*
-+	 * A read-only cache maps without FOLL_WRITE, so writing through
-+	 * gpc->khva would hit a mapping which may lack write permission;
-+	 * there is never anything to mark dirty.
-+	 */
-+	gpc->never_dirty = never_dirty || readonly;
-+	gpc->readonly = readonly;
+ 	/* Note: the offset must be correct before calling hva_to_pfn_retry() */
+-	gpc->uhva += page_offset;
++	WRITE_ONCE(gpc->uhva, gpc->uhva + page_offset);
  
  	/*
- 	 * A vCPU-owned cache must come with a service request for the
-@@ -827,6 +851,7 @@ void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
- 	gpc->vcpu = vcpu;
- 	gpc->vcpu_req = vcpu_req;
- }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(__kvm_gpc_init);
+-	 * If the userspace HVA changed or the PFN was already invalid,
+-	 * drop the lock and do the HVA to PFN lookup again.
++	 * Always redo the HVA to PFN lookup: an invalidation of our uhva
++	 * may have raced with (or followed) the valid-clearing above, in
++	 * which case the notifier walk skipped this cache (valid was
++	 * already false) and the old pfn may already be stale. The
++	 * gpc_invalidate_seq check in hva_to_pfn_retry() is what detects
++	 * that race, so the lookup path is the only safe way to publish.
++	 * If the mapping is in fact unchanged, hva_to_pfn_retry() reuses
++	 * the existing kernel mapping for the same pfn.
+ 	 */
+-	if (!gpc->valid || hva_change) {
+-		ret = hva_to_pfn_retry(gpc);
+-	} else {
+-		/*
+-		 * If the HVA→PFN mapping was already valid, don't unmap it.
+-		 * But do update gpc->khva because the offset within the page
+-		 * may have changed.
+-		 */
+-		gpc->khva = old_khva + page_offset;
+-		ret = 0;
+-		goto out_unlock;
+-	}
++	ret = hva_to_pfn_retry(gpc);
  
- static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long uhva,
- 			      unsigned long len)
-@@ -869,6 +894,7 @@ int kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long len)
- 
- 	return __kvm_gpc_activate(gpc, gpa, KVM_HVA_ERR_BAD, len);
- }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gpc_activate);
- 
- int kvm_gpc_activate_hva(struct gfn_to_pfn_cache *gpc, unsigned long uhva, unsigned long len)
- {
-@@ -932,3 +958,4 @@ void kvm_gpc_deactivate(struct gfn_to_pfn_cache *gpc)
- 		gpc_unmap(old_pfn, old_khva);
+  out:
+ 	/*
+@@ -346,17 +618,12 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+ 	 * valid, leave it as is.
+ 	 */
+ 	if (ret) {
+-		gpc->valid = false;
++		WARN_ON_ONCE(atomic_read(&gpc->state) & GPC_VALID);
+ 		gpc->pfn = KVM_PFN_ERR_FAULT;
+ 		gpc->khva = NULL;
  	}
+ 
+-	/* Detect a pfn change before dropping the lock! */
+ 	unmap_old = (old_pfn != gpc->pfn);
+-
+-out_unlock:
+-	write_unlock_irq(&gpc->lock);
+-
+ 	if (unmap_old)
+ 		gpc_unmap(old_pfn, old_khva);
+ 
+@@ -385,14 +652,14 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len)
+ void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
+ 		    bool never_dirty)
+ {
+-	rwlock_init(&gpc->lock);
+ 	mutex_init(&gpc->refresh_lock);
+ 
+ 	gpc->kvm = kvm;
+ 	gpc->pfn = KVM_PFN_ERR_FAULT;
+ 	gpc->gpa = INVALID_GPA;
+ 	gpc->uhva = KVM_HVA_ERR_BAD;
+-	gpc->active = gpc->valid = false;
++	gpc->active = false;
++	atomic_set(&gpc->state, 0);
+ 	gpc->never_dirty = never_dirty;
  }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gpc_deactivate);
+ 
+@@ -407,7 +674,7 @@ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned
+ 	guard(mutex)(&gpc->refresh_lock);
+ 
+ 	if (!gpc->active) {
+-		if (KVM_BUG_ON(gpc->valid, kvm))
++		if (KVM_BUG_ON(atomic_read(&gpc->state) & GPC_VALID, kvm))
+ 			return -EIO;
+ 
+ 		spin_lock(&kvm->gpc_lock);
+@@ -417,11 +684,11 @@ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned
+ 		/*
+ 		 * Activate the cache after adding it to the list, a concurrent
+ 		 * refresh must not establish a mapping until the cache is
+-		 * reachable by mmu_notifier events.
++		 * reachable by mmu_notifier events. (Refreshes are serialized
++		 * by refresh_lock, which we hold; the store ordering matters
++		 * only against the notifier walk, which holds gpc_lock.)
+ 		 */
+-		write_lock_irq(&gpc->lock);
+-		gpc->active = true;
+-		write_unlock_irq(&gpc->lock);
++		WRITE_ONCE(gpc->active, true);
+ 	}
+ 	return __kvm_gpc_refresh(gpc, gpa, uhva);
+ }
+@@ -456,13 +723,28 @@ void kvm_gpc_deactivate(struct gfn_to_pfn_cache *gpc)
+ 
+ 	if (gpc->active) {
+ 		/*
+-		 * Deactivate the cache before removing it from the list, KVM
+-		 * must stall mmu_notifier events until all users go away, i.e.
+-		 * until gpc->lock is dropped and refresh is guaranteed to fail.
++		 * Mark the cache inactive and invalid, and wait for all
++		 * current readers to drain, before tearing down the mapping
++		 * they may have been using. Refreshes are excluded by
++		 * refresh_lock, which we hold.
++		 */
++		WRITE_ONCE(gpc->active, false);
++
++		/*
++		 * As in __kvm_gpc_refresh(): clear and test in one
++		 * operation, waiting on GPC_INVALIDATING as well as
++		 * GPC_VALID. An invalidation which cleared GPC_VALID first
++		 * may still be inside its own synchronize_srcu() with
++		 * readers outstanding — it left GPC_INVALIDATING set to say
++		 * so — and the unmap below must not run under those readers.
++		 * And, also as there, leave GPC_INVALIDATING standing until
++		 * the drain completes, so that an mmu_notifier walk arriving
++		 * mid-wait does not read a zero state and skip the cache.
+ 		 */
+-		write_lock_irq(&gpc->lock);
+-		gpc->active = false;
+-		gpc->valid = false;
++		if (atomic_xchg(&gpc->state, GPC_INVALIDATING) &
++		    (GPC_VALID | GPC_INVALIDATING))
++			synchronize_srcu_atomic(&kvm->gpc_srcu);
++		atomic_set(&gpc->state, 0);
+ 
+ 		/*
+ 		 * Leave the GPA => uHVA cache intact, it's protected by the
+@@ -475,7 +757,6 @@ void kvm_gpc_deactivate(struct gfn_to_pfn_cache *gpc)
+ 
+ 		old_pfn = gpc->pfn;
+ 		gpc->pfn = KVM_PFN_ERR_FAULT;
+-		write_unlock_irq(&gpc->lock);
+ 
+ 		spin_lock(&kvm->gpc_lock);
+ 		list_del(&gpc->list);
 -- 
 2.43.0
 
