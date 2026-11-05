@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793844072;
-	b=pkvjtUBHzuAKm9eA+0tLb6dJr+cp/oYWz6moJhY7QfHZA5u4x0F3uh46Y1ZJnYh1kqH4
-	 XDXVskJR5/10gSxuUI0idEMMqpZNjXcLoXu2VbDjDmsm9uAc6o9jWjKMMm6yrSnBuwyQm
-	 D7F8s4qaCPqMDpok93i6N/kreTPT3ZNCFk+4n405I3IYTPG4BJhHWsl4faYPLrBO+DPjW
-	 a8lPgkcc3PtXZ4kwizoF6GGra/TzA/UtqjYxWk0nX6tGa5ZJcc9nvjeMydamY932uN/8Q
-	 UOynvJ6wEEXqjAxNrznG3+LS5xP6XkUzDbJM2uyHnw9tfETLeELCuDc69NhrYZVhxLg==
+	t=1793844071;
+	b=UFNWXQLcAg+x291Riv7cIRnnj3ZWaoWSYwLedA3Q9h1oG6Zbg7HZFl7KtACvREjHRcp8
+	 YaevPrRa4rpBNdT6VcKbnFmccI0Uxx65g5ohqvsPgG40mWtyOXVB1TikEgE69G4wrTSTD
+	 rHJbXdCwgvLCR5dpk4l3mLlX0C6fAjHiNbBD8cHS2JoU4AT+QY1xlo249vgVf4ceWfJF2
+	 hXnToAayukj6PLwDnL+vBZ65QWU//9aBQFi1rTwi115Ea6g/kSKuHVLeh2VHdoDj0BvTs
+	 dJutxYtGwkfzk07bq9m0gxSJ1iRnrfRJrnPsBpMbYfH8KFnIMsdHMWzjMGptH40hYqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793844072;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793844071;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=lXeVdKZgplIsnHrxxLZrBVIeJZ4mQkNiuMtdZoSEMdo=;
-	b=Pm/vdXk9kodH/2OJSAsykU2zJs3VBuCDtqhjNV1YJlqFAmJbJc2nCuu0gePzIy/aOn2M
-	 JAAHDkGa2qPmO2QK8jjxmnTj6RygPLVHfZJTOQkijUxOpxSZbFfrcBN2DJYmRUlv86F98
-	 fnZxSKv7y0Kv5Bqe/Axovqv3IInHKdWMO8LgVjNbQ08AAun+GAXcIm9Ioi5LPyRw9bE8Y
-	 6m4wF1QisBkkdWi+PNDqUPJndAMBZT2DoLmkCPZedptoS3fKScKwqKhK+H7fFW26XmOpT
-	 TUhqADDSGUL0wvH1jJ2OC7LnbUs+dB5rSnywb82QcqWJSd5+iflhcfOZFl6iJfDy13A==
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=EjC93C9IT1HB5U8uFJ3DkGgCAi5EPZ8cZ/bI0C1PcNQ=;
+	b=q+k2Z3VgsrBtW0vec+jeU/QOam1fgtA27RH8aNxSdXztX2EJkItz2dQaVLwuJg/I52g4
+	 PoyKXEoNlrmlW5MHi+Cj1fEl0kWSNbFT5S1FeRkvMUnaPnvfMFgeaCGssZdQtkqzOxi8j
+	 6Aprhi2/71dkPUFYg6wbZ71cQDCXWaCL5a7l2SSLsiUgX20e73NZFtYvI/DCsulZug75o
+	 zCVTXfga3xX4bLBuPr7vSkJvsWMxcJR75LLIsNBNpqZiasJ1WIsiD74RT/Ai3xCTibeXV
+	 +iJVTZXQXtmEivgbgOSJKwigrDwR/MCRO8t+/nUTdkCTAi5JMfPaLDhrbRNqih1u4RA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Q0mTKClI;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=KZEVV+Cu;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA5E606A332;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAE3606A335;
 	Thu,  5 Nov 2026 02:01:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAA5E606A332
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAAE3606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Q0mTKClI
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=KZEVV+Cu
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=lXeVdKZgplIsnHrxxLZrBVIeJZ4mQkNiuMtdZoSEMdo=; b=Q0mTKClI9VooOYT679tqFrQtl6
-	xuCH0mZbWbK+FGnQpTilLo0MkCIpY8grbwbYQEqNuCnyjvdA8+Opdm7YOWLuyX96rDEz6WHzB0JK/
-	XaYo0OtsN1p2LxySiL65rwFkuU5lvRSJfdYSbSwgBZ70DANcbpyhNn5R9wZAznZ6+pWWKn4Zv5xKE
-	8if70cDKkbabaiNilOaf6GyvgNyXmGzDBwuDNWdxY48W07eIuvmiZNvQGWjD4FJz7vN+RWMZImJ/A
-	kykuL6uVDvg8KGxzjzg5WdX31h8n0QVDI0HlaMtdw9Yj0pr2NsDt8Kj4gnEOPpX3gpo3LxZlzHxsf
-	me7f1aOA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=EjC93C9IT1HB5U8uFJ3DkGgCAi5EPZ8cZ/bI0C1PcNQ=; b=KZEVV+Cusbxv+cqJ1kbyuEa7Xp
+	Az5YvzTCVTn9BkjUQ7VoLal2X0iJkw80mTjX0LIKlBJtOMc6AFj5zUxXoY3upW8Y44SaabIXm0NT0
+	gMFVL5VU6OwVFfCc8BjLvtJ8NedNhW/ullEBc3evR79R3CpbEijH9bn0OUb0na0yElKw3Mf3upGBk
+	HT6tNjFHToAEN7pEX52g2+Akf+UGqrtNXYXd3Mz2aAdy0hmTBOshjxqKlq6/TkHb8vwl+/Z/IIcAA
+	aVfCQ2V9x73SR9sYDQ79umK5i4H/e4pCwDw5/TkyFevg+8n+okm/x/oFvt3MXcC2HPXn0K1I4Ik57
+	rhdArMew==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOmmn-000000037j3-0IyH;
+	id 1xOmmn-000000037j8-0FsG;
 	Thu, 05 Nov 2026 02:01:05 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOmmm-0000000AWDJ-1Lfa;
+	id 1xOmmm-0000000AWDD-150I;
 	Thu, 05 Nov 2026 02:01:04 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Kunwu Chan <kunwu.chan@gmail.com>,
 	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 06/20] KVM: x86: Request the guest TLB flush from record_steal_time()
-Date: Thu,  5 Nov 2026 02:00:48 +0000
-Message-ID: <20261105020104.2507083-7-dwmw2@infradead.org>
+Subject: [PATCH v2 04/20] KVM: x86/xen: Explicitly tag "shared info" page as never being dirty tracked
+Date: Thu,  5 Nov 2026 02:00:46 +0000
+Message-ID: <20261105020104.2507083-5-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261105020104.2507083-1-dwmw2@infradead.org>
 References: <20261105020104.2507083-1-dwmw2@infradead.org>
@@ -81,95 +81,116 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Sean Christopherson <seanjc@google.com>
 
-record_steal_time() performs a TLB flush on the guest's behalf when the
-guest sets KVM_VCPU_FLUSH_TLB. With shadow paging,
-kvm_vcpu_flush_tlb_guest() ends up in mmu_sync_children(), which can
-reschedule via cond_resched_rwlock_write(). That is why the flush
-currently sits between a user_access_end() and a fresh
-user_access_begin(): it cannot be done while the guest page is mapped
-for access.
+Explicitly mark the Xen shared info page as never being dirty tracked so
+that higher-level gpc APIs can be added to automatically take care of
+things like dirty tracking, without reintroducing the bug fixed by
+commit 55749769fe60 ("KVM: x86: Fix wall clock writes in Xen shared_info
+not to mark page dirty").  And because the code _looks_ buggy.
 
-Raise KVM_REQ_TLB_FLUSH_GUEST instead of flushing inline, and move the
-processing of KVM_REQ_STEAL_UPDATE ahead of where the TLB flush requests
-are serviced in vcpu_enter_guest() so that the flush still happens before
-the vCPU enters the guest. There is no requirement for it to complete any
-earlier than that.
+No functional change intended.
 
-kvm_make_request() on the vCPU which is running is nothing more than a
-barrier and a set_bit(), so unlike the flush itself it can be done from
-any context — which lets the surrounding access be simplified later.
-
-Note that the xchg() must stay where it is: it atomically consumes any
-KVM_VCPU_FLUSH_TLB which the guest has set, as required by commit
-b043138246a4 ("x86/KVM: Make sure KVM_VCPU_FLUSH_TLB flag is not missed").
-
-Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/20260530061932.7849D1F00893@smtp.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/x86.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ arch/x86/kvm/xen.c        |  2 +-
+ include/linux/kvm_host.h  | 15 +++++++++++----
+ include/linux/kvm_types.h |  1 +
+ virt/kvm/pfncache.c       |  4 +++-
+ 4 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 6a1f0404f029..3c26c0eb9865 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2117,8 +2117,22 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 4517eeb24909..d3773416cd44 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -2485,7 +2485,7 @@ void kvm_xen_init_vm(struct kvm *kvm)
+ {
+ 	mutex_init(&kvm->arch.xen.xen_lock);
+ 	xa_init(&kvm->arch.xen.evtchn_ports);
+-	kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm);
++	__kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm, true);
+ }
  
- 		trace_kvm_pv_tlb_flush(vcpu->vcpu_id,
- 				       st_preempted & KVM_VCPU_FLUSH_TLB);
-+		/*
-+		 * Request the flush instead of performing it inline. With
-+		 * shadow paging kvm_vcpu_flush_tlb_guest() can reschedule
-+		 * (via mmu_sync_children()), so it could not be called while
-+		 * the user access above was open. Requesting is just a bit
-+		 * set on the running vCPU, and the request is serviced
-+		 * before the vCPU enters the guest; nothing requires the
-+		 * flush to have completed any earlier than that.
-+		 *
-+		 * Note the xchg above must remain as-is: it atomically
-+		 * consumes any KVM_VCPU_FLUSH_TLB the guest set, as required
-+		 * by commit b043138246a4 ("x86/KVM: Make sure
-+		 * KVM_VCPU_FLUSH_TLB flag is not missed").
-+		 */
- 		if (st_preempted & KVM_VCPU_FLUSH_TLB)
--			kvm_vcpu_flush_tlb_guest(vcpu);
-+			kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+ void kvm_xen_destroy_vm(struct kvm *kvm)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index e7fc94e2910a..cadd0318400e 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1459,16 +1459,23 @@ int kvm_vcpu_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa, const void *data,
+ 			 unsigned long len);
  
- 		if (!user_access_begin(st, sizeof(*st)))
- 			goto dirty;
-@@ -8168,6 +8182,14 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			if (unlikely(r))
- 				goto out;
- 		}
-+		/*
-+		 * Process the steal time update before the TLB flush requests
-+		 * are serviced below; record_steal_time() requests
-+		 * KVM_REQ_TLB_FLUSH_GUEST on the guest's behalf rather than
-+		 * performing the flush itself.
-+		 */
-+		if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu))
-+			record_steal_time(vcpu);
- 		if (kvm_check_request(KVM_REQ_MMU_SYNC, vcpu))
- 			kvm_mmu_sync_roots(vcpu);
- 		if (kvm_check_request(KVM_REQ_LOAD_MMU_PGD, vcpu))
-@@ -8217,8 +8239,6 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			r = 1;
- 			goto out;
- 		}
--		if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu))
--			record_steal_time(vcpu);
- 		if (kvm_check_request(KVM_REQ_PMU, vcpu))
- 			kvm_pmu_handle_event(vcpu);
- 		if (kvm_check_request(KVM_REQ_PMI, vcpu))
+ /**
+- * kvm_gpc_init - initialize gfn_to_pfn_cache.
++ * __kvm_gpc_init - initialize gfn_to_pfn_cache.
+  *
+  * @gpc:	   struct gfn_to_pfn_cache object.
+  * @kvm:	   pointer to kvm instance.
++ * @never_dirty:   the cache never needs to mark its page dirty in its memslot.
+  *
+  * This sets up a gfn_to_pfn_cache by initializing locks and assigning the
+  * immutable attributes.  Note, the cache must be zero-allocated (or zeroed by
+- * the caller before init).
++ * the caller before init).  Most callers want the kvm_gpc_init() wrapper.
+  */
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm);
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty);
++
++static inline void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++{
++	__kvm_gpc_init(gpc, kvm, false);
++}
+ 
+ /**
+  * kvm_gpc_activate - prepare a cached kernel mapping and HPA for a given guest
+@@ -1979,7 +1986,7 @@ static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
+ {
+ 	lockdep_assert_held(&gpc->lock);
+ 
+-	if (!gpc->memslot)
++	if (!gpc->memslot || gpc->never_dirty)
+ 		return;
+ 
+ 	mark_page_dirty_in_slot(gpc->kvm, gpc->memslot, gpa_to_gfn(gpc->gpa));
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index a568d8e6f4e8..e850adc3f47e 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -94,6 +94,7 @@ struct gfn_to_pfn_cache {
+ 	kvm_pfn_t pfn;
+ 	bool active;
+ 	bool valid;
++	bool never_dirty;
+ };
+ 
+ #ifdef KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 3659686b97c2..17a30da00d40 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -382,7 +382,8 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len)
+ 	return __kvm_gpc_refresh(gpc, gpc->gpa, uhva);
+ }
+ 
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty)
+ {
+ 	rwlock_init(&gpc->lock);
+ 	mutex_init(&gpc->refresh_lock);
+@@ -392,6 +393,7 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ 	gpc->gpa = INVALID_GPA;
+ 	gpc->uhva = KVM_HVA_ERR_BAD;
+ 	gpc->active = gpc->valid = false;
++	gpc->never_dirty = never_dirty;
+ }
+ 
+ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long uhva,
 -- 
 2.43.0
 
