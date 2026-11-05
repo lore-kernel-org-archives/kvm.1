@@ -1,115 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.161
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793894348;
-	b=Q5K0X1nZEu8No9uh6OFDXvkzypG/X1y5/O2/DuHCBAuoPXeqTeJbTIo2IlXnPrC8PwhG
-	 I135XQxuUWx/JlxNMD0C1eH/NsuBV7O38Q+IDs8hBKpAN1NGzcEaSRvMhTp+XmjPGlfQG
-	 xEvzq4SdFLreEldzuEQtihenZckWSa/twM7dJqiE29RNiSIlDsJpOY8xNl+WuTj6KlmUa
-	 /wFxOjji3Sk7vhO0AIvUov76dDkAXeQ2W8pF+QS9qk8sL9clNpnstRoYNVNN9kHrNoLFI
-	 Q+P4clD7syzgFU/2wUYI1qitX/q62ifWKmP4ZL4GFpIRLmf/Kjcc/pH8mjOuvBNww3Q==
+	t=1793894777;
+	b=uxLk1tqSkyQYIZPdaZdP7xXrIHbVb/4/MykSGd1O6z4mDSwEjJQt8HzreT3kuW92tTJi
+	 0n5Sz7psOaXCcRuNntJlFhc0q4HiYaKissGlrydHAyjYvPdG8Wh9c84bqwFvA6E7uQXxF
+	 U6B1YcWWev01ppszb3oCchcagWOdLX9J+L9t71i3d2WzpTFUfP3ArmVLvhTerMkQNf+I9
+	 SWgetfG+wzWTKGev1R0UMgokUbkka3zXuJbaP1iSUbcoKsN0lAVBfpYycDlT0AHkLjG1O
+	 fMpCVbreqoH/s3VdPAKsJxH41MuFtQZ/Z8jANw21HkJQsG/5KG0+fq0U10Tdi2Cp9NA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793894348;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=aglmvI44os2GRu0bcU/SuIptRdKDUA6w1hEL4+0FU3g=;
-	b=cSSNf10/3eo05EXNJJ/SJe+LJcwGEvkoefRz1XbC6sb9NAHAUPSxYiT6B5EYss3k0pdY
-	 pPmIn4FVMwcg49nxTTxLgE8nyh5lJrLoNpPrl1VlWdcIe+VMpBtT1ZMuBiMtDSo48N4ns
-	 0lyRAoZ046Vh1yyGnABu3N/visai8bt/n5iZFu5jYFQkBIXsdOxtvz4U2KMnI/jfzOdEX
-	 gdSXbIkojdSU85zQ3iC5zig+/XilKwvzwsp+RzpCFz/6QFE4ZqD+54VM7YGzMwKOcZjf2
-	 8yGDU72t5cXPDT7QHWkEF2uLhpFRiXT1Xq6p3BXONRkkk1o8O7hAinjAS7cJEd2vnSw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793894777;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=/cWlRZ8SCFwTMb55OqToMLGSlbLAYefJerAulPP2VEQ=;
+	b=TfK7XO9HOeDAm72l5YTm08i97EU3TSLRnaXA2Uk+lUV8hchyFf7CEbrJ145jxpCCTM6g
+	 Ge/gw8+enfjoGOnrFfPKWuH50nYb/UvTtj655yY4TJNQQ0zYOl/VZqQaoH05xrcI33sxH
+	 vR47G+eE+ikJO1E5KT7aq0vribGj86DepeLswguZqhu3XOMv5gZ89BeqFC57HpG20xSjI
+	 kDXCNxQTVu0QV7lPPlPb4RhmfFDvk6bA3Azhf4rTKJNF6FkswFJaikhW8KP4GtkJB0EaN
+	 HPAxt01jtbBfd2xmX4Weplc4RfMvSgI1Duh73rVkzW15Ey+2q7b0Xec12Oz6N3QmE3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hgcSBKcV;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EMOrkC5s;
+	arc=none smtp.remote-ip=91.218.175.161
+Received: from mta0.migadu.com (out-161.mta0.migadu.com [91.218.175.161])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1160F606A60D
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 15:59:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1160F606A60D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C0606A328
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 16:06:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 088C0606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hgcSBKcV
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a2d6d01ecbso12584385e9.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 07:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793894346; x=1794499146; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=aglmvI44os2GRu0bcU/SuIptRdKDUA6w1hEL4+0FU3g=;
-        b=hgcSBKcVWV46JnyODWHiOcRnk/spXtkg7osxY/LN0J6J9PXkBeaw5q3Yg/OssgOLQX
-         ArpSSo0tSQgLcQ5bzFofIVqZXw8QOv9b3jUqtGtAhKMINbPIdocM8c486QZO9+FlA68E
-         G37/T0CKmtXUT8i3NKjxj9B4Cgm1imLIq4pOUUMQZvWe4t/aT+9M+xPSB6GsbtM5A4mM
-         VkdTCVr8Npn0WbqIl2G/HzQhIWgt7g90Lok+rRhK/P1S5IIpuGdPgTF7elIiknk7Rbl4
-         HbJarz0EpxNMvF9WsJ2tFpxzedBGY69QZhT/Ud9/UWqgTHVJ08Y4JcOiJDrDN3fjEshC
-         5YFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793894346; x=1794499146;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aglmvI44os2GRu0bcU/SuIptRdKDUA6w1hEL4+0FU3g=;
-        b=mqSC4YDj+JuIONahiyatn9XXhMUXEZBJz/M25Y9iGvcjeCF+3IiGJSKPfb79oxjnkj
-         sG8jIA5ybLlVlIdhsHs57z8K81yU2qoQ9ld7OaJwX7LktRXQq16FzeSj9uwI93gu2ouK
-         WLH+YyCkCTtieu3Yh1X6xjq/cYZltEDS1yTABBO0AfFXnWQlgAVVmWH3xZRA40PFoTZ4
-         e6MlNrEz6zUpLndfSPuK8RPrMo6Xj3Q6q9WEjxrEhfISdrUFIvGfofiP4NksdfmFgDcK
-         +nTMFHCah6RXyVs4PllcaYGbncF2MxE7SBWOWM/0Swy2pTyhiNhwwmyDIEqB5BPQXAVL
-         VdoQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxU2m7hSMSMsok0OkxAlsGNv/yvMqrr4+wJa0KWKciJvgZDAiKek5qo3TZLwUQpvM2hRFI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+eO9njFI5nr/pbhBN+9Qh6VtJOEO8X+600/moQ+9l36cGMtakS
-	bG2Jp+nZIl2R24+DR76LlT3bwdfNHAKT44PBmUo5UaCREzXAFk1E0hjr
-X-Gm-Gg: AYBFou1qYQFIkAk+9hDHofSbJZWoQ9bG0J9VnsengVDZFcvv8IANaSf5WaJbhxSd1DG
-	LimYDLgfKP7u5yNwueEQtb5ORHzJb6svC3LgiryhoVjQ3puci0wPLjokUhH/+q0G6WP8tDAWZE8
-	q1jwy/+XRW62Zh4QE3ZldnCWIDv55Ai2lhf93d2u6768qYhpvCz3stGgjk87IAgwEZDc8CjQ97E
-	Eso09sGQC/VmGhuyWgxnWOksEaAB3fWqHS38HyYFO+4RHyN5TaJ5wwRBkqYzAUqWjkvEyLL3bQ3
-	dEXSgrB83wTtUUGVWbxDGPhGZ3CTM4JbmYn9m1ZzuppOszGC1M+K+oDxL5YWnAd3XZUnssYZDIs
-	bmMlBUw0dv/zC/W9Av+SMEeFtx2dws1tTo8X3qOUiIwaVsKAobaitY0eNPNA3fS9ehdeLUUn5Sq
-	ORnxQrFEvst7RB/3DvTOoeIXxvHZDJiE6zPVu5bfP4yrqTe24a/0Ed4jJhEq7U+DSbzUOXHtCuy
-	iK0pcVDE3m0wJJsU2vnySOuRWtib9o1BAmhjfq6r2263CKeavXoDCbxNS8Mj1+C48L7e/2h6gPb
-	dkR//UZLBItIcDf6pKiMHck54/hDJrm5
-X-Received: by 2002:a05:600c:46ce:b0:4a6:7d6:821f with SMTP id 5b1f17b1804b1-4ac189928e9mr427862295e9.29.1793894346268;
-        Thu, 05 Nov 2026 07:59:06 -0800 (PST)
-Received: from [10.245.244.150] ([192.198.151.47])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b5725fb0d1sm72442095e9.8.2026.11.05.07.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 07:59:05 -0800 (PST)
-Message-ID: <85f899cd277b2188cd4b33f8f21b206fa2ff6f6f.camel@gmail.com>
-Subject: Re: TDX migration model
-From: Artem Bityutskiy <dedekind1@gmail.com>
-To: "Serge Hallyn (AMD)" <sergeh@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>, Tony Lindgren
- <tony.lindgren@linux.intel.com>,  Paolo Bonzini <pbonzini@redhat.com>, Sean
- Christopherson <seanjc@google.com>, Fabiano Rosas <farosas@suse.de>,  Jon
- Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, Tom
- Lendacky	 <thomas.lendacky@amd.com>, Marc Zyngier <maz@kernel.org>, Oliver
- Upton	 <oliver.upton@linux.dev>, Steven Price <steven.price@arm.com>, Anup
- Patel	 <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>, Jakub
- =?UTF-8?Q?R=C5=AF=C5=BEi=C4=8Dka?=	 <jakub.ruzicka@matfyz.cz>,
- =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,  Vishal Annapurve
- <vannapurve@google.com>, Elena Reshetova <elena.reshetova@intel.com>, Kai
- Huang <kai.huang@intel.com>,  Kishen Maloor <kishen.maloor@intel.com>, Mika
- Westerberg <mika.westerberg@linux.intel.com>, Peter Fang	
- <peter.fang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Xiaoyao Li	 <xiaoyao.li@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	kvm@vger.kernel.org, David.Kaplan@amd.com, Mathias.Brossard@arm.com
-Date: Thu, 05 Nov 2026 17:59:01 +0200
-In-Reply-To: <auyZnIfxMnxYD8rT@shallyn-amd>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
-	 <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
-	 <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
-	 <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
-	 <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
-	 <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
-	 <auyZnIfxMnxYD8rT@shallyn-amd>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EMOrkC5s
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=q1Jd3oCj3wElY/Ramn8yIWwh5Mzi3hHTvnQWrqt1nCM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793894772; v=1; x=1794499572;
+ b=EMOrkC5sVVLJ80dqxga4EYGB2nalv7krTmw6OMvbStyhnJ9qhUSHYqMI6dK+DedLAdO6evv0
+ DhxzHVDLbd4lE4DXlGrsxCEjmmS7O0s7Ug9/RltoYeBzEDKSAgpCqwU6JNurG45GXq6uThCRfRh
+ GZnC5lLmKzLYlWBm7xRUZhkY=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c1bfe697b5c1862e;
+	Thu, 05 Nov 2026 16:06:12 +0000
+X-Mizu-Trace-ID: c1bfe697b5c1862e
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bff701efa5so8060e87.0
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 08:06:10 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwn1goJxe/r8ilZMCBrdSOGraVNxYTNNCUSb0paPCXiRE0WY1vGUIfSs4of3tNNctEQ6E4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Emn7KgMvuBAKoMJ6zvUh5QLRKfpWappl8A15GPH4+ePukvZT+
+	tA9kXMb/hKWYoe9jLa+0rDgEEnTU8NN0WTjUF0qhOU4dCne7BRCz4OxSaROrYxs2wUjreZin+Vd
+	OHI23WrRnHIo80nFGBajrXgPKRnPLzSiLzXvzof4l
+X-Received: by 2002:a05:6512:6ce:b0:5bf:bec9:aaed with SMTP id
+ 2adb3069b0e04-5bffabc3e5emr166519e87.8.1793894769045; Thu, 05 Nov 2026
+ 08:06:09 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -119,63 +66,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261105110050.1244525-1-fuad.tabba@linux.dev> <861p8z2s5w.wl-maz@kernel.org>
+In-Reply-To: <861p8z2s5w.wl-maz@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 5 Nov 2026 16:05:32 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTyEOfDf4ynYuGz1ejE3s6R2syP4=zZMcq1oKAqFfDxCNA@mail.gmail.com>
+X-Gm-Features: AclHuK9sqVJFjm0gw0BfO1w3RU0O4-fEP04HRvITK947bPe5QzS5BG9idCL7ftg
+Message-ID: <CA+EHjTyEOfDf4ynYuGz1ejE3s6R2syP4=zZMcq1oKAqFfDxCNA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] KVM: arm64: vgic: Drop stale LPI pending state
+To: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Andre Przywara <andre.przywara@arm.com>, Eric Auger <eric.auger@redhat.com>, 
+	Yuchao Zhang <ndaugoing@gmail.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[I dropped a bunch of people from CC, sorry about that, just restored the C=
-C
-list]
+On Thu, 5 Nov 2026 at 15:51, Marc Zyngier <maz@kernel.org> wrote:
+>
+> On Thu, 05 Nov 2026 11:00:47 +0000,
+> Fuad Tabba <fuad.tabba@linux.dev> wrote:
+> >
+> > Hi folks,
+> >
+> > The GIC just keeps on giving. Three follow-ups to my LPI fixes for
+> > redistributors with LPIs disabled [1], to fix pre-existing bugs Sashiko
+> > found.
+>
+> Can you *please* come up with a full series rather than this constant
+> "here's another set of patches" that address the same thing, one
+> pothole at a time?
+>
+> I'm now really tempted to drop all the patches I have queued on this
+> so far, and wait for the "one true series".
 
-On Thu, 2026-11-05 at 08:58 -0600, Serge Hallyn (AMD) wrote:
-> On Wed, Nov 04, 2026 at 03:51:45PM +0200, Artem Bityutskiy wrote:
-> > Hi Peter, community,
-> >=20
-> > Here is the TDX migration model doc that I mentioned in the CoCo migrat=
-ion
-> > uAPI thread:
-> >=20
-> > https://github.com/dedekind/dedekind-share/blob/master/2026/tdx-live-mi=
-gration.md
-> >=20
-> > The doc focuses on TDX only. It does not cover CoCo in general or
-> > Linux/KVM.=C2=A0
-> >=20
-> > The goal is to lay out what the TDX module offers in terms of ABI and
-> > migration flow today. Hopefully it is easier to read than the TDX specs=
-,
-> > which are much more detailed. Feedback is very welcome.
-> >=20
-> > The uAPIs that we suggested were modeled around this flow and ABI. But
-> > we kept general CoCo VMs in mind as much as we could.
-> >=20
-> > The TDX live migration PoC implementation that we mentioned earlier fol=
-lows
-> > the flows and uses the ABIs described in the doc.
-> >=20
-> > Thanks!
-> >=20
-> > P.S. From the ARM talk and hallway conversations at Plumbers, I underst=
-ood
-> > that the ARM live migration flow is very similar to TDX. For SNP guests=
-, we
-> > have not heard enough yet.
-> >=20
-> > Thanks,
-> > Artem.
->=20
-> Thanks, Artem!
->=20
-> So, looking at the section '### How the Setup Session Works', is it safe
-> to assume that you are using the qemu migration fd for the message
-> transfers?  So basically qemu loops over KVM_MIGRATE_SETUP calls, which
-> is directed to platform-specific handlers, which in the tdx case calls
-> TDH.MIG.SETUP, and this loop continues until TDX_SUCCESS?  If so, great,
-> that mirrors pretty exactly what we were looking at for SNP.
+Sorry about that. Every time I think I'm done with it, Sashiko pokes more holes!
 
-Hi,
+I'll sit on this a bit more, make sure all the gaps are closed,
+Sashiko it locally, before I respin.
 
-Yes, that's the flow. I=E2=80=99m not sure about the migration fd part, I b=
-elieve we
-pass the setup session data via ioctl buffers. I am sure Kishen will can
-clarify.
+Cheers,
+/fuad
 
-Thanks,
-Artem.
+>
+>         M.
+>
+> --
+> Without deviation from the norm, progress is not possible.
