@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793836929;
-	b=MLJ8JkFqEtzX9z6Y8ZLt+hjMfkPl6u7EwRzSDkRCq/ckjFOyAa6/nbuHN1QzUTvUxm6X
-	 Fpc87f0PEqp1/oPBXTBk2qaymFpPkmzDfL4znYOppvaCPdtQ0CfUsj0AbE+rPjhcZKWTw
-	 ZC+wOtF405DVJxP7bDszQgrMH/3KXsEx60umVlaF1rTpypz6nO4NTOkRjpKa200ZKBo3H
-	 kRxz9k2xI53nVo5+LcPT2bnmodFaOv9qu79lsS7Gh7S50CaL1sQWUwaT4WCF43tTx0y9C
-	 oORut80CWMxmGWhsmg9Q/8/2Pzruamb9ulN8W1F7SUqA+pEg65PJBCLQs+QjhC76EFw==
+	b=IMgh7jfL7uGV91V7OQGx279+/TYfs5+BX4CM7soOUYwFvp9l7L6tft0aG2adg2Ytramc
+	 xiJrIYFP3eRjXVdAf0W7zze+7cXnnoXZkzYyezryctFNk3dMkr9ASgvNewU+xywirUH3Q
+	 YxUtWqfp9YiDHWR86HpfBvKFHv9In7Bg8Wd6GrRVoxjJrQmxLf50nczj0B/DSaGgwds6/
+	 mqXcIlXZjbeo2TTboSfVqZMy/Z5ZI1tVq6MuUFgAnZRcg45cSoonfvJ92MU0buZ3pgQL6
+	 Q/JLzCPwCgQ9/F+SyvuD/+f3HKdZKruDZg60WPOUQ0Uyz/AgigJMzz9EpiXu0DVaPfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793836929;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 X-Spam-Status:X-Spam-Checker-Version;
-	bh=gvXZud60WW8KOHt3CUZkR9JbkQ/A5YVK6z5NEHxZryM=;
-	b=XEHIv7rrckRq0egX+2K86c6LgBImxyMEYbZPtguXPOFDvJvelzNQ7dtQycdGWbT0CT4r
-	 TDTD9/ubCa0d3mubRu1JzUdn/2hwHylPjLH7flDUC5/YaLxEMSPWvdWPEFgE/c2CSbArK
-	 AY87TtftK7P7l66wMZxaxok0m+3mQ/gerUTUPMzoCNVMIAmFDaTNb5RCoR/lEvXSLh1p8
-	 3fl1O8e53VQdASmzJRbwILot5/yIPKygR+NR+yAtBXCulbXyvHlU8HjxkEL4UpT9IwGMo
-	 Ws1JjfpmHBdSo1bQ7oiv/s/Tthvc9fooCUsLeY0iFse+4QxpZuIEX7ABiD8wCqsz9ew==
+	 MIME-Version:Content-Transfer-Encoding:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=oLJyanmstYagcI9Rv5WYzf+IYeOCfgcugYDSw4IlpLU=;
+	b=jtH1xcf5p8wngdg/82jFGykX7SYQh4HnPpcoHI1TE7mmHstz4a4g9ZhDDc3nWxvZz276
+	 iGjJ5GU07Ify4Hq3bhi0k4l5X4iqYXUpCRKSqlSA/JPhHZDP4eVK49SVOnTODY2LSh4w6
+	 o5q/7k25/QuLKbGKryt0dp2PjhswVUVa6IbUwYZ4yUj1oOGChaht8a+kJynb9ayYzSqlf
+	 rz6Sj7RG0yfSsxGbftV43c8AcL6thp7kxE7bpRVJMixn/nDWdUCDCc9Y+aqh6tgJjyFep
+	 WUMt3QtfrrNzK/o6F+eo9f+IWfEZmSBmcTmoY5IpskCelo0Q5LMzeVzLzb2K+BGs5HQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=linuxhacker.ru;
 	spf=none smtp.mailfrom=linuxhacker.ru;
@@ -25,14 +25,14 @@ Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33657606A330;
-	Thu,  5 Nov 2026 00:02:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33657606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92B5606A326;
+	Thu,  5 Nov 2026 00:02:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C92B5606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linuxhacker.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linuxhacker.ru
 Received: from intelbox1.virtnet (unknown [162.81.204.199])
-	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id BAE43BEE69;
-	Thu,  5 Nov 2026 00:02:04 +0000 (UTC)
+	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id 82E49BEE42;
+	Thu,  5 Nov 2026 00:01:57 +0000 (UTC)
 From: Oleg Drokin <green@linuxhacker.ru>
 To: sgarzare@redhat.com,
 	stefanha@redhat.com,
@@ -50,12 +50,10 @@ Cc: jasowangio@gmail.com,
 	virtualization@lists.linux.dev,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/3] vsock/virtio: bound the send credit by bytes not yet consumed by the transport
-Date: Wed,  4 Nov 2026 19:01:40 -0500
-Message-ID: <20261105000141.3617241-3-green@linuxhacker.ru>
+Subject: [PATCH net 0/3] vsock/virtio: bound what a peer can make the host queue
+Date: Wed,  4 Nov 2026 19:01:38 -0500
+Message-ID: <20261105000141.3617241-1-green@linuxhacker.ru>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261105000141.3617241-1-green@linuxhacker.ru>
-References: <20261105000141.3617241-1-green@linuxhacker.ru>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -67,77 +65,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The send credit is
+A virtio-vsock peer that does not consume what it is sent can make the
+local side queue memory that no limit covers. On a host the peer is a
+guest, and the memory is GFP_KERNEL, charged to no memory cgroup. Two
+ways remain on net/main:
 
-    min(peer_buf_alloc, buf_alloc) - (tx_cnt - peer_fwd_cnt)
+ - the send credit trusts the fwd_cnt the peer reports, so a peer that
+   never reads but keeps acknowledging gets unlimited credit (patch 2);
+ - credit updates are not bounded at all: a peer can solicit them with
+   OP_CREDIT_REQUEST, or by sending small packets that a reader drains,
+   while posting no rx buffers (patch 3).
 
-where peer_fwd_cnt is taken unchecked from every header the peer sends.
-A peer that never consumes what it is sent but keeps reporting
-fwd_cnt == tx_cnt gets unlimited credit: every send() is accepted and
-the skbs pile up in the transport's queue (on a host, vhost's
-send_pkt_queue, for a guest that posts no rx buffers). The skbs are
-GFP_KERNEL allocations charged to no memory cgroup. The peer learns
-tx_cnt easily when the host side relays a stream it also controls.
+Patch 1 fixes the accounting of packets that vhost drops on rx errors;
+patch 2 relies on bytes_unsent being right.
 
-Commit 8ee784fdf006 ("vsock/virtio: cap TX credit to local buffer size")
-bounded peer_buf_alloc, but not peer_fwd_cnt.
+Nothing changes on the wire.
 
-bytes_unsent (maintained for SIOCOUTQ) counts what was handed to the
-transport and not yet consumed by the device. It is local knowledge, so
-bounding it by the same window limits a lying peer to one window of
-queued data per socket.
+Tested in an x86_64 qemu/KVM guest running the kernel under test
+(net/main 03897066069f); the "guest" is a user-space program driving
+/dev/vhost-vsock directly, talking to plain AF_VSOCK host sockets:
 
-For an honest peer, bytes_unsent can exceed tx_cnt - peer_fwd_cnt only
-by data the peer already has but the transport has not yet released:
+  case                                      net/main      this series
+  lying fwd_cnt, no rx buffers, 2 s of      256 MiB       256 KiB
+  non-blocking send() on one socket         queued        (one window)
+  20000 OP_CREDIT_REQUEST, no rx buffers    +18.5 MiB     +0
+  20000 1-byte packets, each read by host   +18.0 MiB     +24 KiB
 
- - on a host, the delivered part of an skb that vhost splits across rx
-   buffers smaller than the skb: the peer acknowledges the pieces, but
-   bytes_unsent drops only once the whole skb is delivered, so at most
-   one skb (64 KiB);
- - in a guest, tx buffers the host has consumed but
-   virtio_transport_tx_work() has not reaped yet: vhost passes the
-   packet to the host socket before it marks the buffer used, so the
-   host's credit update can arrive first.
+vsock_test from tools/testing/vsock passes over loopback and between a
+nested guest and its host. A bidirectional stress test (up to 512
+connections streaming both ways, readers draining in small reads) runs
+without stalls, and vsock_perf throughput stays within run-to-run noise.
+With KASAN and lockdep enabled, these tests show no reports.
 
-Either way the window shrinks only until the transport catches up;
-nothing stalls and nothing changes on the wire. The writer is woken when
-bytes_unsent drops (sock_wfree() calls sk_write_space()).
+The reproducer (a small user-space program that drives /dev/vhost-vsock
+as the guest) is available on request.
 
-With a user-space vhost-vsock "guest" that posts no rx buffers and
-acknowledges everything, one host socket queued 256 MiB in under 2 s
-(SIOCOUTQ 268304384, where the test stops); with this patch it stays at
-one window (SIOCOUTQ 262144).
+The patches, the test setup and these changelogs were prepared with an
+AI coding assistant (Claude); the tests above were run as described.
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
----
- net/vmw_vsock/virtio_transport_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Oleg Drokin (3):
+  vhost/vsock: release the accounting of packets dropped on rx errors
+  vsock/virtio: bound the send credit by bytes not yet consumed by the
+    transport
+  vsock/virtio: queue at most one credit update per socket
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 1e762a480df4..74a8fdf825d5 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1031,14 +1031,17 @@ EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_has_data);
- 
- static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
- {
-+	s64 tx_buf_size = virtio_transport_tx_buf_size(vvs);
- 	s64 bytes;
- 
- 	/* Use s64 arithmetic so if the peer shrinks peer_buf_alloc while
- 	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
- 	 * does not underflow.
- 	 */
--	bytes = (s64)virtio_transport_tx_buf_size(vvs) -
--		(vvs->tx_cnt - vvs->peer_fwd_cnt);
-+	bytes = tx_buf_size - (vvs->tx_cnt - vvs->peer_fwd_cnt);
-+
-+	/* peer_fwd_cnt is peer-controlled, bytes_unsent is not. */
-+	bytes = min_t(s64, bytes, tx_buf_size - (s64)vvs->bytes_unsent);
- 	if (bytes < 0)
- 		bytes = 0;
- 
+ drivers/vhost/vsock.c                   | 25 +++++++--
+ include/linux/virtio_vsock.h            |  5 ++
+ net/vmw_vsock/virtio_transport.c        |  2 +
+ net/vmw_vsock/virtio_transport_common.c | 69 +++++++++++++++++++++++--
+ net/vmw_vsock/vsock_loopback.c          |  1 +
+ 5 files changed, 95 insertions(+), 7 deletions(-)
+
 -- 
 2.56.0
 
