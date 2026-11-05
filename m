@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793893807;
-	b=GZTEgVmuvnm8LajnPBW9p9mxL+fiBYc1ZJC9tjjwD21FwTcAQEPjP0jj0BuGS0eFlOV8
-	 //e9V0zoMtAlQenEz9E/OHx0P5IupqoogSPZKYfxvaihA+i4RF0wYO91vUkW/ZOi8hcnf
-	 0wirG4/zfPWZ7IfuP3cwGp5V+tB69HW+/FUhHESUICAO+SdAIKx+vcHnrgYE2TP9mOtuK
-	 /PL5UZxjJ8ksY4TpGqddGh6Q3BB308bp8DECCpg9TRHlzAN+QO+BtvtwjgWqqBzAScRlQ
-	 RsW2UTT9ycqLLYV1cDgH7H+O3feirEOEet02+6nVA46GEgUWQIiQut4F4pSHO6tMZ1w==
+	t=1793893808;
+	b=B8oRVbV1sqhSGlkSNj0XUXnZJ8hqz+RrTpEcCDOfXMrc/koJVhWgEv2V5jP8FAwPWsGu
+	 HI0PsAHsEKnpcjwiWBjhe6wqQ1UCljCjcvie8XSQh3sJgxPOiODBvIxi+wmR9NnniXzJ0
+	 ZOIocuxGK8qC0LLijt47lhNBahHaDEt/0dsJbNGUcCesCJxlr5ukenGKDXMg9GcZU91DG
+	 pXNYYetW5jQyEc583XHc2jlTy9FxDGhpiejwcaEYvvdaWWVAb6Makb5ZSwoRZo6pXbUli
+	 81930iWvsbBEx5MgKRaneq4mxsz1bUsA+QLtTv+a2hFgJzZKsySFvSUQXfzNsJ/3ocg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793893807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793893808;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=+Bp/FraEPNEKgnVnaEnw6iNuhtXFkslibvECwlTvHqE=;
-	b=Uu8aPKbo6cAJ9izXxqtLIwKvCAWZLuZZfvC0qONmt94ROczlXJrHPxd43RK0nWr1JDA+
-	 BTkcbCtr7KQrCxEJJ46MJWdqopKWhVFd3J2Hd97CfxLGNqW33VjNkc4rkYGC7jmwP0StX
-	 qAZ89GtlX+KRu9tYDwJ6vzv+G3D3ObCU9ELUg5OO/Z8uqTFE7yefJSc7SWLikIR34ENzc
-	 hVM+RV+2ttwiuzHf/dKnGPKycvgHHBF99MsNJmBSq5NZZorDQvlUYVdkkaj+7yzt3DDyr
-	 WDmZBJuw3U63hkzskPOKMkNjFV6oL78Nwh8wtszC8dLpTbYvc3rDNV0U7MsMQg+pG9w==
+	bh=owfwD0c0iFVkQvxXvAVHEdrEkPi8aTG2v+Yo8RsVjLo=;
+	b=prdcRJrK/WbHxHphkJdj5Uvs9/odPiwjqv9DxeZpsY34MZEVnLhqbUccZI+MU4TtwzmQ
+	 yVak0a7PXzjxEihCHUYiOsPAV9NCnmszuvbRYiDr0PNH/TX5YOzISis8Ncy3L2zSfiYJh
+	 qfR2vWcNeUEA/2+mzwx58VgvNoe1X3gCf4qN3u1/yiLddFO78/cU8lhTBE8iDGtNPF0R5
+	 NJ3utGOpj4XM4uPmQpKFnTw0pUWPpHWhP8RhBuq+FbV/RDU2PzpPpMxK3i8qaqg4SlLL2
+	 rsP3MgMZzABA24+y3ZLGWSVDk5qu2toLWr+o7BriuRmy68vpPi+6aLc8upXVcnuqcrw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZcdGpA6p;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=FbXOOX8v;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D160A6F7B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B212160A6F7D;
 	Thu,  5 Nov 2026 15:50:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B20D160A6F7B
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B212160A6F7D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZcdGpA6p
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=FbXOOX8v
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=+Bp/FraEPNEKgnVnaEnw6iNuhtXFkslibvECwlTvHqE=; b=ZcdGpA6p4Jpvl/hnSOPP0PjHv/
-	eeUSBwF7bh55qJGD+CCING13IN7mFqESX25yk51b9VeLvgG4rbjs5xe8s0UTFKm4LqdldDD/tIZtF
-	dG9+rgKGgqNn+BAiv5ZHViWGFDcT4mJofE0dNYAWQLik25Qdtkp0ppZIWLyPpyr0zLWPB/Po5fjUm
-	SfkH/qeYivekcHSnsWOKZmJWKHBT/J3eS7feqBmxhrn5A22MEYZ0n23XYt2SfhqEMiY4bFLQpkXHS
-	8/H/c+LfweYD+K4wNyQjIGJEe5BI/YFpAfzjG68e/WD1+lP4eOLg2hXQCYo9jfVgcSPILWa33Nuy1
-	yRkQlxag==;
+	bh=owfwD0c0iFVkQvxXvAVHEdrEkPi8aTG2v+Yo8RsVjLo=; b=FbXOOX8vbDQkaNDkiTyDoCi0GI
+	JbPxVa0uJaJ0nH2KdWLZQ1b41mAhpvDhmrHl4VimexZABaM1zNkCJ7p5BGD6CW3sgbLWBcq6nybSv
+	RtmK55YPnkziyKx5y4tyxXs3uy2ZzfZlt1c2IR1o4nQglyenBHZgDkcNijt5WtbXHR8RBY2czDCv4
+	5Kbgdj/SnX5OYqhgX7s/6eqJR/T6d9rv0FKgADxwMTQI8XC6GqIhukF5KJjp02re2d5nV5lk/c/wo
+	jo2a4jOzuH1Pb0+Qm+ijRn5cnhlAvql5bALrkR8hZyK/ou+5tdd3Tz28N4nZkd4q+WY2D84acs/K/
+	IMMMbylQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOziu-00000009aoq-0dWx;
-	Thu, 05 Nov 2026 15:49:56 +0000
+	id 1xOzit-00000009aof-2vx4;
+	Thu, 05 Nov 2026 15:49:55 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOzit-0000000AazM-3xHY;
+	id 1xOzit-0000000Aaym-20JR;
 	Thu, 05 Nov 2026 15:49:55 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -78,9 +78,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Dongli Zhang <dongli.zhang@oracle.com>,
 	joe.jin@oracle.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v11 10/23] KVM: x86: Remove pvclock_gtod_data and private timekeeping code
-Date: Thu,  5 Nov 2026 07:49:41 -0800
-Message-ID: <20261105154955.2525419-11-dwmw2@infradead.org>
+Subject: [PATCH v11 01/23] KVM: x86: Improve synchronization in kvm_synchronize_tsc()
+Date: Thu,  5 Nov 2026 07:49:32 -0800
+Message-ID: <20261105154955.2525419-2-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261105154955.2525419-1-dwmw2@infradead.org>
 References: <20261105154955.2525419-1-dwmw2@infradead.org>
@@ -99,92 +99,104 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Remove the now-unused KVM-private timekeeping infrastructure:
+When synchronizing to an existing TSC (either by explicitly writing
+zero, or the legacy hack where the TSC is written within one second's
+worth of the previously written TSC), the last_tsc_write and
+last_tsc_nsec values were being misrecorded by __kvm_synchronize_tsc().
+The *unsynchronized* value of the TSC (perhaps even zero) was being
+recorded, along with the current time at which kvm_synchronize_tsc()
+was called. This could cause *subsequent* writes to fail to synchronize
+correctly.
 
- - struct pvclock_clock and struct pvclock_gtod_data
- - update_pvclock_gtod() and its seqcount-protected state copy
-   (the private readers were already removed when their last callers
-   went away)
+Fix that by extrapolating the generation's TSC value to the current
+time (data = cur_tsc_write + elapsed cycles) before passing it to
+__kvm_synchronize_tsc(), so the recorded {data, ns} pair always lies
+on the generation's line and the one-second matching window slides
+forward with each synchronized write. When the TSC is stable, reuse
+the generation's offset exactly; when it is unstable, compute a new
+offset for the extrapolated value.
+
+Furthermore, there were *three* different TSC reads used for calculating
+the "current" time, all slightly different from each other. Fix that by
+using kvm_get_time_and_clockread() where possible and using the same
+host_tsc value in all cases.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- arch/x86/kvm/x86.c | 56 ----------------------------------------------
- 1 file changed, 56 deletions(-)
+ arch/x86/kvm/x86.c | 39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index e81e527e7b99..940168528721 100644
+index 32563a91fba9..7a2b0b99373f 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -889,60 +889,6 @@ static inline bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu)
- 	       kvm_request_pending(vcpu) || xfer_to_guest_mode_work_pending();
- }
+@@ -210,6 +210,10 @@ module_param(pi_inject_timer, bint, 0644);
+ static bool __read_mostly mitigate_smt_rsb;
+ module_param(mitigate_smt_rsb, bool, 0444);
  
--#ifdef CONFIG_X86_64
--struct pvclock_clock {
--	int vclock_mode;
--	u64 cycle_last;
--	u64 mask;
--	u32 mult;
--	u32 shift;
--	u64 base_cycles;
--	u64 offset;
--};
--
--struct pvclock_gtod_data {
--	seqcount_t	seq;
--
--	struct pvclock_clock clock; /* extract of a clocksource struct */
--	struct pvclock_clock raw_clock; /* extract of a clocksource struct */
--
--	ktime_t		offs_boot;
--	u64		wall_time_sec;
--};
--
--static struct pvclock_gtod_data pvclock_gtod_data;
--
--static void update_pvclock_gtod(struct timekeeper *tk)
--{
--	struct pvclock_gtod_data *vdata = &pvclock_gtod_data;
--
--	write_seqcount_begin(&vdata->seq);
--
--	/* copy pvclock gtod data */
--	vdata->clock.vclock_mode	= tk->tkr_mono.clock->vdso_clock_mode;
--	vdata->clock.cycle_last		= tk->tkr_mono.cycle_last;
--	vdata->clock.mask		= tk->tkr_mono.mask;
--	vdata->clock.mult		= tk->tkr_mono.mult;
--	vdata->clock.shift		= tk->tkr_mono.shift;
--	vdata->clock.base_cycles	= tk->tkr_mono.xtime_nsec;
--	vdata->clock.offset		= tk->tkr_mono.base;
--
--	vdata->raw_clock.vclock_mode	= tk->tkr_raw.clock->vdso_clock_mode;
--	vdata->raw_clock.cycle_last	= tk->tkr_raw.cycle_last;
--	vdata->raw_clock.mask		= tk->tkr_raw.mask;
--	vdata->raw_clock.mult		= tk->tkr_raw.mult;
--	vdata->raw_clock.shift		= tk->tkr_raw.shift;
--	vdata->raw_clock.base_cycles	= tk->tkr_raw.xtime_nsec;
--	vdata->raw_clock.offset		= tk->tkr_raw.base;
--
--	vdata->wall_time_sec            = tk->xtime_sec;
--
--	vdata->offs_boot		= tk->offs_boot;
--
--	write_seqcount_end(&vdata->seq);
--}
--#endif
--
- static s64 get_kvmclock_base_ns(void)
++#ifdef CONFIG_X86_64
++static bool kvm_get_time_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp);
++#endif
++
+ #define KVM_SUPPORTED_XCR0     (XFEATURE_MASK_FP | XFEATURE_MASK_SSE \
+ 				| XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS \
+ 				| XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 \
+@@ -1374,14 +1378,23 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
  {
- 	/* Count up from boot time, but with the frequency of the raw clock.  */
-@@ -7092,8 +7038,6 @@ static int pvclock_gtod_notify(struct notifier_block *nb, unsigned long unused,
- {
- 	struct timekeeper *tk = priv;
+ 	u64 data = user_value ? *user_value : 0;
+ 	struct kvm *kvm = vcpu->kvm;
+-	u64 offset, ns, elapsed;
++	u64 offset, host_tsc, elapsed;
++	s64 ns;
+ 	unsigned long flags;
+ 	bool matched = false;
+ 	bool synchronizing = false;
  
--	update_pvclock_gtod(tk);
--
- 	/*
- 	 * Pairs with the READ_ONCE() in the lockless readers; the race is
- 	 * benign by design, relying on eventual consistency (the notifier
+ 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
+-	offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
+-	ns = get_kvmclock_base_ns();
++
++#ifdef CONFIG_X86_64
++	if (!kvm_get_time_and_clockread(&ns, &host_tsc))
++#endif
++	{
++		host_tsc = rdtsc();
++		ns = get_kvmclock_base_ns();
++	}
++
++	offset = kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
+ 	elapsed = ns - kvm->arch.last_tsc_nsec;
+ 
+ 	if (vcpu->arch.virtual_tsc_khz) {
+@@ -1424,13 +1437,21 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
+          */
+ 	if (synchronizing &&
+ 	    vcpu->arch.virtual_tsc_khz == kvm->arch.last_tsc_khz) {
+-		if (!kvm_check_tsc_unstable()) {
++		/*
++		 * If synchronizing, advance the reference point to "now"
++		 * so the matching window slides forward with each vCPU.
++		 * Extrapolate from the generation's own origin: 'elapsed'
++		 * is measured from the most recent write, which lies on
++		 * the generation's line only for the first matched write.
++		 */
++		u64 delta = nsec_to_cycles(vcpu, ns - kvm->arch.cur_tsc_nsec);
++
++		data = kvm->arch.cur_tsc_write + delta;
++
++		if (!kvm_check_tsc_unstable())
+ 			offset = kvm->arch.cur_tsc_offset;
+-		} else {
+-			u64 delta = nsec_to_cycles(vcpu, elapsed);
+-			data += delta;
+-			offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
+-		}
++		else
++			offset = kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
+ 		matched = true;
+ 	}
+ 
 -- 
 2.43.0
 
