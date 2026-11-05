@@ -1,98 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793915008;
-	b=YC2d3lxZ+xdYtYVIQ1Gets1P9uEhzTnPPB4autnz0zXaiZsBRWKpwzSz76fcHih0kKeA
-	 k6m1g18KWEU9FDJU1zbGXX0qZa2MPOWVujCYHiS10v025y4od05xwl9A9oD2FfDpSvki0
-	 A6hTXBQzLnDEmAmDaGoaQIUfnEP8T7vc+qw/pzoEDhfdGROi9cjzFKvmpNF91CyGgVs1u
-	 lf1v/w2SflXEohOkjNNrySEyswUOymoCZBzJVTkJn+9pOqtYqD19kTdS81sP5YUnjhd2Y
-	 WkGBfxccMBXSjxaen0vlxUHMRqWF0Sy6ywPUFQfcywo1pN4ASzSdU/dyYCmDo+OwOGw==
+	t=1793917806;
+	b=n7Wy/Qsi/hC7EtQg0U6+5ts9X/KdTYZnz8SL6bfgobak79WJ3mS0uorQ3PX/LZriMkRw
+	 siepfKFxeMx0NobU9bP83CCNJfH6oDbOyJHEVywb/XCfRTPNuxuc9VZjWd4paZwvie4F2
+	 5c6CbQJfA6IM/YqkzEj9ilAumSNZJA73BvYjvD77x19kL3/jtu4c1UzJWBRbnfpd0gSkl
+	 fC8jcgDKXPFD6Dx4XF4ehlLov1coX+GmyResgiwsHEOfMa6ymM4m9cL+vJgN0wEfkTNvl
+	 30LXb83/zHhgkD3uFt7cmpAfrZB0Pr8sO+fO4lE2ji9oGTUZDycZCaW9sClajU9RvAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793915008;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nnsNMtUi8B/PfO4GG0OW4lr6jLs4u50NUe2xEiA6RC0=;
-	b=eaXvzoqyiCBoR+f0jPBzGX9KQ428npqD2s7gfoAAZby0+JDtyN2kU3Nbw30MXUwutcHa
-	 biy23HSyPb2qDXtCAX2avu5V0EA5FKzY74A3dle++4ESh/2WOwr+3PpGuC+rCNO0nJqzh
-	 InQVF724oMGidILBy1+lzYWigoS4qW438260I/YDRUpSzbsFHWrUFsUDzaGMb+Hl/l20K
-	 aCDKFjuqdNXVpKbrdJAouL4igPR9fk5yOJ9TQIHIxzGCIIKUbvMoVn6tzrcxGL9IHf/0S
-	 6Nlg7wVbN+qZy9tc7vf4cLfMvFXwMovd0xKTKcxgroc09y9YNHKrpLIe+8XTCYLgp5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793917806;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=6RccBScqvox0PQtK6ljXaLC+8XlIbIU61+oRhrEpvwc=;
+	b=rIUo+UBzO645e29zXA21WXxBgmFoqL8CCGCrl99ibGJSdKKsEIH6jEoKuL8Nc2wD/Hgp
+	 qvE22QfRpqfkeH5ozHzu3iSSp965PXT6lMDo/sI7g9YInTFf/ROmWIeQMQd884kQNz6tZ
+	 6zGYPNCkD6JNmTYGAiC/EeZzeUF3/jziboJ0Y4GH1njM+XqQ4U58VcYeLzUGwxC2F2SSp
+	 Q1OjlPDJWJZV8W+2Zz17FzWFqOIl3XIjqOhFP5uScZ4kqorCU9oN+lifa9ev3txQaNMNE
+	 mecdPBVgaU/N+Cx9dFnKUKmB6C8QLE3hCyM/+4ftM3VUqNheyECvRprX1BKML0vJ4iA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KFA+ZicK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OvqWLWR1;
+	arc=none smtp.remote-ip=209.85.210.69
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 0B1DC606A326;
-	Thu,  5 Nov 2026 21:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B5E606A328
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 22:30:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81B5E606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KFA+ZicK
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0AE881F0089F;
-	Thu,  5 Nov 2026 21:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793915007;
-	bh=nnsNMtUi8B/PfO4GG0OW4lr6jLs4u50NUe2xEiA6RC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KFA+ZicKHpTxqbxZeNU9rKNH0zDIw+G9WkxRcTelADPJIyDG9z+SV38MG0CjPlcEC
-	 1gjbq2m9ysrv8pBHAJrvqPnMERLZq6W4rxcogl2DlIDB44RylaSdblCTSEXNnxfcbK
-	 l3RbrI5Oxv1bkdw/nOHwLpMlw6rPe3TmPXrqXYMaHNImuFIqgFREHKoGTzOn5W2eUw
-	 HnogndejHth27NGEbdc3qPN/i0WWKweuYdEdmiZr5RDjCfk6/mEdy1F9Yu6XlveCU2
-	 QfoEW83U8XIbYRbkOdJsXHQEOAAPFI6k6EpuBWa/BFfpmagRIXSu+HdiZvkzWIUa8b
-	 kW/HsHhM4i4og==
-Date: Thu, 5 Nov 2026 23:43:23 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	Scott Branden <scott.branden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 05/14] x86/sgx: convert vepc mmap hook to mmap_prepare
-Message-ID: <auz4e81zm0mTMknq@kernel.org>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <20261105-late-2026-mmap_prepare-v1-5-c56aadfbab8a@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OvqWLWR1
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-83c2311eb1dso129434a34.1
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 14:30:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793917804; x=1794522604; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6RccBScqvox0PQtK6ljXaLC+8XlIbIU61+oRhrEpvwc=;
+        b=OvqWLWR1KNUYYP0/8bQc2nDQaeuku4ZkjK4RHbXf827VqQ1GGHTVkpWnoghHBNUJDD
+         q1ItZf2QrGLBb1POwB7jMCuxvRlcYqcfOaEPguBn+MFym4U38XSCGtIDMXlgmdJ3HYVK
+         jBenfWhBJe8ForsxJHb+Gp6V0hz3q1ncAnuT6Bri4JHzeVRyr6Q0LmRukZKa5hOld0sK
+         rl7DPLP7KDMImQIRbYdb0gHVGhJnDJrB6Xs+XTXNg6wpp1L4FbDIuaI2UPruWI+Ehs5n
+         cvSeK9+UVu0w2X8TSG8rvd8wGKAMzY2PRgqXRUsg6cY4MyDP5CJkzxf11UWJStgpVtdf
+         r20g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793917804; x=1794522604;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6RccBScqvox0PQtK6ljXaLC+8XlIbIU61+oRhrEpvwc=;
+        b=Vx6q9Ug4/GIQuWODb9JF6Cpo9zHSgsKEMwVPRKBGk03DaTSHmQWG+JHCrYIrZecAyv
+         ekVlNwsjJy9PGVlVBYulbmiSlSb59kh8biXsReL4WsMrPwTQGS6bVLevTi7pZeBrdu9e
+         FnhmMnI+TwdqKy1BFKBki2ALxCumRCuuA/aJ9acHdsoWiy1RlddaL0cfa8uB9xbZYVQj
+         S4JhgZerP3L6G9JPoU8pEO4lMRNrX/QERLb1ucvJtWe0UtQoWYkMPoAdhN7VCUhq6tOX
+         D+qckdAiQSY7/1ysZW3SBdVqQzBp4HfaWgI5cqUX+TrXtS2mfSt1AUyzjniJG+0AEKWZ
+         7T0g==
+X-Forwarded-Encrypted: i=1; AKwUvByDVn/cdUy6av305yH1928pDQb2cwF3WocbNonnS9AZ/3ghWkyMdRY0/1hRbkO7mbNo9eM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9DzhgFsMtpc0g1ERnwbMl8uUQfwtJ0KI+chNxwDDxoS32gu3S4
+	X//9Edf6MAdRXnOx5/4dGPc1gzZ+8/6CQD5sPWPACWf7wY5T8KkwkjR+UyI0U1rt5b4/I2ux2k4
+	wjhZRFcEV9e6DVw==
+X-Received: from iobn15-n1.prod.google.com ([2002:a05:6602:c6cf:10b0:9e0:f302:3530])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:198f:b0:4d6:93e2:5bc1 with SMTP id 5614622812f47-567e1a16c8fmr547852b6e.66.1793917804196;
+ Thu, 05 Nov 2026 14:30:04 -0800 (PST)
+Date: Thu,  5 Nov 2026 14:30:00 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,64 +75,41 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-5-c56aadfbab8a@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
+Message-ID: <20261105223000.3036448-1-jmattson@google.com>
+Subject: [PATCH] KVM: nSVM: Mark all of vmcb01 dirty when restoring nested state
+From: Jim Mattson <jmattson@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Nov 05, 2026 at 09:05:36PM +0000, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-> only checks that the mapping is shared and sets VMA flags, operations and
-> private data.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  arch/x86/kernel/cpu/sgx/virt.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
-> index 6a1933ddc6fc..850990519ca5 100644
-> --- a/arch/x86/kernel/cpu/sgx/virt.c
-> +++ b/arch/x86/kernel/cpu/sgx/virt.c
-> @@ -98,17 +98,18 @@ static const struct vm_operations_struct sgx_vepc_vm_ops = {
->  	.fault = sgx_vepc_fault,
->  };
->  
-> -static int sgx_vepc_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int sgx_vepc_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	struct sgx_vepc *vepc = file->private_data;
-> +	struct sgx_vepc *vepc = desc->file->private_data;
->  
-> -	if (!(vma->vm_flags & VM_SHARED))
-> +	if (!vma_desc_test(desc, VMA_SHARED_BIT))
->  		return -EINVAL;
->  
-> -	vma->vm_ops = &sgx_vepc_vm_ops;
-> +	desc->vm_ops = &sgx_vepc_vm_ops;
->  	/* Don't copy VMA in fork() */
-> -	vm_flags_set(vma, VM_PFNMAP | VM_IO | VM_DONTDUMP | VM_DONTCOPY);
-> -	vma->vm_private_data = vepc;
-> +	vma_desc_set_flags(desc, VMA_PFNMAP_BIT, VMA_IO_BIT, VMA_DONTDUMP_BIT,
-> +			   VMA_DONTCOPY_BIT);
-> +	desc->private_data = vepc;
->  
->  	return 0;
->  }
-> @@ -315,7 +316,7 @@ static const struct file_operations sgx_vepc_fops = {
->  	.unlocked_ioctl	= sgx_vepc_ioctl,
->  	.compat_ioctl	= sgx_vepc_ioctl,
->  	.release	= sgx_vepc_release,
-> -	.mmap		= sgx_vepc_mmap,
-> +	.mmap_prepare	= sgx_vepc_mmap_prepare,
->  };
->  
->  static struct miscdevice sgx_vepc_dev = {
-> 
-> -- 
-> 2.56.0
-> 
+When restoring a vCPU in guest mode via KVM_SET_NESTED_STATE,
+svm_copy_vmrun_state() updates L1's save state in vmcb01->save directly.
+Stale clean bits may result in the loss of these updates.
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Mark all of vmcb01 dirty after svm_copy_vmrun_state() in
+svm_set_nested_state() (cf. svm_leave_smm()).
 
-Br, Jarkko
+Fixes: 7ca62d132250 ("KVM: nSVM: do not mark all VMCB01 fields dirty on nested vmexit")
+Signed-off-by: Jim Mattson <jmattson@google.com>
+---
+ arch/x86/kvm/svm/nested.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 07554089ec05..0d1e4d624cdf 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -2091,6 +2091,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	svm->nested.vmcb12_gpa = kvm_state->hdr.svm.vmcb_pa;
+ 
+ 	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, save);
++	vmcb_mark_all_dirty(svm->vmcb01.ptr);
+ 	nested_copy_vmcb_control_to_cache(svm, ctl);
+ 
+ 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
+-- 
+2.56.0.455.g6c5a503b38-goog
+
