@@ -1,109 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.101
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793884522;
-	b=dupf9tzYHIBhiVl9TCu7DADDDpNZWHQWUzTzTX+DRXSnBhhA+88MU+b62ER+cQldPGFT
-	 qjx5l6bhD24ii5JlJTnwXzDZQJ7qz8CCkO8pOxLWnLkkt5/c1ToPkQUIWZtHL4/0mrtks
-	 OLaMxHwwzJYVw4RUcL90zL8P/lNF4/rI9lX2AvC3WnQZqenBJIIF5lALP6Jaj+0UDvpSq
-	 cPOqVhSg0ASb/wtQZ1DKAvvETTdEHhDZQdfa/tqqcSta8RB+T70Mt5io+E4dznzPfplt8
-	 cYHOwVjJa1tA3dHtxOda21xmyxquyhMsuFEQNrf77mvbmSmzRwgrItChhS52HxW4Jww==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793884522;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=H7SG9w/r52br65U3O9apzJvPdoY0E0NdQOv4AkgFZZM=;
-	b=AqPVOy9VfhVkB+UC2Um+mEMp4Q+Y6Oo7Kxr+fhapAl9YEec0GJ+1NmLlo3oTJL5OLRnj
-	 u8CHcjjg6iAJpcsahIlmJxTbtRZ8auBXL4jeOISWySA1WaOXPiQ2ZKfSQqPtqJLyh1uC/
-	 GaLxVQxKJTIFCvRBF8nv2jPrAJa/TwpK1vJdZtIZd0Id9Wq3aaR1PTqc4qwrHMQx6Dfmh
-	 WpvqEK2JMyaG6xWHTP4kWpzEeM/4t6p9hpF8S4DC83VJRFistlCcd03eNe1s4wWUuGrQ5
-	 pi28pdESlMF2EmP8QmkjZRUKoHXMku2uEPPXkPuUfxZ40CeeRbJlPhiButbbENA+bKQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=virtuozzo.com;
-	spf=pass smtp.mailfrom=virtuozzo.com;
-	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b="fXmxL/RA";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.101
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021101.outbound.protection.outlook.com [52.101.70.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0444D606A326;
-	Thu,  5 Nov 2026 13:15:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0444D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793885656;
+	b=OXr5th9sWHkC6wgFViHEM+2qklIP8q18fu7b72wU4AaVO06b8thNtfAnV93MIZAXWqfW
+	 XyLi+tqaMq8V7npqDJ1eZyFiF+lidZst3shI12gV9MhpUCwRK2AAiTluCpay69tKvLKbc
+	 n64xZfH9bwkf/Pyo14/GdenZ0xGVm7oo39eWNAyyGcwf4S4seBQCMcFq0a4RcuVt0Yj+y
+	 V65Hg1av8McGQMS4plOYTem8NkQfII6A0rtlzlatuFZheagCiD4tUzmxcPfxIfzh+UxW6
+	 O66ZtcuZzL0EUm2zlYswBNYfGL+trU1bfHBd+GZbpMuubzGVI0fJivYFueLL1P5b1Sw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793885656;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=xtG6fIgcVTzyv91/g3gp13PkyR5FUez629otMerYOAs=;
+	b=nWudy0uYrc2YIUq9+A1NotxnfXOV2ZtMkbMJkX7/TVeojoXh4unn2euC8QIjcpWa0Y+l
+	 i1D+HzCn26fO6cwMeVjp4N2ro0mYEGQ7xla55u09b8onYsCNj+GCpk4181gSH5W2YyzUF
+	 6XfOD0Q0TQ+l4spKwj9JKWP0fzPnYXZg4obz79jH14/CIahkvbhCjWSi0uvlwT36fmeZJ
+	 CSZXSFtmgguRVSg9CF9TMC5y34X9NatLIxeVrDvSAKNBDmMLEAahxzkvZXfFbfjX252Fo
+	 gL7/lbXEU1eZauyAt8rfvwjdqj/uahY6QEse2yVZKSw6urRfqpdypOE9Re4UKtV3iHQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AJAD0adZ;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B997606A32D;
+	Thu,  5 Nov 2026 13:34:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B997606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=fXmxL/RA
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H5s+IByKAPn+P/4/PsoRwp30BB8netdwamvr/Hh3lAdvD0C4Uo0N7aTYDej4HNTyLXTbmSe0qBl2cHtyKY/SsWmPodN9W5Gv3SCCSDv3L4H1cgCxCelIfPOaQFmV7YG9IJoEAmYtF30tBc9QvUaakVIfrNrJ1hDynh+Y5ekde4iNmCv2frXr0gC/fuBTyWSA7qEifF7vgxUkSkMOVaorUqmvAEjnoLib7dhzVZAZWz+O8WztpvvcU9/15jMaJpskzcM4q1ACBzb5GnEwfhlruVpLq6aAFtZZ3VoNqK2hJBGnbOZbkbduHpVsbJFtOg32gIlQ9f8UwHz/299nihA9MA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H7SG9w/r52br65U3O9apzJvPdoY0E0NdQOv4AkgFZZM=;
- b=EEco/6LMfdCJlPbKBmKzoaiq8CIUSO1YuzMAup37QXzcWwP3Hhon5kmVHfqXMI9eCR100gTk0viJoaCYc3uoTY/EnjJWYFKT0q8CSH1gJo71O3kvXlVqAdMt/cfEwrE2Woz0HD9V6cW+9cCxfNC/6zea/7qf8I2uiboBxqlf6EAYW2kd3sZvo3nocHnV3GcDFgKICLtUpO2yQYrmRPXSv7cR3ZVvF/7DwFAD3R/602KHcNyvpamgkbW8dKt8ovyjhUDutJDdgYsc+uCGGdVXQnW8hxzfkNg/JWPxh1GgnTcfGs7rgO2L2RAYSmaC+bJ3NJFaKiFzCoU2UompGRnDEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H7SG9w/r52br65U3O9apzJvPdoY0E0NdQOv4AkgFZZM=;
- b=fXmxL/RAOBMlPJWaD4PvFNDOwwGbMApLmwWdC5XdTtbHpSdIKSPLoqVJOElL5jjTryUx1EPR/9hMIA5+ZMBWVnzUfkFo391MlEr75jY1s81Ht6TV8tKUcM2bCe5flU71hZj2gTd85yDDrEkacTkyT2ISqTZVAYdI0gWeGxRT+4KhDlYJty6o4sX01nSlOA778lbqXKWa2LJKGnSvB2AxArQN/I5L4syk54C8Zf6mwfoaoa3QqZOoUTxP9GrYq38VjSlHX+Xh0mq9XpnrkxxqfsGY452ERhMoENPdzqMOJu/SJO6QMVgAyOhRrIUxeaFPDEmELB4kRwk+QQbNJpibMA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::9)
- by PAVPR08MB8893.eurprd08.prod.outlook.com (2603:10a6:102:321::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 5 Nov 2026
- 13:15:16 +0000
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8]) by AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8%4]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
- 13:15:16 +0000
-Message-ID: <7a7ae5ba-a57d-4024-b642-7b9798aa6311@virtuozzo.com>
-Date: Thu, 5 Nov 2026 14:15:14 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/4] selftests/mm: test fork of PMD-mapped shmem THPs
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
- <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-4-c56d0d26f970@virtuozzo.com>
- <ad6e93c7-203e-470f-804b-fbf7ac9890f2@gmail.com>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <ad6e93c7-203e-470f-804b-fbf7ac9890f2@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM9P193CA0015.EURP193.PROD.OUTLOOK.COM
- (2603:10a6:20b:21e::20) To AS2PR08MB9075.eurprd08.prod.outlook.com
- (2603:10a6:20b:5ff::9)
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AJAD0adZ
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D4776152B;
+	Thu,  5 Nov 2026 05:34:11 -0800 (PST)
+Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A10D3F628;
+	Thu,  5 Nov 2026 05:34:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793885654; bh=l14vhx5E/VbDt8tx/DC7VJgj77lpt87vUA3lRCAIukc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AJAD0adZM+HCYJxY7MSwwM7ewupYaBK7MHtAFWoJGwaLsy9a2Z3j0hqOYyLCD7h9l
+	 uZQcELPuN4SgmB/pGNNyGyoik9JIl7sAoIqln4XYNWCG+mWzdqV5Zl3w/eOB4igDB/
+	 a7d1AJeMDvSeVAgYKmR7bolgYmyGdI2IYsVoMx3k=
+Date: Thu, 5 Nov 2026 13:34:09 +0000
+From: Joey Gouly <joey.gouly@arm.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Quentin Perret <qperret@google.com>, Fuad Tabba <tabba@google.com>,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 05/16] KVM: arm64: selftests: Add protected-VM boot
+ trampoline
+Message-ID: <auyF0ePpUlJKZgNo@e143914.arm.com>
+References: <20261104084842.132944-1-fuad.tabba@linux.dev>
+ <20261104084842.132944-6-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,86 +70,168 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS2PR08MB9075:EE_|PAVPR08MB8893:EE_
-X-MS-Office365-Filtering-Correlation-Id: beebff2b-16fc-4dae-a729-08df3b3ed56f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|921020|10067099003|4143699003|56012099006|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	WFP/hKWZhOvZRNMRpWsRHDzOR7Wsx8nRBgzBIOLmlT0C9VThG6TT+PRxCTZpCQhlzC1AbmPivQ8TwgvRnoLYl9AZZvX7M6U45SMna8Tu76i7z5lNZP35FBLKkV1VKto/8HDF7Iowfrz7y6k/dJhGUFj18QJCjyPo2QAutP6SbSYMuxm5bFQcS4yl7TvbLB3UToXjcePYbRN6Rwck0UBcUMr8yGVjG5vhNcUH8UzCKLzlTP6LmeTdJNf1OrPsI53/zDVAGTe6SZ+T2lrNUK3ouuIsNjHy6EpTPguNFyJSpkdlir7szYcp6ajFRCI9yVbeWb3Z1URpY3IclbDyunkT8hLd8regD5+tfGuuPYq52DZJX9ouZ0fMbzxYjFNR9ODe4U6xOc9jlOgXu+0Bk2dpTvGEQfi/2wbeeTqD+oWAAQHupZSRkl6OUOInaCjqvKQ5iI4BF9Tme7jSyhCvJ5yEAOzPnqNJjGf1K72e8OcbNTkZJwN/3qah3QRjG5s2ElA1zZLW5gxcT/zyHz/7XEfy2RLpGYKjJyP+eJ0OrwsFPjBkHzLb/dHOhp6Mc0jQM9O5RkhT5z+kCsmDLtZaowFNpu1ncfkbD7RBUWJE33rONqVXdqpx7tBbjpcqg3yLtori9qJYcvrZUgb9xWj7QxlbPlcqpYc2ujrwY1TOT69gyNx6XCANAndRg2aqBgAEsOj5ZT8whTOimFi2rYp0ZuTH4g==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9075.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(921020)(10067099003)(4143699003)(56012099006)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V29SaE1oOXlaMjMxY3ZTbVFPQ2xhT3dTSjJnSnZCOG55K0NKTlJBdmpTSEla?=
- =?utf-8?B?S2g5TG0vRmdBbEhMMDhpZEh0VWUwQXVGQ0ZnWWFlOFM2YnZqOUxPa0xPc3Zj?=
- =?utf-8?B?aC9mRmF6UWxwMDBOblpWU1hZbTIyVHFrU240TVVPZmNTR1EvaUozajl3b1My?=
- =?utf-8?B?UjhsS3JvejZSREFxTWtXWmFQZW1NSC9hbWZyVFA0a3lFUFdSUlhqM1IzR3hT?=
- =?utf-8?B?NnZNdXBnTWNhand1czNRc0dDOURBdTZnS1hLZks5TXdsc1pDbGROcGwwaXJO?=
- =?utf-8?B?ZVRuNExXYjFLOUpkWW1ISXFBUEU3M25Wb3BGc0hXWHJrUEd0TDVNZnZJbitP?=
- =?utf-8?B?bS9zeExsblVzMlZxWXNoYnhGMENMMjhoQlI4SkwrcUNQMXhjMFpCdHIrUlo4?=
- =?utf-8?B?WGNjM0FZbU81enNCYWI3RFNhbUo0USs2U05kbDFQbGNuTXFZenV4L0tXTU5U?=
- =?utf-8?B?ekJmZHRCL05JUzRrdzVUM2Q5dU5RS0p0SGRRZ1BEQTJ2dlA5cStxZk1Bdnh0?=
- =?utf-8?B?d2RhMU4rdG5ZV2hMT3BlK3YrSjUzbzVKcTkrMkxMc2tPeDdLZ0FMYzRlcFNl?=
- =?utf-8?B?NW8wTVRaaEJLMEZtZncwRVQwazdtVmtyeHRHUzZwcWQwN3dnb2xoanYxbHR3?=
- =?utf-8?B?Qk1hWk1iZ1h1QURGbWhIQ0ovdmJHemVGQnpVdkdybUR5S21GRTg3eWt6cDUw?=
- =?utf-8?B?aDdCVSszWDU2bjV5NWNGclhkYldOYytBWVRSc0xTVXdlQW94YjRTVFBkdnFT?=
- =?utf-8?B?ZHlyQzdzTGF5cE54c0hRTVhPWkFZMHhLRHZqakllUXFhczROYzFKRGNsdURV?=
- =?utf-8?B?bGp4R0I3UDArcW9NWEFOVXcxNmZmbzd3QzkzSDIrMzRQeC9xMTY5ODVPdnI0?=
- =?utf-8?B?S29pM2xLeTcrdmRrQTB1UG91Y1QzK1U2WUxPM1VUWXpNMCtsb2w5TTIyV3hG?=
- =?utf-8?B?MGRpTmlsd0pwdEkyeHBUNnJabjlwQmNkV2Z1WlA5T1RZTDJHbVZqci9CcW9r?=
- =?utf-8?B?V2NwNTIvSFRUdWNkMXVPMk9RQUNVeXY3blAvSklieFpKUzBmTjBIVmVycGpu?=
- =?utf-8?B?eWt3SGtJKzZpbk4weFJYeEpsNmhpeUs3Vm9pMXVvQW9hZm1UN3lqcmJtOS9l?=
- =?utf-8?B?NnVTaHBCb0NYVWtxUlFyODh5Z2lvMVRBbEdOaFBQbC9KNXF2V2pkRXBCTXhh?=
- =?utf-8?B?RGp1cWpiV0xBUXN4RHhIcmFtQjlQd2FMR0kvMGtWMXVYRGJIT3hsT1VKRllF?=
- =?utf-8?B?YWp3RDd5NUloRmx2REh3V1p2V3kvbjFtR2c0NXdlQklZdUxzUVRFVzFnSWNy?=
- =?utf-8?B?M091c2hWdFErR1dpTXZFbjhQTXkxdmtCMVBvT2lHcWUxZHF6bHpKYjN1UVAy?=
- =?utf-8?B?NTREdzBsMkRWWlNMK0t1VldabmhNclN0eVVLTHFGd3pCYnRPOXQzaVI4bEl5?=
- =?utf-8?B?SE52MXQ3ZnFDWXRTbHl3UW5ONHpIaFVYYkpSRHRLOTIwUUhGdmpOa3BwVUhD?=
- =?utf-8?B?WXFOVVBOTis1dlVvWXZuNFBkV3k0eGFVeFViTHlPRW9XZE1UdFZhRFlSSk4w?=
- =?utf-8?B?OVpJNWNTSURiWnZNTmNpaW13RlhnVHJLR0JPVktmUEJLMXhMaHRJT0hOakNE?=
- =?utf-8?B?WlgzM3dFcW5Ec0lSemo3WmpQNVJUeE9qbG1Za0YvdDJLL0E1R0gwckJKTXFT?=
- =?utf-8?B?R1BaUW5JYTFCZXlnK0tmZHc5TTJiZ3V1RkFjQ0prZjlLRSt4RGRNRWpycUgv?=
- =?utf-8?B?RkJ6NXlOeWpYL21DMTBTdlVvQ1lQTnIxSG1pQVhNM09HZnUvYU1BQ1RDYlN3?=
- =?utf-8?B?cDlKZzRENXM5N0NoY1dzcjZMbHp4dnFTVXlralplRFR2U1pXL0xoWjlDdlk3?=
- =?utf-8?B?VUdYYTB3aFpIM3Q4NjFITWUvQVgrYUpLK3F1bHRiazlpZ2dmdTNHejJKamVn?=
- =?utf-8?B?M2xzQU9EenczTU1YcmZUQjVwZERzYzVTS1ovQjlCRnhZWk10cGsvTysxc0sr?=
- =?utf-8?B?L1d0MVpwRkhhRFREWjhlT2I5Q0RGWEpoTS8wZVk4RTVUZzJhem1DWHA5aFo0?=
- =?utf-8?B?TndKMWpXVVRLcDVvcDFHcDQrRlp2ZFJBQmtNVE85c3BGem5TQWtCOFo3SC9C?=
- =?utf-8?B?RzdpdjU4OXFRNkxmMXNhUVJwOStZcGs1SWRhb0l5Nk1qeEYvNWczRmYzajNZ?=
- =?utf-8?B?V25CTkFKNXdGcDFNcnpSZGhlNHJUeHNQSUZMeFoxMVo5VDFDNUhLbmhOUlAz?=
- =?utf-8?B?RGdRYWxwdk94TzMzUWlnaEVnVHM3Nm02MjdJeTV3WlJLK25raFZzUmV1QTJH?=
- =?utf-8?B?OC90NElibzBJTHRESjJZLzNrTDhNdTE1MkRUbkhGOUg0b2xmaWZpUT09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: beebff2b-16fc-4dae-a729-08df3b3ed56f
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR08MB9075.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 13:15:16.7384
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GY/GM1gca1yOw4lXEgMb+tx39FFTQ/7adYjNhbw14C/Ecm9Ds2ApZAeJDLmF5cJOfrhSXFVTv+zFyfx6bfkdkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB8893
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104084842.132944-6-fuad.tabba@linux.dev>
 
-On 11/5/26 00:15, Jose A. Perez de Azpillaga wrote:
-> On 11/4/26 9:40 PM, Konstantin Khorenko wrote:
->> +	pmdsize = read_pmd_pagesize();
+On Wed, Nov 04, 2026 at 08:48:31AM +0000, Fuad Tabba wrote:
+> EL2 takes only PC and X0 from the host when it boots a protected vCPU,
+> and resets everything else. So the registers the selftest library sets
+> before the first run never reach the guest.
 > 
-> read_pmd_pagesize() is pmd_psize() in mm-new since 5d123bb07b18
-> ("kselftest: mm: rename read_pmd_pagesize() to pmd_psize()"), so this
-> won't build there, will it?
+> Boot a protected guest through a trampoline that restores X0-X7, seven
+> EL1 system registers and the stack pointer from a block X0 points to,
+> then enables the MMU and branches to the guest's entry point.
+> 
+> Co-developed-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-Right, my fault: I based all the versions on Linus' tree, which still
-has read_pmd_pagesize(). On mm-new this patch needs a one-line
-s/read_pmd_pagesize/pmd_psize/, patches 1-3 apply as they are.
+Similar idea to the 'realm-boot' I added, and mentioned previously. I
+think it should work for Realms too.
 
-If a new version is needed, I'll base it on mm-new.
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 
-Thanks for the review!
-
--- 
-Cheers,
- Konstantin.
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+>  .../selftests/kvm/include/arm64/pkvm.h        | 50 ++++++++++++++++
+>  .../selftests/kvm/lib/arm64/pvm-entry.S       | 58 +++++++++++++++++++
+>  3 files changed, 109 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/include/arm64/pkvm.h
+>  create mode 100644 tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
+> 
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 17a4256e90819..c254e82f9a786 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -35,6 +35,7 @@ LIBKVM_arm64 += lib/arm64/gic_v3.c
+>  LIBKVM_arm64 += lib/arm64/gic_v3_its.c
+>  LIBKVM_arm64 += lib/arm64/handlers.S
+>  LIBKVM_arm64 += lib/arm64/processor.c
+> +LIBKVM_arm64 += lib/arm64/pvm-entry.S
+>  LIBKVM_arm64 += lib/arm64/spinlock.c
+>  LIBKVM_arm64 += lib/arm64/ucall.c
+>  LIBKVM_arm64 += lib/arm64/vgic.c
+> diff --git a/tools/testing/selftests/kvm/include/arm64/pkvm.h b/tools/testing/selftests/kvm/include/arm64/pkvm.h
+> new file mode 100644
+> index 0000000000000..6ef769b8ff977
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/include/arm64/pkvm.h
+> @@ -0,0 +1,50 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2025 Google LLC
+> + * Author: Fuad Tabba <fuad.tabba@linux.dev>
+> + * Author: Will Deacon <will@kernel.org>
+> + */
+> +
+> +#ifndef SELFTEST_KVM_ARM64_PKVM_H
+> +#define SELFTEST_KVM_ARM64_PKVM_H
+> +
+> +#ifndef __ASSEMBLER__
+> +/*
+> + * Register state the boot trampoline (pvm-entry.S) restores. Only PC and X0
+> + * survive to a protected guest's first run, so X0 points at this block.
+> + */
+> +struct pvm_boot_args {
+> +	u64	jump_tgt;
+> +
+> +	u64	regs[8];
+> +	u64	cpacr_el1;
+> +	u64	sctlr_el1;
+> +	u64	tcr_el1;
+> +	u64	mair_el1;
+> +	u64	ttbr0_el1;
+> +	u64	vbar_el1;
+> +
+> +	u64	tpidr_el1;
+> +	u64	sp_el1;
+> +};
+> +#endif
+> +
+> +#define PVM_BOOT_ARGS_OFF_JUMP_TGT	0
+> +#define PVM_BOOT_ARGS_OFF_X0		(PVM_BOOT_ARGS_OFF_JUMP_TGT + 8)
+> +#define PVM_BOOT_ARGS_OFF_X1		(PVM_BOOT_ARGS_OFF_X0 + 8)
+> +#define PVM_BOOT_ARGS_OFF_X2		(PVM_BOOT_ARGS_OFF_X1 + 8)
+> +#define PVM_BOOT_ARGS_OFF_X3		(PVM_BOOT_ARGS_OFF_X2 + 8)
+> +#define PVM_BOOT_ARGS_OFF_X4		(PVM_BOOT_ARGS_OFF_X3 + 8)
+> +#define PVM_BOOT_ARGS_OFF_X5		(PVM_BOOT_ARGS_OFF_X4 + 8)
+> +#define PVM_BOOT_ARGS_OFF_X6		(PVM_BOOT_ARGS_OFF_X5 + 8)
+> +#define PVM_BOOT_ARGS_OFF_X7		(PVM_BOOT_ARGS_OFF_X6 + 8)
+> +#define PVM_BOOT_ARGS_OFF_CPACR_EL1	(PVM_BOOT_ARGS_OFF_X7 + 8)
+> +#define PVM_BOOT_ARGS_OFF_SCTLR_EL1	(PVM_BOOT_ARGS_OFF_CPACR_EL1 + 8)
+> +#define PVM_BOOT_ARGS_OFF_TCR_EL1	(PVM_BOOT_ARGS_OFF_SCTLR_EL1 + 8)
+> +#define PVM_BOOT_ARGS_OFF_MAIR_EL1	(PVM_BOOT_ARGS_OFF_TCR_EL1 + 8)
+> +#define PVM_BOOT_ARGS_OFF_TTBR0_EL1	(PVM_BOOT_ARGS_OFF_MAIR_EL1 + 8)
+> +#define PVM_BOOT_ARGS_OFF_VBAR_EL1	(PVM_BOOT_ARGS_OFF_TTBR0_EL1 + 8)
+> +#define PVM_BOOT_ARGS_OFF_TPIDR_EL1	(PVM_BOOT_ARGS_OFF_VBAR_EL1 + 8)
+> +#define PVM_BOOT_ARGS_OFF_SP_EL1	(PVM_BOOT_ARGS_OFF_TPIDR_EL1 + 8)
+> +
+> +#endif /* SELFTEST_KVM_ARM64_PKVM_H */
+> diff --git a/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S b/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
+> new file mode 100644
+> index 0000000000000..a0974cde78da6
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
+> @@ -0,0 +1,58 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2025 Google LLC
+> + * Author: Fuad Tabba <fuad.tabba@linux.dev>
+> + * Author: Will Deacon <will@kernel.org>
+> + */
+> +
+> +#include "pkvm.h"
+> +
+> +	.text
+> +	.balign 16
+> +	.globl	pvm_entry_start
+> +pvm_entry_start:
+> +	mov	x30, x0
+> +
+> +	ldr	x0, [x30, #PVM_BOOT_ARGS_OFF_X0]
+> +	ldr	x1, [x30, #PVM_BOOT_ARGS_OFF_X1]
+> +	ldr	x2, [x30, #PVM_BOOT_ARGS_OFF_X2]
+> +	ldr	x3, [x30, #PVM_BOOT_ARGS_OFF_X3]
+> +	ldr	x4, [x30, #PVM_BOOT_ARGS_OFF_X4]
+> +	ldr	x5, [x30, #PVM_BOOT_ARGS_OFF_X5]
+> +	ldr	x6, [x30, #PVM_BOOT_ARGS_OFF_X6]
+> +	ldr	x7, [x30, #PVM_BOOT_ARGS_OFF_X7]
+> +
+> +	ldr	x8, [x30, #PVM_BOOT_ARGS_OFF_JUMP_TGT]
+> +
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_CPACR_EL1]
+> +	msr	cpacr_el1, x9
+> +
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TCR_EL1]
+> +	msr	tcr_el1, x9
+> +
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_MAIR_EL1]
+> +	msr	mair_el1, x9
+> +
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TTBR0_EL1]
+> +	msr	ttbr0_el1, x9
+> +
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_VBAR_EL1]
+> +	msr	vbar_el1, x9
+> +
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TPIDR_EL1]
+> +	msr	tpidr_el1, x9
+> +
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_SP_EL1]
+> +	mov	sp, x9
+> +
+> +	/* No stale TLB entries, and the writes above in effect, before the MMU is on. */
+> +	tlbi	vmalle1
+> +	dsb	nsh
+> +	isb
+> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_SCTLR_EL1]
+> +	msr	sctlr_el1, x9
+> +	isb
+> +
+> +	br	x8
+> +	.globl	pvm_entry_end
+> +pvm_entry_end:
+> -- 
+> 2.47.3
+> 
