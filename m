@@ -1,64 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793890723;
-	b=odyHJ2APMj684xYdBgTAb7DkB2VJRc3npb3UbcpEdwDk6UDmbhguSFBHOj+R0MVDLIKE
-	 jpcP8xhZdPa5io7Z1EYO2cq6qr/eGRhWNfXOzQmI6irzzSuabNIMvXw5eRwkj4YaXlqzB
-	 PA+lWGmaOjJ81TCQBMl+2sjwhpfF5sGy46GDGot9DBtvm5d/xuun6UGzy4BQRwmUIWql9
-	 EX/JZ/2itv5L56pJnE+oh3XD0gLO2x3/3pmpg87+ke7dlpmrfqmSJoG7U8dl8DIrFmG/I
-	 G05ImYZU/Z4RrUFpl/40Ogai2W4oEXdm7hSfa0AHwgTUoyiI65FPc040isT5MQuXK0A==
+	t=1793891167;
+	b=yOkDqb2eB1nLNJWKNss5P/VtOjsD7ubKfMl/lwgmmBJoQU2cdtPFR5ttrUZY1vHyiRJc
+	 +bhFpBOkOY8uxwj6ZK7QPIZzk6nDJvO6X6xwGvig+CGFoFr0ZgPFtFpYtJ4oQ8XUlLjCL
+	 ECRoVJXDzNHUJhryrVl6U/p7DuvzZXn6nKq6d8ewLuW5HiLSXnEFNK90fWRBpN55GFG+y
+	 EZncpElMzrpaXmgutBqM3qRreMaNW6N2YRXYAUBpuRcPEFiYK6F3myyS0PYbKlxaKnb6N
+	 qsK5UCPAEe0o5aT0+S5B1DFEeF64LYtRGal6CGT93S/sSMtKJmPjRbLuuj4jd7DyqCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793890723;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=YkeHMNN6y1G7/zXanJ/Atw+CKT/AoijUs//DrchVQLI=;
-	b=n2J8wHTNm9Ho+hhXOavomPzeR+SuZBpEe0Cunbs2slfkAQNzJZnyNeRTfluR4O/KrYrl
-	 UZgkw+47k7/Hats6lOCUJTrO0uPh+B7vWdi5BN3uT4tTG6KOGLF0WTEKittm/G4is//S5
-	 Uaq3jcT0SFuIKP80HuhMVHd1uHvNVkBHY8YRiIqWCcgaq/6z7d/4fIgx5ZPFk/xSlIW8s
-	 lO0JJwbrdidTdgKRckNrRxjL1kW02ti3OpQ6aGSP+PsmNLak1XNK2CbZbb+0fTLuI5nWL
-	 4cXQCh7rZtpw8OdtMP4kf1I4/BBOQI5lOdpvEFZegqxHLwqq1gzWzgS8i8C29e0LElA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793891167;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Yn0QkHatHx/W4aQMXIv5zjBEyzOdn1ftmVP/Kr4JG3I=;
+	b=Cvv2ssnVCiUpTpl/m+WZThK8FJgnBiaygK5DODAsBVE2dwDZtpEmpSM8yyrLqX6Gtodv
+	 23nlq8eDJq9AqE9OLDke5LU3fVnPM2qEU0R6csVVQgNkClkW7B2CN6k2RdXZA32HyFr7j
+	 b2VHv1b+8j6xgtX7f8ey6VXupxR771+cVhA2FV8eYlb5wdHR9NtC6Ur7vjqG7rTye+zic
+	 tiozuarIyykGFfcNS4jOGEkhaHBnveVGAjUTHS6/KStHDxcvYQsaNE26zfrCfCrycv3zg
+	 xI+cOHFDn7FKkXN4GHSk5XcKI9Oqa2+Cv91AsSOY3VdJMBRFDrEtyl6a24ykErjKFVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MRu0mLh+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A627606D82A
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 14:58:43 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=kKXfLjoc;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00FE606A328
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 15:06:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A00FE606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MRu0mLh+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AC31F00A02;
-	Thu,  5 Nov 2026 14:58:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793890722;
-	bh=YkeHMNN6y1G7/zXanJ/Atw+CKT/AoijUs//DrchVQLI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MRu0mLh+fr2178t2C2nFYeb4n3loY/6Eqd4vejbNcqkQ6xZxdBsffyVLRwV3wUYhi
-	 +htA+9GuJPqLNybLbCwofBJiiZmPW8HkZ3e/YiY/L32y7EyZavq3enDMTwwxxQRZHf
-	 gJeFrs5Kj/dQQAYgztbikAee4K2UfJzGch5B25H+KDZMywFe9Ah+6sWS3No6F23v5Z
-	 ur5kAjgW3uCVyBCis98MGm+UxcJf2jkLd2JLzNCRRf3Av7dV32UHEgzoDeTw2K2R2k
-	 CySE2MTIUhBFGiqunvJbNBRwBPxxQJ50cuVECLlbJGXncbadOde/8WiNmWE4sVjwQs
-	 LHYDlkHjBZsAQ==
-Date: Thu, 5 Nov 2026 08:58:36 -0600
-From: "Serge Hallyn (AMD)" <sergeh@kernel.org>
-To: Artem Bityutskiy <dedekind1@gmail.com>
-Cc: Peter Xu <peterx@redhat.com>,
-	Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-	Kishen Maloor <kishen.maloor@intel.com>, kvm@vger.kernel.org,
-	David.Kaplan@amd.com, Mathias.Brossard@arm.com
-Subject: Re: TDX migration model
-Message-ID: <auyZnIfxMnxYD8rT@shallyn-amd>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
- <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
- <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=kKXfLjoc
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E1B1F168F;
+	Thu,  5 Nov 2026 07:06:02 -0800 (PST)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0EAC3F628;
+	Thu,  5 Nov 2026 07:06:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793891166; bh=vR85onfgpCUJLCUOJVtduoihfsVyEmN6bASRt05GYAE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kKXfLjoclyMl8CP3Re4DQ96z4xr/dqy8V5kGJ/OP5jC95ZOfzQfIJo9MzX6dqZ6Ki
+	 jCsZ6IIq6tbX9oIWC069Ft0VmSwARjBJ5HFMZeihHBUb2RZohH524i9QGemxuSTrkw
+	 DIFGGCTU58ihEFxRV7Lfr+BTtJ1EN/QkipS8Zneg=
+Message-ID: <a2dfb2ad-7c52-43e1-8b77-cacb2fa00c05@arm.com>
+Date: Thu, 5 Nov 2026 15:06:03 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,49 +53,139 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/11] KVM: arm64: CCA: Prevent memslot modifications
+ after Realm creation
+To: Steven Price <steven.price@arm.com>, sashiko-reviews@lists.linux.dev,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Ackerley Tng <ackerleytng@google.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-10-steven.price@arm.com>
+ <sashiko-outbox-193708@kernel.org>
+ <9489ebe7-4c75-4229-811e-3f618028d367@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <9489ebe7-4c75-4229-811e-3f618028d367@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 04, 2026 at 03:51:45PM +0200, Artem Bityutskiy wrote:
-> Hi Peter, community,
+On 04/11/2026 11:15, Steven Price wrote:
+> On 02/11/2026 15:50, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+>> - [High] KVM: arm64: CCA: guest_memfd memslot delete rejected after Stage-2 unmap
+>> --
+>>
+>> commit 5106402397c36eec1e5fa59a5bb2c5adf4ee2aa8
+>> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>
+>> KVM: arm64: CCA: Prevent memslot modifications after Realm creation
+>>
+>> This commit updates kvm_arch_prepare_memory_region() to disallow creating,
+>> modifying, or deleting guest_memfd-backed memslots once a Realm has been
+>> created.
+>>
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index 51fda7b2ff7f3..eb8c5f9e9791d 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -2862,13 +2862,28 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>>>   	    (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
+>>>   		return -EPERM;
+>>>   
+>>> -	if (kvm->arch.vm_flavor == VM_PROTECTED_PKVM) {
+>>> +	switch (kvm->arch.vm_flavor) {
+>>> +	case VM_PROTECTED_PKVM:
+>>>   		/* Cannot modify memslots once a pVM has run. */
+>>>   		if (pkvm_hyp_vm_is_created(kvm) &&
+>>> -		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
+>>> +		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
+>>>   			return -EPERM;
+>>> -		}
+>>> +		break;
+>>> +	case VM_REALM:
+>>> +		/*
+>>> +		 * Once the Realm is created, we cannot modify any slots that
+>>> +		 * could be providing private memory. i.e., guest_memfd backed
+>>> +		 * slots.
+>>> +		 * TODO: Handle trusted device private memory slots
+>>> +		 */
+>>> +		if (!kvm_realm_is_created(kvm))
+>>> +			break;
+>>>   
+>>> +		if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
+>>> +			return -EPERM;
+>>
+>> [Severity: High]
+>> Does checking kvm_slot_has_gmem(old) in kvm_arch_prepare_memory_region() run
+>> too late to prevent Stage-2 unmapping when deleting a guest_memfd-backed
+>> memslot on a created Realm?
+>>
+>> In virt/kvm/kvm_main.c:kvm_set_memory_region(), non-delete changes
+>> (KVM_MR_MOVE and KVM_MR_FLAGS_ONLY) on KVM_MEM_GUEST_MEMFD memslots are
+>> already rejected upfront with -EINVAL, so kvm_slot_has_gmem(old) is reached
+>> here when change == KVM_MR_DELETE.
+>>
+>> However, in virt/kvm/kvm_main.c:kvm_set_memslot(), KVM invalidates and
+>> flushes the old memslot before calling kvm_prepare_memory_region():
+>>
+>> virt/kvm/kvm_main.c:kvm_set_memslot() {
+>> 	if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
+>> 		invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
+>> 		if (!invalid_slot) {
+>> 			mutex_unlock(&kvm->slots_arch_lock);
+>> 			return -ENOMEM;
+>> 		}
+>> 		kvm_invalidate_memslot(kvm, old, invalid_slot);
+>> 	}
+>>
+>> 	r = kvm_prepare_memory_region(kvm, old, new, change);
+>> 	if (r)
+>> 		goto err;
+>> }
+>>
+>> kvm_invalidate_memslot() marks the active slot as KVM_MEMSLOT_INVALID and
+>> calls arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot():
+>>
+>> arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot() {
+>> 	write_lock(&kvm->mmu_lock);
+>> 	kvm_stage2_unmap_range(&kvm->arch.mmu, gpa, size, true);
+>> 	kvm_nested_unmap_cipa_range(kvm, gpa, size, true);
+>> 	write_unlock(&kvm->mmu_lock);
+>> }
+>>
+>> For a Realm VM, kvm_stage2_unmap_range() invokes
+>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() with
+>> KVM_FILTER_PRIVATE | KVM_FILTER_SHARED:
+>>
+>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() {
+>> 	if (attr_filter & KVM_FILTER_SHARED)
+>> 		realm_unmap_shared_range(kvm, start, end, may_block);
+>> 	if (attr_filter & KVM_FILTER_PRIVATE)
+>> 		realm_unmap_private_range(kvm, start, end, may_block);
+>> }
+>>
+>> By the time kvm_arch_prepare_memory_region() returns -EPERM and
+>> kvm_set_memslot() restores the old memslot in the error path, hasn't
+>> realm_unmap_private_range() already unmapped and undelegated the Realm's
+>> private Stage-2 DATA granules across the memslot's GPA range?
+>>
 > 
-> Here is the TDX migration model doc that I mentioned in the CoCo migration
-> uAPI thread:
-> 
-> https://github.com/dedekind/dedekind-share/blob/master/2026/tdx-live-migration.md
-> 
-> The doc focuses on TDX only. It does not cover CoCo in general or
-> Linux/KVM. 
-> 
-> The goal is to lay out what the TDX module offers in terms of ABI and
-> migration flow today. Hopefully it is easier to read than the TDX specs,
-> which are much more detailed. Feedback is very welcome.
-> 
-> The uAPIs that we suggested were modeled around this flow and ABI. But
-> we kept general CoCo VMs in mind as much as we could.
-> 
-> The TDX live migration PoC implementation that we mentioned earlier follows
-> the flows and uses the ABIs described in the doc.
-> 
-> Thanks!
-> 
-> P.S. From the ARM talk and hallway conversations at Plumbers, I understood
-> that the ARM live migration flow is very similar to TDX. For SNP guests, we
-> have not heard enough yet.
-> 
-> Thanks,
-> Artem.
+> I think this should be fixable by checking in
+> kvm_arch_flush_shadow_memslot() and preserving the stage-2 mappings by
+> returning early. kvm_arch_prepare_memory_region() will then reject the
+> operation but the mappings will still be in place.
 
-Thanks, Artem!
+Or is the better fix to delay the kvm_invalidate_memslot() after 
+kvm_prepare_memory_region() ? i.e., if we the KVM backend doesn't
+approve the change, why do invalidate the slot ? For most of the CoCo
+VMs, this would be disastrous.
 
-So, looking at the section '### How the Setup Session Works', is it safe
-to assume that you are using the qemu migration fd for the message
-transfers?  So basically qemu loops over KVM_MIGRATE_SETUP calls, which
-is directed to platform-specific handlers, which in the tdx case calls
-TDH.MIG.SETUP, and this loop continues until TDX_SUCCESS?  If so, great,
-that mirrors pretty exactly what we were looking at for SNP.
+Suzuki
 
-thanks,
--serge
+
+
+> 
+> Steve
+
