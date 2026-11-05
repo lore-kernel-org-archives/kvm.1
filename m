@@ -1,61 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793836932;
-	b=YzaQxATNGXY5RKwydItbXLRFFsXbGYCG89lTgmPu9CfJBOKLuAd90rGTrz7enFnA5ifn
-	 mk8kblBYTveAmliebHfcQsX8Y9fi3Z4L81R9jMz4Z84iFQm9NsqxUouFSuQ+GMuVAmR+X
-	 59rQ+ry1mgfDyeNx82B/Qy9HQGmSOwFsAVtF6h1dl+hoO51MSRbBlZHXXXiA/bU2vxyB/
-	 4br2+a4iH40Z7Bikf9KC2O9bq4oFxPzVXBD2nAtfANg507UnXoarzh0EpV7CCa+B5ZdZI
-	 9lUw1Vo67UAt7ZAGh+mTDzR8v7tOrWcbmGq1A/fQV4FpbVkRGGYLve2oMqZUhXac/iw==
+	t=1793836961;
+	b=T/4n1q/Jt9xroQ3xv3TVqx/z6zcevLcib0eyAQITSFam9kFqpqLYPhN1vN32DI75n8rf
+	 uAXDYztPgTNJyy2aZ/c7wkO6ub4c50r1uwfOg231sYM9/Yw61CYBg29hd8BcIJ7kRvlOZ
+	 zj1XvNqrgoaUKsmivtYxZaFPVbjB94Gu8X2wHDyGHclrAXdK5z+jJAbhdCbguoG7379Gj
+	 JmvaN2aNLkx5B/0k6HdaZXNM2IBs3cfJ79XbbX9d1HOI27zpAxRxKaVvyeNg/9fvYuxNL
+	 CsefYvFhiGrPyHWyYKmZ5/+kzhapy7t25WhLUFiGv/g/nMb1AjgQoHRCDFPzwPanAfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793836932;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 X-Spam-Status:X-Spam-Checker-Version;
-	bh=LohI0OFoxJxkaEB+sGEh3geC60v7lkZMH4lAoeF1VKI=;
-	b=o/vVpt2uRPH4B1XzJm9eNcwkfGAA4HSs9N80tflXTBkPhg/tkKAd/w/ZlIVNEoxU283M
-	 ZFBndw4YMcFVsIxq2XsJi/4Rg3tH/lJfs1V/d7DfMf0JHonrDyiAuElhHQsObO50i7CSJ
-	 /qRC+FekDgF75SV/DeDcdiSCi7l/vSpLgvoAP9siPBd5BNlCS+RVbYFCWOzf9g3i08CUD
-	 2mrX4xnAk0yyXDY/dG2sNmjDtgg/xUbmNcLnBI/OsdNfj+IRWt9b5HhgRrxe/gHBRLQFt
-	 LgUhcaxSyVo8U9uuU6AlczoXXOtx3bW7RX7v5PHGxv740/pPkXBvPApFDPQ+6k52yrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793836961;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=I0dLEy0/RWH1lm8d6zJOmiHKcDSiY13O6lAZIBvefJE=;
+	b=Ia39ZCiT2bLhuFJwxtDzcHOZFDxfyZUVW3mzTQmYwO5N56joDsH5wNQu6yiWqquenele
+	 +p6y7QqWwzT2IYdvF1z6xIkRc995gvN621zxN5JpNdhdiBVQkXY3GfsNuzPhl93EOveXJ
+	 0T1ezqNE9lxx+vHg7M436dDbIWnQj3q4Czo7KDfv91+XCkRN1h93Pk1Jyr1DqaEnArIiC
+	 ON6JgdhCcms8rn8o73HluWILBFLaLSf5H7gu5QpKWceGKQXmDSTmaKmCBb0xFhy2g93uR
+	 NnpaxdUlEtTU/Qs+uzdRpuM+EUCupfFsOxmFmOMXUEDiwAPiiGIWUtm78bDM6ejDm5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=linuxhacker.ru;
-	spf=none smtp.mailfrom=linuxhacker.ru;
-	arc=none smtp.remote-ip=159.69.87.85
-Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iPEYS9Wa;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBE1606D839;
-	Thu,  5 Nov 2026 00:02:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FBE1606D839
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linuxhacker.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linuxhacker.ru
-Received: from intelbox1.virtnet (unknown [162.81.204.199])
-	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id BB0E7BEE80;
-	Thu,  5 Nov 2026 00:02:07 +0000 (UTC)
-From: Oleg Drokin <green@linuxhacker.ru>
-To: sgarzare@redhat.com,
-	stefanha@redhat.com,
-	mst@redhat.com
-Cc: jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	bobbyeshleman@meta.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 3/3] vsock/virtio: queue at most one credit update per socket
-Date: Wed,  4 Nov 2026 19:01:41 -0500
-Message-ID: <20261105000141.3617241-4-green@linuxhacker.ru>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261105000141.3617241-1-green@linuxhacker.ru>
-References: <20261105000141.3617241-1-green@linuxhacker.ru>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DDD606A329;
+	Thu,  5 Nov 2026 00:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iPEYS9Wa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2471F000C1;
+	Thu,  5 Nov 2026 00:02:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793836960;
+	bh=I0dLEy0/RWH1lm8d6zJOmiHKcDSiY13O6lAZIBvefJE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iPEYS9Wae8NoW+oX6Hkt3rDqmoP7Q+RYJgafe8t9g1bg7bX/lH9LlbruhkAVMD6EU
+	 he03MHr98J3B96Z1F/5ezqmQDqLFg0JAl7n4F601WZaTiIYaxTydBaaegdUUQ1e2vK
+	 Fhctx1r+c3QgGppAgn2Dyw8NpD9YoL9OsbEmQWttu63phMklwnnbXCr5Ddmo8DJ9yQ
+	 pXpbBhg+OHJrTE7UyhGHrPp1mrAfwZ6z8X/ooOoJQY8FcqIjmUuO5Y05EuPw29x2Tf
+	 fszcxTccXjCrdEr9g09MkKT9eBqxn2P+OD3DCmPaOv5HfeJbgDGz1DKp75EsaEeWx7
+	 z38y5eSlK4Aug==
+Date: Wed, 4 Nov 2026 16:02:38 -0800
+From: Oliver Upton <oupton@kernel.org>
+To: Sascha Bischoff <sascha.bischoff@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, maz@kernel.org, oliver.upton@linux.dev,
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
+	peter.maydell@linaro.org, lpieralisi@kernel.org,
+	timothy.hayes@arm.com, fuad.tabba@linux.dev
+Subject: Re: [PATCH v2 07/16] KVM: arm64: gic-v5: Add ITS guest table
+ translation emulation
+Message-ID: <auvHnnymzccd9OaF@kernel.org>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+ <20261102194454.4086911-8-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -65,230 +61,109 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102194454.4086911-8-sascha.bischoff@arm.com>
 
-A credit update carries no data, so the send credit never limits it,
-and the peer can solicit one at will: with OP_CREDIT_REQUEST, or by
-sending data that a local reader drains (a read that empties the
-receive queue sends one). A peer that posts no rx buffers can therefore
-make the other side queue credit updates without limit, about 1 KiB of
-unaccounted slab each for a 44-byte packet.
+On Mon, Nov 02, 2026 at 07:44:45PM +0000, Sascha Bischoff wrote:
+> +static int parse_linear_dt(struct kvm *kvm, gpa_t dt_base, u32 device_id,
+> +			   gpa_t *itt_base, bool *two_level_itt,
+> +			   unsigned int *event_id_bits, unsigned int *itt_l2sz)
+> +{
+> +	__le64 dt_l2_entry;
+> +	gpa_t entry_addr;
+> +	u64 val;
+> +	int ret;
+> +
 
-Do not queue a credit update while the socket's last queued packet is
-already one. Every packet carries fwd_cnt and buf_alloc, so a packet
-queued later makes the queued update redundant and lets a new one be
-queued after it. When a transport puts a queued update on the wire
-(vhost once it has an rx buffer for it, the guest driver when it adds
-it to the tx virtqueue, loopback when it delivers it) and nothing has
-been queued after it, it refreshes the update's fwd_cnt and buf_alloc
-and releases the socket. So a suppressed update always reaches the
-peer, either in the queued one or in a later packet, and the fwd_cnt
-the peer sees never goes back.
+<snip>
 
-connect() can move a socket to another transport, freeing its
-virtio_vsock_sock, while packets are still queued in the old one. So a
-tracked update holds a reference on the virtio_vsock_sock, and its skb
-destructor clears the socket's pointer to it and drops the reference,
-however the skb is freed: sent, purged or dropped.
+> +	entry_addr = dt_base + device_id * sizeof(__le64);
+> +	ret = kvm_read_guest_lock(kvm, entry_addr, &dt_l2_entry,
+> +				  sizeof(dt_l2_entry));
+> +	if (ret) {
+> +		kvm_debug("Failed to read guest memory for L2 DT\n");
 
-A peer can thus make a connection queue at most one credit update, plus
-one per packet the socket itself queued after it.
+99% chance of this being either the guest or userspace's fault. I don't
+see any reason why we need to carry a pr_debug() here.
 
-Counting credit updates in queued_replies instead would not work: most
-of them are sent by local reads, not in answer to the peer, and under
-bidirectional traffic vhost would stop reading the guest's tx queue
-while the guest stops reading its rx queue, each waiting for the other.
+What would be nice is some preparatory return codes or helpers for
+recording the SWERR that caused an ITS operation to fail so we can add
+support for ITS_IDR0.SWE later on.
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
----
- drivers/vhost/vsock.c                   |  2 +
- include/linux/virtio_vsock.h            |  5 ++
- net/vmw_vsock/virtio_transport.c        |  2 +
- net/vmw_vsock/virtio_transport_common.c | 62 ++++++++++++++++++++++++-
- net/vmw_vsock/vsock_loopback.c          |  1 +
- 5 files changed, 71 insertions(+), 1 deletion(-)
+The GICv3 ITS made a half-attempt at doing this. Even though it never
+conveyed that information to the guest, I think it was a net-win in
+terms of readability.
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index b0004cb48999..f1b47a826ca4 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -176,6 +176,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 			break;
- 		}
- 
-+		virtio_transport_credit_update_xmit(skb);
-+
- 		if (out) {
- 			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
- 			vq_err(vq, "Expected 0 output buffers, got %u\n", out);
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index f91704731057..6c3fc8faca0b 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -13,6 +13,7 @@ struct virtio_vsock_skb_cb {
- 	bool reply;
- 	bool tap_delivered;
- 	u32 offset;
-+	struct virtio_vsock_sock *vvs;
- };
- 
- #define VIRTIO_VSOCK_SKB_CB(skb) ((struct virtio_vsock_skb_cb *)((skb)->cb))
-@@ -167,6 +168,9 @@ struct virtio_vsock_sock {
- 	u32 buf_used;
- 	struct sk_buff_head rx_queue;
- 	u32 msg_count;
-+	struct sk_buff *credit_update;
-+
-+	refcount_t refcnt;
- };
- 
- struct virtio_vsock_pkt_info {
-@@ -283,6 +287,7 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
- void virtio_transport_recv_pkt(struct virtio_transport *t,
- 			       struct sk_buff *skb, struct net *net);
- void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
-+void virtio_transport_credit_update_xmit(struct sk_buff *skb);
- u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
- void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
- void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 4f9aa9c4c3aa..82cd52249de3 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -104,6 +104,8 @@ static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
- 	int ret, in_sg = 0, out_sg = 0;
- 	struct scatterlist **sgs;
- 
-+	virtio_transport_credit_update_xmit(skb);
-+
- 	sgs = vsock->out_sgs;
- 	sg_init_one(sgs[out_sg], virtio_vsock_hdr(skb),
- 		    sizeof(*virtio_vsock_hdr(skb)));
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 74a8fdf825d5..65d6e0790e72 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -604,18 +604,68 @@ static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
- 	vvs->fwd_cnt += bytes_dequeued;
- }
- 
-+static void virtio_transport_put_vvs(struct virtio_vsock_sock *vvs)
-+{
-+	if (refcount_dec_and_test(&vvs->refcnt))
-+		kfree(vvs);
-+}
-+
-+static void virtio_transport_credit_update_destruct(struct sk_buff *skb)
-+{
-+	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
-+
-+	spin_lock_bh(&vvs->rx_lock);
-+	if (vvs->credit_update == skb)
-+		vvs->credit_update = NULL;
-+	spin_unlock_bh(&vvs->rx_lock);
-+
-+	virtio_transport_put_vvs(vvs);
-+	sock_wfree(skb);
-+}
-+
- void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	bool track = le16_to_cpu(hdr->op) == VIRTIO_VSOCK_OP_CREDIT_UPDATE &&
-+		     skb->destructor == sock_wfree;
-+
-+	/* The skb pins vvs, which connect() may detach from the socket. */
-+	if (track) {
-+		refcount_inc(&vvs->refcnt);
-+		VIRTIO_VSOCK_SKB_CB(skb)->vvs = vvs;
-+		skb->destructor = virtio_transport_credit_update_destruct;
-+	}
- 
- 	spin_lock_bh(&vvs->rx_lock);
- 	vvs->last_fwd_cnt = vvs->fwd_cnt;
- 	hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
- 	hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
-+	vvs->credit_update = track ? skb : NULL;
- 	spin_unlock_bh(&vvs->rx_lock);
- }
- EXPORT_SYMBOL_GPL(virtio_transport_inc_tx_pkt);
- 
-+/* Called by the transports when @skb is put on the wire. */
-+void virtio_transport_credit_update_xmit(struct sk_buff *skb)
-+{
-+	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
-+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+
-+	if (!vvs)
-+		return;
-+
-+	spin_lock_bh(&vvs->rx_lock);
-+	/* Still the socket's last packet: carry what was suppressed. */
-+	if (vvs->credit_update == skb) {
-+		vvs->credit_update = NULL;
-+		vvs->last_fwd_cnt = vvs->fwd_cnt;
-+		hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
-+		hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
-+	}
-+	spin_unlock_bh(&vvs->rx_lock);
-+}
-+EXPORT_SYMBOL_GPL(virtio_transport_credit_update_xmit);
-+
- void virtio_transport_consume_skb_sent(struct sk_buff *skb, bool consume)
- {
- 	struct sock *s = skb->sk;
-@@ -667,11 +717,20 @@ EXPORT_SYMBOL_GPL(virtio_transport_put_credit);
- 
- static int virtio_transport_send_credit_update(struct vsock_sock *vsk)
- {
-+	struct virtio_vsock_sock *vvs = vsk->trans;
- 	struct virtio_vsock_pkt_info info = {
- 		.op = VIRTIO_VSOCK_OP_CREDIT_UPDATE,
- 		.vsk = vsk,
- 		.net = sock_net(sk_vsock(vsk)),
- 	};
-+	bool queued;
-+
-+	spin_lock_bh(&vvs->rx_lock);
-+	queued = vvs->credit_update;
-+	spin_unlock_bh(&vvs->rx_lock);
-+
-+	if (queued)
-+		return 0;
- 
- 	return virtio_transport_send_pkt_info(vsk, &info);
- }
-@@ -1086,6 +1145,7 @@ int virtio_transport_do_socket_init(struct vsock_sock *vsk,
- 	spin_lock_init(&vvs->rx_lock);
- 	spin_lock_init(&vvs->tx_lock);
- 	skb_queue_head_init(&vvs->rx_queue);
-+	refcount_set(&vvs->refcnt, 1);
- 
- 	return 0;
- }
-@@ -1276,8 +1336,8 @@ void virtio_transport_destruct(struct vsock_sock *vsk)
- 
- 	virtio_transport_cancel_close_work(vsk, true);
- 
--	kfree(vvs);
- 	vsk->trans = NULL;
-+	virtio_transport_put_vvs(vvs);
- }
- EXPORT_SYMBOL_GPL(virtio_transport_destruct);
- 
-diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
-index 8068d1b6e851..84342a97a513 100644
---- a/net/vmw_vsock/vsock_loopback.c
-+++ b/net/vmw_vsock/vsock_loopback.c
-@@ -134,6 +134,7 @@ static void vsock_loopback_work(struct work_struct *work)
- 	spin_unlock_bh(&vsock->pkt_queue.lock);
- 
- 	while ((skb = __skb_dequeue(&pkts))) {
-+		virtio_transport_credit_update_xmit(skb);
- 		/* Decrement the bytes_unsent counter without deallocating skb
- 		 * It is freed by the receiver.
- 		 */
--- 
-2.56.0
+> +		return ret;
+> +	}
+> +
+> +	val = le64_to_cpu(dt_l2_entry);
 
+</snip>
+
+Feels like "read the Nth entry from this table out of guest memory"
+should be done in a helper shared with the other callsites. On top of
+that, arm64 is little-endian only as of 7.4.
+
+While I'm not saying we should go tear out every instance of byteorder
+twiddling, I think that shared helper would be an excellent spot to
+either do the le_to_cpu() or document the fact that both the kernel and
+the ITS are LE-only.
+
+> +	if (!FIELD_GET(GICV5_DTL2E_VALID, val)) {
+> +		kvm_debug("Guest DT entry is invalid\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	*itt_base = FIELD_GET(GICV5_DTL2E_ITT_ADDR_MASK, val) << 3;
+> +	*two_level_itt = FIELD_GET(GICV5_DTL2E_ITT_STRUCTURE, val);
+> +	*event_id_bits = FIELD_GET(GICV5_DTL2E_EVENT_ID_BITS, val);
+> +	*itt_l2sz = FIELD_GET(GICV5_DTL2E_ITT_L2SZ, val);
+
+Same sense brewing here about the parsing, with the added gripe that
+multiple out pointers can be a bit annoying to cope with. I'd rather see
+the literal DTE get passed around or we use a struct containing all the
+extracted fields we care about.
+
+> +static int parse_two_level_dt(struct kvm *kvm, gpa_t dt_base,
+> +			      unsigned int dt_l2sz, u32 device_id,
+> +			      gpa_t *itt_base, bool *two_level_itt,
+> +			      unsigned int *event_id_bits,
+> +			      unsigned int *itt_l2sz)
+
+Any reason why this can't be anchored on a pointer to the ITS? Because
+you're passing down a lot of state that's just per-ITS context.
+
+> +	if (device_id >= 1UL << device_id_bits) {
+
+BIT_ULL()?
+
+> +static int parse_two_level_itt(struct kvm *kvm, u32 event_id, gpa_t itt_base,
+> +			       unsigned int itt_l2sz, __le64 *itt_l2_entry)
+> +{
+> +	unsigned int itt_split_bits, l2_event_id_bits;
+> +	gpa_t itt_l2_base, entry_addr;
+> +	u32 l1_event_id, l2_event_id;
+> +	__le64 itt_l1_entry;
+> +	u64 val;
+> +	int ret;
+> +
+> +	switch (itt_l2sz) {
+> +	case 0:
+> +		itt_split_bits = 9;
+> +		break;
+> +	case 1:
+> +		itt_split_bits = 11;
+> +		break;
+> +	case 2:
+> +		itt_split_bits = 13;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+
+this should be a shared helper
+
+Thanks,
+Oliver
