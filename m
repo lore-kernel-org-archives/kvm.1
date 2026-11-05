@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793866867;
-	b=DPDa1DwocO4XM6soVPF4Oly4/WwSS/UkFltpvufe8KRXMFVnEpkqpUwfHEkbBR49kBYr
-	 KcnFgTCV7Ll96kYLV3vEj729/uw4VW5uBn801XOZbIdRIqVgg9q63LshtLiRv5XvzpXWx
-	 Xuv2Vx95GGk5I/RU/SPIav5L7WZSZN3Q6nfHM9ZylBTOt6cNFVDlbi4tCaw+sK2oul3Os
-	 jxP683KxlFdMwzxAtGc16Lz1ZkA/pUgyc83GjHSYOHj97rsnfgI1+YagfMEoIdcYKJVAx
-	 x/lfJFzfRsrln1f4na5ak9eaiJZHsqmRxFGpR6RBSUTjkintvYP8oKNEPE+jFR7JJcw==
+	t=1793866858;
+	b=ezkZRHlWNeNsuRolOF2IDEYc543yHldbybWsJSGseye7SCDb+znBdtObsKuObAdQpjXg
+	 vYXbo3Jk7vyA7RZCI/KT17BSwzNVSX8uYpno7GBus7GNghvQlwuXkccGqbqVWhnIZf6Va
+	 ViPfINAf+mCVNuZYy/LFXY1lEr9vdcZPDYtOQsaVGCZLal8DBjkjkZCMRko1z8oC20Ygz
+	 9GPY1Ia29msL+1G2OMnVsuH9Tb1QLUhU/RnCd063RuAaTGSmmZBtZmiJK3nlzaQiV9M9L
+	 HwlLjZtCua6jNNavH0fs45xiM9KJfXP98ORRIXoUKfmujzLeZytUFiUzUm+5V2gPf3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793866867;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793866858;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=GQPlZS0ThlW8ARB1A9vQ16a2xVlhrXJt8Jk6pUCHY7w=;
-	b=Hbmqv7rMlN3iFkGBfPiho1H9Pcoa31XU8hkcKxlyMRXHYaJLRaS93txlbMWyGb0CpT1O
-	 10RcqgNIO0mK5I2rhX3rUizpmVOUrpX1I2dPknXefhrpbytAo+RDhfpsptyq1z5W6CrzE
-	 IdRXHuopmL7rzFGlI5iDqb5kjJBUiVR1+8kYcppYKEKi5VnoPWfTQPZxTavyH8ankJzIY
-	 gbxlqzP9G2yx8Ikakybg6May8lraTN7j18eDQ4Znu33GYNf9g07K0iml8iyqbjacrohiQ
-	 9/hokGGZ3f6NygShWRT4EAiLGECd5LPo0O4xYlSAFg1uoue8nXVokPcA7o10sM5ImbQ==
+	bh=yN3uXoIXvKaAUvBKeRTjIGJkqG8HmaAHG0+w4rxHn/U=;
+	b=wL0gGFhqlcbv1FaVOUodTHFdz8DdGHQKzCupvcV/eeR2VlMPyNTa62w5FhE7doELQXwr
+	 XBJnnnSh9kNRKW69iTGyCMLm7J0U6NeYdOER64hEcwjsobw9UVqG0SMSyqfrz3QsEqgrU
+	 DM46X5jlzYJp4edk5caZxkOyHVPJDeiPKlmfnaGE/5oAAE/em6+oI600BKyCjl7Xnskw5
+	 csT3IF0dQa2yXflOxgUI/UinHFcLr1LwbKVo7LtAh5ZEP/19GkSGqfea2h3tHhTMoDvHU
+	 16P+sKWH+XvSDMQviIpuB0qOR7lz0b9CBRutrb4eQYNe5oWAfP5BSOvvDFU5DjEIL9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,13 +25,13 @@ Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879A0606D805
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 08:20:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 879A0606D805
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E69606A329
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 08:20:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40E69606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost (unknown [122.194.100.204])
-	by APP-01 (Coremail) with SMTP id qwCowABXgvxZPOxq0idRAA--.3359S2;
+	by APP-01 (Coremail) with SMTP id qwCowAD3I_5ZPOxq3idRAA--.3647S2;
 	Thu, 05 Nov 2026 16:20:41 +0800 (CST)
 From: Xiang W <wangxiang@iscas.ac.cn>
 To: kvm@vger.kernel.org,
@@ -40,9 +40,9 @@ Cc: andrew.jones@linux.dev,
 	Xiang W <wangxiang@iscas.ac.cn>,
 	pbonzini@redhat.com,
 	thuth@redhat.com
-Subject: [kvm-unit-tests PATCH v2 4/8] riscv: Add ACPI support for ISA string discovery
-Date: Thu,  5 Nov 2026 16:20:31 +0800
-Message-ID: <20261105082035.133680-5-wangxiang@iscas.ac.cn>
+Subject: [kvm-unit-tests PATCH v2 5/8] riscv: Prefer SBI DBCN console with UART fallback
+Date: Thu,  5 Nov 2026 16:20:32 +0800
+Message-ID: <20261105082035.133680-6-wangxiang@iscas.ac.cn>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261105082035.133680-1-wangxiang@iscas.ac.cn>
 References: <20261105082035.133680-1-wangxiang@iscas.ac.cn>
@@ -56,10 +56,10 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABXgvxZPOxq0idRAA--.3359S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWFWrtw1DuFy8JrWktrWrZrb_yoWrtw1fpF
-	4fK34YyrsrJa1xW34Sq3yjvw43GrykCr4xtrs3JaySyw4kGa4jqF4kKF1rZFyrJan5Wa1a
-	vrs8KayjgF1UAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:qwCowAD3I_5ZPOxq3idRAA--.3647S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAw48JFW7tr1rZryxXF1kXwb_yoW5Ar1UpF
+	sxKFZIyr1rJFs5Xa97Jr1kuws8K3Z7u345Kr48Jw1Sv3yDX3yDZws5ta4av3sxWry7JF45
+	AFsagr93CF4UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
@@ -69,206 +69,130 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxWFWrtw1DuFy8JrWktrWrZrb_yoWrtw1fpF
 	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
 	AVWUtwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
 	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7
 	IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
 	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
 	IFyTuYvjfU8a9aDUUUU
 X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
 
-When a DT is not provided, walk the RHCT Hart Info nodes and parse
-the referenced ISA String node instead of aborting in isa_init()
-and cpu_has_extension_name().
+CONFIG_SBI_CONSOLE already routes output through SBI DBCN, but console
+setup still always went through the UART init path. uart0_init_fdt()
+could skip a missing UART while uart0_init_acpi() aborted, so EFI/ACPI
+guests without a described MMIO UART could not print.
 
-Match the current hart by ACPI UID (DT still matches by hartid)
-and feed the ISA string into the existing isa_parse() helper so
-extension detection is shared by both firmware descriptions.
+Probe SBI_EXT_DBCN first. When it is available, use
+SBI_EXT_DBCN_CONSOLE_WRITE and skip UART setup. Otherwise fall back to
+the existing FDT or ACPI UART path. This keeps a UART fallback (as
+required by the server platform spec on ACPI systems) while allowing
+pure SBI-console environments to boot without an MMIO UART.
 
-Rename isa_info.hartid to isa_info.id so the same iterator state
-can hold either identifier.
+Rename the lock from uart_lock to console_lock since it now protects
+both console backends.
 
 Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
 ---
- lib/acpi.h      | 28 +++++++++++++++++
- lib/riscv/isa.c | 81 ++++++++++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 102 insertions(+), 7 deletions(-)
+ lib/riscv/io.c | 41 ++++++++++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 17 deletions(-)
 
-diff --git a/lib/acpi.h b/lib/acpi.h
-index 0589669b..d5e238a9 100644
---- a/lib/acpi.h
-+++ b/lib/acpi.h
-@@ -334,6 +334,34 @@ struct acpi_table_rhct {
- 	u32 node_offset;
- };
+diff --git a/lib/riscv/io.c b/lib/riscv/io.c
+index b1163404..af38a540 100644
+--- a/lib/riscv/io.c
++++ b/lib/riscv/io.c
+@@ -28,7 +28,10 @@
+ static volatile u8 *uart0_base = UART_EARLY_BASE;
+ static u32 uart0_reg_width = 1;
+ static u32 uart0_reg_shift;
+-static struct spinlock uart_lock;
++static struct spinlock console_lock;
++#ifdef CONFIG_SBI_CONSOLE
++static bool has_dbcn;
++#endif
  
-+#define ACPI_RHCT_NODE_HEADER_DEF \
-+	u16 type;	\
-+	u16 length;	\
-+	u16 revision;	\
-+
-+struct acpi_rhct_node {
-+	ACPI_RHCT_NODE_HEADER_DEF
-+	char data[];
-+};
-+
-+enum acpi_rhct_node_type {
-+	ACPI_RHCT_NODE_TYPE_ISA_STRING = 0x0,
-+	ACPI_RHCT_NODE_TYPE_HART_INFO = 0xFFFF
-+};
-+
-+struct acpi_rhct_node_isa_string {
-+	ACPI_RHCT_NODE_HEADER_DEF
-+	u16 isa_length;
-+	char isa[];
-+};
-+
-+struct acpi_rhct_node_hart_info {
-+	ACPI_RHCT_NODE_HEADER_DEF
-+	u16 num_offsets;
-+	u32 uid;
-+	u32 nodes[];
-+};
-+
- /* Reset to default packing */
- #pragma pack()
- 
-diff --git a/lib/riscv/isa.c b/lib/riscv/isa.c
-index bc1c9c72..91c7302c 100644
---- a/lib/riscv/isa.c
-+++ b/lib/riscv/isa.c
-@@ -12,7 +12,7 @@
- typedef void (*isa_func_t)(const char *, int, void *);
- 
- struct isa_info {
--	unsigned long hartid;
-+	unsigned long id;
- 	isa_func_t func;
- 	void *data;
- };
-@@ -74,7 +74,7 @@ static void isa_parse_fdt(int cpu_node, u64 hartid, void *data)
- 	const struct fdt_property *prop;
- 	int len;
- 
--	if (hartid != info->hartid)
-+	if (hartid != info->id)
- 		return;
- 
- 	prop = fdt_get_property(dt_fdt(), cpu_node, "riscv,isa", &len);
-@@ -83,32 +83,92 @@ static void isa_parse_fdt(int cpu_node, u64 hartid, void *data)
- 	isa_parse(prop->data, len, info);
- }
- 
--static void isa_init_acpi(void)
-+#ifdef CONFIG_EFI
-+#include <acpi.h>
-+
-+static void isa_parse_acpi(struct acpi_table_rhct *rhct,
-+			   struct acpi_rhct_node_hart_info *hart_info, void *data)
+ static u32 uart0_read(u32 num)
  {
--	assert_msg(false, "ACPI not available");
-+	u32 offset;
-+	struct acpi_rhct_node *node;
-+	struct acpi_rhct_node_isa_string *isa_string;
-+	struct isa_info *info = (struct isa_info *)data;
-+
-+	if (hart_info->uid != info->id)
+@@ -71,16 +74,11 @@ static void uart0_init_fdt(void)
+ 				break;
+ 		}
+ 
+-#ifdef CONFIG_SBI_CONSOLE
+-		uart0_base = NULL;
+-		return;
+-#else
+ 		if (ret) {
+ 			printf("%s: Compatible uart not found in the device tree, aborting...\n",
+ 			       __func__);
+ 			abort();
+ 		}
+-#endif
+ 	} else {
+ 		const fdt32_t *val;
+ 		int len;
+@@ -107,6 +105,12 @@ static void uart0_init_acpi(void)
+ 
+ void io_init(void)
+ {
++#ifdef CONFIG_SBI_CONSOLE
++	if (sbi_probe(SBI_EXT_DBCN)) {
++		has_dbcn = true;
 +		return;
-+
-+	for (int i = 0; i < hart_info->num_offsets; i++) {
-+		offset = hart_info->nodes[i];
-+		if (offset >= rhct->length)
-+			break;
-+		node = (void *)rhct + offset;
-+		if (node->type == ACPI_RHCT_NODE_TYPE_ISA_STRING) {
-+			isa_string = (void *) node;
-+			isa_parse(isa_string->isa, isa_string->isa_length, info);
-+		}
 +	}
-+}
-+
-+static int acpi_rhct_for_each_hart(void (*func)(struct acpi_table_rhct *,
-+						 struct acpi_rhct_node_hart_info *,
-+						 void *), void *data)
-+{
-+	u32 offset;
-+	struct acpi_table_rhct *rhct;
-+	struct acpi_rhct_node *node;
-+	struct acpi_rhct_node_hart_info *hart_info;
-+
-+	rhct = find_acpi_table_addr(RHCT_SIGNATURE);
-+	if (rhct == NULL)
-+		return -1;
-+
-+	offset = rhct->node_offset;
-+	for (int i = 0; i < rhct->node_count; i++) {
-+		if (offset >= rhct->length)
-+			return -1;
-+
-+		node = (void *)rhct + offset;
-+		if (node->length < sizeof(*node))
-+			return -1;
-+
-+		if (node->type == ACPI_RHCT_NODE_TYPE_HART_INFO) {
-+			hart_info = (void *)node;
-+			func(rhct, hart_info, data);
-+		}
-+
-+		offset += node->length;
-+	}
-+
-+	return 0;
- }
 +#endif
- 
- void isa_init(struct thread_info *ti)
- {
- 	struct isa_info info = {
--		.hartid = ti->hartid,
- 		.func = isa_bit,
- 		.data = ti,
- 	};
- 	int ret;
- 
- 	if (dt_available()) {
-+		info.id = ti->hartid;
- 		ret = dt_for_each_cpu_node(isa_parse_fdt, &info);
- 		assert(ret == 0);
- 	} else {
--		isa_init_acpi();
-+#ifdef CONFIG_EFI
-+		info.id = ti->uid;
-+		ret = acpi_rhct_for_each_hart(isa_parse_acpi, &info);
-+		assert(ret == 0);
-+#else
-+		assert_msg(false, "ACPI not available");
-+#endif
+ 	if (dt_available())
+ 		uart0_init_fdt();
+ 	else
+@@ -119,38 +123,41 @@ void io_init(void)
  	}
  }
  
- bool cpu_has_extension_name(int cpu, const char *ext)
+-void sbi_puts(const char *s);
+-void sbi_puts(const char *s)
++#ifdef CONFIG_SBI_CONSOLE
++static void sbi_puts(const char *s)
  {
- 	struct isa_info info = {
--		.hartid = cpus[cpu].hartid,
- 		.func = isa_name,
- 		.data = &(struct isa_check){ .ext = ext, },
- 	};
-@@ -116,10 +176,17 @@ bool cpu_has_extension_name(int cpu, const char *ext)
- 	int ret;
+ 	phys_addr_t addr = virt_to_phys((void *)s);
+ 	unsigned long hi = upper_32_bits(addr);
+ 	unsigned long lo = lower_32_bits(addr);
  
- 	if (dt_available()) {
-+		info.id = cpus[cpu].hartid;
- 		ret = dt_for_each_cpu_node(isa_parse_fdt, &info);
- 		assert(ret == 0);
- 	} else {
-+#ifdef CONFIG_EFI
-+		info.id = cpus[cpu].uid;
-+		ret = acpi_rhct_for_each_hart(isa_parse_acpi, &info);
-+		assert(ret == 0);
-+#else
- 		assert_msg(false, "ACPI not available");
+-	spin_lock(&uart_lock);
++	spin_lock(&console_lock);
+ 	sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE, strlen(s), lo, hi, 0, 0, 0);
+-	spin_unlock(&uart_lock);
++	spin_unlock(&console_lock);
+ }
 +#endif
- 	}
  
- 	return check->found;
+-void uart0_puts(const char *s);
+-void uart0_puts(const char *s)
++static void uart0_puts(const char *s)
+ {
+ 	assert(uart0_base);
+-	spin_lock(&uart_lock);
++	spin_lock(&console_lock);
+ 	while (*s) {
+ 		while (!(uart0_read(UART_LSR_OFFSET) & UART_LSR_THRE))
+ 			;
+ 		uart0_write(0, *s++);
+ 	}
+-	spin_unlock(&uart_lock);
++	spin_unlock(&console_lock);
+ }
+ 
+ void puts(const char *s)
+ {
+ #ifdef CONFIG_SBI_CONSOLE
+-	sbi_puts(s);
+-#else
+-	uart0_puts(s);
++	if (has_dbcn) {
++		sbi_puts(s);
++		return;
++	}
+ #endif
++
++	uart0_puts(s);
+ }
+ 
+ /*
 -- 
 2.47.3
 
