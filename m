@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793893804;
-	b=bYdXBiqNes3uK8PR6bb0emOaZK0dY1FZJoeUqiQFZCMN18YHirfxm6iMtB+NW1FFC6YZ
-	 JWM+PjnnDyjURzGRt/0PR9s6bfRnhj1YGjJ2HQ/7cxaMvimYXpb/QDmRE30B5Sux43c7g
-	 r4O93JSJo0/hCBbsYS/pSxLUmotng7KPKFmKURPBUIjZeaAb/sGwbVg8ohTmTSNZud0Yp
-	 vWUieU7YIDD8L4q9nypJ4ftefmpHFMKmO5JW4zE7LH3Tb+wMYnEcK8ni4+wqs46AVPjgx
-	 U3kIG+/lsWpLUU69kNEOdt0N2cSYQ+8Ejqm0IYvn00Skd5QQINqkQGWJKat8+saOX8g==
+	t=1793893807;
+	b=GZTEgVmuvnm8LajnPBW9p9mxL+fiBYc1ZJC9tjjwD21FwTcAQEPjP0jj0BuGS0eFlOV8
+	 //e9V0zoMtAlQenEz9E/OHx0P5IupqoogSPZKYfxvaihA+i4RF0wYO91vUkW/ZOi8hcnf
+	 0wirG4/zfPWZ7IfuP3cwGp5V+tB69HW+/FUhHESUICAO+SdAIKx+vcHnrgYE2TP9mOtuK
+	 /PL5UZxjJ8ksY4TpGqddGh6Q3BB308bp8DECCpg9TRHlzAN+QO+BtvtwjgWqqBzAScRlQ
+	 RsW2UTT9ycqLLYV1cDgH7H+O3feirEOEet02+6nVA46GEgUWQIiQut4F4pSHO6tMZ1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793893804;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793893807;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=H+VBL9OJwUW+IzdV5LCITp9ezCq4N+iWOV0zwHTcOS8=;
-	b=Ffxg4r4h4EHonKM4+Kw4LStRpx/x3yT6TgI5kezwm3mNptlJ72a58rfd0c/absgc1Qrv
-	 v3F/B//m27jrRuZxxyqBPAVniPxzD8WaNUCN/CBqNOtidqlsl8hnd1Eu3dI2n4zX+v+En
-	 G4GjIXW/K1X3T2571oOTo0qVHilNCJscPz6oRQ/77rCO1YADCTV3wnD80RD4Cs1ot+Cph
-	 qHCWwKSj+NrtoDApuSm4pZiACr+MzlV1c2IVIMYajQZO7KJ4OQSJaW39h9+TjK9QuFw7r
-	 e5Pg3UwyZLR8RO2+nbOHSlK448F4oh73FEnHUQ6LAr5ZqHCYPyVbae1mukRytCn+YOg==
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=+Bp/FraEPNEKgnVnaEnw6iNuhtXFkslibvECwlTvHqE=;
+	b=Uu8aPKbo6cAJ9izXxqtLIwKvCAWZLuZZfvC0qONmt94ROczlXJrHPxd43RK0nWr1JDA+
+	 BTkcbCtr7KQrCxEJJ46MJWdqopKWhVFd3J2Hd97CfxLGNqW33VjNkc4rkYGC7jmwP0StX
+	 qAZ89GtlX+KRu9tYDwJ6vzv+G3D3ObCU9ELUg5OO/Z8uqTFE7yefJSc7SWLikIR34ENzc
+	 hVM+RV+2ttwiuzHf/dKnGPKycvgHHBF99MsNJmBSq5NZZorDQvlUYVdkkaj+7yzt3DDyr
+	 WDmZBJuw3U63hkzskPOKMkNjFV6oL78Nwh8wtszC8dLpTbYvc3rDNV0U7MsMQg+pG9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=pazvH9hx;
-	arc=none smtp.remote-ip=90.155.92.199
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	spf=none smtp.mailfrom=casper.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZcdGpA6p;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4018606A332;
-	Thu,  5 Nov 2026 15:50:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4018606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D160A6F7B;
+	Thu,  5 Nov 2026 15:50:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B20D160A6F7B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=pazvH9hx
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZcdGpA6p
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=H+VBL9OJwUW+IzdV5LCITp9ezCq4N+iWOV0zwHTcOS8=; b=pazvH9hxp0r4Z7x2fzidl01Hpa
-	P7wfwrljfAb/Lw918WuBSOv8YJshJq6pYjO3ssKu6okTF0iVV4XBQo+hZWgnwccv2CAjUTg++/O6Y
-	Jm2FJhdd0LjBfDn6z+gpiQ7ClNXBgG9Poghhm3yZCt1FB2xFVkglSXP0QcmT4kein89a6m/hOUpvk
-	jk3/j6J3kuSXBe1DzWg3+zWyKqdsG0RfdrU4gcHp5P2uVquu7KgCbdQ8L0+cl8lzsmZF8PvXSLATO
-	iufzdzQ/Qvg8teerPslEYc8jhRp0IoetEIfgOU3N7yYN4/Bp2VoYQUubQtE7tZqOt3eCF4K3wEAXD
-	6OWPWcsw==;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=+Bp/FraEPNEKgnVnaEnw6iNuhtXFkslibvECwlTvHqE=; b=ZcdGpA6p4Jpvl/hnSOPP0PjHv/
+	eeUSBwF7bh55qJGD+CCING13IN7mFqESX25yk51b9VeLvgG4rbjs5xe8s0UTFKm4LqdldDD/tIZtF
+	dG9+rgKGgqNn+BAiv5ZHViWGFDcT4mJofE0dNYAWQLik25Qdtkp0ppZIWLyPpyr0zLWPB/Po5fjUm
+	SfkH/qeYivekcHSnsWOKZmJWKHBT/J3eS7feqBmxhrn5A22MEYZ0n23XYt2SfhqEMiY4bFLQpkXHS
+	8/H/c+LfweYD+K4wNyQjIGJEe5BI/YFpAfzjG68e/WD1+lP4eOLg2hXQCYo9jfVgcSPILWa33Nuy1
+	yRkQlxag==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOziw-00000003BoB-28TF;
-	Thu, 05 Nov 2026 15:49:58 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOziu-0000000Ab0H-2luc;
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xOziu-00000009aoq-0dWx;
 	Thu, 05 Nov 2026 15:49:56 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xOzit-0000000AazM-3xHY;
+	Thu, 05 Nov 2026 15:49:55 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -78,9 +78,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Dongli Zhang <dongli.zhang@oracle.com>,
 	joe.jin@oracle.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v11 22/23] KVM: x86/xen: Drop open-coded fallback clock read in kvm_xen_start_timer()
-Date: Thu,  5 Nov 2026 07:49:53 -0800
-Message-ID: <20261105154955.2525419-23-dwmw2@infradead.org>
+Subject: [PATCH v11 10/23] KVM: x86: Remove pvclock_gtod_data and private timekeeping code
+Date: Thu,  5 Nov 2026 07:49:41 -0800
+Message-ID: <20261105154955.2525419-11-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261105154955.2525419-1-dwmw2@infradead.org>
 References: <20261105154955.2525419-1-dwmw2@infradead.org>
@@ -93,108 +93,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-When no coherent (CLOCK_MONOTONIC, TSC) pair was available,
-kvm_xen_start_timer() computed one from separate ktime_get() and
-rdtsc() calls rather than using get_kvmclock_ns(), with a comment
-explaining that the latter had a systemic error from scaling host TSC
-directly to nanoseconds instead of scaling to the guest TSC first.
+Remove the now-unused KVM-private timekeeping infrastructure:
 
-Commit abdef42276d8 ("KVM: x86: Fix KVM clock precision in
-get_kvmclock() with TSC scaling") removed that systemic error: in
-master clock mode, get_kvmclock_ns() now scales the host TSC delta to
-the guest TSC and converts it with the guest's own mul/shift,
-computing precisely what the guest would.
-
-The fallback is also nearly unreachable. It sits behind the
-use_master_clock check, so on 32-bit (where the master clock is never
-active) it is dead code, and on 64-bit kvm_get_monotonic_and_clockread()
-can only fail there if the host clocksource changed after the last
-master clock update, in the window before the resulting masterclock
-update is processed. In exactly that window get_kvmclock_ns() takes
-its raw-clock fallback path rather than the guest TSC computation,
-which is continuous with the last valid snapshot and tolerable for
-the one timer that can be started before the pending masterclock
-update lands.
-
-Drop it and fall back to the existing get_kvmclock_ns() path.
+ - struct pvclock_clock and struct pvclock_gtod_data
+ - update_pvclock_gtod() and its seqcount-protected state copy
+   (the private readers were already removed when their last callers
+   went away)
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/xen.c | 40 +++++++++++++++++++---------------------
- 1 file changed, 19 insertions(+), 21 deletions(-)
+ arch/x86/kvm/x86.c | 56 ----------------------------------------------
+ 1 file changed, 56 deletions(-)
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 6aa00f746cba..dbac3d2c04d7 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -230,22 +230,19 @@ static void kvm_xen_start_timer(struct kvm_vcpu *vcpu, u64 guest_abs,
- 		if (r)
- 			break;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index e81e527e7b99..940168528721 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -889,60 +889,6 @@ static inline bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu)
+ 	       kvm_request_pending(vcpu) || xfer_to_guest_mode_work_pending();
+ }
  
-+		/*
-+		 * With use_master_clock set, the clocksource was TSC-based
-+		 * when the master clock was last updated. The clockread can
-+		 * only fail here if the clocksource has changed since, in
-+		 * which case a masterclock update is already pending and
-+		 * get_kvmclock_ns() returns the raw-clock fallback value —
-+		 * continuous with the last valid snapshot, which is as good
-+		 * as it gets in that transient window.
-+		 */
- 		if (!IS_ENABLED(CONFIG_64BIT) ||
- 		    !kvm_get_monotonic_and_clockread(&kernel_now, &host_tsc)) {
--			/*
--			 * Don't fall back to get_kvmclock_ns() because it's
--			 * broken; it has a systemic error in its results
--			 * because it scales directly from host TSC to
--			 * nanoseconds, and doesn't scale first to guest TSC
--			 * and *then* to nanoseconds as the guest does.
--			 *
--			 * There is a small error introduced here because time
--			 * continues to elapse between the ktime_get() and the
--			 * subsequent rdtsc(). But not the systemic drift due
--			 * to get_kvmclock_ns().
--			 */
--			kernel_now = ktime_get(); /* This is CLOCK_MONOTONIC */
--			host_tsc = rdtsc();
-+			r = -EOPNOTSUPP;
-+			break;
- 		}
+-#ifdef CONFIG_X86_64
+-struct pvclock_clock {
+-	int vclock_mode;
+-	u64 cycle_last;
+-	u64 mask;
+-	u32 mult;
+-	u32 shift;
+-	u64 base_cycles;
+-	u64 offset;
+-};
+-
+-struct pvclock_gtod_data {
+-	seqcount_t	seq;
+-
+-	struct pvclock_clock clock; /* extract of a clocksource struct */
+-	struct pvclock_clock raw_clock; /* extract of a clocksource struct */
+-
+-	ktime_t		offs_boot;
+-	u64		wall_time_sec;
+-};
+-
+-static struct pvclock_gtod_data pvclock_gtod_data;
+-
+-static void update_pvclock_gtod(struct timekeeper *tk)
+-{
+-	struct pvclock_gtod_data *vdata = &pvclock_gtod_data;
+-
+-	write_seqcount_begin(&vdata->seq);
+-
+-	/* copy pvclock gtod data */
+-	vdata->clock.vclock_mode	= tk->tkr_mono.clock->vdso_clock_mode;
+-	vdata->clock.cycle_last		= tk->tkr_mono.cycle_last;
+-	vdata->clock.mask		= tk->tkr_mono.mask;
+-	vdata->clock.mult		= tk->tkr_mono.mult;
+-	vdata->clock.shift		= tk->tkr_mono.shift;
+-	vdata->clock.base_cycles	= tk->tkr_mono.xtime_nsec;
+-	vdata->clock.offset		= tk->tkr_mono.base;
+-
+-	vdata->raw_clock.vclock_mode	= tk->tkr_raw.clock->vdso_clock_mode;
+-	vdata->raw_clock.cycle_last	= tk->tkr_raw.cycle_last;
+-	vdata->raw_clock.mask		= tk->tkr_raw.mask;
+-	vdata->raw_clock.mult		= tk->tkr_raw.mult;
+-	vdata->raw_clock.shift		= tk->tkr_raw.shift;
+-	vdata->raw_clock.base_cycles	= tk->tkr_raw.xtime_nsec;
+-	vdata->raw_clock.offset		= tk->tkr_raw.base;
+-
+-	vdata->wall_time_sec            = tk->xtime_sec;
+-
+-	vdata->offs_boot		= tk->offs_boot;
+-
+-	write_seqcount_end(&vdata->seq);
+-}
+-#endif
+-
+ static s64 get_kvmclock_base_ns(void)
+ {
+ 	/* Count up from boot time, but with the frequency of the raw clock.  */
+@@ -7092,8 +7038,6 @@ static int pvclock_gtod_notify(struct notifier_block *nb, unsigned long unused,
+ {
+ 	struct timekeeper *tk = priv;
  
- 		/* Calculate the guest kvmclock as the guest would do it. */
-@@ -255,18 +252,19 @@ static void kvm_xen_start_timer(struct kvm_vcpu *vcpu, u64 guest_abs,
- 
- 	if (r) {
- 		/*
--		 * Without CONSTANT_TSC, get_kvmclock_ns() is the only option.
-+		 * Without CONSTANT_TSC and the master clock,
-+		 * get_kvmclock_ns() is the only option.
- 		 *
- 		 * Also if the guest PV clock hasn't been set up yet, as is
- 		 * likely to be the case during migration when the vCPU has
- 		 * not been run yet. It would be possible to calculate the
- 		 * scaling factors properly in that case but there's not much
--		 * point in doing so. The get_kvmclock_ns() drift accumulates
--		 * over time, so it's OK to use it at startup. Besides, on
--		 * migration there's going to be a little bit of skew in the
--		 * precise moment at which timers fire anyway. Often they'll
--		 * be in the "past" by the time the VM is running again after
--		 * migration.
-+		 * point in doing so. Without the master clock, the
-+		 * get_kvmclock_ns() drift accumulates over time, so it's OK
-+		 * to use it at startup. Besides, on migration there's going
-+		 * to be a little bit of skew in the precise moment at which
-+		 * timers fire anyway. Often they'll be in the "past" by the
-+		 * time the VM is running again after migration.
- 		 */
- 		guest_now = get_kvmclock_ns(vcpu->kvm);
- 		kernel_now = ktime_get();
+-	update_pvclock_gtod(tk);
+-
+ 	/*
+ 	 * Pairs with the READ_ONCE() in the lockless readers; the race is
+ 	 * benign by design, relying on eventual consistency (the notifier
 -- 
 2.43.0
 
