@@ -1,103 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887380;
-	b=aoXreivkYyy7Myp2Gsy/uEMEpqImLtUGqoauWlknxVEszT5JAaVIvpbCAKbJr/dh3PD1
-	 niIE2LanJqxS+WwpQLL96kLsdQkGOBCuiMQFAfOLMy/HHlheorD7Sh0MOt4J/RhEQjqie
-	 FPNWlcdERk9dt33ttuzMnglXd6u9Horm2WlsTcP9xWdfY0+ZhHeeNETDAsW4OE1Q5Ppt/
-	 UTLKpmUoa6OSLaGFtyY1HjUHkaT1RZLy/5kj/Zru+WlW36HyhGiMywdYZrULtkmcjr9mq
-	 KbeJcoSExpFPeL/2hzLN4xFQWjK2FZW7p00pU2j0PeFxasWt29msByzpGbskYBOdkQQ==
+	t=1793888020;
+	b=E/QLQ1twABiOC+4QbCe3oGF2l9ymc+q3kZDdtjQm8TqW2MuRsId5lztKRFEX03a+unEP
+	 K1gxnycVpZe4zNsdVye0ZtZxRY4GOf/oLX9/JWlMRYhvLUEHUsqPt3p20Nx7B8ym1W91S
+	 qTNJlPHOus/GYDUFHU1CCJpo8JbjM+k55lRS34C9A4SzEtapFj7AojiOzK18PsB1n2lzo
+	 /blMBR8JV2HyQCYMVKuNUJ4QvGi088mqVC+OzYOhJrE8+358CWmg7HnzGF1v22chWIYuf
+	 niGEwwJrk8jmkUCBbHW1TdPwgDff/ILl+LNYkABIVCTMhCl8mD8wPm4WPZkbr00Vi7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887380;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
-	b=F56PaN2EjrHTgH9lBdc7sOd6F5aQ525kY8ImgyQYHDjrtKUpCFpsnwdGfSBF9VaNj9nx
-	 qkCbZyintuytuqfdtj+eZ9Lv+zwU/+eEq7NQ2VCtdD0mtRmpmDuwy/CvF8+uTs5fU9ZXB
-	 Qi/3cEsEajSgYdON6NwxnUAR0jIArDHgkpCaWMrRxNDq5vMeI89LHZwkeV1MSQHuKI92Z
-	 Fy+mP5bSYaT7Nt5vcU7L966mTZbb5C8EEo3z5zGGPawbl8l9PiPLR5hoOqj9vwZ14BSUd
-	 TA3v++lce6DDTsPZ2MtrUhgW8VXY0CjcPiswsz0gWu1M0YGpx+2fKxxxYOhC9kJFjqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793888020;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=Gr+NUEMjau+xl2lP4NDpYm7f/Dhs1l8XcQKj5Nk+OLA=;
+	b=fjABvCFplHsXXoEUNa1+Hu5Gxmge0HxGdPjJFRqUEQLUVifp9TILWjpfnRnvKc6qADre
+	 wCIWpcAaReRnO896zNFdjZWMBBaTOMzIVPDU7sYz7GFt8B3oK6GtvqclBWUliFMa5as+Z
+	 n4kuEQxmIyVGlAPQM/WrZC12nr6m3Os3fI1qqEnBH67rLxRcx0wf8MUqE3Qmqol9MZrau
+	 eLA2gWWjHoXkvBH+Qyd0T4g2hr+Fbj2Jl6Fkl615c0lgKod6TkbMzVmIWwwExn/Pfes9Q
+	 xPyWB/4UgrzFxQ0+Hrza/jrl7O7SXk0g2/GQNIo1Q2B9JBpuvr3TjwV/K8/ie4RgBLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=wcPW2VeS;
-	arc=none smtp.remote-ip=209.85.221.54
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NdI7v+wR;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B9F606A337
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 14:02:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98B9F606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B043606A31B;
+	Thu,  5 Nov 2026 14:13:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B043606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=wcPW2VeS
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48e3b22e971so998996f8f.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 06:02:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793887377; x=1794492177; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
-        b=wcPW2VeSRvODbdYagFsU2XIg0aTXdnhx/kXOwWNbpngwDM/gCfcZrWORghX1FKTjDc
-         Mv5N2+vmUnjqQm9dS9NB6DBVam/f0NDbeQqt4+86O0cpG537XPDtso4cmVRWMyArr8PI
-         jXiPqpbCMNpRwt04pZ64rNnRkpc1jgKy9F7LZJn034x7mHjW9lWeHDZ8wuGAGcsp9tA6
-         fdYaq4RLqyMu+odlklcLb3/vkf+rq5ENmZYu7oz4AZdq4mhjZAN+ODbuapfT9A5hM+9n
-         IBsHWEC4PC7xOlWAsj92te775B+ABgmDcVqt7oltV+jbn2ZKpApmiWB2SPL7l15TkecI
-         7lpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793887377; x=1794492177;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7rw+Vw2Z3L2B8lNDfsIFSmx/pfSm9WeDfRFG4S2Q0cI=;
-        b=e++PSUKcRCOtLxFIkDXZylmcyFxulpG9fZlpDutOEndra53/PZrrLYuIr92YQe8tNH
-         C0Fkm/v3TD9AIJIvxXR9xJrQiyUkOO5e9Ggr64Y+tEFIBtQNwBGMjCDH4HFx45DqlSUS
-         QK8D5U/JZtysuYt7JBYoJ5F4eaAvctDyguG2ohNY3WVnNsdWp32WWhTg1IeLoAdYrANA
-         qW/LbKiED17iUkkRfUB0W1bnh+eOjlVGqqzH6FPhE+pIf2RCfxRrqolt8CrUTOD6VX2W
-         1OpZWbJKO3H2ymC95PpFCzAdEdTprReMXz3jFGz7WqdY6Tol1P1Iwc2x1918+nYV6XVl
-         /1Pg==
-X-Forwarded-Encrypted: i=1; AKwUvByF74Wjk1GxLCy/Yx3UZe7c7cMrtEqZxj08xA686n9rFl/XP6oNbH+iVgTdwmZd73xu+Bs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/s62akV8D3OHK4AgUoEUicSxYy1Hl4brgECdwBVFonf4B/1Ztk
-	/cTD5+QZw7z11l0fNxk+eqvtCVCwScsbd2AI5sQ6JEGKQhokqpgSdznF+OS95Llo4hzdZhpue69
-	EaVRBM8E=
-X-Gm-Gg: AYBFou3sFpt1tErqwjjOK6pJxp3n/AFen9czgWfqx6kDffXRJIx/iCrEIWalmfc2OHD
-	bEkvlVV4QjoxDDz4oGYswVIKVePDP4K8/zcoUb5fPw5b8OMlc92kMyq4kc2x3DeYEsjV2ifgNx1
-	uxfmfU0hBqFCTCMPiUQeRFUFw/Mey0hnlAVHc0AHMF7jxnuAPF/4t6eT/dGU79IFObyzJyw9HGe
-	siKnLLa/+YffFi3Tr55ZzeOB06zuxTHb5MXQFe/xDZ8Efq8VeKR/rl0+wERQfmRlBj4yZW0s5Yf
-	6A4040bSzWxJPOI+wSgjE2G/9vamPapWrZnjgvyk5NwQ79EhpbOrX2lkMMoxobN/+AJx/qZDujd
-	LHws/l5sx0J6OolOrl9oF7swAbxa4+urhs4KLKiQUO6/AnpxNH25iiZ9RGfB9RVgTg2Paz9jpqp
-	MkUr26qUnx9EALXPD/14BQW2aZZk0/iIwCKN5we3ABXftZ/A53TU9nUCnIXpOI9m6gcLLvph6YR
-	dC9BbKeBmxpmqiVU/kLNq2p3zca3WfcTySxXU2RuMfVjCkO7iRwis24ZS0XN1shqc+rQP/ZuO+R
-	oIt/ky98yxD2WD1ishoD5Fuskp9iqYU4UL1ABAM=
-X-Received: by 2002:a05:6000:310f:b0:48d:f95e:6e8 with SMTP id ffacd0b85a97d-48e6e2c3586mr39104058f8f.1.1793887376849;
-        Thu, 05 Nov 2026 06:02:56 -0800 (PST)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fec8d8e29sm10937240f8f.19.2026.11.05.06.02.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 06:02:56 -0800 (PST)
-Date: Thu, 5 Nov 2026 15:02:52 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 14/20] attestation: Add the base family specification
- and generated files
-Message-ID: <auyKhc02JmfXNiMe@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-15-jiri@resnulli.us>
- <179302367452.58760.3782556786585774917.b4-review@b4>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NdI7v+wR
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A5AESJd2060070;
+	Thu, 5 Nov 2026 14:13:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Gr+NUE
+	Mjau+xl2lP4NDpYm7f/Dhs1l8XcQKj5Nk+OLA=; b=NdI7v+wRtIodvKWFkACcuw
+	KqCZ4vapNr37oyPTZ1gSHsz7YQKQbadWIwKyGT+pUqFy7XZqbm/B2yYwwXYEDXaq
+	MskmGrVat8CndN3gclZyXS0KnvO+H//zaYvXlY57iMEFBd4y/tHMsx/b5s0FuLxu
+	fJzfsmhIVB7ML25bjnoyfpICYwUvs9Pji+gUvHxK7y7WlBkm6U5VzEl2PBAbubBh
+	+lKcBMj9b68SZuBUQOpq9YvUhNgSs5gSJKiRaO3sjs5CV+orIaHwU/JbRHBIk9jo
+	q9K15Y00eDxAlDlmZgMQsiFqwnFs0gSFJbIdHw7upZSVOyorcn6wf8rTmKjbEy9Q
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn6rdj8q7-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 05 Nov 2026 14:13:37 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A5DeBpA1509508;
+	Thu, 5 Nov 2026 14:13:36 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hrdd7krjc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Nov 2026 14:13:36 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A5EDWwk46203372
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 5 Nov 2026 14:13:32 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B494B2004B;
+	Thu,  5 Nov 2026 14:13:32 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A2AF20043;
+	Thu,  5 Nov 2026 14:13:32 +0000 (GMT)
+Received: from [9.68.16.159] (unknown [9.68.16.159])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  5 Nov 2026 14:13:32 +0000 (GMT)
+Message-ID: <60da9bc6-eaae-4aff-85d3-63da3b83a6ac@linux.ibm.com>
+Date: Thu, 5 Nov 2026 15:13:32 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -107,86 +85,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179302367452.58760.3782556786585774917.b4-review@b4>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests: drivers/s390x: select uvdevice tests using the
+ target architecture
+To: Sasha Levin <sashal@kernel.org>, Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: David Hildenbrand <david@kernel.org>,
+        Steffen Eiden
+ <seiden@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261014200149.1365017-1-sashal@kernel.org>
+ <20261103130131.4069212-3-sashal@kernel.org>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20261103130131.4069212-3-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qEyc5Vq2YMukiGxTB4LaH3WuC3jNWR4i
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDA1NCBTYWx0ZWRfX9HsualfMzmPh
+ q3J/NklJh8YCChVU0SbLfBaNaZwOw8W+ITPykCkPwzWTbWabmnP2BxrqtQ2NXvNrv4D4yeY23rA
+ xE5Li3CHHON09SVDRnvTqCTC0YOVVoASN6fs+YGQ3u58BcNnPU6/6p93cGxq6U8+aQGkQPLGCtk
+ Iw7CkQrSziQ6MKlR0/m8AQAPG0nDAWppL+iiZD0txtIMpmkYq8SWhLtWDnVTqZaDGGDzgcMIL9v
+ EkDukkAAVh29qJMZHDt+RXzk6inA4JkjWYohKPXCwH0fj5/e+YI3VL8ILBeAeV33uDqQenVkLgw
+ boXfLXH8kTwquveviAIWKVuvjvUo3Jd6LFGPQ2txpm8dj2AKYbUxK7oMO680FhqL/VMF7g+O/vf
+ IHKjCrvNuFVIncknGjnDiThPDGfYRAeeIhFvWuiFCTEinm/6R7BvdVB4u9rMtQQeBOToXJ1Fchn
+ 5phaixi5vIpvQTJCE+Q==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDA1NCBTYWx0ZWRfXxOhrwzD/V6hj
+ 5nL2C64p3oiJ9jApbF3fyJO9q2cb73nZCRwjBlFuZBeUVylwm9HWVk7e6GlUCzP7po60rBgyjX7
+ Qr1lyudDZwrPWkPhgac31vRm6dY+EfE=
+X-Authority-Analysis: v=2.4 cv=QK391QLL c=1 sm=1 tr=0 ts=6aec8f11 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=RhU_m4-V-8PcAr7x2KIA:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
+X-Proofpoint-ORIG-GUID: qEyc5Vq2YMukiGxTB4LaH3WuC3jNWR4i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-05_03,2026-11-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611050054
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
+Am 03.11.26 um 14:01 schrieb Sasha Levin:
+> Ping. Steffen reviewed this and it still applies on 7.4-rc1.
+> 
+> The uvdevice tests still never get built when s390 is cross compiled
+> (KernelCI builds on x86, so uname -m never says s390x). Could one of you
+> pick it up, or should it go through Shuah's tree?
 
-[..]
-
->
->evidence-get:
->  request:
->    challenge: binary
->
->Binary, blob, raw? Lots of words for the same idea here..
-
-binary is inline field, blob is va/memfd/dmabuf using field. I want to
-keep these to "types" of TLV separate.
-
-
->
->    objects[]:
->      blob-class: evidence-blob-class
->      format: string
->      representation: evidence-representation
->      data: output-blob
->  reply:
->    object-lengths[]: uint
->    mr-generation?: uint
->
->=======
->
->mr-get:
->  request:
->    id: uint
->  reply:
->    name: string
->    supported-hash-algorithms[]: uint
->
->No definition what these numbers are. They should be TCG2 defined hash
->algorithm constants I guess. Why not have an enum here for them?
-
-it's enum hash_algo - I will make it more explicit including existing
-c enums into yaml.
-
-
->
->    caps: mr-caps
->    register-index?: uint
->
->So we get a string and a small integer for every MR? Like PCR10 and 10
->for TPM?
-
-Yes. The name is the platform's and the index is the hardware's number,
-where it has one. TDX has mrtd without an index and rtmr0-rtmr3 with
-0-3. A TPM would have pcr10 and 10.
-
-
-[..]
-
-
->
->=======
->
->mr-extend:
->  request:
->    id: uint
->    values[]:
->      hash-algo: uint
->      data: binary
->  reply:
->    generation: uint
->
->Is this extend 'you give me an exactly sized data that is a hash' or
->'you give me data and I hash it' ?
->
->TPM/etc do both, there are good reasons to have both, and the latter
->is more flexible in supporting crypto agility..
-
-The former. I have a patch in a queue that adds the latter: mr-extend
-takes either a digest per bank or the data, as an input blob, which the
-kernel hashes with the algorithm of each bank, and the reply returns
-the digests the banks were extended by.
+Applied and queued for kvms390/master https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git/commit/?id=fdbf9b6e8faf00b7bbfc6c87de09676c971d2fe7
+Thank you and sorry for the delay. 
 
