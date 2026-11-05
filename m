@@ -1,127 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793909259;
-	b=X3l/ATHqvAi/RJPpkwrmceJ0b8hkqwm0dImj1XCpUCAAbP1AH0n7ZtNsoR3MhBwQablv
-	 Bhh9DcL4KU/lCXHleHj5MR45KU+IbR3HkcUSe9VtIgi4KGfEOuD03qgIMjJSggBM0paZC
-	 Q6X/fq5qBjGjPjF32+xBVV02PPnQn+CEWVmnIspO2FEt+m34Onr6gb7iECMxoIpYr6URD
-	 IR32zX8uyvGNzeDF+LjUINpOBQFSso1KOWdwEQyT0bcG/2QpbEGTTCpxWQD2f+fDtFOn5
-	 99tblkfx0/2FwaQlPamTftc83z1fvH6Oj58IW01zZV2FfHkdmLpcaqM1mBFka+lgMZw==
+	t=1793910355;
+	b=MinYCkdzLhy+tSp2yslUd1oQXKTA3NYJtLX8fQN1MffVUFhKlLVprCN1U/Pj6SobP713
+	 nep9uzlbf3RNTRsVOPooewyD0sKJkgW46Lu2z5OTXE+O+pJCaJaG1T8vzm+w3I+5iGsKv
+	 gy5/SRD7DxfLh8jaCTszj3injcn6IPAsPwh74Lq6vfVZwTBcj/taQCFr0xnXFfv7Umgsp
+	 h2cYrZrGAO4gTjR5taNUN/jNZgYRPKvjG1a6EqYPUmjgpsvLoxaaM9klkLmqvTf2STws2
+	 V5lfEMpT/uZou42SdPxcuythOEKkCmo4G6D1mJMqmuFnPJhNYdP/OjrE/lPedNV3jJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793909259;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=z52AWMMx/NPlxXG7BPdw5LHgxa12llcgL1Kha+Q5UfY=;
-	b=coqDGyoZdPy0pJ5fPpCK+hjGIY+BzB7xvaeujGbw3yxafabgI6m51O4xmCx56cqBzIlB
-	 hHBjoIzX4GcUmh7jNRuEicb0O+adcnQQfo8Jl2VsNNhIPyh2QkVEEwV0p4JNWmQ24IQKW
-	 qvV7BP07jTe0w3F5Qt4zh/A41TKscHSFbawlkf7nGqjLo9ZeJ2KcDfnmi9xrQ81es325O
-	 PzcozpMQTfpCawJSXuvSXh4J8L+FztxLEWT6A0t5oYLdVCMXSKtENEMoBvYAzpemM6oUf
-	 GrAClPT32BkJL8ZGX66ENkXHp3WsrM5T2IjxoYpUJCSFAkvsbCIXovJFyyy4VclCPrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793910355;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=sWflS6cdWNQglp5FPdjNSHREO+j1KZXLsHisfM/YN+s=;
+	b=3Ziw1BWCd+wDHkGE/HL2sxpy4KucIfrJvbJpedZXlpREhQ1camtUBMWWgWygrTm4fkwZ
+	 cco3TzOwBLLlnvNdT5dAIpNsvK5FV8f3+VDUvKzLrHhn5KRQKmG0bPc7AXaQo/ab7tlv+
+	 ilWOpeiTYUv0XEZm86ok0qnUD4DN3mRoLioT4fXI2M2SxEueiXyOjpHRc2dViXqk2blml
+	 6Jm+q3G7T/Nf7ylvkDX5OMpQ/c7HTcWjz/j0axNbAo/1eTc4KXDGT3PUd/CVnSsAfcKw3
+	 BVIc4oNC8njSxXVVkive3p74UWiE/8yj+DLGxonku18cHleqZbVl0JC2+VcXfBfO9uQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=pWAcW2zD;
-	arc=none smtp.remote-ip=209.85.221.180
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g8OWumeW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD3606EEBF
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 20:07:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2BD3606EEBF
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EA1606A329
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 20:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=pWAcW2zD
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5e9528732b4so1906795e0c.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 12:07:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793909257; x=1794514057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=z52AWMMx/NPlxXG7BPdw5LHgxa12llcgL1Kha+Q5UfY=;
-        b=pWAcW2zD/63HAANui/KgQteFGf23DIFTBPKN5TS2f+lZtRer2UXQWE5nmZ7E6+0NmL
-         NOOCXte1XvmkZBJozDZeonddr7WOhKYwoxG0t/prTXufgqXucApuu46Sd4uUJbmVTObR
-         7fBoftmI0x8C5OBoveyYTeiR5CzcpDKIDS2NqP2Zi4JYmMvse+F1UJ+tD5iRjIQbUeMi
-         N0hs7feA4M3cPYsGIWBxIU+8M+cR5rQpjj7DVMZCRulJVbB4tHdrN+Gqsr/Umk190Esz
-         gMQTgholi5MoO2YuumyOWyN+Vz/Zl26KLlq1hDXbDxh17QeLxWCQNp/kJGIw8NnG5ysp
-         ISqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793909257; x=1794514057;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=z52AWMMx/NPlxXG7BPdw5LHgxa12llcgL1Kha+Q5UfY=;
-        b=EEOWO1vo9UpEeqJV7jwoyYkA3WIImR9DYxwDQfyA2CPq3bdr1w2rCaKEGYRnDJH/3l
-         /6pgaoF5KA8lpifTYm4ZkrRN6k/su8QXYyEvUx8P2Z8mPpQP8bVpqogwme1tjbHmPdk9
-         9qsDoTvXp8f8RO+08zWV78yWD1aV51xrGJN5kQAblvatDZmlPVPFoi+35IwSxNUGqoXN
-         Jy07YIdla/IkN8c8LthaqE5OOKhQkg5be7nhRlqJInfhh5VT3xw7vlF3y5dghYWB2pgh
-         aprkDt1G/FSdTlGXbeDSbSzZn9BHCMN8OO5WCx9A2HHyx3AGXzZ1mKf9DDCpxUUkSSSu
-         n6gQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy0rZ2xibRq+mJRvRgBAWiDfahjgnC15MGoU2OcIV5frZZPLeefPKZzj6ymZRk7i90oQv0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z96f6VdY8WTMfbQTQ4H6OM+/+mEkG0uT8Ej64mEuE8R0mXCO4x8
-	66rQUvLaX10OLFbVsYombhv0sWp2jIB+za0fx559V2AA9WIDeV7mhbQ95LjtDD0MNl8=
-X-Gm-Gg: AYBFou2bJS/6EsfTcRxMLzMfCWinr3X9lqiJc45glgDtyXnZx2louQDmRqyL0LZ/jk+
-	jwRTk1mRaIynyAXwVCFzM+tfUsmn9Aj/+DsPDu8114rXI+TgDoLERR/B7UGTJoApsgMuNDQLpeX
-	rQ+vFJR30iqvXYB0epUvb+xSe5gwacOHV/TtKmb7zDdpM5VpvPx/a1pTZ9BCnVBrXN+oLbwgv+p
-	Cj10XKPMI67X+IcEPVvLWC0ROiVPF95ZMLoO8VuiA+0Y98LL/+YwcCaf5hH+nKFggsWal85XSkI
-	cGXaJ1EaBGcY5LuZCEsChD021SKmTIO6jWQosrJ+QdHDD+D7H9ASMG6PwpqPyyzwEMH7AbF0pBz
-	KetvmcOcIVkfsHq0CbnRLGo+JBFW8v4hP53Sn9yg4W/jCfRp3Hz6lD0wgmmpvEYVXxCfD5/VxBY
-	1JxW8GajvQe168AD4oAJSGHWb13nhYtUzO98KV2pMUIhhMcLMF1+qijX05r7pZYBWsQaNt7jX/E
-	FCgWyB9nXbVq5QFcoo07V51jqW7ED+DJwNIc97olt+DIFiXPmoAoOXuLgdxvjSoyF0Cg5A8f1V3
-	kH9XVlO7cU3SH2ujA+Dus3/7ssLeGnWSk5vGpgVqykWO4xi33b9aNKsupAQ2vTEAhJPlgLNDN+G
-	MrdgaX7aTZw==
-X-Received: by 2002:a05:6102:390f:b0:7c3:99a3:314a with SMTP id ada2fe7eead31-7d2a1509e88mr658597137.9.1793909257584;
-        Thu, 05 Nov 2026 12:07:37 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ecb6d79d9fsm2610604e0c.7.2026.11.05.12.07.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 12:07:36 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xP3kF-00000003dYX-3Q5c;
-	Thu, 05 Nov 2026 16:07:35 -0400
-Date: Thu, 5 Nov 2026 16:07:35 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
-	Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v8 13/15] iommufd/viommu: Allow vIOMMUs without a parent
- HWPT
-Message-ID: <20261105200735.GF663069@ziepe.ca>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-14-aneesh.kumar@kernel.org>
- <auuBjRjQwXl7UvvO@nvidia.com>
- <20261104193139.GB3889730@ziepe.ca>
- <yq5afqxf97a1.fsf@kernel.org>
- <auzAivzpzSUHjEQj@nvidia.com>
- <20261105182106.GD663069@ziepe.ca>
- <auzNkAGFLH6da8fq@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g8OWumeW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361AA1F0089F;
+	Thu,  5 Nov 2026 20:25:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793910354;
+	bh=sWflS6cdWNQglp5FPdjNSHREO+j1KZXLsHisfM/YN+s=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=g8OWumeWmwjCKY0JJBdd2JuSxiXVZBcw0ILXJSrUkqGQKIq1dCFQr2gkM7aE9eUX0
+	 uKnGgwcT4XCXPd+dUMlBbLSReMh1xLyMP6SlBpdnsSVUcKcvkMRnzUydrHOOQdxZqR
+	 A4sICyc9/NPYwYWDTFAqyxFDbO3VO/OnwoPM8I0RpjvE1sqnXeEQMFGXwcrZ+iMRMS
+	 PuEArhDNN8zPFTDTYmHyl1ewntdFeBjthIFXD3uSr0CVo/HWqqaXh3C7y1s9mnMZhz
+	 0Dl15HgPsJVzd2QemMcdnJ/Lw4lcGw8R3TcIbW2stau5UG0UuVJn6esmGV+uMOYlfN
+	 GNNfQg6PlZMVg==
+Message-ID: <sashiko-outbox-200097@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11 18/23] KVM: selftests: Add master clock offset test
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
+In-Reply-To: <20261105154955.2525419-19-dwmw2@infradead.org>
+References: <20261105154955.2525419-1-dwmw2@infradead.org>
+ <20261105154955.2525419-19-dwmw2@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 20:25:53 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -130,41 +58,183 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auzNkAGFLH6da8fq@nvidia.com>
 
-On Thu, Nov 05, 2026 at 10:40:16AM -0800, Nicolin Chen wrote:
-> On Thu, Nov 05, 2026 at 02:21:06PM -0400, Jason Gunthorpe wrote:
-> > On Thu, Nov 05, 2026 at 09:44:42AM -0800, Nicolin Chen wrote:
-> > > On Thu, Nov 05, 2026 at 10:58:06AM +0530, Aneesh Kumar K.V wrote:
-> > > > Jason Gunthorpe <jgg@ziepe.ca> writes:
-> > > > > On Wed, Nov 04, 2026 at 11:03:41AM -0800, Nicolin Chen wrote:
-> > > > >> By dropping the nesting parent from VIOMMU, it just simplifies the
-> > > > >> attachment to an S1 paging hwpt, right?
-> > > > >
-> > > > > Yes.
-> > > > >
-> > > > > The VMM must always maintain a S1 paging attachment that is the
-> > > > > identity map of the VM on all devices, same action as when there is no
-> > > > > viommu.
-> > > > >
-> > > > 
-> > > > I am currently creating an S2 paging attachment. This results in a
-> > > > configuration with S1 disabled and S2 enabled, which is used by all
-> > > > untrusted devices.
-> > > 
-> > > For validation, that would work. Yet "no viommu" should would be S1
-> > > paging, i.e. hwpt allocated without IOMMU_HWPT_ALLOC_NEST_PARENT.
-> > 
-> > It doesn't matter, consistently using a single S2 for everything is
-> > probably better..
-> 
-> Hmm, I am confused: if we use a nesting parent, why do we need to
-> allow a viommu without a parent HWPT here?
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] KVM: selftests: get_pvtis() never reads guest pvclock pages at K=
+VMCLOCK_GPA
+- [Low] KVM: selftests: pvclock_calc() and test duplicate pvclock helpers a=
+nd tests
+--
 
-It is because it doesn't *use* it. It is a confusing to pass in a hwpt
-that is never used for anything.
+commit 5c47fcec1d956ca47ab8d39fceaff3ebcc1cad2e
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-Jason
+KVM: selftests: Add master clock offset test
+
+This commit adds a KVM selftest on x86 to verify that master clock mode
+remains active and consistent across vCPUs when one vCPU is given a
+different TSC offset and the VM clock is advanced with KVM_SET_CLOCK.
+
+> diff --git a/tools/testing/selftests/kvm/x86/masterclock_offset_test.c b/=
+tools/testing/selftests/kvm/x86/masterclock_offset_test.c
+> new file mode 100644
+> index 0000000000000..47a1313eadc9f
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/masterclock_offset_test.c
+> @@ -0,0 +1,215 @@
+[ ... ]
+> +static u64 pvclock_calc(struct pvclock_vcpu_time_info *pvti, u64 guest_t=
+sc)
+> +{
+> +	u64 delta =3D guest_tsc - pvti->tsc_timestamp;
+> +
+> +	if (pvti->tsc_shift >=3D 0)
+> +		delta <<=3D pvti->tsc_shift;
+> +	else
+> +		delta >>=3D -(int)pvti->tsc_shift;
+> +
+> +	return pvti->system_time + ((__uint128_t)delta * pvti->tsc_to_system_mu=
+l >> 32);
+> +}
+
+[Severity: Low]
+This isn't a bug, but pvclock_calc() in
+tools/testing/selftests/kvm/x86/masterclock_offset_test.c duplicates
+__pvclock_read_cycles() from tools/arch/x86/include/asm/pvclock.h (already
+used by tools/testing/selftests/kvm/x86/kvm_clock_test.c):
+
+tools/arch/x86/include/asm/pvclock.h:__pvclock_read_cycles() {
+	u64 delta =3D tsc - src->tsc_timestamp;
+	u64 offset =3D pvclock_scale_delta(delta, src->tsc_to_system_mul,
+					     src->tsc_shift);
+	return src->system_time + offset;
+}
+
+Also, tools/testing/selftests/kvm/x86/pvclock_test.c (in
+test_tsc_stable_bit() and test_clock_guest_with_offsets()) and
+tools/testing/selftests/kvm/x86/pvclock_migration_test.c (in
+check_cross_vcpu_coherence()) already test master clock persistence,
+PVCLOCK_TSC_STABLE_BIT clearing, and cross-vCPU pvclock agreement when vCPUs
+have divergent TSC offsets.
+
+Could this use __pvclock_read_cycles() and be folded as a test case into
+tools/testing/selftests/kvm/x86/pvclock_test.c rather than adding a separate
+test binary?
+
+> +static void guest_code(u64 pvti_gpa)
+> +{
+> +	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, pvti_gpa | KVM_MSR_ENABLED);
+> +	for (;;)
+> +		GUEST_SYNC(0);
+> +}
+> +
+> +static void get_pvtis(struct kvm_vcpu **vcpus,
+> +		      struct pvclock_vcpu_time_info *pvti)
+> +{
+> +	int i;
+> +
+> +	for (i =3D 0; i < NR_VCPUS; i++) {
+> +		int idx =3D vcpu_order[i];
+> +
+> +		vcpu_get_clock_guest(vcpus[idx], &pvti[idx]);
+> +		pr_info("vCPU %d: tsc_timestamp=3D%lu system_time=3D%lu "
+> +			"mul=3D%u shift=3D%d flags=3D0x%x\n",
+> +			idx, (unsigned long)pvti[idx].tsc_timestamp,
+> +			(unsigned long)pvti[idx].system_time,
+> +			pvti[idx].tsc_to_system_mul, pvti[idx].tsc_shift,
+> +			pvti[idx].flags);
+> +	}
+> +}
+[ ... ]
+> +static void test_set_clock_consistency(struct kvm_vm *vm,
+> +				       struct kvm_vcpu **vcpus,
+> +				       struct pvclock_vcpu_time_info *pvti,
+> +				       struct kvm_clock_data *clock,
+> +				       u64 offset0)
+> +{
+> +	struct kvm_clock_data setclk =3D { .clock =3D clock->clock + ONE_HOUR_N=
+S };
+> +	u64 clk0;
+> +	int i;
+> +
+> +	/*
+> +	 * Add an hour to the VM kvmclock via KVM_SET_CLOCK, run each
+> +	 * vCPU to pick up the update, and check they're still in sync.
+> +	 */
+> +	vm_set_clock(vm, &setclk);
+> +
+> +	/* Guest code does GUEST_SYNC then exits =E2=80=94 run each to see upda=
+te */
+> +	for (i =3D 0; i < NR_VCPUS; i++) {
+> +		vcpu_run(vcpus[vcpu_order[i]]);
+> +		TEST_ASSERT_KVM_EXIT_REASON(vcpus[vcpu_order[i]], KVM_EXIT_IO);
+> +	}
+> +
+> +	get_pvtis(vcpus, pvti);
+> +
+> +	TEST_ASSERT(pvti[0].system_time =3D=3D pvti[1].system_time &&
+> +		    pvti[0].system_time =3D=3D pvti[2].system_time,
+> +		    "system_time should still match after KVM_SET_CLOCK");
+[ ... ]
+> +int main(void)
+> +{
+[ ... ]
+> +	/* Give each vCPU its own pvclock structure within the page */
+> +	for (i =3D 0; i < NR_VCPUS; i++)
+> +		vcpu_args_set(vcpus[i], 1, KVMCLOCK_GPA +
+> +			      i * sizeof(struct pvclock_vcpu_time_info) * 2);
+> +
+> +	/* Get vCPU 0's default offset and set vCPU 2's offset higher */
+> +	offset0 =3D vcpu_get_tsc_offset(vcpus[0]);
+> +	vcpu_set_tsc_offset(vcpus[2], offset0 + TSC_OFFSET);
+> +
+> +	/* Run each vCPU to enable kvmclock (with offset already set) */
+> +	for (i =3D 0; i < NR_VCPUS; i++) {
+> +		vcpu_run(vcpus[i]);
+> +		TEST_ASSERT_KVM_EXIT_REASON(vcpus[i], KVM_EXIT_IO);
+> +	}
+
+[Severity: Medium]
+Should get_pvtis() also inspect the guest-visible pvclock structures mapped
+at KVMCLOCK_GPA rather than only calling vcpu_get_clock_guest()?
+
+In main(), the test maps guest memory at KVMCLOCK_GPA, gives each vCPU its
+own pvclock GPA, runs guest_code() to write MSR_KVM_SYSTEM_TIME_NEW, and in
+test_set_clock_consistency() runs each vCPU after vm_set_clock() to refresh
+the per-vCPU pvclock state.
+
+However, get_pvtis() only calls vcpu_get_clock_guest()
+(KVM_GET_CLOCK_GUEST). In arch/x86/kvm/x86.c,
+kvm_vcpu_ioctl_get_clock_guest() does not read the guest pvclock page or go
+through kvm_guest_time_update(); instead, it synthesizes hv_clock directly
+from the VM-wide master clock fields in struct kvm_arch:
+
+arch/x86/kvm/x86.c:kvm_vcpu_ioctl_get_clock_guest() {
+	...
+		hv_clock.tsc_timestamp =3D kvm_read_l1_tsc(v, ka->master_cycle_now);
+		hv_clock.system_time =3D ka->master_kernel_ns + ka->kvmclock_offset;
+		hv_clock.tsc_shift =3D ka->master_tsc_shift;
+		hv_clock.tsc_to_system_mul =3D ka->master_tsc_mul;
+		hv_clock.flags =3D READ_ONCE(ka->all_vcpus_matched_tsc) ?
+				 PVCLOCK_TSC_STABLE_BIT : 0;
+	...
+}
+
+Because kvm_vm_ioctl_set_clock() updates ka->kvmclock_offset synchronously,
+get_pvtis() never observes the guest memory at KVMCLOCK_GPA written by
+kvm_guest_time_update(), and comparing system_time, tsc_to_system_mul, and
+tsc_shift across vCPUs only compares the same VM-wide master_* fields to
+themselves regardless of whether the vCPUs were run.
+
+In addition, when main() calls vcpu_set_tsc_offset(vcpus[2], offset0 +
+TSC_OFFSET), KVM_REQ_MASTERCLOCK_UPDATE is raised only on vcpus[2]. Running
+vcpus[0], vcpus[1], and vcpus[2] in a single pass causes vcpus[0] and
+vcpus[1] to populate their guest pvclock pages at KVMCLOCK_GPA before
+vcpus[2] runs kvm_update_masterclock() and broadcasts KVM_REQ_CLOCK_UPDATE,
+leaving the guest-visible pvclock pages for vcpus[0] and vcpus[1] with a
+stale pre-update snapshot where PVCLOCK_TSC_STABLE_BIT is still set.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105154955.2525=
+419-1-dwmw2@infradead.org?part=3D18
