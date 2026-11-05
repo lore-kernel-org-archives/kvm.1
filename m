@@ -1,56 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793908296;
-	b=Np8LfZ1To+qW8hNwZLvLk87Rolw0f82gq8lomQvv9puSJ680371RpINGsKMq9A6iNxvW
-	 h3c6VCdpgB3bd+3BDr+RFYLtBZOn0lftp0x7gBbucXaG6+eSewCXuB0HtP0JI1OmrbsBe
-	 jpkr3GiVAiZa/droF3hWxbV9QqUeEbwlgN7xH9WKE29WVJeCl0VNu4NsimaY5EnFq6Aa+
-	 Axz2L5jubRe+RyV4tipFe2Os89hfitO744YlqWbjmPDLltCY9LLr1vJzi/k8Nrr6ik0Rg
-	 sxM3T6DK/x21mRcqjBFKVal6k7pVMd0vDQBNwmVipFcFBlU8mFlF3s59tD7ge0cGIDw==
+	t=1793908667;
+	b=WVZ2skBPVsW9j/Hg2x2QnnSvnCfnznuigremmHhNlENwL+5naXNlP05mmiQF0Wqpky5+
+	 5O4nOlgP4g8QOom3cCdtXX3UGceK6Znw+ObjJFCuJSIOX1Gwpv7OioGMP/j2nt7uTOhW8
+	 zht6m9oZYOTxhyajU6lU1+r2ATWQ0N9WekkWWc2dHxxdcZHeTlIzPKOYttYQAT7D0oPHi
+	 GGLLz4vJ/t3W755TF1eqbOCJzUT/tPz2M/iLJrfkHSDA9rYKyeUWxBpPUBNRiCPhytH8h
+	 XFNO/LSNCcNFrm/O9s6wySzywpDnizSIbl8myw0D5E8pDXvm/gBPAqPHCiSmUnTcUFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793908296;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=DCoQNGZJH+g7ZYuZDzfy+0y6UL2XBDSJsPDzUp8mlVo=;
-	b=te+6VWgTPdaMpkMTiAJAFjrx3n2/cvUXxaKXcdoNT3cs9+nMlIwD5tttTVXWGVuV8MU9
-	 5iXiPBmru00Ly4P08XBQkuToSebFYdq7j4Anhyf62k++yYMCRJpxR+7SJSkKOjlgh+01B
-	 VDtq0S6gIKINQvP8xhWkRvKb5XvViVLHmzMEUgyxKZSuG26smQkh0hws1A7yDzCAGh0aM
-	 NhVOiraUsVnnNFrxataZGgdEJ890Ym/vPy8GWU1kN+WTFRykuz/HUyoVnEVB2kK04vZ7d
-	 +tK9uMDDcOSoFr+llWh/xHYmIygDJKRyBAFNElPRPbYxvjgJZtuZXAYoH5ZvLgGe0lw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793908667;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=5M1pVxSHRgoftylSS6+7dytfFVlWyjkEZ+vlzow5Ync=;
+	b=LO6vkPfTAChFDhT3pfu9cZhSU/Po2h5FDiNie8MUjcZWyFz/ZSCCYxakzdI+/ePekwEE
+	 4BJwmOs7h4T9GwmZ0CsjxkBOmbacAHjYMmqLAaYJTTsqv+Ba2ylWpAFoF0SyWwkFCqHX4
+	 zOODKY394Olw6ZnqVAxEebwlRadpldnIDIt5uZxoDkg+G1yvhPqPM2Q3YVAfS2b2DLjvM
+	 xL4J0/EnCJXVrfWKHBFY4vmMwTpr2fuRCbCqYSzBBROxbe1Yznt3TCcRuywcXQp/Cg19i
+	 ZdZ626sQ/jcVIhGx5kCQBT1uSGYBa8S5wsvG1JKExt5fT5PzUMrTact0C+lmOUrIaPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0xRP6TN;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FvZGj512;
+	arc=none smtp.remote-ip=209.85.216.52
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6D3606A33E
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80561606B9E8
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:57:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80561606B9E8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0xRP6TN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0001F008A6;
-	Thu,  5 Nov 2026 19:51:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793908296;
-	bh=DCoQNGZJH+g7ZYuZDzfy+0y6UL2XBDSJsPDzUp8mlVo=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=m0xRP6TNxUPVNhVXD9CQdN1RmUoilqqjXqcOAQRKhy2N1HwAenQWAHyfK2pus6Yu0
-	 cFTG53Ljk4Kvp8CYBwZ5zcST8dMTBydccAth/ujftyMkHl+2HORIWV6PmLt6V6K/GJ
-	 C/qQDHJo1+ruFGxgPMFavKUUvpXrAPFcPW83jjQNLlgsU7zJEfFmSRbvOxSU1uH1Em
-	 ZKRxPizd9WxV9YPj0DdkF2cJffdjYpP+sbhGddZWKOFYgCVCpbGD1DflbNd+Vw9Fkw
-	 g89GbmLj0y/3BMUI0CsMOac709RefqieL0NIu1q2c6P0g3M9cWQjqCEkjyv6qGA4pt
-	 DaUH07yDGatww==
-Message-ID: <sashiko-outbox-200022@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 14/23] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
- accurate KVM clock migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261105154955.2525419-15-dwmw2@infradead.org>
-References: <20261105154955.2525419-1-dwmw2@infradead.org>
- <20261105154955.2525419-15-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:51:35 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FvZGj512
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3adac5c10e3so1427665a91.0
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 11:57:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793908667; x=1794513467; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5M1pVxSHRgoftylSS6+7dytfFVlWyjkEZ+vlzow5Ync=;
+        b=FvZGj5121a1NtgHB6chRnlzy241vze8erM8dB9mPTaymnUBZxnIKHYbDizc+tsNdMC
+         9xXANnArwrAe4jM1L+kNwZVsWwHaxd8DC+kdYh2zfwJxDx5a3S+NZg+dpjKFQC+je0eu
+         8cpyXra2NEA7/SJPFX44jlSYBGwL8JIEBGjujrV92PVab4E4xGy+h/VASb+A1piazcv0
+         1GpbgW1c3t4cnKg5ljJ9HbCKe+cSfQ69Q9QSygs0vmFzk4hJuLt6M5NQJkreV4AZvog3
+         3UOCCtMHKTzbO1wNZaNos6J/Z9k8iE1aMgZz9sd1DYfmk6DbXLVI0GFisrrpGoC5KxZS
+         4mlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793908667; x=1794513467;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5M1pVxSHRgoftylSS6+7dytfFVlWyjkEZ+vlzow5Ync=;
+        b=q/h/1hJRgdjhNgV0G2MGHb5NF5zweyiN1d6aMzPvzt9D6yNeigOkqmyEpZPz9nATSK
+         qEgVhFFe5XVYpzZe/6NltBUUhGemBMW8U+0LqMX81MpwIbvhtT74CttItmyoK60JsT1A
+         XKrQEVSt2s1xzrYEFxkeZAOqnqLQ/OaVA9PvDG/KZpGOIJKi6bdsDVAtdeeHz1CL1o5F
+         unuHzHC3E1mXWwj90L2WGVre0rsh+HPDkBF9BppGPd9oI26n9/FpBXp5qrt4026UC4Mo
+         OJ8ShB0uyUpS0yoXLGzWkQxtOc6iQ/y/K3BtRmvi7Px1ZP0d8hMKuTIMhji6EPmUTDo7
+         7Y4g==
+X-Forwarded-Encrypted: i=1; AKwUvBzaRbHYZSp9Gn3ixJJVZtYSbWIeVKaTYxOeMXQL5gvkdmaS3Qph6596KsDGuV1m03UlU5A=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+fSR+65ADqfgbw5rZ6XlVPP8AVyGwMheceBIwpmWG9ozl/4i2H
+	CiPLyp2mBU+Z9WV9WO/6N7Mct4B7DsF5nK8zYf6WrLIrukalfsVQz+32HmbPNI9aJQ==
+X-Gm-Gg: AYBFou2ySIN+Uppi0bGVlccBcd14m00LBUJxM+mbSf6uqY1OejtRMugIqy0fKF6pNXO
+	tOeDro364tuFJZI/67wlSFTM1iMyNh9iRO6KdSfb6EcpfDVHlHQn/5oAGYvKKwUYMYQJm/+bgXy
+	xSHu3KcnMMPgho0JIjcnGqI0S/Ue+bGuPNJ76+8hTc9WfU94Dcxx1ECrXscf4adUdo7Esg9J50J
+	zyWNKMABDIlm6OplrJi6+W2ulMRQ4yNtfCePRqc8ze/7Urx2s2lPDRIySl8HpLaO8lC9cblxnmz
+	Hmml4VtpwT0f9szk9qJI1gTJVLtCfKYB0HR7/Zq1DIJL2lnyaNjy9sk/Q7rgZ6UbKzDRqteJr09
+	C6IYpdu3GUYDZ5NgaJJurDc+g7PawOZgFDuGRmFbC+DaDcL+iyPZ8cEzv4uHM2qSaD5Bo9H9wQo
+	QE3cY01neqEbD3o0nUiBkuI9zc9QayShigce77D1aqC2RxJhBcet3I1fAnWyBwIlpDtTKZU2Dga
+	YLTzfhDYFxL+UeJO5FGstATFeT83LVdt+1WA6/3VUB18iUdDlsnCht2qB/aSUx6dchHBlEvRUrR
+	65/Z9OglDbM7mQacvv2CpnWjO5Y+HuKUfT/V5PJRHYEnJRH5SHaqN+sUG0w9rhP0
+X-Received: by 2002:a17:90b:3c04:b0:3b0:968f:fdee with SMTP id 98e67ed59e1d1-3b0db7190d8mr58712a91.55.1793908665982;
+        Thu, 05 Nov 2026 11:57:45 -0800 (PST)
+Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b326add7sm4962363a91.8.2026.11.05.11.57.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 11:57:43 -0800 (PST)
+Date: Thu, 5 Nov 2026 19:57:41 +0000
+From: David Matlack <dmatlack@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+	chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com,
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
+	kees@kernel.org, kevin.tian@intel.com, leon@kernel.org,
+	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com,
+	michal.winiarski@intel.com, parav@nvidia.com,
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org,
+	rananta@google.com, rdunlap@infradead.org, rientjes@google.com,
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+	schnelle@linux.ibm.com, skhan@linuxfoundation.org,
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com,
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <auzftbPFO_6XBYVw@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-8-vipinsh@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,402 +112,203 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102153656.1431701-8-vipinsh@google.com>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [High] KVM: x86: stale masterclock state in kvm_vcpu_ioctl_get_clock_gues=
-t()
-- [High] KVM: x86: u64 underflow and overflow in kvm_vcpu_ioctl_set_clock_g=
-uest()
-- [High] KVM: x86: unsigned TSC wraparound check in kvm_vcpu_ioctl_set_cloc=
-k_guest()
-- [High] KVM: x86: premature all_vcpus_matched_freq in kvm_track_tsc_matchi=
-ng()
-- [Medium] KVM: x86: unreachable -EBUSY path in kvm_vcpu_ioctl_set_clock_gu=
-est()
-- [Medium] KVM: x86: early return inside pvclock_sc seqcount read section i=
-n kvm_vcpu_ioctl_get_clock_guest()
---
-
-commit a2ceb951545e5e2e7837aa6b7c533b2b547ba201
-Author: Jack Allister <jalliste@amazon.com>
-
-KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for accurate KVM clock migration
-
-This commit adds the per-vCPU KVM_GET_CLOCK_GUEST and KVM_SET_CLOCK_GUEST
-ioctls (advertised via KVM_CAP_CLOCK_GUEST) to save and restore the
-pvclock_vcpu_time_info structure in terms of the guest vCPU TSC when the VM
-is using the master clock.
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 6dbdb60962fe7..bdc838b12fdc0 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-
-[ ... ]
-
-> @@ -3541,6 +3544,168 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_v=
-cpu *vcpu,
->  	}
->  }
-> =20
-> +#ifdef CONFIG_X86_64
-> +static int kvm_vcpu_ioctl_get_clock_guest(struct kvm_vcpu *v, void __use=
-r *argp)
-> +{
-> +	struct pvclock_vcpu_time_info hv_clock =3D {};
-> +	struct kvm_arch *ka =3D &v->kvm->arch;
-> +	unsigned int seq;
-> +
-> +	/*
-> +	 * Construct the pvclock purely from the master clock state. The
-> +	 * master mul/shift are computed for the guest TSC frequency, which
-> +	 * in master clock mode is the frequency of every vCPU; only the
-> +	 * tsc_timestamp is per-vCPU, translating the master snapshot into
-> +	 * this vCPU's TSC domain via its scaling ratio and offset.
-> +	 *
-> +	 * Note, this deliberately does NOT invoke kvm_guest_time_update(),
-> +	 * which would write the guest's pvclock pages: dirtying guest
-> +	 * memory after the final KVM_RUN would break post-copy migration
-> +	 * flows. The pvclock returned here describes the same clock as the
-> +	 * guest-visible copy (the same linear function of the guest TSC),
-> +	 * anchored at the current master clock snapshot.
-> +	 */
-> +	do {
-> +		seq =3D read_seqcount_begin(&ka->pvclock_sc);
-> +
-> +		if (!ka->use_master_clock)
-> +			return -ENODATA;
-
-[Severity: Medium]
-Is it safe to return directly from inside the read_seqcount_begin() loop
-when !ka->use_master_clock without calling read_seqcount_retry()?
-
-Returning early here skips the pairing smp_rmb() and sequence validation on
-ka->use_master_clock (which pvclock_update_vm_gtod_copy() updates inside
-write_seqcount_begin/end and may transiently set to true before clearing it
-if tsc_hz is 0), and leaves KCSAN's seqlock atomic region state active on
-current because do___read_seqcount_retry() -> kcsan_atomic_next(0) is never
-reached.
-
-For comparison, kvm_guest_time_update() in arch/x86/kvm/x86.c completes the
-seqcount loop before checking use_master_clock:
-
-	do {
-		seq =3D read_seqcount_begin(&ka->pvclock_sc);
-		use_master_clock =3D ka->use_master_clock;
-		if (!use_master_clock)
-			continue;
-		...
-	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
-
-> +
-> +		hv_clock.tsc_timestamp =3D kvm_read_l1_tsc(v, ka->master_cycle_now);
-> +		hv_clock.system_time =3D ka->master_kernel_ns + ka->kvmclock_offset;
-> +		hv_clock.tsc_shift =3D ka->master_tsc_shift;
-> +		hv_clock.tsc_to_system_mul =3D ka->master_tsc_mul;
-> +		hv_clock.flags =3D READ_ONCE(ka->all_vcpus_matched_tsc) ?
-> +				 PVCLOCK_TSC_STABLE_BIT : 0;
-> +	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
-
-[Severity: High]
-Can kvm_vcpu_ioctl_get_clock_guest() return a corrupt pvclock_vcpu_time_info
-structure when KVM_REQ_MASTERCLOCK_UPDATE is pending?
-
-Operations that change vCPU TSC frequency, TSC offset, or masterclock
-eligibility =E2=80=94 such as KVM_SET_TSC_KHZ via kvm_set_tsc_khz() ->
-kvm_synchronize_tsc() -> __kvm_synchronize_tsc() -> kvm_track_tsc_matching(=
-),
-host-initiated MSR_IA32_TSC writes, KVM_VCPU_TSC_OFFSET via
-kvm_arch_tsc_set_attr(), host clocksource updates via
-pvclock_gtod_update_fn(), or backwards TSC detection =E2=80=94 immediately =
-update
-v->arch.l1_tsc_scaling_ratio, v->arch.l1_tsc_offset,
-ka->cur_tsc_scaling_ratio, and ka->all_vcpus_matched_freq, but defer
-refreshing ka->use_master_clock, ka->master_tsc_shift, ka->master_tsc_mul,
-ka->master_cycle_now, and ka->master_kernel_ns by queuing
-KVM_REQ_MASTERCLOCK_UPDATE:
-
-arch/x86/kvm/x86.c:kvm_track_tsc_matching() {
-	...
-	if ((ka->use_master_clock && update_mclock) ||
-	    (ka->use_master_clock !=3D use_master_clock))
-		kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
-}
-
-Because KVM_REQ_MASTERCLOCK_UPDATE is only serviced in vcpu_enter_guest()
-during KVM_RUN (and kvm_track_tsc_matching() only queues it on the single
-vCPU being updated rather than VM-wide), invoking KVM_GET_CLOCK_GUEST while
-vCPUs are stopped in userspace reads stale ka->use_master_clock,
-ka->master_tsc_shift, and ka->master_tsc_mul while combining them with the
-updated v->arch.l1_tsc_scaling_ratio and v->arch.l1_tsc_offset in
-kvm_read_l1_tsc(v, ka->master_cycle_now). This either mixes a newly scaled
-tsc_timestamp with old master_tsc_mul/shift (causing KVM_SET_CLOCK_GUEST to
-fail with -ERANGE) or returns 0 with stale clock data instead of -ENODATA
-after masterclock eligibility was lost.
-
-[Severity: High]
-Also on this read path in kvm_vcpu_ioctl_get_clock_guest(), can
-ka->use_master_clock remain true even when vCPUs have mismatched TSC
-frequencies?
-
-If userspace creates vCPU 0 (online_vcpus =3D=3D 1) and sets its TSC freque=
-ncy
-via KVM_SET_TSC_KHZ to F1 !=3D ka->default_tsc_khz, ka->cur_tsc_khz is F1 a=
-nd
-ka->all_vcpus_matched_freq is true.
-
-When vCPU 1 is subsequently created in kvm_vm_ioctl_create_vcpu(),
-kvm_arch_vcpu_create() runs before atomic_inc(&kvm->online_vcpus) (while
-online_vcpus is still 1) and calls kvm_set_tsc_khz(vcpu1, default_tsc_khz) =
-->
-kvm_synchronize_tsc() -> __kvm_synchronize_tsc():
-
-	if (vcpu->arch.virtual_tsc_khz !=3D kvm->arch.cur_tsc_khz) {
-		kvm->arch.cur_tsc_freq_generation++;
-		kvm->arch.all_vcpus_matched_freq =3D false;
-		kvm->arch.nr_vcpus_matched_freq =3D 0;
-	}
-
-	/* Count each vCPU once per freq generation */
-	if (vcpu->arch.this_tsc_freq_generation !=3D kvm->arch.cur_tsc_freq_genera=
-tion) {
-		vcpu->arch.this_tsc_freq_generation =3D kvm->arch.cur_tsc_freq_generation;
-		kvm->arch.nr_vcpus_matched_freq++;
-	}
-
-	kvm->arch.cur_tsc_khz =3D vcpu->arch.virtual_tsc_khz;
-
-__kvm_synchronize_tsc() sees default_tsc_khz !=3D F1, resets
-nr_vcpus_matched_freq to 1, updates ka->cur_tsc_khz to default_tsc_khz, and
-calls kvm_track_tsc_matching():
-
-	if (ka->all_vcpus_matched_tsc ||
-	    ka->nr_vcpus_matched_freq >=3D online)
-		ka->all_vcpus_matched_freq =3D true;
-
-Because online is still 1 during kvm_arch_vcpu_create(), 1 >=3D 1 is true a=
-nd
-ka->all_vcpus_matched_freq is latched back to true. When
-kvm_arch_vcpu_postcreate() later runs after online_vcpus is incremented to =
-2,
-vcpu1->arch.virtual_tsc_khz already matches ka->cur_tsc_khz
-(default_tsc_khz), and kvm_track_tsc_matching() never clears
-ka->all_vcpus_matched_freq when nr_vcpus_matched_freq < online.
-
-As a result, ka->all_vcpus_matched_freq and ka->use_master_clock stay true
-while vCPU 0 is at F1 and vCPU 1 is at default_tsc_khz, causing
-kvm_vcpu_ioctl_get_clock_guest() on vCPU 0 to return a pvclock structure wi=
-th
-tsc_timestamp scaled for F1 and tsc_to_system_mul/tsc_shift computed for
-default_tsc_khz instead of returning -ENODATA.
-
-> +
-> +	if (copy_to_user(argp, &hv_clock, sizeof(hv_clock)))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Reverse the calculation in the hv_clock definition.
+On 2026-11-02 07:36 AM, Vipin Sharma wrote:
+> + * DMA Memory Ordering Contract
+> + * ============================
 > + *
-> + * time_ns =3D ( (cycles << shift) * mul ) >> 32;
-> + * (although shift can be negative, so that's bad C)
+> + * Because a preserved noiommu device continues performing DMA using physical
+> + * addresses across kexec, any memory buffer targeted by device DMA must remain
+> + * at the same physical address in both kernels and must not be freed to the
+> + * page allocator while the device can still access it:
 > + *
-> + * So for a single second,
-> + * NSEC_PER_SEC =3D ( ( FREQ_HZ << shift) * mul ) >> 32
-> + * NSEC_PER_SEC << 32 =3D ( FREQ_HZ << shift ) * mul
-> + * ( NSEC_PER_SEC << 32 ) / mul =3D FREQ_HZ << shift
-> + * ( NSEC_PER_SEC << 32 ) / mul ) >> shift =3D FREQ_HZ
-> + */
-> +static u64 hvclock_to_hz(u32 mul, s8 shift)
-> +{
-> +	u64 tm =3D NSEC_PER_SEC << 32;
+> + *  * When using a LUO-preserved ``memfd``, userspace **must** preserve the
+> + *    ``memfd`` in the **same** LUO session as the VFIO device and **before**
+> + *    preserving the VFIO device. LUO finishes files within a session in reverse
+> + *    preservation order (LIFO), guaranteeing that if the device is not taken
+> + *    over in the new kernel, VFIO's ``finish()`` callback stops bus mastering
+> + *    and resets the device before the ``memfd``'s ``finish()`` callback releases
+> + *    its folios. Cross-session ordering is the responsibility of userspace.
+> + *
+> + *  * After retrieving a preserved ``memfd`` in the new kernel, its folios are
+> + *    ordinary unpinned shmem page cache until pinned again; userspace must keep
+> + *    the ``memfd`` alive and re-pin/map it before finishing the session, and
+> + *    must not rely on a ``memfd`` whose ``LIVEUPDATE_SESSION_RETRIEVE_FD`` call
+> + *    failed (failed ``memfd`` retrieval frees its folios immediately).
+
+Most of this section documents LUO and memfd behavior (finish ordering
+within and across sessions, what happens to memfd folios after
+retrieval), which belongs in the LUO and memfd documentation rather than
+here. The VFIO documentation should just state what VFIO requires of
+userspace and what happens if userspace violates it. Something like:
+
+  DMA Memory
+  ==========
+
+  A preserved device keeps performing DMA across kexec to the physical
+  addresses it was programmed with before kexec. VFIO does not know
+  which memory the device accesses and does not preserve it. Userspace
+  must ensure that all memory the device can access stays allocated at
+  the same physical address in both kernels until the device is stopped,
+  either by userspace after taking it over or by VFIO when the session
+  is finished. If userspace violates this, the device can corrupt memory
+  that has been freed and reused by either kernel. VFIO cannot detect
+  this.
+
+VFIO doesn't stop the device when the session is finished until
+PATCH 11, so either add this section there or drop that clause here and
+add it in PATCH 11.
+
+> +	cfg_size = pdev->cfg_size;
 > +
-> +	/* Maximise precision. Shift left until the top bit is set */
-> +	tm <<=3D 2;
-> +	shift +=3D 2;
-> +
-> +	/* While 'mul' is even, increase the shift *after* the division */
-> +	while (!(mul & 1)) {
-> +		shift++;
-> +		mul >>=3D 1;
-> +	}
-> +
-> +	tm /=3D mul;
-> +
-> +	if (shift >=3D 64)
-> +		return 0;
-> +	if (shift > 0)
-> +		return tm >> shift;
-> +	if (shift <=3D -64)
-> +		return 0;
-> +	return tm << -shift;
-> +}
-> +
-> +static int kvm_vcpu_ioctl_set_clock_guest(struct kvm_vcpu *v, void __use=
-r *argp)
-> +{
-> +	struct pvclock_vcpu_time_info user_hv_clock;
-> +	struct kvm *kvm =3D v->kvm;
-> +	struct kvm_arch *ka =3D &kvm->arch;
-> +	u64 curr_tsc_hz, user_tsc_hz;
-> +	u64 user_clk_ns;
-> +	u64 guest_tsc;
-> +	int rc =3D 0;
-> +
-> +	if (copy_from_user(&user_hv_clock, argp, sizeof(user_hv_clock)))
-> +		return -EFAULT;
-> +
-> +	if (user_hv_clock.pad0 || user_hv_clock.pad[0] || user_hv_clock.pad[1])
+> +	if (cfg_size != PCI_CFG_SPACE_SIZE && cfg_size != PCI_CFG_SPACE_EXP_SIZE)
 > +		return -EINVAL;
+
+pdev->cfg_size isn't limited to these two values. PCI quirks set other
+sizes, e.g. quirk_citrine() (0xA0) and quirk_nfp6000() (0x600), and
+vfio-pci handles those devices fine since vconfig is just pdev->cfg_size
+bytes. This check only seems to exist to bound the variable-length
+layout of struct vfio_pci_core_device_ser, which goes away with the
+changes suggested below. Please drop it.
+
+> +	total_size = size_add(sizeof(*ser),
+> +			      size_add(size_mul(2, cfg_size), saved_size));
+> +	if (total_size > U32_MAX)
+> +		return -EOVERFLOW;
 > +
-> +	if (!user_hv_clock.tsc_to_system_mul)
+> +	ser = kho_alloc_preserve(total_size);
+> +	if (IS_ERR(ser))
+> +		return PTR_ERR(ser);
+> +
+> +	if (saved_size) {
+> +		void *dst = ser->data + 2 * (size_t)cfg_size;
+> +
+> +		err = pci_liveupdate_serialize_saved_state(vdev->pci_saved_state,
+> +							   dst, saved_size);
+> +		if (err) {
+> +			kho_unpreserve_free(ser);
+> +			return err;
+> +		}
+> +	}
+
+Please don't embed struct pci_saved_state_ser in VFIO's serialized
+struct. Variable-length serialized structs should be preserved in their
+own allocation, and VFIO should just store the physical address (0 if
+there is no saved state). That way the PCI core owns the size, flags and
+validation of its own ABI, either struct can grow without changing the
+layout of the other, and the offset math here and in PATCH 11 goes away.
+struct pci_ser already references its devices array the same way.
+
+I plan to structure the PCI core helpers for serializing and
+deserializing struct pci_saved_state to require this. The PCI core will
+do the allocation and just return a pointer to the serialized saved
+state. But I just wanted to call it out here.
+
+> +	ser->flags = vdev->reset_works ? VFIO_PCI_SER_RESET_WORKS : 0;
+
+reset_works shouldn't be serialized. Alex's series replaces
+vdev->reset_works with pci_reset_supported() [1], which only looks at
+pdev->reset_methods. Those are set up at enumeration without resetting
+the device, so the next kernel can answer the question itself. And the
+next kernel's answer is the one that matters, since it's the kernel that
+will reset the device.
+
+Please base on that series (or cherry-pick that patch) and drop
+VFIO_PCI_SER_RESET_WORKS, along with the incoming reset_works copy and
+the reset_works argument to vfio_pci_core_liveupdate_reset() in PATCH
+11, and the copy in vfio_pci_liveupdate_take_over() in PATCH 14. flags
+then has no defined bits, but please keep it (and keep rejecting unknown
+bits) for future features, see below.
+
+> +	if (!vdev->vconfig || !vdev->pci_config_map ||
+> +	    ser->cfg_size != pdev->cfg_size)
 > +		return -EINVAL;
-> +
-> +	if (user_hv_clock.tsc_shift < -31 || user_hv_clock.tsc_shift > 31)
-> +		return -EINVAL;
-> +
-> +	user_tsc_hz =3D hvclock_to_hz(user_hv_clock.tsc_to_system_mul,
-> +				    user_hv_clock.tsc_shift);
-> +
-> +	kvm_hv_request_tsc_page_update(kvm);
-> +
-> +	/*
-> +	 * kvm_start_pvclock_update() takes tsc_write_lock and opens
-> +	 * the pvclock seqcount; kvm_end_pvclock_update() closes both.
-> +	 * All clock state modifications between them are atomic with
-> +	 * respect to readers in kvm_guest_time_update().
-> +	 */
-> +	kvm_start_pvclock_update(kvm);
-> +	pvclock_update_vm_gtod_copy(kvm);
-> +
-> +	if (!ka->use_master_clock) {
-> +		rc =3D -ENODATA;
-> +		goto out;
-> +	}
-> +
-> +	curr_tsc_hz =3D (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
-> +	if (unlikely(curr_tsc_hz =3D=3D 0)) {
-> +		rc =3D -EBUSY;
-> +		goto out;
-> +	}
 
-[Severity: Medium]
-Can this curr_tsc_hz =3D=3D 0 (-EBUSY) branch ever be reached?
+ser->cfg_size was set from pdev->cfg_size in preserve(), and
+pdev->cfg_size doesn't change after enumeration, so the cfg_size check
+can't fail.
 
-kvm_start_pvclock_update() acquires raw_spin_lock_irq(&ka->tsc_write_lock),
-disabling interrupts and preemption on the local CPU. Immediately before the
-!ka->use_master_clock check, pvclock_update_vm_gtod_copy() reads
-get_cpu_tsc_khz() on the same CPU and clears ka->use_master_clock if tsc_hz
-is 0:
+> +	memcpy(ser->data, vdev->vconfig, ser->cfg_size);
+> +	memcpy(ser->data + ser->cfg_size, vdev->pci_config_map, ser->cfg_size);
 
-arch/x86/kvm/x86.c:pvclock_update_vm_gtod_copy() {
-	...
-		tsc_hz =3D (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
-		if (tsc_hz && kvm_caps.has_tsc_control)
-			tsc_hz =3D kvm_scale_tsc(tsc_hz,
-					       ka->master_tsc_scaling_ratio);
-		if (tsc_hz)
-			kvm_get_time_scale(NSEC_PER_SEC, tsc_hz,
-					   &ka->master_tsc_shift,
-					   &ka->master_tsc_mul);
-		else
-			ka->use_master_clock =3D false;
-}
+pci_config_map doesn't need to be preserved. PATCH 14 already rebuilds
+it with vfio_config_init() in the next kernel and only uses the
+preserved copy to check that the two are identical.
 
-Because IRQs remain disabled across both calls, get_cpu_tsc_khz() =3D=3D 0 =
-will
-always set ka->use_master_clock =3D false in pvclock_update_vm_gtod_copy(),
-causing kvm_vcpu_ioctl_set_clock_guest() to take the !ka->use_master_clock
-path and return -ENODATA rather than the documented -EBUSY.
+I assume the intent is to detect changes to vfio-pci's config emulation
+between the two kernels, but the map isn't a good proxy for that. It
+changes for differences that don't matter (e.g. hiding a capability or
+learning the length of a new extended capability), which would fail
+take-over and lose the Live Update on exactly the kernel upgrades Live
+Update is meant for. And it doesn't change for differences that do
+matter, like which bits are virtualized or writable within a capability.
 
-> +
-> +	if (kvm_caps.has_tsc_control)
-> +		curr_tsc_hz =3D kvm_scale_tsc(curr_tsc_hz,
-> +					    v->arch.l1_tsc_scaling_ratio);
-> +
-> +	/*
-> +	 * The mul/shift in the provided pvclock structure encode the guest
-> +	 * TSC frequency at which it was generated. Sanity-check that it is
-> +	 * consistent with this vCPU's effective TSC frequency, allowing a
-> +	 * discrepancy of 1 kHz either way since independently calibrated
-> +	 * hosts will not measure precisely the same value even for the
-> +	 * same nominal frequency.
-> +	 */
-> +	if (user_tsc_hz < curr_tsc_hz - 1000 ||
-> +	    user_tsc_hz > curr_tsc_hz + 1000) {
-> +		rc =3D -ERANGE;
-> +		goto out;
-> +	}
+Preserving vconfig makes vfio-pci's config emulation part of the
+contract between kernels either way. I think changes to the config
+emulation that affect how a preserved vconfig is interpreted need to be
+tied to a userspace opt-in, recorded as a flag in struct
+vfio_pci_core_device_ser. A kernel that doesn't understand the flag then
+rejects the preserved device, and userspace shouldn't opt in while it
+can still roll back to a kernel without the new emulation.
 
-[Severity: High]
-Are there three boundary and overflow issues in the frequency calculation a=
-nd
-comparison between hvclock_to_hz() and kvm_vcpu_ioctl_set_clock_guest()?
+> +	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
+> +	vdev->liveupdate_intx_disabled = !!(cmd & PCI_COMMAND_INTX_DISABLE);
+> +	if (!vdev->liveupdate_intx_disabled)
+> +		pci_intx(pdev, 0);
 
-First, if a vCPU's guest TSC frequency is set to 1 kHz via KVM_SET_TSC_KHZ,
-set_tsc_khz() computes ratio =3D mul_u64_u32_div(1ULL << frac_bits, 1,
-tsc_khz), which truncates down. Scaling the host TSC frequency in Hz via
-kvm_scale_tsc() then yields curr_tsc_hz =3D=3D 999 Hz (non-zero, so
-ka->use_master_clock stays true). Because curr_tsc_hz is u64, evaluating
-curr_tsc_hz - 1000 underflows to U64_MAX, making user_tsc_hz < curr_tsc_hz -
-1000 unconditionally true and failing with -ERANGE.
+This doesn't mask INTx on devices with pdev->broken_intx_masking set,
+either because PCI_COMMAND_INTX_DISABLE isn't writable or because a
+quirk marks INTx masking as broken. vfio-pci normally masks INTx for
+those devices at the interrupt controller, but nothing does that across
+kexec, so the device can still assert INTx in the next kernel before
+anything is ready to handle it. If the line is shared, that can get the
+line disabled as spurious and break the other device.
 
-Second, host tsc_khz is measured in whole kHz (1000 Hz steps), so a 1 kHz
-calibration difference between two hosts is already 1000 Hz. Because
-kvm_get_time_scale() floors tsc_to_system_mul via div_frac(), hvclock_to_hz=
-()
-rounds user_tsc_hz up by 1 to 3 Hz (for example, 2100001 kHz becomes
-2100001001 Hz) while kvm_scale_tsc() can floor curr_tsc_hz by 1 Hz. Doesn't=
- a
-1 kHz host calibration difference therefore exceed +/- 1000 Hz by 1 to 3 Hz
-and get rejected with -ERANGE?
+Please reject those devices in preserve() if they have an INTx pin and
+!pci_intx_mask_supported(pdev), and add that to the Restrictions in the
+DOC. Check the PCI core flag rather than vdev->pci_2_3, since
+vfio_pci.nointxmask=1 clears pci_2_3 even when INTx masking works.
 
-Third, in hvclock_to_hz(), tm =3D (NSEC_PER_SEC << 34) / mul always has at
-least bit 31 set (and bit 63 set when mul =3D=3D 1). When shift < 0 (for ex=
-ample,
-user_hv_clock.tsc_shift in [-31, -3]), won't tm << -shift overflow 64 bits
-and wrap around modulo 2^64?
+> +struct vfio_pci_core_device_ser {
+> +	u32 domain;
+> +	u16 bdf;
+> +	u16 cfg_size;
+> +	u32 size;
+> +	u32 flags;
+> +	u32 saved_state_size;
+> +	u32 reserved;
+> +	u8 data[];
+> +} __packed;
 
-> +
-> +	/*
-> +	 * Calculate the guest TSC at the new reference point, and the
-> +	 * corresponding KVM clock value according to user_hv_clock.
-> +	 * Adjust kvmclock_offset so both definitions agree.
-> +	 */
-> +	guest_tsc =3D kvm_read_l1_tsc(v, ka->master_cycle_now);
-> +	if (guest_tsc < user_hv_clock.tsc_timestamp) {
-> +		rc =3D -EINVAL;
-> +		goto out;
-> +	}
+Once config_map and the saved state are gone, vconfig is the only
+variable-length part left. Please either make it a fixed-length array
+sized for the largest config space (PCI_CFG_SPACE_EXP_SIZE), or preserve
+it in a separate allocation like the saved state. Either way this struct
+becomes fixed-size and data[] goes away.
 
-[Severity: High]
-Does the unsigned comparison guest_tsc < user_hv_clock.tsc_timestamp mishan=
-dle
-64-bit modular TSC wraparound?
+cfg_size should stay, to record how much of vconfig is valid. The next
+kernel computes pdev->cfg_size on its own and could come up with a
+different value, so it needs to check that ser->cfg_size matches (and
+fits in the vconfig buffer) before using the preserved vconfig. Doing
+that once in retrieve() should be enough.
 
-Guest TSC values from kvm_read_l1_tsc() and pvclock deltas in
-__pvclock_read_cycles() (u64 delta =3D tsc - src->tsc_timestamp) use 64-bit
-modular arithmetic. When a vCPU has a negative TSC offset, its guest TSC can
-start near U64_MAX and wrap across 0 into small positive values as time
-advances.
+I understand this will waste some memory today, since each KHO
+allocation must be a multiple of a PAGE_SIZE. But that is a KHO problem
+that can be fixed later.
 
-If user_hv_clock.tsc_timestamp was captured just before wrapping across 0
-(near U64_MAX) and guest_tsc on the destination is just after 0, guest_tsc =
-is
-ahead of tsc_timestamp, but guest_tsc < user_hv_clock.tsc_timestamp evaluat=
-es
-to true and rejects the call with -EINVAL. Conversely, if tsc_timestamp is a
-small value just above 0 and guest_tsc is slightly behind it (wrapped below=
- 0
-to near U64_MAX), the unsigned check evaluates to false and passes a huge
-delta (~U64_MAX) into __pvclock_read_cycles().
+> +#ifdef CONFIG_VFIO_PCI_LIVEUPDATE
+> +	bool			liveupdate_frozen;
+> +	bool			liveupdate_intx_disabled;
+> +#endif
 
-Should this check (s64)(guest_tsc - user_hv_clock.tsc_timestamp) < 0 instea=
-d?
+nit: liveupdate_intx_disabled reads like "INTx is disabled for Live
+Update", but it actually records whether INTx was already disabled
+before freeze(). Inverting it to something like liveupdate_masked_intx
+(i.e. freeze() masked INTx, so unfreeze() needs to unmask it) would make
+freeze() and unfreeze() easier to follow.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105154955.2525=
-419-1-dwmw2@infradead.org?part=3D14
+[1] https://lore.kernel.org/kvm/20260812045325.2733631-6-alex.williamson@nvidia.com/
