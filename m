@@ -1,100 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.37
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793890137;
-	b=AoZo0Xo2bhFrw+pwDMmsRPSts1wAefm2pQvzgCDgdTfsp1D1uJnLlaQUv9igFsQ4KkMj
-	 ScYDnKyHE9UslUkWDB9AHFaki8q3D3ZoTodYjw8u9LoPjwGX46rFnVZuXVrW2zDaTkCod
-	 1gjlBo+TQSNuAT3lpNI+quYTpaN5b9M+hrfHpgfpjfDaHR2S2hcLLbWXxJxPtNQ8BBEnJ
-	 CeTJfaDBfmejk4PnIVocoE095pYhryZovXaXuL38JjAW8DZ0qEt1GHuujaxHvXFXDEMPm
-	 FHblUko2P5F03GHE65T9WcDFVr1ABYitre/nPPEvoY2W2fHzEQFpWFTahpvn8N2nJ3w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793890137;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=59mzC/SUaq+dWNv6foVeZK1IWurnNKFJ5YtzJpKMSIA=;
-	b=nBml1aDG8HtjLIACXAQhSrvHIPJ8gBE0JrSFZd59UQ/4fMP6+opKVQTlQ6Jin6usM32m
-	 kkPcEvi6FaCfBpAZW4GZSnsDTmu63h/vsH+AzIpKLwEcffN8sl3fkWsXwMnwIFXZF3OqD
-	 lsrJU57O+dtQuw1Foow0bGCDLQiY7r2SzevCdQCbeQjDpKvUDtB3luwba2h53L5YzeDGN
-	 fublhogzFINFL6XCS5afX3eSEVJxFYiUFtIZQbCX2TtmhOl2ZwhbO5uJRVVNiD6wPMSyp
-	 DvCNjG/HdeL1i0DOjhZj+ckMyUMB/bXFSET55bplNJZA15O+sSrEECrLvuVxhS5jeTA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=n8OC4dpU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.37
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011037.outbound.protection.outlook.com [52.101.57.37])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793890220;
+	b=qUrpdFYcQgFJHEyJPokvaJyjxMle6ZDZygv6WNuP+3G7Ya7NwETl/gCNjWAmPzz34Isk
+	 O3X7UrdNyQRTLG5KMdBxo2xNOYW4GsXz6/F58kxYA+BLAmkG7bBnES2kfZq4J1RTYu8Nd
+	 IuI7gbhMGLSsTQvcruJGN/kdHBbaMgFGsOQKPBY60Fl5tcRmh669ghGlfx7x91mJp54iZ
+	 DtTHlrxhmh7pVj2YBqbHgT8bwNEDkTtqiPosqxfAfpPm/W3qlhBOVy3XwuW3MX+SLPHVZ
+	 KAHSGDTrn7sOfgPUBOGFCNNYZ645P/09UHqoF8YB27KR1/j6NmCYYjkUST4sRI6RvBg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793890220;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=zngDh/hn+d+IfbRxuQD9941zh0dh76DUZmGv37oN1yw=;
+	b=HzMLGIqqVn2//dkvQAT22iGKMMeJt7UDh7uxzsQpUygD+qtPFM9tCQx9xfJhWIcVcFwz
+	 J5gars6JiHHJjX8YepJ8imlv2pLLYGboWD+nHUPbNvP2MBcMeAmhAvEC6Xjy3sKdeWhFP
+	 LQYPG0KEDK4FVLFn5tTeuix7rKExdFGmQS4yFwo1WwVJ3YO/F8SMkG4PXtLN3V2Gk7AHU
+	 PiBhR3SvD3lRgsBp6ikLCyDy3Ytoj4yLutedNRb+OZZisQ2YUq6D154s2sEj0l5z46GiO
+	 6nk402WnkMZlGr60ggNieF8eVbmK5cfo6xBHazWkSJps2WnrlCb4p5mnPZl3FKYNNWA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CaH54igg;
+	arc=none smtp.remote-ip=192.198.163.7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7DD606A31B;
-	Thu,  5 Nov 2026 14:48:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E7DD606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B667606A333;
+	Thu,  5 Nov 2026 14:50:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B667606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=n8OC4dpU
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CC6F5NH3N/QeoiegI7vRnP4i2O2Ms6ZBwDTwacN/LTfZJbwo9yUZdtKeBxVBSKiLom2wOWkELLBX5WNcGX3nHWyb/eoj9YiO8gZog/HEYSUxqXwINWxRwC4B9tz76CWngXMWqGt5b0sy7q5W7r/6dHc2QfbtIkQ+7Z5htCVJtIgWt792wFtAIpi1+t81LqjJZ/9bB6KCIQt1/NX61u4bfL7cly/VOvKLPgZjkjm6ofsvZHXSkU0avctKhXp9kb/QCG5ScuU//XL3AG285Ql5zrN+RXxfE5SbZnDfcuGUqIO+ckaBTzz3FgmsZTRDCODjwsPbo67v2WS8UCGnVXPBrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=59mzC/SUaq+dWNv6foVeZK1IWurnNKFJ5YtzJpKMSIA=;
- b=YpZbA91zcdFBcq2r4ib8KtIxx4PP6+K2wZd8/a9mnoizYGQDLwRb/SFDtNpli+M/DfTfcEX5Cd9BDmOoFqRc9V1ImReG9x+1HvmkYhhWC/0bUjIYKbLpiEqJtT4TNb7H628D+GxzKtwYRlpYFFydDqK7hz7DT8ILNgqYDFXYpMnFS6Dp3AvwoYHv8cENqF4Q3RFCarVN2VzfK1afTYghrl1QLx1LXPobyBYjFcEaYqRt476E7IaL9hr4Zf+af/LoWveeo8sH8G2jwueShiERtfxOuZaNx8Z/uQ5YO64jrvo8vAeVlO4xYUfJjQvanLVaMNIbetaSd3/mpSjJF10L+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=59mzC/SUaq+dWNv6foVeZK1IWurnNKFJ5YtzJpKMSIA=;
- b=n8OC4dpUQBQP2A2Abrk7dpwZvURS/8b1fWx5gi7P384OUwk8CAgGgd4sOox0cj/fti3MdwJoIT/Fuu7KDvpwdlO6xq7sCp3u75WtXgmryi7RHCuTpvmNKzcDEKp9AcAQrUqGPc9wjm4w+d1cBORti9wA03Arx7wn1GLn5P1DCcvHjH0rLCqJgywoJI4BrLq7QyXF4JL/yRg9g/TMTqhOhWb+nxW3vvdE9eSTkrnd4rZCR+uFJK7x11Ex+Uk+D9kAIUwebuU/xI47jmMb7GA7ZloTUio7hUmDopEyBDweRDeIk6Djgx+5uERJWylLzNZ49pE1YYcq0ym8cmkKkeVjiw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB6393.namprd12.prod.outlook.com (2603:10b6:510:1ff::15)
- by IA1PR12MB6482.namprd12.prod.outlook.com (2603:10b6:208:3a9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 14:48:45 +0000
-Received: from PH7PR12MB6393.namprd12.prod.outlook.com
- ([fe80::6562:4ede:3d29:f036]) by PH7PR12MB6393.namprd12.prod.outlook.com
- ([fe80::6562:4ede:3d29:f036%2]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
- 14:48:45 +0000
-From: Wojtek Wasko <wwasko@nvidia.com>
-To: netdev@vger.kernel.org
-Cc: richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mtosatti@redhat.com,
-	pbonzini@redhat.com,
-	cjubran@nvidia.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wojtek Wasko <wwasko@nvidia.com>
-Subject: [PATCH net] ptp: kvm: report paired cycles for the active clocksource
-Date: Thu,  5 Nov 2026 15:48:21 +0100
-Message-ID: <20261105144821.5299-1-wwasko@nvidia.com>
-X-Mailer: git-send-email 2.54.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZR0P278CA0127.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:40::6) To PH7PR12MB6393.namprd12.prod.outlook.com
- (2603:10b6:510:1ff::15)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CaH54igg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793890220; x=1825426220;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pR76mBghhXMOKm2t2fE0Nbyxh5lA9YdTCI2eN6g0oNY=;
+  b=CaH54iggLRDvQu+fJy5qc9rHlSnF6nsEVdBBbu3Ar6gIvJuB8AHBpkPM
+   kCA7K7QuaiBsHFbRWy9TTYTaWKa3D7Zt92JuZ/ksDLmMqCKsttD1DpZom
+   pkVIgwhUNfwLRm54cVXI0rSfvLC036msgNFCu8F4xD0jLJU64AJ8/51Qu
+   6BabFNr6P1nwSVwlm3ZlksDHdPa8gS8Nm3pLNYVRLO9CytwaN93oP88zt
+   CMOm2lBojG4H/vZuJGRvjmXoCkdBqh1xbiG8vEPM9udN0dDqdjQTboPRM
+   QleP0cr+b4qYN72v4nHfL9cyupgrhozEzja8wYoOC23dG7xOG85PP0/Ux
+   g==;
+X-CSE-ConnectionGUID: Upc1HOLNSC+zVEVTogBspw==
+X-CSE-MsgGUID: 1Mq3vmUnT22ZxrH0dNtgfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2551306"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2551306"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 06:50:19 -0800
+X-CSE-ConnectionGUID: /dk8MTNSRPGYLMVUiJXO/Q==
+X-CSE-MsgGUID: pVjBF9RvTTCjveglukFKDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="7151193"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 05 Nov 2026 06:50:13 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xOyn4-00000000mLb-00W9;
+	Thu, 05 Nov 2026 14:50:10 +0000
+Date: Thu, 5 Nov 2026 22:49:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v8 11/15] iommufd/viommu: Select vIOMMU operations before
+ allocation
+Message-ID: <202611052227.TxHIjde3-lkp@intel.com>
+References: <20261104161632.3547423-12-aneesh.kumar@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,166 +106,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6393:EE_|IA1PR12MB6482:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f8ca964-2895-4780-b73b-08df3b4be48b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|261022105027099003|261028144727099003|10067099003|261021121427099003|261021123027099003|261026121527099003|261026140227099003|261102123227099003|11063799006|56012099006|18002099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	j7MAiWhLGuumf3n8kV0WW3z1tM+wGVJcvVgjfs1PZT1hnPolp7SE6C2x92y7vAulsTVlFAxV743JfeopvXXJCBRiT/r4hSuOkDkAjey0YOsH+NX/UKl/0yc770JnvWTmXz12AJy1oCLmMtPxBYpTQKw7pyrXbRj5Fx2WivTsX/Jan22b9DRsy1Jid5u+MubvByoiwi/7UFTR+kF4qMIGAUGsWYwrIkqzu3UhQBgKFl0WiOQc8lXMmQxsAFAditfcbXvc2pRmbbL3iwu0lXSqEMZgZ//K0G/aJp5bhrVcYXNrEaIQlWy7Gta/BD3hbR+AOaFZb9OVZhTY1ztsxSJ90tcvVyy0J8VaIV3PVK/hThsxJnN1yrDGm8v03RggjEMOwf2vm0nih7AGEiMrKTS+igx/Elj0nqOgPlOSd6E8sEoWwycd8lHC2CglKJiJLGbktj0CLHfM2IuFe4hjGXk7Z9an/F3NHsWHRsgTaah/QpaVZefXr0ulJ62J6j1X2kLBhX4pDwXxVnSyX/0/4APxMh39V5oTvCdB11kg3F2FWqIhc1VOeQuf9E5MBU3sBkz3sWpgTkrCLv+hV8/beZRrk5Vae8QWtxU8JEPikxbM8BCueB/aRSKD6Z91I6kOs4n4aqq5AHKAnhQPuTwrDF1/ZE9L3wfGwygcyA+23mJ1lRc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6393.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(261022105027099003)(261028144727099003)(10067099003)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(261102123227099003)(11063799006)(56012099006)(18002099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+bz2yPW7sa4ZIok9DZNZW4VRqsXfdZ3CFezY2rMDL5QMDQCm/HDbZGs8E8ro?=
- =?us-ascii?Q?WZkjKynxNIVRAg1BFsw98I48/1GAe5WqWAMRtv/z40wTJn0/4dzK+jLFsn/I?=
- =?us-ascii?Q?VRiYarSQ6Y9zWOFCQLeg0vBQvDbCWSGSxmhTeTksC7Ro3ONXTt8L1b0pOmO6?=
- =?us-ascii?Q?on2noRibkIEb+wrmHTz3139Lnee/qG++LY5UDrlHPub4GUqm5BWsMmpmEkhy?=
- =?us-ascii?Q?XP/H2Bsx1jXQ6v8j+c6lLOEU92D6ypHuULqE5y89/CgS0YWl3UplONGpavdl?=
- =?us-ascii?Q?Vyrh8L+ia0yxXBfe8T7H/hDGhV0pujbSxbraDN/zQt8+bjioo68gkiuLCEBO?=
- =?us-ascii?Q?9ZiOzN+H5qH8LesXNq+rNVU7XSla5GkKYHlXXTyXMpOrNRtqPqmHR5R8/gCy?=
- =?us-ascii?Q?7hMlpoLEiGy23SbSbFOVN1Cf6lsB3uZWQPfHUv2lG5vz9GVLbsWUCSDwIP0R?=
- =?us-ascii?Q?a39hPfoxxHst91IulrMEiUQDtwKVcNArW4QSpC/dng61GhcBTfAQvQE3ftfH?=
- =?us-ascii?Q?U04W1NW3urMU6p8loR04Bf9+rQnzBogtPf9Du5y7ZjCfDyZk1DBZaQITvKJe?=
- =?us-ascii?Q?GvROxb+d9R6ziFVdPKtqgnkiD7xJBLuV3KgertYe5snUKklkYxYaySj4zeW1?=
- =?us-ascii?Q?0enWo2NgnXTutgUnvzb7opd3dPGp5Aign41n9dcGVJSQjp+hOHMHcJV2ldXG?=
- =?us-ascii?Q?MPX+WYNdsuC5c51LbKSmx2K5KlpzVZKM0C6VXhy5/LidfmkkyHmOGNgp5ITF?=
- =?us-ascii?Q?mwRV/fuZYLnGXWsvM0myMqdUr2gvbQQa+eE/66IyXC7fS3I0req3hjFDSpKY?=
- =?us-ascii?Q?o+G7DmOCBwXpos8LBrlZUqk8J34qRSPeEhg0ayRIVskR9hwgB9H4uO/unum8?=
- =?us-ascii?Q?aWDHnRIpFVYPfmAc69cT1uWbyZfJI6Wq88LwEfhIhBguxnX++tM1vI6e1kIw?=
- =?us-ascii?Q?D6fsdnZuWzuPj+UpeTvYznp/JpoLhWwyu6azraAA8uM/OLCfp8rULxAbwoRG?=
- =?us-ascii?Q?RJ+uPcEqU9p63ACWr6puPxYzzpEACeRPtIiK62odjT4uZk5Xl3o2JgDl0M9F?=
- =?us-ascii?Q?BBzT8wBFGVWBO4CTj8/dzOax8/rzNw9sp51l9tdM6j5cRHKpRfNlTawi2BUD?=
- =?us-ascii?Q?ZtxRyJx8j6wZ6aFtyJ/YTdmpbup94QWb3oOqxNEV5Wy4Nxel5EJP0q5qCje9?=
- =?us-ascii?Q?/LBJxK2BufaL9aXf5xChn4iCqka5KYMafRaim549+/J0P6UTQd3AoSsVm3XO?=
- =?us-ascii?Q?OIrm3vK2JeK13OlsaY8iBj88zw+qnnotXiOAygaXtMhadgeAMey8wV7LLrMc?=
- =?us-ascii?Q?OPaatt3WzTSlTy6ZPUWxRyyhWGKgHVG7adF4IqalT9Uxg016ykBC54RcxXkS?=
- =?us-ascii?Q?2tYWnuUIFh8l6IZovteL3gOL8/KgJ4YweNOzYXN4omX4+8j5YzZQH1yjwwwG?=
- =?us-ascii?Q?X03fNrKxP1AuBN8mXzNSQXoSaGuTcfhpj/3RUiGnhGnDBS4CIzkKU+GTkodp?=
- =?us-ascii?Q?1t3qGzM60A0NHQDsjQL0S/lKZUU9rdCBLIfjG52UP+YfNVFmWYpHSBfQm9T4?=
- =?us-ascii?Q?dLQvGfgH3dmvYXP8CSCn/Ea3r72cWzE/Qoq0/KfRrOQx5ISluoXgttmBbA9r?=
- =?us-ascii?Q?dRf6thIYnwgIgvO6AwVXSgsSXlMSawqyGdkVOanXS5gmUSqHUdLRYG6rTayR?=
- =?us-ascii?Q?UuWYJBw9LuVTzzgl7aaKYe2vnv7wkrrTuENkkLjGzim08gpr9W2A/ModlBft?=
- =?us-ascii?Q?Jdk/y2Z8MQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f8ca964-2895-4780-b73b-08df3b4be48b
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6393.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 14:48:45.5360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T5TIA4Wwo6UCiJwe99Udf8JpQAQYnmTNLebZzrQ1E2370ZEX2bMudYXue/dx3ZyP46NSQyUBvo/5GtvNzfwvrA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6482
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104161632.3547423-12-aneesh.kumar@kernel.org>
 
-The KVM clock-pairing hypercall returns host wall time paired with a
-guest TSC value. Cross-timestamping needs that counter expressed in the
-guest's active clocksource domain.
+Hi Aneesh,
 
-ptp_kvm always converts the paired TSC value to kvm-clock units and
-reports it as CSID_X86_KVM_CLK, so precise cross-timestamping
-(PTP_SYS_OFFSET_PRECISE) fails on guests with TSC clocksource.
+kernel test robot noticed the following build warnings:
 
-Return the paired TSC value directly when TSC cycles are requested and
-convert it to kvm-clock units otherwise. If get_device_system_crosststamp()
-rejects the counter with -ENODEV and the active clocksource differs from
-the requested one, retry once using the active clocksource.
+[auto build test WARNING on 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4]
 
-Fixes: a0e136d436de ("PTP: add kvm PTP driver")
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
----
- drivers/ptp/ptp_kvm_common.c | 28 +++++++++++++++++++++++++---
- drivers/ptp/ptp_kvm_x86.c    | 13 +++++++++++++
- 2 files changed, 38 insertions(+), 3 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Aneesh-Kumar-K-V-Arm/PCI-TSM-Move-core-code-into-its-own-directory/20261104-214618
+base:   6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+patch link:    https://lore.kernel.org/r/20261104161632.3547423-12-aneesh.kumar%40kernel.org
+patch subject: [PATCH v8 11/15] iommufd/viommu: Select vIOMMU operations before allocation
+config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20261105/202611052227.TxHIjde3-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261105/202611052227.TxHIjde3-lkp@intel.com/reproduce)
 
-diff --git a/drivers/ptp/ptp_kvm_common.c b/drivers/ptp/ptp_kvm_common.c
-index 15ccb7dd2ed0..e11fcf961758 100644
---- a/drivers/ptp/ptp_kvm_common.c
-+++ b/drivers/ptp/ptp_kvm_common.c
-@@ -23,12 +23,13 @@ struct kvm_ptp_clock {
- };
- 
- static DEFINE_SPINLOCK(kvm_ptp_lock);
-+static enum clocksource_ids kvm_ptp_cs_id = CSID_GENERIC;
- 
- static int ptp_kvm_get_time_fn(ktime_t *device_time,
- 			       struct system_counterval_t *system_counter,
- 			       void *ctx)
- {
--	enum clocksource_ids cs_id;
-+	enum clocksource_ids cs_id = *(enum clocksource_ids *)ctx;
- 	struct timespec64 tspec;
- 	u64 cycle;
- 	int ret;
-@@ -58,8 +59,29 @@ static int ptp_kvm_get_time_fn(ktime_t *device_time,
- static int ptp_kvm_getcrosststamp(struct ptp_clock_info *ptp,
- 				  struct system_device_crosststamp *xtstamp)
- {
--	return get_device_system_crosststamp(ptp_kvm_get_time_fn, NULL,
--					     NULL, xtstamp);
-+	enum clocksource_ids cs_id = READ_ONCE(kvm_ptp_cs_id);
-+	struct system_time_snapshot snapshot;
-+	int ret;
-+
-+	ret = get_device_system_crosststamp(ptp_kvm_get_time_fn, &cs_id, NULL,
-+					    xtstamp);
-+	/*
-+	 * The paired counter value is not in the units of the current
-+	 * clocksource. If the clocksource differs from the one this request
-+	 * asked for, ask for the counter in the new units and retry once.
-+	 */
-+	if (ret == -ENODEV) {
-+		ktime_get_snapshot_id(CLOCK_REALTIME, &snapshot);
-+		if (snapshot.valid && snapshot.cs_id != cs_id) {
-+			cs_id = snapshot.cs_id;
-+			WRITE_ONCE(kvm_ptp_cs_id, cs_id);
-+			ret = get_device_system_crosststamp(ptp_kvm_get_time_fn,
-+							    &cs_id, NULL,
-+							    xtstamp);
-+		}
-+	}
-+
-+	return ret;
- }
- 
- /*
-diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/ptp_kvm_x86.c
-index 6cea4fe39bcf..4dd55c60d2ce 100644
---- a/drivers/ptp/ptp_kvm_x86.c
-+++ b/drivers/ptp/ptp_kvm_x86.c
-@@ -92,6 +92,11 @@ int kvm_arch_ptp_get_clock(struct timespec64 *ts)
- 	return 0;
- }
- 
-+/*
-+ * *cs_id selects the clocksource @cycle is reported in: CSID_X86_TSC returns
-+ * the paired TSC value as is, anything else converts it to kvm-clock units.
-+ * On return, *cs_id holds the clocksource actually used.
-+ */
- int kvm_arch_ptp_get_crosststamp(u64 *cycle, struct timespec64 *tspec,
- 			      enum clocksource_ids *cs_id)
- {
-@@ -99,6 +104,14 @@ int kvm_arch_ptp_get_crosststamp(u64 *cycle, struct timespec64 *tspec,
- 	unsigned int version;
- 	long ret;
- 
-+	if (*cs_id == CSID_X86_TSC) {
-+		ret = kvm_arch_ptp_get_clock(tspec);
-+		if (ret)
-+			return ret;
-+		*cycle = clock_pair->tsc;
-+		return 0;
-+	}
-+
- 	src = this_cpu_pvti();
- 
- 	do {
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611052227.TxHIjde3-lkp@intel.com/
 
-base-commit: 57889a8f6d49fc153aa0017d13086ab736567f8a
--- 
-2.43.0
+All warnings (new ones prefixed by >>):
 
+>> drivers/iommu/amd/iommufd.c:81:40: warning: unused variable 'amd_viommu_ops' [-Wunused-const-variable]
+      81 | static const struct iommufd_viommu_ops amd_viommu_ops = {
+         |                                        ^~~~~~~~~~~~~~
+   1 warning generated.
+
+
+vim +/amd_viommu_ops +81 drivers/iommu/amd/iommufd.c
+
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  76  
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  77  /*
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  78   * See include/linux/iommufd.h
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  79   * struct iommufd_viommu_ops - vIOMMU specific operations
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15  80   */
+757d2b1fdf5b7d6 Suravee Suthikulpanit 2026-01-15 @81  static const struct iommufd_viommu_ops amd_viommu_ops = {
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
