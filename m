@@ -1,72 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793905656;
-	b=Ighmbx0ID71OEwdFfnGf1/LULbT08Hq7HxShj8XwqRXojWxGDzLadjbkdZneo0gN97Ii
-	 VvZeFEqWQ78OFmh7gCiXhyV3VBCnUq2sk4RRvMDznjWWeAvaHA4FcHTRDaWA9bOLS8Bty
-	 NFwhcowCH455T0whIBTSuNEv7ecS79VH9ORdp8VC6BSUDwI36/XSU5dYr4l8Wz78wgV4X
-	 RF5Zeyp18JD4qf/HE6BNDIQNVF+x2GPLcM7IMohx7TyS9nXR+VlsuQM3fYZQCEaSTH0yN
-	 FpRNJ1MtL4uN9kmZxOgQbEx5+W8ov1quHZ4rieggpwDtYb2pQO6sX5WDVP7BKkv5e0g==
+	t=1793905658;
+	b=h2HLaHqmex1l+PCMpnMmdVm3QztVm87R4SpWTlyDNhomvV/kcATszEcZYKD9xhxM7NOG
+	 WgGQzMsYcL8+UC5ikL2xhJk2giqCFbIl6PchlGJE42wgbM0nYdb6QGE2vqn3Xc28/CPSd
+	 2x/0vA9eSzj0Apu7wS+SbK/NDMrZGtq1KnhVWVt0dXUulI985Mhn2mxOmGJ5Qj6hUfW16
+	 6h/fko47TGYG3nSl1xNnYPcaMj4f+6U7PTwmVbooo8RJ8iNiNsqhKeF76VSdPvrwOFhOn
+	 qwg31JwpVzCYRk2Gl4ynKEMkTnhJaba29fxjxPDBGjUQg0ddHQph7kfVdWHqpBl2fxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793905656;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793905658;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
-	 Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=yTiKwXEnXxeIRLFTsm6pyPXSdQ19stWeCj4ZNZtBtvc=;
-	b=l1NBPzfPFC+XDB6szKCJhQWjjseG3F/agvkdrrwuwc2HUQ+ZDKLiQmWR9F/9CKru0TU9
-	 FaMkY04vm46XhnWKeNB4ZbJ8yTkYnobteC/x56y+pauTGT6KzEDeJxhwrcII68PT0OVJy
-	 XlgIrVPxm3mC7eRTWeeaUmbyXB1Iwg0ldo7inbveZAaCgB4xBKBpz9kAP/KGE93SxNgBE
-	 aUokhvYtUFSs0akwO7zG2ljPn8laI4QRNhS1BCvMC0xZZ/fNUkv6YtkLvSivWWhi1AYpE
-	 0U/Xr8JRszcCJjCk1/D9xMYSbBCgXmcKMAf683RqXWg8tMG3Qnz8/1IYFRCY77FsVvg==
+	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=RImlfGZRhzIDr+NgSiSBCyFCeHOPnTqcBiVWF5DlQGM=;
+	b=EIX1tt6dGbzrFLvjI14HBT1quUVifpKEJKiYsE37dtQwotLhLLF5kHJXsE+8TzdOzkR2
+	 CRri6WWqFtp46SI68TXX3Cr3KA5xvi7Ixu7bwODmc0Tv5/HZmhN7grWJ4YnjnIoINTqM3
+	 cdF2Ejlg8VINSLObGbqQYHB/vl9cDyozHoBwnER49AVyJ8tpQn6X82TvZ91Y1SH+zI4lc
+	 g+HO4KktmOb6xxFuhs+e6T6NzNpikWv0CgwZoPFtef7HPCQq5GOfEnc17fzpsWyxAsJfn
+	 E5hoZ+wwVY7M86Xq8NrqSw9hfhQs+THctx50U3cARzq69YXkE9iBf1K+/p1TzOJW2Ow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=j556zDUZ;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AdJhLm6m;
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E761606A32E
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:07:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E761606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2B1606A329
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:07:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A2B1606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=j556zDUZ
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3aed1b64104so3054494a91.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 11:07:35 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AdJhLm6m
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ed08b07232so19818955ad.3
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 11:07:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793905655; x=1794510455; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yTiKwXEnXxeIRLFTsm6pyPXSdQ19stWeCj4ZNZtBtvc=;
-        b=j556zDUZZLkeXoLhiuhzLJ/REgnxdyh2p2h9Ll+wk9PrrYpw/mvLgYhAb7XcnW3uFD
-         Z5PYxbNSsZXz2Y6xYfS4bl3SJxAIwp5EURlwfxs4i4Q5ku1o5HdVJG/A5SXJ5tb2uU1D
-         WHfLVC1ZU34LnuPwkKdEpWGAZfX8EBi5R/oObwEvw8kEcP5YpDAqJ8r6bArrrIElh0Kb
-         DYYwFMaG5XrWLerOGr+LAnY/PFbGnmb1SoZk/hPx3lQBFVhodZ9WtZl6dYS0nyS7MjAx
-         E6/A80KQuiEjMg7qdb4FTPySIYR9zh7Xuanz8kaDizNwPttCmDVwNCQMvjOaFgNCo5EG
-         kNLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793905655; x=1794510455;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20260707; t=1793905657; x=1794510457; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=yTiKwXEnXxeIRLFTsm6pyPXSdQ19stWeCj4ZNZtBtvc=;
-        b=nIsYkbmVq6D+02nKadrWtDicd2sUd79LSYPRccTD25vcG3/AZjRKwyVS7nCjkbN9KI
-         WF2OUsp86QG+pjSmYIz36/XDw+RI59jA4oeYxx5Qt7y4irYT8MsCPYAcU+CqVUCS460u
-         l/AyIQpQl46YWlfhg+xO0ETw+kX9va0yQ4a+FmLrlBCu7ckXSS67tOivfH4f/36dFxPX
-         pZLhdraezAqtsnzujZ3mnz9OItGEqukztmmAi8OeaCQXGVvVyJhE/iK44XKhyk7Kev5l
-         OelbFKZjCUYivo2s0zy+9huVjysClzQnKJFzOSiyTXsUUS8FOUDmxjbMG6o815kScrlr
-         dqCg==
-X-Gm-Message-State: APuU4Z9ijRkETnT02uPrqFLu2T5yKZ8BtQ1sk0vBOVskp4K+ogSSNTr0
-	MiEYEcZfUFa7xyAsjV7KokNlzgZ+MT7kVoL8akH1EP25cVLiXiukjt7vr9LrChABXWT5lJo8HUS
-	pM1+SpA==
-X-Received: from pgbm12-n1.prod.google.com ([2002:a05:6a02:618c:10b0:cd6:a6ae:1ba0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:390c:b0:3ab:e588:c2a8
- with SMTP id 98e67ed59e1d1-3ae8985c4e4mr17141245a91.64.1793905655207; Thu, 05
- Nov 2026 11:07:35 -0800 (PST)
+        bh=RImlfGZRhzIDr+NgSiSBCyFCeHOPnTqcBiVWF5DlQGM=;
+        b=AdJhLm6mql34JAg3z0aFAtzRel/U3sZykYE8DFCd1DuPZmWksgOM7QthliAKD2CEIu
+         NPkoeg31Vb1lrbpacwm1oXOL/o/SjnefV72IGayZsF2bYXDqYzrevgG2hXa1u0S991VZ
+         hglGSgsGGXiNwyiVTPVae1OUBW36Btf3PQjWLa5UC/9RPaFzS6csnn+OiusgNhX/LSC1
+         PXh6q29umyNjwLlm3bGse3rjJ2ei2vy8pkOUgl/tAJ522pXaiQ3XVZzgzYpoNKOd04A4
+         mVAx7Ob96gzoCUs1dGpxi8AophvY7lDgJtdk5rxXN6tsMXoyJPJ9jHfxmMVVcyMM8rDk
+         JEwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793905657; x=1794510457;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RImlfGZRhzIDr+NgSiSBCyFCeHOPnTqcBiVWF5DlQGM=;
+        b=jpZr1GU7wSVTT4uJGXw+MU0ppHzgACuCc0p49cdcjspZfc09buMnxHGcyxj8xRfQEZ
+         NKV225e7wmyNQ8onOQ7khbthd3O1LlSQ7Kd4v9V9hyRiPgMTsfwKDQWfOFpeUZ38N6Ie
+         ytL7QkEGvAm7TtxxNRp4uyUrxC+INusLBFLfxa7pYIfedFPfdSjK0FF2m/HlptVTr6cp
+         Xvl0XAChRtAtJ/2ePuIEoO1AomABRvsBSwAcR2HcyqmVpGBYBJpVNUvCkXkVxd8/XrER
+         viGcxS8c9Qy6AY6xENmInlVN6MfHoKTXAznfAphFGJ/0YjrNs1ZpDnND1AwylCReOyvL
+         kkoA==
+X-Gm-Message-State: APuU4Z8IXLfg6VbQ9Ge6XZljVrYTnIsn6H/NeJC6wZVkjPYNlFjq8DNd
+	1/FSa4DM48vMxQY0vpDJedsyRmLBrAUyNtv3JnnRC7xicuYU6ArTF/KyCR7E2/XlpD56ILKBtkC
+	OciAeAA==
+X-Received: from plbmf12.prod.google.com ([2002:a17:902:fc8c:b0:2e8:ad52:30e1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:18b:b0:2e8:93b5:c555
+ with SMTP id d9443c01a7336-2ed40e29864mr5181435ad.61.1793905656447; Thu, 05
+ Nov 2026 11:07:36 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  5 Nov 2026 11:07:31 -0800
+Date: Thu,  5 Nov 2026 11:07:32 -0800
+In-Reply-To: <20261105190733.3741959-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,9 +78,11 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261105190733.3741959-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
-Message-ID: <20261105190733.3741959-1-seanjc@google.com>
-Subject: [PATCH v2 0/2] KVM: nVMX: eVMCS consistency check fixes
+Message-ID: <20261105190733.3741959-2-seanjc@google.com>
+Subject: [PATCH v2 1/2] KVM: nVMX: Do eVMCS consistency check on secondary
+ controls iff they're enable
 From: Sean Christopherson <seanjc@google.com>
 To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -86,24 +90,37 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Manuel Andreas <manuel.andreas@tum.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix two benign-for-real-guests bugs where KVM incorrectly performs eVMCS
-consistency checks on VMCS fields that are supposed to be ignored.
+Check that the secondary execution controls are actually enabled before
+performing eVMCS-specific consistency checks, as the secondary controls are
+supposed to be completely ignored if they're not enabled.  Per the SDM:
 
-v2: Properly guard the checks instead of simply deleting the WARN.
+  If the "activate secondary controls" primary processor-based VM-execution
+  control is 0 (or if the processor does not support the 1-setting of that
+  control), no checks are performed on the secondary processor-based
+  VM-execution controls. The logical processor operates as if all the
+  secondary processor-based VM-execution controls were 0.
 
-v1: https://lore.kernel.org/all/f1f39118-2e1b-476b-9a84-ef7d56412bdc@tum.de
+Fixes: a83502314ce3 ("x86/kvm/hyper-v: don't allow to turn on unsupported VMX controls for nested guests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/vmx/hyperv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Sean Christopherson (2):
-  KVM: nVMX: Do eVMCS consistency check on secondary controls iff
-    they're enable
-  KVM: nVMX: Do eVMCS consistency check on VMFUNC controls iff they're
-    enable
-
- arch/x86/kvm/vmx/hyperv.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-
-base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
+diff --git a/arch/x86/kvm/vmx/hyperv.c b/arch/x86/kvm/vmx/hyperv.c
+index fa41d036acd4..2b40ac32ff06 100644
+--- a/arch/x86/kvm/vmx/hyperv.c
++++ b/arch/x86/kvm/vmx/hyperv.c
+@@ -169,7 +169,8 @@ int nested_evmcs_check_controls(struct vmcs12 *vmcs12)
+ 					       vmcs12->cpu_based_vm_exec_control)))
+ 		return -EINVAL;
+ 
+-	if (CC(!nested_evmcs_is_valid_controls(EVMCS_2NDEXEC,
++	if (nested_cpu_has(vmcs12, CPU_BASED_ACTIVATE_SECONDARY_CONTROLS) &&
++	    CC(!nested_evmcs_is_valid_controls(EVMCS_2NDEXEC,
+ 					       vmcs12->secondary_vm_exec_control)))
+ 		return -EINVAL;
+ 
 -- 
 2.56.0.567.gdb80ae8cd5-goog
 
