@@ -1,49 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793899914;
-	b=X80uHTTkEGj4YeLhpL1UPhEATiKI/hcCNC6P2bVWKZW7AufW3auM4c200z4CogwWIRJN
-	 fexT+h/nuKxg35LSvCRuyRCjXCcSiAysVq2khkV6H+vzj6YhGdUJ7lGYI+JHt7Q4gJjeH
-	 qZisLRhgF9MO786ZxdJUeOKQHsgwUl1awYxqC/ad3FUVgrTfdR7bZ129tcpyFC8RxIGRB
-	 nY80OZdcuyMk8jtedTgIcFoXWLuq9rqAXu5rh6UZID6a5TbOAzllVzm/23NFzVjG/Fyqa
-	 0cfxQ1I49/5Gsl7GcAZmYSeNAGIwtTnLn4g3TN6T7ptnEJO6zjTSN2fEPJRHYsV4WcQ==
+	t=1793900399;
+	b=novkt8aJaeZhzIngIY+rxjERYz2YLnMCX9nxoCuRB/trgA0ULMK+b9bNvcDxIgiHKTMe
+	 QLv8Ikg6Sf/dK4NKP5+dwtI18Q0HKat0DEYSKAWzenaqyz7LDtbgfxoDcN9zFU8NYuhWr
+	 0jftZKi5/DxMSUdnYr8sOI751kkCXzZgsTP4U59cMQQhQLfosCJ6HjHbBWRiUOVKGY3t7
+	 +mfLbyoL+i3/KGFLzZFJCXor/zxdzV6A7kGSUwMqY3CDgNJSk/Tj3NtlIQd4mxhH/YUZk
+	 hOhblWXsQZFAb7540K6kS7SnaTIkS94zlqeRyd/cxLaUlwNZklsXwveLWcZNypQdlgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793899914;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:From:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=YKulzZM0URwerrPabJBi4D2xYbrKiSJ1N2beCoy9biU=;
-	b=N5BLDjiqRnnf1YdGaSwCSEDtGcmXbHB2Kp32Qlynv0G2jvQJSCidvQA5nwUzZthrZUD3
-	 j0yuKLlmb5Q7ureh1/GftoAzzOVL1qWhvIk0t6UN30AJNvPYqF25nPz60BWnRLyHE5mi9
-	 PLOXJAQgX0e81mVzaVC6JviIpqMvmXK/T5mpQQxmW6V6FkxI9C39kvpDjnqwNXyhN3RlX
-	 cbV+cPxaDG52xx+MgebnrbVDkOVyG7D/ZEoHG0Na0wBHSEUbLFH3U2AIJ23uzc/DTKBKY
-	 bWLOqpca5DcQZjdd5eMKzlMk4s5hfcDWDSJFB8wcMiTiD1Uw6D3XqOlbo6dEhAGtYgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793900399;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=5IuQ2LIASqU+8WcfjUgkbAn0VQq/Ius7honjWE6ee4M=;
+	b=3o/8mJTyTLqhOvPzRPb0BjY5YfyLWo4tByHfFu95ZqIAYbHYjZ8I3fWScKDjseW6cHIu
+	 kof+oNTacsXY0nyYLTSbNpfMXRKKfBqWQ1bTZJSz6CgLbxZNCBWaW5CtkuM2F2oUan654
+	 L9UdCFA/17mWuRhuVTBXdpRQvVwk2ldw3dIhMgfY8e5yoQDzNCAjTN2tZiJGrLoFSmq6a
+	 DzAtdh24D2uPKLsjNQ7w0roPZ/V/mYnVkmHceQuehPhZFWQyhOuJYUZgZyNo4bSXqDFBv
+	 U/KgLnKMJ8H7VZ0cSdQeZxzosMPv9AolV50z36fAlNsn0LC8OLo4rtK1wn/zf/MvBkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=i7RS6puz;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642A9606A328
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 17:31:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 642A9606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eNtM58GX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EA2606A329
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 17:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=i7RS6puz
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A96541596;
-	Thu,  5 Nov 2026 09:31:49 -0800 (PST)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A1C0D3F628;
-	Thu,  5 Nov 2026 09:31:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793899912; bh=XXpaSz8VDhnp2Ua2FudpG2j4Ty9LSQB5GikQ0O0/Xag=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=i7RS6puz/MVKzQ5X29iNuL78bzNVknNnJjndXSlO1sQTMsU8SNXVGXQVzi3eDMMwu
-	 17m3I0U+ra/NW5Cy8hJjp3g/Mnqzor7WloMuegvmPpr/zNYSLPLSFg1JJQd6wcb45V
-	 QoeMT8yjWQRRVczYl1Srd0/rUQCwN8WwLK858djU=
-Message-ID: <0d5a4b59-f38c-4c1d-a59e-202e7efb4b54@arm.com>
-Date: Thu, 5 Nov 2026 17:31:50 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eNtM58GX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9E81F000C1;
+	Thu,  5 Nov 2026 17:39:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793900399;
+	bh=5IuQ2LIASqU+8WcfjUgkbAn0VQq/Ius7honjWE6ee4M=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=eNtM58GXT5190Qsj8qA/OVURob/4ZUsh+LfD2EtBrwQsR2QDG3NihDkY2xQN1K++Q
+	 t1oBFq4uoPGiBRIFnJUBf6N9tLTCxlaeliJBxzVpCicfRGv8O6dSS1gTXwrf148dra
+	 KpddYjkBTCEtX/JF2OjqoRy+xAIP9RaqBdCkcxS2wdafzdIt2g0dXAgmJI1JpfOeL2
+	 QKfcGzmu/USCBbTcMYDwcaIIOb61FpL1o1wMMTLqTya4HIdwR3Q74comtAs+f/myzx
+	 kHw7yAiYMiTexTYa66FtbkE84CVDKkmuwcW1rZcyVythNOlIsa1089vrsDZMka9Bb/
+	 BOXfdUftmVKdg==
+Message-ID: <sashiko-outbox-199646@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5/5] KVM: x86: move asynchronous page fault handling to
+ vcpu_enter_guest()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
+In-Reply-To: <20261105164531.313849-6-pbonzini@redhat.com>
+References: <20261105164531.313849-1-pbonzini@redhat.com>
+ <20261105164531.313849-6-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 17:39:58 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,159 +59,146 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/11] KVM: arm64: CCA: Prevent memslot modifications
- after Realm creation
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Steven Price <steven.price@arm.com>, sashiko-reviews@lists.linux.dev,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-10-steven.price@arm.com>
- <sashiko-outbox-193708@kernel.org>
- <9489ebe7-4c75-4229-811e-3f618028d367@arm.com>
- <a2dfb2ad-7c52-43e1-8b77-cacb2fa00c05@arm.com>
-Content-Language: en-US
-In-Reply-To: <a2dfb2ad-7c52-43e1-8b77-cacb2fa00c05@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] KVM: x86: stack use-after-free in vcpu_enter_guest() when APF toke=
+n is 0
+--
 
+commit c5a7c8d28f1e59908884ea94549586d942a8b76f
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-On 05/11/2026 15:06, Suzuki K Poulose wrote:
-> On 04/11/2026 11:15, Steven Price wrote:
->> On 02/11/2026 15:50, sashiko-bot@kernel.org wrote:
->>> Thank you for your contribution! Sashiko AI review found 1 potential 
->>> issue(s) to consider:
->>> - [High] KVM: arm64: CCA: guest_memfd memslot delete rejected after 
->>> Stage-2 unmap
->>> -- 
->>>
->>> commit 5106402397c36eec1e5fa59a5bb2c5adf4ee2aa8
->>> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>
->>> KVM: arm64: CCA: Prevent memslot modifications after Realm creation
->>>
->>> This commit updates kvm_arch_prepare_memory_region() to disallow 
->>> creating,
->>> modifying, or deleting guest_memfd-backed memslots once a Realm has been
->>> created.
->>>
->>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>>> index 51fda7b2ff7f3..eb8c5f9e9791d 100644
->>>> --- a/arch/arm64/kvm/mmu.c
->>>> +++ b/arch/arm64/kvm/mmu.c
->>>> @@ -2862,13 +2862,28 @@ int kvm_arch_prepare_memory_region(struct 
->>>> kvm *kvm,
->>>>           (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
->>>>           return -EPERM;
->>>> -    if (kvm->arch.vm_flavor == VM_PROTECTED_PKVM) {
->>>> +    switch (kvm->arch.vm_flavor) {
->>>> +    case VM_PROTECTED_PKVM:
->>>>           /* Cannot modify memslots once a pVM has run. */
->>>>           if (pkvm_hyp_vm_is_created(kvm) &&
->>>> -            (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
->>>> +            (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
->>>>               return -EPERM;
->>>> -        }
->>>> +        break;
->>>> +    case VM_REALM:
->>>> +        /*
->>>> +         * Once the Realm is created, we cannot modify any slots that
->>>> +         * could be providing private memory. i.e., guest_memfd backed
->>>> +         * slots.
->>>> +         * TODO: Handle trusted device private memory slots
->>>> +         */
->>>> +        if (!kvm_realm_is_created(kvm))
->>>> +            break;
->>>> +        if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
->>>> +            return -EPERM;
->>>
->>> [Severity: High]
->>> Does checking kvm_slot_has_gmem(old) in 
->>> kvm_arch_prepare_memory_region() run
->>> too late to prevent Stage-2 unmapping when deleting a guest_memfd-backed
->>> memslot on a created Realm?
->>>
->>> In virt/kvm/kvm_main.c:kvm_set_memory_region(), non-delete changes
->>> (KVM_MR_MOVE and KVM_MR_FLAGS_ONLY) on KVM_MEM_GUEST_MEMFD memslots are
->>> already rejected upfront with -EINVAL, so kvm_slot_has_gmem(old) is 
->>> reached
->>> here when change == KVM_MR_DELETE.
->>>
->>> However, in virt/kvm/kvm_main.c:kvm_set_memslot(), KVM invalidates and
->>> flushes the old memslot before calling kvm_prepare_memory_region():
->>>
->>> virt/kvm/kvm_main.c:kvm_set_memslot() {
->>>     if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
->>>         invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
->>>         if (!invalid_slot) {
->>>             mutex_unlock(&kvm->slots_arch_lock);
->>>             return -ENOMEM;
->>>         }
->>>         kvm_invalidate_memslot(kvm, old, invalid_slot);
->>>     }
->>>
->>>     r = kvm_prepare_memory_region(kvm, old, new, change);
->>>     if (r)
->>>         goto err;
->>> }
->>>
->>> kvm_invalidate_memslot() marks the active slot as KVM_MEMSLOT_INVALID 
->>> and
->>> calls arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot():
->>>
->>> arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot() {
->>>     write_lock(&kvm->mmu_lock);
->>>     kvm_stage2_unmap_range(&kvm->arch.mmu, gpa, size, true);
->>>     kvm_nested_unmap_cipa_range(kvm, gpa, size, true);
->>>     write_unlock(&kvm->mmu_lock);
->>> }
->>>
->>> For a Realm VM, kvm_stage2_unmap_range() invokes
->>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() with
->>> KVM_FILTER_PRIVATE | KVM_FILTER_SHARED:
->>>
->>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() {
->>>     if (attr_filter & KVM_FILTER_SHARED)
->>>         realm_unmap_shared_range(kvm, start, end, may_block);
->>>     if (attr_filter & KVM_FILTER_PRIVATE)
->>>         realm_unmap_private_range(kvm, start, end, may_block);
->>> }
->>>
->>> By the time kvm_arch_prepare_memory_region() returns -EPERM and
->>> kvm_set_memslot() restores the old memslot in the error path, hasn't
->>> realm_unmap_private_range() already unmapped and undelegated the Realm's
->>> private Stage-2 DATA granules across the memslot's GPA range?
->>>
->>
->> I think this should be fixable by checking in
->> kvm_arch_flush_shadow_memslot() and preserving the stage-2 mappings by
->> returning early. kvm_arch_prepare_memory_region() will then reject the
->> operation but the mappings will still be in place.
-> 
-> Or is the better fix to delay the kvm_invalidate_memslot() after 
-> kvm_prepare_memory_region() ? i.e., if we the KVM backend doesn't
-> approve the change, why do invalidate the slot ? For most of the CoCo
-> VMs, this would be disastrous.
+KVM: x86: move asynchronous page fault handling to vcpu_enter_guest()
 
+This commit moves host paravirtualized asynchronous page fault handling out
+of the MMU page fault paths and into vcpu_enter_guest() using a new
+EXIT_FASTPATH_APF fastpath exit completion and a stack-allocated
+kvm_task_sleep_node.
 
-Ignore this, driver for CCA is doing the wrong thing. Instead of
-flushing (which is a NOP for CCA), we were removing the mapping.
+Link: https://patch.msgid.link/auqAsEk9o6buPNiR@google.com
 
+> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+> index 3cb2616d88aca..c01a1cf70d77b 100644
+> --- a/arch/x86/kvm/mmu.h
+> +++ b/arch/x86/kvm/mmu.h
+> @@ -163,17 +163,20 @@ bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
+>  int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+>  				u64 fault_address, char *insn, int insn_len);
+> =20
+> -static inline void kvm_handle_host_apf_irqoff(struct kvm_vcpu *vcpu, u32=
+ token)
+> +static inline fastpath_t kvm_handle_host_apf_irqoff(struct kvm_task_slee=
+p_node *host_apf_node,
+> +						    u32 token)
+>  {
+> -	vcpu->arch.apf.host_apf_flags =3D kvm_read_and_reset_apf_flags();
+> -	if ((vcpu->arch.apf.host_apf_flags & KVM_PV_REASON_PAGE_NOT_PRESENT) &&
+> -	    !kvm_async_pf_queue_task(token, &vcpu->arch.apf.host_apf_node)) {
+> -		/*
+> -		 * Nothing to do but regular page fault handling must still
+> -		 * be suppressed, so leave host_apf_flags nonzero.
+> -		 */
+> -		vcpu->arch.apf.host_apf_flags =3D KVM_PV_REASON_PAGE_READY;
+> +	u32 host_apf_flags =3D kvm_read_and_reset_apf_flags();
+> +
+> +	if (!host_apf_flags)
+> +		return EXIT_FASTPATH_NONE;
+> +
+> +	if (!WARN_ON_ONCE(!(host_apf_flags & KVM_PV_REASON_PAGE_NOT_PRESENT))) {
+> +		kvm_async_pf_queue_task(token, host_apf_node);
+> +		return EXIT_FASTPATH_APF;
+>  	}
+> +
+> +	return EXIT_FASTPATH_NONE;
+>  }
+> =20
+>  void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
 
-Cheers
-Suzuki
+[ ... ]
 
-> 
-> Suzuki
-> 
-> 
-> 
->>
->> Steve
-> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 2a26900c06bd0..ffcf6ab622518 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
 
+[ ... ]
+
+> @@ -8130,9 +8140,9 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  	bool req_int_win =3D
+>  		dm_request_for_irq_injection(vcpu) &&
+>  		kvm_cpu_accept_dm_intr(vcpu);
+> +	struct kvm_task_sleep_node host_apf_node =3D {0};
+>  	fastpath_t exit_fastpath;
+>  	u64 run_flags, debug_ctl;
+> -
+>  	bool req_immediate_exit =3D false;
+> =20
+>  	if (kvm_request_pending(vcpu)) {
+> @@ -8507,7 +8517,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  		fpu_sync_guest_vmexit_xfd_state();
+> =20
+>  	if (exit_fastpath =3D=3D EXIT_FASTPATH_NONE)
+> -		exit_fastpath =3D kvm_x86_call(handle_exit_irqoff)(vcpu);
+> +		exit_fastpath =3D kvm_x86_call(handle_exit_irqoff)(vcpu, &host_apf_nod=
+e);
+> =20
+>  	if (vcpu->arch.guest_fpu.xfd_err)
+>  		wrmsrq(MSR_IA32_XFD_ERR, 0);
+> @@ -8569,6 +8579,9 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  	if (vcpu->arch.apic_attention)
+>  		kvm_lapic_sync_from_vapic(vcpu);
+> =20
+> +	if (exit_fastpath =3D=3D EXIT_FASTPATH_APF && host_apf_node.token)
+> +		kvm_handle_pv_async_pf(&host_apf_node);
+
+[Severity: High]
+Can this leave the stack-allocated host_apf_node linked in async_pf_sleepers
+after vcpu_enter_guest() returns when token is 0?
+
+In kvm_handle_host_apf_irqoff(), kvm_async_pf_queue_task(token,
+host_apf_node) is called without checking whether token is 0 or recording t=
+he
+boolean return value:
+
+arch/x86/kernel/kvm.c:kvm_async_pf_queue_task() {
+	...
+	n->token =3D token;
+	n->cpu =3D smp_processor_id();
+	init_swait_queue_head(&n->wq);
+	hlist_add_head(&n->link, &b->list);
+	raw_spin_unlock(&b->lock);
+	return true;
+}
+
+If token is 0, kvm_async_pf_queue_task() still inserts &host_apf_node.link
+into async_pf_sleepers with host_apf_node.token =3D=3D 0 and returns true.
+
+Then in vcpu_enter_guest(), the condition:
+
+	if (exit_fastpath =3D=3D EXIT_FASTPATH_APF && host_apf_node.token)
+		kvm_handle_pv_async_pf(&host_apf_node);
+
+evaluates to false because host_apf_node.token is 0, skipping
+kvm_handle_pv_async_pf() and returning from vcpu_enter_guest() while
+host_apf_node.link remains queued in async_pf_sleepers.
+
+A zero token with KVM_PV_REASON_PAGE_NOT_PRESENT set can occur if L0 is bug=
+gy
+or untrusted, or if L0 KVM sets KVM_PV_REASON_PAGE_NOT_PRESENT in L1's
+apf_reason.flags via kvm_arch_async_page_not_present() and queues
+vcpu->arch.exception_vmexit, but exception_vmexit is subsequently cleared
+before injection into L1 (for example, when preempted by KVM_APIC_INIT in
+vmx_check_nested_events() or svm_check_nested_events() calling
+kvm_clear_exception_queue(), or across KVM_GET_VCPU_EVENTS and
+KVM_SET_VCPU_EVENTS), leaving KVM_PV_REASON_PAGE_NOT_PRESENT stale in L1's
+apf_reason.flags until L2 triggers a regular #PF VM-exit whose faulting
+address has lower 32 bits equal to 0.
+
+Previously, kvm_handle_host_apf_irqoff() checked the boolean return value of
+kvm_async_pf_queue_task() directly instead of testing host_apf_node.token !=
+=3D 0.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105164531.3138=
+49-1-pbonzini@redhat.com?part=3D5
