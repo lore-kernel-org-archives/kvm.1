@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793844078;
-	b=Ab/CvqPQoJKQY+TfIIbE9fXMchy8tzTl6GA36bqv2f9rnce+v5ugacyFPRJcMmFvHh08
-	 JhXq2JrAAHRCxp+hv51ZiEx7x4bNx3LjFzfAuZKRIG2UDXxmKAsVAAggkwdkq9IYn9kKm
-	 I7MAek+1NR66jaEAqpqGI9+AlpFOe0wa4/yT/LdR26DnftVCzw2IJWkU0W4iAq0zHGL/A
-	 +68ZqURYV4oOhYZEk6aSa2Uzgf6o6LAREq020KpNFK2fZgWwQDnSkZ8MRrTHDl62UxOGw
-	 Oi+1L2o3b37DByuA8En0T+SxrZBFiILmM4tuzIwa8ZPStkBGExioS4VkyaPsf9u2JSw==
+	t=1793844079;
+	b=y8ElK9gPtWJmvTj+MsbhO9l738ikOpUTBySGMoKkT+8X5RatNY4G7V9JaTxZSwzOoS+n
+	 gBUxTB6QvIaunUcGarVktcihag2UdaMqR/gZutBpQAR+g7m/oZUV+5uRfIdVeDFXiTsoe
+	 172oadm8Av5/kYVJbokcxyoet6qdT3rQ7ZVQFacX0zZXEwJ6lYSCsTihTqTQTzHrj3A+m
+	 COpIzd8tAPm9NH/ASJ5Deh1pngat5r77AvMXiPBiNrsVrhenVYlsvuB2iivOGfUoAhap7
+	 NSR8Q0glhAZqXU0pZ42Psp1kVplEyi+W3lD/sbNIJj4bkea9cAkOxel3YwA/0drA6rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793844078;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793844079;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=5928Fm1r4SKQS+jH4OMcVcprvnhzKwbhu15jXKH4aPQ=;
-	b=42glvD8ktPV2R4qacoM8o5mqYcQnIDSkm1MoOI8L/0ow2N0nX5hFeFoG72x4diJe5/Ed
-	 L0rwy9JCKZt0TJPyf2SfgXmyidFKj22o3ekZkLwr5a9Zn9roo/Jb0ScSeL+cUkXIxIIto
-	 9iYPsjMqm4jst0eYP0DxrDbWBX3OOgZ4xvhs9pCwHeiUncGw2Y8W74OoTMPmvDqAi8vtw
-	 EjW0oiAMwJ9fQ8JlaDo4cVxwnM/PIi6qVPCLFUTrDT0YGwHRUfIGJfLN3FU/KUpo50fGw
-	 J/BMPujc1Ld2sf6K+oXP46q+W/Z7wPRmwgKw9tezLL4C0acDk1dKFQAsGJ5YrEv8SJA==
+	bh=HHbMXrntQTOJ5IPdESBOGZVApcYK5UI5lu9oMqvobYE=;
+	b=XuZbXpuUTXvPaiCY86dXynbJdTRqSr/Wyh01zFaVjrynEXt5gybKPfsO+NL9eLY+wnrt
+	 r/lMFqOhwkDgzuNpOSpU30nMnnecbGWOvEtrwbkY8X+dOnA2rHOXm+qwEPfnoOLyuFMN8
+	 ReFdnusBOXfj0I1NXfLlTIehxyOegcUnMX1r0Q/LD+jDICaKSFZNHjp5F11ZUMjo0JZgP
+	 VruAjkJumwhYhyhY1i8ZHmebDKJU1enkA4rrc0IK0n92L7d76k/GkpiU+4UtvQuc081N2
+	 1+ugoYmMw4g4jvHV7Sq2U0wV0PRysBkjrU0186NS2ngSf3DLDpwaJxbQeh6Bab3XkJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=c+cJAlqC;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Ae+tqrD0;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE68606EEA9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC99606EEA6;
 	Thu,  5 Nov 2026 02:01:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EE68606EEA9
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EC99606EEA6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=c+cJAlqC
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Ae+tqrD0
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description;
-	bh=5928Fm1r4SKQS+jH4OMcVcprvnhzKwbhu15jXKH4aPQ=; b=c+cJAlqCYvwVUBT4ZnFxngvmEg
-	j06UhJBCENC+EWoZ8uxTBe1BBkm/K3xpWMIPcGenCA3LmH+U9Q/Dg5bWoQ54giJNHszlHgrZ/nmot
-	dhX1Ys8wR7p0RlzClAALbcdELVnNJ+n8ApVB4ktMzDm28gJUocHY6GxrbkEN8ILJRpbL4N90IN/wv
-	KEfe9NuUJTyFIeG5ezpKPKjEKxQNKWJlzfO9vpntoZ27Nlk2dRBasRMfGfzsrAVa0oU66QBYPA3ou
-	HkHH3OBDWOEl+/9HKxOSoRtrVciGSUmi9AVPYqFy0schWzdIpdFTNN1CCTuLrEv1Jf2heYs55ZGDh
-	Yd1RUHlQ==;
+	bh=HHbMXrntQTOJ5IPdESBOGZVApcYK5UI5lu9oMqvobYE=; b=Ae+tqrD0A5cIWp9q1MmrdrlOhm
+	x0DHa/HcBOUb8qpxiTZNQGso0gaFp60cS1T4G+k/gU+stshu3i38AotQfBfdAfTVoIaZt0GKHNtOv
+	1xIrt0/A/Qf433sSC8WDNBQT5CQu86Qs6LujeOtqo2kml1k9vlrsI1Rg8cJ4epb3o0SVHtLo10tDb
+	Bka/PNm22PqSLTkTcgJD7DwCbNWBvP1QbHQqVFnV/PQuKz76uTOKf+3XHGmyNLeMcSPI5oWqY05ar
+	DAuaXhf8/SNlQ9InzAkjGLZ4o4PRxsduxy4SN91W/GhAxZ7O3Ywe6d3KPGYt9qFII5v9FQYyj21e0
+	vIZZreKg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOmmo-00000002ROS-24dv;
+	id 1xOmmo-00000002ROR-265C;
 	Thu, 05 Nov 2026 02:01:08 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOmmn-0000000AWEJ-0E2y;
-	Thu, 05 Nov 2026 02:01:05 +0000
+	id 1xOmmm-0000000AWE6-3u0A;
+	Thu, 05 Nov 2026 02:01:04 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Kunwu Chan <kunwu.chan@gmail.com>,
 	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 20/20] KVM: selftests: Add Xen evtchn vs mmu_notifier race test for HVA caches
-Date: Thu,  5 Nov 2026 02:01:02 +0000
-Message-ID: <20261105020104.2507083-21-dwmw2@infradead.org>
+Subject: [PATCH v2 17/20] KVM: nSVM: Cache L1's IO permissions map pages
+Date: Thu,  5 Nov 2026 02:00:59 +0000
+Message-ID: <20261105020104.2507083-18-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261105020104.2507083-1-dwmw2@infradead.org>
 References: <20261105020104.2507083-1-dwmw2@infradead.org>
@@ -88,237 +88,183 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Race a guest EVTCHNOP_send loop against a host thread hammering
-MADV_DONTNEED on the userspace page backing HVA-based shared_info and
-vcpu_info caches. Every madvise zaps the PTE and invalidates both
-gfn_to_pfn_caches; every delivery must refresh through the window
-(hva_to_pfn_retry() retries until the invalidation has finished, then
-faults the page back in) and must succeed. The caches are HVA-based,
-so no memslot semantics excuse a drop: unlike
-xen_evtchn_memslot_race_test, which only pins the no-deadlock claim,
-this test asserts every one of the 20000 sends delivers, and any
-hypercall bounce to userspace fails the test.
+The per-intercept IOPM check on every trapped L2 IO instruction reads
+L1's IO permissions map with kvm_vcpu_read_guest() — a
+memremap/memunmap cycle per access with unmanaged guest memory. Cache
+the three IOPM pages in gfn_to_pfn_caches keyed on iopm_base_pa, as
+for the MSR permissions map.
 
-This exercises the pfncache invalidation protocol itself — the
-invalidate_start walk, the reader draining for a cache mid-teardown,
-and the handshake between a refresh publishing a new mapping and a
-concurrent invalidation vetoing it — which is where a lifetime bug
-in the cache would live; on a debug kernel one is expected to
-surface as a splat rather than a dropped event.
+Unlike the MSRPM accesses, an IOPM read is not naturally aligned: a
+two-byte read for a port range straddling a page boundary (e.g. ports
+0x7ff8-0x7fff at bytes 0xfff-0x1000) spans two pages, so read byte by
+byte, each from its own page's cache.
+
+Failure semantics are preserved: an unreadable IOPM reflects the
+intercept to L1 (NESTED_EXIT_DONE).
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/xen_evtchn_hva_notify_race_test.c | 188 ++++++++++++++++++
- 2 files changed, 189 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_test.c
+ arch/x86/kvm/svm/nested.c | 71 +++++++++++++++++++++++++++++----------
+ arch/x86/kvm/svm/svm.c    |  2 ++
+ arch/x86/kvm/svm/svm.h    |  7 ++++
+ 3 files changed, 63 insertions(+), 17 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index c17408f8d61f..19dc0744f25f 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -150,6 +150,7 @@ TEST_GEN_PROGS_x86 += x86/debug_regs
- TEST_GEN_PROGS_x86 += x86/tsc_msrs_test
- TEST_GEN_PROGS_x86 += x86/vmx_pmu_caps_test
- TEST_GEN_PROGS_x86 += x86/xen_evtchn_memslot_race_test
-+TEST_GEN_PROGS_x86 += x86/xen_evtchn_hva_notify_race_test
- TEST_GEN_PROGS_x86 += x86/xen_shinfo_test
- TEST_GEN_PROGS_x86 += x86/xen_vmcall_test
- TEST_GEN_PROGS_x86 += x86/sev_dbg_test
-diff --git a/tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_test.c b/tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_test.c
-new file mode 100644
-index 000000000000..c105435f6357
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/xen_evtchn_hva_notify_race_test.c
-@@ -0,0 +1,188 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 4e22cd7a38e1..a682b7446c3e 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1519,10 +1519,36 @@ static void nested_svm_triple_fault(struct kvm_vcpu *vcpu)
+ 	nested_svm_simple_vmexit(to_svm(vcpu), SVM_EXIT_SHUTDOWN);
+ }
+ 
 +/*
-+ * xen_evtchn_hva_notify_race_test
-+ *
-+ * A guest EVTCHNOP_send loop racing continuous mmu_notifier
-+ * invalidation of the HVA-based shared_info and vcpu_info caches: a
-+ * host thread hammers MADV_DONTNEED on the userspace page backing
-+ * both, zapping the PTE and invalidating the gfn_to_pfn_caches on
-+ * every pass. Delivery must refresh through each invalidation window
-+ * (hva_to_pfn_retry() retries until the notifier has finished, then
-+ * faults the page back in) and must never fail: the caches are
-+ * HVA-based, so no memslot semantics excuse a drop.
-+ *
-+ * This is the stress for the pfncache invalidation protocol itself —
-+ * the invalidate_start walk, the GPC_INVALIDATING grace-period
-+ * draining, and the announce/veto handshake between a refresh's
-+ * publish and a concurrent invalidation. Unlike the sibling
-+ * xen_evtchn_memslot_race_test, every send is asserted to succeed;
-+ * any -EFAULT bounce to userspace, or any guest-visible failure, is
-+ * a test failure, and a lifetime bug is expected to show up as a
-+ * crash or splat on a debug kernel.
++ * Initialize the nested gfn_to_pfn_caches, once per vCPU. Unlike the
++ * allocations in svm_allocate_nested(), the caches persist across
++ * EFER.SVME toggles: svm_free_nested() only deactivates them, and
++ * reuse goes through kvm_gpc_activate() without re-init.
 + */
-+#include <pthread.h>
-+#include <stdatomic.h>
-+#include <sys/mman.h>
-+
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+
-+#include <stdint.h>
-+
-+#define EVTCHN_PORT		15
-+#define TEST_ITERATIONS		5000
-+
-+#define EVTCHNOP_send		4
-+#define __HYPERVISOR_event_channel_op	32
-+
-+#define XEN_HYPERCALL_MSR	0x40000000
-+
-+#define EVTCHNSTAT_ipi		5
-+
-+struct evtchn_send {
-+	uint32_t port;
-+};
-+
-+static void guest_code(void)
++void svm_init_nested_caches(struct vcpu_svm *svm)
 +{
-+	struct evtchn_send s = { .port = EVTCHN_PORT };
-+	uint64_t rc;
 +	int i;
 +
-+	for (i = 0; i < TEST_ITERATIONS; i++) {
-+		rc = __xen_hypercall(__HYPERVISOR_event_channel_op,
-+				     EVTCHNOP_send, &s);
-+		__GUEST_ASSERT(!rc,
-+			       "EVTCHNOP_send failed with %ld on iteration %d",
-+			       (long)rc, i);
-+		GUEST_SYNC(i);
-+	}
-+
-+	GUEST_DONE();
-+}
-+
-+static atomic_bool churn_stop;
-+
-+static void *backing_churn(void *arg)
-+{
-+	void *backing = arg;
-+
-+	while (!atomic_load(&churn_stop))
-+		madvise(backing, PAGE_SIZE, MADV_DONTNEED);
-+
-+	return NULL;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	pthread_t thread;
-+	struct ucall uc;
-+	void *backing;
-+	int done = 0;
-+
-+	int xen_caps = kvm_check_cap(KVM_CAP_XEN_HVM);
-+
-+	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_SHARED_INFO_HVA);
-+	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_EVTCHN_SEND);
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++	kvm_gpc_init(&svm->nested.vmcb12_cache, svm->vcpu.kvm);
 +
 +	/*
-+	 * The shared_info page and the vcpu_info within it live in plain
-+	 * anonymous VMM memory, not in any memslot: nothing but the
-+	 * mmu_notifier churn below can perturb the caches.
++	 * KVM only ever reads the MSR and IO permissions maps, which L1 may
++	 * keep in memory that its VMM maps read-only: map the caches
++	 * read-only (which also means never marking them dirty), matching
++	 * the read semantics of the kvm_vcpu_read_guest() calls they
++	 * replace.
 +	 */
-+	backing = mmap(NULL, PAGE_SIZE, PROT_READ | PROT_WRITE,
-+		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	TEST_ASSERT(backing != MAP_FAILED, "mmap of backing page failed");
-+
-+	struct kvm_xen_hvm_config hvmc = {
-+		.flags = KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL |
-+			 KVM_XEN_HVM_CONFIG_EVTCHN_SEND,
-+		.msr = XEN_HYPERCALL_MSR,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_CONFIG, &hvmc);
-+
-+	struct kvm_xen_hvm_attr lm = {
-+		.type = KVM_XEN_ATTR_TYPE_LONG_MODE,
-+		.u.long_mode = 1,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &lm);
-+
-+	struct kvm_xen_hvm_attr ha = {
-+		.type = KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA,
-+		.u.shared_info.hva = (unsigned long)backing,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &ha);
-+
-+	struct kvm_xen_vcpu_attr vi = {
-+		.type = KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO_HVA,
-+		.u.hva = (unsigned long)backing + 0x40,
-+	};
-+	vcpu_ioctl(vcpu, KVM_XEN_VCPU_SET_ATTR, &vi);
-+
-+	/* Loop the port back to this vCPU as an IPI. */
-+	struct kvm_xen_hvm_attr evt = {
-+		.type = KVM_XEN_ATTR_TYPE_EVTCHN,
-+		.u.evtchn.send_port = EVTCHN_PORT,
-+		.u.evtchn.type = EVTCHNSTAT_ipi,
-+		.u.evtchn.flags = 0,
-+		.u.evtchn.deliver.port.port = EVTCHN_PORT,
-+		.u.evtchn.deliver.port.vcpu = vcpu->id,
-+		.u.evtchn.deliver.port.priority = KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &evt);
-+
-+	kvm_pthread_create(&thread, NULL, backing_churn, backing);
-+
-+	/*
-+	 * Self-guard against a kernel which livelocks a refresh under
-+	 * continuous invalidation. Deliberately no SIGALRM handler, as in
-+	 * xen_evtchn_memslot_race_test: only the default disposition can
-+	 * kill a process whose vCPU thread never returns to userspace.
-+	 * Empirically ~100-170 iterations/sec on a c6a.metal host: nearly
-+	 * every send pays a full refresh (fault the page back in and remap
-+	 * it), so budget generously; the healthy runtime is ~30-50s.
-+	 */
-+	alarm(240);
-+
-+	while (!done) {
-+		vcpu_run(vcpu);
-+
-+		/*
-+		 * An HVA-based cache has no memslot to be mid-update:
-+		 * there is no legitimate reason for delivery to fail, so
-+		 * unlike the memslot race test, a hypercall bouncing to
-+		 * userspace is a straight failure.
-+		 */
-+		TEST_ASSERT(vcpu->run->exit_reason != KVM_EXIT_XEN,
-+			    "EVTCHNOP_send bounced to userspace: delivery failed");
-+
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_SYNC:
-+			if (uc.args[1] && !(uc.args[1] % 1000))
-+				pr_info("progress: %lu iterations\n", uc.args[1]);
-+			break;
-+		case UCALL_DONE:
-+			done = 1;
-+			break;
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+			/* NOT REACHED */
-+		default:
-+			TEST_FAIL("Unexpected ucall %lu", uc.cmd);
-+		}
-+	}
-+
-+	atomic_store(&churn_stop, true);
-+	kvm_pthread_join(thread, NULL);
-+	alarm(0);
-+
-+	kvm_vm_free(vm);
-+	return 0;
++	for (i = 0; i < ARRAY_SIZE(svm->nested.msrpm12_cache); i++)
++		__kvm_gpc_init(&svm->nested.msrpm12_cache[i], svm->vcpu.kvm,
++			       false, true, NULL, 0);
++	for (i = 0; i < ARRAY_SIZE(svm->nested.iopm12_cache); i++)
++		__kvm_gpc_init(&svm->nested.iopm12_cache[i], svm->vcpu.kvm,
++			       false, true, NULL, 0);
 +}
++
+ int svm_allocate_nested(struct vcpu_svm *svm)
+ {
+ 	struct page *vmcb02_page;
+-	int i;
+ 
+ 	if (svm->nested.initialized)
+ 		return 0;
+@@ -1539,18 +1565,6 @@ int svm_allocate_nested(struct vcpu_svm *svm)
+ 
+ 	svm->nested.vmcb02.cpu = -1;
+ 
+-	kvm_gpc_init(&svm->nested.vmcb12_cache, svm->vcpu.kvm);
+-
+-	/*
+-	 * KVM only ever reads the MSR permissions map, which L1 may keep in
+-	 * memory that its VMM maps read-only: map the cache read-only
+-	 * (which also means never marking it dirty), matching the read
+-	 * semantics of the kvm_vcpu_read_guest() calls it replaces.
+-	 */
+-	for (i = 0; i < ARRAY_SIZE(svm->nested.msrpm12_cache); i++)
+-		__kvm_gpc_init(&svm->nested.msrpm12_cache[i], svm->vcpu.kvm,
+-			       false, true, NULL, 0);
+-
+ 	svm->nested.initialized = true;
+ 	return 0;
+ 
+@@ -1575,6 +1589,8 @@ void svm_free_nested(struct vcpu_svm *svm)
+ 	kvm_gpc_deactivate(&svm->nested.vmcb12_cache);
+ 	for (i = 0; i < ARRAY_SIZE(svm->nested.msrpm12_cache); i++)
+ 		kvm_gpc_deactivate(&svm->nested.msrpm12_cache[i]);
++	for (i = 0; i < ARRAY_SIZE(svm->nested.iopm12_cache); i++)
++		kvm_gpc_deactivate(&svm->nested.iopm12_cache[i]);
+ 
+ 	__free_page(virt_to_page(svm->nested.vmcb02.ptr));
+ 	svm->nested.vmcb02.ptr = NULL;
+@@ -1654,7 +1670,7 @@ static int nested_svm_intercept_ioio(struct vcpu_svm *svm)
+ 	unsigned port, size, iopm_len;
+ 	u16 val, mask;
+ 	u8 start_bit;
+-	u64 gpa;
++	int i;
+ 
+ 	if (!(vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_IOIO_PROT)))
+ 		return NESTED_EXIT_HOST;
+@@ -1662,14 +1678,35 @@ static int nested_svm_intercept_ioio(struct vcpu_svm *svm)
+ 	port = svm->vmcb->control.exit_info_1 >> 16;
+ 	size = (svm->vmcb->control.exit_info_1 & SVM_IOIO_SIZE_MASK) >>
+ 		SVM_IOIO_SIZE_SHIFT;
+-	gpa  = svm->nested.ctl.iopm_base_pa + (port / 8);
+ 	start_bit = port % 8;
+ 	iopm_len = (start_bit + size > 8) ? 2 : 1;
+ 	mask = (0xf >> (4 - size)) << start_bit;
+ 	val = 0;
+ 
+-	if (kvm_vcpu_read_guest(&svm->vcpu, gpa, &val, iopm_len))
+-		return NESTED_EXIT_DONE;
++	/*
++	 * Read byte by byte: a two-byte read at the end of a page (e.g.
++	 * ports 0x7ff8-0x7fff spanning bytes 0xfff-0x1000) crosses into
++	 * the next page of the IOPM, i.e. the next cache.
++	 */
++	for (i = 0; i < iopm_len; i++) {
++		unsigned long offset = port / 8 + i;
++		struct gfn_to_pfn_cache *gpc;
++		gpa_t gpa;
++		int idx;
++
++		if (WARN_ON_ONCE(offset >= IOPM_SIZE))
++			return NESTED_EXIT_DONE;
++
++		gpc = &svm->nested.iopm12_cache[offset >> PAGE_SHIFT];
++		gpa = svm->nested.ctl.iopm_base_pa + (offset & PAGE_MASK);
++
++		idx = kvm_gpc_lock_page(gpc, gpa);
++		if (idx < 0)
++			return NESTED_EXIT_DONE;
++
++		val |= *(u8 *)(gpc->khva + offset_in_page(offset)) << (i * 8);
++		kvm_gpc_unlock(gpc, idx);
++	}
+ 
+ 	return (val & mask) ? NESTED_EXIT_DONE : NESTED_EXIT_HOST;
+ }
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index b78727cca9b1..f601e0650c36 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1382,6 +1382,8 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+ 	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
+ 	svm_switch_vmcb(svm, &svm->vmcb01);
+ 
++	svm_init_nested_caches(svm);
++
+ 	svm->guest_state_loaded = false;
+ 
+ 	return 0;
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 8a5dff5a9ee3..256eefb27a83 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -229,6 +229,12 @@ struct svm_nested_state {
+ 	 */
+ 	struct gfn_to_pfn_cache msrpm12_cache[MSRPM_SIZE / PAGE_SIZE];
+ 
++	/*
++	 * Cached mappings of the three pages of L1's IO permissions map,
++	 * keyed on ctl.iopm_base_pa, for the per-intercept checks.
++	 */
++	struct gfn_to_pfn_cache iopm12_cache[IOPM_SIZE / PAGE_SIZE];
++
+ 	/*
+ 	 * The MSR permissions map used for vmcb02, which is the merge result
+ 	 * of vmcb01 and vmcb12
+@@ -904,6 +910,7 @@ int __init nested_svm_init_msrpm_merge_offsets(void);
+ 
+ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb_gpa, bool from_vmrun);
+ void svm_leave_nested(struct kvm_vcpu *vcpu);
++void svm_init_nested_caches(struct vcpu_svm *svm);
+ void svm_free_nested(struct vcpu_svm *svm);
+ int svm_allocate_nested(struct vcpu_svm *svm);
+ int nested_svm_vmrun(struct kvm_vcpu *vcpu);
 -- 
 2.43.0
 
