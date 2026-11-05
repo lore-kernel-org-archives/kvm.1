@@ -1,56 +1,127 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793909199;
-	b=f5SW5wzs+zD6bM5Fk+fFzJe4iA/Ylt/ON4mUB0SNwmnia9xorBgiLW6tY+G7mAyqy5Qe
-	 Z1lyVWvKHVNB2ev38rWuzk14f8MyYNVKAyuXAYvDTQt85w/ghvTvR2GJY2mYr0dSnqD7G
-	 xwSmXjHkwpUXZjX4lznZEALYOPRjm34s1ikEPB5oM7Kl09MKRiu3IJ3WOUmVbLXRDvqAi
-	 w0n1lYMGNIrswmLjryLZDiYda+h3q4+7gis0BClvsEOCMQKUETJqv/5CPoNNJUtijj/SJ
-	 RgcqKs7aykWg32xGDKWh/NbaSauNklsOwzj7UWZHv6wc0CYReBHyPcsGJ69hrHiZodA==
+	t=1793909259;
+	b=X3l/ATHqvAi/RJPpkwrmceJ0b8hkqwm0dImj1XCpUCAAbP1AH0n7ZtNsoR3MhBwQablv
+	 Bhh9DcL4KU/lCXHleHj5MR45KU+IbR3HkcUSe9VtIgi4KGfEOuD03qgIMjJSggBM0paZC
+	 Q6X/fq5qBjGjPjF32+xBVV02PPnQn+CEWVmnIspO2FEt+m34Onr6gb7iECMxoIpYr6URD
+	 IR32zX8uyvGNzeDF+LjUINpOBQFSso1KOWdwEQyT0bcG/2QpbEGTTCpxWQD2f+fDtFOn5
+	 99tblkfx0/2FwaQlPamTftc83z1fvH6Oj58IW01zZV2FfHkdmLpcaqM1mBFka+lgMZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793909199;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=kl4XAQ3JP5nWD6L49y2S40rmApUYoz+CGbjVNaZwAsA=;
-	b=qTf3LkksItdWnhpUxmjtz5hgscpVqQRfc+XA+cR86ET7sXqlG2+Y/99e/5ABE8OpMQ9D
-	 9KQmmKrYdzUaOTXeHhq1o0AZT58NqDbyrTRrSaYOgVApH7uo12NvOeMK/pTu4ZPjPeYzI
-	 61sU5Y8QvQjPXQgMAkkNK5eoAj94KUnGVhnU76aXGM/jmNsRKEOJKZOx5qQTt+/HtaHCU
-	 ptPgP6yOqrTkulpbgCGBuF0eYL+B4byebDkCAEAtl2s/fDMu//u/4w0CV+LGTeYLSuglD
-	 t85lZLZqGStjKP9FsNXX+1mGq9thUrUIicKAtbMueCUBehiBRRr4I+c13KmIEV3K4bA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793909259;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=z52AWMMx/NPlxXG7BPdw5LHgxa12llcgL1Kha+Q5UfY=;
+	b=coqDGyoZdPy0pJ5fPpCK+hjGIY+BzB7xvaeujGbw3yxafabgI6m51O4xmCx56cqBzIlB
+	 hHBjoIzX4GcUmh7jNRuEicb0O+adcnQQfo8Jl2VsNNhIPyh2QkVEEwV0p4JNWmQ24IQKW
+	 qvV7BP07jTe0w3F5Qt4zh/A41TKscHSFbawlkf7nGqjLo9ZeJ2KcDfnmi9xrQ81es325O
+	 PzcozpMQTfpCawJSXuvSXh4J8L+FztxLEWT6A0t5oYLdVCMXSKtENEMoBvYAzpemM6oUf
+	 GrAClPT32BkJL8ZGX66ENkXHp3WsrM5T2IjxoYpUJCSFAkvsbCIXovJFyyy4VclCPrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aisN2xSA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=pWAcW2zD;
+	arc=none smtp.remote-ip=209.85.221.180
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC69606EEBF
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 20:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD3606EEBF
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 20:07:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2BD3606EEBF
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aisN2xSA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528271F0089F;
-	Thu,  5 Nov 2026 20:06:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793909198;
-	bh=kl4XAQ3JP5nWD6L49y2S40rmApUYoz+CGbjVNaZwAsA=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=aisN2xSAVjejNgl3CDcXPf+qZsaZy9cZskYaIop9S//9RF5f3wo41pXy+2hqJFaU4
-	 /smV8hQr0PS4lr80XsV9UJoutRor6370QD40OUD8SIm8P1UL6/fFeS8oJVxcwKXJ8K
-	 IvaLUAEN6GM8+3e9etrcQJY4aufxPqlKjqTw5zhckDitfbSC0gq+s1taEvb3f1ydAw
-	 J8NtE9MyK1zYNXdzq1oWL3GMgRm2sbpt815rtmyzVyxwphKJ5b7iGgn4E3v21nBY45
-	 SP3wg7twEhtI8itYDAiOAv56T7dbvvle9r/keLV3XZouH7DIo0oNDFrQTcc3JFvd+T
-	 cm4nqs5NhOFUg==
-Message-ID: <sashiko-outbox-200074@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 16/23] KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the
- documentation on TSC migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261105154955.2525419-17-dwmw2@infradead.org>
-References: <20261105154955.2525419-1-dwmw2@infradead.org>
- <20261105154955.2525419-17-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 20:06:37 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=pWAcW2zD
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5e9528732b4so1906795e0c.0
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 12:07:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1793909257; x=1794514057; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=z52AWMMx/NPlxXG7BPdw5LHgxa12llcgL1Kha+Q5UfY=;
+        b=pWAcW2zD/63HAANui/KgQteFGf23DIFTBPKN5TS2f+lZtRer2UXQWE5nmZ7E6+0NmL
+         NOOCXte1XvmkZBJozDZeonddr7WOhKYwoxG0t/prTXufgqXucApuu46Sd4uUJbmVTObR
+         7fBoftmI0x8C5OBoveyYTeiR5CzcpDKIDS2NqP2Zi4JYmMvse+F1UJ+tD5iRjIQbUeMi
+         N0hs7feA4M3cPYsGIWBxIU+8M+cR5rQpjj7DVMZCRulJVbB4tHdrN+Gqsr/Umk190Esz
+         gMQTgholi5MoO2YuumyOWyN+Vz/Zl26KLlq1hDXbDxh17QeLxWCQNp/kJGIw8NnG5ysp
+         ISqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793909257; x=1794514057;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=z52AWMMx/NPlxXG7BPdw5LHgxa12llcgL1Kha+Q5UfY=;
+        b=EEOWO1vo9UpEeqJV7jwoyYkA3WIImR9DYxwDQfyA2CPq3bdr1w2rCaKEGYRnDJH/3l
+         /6pgaoF5KA8lpifTYm4ZkrRN6k/su8QXYyEvUx8P2Z8mPpQP8bVpqogwme1tjbHmPdk9
+         9qsDoTvXp8f8RO+08zWV78yWD1aV51xrGJN5kQAblvatDZmlPVPFoi+35IwSxNUGqoXN
+         Jy07YIdla/IkN8c8LthaqE5OOKhQkg5be7nhRlqJInfhh5VT3xw7vlF3y5dghYWB2pgh
+         aprkDt1G/FSdTlGXbeDSbSzZn9BHCMN8OO5WCx9A2HHyx3AGXzZ1mKf9DDCpxUUkSSSu
+         n6gQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy0rZ2xibRq+mJRvRgBAWiDfahjgnC15MGoU2OcIV5frZZPLeefPKZzj6ymZRk7i90oQv0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z96f6VdY8WTMfbQTQ4H6OM+/+mEkG0uT8Ej64mEuE8R0mXCO4x8
+	66rQUvLaX10OLFbVsYombhv0sWp2jIB+za0fx559V2AA9WIDeV7mhbQ95LjtDD0MNl8=
+X-Gm-Gg: AYBFou2bJS/6EsfTcRxMLzMfCWinr3X9lqiJc45glgDtyXnZx2louQDmRqyL0LZ/jk+
+	jwRTk1mRaIynyAXwVCFzM+tfUsmn9Aj/+DsPDu8114rXI+TgDoLERR/B7UGTJoApsgMuNDQLpeX
+	rQ+vFJR30iqvXYB0epUvb+xSe5gwacOHV/TtKmb7zDdpM5VpvPx/a1pTZ9BCnVBrXN+oLbwgv+p
+	Cj10XKPMI67X+IcEPVvLWC0ROiVPF95ZMLoO8VuiA+0Y98LL/+YwcCaf5hH+nKFggsWal85XSkI
+	cGXaJ1EaBGcY5LuZCEsChD021SKmTIO6jWQosrJ+QdHDD+D7H9ASMG6PwpqPyyzwEMH7AbF0pBz
+	KetvmcOcIVkfsHq0CbnRLGo+JBFW8v4hP53Sn9yg4W/jCfRp3Hz6lD0wgmmpvEYVXxCfD5/VxBY
+	1JxW8GajvQe168AD4oAJSGHWb13nhYtUzO98KV2pMUIhhMcLMF1+qijX05r7pZYBWsQaNt7jX/E
+	FCgWyB9nXbVq5QFcoo07V51jqW7ED+DJwNIc97olt+DIFiXPmoAoOXuLgdxvjSoyF0Cg5A8f1V3
+	kH9XVlO7cU3SH2ujA+Dus3/7ssLeGnWSk5vGpgVqykWO4xi33b9aNKsupAQ2vTEAhJPlgLNDN+G
+	MrdgaX7aTZw==
+X-Received: by 2002:a05:6102:390f:b0:7c3:99a3:314a with SMTP id ada2fe7eead31-7d2a1509e88mr658597137.9.1793909257584;
+        Thu, 05 Nov 2026 12:07:37 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ecb6d79d9fsm2610604e0c.7.2026.11.05.12.07.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 12:07:36 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xP3kF-00000003dYX-3Q5c;
+	Thu, 05 Nov 2026 16:07:35 -0400
+Date: Thu, 5 Nov 2026 16:07:35 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
+	Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-tegra@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v8 13/15] iommufd/viommu: Allow vIOMMUs without a parent
+ HWPT
+Message-ID: <20261105200735.GF663069@ziepe.ca>
+References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
+ <20261104161632.3547423-14-aneesh.kumar@kernel.org>
+ <auuBjRjQwXl7UvvO@nvidia.com>
+ <20261104193139.GB3889730@ziepe.ca>
+ <yq5afqxf97a1.fsf@kernel.org>
+ <auzAivzpzSUHjEQj@nvidia.com>
+ <20261105182106.GD663069@ziepe.ca>
+ <auzNkAGFLH6da8fq@nvidia.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,302 +130,41 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auzNkAGFLH6da8fq@nvidia.com>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
-- [Medium] KVM: selftests: missing TEST_REQUIRE() checks in pvclock_migrati=
-on_test
-- [Low] KVM: x86: doc per-vCPU KVM_SET_TSC_KHZ order breaks KVM_SET_CLOCK_G=
-UEST
-- [Low] KVM: x86: vcpu.rst drops source KVM_GET_TSC_KHZ step still used on =
-dest
-- [Low] KVM: selftests: VM memory leak in main() from using kvm_vm_release()
-- [Low] KVM: selftests: duplicated pvclock and TSC scaling helpers in test
---
+On Thu, Nov 05, 2026 at 10:40:16AM -0800, Nicolin Chen wrote:
+> On Thu, Nov 05, 2026 at 02:21:06PM -0400, Jason Gunthorpe wrote:
+> > On Thu, Nov 05, 2026 at 09:44:42AM -0800, Nicolin Chen wrote:
+> > > On Thu, Nov 05, 2026 at 10:58:06AM +0530, Aneesh Kumar K.V wrote:
+> > > > Jason Gunthorpe <jgg@ziepe.ca> writes:
+> > > > > On Wed, Nov 04, 2026 at 11:03:41AM -0800, Nicolin Chen wrote:
+> > > > >> By dropping the nesting parent from VIOMMU, it just simplifies the
+> > > > >> attachment to an S1 paging hwpt, right?
+> > > > >
+> > > > > Yes.
+> > > > >
+> > > > > The VMM must always maintain a S1 paging attachment that is the
+> > > > > identity map of the VM on all devices, same action as when there is no
+> > > > > viommu.
+> > > > >
+> > > > 
+> > > > I am currently creating an S2 paging attachment. This results in a
+> > > > configuration with S1 disabled and S2 enabled, which is used by all
+> > > > untrusted devices.
+> > > 
+> > > For validation, that would work. Yet "no viommu" should would be S1
+> > > paging, i.e. hwpt allocated without IOMMU_HWPT_ALLOC_NEST_PARENT.
+> > 
+> > It doesn't matter, consistently using a single S2 for everything is
+> > probably better..
+> 
+> Hmm, I am confused: if we use a nesting parent, why do we need to
+> allow a viommu without a parent HWPT here?
 
-commit 17f0fed5469017ce773a7df8f640aab41b731a06
-Author: David Woodhouse <dwmw@amazon.co.uk>
+It is because it doesn't *use* it. It is a confusing to pass in a hwpt
+that is never used for anything.
 
-KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the documentation on TSC migration
-
-This commit adds the KVM_VCPU_TSC_SCALE device attribute to expose a vCPU's
-TSC scaling ratio and fraction bits to userspace when hardware TSC scaling =
-is
-supported. It also updates the vCPU TSC migration documentation and adds a
-selftest to verify kvmclock precision across simulated live migration.
-
-> diff --git a/Documentation/virt/kvm/devices/vcpu.rst b/Documentation/virt=
-/kvm/devices/vcpu.rst
-> index deb5c51bc00c8..3daa77c5d2150 100644
-> --- a/Documentation/virt/kvm/devices/vcpu.rst
-> +++ b/Documentation/virt/kvm/devices/vcpu.rst
-> @@ -239,6 +239,7 @@ including the layout of the stolen time structure.
->  :Architectures: x86
-> =20
->  4.1 ATTRIBUTE: KVM_VCPU_TSC_OFFSET
-> +----------------------------------
-
-[ ... ]
-
-> @@ -261,44 +265,110 @@ following describes a possible algorithm to use fo=
-r this purpose.
-> =20
->  From the source VMM process:
-> =20
-> -1. Invoke the KVM_GET_CLOCK ioctl to record the host TSC (tsc_src),
-> +1. Invoke the KVM_GET_CLOCK ioctl to record the host TSC (host_tsc_src),
->     kvmclock nanoseconds (guest_src), and host CLOCK_REALTIME nanoseconds
-> -   (host_src).
-> +   (time_src) at a given moment (Tsrc). The host_tsc field is only valid
-> +   when the returned flags include KVM_CLOCK_HOST_TSC.
-> +
-> +2. For each vCPU[i]:
-> +
-> +   a. Read the KVM_VCPU_TSC_OFFSET attribute to record the guest TSC off=
-set
-> +      (ofs_src[i]).
-> +
-> +   b. Read the KVM_VCPU_TSC_SCALE attribute to record the guest TSC scal=
-ing
-> +      ratio (ratio_src[i], frac_bits_src[i]). If the attribute is not
-> +      supported (-ENXIO), there is no hardware TSC scaling and identity
-> +      scaling applies: use ratio 1, frac_bits 0.
-> =20
-> -2. Read the KVM_VCPU_TSC_OFFSET attribute for every vCPU to record the
-> -   guest TSC offset (ofs_src[i]).
-> +   c. Use host_tsc_src and the scaling/offset factors to calculate this
-> +      vCPU's TSC at time Tsrc:
-> =20
-> -3. Invoke the KVM_GET_TSC_KHZ ioctl to record the frequency of the
-> -   guest's TSC (freq).
-> +      tsc_src[i] =3D ((host_tsc_src * ratio_src[i]) >> frac_bits_src[i])=
- + ofs_src[i]
-> +
-> +      Note that frac_bits may be as high as 48, so this multiplication
-> +      needs a 128-bit intermediate to avoid overflow.
-> +
-> +3. Invoke the KVM_GET_CLOCK_GUEST ioctl on the boot vCPU to return the K=
-VM
-> +   clock as a function of the guest TSC (pvti_src). (This ioctl may not
-> +   succeed if the host and guest TSCs are not consistent and well-behave=
-d.)
-
-[Severity: Low]
-Previously, step 3 on the source side instructed the VMM to invoke
-KVM_GET_TSC_KHZ to record the guest TSC frequency (freq), which was replaced
-here by KVM_GET_CLOCK_GUEST.
-
-However, destination step 4 and step 7b below still reference freq and
-freq[i]:
-
-    tsc_dst[i] =3D tsc_src[i] + (=CE=94T * freq[i] / 10^6)
-
-Should step 2 on the source side also include invoking KVM_GET_TSC_KHZ to
-record freq[i] (or freq) for each vCPU?
-
->  From the destination VMM process:
-> =20
-> -4. Invoke the KVM_SET_CLOCK ioctl, providing the source nanoseconds from
-> -   kvmclock (guest_src) and CLOCK_REALTIME (host_src) in their respective
-> -   fields.  Ensure that the KVM_CLOCK_REALTIME flag is set in the provid=
-ed
-> -   structure.
-> +4. Invoke the KVM_SET_TSC_KHZ ioctl to set the scaled frequency of the
-> +   guest's TSC (freq) =E2=80=94 either on the VM before creating the vCP=
-Us, or
-> +   on each vCPU after creating it (as the exemplar test does).
-> +
-> +5. Invoke the KVM_GET_CLOCK ioctl to record the host TSC (host_tsc_dst) =
-and
-> +   host CLOCK_REALTIME nanoseconds (time_dst) at a given moment (Tdst),
-> +   again checking KVM_CLOCK_HOST_TSC in the returned flags.
-> +
-> +6. Calculate the number of nanoseconds elapsed between Tsrc and Tdst:
-> +
-> +   =CE=94T =3D time_dst - time_src
-> +
-> +7. As each vCPU[i] is created:
-> +
-> +   a. Read the KVM_VCPU_TSC_SCALE attribute to record the guest TSC scal=
-ing
-> +      ratio (ratio_dst[i], frac_bits_dst[i]).
-> +
-> +   b. Calculate the intended guest TSC value at time Tdst, taking care
-> +      with the units (=CE=94T is in nanoseconds; freq, as set by
-> +      KVM_SET_TSC_KHZ, is in kHz):
-> +
-> +      tsc_dst[i] =3D tsc_src[i] + (=CE=94T * freq[i] / 10^6)
-> =20
-> -   KVM will advance the VM's kvmclock to account for elapsed time since
-> -   recording the clock values.  Note that this will cause problems in
-> -   the guest (e.g., timeouts) unless CLOCK_REALTIME is synchronized
-> -   between the source and destination, and a reasonably short time passes
-> -   between the source pausing the VMs and the destination executing
-> -   steps 4-7.
-> +   c. Use host_tsc_dst and the scaling factors to calculate this vCPU's
-> +      raw scaled TSC at time Tdst without offsetting:
-> +
-> +      raw_dst[i] =3D ((host_tsc_dst * ratio_dst[i]) >> frac_bits_dst[i])
-> +
-> +   d. Calculate ofs_dst[i] =3D tsc_dst[i] - raw_dst[i] and set the resul=
-ting
-> +      offset using the KVM_VCPU_TSC_OFFSET attribute.
-> +
-> +8. If pvti_src was provided, invoke the KVM_SET_CLOCK_GUEST ioctl on the=
- boot
-> +   vCPU to restore the KVM clock as a precise function of the guest TSC.
-
-[Severity: Low]
-Can following steps 4, 7, and 8 as written cause KVM_SET_CLOCK_GUEST in ste=
-p 8
-to fail with -ENODATA when a VMM uses per-vCPU KVM_SET_TSC_KHZ?
-
-Step 4 allows calling KVM_SET_TSC_KHZ on each vCPU after creating it, while
-step 7 is described as happening "As each vCPU[i] is created". If a VMM
-reads KVM_VCPU_TSC_SCALE in step 7a as each vCPU is created before calling
-per-vCPU KVM_SET_TSC_KHZ, KVM_VCPU_TSC_SCALE will return the unscaled defau=
-lt
-ratio (1 << tsc_frac_bits) rather than the scaled ratio for freq.
-
-Furthermore, if a VMM creates and configures one vCPU at a time (creating
-vCPU[0], calling per-vCPU KVM_SET_TSC_KHZ(vCPU[0], freq), and running step =
-7,
-then creating vCPU[1]), creating vCPU[1] invokes:
-
-  kvm_arch_vcpu_create()
-    -> kvm_set_tsc_khz(vcpu, kvm->arch.default_tsc_khz)
-      -> __kvm_synchronize_tsc()
-
-Because per-vCPU KVM_SET_TSC_KHZ does not update kvm->arch.default_tsc_khz,
-vCPU[1] is initialized with the unscaled default_tsc_khz. In
-arch/x86/kvm/x86.c:__kvm_synchronize_tsc():
-
-	if (vcpu->arch.virtual_tsc_khz !=3D kvm->arch.cur_tsc_khz) {
-		kvm->arch.cur_tsc_freq_generation++;
-		kvm->arch.all_vcpus_matched_freq =3D false;
-		kvm->arch.nr_vcpus_matched_freq =3D 0;
-	}
-
-This bumps cur_tsc_freq_generation to default_tsc_khz, and the subsequent
-KVM_SET_TSC_KHZ(vCPU[1], freq) bumps cur_tsc_freq_generation again back to
-freq, leaving vCPU[0] in an older generation with all_vcpus_matched_freq set
-to false. When step 8 then invokes KVM_SET_CLOCK_GUEST,
-pvclock_update_vm_gtod_copy() disables use_master_clock and
-KVM_SET_CLOCK_GUEST fails with -ENODATA.
-
-Should the documentation clarify that if per-vCPU KVM_SET_TSC_KHZ is used
-instead of VM-scoped KVM_SET_TSC_KHZ, all vCPUs must be created and have
-KVM_SET_TSC_KHZ applied before reading KVM_VCPU_TSC_SCALE and setting
-KVM_VCPU_TSC_OFFSET in step 7?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/x86/pvclock_migration_test.c b/t=
-ools/testing/selftests/kvm/x86/pvclock_migration_test.c
-> new file mode 100644
-> index 0000000000000..c4a64b6a2e429
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/pvclock_migration_test.c
-
-[ ... ]
-
-> +static u64 pvclock_read_cycles(struct pvclock_vcpu_time_info *src,
-> +				    u64 tsc)
-> +{
-> +	u64 delta =3D tsc - src->tsc_timestamp;
-> +	u64 ns;
-> +
-> +	if (src->tsc_shift >=3D 0)
-> +		delta <<=3D src->tsc_shift;
-> +	else
-> +		delta >>=3D -(s32)src->tsc_shift;
-> +
-> +	ns =3D (unsigned __int128)delta * src->tsc_to_system_mul >> 32;
-> +	return src->system_time + ns;
-> +}
-
-[Severity: Low]
-This isn't a bug, but pvclock_read_cycles() duplicates __pvclock_read_cycle=
-s()
-from tools/arch/x86/include/asm/pvclock.h (already used by
-tools/testing/selftests/kvm/x86/kvm_clock_test.c). In addition, main() later
-open-codes the 128-bit TSC scaling calculation for raw_dst:
-
-	if (scale_dst.tsc_frac_bits)
-		raw_dst =3D (unsigned __int128)host_tsc_dst * scale_dst.tsc_ratio
-			  >> scale_dst.tsc_frac_bits;
-	else
-		raw_dst =3D host_tsc_dst;
-
-Could this test reuse __pvclock_read_cycles() and call
-host_to_guest_tsc(&scale_dst, 0, host_tsc_dst) for raw_dst?
-
-[ ... ]
-
-> +int main(void)
-> +{
-> +	struct pvclock_vcpu_time_info pvti_src[NR_VCPUS];
-> +	struct pvclock_vcpu_time_info pvti_dst_ioctl[NR_VCPUS];
-> +	struct kvm_clock_data clock_src, clock_dst;
-> +	struct kvm_vcpu_tsc_scale scale_src[NR_VCPUS], scale_dst;
-> +	struct kvm_vcpu *vcpus[NR_VCPUS];
-> +	struct kvm_vm *vm;
-> +	u64 mono_before, kvm_before, kvm_after;
-> +	s64 delta_before;
-> +	u64 ofs_src[NR_VCPUS], tsc_src[NR_VCPUS], tsc_dst, raw_dst;
-> +	u64 ofs_dst[NR_VCPUS];
-> +	u64 host_tsc_src, host_tsc_dst;
-> +	u64 time_src, time_dst;
-> +	s64 delta_t;
-> +	u32 freq_khz =3D 1500000; /* 1.5 GHz =E2=80=94 forces TSC scaling */
-> +	int i, pass;
-> +
-> +	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
-> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_TSC_CONTROL));
-
-[Severity: Medium]
-What happens if this selftest is run on a kernel that supports
-KVM_CAP_TSC_CONTROL, but does not support KVM_CAP_CLOCK_GUEST (or
-KVM_VCPU_TSC_SCALE)?
-
-In main(), the subsequent calls to vcpu_get_clock_guest(),
-vcpu_set_clock_guest(), and vcpu_device_attr_get(..., KVM_VCPU_TSC_CTRL,
-KVM_VCPU_TSC_SCALE, ...) unconditionally assert ioctl success, so the test
-will fail with an assertion abort instead of skipping.
-
-Should main() also check TEST_REQUIRE(kvm_has_cap(KVM_CAP_CLOCK_GUEST)) (li=
-ke
-pvclock_test.c, masterclock_offset_test.c, and xen_migration_test.c) and
-verify that the vCPU has KVM_VCPU_TSC_SCALE via __vcpu_has_device_attr()?
-
-[ ... ]
-
-> +	/* Step 3: KVM_GET_CLOCK_GUEST (already fetched above as pvti_src[]) */
-> +
-> +	kvm_vm_release(vm);
-> +
-> +	/* =3D=3D=3D PAUSE (simulate migration) =3D=3D=3D */
-> +	pr_info("=3D=3D=3D Pausing 1 second =3D=3D=3D\n");
-> +	sleep(1);
-> +
-> +	/* =3D=3D=3D DESTINATION SIDE =3D=3D=3D */
-> +	pr_info("=3D=3D=3D Destination VM =3D=3D=3D\n");
-> +	/* Step 4: create + KVM_SET_TSC_KHZ (in create_vm) */
-> +	vm =3D create_vm(vcpus, freq_khz);
-
-[Severity: Low]
-Does calling kvm_vm_release(vm) instead of kvm_vm_free(vm) here (and at the
-end of main()) leak the VM's userspace_mem_regions mappings, sparsebit arra=
-ys,
-and struct kvm_vm when vm is overwritten by create_vm()?
-
-In tools/testing/selftests/kvm/lib/kvm_util.c, kvm_vm_release() only frees =
-the
-vCPUs and closes the KVM file descriptors, whereas kvm_vm_free() unmaps the
-memory regions, frees vpages_valid and vpages_mapped, calls kvm_vm_release(=
-),
-and frees struct kvm_vm.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105154955.2525=
-419-1-dwmw2@infradead.org?part=3D16
+Jason
