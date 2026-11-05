@@ -1,85 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.63.66.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793896955;
-	b=ujgM1cvBjabfK7OzlQ2zG6vINiPjUKiFWwCAeARAuD7IrW87ATTjb8KCoLO8namdZBkz
-	 7xTr7/NqQrpR6HpSRVOiRShebbkbYHST3a5RJY96jroi0i8UeJx+u43kbmCChqIdPPY2U
-	 vXZO0GViDRkH0ComdEKE60BZ4qkYiMRrRkwXaC8FZDrub+wpZryWawAc9xjZLTIUubysh
-	 3Vz/jvCJTqdOmmjYwX7mbpZKcDrE5PDV/r4xvlkurrwEhTYjBuPA65qX5ZLFt3hrBB8f5
-	 CvoBMZfAk6dMJMgvsW+N+aO5J1UHx6aldhLwG4Yhobolwtq+QkhgLNzV+rfRfcegz+g==
+	t=1793897146;
+	b=fLYZ+jvYCqjjLM1yQdGt9nU9EPQ8XAW8qKIe6MrnDVPm1yq+RKURnVBN1F9S5VQO1LRe
+	 /0wIMGNLeP8LErtwrXLeX9Vvm/BhHuITH5M6WTe6iTzqoK8ME47+fHpote6Eyfd6pdUMr
+	 bP3gz5MDl9UXZ87ZpGOPezelMvEMrRBS1Zl3y/qQ/T8K+t+3gdJPXcLSsVZ7cZv2vLXQ+
+	 t4iBaYPHsqciI69RAlJIAYZFgUKufRYgmDopVuBlUVq64RvU7pm5hH1ptGtqSqfL3zC21
+	 l+6ewQR7xfi0+1HCtXAUehnTpgl0Ff7dAxhXbDraxC+vnL2o4qwq1+4woa6dwhnPAmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793896955;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=t2FuH7Jo8ZcdZbICEjdlHjyy/k1niD+kPzrNFz3X16U=;
-	b=Mwwk4KVcM8j+NR6OWnJDw7IQzhGfDnVyjmsRrRUdvl13179eMuqFZid6TaFzxxCLpHqs
-	 btfPCfHCM/T/QddoGhMtbLCReEkwLOgFFOOucA1ABDlwue++fNizE7NKOHc/jEFvn9r+/
-	 J/TzTrCsLDaoOAy0m/Pa0i7ac7ogcFqqsuybfwMvZc/KbxYD1Z7J3zDDD78QXOj6cIYp2
-	 EBkzOl52sIPHL81qiJ6iipRuGsOWBV4JQ+c0Q4eKgGRDSOBpnYnAt4DCE4FoQ0SXVBP36
-	 SojifZdcKPCDboo0OFwf49AJH304rbw67Bhy/qpsv4qPTTvpbZnOVkEFkFTgxrHjc8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793897146;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=zx5u9VN24sYUcmtlUelBRA8tzuXsBqsvfiKHKwuBQTk=;
+	b=5JbQCv03G9CO+ngW5O/1w3CBGhv5ayXGBMl0D1flX1Z5meq8OrNnTTwsuZYWKRuVUIw1
+	 tMKGrLVz0Cq0NNyOZupIwAIdl8ZjhS7FBiu7JChC/Ynw8wxMuHLAQ7T02wY8n7WQmDY7q
+	 v706MhrNTnrQCgDyiegzwq5Thc6UXYtZcXD+lFgKLdxhj3y49V+cDBpgP8CsJ8XxLkm1f
+	 egJ5A9vgHiI3XSUUKQsbnsJ5GhqS2Ym/nPNEoUGNvEDHqbvJgx2TzWVcO5WCneT70sGgV
+	 GWD1clGzCZCEQLhFNHLvxx8Sajdw0PAyfTRoWZuZbsvdfNNmFlCA0TijFw3sfw1z5uA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hallyn.com;
-	spf=(null) smtp.mailfrom=hallyn.com;
-	dkim=pass header.d=hallyn.com header.i=@hallyn.com header.a=rsa-sha256 header.s=mail header.b=1uTHnVN1;
-	arc=none smtp.remote-ip=178.63.66.53
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9m3KZ4f;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF619606A332
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 16:42:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF619606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hallyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=hallyn.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D97C606A326
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 16:45:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D97C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hallyn.com header.i=@hallyn.com header.a=rsa-sha256 header.s=mail header.b=1uTHnVN1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hallyn.com; s=mail;
-	t=1793896944; bh=nne4VO+hFrI4n/pJlpGjE91HQgn1YCyVF81fG7x0K2I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1uTHnVN1CiNRmFUqbbviIyzTcHjQFH9dvG0Uk+yXyU5Uz2Sh9qPWSjIU7FCn+LPe0
-	 KoAoLCOJHFLheoijJ7L5pD23UB2Noy4kKWQ/RSjuMStcIS3CV9LANfn0T+CTn+G5Ys
-	 h+Oe39ZNJHBazX7lk0UerbArh4U/f2S/cFRddkWys0EVJNUjD4XLbhE/t+SQ2WF4pH
-	 84g1d2xdDg6o6CjqYaPnSXXFz1cfs9Wk+tJTWlXPr2GTjJER1E+8rRX+92nz8ECGw+
-	 BmZsAwNn63Cz0H69lgG8wj7c7q65pSwkQsyy107uMA7vfYGuGnnGZ2zkVbSlYuQl5x
-	 ZkOxtHx59w3iQ==
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 85616C7; Thu,  5 Nov 2026 10:42:24 -0600 (CST)
-Date: Thu, 5 Nov 2026 10:42:24 -0600
-From: "Serge E. Hallyn" <serge@hallyn.com>
-To: Artem Bityutskiy <dedekind1@gmail.com>
-Cc: "Serge Hallyn (AMD)" <sergeh@kernel.org>, Peter Xu <peterx@redhat.com>,
-	Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Kishen Maloor <kishen.maloor@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	David.Kaplan@amd.com, Mathias.Brossard@arm.com
-Subject: Re: TDX migration model
-Message-ID: <auyx8C67zCnbPpuL@hallyn.com>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
- <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
- <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
- <auyZnIfxMnxYD8rT@shallyn-amd>
- <85f899cd277b2188cd4b33f8f21b206fa2ff6f6f.camel@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9m3KZ4f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793897144;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zx5u9VN24sYUcmtlUelBRA8tzuXsBqsvfiKHKwuBQTk=;
+	b=V9m3KZ4fpZ5jUpq18AXxpF3rskcNF319UEycnrQWh7501h7BjZCj6VpwN0KPXBzEUrahOA
+	cVeBEqw9P9JZqgt58ZtMs4R/zdhpU9CijfDq8a06r7ORLg/12GbJJ22LG7MxvjeO9MNcuk
+	u1y42Zx6SR7OGiXHkMdwFIdTm7RCxRc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-56-XaKuiKlfN-K6MD2zdsaerg-1; Thu,
+ 05 Nov 2026 11:45:38 -0500
+X-MC-Unique: XaKuiKlfN-K6MD2zdsaerg-1
+X-Mimecast-MFC-AGG-ID: XaKuiKlfN-K6MD2zdsaerg_1793897137
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 72937180063B;
+	Thu,  5 Nov 2026 16:45:35 +0000 (UTC)
+Received: from pbonzini-thinkpadx1carbon6th.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 46BEB195608A;
+	Thu,  5 Nov 2026 16:45:33 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Harry Yoo <harry@kernel.org>
+Subject: [PATCH v2 0/5] KVM: remove the dummy allocation case from async page fault handling
+Date: Thu,  5 Nov 2026 17:45:26 +0100
+Message-ID: <20261105164531.313849-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,64 +77,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <85f899cd277b2188cd4b33f8f21b206fa2ff6f6f.camel@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Nov 05, 2026 at 05:59:01PM +0200, Artem Bityutskiy wrote:
-> [I dropped a bunch of people from CC, sorry about that, just restored the CC
-> list]
-> 
-> On Thu, 2026-11-05 at 08:58 -0600, Serge Hallyn (AMD) wrote:
-> > On Wed, Nov 04, 2026 at 03:51:45PM +0200, Artem Bityutskiy wrote:
-> > > Hi Peter, community,
-> > > 
-> > > Here is the TDX migration model doc that I mentioned in the CoCo migration
-> > > uAPI thread:
-> > > 
-> > > https://github.com/dedekind/dedekind-share/blob/master/2026/tdx-live-migration.md
-> > > 
-> > > The doc focuses on TDX only. It does not cover CoCo in general or
-> > > Linux/KVM. 
-> > > 
-> > > The goal is to lay out what the TDX module offers in terms of ABI and
-> > > migration flow today. Hopefully it is easier to read than the TDX specs,
-> > > which are much more detailed. Feedback is very welcome.
-> > > 
-> > > The uAPIs that we suggested were modeled around this flow and ABI. But
-> > > we kept general CoCo VMs in mind as much as we could.
-> > > 
-> > > The TDX live migration PoC implementation that we mentioned earlier follows
-> > > the flows and uses the ABIs described in the doc.
-> > > 
-> > > Thanks!
-> > > 
-> > > P.S. From the ARM talk and hallway conversations at Plumbers, I understood
-> > > that the ARM live migration flow is very similar to TDX. For SNP guests, we
-> > > have not heard enough yet.
-> > > 
-> > > Thanks,
-> > > Artem.
-> > 
-> > Thanks, Artem!
-> > 
-> > So, looking at the section '### How the Setup Session Works', is it safe
-> > to assume that you are using the qemu migration fd for the message
-> > transfers?  So basically qemu loops over KVM_MIGRATE_SETUP calls, which
-> > is directed to platform-specific handlers, which in the tdx case calls
-> > TDH.MIG.SETUP, and this loop continues until TDX_SUCCESS?  If so, great,
-> > that mirrors pretty exactly what we were looking at for SNP.
-> 
-> Hi,
-> 
-> Yes, that's the flow. I’m not sure about the migration fd part, I believe we
-> pass the setup session data via ioctl buffers. I am sure Kishen will can
-> clarify.
+Asynchronous page fault handling is supposedly able to detect page
+ready notifications that are sent before the waiter is registered,
+but this code is broken for PREEMPT_RT because it tries to allocate in
+hardirq-disabled context.
 
-If you mean pass via ioctl buffers from tdx->kvm-> back to qemu, which passes
-it over the migration fd to the other side, then that's what I expected.
-Othewise I'll be interested to the details :)
+This code however is almost dead, because page ready notification will
+happen on the same vCPU as the waiter and not until after the waiter
+enables interrupts.  Outside guest mode, interrupts are only enabled once
+the waiter has registered itself, and this guarantees that an outstanding
+(non-spurious) waiter will always be found.  This unfortunately is not
+the case for asynchronous page faults that are delivered while in guest
+mode, but that can be fixed and the dubious code removed.
 
-thanks,
--serge
+On top of this I have rebased Sean's attempt at moving asynchronous
+page fault handling to vcpu_enter_guest(), rebased on top of the new
+code that splits registration for wait.
+
+Paolo Bonzini (5):
+  x86: KVM: take b->lock around wait
+  KVM: x86: register asynchronous page fault waits with interrupts disabled
+  x86: KVM: remove the dummy allocation case from async page fault handling
+  KVM: x86: allow handle_exit_irqoff to return EXIT_FASTPATH_*
+  KVM: x86: move asynchronous page fault handling to vcpu_enter_guest()
+
+ arch/x86/include/asm/kvm_host.h |   5 +-
+ arch/x86/include/asm/kvm_para.h |  20 ++++++-
+ arch/x86/kernel/kvm.c           | 103 ++++++++++----------------------
+ arch/x86/kvm/mmu.h              |  17 ++++++
+ arch/x86/kvm/mmu/mmu.c          |  19 +-----
+ arch/x86/kvm/svm/nested.c       |   4 --
+ arch/x86/kvm/svm/svm.c          |  17 +++---
+ arch/x86/kvm/vmx/main.c         |  24 ++++----
+ arch/x86/kvm/vmx/nested.c       |   3 +-
+ arch/x86/kvm/vmx/vmx.c          |   6 +-
+ arch/x86/kvm/x86.c              |  18 +++++-
+ 11 files changed, 114 insertions(+), 122 deletions(-)
+
+-- 
+2.56.0
+
