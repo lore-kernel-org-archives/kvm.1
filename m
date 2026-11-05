@@ -1,66 +1,72 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793885656;
-	b=OXr5th9sWHkC6wgFViHEM+2qklIP8q18fu7b72wU4AaVO06b8thNtfAnV93MIZAXWqfW
-	 XyLi+tqaMq8V7npqDJ1eZyFiF+lidZst3shI12gV9MhpUCwRK2AAiTluCpay69tKvLKbc
-	 n64xZfH9bwkf/Pyo14/GdenZ0xGVm7oo39eWNAyyGcwf4S4seBQCMcFq0a4RcuVt0Yj+y
-	 V65Hg1av8McGQMS4plOYTem8NkQfII6A0rtlzlatuFZheagCiD4tUzmxcPfxIfzh+UxW6
-	 O66ZtcuZzL0EUm2zlYswBNYfGL+trU1bfHBd+GZbpMuubzGVI0fJivYFueLL1P5b1Sw==
+	t=1793886713;
+	b=maxHZFrfDhG1MBOOXB148VP2K/7zpxy+zr8L1iyKOo50ln1KDLlSUTnJEDYponpROSIz
+	 GlgYi8JhElCXWLmGTVeYJbM+7Rgw/HEyGppaKpjBOCPlURyLxBcnfMX6VUUTzXwvGoeI2
+	 rAHwKqUcOm7tLA9mYzB09v/xZ/C4k0uW0DuT6kUJoVJxb2d5wgcW2pFlcWnBQwZhqo717
+	 fEtXFpbva7OWQbcAwDx8Sjpt3E4PZ3Seq57CDP6iv+ixO/zpysMXewB/LkpNPLQthDJH5
+	 pJd2ikWT5gsUH2rp3VIvPCopYd8MLgCjAzO11gaPTfvHpqty9YENq3a3+W9NZdPfSAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793885656;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793886713;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=xtG6fIgcVTzyv91/g3gp13PkyR5FUez629otMerYOAs=;
-	b=nWudy0uYrc2YIUq9+A1NotxnfXOV2ZtMkbMJkX7/TVeojoXh4unn2euC8QIjcpWa0Y+l
-	 i1D+HzCn26fO6cwMeVjp4N2ro0mYEGQ7xla55u09b8onYsCNj+GCpk4181gSH5W2YyzUF
-	 6XfOD0Q0TQ+l4spKwj9JKWP0fzPnYXZg4obz79jH14/CIahkvbhCjWSi0uvlwT36fmeZJ
-	 CSZXSFtmgguRVSg9CF9TMC5y34X9NatLIxeVrDvSAKNBDmMLEAahxzkvZXfFbfjX252Fo
-	 gL7/lbXEU1eZauyAt8rfvwjdqj/uahY6QEse2yVZKSw6urRfqpdypOE9Re4UKtV3iHQ==
+	bh=jeG3y12HtFa7m8IvIKhqM9ur3tVT1kjPhMNf8HVLxi8=;
+	b=dgmGv/OATO9RIva/1jEtgpyhR6OkLDbNrV+gnpFWKeXI4vAgT4fzr62Nv7uNli6wjjrc
+	 C3hHFUPEQuLQtTrtnzS8OYmCK1jQtt8MiQlQhhbfdhhFpfzdcgR5qT82kqahHsI3aTES8
+	 DvTVwR2WAnXJpfel2b4K6Klhc21d3qNp3WFtAVQIW8s0eKxPvo34Y5CAfAmKOCBt8D3GQ
+	 0FmIqr0ryvlzNncRjmH1ZqA/4NyBloaeR5DKQUjlb/gwncEXKa3/p3PrS1J5G5B35ItnP
+	 UMEYHDe1ULQozX2Ouy3vZUOcdPMt15BXx2okzxV0O27hG+xctRPcOQ50PfKbnXOcM7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AJAD0adZ;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=m+09lacs;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B997606A32D;
-	Thu,  5 Nov 2026 13:34:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B997606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0E6606A328;
+	Thu,  5 Nov 2026 13:51:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C0E6606A328
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AJAD0adZ
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=m+09lacs
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D4776152B;
-	Thu,  5 Nov 2026 05:34:11 -0800 (PST)
-Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A10D3F628;
-	Thu,  5 Nov 2026 05:34:12 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 975371650;
+	Thu,  5 Nov 2026 05:51:48 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 532CF3F628;
+	Thu,  5 Nov 2026 05:51:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793885654; bh=l14vhx5E/VbDt8tx/DC7VJgj77lpt87vUA3lRCAIukc=;
+	t=1793886711; bh=h84UlwUJYAiqDq33RX39Hh2D1oEYdS7iW7dNb129dXw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AJAD0adZM+HCYJxY7MSwwM7ewupYaBK7MHtAFWoJGwaLsy9a2Z3j0hqOYyLCD7h9l
-	 uZQcELPuN4SgmB/pGNNyGyoik9JIl7sAoIqln4XYNWCG+mWzdqV5Zl3w/eOB4igDB/
-	 a7d1AJeMDvSeVAgYKmR7bolgYmyGdI2IYsVoMx3k=
-Date: Thu, 5 Nov 2026 13:34:09 +0000
-From: Joey Gouly <joey.gouly@arm.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Quentin Perret <qperret@google.com>, Fuad Tabba <tabba@google.com>,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/16] KVM: arm64: selftests: Add protected-VM boot
- trampoline
-Message-ID: <auyF0ePpUlJKZgNo@e143914.arm.com>
-References: <20261104084842.132944-1-fuad.tabba@linux.dev>
- <20261104084842.132944-6-fuad.tabba@linux.dev>
+	b=m+09lacsvQH6RHUHtbjlvSu27zPjooCxuMs6qDiflGnjn4Td/TYYUafIL8k4EYAXF
+	 6ediJxrSXelxhGk1YIPGggBvbGC0ixvbbQaewIy+pOtbmJ19guvhIRcQFuracVXXk/
+	 OZeo6y15VTgJCsrdOWjJ0R7OhFPrIqPJRjYl1Eq8=
+Date: Thu, 5 Nov 2026 13:51:44 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
+Message-ID: <auyJ8Nuvn0t2qj5w@e129823.arm.com>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-3-jiri@resnulli.us>
+ <at-iEMxN98nie1Qr@e129823.arm.com>
+ <auBaROC0XdWpILEI@FV6GYCPJ69>
+ <20261027141524.GF1685504@ziepe.ca>
+ <auC5sw9YMC9NO4wl@e129823.arm.com>
+ <20261027151729.GG1685504@ziepe.ca>
+ <auyAJ8OMWHUTCFKs@FV6GYCPJ69>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,166 +78,73 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104084842.132944-6-fuad.tabba@linux.dev>
+In-Reply-To: <auyAJ8OMWHUTCFKs@FV6GYCPJ69>
 
-On Wed, Nov 04, 2026 at 08:48:31AM +0000, Fuad Tabba wrote:
-> EL2 takes only PC and X0 from the host when it boots a protected vCPU,
-> and resets everything else. So the registers the selftest library sets
-> before the first run never reach the guest.
+> Tue, Oct 27, 2026 at 04:17:29PM +0100, jgg@ziepe.ca wrote:
+> >On Tue, Oct 27, 2026 at 02:48:19PM +0000, Yeoreum Yun wrote:
+> >> > On Tue, Oct 27, 2026 at 09:02:14AM +0100, Jiri Pirko wrote:
+> >> > > Mon, Oct 26, 2026 at 07:55:12PM +0100, yeoreum.yun@arm.com wrote:
+> >> > > >[    3.856919]  ctlv_schema_check_attr+0x3dc/0x538
+> >> > > >[    3.857105]  ctlv_schema_check_indexed_nest+0x788/0x958
+> >> > > >[    3.857301]  ctlv_schema_validate+0x88/0x180
+> >> > > >[    3.857482]  ctlv_msg_test_as_deep_as_the_core_allows+0x11c/0x1e8
+> >> > > >[    3.857698]  kunit_try_run_case+0x64/0x188
+> >> > > >[    3.857878]  kunit_generic_run_threadfn_adapter+0x30/0x68
+> >> > > >[    3.858086]  kthread+0x10c/0x140
+> >> > > >[    3.858245]  ret_from_fork+0x10/0x20
+> >> > > >[    3.858398] SMP: stopping secondary CPUs
+> >> > > >[    3.858630] Kernel Offset: disabled
+> >> > > >[    3.858720] CPU features: 0x0,00000000,00b0802e,9f190bc3,2affe72f
+> >> > > >[    3.858872] Memory Limit: none
+> >> > > >[    3.858976] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
+> >> > > >
+> >> > > >[...]
+> >> > > >
+> >> > > >I think it might be good to configurable according to architecture
+> >> > > >unless it's not good to reduce the CTLV_MAX_NEST_DEPTH number
+> >> > > >otherwise, increasing stack size when CTLV is enabled seems unresonable...
+> >> > > 
+> >> > > Agreed, will lower it down. I think we should be okay with 8 for start.
+> >> > 
+> >> > I'm surprised this ran out of stack though with even as few as
+> >> > 32 levels.. Is there accidently something large on the stack?
+> >> >
+> >> 
+> >> Nope.
+> >> 
+> >> When I see the each functions stack allocation:
+> >> - ctlv_schema_check_indexed_nest():
+> >> 	sub	sp, sp, #0xf0 // 240 bytes
+> >> 
+> >> - ctlv_schema_check_attr():
+> >> 	sub	sp, sp, #0xb0 // 176 bytes
+> >> 
+> >> Roughly (240 + 176) * CTLV_MAX_NEST_DEPTH = 13,952 (around 14KB)
+> >> consumed.
+> >
+> >400 bytes per nest seems pretty big to me...
+> >
+> >Do you have debug options enabled or something that increases stack usage?
 > 
-> Boot a protected guest through a trampoline that restores X0-X7, seven
-> EL1 system registers and the stack pointer from a block X0 points to,
-> then enables the MMU and branches to the guest's entry point.
+> KASAN is such an option. On arm64 with GCC 15, the stack protector and
+> zero-initialized stack variables, ctlv_schema_check_indexed_nest() takes
+> 208 bytes and ctlv_schema_check_attr() 144 without KASAN. With generic
+> KASAN, which instruments the stack with GCC, they take 432 and 304: the
+> redzones around every local whose address is taken more than double both
+> frames. Your numbers are in between, I guess a different compiler or
+> KASAN mode.
 > 
-> Co-developed-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+> Otherwise there is nothing large on the stack. 96 of the 208 bytes hold
+> the callee-saved registers, the rest are small locals and spills. It is
+> just two frames per nesting level.
+> With the limit lowered to 8, validation at the maximum depth takes about
+> 3KB, about 6KB with generic KASAN.
 
-Similar idea to the 'realm-boot' I added, and mentioned previously. I
-think it should work for Realms too.
+TBH, I'm bit of surprised since I'm not using GENERIC option but with HW
+(MTE). Do you mean this with KASAN HW_TAG?
+might the GENERIC and SW_TAG would be, but I don't expected with HW_TAG.
 
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm      |  1 +
->  .../selftests/kvm/include/arm64/pkvm.h        | 50 ++++++++++++++++
->  .../selftests/kvm/lib/arm64/pvm-entry.S       | 58 +++++++++++++++++++
->  3 files changed, 109 insertions(+)
->  create mode 100644 tools/testing/selftests/kvm/include/arm64/pkvm.h
->  create mode 100644 tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 17a4256e90819..c254e82f9a786 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -35,6 +35,7 @@ LIBKVM_arm64 += lib/arm64/gic_v3.c
->  LIBKVM_arm64 += lib/arm64/gic_v3_its.c
->  LIBKVM_arm64 += lib/arm64/handlers.S
->  LIBKVM_arm64 += lib/arm64/processor.c
-> +LIBKVM_arm64 += lib/arm64/pvm-entry.S
->  LIBKVM_arm64 += lib/arm64/spinlock.c
->  LIBKVM_arm64 += lib/arm64/ucall.c
->  LIBKVM_arm64 += lib/arm64/vgic.c
-> diff --git a/tools/testing/selftests/kvm/include/arm64/pkvm.h b/tools/testing/selftests/kvm/include/arm64/pkvm.h
-> new file mode 100644
-> index 0000000000000..6ef769b8ff977
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/arm64/pkvm.h
-> @@ -0,0 +1,50 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2025 Google LLC
-> + * Author: Fuad Tabba <fuad.tabba@linux.dev>
-> + * Author: Will Deacon <will@kernel.org>
-> + */
-> +
-> +#ifndef SELFTEST_KVM_ARM64_PKVM_H
-> +#define SELFTEST_KVM_ARM64_PKVM_H
-> +
-> +#ifndef __ASSEMBLER__
-> +/*
-> + * Register state the boot trampoline (pvm-entry.S) restores. Only PC and X0
-> + * survive to a protected guest's first run, so X0 points at this block.
-> + */
-> +struct pvm_boot_args {
-> +	u64	jump_tgt;
-> +
-> +	u64	regs[8];
-> +	u64	cpacr_el1;
-> +	u64	sctlr_el1;
-> +	u64	tcr_el1;
-> +	u64	mair_el1;
-> +	u64	ttbr0_el1;
-> +	u64	vbar_el1;
-> +
-> +	u64	tpidr_el1;
-> +	u64	sp_el1;
-> +};
-> +#endif
-> +
-> +#define PVM_BOOT_ARGS_OFF_JUMP_TGT	0
-> +#define PVM_BOOT_ARGS_OFF_X0		(PVM_BOOT_ARGS_OFF_JUMP_TGT + 8)
-> +#define PVM_BOOT_ARGS_OFF_X1		(PVM_BOOT_ARGS_OFF_X0 + 8)
-> +#define PVM_BOOT_ARGS_OFF_X2		(PVM_BOOT_ARGS_OFF_X1 + 8)
-> +#define PVM_BOOT_ARGS_OFF_X3		(PVM_BOOT_ARGS_OFF_X2 + 8)
-> +#define PVM_BOOT_ARGS_OFF_X4		(PVM_BOOT_ARGS_OFF_X3 + 8)
-> +#define PVM_BOOT_ARGS_OFF_X5		(PVM_BOOT_ARGS_OFF_X4 + 8)
-> +#define PVM_BOOT_ARGS_OFF_X6		(PVM_BOOT_ARGS_OFF_X5 + 8)
-> +#define PVM_BOOT_ARGS_OFF_X7		(PVM_BOOT_ARGS_OFF_X6 + 8)
-> +#define PVM_BOOT_ARGS_OFF_CPACR_EL1	(PVM_BOOT_ARGS_OFF_X7 + 8)
-> +#define PVM_BOOT_ARGS_OFF_SCTLR_EL1	(PVM_BOOT_ARGS_OFF_CPACR_EL1 + 8)
-> +#define PVM_BOOT_ARGS_OFF_TCR_EL1	(PVM_BOOT_ARGS_OFF_SCTLR_EL1 + 8)
-> +#define PVM_BOOT_ARGS_OFF_MAIR_EL1	(PVM_BOOT_ARGS_OFF_TCR_EL1 + 8)
-> +#define PVM_BOOT_ARGS_OFF_TTBR0_EL1	(PVM_BOOT_ARGS_OFF_MAIR_EL1 + 8)
-> +#define PVM_BOOT_ARGS_OFF_VBAR_EL1	(PVM_BOOT_ARGS_OFF_TTBR0_EL1 + 8)
-> +#define PVM_BOOT_ARGS_OFF_TPIDR_EL1	(PVM_BOOT_ARGS_OFF_VBAR_EL1 + 8)
-> +#define PVM_BOOT_ARGS_OFF_SP_EL1	(PVM_BOOT_ARGS_OFF_TPIDR_EL1 + 8)
-> +
-> +#endif /* SELFTEST_KVM_ARM64_PKVM_H */
-> diff --git a/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S b/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
-> new file mode 100644
-> index 0000000000000..a0974cde78da6
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
-> @@ -0,0 +1,58 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2025 Google LLC
-> + * Author: Fuad Tabba <fuad.tabba@linux.dev>
-> + * Author: Will Deacon <will@kernel.org>
-> + */
-> +
-> +#include "pkvm.h"
-> +
-> +	.text
-> +	.balign 16
-> +	.globl	pvm_entry_start
-> +pvm_entry_start:
-> +	mov	x30, x0
-> +
-> +	ldr	x0, [x30, #PVM_BOOT_ARGS_OFF_X0]
-> +	ldr	x1, [x30, #PVM_BOOT_ARGS_OFF_X1]
-> +	ldr	x2, [x30, #PVM_BOOT_ARGS_OFF_X2]
-> +	ldr	x3, [x30, #PVM_BOOT_ARGS_OFF_X3]
-> +	ldr	x4, [x30, #PVM_BOOT_ARGS_OFF_X4]
-> +	ldr	x5, [x30, #PVM_BOOT_ARGS_OFF_X5]
-> +	ldr	x6, [x30, #PVM_BOOT_ARGS_OFF_X6]
-> +	ldr	x7, [x30, #PVM_BOOT_ARGS_OFF_X7]
-> +
-> +	ldr	x8, [x30, #PVM_BOOT_ARGS_OFF_JUMP_TGT]
-> +
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_CPACR_EL1]
-> +	msr	cpacr_el1, x9
-> +
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TCR_EL1]
-> +	msr	tcr_el1, x9
-> +
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_MAIR_EL1]
-> +	msr	mair_el1, x9
-> +
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TTBR0_EL1]
-> +	msr	ttbr0_el1, x9
-> +
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_VBAR_EL1]
-> +	msr	vbar_el1, x9
-> +
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TPIDR_EL1]
-> +	msr	tpidr_el1, x9
-> +
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_SP_EL1]
-> +	mov	sp, x9
-> +
-> +	/* No stale TLB entries, and the writes above in effect, before the MMU is on. */
-> +	tlbi	vmalle1
-> +	dsb	nsh
-> +	isb
-> +	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_SCTLR_EL1]
-> +	msr	sctlr_el1, x9
-> +	isb
-> +
-> +	br	x8
-> +	.globl	pvm_entry_end
-> +pvm_entry_end:
-> -- 
-> 2.47.3
-> 
+-- 
+Sincerely,
+Yeoreum Yun
