@@ -1,92 +1,98 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793914899;
-	b=bqwjbgY1HkwrNCzEhQnUrFPeZT/IWyCILQIdUqZCeQtkuslFUyZNCyFqunr5XzTnAtsr
-	 XqMspzrzh5lFY1UbYEBiU90nd5uzpXmEri9ix6fx/pfrWOOlbZNaWsYXE5rVG8TxsDmtB
-	 S+C+jyyaMCElWl3nNIZNLMMO5nL9Q0R1SduyP7feIZrWyw8frOjEZv5rZgNite8Wd8XuH
-	 P6c3RXGs3Sdc3UEOV1iqXetN0TLDwzO//sd9RlLiqps6agXe0tg9Yz89//Z8ERK8KnSvZ
-	 NmpQ3zk0sa4BqoiKtEyhWT0wlTEepa2J8PBi5Cu8VXsLaHihOS2RBg7dgQHZy5gMS7A==
+	t=1793915008;
+	b=YC2d3lxZ+xdYtYVIQ1Gets1P9uEhzTnPPB4autnz0zXaiZsBRWKpwzSz76fcHih0kKeA
+	 k6m1g18KWEU9FDJU1zbGXX0qZa2MPOWVujCYHiS10v025y4od05xwl9A9oD2FfDpSvki0
+	 A6hTXBQzLnDEmAmDaGoaQIUfnEP8T7vc+qw/pzoEDhfdGROi9cjzFKvmpNF91CyGgVs1u
+	 lf1v/w2SflXEohOkjNNrySEyswUOymoCZBzJVTkJn+9pOqtYqD19kTdS81sP5YUnjhd2Y
+	 WkGBfxccMBXSjxaen0vlxUHMRqWF0Sy6ywPUFQfcywo1pN4ASzSdU/dyYCmDo+OwOGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793914899;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=OC6xPJuoLtag/UNVUOAoSaQZwd0BWlf5yd9F9l2dg+8=;
-	b=yjM/FLVkfEbOaJB/kS01H1hKB049rjjpKUaVFW/A84Nlzryu0vtRgHDw3MjHNINlZNpy
-	 9a2B7FjZyd1wnR8D/3GRu/ixCoF5yqd3IRPLUuXjFdzmVup1mj5FPhkjWpF3ZkELHggvv
-	 ofxraMHlM0X8h/tCrARdgkJVNAGjzWE6geHIAb9eN9LUhIzu+s+lYZQKbtGWFsOM0JzBV
-	 smAekyJ2mDL1sra2X/w+EvZXA7lT+aKiZVpcDpoWn3WEVmi/HHRhhanMPS2KnNt+wkHPc
-	 bUhK++smEWeaOWBFMjtOLsh9pLnRR+VQY2ypg19g8V43LAwozSgn23DPSM1pWEboYpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793915008;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=nnsNMtUi8B/PfO4GG0OW4lr6jLs4u50NUe2xEiA6RC0=;
+	b=eaXvzoqyiCBoR+f0jPBzGX9KQ428npqD2s7gfoAAZby0+JDtyN2kU3Nbw30MXUwutcHa
+	 biy23HSyPb2qDXtCAX2avu5V0EA5FKzY74A3dle++4ESh/2WOwr+3PpGuC+rCNO0nJqzh
+	 InQVF724oMGidILBy1+lzYWigoS4qW438260I/YDRUpSzbsFHWrUFsUDzaGMb+Hl/l20K
+	 aCDKFjuqdNXVpKbrdJAouL4igPR9fk5yOJ9TQIHIxzGCIIKUbvMoVn6tzrcxGL9IHf/0S
+	 6Nlg7wVbN+qZy9tc7vf4cLfMvFXwMovd0xKTKcxgroc09y9YNHKrpLIe+8XTCYLgp5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ftjSanR5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KFA+ZicK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A05606A329;
-	Thu,  5 Nov 2026 21:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 0B1DC606A326;
+	Thu,  5 Nov 2026 21:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ftjSanR5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05BF1F0089F;
-	Thu,  5 Nov 2026 21:41:34 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KFA+ZicK
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0AE881F0089F;
+	Thu,  5 Nov 2026 21:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793914898;
-	bh=OC6xPJuoLtag/UNVUOAoSaQZwd0BWlf5yd9F9l2dg+8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ftjSanR5NYRVoTeBKZ9GKKb5Ejk1Wo1LW5KsXglEAcnlyjjvxN2a+oB7TS+tqIO48
-	 mLWMUruChKgreDIeGVIBYX7RKGlsxtvnxnVOabXGjobAB/fVlZBcpRSb4QcmM+aPey
-	 H1GN8tWl7V0jJslBLXgjRHT2fPyQBR4w0/b8W6NY2gw07MVWVDA9NQN/Y11ulVuQIA
-	 85VS68u9z1a4tjmBgnUKmKpo/fWULan3ie+4z30hlSVqrPQol/nhiJzLckViEBmmge
-	 zkrugiLnzvT9AifyLkUuMzOvKx+kKGulAQEqHn+yOT6n1ONFUVd0hOc+ZZVtqSd1Kf
-	 1pcTL4VXazLdw==
-Message-ID: <sashiko-outbox-200257@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 02/13] mm/filemap: convert fault and readahead logic to
- use vma_flags_t
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, "John Hubbard" <jhubbard@nvidia.com>, "Peter Xu" <peterx@redhat.com>,
- =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Jan
- Kara" <jack@suse.cz>, "Rik van Riel" <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Harry Yoo" <harry@kernel.org>, "Jann Horn" <jannh@google.com>, "Lance
- Yang" <lance.yang@linux.dev>, "Zi Yan" <ziy@nvidia.com>, "Matthew Brost" <matthew.brost@intel.com>, "Joshua
- Hahn" <joshua.hahnjy@gmail.com>, "Byungchul Park" <byungchul@sk.com>, "Gregory
- Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Nico
- Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
- Shutsemau" <kas@kernel.org>, "Xu Xin" <xu.xin@linux.dev>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Madhavan
- Srinivasan" <maddy@linux.ibm.com>, "Nicholas Piggin" <npiggin@gmail.com>, "Michael
- Ellerman" <mpe@ellerman.id.au>, =?utf-8?b?Q2hyaXN0b3BoZSBMZXJveSAoQ1Mg?=
- =?utf-8?b?R1JPVVAp?= <chleroy@kernel.org>, =?utf-8?b?Uml0ZXNoIEhhcmph?=
- =?utf-8?b?bmkgKElCTSk=?= <ritesh.list@gmail.com>, "Shrikanth Hegde" <sshegde@linux.ibm.com>, "Pedro
- Falcato" <pfalcato@suse.de>, "Kairui Song" <kasong@tencent.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen" <axelrasmussen@google.com>, "Yuanchu
- Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Leon Romanovsky" <leon@kernel.org>, "SJ Park" <sj@kernel.org>, "Rakie
- Kim" <rakie.kim@sk.com>, "David Rientjes" <rientjes@google.com>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Arnaldo
- Carvalho de Melo" <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Mark
- Rutland" <mark.rutland@arm.com>, "Alexander Shishkin" <alexander.shishkin@linux.intel.com>, "Jiri
- Olsa" <jolsa@kernel.org>, "Ian Rogers" <irogers@google.com>, "Adrian Hunter" <adrian.hunter@intel.com>, "James
- Clark" <james.clark@linaro.org>, "Masami Hiramatsu" <mhiramat@kernel.org>, "Oleg
- Nesterov" <oleg@redhat.com>, "John Johansen" <john.johansen@canonical.com>, "Georgia
- Garcia" <georgia.garcia@canonical.com>, "Paul Moore" <paul@paul-moore.com>, "James
- Morris" <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Mimi
- Zohar" <zohar@linux.ibm.com>, "Roberto Sassu" <roberto.sassu@huawei.com>, "Dmitry
- Kasatkin" <dmitry.kasatkin@gmail.com>, "Eric Snowberg" <eric.snowberg@oracle.com>, "Fan
- Wu" <wufan@kernel.org>, "Stephen Smalley" <stephen.smalley.work@gmail.com>,
- =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org, damon@lists.linux.dev, linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-In-Reply-To: <20261105-late-2026-vma-flags-v1-2-0d3cd15ab75f@kernel.org>
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <20261105-late-2026-vma-flags-v1-2-0d3cd15ab75f@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 21:41:34 +0000
+	s=k20260515; t=1793915007;
+	bh=nnsNMtUi8B/PfO4GG0OW4lr6jLs4u50NUe2xEiA6RC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KFA+ZicKHpTxqbxZeNU9rKNH0zDIw+G9WkxRcTelADPJIyDG9z+SV38MG0CjPlcEC
+	 1gjbq2m9ysrv8pBHAJrvqPnMERLZq6W4rxcogl2DlIDB44RylaSdblCTSEXNnxfcbK
+	 l3RbrI5Oxv1bkdw/nOHwLpMlw6rPe3TmPXrqXYMaHNImuFIqgFREHKoGTzOn5W2eUw
+	 HnogndejHth27NGEbdc3qPN/i0WWKweuYdEdmiZr5RDjCfk6/mEdy1F9Yu6XlveCU2
+	 QfoEW83U8XIbYRbkOdJsXHQEOAAPFI6k6EpuBWa/BFfpmagRIXSu+HdiZvkzWIUa8b
+	 kW/HsHhM4i4og==
+Date: Thu, 5 Nov 2026 23:43:23 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Scott Branden <scott.branden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+	linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 05/14] x86/sgx: convert vepc mmap hook to mmap_prepare
+Message-ID: <auz4e81zm0mTMknq@kernel.org>
+References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
+ <20261105-late-2026-mmap_prepare-v1-5-c56aadfbab8a@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,104 +101,64 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-late-2026-mmap_prepare-v1-5-c56aadfbab8a@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] mm/filemap: use-after-free on vma in do_sync_mmap_readahead()
-- [Low] mm/filemap: inner vma declaration shadows outer vma in do_sync_mmap=
-_readahead()
---
+On Thu, Nov 05, 2026 at 09:05:36PM +0000, Lorenzo Stoakes (ARM) wrote:
+> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
+> only checks that the mapping is shared and sets VMA flags, operations and
+> private data.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  arch/x86/kernel/cpu/sgx/virt.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
+> index 6a1933ddc6fc..850990519ca5 100644
+> --- a/arch/x86/kernel/cpu/sgx/virt.c
+> +++ b/arch/x86/kernel/cpu/sgx/virt.c
+> @@ -98,17 +98,18 @@ static const struct vm_operations_struct sgx_vepc_vm_ops = {
+>  	.fault = sgx_vepc_fault,
+>  };
+>  
+> -static int sgx_vepc_mmap(struct file *file, struct vm_area_struct *vma)
+> +static int sgx_vepc_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	struct sgx_vepc *vepc = file->private_data;
+> +	struct sgx_vepc *vepc = desc->file->private_data;
+>  
+> -	if (!(vma->vm_flags & VM_SHARED))
+> +	if (!vma_desc_test(desc, VMA_SHARED_BIT))
+>  		return -EINVAL;
+>  
+> -	vma->vm_ops = &sgx_vepc_vm_ops;
+> +	desc->vm_ops = &sgx_vepc_vm_ops;
+>  	/* Don't copy VMA in fork() */
+> -	vm_flags_set(vma, VM_PFNMAP | VM_IO | VM_DONTDUMP | VM_DONTCOPY);
+> -	vma->vm_private_data = vepc;
+> +	vma_desc_set_flags(desc, VMA_PFNMAP_BIT, VMA_IO_BIT, VMA_DONTDUMP_BIT,
+> +			   VMA_DONTCOPY_BIT);
+> +	desc->private_data = vepc;
+>  
+>  	return 0;
+>  }
+> @@ -315,7 +316,7 @@ static const struct file_operations sgx_vepc_fops = {
+>  	.unlocked_ioctl	= sgx_vepc_ioctl,
+>  	.compat_ioctl	= sgx_vepc_ioctl,
+>  	.release	= sgx_vepc_release,
+> -	.mmap		= sgx_vepc_mmap,
+> +	.mmap_prepare	= sgx_vepc_mmap_prepare,
+>  };
+>  
+>  static struct miscdevice sgx_vepc_dev = {
+> 
+> -- 
+> 2.56.0
+> 
 
-commit f5f0f8e634a6a2e2b76ad818de67e83f30cb7dea
-Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-mm/filemap: convert fault and readahead logic to use vma_flags_t
-
-This commit replaces direct checks of vm_flags_t values with vma_flags_t
-helpers in the filemap fault and mmap readahead paths.
-
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index b74bc1e5015c6..d8b538bd14043 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3351,13 +3351,14 @@ static struct file *do_sync_mmap_readahead(struct=
- vm_fault *vmf)
->  	struct address_space *mapping =3D file->f_mapping;
->  	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
->  	struct file *fpin =3D NULL;
-> -	vm_flags_t vm_flags =3D vmf->vma->vm_flags;
-> +	struct vm_area_struct *vma =3D vmf->vma;
->  	bool force_thp_readahead =3D false;
->  	unsigned int thp_order =3D 0;
->  	unsigned short mmap_miss;
-
-[ ... ]
-
-> @@ -3414,7 +3416,7 @@ static struct file *do_sync_mmap_readahead(struct v=
-m_fault *vmf)
->  		 * Fetch two folios so we get the chance to actually
->  		 * readahead, unless we've been told not to.
->  		 */
-> -		if (!(vm_flags & VM_RAND_READ))
-> +		if (!vma_test(vma, VMA_RAND_READ_BIT))
->  			ra->size *=3D 2;
->  		ra->async_size =3D folio_nr_pages;
->  		ra->order =3D thp_order;
-
-[Severity: High]
-Can this trigger a use-after-free on vma?
-
-Previously, do_sync_mmap_readahead() cached vmf->vma->vm_flags by value in a
-local variable at entry while the fault lock was held, as introduced by
-commit dcfa24ba6899 ("filemap: Cache the value of vm_flags").
-
-In the force_thp_readahead block, maybe_unlock_mmap_for_io() is called befo=
-re
-this check:
-
-	if (force_thp_readahead) {
-		unsigned long folio_nr_pages =3D 1UL << thp_order;
-
-		fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
-		ractl._index &=3D ~(folio_nr_pages - 1);
-		ra->size =3D folio_nr_pages;
-		/*
-		 * Fetch two folios so we get the chance to actually
-		 * readahead, unless we've been told not to.
-		 */
-		if (!vma_test(vma, VMA_RAND_READ_BIT))
-			ra->size *=3D 2;
-
-Since maybe_unlock_mmap_for_io() only pins vmf->vma->vm_file and calls
-release_fault_lock(vmf) to drop mmap_lock or the per-VMA lock, isn't vma
-unprotected against concurrent modification or freeing when vma_test(vma,
-VMA_RAND_READ_BIT) dereferences vma->flags?
-
-> @@ -3422,7 +3424,7 @@ static struct file *do_sync_mmap_readahead(struct v=
-m_fault *vmf)
->  		return fpin;
->  	}
-> =20
-> -	if (vm_flags & VM_EXEC) {
-> +	if (vma_test(vma, VMA_EXEC_BIT)) {
->  		/*
->  		 * Allow arch to request a preferred minimum folio order for
->  		 * executable memory. This can often be beneficial to
-
-[Severity: Low]
-Does the newly added outer vma declaration in do_sync_mmap_readahead() cause
-the existing inner declaration in this VMA_EXEC_BIT block to shadow it?
-
-	if (vma_test(vma, VMA_EXEC_BIT)) {
-		...
-		struct vm_area_struct *vma =3D vmf->vma;
-		const unsigned long start =3D vma_start_pgoff(vma);
-		const unsigned long end =3D vma_end_pgoff(vma);
-
-Should the inner vma variable be removed now that vma is declared at functi=
-on
-scope?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105-late-2026-=
-vma-flags-v1-0-0d3cd15ab75f@kernel.org?part=3D2
+Br, Jarkko
