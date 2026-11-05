@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793898059;
-	b=DiPsjfmC6nIFReOazdINl9K3eUtqOKgfaFzCT7Pb86uWK201vTa1+5L4uxThUukBVUzX
-	 eRrUlpXHUVcHv3qkDdJ9pR3FPdXvE2gI2KgOPSh9eqS9HFWdZnuyMSV18tet5EGURzkeH
-	 aljFbCOAgxGOKvl9ZuBi9uTY6xDCJDBQVE0Pe7LEr7BcK6Kva0+AFr0P8QXBDmDqkQDyO
-	 vruk9FsjESwR+IbBRAkxg3WCzKpKsI2ibfMKKRi4kAzXojcXKpdXqb+pD66dkrK3jzycT
-	 Hzvy/b+QVqe9wPkBOsMeMEY206HL8dc7PDvZIlcMUErPh6xQd3mnp1SAmywDVe0oU9Q==
+	t=1793898067;
+	b=Xj/dGevi52SujcwdI+YKLFakpTAy11Rr4j0QpB0khChbVw1Hi58ZAKUiJj6CE6EXUS/b
+	 g0wB2VHZMKJYTGB+geMLEaGfCSmERT2dfuIX3wVHq4fddBpufYP5ZhvzYDA+dYvQiZYY0
+	 rbIG5+1RWgOSslIoqfbGA3T6YezHbRMQ729UGJfz2GUoHPlkpaH9x/ev8TOknbmgYo+td
+	 OJvl5d9pQ84qx8co2+Fm6QK7RYz8Y26XvzMzwAuJMLW0pxGmdEB1qTKnZzagyGf/gkwKL
+	 xl28nWjYRvIQjCD54IrTUm9SilrqGVgx9cEIXX+2ncl3oCuq83SIPWpPCwO6ukG2VkA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793898059;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793898067;
 	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
 	 DKIM-Signature:Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Spamd-Result:X-Spam-Score:X-Spam-Level:
-	 X-Spam-Flag;
-	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
-	b=2nTO7Xd+jDJOVm+lGIz48T75WY+KSMGaNkGWTYV0/8kJB1T9/WgH/KEWnfvdCJ0e526W
-	 nDnRjd56TmZSYOWo/tS2oAHXG/HNahlgIz4zsjr+C5h5KTcgryWQ1SuuD3QAdndPfltsM
-	 VMWUdbsmU7UFXMfD/zfVvMXkOj8tE9dmcRRhdZ/uWG5d4Fcf1aXde4Fe5YAhsZrb/LGwk
-	 YRgSaBig3e6YYo2FamumGz1UkU+CQ3REDPzd1mi86exDXcSRJl6nW7n67zvpJLWP7La38
-	 QH1eTLbRV7oD08Acr5nilX954zBg4rFmOWGwsM0Pwp3+jM4QTFDqGdFF+B0Ho+nF4yA==
+	 Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:X-Spamd-Result:
+	 X-Spam-Score;
+	bh=zJ4YMgar/+f3xch1CQmR84D/AWFtiNZ8AwAhZEnWX4g=;
+	b=iO7B5puWrr5xM85RZ6jFP9gN8lLFQOw9n9Q/z75KsJREAndC6pM71qTTc42tsH3hu9Yf
+	 aWxMK+QnQuQTEdBvKRNHE1JZrml4FHrw2TDIH3kSxN9jR/j0uZjhxK15/QUvBT0pirSLx
+	 dyki+tUswmO7pxEpNeevLujZXTzb0A5k8JH/lyB7qLYmeg5SewMEAo9wGq30uV0uk4gtu
+	 ohjsEVGmgL4xl0vODRD3POU26sxb5U6FuEw5oM4u7lFe8FjHKKlgNyD/Xsaa5pnsfUjDQ
+	 L4pASEuvrX9fl0G4SE6IOQaFw8Maqy6vehB/AHa0ebbYB8+GRFE1WXvlhtXTeb22cjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=suse.de;
 	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FyiaQi6Y;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P556lgPy;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FyiaQi6Y;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P556lgPy;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o2rewCfA;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gNOFwnmK;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o2rewCfA;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gNOFwnmK;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F677606A328;
-	Thu,  5 Nov 2026 17:00:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F677606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A556082BC7;
+	Thu,  5 Nov 2026 17:01:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3A556082BC7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FyiaQi6Y;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P556lgPy;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FyiaQi6Y;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P556lgPy
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o2rewCfA;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gNOFwnmK;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o2rewCfA;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gNOFwnmK
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A1D701FE8F;
-	Thu,  5 Nov 2026 17:00:57 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5FE6D22937;
+	Thu,  5 Nov 2026 17:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793898057; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793898065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
-	b=FyiaQi6Y22rH29a1RDsHKP1SPcP1S1oFAeAS3xeGQfgeA9N//7ADuXokQdk4OFMCztHkgr
-	ODWk2HqyRQocNMJK2K29NCzbfvzJH+R4brhwlcgKg2GP7+R0dcOWewn/PWpaDL3l95hIFQ
-	iIB3sgwsZluA/aODCeXlO3pk8d3z+8g=
+	bh=zJ4YMgar/+f3xch1CQmR84D/AWFtiNZ8AwAhZEnWX4g=;
+	b=o2rewCfAnbi1hi0MofFMdb9Ixx8NBxq97b3E5eyBcNFiBDcnEHA/FcNJrljUp4KAPbfEuN
+	MO7dqjK5dOd0b+XN3ue2BGEy1uOew2ZFUM7ucie5f0BEUHakLT+5Oxhlpe9roQPHm+E6Nc
+	QXqStp0DXuqg2djuEq5GdV7OvbrQtyA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793898057;
+	s=susede2_ed25519; t=1793898065;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
-	b=P556lgPyQn3q30w9Fgf4cK2jzW9bYpuofte4VAKU44wYJhKO96WGioywB7j7jlZ23FQG8X
-	hiQJvKfqZkM6zBBA==
-Authentication-Results: smtp-out2.suse.de;
+	bh=zJ4YMgar/+f3xch1CQmR84D/AWFtiNZ8AwAhZEnWX4g=;
+	b=gNOFwnmKOfXqFUyiXGIpJJR+IwTNMewBrh/2d7AdIwYvDM6h85yo91Qf+wKyAI2vats1dw
+	WdwdsPOSHQyQngBA==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793898057; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793898065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
-	b=FyiaQi6Y22rH29a1RDsHKP1SPcP1S1oFAeAS3xeGQfgeA9N//7ADuXokQdk4OFMCztHkgr
-	ODWk2HqyRQocNMJK2K29NCzbfvzJH+R4brhwlcgKg2GP7+R0dcOWewn/PWpaDL3l95hIFQ
-	iIB3sgwsZluA/aODCeXlO3pk8d3z+8g=
+	bh=zJ4YMgar/+f3xch1CQmR84D/AWFtiNZ8AwAhZEnWX4g=;
+	b=o2rewCfAnbi1hi0MofFMdb9Ixx8NBxq97b3E5eyBcNFiBDcnEHA/FcNJrljUp4KAPbfEuN
+	MO7dqjK5dOd0b+XN3ue2BGEy1uOew2ZFUM7ucie5f0BEUHakLT+5Oxhlpe9roQPHm+E6Nc
+	QXqStp0DXuqg2djuEq5GdV7OvbrQtyA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793898057;
+	s=susede2_ed25519; t=1793898065;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
-	b=P556lgPyQn3q30w9Fgf4cK2jzW9bYpuofte4VAKU44wYJhKO96WGioywB7j7jlZ23FQG8X
-	hiQJvKfqZkM6zBBA==
+	bh=zJ4YMgar/+f3xch1CQmR84D/AWFtiNZ8AwAhZEnWX4g=;
+	b=gNOFwnmKOfXqFUyiXGIpJJR+IwTNMewBrh/2d7AdIwYvDM6h85yo91Qf+wKyAI2vats1dw
+	WdwdsPOSHQyQngBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A681133F6;
-	Thu,  5 Nov 2026 17:00:56 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 16CD5134F6;
+	Thu,  5 Nov 2026 17:01:04 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HMEkC0K27GqWRwAAD6G6ig:T5
-	(envelope-from <clopez@suse.de>); Thu, 05 Nov 2026 17:00:56 +0000
+	id HMEkC0K27GqWRwAAD6G6ig:T10
+	(envelope-from <clopez@suse.de>); Thu, 05 Nov 2026 17:01:04 +0000
 From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
 To: kvm@vger.kernel.org,
 	linux-mm@kvack.org
@@ -111,16 +111,16 @@ Cc: linux-kernel@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	frankja@linux.ibm.com,
 	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>
-Subject: [PATCH v2 4/9] mm/mprotect: add MM_CP_PERM_UPGRADE
-Date: Thu,  5 Nov 2026 17:50:01 +0100
-Message-ID: <20261105165004.2663799-8-clopez@suse.de>
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>
+Subject: [PATCH v2 9/9] KVM: s390: don't unmap the gmap on permission upgrade
+Date: Thu,  5 Nov 2026 17:50:06 +0100
+Message-ID: <20261105165004.2663799-13-clopez@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261105165004.2663799-4-clopez@suse.de>
 References: <20261105165004.2663799-4-clopez@suse.de>
@@ -135,6 +135,8 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
 X-Spamd-Result: default: False [-12.30 / 50.00];
 	SUSE_INTERNAL_BYPASS(-9.00)[];
 	BAYES_HAM(-3.00)[100.00%];
@@ -142,81 +144,74 @@ X-Spamd-Result: default: False [-12.30 / 50.00];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[22];
 	RCVD_TLS_ALL(0.00)[];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLmtzipbxtgehzutu1qae44kxg)];
 	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
 X-Spam-Score: -12.30
-X-Spam-Level: 
-X-Spam-Flag: NO
 
-Add a change_protection() flag for changes that only add permissions,
-keeping the PFN and revoking no access. mprotect() sets it when the new
-VMA flags only add read, write or execute permissions. VM_ACCOUNT may be
-added as well, as it does not affect the page tables. Any other change,
-such as a different protection key, is not considered an upgrade.
+When an mmu_notifier invalidation only upgrades permissions
+(MMU_NOTIFIER_RANGE_PERM_UPGRADE), keep the existing gmap entries
+instead of unmapping them. The PFN is unchanged and no access is
+revoked, so an existing entry is no more permissive than the new host
+PTE.
 
-This will allow MMU notifier users to perform optimizations, as they
-can avoid invalidating PTEs whose permissions can be faulted in.
+A write to an entry that is still read-only causes a protection
+exception, which kvm_s390_faultin_gfn() handles as a write fault,
+picking up the new permissions. This applies to both s390 and arm64
+guests.
 
 Signed-off-by: Carlos López <clopez@suse.de>
 ---
- include/linux/mm.h |  2 ++
- mm/mprotect.c      | 13 +++++++++++++
- 2 files changed, 15 insertions(+)
+ arch/s390/kvm/arm64/arm.c | 7 +++++++
+ arch/s390/kvm/s390/s390.c | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 9f167950926a..dddbd76a2760 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3581,6 +3581,8 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
- #define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
- #define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
- 					    MM_CP_UFFD_RWP_RESOLVE)
-+/* Whether this change only upgrades/adds permissions */
-+#define  MM_CP_PERM_UPGRADE                (1UL << 6)
+diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
+index bd9d85235f43..5aee1817aad8 100644
+--- a/arch/s390/kvm/arm64/arm.c
++++ b/arch/s390/kvm/arm64/arm.c
+@@ -678,6 +678,13 @@ void kvm_arch_commit_memory_region(struct kvm *kvm, struct kvm_memory_slot *old,
  
- bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
- 			     pte_t pte);
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 754333698c1e..683131c9c4a0 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -756,6 +756,17 @@ static const struct mm_walk_ops prot_none_walk_ops = {
- 	.walk_lock		= PGWALK_WRLOCK,
- };
- 
-+static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
-+				      vma_flags_t new_vma_flags)
-+{
-+	vm_flags_t old = vma_flags_to_legacy(old_vma_flags);
-+	vm_flags_t new = vma_flags_to_legacy(new_vma_flags);
-+	/* VM_ACCOUNT does not affect page tables */
-+	vm_flags_t mask = VM_READ | VM_WRITE | VM_EXEC | VM_ACCOUNT;
+ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
++	/*
++	 * Do not bother unmapping if this is only a protection upgrade.
++	 * Permissions will be faulted-in on demand.
++	 */
++	if (range->flags & MMU_NOTIFIER_RANGE_PERM_UPGRADE)
++		return false;
 +
-+	return new == (old | (new & mask));
-+}
-+
- int
- mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- 	       struct vm_area_struct *vma, struct vm_area_struct **pprev,
-@@ -836,6 +847,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- 	vma_flags_reset_once(vma, &new_vma_flags);
- 	if (vma_wants_manual_pte_write_upgrade(vma))
- 		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-+	if (vma_flags_is_perm_upgrade(old_vma_flags, new_vma_flags))
-+		mm_cp_flags |= MM_CP_PERM_UPGRADE;
- 	vma_set_page_prot(vma);
+ 	return gmap_unmap_gfn_range(kvm->arch.gmap, range->slot, range->start, range->end);
+ }
  
- 	change_protection(tlb, vma, start, end, mm_cp_flags);
+diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
+index 18fb200f854a..954bf6b64683 100644
+--- a/arch/s390/kvm/s390/s390.c
++++ b/arch/s390/kvm/s390/s390.c
+@@ -5871,6 +5871,13 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+  */
+ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
++	/*
++	 * Do not bother unmapping if this is only a protection upgrade.
++	 * Permissions will be faulted-in on demand.
++	 */
++	if (range->flags & MMU_NOTIFIER_RANGE_PERM_UPGRADE)
++		return false;
++
+ 	return gmap_unmap_gfn_range(kvm->arch.gmap, range->slot, range->start, range->end);
+ }
+ 
 -- 
 2.51.0
 
