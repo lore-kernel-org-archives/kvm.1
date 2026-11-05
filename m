@@ -1,45 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793842540;
-	b=HHXQTQYG3uSg5lDnzbdo3n+3FYwENLfqFreono29E/SLHi5hM0U1wWWkqZDakS1FhN5b
-	 T63Z+CV0evEQDvNAI3Mw7MbTwTyCoO94QmT3YptAcZfwqV2A/bZ942U9ExLgp39f7Nw3i
-	 S3yRXu3qLswSf2WNNLD7OI0mxIPqaLsvx3t2ta5grBuclTnLvOFbd2m4a2GSKm9WD1o1e
-	 481fVQ4QutlvUh8ldwa8C9AHB1UAS3qJ1w5WR5ETBr2VGornzX8wmJSkp456TK4skNVkj
-	 yra/eO4IcyKupTeRrAwsELY4EWVKP+0e2chPqM4nklX0f8hZZOyfSinyW0iBQ5uPRxA==
+	t=1793843680;
+	b=dykmPaEd6c70lhijK4vCa6PsQkYzu5zp9xvuCLeYrlJ18Fpw/WYmjmDhvGtrHPwz+6ff
+	 gSWv60BBLn2cKsoAmFuits0cKzbY+roJX1rP0IOPHZiKI+vON1vsyqrPwm2Ja/0Bx/g7A
+	 DYMBLhBlZPT725COiQvx76Nl8rSeOqJeVRZFuwnXdw7PxKZwyx7dinvzx9jvC0zhCU3/p
+	 VfOf1ZFub9hjD87mDEOjuGLIFGeVcsu7gGQmUBsJd7cHCR2D03sIHfvhBBMvkC2vPlvbm
+	 9VUAE0MJOVHwH4+s3ARpL7J8xKEhlb2x08thVZMGLlpS4NH7rAbUnMxS7zsB7BIMcgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793842540;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:From:Subject:Cc:To:References:
-	 In-Reply-To;
-	bh=KttBQIY3CoR0oa+wCZDATiCKgDh41PjVmh/fyWWpT0g=;
-	b=KQv9f7f7z/ElPIeX8AoDMqf6uGLF3xiTH6K8nXTzvo7Z6s36/gfJdLWF9r07RVQ7BStv
-	 K3CPCQrDS+3kel/xDedE7zB33R/N+FryOrJpuf5rbvOW0QWpOGnGzjF2e5SYc/kkSN6Uk
-	 IDcJlV7PBpp1UEwp4Mk9T5LOIzXRK96Qyn7M3AYdJDo8KzynkUoKg9alCGNr3kFswkvBo
-	 oda0Xtr2Li0Y4T5HA57aKmKrgSYuOkSX9/2jcg9jyruTNKEI7hdkbVkLMrEA0pvxeruDN
-	 kCNj3RleF7j4IM6I2ue4cNXab24wZsDCoJp5vgIh8IcQSLuBqQlwbWQlwHItnr2TGGQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793843680;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=QKPgoiWRsxPtShXuI0V6ebeOraFMZLMbO856bZBhv+o=;
+	b=0gxtQPj0sBOjgzyhvb/LhkpoVrvFOiIs3zOMefJhgAPrIYEujDh96vDBdnxNuIdY9qAQ
+	 W6BmmKYvalMSStive+4pXXola58QFyM5qbna8hSPqoVktJdT6zqlvld33srY3V7ODTOJe
+	 T9xtkTEFJDGO2ACNnw93yF+WdnEh2tCD4RKQd8jYd3WiW3v2V6C9NeIxxqVrCVTzzTxeP
+	 2sAWRXpeLyMBl/fPUKQcEofS3tosD567AdvdG9xH6fJ3V3mpPc0Hxu4mAZYBG3hYo3PT7
+	 j0v0p/eemoC8G1SXIoL7v1NW7bzVpO+5tIFKUJRQQW6rW8zwfYZ1FX3cOVFZu0deZhw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="AWgQ/GVF";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g2aiKN+V;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D56606A31B;
-	Thu,  5 Nov 2026 01:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08152606A331;
+	Thu,  5 Nov 2026 01:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AWgQ/GVF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241DA1F00919;
-	Thu,  5 Nov 2026 01:35:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g2aiKN+V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700CD1F00919;
+	Thu,  5 Nov 2026 01:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793842540;
-	bh=KttBQIY3CoR0oa+wCZDATiCKgDh41PjVmh/fyWWpT0g=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To;
-	b=AWgQ/GVF2EPfjjBRjUQl2TwhcDoTOHFhv4OThVqNUfe1HHJvlheooMr1GzMztQ1C8
-	 bdDigN/E6YS0yyDelrJfaAIPa0JM11JKsCj8P4uSdsuxbHNF1qTouqAxgvw+zkM537
-	 QgN/gxgocgD/u5ZKcmMrLh74pqTjPNGVyBCnsQ0njBfmVN7OfPe7ZVU0Gz5FRlAA1M
-	 j3VMkH18Qu2YN5aWhNsHX4MBDUcZvl4D8c5OZ9Wfczmt2I7kKzud6TJLW4NxnmLipM
-	 LmmSf0MPFpE9Ql48nCc4qVKSW2FQchsBokmjMO7ac2tdXGudifv5z+Bx4kyM44HXuY
-	 hMeQ0Yhhy/GJw==
+	s=k20260515; t=1793843679;
+	bh=QKPgoiWRsxPtShXuI0V6ebeOraFMZLMbO856bZBhv+o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=g2aiKN+VlnryNsGMh4BQ7274hgbJGjXfe8MLA97CcEJCdg9m4irMCNoGOY5s+z4Ew
+	 uROx9+Zj3Ye1pGRr1G0whQarxGN1nPHrwga+QNBVrrZBLaGTz8Yzqq6MlsViRXXuc+
+	 qqGNbRItpq1nHhnTH8r1jJVz2miq3iZ4j0JNd1YY1/MRSkpHot5RbN+jkaAgvrXj9H
+	 wXdxXzzIeXGbb1XxREpMYiMndJsbQDqCbxj/t47VESe24Ppjhz9/ktLtiB6l7TlT+4
+	 0DZHibPQRVamwBsEF8G634nSzJng+sU0xGYur5tkMJs0cq6FIjo1819Wd/3wAYeGJE
+	 zE4+IpCRBuFAA==
+Message-ID: <sashiko-outbox-198420@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net-next v5 4/7] vsock: add a netlink command to assign
+ the g2h device to a netns
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Bobby Eshleman" <bobbyeshleman@meta.com>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, "Eugenio
+ Perez" <eperezma@redhat.com>
+In-Reply-To: <20261103-vsock-guest-ns-v5-4-48179b9b66b8@meta.com>
+References: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
+ <20261103-vsock-guest-ns-v5-4-48179b9b66b8@meta.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 01:54:39 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -48,43 +61,177 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Nov 2026 02:35:29 +0100
-Message-Id: <DMMW3TIIN8OI.3MZC03PWC1MRK@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5 9/9] samples: rust: add Rust SR-IOV PF and VF driver
- samples
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
- <jhubbard@nvidia.com>, <apopple@nvidia.com>, <joelagnelf@nvidia.com>,
- <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <peter@colberg.org>
-To: "Simon Song" <xinmengs@nvidia.com>
-References: <20261030171230.196717-1-xinmengs@nvidia.com>
- <20261030171230.196717-10-xinmengs@nvidia.com>
-In-Reply-To: <20261030171230.196717-10-xinmengs@nvidia.com>
 
-On Fri Oct 30, 2026 at 6:12 PM CET, Simon Song wrote:
-> +# Follow the nova-core/nova-drm cross-crate rules in drivers/gpu/Makefil=
-e.
-> +# Export Rust symbols from the PF only if the VF actually references the=
-m.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] vsock: connect() corrupts state and bytes_unsent on swept establ=
+ished socket
+--
 
-This seems overkill, please make it two separate files, but a single kernel
-module. We can always make them separate kernel modules once we have the ne=
-w
-build system.
+commit 1f8c2b3f7e5cf0bf0bba26600e236377dd6b1fe3
+Author: Bobby Eshleman <bobbyeshleman@meta.com>
+
+vsock: add a netlink command to assign the g2h device to a netns
+
+This commit introduces a vsock generic netlink family with
+VSOCK_CMD_DEV_NETNS_SET and VSOCK_CMD_DEV_NETNS_GET to assign the
+guest-to-host vsock device to a network namespace and query its assignment.
+Sockets that can no longer reach the device after an assignment are closed
+with ECONNRESET.
+
+Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index c9b28e34b1b3c..7140a3c708389 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+
+[ ... ]
+
+> @@ -742,8 +868,269 @@ bool vsock_find_cid(unsigned int cid)
+
+[ ... ]
+
+> +/* Close every connected socket of @t that can no longer reach the g2h d=
+evice.
+> + */
+> +static void vsock_g2h_reset_unreachable(const struct vsock_transport *t)
+> +{
+> +	struct vsock_sock *vsk;
+> +	unsigned int i =3D 0;
+> +	struct sock *sk;
+> +	bool reset;
+> +
+> +	lockdep_assert_held(&vsock_g2h_assign_mutex);
+> +	lockdep_assert_not_held(&vsock_register_mutex);
+> +
+> +	/* lock_sock() cannot be taken under vsock_table_lock, so pick the
+> +	 * sockets one at a time, then recheck each under both locks.
+> +	 */
+> +	while ((sk =3D vsock_next_connected_socket(t, &i,
+> +						 vsock_g2h_should_reset))) {
+> +		vsk =3D vsock_sk(sk);
+> +
+> +		lock_sock(sk);
+> +
+> +		reset =3D false;
+> +		spin_lock_bh(&vsock_table_lock);
+> +		/* It may have been closed since we dropped the table lock. */
+> +		if (__vsock_in_connected_table(vsk) && vsk->transport =3D=3D t &&
+> +		    vsock_g2h_should_reset(vsk)) {
+> +			__vsock_remove_connected(vsk);
+> +			reset =3D true;
+> +		}
+> +		spin_unlock_bh(&vsock_table_lock);
+> +
+> +		if (reset) {
+> +			sock_set_flag(sk, SOCK_DONE);
+> +			WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
+> +			sk->sk_state =3D TCP_CLOSE;
+> +			sk->sk_err =3D ECONNRESET;
+> +			sk_error_report(sk);
+> +		}
+> +
+> +		release_sock(sk);
+> +		sock_put(sk);
+> +	}
+> +}
+
+[ ... ]
+
+> @@ -1705,6 +2093,16 @@ static void vsock_connect_timeout(struct work_stru=
+ct *work)
+>  	sock_put(sk);
+>  }
+> =20
+> +/* Avoid breaking the socket when another thread has changed its sock->s=
+tate
+> + * while we were asleep.
+> + */
+> +static void vsock_connect_close(struct socket *sock)
+> +{
+> +	sock->sk->sk_state =3D TCP_CLOSE;
+> +	if (sock->state =3D=3D SS_CONNECTING)
+> +		sock->state =3D SS_UNCONNECTED;
+> +}
+> +
+>  static int vsock_connect(struct socket *sock, struct sockaddr_unsized *a=
+ddr,
+>  			 int addr_len, int flags)
+>  {
+> @@ -1863,8 +2261,7 @@ static int vsock_connect(struct socket *sock, struc=
+t sockaddr_unsized *addr,
+>  			 * sk_state =3D=3D TCP_SYN_SENT, which hereby we break.
+>  			 * In such case VIRTIO_VSOCK_OP_RST will follow.
+>  			 */
+> -			sk->sk_state =3D TCP_CLOSE;
+> -			sock->state =3D SS_UNCONNECTED;
+> +			vsock_connect_close(sock);
+> =20
+>  			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
+>  			 * transport->connect().
+> @@ -1878,10 +2275,8 @@ static int vsock_connect(struct socket *sock, stru=
+ct sockaddr_unsized *addr,
+>  	}
+> =20
+>  	err =3D sock_error(sk);
+> -	if (err) {
+> -		sk->sk_state =3D TCP_CLOSE;
+> -		sock->state =3D SS_UNCONNECTED;
+> -	}
+> +	if (err)
+> +		vsock_connect_close(sock);
+
+[Severity: Medium]
+What happens in vsock_connect() when a socket reaches TCP_ESTABLISHED while
+sleeping in schedule_timeout(), and is then swept by
+vsock_g2h_reset_unreachable() before vsock_connect() reacquires
+lock_sock(sk)?
+
+While vsock_connect() has released lock_sock(sk) in schedule_timeout(),
+virtio_transport_recv_connecting() can receive VIRTIO_VSOCK_OP_RESPONSE,
+transition sk->sk_state to TCP_ESTABLISHED, set sock->state to SS_CONNECTED,
+and insert vsk into vsock_connected_table. Once established, a concurrent
+vsock_connectible_sendmsg() on another thread can acquire credits via
+virtio_transport_get_credit() (incrementing vvs->bytes_unsent) and enqueue
+VIRTIO_VSOCK_OP_RW skbs onto send_pkt_queue.
+
+If VSOCK_CMD_DEV_NETNS_SET then runs vsock_g2h_reset_unreachable() before
+vsock_connect() reacquires lock_sock(sk), it sets sk->sk_state to TCP_CLOSE
+and sk->sk_err to ECONNRESET while leaving sock->state as SS_CONNECTED. When
+vsock_connect() wakes up, the once-established check:
+
+	if (sk->sk_state =3D=3D TCP_ESTABLISHED ||
+	    sk->sk_state =3D=3D TCP_CLOSING) {
+		err =3D 0;
+		goto out_wait;
+	}
+
+does not match because sk->sk_state is TCP_CLOSE rather than TCP_CLOSING (u=
+nlike
+virtio_transport_do_close()) and sock->state =3D=3D SS_CONNECTED is not che=
+cked.
+
+If signal_pending(current) || timeout =3D=3D 0 holds, vsock_connect() proce=
+eds to
+call vsock_transport_cancel_pkt(vsk) -> virtio_transport_purge_skbs(), which
+purges the post-connection VIRTIO_VSOCK_OP_RW skbs without calling
+virtio_transport_consume_skb_sent() to decrement vvs->bytes_unsent. Doesn't
+this leak vvs->bytes_unsent and cause vsock_linger() on close() to block un=
+til
+sk_lingertime expires, similar to the issue fixed by commit 002541ef650b
+("vsock: Do not allow signal/timeout on established sockets")?
+
+And if no signal or timeout is pending, vsock_connect() exits the wait loop,
+consumes sk->sk_err via sock_error(sk), calls vsock_connect_close(sock), and
+returns -ECONNRESET while leaving sock->state as SS_CONNECTED with sk->sk_e=
+rr
+cleared to 0.
+
+Should vsock_g2h_reset_unreachable() set sk->sk_state =3D TCP_CLOSING like
+virtio_transport_do_close(), or should vsock_connect() also check for
+sock->state =3D=3D SS_CONNECTED after schedule_timeout()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-vsock-gues=
+t-ns-v5-0-48179b9b66b8@meta.com?part=3D4
