@@ -1,125 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793902869;
-	b=H7WnNtEl/FOhXCC8/SOtwrXI8vGqSCUivcksSrRuZNaBtB8MoUq84PNv9KOgyam7CMF7
-	 Bc8jKHsyVJto+6LYX0kHOvkb2PW/zwr+3HGxK9wzOR6bYcRJy1gMVlHCAcuUhMUuvj4ln
-	 If3BzNkpxEiAP2iaI1GaL5/6BmzpRQtp8oG3hJtNBhHFfgRrXrVIEK9VoktxsOVVGqnuZ
-	 tEo1rqoOG4tifTWsg8VO2wjWluwVJz3ZYjblEjBdc4XXdOHdaq1mAtBQyPrbNOeOvvbQi
-	 9jFb09gZ8CHzG5+4ekb/xq9Y/D8Sx+n4hLKcCzo1Dhl4tfbXvPt0d5XlO1jVfeQ0MNw==
+	t=1793902930;
+	b=hj3+qh3/T0Rtea456rzhABk9plSdCZMBD913LcajTJ4KFQ/V5VSXtEkzOhxE7HJKynHf
+	 gRYO3KO0nC44vWWe6lpSCrn2PWmLJJusEkSaGeGLLu1M306KBr3zoYfT6FFHX1ahLSqO+
+	 zb1WkUgPYBP/sVUdKeo6/baquNT4uSTFWlmY2PhUL/A9yP38sGckIz57I0YeotqCyot03
+	 +cTGOxa07mwRH4LB+ZQ0wy3lPNM2bJA0gjPvsQgZtvelo30d7aYB8MYY0CGHPRRyRZMHn
+	 9R8xYpmKyznhx6CSSWuJvd6bLOoCh8eGwInXp3K3BXR9RTJ2v8tNTdvW25azvZcJHGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793902869;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=jskhMrN6L8/ity8GI6Per+nZ8wI0zDQt0quVEnFZ+Iw=;
-	b=z6JSc11jTMe1x4fQI5+aA6lQfoGL/5crka+1NfNUDQ0EJFNoXapxu8PRiMKxqhlrNCGV
-	 IJDJAoybj6T2gS7hvvdlnnE9yJdJJdqWMwWXW7C/TkHoopm4VfP5RFPLC4P65uOkng7EK
-	 ZHuWQHqQVpzhBh0tJ4PJqyGfEwBkEpVmyr5i6drbD+meoD5VF8mv+GJ3TTqSTmcjp0GWK
-	 z8KaWEk5xA9Z3uoU6U9aH3jW+VIQ3vvr5jyKv+d0zMF5O9Gk8EwsU7VGutMXhFmQsGrPz
-	 HnSHmHZagE9O3DvzGk9N3s3IsLf53B9XZnWUGOIZD+j5H5rDBgM/I5j4Aw9inDTb37g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793902930;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=CEaWPjduGJC02fYR72s4uPAwZyDyMCak2eQCHyNKGDg=;
+	b=dKlgfH9frUnX1/QG8Eoc86wf4ltCAy8f1HQYLsAlNNMn/eDfuvg4LY4F7VbgvgC9cb2x
+	 USsYLVitSZOideXHTca9yjClRD4LB8bVMRa853F2g6qToH18yLyUrfUTTK6nHh8MbS6G7
+	 FL3hQnCprmq4fKN7lAIATUfOQt6NFRjot8opqsdf34tldfS+hGueoox2oHjicAZmFQ74O
+	 TBULUCLaNRbt/sNKq+KGr0LfcgG+5x0f14UiAAWygXwLzguzr/n0VLV/bkx5jtnbEhF/S
+	 deCPiDBcK9MUZZg7o1Bkkvx1dHsOpb7XYjq/x94ffHx5mZte/7f22yHTZWzt6wAiy/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=ire535yI;
-	arc=none smtp.remote-ip=209.85.217.42
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MpyRrTF4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30E2606A32E
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 18:21:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C30E2606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107CF606A31B
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 18:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=ire535yI
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-7c3b6e8225dso1406163137.2
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 10:21:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793902867; x=1794507667; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jskhMrN6L8/ity8GI6Per+nZ8wI0zDQt0quVEnFZ+Iw=;
-        b=ire535yI4zQnLBCiIAurI9xJYsUwvc7Sip6NA8XOlKY8BmMk6D3rtdebYXDlLnb+ZP
-         aEGddu2E8npnG7M4/+0EgOwpXWB5SDN4kgpIxamJ2Uy2NDnYvTWgObc3vELT08wtz/xF
-         3xeWBALg5snzMuspxTmvkiNsDCe5u5k7BqFrm+FvEdrW+9g4YmpiWSs7IIKmBLSXprfT
-         B76tw8MYCHnKMka4LW2C5MZT3rGdLaEtriq6m+jRXouhgJYmsUSLWxCwDQA/9gbJdM1n
-         NRjQE5XtPnpZDvStPl0FX//pa+XdJ0rYFA3eynPysioKRTlm1rN1Vx2zxk6ZZNMhX2vJ
-         yV9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793902867; x=1794507667;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jskhMrN6L8/ity8GI6Per+nZ8wI0zDQt0quVEnFZ+Iw=;
-        b=KCNgIdbciDQMx4Q4xKqViV0uaTlCUHra2z4I0eQlxFhbfPnEZoJ5kBCLYmhjf+t9ML
-         MePrJbO88UE1ULhCNMCRT67zhp9y0mE67Aso3R4R/qTl4IOsfIa+tWvmQHPccvDvSVq0
-         N0uoEk1zqChUeg5SHX6s6ao4yazuZI/K8fqHrBxhDMkEBFHUk93MWWpx1wc2GH3HrVyp
-         G7/VJW07KamQ89y9zKZumPjVKVIUB5w1ArExxVOX2G4PAuC/BdzhLyXB0m24SFiOQ0It
-         JqIXGF+XyYfukmsSFVFQaWwAHoBmRlDFLvoJnZoQnrJlkAKHCkbC3R09iQx6upyNipNo
-         yIsw==
-X-Forwarded-Encrypted: i=1; AKwUvByHGFaIk1IttCbkmHRH2MzeYRxZQHmZbFAQ5EWzgIdgHGsyqZ9JJVR5TOagq+3M4o6w1UM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+CVtF6FR4/oL2BNt7V1xRw7G0zPoicb64nBpiRXshtTK4QJfH7
-	kHsho/AwH3KEyPncyxUpFJBDGZSARmAhzceEbFWZYpp5H9vMGt8R6siyz68zxWjuvxg=
-X-Gm-Gg: AYBFou0jKXxfXJmYtA9dd/JKbZRimdjwcCngfSMC9jBjz6gtNPDLlblTgDpvn1bgRgx
-	HLRRHTM388Oq4zy4qm0i9f9kAHDKTZyxuhGLaIVVGF5Szf+NBh0NjdWAoW/uxfN7cvtVaFgG7Lp
-	6t1zbAiXIkQOXqRJbabKQ3OjckVTX1DH2v9xBTPs8nXK9Ft/GfD0nICEeRTKGcU/snvEVW1Tuw5
-	Ne1nZlnPF5EYAU5neY2HAYvTnly0ciKlvHY6oeeoW0mzNidRP8dzXzaBBdNfp+ZeD9ovYdWRXy1
-	KR8PGF+bPyWWr7Fo9yL+ptLwcjxXm4Umi+ZkJAJSS2f3w+6QD0D5+/qo9TUu3DfeGsR4UjitSJ4
-	QhNwEUxqRBpNg25vCaQB9KMhwbucqU+rq2hYo4lH4Mmbm3IFqZlnMlPExi3SsjHbwwaR2egnMeg
-	mbZmc4yit+ALBWT2MjohcnD0jgHrhpOc9Mj76rMiGynpK7gR5NFOAoB3ip8EYU22BRJ78aqY1/0
-	vh2JsKUfcx9R5AyXLup+Pr/Poslai8DccdrhNwjBqnwc4ankinVCQClkLrdk0GiqppS1d1TEhqk
-	uucVE8Qkm3CXnNPF29G6B1eOvbN7sVLTi9qvT4jrSSust99bc5EDJ9I5v+F6M4xNFvw7KvHcnTF
-	BP9/gnl7U8Q==
-X-Received: by 2002:a05:6102:5706:b0:7cc:2712:caf2 with SMTP id ada2fe7eead31-7d2a1628b19mr348440137.23.1793902867469;
-        Thu, 05 Nov 2026 10:21:07 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998da178b59sm5242293241.12.2026.11.05.10.21.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 10:21:06 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xP25C-00000003LsF-0vAz;
-	Thu, 05 Nov 2026 14:21:06 -0400
-Date: Thu, 5 Nov 2026 14:21:06 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
-	Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v8 13/15] iommufd/viommu: Allow vIOMMUs without a parent
- HWPT
-Message-ID: <20261105182106.GD663069@ziepe.ca>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-14-aneesh.kumar@kernel.org>
- <auuBjRjQwXl7UvvO@nvidia.com>
- <20261104193139.GB3889730@ziepe.ca>
- <yq5afqxf97a1.fsf@kernel.org>
- <auzAivzpzSUHjEQj@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MpyRrTF4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8639C1F000C1;
+	Thu,  5 Nov 2026 18:22:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793902929;
+	bh=CEaWPjduGJC02fYR72s4uPAwZyDyMCak2eQCHyNKGDg=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=MpyRrTF4B4M24dAAIIzWEE2yVa9/ubPm/mvvgAb5fYzOmaEHHuTD+Z26uJczMFAzP
+	 mdSUvISCt98POWPuwtlKGXPAr4qYdhDfFV7FKz1b3cPpzgXa0bANqfJXFINEKKiK19
+	 4oWmmvZkoWq8opDUGB3rxYGMePXvfixiP9IsynyBxn24OGSn5PQZ+c86WihhWhYYCS
+	 9VTVtj8DgrtrQVu/4tUTUSzPa7eOJd1q2BccOMlBL4U1yEUP13ZuWcfZ9m8Xd3s1fu
+	 SpCZsJ83utPn7rE3GyavLet8yEKSQys6HGhDjgsTSyWBrtjJR7R1JW+BZDuP95n5r7
+	 IhzvCzvqxJMpA==
+Message-ID: <sashiko-outbox-199742@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11 08/23] KVM: x86: Re-synchronize TSC after
+ KVM_SET_TSC_KHZ
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
+In-Reply-To: <20261105154955.2525419-9-dwmw2@infradead.org>
+References: <20261105154955.2525419-1-dwmw2@infradead.org>
+ <20261105154955.2525419-9-dwmw2@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 18:22:09 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -128,36 +59,246 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auzAivzpzSUHjEQj@nvidia.com>
 
-On Thu, Nov 05, 2026 at 09:44:42AM -0800, Nicolin Chen wrote:
-> On Thu, Nov 05, 2026 at 10:58:06AM +0530, Aneesh Kumar K.V wrote:
-> > Jason Gunthorpe <jgg@ziepe.ca> writes:
-> > > On Wed, Nov 04, 2026 at 11:03:41AM -0800, Nicolin Chen wrote:
-> > >> By dropping the nesting parent from VIOMMU, it just simplifies the
-> > >> attachment to an S1 paging hwpt, right?
-> > >
-> > > Yes.
-> > >
-> > > The VMM must always maintain a S1 paging attachment that is the
-> > > identity map of the VM on all devices, same action as when there is no
-> > > viommu.
-> > >
-> > 
-> > I am currently creating an S2 paging attachment. This results in a
-> > configuration with S1 disabled and S2 enabled, which is used by all
-> > untrusted devices.
-> 
-> For validation, that would work. Yet "no viommu" should would be S1
-> paging, i.e. hwpt allocated without IOMMU_HWPT_ALLOC_NEST_PARENT.
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] KVM: x86: premature kvm_synchronize_tsc() in kvm_arch_vcpu_create()
+- [High] KVM: x86: VM-wide user_set_tsc check in kvm_set_tsc_khz() breaks s=
+ync
+- [Medium] KVM: x86: stale masterclock scaling state after kvm_set_tsc_khz()
+- [Medium] KVM: x86: unmatched TSC generations in kvm_set_tsc_khz() after r=
+un
+--
 
-It doesn't matter, consistently using a single S2 for everything is
-probably better..
+commit 485fbef9a92020d117515ff0401050c42d986ac4
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-The VMM should try to minimize the number of hwpts involved, ideally
-just one per NUMA
+KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
 
-Jason
+This commit updates kvm_set_tsc_khz() to invoke kvm_synchronize_tsc() after
+changing a vCPU's TSC frequency so that cur_tsc_scaling_ratio and TSC
+generation tracking are updated. It also adds an explicit user_initiated
+parameter to kvm_synchronize_tsc() to distinguish host userspace MSR_IA32_T=
+SC
+writes from internal frequency resynchronizations.
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 77bd3e4bfdcd7..f551056d72746 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -1064,6 +1064,7 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u=
+32 user_tsc_khz)
+>  {
+>  	u32 thresh_lo, thresh_hi;
+>  	int use_scaling =3D 0;
+> +	u64 tsc;
+> =20
+>  	/* tsc_khz can be zero if TSC calibration fails */
+>  	if (user_tsc_khz =3D=3D 0) {
+> @@ -1091,7 +1092,34 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, =
+u32 user_tsc_khz)
+>  			 user_tsc_khz, thresh_lo, thresh_hi);
+>  		use_scaling =3D 1;
+>  	}
+> -	return set_tsc_khz(vcpu, user_tsc_khz, use_scaling);
+> +	/*
+> +	 * Read the guest TSC before changing the ratio, so we can
+> +	 * re-synchronize to preserve continuity across the change.
+> +	 */
+> +	tsc =3D kvm_read_l1_tsc(vcpu, rdtsc());
+> +
+> +	if (set_tsc_khz(vcpu, user_tsc_khz, use_scaling))
+> +		return -1;
+> +
+> +	/*
+> +	 * Preserving continuity only makes sense for a vCPU which has
+> +	 * actually run; for one which has not, synchronize as for a zero
+> +	 * write, joining the current generation. This makes vCPU creation
+> +	 * (which comes through here with the default frequency) join the
+> +	 * generation *explicitly*, rather than by the accident that the
+> +	 * scaling ratio is still zero at this point so the TSC read above
+> +	 * is zero anyway =E2=80=94 and it stops an explicit KVM_SET_TSC_KHZ on=
+ a
+> +	 * never-run vCPU, whose nonzero TSC value could never match, from
+> +	 * opening a new generation and orphaning the matched state of its
+> +	 * siblings. If userspace has already written a TSC, preserve the
+> +	 * value even for a never-run vCPU =E2=80=94 a zero write would discard=
+ it =E2=80=94
+> +	 * and let the user-write matching window do its usual job.
+> +	 */
+> +	if (vcpu->arch.last_vmentry_cpu !=3D -1 || vcpu->kvm->arch.user_set_tsc)
+> +		kvm_synchronize_tsc(vcpu, &tsc, false);
+
+[Severity: High]
+Does checking the VM-wide vcpu->kvm->arch.user_set_tsc flag here break TSC
+synchronization when userspace configures or restores multiple never-run
+vCPUs sequentially?
+
+In __kvm_synchronize_tsc(), user_set_tsc is a VM-wide flag on struct kvm_ar=
+ch:
+
+	if (user_set_tsc)
+		vcpu->kvm->arch.user_set_tsc =3D true;
+
+If userspace initializes or restores vCPUs in a per-vCPU loop by calling
+KVM_SET_TSC_KHZ followed by KVM_SET_MSRS(MSR_IA32_TSC) on each vCPU in turn:
+
+1. Userspace creates vCPU 0 and vCPU 1 (both have last_vmentry_cpu =3D=3D -=
+1 and
+   creation-time TSC offsets ticking from ~0).
+2. On vCPU 0, userspace calls KVM_SET_TSC_KHZ and then writes MSR_IA32_TSC
+   with a restored value T_restore (where T_restore > 1 second of guest
+   uptime). That sets vcpu->kvm->arch.user_set_tsc =3D true and sets
+   cur_tsc_write =3D T_restore.
+3. On vCPU 1, before MSR_IA32_TSC is written on vCPU 1, userspace calls
+   KVM_SET_TSC_KHZ. Because the VM-wide user_set_tsc flag is already true,
+   kvm_set_tsc_khz() takes the first branch and passes vCPU 1's un-restored,
+   near-zero creation TSC (&tsc) instead of NULL.
+4. In kvm_synchronize_tsc(), vCPU 1's near-zero tsc is more than 1 second
+   away from cur_tsc_write (T_restore), so it fails to match and opens a new
+   TSC generation with cur_tsc_write overwritten to that near-zero value.
+5. When userspace then writes MSR_IA32_TSC =3D T_restore on vCPU 1, T_resto=
+re
+   is more than 1 second away from the clobbered near-zero cur_tsc_write, so
+   it fails to match again and leaves all_vcpus_matched_tsc false.
+
+Should this check whether a TSC value was written by userspace on this
+specific vCPU rather than checking the VM-wide vcpu->kvm->arch.user_set_tsc
+(which is also read here without holding kvm->arch.tsc_write_lock)?
+
+[Severity: Medium]
+What happens in kvm_set_tsc_khz() when KVM_SET_TSC_KHZ is called on a
+multi-vCPU guest whose vCPUs have already run (last_vmentry_cpu !=3D -1), if
+userspace has never explicitly written MSR_IA32_TSC?
+
+Because kvm_set_tsc_khz() passes &tsc (non-zero) with user_initiated =3D fa=
+lse,
+kvm->arch.user_set_tsc remains false. When kvm_synchronize_tsc() runs for e=
+ach
+vCPU:
+
+	if (vcpu->arch.virtual_tsc_khz) {
+		if (data =3D=3D 0) {
+			synchronizing =3D true;
+		} else if (kvm->arch.user_set_tsc) {
+			...
+		}
+	}
+
+Since data !=3D 0 and kvm->arch.user_set_tsc is false, synchronizing is fal=
+se
+for every vCPU. Doesn't each vCPU open a separate TSC generation with
+nr_vcpus_matched_tsc =3D 1, orphaning its siblings and leaving
+all_vcpus_matched_tsc permanently false?
+
+> +	else
+> +		kvm_synchronize_tsc(vcpu, NULL, false);
+> +	return 0;
+
+[Severity: High]
+Can calling kvm_synchronize_tsc() unconditionally from kvm_set_tsc_khz()
+corrupt VM-wide TSC matching state during KVM_CREATE_VCPU?
+
+During vCPU creation, kvm_vm_ioctl_create_vcpu() calls:
+
+  kvm_vm_ioctl_create_vcpu()
+    -> kvm_arch_vcpu_create()
+      -> kvm_set_tsc_khz(vcpu, vcpu->kvm->arch.default_tsc_khz)
+        -> kvm_synchronize_tsc(vcpu, NULL, false)
+          -> __kvm_synchronize_tsc()
+            -> kvm_track_tsc_matching()
+
+At the point kvm_arch_vcpu_create() runs, atomic_inc(&kvm->online_vcpus) has
+not happened yet:
+
+virt/kvm/kvm_main.c:kvm_vm_ioctl_create_vcpu() {
+	...
+	r =3D kvm_arch_vcpu_create(vcpu);
+	if (r)
+		goto vcpu_free_run_page;
+	...
+	smp_wmb();
+	atomic_inc(&kvm->online_vcpus);
+	mutex_unlock(&vcpu->mutex);
+
+	kvm_arch_vcpu_postcreate(vcpu);
+}
+
+Running __kvm_synchronize_tsc() and kvm_track_tsc_matching() before
+online_vcpus is incremented appears to cause several regressions:
+
+1. In kvm_track_tsc_matching():
+
+	int online =3D atomic_read(&vcpu->kvm->online_vcpus);
+	WRITE_ONCE(ka->all_vcpus_matched_tsc,
+		   ka->nr_vcpus_matched_tsc >=3D online);
+
+	update_mclock |=3D (prev_matched_tsc !=3D ka->all_vcpus_matched_tsc);
+
+	if (ka->all_vcpus_matched_tsc ||
+	    ka->nr_vcpus_matched_freq >=3D online)
+		ka->all_vcpus_matched_freq =3D true;
+
+   If vCPU 0 is already online (online =3D=3D 1) and configured to a non-de=
+fault
+   frequency F !=3D default_tsc_khz, creating vCPU 1 runs
+   __kvm_synchronize_tsc() at default_tsc_khz while online is still 1. That
+   resets ka->all_vcpus_matched_freq =3D false, increments
+   ka->nr_vcpus_matched_freq to 1, and sets ka->cur_tsc_khz =3D default_tsc=
+_khz.
+   Then kvm_track_tsc_matching() sees nr_vcpus_matched_freq (1) >=3D online=
+ (1)
+   and latches ka->all_vcpus_matched_freq =3D true. When
+   kvm_arch_vcpu_postcreate() later runs with online =3D=3D 2,
+   vcpu->arch.virtual_tsc_khz already equals ka->cur_tsc_khz, so
+   all_vcpus_matched_freq is never cleared and kvm_update_masterclock()
+   enables masterclock mode across frequency-mismatched vCPUs.
+
+2. If userspace creates and configures vCPUs one by one (create vCPU 0, call
+   KVM_SET_TSC_KHZ(vcpu 0, F), then create vCPU 1, call
+   KVM_SET_TSC_KHZ(vcpu 1, F)), creating vCPU 1 synchronizes it at
+   default_tsc_khz, clobbering cur_tsc_khz, cur_tsc_offset,
+   cur_tsc_freq_generation, and cur_tsc_generation so that the subsequent
+   KVM_SET_TSC_KHZ(vcpu 1, F) only counts vCPU 1 and leaves
+   all_vcpus_matched_freq and all_vcpus_matched_tsc false.
+
+3. If kvm_dirty_ring_alloc(), xa_insert(), or create_vcpu_fd() fails in
+   kvm_vm_ioctl_create_vcpu() after kvm_arch_vcpu_create(), the destroyed
+   vCPU's increments and generation changes in kvm->arch remain permanently
+   recorded.
+
+Should kvm_set_tsc_khz() skip kvm_synchronize_tsc() during
+kvm_arch_vcpu_create() and leave initial synchronization to
+kvm_arch_vcpu_postcreate() after online_vcpus has been incremented?
+
+[Severity: Medium]
+Does the KVM_SET_TSC_KHZ ioctl path also need to process
+KVM_REQ_MASTERCLOCK_UPDATE before returning to userspace?
+
+Calling kvm_synchronize_tsc() from kvm_set_tsc_khz() updates
+ka->cur_tsc_scaling_ratio and sets KVM_REQ_MASTERCLOCK_UPDATE on the vCPU v=
+ia
+kvm_track_tsc_matching(), but kvm_arch_vcpu_ioctl() returns to userspace
+without calling kvm_update_masterclock().
+
+In __get_kvmclock_master_clock(), get_kvmclock() uses
+ka->master_tsc_scaling_ratio, ka->master_tsc_shift, and ka->master_tsc_mul,
+which are only updated from ka->cur_tsc_scaling_ratio when
+pvclock_update_vm_gtod_copy() runs via kvm_update_masterclock():
+
+	hv_clock.tsc_shift =3D ka->master_tsc_shift;
+	hv_clock.tsc_to_system_mul =3D ka->master_tsc_mul;
+
+	if (kvm_caps.has_tsc_control) {
+		u64 tsc_delta =3D data->host_tsc - ka->master_cycle_now;
+
+		tsc_delta =3D kvm_scale_tsc(tsc_delta, ka->master_tsc_scaling_ratio);
+
+If userspace calls KVM_SET_TSC_KHZ and then queries KVM_GET_CLOCK before
+entering KVM_RUN, won't get_kvmclock() still use the stale masterclock
+scaling parameters (or remain in masterclock mode despite a frequency
+mismatch)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105154955.2525=
+419-1-dwmw2@infradead.org?part=3D8
