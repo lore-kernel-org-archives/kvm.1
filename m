@@ -1,74 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793883925;
-	b=gwb0QJ5wSk9+h84AkvjzUK2edt/tcNQ2a1iHw0VuqtiyuC7x+TcQdYaZgFL/rzFx8snl
-	 1utE2KLNKN9g3KcFPETk2PL5eu9jEBk2STNPdSL+uPj1JDvOPXWSGgOfX1j5nL3wePjlx
-	 nwoHIh0EhNT2hr0WQxgj/XF8A6v5Fl0EA2dbXWIUmrYdb4xwnPN40GebFEg3SegVPQRKf
-	 xPDHrcFRaW2dC29bpbTMLetM2eyTYgYum5RrGSU47FyLhfZI8u2FSxekVDAnpBfIwPZLR
-	 35B/F8xSPurHoNgifak6X6G4QQMcUk0uBZ+JTGGdLEi1nu/bgdWvYFljaicYfzY6bBQ==
+	t=1793884302;
+	b=v2BrkAPv1xjMXf09OZ3JkIsF1w2tBUfwvUwp4/B7zJAfRlZ77iJY0gmJ24gosQbSjleP
+	 +BSSYOpitcQMqMaY1SC/Euyq8gZY1AbXqnhkkApsi4lTG6ZoiYI42G/MDisjahR9yUYPK
+	 jR+H60QBobqn6Gat+s8Nk7zz3tQ2u/o8BstUTGEgYHvYsGZdIbwAUUY3CSB1X5sz26NZf
+	 iQSSRT8CfkedEwICuq7GhZ+mtIcjO2P88s2NZMSReuoEp9espfX/e2ojL6nuntfQqwI0B
+	 5pSJlm4g5GHcgsVGj785dGH+QDwGZGtVTIq2RY38wd+gZsJ3ewr2Grd5ph2lLRiUv6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793883925;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9k9K8nTEYmyXFaOgzj1P2GDgV/Rf++l8doHLxGAc6VA=;
-	b=FUCUST7BjJZGCWGI5GnY6JB8Bg6GgQ5pb2hMnTRKWxbXGADvB0ryPrabvn4xMCin92dp
-	 riTciiBEeX4B6cSUJg7dCbOSPOIoGaDrBChhWnSLpms37/X9p7/Hd6rYfEctPeF1CLOVF
-	 iWT0h1za4B18G9ONMK185Zy5LCYYfjyHjq0nJrzXM+qAikdXxPsJiNGyv3WC+YMZhHjm5
-	 zibduYZsQ0sEblIrssvrFVFOM10f35mtjI2FZEPG1ryoG17wLraSV+XYQLzI1qAx2Xxap
-	 3ST44xftNMpDEpVVzLuflNKfg/mr7cgxVvnsLbDqVqiaRaR8QKLwgeFAq7+Z3cquIUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793884302;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=cFWG6Sga3Lp6k+n+muTvwPlAdm13M1aYQLJn0cvv/Mc=;
+	b=gOY6Oqkro797niO4re0txmMKbKmIuxCfSj+D217m8HXP+hQHF6And4+7pweUvNoGis3s
+	 OXRd+gHq7TTTrJ+oxSUFNrvYFo51X1DRVVlvMuc5dDFZiY+/nqJeu17GNHbfnTA2zM39I
+	 5TZa9QCxprqIeZ8aQfK3AFROuM0+2rmEST2IHwgPoUxHJ219j5EAzLPkvVwyHjqX7CVa6
+	 L0XTLlBpQw6YlsUxVR/pVLDbuxNNZCTjagLbSN3TjTa6iaIkiHbsnGE3kaDqE2u2ACqy7
+	 0bnvMDvoclMr5Q9y04f29lUq7jW6VmG2HHGyg1jT9MO0PY8PCiIIEUBido52wQVRVIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IECN0rQV;
-	arc=none smtp.remote-ip=91.218.175.201
-Received: from mta0.migadu.com (out-201.mta0.migadu.com [91.218.175.201])
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	arc=none smtp.remote-ip=209.85.167.53
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D994606D828
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 13:05:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D994606D828
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IECN0rQV
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=l8jzR9UTrR8//YSZuL9grlpdOXVS3eekgMJRG6e6qXQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793883922; v=1; x=1794488722;
- b=IECN0rQVvxwCYyiFnr2VMIyioM84NmeZce/VherjifNhYf9uk8PMXQiCguKtau8lS7cdc2Y2
- F2IyA9n4yH5mtAtPt1x6qfqDDkD36xoDIQ53SKR2KWPDz9+aIpVT0SztpidNYnFCSsA1wGqJp/x
- WszWnwxE9qYNxJSwweJ+QULo=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 4942c736930b283a;
-	Thu, 05 Nov 2026 13:05:19 +0000
-X-Mizu-Trace-ID: 4942c736930b283a
-X-Migadu-Flow: FLOW_OUT
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] KVM: arm64: Advertise ID_AA64ZFR0_EL1 to protected VMs
-Date: Thu,  5 Nov 2026 13:04:55 +0000
-Message-ID: <20261105130456.1617185-4-fuad.tabba@linux.dev>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261105130456.1617185-1-fuad.tabba@linux.dev>
-References: <20261105130456.1617185-1-fuad.tabba@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC76606EE82
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 13:11:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EC76606EE82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5be42ae8eadso1205962e87.3
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 05:11:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793884298; x=1794489098; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cFWG6Sga3Lp6k+n+muTvwPlAdm13M1aYQLJn0cvv/Mc=;
+        b=O/WK73xDQgKKqiq4d4hHESILJFUUZ9SW6N85AxaK3rE7ZySNU3qEhKNIEYD1O9eQqI
+         95fjFpuc79ZuTRElQ+h02Wj9E5V0JdSNQuaGTA2nDcJfjwcR6SkYbmUTwtS+3MD4FVai
+         ypADZ2qW/Q/jvYffnvPAfE4QHI637QdVgl4zoT9tCL8MI048zRl+q75E6+KPj4p4A6Zx
+         8ziMQe+vSfe4gTBqJH2XsnQLmfKmDFpDC5GOmuyWNS93SOEMOgYVkUvZ+fTkwWIqFQh4
+         8Bfsje7zWlYV6r9bYcca0QX0n264DtY3WiqEOGm9x9Zo+Y7muxa/sL0dJGq9PlVpHr6A
+         gqZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793884298; x=1794489098;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cFWG6Sga3Lp6k+n+muTvwPlAdm13M1aYQLJn0cvv/Mc=;
+        b=XWmPpf89CDqdSQBpfzCvpQAkVcrUsgO6rqqa+B6qGv8xBTs25uavvbDnPhwMeAE5Di
+         11kkkhMM8QhAXJFoPRDCOmlEFq6PzqOceP/zM61XcSAgK1zPFWFqJxlevpR4o8RuuSz7
+         qHcFOQIi+1WroVfeYBWbNsQZwmgCm4wbjMyGhPG+Svzkgmu6MpF8VfA+f6b+iuzJ476W
+         JIXOUznY0yzsratr88LM5ugtiNz9Qt40rDtMmBHoORvBqDWihwMKA7aKpGNTKxDzElJv
+         TRKGJkat+A5CHrhCs8uvH6QAqXdKJdABeCuT45BHaQB4FybYrwAraYReKy4hIG9q0NEZ
+         iIhQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwLwVXAPr21xV8UL9OPs9SnToVSzZeRraSE6VtLAxTsOZxtNtCidFn5Fsiezp7N4MIdnC8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+kZOi5LUdpb7n2LKDJ2VXo6g4zPTQlfpoMaVB76QdJzjQVRRuP
+	qOONukFIB5AxK1vIBmvMuqf5HJozUKDGfAc3rfQR1QaEpaA4HvZSC1yLIPWSOVf3sls=
+X-Gm-Gg: AYBFou1EiCkoqicYs7lPbhx3oQedQR7i3frbEjVub6rGUbrA3V2KPGrr6Eqe1snfmT0
+	FAnvzKmuX41kttjq6hqF3jZnr0F1YzxffTiItRYrR7myKc/zQHFJztt3LjW7luXv7VauWqHVpK3
+	YzsV/Vwr+8hhdPl+vktNiYjVpnYN3KKgnwBPWF5CczmVgStkPtaxlAfwBiyS0Cll6SsTD4RJeL9
+	XTTwepWJZQcMR5yBCOZZKxkEGahB/2r+iz9XXUvn4Hv+BTQvhkW1ccg0nMBzJiblr4RTGsPNjKw
+	bEustrWjVnDNWMwH2ymRal+BfixIqcEgRdfGKyHX5m3kmlE7VMZCg2dEve3db474lt2+sDo47As
+	MRyIfbt0ygyic5hugCSCo3OVMIrrcKT+hvwExCbjvzFIGnxonryNpy9qMjT3LkgJYg18gD2wHuy
+	ZRkg94GR66Bgu3rfwAnwyEuVnktrquvH4kHR0D84t8vPImujoUpQW7loILequ3dZLWVRft912IQ
+	0+iSfJ9gW5nJ86I5g0m9DJ7xNWCx7ZDBIaunPmPKnX27a8v38mU0KExhxIYhi8CZk6XSBByMco2
+	lSt71PhSELKUgDRSvsLnTlo1oUSDJqtvoDUAEf9Nu4GL7lzpEeLjUjTGjv4=
+X-Received: by 2002:a05:6512:128a:b0:5b8:fa05:e49c with SMTP id 2adb3069b0e04-5bfd9569d40mr7209047e87.34.1793884298157;
+        Thu, 05 Nov 2026 05:11:38 -0800 (PST)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bff38ab798sm817490e87.23.2026.11.05.05.11.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 05:11:37 -0800 (PST)
+Date: Thu, 5 Nov 2026 14:11:32 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
+Message-ID: <auyAJ8OMWHUTCFKs@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-3-jiri@resnulli.us>
+ <at-iEMxN98nie1Qr@e129823.arm.com>
+ <auBaROC0XdWpILEI@FV6GYCPJ69>
+ <20261027141524.GF1685504@ziepe.ca>
+ <auC5sw9YMC9NO4wl@e129823.arm.com>
+ <20261027151729.GG1685504@ziepe.ca>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,92 +106,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027151729.GG1685504@ziepe.ca>
 
-EL2 builds a protected guest's ID registers from the host's sanitised
-values, most of them capped per field. It has no case for
-ID_AA64ZFR0_EL1, so the register reads as 0, and a protected guest with
-SVE wouldn't see any of the SVE extensions the CPUs implement.
+Tue, Oct 27, 2026 at 04:17:29PM +0100, jgg@ziepe.ca wrote:
+>On Tue, Oct 27, 2026 at 02:48:19PM +0000, Yeoreum Yun wrote:
+>> > On Tue, Oct 27, 2026 at 09:02:14AM +0100, Jiri Pirko wrote:
+>> > > Mon, Oct 26, 2026 at 07:55:12PM +0100, yeoreum.yun@arm.com wrote:
+>> > > >[    3.856919]  ctlv_schema_check_attr+0x3dc/0x538
+>> > > >[    3.857105]  ctlv_schema_check_indexed_nest+0x788/0x958
+>> > > >[    3.857301]  ctlv_schema_validate+0x88/0x180
+>> > > >[    3.857482]  ctlv_msg_test_as_deep_as_the_core_allows+0x11c/0x1e8
+>> > > >[    3.857698]  kunit_try_run_case+0x64/0x188
+>> > > >[    3.857878]  kunit_generic_run_threadfn_adapter+0x30/0x68
+>> > > >[    3.858086]  kthread+0x10c/0x140
+>> > > >[    3.858245]  ret_from_fork+0x10/0x20
+>> > > >[    3.858398] SMP: stopping secondary CPUs
+>> > > >[    3.858630] Kernel Offset: disabled
+>> > > >[    3.858720] CPU features: 0x0,00000000,00b0802e,9f190bc3,2affe72f
+>> > > >[    3.858872] Memory Limit: none
+>> > > >[    3.858976] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
+>> > > >
+>> > > >[...]
+>> > > >
+>> > > >I think it might be good to configurable according to architecture
+>> > > >unless it's not good to reduce the CTLV_MAX_NEST_DEPTH number
+>> > > >otherwise, increasing stack size when CTLV is enabled seems unresonable...
+>> > > 
+>> > > Agreed, will lower it down. I think we should be okay with 8 for start.
+>> > 
+>> > I'm surprised this ran out of stack though with even as few as
+>> > 32 levels.. Is there accidently something large on the stack?
+>> >
+>> 
+>> Nope.
+>> 
+>> When I see the each functions stack allocation:
+>> - ctlv_schema_check_indexed_nest():
+>> 	sub	sp, sp, #0xf0 // 240 bytes
+>> 
+>> - ctlv_schema_check_attr():
+>> 	sub	sp, sp, #0xb0 // 176 bytes
+>> 
+>> Roughly (240 + 176) * CTLV_MAX_NEST_DEPTH = 13,952 (around 14KB)
+>> consumed.
+>
+>400 bytes per nest seems pretty big to me...
+>
+>Do you have debug options enabled or something that increases stack usage?
 
-Keep a copy of the host's sanitised ID_AA64ZFR0_EL1 at EL2, and
-advertise it when the guest has SVE, as KVM does for a non-protected
-guest. Cap each field at the highest value the sysreg file defines.
+KASAN is such an option. On arm64 with GCC 15, the stack protector and
+zero-initialized stack variables, ctlv_schema_check_indexed_nest() takes
+208 bytes and ctlv_schema_check_attr() 144 without KASAN. With generic
+KASAN, which instruments the stack with GCC, they take 432 and 304: the
+redzones around every local whose address is taken more than double both
+frames. Your numbers are in between, I guess a different compiler or
+KASAN mode.
 
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- arch/arm64/include/asm/kvm_hyp.h   |  1 +
- arch/arm64/kvm/arm.c               |  1 +
- arch/arm64/kvm/hyp/nvhe/sys_regs.c | 19 +++++++++++++++++++
- 3 files changed, 21 insertions(+)
-
-diff --git a/arch/arm64/include/asm/kvm_hyp.h b/arch/arm64/include/asm/kvm_hyp.h
-index 8cf42f87526dd..b9455ff8d7bdb 100644
---- a/arch/arm64/include/asm/kvm_hyp.h
-+++ b/arch/arm64/include/asm/kvm_hyp.h
-@@ -144,6 +144,7 @@ void __noreturn __host_enter(struct kvm_cpu_context *host_ctxt);
- extern u64 kvm_nvhe_sym(id_aa64pfr0_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64pfr1_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64pfr2_el1_sys_val);
-+extern u64 kvm_nvhe_sym(id_aa64zfr0_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64isar0_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64isar1_el1_sys_val);
- extern u64 kvm_nvhe_sym(id_aa64isar2_el1_sys_val);
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 157bf4b812020..be5127ce388a8 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -2827,6 +2827,7 @@ static void kvm_hyp_init_symbols(void)
- 	kvm_nvhe_sym(id_aa64pfr0_el1_sys_val) = get_hyp_id_aa64pfr0_el1();
- 	kvm_nvhe_sym(id_aa64pfr1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1);
- 	kvm_nvhe_sym(id_aa64pfr2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64PFR2_EL1);
-+	kvm_nvhe_sym(id_aa64zfr0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ZFR0_EL1);
- 	kvm_nvhe_sym(id_aa64isar0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR0_EL1);
- 	kvm_nvhe_sym(id_aa64isar1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR1_EL1);
- 	kvm_nvhe_sym(id_aa64isar2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR2_EL1);
-diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-index 06ea91415ad8b..e6bbc897cd7b1 100644
---- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-+++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-@@ -21,6 +21,7 @@
- u64 id_aa64pfr0_el1_sys_val;
- u64 id_aa64pfr1_el1_sys_val;
- u64 id_aa64pfr2_el1_sys_val;
-+u64 id_aa64zfr0_el1_sys_val;
- u64 id_aa64isar0_el1_sys_val;
- u64 id_aa64isar1_el1_sys_val;
- u64 id_aa64isar2_el1_sys_val;
-@@ -114,6 +115,22 @@ static const struct pvm_ftr_bits pvmid_aa64pfr2[] = {
- 	FEAT_END
- };
- 
-+static const struct pvm_ftr_bits pvmid_aa64zfr0[] = {
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, SVEver, SVE2p3, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, AES, AES2, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, EltPerm, IMP, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, BitPerm, IMP, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, BF16, EBF16, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, B16B16, B16MM, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, SHA3, IMP, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, SM4, IMP, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, I8MM, IMP, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, F16MM, IMP, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, F32MM, IMP, vm_has_sve),
-+	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, F64MM, IMP, vm_has_sve),
-+	FEAT_END
-+};
-+
- static const struct pvm_ftr_bits pvmid_aa64mmfr0[] = {
- 	MAX_FEAT_ENUM(ID_AA64MMFR0_EL1, PARANGE, 40),
- 	MAX_FEAT_ENUM(ID_AA64MMFR0_EL1, ASIDBITS, 16),
-@@ -232,6 +249,8 @@ static u64 pvm_calc_id_reg(const struct kvm_vcpu *vcpu, u32 id)
- 		return get_restricted_features(vcpu, id_aa64pfr1_el1_sys_val, pvmid_aa64pfr1);
- 	case SYS_ID_AA64PFR2_EL1:
- 		return get_restricted_features(vcpu, id_aa64pfr2_el1_sys_val, pvmid_aa64pfr2);
-+	case SYS_ID_AA64ZFR0_EL1:
-+		return get_restricted_features(vcpu, id_aa64zfr0_el1_sys_val, pvmid_aa64zfr0);
- 	case SYS_ID_AA64ISAR0_EL1:
- 		return id_aa64isar0_el1_sys_val;
- 	case SYS_ID_AA64ISAR1_EL1:
--- 
-2.47.3
+Otherwise there is nothing large on the stack. 96 of the 208 bytes hold
+the callee-saved registers, the rest are small locals and spills. It is
+just two frames per nesting level.
+With the limit lowered to 8, validation at the maximum depth takes about
+3KB, about 6KB with generic KASAN.
 
