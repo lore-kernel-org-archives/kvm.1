@@ -1,89 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.145
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793893808;
-	b=B8oRVbV1sqhSGlkSNj0XUXnZJ8hqz+RrTpEcCDOfXMrc/koJVhWgEv2V5jP8FAwPWsGu
-	 HI0PsAHsEKnpcjwiWBjhe6wqQ1UCljCjcvie8XSQh3sJgxPOiODBvIxi+wmR9NnniXzJ0
-	 ZOIocuxGK8qC0LLijt47lhNBahHaDEt/0dsJbNGUcCesCJxlr5ukenGKDXMg9GcZU91DG
-	 pXNYYetW5jQyEc583XHc2jlTy9FxDGhpiejwcaEYvvdaWWVAb6Makb5ZSwoRZo6pXbUli
-	 81930iWvsbBEx5MgKRaneq4mxsz1bUsA+QLtTv+a2hFgJzZKsySFvSUQXfzNsJ/3ocg==
+	t=1793893838;
+	b=SmKx/zXz6Eoybs03YJc2OgcKt5NZEEvKxGDPTnEuQl1Gu4xeGMERv2LCrDGLdfDhzp7f
+	 gSUs0AzL9uDLntjF0HMNbpJKMSfRjJQkSnxm42y6RkpkLxuvZqGdXRA03ITln8Dq2Bsye
+	 43G9Nd90EhLfJGRfGY6dr1rKfem/O3Ivd2tg7SLfoBg8zvTa5VEBIX90Bx+5Cpr9aLAGr
+	 qEBK3dnvj/jKHlrfltWEZ9oOZoSkAi2cb2u0b6IfTWzT+8LcJungrLtfMcgQ0v2EFWux3
+	 6ZHBvj75eyFttiIX+i1lHljCHuBO2FznCEoXWcdOPl4UODXZR2arcQ6MYX81UVcc7aA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793893808;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=owfwD0c0iFVkQvxXvAVHEdrEkPi8aTG2v+Yo8RsVjLo=;
-	b=prdcRJrK/WbHxHphkJdj5Uvs9/odPiwjqv9DxeZpsY34MZEVnLhqbUccZI+MU4TtwzmQ
-	 yVak0a7PXzjxEihCHUYiOsPAV9NCnmszuvbRYiDr0PNH/TX5YOzISis8Ncy3L2zSfiYJh
-	 qfR2vWcNeUEA/2+mzwx58VgvNoe1X3gCf4qN3u1/yiLddFO78/cU8lhTBE8iDGtNPF0R5
-	 NJ3utGOpj4XM4uPmQpKFnTw0pUWPpHWhP8RhBuq+FbV/RDU2PzpPpMxK3i8qaqg4SlLL2
-	 rsP3MgMZzABA24+y3ZLGWSVDk5qu2toLWr+o7BriuRmy68vpPi+6aLc8upXVcnuqcrw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793893838;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=NZay7L2nryhfKnNMEqZkGMSJNXNIWBCGAWm4vFCRCqw=;
+	b=hv/nkW07zDmC2Os/8ahcSk+oS4aMLhOWQzMJWGuzNj3BlnB+6NZAK7F9XJ+r5RfunNMY
+	 UvTd4UwPJuS6mEFY84n2Ww6zmO5PMiOuGiuvh9yBCx0AOKiucbU/Hz+7PtOCkpYgNYkH1
+	 qNuLQF5mTrg+XaPuHH7JpiDWOPeJOYhhDTmghQlLzlfBXl6gY44bk/QvPmSF5cslhBwDY
+	 nJFdsofcqa5fZklm7aaF0G+Nnu3fNOV8dXV+6cEkfDZRm3N4mJSpBZTJOHw/NpHedcR4B
+	 WNoPMZJonTDV/uiQFT+mQZpclmLdDWHY0OlZD6jfeO7NzIJN3LOkbqck5QNIhVPLydQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=FbXOOX8v;
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=0tMbQth0;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=qshhmKdc;
+	arc=none smtp.remote-ip=103.168.172.145
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B212160A6F7D;
-	Thu,  5 Nov 2026 15:50:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B212160A6F7D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2D460730A7
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 15:50:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D2D460730A7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=FbXOOX8v
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=owfwD0c0iFVkQvxXvAVHEdrEkPi8aTG2v+Yo8RsVjLo=; b=FbXOOX8vbDQkaNDkiTyDoCi0GI
-	JbPxVa0uJaJ0nH2KdWLZQ1b41mAhpvDhmrHl4VimexZABaM1zNkCJ7p5BGD6CW3sgbLWBcq6nybSv
-	RtmK55YPnkziyKx5y4tyxXs3uy2ZzfZlt1c2IR1o4nQglyenBHZgDkcNijt5WtbXHR8RBY2czDCv4
-	5Kbgdj/SnX5OYqhgX7s/6eqJR/T6d9rv0FKgADxwMTQI8XC6GqIhukF5KJjp02re2d5nV5lk/c/wo
-	jo2a4jOzuH1Pb0+Qm+ijRn5cnhlAvql5bALrkR8hZyK/ou+5tdd3Tz28N4nZkd4q+WY2D84acs/K/
-	IMMMbylQ==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOzit-00000009aof-2vx4;
-	Thu, 05 Nov 2026 15:49:55 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xOzit-0000000Aaym-20JR;
-	Thu, 05 Nov 2026 15:49:55 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	x86@kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paul Durrant <paul@xen.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Jack Allister <jalliste@amazon.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	joe.jin@oracle.com,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v11 01/23] KVM: x86: Improve synchronization in kvm_synchronize_tsc()
-Date: Thu,  5 Nov 2026 07:49:32 -0800
-Message-ID: <20261105154955.2525419-2-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261105154955.2525419-1-dwmw2@infradead.org>
-References: <20261105154955.2525419-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=0tMbQth0;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=qshhmKdc
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 18585EC01BC
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 10:50:36 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Thu, 05 Nov 2026 10:50:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793893836;
+	 x=1793980236; bh=NZay7L2nryhfKnNMEqZkGMSJNXNIWBCGAWm4vFCRCqw=; b=
+	0tMbQth0NQkeucnyD4pkjvlZIplB32NHkn7gDWXcul7odnqIdd2R1jhLLCYM1IEr
+	GmY4zRZMirpAZwiyVKF155d3IS49NUsl8lGh7iCWFVk6vxek9FytUXvfJKwIjIMm
+	1RdKsCvG/bH7IGLfCpmIjtUlN21JflxZvjBxrMhyQ/7etugY8FXWJD7QY3noBJeG
+	I8VHYc8AvAesoPuVuVgxJ1dZmEK0Y8TbUitZihkAzZ0DLet2RFUhact0/CmsBkH3
+	UKW7gJwhM+RvJmyH5EPr/zchaYwDfM6qs6wYVmgkG6fFXjggHVd4ga1tJ0Y86JaL
+	1J9UTM+C98+C1QDfcOO0Ug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793893836; x=
+	1793980236; bh=NZay7L2nryhfKnNMEqZkGMSJNXNIWBCGAWm4vFCRCqw=; b=q
+	shhmKdcCRMesRoKxOq2445nS5tbya/hufPlil42QSWFUPlDNV5Hpsu77VYZn/isv
+	t28ooYUwsjtw6TMTKJ9OIv9xhf3XPS+9jORge8ebYcpSwqLtietu5hU4rqhS+7+9
+	d2RuZJ52J7RuEsCScL9GQs5bbEJl4mQwd4FKzoBHz+Jamhwl7WGdFsbSPtIQ8TKr
+	YOMOioHE13eODk5lN5q3D7Hx0bH/LL1rOBg3e6Mb5IcsYJH6Q7sbEiZEEPrKQj6X
+	MgDzmVglmHq6k58YoSPYqth3pbFOlv2PTSLd+ZYdykiPYbpLbln8oXVNscDudmNc
+	p1n7RviYmWUbk0U13gESA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793893836; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:VbPk7AvsQ40GUdKBSYHqb6cUMPLGnAtElUZhxYC5PG69vrG
+	K/DF/wcjn6yGd1ALv9N0Zu+NomgBGLRd5BWqlDvEFACzlorEyKOe1cNZnmclRcFV
+	OSP6X+fM6/FMmmvpiZh4A9VJjKMmoabmsscZoRPJpwsJYK+G/OXSB5rSzhkbJJKA
+	b0I83JgE7O/5hIvCI2gczLb+bCmn1Nr4fIpTpLfW5C33I9AZhlx66kEAu3zGpYHh
+	zg4MgF3/g5KhSkWQNIMgy72tYV7l2DSXsZqciF7BUNzOhO/VQc/qApr3ESxFlHZj
+	MfgD6uX6OfHoyMSIbmHCvz3Cdv7iUmG51WUGb/w==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:YFus3HutPXTLvZFoFGpqPzl3xKeJzNug8nJycK/gXBM=:RwtE1ERIc4WaoKgPKbvPbHAii5aWb9hJhqoJC/CVX0U=;
+X-ME-Sender: <xms:y6Xsat29eO3y9O1K1DvuAa1GQW64tu32quiEgZMWzHw2ok0Tv4kHWQ>
+    <xme:y6XsalmPWsqaLgMh9_xbnxoz_Y6H9P5Wn26A28tYiV6ijWJXE_qkKPbPehKgIR6vT
+    FUREoG4EFwDPwa-mQcgUGt_d9bZfqAxKQlRAiQ9JM9VYJR9x9V31Cs>
+X-ME-Received: <xmr:y6Xsat-7eg4PlVwUf6IyR-5CGCsrK6h0usnb4sn0X3dT38ROpBR1Bg4KKiAX6Q>
+X-ME-Proxy-Cause: dmFkZTGanw37Gl7H+UY/qwa9sgu8ZldFdK0gFO7vrPMMnDhzvv+CR4Z5hCBoD9CiDxtN7+
+    HIAaFfGuZlfoo5UCG7JE+CbDI2irM6kY7c1vZrgXfXPkJf5eUIXzfSrPuJdAzrSofyTOU4
+    ALro7wZXyu1FKfDKNHv5IbmacSfi81DJ1K+O8o2VfOcuIIy7QyHyoGGQtkC7N4zRzYWHKG
+    Cz2jCpaNwweDVvnFPV0W2MUgASr37JCtd5y52Z5PWAbFBmYpYgmQsO1purHJYgz93cwpGw
+    NDgHSzKiV+cXs4b9C1Ss5AKAlkxNUV1OzzgYXPjl11xwHjY18H54X+r0zjENuffb59ButI
+    a0cqgluvKe13xiUwCD+VpfiPzY74M6vUZxB5EIPGrWblRg/uiS7cEXMnGXdI8thpJdy78M
+    mLV7dr76d3AJ4Pl+q9cHCz7IbELMcHgKBhI0qoetTh/qSz/QpjYxbKcaePsrWCuXV9Jkto
+    hkRXz7RitSG5/ylRDDz2qugSIqAwxDGFAWtw2qckXSvdHGz4Xym/1A1KlRqMv/Hv8NEybt
+    XJadHT2TMBqGjWh+iRlgmBUtdiHxvIDg943EUJl81uBU2VMVh8nllqR5kLi0LgP0H55owL
+    zT2CbNOUiKkWzFhMCH5Nk79yG2AVdGRCdVKja2wvznbV9ZKoyh4l1DBaup3Q
+X-ME-Proxy: <xmx:y6XsaqqxnAYp1TQ7huqZCb95bZFD1fMvK1aeB8OjYhMlEg_W3ObvZw>
+    <xmx:y6XsammpRyOH1H2648T-7lQOOcoTtEjUjXuCfIGhnvgmxRm44XciHA>
+    <xmx:y6Xsahi59Jm8iNN89pt546nQ6IyKDiVYBNnRyuLouALa6hhTe3lWeQ>
+    <xmx:y6Xsaue5YSaZqaYRTDaO584u_5CQazyfMCgLqMzos0EUxP6gixEXbA>
+    <xmx:zKXsav6FkWe6A4Bv5z1b3UuPGduz6to2vTmBoHo13igUxuDquhSq7diW>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Nov 2026 10:50:35 -0500 (EST)
+Date: Thu, 5 Nov 2026 08:50:32 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: "=?UTF-8?B?UGnDs3Jrb3dza2ks?= Piotr" <piotr.piorkowski@intel.com>
+Cc: <kvm@vger.kernel.org>, <intel-xe@lists.freedesktop.org>,
+ alex@shazbot.org, Manish Honap <mhonap@nvidia.com>
+Subject: Re: [RFC PATCH 0/4] vfio/pci: Allow hiding BAR ranges from the VFIO
+ user
+Message-ID: <20261105085032.679881ff@shazbot.org>
+In-Reply-To: <20261105153738.1938345-1-piotr.piorkowski@intel.com>
+References: <20261105153738.1938345-1-piotr.piorkowski@intel.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,110 +125,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Thu, 5 Nov 2026 16:37:34 +0100
+"Pi=C3=B3rkowski, Piotr" <piotr.piorkowski@intel.com> wrote:
 
-When synchronizing to an existing TSC (either by explicitly writing
-zero, or the legacy hack where the TSC is written within one second's
-worth of the previously written TSC), the last_tsc_write and
-last_tsc_nsec values were being misrecorded by __kvm_synchronize_tsc().
-The *unsynchronized* value of the TSC (perhaps even zero) was being
-recorded, along with the current time at which kvm_synchronize_tsc()
-was called. This could cause *subsequent* writes to fail to synchronize
-correctly.
+> From: Piotr Pi=C3=B3rkowski <piotr.piorkowski@intel.com>
+>=20
+> Some devices have BAR ranges which shouldn't be exposed to the VFIO
+> user, but vfio-pci exposes the memory BARs as a whole, apart from the
+> MSI-X table.
+>=20
+> This series lets the host hide ranges of the memory BARs. Reads of a
+> hidden range return ones, writes to it are dropped, the pages containing
+> it are never mapped (a sparse mmap capability advertises the rest of the
+> BAR), and ioeventfds and dma-bufs covering it are rejected. The ranges
+> are fixed while the device is bound and listed in
+> /sys/.../vfio-dev/vfioX/hidden_bar_ranges.
+>=20
+> The ranges can be hidden by the driver, with
+> vfio_pci_core_hide_bar_ranges(), and by the host administrator, through
+> configfs (CONFIG_VFIO_PCI_CONFIGFS). Only drivers which access their
+> BARs exclusively through vfio-pci-core can hide ranges; vfio-pci and
+> xe-vfio-pci declare it.
+>=20
+> Patch 1 is a preparatory refactor, patch 2 adds the core mechanism,
+> patch 3 the configfs interface and patch 4 per-device-ID defaults in
+> xe-vfio-pci, with no ranges defined yet.
+>=20
+> Sent as RFC for feedback on the approach and the interfaces.
 
-Fix that by extrapolating the generation's TSC value to the current
-time (data = cur_tsc_write + elapsed cycles) before passing it to
-__kvm_synchronize_tsc(), so the recorded {data, ns} pair always lies
-on the generation's line and the one-second matching window slides
-forward with each synchronized write. When the TSC is stable, reuse
-the generation's offset exactly; when it is unstable, compute a new
-offset for the extrapolated value.
+See Manish's proposal for a generic excluded range interface to
+generalize MSI-X table read/write and disable all access to CXL HDM
+decoders:
 
-Furthermore, there were *three* different TSC reads used for calculating
-the "current" time, all slightly different from each other. Fix that by
-using kvm_get_time_and_clockread() where possible and using the same
-host_tsc value in all cases.
+https://lore.kernel.org/all/20261016161839.2765592-9-mhonap@nvidia.com/
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
----
- arch/x86/kvm/x86.c | 39 ++++++++++++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 9 deletions(-)
+Granting users the ability to manipulate excluded ranges through
+configfs seems like a terrible idea, frankly.  Thanks,
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 32563a91fba9..7a2b0b99373f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -210,6 +210,10 @@ module_param(pi_inject_timer, bint, 0644);
- static bool __read_mostly mitigate_smt_rsb;
- module_param(mitigate_smt_rsb, bool, 0444);
- 
-+#ifdef CONFIG_X86_64
-+static bool kvm_get_time_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp);
-+#endif
-+
- #define KVM_SUPPORTED_XCR0     (XFEATURE_MASK_FP | XFEATURE_MASK_SSE \
- 				| XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS \
- 				| XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 \
-@@ -1374,14 +1378,23 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- {
- 	u64 data = user_value ? *user_value : 0;
- 	struct kvm *kvm = vcpu->kvm;
--	u64 offset, ns, elapsed;
-+	u64 offset, host_tsc, elapsed;
-+	s64 ns;
- 	unsigned long flags;
- 	bool matched = false;
- 	bool synchronizing = false;
- 
- 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
--	offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
--	ns = get_kvmclock_base_ns();
-+
-+#ifdef CONFIG_X86_64
-+	if (!kvm_get_time_and_clockread(&ns, &host_tsc))
-+#endif
-+	{
-+		host_tsc = rdtsc();
-+		ns = get_kvmclock_base_ns();
-+	}
-+
-+	offset = kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
- 	elapsed = ns - kvm->arch.last_tsc_nsec;
- 
- 	if (vcpu->arch.virtual_tsc_khz) {
-@@ -1424,13 +1437,21 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
-          */
- 	if (synchronizing &&
- 	    vcpu->arch.virtual_tsc_khz == kvm->arch.last_tsc_khz) {
--		if (!kvm_check_tsc_unstable()) {
-+		/*
-+		 * If synchronizing, advance the reference point to "now"
-+		 * so the matching window slides forward with each vCPU.
-+		 * Extrapolate from the generation's own origin: 'elapsed'
-+		 * is measured from the most recent write, which lies on
-+		 * the generation's line only for the first matched write.
-+		 */
-+		u64 delta = nsec_to_cycles(vcpu, ns - kvm->arch.cur_tsc_nsec);
-+
-+		data = kvm->arch.cur_tsc_write + delta;
-+
-+		if (!kvm_check_tsc_unstable())
- 			offset = kvm->arch.cur_tsc_offset;
--		} else {
--			u64 delta = nsec_to_cycles(vcpu, elapsed);
--			data += delta;
--			offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
--		}
-+		else
-+			offset = kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
- 		matched = true;
- 	}
- 
--- 
-2.43.0
+Alex
+
+>=20
+> Piotr Pi=C3=B3rkowski (4):
+>   vfio/pci: Move the excluded range handling out of
+>     vfio_pci_core_do_io_rw()
+>   vfio/pci: Allow hiding BAR ranges from the VFIO user
+>   vfio/pci: Allow configuring hidden BAR ranges through configfs
+>   vfio/xe: Hide BAR ranges by default per device ID
+>=20
+>  Documentation/ABI/testing/configfs-vfio-pci   |  49 +++
+>  .../ABI/testing/sysfs-devices-vfio-dev        |  13 +
+>  drivers/vfio/pci/Kconfig                      |  13 +
+>  drivers/vfio/pci/Makefile                     |   4 +-
+>  drivers/vfio/pci/nvgrace-gpu/main.c           |   4 +-
+>  drivers/vfio/pci/vfio_pci.c                   |   1 +
+>  drivers/vfio/pci/vfio_pci_configfs.c          | 312 +++++++++++++++++
+>  drivers/vfio/pci/vfio_pci_core.c              |  42 ++-
+>  drivers/vfio/pci/vfio_pci_dmabuf.c            |  11 +
+>  drivers/vfio/pci/vfio_pci_hidden_bar_ranges.c | 313 ++++++++++++++++++
+>  drivers/vfio/pci/vfio_pci_priv.h              |  53 +++
+>  drivers/vfio/pci/vfio_pci_rdwr.c              | 156 +++++++--
+>  drivers/vfio/pci/xe/main.c                    |  60 +++-
+>  include/linux/vfio_pci_core.h                 |  36 +-
+>  14 files changed, 1009 insertions(+), 58 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/configfs-vfio-pci
+>  create mode 100644 drivers/vfio/pci/vfio_pci_configfs.c
+>  create mode 100644 drivers/vfio/pci/vfio_pci_hidden_bar_ranges.c
+>=20
 
