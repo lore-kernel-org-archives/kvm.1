@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793912823;
-	b=jMv8kKB3PXmjjQsL9LUMau+HiU8s7dBVwep38j2L1eU+mgfyD2VFoYgezl6H4T8Ontd4
-	 UWFfZQCl3qcaYKBJH87chKFY6G0o0u/fGpqarL6GMN/nvrWQzqLV9caBLkQ8ubQ+M2aGD
-	 xp2J7znabbX96tMwQd7zHX0EwFFdlZwwp3+BOgcwtpszBKzdv7vuH6ofb6R49jjzkuWa6
-	 JSwomOMmdfqlbixMUupQYzLTj4IOcQB75oLAiFKWGdcJqF8kRtGcht406yVpRySGXlEny
-	 Gw7o3i241L422tLnjpTxYv7r6EFEd8ja4azkpYaGW1fDFFLQ4aR3lXjnbo2wqeOIy4A==
+	t=1793912847;
+	b=s+scUTYiHux5s5xQviPTfE2NWRLSEBpDxOWCcaJMuOOMNkACz4UNDRiYmMnu/9LpAZ49
+	 RTreANoGmYVOnLQoE4Q1CEW0wMl6xVU5+eug3NBLKNm0X2E/traZP4nT9ty1M2iJbOPPP
+	 FmwQdNnV4vwT7n/VBi4wi6z4ZnTYLaomloQd7YusavPti15mpCAPCvMgsQPTsnICbq6np
+	 G4B9tdu2ckJWiadWZTpxaSm5gQ8ggydYXiVyX4PVcis0aUqJjzdZHlKPDfSYhtRRny7g7
+	 sbIdhswN/GEcjRhZRwmhl3p7yTEg7jdLIqq0yiAXXpRVf0qkHNG+1vCbWwAUIar8/lg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793912823;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793912847;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=bqfQWE9INck3Aoq42ZNpSathvk4p8fmQAVJsjbZAm0g=;
-	b=FXwSHCZ1yMOYntGU1/xrsqlvdXwtwszTNC0w4WU3WiDxUvzftXkHUYNx49PJ65W35jn5
-	 PzFkCRss5diarwe7qtij1dzdvpiPhRDPqad2ajYOu1hiP4X95CO6H+vPmNWnxr9cvATfj
-	 lozlcFO/wipF8rJa5IQJiU6fID1hDh3L7LIIswLSfCrcetoqiBw3RdlQu/w/GHQpDYY3K
-	 93iqUZfCiJs5tmGE04u2v6FpL2HK4Sf5ldT4KdQ7GyJ6/qmCTZBhFU7aCaNlTDO5Sc/EQ
-	 jy3huorqAmuY3xt0lxtZsFNra7ix7Mh9AP6oucS40twJLdc5akS+ssHaHxrKupKxqHg==
+	bh=K0Qe+brxG+0dZUrKAAGrAFU8X9IZH0VVnpzTIvw3ERA=;
+	b=O4fWr6nouZf+XgJBHp7+dXsoo+vXwXp/M5yuDjSKHI8Re78Aq4l7L00P/M5n+eLDdX+C
+	 9eVZxWiQexiBK//0bIUv0C/YNwJqVmRXMrYQ81KNmDh7ocj65YqYl7rm+1lI2zOtjF5FJ
+	 4RTMOZNj1k9ursUwj/LLMweSHCF/TfOqJwyLgRgwjUdzGsd5g5jkkGiLkGWgLjVqFxrzz
+	 yjvOFT/ZjF37JhKiB7cj1i67sp532G+ny5b9FGSekOY66wbpvn7HtocAUFxYKQrKJ9yHc
+	 +4/jmjExKK/RmLzuA4G00NhyImcMZM3ghpvYoWIHQVvqQPWwHanXtsx3lakEY8zAgoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GWekXUJt;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EoGQCLGY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30BB606D818;
-	Thu,  5 Nov 2026 21:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A89606A328;
+	Thu,  5 Nov 2026 21:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GWekXUJt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073691F008A6;
-	Thu,  5 Nov 2026 21:06:50 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EoGQCLGY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8983A1F0089F;
+	Thu,  5 Nov 2026 21:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793912822;
-	bh=bqfQWE9INck3Aoq42ZNpSathvk4p8fmQAVJsjbZAm0g=;
+	s=k20260515; t=1793912847;
+	bh=K0Qe+brxG+0dZUrKAAGrAFU8X9IZH0VVnpzTIvw3ERA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=GWekXUJtTW/bmKiTy4QB6lwJ7qbgw7vFuwUU+DOaOfg/TRAzLeM32R3kLak4qQeQ3
-	 Qv4vJ9ieuL7oXsySpCaty+GruAFXFHyboa49jWYOSQ5CvYOGpKEnZ4EVlYgXyECMBV
-	 SAYyovNMBS/4DJV9jvSExBs04MC2Ny8P8JjIrR64zZOycDnouZr851hmFFOt4+wNVA
-	 fPiv0XZG2hDHC8h3Gwkazyekp82IqzHvmXnmVgCZg0iO26M0dmBWKapLrfZusp9wwT
-	 zzsZcWlKHFiQMAFkueAeuPV0PQFvmCrLb3vSKAp9PJu0JxbVW/FD9XwOTh2SLxX8iP
-	 /o3UyJrfNU3sg==
+	b=EoGQCLGYUECuMK3Ryy2JPZD867vm1Nft2NyWWjYZH04COu4EW/n19poNq9sBYoVuM
+	 /9L6U4I6ZY4vXlCPISOuIqoBB5h83vy6AzZrs2irL36W/r0sB/qf1ZvlmEqaeHCR98
+	 Yd2HoEORahKhAsOB/TOKoJBhF5tSUb+5it9H8lS7Qhw6Evt7ES6t9E6Hi7+ZQqGPV/
+	 km0fScYDuEqdFgtcf7u8IrOQsq2bqZdZcBr9xB/YyRxrFVrgKBphzww0dpecuBV/gD
+	 cN1u7CBvszdIwDETsVYy/2zHoypyOCESC6YkymFo3ap/d8M1X84ZFUtyFwrTw/eilV
+	 jjk9dx2yFMCwQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 05 Nov 2026 21:05:36 +0000
-Subject: [PATCH 05/14] x86/sgx: convert vepc mmap hook to mmap_prepare
+Date: Thu, 05 Nov 2026 21:05:38 +0000
+Subject: [PATCH 07/14] selinuxfs: convert mmap hooks to mmap_prepare
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,7 +54,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-late-2026-mmap_prepare-v1-5-c56aadfbab8a@kernel.org>
+Message-Id: <20261105-late-2026-mmap_prepare-v1-7-c56aadfbab8a@kernel.org>
 References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
 In-Reply-To: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
 To: Juergen Gross <jgross@suse.com>, 
@@ -99,62 +99,88 @@ Cc: ljs@kernel.org, xen-devel@lists.xenproject.org,
  linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
  op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1666; i=ljs@kernel.org;
- h=from:subject:message-id; bh=8M6KXM/gidl407BgZsE6l9e639j02CBQooR3iZ5mU4M=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLevF/NfkpnyQUdw7u/LIOuqb1l2agTvF3TyPxd3+spl
- 1Y3rn9v1lHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJyAcx/NONOFpeGCnRO6e7
- +3T/k1zGsxF7YoO6TcO7Xjvq/jC+sIuRocFi0+uncd+Ew6Qit/5Nqt5kFnHQtvGp8hbW+Lk53Av
- lmAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2606; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=7PdtcPjX+tywnOn8AbMVtXCWtyiPBNa3B2xUfxFmHH4=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLevF/TIhScFGkt26v86da3Ox+Yv91Wnrv55exlR5/1b
+ 3xS+CHGoqOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQATWbaV4Z/R5fMFHr++HXFy
+ /Ffm97i/eD5f7pGnC1lXqB4L2nOKY1YTw/9ss1+Cbkvu1sn7vT0cwLOC8VqV2dR7TXeLg2ew97/
+ Z5cYPAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
-Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-only checks that the mapping is shared and sets VMA flags, operations and
-private data.
+Move from the deprecated mmap hook to the new mmap_prepare hook for the
+policy and status files.
+
+The policy file only sets VMA flags and operations. The status file remaps
+a single page, so use the PFN remap mmap action to do so.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/virt.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ security/selinux/selinuxfs.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
-index 6a1933ddc6fc..850990519ca5 100644
---- a/arch/x86/kernel/cpu/sgx/virt.c
-+++ b/arch/x86/kernel/cpu/sgx/virt.c
-@@ -98,17 +98,18 @@ static const struct vm_operations_struct sgx_vepc_vm_ops = {
- 	.fault = sgx_vepc_fault,
+diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+index 310e19efff1d..e78c65685020 100644
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -236,27 +236,25 @@ static ssize_t sel_read_handle_status(struct file *filp, char __user *buf,
+ 				       sizeof(struct selinux_kernel_status));
+ }
+ 
+-static int sel_mmap_handle_status(struct file *filp,
+-				  struct vm_area_struct *vma)
++static int sel_mmap_prepare_handle_status(struct vm_area_desc *desc)
+ {
+-	struct page    *status = filp->private_data;
+-	unsigned long	size = vma->vm_end - vma->vm_start;
++	struct page    *status = desc->file->private_data;
+ 
+ 	BUG_ON(!status);
+ 
+ 	/* only allows one page from the head */
+-	if (vma->vm_pgoff > 0 || size != PAGE_SIZE)
++	if (desc->pgoff > 0 || vma_desc_size(desc) != PAGE_SIZE)
+ 		return -EIO;
+ 
+-	return remap_pfn_range(vma, vma->vm_start,
+-			       page_to_pfn(status),
+-			       size, vma->vm_page_prot);
++	mmap_action_remap_full(desc, page_to_pfn(status));
++
++	return 0;
+ }
+ 
+ static const struct file_operations sel_handle_status_ops = {
+ 	.open		= sel_open_handle_status,
+ 	.read		= sel_read_handle_status,
+-	.mmap		= sel_mmap_handle_status,
++	.mmap_prepare	= sel_mmap_prepare_handle_status,
+ 	.llseek		= generic_file_llseek,
  };
  
--static int sgx_vepc_mmap(struct file *file, struct vm_area_struct *vma)
-+static int sgx_vepc_mmap_prepare(struct vm_area_desc *desc)
+@@ -419,10 +417,10 @@ static const struct vm_operations_struct sel_mmap_policy_ops = {
+ 	.page_mkwrite = sel_mmap_policy_fault,
+ };
+ 
+-static int sel_mmap_policy(struct file *filp, struct vm_area_struct *vma)
++static int sel_mmap_prepare_policy(struct vm_area_desc *desc)
  {
--	struct sgx_vepc *vepc = file->private_data;
-+	struct sgx_vepc *vepc = desc->file->private_data;
- 
--	if (!(vma->vm_flags & VM_SHARED))
-+	if (!vma_desc_test(desc, VMA_SHARED_BIT))
- 		return -EINVAL;
- 
--	vma->vm_ops = &sgx_vepc_vm_ops;
-+	desc->vm_ops = &sgx_vepc_vm_ops;
- 	/* Don't copy VMA in fork() */
--	vm_flags_set(vma, VM_PFNMAP | VM_IO | VM_DONTDUMP | VM_DONTCOPY);
--	vma->vm_private_data = vepc;
-+	vma_desc_set_flags(desc, VMA_PFNMAP_BIT, VMA_IO_BIT, VMA_DONTDUMP_BIT,
-+			   VMA_DONTCOPY_BIT);
-+	desc->private_data = vepc;
+-	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+-	vma->vm_ops = &sel_mmap_policy_ops;
++	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
++	desc->vm_ops = &sel_mmap_policy_ops;
  
  	return 0;
  }
-@@ -315,7 +316,7 @@ static const struct file_operations sgx_vepc_fops = {
- 	.unlocked_ioctl	= sgx_vepc_ioctl,
- 	.compat_ioctl	= sgx_vepc_ioctl,
- 	.release	= sgx_vepc_release,
--	.mmap		= sgx_vepc_mmap,
-+	.mmap_prepare	= sgx_vepc_mmap_prepare,
+@@ -430,7 +428,7 @@ static int sel_mmap_policy(struct file *filp, struct vm_area_struct *vma)
+ static const struct file_operations sel_policy_ops = {
+ 	.open		= sel_open_policy,
+ 	.read		= sel_read_policy,
+-	.mmap		= sel_mmap_policy,
++	.mmap_prepare	= sel_mmap_prepare_policy,
+ 	.release	= sel_release_policy,
+ 	.llseek		= generic_file_llseek,
  };
- 
- static struct miscdevice sgx_vepc_dev = {
 
 -- 
 2.56.0
