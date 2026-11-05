@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793922481;
-	b=tpYFZXdgwUdAeDYpKGBuy1CCX6rhzMvvWLkdtj6BM9FBH3bhzTgnsmY0l9kr+7YqbZ3o
-	 yQzJbA0Rv3brz/0KocYLrzYAKgmp34Se2yMT54uUFmmvxR9PW/PGyxkKeFYAixpEJVkOr
-	 LG3nCEXRhiwQzEPA3FgykTArAczL+GN2M5BR5QYidSUrknOukK/Pa86pdxl9BrjIaqyVx
-	 XWI0HExyNxeiy1e+LjkT921R8C0FrXMeIMmOEqDwQxMg27NDeO9x41E9v/wTvfqNwSB7c
-	 EUjxI5BiWPXeUdZnihiYUD8I5tMpThiv8MEeKOVO+fstEUkGlhl/vrULsRt0oeOqVSw==
+	t=1793922482;
+	b=RxP/KsYcegwBZ+JZMW/wR1GoK+tTojXP3oK3xF9VsqkoUkvC8SDUVfaTutt1JDwH+aQl
+	 9ZDqssojGS1MgrDGJhnpTalOo0qpydUUIOnjKx999SiPpdegtXePqHPZO3kOt0xfjg5y7
+	 XhICzl0og7E85h0l0Pl1oCl8WgthDm6FqCjQ8OE70Z/TBlspT/n0GOhUOznJL7R/3WpiP
+	 ZEd17peUcYflJMkH+9PifRmcY29qyTG3BdlsIBy+MSBiqOOlYM9LMlbYk/Y9IuDPPqEoi
+	 AaQJp8u7EmaRCc6OjagF+5X0jLeW3NyIxmS6RdI0u3wwMwCyCE3N/m7awU6h3YbouSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793922481;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793922482;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Developer-Key:X-Developer-Signature:
 	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=a4has+3ZOallPubnO5PCgDkTmmWpt2dIq6/LlaB8Yy8=;
-	b=BVMWGgjqqcWnRkD1EKFE8NIxWmrCT7IH6eG4oousnRjgtG5ctm6lvLwv3PsDH/0bqW/T
-	 Ollji10z+oGA4tOQGZ4KF+pD3favy+IDruy+5k14U038yrsC5WtTqI1wWoTDFkYZB5VNl
-	 zju5AB27jOucT20FuKjYr7tSZzXV5Qlp2kyzJQOxtSJYRVF1mj2OLlQsfZqZYDr6Kh8Xi
-	 WA4Q0S5I9QgNcIcFexp3go66eVmtdl2T6EDlQpvjQvQzz9m+7INh4AG6A8eNgb6EJQxSk
-	 cNpZizMTAUkIoZlH1Auia6EH+rzdrd4lfbqH60nuvKWUrIjCn8+45GuN04sdgJtGSig==
+	bh=3APDwUUBO5Tor+FhWze8o86U6Ry1uRslwxSo4XqrbcE=;
+	b=Cwmrmg8+gM5VAp7P/GwHcMdZLw2PDjkF4wOp55bi83h+MbRlNNVKemM5zGyKN5byHVYx
+	 Uka4OUfVxy2HX8uv3DNZ2QBm1YcwE6DO/cmLTsHCtGuSEELioCzBzSV5CxZ7xZiSPJiD9
+	 HpemM0dfKdLZ0k0fIcTeMDncoZALhh/+8U7m+blgMW8I2HVPZg2aH0xBkx7vK4Yyln7ao
+	 rKnkfI6e6/LRVQTgHGU5ChjNaXaXnbdtP7rtzrcI1m8QP6DUJ15q3bUlGDj/B+gph/Fk7
+	 tClR/lsQK3tTQhcagr/ZBSdMxPNRC/2WVyEGNZSfyTxTn4xTSOm41pvqAXd8gkJsTpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hzIQpwe1;
-	arc=none smtp.remote-ip=209.85.214.200
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SldGp000;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC6D60A263C
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 23:48:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEC6D60A263C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B184D60A381D
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 23:48:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B184D60A381D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hzIQpwe1
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ed05b3eaecso492105ad.1
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 15:48:00 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SldGp000
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2eaae62796dso732025ad.0
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 15:48:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793922480; x=1794527280; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793922481; x=1794527281; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=a4has+3ZOallPubnO5PCgDkTmmWpt2dIq6/LlaB8Yy8=;
-        b=hzIQpwe1z4a3HZMu1AIKDugfXswvx2bIlWHKL28n78+s88M7wjwxzlMiHT6VwCc0AX
-         CJySbB6avBx8SgAQHZpU+p+ut/cj2hXJJmsxeVv8lZYIEDTY6S/eJWXCIDvEFRfzxP8D
-         zuIl3S3i7HSt7ZXP1HpBXguFkbENY+SF+oYpxAea0K8+WM5inuKGu3JS8WBBTgwrIXLQ
-         hA7YH1c/eizrZW0RNI45uSkx44s3Gf7Yv7X04WYY0gbBA0+I4Fmaa0+gq8Yr6ffWElqD
-         A0ZObMRCMiaxObtR8ZmC9otuZ0rbvpr/NJqbY+qcaZO6LEp7YJXd7pMIurhWrS0MsGD0
-         uDjA==
+        bh=3APDwUUBO5Tor+FhWze8o86U6Ry1uRslwxSo4XqrbcE=;
+        b=SldGp000HO5eYKjIRruXFswTpb6V1OGSqMIcrnjFZXW7kUNy/vXs8/Hq4QHe/gd+gg
+         Mg24FAXAhzpIVuJ79O4Dzf3JFw6pIuPGwlPmd26hoDR7NqDF25v6hxzw3Ps5/UP/Q90D
+         RLU1kI4B+HCifskeaktSTDNt8GvBCNkkEXPIs+iZ1qRhbpIgkIz5241nCzPR0ft75tKw
+         NFdBN3ObNvp3o/cfZ09my/dGLRzG+fHQIBxbotX6O07/xsIGQvLX/W86DOaaijpH4j2I
+         Craf1CS+CzbIh8gkg5HUA9unt/lDNRlM6yoTWjd6rf6OWUNNUmj3AtvZtD+EP0UvCIk1
+         MGuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793922480; x=1794527280;
+        d=1e100.net; s=20260707; t=1793922481; x=1794527281;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=a4has+3ZOallPubnO5PCgDkTmmWpt2dIq6/LlaB8Yy8=;
-        b=emv0tmmck2jrw3pwnQkVgZJ6ewm6gAZtSBd49EBnbVLiSZhE3ihYHrdtagsqWRXjnC
-         VtpFyX3iS/9ytbiQi15q3NyLosB8mSck40O2o0VF7N9+0KDeXp2xnaVZHtZfYY/MtgmL
-         qNEeprf8Hx3QNpTsergnsbLhBPNmyugbT/bTg0yFWW+2q4dF2daNXOClcmDi6GQ7EZs+
-         hzV1VlJSzwPR/o8Mto5uWpEIvqbMSkL3FKgKbHzwsUV5YTo4Ntm54a6kqcB4ivdA2tnG
-         y4vyOpPPE2+rlaPKAO69tTxetRkkA2hZ0lEe6yRu6WB64hSlmccNo1Q1p5KywqMnzSyq
-         2tsg==
-X-Forwarded-Encrypted: i=1; AKwUvBwHaxuuhfkX4uF9cO6Gwbx6vrepL4mSzKT+M4vmK1jknE99I5VhxJZhN3CBGAFpA+X9Ni0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/RdKz/2OWr+nasC4dgaZG84p780Iwoamd5wdxt0l+5x9rP3WFs
-	Q1exgcR7j2PwrhLnA70XiYxjgfbwSxcPVtCL1uoLRT9ZnQkPGiestIoVipuhVQkqrbgK6o/Fk6+
-	UH+6n0w==
-X-Received: from plcu11.prod.google.com ([2002:a17:903:308b:b0:2e3:bd2:38ec])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3d05:b0:2e9:9522:ed3a
- with SMTP id d9443c01a7336-2ed4198726fmr11039015ad.22.1793922479962; Thu, 05
- Nov 2026 15:47:59 -0800 (PST)
-Date: Thu, 05 Nov 2026 23:47:03 +0000
+        bh=3APDwUUBO5Tor+FhWze8o86U6Ry1uRslwxSo4XqrbcE=;
+        b=j7PqenyLpSRBZki1yjiCaj0XNBJUIODBtE0saQWlMsobGrfcilWYPD8AiS19m+d4sK
+         YYTIHAWEPeAuPnYntgbTFuQXj8MDC+EnYn4OcEgYuiFJ5RDZS1rUDyFBBQ0MF1S7GIVs
+         abHZq9M4H/hhfAFD+nSm5q8Wfozfbo3cofSpoMWDrzmgzSa9NCFPfU8kwyOjHTfZncfd
+         rjezyl+jgKq/0WRpAsyPVxjKR5qPcxMOSA/nAdMmvf7dGiIJxbovQ9znuxZcVeATZqUT
+         hoXENCDty2Ql3CE5fNsX6QOjzJOudVMzle7vB3LkD0Xg42Rb8+b+meKfQRKrn7dje05Y
+         LOrg==
+X-Forwarded-Encrypted: i=1; AKwUvBzxd0JVNL73K8CyjtDW1+krCrqMH5TMMRZcvB1n39hj56+Z3EphFe0Wg3rClD8vwpNyG8Q=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+QUHvmzFmx5AWB2fMqumxVrBo516QJdH8FKWnhVBrwEyyJ1FRY
+	6pJ9KKYjfOvKo3DcwClIISpsb4sMewpA+X9cih6yQMMAdooW/qw3tAcgY/C1s72HwUpvtiXY7BA
+	SN/JAkw==
+X-Received: from plhn7.prod.google.com ([2002:a17:903:1107:b0:2ea:775e:19b7])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ecd0:b0:2e9:9522:ed3b
+ with SMTP id d9443c01a7336-2ed40e0f220mr10754625ad.70.1793922480859; Thu, 05
+ Nov 2026 15:48:00 -0800 (PST)
+Date: Thu, 05 Nov 2026 23:47:04 +0000
 In-Reply-To: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,13 +81,13 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793922452; l=3781;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793922452; l=3389;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=ye0dh2bn0KuuGDqjMywSIYVHmjvFFWLyKdkM/LtZa10=; b=vgff3Sgn5XANvkH0beXOhFTw4ETPjNQv8H6v3gSbnsRrc4f3vCOyzTiujFNd/P7ja9qHSfLIX
- gRypAWyRJDSChnyrxV5WGD7fjHqXI9tiPxKrooyiMg4b2CXatxrlq1x
+ bh=rtaSAm22wUuQqMoCfkhcKnDPwilIcSWfTJAYTINBIKY=; b=q/dD+BNThuDw5f3at4kbEcwCii+6ek0wqsmjTN3LQGQmhXgtKQX6+UCbiVQitmA5mNX1BEa4R
+ 9z2eYcAE3KgA05oLcdk6QFkljZrZqgcF5VZUP/WWlOV1hgn5CBvSC7J
 X-Mailer: b4 0.14.3
-Message-ID: <20261105-tdx-selftests-v16-19-2024e8fa517a@google.com>
-Subject: [PATCH v16 19/20] KVM: selftests: Add support for TDX ucalls, via TDVMCALL_REPORT_FATAL_ERROR
+Message-ID: <20261105-tdx-selftests-v16-20-2024e8fa517a@google.com>
+Subject: [PATCH v16 20/20] KVM: selftests: Add TDX lifecycle test
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -104,105 +104,100 @@ Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lis
 	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-From: Sean Christopherson <seanjc@google.com>
+From: Sagi Shahar <sagis@google.com>
 
-Add support for doing ucalls on TDX by abusing TDVMCALL_REPORT_FATAL_ERROR
-to pass the address of the payload to the host.  The "fatal error" TDVMCALL
-is perfectly suited for passing information to host userspace, as both the
-TDX Module and KVM allow the guest to pass (almost) all registers to the
-host, i.e. provide enough of a data payload to make a collision with a real
-fatal error practically impossible.
+Add a test to verify TDX lifecycle by creating a simple TDX VM.
 
-TDX can't use port I/O, as the TDX ABI doesn't allow the guest to share
-arbitrary register state with the host on a port I/O exit, and the port I/O
-data payload is limited to 4 bytes, i.e. would potentially truncate the
-ucall address.
-
-Alternatively, TDX could use MMIO, but using a magic emulated MMIO address
-is fragile (see the TODO in __vm_create()), especially for TDX since TDX
-doesn't support read-only memslots, i.e. doesn't have line of sight towards
-addressing the TODO.  E.g. TDX could hardcode the address to something that
-is all but guaranteed to be unused on x86, e.g. the I/O APIC base address
-or the HPET address, but that doesn't truly address the fragility concerns,
-and it's ugly because ucall_arch_init() would completely ignore the passed
-in @mmio_gpa despite obviously utilizing emulated MMIO.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
- tools/testing/selftests/kvm/include/x86/tdx/tdx.h |  7 +++++
- tools/testing/selftests/kvm/lib/x86/ucall.c       | 31 ++++++++++++++++++++++-
- 2 files changed, 37 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/Makefile.kvm           |  1 +
+ .../testing/selftests/kvm/include/x86/processor.h  |  1 +
+ .../selftests/kvm/include/x86/tdx/tdx_util.h       |  5 ++++
+ tools/testing/selftests/kvm/x86/tdx_vm_test.c      | 33 ++++++++++++++++++++++
+ 4 files changed, 40 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-index d41a1efc8a63..9982aaaba885 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-@@ -4,6 +4,13 @@
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index ab797c8dd497..1ea7b42db22d 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -166,6 +166,7 @@ TEST_GEN_PROGS_x86 += x86/triple_fault_event_test
+ TEST_GEN_PROGS_x86 += x86/recalc_apic_map_test
+ TEST_GEN_PROGS_x86 += x86/aperfmperf_test
+ TEST_GEN_PROGS_x86 += x86/guest_memfd_conversions_test
++TEST_GEN_PROGS_x86 += x86/tdx_vm_test
+ TEST_GEN_PROGS_x86 += access_tracking_perf_test
+ TEST_GEN_PROGS_x86 += coalesced_io_test
+ TEST_GEN_PROGS_x86 += dirty_log_perf_test
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 4db0c7009876..4c390edb634b 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -396,6 +396,7 @@ static inline unsigned int x86_model(unsigned int eax)
+ #define VM_SHAPE_SEV		VM_TYPE(KVM_X86_SEV_VM)
+ #define VM_SHAPE_SEV_ES		VM_TYPE(KVM_X86_SEV_ES_VM)
+ #define VM_SHAPE_SNP		VM_TYPE(KVM_X86_SNP_VM)
++#define VM_SHAPE_TDX		VM_TYPE(KVM_X86_TDX_VM)
  
- #include <linux/types.h>
+ #define PHYSICAL_PAGE_MASK      GENMASK_ULL(51, 12)
  
-+/* TDX hypercall Leaf IDs */
-+#define TDVMCALL_GET_TD_VM_CALL_INFO		0x10000
-+#define TDVMCALL_MAP_GPA			0x10001
-+#define TDVMCALL_GET_QUOTE			0x10002
-+#define TDVMCALL_REPORT_FATAL_ERROR		0x10003
-+#define TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT	0x10004
-+
- u64 __tdvmcall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15);
- 
- #endif /* SELFTEST_KVM_TDX_TDX_H */
-diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
-index 3aec4dd46d1b..2a1c61785e5f 100644
---- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-+++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
-@@ -5,8 +5,32 @@
-  * Copyright (C) 2018, Red Hat, Inc.
-  */
- #include "kvm_util.h"
-+#include "tdx/tdx.h"
-+#include "tdx/tdx_util.h"
- 
--#define UCALL_PIO_PORT ((u16)0x1000)
-+#define UCALL_PIO_PORT		((u16)0x1000)
-+#define UCALL_TDX_MAGIC		0xabacadabaULL
-+
-+static void ucall_tdx_do_ucall(gva_t uc)
-+{
-+	__tdvmcall(TDVMCALL_REPORT_FATAL_ERROR, UCALL_TDX_MAGIC, uc, 0, 0);
-+}
-+
-+static void *ucall_tdx_get_ucall(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_run *run = vcpu->run;
-+
-+	/*
-+	 * KVM_SYSTEM_EVENT_TDX_FATAL stores R0..R15 in data[0..15].  R12
-+	 * holds the ucall magic and R13 holds the ucall GVA.
-+	 */
-+	if (run->exit_reason == KVM_EXIT_SYSTEM_EVENT &&
-+	    run->system_event.type == KVM_SYSTEM_EVENT_TDX_FATAL &&
-+	    run->system_event.data[12] == UCALL_TDX_MAGIC)
-+		return (void *)(run->system_event.data[13]);
-+
-+	return NULL;
-+}
- 
- static void ucall_x86_do_ucall(gva_t uc)
- {
-@@ -37,6 +61,11 @@ static struct {
- 
- void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
- {
-+	if (is_tdx_vm(vm)) {
-+		ucall_x86_ops.do_ucall = ucall_tdx_do_ucall;
-+		ucall_x86_ops.get_ucall = ucall_tdx_get_ucall;
-+	}
-+
- 	sync_global_to_guest(vm, ucall_x86_ops);
+diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+index 67e717521409..cef54d2676bf 100644
+--- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
++++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+@@ -12,6 +12,11 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
+ 	return vm->type == KVM_X86_TDX_VM;
  }
  
++static inline bool is_tdx_supported(void)
++{
++	return !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_TDX_VM));
++}
++
+ /*
+  * TDX ioctls
+  * Use underscores to avoid collisions with struct member names.
+diff --git a/tools/testing/selftests/kvm/x86/tdx_vm_test.c b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
+new file mode 100644
+index 000000000000..7cdcaf33b585
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
+@@ -0,0 +1,33 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include "processor.h"
++#include "kvm_util.h"
++#include "tdx/tdx_util.h"
++#include "ucall_common.h"
++#include "kselftest_harness.h"
++
++static void guest_code_lifecycle(void)
++{
++	GUEST_DONE();
++}
++
++TEST(verify_td_lifecycle)
++{
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++
++	vm = vm_create_shape_with_one_vcpu(VM_SHAPE_TDX, &vcpu,
++					   guest_code_lifecycle);
++
++	vcpu_run(vcpu);
++	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_DONE);
++
++	kvm_vm_free(vm);
++}
++
++int main(int argc, char **argv)
++{
++	TEST_REQUIRE(is_tdx_supported());
++	return test_harness_run(argc, argv);
++}
 
 -- 
 2.56.0.455.g6c5a503b38-goog
