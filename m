@@ -1,109 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793905943;
-	b=o+DofQ4FeF+W972BF7hBZEM/q7if1ML9FZTcRPbVMBJwFFf4PdZvcjppqjwqsLeUTfpj
-	 2UcdAR3h8aWzWKTpZs8DzwZSHCicNpE2NVznyYeRWz11Z4ZdLSaYXSe4yvYUpY+HMLpjL
-	 FEeUfjenmYt49XYElwg1G8TQvNbJbYUassC7GC7gziuy5UrM94Zl3H5AioItwcz+Yo/Ql
-	 E1/vycqmo3je0CHn+C46G42xEemZdD+5mMg0gGe6v7kc8AQtuA5xcJrRH5qj63rEhSGkU
-	 kDzrKwpVq1U54HLgi1j7IiQmVyo6/O4ZkApcewYJFNMHVypgUAUPqkUMrLwxkgS43+A==
+	t=1793906149;
+	b=Ohte6AntgT5jBUQsapx3o6oQrLRtqXsvx3ovO7wyzk4nKouRVK5BFZtizzAQiiRUeHay
+	 tbZtKRCN5Q9mhn+1TbizD7Gt+vjgs568avrgz+O+wtcXY4igmAeMMd2Vrs6784rY/cNr3
+	 W8njdneyxmzQYVJjChb0ESiKuDk9eaHcEvfzvJYNOPsgpNifrvNBJb9kX8BHhmTFfkNBX
+	 SsmNkrAjxaMsWn9pjTXDRTmkz0NLR3R2w2O0TbOj1JjqOpyRf0wid0dxZ5OgQsQFxVJil
+	 ZuCr2a9V2vThnADDGCnyKnq4717gWHG4utuE2aqcYOXaGpZBR3nA4bORAyWSSlqYG+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793905943;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=QH8EWm3WpJvKmm+3SH11RyockHxBeCCGhqou8vP+rPk=;
-	b=YIdf1/3TPBOE81qN1rikP5G0o5I9yGs8USI5izywjVgSgm+EfDsQSaCTSq6Q9wJIDsVn
-	 1DLwbDDn1sYzo+6CS79dJMmZ5dZs0tLC/CRG/r7/NR0dxYlOfFwe704bskUTbxIcqGHj9
-	 dG2uuMuplbvgv3AS9y975FOnCG6p7WfFZJM6snRZxMHU0H01PN0i8FvlWoprUVrV8lT+F
-	 PHu3MjK6tRwbeu/QVbSmaKgrP7ZkcOxjE1bJ5f0x+j0amoogCKC7OO8DZi+6QJXMupUIU
-	 gPhSIjbIsb3qw9PYZeNZJGqS0gFoXpwA9kV5CaJvQCJ+JD0gdlQ89nT17bYqDtvOIWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793906149;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=jWLFFJ/Hvbs6hlpI8QhMyfWXIRyQD2jWJqvsJ+wsDNc=;
+	b=LcF4BsVAb5xbnDzbXvRBxwGUSO9aRnQG2/tkxIJO9ik/y+/BcnXKheJBl6coCxyghwdG
+	 he7ACpBJICQNjaS5FCqwxDWMRfKUyXcCiz0lY3tuhFCML3dhPA0MzJX87ba7os0daCv/f
+	 xjebqLqkXEMCjxsyhR8lpCxlPrvN06nkQOAgJRGc5gTn3skaWrVRJ+0C1AYXGOPpoW34n
+	 B9VkrWHGbhvOW1aRKdQs8hZQd38XEg3yLsArSTDzxOPjjys9UoZ33TRSY8uJDt+JR/Cn2
+	 XnK5hkEpW4+GFaiD0uudkggRPPRD7EkcfSSJpXb6fe9ZGuFRh5dW9PqQGNhsXdafGNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B0MNLtWQ;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Atxj1Hfb;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60BC606A329
-	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:12:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D60BC606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE0A606A31B
+	for <kvm@vger.kernel.org>; Thu,  5 Nov 2026 19:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B0MNLtWQ
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso980196a91.1
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 11:12:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793905942; x=1794510742; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QH8EWm3WpJvKmm+3SH11RyockHxBeCCGhqou8vP+rPk=;
-        b=B0MNLtWQGjDmicRxY8nTu69DmYdME/D2jJN8rX+nGAlTMa5/iKX0Zivd7mhh+flPfs
-         xy3ZoNN4HgIKW4K4+mbAoNWhsSmDgb1P3WgIZCjZvecSakD2rB4XrTL8WwonQtbvNgZ8
-         h8p2WNu5k95YFljALG1jMJJ03s4qGmEUPwOwManEDxZ+GcL/xuiqjJVeLqmp+5UyzAW6
-         9EH7p2MmwcpUJDnOC5R25PxQkZi+0TuqQnMBjToaTQ/j5/LnlqaqNQd3J93XCaF2MN6H
-         E7WHw7qCt48+ehLyUoviWDEPPA7ju+e/24ge/Nj8T6fML4Ui3s4IgQMHHYqUJVnOXFuq
-         B5Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793905942; x=1794510742;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QH8EWm3WpJvKmm+3SH11RyockHxBeCCGhqou8vP+rPk=;
-        b=stCbxPFvC5+ojQPooazxXk7w94AfYBWeFkM/AEKgv27dF+T4NIibhVz+07PwzURENG
-         un0N2K6oMG69sXkvpNhZNA+ZVUVMMDZHQDzM3KNtPvK1D4F07uyrNuVefHvpMQR6wgEx
-         2wCRrZQFyTZxkVfeDLym5XpGp8QnbzBU93MAjEz2EoHaBZrxRTHbgmvyIpD2ADvfVi5g
-         u0d1LUlToo8fIDl2RFz0xMae/8o6j8gChkXO7LGKvptMRR6VmpqBIxmuU3cWuEBYnUm+
-         hd6C+T0TGeiEjvdoe4alYlCyyNQJ/gGm/7CqnFG/YsKqRephknnzD2O0qrC9W4uWMzko
-         2YDQ==
-X-Forwarded-Encrypted: i=1; AKwUvByxy/SM2QQywe7wyDKYRg4TsIkZVou+ATyjltDOYZjey0vFxmij24ugf41iDay0JvWXBt0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9x3MRJc238NopTbVWACv63xCUjX3sL7jXUMdZyfRmHtpS7tz3G
-	rfEklE2RYjAVBcTfoq+1/8KIROsIvss9aCLXfEgs/aJRj1dhXIOMo1nmX/3OjwKtlQ==
-X-Gm-Gg: AYBFou1T2w28T4kgdI1vxckjKUrFN3SljfPKJStq8mZyZcrZVK2VjLM/KQroVbmK8n1
-	9YRZL7Iqlavi18welL6J02WVmtkFKIj4Uz1skGPVf9EBOlrZYYv2sb5rpDEe6Pr7dvuv883XEY9
-	FA/Xd2foUnfCzT2NKHQYYYFPZnRx5R29LxqKHhgaciwd02AwncjwM014AnARR3mjF0y90KVjc/5
-	JRRhR4KfDvjnUAsI4Bg8/yqY7MCaANEaNBy3mTmyAs1GND1/zv1BVCUfAAjESqYqXgVDy8hYXms
-	524Bv+7WPrB8/4/UWm9nP/lrtzv8sUhk3MP3IGkH0DuP4M4EZWI7AzzqzUo1uAUIsZWAB77JAZo
-	Kws5h5XC03r9fCyq4G7RGoNDvK+TEnm8QxcOf109h/GYeuRVhMe8yp0srMqGBPAbwdnzeTqfLFS
-	wxaita+GVzR3rM5Y7JpOCDSS8SClc2FhwaaJKQpNU0JHjSHpP/6LGtCpFCTCmwq4JeOzkbTW09T
-	ZBmw6n7E2X7RFu587+2bHxzizxkgx1g9X4w0w+mzg/8UeVFpdBBB3txbRGm0FjlqioslpzfJU7z
-	/oIO8u9BZMfmRYGYUZL7/upY0Yp5bcmZF5VsHUvp2DM1X+OSrepYPoRIHdbeeP2k
-X-Received: by 2002:a17:90b:268a:b0:3ac:7c52:faeb with SMTP id 98e67ed59e1d1-3ae89769d66mr17879218a91.41.1793905941532;
-        Thu, 05 Nov 2026 11:12:21 -0800 (PST)
-Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944eb1d1sm5401592a91.0.2026.11.05.11.12.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 11:12:20 -0800 (PST)
-Date: Thu, 5 Nov 2026 19:12:17 +0000
-From: David Matlack <dmatlack@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
-	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
-	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
-	chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
-	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com,
-	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
-	kees@kernel.org, kevin.tian@intel.com, leon@kernel.org,
-	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com,
-	michal.winiarski@intel.com, parav@nvidia.com,
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org,
-	rananta@google.com, rdunlap@infradead.org, rientjes@google.com,
-	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
-	schnelle@linux.ibm.com, skhan@linuxfoundation.org,
-	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com,
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
- Live Update
-Message-ID: <auzVEUpFEoWltpVg@google.com>
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-8-vipinsh@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Atxj1Hfb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927581F000C1;
+	Thu,  5 Nov 2026 19:15:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793906148;
+	bh=jWLFFJ/Hvbs6hlpI8QhMyfWXIRyQD2jWJqvsJ+wsDNc=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=Atxj1HfboS0cIPz3t2ToNl6czr0HdEsh3y1aPDjPoZxlKvfinpGalzonYTrX1qAPL
+	 Gf6agJEMeGFjGndZNrSXa27AywOBC6d32/LVLgpfYFZPa6uUWtLtIy5pVnf0LMqkz/
+	 Xww/cd01lYcGuv8WyHMBwfkkZQKFapsPAeVBTF07RHbRaGLoHC7JZ945J6sp5O1bGB
+	 UflurqNibHuML6W1E5p+vkijERBulj8h9iK7sY5KdxLhr6RIuxbjF6yLH9Ap5vZOq0
+	 IjWDjZUrPG88XSUarm0ewsieEGK/iQYU4alyS6DIEtHkaKqdwB5ObWW3lB4BGNlLyf
+	 cnbJCuCX0RMTA==
+Message-ID: <sashiko-outbox-199830@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11 11/23] KVM: x86: Activate master clock from
+ kvm_arch_init_vm()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
+In-Reply-To: <20261105154955.2525419-12-dwmw2@infradead.org>
+References: <20261105154955.2525419-1-dwmw2@infradead.org>
+ <20261105154955.2525419-12-dwmw2@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 19:15:48 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,117 +59,246 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102153656.1431701-8-vipinsh@google.com>
 
-On 2026-11-02 07:36 AM, Vipin Sharma wrote:
->  * TOCTOU synchronization: vfio_pci_dev_is_frozen() is checked locklessly
->    on entry to the ioctl, read/write and mmap paths, and re-checked under
->    a lock that freeze() holds before any operation that could change the
->    device or vconfig: under vdev->igate in vfio_pci_ioctl_set_irqs() and
->    around every config-space write in vfio_pci_config_rw_single(), under
->    vdev->memory_lock in vfio_pci_runtime_pm_entry(),
->    vfio_pci_ioctl_reset() and the SR-IOV enable path of
->    vfio_pci_core_sriov_configure(), and under dev_set->lock in
->    vfio_pci_dev_set_hot_reset(). A racing operation thus either completes
->    before freeze() takes its snapshot or fails, while existing BAR mmaps,
->    ioeventfds and dma-bufs keep working. Serializing config writes on
->    igate covers the PCI_COMMAND, INTx disable emulation, power state and
->    FLR paths at one point (the INTx disable emulation now uses the
->    igate-held __vfio_pci_intx_mask() and __vfio_pci_intx_unmask()
->    helpers), and also serializes the irq_type and virq_disabled accesses
->    of config writes with VFIO_DEVICE_SET_IRQS.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] KVM: x86: unreachable scaling check in kvm_synchronize_tsc()
+- [Medium] KVM: x86: premature TSC sync in kvm_arch_vcpu_create() corrupts =
+freq match
+- [Medium] KVM: x86: unserviced masterclock request in kvm_arch_vcpu_postcr=
+eate()
+--
 
-I think there's a simpler way to do this. Checking the frozen flag
-locklessly and then re-checking it under whichever lock covers each
-path spreads the synchronization across igate, memory_lock and
-dev_set->lock. That makes it hard to convince yourself every path that
-can change the device is covered. It also makes every config space
-write take igate, for all vfio-pci users, even when
-CONFIG_VFIO_PCI_LIVEUPDATE=n.
+commit e32eb6058695cc6d79a22be2b503c0c26e852ace
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-Instead, I suggest adding a per-device rw_semaphore to struct
-vfio_device in the VFIO core, e.g. liveupdate_rwsem, that protects a
-liveupdate_frozen flag:
+KVM: x86: Activate master clock from kvm_arch_init_vm()
 
- - vfio_device_fops_unl_ioctl(), vfio_device_fops_read() and
-   vfio_device_fops_write() take liveupdate_rwsem for read and fail
-   with -EIO if the device is frozen. That covers every device ioctl in
-   one place, including the ones handled by the VFIO core
-   (VFIO_DEVICE_FEATURE, VFIO_DEVICE_GET_REGION_INFO and
-   VFIO_DEVICE_{ATTACH,DETACH}_IOMMUFD_PT). This patch doesn't block
-   the last two at all today.
+This commit initializes the initial TSC generation and master clock state in
+kvm_arch_init_vm() from an atomic ktime/TSC snapshot, and updates
+kvm_synchronize_tsc() and kvm_arch_vcpu_postcreate() to synchronize vCPUs a=
+nd
+refresh the master clock against that initial generation.
 
- - freeze() and unfreeze() take liveupdate_rwsem for write, before any
-   other lock, and flip the flag. preserve() doesn't need it since it
-   only serializes state that doesn't change after the device is
-   opened.
-
-Putting this in the VFIO core also means other VFIO drivers can reuse
-it if they add Live Update support in the future.
-
-The lock order then becomes:
-
-  liveupdate_rwsem -> dev_set->lock -> igate -> memory_lock
-
-freeze() can still take igate and memory_lock to check irq_type,
-pm_runtime_engaged and sriov_active. But the ioctl, read and write
-paths no longer need to re-check anything under those locks. So you
-can drop the igate change in vfio_pci_config_rw_single(), the
-open-coded vfio_pci_zap_and_down_write_memory_lock() in
-vfio_pci_runtime_pm_entry() and vfio_pci_ioctl_reset(), and the
-smp_load_acquire()/smp_store_release() pair.
-
-Two paths still need their own handling because they don't go through
-the device's file:
-
- - vfio_pci_core_sriov_configure() is reached through sysfs. Take
-   liveupdate_rwsem for read around the frozen check and the
-   sriov_active update.
-
- - VFIO_DEVICE_PCI_HOT_RESET issued on one device also resets the other
-   devices in its dev_set. Keep the check in
-   vfio_pci_dev_set_hot_reset() under dev_set->lock. freeze() sets the
-   flag while holding both liveupdate_rwsem and dev_set->lock, so
-   holding either one is enough to read it. Please don't take the other
-   devices' liveupdate_rwsem there, since that would invert the lock
-   order relative to freeze().
-
-I don't think mmap needs to be blocked at all. Creating a new mapping
-doesn't change the device or any of the state that gets preserved, and
-existing mappings already keep working while the device is frozen.
-Leaving mmap alone also avoids taking liveupdate_rwsem under mmap_lock,
-which could deadlock: the ioctl, read and write paths can fault on user
-memory (taking mmap_lock) while holding liveupdate_rwsem for read, and
-freeze() may be waiting for the write lock. Please update the comment
-in freeze() and the DOC section to match.
-
-> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-> index 9914f3ac69ae..1f1ac7a798aa 100644
-> --- a/drivers/vfio/pci/vfio_pci_config.c
-> +++ b/drivers/vfio/pci/vfio_pci_config.c
-> @@ -644,10 +644,10 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
->  
->  		if (virt_intx_disable && !vdev->virq_disabled) {
->  			vdev->virq_disabled = true;
-> -			vfio_pci_intx_mask(vdev);
-> +			__vfio_pci_intx_mask(vdev);
->  		} else if (!virt_intx_disable && vdev->virq_disabled) {
->  			vdev->virq_disabled = false;
-> -			vfio_pci_intx_unmask(vdev);
-> +			__vfio_pci_intx_unmask(vdev);
->  		}
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 9401685287215..6dbdb60962fe7 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -1500,11 +1500,25 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u=
+64 *value, bool user_initiated)
+> =20
+>  		data =3D kvm->arch.cur_tsc_write + delta;
+> =20
+> -		if (!kvm_check_tsc_unstable())
+> -			offset =3D kvm->arch.cur_tsc_offset;
+> -		else
+> +		/*
+> +		 * The generation's offset can only be joined by a vCPU which
+> +		 * scales the TSC by the same ratio it was recorded with; the
+> +		 * initial generation's offset is recorded at VM creation
+> +		 * with the default ratio, before any vCPU exists. With a
+> +		 * different ratio, open a new generation (recording this
+> +		 * vCPU's own offset) rather than leave the generation's
+> +		 * ratio and offset describing different scaling domains.
+> +		 */
+> +		if (vcpu->arch.l1_tsc_scaling_ratio !=3D
+> +		    kvm->arch.cur_tsc_scaling_ratio) {
+>  			offset =3D kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
+> -		matched =3D true;
+> +		} else {
+> +			if (!kvm_check_tsc_unstable())
+> +				offset =3D kvm->arch.cur_tsc_offset;
+> +			else
+> +				offset =3D kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
+> +			matched =3D true;
+> +		}
 >  	}
+> =20
+>  	__kvm_synchronize_tsc(vcpu, offset, data, ns, matched, user_initiated);
 
-With the rwsem, config writes no longer need igate, so this change
-isn't needed. If config writes and VFIO_DEVICE_SET_IRQS really do race
-on irq_type and virq_disabled today, that's unrelated to Live Update.
-Please send it as a separate fix.
+[Severity: Medium]
+Can this scaling ratio check in kvm_synchronize_tsc() ever be reached?
 
-Lastly, please add the freeze infrastructure and the checks in their
-own commit ahead of this one, e.g. "vfio: Add infrastructure to freeze
-devices for Live Update". Then this patch only has to implement
-freeze() and unfreeze() on top of it, which will make both easier to
-review.
+The enclosing block in kvm_synchronize_tsc() is gated on matching
+virtual_tsc_khz:
+
+	if (synchronizing &&
+	    vcpu->arch.virtual_tsc_khz =3D=3D kvm->arch.cur_tsc_khz) {
+		u64 delta =3D nsec_to_cycles(vcpu, elapsed);
+
+		data =3D kvm->arch.cur_tsc_write + delta;
+		...
+		if (vcpu->arch.l1_tsc_scaling_ratio !=3D
+		    kvm->arch.cur_tsc_scaling_ratio) {
+
+In set_tsc_khz(), vcpu->arch.l1_tsc_scaling_ratio is derived deterministica=
+lly
+from vcpu->arch.virtual_tsc_khz, and __kvm_synchronize_tsc() updates
+kvm->arch.cur_tsc_khz and kvm->arch.cur_tsc_scaling_ratio together.
+
+Meanwhile, kvm_arch_init_vm() initializes:
+
+	kvm->arch.cur_tsc_scaling_ratio =3D kvm_caps.default_tsc_scaling_ratio;
+	kvm->arch.cur_tsc_khz =3D kvm->arch.default_tsc_khz;
+
+When userspace configures a non-default guest TSC frequency via the VM-scop=
+ed
+KVM_SET_TSC_KHZ ioctl in kvm_arch_vm_ioctl():
+
+	mutex_lock(&kvm->lock);
+	if (!kvm->created_vcpus) {
+		WRITE_ONCE(kvm->arch.default_tsc_khz, user_tsc_khz);
+		r =3D 0;
+	}
+	mutex_unlock(&kvm->lock);
+
+only kvm->arch.default_tsc_khz is updated, leaving kvm->arch.cur_tsc_khz at
+the initial host frequency. Or, if userspace instead invokes the vCPU-scoped
+KVM_SET_TSC_KHZ ioctl after creating the first vCPU, virtual_tsc_khz also
+differs from kvm->arch.cur_tsc_khz.
+
+In both cases, vcpu->arch.virtual_tsc_khz =3D=3D kvm->arch.cur_tsc_khz is f=
+alse in
+kvm_synchronize_tsc(), so the outer if block is skipped entirely. That leav=
+es
+data at 0 instead of extrapolating data =3D kvm->arch.cur_tsc_write + delta=
+ from
+the VM-creation epoch (while kvmclock_offset remains anchored at VM creation
+time), and on VMs where vcpu->arch.guest_tsc_protected causes
+__kvm_synchronize_tsc() to return early, kvm->arch.cur_tsc_scaling_ratio and
+kvm->arch.master_tsc_scaling_ratio remain stuck at
+kvm_caps.default_tsc_scaling_ratio.
+
+> @@ -9645,8 +9659,15 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcp=
+u)
+>  		return;
+>  	vcpu_load(vcpu);
+>  	kvm_synchronize_tsc(vcpu, NULL, false);
+> -	if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
+> +
+> +	/*
+> +	 * Refresh the VM-creation masterclock snapshot (see
+> +	 * kvm_arch_init_vm), synchronously so that it is valid even for
+> +	 * userspace which queries the clock before ever running a vCPU.
+> +	 */
+> +	if (vcpu->vcpu_idx =3D=3D 0)
+>  		kvm_update_masterclock(vcpu->kvm, NULL);
+> +
+>  	vcpu_put(vcpu);
+> =20
+>  	/* poll control enabled by default */
+
+[Severity: Medium]
+What happens if creating a secondary vCPU (vcpu->vcpu_idx > 0) queues
+KVM_REQ_MASTERCLOCK_UPDATE on that vCPU?
+
+During vCPU creation, kvm_synchronize_tsc() -> __kvm_synchronize_tsc() ->
+kvm_track_tsc_matching() checks whether a masterclock update is needed:
+
+	if ((ka->use_master_clock && update_mclock) ||
+	    (ka->use_master_clock !=3D use_master_clock))
+		kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
+
+When vcpu->vcpu_idx > 0 and its synchronization opens a new TSC generation,
+changes ka->all_vcpus_matched_tsc, or changes masterclock eligibility,
+KVM_REQ_MASTERCLOCK_UPDATE is queued only on the newly created vCPU.
+
+With kvm_arch_vcpu_postcreate() only calling kvm_update_masterclock() when
+vcpu->vcpu_idx =3D=3D 0, won't that request remain unserviced until the sec=
+ondary
+vCPU enters vcpu_enter_guest(), leaving ka->use_master_clock and the
+masterclock state stale for host-side KVM_GET_CLOCK / KVM_GET_CLOCK_GUEST /
+KVM_SET_CLOCK_GUEST calls and delaying KVM_REQ_CLOCK_UPDATE for already
+running sibling vCPUs?
+
+> @@ -10106,16 +10133,41 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned =
+long type)
+>  	 * returns early =E2=80=94 is still eligible for PVCLOCK_TSC_STABLE_BIT.
+>  	 */
+>  	kvm->arch.all_vcpus_matched_tsc =3D true;
+> +	kvm->arch.cur_tsc_scaling_ratio =3D kvm_caps.default_tsc_scaling_ratio;
+> +	kvm->arch.cur_tsc_khz =3D kvm->arch.default_tsc_khz;
+> =20
+>  	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
+> +
+> +	/*
+> +	 * Establish the initial TSC generation for synchronization logic.
+> +	 * The first vCPU will sync to this, starting its guest TSC at the
+> +	 * number of cycles elapsed since VM creation rather than at zero.
+> +	 * This ensures coherence with the kvmclock epoch (also set here),
+> +	 * and the master clock snapshot taken below is immediately valid.
+> +	 * It is refreshed again when the first vCPU is created, in case
+> +	 * the host clocksource changed (and changed back) in between:
+> +	 * pvclock_gtod_update_fn() does not notify a VM with no vCPUs.
+> +	 */
+> +#ifdef CONFIG_X86_64
+> +	if (!kvm_get_time_and_clockread(&kvmclock_ns, &kvmclock_host_tsc))
+> +#endif
+> +	{
+> +		/*
+> +		 * If not simultaneous, we want the TSC to be zero slightly
+> +		 * *after* the kvmclock is zero.
+> +		 */
+> +		kvmclock_ns =3D get_kvmclock_base_ns();
+> +		kvmclock_host_tsc =3D rdtsc();
+> +	}
+> +	kvm->arch.cur_tsc_write =3D 0;
+> +	kvm->arch.cur_tsc_offset =3D -(s64)kvmclock_host_tsc;
+> +	kvm->arch.cur_tsc_nsec =3D kvmclock_ns;
+> +	kvm->arch.cur_tsc_generation =3D 1;
+> +	kvm->arch.kvmclock_offset =3D -kvmclock_ns;
+
+[Severity: Medium]
+Now that cur_tsc_khz and cur_tsc_generation are initialized from
+kvm_arch_init_vm() with all_vcpus_matched_freq =3D true and
+all_vcpus_matched_tsc =3D true, does the initial kvm_set_tsc_khz() call in
+kvm_arch_vcpu_create() corrupt frequency and TSC matching when userspace us=
+es
+per-vCPU KVM_SET_TSC_KHZ?
+
+In kvm_vm_ioctl_create_vcpu(), kvm_arch_vcpu_create() runs before
+atomic_inc(&kvm->online_vcpus):
+
+	kvm_arch_vcpu_create(vcpu)
+		kvm_set_tsc_khz(vcpu, vcpu->kvm->arch.default_tsc_khz)
+			set_tsc_khz(vcpu, user_tsc_khz, false)
+				kvm_synchronize_tsc(vcpu, NULL, false)
+
+Consider creating vCPU 0 and setting its frequency to F !=3D default_tsc_kh=
+z via
+the vCPU-scoped KVM_SET_TSC_KHZ ioctl (so cur_tsc_khz =3D F,
+cur_tsc_freq_generation =3D 1, and nr_vcpus_matched_freq =3D 1), and then c=
+reating
+vCPU 1:
+
+1. In kvm_arch_vcpu_create(vcpu 1), kvm_set_tsc_khz() syncs vCPU 1 at
+   default_tsc_khz while online_vcpus is still 1. Because default_tsc_khz !=
+=3D F,
+   __kvm_synchronize_tsc() increments cur_tsc_freq_generation to 2, clears
+   all_vcpus_matched_freq, sets nr_vcpus_matched_freq =3D 1, and overwrites
+   cur_tsc_khz =3D default_tsc_khz.
+
+2. Immediately afterwards, kvm_track_tsc_matching() reads online =3D 1, sees
+   nr_vcpus_matched_freq (1) >=3D online (1), and sets
+   ka->all_vcpus_matched_freq =3D true.
+
+3. After online_vcpus is incremented to 2, kvm_arch_vcpu_postcreate(vcpu 1)
+   calls kvm_synchronize_tsc(vcpu 1, NULL, false). Because vCPU 1's
+   virtual_tsc_khz already matches cur_tsc_khz (default_tsc_khz),
+   __kvm_synchronize_tsc() does not clear all_vcpus_matched_freq.
+
+If vCPU 1 is left at default_tsc_khz, all_vcpus_matched_freq remains true e=
+ven
+though vCPU 0 is at F and vCPU 1 is at default_tsc_khz. Conversely, if
+userspace then sets vCPU 1's frequency to F via KVM_SET_TSC_KHZ, the
+intermediate sync at default_tsc_khz has already bumped
+cur_tsc_freq_generation and cur_tsc_generation, so setting vCPU 1 to F bumps
+both generations again with nr_vcpus_matched_freq =3D 1 and
+nr_vcpus_matched_tsc =3D 1 (for 2 online vCPUs), leaving all_vcpus_matched_=
+freq
+and all_vcpus_matched_tsc permanently false even though both vCPUs are
+configured to F.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105154955.2525=
+419-1-dwmw2@infradead.org?part=3D11
