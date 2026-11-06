@@ -1,58 +1,133 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.146
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793997319;
-	b=0deFY7IMRxGfyRKvn5WNEz7ewfhVbKNkWfWRUWFTH2zBuVUzh++Ce4+AKM9VTFt/oS77
-	 2XecHKrtbH/8Fvb9Ki6nxHvKgALZklzig0jmeInqlyH/q4k8urjKaLBJ6FVq1jotYZXT+
-	 66zZVb1nOM+XqC16dj2Ln12qrIKBYQqJGCeD0Zs0jSr//sl2zWIYIqb+r2PPQAlhn75w+
-	 uxR5mKX4mvOlj7rQVprTDbqIX12IZy7/TfBoG5vJL2sWq/mh9mVRds6fk8LgprmShCLRK
-	 0LsvVlkkt2ROdk5fy8UxU97lBRg167mUeOa91fuxqWEmvhddK/soRFjWP8utwL6DzHw==
+	t=1793997566;
+	b=ZU6I2wH1NSoBfYNWC7TJH4rXfzUhJr1MyS63d8GJfuX9eotCWUaSukhGKk2LgDc0i+D5
+	 Zf8AvmVjfvU4FNmeVLHzzmkj2QO5f5RDynDcRZU8W+VwnVX+HvtKRWkwk3iKXG5JZDYON
+	 fjDmFhZesCdpqgA9+p4FVvSv3uZm5t5xmas4Jjs8m87QYquswlauZsWhrzvQkwy8XeFMo
+	 kig6XDBoo9c1LcfxK//SOOH8BkbVaLpEsq4BwKVwO6Divz9iGESbvdrXO8DfGCC0yNMQ1
+	 H5rs/w6iZS/jIr54XCZzhAxpmC5gF7z8IzLIvYT+jCYI6taB2DPc6xT2EfWMSFPh6Fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793997319;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=t2PKG6ft0uQ0Jp0pnLvRhw5qbjOJj0JEcw/PXEMCoY8=;
-	b=iucNKDaZIif5S7bsaBNL9/T9TaGmdpYdDS+vZciI3nwQiz2B6q6HHFecoxOjmzkF0Gd4
-	 S8uDG6TsDZFZmkEBCfQg86qBPyG6EHNTr9Ak49f2BIuKTkdtADVHCC0CabJlcRJS1vIDT
-	 crvGc47yRdGX5rX/2cjRomh8ZpMQPXrJgOPMxJqgY0fNmT19S01I6YBAo+u060Kiv26S0
-	 SqKXqCxq6inJzXwEMpZnr8NJUgN1LT6OgLL+UOQyT97tfcMV+S80c0locvWxYYbep+Pix
-	 X+cYo/hDwds7ZslyhlLNbo6RDwmhoV7N6CnhZaJSmRmXNrIUZaJpVMPxDQ7b+ycBnZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793997566;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=y0BVziaquUjVVAPoh4llDs6v2FQ9OhndML7IsF84gsc=;
+	b=I5DEzF4oGAwoMPInR2jp+YPTQbrkzprt3k+SSENxyBy+F+mbhuVG0drLWLxqoL+zLMK1
+	 WX5dEPW1FCrVBoCJmN+rBTtN3gzdu3FN9Ih54OQQAtKn2fK3QsiP3wOSc6e+FvvwKtt78
+	 pBYYeYbR9eGFoyuGsaRrOvnrepzHBXtdSmomOozbB9CKxnqmP1F2l30yw21mOprgI+smc
+	 Crid5ANJ92mC/PJ7lEWiaoNzc1FWQrWsUiCx7rHHOFE77405jhMBtUlqQvhHbFnbopuuX
+	 Atm1p3EetMwnSzkCPYHyG7LFbXFJSvVl9N8i5gAItiz1xrq4zQcsu0kekUosAhLK/Wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEQPqsz6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=QFns8ebX;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=jnaNMHw6;
+	arc=none smtp.remote-ip=103.168.172.146
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF96606A329;
-	Fri,  6 Nov 2026 20:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D780606A326
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 20:39:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D780606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEQPqsz6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77C21F0089F;
-	Fri,  6 Nov 2026 20:35:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793997319;
-	bh=t2PKG6ft0uQ0Jp0pnLvRhw5qbjOJj0JEcw/PXEMCoY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OEQPqsz6k7rJc27U0CYanNJRkWGN32n4tBzQ1uN1mTwhUsEW8VcPBq3bOiGW7Ddwb
-	 HJgeZr1W4lvLQ/720jV2SIsD6UBcNr9vf5x139yuPqkR1OOhSdU/eWl8sl1WJUHZJh
-	 f+0+vvrP+6kmofWTfrp+L6btps3kB7qRnjNZS8qxN6/TEpIrAv8ivXwg6+PJjT6Z1Q
-	 6UPNlGAaEG/6OBzO6yoKoESbGw3v2gzJ2Kec0FeEcxSlPSkmyUo7kt2PmhaLNzZ3OC
-	 0gvUau7waMIIdERRwS95iU2BdALwVfO6k9ACEOEbuvqM14DMsDirTT/Brd8kBKh1c2
-	 LtgCgiLJnMUTA==
-Date: Fri, 6 Nov 2026 20:35:17 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
-	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v3 11/18] KVM: x86/pmu: Emulate
- IA32_PERF_GLOBAL_STATUS_SET MSR
-Message-ID: <au44SIwBF52nsIkk@google.com>
-References: <20261106013927.166209-1-zide.chen@intel.com>
- <20261106013927.166209-12-zide.chen@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=QFns8ebX;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=jnaNMHw6
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfout.phl.internal (Postfix) with ESMTP id 79C39EC01DC
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 15:39:24 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Fri, 06 Nov 2026 15:39:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793997564;
+	 x=1794083964; bh=y0BVziaquUjVVAPoh4llDs6v2FQ9OhndML7IsF84gsc=; b=
+	QFns8ebXFo0UFvT6+ZHPsjuq+ghcluonVEII3xNwxed3tzNZSMo0BDnZS3wq9lKo
+	0t5PE6BPBfCVD/nTpgG5nwaqP6/OX3R5qJ6KDfKf1RgOt86qNBb+s7sM0+uWuMIZ
+	H1+IEctvDJOBnF2LcVuu1jVTd2xWcB61EbuTFQIQIY6cKRq611Yhpo1ZXcNt2Xis
+	2v3z+2PCZgSpn0JazvwAKLS6Iw3/OgxnSfXbPL6M5J2U2zc2E3qYoNejg1j7oTJo
+	Yui5sKMjD7NzhcqC60CUNh3OL5V5TQjQ1hySMnCfJlm8QSwulyGCXh8F9s2KAaGF
+	Ghwbe1SB3VWQSdmDM4MrIw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793997564; x=
+	1794083964; bh=y0BVziaquUjVVAPoh4llDs6v2FQ9OhndML7IsF84gsc=; b=j
+	naNMHw6TOkiuBhQIxtaTCEmuvzmoa6wH6SL5N5kjy38vB1ucE+V8i3AQd0q9rb+h
+	dldrUfO0DPZZ7Xxim5fi08xJdLrHF71dihHNdTahXafS5oWt/OIW2/CRNjJyR2Th
+	Ceg0bMTZN1v2YKd3FqFuqnqqlF9W6ZQzYhUtp1OXeqCOD6tO6r207r/Pyp9eCoUi
+	Uw55yiI876gdEhjtzdmyFfHYJsoi75/Puatt0AasECt38B/r3sLUaKb69pATEuwf
+	CHPVG9LA3cl1um+RnAOjwiWRYFvutWcLPZc6M1LqemJvgeeZDdEVSBXXLQ7IQNtS
+	GZ5G+BAFYDz01NzSmuuAQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793997564; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:PgOL7W2t1P1EkFQ8DO5YQ9ln4+uhyi1uHUTIHXvGm0Jv6ft
+	WKxDj+thC5/h4MScUS1YijBKCQBHUJLQRoSGlrbPu8pO3QKWmAixfLFNCP/h2/D6
+	2PYUpV37YfaSDJvE7SYwy3e3kj54gS7kSLzxnuHYER88uF8LJw6TT8jm2CHuAwKI
+	2pMrxva9Tp95DJQ7axWAerSOx4te65isN6rM1Co4s5QKC6T7We/o1/554AHC8yx0
+	uFDCCkfdHwF7/nzTbcHd3X0CRmWF2kThDWuYRty6GREVu66+qkC3yGRHTxSgmHkv
+	h2YcGP42TbH0gADF9GYDqM7kbtFfeAei4GjiSmQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:TC2OAASFXc/kqGL+CunvWFfjUQDUXEFfcgl8mkejbCw=:KLM1XTdGORKLzVXxMM2+MBqBSSgPSj1LNFXBZwNORQc=;
+X-ME-Sender: <xms:-zruapswx845re28jK7E-OISiOWhgLdGEzbA0gYJ4Jaukh4q8ERM5w>
+    <xme:-zruagGv_oYl0JasYwTqNuMV9YfG4cqnE57Xk0ZmwUhwx4wfvWkkZcKjTNiOcHNH5
+    f1ObK33XWf7tyXP_cUBksnGPcFiyply7mFddvMfjxbMyfhNaK9-Rg>
+X-ME-Received: <xmr:-zruakL7z03VZTgAiqT4Blwr0mVgipsBhSTSBlaAlE-iTpTJR0DAEzose6zAjw>
+X-ME-Proxy-Cause: dmFkZTGIbL7eiEY7X8p/l+CeUB7m44a61PuMeL+fbY3aREjzPUsLlzqVekELJvtGSYzY/I
+    nO/9fOkHagfaTDpr/q7Hu4ec1OgxpJzeR1b+u+/9ylFLL0hiPQ7Q5WGOti0WTlU639UET8
+    W0OANyCth0cdOR2e7W6mWO1PJHdl/BResgCHiTxzvLlqq3zCDX3wvzLg16WhpWjXSqlvxH
+    89LRMj0xWkNEZ4qN6TB296bhwMUVIMYXaAmu9mgVoI4iM8H8vundo/2ymieM+LgoFiwTPq
+    IhQxBsWs0Ga7dr1x8oM6/9wnzhBZVCQvByhcFz33jTVizQNgL5tYw3VmrPQxyPhLIvxifv
+    H7QY9kPySOCsFJrhxoC6uqsSDc1GcMOACH3r7Wrmfr/jnoMJGP58FMF4t2RcELJnfT33jD
+    je5SutMzSelw6oN50vcX7lIELIN9R0dR9ohFPMT4pfg+q7rmzgKEPWOhidL3uG4rHDfx8E
+    bdsoBTFLWpPoCvbhqBhLI+776dylwZRjCQk6W/hoGKw0YgFB8jgrcJoIK9CA/qxfCdKgtu
+    VpseP5mr6Y0vLjZMqZAROvOolYbNFuQE9hVhhbAwSnSVTI/Gge+4z1RvnWcKgImEeF39T+
+    OWgDl/6GYLI6UCeWNQ2UCfPZamPvO1USkUaKy4natYDrfR6Un0JmtJhr1VyA
+X-ME-Proxy: <xmx:-zruaoYTS6zaXrUnuamRBu1QXRKhqDl6CLVkSZ2bn8QMmD4Yem2QHw>
+    <xmx:-zruahps8Qx_fewfGVvHRM6AEFA-RYq-3pHwGw9P3jodAEu4HSumLg>
+    <xmx:-zruagHkcYHQpi7Qlk7TjgwSxyJUT48sIqyc-BBi0duFKzQbget_zg>
+    <xmx:-zrualdFIYqEPdPn5BJgS0ePxXMEsDJW9LK7HWSjS1lZq1TJQzK-pA>
+    <xmx:_DruatZac4csxBguHlwKZ6baZZokuGozy6Fj434FxEBTDO-Hb4g6MpQ1>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 Nov 2026 15:39:21 -0500 (EST)
+Date: Fri, 6 Nov 2026 13:39:20 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v6 09/31] vfio/pci: Advertise the mmap areas around
+ excluded ranges
+Message-ID: <20261106133920.144f0665@shazbot.org>
+In-Reply-To: <20261016161839.2765592-10-mhonap@nvidia.com>
+References: <20261016161839.2765592-1-mhonap@nvidia.com>
+	<20261016161839.2765592-10-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,138 +137,163 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106013927.166209-12-zide.chen@intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 05, 2026 at 06:39:20PM -0700, Zide Chen wrote:
-> Intel PerfMon v4 introduces IA32_PERF_GLOBAL_STATUS_SET (0x391) to
-> allow software to set individual bits in the global status MSR. Reads
-> of IA32_PERF_GLOBAL_STATUS_SET always return zero.
+On Fri, 16 Oct 2026 21:48:16 +0530
+<mhonap@nvidia.com> wrote:
+
+> From: Manish Honap <mhonap@nvidia.com>
 > 
-> IA32_PERF_GLOBAL_STATUS_SET is not part of the VM state, so it doesn't
-> need to be advertised to userspace, nor saved and restored during live
-> migration.
+> A range excluded from mmap must not be reachable through an mmap of its
+> BAR. Refuse an mmap that overlaps such a range, and advertise the BAR
+> with a sparse mmap capability that lists the areas between the excluded
+> ranges, so a VMM maps those and traps the rest.
 > 
-> Always intercept IA32_PERF_GLOBAL_STATUS_SET to prevent the guest from
-> modifying status bits that are not virtualized by KVM.
+> mmap is page granular, so each range is rounded out to whole pages, and
+> ranges that meet after rounding form one hole. The sorted list gives the
+> areas in two walks: the first counts them and the second fills them.
 > 
-> Bit 63 (CondChgd) stays unreserved in pmu->global_status_rsvd to
-> architecturally allow the guest to write this bit on STATUS_RESET (0x390)
-> to clear it, and allow userspace to set it on GLOBAL_STATUS (0x38E).
+> A BAR without mmap-excluded ranges gets no new capability. The MSI-X
+> table is excluded from read and write only, so the MSI-X BAR is
+> unchanged.
 > 
-> However, bit 63 is architecturally reserved in STATUS_SET per the SDM.
-> Reject writes to bit 63, injecting #GP for guest writes. While older
-> processors had silicon errata that accepted writes without #GP (e.g.
-> SKX95), strictly enforce the architectural specification for
-> deterministic behavior across migrations.
-> 
-> Platform-specific EDS clarifies that CondChgd indicates a change to
-> IA32_MISC_ENABLE[7], which KVM intercepts and keeps strictly read-only
-> for guests. This guarantees hardware will never assert CondChgd during
-> guest execution.
-> 
-> Thus, the architectural asymmetry among these three MSRs is safe; being
-> unable to restore bit 63 to hardware via STATUS_SET is benign because
-> the guest will never legitimately observe CondChgd. Filter it out
-> defensively before writing to hardware in intel_mediated_pmu_load().
-> 
-> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> Assisted-by: LLM
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
 > ---
-> v3:
-> - Split from combined v2 patch into standalone GLOBAL_STATUS_SET patch.
-> - Always intercept IA32_PERF_GLOBAL_STATUS_SET to prevent passthrough of
->   unvirtualized status bits. (Jim)
-> - Reject writing bit 63 (CondChgd) to IA32_PERF_GLOBAL_STATUS_SET. (Jim)
-> - Filter out bit 63 before writing to hardware in intel_mediated_pmu_load().
-> - Move validation for MSR_CORE_PERF_GLOBAL_STATUS_SET to pmu_intel.c rather
->   than common pmu.c to avoid exposing the Intel MSR on AMD.
+>  drivers/vfio/pci/vfio_pci_core.c | 91 ++++++++++++++++++++++++++++++++
+>  1 file changed, 91 insertions(+)
 > 
-> v2:
-> - Add the missing vmcs02 updates for these two MSRs.
-> - Change "> 3" to ">= 4" to make the "v4-gated" more obvious and match
->   the existing code style.
-> ---
->  arch/x86/kvm/pmu.c           | 13 +++++++++++++
->  arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++--
->  2 files changed, 25 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index 27d6a9169821..2cb5bccc7044 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -855,6 +855,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
->  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
->  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
-> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
->  		msr_info->data = 0;
->  		break;
->  	default:
-> @@ -921,6 +922,18 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->  		if (!msr_info->host_initiated)
->  			pmu->global_status &= ~data;
->  		break;
-> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> +		/*
-> +		 * Bit 63 (CondChgd) is architecturally reserved in STATUS_SET.
-> +		 * Older CPUs errantly accepted writes without #GP (e.g. SKX95),
-> +		 * but KVM strictly enforces the architectural spec to ensure
-> +		 * consistent behavior across migrations.
-> +		 */
-> +		if (data & (pmu->global_status_rsvd | GLOBAL_STATUS_COND_CHG))
-> +			return 1;
-
-Is it intentional to disallow userspace from writing
-GLOBAL_STATUS_COND_CHG through MSR_CORE_PERF_GLOBAL_STATUS_SET, even tho
-it's allowed through MSR_CORE_PERF_GLOBAL_STATUS?
-
-> +		if (!msr_info->host_initiated)
-> +			pmu->global_status |= data;
-> +		break;
->  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
->  		if (!msr_info->host_initiated)
->  			pmu->global_status |= data & ~pmu->global_status_rsvd;
-> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-> index ce668ea08da5..e81a3f8b9b02 100644
-> --- a/arch/x86/kvm/vmx/pmu_intel.c
-> +++ b/arch/x86/kvm/vmx/pmu_intel.c
-> @@ -197,6 +197,8 @@ static bool intel_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
->  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
->  	case MSR_CORE_PERF_FIXED_CTR_CTRL:
->  		return kvm_pmu_has_perf_global_ctrl(pmu);
-> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> +		return pmu->version >= 4;
->  	case MSR_IA32_PEBS_ENABLE:
->  		ret = vcpu_get_perf_capabilities(vcpu) & PERF_CAP_PEBS_FORMAT;
->  		break;
-> @@ -827,8 +829,16 @@ static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu)
->  	toggle = pmu->global_status ^ global_status;
->  	if (global_status & toggle)
->  		wrmsrq(MSR_CORE_PERF_GLOBAL_OVF_CTRL, global_status & toggle);
-> -	if (pmu->global_status & toggle)
-> -		wrmsrq(MSR_CORE_PERF_GLOBAL_STATUS_SET, pmu->global_status & toggle);
-> +
-> +	/*
-> +	 * CondChgd is architecturally reserved in GLOBAL_STATUS_SET. Unless
-> +	 * set by malicious userspace, this bit should never be set in
-> +	 * pmu->global_status; filter it out defensively to protect against
-> +	 * a host #GP.
-
-IIUC, this will ignore bit 63 completely when written by userspace,
-should KVM be doing this?
-
-> +	 */
-> +	if ((pmu->global_status & toggle) & ~GLOBAL_STATUS_COND_CHG)
-
-Maybe store this in a variable as it's used in wrmsrq() as well?
-
-> +		wrmsrq(MSR_CORE_PERF_GLOBAL_STATUS_SET,
-> +		       (pmu->global_status & toggle) & ~GLOBAL_STATUS_COND_CHG);
->  
->  	wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, pmu->fixed_ctr_ctrl_hw);
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index bee3d1b4d8d2..f099a294af34 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1106,6 +1106,88 @@ static void vfio_pci_free_excluded_ranges(struct vfio_pci_core_device *vdev)
+>  	}
 >  }
-> -- 
-> 2.56.0
-> 
+>  
+> +/* True when [start, start + len) on @bar overlaps a range with any of @flags. */
+> +static bool vfio_pci_bar_range_excluded(struct vfio_pci_core_device *vdev,
+> +					int bar, u64 start, u64 len, u32 flags)
+> +{
+> +	struct vfio_pci_excluded_range *range;
+> +
+> +	/* Only BARs have excluded ranges; a device-specific region has none. */
+> +	if (bar >= PCI_STD_NUM_BARS)
+> +		return false;
+> +
+> +	list_for_each_entry(range, &vdev->excluded_ranges[bar], entry) {
+> +		if (range->start >= start + len)
+> +			break;
+> +		if ((range->flags & flags) &&
+> +		    start < range->start + range->size)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +/*
+> + * Advertise a BAR with mmap-excluded ranges as the mmap-able areas between
+> + * them. mmap is page granular, so each range is rounded out to whole pages;
+> + * ranges that meet after rounding merge into one hole. The first walk counts
+> + * the areas and the second fills them.
+> + */
+> +static int vfio_pci_excluded_sparse_cap(struct vfio_pci_core_device *vdev,
+> +					int bar, struct vfio_info_cap *caps)
+> +{
+> +	struct vfio_region_info_cap_sparse_mmap *sparse __free(kfree) = NULL;
+> +	u64 bar_len = pci_resource_len(vdev->pdev, bar);
+> +	struct vfio_pci_excluded_range *range;
+> +	u32 nr_areas = 0;
+> +	bool holes = false;
+> +	u64 pos = 0;
+> +	u32 i = 0;
+> +
+> +	list_for_each_entry(range, &vdev->excluded_ranges[bar], entry) {
+> +		if (!(range->flags & VFIO_PCI_EXCLUDE_MMAP))
+> +			continue;
+> +		holes = true;
+> +		if (ALIGN_DOWN(range->start, PAGE_SIZE) > pos)
+> +			nr_areas++;
+> +		pos = max(pos, ALIGN(range->start + range->size, PAGE_SIZE));
+> +	}
+> +	if (!holes)
+> +		return 0;
+> +	if (pos < bar_len)
+> +		nr_areas++;
+
+The number of sparse ranges is bounded by (num_mmap_excluded_ranges +
+1).  We're dealing with a very low number of excluded ranges, bounded by
+insertion via kernel drivers and core.  It seems worthwhile to avoid
+the duplication with a simple list walk that counts the mmap excluded
+ranges, then all of the alignment happens once, and the resulting
+nr_areas is calculated as we fill.
+
+Note that with the use of __free, it's generally recommended to
+allocate at the point it's declared and mixed declarations and
+statements are allowed for this.  We can therefore do the declaration
+and allocation after we've done the simple version of the counting loop.
+Thanks,
+
+Alex
+
+> +
+> +	sparse = kzalloc_flex(*sparse, areas, nr_areas);
+> +	if (!sparse)
+> +		return -ENOMEM;
+> +
+> +	sparse->header.id = VFIO_REGION_INFO_CAP_SPARSE_MMAP;
+> +	sparse->header.version = 1;
+> +	sparse->nr_areas = nr_areas;
+> +
+> +	pos = 0;
+> +	list_for_each_entry(range, &vdev->excluded_ranges[bar], entry) {
+> +		u64 hole = ALIGN_DOWN(range->start, PAGE_SIZE);
+> +
+> +		if (!(range->flags & VFIO_PCI_EXCLUDE_MMAP))
+> +			continue;
+> +		if (hole > pos)
+> +			sparse->areas[i++] = (struct vfio_region_sparse_mmap_area) {
+> +				.offset = pos,
+> +				.size = hole - pos,
+> +			};
+> +		pos = max(pos, ALIGN(range->start + range->size, PAGE_SIZE));
+> +	}
+> +	if (pos < bar_len)
+> +		sparse->areas[i] = (struct vfio_region_sparse_mmap_area) {
+> +			.offset = pos,
+> +			.size = bar_len - pos,
+> +		};
+> +
+> +	return vfio_info_add_capability(caps, &sparse->header,
+> +					struct_size(sparse, areas, nr_areas));
+> +}
+> +
+>  int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
+>  				      unsigned int type, unsigned int subtype,
+>  				      const struct vfio_pci_regops *ops,
+> @@ -1254,6 +1336,10 @@ int vfio_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
+>  				if (ret)
+>  					return ret;
+>  			}
+> +			ret = vfio_pci_excluded_sparse_cap(vdev, info->index,
+> +							   caps);
+> +			if (ret)
+> +				return ret;
+>  		}
+>  
+>  		break;
+> @@ -1947,6 +2033,11 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
+>  	if (req_start + req_len > phys_len)
+>  		return -EINVAL;
+>  
+> +	/* An excluded sub-range is reachable only through its trap, not mmap. */
+> +	if (vfio_pci_bar_range_excluded(vdev, index, req_start, req_len,
+> +					VFIO_PCI_EXCLUDE_MMAP))
+> +		return -EINVAL;
+> +
+>  	/*
+>  	 * Ensure the BAR resource region is reserved for use.
+>  	 */
+
