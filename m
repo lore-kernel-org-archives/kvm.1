@@ -1,112 +1,112 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793985342;
-	b=a6lhM4ULtIDWgM79MgYitdMJTBrSoeis4Ol1xgWNUMMhQDVrxZnfJlokpmU1uKROwqJk
-	 Zjn205D/l1PPLNrO4vbTvkqVJvvDJiGL56laKhwvxLqOfdg/kfTcpKTtCsN5Dk5DBoVD/
-	 n+JonMGZ2xOWFsjrlmTjzXa3/SNcSvL7uuJWPkkkx6cbJ2O1nabzCyPDnZV7n6+8kDKb6
-	 yT8A5828toMwyKn8WTq3MgpahXgkIkMHagQDldYQW94gvPnog2b2V2V6XF95fbF5Nr+q6
-	 Nso7M4nNP1yIVnXvkr6Zpmb2c6uvaFV8ll3k2Ta0TqUJQL5AYzYxNj+3v/72Xoy5a/Q==
+	t=1793985332;
+	b=IvFZ5Ny13JKU128L54P+Xqap/gr1zuUXbiexPu1oYFHEvRWu/HZ2qumEdXRDgTS1XC6B
+	 lggOEp501tZenoGjtEoqbiwEyGPVQt1CiGxyGPxV/l20QKe+kOcJ9B180kOtEYWAvxMzE
+	 fwCL2hUK7xexpsXLVZeISGTQYN+V+j5mxO5bU0D+lAkcNZDDkv+hNlRvnN640LO0hv9Cm
+	 i4bnlKDzVQtfsziIzjySbz5RGj9RxrxtJcSXi0QjNpqwYACvYx7GkulhTNWEsNyrj6Yif
+	 JnJdQoaaEafVE+cuOVXjoKTdpuqgtpJKYcdkkqwfDKGR3rJTqZk1p6GQICdaghTIr/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793985342;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793985332;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
 	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Developer-Signature:X-Developer-Key:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=ktnp8h8HYMjSZRjDLlt4pPs82/7KOH2Yv0rLDfthZeI=;
-	b=GImbwaNyrqdeX0Z0N1Pnqo2xSpmTduBthfOYlvjQmluzkBmjLXpoF3QdJ0sKhB+BssMQ
-	 i8RHiFPhaLaGyCH59i27swovg99ik02HUbs9E1KRmazmyJi8Ff2GiBIFijd7IoADnC5pP
-	 P0ULUf/bgCtB6Ng4CQEOuaweIbMX1cz+7+hntLZjgWOIPQsxwXFA3vR3yO2wBbp9R/3oH
-	 pXvd1P1921Y6m358jlXanyJjlayRi0X23Xdglm43+m2kTEm5v66DTQIAplxQlzmmI2DbO
-	 pBJtDe1yDeEwjqHyJmpKSx5ZOgIpZ5hZHQsz0Z3HB8KfBsRcVlIJ47SaHWD3f6ComBA==
+	bh=zF/sv9c+NsXmkESm0mCjV6+WOZV3eXKN1t46mzLarEY=;
+	b=S1iPDEkmGm4GxYDf4TEmkwGXWLsasKMmTJ3unW5Pym/xLf/2nxNrirrZ3VtqYq6rBfvX
+	 Fljv1dSRP+V7DkCRajZNA0h+j6Wl940UgUEnnX48NXiJBVbrzAf6ANGQLv++HM5Cs8bhX
+	 pi0DjpnE8wpPyAMfuszx/AiKCn8qyYlZ/lu2cwKenlfmh4TMxUIubcrsFf1e9JfzqpYIu
+	 sS/Ge1ZZznqHJimZfrgP9omqm/zvVb8iWw8u26VJLT9JcKpHKKOhTJWLhKJwvKv40BYSk
+	 BUmJwP7GG43LjhVhKEpkN9P9NuuRKYMpXE8EOWzMQp//MJN/Yg9K3PSKTff67XoJ1gw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.qualcomm.com;
 	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=PxynK2so;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=ahuWm2vc;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=P3vtkPAE;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Xhy6mpYY;
 	arc=none smtp.remote-ip=205.220.180.131
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD79606D806
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 17:15:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADD79606D806
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137A1606A331
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 17:15:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 137A1606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=PxynK2so;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=ahuWm2vc
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6HDUlR383208
-	for <kvm@vger.kernel.org>; Fri, 6 Nov 2026 17:15:40 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=P3vtkPAE;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Xhy6mpYY
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6F030t102294
+	for <kvm@vger.kernel.org>; Fri, 6 Nov 2026 17:15:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ktnp8h8HYMjSZRjDLlt4pPs82/7KOH2Yv0rLDfthZeI=; b=PxynK2soVuo53JjN
-	5aj46e3rVH7kXRVGRgHizLTk7r1efV79/U0yrirlZ7/QvmE9lWyP1ixbn046WYHW
-	mRNkgaEaaU5spk5b068thk09RJAnom8M5OiVBPi47dlSmBWBNLB8ncWTx78AAh7p
-	jhzXb/yblbck7Ox/MlVS8y+fvGb/gylJcl6EgNx+NlJ/9KmmI9gZjdwjFDv3oZYX
-	ZDE+4oTOJNA6cPFKwCcls9o+Dp7zL00pMeN6/9V06JMNLlCrP4ae9Xy4jH1E9HOI
-	bLaYdwKm+bI35HThXY48Od99Ofdf7AebqtXjmLlDrhKozB/bTqxzNqKmWqfkJLuy
-	dkCcwQ==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hsk3wg0bp-1
+	zF/sv9c+NsXmkESm0mCjV6+WOZV3eXKN1t46mzLarEY=; b=P3vtkPAEC2OU1b00
+	o9yuEbq8a96oHz1CCQpEWhumD+JCXfrJVBaEIxKLCybmx//oe5RQ+4TB3R4RicYA
+	x8TZSJGyfPSH1nDyG03f5E9JggRSUiS7uCxRXY7ILjVYOpxMvG4rRGUMLRaa5bP5
+	UuDfaHXj9CtyeReUgmTt/+k92RDns0w8pGXjAknEiMN2jU1c9TcBu72fo9zzYHa0
+	GzK/JZh+EJuGhzj/k7it8UPWJ1+AiDsiyf0DcvT3Rl8QRCcBVcoqnvnBA2awSEyR
+	mzl5nimqZk+9pnEZH+xGfOExCks0/mVlm+SA7Bcirbuk6TlcOj5YWpvNTsTgUNHC
+	60f7hA==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hs3pa3uyq-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 17:15:40 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-36f1e7d9d4dso1730552eec.0
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 09:15:40 -0800 (PST)
+	for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 17:15:31 +0000 (GMT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36f479b9819so1458176eec.1
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 09:15:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793985340; x=1794590140; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1793985330; x=1794590130; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ktnp8h8HYMjSZRjDLlt4pPs82/7KOH2Yv0rLDfthZeI=;
-        b=ahuWm2vcfDtz6MK65Bnh3gMHg00DHU750LscBRfqRIiR69/R92xv3mpncei8mhazHj
-         ONtR0rHbVorjGmqSPDChDd0Z5bEen5TATxZSHjF0BKbryF6MJuo161S9FczrH3zHZUY5
-         21oWFsYY+uHy/k1Iwm9nb1oQtgeDGunr8Z6zDsmgmY0lvJXS3Zic6QM5BaE9VKnMkoOA
-         rPCyYEcf4SLg1qNWk7nsYiXFhjUstkpWJD1kM398IkxU53S5F2POCRzphkrT2Z8ikFwY
-         LJBNWEfpFhRgEaVSnYPT5NS9rUNTfWii1vTFSSTE+wwKC/e6FNQo0nhV8vrBa/LxrUI/
-         Y2kg==
+        bh=zF/sv9c+NsXmkESm0mCjV6+WOZV3eXKN1t46mzLarEY=;
+        b=Xhy6mpYYH+FaV0vtIaet0pNDRikfJtbPr3n7+QvJHvxrEkGscfVKGVT9i+0iMeTZii
+         eU/qTs7DtHPn0igoyprHP1e4e8Fwtwf/r69jOFHmRODxGKSlLTsWD0g4IW0FxYwZ97VQ
+         E49P4oEG0RJho/jRZuP/tgOoFFE+7v95aH19AlpI3/BNSiV2oXop7htxwvUF7aZhLW5c
+         LmkCRVShGVzrJi1ez7GmRR9G+6a5QMu2CQ7XS4hCUewk/3aKEmrYm+LWy2B5UonhwQAn
+         3F+9CVAhloyYTZYkpcZrlbLxhMrJO6VzzBlfjJgqU0yvbLKmDmet1pas9Io/qF0YEGDI
+         Rm9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793985340; x=1794590140;
+        d=1e100.net; s=20260707; t=1793985330; x=1794590130;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ktnp8h8HYMjSZRjDLlt4pPs82/7KOH2Yv0rLDfthZeI=;
-        b=x1MIzbVLNMrvGAFBohysBUAF7nFtSs5BV26EitmSAvDcdvgTlhg4l0oUAEXJBIqKgC
-         Njs9Ymw/EkZGmIx+3yqWnzUXGCxbry90m5Er09iMOMUvk228CI0iR08joQeh0wWsFjM/
-         S4x8k+fQ22E+hnZ+SYASz4EGm/KHg4GQNqLTZ2ltmnv/ua7rIoMT2ZKlDJVdpxr8NfYb
-         X7PSMvQOO50S7WRbOlEvffl39IIE2xNNgPJ23w9riHwrgu6GVHqjnNIMY5fC+lCv/Nxm
-         P/nPpMWzO7J1iQsWg9QDBKSiTcYjy2D2wtMMaYqYaEBvVrQlNmU0acfkS85YZnamkr85
-         MS3w==
-X-Forwarded-Encrypted: i=1; AL+hErGxN2yYRkg/RR9ODfbUnga+QKTf7X3030Ji+sBIE20YYPuWw/Cl0GEUhp/pSMpi44e39GU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+t+GbBz+U2WT2qFHuvIF8ffO3+al4DsWQ1NqI9LEG47+Z2z13J
-	LbE6ZbC3AKhhgedYfsh9bH8WohPIyBUKsNqRY+w4rBRz4aOCRtLsw5FfVrGIzW+CvkECk6vQ5eB
-	1kGWiGCU+vXBKyVLpAzDFkOsFlW550Buv91GHfuq5U2AybAS3eIAKJVI=
-X-Gm-Gg: AYBFou2o4Go6qepKRDfOhYgRA3rOfHY2g9lTl4TtfCEc2g9GDbJrHJfzd8jw69qX49i
-	YAzNqs3MMGmgLk2ccf6HPpSdO3aZ6B50uMsCJxAmibi3NNatxC+yILHWy/hObD7zdNCW8NmhtZ7
-	mfTA+86a9I1wFDkWLCgBLyKIQ2n65s6RNe7HEfzjmTcb+TwAmyZSSpKbB7dFn9CDYYxaeGq7EBx
-	JCU67w64PeTlxuTEu/3+aFCQcc5zADOlRWx0XnN7np5KSKipqdBYiRuRAANZH21edK8VxCrjHfo
-	F7m5w0mqK/aKxF1k7//NWrwFgEcaR5gegB7nEjKxb2zGh+x3AHeoIFUJzEgrNld97vnbUukYuCe
-	9RZtWPZv4G+kc+xutuU+pPpK+Ll4gzeKI+IYUvuMM6dTCj/lxd4PJshJ0CArGOGdXx6kd32LOML
-	d9FJYF1oVU
-X-Received: by 2002:a05:693c:839a:20b0:36e:371:8255 with SMTP id 5a478bee46e88-36f6fb7f6b0mr4460581eec.0.1793985339490;
-        Fri, 06 Nov 2026 09:15:39 -0800 (PST)
-X-Received: by 2002:a05:693c:839a:20b0:36e:371:8255 with SMTP id 5a478bee46e88-36f6fb7f6b0mr4460485eec.0.1793985338092;
-        Fri, 06 Nov 2026 09:15:38 -0800 (PST)
+        bh=zF/sv9c+NsXmkESm0mCjV6+WOZV3eXKN1t46mzLarEY=;
+        b=VIfdqjlDsc2mgVNNjtWwDLMcD/ep5z/GUTLn/zjUtefGJ6XsdnMRzjJfmnA5eq6rDd
+         lvYTuawwi55dubvqH1gexvJpAxtEos918HaFEwlJ3trYtl0BvyKqXvBVvUkjmG3jlY7C
+         9cUi8I97nDc1/i9QekYHPbWshaF/eaQA6dhxo2kdxGe+DzR9Aw526TDiS3bQPpIN/n3m
+         1R9WkSNHL8b0B4pZekqH3i9E0eNMufa1axyh9pHDA9u02dJ7G5++YqXEcmKQenFakBug
+         AzGyi41qubk9+hG3yKr/+1EFqSSscYd19TXxg8mgEYuSq/wfNdOKnFfuL9FPc6JaY/4X
+         CZzw==
+X-Forwarded-Encrypted: i=1; AL+hErGnpKnIzAV/iddSOCBhZwEaWBj1DvTcQaaCY5a+OwLA6wNaG2F2bPQ2yLQhYEQ5PbuVbW0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+iAfwS8PtKXHxq16YV5exxhgOvhmPfnA4jkaIjx2Fsf/rMHurS
+	APdnkgQgx/glDK4WBoEyP0J6U4R5ORWTsymxLRMoJCm3jN2DtpmxjQFsjdPro93ThDdm0R3zVhn
+	Fd6n0OYtRphF7EWMFkTlB9WeQrz70GmuYmNOOrZ+yHQQtOSj3NKfWgUc=
+X-Gm-Gg: AYBFou0idDCkncphbOjrlP2Zd8O2zPc7Z4ZrWgjoT35SPAuvNkLkw+5zuK8hZRtZn+R
+	3K+wXbTWNrbi7kiyG3yeWAYK67gaCEiksRFCcrD4keSZnNPl0u4QWxnJxwTABLPrjODqndWYLdp
+	b4rH2IFPPiu72AbUO8GxKPrJ26Lqy6/mOfgeJ1gQLVQ2S8AESSKCJ6YYwXfVaH7xTMfviCUKMN3
+	5um7kHsX107NXOmY4P7T/sNZTZFE7aP9jhjglUNpfRypjL40u1im+lo2UsB4SbZtZSWbvSAo3qo
+	n2nL8GjvJJQsOMw5SDy2DJkYkJ/iP7ZpMQnYgpqhBGkRdFIzamvwHa31XqLa6F5iAIiiHHJPgVQ
+	5bHbX9bEtc+aGVD9eXVB0AICVJjlU06qpHzF9wJlj9nblcbt6l+Crgbz24np+Cnbx2jSfrmxaCD
+	6p+4K1nG7H
+X-Received: by 2002:a05:693c:80c1:b0:36a:1732:1e7 with SMTP id 5a478bee46e88-36f76d0f26emr4000270eec.31.1793985330022;
+        Fri, 06 Nov 2026 09:15:30 -0800 (PST)
+X-Received: by 2002:a05:693c:80c1:b0:36a:1732:1e7 with SMTP id 5a478bee46e88-36f76d0f26emr4000223eec.31.1793985329467;
+        Fri, 06 Nov 2026 09:15:29 -0800 (PST)
 Received: from hu-vgarodia-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa9aea75fsm14693756eec.15.2026.11.06.09.15.29
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa9aea75fsm14693756eec.15.2026.11.06.09.15.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 09:15:37 -0800 (PST)
+        Fri, 06 Nov 2026 09:15:29 -0800 (PST)
 From: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Date: Fri, 06 Nov 2026 22:44:27 +0530
-Subject: [PATCH v7 4/5] iommu/of: Require reg for iommu-addresses
+Date: Fri, 06 Nov 2026 22:44:26 +0530
+Subject: [PATCH v7 3/5] iommu/of: Make OF_IOMMU depend on OF_ADDRESS
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,7 +118,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-add_iommu_ranges-v7-4-5c0f72083e52@oss.qualcomm.com>
+Message-Id: <20261106-add_iommu_ranges-v7-3-5c0f72083e52@oss.qualcomm.com>
 References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
 In-Reply-To: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
 To: "Joerg Roedel (AMD)" <joro@8bytes.org>,
@@ -145,131 +145,102 @@ Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
         Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
         Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793985294; l=3341;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793985294; l=2273;
  i=vikash.garodia@oss.qualcomm.com; s=20241104; h=from:subject:message-id;
- bh=eqYY4N+b5bBNKlPSwJkXdHdjtL4HfBKjpUYn+IsXKkA=;
- b=GBQVa8RApuiz6ercB/DdrPne5hpMvwbz+39mcf5Gak8TM+/DOIR+JsQkatd14qD1YxOVp3Bni
- be5cEvNi0vbASIajgNIko9PHVXfje8oKBQGQwGiGrYCVoXQBWE0ZAFZ
+ bh=NupkmvlL/dCPtTaOqaRQsl8ArnjGwSn52BAlgLqDvzE=;
+ b=zmYLfThWfIv3sYXwDsJ6RflfKmCfmALOpmNPBUN8TCisKPeZCWDqMJUW2XSqMOPFsQD3BtSCT
+ o8PihuvJzOpAYMe5W/ppgKgNz7pZ2PFLD8vYjYsYkLQ8uPypf6/trFV
 X-Developer-Key: i=vikash.garodia@oss.qualcomm.com; a=ed25519;
  pk=LY9Eqp4KiHWxzGNKGHbwRFEJOfRCSzG/rxQNmvZvaKE=
-X-Proofpoint-ORIG-GUID: x-d-xvU7uHw2K85FA6XhbGHcXkCNuBwe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA2OCBTYWx0ZWRfXwc1tGjXYEsWU
- HpSrrwvfwtATvmccBSJPFZLBX6EhZ1Qf/rcQ7O3OiXB00ZYZq3UTS0JHiINptmVJjez/H8CEkZY
- 57tOlJnAPkTnJlICw75GsZLx++r/rTyAGltkPkVxgEcICh3W8YREgHlP9clAifRL7J1gEX3aQCM
- tFdDyMjSF1k6xkqSdNitmHyTXclZGAzkpYuehfKKdpRcXHdMZ3Nk9g6djXqPbkXIoG3ZVnlFxZ9
- Kovv/FLo/cAkJvYJfRtowJzubyn+Ctn4BlYgA/rFKY9K+q5oMT0IIBuEHV2OP6pFwXTrskqEeXF
- wlcGmB6mf0qznDTJdtYHgwvn4MHBe9PKQcI+0HM2fz373ej+v00GumZ2rAZkiDaHod9BangktFV
- taZrGTItq7oga11RjMr5YidQFPELVIXR527/1wY0qqgm3QJasOUUELbZ08KjR2vJDQYY6XUf7X4
- 4Qlt63gTXBB/LSJcnWA==
-X-Authority-Analysis: v=2.4 cv=a6OlZkSF c=1 sm=1 tr=0 ts=6aee0b3c cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA2OCBTYWx0ZWRfXyMfMmB91ckZl
+ TS2vLjN/u2M38qcdoNyFsn255JtGy2bXYn4mM22mUbbavIB9170Uzas9JFEX1lDLeZsup8et0XJ
+ DcP92BZg4xm/uOCT+C+aAc5C4FaErKDcHo+fm22BdfYjgvw6BGYbDeN2cySo2pRtCsm3rcGETyU
+ o020qRc5nYvDfuklfTEiiw6ohHalEW3J75NPjkGXcxFuuX2Ypub+gAn8COn19f3obodgRW8ZvuM
+ KmUOoZhp+eeyLd43XIF+2vvGklIYbkwIppP0jKZzqGc65boWW+wGuW/t6ZhG+h6BpMdFt/K7yS2
+ 2GeXgfoWbVI6lPsgmIKB4zzT7SJl/ls6HNCabdKbunjQevni/gw/txmCoyCxQ4lvu3ObysXSXW0
+ rmFI2q54AyyGNkAcQdCO+aqTFMTJR2PY45f3kBMd0P2f9N/1SCWy352KTo9k1FSVofBMJEm2yo1
+ Up0+sAkK4AvFJ1DVF9w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA2OCBTYWx0ZWRfXwVycCVDHeDgq
+ BKMeHIwoG8JiZh1hDTFpX7PstyKdVJTeSuYG0Vvd3642+ibpDfjpxRuHqAiuESV9nTfhtXe4Ct0
+ GZbHvt886g512z5DcgRZIJ8WOyfBjqk=
+X-Proofpoint-ORIG-GUID: 8HNY1A_fEjABi8z8pZfI1bc-xhQKVd-o
+X-Authority-Analysis: v=2.4 cv=GpzXaU1C c=1 sm=1 tr=0 ts=6aee0b33 cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=S4w_zJ8MM8sBhC3S0vwA:9
- a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA2OCBTYWx0ZWRfX+jq/n2wUGteN
- vohYbRGp6215XQgTVxkMM32t8MhnPjI79aXF7Z7+W29okaXY9cZAwWl4B+0Z0Z4D76FTmD4l3gD
- YWq+cYAG8aNVSjPx9w1D1tVs1os6/T0=
-X-Proofpoint-GUID: x-d-xvU7uHw2K85FA6XhbGHcXkCNuBwe
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=fdurNWXONF6VWYIYtoQA:9 a=QEXdDO2ut3YA:10
+ a=6Ab_bkdmUrQuMsNx7PHu:22
+X-Proofpoint-GUID: 8HNY1A_fEjABi8z8pZfI1bc-xhQKVd-o
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-06_05,2026-11-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0
- clxscore=1011 suspectscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ spamscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 phishscore=0 bulkscore=0 clxscore=1011 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611060068
 
-The "iommu-addresses" property describes an identity 1:1 mapping between
-an IOVA range and the physical memory specified by "reg" in the same
-reserved-memory node. Without "reg", there is no physical memory to map.
+The OF_IOMMU code relies on OF address parsing helpers, but the
+dependency on OF_ADDRESS is not expressed in Kconfig. As a result,
+of_iommu.c contains CONFIG_OF_ADDRESS guards and a __maybe_unused
+annotation to handle configurations where OF_ADDRESS is disabled.
 
-The DT schema now requires "reg" whenever "iommu-addresses" is present.
-Align the kernel implementation with this requirement.
-https://github.com/devicetree-org/dt-schema/pull/207
+Make OF_IOMMU depend on OF_ADDRESS and remove the now unnecessary
+preprocessor guards and __maybe_unused annotation.
 
-An identity mapping requires matching IOVA and "reg" ranges. Reject
-mismatched ranges and report an error.
+The only architecture supporting OF without OF_ADDRESS is SPARC, which
+does not use OF_IOMMU, so no functional change is intended.
 
 Suggested-by: Rob Herring <robh@kernel.org>
 Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
 Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
 Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
 ---
- drivers/iommu/of_iommu.c | 32 +++++++++++++++-----------------
- 1 file changed, 15 insertions(+), 17 deletions(-)
+ drivers/iommu/Kconfig    | 2 +-
+ drivers/iommu/of_iommu.c | 4 +---
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index 85a8d7fdfa30b64e21b8db0db1d5bc268c04f24b..c1e97bd885f933cae45fb7806183477f2d64cd5d 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -147,7 +147,7 @@ endchoice
+ 
+ config OF_IOMMU
+ 	def_bool y
+-	depends on OF && IOMMU_API
++	depends on OF_ADDRESS && IOMMU_API
+ 
+ # IOMMU-agnostic DMA-mapping layer
+ config IOMMU_DMA
 diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 6675fc900e6c2d55b34c61dc9effaeb48e24f18f..00b02c19f27e195fc36c4bc1d91253255147c9ab 100644
+index 5c266511db78910d6fd221af5437cecff4931c22..6675fc900e6c2d55b34c61dc9effaeb48e24f18f 100644
 --- a/drivers/iommu/of_iommu.c
 +++ b/drivers/iommu/of_iommu.c
-@@ -174,19 +174,12 @@ iommu_resv_region_get_type(struct device *dev,
- {
- 	phys_addr_t end = start + length - 1;
- 
--	/*
--	 * IOMMU regions without an associated physical region cannot be
--	 * mapped and are simply reservations.
--	 */
--	if (phys->start >= phys->end)
--		return IOMMU_RESV_RESERVED;
--
- 	/* may be IOMMU_RESV_DIRECT_RELAXABLE for certain cases */
- 	if (start == phys->start && end == phys->end)
- 		return IOMMU_RESV_DIRECT;
- 
--	dev_warn(dev, "treating non-direct mapping [%pr] -> [%pap-%pap] as reservation\n", phys,
--		 &start, &end);
-+	dev_err(dev, "non-direct mapping [%pr] -> [%pap-%pap] is not supported\n", phys,
-+		&start, &end);
- 	return IOMMU_RESV_RESERVED;
+@@ -167,7 +167,7 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 	return err;
  }
  
-@@ -211,12 +204,14 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
- 		struct resource phys;
- 		int size;
+-static enum iommu_resv_type __maybe_unused
++static enum iommu_resv_type
+ iommu_resv_region_get_type(struct device *dev,
+ 			   struct resource *phys,
+ 			   phys_addr_t start, resource_size_t length)
+@@ -203,7 +203,6 @@ iommu_resv_region_get_type(struct device *dev,
+  */
+ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
+ {
+-#if IS_ENABLED(CONFIG_OF_ADDRESS)
+ 	struct of_phandle_iterator it;
+ 	int err;
  
--		memset(&phys, 0, sizeof(phys));
-+		maps = of_get_property(it.node, "iommu-addresses", &size);
-+		if (!maps)
-+			continue;
- 
- 		/*
--		 * The "reg" property is optional and can be omitted by reserved-memory regions
--		 * that represent reservations in the IOVA space, which are regions that should
--		 * not be mapped.
-+		 * "iommu-addresses" must be used in combination with a "reg" that provides
-+		 * the physical address and size of this memory region, for an identity 1:1
-+		 * IOVA mapping to that physical memory.
- 		 */
- 		if (of_property_present(it.node, "reg")) {
- 			err = of_address_to_resource(it.node, 0, &phys);
-@@ -225,11 +220,11 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
- 					it.node, err);
- 				continue;
+@@ -265,6 +264,5 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
  			}
--		}
--
--		maps = of_get_property(it.node, "iommu-addresses", &size);
--		if (!maps)
-+		} else {
-+			dev_err(dev, "%pOF: iommu-addresses requires a reg property\n",
-+				it.node);
- 			continue;
-+		}
- 
- 		end = maps + size / sizeof(__be32);
- 
-@@ -257,6 +252,9 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
- 				}
- 				type = iommu_resv_region_get_type(dev, &phys, iova, length);
- 
-+				if (type != IOMMU_RESV_DIRECT)
-+					continue;
-+
- 				region = iommu_alloc_resv_region(iova, length, prot, type,
- 								 GFP_KERNEL);
- 				if (region)
+ 		}
+ 	}
+-#endif
+ }
+ EXPORT_SYMBOL(of_iommu_get_resv_regions);
 
 -- 
 2.34.1
