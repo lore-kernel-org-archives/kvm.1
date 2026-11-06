@@ -1,52 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793941390;
-	b=OOIiejOdbZ60UwzLIt8bs2hbg59tHk1cYVcKDMRcYyoFqqgR/sAORui24JRIdoAGBONm
-	 OrjACpiN493c2iJjVSM3gpY5S8O2bEaffEjRNC97rgUeByS/n7w/S/MvhlZPvaCv5qmGf
-	 lcSFmdVgaSPpBgCeDvTJyyF4IgpOAp9CpfkbTKbRnTPGhSI2DYoouniXkX3XnKcj4UePD
-	 u4p5R2c+Eg9eUdpENOFXr5WAjaT2SjPsT4o16W6V7fJdu/X1tlw5WB2ruT4oRjkbWdJE+
-	 jQ6yOY81s/upcJRpMesxxdr5goLrbJNLbgxIqA1BDc11zOLjTrtne5Uoc4lmThPRmlA==
+	t=1793941388;
+	b=Rxg4cETTqgPqW4KI92xwvWmpwI5w+C9/vKRB0TiG5fSaQ6hXFkKoDTt0pal+5MwHLdQv
+	 QjDiRXRjCAACiNrGT9DPvgFl6es08SdAk5lbrA4FRkUtBAa1DSYLR+pxico8b48/aoGuB
+	 YjoeyvyTc7EJHmRcwGdunjHUJjDWonoiJh8R08fVwogUZ5W3/NQ7DDv07IOIiQ3KhPyf3
+	 RD2XdXowyHTn1irf7L3/jGjAT2kQgXkQnkEjcVGDTI1OSMQENKjeqRp+Pder9ZSm2sS42
+	 2UbYy3ZheMa8kOhjHXDXSilM4bYTjPA5+MCWzbTTHqqBs0sfZOukSHcxf9MFnmIyl6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793941390;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793941388;
 	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=LmdTj8g581thkbq3W6hV05B622ecW9OswUVr0f7diMI=;
-	b=jzkwiyI/HkxlvRPS9PR7JwgvCwUPDvQqutWFEpAhM4pqcQ1fIoItYNr2wxzf+z4ZqnuY
-	 q49xR74sMwN8U77xnBDLYy1pKdSHi1gQMy8lWHYFfEufe071Si+vdFV3j//gMUO8reAjw
-	 SYsOy4KLegvVjMQBaoqaB7BC4yc22i3VI0fP/389y9VlAa3BXr5dJIZUQeQu64kgHc3e+
-	 mFPI1aCRZQjQNAAvBy4lsVSQbLHbq+lXZ6H7vPfXfifwJWn9iBhxty6DKawOvjpseaJDS
-	 XY+PE8rRikuWy/PKHlETKkPlho10xMe8YWZfuYVMmAAWbeWESWeGOoiWhGE2p4hQyTQ==
+	bh=huvRpdQxu5unJL4IKJvJL3fCbaqo/nPWMO2++QsJFvI=;
+	b=e6wbQ013+651cbHTUj57X4i97eO5cpTMWEe4hPHR14S6lyI94uK5Zu//op971uWubLhC
+	 uZ7D/gwMhMS5GXDE1bVn9hDkNHJ1ay3fdcyP7ftKW9il1bhWDDg4Nlk9N2stXLaUd3zlt
+	 L/od4UgutgQ5jmDRcdu7sZScKCORTOtGpwLB1+Kn7+OEQxmQBr2Jg8UvSYk1vZKWbEB9w
+	 +cCMF/h5JJNBLYEmKY4agZJpDKbWhbiLkF3sjTMClwo1SC7P4c79QJdH8CWWwvvPyvgF3
+	 TOlWcj7tpG0mXt4zBvqzwaD0Wzr9rqp1NPo+5U8olAOGpOqGJAQAZBHyGDarFLxy+Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linuxhacker.ru;
 	spf=pass smtp.mailfrom=linuxhacker.ru;
-	dkim=pass header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=fPJnRPDk;
+	dkim=pass header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=pJV6LErh;
 	arc=none smtp.remote-ip=159.69.87.85
 Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56AD606A333;
-	Fri,  6 Nov 2026 05:03:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B56AD606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532FC606A339;
+	Fri,  6 Nov 2026 05:03:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 532FC606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxhacker.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxhacker.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=fPJnRPDk
+	dkim=pass (2048-bit key, unprotected) header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=pJV6LErh
 Received: from intelbox1.virtnet (unknown [162.81.204.199])
-	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id 965B2BEE69;
-	Fri,  6 Nov 2026 05:03:06 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 eagle.linuxhacker.ru 965B2BEE69
+	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id E36D4BEE67;
+	Fri,  6 Nov 2026 05:03:03 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 eagle.linuxhacker.ru E36D4BEE67
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxhacker.ru;
-	s=mail; t=1793941388;
-	bh=acMYEvEpV8jfvisnvb63rQCzMw51WKbSROFjMmVDins=;
+	s=mail; t=1793941385;
+	bh=NEmHPxgdCgP5LEraAZFaWFE29jwBPGLQnXjlp0QdjEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPJnRPDk8sveS2rigxh9EIUBYzGo2kNg3EHZjvTkkqBhTj/k1tPNpeN0W9NXP6Uf3
-	 cxgYkpQaftFUDsDNX5dC5Q2FUuT9pQ3JpV2eJ84PxRpGdT0gamegSsmmDbeJp4V9q8
-	 sIRFCFe4C8QDP6EngQgbuq20hxYZqKdyzQZiT7WjImMAswaW/hasi7Bsv5tEWz/I40
-	 nUFtA0Ks1RYTvkAOXhYqkCbwPU83n65/QiCmfttU4bCQZhO6Wt3EcZLBLgsIeZiPiQ
-	 lD3RKjw2ctoYITpspevINK9CPuTfSCpmZlluejmVl40Bdd/h07zIk7QhP9RELlZDGB
-	 2SsbVKPXEdCjA==
+	b=pJV6LErhgigmKYbg61Gg7A6mxizilCVJ85VWZ1MLJ7EgQewZ5v12+QhY3lDICjnqo
+	 A5I1bajI/7IlH99tT/O17xAOJPVpYkLNZSSiFjRuaQXbBBw7zbt7UqtFsxojBNVdhx
+	 UYXAOPd8wbVW/Kemm8oBAn9pOaKA+4DPqGUGDOS4U8Vwg09DsVWQorVghcBbqueUjS
+	 JL3X64OL6U7Edre70zoU7Z8MKLq92tnuCRauvrZvAv4yhLhHOgRyal8k9pVDP617dk
+	 tZjFQfd7bCUVk3RlitrKl2J78NpTktY3KdcxhLACT8Qs9WMW/lau44uBKPy/J2ppfW
+	 4vgTaVbZDbHug==
 From: Oleg Drokin <green@linuxhacker.ru>
 To: sgarzare@redhat.com,
 	stefanha@redhat.com,
@@ -64,9 +64,9 @@ Cc: jasowangio@gmail.com,
 	virtualization@lists.linux.dev,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 2/3] vsock/virtio: bound the send credit by bytes not yet consumed by the transport
-Date: Fri,  6 Nov 2026 00:02:43 -0500
-Message-ID: <20261106050244.602625-3-green@linuxhacker.ru>
+Subject: [PATCH net v2 1/3] vhost/vsock: release the accounting of packets dropped on rx errors
+Date: Fri,  6 Nov 2026 00:02:42 -0500
+Message-ID: <20261106050244.602625-2-green@linuxhacker.ru>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261106050244.602625-1-green@linuxhacker.ru>
 References: <20261106050244.602625-1-green@linuxhacker.ru>
@@ -81,81 +81,94 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The send credit is
+When vhost_transport_do_send_pkt() fails to deliver a packet to the guest
+(unexpected output buffers, a buffer smaller than the header, a fault
+while copying the header or the payload) it frees the skb with
+kfree_skb() and gives up. The success path does more:
+virtio_transport_consume_skb_sent() subtracts the payload from the
+socket's bytes_unsent (SIOCOUTQ), and for a reply the queued_replies
+counter is decremented, restarting the guest's tx queue once it drops
+below the ring size.
 
-    min(peer_buf_alloc, buf_alloc) - (tx_cnt - peer_fwd_cnt)
+The error paths skip both. Every such drop leaves SIOCOUTQ too high for
+the life of the socket, and every dropped reply permanently takes one
+slot of the queued_replies budget, so that after a ring's worth of them
+vhost stops processing the guest's tx queue for good.
 
-where peer_fwd_cnt is taken unchecked from every header the peer sends.
-A peer that never consumes what it is sent but keeps reporting
-fwd_cnt == tx_cnt gets unlimited credit: every send() is accepted and
-the skbs pile up in the transport's queue (on a host, vhost's
-send_pkt_queue, for a guest that posts no rx buffers). The skbs are
-GFP_KERNEL allocations charged to no memory cgroup. The peer learns
-tx_cnt easily when the host side relays a stream it also controls.
-
-Commit 8ee784fdf006 ("vsock/virtio: cap TX credit to local buffer size")
-bounded peer_buf_alloc, but not peer_fwd_cnt.
-
-bytes_unsent (maintained for SIOCOUTQ) counts what was handed to the
-transport and not yet consumed by the device. It is local knowledge, so
-bounding it by the same window limits a lying peer to one window of
-queued data per socket.
-
-For an honest peer, bytes_unsent can exceed tx_cnt - peer_fwd_cnt only
-by data the peer already has but the transport has not yet released:
-
- - on a host, the delivered part of an skb that vhost splits across rx
-   buffers smaller than the skb: the peer acknowledges the pieces, but
-   bytes_unsent drops only once the whole skb is delivered, so at most
-   one skb (64 KiB);
- - in a guest, tx buffers the host has consumed but
-   virtio_transport_tx_work() has not reaped yet: vhost passes the
-   packet to the host socket before it marks the buffer used, so the
-   host's credit update can arrive first.
-
-Either way the window shrinks only until the transport catches up;
-nothing stalls and nothing changes on the wire. The writer is woken by
-sock_wfree() once enough of the queued skbs are freed, as it already is
-when credit comes back.
-
-With a user-space vhost-vsock "guest" that posts no rx buffers and
-acknowledges everything, one host socket queued 256 MiB in under 2 s
-(SIOCOUTQ 268304384, where the test stops); with this patch it stays at
-one window (SIOCOUTQ 262144).
+Release both on the error paths, as the success path does.
 
 Found by an LLM-assisted security review of vhost-vsock, done while
-porting a project from Xen to KVM, and reproduced as above.
+porting a project from Xen to KVM. These error paths were not
+reproduced: they need a guest that posts malformed rx buffers.
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Fixes: 433fc58e6bf2 ("VSOCK: Introduce vhost_vsock.ko")
+Fixes: e6ab45005772 ("vsock/virtio: add SIOCOUTQ support for all virtio based transports")
 Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
 ---
- net/vmw_vsock/virtio_transport_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/vhost/vsock.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 1e762a480df4..74a8fdf825d5 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1031,14 +1031,17 @@ EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_has_data);
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 88a310390eb0..b0004cb48999 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -104,6 +104,21 @@ static bool vhost_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
+ 	return found;
+ }
  
- static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
- {
-+	s64 tx_buf_size = virtio_transport_tx_buf_size(vvs);
- 	s64 bytes;
- 
- 	/* Use s64 arithmetic so if the peer shrinks peer_buf_alloc while
- 	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
- 	 * does not underflow.
- 	 */
--	bytes = (s64)virtio_transport_tx_buf_size(vvs) -
--		(vvs->tx_cnt - vvs->peer_fwd_cnt);
-+	bytes = tx_buf_size - (vvs->tx_cnt - vvs->peer_fwd_cnt);
++/* Undo the send accounting of an undelivered skb; true if tx may restart. */
++static bool vhost_vsock_drop_skb(struct vhost_vsock *vsock, struct sk_buff *skb)
++{
++	bool restart_tx = false;
 +
-+	/* peer_fwd_cnt is peer-controlled, bytes_unsent is not. */
-+	bytes = min_t(s64, bytes, tx_buf_size - (s64)vvs->bytes_unsent);
- 	if (bytes < 0)
- 		bytes = 0;
++	if (virtio_vsock_skb_reply(skb)) {
++		int val = atomic_dec_return(&vsock->queued_replies);
++
++		restart_tx = val + 1 == vsock->vqs[VSOCK_VQ_TX].num;
++	}
++	virtio_transport_consume_skb_sent(skb, false);
++	kfree_skb(skb);
++	return restart_tx;
++}
++
+ static void
+ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 			    struct vhost_virtqueue *vq)
+@@ -162,14 +177,14 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 		}
  
+ 		if (out) {
+-			kfree_skb(skb);
++			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
+ 			vq_err(vq, "Expected 0 output buffers, got %u\n", out);
+ 			break;
+ 		}
+ 
+ 		iov_len = iov_length(&vq->iov[out], in);
+ 		if (iov_len < sizeof(*hdr)) {
+-			kfree_skb(skb);
++			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
+ 			vq_err(vq, "Buffer len [%zu] too small\n", iov_len);
+ 			break;
+ 		}
+@@ -212,7 +227,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 
+ 		nbytes = copy_to_iter(hdr, sizeof(*hdr), &iov_iter);
+ 		if (nbytes != sizeof(*hdr)) {
+-			kfree_skb(skb);
++			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
+ 			vq_err(vq, "Faulted on copying pkt hdr\n");
+ 			break;
+ 		}
+@@ -221,7 +236,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 					   offset,
+ 					   &iov_iter,
+ 					   payload_len)) {
+-			kfree_skb(skb);
++			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
+ 			vq_err(vq, "Faulted on copying pkt buf\n");
+ 			break;
+ 		}
 -- 
 2.56.0
 
