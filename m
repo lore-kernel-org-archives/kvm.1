@@ -1,101 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793925658;
-	b=fjNccP3mPEqAQTFLxlr4Gwg+HvMxkkjivD043lOE7K1qTHUtkkHZbD6tFZQFjH0/Dhqt
-	 YyvIXKghDo05RJoB8iZ4NJ5GshVPY4BORgN0nd9hxHYvKRzD402VNbg48apfQn3gjyYLA
-	 5Pe04azXekIIvfemnGUIk1oSuK0RI5k3kQuDUe1gVdyqM00Cf+CxPSD+X0adnDvqg0QQl
-	 tf65jHreG0NGaaatNQbc7ZfNnwId7rap4BQPFNlWqkiF2O6gbqXFU3fK3jIDSACx0acjH
-	 3OcTzcwp/7P7YY3nPXRHSnEOqmXnNu3QfCEj90qwJUX7AqiRa64wroRK4shpNPoL4Ug==
+	t=1793926401;
+	b=s4ZfBh9GDQLiDZurwfHaGxTXo9Wqd5YOvGJiuAH7rZlsZlN1YRXobRcWHL7PfLL1SuuN
+	 jbVOtYygHIFLMawFRKFYp8/1is4RY2s7tHzkg+T2NXKJvgUlVSqA2NYXrWkPyFxz6TU0I
+	 DUYqMSi7xjv3JQJudNEPPxhPvGTRQ9kYAPEk0TI9dCnf6zfVwGVZdJ0bxKBJnYGTqMyzF
+	 EMUvjb+1pRd3VVuGYB3lb/o7SH49S907+kt/kCvIWaPTH1S6poxSTFzC42kd7sEOvaYei
+	 rguLjDo1btKBPR2VRD12l8240wY6r6y3r97JepRmm2FKN6vZZL8Yypo001ZXQYA0Qfg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793925658;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793926401;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=NWW6VWRvfnKcgFIlw1Yh6tcTkZ0ARdGpxylaeqJx8hg=;
-	b=5chOWg5A4nzASE8S+btjVhgD7WPREvynwXJlBjLMv1yeZNHRziO8ILpNni8UgETzyEd+
-	 Fgui4s+K6vkkMyXfbzxpsVurdyeQS4CfiS4/ainAhX9fUjYMKYr7AJfS1rBPI6WkHJk+T
-	 p73YIHdeSeQb3/n/19n2IGU/823MS2VWZcmVnRdqjrDRdzN7yP+Vrok+DzFMQKA7MaNRP
-	 eMqPZYHyLWn9NW5NKz8GtdScu03KC33LVBW1JKZV/f3pOsCm21nC5eFOvGGq7e59EoxF1
-	 NzTeCUF5NP4w87Gp/WuiXL/2RuKVvTAiY67XlnvKBZGfVwXm2Ck/wCv0L2WOZNsnXag==
+	bh=Z8p0bYiVFuNX4OfWuZZ4sxGIKahg/FfKszGkM4uD0Nw=;
+	b=g6gTFbPJCwttoNKuaDRymo/NOBFGRCOZQA6vfdqNH9e6UnCWeDjGvZ13zgX+hyld/a0T
+	 a7d/xs3Z8FcyggHW2K+u7AEaCHnfbA4r9dnDrzhf98DAmULlfPoKzyjYHZcU3J2+aLSFt
+	 I3Mq0wZTmt8GM//8A4r/vX1WMEl7IiPG4kVHeMaDqkNjIz8aHQ+qKvisqi3f+Xh+stP7A
+	 DpeRpPKPtWOKyGpMUT8ergYHG0UEkwTsdhsLhV+ffs9A3u5y9r4eI2MGi38d33+eoh3Wf
+	 mmJfXyBDMikGICgqAI2Te7LFYARKJY1zlMTpjMz52goXVbtDN5OyHJ1qdT6ylatbPlQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fvdvi436;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=GUqyc+PE;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02CF606A32E
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 00:40:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C02CF606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B8E606A31B
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 00:53:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53B8E606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fvdvi436
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b571a45a2aso381a12.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 16:40:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793925656; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=GUqyc+PE
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso500a12.0
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 16:53:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793926400; cv=none;
         d=google.com; s=arc-20260327;
-        b=IkZxh8XRPHKu0J/J9LUHCNOSCPZJAV13CfxbpE4HE0JBJQIdVDLdj1RI9yDgRT74G4
-         N3Ge8GAPjwqSEbeu/Otc41DNfNDZoKLZqblmndS7fqKmJRYcsjcBu34bEBhyJIeZPudv
-         IF3aM3gUEh7Jzi5WpjHuxEGF3gLzxlcjXS4GcFr83UpV5UOCFX8TC3/3XkW6T/9mWzN2
-         +bOT+oaGN2CZZKEiTtFn8BKv3ENV2r0P3q0XjxhupRqPX9BOCifvOQRxmwm0oWPX/Ti0
-         HBa+zzjPEY3Kd7kvr+Eg466xwABNEC8KcQDu7aQ3O7uFbQWI5REcKu2exxt06v8iiWlj
-         iamw==
+        b=in5LjiSNMtbGvXIYdCspPqCOgDgX/D9Ds3zMfEtLray7GQlbGqnra4eeyqkn9fn8HD
+         BGEE1jr4n75o6wWVwdxYOq6xlk1bRvmtAsZUmu3+RkEjvFb3Yl4WkPsmj8BZNz6wiJek
+         CBsih2aLZw3x82Ur+D+nd0R0dHVbrE6cdPLqBcqSpxOLxBQjgtuteqE+vJtpdKGup298
+         ey2NmKKqMvd8ytjB6dnTkX8Gdy4IhMVrThSizXAiDdvcKnCvD6h5rbhV61x8tIRAW4Y3
+         Y58L5Lm0YapnDKZ5ekEwKGZ4E+aeiYaOwk07OEERlJ7M99IkHZg+Ht4jXDDZiltra3ai
+         ObRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=NWW6VWRvfnKcgFIlw1Yh6tcTkZ0ARdGpxylaeqJx8hg=;
-        fh=NhInO5QFh+7isPGaqV8Cbgv1y29flU2nAhHUZ/pcr6M=;
-        b=bZATyN/9xpZGXGWM/qKFx6v9h1jPHFdwwX6bM1J8RD9JagANSNz93TVoKd0Myg9NMS
-         mcV2du70aYjRElRfKOhUU7kpVudw+0umfDJOjR2nQaDv1+C5+eqwT1FDRczKMl9kvsMi
-         MyE5s5seNpk2RoEMzrbg6KPYtUntN3HXaM9MR12r6s5h+ncelyw4z4PXs6AG10v/EfiV
-         nUyoEyiPHGsSZUQfT0+gaIUjRMEunBjuVp/f8sIEWfp4JoVN9VegUeMLxWY4G1GLkF3U
-         s+47VDkkIXTYxl9PJC0PENy89d19ayVqA6QOS7XdNCcVepM+uMdCqqfgampy+3WCa6b8
-         k6aw==;
+        bh=Z8p0bYiVFuNX4OfWuZZ4sxGIKahg/FfKszGkM4uD0Nw=;
+        fh=omjsYmBXFGZCHkRuJVE1jgUTt92ubw13QJ3Ln2zaSYg=;
+        b=bpeIg8Mio6H+SSIrZXRrKAjnq58CL3kWlco/Euvz+Kl1l2oPWosIXtKo+SkBJLkw2Z
+         7utMREWWeAWX8SFEEcs0/dkAJi6b4ifLparbAcCOZQJw66PiDDkHR7v/XvLu59DzseJx
+         vqbXEPKzgLA4J5cTewtvwJ5p+cR3zQ/uU0PiofaCMCkssvN+AQDdUAsm1ciiXeYdug4G
+         dKuXh8CYcGfVPS9v5Qo2kVJsfF24lhOfGBhmIM0vnvSQF+aOyPkakUVn62jUBHMM7Z3e
+         BSoUMTH0ZlUZPr6zu2ArhA0cCSey6zYasAo5tfv/uDVzLWN5tml4hCzTEa9ks6WKSSLE
+         +Zsw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793925656; x=1794530456; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793926400; x=1794531200; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NWW6VWRvfnKcgFIlw1Yh6tcTkZ0ARdGpxylaeqJx8hg=;
-        b=fvdvi436qEqauV2hnhDmQVirJAqbX7yiljRe9cOvyeMaPEVMh2eDz1lenbawGE2ZwD
-         7nICz7zL7xJq1VNJn1KzBqi2RzRWUTUd5j23vxjqnME7d5n3JmCMRfK2Jz6cbPFUkHGW
-         JJqreYxj0zMKkDnTYEVldHl+NH8VkdhA/wYXf0D9iDHGZoDGG5Xkt7+ic1X8Ne3jjyui
-         Gr3LTLhA9G4Hjl+exYc1rSLykY5LzBpL9IPfRrd4Y7vynHORBNwb2OT/5T3HOqJFtcB2
-         8b7bP4Op1s1KC19DSn3v3YbWpdC+cj7sbJHijwxKTvOSjyB5yvBKizjm8qr5htCtGNO6
-         Vn9Q==
+        bh=Z8p0bYiVFuNX4OfWuZZ4sxGIKahg/FfKszGkM4uD0Nw=;
+        b=GUqyc+PESPCRisgfCD13AQ7e7emdlghEExujUKLxIzHKpk7z8xfI355RoaQ98hWyFx
+         3zBlPq0nR9JmXHRICZ1bnume/4epEI7ZVtuV/F1SO/xrRVZ+9BDYtYnQk8HQ2LVvpOoT
+         r/BgrjpNJ5qItxjhpwcpk9HEzjBmEA7Gkl6a/Uxly3M3m0S+FjccWTituF0CYyEFArTs
+         kTSMMjKymJHXUInedhlDjwvbGAn4dGFn1c1zRdXqldKyOcSqKarcJQtBwCeW46oprKo7
+         Qpra3klJ8pd9WPVTdtl+wcwamc1Jat4kuD6yoGcFuc6ZQmOJadbDl2uHXpt6suIAe/+4
+         FP0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793925656; x=1794530456;
+        d=1e100.net; s=20260707; t=1793926400; x=1794531200;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NWW6VWRvfnKcgFIlw1Yh6tcTkZ0ARdGpxylaeqJx8hg=;
-        b=1Kzr+9xccjmOrVdlG0CP2/v/+yoV3hwAu8EsIVcjmMPV9XxGjtx+WNslb49Upmk6vE
-         7LaCfjKljTxaJvAjgdwp0/RfjL4OZak1+76Zv21BdBvcFsuW4UAYFRFvtcyrPY3MK6PJ
-         QMqaBpBi/EeJ/+AYsKft2XxfUnc1QhQa0u1CK31lyXNyv87X28Ke1yO0UBak7/wJn5Ux
-         FJzPWuzsfwyMSyF8iHLTq99dOv8FgUMZBfFR6tQYzbRtbRGyvqTOn7PLQh5kxPqReLh3
-         drlomVVp+kuP8GWyyttOLsydG0pjuasmLXY4MLq1oZl3kKqdy2R/r/c6X14NwiRFvs8V
-         Ac0A==
-X-Forwarded-Encrypted: i=1; AKwUvBx/lG9o6OJzCQU0IC/xEQ9sb3MdiDI7gxuOKgl0t4Z1ejAJeHRnq7jV5Ym6JEivDvhZWw8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8SGRu6OfhyREs4+ZNmLm6hLC5xB0NLBe6cMPs/XzJ7m9YKXMz/
-	x6ryrmY0mop2OmzjON0kx2s97pyk7ZHPk+5deHAjaEwLLamyd7KBnk7uzjTDNVOEm1027ki8yLI
-	irKJl1t4ghR+u9Xbamus1+tEZN0RLxxEfRKAK9/F6
-X-Gm-Gg: AYBFou0U9XUVnbcX7RnplEUhOdkvIao/YrerkIJjUNPmynCQPlHVl6mr29HqlHMYgts
-	ayePbreADCsJPnMDcTGMnfOUzpOufuOZSQZ7V97qymD03tI/i4ESf1Qbdg07Ix2RSZUCoN4wneW
-	DCX61yVuB1MExuvP0LfZ0YqV6J7lR3Hj8cZ/X+DhnEF8rFwNKJFhBkeoxXzCqekPNwO/x/ChDpT
-	z/LfffMt4sB6yq47fpN8l3Er9ABEPEtcq32U8fOTu2p9s9ZbkJ2Q+xSv+lGoLvEZe5g/CbLVx8y
-	pGL7BrU1IvjYiEt61TTVjgp2RfN/BlCqWwQBZ+K04TltqIrGeQ02kLi9tfRmH6DQPcLD1M2m9F7
-	UZbkjnr7uVoGtSwDto9ziQQJ5tJ+MzJph9b11SsSdnDNyQjMvs5oKESNustu5AsWCIZplJ0uY/2
-	wjIPYvhCIAmCoxAUrQL53m1uNj8w==
-X-Received: by 2002:a05:6402:1806:b0:6b4:629a:6352 with SMTP id
- 4fb4d7f45d1cf-6b597833cb7mr35960a12.5.1793925655384; Thu, 05 Nov 2026
- 16:40:55 -0800 (PST)
+        bh=Z8p0bYiVFuNX4OfWuZZ4sxGIKahg/FfKszGkM4uD0Nw=;
+        b=I8lWbGctPStCgiB63p2iDGBrLTp2FevL63hQae6ZTiQbjOVyTUjWnY/C+HnDUkbm28
+         DAu62C+Nv0RhdjT7WWhxuNYgj4UgMSwLeaHwPgn0t/sKbVqmmGWNSAZDCba+XuGGAFJ3
+         tKZMgu4GQR3xvKdu1wGF+d+YfcVxFRKuAX4oaKbDhlcIAQuTzIAjTPIgYDJvDmFfNVem
+         C07MGyFsVXHcLUzuhCPqH62UXgoVEWyWwSp5ey/RGmjNpwXEkGw4V0eyy9edpnrtxXna
+         BFEbN/o0bwQPZkenBqnjWFPs+kgSp4MElgWmPyxJs3C50WoKSvYXFRir4h/CgUZcLVKA
+         OC2A==
+X-Forwarded-Encrypted: i=1; AKwUvByLEi9MgFW+ul7TpKtT2kQmTuuabWpLsGfxHbRurSDTeVnVXP5muGuxhZjGDNFHcd9zR+8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/gBrPDVc7ZuYO9Psk3pTWRIvyijLDUiCihSP0v4d4+QrJ8tyft
+	qlUbebu03MHxStEUqa/JqmOO2agCHway0ys85vpbvsdIH5REnnf70rmV6vVbNg25jMNp71X3Z2L
+	ekiwGLH2ZW0KNW51KconnIagESjAlwCWTnX80GsKF
+X-Gm-Gg: AYBFou3BsTyUO4krUi0lMFZzFbErGpW5NVi8j38ykq54Wczkf7pPw3sN569DVzyz3LP
+	HVDJoFnelWPPgILGZGVK0A3/i0RN3Tf6sgETHELtkQvf/Ta760v3tBKSWQzYEExWLb1p6RgLWhJ
+	Y5MOm5+0/iIrEcGNHL27RwE8FvMi9N24TGE3eUsyhXg+O762N0X56chO1yj7BVOjnTikGH8sc4I
+	qsr0oI92Y7Z6lKy2ZvlkI/cFPWlker0w1Ruw/gWl/RtM4csHCAVThhlIma+P6d8gV3tPpr7XAyG
+	vYsiQ5jORaPaoFja+Us6ei2+OPprkO79K6ed32vxIX49eR+YDh9ncRmnY2pFZ1CT8NGRb4tg5QD
+	2C0EXN0nWESAd6v8JcaYWmDB7o5BPmh3B+CFSyqFZrKl1xdjk4VfpwHBsmv5AFjR0fQLBm1f0rr
+	HcYX7eJOuedq4q42R3zJLI8EbkGvZ6ilFHL2ek5xfqfN+/MQ==
+X-Received: by 2002:aa7:d44c:0:b0:6b1:d80d:396b with SMTP id
+ 4fb4d7f45d1cf-6b5d53d5c2fmr27678a12.14.1793926399217; Thu, 05 Nov 2026
+ 16:53:19 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,109 +105,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260930210750.1487547-1-chang.seok.bae@intel.com> <20260930210750.1487547-9-chang.seok.bae@intel.com>
-In-Reply-To: <20260930210750.1487547-9-chang.seok.bae@intel.com>
+References: <20260930210750.1487547-1-chang.seok.bae@intel.com> <20260930210750.1487547-10-chang.seok.bae@intel.com>
+In-Reply-To: <20260930210750.1487547-10-chang.seok.bae@intel.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Thu, 5 Nov 2026 16:40:42 -0800
-X-Gm-Features: AclHuK-4sGsbJMrfSl64kCcEOiMA7UjfuzawJTnrgKST2LlZsQ5qYXn3PXqPGmk
-Message-ID: <CALMp9eTEd3jHNwh8M-xbtrTVD5-RgWuUDr=ZxRPWtL20_=WDQg@mail.gmail.com>
-Subject: Re: [PATCH v8 08/20] KVM: VMX: Support instruction information extension
+Date: Thu, 5 Nov 2026 16:53:07 -0800
+X-Gm-Features: AclHuK_SEF5elS3aU0BqmAvaeLUrXA4HaQU5I3YL53_AQiNGQtbuBTA-Tt14aoU
+Message-ID: <CALMp9eQ2TbHZ1xzsDq+TfFTfaJf5wHMk9g1fM0aWRhJsE=sgOQ@mail.gmail.com>
+Subject: Re: [PATCH v8 09/20] KVM: nVMX: Propagate extended instruction information
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, zhao1.liu@intel.com
+	x86@kernel.org, linux-kernel@vger.kernel.org, zhao1.liu@intel.com, 
+	Chao Gao <chao.gao@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 4:55=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.=
+On Wed, Sep 30, 2026 at 2:37=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.=
 com> wrote:
 >
-> Define the VMCS field offset for the extended instruction information.
-> Then, support 5-bit register indices retrieval from VMCS fields.
+> Define the new extended_instruction_info field in struct vmcs12 and
+> propagate it to nested VMX. Gate the propagation on the guest APX
+> enumeration, which aligns with bare metal behavior. Thus, define the
+> CPUID bit here too.
 >
-> Note the APX enumeration alone indicates the extension is available.
-> For safety, do not assume that previously reserved bits were zero
-> on older implementations.
->
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Suggested-by: Chao Gao <chao.gao@intel.com>
 > Tested-by: Zhao Liu <zhao1.liu@intel.com>
 > Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-> Link: https://lore.kernel.org/aakEsXJgO-3m2xca@google.com
+> Link: https://lore.kernel.org/aRvOSnaUt1E+%2FpkC@intel.com
 > ---
->
-> Note for the review of extensions in following functions:
-> +-------+------------------+------------------------------------+
-> | Bits  | Field Name       | Related KVM Functions              |
-> +=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+
-> | 3:2   | ASIZE            | vmx_get_instr_info_addr_size()     |
-> +-------+------------------+------------------------------------+
-> | 4     | Mem/Reg (1=3D>reg) | vmx_get_instr_info_is_reg()        |
-> +-------+------------------+------------------------------------+
-> | 9:7   | Segment          | vmx_get_instr_info_seg_reg()       |
-> +-------+------------------+------------------------------------+
-> | 10    | IndexInvalid     | vmx_get_instr_info_base_reg()      |
-> +-------+------------------+------------------------------------+
-> | 11    | BaseInvalid      | vmx_get_instr_info_base_is_valid() |
-> +-------+------------------+------------------------------------+
-> | 20:16 | Reg1             | vmx_get_instr_info_reg()           |
-> +-------+------------------+------------------------------------+
-> | 28:24 | Index            | vmx_get_instr_info_index_reg()     |
-> +-------+------------------+------------------------------------+
-> | 36:32 | Base             | vmx_get_instr_info_base_reg()      |
-> +-------+------------------+------------------------------------+
-> | 44:40 | Reg2             | vmx_get_instr_info_reg2()          |
-> +-------+------------------+------------------------------------+
->
-> Reference:
->   APX Specification, Table 3.11 Extended Instruction-Information (EII)
->   VMCS Field
-> ---
->  arch/x86/include/asm/vmx.h |  2 ++
->  arch/x86/kvm/vmx/vmx.h     | 42 +++++++++++++++++++++++++++-----------
->  2 files changed, 32 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-> index f98e40df5004..0b1e2353db3b 100644
-> --- a/arch/x86/include/asm/vmx.h
-> +++ b/arch/x86/include/asm/vmx.h
-> @@ -277,6 +277,8 @@ enum vmcs_field {
->         PID_POINTER_TABLE_HIGH          =3D 0x00002043,
->         GUEST_PHYSICAL_ADDRESS          =3D 0x00002400,
->         GUEST_PHYSICAL_ADDRESS_HIGH     =3D 0x00002401,
-> +       EXTENDED_INSTRUCTION_INFO       =3D 0x00002406,
-> +       EXTENDED_INSTRUCTION_INFO_HIGH  =3D 0x00002407,
->         VMCS_LINK_POINTER               =3D 0x00002800,
->         VMCS_LINK_POINTER_HIGH          =3D 0x00002801,
->         GUEST_IA32_DEBUGCTL             =3D 0x00002802,
-> diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-> index 863b08478544..4a76af613720 100644
-> --- a/arch/x86/kvm/vmx/vmx.h
-> +++ b/arch/x86/kvm/vmx/vmx.h
-> @@ -330,9 +330,18 @@ static __always_inline unsigned long vmx_get_exit_qu=
-al(struct kvm_vcpu *vcpu)
->         return vt->exit_qualification;
->  }
->
-> +/*
-> + * The APX enumeration guarantees the presence of the extended fields.
-> + * The host CPUID bit alone is sufficient to rely on it.
-> + */
-> +static inline bool vmx_instr_info_extended(void)
-> +{
-> +       return cpu_feature_enabled(X86_FEATURE_APX);
-> +}
 
-Sashiko is not wrong. When KVM runs on top of Hyper-V with eVMCS enabled,
-vmcs_read64() becomes evmcs_read64(). Because eVMCS v1 does not define a
-mapping for EXTENDED_INSTRUCTION_INFO (0x2406) in vmcs_field_to_evmcs_1[],
-get_evmcs_offset() triggers a WARN_ONCE() and evmcs_read64() returns 0 on
-every instruction exit that calls vmx_get_instr_info(), even when APX is
-not enabled for the guest.
+[ ... ]
 
-Until eVMCS supports EXTENDED_INSTRUCTION_INFO, vmx_instr_info_extended()
-must be predicated on !kvm_is_using_evmcs().
+> diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
+> index 1ebe67c384ad..267aa64f005e 100644
+> --- a/arch/x86/kvm/vmx/vmcs12.c
+> +++ b/arch/x86/kvm/vmx/vmcs12.c
+> @@ -53,6 +53,7 @@ static const u16 kvm_supported_vmcs12_field_offsets[] _=
+_initconst =3D {
+>         FIELD64(XSS_EXIT_BITMAP, xss_exit_bitmap),
+>         FIELD64(ENCLS_EXITING_BITMAP, encls_exiting_bitmap),
+>         FIELD64(GUEST_PHYSICAL_ADDRESS, guest_physical_address),
+> +       FIELD64(EXTENDED_INSTRUCTION_INFO, extended_instruction_info),
 
-Moreover, enable_apx should be forced off when kvm_is_using_evmcs() is true=
-.
+You need to add a case for VMCS12_CASE64(EXTENDED_INSTRUCTION_INFO) to
+cpu_has_vmcs12_field().
