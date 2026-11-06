@@ -1,55 +1,133 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.152
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794004698;
-	b=m5iQKZzsxQEnodTwMWlIk9ZxyMCT243i8RlRzl1SdDPxYyqoMDRKfe8oTcnyVdFsXeaE
-	 +JIMhTNLaqkobMExVqjRpb7y57pV1eKq3HrFWPNTrsU7J4oykCiQDy2H6a0ZDm/C9NXQ7
-	 JQ6aFkGobXX8f+emu/C8xVY7s5qhD8UbDc5zSQSd36JclJTxDWt7GwUI64Kcc1zYKkMhD
-	 Zq79C6ISB34ZapsxXhA6/K38LudHcmvoadPEZWE99KOpX2nlbM2VmOq+1EN1nBTDpqocQ
-	 HU+IWyQ8n+gc/ZCV240ADejWH4FBFj8KkdqZwLbOF/hFKyRXxbx+CzZer/dhQ+ieh+Q==
+	t=1794005504;
+	b=i2gl8eHrrgPxSGJkLsDsfaK9BFF9EKcCgmKelvTeGconMIEK7TujCDsDwaQdRZgr2q9N
+	 pJmK1k6t1wD3t+/yHwpBNuXkBhopBOLyDXdZeRDjSBO1iDnz98evEs7DEDOE8G0nZy2X7
+	 ZpyQe07EzQQM3j9c7/UIMZXageNOSlGldGiWi9Rm05IGXx4aJIuKkienOoWmkXlRvz9nZ
+	 /KGyXqKeqUI0NB6Rqa6lgzwvLOIr6aZtSsL1ggux6WDDkp8A0UeuiBjBaJI4fF6woXfpm
+	 iUr2wsuHUyNNq00a7qx6kPPoOMwNZ21XEKyI96QMW9X02lH5vm0x6KDlsrtxJnSlJFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794004698;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=VV1Mfm3TCiX+PFest0QA96zqc7lpSirF2QO8NESV8gw=;
-	b=RABDGx9yKiONHXWkTQKq8IW4iA7OZ92QZ4FJ5AaE/WueaKMJKXkOTqvoesSMm2Fd2fQR
-	 GyjdktftmnHizR9IQKNqTCGzCLgArEkMAQEwZEhB3l6tgnvtKQnBxVPGPzDFXlWSkoFnZ
-	 5p3vOV1iPOO5UvYyjZAsxGuo2jLNO7geRC3iKUhizxiv0QLAPuP1JIF/egdnhy8FX+uqh
-	 +N/cPcilkZWw0PGWoa53A9J5uRs8uJDpW9rXR6O1RgA/OR3bNvSGL2tP8emGmxtqC7QG3
-	 O5pVhAAoLpIaBOzy98/L4odEVKdPrgQc2npyP21VMp6AiTmX2LzmUgc1lvNUkqCWNqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794005504;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=pCINyycb2Yi7eXcN76C9p3VO8yXHWknwGqsZ4naX5E4=;
+	b=2fbP/Cq87+nHbmnDfmwEejAqMl3D3PCaSi47aHP5leDBTYW7zz2niyXa2hEVwpAatJfP
+	 /o5bMgGWWxhJ5j2eVEIdZLX20rXUKdQaDf+v9dwo0zXADDf4ADgwsuSZNdKiA0f8C0wYp
+	 cUqh2/lvW8ONxVyvU4+FIishRmM8Ft1V1ruLAVzsQwW7X+ZBhVSXpHyFQZk9VcDqEynVj
+	 mjckv7xsL2NFla5SYjO09GI6isuvGWt9gRXoHy8izQhjwpFbqHIH46EtLRMNey6lTDGn0
+	 aLYABvx0gLIkd6f7SrABDtggoOHQXGX7r3+itoakMrRvB9hv2WjgZq8lYu/yB6WvuIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a+hkREkJ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=eXwYvvvp;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b="a/EV4SN3";
+	arc=none smtp.remote-ip=103.168.172.152
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2519606A32C
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760F2606A32E
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:51:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 760F2606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a+hkREkJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FF1F008AB
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:38:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794004697;
-	bh=VV1Mfm3TCiX+PFest0QA96zqc7lpSirF2QO8NESV8gw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=a+hkREkJvfNJfQXxIl7bMHmaTWEO4rXPI/43cIn1nSAylWA38p12smeLkfoz68Yqa
-	 Yh7B/xDqo3qV8BGzZdXTmpclEDITBd40LxvZI6UL7X/qFSAzIJD87ShHJ7R0BOLtuO
-	 XcMMLnhCGoKHpcC3RBJrm4w4MNGtkGUdrr5xMZi+0b1Q58hfes4O+ZxkJ+ZfTyuyS5
-	 ZNSNT9abFbRt39pfD3OHtRNKZtvk3V+sJr/4nVy41iBilVsWDSaLPb9gsyaPZlKWOE
-	 8uUIMtmZcrUsOfEfYpzxcTy0fXIwjvF2OZ0zKT4uhxzW4NT5dPvXyl3VWhhUlmHi/0
-	 dDS2k1N9+GtxQ==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c49b431f022so166796366b.1
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 14:38:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBw6Swgt4dH66Zqw7trBForMT5X0XQJVdCpOGEjR6SxD69XgjWuOAm+LR0kkCi73crxohkQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9Mgq/igZVrGvwFZGKYEHbH7Zny+nFSCyN/pij0Lii9OPF3ausj
-	s09tUDf91B9tcmMCHobuz1ul2rMVURsBl7AROMtNTdudfUF5+ZpZ/qrp6ZVgFNceD9ITRsR3MDu
-	K/5vuIjunGEZbZp553jpywubWwFlPlSM=
-X-Received: by 2002:a17:907:9803:b0:c40:f9ea:7387 with SMTP id
- a640c23a62f3a-c4d346923b7mr295391666b.6.1794004696138; Fri, 06 Nov 2026
- 14:38:16 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=eXwYvvvp;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=a/EV4SN3
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id C2549140011B
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 17:51:42 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Fri, 06 Nov 2026 17:51:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794005502;
+	 x=1794091902; bh=pCINyycb2Yi7eXcN76C9p3VO8yXHWknwGqsZ4naX5E4=; b=
+	eXwYvvvpQVKBaBpNbRUe/+3hYKCeOcbuVWiYmYLKEvLXtRoAGvUf8RbrmXwsx48p
+	RMEOXPcOMIYiwlgJiG2tu6GhNLXDb72Rz1d/Z1gV4gjhVv9VROtq60SjULmH35ib
+	PZVrZi6T4LBfl535OcFR2LdFMLf4CbQXL6pHnWFKuPquS9UGc9oQZsVTiFUgLCFO
+	++dgLLlhCWRIaIzw48OyM5BEywklope1/SwKtMCifcb2M47t9hktfmi7eSt/M3UA
+	7rwZSjQBVEa4VMwNCbH7KonnGQdnp8Hay/5XF84slGoGYXimieBUP8P7D3ZU/b2o
+	1QG4Ab+IwWFzwNIrtne2Iw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794005502; x=
+	1794091902; bh=pCINyycb2Yi7eXcN76C9p3VO8yXHWknwGqsZ4naX5E4=; b=a
+	/EV4SN34LhFKeoYm6dLT3OPcpHdaXHaATWoVHjVvgCPGmJTb5pjnZxCvn7ukG+JG
+	sLQeOwxldI5cEywnOf3f4YLOJoqeg3ghymFxn15lA9qe69MLo4CH2NozGNukA+8i
+	j3L4X2Vu/aL2SxDhWHewSeAdY5047siA2UMT0W3qVXejXKCwHQRk28cPB/r0iB5e
+	gYwQTPe9hbzlX34JPw9yzWAbqMnB4dSbHNt+X4NsJ2wEcplyKIrGlQM+h7vwDFyH
+	Z/s5D5/h/AMuCYCTEbMCSHFl7X51iK8VERLJkDK6HasGlxqsOHSR3atmfynWe/Fo
+	TMhS7FmeFF8DXAtm257Tw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794005502; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:QLSnLIhwSqJ+unkIjKxwh9x3yYsF0qztgygy3TSsTroICBy
+	kJ0fxaNzwpsV5SttXPl4uO1uZuRBXSCO39k87gGGsjNAViyD3bXELgbZfI4oo11S
+	su2FwRWMwwqYP7WDWlbcfVVkGh9C5pLVeAIttKt4EsgHwWM2GGhE69BCQ1j/wFid
+	vj6o1VD8I0bFOFIvsM/n/AawLVTfCGuD+7/5/rdTIFHX31BCKO20p6vaMle/2Btt
+	MlQPHHFlFNZwh+BzDqMNNcBMmroHvNwfSJT+vPWNLows7qGVSyrBvCQvjP3V5mJT
+	gZ3sL1AzboPr7zzXS6KbnWlm3aDVT1HcIiwVtbw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:RaomtIcuXvUIFwt+5sZpEeZA5wqZr6f0fW2ssedUVHc=:TOM4g+7xSqNy0WSFjfB2JfWoxxEEleNx6wst9aJJXmM=;
+X-ME-Sender: <xms:_lnuasrUXba2FrX_QVudFK--ZVFTg4U3il0mSRvOBIMemZgedb16gA>
+    <xme:_lnuagTR-JZN5SUaZs4jWkwPnnep0J1QxGJoPLO1ZKiHJzt3oisUygEk2CYWdEjQi
+    kn6AEVtgCwNvxqoNeA5hKsRwEvOEySqBQnA_8Y4wUZpHOyj_6Dn4IQ>
+X-ME-Received: <xmr:_lnuaokoo8q81RfRbxNYqIAseOSj28-drfG_yAOgxIVVx0ALfmNpvcnrHow0rg>
+X-ME-Proxy-Cause: dmFkZTE6cr9qQxQy/NTdx2j4Uy5Tstc9ECcua64GU/0jH4N0I8lrKEWqW0lQfJCEnrS+FW
+    gyx3ol9myKVUtTXCA9e+BjNluWF9Pe7xw62YCW5NHRrMlGafLSXEyWuu/BRNxfSmaaNYk3
+    ehoFW8RAO9Lo2QPPkRc7SLF4DF8EkO0phNnJDBOrFkTdcKiJ1wl5a7GZTtFoVK5dKSI/Se
+    QAzufhGQWi4yhKr6pr77YJ5raXlX+1ksTpMfWqQQAN9wbkNk72zgi+E5g2y54K+q2tyjLE
+    Mbj4vpmCNPkzKYz9fyM4HMsfdMMUfYjpxN4v9LT2xRoZ6OeTk1TG0ide3UTnOQh3yMMdZ+
+    3TJl5bkNUPm9aDoS0Y71plJGBC28Zx0F4P6vPaH82ObBxWqh1SwdHWnETNDfw1BXPNOL0M
+    XeD+jGnmuSG7Fv9QHEoBl3VDJNBjaFcPBYKUn5hpg+f95Ka9UmSJvvCB9wKbxJ0Yysqy9w
+    FeNhXvPq3VKx8yPfk+rkNwJgHtk9dl5/+VNboIkvc7Z8TZUJlAfcX/b0bRp8Gt0DM4ErT/
+    8NovABCzt5qxLsbChHORU0PWnhIjppVCbJ76ra3OJz3PKFXWkZBS5TrqXD/Ad6Gmpgvom+
+    JT3/5L0/Ke5nO6i2sYG95fXtvrgBuHmUDoINrVDtRLny7nYXAbRN2zE4+PGQ
+X-ME-Proxy: <xmx:_lnuasEkV9zy_rdKjRXk4w0T4o0Yq0f5dU4bKCOuzR-TyNvkqkv_sw>
+    <xmx:_lnuajnE82WfU-nm3AOPdykNkoAc96cZkOvAKNMdlXGNzqgB9jC--Q>
+    <xmx:_lnuajRDMaG3gWHBcqQVfE8kK4lQAqaYCFH0b3kXUjn8tumL42oY1Q>
+    <xmx:_lnuag6gKPuHTLIN96fk-wGeWaIaOqccowAhMFZ0bnSdh4_a-vjm8Q>
+    <xmx:_lnuasGNzPibMYWZ8e9ucvV1agWqbApqR8cu9IgskTYC2TRgUOBPftzE>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 Nov 2026 17:51:40 -0500 (EST)
+Date: Fri, 6 Nov 2026 15:51:37 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v6 12/31] vfio/pci: Call the CXL open and close hooks
+ around device use
+Message-ID: <20261106155137.5fcf7259@shazbot.org>
+In-Reply-To: <20261016161839.2765592-13-mhonap@nvidia.com>
+References: <20261016161839.2765592-1-mhonap@nvidia.com>
+	<20261016161839.2765592-13-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,94 +137,170 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106013927.166209-1-zide.chen@intel.com> <20261106013927.166209-4-zide.chen@intel.com>
- <au4dVD2cZbvoqEa4@google.com> <49798d13-f426-4834-9996-5d8f1f7dad4c@intel.com>
-In-Reply-To: <49798d13-f426-4834-9996-5d8f1f7dad4c@intel.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 6 Nov 2026 14:38:03 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zNQX_fzYpiF8sC2i+S2E4XvxrMarmLg75J=kgX_2Npu0w@mail.gmail.com>
-X-Gm-Features: AclHuK9hbPxh7eWR_k3ODCU3ex8SniyHqugMgQFLThIlqSvJYYwfWvKiIvfdme4
-Message-ID: <CAO9r8zNQX_fzYpiF8sC2i+S2E4XvxrMarmLg75J=kgX_2Npu0w@mail.gmail.com>
-Subject: Re: [PATCH v3 03/18] KVM: x86/pmu: Rename reserved_bits to
- eventsel_rsvd in kvm_pmu
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 6, 2026 at 1:16=E2=80=AFPM Chen, Zide <zide.chen@intel.com> wro=
-te:
->
->
-> >> @@ -214,9 +214,15 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu=
-)
-> >>
-> >>      pmu->counter_bitmask[KVM_PMC_GP] =3D BIT_ULL(48) - 1;
-> >>
-> >> -    pmu->reserved_bits =3D 0xfffffff000280000ull;
-> >> +    /*
-> >> +     * AMD PerfEvtSeln registers do not support PinControl, and KVM d=
-oes
-> >> +     * not emulate AnyThread due to cross-VM information leakage on S=
-MT
-> >> +     * cores (as on the Intel side).
-> >> +     */
-> >> +    pmu->eventsel_rsvd =3D GENMASK_ULL(63, 36) | ARCH_PERFMON_EVENTSE=
-L_PIN_CONTROL |
-> >> +                         ARCH_PERFMON_EVENTSEL_ANY;
-> >
-> > It's probably better if we diff against the generic pmu->eventsel_rsvd
-> > set by kvm_pmu_refresh(), and explicitly add/remove bits as needed here=
-,
-> > like the Intel code. Then we also avoid re-iterating the AnyThread
-> > rationale here.
-> >
-> > What do you think?
->
->
-> Yes, I think this is better. How about this:
+On Fri, 16 Oct 2026 21:48:19 +0530
+<mhonap@nvidia.com> wrote:
 
-LGTM, with that feel free to add:
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> vfio-pci-core frees device regions and excluded ranges on close and on a
+> failed open, so a CXL provider must set them up at each open.
+> 
+> Add open and close to the CXL ops and call them from the common enable
+> and close paths. A failed open unwinds the enable in reverse order:
+> release the device regions, unmap the BARs, drop the excluded ranges,
+> then free the virtual config.
+> 
+> Factor the device region release and the BAR unmap out of
+> vfio_pci_core_disable() into helpers so the enable failure path and the
+> disable path share them.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 57 +++++++++++++++++++++++---------
+>  include/linux/vfio_pci_core.h    |  2 ++
+>  2 files changed, 44 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 211fff6045e2..3d4e01eea7b1 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -590,6 +590,31 @@ static const struct dev_pm_ops vfio_pci_core_pm_ops = {
+>  
+>  static void vfio_pci_free_excluded_ranges(struct vfio_pci_core_device *vdev);
+>  
+> +static void vfio_pci_core_unmap_bars(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct pci_dev *pdev = vdev->pdev;
+> +
+> +	for (int i = 0; i < PCI_STD_NUM_BARS; i++) {
+> +		int bar = i + PCI_STD_RESOURCES;
+> +
+> +		if (IS_ERR_OR_NULL(vdev->barmap[bar]))
+> +			continue;
+> +		pci_iounmap(pdev, vdev->barmap[bar]);
+> +		pci_release_selected_regions(pdev, 1 << bar);
+> +		vdev->barmap[bar] = NULL;
+> +	}
+> +}
+> +
+> +static void vfio_pci_core_free_dev_regions(struct vfio_pci_core_device *vdev)
+> +{
+> +	for (int i = 0; i < vdev->num_regions; i++)
+> +		vdev->region[i].ops->release(vdev, &vdev->region[i]);
+> +
+> +	vdev->num_regions = 0;
+> +	kfree(vdev->region);
+> +	vdev->region = NULL; /* don't krealloc a freed pointer */
+> +}
 
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Mechanical changes like this should be done in a separate patch.
 
->
-> diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-> index fb5a298244ec..15d4b94826f8 100644
-> --- a/arch/x86/kvm/svm/pmu.c
-> +++ b/arch/x86/kvm/svm/pmu.c
-> @@ -213,12 +213,11 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
->         pmu->counter_bitmask[KVM_PMC_GP] =3D BIT_ULL(48) - 1;
->
-> /*
-> -      * AMD PerfEvtSeln registers do not support PinControl, and KVM doe=
-s
-> -        * not emulate AnyThread due to cross-VM information leakage on S=
-MT
-> -        * cores (as on the Intel side).
-> +        * AMD PerfEvtSeln registers do not support PinControl, but suppo=
-rt
-> +        * a 12-bit EventSelect (bits 35:32 in addition to 7:0).
->          */
-> -       pmu->eventsel_rsvd =3D GENMASK_ULL(63, 36) |
-> ARCH_PERFMON_EVENTSEL_PIN_CONTROL |
-> -                            ARCH_PERFMON_EVENTSEL_ANY;
-> +       pmu->eventsel_rsvd |=3D ARCH_PERFMON_EVENTSEL_PIN_CONTROL;
-> +       pmu->eventsel_rsvd &=3D ~AMD64_EVENTSEL_EVENT;
->         if (guest_cpu_cap_has(vcpu, X86_FEATURE_SVM) &&
-> kvm_vcpu_has_mediated_pmu(vcpu))
->                 pmu->eventsel_rsvd &=3D ~AMD64_EVENTSEL_HOST_GUEST_MASK;
->
-> >
-> >
-> >>      if (guest_cpu_cap_has(vcpu, X86_FEATURE_SVM) && kvm_vcpu_has_medi=
-ated_pmu(vcpu))
-> >> -            pmu->reserved_bits &=3D ~AMD64_EVENTSEL_HOST_GUEST_MASK;
-> >> +            pmu->eventsel_rsvd &=3D ~AMD64_EVENTSEL_HOST_GUEST_MASK;
->
+> +
+>  int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>  {
+>  	struct pci_dev *pdev = vdev->pdev;
+> @@ -691,8 +716,20 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>  
+>  	vfio_pci_core_map_bars(vdev);
+>  
+> +	if (vdev->cxl_ops) {
+> +		ret = vdev->cxl_ops->open_device(vdev);
+> +		if (ret)
+> +			goto out_free_config;
+> +	}
+> +
+>  	return 0;
+>  
+> +out_free_config:
+> +	/* A failed first open never reaches vfio_pci_core_disable(). */
+> +	vfio_pci_core_free_dev_regions(vdev);
+> +	vfio_pci_core_unmap_bars(vdev);
+> +	vfio_pci_free_excluded_ranges(vdev);
+> +	vfio_config_free(vdev);
+
+Raising again that this doesn't account for the code previously added
+to this function that has its own unwind.
+
+There also remains the question of whether excluded range setup should
+be moved to init/release.
+
+>  out_free_zdev:
+>  	vfio_pci_zdev_close_device(vdev);
+>  out_free_state:
+> @@ -713,7 +750,6 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>  	struct pci_dev *pdev = vdev->pdev;
+>  	struct vfio_pci_dummy_resource *dummy_res, *tmp;
+>  	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
+> -	int i, bar;
+>  
+>  	/* For needs_reset */
+>  	lockdep_assert_held(&vdev->vdev.dev_set->lock);
+> @@ -759,24 +795,12 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>  
+>  	vdev->virq_disabled = false;
+>  
+> -	for (i = 0; i < vdev->num_regions; i++)
+> -		vdev->region[i].ops->release(vdev, &vdev->region[i]);
+> -
+> -	vdev->num_regions = 0;
+> -	kfree(vdev->region);
+> -	vdev->region = NULL; /* don't krealloc a freed pointer */
+> +	vfio_pci_core_free_dev_regions(vdev);
+>  
+>  	vfio_config_free(vdev);
+>  	vfio_pci_free_excluded_ranges(vdev);
+>  
+> -	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> -		bar = i + PCI_STD_RESOURCES;
+> -		if (IS_ERR_OR_NULL(vdev->barmap[bar]))
+> -			continue;
+> -		pci_iounmap(pdev, vdev->barmap[bar]);
+> -		pci_release_selected_regions(pdev, 1 << bar);
+> -		vdev->barmap[bar] = NULL;
+> -	}
+> +	vfio_pci_core_unmap_bars(vdev);
+>  
+>  	list_for_each_entry_safe(dummy_res, tmp,
+>  				 &vdev->dummy_resources_list, res_next) {
+> @@ -859,6 +883,9 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+>  #endif
+>  	vfio_pci_dma_buf_cleanup(vdev);
+>  
+> +	if (vdev->cxl_ops)
+> +		vdev->cxl_ops->close_device(vdev);
+> +
+
+Mismatched in both naming and conventions.
+
+vfio_pci_core_enable() -> cxl_ops->open_device()
+
+vfio_pci_core_close_device() -> cxl_ops->close_device()
+
+Some variant drivers unwind a failure after core_enable() with
+core_disable(), so the placement in the close_device() path is not only
+inconsistent, it's wrong.  The hooks should also be consistently named
+relative to where they're called from the core.  Thanks,
+
+Alex
+
+>  	vfio_pci_core_disable(vdev);
+>  
+>  	mutex_lock(&vdev->igate);
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index fd1ad0baf470..6520a2dcfd4a 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -70,6 +70,8 @@ struct vfio_pci_device_ops {
+>  struct vfio_cxl_ops {
+>  	int	(*init)(struct vfio_pci_core_device *vdev);
+>  	void	(*release)(struct vfio_pci_core_device *vdev);
+> +	int	(*open_device)(struct vfio_pci_core_device *vdev);
+> +	void	(*close_device)(struct vfio_pci_core_device *vdev);
+>  	/* Pinned per bound CXL device so vfio-cxl cannot unload under usage */
+>  	struct module *owner;
+>  };
+
