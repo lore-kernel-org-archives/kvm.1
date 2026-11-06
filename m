@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.69
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.37
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793943908;
-	b=umVhdK5SW33M4IYsyty9lBNI+zMWNa6PtH4Oi76VIEiAK9vwL45GYKSolMav4igYORAH
-	 H5QJT/IPiiengMYPvIjNTep2rTRWPhgF4q0RxUiuNEU8f6PZPtmEzKhI12F/DUi/hgz4J
-	 7VOAZ8c/Dl0VrOxEdiaMawjpafPv7uqtb1SJlaV0LXG5czDBb/ux9FxJRuBYkJ8S3vz3h
-	 6o16UI5ImqppDD0A+iKz2aJiMpgd4Z4OgxAfmCPDNi4PjbZIPmmMp/hk4WFcyPOfhKxdB
-	 7ZwYgIFtL5guAy1ba9YKl11w5j6hAzwuuVaekZ2IMG3XoVMeH4Zl0BFrM5z7QXB69bA==
+	t=1793943915;
+	b=zvj6Z8yJR2L94zjOjavausMBJ7EFT2yuy/VlznWHZucJFpuQleQYBVzrUtMWYos3KGLF
+	 pAFFksVlnnMLxTm98IM9XIRa66J0yjEHjYhm2rKIZHuKvMnKZCFSDFNQTNTH+JJ0guSgx
+	 N7E8JXf6GuqPDBq7VJJHVKmQfPfOnedJRGAgRx9X3wXFMG0jHyJg18kWTolxs6QIpyZxx
+	 yF3O9I3P5ZrJ0QKY3TrV31UwV5eHJmyrB/+NlrDMlRkobClnBVGoFNfb3Z9afRxUYs7v/
+	 v6yQT7tFl26iwIHCiMGhV0vr7GEQHcJL/sSGdRg+d1mu5bDkbTsc7CToS2uP3sxsTGg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793943908;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793943915;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
@@ -26,72 +26,72 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=G8mgOswGuepWRRBaUG9ZWm7C68CwS0Zp37xHFTz+mus=;
-	b=TfsGMg0zi18IF/FXLqSrzU3WyWIBJ737DLWlUifFZQXRHU0Y2mUMA0WBWOTgsTbtw1Mi
-	 B5ftTZ56XNNt2sKYzsvFb2UKO0sxhtOhMlB0I1vMcmTQE/465wpwawMfhV2QvwYqtW2R4
-	 S68jlGiDv2Bkp18rUjprzSkt0K6l8cAc9sjmjgqnfpASmSq/ki4XJx7j5m5YJQKrEjov+
-	 VDn6KuwkZXXDvOt6SLY548HeELg9H+qiYDtA8lkDGbqyc0Kyjv4uyEsupY5IBuKL0Lt1V
-	 lacp82x497oi6nyp+7kJv6n/wBQLv9mj7DabHpXEH1bM0c4PNrna1fVT9JdlHrB0ejw==
+	bh=rCmU80LKbBVhC4ibu/Kzfb/8NW1Hrg0eVgB4SFpougc=;
+	b=ztF0revfgPNABUAWhAxsAwtP3UtN41ymS3mDO312zw+WuZ7a4mmvkJr1rP+cpYq+N58r
+	 ugG6PzE6Cw0B6Ju8mS6IIQW6Ru9PmwOhMKZ0NqeN7jlctHJL6p3KJOxgrzzWWIvM56U03
+	 Qcw65lljatYtgaq66Gr+zUt0BwIqf996VQcqadPdLXUgMjxjBaxxML77a4+8zYLkqMXPj
+	 VoGFCVTWv9fyjHAu/rSsZNVUg1tiakvVt9tM5jW+HHzqW7G6JR+45kvc5WHPynhvjK/+S
+	 GwXZBV6RYQRFbIipfi90piFo/hGoPoRwUkbOLssBvXV3hKH2yqzgNC5sSGf8wCQtJdA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cOMeMN7q;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.69
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013069.outbound.protection.outlook.com [40.93.196.69])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=f33AoJz9;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.37
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010037.outbound.protection.outlook.com [52.101.61.37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAB7606A332;
-	Fri,  6 Nov 2026 05:45:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EDAB7606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8C4606A32F;
+	Fri,  6 Nov 2026 05:45:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC8C4606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cOMeMN7q
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=f33AoJz9
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OjWs2dNuYe6kSW6vGrH4NU3uOTLR2GRFzb94i1ipMwGNawygwl47KuEnxNbHDjicgSDCBElW/aoy4Qvzgkj/gAKA1MQ1flyj9A1Ig9Hb+5uGLYbo4XLpeZ5VKkiSFEL4axYZw1XBOMpGjOOuLB9bE9qdsqbZRVq3940qwzDjs8R9uY5XvbPNA742BRMOKVCp7HRwFmcePNXhzq/NVvwva00TuYvIfLzzykxyTLpGhoxdrfDBaalEv16oqLxEqdHvOct5Va16r1PMqUnMuAw+u1F+Pov+oxi+HF1n92HuKoEFwytzepvzn+6ZoLPnx6Ogb0X2N/gR8fHCgInU3lNrKQ==
+ b=SnzwHRlqoZzzW7DSZ+7nORiAvMMMo5fJ8wlHoEGrXjWvOEkO1pvib9S59IWPciIDjP323b3xjPN7EBjT31wQLP0V3LhJpEYnrgslFVV86lTMb1baDw3nJ+M6PV9RU/lkLua8r0QWAxV/aanTnMIm2+NzfD0C0Csxf4k+lE+lvSEEsGhus4/2MPI1eOIALNxPY1FkLN+N/4zJl8qo38hmOgcgBlz1tg+I3w5VHqzWCqQtoPUyrv3jVRzGyBP4mtsKad7mLTNAycb7QILi0G0hDVwNjmxtmHMuNOjPFHWZlQOqO+vXjhAryX+PkNbGAEPgVE+jN2ta5E8yrTZc+VJKjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G8mgOswGuepWRRBaUG9ZWm7C68CwS0Zp37xHFTz+mus=;
- b=Ll+t8s6z5z8vKdtHApzvoxlLLIki9Q+vfcEH5F79MZRL14igKcJxE+JwAaQcgAszOTLYe/eG1FWOCDxaIMnNqrQwU5rjxbsLKUkQU3W8ofWv/L3XVxhEW+EIaKBk/J9rPuMWLs92UXHu6qN2t6PDeETMoQ7Fkz1/PVvBn/T0eaT3e1A+nZXjHs014D/nQGV1i/jNDUSGoakOrOkJWuM9Emp8olhbSzpRvTJi7Eefd6zRzjqdCoQ17uM29ihmY3rGSG35hIAqVCjVNGoIHYhnsUG3b+mYgrR91jgWYAiFJPwh2WFgogx38AM7oafnMMjwBiVkr4RrX/x6SHcXnabBKw==
+ bh=rCmU80LKbBVhC4ibu/Kzfb/8NW1Hrg0eVgB4SFpougc=;
+ b=L/kXQf5k5jo2SwzhTV4usmb6FiCbn7Gid3zVAORG1eBbcqWVoh/21RuvASWajYline3geV4xC7Z+W6iIZcPMMTaWspDv9W/oOrnHeu9YIcaZZrizZcbt7js5u/WNUjyih6YncQY+KVkG8LRUGNvzLH0jVO8rB2+DZwty8IYF0Xk8YQ81N2uHuX9dhAySWce6Hk+7J6DwYBHp1gFzruBAYjXcsU7PDTh+zT4Lccw+KtbXY4VYBryLtK2vflU5mgkzfH6hxplxj/mj/WrshUgDVkrnj6Gfsm5y84cYHxZGGJrGrHjVBEHmarNtcabPo4Pfd9ppGu3wdAY2vNuXOkdRmA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G8mgOswGuepWRRBaUG9ZWm7C68CwS0Zp37xHFTz+mus=;
- b=cOMeMN7q76xTZSaB7Zy/N279VzlUKxb6HTKB5c4cAS0mU4/JKjdCWh0/K1Cx1iEiyJ0nXC1gnSIqsaSS3bM/gwkskwo620h5gQtCFHCE5ywrkXwkHq4BjpSFM/mOZE5tJjgFrvV406jWyzERu/pmrY96eymc46qbImZemWjOw8Gdm9MAsLjSXPjL9OnX6Q+aaG9FJm1VJOMJKzA21osmmbB44aziSnXzfRjdT3K+SpSbUS7JZ5SG+YdIdWHhbcewLM9HrMrYTqMhrwcThTaMOEW/B92ywoivX+9bYKTXqhfwnlTzk8MtkV87bUgAuuW3xHKAuK2wrQsvqkrp7wRekA==
-Received: from MW4PR03CA0334.namprd03.prod.outlook.com (2603:10b6:303:dc::9)
- by LV0PR12MB273923.namprd12.prod.outlook.com (2603:10b6:408:3b5::22) with
+ bh=rCmU80LKbBVhC4ibu/Kzfb/8NW1Hrg0eVgB4SFpougc=;
+ b=f33AoJz9GAhaEfZbficAqmQxHDHqrl+OyeeNmfT/1LNPgEwVHNOJ6qqxpXfRUFDGKVDXcnFwhbX1BGUEzqe7hlGH++Fz/MvwRCTrfWZsR6Fs1tqIu4ywp8wbgllVPbVpt6jX7ReX6fL9yBK73XMknr+eyVjjEd/YaGbgzPHjs6lzzyygF5tHiJm+2JNq3TGJZK91jWX7WAPlz5LB32z5nT6S1+DLSxeb41Lyta0MtNceYkSZHW6uuVUMs//yVxR0tIYvRi93CNDOK9K3FLuaIcGf21b3wUTWMkvuY8jB7Ezc7xCUxgNHfxkaY0Npo9COcpg/TB4psRkZxhwVfF0tlA==
+Received: from PH7PR17CA0034.namprd17.prod.outlook.com (2603:10b6:510:323::12)
+ by PH7PR12MB8037.namprd12.prod.outlook.com (2603:10b6:510:27d::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Fri, 6 Nov
- 2026 05:45:04 +0000
-Received: from PH7PEPF00000009.namprd04.prod.outlook.com
- (2603:10b6:303:dc:cafe::25) by MW4PR03CA0334.outlook.office365.com
- (2603:10b6:303:dc::9) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 05:44:14 +0000
+Received: from CY4PEPF000392DB.namprd03.prod.outlook.com
+ (2603:10b6:510:323:cafe::9c) by PH7PR17CA0034.outlook.office365.com
+ (2603:10b6:510:323::12) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.11 via Frontend Transport; Fri, 6
- Nov 2026 05:45:03 +0000
+ Nov 2026 05:44:14 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- PH7PEPF00000009.mail.protection.outlook.com (10.167.243.40) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF000392DB.mail.protection.outlook.com (10.167.247.121) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Fri, 6 Nov 2026 05:45:03 +0000
+ 15.21.615.4 via Frontend Transport; Fri, 6 Nov 2026 05:44:14 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
- 2026 21:44:47 -0800
+ 2026 21:43:57 -0800
 Received: from kalok-SPC741D16QM3.nvidia.com (10.126.230.37) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 5 Nov 2026 21:44:34 -0800
+ 15.2.2562.56; Thu, 5 Nov 2026 21:43:44 -0800
 From: Alok Kumar <alkumar@nvidia.com>
 To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
 	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
@@ -111,9 +111,9 @@ CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
 	<work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
 	<kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
 	<peter@colberg.org>, <xinmengs@nvidia.com>
-Subject: [PATCH v4 17/32] gpu: nova-core: gsp: factor out NVKV payload conversion
-Date: Fri, 6 Nov 2026 11:09:50 +0530
-Message-ID: <6acb8db2973e5fc0047815ab76d121330bd6fff4.1793906667.git.alkumar@nvidia.com>
+Subject: [PATCH v4 13/32] gpu: nova-core: gsp: add synchronous GMC transactions
+Date: Fri, 6 Nov 2026 11:09:46 +0530
+Message-ID: <124b9805f160d9992974cd4a4b730b275325ca8c.1793906667.git.alkumar@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1793906667.git.alkumar@nvidia.com>
 References: <cover.1793906667.git.alkumar@nvidia.com>
@@ -132,138 +132,401 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PEPF00000009:EE_|LV0PR12MB273923:EE_
-X-MS-Office365-Filtering-Correlation-Id: 619efaaa-76c7-41c4-6c84-08df3bc91aa0
+X-MS-TrafficTypeDiagnostic: CY4PEPF000392DB:EE_|PH7PR12MB8037:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e5c61ee-7ac7-4439-b023-08df3bc8fd98
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|82310400026|1800799024|36860700016|56012099006|11063799006|261021123027099003|261102123227099003|261022105027099003|261021121427099003|261009223027099003|261026140227099003|261022075727099003|261028144727099003|22082099003|18002099003|6133799003|10067099003|3023799007;
+	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|23010399003|376014|30052699003|7416014|22082099003|18002099003|6133799003|3023799007|10067099003|56012099006|261026140227099003|11063799006|261026121527099003|261028144727099003|261021121427099003|261022113327099003|261022075727099003|261102123227099003|261009223027099003|261021123027099003|261022105027099003|261021135927099003;
 X-Microsoft-Antispam-Message-Info:
-	7sIk2VBQ+EsW2LGeMySR4efi1ldzNRpejtxlpoX3Hq3ZoxYY5YXkYhjWAuGSn4or/ztHdP+/QIWX+PJ90t7bc4R+ph8dWqIrdmUUy8oHZaljv9j4YlDhqFZ+UWS9pAB2VEXfyb164SUFJVu2m7zwcFdGSyYuORej6qW0vVC2uH7Otl+oLlQhS2hLI5CpYRBUQflFCfXaOroTza8zXbMzTHN+BhaQULSmUt6CTYQn774xiNOaGzaR32dpLrqMwoP0X8llF40+9PqUXDoxJy5BU5CFnAAX6+uLwrorXcm5PP/Ks0bnSblT674ApBYFuIhXqcY8j8V4NnS/yfoy1e6MEr2k79YZMo+xPe3kRqNpInUVX/hrpywhMXVx1CBv2Aqm3K2YF1hB5qeJmFLPpRoq2GVMFsV4pTLCF+q+N+FCPI25w/Q6QnOJTzfgirgygQDOOYRgaYstyLy0Q2Zo59f3d2F3ODaJwu3OwghabYEtRRHq3CvL9Y6//L/ygZ3k27KSVlAxQW/9MD5zKQN+2Z6yPjbPUQ5lLhiJwcJzYhDig3awSxv+fPCeyp1D3x6E50AjmBWCC5ho4shCK315wf82C0nvaPv9XTSLmZqwkHf6H64zDK6MA4ty0D3OlixxsXOeZQG/Vph9EphEnhSvNV4PF3iv0TT3sN/P8qY9Ynoz3sI9DWXxVmOK8UBNt3Zd90YVk1ZoqwaG2pPS8u7MPFaQfg==
+	ehkQdhh4iBfFKh+qTf1pqzYZ4hvrD+WdrfmbdiA6XRIVMLwFvcDwHSSmhR9RgtVpMnU1Eo/FdUk1VL8D/ON35ZmlfQ1DuM3p7ML7XUaBWGV8OLjk5ihVuZIvxdQfCgGgCIA4EDyfQSMc1FFIQ2RWil3o2oM/aDaSNgILo8MoxEnRlrfYgqExtVpJ6/q9rA6PuT3p3pTTjK/d5IS1j40cE8yCMurmHCGhbR8d5U2pRXwGPOgMT/8QLlx48Z/xy667sNUFMrLRzrgdoddxSh5yhi5W8V5dpdZXBhEyTkw9H/riPZbjxnjo2hGu4xxii8+kC82jfL7P/IREj8xew1FRyifdq2r1BB0FT+jn+wX73ESvXDqQcb12gKdJm+iaHPYK+TNZ4KY5nMIvJGhg14J+W68wjXzuj7Xo6D565ag+tu1lkyzzfVoku25DpZ/et+NJWeseA9wkzOXsSY/QHMsMkAqdrWtgDQsizTklHS1ekCnQKr0aRBf0R+sZVBg1/mOsDCClDaDqwJfHBcR0++TfpjgS5IGEd+7Jn/68L4lKYq+FJKlWLyDKwayYvey8GiYGsL/XgJOlvN/kzPcmfaQ0tjZEsjkpuUTpVLdXmj3lZaKZLkejqs+m9eszXbKRlpcgBTk3vsw/oWtQ13PKPnTg66K/ig66sdhCG2lzr1LgAc9AT3jDRBigFxh4QTlAAq717rM77EHGZAwe+bamRTz8RA==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(82310400026)(1800799024)(36860700016)(56012099006)(11063799006)(261021123027099003)(261102123227099003)(261022105027099003)(261021121427099003)(261009223027099003)(261026140227099003)(261022075727099003)(261028144727099003)(22082099003)(18002099003)(6133799003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(23010399003)(376014)(30052699003)(7416014)(22082099003)(18002099003)(6133799003)(3023799007)(10067099003)(56012099006)(261026140227099003)(11063799006)(261026121527099003)(261028144727099003)(261021121427099003)(261022113327099003)(261022075727099003)(261102123227099003)(261009223027099003)(261021123027099003)(261022105027099003)(261021135927099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ZSPugBiDaK1NAw6cUEh9tDgqCitYspMJa+kyxZEr3d8ZJlcLm3qbwxPZtHxIqnRrFcv1VHRaU4b1cNp9BetIpEyAX085KCBKyrNIbkLHR8hHxo22lt2O9glpESRDlfupMzELzDcHpi3HItSsiBSvtu+MhrHiq7xue1GUmTZbHWMfwjK/cnIG2nyF2Ta4NOUzp5uqbXrtk+mA34xuFT2XYvTntzTyq9d6IENip/TPwrtOfMznbxDZLsuH2xi9nxdCIVyfFdqk5MKzhgvOS7YD3hD+UonOS5SRkyNBSm6Ieo/tSrYmRRVOMMzK70lnOv6WFfXYNbnDy0AWTsY4QCyn/hJo9F19PyeFm6FWQHxdGFVbtc6S33ICOWdW9jUlXLC/evQ3MefFWOTQjGTIlV2Evnu9CIuPH0uII7WS0WJrXI3pQBxiYT5ZzPNcDktUpVDU
+	WO++BqJj7jPh5pUGLoactRQiqeGOtXN209c91P136hBrpRhG3EI1JeMjwdq53t9AD+bEuquRMCZSYLH1H+V4njUgBapvADzTEJ7kLGTPBvMqNq4SFu+ouhgr6wWNGaDnFY6dTGcGefdYuG0TPu197kAbve04TQYq7czU/BriFq2XyOyfnz5od6WR1Myaxk/9V7rMk6qsrE0/wD+wmT8sduQCJGgEoLWWU31YHOtyOr6zxEBhCfqeBh6RpJ9/7ASFDLJWBjc4eEjjro3/8E4xypOd2Wmsnbo83MiilDYlxMBg9lPBqF86qCVNAZoHTh7aOehRwxD8v4it7VVy/3FRGI3s1qskqNaKapCGtR+jFCi4fDr8+nbDkmbzohxnOR6THxEC8TieAWA0an6nobBNGQmzEh9Vn79urfVQ7PpIsWW2i9sfmmYcsJ6qOVVK/VrI
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 05:45:03.0530
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 05:44:14.3393
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 619efaaa-76c7-41c4-6c84-08df3bc91aa0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e5c61ee-7ac7-4439-b023-08df3bc8fd98
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	PH7PEPF00000009.namprd04.prod.outlook.com
+	CY4PEPF000392DB.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR12MB273923
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8037
 
 From: Zhi Wang <zhiw@nvidia.com>
 
-Both GSP initialization and vGPU property queries decode their replies as
-NVKV streams.
+vGPU management queries need an owned response payload after the receive
+queue releases its slot. Sending and receiving must share one queue
+guard so another receiver cannot consume the reply.
 
-Move the byte-to-word conversion helper into the NVKV module and make
-that module accessible to the vGPU firmware interface.
+Match the response flag, command ID and request sequence, then copy the
+payload and return the raw firmware status. Support the default receive
+timeout and a caller-selected timeout without converting firmware
+rejection into a transport error.
 
-No functional change is intended.
+Share the receive deadline and retry loop in CmdqInner with the existing
+GMC boot response wait. Preserve each caller's matching and status
+policy, consume every valid element once even when its callback fails,
+and keep a single deadline after sending. Document unmatched-message
+consumption and distinguish a zero response payload capacity from a
+command that sends no reply.
 
 Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Co-developed-by: Alok Kumar <alkumar@nvidia.com>
 Signed-off-by: Alok Kumar <alkumar@nvidia.com>
 ---
- drivers/gpu/nova-core/gsp.rs              |  2 +-
- drivers/gpu/nova-core/gsp/commands/gmc.rs | 12 ++-------
- drivers/gpu/nova-core/gsp/nvkv.rs         | 31 ++++++++++++++++++++++-
- 3 files changed, 33 insertions(+), 12 deletions(-)
+ Documentation/gpu/nova/core/interrupts.rst |  19 ++-
+ drivers/gpu/nova-core/gsp/cmdq.rs          |  28 +++-
+ drivers/gpu/nova-core/gsp/cmdq/gmc.rs      | 162 ++++++++++++++++++++-
+ drivers/gpu/nova-core/gsp/fw.rs            |  26 +++-
+ 4 files changed, 215 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-index cac123cbeac4..8424aa3937e7 100644
---- a/drivers/gpu/nova-core/gsp.rs
-+++ b/drivers/gpu/nova-core/gsp.rs
-@@ -28,7 +28,7 @@
- pub(crate) mod cmdq;
- pub(crate) mod commands;
- mod fw;
--mod nvkv;
-+pub(crate) mod nvkv;
- mod regs;
+diff --git a/Documentation/gpu/nova/core/interrupts.rst b/Documentation/gpu/nova/core/interrupts.rst
+index 3fcc886e22c1..7f61e5d6334e 100644
+--- a/Documentation/gpu/nova/core/interrupts.rst
++++ b/Documentation/gpu/nova/core/interrupts.rst
+@@ -580,9 +580,12 @@ command reply or an unsolicited event, and the two differ in the function code.
+   records, lifecycle notices) need no action and get no line of their own,
+   because the receive trace at debug level already records every message's
+   arrival with its sequence number, function code, and length.
+-* A GMC message carries a command id in place of a function code. Only the
+-  ``GSP_INIT`` wait during boot claims GMC messages, so one that arrives
+-  anywhere else is logged at warning level and dropped.
++* A GMC message carries a command id in place of a function code. The
++  ``GSP_INIT`` wait and synchronous GMC transactions claim responses with the
++  expected command id and sequence number. These waits consume interleaved RPC
++  messages as events. Unmatched GMC messages are handled by the wait's callback
++  or logged and consumed; a queue drain with no waiting caller logs unclaimed
++  responses and unknown commands at warning level and drops them.
  
- pub(crate) use fw::{
-diff --git a/drivers/gpu/nova-core/gsp/commands/gmc.rs b/drivers/gpu/nova-core/gsp/commands/gmc.rs
-index 6f88c99349ac..33aea614cf72 100644
---- a/drivers/gpu/nova-core/gsp/commands/gmc.rs
-+++ b/drivers/gpu/nova-core/gsp/commands/gmc.rs
-@@ -29,6 +29,7 @@
-             GmcCommandId, //
-         },
-         nvkv::{
-+            nvkv_words,
-             Decoder,
-             Encodable,
-             Encoder,
-@@ -151,16 +152,7 @@ impl MessageFromGsp for GspStaticInfo {
-     fn read(payload: &mut SBufferIter<core::array::IntoIter<&[u8], 2>>) -> Result<Self> {
-         let bytes = payload.flush_into_kvec(GFP_KERNEL)?;
+ A command's reply must carry the RPC sequence number that nova-core wrote into
+ the command, as well as its function code. A message with the awaited function
+@@ -602,10 +605,12 @@ element stays at the queue head, and every later receive fails on it with
+ The polling path and the IRQ thread both read the queue under the command-queue
+ mutex. Replies and events share one queue and one read pointer, so one lock is
+ held across the whole drain. A thread waiting for a reply logs each event that
+-arrives before the reply and keeps waiting. One deadline of 5 seconds applies to
+-the whole wait, rather than a fresh timeout after each message, and the thread
+-holds the mutex for the whole wait, so that no other caller consumes the message
+-that it waits for.
++arrives before the reply and keeps waiting. One receive deadline applies to
++all messages in the wait. The default timeout is 5 seconds; GMC transactions
++can specify another timeout. For send-and-wait operations the receive deadline
++starts after sending, so it does not bound waiting for the mutex or for
++command-queue space. The thread holds the mutex from sending through receiving,
++so no other caller consumes the message it waits for.
  
--        let chunks = bytes.chunks_exact(size_of::<u64>());
--        if !chunks.remainder().is_empty() {
--            return Err(EINVAL);
--        }
--        let mut words = KVVec::with_capacity(chunks.len(), GFP_KERNEL)?;
--        for chunk in chunks {
--            // `chunks_exact` yields slices of exactly `size_of::<u64>()` bytes.
--            let word = chunk.try_into().map_err(|_| EINVAL)?;
--            words.push(u64::from_le_bytes(word), GFP_KERNEL)?;
--        }
-+        let words = nvkv_words(&bytes, &[])?;
+ With one lock, a drain waits for an in-flight command's receive to finish or
+ time out. For log and error records that delay does not matter.
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index 4b25bd58ab93..70de84079d20 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -2,6 +2,7 @@
+ // SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
  
-         let decoder = Decoder::new(&words, UnknownKeyPolicy::Ignore);
-         let mut schema = KBox::init(GspInitResponseSchema::init(), GFP_KERNEL)?;
-diff --git a/drivers/gpu/nova-core/gsp/nvkv.rs b/drivers/gpu/nova-core/gsp/nvkv.rs
-index f81a9e60d89c..5887a61af02a 100644
---- a/drivers/gpu/nova-core/gsp/nvkv.rs
-+++ b/drivers/gpu/nova-core/gsp/nvkv.rs
-@@ -20,11 +20,40 @@
+ pub(super) mod gmc;
++
+ // No RPC command is sent since the switch to the r000 firmware: GSP_INIT and GSP_SUSPEND replaced
+ // the RPC commands that the driver used during boot and shutdown. The RPC send and reply paths
+ // stay for the commands that later series add, and are built as dead code until then.
+@@ -67,6 +68,9 @@
+ 
+ use super::regs;
+ 
++#[expect(unused_imports)]
++pub(crate) use gmc::GmcResponse;
++
+ /// Marker type representing the absence of a reply for a command. Commands using this as their
+ /// reply type are sent using [`Cmdq::send_rpc_command_no_wait`].
+ pub(crate) struct NoReply;
+@@ -722,15 +726,29 @@ fn consume_element<R>(
+     /// - Any error returned by `f` with the exception of `ENOMSG`.
+     fn await_msg_with<R>(&mut self, f: impl Fn(GspParsedMessage<'_>) -> Result<R>) -> Result<R> {
+         let deadline = Instant::<Monotonic>::now() + Cmdq::RECEIVE_TIMEOUT;
++        self.await_msg_with_deadline(deadline, |message| match f(message) {
++            Ok(value) => Ok(Some(value)),
++            Err(ENOMSG) => Ok(None),
++            Err(error) => Err(error),
++        })
++    }
++
++    /// Waits under the queue guard until `f` claims a message, using one receive deadline.
++    ///
++    /// Every valid element is consumed even if `f` fails. Unclaimed messages do not extend the
++    /// deadline. Framing errors stall the queue and are returned without consuming the element.
++    fn await_msg_with_deadline<R>(
++        &mut self,
++        deadline: Instant<Monotonic>,
++        mut f: impl FnMut(GspParsedMessage<'_>) -> Result<Option<R>>,
++    ) -> Result<R> {
+         loop {
+             let remaining = deadline - Instant::<Monotonic>::now();
+             if remaining.is_negative() {
+-                break Err(ETIMEDOUT);
++                return Err(ETIMEDOUT);
+             }
+-            match self.consume_element(remaining, &f)? {
+-                Ok(m) => break Ok(m),
+-                Err(ENOMSG) => continue,
+-                Err(e) => break Err(e),
++            if let Some(value) = self.consume_element(remaining, &mut f)?? {
++                return Ok(value);
+             }
+         }
+     }
+diff --git a/drivers/gpu/nova-core/gsp/cmdq/gmc.rs b/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
+index f3f4e265f023..392143e534f6 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
+@@ -6,6 +6,11 @@
  use kernel::{
-     alloc::ArrayVec,
-     bitfield,
--    num::Bounded, //
-+    num::Bounded,
-+    prelude::*, //
- };
+     device,
+     prelude::*,
++    time::{
++        Delta,
++        Instant,
++        Monotonic, //
++    },
+     transmute::{
+         AsBytes,
+         FromBytes, //
+@@ -59,8 +64,8 @@ pub(crate) trait CommandToGsp {
+     /// reply.
+     type Reply;
  
- use crate::bounded_enum;
+-    /// Largest reply this command accepts, in bytes. Zero for commands that the GSP does not
+-    /// answer.
++    /// Response payload capacity in bytes. Zero permits a status-only response; whether the
++    /// command sends a reply is determined by its protocol and [`Self::Reply`].
+     const MAX_REPLY_SIZE: u32;
  
-+use crate::sbuffer::SBufferIter;
-+
-+/// Joins the two halves of a wrapped payload into the `u64` words an NVKV stream is made of.
-+///
-+/// # Errors
-+///
-+/// - `EINVAL` if the combined length is not a whole number of words.
-+/// - `ENOMEM` if the buffer cannot be allocated.
-+pub(crate) fn nvkv_words(payload_0: &[u8], payload_1: &[u8]) -> Result<KVVec<u64>> {
-+    const WORD_SIZE: usize = size_of::<u64>();
-+
-+    // Each byte slice is at most `isize::MAX` bytes, so their sum fits in `usize`.
-+    let len = payload_0.len() + payload_1.len();
-+    if len % WORD_SIZE != 0 {
-+        return Err(EINVAL);
-+    }
-+
-+    let mut words = KVVec::with_capacity(len / WORD_SIZE, GFP_KERNEL)?;
-+    let mut bytes = SBufferIter::new_reader([payload_0, payload_1]);
-+    for _ in 0..len / WORD_SIZE {
-+        let mut word = [0u8; WORD_SIZE];
-+        bytes.read_exact(&mut word)?;
-+        words.push(u64::from_le_bytes(word), GFP_KERNEL)?;
-+    }
-+
-+    Ok(words)
+     /// Error type returned by [`CommandToGsp::init`].
+@@ -249,9 +254,8 @@ pub(crate) fn payload(&self) -> (&'a [u8], &'a [u8]) {
+     /// Returns the status code of this message if it is the reply to `command` sent with sequence
+     /// number `seq`, `None` otherwise.
+     fn is_reply_to(&self, command: GmcCommandId, seq: u32) -> Option<u32> {
+-        if matches!(self.header.command().id(), Ok(id) if id == command)
+-            && self.header.sequence() == u64::from(seq)
+-        {
++        // CAST: `GmcCommandId` is `repr(u32)`, so this cast is lossless.
++        if self.header.is_response_to(command as u32, seq) {
+             self.header.status()
+         } else {
+             None
+@@ -295,7 +299,155 @@ pub(super) fn log(&self, dev: &device::Device) {
+     }
+ }
+ 
++/// Response from a GMC API command.
++pub(crate) struct GmcResponse {
++    /// Response status (`NV_STATUS` code). Zero means success.
++    #[expect(dead_code)]
++    pub(crate) status: u32,
++    /// Response payload copied out of the message queue.
++    #[expect(dead_code)]
++    pub(crate) payload: KVec<u8>,
 +}
 +
- mod encode;
- pub(crate) use encode::*;
++/// A byte payload sent with a runtime-selected GMC command ID.
++struct RawGmcCommand<'a> {
++    command_id: u32,
++    payload: &'a [u8],
++    max_response_size: u32,
++}
++
++impl CommandElement for RawGmcCommand<'_> {
++    const NVDM_TYPE: NvdmType = NvdmType::GmcApi;
++
++    fn size(&self) -> usize {
++        size_of::<GmcApiHeader>() + self.payload.len()
++    }
++
++    fn write(&self, dev: &device::Device, seq: u32, dst: &mut GspCommand<'_>) -> Result {
++        let (header, payload_0) = GmcApiHeader::from_bytes_mut_prefix(dst.contents.0).ok_or(EIO)?;
++        let init = GmcApiHeader::init_raw(
++            self.command_id,
++            u64::from(seq),
++            self.payload.len(),
++            self.max_response_size,
++        );
++        // SAFETY: `header` is valid and is not touched if initialization fails.
++        unsafe { pin_init::raw_try_init(core::ptr::from_mut(header), init)? };
++        SBufferIter::new_writer([payload_0, &mut dst.contents.1[..]]).write_all(self.payload)?;
++        dev_dbg!(
++            dev,
++            "GSP GMC: send: seq# {}, command={}, length=0x{:x}\n",
++            seq,
++            GmcCommand(self.command_id & 0x00ff_ffff),
++            self.payload.len(),
++        );
++        Ok(())
++    }
++}
++
+ impl Cmdq<'_> {
++    /// Sends a GMC API command and waits for its matching response.
++    ///
++    /// Uses [`Self::RECEIVE_TIMEOUT`] as the receive timeout. Firmware rejection is returned in
++    /// [`GmcResponse::status`], not as an error.
++    ///
++    /// See [`Self::send_gmc_and_receive_timeout`] for message consumption and locking behavior.
++    ///
++    /// # Errors
++    ///
++    /// Returns the same errors as [`Self::send_gmc_and_receive_timeout`].
++    #[expect(dead_code)]
++    pub(crate) fn send_gmc_and_receive(
++        &self,
++        command_id: u32,
++        payload: &[u8],
++        max_response_size: u32,
++    ) -> Result<GmcResponse> {
++        self.send_gmc_and_receive_timeout(
++            command_id,
++            payload,
++            max_response_size,
++            Self::RECEIVE_TIMEOUT,
++        )
++    }
++
++    /// Sends a GMC API command and waits up to `timeout` for its matching response.
++    ///
++    /// Matches both the command ID and the request's sequence number. A nonzero firmware status
++    /// is returned in [`GmcResponse::status`]; the caller decides how to handle rejection.
++    /// `max_response_size` advertises the response payload capacity in bytes, so zero still
++    /// permits a status-only response.
++    ///
++    /// Unmatched GMC responses and events are debug-logged and consumed. Interleaved RPC messages
++    /// are logged as events and consumed. The matching response is also consumed if copying its
++    /// payload fails.
++    ///
++    /// The queue stays locked from sending through receiving. One receive deadline starts after
++    /// sending and is not extended by other messages. It does not bound waiting for the mutex or
++    /// for space to send the request.
++    ///
++    /// # Errors
++    ///
++    /// - `EMSGSIZE` if the request exceeds the command queue's maximum element size.
++    /// - `ETIMEDOUT` if space does not become available to send the request, or if the matching
++    ///   response does not arrive before the receive deadline.
++    /// - `EIO` if the command queue slot cannot hold the request headers, the receive queue is
++    ///   stalled by an invalid element, or a received element fails framing validation.
++    /// - `ENOMEM` if the response payload cannot be allocated.
++    ///
++    /// Errors from initializing the request headers are propagated as-is.
++    pub(crate) fn send_gmc_and_receive_timeout(
++        &self,
++        command_id: u32,
++        payload: &[u8],
++        max_response_size: u32,
++        timeout: Delta,
++    ) -> Result<GmcResponse> {
++        let mut inner = self.inner.lock();
++        let expected_sequence = inner.send_command_element(RawGmcCommand {
++            command_id,
++            payload,
++            max_response_size,
++        })?;
++        let dev = inner.dev;
++
++        let deadline = Instant::<Monotonic>::now() + timeout;
++        inner.await_msg_with_deadline(deadline, |message| {
++            let GspParsedMessage::Gmc(message) = message else {
++                message.log(dev);
++                return Ok(None);
++            };
++            let header = message.header();
++            let (payload_0, payload_1) = message.payload();
++            if !header.is_response_to(command_id, expected_sequence) {
++                let kind = if header.command().is_response() {
++                    "response"
++                } else {
++                    "event"
++                };
++                dev_dbg!(
++                    dev,
++                    "GSP GMC: skip {} seq {} cmd {:#x}; want response seq {} cmd {:#x}\n",
++                    kind,
++                    header.sequence(),
++                    GmcCommand::from(header.command()).0,
++                    expected_sequence,
++                    command_id,
++                );
++                return Ok(None);
++            }
++
++            // Each byte slice is at most `isize::MAX` bytes, so their sum fits in `usize`.
++            let mut payload = KVec::with_capacity(payload_0.len() + payload_1.len(), GFP_KERNEL)?;
++            payload.extend_from_slice(payload_0, GFP_KERNEL)?;
++            payload.extend_from_slice(payload_1, GFP_KERNEL)?;
++            Ok(Some(GmcResponse {
++                status: header.status().ok_or(EIO)?,
++                payload,
++            }))
++        })
++    }
++
+     /// Sends `command` to the GSP and waits for the reply.
+     ///
+     /// GMC events that arrive before the reply are passed to `on_event`, and RPC messages are
+diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
+index dfe7aafcf31f..c75488e7a787 100644
+--- a/drivers/gpu/nova-core/gsp/fw.rs
++++ b/drivers/gpu/nova-core/gsp/fw.rs
+@@ -834,8 +834,8 @@ impl GmcApiHeader {
+     /// Creates the header of a request for `command`, sent with sequence number `sequence` and
+     /// followed by `payload_size` bytes of payload.
+     ///
+-    /// `max_reply_size` is the largest reply the sender accepts, and zero for a request that
+-    /// GSP-RM does not answer.
++    /// `max_reply_size` is the response payload capacity in bytes. Zero permits a status-only
++    /// response; whether GSP-RM sends a reply is determined by the command protocol.
+     ///
+     /// # Errors
+     ///
+@@ -845,9 +845,22 @@ pub(crate) fn init(
+         sequence: u64,
+         payload_size: usize,
+         max_reply_size: u32,
++    ) -> impl Init<Self, Error> {
++        // CAST: `GmcCommandId` is `repr(u32)`, so this cast is lossless.
++        Self::init_raw(command as u32, sequence, payload_size, max_reply_size)
++    }
++
++    /// Creates a request header for a runtime command ID, masking off command flags.
++    ///
++    /// Returns `EOVERFLOW` if `payload_size` does not fit its 32-bit field.
++    pub(super) fn init_raw(
++        command: u32,
++        sequence: u64,
++        payload_size: usize,
++        max_reply_size: u32,
+     ) -> impl Init<Self, Error> {
+         let init_inner = try_init!(bindings::GMCAPI_HEADER {
+-            command: GmcCommandWord::zeroed().with_id(command).into(),
++            command: command & 0x00ff_ffff,
+             size: payload_size.try_into().map_err(|_| EOVERFLOW)?,
+             sequence,
+             __bindgen_anon_1: bindings::GMCAPI_HEADER__bindgen_ty_1 {
+@@ -863,6 +876,13 @@ pub(crate) fn init(
+         })
+     }
  
++    /// Matches the response flag, low 24 command-ID bits, and full request sequence number.
++    pub(crate) fn is_response_to(&self, command_id: u32, sequence: u32) -> bool {
++        self.command().is_response()
++            && GmcCommand::from(self.command()).0 == (command_id & 0x00ff_ffff)
++            && self.sequence() == u64::from(sequence)
++    }
++
+     /// Returns the `command` word of the header.
+     pub(crate) fn command(&self) -> GmcCommandWord {
+         GmcCommandWord::from(self.inner.command)
 -- 
 2.53.0
 
