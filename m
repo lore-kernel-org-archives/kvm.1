@@ -1,84 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793985573;
-	b=HjEmOCKWDWMQWwgMklJxp3Swt/uNGwcMJzXRYp8Qwb9tCFQ4kq6CjVRC4ZTCKhna7/HP
-	 fV5udl7yXMzocD4LDS1CkhvFlUB81EOEMxPSO32nKGszEhRQnIAuRDG8LwPrINLGnilFp
-	 tmdQr7uOxIx7NQDVMPouHibMcxDEQPtIbL7nh7SLLMevlL2Dq1jU3++5KKcAkgrGU6N/j
-	 OrUNnd4Arq6CAgjX5xjnldr01g+gzD04DTDZGev7aV3USsEl12WQOqky2ygyXl1Yt7GvW
-	 OSd15WSOB44HZKBlzBFNdKeykGpUf+Q5C4N00fcQL2HCJpadtzyobiKSfPrcCc56luA==
+	t=1793985675;
+	b=Aw6S5KPQBCLIGT2K/lK8W+RBQ2PRR1eBu4WG5rPYMbQQ8KHbDSqLqTDIy38zB+GZ47Vt
+	 A+3qJ0lm/9Ek+mjHh5QATyO5afvMBqSFZJtaPT6ZekfjotaMs2eL51exywzBEJn60E0Eg
+	 luJtMxXbHmC9zLc4mPXu8fDMxRjE/HTGdR6AhzSa1S1LGd8/yL7bCKGQE1ob4LepnBSbE
+	 cVYm/ZLMEdksYVj9ByyhIg8k5aljyoWvCj+anyFvhm6nv4jlL6C60avMe+If/x0CEeO+H
+	 CIMkqGmefFBgJJ30P1e4IFbUxVN7x8rretaElBOdG2f7+i7o613Ywyhfn9vILOJ0qSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793985573;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Subject:From:To:Cc:X-Mailer:References:In-Reply-To;
-	bh=tEaeh2MQM8Yqh+InUxWcP/c3Ugn8r1gCgilB/e+XZTU=;
-	b=IR7JMUz4zOcNA5Bmx9MYBYKinlFbwTMP/Y9vJJkGjq13l8wMDpj1laewfT91DG575G37
-	 OZx9DgArLyr70bBU+w6JbrQwYVDUgMjpOyLBXY0NwwHlHDsSy7qAUAtthafde6uBdYIaj
-	 6J+xESgAr4A/Q95TUDArAmGoAjME5SYwcgCkMBYH1iSC9382e+eUvfdJgytz3gneRCFun
-	 sEeZAJc9bfiYmbRIVzqfY7hMZfXojTpZEYlZRXX631Mi8Jt8rFMD7f7u/tFxRr9qYYda4
-	 BBSnpf9AVojDNFeGMdk8N7Q+hNHiaxOaC6/IiYYCxDva3EkW81plFhX9VU32pl0YHJg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793985675;
+	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:X-SA-Exim-Connect-IP:
+	 X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:X-SA-Exim-Scanned;
+	bh=U5sv14dbUY73w+ibVHisrtwJwt6hsu+gob3cdY7WnKw=;
+	b=5PezjA/lJnd5MsxfUJEYqLFblrHlCNP6Q2b1EJ2lwJFDIgl/1PloFzOPyijPnJdSGvrR
+	 LjXCdSVRdRYxI4mjHccW9jL8gCm7Y3l5hJHp7TlQYXl7UfnRc/K5XVcJrZB6J89bqaRa3
+	 rCsyK5kfOaWcfXf2kpdLzVRQZjRLt/NYH6c4+ZjneOMKWqRQhSp3PinCdZBybWDBIS8oA
+	 D1pQqEYzBWA2bwNCWiouFYERqMb9NJcrB5rEFtQ+T/PZxcXt1T/X/92Gvwl2zehs1CUZy
+	 UUjr5KGJlKygF6ppU1uGWjp6n2yERnt07NwX78UbI/JTWe0xLpLrOEMz4b6+foO8hyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V3vuG2QG;
-	arc=none smtp.remote-ip=209.85.216.51
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n68mOmrL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54F7606A32C
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 17:19:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B54F7606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98955606D803;
+	Fri,  6 Nov 2026 17:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V3vuG2QG
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3b0ae87069dso424680a91.2
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 09:19:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793985572; x=1794590372; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=tEaeh2MQM8Yqh+InUxWcP/c3Ugn8r1gCgilB/e+XZTU=;
-        b=V3vuG2QGjhL8r2VuA4Y+96OnzymPavm7o7EgEyvr170YdIQ6DRl7oV53qhL1GcFHq9
-         pAuFDTumBKjC04cfsqiF/s9mzLQ7MxMB33+iWjjD6M/c6YfzXCbLDc+N7vG+f5wRPHnt
-         YGfusFO0BTgDqxJC3GAGWNZSjKJIGzOR0waqOm65uqs4mfbkFPtcjPreR4HJO5uzAwIM
-         aZJqv3Eu06A17GOsAL38uxdtzasGV3QnNWGft1JdKGB0XYClaHm6eqK5tjUpWsaDDnGv
-         L3j4WwyzVfe0Q7LrBT5u/+m8/nbkT0KO2eRt94r5hQOTgl8rRxeGomxzWEId9K33GS3u
-         IwQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793985572; x=1794590372;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tEaeh2MQM8Yqh+InUxWcP/c3Ugn8r1gCgilB/e+XZTU=;
-        b=H1/X/LM/dbf+ADa7Lw9fxfoFSMleOFOkmIGqgJY7p8jbKIAfBlky5kQkDX2ebttjOo
-         kg/o4hVnZ/vrMFtrEgasppvk/Ii/oGUCsBNBm5cwrLjc7vd6al2duS4IbxFtoo7uxFoL
-         W+9rX8yu/jYX/xusScS0u3fmCdoe5BgX2SJ4ujV9Ed98oN0rXzF+ZXUb+uedKwIDlp1L
-         R5HWEHdLwbDjMynqVHfkTC39Xp8NprpuRptmGUQ1/bHmvWHMNB+3qggTe71vWjGf7W2p
-         YJAWuss47ENEQ2jIJTq29A6g3eHO18clb+Y5rHJ+ftDFM5oVgMuBGaihOZJlGFloBt6C
-         P9ww==
-X-Forwarded-Encrypted: i=1; AL+hErGlwTKR+hrBgGoqkFL1GMqWpJTKvfg7g3RFoItB21SD93F8DLWarnu0Lfd5MKtutkebWnQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9b/lTZqwsrvUU+DGkz0p5fMGa1lk7RA6lzF557vXzxYObOq5oL
-	ymFn0mSFRnyvA4vPcwvJcCpeTmVI6KTRoWoJYm5EHC1IcvLzeGng4cvpLU3+dSej8A==
-X-Gm-Gg: AYBFou3TsUkUIUC819EtmjlSH2FNKGvpf2BuNhGtkO00lYxnPuAE2+i3jbIES0uKEQd
-	/htHtBaWlxeGNiZsoZ6VK8QutuX1U8ZMRFKiYZ1Uk+07vtwZuT+Bjbd7PSK+slcQkQwGI6qmysX
-	/wCpkmna5WyfhEr4xZ4TyVcs5mli3lAZXj688p/ItHKLtnCGM49fH3RMqB9qsOoe1okMjcurAiy
-	0ysXleMGLScDyYenoIpKWIQWURPNTaess1k4Y+3am1PbC8Js9ebSdjRib4KX042NcFgtjXrpFVJ
-	zfQXkWjt5XBV6jvT8gzj/iaseFhH14XlJwotuYWtEq8bsx2zK5UljnawvmIVlBhEhxXHM6e3kwD
-	vilRVfXf7/bZXTNhxuQfVZDqLj83F3/GPmh353gY1ur4O4W66331amuZXz89Q6VvCN6CXbixsom
-	/om31HPEsD6oCRz/ezvJs6HhZwWVmTHcGRWojs/eyAhqa4kfR1R48Hez34xvNsktJOrnleiHlOd
-	nU2thOg50+xNZXMC4m+q8LAUUktu1nLGgT+eN6dXQuWJRU8Qkelsr7ph+70Y4N2sb0NgdjTitc9
-	sAT+iSfQZgHz+ZbFfSABvjNHd7JN93fqYSb8odtyT6wJKnO3ylhKIsqaaqmlOVnk
-X-Received: by 2002:a17:90b:554d:b0:3ac:bfa7:b079 with SMTP id 98e67ed59e1d1-3b0db5edb73mr3411640a91.7.1793985571464;
-        Fri, 06 Nov 2026 09:19:31 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb70a7fbcbsm795231a12.25.2026.11.06.09.19.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 09:19:29 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n68mOmrL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5881F0089F;
+	Fri,  6 Nov 2026 17:21:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793985675;
+	bh=U5sv14dbUY73w+ibVHisrtwJwt6hsu+gob3cdY7WnKw=;
+	h=From:To:Cc:Subject:Date;
+	b=n68mOmrLemTKlu37aZroTplBrrMzMJowUSvOCMlXobjKpdxLI6qlb3tPAB6MbuTBd
+	 x0g2Sp0npjcaqFUPWfFnPVghBeTXZhB5vybYWurFmsNK5lj6h0OqcUyCEHxrNch7+h
+	 0KoJtUidFvyh6/g5ONSFkPKLAfEf2fTK40+b5cIaOfXACkrZy77EmHoP53OLREOSNh
+	 i5u/IO8WzThvxWUZtNAQ3XIKD3XNGRI4rH3Fy3J7D2bC8HMWWJDk18Uu73CLjV/+SJ
+	 RnHJeCC9CYndiRVN1eMtTQlqy1wj8lOlG+ZWdYO9JPaBLgSVAYWTTgyg8ovk/A2Zoz
+	 X+gV3K4muvh2w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xPNcm-0000000CI4M-2k9T;
+	Fri, 06 Nov 2026 17:21:12 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Colton Lewis <coltonlewis@google.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Gavin Shan <gshan@redhat.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthias Goergens <matthias.goergens@gmail.com>,
+	Oculytic <oculytic@gmail.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xuheng Li <xuheng@cs.columbia.edu>,
+	Yuan Yao <yaoyuan@linux.alibaba.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] KVM/arm64 fixes for 7.4, take #2
+Date: Fri,  6 Nov 2026 17:21:07 +0000
+Message-ID: <20261106172107.3263617-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,113 +85,240 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Nov 2026 17:19:28 +0000
-Message-Id: <DMOAT4VV939P.2DI8CEOMMSKMY@google.com>
-Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files
- after Live Update
-From: "David Matlack" <dmatlack@google.com>
-To: "Vipin Sharma" <vipinsh@google.com>, <kexec@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Cc: <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
- <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
- <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
- <dmatlack@google.com>, <graf@amazon.com>, <jacob.pan@linux.microsoft.com>,
- <jgg@nvidia.com>, <jgg@ziepe.ca>, <jrhilke@google.com>,
- <julianr@linux.ibm.com>, <kees@kernel.org>, <kevin.tian@intel.com>,
- <leon@kernel.org>, <leonro@nvidia.com>, <lukas@wunner.de>,
- <mattev@meta.com>, <michal.winiarski@intel.com>, <parav@nvidia.com>,
- <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
- <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
- <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
- <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
- <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
- <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
-X-Mailer: aerc 0.21.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-12-vipinsh@google.com>
-In-Reply-To: <20261102153656.1431701-12-vipinsh@google.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, ardb@kernel.org, catalin.marinas@arm.com, coltonlewis@google.com, fuad.tabba@linux.dev, gshan@redhat.com, imv4bel@gmail.com, joey.gouly@arm.com, leo.bras@arm.com, ljs@kernel.org, broonie@kernel.org, matthias.goergens@gmail.com, oculytic@gmail.com, oupton@kernel.org, sascha.bischoff@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, vdonnefort@google.com, weilin.chang@arm.com, will@kernel.org, xuheng@cs.columbia.edu, yaoyuan@linux.alibaba.com, yuzenghui@huawei.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon Nov 2, 2026 at 3:36 PM UTC, Vipin Sharma wrote:
-> During retrieve():
->  * Validate the handed-over struct vfio_pci_core_device_ser header,
->    sizes, and flags.
->  * Locate the registered vfio-pci device matching the serialized domain
->    and BDF (requiring device->ops =3D=3D &vfio_pci_ops) under the device
->    lock. vfio-pci registers the vfio device before its probe completes,
->    and the probe holds that lock, so a device that is still being probed
->    is not returned.
-[...]
->  * Open and return an anonymous VFIO cdev file via
->    vfio_device_liveupdate_cdev_open().
+Paolo,
 
-Here's an idea for how the device file could be created on retrieve,
-which I'd like to hear your thoughts on.
+Here's the second set of KVM/arm64 fixes for 7.4, which is a pretty
+large set as Fuad has made his mission to address each and every
+Sashiko utterance. This is great work, in all the meanings of the word
+Great.
 
-The patches from Pasha at [1] lets userspace pass a
-file-handler-specific argument to LIVEUPDATE_SESSION_RETRIEVE_FD. In the
-next version of the tmpfs series, I'm planning to use that to have
-userspace create the file and pass it in the argument, and the kernel
-then restores the preserved file into it.
+We also have a couple of more "amusing" fixes, such as the livelock
+issue that Ard managed to debug and elegantly address.
 
-I wonder if VFIO should work the same way, e.g.:
+As usual, details in the tag below. I'll be at KVM Forum next week, so
+I'll probably come back with another PR in time for -rc4 (I've already
+earmarked a number of patches...).
 
-  struct liveupdate_vfio_retrieve_arg {
-          __u32 size;
-          __s32 fd;
-  };
+Please pull,
 
-Userspace would open /dev/vfio/devices/noiommu-vfioX itself and pass
-the fd. retrieve() would check that it's an unbound vfio-pci cdev file
-for the preserved device (domain/BDF, noiommu, incoming, cfg_size),
-attach the incoming state to that file, and LUO would track that file
-as the retrieved file. VFIO_DEVICE_BIND_IOMMUFD would then take over the
-device as it does now. Since VFIO preservation is new, the argument
-could simply be required.
+	M.
 
-I think this could get rid of some of the special handling:
+The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
 
- - There'd be no need to fake a cdev open with an anonymous inode, so
-   PATCH 09 and PATCH 10 could probably be dropped.
+  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
 
- - retrieve() wouldn't need to look up the device by BDF, or reason
-   about racing with probe under the device lock. If userspace was able
-   to open the cdev, the device is registered and probed.
+are available in the Git repository at:
 
- - The device file would be opened through the normal cdev path, so the
-   usual permission and LSM checks on the device node would apply.
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.4-2
 
- - It would be the same model across file types.
+for you to fetch changes up to 181a701fc14d3d468c603b5ecfb9f12115c5fb72:
 
-A few things I think would need care if you go this way. The file check
-and the attach would need to happen under dev_set->lock so they can't
-race with a concurrent VFIO_DEVICE_BIND_IOMMUFD on the same fd. And the
-incoming state should probably be tied to that specific
-vfio_device_file rather than just the vdev, so only the file passed to
-RETRIEVE_FD can take over the device.
+  Merge branch kvm-arm64/misc-7.4-1 into kvmarm-master/fixes (2026-11-03 18:14:37 +0000)
 
-It would also change PATCH 12. Opening the cdev of an incoming device
-would have to succeed, so the check would move to the first open of the
-device instead: fail with -EBUSY if the device is incoming and the file
-being bound doesn't have the incoming state attached. That one check in
-vfio-pci would also cover VFIO_GROUP_GET_DEVICE_FD, which opens the
-device right away, so vfio_liveupdate_incoming_is_preserved() and its
-dev_is_pci() special case could be dropped from the VFIO core.
+----------------------------------------------------------------
+KVM/arm64 fixes for 7.4, take #2
 
-The next tmpfs version will also add a way for a file handler to say a
-failed retrieve can be retried, and a helper to claim an existing file
-before restoring into it (so a file LUO already manages, e.g. one that
-is preserved in an outgoing session, is rejected). Both seem useful
-here too, e.g. so that a mistake in the argument (wrong fd, an fd for
-another device, an already bound fd) doesn't make the device
-unretrievable. I'll Cc you when I send it, and I'm happy to share the
-branch before then.
+* MMU fixes:
 
-What do you think?
+  - Correctly sanitise the TCR_EL2 register
 
-[1] https://lore.kernel.org/kexec/20261103010216.3447716-1-dmatlack@google.=
-com/
+  - Stop advertising LPA2 to NV guest when it isn't supported
+
+  - Correctly convert EH2==0's view of TCR_EL2 into the E2H==1 format
+
+  - Make sure an EL2 mapping is immediately visible to the hypervisor
+    code, as we don't necessarily require ETS
+
+  - Address a horrible situation where a guest can livelock when
+    trying to solve a permission fault whilst the underlying S2 PTs
+    have AF=0
+
+  - Correctly wipe MTE tags for large mappings instead of just the
+    head page, providing a convenient helper for this
+
+  - Fix dirty logging detection in ring-only mode
+
+  - Use ATS1A whenever FEAT_S1PIE is present
+
+* VGIC fixes:
+
+  - Fix a bunch of low-impact issues with GICv4, avoiding leaks on
+    unlikely failure paths
+
+  - Use a separate lockdep class for vPE doorbells, and guarantee that
+    they are never threaded
+
+  - Avoid spurious allocation of VPEs when userspace decided not to
+    expose nASSGIcap
+
+  - Fix spurious preservation of the pending state after DISCARD
+    and CLEAR ITS commands
+
+  - Make sure GITS_CTLR.Enabled is updated under the its_lock
+
+  - Serialise vgic CTRL_INIT against vCPU creation
+
+  - Make the forwarding of LPIs tobust against LPIs being disabled
+    on the target redistributor
+
+* pKVM fixes:
+
+   - Fix the reset of GICv3 LRs for pKVM, de-uglifying the PM paths
+     whilst at it
+
+   - Fix PMU handling for both protected and non-protected guests,
+     fixing the synchronisation of kvm_host_data in the process
+
+   - Correctly invalidate TLBs and I-cache when multiplexing multiple
+     vcpus of the same VM on a single physical CPU
+
+* Feature visibility fixes:
+
+  - Correctly handle ACCDATA_EL1 being exposed to guests, plugging a
+    potential communication channel between guests.
+
+* Misc fixes:
+
+  - Correctly clear the vcpu feature set on init failure
+
+  - Clear PSTATE.TCO on exit from the guest when MTE is enabled
+    for the kernel
+
+  - Let the L0 hypervisor always deal with FEAT_MOPS A/B nonsense when
+    taking such exception, instead of potentially forwarding it
+
+  - Add a "maintainer profile" for KVM/arm64
+
+  - Add testing for the MOVI and MOVALL commands
+
+----------------------------------------------------------------
+Ard Biesheuvel (1):
+      KVM: arm64: Don't livelock when AT can't resolve a fault IPA
+
+Colton Lewis (1):
+      irqchip/gic-v4: Use a separate lockdep class for vPE doorbell IRQs
+
+Fuad Tabba (25):
+      irqchip/gic-v4: Clear the domain and fwnode pointers after freeing them
+      irqchip/gic-v4: Unwind what its_alloc_vcpu_irqs() allocated on failure
+      KVM: arm64: vgic: Tear down what vgic_init() created when it fails
+      KVM: arm64: vgic-v4: Restore nr_vpes before freeing the vPE resources
+      KVM: arm64: vgic-its: Clear an unqueued LPI before dropping its lock
+      KVM: arm64: vgic-its: Remove the pending state of a cleared LPI
+      KVM: arm64: vgic-its: Update GITS_CTLR.Enabled under its_lock
+      KVM: arm64: vgic-v4: Don't allocate vPEs for a GICv2 VM
+      KVM: arm64: vgic-v4: Don't allocate vPEs when userspace clears nASSGIcap
+      KVM: arm64: vgic: Don't forward LPIs to a redistributor with LPIs disabled
+      KVM: arm64: vgic-v3: Don't drop a pending LPI mapped with LPIs disabled
+      KVM: arm64: selftests: Add MOVI and MOVALL commands to the ITS library
+      KVM: arm64: selftests: Build a VM per test in vgic_lpi_stress
+      KVM: arm64: selftests: Test MOVI and MOVALL on a pending LPI
+      KVM: arm64: Disable host PMU counters for protected guests
+      KVM: arm64: Ensure TLBs and I-cache are private to each vCPU in pKVM
+      arm64: Add override for ID_AA64ISAR1_EL1.LS64
+      KVM: arm64: Enable ST64BV0 for guests with FEAT_LS64_ACCDATA
+      KVM: arm64: selftests: Add ACCDATA_EL1 to get-reg-list
+      KVM: arm64: Clear the VM's feature bitmap when kvm_setup_vcpu() fails
+      KVM: arm64: Clear the default PMU when kvm_setup_vcpu() fails
+      KVM: arm64: Clear the whole hugetlb folio when sanitising MTE tags
+      KVM: arm64: Clear the whole hugetlb folio when storing MTE tags
+      KVM: arm64: Sanitise MTE tags when a permission fault installs a mapping
+      arm64: mte: Add mte_clear_folio_tags()
+
+Marc Zyngier (11):
+      Merge branch kvm-arm64/vgic-fixes-7.4-1 into kvmarm-master/fixes
+      KVM: arm64: Reset TCR_EL2 according to guest's E2H mode
+      KVM: arm64: Add ACCDATA_EL1 to the sysreg array
+      KVM: arm64: Add context-switch of ACCDATA_EL1
+      arm64: Add return value to mte_disable_tco_entry()
+      KVM: arm64: Reenable MTE tag checking on exit from guest when running VHE
+      KVM: arm64: Don't let a guest overwrite HCRX_EL2.MCE2
+      Merge branch kvm-arm64/mmu-fixes-7.4-1 into kvmarm-master/fixes
+      Merge branch kvm-arm64/pkvm-fixes-7.4-1 into kvmarm-master/fixes
+      Merge branch kvm-arm64/ls64-accdata into kvmarm-master/fixes
+      Merge branch kvm-arm64/misc-7.4-1 into kvmarm-master/fixes
+
+Matthias Goergens (1):
+      Documentation/process: Add a maintainer entry profile for KVM/arm64
+
+Oliver Upton (2):
+      KVM: arm64: nv: Correctly compute the effective TCR_EL1 for nVHE TCR_EL2
+      KVM: arm64: Pass the PMU events to the hyp vCPU of non-protected guests
+
+Sascha Bischoff (1):
+      KVM: arm64: vgic: Serialise CTRL_INIT against vCPU creation
+
+Vincent Donnefort (4):
+      KVM: arm64: Make __vgic_v3_init_lrs HVC always available
+      KVM: arm64: pkvm: Fix missing reset of GICv3 LRs
+      KVM: arm64: pkvm: Reset GICv3 LRs in the hypervisor
+      KVM: arm64: Synchronise kvm_host_data before host deprivileging
+
+Wei-Lin Chang (5):
+      KVM: arm64: nv: Don't advertise FEAT_LPA2 for guest stage-1
+      arm64: sysreg: Add TCR_EL2 to sysreg infrastructure
+      KVM: arm64: Convert TCR_EL2 to config-driven sanitisation
+      KVM: arm64: Fix dirty logging detection in ring-only mode
+      KVM: arm64: Remove stale remark on canonical IPA alignment
+
+Will Deacon (1):
+      KVM: arm64: Use S1E1A when Stage-1 PIE is supported
+
+Xuheng Li (1):
+      KVM: arm64: Add an ISB after mapping a hyp fixmap slot
+
+ Documentation/admin-guide/kernel-parameters.txt    |   3 +
+ Documentation/process/maintainer-kvm-arm64.rst     | 181 +++++++++++++++
+ MAINTAINERS                                        |   2 +
+ arch/arm64/include/asm/cpufeature.h                |   5 +
+ arch/arm64/include/asm/kvm_arm.h                   |  13 --
+ arch/arm64/include/asm/kvm_asm.h                   |   2 +-
+ arch/arm64/include/asm/kvm_emulate.h               |   3 +
+ arch/arm64/include/asm/kvm_host.h                  |   5 +-
+ arch/arm64/include/asm/kvm_nested.h                |  38 ++-
+ arch/arm64/include/asm/mte.h                       |  14 +-
+ arch/arm64/include/asm/sysreg.h                    |   1 -
+ arch/arm64/include/asm/virt.h                      |   2 +-
+ arch/arm64/kernel/cpufeature.c                     |   7 +
+ arch/arm64/kernel/mte.c                            |  15 +-
+ arch/arm64/kernel/pi/idreg-override.c              |   2 +
+ arch/arm64/kvm/arm.c                               |  60 +++--
+ arch/arm64/kvm/config.c                            | 112 +++++++++
+ arch/arm64/kvm/guest.c                             |  11 +-
+ arch/arm64/kvm/hyp/include/hyp/fault.h             |   5 +-
+ arch/arm64/kvm/hyp/include/hyp/switch.h            |  24 +-
+ arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h         |  23 ++
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c                 |  16 +-
+ arch/arm64/kvm/hyp/nvhe/mm.c                       |   1 +
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                     |  22 +-
+ arch/arm64/kvm/hyp/nvhe/psci-relay.c               |   4 +
+ arch/arm64/kvm/hyp/nvhe/switch.c                   |  24 ++
+ arch/arm64/kvm/hyp/vhe/switch.c                    |   7 +
+ arch/arm64/kvm/mmu.c                               |  21 +-
+ arch/arm64/kvm/nested.c                            |  15 ++
+ arch/arm64/kvm/pkvm.c                              |   6 +
+ arch/arm64/kvm/sys_regs.c                          |  22 +-
+ arch/arm64/kvm/vgic/vgic-init.c                    |  21 +-
+ arch/arm64/kvm/vgic/vgic-its.c                     |  68 +++---
+ arch/arm64/kvm/vgic/vgic-kvm-device.c              |   2 +
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c                 |  40 ++--
+ arch/arm64/kvm/vgic/vgic-v3.c                      |   3 +-
+ arch/arm64/kvm/vgic/vgic-v4.c                      |   5 +-
+ arch/arm64/kvm/vgic/vgic.c                         |  12 +-
+ arch/arm64/kvm/vgic/vgic.h                         |   1 +
+ arch/arm64/tools/cpucaps                           |   1 +
+ arch/arm64/tools/sysreg                            | 125 ++++++++++
+ drivers/irqchip/irq-gic-v4.c                       |  39 +++-
+ tools/testing/selftests/kvm/arm64/get-reg-list.c   |   2 +
+ .../testing/selftests/kvm/arm64/vgic_lpi_stress.c  | 258 +++++++++++++++++++--
+ .../selftests/kvm/include/arm64/gic_v3_its.h       |   2 +
+ tools/testing/selftests/kvm/lib/arm64/gic_v3_its.c |  28 +++
+ 46 files changed, 1099 insertions(+), 174 deletions(-)
+ create mode 100644 Documentation/process/maintainer-kvm-arm64.rst
