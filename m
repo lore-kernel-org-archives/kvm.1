@@ -1,60 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793992690;
-	b=FezwioOFEtlZxOjLPj2DT1v15B3M5QIOM0tGfkwDXOk3nmkzI8zYxznW64FMuhfzOiKI
-	 czpT9y7ahXJ6qvGHdYRwGlRxkua06f3t/3jQZ0AvFCI9DoCYFSilQCJycdeQ1cf4GqRkD
-	 Ko/lS4UY+Pxf9/2ppHi5angtqibZiBp9RwVmO2t/Lmq/6+SaZ/s8rnp3nzOiREY9Xs4I4
-	 QAomFJJY3zpXo2T0nb8h40QSerfPOMyLmqxEhPUSmIGNG0Fb8lvt9G31pXrDYs3ff3ka+
-	 Rcd8DSZCe+UKlsKP4Y0lM3jVF4IpBMMEplJCwb8rZXgkmU7+X43kG6/UIEq/w1pX7Tg==
+	t=1793993675;
+	b=YzgFHnl7GFte25BX9LS1jLpXoiPyVWOsGC+wDNkssd6TtdVE/JSiUZMwPVMNPou+lNxU
+	 YzV1a20uP/a1bIWyuQ6WEVhM8JPXTmy7hX4xVXUpxTvvx1+k7M32Sy2BVo1LaBCAo33jp
+	 zsHkGESXxeX+8pBPdrrQbDnJArbp41GuEauMsyhb9WYdFdrq5WSQcROBte8pzWUbwlBsu
+	 yIVucbznZZlqJE2MapaWdS0aH+0YJC1jUI4HMe0Xy9ipE3Bj1n1w0BLENBEdLgheBti0J
+	 18Rgz/YSfNZVDkdswzvAdq01ahnAHYyasf/qBdOc0HxAvDr/11XWY5JNuPzk4m235TA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793992690;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=O/WfF4q72VW53Alr6ZZ5MsjjzWOgUG4myB6F5vL1jRY=;
-	b=pht/6d9U3jOh3mEruNvrsZPEhqPTXnvOdIVAxlLEHWj2bV6nXUCHaSxzvkdyxU9pzAHZ
-	 67FfsZCrRLGXenQwhmBxa6uBjd99KDKJerr+yHLKNJkiA54COmTwANLZjRFXEkxv4FGga
-	 p5C+9bwb0O2V8UkVB3sOcQ2u9i3Th1lY1mdffL0aPkypL7SxzXblz0pl3Abj3I9zyi/w3
-	 WlM+vMQydssl2nhK4qLYofyDnqEBEfNQ7UDBZOwXvlbT8m5uQfilIUDSaBaT6Mmqb5Xbp
-	 HdWFMcjVEL9TFTWXDZ/N20ZpvUVKfP57iXi4iJ1lueqAKW/BXBbhZ4RZyedTNOk9v1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793993675;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=88C97N6UH9Uyrq41e1ngidp2rYbzeD72tqfq3U+ZGhg=;
+	b=wYy4ZEQG0ZDzBnzQUlbm+7ZS23a7PPGiOzy91Sqe72MhneUItMhKQlhIUrVF8G+0jSSz
+	 o7GIe6QlfHAD+a7yX/U9wLAws64ZD+MyEY6ou0PnbJ6QwdAcXmOsWccU+U1nMG9VjG+ij
+	 4XWdYx0iDnorSEv3fIOMyRjXJpT7myCJy0gXA8+NwAv/6mYFNp8et3b6E+/183yiHzuBu
+	 Txzg7Cw2grTksERacGJKxkTgdx4OyJKwYTvxVtYUFJEup1jSoGJQpn0gSfTPsagAPVpUj
+	 OmK0xxMozEfBlPZl64w6Z5We0l0FZ/eVLW8qW+s2sYYG5Fu6+FyUWqXD1O2hpwl+tfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WW1un0yS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bVYMyLm1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BC5606A326;
-	Fri,  6 Nov 2026 19:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAD4606A337;
+	Fri,  6 Nov 2026 19:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WW1un0yS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FEE1F0089F;
-	Fri,  6 Nov 2026 19:18:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bVYMyLm1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89641F008A4;
+	Fri,  6 Nov 2026 19:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793992689;
-	bh=O/WfF4q72VW53Alr6ZZ5MsjjzWOgUG4myB6F5vL1jRY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WW1un0yS9x1HulQr4vhmunOUmTq/qcZxQkKi9siMIZrJ7TeKPyjK4/M5/khz8LJx0
-	 v6ADWulqh6UKjtrIWOhf9WKplQhNdrGzE1sIhowPETQ13DqzNFfTky+eRMTOrqXwwC
-	 paubLhn7uwC5VNpTOBpdqLvfOv968RYZB9ID0jgKU5nb/S8kHz4O5ylOhHAU751wIO
-	 XgtVKQEiWNYeH2UgKULUZOSOCFkxjvjdABmXa1ZAaO19QpeayWtvmVNj6PzfqPTJKu
-	 3mUMH1aZQMEasncdJyWfBSPI0wHkitna/OoIVi3S7bd6ZcC4snyP2r/L870C6xFOhe
-	 d+4vyCufdHMXg==
-Message-ID: <sashiko-outbox-202145@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 17/23] KVM: s390: arm64: Integrate sysreg into the
- host
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261106-sysreg-v3-17-75e95980fb10@linux.ibm.com>
-References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
- <20261106-sysreg-v3-17-75e95980fb10@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 19:18:08 +0000
+	s=k20260515; t=1793993674;
+	bh=88C97N6UH9Uyrq41e1ngidp2rYbzeD72tqfq3U+ZGhg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bVYMyLm1nDv27Q2qjtwhqnzl4hU2tyTPpIn+sRFquHEo6/5vMMdWZsKKjCjhWYYHc
+	 TfTVg0v24uLDFhjNjnQmmogI+G8fXKuWqf76T0QEW6RcnJ/eTyHjflEppwmFApBkQq
+	 FhwrKE+W/4f2jfp8mGYSm47ULtFcT328UvVYB/0+Blc8+7eYoz5eWUghd73epEyAFO
+	 iJF/Nj+eRYLnvmamsx9uZANUrfs/0TSIJtrtFIKiMP7Z2MIA9Su6R5kHKQoXn7SPiZ
+	 2IGve5m0VEfd9wAvfkh4uhBnZPtNNV+P3eO+l2fIVPUI+zDi0vSrI6+hDdLz9IvY+6
+	 OneYkL/ql9WXw==
+Date: Fri, 6 Nov 2026 19:34:32 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v3 05/18] KVM: x86/pmu: Drop nr_arch_{gp,fixed}_counters
+ from kvm_pmu
+Message-ID: <au4pSeg5AcHEbfDv@google.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-6-zide.chen@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,125 +61,216 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106013927.166209-6-zide.chen@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Medium] KVM: s390: arm64: hcrx_el2 not updated after finalizing ID
-  regs
-- [Medium] KVM: s390: arm64: preemptible smp_processor_id() in
-  kvm_handle_sys_reg()
-- [Medium] KVM: s390: arm64: missing reset of ctxt.elr_el1, spsr_el1,
-  and sp_el1
---
+> @@ -979,8 +979,6 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+>  	kvm_pmu_reset(vcpu);
+>  
+>  	pmu->version = 0;
+> -	pmu->nr_arch_gp_counters = 0;
+> -	pmu->nr_arch_fixed_counters = 0;
+>  	pmu->counter_bitmask[KVM_PMC_GP] = 0;
+>  	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
+>  	/*
+> @@ -1008,16 +1006,12 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+>  	 * in the global controls).  Emulate that behavior when refreshing the
+>  	 * PMU so that userspace doesn't need to manually set PERF_GLOBAL_CTRL.
+>  	 */
+> -	if (pmu->nr_arch_gp_counters &&
+> +	if (kvm_gp_pmc_mask(pmu) &&
+>  	    (kvm_pmu_has_perf_global_ctrl(pmu) || kvm_vcpu_has_mediated_pmu(vcpu)))
+> -		pmu->global_ctrl = GENMASK_ULL(pmu->nr_arch_gp_counters - 1, 0);
+> +		pmu->global_ctrl = kvm_gp_pmc_mask(pmu);
+>  
+>  	if (kvm_vcpu_has_mediated_pmu(vcpu))
+>  		kvm_pmu_call(write_global_ctrl)(pmu->global_ctrl);
+> -
+> -	bitmap_set(pmu->pmc_exists, 0, pmu->nr_arch_gp_counters);
+> -	bitmap_set(pmu->pmc_exists, KVM_FIXED_PMC_BASE_IDX,
+> -		   pmu->nr_arch_fixed_counters);
 
-commit 0aa20b7c35188a2ab3cdf479482a3360763c4252
-Author: Steffen Eiden <seiden@linux.ibm.com>
+I understand the vendor modules are responsible of initializing this
+now, but should we clear it before calling into the vendors like other
+fields above?
 
-KVM: s390: arm64: Integrate sysreg into the host
+>  }
+>  
+>  void kvm_pmu_init(struct kvm_vcpu *vcpu)
+> @@ -1328,6 +1322,8 @@ static __always_inline u32 gp_eventsel_msr(u32 idx)
+>  static void kvm_pmu_load_guest_pmcs(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> +	unsigned long fixed_mask = kvm_fixed_pmc_mask(pmu);
+> +	unsigned long gp_mask = kvm_gp_pmc_mask(pmu);
 
-This commit integrates the arm64 system register management infrastructure
-into the s390 host by initializing and resetting system registers on vCPU
-creation and reset, finalizing them on the first vCPU run, handling
-ESR_ELx_EC_SYS64 exits, and exposing them via KVM_CAP_ONE_REG.
+All these should go away if we pass the pmu into the iterators.
 
-> diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
-> index ba6235629c7d9..62fd71af8968c 100644
-> --- a/arch/s390/kvm/arm64/arm.c
-> +++ b/arch/s390/kvm/arm64/arm.c
+>  	struct kvm_pmc *pmc;
+>  	u32 i;
+>  
+> @@ -1336,14 +1332,14 @@ static void kvm_pmu_load_guest_pmcs(struct kvm_vcpu *vcpu)
+>  	 * is intercepted if hardware has counters that aren't visible to the
+>  	 * guest (KVM will inject #GP as appropriate).
+>  	 */
+> -	for (i = 0; i < pmu->nr_arch_gp_counters; i++) {
+> +	kvm_for_each_gp_counter(i, gp_mask) {
+>  		pmc = &pmu->gp_counters[i];
+>  
+>  		if (pmc->counter != rdpmc(i))
+>  			wrmsrq(gp_counter_msr(i), pmc->counter);
+>  		wrmsrq(gp_eventsel_msr(i), pmc->eventsel_hw);
+>  	}
+> -	for (i = 0; i < pmu->nr_arch_fixed_counters; i++) {
+> +	kvm_for_each_fixed_counter(i, fixed_mask) {
+>  		pmc = &pmu->fixed_counters[i];
+>  
+>  		if (pmc->counter != rdpmc(INTEL_PMC_FIXED_RDPMC_BASE | i))
+[..]
+> @@ -117,7 +116,7 @@ static bool amd_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
+>  		return pmu->version > 1;
+>  	default:
+>  		if (msr > MSR_F15H_PERF_CTR5 &&
+> -		    msr < MSR_F15H_PERF_CTL0 + 2 * pmu->nr_arch_gp_counters)
+> +		    msr < MSR_F15H_PERF_CTL0 + 2 * hweight_long(kvm_gp_pmc_mask(pmu)))
 
-[ ... ]
+This assumes the MSRs are contiguous, which IIUC is always true, but I
+wonder if it should also be handled since the series claims to also
+prepare for discontiguous GP counters.
 
-> @@ -271,6 +280,10 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vc=
-pu)
->  	if (likely(READ_ONCE(vcpu->pid)))
->  		return 0;
-> =20
-> +	ret =3D kvm_vcpu_finalize_sys_regs(vcpu);
-> +	if (ret)
-> +		return ret;
+>  			return pmu->version > 1;
+>  		break;
+>  	}
+[..]
+> @@ -107,6 +108,8 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+>  	if (WARN_ON_ONCE(!pmu->version))
+>  		return NULL;
+>  
+> +	idx &= INTEL_RDPMC_INDEX_MASK;
 > +
->  	scoped_guard(mutex, &kvm->arch.config_lock)
->  		set_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags);
-> =20
+>  	/*
+>  	 * General Purpose (GP) PMCs are supported on all PMUs, and fixed PMCs
+>  	 * are supported on all architectural PMUs, i.e. on all virtual PMUs
+> @@ -117,23 +120,25 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+>  	 */
+>  	switch (type) {
+>  	case INTEL_RDPMC_FIXED:
+> +		if (!kvm_is_fixed_pmc_supported(pmu, idx))
+> +			return NULL;
+> +
+>  		counters = pmu->fixed_counters;
+> -		num_counters = pmu->nr_arch_fixed_counters;
+> +		num_counters = KVM_MAX_NR_INTEL_FIXED_COUNTERS;
+>  		bitmask = pmu->counter_bitmask[KVM_PMC_FIXED];
+>  		break;
+>  	case INTEL_RDPMC_GP:
+> +		if (!kvm_is_gp_pmc_supported(pmu, idx))
+> +			return NULL;
+> +
+>  		counters = pmu->gp_counters;
+> -		num_counters = pmu->nr_arch_gp_counters;
+> +		num_counters = KVM_MAX_NR_INTEL_GP_COUNTERS;
 
-[Severity: Medium]
-Should kvm_arch_vcpu_run_pid_change() recompute vcpu->arch.hcrx_el2 (for
-example via vcpu_reset_hcrx()) after finalizing ID registers?
+num_counters is no longer an accurate name, is it? Maybe max_counter
+(and use KVM_MAX_* - 1) or max_nr_counters?
 
-vcpu_reset_hcrx() sets HCRX_EL2_MSCEn from ID_AA64ISAR2_EL1 during
-kvm_reset_vcpu() at KVM_ARM_VCPU_INIT time.  Because KVM_SET_ONE_REG is
-only permitted after KVM_ARM_VCPU_INIT, if userspace clears FEAT_MOPS in
-SYS_ID_AA64ISAR2_EL1 before the first KVM_RUN, vcpu->arch.hcrx_el2 retains
-the stale HCRX_EL2_MSCEn bit and kvm_arch_vcpu_ioctl_run() leaves MOPS
-instructions enabled in hardware for the guest.
+>  		bitmask = pmu->counter_bitmask[KVM_PMC_GP];
+>  		break;
+>  	default:
+>  		return NULL;
+>  	}
+>  
+> -	idx &= INTEL_RDPMC_INDEX_MASK;
+> -	if (idx >= num_counters)
+> -		return NULL;
+> -
+>  	*mask &= bitmask;
+>  	return &counters[array_index_nospec(idx, num_counters)];
+>  }
+> @@ -495,9 +500,10 @@ static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+>  
+>  static void intel_pmu_enable_fixed_counter_bits(struct kvm_pmu *pmu, u64 bits)
+>  {
+> +	unsigned long fixed_mask = kvm_fixed_pmc_mask(pmu);
+>  	int i;
+>  
+> -	for (i = 0; i < pmu->nr_arch_fixed_counters; i++)
+> +	kvm_for_each_fixed_counter(i, fixed_mask)
+>  		pmu->fixed_ctr_ctrl_rsvd &= ~intel_fixed_bits_by_idx(i, bits);
+>  }
+>  
+> @@ -509,6 +515,8 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  	union cpuid10_eax eax;
+>  	union cpuid10_edx edx;
+>  	u64 perf_capabilities;
+> +	u64 fixed_mask;
+> +	int nr_gp_counters;
+>  	u64 counter_rsvd;
+>  
+>  	if (!lbr_desc)
+> @@ -535,8 +543,6 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  	if (!pmu->version)
+>  		return;
+>  
+> -	pmu->nr_arch_gp_counters = min_t(int, eax.split.num_counters,
+> -					 kvm_pmu_cap.num_counters_gp);
+>  	eax.split.bit_width = min_t(int, eax.split.bit_width,
+>  				    kvm_pmu_cap.bit_width_gp);
+>  	pmu->counter_bitmask[KVM_PMC_GP] = BIT_ULL(eax.split.bit_width) - 1;
+> @@ -544,6 +550,17 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  				      kvm_pmu_cap.events_mask_len);
+>  	pmu->available_event_types = ~entry->ebx & (BIT_ULL(eax.split.mask_length) - 1);
+>  
+> +	fixed_mask = BIT_ULL(edx.split.num_counters_fixed) - 1;
+> +	fixed_mask &= BIT_ULL(kvm_pmu_cap.num_counters_fixed) - 1;
 
-[ ... ]
+Why not do min() like the old code?
 
-> diff --git a/arch/s390/kvm/arm64/handle_exit.c b/arch/s390/kvm/arm64/hand=
-le_exit.c
-> index e0c7773c2165d..1653163ed6d65 100644
-> --- a/arch/s390/kvm/arm64/handle_exit.c
-> +++ b/arch/s390/kvm/arm64/handle_exit.c
-> @@ -62,6 +62,7 @@ static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
->  static exit_handle_fn arm_exit_handlers[] =3D {
->  	[0 ... ESR_ELx_EC_MAX]	=3D kvm_handle_unknown_ec,
->  	[ESR_ELx_EC_HVC64]	=3D handle_hvc,
-> +	[ESR_ELx_EC_SYS64]	=3D kvm_handle_sys_reg,
->  	[ESR_ELx_EC_IABT_LOW]	=3D kvm_handle_guest_abort,
->  	[ESR_ELx_EC_DABT_LOW]	=3D kvm_handle_guest_abort,
->  };
+> +
+> +	/*
+> +	 * The number of counters comes from guest CPUID data. Clamp the value
+> +	 * to avoid a shift-by-64 in BIT_ULL().
+> +	 */
+> +	nr_gp_counters = min_t(int, eax.split.num_counters, X86_PMC_IDX_MAX - 1);
+> +	pmu->pmc_exists64 = (BIT_ULL(nr_gp_counters) - 1) &
+> +			    (BIT_ULL(kvm_pmu_cap.num_counters_gp) - 1);
 
-[Severity: Medium]
-Does calling kvm_handle_sys_reg() from handle_exit() invoke
-_vcpu_read_sys_reg() and _vcpu_write_sys_reg() in preemptible context while
-the vCPU is loaded?
+Why not just do min(eax.split.num_counters, kvm_pmu_cap.num_counters_gp)
+directly like it used to be?
 
-In kvm_arch_vcpu_ioctl_run(), handle_exit() runs after local_irq_enable()
-with preemption enabled and vcpu_is_loaded(vcpu) true.  When a guest traps
-on a save-area system register such as OSLSR_EL1 or SCXTNUM_EL0/EL1,
-kvm_handle_sys_reg() -> perform_access() calls vcpu_read_sys_reg() or
-vcpu_write_sys_reg():
-
-arch/s390/include/asm/kvm_host_arm64.h:_vcpu_read_sys_reg()
-	KVM_BUG_ON(vcpu_is_loaded(C) && smp_processor_id() !=3D (C)->cpu, (C)->kvm=
-);
-
-Under CONFIG_DEBUG_PREEMPT=3Dy this triggers a "using smp_processor_id() in
-preemptible code" splat, and if the vCPU thread is preempted and migrated
-between smp_processor_id() and reading (C)->cpu, KVM_BUG_ON() fires and
-terminates the VM.
-
-> diff --git a/arch/s390/kvm/arm64/reset.c b/arch/s390/kvm/arm64/reset.c
-> index e4cdce1dbf9d2..0339901f5fd08 100644
-> --- a/arch/s390/kvm/arm64/reset.c
-> +++ b/arch/s390/kvm/arm64/reset.c
-
-[ ... ]
-
-> @@ -43,9 +80,14 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
->  		vcpu_put(vcpu);
-> =20
->  	kvm_reset_vcpu_core(vcpu);
-> +	kvm_reset_sys_regs(vcpu);
-> =20
->  	/* Reset special registers */
->  	vcpu_reset_hcr(vcpu);
-> +	vcpu_reset_hcrx(vcpu);
-> +	vcpu_reset_cptr(vcpu);
-> +	vcpu_reset_cnthctl(vcpu);
-> +	vcpu_reset_icc(vcpu);
-
-[Severity: Medium]
-Does kvm_reset_vcpu() leave vcpu->arch.ctxt.elr_el1,
-vcpu->arch.ctxt.spsr_el1, and vcpu->arch.sae_block.sp_el1 unreset when a
-vCPU is reset after running?
-
-Neither kvm_reset_vcpu_core() nor kvm_reset_sys_regs() resets those fields
-because sys_reg_descs[] has no entries for ELR_EL1, SPSR_EL1, or SP_EL1.
-On the next guest entry after a vCPU reset, kvm_arch_vcpu_ioctl_run()
-writes the stale ctxt.elr_el1 and ctxt.spsr_el1 values back into
-SYS_ELR_EL1 and SYS_SPSR_EL1 in the hardware save area.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-sysreg-v3-=
-0-75e95980fb10@linux.ibm.com?part=3D17
+> +
+>  	entry = kvm_find_cpuid_entry_index(vcpu, 7, 0);
+>  	if (entry &&
+>  	    (boot_cpu_has(X86_FEATURE_HLE) || boot_cpu_has(X86_FEATURE_RTM)) &&
+> @@ -565,8 +582,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  	if (pmu->version == 1)
+>  		return;
+>  
+> -	pmu->nr_arch_fixed_counters = min_t(int, edx.split.num_counters_fixed,
+> -					    kvm_pmu_cap.num_counters_fixed);
+> +	pmu->pmc_exists64 |= fixed_mask << INTEL_PMC_IDX_FIXED;
+>  	edx.split.bit_width_fixed = min_t(int, edx.split.bit_width_fixed,
+>  					  kvm_pmu_cap.bit_width_fixed);
+>  	pmu->counter_bitmask[KVM_PMC_FIXED] = BIT_ULL(edx.split.bit_width_fixed) - 1;
+> @@ -575,8 +591,8 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  						 INTEL_FIXED_0_USER |
+>  						 INTEL_FIXED_0_ENABLE_PMI);
+>  
+> -	counter_rsvd = ~((BIT_ULL(pmu->nr_arch_gp_counters) - 1) |
+> -			 ((BIT_ULL(pmu->nr_arch_fixed_counters) - 1) << KVM_FIXED_PMC_BASE_IDX));
+> +	counter_rsvd = ~((u64)kvm_gp_pmc_mask(pmu) |
+> +			 ((u64)kvm_fixed_pmc_mask(pmu) << KVM_FIXED_PMC_BASE_IDX));
+>  	pmu->global_ctrl_rsvd = counter_rsvd;
+>  
+>  	pmu->global_status_rsvd = pmu->global_ctrl_rsvd
+> @@ -591,7 +607,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  			pmu->pebs_data_cfg_rsvd = ~0xff00000full;
+>  			intel_pmu_enable_fixed_counter_bits(pmu, ICL_FIXED_0_ADAPTIVE);
+>  		} else {
+> -			pmu->pebs_enable_rsvd = ~(BIT_ULL(pmu->nr_arch_gp_counters) - 1);
+> +			pmu->pebs_enable_rsvd = ~(u64)kvm_gp_pmc_mask(pmu);
+>  		}
+>  	}
+>  }
