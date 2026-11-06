@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793923339;
-	b=pqLBMbKGGDtj21KPVGboD5ZsHRh9Cq5nqLIA3eADpyraRPTHwElMrMxdzHwFamVrOFoE
-	 cWpQ6XnDKZjltjPEtNZqDFFlWbJu23yfUMOZOkoTKwBf0zqycyG/JEMMMwhPMfUlE9XP2
-	 4xdeR0IppQzc6FmELI40Ilv7enpqFPP5LozJbYBEL/CPKjm578ZxapAxZdNiHDm1QBJ6w
-	 J/94KjdSgm8baMMp1gSPDHRpzR8X5oA3u7p12MMAMmId8IVLTj0r0CrIfkKk59tqNfyGs
-	 CpTLSDqBCk3rKXuoSMAv6CsG/GzvJ/Ra9I+UGhbqlfV0vA3GzHvtnl0QyKOUE9DLV8Q==
+	t=1793923340;
+	b=WmQMi12POgJOzNsT+UisJjPzw5ktxp/GhFN+q7oIPe+Yf0j2slawjlltf5rp7byZwaKk
+	 YQk3RuC84sFjqlRc2CCD99GNR+qJKkvAZwcvuRyxBQDLLyI2IJGR/WgdJ2k6Lxuowc8E2
+	 i6AO/7Up7n9SMgK42TZe5eWJdLs/g3QbUC6rxoKj02xi+F+8U82s2Rqtq0vJkCPhjHprJ
+	 FR2uYPB8oQaw96wV7JUhj+DJcawNTXkHn1jtk8VHgRks2e8rXGpa5MVdBqMmD5o/xEWvK
+	 Fp0XQkm4/tILKLcvkA/Ssl3ChqrLvNg7H6zAcWCaYNe+VVE0Ehoo01RpzaeQIVK9Isg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793923339;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793923340;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=I+AKrKdXrTGF3YhHydrji5oIlm8/d8kpGckl/JGzOyc=;
-	b=K/5OpOC75xNvsjeMOUdfhMsojbqdlWLeI213gyOAD301c5AIsib6zDp7/DjJ8ORMM8Mq
-	 0AueVwz2fnyFZqmoRkX7rXWey0G4iM7bo4Y/jsmaB8p/8hvND29o/50q3YwbynJ1bBpJw
-	 K5fclkANHLg1vJCj2vIAPmKbP+5FIfJSCc8KenCU6StEw22NZ8RyOErKzNS7uTVbGFBpr
-	 S+JTeMUXeOjg0a6Alh+uO5b5bCbRT3UWM5ZKY4oOH11EnY8GLOUt6NnWofhI+eZ5k6NJW
-	 T0uxJ3Khwaa+eWEaO01hnEWQkksyUukg5Bqyh3ayMVMwTLlxlAas0zEFNrkMJJkVmhw==
+	bh=tmFmr+ej0lqf8GQ11rxdhScluK7Ys/zDVNanSgLQtTI=;
+	b=4DcOVY/UhodCpwBVbcD/ZrwZL6p6zA0JMaUOURuhsJav6LQugF3hZsAZpUufUkNj6/5k
+	 jTbLNG7bhE2AmBUUaSKbsbcI2jl0gY3kVOSQmLGWgvdWkOBO9aZuR2Q+rgKAn6YnA2Wlx
+	 hIyP8gTgBzB/+icgfow96OMPvl4EZ1hZSgnMwKn29pjt5hihy+ivUJAEzc6PeTD7uRzpX
+	 O0giTYNt2tTTPNoKX2DE8/9oAIrT+2zSVsohyNFcdvX4KZ9AEVHauaF7zhu9q3jXZgB/y
+	 6auKlw88pzDozlf+At8oDkYR3DlG65db3ZMNDwH940h5olvo4PF19YOhJ0TPOcAe9kg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nK2hn9LD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GVGldMvj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CC9606A328;
-	Fri,  6 Nov 2026 00:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB41606A329
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 00:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nK2hn9LD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8161F0089F;
-	Fri,  6 Nov 2026 00:02:18 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GVGldMvj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8F11F008A2;
+	Fri,  6 Nov 2026 00:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793923339;
-	bh=I+AKrKdXrTGF3YhHydrji5oIlm8/d8kpGckl/JGzOyc=;
+	bh=tmFmr+ej0lqf8GQ11rxdhScluK7Ys/zDVNanSgLQtTI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nK2hn9LDrrajrZEXf5Hj/6MFANn3WSgT2Ksihbp5WbmkddYTlGN5SCLBlC321KJeI
-	 G6UQOpo+tEJw1Hmde+kxM5K7+blKYo2jBdIRxQpMeRwjsB5mTeUWEzffbEkLV1fZvI
-	 Oyodb0Vb4t1hWkQPlKvA6wAvr86tGNlT8ccHgblZhepGqUYhv/TvP9rxdlygtcT3/q
-	 XDDakEho7iruSTJGk++snUvP0cFxOOMap3ZqqF+TEzAaLgzY/O8RyrIJkxzLpiGxry
-	 +zkkR/0r7OC+ZCdlgYcrqLQWc9E2wJaf6FBLGaiROnQ417sEpXXbd8ihdLz1rVLcvK
-	 GFdPeZ6nQEehw==
-Message-ID: <sashiko-outbox-200421@kernel.org>
+	b=GVGldMvjwsY3Nd7YxXjXCS0CJZQbysQTeAiN/7Lim+9IuAf2Nk0lT9bfvIXMrRLHc
+	 qE2t1GBsqEcOLFfLmGpJ5CXiXklVf9w3En7ot9LAyH+F9wLRInJIshOwPeVrBVJaFA
+	 F65kPA8QBvnLXUPeQNJiezHdKX/PFfrOlqzjN2129Fsc4+QcfFxK8QC6V2egeiTP3v
+	 R5sp8dypyt/N0gwkomZQygwpYVfOQEvmvcmz1UbWVg9Kuj7T6r4e6k/D2wUVQRe08z
+	 fOirtHdocyY7fteADVRNsqv8f+94gtBQqyQ45jDHuf1VYg4jPQluEVrUv1I6eeEmiv
+	 03o44jDzFHtwQ==
+Message-ID: <sashiko-outbox-200422@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net 3/3] vsock/virtio: queue at most one credit update
- per socket
+Subject: Re: [PATCH v16 19/20] KVM: selftests: Add support for TDX ucalls,
+ via TDVMCALL_REPORT_FATAL_ERROR
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Oleg Drokin" <green@linuxhacker.ru>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, "Eugenio
- Perez" <eperezma@redhat.com>
-In-Reply-To: <20261105000141.3617241-4-green@linuxhacker.ru>
-References: <20261105000141.3617241-1-green@linuxhacker.ru>
- <20261105000141.3617241-4-green@linuxhacker.ru>
+To: "Lisa Wang" <wyihan@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261105-tdx-selftests-v16-19-2024e8fa517a@google.com>
+References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com>
+ <20261105-tdx-selftests-v16-19-2024e8fa517a@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 00:02:18 +0000
+Date: Fri, 06 Nov 2026 00:02:19 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,73 +63,79 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] vsock/virtio: premature credit_update clear in virtio_transport_se=
-nd_skb()
+- [Medium] kvm: selftests: ucall_arch_init() permanently overwrites global =
+ucall_x86_ops
 --
 
-commit 2cdb1a5b77890d0e5001ce1a907ca3477d945d5d
-Author: Oleg Drokin <green@linuxhacker.ru>
+commit e57af1ee0994af97f6ae447fc9a5abebc0287e67
+Author: Sean Christopherson <seanjc@google.com>
 
-vsock/virtio: queue at most one credit update per socket
+KVM: selftests: Add support for TDX ucalls, via TDVMCALL_REPORT_FATAL_ERROR
 
-This commit limits each vsock socket to at most one queued credit update
-packet when its last queued packet is already an OP_CREDIT_UPDATE. When the
-transport transmits the queued credit update and no newer packet has been
-queued after it, virtio_transport_credit_update_xmit() refreshes its
-fwd_cnt and buf_alloc and clears vvs->credit_update.
+This patch adds TDX ucall support in KVM selftests by passing the ucall
+payload address and a magic value via TDVMCALL_REPORT_FATAL_ERROR. When a
+TDX VM is initialized in ucall_arch_init(), ucall_x86_ops is updated to
+use the TDX ucall callbacks and synced to the guest.
 
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_tran=
-sport.c
-> index 4f9aa9c4c3aa5..82cd52249de3c 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
-> @@ -104,6 +104,8 @@ static int virtio_transport_send_skb(struct sk_buff *=
-skb, struct virtqueue *vq,
->  	int ret, in_sg =3D 0, out_sg =3D 0;
->  	struct scatterlist **sgs;
+> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/=
+selftests/kvm/lib/x86/ucall.c
+> index 3aec4dd46d1b2..2a1c61785e5fb 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+
+[ ... ]
+
+> @@ -37,6 +61,11 @@ static struct {
 > =20
-> +	virtio_transport_credit_update_xmit(skb);
+>  void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+>  {
+> +	if (is_tdx_vm(vm)) {
+> +		ucall_x86_ops.do_ucall =3D ucall_tdx_do_ucall;
+> +		ucall_x86_ops.get_ucall =3D ucall_tdx_get_ucall;
+> +	}
 > +
->  	sgs =3D vsock->out_sgs;
->  	sg_init_one(sgs[out_sg], virtio_vsock_hdr(skb),
->  		    sizeof(*virtio_vsock_hdr(skb)));
+>  	sync_global_to_guest(vm, ucall_x86_ops);
+>  }
 
-[Severity: High]
-Does calling virtio_transport_credit_update_xmit(skb) before
-virtqueue_add_sgs() clear vvs->credit_update and advance vvs->last_fwd_cnt
-even when adding the packet to the tx virtqueue fails?
+[Severity: Medium]
+As reported by Sashiko on v15 [1], since ucall_x86_ops is a process-wide
+global structure in tools/testing/selftests/kvm/lib/x86/ucall.c:
 
-In virtio_transport_send_skb(), virtqueue_add_sgs() can fail (for example
-with -ENOSPC when VSOCK_VQ_TX is full, or -ENOMEM under GFP_ATOMIC on the
-fast path):
+static struct {
+	void (*do_ucall)(gva_t uc);
+	void *(*get_ucall)(struct kvm_vcpu *vcpu);
+} ucall_x86_ops =3D {
+	.do_ucall =3D ucall_x86_do_ucall,
+	.get_ucall =3D ucall_x86_get_ucall,
+};
 
-net/vmw_vsock/virtio_transport.c:virtio_transport_send_skb() {
-	virtio_transport_credit_update_xmit(skb);
-	...
-	ret =3D virtqueue_add_sgs(vq, sgs, out_sg, in_sg, skb, gfp);
-	if (ret < 0)
-		return ret;
+does overwriting ucall_x86_ops in ucall_arch_init() when is_tdx_vm(vm) is
+true without restoring the default handlers when !is_tdx_vm(vm) break tests
+that create a non-TDX VM after a TDX VM (or run both concurrently) in the
+same process?
+
+If a non-TDX VM is initialized after a TDX VM via ucall_init() ->
+ucall_arch_init(), sync_global_to_guest(vm, ucall_x86_ops) will copy
+ucall_tdx_do_ucall into the non-TDX guest, causing the guest to execute
+TDCALL and fault with #UD on its first ucall.
+
+Similarly, on the host side, ucall_arch_get_ucall() dispatches through the
+single global ucall_x86_ops.get_ucall pointer:
+
+void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
+{
+	return ucall_x86_ops.get_ucall(vcpu);
 }
 
-When that happens, virtio_transport_credit_update_xmit(skb) has already set
-vvs->credit_update =3D NULL and vvs->last_fwd_cnt =3D vvs->fwd_cnt, and the
-caller then queues or requeues skb in vsock->send_pkt_queue:
+so get_ucall() -> ucall_arch_get_ucall() will check for
+KVM_SYSTEM_EVENT_TDX_FATAL instead of KVM_EXIT_IO for any non-TDX VM once a
+TDX VM has been initialized. Should ucall_arch_init() restore the default x=
+86
+callbacks when !is_tdx_vm(vm) (or should ucall_arch_get_ucall() dispatch
+based on is_tdx_vm(vcpu->vm))?
 
-- via virtio_transport_send_pkt() -> virtio_transport_send_skb_fast_path(),
-  which falls back to virtio_vsock_skb_queue_tail(&vsock->send_pkt_queue, s=
-kb)
-  when vsock->send_pkt_queue was initially empty, or
-- via virtio_transport_send_pkt_work(), which puts skb back with
-  virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb).
-
-While skb sits in vsock->send_pkt_queue with vvs->credit_update cleared to
-NULL, subsequent calls to virtio_transport_send_credit_update() (from
-OP_CREDIT_REQUEST or local reads) will queue additional OP_CREDIT_UPDATE
-skbs behind it. In addition, when skb is later sent by
-virtio_transport_send_pkt_work(), virtio_transport_credit_update_xmit(skb)
-sees vvs->credit_update !=3D skb and will not refresh hdr->fwd_cnt or
-hdr->buf_alloc with credits freed while it was queued.
+[1] https://lore.kernel.org/r/20261002091337.9BDF91F0089A@smtp.kernel.org
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105000141.3617=
-241-1-green@linuxhacker.ru?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105-tdx-selfte=
+sts-v16-0-2024e8fa517a@google.com?part=3D19
