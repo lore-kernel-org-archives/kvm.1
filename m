@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.86
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.106
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793971181;
-	b=hNB13OkNTYpvXw4P9+HV6JAxxkPl1owtnmFpAZo42xJRzTTteg7HdPKsMIwFZvJ2bG7N
-	 7JlCs1KNS/I89bz0cIAsMetVyutWaEPiaid5tjtJi+XKpPduKRqxK21aWvXY+f6O6xyWh
-	 rT7j+Uahdtn1wrzJ10oyE7AFTKMjnX5qpsW0HCxIQj2ovaOBdfhdFqZ4GuKlL1lHvR7sx
-	 enHF/+XwxOoynMx6ZEyLhLYCLQ7tL6HJN4gvapVvOJGNv5G4XeTUg/2EnEug8hg6i/9EN
-	 EQgaSOSdv6rtzebu5VE7//ZrSu0f/WY7AvMrkF0vC6SOl7hrzKrpI/gsv86NOVl7gLA==
+	t=1793971195;
+	b=QNsAjivd4VC9GRMAR9uddkqcfsAxSpUIYbUR5y9wpXSsdGBuPSkN0Zf3+u0p9P1+V/nL
+	 ZHYfiljR1Cs67dZZewbZQnzt/Kc6ov083BYAdq05mWhFJNoMhlZ8nH7F8fBDyJzlORtR0
+	 0bQywDcp5Kzx5PJ83azeV7WDQapy4RHHtyv+LBsTpD1CWSI0mhDITtukP5ClJWoHjtZai
+	 QR+1UNKsSeMvuWy1f12cJRoVbNk3GW/IxgUyF6SG4Yxqvy7NF6Z/CqqRMxQLTGv/E61A7
+	 mD9nx7LfEJevg/kKgzVjUMK0z+QUjO5EkTx8AgPKoEn1lqdhbhZSgLxG30MxKK+TDRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793971181;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793971195;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=uHDTPFGM/AF1nyT/Yc6bbkTHW5yMlJbnq5ZETvmi2Vs=;
-	b=HAzONcJNRvO5tgEdfQeDBB7ahgfEaO108AN8fBX8l8Kphf6qEqP41c3EUi61zuiZuOL6
-	 94hjijUQ3S4lboeIcqW9Y7nV4QAwruEx5jfIWIosGb6A7dMJV0khs7UgPFM+cOsQfk8/O
-	 Gpd0Xms9YtX02SHmIacdco5G3ApD4qvxXF2vBYGaBtGv2KYBZL6J8TJsls1D2nuCOPSzK
-	 fFzY+lhYIOTEAuUgOxYqGvzPzIkvR6GXXynAr0wbF7FCMMf6dCxYXUHlBWyn1ZUDM51Af
-	 sz9ygxxOWyGcVPTRKcynq+EAVoESqhj5w/wg1RepmTiyKHYAWTgisOMheA7CUIZM/xg==
+	bh=CYfB1FwPouVvSzabiejXQPBqorI59dDF0aM5IPAqcsI=;
+	b=MYgmZg7iqhj1Q2gmJ9hSK2FY4+fDfOYqKsiQUSQg9IakA6xSId8jFSA0XNktWxOYem67
+	 Kv+mLVKkyqM2D+1DZeWj74Rz8yt54Rik5LZ+It30CdoxOfrvFycRrcEaGjQLjDsPpxeu5
+	 qU7qcLbYXLUp6Lt/k9LSPtm8moKsMgtB709gKqmQ6BLki52bM0xRwF9FuuX64/KOJPT+v
+	 6SwTBHpPJLe64fhpxPqn0QgymSuLeuSA1Ln61tlkCmx9qicY57lZ4KxBIt03WLfTKzrkD
+	 Fm8rI9q0rkM0ebOoQsijjqGypgVrPWZ4ct7JA14KGmsoN0k9hbX88Y/kKDzRvFk0CYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e39dX1aD;
-	arc=none smtp.remote-ip=95.215.58.86
-Received: from mta1.migadu.com (out-86.mta1.migadu.com [95.215.58.86])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OBh2yzfS;
+	arc=none smtp.remote-ip=95.215.58.106
+Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5529B606A32D
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 13:19:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5529B606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF2B606A33D
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 13:19:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AF2B606A33D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e39dX1aD
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OBh2yzfS
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=55Gu1BuWJQRvJsCcgFgbtSGQhBxGx47gTgITgbn0eiI=;
+DKIM-Signature: a=rsa-sha256; bh=73QCibDvpuaBGtRTNbIkxL+btURCG2VkLUsjiT9bmAg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793971178; v=1; x=1794575978;
- b=e39dX1aDFsU5NTPTFLe3+RT+3/gSUyvAl18yS049B+1+avfXR5NJDC/GkY5xOMwPLboBKIzd
- N/1dhMtcwKi5kzXqiwRZhxE3jiyRM5th46sYicPK4WAzdzE7WYf96hN+5fs28ZwivqYdNalGYQh
- JAlb8yu3ez3DJaz2LqvdS2LE=
+ t=1793971192; v=1; x=1794575992;
+ b=OBh2yzfS4sOkxhGkT+JBPca55NoqbHEL9VIcAcbEj1J1rXgOoQHQgV3Mcnc02kQNXVO902W+
+ noDVT/X6o8QePW+IXif0wVhRtAIt7pCstFsBd5LRqmTL17bi9HehYz49UEdj6gHklLbJYcIOxCM
+ FPVWpW0g4r5YYg1Ao8bNZ4dk=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 2231816b5623e6c8;
-	Fri, 06 Nov 2026 13:19:38 +0000
-X-Mizu-Trace-ID: 2231816b5623e6c8
+Received: by smtp.migadu.com with ESMTPS id b2c073d8feb08521;
+	Fri, 06 Nov 2026 13:19:52 +0000
+X-Mizu-Trace-ID: b2c073d8feb08521
 X-Migadu-Flow: FLOW_OUT
 From: Tao Cui <cui.tao@linux.dev>
 To: akpm@linux-foundation.org,
@@ -93,9 +93,9 @@ Cc: linux-mm@kvack.org,
 	vbabka@suse.cz,
 	cui.tao@linux.dev,
 	cuitao@kylinos.cn
-Subject: [PATCH 2/7] dma-buf/udmabuf: account the page array metadata to memcg
-Date: Fri,  6 Nov 2026 21:18:24 +0800
-Message-ID: <20261106131829.3228926-3-cui.tao@linux.dev>
+Subject: [PATCH 3/7] vhost: account the per-device kernel allocations to memcg
+Date: Fri,  6 Nov 2026 21:18:25 +0800
+Message-ID: <20261106131829.3228926-4-cui.tao@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261106131829.3228926-1-cui.tao@linux.dev>
 References: <20261106131829.3228926-1-cui.tao@linux.dev>
@@ -112,52 +112,140 @@ Content-Transfer-Encoding: 8bit
 
 From: Tao Cui <cuitao@kylinos.cn>
 
-udmabuf pins the pages of a memfd and hands them out as a dma-buf.  The
-data pages keep the accounting of the memfd they were instantiated in,
-but the bookkeeping around them does not: the page pointer array and
-the pinned_folios array, both sized by the buffer page count, plus the
-transient folios array sized by the memfd folio count, are plain
-GFP_KERNEL.  A 1GB buffer costs about 4MB of uncharged SUnreclaim
-memory, and size_limit_mb defaults to INT_MAX.
+Everything except the worker struct is allocated with plain GFP_KERNEL:
+the per-vq iovec and log arrays at VHOST_SET_OWNER, the memory table at
+VHOST_SET_MEM_TABLE whose size follows the user supplied region count,
+the pending message nodes, and the vhost_net/vhost_vsock device structs
+with their fallback to vmalloc.  The worker has been accounted since the
+vhost_task conversion.
 
-Charge the three kvmalloc allocations so the creator pays for the
-metadata it induces.  The system heap in the same subsystem already
-accounts its buffer allocation; the data pages here stay with the
-memfd.
+A container that can open /dev/vhost-net or /dev/vhost-vsock, which
+device plugins hand out with passthrough, holds roughly 150KB of
+resident kernel memory per device after SET_OWNER.  Charge the rest the
+same way the worker already is.
 
 Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 ---
- drivers/dma-buf/udmabuf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/vhost/net.c   | 14 ++++++++------
+ drivers/vhost/vhost.c | 16 ++++++++++------
+ drivers/vhost/vsock.c |  5 +++--
+ 3 files changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index df6dd0046242..40182c82df6b 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -190,11 +190,12 @@ static void unpin_all_folios(struct udmabuf *ubuf)
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 4570a4ffbab2..bab6597c696d 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -249,7 +249,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
+ 	/* No zero copy backend? Nothing to count. */
+ 	if (!zcopy)
+ 		return NULL;
+-	ubufs = kmalloc_obj(*ubufs);
++	ubufs = kmalloc_obj(*ubufs, GFP_KERNEL_ACCOUNT);
+ 	if (!ubufs)
+ 		return ERR_PTR(-ENOMEM);
+ 	atomic_set(&ubufs->refcount, 1);
+@@ -302,7 +302,8 @@ static int vhost_net_set_ubuf_info(struct vhost_net *n)
+ 		if (!zcopy)
+ 			continue;
+ 		n->vqs[i].ubuf_info =
+-			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV);
++			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV,
++				     GFP_KERNEL_ACCOUNT);
+ 		if  (!n->vqs[i].ubuf_info)
+ 			goto err;
+ 	}
+@@ -1344,17 +1345,18 @@ static int vhost_net_open(struct inode *inode, struct file *f)
+ 	struct xdp_buff *xdp;
+ 	int i;
  
- static __always_inline int init_udmabuf(struct udmabuf *ubuf, pgoff_t pgcnt)
- {
--	ubuf->pages = kvmalloc_objs(*ubuf->pages, pgcnt);
-+	ubuf->pages = kvmalloc_objs(*ubuf->pages, pgcnt, GFP_KERNEL_ACCOUNT);
- 	if (!ubuf->pages)
+-	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
++	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
++			 __GFP_ACCOUNT);
+ 	if (!n)
  		return -ENOMEM;
+-	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX);
++	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX, GFP_KERNEL_ACCOUNT);
+ 	if (!vqs) {
+ 		kvfree(n);
+ 		return -ENOMEM;
+ 	}
  
--	ubuf->pinned_folios = kvmalloc_objs(*ubuf->pinned_folios, pgcnt);
-+	ubuf->pinned_folios = kvmalloc_objs(*ubuf->pinned_folios, pgcnt,
+ 	queue = kmalloc_array(VHOST_NET_BATCH, sizeof(void *),
+-			      GFP_KERNEL);
++			      GFP_KERNEL_ACCOUNT);
+ 	if (!queue) {
+ 		kfree(vqs);
+ 		kvfree(n);
+@@ -1362,7 +1364,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
+ 	}
+ 	n->vqs[VHOST_NET_VQ_RX].rxq.queue = queue;
+ 
+-	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH);
++	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH, GFP_KERNEL_ACCOUNT);
+ 	if (!xdp) {
+ 		kfree(vqs);
+ 		kvfree(n);
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index ea127af58ada..d1274106ad5d 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -526,11 +526,14 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
+ 
+ 	for (i = 0; i < dev->nvqs; ++i) {
+ 		vq = dev->vqs[i];
+-		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV);
+-		vq->log = kmalloc_objs(*vq->log, dev->iov_limit);
+-		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit);
++		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV,
 +					    GFP_KERNEL_ACCOUNT);
- 	if (!ubuf->pinned_folios)
++		vq->log = kmalloc_objs(*vq->log, dev->iov_limit,
++				       GFP_KERNEL_ACCOUNT);
++		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit,
++					 GFP_KERNEL_ACCOUNT);
+ 		vq->nheads = kmalloc_array(dev->iov_limit, sizeof(*vq->nheads),
+-					   GFP_KERNEL);
++					   GFP_KERNEL_ACCOUNT);
+ 		if (!vq->indirect || !vq->log || !vq->heads || !vq->nheads)
+ 			goto err_nomem;
+ 	}
+@@ -2053,7 +2056,8 @@ static long vhost_set_memory(struct vhost_dev *d, struct vhost_memory __user *m)
+ 		return -E2BIG;
+ 	if (max_iotlb_entries <= 0)
+ 		return -EINVAL;
+-	newmem = kvzalloc_flex(*newmem, regions, mem.nregions);
++	newmem = kvzalloc_flex(*newmem, regions, mem.nregions,
++			       GFP_KERNEL_ACCOUNT);
+ 	if (!newmem)
  		return -ENOMEM;
  
-@@ -387,7 +388,7 @@ static long udmabuf_create(struct miscdevice *device,
- 	if (ret)
- 		goto err;
+@@ -3405,7 +3409,7 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
+ struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
+ {
+ 	/* Make sure all padding within the structure is initialized. */
+-	struct vhost_msg_node *node = kzalloc_obj(*node);
++	struct vhost_msg_node *node = kzalloc_obj(*node, GFP_KERNEL_ACCOUNT);
+ 	if (!node)
+ 		return NULL;
  
--	folios = kvmalloc_objs(*folios, max_nr_folios);
-+	folios = kvmalloc_objs(*folios, max_nr_folios, GFP_KERNEL_ACCOUNT);
- 	if (!folios) {
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 0cb87971d749..600daeb05e7b 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -721,11 +721,12 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
+ 	/* This struct is large and allocation could fail, fall back to vmalloc
+ 	 * if there is no other way.
+ 	 */
+-	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
++	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
++			     __GFP_ACCOUNT);
+ 	if (!vsock)
+ 		return -ENOMEM;
+ 
+-	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs));
++	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs), GFP_KERNEL_ACCOUNT);
+ 	if (!vqs) {
  		ret = -ENOMEM;
- 		goto err;
+ 		goto out;
 -- 
 2.43.0
 
