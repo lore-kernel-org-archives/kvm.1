@@ -1,75 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793982007;
-	b=f/uyACEZln+B4nM+rodO5MUwN09AKKoAqx3ZGI/8u+L8t7yTVyH2n5ZRK5tvbwwoZSLy
-	 vs2fKrFRZJWpJY33rXPcnkFNhhT2J5Ukxz4/wlGLwa+Khosji+W9Y4XgYVcyNqRrrabRW
-	 58EiXF9IuZUqUY3RJy6zlm7HWNZ6GXbo1qztX1S9MWqh5OqOryCb0HS7IAsOFr71bHE4m
-	 9wIM8v1nhkNq9VFuzE9/sIQmeHpaElNOOFCX+JvwRT9Q/52dtfR6A3cQvkhg6c0SA3vQ8
-	 UETd5Pfi/bv4rqodT3P19H4cYCWuLOiC+mcqVhJX87D5VEmbDSD99OZO/A6lXzFRwkw==
+	t=1793982882;
+	b=vkMF30KpOh7cJwmrV4ExaBvc/mKqaqF8NNt3kktGbn1AHib2NPuBkhbydkwWrAU0IPFc
+	 YMf0JUBs7faFntQoLkJL7Tvp7NCH2r6iIf/E58wHLI6OWRlveamNiXN0UPrWK9xUuamHG
+	 JiGSm8ttLItpEgxt62/PGkfWKvyeEl2od3M7PG8V0/d+65zh+t6LOWKZJdKrL2XzbYmfq
+	 eLBOmQB+IGrmfTM54/dUc5hSSX1sU5oQT4qeRe23oNWFzBUHVZOrse11yZzUhlOgn/tJq
+	 pn0nobOxncqHErOWYKoajKE4+TUOe6xNlupALdJ5815A2295QOrR4ziaf5KmxGwvS8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793982007;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=H8tdDLfdz3dupNbZz6pSUlfj0t7O9pAhB3VyyAXafto=;
-	b=DvpLDTgCFs1GUTIDsNVrdb8f4mWYqwrqCHy923B7S5VMMKf2LlmDztcRTIg5GMQxZ+mp
-	 0FMDCIfg8w/l3tmOMiuwv/4gCxlc1ekl9+G3FwpWAqvPfhZZa/JaQdiA2RaJ9FDSiAL+Z
-	 FarbBGN7teQ321NvCSUIgHxxxT4d1fnLwbRaIbNfaRZcitLsJyEaZRWY0MbqThf6ECd8a
-	 u3J8i7u4hQbCZwoQI+dvyEM/M/AWaLfB1riHGQrS1JA98WyzWD4IwWLP6tKFmn0wAw0gm
-	 1DhJyBOwUfNsyov86WMNondkIOakkE/rQG/yJlByX6PbVNCK03Jjb3lbXGhMz8nynbA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793982882;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=Cp+tZVOrkmD7nG2RhQ6YN+Z0lOkuIfJ+qQn8uFGND2c=;
+	b=RBFvRJU7S+4it8sR7dLk7eu8BmWRWKa1FhGJF4H2VDpIFeMK04XaPVTcwqukhnn9zQCC
+	 GjWF2Stc1tLjjYwQINOdL1xSNSoM7Lvf0b0ddIZwggbTpRQMMnP1zDYWI20MwUBbAZ8gt
+	 z58udOEMkY5YUr3AGUq3RqM9GaJuq1InnP7+xgBM+aCr6JIlQu0qzLZ2MlA+1uRGzh0M2
+	 upn6vSUlW+zRTH0u21/7JH017sOjw5b7fAP6PHOr+cr0RxGaEiz+7rsdkpFW98ASXpeAk
+	 vNDedjW2sr+COnmu9isEZY1GnEYcVaZXaL0shersyxaXHLwZFhbeBtdUXv8eQ6R1Q+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nR5nhhcA;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3D5606A32C;
-	Fri,  6 Nov 2026 16:20:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE3D5606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EHANWA66;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6846D606A338;
+	Fri,  6 Nov 2026 16:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nR5nhhcA
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A42401682;
-	Fri,  6 Nov 2026 08:20:02 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DFA483F673;
-	Fri,  6 Nov 2026 08:20:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793982005; bh=NlmmtGOQekNfMxvIrzPHiHl/2PCEDv1vbcb2KGPiI4A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nR5nhhcABJ2UWpAzYd5U/MsJRDOw1v+jUk7l8fiqdm52A+1EpvNyRDh9I/N684lKH
-	 F3VnzYkynAFKSO6AXptU88GzQ8bEU1nFpS0H4+qg3D19oszxW229A1caNAJ0zIPvlp
-	 hmARhUzauJSvqvR6wKrPs0A69SEFJWsw1EcyjPgY=
-Date: Fri, 6 Nov 2026 16:19:59 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	aneesh.kumar@kernel.org
-Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
-Message-ID: <au3-LyBiCZtUMpEx@e129823.arm.com>
-References: <20261015145053.3664509-18-jiri@resnulli.us>
- <auuDcABX27EeTApl@e129823.arm.com>
- <20261104194622.GC3889730@ziepe.ca>
- <aux01NUd85PabtZu@FV6GYCPJ69>
- <auyKE2sGqtfjk4v5@e129823.arm.com>
- <auy7IM0_S2tv7EZX@FV6GYCPJ69>
- <au2WdWFOYbPEv0Uj@e129823.arm.com>
- <au3i-0eDzJZaWukx@FV6GYCPJ69>
- <au3mAsQrh0GniXJo@e129823.arm.com>
- <au34wXtIqii-hfFI@FV6GYCPJ69>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EHANWA66
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728A71F008BC;
+	Fri,  6 Nov 2026 16:34:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793982882;
+	bh=Cp+tZVOrkmD7nG2RhQ6YN+Z0lOkuIfJ+qQn8uFGND2c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EHANWA66ONkLPMq3+7IOO+507vY2TicQubzfBZAMq1QAD945Nrxeb08V/q98v/99K
+	 qkoCCgYy1dnzSfK1GolMPt1pvCJ5teZq7K+gFrQ72n0oNFjR1rB1V/Mk7nE6E5IitI
+	 7RTScJG7oqTyU7y+1h4V3Ojx0KqsIiARMPXVJ3gw62QajcVtWelM/ydUFf/g5mmNNK
+	 vV4T7V2eIwaQCwuXkx1mqnmImGU3TZi9ezc6nP7Cp8Ozge4jwEsica42PICwOa/eNK
+	 gS6dqm/Ov92ckqUHOEUcajS4xxXCN+IhaTIi+aCLM6hHDMPia8+YT7PjG2/2WIzO7Z
+	 o71mIuLmwMA6g==
+Message-ID: <sashiko-outbox-201828@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 03/23] arm64: sysreg: Convert OSLSR to automatic
+ register generation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
+ Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261106-sysreg-v3-3-75e95980fb10@linux.ibm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-3-75e95980fb10@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 06 Nov 2026 16:34:41 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,190 +63,53 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au34wXtIqii-hfFI@FV6GYCPJ69>
 
-On Fri, Nov 06, 2026 at 05:03:32PM +0100, Jiri Pirko wrote:
-> Fri, Nov 06, 2026 at 03:36:50PM +0100, yeoreum.yun@arm.com wrote:
-> >> Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
-> >> >On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
-> >> >> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
-> >> >> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
-> >> >> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
-> >> >> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
-> >> >> >> >> [..snip..]
-> >> >> >> >> 
-> >> >> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
-> >> >> >> >> > +					       const struct ctlv_cursor *request,
-> >> >> >> >> > +					       struct attestation_evidence_request *decoded,
-> >> >> >> >> > +					       struct attestation_evidence_object_request **objects)
-> >> >> >> >> > +{
-> >> >> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
-> >> >> >> >> > +	u32 challenge_length;
-> >> >> >> >> > +
-> >> >> >> >> > +	decoded->challenge =
-> >> >> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
-> >> >> >> >> > +	decoded->challenge_length = challenge_length;
-> >> >> >> >> > +	if (challenge_length < caps->min_challenge_length ||
-> >> >> >> >> > +	    challenge_length > caps->max_challenge_length)
-> >> >> >> >> 
-> >> >> >> >> Hmm, I'm not sure whether this check is required for
-> >> >> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
-> >> >> >> >> 
-> >> >> >> >> for example, if the provider provides two evidence:
-> >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
-> >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
-> >> >> >> >> 
-> >> >> >> >> might challenge is reuiqred for generating the token
-> >> >> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
-> >> >> >> >> 
-> >> >> >> >> However, in case of eventlog, it wouldn't require challenge.
-> >> >> >> >> for example, TPM event log or CCEL event log.
-> >> >> >> >
-> >> >> >> >Right
-> >> >> >> >
-> >> >> >> >> Do we need some field on attestation_evidence_supported_object whether
-> >> >> >> >> it requires challenge or not and applies this sanity check per the object?
-> >> >> >> >> 
-> >> >> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
-> >> >> >> >> always.
-> >> >> >> >
-> >> >> >> >I wonder if we should have two interfaces here for signed and unsigned
-> >> >> >> >evidence? It would be clearer for userspace then when it needs to
-> >> >> >> >provide a challenge or not.
-> >> >> >> 
-> >> >> >> Isn't the challenge field provided/not-provided enough?
-> >> >> >> 
-> >> >> >> Currently on the introspection side, device-get op would provide
-> >> >> >> challenge-lengths array:
-> >> >> >> 
-> >> >> >>         evidence?:
-> >> >> >>           challenge-lengths[8]:
-> >> >> >>             length?: uint(..4096)
-> >> >> >>             min-length?: uint(..4096)
-> >> >> >>             max-length?: uint(..4096)
-> >> >> >>  	  objects[16]:
-> >> >> >>             blob-class: evidence-blob-class
-> >> >> >>             max-length: uint
-> >> >> >>             blob-instance?: uint(..u32-max)
-> >> >> >> 
-> >> >> >> I think it would make sense to have challenge-lengths array per object:
-> >> >> >> 
-> >> >> >>  	  objects[16]:
-> >> >> >>             blob-class: evidence-blob-class
-> >> >> >>             max-length: uint
-> >> >> >>             blob-instance?: uint(..u32-max)
-> >> >> >>             challenge-lengths[8]:
-> >> >> >>               length?: uint(..4096)
-> >> >> >>               min-length?: uint(..4096)
-> >> >> >>               max-length?: uint(..4096)
-> >> >> >> 
-> >> >> >> Then the unsigned object would just simply have challenge-lengths empty?
-> >> >> >
-> >> >> >This looks good to me. :)
-> >> >> 
-> >> >> The challenge is one of several open points that all depend on what an
-> >> >> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
-> >> >> "primary", "raw" and the format strings. Here is my proposal to settle
-> >> >> these together:
-> >> >> 
-> >> >> The model:
-> >> >> 
-> >> >> 1. device-get lists each object with an id, a class (signed, event-log,
-> >> >>    cert-chain or auxiliary), the formats it may come in, its max-length
-> >> >>    and, for signed objects only, challenge-lengths.
-> >> >> 2. evidence-get names objects by id, as MR ops name MRs, each with its
-> >> >>    output blob. It carries a challenge exactly when it names a signed
-> >> >>    object, and the challenge has to fit each of them.
-> >> >> 3. The reply gives each object's format, length and, where the TCB
-> >> >>    vouches for it, the TCB's digest. The output is always {label, data}.
-> >> >> 4. A signed object is made by the call, over the challenge, and never
-> >> >>    reused. The rest are read as they stand.
-> >> >> 
-> >> >> This settles following issues discussed during this patchset review:
-> >> >> 
-> >> >> 1. One op, not two. Per-object challenge-lengths tell userspace when to
-> >> >>    pass a challenge, and one call returns the signed object with the log
-> >> >>    and certificates needed to check it.
-> >> >> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
-> >> >>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
-> >> >> 3. TDX's Quote object lists the legacy and the DICE format. The provider
-> >> >>    labels what the host returned and fails on a Quote it cannot label.
-> >> >> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
-> >> >>    spdm-measurements and tdisp-report become formats, and signature
-> >> >>    goes, as a signed object carries its own.
-> >> >> 5. "raw" goes with the representation attr. The TCB digest is a reply
-> >> >>    field, so a blob always holds the object's own bytes.
-> >> >> 
-> >> >> Formats become an enum each provider family defines, instead of free
-> >> >> strings. I'm still unsure if format should be entirely provider-specific
-> >> >> and defined as "extension", or it should be somehow mixture of common
-> >> >> and provider-specific. Looks there is not really much common
-> >> >> anyway, so I lean towards provider-specific only. So far I have:
-> >> >
-> >> >Overall, This is plausible for me with some small question.
-> >> >
-> >> >> 
-> >> >> ======  ============  ==========  =========  ===========================
-> >> >> Family  Format        Class       Challenge  Bytes
-> >> >> ======  ============  ==========  =========  ===========================
-> >> >[...]
-> >> >> tpm     ek-cert       cert-chain  none       EK certificate from NV
-> >> >
-> >> >Just a thought, but how are we planning to retrieve
-> >> >the NV index for EK certificate?
-> >> >
-> >> >As far as I know, TPM NV storage doesn't support labeling.
-> >> >
-> >> >Should I assume that the NV index would be specified as part of the
-> >> >challenge to retrieve the certificate from TPM NV storage?
-> >> 
-> >> evidence-get allows to accept mr-selection as part of the request
-> >> alongside the challenge.
-> >
-> >Sorry. Could you explain a little bit detail for this?.
-> >AFAIU, this is to get the EK certificate from TPM non-volatile storage.
-> >But, I don't know why *EK* certificate get would be relevant for
-> >*mr selection*.  AFAIK, the TPM_Quote will be used AK not a EK.
-> 
-> You are right, my mistake. I misunderstood the question.
-> 
-> mr-selection selects PCRs for Quote, or an extend-NV measurement
-> register for NV Certify.
-> 
-> An NV-resident EK certificate is retrieved using NV_Read. I think
-> blob-instance is a good fit. For TPM certificate objects, it could
-> identify the certificate's NV index.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] arm64: sysreg: OSLSR_EL1_OSLK redefinition in tools/ sysreg.h
+  breaks perf
+--
 
-Ah. I missed the TCG_EK_Credential_Profile specification which defines
-the NV index value for EK certificate:
+commit 33e9aa857b4dfa390c27f99a1a44127d7465fe7b
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-2.2.1.4 Low Range
-  The Low Range is at NV Indices 0x01c00002 - 0x01c0000c.
-    0x01c00002 RSA 2048 EK Certificate
-    0x01c00003 RSA 2048 EK Nonce
-    0x01c00004 RSA 2048 EK Template
-    0x01c0000a ECC NIST P256 EK Certificate
-    0x01c0000b ECC NIST P256 EK Nonce
-    0x01c0000c ECC NIST P256 EK Template
+arm64: sysreg: Convert OSLSR to automatic register generation
 
-But, do we need some argument to get which EK certificate to get?
-(RSA or ECC NIST P256)?
+This commit converts OSLSR_EL1 to automatic system register generation in
+arch/arm64/tools/sysreg and renames OSLSR_EL1_OSLM_IMPLEMENTED to
+OSLSR_EL1_OSLM_IMP.
 
-Otherwise, Is this interface going to print all EK certificate
-regardless of alg?
+> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sys=
+reg.h
+> index e3b60ee030230..2ec9ba9cd896f 100644
+> --- a/arch/arm64/include/asm/sysreg.h
+> +++ b/arch/arm64/include/asm/sysreg.h
+> @@ -186,11 +186,13 @@
+>  #define SYS_DBGWCRn_EL1(n)		sys_reg(2, 0, 0, n, 7)
+>  #define SYS_MDRAR_EL1			sys_reg(2, 0, 1, 0, 0)
+> =20
+> -#define SYS_OSLSR_EL1			sys_reg(2, 0, 1, 1, 4)
+> -#define OSLSR_EL1_OSLM_MASK		(BIT(3) | BIT(0))
+> -#define OSLSR_EL1_OSLM_NI		0
+> -#define OSLSR_EL1_OSLM_IMPLEMENTED	BIT(3)
+> -#define OSLSR_EL1_OSLK			BIT(1)
+> +#define OSLSR_EL1_OSLM_MASK (OSLSR_EL1_OSLM0_MASK | OSLSR_EL1_OSLM1_MASK)
+> +#define OSLSR_EL1_OSLM_NI						\
+> +	((OSLSR_EL1_OSLM1_NI << OSLSR_EL1_OSLM1_SHIFT) |		\
+> +	(OSLSR_EL1_OSLM0_VAL_0 << OSLSR_EL1_OSLM0_SHIFT))
+> +#define OSLSR_EL1_OSLM_IMP						\
+> +	((OSLSR_EL1_OSLM1_IMP << OSLSR_EL1_OSLM1_SHIFT) |		\
+> +	(OSLSR_EL1_OSLM0_VAL_0 << OSLSR_EL1_OSLM0_SHIFT))
 
-> >Also, AFAIK, mr_selection is meaningful when the evidence_accept is
-> >supported.
-> 
-> These are independent. mr-selection chooses the measurements included
-> in evidence. EVIDENCE_ACCEPT authorizes a subsequent native transition.
-> The TPM provider can quote selected PCRs without supporting acceptance.
+[Severity: Medium]
+Should tools/arch/arm64/include/asm/sysreg.h receive the same update?
 
-Acked.
+The tools build generates its own asm/sysreg-defs.h from
+arch/arm64/tools/sysreg, which now defines OSLSR_EL1_OSLK as GENMASK(1, 1).
+Because tools/arch/arm64/include/asm/sysreg.h includes asm/sysreg-defs.h and
+still defines OSLSR_EL1_OSLK as BIT(1), building tools/perf fails under
+-Werror with a macro redefinition error.
 
--- 
-Sincerely,
-Yeoreum Yun
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-sysreg-v3-=
+0-75e95980fb10@linux.ibm.com?part=3D3
