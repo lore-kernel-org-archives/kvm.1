@@ -1,101 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793987891;
-	b=jVzqh1oW4iAmt+gqh8nMJH54KV8vg0yDeqsS2wnTWCC65GLus6hcPNPz4JxPDzBhCE+A
-	 ZDbHQjC6ACLIwx7GPkYXZt2ZHioW3kQ2z1FiqYaUxdiM18xYardjDMNW7J0b5AczvNqzf
-	 YPtAI5r4A5/OW2IGftnotgKi3O0kAapll9Ft8Hd8Pl6HQACUjSI4jZIQSSWzSOq5TesuE
-	 89eyZeMkE5680+fMI/v/FxVi2vShrRqVRqRQwYtna8LrF7eH04wyXRQ9zmIU9V4q6EDg0
-	 Fesbp5n8r5iZ5zx/mJb+RTIEpqTL0IfQCNQ0J5PK57zWNrnA9ekJdnxfKcQjSjGf97g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793987891;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=QgfTA5a+5MMLBq/A4jGpp86Ey0W49QUd8AMooz78Jz8=;
-	b=Y6pg5PziLCbp5D4sE0bQIgZABg9Pnuq9xeAj/18wvsYP0JjVH5rxO8lnko+8Qg9U6V0c
-	 ENgm9vPN8DVtfAGcy58fO8NcfNDQw8mvzKYvfIQIH3tvyfirhM8euH4mEbEe7ml4GWQfa
-	 xgwuZ9nHCxWwL37RFV370tFu5iOCkKcU72EBy9RVSkpdXw4IXvbGmarFINHhs2AFVK9cR
-	 ESDylY0xs0tXSNvApcvO4ww3h84/WfnCi4CZmA3Zy0EwTuYHGIykInDTujU0vLLu87CcZ
-	 00cWh5w2xArReg0VcIhlQQDKnh6fTEyohWp3M4voBJYPL6yDsF3bTiTzFkH5w7NaR0w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="CqxfqR/c";
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=79.135.107.169
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793988214;
+	b=iNZJa6OFdWRlpC8y7Qdi2KV1qfmXC94pNmq4XAtmJH6p61zWjEdXt9hArPDZTFpTdN/Q
+	 CkJfzAwgb4iAyYOvfsLf597AG7IwBAyQtS9MdLOnJ1cJXSvd8NTNOap80y47MFUiEB88R
+	 +ylGnwLYh2Xb3u6s6latEjxGb5aIuvUp91/ftdUIYrjGn334F3uSbgoFVkOEigcgTOKHc
+	 PUUBGfxHgz+QQCKfhV343LigTJ02RG5B+Ul6p1MwR2+A2oYFvQi362GSawccJoLe9M1rN
+	 5MeY8C/R3nBNccyStUCqNqAHMGAmbOIwxpkRnC4yPE2BQsiJYlvbJtBXdnhDPC/U5og==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793988214;
+	h=DMARC-Filter:DKIM-Signature:Date:Subject:In-Reply-To:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:From:To:Cc:Message-ID:
+	 References:X-SimpleLogin-Type:X-SimpleLogin-EmailLog-ID:
+	 X-SimpleLogin-Want-Signing;
+	bh=SiS3p1Pdfw5SumEsCCsXq+4z7US+NPjbCfUp1+4kB04=;
+	b=EjamGAo3ZNJ+hWdFgZQClvbflUPdIt5pB8kogQnjC68dC/yB5d1tsNfa9mBWIYgATBsB
+	 h9O5HRpLFdUaGxI4fxz5e5unRVdjcOUSKShNTTKgYzMk1W0cC3ufMNGqULt+XO4zNCnR+
+	 0nkcSwxo5UhKvwM+W3l77YAa9VZ1/o80jPZ0pRLnSFnTuvCz87slQrjsm+QfNVXY8959C
+	 x1WPRFRIUbUSyWWDupfbb6EiQRee9L22v9RDhXC4T9Q2xJ73tEl9742VHEpRkyQkk9n6U
+	 en4rq6Te9x801lNBEQjFH429HHlou9/C3elKqy2aSNNvZLgbUXc0Zi88ttSmL9Dt4BA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=eldare.de;
+	spf=pass smtp.mailfrom=eldare.de;
+	dkim=pass header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=SCJ3yZca;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=79.135.107.169
+Received: from mail-107169.simplelogin.co (mail-107169.simplelogin.co [79.135.107.169])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41699606A326
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 17:58:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41699606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8892F606A32F
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 18:03:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8892F606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=eldare.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eldare.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CqxfqR/c
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a214af2076so6669935e9.0
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 09:58:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793987889; x=1794592689; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QgfTA5a+5MMLBq/A4jGpp86Ey0W49QUd8AMooz78Jz8=;
-        b=CqxfqR/cUh8AJlLzkvgITLK1SmDNsBsLrV18EJse3aq9MPyMMqMXPA/aQCg/BBDu3d
-         yD7JVsBVbsDJen9/Uu0++vaTAFbuawnR0dBqvCnRsqNlIrRwNzTmiQ0Ecf6Fz1UfLpEY
-         MaFcUNJtauJ0cBjE6SdlDoe6+B7+/f6ewtoi7IaTPQiXP2BYBkMQ6/UVS5egaYIT5BDD
-         HD4th9ehFmy6QK8FUlQ3grqD/xZcClhNQo+MS98mVLq5iwwPKoI0EsF9rfkKzInXHtiH
-         GR+rJt1g4ar8ympxrmUW7IWuH8kbrNgOXjkLQKI9WdSMB/VzXAXW2nzfZzsmi+LY8MlY
-         tL0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793987889; x=1794592689;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QgfTA5a+5MMLBq/A4jGpp86Ey0W49QUd8AMooz78Jz8=;
-        b=m0+Tz3BWGxhVAKnrvwze/6qU5AP0/dF68V726jez6hmp1qUMtVlcIg3RRuGqZZ4J8b
-         4GKwX4HMD/8k085qPu0wuWpxTwc0EWv9lsPvjta0NPYQmK7XWmP5lbGHcBwWQHYsX08W
-         c9eJ/dMI5MRNvQO+rooGYKhfI775Ve0bfCtGqo+92pJ1ApvaiGsiLlYifh138s7TVtmH
-         VvVq+3Md/G18VOHaGi9DgwCRC4DHzIFoMoFhosRazGY45X1wJXLZN6sL2/UJosygnAmb
-         a6rGG6+uXS2fKUxuWmgqIWRXbtSO5mkPeCCmJBEo4b1owsxbckSw+RJw8cpy42kNAIFP
-         Ex4w==
-X-Forwarded-Encrypted: i=1; AKwUvBzMKFvhyFv/k1Ku7ME3uvlOdaOA+bBA50Wxr1iQOUG+eVX0c/pAbJDLDzMVrsvGfDoKAo0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9/EYuUWAWWDpTD2YGkhRkZxoVaoygX3IR4nVkAjg8G6SvLIi1Z
-	x+TR79a56A87RvyPH3SdB28p3nM0DIa4+rz0nMhjB22xQmZ4fGxbTZlpYoNWNEKEng==
-X-Gm-Gg: AYBFou3EuJ2NGY6rAzMGR2M5UyYpzA0doE5nXiA9ZwVIW7/KIe4wxMC1xACAzNkopeC
-	0OD8XnQOq34q7BhyY3Sf1XgJF/COkLjlWXPDEYY0v10McKuxH21SQcFSzuMgghr9n+payRRDeHs
-	TpR4dhJlzr16hCVefOFG1BlALLwxO7E+7/fmP3NDWB746Q15ab2upJJCjjBKCkgc/TLIVamQd3l
-	FBmXYxpj2EsHbx/1WmCW/h45LD6QD8MMYpsCWHkOfqCo4zrEnm0v4AdNdVoLDEOEOaL6jESRjvH
-	3Mt3hCrH31vrLB6ZLV0lWHU1SABfoeq3IHZzQPltHiUaXsviDpJcta6rZTd37mFZF2oWxt/LniL
-	ScFD/QppgpudFPppXIkOOKhXtZMrLIL4a3w+W0gPtxeGvQi/j2902LHkuURkXvQpCsoEwi2ZZ6d
-	fpaTk9OYWl2+jVthxxd77FYjt57WxBBeQdGejc2bzQLC8w7gUogkUqGUQus2SECWqRbcbSJCk3c
-	gpWQKg/C486ouSHZ0ewNhRLZaFODBWzQOj9t207UmAIjKMQNZipQxg5Qu+QwKUt7afgL4EL6TBN
-	A2g8ObxXim1sVnP7QXRMUhbRkdr8ARBoyTofA3qHPETzk31cgvapJngzWr3ii8OUMhXgID4ukjb
-	A1rvndFA48g==
-X-Received: by 2002:a05:600c:3e08:b0:4a8:f2ad:a9e5 with SMTP id 5b1f17b1804b1-4b6db4a9ea1mr49691395e9.3.1793987888277;
-        Fri, 06 Nov 2026 09:58:08 -0800 (PST)
-Received: from google.com (0.182.34.34.bc.googleusercontent.com. [34.34.182.0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b76cbd082dsm8048725e9.1.2026.11.06.09.58.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 09:58:07 -0800 (PST)
-Date: Fri, 6 Nov 2026 17:58:03 +0000
-From: Vincent Donnefort <vdonnefort@google.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] KVM: arm64: Support SVE in protected VMs
-Message-ID: <au4VKxSnkJgDtcpG@google.com>
-References: <20261105130456.1617185-1-fuad.tabba@linux.dev>
+	dkim=pass (1024-bit key, unprotected) header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=SCJ3yZca
+ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1793988211;
+	cv=none; b=TnL1jVtSQDg9t4tNi2XEcs1buOQeg4an7YvtMUvXf6nlfjSZN8nYNWX3V5BhkJevk5zn0RW8Ja539uEZacN/xnHJiuyyaQwxJp3f5lrD8stG0/42x66cGX3VrLsmsrFt9vPaVQPMFuDV3L83UnDTfA2Ph6KDYhOtpi0vdlf7zhfyAgi4G1VEC0mnrLfNKS9Vn1o07Mr2ZGHQaqsAg+BoN/IBj3XcfdgAryhOqL+S49s9tRt8POL9hrw85unGDuX2LKvybKnlgPL9YGSzvxbHnioFHYXKqfYXu20LamY9PyvkDW944jed1aINMoL+OpwZ75VQLHbBGRf+kPrAX2dhPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
+	t=1793988211; c=relaxed/simple;
+	bh=TkX1EUPzM5jpig3x/0OdpL9Rw6sv05DAS7uiaOgULNc=;
+	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=YDuIBsEZd4MM40MhEuyuML2OCJayxxhnz7lnTJoN0IpUmKSHKcnuXpHd5h4egnSL+pxbWkVtjMwxa/cos8whk/ak9Y3NHu/fuy2Apqnj0qHj1U6MVJ8kQ7ghAmW2leVs/jAvkan8hPUxxhnA7kfVP63m45xIqE11llYtb6/fFfd6PkHVK445mzri5PU9O+JefMLpvfXIwaepfqpEeLrlHl8o+vUqGGeNjaWugC75h/7l/nlMj9VmyBAduDbkhUZjvgr7Ukr4Pp0kk8JM3vcTXVvs/YOSAZofcfeGfJgasdY1sgHNlYdsv6zU6OI6MRLbaDb3Z2+aF1qjBYRbOSy0eg==
+ARC-Authentication-Results: i=1; mail.protonmail.ch
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eldare.de; s=dkim;
+	t=1793988211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SiS3p1Pdfw5SumEsCCsXq+4z7US+NPjbCfUp1+4kB04=;
+	b=SCJ3yZcaAZOrUb/mfp9+Y66EWkaIeofok5zYSLGGsp8LJVwAJEbog283DH2zAxWzc4+ipB
+	/uy4sQgYFvh5mhkX9b4+QlY+BYQBhJI+nn8mLEkcan/7rvW9AIlqebWUeFBgK8GDH7wxDy
+	HkjrC5Vm4zqxCP77c8WCziIVYWWJfiY=
+Date: Fri, 06 Nov 2026 18:03:21 +0000
+Subject: Re: [PATCH net v3] vsock/virtio: clear vqs[] to avoid a UAF on a
+ failed PM restore
+In-Reply-To: <auxVKMavkOw3Ia-6@sgarzare-redhat>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,56 +64,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105130456.1617185-1-fuad.tabba@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: jrmmhm.kernel@eldare.de
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,Bobby Eshleman
+ <bobbyeshleman@meta.com>,"Michael S. Tsirkin" <mst@redhat.com>,Jason Wang
+ <jasowangio@gmail.com>,=?utf-8?q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>,Xuan Zhuo <xuanzhuo@linux.alibaba.com>,"David S.
+ Miller" <davem@davemloft.net>,Eric Dumazet <edumazet@kernel.org>,Jakub
+ Kicinski <kuba@kernel.org>,Paolo Abeni <pabeni@redhat.com>,Simon Horman
+ <horms@kernel.org>,virtualization@lists.linux.dev,kvm@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,stable@vger.kernel.org
+Message-ID: <179398820999.8.18191536850628408290.1752255756@eldare.de>
+References: <20261104-vsock-restore-uaf-send-v3-1-d60d06488b57@eldare.de>
+ <auxVKMavkOw3Ia-6@sgarzare-redhat>
+X-SimpleLogin-Type: Reply
+X-SimpleLogin-EmailLog-ID: 1752255862
+X-SimpleLogin-Want-Signing: yes
 
-On Thu, Nov 05, 2026 at 01:04:52PM +0000, Fuad Tabba wrote:
-> Hi folks,
-> 
-> This series adds SVE support for protected VMs. EL2 allocates a
-> protected vCPU's SVE state from its own heap rather than pinning the
-> host's buffer, so the host never sees the guest's vector registers. It
-> then advertises ID_AA64ZFR0_EL1 to protected VMs, and routes the SVE
-> trap to the lazy FP switch. The first patch is a small tidy-up of the
-> pKVM FP sync code that saves a guest's SVE state.
-> 
-> v2 of the pKVM selftests series [1] will add a selftest for this.
-> 
-> Based on Linux 7.4-rc1 (6628e7d4c6b25).
-> 
-> Cheers,
-> /fuad
-> 
-> [1] https://lore.kernel.org/all/20261104084842.132944-1-fuad.tabba@linux.dev/
-> 
-> Fuad Tabba (4):
->   KVM: arm64: Remove redundant kern_hyp_va() calls from the pKVM FP sync
->   KVM: arm64: Allocate a protected vCPU's SVE state at EL2
->   KVM: arm64: Advertise ID_AA64ZFR0_EL1 to protected VMs
->   KVM: arm64: Allow protected VMs to use SVE
-> 
->  Documentation/virt/kvm/arm/pkvm.rst |  6 ++---
->  arch/arm64/include/asm/kvm_hyp.h    |  2 ++
->  arch/arm64/include/asm/kvm_pkvm.h   |  1 +
->  arch/arm64/kvm/arm.c                |  1 +
->  arch/arm64/kvm/hyp/nvhe/hyp-main.c  |  4 +--
->  arch/arm64/kvm/hyp/nvhe/pkvm.c      | 41 +++++++++++++++++++----------
->  arch/arm64/kvm/hyp/nvhe/switch.c    |  1 +
->  arch/arm64/kvm/hyp/nvhe/sys_regs.c  | 22 ++++++++++++++--
->  arch/arm64/kvm/reset.c              |  2 ++
->  9 files changed, 59 insertions(+), 21 deletions(-)
-> 
-> 
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-> -- 
-> 2.47.3
-> 
+On Thu, Nov 05, 2026 at 11:19:23AM +0100, Stefano Garzarella wrote:
+>On Wed, Nov 04, 2026 at 05:26:43PM +0100, Jerome Mohm via B4 Relay wrote:
+>>Clear vqs[] after del_vqs() and when virtio_find_vqs() fails. Return
+>>early from virtio_vsock_vqs_del() when vqs[] is empty: a second
+>>del_vqs() would free virtio-mmio's IRQ again ("Trying to free
+>>already-free IRQ").
+>
+>Is this an issue or just a warning?
 
-For the whole series
+Just a warning: free_irq() finds no action for the IRQ, WARNs and
+returns without freeing anything. That taints the kernel, and panics
+only with panic_on_warn or at kernel.warn_limit. v4 says WARN in the
+message.
 
-Reviewed-by: Vincent Donnefort <vdonnefort@google.com>
-Tested-by: Vincent Donnefort <vdonnefort@google.com>
+>>+    virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+>
+>I'd prefer to move this before the virtio_reset_device(), because the
+>comment on top of that is related also to the next steps (detach unused
+>buffers), so having this in the middle is not really readable.
 
--- 
-Vincent
+Sure, v4 moves it right before virtio_reset_device().
+
+>>+    /* After a failed restore no virtqueues are live, and a second
+>>+     * del_vqs() would free virtio-mmio's IRQ again.
+>
+>What will be the issue of freeing virtio-mmio's IRQ again?
+
+Only that WARN. The early return is needed anyway: with vqs[] cleared,
+the detach loops below would pass NULL to
+virtqueue_detach_unused_buf(). I'll say that in the v4 message too.
+
+Thanks,
+Jerome
+
