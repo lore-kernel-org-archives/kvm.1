@@ -1,90 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793978548;
-	b=ffkctUyVfLOQw9VQV8MEG3myIs9iNNNarii8gvgA/Nmtxy91XQAtW5dwkBNs1RKeG1oC
-	 uUttN0b2MFF1wXaSRAUWy4gPbEm1TwhjBiKlUs3Of9U2HO0Y9aaSXsMIfFX92l0holULW
-	 StcdTdvIy2dLDxZMQv6e3I8BbNqhEUJXX+6Aywj81BjnTfQJcoCkxKjzxbAUjZxWvx3bl
-	 1HpaDAsUoD4eK+Iz8m3sgld0GuoP9XkVQXFXvxrDeDK16iEpoq9N4YAym79sIQR0TN4su
-	 akrVUsXqEjOBXpNgEwMbvLPBB9lbIZPoztWUKSRywnKJGFCKRs8TUswaqlaqVlgc2Vw==
+	t=1793978595;
+	b=zMwKohT8aiC7OG1oNvUg0jhvC2fb670/5GeWJqFA+L6HxhzzTMWBl3B2d6yhxAERkiR4
+	 rGqdFbRTxexy0dUz6tbjGIhnRJjudQevHNmmhXmBtSw3JjE5Su9K/P5nTuz3UiUNg2Qfg
+	 RN9Rc8kAJmmFU16u23craOiLa+xUm3nVjPEmNIM2wgjoeZYjvDcMlwo8Urwq+8HBinoVK
+	 +aqnuEruDl3r36RjNBzDpIZLbeN91NjwFXH+IKnG3NTP2MheLQP8PFXHwIsiCKdVGyblg
+	 Qc+idXS4u+N55oOqNooku7DGd88pMEvVj6TnjWQOVVRmmSUWcEid0kE3LZltQ0ir4xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793978548;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=z3y+DELGAxT9V5PmpfgouMZn+gCc4O45ROBPQSi1BPo=;
-	b=zvG/pFCnX+N7P6i/0L8qwFk3gaCDMZRqcH+u65PWyybcl0c3wqFXnuorIBNRP1hVhKeK
-	 jlyONjui4CHYxLfeEEnsGzzLnB+AsOSmTMzl6a5MdGQ6iGDxiIvMkYbknBYkJOjpt2A79
-	 Dz6RFjVa1ujDWoQHB3suVg3Js+XhFuOarcI0WRcYoGnAWcWmRJA3mlIwcYBhnHorG/c51
-	 xZjj8mf3L8QnVuuaYZHMi8hYpPFwD6VmEaErkHX/8l87a9LLh8TpnUpDIKWq6R3AmO7oQ
-	 7iu7flhqx22l8dE1RB5S8Roc0lKmwpTe0Ty259Vwqad+/nPnOiX8UI69o6SlRztdPKg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793978595;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=6l7pxX9s0xOFOQV1s+MkJgAaQC35eNqSYf/sgQRXtZE=;
+	b=R4HKkrEoRkyNYQgbNHRx/ca0CRcqax51qEvWQQ6uyvnmTvvJ3NwX8RXieDjrdUAIazfj
+	 RMfJf/xZGziW6gV7+Y5QTn18H+EuGdNtI/rAfMo9kVrTNa0TjV1KIyB2zO9/ocG9s1/Gk
+	 NhNGO07HJFnJ/qc2euf2uzMxlDs33l/rcgHE7Ujxn64v9q0hCaqcN6nr7JKdjfU6pltU6
+	 AM2zsttRX2fvNwtuC9liBGHyl4Zg5l/xHFpf8x8dvaaDAEBZPDGH/lyuGwbJYovOBWZWi
+	 1HnFq2jtcS3GVNZ3TacIrPoRnfHymVWUyUJtPAu25EFQo95fu0JixgXdJjpfw1koYFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D0OBt12S;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nchoGeZZ;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E95606A32D;
-	Fri,  6 Nov 2026 15:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276A4606A33C;
+	Fri,  6 Nov 2026 15:23:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 276A4606A33C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D0OBt12S
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73F71F0089F;
-	Fri,  6 Nov 2026 15:22:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793978547;
-	bh=z3y+DELGAxT9V5PmpfgouMZn+gCc4O45ROBPQSi1BPo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D0OBt12S5A0/61ajOHRCOvVj9Y496CxzkIZ539OmP2Egd7lJ1ZTg+93+bz35MlhhQ
-	 aEcmgJvs2K1rXKjoPty9afP418nmgDzNbNz3R49xM82YI+IZppcn7JPT2+rOR1oP3E
-	 aXPgvNxlojcYTHikG/NcZ6k0ko8+NVlu5A2DjoEJYkhK0Y6iRimNr2X51btaRYAQe4
-	 3oYkIoHH1FFpK2QL5UAfs5I6l1ULxHTF3yATZiallmsTHKUql1MDHJSRDkOp7LPZaS
-	 WDiRcIhr4R/mT8uJ1TsaVWpbDwDHCB8mxh70Ac0iVGTP+nI77JgCBpwlXJfuSijYjQ
-	 cOmEIk2xUD+nw==
-Date: Fri, 6 Nov 2026 15:22:08 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, SJ Park <sj@kernel.org>, 
-	Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	John Johansen <john.johansen@canonical.com>, Georgia Garcia <georgia.garcia@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH 00/13] mm: continue vma_flags_t conversion
-Message-ID: <au3r0-geuwtRYPiC@gremlin>
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nchoGeZZ
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6FE7Ks1094515;
+	Fri, 6 Nov 2026 15:23:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=6l7pxX9s0xOFOQV1s
+	+MkJgAaQC35eNqSYf/sgQRXtZE=; b=nchoGeZZ4q3+KvNMhmKIJOtYfiTKc6mYX
+	C5ehKier1JVHC4dDb3UocXIvYDavE8NDySMAnO4dVzIKVrGUWHbUbp9U9yTEmh/f
+	Aouct2VyVpkSHYpgoxfU7XpCbkGg6dHPUQKh/FkSXvWQE+s8kBsMwgadX4HRKhp1
+	yWHmgxH1HQqiOvwpmGcyDce3MbPLvyf6TdQE3l1EIX9oXfKJ7kAZzj+ho1D4rgwb
+	oCv01v2kHpmkD1RnpVbLl1fR/pXB04WRSC4R2qOmG4wJyrA1vgIx5qILFzhYhpPE
+	P6qEHk0Bm2ohNimNjBt4ZZQZ1aAd5t7u2MU2Oj2WJNNamDsCvnTsQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hs3raw776-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 15:23:08 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6F4wNW2390145;
+	Fri, 6 Nov 2026 15:23:07 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hs7h13m06-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 15:23:07 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A6FN67x29032978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Nov 2026 15:23:06 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0823458064;
+	Fri,  6 Nov 2026 15:23:06 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5696158055;
+	Fri,  6 Nov 2026 15:23:04 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.114.69])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Nov 2026 15:23:04 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+Subject: [PATCH v12 02/14] s390/vfio-ap: Data structures for facilitating vfio device migration
+Date: Fri,  6 Nov 2026 10:22:47 -0500
+Message-ID: <20261106152259.1360651-3-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261106152259.1360651-1-akrowiak@linux.ibm.com>
+References: <20261106152259.1360651-1-akrowiak@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,49 +96,218 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=QYDzLcbv c=1 sm=1 tr=0 ts=6aedf0dc cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=7vL54HQLIAyOYZVRu_kA:9
+X-Proofpoint-GUID: QoNGPoeYzJ3KaMOQuTo_bdtiS_8U-R25
+X-Proofpoint-ORIG-GUID: QoNGPoeYzJ3KaMOQuTo_bdtiS_8U-R25
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA2MCBTYWx0ZWRfX2iRp7vtYonIw
+ LLznraGxlT7UsO+lbigzs4vdvQsAd05yeyvco4fujBQgzJWmccWY7CnHCvNbjypgww9mN6xVIRp
+ 4s03dL2NRW17eZM3bZJZRbD4U0YO4S0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA2MCBTYWx0ZWRfX7OwZWl3xlkpL
+ 5Ayc/X/XKLd+Tm/6gbCiFjSm66ML3DfPU9lbGgfZIqP2wlvmD8p19vueEMsVQns1RvPOnbqVTCu
+ 35AOUJU+xuZ7f/6sv6cLPLFTIFnqwlDcbNXTSVy7TACWDhRW9OPY+MwWBNMiA4uLl/F+J14PP7Z
+ PuGab6+jS5IDN3v9Al9UUmQ0iI4VKqtEumMhUwj5kBqSEJZqnBDjVW8QV6HC27unCvak1LD1ES5
+ 20MAbwLx48WULCPFGywvlDOtRfVtRjU10LOVDFuix6rvIN9E4pq3xs7wGOdAj5N1awqntzO8Hlv
+ c7RbvAmtUCDwsLhUreXjJToumPglmgtHi5CcOvPNLOTQhth/TEnsnTFjnhZoN9Gq92wtobzuv4g
+ wgoJcC56swNZZR9lYhf7T0SO5x0XPg6aNKJvkXi72TlIxEB3Zb1G06DHoJ256NCi1TDL0b8MA0h
+ u2+bMn+YbDBz3y1GGEA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-06_05,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 priorityscore=1501 bulkscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611060060
 
-On Fri, Nov 06, 2026 at 03:35:01PM +0100, David Hildenbrand (Arm) wrote:
-> I agree that this should be picked separately. For example, I will pick
-> everything that falls into my realm to reduce conflicts.
+Creates the data structures used to facilitate state transitions during
+vfio device migration.
 
-Hmm, generally tree-wide mechanical changes are the exception to that rule
-no?
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
+---
+ drivers/s390/crypto/Makefile            |   2 +-
+ drivers/s390/crypto/vfio_ap_migration.c | 125 ++++++++++++++++++++++++
+ drivers/s390/crypto/vfio_ap_private.h   |   5 +
+ 3 files changed, 131 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
 
-It's going to make the rest of the VMA flags/mmap_prepare conversion really
-quite difficult if I have to chase every single driver maintainer in the
-kernel (literally in both cases pretty much :).
+diff --git a/drivers/s390/crypto/Makefile b/drivers/s390/crypto/Makefile
+index e83c6603c858..20f29184825a 100644
+--- a/drivers/s390/crypto/Makefile
++++ b/drivers/s390/crypto/Makefile
+@@ -34,5 +34,5 @@ pkey-uv-objs := pkey_uv.o
+ obj-$(CONFIG_PKEY_UV) += pkey-uv.o
+ 
+ # adjunct processor matrix
+-vfio_ap-objs := vfio_ap_drv.o vfio_ap_ops.o
++vfio_ap-objs := vfio_ap_drv.o vfio_ap_ops.o vfio_ap_migration.o
+ obj-$(CONFIG_VFIO_AP) += vfio_ap.o
+diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+new file mode 100644
+index 000000000000..52f9a0524ae9
+--- /dev/null
++++ b/drivers/s390/crypto/vfio_ap_migration.c
+@@ -0,0 +1,125 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Drives vfio_ap mdev migration.
++ *
++ * Copyright IBM Corp. 2025
++ */
++#include "vfio_ap_private.h"
++
++/* Magic number and version for the vfio_ap_config migration blob */
++#define VFIO_AP_MIG_MAGIC			0x76666170U  /* "vfap" */
++#define VFIO_AP_MIG_VERSION			1U
++
++/**
++ * struct vfio_ap_migration_file:
++ *
++ * This object is used for chunk processing of multiple reads and writes of
++ * AP configuration information.
++ *
++ * @matrix_mdev:	object used for managing the state of the mdev
++ * @lock:		mutex used for synchronizing read/write operations
++ * @filp:		file stream used to read or write AP configuration data
++ * @ap_config:		buffer used to store AP configuration data between read
++ *			or write calls
++ * @config_sz:		the size (in bytes) of @ap_config
++ */
++struct vfio_ap_migration_file {
++	struct ap_matrix_mdev	*matrix_mdev;
++	struct mutex		lock; /* protects read/write operations */
++	struct file		*filp;
++	void			*ap_config;
++	unsigned long		config_sz;
++};
++
++/**
++ * struct vfio_ap_migration_data:
++ *
++ * Manages the migration state for the VFIO device that maintains the AP
++ * configuration of the guest being migrated.
++ *
++ * @mig_state:			the current migration state
++ * @resuming_mig_data_complete:	indicates whether a complete, valid AP
++ *				configuration blob was received (true) or not (false)
++ *				during the RESUMING phase. This must be checked
++ *				on RESUMING->STOP to enforce the vfio.h
++ *				requirement that SET_STATE must fail if the data
++ *				is incomplete or invalid.
++ * @resuming_mig_file:		the object used to restore the state of the
++ *				vfio-ap device on the destination host.
++ * @stop_copy_mig_file:		the object used to store the AP configuration of
++ *				the source guest for transfer to the destination
++ *				host.
++ */
++struct vfio_ap_migration_data {
++	enum vfio_device_mig_state	mig_state;
++	bool				resuming_mig_data_complete;
++	struct vfio_ap_migration_file	resuming_mig_file;
++	struct vfio_ap_migration_file	stop_copy_mig_file;
++};
++
++/**
++ * struct vfio_ap_queue_info - the information for an AP queue
++ *
++ * @data: contains the queue information returned in GR2 from the PQAP(TAPQ)
++ *	  command
++ * @apqn: the APQN of the queue
++ * @reserved: padding to ensure consistent structure size across platforms
++ */
++struct vfio_ap_queue_info {
++	u64 data;
++	u16 apqn;
++	u8  reserved[6];
++};
++
++/**
++ * struct vfio_ap_config:
++ *
++ * Stores the state of a guest's AP configuration.
++ *
++ * VFIO device migration state transition from STOP to STOP_COPY:
++ * -------------------------------------------------------------
++ * When the migration state transitions from STOP to STOP_COPY, the vfio_ap device
++ * driver will open a file stream in read-only mode and return the fd to userspace.
++ * This fd is used during the STOP_COPY phase to read the current state of the
++ * vfio-ap device on the source host. In response, the driver will store the
++ * source guest's AP configuration data in a vfio_ap_config object and copy it to
++ * userspace.
++ *
++ * VFIO device migration state transition from STOP to RESUMING:
++ * ------------------------------------------------------------
++ * When the VFIO migration state transitions from STOP to RESUMING,
++ * the vfio_ap device driver will open a file stream in write-only mode and
++ * return the fd to userspace. This fd is used during the RESUMING phase to
++ * write the source guest's vfio_ap_config data that was read in during the
++ * STOP_COPY phase to the vfio_ap device driver on the destination host. In
++ * response, the device driver will copy the data sent from userspace to a
++ * vfio_ap_config instance which is then used to update the destination guest's
++ * AP configuration.
++ *
++ * Since the source and destination hosts may be running different versions of
++ * the linux kernel, the vfio_ap_config object provides two fields (@magic and
++ * @version) which must be set by the source device driver and verified by the
++ * destination device driver to ensure the migration ABI of the source and
++ * destination hosts are compatible.
++ *
++ * Note: Since a guest's AP configuration could be comprised of a large number of
++ *	 AP queue devices, a vfio_ap_config object should be allocated using
++ *	 kvzalloc.
++ *
++ * @magic:	identifies this as a valid vfio_ap_config migration blob;
++ *		must equal VFIO_AP_MIG_MAGIC
++ * @version:	layout version; must equal VFIO_AP_MIG_VERSION
++ * @num_queues:	the number of queues passed through to the guest
++ * @reserved:	padding to ensure proper alignment of @adm
++ * @adm:	bitmap specifying the control domains in the AP configuration
++ * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
++ *		queue information for a queue passed through to the guest
++ */
++struct vfio_ap_config {
++	u32				magic;
++	u32				version;
++	u32				num_queues;
++	u8				reserved[4];
++	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
++	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
++};
+diff --git a/drivers/s390/crypto/vfio_ap_private.h b/drivers/s390/crypto/vfio_ap_private.h
+index 12d7d240addd..172471793e22 100644
+--- a/drivers/s390/crypto/vfio_ap_private.h
++++ b/drivers/s390/crypto/vfio_ap_private.h
+@@ -91,6 +91,9 @@ struct ap_queue_table {
+ 	DECLARE_HASHTABLE(queues, 8);
+ };
+ 
++/* Forward declaration for migration data structure */
++struct vfio_ap_migration_data;
++
+ /**
+  * struct ap_matrix_mdev - Contains the data associated with a matrix mediated
+  *			   device.
+@@ -110,6 +113,7 @@ struct ap_queue_table {
+  * @aqm_add:	bitmap of APQIs added to the host's AP configuration
+  * @adm_add:	bitmap of control domain numbers added to the host's AP
+  *		configuration
++ * @mig_data:  vfio device migration data
+  */
+ struct ap_matrix_mdev {
+ 	struct vfio_device vdev;
+@@ -125,6 +129,7 @@ struct ap_matrix_mdev {
+ 	DECLARE_BITMAP(apm_add, AP_DEVICES);
+ 	DECLARE_BITMAP(aqm_add, AP_DOMAINS);
+ 	DECLARE_BITMAP(adm_add, AP_DOMAINS);
++	struct vfio_ap_migration_data *mig_data;
+ };
+ 
+ /**
+-- 
+2.53.0
 
-And sometimes there are dependencies which mean you really can't split it
-across trees unless you establish functionality in one cycle and callers in
-another, but that seems a little silly.
-
-I was thinking that once the VMA tree is separate I'd put mechanical
-changes like this through it. Is that not the way to go?
-
->
-> Ideally, patches really only touch one component.
-
-Right, but sometimes functions are declared in one place and called in
-others. It is impossible to change the signature of one without also touching
-the others.
-
->
-> [PATCH 07/13] mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
->
-> is all over the place :)
-
-It's not really all over the place, it's converting vm_flags_t to
-vma_flags_t across madvise.c, which involves changing a few function
-signatures, whose callers must be updated.
-
-I could split it up into 3 patches where 1 does internal-only, one changes 1
-function, and the next changes another, if that works?
-
-But there's no way for that change to only touch madvise() given the
-function decl/callers.
-
---
-Cheers, Lorenzo
