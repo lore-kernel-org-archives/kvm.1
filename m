@@ -1,59 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793995844;
-	b=5AYlR56K3zxnEeR0MEyeRub2ja5A0ZPGwzyKJCrZQPXgJwe1yu6KdjtUN6xB6UxiAwed
-	 MydOzS/6bEJkDxVcrJswYKVqj3N9gCn1VfKDLrnGMln5iUoBZ48WlOI5OxSB/rIX4UDF0
-	 F9l5lrAOulPWj11rOM1bZcJFFnb1EkwmojTa2Ao8gZSqn9f4vxAYM0I2I2pr+Aq6BU28d
-	 Et+3hrbGz4JiLsA2Cd1wj18GPTwa257Sw9E8rP6n3ozi4niYj5Fog/doFYV1ro49rmQ7v
-	 OT9OCoBB1KINuFOPdAR1h2hJhpetoQ3vpCHym5gZ3Am1ABgbkF7bDk7iEa/RtyLjWdg==
+	t=1793996051;
+	b=k6K6zr1b0KQT/fL151/SCFmlhwZqe+QX0IwFzFAd6XMXEcDG2rciMToNpBQufb1YRVfe
+	 e+agrc9ZvJ5oOAjoB/QeLEQbmu74pBvk3UDkvvXudzyrA7scrpOONezdEdpBhW7cwTFU4
+	 4qWmLlPOMb19Vd8EUjwezYXboHTDGSevWHerbusunWjobMrop3UPToqUeUIx8jbu539Eg
+	 v3it+t1Lhzu0AclJNyU0ONtKI4Ik0xn/DzOE4FB91WIEwPqt7YPwR3//euXacXzU2OWH9
+	 NJT5ZwnY7W8xKzJvyiNM/3qOOZt8Az9Ay0P2mO5dBmvInF5fnto7wcBnBE34xNRK3Rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793995844;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=dK5ikpJ3Ehrl8Rpf2JL5Uz3SzaBhmdsRWWT52oRBwxk=;
-	b=ici9+Qw1siLc4B9uTFNVQ2qg1qw8l1AE3nR8Qww7NXBpLDXfy9g7RacYu9Dbcs4ik0ab
-	 f72KeSmAG70ExAEXBvXQr/uIGk89NssYBKkQpQrZDoq66pqx6ZrV6eWD/24QcDcFtod+f
-	 Ulmt/25pwTdL2UA8uMYhNhxkx0wR9axSpIUci4PGbNhgwrIrhE0FVUBeJjx6cASK1mCOj
-	 eLNn+lTyrAjDc405XcCjoX3mgFBPGtycKqkqdnpJIArzMR1joeX9B7lGRNPHZxA6CLPjP
-	 O3TlrbKJqsLOn/Hi5KIVtLXRbdTec/tKAozbIzHBL7wL/Ebd6v8TMH01SeJgJBxzdig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793996051;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=J2iofcJL87VuzLLEHzx5m8VEI9RC+TD/ZaA8aoGOZDw=;
+	b=kTzUV4VDTFEn86/HKd8OmZ08kNWZ/SnSIV172kVWq5wICfdLuPsLbls7QQE2s+Y+yaGu
+	 iG0xjXsp5d+Bl0ax1MSStgCt/HuAPOIaYx2tzXu8yHH0T1gkVHf0RrYKtnCr0S5zEJe6c
+	 iEtJ7B2qScGrld0eDXQAAqb+NMcAAtJcrVN4jnoW3CisQgI56k3si5h2uH+K9QNUGPRRS
+	 Mi2KbqXSKd32DTV255aDn8jRsCxYqAOufp/b7QmPREW+79jX/JloU5nJLUa/VavNiOWSa
+	 mtK13IhVf74AW+Bv0XyLp2AcI1htuOeTBJKm/p62VuIcnS3tmrvxQTDesy+B+4aX4Vw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpoGGTj+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oXaD1Xzg;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFD3606A329;
-	Fri,  6 Nov 2026 20:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11D1606A329;
+	Fri,  6 Nov 2026 20:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpoGGTj+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269D61F008A4;
-	Fri,  6 Nov 2026 20:10:43 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oXaD1Xzg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC18C1F008A4;
+	Fri,  6 Nov 2026 20:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793995843;
-	bh=dK5ikpJ3Ehrl8Rpf2JL5Uz3SzaBhmdsRWWT52oRBwxk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gpoGGTj+X210gjCvfLOFwO/Iu6uUvimZwSAm0MJ3ajRw5rwbpWnnf+fjE94qKKDos
-	 aoiDbhLWI45RLjp1zh6McPEyEoUVDfT9CaMTA/JXucN8UBxsYlmCG1BW2EBK4kyzwa
-	 Zh8/Au7C1J7wBF7nNAsbzDQduQwphJphhfj8r0Ske0TX6cePFfmyB7kbL0QhXe6aWc
-	 eEoZE7++PG2iwTSGP6g3vCT2bvtCHNuPyp1jrSs5X+9kRV2S+xsJ8OyoVA//UN18jf
-	 YpEfx9eBT28afvxNYzBWQ7PMVsAQ3O7SPTM2Eloodc2FTqsrb2PhmwSZy/SxvmsrBA
-	 EKWIuvrfgm5XQ==
-Message-ID: <sashiko-outbox-202185@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 20/23] KVM: s390: arm64: Finalize page fault handling
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261106-sysreg-v3-20-75e95980fb10@linux.ibm.com>
-References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
- <20261106-sysreg-v3-20-75e95980fb10@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 20:10:42 +0000
+	s=k20260515; t=1793996050;
+	bh=J2iofcJL87VuzLLEHzx5m8VEI9RC+TD/ZaA8aoGOZDw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oXaD1Xzgw1JyR1wcRKyOpDEt0LIlgXV8PHnUfD8BQf9ROua1LidW2jrnieOcvqXW+
+	 zAoHYyub6OnczfElGs+pnnj2kFuD4+fwhQte2FQnBmqPGrm8lSPBMsS5Cd2+mTcVVg
+	 RDPSWZSOcA6K7zg4fTx7dB5xNHzUk58Jss8K5ZR3BSlIX7BEET4KF/fX1fo92aPD/k
+	 6m7mtph7fTIQJCnjygbzqdSVDBqnErFn6VMXOAr0pfTjqLYrEpqaDwuqr/kcbg0yY/
+	 HPYjo3NAO5LmRVXMwYJYlBdtGCAv2cWcdPqJS3+rpKnF+BbJ7B9ANqEJGxbmxH44uW
+	 afcjzZC2lBQsQ==
+Date: Fri, 6 Nov 2026 20:14:08 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v3 10/18] KVM: x86/pmu: Document GLOBAL_STATUS_RESET
+ passthrough erratum
+Message-ID: <au40uLZo3C8a7fdg@google.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-11-zide.chen@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,101 +61,69 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106013927.166209-11-zide.chen@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] KVM: s390: arm64: preemptible smp_processor_id() in fault
-  injection
---
+On Thu, Nov 05, 2026 at 06:39:19PM -0700, Zide Chen wrote:
+> IA32_PERF_GLOBAL_STATUS_RESET, introduced in PerfMon version 4,
+> inherits the MSR address and architecturally defined bits from
+> IA32_PERF_GLOBAL_OVF_CTRL, while providing additional bits to clear
+> new indicators in IA32_PERF_GLOBAL_STATUS.
+> 
+> From an emulation perspective, KVM handles it identically to the
+> OVF_CTRL MSR: reads return zero, and intercepted writes are guarded
+> against pmu->global_status_rsvd. No code changes are needed in KVM
+> to emulate this MSR.
+> 
+> However, to reduce VM exits, KVM passes through this MSR in mediated
+> PMU mode when GLOBAL_STATUS is also passed through. Consequently,
+> writes to bits that are valid on the host but unvirtualized by KVM
+> will not trigger a #GP (unlike when the MSR is intercepted). Except
+> for the known limitation where host Intel PT in system mode can
+> assert Trace_ToPA_PMI (bit 55), unvirtualized status bits are not set
+> while the guest is running, so clearing them has no negative effects.
+> 
+> Document this divergence in errata.rst.
+> 
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+> v3:
+> - New patch prompted by Jim and Yosry's review on unvirtualized
+>   status bits.
+> ---
+>  Documentation/virt/kvm/x86/errata.rst | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/virt/kvm/x86/errata.rst b/Documentation/virt/kvm/x86/errata.rst
+> index a9cf0e004651..161ba6d1beb4 100644
+> --- a/Documentation/virt/kvm/x86/errata.rst
+> +++ b/Documentation/virt/kvm/x86/errata.rst
+> @@ -84,4 +84,12 @@ memory.
+>  
+>  Note, this erratum does not affect AMD CPUs, which fully virtualize CR0.CD in
+>  hardware, i.e. put the CPU caches into "no fill" mode when CR0.CD=1, even when
+> -running in the guest.
+> \ No newline at end of file
+> +running in the guest.
+> +
+> +IA32_PERF_GLOBAL_STATUS_RESET
+> +-----------------------------
+> +To reduce VM-exits on performance-critical paths, KVM passes through writes
+> +to IA32_PERF_GLOBAL_STATUS_RESET (0x390) in mediated PMU mode when the guest's
+> +counters match hardware, without injecting #GP on unvirtualized bits.
 
-commit 2432a7ede0d5feb054800e41b623b3e845ffe9c3
-Author: Steffen Eiden <seiden@linux.ibm.com>
+Might be worth clarifying that this refers to the number of counters
+matching, not the values in the counters.
 
-KVM: s390: arm64: Finalize page fault handling
+> +Because the MSR is read-as-zero and write-to-clear, this cannot leak
+> +host information to the guest.
 
-This commit replaces temporary -ENOEXEC returns in the arm64-on-s390 page
-fault handler with address size fault and synchronous external abort
-injection into the guest, and bounds the guest address limit and
-ID_AA64MMFR0_EL1.PARANGE against the supported physical address range.
+It can let the guest clear host state tho, but I assume this isn't a
+problem because GLOBAL_STATUS is saved/restored on guest PMU load/put.
+Might be worth clarifying.
 
-> diff --git a/arch/s390/kvm/arm64/mmu.c b/arch/s390/kvm/arm64/mmu.c
-> index 31e0d036896f1..7a6f6ba326c13 100644
-> --- a/arch/s390/kvm/arm64/mmu.c
-> +++ b/arch/s390/kvm/arm64/mmu.c
-[ ... ]
-> @@ -32,12 +33,14 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, gpa_=
-t fault_ipa,
->  	ret =3D kvm_s390_faultin_gfn(vcpu, NULL, &f);
->  	if (ret <=3D 0)
->  		return ret;
-> -	if (ret =3D=3D PGM_ADDRESSING)
-> +	if (ret =3D=3D PGM_ADDRESSING) {
->  		/*
-> -		 * Without the relevant sysregs we cannot do anything for now.
-> -		 * Go back to userspace with an error. TODO sysreg handling
-> +		 * There is no page with the requested address. Inject size fault
-> +		 * which is the closest arm match to PGM-addressing
->  		 */
-> -		return -ENOEXEC;
-> +		kvm_inject_size_fault(vcpu);
-> +		return 1;
-> +	}
->  	KVM_BUG_ON(ret, vcpu->kvm);
->  	return -EINVAL;
->  }
-[ ... ]
-> @@ -98,16 +130,17 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  	}
-> =20
->  	if (translation) {
-> -		/*
-> -		 * For both cases:
-> -		 * Without the relevant sysregs we cannot do anything for now.
-> -		 * Go back to userspace with an error. TODO sysreg handling
-> -		 */
-> -		if (fault_ipa >=3D BIT_ULL(get_kvm_ipa_limit()))
-> -			return -ENOEXEC;
-> +		/* Beyond the PA range programmed for the guest */
-> +		if (fault_ipa >=3D kvm_get_pa_address(vcpu->kvm)) {
-> +			kvm_inject_size_fault(vcpu);
-> +			return 1;
-> +		}
-> =20
-> -		if (fault_ipa >=3D vcpu->kvm->arch.guest_phys_size)
-> -			return -ENOEXEC;
-> +		/* Falls between the IPA range and the PA range? */
-> +		if (fault_ipa >=3D vcpu->kvm->arch.guest_phys_size) {
-> +			fault_ipa |=3D FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
-> +			return kvm_inject_sea(vcpu, is_iabt, fault_ipa);
-> +		}
->  	}
-
-[Severity: Medium]
-Can calling kvm_inject_size_fault() and kvm_inject_sea() (as well as
-kvm_inject_sea_iabt() and kvm_inject_sea_dabt() below) from
-kvm_handle_guest_abort() invoke smp_processor_id() in preemptible context?
-
-kvm_arch_vcpu_ioctl_run() calls handle_exit() -> kvm_handle_guest_abort()
-with both interrupts and preemption enabled while the vCPU is loaded
-(vcpu->cpu !=3D -1).  The fault injection helpers access FAR_EL1 and ESR_EL1
-through vcpu_read_sys_reg() and vcpu_write_sys_reg(), which expand to
-_vcpu_read_sys_reg() and _vcpu_write_sys_reg():
-
-arch/s390/include/asm/kvm_host_arm64.h:_vcpu_write_sys_reg() {
-	({	BUILD_BUG_ON(!__builtin_constant_p((R))); \
-		KVM_BUG_ON(vcpu_is_loaded(C) && smp_processor_id() !=3D (C)->cpu, (C)->kv=
-m); \
-		(vcpu_is_loaded(C)) \
-			? __vcpu_write_sr((C), (V), (R), 0) \
-			: __vcpu_write_sr((C), (V), (R), SASR_FLAG_INITIALIZED); })
-}
-
-When a guest faults on an address above its IPA or PA range, this triggers
-a debug_smp_processor_id() warning under CONFIG_DEBUG_PREEMPT=3Dy, and if
-the vCPU thread is preempted and migrated to another CPU between reading
-vcpu->cpu and smp_processor_id() (where kvm_sched_out() / kvm_sched_in()
-update vcpu->cpu), KVM_BUG_ON() fires and marks the VM bugged.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-sysreg-v3-=
-0-75e95980fb10@linux.ibm.com?part=3D20
+> -- 
+> 2.56.0
+> 
