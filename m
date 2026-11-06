@@ -1,80 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.218
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793960301;
-	b=WrJGACGeg+dKJenMpzNtyir4vbxyWVbIb4OBu4sZbd9Jrbmb2LR95YloPytyin82dGR7
-	 04Hqj0ggk4LTSMG/4jfn4DuoM4lemLcmurzZn5XWZNsmkuhAntRJoSqE5iP4GOBnb2vsX
-	 cezKTnga5MqCSCI0M8tyyc+94kYrLgqqGx+p7IoN89/d0Hj8vJJ0C6uouU54x53NmigPD
-	 X41tA397HEj3F4ryOMyjEKwjCnFMTpbpzwwIUOogyoUaE6ahNh+FpjOWVkT81xME7JS3N
-	 ilWXGB0Y7TvEkhkNcjH9G7LRCw/BvfhuKE1gCKKHgywM6HOXGaKNFzJZYEmNnBgR0+Q==
+	t=1793960861;
+	b=yDTbj+dV5LD/SJufzOklD75+Xq/y34elCTuAcx2+gnCtjXf5iu+ScohjT1omkoTlY5tS
+	 mZDl1UuZ7ILhtRKup7VFVdky+UT8N7unaZNiBOv0/U8bZmzY1grMnyIgF57aiKZcZnroZ
+	 iI5o3DSHQvVc6xGyx1dkSy6B48siR5JbxgZbMSfocKCqOZHdMlcNgQQV0ZG+qDW67ze+d
+	 37adKWiSgNRpUTbucfkgwwMB23kswdcv1zyr4YwXR3YVTZ4b8zN4FYaU7jrBnj2aWc4AE
+	 uHSM7H7QwhPM/GgpWGAAuFcI8t4GBs/l43xKLuomOzRj5CroTfha5ZAYHhkxUKEF7tg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793960301;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=WRJXIR3G73/bAoeCrNJcFgak4mvp+3ngQ+qpnIKUqWQ=;
-	b=Nt2TLyWksU2I+LkSmxbn4AjFaBtOwA9/Mh7GKBmPQKf99FO4Zh1ddH2q2dDiCABoLOoa
-	 8JT6BDN9EbFmLqhOwQwiS8GqyFKTwJ7ufYcVbWVYvV+OnCWOupL7KBRZMbFU6WMPazFQK
-	 icDnodctUsLw4zUwqAgVNVcbiH++VVgierwEWAhBA2Y6+XgxNNohVRLsUwFq0BzlKISOT
-	 FnF54ZubHNxQJtYgyQ9rn4o5KDxMr6aOiHvRCiJAhsNlzvH1+/TNdaUGHtjxfoksmaMev
-	 A/Yl8usCHVpr+5TADG8a2oxhz/6zNItgTx+LgZzgJqJv/rgPiOMchKqGGapFjByTpZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793960861;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=SxUZdl1nxNmZdMNHl/mAId5VPOOSyhyBaIunfeJwQ5s=;
+	b=k+mctIpF8SzeCDRbuJ1KMTEIgijLh/is/+rficm/qzy1b2mTq6ilqqGr3x8YqRZbMrYS
+	 pFLVIMzZh5Q1x2RDtkKuP9pD5LyOH/DkqDBOM7H/zj8rFkKnwi0jwiJK5koftayX280bG
+	 ICmrvO4/3oomXoE4uYUz3jqPqh+hVSxdSYLfe98WYFOuBWondNT1A9Itu0bLODt03LGhT
+	 FSk6odgrf/SxHTBNMhsNF+KYZlruUST2SKtZLy6fU9V2CMQO5kezOxzJtUYuHZNDgk323
+	 pFBu83bFJI0ZAtmNinjOjx0WnE0rTEAt7OKh0pB0IxGvbnOXIoXcZMv3JS2vsxaBc/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l2m6k6Gq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=h53tQAGQ;
+	arc=none smtp.remote-ip=113.46.200.218
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0696606A329;
-	Fri,  6 Nov 2026 10:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C6E606A32E;
+	Fri,  6 Nov 2026 10:27:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1C6E606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l2m6k6Gq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFC01F0089F;
-	Fri,  6 Nov 2026 10:18:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793960300;
-	bh=WRJXIR3G73/bAoeCrNJcFgak4mvp+3ngQ+qpnIKUqWQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l2m6k6GqXZKAI6ai2Tun1aF46awXpI/z2hhpm9C9mWFFrwb28EgYdeM12++TFdXHC
-	 tZPDcNtqorI1JgQeh4d/V0oUoA8wTmUuwUWJnczsn3SnNHjwPhjBcdo7A1YGDV2mTG
-	 KcYpC48NxWmRQWs88tJMsCh3bVG0uv6meLjHSwr1ICrXX3Vw/iw6HMzgoNOlCZ+Cr/
-	 4yqxl3LXfTuCElZyaokutxEyEknbHWSUP2DCjtT8OlSb46KYExKXDg1tVpuuXc3j/i
-	 oBl8kAvxU+cGtuwjokkyklXwgQ5yXoGFuePAoE1OqzN7B+weZmt4UCKvb6LGDNbMBE
-	 27H/f4pFzu1cw==
-Date: Fri, 6 Nov 2026 10:18:06 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai <billy_tsai@aspeedtech.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>, 
-	Sumit Garg <sumit.garg@kernel.org>, Scott Branden <scott.branden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Richard Cochran <richardcochran@gmail.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, xen-devel@lists.xenproject.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, linux-sgx@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 00/14] mm: convert further simple mmap hooks to
- mmap_prepare
-Message-ID: <au2odtvEhpLJY4eD@gremlin>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <CAHC9VhQvpFeEJaEyPDaqj8_S752puSaNe0Rn-hxjh=ugCoFsxA@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=h53tQAGQ
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=SxUZdl1nxNmZdMNHl/mAId5VPOOSyhyBaIunfeJwQ5s=;
+	b=h53tQAGQkAc6oUDOj1QWs7jrAmp3A7l4aeZkvG4ny3FjBaa0BPtLnE9b1YH4Wi3QdvU+wQqJU
+	R/iZycLsdkiiUeQ73aC4bqFkUWlwU65f0HQ+xed9nr0AW0Rx9rnG98M0+I7MjNm+oGkad21luYh
+	jTSKQsEtgoATxj4BULMkQB0=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4jLb2X2gsXzpSwn;
+	Fri,  6 Nov 2026 18:27:00 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0467B4063F;
+	Fri,  6 Nov 2026 18:27:29 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 6 Nov 2026 18:27:27 +0800
+Message-ID: <5a096cca-713a-4449-83dc-c763dc06c085@huawei.com>
+Date: Fri, 6 Nov 2026 18:27:27 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,48 +62,126 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhQvpFeEJaEyPDaqj8_S752puSaNe0Rn-hxjh=ugCoFsxA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 13/15] KVM: arm64: Add HDBSS buffer size ioctl for
+ dirty-bitmap mode
+To: Leonardo Bras <leo.bras@arm.com>
+CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
+	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
+	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
+	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
+	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
+	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
+	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
+References: <20260929103655.85107-1-zhengtian10@huawei.com>
+ <20260929103655.85107-14-zhengtian10@huawei.com> <auioRICO9Frhk-zT@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <auioRICO9Frhk-zT@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On Thu, Nov 05, 2026 at 06:12:09PM -0500, Paul Moore wrote:
-> On Thu, Nov 5, 2026 at 4:06 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> >
-> > Continue the conversion of users of the deprecated f_op->mmap callback to
-> > f_op->mmap_prepare. Keep things gentle this cycle by targeting simple
-> > cases.
-> >
-> > No functional change intended.
-> >
-> > Build tested on x86-64 (allmodconfig, each patch individually), i386,
-> > arm64 and ppc64le.
-> >
-> > <<>>
-> >
-> > David, Andrew - I wonder whether one of you guys could take this series
-> > through your tree? Since it's kernel-wide it seems sensible to take it
-> > through an mm tree.
->
-> Granted I've only properly looked at the SELinux patch (7/14), the
-> rest I've just skimmed through, but these are all independent patches,
-> right?  Is there any reason why individual subsystem maintainers
-> shouldn't just pick up their associated patch?  Yes, perhaps chasing
-> down individual maintainers is a bit more work, but isn't that the way
-> this should work?
 
-I've no objection to people taking patches independently, the concern is people
-lagging on that and holding up a key conversion which is entirely mechanical, +
-generally tree-wide stuff like this has been via the mm tree.
 
-The mmap_prepare stuff is actually important for security (pertinent given
-current AI fix storm) as it's by design super locked down vs. mmap which has
-caused several genuine issues including a nasty 0-day.
+On 11/2/2026 11:12 PM, Leonardo Bras wrote:
+> On Tue, Sep 29, 2026 at 06:36:53PM +0800, Tian Zheng wrote:
+>> In dirty-bitmap mode, a larger HDBSS buffer lets the guest dirty more
+>> pages between VM exits, at the cost of memory. The default of one page
+>> per vCPU is a reasonable starting point, so allow userspace to opt
+>> into a larger buffer via KVM_CAP_ARM_HDBSS_BUFFER_SIZE.
+>>
+>> The size is specified in bytes through KVM_ENABLE_CAP and must be a
+>> power of two in [PAGE_SIZE, SZ_2M]: the upper bound is the largest
+>> HDBSSBR_EL2.SZ encoding, and the power-of-two requirement matches the
+>> buddy allocator. It must be set before any vCPU is created: -EINVAL
+>> after vCPUs exist, -EBUSY if already set.
+>>
+>> The capability is rejected in dirty-ring mode, where the size is
+>> pinned by kvm_arch_dirty_ring_size_updated().
+>>
+>> KVM_CHECK_EXTENSION returns the configured size for a VM, or SZ_2M
+>> when queried globally with a NULL kvm.
+>>
+>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+>> ---
+>>   arch/arm64/kvm/arm.c     | 34 ++++++++++++++++++++++++++++++++++
+>>   include/uapi/linux/kvm.h |  1 +
+>>   2 files changed, 35 insertions(+)
+>>
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index 5a7046acb62e..eadbf3a88d31 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -19,6 +19,7 @@
+>>   #include <linux/kvm.h>
+>>   #include <linux/kvm_irqfd.h>
+>>   #include <linux/irqbypass.h>
+>> +#include <linux/log2.h>
+>>   #include <linux/sched/stat.h>
+>>   #include <linux/psci.h>
+>>   #include <trace/events/kvm.h>
+>> @@ -203,6 +204,31 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>>   		r = 0;
+>>   		set_bit(KVM_ARCH_FLAG_EXIT_SEA, &kvm->arch.flags);
+>>   		break;
+>> +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE: {
+>> +		u64 size = cap->args[0];
+>> +
+>> +		if (!system_supports_hdbss())
+>> +			break;
+>> +		if (kvm->dirty_ring_size)
+>> +			break;
+>> +		if (size < KVM_ARM_HDBSS_DEFAULT_SIZE ||
+>> +		    size > KVM_ARM_HDBSS_MAX_SIZE)
+>> +			break;
+>> +		if (!is_power_of_2(size))
+>> +			break;
+>> +
+>> +		mutex_lock(&kvm->lock);
+>> +		if (kvm->created_vcpus) {
+>> +			r = -EINVAL;
+>> +		} else if (kvm->arch.hdbss_buffer_size) {
+>> +			r = -EBUSY;
+>> +		} else {
+>> +			kvm->arch.hdbss_buffer_size = size;
+>> +			r = 0;
+>> +		}
+>> +		mutex_unlock(&kvm->lock);
+>> +		break;
+>> +	}
+>>   	default:
+>>   		break;
+>>   	}
+>> @@ -500,6 +526,14 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>>   		else
+>>   			r = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+>>   		break;
+>> +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE:
+>> +		if (!system_supports_hdbss())
+>> +			r = 0;
+>> +		else if (kvm)
+>> +			r = kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
+> 
+> This whole thing of allowing hdbss_buf_size to be set only once makes
+> everything more complex. Why do we have this limitation again?
+> 
+> I mean, if we want to restrict size changes after the first hdbss buffer
+> gets allocated, it makes sense, other than that, I would like to understand
+> the reason for that.
+> 
+> Thanks!
+> Leo
 
-So am keen to keep that rolling!
+Hi Leo,
 
-In this case each patch is mechanical and simple, so little surface area for
-issues.
+You're right, I re-examined the whole flow and the "set once"
+restriction isn't actually needed. I'll remove it.
 
---
-Cheers, Lorenzo
+Thanks,
+Tian
+
