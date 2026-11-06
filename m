@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793935006;
-	b=KEKuCSZZI2Adp2JhUll6GiLxJmKUMK+k7cElM7kOJniyRHMn+NBVNxN963VByWUCWFhs
-	 Px/1t+1SfuMoBkeCHTUpYRMsmg/MYntSFpzI0fK+2vgqT4kySeKoTNe5KDftJdrWwJCve
-	 yU8CyJJIoCzvGFVnwv3z7OsS5zR4CA2iZBbKDUL181PAxMuwYxAMj/dkQvfxmuNjN6vCk
-	 oZH8b7X8qK9P/PPDcPfq8IXh/4ipvwhnnU9to9luGTzgTamSs0I7UORbKyD8pUNHPWwJ0
-	 YLMXPne3a1oesHBB7idKgI+GHOcX4YTHMK2PEX/yvH57WydLyuVCcJjrpYd48hBefTQ==
+	t=1793936864;
+	b=3PCeuaDwcYvs1BKYLTfHf5VH4iFVJoZS5iOq25IPxEOmyjYWcgg5INKau305sISbcyWq
+	 P5MFF42fRiis4nVpN3A+NUI1uLgPgX4olQ4SBZ0Nc+k+ZRkGzQAzW//l9sbKdCLvqjm+B
+	 ZVDZ+BM0QVxSRob08Apr0Fih5WdRay3/VXhQwEe8dBkq6qg/TqDx9MBdQgZqgqeRG37r3
+	 Vm5UYAxASl1YmXkHHHzK7aZH33Wpb/Rey+ZFcGznEIYckYSjpFThQ3kc/brQxFWYjPbO0
+	 Ej/p01IbCYz3LM+Y7nJ+Qszr6nTZyXviGO7KOBhsceUEYGdxQZ06y1gZlb1GE211dWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793935006;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=ErgEQ0Ns6+rcrsITsiCH+rdm0302iBOiS8IkFodZXU4=;
-	b=bJ5ZIWhBjgGFYh8mDR71R64dliPN2CO3TMzt9pJ9mR5zMh9ozveJ7jUMIndlDxV6lSON
-	 LBN10zkGVVad4AHtnZ70QzwHPqFM9gmGwZc6uVqTzoo/9XNjjWjQoquHpkFat97citbv1
-	 XxlgPLx8PsFNq0oLsz5BD9f/9QfiRAa5/yAwJoZAL81BL+jadE4+XMHm/U3giVNssvrEi
-	 qjfGN7hwvWafFVlRhOvuzpU1rpJmRPM3xNW9Id47/7QswOjwqY475wGVu3iI/w0d6QUge
-	 DxQypRr1D3ilvaukHhjDUhd/+dT8wKNot5BoF7U+HIwJzizBryQ8YElU5fCrFEdXLQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793936864;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=7itVVRO0OrCMzanAOyJRHIm0MPtgmrlnhYWCxSa5SEs=;
+	b=dLAlzN3OHjSIyhRaRnB4RIsYrtwReasOPL8H2MTFyglx4i/oNgCeB3IakcIfPC42m0bb
+	 4IbuOO3nVNRcibaY6yUMQG+5kddFggpwmB7sArhJh4vC9070lRjqBk6jNHwT+w8oFIuYw
+	 BJl9XP3cAzcoPjgfHO5YGv/kK2YGLyFpyNsHHG6Gia0ant/h6QmI+E5QteuAxDHtERhZa
+	 ffyF2Fgf13qs2rTu2YKenhZcPK7rAh6GOfbu+8QoaMlAKsAWVbGddGMz7oVxbfbRxnFdD
+	 1vxLZeEcncer/sovb+DXbES+E8sY07CdjLY4BUYCxTpuyYqcFmReTEBjGDBsBjh5umg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	arc=none smtp.remote-ip=113.46.200.220
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IboQVEBX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED25606A33B;
-	Fri,  6 Nov 2026 03:16:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ED25606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ErgEQ0Ns6+rcrsITsiCH+rdm0302iBOiS8IkFodZXU4=;
-	b=iDmH0EN4KaCXipjoVKe9dplNElfKEF7HgYj73b4dQV/KmWfbmC/dGbNyQKPX/jEGKUVDhLOcH
-	U6s5h8YRl4yXnB4HClWs82BZEpHLsF9gA//ivG77NkFDUNY0vGYjj4c9RYoTWmS08lK/KuhUlMN
-	bXs7XmU7cs3LK1LARmr6OE0=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jLPTw3G5xz12LG1;
-	Fri,  6 Nov 2026 11:16:36 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 99A114056E;
-	Fri,  6 Nov 2026 11:16:34 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 6 Nov 2026 11:16:33 +0800
-Message-ID: <6e6fb626-d3d4-46f7-93ac-94e3d243eb69@huawei.com>
-Date: Fri, 6 Nov 2026 11:16:33 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663D8606A333
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 03:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IboQVEBX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450D61F00902
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 03:47:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793936864;
+	bh=7itVVRO0OrCMzanAOyJRHIm0MPtgmrlnhYWCxSa5SEs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IboQVEBXl4jWmUIvw0DOc0QCJjQ8dTtJqHWh38IstQq4GF/XzX2BgioRpgWgX6v3P
+	 D5fDo4sg7rNsqSrYNK8o/zN8HDEQJwDTBpkQc5B6wdsLuzlBioIZJ1JXxYScTaKhKq
+	 EXzy4QVcoH3qpcgpOmOr7ueMPQ0Pdq3rpjD4upTnMEExPCwaJHTNl7ZEa+kCA6YMjg
+	 V1+Zo6uLqCaTfqZG2lyPYI8f9v6lHJhj3xgryyJGW5y3JtAdTcHJwPwPYL8MTIL+j3
+	 DjsAyuNPIoqIO1HAGO1EEAT+4quG29QrQNBWH+drmvQELISCJ4FKo/roKRV/DkIV4c
+	 oMSGhP/EEgang==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-945ae2daa68so28242885a.1
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 19:47:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBw5DDjM1VtPFc3G+x8HY932NAmVTJSJYUcmEfBubf3cSCvnW6RLQK/S+Q2cBfi5TERNnGs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/uX0ClZxnxVI6qVOhQ+pCyx3CWGpgp5ekoG5cjVtnQ9eMRP7Zt
+	aL6e5IIgxBgYPW6BSkjhO5yCKEWFGPkI0ayT1W8EH0Y07EblNJTfQI9IwEaPPbOtjldB5qBqvtC
+	r3qntS8htP9MOg5DY42kygFakL1uc0U4=
+X-Received: by 2002:a05:620a:6ccd:b0:945:d3ba:7d99 with SMTP id
+ af79cd13be357-945f3593146mr175996585a.37.1793936862458; Thu, 05 Nov 2026
+ 19:47:42 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,151 +59,86 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 05/15] KVM: arm64: Harvest stage-2 dirty state into the
- host folio account
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
-	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
-	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
-	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-6-zhengtian10@huawei.com> <at-WceRKAVM2kEnI@LeoBrasDK>
- <009b13c6-f618-43fe-8a56-8519d31b239b@huawei.com>
- <auSMkdEhLI7k8QbV@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <auSMkdEhLI7k8QbV@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-1-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-1-0d3cd15ab75f@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 6 Nov 2026 11:47:31 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wFi9mqSsq9RFoYP8m0GbqU01he_icbP2VLPhBfQAvCOg@mail.gmail.com>
+X-Gm-Features: AclHuK8VX6mOjbrvfm7oXhssK45doLoq2eZ9cV_P4690FurSVGBQe9E3r9SjObI
+Message-ID: <CAGsJ_4wFi9mqSsq9RFoYP8m0GbqU01he_icbP2VLPhBfQAvCOg@mail.gmail.com>
+Subject: Re: [PATCH 01/13] mm/gup: convert GUP code to use vma_flags_t
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+	SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, John Johansen <john.johansen@canonical.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, damon@lists.linux.dev, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Nov 6, 2026 at 5:31=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values
+> throughout the GUP logic, both for the MMU and nommu variants.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-On 10/30/2026 8:24 PM, Leonardo Bras wrote:
-> On Thu, Oct 29, 2026 at 10:02:10PM +0800, Tian Zheng wrote:
->>
->>
->> On 10/27/2026 2:05 AM, Leonardo Bras wrote:
->>> Hi Tian,
->>> Sorry for the delay in reviewing...
->>>
->>> On Tue, Sep 29, 2026 at 06:36:45PM +0800, Tian Zheng wrote:
->>>> With VTCR_EL2.HD set, hardware promotes writable-clean descriptors to
->>>> writable-dirty without any VM exit, and the only record of the write
->>>> is the S2AP[1] bit in the stage-2 PTE. The write never passed through
->>>> the host stage-1, and no unmap path reads the bit, so the record dies
->>>> with the PTE and reclaim may discard written guest data (silent
->>>> corruption).
->>>
->>> Sorry, I didn't get what you are trying to achieve here.
->>>
->>> On your patch, I see you marking backing pages dirty at wrprotect and unmap
->>> walkers, and it's very confusing to me on why you are doing this.
->>>
->>> IIUC, what you are trying to do is make sure a page does not lose it's
->>> contents in case it is reclaimed by the OS.
->>>
->>> IIUC, when a page is reclaimed, it will unmap the S2 PTE, and save it's
->>> contents to swap, so when the guest read or write to that page will cause
->>> it to fault.
->>>
->>> The page can never be just unmaped, as if there was a single write to it,
->>> the backing pages should be writable, and the contents need to be saved
->>> somewhere.
->>>
->>> So, if I was able to understand your suggestion, we don't need to worry
->>> about this, and this patch wouldn't be necessary.
->>>
->>> Did you hit this issue?
->>> Can you please expand on your issue, if I could not describe it above?
->>>
->>> Thanks!
->>> Leo
->>
->> Hi Leo,
->>
->> Thanks for the review. I haven't hit this in practice, and based on your
->> analysis the patch doesn't look necessary.
->>
->> Reclaim only writes back folios whose PG_dirty flag is set; a clean
->> folio is simply freed. A stage-2 write never touches the host
->> stage-1, so the folio depends entirely on kvm_release_faultin_page()
->> at fault-in to be marked as dirty; without it, the page stays clean from
->> the host's perspective and reclaim drops the data.
->>
-> 
-> Oh, okay. IIUC it will be enough if PG_dirty flag is set once, right?
-> 
-> While on HAFDBS/HDBSS we will skip the fault for marking them dirty again,
-> we always take the first fault for every PTE (or prefault them), so
-> PG_dirty should always be set once the page is first wroten to.
-> 
-> 
->> Your **RFC v1** patch 2 changed that marking from writable to dirty:
->>
->> ```
->> - kvm_release_faultin_page(kvm, s2vi->page, !!ret, writable);
->> + kvm_release_faultin_page(kvm, s2vi->page, !!ret, dirty);
->> ```
->>
->> During logging, a read fault maps the page as WC: the folio is not
->> marked PG_dirty in kvm_s2_fault_map() and hardware promotes the PTE to
->> WD on write without any fault, so reclaim frees the page without saving
->> it (the folio was treated as clean).
-> 
-> Ah, I see your point.
-> During dirty-tracking guest reads a page, then HAFDBS promotes it to
-> writable without marking it as dirty. Good catch!
-> 
-> But wouldn't a simpler solution be to change the conditions in the fault
-> handler, so that it indeed marks it as dirty if dirty-tracking is on, even
-> if it's just a read fault?
-> 
-> Thanks!
-> Leo
-> 
-Hi Leo,
+> ---
+>  mm/gup.c | 45 ++++++++++++++++++++++++---------------------
+>  1 file changed, 24 insertions(+), 21 deletions(-)
+>
 
-Yes, that's exactly the simpler fix, and it's what I already did in
-HDBSS v5 patch 2 — the folio is marked dirty for any write-permitting
-mapping, so a read fault on a tracked memslot also marks it.
+> @@ -1514,9 +1514,8 @@ static bool vma_permits_fault(struct vm_area_struct=
+ *vma,
+>  {
+>         bool write   =3D !!(fault_flags & FAULT_FLAG_WRITE);
+>         bool foreign =3D !!(fault_flags & FAULT_FLAG_REMOTE);
+> -       vm_flags_t vm_flags =3D write ? VM_WRITE : VM_READ;
+>
+> -       if (!(vm_flags & vma->vm_flags))
+> +       if (!vma_test(vma, write ? VMA_WRITE_BIT : VMA_READ_BIT))
+>                 return false;
 
-Since patch 2 covers this, patch 5 isn't needed. I'll drop it in the 
-next version.
+This also improves readability. Thanks!
 
-Thanks,
-Tian
-
->>
->> Therefore, **HDBSS v5** patch 2 reverted to marking the folio for any
->> write-permitting mapping:
->>
->> ```
->> kvm_release_faultin_page(kvm, s2vi->page, !!ret, writable);
->> ```
->>
->> Together with the v5 scheme, this makes patch 5 unnecessary:
->>
->> - kvm_s2_fault_compute_prot: always set PROT_W when map_writable
->> - stage2_set_prot_attr: PROT_W -> DBM unconditionally
->>
->>
->> ---------
->>
->> On a related note, I'd like to discuss the next version of the DBM
->> scheme, following Oliver's suggestion [1].
-> 
-> Just as a note for future readers: on another thread we agreed to wait for
-> the discussion to reach a point we are all happy before rebasing
-> everything.
-
-
-
+>
