@@ -1,133 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793998372;
-	b=Sj2/3bvBtswJEsvonuqyJL6YB8fIlk9n5kXNBUuvLnU+xSYzW28SAhlAJxX4pgdoj9w/
-	 ifsg98we0Vi9c6QolFt6CIWV6yJv/pRTfIUuvFJIeYNHNgVleU66fcnRln4QxUk5CrD0U
-	 XAoOg5bDAM0VF77Qsm4n3CC5ICv3lEfqQsRhTs5E3kbtQ0oXgQybk1sdAXbuaZYz9dvil
-	 L0zKbdoXA8vm/9lLBJciGfRT5rJqeJX0TyUVaPUk2J6TukFKv3VcgFarhI7IIh7i6qypD
-	 tsFZufFYux1i8GdHYW60ifWFpLNmPIWX98CuR1kZiB8kOwfimjfxZuBPdxirM9rdSfQ==
+	t=1793998827;
+	b=vHJkLVXCQ1Wzzcq1xKbYtM60VAevHtYnRVr/HsGRCEpcPd39cu3dUnkgNzddrevEfGl7
+	 fQMvSyjyWQlJcC+qAC6ZuiniTORSBJUPEQqEGjvEytU6a2x0BvefbVKZmvvVunhYFzLNZ
+	 +ZtRiTPM5Dkb7rrzTpmhMWJDAskBE6erKM+uiLIAOfirgORMQTDBWTmLwNjcTFerDA0E+
+	 o8IVNA8mXA0lTtS/noRw1/TtnQVoM5k/eUifTEsKvOC285a5pk3GBzHrmEe1Uujh2mN/M
+	 PXDLzG8hZJC8iH27vqd83AbOw3BWBu4iLtVj3i7hjBYqS26EC4vLUfgCSwL61CVVDtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793998372;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=DI68O0X3RB/jvXr8h6qOIGncG3G3gqaeml4OgW4iOEE=;
-	b=ZRK/BR+LJsYIHKhmZ/83LXe7ZGeHr1viSup01eriQFbr6l30stJrNqVUViYJ48g+NbGi
-	 mieko8UHyqpNIww4vL8Xo28er7SxnTmiUUyC0aB4vOe+FCiQq1lLPH+OgWxIPfBdKP6pA
-	 /nNB1kBdGo4P9q33ANJcVeK0LJ/2uRk4b0JNWUGuCASAyF3qL6DebaRIFzI1a7hl5SULI
-	 o45lFOZPj7lwSlVnqFE8zZiIxp6lXA8WBeR1pmOUSeUtB23FmGJPtugzM3ETx17q7h41h
-	 aSvMg5xIYdbxK1VnLeNFYJlwky1KGRvg8RTg85r44uKw+jvs2eqAUdV9hD3VuhCRMrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793998827;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=WNl7m/hXi4gHMAflyroY/+DNB2PoxFpjxeHVm3WBpSg=;
+	b=xOUAQ247DuCKgs+e2lRj0uWxvPfCQJb2nYL9KywwDg8I5GDdNBsFRssMXiW498/en4zF
+	 qzTmHL2KZwirivvpBKh0pmBDfmnEZpBD9v+qzN/68YFlUONrTHGlw7v0wXDQ6polEHtMi
+	 8wRardJ8kInJfXzSyuiyyTMzjVaqYjEPs3bSWG8TQXViP7qOMH41uXFV9XeJiI/8lQwpz
+	 FOybMrKqA3FnjGUbnieRqjOKX8kcW+e0iH/QRo3zTpdChYvW8HuACDgB1Wq3jPPlxEPLK
+	 KtvNcwptcLEZx3Adx0rEasA8D7yk0u36lA58WJFi0ZAcSlxrAFrfYFf+sSDKbNhHF7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=PcvY35YW;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ZKmMOCmM;
-	arc=none smtp.remote-ip=103.168.172.146
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nIoreleJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F037606A32F
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 20:52:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F037606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D95D606A329;
+	Fri,  6 Nov 2026 21:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=PcvY35YW;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ZKmMOCmM
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 30C64EC018C
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 15:52:50 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 06 Nov 2026 15:52:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793998370;
-	 x=1794084770; bh=DI68O0X3RB/jvXr8h6qOIGncG3G3gqaeml4OgW4iOEE=; b=
-	PcvY35YWH6Du/gCafTao8iOZjmTLwWOVKzghULOCwxRJDepwHq5SEXZgDjhp2YmN
-	Mczq8tEtam7bb6F11NAjdemUzEg7WBYWDdz7b9e9eVbl3gJy/4icG1CbYZZ4IvJW
-	EzT0n15ww8oTyyl1kb/PIVTYOevzJfWyYFuXWFuTiu0N+vTEosrH8eXrcyblP4BW
-	r6U71LrA83YcsF8DNZ8mLXSEX+XM87JLo1WrflYjh5ULnf+fr19CnoqSiLWx/SDt
-	m1TCMCcgDTGQZziQuXeJvel0Mu53eeZiKOtoN7tQ8iC5Ie6lfLTcpIuMAv1cH+aj
-	L2FsoGkSiDwfpDaFRhjD0Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793998370; x=
-	1794084770; bh=DI68O0X3RB/jvXr8h6qOIGncG3G3gqaeml4OgW4iOEE=; b=Z
-	KmMOCmML5eN4wvqkIgXX8D7nNZgEuIUCuFe7kzARN8GKe99ZFIIl207mXcKbSEv/
-	BnToq5+sgvh/FWRxLQLwqqxlBIeqFO+5qA1QPzFNQ3e6UGUhSHn8fb3rj30/TcC+
-	WJsyeQoNOdTDpzNVdCQ7CKtrsXCa2mvycmqQKFJ+jEjLoiA47kb+dyCMtq0vSN85
-	1vMbwveDH+YpK14phRJr/zVjmyr933EGuZLtnzUJf/roWOFFzlLA+fOQ0EkwQ7EE
-	o5UM+63iBsfUrQlFLSNfe4tNarSMxfCjoNMRT7s2Y2DgorDF2P7fxoWicJAMXYuG
-	QtivnVCwzT5/+JWPhEOTw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793998370; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:bXD0ljv747BkJFMx3uW03oQko7u14Hl+RVQE7XRDh24XPwa
-	2qKSRWXfOrTEYuY9HnjWIhZFx73RlpI0PE3Z9+PfsWO4t7QD34RhdMJmSgqAQfQu
-	mEhUQNnkcM8/J7HHP60iOO85P91piFKa82zE+M2Qrr7mhAdtWaqW3aKH27yK+v/2
-	DfSwq3Hp5iuueyJAdaVSuSOvjw98RGQLMyKab0hgTKDNGs1F6nd8+AS9ZH8Z2B03
-	0dTx8HwJx2CCMzIyYN4KhyM8+11m1AyHAohOwDY9OyMVERMJFPfEeehNkzG1yc2/
-	dhvfLm/vBy2CsLGui4u2DefCpFMEj5+66RlV9HQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:JlV29eQ9Ey6xSHV8ni9oTZHE4eweDtFxopLH4TWcwP4=:va0vdCyusufdfSq+B2ZmcLdvPoQ4pqTqrJNg8au0qYY=;
-X-ME-Sender: <xms:IT7uanLeayqQ7DVrELXhyBB_TM1Ef_4FS0UgXLkqbDxXz7w976GkhQ>
-    <xme:IT7ual-0GLZ2AsTD9KXSm22KZeDOqZ1fOpfeZOIIaVX183tOrZ1tPrjF7Qc6FZ3kW
-    gqgiHF2ylIXJqJH-PmvNDzNyfYWkE0mUPI7Y4bfaQfW3OE28Dl3JA>
-X-ME-Received: <xmr:IT7uat_yTTYLhkcdeim5Lod4HPghLTf3SAw-l8LtY9DA_rf_Tvjnl650qqfr3w>
-X-ME-Proxy-Cause: dmFkZTG3ELfz1HMYilg74EaAvzptHMUfC/ybskUvnsHdFUyYtIj+CatcaN0RoFw5cE4Jq4
-    uqqKuKvggY98V7NPM7fyvdzk/WptIGtF5ANhhp9eW4RXRlON7oA8CjAY/ER6Ga9ZH71/UQ
-    7BGmSdDbBP8fblvnU6n2d7GOhvDWCTh3bZU6nz8YF1Iw7QrXH/X9o2DBzDXNlhRoEHf1Ro
-    9BZ8n4AYFcbR4OWj/Rtay3IZmP9AzvX2yNWgjVkET5nZ9J7wt/Wbnpuc96R7069p31O6hZ
-    QrNAOg6cqZdm50VCeIVbFAKGMLAOpGIaHOWVtBCWEdYbqtvAMuWIQQEWIylhgHdLRhKyNG
-    kSnpXXqZPWWuDmamcEXDih2jKI6JeTV5ycsRHBoVCSC72WKEyrJXvi/EXLR4MDH4nZ+W3G
-    9oHGtpg7/4oKhoL7xXS0JdYhK7IAwllR9xk7MdVRB80nZTMZ6rURco+l//r9/jfkn6O3R3
-    3NLb6VOoDL0CbwIhn+WuvFdiebw4WDWazKGaaFH7pbIyCk76YRereTpLI4t2eKdxaug0EE
-    WXWO/2gKZWxNAIdjghMz7jilGQ+bU7Gf/UM5uiie6UJ1HZuc+V9Ad7Jq0XsLOVmoQzG2a3
-    YlHURpwYLcsHnoZbtnue9Aik407XqcM/K9471PhTwt1gA3gjt60NVK1JPxJA
-X-ME-Proxy: <xmx:IT7uav964Hga9-J9speWrNVFSCuWOuJzoeJHoz3eyguHNPaQc-L5Cw>
-    <xmx:IT7uaoL5uI5mefie3DtZ8HiN-ndSadyHOqlIFghA5fHmhUPLbn_LdA>
-    <xmx:IT7uakRTo79983alZPUEfZiKbs8yIOugv2IOXEMk_t7FR5w7kDHNiA>
-    <xmx:IT7uah-oXs2lCD_8by5Fcp0xGVEbLmtiYTOwmaXXMVW4-Hx89yRCGQ>
-    <xmx:Ij7ualyd7aOSUnPtmOrSzM2TRz7pz5jro_A5NG05sBdjo7gnAleEQPiz>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 15:52:47 -0500 (EST)
-Date: Fri, 6 Nov 2026 13:52:45 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v6 10/31] vfio/pci: Refuse ioeventfds and dma-buf
- exports over excluded ranges
-Message-ID: <20261106135245.2870aebb@shazbot.org>
-In-Reply-To: <20261016161839.2765592-11-mhonap@nvidia.com>
-References: <20261016161839.2765592-1-mhonap@nvidia.com>
-	<20261016161839.2765592-11-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nIoreleJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9031F008A2;
+	Fri,  6 Nov 2026 21:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793998826;
+	bh=WNl7m/hXi4gHMAflyroY/+DNB2PoxFpjxeHVm3WBpSg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nIoreleJB5v0uMZFXZGVblDwl9VmuZ57G5YdznQyyKNTJbLihoTIMLak89t+SeWSI
+	 6/WR0Es2i6nuUzY+pZ/PseW8adDcpPI2HtCBTTqEq6Ldyl5tkmGKRNuH5VqNNGcGHZ
+	 Xq2kcbUjQUBAlqh5M4Q0gCWamK7xL73VPbbS6LD+WMGEVJZxEmn8r8il3O8z58kwOA
+	 P0ONn8OoWeXwpkjzY/mJBOFC8QufLpkkNDodyzbYGU4YH9T4tScWG6L5i6UEGDEe2t
+	 gbu1oqm9Nd2L3FyyOyXRTDKRaieXp0M44TPCBuTNFxRUJXJxR4TwboCiOIuQuR3mo1
+	 3qsnB2BY79urQ==
+Date: Fri, 6 Nov 2026 21:00:24 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v3 13/18] KVM: x86/pmu: Populate CPUID.0AH:ECX
+ fixed-counter bitmap
+Message-ID: <au491iiV7koeP0t6@google.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-14-zide.chen@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -137,113 +62,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106013927.166209-14-zide.chen@intel.com>
 
-On Fri, 16 Oct 2026 21:48:17 +0530
-<mhonap@nvidia.com> wrote:
-
-> From: Manish Honap <mhonap@nvidia.com>
+On Thu, Nov 05, 2026 at 06:39:22PM -0700, Zide Chen wrote:
+> PerfMon v5 adds a fixed-counter support bitmap in CPUID.0AH:ECX.
+> This is the superset of EDX[4:0] which indicates the contiguous
+> counters starting from 0. For backward compatibility, it's recommended
+> to use the following to determine if a fixed counter is supported:
 > 
-> vfio_pci_bar_rw() keeps the excluded ranges of a BAR off the device, but
-> two other paths reach BAR MMIO without it.
+> FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i);
 > 
-> An ioeventfd writes the BAR directly when it fires, through
-> vfio_pci_core_iowriteN(). Refuse an ioeventfd whose range overlaps a
-> write-excluded range, as one over the MSI-X table is already refused.
-> 
-> A dma-buf export of a BAR range lets an importer map it for DMA, which
-> reaches a range that the BAR keeps off mmap. Refuse an export whose
-> ranges overlap an mmap-excluded range, so the dma-buf follows the same
-> rule as mmap.
-> 
-> Suggested-by: Alex Williamson <alex@shazbot.org>
-> Assisted-by: LLM
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
 > ---
->  drivers/vfio/pci/vfio_pci_core.c   |  4 ++--
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 14 ++++++++++++++
->  drivers/vfio/pci/vfio_pci_priv.h   |  3 +++
->  drivers/vfio/pci/vfio_pci_rdwr.c   |  9 +++++++++
->  4 files changed, 28 insertions(+), 2 deletions(-)
+> v3:
+> - Remove '&' when populating entry->ecx. (Jim)
+> - Gate entry->ecx on kvm_pmu_cap.version >= 5 in intel_pmu_refresh() to
+>   avoid enabling v5 fixed counters on hosts where KVM caps PMU at v2.
+> ---
+>  arch/x86/kvm/cpuid.c         | 5 ++++-
+>  arch/x86/kvm/vmx/pmu_intel.c | 8 ++++++++
+>  2 files changed, 12 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index f099a294af34..211fff6045e2 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1107,8 +1107,8 @@ static void vfio_pci_free_excluded_ranges(struct vfio_pci_core_device *vdev)
->  }
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index 3310c370c5fa..00a2ca6d3049 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+> @@ -1554,7 +1554,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
 >  
->  /* True when [start, start + len) on @bar overlaps a range with any of @flags. */
-> -static bool vfio_pci_bar_range_excluded(struct vfio_pci_core_device *vdev,
-> -					int bar, u64 start, u64 len, u32 flags)
-> +bool vfio_pci_bar_range_excluded(struct vfio_pci_core_device *vdev, int bar,
-> +				 u64 start, u64 len, u32 flags)
->  {
->  	struct vfio_pci_excluded_range *range;
+>  		entry->eax = eax.full;
+>  		entry->ebx = kvm_pmu_cap.events_mask;
+> -		entry->ecx = 0;
+> +		if (kvm_pmu_cap.version >= 5)
+> +			entry->ecx = (u32)kvm_pmu_cap.fixed_cntr_mask64;
+> +		else
+> +			entry->ecx = 0;
+>  		entry->edx = edx.full;
+>  		break;
+>  	}
+> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+> index 1372091dc1f8..37b34b588601 100644
+> --- a/arch/x86/kvm/vmx/pmu_intel.c
+> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+> @@ -597,7 +597,15 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>  				  find_first_zero_bit(kvm_pmu_cap.fixed_cntr_mask,
+>  						      KVM_MAX_NR_FIXED_COUNTERS));
 >  
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index c16f460c01d6..8606c15ab2fe 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -260,6 +260,20 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  	if (ret)
->  		goto err_free_ranges;
->  
+> +	/* FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i) */
+>  	fixed_mask = BIT_ULL(nr_fixed_counters) - 1;
 > +	/*
-> +	 * A DMA mapping built from the dma-buf would reach a range that the
-> +	 * BAR keeps off mmap, so refuse such a range here as mmap does.
+> +	 * Do not enable fixed counters via the v5 ECX bitmap if KVM caps
+> +	 * PMU version below 5 (e.g. when mediated PMU is disabled or on
+> +	 * older hosts), matching KVM's advertised CPUID.0AH:ECX capability.
 > +	 */
-> +	for (u32 i = 0; i < get_dma_buf.nr_ranges; i++) {
-> +		if (vfio_pci_bar_range_excluded(vdev, get_dma_buf.region_index,
-> +						dma_ranges[i].offset,
-> +						dma_ranges[i].length,
-> +						VFIO_PCI_EXCLUDE_MMAP)) {
-> +			ret = -EINVAL;
-> +			goto err_free_ranges;
-> +		}
-> +	}
+> +	if (kvm_pmu_cap.version >= 5 && pmu->version >= 5)
 
-This should be rolled into validate_dmabuf_input().
+Having to check both versions is confusing. Can they go out of sync?
+Should we clamp pmu->version to kvm_pmu_cap.version and only check the
+former?
 
-> +
->  	priv = kzalloc_obj(*priv);
->  	if (!priv) {
->  		ret = -ENOMEM;
-> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-> index 53544e0cbedf..09a68c99b43c 100644
-> --- a/drivers/vfio/pci/vfio_pci_priv.h
-> +++ b/drivers/vfio/pci/vfio_pci_priv.h
-> @@ -52,6 +52,9 @@ struct vfio_pci_excluded_range {
->  	u32			flags;
->  };
->  
-> +bool vfio_pci_bar_range_excluded(struct vfio_pci_core_device *vdev, int bar,
-> +				 u64 start, u64 len, u32 flags);
-> +
->  #ifdef CONFIG_VFIO_PCI_VGA
->  ssize_t vfio_pci_vga_rw(struct vfio_pci_core_device *vdev, char __user *buf,
->  			size_t count, loff_t *ppos, bool iswrite);
-> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-> index 93823c6391f6..ef098f0b1401 100644
-> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
-> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-> @@ -476,6 +476,15 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
->  	      pos >= vdev->msix_offset + vdev->msix_size))
->  		return -EINVAL;
->  
-> +	/*
-> +	 * The ioeventfd fire path writes the BAR directly, without the
-> +	 * excluded-range filter of vfio_pci_bar_rw(), so refuse a write-excluded
-> +	 * range here.
-> +	 */
-> +	if (vfio_pci_bar_range_excluded(vdev, bar, pos, count,
-> +					VFIO_PCI_EXCLUDE_WRITE))
-> +		return -EINVAL;
-> +
+> +		fixed_mask |= entry->ecx;
+>  	fixed_mask &= kvm_pmu_cap.fixed_cntr_mask64;
 
-The code immediately above this is still performing the open coded
-exclusion based on the MSI-X range, which is now incorporated into the
-generic range exclusion.  It should be removed.  Thanks,
+I see why this is needed now, to re-apply KVM's fixed counter mask after
+reading it, but if this is only needed there, it's probably clearer to
+do:
 
-Alex
+	if (version >= 5)
+		fixed_mask |= (entry->ecx & kvm_pmu_cap.fixed_cntr_mask64);
