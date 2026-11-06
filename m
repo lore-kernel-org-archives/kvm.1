@@ -1,58 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793990224;
-	b=l8bph0/7+be4y/bgu7G3wm8DV6kX3D3IdLoAjEUrS849O7KlXcV2Ebtt9/K0lecoa/ky
-	 QMT5LsZTF3Y1XHANDIMmI9kay7jE1udEoS7xuCBH7BEB+UJSBILl4nHv9VhX51ypFq/J2
-	 3phv9/NN38a2xdO/bLG7jBxoBdlWuOyzZ4Sx6lWYRmG+v2ZQFahKqcCbY4QY3BjyuIiu+
-	 8OKTsV11V862D8TjBTETDIDGTC8gzM6ZftllcIzqBbgynANCwgw038rPr2ZOwAjkcDwkR
-	 1Z0VOQjLiVqzAigCMD4aVdF+JLt2sFeU5ATE3AdzdM9dghzrzhc0PuXTLU8+y2/MbDQ==
+	t=1793990729;
+	b=Ixn1OPuxpxl+CgwjbJUb4l6rfVDxO1ZPWc6LqXUV1LszUII7cT0qYEnUcbroPIND2TSa
+	 Amuv81nnsAd77DOPPaO2B5VuQFLz71ohv7ZeAah3H8KBmonRoRwYvaGfvG83gFr78Dn9x
+	 Ct2wnbt6NGDfEWAwEsrEKvcwuGRZGRx+27EMQBhNb628xQGv2MP3bFFpvVVk2nfyBUOUc
+	 XNxXypnsyJc03EvX4yxtO9G6ZPh86sqolAYStRO2uHN3rq5pVvIwdbwEgQ0P0MY3TUNBX
+	 kPcDJkfls42ZS0fe3Yw8Ukn6G9ZmX1qC3HdYIREhhAGK7ICgGieYRPeVl6cjZf3OUUg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793990224;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nwmGbMmc/+3I+KKxxtFTReRzpqbjsS9Rdng+DNRWEjM=;
-	b=HlwEb+s4VYt+Ut2UKSy9O4AkT9W5kSQeu2oppqLYTEvM4e6LPD/XI69yK8X8HlOoAzFe
-	 BU7rkI6sQaaHml/kFbkxIzRp5+PwUR3qBgDTzyublas4jzw1E9ribyU843/E2tPjN5Fs6
-	 DQv5AcnhCtv+UCUeNM/+KEtO5DYV0s/MGOSpy+3fjJ0ko0g5FgG+a7n/9SFm+/f7GUsE3
-	 dmw8McA30AlARu1rMm85SZGTg90qNkG4EZn7RdlJrkSXJ73B+q+58z2BS1zzKeEK9Swpz
-	 ZccO09rWobuVIuDTsID8Q0cPhqAu32dyM0u7OqnvX9NIexAqKXgF/7gMPJYVRp2Znbg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793990729;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=FNLxcl/7ryzRAwl+jM/Z8IFsimfNedXfhYCn8zPHQEE=;
+	b=YfGGVhyV8AdzZPtOFeVsqUm/WAn+037ZafhW+OiC3B7jRJoJ3tWo82PSXluoCaazwNXF
+	 05Mn+YOxyKNZMZfHs3b9jqNHUl5dDHC2MNpkfeokJvMRiqJFpr6+WViDxjhJMSq/eBG+h
+	 LRZXZ2eeaod845S9fVKFh2oZlME6r2ihWHI08kU1cxLKMZxZhblR5kU3zZbt/IO92Vsdo
+	 Vw4Z0phhCuqIzCAPoWfwmBwj0z9BNSKy3Ymwz4Zx8SJoMbEMgGNlqm7WUACiWg5irMFn8
+	 Ya2XRARgu1lWp9A0x+ZSl30eLO/m/fr94TXrDrjWLUrQzzJGAw50YQVfeYGfXIfXBcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NTlarG8g;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bRYPyyjX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268D3606A335;
-	Fri,  6 Nov 2026 18:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4AF606A326;
+	Fri,  6 Nov 2026 18:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NTlarG8g
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A24F1F00906;
-	Fri,  6 Nov 2026 18:37:03 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bRYPyyjX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C9F1F0089F;
+	Fri,  6 Nov 2026 18:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793990223;
-	bh=nwmGbMmc/+3I+KKxxtFTReRzpqbjsS9Rdng+DNRWEjM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NTlarG8g1mzPMEiwawgpKwZLsA+lya3SE4HOyO+AkbnfybQOSBn97TOBcoBI08Hwn
-	 18WYc+9qmyLhFkPlc0ja4+zcz08uVo3lGs6AykaTPp0zxF5PB/moG/wu1v//A7p2mj
-	 oLAWyye5C8kszrSY6cAhWxuUrXYmdnI4BdLabLTuXkjCGkTdP6tmaZ4YZY8oDwXgv2
-	 csIFTvCZ3N5aU+Ccgt4H+m/CO8F2ggLv8h4a0JiXNlvDiQ3HVk+sRmD4dsGGmV/JZY
-	 +WmSPEWbJuDHA9rXeXSPL4aAX4q9DkSRlXx6VyvH5eTV1dyapq8UYNZyrStIH1T0li
-	 cIuQZoVofbZjQ==
-Date: Fri, 6 Nov 2026 18:37:01 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
-	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v3 03/18] KVM: x86/pmu: Rename reserved_bits to
- eventsel_rsvd in kvm_pmu
-Message-ID: <au4dVD2cZbvoqEa4@google.com>
-References: <20261106013927.166209-1-zide.chen@intel.com>
- <20261106013927.166209-4-zide.chen@intel.com>
+	s=k20260515; t=1793990729;
+	bh=FNLxcl/7ryzRAwl+jM/Z8IFsimfNedXfhYCn8zPHQEE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bRYPyyjXlAWM5shDLcYNZZdHBKNyELV6SZ+p3K/aARncKjm2gaWxNAlu4pc/lvGws
+	 cuzq0RagKboo+XGrHZtTsDAWdEqLPzLnwgnn32Cai5JGfuWCsAcJQgeOeL39J1N8Z8
+	 tD0xeBjezjk7YWW9QVzF/kK6Q/Lf8CQft/BqfzA/SowxFEnr3RXiT3dKw+H5AIUNJQ
+	 Wwpg74ORaFyYivtvmsmAJxaMGzFqh2qU/2VDHyvMMvC7xswKHa7ZzHEF8YJ+0N84HU
+	 a7jZo+aojtd+QLTo/bUPZAtTs/smWRUWrbaZRzxPdqyGAG+/38V/zQKAHjv43XnHOn
+	 NrHfp3vBJFHaQ==
+Message-ID: <sashiko-outbox-202093@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 16/23] KVM: s390: arm64: Implement arm sysreg
+ managing infrastructure
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
+ Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261106-sysreg-v3-16-75e95980fb10@linux.ibm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-16-75e95980fb10@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 06 Nov 2026 18:45:28 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,102 +63,99 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106013927.166209-4-zide.chen@intel.com>
 
-On Thu, Nov 05, 2026 at 06:39:12PM -0700, Zide Chen wrote:
-> This field stores the bits that are reserved in guest IA32_PERFEVTSELx
-> MSRs. Rename it to eventsel_rsvd to better reflect its purpose and to
-> align with other field names in struct kvm_pmu.
-> 
-> Opportunistically, replace magic numbers with macros.
-> 
-> No functional change intended.
-> 
-> Suggested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Reviewed-by: Jim Mattson <jmattson@google.com>
-> Reviewed-by: Sandipan Das <sandipan.das@amd.com>
-> ---
-> v3:
-> - Mention "magic numbers" in changelog to cover AMD as well.
-> 
-> v2:
-> - Replace magic numbers in AMD pmu->eventsel_rsvd.
-> ---
->  arch/x86/include/asm/kvm_host.h |  2 +-
->  arch/x86/kvm/pmu.c              |  6 +++++-
->  arch/x86/kvm/svm/pmu.c          | 12 +++++++++---
->  arch/x86/kvm/vmx/pmu_intel.c    | 12 ++++++------
->  4 files changed, 21 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 72b8fbf432a2..b8875ed5502c 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -581,7 +581,7 @@ struct kvm_pmu {
->  	u64 counter_bitmask[2];
->  	u64 global_ctrl_rsvd;
->  	u64 global_status_rsvd;
-> -	u64 reserved_bits;
-> +	u64 eventsel_rsvd;
->  	u64 raw_event_mask;
->  	struct kvm_pmc gp_counters[KVM_MAX_NR_GP_COUNTERS];
->  	struct kvm_pmc fixed_counters[KVM_MAX_NR_FIXED_COUNTERS];
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index 83883191d124..cbd63329cf13 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -983,7 +983,11 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
->  	pmu->nr_arch_fixed_counters = 0;
->  	pmu->counter_bitmask[KVM_PMC_GP] = 0;
->  	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
-> -	pmu->reserved_bits = 0xffffffff00200000ull;
-> +	/*
-> +	 * KVM is not able to emulate the AnyThread bit due to cross-VM
-> +	 * information leakage on SMT cores.
-> +	 */
-> +	pmu->eventsel_rsvd = GENMASK_ULL(63, 32) | ARCH_PERFMON_EVENTSEL_ANY;
->  	pmu->raw_event_mask = X86_RAW_EVENT_MASK;
->  	pmu->global_ctrl_rsvd = ~0ull;
->  	pmu->global_status_rsvd = ~0ull;
-> diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-> index c18286545a7a..52224872e0d4 100644
-> --- a/arch/x86/kvm/svm/pmu.c
-> +++ b/arch/x86/kvm/svm/pmu.c
-> @@ -163,7 +163,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->  	/* MSR_EVNTSELn */
->  	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
->  	if (pmc) {
-> -		data &= ~pmu->reserved_bits;
-> +		data &= ~pmu->eventsel_rsvd;
->  		if (data != pmc->eventsel) {
->  			pmc->eventsel = data;
->  			pmc->eventsel_hw = (data & ~AMD64_EVENTSEL_HOSTONLY) |
-> @@ -214,9 +214,15 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
->  
->  	pmu->counter_bitmask[KVM_PMC_GP] = BIT_ULL(48) - 1;
->  
-> -	pmu->reserved_bits = 0xfffffff000280000ull;
-> +	/*
-> +	 * AMD PerfEvtSeln registers do not support PinControl, and KVM does
-> +	 * not emulate AnyThread due to cross-VM information leakage on SMT
-> +	 * cores (as on the Intel side).
-> +	 */
-> +	pmu->eventsel_rsvd = GENMASK_ULL(63, 36) | ARCH_PERFMON_EVENTSEL_PIN_CONTROL |
-> +			     ARCH_PERFMON_EVENTSEL_ANY;
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] KVM: s390: arm64: preemptible smp_processor_id() in
+  _vcpu_read/write_sys_reg()
+--
 
-It's probably better if we diff against the generic pmu->eventsel_rsvd
-set by kvm_pmu_refresh(), and explicitly add/remove bits as needed here,
-like the Intel code. Then we also avoid re-iterating the AnyThread
-rationale here.
+commit a0eb8c366cfc592c3052299b9ed41b9fe9cc173f
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-What do you think?
+KVM: s390: arm64: Implement arm sysreg managing infrastructure
 
+This commit implements the infrastructure for the s390 host to read, write,
+and trap guest arm64 system registers using EASR/SASR instructions and
+shared arm64 sysreg tables.
 
->  	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SVM) && kvm_vcpu_has_mediated_pmu(vcpu))
-> -		pmu->reserved_bits &= ~AMD64_EVENTSEL_HOST_GUEST_MASK;
-> +		pmu->eventsel_rsvd &= ~AMD64_EVENTSEL_HOST_GUEST_MASK;
+> diff --git a/arch/s390/include/asm/kvm_host_arm64.h b/arch/s390/include/a=
+sm/kvm_host_arm64.h
+> index 9afe37f6696c8..35b6d8972359c 100644
+> --- a/arch/s390/include/asm/kvm_host_arm64.h
+> +++ b/arch/s390/include/asm/kvm_host_arm64.h
+[ ... ]
+> @@ -219,4 +245,181 @@ static inline void kvm_arch_async_page_present_queu=
+ed(struct kvm_vcpu *vcpu)
+> =20
+>  #define kvm_supports_32bit_el0() false
+> =20
+> +#define __vcpu_sys_reg(__vcpu, __reg) \
+> +	vcpu_read_sys_reg(__vcpu, __reg)
+> +
+> +#define __vcpu_assign_sys_reg(__vcpu, __reg, __val) \
+> +	vcpu_write_sys_reg(__vcpu, __val, __reg)
+> +
+> +#define __vcpu_rmw_sys_reg(v, r, op, val)				\
+> +	do {								\
+> +		u64 __v =3D vcpu_read_sys_reg(v, r);			\
+> +		__v op (val);						\
+> +		vcpu_write_sys_reg(v, __v, r);				\
+> +	} while (0)
+> +
+> +/**
+> + * _vcpu_read_sys_reg() - read a guest sysreg with easr
+> + * @C: vcpu to read from; if loaded, may only be called from its own thr=
+ead
+> + * @R: sysreg id; must be readable by easr; must be compile time constant
+> + *
+> + *   if SYSREGS_ON_CPU: proceed with flags =3D 0
+> + *   otherwise:         proceed with flags =3D EASR_FLAG_SA
+> + *
+> + */
+> +#define _vcpu_read_sys_reg(C, R) \
+> +	({	BUILD_BUG_ON(!__builtin_constant_p((R))); \
+> +		KVM_BUG_ON(vcpu_is_loaded(C) && smp_processor_id() !=3D (C)->cpu, (C)-=
+>kvm); \
+> +		(vcpu_is_loaded(C)) \
+> +			? __vcpu_read_sr((C), (R), 0) \
+> +			: __vcpu_read_sr((C), (R), EASR_FLAG_SA); })
+> +
+> +/**
+> + * _vcpu_write_sys_reg() - write a guest sysreg with sasr
+> + *
+> + * @C: vcpu to write to; if loaded, may only be called from its own thre=
+ad
+> + * @V: value to write
+> + * @R: sysreg id; must be writable by sasr; must be compile time constant
+> +
+> + *   if SYSREGS_ON_CPU: proceed with flags =3D 0
+> + *   otherwise:         proceed with flags =3D SASR_FLAG_INITIALIZED
+> + */
+> +#define _vcpu_write_sys_reg(C, V, R) \
+> +	({	BUILD_BUG_ON(!__builtin_constant_p((R))); \
+> +		KVM_BUG_ON(vcpu_is_loaded(C) && smp_processor_id() !=3D (C)->cpu, (C)-=
+>kvm); \
+> +		(vcpu_is_loaded(C)) \
+> +			? __vcpu_write_sr((C), (V), (R), 0) \
+> +			: __vcpu_write_sr((C), (V), (R), SASR_FLAG_INITIALIZED); })
+
+[Severity: High]
+Can _vcpu_read_sys_reg() and _vcpu_write_sys_reg() call smp_processor_id()
+with preemption enabled?
+
+vcpu_load() sets vcpu->cpu and then calls put_cpu(), and
+kvm_arch_vcpu_ioctl_run() re-enables local interrupts before calling
+handle_exit().  When exit handlers such as kvm_handle_sys_reg() or
+kvm_handle_guest_abort() read or write save-area registers,
+vcpu_is_loaded() is true in preemptible context.
+
+On CONFIG_DEBUG_PREEMPT=3Dy kernels, smp_processor_id() triggers a
+check_preemption_disabled() BUG splat.  On any preemptible kernel, if the
+vCPU thread is migrated between reading (C)->cpu and evaluating
+smp_processor_id(), the preempt notifier updates (C)->cpu to the new CPU
+and KVM_BUG_ON() fires falsely, killing the VM.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-sysreg-v3-=
+0-75e95980fb10@linux.ibm.com?part=3D16
