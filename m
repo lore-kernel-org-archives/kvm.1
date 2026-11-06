@@ -1,89 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793980962;
-	b=m/j+Hb7z1NUg2chBh3/64xVe9ZYE0WFrwSlQ6Vlzuiex6Mv76QQIiE3vM7EaJWaZ6jI4
-	 A+qf7+TV7ZAz1u+jjS0jBIZ7fU3kMR8d4IF0YEhuOIYbXhMLx8gUrqwK3UYG8LuCz10Uc
-	 4DmZQM1xrHsRQMC4L477SWlLooMGk2+QYuEIOSUS3vdtH9j1qcY300WTAniEJ5BCIaad7
-	 mjqwGmPjWdSwFwvCul8PuT9xuy2Yw98RSvQ/NX7GbRUS4foWMFML+PVZrdw4MnNHU4OpA
-	 z4XcMHP9GbI4+XvHUl1xtHiMzq9YVtFNERuT3TQzX3LShC/3+5zb1ydS05MQSeQLgDA==
+	t=1793981024;
+	b=fgP8O2saR7mnqNGJw04Gd+KnwwOlrFXicokmXxeqOrP6QWqj8CGXl24X/1xVkuGrzpiy
+	 39NSc2Trq96cIuGSV/F0b1VKkATJ7eQK2Sr/NFXnRHfVuLzIGi472vPA3UtdTskybxMQ1
+	 6N8mSX/73JkMVUJIxQKKR9vuwxXVmFdPxkFSZD0FSak200RhIv14884lj7gxTb+Vv4WDT
+	 RXDlv+5U5POm9PqzXiPo8eB844TbVpR7NagTAy7Rdfvk3WOFIo5xotx403a5+mhwkYArF
+	 PgLx4oPlQZdTDiqd75/UNYd69W5AIdoh1+c/80N1llrmpz9ngCSLnUyVnogV9c4EmUg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793980962;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Reinject:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=hB4t7lomzunxZk0X0m05JMwXZ0SRZi/SUaDJWWyv2/A=;
-	b=lCZdLSjZqJ6ZUiMppOUPRoqmoOdRNYYitP9MaNfz2NO3kVms8WUpKPYo1HCMvaXd+7Iz
-	 rG5a5RNh0eesFWM3odvoyRjDosgtDTLTJMlwBXRBg2dpogu6wsoCFAI9loqKcoKYSdpBV
-	 bvVpeAF8TT0xXp3d0PJe2Sbrsk+cmeUlD8YrKbT/LAJPI4evEC3DcguWqkqctJJUEn6+Z
-	 3jVHNUJLCs/igMYjDkV24vC+Bf8pi5ZaYkMo05MH/7WymoKHAhepJMp9mfvIjr/lUYlls
-	 g+gDxx479GWBho8lOPxcNjmT2KAn1yZBFWAQPo5MBp+wzO1CuQZOVo/a0luE096N/ig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793981024;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=t7whNWzXgtf5Zep3rN0eJ8AdaQGIaezCYSMAtMtMDQ4=;
+	b=gxY2WWAlsYL/lldesnjF7HdEep4mt8duuxfSTMG3uGSCIV/I7FdwehHq/aYPu4x6EJPJ
+	 NrRbzpX0mmt1l0MvSZQ8CPKjOVMPLgCCGpMwjfjMXdGPbuQ1HMpFpDta0HfzO5ZhknQTv
+	 FbR8kDSbPdvpOySjdfcggUyn1TPcO/3PyS2KoYzpFA85Gqbk28CAX9SzgWCJuZdV46Gpo
+	 dAV7kSjTNJnFj5o6lhRdaxaLQN9xXM4qu5R2RAFgEm4llN5vNbvQpHrWQMtFRSJKWbFZ7
+	 rjTWmmCltW8es+tEoiKPj9PtgzMbD4Pv8zKkZ+pM9VZE7EIFp7o+bwcfLqudICYT+cg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=acznaWDr;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=PROVhtFB;
+	arc=none smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25B0606A326;
-	Fri,  6 Nov 2026 16:02:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C25B0606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF30606A33F
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 16:03:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEF30606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=acznaWDr
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6FE9JQ2726688;
-	Fri, 6 Nov 2026 16:02:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=hB4t7lomzunxZk0X0m05JMwXZ0SRZi
-	/SUaDJWWyv2/A=; b=acznaWDrm3C8X8dMZOufO4t0sVPuS3zc1xYhVpkXtBZVCi
-	5eTVaqQN0EDaKN1xyByhEy/5mYf9oZGhELEk1WhsNHeFMuPaqaej+4rFSA0qYDsw
-	zR2yvb5gB1/NG19N/O+zAcLH/Bnp2/R+Q7b1IV2F3w0hKMe57HfOToDMRnqtZFnR
-	On2TILkkV7ty+ANJS0bL/1/Sk/63kGzVyF4TdAlB2lXW1CQkY+V5X5ymd19tsA3a
-	ISyHuoT7D+fZi7B2HIEpF4IYEqN3WBEe6tGxt6APOmhPVQw3W/ZOjEfoexH+6lzs
-	74utCs2LhdefIu6idsdG9qgFGvn7iZltOJvDgxww==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hs3r9ddue-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 16:02:27 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6F4xrk3538379;
-	Fri, 6 Nov 2026 16:02:27 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hrk9mt2p1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 16:02:26 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A6G2NHc36897042
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Nov 2026 16:02:23 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6656920040;
-	Fri,  6 Nov 2026 16:02:23 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E8582004B;
-	Fri,  6 Nov 2026 16:02:20 +0000 (GMT)
-Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.39.29.160])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  6 Nov 2026 16:02:20 +0000 (GMT)
-Date: Fri, 6 Nov 2026 21:32:18 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
-        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
-        atrajeev@linux.ibm.com, tshah@linux.ibm.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 0/3] powerpc/perf: Fix vpa-pmu driver to report
- correct numbers
-Message-ID: <au35t73S10aXgpYi@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
-References: <20261106153136.330165-1-gautam@linux.ibm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=PROVhtFB
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48dfc0421d9so897181f8f.1
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 08:03:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793981017; x=1794585817; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=t7whNWzXgtf5Zep3rN0eJ8AdaQGIaezCYSMAtMtMDQ4=;
+        b=PROVhtFBjiJL+M4D+pdcjRm34WNVU0Biwx7qiIHzLO+Dmg7trp46+GEqUgPKdhEbt0
+         3ap1c2ItjCrGDnAhNpOzx4pOWMg27MNi/WxI0zA0O/tfV9zarjUHSb2qO730sdRsXPhm
+         YQ5YDp/qnYpkHndm9k6ya2ujKHgrC56BMrPDfy+UR+DiWa0259MM5BWmuhi03/giL/Vw
+         LT2ScogfcWZF41AoGkFJmBjLE3tgyE10+V9+O88PZ7pDT3dWGLSb2rsr4Mn2D9hQQarn
+         8xnSNFo1XDw577NcafopStS/ls+4DqhJ/kdX/0SOLPI20rV9aiCm8PCAcsTAYx6NLW/9
+         dThw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793981017; x=1794585817;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t7whNWzXgtf5Zep3rN0eJ8AdaQGIaezCYSMAtMtMDQ4=;
+        b=XGYTMuhRde0uO61s1iKMWAiUB3mSI+7SMtkRn7UUZ6RzwQCKBsFyNZ7oceQuWAvArj
+         F+XjYnyys5l9k3o1S5jpE4yR0U3o9Rtt37f7MEyGD+MkAGISgita80dJpaGus5cQBtMQ
+         mlkCl0BClVjMXKJSCE8A7aPTVMOJRw96pDc6vVaSU+9cBd3uFK0YOKtVQT1IAlvWSOs4
+         C/785w6paf3AwQjLyb5TNcZs7jhvy9/yOkqV4ua+6VrLAetkKtjtf1icp6/iNbkmNPNh
+         KXCm7sA+1Xa+XwqDLfytiTwWpzMGRLEeyfqfe95XGtzmYsFQXsnuabAjm8VDHwTSF/bV
+         XmSw==
+X-Forwarded-Encrypted: i=1; AL+hErHhgvpXxLb5IIALikQKO+sUeWDAHvAaUOk9a0gcn8QYV4ORWsrt8Vm2QKyGbZMUExqqTaU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8JXtfReXAEwHbJEXLzgckQ7hRxCFWh30KL9tdjnjiyPbO4f0Za
+	JZW7h31+oJc1h/4AQDhRQA4eRmTdZJ659rhq7lesgbzin+vVTOpLCOfwjw/ty0HSN0c=
+X-Gm-Gg: AYBFou1/1FodqnpAvZmtIgpiTrzZUmjRUszkubPGRdQ+R+N1UPOafH/EcseYVlGaJZB
+	fIwxH2x/blwX++VvQ1iTSZQ6isvwCY5SGBH8QsaxUYje9UXTiGG529FZMIa/oQsiHoKPaUijqLx
+	id0TyxOo6iZ5inidChcWyyJuGyFirofOhFMTdgwAtufMXyKcLapplCedFkJQ7RhFfLAw8BAPS5C
+	BKIF7lrcllYlP264FwOJWTAFqaQhllfzkE39JFQHcxL8mt50AUjbReUKUZWAdkU/c3WhsOqqegu
+	zjMIIEaOQp9eP7RD+PkBifUck3k2dJAPpE18OSs0XcNU+Xlsjzm7oliuysb1E5kwkG0viUHPMxT
+	SmHrzhYcDOCHdO/eqhUc1iGw/+6pwYPsoWS6CBFNX72YZuSdXJvDTyV0sQF28iYwBTwrYnBF/lK
+	JWYySV76iMBtTAdjyMxgjBfFZ6NkVlFJtS0YSXJTjnKNkMayJgV218la7xAywP0I+8dI1/nInjy
+	qrBlGO9duDYaipYZ3h2d/agjShxRh09ykaViccIFRxyWb6FmFd6KXoX6L8ackgGbZGZ16zlgTHs
+	6rEdZTN3HZP7pCtocI9kHNxrwbb6aKvrYpy0
+X-Received: by 2002:a05:6000:46d0:b0:490:b23b:802d with SMTP id ffacd0b85a97d-4927740356amr3723333f8f.37.1793981016857;
+        Fri, 06 Nov 2026 08:03:36 -0800 (PST)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7701b51sm4353763f8f.37.2026.11.06.08.03.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 08:03:36 -0800 (PST)
+Date: Fri, 6 Nov 2026 17:03:32 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, aneesh.kumar@kernel.org
+Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
+Message-ID: <au34wXtIqii-hfFI@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-18-jiri@resnulli.us>
+ <auuDcABX27EeTApl@e129823.arm.com>
+ <20261104194622.GC3889730@ziepe.ca>
+ <aux01NUd85PabtZu@FV6GYCPJ69>
+ <auyKE2sGqtfjk4v5@e129823.arm.com>
+ <auy7IM0_S2tv7EZX@FV6GYCPJ69>
+ <au2WdWFOYbPEv0Uj@e129823.arm.com>
+ <au3i-0eDzJZaWukx@FV6GYCPJ69>
+ <au3mAsQrh0GniXJo@e129823.arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,75 +114,174 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261106153136.330165-1-gautam@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=LKHz05W9 c=1 sm=1 tr=0 ts=6aedfa14 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=jjOfc4w_Om44QiH6-5AA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: gv41lfcRHMda00r8k1NQBgu2bPir9Rnt
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA2MiBTYWx0ZWRfX2M57DSAyjsYO
- mudStF14o7h1KyA4jwUoHFFqiRMk8iMS7VeyFAQPDOojnFDR1qx5CyvshcXoIUHt5dZVknGNSez
- 3NMLGPq9I0Qd75ziDUdYnfSBz+Rb+Ko=
-X-Proofpoint-ORIG-GUID: DdOAsDceh1iOtpLystqEkO3lhpRnxU3w
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA2MiBTYWx0ZWRfX5Px/oIZS0u0w
- 96bBqRNbdpek1wFfTuP+kX1yWT3gnUV+DklyM2qO8tPEd5COhCxCQ/kaSYq1/L1epybYbKy9UxH
- xoqo/34Oc4YlEydCHzeiD+VoTthG/v6mywLPW7Cqu5SEbTIDdetvDrQ6GU5okFpSa2g7piI4CA6
- 00WArMBob+lkmRy2uAohMprCsIk+4/ELSSJe1F/7Z6pFtFelbhEoAwX8W6BkAz1SnCIKvxCFP+z
- M780qg6OAntKC7Wkrqe1S7zFqzK+mpEpesUe6H33dpzXUEFIpvw4doid91Rno0iTpyUEopMC/i8
- KjT2DQfYISOJpy4XjEHWLKq+56rZ5i9ZFZBhtpGIs+HHyRJrt9YnHg0jJRWeb7zLkwk3+7qtyeu
- f9RP32/EHuAdtQzp9DZZt0OQrxrlertgEFaSohvdh9sOBh3ek/e+ECauR4arjwuvkEvzJVnyevU
- buVVBDQNAttfC37x5pQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-06_05,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611060062
+In-Reply-To: <au3mAsQrh0GniXJo@e129823.arm.com>
 
-Forgot to add linuxppc-dev
+Fri, Nov 06, 2026 at 03:36:50PM +0100, yeoreum.yun@arm.com wrote:
+>> Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
+>> >On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
+>> >> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
+>> >> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
+>> >> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
+>> >> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
+>> >> >> >> [..snip..]
+>> >> >> >> 
+>> >> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
+>> >> >> >> > +					       const struct ctlv_cursor *request,
+>> >> >> >> > +					       struct attestation_evidence_request *decoded,
+>> >> >> >> > +					       struct attestation_evidence_object_request **objects)
+>> >> >> >> > +{
+>> >> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
+>> >> >> >> > +	u32 challenge_length;
+>> >> >> >> > +
+>> >> >> >> > +	decoded->challenge =
+>> >> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
+>> >> >> >> > +	decoded->challenge_length = challenge_length;
+>> >> >> >> > +	if (challenge_length < caps->min_challenge_length ||
+>> >> >> >> > +	    challenge_length > caps->max_challenge_length)
+>> >> >> >> 
+>> >> >> >> Hmm, I'm not sure whether this check is required for
+>> >> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
+>> >> >> >> 
+>> >> >> >> for example, if the provider provides two evidence:
+>> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
+>> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
+>> >> >> >> 
+>> >> >> >> might challenge is reuiqred for generating the token
+>> >> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
+>> >> >> >> 
+>> >> >> >> However, in case of eventlog, it wouldn't require challenge.
+>> >> >> >> for example, TPM event log or CCEL event log.
+>> >> >> >
+>> >> >> >Right
+>> >> >> >
+>> >> >> >> Do we need some field on attestation_evidence_supported_object whether
+>> >> >> >> it requires challenge or not and applies this sanity check per the object?
+>> >> >> >> 
+>> >> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
+>> >> >> >> always.
+>> >> >> >
+>> >> >> >I wonder if we should have two interfaces here for signed and unsigned
+>> >> >> >evidence? It would be clearer for userspace then when it needs to
+>> >> >> >provide a challenge or not.
+>> >> >> 
+>> >> >> Isn't the challenge field provided/not-provided enough?
+>> >> >> 
+>> >> >> Currently on the introspection side, device-get op would provide
+>> >> >> challenge-lengths array:
+>> >> >> 
+>> >> >>         evidence?:
+>> >> >>           challenge-lengths[8]:
+>> >> >>             length?: uint(..4096)
+>> >> >>             min-length?: uint(..4096)
+>> >> >>             max-length?: uint(..4096)
+>> >> >>  	  objects[16]:
+>> >> >>             blob-class: evidence-blob-class
+>> >> >>             max-length: uint
+>> >> >>             blob-instance?: uint(..u32-max)
+>> >> >> 
+>> >> >> I think it would make sense to have challenge-lengths array per object:
+>> >> >> 
+>> >> >>  	  objects[16]:
+>> >> >>             blob-class: evidence-blob-class
+>> >> >>             max-length: uint
+>> >> >>             blob-instance?: uint(..u32-max)
+>> >> >>             challenge-lengths[8]:
+>> >> >>               length?: uint(..4096)
+>> >> >>               min-length?: uint(..4096)
+>> >> >>               max-length?: uint(..4096)
+>> >> >> 
+>> >> >> Then the unsigned object would just simply have challenge-lengths empty?
+>> >> >
+>> >> >This looks good to me. :)
+>> >> 
+>> >> The challenge is one of several open points that all depend on what an
+>> >> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
+>> >> "primary", "raw" and the format strings. Here is my proposal to settle
+>> >> these together:
+>> >> 
+>> >> The model:
+>> >> 
+>> >> 1. device-get lists each object with an id, a class (signed, event-log,
+>> >>    cert-chain or auxiliary), the formats it may come in, its max-length
+>> >>    and, for signed objects only, challenge-lengths.
+>> >> 2. evidence-get names objects by id, as MR ops name MRs, each with its
+>> >>    output blob. It carries a challenge exactly when it names a signed
+>> >>    object, and the challenge has to fit each of them.
+>> >> 3. The reply gives each object's format, length and, where the TCB
+>> >>    vouches for it, the TCB's digest. The output is always {label, data}.
+>> >> 4. A signed object is made by the call, over the challenge, and never
+>> >>    reused. The rest are read as they stand.
+>> >> 
+>> >> This settles following issues discussed during this patchset review:
+>> >> 
+>> >> 1. One op, not two. Per-object challenge-lengths tell userspace when to
+>> >>    pass a challenge, and one call returns the signed object with the log
+>> >>    and certificates needed to check it.
+>> >> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
+>> >>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
+>> >> 3. TDX's Quote object lists the legacy and the DICE format. The provider
+>> >>    labels what the host returned and fails on a Quote it cannot label.
+>> >> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
+>> >>    spdm-measurements and tdisp-report become formats, and signature
+>> >>    goes, as a signed object carries its own.
+>> >> 5. "raw" goes with the representation attr. The TCB digest is a reply
+>> >>    field, so a blob always holds the object's own bytes.
+>> >> 
+>> >> Formats become an enum each provider family defines, instead of free
+>> >> strings. I'm still unsure if format should be entirely provider-specific
+>> >> and defined as "extension", or it should be somehow mixture of common
+>> >> and provider-specific. Looks there is not really much common
+>> >> anyway, so I lean towards provider-specific only. So far I have:
+>> >
+>> >Overall, This is plausible for me with some small question.
+>> >
+>> >> 
+>> >> ======  ============  ==========  =========  ===========================
+>> >> Family  Format        Class       Challenge  Bytes
+>> >> ======  ============  ==========  =========  ===========================
+>> >[...]
+>> >> tpm     ek-cert       cert-chain  none       EK certificate from NV
+>> >
+>> >Just a thought, but how are we planning to retrieve
+>> >the NV index for EK certificate?
+>> >
+>> >As far as I know, TPM NV storage doesn't support labeling.
+>> >
+>> >Should I assume that the NV index would be specified as part of the
+>> >challenge to retrieve the certificate from TPM NV storage?
+>> 
+>> evidence-get allows to accept mr-selection as part of the request
+>> alongside the challenge.
+>
+>Sorry. Could you explain a little bit detail for this?.
+>AFAIU, this is to get the EK certificate from TPM non-volatile storage.
+>But, I don't know why *EK* certificate get would be relevant for
+>*mr selection*.  AFAIK, the TPM_Quote will be used AK not a EK.
 
-On Fri, Nov 06, 2026 at 09:01:31PM +0530, Gautam Menghani wrote:
-> The vpa-pmu driver can sometimes report incorrect context switch latency
-> numbers:
-> 
-> $ perf stat -e vpa_pmu/l1_to_l2_lat/  --tid=2061  -I 1000
->            time             counts unit events
->      1.001022517 18,446,744,073,708,177,408      vpa_pmu/l1_to_l2_lat/
->      2.002120674            345,092      vpa_pmu/l1_to_l2_lat/
->      3.003171582            406,342      vpa_pmu/l1_to_l2_lat/
->      4.004234838            340,836      vpa_pmu/l1_to_l2_lat/
-> 
-> These invalid numbers are observed because of 2 issues:
-> 
-> 1. The PACA never points to the correct vCPU running on a host vCPU when
-> vpa_pmu_add() is called.
-> 
-> 2. When get_counter_data() reads the PACA counter values, it does not
-> update the event->hw.prev_count.
-> 
-> 
-> Changes in V3:
-> 1. Drop the usage of the PACA's vCPU pointer.
-> 2. Introduce a new patch to fix an issue seen when a tracepoint and vpa-pmu
-> driver concurrently enable/disable access to latency counters in VPA.
-> 
-> 
-> Gautam Menghani (3):
->   Revert "powerpc/perf: Add per-task/process monitoring to vpa_pmu
->     driver"
->   powerpc/perf: Update prev_count of event to get accurate values
->   KVM: PPC: Book3s HV: Ensure reliable usage of latency counters
-> 
->  arch/powerpc/include/asm/kvm_book3s_64.h |  3 --
->  arch/powerpc/kvm/book3s_hv.c             | 54 +++---------------------
->  arch/powerpc/perf/vpa-pmu.c              | 16 ++-----
->  3 files changed, 11 insertions(+), 62 deletions(-)
-> 
-> -- 
-> 2.56.0
-> 
+You are right, my mistake. I misunderstood the question.
+
+mr-selection selects PCRs for Quote, or an extend-NV measurement
+register for NV Certify.
+
+An NV-resident EK certificate is retrieved using NV_Read. I think
+blob-instance is a good fit. For TPM certificate objects, it could
+identify the certificate's NV index.
+
+
+
+>
+>Also, AFAIK, mr_selection is meaningful when the evidence_accept is
+>supported.
+
+These are independent. mr-selection chooses the measurements included
+in evidence. EVIDENCE_ACCEPT authorizes a subsequent native transition.
+The TPM provider can quote selected PCRs without supporting acceptance.
+
+
+>
+>What is the relation-ship between mr-selecation and getting the TPM's
+>EK certificate getting from NV storage?
+>
+>-- 
+>Sincerely,
+>Yeoreum Yun
