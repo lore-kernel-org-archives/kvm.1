@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793989184;
-	b=XJhBs7xZZ5Le7WBagY84TvtY2layg63zBxpKrpAI4uxLzD8mEwoHcWkHTfwS8ofc1eAj
-	 sKXlMqEXp0mCaU1Z6yhvpP27hwqrTf2Fa/QkHXHoZGurN3iJPUqgCLzCagXu/SA1cHNeh
-	 SJ0gITAh6t8ueSfzNg+0q6Bl2+NscffmnP5MZIbdltWw175YObhF85GQCrrHDW48xZCFc
-	 XL57R3BPe4LYWqjYAShalbmiAMP93iVSI1fWIfI+ogATzWt39hkBpoKw71YuSWbsI71yh
-	 iez8FiSU3/9mskdn540JtZOwYzuaWMfsnyw+stUh91SdOrH1d5SHe067p8w1ukFCnUA==
+	t=1793989280;
+	b=1vdhXToyoXHAv63VE+9eeQg2Ji30Cpk9i5hqDddh+aToLsy9HWZRvIzW8u7F4ycrSNaX
+	 BO9oCXBFOhTuJ6V3dt4MCa3T2K+4xSVL80HK2FUesA1MorPGhROUTJfhU/sYI+JOU8r8P
+	 nxRaU8+ftElPd7takJEE5CmhmTMvs/cbzhp5NuYlDJNROJvd/vt9Apfz7oyb2x+hYg571
+	 8iJMHLCH7Qv4ccCDwW976Suxo08pc3HMDk6lAeZXLDP9wkPo37sIoJ5o/cVBlEo6Qmnsc
+	 nvlPyKkWeLLbpMZvHavuqdjzkgr5JShzPgVsUHgiTFkA6pT4B1EqOvxB9+dfY+Q2qAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793989184;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793989280;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=MTuiUC1h2NKtHU7YdcHmw2Q8zH5iW4pR7cbqMM6/21Y=;
-	b=d246shtUixxO29bAQo7Zd/xzNK/YafdHM6f/RhVN6hXwwIWoLJRl4M0RcXiu1sIcellr
-	 xre7z/syMDrZe2Uyjfn/EF9LDabyydALAihTfW8joLcZ5iGEZIRC8joedf2NGqQ1Uxc+K
-	 5oHlpV3fX2sDGSOTZC5vcHE09N8qvBvWw1d+2F8hTV7vR6H7BA5KKZPIuZWlFrhO5ta64
-	 +BcFFua7OcnTIJXAXz5peZizmw8OA/YiaiWzfjOOff+EymycE6kFTmchWjES/qNO21KqY
-	 0t1P3ySMBUKANjzbYtGfclVG+hCTpn9hD567wtZ2Xro59pEjfYXhjhIXZfbegCeUrgw==
+	bh=bzTsikQIe0Lm5u/5x1GkaL87bNsKwsJpmNXeeOvE4T8=;
+	b=UIQ3i6Wfm50GrgQuyWLX0dIIyNF+duHVuH9WvZ4PMUHMaVkvGhCOtzgfuCgi37eDbMED
+	 k9Fm6ATKhQK8ol9TU9WBozTSycMhcjsKAYSicZMKVtUTSMK+ArIQtPeCz0WV6Pl/2+Zmj
+	 55y1fZFmtwiIciZwEQGLdQK37HbKFli0jiuh+NVti2afXPmh6ApqGaUgkzwhv/wQBZDJj
+	 mLwvKjLVqXqzVWeD1GPBSOwbF7G0wgvHsYwSYAft3jMlHDnAl9RhyvAmaVYP7uac9hXoi
+	 F9hvasyAzRomGaR4RU3cnqa+L760nvGUJYQS8BaBeVCQGN0tGUFfXdfOBqoq+Ihvu/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QqP5S3XG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LIWXUC0Z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B834D606A326;
-	Fri,  6 Nov 2026 18:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96D1606A336;
+	Fri,  6 Nov 2026 18:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QqP5S3XG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD07E1F0089F;
-	Fri,  6 Nov 2026 18:19:42 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LIWXUC0Z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3841F008A5;
+	Fri,  6 Nov 2026 18:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793989183;
-	bh=MTuiUC1h2NKtHU7YdcHmw2Q8zH5iW4pR7cbqMM6/21Y=;
+	s=k20260515; t=1793989279;
+	bh=bzTsikQIe0Lm5u/5x1GkaL87bNsKwsJpmNXeeOvE4T8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QqP5S3XGUj2ZwvX2Es2VLLvLdx4x3A2ps7jURNmpp9X/d0adxJ+KHzzuLTEHTWDre
-	 Z1oHxlBhVxAqYa1/APjOf29t/Q9B6G1cNn0PKxPwgeMvgLkY4CC+zNFfbllYxvFP7e
-	 stlUgU8s9eBMa3eX+wiHBCZnBDTBWZDkDL2LKaZSE+J1LD/d/XllwamIaJoB0UTd5o
-	 4vCs0JBAKgQVUBqeYyHV3bCiA/Ib6PydzSWnSL8h2vlz8tZsBKD+5vhN5JKrs8xWcD
-	 D74smc4svBJncjKVtnig6UcxRGX5LruNEZIf8/NGiqy37WMtkWeCg7IMq7B66uVUJI
-	 Rg0GMAlju2+GQ==
-Date: Fri, 6 Nov 2026 18:19:41 +0000
+	b=LIWXUC0Z60FM0SIxWrjPsUEnOqXdBR+ozF1HNGKwDSFSnaH+Tk6Yx6PQkAv1YM65N
+	 Iht0pgYX8ZSweS3z2Sd+nw1X0OP37i8C28sqjHB/raL1GTgGZkSQoHhsIRbaN2z3Sh
+	 38KEVe6Sb4KXoe2yohqx5V/KuxUSpI4QpEjMGJXxqUL4TNEWykwoerEHeXubuxCd+o
+	 12HGVHivZHu/u6ojtdKCplfAgUQzsnufyDY/h3pob+DGo0qWdxnpx0V/uKsffAfuiU
+	 uex7NjjuTenwifLBNs+0GYKeKiDLhYXe7tfWJ650UAfhRVivkrqVmr0npfOW4ClHrC
+	 8wovP9d8NM1iA==
+Date: Fri, 6 Nov 2026 18:21:17 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Zide Chen <zide.chen@intel.com>
 Cc: Sean Christopherson <seanjc@google.com>, 
@@ -48,11 +48,11 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
 	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
 	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v3 01/18] KVM: x86/pmu: Remove redundant Perf Global
- Status MSR bit definitions
-Message-ID: <au4aNg22tUx2o4at@google.com>
+Subject: Re: [PATCH v3 02/18] KVM: x86/pmu: Rename all_valid_pmc_idx to
+ pmc_exists
+Message-ID: <au4akzNMjwzQV_ic@google.com>
 References: <20261106013927.166209-1-zide.chen@intel.com>
- <20261106013927.166209-2-zide.chen@intel.com>
+ <20261106013927.166209-3-zide.chen@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,17 +64,12 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261106013927.166209-2-zide.chen@intel.com>
+In-Reply-To: <20261106013927.166209-3-zide.chen@intel.com>
 
-On Thu, Nov 05, 2026 at 06:39:10PM -0700, Zide Chen wrote:
-> IA32_PERF_GLOBAL_STATUS and its SET/RESET counterparts share bit
-> definitions with perf_event.h, which is the canonical home for Intel
-> PMU bit definitions (e.g., PERFEVTSEL, FIXED_CTR_CTRL, GLOBAL_STATUS).
-> Drop the duplicate definitions from msr-index.h and update KVM code to
-> use the macros from perf_event.h.
-> 
-> Drop the comment as well, since the macros now match the MSR
-> naming.
+On Thu, Nov 05, 2026 at 06:39:11PM -0700, Zide Chen wrote:
+> all_valid_pmc_idx is a bitmap of valid PMC indices, not an index
+> itself; rename it to pmc_exists to better reflect what it holds and
+> keep the name consistent with other fields in the same struct.
 > 
 > No functional change intended.
 > 
