@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793937441;
-	b=OfLTa7IMa31e8OAd0Gxsk01TR/81v3zvTmBrpy6yFHRoejosNu2xTEPdtRAE+TRgy6WE
-	 beucqR+PUMsaydG+2ChAlDWP7qhltvR2PUHEFBqXc/BTXboc/FgYJcgN2YHwjGMhVWLl5
-	 Cx6Fjfl0enPnFDVuqyRzTocNeDwu9z7dT9FcYMd8qBtBGKlHrUHL/v4kajtx8bxSdBjS6
-	 RUyhQmmzVR7UPTcIOX1mjZnLuYmwiCv1PDlBAvEWNV67J5pn5m8d5oghmcuCBlhrAvBNV
-	 aMem45az+3YNS/+kDB/cZD2ufJX+UnQfkdtFyDpvHYri5zCt1km6ZTdM5zuAFNrVexg==
+	t=1793937680;
+	b=qdF8OP0UtdQSqKZpwYo6so7cY2NYGcpG+wRmGw+ZWitra5Z9YTzjL10GSr+kfZNmV5Gu
+	 C9uUZ3agYVVJnM0YiDs6bD5SEJN5HJx3Z8nqKIMQR3UZqj2nXUmtsoQospkVjJ+CAZYNK
+	 yw+5HVyBhyQ37bsF4G1DGeTRF7IbdDhSI57KgeuIZoZR2/dVMze5aMbM3Get5w+0PbQYa
+	 VPSVKtuZ72ZIU3k6T6rbnqCoPoblOPc2NpDaOjzu7bhRONrjE6ako+mhdtp0MN7Lxgefc
+	 JQ1GD34o8FjQitXwch9N+HuQ4FG1WOsptXZ/f1E+Z6Ozx0Zme9mZuL5nHG9DqKB1veA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793937441;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793937680;
 	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=lHXR2FH3bh5spT35/G4nG+cv25q2yTDGLvo0NNx3ZVg=;
-	b=DxTG+R6Pp2ZbCRlEgO6Qw/F3oMDfT3OYdd91XxBqWGFSn5zNslbM+JyVfLTpwwISQHGX
-	 1+0+lzwrtuK2HKa45hmXrgcmWbjfeTpV6rVDfEckFO2L60+ZtldX0aaYRMssxBlBkjghF
-	 hsOxxbEyIVXB5Ccnqc7/usybmGCdOKtJjmFxL07WjnDq6Ge7wx5RGF9QFmm9u1k9A+u5G
-	 10LSpoADGV0G6fNRwRQ+6QmdZ2vINKKTO8QiQ+/8Se/GpBh9TCzTsYsp9wu5IFeFMGMLF
-	 bZUvRf2tv/jRy3OBL0Ji5tEGujsYatMI2tNrEvrA1zV5cRttUzCB4rK/rs3hQy0IWUA==
+	bh=EKI7PGZaHzRnKhw9+Gxl7Ck/B2CGZVJrrWzNjxtIAHE=;
+	b=ga0Kq91ANqET/G78+3D8VzFYDqY0eug7T+85dFlUK3UWDSpm6MBT2echieqEzDu3ns0c
+	 e+kmJq1sDLRIxxx9lCDce155PqNjZ9AG9rnAhARtsf+ryEBxeDFCFC379tY6Jim7SVSNW
+	 +PAgU/aW6aDgUXL3U06C1DSSukBqxxDCDvPV22DRyiGnR4L5pQYY1tVR9EGl5E0yiSVjG
+	 FPgFeyWMdlsp3FCU9dpJ4fdGr+J0oBgPYYs+u6Linu5IhzdvPfCKuvn3jc/bxg5Sf3xIR
+	 SlSrs2kbRtKJ0hYVrG/JeXti+yARQEl304GcUCR2V3C+RdDxHbWcBAfM+3WsFTyHd1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XqiaXlxi;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LNdgrU5z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AC9606A332
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 03:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35677606A337
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 04:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XqiaXlxi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078E31F008A7
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 03:57:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LNdgrU5z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCEF1F00906
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 04:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793937441;
-	bh=lHXR2FH3bh5spT35/G4nG+cv25q2yTDGLvo0NNx3ZVg=;
+	s=k20260515; t=1793937679;
+	bh=EKI7PGZaHzRnKhw9+Gxl7Ck/B2CGZVJrrWzNjxtIAHE=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=XqiaXlxiATDzJrgw9f0OYt1TfHLb2ipTeIcKivy65nis0f6TmA/08oHIZ0R0nf5m6
-	 nUvgA0EXaiwf1XpMUGGc013GsyUxECqfq1Uh00oLL7zzVrZ//HgstfV0QrxF9mqluK
-	 NKkBvgk64ubOOcbPj23ww4CMq5VaK+O5NA3iSPWNPiVWpS/jS5m6iqdqtnQXeGv5w0
-	 y48/IZagRGHa+F1jeQ+VqNbGxtUf9G7I+pzA0zivc6NUUr/7OjAG+Y1R8Paj8q4Cin
-	 LMpizKHXpmKlbmYFDP5mLxbU6mR0aZreEhaVl2amkcHQT9fKPqzhlS/9aCSoy1O64o
-	 /7S9mxQbxAZMA==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93efc0452b5so15550985a.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 19:57:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwuHRFEvYscjjGZ1BLod+VrXNcVUcQXRhQSY2+XJ4+HdNNRvfiShTgkdWFKu0aZzL0I+RE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/b8V5VZyUKo0Ycy1lLPEQt9JROKBuw0cwSfD9R/kZDkfzJcL3l
-	3DnNE4b6fvbDc+QkAfQhp4gMWlBkB0Rs6JFyCT/qbszh9fqMXw80Znv9ogTTThJxEQtWQHqvOiz
-	ovmnrA7dz9rm3kVQIAUQLzShvCyzA0XI=
-X-Received: by 2002:a05:620a:6c88:b0:939:b8d6:9b1c with SMTP id
- af79cd13be357-945f34af2acmr198595685a.19.1793937440071; Thu, 05 Nov 2026
- 19:57:20 -0800 (PST)
+	b=LNdgrU5zM2nugBvZVCR02iYgDIFmlQHM3kqBcyp/SVdk7mtCDyZg91KEZW9QGqiq4
+	 pTrdL/v5+Sridp9dwQOz13aeDVsJ3H2YdUTQ2WgTqzAN3jOXnwlTOnh17e7nKmSJJS
+	 cBGQ2Hysr/0o2u+C0HNxL4jSArWNZCkAWoE4VqHwdeCR6AmOWsinVXhs4XeD3AnnYL
+	 NyyqQbfWqKaONffmcdGvCd7zgPIyaaZdh/1bZChmRJVWt9bEoba8Mj9VPdtvLQJHSL
+	 LtcLpkBtQervU2s3YqAwlJwk+9qPdvnWWnyivKaN8yf3MXd/mXhVPuD1TG2CyQRZXk
+	 koUxpIOcYqO3g==
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-53381e53b80so1863571cf.1
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 20:01:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBxs9PvmUzA7VgCV7SBiwZRMlgDf0aGrT4zbCUKBuaHaddC1Y4KQE51XW4os+WHllJvE7cY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/xQrxuLfjKMnPD+FABib+SaBaJJgTKGPwGbi3Gu+R97MkWdSry
+	EZUp2IezsU1yoQPaCrmi6xndsm+Fy2x827IwYCBQRIs+3QJ/k1viaFeufATwQSY+UFw+HMToyMk
+	m84DyetI1sMpu85UgCQW6zZzyRf0g6Wk=
+X-Received: by 2002:a05:620a:688f:b0:93f:5f83:2cbb with SMTP id
+ af79cd13be357-945f33a9aa3mr181925685a.7.1793937678322; Thu, 05 Nov 2026
+ 20:01:18 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,14 +59,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
-In-Reply-To: <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
 From: Barry Song <baohua@kernel.org>
-Date: Fri, 6 Nov 2026 11:57:08 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wCd_j5or0uHwPLq0PUixcXgiFim=_d7uUhUhAuQf0nTQ@mail.gmail.com>
-X-Gm-Features: AclHuK8deEInzaZZJ26UPrq6mS-8I8VnGN9Ocbio_nvLAi7VvywQ3Ss3UdDHcfM
-Message-ID: <CAGsJ_4wCd_j5or0uHwPLq0PUixcXgiFim=_d7uUhUhAuQf0nTQ@mail.gmail.com>
-Subject: Re: [PATCH 03/13] mm/rmap: convert remaining VMA flag tests to use vma_flags_t
+Date: Fri, 6 Nov 2026 12:01:06 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zKtBarGn2gMEH7ckKtLLgugoyPb040Z2KtXX5Feye1Mg@mail.gmail.com>
+X-Gm-Features: AclHuK-043SJnHCawrQog3yw2g1v7cvWQi1ZSPtdBLorMSdL4MZoNdMju91VkJk
+Message-ID: <CAGsJ_4zKtBarGn2gMEH7ckKtLLgugoyPb040Z2KtXX5Feye1Mg@mail.gmail.com>
+Subject: Re: [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
@@ -111,12 +111,17 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 6, 2026 at 5:32=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+On Fri, Nov 6, 2026 at 5:33=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
 g> wrote:
 >
-> Replace the remaining uses of the legacy vm_flags_t flags in the rmap log=
-ic
-> with vma_flags_t values.
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values where
+> VMA flags are tested directly in the THP and khugepaged logic.
+>
+> The thp_vma_allowable_orders() family of functions, hugepage_madvise() an=
+d
+> khugepaged_enter_vma() continue to take legacy flags for the time being.
+>
+> Also update BUG_ON()'s to VM_WARN_ON_ONCE() while here.
 >
 > No functional change intended.
 >
@@ -124,37 +129,4 @@ ic
 > ---
 
 LGTM,
-
 Reviewed-by: Barry Song <baohua@kernel.org>
-
->  mm/rmap.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 1131b76bbbc2..cdc97fec8586 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1196,7 +1196,7 @@ static bool page_mkclean_one(struct folio *folio, s=
-truct vm_area_struct *vma,
->
->  static bool invalid_mkclean_vma(struct vm_area_struct *vma, void *arg)
->  {
-> -       if (vma->vm_flags & VM_SHARED)
-> +       if (vma_test(vma, VMA_SHARED_BIT))
->                 return false;
->
->         return true;
-> @@ -1660,7 +1660,8 @@ void folio_add_new_anon_rmap(struct folio *folio, s=
-truct vm_area_struct *vma,
->          * VM_DROPPABLE mappings don't swap; instead they're just dropped=
- when
->          * under memory pressure.
->          */
-> -       if (!folio_test_swapbacked(folio) && !(vma->vm_flags & VM_DROPPAB=
-LE))
-> +       if (!folio_test_swapbacked(folio) &&
-> +           !vma_test_single_mask(vma, VMA_DROPPABLE))
-
-Right, VMA_DROPPABLE_BIT is not available on
-32-bit architectures, so vma_test() cannot be
-used here.
