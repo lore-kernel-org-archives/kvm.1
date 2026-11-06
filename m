@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793929841;
-	b=KDHxRga8N+M5vkgbNh3dtgMvwvZw7VV+SYx+tcY2+6JLlgGAnWwcGmf4P0F7Swj6XbJA
-	 yc1SnEWD4KL9Seg+/AoBmddSKC/+bOJnaopSTB6HO39a5/XakF/YThZmngdiOl20Nx3vy
-	 +uhDTjp/eFByAu7snpw/OKsRM1iPowuTzSoajgDNNvz4biRxHs5pVMB3OgU0M0AbnbyZq
-	 Dg/vKoMvCWkO6HCOLF315rISQiY03M7x6o2kt3I6KGblbKS4hsZoxAeyihSlLQGY0BAGK
-	 E+fZXu/4em1dCTSFwths/YYnpNp5V8MzNDxUE+oy/Vs6eFDb3mebyajfCPQyxy0UVSQ==
+	t=1793929833;
+	b=yS9VtpBu5OdRbBPaGGolnP1RimL06D370tdMRA/9plvXZUL+JcXDY2X1IumJ/rQD57YB
+	 19tgWUi6bmOGxGj2gfhoGgJryScsRqRbbniSUIr2km5k8O3NA4LldjZ8pd+vhxw4vwQP/
+	 xQjfsT8W0iz83dd/VPP0Nq7J2Gs6hwp8SesqCMmw9U1qq/D3nUks4dxZ6QVdg/aFYGdTv
+	 ChOiJQjgXtb7UGAtnVcH/gICxvUCWZ8xx8AX7H95yhemWrIZqb5dwB5Jc7+RHpiHzBho5
+	 Y5cyq26FUY2nFUXEHSDojhb0i0t6x8aMqKJwccdVL5QMUTFBAoMZUosjjGw18xlVTKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793929841;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793929833;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=k6GpxUSOBkepNG/7AUTAINEEEyPxCb8lZe4Y7y9q6EU=;
-	b=t/KBb9AeuZEZ7Ynm0tOl2w8A8+hkDVCNjYsU9mynMeIiiUgzO6NMoJIwxE08ZhVyXd6/
-	 GnvYPtMBpRFXMAbW1lasD+ux4uc5+IXnA1i1zo1qbAhzwgpVXzPWp912qOBlYUyrwoWC3
-	 4CY7CP92tDDeWwxhshzMr44ogXbMEOtfTJG/RAozQ+OxpF3Z5DWmH5AXq5sS9Z+EI/6HM
-	 EiinIkqunziYcfgiNunCcZq9R4XWmWTfECu2zQ9GSTJLgA2RdCK67mLsy9tKPWzmzDz+d
-	 JZG4x0o+mPB1RbzxfHhkcFg4KP2ddhNVHNgiGo4Z6sPnPQgVyTgMEV9+GXiRfVYlq2w==
+	bh=RAewxd9+PEcCdF8Fwg2UTOtSDMqmFi0KIUl9u9FAQBw=;
+	b=3T6Ab9EBlfflnz3cMvxlN+7c4E1KRh8zDinIu94jvUoPZalcQw/oG1tABNunB9JOjLl2
+	 PcbBdL+uHyYfLBXWz/4BIAEH9w5zin1fJYWCaBrtEWI/daoIvLLk2gmCbnH/ZZGN1wI0Y
+	 n9DryOhzK2e88mkiapNV0ThXNpRZqGwG8nBaufCJkXlqRXphGsr0kik3YI/YRhadQ7+hO
+	 D7ydXhFJsjpuozsw86rcBNoPndFblVCrgodVQfYr+VXe8o35g4CrdZ7dOkKDzIlMLeztZ
+	 ePlYOiWd0xWyXQxLo3phe+LVn07PmnqgS3U3UwYh5JEYA2NBDMOHPp+JqfaSa1UhpLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GTZlI7mm;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HYRzI7OI;
 	arc=none smtp.remote-ip=198.175.65.15
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A59606D82D;
-	Fri,  6 Nov 2026 01:50:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52A59606D82D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D03C606A329;
+	Fri,  6 Nov 2026 01:50:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D03C606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GTZlI7mm
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HYRzI7OI
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793929840; x=1825465840;
+  t=1793929832; x=1825465832;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FKf79K3Z0P/wrLSbHeO46/+gfErlRjAZZxxoEJusUp4=;
-  b=GTZlI7mmP5m2+5SNc2JqJn2cRvSrDvr09AjZjQkEET4UkcWlbyZDkYOj
-   GjaG+OWG/rMRAx14ghhCVJmsuzA0UKiMia3EkUjj6XbB3kqHyKo37ETJE
-   kluebL1QexQtqn3BRi7tig7gYTrCVrKaPZv70lnrU8qPxWHQg67BXqK41
-   S9gUHc4Wwo9DEil5fRm3VbpCLLl5xq47Ztr/Le7jNk1zA0Ce0YekfrK1o
-   juMLcqsp8oQUa2jrK/nimI3WO9VJc6gfel1HbCogIoh8+y9s5nerYRsgf
-   KDYVN2Uw84fnstrR8pH5Xidvi1sPCXdTBH7SlFIG8Vv9g7q/y4fjG3jhK
-   Q==;
-X-CSE-ConnectionGUID: 8c0ufQsRSEqMMhMddmls7g==
-X-CSE-MsgGUID: 9CjnALGDRGCEX84lekLS+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2740205"
+  bh=4qYcfZuBzVUeYYmLj7ixMFnAtydAwbCLFI3fsIcxRas=;
+  b=HYRzI7OIg+J8RnSKlVdiQHQcTqRwFbw6yvXNGUkLVibAQmBklHQfujqg
+   KEc1PPx68HErnXZKBE2sDrz6x8Jn5nFcpzmUj5QtA8MlCzRZ89GnjQx+n
+   EhUK0cGHan0McTJpJ9S961Hx5ZrVs2cZ10EwvsPNBGZ9ong0ethreiGHq
+   B06zEH1NXXxJRj1cpCF0MlLb3rsR7WJG5GcY17kwK5Z1bcIiwmh3YvB+a
+   n6zJrnyTh22qel7Lh3xP7dzDkpXN6IAmUn3Mm/5aczcf+iOL1OhXkZDPb
+   y4d/YH0l4ctTrjWGLEnWef0H1t+xOlaPoDILlHiPXHbufhF/RCGI3h+H8
+   A==;
+X-CSE-ConnectionGUID: btE+kVDHTV6a9Ro5y98zkQ==
+X-CSE-MsgGUID: J/TtIeubQ8+a54lEB90/dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2740114"
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2740205"
+   d="scan'208";a="2740114"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:32 -0800
-X-CSE-ConnectionGUID: qpMbqxXLR7eZbw5p2M6eBw==
-X-CSE-MsgGUID: DLIF0L22QDa161UoGmulow==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:30 -0800
+X-CSE-ConnectionGUID: qDT5Ui0oQwWBqHOrgQfwIQ==
+X-CSE-MsgGUID: IKXhFjEEQou2kBHm94JBxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="7067211"
+   d="scan'208";a="7067167"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:31 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:30 -0800
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v3 16/18] KVM: x86/pmu: Ignore AnyThread bit if CPUID.0AH:EDX[15] is set
-Date: Thu,  5 Nov 2026 18:39:25 -0700
-Message-ID: <20261106013927.166209-17-zide.chen@intel.com>
+Subject: [PATCH v3 01/18] KVM: x86/pmu: Remove redundant Perf Global Status MSR bit definitions
+Date: Thu,  5 Nov 2026 18:39:10 -0700
+Message-ID: <20261106013927.166209-2-zide.chen@intel.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261106013927.166209-1-zide.chen@intel.com>
 References: <20261106013927.166209-1-zide.chen@intel.com>
@@ -94,118 +94,82 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Intel PerfMon v5 introduces the ANYTHREAD_DEPRECATION capability
-(CPUID.0AH:EDX[15]) to indicate that AnyThread counting is deprecated
-and that writes to the AnyThread bit in IA32_PERFEVTSELx and
-IA32_FIXED_CTR_CTRL are ignored.
+IA32_PERF_GLOBAL_STATUS and its SET/RESET counterparts share bit
+definitions with perf_event.h, which is the canonical home for Intel
+PMU bit definitions (e.g., PERFEVTSEL, FIXED_CTR_CTRL, GLOBAL_STATUS).
+Drop the duplicate definitions from msr-index.h and update KVM code to
+use the macros from perf_event.h.
 
-Preserve the guest-written value in guest-visible state so that guest
-RDMSRs observe the AnyThread bit, but strip it before programming
-hardware to ensure cross-VM SMT isolation.
+Drop the comment as well, since the macros now match the MSR
+naming.
 
-Continue to inject #GP when ANYTHREAD_DEPRECATION is not present in the
-guest CPUID, e.g. for PerfMon v3/v4 guests or when the capability is
-not configured for a PerfMon v5+ guest.
-
-Advertise CPUID.0AH:EDX[15] only for PMU version 5+ guests, since the
-bit doesn't exist below version 5.
+No functional change intended.
 
 Signed-off-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
-v3:
-- Exclude Fixed Counter 3 bit 14 (METRICS_CLEAR_EN) from the AnyThread mask
-  so it remains reserved in fixed_ctr_ctrl_rsvd. (Jim)
-- Preserve AnyThread in guest-visible state (eventsel/fixed_ctr_ctrl) to
-  match bare-metal RDMSR behavior. (Jim)
-- Removed it from the hardware-visible counterparts (_hw) so that it
-  doesn't need to explicitly remove this bit in intel_pmu_set_msr().
-  (Jim)
-- Re-use intel_pmu_fixed_ctrl_bits() for AnyThread bits computation.
-  (Sashiko)
+ arch/x86/include/asm/msr-index.h |  8 --------
+ arch/x86/kvm/vmx/pmu_intel.c     | 11 ++---------
+ arch/x86/kvm/vmx/vmx.c           |  2 +-
+ 3 files changed, 3 insertions(+), 18 deletions(-)
 
-v2:
-- Advertise anythread_deprecated only if kvm_pmu_cap.version >= 5.
-- Add the missing AnyThr bit handling for IA32_FIXED_CTR_CTRL.
-- Update the comments to be clearer.
----
- arch/x86/kvm/cpuid.c         |  2 +-
- arch/x86/kvm/vmx/pmu_intel.c | 28 +++++++++++++++++++++++++---
- 2 files changed, 26 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 00a2ca6d3049..66e68a867946 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1549,7 +1549,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
- 					    KVM_MAX_NR_FIXED_COUNTERS);
- 		edx.split.bit_width_fixed = kvm_pmu_cap.bit_width_fixed;
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 3a8e51a0c9e8..30cd04c0ace9 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -1245,14 +1245,6 @@
  
--		if (kvm_pmu_cap.version)
-+		if (kvm_pmu_cap.version >= 5)
- 			edx.split.anythread_deprecated = 1;
+ #define MSR_PERF_METRICS		0x00000329
  
- 		entry->eax = eax.full;
+-/* PERF_GLOBAL_OVF_CTL bits */
+-#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT	55
+-#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI		(1ULL << MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT)
+-#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF_BIT		62
+-#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF			(1ULL <<  MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF_BIT)
+-#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD_BIT		63
+-#define MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD			(1ULL << MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD_BIT)
+-
+ /* Geode defined MSRs */
+ #define MSR_GEODE_BUSCONT_CONF0		0x00001900
+ 
 diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 6bd7c8e03c14..961d16e7f31f 100644
+index 70a8c4816135..36d91215f42a 100644
 --- a/arch/x86/kvm/vmx/pmu_intel.c
 +++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -67,6 +67,13 @@ static u64 intel_pmu_fixed_ctrl_bits(struct kvm_pmu *pmu, u64 bits)
- 	return fixed_ctrl_bits;
+@@ -579,17 +579,10 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+ 			 ((BIT_ULL(pmu->nr_arch_fixed_counters) - 1) << KVM_FIXED_PMC_BASE_IDX));
+ 	pmu->global_ctrl_rsvd = counter_rsvd;
+ 
+-	/*
+-	 * GLOBAL_STATUS and GLOBAL_OVF_CONTROL (a.k.a. GLOBAL_STATUS_RESET)
+-	 * share reserved bit definitions.  The kernel just happens to use
+-	 * OVF_CTRL for the names.
+-	 */
+ 	pmu->global_status_rsvd = pmu->global_ctrl_rsvd
+-			& ~(MSR_CORE_PERF_GLOBAL_OVF_CTRL_OVF_BUF |
+-			    MSR_CORE_PERF_GLOBAL_OVF_CTRL_COND_CHGD);
++			& ~(GLOBAL_STATUS_BUFFER_OVF | GLOBAL_STATUS_COND_CHG);
+ 	if (vmx_pt_mode_is_host_guest())
+-		pmu->global_status_rsvd &=
+-				~MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI;
++		pmu->global_status_rsvd &= ~GLOBAL_STATUS_TRACE_TOPAPMI;
+ 
+ 	if (perf_capabilities & PERF_CAP_PEBS_FORMAT) {
+ 		if (perf_capabilities & PERF_CAP_PEBS_BASELINE) {
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b341af4c6057..efde96e15533 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -8477,7 +8477,7 @@ static unsigned int vmx_handle_intel_pt_intr(void)
+ 		return 0;
+ 
+ 	kvm_make_request(KVM_REQ_PMI, vcpu);
+-	__set_bit(MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT,
++	__set_bit(GLOBAL_STATUS_TRACE_TOPAPMI_BIT,
+ 		  (unsigned long *)&vcpu->arch.pmu.global_status);
+ 	return 1;
  }
- 
-+static u64 intel_pmu_fixed_anythread_mask(struct kvm_pmu *pmu)
-+{
-+	/* Fixed counter 3 repurposes that bit for METRICS_CLEAR_EN. */
-+	return intel_pmu_fixed_ctrl_bits(pmu, INTEL_FIXED_0_ANYTHREAD) &
-+	       ~intel_fixed_bits_by_idx(3, INTEL_FIXED_3_METRICS_CLEAR);
-+}
-+
- static void reprogram_fixed_counters(struct kvm_pmu *pmu, u64 data)
- {
- 	/*
-@@ -83,9 +90,9 @@ static void reprogram_fixed_counters(struct kvm_pmu *pmu, u64 data)
- 	int i;
- 
- 	pmu->fixed_ctr_ctrl = data;
--	pmu->fixed_ctr_ctrl_hw = data;
-+	pmu->fixed_ctr_ctrl_hw = data & ~intel_pmu_fixed_anythread_mask(pmu);
- 	kvm_for_each_fixed_counter(i, fixed_mask) {
--		u8 new_ctrl = fixed_ctrl_field(data, i);
-+		u8 new_ctrl = fixed_ctrl_field(pmu->fixed_ctr_ctrl_hw, i);
- 		u8 old_ctrl = fixed_ctrl_field(old_fixed_ctr_ctrl, i);
- 
- 		if (old_ctrl == new_ctrl)
-@@ -500,7 +507,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 
- 			if (data != pmc->eventsel) {
- 				pmc->eventsel = data;
--				pmc->eventsel_hw = data;
-+				pmc->eventsel_hw = data & ~ARCH_PERFMON_EVENTSEL_ANY;
- 				kvm_pmu_request_counter_reprogram(pmc);
- 			}
- 			break;
-@@ -672,6 +679,21 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
- 
- 	pmu->fixed_ctr_ctrl_rsvd &=
- 		~intel_pmu_fixed_ctrl_bits(pmu, fixed_enable_bits);
-+
-+	/*
-+	 * AnyThread counting is not supported by KVM due to cross-VM
-+	 * information leakage concerns on SMT cores. Therefore, AnyThread
-+	 * remains unavailable for PerfMon v3/v4 guests, where AnyThread
-+	 * deprecation is not enumerated.
-+	 *
-+	 * On PerfMon v5+ with ANYTHREAD_DEPRECATION, writes to AnyThread bits
-+	 * are accepted and preserved on RDMSR, while counting behavior is
-+	 * ignored.
-+	 */
-+	if (pmu->version >= 5 && edx.split.anythread_deprecated) {
-+		pmu->eventsel_rsvd &= ~ARCH_PERFMON_EVENTSEL_ANY;
-+		pmu->fixed_ctr_ctrl_rsvd &= ~intel_pmu_fixed_anythread_mask(pmu);
-+	}
- }
- 
- static void intel_pmu_init(struct kvm_vcpu *vcpu)
 -- 
 2.56.0
 
