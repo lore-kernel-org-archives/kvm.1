@@ -1,133 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794003051;
-	b=IR59uM1AyfixRjnukO/YZjUUUNj+W1FGM69hMhL8sr2ScTWK0DtvRBCuL5LRJqzd642B
-	 sOaqmVOSrgCyIJpxNfJlPWqRvId65xjh+gZ0S5nfH4pNriY0Rj8dZ5lJe4kuTbgfA/6Uz
-	 50+tkXE/hItL5Tgc+fzOfLPeNW83G4OwL3Az5ACPlrfHNjkDb2pJozLb56fYB1sxRQn5f
-	 XcHQtYT+Uv6sPjp2pc0yJIs6BmrzI1yjghTcNTdcZx6xgnKekWX4cg4EvXNwDH7HQS1MI
-	 j3sJIJXQZwf6iWzEyxVfyrRUI3S6Zbz+hTk55sm1ZG0ToFbavpUrX+6FN3hIsWKR82Q==
+	t=1794003574;
+	b=aj8AG4MRViQYAFF22gT38EyePbNw80mtZbJkkFbsvabEzBZZ8XeWiEhuCp/82wVU+6vO
+	 OmU47tSfN8kPf83oY9U68nUgYmOYYsqsU+AtYkkp2Zo4uqLm+a3wU27SmXC8+NZRLRzf8
+	 8X7I75Nw2AQiK8SpK8Oo0CT+AxbhlmkAtRgSv3hEBH3IT3hFx6105tLO10X0lB2n2IexU
+	 ZIJBRbUprwy3FfpoMonUw5rVLNHuPfaXwnhtZD66oSBr8S1/bYMit6PIzGa601QxIJ5F0
+	 UpOv8gY4CnhE2vZ6OIwdJS8zaep8KQ3OBCteJbwep628TFhlzDZsF+Ibix4Nhbo6Hjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794003051;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=QccVIHCCeW+j3JKH26Y//JlAzW2DNSmEXbLjeGbZAa4=;
-	b=qgGVhOPmJwVxaAeEXPVt/jt5EamLT+ts19b2KXneqooxXan+uBb7rMwkN+gWyfOTngRH
-	 /W5uFxB/Pqegf9u0H6oPY3hBAh211jQG12nsXPyMjeX7/ylnQvKZunp6ZlTVA+LEMQOKp
-	 mfRDwgHo6fMwn6ZLU4x+E55sSpaRZMG6SKmguO0t/n7Xe1YMioCr5NceWGhbVzlhuWMcY
-	 Ud4Dh8cgtInpqU08IiiR9ONu3ligjAOHGHRczVkfcsGS4uGE6eg2e4i4GJ5XDgu1pZv8m
-	 SRmWznzLSP8ukdEyOZUtC6BhVTlMCvzSBsxhvKc0JzGAHQtmZ9hBO6lssZZ6JRFAyTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794003574;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=1zCuzHohC5b/CUEfdv5fZDG/hMbseqishkj29tGgCF8=;
+	b=cDgQKNn9XPic/y64BYos227KGIS44xhZig4nD7ojyLmCgTbYl6ZRyytGksyK5/EhK2SO
+	 nbAyCLRoLo2PoBowV7ABVJQ/D6YFhE60VQx6G0/3MluiDj31EdB71UP7/ovIv8wGyGCKE
+	 3iGkXcMSNNmD/5PrhwehdseP21J6M6DF19RLH3HBV/S2tu/1q/PUMaiAEazX/jzOsRulO
+	 FtFxvX7bqhh6odh5HVfKpGqoJDybLhYQ5dXwodBnXYnF15513Xz3anJjngr2K+KaQq9+E
+	 Wc2VUXGlFjrRKtHKEl164UeLsbxw6e8rTzenghkH8B4ehJFxJ2biFB8br0dKRwpFZAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=UqWEWw2G;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Wq1B0bzJ;
-	arc=none smtp.remote-ip=103.168.172.144
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZN0NZ9q+;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC671606A32D
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:10:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC671606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476F0606A32C;
+	Fri,  6 Nov 2026 22:19:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 476F0606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=UqWEWw2G;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Wq1B0bzJ
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1AF68EC0213
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 17:10:49 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 06 Nov 2026 17:10:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794003048;
-	 x=1794089448; bh=QccVIHCCeW+j3JKH26Y//JlAzW2DNSmEXbLjeGbZAa4=; b=
-	UqWEWw2GThoHEJKQfjEHOdcQALnA/VCr6x9lVMMMC71RoKJRbfK0srKiPF6XeIFw
-	Pz56TDxJl9BvHN5ckSE3wGU2HPkQ0TQk94jBpsZjmn1ORGdTC3DGDHY3MvNdIxyI
-	s+kCtN7Ej6JCPc/XPNmoH2hAOOjP9Rc/f7URbOc5stOfAQPq4wiIxkc7/XmIBf+f
-	ZXzmHN7mG3ytv1Nyk0hY9l1pk4xcoJCSJeB+yldBbxBLSUMH+OqjmkxvQOL4wIej
-	wZTGPs7S/78T79pK8UBCNLw9hzcnwX77Xv7SufDL0LkL2qCq0uMp2EY2uPolxWID
-	f5Hzp8q1qh/V7pyMyC5E8Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794003048; x=
-	1794089448; bh=QccVIHCCeW+j3JKH26Y//JlAzW2DNSmEXbLjeGbZAa4=; b=W
-	q1B0bzJxngvd5pxx1z8Hvhzh8EXp0hulAtSMvOThvCtFKm8zjbaYr4nqk1Wp+lzQ
-	/ld4JBCtYlqq1qS09Bw+uyWC2dNGlBNQ7/LH1Y9BSpHAd2S2p6bEhYYLnGyftQrV
-	eAPkB59GLXHIjL8/muu2wmHQknowY096n4iR30+yQSr3MQ8i9SE5kyorQbDAbY0P
-	dfGs7qZVtvBMmwQevPcgxImyhdZoWvYHUopQC6lMyJbdHRZiVnLkCETHqXiEMJQD
-	jFnKSa59fagVVVk/42vySejrWbOCKl6qZnAlmQwd+P1V0DbSC66My4earSd9ocHa
-	4YLZMO1ITY9Xb87KrTogQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794003048; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:A3OdxBKJfJjcm8DtnzuEf4bE3gbMoh4V+nYvO7XxD4clCRa
-	fzDqqAOnETSfcyWgzuhtAdCrjHeukFrnmEOK/PEmxx+E42bdiSzeOM0tZXQ2djY9
-	K9j4p02Ky708zy2LRPOvYwNRWskHiAP56htvaJpULnED4qUCBOxA2q5ShOs3A79w
-	PX5frksIoUlAvG7iRJwa12nkiWsJZhR9cuLSstR9xP+s7o7F5kOekiDXRxcOipKQ
-	GWPUMHPs4sv2A/DV0eikWqwZsTGaFKBF24SI9TjZEypxFuUv+71i6KpU2lo6QU+7
-	JWiF9K78C10p2fqPFTG4VZMNYu9rQFIqaONzZJg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:uakpYHZNRFDsNZuJ/8u5kiVH2K39n3URm1dmZQoYTzk=:jx6GhieGqJzW+u2Qbw2RejWE42x0NhlAuL8kxBNmgcY=;
-X-ME-Sender: <xms:aFDuamkMqkGei2S1R9k1GfJOVd99MhZqFJJoZPiuU9Qj6YD2HsogIA>
-    <xme:aFDuaoowkgoHMmc1cj3qYSU1M7whBtB8u7w8Fxj28IT6cpPEAAl0TOuzzUcZ_IINF
-    RaQ5M80Vq4is70IqX5_9IFJNP6Iu_sQwharag48bwRbmL1CWNPU1g>
-X-ME-Received: <xmr:aFDuai5zOhXH7L-hw6ck12LEVnE5Xj-U-7kVxisHnU2RHy5WkF9fJzb06bIkJQ>
-X-ME-Proxy-Cause: dmFkZTF6YVreCUYhzzKLlDVeG/7YeI1VDYvZ8MjzsWdEpydaVQgMvCsQCMOJIezXFfo1ZM
-    xcwNLTI7Yq8fBZx2BpX9IyJHugdOW6C4ss+oT0iw0ZFClgtApOWdlLljryuA5JkOg6iins
-    eQloH9nrnF6xd03wnx67JDcxKiB4wxXwXta2idirSp8KRsIvc9tHK4ZU3GH68GN2oSHN3p
-    15v93jn/GdnEi3FKcDmnY4xXliG3LGd+jqSVQPp0YsRjKeCrUZqTprybumbfhYgFN10IPq
-    f7mzuyt+nfq4qWSttf8h0o1aQLAetFI+sFGgdHb8BKxDXgiVlsVpGH3VR/5fvsmOoHojf3
-    UaiPwXVxxbe5Ukgg6U4OKl/9ASvi1r0J6G0fuh2iutVvvdePH4xex2KDplCyWaJgePtyoQ
-    fS2UaQpIvmIJK7S6j2LevBzBliosWRG/qS8TR7UWfK/gS0SdFGSMEYMJ6BLhbqDmKCFKkY
-    Bn+gM/CXLCerU2kVOXQNY5b24Ze8KMcsmo6lmQcPeGADiDbXONyl+dcUmOBw7ff4Eta77T
-    hANaWJlbKGww8odVkO1HjEF6Z8NoRcN6x0PqZ/isGe47TjZRO2hgXAKZnicGSWg3BYfAO1
-    WC5CwjzPnmLLMoh2lR7anVc2rCM3cyGOql4QdJo4znkQRK6mfnatmgUWTHJQ
-X-ME-Proxy: <xmx:aFDuaqIWrqlxbGIH76Pp-LvguoNAnb3RWsK2tlZqyMeInf-_KCx2Ow>
-    <xmx:aFDuaumvXOQ2HKVievZm7Bn9ZCNMXuoFuMvSmWmdlWVPua3CWTIXQA>
-    <xmx:aFDuah-HLMUTzbhn8_btzGP2pjzgoSdZQfvcNEV5YdrzyCABIHYLVQ>
-    <xmx:aFDual5-RCURO6Vu61vYmI0-XSThO5Smg1EnN-LkR6Tu5gwaK7WiCA>
-    <xmx:aFDuaoVw8b8tKPw6wSQjgMP1sH02DPEjQ-NyUv6FXYJQ5itR3V9z_Pkb>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 17:10:45 -0500 (EST)
-Date: Fri, 6 Nov 2026 15:10:43 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v6 11/31] vfio/pci: Virtualize the CXL DVSEC in
- vfio_pci_config.c
-Message-ID: <20261106151043.4f47679f@shazbot.org>
-In-Reply-To: <20261016161839.2765592-12-mhonap@nvidia.com>
-References: <20261016161839.2765592-1-mhonap@nvidia.com>
-	<20261016161839.2765592-12-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZN0NZ9q+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794003572; x=1825539572;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4VneRkBa1l3Igkh7ktlEK8Q22+2qdQIcynnaqMYNisM=;
+  b=ZN0NZ9q+br0Z4IhZI1F94knI2TdnsdK5vh04eoTn13ipKaQFjYo4ovHG
+   jg9l2Jzpp+CJp6Nl5h4qNJItbS9qkbeDtgEZCpUyZkwEObMlSgsVeMJuF
+   dgCYjwOW0UK/aAL/2fCojg2/WjNiop5jNmHVDBedIs/Odhg55txA7leCZ
+   qbCrnX0QkiSuq4NoEb7Y2ckIvW96xH1zwoHlK9RubwvfL6C7oUpv1Lf5i
+   u9o+S+wiJrnlNoI7LRoN5HZUn4wJV5USYVliCa/YJ9HSsNOq0TZyQUezP
+   NST0oGcVsHO2mvo79wrS+wo+hzDLOwtF6N50+bFYxVcqfw1zbB5aq61d4
+   A==;
+X-CSE-ConnectionGUID: lwsfTVMqSC6mK6N9T98FYw==
+X-CSE-MsgGUID: FeOV+6NxQg+kQcYId2P/bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2710587"
+X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
+   d="scan'208";a="2710587"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 14:19:32 -0800
+X-CSE-ConnectionGUID: mT3fDVW1Tj6CLhAFsJSIlw==
+X-CSE-MsgGUID: 15WtYQyzTEOPOgIp2m2xKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
+   d="scan'208";a="7820706"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 14:19:31 -0800
+Message-ID: <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
+Date: Fri, 6 Nov 2026 16:19:30 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -137,340 +72,132 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-5-zide.chen@intel.com> <au4kyULjUYdqbfIq@google.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <au4kyULjUYdqbfIq@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Oct 2026 21:48:18 +0530
-<mhonap@nvidia.com> wrote:
 
-> From: Manish Honap <mhonap@nvidia.com>
+
+On 11/6/2026 1:09 PM, Yosry Ahmed wrote:
+>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+>> index b8875ed5502c..4f192429ed93 100644
+>> --- a/arch/x86/include/asm/kvm_host.h
+>> +++ b/arch/x86/include/asm/kvm_host.h
+>> @@ -595,7 +595,10 @@ struct kvm_pmu {
+>>  		DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
+>>  		atomic64_t __reprogram_pmi;
+>>  	};
+>> -	DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
+>> +	union {
+>> +		DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
+>> +		u64 pmc_exists64;
 > 
-> A CXL Type-2 device is reprogrammable through its CXL DVSEC: a guest could
-> set Config Lock, toggle CXL.cache and CXL.mem enable, or rewrite the HDM
-> range registers that govern host memory decode. Virtualize the DVSEC so
-> the guest sees a shadow it cannot use to reprogram the hardware.
+> __pmc_exists would be more consistent with __reprogam_pmi above.
+
+I used the *64 suffix and without '__' to match the cntr_mask/cntr_mask64
+and fixed_cntr_mask/fixed_cntr_mask64 pattern in struct x86_pmu_capability
+(patch 7), whereas __reprogram_pmi used '__' because it is an atomic64_t
+rather than a scalar mask.
+
+Also, arch/x86/events/perf_event.h has similar names:
+
+        union {
+                        u64             cntr_mask64;
+                        unsigned long
+cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
+        };
+        union {
+                        u64             fixed_cntr_mask64;
+                        unsigned long
+fixed_cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
+        };
+
+Seems either way won't be absolutely unifie
+
+>> @@ -120,6 +144,17 @@ static inline struct kvm_pmc *kvm_pmc_idx_to_pmc(struct kvm_pmu *pmu, int idx)
+>>  			continue;				\
+>>  		else						\
+>>  
+>> +/*
+>> + * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
+>> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
+>> + * so iteration up to KVM's maximum counter count is safe.
+>> + */
+>> +#define kvm_for_each_gp_counter(i, mask)	\
+>> +	for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
+>> +
+>> +#define kvm_for_each_fixed_counter(i, mask)	\
+>> +	for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
 > 
-> Build a per-device cxl_perm permission map, modeled on msi_perm. When
-> the device is bound through the CXL provider (e.g. vfio-cxl), the whole
-> CXL DVSEC is served from the vconfig shadow; only Control and Control2
-> are guest programmable, while Capability, Status, Lock and the Range
-> registers keep their firmware snapshot. A vendor DVSEC on the same
-> device is unaffected: the map is selected by the CXL DVSEC's range,
-> since every DVSEC has the same ID in the config map and two DVSECs can
-> be adjacent.
+> These are not used in this patch, are they?
 > 
-> A Type-2 function bound without the provider (the provider is absent,
-> its init failed, or the extensions are disabled) gets a guard map
-> instead. The DVSEC reads from hardware, Control and Control2 stay
-> writable and the RW1C status bits stay clearable, but writes to Lock and
-> the Range registers are dropped, since they outlive the user. Initiate
-> CXL Reset uses the same doorbell; a cache write-back goes to the device.
+> They should probably be introduced when they are used. Also, do we
+> always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
+> yes, maybe we should pass in the pmu here instead?
 
-The guard map actually changes the device ABI.  This may be necessary,
-but if so, it should be pulled out into a Fixes: patch.  The device
-aspects that change need to be well justified.  Access to CXL reset
-without coordination is certainly not good.  Config lock has side
-effects that we may not want to deal with.  Is there value in exposing
-the CXL DVSEC at all when we're operating in vfio-pci mode?  What do we
-expect a type-2 driver does with the guarded capability?
+The intent was to group all bitmap accessor helpers together in this
+patch for easier review so that the big patch 5/18 could be kept to
+mostly mechanical replacements.
 
-Maybe the right answer is to drop it from the chain and make it
-read-only.
- 
-> Control2 carries the CXL reset and cache write-back-invalidate initiate
-> bits as self-clearing doorbells. With the provider, vfio never forwards
-> them to hardware, so a custom writefn synthesizes their completion in
-> the shadow: the initiate bit self-clears and the matching Status2 bit
-> (Cache Invalid or Reset Done) is set, so a guest that writes back its
-> cache (CXL r4.0 sec 9.6) and then runs CXL Reset (sec 9.7.2) progresses
-> instead of timing out. Cache Invalid is reported only while Disable
-> Caching is set, as the spec requires. The host performs the real cache
-> write-back and reset at the vfio reset points. Until a later patch in
-> this series runs the real reset from the doorbell, Initiate CXL Reset
-> completes in the shadow only.
+But if you prefer introducing them on first use, I'll move their
+definitions to patch 5.
+
+Regarding passing 'pmu' directly, I initially implemented it in this
+way, but I can't recall why I discarded it. I will take another look.
+>> @@ -183,9 +221,12 @@ static inline struct kvm_pmc *get_fixed_pmc(struct kvm_pmu *pmu, u32 msr)
+>>  {
+>>  	int base = MSR_CORE_PERF_FIXED_CTR0;
+>>  
+>> -	if (msr >= base && msr < base + pmu->nr_arch_fixed_counters) {
+>> +	if (msr >= base && msr < base + KVM_MAX_NR_FIXED_COUNTERS) {
+>>  		u32 index = array_index_nospec(msr - base,
+>> -					       pmu->nr_arch_fixed_counters);
+>> +					       KVM_MAX_NR_FIXED_COUNTERS);
+>> +
+>> +		if (!kvm_is_fixed_pmc_supported(pmu, index))
+>> +			return NULL;
 > 
-> Assisted-by: LLM
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/vfio/pci/vfio_pci_config.c | 206 ++++++++++++++++++++++++++++-
->  include/linux/vfio_pci_core.h      |   3 +
->  2 files changed, 205 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-> index 9914f3ac69ae..1fc463540211 100644
-> --- a/drivers/vfio/pci/vfio_pci_config.c
-> +++ b/drivers/vfio/pci/vfio_pci_config.c
-> @@ -1747,6 +1747,194 @@ static const struct pci_device_id known_bogus_vf_intx_pin[] = {
->   * for each area requiring emulated bits, but the array of pointers
->   * would be comparable in size (at least for standard config space).
->   */
+> Do all callers handle NULL correctly? At least
+> reprogram_fixed_counters() doesn't look like it. It may be fine since
+> NULL can already be returned today. Not sure if this series makes it
+> more likely.
 
-This comment above used to be attached to vfio_config_init() and now
-it's miles away!
+All other callers properly check NULL.
 
-> +static int vfio_cxl_dvsec_write(struct vfio_pci_core_device *vdev, int pos,
-> +				int count, struct perm_bits *perm,
-> +				int offset, __le32 val)
-> +{
-> +	u16 start = vdev->cxl_dvsec;
-> +	__le16 *pctrl2, *pstatus2;
-> +	u16 ctrl2, status2;
-> +
-> +	count = vfio_default_config_write(vdev, pos, count, perm, offset, val);
-> +	if (count < 0)
-> +		return count;
-> +
-> +	/* Only Control2 carries the self-clearing doorbells. */
-> +	if (offset > PCI_DVSEC_CXL_CTRL2 ||
-> +	    offset + count <= PCI_DVSEC_CXL_CTRL2)
-> +		return count;
-> +
-> +	pctrl2 = (__le16 *)&vdev->vconfig[start + PCI_DVSEC_CXL_CTRL2];
-> +	pstatus2 = (__le16 *)&vdev->vconfig[start + PCI_DVSEC_CXL_STATUS2];
-> +	ctrl2 = le16_to_cpu(*pctrl2);
-> +	status2 = le16_to_cpu(*pstatus2);
-> +
-> +	/*
-> +	 * INIT_CACHE_WBI and INIT_CXL_RST are self-clearing doorbells. With a
-> +	 * provider neither reaches hardware: synthesize their completion in the
-> +	 * shadow so the guest poll finishes, clearing the initiate bit and
-> +	 * setting the matching Status2 completion. Cache Invalid is set only
-> +	 * while caching is disabled and reads 0 otherwise (CXL r4.0 sec 8.1.3.5,
-> +	 * Table 8-9). Under the guard map INIT_CACHE_WBI and Cache Invalid go to
-> +	 * the device; only INIT_CXL_RST and its completion are virtualized.
-> +	 */
-> +	if (ctrl2 & PCI_DVSEC_CXL_INIT_CACHE_WBI) {
-> +		ctrl2 &= ~PCI_DVSEC_CXL_INIT_CACHE_WBI;
-> +		if (ctrl2 & PCI_DVSEC_CXL_DISABLE_CACHING)
-> +			status2 |= PCI_DVSEC_CXL_CACHE_INV;
-> +	}
-> +	if (!(ctrl2 & PCI_DVSEC_CXL_DISABLE_CACHING))
-> +		status2 &= ~PCI_DVSEC_CXL_CACHE_INV;
-> +	if (ctrl2 & PCI_DVSEC_CXL_INIT_CXL_RST) {
-> +		ctrl2 &= ~PCI_DVSEC_CXL_INIT_CXL_RST;
-> +		status2 &= ~PCI_DVSEC_CXL_RST_ERR;
-> +		status2 |= PCI_DVSEC_CXL_RST_DONE;
-> +	}
-> +
-> +	*pctrl2 = cpu_to_le16(ctrl2);
-> +	*pstatus2 = cpu_to_le16(status2);
-> +
-> +	return count;
-> +}
-> +
-> +static int init_cxl_dvsec_perm(struct perm_bits *perm, int len)
-> +{
-> +	if (alloc_perm_bits(perm, len))
-> +		return -ENOMEM;
-> +
-> +	perm->writefn = vfio_cxl_dvsec_write;
-> +
-> +	/* Serve the whole CXL DVSEC from the shadow. */
-> +	for (int i = 0; i < len; i++)
-> +		p_setb(perm, i, (u8)ALL_VIRT, NO_WRITE);
-> +
-> +	/*
-> +	 * Control and Control2 are guest programmable; Capability, Status,
-> +	 * Lock and the Range registers keep their firmware snapshot, so the
-> +	 * guest cannot set Config Lock or rewrite the capability and ranges.
-> +	 */
-> +	p_setw(perm, PCI_DVSEC_CXL_CTRL, (u16)ALL_VIRT, (u16)ALL_WRITE);
-> +	p_setw(perm, PCI_DVSEC_CXL_CTRL2, (u16)ALL_VIRT, (u16)ALL_WRITE);
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Without a CXL provider the device is bound without the CXL extensions, so
-> + * the DVSEC is read from hardware, Control and Control2 stay writable, and
-> + * the RW1C status bits in Status and Status2 (for example Viral_Status) can
-> + * still be cleared. Drop the writes whose effect outlives the user: Config
-> + * Lock and the Range registers. Initiate CXL Reset goes through the same
-> + * doorbell as with a provider, so the reset runs at a vfio reset point under
-> + * memory_lock.
-> + */
-> +static int init_cxl_dvsec_guard_perm(struct perm_bits *perm, int len)
-> +{
-> +	if (alloc_perm_bits(perm, len))
-> +		return -ENOMEM;
-> +
-> +	perm->writefn = vfio_cxl_dvsec_write;
-> +
-> +	/* Extended capability header: ID and next pointer from vconfig. */
-> +	p_setd(perm, 0, ALL_VIRT, NO_WRITE);
-> +
-> +	p_setw(perm, PCI_DVSEC_CXL_CTRL, NO_VIRT, (u16)ALL_WRITE);
-> +	p_setw(perm, PCI_DVSEC_CXL_CTRL2, PCI_DVSEC_CXL_INIT_CXL_RST,
-> +	       (u16)ALL_WRITE);
-> +	/* Status (offset 0Eh, between Control and Control2): RW1C to the device. */
-> +	p_setw(perm, PCI_DVSEC_CXL_CTRL + 2, NO_VIRT, (u16)ALL_WRITE);
-> +	p_setw(perm, PCI_DVSEC_CXL_STATUS2,
-> +	       PCI_DVSEC_CXL_RST_DONE | PCI_DVSEC_CXL_RST_ERR,
-> +	       (u16)~(PCI_DVSEC_CXL_RST_DONE | PCI_DVSEC_CXL_RST_ERR));
-> +
-> +	return 0;
-> +}
-> +
-> +/* Virtualize the CXL DVSEC so a guest cannot reprogram the device through it. */
-> +static int vfio_cxl_dvsec_init(struct vfio_pci_core_device *vdev)
-> +{
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	u32 dword;
-> +	u16 dvsec, cap;
-> +	int len, ret;
-> +
-> +	dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_CXL,
-> +					  PCI_DVSEC_CXL_DEVICE);
-> +	if (!dvsec)
-> +		return 0;
-> +
-> +	ret = pci_read_config_dword(pdev, dvsec + PCI_DVSEC_HEADER1, &dword);
-> +	if (ret)
-> +		return pcibios_err_to_errno(ret);
-> +	len = PCI_DVSEC_HEADER1_LEN(dword);
-> +
-> +	/*
-> +	 * The virtualization writes fixed DVSEC offsets up to Status2 (the reset
-> +	 * doorbell stamps it). A device that reports a shorter DVSEC is not a
-> +	 * usable Type-2 function; leave its DVSEC unvirtualized rather than
-> +	 * index the device-length-sized perm allocation past its end.
-> +	 */
-> +	if (len < PCI_DVSEC_CXL_STATUS2 + 2)
-> +		return 0;
-> +
-> +	/*
-> +	 * Without a provider, guard only a CXL Type-2 function, with the same
-> +	 * test vfio-pci-core uses to load the provider.
-> +	 */
+In reprogram_fixed_counters(), 'i' comes from
+kvm_for_each_fixed_counter(), so it is guaranteed supported and cannot
+return NULL (just as it was safe previously via "i <
+pmu->nr_arch_fixed_counters").
 
-Cryptic comment.  Why don't we expose vfio_pci_is_cxl_type2() and use
-it here?
+However, calling get_fixed_pmc() in reprogram_fixed_counters() was
+unnecessary indirection. In patch 5, I can clean this up to index directly:
 
-> +	if (!vdev->cxl_ops) {
-> +		if (!pcie_is_cxl(pdev))
-> +			return 0;
-> +		ret = pci_read_config_word(pdev, dvsec + PCI_DVSEC_CXL_CAP, &cap);
-> +		if (ret)
-> +			return pcibios_err_to_errno(ret);
-> +		if (!(cap & PCI_DVSEC_CXL_CACHE_CAPABLE) ||
-> +		    !(cap & PCI_DVSEC_CXL_MEM_CAPABLE))
-> +			return 0;
-> +	}
-> +
-> +	vdev->cxl_perm = kmalloc_obj(*vdev->cxl_perm, GFP_KERNEL_ACCOUNT);
-> +	if (!vdev->cxl_perm)
-> +		return -ENOMEM;
-> +
-> +	if (vdev->cxl_ops)
-> +		ret = init_cxl_dvsec_perm(vdev->cxl_perm, len);
-> +	else
-> +		ret = init_cxl_dvsec_guard_perm(vdev->cxl_perm, len);
-> +	if (ret) {
-> +		kfree(vdev->cxl_perm);
-> +		vdev->cxl_perm = NULL;
-> +		return ret;
-> +	}
-> +
-> +	vdev->cxl_dvsec = dvsec;
-> +	vdev->cxl_dvsec_len = len;
-> +
-> +	return 0;
-> +}
-> +
-> +static void vfio_cxl_dvsec_exit(struct vfio_pci_core_device *vdev)
-> +{
-> +	if (!vdev->cxl_perm)
-> +		return;
-> +
-> +	free_perm_bits(vdev->cxl_perm);
-> +	kfree(vdev->cxl_perm);
-> +	vdev->cxl_perm = NULL;
-> +	vdev->cxl_dvsec = 0;
-> +	vdev->cxl_dvsec_len = 0;
-> +}
-> +
-> +/*
-> + * Every DVSEC carries the same ID in pci_config_map, so vfio_find_cap_start()
-> + * can walk from one DVSEC into an adjacent one. Match the CXL DVSEC by range.
-> + */
+@@ -98,7 +98,7 @@ static void reprogram_fixed_counters(struct kvm_pmu
+*pmu, u64 data)
+                if (old_ctrl == new_ctrl)
+                        continue;
 
-IMO, a comment is more relevant below.
+-               pmc = get_fixed_pmc(pmu, MSR_CORE_PERF_FIXED_CTR0 + i);
++               pmc = &pmu->fixed_counters[i];
 
-> +static bool vfio_cxl_dvsec_contains(struct vfio_pci_core_device *vdev,
-> +				    loff_t pos)
-> +{
-> +	return vdev->cxl_perm && pos >= vdev->cxl_dvsec &&
-> +	       pos < vdev->cxl_dvsec + vdev->cxl_dvsec_len;
-> +}
-> +
->  int vfio_config_init(struct vfio_pci_core_device *vdev)
->  {
->  	struct pci_dev *pdev = vdev->pdev;
-> @@ -1842,6 +2030,10 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
->  	if (ret)
->  		goto out;
->  
-> +	ret = vfio_cxl_dvsec_init(vdev);
-> +	if (ret)
-> +		goto out;
-> +
->  	return 0;
->  
->  out:
-> @@ -1863,6 +2055,7 @@ void vfio_config_free(struct vfio_pci_core_device *vdev)
->  		kfree(vdev->msi_perm);
->  		vdev->msi_perm = NULL;
->  	}
-> +	vfio_cxl_dvsec_exit(vdev);
-
-Teardown in opposite order of init.  Last initialized ~ first exit.
-
->  }
->  
->  /*
-> @@ -1926,12 +2119,17 @@ ssize_t vfio_pci_config_rw_single(struct vfio_pci_core_device *vdev,
->  			 * of the extended capability list.  Use default, ro
->  			 * access, which will virtualize the id and next values.
->  			 */
-> -			if (cap_id > PCI_EXT_CAP_ID_MAX)
-> +			cap_start = vfio_find_cap_start(vdev, *ppos);
-> +
-> +			if (cap_id > PCI_EXT_CAP_ID_MAX) {
->  				perm = &direct_ro_perms;
-> -			else
-> +			} else if (cap_id == PCI_EXT_CAP_ID_DVSEC &&
-> +				   vfio_cxl_dvsec_contains(vdev, *ppos)) {
-> +				perm = vdev->cxl_perm;
-
-				/*
-				 * Multiple DVSECs may be back-to-back, resulting
-				 * in bogus cap_start.
-				 */
-
-Thanks,
-Alex
-
-> +				cap_start = vdev->cxl_dvsec;
-> +			} else {
->  				perm = &ecap_perms[cap_id];
-> -
-> -			cap_start = vfio_find_cap_start(vdev, *ppos);
-> +			}
->  		} else {
->  			WARN_ON(cap_id > PCI_CAP_ID_MAX);
->  
-> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> index 70acb03d466e..fd1ad0baf470 100644
-> --- a/include/linux/vfio_pci_core.h
-> +++ b/include/linux/vfio_pci_core.h
-> @@ -120,6 +120,9 @@ struct vfio_pci_core_device {
->  	u8			*pci_config_map;
->  	u8			*vconfig;
->  	struct perm_bits	*msi_perm;
-> +	struct perm_bits	*cxl_perm;
-> +	u16			cxl_dvsec;
-> +	u16			cxl_dvsec_len;
->  	spinlock_t		irqlock;
->  	struct mutex		igate;
->  	struct xarray		ctx;
+>>  
+>>  		return &pmu->fixed_counters[index];
+>>  	}
+>> -- 
+>> 2.56.0
+>>
 
