@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793979899;
-	b=VBfbyqPa0AMM2CtqPOK8b9oJ6MdY+oag/xsFq2bVdPFExwK+aBjplvUnzvFCzwlhTgoh
-	 BXZbwKu5A04SlzIhSWMi/HnboWdzP0JhhvwzdSmrB8tMP0USdLxsnde+9ua0XmxJMRFiV
-	 g4xoTnAjWTOeykC3RXvTE6ZJrwBWyTg//se8ZcSXPloK1FH8MnlfgzOHPPDFiVBB4w83C
-	 +AIactdLV8he6XDCqvwVLduRnVL9NDkowHG94tLG6BetJxtPuLAzbmF4VYKwmI5Q1sfN9
-	 GoQLjWLSRtJf7xedAK6bP2PMQxgKE2HJMAkSj3MntreW/RxDwq1OH/pMII/lF8NOH5A==
+	t=1793980227;
+	b=1Bsa99Gpf6hZWpnVT6glDIGynB6t2hZszX3p80AXjGMPpNcuxVUhyQBqV9EvjKBPfAnS
+	 PaFRl4CC0MuMJnRY2hoQ3t0e3R2ygIwZiaDOBmO3YIiMQHGXJBTdUbXspgqpYo2YUzh8D
+	 oF5JTAUtx596NLVYzlyHpvspOHO0rcwbnTOO0IycrDDZzK9BYvDV8+KpZzK7GPdnlW8P4
+	 kkbfheH/CurwgzaEtOxW9ElQCt9PS/JIR7SPcaz/4+88App/rRjG/G//gEXH1sICxFo8r
+	 P3g6sXZWE387wKlWU9VcjtZkNAp4WurdLHMBQq7ZZj4FivwZu65uivDhUSugCMdu89w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793979899;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793980227;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=UEbohyqL7zLaBDoaY1LCJGRCHjqr4aS51Wk9lepCI4g=;
-	b=Eo2YkfSjTJjSOKxc6Gt7NWLrHng5MsR7XZ+SnvmwB/jhL9z2IVF72I2B84KgWgzjBi3w
-	 QZUr7W8rws0KnGActku5/ueqzTFH0Tm83TYvHsv98D0xQBhOEPPqtEwtwRE2dc/9Nx0IU
-	 QpB9reVX1riuKOYaaMNux/rCrp/eGO4xP+RUNZQ4Dskpp7Mw7tjoCl2VDc28L/aLMCzCt
-	 +JlbkTqeeGRUDVeVWLELkvk1tyK6RxEx+tf1u9oHDucw+waSEwkacosScF4L27pZ1fZRM
-	 D/MjQaayLD5aIgiA6/qoA5+9XnETyVmjsdP++vb4NjvGipkS3xXr4tKMbqFAID1uSFQ==
+	bh=bjwk9tDO8f1h3aEvNEMTJAmAxCZXKvo0+Y35LraCst4=;
+	b=n9xpd0ncTvuAuFMjU3pannLznEuT6vv+01V+SygWw0wHXBtaEAU4D9iQn58bhlpYk5x9
+	 c2KmiHsBwBZL7XMZ4qAcJyQ2qyXrj/VSacFWwN0gSvoCPwCMxvJNfguFeH44ypsgJwqU0
+	 xSHticxqCV4fcCbsQQWXtRACEVQ54KewVK79robUvoCpuGYFigZzBJFizZFOGuREbRSgr
+	 vHBZYr1aH4o/AVsDn3VEj2A7Y7qrCzFippYMpRfhqvGYSbBsvQF4QgNPyRHVofBc3TZhg
+	 Fnk+NAcI47X+J4n7AdBNm1aK7zUByiSvqDicrmaMaTkvJVwofqXQfIHSsEKzHzIPMtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LFm4qOcT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fy5qBz93;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DD2606A329;
-	Fri,  6 Nov 2026 15:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C3F606A326
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 15:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LFm4qOcT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2191B1F008A1;
-	Fri,  6 Nov 2026 15:44:58 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fy5qBz93
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EDA1F008A4;
+	Fri,  6 Nov 2026 15:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793979898;
-	bh=UEbohyqL7zLaBDoaY1LCJGRCHjqr4aS51Wk9lepCI4g=;
+	s=k20260515; t=1793980226;
+	bh=bjwk9tDO8f1h3aEvNEMTJAmAxCZXKvo0+Y35LraCst4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LFm4qOcTa8Wc0w1KzQA16gYM47nkgslvw7QhrFsMu++WmKSpMq22xhPCQrw62C2LW
-	 u5/Dza/mG6W8N88aLMFn2I3LUrqJKI+CRIWDHVu+5JGUEy4t0UEfcg8nJ9LRwNub8p
-	 Sn8QDBTnAzEkgp1XB0VHuQW7S3us7ZCsV2Zk+wuUVH0pyLIDGY5onGZZtWnVsThFG2
-	 7iu55ueql8DNR98JL6THDiugFg71tbraGF5TkrwdX2UPOc5red8RAkDsy1hokJ49Xh
-	 AjvyfRk7s7dTwKs+1Zm1W6z9g7bxmymfwRPQrThH5w88eK6LBasgmbGawwSHA+ppS8
-	 JQknBabJCYyOQ==
-Message-ID: <sashiko-outbox-201724@kernel.org>
+	b=Fy5qBz93leK69NJ1zEVQfd4WTXEf3VzqPH2x3aib/QWUg46UllXFg+BKmiz6MPTT5
+	 qsW2YVTQyhmyTM2fqTNqy+bvIdgwNByCMQ6vTtrMlxMdfX4HHrepZ5Egvv29rEHNFZ
+	 Gjycvdn7r+uwYMyG2acUaaobKmpP8hYqDYtgm0umPoYa2cO84HbzRW9UBBm7OfUgsH
+	 1XmlZ5Rs58uQt8u0IEC2czpvZZVmtzf2ahHPaWmlfW/L0TSHG9dIHL2Z6CsJ+XZcMx
+	 PDwqtQx1bNJqE13wWn38NxCidJ6ij5Niil5SM3g/Dpu7YVYIG0vavHgwOhzEf6UcMs
+	 CLu6rTRu4eaYA==
+Message-ID: <sashiko-outbox-201736@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 05/14] s390/vfio-ap: Callback to get/set vfio device
- mig state during guest migration
+Subject: Re: [PATCH v3 3/3] KVM: PPC: Book3s HV: Ensure reliable usage of
+ latency counters
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261106152259.1360651-6-akrowiak@linux.ibm.com>
-References: <20261106152259.1360651-1-akrowiak@linux.ibm.com>
- <20261106152259.1360651-6-akrowiak@linux.ibm.com>
+To: "Gautam Menghani" <gautam@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261106153136.330165-4-gautam@linux.ibm.com>
+References: <20261106153136.330165-1-gautam@linux.ibm.com>
+ <20261106153136.330165-4-gautam@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 15:44:57 +0000
+Date: Fri, 06 Nov 2026 15:50:26 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,84 +61,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] s390/vfio-ap: wrong SE guest check for migration in
-  vfio_ap_set_state()
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] KVM: PPC: Book3S HV: u8 overflow in
+  kvmhv_set_l2_counters_status()
+- [Medium] KVM: PPC: Book3S HV: l2_counters_enable underflow across CPU
+  hotplug
 --
 
-commit 2bdeb1a9bd0e390837450d39cca0f224a21db0ec
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+commit c5caaeddc35ba638841a3b81b1767bed8f97a3e3
+Author: Gautam Menghani <gautam@linux.ibm.com>
 
-s390/vfio-ap: Callback to get/set vfio device mig state during guest migrat=
-ion
+KVM: PPC: Book3s HV: Ensure reliable usage of latency counters
 
-This commit adds the migration_set_state and migration_get_state callbacks
-for vfio_ap devices to manage device migration states during guest live
-migration.
+This commit replaces the boolean assignment of l2_counters_enable in
+kvmhv_set_l2_counters_status() with spinlock-protected increments and
+decrements so the kvmppc_vcpu_stats tracepoint and vpa-pmu driver can
+enable VPA latency counters concurrently.
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> index 94772cab1e855..df012f80ed0d7 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> @@ -143,6 +143,150 @@ static void vfio_ap_release_resuming_file(struct vf=
-io_ap_migration_data *mig_dat
-
-[ ... ]
-
-> +static struct file *vfio_ap_set_state(struct vfio_device *vdev,
-> +				      enum vfio_device_mig_state  new_state)
-> +{
-> +	int ret;
-> +	struct file *filp =3D NULL;
-> +	struct ap_matrix_mdev *matrix_mdev;
-> +	enum vfio_device_mig_state next_state;
-> +	struct vfio_ap_migration_data *mig_data;
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 5fa6f93548add..e1bde3c6b0c4e 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4142,14 +4142,19 @@ int kvmhv_get_l2_counters_status(void)
+>  		get_lppaca()->l2_counters_enable;
+>  }
+> =20
+> +static DEFINE_RAW_SPINLOCK(l2_counters_lock);
+>  void kvmhv_set_l2_counters_status(int cpu, bool status)
+>  {
+> +	unsigned long flags;
 > +
-> +	mutex_lock(&matrix_dev->mdevs_lock);
-> +
-> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
-> +	mig_data =3D matrix_mdev->mig_data;
-> +
-> +	/*
-> +	 * The mig_data pointer is set in the vfio_ap_init_migration_data
-> +	 * function which is called when the vfio-ap device fd is opened.
-> +	 * Since the implicit pre-open state is RUNNING, a request to set
-> +	 * RUNNING is a no-op. Any other state transition is invalid before
-> +	 * open_device.
-> +	 */
-> +	if (!mig_data) {
-> +		mutex_unlock(&matrix_dev->mdevs_lock);
-> +		if (new_state =3D=3D VFIO_DEVICE_STATE_RUNNING)
-> +			return NULL;
-> +		return ERR_PTR(-ENODEV);
-> +	}
+>  	if (!firmware_has_feature(FW_FEATURE_LPAR))
+>  		return;
+> +	raw_spin_lock_irqsave(&l2_counters_lock, flags);
+>  	if (status)
+> -		lppaca_of(cpu).l2_counters_enable =3D 1;
+> +		lppaca_of(cpu).l2_counters_enable++;
 
 [Severity: Medium]
-Does vfio_ap_set_state() allow migration state transitions for Secure
-Execution (SE) KVM guests?
+Can lppaca_of(cpu).l2_counters_enable overflow here?
 
-vfio_ap_init_migration_data() tries to skip allocating mig_data for SE
-guests by checking ap_is_se_guest(), which tests is_prot_virt_guest():
+In struct lppaca, l2_counters_enable is a u8, while vpa_pmu_event_init()
+places no upper bound on how many perf_sw_context events can be opened and
+scheduled on the same CPU via vpa_pmu_add().  When 256 consumers enable
+the counters on one CPU, l2_counters_enable wraps to 0, causing the
+hypervisor to stop accumulating VPA latency counters and
+kvmhv_get_l2_counters_status() to return 0 while active consumers are
+running.
 
-drivers/s390/crypto/ap_bus.c:ap_is_se_guest() {
-	return is_prot_virt_guest() && ap_sb_available();
+>  	else
+> -		lppaca_of(cpu).l2_counters_enable =3D 0;
+> +		lppaca_of(cpu).l2_counters_enable--;
+> +	raw_spin_unlock_irqrestore(&l2_counters_lock, flags);
+>  }
+>  EXPORT_SYMBOL(kvmhv_set_l2_counters_status);
+
+[Severity: Medium]
+Could lppaca_of(cpu).l2_counters_enable underflow across CPU hotplug?
+
+kvmhv_counters_tracepoint_regfunc() and
+kvmhv_counters_tracepoint_unregfunc() both iterate over
+for_each_present_cpu(cpu) without CPU hotplug callbacks:
+
+arch/powerpc/kvm/book3s_hv.c:kvmhv_counters_tracepoint_regfunc() {
+	for_each_present_cpu(cpu) {
+		kvmhv_set_l2_counters_status(cpu, true);
+	}
+	return 0;
 }
 
-On a KVM host, is_prot_virt_guest() is always false because it checks
-whether the running host kernel itself is an SE guest rather than whether
-the KVM guest attached to matrix_mdev is protected.  In addition, a KVM
-guest only enters SE mode later during boot via DIAG 308 subcode 10
-(KVM_PV_ENABLE), after open_device has already called
-vfio_ap_init_migration_data().  As a result, mig_data is always allocated
-and vfio_ap_set_state() does not reject migration state changes on SE KVM
-guests.
-
-Should vfio_ap_set_state() check kvm_s390_pv_is_protected(matrix_mdev->kvm)
-(under kvm->lock) to reject migration when the attached KVM guest is in SE
-mode?
+If a CPU is hot-added via pseries_add_processor() while the
+kvmppc_vcpu_stats tracepoint is enabled, disabling the tracepoint
+decrements l2_counters_enable on that CPU from 0 to 255 (or drops an
+active vpa_pmu event's reference), leaving the VPA counters enabled after
+all users exit.  Conversely, hot-removing a CPU while the tracepoint is
+active skips the decrement on that CPU when the tracepoint is later
+disabled.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106152259.1360=
-651-1-akrowiak@linux.ibm.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106153136.3301=
+65-1-gautam@linux.ibm.com?part=3D3
