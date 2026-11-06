@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793978613;
-	b=0if7EvurxXacRlRRoFeEFDAXEgkvhHeyAk7JjQ9YVVlYxv/EsVoMsXfgSTYDQuErpMkl
-	 xBgC1jf8uSZgpnLHWmDA2KZ9uMxKvhUzaxFQmjnALtZe7W5x/A79TChzbNPmVaZNtCRfp
-	 SjkofvbLpMbEbPVn7ZtshE9JTH6QiiEvigfyT4nPnlIjZ1lLC8mezJvzYAr9VTFOJU39+
-	 CJbFQ4Ngz+agTDAmw0EJznafKGn1pr0bqFl/yMBEJo/71Vt6t6q0l/fhfhuhemfdBApU/
-	 c7y1Nt9ypp1mj2RmWPYs5/vSOjjoYU3zfanNc/S8eavgl2lI7NxiHddNMSdSJCVe6Bg==
+	t=1793978610;
+	b=5lX+pi6ytaTuxl9aNEF444C7Ageisr2VxHUHM2lDv2lUFANn8TG5VYe6edi1GGNATd7P
+	 VIuzpcNnbcmw7xbkRcgTF2UMePxegVBu3IQ62BgBZMJeo15FVAqbN4SXwT61LhJ0mTUrw
+	 DC5ApRO95CiDJfFVIQwRR4rzpDd3vXh4mm2FVVUc81EBExislRlpS7VOmqMs7rWHZmpuT
+	 4ZTh7VXMbCgmZdXTY/a4IHbfYV9fOP2Ss6czNCjH/bsicvyZQN3s8n84b0Na3ALNeiC/y
+	 Zq+Px2v4Na/Kuaw+KSXeaY9gswnbpPlErehxqyq7TNIhEb3sEqWFyV0ynZOuU2gWbwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793978613;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793978610;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=ZX38sRcqU/3qJc7kmB9k5dlZiWn18NqAnxxTQpxKp5o=;
-	b=q3Ve44r8dvfYsEYdLPTCpnooC0TcO1szHaSXOcgmC1ZlfBd47q0Q0x31edgFJSDXpOpk
-	 4oG0SecfRCXQxdTVCL693awXKqObSK8cuS+dFYNG6Ku6ZUMWyzO35c8Dc/hhACVgq+TZK
-	 9ij/Ag/QTmiB4BVROlDX0+SAFvg2zORmh+QJj4DqJvki0PNccQXhO7sv2Zu1IjDPVMJpj
-	 TsFSWswJfiUFrH7x3iPDOzgpMc9QSR/VxeiWkO0zlmNWdXsrycvWe2mylKMP/9LCr6jjn
-	 37ZuYYN5dyWb8XpLwgxwUUFdjN0RM+P0uwR6rcxoXYoItpbKTYQVDeyMWwbHkVMJjZg==
+	bh=Y4ozeAh2W3OJzeMdeYAxvRkvOyE+SHLTP8YuJ47lQqQ=;
+	b=SW4IucmKlGMKkrZQ8wDpshz7MXoJrgPy2e3FsagyJdRX1/oThdAdmlypj+QYEguOB8qi
+	 4Re+7FZiONWvVohihBOo8dJQXPx0wJuDARRjmG8yX1gvvA5Krcf2+RwX7VO1LgDipUAOc
+	 s+Fu1WGTXhVTNnAvS41XUg79KJEVRqkiT4X/Sq6luYU2v3tz6jggagAMiov5x++XZxFRv
+	 4o+K/RoQJboNoTDi46/r/0887kzqEQ9PZOgQgOUzHCEbWtEAd+MrS8FuMWwvFjmZCq2g6
+	 637AVjVk4ZRTRaDMCLhJ8fZf2qDyNn++0dIQkg0bERd3NbBl1XphXS9vPTyJEl2AyGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.ibm.com;
 	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q3Dx1hC+;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="WnKg/X/N";
 	arc=none smtp.remote-ip=148.163.156.1
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03ED6082BF9;
-	Fri,  6 Nov 2026 15:23:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A03ED6082BF9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0C9606D82F;
+	Fri,  6 Nov 2026 15:23:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E0C9606D82F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q3Dx1hC+
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6FE5651094480;
-	Fri, 6 Nov 2026 15:23:27 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WnKg/X/N
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6FE7RF2935684;
+	Fri, 6 Nov 2026 15:23:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ZX38sRcqU/3qJc7km
-	B9k5dlZiWn18NqAnxxTQpxKp5o=; b=Q3Dx1hC+GpUqBCmiVLZlbTA8rNeKA4HSo
-	DrcH3cEwzqc3ExmaUT2Lg/X2eHdtw0rEBu6BZpxkjMY+TCX3KgCAi2+Ks9ApJgZJ
-	Kni67k/DSSRw8jkOOMnABBh5zEzt98VHp8UElSFQuvKBJ3ZTQGKbVOfsQU/E4KNG
-	un7gt7YBU3DcGjMvzP4oFkm6doPKOYZ6L+vgTO9E7yFOX9BTy0zkjZoPPYBFBupu
-	v9rcnh4j5saCKv6D+df72/1Yh4b8V5WWjKM9rZzynYmKqLCVWOcbbjMFJ5MGOfet
-	9eGWJHNawOQUjZHJsMkjiOStuFfJtsjg+fBAdE88Hn/ZW7GWrgJAw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hs3raw79a-1
+	:mime-version:references:subject:to; s=pp1; bh=Y4ozeAh2W3OJzeMde
+	YAxvRkvOyE+SHLTP8YuJ47lQqQ=; b=WnKg/X/NWYMfApYlEmasVGpL0DAmuRRJA
+	V4zcgYPZNH+w/bzBylVlwANad7DfCb7bGFlvkaffdgmuDtJLYqAVpIoExfO7z6tE
+	lLYyOgQ+BHBXbFZkLq9elZTkKhwQnIRpahYYYbvBQdbW0GPwFu7XD6j0I5ufSFBA
+	n+0Pdlyn7aa+/1pUfhaTn7TDEK37uGxSrxOdO0X2g4f4vqpuEll0m1e03nA3SgdP
+	lZwqEwE09JYE/cfqML2nf0+yJr+hPhuDYtLtRF3r5v8Zr1vP7By3BHp9lpCue+X8
+	Bsc8s//yeS/3oqHBSSqNADgyZJoo5WvB1GnzddTd+n6ow0tETFykA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hs3rcd72g-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 15:23:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6F4xxe3617252;
-	Fri, 6 Nov 2026 15:23:26 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hrdd7ua24-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 15:23:26 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A6FNOCL20841176
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 06 Nov 2026 15:23:25 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6FKClc3577994;
 	Fri, 6 Nov 2026 15:23:24 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hqv1v7wtb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 15:23:24 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A6FNMIC26018404
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Nov 2026 15:23:23 GMT
 Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8656658054;
-	Fri,  6 Nov 2026 15:23:24 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D5A385804E;
+	by IMSVA (Postfix) with ESMTP id AA02F58060;
 	Fri,  6 Nov 2026 15:23:22 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F2B3958056;
+	Fri,  6 Nov 2026 15:23:20 +0000 (GMT)
 Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.114.69])
 	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Nov 2026 15:23:22 +0000 (GMT)
+	Fri,  6 Nov 2026 15:23:20 +0000 (GMT)
 From: Anthony Krowiak <akrowiak@linux.ibm.com>
 To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
         kvm@vger.kernel.org
@@ -81,9 +81,9 @@ Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
         fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
         imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
         gor@linux.ibm.com
-Subject: [PATCH v12 12/14] s390/vfio-ap: Set up for vfio-ap device migration
-Date: Fri,  6 Nov 2026 10:22:57 -0500
-Message-ID: <20261106152259.1360651-13-akrowiak@linux.ibm.com>
+Subject: [PATCH v12 11/14] s390/vfio-ap: Callback to get the size of data to be migrated during guest migration
+Date: Fri,  6 Nov 2026 10:22:56 -0500
+Message-ID: <20261106152259.1360651-12-akrowiak@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261106152259.1360651-1-akrowiak@linux.ibm.com>
 References: <20261106152259.1360651-1-akrowiak@linux.ibm.com>
@@ -98,130 +98,69 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QYDzLcbv c=1 sm=1 tr=0 ts=6aedf0ef cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=HPJWAd_ergi89gPIvREA:9
-X-Proofpoint-GUID: HEGfbKWIGUahVXJfuGrbb3kvAlqestA6
-X-Proofpoint-ORIG-GUID: HEGfbKWIGUahVXJfuGrbb3kvAlqestA6
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA2MCBTYWx0ZWRfX+7FgMIwyCH6A
- WmDXGiqKnLsUFEUpej5XMHUane3Kj2w6jIhXs5PrlGWexORrVu+FpFpRP2GOzq15sXj/eHut7g2
- Ws8ld0wdSqh+8XMW6QrJaLicikRYXH8=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA2MCBTYWx0ZWRfX2pSEc1s6K4mN
- 3VLGTHlNF0x0yhQro5hwMVB6RS6XffMFZFITHQYSNLTiIKcmAYrz9s+fdNUtyGQ4SKjjnC5Rfrm
- egUsoXJUVcb7Mupci1xn9YnRfbEDdFXpRDl5oFtAL8lNnsQgmoZJcKD9/n3GCI5iAVLNqqa9kOo
- qqJMsYrJtkFPiM+zhhEA/imq4rqNwxMx7S1eBhqQR4cryOO+yG9hfuwp8mgwo+zAfW0OKg0zxro
- KQCUwA2o8S/Xni/3QRcW8P8ORT+dIQ9ZZQTb4yX2NNochiWZcjaib8WvK2HZ7fkv4lSltVdnioH
- BXeXgG24JPSOPw7VH2ODv8JW+pt5Ir0CtCZScvCjDkPLtiKRpcY1jwbm+T4RjUun9V13NCmvIla
- DAx3cWMKexF8+W8qC9lKpW6vIIE2iRS+bCLcpzihVb3DlzqgWXMT9FxWLlsPSMQq3RJvL81IVzV
- XvScVLO95K6flzB8odA==
+X-Proofpoint-ORIG-GUID: DIo0wkpYe2o3jN2R9kJj2KdM4Q-MD6e3
+X-Authority-Analysis: v=2.4 cv=A635rKWG c=1 sm=1 tr=0 ts=6aedf0ed cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=vZ-Ft76KQvoWVpZ_:21 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=dNOmgfuV3ZSo10a98CMA:9
+X-Proofpoint-GUID: DIo0wkpYe2o3jN2R9kJj2KdM4Q-MD6e3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA2MCBTYWx0ZWRfX4iIJGrAc6Lfn
+ f5wD9emVure9x5ZtP2qfSiQYEjO1gg27e3Zmbl8DPw5DH26uoP6RI2r7Nw2CGpU+gMVa9O53MiB
+ CsIMFYyW8p2X9w+JFyJXJ7gRQV44oFGVyLywv3EhTVHLQX9wk06rXvwbCYRIF86U0Xjfum/AAfU
+ ATudQD5yvQwqcsggEiA7vCZ5LozOztNuIIoi0eiYHJeUutKFLc7RWVenvgq1NlDdS5CPO8fzmzh
+ zf6sF8sc50Qk85i9BUEwM9Mph6a1yeuZR813FBKSAnFPYOvV5lo8ggHU2XqfDhtXsvJwTCnLw1A
+ qgTLBZhCyH9toErrPNAgjuRDTKByl+hCSvw9Vm0bjauhH905Odq02I+ex7FaLGGKHWYBts0S5jG
+ fl3yQ7o3h+2BJA+cn63F/+2e1jsHAG9T3I1//1C0i62QzaErihIkMzCkH3cA3zrphS/5gxXhDvM
+ Ck3aJrZ71ZcFXR3AmYg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA2MCBTYWx0ZWRfX/gnM8QCsdHo7
+ EiDvjwxdRo88JVvvlHaQq6UHMY9/g2VfgfXyFIQhO2+9BYb+NGOJI5TPJZ/aOOTIZgGxqaIpMy1
+ /qlMSwm0jZBWlgKGzA4mghpPIez8Im0=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-06_05,2026-11-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0
+ malwarescore=0 adultscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611060060
 
-In order to facilitate vfio-ap device migration:
+Callback to get the estimated data length of the data that will be required
+to complete reading of the vfio device's internal state. It's mandatory for
+VFIO_DEVICE_FEATURE_MIGRATION migration support.
 
-* The function pointers to the callbacks used to facilitate migration of a
-  vfio-ap device must be plugged in. These function pointers are specified
-  via the fields contained in a struct vfio_migration_ops instance:
-
-  	migration_set_state: Set the migration state of the vfio-ap device
-  	migration_get_state: Get the migration state of the vfio-ap device
-  	migration_get_data_size: Get the estimated data number bytes of
-  				 data that will be required to complete
-  				 STOP_COPY
-* The migration_flags field of the struct vfio_device instance is set to
-  VFIO_MIGRATION_STOP_COPY to indicate that STOP, STOP_COPY and RESUMING
-  are the migration states supported for vfio-ap device migration.
-
-* The initial migration state of the vfio-ap device is set to RUNNING
-
-* The boolean flag indicating that all data sent from userspace during the
-  RESUMINMG phase has been received is initialized to false.
+The function pointer for this callback is specified via the
+'migration_get_data_size' field of the 'vfio_migration_ops' structure
+which is stored with the VFIO device when the 'vfio_device'
+structure representing the mediated device is initialized.
 
 Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
 ---
- drivers/s390/crypto/vfio_ap_migration.c | 24 ++++++++++++++++++++++++
- drivers/s390/crypto/vfio_ap_ops.c       | 10 ++++++++++
- drivers/s390/crypto/vfio_ap_private.h   |  1 +
- 3 files changed, 35 insertions(+)
+ drivers/s390/crypto/vfio_ap_migration.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
-index 4af734aeee17..924c25585987 100644
+index c6d4048b1299..4af734aeee17 100644
 --- a/drivers/s390/crypto/vfio_ap_migration.c
 +++ b/drivers/s390/crypto/vfio_ap_migration.c
-@@ -217,6 +217,30 @@ static int vfio_ap_release_mig_file(struct inode *file_inode, struct file *filp)
- 	return 0;
+@@ -1299,7 +1299,15 @@ static int vfio_ap_get_state(struct vfio_device *vdev,
+ static int vfio_ap_get_data_size(struct vfio_device *vdev,
+ 				 unsigned long *stop_copy_length)
+ {
+-	return -EOPNOTSUPP;
++	struct ap_matrix_mdev *matrix_mdev;
++	int num_queues;
++
++	mutex_lock(&matrix_dev->mdevs_lock);
++	matrix_mdev = container_of(vdev, struct ap_matrix_mdev, vdev);
++	*stop_copy_length = vfio_ap_config_size(matrix_mdev, &num_queues);
++	mutex_unlock(&matrix_dev->mdevs_lock);
++
++	return 0;
  }
  
-+static const struct vfio_migration_ops vfio_ap_migration_ops;
-+
-+/**
-+ * vfio_ap_setup_vfio_device_migration:
-+ *
-+ * Plug the object containing the function pointers to the migration callbacks
-+ * used to facilitate migration into the vfio device and set the flags
-+ * indicating migration states STOP, STOP_COPY and RESUMING are supported.
-+ *
-+ * @matrix_mdev: pointer to object containing the vfio device (vdev)
-+ */
-+void vfio_ap_setup_vfio_device_migration(struct ap_matrix_mdev *matrix_mdev)
-+{
-+	/*
-+	 * Live guest migration is not supported for SE guests, so there is no
-+	 * need to initialize the migration capabilities.
-+	 */
-+	if (ap_is_se_guest())
-+		return;
-+
-+	matrix_mdev->vdev.migration_flags = VFIO_MIGRATION_STOP_COPY;
-+	matrix_mdev->vdev.mig_ops = &vfio_ap_migration_ops;
-+}
-+
- /**
-  * validate_stop_copy_read_parms: Validate the input parameters to the
-  *                                vfio_ap_stop_copy_read function
-diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-index 8d70089eb9c9..52de74dc2c6c 100644
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -811,9 +811,19 @@ static int vfio_ap_mdev_probe(struct mdev_device *mdev)
- 
- 	matrix_mdev = vfio_alloc_device(ap_matrix_mdev, vdev, &mdev->dev,
- 					&vfio_ap_matrix_dev_ops);
-+
- 	if (IS_ERR(matrix_mdev))
- 		return PTR_ERR(matrix_mdev);
- 
-+	/*
-+	 * Set up vfio-ap device migration before calling
-+	 * vfio_register_emulated_iommu_dev; otherwise, the VFIO core
-+	 * will see mig_ops as NULL during the registration. This could
-+	 * prevent the VFIO core from properly setting up migration
-+	 * infrastructure like debugfs entries.
-+	 */
-+	vfio_ap_setup_vfio_device_migration(matrix_mdev);
-+
- 	ret = vfio_register_emulated_iommu_dev(&matrix_mdev->vdev);
- 	if (ret)
- 		goto err_put_vdev;
-diff --git a/drivers/s390/crypto/vfio_ap_private.h b/drivers/s390/crypto/vfio_ap_private.h
-index c6e577064e7e..19772e59fdc6 100644
---- a/drivers/s390/crypto/vfio_ap_private.h
-+++ b/drivers/s390/crypto/vfio_ap_private.h
-@@ -173,6 +173,7 @@ void vfio_ap_on_scan_complete(struct ap_config_info *new_config_info,
- 			      struct ap_config_info *old_config_info);
- 
- int vfio_ap_init_migration_data(struct ap_matrix_mdev *matrix_mdev);
-+void vfio_ap_setup_vfio_device_migration(struct ap_matrix_mdev *matrix_mdev);
- void vfio_ap_release_migration_data(struct ap_matrix_mdev *matrix_mdev);
- void vfio_ap_reset_migration_state(struct ap_matrix_mdev *matrix_mdev);
- 
+ static const struct vfio_migration_ops vfio_ap_migration_ops = {
 -- 
 2.53.0
 
