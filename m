@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=79.135.107.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793988214;
-	b=iNZJa6OFdWRlpC8y7Qdi2KV1qfmXC94pNmq4XAtmJH6p61zWjEdXt9hArPDZTFpTdN/Q
-	 CkJfzAwgb4iAyYOvfsLf597AG7IwBAyQtS9MdLOnJ1cJXSvd8NTNOap80y47MFUiEB88R
-	 +ylGnwLYh2Xb3u6s6latEjxGb5aIuvUp91/ftdUIYrjGn334F3uSbgoFVkOEigcgTOKHc
-	 PUUBGfxHgz+QQCKfhV343LigTJ02RG5B+Ul6p1MwR2+A2oYFvQi362GSawccJoLe9M1rN
-	 5MeY8C/R3nBNccyStUCqNqAHMGAmbOIwxpkRnC4yPE2BQsiJYlvbJtBXdnhDPC/U5og==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793988214;
-	h=DMARC-Filter:DKIM-Signature:Date:Subject:In-Reply-To:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:From:To:Cc:Message-ID:
-	 References:X-SimpleLogin-Type:X-SimpleLogin-EmailLog-ID:
-	 X-SimpleLogin-Want-Signing;
-	bh=SiS3p1Pdfw5SumEsCCsXq+4z7US+NPjbCfUp1+4kB04=;
-	b=EjamGAo3ZNJ+hWdFgZQClvbflUPdIt5pB8kogQnjC68dC/yB5d1tsNfa9mBWIYgATBsB
-	 h9O5HRpLFdUaGxI4fxz5e5unRVdjcOUSKShNTTKgYzMk1W0cC3ufMNGqULt+XO4zNCnR+
-	 0nkcSwxo5UhKvwM+W3l77YAa9VZ1/o80jPZ0pRLnSFnTuvCz87slQrjsm+QfNVXY8959C
-	 x1WPRFRIUbUSyWWDupfbb6EiQRee9L22v9RDhXC4T9Q2xJ73tEl9742VHEpRkyQkk9n6U
-	 en4rq6Te9x801lNBEQjFH429HHlou9/C3elKqy2aSNNvZLgbUXc0Zi88ttSmL9Dt4BA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=eldare.de;
-	spf=pass smtp.mailfrom=eldare.de;
-	dkim=pass header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=SCJ3yZca;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=79.135.107.169
-Received: from mail-107169.simplelogin.co (mail-107169.simplelogin.co [79.135.107.169])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793989056;
+	b=1XtelzUJBdAV1D9T14OWJSwDB/PMlQbDCWpkH5Wrk++2GUleuHU+xxiMoM7WSlg1mfqa
+	 z9oZt70KBFLdSo0KcghLuQLXHgJOWPSXDigzPqEpi+QIc/mc77ZSR7LNCurJQBMdC4ccu
+	 iLQ8K5mVPsDrLiSerDLdU6oOBRhhXAx7rfJ1cc5Vxqr/wlhojgOiv0uEUM7k4AubX4hLL
+	 F6Hv1kWRyHSUAsLAmEfO2R0HfUpjqKeBXxXTVTCHAQPPHMrpveg1wX7dZtmNCaIykocL/
+	 1pHhsq+7iz5479kXuCl0/9JZGGz88nBZnlmBp4vuVnUpS8SI6tfN4qL46oz9YRBMl1Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793989056;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=F0qkdeW9NAwTpGhGXz4KXbB5dgSQg8TK+EZRzv3+Fzo=;
+	b=2LyM3zyLVJpKceIsb/ROls2FYGdWyZB+rdPTLQb6nJuJyMZOo2ITzfJwGcCuPXDtUAqc
+	 jJ6TqPvaOQD9T7RZa3JpPv0/K/JyAp/lN/uFQX1rGlzRc9byfYduM1Y+jD/qXrYvVOUvv
+	 4ePfJhjZBAWE4ImmOJUTUj3xYx657Z8HWMP5WWQLGYBEUw1TkS1NyXBmGiH1Z9mV9EnBF
+	 ELV3ozmxTIjYbzCK3QIkOwfQyna2CBZd6CVJlMx6zaFVC5ZlxFyYbd5Od72FAlfD2mRfn
+	 ahmmRzNUcsEwBIgdZtzQcoI3LyH2wjFWg+sM7/dZshN9f3mLz68LMHLqyd1YVa5u35A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JSw2e4AN;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8892F606A32F
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 18:03:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8892F606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=eldare.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eldare.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F57606A326;
+	Fri,  6 Nov 2026 18:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=SCJ3yZca
-ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1793988211;
-	cv=none; b=TnL1jVtSQDg9t4tNi2XEcs1buOQeg4an7YvtMUvXf6nlfjSZN8nYNWX3V5BhkJevk5zn0RW8Ja539uEZacN/xnHJiuyyaQwxJp3f5lrD8stG0/42x66cGX3VrLsmsrFt9vPaVQPMFuDV3L83UnDTfA2Ph6KDYhOtpi0vdlf7zhfyAgi4G1VEC0mnrLfNKS9Vn1o07Mr2ZGHQaqsAg+BoN/IBj3XcfdgAryhOqL+S49s9tRt8POL9hrw85unGDuX2LKvybKnlgPL9YGSzvxbHnioFHYXKqfYXu20LamY9PyvkDW944jed1aINMoL+OpwZ75VQLHbBGRf+kPrAX2dhPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
-	t=1793988211; c=relaxed/simple;
-	bh=TkX1EUPzM5jpig3x/0OdpL9Rw6sv05DAS7uiaOgULNc=;
-	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=YDuIBsEZd4MM40MhEuyuML2OCJayxxhnz7lnTJoN0IpUmKSHKcnuXpHd5h4egnSL+pxbWkVtjMwxa/cos8whk/ak9Y3NHu/fuy2Apqnj0qHj1U6MVJ8kQ7ghAmW2leVs/jAvkan8hPUxxhnA7kfVP63m45xIqE11llYtb6/fFfd6PkHVK445mzri5PU9O+JefMLpvfXIwaepfqpEeLrlHl8o+vUqGGeNjaWugC75h/7l/nlMj9VmyBAduDbkhUZjvgr7Ukr4Pp0kk8JM3vcTXVvs/YOSAZofcfeGfJgasdY1sgHNlYdsv6zU6OI6MRLbaDb3Z2+aF1qjBYRbOSy0eg==
-ARC-Authentication-Results: i=1; mail.protonmail.ch
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eldare.de; s=dkim;
-	t=1793988211;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SiS3p1Pdfw5SumEsCCsXq+4z7US+NPjbCfUp1+4kB04=;
-	b=SCJ3yZcaAZOrUb/mfp9+Y66EWkaIeofok5zYSLGGsp8LJVwAJEbog283DH2zAxWzc4+ipB
-	/uy4sQgYFvh5mhkX9b4+QlY+BYQBhJI+nn8mLEkcan/7rvW9AIlqebWUeFBgK8GDH7wxDy
-	HkjrC5Vm4zqxCP77c8WCziIVYWWJfiY=
-Date: Fri, 06 Nov 2026 18:03:21 +0000
-Subject: Re: [PATCH net v3] vsock/virtio: clear vqs[] to avoid a UAF on a
- failed PM restore
-In-Reply-To: <auxVKMavkOw3Ia-6@sgarzare-redhat>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JSw2e4AN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BC61F0089F;
+	Fri,  6 Nov 2026 18:17:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793989056;
+	bh=F0qkdeW9NAwTpGhGXz4KXbB5dgSQg8TK+EZRzv3+Fzo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=JSw2e4ANSksUNA1pfilCZBigNCHiYSObSAJdqJfoIjV3jjHfKTdtNeBfxN5uOcETB
+	 l4BCLzZPyNiRLN+p+kBTm5ip8KWFyBXEB73AOC7WffVF0/EkgPed8UBKgBsyuQjnHg
+	 DnTD7xlHiUR8gTQpjdJh8+Zu7nInbwgC+bysCCVdemja2wZee/3vkMFkTwUauhFhT1
+	 Ch5RMWaI9MnthuTYtygOv3/VzwuU5qu3rRnYqGAzi77ZOhNX0SoBgxSds+zmEWe6NS
+	 elHCMhK9twzJvAPCSL7kYvs2ysFdEEoEkTMPUdRBFT2Y697/1BDlgnJZZEPJwJwAuG
+	 VfXdB6en18C0Q==
+Message-ID: <sashiko-outbox-202007@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 15/23] KVM: s390: arm64: Implement feature
+ sanitisation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
+ Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261106-sysreg-v3-15-75e95980fb10@linux.ibm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-15-75e95980fb10@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 06 Nov 2026 18:17:35 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,56 +63,126 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: jrmmhm.kernel@eldare.de
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,Bobby Eshleman
- <bobbyeshleman@meta.com>,"Michael S. Tsirkin" <mst@redhat.com>,Jason Wang
- <jasowangio@gmail.com>,=?utf-8?q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>,Xuan Zhuo <xuanzhuo@linux.alibaba.com>,"David S.
- Miller" <davem@davemloft.net>,Eric Dumazet <edumazet@kernel.org>,Jakub
- Kicinski <kuba@kernel.org>,Paolo Abeni <pabeni@redhat.com>,Simon Horman
- <horms@kernel.org>,virtualization@lists.linux.dev,kvm@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,stable@vger.kernel.org
-Message-ID: <179398820999.8.18191536850628408290.1752255756@eldare.de>
-References: <20261104-vsock-restore-uaf-send-v3-1-d60d06488b57@eldare.de>
- <auxVKMavkOw3Ia-6@sgarzare-redhat>
-X-SimpleLogin-Type: Reply
-X-SimpleLogin-EmailLog-ID: 1752255862
-X-SimpleLogin-Want-Signing: yes
 
-On Thu, Nov 05, 2026 at 11:19:23AM +0100, Stefano Garzarella wrote:
->On Wed, Nov 04, 2026 at 05:26:43PM +0100, Jerome Mohm via B4 Relay wrote:
->>Clear vqs[] after del_vqs() and when virtio_find_vqs() fails. Return
->>early from virtio_vsock_vqs_del() when vqs[] is empty: a second
->>del_vqs() would free virtio-mmio's IRQ again ("Trying to free
->>already-free IRQ").
->
->Is this an issue or just a warning?
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] KVM: s390: wrong ARM64_HAS_HCR_NV1 check in
+  cpus_have_final_cap()
+- [Low] KVM: s390: missing ID_AFR0_EL1 masking in
+  kvm_arm_host_sanitize_features()
+- [Low] KVM: s390: malformed kernel-doc comment for
+  read_sanitised_ftr_reg()
+--
 
-Just a warning: free_irq() finds no action for the IRQ, WARNs and
-returns without freeing anything. That taints the kernel, and panics
-only with panic_on_warn or at kernel.warn_limit. v4 says WARN in the
-message.
+commit 1c037e7c3587ba94101456185c381c6fbc670b9c
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
->>+    virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
->
->I'd prefer to move this before the virtio_reset_device(), because the
->comment on top of that is related also to the next steps (detach unused
->buffers), so having this in the middle is not really readable.
+KVM: s390: arm64: Implement feature sanitisation
 
-Sure, v4 moves it right before virtio_reset_device().
+This commit implements feature detection and ID register sanitization for
+arm64 KVM guests on s390 using capabilities queried via QAAF.
 
->>+    /* After a failed restore no virtqueues are live, and a second
->>+     * del_vqs() would free virtio-mmio's IRQ again.
->
->What will be the issue of freeing virtio-mmio's IRQ again?
+> diff --git a/arch/s390/kvm/arm64/feature.c b/arch/s390/kvm/arm64/feature.c
+> new file mode 100644
+> index 0000000000000..f8b23ba85f9ef
+> --- /dev/null
+> +++ b/arch/s390/kvm/arm64/feature.c
+> @@ -0,0 +1,163 @@
 
-Only that WARN. The early return is needed anyway: with vqs[] cleared,
-the detach loops below would pass NULL to
-virtqueue_detach_unused_buf(). I'll say that in the v4 message too.
+[ ... ]
 
-Thanks,
-Jerome
+> +void __init kvm_arm_host_sanitize_features(struct qaaf_qmc_block *qaaf_q=
+mc)
+> +{
 
+[ ... ]
+
+> +	MASK_RESERVED(qaaf_qmc, ID_PFR0_EL1);
+> +	MASK_RESERVED(qaaf_qmc, ID_PFR1_EL1);
+> +	MASK_RESERVED(qaaf_qmc, ID_PFR2_EL1);
+> +
+> +	MASK_RESERVED(qaaf_qmc, ID_DFR0_EL1);
+> +	MASK_RESERVED(qaaf_qmc, ID_DFR1_EL1);
+> +
+> +	MASK_RESERVED(qaaf_qmc, ID_MMFR0_EL1);
+
+[Severity: Low]
+Should kvm_arm_host_sanitize_features() also mask reserved bits for
+ID_AFR0_EL1?  kvm_qaaf_read_ftr_reg() exposes
+qmc_sanitized.regs[QAAF_REG_ID_AFR0_EL1], and without
+MASK_RESERVED(qaaf_qmc, ID_AFR0_EL1) its reserved bits [63:16] remain
+unmasked when queried via read_sanitised_ftr_reg().
+
+[ ... ]
+
+> +bool cpus_have_final_cap(unsigned int num)
+> +{
+> +	u64 reg_val;
+> +
+> +	switch (num) {
+
+[ ... ]
+
+> +	case ARM64_HAS_HCR_NV1:
+> +		reg_val =3D read_sanitised_ftr_reg(SYS_ID_AA64MMFR4_EL1);
+> +		return SYS_FIELD_GET(ID_AA64MMFR4_EL1, E2H0, reg_val) =3D=3D
+> +		       ID_AA64MMFR4_EL1_E2H0_IMP;
+
+[Severity: Medium]
+Does the ARM64_HAS_HCR_NV1 case check for FEAT_E2H0 instead of HCR_EL2.NV1
+support?
+
+In the Arm architecture, ID_AA64MMFR4_EL1.E2H0 is a signed field where 0
+(ID_AA64MMFR4_EL1_E2H0_IMP) means HCR_EL2.E2H can be programmed to 0, 0xf
+(ID_AA64MMFR4_EL1_E2H0_NI) means E2H0 is not implemented but HCR_EL2.NV1 is
+supported if nested virtualization is present, and 0xe
+(ID_AA64MMFR4_EL1_E2H0_NI_NV1) means neither is implemented.  On arm64,
+has_nv1() checks for nested virtualization support and that E2H0 is not
+NI_NV1:
+
+arch/arm64/kernel/cpufeature.c:has_nv1() {
+	return (__system_matches_cap(ARM64_HAS_NESTED_VIRT) &&
+		!(has_cpuid_feature(entry, scope) ||
+		  is_midr_in_range_list(nv1_ni_list)));
+}
+
+Checking E2H0 =3D=3D ID_AA64MMFR4_EL1_E2H0_IMP causes cpus_have_final_cap()=
+ to
+return true whenever E2H0 is 0 even though nested virtualization is not
+supported on s390, and false when E2H0 is 0xf.
+
+[ ... ]
+
+> diff --git a/arch/s390/kvm/arm64/feature.h b/arch/s390/kvm/arm64/feature.h
+> new file mode 100644
+> index 0000000000000..0a59047fda6ef
+> --- /dev/null
+> +++ b/arch/s390/kvm/arm64/feature.h
+> @@ -0,0 +1,86 @@
+
+[ ... ]
+
+> +/**
+> + * read_sanitised_ftr_reg() - Get the value of a sys register
+> + *
+> + * @id - ARM sysreg id
+> + *
+> + * Get the value of a sys register describing the host configuration.
+> + * The returned value indicates support by the machine (HW/FW)
+> + * after some sanitisation.
+> + *
+> + * Example:
+> + *	read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1)
+> + *
+> + * Return: Sanitised HW value of the specified register
+> + */
+> +static inline u64 read_sanitised_ftr_reg(u32 id)
+
+[Severity: Low]
+This isn't a bug, but the kernel-doc comment uses "@id -" instead of "@id:",
+which causes scripts/kernel-doc to warn that the parameter is not described
+in read_sanitised_ftr_reg().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-sysreg-v3-=
+0-75e95980fb10@linux.ibm.com?part=3D15
