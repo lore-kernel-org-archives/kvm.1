@@ -1,85 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793979463;
-	b=x2EGO3a4A/xHDV3ZPbAbFgavoPfho+972gShPSbufcNQCE93HAPxFEgs4YOmMuyZelo8
-	 m5fvtJWvTLzOjRQL8C2HK21VY3Fs1ChP4XyUfcSs8G9EiGvMBxxJIwe/s1oe/o6xCLWG2
-	 QcuwUkDCVJsUgEQ0vWFbc8BQ0gsW/DqnFUY+aNVz012F+B6z1lBEwhtZTZW8WQmeveoKI
-	 v+K/460Su1zm/rTCpfsgxGRJZ7s4WNdZ+jFfk3leiek40Y+Omz5nfdD6qczsi721qIuas
-	 SBIN7S8N48IenogWKWc0j6ImrG6GUwbJ101V5BVxrLVI4J/YlpZDiDGApo4C79q/9Vg==
+	t=1793979608;
+	b=or+3NaBbaZ3/wKuWhqGIb3WtuspYN9O0tPlwitdPu8k8y1sNSeUAAML0yeyMU8YLUb2I
+	 ArbTXKJ+LtA26vaKF0foRT5KxuUVNzpRaUNBiRXegM54w3adnJm8cQTkZMg+u+9A2Yxkm
+	 AA95loflCYqogpJb1v9QtvhGT+9KZ4VqqHNIE0hVhU72KDbXvvFOpXHihp3KQY4VUSrm2
+	 P2zYwTCIVVHqqywFLkdfIPkVygOfoKFIJjhUMzmtBjlES7XNXnXzG7U9ftfISesAkXrgZ
+	 GjoQnypdYVQM2NNQud7tgzfUfJeVFPfDRH719NBhZe4e9hkKLFB0QC7t1sis1L5BbBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793979463;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=HuObySZLDxE9+LLAkaqrBSP5vceAa33bCHj1KNG2i7A=;
-	b=bnHs3fIbeVGM1huReEHqivqiK8myZP4PHaowxF9m94F2PFWqiubYPumD6KKdN8HbHZcQ
-	 3cD0dj42gMCa5H7h9lcbXgXub64QZJ/H90YKSTBBjLpEM0sw8108e/7ijbwOXzI5WZEWU
-	 Keveo+FxMISrOp+Hai5Ruse73rMkzkKYzxO3lGfW4AUdYlZa98hGOzabFsLIDAf6BiiP1
-	 w288wo9gJsQ1m3lLwRTkjRtCd4zT8jj2/xDRcBU7JKtX1kQ39uQAiJPNingx7J2vv80HI
-	 liFUTVA2G1/JGJqQYI94eerFBTQ9X8ee9AARhoVSZuEZGJtmR8tC2cKkFBAMCeF7tEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793979608;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=GjZxu266jNxwcR9mDbLVKfmtb9ofuqlgjo6mMVq48Ow=;
+	b=yE9noc+l+jG0KObbf8p+vmFTfypO+7px8RmV3QHi7uUudBhzMtX9g7yvuOCrKeMWvWrr
+	 DIS3yjS6lPG1qvXSe/EGnrt2crIqwHCZXz2VtC7LjSHZtDdebpIZDqtl14wKWkFxKL6Sa
+	 YKPGMCRy5Yftp2tkncrHqfcvxRefBRCvsEHNs94auG0HkflMufm9B1+0gdc6U9q0wwWyi
+	 54s02fvvxfT9Bx8517271frRf2tKOxs3SM7wJ07gWWpCrqXqkvThyTglYBDLi+Jsedtvk
+	 xZ/hjIcsqziIbea7dqVJ1PiQIzicxQ7aySgSpszfEZKR0pCQ2eggGJb547C0kwO2oZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=llAlWz7x;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0958A606D827;
-	Fri,  6 Nov 2026 15:37:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0958A606D827
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b9PcMiN9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB29C606A332
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 15:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=llAlWz7x
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 475C81650;
-	Fri,  6 Nov 2026 07:37:38 -0800 (PST)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 113BC3F632;
-	Fri,  6 Nov 2026 07:37:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793979461; bh=qXWXkuBVBxZ9xT4eUDdfxaF2UuiBGoMjIIlVYYrkttg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=llAlWz7xlnBHxmmVTz87IEUBT+U3kyH9YObDETp6fosKhKB5oJhxN2dhuPXDLEEsX
-	 DVL7yW5Oevy7iKyPxCGohG1kCXByNMZVwjct//ZIvQOmSyP2HF+mq413aZkhu0GgXL
-	 wbI2QCexMI+/E09pwLD219X0IgawLZpU1REqS810=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	maz@kernel.org,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	tangchengchang@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com,
-	fuad.tabba@linux.dev,
-	mark.rutland@arm.com,
-	seanjc@google.com,
-	rdunlap@infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH v5 13/15] KVM: arm64: Add HDBSS buffer size ioctl for dirty-bitmap mode
-Date: Fri,  6 Nov 2026 15:37:33 +0000
-Message-ID: <au30PSHX_UBIIx_Y@LeoBrasDK>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <5a096cca-713a-4449-83dc-c763dc06c085@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-14-zhengtian10@huawei.com> <auioRICO9Frhk-zT@LeoBrasDK> <5a096cca-713a-4449-83dc-c763dc06c085@huawei.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b9PcMiN9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6016B1F0089F;
+	Fri,  6 Nov 2026 15:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793979607;
+	bh=GjZxu266jNxwcR9mDbLVKfmtb9ofuqlgjo6mMVq48Ow=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=b9PcMiN9Eyh6Y1nHv0j8ZdtKXqS+JtGE65/ANJNbJxbJakhtJ88RjlN98bI8HU3MJ
+	 2CGoi5X4r3x8NFx82QCEfz9ZF+n6tqxfENn2pXm0zhkavCSf6MvoiF5IElJVSv7EEf
+	 Eek+g0ERAlNMXzeYYAj+qJZS8hm06GrsgqDsQQdQ8pgJ/BU5JTuWsaEll7ToGPztdH
+	 07gCnA0qfIXDVyYysvpS6PnDcyCDCD9ubwHf64vWiYcGUHG6w8LgUAIWQ94mD34Qj+
+	 KmXqEB3O3CYD1DGEhfcARS/e8Q2S/9nnbnVEQ6HRk8viYUoPpWT1TkZB3kZmoronwG
+	 n7MtlykGkdRjA==
+Message-ID: <sashiko-outbox-201715@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/3] powerpc/perf: Update prev_count of event to get
+ accurate values
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Gautam Menghani" <gautam@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261106153136.330165-3-gautam@linux.ibm.com>
+References: <20261106153136.330165-1-gautam@linux.ibm.com>
+ <20261106153136.330165-3-gautam@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 06 Nov 2026 15:40:07 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -88,108 +60,38 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 06, 2026 at 06:27:27PM +0800, Tian Zheng wrote:
-> 
-> 
-> On 11/2/2026 11:12 PM, Leonardo Bras wrote:
-> > On Tue, Sep 29, 2026 at 06:36:53PM +0800, Tian Zheng wrote:
-> > > In dirty-bitmap mode, a larger HDBSS buffer lets the guest dirty more
-> > > pages between VM exits, at the cost of memory. The default of one page
-> > > per vCPU is a reasonable starting point, so allow userspace to opt
-> > > into a larger buffer via KVM_CAP_ARM_HDBSS_BUFFER_SIZE.
-> > > 
-> > > The size is specified in bytes through KVM_ENABLE_CAP and must be a
-> > > power of two in [PAGE_SIZE, SZ_2M]: the upper bound is the largest
-> > > HDBSSBR_EL2.SZ encoding, and the power-of-two requirement matches the
-> > > buddy allocator. It must be set before any vCPU is created: -EINVAL
-> > > after vCPUs exist, -EBUSY if already set.
-> > > 
-> > > The capability is rejected in dirty-ring mode, where the size is
-> > > pinned by kvm_arch_dirty_ring_size_updated().
-> > > 
-> > > KVM_CHECK_EXTENSION returns the configured size for a VM, or SZ_2M
-> > > when queried globally with a NULL kvm.
-> > > 
-> > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> > > ---
-> > >   arch/arm64/kvm/arm.c     | 34 ++++++++++++++++++++++++++++++++++
-> > >   include/uapi/linux/kvm.h |  1 +
-> > >   2 files changed, 35 insertions(+)
-> > > 
-> > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > > index 5a7046acb62e..eadbf3a88d31 100644
-> > > --- a/arch/arm64/kvm/arm.c
-> > > +++ b/arch/arm64/kvm/arm.c
-> > > @@ -19,6 +19,7 @@
-> > >   #include <linux/kvm.h>
-> > >   #include <linux/kvm_irqfd.h>
-> > >   #include <linux/irqbypass.h>
-> > > +#include <linux/log2.h>
-> > >   #include <linux/sched/stat.h>
-> > >   #include <linux/psci.h>
-> > >   #include <trace/events/kvm.h>
-> > > @@ -203,6 +204,31 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
-> > >   		r = 0;
-> > >   		set_bit(KVM_ARCH_FLAG_EXIT_SEA, &kvm->arch.flags);
-> > >   		break;
-> > > +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE: {
-> > > +		u64 size = cap->args[0];
-> > > +
-> > > +		if (!system_supports_hdbss())
-> > > +			break;
-> > > +		if (kvm->dirty_ring_size)
-> > > +			break;
-> > > +		if (size < KVM_ARM_HDBSS_DEFAULT_SIZE ||
-> > > +		    size > KVM_ARM_HDBSS_MAX_SIZE)
-> > > +			break;
-> > > +		if (!is_power_of_2(size))
-> > > +			break;
-> > > +
-> > > +		mutex_lock(&kvm->lock);
-> > > +		if (kvm->created_vcpus) {
-> > > +			r = -EINVAL;
-> > > +		} else if (kvm->arch.hdbss_buffer_size) {
-> > > +			r = -EBUSY;
-> > > +		} else {
-> > > +			kvm->arch.hdbss_buffer_size = size;
-> > > +			r = 0;
-> > > +		}
-> > > +		mutex_unlock(&kvm->lock);
-> > > +		break;
-> > > +	}
-> > >   	default:
-> > >   		break;
-> > >   	}
-> > > @@ -500,6 +526,14 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
-> > >   		else
-> > >   			r = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
-> > >   		break;
-> > > +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE:
-> > > +		if (!system_supports_hdbss())
-> > > +			r = 0;
-> > > +		else if (kvm)
-> > > +			r = kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
-> > 
-> > This whole thing of allowing hdbss_buf_size to be set only once makes
-> > everything more complex. Why do we have this limitation again?
-> > 
-> > I mean, if we want to restrict size changes after the first hdbss buffer
-> > gets allocated, it makes sense, other than that, I would like to understand
-> > the reason for that.
-> > 
-> > Thanks!
-> > Leo
-> 
-> Hi Leo,
-> 
-> You're right, I re-examined the whole flow and the "set once"
-> restriction isn't actually needed. I'll remove it.
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] powerpc/perf: dead store to prev_data from local64_read() in
+  vpa_pmu_read()
+--
 
-Awesome, thanks!
-Leo
+commit e6b6a01ca205d4ad136547505bcf1dcf984b82ba
+Author: Gautam Menghani <gautam@linux.ibm.com>
+
+powerpc/perf: Update prev_count of event to get accurate values
+
+This commit updates event->hw.prev_count in vpa_pmu_read() using
+local64_xchg() so that consecutive counter reads accumulate only the delta
+since the last read.
+
+> diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
+> index 01d9196fcb0f6..3296877eb317b 100644
+> --- a/arch/powerpc/perf/vpa-pmu.c
+> +++ b/arch/powerpc/perf/vpa-pmu.c
+> @@ -132,6 +132,7 @@ static void vpa_pmu_read(struct perf_event *event)
+> =20
+>  	prev_data =3D local64_read(&event->hw.prev_count);
+>  	new_data =3D get_counter_data(event);
+> +	prev_data =3D local64_xchg(&event->hw.prev_count, new_data);
+
+[Severity: Low]
+Can the earlier local64_read(&event->hw.prev_count) call be dropped now
+that local64_xchg() unconditionally overwrites prev_data before it is
+used?  Because local64_read() expands to a volatile READ_ONCE() load, the
+compiler cannot elide the redundant read on every vpa_pmu_read() call.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106153136.3301=
+65-1-gautam@linux.ibm.com?part=3D2
