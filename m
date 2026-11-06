@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793979415;
-	b=PVfd9204akcAW7Xeb+uCri9T/dNFye1KlukJdiDCbqOYqznQYUvBa8Ct1q3W8qb534wq
-	 yNYK8+onM3XTdlUsAi5Fks7HIKfVvbPQvCo29kR68B73gTpdsZtuWp1BePZt4Cy9hPgeW
-	 zgc3mBvMP4kL3gCNS3hrhFcBS1EQIhGSqbbMhr2jIuczq68IyiBX4SYKsb76evAEbtgBb
-	 sEy45Bvd86Oos+BNbwH3qsKtSEtUqE5/9TLsl0h1aRE8VozCRV+B+HVMBKXpvsC9zXVT6
-	 Hgop5K4KJk6BQZrdfc5sStES5bcbD0FhWGroVN7JNCrACGw0obQYpK63GIJ2eqQFX0A==
+	t=1793979445;
+	b=KNLXSwTLFOz+Gu6UbuH/sTRTCtckuzGt2GGuXi81xSnEFvtV9g9naKz0cfXisEHQ3HCE
+	 cM+AQakJr6u1gbM122UaW3gFz7EqyA9h3ZfEpovhK2E+6Nz79B3/l0IL47HDSX1kuuVzi
+	 B57Dxp4z/QmpiqlobPK1X0ZK8Vk4z4AkQ1G5DiR+vZ8y1FP3uzDU4btP/UJ3RLabqYlDm
+	 Kh1BzKsRCrLG8VSov5EKYfT9pmYVHqcKOUBTdJ3zJi6Rr3wE9+SSioo6Bixvm7HjaikNo
+	 zPt4MgSkHtz6SCuqHmPyZWZ5OZ88jLdUJVOjen3odCFvOC401iEJuLX4unFo1wiUmKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793979415;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793979445;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=X6oCZ8KMibXCNr1yDQP09IDW1MiX5SNSSfAmHFWcFuM=;
-	b=joZvvL4IkgeBZo1pquQh+QBOJ4ecVGJDLZz/diufGejiXKWlPgR2YODsXPFbKBzzy5a/
-	 5v0hfokQhSYhdLln3+c87Ou7HYXMuJSqL8KGjVQchC7eLL+53BF4AEjVez+CgIT4eBEzg
-	 yl0YZmTWNLAY4rtsW7nSeNNQ2QLhYniJFE9/lLJPfh+xYXhxMa7fB+POz/UnkYMVrHQOn
-	 RA+94JeuEknOe7PhZBayHQ7slvA7OpyNVRSRPhjVRcvjo+yxxRPaBlPW6ayvnf87Sb0PB
-	 IY8tJQm7hrZh8aRUkBMKraWmm6A60VDTtmgwVptw6Oy5Mvm/3g/Mg5B14YiBZKZQ/rQ==
+	bh=WbInPTtgeVQVaR+YtMP5Ieeyl2biDusMLIdL8tIaNf8=;
+	b=QTss/y1JyTyFYqMJlY3efmZgHnbLtAWI6kLs6ljiBVnHS8PortY/50umqgrroHUQfvPM
+	 bGfgXCpq7t8qp4LpckDY4sTiB4rW3SnNnfr0k4SN3tBEk1NEjwqcV56buId+uK+Czevwx
+	 1gU93YL/U35LtOWnh/k767+BpYloALnktbKRHKHM5NX+QeEybUe/4xiA05HfjWvNMKfUS
+	 7e9R7yjS1uCwBbdB1sYD+BuzerQ85wjB3pvAE7VGE4q7xdVelElmb92PcOcblCbYvZKKA
+	 D+kuIvOrvtigmdlrsV9Ict8Hh9vWtOFv3uAfJECWZ2hkDpjGAcL2ZEh/+Obq3gOGVnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=fQxMjKtQ;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WX68Z5yL;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6D7606A33B;
-	Fri,  6 Nov 2026 15:36:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA6D7606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024D3606A336;
+	Fri,  6 Nov 2026 15:37:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 024D3606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=fQxMjKtQ
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WX68Z5yL
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F22051650;
-	Fri,  6 Nov 2026 07:36:50 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEC4F1650;
+	Fri,  6 Nov 2026 07:37:19 -0800 (PST)
 Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E638C3F632;
-	Fri,  6 Nov 2026 07:36:48 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8047E3F632;
+	Fri,  6 Nov 2026 07:37:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793979414; bh=XhTj1ZqerFVvUKFrBdoT7z+FaNkZhZNX8C/KwXqfi4Y=;
+	t=1793979442; bh=7EK+OV8cc6RynWDVsBo3aQX5rI+zXYDSLKEL403LmQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQxMjKtQP13tykAE+L2nt7gsW2dFPZHgY5a2UhnFNKxU6LLOsJPGDvVyqyrLaJf3g
-	 rnqVSo1tCLPaYbCB/JHGdo0YAiCdYF94rO9uZtgxKA4byJK0eOGUkjCjuRQLrU/2Um
-	 Qr5BuxuawI84dtwHI4oxWrZiiNGlXsezx2dHHYsI=
+	b=WX68Z5yL6OyzNuu6ZywpIXZrFSwK9X2UJrdZ6ELbVJWB/Rx0VdMU5Rbmy0NZFI+PD
+	 m1eJazJZTMQLnD3Wv7gPUGVEW1c51bZ3fbQ9BWbBFFx622ozPIILzlDy0QQ8ZDBTKa
+	 ZKgMtPWWAQZ7ODXi1Gn2Q1+KL1k+y4WW/FQyfpNw=
 From: Leonardo Bras <leo.bras@arm.com>
 To: Tian Zheng <zhengtian10@huawei.com>
 Cc: Leonardo Bras <leo.bras@arm.com>,
@@ -74,12 +74,12 @@ Cc: Leonardo Bras <leo.bras@arm.com>,
 	linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	skhan@linuxfoundation.org
-Subject: Re: [PATCH v5 11/15] KVM: arm64: Reserve dirty ring space for the HDBSS buffer
-Date: Fri,  6 Nov 2026 15:36:46 +0000
-Message-ID: <au30DqzWIFny1tpr@LeoBrasDK>
+Subject: Re: [PATCH v5 12/15] KVM: arm64: Derive the VM hardware dirty mode from dirty logging
+Date: Fri,  6 Nov 2026 15:37:14 +0000
+Message-ID: <au30Kg7zCnTjoD0u@LeoBrasDK>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <afcbf19b-bd13-4afc-ab56-8bc50c793e50@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-12-zhengtian10@huawei.com> <auikG0clmr19sAjh@LeoBrasDK> <afcbf19b-bd13-4afc-ab56-8bc50c793e50@huawei.com>
+In-Reply-To: <191ab0e3-9913-4927-9f84-c861c8f3bcd5@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-13-zhengtian10@huawei.com> <auimPtktqZ1cwk3-@LeoBrasDK> <191ab0e3-9913-4927-9f84-c861c8f3bcd5@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,93 +93,33 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 06, 2026 at 06:36:04PM +0800, Tian Zheng wrote:
+On Fri, Nov 06, 2026 at 06:46:46PM +0800, Tian Zheng wrote:
 > 
 > 
-> On 11/2/2026 10:54 PM, Leonardo Bras wrote:
-> > On Tue, Sep 29, 2026 at 06:36:51PM +0800, Tian Zheng wrote:
-> > > The dirty ring reserves room for CPU-side dirty buffers via
-> > > kvm_cpu_dirty_log_size(). Report the HDBSS buffer entry count
-> > > through it, so a full buffer flush always fits in the ring.
+> On 11/2/2026 11:03 PM, Leonardo Bras wrote:
+> > On Tue, Sep 29, 2026 at 06:36:52PM +0800, Tian Zheng wrote:
+> > > Both HAFDBS and HDBSS flip VTCR_EL2.HD at memslot-update time. Two
+> > > independent toggles allow an intermediate HDBSS-set/HD-clear state,
+> > > an illegal combination, and need locking against concurrent updates.
 > > > 
-> > > Pin the HDBSS buffer size to PAGE_SIZE when dirty-ring is enabled,
-> > > via kvm_arch_dirty_ring_size_updated(): a larger buffer only
-> > > shrinks the soft_limit and forces more frequent userspace drains.
+> > > Replace both with kvm_arch_update_hw_dirty_mode(), a pure function
+> > > of the static capabilities and the number of logging memslots:
 > > > 
-> > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> > > ---
-> > >   arch/arm64/kvm/arm.c | 8 ++++++++
-> > >   arch/arm64/kvm/mmu.c | 8 ++++++++
-> > >   2 files changed, 16 insertions(+)
-> > > 
-> > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > > index 9d7bdece149a..5a7046acb62e 100644
-> > > --- a/arch/arm64/kvm/arm.c
-> > > +++ b/arch/arm64/kvm/arm.c
-> > > @@ -215,6 +215,14 @@ static int kvm_arm_default_max_vcpus(void)
-> > >   	return vgic_present ? kvm_vgic_get_max_vcpus() : KVM_MAX_VCPUS;
-> > >   }
-> > > 
-> > > +void kvm_arch_dirty_ring_size_updated(struct kvm *kvm)
-> > > +{
-> > > +	if (!system_supports_hdbss())
-> > > +		return;
-> > > +
-> > > +	kvm->arch.hdbss_buffer_size = KVM_ARM_HDBSS_DEFAULT_SIZE;
-> > > +}
-> > > +
+> > >    - logging && HDBSS-capable  -> HD|HA|HDBSS
+> > >    - logging, no HDBSS         -> off
+> > >    - !logging && HAFDBS-cap.   -> HD|HA
 > > 
-> > On the same subject as a previous patch:
-> > I don't think this is the best approach, on top of adding a new weak
-> > function to take care.
-> > 
-> > Maybe during the dirty-ring allocation, on vcpu creation, we could take
-> > into account the requested dirty-ring size, and just allocate the HDBSS
-> > buffer taking that into account. That would make it simpler, don't you
-> > agree?
+> > This last one is gone now, so I guess most of this patch has to be
+> > reworked, right?
 > > 
 > > Thanks!
 > > Leo
 > 
 > Hi Leo,
 > 
-> The "set once" guard we're discussing comes from the patch that adds the
-> ioctl, and it isn't really needed. We discussed this earlier [1]: we can
-> just initialize hdbss_buffer_size to PAGE_SIZE at VM creation and let
-> the ring reservation use it directly. **That also means
-> kvm_arch_dirty_ring_size_updated() can be removed.** Thanks for your
-> suggestion.
-
-:)
-
-> 
-> As for why PAGE_SIZE is the right value in ring mode: the HDBSS buffer
-> is flushed on every VM exit, so a larger buffer doesn't reduce the flush
-> frequency. It only inflates the ring reservation (64 + size/
-> sizeof(u64)), which shrinks the soft_limit and forces more frequent
-> exits to userspace for the ring to be drained. Draining the dirty ring
-> from QEMU is more expensive than draining the HDBSS buffer from the
-> kernel, so the smallest buffer gives the best performance. In this mode,
-> a larger buffer provides no benefit to users.
-
-Humm, if properly dimensioned larger buffers would be benefitial for 
-memory-intensive workloads, unless they are guest_exiting for other 
-reasons in the meantime. 
-
-> 
-> In my tests, I also saw performance degrade when more space is reserved.
+> Yes, the last one is no longer needed as we discussed earlier in [1], so
+> I'll rework this patch.
 > 
 
-Humm, what kind of workloads did you test? 
-Did you have the chance to monitor what were the reasons for VM exiting?
-
-I am not saying this is mandatory for the HDBSS implementation, but the 
-whole idea of letting the user choose their own HDBSS buffer size is 
-because different workloads may benefit from different buffer sizes: if a 
-VM writes a lot to new memory, and exits very little for other reasons, 
-then a larger buffer will cause the VM to guest_exit much less often.
-
-Does that make sense?
-
-Thanks!
+Awesome, thanks!
 Leo
