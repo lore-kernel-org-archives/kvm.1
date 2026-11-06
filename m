@@ -1,111 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793977700;
-	b=UhYvgHFKyU9HNZCXqpNv58bA1UZgEOPjr05kOejNmwILu3/gDeAMc5qrABda+yilIqv+
-	 rwm7EAMXxQUh7qNti0/RKCn9mOnaizk7L7xOYg47HNGfVWqfqCIf8nojDGPxyEwb0uZL3
-	 6Z8KmFWPUXZYg5Jm4FM0w6aQ8D39RnFfBsus3SgNSjD9hWklvvgg8TNtjIqD+CFsjOcdY
-	 /96qVwe1Awq5VMcoU/b9sGcQmtMMSKSZEXa8Y83YtB+6JN7xT5Ft1SPbeQLcrFovv1yBE
-	 HGsDAe7Tzd/Cji5IZojzM9LHF4m7lV0X2jMflZbARLzDUt9ojgIiDwGf2nDMEaUH9Ag==
+	t=1793978503;
+	b=gRD3/wSrViU6NdnjkNePj/5Ed0ZXzxYXjem4qlVyy9rPDs+tyBgiwtyJPKXwGC2oK7Ln
+	 tLRUBsK4oLLtdQGavbzntjOnDl33YSyxus8KE3m2MLYfvfiynzROnvAQjIOSwJRqNSBUJ
+	 Q6cf0M+8OB2cxH5vxQEibsTuoe29N5pSFxMwIX8KP6D1ofmKCGd0yYSTbJ0f9XH33+lt1
+	 bVhIovCz5qmyGYcDsQl2yPlc6/AfACD9PZ32vKRQsS2mGon3aA3XwYqzP/GuPttCRJHRQ
+	 t141NwLG5zUIRAiK+oyp9g1LNUlYGglBcHjPVQQc6DZiAwYzNGs0XzDujrxHPx6eITQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793977700;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:To:Cc:
-	 Subject:In-Reply-To:References:Date:Message-ID:MIME-Version:
-	 Content-Type;
-	bh=3vp3q6lh6TXy5on50j0jpxtnhhR94Zm7KWhjqrQdFt4=;
-	b=vWjEjw9m1GvTWH2YWA6zTeBDqMBEZAe6rdfjxPQKXaSvM26HUHxx/CrRZ8o2okl+rTrq
-	 tiZNixVQBouru6ay8YFApTK9DE1h8o9e0+6X4mang6Ts1RqS6aMZDnJ6jlP81qnmOqICz
-	 CZhtZyOwmUSURnMda/DVEttnTfEIDr5DARzH69C+iwNrlOuy5iKM6WXjyzWOoMivkAoMc
-	 994PcWOFlvWQEif+8cF+telXUhlKDLXDuExxkqSvMVewO2lN6GIhMynX6ZyqXEHMsZxs6
-	 VFjbRLGxzk+u8uJFX5rdU+Nyu7G2mBoUwcF4U6SmiYihDZzfuUHoSPxIjZLBJoCk9xA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793978503;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=QlAJRLst9AJbwfYrhiuAcYHXrk5kiqZZ598/4vkmUAs=;
+	b=KFJx4JkIT6ZqDJx0o3gM8sWlXa8Al5L7YAH2zOT+XwZf6ons2M3tf5Tx2K7yUp3f1RuW
+	 W+J/oU/0UoCzwgNspvLzhwxnvukajfH39iLsZXApGvAOi2phZyqvNl5ATUAQ1aiTriorm
+	 nM83aoXlaD7trbuCfdMODoPi3Q3vZY0trh+y8uSqejotGOGZgkPmrT+ijUZ7RYOdu+f1M
+	 zh2lIIH9zyhrUxVG9ZL4HOFj4yvwWW11Blm/EKPkEAtTNKV6H9v8ARIfx0wfreV3WD1o+
+	 PW0m4BADPc1ukOw/WpH0P8QPX1+MaZUziaHS3X4/xncvUk6SQFdJeA4Fg6+uXbpNoiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cp1OsbjF;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=n8ufY3cU;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA59606A326
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 15:08:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FA59606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=F0RruXBz;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C23606A33B;
+	Fri,  6 Nov 2026 15:21:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9C23606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cp1OsbjF;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=n8ufY3cU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793977699;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3vp3q6lh6TXy5on50j0jpxtnhhR94Zm7KWhjqrQdFt4=;
-	b=cp1OsbjF5nUm2XXzP1Yrf4p/Ht/ftqiop6GvjOOGl4yOTchounjZA1+Rgm1j0xnqwivPaA
-	IRrczrSqU8P+SLIck1uIBD6HU/o5ZMVnHnN/VzAArz7//Cea7c4osHlz4tgEp2MaRYTTaz
-	pYQUGp8oTtbLl96k7BNtzVNRP4P/A+E=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-AAe6ek_uNCiAmf5j4oMRlA-1; Fri, 06 Nov 2026 10:08:16 -0500
-X-MC-Unique: AAe6ek_uNCiAmf5j4oMRlA-1
-X-Mimecast-MFC-AGG-ID: AAe6ek_uNCiAmf5j4oMRlA_1793977696
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-49090fde23aso770659f8f.2
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 07:08:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793977695; x=1794582495; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3vp3q6lh6TXy5on50j0jpxtnhhR94Zm7KWhjqrQdFt4=;
-        b=n8ufY3cUDQpD7iDSD/RVDVONRIeOFwi+FYM3c1hK0KpkX4vEqP+n+CQtLi0HrO8Uy+
-         ExULCAO83DS5QHtcRbad0LKvA/aAYXJkTlle8q4Ha+edNGnGe18RO3Eib6enV3HJPa2B
-         jYa8MinYllp86cd9UAkd2puBur2iawLy5sALNx4+FZ7ydvfdOPnqxUTuI5Y6UhAlAb8L
-         o8BspxKHKg25nsfWhOky96W7AOZ3QtMoNHhwqc4m/frALtGncQVmM77m7Cvekwbcbage
-         /FP0whc9i0Y+jmmkE8csrHxI/0w/EyHpFvSpRaCbBHQ1miqph1pUki19D0vLWW7w9jD0
-         1uhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793977695; x=1794582495;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3vp3q6lh6TXy5on50j0jpxtnhhR94Zm7KWhjqrQdFt4=;
-        b=mVDTXf9ZhnDm2KaWuNTVqwykzs5dsPVfb1ARG6s/JlQpSKrAKseJD0BJlS3B4q4Gaz
-         z2EMRUvbz3x4itDuZn+uK4c96KybuR5CeN6SlLU8KEAb0qPevkjbLpaNERTrDG8VDBCk
-         DsTfBBbHs8HUxnczcrNVwDzahyKB4dpx8rJwBgH13074VI3GT4VfdtDmb1WS5kM8oSn2
-         2c93j/H9HAL691Zh1MFUo9P+RU+meCmLCyQnsxz0xty7hrNMjZUyTTyfkCh052FZ+Pm3
-         9qJzWyxWsE+iEJbDxmkbTpCrB0fRxkcwycCYqls7ApXz+w6oEF4cY+Hkxg9c6HA+hfnb
-         J+qQ==
-X-Gm-Message-State: APuU4Z+ucrrp9A0u2P1XDpxPDYDHAd80pWx96622nCAf6aOW8X2NaTzj
-	5aqvcE1K/tZbyaV+XzU6BruhtRwQ1BGAxFF8nmbM8UQehDx/UBz18rBtTGsUXN8WPu5yABMDm/n
-	t2YtEM4FCCTET4CF8wHQfrzt7u1XCThjJrH+RQvw+2y+uvU4atrB81Q==
-X-Gm-Gg: AYBFou1eM2ozZF91nrz0KQ+mCQXoSGRrTknmIWo6DcqJZRcxXzItO0XAPhjZ+SrywIh
-	3jwxelCsGvQr/x78jqgOVNXe0lwbqrwhzOQj+PuwUm2bWCpFBeOTis3QTA/m7GWLivTLE8aGSE+
-	kFcHUwZB1/s3KqP/fAkS7zcPI/HerVfLwdI9q/dJH8ppurDR7OEtlowAWA6ItXLhYyHl0CoYhFS
-	HdfupykwgDwCvA67cf0LtTLA+6TjVbnXqWxtNDS7G7bkgrlcZVJoVnvRzA/aZhyTzMy+fCkTQd0
-	fIGe73tedmRr5xaez0DY/8BW8MPfdfnMd9TMPM2j086iWDrrZMV15bOUChbbtGum2Uv0IMwA7+2
-	M3wH+sKSwIGSfX17QNJGyhwuDgzpnjqcG9mWQ3VAldjkRDHyjl4a90yCWuWDALon68a+yOup7P/
-	0kxaLhfVdBcdGp9c4=
-X-Received: by 2002:a05:6000:1788:b0:48e:752b:9f90 with SMTP id ffacd0b85a97d-492772197c5mr5796940f8f.38.1793977695532;
-        Fri, 06 Nov 2026 07:08:15 -0800 (PST)
-X-Received: by 2002:a05:6000:1788:b0:48e:752b:9f90 with SMTP id ffacd0b85a97d-492772197c5mr5796888f8f.38.1793977695161;
-        Fri, 06 Nov 2026 07:08:15 -0800 (PST)
-Received: from vkuznets-thinkpadx1carbongen12.rmtcz.csb (g3.ign.cz. [91.219.240.17])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d723320csm3831907f8f.26.2026.11.06.07.08.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 07:08:14 -0800 (PST)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Manuel Andreas
- <manuel.andreas@tum.de>
-Subject: Re: [PATCH v2 0/2] KVM: nVMX: eVMCS consistency check fixes
-In-Reply-To: <20261105190733.3741959-1-seanjc@google.com>
-References: <20261105190733.3741959-1-seanjc@google.com>
-Date: Fri, 06 Nov 2026 16:08:13 +0100
-Message-ID: <kuppkwihuaq.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=F0RruXBz
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 13A2014BF;
+	Fri,  6 Nov 2026 07:21:39 -0800 (PST)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B4D43F628;
+	Fri,  6 Nov 2026 07:21:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793978502; bh=Iwz4s79vORMlYnpLiY8KAQnEt0Hrm46DNVXQpjoy090=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=F0RruXBzTZJNsivcNgD/k0rJtVLF4dj6Mu+wOS+gR2L2sR1V6FmZyqLXF3ROdeNwk
+	 vKRjBNJ57EXk8cfW1LFJa5ZkqXnxlBVANULfxXjatVoaU7QMH42OwVvjMzEP1mAdYN
+	 arHGHUemcV/jmvh6lTbk7nxcbmjR06nPG0TrTw2s=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 07/15] KVM: arm64: Add HDBSS per-vCPU buffer management
+Date: Fri,  6 Nov 2026 15:21:30 +0000
+Message-ID: <au3wekPW4sPUUVGm@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <c80e143e-f899-4b86-94ad-f575c869d72b@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-8-zhengtian10@huawei.com> <at-bm_p_MHU3GmYn@LeoBrasDK> <6e2d5b81-1ae9-476e-897c-f6dc7079565c@huawei.com> <auSuAAmzoND1sy4c@LeoBrasDK> <c80e143e-f899-4b86-94ad-f575c869d72b@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -115,34 +89,458 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Sean Christopherson <seanjc@google.com> writes:
+On Fri, Nov 06, 2026 at 04:49:49PM +0800, Tian Zheng wrote:
+> 
+> 
+> On 10/30/2026 10:47 PM, Leonardo Bras wrote:
+> > On Fri, Oct 30, 2026 at 11:47:20AM +0800, Tian Zheng wrote:
+> > > 
+> > > 
+> > > On 10/27/2026 2:27 AM, Leonardo Bras wrote:
+> > > > On Tue, Sep 29, 2026 at 06:36:47PM +0800, Tian Zheng wrote:
+> > > > > From: Eillon <yezhenyu2@huawei.com>
+> > > > > 
+> > > > > Each vCPU owns an HDBSS buffer, described by HDBSSBR_EL2 (base
+> > > > > address and encoded size) and advanced by HDBSSPROD_EL2 as hardware
+> > > > > appends entries. Tie the buffer lifetime to the vCPU: allocate at
+> > > > > vCPU creation, free at destruction. The buffer is allocated zeroed,
+> > > > > so a stale producer index can only ever observe invalid entries.
+> > > > > 
+> > > > > Registers are programmed whenever the vCPU owns a buffer, regardless
+> > > > > of whether HDBSS is enabled. The feature can be turned on
+> > > > > mid-KVM_RUN, and hardware dirty-state updates write to
+> > > > > HDBSSBR_EL2.BADDR without any fault, so the registers must already
+> > > > > be in place by then. HDBSSPROD_EL2 is preserved across context
+> > > > > switches and vCPU migration.
+> > > > > 
+> > > > > Two details: the buddy order is kept separate from the HDBSSBR_EL2.SZ
+> > > > > encoding, since the two only coincide on 4KB pages; and kvm_share_hyp()
+> > > > > is unwound in kvm_arch_vcpu_create() when the HDBSS allocation fails.
+> > > > 
+> > > > Out of curiosity: why can't we allocate the buffers when dirty-tracking
+> > > > starts? (and free them when it stops)
+> > > > 
+> > > > Since we have to request the vcpus to guest_exit, and enable
+> > > > VTCR_EL2{HA,HD,HDBSS}, we could as well allocate the buffers and set the
+> > > > HDBSSBR_EL2.BADDR. In case the buffer allocation fails, we could just not
+> > > > enable HDBSS, maybe.
+> > > > 
+> > > > Buffer allocation could happen before the VCPU request, for every vcpu, or
+> > > > during the vcpu request, so every vcpu allocates it's own buffer.
+> > > > 
+> > > > Am I missing something, or is it just to make things easier?
+> > > > 
+> > > 
+> > > Hi loe,
+> > > 
+> > > Yes, allocating the buffers at vCPU creation does make things simpler.
+> > > 
+> > > I'd rather follow the x86 PML and dirty ring scheme: allocate at vCPU
+> > > creation. This avoids partial enablement when an allocation fails mid-
+> > > broadcast, the use-after-free window when freeing at logging stop, and
+> > > naturally handles vCPU hotplug during logging.
+> > 
+> > Ah, I see.
+> > Well, the problem of partial enablement is gone if the requester tries to
+> > allocate all buffers for all vcpus, before requesting the vcpus to enable HDBSS.
+> > If one of them fails, then just don't request the vcpus to enable :)
+> > 
+> > As for the use after free: you can free the buffer at the vcpu request to
+> > disable the feature, making sure it's not using it when you free the
+> > buffer.
+> > 
+> > I agree that allocating at the creation of a vcpu is easier, but this can
+> > receive pushback as a VM will have to carry this buffers for it's whole
+> > lifetime, even though it may never use it.
+> > 
+> > I suggest we try allocating at vcpu creation should only if dirty-tracking
+> > is already happening, so we can enable the feature on the new vcpu.
+> > 
+> > I agree that x86 may have chosen to do that for a reason, but if we don't
+> > know the reason, or if it's not compelling for us, maybe we can just try
+> > doing something better.
+> > 
+> 
+> Hi Leo,
+> 
+> Thanks for giving this suggestion. I think it's useful. x86's PML only
+> occupies 4KB per vCPU, so its memory overhead is controllable. But ours
+> can occupy up to 2MB, which is wasteful.
+> 
+> Therefore, we keep allocating the HDBSS buffer when creating a vCPU if
+> HDBSS is enabled (this is for vCPU hotplug). For normal vCPUs, we keep
+> allocating HDBSS buffers when enabling HDBSS, and destroy them when
+> disabling HDBSS or destroying the vCPU.
+> 
+> I think it works and can save memory. What do you think about this?
 
-> Fix two benign-for-real-guests bugs where KVM incorrectly performs eVMCS
-> consistency checks on VMCS fields that are supposed to be ignored.
->
-> v2: Properly guard the checks instead of simply deleting the WARN.
->
-> v1: https://lore.kernel.org/all/f1f39118-2e1b-476b-9a84-ef7d56412bdc@tum.de
->
+Yeap, that's what I suggested :)
 
-FWIW, makes sense to me so:
+> 
+> > > 
+> > > > > 
+> > > > > Signed-off-by: Eillon <yezhenyu2@huawei.com>
+> > > > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > > > > ---
+> > > > >    arch/arm64/include/asm/kvm_dirty_bit.h | 28 +++++++++++++
+> > > > >    arch/arm64/include/asm/kvm_host.h      | 13 ++++++
+> > > > >    arch/arm64/include/asm/sysreg.h        |  9 +++++
+> > > > >    arch/arm64/kvm/Makefile                |  1 +
+> > > > >    arch/arm64/kvm/arm.c                   | 14 ++++++-
+> > > > >    arch/arm64/kvm/dirty_bit.c             | 55 ++++++++++++++++++++++++++
+> > > > >    arch/arm64/kvm/hyp/vhe/switch.c        | 17 ++++++++
+> > > > >    arch/arm64/kvm/reset.c                 |  3 ++
+> > > > >    8 files changed, 138 insertions(+), 2 deletions(-)
+> > > > >    create mode 100644 arch/arm64/include/asm/kvm_dirty_bit.h
+> > > > >    create mode 100644 arch/arm64/kvm/dirty_bit.c
+> > > > > 
+> > > > > diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > > > new file mode 100644
+> > > > > index 000000000000..fe703f02626b
+> > > > > --- /dev/null
+> > > > > +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > > > @@ -0,0 +1,28 @@
+> > > > > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > > > > +/*
+> > > > > + * Per-vCPU buffer management for HDBSS-based dirty page tracking.
+> > > > > + *
+> > > > > + * Copyright (C) 2026 Huawei Technologies Co., Ltd
+> > > > > + * Author: Tian Zheng <zhengtian10@huawei.com>
+> > > > > + */
+> > > > > +
+> > > > > +#ifndef __ARM64_KVM_DIRTY_BIT_H__
+> > > > > +#define __ARM64_KVM_DIRTY_BIT_H__
+> > > > > +
+> > > > > +#include <asm/kvm_pgtable.h>
+> > > > > +#include <asm/sysreg.h>
+> > > > > +#include <linux/sizes.h>
+> > > > > +
+> > > > > +#define KVM_ARM_HDBSS_DEFAULT_SIZE  PAGE_SIZE
+> > > > > +#define KVM_ARM_HDBSS_MAX_SIZE      SZ_2M
+> > > > > +
+> > > > > +/* 0 means unconfigured, fall back to one page per vCPU. */
+> > > > > +static inline u32 kvm_hdbss_buffer_size(struct kvm *kvm)
+> > > > > +{
+> > > > > +	return kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
+> > > > > +}
+> > > > 
+> > > > Why not set arch.hdbss_buffer_size to KVM_ARM_HDBSS_DEFAULT_SIZE at start,
+> > > > instead of testing it here like this?
+> > > > 
+> > > 
+> > > The size is set by userspace via ioctl, and we don't allow it to
+> > > be set twice:
+> > > 
+> > > ```
+> > > if (kvm->created_vcpus) {
+> > > 	r = -EINVAL;
+> > > } else if (kvm->arch.hdbss_buffer_size) {
+> > > 	r = -EBUSY;
+> > > } else {
+> > > 	kvm->arch.hdbss_buffer_size = size;
+> > > }
+> > > ```
+> > > 
+> > > If we pre-fill the default at VM creation, hdbss_buffer_size is
+> > > always non-zero and the -EBUSY branch would reject every attempt
+> > > to set a size. The same 0 sentinel also gates the dirty-ring
+> > > enable (a configured size conflicts with the ring), so it has to
+> > > mean "not configured".
+> > > 
+> > 
+> > It looks like there is a reason for us not to set the size more than
+> > once. I have not figured it yet, do you mind sharing?
+> > 
+> > I ask because effectively what we are having here is the same effect:
+> > kvm_hdbss_buffer_size() may return two different values depending on the
+> > IOCTL being ran or not. So for it's users does it look like the expected
+> > value changed mid way.
+> > 
+> > What I am trying to understand: is it safe for us to change the perceived
+> > value once? (default -> whatever the user sets) In which scenario is it
+> > safe?
+> > 
+> > In that case, can't we just allow that change to happen in that scenario,
+> > instead of having a proxy function to return the ring size?
+> > 
+> > 
+> 
+> The size affects the dirty-ring reservation: when the ring is enabled, it
+> reserves entries for the HDBSS buffer. Once the ring is allocated with that
+> reservation, changing the HDBSS size would make the two inconsistent, and
+> matching them dynamically isn't practical.
+> 
 
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Right, if it's just that, let's allow the buffer size to be set as long as 
+no buffer is allocated then. I mean, not allowed to change buffer size if 
+dirty-tracking is on. 
 
-> Sean Christopherson (2):
->   KVM: nVMX: Do eVMCS consistency check on secondary controls iff
->     they're enable
->   KVM: nVMX: Do eVMCS consistency check on VMFUNC controls iff they're
->     enable
->
->  arch/x86/kvm/vmx/hyperv.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
->
-> base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
+> In practice a larger buffer doesn't provide much benefit either: the buffer
+> is flushed on every VM exit, so it rarely fills up.
 
--- 
-Vitaly
+It depends very much on the workload running in the VM, some VMs can 
+benefit of larger buffers. If the workload is having very intensive memory 
+activity, having a 2MB buffer instead of a 4k buffer means taking up to 
+512x less faults.
 
+> Setting it once, before
+> the ring is allocated, is the simplest correct option.
+
+Before the buffer is allocated: fully agree.
+
+My point is that it looks weird to have a "can only be set once" scenario.
+I suggest we try the "only set the buffers are allocated, or in process of 
+being allocated".
+
+Which, in the scenario above discussed, could be anytime dirty-tracking is 
+disabled.
+
+On the other hand, if your strategy for dirty-ring is to have the number of 
+buffer entries being reserved in kvm's dirty-ring array, then we have (for 
+dirty-ring) to disable setting the size once we allocate the dirty-ring 
+buffer, which happens when we create the first vcpu, IIRC.
+
+> 
+> > > > > +
+> > > > > +int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu);
+> > > > > +void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
+> > > > > +
+> > > > > +#endif /* __ARM64_KVM_DIRTY_BIT_H__ */
+> > > > > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > > > > index 86a4d6e50934..c8fc29f3db75 100644
+> > > > > --- a/arch/arm64/include/asm/kvm_host.h
+> > > > > +++ b/arch/arm64/include/asm/kvm_host.h
+> > > > > @@ -425,6 +425,9 @@ struct kvm_arch {
+> > > > >    	 */
+> > > > >    	struct kvm_protected_vm pkvm;
+> > > > > 
+> > > > > +	/* HDBSS: per-VM buffer size in bytes (0 = not configured, use default) */
+> > > > > +	u32 hdbss_buffer_size;
+> > > > > +
+> > > > >    #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
+> > > > >    	/* Nested virtualization info */
+> > > > >    	struct dentry *debugfs_nv_dentry;
+> > > > > @@ -844,6 +847,13 @@ struct vcpu_reset_state {
+> > > > >    	bool		reset;
+> > > > >    };
+> > > > > 
+> > > > > +struct vcpu_hdbss_state {
+> > > > > +	struct page *hdbss_pg;		/* HDBSS buffer */
+> > > > > +	u64 hdbssbr_el2;		/* programmed into the CPU on load */
+> > > > > +	u64 hdbssprod_el2;		/* producer index, saved on put */
+> > > > > +	unsigned int buddy_order;	/* allocation order for __free_pages() */
+> > > > > +};
+> > > > > +
+> > > > >    struct vncr_tlb;
+> > > > > 
+> > > > >    struct kvm_vcpu_arch {
+> > > > > @@ -951,6 +961,9 @@ struct kvm_vcpu_arch {
+> > > > > 
+> > > > >    	/* Hyp-readable copy of kvm_vcpu::pid */
+> > > > >    	pid_t pid;
+> > > > > +
+> > > > > +	/* HDBSS buffer state */
+> > > > > +	struct vcpu_hdbss_state hdbss;
+> > > > >    };
+> > > > > 
+> > > > >    /*
+> > > > > diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> > > > > index 7aa08d59d494..7c71560b57e4 100644
+> > > > > --- a/arch/arm64/include/asm/sysreg.h
+> > > > > +++ b/arch/arm64/include/asm/sysreg.h
+> > > > > @@ -1039,6 +1039,15 @@
+> > > > > 
+> > > > >    #define GCS_CAP(x)	((((unsigned long)x) & GCS_CAP_ADDR_MASK) | \
+> > > > >    					       GCS_CAP_VALID_TOKEN)
+> > > > > +
+> > > > > +/*
+> > > > > + * Definitions for the HDBSS feature
+> > > > > + */
+> > > > > +#define HDBSSBR_EL2(baddr, sz)	(((baddr) & HDBSSBR_EL2_BADDR_MASK) | \
+> > > > > +				 FIELD_PREP(HDBSSBR_EL2_SZ_MASK, sz))
+> > > > > +
+> > > > > +#define HDBSSPROD_IDX(prod)	FIELD_GET(HDBSSPROD_EL2_INDEX_MASK, prod)
+> > > > > +
+> > > > >    /*
+> > > > >     * Definitions for GICv5 instructions
+> > > > >     */
+> > > > > diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+> > > > > index 59612d2f277c..ec2749af64fa 100644
+> > > > > --- a/arch/arm64/kvm/Makefile
+> > > > > +++ b/arch/arm64/kvm/Makefile
+> > > > > @@ -18,6 +18,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+> > > > >    	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
+> > > > >    	 vgic-sys-reg-v3.o fpsimd.o pkvm.o \
+> > > > >    	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+> > > > > +	 dirty_bit.o \
+> > > > >    	 vgic/vgic.o vgic/vgic-init.o \
+> > > > >    	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
+> > > > >    	 vgic/vgic-v3.o vgic/vgic-v4.o \
+> > > > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > > > > index d9ad765943d9..5ea4ac26995e 100644
+> > > > > --- a/arch/arm64/kvm/arm.c
+> > > > > +++ b/arch/arm64/kvm/arm.c
+> > > > > @@ -36,6 +36,7 @@
+> > > > >    #include <asm/virt.h>
+> > > > >    #include <asm/kvm_arm.h>
+> > > > >    #include <asm/kvm_asm.h>
+> > > > > +#include <asm/kvm_dirty_bit.h>
+> > > > >    #include <asm/kvm_emulate.h>
+> > > > >    #include <asm/kvm_hyp.h>
+> > > > >    #include <asm/kvm_mmu.h>
+> > > > > @@ -580,10 +581,19 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+> > > > >    	}
+> > > > > 
+> > > > >    	err = kvm_share_hyp(vcpu, vcpu + 1);
+> > > > > -	if (err)
+> > > > > +	if (err) {
+> > > > >    		kvm_vgic_vcpu_destroy(vcpu);
+> > > > > +		return err;
+> > > > > +	}
+> > > > > 
+> > > > > -	return err;
+> > > > > +	err = kvm_arm_vcpu_alloc_hdbss(vcpu);
+> > > > > +	if (err) {
+> > > > > +		kvm_unshare_hyp(vcpu, vcpu + 1);
+> > > > > +		kvm_vgic_vcpu_destroy(vcpu);
+> > > > > +		return err;
+> > > > > +	}
+> > > > > +
+> > > > > +	return 0;
+> > > > >    }
+> > > > > 
+> > > > >    void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+> > > > > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..f9aeb9f34ad0
+> > > > > --- /dev/null
+> > > > > +++ b/arch/arm64/kvm/dirty_bit.c
+> > > > > @@ -0,0 +1,55 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > > +/*
+> > > > > + * Per-vCPU HDBSS buffer management.
+> > > > > + *
+> > > > > + * Copyright (C) 2026 Huawei Technologies Co., Ltd
+> > > > > + * Author: Tian Zheng <zhengtian10@huawei.com>
+> > > > > + */
+> > > > > +
+> > > > > +#include <asm/kvm_dirty_bit.h>
+> > > > > +#include <asm/kvm_mmu.h>
+> > > > > +#include <asm/sysreg.h>
+> > > > > +#include <linux/gfp.h>
+> > > > > +#include <linux/kconfig.h>
+> > > > > +#include <linux/log2.h>
+> > > > > +#include <linux/mm.h>
+> > > > > +
+> > > > > +int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu)
+> > > > > +{
+> > > > > +	struct page *hdbss_pg;
+> > > > > +	u32 size;
+> > > > > +	unsigned int buddy_order;
+> > > > > +	u32 sz_encoded;
+> > > > > +
+> > > > > +	if (vcpu->arch.hdbss.hdbss_pg || !system_supports_hdbss())
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	size = kvm_hdbss_buffer_size(vcpu->kvm);
+> > > > > +
+> > > > > +	buddy_order = get_order(size);
+> > > > > +	sz_encoded = ilog2(size) - 12;
+> > > > > +
+> > > > > +	hdbss_pg = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, buddy_order);
+> > > > > +	if (!hdbss_pg)
+> > > > > +		return -ENOMEM;
+> > > > > +
+> > > > > +	vcpu->arch.hdbss = (struct vcpu_hdbss_state) {
+> > > > > +		.hdbss_pg = hdbss_pg,
+> > > > > +		.hdbssbr_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg), sz_encoded),
+> > > > > +		.hdbssprod_el2 = 0,
+> > > > > +		.buddy_order = buddy_order,
+> > > > > +	};
+> > > > > +
+> > > > > +	return 0;
+> > > > > +}
+> > > > > +
+> > > > > +void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
+> > > > > +{
+> > > > > +	if (!vcpu->arch.hdbss.hdbss_pg)
+> > > > > +		return;
+> > > > > +
+> > > > > +	__free_pages(vcpu->arch.hdbss.hdbss_pg, vcpu->arch.hdbss.buddy_order);
+> > > > > +
+> > > > > +	vcpu->arch.hdbss.hdbss_pg = NULL;
+> > > > > +	vcpu->arch.hdbss.hdbssbr_el2 = 0;
+> > > > > +}
+> > > > > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+> > > > > index 7875911c0506..922fc9260e11 100644
+> > > > > --- a/arch/arm64/kvm/hyp/vhe/switch.c
+> > > > > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+> > > > > @@ -19,6 +19,7 @@
+> > > > >    #include <asm/cpufeature.h>
+> > > > >    #include <asm/kprobes.h>
+> > > > >    #include <asm/kvm_asm.h>
+> > > > > +#include <asm/kvm_dirty_bit.h>
+> > > > >    #include <asm/kvm_emulate.h>
+> > > > >    #include <asm/kvm_hyp.h>
+> > > > >    #include <asm/kvm_mmu.h>
+> > > > > @@ -219,6 +220,17 @@ static void __vcpu_put_deactivate_traps(struct kvm_vcpu *vcpu)
+> > > > >    	local_irq_restore(flags);
+> > > > >    }
+> > > > > 
+> > > > > +static void __load_hdbss(struct kvm_vcpu *vcpu)
+> > > > > +{
+> > > > > +	if (!vcpu->arch.hdbss.hdbss_pg)
+> > > > > +		return;
+> > > > > +
+> > > > > +	write_sysreg_s(vcpu->arch.hdbss.hdbssbr_el2, SYS_HDBSSBR_EL2);
+> > > > > +	write_sysreg_s(vcpu->arch.hdbss.hdbssprod_el2, SYS_HDBSSPROD_EL2);
+> > > > > +
+> > > > > +	isb();
+> > > > > +}
+> > > > > +
+> > > > >    void kvm_vcpu_load_vhe(struct kvm_vcpu *vcpu)
+> > > > >    {
+> > > > >    	host_data_ptr(host_ctxt)->__hyp_running_vcpu = vcpu;
+> > > > > @@ -226,10 +238,15 @@ void kvm_vcpu_load_vhe(struct kvm_vcpu *vcpu)
+> > > > >    	__vcpu_load_switch_sysregs(vcpu);
+> > > > >    	__vcpu_load_activate_traps(vcpu);
+> > > > >    	__load_stage2(vcpu->arch.hw_mmu);
+> > > > > +	__load_hdbss(vcpu);
+> > > > >    }
+> > > > > 
+> > > > >    void kvm_vcpu_put_vhe(struct kvm_vcpu *vcpu)
+> > > > >    {
+> > > > > +	/* Saved under the same ownership condition as __load_hdbss(). */
+> > > > > +	if (vcpu->arch.hdbss.hdbss_pg)
+> > > > > +		vcpu->arch.hdbss.hdbssprod_el2 = read_sysreg_s(SYS_HDBSSPROD_EL2);
+> > > > 
+> > > > Above suggestion would need you to reload HDBSSBR_EL2 as well.
+> > > > 
+> > > 
+> > > Right, that reload is part of the ordering obligation above.
+> > > 
+> > > I think keeping the allocation at vCPU creation is simpler, but
+> > > let me know what you think.
+> > > 
+> > 
+> > I fully agree it's simpler, but we have to carry those per-cpu buffers
+> > (that can go up to 2M each) for the whole life of the VM, which can be a
+> > lot on a big VM.
+> > 
+> > That being said, I'm not against it. But I think we should resort to it
+> > only if we have a compelling reason not to allocate/free on demand.
+> > 
+> > What do you think?
+> > 
+> > Thanks!
+> > Leo
+> 
+> Yes, I agree. My answer is the same as the one below.
+> 
+
+Awesome, thanks for the discussion!
+Leo
