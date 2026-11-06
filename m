@@ -1,101 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793941518;
-	b=K0wY47JweP/P1MoZfiAfmNqsJWeQ73J6AU79KqMhuVLkjUfHgwMII9GVC+lJC3kC9oKU
-	 1d5kDYXRhBjif4YnGbyl8pKwhqg7b5g9TJ5t9ri8nLXOeQGwNfB2XWvt6wPOxPOIOiWmM
-	 cS9RaFq9/1QVfNGYqN7yBCQb0USOQp2gFhkZcE1gncGFGkWDK/HUM3gp5sPp7YbQxzRsS
-	 ZZqqdrs8GsCsGIaaZ9bgM86P6AArnEb+YPMuj5KUeQrpjqy242kUeSF2UAUh2X+Devrzr
-	 90xCxwgC0KgplS32RJPebu/REAUEtv4CpLWDoyGCQyYW83+qW0lSpXFUTKrpHrp39PA==
+	t=1793941944;
+	b=aWmGL1uRO9GDZjc2xTjexZkGTHGSMZsm7wuwK2ZrjqpswtYBuMOTMHmJUUImqRV7bEv5
+	 y3Sd3Bq8DWtvmTPWacHm3e/dqsyfGb6pNDrU02jL1i4IWAePcfuIXrp60hP1hg9fsIhm9
+	 iGyELdi7xmaYr7U7rCxr1KClcCapvVnLcrPW73gDJQ3DUr42fzrJKxyBa7cEn3wcIMEUl
+	 oFGOtmR/rFjljDcoMXlaRzzeWgnZb6eEc8668dwEFfJTTLW7rBSwlI0o/E4VMHErqPNgK
+	 F8yrqWNTbjeKxFWvb10ilSDAZLYKnq1sp21P0XNPMuSQJx9osSppSZ36K3v05JefGYQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793941518;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793941944;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=pspHsxwC+1fZ0eWgExmZb4edg4s0MDST/6bYFdzne0M=;
-	b=lWgrYw+3mPdNsNYtJGXsyM6AvYqn2bGkDa/0zr0UR2chzM9I80I2wDyKRD/wsAPzMxY/
-	 GTX8wTlB8ICscW6xppRRBeqhLuyk0Bk2dykgZaXsxRtUopCkgJIBtx1EV1VQ6mZfu1+v7
-	 HltwpAe8pJ2jMVJnlsZh9aDvpfEw8feC+WsF2pp5DIRaZQsnasyI4oxUCbpWKVFO3YEcR
-	 R2E14A+eviozMHQUWt8Kue+VxWiIrKcIDkvCuVfrebGROMCZDuxGcBH9heZhT2D2gk6sO
-	 LjbnGJ5M7+l1EVR5nYicheANe1kdF6fyz5yigdQj2DXHwYplZWayR4ZnJEuBcfYxKpg==
+	bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
+	b=kFx4rd9Kz1M5iMW4tHYnG0k8c3q2/xXwhZaVUu2SRRcArDmbWs0rS4xxVL0iGl2+qUhR
+	 sg6XtzWPGEixtqFfPJqrHVm2XcySMqfK5dUJ8habqTTKl/8jbiVB1CphTY3rpef01Feph
+	 A1gYceCAVNm4QuUFVWFc7IE+VOBDPu8I4FcH59NqfYwv9aKyq3WucPGSCn53SzFwt3BAH
+	 0qtvdS/diQMBTMz3ldoftXJ2dXuMSsOkbGLeyeGVqxpOeETOWcM1iT9jEmzR+za4JwlsJ
+	 rPrOUgeeb7r2JwZcIh2mqO9Bcmcdhk5Cz6lr4wZ9mc86j0onFjlWIKj3Cn+8RIY8tKA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T9xEbZc+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="oIgbNl1/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A9C606A31B
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 05:05:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36A9C606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45737606A31B
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 05:12:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45737606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T9xEbZc+
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5383c97c8cfso29021cf.1
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 21:05:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793941517; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oIgbNl1/
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso1995a12.0
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 21:12:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793941943; cv=none;
         d=google.com; s=arc-20260327;
-        b=m0sOlI80NKs2Dlz6KQGEZZH0vQ5xWGCfg53mXIJZg7CrC8vXfBSnxPZUsZE8Df1mZ6
-         8dkDhJ/kBJp/STpQTPU2Zwvj6TU6RoEDDOBidt5LM+hXiVtzu/a1D+43EB3Z4/H+ho89
-         PPa4mATTfxWennuZ6VZO6f+LjfI3scKQJTfcqx10f7M32eIv0v9aorPEvdQT+2aOQgJG
-         RSiiFXfdN78j1unVvF+Mr0dlb8MLHDad9rDaFGn3aaaoBcdADQO5R4xbuzJRXCwZe3Bp
-         nd/NQwcxRoEI8tkIMqEbkDA2/uchny5QFScwJS8XDWSDuRMAVYQxnHg7sCC631S/t2e2
-         nykg==
+        b=VoTTfixmVF/s34VJo8a/1jpuq/a4CK3xsCpkBHIlcBzD5iQ3OSPq5FXKOjxTtAeYj0
+         tkllw+UAZVw+/ezfRg+rUuz9ElKauDA3r+ZTdzfz1IwdxCSJj/ViUCxyRaqbN4PMsdVO
+         hz3SnkSkgSpVyCERQfQz3U+65gkH38yAaw28l4yWijYKMddOIqfRyx3tQFfon8fMez9h
+         OzThAkzwDvaHS0wO+QqfAZbAOTnl+b3/qSXpy6sA3/jJrwlThczWSx7LAh3U8ZrtwjB6
+         ZCldOGpowy+V4rM+CwiiFV9zGPclGvKrbhqyO5o1/Xm0/DjwAWh7my2bOOGDdxpsu7Hs
+         tofw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=pspHsxwC+1fZ0eWgExmZb4edg4s0MDST/6bYFdzne0M=;
-        fh=dMmwUcbqERfxUzQ2tl+nt9TGnLyWid5CbuG27jp3Ct0=;
-        b=W8XcSxglNlpbEMLlY2lwiFcRMsqHI+COjApN3hUAiy4U2HjpGECWNO+f2cKNS8b27P
-         jsS1P72nhByDhuUb3bGZu/8f40qDx09UsRReSTa9rtZnuWQyvWB1Sgl1cKR4KAUAbQci
-         XQAMCMPQ6EpxzlFqQBmas6YfSLCRPZPV8Vo3478yf4JnXrhVaCYDuyjAh56Hiu8g48zh
-         c9WYHbONTj9o1ORsdm76WHL1HWccKV6j1ZBlAK/lyJswXm5+umfRcxCMpV97SAW2A08k
-         SWGalW3ENvA16ZQZxHtm/zJ/BcV3KEHlRetUpecbZNoDJTXuCLJ1dhbSY7tH9brdLsLL
-         2Izg==;
+        bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
+        fh=/Ur0soFXrcUNuU5Sn+FxemRodCD7o2RvPzsuQf71HNU=;
+        b=CW3/OQHTsRyBsosU1uLhLrGMLAwHCZPaFno7fni9oa/BMmgnegg75xNhnIIM7uZrTl
+         PAIsL29P0rOvkOIqS5YOV3ItNMKbkQMkq8wCUPvQiK/nu0lF84GJWx263Q8OL0gbsCmy
+         pmScs9rfjXoZp6uqpJmxTuE/0OhOwrBjXSWtVHyYBUVTc44Fvrz6xDZD1KlecQk0tTjk
+         m5xLLZLAKxlVDWgy795e19PBlZIIbO6gB9JI2AV0nsHbGAL6HiZeBNPD9e0hKfeZiqip
+         yX+AaFIj0Ox0CZ2z0CTcoRKxrRMP4n+Z73B5reoNGRDc+dzi1cOASC/+eK8M3xmlLe35
+         fiqA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793941517; x=1794546317; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793941943; x=1794546743; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=pspHsxwC+1fZ0eWgExmZb4edg4s0MDST/6bYFdzne0M=;
-        b=T9xEbZc+DwJsTIZJ5kRLvQitoKGARhVX9+FfMjxC5ToMew5+z4yZqWm1MXg5HZzJ8P
-         q7Idnq2Uza6VKP4NVIJFQfZfXm+4BJ8pGqN+GjsCejEfftMg7PkH3flJzv+XMoMsMRWz
-         Szv5py7JQwiVfTFSbwJe0EbWkmYFj3ZPM+w7LUmmdny9NQkBVe0ie/3otmNF+/dTKSdg
-         XT9yHhVLYe/jo8Yst3WY1Sgj/q6XU+IRF++RaC3jV+Cmxzk5j65I2Xm6r6UYpXZfU73u
-         nLhiExVdoRmWctIOxkyDuZOS22GG3mN5f1uNVTPvQhArGc6RosdnTZghPOw9PfyHpZaW
-         OJ+g==
+        bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
+        b=oIgbNl1/Q1nF4uodqrrjdCYfUb+UfcL4xxtLPNA/QST1KgVM8d9k+ZQWlvtNsgiGcD
+         mjSqmz+ZcRAw3AKIzEV7nsH2RWtjPZgIDZpNg9mS3nYY6DBl35BskHf1uQB3eHKa2TiJ
+         BKlOPlnVR+zUtmb9TWYIH8TF9XVpybVlbBGKaNc+CqpLXzJ4rsFrBxGS2bdQyP85eMbZ
+         hgWr64cSaTp0mvmhRgfs6bY6DGadAHVvXCLSX7IVS9MeUnuX6DffvGWCejVIIR2ydVEh
+         Z2/Zb5mTiAgXhzMeVb+99ygt3Pe/usTn9WTti6wQQo6+ej+VCyUgzXXkSGXGoRxQfXCB
+         qe5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793941517; x=1794546317;
+        d=1e100.net; s=20260707; t=1793941943; x=1794546743;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pspHsxwC+1fZ0eWgExmZb4edg4s0MDST/6bYFdzne0M=;
-        b=GJxjCucecqPyWsYkKTp3Iwr+t7epOHyWcxF1PPhbsfJcVCHrWtEdQMvLU4Wt6Mx3eo
-         OWuzt9gIMBoY9c7UM7/hR0Srr7PulqeG3f7hlsY+afXFLWIWvKURC77UnnBG1rVfi8r6
-         GHGuJjHPq771iUIdzn3ZOre6pvsKhkUel81Brj5CJE4u96D72/YGXGt/lkCwn9RRykAI
-         nzEDaLA/d3XvfvqJ2/a1lX9/neV6IMB0NMfnxFND02y0WDEQ3+ftobPuu8krDRzPJzCa
-         FZhiX9iNcXChdDd7c99Rlv6obetnvcpJ5RNNgYk2ztGt5LTDrY2uaKOEaWLLVW3C7H/k
-         iyiQ==
-X-Forwarded-Encrypted: i=1; AKwUvByIS+L5WokbsTmYw8UqCMXl8Annw1vGR2THCxQrAZH46gHY+FoFlvAVFFwcTuI1I9r0nw4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8SKFN/qB1fR42j8mvkttZUflfV+mxnmofn5BGUBvRKC+gyHuAt
-	f/QQK9af4BqV9naeIiVvoCRwNYwVXB4Jo6ko1OSMIMbLSip99IqNw2HTGR5SmHupy4kwUMbIJX9
-	6x2prL3SAj/6Z7CwsoFR3NTe0b7XXPzVECzMZnQ1d
-X-Gm-Gg: AYBFou2wl/VJaQz6z+D0hUfXvdCdckvwfsldILia3TdEfDbp6qHGibUwqZ283+zQGU9
-	Dit/VYAUBiYh5PjVDHvyPsx0DDNQqMwEDhjg8YrpEip5yU0Pr/+sSH/XoqicnKRcLOXPjbT8yxb
-	NBDKQZuRMuRZp8M1Opt38QAcuQGZIk59G1eIruejW/bUHQlN9KTBejij0E6dB5jORV9nSmhQJ9n
-	wzQqRqjNv4bVaRfhB3QyITso2JGXjTFqV5VykwMyin1jSMOr4tNcefK6bScoZL6aWx5KS4k/xcw
-	5egiyMIs9HWORM0DHkNEjdqYO1w3hEwSrACy+HJXfDzeRX1CNPLoehkG7YIBA6rqSKZJiMjgeXi
-	75vo1su63K4ao56TVamOEVyuYizyuKV9v+9fyKDtu+3xvbWtSbByOAEo7y/8P53ud90T7WdUkq8
-	Xc87k8MwZG+wSFbzVM089hE8qZ
-X-Received: by 2002:a05:622a:4894:b0:534:313:9b4e with SMTP id
- d75a77b69052e-54e96052d51mr2220171cf.5.1793941516495; Thu, 05 Nov 2026
- 21:05:16 -0800 (PST)
+        bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
+        b=bIYS4LO3zd0nptnCQapDI7ffzHfb4vT7lhMPl2itJjnslCS9qq6RQ0eVol9bMizZwo
+         QcJ4YHnRG4nph+KaNUd2Fa4nuiMSx3IzBBHNOlggLSAQjlWyofPOCmziYEg8wEFJf01X
+         7LQIA/6SNxwPsGwtfXh7s7J545T/ZBa2vc6rPmPtHq0nO1JuR5K+anj8K1xigJhOgPA+
+         qZS8j5ZaMPfWIaPwSdQKd3uPwP9xBa6urstVE0jxl4wY6gKeJvUuB2Oy0NxMaOfZ9CUd
+         Tpl56BnPNDUnjiFzxy0Xc+p5k3cj/yiFeZrkKySFBSTv0LKYloktAbfQX6xZjm8BHWWR
+         kjrQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx6QKh0br/JHy9b8B5JON+4lFCFLRg/mSWHmcQTjWNGigv/W5l9btXTBf5F1Ncd2psxKUs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z947p5h90dZ8Jr8jJbIcf8pZosk7cWRUrGL9u/lrEL8pyuLMHdG
+	ggMN/5Plitow6KAIX1sZbTu9WjY8I90rgQEd/Yb8tGhFnSlENx1H23zluX8Syix3/ENrQRpirFO
+	YhOLS9RYPiNNb3P76K8DM6t5VOm0NNwVSD3WfOfxRDyBmzRAGS4QI8rfVCsA=
+X-Gm-Gg: AYBFou32t3acNWnQCu4++J9CX5YkTMPGc4iX0qD1JIWN8WvLEUwEYfvJG7n0+UJkR9T
+	rN8xUlSlw32ZLbej/ZBjCcbcu84EoaGzLcrUsf75WES4H4giIL5H6AtmphozUvHfMsqdtuiQ6hi
+	xqVQZ4at6X2W8yOiA1LxnFyZT2sUE7woZ0Djt2tg7SUGyji3b6dgeL6QGeAQ3tnN6bTs3MPb5L5
+	YrcXTDGW2eFYmoIUHs8MRg8jeCwd+L383dW6GnbhO+oth5gEJC8GSyg9MPuGrJuc6HQWEmM9l9e
+	O1JLCW1kISWrFZAaeLOA/FvDPRg9B6iedIDYynPCRb1m7stLLIFRjYmTM4/3kK4PqBYj7ge6u7Q
+	HIvpx48idpz0/aLZxeqouGaU99wax88fA38OAouaWcUHAdEHtavZFoNgwVi17bRlrawXptrr/cG
+	Mhiruw6JReW+Y3yJoEUHKFTGSJ
+X-Received: by 2002:aa7:c2d5:0:b0:6b4:9221:8932 with SMTP id
+ 4fb4d7f45d1cf-6b6e7867b67mr4141a12.10.1793941942269; Thu, 05 Nov 2026
+ 21:12:22 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,37 +105,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260930210750.1487547-1-chang.seok.bae@intel.com> <20260930210750.1487547-18-chang.seok.bae@intel.com>
-In-Reply-To: <20260930210750.1487547-18-chang.seok.bae@intel.com>
+References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
+ <20260930210750.1487547-19-chang.seok.bae@intel.com> <20260930214337.90CD51F0089A@smtp.kernel.org>
+ <2b4779f4-c3d9-4b58-bc97-f31dba58fc7f@intel.com>
+In-Reply-To: <2b4779f4-c3d9-4b58-bc97-f31dba58fc7f@intel.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Thu, 5 Nov 2026 21:05:03 -0800
-X-Gm-Features: AclHuK9lPryylgvZTsZT9okEXT1mwwp0Ro2hcmwenAEz7x0RSOlOJWzdvOWsQcM
-Message-ID: <CALMp9eRzBd=wqOkL0o7f8utDbBm7Gturhyd1tirVKbeSw5=S5w@mail.gmail.com>
-Subject: Re: [PATCH v8 17/20] KVM: x86: Expose APX foundation feature to userspace
+Date: Thu, 5 Nov 2026 21:12:09 -0800
+X-Gm-Features: AclHuK_opVd9yhWh8shRW90UNd702LBlE68EsvOSF_68yFBs47J1mEWVZ_Maozw
+Message-ID: <CALMp9eRJVdROXGE55qa3VGZBxaMPLoyMhZTwpkHPjA0nu9Xnvw@mail.gmail.com>
+Subject: Re: [PATCH v8 18/20] KVM: x86: Expose APX sub-features to userspace
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, zhao1.liu@intel.com, 
-	Peter Fang <peter.fang@intel.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 5:23=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.=
-com> wrote:
+On Thu, Oct 1, 2026 at 1:35=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.c=
+om> wrote:
 >
-> Expose the APX feature to userspace component. Update the maximum
-> supported CPUID leaf to 0x29 to include the APX leaf.
+> On 9/30/2026 2:43 PM, sashiko-bot@kernel.org wrote:
+> >
+> >> @@ -1733,7 +1737,8 @@ static inline int __do_cpuid_func(struct kvm_cpu=
+id_array *array, u32 function)
+> >>      }
+> >>      /* APX sub-features */
+> >>      case 0x29:
+> >> -            entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =
+=3D 0;
+> >> +            if (!kvm_cpu_cap_has(X86_FEATURE_APX))
+> >> +                    entry->eax =3D entry->ebx =3D entry->ecx =3D entr=
+y->edx =3D 0;
+> >>              break;
+> >
+> > [Severity: Medium]
+> > Does this code leak unfiltered host CPUID capabilities for leaf 0x29 to=
+ the
+> > guest?
+> >
+> > If the host supports X86_FEATURE_APX, KVM fails to apply
+> > cpuid_entry_override(entry, CPUID_29_0_EBX) or explicitly clear the
+> > unvirtualized registers (eax, ecx, edx) for leaf 0x29 in __do_cpuid_fun=
+c().
+> >
+> > This could bypass the capability mask initialized in
+> > kvm_initialize_cpu_caps(), violating the KVM invariant that new
+> > guest-visible features must default off and be explicitly enumerated.
+> > This might break capability negotiation and live migration between host=
+s
+> > with varying hardware support.
+> >
 >
-> On SVM, do not advertise APX, as EGPR support is not yet implemented.
->
-> No APX sub-features are enumerated yet. Those will be exposed in a
-> separate patch.
+> Leaf 0x29 currently defines only one sub-feature bit, which comes when
+> APXF presents. Additional filtering may be necessary when more feature
+> bits are introduced and then filtering becomes more necessary in
+> practice.
 
-Per Section 3.1.4.3.1 ("Intel APX Feature and Enumeration") of the Intel
-APX Architecture Specification (rev. 9.0):
+Sashiko is right. The whole point of masking CPUID leaves in KVM *now* is
+so that an older kernel running on future hardware does not blindly
+advertise new sub-leaves or new APX sub-features in EAX/EBX/ECX/EDX that
+KVM does not yet know how to virtualize. Adding the filtering only after
+future hardware defines more bits is too late for legacy kernels.
 
-  Any Intel processor that enumerates support for APX_F will also
-  enumerate support for APX_NCI_NDD_NF.
-
-Why split leaf 0x29 across this patch and patch 18? And if they are split,
-why add the leaf 0x29 plumbing here (where "case 0x29:" just duplicates the
-default case) instead of in patch 18?
+Why did you define CPUID_29_0_EBX and initialize it in
+kvm_initialize_cpu_caps() if you didn't intend to use it?
