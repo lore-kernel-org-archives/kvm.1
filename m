@@ -1,66 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793942301;
-	b=NP3DLjU7KQNla8Xul57pYihaa63bUtZCFfmpX8vSH1DLXFIZ2NZZrBaspg0H6+Rp5RdU
-	 A7W+BVHUIHmPUhUamARArbKpGSsCZtsm9IqtrScAR3NKSi6GUjVKbe+ubckKTpidAOeQ5
-	 sHuHYG4ZXlbsrD6FoqhXZ9UqS9rImNhB/hGN1xEHfJngJjcepPjzKG8cAY8qkyMsoD+mw
-	 iUfr2wV/V4NyduZbQVXRB/DhIT7JIr2gKxbVNH/3NErCiUYzGhZ24UHKV3L7Uk1XAgkGa
-	 WhNPwz6xS6We8c7yG3pXlt+pkFsWt20gtFhxWs8m5gQ0ayZaIAQUC0sMbQkOIfI2s1A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793942301;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-Id:
-	 In-Reply-To:References:X-Mailer:Mime-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=w/aL1sjxZAD4jPRBmObfPh4EoB+Er0nYqQkFKEvP8dI=;
-	b=P20hw+KSyJg9V8g3Nwtk1qR6okgzpW4VKWZ60WILbRfurQ9ZMBSkvDnNCMYlOjm6Dp8Z
-	 KtMZTvW9UaWjM05h2iqckE+r2ns/OK99hpRER2AqEp+SUQTC1nMqWWHRuobXh1NtbIUjo
-	 GrIdvkkCjZ2DchirTbFDnaWifYEogS4N6jrUg8gRfzpK+UBvEc/Fve/Hiw2hdedoj2NaU
-	 1dLl/SU7W5E1XZi2FoupgdiVAV5LKYEdC+ZHdfJJMYtGaHyBbQ+ALfUNbb7iRuj2UKGu2
-	 9BRJPVX30W6ATtifFWQVLH0eBEyxFmOadQDNIR5q46b3ySAe2EmqFrljllZHygyrJyg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=q0ovCD7x;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793942581;
+	b=E8TqsjitL++0v47ANXDSmnGdHuN0WaRBjlWZ4h1kGuNUCGfzG20JBAcLALequ1FkmWQi
+	 VNqXEmOCzg4xfN5JzaF7VpPE6VNVrtYltdXjRkkdLMZsnm3lEiv9BqByGSvzJLhxIpeRt
+	 A699zHxVgLFeQOKJ+FVhLzBfSD1UUnkLFETDy/eKt+KSJnvBBj1XaEcEPiVNtdpgKtUpR
+	 f1iMfFK7PZ4o/ynXkBzeN7sGLFy1aN9yaFq/PVt6l0gEFJBDxlkNqy04dVX7YVjTcdzXT
+	 T2npB7XaY4ZtoT+G8p5tFGvszT49X/voaWuaFveb74AYKvFC5CU+FIdU1I24CagzZvg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793942581;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Lr3lGEbBwXSP6n4uutvUzv2qEuwZ5jDJob60Za7bOmw=;
+	b=L0upl4yaYrpFlvkzmY8Zx5pXvhh785jAHKIFrA7BKNlXRv6UySUgc/q38B7dRqn6yyd6
+	 9jz7eMx9BoVkmBSi80xe4u3oSV3vvoS8+qotFh7SBOV769lnbIxBP8FmnzTX70w2AgroO
+	 8GX6cWASDyo/TBXQjSXaA5DKtOIHqp3cmgXbQ12MZ2Xmkofs7LHLqwGbqudx+vP/6zn1T
+	 vUrNz5+R+qhvyC2+rukkHOvQtaK9/gFU2zlL2rwcKwRfJ+ph2AiAlAy30Fli35kDnFWO7
+	 FO3Zv2rBtl+WVLvpPvJraMDNTAvmzuR/9QepVpH8TTv6thN+PbAMRXCEETl85FsSzzA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ONJudjMy;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EF2606A31B;
-	Fri,  6 Nov 2026 05:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1554D606A326
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 05:23:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1554D606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=q0ovCD7x
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8BD1F0089F;
-	Fri,  6 Nov 2026 05:18:20 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ONJudjMy
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b6966d9508so965a12.1
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 21:23:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793942579; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ec3fbA5Yd6VKPZMm0ClD5Ijw/V0Xg0OtwiOcdqeRZ/z9lajqiKNfI8bgVsK4n7U7aB
+         sslWpHjsdyZ8jfs5we7DIQJkbxJoe0tR+Jql0KSE1FJ7sci0QlxswqMgaw3p5W+2pwVo
+         l9M34s867TcDKzFV9jVv/KsZkZiL+yV83ysrn8HSIoSzwnx3HRYPPhMcLfP0LOWEAyY9
+         6MdoFtiKkUdIWIQGg5KLrEZcMH2PmpN5znuYjgLB9Ww8JDCC9gWBJ7Dj5KP/GGYn9bJR
+         fC/n8iqNp9sg7KKZBpdgODdHytwQJeFJxt5DJ5ghSksm8cmu8m/88D/xMhbM2mzMYrw0
+         Lj/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Lr3lGEbBwXSP6n4uutvUzv2qEuwZ5jDJob60Za7bOmw=;
+        fh=LRNIxDJSHsswzi/2lR1Vbr7Vcza9mqKBveS55qhE+98=;
+        b=ZFvUvEIDrWQ2Y9uujITDRfENx/6AtydPwlg80hNHiwobUgbJQdw2o5fiE/ozVSpSTt
+         ADw/0JI/z7EUm4kBEmnzFrjK+7DYh3V1n5W84wjdFNMu1og2v/9MvFSMI529RhIp3rmZ
+         mme7NOKlMNy7rQ2UVq4joXMO7mXSpZOVaoQhvbi9WqClPpzlIRJ6qk23XNK8m7HnKhWL
+         ybecUxAjG4/Bg/6Id2NiDS9UwGq4DDFj6rF1xyl0pQaeMuVMV5Lb+aoln2s0ziunwh/B
+         Llsk0dWYHg0XI+Vh0tCy+axyd0O6KBsUCZVjxj0As8ZUC1O9pmLkEas0RtNEV0NK+CCa
+         xLcA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793942301;
-	bh=w/aL1sjxZAD4jPRBmObfPh4EoB+Er0nYqQkFKEvP8dI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=q0ovCD7xIiR0+ANf/raivI4OhRAQOY6dX6Pc57lH4HPcSvDIuQJ3knVapFQmGtx5L
-	 RcTkRAX3SqUxY4Q6SCFu12gdGRAQ88bWqEZUPiRcnOFZFeJ928jqdsddLogK7ZrlCA
-	 85oG4mh8tHfOEMRS42hc30LZfmiSJv2AgWPj1LD0=
-Date: Thu, 5 Nov 2026 21:18:19 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Peter Xu
- <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>,
- kvm@vger.kernel.org, =?ISO-8859-1?Q?Lo=EFc?= Molinari
- <loic.molinari@collabora.com>, Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan
- <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v5 0/4] mm/huge_memory: copy PMDs at fork like the PTE
- path does
-Message-Id: <20261105211819.2a6a349b2edc077784ca52f9@linux-foundation.org>
-In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
-References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20260707; t=1793942579; x=1794547379; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Lr3lGEbBwXSP6n4uutvUzv2qEuwZ5jDJob60Za7bOmw=;
+        b=ONJudjMyVOz/70HwL+Tv3/G4CGT7PaUqbIp00v7j0xfPaSJk+HszI4m25qimBR1etI
+         rNCU7/jFiNLkxkyom4hodFFIbExdEJW5Uo0t1+1huNIfW9hI4ThHNt9/YMIfa++XUwBj
+         Xkyp/Gv9M0YXSEyharL9gyekNjwHKdlu2EpO4HqyA8xBOyRWZxDUQj0/W1AFHjyHHTlk
+         4/OfrUZasB6e6Q9pS5PScsYayx8hmDGVp2TTqaKsASGcCc/BEfXbqLw/z+5bMCRlvxFp
+         GHI1TLGaYPNuzd/IvxZDB7MKsz9cxCV7LwYOcNzCe40VaD9950hnsX1zqP4uSMF4w10d
+         lP6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793942579; x=1794547379;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Lr3lGEbBwXSP6n4uutvUzv2qEuwZ5jDJob60Za7bOmw=;
+        b=JvOepJA7KjBzu6Dj7AMtJByeOYGiQHIw/GKq74vdxiO3Zu1BPIJgBMIoUKlWzxwDY1
+         olIbTv/Jg5/D0h7PF0zahs8kGLu4gov2ChByB7GDBZl7w6wM8tcbpyp5QBE8yITSjBSg
+         zurzTOO0gvntuPIq9YF3cSXfEeM6CZ+fq7XL63Dv8yOOFI1Oem3+J1N264aGpPe3LYjH
+         O6O3MlfWgm31Az06PNuqBN3do5Rie4hYOk4Ti+0hytf8PHW0es+0lhY0Z9uPqyB6uUps
+         U3o3RUZGiFlu6FgV3w0iCFfSeF6JJusa0DZwp3ivfADleYhguTrJJbloXttnjY+sey4C
+         HfzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwRyYDo+NacmnBioH+yAPYoq212dxqKiMtGlqQX6LHEdXShOTaSmLhE/GTVWl+rGD8S2gM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/anbsUKzbztBfkqXdaggU0jzClfcgfYtVOG1DdRgDg6pTETXVU
+	QI3fCraa+9bixyDwcoe4VmnUT65aHj5TsVQ7eMB04hmpqE2IPS1SOvLDqZpDJAXXSM9MykOzuyt
+	sqpHBUp1WuvUOvU6ZD5qxih72qmAE5toOo+C5GjeTE8qw+xU4V9C2nFZhzo4=
+X-Gm-Gg: AYBFou1r/BanBbBq4RB1dMNWFWE1IMZqrmknMYxQ87MFSHUQMZrIIx/Yby/t11iI1EQ
+	huq3SuDELi/qIf/h9rLkJ+qK5AW+NHID+uIL4ESa0vIMXvCp+C5TApKX+KbAvt8HzSzZE42x4tr
+	fwY6FjA+3qGVnMdmDt0o0htLJcBiMoFeBw3x0qRwpvwxu2CL6BWV89lCNfvQ5EiuIoJHMHBZOgA
+	kmnY7+BYdtxNC+ggVziYIiT7ZMv9F/JTbWTBwdS933jqahOZtpcAl59Kv6+H9DiDpu5Q+2Kmc+L
+	YDfMrzAAc4fgAS7eUCB9zoyvbwgxWjdozs1ybyz65IAQv+S1+GLmUdPDEiDuMsnLQja5L8IB9Yx
+	cVMit8QccANi9F+DmINMQhykOxUVLaBwrEm8OObhYrYIjtNACgGtKTvGKpUcN8SkViOc9YQ8uOT
+	U6RehKngxK37qaADLhlpQCPV4mBVoZx0s5CPvYbMCLHOR8XQ==
+X-Received: by 2002:a05:6402:54b:b0:6af:97c0:ce51 with SMTP id
+ 4fb4d7f45d1cf-6b6e76192a9mr2321a12.13.1793942578969; Thu, 05 Nov 2026
+ 21:22:58 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,85 +104,57 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
+ <20260930210750.1487547-20-chang.seok.bae@intel.com> <20260930214824.158FB1F00898@smtp.kernel.org>
+ <f56b02c9-0954-4d53-9e51-f9b7cfc5baf4@intel.com>
+In-Reply-To: <f56b02c9-0954-4d53-9e51-f9b7cfc5baf4@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 5 Nov 2026 21:22:45 -0800
+X-Gm-Features: AclHuK8GnBbvokQKB0pCMrxKYOwTMrjXF2igv3lvpmfxhvOjlAOs2IZM4IKwEVw
+Message-ID: <CALMp9eQqbj0is11H9vN_a7hGh4R_PVuzdXu4KX9Z3ZJNcGk_=Q@mail.gmail.com>
+Subject: Re: [PATCH v8 19/20] KVM: x86: selftests: Add APX state and ABI test
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 04 Nov 2026 21:40:54 +0100 Konstantin Khorenko <khorenko@virtuozzo.com> wrote:
-
-> copy_huge_pmd() decides what to copy at fork by its own rules, apart
-> from copy_present_ptes(): a lockless check for special PMDs, and a skip
-> of every file THP. Following David's review of v3, this series makes it
-> decide the way the PTE path does, under the page table lock, with
-> vm_normal_page_pmd(). That fixes the two bugs v1-v3 were about. The
-> patches:
-> 
-> 1. folio_dup_file_rmap_pmd() duplicated a PMD mapping as HPAGE_PMD_NR
->    PTE mappings. It had no caller until patch 2.
-> 2. File THPs are copied at fork instead of being refaulted by the
->    child, as their PTEs would be.
-> 3. The special-PMD read moves under the lock. That closes the race with
->    a driver zap (vfio-pci, panthor) and the missing page table deposit
->    on ppc64 hash that Sashiko found in v1.
-> 4. A selftest for 1 and 2.
-> 
-> ...
-> 
-> Cost
-> ====
-> 
-> fork() now copies file THPs instead of leaving them to a refault, which
-> costs fork() a reference, an rmap update and a counter per huge PMD and
-> saves the child a fault per huge PMD it touches. fork() of a process
-> with 4 GB of shmem THPs mapped MAP_PRIVATE and an anon_vma on the VMA,
-> medians of 2000 forks:
-> 
->   +-----------------------+------------+-------------------------+
->   | kernel                | fork()     | fork(), child reads all |
->   +-----------------------+------------+-------------------------+
->   | 7.3-rc7               | 86-129 us  | 2380-2620 us            |
->   | 7.3-rc7 + this series | 230-355 us | 820-930 us              |
->   +-----------------------+------------+-------------------------+
-
-The second column assumes that the child touches all the file THPs,
-yes?  If the child touches only a small proportion of those mappings,
-or just does fork+exec, that changes the "Cost" comparison?
-
-And on ppc64 hash-mode setups this also allocates deposited page tables
-for mappings which the child might never touch?  So a modest increase
-in memory use is to be expected?  I can't say I care about this
-(sorry!).
-
-But I worry that this change is not an overall win for thp-file
-mappings, which are the common case.
-
-I'm not understanding why we need to mess with thp-file behavior at all
-in order to address a special-PMD bug?
-
-> Notes
-> =====
-> 
-> - drm_gem_shmem and mshv_vtl map special PMDs with
->   vmf_insert_pfn_pmd() as well.
-> - copy_huge_pud() still differs from the PMD tail in that it does not
->   mark a shared PUD clean in the child or handle uffd bits.
+On Thu, Oct 1, 2026 at 1:34=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.c=
+om> wrote:
 >
-> ...
+> On 9/30/2026 2:48 PM, sashiko-bot@kernel.org wrote:
+> >
+> >> +static inline unsigned long read_egpr(int reg)
+> >> +{
+> >> +    unsigned long data =3D 0;
+> >> +
+> >> +    /* mov %r16..%r31, %rax */
+> >> +    switch (reg) {
+> >> +    case 16:
+> >> +            asm(".byte 0xd5, 0x48, 0x89, 0xc0" : "=3Da"(data));
+> >
+> > [Severity: Medium]
+> > Does read_egpr() need the volatile qualifier on its inline assembly
+> > statements?
+> >
+> > Since the asm statements only have an output operand, standard compiler
+> > optimizations can treat them as pure computations. When called multiple
+> > times, the compiler might cache the result of the first read and skip
+> > subsequent executions, leading to stale register reads.
 >
-> Reproducer.
+> Without the EGPR option, the compiler shouldn't include EGPRs in the
+> optimization options. These tests are built without it.
 
-Changelog is soooo long.  I replaced this Reproducer section with simply
+Sashiko is right. All the compiler sees is a non-volatile asm statement
+with an output operand ("=3Da"(data)) and no input operands. Per the
+GCC/Clang extended asm rules, an asm statement without volatile and without
+inputs is a *pure* computation that always produces the same output.
 
-	- A reproducer is at the Link;
+When test_guest_update(), test_userspace_update(), and test_guest_apxoff()
+are inlined into guest_code(), the compiler is free to CSE or hoist the asm
+statements in read_egpr() across GUEST_SYNC() and reuse the result of the
+first read--without knowing anything about EGPRs.
 
-So interested people can still find it.
-
-
-Anyway, bugfixes come first so I'll fix the selftest pmd_psize thing
-and I'll toss this onto the pile, thanks.
-
-
-I'm attempting to runtime test this on local LLM-driven live kernel
-test setup, but it keeps on kicking me out and calling me a
-cybercriminal.  Sigh.  Giving up.
-
+Please add volatile to the asm statements in read_egpr() (and write_egpr()
+for clarity--even though an asm statement with no outputs is implicitly
+volatile).
