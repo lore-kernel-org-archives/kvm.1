@@ -1,106 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793975129;
-	b=Hgo2DK0XC1Bz0Hu16dS7PAM45GL2znZZNQ1uBTTCxq8MvjAIx2CdTlmHlj6+yRGzQ8ol
-	 YiwuuAFXJexEmI7tiPWXLfNYIHsp5VKCFyoJoLz8jLceotUaeTcwwV4iiABKTKTLbrhk0
-	 6x35c784gtOMHHsbTL+UeBgExh2l1qAGWYm18gqRIoq5wKQdaTyyb6VKvdW6/568cUf8a
-	 RqYDTx0zk6HF2i8KG2U2mzLSyrO4XsyOnn9JBgleq+6ek4xY6iOyIwJv9LHD0AVx+8QL5
-	 SLY1Xp7vOvJOdTmtZFnrufUlcKGWTFyas/gIa/COeIFxXSGEaQQUtzjRef1VDcBepVw==
+	t=1793975124;
+	b=B0Bavm/gb+yDV0s2Yv5uNesNgQQo8TUnsD5WNBrXIXWXZzVe4aZ4TvDN+84n3qCWx0Wi
+	 jJ2PWr+O0WEJIXrniBawY9k4uuS2FMI8eaeI+7xDRigtKDwuGXk9wiYwCgY9nfr3UZ0LZ
+	 MLAgOnZU1LHCSn4WL8D4Jtd3zJ0GQjmztD7cpEXIc9+TwLpM1dj23dSlmgedpzCsfDq7Z
+	 INzl4898qbOCRIb5uRepCvRtaYLz4HU7SdQnoDxT/kUHhPmKb0HXTTvH5iTyeuzcUHhcQ
+	 zksnWO6UW5+45jUlrY0p0I/9ezbciZ3vpRhmsYG/XT/dlp0AQpmtqJ3voBDpdAHZXnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793975129;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=XjubV5JgjeqjPXQH1+nVKdJIc9BEV5NX4y8ymGv5/6U=;
-	b=a6TCWUG0Sqkrjf7pD2l22HDsYh1iCr4TC+W90XHSg0fUFczeKXfudUgcLIdfH4AbESAo
-	 hR2jvvZQxfBMoTmto1dIux24Wf5hwnKHXN7EQF6Rf/LHDAxDtcItT+9S1b2h3UvYd/p3s
-	 imWTNc2VXV87XRhJc7j+kR9w3nwGKCVt/cvvDlPd7uW6V37Dm8L2cayPsC0q6vUz0cv3j
-	 8LkdAbxzDwto3Wb+JMSzTdOOE3Dag7xtMhCRflqPUgivh45zyugkeqW1522+lR+YJ/sF/
-	 9arERUGRP0xVT776cHP6Ldz7xgv+0KkoT4QgIgNlAWpOdcp0f+RUm+GNDbQGvpj5rnQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793975124;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=CnzZ9tu/PJ0Xc56iPjJhoZcChGnPBcjUy3GAK0JvUCU=;
+	b=lxMw1K2WwgcZ4HFMjozRB8QoQFL/6bShq0FwuWdp8ZVKFxQkgsOTtq/egAzeVySxG/Mi
+	 KQJ6E6z2qakjs1TfwlefWhY2DdfIXjnDD5sJmKJSg5iTjUwGSlOo3OWlxAHJ/LfW1DgSS
+	 J3MTM9K3ON4O/+xel2J8NoZEPW7b0GRwGu5oSoo65OAYjminb5uGAJDPPIoSFVCJf3eUp
+	 m+6qoTWsSpUlKC8fwUg4CHR21/A/Amhpytirv62mOopXZCMrvwtllyRnQ6a+1pH8nf3QD
+	 7h7cTwhTsR9UGYyQbHgzqucfDJiVUJ5i5mQ6nhRBxvcbq2ZlRru5r7IDdMkpf0ux58w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=ckzssVGu;
-	arc=none smtp.remote-ip=209.85.128.44
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DRb+1yN1;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2644606A326
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 14:25:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2644606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6423C606A33D;
+	Fri,  6 Nov 2026 14:25:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6423C606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=ckzssVGu
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4b7252a32c8so5912835e9.0
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 06:25:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793975121; x=1794579921; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XjubV5JgjeqjPXQH1+nVKdJIc9BEV5NX4y8ymGv5/6U=;
-        b=ckzssVGusvfgdWa877JLQ+g9yDiCK6LqO/d2+VrE2UpCFHeE+tB8b8SqRws5GBSqx2
-         niAzMrDh/1+1TLdEtAHsHMLBcXse/VRnxauwVjCp5d5GcSC+C3lO66eKw9KUJzSNwUdr
-         OQnF0wN0rxiSqYb9YFICNXlvm2xv/XyjY/QBNxXoN0xib15CvZpB1K2Gt+j86EGnOwok
-         QpWXbvz/My5HqLkQQ3nStgmnG7bcqlSBJTI7SghOq0Afdu8BADzs7xoCM1y7UZhF2BGa
-         wkt53axlAXW/ruJjjShFpz4MO8GFfDgXTRWtmJF5eSx1BSuanyCMCXdzxdeCTPA5N1vf
-         vQOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793975121; x=1794579921;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XjubV5JgjeqjPXQH1+nVKdJIc9BEV5NX4y8ymGv5/6U=;
-        b=IVHkChDa/X+yuzzimaG7qYKzANRO6ACqzjUuwHF7hQ8uGZtcJiL0DYL8korZF+DoXL
-         XEKAyNZNA3oP+avaE8P375j5BGgNisAn7TpyhjY0ip2XubBnuy92Ckij3WaobKc+jsV/
-         DtP1+ce1ubsRfu8ZCmCuYLz++MAXykkVFeLW4UmAu1OGIe0RMs5IMO8vPiBE2MCG0tVX
-         6Yfueo/Kob15hSUI4uHXtJwvn6LZexI6xwDBp/Zw9TdE736gZO5RG0f99tUCiPC9nXyq
-         H+1/BTR7ohD8wOg4E6irDQ9U/AFWAw738kpAXACZ47gX124Ig5eSOyRpj2isp6TitcnH
-         mJKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzcTWIRqNt2ePxLPORlHU7SyH7+XVcp7xAkT9sgFcB+V2iQK1MYus7XXoOsjtW1N53uPJE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9nLMKJVEm4o06W1/B+FvQ326HyGwMY1gkGIeN4CJjYul1DwEcj
-	blGNGsS6S2tfLFkdGkTt5WrXzIWY5X/8nOJQ/3518SaHHXlT1nZOSxc8pmn1RRwl1Ww=
-X-Gm-Gg: AYBFou13bJ9zu8SYQ5fuaNlzijVDVZe0Yr3qncAetr8mnt4pKK4gTZ926RWeQyiUIJG
-	0QAUQdQIAUZXtexXnL5XxH7d9lBKZyBr+UzUHHcb/eVH3KMs2sp2MRbBdt9raGp07f3LOg4r1Vg
-	FR9c16AbwOIzGx7GOHCgF68wC7aa+U4vJ4DY0kTYsuD3OOmSZWiBzy8J2j1yUXhUVLoGqZjASA2
-	AKZoDXAv2yfFGX6FoI6VVfcQf21SMUUK1dPxrBd//WfaEOws3WtqjSo7abPR1hSaSOqvRR9kH78
-	1XfBZ1/ch1mcQTF9CTAJAKZ7B5r54H8EajDaDcYLiRegLGrrs1/rX+P9RZLK+nhkylClbEc7Y2m
-	8krF3YNyTOaXNci5/0JPQEO1zysUDA+LU/tvqPyYCTGoXNUxWoGrAnuKMUiw7SnopJ9oBXzTpeq
-	BoDPt7RHk4xfr5spc4ZWeU7TxBk2VzbMV7Tvp5R4u0Tu1pYb3VvCho1kGE+4H7sPcZ2uZummp1H
-	W0yRkaSfaBYiYRQtMjr4lg3cGUXShvQaSz+KW/VDdOS+AcN458JGyPbbM5RqOgBBfcxZXj9WRMA
-	wFWOTv/Xw6IAyKwJ3M1CYaYRwh7J7nYyA0MO
-X-Received: by 2002:a05:600c:5307:b0:4a1:e00b:a10b with SMTP id 5b1f17b1804b1-4b6de973c39mr43606025e9.7.1793975120493;
-        Fri, 06 Nov 2026 06:25:20 -0800 (PST)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b571f46538sm136357845e9.5.2026.11.06.06.25.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 06:25:19 -0800 (PST)
-Date: Fri, 6 Nov 2026 15:25:15 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, aneesh.kumar@kernel.org
-Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
-Message-ID: <au3i-0eDzJZaWukx@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-18-jiri@resnulli.us>
- <auuDcABX27EeTApl@e129823.arm.com>
- <20261104194622.GC3889730@ziepe.ca>
- <aux01NUd85PabtZu@FV6GYCPJ69>
- <auyKE2sGqtfjk4v5@e129823.arm.com>
- <auy7IM0_S2tv7EZX@FV6GYCPJ69>
- <au2WdWFOYbPEv0Uj@e129823.arm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DRb+1yN1
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6EENGk2577588;
+	Fri, 6 Nov 2026 14:25:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=CnzZ9t
+	u/PJ0Xc56iPjJhoZcChGnPBcjUy3GAK0JvUCU=; b=DRb+1yN1b58UA3vJgQlIsQ
+	LRLFKOt5bzU7Dm/sT3rdlOPfLA42Fbm5SmGiH7Q0P3w80Lh1INz2gVxBDf+fJWJ5
+	wiOx1LwY8Y1VZWDSJemZEpoau4Cvo2+rGn1CZFRVS+Qk+PyIVimzrvzBnFxMGS0a
+	lFtKAAlvHRyNo9FZlmWY+gNKETnGlxUWdxZcJ0I7Fa0He89NJq8BBSv2zqY9N/KY
+	oIbahz6hXm803/Izviwfv/tuaPrLaB9W6oIqKV7099EvNhbWQv4wFZPVBX17CB8U
+	BgJClIC5G0JsjygQGpLAgGGlg7u5Sa9x/+e7vfpIfxv1Hz/mu1mLsE6fdoqUF/ng
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hs3r94s6v-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 14:25:23 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6Do4Mt3519503;
+	Fri, 6 Nov 2026 14:25:22 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hrdd7txkx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 14:25:22 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A6EPLlU30671506
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Nov 2026 14:25:21 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 541665805A;
+	Fri,  6 Nov 2026 14:25:21 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A354058062;
+	Fri,  6 Nov 2026 14:25:20 +0000 (GMT)
+Received: from [9.61.114.69] (unknown [9.61.114.69])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Nov 2026 14:25:20 +0000 (GMT)
+Message-ID: <0cc314a9-2fe1-41c5-bacc-bbf5552d1aeb@linux.ibm.com>
+Date: Fri, 6 Nov 2026 09:25:20 -0500
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,202 +86,238 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au2WdWFOYbPEv0Uj@e129823.arm.com>
-
-Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
->On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
->> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
->> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
->> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
->> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
->> >> >> [..snip..]
->> >> >> 
->> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
->> >> >> > +					       const struct ctlv_cursor *request,
->> >> >> > +					       struct attestation_evidence_request *decoded,
->> >> >> > +					       struct attestation_evidence_object_request **objects)
->> >> >> > +{
->> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
->> >> >> > +	u32 challenge_length;
->> >> >> > +
->> >> >> > +	decoded->challenge =
->> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
->> >> >> > +	decoded->challenge_length = challenge_length;
->> >> >> > +	if (challenge_length < caps->min_challenge_length ||
->> >> >> > +	    challenge_length > caps->max_challenge_length)
->> >> >> 
->> >> >> Hmm, I'm not sure whether this check is required for
->> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
->> >> >> 
->> >> >> for example, if the provider provides two evidence:
->> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
->> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
->> >> >> 
->> >> >> might challenge is reuiqred for generating the token
->> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
->> >> >> 
->> >> >> However, in case of eventlog, it wouldn't require challenge.
->> >> >> for example, TPM event log or CCEL event log.
->> >> >
->> >> >Right
->> >> >
->> >> >> Do we need some field on attestation_evidence_supported_object whether
->> >> >> it requires challenge or not and applies this sanity check per the object?
->> >> >> 
->> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
->> >> >> always.
->> >> >
->> >> >I wonder if we should have two interfaces here for signed and unsigned
->> >> >evidence? It would be clearer for userspace then when it needs to
->> >> >provide a challenge or not.
->> >> 
->> >> Isn't the challenge field provided/not-provided enough?
->> >> 
->> >> Currently on the introspection side, device-get op would provide
->> >> challenge-lengths array:
->> >> 
->> >>         evidence?:
->> >>           challenge-lengths[8]:
->> >>             length?: uint(..4096)
->> >>             min-length?: uint(..4096)
->> >>             max-length?: uint(..4096)
->> >>  	  objects[16]:
->> >>             blob-class: evidence-blob-class
->> >>             max-length: uint
->> >>             blob-instance?: uint(..u32-max)
->> >> 
->> >> I think it would make sense to have challenge-lengths array per object:
->> >> 
->> >>  	  objects[16]:
->> >>             blob-class: evidence-blob-class
->> >>             max-length: uint
->> >>             blob-instance?: uint(..u32-max)
->> >>             challenge-lengths[8]:
->> >>               length?: uint(..4096)
->> >>               min-length?: uint(..4096)
->> >>               max-length?: uint(..4096)
->> >> 
->> >> Then the unsigned object would just simply have challenge-lengths empty?
->> >
->> >This looks good to me. :)
->> 
->> The challenge is one of several open points that all depend on what an
->> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
->> "primary", "raw" and the format strings. Here is my proposal to settle
->> these together:
->> 
->> The model:
->> 
->> 1. device-get lists each object with an id, a class (signed, event-log,
->>    cert-chain or auxiliary), the formats it may come in, its max-length
->>    and, for signed objects only, challenge-lengths.
->> 2. evidence-get names objects by id, as MR ops name MRs, each with its
->>    output blob. It carries a challenge exactly when it names a signed
->>    object, and the challenge has to fit each of them.
->> 3. The reply gives each object's format, length and, where the TCB
->>    vouches for it, the TCB's digest. The output is always {label, data}.
->> 4. A signed object is made by the call, over the challenge, and never
->>    reused. The rest are read as they stand.
->> 
->> This settles following issues discussed during this patchset review:
->> 
->> 1. One op, not two. Per-object challenge-lengths tell userspace when to
->>    pass a challenge, and one call returns the signed object with the log
->>    and certificates needed to check it.
->> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
->>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
->> 3. TDX's Quote object lists the legacy and the DICE format. The provider
->>    labels what the host returned and fails on a Quote it cannot label.
->> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
->>    spdm-measurements and tdisp-report become formats, and signature
->>    goes, as a signed object carries its own.
->> 5. "raw" goes with the representation attr. The TCB digest is a reply
->>    field, so a blob always holds the object's own bytes.
->> 
->> Formats become an enum each provider family defines, instead of free
->> strings. I'm still unsure if format should be entirely provider-specific
->> and defined as "extension", or it should be somehow mixture of common
->> and provider-specific. Looks there is not really much common
->> anyway, so I lean towards provider-specific only. So far I have:
->
->Overall, This is plausible for me with some small question.
->
->> 
->> ======  ============  ==========  =========  ===========================
->> Family  Format        Class       Challenge  Bytes
->> ======  ============  ==========  =========  ===========================
->[...]
->> tpm     ek-cert       cert-chain  none       EK certificate from NV
->
->Just a thought, but how are we planning to retrieve
->the NV index for EK certificate?
->
->As far as I know, TPM NV storage doesn't support labeling.
->
->Should I assume that the NV index would be specified as part of the
->challenge to retrieve the certificate from TPM NV storage?
-
-evidence-get allows to accept mr-selection as part of the request
-alongside the challenge.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 09/14] s390/vfio-ap: File ops called to resume the
+ vfio device migration
+To: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>
+References: <20261102151604.2150055-1-akrowiak@linux.ibm.com>
+ <20261102151604.2150055-10-akrowiak@linux.ibm.com>
+ <sashiko-outbox-193805@kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <sashiko-outbox-193805@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=O86sLx9W c=1 sm=1 tr=0 ts=6aede353 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=CTQ77ZSDLaTwiO4wZoYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: hOb1hci8Vvvixm5yIoOJhp9F6q6yRYh3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA1NiBTYWx0ZWRfXyw9cZJ36XzOF
+ ZGpWjXi95+Ga0Xjrf0xE/Xr3CLXzcKXwk6+Js/MPnrxSfN7HyVpiz1a4qfDUBJ8TOCOEbX8RXyw
+ pMHEjsbN0mc61E6xisiiZtTyU1GcmfPWU7pp2ENcmxMAqaF8SACjD9paOjZi4Kk1jQjD1krBNM8
+ sK8BjqJryq7MidGTM0qOYX3SYLWnHJfO1XyPzCjUgF+V64JKtu8ICqrmXiRJl7y0JZZpgWEkV3Z
+ 6BkiIJZ/47CSbxRXMl52Jod2ppoU93TNXZishJJCU1SLU9ZZg5SnFsMC4i49BX1HMykG99PBgOB
+ WMNfHnX2V/S0J5dL/fB7Tjp3Hx2IA8Mc3yo/5l2IVHHakw3ulzeeijmOCPSROY6Mjx9swyro9L3
+ QXZXJQnZx9ESYQX7zqpyYpmfts4iq5j8RsNKeajFHYKfKm3Guwu+mPBixfMBc0RPKmgGeguaWqx
+ WXa7Xes7syP4qmyGuMA==
+X-Proofpoint-GUID: hOb1hci8Vvvixm5yIoOJhp9F6q6yRYh3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA1NiBTYWx0ZWRfX2LXfP12l1Dh1
+ 81bNBar8qpco0d0Xd5vXZP7XMUU4xDPfsSh7tLg1cv6wK+ESHu6C+SLBLY396+REkrdyRWAeKo7
+ Q/rLZ1OxyEFctGUO+t5Ez2xzqyfnZTc=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-06_03,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 adultscore=0 suspectscore=0 spamscore=0
+ bulkscore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611060056
 
 
->
->[...]
->> armcca  event-log     event-log   none       Realm firmware log, if any
->
->JFYI, this would be a CCEL log like tdx:
->  - https://github.com/tianocore/edk2/issues/11384
 
-Okay.
+On 11/2/26 12:09 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] s390/vfio-ap: use-after-free of mig_file in vfio_ap_resuming_write()
+> - [High] s390/vfio-ap: fortify panic in vfio_ap_resuming_write() on chunked writes
+> --
+>
+> commit 05b49746b964ad1916518e2c783de5c6220f1f14
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: File ops called to resume the vfio device migration
+>
+> This commit implements the write callback for the migration file stream used
+> during the RESUMING phase to receive and validate the source guest's AP
+> configuration on the destination host.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+>> index 526d83e8590d9..47f05e43b9e0e 100644
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> [ ... ]
+>
+>> @@ -466,11 +511,562 @@ static struct file *vfio_ap_open_file_stream(struct vfio_ap_migration_file *mig_
+>>   	return filp;
+>>   }
+>>   
+>> +static int validate_resuming_write_parms(struct vfio_ap_migration_file *mig_file,
+>> +					 struct file *filp, size_t len)
+>> +{
+>> +	loff_t total_len;
+>> +
+>> +	lockdep_assert_held(&mig_file->lock);
+>> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
+>> +
+>> +	if (!len || filp->f_pos < 0)
+>> +		return -EINVAL;
+>> +
+>> +	if (!mig_file->matrix_mdev->mig_data)
+>> +		return -ENODEV;
+> [ ... ]
+>
+>>   static ssize_t vfio_ap_resuming_write(struct file *filp, const char __user *buf,
+>>   				      size_t len, loff_t *pos)
+>>   {
+>> -	/* TODO */
+>> -	return -EOPNOTSUPP;
+>> +	struct vfio_ap_migration_file *mig_file;
+>> +	struct vfio_ap_config *ap_config;
+>> +	ssize_t ret;
+>> +	void *kbuf;
+> [ ... ]
+>
+>> +	mig_file = filp->private_data;
+>> +	mutex_lock(&mig_file->lock);
+>> +	mutex_lock(&ap_attr_mutex);
+>> +	mutex_lock(&matrix_dev->mdevs_lock);
+>> +	pos = &filp->f_pos;
+>> +
+>> +	ret = validate_resuming_write_parms(mig_file, filp, len);
+>> +	if (ret)
+>> +		goto out_unlock;
+> [Severity: High]
+> Can this trigger a use-after-free on mig_file if the VFIO device file
+> descriptor is closed while the migration file descriptor remains open?
+>
+> In vfio_ap_resuming_init() -> vfio_ap_open_file_stream(), filp->private_data
+> is set to &mig_data->resuming_mig_file, which is embedded inside
+> matrix_mdev->mig_data:
+>
+> drivers/s390/crypto/vfio_ap_migration.c:
+> struct vfio_ap_migration_data {
+> 	enum vfio_device_mig_state	mig_state;
+> 	bool				resuming_mig_data_complete;
+> 	struct vfio_ap_migration_file	resuming_mig_file;
+> 	struct vfio_ap_migration_file	stop_copy_mig_file;
+> };
+>
+> While vfio_ap_open_file_stream() calls vfio_device_try_get_registration() to
+> keep matrix_mdev alive until vfio_ap_release_mig_file() runs, closing the
+> VFIO device file descriptor invokes:
+>
+> vfio_ap_mdev_close_device()
+>    vfio_ap_release_migration_data() {
+> 	...
+> 	vfio_ap_release_mig_files(matrix_mdev);
+> 	mutex_destroy(&matrix_mdev->mig_data->stop_copy_mig_file.lock);
+> 	mutex_destroy(&matrix_mdev->mig_data->resuming_mig_file.lock);
+> 	kfree(matrix_mdev->mig_data);
+> 	matrix_mdev->mig_data = NULL;
+>    }
+>
+> Although validate_resuming_write_parms() checks
+> !mig_file->matrix_mdev->mig_data under matrix_dev->mdevs_lock, mig_file
+> itself lives inside the freed matrix_mdev->mig_data object. Calling
+> vfio_ap_resuming_write() after or concurrently with
+> vfio_ap_mdev_close_device() will lock and unlock the destroyed
+> mig_file->lock and dereference mig_file->matrix_mdev in freed memory.
+
+Confirmed:
+This is the RESUMING write path of the same mig_data lifetime
+issue reported on patches 03/14, 06/14, and 08/14, and will be resolved 
+in v12
+by moving mig_data deallocation to vfio_ap_mdev_release_dev() and resetting
+migration state on device close.
 
 >
+>> +
+>> +	ap_config = mig_file->ap_config;
+>> +	memcpy((char *)ap_config + *pos, kbuf, len);
+>> +	*pos += len;
+>> +
+>> +	/*
+>> +	 * Check whether we have received all the data.  We know the total
+>> +	 * expected size once num_queues has arrived, i.e. once *pos is past
+>> +	 * the fixed header.  Until then keep accumulating.
+>> +	 */
+>> +	if (*pos >= offsetofend(struct vfio_ap_config, num_queues)) {
+>> +		size_t expected_sz;
+>> +
+>> +		if (ap_config->num_queues > MAX_AP_QUEUES) {
+>> +			ret = -EINVAL;
+>> +			goto out_unlock;
+>> +		}
+>> +
+>> +		expected_sz = sizeof(struct vfio_ap_config) +
+>> +			      ap_config->num_queues *
+>> +			      sizeof(struct vfio_ap_queue_info);
+>> +
+>> +		if (*pos > (loff_t)expected_sz) {
+>> +			ret = -EINVAL;
+>> +			goto out_unlock;
+>> +		}
+> [Severity: High]
+> As reported by Sashiko on v9 [1], can the memcpy() in
+> vfio_ap_resuming_write() trigger a fortify_panic() on chunked writes when
+> CONFIG_FORTIFY_SOURCE and CONFIG_CC_HAS_COUNTED_BY are enabled?
 >
->> snp     report        signed      64         SNP attestation report
->> snp     cert-table    cert-chain  none       VCEK or VLEK, ASK and ARK
->> ======  ============  ==========  =========  ===========================
->> 
->> Did I miss something that would break us here?
->> 
->> CTLV layout draft:
->> 
->>     device-get reply, caps.evidence:
->>       objects[16]:
->>         id: uint(..15)
->>         class: evidence-class
->>         # The reply says which one was written.
->>         formats[4]: evidence-format
->>         max-length: uint
->>         # Signed objects only, entries as today.
->>         challenge-lengths[8]?: ...
->>         # Descriptive, such as an SPDM slot.
->>         instance?: uint(..u32-max)
->>         # When the TCB vouches for the object with a digest.
->>         tcb-digest-algo?: hash-algo
->> 
->>     evidence-get request:
->>       # Required exactly when a signed object is named.
->>       challenge?: binary(1..4K)
->>       objects[16]:
->>         id: uint(..15)
->>         data: blob(out, va memfd dma-buf)
->>       # selection, privlevel, service and options as now.
->> 
->>     evidence-get reply:
->>       # In request order.
->>       objects[16]:
->>         format: evidence-format
->>         length: uint
->>         tcb-digest?:
->>           hash-algo: hash-algo
->>           data: binary(16..64)
->>       # The generations as now.
->> 
->> Makes sense?
+> In struct vfio_ap_config, qinfo[] is annotated with
+> __counted_by(num_queues):
 >
->For me, It seems fine.
+> struct vfio_ap_config {
+> 	u32				magic;
+> 	u32				version;
+> 	u32				num_queues;
+> 	u8				reserved[4];
+> 	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
+> 	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
+> };
 >
->-- 
->Sincerely,
->Yeoreum Yun
+> Although vfio_ap_resuming_init() initializes ap_config->num_queues to
+> MAX_AP_QUEUES, fortified memcpy((char *)ap_config + *pos, kbuf, len)
+> evaluates __struct_size((char *)ap_config + *pos) using the current value of
+> ap_config->num_queues in memory before the expected_sz check runs:
+>
+> 1. Once an earlier chunk writes the header with num_queues < MAX_AP_QUEUES,
+>     the dynamic object size of *ap_config shrinks to expected_sz. If a
+>     subsequent write() supplies more bytes than expected_sz - *pos (while
+>     staying within VFIO_AP_CONFIG_MAX_SIZE), memcpy() executes before the
+>     *pos > (loff_t)expected_sz check and calls fortify_panic() instead of
+>     returning -EINVAL.
+>
+> 2. On big-endian s390, MAX_AP_QUEUES (0x00010000) has bytes 0x00, 0x01,
+>     0x00, 0x00 at offsets 8..11. If an initial chunk of 10 or 11 bytes writes
+>     the upper two bytes of a valid num_queues < 65536 (0x00, 0x00),
+>     ap_config->num_queues in memory becomes 0. If the next chunk writes past
+>     the header into qinfo[], fortified memcpy() evaluates __struct_size()
+>     with ap_config->num_queues == 0 before copying the remaining bytes of
+>     num_queues, triggering fortify_panic() on valid migration data.
+
+Confirmed:
+In v12, will be resolved :
+    - Changing ap_config in struct vfio_ap_migration_file to a void * 
+buffer
+      representing the raw VFIO_AP_CONFIG_MAX_SIZE allocation.
+    - Performing memcpy((char *)mig_file->ap_config + *pos, kbuf, len) into
+      the raw buffer so fortified memcpy checks against 
+VFIO_AP_CONFIG_MAX_SIZE.
+    - Casting to struct vfio_ap_config * and evaluating num_queues, 
+expected_sz,
+      and do_post_copy_validation() only after the full fixed header has 
+arrived
+      (*pos >= offsetofend(struct vfio_ap_config, num_queues)).
+
+>
+> [1] https://lore.kernel.org/r/sashiko-outbox-170099@kernel.org
+>
+
