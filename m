@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794004542;
-	b=WUdUTEIyU3V75fxxbKBfGJWRDY4RzochwlF4yHSnNVgT3X/W60Kfj63cGks2XUmgc0iG
-	 IdC2l7NmFBnyJ/1y0l/IQ4gpa8URyJCD6hqyrx2BwcaDE6Ou9ryRr6t2nAL9HVp6yUfyp
-	 RuXwrSObv8Ra1I+7GABAgF7XtR6TtcL2sYmwcSK6py1J29Hw4yrySAM6spMmfIGfXBMs8
-	 fbz/+9MoPdiJNzQ9U62epGHhITmIPKsOzkJdlge9dLBd1/lM7QOFB9m7N83o212IzJZcR
-	 Cm4plwzmmsZBDU7iP883NoBJUoH3dIvzWZ+8XJI4srj3lYbmX5JnFkRZBEJf25hjDhA==
+	t=1794004698;
+	b=m5iQKZzsxQEnodTwMWlIk9ZxyMCT243i8RlRzl1SdDPxYyqoMDRKfe8oTcnyVdFsXeaE
+	 +JIMhTNLaqkobMExVqjRpb7y57pV1eKq3HrFWPNTrsU7J4oykCiQDy2H6a0ZDm/C9NXQ7
+	 JQ6aFkGobXX8f+emu/C8xVY7s5qhD8UbDc5zSQSd36JclJTxDWt7GwUI64Kcc1zYKkMhD
+	 Zq79C6ISB34ZapsxXhA6/K38LudHcmvoadPEZWE99KOpX2nlbM2VmOq+1EN1nBTDpqocQ
+	 HU+IWyQ8n+gc/ZCV240ADejWH4FBFj8KkdqZwLbOF/hFKyRXxbx+CzZer/dhQ+ieh+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794004542;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794004698;
 	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=UavySZ+OeIKq2CthQuXeeB3YfvoHKnTgBFS2bFiccoo=;
-	b=qfgqhhLKojjvmvLo/aWjRYPMst1BZIxsyCZl4cvLG8mWn0Lz2rr9FiVgu7sPuF6LM0aT
-	 knvBPlxcwzQKe2Sp7bolTD7R1TTBBPQyRShVzJC1u6CZJTzG5/vwGAO8hGUiVB3F8C0Em
-	 S3f4zUuAH4Q2WH3JvZTU1EQcQTkEmzvSs4xGYgQ+8sdN+4KJ4LU4aQCS0LrNF3SGLTTZL
-	 Vm1dtOZqbH62BgWEUODBdrC2oYT6aBC1v7oZO/voUWQeDEfHppGWEVAFOvYqv0o32acOz
-	 NGY9N10ncEu2m4Na04nRQ4MCN2pyHQ+0L/UKwusNxTPy52HPc1Tj8SiV77xRlbnOn1A==
+	bh=VV1Mfm3TCiX+PFest0QA96zqc7lpSirF2QO8NESV8gw=;
+	b=RABDGx9yKiONHXWkTQKq8IW4iA7OZ92QZ4FJ5AaE/WueaKMJKXkOTqvoesSMm2Fd2fQR
+	 GyjdktftmnHizR9IQKNqTCGzCLgArEkMAQEwZEhB3l6tgnvtKQnBxVPGPzDFXlWSkoFnZ
+	 5p3vOV1iPOO5UvYyjZAsxGuo2jLNO7geRC3iKUhizxiv0QLAPuP1JIF/egdnhy8FX+uqh
+	 +N/cPcilkZWw0PGWoa53A9J5uRs8uJDpW9rXR6O1RgA/OR3bNvSGL2tP8emGmxtqC7QG3
+	 O5pVhAAoLpIaBOzy98/L4odEVKdPrgQc2npyP21VMp6AiTmX2LzmUgc1lvNUkqCWNqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nPRM1fig;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a+hkREkJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8F8606A32E
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2519606A32C
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nPRM1fig
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBC01F00903
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:35:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a+hkREkJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FF1F008AB
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794004541;
-	bh=UavySZ+OeIKq2CthQuXeeB3YfvoHKnTgBFS2bFiccoo=;
+	s=k20260515; t=1794004697;
+	bh=VV1Mfm3TCiX+PFest0QA96zqc7lpSirF2QO8NESV8gw=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nPRM1fig4mV2k6m7RKcPFyXNlgjxc/bUp/DiSsUeC34MP8x5DBQUT1ywMrlVBv11T
-	 KzZFI5SEP85RrzRQxAu81Wj+c9q3RxNb/WbRSJ4BG+omGGxp/HkzrenkLTpCPFmvdw
-	 SK9/7rW0eqRKWpP477t8bgHisxj+eJQ/WPfbI80+5ZJfur67H1dq+Nkh6tE4MPFqkR
-	 U63funfTSpw98uVZAerExeZFV/g9jfg6qHEKAkEYcHWYUfhIO5RaZOWInk/v0vXVUc
-	 ed70vNuA+WlJcKaHmRbczxLJfqKfiJ2kWUGfHqA51vwhWLS+7Ql9yXIInK22LQ1FeW
-	 ZLX3JeaE2Mb+A==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c4ced671398so144947066b.3
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 14:35:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwKOmRsEs5keOIpwbfgvYN2T5B61eJ9SJIBdjDkSn1HzEs2AZGLkhFV7kIARAMcVkR/c1I=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Ws+okE2ucizm7JXk8dy9h5xGXaHjf1v15cTc1gxureHgjuAkH
-	rx21NBjI+7hQr3UunCEQD/Eb1RHnJAOFUuRtyF8rQK0sErkJvvtF4enRCrbiE91+RDgg3bJtWM7
-	oPDCuaGIutfQQAVGESTz80Z/064o4UrI=
-X-Received: by 2002:a17:907:5c4:b0:c29:5172:6151 with SMTP id
- a640c23a62f3a-c4d35542b5dmr321291666b.45.1794004540573; Fri, 06 Nov 2026
- 14:35:40 -0800 (PST)
+	b=a+hkREkJvfNJfQXxIl7bMHmaTWEO4rXPI/43cIn1nSAylWA38p12smeLkfoz68Yqa
+	 Yh7B/xDqo3qV8BGzZdXTmpclEDITBd40LxvZI6UL7X/qFSAzIJD87ShHJ7R0BOLtuO
+	 XcMMLnhCGoKHpcC3RBJrm4w4MNGtkGUdrr5xMZi+0b1Q58hfes4O+ZxkJ+ZfTyuyS5
+	 ZNSNT9abFbRt39pfD3OHtRNKZtvk3V+sJr/4nVy41iBilVsWDSaLPb9gsyaPZlKWOE
+	 8uUIMtmZcrUsOfEfYpzxcTy0fXIwjvF2OZ0zKT4uhxzW4NT5dPvXyl3VWhhUlmHi/0
+	 dDS2k1N9+GtxQ==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c49b431f022so166796366b.1
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 14:38:17 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBw6Swgt4dH66Zqw7trBForMT5X0XQJVdCpOGEjR6SxD69XgjWuOAm+LR0kkCi73crxohkQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Mgq/igZVrGvwFZGKYEHbH7Zny+nFSCyN/pij0Lii9OPF3ausj
+	s09tUDf91B9tcmMCHobuz1ul2rMVURsBl7AROMtNTdudfUF5+ZpZ/qrp6ZVgFNceD9ITRsR3MDu
+	K/5vuIjunGEZbZp553jpywubWwFlPlSM=
+X-Received: by 2002:a17:907:9803:b0:c40:f9ea:7387 with SMTP id
+ a640c23a62f3a-c4d346923b7mr295391666b.6.1794004696138; Fri, 06 Nov 2026
+ 14:38:16 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,15 +59,16 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106013927.166209-1-zide.chen@intel.com> <20261106013927.166209-5-zide.chen@intel.com>
- <au4kyULjUYdqbfIq@google.com> <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
-In-Reply-To: <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com> <20261106013927.166209-4-zide.chen@intel.com>
+ <au4dVD2cZbvoqEa4@google.com> <49798d13-f426-4834-9996-5d8f1f7dad4c@intel.com>
+In-Reply-To: <49798d13-f426-4834-9996-5d8f1f7dad4c@intel.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 6 Nov 2026 14:35:27 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
-X-Gm-Features: AclHuK-VoUhifM_qge0s6Rn8NEfCDJVzOUdT48Q-413RN0Wf6-4xq5DSBFi-OSs
-Message-ID: <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
-Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
+Date: Fri, 6 Nov 2026 14:38:03 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zNQX_fzYpiF8sC2i+S2E4XvxrMarmLg75J=kgX_2Npu0w@mail.gmail.com>
+X-Gm-Features: AclHuK9hbPxh7eWR_k3ODCU3ex8SniyHqugMgQFLThIlqSvJYYwfWvKiIvfdme4
+Message-ID: <CAO9r8zNQX_fzYpiF8sC2i+S2E4XvxrMarmLg75J=kgX_2Npu0w@mail.gmail.com>
+Subject: Re: [PATCH v3 03/18] KVM: x86/pmu: Rename reserved_bits to
+ eventsel_rsvd in kvm_pmu
 To: "Chen, Zide" <zide.chen@intel.com>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
@@ -79,89 +80,73 @@ Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 6, 2026 at 2:19=E2=80=AFPM Chen, Zide <zide.chen@intel.com> wro=
+On Fri, Nov 6, 2026 at 1:16=E2=80=AFPM Chen, Zide <zide.chen@intel.com> wro=
 te:
 >
 >
->
-> On 11/6/2026 1:09 PM, Yosry Ahmed wrote:
-> >> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kv=
-m_host.h
-> >> index b8875ed5502c..4f192429ed93 100644
-> >> --- a/arch/x86/include/asm/kvm_host.h
-> >> +++ b/arch/x86/include/asm/kvm_host.h
-> >> @@ -595,7 +595,10 @@ struct kvm_pmu {
-> >>              DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
-> >>              atomic64_t __reprogram_pmi;
-> >>      };
-> >> -    DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
-> >> +    union {
-> >> +            DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
-> >> +            u64 pmc_exists64;
-> >
-> > __pmc_exists would be more consistent with __reprogam_pmi above.
->
-> I used the *64 suffix and without '__' to match the cntr_mask/cntr_mask64
-> and fixed_cntr_mask/fixed_cntr_mask64 pattern in struct x86_pmu_capabilit=
-y
-> (patch 7), whereas __reprogram_pmi used '__' because it is an atomic64_t
-> rather than a scalar mask.
-
-I don't follow why the '__' prefix is specific to atomics, but anyway,
-I will leave this up to you and Sean.
-
->
-> Also, arch/x86/events/perf_event.h has similar names:
->
->         union {
->                         u64             cntr_mask64;
->                         unsigned long
-> cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
->         };
->         union {
->                         u64             fixed_cntr_mask64;
->                         unsigned long
-> fixed_cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
->         };
->
-> Seems either way won't be absolutely unifie
->
-> >> @@ -120,6 +144,17 @@ static inline struct kvm_pmc *kvm_pmc_idx_to_pmc(=
-struct kvm_pmu *pmu, int idx)
-> >>                      continue;                               \
-> >>              else                                            \
+> >> @@ -214,9 +214,15 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu=
+)
 > >>
-> >> +/*
-> >> + * @mask is expected to be a scalar unsigned long derived from pmu->p=
-mc_exists,
-> >> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_=
-COUNTERS,
-> >> + * so iteration up to KVM's maximum counter count is safe.
-> >> + */
-> >> +#define kvm_for_each_gp_counter(i, mask)    \
-> >> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
-> >> +
-> >> +#define kvm_for_each_fixed_counter(i, mask) \
-> >> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
+> >>      pmu->counter_bitmask[KVM_PMC_GP] =3D BIT_ULL(48) - 1;
+> >>
+> >> -    pmu->reserved_bits =3D 0xfffffff000280000ull;
+> >> +    /*
+> >> +     * AMD PerfEvtSeln registers do not support PinControl, and KVM d=
+oes
+> >> +     * not emulate AnyThread due to cross-VM information leakage on S=
+MT
+> >> +     * cores (as on the Intel side).
+> >> +     */
+> >> +    pmu->eventsel_rsvd =3D GENMASK_ULL(63, 36) | ARCH_PERFMON_EVENTSE=
+L_PIN_CONTROL |
+> >> +                         ARCH_PERFMON_EVENTSEL_ANY;
 > >
-> > These are not used in this patch, are they?
+> > It's probably better if we diff against the generic pmu->eventsel_rsvd
+> > set by kvm_pmu_refresh(), and explicitly add/remove bits as needed here=
+,
+> > like the Intel code. Then we also avoid re-iterating the AnyThread
+> > rationale here.
 > >
-> > They should probably be introduced when they are used. Also, do we
-> > always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
-> > yes, maybe we should pass in the pmu here instead?
+> > What do you think?
 >
-> The intent was to group all bitmap accessor helpers together in this
-> patch for easier review so that the big patch 5/18 could be kept to
-> mostly mechanical replacements.
 >
-> But if you prefer introducing them on first use, I'll move their
-> definitions to patch 5.
+> Yes, I think this is better. How about this:
 
-Yeah I think it's clearer to see what their definitions are with their usag=
-e.
+LGTM, with that feel free to add:
+
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 
 >
-> Regarding passing 'pmu' directly, I initially implemented it in this
-> way, but I can't recall why I discarded it. I will take another look.
-
-Thanks.
+> diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+> index fb5a298244ec..15d4b94826f8 100644
+> --- a/arch/x86/kvm/svm/pmu.c
+> +++ b/arch/x86/kvm/svm/pmu.c
+> @@ -213,12 +213,11 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
+>         pmu->counter_bitmask[KVM_PMC_GP] =3D BIT_ULL(48) - 1;
+>
+> /*
+> -      * AMD PerfEvtSeln registers do not support PinControl, and KVM doe=
+s
+> -        * not emulate AnyThread due to cross-VM information leakage on S=
+MT
+> -        * cores (as on the Intel side).
+> +        * AMD PerfEvtSeln registers do not support PinControl, but suppo=
+rt
+> +        * a 12-bit EventSelect (bits 35:32 in addition to 7:0).
+>          */
+> -       pmu->eventsel_rsvd =3D GENMASK_ULL(63, 36) |
+> ARCH_PERFMON_EVENTSEL_PIN_CONTROL |
+> -                            ARCH_PERFMON_EVENTSEL_ANY;
+> +       pmu->eventsel_rsvd |=3D ARCH_PERFMON_EVENTSEL_PIN_CONTROL;
+> +       pmu->eventsel_rsvd &=3D ~AMD64_EVENTSEL_EVENT;
+>         if (guest_cpu_cap_has(vcpu, X86_FEATURE_SVM) &&
+> kvm_vcpu_has_mediated_pmu(vcpu))
+>                 pmu->eventsel_rsvd &=3D ~AMD64_EVENTSEL_HOST_GUEST_MASK;
+>
+> >
+> >
+> >>      if (guest_cpu_cap_has(vcpu, X86_FEATURE_SVM) && kvm_vcpu_has_medi=
+ated_pmu(vcpu))
+> >> -            pmu->reserved_bits &=3D ~AMD64_EVENTSEL_HOST_GUEST_MASK;
+> >> +            pmu->eventsel_rsvd &=3D ~AMD64_EVENTSEL_HOST_GUEST_MASK;
+>
