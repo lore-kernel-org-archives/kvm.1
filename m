@@ -1,74 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793983170;
-	b=Ssg7ruSTHMQWkrm3gxPU4xQ+TFGPjSq7Vjjsg1KxE9lYSg7njy9shNKxQ+WDS2ap9V2+
-	 iVDDgBPrBHPy2DTEUcLW6dfB+jrl8ZkxhvokBTpiC7TMeGVZZcoG6Wb8ILBqe5q/KyXRy
-	 6z1O8rZpt8an6ZW1z2lyOe8UPw/FgNs2S1PsqxFubeMh5aVmx0fIYrrtzQPxbcEycHvfG
-	 2MRoMODk+GJl8c9Uh7m3bP97eM8cLWeE/0PFcGYVdvetPGWX6iW7A7QNvHZsG1C8+relv
-	 A8+PncFQEBmu6PNjSHhJUL0R5dS+1OB+lnLMopx5wNWpibo3nMcnyeCkOk8kAQbFQEA==
+	t=1793983250;
+	b=IJWFSzVxaRqZR9Yp9GrjDJz1087mZPzmqdVTGt5l2BcOf7YadrX8JUKwlPlAWyjHwOcc
+	 9EhgtJB5SHGeedTsM0LLDbQJN87kp1NtzB8ocOflvrJbQax8NKPmch6Efu0ButP4smrnx
+	 sH51FOE/3sOAG9XaSbrOmLnq4s8Ag38I/9o61af3/6Pw1sZZPByzdjiIyRVBlQDlqdkj3
+	 Sk8LQhn0lE+pQpg88jxb45KwmWL7CZRlIstObADivj3lERTexzvdca4TEnpMmLmNwc5UB
+	 b1q2/iMriZ/1V/Tnoq5YrwJFSs/7CjQ/tM4pmA+ojKj1SDerI90TCD6BQMqTsySE2nA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793983170;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=ze343Uaqk+X8UtHweN3K4PjeYKSuxe6pflYwae6tsAs=;
-	b=s6eBU4IyYMWos/c08MG+OhdRCH5pMGAVM85cIzxSRlng0TubfbqIL2As0vnP9OMD4Etc
-	 Pwf2IFwb6OYFtbWJAJtHFxv8RwwoiZPQzE1HZcSItbNx+BjO7921jZE6cTz/ZVDWRfRSy
-	 gA3kdY/72ndBGGhLpHgIUJLp13aMPdzTdzAAtXpokeSAe6AMfNFHSJxq0GumoPeUxtGrx
-	 FPtjYGzB1uEaw7ntqY9tLHDEWUUpT2/JGuB7dHBtLObavHzONhTJkJkwTKt867Jh3OCev
-	 Jp7etXW+z74deDSinBH/jXO5vvnfA+lrnpaRLYtEtv18hb14AI0L5gz1X8wbTUeZOJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793983250;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:From:To:Cc:References:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=9IIEYk7YBZeshSLM0PoZroS+Zb4rz7EQkxpB2vSxCzc=;
+	b=HlYVbupaQ/JxQqZ5EvkG1F+whiM6tGYW70831CHdnKoBs927Tzzd44G7X4mNlb8H065l
+	 P2RGqbjbvMUlL4RDXG6onZroCkUxpuaZQ6ouEhG278RO6nhrDVqlV3F3fB5Pu/jmFYdoQ
+	 cBfTU3jxVb4ho9PG0f1sR0KiWNyq+UqjcHuo2tW3WyW3GCP7v2rONTdzOumyyByyi+UTd
+	 UB8fofUE1K7QRyDQBvm/RZ9XMGA1sxkt3QWw1lFnbjWmYuqrfuPZBQbd/DvNyAQUMERKX
+	 WaQaxjt6Slia7xS0QFIccoef6UjOJQSUBLU4Qk+6zAH1bwd//ajhFIZRa3/Z1VPJhhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=A8tSMFaf;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9544D606A32C
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 16:39:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9544D606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=izE986vy;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FEA606A32C
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 16:40:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51FEA606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=A8tSMFaf
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ae72da2f57so1330306a91.1
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 08:39:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793983169; x=1794587969; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ze343Uaqk+X8UtHweN3K4PjeYKSuxe6pflYwae6tsAs=;
-        b=A8tSMFafFqBRRHJy3GU6h+xCdy/7eVZn1X8eTZmPaKBacLB6VUPbIq9MFpVGkGgprx
-         2lFxA9YYCM4g6jOqPk6gJMH363BwXVN4zzbBsdhqcEx+pDz4SKCpt+0vLtMAR2V/7XEZ
-         z0UAUuE47C8QtsXMOYnZ83jrcRuJbnRYbcefOAOdbk7FLmcbmw15yw5JNc2XQgrDZNl2
-         nC+n93Yt3i+j13l5HZk6vCK4H7uzd7T0Vkikhl8/4pFzIsBlSM0LtErpkDtfG0aaFCuW
-         yVwmQrviMtd9BjTkApWCqSf4r+MmBQIrl5ZFodCOcamDBlfkUqX36HvPPRbykFG40tNt
-         UMww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793983169; x=1794587969;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ze343Uaqk+X8UtHweN3K4PjeYKSuxe6pflYwae6tsAs=;
-        b=EFwPfW7Fqs5GQvNSkXiL4ETPPj68wWcKyle9Ikycj4T6EwbC/S5vgIcNYsj4q4lt1v
-         JUbCBM8a1a6/No6rtf8A8RA953Vg3fmvcnHqBCh+SPMGmcVG+myJilMUZ5jdalLwh+Xw
-         ndID0K8gMdRVrt9VXngELZG8xzKvlGtkAxxRsiRnTIYZR70CVmXv8nNY1jf8dR1Wg7s+
-         T1ejgel79GTaAT8b2M09K/I7wR6vgMaG/4m8nJFdtUvoRrZdXfR+2OeRTL5IvHV2XGvO
-         VA/FvKvtPzsB2edsFes43Y1I696uqaLy2rkpk96mszNSxPxVz6HneQz/9H/U0a96Y3av
-         ooIw==
-X-Forwarded-Encrypted: i=1; AL+hErE6VB1KxrSNISKzvzwWjOXjnPx5Lb75eCREIoGjSjAyw19hznoqyT6zYdETHOYZd1tWcWA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8FIAeqq7g5jreM6OX1Ytp76QNI3JeEmaHhteNhOIV84VQ9lgmZ
-	6sC0mNKWVXteNtWbUfMoeQolU0j76KBWlnzUg7s5s0w12I6Ozo92TxYj9U1mt3ajmVAUBD7CUdP
-	bpwovBQ==
-X-Received: from pjbco24.prod.google.com ([2002:a17:90a:fe98:b0:3ad:3715:39c8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3b8b:b0:3b0:a385:5aaf
- with SMTP id 98e67ed59e1d1-3b0db6e53c8mr2966660a91.39.1793983168137; Fri, 06
- Nov 2026 08:39:28 -0800 (PST)
-Date: Fri, 6 Nov 2026 08:39:27 -0800
-In-Reply-To: <20261106073417.86867-1-flyingpeng@tencent.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=izE986vy
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 766E01595;
+	Fri,  6 Nov 2026 08:40:45 -0800 (PST)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13D863F673;
+	Fri,  6 Nov 2026 08:40:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793983248; bh=ADNoIliO7uObwSND37J76qZqTaSAog/LObwgBbJ0hrE=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=izE986vyY0q3Pt8OzbVRSsX+gj1YMLu1KTdyxaBfirRrJdU/zpJYFe7HbUC+GKIAa
+	 PnRjK0I2uAaRUtfjnoncQW3+3Tk8RT6ft1ZSlUX+IYQYiE1Wi49dk+5Ei/EpX2Xt74
+	 I6Dh6W48YANBmzAaKmgyN7nkpTD/adhBrHrDiFGY=
+Message-ID: <80a956c7-b2b2-411e-99c7-d703c92f3c34@arm.com>
+Date: Fri, 6 Nov 2026 16:40:45 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,677 +52,385 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261106073417.86867-1-flyingpeng@tencent.com>
-Message-ID: <au4Cv1pjFp_7rmlT@google.com>
-Subject: Re: [PATCH] KVM: VMX: Allocate struct pt_desc only when PT is
- virtualized for guests
-From: Sean Christopherson <seanjc@google.com>
-To: Peng Hao <flyingpenghao@gmail.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/11] KVM: arm64: CCA: Prevent memslot modifications
+ after Realm creation
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Steven Price <steven.price@arm.com>, sashiko-reviews@lists.linux.dev,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Ackerley Tng <ackerleytng@google.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-10-steven.price@arm.com>
+ <sashiko-outbox-193708@kernel.org>
+ <9489ebe7-4c75-4229-811e-3f618028d367@arm.com>
+ <a2dfb2ad-7c52-43e1-8b77-cacb2fa00c05@arm.com>
+ <0d5a4b59-f38c-4c1d-a59e-202e7efb4b54@arm.com>
+Content-Language: en-US
+In-Reply-To: <0d5a4b59-f38c-4c1d-a59e-202e7efb4b54@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 06, 2026, Peng Hao wrote:
-> struct pt_desc is only used when pt_mode is PT_MODE_HOST_GUEST, so
-> allocate it on demand instead of embedding it in struct vcpu_vmx.
+
+
+On 05/11/2026 17:31, Suzuki K Poulose wrote:
 > 
-> This shrinks struct vcpu_vmx from 8384 to 8128 bytes.
+> 
+> On 05/11/2026 15:06, Suzuki K Poulose wrote:
+>> On 04/11/2026 11:15, Steven Price wrote:
+>>> On 02/11/2026 15:50, sashiko-bot@kernel.org wrote:
+>>>> Thank you for your contribution! Sashiko AI review found 1 potential 
+>>>> issue(s) to consider:
+>>>> - [High] KVM: arm64: CCA: guest_memfd memslot delete rejected after 
+>>>> Stage-2 unmap
+>>>> -- 
+>>>>
+>>>> commit 5106402397c36eec1e5fa59a5bb2c5adf4ee2aa8
+>>>> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>
+>>>> KVM: arm64: CCA: Prevent memslot modifications after Realm creation
+>>>>
+>>>> This commit updates kvm_arch_prepare_memory_region() to disallow 
+>>>> creating,
+>>>> modifying, or deleting guest_memfd-backed memslots once a Realm has 
+>>>> been
+>>>> created.
+>>>>
+>>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>>>> index 51fda7b2ff7f3..eb8c5f9e9791d 100644
+>>>>> --- a/arch/arm64/kvm/mmu.c
+>>>>> +++ b/arch/arm64/kvm/mmu.c
+>>>>> @@ -2862,13 +2862,28 @@ int kvm_arch_prepare_memory_region(struct 
+>>>>> kvm *kvm,
+>>>>>           (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
+>>>>>           return -EPERM;
+>>>>> -    if (kvm->arch.vm_flavor == VM_PROTECTED_PKVM) {
+>>>>> +    switch (kvm->arch.vm_flavor) {
+>>>>> +    case VM_PROTECTED_PKVM:
+>>>>>           /* Cannot modify memslots once a pVM has run. */
+>>>>>           if (pkvm_hyp_vm_is_created(kvm) &&
+>>>>> -            (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
+>>>>> +            (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
+>>>>>               return -EPERM;
+>>>>> -        }
+>>>>> +        break;
+>>>>> +    case VM_REALM:
+>>>>> +        /*
+>>>>> +         * Once the Realm is created, we cannot modify any slots that
+>>>>> +         * could be providing private memory. i.e., guest_memfd 
+>>>>> backed
+>>>>> +         * slots.
+>>>>> +         * TODO: Handle trusted device private memory slots
+>>>>> +         */
+>>>>> +        if (!kvm_realm_is_created(kvm))
+>>>>> +            break;
+>>>>> +        if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
+>>>>> +            return -EPERM;
+>>>>
+>>>> [Severity: High]
+>>>> Does checking kvm_slot_has_gmem(old) in 
+>>>> kvm_arch_prepare_memory_region() run
+>>>> too late to prevent Stage-2 unmapping when deleting a guest_memfd- 
+>>>> backed
+>>>> memslot on a created Realm?
+>>>>
+>>>> In virt/kvm/kvm_main.c:kvm_set_memory_region(), non-delete changes
+>>>> (KVM_MR_MOVE and KVM_MR_FLAGS_ONLY) on KVM_MEM_GUEST_MEMFD memslots are
+>>>> already rejected upfront with -EINVAL, so kvm_slot_has_gmem(old) is 
+>>>> reached
+>>>> here when change == KVM_MR_DELETE.
+>>>>
+>>>> However, in virt/kvm/kvm_main.c:kvm_set_memslot(), KVM invalidates and
+>>>> flushes the old memslot before calling kvm_prepare_memory_region():
+>>>>
+>>>> virt/kvm/kvm_main.c:kvm_set_memslot() {
+>>>>     if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
+>>>>         invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
+>>>>         if (!invalid_slot) {
+>>>>             mutex_unlock(&kvm->slots_arch_lock);
+>>>>             return -ENOMEM;
+>>>>         }
+>>>>         kvm_invalidate_memslot(kvm, old, invalid_slot);
+>>>>     }
+>>>>
+>>>>     r = kvm_prepare_memory_region(kvm, old, new, change);
+>>>>     if (r)
+>>>>         goto err;
+>>>> }
+>>>>
+>>>> kvm_invalidate_memslot() marks the active slot as 
+>>>> KVM_MEMSLOT_INVALID and
+>>>> calls arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot():
+>>>>
+>>>> arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot() {
+>>>>     write_lock(&kvm->mmu_lock);
+>>>>     kvm_stage2_unmap_range(&kvm->arch.mmu, gpa, size, true);
+>>>>     kvm_nested_unmap_cipa_range(kvm, gpa, size, true);
+>>>>     write_unlock(&kvm->mmu_lock);
+>>>> }
+>>>>
+>>>> For a Realm VM, kvm_stage2_unmap_range() invokes
+>>>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() with
+>>>> KVM_FILTER_PRIVATE | KVM_FILTER_SHARED:
+>>>>
+>>>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() {
+>>>>     if (attr_filter & KVM_FILTER_SHARED)
+>>>>         realm_unmap_shared_range(kvm, start, end, may_block);
+>>>>     if (attr_filter & KVM_FILTER_PRIVATE)
+>>>>         realm_unmap_private_range(kvm, start, end, may_block);
+>>>> }
+>>>>
+>>>> By the time kvm_arch_prepare_memory_region() returns -EPERM and
+>>>> kvm_set_memslot() restores the old memslot in the error path, hasn't
+>>>> realm_unmap_private_range() already unmapped and undelegated the 
+>>>> Realm's
+>>>> private Stage-2 DATA granules across the memslot's GPA range?
+>>>>
+>>>
+>>> I think this should be fixable by checking in
+>>> kvm_arch_flush_shadow_memslot() and preserving the stage-2 mappings by
+>>> returning early. kvm_arch_prepare_memory_region() will then reject the
+>>> operation but the mappings will still be in place.
+>>
+>> Or is the better fix to delay the kvm_invalidate_memslot() after 
+>> kvm_prepare_memory_region() ? i.e., if we the KVM backend doesn't
+>> approve the change, why do invalidate the slot ? For most of the CoCo
+>> VMs, this would be disastrous.
+> 
+> 
+> Ignore this, driver for CCA is doing the wrong thing. Instead of
+> flushing (which is a NOP for CCA), we were removing the mapping.
 
-Hrm, I don't think I want to do this to save "only" 256 bytes.  I assume the goal
-is to get back down to an order-1 allocation, but vcpu_vmx is sooo close that
-shaving off 256 bytes is only going to keep it order-1 for a kernel release or two.
+Well, I got it confused with arm64 calling stage2_flush_memslot()
+(called for flushing the dcache for a memory slot) with
+kvm_arch_flush_shadow_memslot() (unmapping a memslot from the guest).
 
-And for "full" configs, e.g. with Xen support, vcpu_vmx is ~9088 bytes.
+We do have a problem with the memslot code ordering. For all VMs, on a
+memslot deletion, we first invalidate the memslot and then run the
+"prepare" hook for the architecture, which could reject a DELETE. This
+is particularly an issue for the Coco VMs, if they want to reject
+deletion of memslots while the VM is active ( e.g., Realm and pKVM),
+unless the VM prevents the stage2 modification (e.g., pKVM ignores
+stage2 unmap requests). Even there, the pKVM may keep the memory mapped
+when the memslot is deleted. But the page pinning keeps the pages in
+tact.
 
-If we want to get vCPUs back to order-1 allocation with any chance of keeping them
-there, I think we need to aim for ~6-7 KiB, but without adding unnecessary layers
-of indirection.  E.g. kvm_vcpu.stats is a whopping 1104 bytes, but it's accessed in
-a ton of hot paths, so I wouldn't want to allocate that separately.  Similarly,
-we could dynamically allocate vcpu_vmx.nested, but I don't know that I'd want to
-add that extra pointer chase just to get at a variety of flags.
+Something like the following could work:
 
-Potential ideas:
+---8>---
 
-  1. vcpu_vmx.rmode (208) - In practice, it's only used by CPUs launched before
-     Westmere (2010), and like PT, it's guarded by a module param so it's easy to
-     dynamically allocate.
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+Date: Fri, 6 Nov 2026 16:31:15 +0000
+Subject: [PATCH] KVM: Allow architectures to reject memslot changes before
+  invalidation
 
-  2. kvm_vcpu_arch.pmu (912) - Can be allocated if and only if the vCPU has a PMU,
-     e.g. in kvm_pmu_refresh(), or based on the module param.  I'd be somehwat
-     worried about regressing hot paths though.  On the other hand, we could throw
-     pt_desc and lbr_desc into kvm_pmu to get a total of 1208 bytes in savings.
+Architectures may need to reject deletion of a memory slot without
+changing the guest's memory mappings. Currently, KVM invalidates the slot
+and calls kvm_arch_flush_shadow_memslot() before
+kvm_arch_prepare_memory_region() can reject the request. On arm64, this
+unmaps the slot from stage-2. Restoring the old memslot on failure does not
+restore those mappings, so even a rejected deletion has side effects.
 
-  3. kvm_vcpu_arch.xen (680) - Only impacts a limited set of configs, but at a
-     glance, this one would be trivially easy to convert, and if distros enable
-     CONFIG_KVM_XEN, would provide meaningful savings for a lot of deployments.
+Add kvm_arch_validate_memory_region() and invoke it before invalidating
+the slot, with slots_lock and slots_arch_lock held. The hook performs
+validation only, allowing architectures to reject a request without
+changing the memslot or its mappings. Provide a weak no-op implementation
+for architectures that do not need early validation.
 
-  4. kvm_vcpu_arch.apf.gfns (512) - Would need to be unconditionally allocated,
-     but its power-of-2 size makes it well suited for a kmem cache, and for many,
-     many VMs, this will almost never be used.
+Move arm64's protected VM checks into the new hook so that unsupported
+deletions and moves are rejected before stage-2 unmapping. Keep resource
+preparation after invalidation, since invalidation drops slots_arch_lock
+and allows concurrent updates to architecture-specific memslot metadata.
 
-If we did all of the above, that would save 2608 bytes for CONFIG_KVM_XEN=y and
-1928 bytes for CONFIG_KVM_XEN=n.  That would put vcpu_vmx around 6.4KiB, which
-would give us some room before we cross the order-1 boundary (again).
+Assisted-by: LLM
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+---
+  arch/arm64/kvm/mmu.c     | 22 ++++++++++++++++------
+  arch/arm64/kvm/pkvm.c    |  2 +-
+  include/linux/kvm_host.h |  4 ++++
+  virt/kvm/kvm_main.c      | 33 ++++++++++++++++++++++++++-------
+  4 files changed, 47 insertions(+), 14 deletions(-)
 
-The other option for pt_desc in particular would be to simply rip out all of the
-code, as it's been buried behind CONFIG_BROKEN=y for a few years now.
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 1db10d8d6db7..c3469551fe3c 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -2806,13 +2806,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+  	}
+  }
 
-Actually, duh, the less committing thing to do is to compile out the code.  I
-think it'd still be worth doing at least some of the above changes, but hard
-disabling PT virtualization seems like a no brainer.  E.g. over a few patches to
-isolate the code movement.  I'll post a miniseries.
+-int kvm_arch_prepare_memory_region(struct kvm *kvm,
+-				   const struct kvm_memory_slot *old,
+-				   struct kvm_memory_slot *new,
+-				   enum kvm_mr_change change)
++int kvm_arch_validate_memory_region(struct kvm *kvm,
++				    const struct kvm_memory_slot *old,
++				    const struct kvm_memory_slot *new,
++				    enum kvm_mr_change change)
+  {
+-	hva_t hva, reg_end;
+-	int ret = 0;
++	lockdep_assert_held(&kvm->slots_lock);
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 1719059570fb..243307328adf 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -151,6 +151,9 @@ config KVM_INTEL_TDX
- 
- 	  If unsure, say N.
- 
-+config KVM_INTEL_PT
-+	def_bool y if BROKEN
-+
- config KVM_AMD
- 	tristate "KVM for AMD processors support"
- 	depends on KVM && (CPU_SUP_AMD || CPU_SUP_HYGON)
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index e91650af44c2..a69020c01afd 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -2596,6 +2596,7 @@ static void kvm_probe_msr_to_save(u32 msr_index)
- 		if (!kvm_cpu_cap_has(X86_FEATURE_WAITPKG))
- 			return;
- 		break;
-+#ifdef CONFIG_KVM_INTEL_PT
- 	case MSR_IA32_RTIT_CTL:
- 	case MSR_IA32_RTIT_STATUS:
- 		if (!kvm_cpu_cap_has(X86_FEATURE_INTEL_PT))
-@@ -2619,6 +2620,7 @@ static void kvm_probe_msr_to_save(u32 msr_index)
- 		     intel_pt_validate_hw_cap(PT_CAP_num_address_ranges) * 2))
- 			return;
- 		break;
-+#endif
- 	case MSR_ARCH_PERFMON_PERFCTR0 ...
- 	     MSR_ARCH_PERFMON_PERFCTR0 + KVM_MAX_NR_GP_COUNTERS - 1:
- 		if (msr_index - MSR_ARCH_PERFMON_PERFCTR0 >=
-diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
-index 810119167f79..604cc376ca5a 100644
---- a/arch/x86/kvm/vmx/capabilities.h
-+++ b/arch/x86/kvm/vmx/capabilities.h
-@@ -17,11 +17,16 @@ extern bool __read_mostly enable_ept_ad_bits;
- extern bool __read_mostly enable_cet;
- extern bool __read_mostly enable_pml;
- extern bool __read_mostly enable_mbec;
--extern int __read_mostly pt_mode;
- 
- #define PT_MODE_SYSTEM		0
- #define PT_MODE_HOST_GUEST	1
- 
-+#ifdef CONFIG_KVM_INTEL_PT
-+extern int __read_mostly pt_mode;
-+#else
-+#define pt_mode			PT_MODE_SYSTEM
-+#endif
-+
- struct nested_vmx_msrs {
- 	/*
- 	 * We only store the "true" versions of the VMX capability MSRs. We
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index f0d75f5a968c..4bc0c1b743d8 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -5455,10 +5455,12 @@ static int enter_vmx_operation(struct kvm_vcpu *vcpu)
- 	vmx->nested.vmcs02_initialized = false;
- 	vmx->nested.vmxon = true;
- 
-+#ifdef CONFIG_KVM_INTEL_PT
- 	if (vmx_pt_mode_is_host_guest()) {
- 		vmx->pt_desc.guest.ctl = 0;
- 		pt_update_intercept_for_msr(vcpu);
- 	}
-+#endif
- 
- 	return 0;
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e6a61514e797..bd1ea5f16c78 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -210,8 +210,8 @@ static unsigned int ple_window_max        = KVM_VMX_DEFAULT_PLE_WINDOW_MAX;
- module_param(ple_window_max, uint, 0444);
- 
- /* Default is SYSTEM mode, 1 for host-guest mode (which is BROKEN) */
-+#ifdef CONFIG_KVM_INTEL_PT
- int __read_mostly pt_mode = PT_MODE_SYSTEM;
--#ifdef CONFIG_BROKEN
- module_param(pt_mode, int, S_IRUGO);
- #endif
- 
-@@ -1231,6 +1231,165 @@ static unsigned long segment_base(u16 selector)
- }
- #endif
- 
-+#ifdef CONFIG_KVM_INTEL_PT
-+static int vmx_rtit_ctl_check(struct kvm_vcpu *vcpu, u64 data)
-+{
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+	unsigned long value;
-+
-+	/*
-+	 * Any MSR write that attempts to change bits marked reserved will
-+	 * case a #GP fault.
-+	 */
-+	if (data & vmx->pt_desc.ctl_bitmask)
-+		return 1;
-+
-+	/*
-+	 * Any attempt to modify IA32_RTIT_CTL while TraceEn is set will
-+	 * result in a #GP unless the same write also clears TraceEn.
-+	 */
-+	if ((vmx->pt_desc.guest.ctl & RTIT_CTL_TRACEEN) &&
-+	    (data & RTIT_CTL_TRACEEN) &&
-+	    data != vmx->pt_desc.guest.ctl)
-+		return 1;
-+
-+	/*
-+	 * WRMSR to IA32_RTIT_CTL that sets TraceEn but clears this bit
-+	 * and FabricEn would cause #GP, if
-+	 * CPUID.(EAX=14H, ECX=0):ECX.SNGLRGNOUT[bit 2] = 0
-+	 */
-+	if ((data & RTIT_CTL_TRACEEN) && !(data & RTIT_CTL_TOPA) &&
-+		!(data & RTIT_CTL_FABRIC_EN) &&
-+		!intel_pt_validate_cap(vmx->pt_desc.caps,
-+					PT_CAP_single_range_output))
-+		return 1;
-+
-+	/*
-+	 * MTCFreq, CycThresh and PSBFreq encodings check, any MSR write that
-+	 * utilize encodings marked reserved will cause a #GP fault.
-+	 */
-+	value = intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_mtc_periods);
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_mtc) &&
-+			!test_bit((data & RTIT_CTL_MTC_RANGE) >>
-+			RTIT_CTL_MTC_RANGE_OFFSET, &value))
-+		return 1;
-+	value = intel_pt_validate_cap(vmx->pt_desc.caps,
-+						PT_CAP_cycle_thresholds);
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_cyc) &&
-+			!test_bit((data & RTIT_CTL_CYC_THRESH) >>
-+			RTIT_CTL_CYC_THRESH_OFFSET, &value))
-+		return 1;
-+	value = intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_periods);
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_cyc) &&
-+			!test_bit((data & RTIT_CTL_PSB_FREQ) >>
-+			RTIT_CTL_PSB_FREQ_OFFSET, &value))
-+		return 1;
-+
-+	/*
-+	 * If ADDRx_CFG is reserved or the encodings is >2 will
-+	 * cause a #GP fault.
-+	 */
-+	value = (data & RTIT_CTL_ADDR0) >> RTIT_CTL_ADDR0_OFFSET;
-+	if ((value && (vmx->pt_desc.num_address_ranges < 1)) || (value > 2))
-+		return 1;
-+	value = (data & RTIT_CTL_ADDR1) >> RTIT_CTL_ADDR1_OFFSET;
-+	if ((value && (vmx->pt_desc.num_address_ranges < 2)) || (value > 2))
-+		return 1;
-+	value = (data & RTIT_CTL_ADDR2) >> RTIT_CTL_ADDR2_OFFSET;
-+	if ((value && (vmx->pt_desc.num_address_ranges < 3)) || (value > 2))
-+		return 1;
-+	value = (data & RTIT_CTL_ADDR3) >> RTIT_CTL_ADDR3_OFFSET;
-+	if ((value && (vmx->pt_desc.num_address_ranges < 4)) || (value > 2))
-+		return 1;
-+
+  	if (kvm_vm_is_protected(kvm)) {
+  		/* Cannot modify memslots once a pVM has run. */
+@@ -2827,6 +2826,17 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+  		}
+  	}
+
 +	return 0;
 +}
 +
-+static void update_intel_pt_cfg(struct kvm_vcpu *vcpu)
++int kvm_arch_prepare_memory_region(struct kvm *kvm,
++				   const struct kvm_memory_slot *old,
++				   struct kvm_memory_slot *new,
++				   enum kvm_mr_change change)
 +{
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+	struct kvm_cpuid_entry2 *best = NULL;
-+	int i;
++	hva_t hva, reg_end;
++	int ret = 0;
 +
-+	for (i = 0; i < PT_CPUID_LEAVES; i++) {
-+		best = kvm_find_cpuid_entry_index(vcpu, 0x14, i);
-+		if (!best)
-+			return;
-+		vmx->pt_desc.caps[CPUID_EAX + i*PT_CPUID_REGS_NUM] = best->eax;
-+		vmx->pt_desc.caps[CPUID_EBX + i*PT_CPUID_REGS_NUM] = best->ebx;
-+		vmx->pt_desc.caps[CPUID_ECX + i*PT_CPUID_REGS_NUM] = best->ecx;
-+		vmx->pt_desc.caps[CPUID_EDX + i*PT_CPUID_REGS_NUM] = best->edx;
-+	}
-+
-+	/* Get the number of configurable Address Ranges for filtering */
-+	vmx->pt_desc.num_address_ranges = intel_pt_validate_cap(vmx->pt_desc.caps,
-+						PT_CAP_num_address_ranges);
-+
-+	/* Initialize and clear the no dependency bits */
-+	vmx->pt_desc.ctl_bitmask = ~(RTIT_CTL_TRACEEN | RTIT_CTL_OS |
-+			RTIT_CTL_USR | RTIT_CTL_TSC_EN | RTIT_CTL_DISRETC |
-+			RTIT_CTL_BRANCH_EN);
-+
-+	/*
-+	 * If CPUID.(EAX=14H,ECX=0):EBX[0]=1 CR3Filter can be set otherwise
-+	 * will inject an #GP
-+	 */
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_cr3_filtering))
-+		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_CR3EN;
-+
-+	/*
-+	 * If CPUID.(EAX=14H,ECX=0):EBX[1]=1 CYCEn, CycThresh and
-+	 * PSBFreq can be set
-+	 */
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_cyc))
-+		vmx->pt_desc.ctl_bitmask &= ~(RTIT_CTL_CYCLEACC |
-+				RTIT_CTL_CYC_THRESH | RTIT_CTL_PSB_FREQ);
-+
-+	/*
-+	 * If CPUID.(EAX=14H,ECX=0):EBX[3]=1 MTCEn and MTCFreq can be set
-+	 */
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_mtc))
-+		vmx->pt_desc.ctl_bitmask &= ~(RTIT_CTL_MTC_EN |
-+					      RTIT_CTL_MTC_RANGE);
-+
-+	/* If CPUID.(EAX=14H,ECX=0):EBX[4]=1 FUPonPTW and PTWEn can be set */
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_ptwrite))
-+		vmx->pt_desc.ctl_bitmask &= ~(RTIT_CTL_FUP_ON_PTW |
-+							RTIT_CTL_PTW_EN);
-+
-+	/* If CPUID.(EAX=14H,ECX=0):EBX[5]=1 PwrEvEn can be set */
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_power_event_trace))
-+		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_PWR_EVT_EN;
-+
-+	/* If CPUID.(EAX=14H,ECX=0):ECX[0]=1 ToPA can be set */
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_topa_output))
-+		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_TOPA;
-+
-+	/* If CPUID.(EAX=14H,ECX=0):ECX[3]=1 FabricEn can be set */
-+	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_output_subsys))
-+		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_FABRIC_EN;
-+
-+	/* unmask address range configure area */
-+	for (i = 0; i < vmx->pt_desc.num_address_ranges; i++)
-+		vmx->pt_desc.ctl_bitmask &= ~(0xfULL << (32 + i * 4));
+  	if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
+  			change != KVM_MR_FLAGS_ONLY)
+  		return 0;
+diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
+index 016997288fd2..552a40871ab1 100644
+--- a/arch/arm64/kvm/pkvm.c
++++ b/arch/arm64/kvm/pkvm.c
+@@ -262,7 +262,7 @@ int pkvm_create_hyp_vm(struct kvm *kvm)
+  	int ret = 0;
+
+  	/*
+-	 * Synchronise with kvm_arch_prepare_memory_region(), as we
++	 * Synchronise with kvm_arch_validate_memory_region(), as we
+  	 * prevent memslot modifications on a pVM that has been run.
+  	 */
+  	mutex_lock(&kvm->slots_lock);
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index e7fc94e2910a..310afcaf7021 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1255,6 +1255,10 @@ int kvm_set_internal_memslot(struct kvm *kvm,
+  			     const struct kvm_userspace_memory_region2 *mem);
+  void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot);
+  void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen);
++int kvm_arch_validate_memory_region(struct kvm *kvm,
++				    const struct kvm_memory_slot *old,
++				    const struct kvm_memory_slot *new,
++				    enum kvm_mr_change change);
+  int kvm_arch_prepare_memory_region(struct kvm *kvm,
+  				const struct kvm_memory_slot *old,
+  				struct kvm_memory_slot *new,
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cf4cb586f140..3ef370d71818 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1682,6 +1682,20 @@ static void kvm_swap_active_memslots(struct kvm 
+*kvm, int as_id)
+  	slots->generation = gen;
+  }
+
++/*
++ * Validate a memslot change before invalidation, which may 
+irreversibly reclaim
++ * private guest memory. Called with slots_lock and slots_arch_lock held.
++ * Implementations must not modify memslot state or allocate resources; 
+leave
++ * those operations to kvm_arch_prepare_memory_region().
++ */
++__weak int kvm_arch_validate_memory_region(struct kvm *kvm,
++					   const struct kvm_memory_slot *old,
++					   const struct kvm_memory_slot *new,
++					   enum kvm_mr_change change)
++{
++	return 0;
 +}
 +
-+void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
-+{
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+	bool flag = !(vmx->pt_desc.guest.ctl & RTIT_CTL_TRACEEN);
-+	u32 i;
+  static int kvm_prepare_memory_region(struct kvm *kvm,
+  				     const struct kvm_memory_slot *old,
+  				     struct kvm_memory_slot *new,
+@@ -1934,6 +1948,10 @@ static int kvm_set_memslot(struct kvm *kvm,
+  	 */
+  	mutex_lock(&kvm->slots_arch_lock);
+
++	r = kvm_arch_validate_memory_region(kvm, old, new, change);
++	if (r)
++		goto unlock_err;
 +
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_STATUS, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_OUTPUT_BASE, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_OUTPUT_MASK, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_CR3_MATCH, MSR_TYPE_RW, flag);
-+	for (i = 0; i < vmx->pt_desc.num_address_ranges; i++) {
-+		vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_ADDR0_A + i * 2, MSR_TYPE_RW, flag);
-+		vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_ADDR0_B + i * 2, MSR_TYPE_RW, flag);
-+	}
-+}
-+
- static inline bool pt_can_write_msr(struct vcpu_vmx *vmx)
- {
- 	return vmx_pt_mode_is_host_guest() &&
-@@ -1306,6 +1465,25 @@ static void pt_guest_exit(struct vcpu_vmx *vmx)
- 		wrmsrq(MSR_IA32_RTIT_CTL, vmx->pt_desc.host.ctl);
- }
- 
-+static unsigned int vmx_handle_intel_pt_intr(void)
-+{
-+	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
-+
-+	/* '0' on failure so that the !PT case can use a RET0 static call. */
-+	if (!vcpu || !kvm_handling_nmi_from_guest(vcpu))
-+		return 0;
-+
-+	kvm_make_request(KVM_REQ_PMI, vcpu);
-+	__set_bit(MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT,
-+		  (unsigned long *)&vcpu->arch.pmu.global_status);
-+	return 1;
-+}
-+#else
-+static void pt_guest_enter(struct vcpu_vmx *vmx) { }
-+static void pt_guest_exit(struct vcpu_vmx *vmx) { }
-+static void update_intel_pt_cfg(struct kvm_vcpu *vcpu) { WARN_ON_ONCE(1); }
-+#endif /* CONFIG_KVM_INTEL_PT */
-+
- void vmx_set_host_fs_gs(struct vmcs_host_state *host, u16 fs_sel, u16 gs_sel,
- 			unsigned long fs_base, unsigned long gs_base)
- {
-@@ -1708,79 +1886,6 @@ void vmx_set_interrupt_shadow(struct kvm_vcpu *vcpu, int mask)
- 		vmcs_write32(GUEST_INTERRUPTIBILITY_INFO, interruptibility);
- }
- 
--static int vmx_rtit_ctl_check(struct kvm_vcpu *vcpu, u64 data)
--{
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	unsigned long value;
--
--	/*
--	 * Any MSR write that attempts to change bits marked reserved will
--	 * case a #GP fault.
--	 */
--	if (data & vmx->pt_desc.ctl_bitmask)
--		return 1;
--
--	/*
--	 * Any attempt to modify IA32_RTIT_CTL while TraceEn is set will
--	 * result in a #GP unless the same write also clears TraceEn.
--	 */
--	if ((vmx->pt_desc.guest.ctl & RTIT_CTL_TRACEEN) &&
--	    (data & RTIT_CTL_TRACEEN) &&
--	    data != vmx->pt_desc.guest.ctl)
--		return 1;
--
--	/*
--	 * WRMSR to IA32_RTIT_CTL that sets TraceEn but clears this bit
--	 * and FabricEn would cause #GP, if
--	 * CPUID.(EAX=14H, ECX=0):ECX.SNGLRGNOUT[bit 2] = 0
--	 */
--	if ((data & RTIT_CTL_TRACEEN) && !(data & RTIT_CTL_TOPA) &&
--		!(data & RTIT_CTL_FABRIC_EN) &&
--		!intel_pt_validate_cap(vmx->pt_desc.caps,
--					PT_CAP_single_range_output))
--		return 1;
--
--	/*
--	 * MTCFreq, CycThresh and PSBFreq encodings check, any MSR write that
--	 * utilize encodings marked reserved will cause a #GP fault.
--	 */
--	value = intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_mtc_periods);
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_mtc) &&
--			!test_bit((data & RTIT_CTL_MTC_RANGE) >>
--			RTIT_CTL_MTC_RANGE_OFFSET, &value))
--		return 1;
--	value = intel_pt_validate_cap(vmx->pt_desc.caps,
--						PT_CAP_cycle_thresholds);
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_cyc) &&
--			!test_bit((data & RTIT_CTL_CYC_THRESH) >>
--			RTIT_CTL_CYC_THRESH_OFFSET, &value))
--		return 1;
--	value = intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_periods);
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_cyc) &&
--			!test_bit((data & RTIT_CTL_PSB_FREQ) >>
--			RTIT_CTL_PSB_FREQ_OFFSET, &value))
--		return 1;
--
--	/*
--	 * If ADDRx_CFG is reserved or the encodings is >2 will
--	 * cause a #GP fault.
--	 */
--	value = (data & RTIT_CTL_ADDR0) >> RTIT_CTL_ADDR0_OFFSET;
--	if ((value && (vmx->pt_desc.num_address_ranges < 1)) || (value > 2))
--		return 1;
--	value = (data & RTIT_CTL_ADDR1) >> RTIT_CTL_ADDR1_OFFSET;
--	if ((value && (vmx->pt_desc.num_address_ranges < 2)) || (value > 2))
--		return 1;
--	value = (data & RTIT_CTL_ADDR2) >> RTIT_CTL_ADDR2_OFFSET;
--	if ((value && (vmx->pt_desc.num_address_ranges < 3)) || (value > 2))
--		return 1;
--	value = (data & RTIT_CTL_ADDR3) >> RTIT_CTL_ADDR3_OFFSET;
--	if ((value && (vmx->pt_desc.num_address_ranges < 4)) || (value > 2))
--		return 1;
--
--	return 0;
--}
--
- int vmx_check_emulate_instruction(struct kvm_vcpu *vcpu, int emul_type,
- 				  void *insn, int insn_len)
- {
-@@ -2130,7 +2235,6 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	struct vmx_uret_msr *msr;
--	u32 index;
- 
- 	switch (msr_info->index) {
- #ifdef CONFIG_X86_64
-@@ -2216,6 +2320,7 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 							&msr_info->data);
- #endif
- 		break;
-+#ifdef CONFIG_KVM_INTEL_PT
- 	case MSR_IA32_RTIT_CTL:
- 		if (!vmx_pt_mode_is_host_guest())
- 			return 1;
-@@ -2251,8 +2356,9 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			return 1;
- 		msr_info->data = vmx->pt_desc.guest.output_mask;
- 		break;
--	case MSR_IA32_RTIT_ADDR0_A ... MSR_IA32_RTIT_ADDR3_B:
--		index = msr_info->index - MSR_IA32_RTIT_ADDR0_A;
-+	case MSR_IA32_RTIT_ADDR0_A ... MSR_IA32_RTIT_ADDR3_B: {
-+		u32 index = msr_info->index - MSR_IA32_RTIT_ADDR0_A;
-+
- 		if (!vmx_pt_mode_is_host_guest() ||
- 		    (index >= 2 * vmx->pt_desc.num_address_ranges))
- 			return 1;
-@@ -2261,6 +2367,8 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		else
- 			msr_info->data = vmx->pt_desc.guest.addr_a[index / 2];
- 		break;
-+	}
-+#endif
- 	case MSR_IA32_S_CET:
- 		msr_info->data = vmcs_readl(GUEST_S_CET);
- 		break;
-@@ -2339,7 +2447,6 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	int ret = 0;
- 	u32 msr_index = msr_info->index;
- 	u64 data = msr_info->data;
--	u32 index;
- 
- 	switch (msr_index) {
- 	case MSR_EFER:
-@@ -2529,6 +2636,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_VMX))
- 			return 1;
- 		return vmx_set_vmx_msr(vcpu, msr_index, data);
-+#ifdef CONFIG_KVM_INTEL_PT
- 	case MSR_IA32_RTIT_CTL:
- 		if (!vmx_pt_mode_is_host_guest() ||
- 			vmx_rtit_ctl_check(vcpu, data) ||
-@@ -2575,7 +2683,9 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			return 1;
- 		vmx->pt_desc.guest.output_mask = data;
- 		break;
--	case MSR_IA32_RTIT_ADDR0_A ... MSR_IA32_RTIT_ADDR3_B:
-+	case MSR_IA32_RTIT_ADDR0_A ... MSR_IA32_RTIT_ADDR3_B: {
-+		u32 index;
-+
- 		if (!pt_can_write_msr(vmx))
- 			return 1;
- 		index = msr_info->index - MSR_IA32_RTIT_ADDR0_A;
-@@ -2588,6 +2698,8 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		else
- 			vmx->pt_desc.guest.addr_a[index / 2] = data;
- 		break;
-+	}
-+#endif
- 	case MSR_IA32_S_CET:
- 		vmcs_writel(GUEST_S_CET, data);
- 		break;
-@@ -4222,22 +4334,6 @@ static void vmx_update_msr_bitmap_x2apic(struct kvm_vcpu *vcpu)
- 	}
- }
- 
--void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
--{
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	bool flag = !(vmx->pt_desc.guest.ctl & RTIT_CTL_TRACEEN);
--	u32 i;
--
--	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_STATUS, MSR_TYPE_RW, flag);
--	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_OUTPUT_BASE, MSR_TYPE_RW, flag);
--	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_OUTPUT_MASK, MSR_TYPE_RW, flag);
--	vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_CR3_MATCH, MSR_TYPE_RW, flag);
--	for (i = 0; i < vmx->pt_desc.num_address_ranges; i++) {
--		vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_ADDR0_A + i * 2, MSR_TYPE_RW, flag);
--		vmx_set_intercept_for_msr(vcpu, MSR_IA32_RTIT_ADDR0_B + i * 2, MSR_TYPE_RW, flag);
--	}
--}
--
- static void vmx_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
- {
- 	u64 vm_exit_controls_bits = VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
-@@ -4997,12 +5093,14 @@ static void init_vmcs(struct kvm_vcpu *vcpu)
- 
- 	vmx_write_encls_bitmap(vcpu, NULL);
- 
-+#ifdef CONFIG_KVM_INTEL_PT
- 	if (vmx_pt_mode_is_host_guest()) {
- 		memset(&vmx->pt_desc, 0, sizeof(vmx->pt_desc));
- 		/* Bit[6~0] are forced to 1, writes are ignored. */
- 		vmx->pt_desc.guest.output_mask = 0x7F;
- 		vmcs_write64(GUEST_IA32_RTIT_CTL, 0);
- 	}
-+#endif
- 
- 	vmcs_write32(GUEST_SYSENTER_CS, 0);
- 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
-@@ -7758,75 +7856,6 @@ static void nested_vmx_cr_fixed1_bits_update(struct kvm_vcpu *vcpu)
- #undef cr4_fixed1_update
- }
- 
--static void update_intel_pt_cfg(struct kvm_vcpu *vcpu)
--{
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	struct kvm_cpuid_entry2 *best = NULL;
--	int i;
--
--	for (i = 0; i < PT_CPUID_LEAVES; i++) {
--		best = kvm_find_cpuid_entry_index(vcpu, 0x14, i);
--		if (!best)
--			return;
--		vmx->pt_desc.caps[CPUID_EAX + i*PT_CPUID_REGS_NUM] = best->eax;
--		vmx->pt_desc.caps[CPUID_EBX + i*PT_CPUID_REGS_NUM] = best->ebx;
--		vmx->pt_desc.caps[CPUID_ECX + i*PT_CPUID_REGS_NUM] = best->ecx;
--		vmx->pt_desc.caps[CPUID_EDX + i*PT_CPUID_REGS_NUM] = best->edx;
--	}
--
--	/* Get the number of configurable Address Ranges for filtering */
--	vmx->pt_desc.num_address_ranges = intel_pt_validate_cap(vmx->pt_desc.caps,
--						PT_CAP_num_address_ranges);
--
--	/* Initialize and clear the no dependency bits */
--	vmx->pt_desc.ctl_bitmask = ~(RTIT_CTL_TRACEEN | RTIT_CTL_OS |
--			RTIT_CTL_USR | RTIT_CTL_TSC_EN | RTIT_CTL_DISRETC |
--			RTIT_CTL_BRANCH_EN);
--
--	/*
--	 * If CPUID.(EAX=14H,ECX=0):EBX[0]=1 CR3Filter can be set otherwise
--	 * will inject an #GP
--	 */
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_cr3_filtering))
--		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_CR3EN;
--
--	/*
--	 * If CPUID.(EAX=14H,ECX=0):EBX[1]=1 CYCEn, CycThresh and
--	 * PSBFreq can be set
--	 */
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_psb_cyc))
--		vmx->pt_desc.ctl_bitmask &= ~(RTIT_CTL_CYCLEACC |
--				RTIT_CTL_CYC_THRESH | RTIT_CTL_PSB_FREQ);
--
--	/*
--	 * If CPUID.(EAX=14H,ECX=0):EBX[3]=1 MTCEn and MTCFreq can be set
--	 */
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_mtc))
--		vmx->pt_desc.ctl_bitmask &= ~(RTIT_CTL_MTC_EN |
--					      RTIT_CTL_MTC_RANGE);
--
--	/* If CPUID.(EAX=14H,ECX=0):EBX[4]=1 FUPonPTW and PTWEn can be set */
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_ptwrite))
--		vmx->pt_desc.ctl_bitmask &= ~(RTIT_CTL_FUP_ON_PTW |
--							RTIT_CTL_PTW_EN);
--
--	/* If CPUID.(EAX=14H,ECX=0):EBX[5]=1 PwrEvEn can be set */
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_power_event_trace))
--		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_PWR_EVT_EN;
--
--	/* If CPUID.(EAX=14H,ECX=0):ECX[0]=1 ToPA can be set */
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_topa_output))
--		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_TOPA;
--
--	/* If CPUID.(EAX=14H,ECX=0):ECX[3]=1 FabricEn can be set */
--	if (intel_pt_validate_cap(vmx->pt_desc.caps, PT_CAP_output_subsys))
--		vmx->pt_desc.ctl_bitmask &= ~RTIT_CTL_FABRIC_EN;
--
--	/* unmask address range configure area */
--	for (i = 0; i < vmx->pt_desc.num_address_ranges; i++)
--		vmx->pt_desc.ctl_bitmask &= ~(0xfULL << (32 + i * 4));
--}
--
- void vmx_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -8471,20 +8500,6 @@ gva_t vmx_get_untagged_addr(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags
- 	return (sign_extend64(gva, lam_bit) & ~BIT_ULL(63)) | (gva & BIT_ULL(63));
- }
- 
--static unsigned int vmx_handle_intel_pt_intr(void)
--{
--	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
--
--	/* '0' on failure so that the !PT case can use a RET0 static call. */
--	if (!vcpu || !kvm_handling_nmi_from_guest(vcpu))
--		return 0;
--
--	kvm_make_request(KVM_REQ_PMI, vcpu);
--	__set_bit(MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT,
--		  (unsigned long *)&vcpu->arch.pmu.global_status);
--	return 1;
--}
--
- static __init void vmx_setup_user_return_msrs(void)
- {
- 
-@@ -8671,6 +8686,7 @@ __init int vmx_hardware_setup(void)
- 	kvm_caps.supported_mce_cap |= MCG_LMCE_P;
- 	kvm_caps.supported_mce_cap |= MCG_CMCI_P;
- 
-+#ifdef CONFIG_KVM_INTEL_PT
- 	if (pt_mode != PT_MODE_SYSTEM && pt_mode != PT_MODE_HOST_GUEST)
- 		return -EINVAL;
- 	if (!enable_ept || !enable_pmu || !cpu_has_vmx_intel_pt())
-@@ -8679,6 +8695,7 @@ __init int vmx_hardware_setup(void)
- 		vt_init_ops.handle_intel_pt_intr = vmx_handle_intel_pt_intr;
- 	else
- 		vt_init_ops.handle_intel_pt_intr = NULL;
-+#endif
- 
- 	setup_default_sgx_lepubkeyhash();
- 
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 6c9dd5b2365d..a449a36fcd1c 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -46,6 +46,7 @@ enum segment_cache_field {
- 	SEG_FIELD_NR = 4
- };
- 
-+#ifdef CONFIG_KVM_INTEL_PT
- #define RTIT_ADDR_RANGE		4
- 
- struct pt_ctx {
-@@ -65,6 +66,7 @@ struct pt_desc {
- 	struct pt_ctx host;
- 	struct pt_ctx guest;
- };
-+#endif
- 
- /*
-  * The nested_vmx structure is part of vcpu_vmx, and holds information we need
-@@ -280,7 +282,9 @@ struct vcpu_vmx {
- 	u64 msr_ia32_mcu_opt_ctrl;
- 	bool disable_fb_clear;
- 
-+#ifdef CONFIG_KVM_INTEL_PT
- 	struct pt_desc pt_desc;
-+#endif
- 	struct lbr_desc lbr_desc;
- 
- 	/* ve_info must be page aligned. */
+  	/*
+  	 * Invalidate the old slot if it's being deleted or moved.  This is
+  	 * done prior to actually deleting/moving the memslot to allow vCPUs to
+@@ -1950,22 +1968,22 @@ static int kvm_set_memslot(struct kvm *kvm,
+  	if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
+  		invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
+  		if (!invalid_slot) {
+-			mutex_unlock(&kvm->slots_arch_lock);
+-			return -ENOMEM;
++			r = -ENOMEM;
++			goto unlock_err;
+  		}
+  		kvm_invalidate_memslot(kvm, old, invalid_slot);
+  	}
+
+  	r = kvm_prepare_memory_region(kvm, old, new, change);
+  	if (r)
+-		goto err;
++		goto revert_slot;
+
+  	if (change == KVM_MR_CREATE && (new->flags & KVM_MEM_GUEST_MEMFD)) {
+  		r = kvm_gmem_commit_memory_region(kvm, new);
+  		if (r) {
+  			kvm_arch_free_memslot(kvm, new);
+  			kvm_destroy_dirty_bitmap(new);
+-			goto err;
++			goto unlock_err;
+  		}
+  	}
+
+@@ -2000,7 +2018,7 @@ static int kvm_set_memslot(struct kvm *kvm,
+
+  	return 0;
+
+-err:
++revert_slot:
+  	/*
+  	 * For DELETE/MOVE, revert the above INVALID change.  No modifications
+  	 * required since the original slot was preserved in the inactive slots.
+@@ -2009,9 +2027,10 @@ static int kvm_set_memslot(struct kvm *kvm,
+  	if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
+  		kvm_activate_memslot(kvm, invalid_slot, old);
+  		kfree(invalid_slot);
+-	} else {
+-		mutex_unlock(&kvm->slots_arch_lock);
++		return r;
+  	}
++unlock_err:
++	mutex_unlock(&kvm->slots_arch_lock);
+  	return r;
+  }
+
+-- 
+2.43.0
+
+
+
+
+
+
+
+> 
+> 
+> Cheers
+> Suzuki
+> 
+>>
+>> Suzuki
+>>
+>>
+>>
+>>>
+>>> Steve
+>>
+> 
 
