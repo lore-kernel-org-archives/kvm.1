@@ -1,59 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793986450;
-	b=L0+eiUPmMQuxzBcJ0n/QqmbgsRB/BOna3mlf6BE9kjTLhgxY2dZTku2ViVhmfjZVnxM3
-	 zwl5hCg1GsG9yY8IqcriUNJ/uNFdaeB5BeVaLBwkdIivunfE6eYgXa7OGlYnt9MQYqA1y
-	 np7sEu+zqpa12QdJkTT/uBEGl7QiVXab9wCD8b5L8DJjYTlBT2oHd0F2MeniznzA4GP0Z
-	 dDnplr/GOJFZfeLMmk0PJGtHMK9O18RTXbPkr5W2uS6nI7ZbzQTs/+PabNeAZjqi2huCT
-	 4d/OJkssAcUjxBnA2BX+REx1Uav0sqg2QZXkUJEOYiNPO/CpDR4JyO8AdJ5iIeLhAMQ==
+	t=1793987511;
+	b=Xj9wm7Bhl8gWlFvZnGd/wnyx7rxx69xsSsq20PrJpPF9VV0GaQnD2iUxx+dega+y3NQI
+	 NFwPBDQhYseOxLwCzKevz3Tbw2SOreoIRTktHNztEGoUin78pSqK/N/kyR7u8i2G+0zoK
+	 yJ2dc0yzpFX4pAG5W9iaZdUSOFOBlVjWGt7w62xVcJLf+JJsa6SVpM3NG48i8KzfrzBex
+	 5rmiD6O/+gn6h3aSlXm4Sj7ZeNwM+uj//E/Ho6mh2ujCVzk9df1dVEMMLqymy6gReadTc
+	 FaXRHI7+0fkG2HhMBWVYsR0yfZZmjpiJzEpO0Yw7Pzx1rpvY4LDFA44wN9hPIfSQp8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793986450;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=LBPKg21CwMGyB/4I0SCE/WrGQblxdUgIh/5dRLjT5K8=;
-	b=l7HSerEq6JmFdSrXR9gvel6jkhlSQEqW4+SvGUdvj5Q6c9Pq47C9ykB8X32k1xWSJUZi
-	 mVufZsRSu19ih8Zmnv/ESJpwubQXC7dd8tQzzW+Z0rvCCtWXSXTbNaYcAx93lWHgH5MzB
-	 5VHdsP9WvJzYvFB/IImOHLMpdO+o9Lz1ngYIEOOZmH+rcIs5BBTqzZO/lbUFlwfIKAfVO
-	 ie+hEfQlEwsw97h3uDNfp/6XrSoZejA5P+8afVrvKgqghJGJHtmRDowfoSsLN13sczjcP
-	 kvs2lk9BcMb2cRxtT8KOS00hbTWVmLnrtpVzgGZN9o/TqdBTYeaKukGaQxQw4ljB2bA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793987511;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=6WEB/QmqGNShWN2WfpdxFDs5dt086xZeyrUN/pg7o0I=;
+	b=zOA35MxvBEsE8rdVr3hqf9upS17NyizcT/njArR1XsdWuY5JaHWXdAYKgzXeKhOqvaZo
+	 kPu4H8LdVpOeX8qunsFqzTagC0OrjtVSYCnKLyLUDB8/MqMh+T61O31eF2CsX4m0xObDY
+	 H/0znc+AcFnz6O2YlewBEqDfT18DQh9igPD1nsAU4NGcrKIxoPR1D9BfwlYwN8BaE588f
+	 UkDjGARpjI3Ocs8lILLLFE9tLUjazFck0lnUJEFLSLDa1x96zyMclmqn0GWZIwfuUBBEg
+	 SttPqSl9sxM1ztDrgphKRzSZBEBs9XmNyjV9kn6KXIb7yRTKJsNqDRN6cPQybkZ/E3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Rh/NKZBO";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SfWnW+pY;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B901606A338;
-	Fri,  6 Nov 2026 17:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3393F606A32C
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 17:51:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3393F606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rh/NKZBO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5814A1F008A1;
-	Fri,  6 Nov 2026 17:34:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793986449;
-	bh=LBPKg21CwMGyB/4I0SCE/WrGQblxdUgIh/5dRLjT5K8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Rh/NKZBOnux0cWcjXKWAmL9W1mm/BKw8Kv60X0sGvdywIX7CON3sK4fzCpQwvFRR4
-	 frscFuvaU+r3ehnswVFvkTJiz8oF8k75yGrvHaIoNkS4DUaeaRA6MOr4qsNMGG/9w5
-	 aJrcG7l18fS8qBsyaPLG5YwCctHIzp1aR/3HhDqcGb8mcm6Ky0p7JV4jAPtAs+ia7J
-	 CMVUG7uKMLYd42IpE/EFQbcB7YYHPjMFsnV1QfjcsiZkg9q2bTgZqjd1TCAgUmbw1k
-	 Tf8bU72qoe1sg+OSiIEL/+fU2sE03CZ6QmyixAMJeK8huAhBg4dW+IkQJ0cOZmOblh
-	 CEt2FrGKwMNrw==
-Message-ID: <sashiko-outbox-201943@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [GIT PULL 1/6] KVM: s390: fix ESSA addressing exception
- injection in migration mode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
-Cc: KVM <kvm@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20261106164958.431978-2-borntraeger@linux.ibm.com>
-References: <20261106164958.431978-1-borntraeger@linux.ibm.com>
- <20261106164958.431978-2-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 17:34:09 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SfWnW+pY
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4b7252a32c8so8087455e9.0
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 09:51:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793987509; x=1794592309; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6WEB/QmqGNShWN2WfpdxFDs5dt086xZeyrUN/pg7o0I=;
+        b=SfWnW+pYyUwOMGSdBGHMoixeHCbffSAajOYltsvFXeb8G1aGGwNOsjpy/pzGGJH5co
+         F2k0Qp3wT79r1aCHEa8tnSJ9jfgUrxBq2e8qN/4yZep8COwwSF7U3p7/R563H+mBLl28
+         D0cldKz+2DVmlWdEqgteclR45OM0JP+weL/agwc3ez+2gMONtMFvdEtSEO7OI/6NX+HB
+         v+zEx2pxCv83ynG42gi9aOuRQ6SuHXQy6T1Wpg1QRmMbLy+1/YAJHEnByWy03Zgf5+66
+         /eqvLlDqpxDcqwycbg8lZPAZmZusX1LrD0zXCv5gOpm1U3vGcEuOBfZQAT3Wa8Ckf4Kd
+         xI4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793987509; x=1794592309;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6WEB/QmqGNShWN2WfpdxFDs5dt086xZeyrUN/pg7o0I=;
+        b=heoZacgVzLc0c/w9n5MF+NUB60M7USHVpV1yvntkouTJFEY0aNjHsdqAvSNTj4vL0S
+         Rso9GvMgSfQTjoQgwrdwsHHW7s5ZSkrmNdQGrPNawfYk5quJNlGPVa4/lx+1dLYOVA4T
+         I861eLi/5E66aFTIontlcq4aIi+9OlfbrI/Gon/cXwdDIztYcXD9zuVoXk8iiDicl43I
+         usvrBlHPj22wpAb/B2cGzi0wM9gWrIpRCtjcTGZHbxOthHp8D4dYEmhHhyI8PEFMNjha
+         NVuDDsx+D9BZdkwhQd0yBX4Qj2DYwIZ045hyAykKlgKyDaVetp5wRQ8linhG0ur0nvnR
+         I4qw==
+X-Forwarded-Encrypted: i=1; AKwUvByJnBw3nAEZqfqfspgpF+tp8JuO0zCtqRz01fdVSujuaLr0j0w8/ThEmYCNkghqOFaErgw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+aWaYH7gwSWGL+llj27WVxzPOKcWzw9CwdvmC5zun2dx7a9OUu
+	SklI3lhPXE22s13iBC3Svw5JOa5xKS7dVGArdlwKKJ3BGiReFj9rYFgFKbRiM8l6Qg==
+X-Gm-Gg: AYBFou2W16P6wRGWd2STKxrinApTx7hOc/TzjDnJluaZJT+qMeyGPirciP7/9TTcbNI
+	MdkkLZ8bXi+OlfjiAktAoKhrrG1MI0l01btc2vxFNlq/8gBe2kRW4fA/kcBQg3H1KDI4c5xKyiC
+	TYI/MO53lDfRZZo/1W0FBx2Feq3GQ2H+wUv2pIfmgDQ7LDwIRccBMi5sp9e0heq2AXdpqb5SPWO
+	PgHZBFqKda1o0ZLgJKHtyjM8jbPeDnXc4b09YucEkoW8Lq1jIA1MjZFjmLRa87uHRtkWiGhJCyD
+	mjiioLbR/oNNLx+8DGQVDS2XZ/Xh9cJWjOQileGBzqzbdJNrU6Kcka5+2hZC7CLACCd/NzbzmaU
+	zm9NZoBLNuCSK1j0H7F2vAfDjN+fiNjjpMBkrJ/QgNRbDpzWcat4MfzjnSsXo6nhaJzA+nWpySh
+	m1jwZqAldwzgQI4x19aGQz//v0SdAAPAjFBpztKGqkw3u8iDpGqSghj5w/wkp1FWF8GV18sKwMD
+	tx8LldM5ingtWpKgIw66mYbRyPOSDnshZhyFvtn5s/brbGwTR0mnmaM/NmpOn3gjQ+uO9MPH3bZ
+	OvVZsguNUVmVdPL7nifS1H4G9ThHB3wghfsVLjkaIyGCxbcq0y9WCtqFIbU8UfAdmIvWCJj0DnS
+	4c8cXREuIiQ==
+X-Received: by 2002:a05:600c:620c:b0:4a1:813f:2a60 with SMTP id 5b1f17b1804b1-4b6dea6881fmr58086205e9.11.1793987509034;
+        Fri, 06 Nov 2026 09:51:49 -0800 (PST)
+Received: from google.com (0.182.34.34.bc.googleusercontent.com. [34.34.182.0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b76cbd082dsm7811725e9.1.2026.11.06.09.51.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 09:51:48 -0800 (PST)
+Date: Fri, 6 Nov 2026 17:51:44 +0000
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] KVM: arm64: Allocate a protected vCPU's SVE state at
+ EL2
+Message-ID: <au4TsO50x7BcFYpi@google.com>
+References: <20261105130456.1617185-1-fuad.tabba@linux.dev>
+ <20261105130456.1617185-3-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,84 +106,52 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105130456.1617185-3-fuad.tabba@linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] KVM: s390: commit message states -PGM_ADDRESSING instead of
-  PGM_ADDRESSING
-It also noticed 1 related pre-existing issue this patch does not
-introduce:
-- [High] KVM: s390: missing CMMA init and page table allocation in
-  handle_essa() [1]
---
+> @@ -1243,6 +1253,9 @@ int pkvm_reset_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu)
+>  			    PSCI_0_2_AFFINITY_LEVEL_ON) != PSCI_0_2_AFFINITY_LEVEL_ON_PENDING)
+>  		return -ECANCELED;
+>  
+> +	if (vcpu_has_sve(&hyp_vcpu->vcpu))
+> +		memset(hyp_vcpu->vcpu.arch.sve_state, 0, vcpu_sve_state_size(&hyp_vcpu->vcpu));
+> +
 
-commit ee014980cbe371ebff00ee828f1f5961b34040ff
-Author: Gautam Gala <ggala@linux.ibm.com>
+Why wasn't this line around before?
 
-KVM: s390: fix ESSA addressing exception injection in migration mode
+>  	kvm_reset_vcpu_core(&hyp_vcpu->vcpu);
+>  	kvm_reset_pvm_sys_regs(&hyp_vcpu->vcpu);
+>  
+> diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+> index 32e82653ebf7e..06ea91415ad8b 100644
+> --- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+> +++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+> @@ -570,6 +570,7 @@ static const struct sys_reg_desc_reset pvm_sys_reg_reset_vals[] = {
+>  	RESET_UNKNOWN(MAIR_EL1),
+>  	RESET_ZERO(AMAIR_EL1),
+>  	RESET_ZERO(MDSCR_EL1),
+> +	RESET_ZERO(ZCR_EL1),
+>  	RESET_ZERO(CNTV_CTL_EL0),
+>  	RESET_UNKNOWN(TTBR0_EL1),
+>  	RESET_UNKNOWN(TTBR1_EL1),
+> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+> index 10eb7249aa9e8..aaaa1b8634ba4 100644
+> --- a/arch/arm64/kvm/reset.c
+> +++ b/arch/arm64/kvm/reset.c
+> @@ -52,6 +52,8 @@ int __init kvm_arm_init_sve(void)
+>  		if (WARN_ON(kvm_sve_max_vl > VL_ARCH_MAX))
+>  			kvm_sve_max_vl = VL_ARCH_MAX;
+>  
+> +		kvm_nvhe_sym(kvm_sve_max_vl) = kvm_sve_max_vl;
+> +
+>  		/*
+>  		 * Don't even try to make use of vector lengths that
+>  		 * aren't available on all CPUs, for now:
+> -- 
+> 2.47.3
+> 
 
-This commit updates dat_perform_essa() to pass DAT_WALK_ANY to
-dat_entry_walk() and return PGM_ADDRESSING on walk failure, so __do_essa()
-injects an addressing exception instead of silently dropping it.
-
->     Return -PGM_ADDRESSING on a walk failure and inject the program
->     interrupt in __do_essa() for the -PGM_ADDRESSING return value.
-
-[Severity: Low]
-This isn't a bug, but the commit message says -PGM_ADDRESSING whereas the
-code returns and checks positive PGM_ADDRESSING.
-
-> diff --git a/arch/s390/kvm/s390/priv.c b/arch/s390/kvm/s390/priv.c
-> index 856939acf012f..b252c812dcbe7 100644
-> --- a/arch/s390/kvm/s390/priv.c
-> +++ b/arch/s390/kvm/s390/priv.c
-> @@ -1169,6 +1169,8 @@ static inline int __do_essa(struct kvm_vcpu *vcpu, =
-const int orc)
->  	entries =3D (vcpu->arch.sie_block->cbrlo & ~PAGE_MASK) >> 3;
-> =20
->  	nappended =3D dat_perform_essa(vcpu->arch.gmap->asce, gfn, orc, &state,=
- &dirtied);
-> +	if (nappended =3D=3D PGM_ADDRESSING)
-> +		return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
->  	vcpu->run->s.regs.gprs[r1] =3D state.val;
->  	if (nappended < 0)
->  		return 0;
-
-[Severity: High]
-This problem wasn't introduced by this patch, but can an initial ESSA
-intercept arriving after migration has already started reach __do_essa()
-without GMAP_FLAG_USES_CMM set or guest page tables allocated [1]?
-
-In handle_essa(), setting GMAP_FLAG_USES_CMM and calling
-gmap_allocate_all_page_tables_best_effort() only happen in the
-!migration_mode branch:
-
-arch/s390/kvm/s390/priv.c:handle_essa() {
-	...
-	if (!READ_ONCE(vcpu->kvm->arch.migration_mode)) {
-		...
-		if (!uses_cmm(vcpu->arch.gmap)) {
-			set_bit(GMAP_FLAG_USES_CMM, &vcpu->arch.gmap->flags);
-			gmap_allocate_all_page_tables_best_effort(vcpu->arch.gmap);
-		}
-		...
-	} else {
-		scoped_guard(mutex, &vcpu->kvm->slots_arch_lock)
-			scoped_guard(read_lock, &vcpu->kvm->mmu_lock)
-				i =3D __do_essa(vcpu, orc);
-	...
-}
-
-If the guest executes its first ESSA instruction while migration_mode is
-already active, dat_perform_essa() walks the gmap without allocating missing
-page tables, returning an exception state and dropping the PGSTE update for
-any unallocated segment.  In addition, because GMAP_FLAG_USES_CMM remains
-unset on kvm->arch.gmap, kvm_s390_get_cmma_bits() sees
-!uses_cmm(kvm->arch.gmap) and returns zeroed data, losing dirtied guest CMMA
-attributes during live migration.
-
-[1] https://sashiko.dev/#/bug/linux-20a07467-1a8a-41bb-8117-0f046fed9112
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106164958.4319=
-78-2-borntraeger@linux.ibm.com?part=3D1
+-- 
+Vincent
