@@ -1,58 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.217
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793958277;
-	b=lnD0BT6z6bUz3L8J8FIk44JuuVj7bvqgt70wkO1IXmYK/oFLYvtlF4LpNyOIEgFqov1C
-	 ZKzq8s/virCDbo6Z+Q7O8K2khQ2UFDoSFGRV17+hcLGdCy81uGtF4/gDqh+IUjlaggzag
-	 9zFMyRHBLZPwZXNXTRNjvgOsI99guKYbaZPuPwM56CHDrvAE1MX102bh/j2R0CQ66LiEL
-	 ClmL+sSNrfWOT/ziQ9mlFJFfBns10hmLkfOG0vuXTbRRgFD5p+OEnNCTYh87t4UglHoPW
-	 RjsHIEGS6ifMStIp644E/I5PvJL1O/W42xNsTBu2cdEthf5Fs66/uuIiy8I/CoeMcow==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793958277;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=3x30TCVHI6HA+CeHvlHb/+H3RtIDMYmugjilEli4TFo=;
-	b=487SjTH4vEmBEg04iSULCqgy4n8OwgQsmLcRAsK2pLqvNiVyTgTNGG3Yjn4hDb2sb8K6
-	 bksW8a31qk/CiRn+YCQEnjLKIkBO+aF+ql7qCEc715Y3/DBC8DAGIKzTE3pXWQ+w/+t7X
-	 DcTbzjhZpx3EM3MzUols8t9j7zeb8TLqMpWMyl8/fIYCj/CnQdxt0sw05gTnEk/GnIVFb
-	 8ukFyVhqdWvVHtm2cZ3CXWpAu80ay9IBCFlTOBuj5j3JPtv8VdPp/RTAnb+MaUEq32P3r
-	 KSoVdsffIU9bWBNfcDAY6sKMbgerPd9Nq4l7oB6C0ZP1LceVtsoyqJUKNkl0qdif5Yw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=gAIJS6Ha;
-	arc=none smtp.remote-ip=113.46.200.217
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793958605;
+	b=1OVXTQSgZnGMqsLwUGfyUK2UuN5BXbBWoKzNlmpRienPCk9H9OOJde/KOtzAJ7Aqa4uV
+	 ujC2qwPdhW5oV+n5mMFlxDaAfU6bLlKGZe6v5PLlVuOMYCg+bcSIk+ReXtvTqC/rXdsUv
+	 Av4GckJRT8cobMgX0mXsfb9+vDnnwTk4vdt7IJeKYu++UcGTss8OrthJERuIQWZ+lVHRh
+	 gKb0K0hLMhnSJfBEHjBH7h/AKEQ78e33MCQj369fE5Lo1LJ2CEucuzBtsnIi40iy9d21E
+	 hWWlfe4OL6NOZ08om4jwonjFpjSM6fYH49+SbANJPRw85O7GUwfjvaz1yEMgA0iluZg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793958605;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=i0RXhXRHqPQplgUbaoUrvnlIZ5UbVQs/4MlB5+exT+o=;
+	b=Pioy9C+tWB5dQUTVWeOjWa9RRvgXK/PVbto9OQLgDwh059FXBIPm5y7eu8twyW7Ht6aX
+	 SzrOH4M8nfNX6dF7UjeNledt76FokjJOlflqoYnSfObpmXuXmQ4UuPqAZ9b7VmieNCSNM
+	 Cse1aZ/rB3NmR1Tf5BfVnxDHvKyAaKxZ+HALue/YhxcyuVyrrnpORjzysHbJXAMu8J6+K
+	 VMztD9FkDASZrKXKAVDefD6W10l4nvWHn5d35l7jSiCmk+1gqW/ZrrblPe6jNEB6ui7nd
+	 OEe+3JhC3e3ZhPT7fE5MBsjrbIQ51yvmOVEYh45QtfNfWezt1stkOlvgN7vf0ljTLWg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rzqR38H4;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.49
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7719C606A906;
-	Fri,  6 Nov 2026 09:44:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7719C606A906
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90474606A328
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 09:50:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90474606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=gAIJS6Ha
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3x30TCVHI6HA+CeHvlHb/+H3RtIDMYmugjilEli4TFo=;
-	b=gAIJS6HaMixK13xBJxngCizzqXaVwAQAylIRB1e8UBqkX8JYSzj7oCVsGuI+kD0FtyWqrZCeO
-	SRzsBCWQ6s7XTmyTWAmwPM+7+5Py8e2Lb/uMdsEta20vaiUGFwE64ocIONy5XOZzbTgI29bU1q2
-	5fnLV0zl5K5XePyypLSDHUI=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jLZ4w0RgBzcb0q;
-	Fri,  6 Nov 2026 17:44:00 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 76A0540577;
-	Fri,  6 Nov 2026 17:44:30 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 6 Nov 2026 17:44:29 +0800
-Message-ID: <3bc53520-0d1c-4fdf-88f3-d88295aa8a75@huawei.com>
-Date: Fri, 6 Nov 2026 17:44:28 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rzqR38H4
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5be4c78e8caso361218e87.1
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 01:50:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793958603; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZsCvVP/cFzd3+NsMStLxnrAfq34/X2SPPreveumGWvYrzF8RBRjj4+SW/MfNFHpFjJ
+         iP9bYblzBHk9HHF//3QM++bL9vcj5DD1CG9jsHKeeLY6UdIWn5kmoPVmvJ/rytFbEzah
+         bzCtTFvKPlIJNnosw6y2qp7avylBntGkZBsOe+GBqyCO9b0BOIdJBbYcwPrxdntGtskF
+         bqOB/B8LizSYaF2oJ/uooFTrLm0oge7wCLg9tPqqy+JMBVJ6bztuNRMtaiEsbiAfhhBf
+         N73/6GvE21xinPwWSjqxeMZDgjnOx+g+4rB+4aL6REpKCfXmKNEVCPwLQ9AFZyJ1eYn1
+         Tt4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i0RXhXRHqPQplgUbaoUrvnlIZ5UbVQs/4MlB5+exT+o=;
+        fh=/K9HN8O53Lzop3XtEFhuOUCVG2hu0wPSWjneb9TafQc=;
+        b=Ibh/TDcO9cR5GF3Za3IO9ax5FaKQk+UDs6zVZv3et58fCuvmgTBsyxYWqQLJMJsehl
+         fUWo+Yxyq7UWWo5/1yElqguB0AAM/XKRjRurFevWkUQb7LyAYBsfmF2Vf3T/7DQ1yojk
+         0HV6f4qENoHb7MhfIfuxKteWwW+KY0gDkVBHVJ7DCFHq8tTI6SGKVGH7XFzHcZ4lKvMo
+         BxRU487/4GcReR49FeoKuVCYcKdu/5Gi3qPIydJYKqGJ3fXxeY5grY0wX4+TIUljI3zB
+         Swg4X4uzIMFhf3fNcH0AX3qRsxuqxHXzUGGVjQ610cR3QE97isWdMEl/w8k+8QkeQGNZ
+         CVIA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793958603; x=1794563403; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i0RXhXRHqPQplgUbaoUrvnlIZ5UbVQs/4MlB5+exT+o=;
+        b=rzqR38H4iEVTKI+W8IRWYFkzq+tJB5Y7OYE9A4p0tEOBaQNsBTdTA7sSi1pfsAY1gG
+         7QzqTwgXkb2GChWskkYKohzYaCfimpwZohcZRYXI5LPZIdrMA6g7TisHn8U7fkyUXuc5
+         U/YenI1adZs2ilmqX4Pgvr7Bs7vHRHF7PiYReq1EXz8HxxEqDio8FhdexnCgFeiO/w1f
+         +H6PTu+wk31z+u3rJvDtXUeF9MmDkKwKJ6ZJI2154C/4yzyF+U2IHBRZUqC1zOB1LJmZ
+         /fFUHYTr0qn1emJpZ+d/AlxRHbtK7oDQUTIL8ATlZnPPGHw5I8zXcqoTmn9j5pcnh6in
+         fpLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793958603; x=1794563403;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i0RXhXRHqPQplgUbaoUrvnlIZ5UbVQs/4MlB5+exT+o=;
+        b=zsEWoM2pDQoscPw9+SK8NsT/fC8WTsxhMhqQaCDAqkdqjmW94YoI1J8kmjJySt1yuR
+         pdX1yFoc7jJRolJpVvXjhgGddYZEekeZ7DhMd6pgxScWDiOXuefDsEX3FUeG0KCT/jGa
+         BP+/ebqRZJ2dqggMPj6tALr/p7md6AgDiie727hjntpxbteaFc4f07N5aJTdJxRaG+in
+         mVepD9lsRIMkekWgYejx0EtLpjEMteZSCpLegHgbxQ+i+iX8o+6CjmzWqq8MVf+D4n4U
+         6O7nnNCiExJlLt4ll9D02uCT8NCj07c4IQopMlfjFqFsYRlB9jjgRNOhdERR9erSjRMk
+         ZHqA==
+X-Forwarded-Encrypted: i=1; AKwUvBwBa7kWq8Efxo2aHPktKqW6M3SBU6nR24DY8ajJCkBVf9a/FCE6HKpnvyU0PNfoINTz1dc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9T/LBwbtDFebNL0yiWKqCADdQTTydeg0blFtH70o3KWey8wolT
+	bifQxhxJfo2FXMEtMNx67dXFYDQcdRDnApC/61x/JuldgwDMHOlwrvjcc80UqwCOxe+l1YBT7hn
+	E8Gvtx+yZEzkBw7tEowqZLiwgn+5RdNE=
+X-Gm-Gg: AYBFou1MeJANp7+rARbxI++BFu22wTLMZyVODgwOitjRiurSHbffytjzCycZd2OqTyI
+	KL+998scNAwLpo+3lVc2DdIQ09+GHKMeO1k/2BjeGpA8pTJMM/kBA5X6SwagfZILa2s8OldsRi2
+	J6YOaG9zDqQn0OIjQNA8wqv4C2wOX5WI0hIypyDt3DyYFs6m88WY8LnooHwPIlLCngnEh94QhVB
+	l2wu0IC5pegFqPkOYevmkHpDIbgMqMnQBE5FENpx0FNO7Ag8KL3o34n4EL8pauELSBKZs0x6I+d
+	ky9o6sd5gfLUdQonuloGglSs7OFN+Xv3yxhmjmi1p9H/qjgEFJigZjp5mLyajiYtES5K/C3v9QP
+	Mm1HInGSVhXxEh2UVdVNoqfKvti/PI/EYjTD25sM6kImMcQiNSgyoEP4Wx1+C63hbZVeM
+X-Received: by 2002:a05:6512:3d93:b0:5be:3d95:3c7e with SMTP id
+ 2adb3069b0e04-5c003c084f6mr599060e87.65.1793958602580; Fri, 06 Nov 2026
+ 01:50:02 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,162 +104,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/15] KVM: arm64: Handle HDBSS faults
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
-	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
-	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
-	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-10-zhengtian10@huawei.com> <auifWrY1u72afXfJ@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <auifWrY1u72afXfJ@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+References: <20261017030927.345454-1-suunj1331@gmail.com> <au01Qocxd1gsXs42@inochi.infowork>
+In-Reply-To: <au01Qocxd1gsXs42@inochi.infowork>
+From: SeungJu Cheon <suunj1331@gmail.com>
+Date: Fri, 6 Nov 2026 18:49:51 +0900
+X-Gm-Features: AclHuK_aMmYFw0Il5my2_hqoI2l0YbFq5ppI5iN9PgB32Mkgeg9mxiSxKYMIzIU
+Message-ID: <CAGwK=3q7MuQQxMZSS=c=UxXX08xgwPqs7kpsPy1EiXgbZbknCQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: riscv: Only fast-path dirty-log write faults on
+ host-writable leaves
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: anup@brainfault.org, atish.patra@linux.dev, tjytimi@163.com, 
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	andrew.jones@linux.dev, pbonzini@redhat.com, seanjc@google.com, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Nov 6, 2026 at 11:03=E2=80=AFAM Inochi Amaoto <inochiama@gmail.com>=
+ wrote:
+> I guess this fix miss a part:
+>
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 53bb25a5a60b..1b35ab980a10 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -761,7 +761,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
+vm_memory_slot *memslot,
+>
+>  out_unlock:
+>         kvm_release_faultin_page(kvm, page,
+> -                                unused || (ret && ret !=3D -EEXIST), wri=
+table);
+> +                                unused || (ret && ret !=3D -EEXIST), hos=
+t_writable);
+>         write_unlock(&kvm->mmu_lock);
+>         return ret;
+>  }
+>
+> Regards,
+> Inochi
 
+Thanks for the review.
 
-On 11/2/2026 10:34 PM, Leonardo Bras wrote:
-> On Tue, Sep 29, 2026 at 06:36:49PM +0800, Tian Zheng wrote:
->> From: Eillon <yezhenyu2@huawei.com>
->>
->> Once the buffer is full, hardware stops promoting writable-clean
->> descriptors and raises a stage-2 Permission fault with
->> ESR_EL2.ISS2.HDBSSF instead. Failed HDBSS accesses, such as external
->> aborts and granule protection faults, are reported the same way.
->>
->> Dispatch from kvm_handle_guest_abort() via the new esr_iss2_is_hdbssf()
->> helper. FSC == OK means the exit path already flushed, so resume the
->> guest; any other FSC is an error - clear it and report -EFAULT.
->>
->> Signed-off-by: Eillon <yezhenyu2@huawei.com>
->> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
->> ---
->>   arch/arm64/include/asm/esr.h           |  5 +++++
->>   arch/arm64/include/asm/kvm_dirty_bit.h |  1 +
->>   arch/arm64/kvm/dirty_bit.c             | 29 ++++++++++++++++++++++++++
->>   arch/arm64/kvm/mmu.c                   |  4 ++++
->>   4 files changed, 39 insertions(+)
->>
->> diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
->> index f816f5d77f1a..4b3ccd407faa 100644
->> --- a/arch/arm64/include/asm/esr.h
->> +++ b/arch/arm64/include/asm/esr.h
->> @@ -437,6 +437,11 @@
->>   #ifndef __ASSEMBLER__
->>   #include <asm/types.h>
->>
->> +static inline bool esr_iss2_is_hdbssf(unsigned long esr)
->> +{
->> +	return !!(ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF);
->> +}
->> +
->>   static inline unsigned long esr_brk_comment(unsigned long esr)
->>   {
->>   	return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;
->> diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
->> index d828e6b43fe9..eb2039820777 100644
->> --- a/arch/arm64/include/asm/kvm_dirty_bit.h
->> +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
->> @@ -39,5 +39,6 @@ static inline bool vcpu_hdbss_enabled(struct kvm_vcpu *vcpu)
->>   int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu);
->>   void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
->>   void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu);
->> +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu);
->>
->>   #endif /* __ARM64_KVM_DIRTY_BIT_H__ */
->> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
->> index be0d12555c84..893a8c4248bc 100644
->> --- a/arch/arm64/kvm/dirty_bit.c
->> +++ b/arch/arm64/kvm/dirty_bit.c
->> @@ -98,3 +98,32 @@ void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu)
->>   	vcpu->arch.hdbss.hdbssprod_el2 = prod;
->>   	isb();
->>   }
->> +
->> +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu)
->> +{
->> +	u64 prod;
->> +	u64 fsc;
->> +
->> +	if (WARN_ON_ONCE(!system_supports_hdbss()))
->> +		return -EFAULT;
->> +
->> +	if (WARN_ON_ONCE(!vcpu_hdbss_enabled(vcpu)))
->> +		return -EFAULT;
->> +
->> +	prod = read_sysreg_s(SYS_HDBSSPROD_EL2);
->> +	fsc = FIELD_GET(HDBSSPROD_EL2_FSC_MASK, prod);
->> +
->> +	if (fsc == HDBSSPROD_EL2_FSC_OK)
->> +		/* Buffer full: the exit path drained it before handle_exit. */
->> +		return 1;
->> +
->> +	if (fsc != HDBSSPROD_EL2_FSC_ExternalAbort &&
->> +	    fsc != HDBSSPROD_EL2_FSC_GPF)
->> +		WARN_ONCE(1,
->> +			  "Unexpected HDBSS fault type, FSC: 0x%llx (prod=0x%llx, vcpu=%d)\n",
->> +			  fsc, prod, vcpu->vcpu_id);
-> 
-> Any reason for using if() before warn_once, given the first parameter is a
-> condition? I mean, why not use, instead:
-> 
-> +	WARN_ONCE(fsc != HDBSSPROD_EL2_FSC_ExternalAbort &&
-> +		  fsc != HDBSSPROD_EL2_FSC_GPF,
-> +		  "Unexpected HDBSS fault type, FSC: 0x%llx (prod=0x%llx, vcpu=%d)\n",
-> +		  fsc, prod, vcpu->vcpu_id);
-> 
+Sashiko also caught this shortly after v1 was posted. I'll include the
+fix in v2 and send it shortly.
 
-Right, this is a syntax style closer to the Linux kernel. I will modify
-it.
-
->> +
->> +	/* Clear FSC so hardware dirty state updates can resume. */
->> +	write_sysreg_s(prod & ~HDBSSPROD_EL2_FSC_MASK, SYS_HDBSSPROD_EL2);
->> +	return -EFAULT;
->> +}
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index 85a98d2c23a9..7bf82d65041c 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -15,6 +15,7 @@
->>   #include <asm/pgalloc.h>
->>   #include <asm/cacheflush.h>
->>   #include <asm/kvm_arm.h>
->> +#include <asm/kvm_dirty_bit.h>
->>   #include <asm/kvm_mmu.h>
->>   #include <asm/kvm_pgtable.h>
->>   #include <asm/kvm_pkvm.h>
->> @@ -2315,6 +2316,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>
->>   	is_iabt = kvm_vcpu_trap_is_iabt(vcpu);
->>
->> +	if (esr_iss2_is_hdbssf(esr))
->> +		return kvm_handle_hdbss_fault(vcpu);
->> +
->>   	if (esr_fsc_is_translation_fault(esr)) {
->>   		/* Beyond sanitised PARange (which is the IPA limit) */
->>   		if (fault_ipa >= BIT_ULL(get_kvm_ipa_limit())) {
-> 
-> I did not get the criteria used to positioning it here:
-> Why placed before is_abt, if not using the result before returning?
-> What is the rationale to putting it here?
-> 
-> Thanks!
-> Leo
-
-Ah, I'm sorry, there's no particular reason. I'll move it so it's placed
-before is_abt.
-
-Thanks!
-Tian
+Thanks,
+SeungJu
