@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793979445;
-	b=KNLXSwTLFOz+Gu6UbuH/sTRTCtckuzGt2GGuXi81xSnEFvtV9g9naKz0cfXisEHQ3HCE
-	 cM+AQakJr6u1gbM122UaW3gFz7EqyA9h3ZfEpovhK2E+6Nz79B3/l0IL47HDSX1kuuVzi
-	 B57Dxp4z/QmpiqlobPK1X0ZK8Vk4z4AkQ1G5DiR+vZ8y1FP3uzDU4btP/UJ3RLabqYlDm
-	 Kh1BzKsRCrLG8VSov5EKYfT9pmYVHqcKOUBTdJ3zJi6Rr3wE9+SSioo6Bixvm7HjaikNo
-	 zPt4MgSkHtz6SCuqHmPyZWZ5OZ88jLdUJVOjen3odCFvOC401iEJuLX4unFo1wiUmKw==
+	t=1793979463;
+	b=x2EGO3a4A/xHDV3ZPbAbFgavoPfho+972gShPSbufcNQCE93HAPxFEgs4YOmMuyZelo8
+	 m5fvtJWvTLzOjRQL8C2HK21VY3Fs1ChP4XyUfcSs8G9EiGvMBxxJIwe/s1oe/o6xCLWG2
+	 QcuwUkDCVJsUgEQ0vWFbc8BQ0gsW/DqnFUY+aNVz012F+B6z1lBEwhtZTZW8WQmeveoKI
+	 v+K/460Su1zm/rTCpfsgxGRJZ7s4WNdZ+jFfk3leiek40Y+Omz5nfdD6qczsi721qIuas
+	 SBIN7S8N48IenogWKWc0j6ImrG6GUwbJ101V5BVxrLVI4J/YlpZDiDGApo4C79q/9Vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793979445;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793979463;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=WbInPTtgeVQVaR+YtMP5Ieeyl2biDusMLIdL8tIaNf8=;
-	b=QTss/y1JyTyFYqMJlY3efmZgHnbLtAWI6kLs6ljiBVnHS8PortY/50umqgrroHUQfvPM
-	 bGfgXCpq7t8qp4LpckDY4sTiB4rW3SnNnfr0k4SN3tBEk1NEjwqcV56buId+uK+Czevwx
-	 1gU93YL/U35LtOWnh/k767+BpYloALnktbKRHKHM5NX+QeEybUe/4xiA05HfjWvNMKfUS
-	 7e9R7yjS1uCwBbdB1sYD+BuzerQ85wjB3pvAE7VGE4q7xdVelElmb92PcOcblCbYvZKKA
-	 D+kuIvOrvtigmdlrsV9Ict8Hh9vWtOFv3uAfJECWZ2hkDpjGAcL2ZEh/+Obq3gOGVnw==
+	bh=HuObySZLDxE9+LLAkaqrBSP5vceAa33bCHj1KNG2i7A=;
+	b=bnHs3fIbeVGM1huReEHqivqiK8myZP4PHaowxF9m94F2PFWqiubYPumD6KKdN8HbHZcQ
+	 3cD0dj42gMCa5H7h9lcbXgXub64QZJ/H90YKSTBBjLpEM0sw8108e/7ijbwOXzI5WZEWU
+	 Keveo+FxMISrOp+Hai5Ruse73rMkzkKYzxO3lGfW4AUdYlZa98hGOzabFsLIDAf6BiiP1
+	 w288wo9gJsQ1m3lLwRTkjRtCd4zT8jj2/xDRcBU7JKtX1kQ39uQAiJPNingx7J2vv80HI
+	 liFUTVA2G1/JGJqQYI94eerFBTQ9X8ee9AARhoVSZuEZGJtmR8tC2cKkFBAMCeF7tEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WX68Z5yL;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=llAlWz7x;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024D3606A336;
-	Fri,  6 Nov 2026 15:37:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 024D3606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0958A606D827;
+	Fri,  6 Nov 2026 15:37:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0958A606D827
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WX68Z5yL
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=llAlWz7x
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEC4F1650;
-	Fri,  6 Nov 2026 07:37:19 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 475C81650;
+	Fri,  6 Nov 2026 07:37:38 -0800 (PST)
 Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8047E3F632;
-	Fri,  6 Nov 2026 07:37:17 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 113BC3F632;
+	Fri,  6 Nov 2026 07:37:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793979442; bh=7EK+OV8cc6RynWDVsBo3aQX5rI+zXYDSLKEL403LmQM=;
+	t=1793979461; bh=qXWXkuBVBxZ9xT4eUDdfxaF2UuiBGoMjIIlVYYrkttg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WX68Z5yL6OyzNuu6ZywpIXZrFSwK9X2UJrdZ6ELbVJWB/Rx0VdMU5Rbmy0NZFI+PD
-	 m1eJazJZTMQLnD3Wv7gPUGVEW1c51bZ3fbQ9BWbBFFx622ozPIILzlDy0QQ8ZDBTKa
-	 ZKgMtPWWAQZ7ODXi1Gn2Q1+KL1k+y4WW/FQyfpNw=
+	b=llAlWz7xlnBHxmmVTz87IEUBT+U3kyH9YObDETp6fosKhKB5oJhxN2dhuPXDLEEsX
+	 DVL7yW5Oevy7iKyPxCGohG1kCXByNMZVwjct//ZIvQOmSyP2HF+mq413aZkhu0GgXL
+	 wbI2QCexMI+/E09pwLD219X0IgawLZpU1REqS810=
 From: Leonardo Bras <leo.bras@arm.com>
 To: Tian Zheng <zhengtian10@huawei.com>
 Cc: Leonardo Bras <leo.bras@arm.com>,
@@ -74,12 +74,12 @@ Cc: Leonardo Bras <leo.bras@arm.com>,
 	linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	skhan@linuxfoundation.org
-Subject: Re: [PATCH v5 12/15] KVM: arm64: Derive the VM hardware dirty mode from dirty logging
-Date: Fri,  6 Nov 2026 15:37:14 +0000
-Message-ID: <au30Kg7zCnTjoD0u@LeoBrasDK>
+Subject: Re: [PATCH v5 13/15] KVM: arm64: Add HDBSS buffer size ioctl for dirty-bitmap mode
+Date: Fri,  6 Nov 2026 15:37:33 +0000
+Message-ID: <au30PSHX_UBIIx_Y@LeoBrasDK>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <191ab0e3-9913-4927-9f84-c861c8f3bcd5@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-13-zhengtian10@huawei.com> <auimPtktqZ1cwk3-@LeoBrasDK> <191ab0e3-9913-4927-9f84-c861c8f3bcd5@huawei.com>
+In-Reply-To: <5a096cca-713a-4449-83dc-c763dc06c085@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-14-zhengtian10@huawei.com> <auioRICO9Frhk-zT@LeoBrasDK> <5a096cca-713a-4449-83dc-c763dc06c085@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,32 +93,102 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 06, 2026 at 06:46:46PM +0800, Tian Zheng wrote:
+On Fri, Nov 06, 2026 at 06:27:27PM +0800, Tian Zheng wrote:
 > 
 > 
-> On 11/2/2026 11:03 PM, Leonardo Bras wrote:
-> > On Tue, Sep 29, 2026 at 06:36:52PM +0800, Tian Zheng wrote:
-> > > Both HAFDBS and HDBSS flip VTCR_EL2.HD at memslot-update time. Two
-> > > independent toggles allow an intermediate HDBSS-set/HD-clear state,
-> > > an illegal combination, and need locking against concurrent updates.
+> On 11/2/2026 11:12 PM, Leonardo Bras wrote:
+> > On Tue, Sep 29, 2026 at 06:36:53PM +0800, Tian Zheng wrote:
+> > > In dirty-bitmap mode, a larger HDBSS buffer lets the guest dirty more
+> > > pages between VM exits, at the cost of memory. The default of one page
+> > > per vCPU is a reasonable starting point, so allow userspace to opt
+> > > into a larger buffer via KVM_CAP_ARM_HDBSS_BUFFER_SIZE.
 > > > 
-> > > Replace both with kvm_arch_update_hw_dirty_mode(), a pure function
-> > > of the static capabilities and the number of logging memslots:
+> > > The size is specified in bytes through KVM_ENABLE_CAP and must be a
+> > > power of two in [PAGE_SIZE, SZ_2M]: the upper bound is the largest
+> > > HDBSSBR_EL2.SZ encoding, and the power-of-two requirement matches the
+> > > buddy allocator. It must be set before any vCPU is created: -EINVAL
+> > > after vCPUs exist, -EBUSY if already set.
 > > > 
-> > >    - logging && HDBSS-capable  -> HD|HA|HDBSS
-> > >    - logging, no HDBSS         -> off
-> > >    - !logging && HAFDBS-cap.   -> HD|HA
+> > > The capability is rejected in dirty-ring mode, where the size is
+> > > pinned by kvm_arch_dirty_ring_size_updated().
+> > > 
+> > > KVM_CHECK_EXTENSION returns the configured size for a VM, or SZ_2M
+> > > when queried globally with a NULL kvm.
+> > > 
+> > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > > ---
+> > >   arch/arm64/kvm/arm.c     | 34 ++++++++++++++++++++++++++++++++++
+> > >   include/uapi/linux/kvm.h |  1 +
+> > >   2 files changed, 35 insertions(+)
+> > > 
+> > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > > index 5a7046acb62e..eadbf3a88d31 100644
+> > > --- a/arch/arm64/kvm/arm.c
+> > > +++ b/arch/arm64/kvm/arm.c
+> > > @@ -19,6 +19,7 @@
+> > >   #include <linux/kvm.h>
+> > >   #include <linux/kvm_irqfd.h>
+> > >   #include <linux/irqbypass.h>
+> > > +#include <linux/log2.h>
+> > >   #include <linux/sched/stat.h>
+> > >   #include <linux/psci.h>
+> > >   #include <trace/events/kvm.h>
+> > > @@ -203,6 +204,31 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+> > >   		r = 0;
+> > >   		set_bit(KVM_ARCH_FLAG_EXIT_SEA, &kvm->arch.flags);
+> > >   		break;
+> > > +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE: {
+> > > +		u64 size = cap->args[0];
+> > > +
+> > > +		if (!system_supports_hdbss())
+> > > +			break;
+> > > +		if (kvm->dirty_ring_size)
+> > > +			break;
+> > > +		if (size < KVM_ARM_HDBSS_DEFAULT_SIZE ||
+> > > +		    size > KVM_ARM_HDBSS_MAX_SIZE)
+> > > +			break;
+> > > +		if (!is_power_of_2(size))
+> > > +			break;
+> > > +
+> > > +		mutex_lock(&kvm->lock);
+> > > +		if (kvm->created_vcpus) {
+> > > +			r = -EINVAL;
+> > > +		} else if (kvm->arch.hdbss_buffer_size) {
+> > > +			r = -EBUSY;
+> > > +		} else {
+> > > +			kvm->arch.hdbss_buffer_size = size;
+> > > +			r = 0;
+> > > +		}
+> > > +		mutex_unlock(&kvm->lock);
+> > > +		break;
+> > > +	}
+> > >   	default:
+> > >   		break;
+> > >   	}
+> > > @@ -500,6 +526,14 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> > >   		else
+> > >   			r = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> > >   		break;
+> > > +	case KVM_CAP_ARM_HDBSS_BUFFER_SIZE:
+> > > +		if (!system_supports_hdbss())
+> > > +			r = 0;
+> > > +		else if (kvm)
+> > > +			r = kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
 > > 
-> > This last one is gone now, so I guess most of this patch has to be
-> > reworked, right?
+> > This whole thing of allowing hdbss_buf_size to be set only once makes
+> > everything more complex. Why do we have this limitation again?
+> > 
+> > I mean, if we want to restrict size changes after the first hdbss buffer
+> > gets allocated, it makes sense, other than that, I would like to understand
+> > the reason for that.
 > > 
 > > Thanks!
 > > Leo
 > 
 > Hi Leo,
 > 
-> Yes, the last one is no longer needed as we discussed earlier in [1], so
-> I'll rework this patch.
+> You're right, I re-examined the whole flow and the "set once"
+> restriction isn't actually needed. I'll remove it.
 > 
 
 Awesome, thanks!
