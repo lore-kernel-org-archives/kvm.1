@@ -1,101 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793941944;
-	b=aWmGL1uRO9GDZjc2xTjexZkGTHGSMZsm7wuwK2ZrjqpswtYBuMOTMHmJUUImqRV7bEv5
-	 y3Sd3Bq8DWtvmTPWacHm3e/dqsyfGb6pNDrU02jL1i4IWAePcfuIXrp60hP1hg9fsIhm9
-	 iGyELdi7xmaYr7U7rCxr1KClcCapvVnLcrPW73gDJQ3DUr42fzrJKxyBa7cEn3wcIMEUl
-	 oFGOtmR/rFjljDcoMXlaRzzeWgnZb6eEc8668dwEFfJTTLW7rBSwlI0o/E4VMHErqPNgK
-	 F8yrqWNTbjeKxFWvb10ilSDAZLYKnq1sp21P0XNPMuSQJx9osSppSZ36K3v05JefGYQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793941944;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793942250;
+	b=jlT8FhlFW4rbRqiYK2aSUnX9KFbwpbsmizClvOR+hCr1uuGkZQhOMdW0ayiShjI8I2Wk
+	 fHDc2UYrVdYISy6XZqmqs0CZ+BbISzd2cM4sFRlQgRU6XU2rXi66xjNWv4p3K1cBunkBx
+	 SrBP1LkzrLt1jN8LN+PU3jCMvNdIuVXGa8mE3q1kk1/0UXtU4h0AMikR9WtjeLVbpFwwn
+	 6SGb/gdbVFj+SjQK2QH5IYTAs0VZ5QL6uySaKMft3lO6VZ1m+eHxStSjBqTTrL4OVGviW
+	 Xyb28aVfUwOUtNuMk6elpIs3PBs4CJb5LeeIM7+1m4tXM9GSaI31271egqiM9CGjXBA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793942250;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
-	b=kFx4rd9Kz1M5iMW4tHYnG0k8c3q2/xXwhZaVUu2SRRcArDmbWs0rS4xxVL0iGl2+qUhR
-	 sg6XtzWPGEixtqFfPJqrHVm2XcySMqfK5dUJ8habqTTKl/8jbiVB1CphTY3rpef01Feph
-	 A1gYceCAVNm4QuUFVWFc7IE+VOBDPu8I4FcH59NqfYwv9aKyq3WucPGSCn53SzFwt3BAH
-	 0qtvdS/diQMBTMz3ldoftXJ2dXuMSsOkbGLeyeGVqxpOeETOWcM1iT9jEmzR+za4JwlsJ
-	 rPrOUgeeb7r2JwZcIh2mqO9Bcmcdhk5Cz6lr4wZ9mc86j0onFjlWIKj3Cn+8RIY8tKA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=wKPkQFzoUgmDW5ajGq1k5LXk3Iw2pT7nfh9L7siN7ds=;
+	b=b4cmFdhAVjYa5NveyxiDW3wAVv5LVsf/PuRIv7AY7ZECERTlWA+x4o+O5zN/hkX9oW0s
+	 GZBK/P5WJBdA89e4qDdjdKDP77MF0RcCXamfuK6ah+mUOSmn5xjC81pSHctBxrtK7zdQy
+	 4cA6wIu6E6AmLx14CdK6NYpaR4HPTjVKD/h7hXj3yNdEZs5fWIMd+LIXy2DALC2mNGWtz
+	 Wrhd4P+iFBzsW06NxXvKmfUJXCYPzO4KwgzolXF5vqP9yzvx/p2FsN/Lc/hxioN719CSr
+	 sEq1+IG0W/8PVF+8YUTyslLJHq4gZ7alSOIkWDbmfain2eQXwsI/8dsRxa99m5iDBow==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="oIgbNl1/";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="EJjG5l/Y";
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45737606A31B
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 05:12:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45737606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A27606A31B
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 05:17:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3A27606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oIgbNl1/
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso1995a12.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 21:12:24 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793941943; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VoTTfixmVF/s34VJo8a/1jpuq/a4CK3xsCpkBHIlcBzD5iQ3OSPq5FXKOjxTtAeYj0
-         tkllw+UAZVw+/ezfRg+rUuz9ElKauDA3r+ZTdzfz1IwdxCSJj/ViUCxyRaqbN4PMsdVO
-         hz3SnkSkgSpVyCERQfQz3U+65gkH38yAaw28l4yWijYKMddOIqfRyx3tQFfon8fMez9h
-         OzThAkzwDvaHS0wO+QqfAZbAOTnl+b3/qSXpy6sA3/jJrwlThczWSx7LAh3U8ZrtwjB6
-         ZCldOGpowy+V4rM+CwiiFV9zGPclGvKrbhqyO5o1/Xm0/DjwAWh7my2bOOGDdxpsu7Hs
-         tofw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
-        fh=/Ur0soFXrcUNuU5Sn+FxemRodCD7o2RvPzsuQf71HNU=;
-        b=CW3/OQHTsRyBsosU1uLhLrGMLAwHCZPaFno7fni9oa/BMmgnegg75xNhnIIM7uZrTl
-         PAIsL29P0rOvkOIqS5YOV3ItNMKbkQMkq8wCUPvQiK/nu0lF84GJWx263Q8OL0gbsCmy
-         pmScs9rfjXoZp6uqpJmxTuE/0OhOwrBjXSWtVHyYBUVTc44Fvrz6xDZD1KlecQk0tTjk
-         m5xLLZLAKxlVDWgy795e19PBlZIIbO6gB9JI2AV0nsHbGAL6HiZeBNPD9e0hKfeZiqip
-         yX+AaFIj0Ox0CZ2z0CTcoRKxrRMP4n+Z73B5reoNGRDc+dzi1cOASC/+eK8M3xmlLe35
-         fiqA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EJjG5l/Y
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ed077a15c3so3207695ad.0
+        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 21:17:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793941943; x=1794546743; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
-        b=oIgbNl1/Q1nF4uodqrrjdCYfUb+UfcL4xxtLPNA/QST1KgVM8d9k+ZQWlvtNsgiGcD
-         mjSqmz+ZcRAw3AKIzEV7nsH2RWtjPZgIDZpNg9mS3nYY6DBl35BskHf1uQB3eHKa2TiJ
-         BKlOPlnVR+zUtmb9TWYIH8TF9XVpybVlbBGKaNc+CqpLXzJ4rsFrBxGS2bdQyP85eMbZ
-         hgWr64cSaTp0mvmhRgfs6bY6DGadAHVvXCLSX7IVS9MeUnuX6DffvGWCejVIIR2ydVEh
-         Z2/Zb5mTiAgXhzMeVb+99ygt3Pe/usTn9WTti6wQQo6+ej+VCyUgzXXkSGXGoRxQfXCB
-         qe5A==
+        d=google.com; s=20260707; t=1793942249; x=1794547049; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wKPkQFzoUgmDW5ajGq1k5LXk3Iw2pT7nfh9L7siN7ds=;
+        b=EJjG5l/YfLtWUmA8DfgNfzXbhO8URPuzeP06Zexc83aNADxVbMgDeeRO9oJxh/QmYC
+         le28ekS7579AEnhwpNury6CVcfFIdRaeA90LCloOKQmNxYpI6NtsuBUoXH1oXb9eQKBP
+         O/niIwfx8zKUOOq5JYEAgzr2MIPh/SlD+XpapXcTVq6jDrQTErmqNy5PgJAVqgnx53uc
+         IKTHoiv07axZqAxtQeyJ3zK9d3QhIdgulXPTJxNftdpvXXpzkgINpS6TDwa8urAqcPZx
+         JYVO8Nqiah++Q+hxlCwr+Zd7fyzUYhAWNMVtDKfpJRsv5Wj4yZUag8ywh9ehO8IF0QJp
+         WWsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793941943; x=1794546743;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793942249; x=1794547049;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=L0E8qwKq9tI0TeHTVwDsi/hq8uyC0B0sTmXnOqBK0ms=;
-        b=bIYS4LO3zd0nptnCQapDI7ffzHfb4vT7lhMPl2itJjnslCS9qq6RQ0eVol9bMizZwo
-         QcJ4YHnRG4nph+KaNUd2Fa4nuiMSx3IzBBHNOlggLSAQjlWyofPOCmziYEg8wEFJf01X
-         7LQIA/6SNxwPsGwtfXh7s7J545T/ZBa2vc6rPmPtHq0nO1JuR5K+anj8K1xigJhOgPA+
-         qZS8j5ZaMPfWIaPwSdQKd3uPwP9xBa6urstVE0jxl4wY6gKeJvUuB2Oy0NxMaOfZ9CUd
-         Tpl56BnPNDUnjiFzxy0Xc+p5k3cj/yiFeZrkKySFBSTv0LKYloktAbfQX6xZjm8BHWWR
-         kjrQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx6QKh0br/JHy9b8B5JON+4lFCFLRg/mSWHmcQTjWNGigv/W5l9btXTBf5F1Ncd2psxKUs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z947p5h90dZ8Jr8jJbIcf8pZosk7cWRUrGL9u/lrEL8pyuLMHdG
-	ggMN/5Plitow6KAIX1sZbTu9WjY8I90rgQEd/Yb8tGhFnSlENx1H23zluX8Syix3/ENrQRpirFO
-	YhOLS9RYPiNNb3P76K8DM6t5VOm0NNwVSD3WfOfxRDyBmzRAGS4QI8rfVCsA=
-X-Gm-Gg: AYBFou32t3acNWnQCu4++J9CX5YkTMPGc4iX0qD1JIWN8WvLEUwEYfvJG7n0+UJkR9T
-	rN8xUlSlw32ZLbej/ZBjCcbcu84EoaGzLcrUsf75WES4H4giIL5H6AtmphozUvHfMsqdtuiQ6hi
-	xqVQZ4at6X2W8yOiA1LxnFyZT2sUE7woZ0Djt2tg7SUGyji3b6dgeL6QGeAQ3tnN6bTs3MPb5L5
-	YrcXTDGW2eFYmoIUHs8MRg8jeCwd+L383dW6GnbhO+oth5gEJC8GSyg9MPuGrJuc6HQWEmM9l9e
-	O1JLCW1kISWrFZAaeLOA/FvDPRg9B6iedIDYynPCRb1m7stLLIFRjYmTM4/3kK4PqBYj7ge6u7Q
-	HIvpx48idpz0/aLZxeqouGaU99wax88fA38OAouaWcUHAdEHtavZFoNgwVi17bRlrawXptrr/cG
-	Mhiruw6JReW+Y3yJoEUHKFTGSJ
-X-Received: by 2002:aa7:c2d5:0:b0:6b4:9221:8932 with SMTP id
- 4fb4d7f45d1cf-6b6e7867b67mr4141a12.10.1793941942269; Thu, 05 Nov 2026
- 21:12:22 -0800 (PST)
+        bh=wKPkQFzoUgmDW5ajGq1k5LXk3Iw2pT7nfh9L7siN7ds=;
+        b=os7az1voQrKbnfMV6oGzuqVZZ0yubGYniChUCN3TBAc7eZmXGvu59zdhWJ7xNf0/7F
+         doZ7RliCCXpuzrOba0cKPvarirKpbHsOGnnI8Jcv02PBls6IJFuUDQjaC9I4N4hZMTlI
+         hbysOGWOGEKrurhr+XDmRWaafto2JrsqXmrr7jHLWyLHvkQ+AgSO/QKPn2Qv3X6u4wll
+         ITrNTGahnwfieSnyAIF4Ph1ZaCjqzGneiYjrT8qiPwEcDL21mxUPhBMOWFt57a9AJw2y
+         0dnB0w03dhAz7myd/6RXA9hmvh0Jrc17w2gs/GgtMvga04ZN5Ryv790aP1FulCEe/jpC
+         wCzg==
+X-Forwarded-Encrypted: i=1; AL+hErHS/vnyNs6TmUEh00sx9WjooEA3YmR0xXUcmLiXfnb3wHSZuqrLTjXmxmOLUac/cSkr+Z4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9FTjvpnL/Xvv6cT6aALWwd1RlsPLE2af12t40MeJL3ytkDd2lR
+	38jG3NwKPPWqMQ/kr1DxR8dT5zwoDwL9M3qk1/n9SOUs/yc5sBekkCCKBrf4y5pryHiHboKyc3L
+	BsqfwffEQ
+X-Received: from pjuz17.prod.google.com ([2002:a17:90a:d791:b0:3b0:a489:6e84])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e185:b0:3ac:80dc:f40a
+ with SMTP id 98e67ed59e1d1-3b0db6c99bamr1392450a91.16.1793942249005; Thu, 05
+ Nov 2026 21:17:29 -0800 (PST)
+Date: Fri,  6 Nov 2026 05:17:26 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,66 +75,249 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
- <20260930210750.1487547-19-chang.seok.bae@intel.com> <20260930214337.90CD51F0089A@smtp.kernel.org>
- <2b4779f4-c3d9-4b58-bc97-f31dba58fc7f@intel.com>
-In-Reply-To: <2b4779f4-c3d9-4b58-bc97-f31dba58fc7f@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 5 Nov 2026 21:12:09 -0800
-X-Gm-Features: AclHuK_opVd9yhWh8shRW90UNd702LBlE68EsvOSF_68yFBs47J1mEWVZ_Maozw
-Message-ID: <CALMp9eRJVdROXGE55qa3VGZBxaMPLoyMhZTwpkHPjA0nu9Xnvw@mail.gmail.com>
-Subject: Re: [PATCH v8 18/20] KVM: x86: Expose APX sub-features to userspace
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
+Message-ID: <20261106051726.3964374-1-jrhilke@google.com>
+Subject: [PATCH v7] vfio: selftests: Find devices that have VFIO selftest drivers
+From: Josh Hilke <jrhilke@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: David Matlack <dmatlack@google.com>, Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 1, 2026 at 1:35=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.c=
-om> wrote:
->
-> On 9/30/2026 2:43 PM, sashiko-bot@kernel.org wrote:
-> >
-> >> @@ -1733,7 +1737,8 @@ static inline int __do_cpuid_func(struct kvm_cpu=
-id_array *array, u32 function)
-> >>      }
-> >>      /* APX sub-features */
-> >>      case 0x29:
-> >> -            entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =
-=3D 0;
-> >> +            if (!kvm_cpu_cap_has(X86_FEATURE_APX))
-> >> +                    entry->eax =3D entry->ebx =3D entry->ecx =3D entr=
-y->edx =3D 0;
-> >>              break;
-> >
-> > [Severity: Medium]
-> > Does this code leak unfiltered host CPUID capabilities for leaf 0x29 to=
- the
-> > guest?
-> >
-> > If the host supports X86_FEATURE_APX, KVM fails to apply
-> > cpuid_entry_override(entry, CPUID_29_0_EBX) or explicitly clear the
-> > unvirtualized registers (eax, ecx, edx) for leaf 0x29 in __do_cpuid_fun=
-c().
-> >
-> > This could bypass the capability mask initialized in
-> > kvm_initialize_cpu_caps(), violating the KVM invariant that new
-> > guest-visible features must default off and be explicitly enumerated.
-> > This might break capability negotiation and live migration between host=
-s
-> > with varying hardware support.
-> >
->
-> Leaf 0x29 currently defines only one sub-feature bit, which comes when
-> APXF presents. Additional filtering may be necessary when more feature
-> bits are introduced and then filtering becomes more necessary in
-> practice.
+Add a new script, list_supported_devices.sh, which prints out the
+segment:bus:device.function (SBDF) numbers and names of devices on a
+machine that have a VFIO selftest driver. This makes it easier to
+determine if the system is capable of running VFIO selftests.
 
-Sashiko is right. The whole point of masking CPUID leaves in KVM *now* is
-so that an older kernel running on future hardware does not blindly
-advertise new sub-leaves or new APX sub-features in EAX/EBX/ECX/EDX that
-KVM does not yet know how to virtualize. Adding the filtering only after
-future hardware defines more bits is too late for legacy kernels.
+Some of these devices are on the vfio-pci denylist, so vfio-pci refuses
+to bind them unless vfio_pci.disable_denylist=Y. The script marks such
+devices as DENYLISTED and prints how to enable them, so the user is not
+left wondering why the selftests cannot use a "supported" device.
 
-Why did you define CPUID_29_0_EBX and initialize it in
-kvm_initialize_cpu_caps() if you didn't intend to use it?
+Includes a -q (quiet) argument which prints just the SBDFs of devices
+that vfio-pci can bind, so that the output can be passed directly to
+tools/testing/selftests/vfio/scripts/setup.sh. Does not print the SBDF
+of a device on the denylist.
+
+Examples on a host with eight Intel DSA devices:
+
+$ cat /sys/module/vfio_pci/parameters/disable_denylist
+N
+
+$ ./list_supported_devices.sh
+0000:6a:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+0000:6f:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+...
+vfio-pci does not bind DENYLISTED devices while
+vfio_pci.disable_denylist=N. To use them, reload vfio-pci:
+  modprobe -r vfio-pci
+  modprobe vfio-pci disable_denylist=1
+If vfio-pci is built into the kernel, boot with
+vfio_pci.disable_denylist=1 instead.
+
+With vfio_pci.disable_denylist=Y, the script lists the same devices with
+"(DENYLISTED, but vfio_pci.disable_denylist=Y)", prints no hint, and
+includes them in the -q output:
+
+$ ./list_supported_devices.sh -q
+0000:6a:01.0
+0000:6f:01.0
+...
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+Changelog
+
+v6 -> v7
+- Mark devices on the vfio-pci denylist as DENYLISTED, and say when
+  vfio_pci.disable_denylist=Y allows them (Sean)
+- Print how to enable denylisted devices when the denylist is on (Sean)
+- Leave out denylisted devices from the -q output when the denylist is
+  on, so the -q output only has devices that setup.sh can bind (Sean)
+- Add the igb and mlx5 devices. Leave out nv_falcon, because its probe
+  matches on a BAR0 register (PMC_BOOT_0), not on a PCI ID, so the script
+  cannot tell if a given NVIDIA GPU will work
+- The mlx5 IDs and names are copied from mlx5st_probe(). They are not
+  tested on hardware
+- Print a message on stderr when no device is found
+- Read device IDs from sysfs instead of lspci, so the script no longer
+  needs pciutils
+
+v6: https://lore.kernel.org/kvm/20260602222941.3133236-1-jrhilke@google.com/
+v5: https://lore.kernel.org/kvm/20260602185615.3025904-1-jrhilke@google.com/
+
+ tools/testing/selftests/vfio/Makefile         |   1 +
+ .../vfio/scripts/list_supported_devices.sh    | 146 ++++++++++++++++++
+ 2 files changed, 147 insertions(+)
+ create mode 100755 tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index 2c32c48db509..160aa989828f 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -16,6 +16,7 @@ TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
+ 
+ TEST_FILES += scripts/cleanup.sh
+ TEST_FILES += scripts/lib.sh
++TEST_FILES += scripts/list_supported_devices.sh
+ TEST_FILES += scripts/run.sh
+ TEST_FILES += scripts/setup.sh
+ 
+diff --git a/tools/testing/selftests/vfio/scripts/list_supported_devices.sh b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+new file mode 100755
+index 000000000000..d1fad82f704a
+--- /dev/null
++++ b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+@@ -0,0 +1,146 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++# Devices that have a driver in selftests/vfio/lib/drivers.
++readonly DEVICES=(
++	"8086:0b25,Intel DSA SPR"
++	"8086:11fb,Intel DSA GNR-D"
++	"8086:1212,Intel DSA DMR"
++	"8086:2021,Intel IOAT SKX"
++	"8086:10c9,Intel 82576 Gigabit Ethernet Controller"
++	"15b3:1011,Mellanox Connect-IB"
++	"15b3:1012,Mellanox Connect-IB VF"
++	"15b3:1013,Mellanox ConnectX-4"
++	"15b3:1014,Mellanox ConnectX-4 VF"
++	"15b3:1015,Mellanox ConnectX-4LX"
++	"15b3:1016,Mellanox ConnectX-4LX VF"
++	"15b3:1017,Mellanox ConnectX-5"
++	"15b3:1018,Mellanox ConnectX-5 VF"
++	"15b3:1019,Mellanox ConnectX-5 Ex"
++	"15b3:101a,Mellanox ConnectX-5 Ex VF"
++	"15b3:101b,Mellanox ConnectX-6"
++	"15b3:101c,Mellanox ConnectX-6 VF"
++	"15b3:101d,Mellanox ConnectX-6 Dx"
++	"15b3:101e,Mellanox ConnectX-6 Dx VF"
++	"15b3:101f,Mellanox ConnectX-6 LX"
++	"15b3:1021,Mellanox ConnectX-7"
++	"15b3:1023,Mellanox ConnectX-8"
++	"15b3:1025,Mellanox ConnectX-9"
++	"15b3:1027,Mellanox ConnectX-10"
++	"15b3:2101,Mellanox ConnectX-10 NVLink-C2C"
++	"15b3:a2d2,Mellanox BlueField integrated ConnectX-5"
++	"15b3:a2d3,Mellanox BlueField integrated ConnectX-5 VF"
++	"15b3:a2d6,Mellanox BlueField-2 integrated ConnectX-6 Dx"
++	"15b3:a2dc,Mellanox BlueField-3 integrated ConnectX-7"
++	"15b3:a2df,Mellanox BlueField-4 integrated ConnectX-8"
++)
++
++# Devices in DEVICES that are also on the vfio-pci denylist. The denylist is
++# in vfio_pci_dev_in_denylist() in drivers/vfio/pci/vfio_pci.c.
++readonly DENYLIST=(
++	"8086:0b25"
++)
++
++readonly DISABLE_DENYLIST=/sys/module/vfio_pci/parameters/disable_denylist
++
++function denylisted() {
++	local id
++
++	for id in "${DENYLIST[@]}"; do
++		[ "${id}" = "${1}" ] && return 0
++	done
++
++	return 1
++}
++
++function denylist_enforced() {
++	local value
++
++	read -r value 2>/dev/null < ${DISABLE_DENYLIST}
++	[ "${value}" != "Y" ]
++}
++
++function is_blocked() {
++	denylisted ${1} && denylist_enforced
++}
++
++function device_name() {
++	local entry
++
++	for entry in "${DEVICES[@]}"; do
++		if [ "${entry%%,*}" = "${1}" ]; then
++			echo "${entry#*,}"
++			return 0
++		fi
++	done
++
++	return 1
++}
++
++function denylist_note() {
++	if ! denylisted ${1}; then
++		return
++	elif denylist_enforced; then
++		echo " (DENYLISTED)"
++	else
++		echo " (DENYLISTED, but vfio_pci.disable_denylist=Y)"
++	fi
++}
++
++function print_denylist_hint() {
++	echo "vfio-pci does not bind DENYLISTED devices while"
++	echo "vfio_pci.disable_denylist=N. To use them, reload vfio-pci:"
++	echo "  modprobe -r vfio-pci"
++	echo "  modprobe vfio-pci disable_denylist=1"
++	echo "If vfio-pci is built into the kernel, boot with"
++	echo "vfio_pci.disable_denylist=1 instead."
++}
++
++# Print the segment:bus:device.function numbers of PCI devices that can be used
++# to run VFIO selftests.
++function main() {
++	local blocked=""
++	local quiet=""
++	local found=""
++	local vendor
++	local device
++	local name
++	local bdf
++	local opt
++	local id
++
++	while getopts "q" opt; do
++		case $opt in
++			q) quiet="true" ;;
++			\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
++		esac
++	done
++
++	for bdf in $(ls /sys/bus/pci/devices); do
++		read -r vendor < /sys/bus/pci/devices/${bdf}/vendor
++		read -r device < /sys/bus/pci/devices/${bdf}/device
++		printf -v id "%04x:%04x" ${vendor} ${device}
++
++		name=$(device_name ${id}) || continue
++		found="true"
++		if is_blocked ${id}; then
++			blocked="true"
++		fi
++
++		if [ -z "${quiet}" ]; then
++			echo "${bdf} - ${name} [${id}]$(denylist_note ${id})"
++		elif ! is_blocked ${id}; then
++			echo "${bdf}"
++		fi
++	done
++
++	if [ "${quiet}" ]; then
++		return 0
++	elif [ -z "${found}" ]; then
++		echo "No devices with a VFIO selftest driver found." >&2
++	elif [ "${blocked}" ]; then
++		print_denylist_hint >&2
++	fi
++}
++
++main "$@"
+-- 
+2.56.0.455.g6c5a503b38-goog
+
