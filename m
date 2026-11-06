@@ -1,55 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793938214;
-	b=LIHfz/tPWXiKYEL+3JdsShAbY1WZ2mtp3Env48nD8VEWO5hU4/h7fguaJYkYWCmhAEjw
-	 AZuMFFxe6aWx6kQVvHlv4bejnx8475uw5vYSD+PLQ0I7MsKA8GszyocLr/Q23sor/JKD+
-	 cTMmSX2pw4SJRFCBdTaw8wJ4a7ZMyAFM6q1TCevBFwcsJoeHwYiikfb7ekZ4Iom+xDzWm
-	 JQ4fv9DuvszDsJbcXDE2m/u8W+ffhV56uKIatxQBb48GYnuu6RZCUQ5dxCDJuxVZv1STE
-	 mrzGNKujUJQJEeyJKcF1MXG1OljIwxITGGiOEXiaXHvGDD6g2v37GtwrJdAA6coHXcw==
+	t=1793939395;
+	b=tJZSES1y+NmTcz+QbZBC7sUnn4L+Ny3LJi4VtTQhwjUypVC6WAyF9kCN577TbgSzgC5A
+	 8G7OZ6sIFRvt+Z/vRY9TwyeMLHYBDgrWuI6CjOUDVfM2bjK2uhmLSzazj/rYuqDVsximx
+	 DoOCzUDkEHMWT5jF4Kmvbj0j9izD5uf8OL98ERVNUvAEleN5ihmfGFIjpcgkNyKBkwNhq
+	 +zGfAPQtoWVKwfKzqqzq+FlJ8j03Uv5HLzT2nvXvXeGLt0VeJ3vhr2Si0vVXUoSc5qRS2
+	 dAoXZlFFEKDCwjW19KUwe8N/eX2RWALwZKDU6HtFjgvxPQVEv4m1SqDI1f6+JVvCkew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793938214;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=bpOrsKv6qGnA9uW832gOGeZZa5N6TFONX1C9LOr1sUo=;
-	b=m+V78Or21TKZvkHZNIHbbyEnz3H42QaB+sHY2hFYlt6WZpLJohcIQ9ufvP1aYRGYAh49
-	 JfX7FlndCxZtJR/I9wjbckmyCZ4YDb6za+qGV7Uiz9bduAkIz5NsGVS/QKLWbhVBbBD8J
-	 qsHdz/s73Qj1zvqmLW6S6Kql7beS4E2WTsLhxfXDuIw2fIqpeSxZadfsWt44+A2+2YDb1
-	 YSCI7TpWy/YVSWYbodpR8dK0Mv2jvtFuFiS+BJSm/ZvQCiPsQYrCjrFMP8GRtzPtLVz5v
-	 BwchReEbmG96J2w9vcnQOdwYWRYyeqiOpdn0u8FWS6AmcoqxygYj9rUdWs7vzw8Ittw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793939395;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=QGCPiCqkjBkaHcHiJL1zla81wyPx1mdvA2MzlmPUBlg=;
+	b=M/paUSGP0QO0Ag+Zvg6bsJ0H9jO3KKif/aGpKwoChSFc/3NbZMjHQ4mRlIkN7kRDu7kM
+	 70TXqlVG0OKGSmGXQ5Rdcq/MNbcf/Rl3NcND8Jzu0ED5SOZyo58p2Rgd6OKkPe8jXhA3L
+	 waZk8L5fl0g3Fq2v3YyuSxsNrt6u3Eh2QJiBacKCuXRwzAU48D5v0K/dOW8FKq8iMJWbu
+	 2vAFR586haSeVpBx77b2w0WI1jDmzKeacX2au5z9gSmUN/gBpKxA4vcH62zljEnR7JwdK
+	 +TCQlsr0xcYcUrgusCYA45vxH6lSFMyOJAK2Jaf8qEg9q3hCl8/6wndNxpdg/LmRLrw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M4g7meN9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042B5606A32F
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 04:10:14 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sjSFEuOq;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FED7606A326
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 04:29:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FED7606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M4g7meN9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A952A1F008A2
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 04:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793938213;
-	bh=bpOrsKv6qGnA9uW832gOGeZZa5N6TFONX1C9LOr1sUo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=M4g7meN9L4jcufSegpXXlWaGlXSAiSHsKt/N0gqp+weN1qe6aJeULVDkyojAgWtGd
-	 gPzkuMhS3VJVvD2iSMsunZRORx5vJwxaWTAQVgFcpLq14jjWIAD7Nw2dIR1i7/2Hzk
-	 /O5QenXf94M6jdl7yxnrnrLBTyfQ+VOsC+G1To0qVtvIPWpP8LkN4Fxrkoshn5Eodv
-	 iI2U+VQDFU28zucCyh62Ju3w7+sSJBZjMtmNRYMl89xvA9b06kdZffirB4Mo5dQJxN
-	 lfwJBW8CcnqbWHB2+bVzFKHN9Grs/TML+8Rs5t7LhzX+R2+u3PZkzW2XpkS0NsohGE
-	 EFmyKRadV+PGA==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93f1cf92c9eso22831685a.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 20:10:13 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvByncIXKs1BdR/ZCtx6Q9IFO1UU9zY8Kg76OWUFDEM/1YJYtRUU6h+SabO19rVgg6cMTmko=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8XGeVNorq2OhBO/xS1gLR2yqTNv+OQsARaT4JoNNKteIeICSug
-	AeFUVTPoxwQQiQwmKKwLyOr3aXhGl5rW27wNBWa1+ws3c1J655jGb/Aj/uJiZIgct9KBbqrBkx4
-	NN9pewhqplHVkVl4gKOd1+6DOSr6zzYU=
-X-Received: by 2002:a05:620a:1b86:b0:93e:c12c:f134 with SMTP id
- af79cd13be357-945f364d640mr184996685a.79.1793938212273; Thu, 05 Nov 2026
- 20:10:12 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sjSFEuOq
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C81F1684;
+	Thu,  5 Nov 2026 20:29:48 -0800 (PST)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 408D33F673;
+	Thu,  5 Nov 2026 20:29:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793939391; bh=Hh3IBRBXYWZYcWrW4B7lncFfAlY/7ljbqAzgjoX9vzU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sjSFEuOqVikrkZpdmRfo8CPj65lCDGOY2G7296cdtoPWQVgMrDIJZJPWeN6jA6amn
+	 nYVsgP0x15rSmDS+9CXSFfE0+KkVcPCfwvuVvQ9OG3bJgtkN+SmqgZWYs9QT720/XI
+	 3puSkJKyLM2rRNeNlpxf5btqf0JxNdC5s7As8kZM=
+Date: Fri, 6 Nov 2026 04:29:26 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Sascha Bischoff <sascha.bischoff@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, 
+	lpieralisi@kernel.org, timothy.hayes@arm.com, fuad.tabba@linux.dev
+Subject: Re: [PATCH v2 10/16] KVM: arm64: gic-v5: Add ITS userspace register
+ access
+Message-ID: <aft27lm35sx4lywm57yfsy6pgsjrfoviiwi6xlkmhzq3v5jnwb@37vchfucxhdc>
+References: <20261102194454.4086911-1-sascha.bischoff@arm.com>
+ <20261102194454.4086911-11-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,73 +63,123 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-4-0d3cd15ab75f@kernel.org>
-In-Reply-To: <20261105-late-2026-vma-flags-v1-4-0d3cd15ab75f@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 6 Nov 2026 12:10:01 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zfovh2t9zNeo2D6+TqPbKeEeoFniTyE6DQT8w8stXNhw@mail.gmail.com>
-X-Gm-Features: AclHuK-3k2KPmLqEqbOgFVFtxh57Y4Ge5X7nQzdyUQMEUj3H7k7EkhGovaoUjnE
-Message-ID: <CAGsJ_4zfovh2t9zNeo2D6+TqPbKeEeoFniTyE6DQT8w8stXNhw@mail.gmail.com>
-Subject: Re: [PATCH 04/13] mm/migrate: convert VMA flag tests to use vma_flags_t
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
-	SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, John Johansen <john.johansen@canonical.com>, 
-	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, damon@lists.linux.dev, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102194454.4086911-11-sascha.bischoff@arm.com>
 
-On Fri, Nov 6, 2026 at 5:32=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->
-> Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
-> migration logic.
->
-> We retain the READ_ONCE() of vma->vm_flags in remove_migration_pte(), as
-> there is no vma_flags_t equivalent, and arch_make_huge_pte() continues to
-> take legacy flags for the time being.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Mon, Nov 02, 2026 at 07:44:48PM +0000, Sascha Bischoff wrote:
+> Userspace needs access to the emulated GICv5 ITS MMIO state in order
+> to inspect and restore the device state around VM reset and migration.
+> Expose the GICv5 ITS register frame through KVM_DEV_ARM_VGIC_GRP_ITS_REGS.
+> 
+> Reuse the same MMIO register descriptors used by the guest-facing
+> IODEV, but apply the usual userspace access constraints: the ITS base
+> address must have been configured, the register offset must map to an
+> emulated ITS register, and userspace accesses must use the natural
+> 32-bit or 64-bit register alignment.
+> 
+> Add control handling for KVM_DEV_ARM_ITS_CTRL_RESET. The reset is
+> performed while all vCPUs are stopped and while holding the ITS lock,
+> so it cannot race with guest MMIO updates or translation lookups. The
+> reset clears guest-programmed state and cached translations while
+> preserving the advertised ITS capability defaults.
+> 
+> Do not expose GICv5 ITS SAVE_TABLES or RESTORE_TABLES controls. For
+> GICv5, the guest-owned DT and ITTs are the authoritative translation
+> state, and the KVM translation cache is disposable state that can be
+> rebuilt from guest memory.
+> 
+> Restore guest read-only IDR0-IDR2 through dedicated userspace writes,
+> validating the advertised capabilities before changing them. Also
+> allow userspace to restore READ_EVENT_DATAR while keeping guest writes
+> to that result register ignored.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 > ---
+>  arch/arm64/kvm/vgic/vgic-its-v5.c | 371 ++++++++++++++++++++++++++----
+>  1 file changed, 322 insertions(+), 49 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> index b69a1d107c0ae..638ee47f6e27d 100644
+> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
+> @@ -688,6 +688,70 @@ static void vgic_v5_mmio_write_its_misc(struct kvm *kvm, void *dev, gpa_t addr,
+>  	}
+>  }
+>  
+> +static int vgic_v5_uaccess_write_its_idr(struct kvm *kvm, void *dev,
+> +					gpa_t addr, unsigned int len,
+> +					unsigned long val)
+> +{
+> +	struct vgic_v5_its *its = dev;
+> +	size_t offset = addr & (SZ_64K - 1);
+> +	u64 mmfr0;
+> +
+> +	guard(mutex)(&its->its_lock);
+> +
+> +	switch (offset) {
+> +	case GICV5_ITS_IDR0:
+> +		if (FIELD_GET(GICV5_ITS_IDR0_DOM, val) !=
+> +		    GICV5_ITS_IDR0_DOMAIN_NON_SECURE ||
+> +		    (val & ~(GICV5_ITS_IDR0_ITSID |
+> +			     GICV5_ITS_IDR0_PA_RANGE | GICV5_ITS_IDR0_DOM)))
+> +			return -EINVAL;
+> +
+> +		mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
+> +		if (FIELD_GET(GICV5_ITS_IDR0_PA_RANGE, val) >
+> +		    cpuid_feature_extract_unsigned_field(mmfr0,
+> +					ID_AA64MMFR0_EL1_PARANGE_SHIFT))
+> +			return -EINVAL;
+> +
+> +		its->idr0.pa_range = FIELD_GET(GICV5_ITS_IDR0_PA_RANGE, val);
+> +		its->idr0.its_id = FIELD_GET(GICV5_ITS_IDR0_ITSID, val);
+> +		return 0;
+> +	case GICV5_ITS_IDR1:
+> +		if ((val & ~(GICV5_ITS_IDR1_L2SZ |
+> +			     GICV5_ITS_IDR1_ITT_LEVELS |
+> +			     GICV5_ITS_IDR1_DT_LEVELS |
+> +			     GICV5_ITS_IDR1_DEVICEID_BITS)) ||
+> +		    FIELD_GET(GICV5_ITS_IDR1_DEVICEID_BITS, val) >
+> +		    VITS_V5_DEVICE_ID_BITS)
+> +			return -EINVAL;
+> +
+> +		/*
+> +		 * Userspace can change the DeviceID limit after translations have
+> +		 * been cached. Drop them so the old limit cannot remain in effect.
+> +		 */
+> +		if (its->idr1.device_id_bits !=
+> +		    FIELD_GET(GICV5_ITS_IDR1_DEVICEID_BITS, val))
+> +			its_cache_clear_translations(its);
+> +
+> +		its->idr1.device_id_bits = FIELD_GET(GICV5_ITS_IDR1_DEVICEID_BITS,
+> +							 val);
+> +		its->idr1.dt_levels = !!(val & GICV5_ITS_IDR1_DT_LEVELS);
+> +		its->idr1.itt_levels = !!(val & GICV5_ITS_IDR1_ITT_LEVELS);
+> +		its->idr1.l2sz = FIELD_GET(GICV5_ITS_IDR1_L2SZ, val);
 
-LGTM,
+I think l2sz should be set to 0 if both dt_levels and itt_levels are 0,
+because a res0 read-only field should read as 0.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Thanks,
+Wei-Lin Chang
+
+> +		return 0;
+> +	case GICV5_ITS_IDR2:
+> +		if ((val & ~GICV5_ITS_IDR2_EVENTID_BITS) ||
+> +		    FIELD_GET(GICV5_ITS_IDR2_EVENTID_BITS, val) >
+> +		    VITS_V5_EVENT_ID_BITS)
+> +			return -EINVAL;
+> +
+> +		its->idr2.event_id_bits = FIELD_GET(GICV5_ITS_IDR2_EVENTID_BITS,
+> +							 val);
+> +		return 0;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+>  static void vgic_v5_write_its_dt_reg(struct vgic_v5_its *its, size_t offset,
+>  				     unsigned long val)
+>  {
+
+[...]
