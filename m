@@ -1,133 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793997566;
-	b=ZU6I2wH1NSoBfYNWC7TJH4rXfzUhJr1MyS63d8GJfuX9eotCWUaSukhGKk2LgDc0i+D5
-	 Zf8AvmVjfvU4FNmeVLHzzmkj2QO5f5RDynDcRZU8W+VwnVX+HvtKRWkwk3iKXG5JZDYON
-	 fjDmFhZesCdpqgA9+p4FVvSv3uZm5t5xmas4Jjs8m87QYquswlauZsWhrzvQkwy8XeFMo
-	 kig6XDBoo9c1LcfxK//SOOH8BkbVaLpEsq4BwKVwO6Divz9iGESbvdrXO8DfGCC0yNMQ1
-	 H5rs/w6iZS/jIr54XCZzhAxpmC5gF7z8IzLIvYT+jCYI6taB2DPc6xT2EfWMSFPh6Fg==
+	t=1793997782;
+	b=Io7MF9Me2FY2uCTrSIabtjHDo+CPPWqzPWzhVfHlbe9VvrikkNEFbCHH+TPB/0wa1RJj
+	 DqQ/tjy+4mOv2lbshAEZKvF9KCs9pPs7cgXEGERGewoKF6AOyvrY3ycUyLf46n9PyoqI7
+	 AVNTTE8L6Rl47hbq/Lpjs1/tNO3bW+a8WYaATvUPeUQw5g5K8Rjeu2BilHw1yqU5uz45R
+	 2N7YhssGMvaYTbg0zlhKrGIkyOww2nclAiWoKMOxC/gValb9KGOZKJGnBOJE/PwXQPR3v
+	 tdAjdY/pXeQI6kpgBrguGEgtrT5rbvc9a0Fu92nLCpfH6tT6qyUmNEVga9wSFu1smJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793997566;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=y0BVziaquUjVVAPoh4llDs6v2FQ9OhndML7IsF84gsc=;
-	b=I5DEzF4oGAwoMPInR2jp+YPTQbrkzprt3k+SSENxyBy+F+mbhuVG0drLWLxqoL+zLMK1
-	 WX5dEPW1FCrVBoCJmN+rBTtN3gzdu3FN9Ih54OQQAtKn2fK3QsiP3wOSc6e+FvvwKtt78
-	 pBYYeYbR9eGFoyuGsaRrOvnrepzHBXtdSmomOozbB9CKxnqmP1F2l30yw21mOprgI+smc
-	 Crid5ANJ92mC/PJ7lEWiaoNzc1FWQrWsUiCx7rHHOFE77405jhMBtUlqQvhHbFnbopuuX
-	 Atm1p3EetMwnSzkCPYHyG7LFbXFJSvVl9N8i5gAItiz1xrq4zQcsu0kekUosAhLK/Wg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793997782;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=SY8C007ZM2/0l1e15k3MulpTIZhlyUJOcEqhwHK5GyU=;
+	b=5ks+Ry3pDj7/UcX1QwSgZG/LUkKPW409+TrxXf6YW5o8tF+Yb9/PNwHVb71s4mjtYc28
+	 U344pdTgvl4Ic2GLRovITNcT97vqX23V3fz2t4hxigDBlzR+BC78UvaSSOYi65ds0lrnu
+	 EbnB6YdYdRLXhcweFZnOxOhNYUgg2QVUzG9llQSdqWU0Vnd4PpbIBMnIwzlz6edmtDrNP
+	 wAPNulYtiyz1Y6bdSlXmXP3IMjRRoyT7W6lpGzA4xAeGIJZ5l8KOOGuHiIyqTi+tCvLWG
+	 dZ0vXKhSDjHHSfWL7eYqscyl7q/bYGgUJTpYhAMKDH64iwhMVGSfylxNQO4YE19Y8qw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=QFns8ebX;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=jnaNMHw6;
-	arc=none smtp.remote-ip=103.168.172.146
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z3cL2Gpj;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D780606A326
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 20:39:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D780606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C61606A329;
+	Fri,  6 Nov 2026 20:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=QFns8ebX;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=jnaNMHw6
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfout.phl.internal (Postfix) with ESMTP id 79C39EC01DC
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 15:39:24 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Fri, 06 Nov 2026 15:39:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793997564;
-	 x=1794083964; bh=y0BVziaquUjVVAPoh4llDs6v2FQ9OhndML7IsF84gsc=; b=
-	QFns8ebXFo0UFvT6+ZHPsjuq+ghcluonVEII3xNwxed3tzNZSMo0BDnZS3wq9lKo
-	0t5PE6BPBfCVD/nTpgG5nwaqP6/OX3R5qJ6KDfKf1RgOt86qNBb+s7sM0+uWuMIZ
-	H1+IEctvDJOBnF2LcVuu1jVTd2xWcB61EbuTFQIQIY6cKRq611Yhpo1ZXcNt2Xis
-	2v3z+2PCZgSpn0JazvwAKLS6Iw3/OgxnSfXbPL6M5J2U2zc2E3qYoNejg1j7oTJo
-	Yui5sKMjD7NzhcqC60CUNh3OL5V5TQjQ1hySMnCfJlm8QSwulyGCXh8F9s2KAaGF
-	Ghwbe1SB3VWQSdmDM4MrIw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793997564; x=
-	1794083964; bh=y0BVziaquUjVVAPoh4llDs6v2FQ9OhndML7IsF84gsc=; b=j
-	naNMHw6TOkiuBhQIxtaTCEmuvzmoa6wH6SL5N5kjy38vB1ucE+V8i3AQd0q9rb+h
-	dldrUfO0DPZZ7Xxim5fi08xJdLrHF71dihHNdTahXafS5oWt/OIW2/CRNjJyR2Th
-	Ceg0bMTZN1v2YKd3FqFuqnqqlF9W6ZQzYhUtp1OXeqCOD6tO6r207r/Pyp9eCoUi
-	Uw55yiI876gdEhjtzdmyFfHYJsoi75/Puatt0AasECt38B/r3sLUaKb69pATEuwf
-	CHPVG9LA3cl1um+RnAOjwiWRYFvutWcLPZc6M1LqemJvgeeZDdEVSBXXLQ7IQNtS
-	GZ5G+BAFYDz01NzSmuuAQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793997564; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:PgOL7W2t1P1EkFQ8DO5YQ9ln4+uhyi1uHUTIHXvGm0Jv6ft
-	WKxDj+thC5/h4MScUS1YijBKCQBHUJLQRoSGlrbPu8pO3QKWmAixfLFNCP/h2/D6
-	2PYUpV37YfaSDJvE7SYwy3e3kj54gS7kSLzxnuHYER88uF8LJw6TT8jm2CHuAwKI
-	2pMrxva9Tp95DJQ7axWAerSOx4te65isN6rM1Co4s5QKC6T7We/o1/554AHC8yx0
-	uFDCCkfdHwF7/nzTbcHd3X0CRmWF2kThDWuYRty6GREVu66+qkC3yGRHTxSgmHkv
-	h2YcGP42TbH0gADF9GYDqM7kbtFfeAei4GjiSmQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:TC2OAASFXc/kqGL+CunvWFfjUQDUXEFfcgl8mkejbCw=:KLM1XTdGORKLzVXxMM2+MBqBSSgPSj1LNFXBZwNORQc=;
-X-ME-Sender: <xms:-zruapswx845re28jK7E-OISiOWhgLdGEzbA0gYJ4Jaukh4q8ERM5w>
-    <xme:-zruagGv_oYl0JasYwTqNuMV9YfG4cqnE57Xk0ZmwUhwx4wfvWkkZcKjTNiOcHNH5
-    f1ObK33XWf7tyXP_cUBksnGPcFiyply7mFddvMfjxbMyfhNaK9-Rg>
-X-ME-Received: <xmr:-zruakL7z03VZTgAiqT4Blwr0mVgipsBhSTSBlaAlE-iTpTJR0DAEzose6zAjw>
-X-ME-Proxy-Cause: dmFkZTGIbL7eiEY7X8p/l+CeUB7m44a61PuMeL+fbY3aREjzPUsLlzqVekELJvtGSYzY/I
-    nO/9fOkHagfaTDpr/q7Hu4ec1OgxpJzeR1b+u+/9ylFLL0hiPQ7Q5WGOti0WTlU639UET8
-    W0OANyCth0cdOR2e7W6mWO1PJHdl/BResgCHiTxzvLlqq3zCDX3wvzLg16WhpWjXSqlvxH
-    89LRMj0xWkNEZ4qN6TB296bhwMUVIMYXaAmu9mgVoI4iM8H8vundo/2ymieM+LgoFiwTPq
-    IhQxBsWs0Ga7dr1x8oM6/9wnzhBZVCQvByhcFz33jTVizQNgL5tYw3VmrPQxyPhLIvxifv
-    H7QY9kPySOCsFJrhxoC6uqsSDc1GcMOACH3r7Wrmfr/jnoMJGP58FMF4t2RcELJnfT33jD
-    je5SutMzSelw6oN50vcX7lIELIN9R0dR9ohFPMT4pfg+q7rmzgKEPWOhidL3uG4rHDfx8E
-    bdsoBTFLWpPoCvbhqBhLI+776dylwZRjCQk6W/hoGKw0YgFB8jgrcJoIK9CA/qxfCdKgtu
-    VpseP5mr6Y0vLjZMqZAROvOolYbNFuQE9hVhhbAwSnSVTI/Gge+4z1RvnWcKgImEeF39T+
-    OWgDl/6GYLI6UCeWNQ2UCfPZamPvO1USkUaKy4natYDrfR6Un0JmtJhr1VyA
-X-ME-Proxy: <xmx:-zruaoYTS6zaXrUnuamRBu1QXRKhqDl6CLVkSZ2bn8QMmD4Yem2QHw>
-    <xmx:-zruahps8Qx_fewfGVvHRM6AEFA-RYq-3pHwGw9P3jodAEu4HSumLg>
-    <xmx:-zruagHkcYHQpi7Qlk7TjgwSxyJUT48sIqyc-BBi0duFKzQbget_zg>
-    <xmx:-zrualdFIYqEPdPn5BJgS0ePxXMEsDJW9LK7HWSjS1lZq1TJQzK-pA>
-    <xmx:_DruatZac4csxBguHlwKZ6baZZokuGozy6Fj434FxEBTDO-Hb4g6MpQ1>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 15:39:21 -0500 (EST)
-Date: Fri, 6 Nov 2026 13:39:20 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v6 09/31] vfio/pci: Advertise the mmap areas around
- excluded ranges
-Message-ID: <20261106133920.144f0665@shazbot.org>
-In-Reply-To: <20261016161839.2765592-10-mhonap@nvidia.com>
-References: <20261016161839.2765592-1-mhonap@nvidia.com>
-	<20261016161839.2765592-10-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z3cL2Gpj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBA81F0089F;
+	Fri,  6 Nov 2026 20:43:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793997781;
+	bh=SY8C007ZM2/0l1e15k3MulpTIZhlyUJOcEqhwHK5GyU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Z3cL2Gpj8dy4kK5JUNwE2pHNE/14RMs2BYEzNONa8NFnDz+MzyhT6q9POJ+WfoNnJ
+	 PWu75lJio28fuFMWsvi188ffMrQzjsZSFtg5nDzO8HaSBAV+ZqeboJ11Qe+ceWbveW
+	 5Y7zjLdnpl5yCa+SbKMB6sr8NzDKPgjfMiPwX/aUrmgdfiTbUpNjSNEsQWuNQuFG61
+	 N4a23X4bcHIc/tzmJxMGsFaU3d6lb2z9Y8IxhQ/k8Crvtta8lhM1yBQ+DALNpaPwfo
+	 FIM5TLqZqHUs9F5i2vNrEQ+ojKVnKaesQbQXPRbl2w+OphcEP+69jefuZFyBLoB2Z0
+	 t0uCd8+HjB4Mg==
+Message-ID: <sashiko-outbox-202252@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 23/23] s390: Report AEF features to sysfs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
+ Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261106-sysreg-v3-23-75e95980fb10@linux.ibm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-23-75e95980fb10@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 06 Nov 2026 20:43:00 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -136,164 +62,59 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Oct 2026 21:48:16 +0530
-<mhonap@nvidia.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] s390: missing static const on bin_attr_qmc and
+  bin_attr_save_area
+--
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> A range excluded from mmap must not be reachable through an mmap of its
-> BAR. Refuse an mmap that overlaps such a range, and advertise the BAR
-> with a sparse mmap capability that lists the areas between the excluded
-> ranges, so a VMM maps those and traps the rest.
-> 
-> mmap is page granular, so each range is rounded out to whole pages, and
-> ranges that meet after rounding form one hole. The sorted list gives the
-> areas in two walks: the first counts them and the second fills them.
-> 
-> A BAR without mmap-excluded ranges gets no new capability. The MSI-X
-> table is excluded from read and write only, so the MSI-X BAR is
-> unchanged.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 91 ++++++++++++++++++++++++++++++++
->  1 file changed, 91 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index bee3d1b4d8d2..f099a294af34 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1106,6 +1106,88 @@ static void vfio_pci_free_excluded_ranges(struct vfio_pci_core_device *vdev)
->  	}
->  }
->  
-> +/* True when [start, start + len) on @bar overlaps a range with any of @flags. */
-> +static bool vfio_pci_bar_range_excluded(struct vfio_pci_core_device *vdev,
-> +					int bar, u64 start, u64 len, u32 flags)
+commit 2934d9947793e4c4621a99293c7dadc5c2b8442b
+Author: Steffen Eiden <seiden@linux.ibm.com>
+
+s390: Report AEF features to sysfs
+
+This commit exposes Arm Execution Facility (AEF) capabilities, supported
+formats, vCPU limits, and raw QAAF query blocks to userspace under
+/sys/firmware/aef/ and documents the new sysfs ABI.
+
+> diff --git a/arch/s390/kernel/aef.c b/arch/s390/kernel/aef.c
+> index 31e18953d7b31..96a6d63b26950 100644
+> --- a/arch/s390/kernel/aef.c
+> +++ b/arch/s390/kernel/aef.c
+
+[ ... ]
+
+> @@ -38,6 +47,68 @@ bool aef_usable(void)
+
+[ ... ]
+
+> +static ssize_t qmc_read(struct file *filp, struct kobject *kobj,
+> +			const struct bin_attribute *attr, char *buf, loff_t off,
+> +			size_t count)
 > +{
-> +	struct vfio_pci_excluded_range *range;
-> +
-> +	/* Only BARs have excluded ranges; a device-specific region has none. */
-> +	if (bar >= PCI_STD_NUM_BARS)
-> +		return false;
-> +
-> +	list_for_each_entry(range, &vdev->excluded_ranges[bar], entry) {
-> +		if (range->start >= start + len)
-> +			break;
-> +		if ((range->flags & flags) &&
-> +		    start < range->start + range->size)
-> +			return true;
-> +	}
-> +
-> +	return false;
+> +	return memory_read_from_buffer(buf, count, &off, &qmc, sizeof(qmc));
 > +}
 > +
-> +/*
-> + * Advertise a BAR with mmap-excluded ranges as the mmap-able areas between
-> + * them. mmap is page granular, so each range is rounded out to whole pages;
-> + * ranges that meet after rounding merge into one hole. The first walk counts
-> + * the areas and the second fills them.
-> + */
-> +static int vfio_pci_excluded_sparse_cap(struct vfio_pci_core_device *vdev,
-> +					int bar, struct vfio_info_cap *caps)
+> +BIN_ATTR_RO(qmc, sizeof(qmc));
+> +
+> +static ssize_t save_area_read(struct file *filp, struct kobject *kobj,
+> +			      const struct bin_attribute *attr, char *buf,
+> +			      loff_t off, size_t count)
 > +{
-> +	struct vfio_region_info_cap_sparse_mmap *sparse __free(kfree) = NULL;
-> +	u64 bar_len = pci_resource_len(vdev->pdev, bar);
-> +	struct vfio_pci_excluded_range *range;
-> +	u32 nr_areas = 0;
-> +	bool holes = false;
-> +	u64 pos = 0;
-> +	u32 i = 0;
-> +
-> +	list_for_each_entry(range, &vdev->excluded_ranges[bar], entry) {
-> +		if (!(range->flags & VFIO_PCI_EXCLUDE_MMAP))
-> +			continue;
-> +		holes = true;
-> +		if (ALIGN_DOWN(range->start, PAGE_SIZE) > pos)
-> +			nr_areas++;
-> +		pos = max(pos, ALIGN(range->start + range->size, PAGE_SIZE));
-> +	}
-> +	if (!holes)
-> +		return 0;
-> +	if (pos < bar_len)
-> +		nr_areas++;
-
-The number of sparse ranges is bounded by (num_mmap_excluded_ranges +
-1).  We're dealing with a very low number of excluded ranges, bounded by
-insertion via kernel drivers and core.  It seems worthwhile to avoid
-the duplication with a simple list walk that counts the mmap excluded
-ranges, then all of the alignment happens once, and the resulting
-nr_areas is calculated as we fill.
-
-Note that with the use of __free, it's generally recommended to
-allocate at the point it's declared and mixed declarations and
-statements are allowed for this.  We can therefore do the declaration
-and allocation after we've done the simple version of the counting loop.
-Thanks,
-
-Alex
-
-> +
-> +	sparse = kzalloc_flex(*sparse, areas, nr_areas);
-> +	if (!sparse)
-> +		return -ENOMEM;
-> +
-> +	sparse->header.id = VFIO_REGION_INFO_CAP_SPARSE_MMAP;
-> +	sparse->header.version = 1;
-> +	sparse->nr_areas = nr_areas;
-> +
-> +	pos = 0;
-> +	list_for_each_entry(range, &vdev->excluded_ranges[bar], entry) {
-> +		u64 hole = ALIGN_DOWN(range->start, PAGE_SIZE);
-> +
-> +		if (!(range->flags & VFIO_PCI_EXCLUDE_MMAP))
-> +			continue;
-> +		if (hole > pos)
-> +			sparse->areas[i++] = (struct vfio_region_sparse_mmap_area) {
-> +				.offset = pos,
-> +				.size = hole - pos,
-> +			};
-> +		pos = max(pos, ALIGN(range->start + range->size, PAGE_SIZE));
-> +	}
-> +	if (pos < bar_len)
-> +		sparse->areas[i] = (struct vfio_region_sparse_mmap_area) {
-> +			.offset = pos,
-> +			.size = bar_len - pos,
-> +		};
-> +
-> +	return vfio_info_add_capability(caps, &sparse->header,
-> +					struct_size(sparse, areas, nr_areas));
+> +	return memory_read_from_buffer(buf, count, &off, &save_area,
+> +				       sizeof(save_area));
 > +}
 > +
->  int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
->  				      unsigned int type, unsigned int subtype,
->  				      const struct vfio_pci_regops *ops,
-> @@ -1254,6 +1336,10 @@ int vfio_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
->  				if (ret)
->  					return ret;
->  			}
-> +			ret = vfio_pci_excluded_sparse_cap(vdev, info->index,
-> +							   caps);
-> +			if (ret)
-> +				return ret;
->  		}
->  
->  		break;
-> @@ -1947,6 +2033,11 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
->  	if (req_start + req_len > phys_len)
->  		return -EINVAL;
->  
-> +	/* An excluded sub-range is reachable only through its trap, not mmap. */
-> +	if (vfio_pci_bar_range_excluded(vdev, index, req_start, req_len,
-> +					VFIO_PCI_EXCLUDE_MMAP))
-> +		return -EINVAL;
-> +
->  	/*
->  	 * Ensure the BAR resource region is reserved for use.
->  	 */
+> +BIN_ATTR_RO(save_area, sizeof(save_area));
 
+[Severity: Low]
+Should BIN_ATTR_RO(qmc, ...) and BIN_ATTR_RO(save_area, ...) be marked stat=
+ic
+const?  BIN_ATTR_RO() expands without storage qualifiers, so omitting static
+const exports bin_attr_qmc and bin_attr_save_area as mutable global symbols
+in .data and triggers sparse -Wdecl warnings.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-sysreg-v3-=
+0-75e95980fb10@linux.ibm.com?part=3D23
