@@ -1,132 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793973526;
-	b=lgGauIn0MGY/9JMJ7ZUH88/Rjeu4gRyALyBcijW+yC1OX1IrgIXBmOOLUwpk+molq3ad
-	 +a13Z6reDZGEjZjcjXOuQ2KrEnnF/PC0CR/X7PRYYDUOKrYU7Htrfs5sAQrNURY5pDo0C
-	 0RrE3KIYpdTAiHGgPKeNiAT2qGFV3ZxLlSUYPWeNObbAE5Yct5Bv4LlHBNez2hQlcBrKT
-	 IK71ZmyugenHmpEJFokFHdqEMUCfBm0M46EI+aa/UQ9qI8ac46sq0o9EgppaMcSOafERf
-	 FwS9nsbTN2eknTeOr6DXcZgfCRgcrfzVr1J7adughWQIFSUWK7IjorH9eAm1auXy5Dg==
+	t=1793973794;
+	b=wvD8rUUn85MHg+U9Zjf7pIuzoOgV/Dkidcn1uvuXAqs0fAMaJSsAXsLmIeBzQgMObRmS
+	 sK6fkzmo6j7plsA1zAfVwwSpFw3+Q3keJMMpS1JLWgquo6GIx53U6kqjIFGAbBII7ytFd
+	 lsO5NUoBcgy+9aFZoWEEiNk38pqDh0wyIyKVQyvxUHPTymeX6PeqMVNrkk7DoeS10Kvot
+	 VvVNI011BELPCNJeUj4Hwv7eoc56XYsLPsQFseSH21T3mSs7GaVqY/ISjlWIn0ZC3VIQT
+	 V0m3CoM9kvSqxP1dDZBKNeubmKRFtHRYUca96y0UWNTXY7Ce1YnEa14gHZUYeCD5bDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793973526;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=lLm/2362Jto1m90argCKrgvD1UmsgxkA6At7FJ6kmGTH9Z1+4OJRYDakCEAyZtcCoT3P
-	 jLkj9cX1uuGuBZbTbqhYzcEUsXrDomavHOf6l6vzNNHL7dKnq0Xv9TjbgSP03lVKRuZHR
-	 BiXWWC2FWuy9GzTgxnBUWrfudbSTJ3VMGeRTm9zvSoiby35WT9MUUq3zseh8VpmcXi5Jq
-	 08gojiCXVmrOiVmpbtUd8+p3H+daTbdlFteAPxcCP0Nm+hn3A2J32J1p0qalzmdMDEDaa
-	 bCKjaxkIx3jkhaxAFY8sE29xiGaPYiu5HbPhy6wufDQPfsY290yTi6KZ0yOj5wfIZlw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793973794;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=55So9WQ/WyrADhzVx1hdq8ywmTf+r85oSbdNInvKBS8=;
+	b=QjSvgPM3OjA38YBzj6p+CfIaefj3HvhhYobSnHxUvSY+vaQ9umAI8MUQWJbvku1xs5ya
+	 cYlAf9HFH3N1MnsGYtFzgxkNoOfmjP24gGV64OTx7PuFb1tgk8FPsleWoaBSXWkxsnzR1
+	 aKwwIMMZBUoMNLGygANmGNFXsXOIP9QXFIdhzNeX35BmTuhzxmtj5mq8Ry3k49xKB+g89
+	 lSucRLg2H1U7dCWk/SEo2PXBwlB9HRwNbhDk42rnjGBPqFziuqhyAznjvvRvWSz241qOy
+	 lB1obcwsB6c5jx67YkM45xiy8CQp/5fJ2luVSF1nAhyPLtsssGUXGPh5Omf/0h3g0bA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=uiFsa2Bw;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6UCJswdK;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LgjfvuMA;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=X0ai5JyZ;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QZuQFHDB;
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB28606A329;
-	Fri,  6 Nov 2026 13:58:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECB28606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325F2606A326
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 14:03:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 325F2606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=uiFsa2Bw;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6UCJswdK;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LgjfvuMA;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=X0ai5JyZ
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 169731F45A;
-	Fri,  6 Nov 2026 13:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793973524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=uiFsa2BwcYOxq2gi53CMvsQcPLhPjX3qEOfmyRG+MMW+i9UaggY9jJaa5wavXNFuLDRya0
-	b9bIk7d+ZGVpmXDC5GD2K4lSWXyUMEx1Xgkq2ZbP1QBkGfhdEqjgXpD2RQsoW8lER5KjM6
-	2nPPQOWWqm1KOh+/u7G+gDW1pky2kPE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793973524;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=6UCJswdK0Z/DiwhrcdamgOXwZj9ItIC+/2kw90iroytJRvaOKpNnwu36Zgri1J7K0hnpW1
-	lNS/qFpJKVe0WBAA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793973523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=LgjfvuMAU87vP+sPHVFl3AgPTWwGTRrRaQzjksp+GUoFchaJHCJWRi3C7JriPqlaDS1xv0
-	xf0+UF6xyLfW5w2peCcDGzuPDj/KNox0QLmUkIz4npAwhjxdTcSyJLMVg3YL5GoQgLdgFJ
-	1Wd203yEyPmbh14aWkzxWl+puCMK0x8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793973523;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=X0ai5JyZByGuYCrevlOApXcGyusGRiOAMLTwFWFDZ7nil+IaqW8n/M/kqrLHGa75L9F+9G
-	ed8IDOXKbujoFXBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D6C01134F4;
-	Fri,  6 Nov 2026 13:58:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wBCPLBLd7WqeVAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 06 Nov 2026 13:58:42 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 4E5B121B72; Fri, 06 Nov 2026 14:58:27 +0100 (CET)
-Date: Fri, 6 Nov 2026 14:58:27 +0100
-From: Jan Kara <jack@suse.cz>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen <ryan_chen@aspeedtech.com>, 
-	Billy Tsai <billy_tsai@aspeedtech.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
-	Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
-	Scott Branden <scott.branden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Richard Cochran <richardcochran@gmail.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, xen-devel@lists.xenproject.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, linux-sgx@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 06/14] udf: convert mmap hook to mmap_prepare
-Message-ID: <6ve6dvcmmozqiv5zkkq57thm62rtsc43jlbsfoxm24qrm5bhkg@ygji3l2k2qxq>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <20261105-late-2026-mmap_prepare-v1-6-c56aadfbab8a@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QZuQFHDB
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36fc0a3fe93so958641eec.0
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 06:03:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793973793; x=1794578593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=55So9WQ/WyrADhzVx1hdq8ywmTf+r85oSbdNInvKBS8=;
+        b=QZuQFHDBdHMb/TTaLa7JAl3/QbIv7GrtTB1q2dqd7HYucRBOA27LagXV488e4Cxsil
+         r0Bzx0RrW0VP+oZqGdswAPICibhHTSPKkCiREm5QZxoJjx1ZKdAyix0LdVzyzau6pjgb
+         Xe32rolTBzWydSR/gvgZTfYp5R+i7L7HDde2XWH8JqIvPfA7p5MrDM4ixFnx/OOiRdX4
+         +8fuz9lbUzGMu+FFzXTtL/lRFjmM78abbQV6xbdCfG7H/aH1XxLQ98fXbxDikdEIA32B
+         hR5Uh6P6BAEHtLqVr2nnJ5BxmpEbYOZZlHUAG1aSPhrXswv5Ykelqmhu6+N+XX/47Bpx
+         LwdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793973793; x=1794578593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=55So9WQ/WyrADhzVx1hdq8ywmTf+r85oSbdNInvKBS8=;
+        b=qG947mCJTNOycGK18h1DhAD20BnlleGQq9JY7XTH/dEF7eo61M4eTtJUFsuCpW205L
+         8I+F6Y94COapvDG0I/NjDO61hinKeKFHsT5riGFyS7ymZvtz9HVTpp7LsaaiBvPZvUKv
+         XLSPH1m+zHACqNNJpa7G3SqaFV+9q6wCj3ex0OxuOaqeK5jGHfmZ6RgxPcGb+7SyXyBT
+         UpVqWvsvC0JebVcTxTugxOssPwSvXIGM97uNSPP5saKYsrMYiLEx8GGf0t+8EZOtVLOY
+         sR+8Joejhzl93EkEjY+kLdL6htM2Jp9W0YSiF1rI8HSDpC89SVXCBu4mJKJuTJhOe+ZL
+         RtpA==
+X-Forwarded-Encrypted: i=1; AL+hErHmgYMDaXSesHj3OsvxoAVFK/2/I+2xeeQYj9hBOjtOIyzuLXew20fOrsBUrZGYtA+fuGw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9vbhKuhvbuvRvepwI6CFWInvZ+Ni3ZBodjcNbZwvSwYdK+mLiN
+	J3ZV/w0dC8T7MAExzxOWAI/BvQSWcFRA9tDYlqhldjuCyLXySphb9iBn
+X-Gm-Gg: AYBFou1kFhgxiM7FVIcycDxLjf/VuV2IeRYkY+3UYxCOADuF6NDvNdYMUQHIvDRCLFq
+	zou0TUAb7YDrIRulVhsC07ck2lnx5tbisGzH/wPcXO97g/11gnvTGknhNFFfPQAxrIy7nyS79AV
+	tYFRiccK+cYIuusq7O4qD1hslbV31FK+bQ9o/YG0vfUN7we3UsFsebfWuolrRtEd6dTbIVjdeKW
+	XeGtE9vZ96XzbvlaUo32KJTAdk6tcSgcFVLds94qiwhFpZ6UHdc6gwwf1D7Em0QYqvBp04VJ1jL
+	H2PhZpiBAJpGJkUV6LAeSvgiGn9VItvmB2gqxa1TJtlGwpk5lTwpa6Cc0oER5q0NWhCk0zRpJsj
+	yh9HgLS+PibCvH9xbgrYC9dg11wns3uU+pgZaetcLJIzHJlwa9aSiNgPMsXv1A0Kp0z1NU5MbmS
+	k2a3fnDa1AxEwniNvPcDBNpDXx0CS2FFuJ5m056J0kysJHuoX9WrLMuGjXr7xkQPrzEbL0aKjgx
+	FrlQOq3wZDkXWCde6MMK9iCMh5niGbKv+T+PPcLfF10H+B0gNpqi4wUJS/LiX497ggLEnhITYzK
+	gf6/snrfAFMpp861KqZ9YJe3WTEuu0SSxhkuesyvd8c5SUjyretG
+X-Received: by 2002:a05:7301:1887:b0:361:6884:78b1 with SMTP id 5a478bee46e88-36f7671a78cmr3700143eec.28.1793973792971;
+        Fri, 06 Nov 2026 06:03:12 -0800 (PST)
+Received: from fedora ([124.51.157.51])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa4b4680sm7004358eec.20.2026.11.06.06.03.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 06:03:12 -0800 (PST)
+From: SeungJu Cheon <suunj1331@gmail.com>
+To: anup@brainfault.org,
+	atish.patra@linux.dev
+Cc: pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	jinyu.tang@linux.dev,
+	inochiama@gmail.com,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] KVM: riscv: Only fast-path dirty-log write faults on host-writable leaves
+Date: Fri,  6 Nov 2026 23:02:47 +0900
+Message-ID: <20261106140247.155817-1-suunj1331@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -136,85 +106,160 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-6-c56aadfbab8a@kernel.org>
-X-Spamd-Result: default: False [-15.30 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,kernel.org,epam.com,linux.ibm.com,gmail.com,ellerman.id.au,microsoft.com,redhat.com,linux.alibaba.com,linux.intel.com,alien8.de,zytor.com,paul-moore.com,jms.id.au,codeconstruct.com.au,aspeedtech.com,broadcom.com,arndb.de,linuxfoundation.org,infradead.org,lunn.ch,davemloft.net,lists.xenproject.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev,lists.infradead.org,lists.trustedfirmware.org];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[61];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -15.30
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Thu 05-11-26 21:05:37, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-> only updates the access time and sets the VMA operations.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+The dirty-log write fault fast path sets _PAGE_WRITE without checking
+whether the backing page is host-writable. A read fault can install
+a read-only mapping to the shared zero page. A subsequent guest write
+then takes the fast path and writes into the zero page instead of
+going through the slow path to break CoW.
 
-Looks good. Feel free to add:
+Use RSW bit 9 to record host writability before dirty logging forces
+the mapping read-only. Preserve this bit across write-protection and
+fall back to the slow path when it is clear.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-174168@kernel.org/
+Fixes: 7705be59eb2d ("KVM: riscv: Fast-path dirty logging write faults")
+Cc: stable@vger.kernel.org # 7.2+
+Reviewed-by: Jinyu Tang <jinyu.tang@linux.dev>
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+---
+v2:
+ - Pass host_writable to kvm_release_faultin_page() as well
+   (Inochi Amaoto, Sashiko)
+v1: https://lore.kernel.org/all/20261017030927.345454-1-suunj1331@gmail.com/
 
-I'll leave it for MM guys to merge this.
-								Honza
+Testing (v2, QEMU -cpu rv64,h=true, 4 vCPUs):
 
-> ---
->  fs/udf/file.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/udf/file.c b/fs/udf/file.c
-> index 02e9314818dc..d5e80c6cae96 100644
-> --- a/fs/udf/file.c
-> +++ b/fs/udf/file.c
-> @@ -190,10 +190,10 @@ static int udf_release_file(struct inode *inode, struct file *filp)
->  	return 0;
->  }
->  
-> -static int udf_file_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int udf_file_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	file_accessed(file);
-> -	vma->vm_ops = &udf_file_vm_ops;
-> +	file_accessed(desc->file);
-> +	desc->vm_ops = &udf_file_vm_ops;
->  
->  	return 0;
->  }
-> @@ -202,7 +202,7 @@ const struct file_operations udf_file_operations = {
->  	.read_iter		= generic_file_read_iter,
->  	.unlocked_ioctl		= udf_ioctl,
->  	.open			= generic_file_open,
-> -	.mmap			= udf_file_mmap,
-> +	.mmap_prepare		= udf_file_mmap_prepare,
->  	.write_iter		= udf_file_write_iter,
->  	.release		= udf_release_file,
->  	.fsync			= simple_fsync,
-> 
-> -- 
-> 2.56.0
-> 
+  A selftest makes the guest read an untouched page, then write to it
+  with dirty logging enabled. Before the fix, the host zero page is
+  corrupted (0x5a5a5a5a5a5a5a5a != 0). After the fix, CoW allocates a
+  private page and the zero page stays zero.
+
+  dirty_log_perf_test -v 2 -b 128M -i 3 completes for Sv39/Sv48/Sv57
+  with no warnings in dmesg.
+
+v1 was additionally tested on a HiFive Premier P550 (no noticeable
+regression in dirty_log_perf_test -v 3 -b 256M -i 3). The board is
+not available for v2.
+
+This patch applies on top of the Accessed-bit fix [1].
+
+[1] https://lore.kernel.org/all/20261016101458.221648-1-suunj1331@gmail.com/
+
+ arch/riscv/include/asm/kvm_gstage.h |  5 ++++-
+ arch/riscv/kvm/gstage.c             |  5 ++++-
+ arch/riscv/kvm/mmu.c                | 17 ++++++++++++++---
+ 3 files changed, 22 insertions(+), 5 deletions(-)
+
+diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
+index aaf080ba1b7..0d19ad6d7df 100644
+--- a/arch/riscv/include/asm/kvm_gstage.h
++++ b/arch/riscv/include/asm/kvm_gstage.h
+@@ -35,6 +35,9 @@ extern unsigned long kvm_riscv_gstage_max_pgd_levels;
+ #define kvm_riscv_gstage_pgd_xbits	2
+ #define kvm_riscv_gstage_pgd_size	(1UL << (HGATP_PAGE_SHIFT + kvm_riscv_gstage_pgd_xbits))
+ 
++/* RSW bit 9: the host mapping behind this leaf is writable. */
++#define KVM_GSTAGE_PTE_HOST_WRITABLE	BIT(9)
++
+ static inline unsigned long kvm_riscv_gstage_gpa_bits(unsigned long pgd_levels)
+ {
+ 	return (HGATP_PAGE_SHIFT +
+@@ -61,7 +64,7 @@ bool kvm_riscv_gstage_try_update_pte(struct kvm_gstage *gstage, u32 level,
+ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
+ 			      struct kvm_mmu_memory_cache *pcache,
+ 			      gpa_t gpa, phys_addr_t hpa, unsigned long page_size,
+-			      bool page_rdonly, bool page_exec,
++			      bool page_rdonly, bool page_exec, bool host_writable,
+ 			      struct kvm_gstage_mapping *out_map);
+ 
+ bool kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index be70607a33e..d9bfd0c6d5f 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -207,7 +207,7 @@ static void kvm_riscv_gstage_update_pte_prot(struct kvm_gstage *gstage, u32 leve
+ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
+ 			      struct kvm_mmu_memory_cache *pcache,
+ 			      gpa_t gpa, phys_addr_t hpa, unsigned long page_size,
+-			      bool page_rdonly, bool page_exec,
++			      bool page_rdonly, bool page_exec, bool host_writable,
+ 			      struct kvm_gstage_mapping *out_map)
+ {
+ 	bool found_leaf;
+@@ -246,6 +246,9 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
+ 			prot = PAGE_WRITE;
+ 	}
+ 
++	if (host_writable)
++		prot = __pgprot(pgprot_val(prot) | KVM_GSTAGE_PTE_HOST_WRITABLE);
++
+ 	found_leaf = kvm_riscv_gstage_get_leaf(gstage, gpa, &ptep, &ptep_level);
+ 	if (found_leaf) {
+ 		/*
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 5664383a1a3..b41534dd500 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -586,6 +586,12 @@ static bool kvm_riscv_mmu_dirty_log_write_fault_fast(struct kvm *kvm,
+ 			break;
+ 		}
+ 
++		/* Let the slow path handle host-side write protection and CoW. */
++		if (!(pte_val(old_pte) & KVM_GSTAGE_PTE_HOST_WRITABLE)) {
++			ret = false;
++			break;
++		}
++
+ 		if (!dirty_marked) {
+ 			mark_page_dirty_in_slot(kvm, memslot, gfn);
+ 			dirty_marked = true;
+@@ -630,6 +636,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	bool is_hugetlb;
+ 	bool unused = false;
+ 	bool writable;
++	bool host_writable;
+ 	unsigned int vma_pageshift;
+ 	gfn_t gfn = gpa >> PAGE_SHIFT;
+ 	struct vm_area_struct *vma;
+@@ -714,6 +721,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	if (is_error_noslot_pfn(hfn))
+ 		return -EFAULT;
+ 
++	host_writable = writable;
++
+ 	/*
+ 	 * If logging is active then we allow writable pages only
+ 	 * for write faults.
+@@ -739,10 +748,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	if (writable) {
+ 		mark_page_dirty_in_slot(kvm, memslot, gfn);
+ 		ret = kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SHIFT,
+-						vma_pagesize, false, true, out_map);
++						vma_pagesize, false, true, host_writable,
++						out_map);
+ 	} else {
+ 		ret = kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SHIFT,
+-						vma_pagesize, true, true, out_map);
++						vma_pagesize, true, true, host_writable,
++						out_map);
+ 	}
+ 
+ 	if (ret)
+@@ -750,7 +761,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 
+ out_unlock:
+ 	kvm_release_faultin_page(kvm, page,
+-				 unused || (ret && ret != -EEXIST), writable);
++				 unused || (ret && ret != -EEXIST), host_writable);
+ 	write_unlock(&kvm->mmu_lock);
+ 	return ret;
+ }
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+prerequisite-patch-id: aea68332f05283074bb715e7dde093a2a316a51a
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.52.0
+
