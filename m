@@ -1,47 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793975841;
-	b=ktWTXVYUAK1ZVS5IwMBZr8g3eY/TBDhz7sKa20aEeVJKpM8bn9PsTMzCVakweT5p9XsZ
-	 subtgMxXHP8YUPtD9vauWQuwec87QWQuYTQKQBCRwen5ccyxyXwDOU3vaofVnHz8+9GHn
-	 YttBoY8ICCCn2t4aoQDz6w7a/iaMMOmHMhksRO6wAZKeL3N6MZ8uFY8nr/5auuNmsCrr7
-	 pjAxH2cxCYrPn2//a2296aCX1eU7Z6JZQ2IDrcG+/tvWVjQpt65pKqkPjwlku2T5k9FjP
-	 adXnsSl/NCDvSPDfutTusuCQWzpApGZdzqSRqlZfnlhqFHcS+qHlrYmoR3Zp3adAXLQ==
+	t=1793976635;
+	b=QoHOrZmqVexbJdnWK72h+fKaXPXQSK0p8RH5mIdBKR36DFVWYfns8vlR+q7l3gezMwHq
+	 y1anDvK8ab5v8bQ0S6rgWVzqFLbeNBJVlRlGirDHByKGRWfdVrcgVHVA/BlVA7tvExYqo
+	 UB0eSM7z4w26ykK5FZzYuqDVRWN81vKOis33kiXPdbyyWi3XqHFtJrJ9CT+RCMCz/g3p9
+	 ug9lGi4sB0Tbmuqs6PeKQUnRbhkmCox8/oU4wGNsTHjAlTo9agFGfcvLFom25HsYf7g7r
+	 PGcB2uDJz1bPC34Z7Ctq3VAPQIA0MnlDvhRsANcFtNihbNAn/uA15jpIKk353uKxICA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793975841;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=keIAQnphxXzZvo7hqiOt5+X+8kVcH3dwqTVAhWNwa0Q=;
-	b=VG85xY36iYkTyeLzdmKkyPfGpqGDUSl1AY7/b1rQiaGliyAiRZ5Yiw0c4RTV6SfR/Bqv
-	 zKQcyx/brBTJSVQUyvkcplwRjqxJdDCz6/22oLuK+MaAfdYUJcPiGzP7qHq98TTKiSbyO
-	 q/aXnR6of6ciOgP2ZxeQuIDl2e4Q6bnMeH7AF4+8ou5W6I8PZ2mSfzW8hwksuk7N4kDf+
-	 IldWUf3RIL9X142d69mGyUygRwBkMWtlDuVjuEImlCRrFCg1c5vubO0uoH0n6dz/Xc5Op
-	 LhediAvoZe9yQGHb7TWu7r0o3PWUNWej2dTHi4BdMKiwcjE8+b2C3JqsCy0Ck/qS6+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793976635;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=ps2TrxaS79teMaF6BMN9ujQO14w0v7Yx37uvkE9xR3M=;
+	b=HsOrwO9CKU5BqpLV9mTWKSn9kvSQ7rtlUsj2B9YwuNVbN79zX3fBl9o7VUEyX6zNNWKQ
+	 xjGoiCbRKsFOeznauRSKa4wUHnzQpIjLpprytkT9/4JKijNPxt0sOgA1wRG5pcE+YQ5sM
+	 q1WUpfMYXiqnV0m9Ykzahi4l7BnBMwPvr7Kvs+erOxYxcvIeVbt7CSMVn1vkP4P8WF7V4
+	 EWNauxFKjfJGUdnciAn+oMj+MS1/5ozRdeTnq9vJqxli0Ky8efFV7em2O3zH9jJow5rCx
+	 CpKtNdf9YAlmA+IzbE+eF1BVDPbGvV6egl1h979nmkECdWSOPjBVk+FfOOeZIMIZhvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XyhloYBR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E66606D810;
-	Fri,  6 Nov 2026 14:37:20 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZOAtWOJl;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AE6606A32D;
+	Fri,  6 Nov 2026 14:50:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1AE6606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XyhloYBR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6EB1F008A6;
-	Fri,  6 Nov 2026 14:36:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793975840;
-	bh=keIAQnphxXzZvo7hqiOt5+X+8kVcH3dwqTVAhWNwa0Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XyhloYBRU5PZfGy0zwVshpBAJFi+mIJTXNNHmRhQZ7EzgoDIjVDmnidnrNgrc9V7u
-	 aVX495bpwJHG0YCLC7BkhFjwSvRyFwfvT7/9JZU5dfEhDsGnT1lXzgYCb70owp8FNi
-	 dYSqAyaH21pE3nSP1vh9MqvsnWtYSHcG3feZOdlP+KPLwhdj+vU58l5hR5WVLLRwvi
-	 gmlDSu/X2hi4GCV6LieIYl9ofm2sFNdnX0juU1RB4aGUsoM9j1IuKlaqvo4WKejCFh
-	 9Ur0h9FMMX/2KDlz/jUbXYiE2GBFYYVYINV90SkMOqsvDM+6OfhVyTMbJDwj1Hp5ro
-	 zXiwPTj3+pYTg==
-Message-ID: <631047fa-8a19-44b8-9fed-6607ec79a1c1@kernel.org>
-Date: Fri, 6 Nov 2026 15:36:55 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZOAtWOJl
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C544D1682;
+	Fri,  6 Nov 2026 06:50:30 -0800 (PST)
+Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 193893F673;
+	Fri,  6 Nov 2026 06:50:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793976633; bh=wKkogkZawpShyolCOJBuV47t0bn62Bkew3r0Q9oxyR0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZOAtWOJlpTNtCuKtz66tt08d64iCeQfuEVwIVQC7lWcy737XIP56yq9xE1VpqFc/1
+	 C4f/acfNLamRSFf6rxWaR1arLqLMqkDUEoEPn6IBgdHR07oOuA5ST4hKDOHngOICHF
+	 oGmx4g4KgybXJBx/CbAb8wRYsNEcTZaAQH36Amhg=
+Date: Fri, 6 Nov 2026 14:50:28 +0000
+From: Joey Gouly <joey.gouly@arm.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Quentin Perret <qperret@google.com>, Fuad Tabba <tabba@google.com>,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 06/16] KVM: arm64: selftests: Add protected-VM library
+ helpers
+Message-ID: <au3pNFOMeIx2X4Dp@e143914.arm.com>
+References: <20261104084842.132944-1-fuad.tabba@linux.dev>
+ <20261104084842.132944-7-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -51,275 +70,352 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>,
- SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
- David Rientjes <rientjes@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, John Johansen
- <john.johansen@canonical.com>, Georgia Garcia
- <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, damon@lists.linux.dev,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104084842.132944-7-fuad.tabba@linux.dev>
 
-On 11/5/26 22:30, Lorenzo Stoakes (ARM) wrote:
-> Replace use of the legacy vm_flags_t flags with vma_flags_t values where
-> VMA flags are tested directly in the THP and khugepaged logic.
+On Wed, Nov 04, 2026 at 08:48:32AM +0000, Fuad Tabba wrote:
+> A protected-VM test has to create the VM with the protected type and the
+> PSCI 0.2 vCPU feature, boot each vCPU through the trampoline from an
+> identity-mapped page, and have the guest share the ucall pool before its
+> first ucall. Secondaries start powered off for the guest to boot with
+> CPU_ON. A vCPU becomes a valid CPU_ON target only at its first KVM_RUN.
 > 
-> The thp_vma_allowable_orders() family of functions, hugepage_madvise() and
-> khugepaged_enter_vma() continue to take legacy flags for the time being.
+> Add lib/arm64/pkvm.c to do this for the tests.
+> pkvm_vcpu_setup_boot_secondary() runs a secondary once with
+> immediate_exit set, so that it becomes a CPU_ON target. The library also
+> has a run loop, an SMCCC call for the guest, and a reader of the
+> process's locked-memory count. The host adds a protected VM's pinned
+> pages to that count. No capability advertises pKVM, so pkvm_supported()
+> tries to create a protected VM.
 > 
-> Also update BUG_ON()'s to VM_WARN_ON_ONCE() while here.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Co-developed-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+
+One minor thing below, that could be addressed or not.
+
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+
 > ---
->  mm/huge_memory.c | 32 ++++++++++++++++----------------
->  mm/khugepaged.c  |  8 +++++---
->  2 files changed, 21 insertions(+), 19 deletions(-)
+>  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>  .../selftests/kvm/include/arm64/pkvm.h        |  24 ++
+>  tools/testing/selftests/kvm/lib/arm64/pkvm.c  | 245 ++++++++++++++++++
+>  3 files changed, 270 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/lib/arm64/pkvm.c
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 7e589a2fb02d..764e693b422f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1257,7 +1257,7 @@ __setup("thp_anon=", setup_thp_anon);
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index c254e82f9a786..e173a9adad3f2 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -34,6 +34,7 @@ LIBKVM_arm64 += lib/arm64/gic.c
+>  LIBKVM_arm64 += lib/arm64/gic_v3.c
+>  LIBKVM_arm64 += lib/arm64/gic_v3_its.c
+>  LIBKVM_arm64 += lib/arm64/handlers.S
+> +LIBKVM_arm64 += lib/arm64/pkvm.c
+>  LIBKVM_arm64 += lib/arm64/processor.c
+>  LIBKVM_arm64 += lib/arm64/pvm-entry.S
+>  LIBKVM_arm64 += lib/arm64/spinlock.c
+> diff --git a/tools/testing/selftests/kvm/include/arm64/pkvm.h b/tools/testing/selftests/kvm/include/arm64/pkvm.h
+> index 6ef769b8ff977..413c7ac4a9f16 100644
+> --- a/tools/testing/selftests/kvm/include/arm64/pkvm.h
+> +++ b/tools/testing/selftests/kvm/include/arm64/pkvm.h
+> @@ -9,6 +9,9 @@
+>  #define SELFTEST_KVM_ARM64_PKVM_H
 >  
->  pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
->  {
-> -	if (likely(vma->vm_flags & VM_WRITE))
-> +	if (likely(vma_test(vma, VMA_WRITE_BIT)))
->  		pmd = pmd_mkwrite(pmd, vma);
->  	return pmd;
->  }
-> @@ -1517,7 +1517,7 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
->   */
->  gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma)
->  {
-> -	const bool vma_madvised = vma && (vma->vm_flags & VM_HUGEPAGE);
-> +	const bool vma_madvised = vma && vma_test(vma, VMA_HUGEPAGE_BIT);
->  
->  	/* Always do synchronous compaction */
->  	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags))
-> @@ -1716,10 +1716,9 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, unsigned long pfn,
->  	 * but we need to be consistent with PTEs and architectures that
->  	 * can't support a 'special' bit.
->  	 */
-> -	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
-> -	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
-> -						(VM_PFNMAP|VM_MIXEDMAP));
-> -	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
-> +	VM_WARN_ON_ONCE(!vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-> +	VM_WARN_ON_ONCE(vma_test_all(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-> +	VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT) && vma_is_cow_mapping(vma));
->  
->  	if (unlikely(is_huge_zero_pfn(pfn)))
->  		return VM_FAULT_SIGBUS;
-> @@ -1750,7 +1749,7 @@ EXPORT_SYMBOL_GPL(vmf_insert_folio_pmd);
->  #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->  static pud_t maybe_pud_mkwrite(pud_t pud, struct vm_area_struct *vma)
->  {
-> -	if (likely(vma->vm_flags & VM_WRITE))
-> +	if (likely(vma_test(vma, VMA_WRITE_BIT)))
->  		pud = pud_mkwrite(pud);
->  	return pud;
->  }
-> @@ -1827,10 +1826,9 @@ vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, unsigned long pfn,
->  	 * but we need to be consistent with PTEs and architectures that
->  	 * can't support a 'special' bit.
->  	 */
-> -	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
-> -	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
-> -						(VM_PFNMAP|VM_MIXEDMAP));
-> -	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
-> +	VM_WARN_ON_ONCE(!vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-> +	VM_WARN_ON_ONCE(vma_test_all(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-> +	VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT) && vma_is_cow_mapping(vma));
->  
->  	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
->  
-> @@ -2262,7 +2260,7 @@ static inline bool can_change_pmd_writable(struct vm_area_struct *vma,
->  {
->  	struct page *page;
->  
-> -	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
-> +	if (WARN_ON_ONCE(!vma_test(vma, VMA_WRITE_BIT)))
->  		return false;
->  
->  	/* Don't touch entries that are not even readable (NUMA hinting). */
-> @@ -2277,7 +2275,7 @@ static inline bool can_change_pmd_writable(struct vm_area_struct *vma,
->  	if (userfaultfd_huge_pmd_wp(vma, pmd))
->  		return false;
->  
-> -	if (!(vma->vm_flags & VM_SHARED)) {
-> +	if (!vma_test(vma, VMA_SHARED_BIT)) {
->  		/* See can_change_pte_writable(). */
->  		page = vm_normal_page_pmd(vma, addr, pmd);
->  		return page && PageAnon(page) && PageAnonExclusive(page);
-> @@ -3568,7 +3566,8 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
->  
->  	if (pmd_dirty(orig_pmd))
->  		folio_set_dirty(folio);
-> -	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-> +	if (folio_test_dirty(folio) &&
-> +	    !vma_test_single_mask(vma, VMA_DROPPABLE)) {
->  		folio_set_swapbacked(folio);
->  		return false;
->  	}
-> @@ -3600,7 +3599,8 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
->  	 */
->  	if (pmd_dirty(orig_pmd))
->  		folio_set_dirty(folio);
-> -	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-> +	if (folio_test_dirty(folio) &&
-> +	    !vma_test_single_mask(vma, VMA_DROPPABLE)) {
->  		folio_set_swapbacked(folio);
->  		set_pmd_at(mm, addr, pmdp, orig_pmd);
->  		return false;
-> @@ -3614,7 +3614,7 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
->  	folio_remove_rmap_pmd(folio, pmd_page(orig_pmd), vma);
->  	zap_deposited_table(mm, pmdp);
->  	add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-> -	if (vma->vm_flags & VM_LOCKED)
-> +	if (vma_test(vma, VMA_LOCKED_BIT))
->  		mlock_drain_local();
->  	folio_put(folio);
->  
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 0d3bd9e23613..a2c7c6a0768d 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -640,7 +640,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
->  		 * If the vma has the VM_DROPPABLE flag, the collapse will
->  		 * preserve the lazyfree property without needing to skip.
->  		 */
-> -		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
-> +		if (cc->policy.anon_skip_lazyfree &&
-> +		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
->  		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
->  			result = SCAN_PAGE_LAZYFREE;
->  			goto out;
-> @@ -1683,7 +1684,8 @@ static enum scan_result collapse_scan_anon(struct vm_area_struct *vma,
->  		 * If the vma has the VM_DROPPABLE flag, the collapse will
->  		 * preserve the lazyfree property without needing to skip.
->  		 */
-> -		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
-> +		if (cc->policy.anon_skip_lazyfree &&
-> +		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
->  		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
->  			result = SCAN_PAGE_LAZYFREE;
->  			failed_pfn = folio_pfn(folio);
-> @@ -1948,7 +1950,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
->  	 * So page lock of folio does not protect from it, so we must not drop
->  	 * ptl before pgt_pmd is removed, so uffd private needs pml taken now.
->  	 */
-> -	if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
-> +	if (userfaultfd_armed(vma) && !vma_test(vma, VMA_SHARED_BIT))
->  		pml = pmd_lock(mm, pmd);
+>  #ifndef __ASSEMBLER__
+> +#include "kvm_util.h"
+> +#include "ucall_common.h"
+> +
+>  /*
+>   * Register state the boot trampoline (pvm-entry.S) restores. Only PC and X0
+>   * survive to a protected guest's first run, so X0 points at this block.
+> @@ -27,6 +30,27 @@ struct pvm_boot_args {
+>  	u64	tpidr_el1;
+>  	u64	sp_el1;
+>  };
+> +
+> +/* Memslot of the trampoline's page. Test memslots start above it. */
+> +#define PKVM_IDMAP_MEMSLOT	1
+> +
+> +bool pkvm_supported(void);
+> +struct kvm_vm *pkvm_vm_create(unsigned int nr_vcpus, u32 features, struct kvm_vcpu *vcpus[]);
+> +struct kvm_vm *pkvm_vm_create_with_one_vcpu(struct kvm_vcpu **vcpu, void *guest_code);
+> +
+> +/* Call after all register setup: later register writes don't reach the guest. */
+> +void pkvm_vcpu_setup_boot(struct kvm_vcpu *vcpu, void *guest_code);
+> +
+> +/* Call before the primary's first run. */
+> +gpa_t pkvm_vcpu_setup_boot_secondary(struct kvm_vcpu *vcpu, void *guest_code);
+> +gpa_t pkvm_idmap_gpa(struct kvm_vm *vm);
+> +
+> +void pkvm_run_loop(struct kvm_vcpu *vcpu, void (*on_sync)(struct kvm_vcpu *vcpu, struct ucall *uc));
+> +size_t pkvm_host_locked_vm(void);
+> +
 
-A patch in mm/core.git will remove that entirely.
+Could add a comment here:
 
-Right now it results in a conflict between mm-new and mm/core.git.
+// Called from the guest
 
-Beat to drop this here entirely. (I can also drop it when applying)
+As you have those 'Call' / contract comments above.
 
--- 
-Cheers,
-
-David
+> +unsigned long pkvm_hvc(u32 func, u64 arg0, u64 arg1, u64 arg2);
+> +
+> +void pkvm_guest_init(void);
+>  #endif
+>  
+>  #define PVM_BOOT_ARGS_OFF_JUMP_TGT	0
+> diff --git a/tools/testing/selftests/kvm/lib/arm64/pkvm.c b/tools/testing/selftests/kvm/lib/arm64/pkvm.c
+> new file mode 100644
+> index 0000000000000..f2d4cf48966e8
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/arm64/pkvm.c
+> @@ -0,0 +1,245 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Protected-VM support for the arm64 KVM selftest library.
+> + *
+> + * Copyright (C) 2025 Google LLC
+> + * Author: Fuad Tabba <fuad.tabba@linux.dev>
+> + * Author: Will Deacon <will@kernel.org>
+> + */
+> +
+> +#include <errno.h>
+> +
+> +#include <linux/arm-smccc.h>
+> +#include <linux/kernel.h>
+> +
+> +#include "kvm_util.h"
+> +#include "pkvm.h"
+> +#include "processor.h"
+> +#include "ucall_common.h"
+> +
+> +/* Set in the guest's copy only, by pkvm_vm_create(). */
+> +static gpa_t pkvm_ucall_pool_gpa;
+> +static size_t pkvm_ucall_pool_size;
+> +
+> +extern char pvm_entry_start[], pvm_entry_end[];
+> +
+> +#define ASSERT_BOOT_ARGS_OFF(field, off)				\
+> +	static_assert(offsetof(struct pvm_boot_args, field) == PVM_BOOT_ARGS_OFF_##off, #off)
+> +
+> +ASSERT_BOOT_ARGS_OFF(jump_tgt, JUMP_TGT);
+> +ASSERT_BOOT_ARGS_OFF(regs[0], X0);
+> +ASSERT_BOOT_ARGS_OFF(regs[1], X1);
+> +ASSERT_BOOT_ARGS_OFF(regs[2], X2);
+> +ASSERT_BOOT_ARGS_OFF(regs[3], X3);
+> +ASSERT_BOOT_ARGS_OFF(regs[4], X4);
+> +ASSERT_BOOT_ARGS_OFF(regs[5], X5);
+> +ASSERT_BOOT_ARGS_OFF(regs[6], X6);
+> +ASSERT_BOOT_ARGS_OFF(regs[7], X7);
+> +ASSERT_BOOT_ARGS_OFF(cpacr_el1, CPACR_EL1);
+> +ASSERT_BOOT_ARGS_OFF(sctlr_el1, SCTLR_EL1);
+> +ASSERT_BOOT_ARGS_OFF(tcr_el1, TCR_EL1);
+> +ASSERT_BOOT_ARGS_OFF(mair_el1, MAIR_EL1);
+> +ASSERT_BOOT_ARGS_OFF(ttbr0_el1, TTBR0_EL1);
+> +ASSERT_BOOT_ARGS_OFF(vbar_el1, VBAR_EL1);
+> +ASSERT_BOOT_ARGS_OFF(tpidr_el1, TPIDR_EL1);
+> +ASSERT_BOOT_ARGS_OFF(sp_el1, SP_EL1);
+> +
+> +unsigned long pkvm_hvc(u32 func, u64 arg0, u64 arg1, u64 arg2)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	smccc_hvc(func, arg0, arg1, arg2, 0, 0, 0, 0, &res);
+> +	return res.a0;
+> +}
+> +
+> +/* Shares whole granules, so pages next to the pool are shared with it. */
+> +void pkvm_guest_init(void)
+> +{
+> +	u64 granule = pkvm_hvc(ARM_SMCCC_VENDOR_HYP_KVM_HYP_MEMINFO_FUNC_ID, 0, 0, 0);
+> +	gpa_t end = pkvm_ucall_pool_gpa + pkvm_ucall_pool_size;
+> +	gpa_t gpa;
+> +
+> +	for (gpa = pkvm_ucall_pool_gpa & ~(granule - 1); gpa < end; gpa += granule)
+> +		GUEST_ASSERT_EQ(pkvm_hvc(ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID, gpa, 0, 0), 0);
+> +}
+> +
+> +bool pkvm_supported(void)
+> +{
+> +	int kvm_fd, vm_fd;
+> +
+> +	kvm_fd = open_kvm_dev_path_or_exit();
+> +	vm_fd = __kvm_ioctl(kvm_fd, KVM_CREATE_VM, (void *)KVM_VM_TYPE_ARM_PROTECTED);
+> +
+> +	if (vm_fd >= 0)
+> +		close(vm_fd);
+> +	close(kvm_fd);
+> +
+> +	return vm_fd >= 0;
+> +}
+> +
+> +/*
+> + * The trampoline turns the MMU on, so it runs from an identity-mapped page:
+> + * the first guest page of a host page at the top of the IPA space.
+> + */
+> +gpa_t pkvm_idmap_gpa(struct kvm_vm *vm)
+> +{
+> +	unsigned int npages = vm_adjust_num_guest_pages(vm->mode, 1);
+> +
+> +	return (vm_compute_max_gfn(vm) + 1 - npages) * vm->page_size;
+> +}
+> +
+> +struct kvm_vm *pkvm_vm_create(unsigned int nr_vcpus, u32 features, struct kvm_vcpu *vcpus[])
+> +{
+> +	struct vm_shape shape = VM_SHAPE_DEFAULT;
+> +	struct kvm_vm *vm;
+> +	gpa_t idmap_gpa;
+> +	unsigned int i;
+> +
+> +	TEST_ASSERT(pvm_entry_end - pvm_entry_start +
+> +		    nr_vcpus * sizeof(struct pvm_boot_args) <= MIN_PAGE_SIZE,
+> +		    "trampoline and %u boot-args blocks overflow the idmap page", nr_vcpus);
+> +
+> +	shape.type = KVM_VM_TYPE_ARM_PROTECTED;
+> +	vm = __vm_create(shape, nr_vcpus, 0);
+> +
+> +	for (i = 0; i < nr_vcpus; i++) {
+> +		struct kvm_vcpu_init init;
+> +
+> +		kvm_get_default_vcpu_target(vm, &init);
+> +		init.features[0] |= features | BIT(KVM_ARM_VCPU_PSCI_0_2);
+> +		if (i > 0)
+> +			init.features[0] |= BIT(KVM_ARM_VCPU_POWER_OFF);
+> +
+> +		vcpus[i] = aarch64_vcpu_add(vm, i, &init, NULL);
+> +	}
+> +	kvm_arch_vm_finalize_vcpus(vm);
+> +
+> +	idmap_gpa = pkvm_idmap_gpa(vm);
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, idmap_gpa, PKVM_IDMAP_MEMSLOT,
+> +				    vm_adjust_num_guest_pages(vm->mode, 1), 0);
+> +	memcpy(addr_gpa2hva(vm, idmap_gpa), pvm_entry_start, pvm_entry_end - pvm_entry_start);
+> +	virt_map(vm, idmap_gpa, idmap_gpa, 1);
+> +
+> +	vm_init_descriptor_tables(vm);
+> +	for (i = 0; i < nr_vcpus; i++) {
+> +		vcpu_set_reg(vcpus[i], ARM64_CORE_REG(regs.pc), idmap_gpa);
+> +		vcpu_init_descriptor_tables(vcpus[i]);
+> +	}
+> +
+> +	write_guest_global(vm, pkvm_ucall_pool_gpa, get_ucall_pool_gpa(vm));
+> +	write_guest_global(vm, pkvm_ucall_pool_size,
+> +			   ucall_nr_pages_required(vm->page_size) * vm->page_size);
+> +
+> +	return vm;
+> +}
+> +
+> +/* Every block must be written before the primary's first run, when the host donates the page. */
+> +static gpa_t pkvm_boot_args_gpa(struct kvm_vcpu *vcpu)
+> +{
+> +	struct kvm_vm *vm = vcpu->vm;
+> +
+> +	return pkvm_idmap_gpa(vm) + vm->page_size - (vcpu->id + 1) * sizeof(struct pvm_boot_args);
+> +}
+> +
+> +static void pkvm_snapshot_boot_args(struct kvm_vcpu *vcpu, void *guest_code)
+> +{
+> +	struct pvm_boot_args *args = addr_gpa2hva(vcpu->vm, pkvm_boot_args_gpa(vcpu));
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(args->regs); i++)
+> +		args->regs[i] = vcpu_get_reg(vcpu, ARM64_CORE_REG(regs.regs[i]));
+> +
+> +	args->jump_tgt  = (u64)guest_code;
+> +	args->cpacr_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_CPACR_EL1));
+> +	args->sctlr_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_SCTLR_EL1));
+> +	args->tcr_el1   = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TCR_EL1));
+> +	args->mair_el1  = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MAIR_EL1));
+> +	args->ttbr0_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TTBR0_EL1));
+> +	args->vbar_el1  = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VBAR_EL1));
+> +	args->tpidr_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL1));
+> +	args->sp_el1    = vcpu_get_reg(vcpu, ARM64_CORE_REG(sp_el1));
+> +}
+> +
+> +void pkvm_vcpu_setup_boot(struct kvm_vcpu *vcpu, void *guest_code)
+> +{
+> +	pkvm_snapshot_boot_args(vcpu, guest_code);
+> +	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.regs[0]), pkvm_boot_args_gpa(vcpu));
+> +}
+> +
+> +gpa_t pkvm_vcpu_setup_boot_secondary(struct kvm_vcpu *vcpu, void *guest_code)
+> +{
+> +	int ret;
+> +
+> +	pkvm_snapshot_boot_args(vcpu, guest_code);
+> +
+> +	/*
+> +	 * A guest's CPU_ON requires the target's hyp vCPU, which KVM_RUN creates.
+> +	 * With immediate_exit set, KVM_RUN returns before the vCPU runs.
+> +	 */
+> +	vcpu->run->immediate_exit = 1;
+> +	ret = __vcpu_run(vcpu);
+> +	vcpu->run->immediate_exit = 0;
+> +	TEST_ASSERT(ret == -1 && errno == EINTR,
+> +		    "secondary hyp-vCPU registration: rc %d errno %d", ret, errno);
+> +
+> +	return pkvm_boot_args_gpa(vcpu);
+> +}
+> +
+> +struct kvm_vm *pkvm_vm_create_with_one_vcpu(struct kvm_vcpu **vcpu, void *guest_code)
+> +{
+> +	struct kvm_vm *vm = pkvm_vm_create(1, 0, vcpu);
+> +
+> +	pkvm_vcpu_setup_boot(*vcpu, guest_code);
+> +	return vm;
+> +}
+> +
+> +void pkvm_run_loop(struct kvm_vcpu *vcpu, void (*on_sync)(struct kvm_vcpu *vcpu, struct ucall *uc))
+> +{
+> +	bool done = false;
+> +	struct ucall uc;
+> +
+> +	while (!done) {
+> +		u64 cmd;
+> +
+> +		vcpu_run(vcpu);
+> +
+> +		switch (cmd = get_ucall(vcpu, &uc)) {
+> +		case UCALL_SYNC:
+> +			if (on_sync)
+> +				on_sync(vcpu, &uc);
+> +			break;
+> +		case UCALL_DONE:
+> +			done = true;
+> +			break;
+> +		case UCALL_ABORT:
+> +			REPORT_GUEST_ASSERT(uc);
+> +			break;
+> +		case UCALL_PRINTF:
+> +			REPORT_GUEST_PRINTF(uc);
+> +			break;
+> +		default:
+> +			TEST_FAIL("Unexpected guest exit: ucall %lu, arg %lu", cmd, uc.args[1]);
+> +		}
+> +	}
+> +}
+> +
+> +/* Bytes the current process has locked, per RLIMIT_MEMLOCK accounting. */
+> +size_t pkvm_host_locked_vm(void)
+> +{
+> +	size_t size = 0, locked_kb = 0;
+> +	char *line = NULL;
+> +	FILE *f;
+> +
+> +	f = fopen("/proc/self/status", "r");
+> +	TEST_ASSERT(f, "fopen /proc/self/status");
+> +
+> +	while (getline(&line, &size, f) > 0) {
+> +		if (sscanf(line, "VmLck:\t%zu kB", &locked_kb) == 1)
+> +			break;
+> +	}
+> +
+> +	free(line);
+> +	fclose(f);
+> +
+> +	return locked_kb << 10;
+> +}
+> -- 
+> 2.47.3
+> 
