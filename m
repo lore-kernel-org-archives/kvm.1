@@ -1,104 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793971245;
-	b=jGnmNswqHEHnjikF4j9BY1h8plcNax/ljR3+5IgTwpvjTPPn1KSgAMpkHZCTR+1RH09O
-	 dPwyE4chwEXzUkaGP5lvK/7RSFCU6r1lnS2gjTutC38k2ihdmdrCe6Obc+5pzJw/33hYG
-	 Mp1U8j+Ri3l586TQY4bN40dtL1CQg2Qy04sbWQzOsozRXFZXO3zoSwZCHElwRsCr0D25w
-	 iFoy87IucimLVBYiTLg5zuYXiXC9QQ5iTixkg43fCqN49eW3ojdb5I89OGSTm4uzpXEFL
-	 dc7hx3j9p7/xyvpuwqbMi+/qkLzt06DXGhGig0M8T4WVbINUvhu8PXchpRWhdDX3slw==
+	t=1793971310;
+	b=kPRXIsJbHYQ5hRAim+BY6xP8YQkKpLZKlj4dikpMNtvyl1utJck21tCXAY+i0Dtgh0Ob
+	 6HBotMmVq5gisRiXOjLkrV+Wm7+fxQMD4738rYyAP8k3cENHpbkPCLSMH9jXGE6pV8pYW
+	 a9s3dCwn/Zug/EBR8fV9BrnW79X0eTxxdlAmKDX7WA+T7J373h+pS7d+unGIy6btkYwLb
+	 FyhrUChHAHpOC79N2VGBak2t2Gg/virHT+TH0ENsJZK5hSTpWEvItRhGoFa96KZAO6w4F
+	 pTRbeU8vyWfTPyhCg5/R4yIcvuLel3mgzjIn6VUzE4RjC7EmRW5kJWJAN58iCjBbGRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793971245;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=fUXCYLhn52D7jjqtCGZ+7rWovE/XUiCSennV1JjWXTc=;
-	b=n2C4QBr3S5cW2iC9Y7ze9CMRdJM6rAsVXDsbiMUTpmwusWDl4VHwIl3KJplHoHYP/cRH
-	 UJP9Dd0KTZnhnI2HGdY8HI+Sd2bgDCkt9kBLD9Cf34Kq6SIs+G82yVwuS3Ard1YrB4+s2
-	 jtDDJoL7Kq2OIXCegqFrBor5026ihNzp4kaqYlnJPPta2Ui/XKjIWcm405aXi6rF0xvY7
-	 j5uQIKsxlNhk01HPEuIiw+Zbv5tDD7A4psQVkdQXkvIHvxzKk+XnYFl/xLOJ+ALTpow+K
-	 OjaNorNYo8Tupis/G4S22HLObogW2EY0TqL1DAkBSm9byWQpR3bgwb9q8di2DU35urg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793971310;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=im8cFQ5bpIMfGLqL2H29H66J9u5HMmBSQRVvIGP1wcA=;
+	b=ROLdM7oyUrkevoFWPCClHi3Be+4RbeMhSHBtLrfD00tkCtNV68n2+zVvb75UyBxwMhzK
+	 1g3creMGwsVQD3HpzYgOrVSBRDJpa68rcCyuwjPKOP9mDts90x7g8ELMAITxjbusCTxWP
+	 iIIJUIhmgprmNoepS4PgF7U/WrHfPIWKh0cJX//yKntM8YyN058Ip6vpM6KJmJM7/HSAN
+	 Bp9habaYHIkohcxgQ1EPELQ5IjeKCz5pQySMopv4X+XbKgqQjcdnEmu7hCLs1E+wAjP3x
+	 bVfeylHN381SrAI46sp4v17/QtMaTJkCcWx7b42Z1PuWmHqWC0xzOWbVrTbAq4KboLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AWU+oP3u;
-	arc=none smtp.remote-ip=95.215.58.186
-Received: from mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FSMg94+r;
+	arc=none smtp.remote-ip=192.198.163.17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237B2606A326
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 13:20:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 237B2606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4E3606A329;
+	Fri,  6 Nov 2026 13:21:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C4E3606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AWU+oP3u
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ojgBXCCljWWMx/by6O5nBZ1cYADUOJnAnHqRvmqKFno=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793971243; v=1; x=1794576043;
- b=AWU+oP3uE+Bp9M4NHthTv7q7awqULRAk7AJ+yUdGd8HP3gv4OZ3L3y2iim+wbp8ZY+SmjP6f
- RQOZ8k1aHyjLLkndQT62PYK+Mb5tL6fxCe7tCZ6NDOnwdYBj1Z+KZlsMEmliGrhC5h4dkKcDQnt
- /zsj+KNoWYeiGHHuaHTmkkzg=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id fd2f547758ebbf7f;
-	Fri, 06 Nov 2026 13:20:43 +0000
-X-Mizu-Trace-ID: fd2f547758ebbf7f
-X-Migadu-Flow: FLOW_OUT
-From: Tao Cui <cui.tao@linux.dev>
-To: akpm@linux-foundation.org,
-	dgilbert@interlog.com,
-	mkp@kernel.org,
-	loberman@redhat.com,
-	jmeneghi@redhat.com,
-	kraxel@redhat.com,
-	vivek.kasireddy@intel.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	stefanha@redhat.com,
-	sgarzare@redhat.com,
-	rostedt@goodmis.org,
-	vdonnefort@google.com,
-	mhiramat@kernel.org,
-	jgg@ziepe.ca,
-	kevin.tian@intel.com,
-	axboe@kernel.dk
-Cc: linux-mm@kvack.org,
-	James.Bottomley@HansenPartnership.com,
-	sumit.semwal@linaro.org,
-	christian.koenig@amd.com,
-	phasta@kernel.org,
-	joro@8bytes.org,
-	will@kernel.org,
-	linux-scsi@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FSMg94+r
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793971309; x=1825507309;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FHnB8hEBQdqMjNCdmgX3qlWiT3Uxn6+/tTiwV9C9JJQ=;
+  b=FSMg94+rJUjtrUgdlByFDmsnBRPlS49R42XAUIuwLrSTNkgFIOgPh7cH
+   4g2H6kSj3mblsONSD0QQ8hQQiZRVvMtAXWZhM69SZYNJXcQxQ6vRTehtp
+   W1ENjnEvfWk1qoLS9Y2/RuSpDKz7Nh4PkFiATQjdYcNVgqh14UjS1DMxi
+   nOQvb0uMJc94gJF1295P4xTFRPu4XB4Kos5g+xKO8WB/qG3Dj0xHhDkhR
+   6LPuBzOH3MPA0kHD5pKaXS60fx/IR/+f1h/kp832dat4onkU0DPBYtZES
+   Ljglbxc6IjTfmASFzhTOaxX4b4fB3Gyhk/3lmCYHAh/wDYhLnb7ICJ5+9
+   g==;
+X-CSE-ConnectionGUID: 3Dc/WSL6TZGavGdFaGd3WQ==
+X-CSE-MsgGUID: Y7vSuImsQ9m74xS0SAKWcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2786761"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2786761"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 05:21:48 -0800
+X-CSE-ConnectionGUID: Kd81QBrYQ8a3j0TQr6UV6g==
+X-CSE-MsgGUID: tJeLR2utSdC16qt6o9ZE/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="7397263"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 05:21:48 -0800
+From: Chao Gao <chao.gao@intel.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-trace-kernel@vger.kernel.org,
-	iommu@lists.linux.dev,
-	io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bobbyeshleman@meta.com,
-	mathieu.desnoyers@efficios.com,
-	robin.murphy@arm.com,
-	mason@kernel.org,
-	aesteve@redhat.com,
-	tjmercier@google.com,
-	harry@kernel.org,
-	vbabka@suse.cz,
-	cui.tao@linux.dev,
-	cuitao@kylinos.cn
-Subject: [PATCH 6/7] io_uring: account the ring context and SQPOLL thread data to memcg
-Date: Fri,  6 Nov 2026 21:18:28 +0800
-Message-ID: <20261106131829.3228926-7-cui.tao@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261106131829.3228926-1-cui.tao@linux.dev>
-References: <20261106131829.3228926-1-cui.tao@linux.dev>
+	linux-kernel@vger.kernel.org
+Cc: yilun.xu@intel.com,
+	arjan.van.de.ven@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [RFC PATCH v2 0/2] TDX: P-SEAMLDR: Support large TDX modules and sigstructs 
+Date: Fri,  6 Nov 2026 05:21:54 -0800
+Message-ID: <20261106132159.1551365-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,87 +90,81 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Tao Cui <cuitao@kylinos.cn>
+This series lets TDX module updates handle large TDX modules and
+sigstructs. It is an RFC for early review.
 
-The io_ring_ctx and the SQPOLL io_sqd are the last per-ring allocations
-made with plain GFP_KERNEL.  The larger surfaces around them are
-already charged: io_mapped_ubuf and io_rsrc_node since commit
-075d5837bafc ("io_uring/rsrc: charge buffer arrays and nodes to memcg"),
-the tctx node and its XArrays since commit 0b34e7b20a48 ("io_uring:
-charge tctx nodes and personalities").
+Dave, feel free to ignore this RFC for now. TDX developers, please take
+a look.
 
-Charge the context and the SQPOLL thread data the same way.
+Patch 1 raises the module size limit from about 2MB to about 32MB,
+instead of supporting every module size the P-SEAMLDR ABI allows.
+Current modules are roughly 2MB and are unlikely to approach 32MB for
+years. If they do, raising SEAMLDR_PARAMS_NR_PAGES is enough. In return
+the code stays much simpler, so I think this is the right direction.
+Does that trade-off look right?
 
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
----
- io_uring/io_uring.c | 2 +-
- io_uring/rsrc.c     | 3 ++-
- io_uring/sqpoll.c   | 2 +-
- io_uring/tctx.c     | 4 ++--
- 4 files changed, 6 insertions(+), 5 deletions(-)
+== Changes ==
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 03724419c4e1..d39cdde49a9f 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -229,7 +229,7 @@ static __cold struct io_ring_ctx *io_ring_ctx_alloc(struct io_uring_params *p)
- 	int hash_bits;
- 	bool ret;
- 
--	ctx = kzalloc_obj(*ctx);
-+	ctx = kzalloc_obj(*ctx, GFP_KERNEL_ACCOUNT);
- 	if (!ctx)
- 		return NULL;
- 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index e0345c3e764e..9a971c983686 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -825,7 +825,8 @@ static bool io_coalesce_buffer(struct page ***pages, int *nr_pages,
- 	unsigned i, j;
- 
- 	/* Store head pages only*/
--	new_array = kvmalloc_objs(struct page *, nr_folios);
-+	new_array = kvmalloc_objs(struct page *, nr_folios,
-+				  GFP_KERNEL_ACCOUNT);
- 	if (!new_array)
- 		return false;
- 
-diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-index d387488db2de..b82d3a285337 100644
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -172,7 +172,7 @@ static struct io_sq_data *io_get_sq_data(struct io_uring_params *p,
- 			return sqd;
- 	}
- 
--	sqd = kzalloc_obj(*sqd);
-+	sqd = kzalloc_obj(*sqd, GFP_KERNEL_ACCOUNT);
- 	if (!sqd)
- 		return ERR_PTR(-ENOMEM);
- 
-diff --git a/io_uring/tctx.c b/io_uring/tctx.c
-index b4fecea3ea47..6673393100ec 100644
---- a/io_uring/tctx.c
-+++ b/io_uring/tctx.c
-@@ -23,7 +23,7 @@ static struct io_wq *io_init_wq_offload(struct io_ring_ctx *ctx,
- 	mutex_lock(&ctx->uring_lock);
- 	hash = ctx->hash_map;
- 	if (!hash) {
--		hash = kzalloc_obj(*hash);
-+		hash = kzalloc_obj(*hash, GFP_KERNEL_ACCOUNT);
- 		if (!hash) {
- 			mutex_unlock(&ctx->uring_lock);
- 			return ERR_PTR(-ENOMEM);
-@@ -85,7 +85,7 @@ __cold struct io_uring_task *io_uring_alloc_task_context(struct task_struct *tas
- 	struct io_uring_task *tctx;
- 	int ret;
- 
--	tctx = kzalloc_obj(*tctx);
-+	tctx = kzalloc_obj(*tctx, GFP_KERNEL_ACCOUNT);
- 	if (unlikely(!tctx))
- 		return ERR_PTR(-ENOMEM);
- 
+Changes since RFC v1:
+
+Patch 1 is reworked to be much smaller. In the last version, we tried to
+size the chained pages to each module, which needed a prep patch so that
+the allocation happens only after the image header is validated. now, we
+make 'struct seamldr_params' a fixed 16 pages. This way, the allocation
+no longer depends on the header, so the prep patch is dropped.
+
+Other changes:
+- Find each link entry by its position at the end of a page instead of
+  by checking for a non-zero entry. [Rick]
+- Write the link entries in populate_pa_list() while filling in the page
+  addresses, instead of in a separate loop and helper.
+- Drop the version macros in patch 2 to keep the diff minimal.
+- Explain in patch 2 why the sigstruct filling code needs no change.
+
+v1: https://lore.kernel.org/kvm/20261030085304.3886520-1-chao.gao@intel.com/
+
+===
+
+This series is a follow-up to the TDX module update series. As thanks
+for merging that series, we agreed to take on the TDX metadata cleanup [1].
+With the cleanup converging, we are starting on this work and expect it
+to be merged after the cleanup.
+
+Today a TDX module binary can be at most 496 pages and its sigstruct at
+most one page. Both limits come from the P-SEAMLDR ABI.
+
+TDX modules are outgrowing them. A post-quantum signature algorithm
+pushes the sigstruct past 4KB, and new module features push the binary
+past 496 pages. The P-SEAMLDR ABI was extended for both.
+
+The kernel rejects any image over these limits. TDX modules for Diamond
+Rapids exceed them, so without this series, TDX module updates fail on
+Diamond Rapids. This series is all that is needed to make them work.
+
+The image format that userspace uploads ('struct tdx_image') is generic
+enough and needs no change.
+
+== AI Usage ==
+
+AI was used under supervision to review code and workshop logs.
+
+== Testing ==
+
+Tested on a Diamond Rapids system. Updates with a module larger than 2MB
+and an 8KB sigstruct work, which exercises both the chained page list
+and version 1 of 'struct seamldr_params'. TDs keep running across
+updates.
+
+[1]: https://lore.kernel.org/kvm/20261012094754.27702-1-chao.gao@intel.com/
+
+
+Chao Gao (2):
+  x86/virt/seamldr: Support large TDX module binaries
+  x86/virt/seamldr: Support multiple sigstruct pages
+
+ arch/x86/virt/vmx/tdx/seamldr.c | 43 ++++++++++++++++++++++++++-------
+ 1 file changed, 34 insertions(+), 9 deletions(-)
+
 -- 
-2.43.0
+2.52.0
 
