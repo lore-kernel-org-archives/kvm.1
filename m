@@ -1,49 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793983250;
-	b=IJWFSzVxaRqZR9Yp9GrjDJz1087mZPzmqdVTGt5l2BcOf7YadrX8JUKwlPlAWyjHwOcc
-	 9EhgtJB5SHGeedTsM0LLDbQJN87kp1NtzB8ocOflvrJbQax8NKPmch6Efu0ButP4smrnx
-	 sH51FOE/3sOAG9XaSbrOmLnq4s8Ag38I/9o61af3/6Pw1sZZPByzdjiIyRVBlQDlqdkj3
-	 Sk8LQhn0lE+pQpg88jxb45KwmWL7CZRlIstObADivj3lERTexzvdca4TEnpMmLmNwc5UB
-	 b1q2/iMriZ/1V/Tnoq5YrwJFSs/7CjQ/tM4pmA+ojKj1SDerI90TCD6BQMqTsySE2nA==
+	t=1793983659;
+	b=4MIt1q6GEEyNYgmtjaz6fzitE5j4EzO5ZLDy3yEKe4+Nfj2MGSZVyBoda90vyrDHF0iQ
+	 IwNWNJv5e5mRrdsLywLV3wfMZYCzgtcv1r0jEBnIT9LBvmo4JvChLqOTaJZPK3xh+q361
+	 EyizxY8OIIq+zQxuaYvo1E7sK9hZUeifIgLOypyH8P8eoUUF0oSeMx9xIE2GYoXJ/5TlX
+	 2fMEH5Pnu+gL93IdyK70RXu8W+6vXM+D3Is4X+g3xbMBZ+nOwFhtxIGIGSfFrmfmJgoSR
+	 vXztMbv5xp2u3I5sdkPDBCYuE4Ina58Tf2wCAdMCIChkWEMo3Tjm9i7+iVYBKPx3uCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793983250;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:From:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=9IIEYk7YBZeshSLM0PoZroS+Zb4rz7EQkxpB2vSxCzc=;
-	b=HlYVbupaQ/JxQqZ5EvkG1F+whiM6tGYW70831CHdnKoBs927Tzzd44G7X4mNlb8H065l
-	 P2RGqbjbvMUlL4RDXG6onZroCkUxpuaZQ6ouEhG278RO6nhrDVqlV3F3fB5Pu/jmFYdoQ
-	 cBfTU3jxVb4ho9PG0f1sR0KiWNyq+UqjcHuo2tW3WyW3GCP7v2rONTdzOumyyByyi+UTd
-	 UB8fofUE1K7QRyDQBvm/RZ9XMGA1sxkt3QWw1lFnbjWmYuqrfuPZBQbd/DvNyAQUMERKX
-	 WaQaxjt6Slia7xS0QFIccoef6UjOJQSUBLU4Qk+6zAH1bwd//ajhFIZRa3/Z1VPJhhQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793983659;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=zti4JuFLZG8tZuk4JJOYaWVhoy6VLoz9Y+1Og8ZFPPU=;
+	b=Peb+DeniLoeJy5LLTxKkLhM8YseYC9YUTo4xnZ9vJTAeEzEMH+6fDTrppox9bHuffabR
+	 Pg59WJcX1tBJkZVkCD/N2c7rtmXbkK3Ki7nFrhI/AR+SevOA/QLhRIHLoQhL5R+V68xr6
+	 /6Qet5/n0nVNrZjac4iz2ScsfQD/U2EflJqpwuOhjLMP+Xr8V/x+rH7eXJBuGHW5GSTbb
+	 LuTS10VUNXdHFLofG3ePifY173hl+rOoYrj7xgBIMnQSdgA1VgtLn59AmL4Ai93g8IAy4
+	 0iKVkN6D0KROsO5LjR74aqk90ilAvEs+NmIOykgFPMi4ni5UWvMT+rAQEU9Dbctv5qw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=izE986vy;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FEA606A32C
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 16:40:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51FEA606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EU+y8ts+;
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD510606A33A
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 16:47:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD510606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=izE986vy
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 766E01595;
-	Fri,  6 Nov 2026 08:40:45 -0800 (PST)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13D863F673;
-	Fri,  6 Nov 2026 08:40:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793983248; bh=ADNoIliO7uObwSND37J76qZqTaSAog/LObwgBbJ0hrE=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=izE986vyY0q3Pt8OzbVRSsX+gj1YMLu1KTdyxaBfirRrJdU/zpJYFe7HbUC+GKIAa
-	 PnRjK0I2uAaRUtfjnoncQW3+3Tk8RT6ft1ZSlUX+IYQYiE1Wi49dk+5Ei/EpX2Xt74
-	 I6Dh6W48YANBmzAaKmgyN7nkpTD/adhBrHrDiFGY=
-Message-ID: <80a956c7-b2b2-411e-99c7-d703c92f3c34@arm.com>
-Date: Fri, 6 Nov 2026 16:40:45 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EU+y8ts+
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a01e2962a1so626404b3a.2
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 08:47:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793983658; x=1794588458; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zti4JuFLZG8tZuk4JJOYaWVhoy6VLoz9Y+1Og8ZFPPU=;
+        b=EU+y8ts+c5IPNHBp7a/U5oL5cJJGNP6x78Zjw2VAaB5X5VijDh7NNxVGqF3c9JiMGT
+         M597ZT0+idqiWEcsSUPqWfWX5VEdcXMB+1S6rQ3POGjfAccdgZZsOERarQs/5bIEHZtD
+         /7SFGiNmgYdtCP1FpdiQQDXPOyr6gG9JFJaOKYo1nx4bQMeXKC2njLa+i0g1e5XL+HK1
+         zsqzw391h1iYcAuYhjjsupo0Qekkr95p50iteAee9eK9pbuxPZqj11DON/5gdgSiuRMc
+         j+8dK3jlA3j+i2ic9P712FZNTmECJ4Tux0JLHAITgnGNRy4qH7MUtM0qd66pGzTJoyhZ
+         Bk2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793983658; x=1794588458;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zti4JuFLZG8tZuk4JJOYaWVhoy6VLoz9Y+1Og8ZFPPU=;
+        b=B82W8RCMxDiRmb8QcQPz+GGohdNk/LL5z3o/g2ZWGGD0uRDM+4xaaIZ2YD4eso0hMY
+         ZNERuxD0PrqruCY0+IKcz8hbBB5HABbMmARxjw4N4sq8PAd4iI7UHb+HvnVKcriiPMz1
+         iHGHEW/nnXACmYY5E3fSefD2KEpiNjT+hKYN0fBHzHXd4FbHykXM4BLGueTZnxoS6pmi
+         E4nmVB2m0qKWbigz5bse8CZilpHvADq7nPnXCQROi+zOdcOkwKoCg9LlkpjwPuNMjSee
+         SF1HIOIYueKEGxyriDceHmOKn/AvrD4zJ57skO/I5FQQsLTSV9PVNUPfgQwPdJvppbNQ
+         VP8A==
+X-Gm-Message-State: APuU4Z+X75taU+w+vmp5HHml7jhy7RFQ7qYhRnoy8bugSuqYMnqq3wby
+	aMoh23xrpQIndk6Tn5QB/MsCNvG8IReWcfF3kHke0A/PaT8PmMOau7VIWWH0rEF13lXXubuA4aJ
+	uKpG0wA==
+X-Received: from pfbfw6.prod.google.com ([2002:a05:6a00:61c6:b0:8a0:6a08:e927])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:140b:b0:8a0:3336:4b45
+ with SMTP id d2e1a72fcca58-8b37aa9f637mr3084436b3a.12.1793983657844; Fri, 06
+ Nov 2026 08:47:37 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri,  6 Nov 2026 08:47:32 -0800
+In-Reply-To: <20261105-tdx-selftests-v16-18-2024e8fa517a@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,385 +77,174 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/11] KVM: arm64: CCA: Prevent memslot modifications
- after Realm creation
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Steven Price <steven.price@arm.com>, sashiko-reviews@lists.linux.dev,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-10-steven.price@arm.com>
- <sashiko-outbox-193708@kernel.org>
- <9489ebe7-4c75-4229-811e-3f618028d367@arm.com>
- <a2dfb2ad-7c52-43e1-8b77-cacb2fa00c05@arm.com>
- <0d5a4b59-f38c-4c1d-a59e-202e7efb4b54@arm.com>
-Content-Language: en-US
-In-Reply-To: <0d5a4b59-f38c-4c1d-a59e-202e7efb4b54@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261105-tdx-selftests-v16-18-2024e8fa517a@google.com>
+X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
+Message-ID: <20261106164732.3939387-1-seanjc@google.com>
+Subject: [PATCH v16.1] KVM: selftests: Add support for TDX ucalls, via TDVMCALL_REPORT_FATAL_ERROR
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sagi Shahar <sagis@google.com>, Lisa Wang <wyihan@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Add support for doing ucalls on TDX by abusing TDVMCALL_REPORT_FATAL_ERROR
+to pass the address of the payload to the host.  The "fatal error" TDVMCALL
+is perfectly suited for passing information to host userspace, as both the
+TDX Module and KVM allow the guest to pass (almost) all registers to the
+host, i.e. provide enough of a data payload to make a collision with a real
+fatal error practically impossible.
 
+TDX can't use port I/O, as the TDX ABI doesn't allow the guest to share
+arbitrary register state with the host on a port I/O exit, and the port I/O
+data payload is limited to 4 bytes, i.e. would potentially truncate the
+ucall address.
 
-On 05/11/2026 17:31, Suzuki K Poulose wrote:
-> 
-> 
-> On 05/11/2026 15:06, Suzuki K Poulose wrote:
->> On 04/11/2026 11:15, Steven Price wrote:
->>> On 02/11/2026 15:50, sashiko-bot@kernel.org wrote:
->>>> Thank you for your contribution! Sashiko AI review found 1 potential 
->>>> issue(s) to consider:
->>>> - [High] KVM: arm64: CCA: guest_memfd memslot delete rejected after 
->>>> Stage-2 unmap
->>>> -- 
->>>>
->>>> commit 5106402397c36eec1e5fa59a5bb2c5adf4ee2aa8
->>>> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>
->>>> KVM: arm64: CCA: Prevent memslot modifications after Realm creation
->>>>
->>>> This commit updates kvm_arch_prepare_memory_region() to disallow 
->>>> creating,
->>>> modifying, or deleting guest_memfd-backed memslots once a Realm has 
->>>> been
->>>> created.
->>>>
->>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>>>> index 51fda7b2ff7f3..eb8c5f9e9791d 100644
->>>>> --- a/arch/arm64/kvm/mmu.c
->>>>> +++ b/arch/arm64/kvm/mmu.c
->>>>> @@ -2862,13 +2862,28 @@ int kvm_arch_prepare_memory_region(struct 
->>>>> kvm *kvm,
->>>>>           (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
->>>>>           return -EPERM;
->>>>> -    if (kvm->arch.vm_flavor == VM_PROTECTED_PKVM) {
->>>>> +    switch (kvm->arch.vm_flavor) {
->>>>> +    case VM_PROTECTED_PKVM:
->>>>>           /* Cannot modify memslots once a pVM has run. */
->>>>>           if (pkvm_hyp_vm_is_created(kvm) &&
->>>>> -            (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
->>>>> +            (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
->>>>>               return -EPERM;
->>>>> -        }
->>>>> +        break;
->>>>> +    case VM_REALM:
->>>>> +        /*
->>>>> +         * Once the Realm is created, we cannot modify any slots that
->>>>> +         * could be providing private memory. i.e., guest_memfd 
->>>>> backed
->>>>> +         * slots.
->>>>> +         * TODO: Handle trusted device private memory slots
->>>>> +         */
->>>>> +        if (!kvm_realm_is_created(kvm))
->>>>> +            break;
->>>>> +        if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
->>>>> +            return -EPERM;
->>>>
->>>> [Severity: High]
->>>> Does checking kvm_slot_has_gmem(old) in 
->>>> kvm_arch_prepare_memory_region() run
->>>> too late to prevent Stage-2 unmapping when deleting a guest_memfd- 
->>>> backed
->>>> memslot on a created Realm?
->>>>
->>>> In virt/kvm/kvm_main.c:kvm_set_memory_region(), non-delete changes
->>>> (KVM_MR_MOVE and KVM_MR_FLAGS_ONLY) on KVM_MEM_GUEST_MEMFD memslots are
->>>> already rejected upfront with -EINVAL, so kvm_slot_has_gmem(old) is 
->>>> reached
->>>> here when change == KVM_MR_DELETE.
->>>>
->>>> However, in virt/kvm/kvm_main.c:kvm_set_memslot(), KVM invalidates and
->>>> flushes the old memslot before calling kvm_prepare_memory_region():
->>>>
->>>> virt/kvm/kvm_main.c:kvm_set_memslot() {
->>>>     if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
->>>>         invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
->>>>         if (!invalid_slot) {
->>>>             mutex_unlock(&kvm->slots_arch_lock);
->>>>             return -ENOMEM;
->>>>         }
->>>>         kvm_invalidate_memslot(kvm, old, invalid_slot);
->>>>     }
->>>>
->>>>     r = kvm_prepare_memory_region(kvm, old, new, change);
->>>>     if (r)
->>>>         goto err;
->>>> }
->>>>
->>>> kvm_invalidate_memslot() marks the active slot as 
->>>> KVM_MEMSLOT_INVALID and
->>>> calls arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot():
->>>>
->>>> arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot() {
->>>>     write_lock(&kvm->mmu_lock);
->>>>     kvm_stage2_unmap_range(&kvm->arch.mmu, gpa, size, true);
->>>>     kvm_nested_unmap_cipa_range(kvm, gpa, size, true);
->>>>     write_unlock(&kvm->mmu_lock);
->>>> }
->>>>
->>>> For a Realm VM, kvm_stage2_unmap_range() invokes
->>>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() with
->>>> KVM_FILTER_PRIVATE | KVM_FILTER_SHARED:
->>>>
->>>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() {
->>>>     if (attr_filter & KVM_FILTER_SHARED)
->>>>         realm_unmap_shared_range(kvm, start, end, may_block);
->>>>     if (attr_filter & KVM_FILTER_PRIVATE)
->>>>         realm_unmap_private_range(kvm, start, end, may_block);
->>>> }
->>>>
->>>> By the time kvm_arch_prepare_memory_region() returns -EPERM and
->>>> kvm_set_memslot() restores the old memslot in the error path, hasn't
->>>> realm_unmap_private_range() already unmapped and undelegated the 
->>>> Realm's
->>>> private Stage-2 DATA granules across the memslot's GPA range?
->>>>
->>>
->>> I think this should be fixable by checking in
->>> kvm_arch_flush_shadow_memslot() and preserving the stage-2 mappings by
->>> returning early. kvm_arch_prepare_memory_region() will then reject the
->>> operation but the mappings will still be in place.
->>
->> Or is the better fix to delay the kvm_invalidate_memslot() after 
->> kvm_prepare_memory_region() ? i.e., if we the KVM backend doesn't
->> approve the change, why do invalidate the slot ? For most of the CoCo
->> VMs, this would be disastrous.
-> 
-> 
-> Ignore this, driver for CCA is doing the wrong thing. Instead of
-> flushing (which is a NOP for CCA), we were removing the mapping.
+Alternatively, TDX could use MMIO, but using a magic emulated MMIO address
+is fragile (see the TODO in __vm_create()), especially for TDX since TDX
+doesn't support read-only memslots, i.e. doesn't have line of sight towards
+addressing the TODO.  E.g. TDX could hardcode the address to something that
+is all but guaranteed to be unused on x86, e.g. the I/O APIC base address
+or the HPET address, but that doesn't truly address the fragility concerns,
+and it's ugly because ucall_arch_init() would completely ignore the passed
+in @mmio_gpa despite obviously utilizing emulated MMIO.
 
-Well, I got it confused with arm64 calling stage2_flush_memslot()
-(called for flushing the dcache for a memory slot) with
-kvm_arch_flush_shadow_memslot() (unmapping a memslot from the guest).
+Use a simple flag to route vCPUs/VMs to the right do_ucall() routine, and
+take care to set the flag via write_guest_global() so that ucall_arch_init()
+is thread safe (in the *extremely* unlikely scenario a single test creates
+both TDX and non-TDX VMs *concurrently).
 
-We do have a problem with the memslot code ordering. For all VMs, on a
-memslot deletion, we first invalidate the memslot and then run the
-"prepare" hook for the architecture, which could reject a DELETE. This
-is particularly an issue for the Coco VMs, if they want to reject
-deletion of memslots while the VM is active ( e.g., Realm and pKVM),
-unless the VM prevents the stage2 modification (e.g., pKVM ignores
-stage2 unmap requests). Even there, the pKVM may keep the memory mapped
-when the memslot is deleted. But the page pinning keeps the pages in
-tact.
+Alternatively, a virtual function pointer could be used to dispatch to the
+correct do_ucall() via an indirect branch, but that has zero advantages
+other than making ucall_arch_do_ucall() look prettier, at the cost of being
+slightly harder to understand and making ucall_arch_init() uglier.  KISS.
 
-Something like the following could work:
-
----8>---
-
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-Date: Fri, 6 Nov 2026 16:31:15 +0000
-Subject: [PATCH] KVM: Allow architectures to reject memslot changes before
-  invalidation
-
-Architectures may need to reject deletion of a memory slot without
-changing the guest's memory mappings. Currently, KVM invalidates the slot
-and calls kvm_arch_flush_shadow_memslot() before
-kvm_arch_prepare_memory_region() can reject the request. On arm64, this
-unmaps the slot from stage-2. Restoring the old memslot on failure does not
-restore those mappings, so even a rejected deletion has side effects.
-
-Add kvm_arch_validate_memory_region() and invoke it before invalidating
-the slot, with slots_lock and slots_arch_lock held. The hook performs
-validation only, allowing architectures to reject a request without
-changing the memslot or its mappings. Provide a weak no-op implementation
-for architectures that do not need early validation.
-
-Move arm64's protected VM checks into the new hook so that unsupported
-deletions and moves are rejected before stage-2 unmapping. Keep resource
-preparation after invalidation, since invalidation drops slots_arch_lock
-and allows concurrent updates to architecture-specific memslot metadata.
-
-Assisted-by: LLM
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Sagi Shahar <sagis@google.com>
+Cc: Lisa Wang <wyihan@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
-  arch/arm64/kvm/mmu.c     | 22 ++++++++++++++++------
-  arch/arm64/kvm/pkvm.c    |  2 +-
-  include/linux/kvm_host.h |  4 ++++
-  virt/kvm/kvm_main.c      | 33 ++++++++++++++++++++++++++-------
-  4 files changed, 47 insertions(+), 14 deletions(-)
+ .../selftests/kvm/include/x86/tdx/tdx.h       |  7 +++
+ .../testing/selftests/kvm/include/x86/ucall.h |  6 +--
+ tools/testing/selftests/kvm/lib/x86/ucall.c   | 53 +++++++++++++++++--
+ 3 files changed, 58 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 1db10d8d6db7..c3469551fe3c 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -2806,13 +2806,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
-  	}
-  }
-
--int kvm_arch_prepare_memory_region(struct kvm *kvm,
--				   const struct kvm_memory_slot *old,
--				   struct kvm_memory_slot *new,
--				   enum kvm_mr_change change)
-+int kvm_arch_validate_memory_region(struct kvm *kvm,
-+				    const struct kvm_memory_slot *old,
-+				    const struct kvm_memory_slot *new,
-+				    enum kvm_mr_change change)
-  {
--	hva_t hva, reg_end;
--	int ret = 0;
-+	lockdep_assert_held(&kvm->slots_lock);
-
-  	if (kvm_vm_is_protected(kvm)) {
-  		/* Cannot modify memslots once a pVM has run. */
-@@ -2827,6 +2826,17 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
-  		}
-  	}
-
-+	return 0;
+diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+index d41a1efc8a63..9982aaaba885 100644
+--- a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
++++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+@@ -4,6 +4,13 @@
+ 
+ #include <linux/types.h>
+ 
++/* TDX hypercall Leaf IDs */
++#define TDVMCALL_GET_TD_VM_CALL_INFO		0x10000
++#define TDVMCALL_MAP_GPA			0x10001
++#define TDVMCALL_GET_QUOTE			0x10002
++#define TDVMCALL_REPORT_FATAL_ERROR		0x10003
++#define TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT	0x10004
++
+ u64 __tdvmcall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15);
+ 
+ #endif /* SELFTEST_KVM_TDX_TDX_H */
+diff --git a/tools/testing/selftests/kvm/include/x86/ucall.h b/tools/testing/selftests/kvm/include/x86/ucall.h
+index 0e4950041e3e..aca582bb2cd5 100644
+--- a/tools/testing/selftests/kvm/include/x86/ucall.h
++++ b/tools/testing/selftests/kvm/include/x86/ucall.h
+@@ -2,12 +2,8 @@
+ #ifndef SELFTEST_KVM_UCALL_H
+ #define SELFTEST_KVM_UCALL_H
+ 
+-#include "kvm_util.h"
++#include <linux/kvm.h>
+ 
+ #define UCALL_EXIT_REASON       KVM_EXIT_IO
+ 
+-static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+-{
+-}
+-
+ #endif
+diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
+index 38050c60a067..bb4a7215d9b1 100644
+--- a/tools/testing/selftests/kvm/lib/x86/ucall.c
++++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+@@ -5,16 +5,40 @@
+  * Copyright (C) 2018, Red Hat, Inc.
+  */
+ #include "kvm_util.h"
++#include "tdx/tdx.h"
++#include "tdx/tdx_util.h"
+ 
+-#define UCALL_PIO_PORT ((u16)0x1000)
++#define UCALL_PIO_PORT		((u16)0x1000)
++#define UCALL_TDX_MAGIC		0xabacadabaULL
+ 
+-void ucall_arch_do_ucall(gva_t uc)
++static void ucall_tdx_do_ucall(gva_t uc)
++{
++	__tdvmcall(TDVMCALL_REPORT_FATAL_ERROR, UCALL_TDX_MAGIC, uc, 0, 0);
 +}
 +
-+int kvm_arch_prepare_memory_region(struct kvm *kvm,
-+				   const struct kvm_memory_slot *old,
-+				   struct kvm_memory_slot *new,
-+				   enum kvm_mr_change change)
++static void *ucall_tdx_get_ucall(struct kvm_vcpu *vcpu)
 +{
-+	hva_t hva, reg_end;
-+	int ret = 0;
++	struct kvm_run *run = vcpu->run;
 +
-  	if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
-  			change != KVM_MR_FLAGS_ONLY)
-  		return 0;
-diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
-index 016997288fd2..552a40871ab1 100644
---- a/arch/arm64/kvm/pkvm.c
-+++ b/arch/arm64/kvm/pkvm.c
-@@ -262,7 +262,7 @@ int pkvm_create_hyp_vm(struct kvm *kvm)
-  	int ret = 0;
-
-  	/*
--	 * Synchronise with kvm_arch_prepare_memory_region(), as we
-+	 * Synchronise with kvm_arch_validate_memory_region(), as we
-  	 * prevent memslot modifications on a pVM that has been run.
-  	 */
-  	mutex_lock(&kvm->slots_lock);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index e7fc94e2910a..310afcaf7021 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1255,6 +1255,10 @@ int kvm_set_internal_memslot(struct kvm *kvm,
-  			     const struct kvm_userspace_memory_region2 *mem);
-  void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot);
-  void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen);
-+int kvm_arch_validate_memory_region(struct kvm *kvm,
-+				    const struct kvm_memory_slot *old,
-+				    const struct kvm_memory_slot *new,
-+				    enum kvm_mr_change change);
-  int kvm_arch_prepare_memory_region(struct kvm *kvm,
-  				const struct kvm_memory_slot *old,
-  				struct kvm_memory_slot *new,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cf4cb586f140..3ef370d71818 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1682,6 +1682,20 @@ static void kvm_swap_active_memslots(struct kvm 
-*kvm, int as_id)
-  	slots->generation = gen;
-  }
-
-+/*
-+ * Validate a memslot change before invalidation, which may 
-irreversibly reclaim
-+ * private guest memory. Called with slots_lock and slots_arch_lock held.
-+ * Implementations must not modify memslot state or allocate resources; 
-leave
-+ * those operations to kvm_arch_prepare_memory_region().
-+ */
-+__weak int kvm_arch_validate_memory_region(struct kvm *kvm,
-+					   const struct kvm_memory_slot *old,
-+					   const struct kvm_memory_slot *new,
-+					   enum kvm_mr_change change)
-+{
-+	return 0;
++	/*
++	 * KVM_SYSTEM_EVENT_TDX_FATAL stores R0..R15 in data[0..15].  R12
++	 * holds the ucall magic and R13 holds the ucall GVA.
++	 */
++	if (run->exit_reason == KVM_EXIT_SYSTEM_EVENT &&
++	    run->system_event.type == KVM_SYSTEM_EVENT_TDX_FATAL &&
++	    run->system_event.data[12] == UCALL_TDX_MAGIC)
++		return (void *)(run->system_event.data[13]);
++
++	return NULL;
 +}
 +
-  static int kvm_prepare_memory_region(struct kvm *kvm,
-  				     const struct kvm_memory_slot *old,
-  				     struct kvm_memory_slot *new,
-@@ -1934,6 +1948,10 @@ static int kvm_set_memslot(struct kvm *kvm,
-  	 */
-  	mutex_lock(&kvm->slots_arch_lock);
-
-+	r = kvm_arch_validate_memory_region(kvm, old, new, change);
-+	if (r)
-+		goto unlock_err;
++static void ucall_x86_do_ucall(gva_t uc)
+ {
+ 	asm volatile("in %[port], %%al"
+ 		: : [port] "d" (UCALL_PIO_PORT), "D" (uc) : "rax", "memory");
+ }
+ 
+-void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
++static void *ucall_x86_get_ucall(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_run *run = vcpu->run;
+ 
+@@ -26,3 +50,26 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
+ 	}
+ 	return NULL;
+ }
 +
-  	/*
-  	 * Invalidate the old slot if it's being deleted or moved.  This is
-  	 * done prior to actually deleting/moving the memslot to allow vCPUs to
-@@ -1950,22 +1968,22 @@ static int kvm_set_memslot(struct kvm *kvm,
-  	if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
-  		invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
-  		if (!invalid_slot) {
--			mutex_unlock(&kvm->slots_arch_lock);
--			return -ENOMEM;
-+			r = -ENOMEM;
-+			goto unlock_err;
-  		}
-  		kvm_invalidate_memslot(kvm, old, invalid_slot);
-  	}
++static bool ucall_is_tdx_vm;
++
++void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
++{
++	write_guest_global(vm, ucall_is_tdx_vm, is_tdx_vm(vm));
++}
++
++void ucall_arch_do_ucall(gva_t uc)
++{
++	if (ucall_is_tdx_vm)
++		return ucall_tdx_do_ucall(uc);
++
++	return ucall_x86_do_ucall(uc);
++}
++
++void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
++{
++	if (is_tdx_vm(vcpu->vm))
++		return ucall_tdx_get_ucall(vcpu);
++
++	return ucall_x86_get_ucall(vcpu);
++}
 
-  	r = kvm_prepare_memory_region(kvm, old, new, change);
-  	if (r)
--		goto err;
-+		goto revert_slot;
-
-  	if (change == KVM_MR_CREATE && (new->flags & KVM_MEM_GUEST_MEMFD)) {
-  		r = kvm_gmem_commit_memory_region(kvm, new);
-  		if (r) {
-  			kvm_arch_free_memslot(kvm, new);
-  			kvm_destroy_dirty_bitmap(new);
--			goto err;
-+			goto unlock_err;
-  		}
-  	}
-
-@@ -2000,7 +2018,7 @@ static int kvm_set_memslot(struct kvm *kvm,
-
-  	return 0;
-
--err:
-+revert_slot:
-  	/*
-  	 * For DELETE/MOVE, revert the above INVALID change.  No modifications
-  	 * required since the original slot was preserved in the inactive slots.
-@@ -2009,9 +2027,10 @@ static int kvm_set_memslot(struct kvm *kvm,
-  	if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
-  		kvm_activate_memslot(kvm, invalid_slot, old);
-  		kfree(invalid_slot);
--	} else {
--		mutex_unlock(&kvm->slots_arch_lock);
-+		return r;
-  	}
-+unlock_err:
-+	mutex_unlock(&kvm->slots_arch_lock);
-  	return r;
-  }
-
+base-commit: 4aeb1c3931544fb3bb64397391c2e7153a81f824
 -- 
-2.43.0
-
-
-
-
-
-
-
-> 
-> 
-> Cheers
-> Suzuki
-> 
->>
->> Suzuki
->>
->>
->>
->>>
->>> Steve
->>
-> 
+2.56.0.567.gdb80ae8cd5-goog
 
