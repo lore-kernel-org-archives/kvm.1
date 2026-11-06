@@ -1,72 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.217
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793955453;
-	b=a4I7XeOWpEYjZtxshlGdeRbM1PTcu/LHz0RPodc7WpgJeUBH3RiqEy7XhsiiYShqrgLx
-	 M9UHNtrqa3v7Hy1Tpug/t9e2Ha/+pMtrlnlGOJ46QM2PPHCamvTLLg7LOfugkfkqDoivf
-	 S4QLEM/CNG1MmeuTZvigSd150fmlOuUuCIVArDOduReg9bd+bKR1EuI0lx5pe/eh/M9lv
-	 L5IiirVLhu9Ro9cwnM1Xj+ZcG2DdaoIGHKMtp31y2A8/vVOrAW4HTpxZW+Cd/mhMM8dlF
-	 9Mp9MYkymJ3BFwjAOwF4CtFOri64Rpmw8ASeF7ltgnv3nNhDNqXN37AEQc8IYeMpWYg==
+	t=1793955740;
+	b=vacOvzzMK25DMelQ+z4p1dpGch+q7MqYT9LluZht4vvdCu6/X6aCrcM2ouA59NxMzrF3
+	 imCsIZx2tK8s/devS0Oa0u8hct1S5At/ZAQJjtvb0PCKeuc1MTjW5T5GvnucoKSdZ5TIC
+	 +zVCUobTXNcYRsvwOyTkjexle8eFnJuSydeaNHrhrnZ2I75yzoklak7FDU44fBtCLNDuR
+	 gpdqdn+vSO+oeLv0/rTa8FrzlZJipTVPgJzmfOcsoc68MR9BnN+bTKcZpGEmBdnhL+HWD
+	 fqJpeuL0cscrZrUwIlnrCbkMACay3mGIlqTaQqRcPUzbrasxZC7uRTGxDvQhL3U9u8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793955453;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=U8NbQLJQXWhE9kRQfhYMRG1gPTaScKvk/CWFssfmr0M=;
-	b=1RI5IcoW44sYCFv8H+D4wSo/fTEqRE0Mc07aofYa50WxwX3d5sYwOENQb19NEU0e8mvP
-	 z67M6srWl500oJLVR1v/A7UsxyRs0hudgcrUJdCRJzpNXfv8E/HuCYwKCRVbeP9GcCzj4
-	 1Eopvob0Ox/f1PSEhp8G+BtmjBUOJrSAVx4cghYclojlrShWKOKwCpK8KqL3lcIEbnRdi
-	 BOe81WKsSFoIoJD6RWORtqvX5KBvxG+yrZqY1sQkBA6zkaIi+miw0Nu/QiICvQ7KUaOa0
-	 dJsvAeW3hmSBzalr3PObN/tkMkZLUO1blbWnDWBc7FEwXzTkEuiHw/9RYtQo/IYiI0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793955740;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=IZO9hHewpI1vF88rTpwvcS4eIwOhB3E4KR10OH18Zcs=;
+	b=FcmX39wV2MfuBEqRi6U1wc749muX9vezdhlC7/FC6o3krMKzGcR/9GBEN1Erka8B9F0i
+	 F7Yd5BN352IjP+dpkUa+C5/AFULX5qowHu1RYQc51oD16K8z9CE4OBCaIP+chfY83MtI4
+	 D3hIQiljxtq8v52SvywnwHdKiTa14vFh+2HN6P9yJ6DNIB51JORArLsJ5SfyfiWrKmi6/
+	 lOLeqC4S+xdv6Fy74pYIYp4eVmxJjQn506xG06TvawEK0FeI8pA8sivK5vOvktoDsWcRa
+	 03d7RiyqL4Z271V1R/dN+1txULLa0wVj2vBZuN4NaCSBLxP86NMoYUeSbcuzbKr0vZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XszJqe4J;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27B1606A32C;
-	Fri,  6 Nov 2026 08:57:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C27B1606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=hjRU7vzd;
+	arc=none smtp.remote-ip=113.46.200.217
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E47E606A326;
+	Fri,  6 Nov 2026 09:02:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E47E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XszJqe4J
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD0C91650;
-	Fri,  6 Nov 2026 00:57:28 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 945A63F673;
-	Fri,  6 Nov 2026 00:57:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793955452; bh=O/L8Xi+/doDKEHUTFfH9GXIaTDWnQJy0rB+FzYj+0/c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XszJqe4JrvzxPntwZX3H1oWIoGpTG4x+s3Eno/88TbHCZ0FGPvkSOrDvEtcBCz0s9
-	 x8laoq14tL0TS1I17eP+Fd3F5Ox8CIiN9yaH+byC8xsMcqvhXaySnADXt+e7uGt5iJ
-	 ov6U+NtVpkprCc3zV6oCmqqNrj8n/80rxEetD8LM=
-Date: Fri, 6 Nov 2026 08:57:25 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	aneesh.kumar@kernel.org
-Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
-Message-ID: <au2WdWFOYbPEv0Uj@e129823.arm.com>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-18-jiri@resnulli.us>
- <auuDcABX27EeTApl@e129823.arm.com>
- <20261104194622.GC3889730@ziepe.ca>
- <aux01NUd85PabtZu@FV6GYCPJ69>
- <auyKE2sGqtfjk4v5@e129823.arm.com>
- <auy7IM0_S2tv7EZX@FV6GYCPJ69>
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=hjRU7vzd
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=IZO9hHewpI1vF88rTpwvcS4eIwOhB3E4KR10OH18Zcs=;
+	b=hjRU7vzdg/I2Nu9I0mN5sdbYT0kFey2K901ZDMBOjEImYw2ZNl0YCPz2n08l6gN5gzgjTEDT3
+	UiWdRSGdcbRhhJ9fuEMPeptb2aUqQ3ozspnVmQbHxAY4Ba+SCZepn1a1YX+RspQ6suiHa9Yi8uf
+	CMPGrMQwBtz8FudL0/tAjF4=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jLY843ZlNzcb3y;
+	Fri,  6 Nov 2026 17:01:40 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id D977A40561;
+	Fri,  6 Nov 2026 17:02:10 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 6 Nov 2026 17:02:09 +0800
+Message-ID: <75b0ebcb-023a-4889-98b1-bf1d8b6327dd@huawei.com>
+Date: Fri, 6 Nov 2026 17:02:09 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,193 +62,169 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auy7IM0_S2tv7EZX@FV6GYCPJ69>
-
-On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
-> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
-> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
-> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
-> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
-> >> >> [..snip..]
-> >> >> 
-> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
-> >> >> > +					       const struct ctlv_cursor *request,
-> >> >> > +					       struct attestation_evidence_request *decoded,
-> >> >> > +					       struct attestation_evidence_object_request **objects)
-> >> >> > +{
-> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
-> >> >> > +	u32 challenge_length;
-> >> >> > +
-> >> >> > +	decoded->challenge =
-> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
-> >> >> > +	decoded->challenge_length = challenge_length;
-> >> >> > +	if (challenge_length < caps->min_challenge_length ||
-> >> >> > +	    challenge_length > caps->max_challenge_length)
-> >> >> 
-> >> >> Hmm, I'm not sure whether this check is required for
-> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
-> >> >> 
-> >> >> for example, if the provider provides two evidence:
-> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
-> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
-> >> >> 
-> >> >> might challenge is reuiqred for generating the token
-> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
-> >> >> 
-> >> >> However, in case of eventlog, it wouldn't require challenge.
-> >> >> for example, TPM event log or CCEL event log.
-> >> >
-> >> >Right
-> >> >
-> >> >> Do we need some field on attestation_evidence_supported_object whether
-> >> >> it requires challenge or not and applies this sanity check per the object?
-> >> >> 
-> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
-> >> >> always.
-> >> >
-> >> >I wonder if we should have two interfaces here for signed and unsigned
-> >> >evidence? It would be clearer for userspace then when it needs to
-> >> >provide a challenge or not.
-> >> 
-> >> Isn't the challenge field provided/not-provided enough?
-> >> 
-> >> Currently on the introspection side, device-get op would provide
-> >> challenge-lengths array:
-> >> 
-> >>         evidence?:
-> >>           challenge-lengths[8]:
-> >>             length?: uint(..4096)
-> >>             min-length?: uint(..4096)
-> >>             max-length?: uint(..4096)
-> >>  	  objects[16]:
-> >>             blob-class: evidence-blob-class
-> >>             max-length: uint
-> >>             blob-instance?: uint(..u32-max)
-> >> 
-> >> I think it would make sense to have challenge-lengths array per object:
-> >> 
-> >>  	  objects[16]:
-> >>             blob-class: evidence-blob-class
-> >>             max-length: uint
-> >>             blob-instance?: uint(..u32-max)
-> >>             challenge-lengths[8]:
-> >>               length?: uint(..4096)
-> >>               min-length?: uint(..4096)
-> >>               max-length?: uint(..4096)
-> >> 
-> >> Then the unsigned object would just simply have challenge-lengths empty?
-> >
-> >This looks good to me. :)
-> 
-> The challenge is one of several open points that all depend on what an
-> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
-> "primary", "raw" and the format strings. Here is my proposal to settle
-> these together:
-> 
-> The model:
-> 
-> 1. device-get lists each object with an id, a class (signed, event-log,
->    cert-chain or auxiliary), the formats it may come in, its max-length
->    and, for signed objects only, challenge-lengths.
-> 2. evidence-get names objects by id, as MR ops name MRs, each with its
->    output blob. It carries a challenge exactly when it names a signed
->    object, and the challenge has to fit each of them.
-> 3. The reply gives each object's format, length and, where the TCB
->    vouches for it, the TCB's digest. The output is always {label, data}.
-> 4. A signed object is made by the call, over the challenge, and never
->    reused. The rest are read as they stand.
-> 
-> This settles following issues discussed during this patchset review:
-> 
-> 1. One op, not two. Per-object challenge-lengths tell userspace when to
->    pass a challenge, and one call returns the signed object with the log
->    and certificates needed to check it.
-> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
->    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
-> 3. TDX's Quote object lists the legacy and the DICE format. The provider
->    labels what the host returned and fails on a Quote it cannot label.
-> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
->    spdm-measurements and tdisp-report become formats, and signature
->    goes, as a signed object carries its own.
-> 5. "raw" goes with the representation attr. The TCB digest is a reply
->    field, so a blob always holds the object's own bytes.
-> 
-> Formats become an enum each provider family defines, instead of free
-> strings. I'm still unsure if format should be entirely provider-specific
-> and defined as "extension", or it should be somehow mixture of common
-> and provider-specific. Looks there is not really much common
-> anyway, so I lean towards provider-specific only. So far I have:
-
-Overall, This is plausible for me with some small question.
-
-> 
-> ======  ============  ==========  =========  ===========================
-> Family  Format        Class       Challenge  Bytes
-> ======  ============  ==========  =========  ===========================
-[...]
-> tpm     ek-cert       cert-chain  none       EK certificate from NV
-
-Just a thought, but how are we planning to retrieve
-the NV index for EK certificate?
-
-As far as I know, TPM NV storage doesn't support labeling.
-
-Should I assume that the NV index would be specified as part of the
-challenge to retrieve the certificate from TPM NV storage?
-
-[...]
-> armcca  event-log     event-log   none       Realm firmware log, if any
-
-JFYI, this would be a CCEL log like tdx:
-  - https://github.com/tianocore/edk2/issues/11384
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/15] KVM: arm64: Flush the HDBSS buffer on VM exit
+To: Leonardo Bras <leo.bras@arm.com>
+CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
+	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
+	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
+	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
+	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
+	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
+	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
+References: <20260929103655.85107-1-zhengtian10@huawei.com>
+ <20260929103655.85107-9-zhengtian10@huawei.com> <auDpyRNpeDNzIk3W@LeoBrasDK>
+ <5bbd0d3b-1026-43f3-bc45-245472603144@huawei.com>
+ <auTLOIafIq4cjRho@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <auTLOIafIq4cjRho@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
 
-> snp     report        signed      64         SNP attestation report
-> snp     cert-table    cert-chain  none       VCEK or VLEK, ASK and ARK
-> ======  ============  ==========  =========  ===========================
-> 
-> Did I miss something that would break us here?
-> 
-> CTLV layout draft:
-> 
->     device-get reply, caps.evidence:
->       objects[16]:
->         id: uint(..15)
->         class: evidence-class
->         # The reply says which one was written.
->         formats[4]: evidence-format
->         max-length: uint
->         # Signed objects only, entries as today.
->         challenge-lengths[8]?: ...
->         # Descriptive, such as an SPDM slot.
->         instance?: uint(..u32-max)
->         # When the TCB vouches for the object with a digest.
->         tcb-digest-algo?: hash-algo
-> 
->     evidence-get request:
->       # Required exactly when a signed object is named.
->       challenge?: binary(1..4K)
->       objects[16]:
->         id: uint(..15)
->         data: blob(out, va memfd dma-buf)
->       # selection, privlevel, service and options as now.
-> 
->     evidence-get reply:
->       # In request order.
->       objects[16]:
->         format: evidence-format
->         length: uint
->         tcb-digest?:
->           hash-algo: hash-algo
->           data: binary(16..64)
->       # The generations as now.
-> 
-> Makes sense?
 
-For me, It seems fine.
+On 10/31/2026 12:52 AM, Leonardo Bras wrote:
+> On Fri, Oct 30, 2026 at 12:57:06PM +0800, Tian Zheng wrote:
+>>
+>>
+>> On 10/28/2026 2:13 AM, Leonardo Bras wrote:
+>>> On Tue, Sep 29, 2026 at 06:36:48PM +0800, Tian Zheng wrote:
+>>>> From: Eillon <yezhenyu2@huawei.com>
+>>>>
+>>>> HDBSS entries accumulate in the per-vCPU buffer while the guest runs,
+>>>> and must be drained into the dirty bitmap or dirty ring before
+>>>> userspace can observe them.
+>>>>
+>>>> Drain the buffer at a single point: kvm_arch_vcpu_ioctl_run() flushes
+>>>> it on every VM exit, before the exit reason is handled. Flushing
+>>>> inside the run loop keeps the dirty-ring feedback timely: when a flush
+>>>> pushes the ring past its soft limit, kvm_dirty_ring_push() raises
+>>>> KVM_REQ_DIRTY_RING_SOFT_FULL, which check_vcpu_requests() observes at
+>>>> the top of the next loop iteration, so the vCPU exits to userspace for
+>>>> the harvest before re-entering the guest.
+>>>>
+>>>> kvm_arch_sync_dirty_log() relies on the exit path to flush: it kicks
+>>>> vCPUs out of guest mode, and the GET/CLEAR protocol tolerates
+>>>> concurrent bitmap writes, so the snapshot is complete without extra
+>>>> synchronization.
+>>>>
+>>>> Signed-off-by: Eillon <yezhenyu2@huawei.com>
+>>>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+>>>> ---
+>>>>    arch/arm64/include/asm/kvm_dirty_bit.h | 15 +++++++++
+>>>>    arch/arm64/kvm/arm.c                   | 20 ++++++++++++
+>>>>    arch/arm64/kvm/dirty_bit.c             | 45 ++++++++++++++++++++++++++
+>>>>    3 files changed, 80 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+>>>> index fe703f02626b..d828e6b43fe9 100644
+>>>> --- a/arch/arm64/include/asm/kvm_dirty_bit.h
+>>>> +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+>>>> @@ -13,6 +13,9 @@
+>>>>    #include <asm/sysreg.h>
+>>>>    #include <linux/sizes.h>
+>>>>
+>>>> +#define HDBSS_ENTRY_VALID	BIT(0)
+>>>> +#define HDBSS_ENTRY_IPA	GENMASK_ULL(55, 12)
+>>>> +
+>>>>    #define KVM_ARM_HDBSS_DEFAULT_SIZE  PAGE_SIZE
+>>>>    #define KVM_ARM_HDBSS_MAX_SIZE      SZ_2M
+>>>>
+>>>> @@ -22,7 +25,19 @@ static inline u32 kvm_hdbss_buffer_size(struct kvm *kvm)
+>>>>    	return kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
+>>>>    }
+>>>>
+>>>> +static inline bool kvm_hdbss_enabled(struct kvm *kvm)
+>>>> +{
+>>>> +	return kvm->arch.mmu.vtcr & VTCR_EL2_HDBSS;
+>>>> +}
+>>>> +
+>>>> +static inline bool vcpu_hdbss_enabled(struct kvm_vcpu *vcpu)
+>>>> +{
+>>>> +	return vcpu->arch.hw_mmu &&
+>>>> +		(vcpu->arch.hw_mmu->vtcr & VTCR_EL2_HDBSS);
+>>>> +}
+>>>> +
+>>>
+>>> IIUC, arch.mmu is always the canonical s2_mmu, while hw_mmu can be the
+>>> nested s2_mmu, if enabled.
+>>>
+>>> Was that your intend here?
+>>> If not, we could use only kvm* version, which can be called with vcpu->kvm.
+>>>
+>>> If it was, then I would like to understand the logic here, as IIUC the
+>>> buffer is accessible only for the non-nested guest, as it's
+>>> allocated in a per-vcpu structure. (vcpu->arch)
+>>>
+>>
+>> Hi leo,
+>>
+>> Yes, that was the intent. The shadow MMU never carries VTCR_EL2.HDBSS,
+>> so the flush is naturally skipped when running nested.
+> 
+> Ah, right. If we always test the kvm one, we may enable it for the nested
+> guest, which is undesired.
+> 
+> [...]
+>>
+>>>
+>>>> @@ -2017,7 +2025,19 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
+>>>>
+>>>>    void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+>>>>    {
+>>>> +	unsigned long i;
+>>>> +	struct kvm_vcpu *vcpu;
+>>>>
+>>>> +	if (!kvm_hdbss_enabled(kvm))
+>>>> +		return;
+>>>> +
+> 
+> And then here you check for the L1 VM because during migration the host
+> could have dirtied memory, and you want to track that as well.
+> 
+> Makes sense
+> 
+>>>> +	/*
+>>>> +	 * The buffer is drained on every VM exit, so kicking running
+>>>> +	 * vCPUs is enough to flush them; the dirty-log GET/CLEAR
+>>>> +	 * protocol tolerates bits set concurrently with the snapshot.
+>>>> +	 */
+>>>> +	kvm_for_each_vcpu(i, vcpu, kvm)
+>>>> +		kvm_vcpu_kick(vcpu);
+>>>>    }
+>>>>
+>>>>    static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
+>>>> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+>>>> index f9aeb9f34ad0..be0d12555c84 100644
+>>>> --- a/arch/arm64/kvm/dirty_bit.c
+>>>> +++ b/arch/arm64/kvm/dirty_bit.c
+>>>> @@ -13,6 +13,7 @@
+>>>>    #include <linux/kconfig.h>
+>>>>    #include <linux/log2.h>
+>>>>    #include <linux/mm.h>
+>>>> +#include <linux/srcu.h>
+>>>>
+>>>
+>>> Out of curiosity, could you please explain you reasoning on selecting srcu
+>>> as locking here?
+>>>
+>>> (Like, what are you protecting against, and why srcu is a good choice)
+>>>
+>>
+>> kvm_vcpu_mark_page_dirty() resolves the memslot under SRCU
+>> (kvm_vcpu_gfn_to_memslot), and the flush loop calls it for each entry,
+>> so the whole loop needs the read lock held.
+> 
+> Oh, right, it's just about getting the memslot... now I see it :)
+> 
+> Thanks!
+> Leo
 
--- 
-Sincerely,
-Yeoreum Yun
+Awesome!
+
