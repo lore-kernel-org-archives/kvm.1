@@ -1,84 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794003614;
-	b=zQ9s6tviqRToYTFwrH1n6ypsLdO4RvgRN5BfPU58ZXwi8LdJVxuUxhNXGV9UCzUTGcN4
-	 5e+fnJJGcK8LOox0ZZ97EyybcV89h2lcwgXox38e3lwlxXxNr7ezf4xY2iMdaLqw0Gt9Y
-	 oM57FYQrxBJa+T/eOxWh9U4KEDCtVzl8lbeOvawqnQxmZvzU441UEateuI//XDP1pA23s
-	 Lcuzor4wCy+KyzExTeRJwggkrLSk0RV/Fv97zlDbkQtXAnGOsYk9QRYZpfCCGzWqswUEf
-	 Wewi/0sLBCxrlqi4NYh2005HV6cvt0gBLmUANh/f4e+gXANO6VjFlYuk/+amyuTTbvA==
+	t=1794004152;
+	b=PjY2rnNc4ts75MrZQ7pTo9xzf+uTlPuZqqt5GmrU+qZpsJhOjnmRzAy3aAwJcUwOIzFN
+	 i0sozOBfqxAmH8UOk/gCijh+6G/XrS7CoA/pY9rwz3+GB0Qi8lCwExbHpk3StRES4SFkv
+	 cYobtPlEMQtAbI2GUa1EtfrSuklul4ap/VLONcc8FuDcOCSeLmmqrrdZ4WMThz7H2CzgV
+	 1DfBE8gufqUT6rMonIr6MyTfDpas71CregwFHPE/SCfoeuTxZ2y6hmLo0EAPiq82iZdyP
+	 EfjRIc+Qqhn3Ib10Mtrnu7fFHHFN223FUXUBhs3szFIzVolvn3cyAEMyhW7iVoDZ8bA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794003614;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794004152;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=YdrvcTfiK/07Nw/kCOuL7er8KrOXBZTHNtdfHcqY3yc=;
-	b=rr3y1jTxFWkPK10i8tTndyZ3AgMLSZTq1IvNjyJivQ0x45CavkXUmTE/mhWSU0wfUS3K
-	 PXsTtAYGiwvN4Fw/DhVSscncmDqd9lky7C1cl4AKdj64rQiBN7UgfU7caff/dIYfjsVxw
-	 Z1c211fCRrgLwXBhBOav3tPY+teIRLAMel68SUkgbhSuzK+iMsBwDbQ7l4XSmMCxlzlvR
-	 a7DG5Dt8DYWnR6d8HwjC6lshht9Iak2WokzwtPJ1myMM/HukXaFeEkW1JEi79jwZrqH+o
-	 eFbnLdtp/RUwCVd/cK/xSHd4Gdbh49HVXcPu+BeHUNJl3o9GbXNb5dbRC6YAAxKl/SQ==
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=i6wtLwteYwyUZUWdoRocIhX8iiQGzMdlm5waC4g0QLs=;
+	b=tIlvCPKFztFxAmunNrvKoF1deg8Nrcxa4dX5rslVmi9VANRx6jtzSbL4BdECkN65bPbE
+	 rRmdUbpE5sX0+vHLTy4JeR8yUsDuf5dsZOcWdVxD59hDc1tb0UlLM85AXhWjjAjCiwQKR
+	 9FyUaGXzGV0MH54iez6OYmrwXdGvDf8MgRtV5tvcYyni/X6p1noBa58+eqar/RXN4EKOD
+	 ImXbqJuheDwpLKJDtSkOfF3vul6qCtBGYgWelWNEYt2Fj+WkRVENPci+SwcydBmaYg2FF
+	 czIMY2OBCHlfeov7GJN+2qKOLRW4dJ1m/PRWLQCrveRP7G0zZvl6jQc1NzXedRrwzkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LXEDKNDB;
-	arc=none smtp.remote-ip=209.85.216.52
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gkl+CmfF;
+	arc=none smtp.remote-ip=209.85.214.169
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18998606A339
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:20:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18998606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF230606A326
+	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 22:29:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF230606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LXEDKNDB
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3b09c07b3d2so711511a91.3
-        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 14:20:13 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gkl+CmfF
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ed3f563739so11635ad.0
+        for <kvm@vger.kernel.org>; Fri, 06 Nov 2026 14:29:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794003613; x=1794608413; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=YdrvcTfiK/07Nw/kCOuL7er8KrOXBZTHNtdfHcqY3yc=;
-        b=LXEDKNDBLRIJbYbtObAwr4pGaCKvFWMV99QdmyNI1LdRkb0kyu8RPs5U/rQq4a6M0h
-         5ASlz3BmDk3LbCaPAyYM+ml0fpr0LBMu3Q0UZRphZODpbT5qLOGmsnp2iuyMGrmWopeo
-         0rfHxzgGItR2A3RsjfMqH1RMIqnPHk/DKQcOT7SxsJPifbZx3trsUOLshBP/kzfGPp40
-         jwfo6kRiQl0dxVV33yemWrOK969JVlnLk1sX53xxNvUOyU2suRXcmx/I4zRoch0SsKrQ
-         gy23ukO+EfJuK2oVUR2elXb03hZSdEx1PEMUCYg04OuYdXw6vsu9TD7Y/3wa6Yuenl32
-         VwJg==
+        d=google.com; s=20260707; t=1794004151; x=1794608951; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i6wtLwteYwyUZUWdoRocIhX8iiQGzMdlm5waC4g0QLs=;
+        b=gkl+CmfFQ+Co71nT6Egy2HcSuWbxjmTrMcP4xLom+yPt7cEbNxsDoECW+9ukC5saGE
+         +AySoNHT/voHJzM5UxjovhfbBA4XVMmOzenTYYDHMTsRbS8yBDI6QJCC/DhqETSb9rfi
+         DOMe5p5m8Jf6QID1xENOM2zAR1ZJEac4eAVE38l+dObMh2ofbhr/jGqeJ6w/wQziIRyG
+         7e0XENuBRYE2xUyk1zPMSoXhVrt2mPi/FAktijRb4aYgmhwzysr64/2u5MQmgud0WLGQ
+         edRQIb+VHahReTzYz8nVaVx/ZTWIZiGWFzXVnUzS8RaVeSJDFuxuhL+tw/ESiAOBb6g1
+         rz8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794003613; x=1794608413;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794004151; x=1794608951;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YdrvcTfiK/07Nw/kCOuL7er8KrOXBZTHNtdfHcqY3yc=;
-        b=eaRPWREnEsAPj/4ciUDaiFL5p1UuNVXkJ2LC8K7ktmORyg2R0Ub7Bqgj8pZOgUCcq9
-         x0Z4Oa98sRHeNU2oHZG9xMDX7pqKQYb6RI8OCtSDfw6JKFO10bhtEsvHsEQ2LTJQ6nd2
-         8zlSZPROCkmG3BR7kKvivdY/nJU2WMAr28htfkPOINzuhYx9px+4SVPaj1/yAckMgjL2
-         d92M5xTiG/w2oCT9xMrAB2aV8u5tVw0L3J12AGg/Ce4AHHA3o9TvgRxf7LUh9y65cn8U
-         vXtObonB0Iq+VWGj6dMWB9FlsWCYwmk25QxM7YY61LpOJaJTwhY+sehEqnfsI5z3YVQg
-         z6Ow==
-X-Forwarded-Encrypted: i=1; AL+hErEitWUvCdIopTwoOZEYdrt2SkAiWAKAnQbc8zNX8xK0bIS4Af57Lkh1S2u0OzHe5JuGFIA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z83x/AqZJ2bOyJb/5uMaVm6Pe05f8rtNkvZJ52V2Mo1IJU7nLF5
-	SUYrLeVLggptKbeq9zCyMiTsKaxdepzmk6uBmFJwAf6+nDTBIsE09qxnCKkN3lHi9w==
-X-Gm-Gg: AYBFou3HCxsQI/QcUUmtRjflJTrbo5ZOtlQ1fOxvsBtaJf0cvCKGhtWWbOhn9iIx4KS
-	HVyhl/MGgmBHl5Ts4Yq5e5mwtvQOP05EJyqJ4dIN/ZxKCBOv9bwtqvrzukmN/nS2gL9y5+HqetZ
-	9qce0nCZOYKba+o7WLXAO4x28xFrMhjDleTn6W35Epm+iD5aZrN5obo/cFvTdV4MNnhh8VmsBKu
-	rZO6AIZXB8cY3DlyrI82UFmAVj3ktQ6WC1kSn1pJLFCBLlSdrQP8W4efeO2L2kc4lkOe4nIaReX
-	mYbwjv5uUXTFTQ2R4OftMF0Dwm+euk/tgShKPBdo7Y+Z+PRqsexyB0W7GoZiR13mFKfJbp1Xxlc
-	h4yxKG0mZaV2sYAr6jfoFe4tj1qHGDa9TP+DuKexDdg2CXDnXCxxgOBlvoUdMIQoDDnBTjh3IvI
-	q2E8gT2VlHbSuK6qV1gvEAoXopjvWAySAt/T6tBvTLUr39FLbTjmjIeLfuPhWwD+0mNMSHrZvnZ
-	ECn45ZmUh6H4aLDMdDNPVEDX/kko7PbIph8vYCMuYsq+l8Qeh9mQ2KVsNIYuzhNb+cu6oTfFDKE
-	IrhMaQrdXQmKhX6WbDOc719FpXOaYWJsZvCMqK891NGtONzjhBZf5jAXk2eSKRmXbhekgw==
-X-Received: by 2002:a17:90b:3ec8:b0:3a4:e735:b39d with SMTP id 98e67ed59e1d1-3b0db726100mr3762406a91.64.1794003612758;
-        Fri, 06 Nov 2026 14:20:12 -0800 (PST)
-Received: from localhost (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1057b1fa8sm528979a91.2.2026.11.06.14.20.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 14:20:11 -0800 (PST)
+        bh=i6wtLwteYwyUZUWdoRocIhX8iiQGzMdlm5waC4g0QLs=;
+        b=q2y9z7qjZLZhCWrWcJD/wf5Gy0c0lEC+3Tyr3D8eBMw8yOlgy5P+9j9DIk8uQH6jCF
+         KP6cJFLW+aEgtdcB8zdr6VOdidsqba6r72WUNzW3Sg1Y2W0WQpaj6GKxNHtYhI6NQEMd
+         IHKSYvUwKtHMMMQkr21+DYyNxM7lwANEfMLTizbi2DHv1KZMSvXimaAAKa/yHRsSQjjV
+         QhF9vfiljw3HzXyZKij9SFjrDL5B2bfUs3nfpavRhdCCIYwkUNF9JGXKpi5yTSlRVjro
+         OuKl8nXzI2C9Ap1wQLWZGDOYjOmVv0ycMTQpeODmbhlXj1cXs3OeWq2q3viPJY5fjsBQ
+         Sjfw==
+X-Forwarded-Encrypted: i=1; AL+hErHFnWGg023uIw7dsAeRGp+m7Hj7LJ99ciF2puKZjDRoszA65kkOapSBUYx32Etp1rstsw0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8CoV+nbnAdX3+ETM81LhrW3FY8EUvu1fbYnP00SMa/UrExPEqB
+	QPiZbF7YAi8EtUE7q8tdbDmFr6sNSATa1lpZHIF3MHCBZ/9/YgLtP/BkThzmCaKxMQ==
+X-Gm-Gg: AYBFou3qH5hjIQ7n28g0CI+j+PkxySarZML6otLagRcpNYxDfBhtMXpDMW1gcWe/p32
+	sC772n3hM7J1romPgYxn/tsnsKje2upRzADNcIkDeU/1U7aRs+lt4XmWRsDdWMYuLe4E07i0NhV
+	IjxEdlYqnqcVe402qiIyNM1g6iu+xWD+eH+dtRUVhKCMe06gWQutjnTBBXTUjYA1MgY88aPn9k1
+	8v4HJwvJA2044CLYktMxN4671BjsRzUKMl9c+/wTOoZBL9Ap8wLZTAeyLEiAd7YWjPiICdQ7k8+
+	zCzeak4N3VT1oxS7v84+ofgE1sEKmkoZiFQ52/J0dJoMOsPols9dp2WON5xCJctBMAdC3PsJo8n
+	FDQw3sr6IC4dIVFbXVLNKRNNgqCzNTLhiSiOzNYwGwRCVB44ZcrhuQQtFlg0pZtpiz+/Pealt/u
+	VnEE7b7uHhJXhs5IhwkcN1pZfU58UP6xQzxp1evueuHXJDqGoF0x66FDwOX04UO+zs5/HHlWd1X
+	KXsjfh3dxfHkE8HABxWVaGnc50K8aMrL3o53qwvUOPxaZHFeo52BRVlX6FlmG6rc+uDESNkFYe8
+	hTCE36jLz0YcWHu9IQhIJ61qfe/3OJvKwviMeHBIJpWed2lEP4f/7HvEDCZL8YopnKtaFmem3Ic
+	8NfQptbc4GioYEVeQXrPK+9tyeoQdtypj61BevRi1Y0A=
+X-Received: by 2002:a17:902:ef11:b0:2eb:188a:1c06 with SMTP id d9443c01a7336-2ed6a865b76mr263955ad.9.1794004150728;
+        Fri, 06 Nov 2026 14:29:10 -0800 (PST)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0fc27e829sm775868a91.0.2026.11.06.14.29.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 14:29:09 -0800 (PST)
+Date: Fri, 6 Nov 2026 22:29:06 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
+	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
+	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
+	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
+	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
+	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
+	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
+	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
+	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 04/27] vfio/pci: Register a file handler with Live
+ Update Orchestrator
+Message-ID: <au5T7qouVfxJSDmr@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-5-vipinsh@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,73 +109,74 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Nov 2026 22:20:10 +0000
-Message-Id: <DMOH7D1PZUM4.1X82LVQK7E54Q@google.com>
-Cc: <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
- <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
- <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
- <dmatlack@google.com>, <graf@amazon.com>, <jacob.pan@linux.microsoft.com>,
- <jgg@nvidia.com>, <jgg@ziepe.ca>, <jrhilke@google.com>,
- <julianr@linux.ibm.com>, <kees@kernel.org>, <kevin.tian@intel.com>,
- <leon@kernel.org>, <leonro@nvidia.com>, <lukas@wunner.de>,
- <mattev@meta.com>, <michal.winiarski@intel.com>, <parav@nvidia.com>,
- <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
- <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
- <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
- <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
- <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
- <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 00/27] VFIO PCI Live Update (noiommu mode)
-From: "David Matlack" <dmatlack@google.com>
-To: "Vipin Sharma" <vipinsh@google.com>, <kexec@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
-In-Reply-To: <20261102153656.1431701-1-vipinsh@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261102153656.1431701-5-vipinsh@google.com>
 
-On Mon Nov 2, 2026 at 3:36 PM UTC, Vipin Sharma wrote:
-
-> David Matlack (4):
->   vfio: Enforce preserved devices are retrieved via
->     LIVEUPDATE_SESSION_RETRIEVE_FD
->   docs: liveupdate: Add documentation for VFIO PCI
->   vfio: selftests: Add vfio_pci_liveupdate_uapi_test
->   vfio: selftests: Add Makefile support for TEST_GEN_PROGS_EXTENDED
+On Mon, Nov 02, 2026 at 07:36:33AM -0800, Vipin Sharma wrote:
+>Register a live update file handler for vfio-pci device files. Add stub
+>implementations of all required callbacks so that registration does not
+>fail. Register it with both live update framework and PCI subsystem.
 >
-> Vipin Sharma (23):
->   vfio/pci: Factor out the reset logic in VFIO PCI device close path
->   vfio: Export various helpers from VFIO
->   liveupdate: Export symbols needed by modules
->   vfio/pci: Register a file handler with Live Update Orchestrator
->   PCI: liveupdate: Add helpers to preserve struct pci_saved_state
->   vfio: Add helpers to identify device files that can be preserved
->   vfio/pci: Preserve vfio-pci device files across Live Update
->   vfio: Introduce vfio_find_device() helper
->   vfio: Refactor vfio_device_fops_cdev_open()
->   vfio: Add API to open cdev device for Live Update restore
->   vfio/pci: Retrieve preserved device files after Live Update
->   vfio/pci: Protect incoming preserved devices until they finish Live
->     Update
->   vfio/pci: Take over preserved devices without resetting them
->   vfio: selftests: Build liveupdate library in VFIO selftests
->   vfio: selftests: Initialize vfio_pci_device using a VFIO cdev FD
->   vfio: selftests: Add iommufd noiommu mode
->   vfio: selftests: Add helpers to map DMA memory at IOVA =3D=3D PA in
->     noiommu mode
->   vfio: selftests: Add helpers for Live Update DMA memory and sysfs
->     state
->   vfio: selftests: Add an attach() driver op
->   vfio: selftests: Test preserving noiommu devices in
->     vfio_pci_liveupdate_uapi_test
->   vfio: selftests: Add vfio_pci_liveupdate_kexec_test
->   vfio: selftests: Verify that opening VFIO device fails during Live
->     Update
->   vfio: selftests: Add continuous DMA to vfio_pci_liveupdate_kexec_test
+>This file handler will be extended in subsequent commits to enable a
+>device bound to vfio-pci to run without interruption while the host is
+>going through a kexec Live Update.
+>
+>Put this support behind a new Kconfig VFIO_PCI_LIVEUPDATE. Initial
+>support is added for no-iommu model vfio-pci devices.
+>
+>Co-developed-by: David Matlack <dmatlack@google.com>
+>Signed-off-by: David Matlack <dmatlack@google.com>
+>Signed-off-by: Vipin Sharma <vipinsh@google.com>
+>---
+> MAINTAINERS                            |  1 +
+> drivers/vfio/pci/Kconfig               | 11 ++++
+> drivers/vfio/pci/Makefile              |  1 +
+> drivers/vfio/pci/vfio_pci.c            | 11 +++-
+> drivers/vfio/pci/vfio_pci_liveupdate.c | 75 ++++++++++++++++++++++++++
+> drivers/vfio/pci/vfio_pci_priv.h       | 14 +++++
+> include/linux/kho/abi/vfio_pci.h       | 28 ++++++++++
+> 7 files changed, 140 insertions(+), 1 deletion(-)
+> create mode 100644 drivers/vfio/pci/vfio_pci_liveupdate.c
+> create mode 100644 include/linux/kho/abi/vfio_pci.h
+>
+>diff --git a/MAINTAINERS b/MAINTAINERS
+>index 5d1b58271989..167aa9d66ce8 100644
+>--- a/MAINTAINERS
+>+++ b/MAINTAINERS
+>@@ -28662,6 +28662,7 @@ F:	Documentation/ABI/testing/debugfs-vfio
+> F:	Documentation/ABI/testing/sysfs-devices-vfio-dev
+> F:	Documentation/driver-api/vfio.rst
+> F:	drivers/vfio/
+>+F:	include/linux/kho/abi/vfio_pci.h
+> F:	include/linux/vfio.h
+> F:	include/linux/vfio_pci_core.h
+> F:	include/uapi/linux/vfio.h
+>diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+>index 296bf01e185e..e8285ad93a69 100644
+>--- a/drivers/vfio/pci/Kconfig
+>+++ b/drivers/vfio/pci/Kconfig
+>@@ -42,6 +42,17 @@ config VFIO_PCI_IGD
+> 	  and LPC bridge config space.
+>
+> 	  To enable Intel IGD assignment through vfio-pci, say Y.
+>+
+>+config VFIO_PCI_LIVEUPDATE
+>+	bool "VFIO PCI support for Live Update in no-iommu mode"
+>+	depends on PCI_LIVEUPDATE && VFIO_NOIOMMU
 
-This series is getting quite long. I would consider splitting out the
-selftests into its own series and we can iterate on each separately.
+Can we handle this dependency in code instead of doing through
+configs? Are there any build dependencies on noiommu?
+>+	help
+>+	  Support for preserving devices bound to vfio-pci in no-iommu mode
+>+	  across a Live Update. It enables a device to continue working (DMA)
+>+	  while host kernel is going through a kexec live update.
+>+
+>+	  If you don't know what to do here, say N.
+>+
+> endif
+>
+
+Thanks,
+Sami
