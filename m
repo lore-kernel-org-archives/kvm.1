@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793929834;
-	b=VvJJSxuH3GlWMJkuY23nhQ8Ib+InaDZiYCDXcHQzJSTE8axB1Yqhs0OxNQkXERYcoMtw
-	 SfNpgUkGWXjbCXMvTKGEhLYMEklyrwveWzjbXp7CbcLI5MgIs9/oeZnvKqfeF0VSC1nyH
-	 GEjqce04QZTuTEizZT7sxrDa+mx821HXiqbrUhnOmLR8G2H1sk0u39fH02wPhtQNlwmsK
-	 OzvT206fzVRlMWrX/+3igckCTIbNp5JW1gpzJkteJC1bF4NwlDutdIw6Tm1zHvjWqhpGJ
-	 JWTT0VssW3xK9xgGt8VHGKf9cA29FyOShGook3IFXHC5sUXWlnc0l3VS7pOjuqYrFqA==
+	t=1793929840;
+	b=XZDRP2rajVn5tZoxOCNBawV10vUvq+JfTY8CeLQ77ZDC8tHGNnZNOTebSoy5pne/77x9
+	 1oqyUBseSUHnWhRxu0B4zWp55LSCBmreq2QhHePHWYLARevS1zupMxuIQp46x732pnSJ3
+	 i717qL842uMljw422akTk34Zeqj9QniRdPcLiQU4kcseQ8nLNLeiScBVmwhlQm4sbUPd8
+	 y2VLn5JHmqFu1s6kvSuBMu7qCz1P7m20yUhGpWyELt+CkTw6o8+fiGPUJVh45iDkHp3CA
+	 8lUEzurJaBVvdpDrHp+C/mErRsNkkZEZ+a/MrSkJ5xDxKUpHp3u/gBsMxCNyMOz90xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793929834;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793929840;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=nLSIkuoCJn5rhHMbEg9ggMw2GppmGJlKwcSugCsQ54c=;
-	b=3teCTF9hREEbLEJty18iq+Ovkz+YrC0jabZExwIgo00IYol6SezBVn1hMYgFLiuBo20i
-	 +XoogvGL9uJcFt9C7B8mNpsJlGdbQMiZ8D6MkKW9esutZi1TRV4ZtAqS3WNgU4QXQ+qEl
-	 qNGaymJCEdaDlDAKvc42MyQGaSADINsP5iht3qcFIYf1Namzl3KoYhDC8QqXwOh0pKZY/
-	 xZ1DatWnt7REeH0uZhNzYq03POMhs+le94rmYEQFpT017tIKUUIveaPFB691w7cgwCNVg
-	 9vpgSG6susmOPVZD4GqzSy4RFMPK92MbpW3jwVPvWQ16LK7pk0KhC8BdRg48t1V2G8g==
+	bh=9TYqOXsew+Y+Q8c5CLe4mxAcwiCP6VtG9pQKJdgk8aI=;
+	b=gPFGi57Bwiog9Z7yDq3pDDFGGE8v6ukErhKeNL6JAaT4qMKg/UBZpWh1qAIvbx5pwn1P
+	 eilQyXfHpXATZTkSJeBLgmd2tuMzTXrciJfeJSZotI+4BAhuYGVyD5I4nyHIi6Czd0UO8
+	 muV0eiRFRdk2wbYgLycN1KSlaAad+nKoeSZYrR4u2jbsLHxn9rr4AwsT3cARpfkumuu4L
+	 Nyv3xX2V63UltNU8fBFlXWKOx1zaM3ASF0XxvBuraaXRkr3XiI/JyGRat9pATyTVUE//F
+	 AC4wciWteoKiDZtwXgg13PMNLoehzHQjglqgj4VzXWyJyEnKYkBj/sVditCgrlIP1Cw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RhOv5zac;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kPkdoKO5;
 	arc=none smtp.remote-ip=198.175.65.15
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799E7606A332;
-	Fri,  6 Nov 2026 01:50:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 799E7606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF832606D826;
+	Fri,  6 Nov 2026 01:50:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF832606D826
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RhOv5zac
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kPkdoKO5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793929833; x=1825465833;
+  t=1793929838; x=1825465838;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hIqZ1NRYpahaEBrIllhtJ0aMrQ/IgXBWdNI9M6GjNOY=;
-  b=RhOv5zac0xHJxeZnDu/VUwiblYe/CJpRoGk6LpQx4RYHgdzMM9nlVoOL
-   jL6G2LebzdeKcF/8uV3aVgCrxQrH9XNWPU6+CsTc0gqU3gBz/PNtw/+GH
-   5RagZqANHexvL9rJAKDDi2XU4dExxRf/4miU45WpyxAfWFpiREvYAIBDP
-   wF8SYbIHQoIbgrX4b6RsnmopPj083iDR33SKV3/0SB/cYTszmNazehbie
-   e55LelVtHsRzu4rwhGJjlPJ2nN6Yz0BuBUJtJPEmlObG1aei0Bk7PqsL1
-   /WWKn7JQ2WUUAmbWKQ1cX6pJnGdrFYMSqCBBdoS5vu6qdPK3tOhe3bJyP
-   w==;
-X-CSE-ConnectionGUID: A/46LBKCQGes8IvpMh3VDA==
-X-CSE-MsgGUID: ZazWXCMGQO+Y+J9i1Ex1YQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2740131"
+  bh=QLNPLyxjRgFiTSVWFbWIdFOomaI9/H6t0hb0/RgMl4E=;
+  b=kPkdoKO53MoBtE8de6c9WNANadOUij7Plipsr01N1IbfRnX1n8+mXJwO
+   +2xQD6udJ0FctsqC+SY1NxAXq1xRthZoBORo6EFUEF34sj75maX0mIYqE
+   YpcWW3WdlL8uB0S0RDxuF7xqQx6opY1xsHwFxA3xh6bE2n5wlnjiV8RK2
+   CKeTqnIqJ2sgXRKV71w8+dWz5OxoSbqb5dWmMno1T6s2oUSLKgIOCdnRF
+   WMcuCAO6fa3DoNnCQGbT34ZAFfqHruk9SfXy0NSmThO9oGGSj+y+R8DiO
+   iSKMPVGttSANt5Ux2Qk1oLKzqKGtAOsiEP43frsTGjKeVLoz/e+HwB5Wf
+   Q==;
+X-CSE-ConnectionGUID: Kn1x2BGJRIy5nGQHy1yw4w==
+X-CSE-MsgGUID: scmoRnFJQzq8HId8kfLwCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2740195"
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2740131"
+   d="scan'208";a="2740195"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:31 -0800
-X-CSE-ConnectionGUID: 3gP62zpLTruIpikloz+RWg==
-X-CSE-MsgGUID: 0v0KI+ztQNq6Omyi5ofnQg==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:32 -0800
+X-CSE-ConnectionGUID: wdfob0K8Skq4iL/v4d871g==
+X-CSE-MsgGUID: wyx1utJ/QziQoE/F33shCA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="7067175"
+   d="scan'208";a="7067206"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:30 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 17:50:31 -0800
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
-Date: Thu,  5 Nov 2026 18:39:13 -0700
-Message-ID: <20261106013927.166209-5-zide.chen@intel.com>
+Subject: [PATCH v3 14/18] KVM: x86/pmu: Factor out fixed counter control bit calculation
+Date: Thu,  5 Nov 2026 18:39:23 -0700
+Message-ID: <20261106013927.166209-15-zide.chen@intel.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261106013927.166209-1-zide.chen@intel.com>
 References: <20261106013927.166209-1-zide.chen@intel.com>
@@ -94,164 +94,101 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pmu->nr_arch_{gp,fixed}_counters is not able to represent that a PMU
-may include non-contiguous GP or fixed counters.
+Rename intel_pmu_enable_fixed_counter_bits() to
+intel_pmu_fixed_ctrl_bits() and have it return the computed fixed
+counter control mask instead of updating fixed_ctr_ctrl_rsvd directly.
 
-pmu->pmc_exists already holds a bitmap indicating both fixed and
-general-purpose counters, and loops over valid counters can be done via
-pmu->pmc_exists alone. Extend it to a union so that the u64 alias is
-available for convenient mask arithmetic operations.
+Accumulate the desired fixed counter control bits during PMU setup and
+apply them once in intel_pmu_refresh().
 
-Add the necessary helpers to prepare for bitmap-based PMC counter
-implementation.
+Move the helper earlier in the file so it can also be reused for
+upcoming ANYTHREAD_DEPRECATION emulation.
 
 No functional change intended.
 
-Co-developed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
-v3:
-- Add BUILD_BUG_ON(). (Jim)
 v2:
-- Rename kvm_{gp,fixed}_pmc_supported() to kvm_is_{gp,fixed}_pmc_supported()
-  and simplify them by removing the temporary bitmap. (Sean)
-- Split kvm_for_each_set_pmc_idx() to kvm_for_each_gp_counter()
-  and kvm_for_each_fixed_counter(). (Sean)
+- New patch.
 ---
- arch/x86/include/asm/kvm_host.h |  5 +++-
- arch/x86/kvm/pmu.c              |  2 ++
- arch/x86/kvm/pmu.h              | 53 +++++++++++++++++++++++++++++----
- 3 files changed, 53 insertions(+), 7 deletions(-)
+ arch/x86/kvm/vmx/pmu_intel.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index b8875ed5502c..4f192429ed93 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -595,7 +595,10 @@ struct kvm_pmu {
- 		DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
- 		atomic64_t __reprogram_pmi;
- 	};
--	DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
-+	union {
-+		DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
-+		u64 pmc_exists64;
-+	};
- 	DECLARE_BITMAP(pmc_in_use, X86_PMC_IDX_MAX);
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 37b34b588601..6bd7c8e03c14 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -55,6 +55,18 @@ static struct x86_pmu_lbr *vcpu_to_lbr_records(struct kvm_vcpu *vcpu)
  
- 	DECLARE_BITMAP(pmc_counting_instructions, X86_PMC_IDX_MAX);
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index cbd63329cf13..5e174d95f3b7 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -1024,6 +1024,8 @@ void kvm_pmu_init(struct kvm_vcpu *vcpu)
+ #pragma GCC poison to_vmx
+ 
++static u64 intel_pmu_fixed_ctrl_bits(struct kvm_pmu *pmu, u64 bits)
++{
++	unsigned long fixed_mask = kvm_fixed_pmc_mask(pmu);
++	u64 fixed_ctrl_bits = 0;
++	int i;
++
++	kvm_for_each_fixed_counter(i, fixed_mask)
++		fixed_ctrl_bits |= intel_fixed_bits_by_idx(i, bits);
++
++	return fixed_ctrl_bits;
++}
++
+ static void reprogram_fixed_counters(struct kvm_pmu *pmu, u64 data)
+ {
+ 	/*
+@@ -537,20 +549,12 @@ static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+ 	return eventsel;
+ }
+ 
+-static void intel_pmu_enable_fixed_counter_bits(struct kvm_pmu *pmu, u64 bits)
+-{
+-	unsigned long fixed_mask = kvm_fixed_pmc_mask(pmu);
+-	int i;
+-
+-	kvm_for_each_fixed_counter(i, fixed_mask)
+-		pmu->fixed_ctr_ctrl_rsvd &= ~intel_fixed_bits_by_idx(i, bits);
+-}
+-
+ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
  {
  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+ 	struct lbr_desc *lbr_desc = vcpu_to_lbr_desc(vcpu);
+ 	struct kvm_cpuid_entry2 *entry;
++	u64 fixed_enable_bits = 0;
+ 	union cpuid10_eax eax;
+ 	union cpuid10_edx edx;
+ 	u64 perf_capabilities;
+@@ -643,9 +647,8 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+ 					  kvm_pmu_cap.bit_width_fixed);
+ 	pmu->counter_bitmask[KVM_PMC_FIXED] = BIT_ULL(edx.split.bit_width_fixed) - 1;
  
-+	BUILD_BUG_ON(sizeof(pmu->pmc_exists) != sizeof(pmu->pmc_exists64));
-+
- 	memset(pmu, 0, sizeof(*pmu));
- 	kvm_pmu_call(init)(vcpu);
- }
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index 090c9bbb74f4..016935c3a8ec 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -88,6 +88,30 @@ static inline bool kvm_vcpu_has_mediated_pmu(struct kvm_vcpu *vcpu)
- 	return enable_mediated_pmu && vcpu_to_pmu(vcpu)->version;
- }
+-	intel_pmu_enable_fixed_counter_bits(pmu, INTEL_FIXED_0_KERNEL |
+-						 INTEL_FIXED_0_USER |
+-						 INTEL_FIXED_0_ENABLE_PMI);
++	fixed_enable_bits |= INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER |
++			     INTEL_FIXED_0_ENABLE_PMI;
  
-+static inline unsigned long kvm_gp_pmc_mask(struct kvm_pmu *pmu)
-+{
-+	return pmu->pmc_exists64 &
-+	       GENMASK_ULL(KVM_MAX_NR_GP_COUNTERS - 1, 0);
-+}
-+
-+static inline unsigned long kvm_fixed_pmc_mask(struct kvm_pmu *pmu)
-+{
-+	return (pmu->pmc_exists64 >> KVM_FIXED_PMC_BASE_IDX) &
-+	       GENMASK_ULL(KVM_MAX_NR_FIXED_COUNTERS - 1, 0);
-+}
-+
-+static inline bool kvm_is_gp_pmc_supported(struct kvm_pmu *pmu, unsigned int idx)
-+{
-+	return idx < KVM_MAX_NR_GP_COUNTERS &&
-+	       test_bit(idx, pmu->pmc_exists);
-+}
-+
-+static inline bool kvm_is_fixed_pmc_supported(struct kvm_pmu *pmu, unsigned int idx)
-+{
-+	return idx < KVM_MAX_NR_FIXED_COUNTERS &&
-+	       test_bit(KVM_FIXED_PMC_BASE_IDX + idx, pmu->pmc_exists);
-+}
-+
- /*
-  * KVM tracks all counters in 64-bit bitmaps, with general purpose counters
-  * mapped to bits 31:0 and fixed counters mapped to 63:32, e.g. fixed counter 0
-@@ -104,11 +128,11 @@ static inline bool kvm_vcpu_has_mediated_pmu(struct kvm_vcpu *vcpu)
-  */
- static inline struct kvm_pmc *kvm_pmc_idx_to_pmc(struct kvm_pmu *pmu, int idx)
- {
--	if (idx < pmu->nr_arch_gp_counters)
-+	if (kvm_is_gp_pmc_supported(pmu, idx))
- 		return &pmu->gp_counters[idx];
- 
- 	idx -= KVM_FIXED_PMC_BASE_IDX;
--	if (idx >= 0 && idx < pmu->nr_arch_fixed_counters)
-+	if (kvm_is_fixed_pmc_supported(pmu, idx))
- 		return &pmu->fixed_counters[idx];
- 
- 	return NULL;
-@@ -120,6 +144,17 @@ static inline struct kvm_pmc *kvm_pmc_idx_to_pmc(struct kvm_pmu *pmu, int idx)
- 			continue;				\
- 		else						\
- 
-+/*
-+ * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
-+ * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
-+ * so iteration up to KVM's maximum counter count is safe.
-+ */
-+#define kvm_for_each_gp_counter(i, mask)	\
-+	for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
-+
-+#define kvm_for_each_fixed_counter(i, mask)	\
-+	for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
-+
- static inline u64 pmc_bitmask(struct kvm_pmc *pmc)
- {
- 	struct kvm_pmu *pmu = pmc_to_pmu(pmc);
-@@ -168,9 +203,12 @@ static inline bool kvm_valid_perf_global_ctrl(struct kvm_pmu *pmu,
- static inline struct kvm_pmc *get_gp_pmc(struct kvm_pmu *pmu, u32 msr,
- 					 u32 base)
- {
--	if (msr >= base && msr < base + pmu->nr_arch_gp_counters) {
-+	if (msr >= base && msr < base + KVM_MAX_NR_GP_COUNTERS) {
- 		u32 index = array_index_nospec(msr - base,
--					       pmu->nr_arch_gp_counters);
-+					       KVM_MAX_NR_GP_COUNTERS);
-+
-+		if (!kvm_is_gp_pmc_supported(pmu, index))
-+			return NULL;
- 
- 		return &pmu->gp_counters[index];
+ 	counter_rsvd = ~((u64)kvm_gp_pmc_mask(pmu) |
+ 			 ((u64)kvm_fixed_pmc_mask(pmu) << KVM_FIXED_PMC_BASE_IDX));
+@@ -661,11 +664,14 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+ 			pmu->pebs_enable_rsvd = counter_rsvd;
+ 			pmu->eventsel_rsvd &= ~ICL_EVENTSEL_ADAPTIVE;
+ 			pmu->pebs_data_cfg_rsvd = ~0xff00000full;
+-			intel_pmu_enable_fixed_counter_bits(pmu, ICL_FIXED_0_ADAPTIVE);
++			fixed_enable_bits |= ICL_FIXED_0_ADAPTIVE;
+ 		} else {
+ 			pmu->pebs_enable_rsvd = ~(u64)kvm_gp_pmc_mask(pmu);
+ 		}
  	}
-@@ -183,9 +221,12 @@ static inline struct kvm_pmc *get_fixed_pmc(struct kvm_pmu *pmu, u32 msr)
- {
- 	int base = MSR_CORE_PERF_FIXED_CTR0;
- 
--	if (msr >= base && msr < base + pmu->nr_arch_fixed_counters) {
-+	if (msr >= base && msr < base + KVM_MAX_NR_FIXED_COUNTERS) {
- 		u32 index = array_index_nospec(msr - base,
--					       pmu->nr_arch_fixed_counters);
-+					       KVM_MAX_NR_FIXED_COUNTERS);
 +
-+		if (!kvm_is_fixed_pmc_supported(pmu, index))
-+			return NULL;
++	pmu->fixed_ctr_ctrl_rsvd &=
++		~intel_pmu_fixed_ctrl_bits(pmu, fixed_enable_bits);
+ }
  
- 		return &pmu->fixed_counters[index];
- 	}
+ static void intel_pmu_init(struct kvm_vcpu *vcpu)
 -- 
 2.56.0
 
