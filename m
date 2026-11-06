@@ -1,101 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793941288;
-	b=dDaVDfwBTupqFc30Bhl5o71d48yrDZhxKF+KBGHqFGxL1SV7lkabq8+Q6SSw9bERTs7T
-	 yJu5jBj+fm48Q2U/M9LEEEbdobYFb3zM+fI7GOcq7kdsCMZcvOepbWlkHyemD872aIaba
-	 TQS1Iq1vx1Y/s5gCylnY/eh2/gTAtH8o/dsOpfxhRnxQUIXgsZvR6Yn9THalz5jMQpP3T
-	 WUBvs5N8E53jKAdeD3m4LQnWqKB5a0L96TanzNZILZilssm90fkLyhRpblVHEWxUuJfBQ
-	 +83v5Hi/FQaGj98zm3dmdsBaqFeA0ciMTS2UaWB/SeRMfncLQ/V7WUeAwd/yBnIeryg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793941288;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=xtLYzvB4QwyE4CQQZBVQ03agWEuN54VOUX3M+RpRBBA=;
-	b=h2jyxqsnHkbvO+iV6CeAEFan8h8l7MjGWRH/DzDc0YUjlpeF0WhHausQ+ZU1XQSpRaV0
-	 Ea0bWTblmNOM3+1SrhtDz51i1PNU94iDGnQl9wqNlwJaM9QBW4OTkx5Xw0tfPz19z+D4e
-	 RyJpdcbt3C5I1856kTqMHScqEjwSXgHzurFo+Ek9WBEitTSPPhUPZvDDl2/Qva6uEiUFV
-	 6TmSEAIMCeZhzH6/UBCDHOPmTBHndSP/FdJZoS6QnbBwLtb4ITqnDG3nSOSDWZ2cHyA/l
-	 1k7Q6ts+iqsolZPBlXm6pUgBSBsTQvlM4YntjGy6SHg8MpUAU6iwqyjq5hIlnfGy+Gg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JetxdjpN;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793941356;
+	b=RI3JABH/eswoWyDEtKR13w1tFFQx/zSOyWZScj+C0eU7rsoRF4Xn2ipFGfaWqzT39CID
+	 MrOltnLJUtp5Fkd5YQCta/5W+vyA8Yk/7ty0D4MV3EXqApDLSLWakl/IVHdpNI1vQkA/h
+	 2PAafAJ5XfevB5132JkPuhSSzJ3CnX1FNhoo0NIfx7LzQHbSuC/aMF+EvkZxOafmCtLfp
+	 OnI9Fa3uGZ/j1xuVIhS04nWUHRHVS9ft3rjtP0HGD6UyzfCXXj7jg/uZ+Ru6RDQPWx9Ht
+	 VuWxaKGI06pT6IaJzFEF1W5oVVIPAEMcoAOgdRDwOL9tzvhoM6es8IyRNJomk1k75dw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793941356;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Subject:
+	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=/E4P3dYGG3OLLZ/+JjGK4939CGV5ZJ679kg1UXIY3WI=;
+	b=U4zZS3Y898Z5y+yrKZO1iXu9+oPrZEnC2DDUF7R7dL2KfqYJwT7uPvC9xIvSwkNLsAo7
+	 qfUdXUHGhwkYDrVghQUpuxtWit8BVy5bCRvZ9bVylYtR1yncIFBZfqvoLE0wXgB9jc7wD
+	 Dpo3aBHwQVjS02TzFOP+YAZqADe9Vq0EDLkEqu6ONUr+hjVBRoubrU7LFYaYnSecBbIlK
+	 228VLcOWJusf6kabC8TfdgsGWz1zRU/v9Glv1BiNkTXTVDBW7VLKj6YKnugCyI9Nwb7Vf
+	 RLWGtxC6x6SeoujgngG6YbCaqBzZTE/ndvaY9Uem7x0ICgR8KVCos3Svo5GiWeblHxg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linuxhacker.ru;
+	spf=pass smtp.mailfrom=linuxhacker.ru;
+	dkim=pass header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=snlGUrD0;
+	arc=none smtp.remote-ip=159.69.87.85
+Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BC3606A31B
-	for <kvm@vger.kernel.org>; Fri,  6 Nov 2026 05:01:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54BC3606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A1E606A326;
+	Fri,  6 Nov 2026 05:02:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5A1E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxhacker.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxhacker.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JetxdjpN
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-54492d8a988so51731cf.0
-        for <kvm@vger.kernel.org>; Thu, 05 Nov 2026 21:01:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793941287; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VDJ6bqDptH5Vkdf44NCBfpQsLc5GLPL2sZrfozbHjwv/2DHJjQ5YxQ8fhDiuuB8rnN
-         ptuDPDMoB1+k8VrXTQb3GII5j0M5EdkCzU7u57wvluYXJ9pqbxz2mrCWuoCdjLpvUh3s
-         Th+krViXch5hXDYZzeBMnMasuTIiP1a2mFPEv3wVm65NIFaBO8QuGfXu2pGaxAxtW75l
-         98x0z5XJmnzS9KxxecfJMVskddd8X315Tb2wVAdsdgJOxrrQDk5n96nw5tt+YwlRDfBE
-         m3cTJNZnNgMBNf5NA3NhVkbrjAIBf2E7lwtC8P4uPkmh7mj+hy6BypegZf8+zC6iBSYE
-         mtoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xtLYzvB4QwyE4CQQZBVQ03agWEuN54VOUX3M+RpRBBA=;
-        fh=Wd2XnyJvzxFUbwxVcUux2EGZV21s3UmN/kWC+lZOsdQ=;
-        b=DqwIUQVullESZhxXLGrDcroIfPIVm5ICMppdkJ22XM/yiMh/o4SeIT+EUJbwQppf9N
-         VjHh+WeMKSgV00gQKF6Iy1PAHWsdMPMmhAjhWFhpkf2BkLMTf0KN3OZYPbw1AM8IMj+B
-         vvXxSteuMNiyQeAUQAaYBD2H2Iobfu2Qv2revl9Ji7GdGCKIrCkGkQMErsITXMFjji9E
-         YWIFRo61rJAhTZFJdLrqjELnYdN8JNocUhF7obv8gBfX2hgK4AxDkGrnWfSq1sbjBDf/
-         PT0Moq8EaDvLWQiIerEd195QLKkv+v6AIK7LVLCOALUWGROGnds2V4LjAaepcG3Ahokx
-         IORw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793941287; x=1794546087; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xtLYzvB4QwyE4CQQZBVQ03agWEuN54VOUX3M+RpRBBA=;
-        b=JetxdjpNy04qLWgZ2MgoRuiFvxEV51HgOqbtf7EMMncLAaq+SM2kbVWZethMJmbGq8
-         hJ829usL/kMbPBbHSdG4OeW4jLnU7gLSsCteTt61KtGEItKyTqm4CzGmiZvoSU9vjti7
-         H690meOzJs2mlQ6Bho9bVL209h4h2oJo3XGDPJdYqwusfue7laXufhBIvuN33Yi6Ck+e
-         oaPzgQK/eiO70nTmrxqkg4bCNW8r3HF61N+IqCPNjnEoqe291qHZxQRXGaJzVpsErD/t
-         9+BRG9xNz1btvq1P2T/TQAqUe8hSdegSsVulMtVP3YG6tcVlStl0pNxxiQRob6LSIJ5f
-         9gGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793941287; x=1794546087;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xtLYzvB4QwyE4CQQZBVQ03agWEuN54VOUX3M+RpRBBA=;
-        b=e97bsF9RBTBcPbK0F0rCm0dbnXPRUAtB6u14RPCLZ2egXBeCtQc+I6GUBNiLrgRwX0
-         j9LqCreuQqaNCBZav7fzqJJLUXy0CCpGdSlqG1NrjWTLLHz5936kYsXtalYeOgLsqEYR
-         si++uot5WM5ucrVL3b3feDCeVt71BeXykJ6DRTUucq552HHrtmw0yWScg73XCV9g+Q0/
-         1PILcBPZOt8aXofCx41fUV/bfpS84GRw6UubsNqZT+qFkG0wx4SlNjHugTJM9eqYWI9u
-         Bz2Nu50MqhcnOXgUjihAEW/Ccth7O/6izOC31MXk5Mxdr1P3L/91gI3m+rqUWtrdsb64
-         ruoA==
-X-Forwarded-Encrypted: i=1; AKwUvBzWAThwUHUxX3/NdiE7gPdhfravZ1OioG4ILyr3BeHVkpi8obV0QdOhQCrnBOFapHffMF8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/WXfOcw5WLOxnu7wK5uytnT4fWIi0/kT0GQ7O3Ul2RqsTFIqy4
-	E5u+9KSKDHZBXinlDi9qe3Qcau+5twOaEQkusRil5GGNAvbUNeQJmhso+L5aY6Ty+MZBsQQpONi
-	Tb6928m6pIZNyrYDBKEubkX9nkDDVHxKW8yKdVr9+
-X-Gm-Gg: AYBFou3NiS2Lz+2cyMnbUZJmPdYjCg+h4G1kU85jBGEjCNQX2NTIaLS0SmGyDMjfXDH
-	LmOiaP50voq4N5hLZKcjB79kHyNskdsRgnMw/wSAppVbYCjmR8A5Rn8Cyz2tlF4oiYkOeTsG6/s
-	KYyaoA/Pwo9Mpn8xz9OLO/oKjTfP+uCIoteYvnp8a39QjR3jcDty+SgEoOM/T1IKK/dMG+pK3tr
-	Ti7E67MLJq5QjI3qFJk2b+YqhOVk33p882USRms9VT2owe5sNVVaT0HDtwXpPUOyOBiEktJWXIz
-	dmuiGD1WdOfYtE74Id+hgsA47iMM7fnHSLwnDOlIQLB1Er70xwMx2wSmtoDjL5KYkASiSAVb5eJ
-	YpNh4xqMTq4/ftEPoQUj3cgH+CTjRA6j+Q7+hZ0Bc+DI/2kF8DB7VRx8mVHf9tyN4+kR6tEGFIS
-	5dBLzTu0xcOlFU1Orf/iIDkq16
-X-Received: by 2002:a05:622a:250c:b0:52f:9ed4:8d76 with SMTP id
- d75a77b69052e-54eb746fba5mr594091cf.14.1793941286561; Thu, 05 Nov 2026
- 21:01:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=snlGUrD0
+Received: from [10.137.0.31] (unknown [162.81.204.199])
+	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id 7A2C7BEE42;
+	Fri,  6 Nov 2026 05:02:25 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 eagle.linuxhacker.ru 7A2C7BEE42
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxhacker.ru;
+	s=mail; t=1793941347;
+	bh=aqDdN5EbIY6jIgTAilZgeXe6s88P6n4MhtpN1ffc92k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=snlGUrD0Q3Yg+a0E085tRFo10AhVaxfpNBITl2MVPIqcC0Q1d8eMgKRWJd4V00lte
+	 UluotoNGtZJONdFBGprmosOJH9ALqG55htsIedDzkSpSnJaXQP/BhfVmxzqN3O69RA
+	 fje+5IDucsxsZ99Svs8v2+msNGlP2nEl8P+F36DmnOdi/y/spIcV4TlfHMDXiDd0CL
+	 FGm+Pzli4O+YOLo2kg/teEqPm53N6V8clkHQ7EhXWp0F1P3KBARWDjY3iz02S3C8jM
+	 RhYulnXClDSxvYLdXmnxKG0EbXa3Aah0pAAKksGbFOsmjZ2JreNzV5qG+9RbMxA5M3
+	 pAlCMzizTYwzg==
+Message-ID: <9615375a368c5d6c31cae9dbbfd51db037784193.camel@linuxhacker.ru>
+Subject: Re: [PATCH net 3/3] vsock/virtio: queue at most one credit update
+ per socket
+From: Oleg Drokin <green@linuxhacker.ru>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: sgarzare@redhat.com, stefanha@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, bobbyeshleman@meta.com, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, 	horms@kernel.org, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, 	kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Fri, 06 Nov 2026 00:02:23 -0500
+In-Reply-To: <20261105191917-mutt-send-email-mst@kernel.org>
+References: <20261105000141.3617241-1-green@linuxhacker.ru>
+	 <20261105000141.3617241-4-green@linuxhacker.ru>
+	 <20261105191917-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,25 +75,32 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260930210750.1487547-1-chang.seok.bae@intel.com> <20260930210750.1487547-17-chang.seok.bae@intel.com>
-In-Reply-To: <20260930210750.1487547-17-chang.seok.bae@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 5 Nov 2026 21:01:09 -0800
-X-Gm-Features: AclHuK-ctdXjo8QN3yQuitGR3bekhHL6BOFHnzufPuigJe6OXqS1fnnmKMIqztE
-Message-ID: <CALMp9eSp7Xj-z-8Wj=XA+KEk1XKTWpvwygWpdgzKeKQmDCobVQ@mail.gmail.com>
-Subject: Re: [PATCH v8 16/20] KVM: x86: Add APX to supported XCR0
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, zhao1.liu@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 4:07=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.=
-com> wrote:
->
-> Set kvm_caps.supported_xcr0[APX] when the host has enabled the APX state
-> along with CONFIG_KVM_APX=3Dy.
->
-> Tested-by: Zhao Liu <zhao1.liu@intel.com>
-> Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On Thu, 2026-11-05 at 19:19 -0500, Michael S. Tsirkin wrote:
+> On Wed, Nov 04, 2026 at 07:01:41PM -0500, Oleg Drokin wrote:
+> >=20
+> > =C2=A0
+> > =C2=A0#define VIRTIO_VSOCK_SKB_CB(skb) ((struct virtio_vsock_skb_cb
+> > *)((skb)->cb))
+> > @@ -167,6 +168,9 @@ struct virtio_vsock_sock {
+> > =C2=A0	u32 buf_used;
+> > =C2=A0	struct sk_buff_head rx_queue;
+> > =C2=A0	u32 msg_count;
+> > +	struct sk_buff *credit_update;
+> > +
+> > +	refcount_t refcnt;
+>=20
+> why all this complexity? can you not just peek at the queue tail
+> instead?
+
+Thanks for the suggestion. The send queues are per device, not per
+socket: vhost has one per guest, and the guest driver and loopback
+have=C2=A0one each. A peer with two connections can alternate its credit
+requests between them, so the tail is always the other connection's
+update and nothing would ever be merged.
+
+v2 reworks this third patch:
+vsock_sock remembers its newest queued packet while that packet is a
+credit update, together with the queue it is in.
+The refcount, the skb destructor and the transmit hooks
+are gone, and vhost and the guest driver are not touched.
