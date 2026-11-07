@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011817;
-	b=SnNME9QMBnQEm348AO1w3xQLGP1E36kVIJXDdSHWxu8U5D/jiY+J4QC5JxBB5ivRuS8l
-	 O+Qvb2jcW78QeFMCREJzkaRBMwKgtd8+CwmOU5SZQ+OEISA8odc1PQf917thOkTKCuv34
-	 7g8IPUMfTNJ/YylPEAqFswEYSDWVydq0k7rfsk8iejbjNjNFMRztsW2VTHdFBKc4Pd4KC
-	 7H7vvikYa+KSlTwk/iM0drgIvzdgKBQcpA8zpFbgROMOBzEW5646x+7u4maMVbN/eOoBr
-	 tz//21bCHvtkNGGWWcl+zbkvLgOUbGmvIBJFfAW1TFxAlhpBsOupSfJ1pU0EzZ8sGSQ==
+	t=1794011818;
+	b=wmTCKIW3RrEMFzAsIleC4v2x013tDD3/q0EEjXfdvaHQU4Z9fGH5xR1uIKiicDymDO81
+	 T5NXBMWMehrA/MEPCkOhTppz5OBbxp/7HtwOGwyiIU+YRFyqSR0ecohuUzm3hgpn11yAQ
+	 cfPG4FiRYDPSjdyfV8tXaHWIWI9uiokZPADl/yQcDvIJXiYi+s48vdPFGlW5We2rcLc98
+	 IfqLJybDZ1Gf/kYZ9tTDHdkdcTt7czv8qFrRRH6UXctiaKeBRLcD6AdHoXYr4Q3IF616R
+	 /cTcbS6306fTrnWSf2FILHewPCNrtVQTXeU2UbOc9ePSDklc4h14h5epP0GyOE++5ew==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011817;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=wzMjOKIzu33g7FJKvimMpae1iK2TD3Ag5YmcsJozb+4=;
-	b=JUkk7fv4iRmIcRgFxCgu6CMUrloBC4aKubx45ORoHZ4Y+889Wvkk+omdpZThGqtiOx4/
-	 /pb7CkgSbhjS91StjXmupt8pHKckVufKJeYmT2/EwzWRVbclgScZsuSITNZgPxG0kx/f2
-	 Hw7q0KHQrmzEixNvC8QAOD0jxs5zEs/at+wjUdaURODphslNcF2bIxxcPy47faveAuvni
-	 VZ/XJSvaC1Bpz6IcDJc2sQDWO+807ZSOg7CWjM4U8AMwcZVJZnhtFw0VrUU7uIa67jYnm
-	 IfXJYJlU921see0woSjEnLe/0TE+okx5N5hFVcI2x0PTE9IzI+HU8BzvkuIDHffuhqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011818;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=bSP0Q8LW8rkNnI4q6jUwUxmI5gx54PlOVRGPJENZuG0=;
+	b=MA+yOLwkT1poqKoII78uieWE97tfEgEROKdZUGRutNktRXEZzoGVg5zAB0fWIGIZDaOs
+	 j0gqoGzQtIMKlgdCXOOwfyEf5Gei2nZum1mXEogZMvlgckfJX7YWmybO6oYQPUYnXbi6Q
+	 7uvgiSxhzY+BoFKcC8vYa40sRnBOvH9dErZpNtBGmHJqKMlHjM3Z8Lqu7zunUjODNRdVc
+	 IZgqhYSCA8w2EQuttHlyJrrcMfqAwLCEqOe+ZFxHe07iY7hJEAOvVujjTTexcAyhbuENt
+	 OMr/0BKHl9aFuurFiIav+j35hmAPyX+eYky+upOUnD4n8Y6KBd43D1pfUReW5ODyU+A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ECd6EWlw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DzOVRtbz;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3140606D82B;
-	Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14CA606EE88;
+	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ECd6EWlw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DzOVRtbz
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011816;
-	b=vOtosl5U7F+S1ku04Cmwj3N515jdS1XahrZcC+S1GocfB/tU9oh/72zMSEZtl7iQKGFA
-	 5BzNygVvkvv5NjVeDXg4s8dK4hj2LdFhtQR1lMyqcJQtFQMExOTXZjwLyUzS9D8Yimbje
-	 I1H97Tp+jmBl6FS+HcZY9mdKjbaDVt1k3ZsB7bI7ycJaRR2qzsnWpA7UOg6RVb00RuotI
-	 UNCJy9tVf4+7mvU/5MOneVmJ3/rdPuDJSXeFbr/V+jCeH9ZKeHH0pYXka87211Jkibg2b
-	 Vfm5vJem10dfPe+3RprKhtiapA7AQ/YfMNbdxtvbBSQ/cU56g6qIeTztnCBL4sVubcA==
+	t=1794011817;
+	b=YYHff6rUfiPRp7BMPHD5RxyuJHzfy6DeWqOvl4c+yIdI1qP6nNPJvQIqre2PNj5m5OJO
+	 L4BlwrbrV8FDwEuko9vOKFZ74JF5ZG+J3KFsE/PSRgZCaRsah+jUFkDfyHehfo7WRbyYF
+	 q04IX8RUb6e5AEEBkJJXTD7TTsOXWAp+SB5F2qhMnSpayUASI27m5IcLKOCl4t37b3w/G
+	 P5tjhKks5Qsj+oYGzCf+qjbD7DDh5Z+tkNN4W/fPY8ZHHBAO/Inn3zlxGR8egSBHtwPGP
+	 3jviRE/s6QD0Ynb7EbPCMwpvp/raQ3Q135g46dKEZtEl36tb8bgAviXPxqyCzVVYTwA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011816;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=wzMjOKIzu33g7FJKvimMpae1iK2TD3Ag5YmcsJozb+4=;
-	b=yaVww1pg1RUNUgCGHkvymom8G12jze5okkinEDoWLL2GfbDKDJAWlSbS1j59WvuXoC6f
-	 ErTqVFAce67h7jsW2YzK1iZbeJAQmrW3c4KJBmx62GGRCOpbeqUndpkXP7xVcCvxPXfW1
-	 o++XlcXFDT+XYQBcF29r7FGJPA7nRhX9UGPrCHuahtyDDTDcSmCN7oFxNJ38jk+/W6ZPr
-	 0DnyXdGflbO+3Lz3gsbprm0hX9cRAWFzACoJd1CnioCwg/MDAzyiQZoeDTpukCgd/d6XX
-	 ZSH6vkMr3SQzNLYYSC7GSNz+tQblPm4rk2LNoE8FyZav6RU5fwnhX+CQQu1jpqTa4Kw==
+	c=relaxed/relaxed; t=1794011817;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=bSP0Q8LW8rkNnI4q6jUwUxmI5gx54PlOVRGPJENZuG0=;
+	b=kELdCDjCNPYjV8n41IxeETCWytZn88dp48WKgBuOagoRnni5dAWR+ORqPQqFrfX7eFMQ
+	 P0hkZkY2C2uVGrRjGUE7FuFgixPP7S6IAtNKEnPU1jjzWV6BEgVnL8OuSZa3lP361/z1G
+	 AED2NYwdxIj2ps6dZ4sqmNe4OsQZr/TnrjpeF8caLCik38ZAiG8Dm2vcqflAFz435IZyj
+	 vpA0cMg0j5NKYyDTfpiI9r5YQeuCw7/kargSrkpcxW+FzIEbZhiWNagHiflmzrt9NFjnj
+	 UNY5UQ3ykc/c/gK/220c7dBHo6J8nEEgTuw62NyXAAxp2FFYTOyG+cFNBnsreUzGB4Q==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 8C70B1F008A4;
+	by smtp.kernel.org (Postfix) with ESMTPS id 550831F008A1;
 	Sat,  7 Nov 2026 00:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011816;
-	bh=wzMjOKIzu33g7FJKvimMpae1iK2TD3Ag5YmcsJozb+4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=ECd6EWlwhwpl78kL6NkcmvF/DAUiWoizeIdyyXTZVrmlfJrcgh8BwFJSd5gJ/obKw
-	 hvhJjVeCtbebCBsEH5O005mbhWX97RPngzbtE0C/Iz5jGNEjthqHbrm2MqSd4J4EUD
-	 SYpis7zleFOf0e4egkB6krTPp++9oN6e59dzp2NjahxhNcd9VMT2bYxFclO77V4CyP
-	 QUx3wMDbTOiGPiCa/VAkFtqYakJkWNNHeaYQy7Gp2OEyXHE2ru45BmRuizGv1UiGbr
-	 tPENSIoHbPMyowNKspA6FOsPd4X80C10CqiIxzuUPVL+hJKryHdbGTWa8dRC+2D/S0
-	 ztEwozxRVs15w==
+	s=k20260515; t=1794011817;
+	bh=bSP0Q8LW8rkNnI4q6jUwUxmI5gx54PlOVRGPJENZuG0=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=DzOVRtbzPERfiDt5vG6izqeaQHq8zNL/wptCdzcH8td0UXdCwgRAya76Pi4dX82HJ
+	 dd/5MpILeicrzB4vBoMOGZhxbcvEahLBEGHdVWHlARjp+V6clEx7y3VO24kDk+4bZH
+	 Is5SZis7+cq2yXeGpLy8XWKwOKGOoW2gjT8RT8GSe3+KJZwWTIaMLgyk55REvMGEOh
+	 hbPT7pBkhgBgwGOJK0GOWXvrqkpPBhuDSXD8OXxD2iSK1O5Yl2Q3kj/vtrASgFqf4P
+	 v96BKuO/5SHIoeQTlv553Sz3f5vekzPxWNgHi5+3HWa9Dz9pZYiIZojpWj0e7mvYCQ
+	 C9CAQv9c+QhNg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 10A8447925;
-	Sat,  7 Nov 2026 00:36:53 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id A01F647919;
+	Sat,  7 Nov 2026 00:36:52 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:36:38 -0800
-Subject: [PATCH RFC v3 04/88] KVM: guest_memfd: Support provider folio
- invalidation
+Subject: [PATCH RFC v3 00/88] guest_memfd alternative providers
+Date: Fri, 06 Nov 2026 16:36:34 -0800
+Message-Id: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,9 +84,12 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-4-8484dde66a7e@google.com>
-References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
-In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJRy7moC/32Oyw6CMBREf4XctTWlhvpYmZj4AW4Ni9Je4Bqgp
+ K2NhvDvFti7nMnknJnAoyP0cMkmcBjJkx1SOOwy0K0aGmRkUgbBhcx5XrCmx56pLqAbVKCIbHQ
+ 2kkHnWWHOJ3MUWKvKQAKMDmv6rPAnPO43KLfSv6sX6rBgl1lLPlj3XS9EsY43mxD/bFEwnpQmN
+ 1pqKbm6NtY2He617aGc5/kHooOaJ9wAAAA=
+X-Change-ID: 20261015-gmem-alternative-providers-5d98d72efabd
 To: Alexey Kardashevskiy <aik@amd.com>, 
  "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
  Christian Brauner <brauner@kernel.org>, 
@@ -105,111 +108,300 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=3364;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=16185;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=MGHk6/Cisdy/wpa1a0X1OzKyL7CzzGctRSrQGUJPYjc=;
- b=0KoWPhP/+ANsbW65PxaOZBZqe5dkk4DAuC4v1KLIC4R5Fu5djTD8G+xa3t2kfBvY/9v08lGNw
- rD9zaIwVcAjDsEAFo+Xlsb9U+GXt7PCNBe9Ws2/8FhAQMqClCp2gjaH
+ bh=ervChwxpIQLRxRtMWrdudBza/JHCGlJ4Ky8gprxuFNM=;
+ b=aPmrelHctmCBUniYoQlzg4J6Z2RA1/rLGL53VtncHCY2ICSUY16dtPcPhkpgT123J4omOjXrJ
+ oynzVFLy+7/Bow3/2aMg1grzHtSfFq95yFDzn9KrI2MvMrD949dll3A
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-Content-Transfer-Encoding: 7bit
 
-From: Ackerley Tng <ackerleytng@google.com>
+Here's RFC v3 of guest_memfd alternative providers.
 
-tmpfs increments the total number of used pages on the mount at allocation
-time, so that number has to be decremented when the folio is removed from
-tmpfs' ownership.
+This RFC is meant to show line of sight to a few things, and will have to be
+split into a few series for upstreaming:
 
-In this model where guest_memfd allocates from a tmpfs mount, I believe we
-should respect the limits set in the mount, hence I require .alloc_folio()
-to increment.
+1. Supporting alternative folio providers (tmpfs used for illustration)
+     ends at "KVM: selftests: Test guest_memfd conversions with tmpfs backing"
+2. Introducing a sample memory provider
+     ends at "KVM: selftests: Test marking page ranges read-only"
+3. Supporting pfn-mode providers in KVM
+     ends at "KVM: selftests: Test flag dependency of PFN_MODE on USE_RESOURCE"
+4. Making sample memory provider a guest_memfd pfn-mode provider
+     ends at "KVM: selftests: Test guest_memfd conversions with sample memory provider backing"
+5. Making VFIO a guest_memfd pfn-mode provider
+     ends at the last patch
 
-.invalidate_folio() is then the counterpart to .alloc_folio(), for undoing
-any provider-specific per-folio work during allocations.
+I was trying to get this to work at a conceptual level:
 
-.invalidate_folio() requires mapping_set_release_always(). Not sure how odd
-it is to use that mapping flag.
+In this version, after working with VFIO, the provider fd should be clarified as
+the provider control/config plane fd.
 
-Using .free_folio() is hard because folio->mapping is NULL by then, so I
-can't reach provider information. The provider information could also be
-stuffed in folio->private? What do people think of that?
+* tmpfs: the directory fd is used as the control plane, since it indicates which
+  mount to get folios from, what the mount config is, etc
+* sample memory provider: the provider file fd doesn't allow access to memory
+  (data plane), but is a handle for memory that is pre-carved out using
+  alloc_contig_pages()
+* VFIO: I added a VFIO_DEVICE_BIND_FLAG_CTRL_ONLY flag for
+  VFIO_DEVICE_BIND_IOMMUFD, which partitions VFIO operations into data plane
+  (mmap_supported + some ioctls) and control plane (everything else, which I
+  think shouldn't be used for Confidential IO, and gmem doesn't want to manage
+  anyway)
 
-Another alternative would be to use a custom truncation function in
-guest_memfd, just like shmem_truncate_range() or shmem_undo_range(). The
-con is that guest_memfd might at some point support more generic mm stuff
-like swap/reclaim, of some form? Or maybe never? Shall we go custom now and
-unify later? Or just not think too far ahead?
+The split between vfio fd and gmem fd is this:
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+* gmem fd: Read/write/mmap mappable BARs 0-5 from userspace and stage 2, and
+           conversions
+* vfio fd: Read/write everything else. mmap, ioeventfd, and dmabufs are blocked
+           for CTRL_ONLY
+
+I also formalized Sean's suggestion of gmem requiring exclusive access to the
+resource, which shows up in the locking requirements (I updated the docstrings
+for all the gmem provider ops accordingly).
+
+For VFIO, this is implemented as a .bars_available field. On attach, we take
+dev_set->lock in vfio to store .gmem_inode, while vfio-pci takes ->memory_lock
+and initializes .bars_available based on whether memory decoding is enabled and
+the device is awake.
+
+After setting .bars_available = true, gmem has exclusive access to the data
+plane for VFIO, which should be everything needed for Confidential IO. gmem will
+use its filemap_invalidate_lock for VFIO operations. Everything on the VFIO side
+is locklessly checked.
+
+Revoking from the VFIO side first sets .bars_available = false to block racing
+accesses from gmem, then calls kvm_gmem_revoke().
+
+For testing VFIO, I selected igb as the test driver since it is the most
+full-featured yet can work with my qemu testing setup :). mdpy and mtty don't
+use vfio-pci so they don't use ->memory_lock.
+
+And then when I introduced the last test on read/write I realized this
+implementation has a slightly different behavior between vfio and gmem-wrapped
+vfio, which is that the reads/writes to the gmem-wrapped version doesn't
+automatically get the device out of low power mode. I don't like this slight
+difference required.
+
+It doesn't get the device out of low power mode because getting the device out
+of low power mode involves taking vdev->memory_lock, and this model commits to
+not taking the lock while holding the filemap_invalidate_lock() in gmem.
+
+The problem here is that read/write needs to take a provider side lock, but
+guest_memfd, the caller, needs to hold the filemap_invalidate_lock() to make
+sure shared/private state doesn't change during the read. Holding
+filemap_invalidate_lock() while taking the provider side lock
+(vdev->memory_lock) causes an ABBA locking issue. Not taking the provider lock
+is possible but results in slightly different functionality.
+
+Aneesh's version [1] didn't implement read/write. I think David mentioned during
+gmem biweekly it shouldn't be that hard, so I tried and that turned out to be
+_the_ challenge, lol. From a gmem provider perspective, the goal is to try and
+get line of sight to a broad set of providers, hence VFIO's read/write is a good
+challenge. Either way, I do think we should try to preserve as much vfio
+functionality even after wrapping with gmem.
+
+Aneesh, I think I'm finally at a point where I have enough background
+understanding to compare our approaches, so I'll get to that after KVM forum.
+
+I didn't get around to prototyping the Confidential stuff but I still want to
+post this because our proposals differ very much in the exclusive access and
+locking setup, and I'd like to get your help to also see if the
+Confidential-specific parts of gmem+VFIO works, and if there are other parts we
+can converge on. I left a patch prefixed QUESTION for the CoCo community.
+
+At a higher level, I'm really trying to make VFIO not that different a provider
+from other PFN providers.
+
+Sean/Aneesh, it turns out that ARM relies on the VMA to determine cacheability
+in stage-2 page tables. Since guest_memfd memory may not have a VMA, reporting
+cacheability somehow from provider (VFIO) via guest_memfd to KVM makes sense
+imo. In "KVM: guest_memfd: Support reporting PFN cacheability", for x86, I just
+left a WARN-ing if there's a discrepancy to be resolved.
+
+Fred, these are the other changes more relevant for the regular PFN provider:
+
+* Cleaned up the sample memory provider (formerly MPS) implementation and added
+  selftests.
+* Fixed bug in the RFCv2, MPS' .lookup_pfn_range() implementation always
+  returned nr_pages = 1, but it can return much more than nr_pages = 1. The
+  intent was to have nr_pages be as large as possible to indicate the full
+  contiguous block beginning at the returned PFN.
+* .lookup_pfn_range() will now set *nr_pages on -ENOENT to indicate the size of
+  the hole. This helps with VFIO since the holes are huge and iterating would be
+  sad.
+* Added the readonly support within KVM ("KVM: guest_memfd: Support reporting
+  PFN attributes")
+* Didn't get around to verifying proper support for more than order 0 PFN ranges
+
+This was built on kvm/next, and the series is also available here for your
+convenience:
+
+https://github.com/googleprodkernel/linux-cc/tree/gmem-alternative-providers-rfc-v3
+
+Testing: these pass:
+
++ ./tools/testing/selftests/kvm/mem_provider_sample_test
++ ./tools/testing/selftests/kvm/guest_memfd_test
++ ./tools/testing/selftests/kvm/x86/guest_memfd_conversions_test
++ ./tools/testing/selftests/kvm/x86/guest_memfd_vfio_test
+
+RFC v1: https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
+RFC v2: https://lore.kernel.org/all/20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com/
+
+[1] https://lore.kernel.org/all/20261104150322.3516320-1-aneesh.kumar@kernel.org/
+
 ---
- virt/kvm/guest_memfd.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Changes in v3:
+- EDITME: describe what is new in this series revision.
+- EDITME: use bulletpoints and terse descriptions.
+- Link to v2: https://patch.msgid.link/20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 545c3e646e9c1..ee823f2ef0368 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -113,6 +113,13 @@ static struct folio *gmem_provider_alloc_folio(struct gmem_inode *gi,
- 	return ERR_PTR(-EOPNOTSUPP);
- }
- 
-+static void gmem_provider_invalidate_folio(struct gmem_inode *gi,
-+					   struct folio *folio)
-+{
-+	if (gi->provider_ops && gi->provider_ops->invalidate_folio)
-+		gi->provider_ops->invalidate_folio(gi->provider, folio);
-+}
-+
- #define kvm_gmem_for_each_file(f, inode) \
- 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
- 
-@@ -213,6 +220,7 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 
- 	r = filemap_add_folio(inode->i_mapping, folio, index, GFP_KERNEL);
- 	if (r) {
-+		gmem_provider_invalidate_folio(GMEM_I(inode), folio);
- 		folio_put(folio);
- 		if (r == -EEXIST)
- 			goto retry;
-@@ -942,10 +950,24 @@ static void kvm_gmem_free_folio(struct folio *folio)
- }
- #endif
- 
-+static void kvm_gmem_invalidate_folio(struct folio *folio, size_t offset,
-+				      size_t len)
-+{
-+	struct inode *inode = folio->mapping->host;
-+	struct gmem_inode *gi = GMEM_I(inode);
-+
-+	/* guest_memfd only allows truncating full folios. */
-+	if (WARN_ON_ONCE(offset != 0 || len != folio_size(folio)))
-+		return;
-+
-+	gmem_provider_invalidate_folio(gi, folio);
-+}
-+
- static const struct address_space_operations kvm_gmem_aops = {
- 	.dirty_folio = noop_dirty_folio,
- 	.migrate_folio	= kvm_gmem_migrate_folio,
- 	.error_remove_folio = kvm_gmem_error_folio,
-+	.invalidate_folio = kvm_gmem_invalidate_folio,
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
- 	.free_folio = kvm_gmem_free_folio,
- #endif
-@@ -984,6 +1006,7 @@ static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
- 	 */
- 	mapping_set_inaccessible(inode->i_mapping);
- 	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-+	mapping_set_release_always(inode->i_mapping);
- 
- 	gi->flags = flags;
- 
+---
+Ackerley Tng (82):
+      KVM: guest_memfd: Split folio allocation and insertion in kvm_gmem_get_folio
+      KVM: guest_memfd: Route folio allocation through native provider operations
+      mm: shmem: Implement guest_memfd provider operations for tmpfs
+      KVM: guest_memfd: Support provider folio invalidation
+      KVM: guest_memfd: Support using resource provider
+      KVM: selftests: Add helper to create guest_memfd with a resource file
+      KVM: selftests: Test negative validation of resource_fd argument
+      KVM: selftests: Test rejection of unsupported filesystem for resource_fd
+      KVM: selftests: Test rejection of memfd for resource_fd
+      KVM: selftests: Test rejection of swap tmpfs mounts
+      KVM: selftests: Test rejection of hugepage tmpfs mounts
+      KVM: selftests: Test rejection of regular file in tmpfs mount
+      KVM: selftests: Test guest_memfd with tmpfs resource pool
+      KVM: selftests: Test guest_memfd resource pool sharing across instances
+      KVM: selftests: Test memory allocation against shared tmpfs resource pool
+      KVM: selftests: Test that shared tmpfs resource pool size limit is respected
+      KVM: selftests: Test guest execution with tmpfs-backed guest_memfd
+      KVM: selftests: Document testing TODOs
+      KVM: selftests: Test guest_memfd conversions with tmpfs backing
+      KVM: selftests: Add basic test for sample memory provider
+      KVM: selftests: Test marking page ranges present and absent
+      KVM: selftests: Test marking page ranges read-only
+      KVM: guest_memfd: Support getting PFNs for stage 2 from providers
+      KVM: guest_memfd: Refactor error handling in kvm_gmem_fault_user_mapping
+      KVM: guest_memfd: Set VM_PFNMAP on VMA in PFN mode
+      KVM: guest_memfd: Support user fault handling in PFN mode
+      KVM: guest_memfd: Skip checking outstanding references in PFN mode
+      KVM: guest_memfd: Support converting to shared in PFN mode
+      KVM: guest_memfd: Support preallocating memory via fallocate in PFN mode
+      KVM: guest_memfd: Clamp hole punch range to inode size
+      KVM: guest_memfd: Support reclaim during hole punch in PFN mode
+      KVM: guest_memfd: Support arch reclaim on inode destruction in PFN mode
+      KVM: guest_memfd: Support put_pfn_range provider op in PFN mode
+      KVM: guest_memfd: Add TODO for memory failure handling in PFN mode
+      KVM: guest_memfd: Allow attaching PFN-backed providers
+      KVM: guest_memfd: Export kvm_gmem_revoke for provider-driven revocation
+      KVM: selftests: Test flag dependency of PFN_MODE on USE_RESOURCE
+      samples/kvm: Implement attach and release provider ops in sample provider
+      samples/kvm: Disallow MP_SET_READONLY after attach
+      samples/kvm: Implement get_pfn provider operation
+      samples/kvm: Implement put_pfn_range provider operation
+      samples/kvm: Support dynamic revocation via kvm_gmem_revoke
+      samples/kvm: Implement lookup_pfn_range provider operation
+      KVM: selftests: Test guest_memfd conversions with sample memory provider backing
+      KVM: guest_memfd: Support reporting PFN cacheability
+      KVM: guest_memfd: Support mmap provider operation
+      KVM: guest_memfd: Support check_set_attributes provider operation
+      KVM: guest_memfd: Support read and write operations and provider callbacks
+      vfio: Track device file access mode with an enum
+      vfio: Support VFIO_DEVICE_BIND_FLAG_CTRL_ONLY
+      vfio: Dispatch guest_memfd provider operations via vfio_device_ops
+      vfio/pci: Implement attach and release provider ops for guest_memfd
+      vfio: Dispatch guest_memfd get_pfn provider op via vfio_device_ops
+      vfio/pci: Implement get_pfn provider op for guest_memfd
+      vfio: Implement mmap provider op for guest_memfd
+      vfio: Dispatch guest_memfd check_set_attributes via vfio_device_ops
+      vfio/pci: Implement check_set_attributes provider op for guest_memfd
+      vfio: Add vfio_device_gmem_revoke helper for guest_memfd
+      vfio/pci: Revoke guest_memfd memory on BAR invalidation and reset
+      vfio: Dispatch guest_memfd lookup_pfn_range via vfio_device_ops
+      vfio/pci: Implement lookup_pfn_range provider op for guest_memfd
+      vfio/pci: Use iov_iter for MMIO read and write
+      vfio: Dispatch guest_memfd read and write provider ops via vfio_device_ops
+      vfio/pci: Introduce vfio_pci_bar_rw_kbuf for kernel buffer MMIO access
+      vfio/pci: Implement read and write provider ops for guest_memfd
+      KVM: selftests: Add initial VFIO test verifying device info
+      KVM: selftests: Verify VFIO region info for igb device
+      KVM: selftests: Verify VFIO IRQ info for igb device
+      KVM: selftests: Verify VFIO MMIO read and write for igb device
+      KVM: selftests: Verify VFIO MMIO mmap access for igb device
+      KVM: selftests: Verify VFIO device reset for igb device
+      KVM: selftests: Verify VFIO access directly and via guest_memfd
+      KVM: selftests: Verify BAR revocation and access gating in low power state
+      KVM: selftests: Verify host VMA flags for VFIO BAR
+      KVM: selftests: Verify guest mapping for VFIO BAR
+      KVM: selftests: Verify VFIO dmabuf creation for igb device
+      KVM: selftests: Verify VFIO ioeventfd creation for igb device
+      KVM: selftests: Verify memory conversions for VFIO BARs
+      KVM: selftests: Verify shared and private mmap access for VFIO BARs
+      KVM: selftests: Expect successful conversion on MSI-X BARs in VFIO test
+      QUESTION: KVM: guest_memfd: Disallow private mappings of shared-only PFNs
+      KVM: selftests: Verify shared and private pread and pwrite for VFIO BARs
 
--- 
-2.56.0.455.g6c5a503b38-goog
+Fred Griffoul (6):
+      samples/kvm: Introduce memory provider module skeleton
+      samples/kvm: Support creating memory provider files
+      samples/kvm: Support marking page ranges present or absent
+      samples/kvm: Support marking page ranges read-only
+      samples/kvm: Support querying provider file statistics
+      KVM: guest_memfd: Support reporting PFN attributes
+
+ Documentation/virt/kvm/api.rst                     |   34 +-
+ arch/arm64/kvm/mmu.c                               |   43 +-
+ arch/arm64/kvm/nested.c                            |   19 +-
+ arch/x86/kvm/Makefile                              |    3 +-
+ arch/x86/kvm/mmu/mmu.c                             |   18 +-
+ arch/x86/kvm/mmu/spte.c                            |    2 +-
+ arch/x86/kvm/mmu/spte.h                            |    1 +
+ arch/x86/kvm/svm/sev.c                             |   29 +-
+ drivers/vfio/device_cdev.c                         |   15 +-
+ drivers/vfio/group.c                               |    2 +-
+ drivers/vfio/pci/vfio_pci.c                        |    9 +
+ drivers/vfio/pci/vfio_pci_config.c                 |   16 +-
+ drivers/vfio/pci/vfio_pci_core.c                   |  211 +++-
+ drivers/vfio/pci/vfio_pci_priv.h                   |   13 +
+ drivers/vfio/pci/vfio_pci_rdwr.c                   |  145 ++-
+ drivers/vfio/vfio.h                                |    8 +-
+ drivers/vfio/vfio_main.c                           |  273 ++++-
+ fs/libfs.c                                         |    4 +-
+ include/linux/fs.h                                 |    6 +
+ include/linux/guest_memfd.h                        |  125 +++
+ include/linux/kvm_host.h                           |   10 +-
+ include/linux/vfio.h                               |   30 +
+ include/linux/vfio_pci_core.h                      |   39 +
+ include/uapi/linux/kvm.h                           |    6 +-
+ include/uapi/linux/vfio.h                          |    7 +
+ mm/shmem.c                                         |  126 +++
+ samples/Kconfig                                    |   11 +
+ samples/Makefile                                   |    1 +
+ samples/kvm/Makefile                               |    2 +
+ samples/kvm/memory_provider.c                      |  405 ++++++++
+ samples/kvm/memory_provider.h                      |   70 ++
+ tools/include/uapi/linux/kvm.h                     |    6 +-
+ tools/testing/selftests/kvm/Makefile.kvm           |    2 +
+ tools/testing/selftests/kvm/guest_memfd_test.c     |  277 ++++-
+ tools/testing/selftests/kvm/include/kvm_util.h     |   24 +-
+ tools/testing/selftests/kvm/include/test_util.h    |    2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c         |    9 +-
+ tools/testing/selftests/kvm/lib/test_util.c        |   56 +
+ .../selftests/kvm/mem_provider_sample_test.c       |  215 ++++
+ .../kvm/x86/guest_memfd_conversions_test.c         |   91 +-
+ .../selftests/kvm/x86/guest_memfd_vfio_test.c      | 1092 ++++++++++++++++++++
+ virt/kvm/guest_memfd.c                             |  658 +++++++++++-
+ 42 files changed, 3956 insertions(+), 159 deletions(-)
+---
+base-commit: 1689c80fca308978ea1c9f03d15a500f4e44e2e1
+change-id: 20261015-gmem-alternative-providers-5d98d72efabd
+
+Best regards,
+--  
+Ackerley Tng <ackerleytng@google.com>
 
 
