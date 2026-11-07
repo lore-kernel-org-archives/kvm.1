@@ -1,75 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794049297;
-	b=L9FK1XSbqwmRlgF3e3Or1CcP9+GD1JJ/Z+k8kzhAGfn1bAhZuTr/fslYLyCaBhZQsxzg
-	 5V9bI4A6OHP2sArPzVTz8cNvVS6qTF5NsyPyFOsVL5Fs8ws5+FA4USEHFuaTUzaDfotAs
-	 fiQ81Jdi1wpRR2ZsVrAbQNn70XhBTC2nucuqiDmzzgoUye1t0RxEYWeIgXp/9IMSVo95D
-	 mXICCJijNuag1FlzUiQmzXD2btrNerorRLCKCVocut3q+eCHw1DKpnvpRIMgtyOMYOU7m
-	 E6KQat68plBxO0dKTbpRxjBFvY+ItD1YFiMrNp4Li2nimI32InygRRZ8PETMv5WvYDA==
+	t=1794058050;
+	b=3x9BCtiLv3BUA8yFjUPCXQM3anQO+7xd3BL89UpaeylIGGhkxk6M8Q265cPP+D/R5q4E
+	 FJbwY6Fwh/h85/6lo4/RVHv3pyXiE2DjNUOESZFkL/KJOs00nHh+vtyKE0DchZ3ODvDZH
+	 +tj5zUia1WEvg8APCYGi55IN4cVk44kgh5RtUNQNHTG9IXmNUjdRKI2hiTb7ZJ63tRu1q
+	 eaYzMHvjyxbp4CT8Zjk8iVY8BEAGGsjfizuRoKxh/5PyPZ9X0Toc5xA5JGijrHIGQ2u1w
+	 Nebaq1WR9l29NGw7S0h2AGHCytwWJUz7Btl7aryT3373dlD7aDVMJt1E41LaEE/yc6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794049297;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=7aJqfSR8WVMJ7AcA727X2IDwYjfW2MXFOBQqXw5IW0o=;
-	b=rhd2usxi1zT529WLEWHGnEGMgxp2lktce5C+GM56ii1/eHTP7FJWysJc/QvqxaEzAxWw
-	 XmDLYXzRs6TXvl3gKx3x3GVrTyO4Ghnk3L1FJXs3JA2IIIs4mechBlB8AaEMZ5MRjOlpi
-	 ON+pJSud/MDBJUaM5XfKxN4eOiOlHRGZ5nhRXAyoJoqpH8Cl/SL8M8c6jdhHvw+o5KWgA
-	 tjo+ogw56LLLXG5e83KexMD/G+4MYRe9q99lkyU2PgdmCU01n8NtdWE1i1qMUZkRWjOIA
-	 N/C0c/vmlBxadkpdJVtkFuqTVSg7o6khbJCwz146uyIe8vSQM9tcAd86yIJ75mypOTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794058050;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=jHo1KtDdlGA9DSIFi2GWmdxqmrc53iL3yuI0wVgmS5U=;
+	b=z2jg1xd0CMxhQ+3L12/qy+i2ac2BQEgDaAhNss+xHfpjA5gTSUFQhOoEhxlyPiJtpdsM
+	 5tqURsAgRTlbH0LEOqztOfcVR5Fi2RXdvWFBWl6M8/49AqqdLJxi8pvjRHhIlZH2YuYHz
+	 KVNuUZTZZaFFkWUDQ4yFuuUYLiyWZwAmTNzSf+ALMoqLSUXg58E6fdLAISTolSJ/mITEk
+	 Cs329+Hq8cBpsRMjX6KwoBkPX0nHHrEBbkPFH8liwnccMmGv4MZTJDxUvEId70YsREi0/
+	 UApr2evCyTsfwBun0Bej3qOi8Ns8QHqo7OzqKCQV6vXpKFryrcVqmvVEDtkeVKrkcLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="K6/LDNLX";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7828606A33B;
-	Sat,  7 Nov 2026 11:01:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7828606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L5dShEHn;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC91D606A32F;
+	Sat,  7 Nov 2026 13:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=K6/LDNLX
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 68DB81595;
-	Sat,  7 Nov 2026 03:01:25 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B55753F673;
-	Sat,  7 Nov 2026 03:01:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794049288; bh=W4WIuUrlizpg0BPIjPNKk2X3Stnp/vxrxo35uFREBkk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K6/LDNLXbmOQ5Aw4qbKjSDfx3+fg38fH0Q/pBceznGmkByRJNq7f2Mb5xSS1Ap9kO
-	 0IX5qyUiQPHZGXnmLBIPYaQxR0f8FLZ713eZ5Cqz9ws9UQ8GTICu9TvMAl9W0EzmCJ
-	 v9ONr3tLLx1VxLV8t51bH9PzXGdV14gJgw+AFnCM=
-Date: Sat, 7 Nov 2026 11:01:22 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	aneesh.kumar@kernel.org
-Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
-Message-ID: <au8FAlt2wIgeEO4I@e129823.arm.com>
-References: <auuDcABX27EeTApl@e129823.arm.com>
- <20261104194622.GC3889730@ziepe.ca>
- <aux01NUd85PabtZu@FV6GYCPJ69>
- <auyKE2sGqtfjk4v5@e129823.arm.com>
- <auy7IM0_S2tv7EZX@FV6GYCPJ69>
- <au2WdWFOYbPEv0Uj@e129823.arm.com>
- <au3i-0eDzJZaWukx@FV6GYCPJ69>
- <au3mAsQrh0GniXJo@e129823.arm.com>
- <au34wXtIqii-hfFI@FV6GYCPJ69>
- <au3-LyBiCZtUMpEx@e129823.arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L5dShEHn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72A01F008A1;
+	Sat,  7 Nov 2026 13:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794058049;
+	bh=jHo1KtDdlGA9DSIFi2GWmdxqmrc53iL3yuI0wVgmS5U=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=L5dShEHntsZ3rWORw5x0i8Ca4SRZF5zcwzzgRpRaldbrc/UqNo0Tkf5n8VNm6bl88
+	 XSzl/fARE/HDZAUN+OBWKXNBi318dehfNvf0MEV5UkcTyafb0bVoUNzrCHi250nDg3
+	 z4peVXPHcr9oc23rPDKGGF/uJNuFFPEK0/fLmGykMtXVFcqGsv3wU9++dUk7IP3Yoz
+	 kYoyoz+KUJacFXNOLmbCT2wsvPPyoFQpjcGFNRpVheRTn4wSl7lp6ev29Zt5S7pJCG
+	 f6OyuP9lEj6jLoolq359cTe0JZbhznG0EN+uQ7hiE4zWUSzWKJPLsgZ/hqqCQZRdR3
+	 yUkPkuni8I7gw==
+Message-ID: <sashiko-outbox-202921@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
+ metadata to memcg
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tao Cui" <cui.tao@linux.dev>, akpm@linux-foundation.org, dgilbert@interlog.com, mkp@kernel.org, loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com, vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com, rostedt@goodmis.org, vdonnefort@google.com, mhiramat@kernel.org, jgg@ziepe.ca, kevin.tian@intel.com, axboe@kernel.dk
+Cc: linux-mm@kvack.org, James.Bottomley@HansenPartnership.com, sumit.semwal@linaro.org, christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org, will@kernel.org, linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org, kvm@vger.kernel.org, virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org, bobbyeshleman@meta.com, mathieu.desnoyers@efficios.com, robin.murphy@arm.com, mason@kernel.org, aesteve@redhat.com, tjmercier@google.com, harry@kernel.org, vbabka@suse.cz, cuitao@kylinos.cn, media-ci@linuxtv.org
+In-Reply-To: <20261106131829.3228926-5-cui.tao@linux.dev>
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+ <20261106131829.3228926-5-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 07 Nov 2026 13:27:27 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,185 +60,167 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au3-LyBiCZtUMpEx@e129823.arm.com>
 
-On Fri, Nov 06, 2026 at 04:19:59PM +0000, Yeoreum Yun wrote:
-> On Fri, Nov 06, 2026 at 05:03:32PM +0100, Jiri Pirko wrote:
-> > Fri, Nov 06, 2026 at 03:36:50PM +0100, yeoreum.yun@arm.com wrote:
-> > >> Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
-> > >> >On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
-> > >> >> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
-> > >> >> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
-> > >> >> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
-> > >> >> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
-> > >> >> >> >> [..snip..]
-> > >> >> >> >> 
-> > >> >> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
-> > >> >> >> >> > +					       const struct ctlv_cursor *request,
-> > >> >> >> >> > +					       struct attestation_evidence_request *decoded,
-> > >> >> >> >> > +					       struct attestation_evidence_object_request **objects)
-> > >> >> >> >> > +{
-> > >> >> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
-> > >> >> >> >> > +	u32 challenge_length;
-> > >> >> >> >> > +
-> > >> >> >> >> > +	decoded->challenge =
-> > >> >> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
-> > >> >> >> >> > +	decoded->challenge_length = challenge_length;
-> > >> >> >> >> > +	if (challenge_length < caps->min_challenge_length ||
-> > >> >> >> >> > +	    challenge_length > caps->max_challenge_length)
-> > >> >> >> >> 
-> > >> >> >> >> Hmm, I'm not sure whether this check is required for
-> > >> >> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
-> > >> >> >> >> 
-> > >> >> >> >> for example, if the provider provides two evidence:
-> > >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
-> > >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
-> > >> >> >> >> 
-> > >> >> >> >> might challenge is reuiqred for generating the token
-> > >> >> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
-> > >> >> >> >> 
-> > >> >> >> >> However, in case of eventlog, it wouldn't require challenge.
-> > >> >> >> >> for example, TPM event log or CCEL event log.
-> > >> >> >> >
-> > >> >> >> >Right
-> > >> >> >> >
-> > >> >> >> >> Do we need some field on attestation_evidence_supported_object whether
-> > >> >> >> >> it requires challenge or not and applies this sanity check per the object?
-> > >> >> >> >> 
-> > >> >> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
-> > >> >> >> >> always.
-> > >> >> >> >
-> > >> >> >> >I wonder if we should have two interfaces here for signed and unsigned
-> > >> >> >> >evidence? It would be clearer for userspace then when it needs to
-> > >> >> >> >provide a challenge or not.
-> > >> >> >> 
-> > >> >> >> Isn't the challenge field provided/not-provided enough?
-> > >> >> >> 
-> > >> >> >> Currently on the introspection side, device-get op would provide
-> > >> >> >> challenge-lengths array:
-> > >> >> >> 
-> > >> >> >>         evidence?:
-> > >> >> >>           challenge-lengths[8]:
-> > >> >> >>             length?: uint(..4096)
-> > >> >> >>             min-length?: uint(..4096)
-> > >> >> >>             max-length?: uint(..4096)
-> > >> >> >>  	  objects[16]:
-> > >> >> >>             blob-class: evidence-blob-class
-> > >> >> >>             max-length: uint
-> > >> >> >>             blob-instance?: uint(..u32-max)
-> > >> >> >> 
-> > >> >> >> I think it would make sense to have challenge-lengths array per object:
-> > >> >> >> 
-> > >> >> >>  	  objects[16]:
-> > >> >> >>             blob-class: evidence-blob-class
-> > >> >> >>             max-length: uint
-> > >> >> >>             blob-instance?: uint(..u32-max)
-> > >> >> >>             challenge-lengths[8]:
-> > >> >> >>               length?: uint(..4096)
-> > >> >> >>               min-length?: uint(..4096)
-> > >> >> >>               max-length?: uint(..4096)
-> > >> >> >> 
-> > >> >> >> Then the unsigned object would just simply have challenge-lengths empty?
-> > >> >> >
-> > >> >> >This looks good to me. :)
-> > >> >> 
-> > >> >> The challenge is one of several open points that all depend on what an
-> > >> >> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
-> > >> >> "primary", "raw" and the format strings. Here is my proposal to settle
-> > >> >> these together:
-> > >> >> 
-> > >> >> The model:
-> > >> >> 
-> > >> >> 1. device-get lists each object with an id, a class (signed, event-log,
-> > >> >>    cert-chain or auxiliary), the formats it may come in, its max-length
-> > >> >>    and, for signed objects only, challenge-lengths.
-> > >> >> 2. evidence-get names objects by id, as MR ops name MRs, each with its
-> > >> >>    output blob. It carries a challenge exactly when it names a signed
-> > >> >>    object, and the challenge has to fit each of them.
-> > >> >> 3. The reply gives each object's format, length and, where the TCB
-> > >> >>    vouches for it, the TCB's digest. The output is always {label, data}.
-> > >> >> 4. A signed object is made by the call, over the challenge, and never
-> > >> >>    reused. The rest are read as they stand.
-> > >> >> 
-> > >> >> This settles following issues discussed during this patchset review:
-> > >> >> 
-> > >> >> 1. One op, not two. Per-object challenge-lengths tell userspace when to
-> > >> >>    pass a challenge, and one call returns the signed object with the log
-> > >> >>    and certificates needed to check it.
-> > >> >> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
-> > >> >>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
-> > >> >> 3. TDX's Quote object lists the legacy and the DICE format. The provider
-> > >> >>    labels what the host returned and fails on a Quote it cannot label.
-> > >> >> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
-> > >> >>    spdm-measurements and tdisp-report become formats, and signature
-> > >> >>    goes, as a signed object carries its own.
-> > >> >> 5. "raw" goes with the representation attr. The TCB digest is a reply
-> > >> >>    field, so a blob always holds the object's own bytes.
-> > >> >> 
-> > >> >> Formats become an enum each provider family defines, instead of free
-> > >> >> strings. I'm still unsure if format should be entirely provider-specific
-> > >> >> and defined as "extension", or it should be somehow mixture of common
-> > >> >> and provider-specific. Looks there is not really much common
-> > >> >> anyway, so I lean towards provider-specific only. So far I have:
-> > >> >
-> > >> >Overall, This is plausible for me with some small question.
-> > >> >
-> > >> >> 
-> > >> >> ======  ============  ==========  =========  ===========================
-> > >> >> Family  Format        Class       Challenge  Bytes
-> > >> >> ======  ============  ==========  =========  ===========================
-> > >> >[...]
-> > >> >> tpm     ek-cert       cert-chain  none       EK certificate from NV
-> > >> >
-> > >> >Just a thought, but how are we planning to retrieve
-> > >> >the NV index for EK certificate?
-> > >> >
-> > >> >As far as I know, TPM NV storage doesn't support labeling.
-> > >> >
-> > >> >Should I assume that the NV index would be specified as part of the
-> > >> >challenge to retrieve the certificate from TPM NV storage?
-> > >> 
-> > >> evidence-get allows to accept mr-selection as part of the request
-> > >> alongside the challenge.
-> > >
-> > >Sorry. Could you explain a little bit detail for this?.
-> > >AFAIU, this is to get the EK certificate from TPM non-volatile storage.
-> > >But, I don't know why *EK* certificate get would be relevant for
-> > >*mr selection*.  AFAIK, the TPM_Quote will be used AK not a EK.
-> > 
-> > You are right, my mistake. I misunderstood the question.
-> > 
-> > mr-selection selects PCRs for Quote, or an extend-NV measurement
-> > register for NV Certify.
-> > 
-> > An NV-resident EK certificate is retrieved using NV_Read. I think
-> > blob-instance is a good fit. For TPM certificate objects, it could
-> > identify the certificate's NV index.
-> 
-> Ah. I missed the TCG_EK_Credential_Profile specification which defines
-> the NV index value for EK certificate:
-> 
-> 2.2.1.4 Low Range
->   The Low Range is at NV Indices 0x01c00002 - 0x01c0000c.
->     0x01c00002 RSA 2048 EK Certificate
->     0x01c00003 RSA 2048 EK Nonce
->     0x01c00004 RSA 2048 EK Template
->     0x01c0000a ECC NIST P256 EK Certificate
->     0x01c0000b ECC NIST P256 EK Nonce
->     0x01c0000c ECC NIST P256 EK Template
-> 
-> But, do we need some argument to get which EK certificate to get?
-> (RSA or ECC NIST P256)?
-> 
-> Otherwise, Is this interface going to print all EK certificate
-> regardless of alg?
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] tracing: alloc_cpu_data() mischarges global_trace and
+  read-page swaps
+- [Medium] tracing: alloc_cpu_data() memcg limit triggers
+  trace_rb_cpu_prepare() WARN
+- [Low] tracing: inaccurate snapshot size claim and inconsistent
+  GFP_KERNEL_ACCOUNT use
+It also noticed 1 related pre-existing issue this patch does not
+introduce:
+- [Medium] tracing: memory leak in trace_array_create_systems() [1]
+--
 
-Might be with a format, it seems to be provided with my humble
-thought...
+commit a11da3138f9fda850c1b05bae82b0be7e738b994
+Author: Tao Cui <cuitao@kylinos.cn>
 
--- 
-Sincerely,
-Yeoreum Yun
+tracing: account ring buffer pages and trace_array metadata to memcg
+
+This commit adds __GFP_ACCOUNT to ring buffer subbuffer allocations in
+alloc_cpu_data() and switches trace_array allocations in
+trace_array_create_systems() to GFP_KERNEL_ACCOUNT.
+
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index e760d2fe386fb..f925936378639 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int c=
+pu, int order)
+>  	 * gracefully without invoking oom-killer and the system is not
+>  	 * destabilized.
+>  	 */
+> -	mflags =3D GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
+> +	/*
+> +	 * The subbuffers are charged to the memcg of whoever caused the
+> +	 * allocation: the creator of a trace instance, or root at boot for
+> +	 * the global trace.
+> +	 */
+> +	mflags =3D GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
+> +		  __GFP_ACCOUNT;
+> =20
+>  	page =3D alloc_pages_node(cpu_to_node(cpu), mflags, order);
+>  	if (!page)
+
+[Severity: Medium]
+Does charging every alloc_cpu_data() call to current's memcg misattribute
+global_trace subbuffers and swapped read pages?
+
+At boot, tracer_alloc_buffers() keeps global_trace at its minimum size
+(ring_buf_size =3D 1) when ring_buffer_expanded is false.  global_trace is
+only expanded to trace_buf_size at runtime in tracing_update_buffers() or
+tracing_set_tracer() when a task first enables an event, sets a tracer, or
+loads a module using trace_printk().  With __GFP_ACCOUNT in
+alloc_cpu_data(), those global_trace pages are charged to whichever cgroup
+triggers the lazy expansion and stay pinned to that memcg because
+global_trace is never freed.
+
+In addition, ring_buffer_alloc_read_page() calls alloc_cpu_data() when
+reading or splicing from trace_pipe_raw, and ring_buffer_read_page() swaps
+that reader-allocated page directly into reader->page while handing the old
+ring buffer page back to the reader to be freed:
+
+kernel/trace/ring_buffer.c:ring_buffer_read_page() {
+    ...
+		dpage =3D reader->page;
+		reader->page =3D data_page->data;
+		local_set(&reader->write, 0);
+		local_set(&reader->entries, 0);
+		reader->read =3D 0;
+		data_page->data =3D dpage;
+    ...
+}
+
+A host process reading trace_pipe_raw from a container's instance will
+replace the container's charged pages with uncharged pages and uncharge the
+container as the old pages are freed, while a cgroup task reading
+global_trace will swap pages charged to its own memcg into global_trace.
+Similarly, trace_rb_cpu_prepare() during runtime CPU hotplug allocates
+per-CPU buffers for all existing instances in the context of the task
+onlining the CPU.
+
+[Severity: Medium]
+Can hitting the memcg limit in alloc_cpu_data() during instance creation
+trigger the WARN(1) in trace_rb_cpu_prepare()?
+
+When alloc_buffer() creates a ring buffer, it allocates the first CPU's
+buffer directly and then calls
+cpuhp_state_add_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node), which runs
+trace_rb_cpu_prepare() for each remaining present CPU:
+
+kernel/trace/ring_buffer.c:trace_rb_cpu_prepare() {
+    ...
+	buffer->buffers[cpu] =3D
+		rb_allocate_cpu_buffer(buffer, nr_pages, cpu);
+	if (!buffer->buffers[cpu]) {
+		WARN(1, "failed to allocate ring buffer on CPU %u\n",
+		     cpu);
+		return -ENOMEM;
+	}
+    ...
+}
+
+Because __rb_allocate_pages() only checks si_mem_available() against global
+memory, a cgroup with enough headroom for the first CPU (~1.375 MB) that
+hits its memcg limit on any subsequent CPU in trace_rb_cpu_prepare() will
+trigger this WARN(1) and crash the host if panic_on_warn is set.
+
+> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+> index 08614af8fad1c..fd1cfd1f66fbe 100644
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+> @@ -8677,11 +8677,11 @@ trace_array_create_systems(const char *name, cons=
+t char *systems,
+>  	int ret;
+> =20
+>  	ret =3D -ENOMEM;
+> -	tr =3D kzalloc_obj(*tr);
+> +	tr =3D kzalloc_obj(*tr, GFP_KERNEL_ACCOUNT);
+>  	if (!tr)
+>  		return ERR_PTR(ret);
+> =20
+> -	tr->name =3D kstrdup(name, GFP_KERNEL);
+> +	tr->name =3D kstrdup(name, GFP_KERNEL_ACCOUNT);
+>  	if (!tr->name)
+>  		goto out_free_tr;
+> =20
+> @@ -8692,7 +8692,7 @@ trace_array_create_systems(const char *name, const =
+char *systems,
+>  		goto out_free_tr;
+> =20
+>  	if (systems) {
+> -		tr->system_names =3D kstrdup_const(systems, GFP_KERNEL);
+> +		tr->system_names =3D kstrdup_const(systems, GFP_KERNEL_ACCOUNT);
+>  		if (!tr->system_names)
+>  			goto out_free_tr;
+>  	}
+
+[Severity: Low]
+Should the alloc_cpumask_var() and zalloc_cpumask_var() calls right between
+tr->name and tr->system_names, as well as alloc_cpu_page() and
+alloc_cpu_buffer() in ring_buffer.c, also use GFP_KERNEL_ACCOUNT?
+
+Also, the commit message says creating an instance immediately allocates a
+full ~1.375 MB per-CPU snapshot buffer, but trace_allocate_snapshot() passes
+size =3D 1 when allocate_snapshot is false (which is always the case after
+boot), so snapshot_buffer only allocates the minimum pages until a snapshot
+is armed.
+
+[Severity: Medium]
+This problem wasn't introduced by this patch, but in
+trace_array_create_systems() [1], does the out_free_tr error path leak
+tr->tracers when trace_array_create_dir() fails?
+
+trace_array_create_dir() calls __update_tracer() -> add_tracer(), which
+allocates struct tracers and struct tracer_flags entries on tr->tracers.  If
+a later step in trace_array_create_dir() fails and jumps to out_free_tr,
+nothing calls free_tracers(tr), leaking the entries already added to
+tr->tracers.
+
+[1] https://sashiko.dev/#/bug/linux-9449d18e-1233-4181-9199-09eaead7b576
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106131829.3228=
+926-1-cui.tao@linux.dev?part=3D4
