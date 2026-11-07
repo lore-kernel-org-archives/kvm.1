@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011840;
-	b=By7FNmPoFaTqciGnsWxm8jvYOgFppoNwb5VKL2zBVTPcErnPMnI+DFowBXvpyEcLITyC
-	 ub4E/UTsqU8L4VbBJskYxAb+EI4vHeu4D3t1Tqj4gp4Khak+cgKYaDzPMFrPhj5TRg+qV
-	 7U/GT3Ceypekw2pEXT2zSC+fFEz3QY5ARmM4Ots+vcidnjTnke5QkopRNgX7C/tWEbJ3y
-	 /omt4XiV973goFtojJX4allqE1qAt4TGybV++3HjjMcHxgFervPZiqMl0CmmOkpzw7chO
-	 Kcv5cg0TqIvVt/KJetqfaUN1BbXVtWmJWOqOXqzlyFjZOYxk01vukX6ufCwzzqcZ9SQ==
+	t=1794011827;
+	b=QYUPi52Qy50mqCjuP0yBh9tQc49u+0DC1zfEmDT5Vz5Uu21hTKqBMw9JK5WKpoeecaUW
+	 STuPYNus0KfNbckHvB3HZhJqduJGrbi4oSSRpm+lIzlzdpAkb6u5yfqK8ghdORqjg3eXC
+	 SpfhFl3AVK8+Zf26l8mVXe8ojALve6/LwI89PxQLWySxroHrTDhR12MZGBBsAekN6eOp9
+	 NOxevMd9e8f+5Gqt0GJVi1+KC2rfCheGdrcjVYQqupII+2PVklve6WhED1mBpMpkm/fh0
+	 m0wfSDDC7PtwmEuQ2olJU+Zs11kYwkPvEWTb9I1lVsbLlgwAStO7pf0HqpblVnI4V9Q==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011840;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011827;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=iUFF8ihBt1kNc/OLwiTGvCS0cCJuPlqdLR52uCLjSi8=;
-	b=A4Fq6KnnZPqSelMootSN+F9qdKy8h5Q1l7iebojlj9tiLayqhBgDnJNCtml9m+N1Yut4
-	 ysO5kHkVqp1cllCaSkaSxFNnLxkUehlOUvyJFeot5C9JwKfl7HoV0baKdjt9EABWvvgkt
-	 oCwVhkcJ9U6kCuGmqbw47Xoh6qG7SGfabXwzN+3vc7ycURtH8MyMjg1vL+/dwtbGdkww7
-	 jVvKus0u4FLPnSFuMYYBmT10nuQoUvnMAQHrwPGOIklhWpUtH7Wh3nRlC44g2EMvj6Rea
-	 OlrihlUZ5RzMfovKXk/XbWY2DUX/0+L+ynhrItuKysUBRcwIlhjbctX5FLQhWpvwF9g==
+	bh=JrP6l22VK6AldWxiWhpFsQCv9l0Qgcd3J7DNoznOHbY=;
+	b=jP1YVt6qUGUw9ECErBx504zQPtYY/mUzZ0BIcp0jZ9mjyzR6JrXnTlbMM1gUtWSf3LFI
+	 wB49+yI+A+FnC8Te6U9hIotZ3iFGGCVyie46FZDYi2cSXnll3ahTFFDmC6+rjmfvX+BCE
+	 5mZpnflOgizNF5AYMBH/CR9EDhgvbZpwwiawArjjWdrlvgUvjQwAqoi6iYHnzEkx1kfJS
+	 1GRNPekUI+Bm9RB18LisXgiVR/x/kUnimBZMKB7IETXNbVaf7HnVMjADDpKo7extf+SAh
+	 Uh18Ag6Zsw/T3PIOKqELW1xPunUWh75+YURmvd1cd4s29htk9slLW8ayjTW5aqJw+sA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n7DhmpN0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hx3uuviZ;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF65606AFAE;
-	Sat,  7 Nov 2026 00:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAAC606D82D;
+	Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n7DhmpN0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hx3uuviZ
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011840;
-	b=zjdZdRHO+LhMZg6GzotNudaaeL59oliWn1QypSoN1arSS4SJvPq0SF/XuGyoTKS6My53
-	 jegL+GhMQCixP6BaSdOhQixt9Q/Cu7VoxF52+FXYZ7KWm6QCycPIchyD48HYoJgTjgZaC
-	 utkoAubONlDR5Vgcjf+sIFuuPFvrmmcc+GxKM1siqeV4/05YZv51kktwZYTonWUg0fcu7
-	 Hm3RsTl/RlUqus5VW29//oCglNjdzWiJVUdsykOiROGiJUp5uOh0LdOrKM8hPoUGMlWF8
-	 8rTHybgW3f+sWuIx1FRRcRMVBS/UuHC9zY8kXqfzxXGOiCE9ftK8hkMDgwrOY49TCiQ==
+	t=1794011827;
+	b=pIOf56ltUFVp8TKwdob/sf3XUAs+kP859hXEEnm3HATr5salmNva4s9ecN+AG1+/dzuk
+	 HZC4TxCLDb52v5REw+84eeocIx38cGUDKC4pqmc3ISrnRqvjZnyyBav5CZwtkToZ8fDnj
+	 1Y0xsj17LxTpaaX6JfsibOQ24/GVogkfLRMsqT8jQMiLTonHGrP7BeHGlboqSaqJieyWQ
+	 eeyyQXRWb9G+UGKytJFLC5hy8N9L/q0UvKLXsCax9l8c1E3Vge//664xxoH/NZefUQzpI
+	 YBpWIqxg/RWOpsspqW+d+X7fmvUEtY4QN0uGHl/dQ1HK9njo7BYRdRKtFEpIqHaw3dg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011840;
+	c=relaxed/relaxed; t=1794011827;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=iUFF8ihBt1kNc/OLwiTGvCS0cCJuPlqdLR52uCLjSi8=;
-	b=TyWdXLqod+8/EI6UXAq5DdkkB6lBVdrRDYkrZ1/uua2QKEHmSIqkgZTHqo1T3jQgmrTD
-	 +xWaZB5BxC0h/Mh2FU2KtFO9AbymG7ZTWWJj4eByyvQoZv98mfhDn3IRKIJmA8Ukm6Goz
-	 ixNJ3hLJCNfFv8BDDFY6HW8kg5PrTWhrxqEWcf13z1oPtQSPOX/Mx4l9Fpofa7EKQwanR
-	 YgOmAx6aKiEH84fdAhqbx3U193PWMl1rvv9xiQsi5/eqILYWdB0ld0ypW8KkC9zoXlMxE
-	 mQ322AWAEQX7NRbfuyfuzddK801CXmRL1FpJGILsBOZwj64O36FIqhlS1yZ4AWYsRgg==
+	bh=JrP6l22VK6AldWxiWhpFsQCv9l0Qgcd3J7DNoznOHbY=;
+	b=bngrH46gRD3bEbiwOoWvBz3tyFeKOKpAVEUR48EtzyF+Fe53B6aqQTf8E1JzVqtF63a0
+	 TlgWns/3Gd3zi/uCO+bigQXlWNLpuXxxWJ26p0WVpyJIjK0WHY6ep1qw1y0eANfZybqRk
+	 LGB4c0Bn2gDPNohj0VbkAvcTy4ni0X1FUKwDfOkwlIoMbpCqgsYcIM57KhXVtg8p44uTC
+	 CWu+Zrb3TkHsxP9WYBO2BvZqOWPrOORsp3mq0IS51Zr9ODPmkIeZGQTtVEAIW0C6EeY3o
+	 l2X09eYT7Z5YtsSW6NMRGEUikAh9YjrK5t8OgojaJlBpzgEJj1h6HVE6aGFRXu/Lrvg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id DAAD01F00A09;
-	Sat,  7 Nov 2026 00:37:16 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 24F781F0092C;
+	Sat,  7 Nov 2026 00:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011840;
-	bh=iUFF8ihBt1kNc/OLwiTGvCS0cCJuPlqdLR52uCLjSi8=;
+	s=k20260515; t=1794011827;
+	bh=JrP6l22VK6AldWxiWhpFsQCv9l0Qgcd3J7DNoznOHbY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=n7DhmpN0wvb9h4REmbSEt1Lq9D+wPsvxzHDF5tjTk1zufmArJ95TKy/3rg/BdsfeN
-	 iszRksMAOZOmnPVWhsF7eUmV0IuVjqR7TyZGhdF+XYrBrQ92cO28MIhe9yrPVe9Y4Y
-	 tUyjSQYegUES3MEILRy7TEcVjNOEtzGnTlp0h17NRUz8fGOGeCwJmUUE2PQqJIKWvV
-	 fD1J2KxcPa30P0b8bx7YVQ44p1L1JkqJ+M/Id+QPCjYlapksz39/5nqBB5O9U20CyD
-	 fROhWzE0xWC1URneQkpRowWJq6u6Iv3PfOfQwTx3Vh0pQOrJFRfloeufhwG7+S0n01
-	 +ZczOWdia9tTg==
+	b=hx3uuviZV9dttW2piCRtuIyn3jTtJRrhwB0hi1IIp6523Hpbpx+Mts8ZNhfp/NJBi
+	 so5CvAr0GwA7t1HyRTbMnY1r/NYb/CYGAAFRoxKzC5twOsJTyA8SHQZfuYbGTGp5gI
+	 pHCUrWFXj2e8g1CU4SEM2qXrjahR0M4Qw3cu0mbjtV3SZtO4VE5TUUTyiiAxR3QI3+
+	 Yd0jAjO6a67U26nYAsT3Yh2KOcTmHizCiW/MG6uZWR/9WpD+f2DQTozQXcwHRQng2d
+	 Cb1KdUW4OCMJ5j9OXHozuEXe+gmBQBA+cDtk5yM9Bj4syufJ9BVc1rw1CFNPvmIkV9
+	 NA9zuB7OHFxqg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 61A0E47A51;
-	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 564534799E;
+	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:56 -0800
-Subject: [PATCH RFC v3 82/88] KVM: selftests: Verify VFIO dmabuf creation
- for igb device
+Date: Fri, 06 Nov 2026 16:37:09 -0800
+Subject: [PATCH RFC v3 35/88] KVM: guest_memfd: Support preallocating
+ memory via fallocate in PFN mode
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-82-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-35-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -105,11 +105,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=3911;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=2052;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=MbD33+QhDIw1sC8OkTEtVrBZ+IoL3RD4qfhKhPg8oKQ=;
- b=7iVZ9xRpmIAg6xpTbf7wls4Z/04O441wO1Vwt3NgTl0XIJAE2iswEYKcjFie8IMkCRGxXqAKQ
- 8/ywYYSClSZASYJSFTxZ80gUqe3p+BNGG16CJqQEWTaXedsT8K4Umdm
+ bh=y5ji1QZXHiuR/oyFz2HLfJNU3wDMuExGaG2bV2F9jH0=;
+ b=DW3LHEMrOWHyFBzYbIPFyKM5f6WF7y8psIUQsI0OqS5DAy7Qg1PqfpHwQmy0Y47gdcmY7E2JQ
+ Pg5dgsEC+uVDKCSzf51XtagCoDyPmvKfgnkxrFZ8dF0gqS9b+M/7K6r
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,111 +120,70 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a subtest to verify dmabuf export via VFIO_DEVICE_FEATURE_DMA_BUF.
+In PFN mode, memory is not backed by page cache folios, so attempting
+to allocate folios during fallocate fails.
 
-Probe device feature support using VFIO_DEVICE_FEATURE_PROBE, skipping
-the test cleanly when kernel dmabuf support is absent
-(CONFIG_VFIO_PCI_DMABUF or CONFIG_PCI_P2PDMA disabled).
-
-Allocate and configure a vfio_device_feature request covering BAR0,
-requesting a dma_buf file descriptor export via
-VFIO_DEVICE_FEATURE_GET.
-
-Verify that in direct mode a valid file descriptor is returned, confirm
-that attempting to mmap the resulting dmabuf fd fails with -EINVAL (as
-VFIO PCI dmabufs provide peer-to-peer kernel DMA rather than userspace
-CPU mappings), and verify clean closure and resource release.
-In guest_memfd mode, verify that dmabuf creation is rejected with
--EOPNOTSUPP.
+Support preallocating backing memory in PFN mode by querying the
+provider for PFNs across the requested range. Step forward by the
+contiguous order reported by the provider so that large contiguous
+allocations do not require redundant per-page calls.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../selftests/kvm/x86/guest_memfd_vfio_test.c      | 74 ++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ virt/kvm/guest_memfd.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-index 0339794fb6dd3..46d325228bda3 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-@@ -651,4 +651,78 @@ TEST_F(guest_memfd_vfio, guest_mapping)
- 	ASSERT_EQ(0, munmap(bar0_mmap, bar0_info.size));
- }
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 0e392b8735259..c62e15e05a249 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -411,6 +411,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+ {
+ 	struct address_space *mapping = inode->i_mapping;
++	struct gmem_inode *gi = GMEM_I(inode);
+ 	pgoff_t start, index, end;
+ 	int r;
  
-+TEST_F(guest_memfd_vfio, dmabuf_creation)
-+{
-+	struct vfio_device_feature_dma_buf *dmabuf_feature;
-+	struct vfio_device_feature probe_feat = {};
-+	struct vfio_region_info bar0_info = {};
-+	struct vfio_device_feature *feat;
-+	size_t feat_size;
-+	int dmabuf_fd;
-+	int ret;
+@@ -424,6 +425,30 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+ 	end = (offset + len) >> PAGE_SHIFT;
+ 
+ 	r = 0;
++	if (kvm_gmem_is_pfn_mode(gi)) {
++		for (index = start; index < end; ) {
++			pgoff_t next_boundary;
++			pgoff_t max_nr_pages;
++			int max_order = 0;
++			kvm_pfn_t pfn;
 +
-+	/*
-+	 * Probe support for VFIO_DEVICE_FEATURE_DMA_BUF. This requires kernel
-+	 * support for CONFIG_VFIO_PCI_DMABUF (CONFIG_PCI_P2PDMA). In guest_memfd
-+	 * mode, VFIO_DEVICE_BIND_FLAG_CTRL_ONLY is active, so the probe itself
-+	 * is rejected with -EOPNOTSUPP by the control-only allowlist.
-+	 */
-+	probe_feat.argsz = sizeof(probe_feat);
-+	probe_feat.flags = VFIO_DEVICE_FEATURE_PROBE |
-+			   VFIO_DEVICE_FEATURE_GET |
-+			   VFIO_DEVICE_FEATURE_DMA_BUF;
-+	ret = ioctl(self->vfio_fd, VFIO_DEVICE_FEATURE, &probe_feat);
-+	if (variant->use_gmem) {
-+		ASSERT_LT(ret, 0);
-+		ASSERT_EQ(EOPNOTSUPP, errno);
-+	} else if (ret != 0) {
-+		SKIP(return, "Kernel lacks CONFIG_VFIO_PCI_DMABUF support\n");
++			if (signal_pending(current)) {
++				r = -EINTR;
++				break;
++			}
++
++			r = gmem_provider_get_pfn(gi, index, &pfn, &max_order, NULL);
++			if (r)
++				break;
++
++			max_nr_pages = 1UL << max_order;
++			next_boundary = ALIGN_DOWN(index + max_nr_pages, max_nr_pages);
++			index += min_t(size_t, next_boundary - index, end - index);
++			cond_resched();
++		}
++		goto out_unlock;
 +	}
 +
-+	bar0_info.argsz = sizeof(bar0_info);
-+	bar0_info.index = VFIO_PCI_BAR0_REGION_INDEX;
-+	ret = ioctl(self->vfio_fd, VFIO_DEVICE_GET_REGION_INFO, &bar0_info);
-+	ASSERT_EQ(0, ret);
-+
-+	/*
-+	 * Allocate vfio_device_feature with trailing vfio_device_feature_dma_buf
-+	 * containing one dma_range covering BAR0.
-+	 */
-+	feat_size = sizeof(*feat) + sizeof(*dmabuf_feature) +
-+		    sizeof(struct vfio_region_dma_range);
-+	feat = calloc(1, feat_size);
-+	ASSERT_NE(NULL, feat);
-+
-+	feat->argsz = feat_size;
-+	feat->flags = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_DMA_BUF;
-+
-+	dmabuf_feature = (struct vfio_device_feature_dma_buf *)feat->data;
-+	dmabuf_feature->region_index = VFIO_PCI_BAR0_REGION_INDEX;
-+	dmabuf_feature->open_flags = O_RDWR | O_CLOEXEC;
-+	dmabuf_feature->nr_ranges = 1;
-+	dmabuf_feature->dma_ranges[0].offset = 0;
-+	dmabuf_feature->dma_ranges[0].length = bar0_info.size;
-+
-+	dmabuf_fd = ioctl(self->vfio_fd, VFIO_DEVICE_FEATURE, feat);
-+	if (variant->use_gmem) {
-+		ASSERT_LT(dmabuf_fd, 0);
-+		ASSERT_EQ(EOPNOTSUPP, errno);
-+	} else {
-+		ASSERT_GE(dmabuf_fd, 0);
-+
-+		/*
-+		 * VFIO PCI dmabufs are intended for peer-to-peer kernel DMA and
-+		 * do not implement mmap or read operations. Verify mmap returns
-+		 * -EINVAL.
-+		 */
-+		ASSERT_EQ(MAP_FAILED, mmap(NULL, bar0_info.size,
-+					   PROT_READ | PROT_WRITE,
-+					   MAP_SHARED, dmabuf_fd, 0));
-+		ASSERT_EQ(EINVAL, errno);
-+		close(dmabuf_fd);
-+	}
-+
-+	free(feat);
-+}
-+
- TEST_HARNESS_MAIN
+ 	for (index = start; index < end; ) {
+ 		struct folio *folio;
+ 
+@@ -450,6 +475,7 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+ 		cond_resched();
+ 	}
+ 
++out_unlock:
+ 	filemap_invalidate_unlock_shared(mapping);
+ 
+ 	return r;
 
 -- 
 2.56.0.455.g6c5a503b38-goog
