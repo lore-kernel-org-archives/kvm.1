@@ -1,75 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794075738;
-	b=zk/siqEIt3aWh8AcuKvqeE3pOWnGU//FxaB3/RDdXJJKP6Ym3LFaVxndA32gsNQrYO69
-	 1GzduplNkyAdRxfLkmqdWXOXmWuUZe8oScLVIuwVjDrpGNtaMYzVoWMfKdkbOuEMpFYJw
-	 i6b2MZE6o6Mwm08lqKi3Mil+39GQXrqd5tkQMxXAI4ZXjqIpkdPTxHUHvsfhY6kfIC+By
-	 tXTmcnX25A1IXaQ1uFSPaahKAwAuXedo4rV/96CpxjvtCQ7BBgcJlv5Dc2f2Pyy9Dfazz
-	 HWzUGf48q9Q2k1y3PYvTkCLhVCbahQ3RQnQoDb3rQFkyZovjtzZn60BYCzTygNw9BIQ==
+	t=1794079628;
+	b=BzmVAzp8mOymRpzljLImzqzOddyb9FQaoUuhV3rrEZcdkG9dc+nuErwDUmtoIm+Sc2fV
+	 BEuTPlE71cBivNrVjMhCckBvk9TlQZVnhedrcRv4eMc576SJpjdnZ/X6S4zkioZRwo611
+	 zqVucwF6GuvbpPM8uiCmEUhxfPMO6kjHjmgeHcCU82gEwH+/NSz6l6Pmd/xX6tJGohdnr
+	 PJWZpiKkfL9oQYYwmD3XRY/mlNTLJwkZTtQjT3a2CV9O54mukzXdZEoMQGVUIp71e5U+H
+	 iH8eskqjI5II+v1z7qINxCumC/+fkZeZnCNWmvBnVd3t595XYYPwqIxRvNI4YHbJlOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794075738;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=0PYrrOTARKubZGB4WKQQtaeNrSGw8tapkr1EDK855Qs=;
-	b=v4MOOsHQr8fRKUifq/44XfNXXCjYFII8ztfUMrwU6zSgYC/5Ks1IWVrEGmxlwPxEOB/0
-	 t7RIUeEdkKEHXdqK5sat77JGWWYWnoRbiXSSDFQCU2oFi/8zgZJEBmgQOYPWWWek9Ogxh
-	 XU6TIBNh82j2mUzLs8QD5mMAe35DhzE29uicF2tgikNVZk9FymW6nFO7jn/Rd7sHVjQaB
-	 PnG0Xydqm6TlPcKbeQHtMsTCsQ7I7cr26c68uy4x9jzITUb5djvAF8MfH97MUPeih8CVt
-	 1xEUM4CtO6zvXxUQc6pS8mS6OjK83QhtWomxkiaj6YjvM/71WzsSqrmcQ6qNh/N62xA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794079628;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=JWUWmDtmMJj9uR+KdODad96y/2aPbtjqytw6K7FIvTo=;
+	b=OaTXM1KMYY+6EN6bMeX1IP9BPlP44YfSSv8Bhpl5nfb3T1P1udtOZx+LqUXJ0MPzgdUz
+	 qcCTelBljkOciC8WL5LEWKt1V7Z4DN9yyRFKMU9BA04HtO9aXAV834drtluH3IvqnslS+
+	 uuylAnFCdKQd5WRbgudSTeriQWirR44cI9zshpsgqyt4tMHHiaDBjJwp3PQLgJ4uraMb9
+	 UyynOQWd9+aRrx9baEqfZiR7rBbNhn2FAOOPTarslLpVYDroS1AQgVAYYftknZ/MfglYM
+	 SN/z8bvqWgRAPrRNWxkapviuxW0L2LQrZ7y/0GMO/aKST2ZL9adRhnD16NwNb7tzWcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dSoSTh0A;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BAD0606A32D;
-	Sat,  7 Nov 2026 18:22:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BAD0606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l4qb68Vh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480B5606A326;
+	Sat,  7 Nov 2026 19:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dSoSTh0A
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F456152B;
-	Sat,  7 Nov 2026 10:22:12 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9F4F3F673;
-	Sat,  7 Nov 2026 10:22:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794075735; bh=oCNyzWg3oBOCxZL5sK6vJaGzWB3RBDFj1HrKHmc/TO8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dSoSTh0AYSDOUr0CpLFMh7a/aIdcmiOdAYQ5QYM6Uyr3K6vj3gUpDL+3dyU7RL7SE
-	 +tdAi6nPsNryVLVnlQGfnf7gSA4PnLsU+dxgYdo3PArwciNODCtLmaiUG2CUIXM7Dg
-	 WqINi8+mQwoiGN7WqyN70mM0O5lJ9/s2yc6d38oQ=
-Date: Sat, 7 Nov 2026 18:22:08 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	aneesh.kumar@kernel.org
-Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
-Message-ID: <au9sUBtdnDk9yA1U@e129823.arm.com>
-References: <20261104194622.GC3889730@ziepe.ca>
- <aux01NUd85PabtZu@FV6GYCPJ69>
- <auyKE2sGqtfjk4v5@e129823.arm.com>
- <auy7IM0_S2tv7EZX@FV6GYCPJ69>
- <au2WdWFOYbPEv0Uj@e129823.arm.com>
- <au3i-0eDzJZaWukx@FV6GYCPJ69>
- <au3mAsQrh0GniXJo@e129823.arm.com>
- <au34wXtIqii-hfFI@FV6GYCPJ69>
- <au3-LyBiCZtUMpEx@e129823.arm.com>
- <au9eskF5P17h3cql@FV6GYCPJ69>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l4qb68Vh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5851F008A3;
+	Sat,  7 Nov 2026 19:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794079627;
+	bh=JWUWmDtmMJj9uR+KdODad96y/2aPbtjqytw6K7FIvTo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=l4qb68Vh5+EpKxfkY8T2j1202etzw9CcaJfnA0gcKPSK2QHF/jdVbFeNxQcShSzl2
+	 kGpXtGW2fD0YNMDmHCEE3KSCdbOQiaNyhgkt6IR9Mflf4BT8u9+mw5mx8X2EiIZj2J
+	 W8W07b0n8ionghCXH/Pzs86IDhVnoJB0NTTVnrhSptFlIBu04i6fwkc33GYm5oDenJ
+	 dpcADsDdrjz0nxyX8rqzWI9tfKG3Iau9FGoEwVkaWYXlv7gP2dIUmvZTJfklUnLWIc
+	 8i4jWo0RR5wZfXr60bMXqdXmQ18dHss7MDPdDsIl+hGwk9ACyEf8QSb02+CeyhY9ai
+	 zAA+05ycOtvEw==
+Message-ID: <1c0b1368-a381-4b25-bba9-7a4f8e92b764@kernel.org>
+Date: Sat, 7 Nov 2026 20:26:29 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,207 +51,181 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au9eskF5P17h3cql@FV6GYCPJ69>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/13] mm: continue vma_flags_t conversion
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>,
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
+ David Rientjes <rientjes@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, John Johansen
+ <john.johansen@canonical.com>, Georgia Garcia
+ <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, damon@lists.linux.dev,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+ <d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org> <au3r0-geuwtRYPiC@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <au3r0-geuwtRYPiC@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Nov 07, 2026 at 06:25:54PM +0100, Jiri Pirko wrote:
-> Fri, Nov 06, 2026 at 05:19:59PM +0100, yeoreum.yun@arm.com wrote:
-> >On Fri, Nov 06, 2026 at 05:03:32PM +0100, Jiri Pirko wrote:
-> >> Fri, Nov 06, 2026 at 03:36:50PM +0100, yeoreum.yun@arm.com wrote:
-> >> >> Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
-> >> >> >On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
-> >> >> >> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
-> >> >> >> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
-> >> >> >> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
-> >> >> >> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
-> >> >> >> >> >> [..snip..]
-> >> >> >> >> >> 
-> >> >> >> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
-> >> >> >> >> >> > +					       const struct ctlv_cursor *request,
-> >> >> >> >> >> > +					       struct attestation_evidence_request *decoded,
-> >> >> >> >> >> > +					       struct attestation_evidence_object_request **objects)
-> >> >> >> >> >> > +{
-> >> >> >> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
-> >> >> >> >> >> > +	u32 challenge_length;
-> >> >> >> >> >> > +
-> >> >> >> >> >> > +	decoded->challenge =
-> >> >> >> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
-> >> >> >> >> >> > +	decoded->challenge_length = challenge_length;
-> >> >> >> >> >> > +	if (challenge_length < caps->min_challenge_length ||
-> >> >> >> >> >> > +	    challenge_length > caps->max_challenge_length)
-> >> >> >> >> >> 
-> >> >> >> >> >> Hmm, I'm not sure whether this check is required for
-> >> >> >> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
-> >> >> >> >> >> 
-> >> >> >> >> >> for example, if the provider provides two evidence:
-> >> >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
-> >> >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
-> >> >> >> >> >> 
-> >> >> >> >> >> might challenge is reuiqred for generating the token
-> >> >> >> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
-> >> >> >> >> >> 
-> >> >> >> >> >> However, in case of eventlog, it wouldn't require challenge.
-> >> >> >> >> >> for example, TPM event log or CCEL event log.
-> >> >> >> >> >
-> >> >> >> >> >Right
-> >> >> >> >> >
-> >> >> >> >> >> Do we need some field on attestation_evidence_supported_object whether
-> >> >> >> >> >> it requires challenge or not and applies this sanity check per the object?
-> >> >> >> >> >> 
-> >> >> >> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
-> >> >> >> >> >> always.
-> >> >> >> >> >
-> >> >> >> >> >I wonder if we should have two interfaces here for signed and unsigned
-> >> >> >> >> >evidence? It would be clearer for userspace then when it needs to
-> >> >> >> >> >provide a challenge or not.
-> >> >> >> >> 
-> >> >> >> >> Isn't the challenge field provided/not-provided enough?
-> >> >> >> >> 
-> >> >> >> >> Currently on the introspection side, device-get op would provide
-> >> >> >> >> challenge-lengths array:
-> >> >> >> >> 
-> >> >> >> >>         evidence?:
-> >> >> >> >>           challenge-lengths[8]:
-> >> >> >> >>             length?: uint(..4096)
-> >> >> >> >>             min-length?: uint(..4096)
-> >> >> >> >>             max-length?: uint(..4096)
-> >> >> >> >>  	  objects[16]:
-> >> >> >> >>             blob-class: evidence-blob-class
-> >> >> >> >>             max-length: uint
-> >> >> >> >>             blob-instance?: uint(..u32-max)
-> >> >> >> >> 
-> >> >> >> >> I think it would make sense to have challenge-lengths array per object:
-> >> >> >> >> 
-> >> >> >> >>  	  objects[16]:
-> >> >> >> >>             blob-class: evidence-blob-class
-> >> >> >> >>             max-length: uint
-> >> >> >> >>             blob-instance?: uint(..u32-max)
-> >> >> >> >>             challenge-lengths[8]:
-> >> >> >> >>               length?: uint(..4096)
-> >> >> >> >>               min-length?: uint(..4096)
-> >> >> >> >>               max-length?: uint(..4096)
-> >> >> >> >> 
-> >> >> >> >> Then the unsigned object would just simply have challenge-lengths empty?
-> >> >> >> >
-> >> >> >> >This looks good to me. :)
-> >> >> >> 
-> >> >> >> The challenge is one of several open points that all depend on what an
-> >> >> >> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
-> >> >> >> "primary", "raw" and the format strings. Here is my proposal to settle
-> >> >> >> these together:
-> >> >> >> 
-> >> >> >> The model:
-> >> >> >> 
-> >> >> >> 1. device-get lists each object with an id, a class (signed, event-log,
-> >> >> >>    cert-chain or auxiliary), the formats it may come in, its max-length
-> >> >> >>    and, for signed objects only, challenge-lengths.
-> >> >> >> 2. evidence-get names objects by id, as MR ops name MRs, each with its
-> >> >> >>    output blob. It carries a challenge exactly when it names a signed
-> >> >> >>    object, and the challenge has to fit each of them.
-> >> >> >> 3. The reply gives each object's format, length and, where the TCB
-> >> >> >>    vouches for it, the TCB's digest. The output is always {label, data}.
-> >> >> >> 4. A signed object is made by the call, over the challenge, and never
-> >> >> >>    reused. The rest are read as they stand.
-> >> >> >> 
-> >> >> >> This settles following issues discussed during this patchset review:
-> >> >> >> 
-> >> >> >> 1. One op, not two. Per-object challenge-lengths tell userspace when to
-> >> >> >>    pass a challenge, and one call returns the signed object with the log
-> >> >> >>    and certificates needed to check it.
-> >> >> >> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
-> >> >> >>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
-> >> >> >> 3. TDX's Quote object lists the legacy and the DICE format. The provider
-> >> >> >>    labels what the host returned and fails on a Quote it cannot label.
-> >> >> >> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
-> >> >> >>    spdm-measurements and tdisp-report become formats, and signature
-> >> >> >>    goes, as a signed object carries its own.
-> >> >> >> 5. "raw" goes with the representation attr. The TCB digest is a reply
-> >> >> >>    field, so a blob always holds the object's own bytes.
-> >> >> >> 
-> >> >> >> Formats become an enum each provider family defines, instead of free
-> >> >> >> strings. I'm still unsure if format should be entirely provider-specific
-> >> >> >> and defined as "extension", or it should be somehow mixture of common
-> >> >> >> and provider-specific. Looks there is not really much common
-> >> >> >> anyway, so I lean towards provider-specific only. So far I have:
-> >> >> >
-> >> >> >Overall, This is plausible for me with some small question.
-> >> >> >
-> >> >> >> 
-> >> >> >> ======  ============  ==========  =========  ===========================
-> >> >> >> Family  Format        Class       Challenge  Bytes
-> >> >> >> ======  ============  ==========  =========  ===========================
-> >> >> >[...]
-> >> >> >> tpm     ek-cert       cert-chain  none       EK certificate from NV
-> >> >> >
-> >> >> >Just a thought, but how are we planning to retrieve
-> >> >> >the NV index for EK certificate?
-> >> >> >
-> >> >> >As far as I know, TPM NV storage doesn't support labeling.
-> >> >> >
-> >> >> >Should I assume that the NV index would be specified as part of the
-> >> >> >challenge to retrieve the certificate from TPM NV storage?
-> >> >> 
-> >> >> evidence-get allows to accept mr-selection as part of the request
-> >> >> alongside the challenge.
-> >> >
-> >> >Sorry. Could you explain a little bit detail for this?.
-> >> >AFAIU, this is to get the EK certificate from TPM non-volatile storage.
-> >> >But, I don't know why *EK* certificate get would be relevant for
-> >> >*mr selection*.  AFAIK, the TPM_Quote will be used AK not a EK.
-> >> 
-> >> You are right, my mistake. I misunderstood the question.
-> >> 
-> >> mr-selection selects PCRs for Quote, or an extend-NV measurement
-> >> register for NV Certify.
-> >> 
-> >> An NV-resident EK certificate is retrieved using NV_Read. I think
-> >> blob-instance is a good fit. For TPM certificate objects, it could
-> >> identify the certificate's NV index.
-> >
-> >Ah. I missed the TCG_EK_Credential_Profile specification which defines
-> >the NV index value for EK certificate:
-> >
-> >2.2.1.4 Low Range
-> >  The Low Range is at NV Indices 0x01c00002 - 0x01c0000c.
-> >    0x01c00002 RSA 2048 EK Certificate
-> >    0x01c00003 RSA 2048 EK Nonce
-> >    0x01c00004 RSA 2048 EK Template
-> >    0x01c0000a ECC NIST P256 EK Certificate
-> >    0x01c0000b ECC NIST P256 EK Nonce
-> >    0x01c0000c ECC NIST P256 EK Template
-> >
-> >But, do we need some argument to get which EK certificate to get?
-> >(RSA or ECC NIST P256)?
+On 11/6/26 16:22, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Nov 06, 2026 at 03:35:01PM +0100, David Hildenbrand (Arm) wrote:
+>> I agree that this should be picked separately. For example, I will pick
+>> everything that falls into my realm to reduce conflicts.
 > 
-> Why blob-instance 0-10 is not good enough here?
+> Hmm, generally tree-wide mechanical changes are the exception to that rule
+> no?
 
-No, it's enough with just breaking down format like:
-======  ============  ==========  =========  ===========================
-Family  Format        Class       Challenge  Bytes
-======  ============  ==========  =========  ===========================
-tpm     ek-cert-rsa   cert-chain  none       EK certificate from NV
-tpm     ek-cert-ecc   cert-chain  none       EK certificate from NV
+I think it really depends. If changes are well standalone, I don't see why it
+couldn't just cleanly go through separate trees.
+
+Anything that is more involved (like the madvise change), there is not really a
+way around.
+
+Well, there is: stable topic branch and letting separate trees merge that ...
 
 > 
+> It's going to make the rest of the VMA flags/mmap_prepare conversion really
+> quite difficult if I have to chase every single driver maintainer in the
+> kernel (literally in both cases pretty much :).
+> > And sometimes there are dependencies which mean you really can't split it
+> across trees unless you establish functionality in one cycle and callers in
+> another, but that seems a little silly.
 > 
-> >
-> >Otherwise, Is this interface going to print all EK certificate
-> >regardless of alg?
-> >
-> >> >Also, AFAIK, mr_selection is meaningful when the evidence_accept is
-> >> >supported.
-> >> 
-> >> These are independent. mr-selection chooses the measurements included
-> >> in evidence. EVIDENCE_ACCEPT authorizes a subsequent native transition.
-> >> The TPM provider can quote selected PCRs without supporting acceptance.
-> >
-> >Acked.
-> >
-> >-- 
-> >Sincerely,
-> >Yeoreum Yun
+> I was thinking that once the VMA tree is separate I'd put mechanical
+> changes like this through it. Is that not the way to go?
+
+Maybe? We'll have to learn. Right now it immediately caused conflicts between
+mine and Andrew's tree.
+
+Because of [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t which
+is THP-only, and feels like it could go straight through one of my trees,
+avoiding conflicts with Andrew's tree. But maybe there is more to it that I am
+missing.
+
+I assume stable topic branches would fix that, but they are currently
+unfortunately not on the table ... :)
+
+> 
+>>
+>> Ideally, patches really only touch one component.
+> 
+> Right, but sometimes functions are declared in one place and called in
+> others. It is impossible to change the signature of one without also touching
+> the others.
+
+Yes. Something like that is unavoidable. Or if you need new APIs/
+
+> 
+>>
+>> [PATCH 07/13] mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
+>>
+>> is all over the place :)
+> 
+> It's not really all over the place, it's converting vm_flags_t to
+> vma_flags_t across madvise.c, which involves changing a few function
+> signatures, whose callers must be updated.
+
+Ah, yeah. What on earth does arch/powerpc/kvm/book3s_hv_uvmem.c do with madvise :(
+
+> 
+> I could split it up into 3 patches where 1 does internal-only, one changes 1
+> function, and the next changes another, if that works?
+
+No, these things really have to go in as one unit, no need to split that up.
 
 -- 
-Sincerely,
-Yeoreum Yun
+Cheers,
+
+David
