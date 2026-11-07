@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011834;
-	b=kf6lWuZufWjY71BQV7CLJxfI9FgfukiVIynpyOcENyUNJLo26k3AGnvG/UhU+79LVx+v
-	 iFcwNhNkgMw6vXKJPyTC8WfEJaaEE88NI0WdwdNDPVsZaWjIiMOKBhLC4dPuDpTsPiB04
-	 HMi7f5uUTIzd6IBo549/90H0KSZ6n9D6rlH7zFyYFYckaWHB2q1uetlFClcEEF8wnp955
-	 d+/Jc39CEBhzvjnT2jENORN9h4vuX6k+AZkrnJ2erRztXri2Hyf/3KUvNL7O+GJZ2Y2DB
-	 odYSiZ7aekUpED5m6OedHYEXqswFJxHOvoyqkIZ89byFEI3sRfxgYk/tHMakrMaGfpw==
+	t=1794011832;
+	b=RGERwpjCW2MfyYIGxcmUEHwiwbjhWs/W4MnsewDNVRmF7s++Cafr8C8T53YkhV+ltSv3
+	 yWKXWpAue7Ukl2/2pHyIbbxEJmkBqZ+TrX8MN4yUhMRHIOAmy0T/8JlbnSZV2xa7GNcqI
+	 1fC5ZtN7x2P4RgxwkblexkNIdkSWcFs6agEjm72gll1ze9ukAwXHQrWTqkXX9LA9/8Bzs
+	 /ahjy6Nti6dkQJ7wBoHNbTpiJ96WxDOTd8/hlf/561Bfx/4xiIOQBBa0kflYCQQS9UWTH
+	 tht+Lm8IFTyx0V3CqtfnRXrZj0ygYO0wd+HKHMa/zuY0QCglCUE1Zmgfu/bDpDqSY3g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011834;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011832;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=013TE8/H9UfaaULLHpe/0PdW6Dc40kZ+W5jg572a6sw=;
-	b=H3z1im/NorGDZauXviXu72/8zVLnV9L5GmqNH9dJ73kJGmuUE8WA6uzePw6K7qUEXFau
-	 WB9M64D4Zv5MEEankDMIK+kF9BnNTJ+UfJkw0ufIBvj9lhGFvA/SGkO5F5xNODA1i1uIE
-	 8nvvu6yI/bTCwcocJQkJ/7m/xILwvvmH1rN9WWix8EwUyPVpkNfcTSRwi8kOH6nQfckY6
-	 pqeG4ZC3sMlieTB1ngP2S0maL0ECet5rHwqWmO/Lm4CZpHNdlZlpvEViXXfiWYpoK667r
-	 /zB51LrfUGjgsdMuMcQ+iJFaNFivFfwDvaM10nakxpktVoGbXKrkQ8/qPA+KwpAuoww==
+	bh=S1VeQt4eeGIXDkcfneZT3UM35I4Mo6EWsujW5a+4lpA=;
+	b=MrWfV6y5vrdQ20bRNJ9CL0z8UHuOTOyY+b2QeLVMdToi4QwmzFW1vrIMls+hjESKa8MY
+	 knyzU89BaaEsKYAsHjC1qWm/lKlauVe02CFkVr+1oqRolkJptrUmyXqJiaRiZbitBYdWo
+	 ++RVgdmHEBupQ9gAkar/2udUlhwg2nMUxop+LBKcIeCWKNcsSB0WhuslWnw6maexeSull
+	 L0DsXKN30JcIhDSOTaJJGp9QKjehnkhkgY5swk2CS5KQ/4sBf3/XMOPpynzPH1V1CZV15
+	 PZDxIUEs4mnOcVtUgRtDLORSv1yWj+kYTtTxEY5h5KwZIOmDDKae/PLQCdZkf6vO9MA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QlPbt3WL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YSImQPJL;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1286E606D814;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CC2606D82A;
 	Sat,  7 Nov 2026 00:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QlPbt3WL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YSImQPJL
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794011831;
-	b=uGhXxcCXbpeIV628k+aMbOMdTYZyovKeux7m1rogOjRvELZQfrkTHPt0OkXUpWWGs3W1
-	 5kYFGC+uVqv+/f+a6qmXedIIXKt7INeklFG77NNf7nzpB7USDZp7pei1cu6lyWqkCUdh3
-	 7X8oMfThHPvllZHOjz7TXublQrY1ZdKEGErcQ4DwTlbB3z5WIBRAW4Sgy1joBt/tOQnt9
-	 SIiesW+FSZi7XwKruB2V62wj9onAo9hfhA6gu9XfITzU1HrFaG2rwwnCGuZIr9tt6rcWF
-	 qeTAVmHGXlq52K6pMpuq8lwsbqwQp9XrtFcjOd63CI3nYUmrqh+EddXl4vz4oo/8OZg==
+	b=nlK8gBR7K2hvsAwNnVXGVAPDl/sTzzIGYraJ03hS3G/32/N8X1Yuk7wHvEAAJqEMZ2l2
+	 xFXnEcjoZKNsnnf6idKtzrdiHxa72oU7d78oCQwNHwu/tGsdAtTcddLeJT938PqFmXQ95
+	 Mm0GGK5zt2ziq+TOsZkEhBWOOrGwswKL1ISwZCZZtqVD79Dtxqx8LfYOfYn7SnuWCdk0G
+	 IpK25VdJFdYYsmkjWVulvzYQHuahKEe5kY1UebO0x/z7Wus4yboqfQg+y/xnkXk/O9ZG4
+	 nL4OkKy3Z2NWlQypYqvA6pUA+ft7tYVxF0AhBTtaPqxohOHxwSMHv+HmHKthPMSwnNA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794011831;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=013TE8/H9UfaaULLHpe/0PdW6Dc40kZ+W5jg572a6sw=;
-	b=Dts+GmX3FEaWJCsd3zZAut3EZPmLk0HqA5zJ+dN+zl0akI4SfIah1sdBNjJjLu8kjCNB
-	 0FYdF1oUa0jrn99be86jgdcbcsIDWIolqbv/SrmfMjDbsgbMTY5xKLt0wCicUf9ZcRWok
-	 WI5QP/fG0mF2001o+f8roxQxMNxgarjU8eiVtnxsfL/qdbc7S6MfHbwkh1h73git5YiBh
-	 PVRkeLP00ZKOKDcAIKjbXuZxMWWLiqxKofHrYzkAjDmFqs2nAn3UlnJ0P5yf87luT0/JU
-	 tGEsVdIZHXR0dmI+Xbd1YGAOuTBIwhFL0xpU3+MekxAQhz7i2wd5jiZTQBQTLTjH2MA==
+	bh=S1VeQt4eeGIXDkcfneZT3UM35I4Mo6EWsujW5a+4lpA=;
+	b=HNioULsevLhci2bx6v/QOTtiDg0YAgmlQRTHuF7X2wbsShQ03MWl0nfXKuF4MqIc8rrB
+	 PizRwKXTnSWyPGdvQJlp1zXvd08jNOAXkGtjfI5Ne4FlbuDfanv7vH4pGBxtYKXNe+Klm
+	 39FmsXAnbLkO5ZICNcSaFTUSyLqy3XntMLvyc6LapLCbTxvyKhwc5OH2QODwWiMP06vp6
+	 VqfBM3iwW8ivoxwj2iGz2NWXI0Z0KV9ved5jzOudkNJz1ZmW+GjWquX91KWiZEE5j0VYH
+	 XVEHdGIY2qDzwIuvQ9h2O9Z+XMW8/PE8OqTFxry87V9utaUfKV+OvdgkiVnCsgVsSZw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 30E171F008A4;
+	by smtp.kernel.org (Postfix) with ESMTPS id 852E21F00AD1;
 	Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011830;
-	bh=013TE8/H9UfaaULLHpe/0PdW6Dc40kZ+W5jg572a6sw=;
+	s=k20260515; t=1794011831;
+	bh=S1VeQt4eeGIXDkcfneZT3UM35I4Mo6EWsujW5a+4lpA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=QlPbt3WLbH1wZg22MADFhgD53xHwV7Qp9/U/C0kT3bpOISuLnRSqcXmVL1BOjkFOY
-	 fhULOZm/YmyDzuqWNqYMv2IJiptkG9RUxa1vCpIQhG+uEiP6Qim8wJTXvWGdCCqhZp
-	 pTlWWgXQCd8fW76zIqmb1o13n5isj5l2s2QeQOi59JhdmMoWq7XWFp6ufeIiB3DDcA
-	 VHaoFXaFbVxT5TaAGQJ9u0tQJN5CHFE6ICBLva+GNDGHEOTACD48pdZe7+PbR6KvwD
-	 9TMOhZE4v3qKT1vzGn/xZ0h8U/ZpNvA7usdT1INjXwfetZz+o34mnNzTbeJlnG3jRy
-	 Fup5I9P6pDgFw==
+	b=YSImQPJLVctRWA9uk5of//u47z47vnJGGof9RAJmUHprZd7MtBhM1UoJJcxaNIgl2
+	 3uvZXMb/uXKQi2nJEjG/2CdcyUhmZdsX0Pdg/n5VeqIerV6nzcxyZGh3Lg4uhb9edA
+	 58c2ZGuQfhbjwWPxCf9UV01NdeDeNgZDfOPPJbFnhtYsnPAY1G8N6EhsGjQDEfZDFg
+	 qIi/JMELX8Pb1QwUv5xWiKf5HX13Tsv7IQTejgLNyQHjtaIuwUC6h2j4pxTudSU57Q
+	 iOvjJejWhDhjBfD7B1zrBXVcI9OTWwtMlUyGoQgdogE2CE5zN6ZCrOFZGeGNOcjNXl
+	 L0Lit6heGxopA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 25249479CB;
+	by lkml.kernel.org (Postfix) with ESMTP id 45B68479D2;
 	Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:21 -0800
-Subject: [PATCH RFC v3 47/88] samples/kvm: Implement put_pfn_range provider
- operation
+Date: Fri, 06 Nov 2026 16:37:23 -0800
+Subject: [PATCH RFC v3 49/88] samples/kvm: Implement lookup_pfn_range
+ provider operation
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-47-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-49-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -105,11 +105,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2017;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=1753;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=EQ1vkfs4Fq6dVy8Tnqa73wtDRnEOHzF5D2kx/MOFQjw=;
- b=qfpeXyJrdfzBNnklBH6lKmbtKPRh5QoMQFABGup6qT5nifmvAegwKuVsurgtDqdWAfCwzbars
- NPUayoqo7OoB5MiAYyY6K29oiVQj15R/7ZFXTkTxKp16tREgjIDIaTq
+ bh=zF6/NHZXYKv9L/HYCXHQCrJDAKRuC7sUwZ4mNyf3Ilw=;
+ b=ahCkSRHzo9omVJZMhhE6rfmRR1w5YCbKaLV2veN+koHtwyTZEPMuUJDWA4vp4xnnxkooZ1qco
+ erjm1pX+7bACC1WV18Q1Je2NRoYM1uyGK8yLYYA8TUwGIp3C8gOY06l
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,63 +120,58 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When guest_memfd hole punches or destroys an instance backed by a PFN
-provider, it invokes .put_pfn_range to release the physical memory back
-to the provider.
+Implement .lookup_pfn_range to allow looking up index -> pfn mappings to
+satisfy guest_memfd requirements and make this sample memory provider a
+valid PFN mode provider.
 
-Implement the .put_pfn_range callback in mps_gmem_provider_ops to clear
-the CMA pages across the released range via clear_highpage(). This
-ensures that subsequent accesses to punched ranges observe zeroed memory,
-matching POSIX fallocate hole-punching semantics and preventing stale data
-from being observed when pages are reused.
+This sample memory provider performs allocations upfront, so
+.lookup_pfn_range doesn't do any allocations anyway and is only slightly
+different from .get_pfn.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- samples/kvm/memory_provider.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ samples/kvm/memory_provider.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/samples/kvm/memory_provider.c b/samples/kvm/memory_provider.c
-index 1db69a8f58758..0a03623492f4c 100644
+index 926f3cf68ed49..7fb7365b65940 100644
 --- a/samples/kvm/memory_provider.c
 +++ b/samples/kvm/memory_provider.c
-@@ -17,6 +17,7 @@
- #include <linux/file.h>
- #include <linux/fs.h>
- #include <linux/gfp.h>
-+#include <linux/highmem.h>
- #include <linux/guest_memfd.h>
- #include <linux/miscdevice.h>
- #include <linux/mm.h>
-@@ -198,6 +199,21 @@ static void mp_gmem_release(void *provider)
- 	fput(resource_file);
+@@ -249,10 +249,34 @@ static int mp_gmem_get_pfn(void *provider, pgoff_t index, unsigned long *pfn,
+ 	return 0;
  }
  
-+static void mp_gmem_put_pfn_range(void *provider, pgoff_t index,
-+				   size_t nr_pages)
++static int mp_gmem_lookup_pfn_range(void *provider, pgoff_t index,
++				     unsigned long *pfn, size_t *nr_pages)
 +{
 +	struct file *resource_file = provider;
 +	struct mp_info *info = resource_file->private_data;
-+	size_t i;
 +
 +	if (index >= info->npages)
-+		return;
++		return -EINVAL;
 +
-+	nr_pages = min_t(size_t, nr_pages, info->npages - index);
-+	for (i = 0; i < nr_pages; i++)
-+		clear_highpage(info->cma_pages + index + i);
++	if (test_bit(index, info->absent)) {
++		unsigned long next_present;
++
++		next_present = find_next_zero_bit(info->absent, info->npages,
++						  index + 1);
++		*nr_pages = next_present - index;
++		return -ENOENT;
++	}
++
++	*pfn = info->base_pfn + index;
++	*nr_pages = find_next_bit(info->absent, info->npages, index + 1) - index;
++	return 0;
 +}
 +
- static int mp_gmem_get_pfn(void *provider, pgoff_t index, unsigned long *pfn,
- 			   int *max_order, u64 *pfn_attrs)
- {
-@@ -226,6 +242,7 @@ static const struct guest_memfd_provider_operations mp_gmem_provider_ops = {
+ static const struct guest_memfd_provider_operations mp_gmem_provider_ops = {
  	.attach		= mp_gmem_attach,
  	.release	= mp_gmem_release,
  	.get_pfn	= mp_gmem_get_pfn,
-+	.put_pfn_range	= mp_gmem_put_pfn_range,
++	.lookup_pfn_range = mp_gmem_lookup_pfn_range,
+ 	.put_pfn_range	= mp_gmem_put_pfn_range,
  };
  
- static const struct file_operations mp_file_fops = {
 
 -- 
 2.56.0.455.g6c5a503b38-goog
