@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011840;
-	b=5IVCO6TgW4YDgunzUYd2kx2Jt5WeCjBZ307bHvaGgAp8qwa2EhuLZwsG32EIbEIulhe6
-	 uJhtqs2m2WfgMFKw0O4L90rPIrDVcenczeY2N5/knvMd6hyn7XsMtkr3fQl/TY12TRkSr
-	 R7+PZbE4a9JNPlQgjpyQpP4LsyaQrMf2b8c6bQzHtdiDXiK54d/5MIK2uXJTZGSKEvpe6
-	 lrCqO74LTTpcASv+a7Lj129C6KDizPN8SNahigNJvJwR/JIBaHWyPxJJhv1pU3VQZRZio
-	 Xni7a18mx5re/hkHswvRC4f1MrrFolQOXfswYtsmiwnPPVbDsJgeSC69BgR0Wjq0dwA==
+	t=1794011834;
+	b=uqlK2drHk3Th8hZcxZu8mQjDc4lAhTVIn1Zz5Sp1kMuNtu/6Wcr2jLztZQeek94xmR7E
+	 wvoEe8ufPPZnS/F0bYbItu1JlFqz8K3XOoaGI6Z84jhgDSrEiBdytoryOJd05HDeEEZKn
+	 otV1BEFUUc8TBD4zzcRT5X2XR7mu8ybYd6lwvfWYh5dA3Ew2WYF3kTpUFmpWML3MnVIwL
+	 xnkFECHEMYEAWPd/SyVQuYlJfTzMQQ7zHIwCEGvQbB2qIWGvOiOQgUr7dVzFy+0FiVc+T
+	 0iZbu0GJSNx67KLBaqlbOtJEX9m7RJncAbn0Spxq/yFSYzE9fSsrlimKYd9LL4m8pjg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011840;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011834;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=L1WAIjsJ2f6GPnFK9J8tErfe5hVo5E0rwAzvzNh8md8=;
-	b=SyC10YXEZEmdtZ2QTgd6B1L+6sFjXUpkjIu8+aD+njK8lids3xwgdoUknvQ8wrPHTjU9
-	 M0trGAVRhzUmXye2XYTYyLaHd5Y17JRSIgPH2coirFykq42oaPhDmDM6UNLhlghuyXygD
-	 PMnWRZdLYiVA45/dYgu4du0rjZpEL2bTd++fm7HBQWT9GtpTSTE1Pu/hOfBFWl0lJUBfl
-	 AXqE4S2T2GBI+muOYYVWDxPAW1qZKdU+Ct+cx/8BfwZ2qbifk2FlKtFTgRVL5NrRNbt3j
-	 MRHX2URZRiEK/Ou5AK/BNytajoJYKv9FRGZ3R09nnmfafKEIZ/pEfCjiAFQR6LQqJIA==
+	bh=wZM6CRwABi3fstnzX44ArAuSrBU3GRfAEQ1WggcvHU4=;
+	b=Wq5Ugkgsww6xtqOx/SpR9pqAN8o/IKR4b5d7Vy45GyIQS/RogKcRRLKXWGPEPhiJI42o
+	 o3fcu3J4YxZBkDGX0Kfuqx0vwwiHJ8ZaJhJENC704C9ZJy4ski8R+N/69LLcYcTMFxUci
+	 pq0H3pFBeVqNsyubkHTQP8Xhio9qAg4PCiwldZnw8OwEUuf8GEhEWYhRd1nQS/3aUkMzg
+	 UA6nkvqo6tM2+geaMmON3rj7h2GZAvL0hejhMtGpMgk9fsr+lXP17WODypWXVIt41B/db
+	 I7MVPYFRm7IMbvGyPhuxuRxtKIXeXNETjqj2bXEUMb4p5mezV4TvUvz03yb8yVJJG3A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FAglrdYv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=liQDf2ND;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB91E606AF8D;
-	Sat,  7 Nov 2026 00:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FBB60A6F46;
+	Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FAglrdYv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=liQDf2ND
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011839;
-	b=aGaBpPuu+/mFZvkAp1rSH7Yasxkx/nnpM4TaXfb2dK0m+wFH13jBhH2fAggftFj/5c6a
-	 mGEPTy1zM4zsAX15ZK5kX7K2jJYr95Ub3yz/vRVUdI4H/z6xUnnUGNVwdFh8bKExslELk
-	 tqJpstnCgh7RjUMrxK6prnL7cDsdyBVXvUhXQN6OBcfeej341XTqyZIYBYu8/vpADTSkc
-	 HW86Bn3m/5fvnbzkvgA05zXHtbM54nQ240b/igXHa1GPbE3RwENTeyVTKg+gJ++0H5hGd
-	 KrXsgpax8Uoz4sy9Mm0EVMbX8hrpiDCwv+WuqFRwVNDDMZGJSxclO5dCApIg1k/jGSw==
+	t=1794011834;
+	b=yvD+sBaPrBpS/CBFoMPYG6zV6MJCfpbb00j/t8JZtcs1A8/pjD9jCpL2IoiDexxsYp5T
+	 5eWBqjMKTp6PU+xVEF9VqoWMz8CyBBTaEbZdakL23VvxZZ3IW2ROKQvPrpd+dAFUbqd8w
+	 lPH2WqEfoIobPGjMRPXluPeAEZ3XeJATVUB8lJYUidcVZSFE0MvDCVLP/6CzgIkCYPaFU
+	 3LOl9gKn8lNz4iErQeTK6l6PS6lYQ/cdNHSF45n4INrRtEWKBoTvO0E5fEjgxpMSGOy49
+	 MjBever0TQUjbTkOU8AS5S8k4+yf0WULDR18IdwNkSu3cTmZZtByYn8VH+7/87ynm2A==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011839;
+	c=relaxed/relaxed; t=1794011834;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=L1WAIjsJ2f6GPnFK9J8tErfe5hVo5E0rwAzvzNh8md8=;
-	b=WFogn1wF4vd50mLOuJIEk39V8ZxNJmY7BZ3IzdASS+OAbsuN3xPTMuwG0oy1wI3TznOi
-	 BpuNjiUFZQa70llOCgQOc+pEBVrZr4wmXBFw0aF8F6KiZHiE/lL6sgDwyXx+eezZuqZit
-	 QS00s0Buvq6MHhxcd+O8lRhumdoFiQ35rkvNBFDY+4KoE0q+NvAm0d0tNpZrtO2qkBvQ3
-	 5u4jOLtVvVFkfQ6z4lExtYp+fDJaIwsxGMjAH8CH/fhOQQqAwpnhgU4HSJIaT3c8InL9v
-	 Pvkv24J+wPmQ66gsIRaRGbEhhnp6l3SGNOPekxBR3JJ7DK/9FCS/2NzWWzUXlFmpdtg==
+	bh=wZM6CRwABi3fstnzX44ArAuSrBU3GRfAEQ1WggcvHU4=;
+	b=FtIT6+K1Yucx7RJTpxEek+MMISonHzfUnUueZ6Hvw8OoZWvyDPqXGGqVuB47ZKMsa267
+	 W3fq/XMLFUenFQS+QsMCc416+LH+RrfzkbSkg4xMd02TRtPKTONcok+faklTof1qDgXnw
+	 eNeqkMQYHGJTR1SkJJhkYIiqST+Kt8ub/HOQYj6F3rN3pYws6j88GKGR9epCbRpAGD2tC
+	 AfechwNVPo5EQ0YSdTZvVCcKjsl30mVnKWZQO/2RFILrRHv41uFKuJ47ha6/bL9C2ssnE
+	 1kj0z9POLlRiWjB21dEuFhxXYBIzHizzdSqWRJ9MHbYuydn9+4Ty3KODH8VyNcYQkYw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 6BEEC1F01559;
-	Sat,  7 Nov 2026 00:37:12 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 926D91F0093C;
+	Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011839;
-	bh=L1WAIjsJ2f6GPnFK9J8tErfe5hVo5E0rwAzvzNh8md8=;
+	s=k20260515; t=1794011834;
+	bh=wZM6CRwABi3fstnzX44ArAuSrBU3GRfAEQ1WggcvHU4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=FAglrdYv+8+AjI1vNIVfyoBykwq94B1Jsxzaaxp8BIhzQAoBm0Np9IlyKyja27FQK
-	 QhhEpYPkeujEXOtnZkmLfwjj/VxY3nUaiCCTO/UGKsyGiLBC3fAQ26SatWOphJZCHy
-	 T6UeH8ua7lxafC1ICU1pXKxHKsZJ0rIvE1EupfWX7TrVPxkeGpeFLpZWatdbG+O8re
-	 NkDWs50HEqN2kaSc1Pq+A/vTWFx4s3f3fq6PqQqRHtQZNnoQv2JilSdWO4dQNP0TCz
-	 k7i1F9pmJToF7d7XteR0Eevx+cmXcq+H1in/UFsoUvt2EXY89m9+W+aLeCtF91qLlm
-	 96tBRh1msbJcA==
+	b=liQDf2ND2DoP4lr/xVkpBNtdQuy5+FkGWG7EMA8QcUl7kgk8Iir/TP4YDIEMY90cj
+	 RABnixlbaFE64trVoWBHQu+R0v11BPFyLeTYSO1/Hw47T0YxUEFiv90t8/YeemDwBn
+	 hcqLx+xdRBqSnltoSl7w9gjoEded+CQTsIWZjTXbTmjATPut3jNKEv//sx4dJL89C4
+	 uI4rr5vwkrGvHMKa8hZtvg156uifkHuBgpckMxs6iNSvVPionEt4Aw7pTlIjNtDOXp
+	 0ggpLG+rYDAL6jJuoFNx/bRcqrPc+osrBGiXr8dj5laXUPH1GKh5rBrDibesO9X2y2
+	 MU6HQye754PFA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3F1EE47A0C;
-	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 5700A479D6;
+	Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:38 -0800
-Subject: [PATCH RFC v3 64/88] vfio: Add vfio_device_gmem_revoke helper for
- guest_memfd
+Date: Fri, 06 Nov 2026 16:37:24 -0800
+Subject: [PATCH RFC v3 50/88] KVM: selftests: Test guest_memfd conversions
+ with sample memory provider backing
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-64-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-50-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -105,11 +105,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2301;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=5146;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=6gfs4j8uCHpXnOLsBDGwfvIT0AGOBGHhi3wjtxG21zs=;
- b=2H/FjEoqaNY0u61FutI/xynBHktbS1ilj9Dq898KbDy8/638MzV06rs1q4/10qrHH8jGsnUXo
- LfFX9u/SduFC73ybrCdDYFQJgPwbpocGEFiTpmQbgpzVeqgnbOtQGrB
+ bh=pFmVA22FXGETZKWOVPROthnqtuyrzDD+ZHNTU/H+YNY=;
+ b=11BVE+QRpNOg7Hd1AOFKxr49Ovvf9iM3u7cDh54/3reFREN7eARVv8IsPL4S1AeL3D5QnyytI
+ dXlUBPCrGnZCsK0Evp6XvNHNHVCdLa2iZrWfJ9bMPZ/08Aj0X4KMUZn
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,65 +120,155 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When physical device regions backing guest_memfd memory must be revoked
-due to hardware reset, power state transitions, or memory decode state
-changes, the bus driver must revoke and reclaim the memory ranges from
-guest_memfd before modifying hardware state.
+Add fixture variant for the sample memory provider.
 
-Add a vfio_device_gmem_revoke() helper in VFIO core that queries whether
-the device is attached to a guest_memfd instance and invokes
-kvm_gmem_revoke() with the specified range and physical frame address.
+If the sample memory provider cannot be opened because the module is not
+loaded, the variant is skipped gracefully via TEST_REQUIRE().
+
+Because PFN-backed memory cannot be pinned via GUP, expect pinning to fail
+for the variant in the elevated_refcount test.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- drivers/vfio/vfio_main.c | 10 ++++++++++
- include/linux/vfio.h     | 12 ++++++++++++
- 2 files changed, 22 insertions(+)
+ tools/testing/selftests/kvm/include/kvm_util.h     |  1 +
+ tools/testing/selftests/kvm/lib/kvm_util.c         |  9 ++++-
+ .../kvm/x86/guest_memfd_conversions_test.c         | 44 +++++++++++++++++++++-
+ 3 files changed, 51 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index e4e7bfe77d03b..fd5f71dfc44b7 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1643,6 +1643,16 @@ static const struct guest_memfd_provider_operations vfio_device_gmem_provider_op
- 	.mmap                 = vfio_device_gmem_mmap,
- 	.check_set_attributes = vfio_device_gmem_check_set_attributes,
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index eca296539db79..1a1387f36a52c 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -1350,6 +1350,7 @@ static inline int pin_self_to_any_cpu(void)
+ 	return pin_task_to_any_cpu(pthread_self());
+ }
+ 
++int __pin_pages(void *vaddr, uint64_t size);
+ void pin_pages(void *vaddr, uint64_t size);
+ void unpin_pages(void);
+ 
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index d42e201eba763..9793818f54d23 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -674,7 +674,7 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
+ 
+ static int gup_test_fd = -1;
+ 
+-void pin_pages(void *vaddr, uint64_t size)
++int __pin_pages(void *vaddr, uint64_t size)
+ {
+ 	const struct pin_longterm_test args = {
+ 		.addr = (uint64_t)vaddr,
+@@ -685,7 +685,12 @@ void pin_pages(void *vaddr, uint64_t size)
+ 	gup_test_fd = __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDWR,
+ 					  "Is CONFIG_GUP_TEST enabled?");
+ 
+-	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
++	return ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args);
++}
++
++void pin_pages(void *vaddr, uint64_t size)
++{
++	TEST_ASSERT_EQ(__pin_pages(vaddr, size), 0);
+ }
+ 
+ void unpin_pages(void)
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index 023df9cb9d4a6..d0cbb1353d7ee 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -16,11 +16,13 @@
+ #include "kselftest_harness.h"
+ #include "test_util.h"
+ #include "ucall_common.h"
++#include "../../../../samples/kvm/memory_provider.h"
+ 
+ FIXTURE(gmem_conversions) {
+ 	struct kvm_vcpu *vcpu;
+ 	int gmem_fd;
+ 	int resource_fd;
++	bool expect_pin_failure;
+ 	/* HVA of the first byte of the memory mmap()-ed from gmem_fd. */
+ 	char *mem;
  };
+@@ -29,10 +31,14 @@ typedef FIXTURE_DATA(gmem_conversions) test_data_t;
+ 
+ FIXTURE_VARIANT(gmem_conversions) {
+ 	int (*create_resource)(size_t size);
++	uint64_t extra_flags;
++	bool expect_pin_failure;
+ };
+ 
+ FIXTURE_VARIANT_ADD(gmem_conversions, native) {
+ 	.create_resource = NULL,
++	.extra_flags = 0,
++	.expect_pin_failure = false,
+ };
+ 
+ static int create_tmpfs_resource(size_t size)
+@@ -42,6 +48,34 @@ static int create_tmpfs_resource(size_t size)
+ 
+ FIXTURE_VARIANT_ADD(gmem_conversions, tmpfs) {
+ 	.create_resource = create_tmpfs_resource,
++	.extra_flags = 0,
++	.expect_pin_failure = false,
++};
 +
-+int vfio_device_gmem_revoke(struct vfio_device *device, pgoff_t start,
-+			    size_t nr_pages, const unsigned long *pfn)
++static int create_mp_resource(size_t size)
 +{
-+	if (!device->gmem_inode)
-+		return 0;
++	struct mp_new_file nf = {
++		.size = size,
++	};
++	int dev_fd, fd;
 +
-+	return kvm_gmem_revoke(device->gmem_inode, start, nr_pages, pfn);
-+}
-+EXPORT_SYMBOL_GPL(vfio_device_gmem_revoke);
- #endif
- 
- const struct file_operations vfio_device_fops = {
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index ffb01e655735f..aade091a91fe8 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -394,6 +394,18 @@ bool vfio_file_is_valid(struct file *file);
- bool vfio_file_enforced_coherent(struct file *file);
- void vfio_file_set_kvm(struct file *vfio_file, struct file *kvm);
- 
-+#ifdef CONFIG_KVM_GUEST_MEMFD
-+int vfio_device_gmem_revoke(struct vfio_device *device, pgoff_t start,
-+			    size_t nr_pages, const unsigned long *pfn);
-+#else
-+static inline int vfio_device_gmem_revoke(struct vfio_device *device,
-+					  pgoff_t start, size_t nr_pages,
-+					  const unsigned long *pfn)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
++	dev_fd = open("/dev/memory_provider", O_RDWR);
++	if (dev_fd < 0) {
++		TEST_REQUIRE(errno != ENOENT && errno != ENODEV);
++		TEST_FAIL("Failed to open /dev/memory_provider: %d (%s)",
++			  errno, strerror(errno));
++	}
 +
- #define VFIO_PIN_PAGES_MAX_ENTRIES	(PAGE_SIZE/sizeof(unsigned long))
++	fd = ioctl(dev_fd, MP_NEW_FILE, &nf);
++	TEST_ASSERT(fd >= 0, "MP_NEW_FILE failed: %d (%s)", errno, strerror(errno));
++	close(dev_fd);
++	return fd;
++}
++
++FIXTURE_VARIANT_ADD(gmem_conversions, mp) {
++	.create_resource = create_mp_resource,
++	.extra_flags = GUEST_MEMFD_FLAG_PFN_MODE,
++	.expect_pin_failure = true,
+ };
  
- int vfio_pin_pages(struct vfio_device *device, dma_addr_t iova,
+ FIXTURE_SETUP(gmem_conversions) { }
+@@ -75,10 +109,12 @@ static void gmem_conversions_do_setup(test_data_t *t,
+ 
+ 	vm = __vm_create_shape_with_one_vcpu(shape, &t->vcpu, nr_pages, guest_do_rmw);
+ 
++	t->expect_pin_failure = variant->expect_pin_failure;
+ 	t->resource_fd = -1;
+ 
+ 	if (variant->create_resource) {
+-		uint64_t flags = gmem_flags | GUEST_MEMFD_FLAG_USE_RESOURCE;
++		uint64_t flags = gmem_flags | GUEST_MEMFD_FLAG_USE_RESOURCE |
++				 variant->extra_flags;
+ 
+ 		t->resource_fd = variant->create_resource(size);
+ 		TEST_ASSERT(t->resource_fd >= 0, "Failed to create backing resource");
+@@ -506,6 +542,12 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
+ {
+ 	int i;
+ 
++	if (t->expect_pin_failure) {
++		TEST_ASSERT(__pin_pages(t->mem + test_page * page_size, page_size) < 0,
++			    "Pinning PFN-backed memory should fail");
++		return;
++	}
++
+ 	pin_pages(t->mem + test_page * page_size, page_size);
+ 
+ 	for (i = 0; i < nr_pages; i++)
 
 -- 
 2.56.0.455.g6c5a503b38-goog
