@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011843;
-	b=dELsmD/I+rt3cLVnA+Q2/y0iaxswfiONgVOGPhzm/4Y+QvjJACGXGxcHtGDN/t6u96yY
-	 chHa8IbY9FTLRC+IELDEdrKll6hswo8w4R3WJt8TipAktRGnLe1ALs7HOS6dsOvn83aOY
-	 PEwUSpugiXsTElvaZjAjtE+WPXa4hKG5ddjCuu2NXNP1t5i8qpOIUgL8g98xwfO5LqMNm
-	 PkugwHSeuDTTp3QCSFaDivW0dqfiS8bGky7KprTsYlUfX5Kea8oApRnetx4jXTWNnYX/o
-	 oTs3V16lF88HyQsNthbB8Mjr5Gk6kUVfNuIhfEIsGSv/2j5WS9mrpgWN0nSwG9kiKww==
+	t=1794011835;
+	b=eoE218iljVbVHBJgd2tO3HuytnJe+KmSJYA2ZlmE4eJrEobCtI6oRVoz5nOSgUtDLN3o
+	 GayO+h5Ol0h7owGEV/ECe5jqOvxoWsRW/GQg5A1WDfp6rUy2kIiotDYCaM2PAxlkeZFs9
+	 1wlzw/5Cb3GsMa9XK49zpdlyfkNhe2yF14Fjkq1HQy+JBmfDb7GY7YM3NhvKtasPHRT+Y
+	 Brwtio8yDMZuoYBxMBqH/tX8O7WRiQEg6nflHvbAQNpx0etGuFajOMRsnZGUq6Tvpqy6w
+	 q39ZWUW1wKtKtMhkRzYsyD2YJennarW2DxdVmSSq9Y0YuXwbRN53flJVn0akQZZbBAg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011843;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011835;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=pkX5RglPGJDEhnslhp8xP4OHF0T6ris68N5dtaSSV90=;
-	b=GS+27fPAprRbjsnNfPfLTWmHDNb7bqk0VgngwtqNFlTmTCzkAcXdmVbFIxzfOSEark3B
-	 HFb66/200TBup+1OZznrPEqHm0GVefVXSUrrG8vdjNO/7ZWAUmjVWMU0WXbcsvxBCJWs8
-	 UX0C23kSi5POhfu/bN/ZtiuPw/TFDWo4E1I2SvY0HOwI0qYZK3iFIUZI8XA2yh1kfw2IQ
-	 9uHdY5CAXvu0t242eopez0Gt0acC2VAst/ZNYul3+0BRWybRc+QzpvUJQZwFL/fCezuBA
-	 9nmkxutzOxc67TXzcKQGiLxzKkbxX+pUkGAorgYnv1nixDoRjo59fNr0jDLDkePwqNA==
+	bh=WKx0S/q4LHoqXh512KCmG0Z59UCrs4m44WNNAgPuWKk=;
+	b=znXuwhxs1v3kzoH0OmxPthtoxafTwFBnklKcZSyjI2i7xQS0zi+IoLHis/UVxOcviFeC
+	 wkLZRD43hNJtN+RP2a7U+FLmawA3QzHRiyHcRD9I1GiVVQyrNs+CxGKN320BQKRHivuJ8
+	 SG3DLwP0Fk/rYJV+iE+R5g8+DnOHyq8YH5XR10JS2CQ9rWe7hG4FaaR+6sV5F0SJNPPIc
+	 rPK7t2/Ru9y7wYYoiSW3yL4NcLhWoJ8Cpd22FbhGHS9IEmPGTD0QO/rZsNLWWVJBdjBZv
+	 jsOLaVBJx8DXrMfD3F9aELPjqA08lnc3PchlLCqDsNlpI/foUzk6RLIPpD5zBHKCnnw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="IK/m6TYo";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UyJ8GHMj;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B47606A824;
-	Sat,  7 Nov 2026 00:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C804C60A6F65;
+	Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IK/m6TYo
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UyJ8GHMj
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011838;
-	b=jIhZc3YtIfe5cGjupmPKguq3MIOc4IViaBNarp0kezszBSIFeD+vPD8seCd1Al+3SJEO
-	 VR34ACWL7VVY8kCdC65950LNEgqgK1t+Ly18bwxDs5JBsTmc04v4dh+6cPoOy+LUtpDhF
-	 nJmORB1n0eS6nCeZ9g27wqIPq/rXu7vM+0Kjcq2fDBsyVMOt3akP9k2chiNCyG8UAKJQn
-	 UTzsv8hJ7DEa/H66j6Aq8t78biqBmEc0nIUV5QN7Rr2vqpfzJ2hqMunHEsEV0nznp5yzH
-	 7cPKLI+RD0ckxbb/xKrYqV5c7dl6ZYEJCRheBpen4BrhwrmCgQmvgdVCL0UzQh12N7g==
+	t=1794011834;
+	b=ZmP2qen5yy0OlzVCFE7lwuma1KZ3jOYVXli49mLUTIYfHADWurXEV/gxraqWLZTGLPw+
+	 X+i3Vzyr58cewRLcYl57BS9qLzdBsjPX9MuTRfcmHWsQd+SMY5tDhwTINF9lIUlZU0o+h
+	 80xg4h6yZUTjDU8VavadZYH3w5Fy5tW1dl/UXkz7vd0hjtya04OV/HTnKKXei8qVc0Okx
+	 xqRN3FFUgXX7wSCWC2yhENWGUpZtP/ZfxDNy7ofdvWtTo+s/XibxQz+o9j/1Z90NNTN+Q
+	 NIDl2oavUHEb47zR6BNwOFbVYjU4A7poHaIXlJiePJrrP0GkPR+ZkvmtaanuKLljlkg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011838;
+	c=relaxed/relaxed; t=1794011834;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=pkX5RglPGJDEhnslhp8xP4OHF0T6ris68N5dtaSSV90=;
-	b=znU0U+Bvk6MTU7HjAJKMKPgZMxkvgaHbhXJJOQhopEd4l3ntegVilnlcOKygdcedpREH
-	 dRU1Y4TXK50KyaDv52X3RTTIl7V6EUcaH8vuRKYA57BOSC7sRaAbcVNL+k+8rOo3FpeBB
-	 mzd5aaiah9WMFQ8JOZ7yHd2T+upw8XvoSTOpr1ooVRWkFQPsGYvFkU7425vcqD/RvQSUC
-	 VeC4fktfigpFXrrZfYM8pxGrDhBaKMhNz/XCjOpjmSvcFCy36u+2alrlTveh75ZLgTEgJ
-	 OM76TdLjoRpoEX0YpFSg3vsSnxkllePOTWARQa5ymFaFOPMdVADiDZmJOYDN7hFD+Dg==
+	bh=WKx0S/q4LHoqXh512KCmG0Z59UCrs4m44WNNAgPuWKk=;
+	b=U24hBmLGJCe6mYgwWzIukTbR4l5BmbvH3COYJW3+2whge1FdMZ0TtTzdg8KRjYcFupvf
+	 j3yiG80JD4KFdlhKhE3No5Vbg5ayUlm0Tl0ENPwh8enPxCRNIFNBHRjSpa6By+Xp4KgtH
+	 uew9q0+1cvfWpsnPtg82m+e0TSY1XMahOgB+VrXtvEpB8AC+c6nsmWI1lv//P8pB0PEkc
+	 0ZgKonXXeV0ZzXceiV+pqD/x74yjQaOFdvGMe9gmpNESWRlQ2lRpZ/tmciyMJZBmi+kcc
+	 h2kLYF+1mcnMALsx51n7TDTaQ3jMoC5Sk/pE8oDmdakbXA113WrL8++Ox0qM/zzamKw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 1F5AB1F00925;
-	Sat,  7 Nov 2026 00:37:17 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 974B31F00901;
+	Sat,  7 Nov 2026 00:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011838;
-	bh=pkX5RglPGJDEhnslhp8xP4OHF0T6ris68N5dtaSSV90=;
+	s=k20260515; t=1794011834;
+	bh=WKx0S/q4LHoqXh512KCmG0Z59UCrs4m44WNNAgPuWKk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=IK/m6TYodvJPSVDageZXSBAYTxQxbGrpYMBiiX865Fpf4W5Xl9gj22vVhvpjq0Ve7
-	 bCe04St6ikuvo9AjP6+boQR7205VjcIvKyvfudmdaD/gH9zidXt+LF1/gDbsTxcp8l
-	 r8BEC4wBThd9pPL8u8Xy9T9/0PHLU+fc7PUqhEB5HnpJAWFOwmw91kI45v5o1/tww+
-	 KbSjbMNLOPJkZsZuK25UYWA0muMoflzeKQOTXbSznzaMQJnzMN2JAPjZGpvKk7ytKj
-	 INtVQhNY88zlGGVQZtp0bOlJbHKQmbxSu6/7FUK0IBpZCKclHC8ot5C9pwEWX4kKxk
-	 GMS3EHMSEy06Q==
+	b=UyJ8GHMj7CDmRAOYLqSw+DWPAcD8w6Gzx5bJLyn82vP+WD79hijnDIpIlxfbagNsz
+	 yyUVz6uY+zBoedBsPX+mKb2LzO63CBPhBtWBoj1AN7zI2QhcVZVS6Z0p6dYq/h1SGt
+	 LpIUF2RAhQ8PAn3xCu+gpMUmfW3N9hqdf1q+XJTP7bAVowIPTvZOEKNi3KTYEbqkEF
+	 AL5jWVu6e2l58VkEeCJmLy2l/TO74x53dgm3Xz6x74EKaj5HOUviLw5zhJIGtQeMIL
+	 kUgru+3bFcThEc2KPaYVelPgOo6h9MQA5rM6FQ3t9+epnZlwk+Z3NO/5S+xLuBEbN6
+	 ygQTX4/AQjG3Q==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 708A547A55;
-	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 2035847A04;
+	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:57 -0800
-Subject: [PATCH RFC v3 83/88] KVM: selftests: Verify VFIO ioeventfd
- creation for igb device
+Date: Fri, 06 Nov 2026 16:37:36 -0800
+Subject: [PATCH RFC v3 62/88] vfio: Dispatch guest_memfd
+ check_set_attributes via vfio_device_ops
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-83-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-62-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -105,11 +105,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2410;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2646;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=lOTB0T1ZgH2qBwxbzF1p5KVxU2nrnnE76xPmcwyhgYk=;
- b=dWWgKLHu4omBOrcbWgEzhyA8WgLPlocfMYQX0wM811XEqldFlmfdRwW/DSH6jtFRb5JzYUcHE
- Z8Q/wpLQ65VBYUKMm9/i2vELQblt1W1Vak0UmJun4RPZLtCa7JjWqVb
+ bh=/6avTRCqI4M8/ALHbbIFehsJKaQvoBf+svzx5j3iq8o=;
+ b=A/0h+r+KSCP4fQo2hcBDtiJJa5JKzY648tnHJ16FNMD3MSKRsvEZ8EZGzK1oxHVIF1ZwPtJO+
+ DRSFyeeW6yzBnvH8OVDGq4XMpFSwBUDkTeKVElbM8BqKXtFQu6mFHma
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,78 +120,72 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a subtest to verify ioeventfd registration and unregistration on
-the bound Intel 82576 device.
+When userspace requests attribute conversion on a guest_memfd file
+backed by a VFIO resource descriptor, guest_memfd invokes the
+.check_set_attributes provider operation under the exclusive filemap
+invalidation lock before committing attribute changes.
 
-Allocate an eventfd and configure a VFIO_DEVICE_IOEVENTFD ioctl targeting
-the scratch receive address low (RAL0) register in BAR0 with 4-byte width
-and a test trigger value.
-
-Assert that in direct mode registration succeeds and that unregistration
-(passing fd = -1 with matching register criteria) succeeds cleanly.
-In guest_memfd mode, verify that ioeventfd registration is rejected with
--EOPNOTSUPP.
+Implement .check_set_attributes on vfio_device_gmem_provider_ops to
+dispatch to the bus driver's .gmem_check_set_attributes callback on
+struct vfio_device_ops if implemented, allowing the driver to inspect
+and validate the requested attributes and offset range.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../selftests/kvm/x86/guest_memfd_vfio_test.c      | 39 ++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/vfio/vfio_main.c | 24 ++++++++++++++++++++----
+ include/linux/vfio.h     |  3 +++
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-index 46d325228bda3..dde249571ebc4 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-@@ -10,6 +10,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <unistd.h>
-+#include <sys/eventfd.h>
- #include <sys/ioctl.h>
- #include <sys/mman.h>
- #include <sys/types.h>
-@@ -725,4 +726,42 @@ TEST_F(guest_memfd_vfio, dmabuf_creation)
- 	free(feat);
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 979ed69c5ebf7..e4e7bfe77d03b 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -1621,11 +1621,27 @@ static int vfio_device_gmem_mmap(void *provider, struct vm_area_struct *vma)
+ 	return vfio_device_mmap(df->device, vma);
  }
  
-+TEST_F(guest_memfd_vfio, ioeventfd_creation)
++static int vfio_device_gmem_check_set_attributes(void *provider, pgoff_t index,
++						 size_t nr_pages,
++						 u64 attributes)
 +{
-+	struct vfio_device_ioeventfd ioeventfd = {};
-+	struct vfio_region_info bar0_info = {};
-+	int ret;
-+	int efd;
++	struct file *file = provider;
++	struct vfio_device_file *df = file->private_data;
++	struct vfio_device *device = df->device;
 +
-+	bar0_info.argsz = sizeof(bar0_info);
-+	bar0_info.index = VFIO_PCI_BAR0_REGION_INDEX;
-+	ret = ioctl(self->vfio_fd, VFIO_DEVICE_GET_REGION_INFO, &bar0_info);
-+	ASSERT_EQ(0, ret);
++	if (!device->ops->gmem_check_set_attributes)
++		return 0;
 +
-+	efd = eventfd(0, EFD_CLOEXEC);
-+	ASSERT_GE(efd, 0);
-+
-+	/* Register ioeventfd on BAR0 targeting RAL0 with 4-byte width */
-+	ioeventfd.argsz = sizeof(ioeventfd);
-+	ioeventfd.flags = VFIO_DEVICE_IOEVENTFD_32;
-+	ioeventfd.offset = bar0_info.offset + E1000_RAL0;
-+	ioeventfd.data = 0xdeadbeef;
-+	ioeventfd.fd = efd;
-+
-+	ret = ioctl(self->vfio_fd, VFIO_DEVICE_IOEVENTFD, &ioeventfd);
-+	if (variant->use_gmem) {
-+		ASSERT_LT(ret, 0);
-+		ASSERT_EQ(EOPNOTSUPP, errno);
-+	} else {
-+		ASSERT_EQ(0, ret);
-+
-+		/* Unregister ioeventfd by passing fd = -1 with identical match criteria */
-+		ioeventfd.fd = -1;
-+		ret = ioctl(self->vfio_fd, VFIO_DEVICE_IOEVENTFD, &ioeventfd);
-+		ASSERT_EQ(0, ret);
-+	}
-+
-+	close(efd);
++	return device->ops->gmem_check_set_attributes(device, index, nr_pages,
++						      attributes);
 +}
 +
- TEST_HARNESS_MAIN
+ static const struct guest_memfd_provider_operations vfio_device_gmem_provider_ops = {
+-	.attach  = vfio_device_gmem_attach,
+-	.release = vfio_device_gmem_release,
+-	.get_pfn = vfio_device_gmem_get_pfn,
+-	.mmap    = vfio_device_gmem_mmap,
++	.attach               = vfio_device_gmem_attach,
++	.release              = vfio_device_gmem_release,
++	.get_pfn              = vfio_device_gmem_get_pfn,
++	.mmap                 = vfio_device_gmem_mmap,
++	.check_set_attributes = vfio_device_gmem_check_set_attributes,
+ };
+ #endif
+ 
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index 51e04b980a381..ffb01e655735f 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -125,6 +125,9 @@ struct vfio_device_ops {
+ 	int (*gmem_get_pfn)(struct vfio_device *device, pgoff_t index,
+ 			    unsigned long *pfn, int *max_order,
+ 			    u64 *pfn_attrs);
++	int (*gmem_check_set_attributes)(struct vfio_device *device,
++					 pgoff_t index, size_t nr_pages,
++					 u64 attributes);
+ 	char	*name;
+ 	int	(*init)(struct vfio_device *vdev);
+ 	void	(*release)(struct vfio_device *vdev);
 
 -- 
 2.56.0.455.g6c5a503b38-goog
