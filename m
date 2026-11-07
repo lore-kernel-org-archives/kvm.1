@@ -1,53 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=83.166.143.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794068559;
-	b=ZxEHqeGlzlc7i92U5EtnwWGS84q8J0eft1NXqmnmCjPI9P+jtFLk5aayW0vIhpj48T5X
-	 m8j5+YyuhJcI1Ynvx+lIM0DtH8C6XTSgaSSs2RI/RdhnhXhxlZFRXXdb851DL6TMANhEN
-	 oBymgJWKNS762N+vedGSjYOC7XNDM7eKHY5S9brIKmDfIP4EjD01aSoM4HQE9yXB8Mklu
-	 QNM92ixCu88DrdVZ6aLz0QX2DynBmIlG9NXjkQpiR3RGXafY7oKCrAeRE8Qma4+wPBVe5
-	 onJNh9mJIq61tqoBtg7c6lGCoaYotDdSHXihHkxAT2LCGwuilAhkLN/y21G4ITPH91Q==
+	t=1794072363;
+	b=xswfoALlI7LvBbzDqaLmh0f4LRDn0a3cA0nOsXLb1ZzQWqeemu0YMlbSSr9vPzxc4o6f
+	 AmKh6Q5srnYCDx3Qp2tUWuVTu2Nu7c+Kfl6vXiYqvB23m+0ARrcrIlecliHMFFE9wwAcM
+	 jpOwGuganxSqRGEu5Mh6o72fUG/jLLrAPEaqjagkSbgTw7ihvIdj6MGkY+FiPp6R4eTyf
+	 6bFGArhLJYzQcWGG0Z8LvTJal2EneHk6PQktAdZMAzjEXTjnLA+mRDK1VmODlxq2mpHcY
+	 kMcyzNDYk6XSFEg33KNd0xRJryWuRU/G7SuM8x3ilJS4rnSmw3BogQ5kvsnxQ9QJtiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794068559;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:From:Subject:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 Feedback-ID:X-Infomaniak-Routing;
-	bh=+pZEKhJ4S1DIwNXL8RYuy+6X+cpdAugo+6kxHr+BwgY=;
-	b=z4S8QutfkAWw4KEIkBk0GiAzYByLGWLZ5KmqDf/HO5hJ0KU9zENB+lj0sH65ybLS6RI6
-	 BIu33tqUTEhhN6ONC1WIX5bDB4cu4Ftkhr1/SDQnLzdIVcFqp2qZ/kQPUKZx77xrhC1jC
-	 PqdPJzBy+QcX+R7I5sxWLN5ByIIsuQmTgEfohaAZ+0E3N5WfzFPToob8ACxoTU/Dykple
-	 2sCCHXx1l/7x1cnn0KAY+9NQfCTX5wJLmdQtUK+EyWzMVI1B5V4Kb45D6+9IzTI2Z3FSw
-	 sN5kexq4xjZJpRT6SNPK644kPjVWTzVQ8Wqxn29SUAZnhE+ZjopEbO6OyYTWBnTDh0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794072363;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Jlkb43CuhYK9URTlTKbtpRdBwEHEC6l0yC9HgESgF6k=;
+	b=ip4vBYsVr2cHP3W4TqWikTej9G+hVRAmPzMXn25c0KXGzZLZB4FjxVxo0knT+slgRJxd
+	 r2kHZfFgLdsZAOZDp2X+wc6ViKqgTeY/I+rR+VmoAUMJ2B5cNjatv6gF9u//fyGOw+rif
+	 7OWeihvjVgv35oCi14z0UZu/neBolMMxJbpTcwXOWLF/bO15HZRR0sJ+uSpQDEjrHBbNm
+	 aoawrvd0PCnwgThqMyoNcbfzD2u7CO6fnYkmop5F1lDSrHh5S9wP3TJQC0A4mN+CQyEfm
+	 0Yov1VX4sH3MYQEg9Ob/dR9E9DaclJXytaXXyEIK8DB5wGDTWFWkfEGTWOHStmCWFqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=etik.com;
-	spf=pass smtp.mailfrom=etik.com;
-	dkim=pass header.d=etik.com header.i=@etik.com header.a=rsa-sha256 header.s=20210927 header.b=vITsI77r;
-	arc=none smtp.remote-ip=83.166.143.173
-Received: from smtp-8fad.mail.infomaniak.ch (smtp-8fad.mail.infomaniak.ch [83.166.143.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=VZ8shri8;
+	arc=none smtp.remote-ip=209.85.218.54
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65B7606A32C
-	for <kvm@vger.kernel.org>; Sat,  7 Nov 2026 16:22:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B65B7606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7222606A32E
+	for <kvm@vger.kernel.org>; Sat,  7 Nov 2026 17:26:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7222606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=etik.com header.i=@etik.com header.a=rsa-sha256 header.s=20210927 header.b=vITsI77r
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4jMLtD5bZLzdt;
-	Sat,  7 Nov 2026 17:22:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=etik.com;
-	s=20210927; t=1794068548;
-	bh=+pZEKhJ4S1DIwNXL8RYuy+6X+cpdAugo+6kxHr+BwgY=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=vITsI77rxiY7b6mTrSWS3Z2lj1kOpGxI6MI9N8f/G9iPv80bLAY+HgZksppd4BpBU
-	 hAZvXq5UL8ODnsKpbWJefpE4meeXv7vnFMJXNx8S3HP6Aw9GZ9NKh5UOOaNtMjepPm
-	 orC6vgEEYC/7YjtZuIG5b+FJIVKnOA28gf2jLuws=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4jMLtB4S97zT1t;
-	Sat,  7 Nov 2026 17:22:26 +0100 (CET)
-Message-ID: <1435d106-d4b0-487e-85d3-4032a9fe9332@etik.com>
-Date: Sat, 7 Nov 2026 17:22:25 +0100
+	dkim=pass (2048-bit key) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=VZ8shri8
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso206228566b.3
+        for <kvm@vger.kernel.org>; Sat, 07 Nov 2026 09:26:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1794072360; x=1794677160; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Jlkb43CuhYK9URTlTKbtpRdBwEHEC6l0yC9HgESgF6k=;
+        b=VZ8shri8znJS14HH0x05XHoVHDK+ik353JHCMpU28CZ8eUX1wRDaLoDISREGUlHEBW
+         ciaFFQZ9T9Ujk3b69KcsusFM7OVo0I6sV7nA8pbXCMLZgJl2nDze6xWGoRkVDK8Dl7Jk
+         ASFQcY2I0vzQRuQ8p1xc5VoNg/b2fYUBWQivefNptf7+PC17IDAp8j3hCjy3emj1+fkr
+         E8HZs0PZI+HNPn1Y0gIffGHgMmPWiSll9GuP2d8OfbgFd0nvn0Gfj1HjU5mEOf5GukQL
+         74U5bV4URvMpwrYM6LTkz2TVmTpK+rUIEW8aymhWAWtiHVQadYlDG2h06CSjUSADHyVB
+         OK7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794072360; x=1794677160;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Jlkb43CuhYK9URTlTKbtpRdBwEHEC6l0yC9HgESgF6k=;
+        b=XEZYJNqrVqJzxThCjqlhjNRAhFlj0kVfGbNdjiYJv82C9xcZUH7HN3sOEGsSYMmonJ
+         dKgtKtqAOWNokGokGwMdSDcqEUn/X1gKci0JrACOOo6uoXC0hitFC+7CygwcPfywkkgo
+         9vOAQb4mfS9M8AK480KBJ+bPxxOkpmPt1HxFHA5zrzWiYvhYV5QH4k2gU8vC2hwtl0UT
+         zSaTDsvOCXbKTY2F2IsHhC8HRrOMcu/Y5NeYJu/ff3CsBwOPmgSPE4AQXUmJMwGbk6zL
+         sKKRQetBGRVBdpLoq+2PbGQe4V7vEqMaxbuRzU20wH/+Qv1KOwYwqG1uiM+B9XwX+pwv
+         1DeQ==
+X-Forwarded-Encrypted: i=1; AL+hErEGvZswKa6NKFfJ6c0dbspj4Givygsoafca+78v3BMBXGmSq9rWbKvvBCYHYOJroeF8mrc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9oH+XHwFxAGO+xGblmyAHV1eE3P3o59sdPUX3yTfsxJMuLnWNX
+	xDsi3+BbNf+kcct/9IFI4wl6NawBlG7C62goEwh3BdTerA/QuPSmjDMGGD9YiBTbnKo=
+X-Gm-Gg: AYBFou2ZisC5dQiWcgRas8muXYUx86zfSZ0N/Cbe/HmQ/5AmBkuwer15TJmKdJRUlV1
+	oJmFUxlnFCjphHBUqsYrCIgegTQ9tVHB0/Dgtao56bexs5Wgtpr8Cqh0oYsHMk9ngIZIlG/eTTs
+	mFts+rFPQYNn600M/p3wJR+IHdbC9G9djE9KZVs6NGDzrTe32WKSLE25YbrfUq7+bl9du8GRE50
+	E+vuJA+gyhUrCrXH01kuDKSvUSAmJtUhgBb7H7R+6C5TfxUYUPqEMoHDciJM1SmQjfksHwhwefx
+	dhZEiARwfnmcF+dDngXSl2I3spaBS+UuTR7A4lAI78lQmIxOIOsokzXSHlu9qaF3l58RXkLbg0N
+	MOdLbaXt6k/EdWm5TpCn4CIIZ8Kv3tlH2GVlR4TN343novBnx+wO4lLFFbL4+/bmRYybJcz9dc2
+	G5mpUnxwl3YoLvqascZimYg7jxdiv+FST6hH1Ule1ZHLJg7ms6Qj4ONHPxcTITiHFtVfVIOZ09A
+	ORMCVQh0AD7evoUbKPN5QihfP36dKjTL/gUIjUK4hny3LbQbw7nvbsZn4ksLxMHVulp+u21hhUE
+	QAjvZbV25MMRiEw2s473XQM8ZnRP9g4uWs6YgG0=
+X-Received: by 2002:a17:907:d03:b0:c46:7fa4:9224 with SMTP id a640c23a62f3a-c4d34a649eamr425140966b.8.1794072359468;
+        Sat, 07 Nov 2026 09:25:59 -0800 (PST)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d3569edc9sm165153366b.50.2026.11.07.09.25.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 09:25:58 -0800 (PST)
+Date: Sat, 7 Nov 2026 18:25:54 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, aneesh.kumar@kernel.org
+Subject: Re: [PATCH RFC 17/20] attestation: Add CTLV operation handling
+Message-ID: <au9eskF5P17h3cql@FV6GYCPJ69>
+References: <auuDcABX27EeTApl@e129823.arm.com>
+ <20261104194622.GC3889730@ziepe.ca>
+ <aux01NUd85PabtZu@FV6GYCPJ69>
+ <auyKE2sGqtfjk4v5@e129823.arm.com>
+ <auy7IM0_S2tv7EZX@FV6GYCPJ69>
+ <au2WdWFOYbPEv0Uj@e129823.arm.com>
+ <au3i-0eDzJZaWukx@FV6GYCPJ69>
+ <au3mAsQrh0GniXJo@e129823.arm.com>
+ <au34wXtIqii-hfFI@FV6GYCPJ69>
+ <au3-LyBiCZtUMpEx@e129823.arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,152 +112,194 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: DV <dv@etik.com>
-Subject: Re: [PATCH] kvm: hyper-v: Delay firing of expired stimers
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>, Sean Christopherson
- <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- hpa@zytor.com, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- nh-open-source@amazon.com, gurugubs@amazon.com, jalliste@amazon.co.uk,
- Michael Kelley <mhklinux@outlook.com>, John Starks <jostarks@microsoft.com>,
- David Woodhouse <dwmw2@infradead.org>, Marcelo Tosatti
- <mtosatti@redhat.com>, qemu-devel@nongnu.org
-References: <20260115141520.24176-1-graf@amazon.com>
- <aXO8I6xuZyZB7CxV@google.com>
- <769f538d-dd42-4d36-a4c5-7e6e48b209f6@amazon.com> <87bjigaeyx.fsf@redhat.com>
-Content-Language: en-US
-In-Reply-To: <87bjigaeyx.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Feedback-ID: :74c292bbbde641d:ham:123049f310c9d1d
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <au3-LyBiCZtUMpEx@e129823.arm.com>
 
-Hi Vitaly, Alex, all,
+Fri, Nov 06, 2026 at 05:19:59PM +0100, yeoreum.yun@arm.com wrote:
+>On Fri, Nov 06, 2026 at 05:03:32PM +0100, Jiri Pirko wrote:
+>> Fri, Nov 06, 2026 at 03:36:50PM +0100, yeoreum.yun@arm.com wrote:
+>> >> Fri, Nov 06, 2026 at 09:57:25AM +0100, yeoreum.yun@arm.com wrote:
+>> >> >On Fri, Nov 06, 2026 at 09:27:42AM +0100, Jiri Pirko wrote:
+>> >> >> Thu, Nov 05, 2026 at 02:52:19PM +0100, yeoreum.yun@arm.com wrote:
+>> >> >> >On Thu, Nov 05, 2026 at 01:32:49PM +0100, Jiri Pirko wrote:
+>> >> >> >> Wed, Nov 04, 2026 at 08:46:22PM +0100, jgg@ziepe.ca wrote:
+>> >> >> >> >On Wed, Nov 04, 2026 at 07:11:44PM +0000, Yeoreum Yun wrote:
+>> >> >> >> >> [..snip..]
+>> >> >> >> >> 
+>> >> >> >> >> > +static int attestation_evidence_request_decode(struct attestation *att, struct ctlv_op_ctx *ctx,
+>> >> >> >> >> > +					       const struct ctlv_cursor *request,
+>> >> >> >> >> > +					       struct attestation_evidence_request *decoded,
+>> >> >> >> >> > +					       struct attestation_evidence_object_request **objects)
+>> >> >> >> >> > +{
+>> >> >> >> >> > +	const struct attestation_evidence_caps *caps = att->provider->evidence_caps;
+>> >> >> >> >> > +	u32 challenge_length;
+>> >> >> >> >> > +
+>> >> >> >> >> > +	decoded->challenge =
+>> >> >> >> >> > +		ctlv_attestation_evidence_get_evidence_challenge_get(request, &challenge_length);
+>> >> >> >> >> > +	decoded->challenge_length = challenge_length;
+>> >> >> >> >> > +	if (challenge_length < caps->min_challenge_length ||
+>> >> >> >> >> > +	    challenge_length > caps->max_challenge_length)
+>> >> >> >> >> 
+>> >> >> >> >> Hmm, I'm not sure whether this check is required for
+>> >> >> >> >> ATTESTATION_EVIDENCE_BLOB_EVENT_LOG blob type.
+>> >> >> >> >> 
+>> >> >> >> >> for example, if the provider provides two evidence:
+>> >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_PRIMARY (might attestation token)
+>> >> >> >> >>   - ATTESTATION_EVIDENCE_BLOB_EVENT_LOG
+>> >> >> >> >> 
+>> >> >> >> >> might challenge is reuiqred for generating the token
+>> >> >> >> >> and this would be marked at min/max_challenge_size in evidence_cap.
+>> >> >> >> >> 
+>> >> >> >> >> However, in case of eventlog, it wouldn't require challenge.
+>> >> >> >> >> for example, TPM event log or CCEL event log.
+>> >> >> >> >
+>> >> >> >> >Right
+>> >> >> >> >
+>> >> >> >> >> Do we need some field on attestation_evidence_supported_object whether
+>> >> >> >> >> it requires challenge or not and applies this sanity check per the object?
+>> >> >> >> >> 
+>> >> >> >> >> Otherwise, to get eventlog, it would need to send *dummy* challenge
+>> >> >> >> >> always.
+>> >> >> >> >
+>> >> >> >> >I wonder if we should have two interfaces here for signed and unsigned
+>> >> >> >> >evidence? It would be clearer for userspace then when it needs to
+>> >> >> >> >provide a challenge or not.
+>> >> >> >> 
+>> >> >> >> Isn't the challenge field provided/not-provided enough?
+>> >> >> >> 
+>> >> >> >> Currently on the introspection side, device-get op would provide
+>> >> >> >> challenge-lengths array:
+>> >> >> >> 
+>> >> >> >>         evidence?:
+>> >> >> >>           challenge-lengths[8]:
+>> >> >> >>             length?: uint(..4096)
+>> >> >> >>             min-length?: uint(..4096)
+>> >> >> >>             max-length?: uint(..4096)
+>> >> >> >>  	  objects[16]:
+>> >> >> >>             blob-class: evidence-blob-class
+>> >> >> >>             max-length: uint
+>> >> >> >>             blob-instance?: uint(..u32-max)
+>> >> >> >> 
+>> >> >> >> I think it would make sense to have challenge-lengths array per object:
+>> >> >> >> 
+>> >> >> >>  	  objects[16]:
+>> >> >> >>             blob-class: evidence-blob-class
+>> >> >> >>             max-length: uint
+>> >> >> >>             blob-instance?: uint(..u32-max)
+>> >> >> >>             challenge-lengths[8]:
+>> >> >> >>               length?: uint(..4096)
+>> >> >> >>               min-length?: uint(..4096)
+>> >> >> >>               max-length?: uint(..4096)
+>> >> >> >> 
+>> >> >> >> Then the unsigned object would just simply have challenge-lengths empty?
+>> >> >> >
+>> >> >> >This looks good to me. :)
+>> >> >> 
+>> >> >> The challenge is one of several open points that all depend on what an
+>> >> >> evidence object is: Rick's TDREPORT, legacy versus DICE Quotes,
+>> >> >> "primary", "raw" and the format strings. Here is my proposal to settle
+>> >> >> these together:
+>> >> >> 
+>> >> >> The model:
+>> >> >> 
+>> >> >> 1. device-get lists each object with an id, a class (signed, event-log,
+>> >> >>    cert-chain or auxiliary), the formats it may come in, its max-length
+>> >> >>    and, for signed objects only, challenge-lengths.
+>> >> >> 2. evidence-get names objects by id, as MR ops name MRs, each with its
+>> >> >>    output blob. It carries a challenge exactly when it names a signed
+>> >> >>    object, and the challenge has to fit each of them.
+>> >> >> 3. The reply gives each object's format, length and, where the TCB
+>> >> >>    vouches for it, the TCB's digest. The output is always {label, data}.
+>> >> >> 4. A signed object is made by the call, over the challenge, and never
+>> >> >>    reused. The rest are read as they stand.
+>> >> >> 
+>> >> >> This settles following issues discussed during this patchset review:
+>> >> >> 
+>> >> >> 1. One op, not two. Per-object challenge-lengths tell userspace when to
+>> >> >>    pass a challenge, and one call returns the signed object with the log
+>> >> >>    and certificates needed to check it.
+>> >> >> 2. TDX's TDREPORT goes: it is MAC'd for the platform, not signed.
+>> >> >>    /dev/tdx_guest keeps TDX_CMD_GET_REPORT0.
+>> >> >> 3. TDX's Quote object lists the legacy and the DICE format. The provider
+>> >> >>    labels what the host returned and fails on a Quote it cannot label.
+>> >> >> 4. "primary" becomes "signed", manifest joins auxiliary, spdm-vca,
+>> >> >>    spdm-measurements and tdisp-report become formats, and signature
+>> >> >>    goes, as a signed object carries its own.
+>> >> >> 5. "raw" goes with the representation attr. The TCB digest is a reply
+>> >> >>    field, so a blob always holds the object's own bytes.
+>> >> >> 
+>> >> >> Formats become an enum each provider family defines, instead of free
+>> >> >> strings. I'm still unsure if format should be entirely provider-specific
+>> >> >> and defined as "extension", or it should be somehow mixture of common
+>> >> >> and provider-specific. Looks there is not really much common
+>> >> >> anyway, so I lean towards provider-specific only. So far I have:
+>> >> >
+>> >> >Overall, This is plausible for me with some small question.
+>> >> >
+>> >> >> 
+>> >> >> ======  ============  ==========  =========  ===========================
+>> >> >> Family  Format        Class       Challenge  Bytes
+>> >> >> ======  ============  ==========  =========  ===========================
+>> >> >[...]
+>> >> >> tpm     ek-cert       cert-chain  none       EK certificate from NV
+>> >> >
+>> >> >Just a thought, but how are we planning to retrieve
+>> >> >the NV index for EK certificate?
+>> >> >
+>> >> >As far as I know, TPM NV storage doesn't support labeling.
+>> >> >
+>> >> >Should I assume that the NV index would be specified as part of the
+>> >> >challenge to retrieve the certificate from TPM NV storage?
+>> >> 
+>> >> evidence-get allows to accept mr-selection as part of the request
+>> >> alongside the challenge.
+>> >
+>> >Sorry. Could you explain a little bit detail for this?.
+>> >AFAIU, this is to get the EK certificate from TPM non-volatile storage.
+>> >But, I don't know why *EK* certificate get would be relevant for
+>> >*mr selection*.  AFAIK, the TPM_Quote will be used AK not a EK.
+>> 
+>> You are right, my mistake. I misunderstood the question.
+>> 
+>> mr-selection selects PCRs for Quote, or an extend-NV measurement
+>> register for NV Certify.
+>> 
+>> An NV-resident EK certificate is retrieved using NV_Read. I think
+>> blob-instance is a good fit. For TPM certificate objects, it could
+>> identify the certificate's NV index.
+>
+>Ah. I missed the TCG_EK_Credential_Profile specification which defines
+>the NV index value for EK certificate:
+>
+>2.2.1.4 Low Range
+>  The Low Range is at NV Indices 0x01c00002 - 0x01c0000c.
+>    0x01c00002 RSA 2048 EK Certificate
+>    0x01c00003 RSA 2048 EK Nonce
+>    0x01c00004 RSA 2048 EK Template
+>    0x01c0000a ECC NIST P256 EK Certificate
+>    0x01c0000b ECC NIST P256 EK Nonce
+>    0x01c0000c ECC NIST P256 EK Template
+>
+>But, do we need some argument to get which EK certificate to get?
+>(RSA or ECC NIST P256)?
 
-On Mon, 26 Jan 2026, Vitaly Kuznetsov wrote:
-> My bet goes to the clocksource switch, e.g. the guest disables (or
-> just stops using, good luck detecting that :-) ) TSC page and uses
-> raw TSC for some period or something.
+Why blob-instance 0-10 is not good enough here?
 
-I think I've hit a close relative of this, with a reproducer that
-works on every boot. A Windows guest running its own Hyper-V computes
-direct-mode stimer deadlines from the raw TSC, while KVM's reference
-counter lags the TSC because of how QEMU restores kvmclock. Here the
-lag is positive, so the guest's timers fire late instead of storming.
 
-Setup
------
-
-Host: Intel Core Ultra 9 285K (invariant TSC, 3686.4 MHz), Linux
-7.3.0, QEMU 10.2.4 (pc-q35-10.2), libvirt 12.2.0.
-
-Guest: Windows 11 Pro 26H2 (build 26300.9711), 8 vCPUs, with
-virtualization-based security on. So Windows runs as the root
-partition on its own Hyper-V (L1), nested on KVM.
-
-   -cpu host,migratable=off,hv-time=on,hv-relaxed=on,hv-vapic=on,
-        hv-spinlocks=0xfff,hv-vpindex=on,hv-runtime=on,hv-synic=on,
-        hv-stimer=on,hv-stimer-direct=on,hv-frequencies=on,
-        hv-tlbflush=on,hv-tlbflush-direct=on,hv-tlbflush-ext=on,
-        hv-evmcs=on,hv-avic=on,hv-emsr-bitmap=on,hv-xmm-input=on,...
-
-Symptom
--------
-
-Every timer inside Windows fired 0.3-0.7 s late. A 1 ms wait on a
-high-resolution waitable timer took up to 466 ms, and an indirect
-display driver paced only by a timer refreshed at 6-8 Hz instead of
-120. Things only moved when some other interrupt woke a vCPU.
-
-What L1 does
-------------
-
-With both hv-stimer-direct and hv-frequencies, L1 arms stimer0 in
-direct mode (config 0x1ef8: vector 0xef, direct, auto-enable) and
-writes absolute counts. Call X the amount by which the reference
-counter lags guest TSC / HV_X64_MSR_TSC_FREQUENCY. L1's counts are
-X too far out. A timer that should fire right away looks like this:
-
-   kvm_hv_stimer_start_one_shot: vcpu_id 6 timer 0
-       time_now 40095770231 count 40100417164
-
-That count is 464.69 ms ahead of time_now, and X on that boot was
-464.7 ms. L1 writes the count again on every L2 timer exit, so such a
-timer keeps moving to now + X and only fires once the vCPU is quiet
-for that long.
-
-Without hv-stimer-direct, without hv-frequencies, or without
-hv-stimer, L1 uses the local APIC timer instead (TMICT/TDCR writes,
-a relative countdown), and all timers are on time. I've turned direct
-mode off as a workaround: a 1 ms wait is now late by at most 1.24 ms.
-
-Why the reference counter lags
-------------------------------
-
-get_time_ref_counter() follows kvmclock on both paths. The fallback
-divides get_kvmclock_ns() by 100, and compute_tsc_page_parameters()
-takes the TSC page's tsc_offset from the pvclock system_time.
-
-QEMU's kvmclock_realize() calls KVM_GET_CLOCK when the VM is created.
-kvmclock_vm_state_change() writes the saved value back with
-KVM_SET_CLOCK when the VM starts running, and saves a new value
-whenever it stops. So kvmclock, and with it the reference counter,
-stands still from creation to first run and during every pause. The
-guest TSC keeps counting through both. On six boots X was 297, 465,
-570, 495, 669 and 512 ms.
-
-Two measurements tie X to this:
-
-- In a trace from QEMU startup, extrapolated back to zero, the guest
-   TSC started at host monotonic 265208.1505 s and the reference
-   counter at 265208.8205 s, 0.670 s later. X on that boot was
-   669.2 ms.
-
-- virsh suspend for 1.045 s, then resume: X grew from 669.2 to
-   1689.3 ms (+1020.1 ms), and L1's far stimer deadline moved out by
-   the same amount.
-
-hv-evmcs off (X = 570.1 ms) and hv-reenlightenment on (X = 494.7 ms)
-didn't change the behaviour. Host load and power management were
-ruled out too.
-
-Connection to your thread
--------------------------
-
-If the reference counter were ahead of TSC time instead, L1's
-deadlines would land in the past. stimer_start() expires a one-shot
-whose count is in the past at once, L1 arms it again on its next
-exit, and that would look like the expired-stimer storm Alex's patch
-delays.
-
-I haven't been able to try that here, because libvirt is set up to
-start a fresh QEMU whenever the guest reboots. But a reset inside the
-same QEMU process sets the guest TSC back to 0 while kvmclock keeps
-counting, so I'd expect it to flip the sign, possibly by the whole
-previous uptime. A resume path that restores the two clocks
-differently could do the same.
-
-Questions
----------
-
-1. Should KVM keep the Hyper-V reference counter equal to guest TSC /
-    TSC frequency when hv-frequencies is exposed? L1 seems to assume
-    it is.
-
-2. If so, where does the fix belong: in QEMU's kvmclock save/restore,
-    or in KVM deriving the reference counter (and TSC page) from the
-    guest TSC?
-
-3. If not, should hv-stimer-direct be documented as unsafe for guests
-    that run their own Hyper-V?
-
-I can share the full traces and the Windows-side timer and frame
-probes if they'd help.
-
-Claude Code, an AI coding assistant, did the tracing and analysis
-while I was looking into why the VM's virtual display ran at a few
-frames per second.
-
-Thanks,
-David
+>
+>Otherwise, Is this interface going to print all EK certificate
+>regardless of alg?
+>
+>> >Also, AFAIK, mr_selection is meaningful when the evidence_accept is
+>> >supported.
+>> 
+>> These are independent. mr-selection chooses the measurements included
+>> in evidence. EVIDENCE_ACCEPT authorizes a subsequent native transition.
+>> The TPM provider can quote selected PCRs without supporting acceptance.
+>
+>Acked.
+>
+>-- 
+>Sincerely,
+>Yeoreum Yun
