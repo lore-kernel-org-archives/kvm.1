@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011827;
-	b=QYUPi52Qy50mqCjuP0yBh9tQc49u+0DC1zfEmDT5Vz5Uu21hTKqBMw9JK5WKpoeecaUW
-	 STuPYNus0KfNbckHvB3HZhJqduJGrbi4oSSRpm+lIzlzdpAkb6u5yfqK8ghdORqjg3eXC
-	 SpfhFl3AVK8+Zf26l8mVXe8ojALve6/LwI89PxQLWySxroHrTDhR12MZGBBsAekN6eOp9
-	 NOxevMd9e8f+5Gqt0GJVi1+KC2rfCheGdrcjVYQqupII+2PVklve6WhED1mBpMpkm/fh0
-	 m0wfSDDC7PtwmEuQ2olJU+Zs11kYwkPvEWTb9I1lVsbLlgwAStO7pf0HqpblVnI4V9Q==
+	t=1794011828;
+	b=fTLfK3In4d+Fb2AhgDhAwYTMjLHBzfNzhDgS52qmQkoCHsdmUZQ6SAT4joZZlsTjt9J1
+	 u8XtIzt6INAccntNIFDzV1PZmSdQ6AODbTqTnPML/QFZtlU+n9D42ZKpLQFbhYEk8V2mV
+	 WLYi8x0ptZKEmHsxsZ/IHiBIh4EzJqOvTgaswyyLi7iNQAUJjq/QVHzA4pyW+Uhlrwfph
+	 LUx4U04N/n+1rSDCziMmXchuFdc1rQxjUyuKjyqVja1wGAuMisjdH3jFDQHQjNWbokq8n
+	 M7TM109//TordPtVVaneJugTO8415q7XzT/CpJMCEKg65M/mYboYCz0Yci542j0aabA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011827;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011828;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=JrP6l22VK6AldWxiWhpFsQCv9l0Qgcd3J7DNoznOHbY=;
-	b=jP1YVt6qUGUw9ECErBx504zQPtYY/mUzZ0BIcp0jZ9mjyzR6JrXnTlbMM1gUtWSf3LFI
-	 wB49+yI+A+FnC8Te6U9hIotZ3iFGGCVyie46FZDYi2cSXnll3ahTFFDmC6+rjmfvX+BCE
-	 5mZpnflOgizNF5AYMBH/CR9EDhgvbZpwwiawArjjWdrlvgUvjQwAqoi6iYHnzEkx1kfJS
-	 1GRNPekUI+Bm9RB18LisXgiVR/x/kUnimBZMKB7IETXNbVaf7HnVMjADDpKo7extf+SAh
-	 Uh18Ag6Zsw/T3PIOKqELW1xPunUWh75+YURmvd1cd4s29htk9slLW8ayjTW5aqJw+sA==
+	bh=OqpfAUM6RL3PzGZLar4gOeRZzwpcSnfwgpXmVVFrLVI=;
+	b=UkI/YiSqq4kgqLLKqs03m/Qe14t6RKTeoqzTuO9E6Z3rTopU6xvCEtJf02qyGYvgQDp4
+	 N3C6gTD2lgDQC9EIDW7U7zAFhJvgzyp69Y4K5NxACbaLRbKQJ5XSKdrb5gwBOjmUtxhcV
+	 XuHIRVTAXNcOSJ56a2QCNPMiUVGt6t1wkNabsEFedQJIjutpI9eoTT3d3KwIrS8Y8+nU0
+	 73YMLieTeU2WPTI/AtCwwzaLZNbWt5DmBiPmLRzGXKbu6DGoXv25UmTQPegGPvoO3PCxw
+	 ZEF5HU3kg6KkeCJl5xIjsmA5jG5nda/g9DMfQZk7rq7Yi1KeOir6qpyyIk0Z1Oqd1pQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hx3uuviZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bQdelZVy;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAAC606D82D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A203660A2608;
 	Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hx3uuviZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bQdelZVy
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794011827;
-	b=pIOf56ltUFVp8TKwdob/sf3XUAs+kP859hXEEnm3HATr5salmNva4s9ecN+AG1+/dzuk
-	 HZC4TxCLDb52v5REw+84eeocIx38cGUDKC4pqmc3ISrnRqvjZnyyBav5CZwtkToZ8fDnj
-	 1Y0xsj17LxTpaaX6JfsibOQ24/GVogkfLRMsqT8jQMiLTonHGrP7BeHGlboqSaqJieyWQ
-	 eeyyQXRWb9G+UGKytJFLC5hy8N9L/q0UvKLXsCax9l8c1E3Vge//664xxoH/NZefUQzpI
-	 YBpWIqxg/RWOpsspqW+d+X7fmvUEtY4QN0uGHl/dQ1HK9njo7BYRdRKtFEpIqHaw3dg==
+	b=WkxG3IA3IISjlhi0ComCYAO8s6CeWT9ZWCppuZF18hv1+K8NmvpTFD4pADpVPAnf509f
+	 06aVK/g4mUG6p9xAQje3IA80lMQ2g2QEKOjRNHwe2WGlqh0TCIGSt5mo9YerLB1qAoYb/
+	 JtU8vT+8PBdaPvVOq9SrESQau4tAkgB6KzvXSXjdT2bMCL8uW7c+O+yR/6l12ie1ujVbH
+	 KtMStZa8+PNC+/c7VW79xpq1B9sY2rq+jl+X0CrbiFQ0D5IvxOFywHs0T8fzTKS4XU4jG
+	 IcUxpNy4IJHDUN7EQ2tx+UQ2Rh0LRm9fQ+S3QZCanK2U+jDjOnsmizEt/dNevgmzH/A==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794011827;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=JrP6l22VK6AldWxiWhpFsQCv9l0Qgcd3J7DNoznOHbY=;
-	b=bngrH46gRD3bEbiwOoWvBz3tyFeKOKpAVEUR48EtzyF+Fe53B6aqQTf8E1JzVqtF63a0
-	 TlgWns/3Gd3zi/uCO+bigQXlWNLpuXxxWJ26p0WVpyJIjK0WHY6ep1qw1y0eANfZybqRk
-	 LGB4c0Bn2gDPNohj0VbkAvcTy4ni0X1FUKwDfOkwlIoMbpCqgsYcIM57KhXVtg8p44uTC
-	 CWu+Zrb3TkHsxP9WYBO2BvZqOWPrOORsp3mq0IS51Zr9ODPmkIeZGQTtVEAIW0C6EeY3o
-	 l2X09eYT7Z5YtsSW6NMRGEUikAh9YjrK5t8OgojaJlBpzgEJj1h6HVE6aGFRXu/Lrvg==
+	bh=OqpfAUM6RL3PzGZLar4gOeRZzwpcSnfwgpXmVVFrLVI=;
+	b=r7AoIT6+Z2WvlaE3VNXpVkjkkEuUA0pe5wlHBHKhzCh/YIzRkEe4PLhju9ZeG+F4sEug
+	 /cUKCSicCSjgEa23B6CIR4eLZ9f5BZ51jClCpP97UqneuCiz1hCmeNfWCoxJpumIaFFGo
+	 RzKERZqNeskkWFrSsJmV2jFFH87g4pPzlDrImFyFN01FJXaCibbS4oRjvWWjIsZZCuQkl
+	 hfOUtigTJlqs5C6uLfr+bXnd85TTBxPafJMKNdGtPGrpB4BVxMnszni9IKINvld79z7Lz
+	 Fb2w+QjHaSFM/0x3uE8Dp1xU/3pzD3gVhIGIREBhCwCKbCv2pKCYoCJgGWD0hDpWM2w==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 24F781F0092C;
-	Sat,  7 Nov 2026 00:37:00 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 780D01F00A06;
+	Sat,  7 Nov 2026 00:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794011827;
-	bh=JrP6l22VK6AldWxiWhpFsQCv9l0Qgcd3J7DNoznOHbY=;
+	bh=OqpfAUM6RL3PzGZLar4gOeRZzwpcSnfwgpXmVVFrLVI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=hx3uuviZV9dttW2piCRtuIyn3jTtJRrhwB0hi1IIp6523Hpbpx+Mts8ZNhfp/NJBi
-	 so5CvAr0GwA7t1HyRTbMnY1r/NYb/CYGAAFRoxKzC5twOsJTyA8SHQZfuYbGTGp5gI
-	 pHCUrWFXj2e8g1CU4SEM2qXrjahR0M4Qw3cu0mbjtV3SZtO4VE5TUUTyiiAxR3QI3+
-	 Yd0jAjO6a67U26nYAsT3Yh2KOcTmHizCiW/MG6uZWR/9WpD+f2DQTozQXcwHRQng2d
-	 Cb1KdUW4OCMJ5j9OXHozuEXe+gmBQBA+cDtk5yM9Bj4syufJ9BVc1rw1CFNPvmIkV9
-	 NA9zuB7OHFxqg==
+	b=bQdelZVyvzyp0I9s6V40CthXVoMUSiMzwHxGzMwnNOBznLtjQvzWXksuo24o22ihX
+	 c4bv2xr9a5IQZxeKi8cMiPD/nD6XbFgVtjhNTL083D9A3VfoRMFPUMSxLG/Dqdv88g
+	 R6XWVqyOvR4ZMXEg3zT+TRidcazQ5QdsAadBAGNkgDJaTAb2IbLTBL07HqahiF4Xtp
+	 CsfOs3VNi18WszhLERoXJaU5bD5Nu4UWJ5WVlcSvFyDQLdqX94yr9GYl9WZI78Y4oT
+	 THA9RJOSDt/2kUwc65o9uPYoip3OYNdpIy0Nooxa06Yr4/DIY9NZoxpLkIA2whlJ/O
+	 15BxURqzsFJug==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 564534799E;
+	by lkml.kernel.org (Postfix) with ESMTP id A9569479B1;
 	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:09 -0800
-Subject: [PATCH RFC v3 35/88] KVM: guest_memfd: Support preallocating
- memory via fallocate in PFN mode
+Date: Fri, 06 Nov 2026 16:37:14 -0800
+Subject: [PATCH RFC v3 40/88] KVM: guest_memfd: Add TODO for memory failure
+ handling in PFN mode
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-35-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-40-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -105,11 +105,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=2052;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=995;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=y5ji1QZXHiuR/oyFz2HLfJNU3wDMuExGaG2bV2F9jH0=;
- b=DW3LHEMrOWHyFBzYbIPFyKM5f6WF7y8psIUQsI0OqS5DAy7Qg1PqfpHwQmy0Y47gdcmY7E2JQ
- Pg5dgsEC+uVDKCSzf51XtagCoDyPmvKfgnkxrFZ8dF0gqS9b+M/7K6r
+ bh=RMoXxdr7unZnobL7R1i/MK8zqw1q/jitBNuF2OvUGw8=;
+ b=hjk6HdU81k97DczNhIQxswAsxYsu4tIqPkDlpmZd+T6wio0f6skkcsf8gsFCP0CMvMeZH6Uiq
+ yEe+MejhQ7bCc8jLcDgoJYyK2pebq3F6/hjkDqs/RM2tzA/djMSle1h
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,70 +120,31 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-In PFN mode, memory is not backed by page cache folios, so attempting
-to allocate folios during fallocate fails.
-
-Support preallocating backing memory in PFN mode by querying the
-provider for PFNs across the requested range. Step forward by the
-contiguous order reported by the provider so that large contiguous
-allocations do not require redundant per-page calls.
+Add a TODO comment noting that PFN mode does not use page-cache folios, so
+->error_remove_folio() will not be called by the core memory failure
+infrastructure when physical memory errors occur.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ virt/kvm/guest_memfd.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 0e392b8735259..c62e15e05a249 100644
+index 501c3e250fc98..ffe1508985d61 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -411,6 +411,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+@@ -1127,6 +1127,11 @@ static int kvm_gmem_migrate_folio(struct address_space *mapping,
+ 	return -EINVAL;
+ }
+ 
++/*
++ * TODO: Support memory failure notification for PFN mode. In PFN mode, memory
++ * is not backed by page cache folios, so ->error_remove_folio() will not be
++ * invoked by the core memory failure handler.
++ */
+ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
  {
- 	struct address_space *mapping = inode->i_mapping;
-+	struct gmem_inode *gi = GMEM_I(inode);
- 	pgoff_t start, index, end;
- 	int r;
- 
-@@ -424,6 +425,30 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
- 	end = (offset + len) >> PAGE_SHIFT;
- 
- 	r = 0;
-+	if (kvm_gmem_is_pfn_mode(gi)) {
-+		for (index = start; index < end; ) {
-+			pgoff_t next_boundary;
-+			pgoff_t max_nr_pages;
-+			int max_order = 0;
-+			kvm_pfn_t pfn;
-+
-+			if (signal_pending(current)) {
-+				r = -EINTR;
-+				break;
-+			}
-+
-+			r = gmem_provider_get_pfn(gi, index, &pfn, &max_order, NULL);
-+			if (r)
-+				break;
-+
-+			max_nr_pages = 1UL << max_order;
-+			next_boundary = ALIGN_DOWN(index + max_nr_pages, max_nr_pages);
-+			index += min_t(size_t, next_boundary - index, end - index);
-+			cond_resched();
-+		}
-+		goto out_unlock;
-+	}
-+
- 	for (index = start; index < end; ) {
- 		struct folio *folio;
- 
-@@ -450,6 +475,7 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
- 		cond_resched();
- 	}
- 
-+out_unlock:
- 	filemap_invalidate_unlock_shared(mapping);
- 
- 	return r;
+ 	struct inode *inode = mapping->host;
 
 -- 
 2.56.0.455.g6c5a503b38-goog
