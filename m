@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794011846;
-	b=kmtc7eU/dDxjBX1XtL3/FvOzhIc0SKKwqfMaBTJqSHBiieqBAN1NXeHOI1F2WZKIkVxy
-	 LhiAkYnDTNX4rDyCUa7HTg1hmfRYCmhtPInHhQucE9Ln73kBo8QQmd3seMYXmhDKjY89n
-	 uIq2uRNR4r06NqFpSgRWPARmxUHIjA5KeTwQU8x1eR57hbFAAHQw0wEpYeuiUWHkZOP+5
-	 IkE4/4gVOifm/KEsX19eoL2s/8WbbVFJj9/ZMUTmpW1VCpybHzXlYdOjjRdyPUWBmkyr0
-	 ODkycLb6Ys/YDoL5Bg3FmEuRIOWIFvcaUZxgTGMsoUf9jSHxlvOGzRBkYqu2lRaYGGg==
+	b=MFI1OgFay6o4LFWhWQ23TTa1Z2SWB9unMWlx4TvWm3Talb7/f9O1kJ1DJG5N8LGsWVDC
+	 Rht+V7PDM2lnRknT6WJVsXmmLBWx+Nt7oHnUbGIs79RV1pJ7WDYfBNjcXApPVwkV6C8lx
+	 0Txo1SEvaBGnN9vBBNsGbF+fl/rFTw83q+K034L9Y6axhDYnJonOlXx/ZiqB7l3M6IPNw
+	 i0jWV+AKgv6/O4numNt1RK7wao4MCFqQNAHu7pvpEsRtQdo+AbRpd8I7ukeKPiXKKJ3mD
+	 F41FRihiYGFp6FSLkI+TXmpkemcpfzs9fNiHJUIob5LtEEQx5b+wialCE42T5UQ7vDA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794011846;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=3ulA1mCA1LQi0DRwZd8cfcNJLIwMWpDlR/Rwc0hFr9I=;
-	b=F+CByPrNY1RsSwfEmIili92++wy2wp3g+hVhff+XYIEmOBf8hyZoNBLetsIeAUnF1CS1
-	 oBLjPDljzYLUUuX2Jxa0j+wHKsH4e5jIbweLCbMXH4oGo4OZPuAJm53YSDncWBtVQq+z4
-	 R+ItpdWn/T1QUWFhTpG+D11isEarAHKa+Yf9JOpsprgrytzE9dgzgFCJaOIUOSyNC8FhU
-	 NlLMF1616SY9nvveIqz/bwcbFzA7rqTVU67k82OaoCNC6JT3DL4kOvjkx8MsPvn9CVlUA
-	 +jekRV+JnjVfV6Kx0mLKWhbJRt0VmxeTJYMnGuMS6QLA5/cLJq4HscfSoiJlw9p58qw==
+	bh=s0F8jvacFzHXtq1BNYj1XM72iSeOawkyFa8eWHiNWfw=;
+	b=PRY/H8h8TaanIzWK5fGCdaNS9voubOOEBKCXrDTpIfh8iaLZNM2byMczZkRs8SDae47l
+	 lQ2DmK3k9Vqsbp4nwYY5ed6SwOanidh3R2Q0kbrxl2VV/iMCGf/F1/3aYlRbFdHHPTF75
+	 ZtszZsa8JMOIFO/hzPOAbg+4LXHllkqJzipZfUugu85sbnOYwevuxCvK/hhLzKweoM0W7
+	 JF1r7y1c7u5vY0eo5xbPIQK7tKIOfU6BZ4MGZ/GxAhQoAnE9gMQyx9mEq0KfRiHmILTOb
+	 w8AiGXmHZrancZCLac1zixaikOLyBhFAylXEOuZMHZtFipWYiqUWvS3u0VT+4zZFJlQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V7FAHBND;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="cjRjDf/U";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3E9606B75B;
-	Sat,  7 Nov 2026 00:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8B4606BFE7;
+	Sat,  7 Nov 2026 00:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V7FAHBND
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cjRjDf/U
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011841;
-	b=q9lu4DKWG+lgRhjewoFPCy9JhybctoKScmpLwHjEZRAkIPRnBsfyILMDrDAeKwIeSEA/
-	 bBLL7h34VZOGD4/DHDblvPV/hZuMvEXsAMdxO/PmBDGETJZbHXcKasAUESrvFF5WLZMtQ
-	 I+nK2OKbe2POjZ6A+hlREVl8zy5Fb9s6r0yi2T9XzvLWSwUJupKr1utYyXIbDesEZLOD1
-	 /41s/lEYdYWpgfakqr4Yqd5N+bOMPaXoHQRo02UBdrTSjfOUtphwrPqL7BZ9i3ULk+S4Y
-	 QV9Hb935lZV7gh+xhA0YjUgKzaamb5LlX3gS8phfatvbSAQ4XnoZGJVLPaCsGCtJNfQ==
+	t=1794011836;
+	b=ROLs1mGmGaXr4nf5VeW7xa4FI4ARw97o9g8w4Mk8n6OrZSg8GX2Ph4gEE3y85HJz3aqQ
+	 cJsaG/CRZfOxrYrCSPkXsp6CT/PP02sXJws9G1y4RPrDf6SwrMstI+KsqPE4VeR5Ci/lf
+	 vGUd2onDjiBvaj0rCeapFfzeeU93l8Pg2TwkEIXrtpm11zDB/X9Ch3tgMVPnf9QT44al6
+	 R0GFoqhv1H3bWvAYtcNP9ycVi/je+y/wlokWpshBCFMlfcocEvM6ISvJJz7kLC1f2Eu4u
+	 aS2hVxU+HlfCX0m/HxYAvOTefosaMqYbP9dUTrYCHrW4qx+ePgWoMh9aob5JOAa7jIg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011841;
+	c=relaxed/relaxed; t=1794011836;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=3ulA1mCA1LQi0DRwZd8cfcNJLIwMWpDlR/Rwc0hFr9I=;
-	b=xsSRG7a780XKp0bW9h1S6KGyN51APmlzl5ekQYscf2ZG9NwhzmencdUvT/TKFbqfhKwp
-	 AWt5tX+0w4HnuSWL+KJDzl0BFmtrOiENbNMB1N1Ve+2g6ix2WyUyorSPgQ69W3oLr13eC
-	 QYlHU4Y8ZqHORXyaWnzKlfevNSYPApBSVMU7TOem7YgCfLnZkdGjfnUoM2oZy0ILTRP5o
-	 Wq27NPtbHf3EUpqxyzHn2S5vAqTSI8rwreZAtlulKtSKz+6gtniaapDxoUJU8/8/9MXjF
-	 mJjB3EbADYivWkPaw+9StkT8RvT/2aPbpK90Q23vBsND7iTZbZ3itGAKixrM8wTuNLQ==
+	bh=s0F8jvacFzHXtq1BNYj1XM72iSeOawkyFa8eWHiNWfw=;
+	b=B+OkdPsHUv8ySdiYEuVCd4HOaAVFZlR7RUbdaghw0ZfAw3DdDbHmZsKyVxmd7NJnHAi0
+	 yx+0/3SXYFXguDhF0q1U6AZcFkrTC1LbZXQ2tdG6iPtvZON9dJ/OMMSKTsIK7yQ0wBAZW
+	 8cBKNtmHGDZF7u7CFyeZ0UfzjhwGzSOV3W+Mj8Ph3/O+FchJT6iGzvwrZ0v3tlNChXHfm
+	 kn8xCb6QtNebwEfUVN1IcjA5g9aEZkNiZ78Tm5F+AeO6JwF/ZT33f/VM7htb9moJglZX1
+	 27y64/foBL5hJr121aSWrdF8IATf3/ch8TBFYAj3R0iGnRlVgizrash67KmBn/tiEWQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E61FA1F00929;
-	Sat,  7 Nov 2026 00:37:18 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 537A61F0092F;
+	Sat,  7 Nov 2026 00:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011841;
-	bh=3ulA1mCA1LQi0DRwZd8cfcNJLIwMWpDlR/Rwc0hFr9I=;
+	s=k20260515; t=1794011836;
+	bh=s0F8jvacFzHXtq1BNYj1XM72iSeOawkyFa8eWHiNWfw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=V7FAHBND2ACYptYxDNQmGMGn+uQPlwkf1V1yLk0qMlFFM3NJGnay0gq0/ExKwhLhC
-	 eyCf2bw+BEeutm4JevN9egT9uN7q2G/hgF3/FcKr3E0XDJxiDFzK86JwXCyYwAHhBd
-	 rrAU9RBi2zS6mlpgsf6ZfmPUADuUTFdXngGdcqJUgtQh8xskK9iMjVlRxGefI1c3EK
-	 VOqu9c0hGHp/a9Yx19ivL8E5jh7/+QCz9EEopAXoTyqhvLF5fR3LPkOfKlnNosedYk
-	 TCcuG5iAD7ay+aIexTq1Ra8OYMLhcv4x1xH4tJx6fwNHadeKXx4k2q0vNY07lZ+YZc
-	 Ze7la/c7Yueqg==
+	b=cjRjDf/US9xa3V98KO6V4mH2o1LdydfcwvxsMwmk+UkSwxLoF3bix9AAFi1lzaVja
+	 qRF1IFAD0pt5NU7eBEQtDsrKBMJcGVztW1hkCADtM3qr1zgcGGiDx4BbNtz97WSS3k
+	 qLtOYWrvFc4ktIXZtWXvTvEinxQl9t4biA8nXcmHKITXdyoK16Af4nN/1Z2CvZPaGg
+	 fnD0gJMouFMV1T3VmBAkeJ4RNcxbo40Dwk1BV9ps4QgR8RtpYoPOvg8bVVzzNFaxnQ
+	 7TjnZzsf/Ii+ZNv9DvooPJ5KVwP1XXx+GqgPwrAro/7pngSUGNVWo4qN9Isf+H/Y0r
+	 +/ZLTgbufeX7w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id AA30A47A63;
-	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id DB285479BC;
+	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:38:01 -0800
-Subject: [PATCH RFC v3 87/88] QUESTION: KVM: guest_memfd: Disallow private
- mappings of shared-only PFNs
+Date: Fri, 06 Nov 2026 16:37:17 -0800
+Subject: [PATCH RFC v3 43/88] KVM: selftests: Test flag dependency of
+ PFN_MODE on USE_RESOURCE
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-87-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-43-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -105,11 +105,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=14128;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2495;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=YboiAAXrsRpRc5OH/Rd6uFPv93m0ToCdIqIrHIwRJIg=;
- b=ajkHJ0uXvnLtyBLv2CwiADg6fka9TnKfqMME3i9rQ1b1fhDLrSXOMh6jeDKixXX8x+DGU5KPG
- OJ3ARdykJrxBkxFnYyWqbLtizhyXr6KmUhskiqTbqOaIdbedecBHtz+
+ bh=EE/Gsp3+vkbnMZChnYBAJO/h7nnosq/HYGBfPtTEjSg=;
+ b=QNfSEUjkf0mmaRJLidwIxGxZJjYboqSAt3/LrwLXP/KiV2nJmCAw/FG1dfUDbyKYK7iveNUQ3
+ h7EkpJWjXFUD0P2174TJKMc5yyC09FzAG8K29bj7LwtBDRnjEvqoMxu
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,339 +120,61 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Host kernel drivers directly write to the PCI MSI-X vector table to
-program and mask interrupts. On confidential computing platforms, allowing
-hardware protection tables (such as RMP, Secure-EPT, or GPT) to mark MSI-X
-pages private causes subsequent host kernel interrupt updates to trigger
-fatal hardware protection faults.
+Creating a guest_memfd with GUEST_MEMFD_FLAG_PFN_MODE requires
+GUEST_MEMFD_FLAG_USE_RESOURCE.
 
-I see 2 options here:
+Skip testing GUEST_MEMFD_FLAG_PFN_MODE as an isolated flag in
+test_guest_memfd_flags() because creating a guest_memfd with PFN_MODE
+alone without USE_RESOURCE is rejected by KVM with EINVAL.
 
-1. Prevent it at conversion time, and require INIT_SHARED
-2. Let guest_memfd track all conversions to private as per normal, but
-   block setting the MSI-X range as private at the platform level by
-   blocking platform config for SNP, ARM CCA at fault time, and by blocking
-   faults for TDX.
-
-Implement (2) partially by introducing a PFN attribute bit indicating that
-a physical frame cannot be mapped or populated as private, reporting that
-attribute from VFIO PCI whenever a BAR page overlaps the MSI-X vector
-table.
-
-When a PFN carries this attribute, reject private stage-2 fault resolution,
-private memory population, and SNP RMP fault / VMSA reload paths before any
-platform private transition occurs, while still allowing shared mappings.
-
-The missing half is that for ARM CCA, which (for now?) doesn't use the
-.gmem_make_private() hook, will have to enforce in its GPT configuration
-path to block to-private config for MSI-X ranges.
-
-With (2), the attribute-conversion check callback is not longer required.
-
-Pros of preventing platform updates via PFN attributes:
-- Enforces the invariant at the single boundary where physical frames
-  enter hardware confidential state, covering both initial private files
-  and later conversions uniformly. (Though for Confidential IO, the
-  guest_memfd would have started off as INIT_SHARED anyway, so we could
-  require INIT_SHARED in the VFIO .attach() handler)
-- Allows virtual machine monitors to initialize or convert an entire BAR
-  at once without carving out the MSI-X range when a memslot hole already
-  traps guest MSI-X accesses.
-
-Cons of preventing platform updates via PFN attributes:
-- Defers error reporting from ioctl conversion or creation time to fault
-  or populate time if userspace maps a shared-only page into a memslot and
-  accesses it as private, whereas rejecting conversions and requiring
-  shared initialization fails eagerly and keeps software attributes
-  aligned with hardware capability.
-- Special architecture make-private paths (CCA only?, since SNP's
-  make-private is handled from within kvm_gmem_get_pfn) need to block this
+In test_resource_fd_invalid(), verify that attempting to create a
+guest_memfd with GUEST_MEMFD_FLAG_PFN_MODE without
+GUEST_MEMFD_FLAG_USE_RESOURCE fails with EINVAL.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/svm/sev.c           |  9 +++++++-
- drivers/vfio/pci/vfio_pci.c      |  1 -
- drivers/vfio/pci/vfio_pci_core.c | 49 ++++++++++++----------------------------
- drivers/vfio/vfio_main.c         | 16 -------------
- include/linux/guest_memfd.h      | 14 ++----------
- include/linux/vfio.h             |  3 ---
- include/linux/vfio_pci_core.h    |  3 ---
- virt/kvm/guest_memfd.c           | 26 +++++----------------
- 8 files changed, 30 insertions(+), 91 deletions(-)
+ tools/include/uapi/linux/kvm.h                 | 1 +
+ tools/testing/selftests/kvm/guest_memfd_test.c | 8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 526f2a457cfe0..4d19ce862c27d 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4100,7 +4100,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL, &pfn_attrs))
- 		return;
+diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+index 66c1f40b50c29..3ef7bc37a7070 100644
+--- a/tools/include/uapi/linux/kvm.h
++++ b/tools/include/uapi/linux/kvm.h
+@@ -1655,6 +1655,7 @@ struct kvm_memory_attributes {
+ #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
+ #define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
+ #define GUEST_MEMFD_FLAG_USE_RESOURCE	(1ULL << 2)
++#define GUEST_MEMFD_FLAG_PFN_MODE	(1ULL << 3)
  
--	if ((pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY) ||
-+	if ((pfn_attrs & (GUEST_MEMFD_PFN_ATTRS_READONLY |
-+			  GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE)) ||
- 	    !kvm_gmem_pfn_is_cacheable(pfn_attrs))
- 		return;
+ struct kvm_create_guest_memfd {
+ 	__u64 size;
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index cbc2f309664b2..fb9d50be2e3b6 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -407,7 +407,8 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ 	int fd;
  
-@@ -5111,6 +5112,12 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 		return;
- 	}
+ 	for (flag = BIT(0); flag; flag <<= 1) {
+-		if (flag == GUEST_MEMFD_FLAG_USE_RESOURCE)
++		if (flag == GUEST_MEMFD_FLAG_USE_RESOURCE ||
++		    flag == GUEST_MEMFD_FLAG_PFN_MODE)
+ 			continue;
+ 		fd = __vm_create_guest_memfd(vm, page_size, flag);
+ 		if (flag & valid_flags) {
+@@ -432,6 +433,11 @@ static void test_resource_fd_invalid(struct kvm_vm *vm)
+ 	TEST_ASSERT(fd < 0, "guest_memfd with resource_fd but without flag should fail");
+ 	TEST_ASSERT_EQ(errno, EINVAL);
  
-+	if (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE) {
-+		pr_warn_ratelimited("SEV: Unexpected RMP fault, shared-only backing page for GPA 0x%llx\n",
-+				    gpa);
-+		return;
-+	}
++	/* PFN_MODE without GUEST_MEMFD_FLAG_USE_RESOURCE fails */
++	fd = __vm_create_guest_memfd(vm, page_size, GUEST_MEMFD_FLAG_PFN_MODE);
++	TEST_ASSERT(fd < 0, "guest_memfd with PFN_MODE without USE_RESOURCE should fail");
++	TEST_ASSERT_EQ(errno, EINVAL);
 +
- 	if (!kvm_gmem_pfn_is_cacheable(pfn_attrs)) {
- 		pr_warn_ratelimited("SEV: Unexpected RMP fault, non-cacheable backing page for GPA 0x%llx\n",
- 				    gpa);
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index e5e2dbca152ec..6b137e009982c 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -173,7 +173,6 @@ static const struct vfio_device_ops vfio_pci_ops = {
- 	.gmem_release		= vfio_pci_core_gmem_release,
- 	.gmem_get_pfn		= vfio_pci_core_gmem_get_pfn,
- 	.gmem_lookup_pfn_range	= vfio_pci_core_gmem_lookup_pfn_range,
--	.gmem_check_set_attributes = vfio_pci_core_gmem_check_set_attributes,
- 	.gmem_read		= vfio_pci_core_gmem_read,
- 	.gmem_write		= vfio_pci_core_gmem_write,
- #endif
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index c976574782663..ccaa24620112a 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -16,7 +16,6 @@
- #include <linux/eventfd.h>
- #include <linux/file.h>
- #include <linux/guest_memfd.h>
--#include <linux/kvm_host.h>
- #include <linux/interrupt.h>
- #include <linux/iommu.h>
- #include <linux/module.h>
-@@ -2790,45 +2789,25 @@ int vfio_pci_core_gmem_get_pfn(struct vfio_device *core_vdev, pgoff_t index,
- 	if (max_order)
- 		*max_order = 0;
- 
--	if (pfn_attrs)
-+	if (pfn_attrs) {
- 		*pfn_attrs = GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC;
- 
--	return 0;
--}
--EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_get_pfn);
--
--int vfio_pci_core_gmem_check_set_attributes(struct vfio_device *core_vdev,
--					    pgoff_t index, size_t nr_pages,
--					    u64 attributes)
--{
--	struct vfio_pci_core_device *vdev =
--		container_of(core_vdev, struct vfio_pci_core_device, vdev);
--	pgoff_t bar_pgoff;
--	size_t size;
--	loff_t pos;
--	int bar;
--
--	if (!(attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE))
--		return 0;
--
--	/*
--	 * Prevent private conversion of pages containing the MSI-X vector
--	 * table. The host kernel directly programs MSI-X table entries to
--	 * configure and mask interrupts; converting these pages to private
--	 * would cause host kernel writes to trigger fatal hardware protection
--	 * faults (e.g. RMP or GPT violations) on confidential compute platforms.
--	 */
--	bar = index >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
--	bar_pgoff = index & ((1ULL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
--	pos = (loff_t)bar_pgoff << PAGE_SHIFT;
--	size = nr_pages << PAGE_SHIFT;
--
--	if (vfio_pci_range_overlaps_msix(vdev, bar, pos, size))
--		return -EINVAL;
-+		/*
-+		 * Disallow private mappings of pages overlapping the MSI-X
-+		 * vector table. The host kernel directly programs MSI-X table
-+		 * entries to configure and mask interrupts; marking these pages
-+		 * private in hardware protection tables (e.g. RMP or GPT) would
-+		 * cause host kernel writes to trigger fatal faults.
-+		 */
-+		if (vfio_pci_range_overlaps_msix(vdev, bar,
-+						 (loff_t)pgoff << PAGE_SHIFT,
-+						 PAGE_SIZE))
-+			*pfn_attrs |= GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE;
-+	}
- 
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_check_set_attributes);
-+EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_get_pfn);
- 
- int vfio_pci_core_gmem_lookup_pfn_range(struct vfio_device *core_vdev,
- 					pgoff_t index, unsigned long *pfn,
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 96a768b5ec71b..770ae8ef7926f 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1621,21 +1621,6 @@ static int vfio_device_gmem_mmap(void *provider, struct vm_area_struct *vma)
- 	return vfio_device_mmap(df->device, vma);
- }
- 
--static int vfio_device_gmem_check_set_attributes(void *provider, pgoff_t index,
--						 size_t nr_pages,
--						 u64 attributes)
--{
--	struct file *file = provider;
--	struct vfio_device_file *df = file->private_data;
--	struct vfio_device *device = df->device;
--
--	if (!device->ops->gmem_check_set_attributes)
--		return 0;
--
--	return device->ops->gmem_check_set_attributes(device, index, nr_pages,
--						      attributes);
--}
--
- static int vfio_device_gmem_lookup_pfn_range(void *provider, pgoff_t index,
- 					     unsigned long *pfn,
- 					     size_t *nr_pages)
-@@ -1692,7 +1677,6 @@ static const struct guest_memfd_provider_operations vfio_device_gmem_provider_op
- 	.read                 = vfio_device_gmem_read,
- 	.write                = vfio_device_gmem_write,
- 	.mmap                 = vfio_device_gmem_mmap,
--	.check_set_attributes = vfio_device_gmem_check_set_attributes,
- };
- 
- int vfio_device_gmem_revoke(struct vfio_device *device, pgoff_t start,
-diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-index c85594b58112a..f839ae936ebed 100644
---- a/include/linux/guest_memfd.h
-+++ b/include/linux/guest_memfd.h
-@@ -32,6 +32,8 @@ struct mempolicy;
- #define GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC	(2ULL << 1)
- #define GUEST_MEMFD_PFN_ATTRS_CACHE_WC		(3ULL << 1)
- 
-+#define GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE	BIT_ULL(3)
-+
- static inline bool kvm_gmem_pfn_is_cacheable(u64 pfn_attrs)
- {
- 	return (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_CACHE_MASK) ==
-@@ -88,16 +90,6 @@ static inline bool kvm_gmem_pfn_is_cacheable(u64 pfn_attrs)
-  * @mmap: Optional callback to set up user mappings. Called when userspace calls
-  *        mmap() on guest_memfd. The provider can customize VMA flags, or reject
-  *        the mapping.
-- * @check_set_attributes: Optional callback to validate attribute changes on a
-- *                        range of indices before they are committed. Called
-- *                        with the exclusive filemap invalidate lock held. The
-- *                        provider can inspect the requested attributes and
-- *                        offset range and return 0 to allow the transition or
-- *                        a negative error code (e.g. -EINVAL or -EPERM) to
-- *                        reject it. Once @check_set_attributes succeeds, the
-- *                        provider must ensure this result stays valid and
-- *                        constant until guest_memfd stops using the range. Do
-- *                        not take locks held across kvm_gmem_revoke().
-  *
-  * Used by filesystems and device drivers that provide memory for guest_memfd.
-  */
-@@ -117,8 +109,6 @@ struct guest_memfd_provider_operations {
- 			loff_t *ppos);
- 	ssize_t (*write)(void *provider, const void *buf, size_t count,
- 			 loff_t *ppos);
--	int (*check_set_attributes)(void *provider, pgoff_t index,
--				    size_t nr_pages, u64 attributes);
- };
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 012a233a375ab..c38bbc5568fee 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -125,9 +125,6 @@ struct vfio_device_ops {
- 	int (*gmem_get_pfn)(struct vfio_device *device, pgoff_t index,
- 			    unsigned long *pfn, int *max_order,
- 			    u64 *pfn_attrs);
--	int (*gmem_check_set_attributes)(struct vfio_device *device,
--					 pgoff_t index, size_t nr_pages,
--					 u64 attributes);
- 	int (*gmem_lookup_pfn_range)(struct vfio_device *device, pgoff_t index,
- 				     unsigned long *pfn, size_t *nr_pages);
- 	ssize_t (*gmem_read)(struct vfio_device *device, void *buf,
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 03cb0b41855dd..5bab69cb83c25 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -175,9 +175,6 @@ void vfio_pci_core_gmem_release(struct vfio_device *core_vdev);
- int vfio_pci_core_gmem_get_pfn(struct vfio_device *core_vdev, pgoff_t index,
- 			       unsigned long *pfn, int *max_order,
- 			       u64 *pfn_attrs);
--int vfio_pci_core_gmem_check_set_attributes(struct vfio_device *core_vdev,
--					    pgoff_t index, size_t nr_pages,
--					    u64 attributes);
- int vfio_pci_core_gmem_lookup_pfn_range(struct vfio_device *core_vdev,
- 					pgoff_t index, unsigned long *pfn,
- 					size_t *nr_pages);
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 385b517b49ed5..cd484bdcb3f0c 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -245,16 +245,6 @@ static ssize_t gmem_provider_write(struct gmem_inode *gi,
- 	return -EINVAL;
- }
- 
--static int gmem_provider_check_set_attributes(struct gmem_inode *gi, pgoff_t index,
--					      size_t nr_pages, u64 attributes)
--{
--	if (gi->provider_ops && gi->provider_ops->check_set_attributes)
--		return gi->provider_ops->check_set_attributes(gi->provider, index,
--							      nr_pages, attributes);
--
--	return 0;
--}
--
- #define kvm_gmem_for_each_file(f, inode) \
- 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
- 
-@@ -1128,12 +1118,6 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
- 		goto out;
- 
--	r = gmem_provider_check_set_attributes(gi, start, nr_pages, attrs);
--	if (r) {
--		*err_index = start;
--		goto out;
--	}
--
- 	mas_init(&mas, mt, start);
- 	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
- 	if (r) {
-@@ -1774,10 +1758,11 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
- 	/*
- 	 * Private memory requires exclusive, writable guest ownership and
--	 * cannot be backed by a read-only frame.
-+	 * cannot be backed by a read-only or shared-only frame.
- 	 */
- 	if (kvm_gmem_is_private_mem(file_inode(file), index) &&
--	    (*pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY)) {
-+	    (*pfn_attrs & (GUEST_MEMFD_PFN_ATTRS_READONLY |
-+			   GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE))) {
- 		r = -EFAULT;
- 		goto out_put_folio;
- 	}
-@@ -1824,9 +1809,10 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
- 	/*
- 	 * Populating pages initializes private memory, which cannot be
--	 * read-only or non-cacheable.
-+	 * read-only, shared-only, or non-cacheable.
- 	 */
--	if ((pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY) ||
-+	if ((pfn_attrs & (GUEST_MEMFD_PFN_ATTRS_READONLY |
-+			  GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE)) ||
- 	    !kvm_gmem_pfn_is_cacheable(pfn_attrs)) {
- 		ret = -EPERM;
- 		goto out_put_folio;
+ 	/* Bad file descriptor with GUEST_MEMFD_FLAG_USE_RESOURCE fails */
+ 	fd = __vm_create_guest_memfd_resource(vm, page_size,
+ 					      GUEST_MEMFD_FLAG_USE_RESOURCE, -1);
 
 -- 
 2.56.0.455.g6c5a503b38-goog
