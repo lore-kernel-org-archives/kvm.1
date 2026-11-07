@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011840;
-	b=j/VPq4qxnpYEjFyUg+49MGn30NCMzR9nOPbeTJmGnoOzrkZn4AJw7xuhSLYe53COlviJ
-	 d74HCa3lv/EaDKltIUlp/Hn+xn+DqB+kLih0raDLZeGm24QmTixM31Vcgi1apajW/X6Wr
-	 ebcEu3qpyCO4zBU04moBQDW1AuCU84NdU5KtGGWv7HUFY+OguNQmm/SvhWfxl1aDEGgUd
-	 naPInm7YVohsXUeZuRUCmHIZfpfXD3dZR8Qr9WxpRy2zXAdD9SaR150QUuTrdQKlaVzHI
-	 VEhF7HNA6T/0Hp5NzlbzXwzhMbsVAVnCS3GlrhUfkdtv9tb3yHq4ahGAHR2KxBRiV5A==
+	t=1794011836;
+	b=HpOsmPaWNxr72azNZsG/5uLFejzs69unrBHaLX0DjzV3IxfHiuqt+NQFMWI0OJilLjp1
+	 tMmPR7oskxsklhqF663rpP9PlFHlREMnA+m4Z10EUFbvzd3qQYaK9taHOTzkYdE/MmrM4
+	 CpTrU2U6ZufXp7fG0A0d/6hyNVUL/BhkAj+/NGdBf+kWXKf4AUFLkmq/yuAoxmUi7287Q
+	 3br0gJ44CsLtEflPtAiZFxlkJVWQA+M2zkGiypoxxjDibOpNpruhuVXcuefQIUzLU4hTZ
+	 uEt93i/7Y94zFH7qpOSSuSDWGMLhrQ2/StPzQrkODYuQzE8wHGqQgyncbiZmaMDWH6w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011840;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011836;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=9gaFBZx0TRAzN46wa1GnNfQ/jyTlgbskICgy7A9zF2c=;
-	b=1OpxBQdWhEL4rJaLSCFv0ighN/ZC1nhy2UtMD4eW22GpofXYGk2A5fq+RqOYPspfL52n
-	 0R8ZtxxPkFUEq2Cl/OMwUMpQ4OtV5zkFFGPJCb16p92SbuORfC8hTitk2Y6wsXW130tku
-	 qBJDhOm6GgHfIgJA5bcJ/ojMKdJmZ/qSRqr/o5xJuTMPBUqgiRoBIHR09jn8wpHtp1ynW
-	 hzapIpozJ4ByLZ/uUDi4TqSTUyvjaz6Mo+yztjO5vR0GvOhKgBp+r95gxFmFKRKQenZ4a
-	 6M848LMhw+N0d7/Jj4f81SVhgxNaz5O0OKzY1weLDX6kp//YkCKhFfhWQw3WJcqJrYw==
+	bh=4UScqvpHbvwhPXhOC+pGujyyRV2Vm9+YOOe4hjQlTSs=;
+	b=XWtV27MErJ9OwiPel2HsjCkEziBMB/cfSgFYkCXbP9kA4ZpKUXjScqiDJPmusumTBtX8
+	 DL4G7H9aRSN3yTY+YErPpAZC1blQJqkzhzxk94v/h8UtE1D563X7NmHwJW9Mqs6AlAkU5
+	 QquTwH5lilDfvHr5vrlTOVHANk8MqePJ6hv5sHix48RbPO9M3lzmGu5MJGPB30H8dW3qX
+	 TMCByt4GzYKZQzzQaN+E8AHEn604TKoqIJEHJwnHYLRRlzk3WgbkWq0Y5NASLcIOjCE7W
+	 pwtWlVYSG2Bh+x8OWd5YKeSnMoTHvEFuJpNjTkTlVpw/eQr6SaPGHNRNrDn5LTU4Lzw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CvZGsurg;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YEXgJipU;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899D4606AFBF;
-	Sat,  7 Nov 2026 00:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F918606BFED;
+	Sat,  7 Nov 2026 00:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CvZGsurg
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YEXgJipU
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011840;
-	b=p2wDhW+bmNDGClGsZDW2GhvWR5YcQpJlAbxJbMTv0KWGcB7V8DPi6PVWROx9EQoe4roQ
-	 /7MZongU4i+Pm6R7VEm0J8BmdsrrEzkD3KpL1KIsynx3YrvCvKH4kCSlLSNPw7v6+Ufp6
-	 oWSlQJS0qnWxY0vIL+C3laq232xsAIfUbJ1Cy7yiVBzBOR3y9uGJmHYjZpr96PSwGHgZZ
-	 3/uBdxM1bSP10uGIC1gPitwTYaDIpCCTrIl+ojYkpxreR4XgoAQNapY0ny7BASi2HdM76
-	 uvo7rZbKoKV2D0g6fZuaFxRGlm3q210Uirv2iwzAR8IRlWLeLRCLgcCoFM/gPc2Ih5A==
+	t=1794011836;
+	b=jTC3oAAoY+yPgFxQmwwyYhKIPdch1/fiATv7pdrPs/9H/PbFt86C9LPdDPukPagJib5z
+	 ii8Um0uegDuIiAefBG2xK9tpjByYxqr/RdaYzpkjXJUTB2gfE0SjijitGVFQXdBpBS7iA
+	 abmbV2YC2WeC0eF8b/QpnNtnc4wmOPb+CV8iE40wa+nED73LI2YFC3CSGdFA1tSrp4/xI
+	 JYk2hJ90Vz/N1BTmDdAWmlZSQC6+0FI7O9w9xNLJGgOYTSTmJb6zBFE5OCOO9BT1vCwDL
+	 yyzPIVd/eWu3keIZab2ybeax+T489k1mj+6LtX+QT5Ryadc4Ly43lxdg7eo4w5GXLfw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011840;
+	c=relaxed/relaxed; t=1794011836;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=9gaFBZx0TRAzN46wa1GnNfQ/jyTlgbskICgy7A9zF2c=;
-	b=X/OJym9ILauqtd3yBSy7ZAcGZWbSGGVkEEoShDdD55lIgK9eSvRrus9pNy936GPhTXrT
-	 TbTcd53hDoGQKQQZ8lHDyo9Xo4DE4GWaCrqx7n+j3wGiUXdr17V6WQPRGErDXhioiiQQ4
-	 DvZaScM68cy8O11j+7k5opphSxuo3GuMx+jIO1a1mp0IdDcz2JeghAKnr4fW3nXIuStje
-	 NI/GzR/gkw05GJdBNDyu8XM3iioFs1L1Awv1PZz4CzBN0wuqNlisCpuzdg6HpAFeOi4zK
-	 uVGV8VyHZBniHwnfRNRWHIUaoH0e1d88kDa/soEuRjo7FJhA/8ltkcZZvSBvjVKfVeg==
+	bh=4UScqvpHbvwhPXhOC+pGujyyRV2Vm9+YOOe4hjQlTSs=;
+	b=HDIUQDobIvemgf+BIWga74IK7QG2WH7iBE0Ws6kqCqoyzB5DbagErY6duQVqoDIXsNbY
+	 Fj0BelWnMFBXiBqRLhNbLNL9iuA5ScYXPeMhS4pl6ztdSV28mGo4ca5PvtiU9TjZf0TDu
+	 Z55q6RodEhwfmTLL23OyUAuiyJt9my5aDRBppgP3lzYdKRHueDmUCJlYmqC9XZNryMvLh
+	 VwuU+lTKtoDPywq13IpyzyG+5fiHlhSmztqfr+UwoOaIR+fBhpet3met/OcAhnXmQR7+a
+	 GWyWfj1topXtKTAHxw7viCm4bJWgkqeajO/s/RUFJEWtFaSc0Y301KIip09+6EZOA6g==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E97821F008A6;
-	Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 818021F00AD4;
+	Sat,  7 Nov 2026 00:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011840;
-	bh=9gaFBZx0TRAzN46wa1GnNfQ/jyTlgbskICgy7A9zF2c=;
+	s=k20260515; t=1794011836;
+	bh=4UScqvpHbvwhPXhOC+pGujyyRV2Vm9+YOOe4hjQlTSs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=CvZGsurgjb3n6a6OGrJb14Ocsm7Jwx1JIZU5OAwGlRK9NtEegSH4tdQoVjqej+70d
-	 zUk8kFfCAzEDs3xyMbqLRB8pyAqjcwlQ8t6HKQmSlTNke5QGEdins3TK9Z+p5P18Wt
-	 6egNslCflKKtqUPo1OCLHnypKIWouoDUTVHzhYLFjouM8+mbvC09w49QFIg/m8oBMQ
-	 XyIs9lPMnbICF31RTEU0wZ95u8P7jFrFHFDAkvAsCHKMJC8lVTli/yl46cKKlwGExK
-	 Onwj+IUxPD7hB+hsz/NXtUl4sXDPfOeLdizaXxbWLo3H8UCyuaGgu9702GXPhRBQW4
-	 +wfodTqoyGOeg==
+	b=YEXgJipUDsxc+shw4qFdKswehd6a1WuJk6fLk1NDYzhAmkqd2x+ZqeW3COYZQWd4k
+	 9waBXcxK+fGnrA+6aOPxKljfkIKzuoNY8hfLl3yVFgC7EEtLks8XFawYt8Ke+zSC6B
+	 X/nQb47vvsKge3FTQDKGt7cYufQQKxDMqk5QLgzIHxqFSGugg/ZsVEA5CoEPvZIE7h
+	 djZW68PoogF+2+/A2chdYeRcEWwywOwNsfBXGNhBr8PSLpYvdtLzNuJQXjn/zWkuuD
+	 ZXJGH5rIpVqKwUffxz/P/wvcwSVA3FNZegZ7IQlMHFrqWBKP2yK6cqZBRaKggjRFYC
+	 WELSa9krLggoA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 66C60479DA;
-	Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id EADFD47929;
+	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:25 -0800
-Subject: [PATCH RFC v3 51/88] KVM: guest_memfd: Support reporting PFN
- cacheability
+Date: Fri, 06 Nov 2026 16:37:18 -0800
+Subject: [PATCH RFC v3 44/88] samples/kvm: Implement attach and release
+ provider ops in sample provider
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-51-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-44-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -105,11 +105,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=9171;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2754;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=GZTQxVn0HjxORiNdxoBtqdA/HiYkhk8lDD2n3VKRLow=;
- b=y38OKIzJH7eiYyPKqj5uQCGyOxtwZlKxg8Qd3cuZA8cWdUQ0l3YXTkA3HzQD+e1zqhN4SOCvP
- 0UXrPpAV/oeBBpAYUMPjuenU/9KmhLKmarn9kYJPf1fXNZN0arx3gYl
+ bh=wGkwYGWhWpUEbPcNoli9OVifhRpY95s9sJaKeYRfDoU=;
+ b=2zBY4/UyvI/wD4fxk5n+1zA8wC8jypJ2hvfyGQousryL2X4dafvdKSl/QarQac9uuatqZ3yC7
+ cRyw4A4lugaDN4Zps6HLSpdgi7cq6SIJHYldFyY/s718nvWW4wv8kWz
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,249 +120,93 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When memory slots are backed exclusively by guest_memfd without a host
-userspace VMA, KVM cannot inspect VMA flags or page protections to
-determine the caching requirements of the backing physical frames. Even
-when a VMA exists, external PFN providers such as device drivers may
-expose multiple regions with distinct caching properties within a single
-provider instance.
+Implement the guest_memfd provider operations in the sample memory
+provider module, providing .attach and .release callbacks.
 
-Extend PFN attributes with a cacheability field whose zero value
-represents normal write-back cacheable memory so existing RAM providers
-require no changes. Distinguish three non-cacheable modes alongside
-normal cacheable memory: strict uncached MMIO where guest
-write-combining could trigger uncontained host faults, uncached MMIO on
-buses such as PCIe where stage-2 can safely permit guest write-combining
-while host mappings remain uncached, and write-combining memory.
+In .attach, take a reference to the provider file (get_file) to keep the
+provider context alive while attached. In .release, release the file
+reference via fput.
 
-Handle the reported cacheability in stage-2 fault paths:
-
-- On arm64, select Device or Normal Non-Cacheable stage-2 attributes for
-  non-cacheable frames, forbid instruction fetches on non-cacheable
-  mappings, verify hardware cacheability support for non-linear-mapped
-  cacheable frames, and reject non-cacheable frames for nested VNCR
-  mappings which require cacheable host kernel mappings.
-- On x86, stage-2 PTE construction already derives MMIO status from host
-  PAT and E820 tables (and couples that status with host memory
-  encryption bits), so warn once with a TODO if the provider-reported
-  cacheability disagrees with x86's host MMIO detection.
-
-Preserve confidential RAM invariants by rejecting non-cacheable frames
-during initial payload population, and during SEV-SNP VMSA reloading or
-RMP fault handling.
+Attach the provider operations to mps_file_fops.gmem_provider_ops so that
+provider file descriptors created by the sample module can be passed as
+resource_fd to guest_memfd.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/arm64/kvm/mmu.c        | 30 ++++++++++++++++++++++++++++--
- arch/arm64/kvm/nested.c     |  5 +++++
- arch/x86/kvm/mmu/mmu.c      |  8 ++++++++
- arch/x86/kvm/mmu/spte.c     |  2 +-
- arch/x86/kvm/mmu/spte.h     |  1 +
- arch/x86/kvm/svm/sev.c      |  9 ++++++++-
- include/linux/guest_memfd.h | 29 ++++++++++++++++++++++++++++-
- virt/kvm/guest_memfd.c      |  8 ++++++--
- 8 files changed, 85 insertions(+), 7 deletions(-)
+ samples/kvm/memory_provider.c | 39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 8f0217185973c..71fc823ed2076 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1789,14 +1789,40 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
- 		return ret ?: -EFAULT;
+diff --git a/samples/kvm/memory_provider.c b/samples/kvm/memory_provider.c
+index 81ac94ae1a4e9..6f86e3e3262e3 100644
+--- a/samples/kvm/memory_provider.c
++++ b/samples/kvm/memory_provider.c
+@@ -17,6 +17,7 @@
+ #include <linux/file.h>
+ #include <linux/fs.h>
+ #include <linux/gfp.h>
++#include <linux/guest_memfd.h>
+ #include <linux/miscdevice.h>
+ #include <linux/mm.h>
+ #include <linux/module.h>
+@@ -34,9 +35,11 @@ struct mp_info {
+ 	unsigned long npages;
+ 	struct page *cma_pages;		/* from alloc_contig_pages() */
+ 
+-	struct mutex lock;		/* the bitmaps */
++	struct mutex lock;		/* the bitmaps and gmem_inode */
+ 	unsigned long *absent;		/* taken away by MP_SET_PRESENT */
+ 	unsigned long *readonly;	/* marked read-only by MP_SET_READONLY */
++
++	struct inode *gmem_inode;
+ };
+ 
+ /* Byte range [offset, offset + len) of @info as page indices. */
+@@ -161,11 +164,45 @@ static long mp_file_ioctl(struct file *file, unsigned int cmd,
  	}
- 
-+	if (!kvm_gmem_pfn_is_cacheable(pfn_attrs) && exec_fault) {
-+		kfree(mapping);
-+		return -ENOEXEC;
-+	}
-+
- 	if (writable)
- 		prot |= KVM_PGTABLE_PROT_W;
- 
- 	if (s2fd->nested)
- 		prot = adjust_nested_fault_perms(s2fd->nested, prot);
- 
--	if (exec_fault || cpus_have_final_cap(ARM64_HAS_CACHE_DIC))
--		prot |= KVM_PGTABLE_PROT_X;
-+	switch (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_CACHE_MASK) {
-+	case GUEST_MEMFD_PFN_ATTRS_CACHE_WB:
-+		if (!pfn_is_map_memory(s2vi.pfn) &&
-+		    !kvm_supports_cacheable_pfnmap()) {
-+			if (!result)
-+				kvm_prepare_memory_fault_exit(
-+					s2fd->vcpu, gfn_to_gpa(canonical_gfn),
-+					s2vi.vma_pagesize, write_fault,
-+					exec_fault, false);
-+			kfree(mapping);
-+			return -EFAULT;
-+		}
-+		if (exec_fault || cpus_have_final_cap(ARM64_HAS_CACHE_DIC))
-+			prot |= KVM_PGTABLE_PROT_X;
-+		break;
-+	case GUEST_MEMFD_PFN_ATTRS_CACHE_UC:
-+		prot |= KVM_PGTABLE_PROT_DEVICE;
-+		break;
-+	case GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC:
-+	case GUEST_MEMFD_PFN_ATTRS_CACHE_WC:
-+		prot |= KVM_PGTABLE_PROT_NORMAL_NC;
-+		break;
-+	}
- 
- 	if (s2fd->nested)
- 		prot = adjust_nested_exec_perms(kvm, s2fd->nested, prot);
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 4519e92d89d66..a3818ece5c753 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1633,6 +1633,11 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
- 						      true, false, false);
- 			return -EFAULT;
- 		}
-+
-+		if (!kvm_gmem_pfn_is_cacheable(pfn_attrs)) {
-+			fail_s1_walk(&vt->wr, ESR_ELx_FSC_EXTABT, false);
-+			return -EINVAL;
-+		}
- 	}
- 
- 	/*
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 87deeeffd9919..23feb737c755b 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4695,6 +4695,14 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
- 		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
- 		return -EFAULT;
- 	}
-+
-+	/*
-+	 * TODO: Perhaps resolve stage-2 cacheability from pfn_attrs instead of
-+	 * relying on host MMIO PFN heuristics when constructing SPTEs?
-+	 */
-+	WARN_ON_ONCE(__kvm_is_mmio_pfn(fault->pfn) !=
-+		     !kvm_gmem_pfn_is_cacheable(pfn_attrs));
-+
- 	fault->max_level = kvm_max_level_for_order(max_order);
- 
- 	return RET_PF_CONTINUE;
-diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
-index 5fc27e9733b38..fd119ac2fad94 100644
---- a/arch/x86/kvm/mmu/spte.c
-+++ b/arch/x86/kvm/mmu/spte.c
-@@ -106,7 +106,7 @@ u64 make_mmio_spte(struct kvm_vcpu *vcpu, u64 gfn, unsigned int access)
- 	return spte;
  }
  
--static bool __kvm_is_mmio_pfn(kvm_pfn_t pfn)
-+bool __kvm_is_mmio_pfn(kvm_pfn_t pfn)
- {
- 	if (pfn_valid(pfn))
- 		return !is_zero_pfn(pfn) && PageReserved(pfn_to_page(pfn)) &&
-diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index e730717824b38..05c7bffa5d2ed 100644
---- a/arch/x86/kvm/mmu/spte.h
-+++ b/arch/x86/kvm/mmu/spte.h
-@@ -557,6 +557,7 @@ static inline u64 get_mmio_spte_generation(u64 spte)
- 	return gen;
- }
- 
-+bool __kvm_is_mmio_pfn(kvm_pfn_t pfn);
- bool spte_needs_atomic_update(u64 spte);
- 
- bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 5e37ea4bc7937..526f2a457cfe0 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4100,7 +4100,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL, &pfn_attrs))
- 		return;
- 
--	if (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY)
-+	if ((pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY) ||
-+	    !kvm_gmem_pfn_is_cacheable(pfn_attrs))
- 		return;
- 
- 	read_lock(&kvm->mmu_lock);
-@@ -5110,6 +5111,12 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
- 		return;
- 	}
- 
-+	if (!kvm_gmem_pfn_is_cacheable(pfn_attrs)) {
-+		pr_warn_ratelimited("SEV: Unexpected RMP fault, non-cacheable backing page for GPA 0x%llx\n",
-+				    gpa);
-+		return;
-+	}
-+
- 	ret = snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
- 	if (ret || !assigned) {
- 		guard(read_lock)(&kvm->mmu_lock);
-diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-index fb2279a001ebf..8cdc334d1c9aa 100644
---- a/include/linux/guest_memfd.h
-+++ b/include/linux/guest_memfd.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_GUEST_MEMFD_H
- #define _LINUX_GUEST_MEMFD_H
- 
-+#include <linux/bits.h>
- #include <linux/types.h>
- 
- struct file;
-@@ -9,7 +10,33 @@ struct folio;
- struct inode;
- struct mempolicy;
- 
--#define GUEST_MEMFD_PFN_ATTRS_READONLY	(1ULL << 0)
-+#define GUEST_MEMFD_PFN_ATTRS_READONLY		(1ULL << 0)
-+
-+/*
-+ * Cacheability attributes for physical frames returned by providers
-+ * (columns show x86 / arm64 memory types):
-+ *
-+ * Attribute                               | Host PTE       | Stage-2 PTE
-+ * ----------------------------------------+----------------+---------------
-+ * GUEST_MEMFD_PFN_ATTRS_CACHE_WB          | WB / Normal    | WB / Normal
-+ * GUEST_MEMFD_PFN_ATTRS_CACHE_UC          | UC / Device    | UC / Device
-+ * GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC | UC / Device    | UC / Normal-NC
-+ * GUEST_MEMFD_PFN_ATTRS_CACHE_WC          | WC / Normal-NC | UC / Normal-NC
-+ *
-+ * GUEST_MEMFD_PFN_ATTRS_CACHE_WB is 0 so normal cacheable memory is the
-+ * default when no cacheability bits are set.
-+ */
-+#define GUEST_MEMFD_PFN_ATTRS_CACHE_MASK	GENMASK_ULL(2, 1)
-+#define GUEST_MEMFD_PFN_ATTRS_CACHE_WB		(0ULL << 1)
-+#define GUEST_MEMFD_PFN_ATTRS_CACHE_UC		(1ULL << 1)
-+#define GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC	(2ULL << 1)
-+#define GUEST_MEMFD_PFN_ATTRS_CACHE_WC		(3ULL << 1)
-+
-+static inline bool kvm_gmem_pfn_is_cacheable(u64 pfn_attrs)
++static void *mp_gmem_attach(struct inode *gmem_inode,
++			    struct file *resource_file)
 +{
-+	return (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_CACHE_MASK) ==
-+	       GUEST_MEMFD_PFN_ATTRS_CACHE_WB;
++	struct mp_info *info = resource_file->private_data;
++
++	mutex_lock(&info->lock);
++	if (info->gmem_inode) {
++		mutex_unlock(&info->lock);
++		return ERR_PTR(-EBUSY);
++	}
++	info->gmem_inode = gmem_inode;
++	mutex_unlock(&info->lock);
++
++	return get_file(resource_file);
 +}
++
++static void mp_gmem_release(void *provider)
++{
++	struct file *resource_file = provider;
++	struct mp_info *info = resource_file->private_data;
++
++	mutex_lock(&info->lock);
++	info->gmem_inode = NULL;
++	mutex_unlock(&info->lock);
++
++	fput(resource_file);
++}
++
++static const struct guest_memfd_provider_operations mp_gmem_provider_ops = {
++	.attach		= mp_gmem_attach,
++	.release	= mp_gmem_release,
++};
++
+ static const struct file_operations mp_file_fops = {
+ 	.owner		= THIS_MODULE,
+ 	.release	= mp_file_release,
+ 	.unlocked_ioctl	= mp_file_ioctl,
+ 	.compat_ioctl	= compat_ptr_ioctl,
++	.gmem_provider_ops = &mp_gmem_provider_ops,
+ };
  
- /**
-  * struct guest_memfd_provider_operations - Operations for external memory providers
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 023bf095340be..1fbb719f0e31f 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1678,8 +1678,12 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	if (folio)
- 		folio_unlock(folio);
- 
--	/* Populating pages initializes private memory, which cannot be read-only. */
--	if (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY) {
-+	/*
-+	 * Populating pages initializes private memory, which cannot be
-+	 * read-only or non-cacheable.
-+	 */
-+	if ((pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY) ||
-+	    !kvm_gmem_pfn_is_cacheable(pfn_attrs)) {
- 		ret = -EPERM;
- 		goto out_put_folio;
- 	}
+ static long mp_ctl_new_file(void __user *uarg)
 
 -- 
 2.56.0.455.g6c5a503b38-goog
