@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011838;
-	b=cHhAp8obfysegoT/qTaks/rAw1Z4EUOPCdUiIMgHmJXam5f23EExB/ycdYoB7UwUDCBw
-	 mjJv405y6IyceF5FXoNE/xPwoTXwJAEP9a/sKnou3q4Cc2MOS/D5k0nUoenyWcuj6Ez3K
-	 pjqYGh1W6oIM7UeRNrcYL5XswnNSRTNqI+QUpuHsP8l4IfT2dl8QcrrJUhfoFomIR83yI
-	 nEHrM6EZ8IM3RdT+0v92+xRvBVcLGq9nQTLuZSTFC+edWOW0iMb22nrsiexFkXF+U3wa0
-	 C3+rFDOfcdrPKr7U3O1SwuV/3/gxvA/LT1XS4gLnk0qDD3AVZgdPZ1kwsogivl2R0LA==
+	t=1794011815;
+	b=PYXNx9OYaRQ/Gs8eg9PVNk8FKt1UGVBnrD35X0plnfoa23fx7T8vmFq+tAapnMCl6P5J
+	 hv9scIxlwQbNFle2RMk3EJXjXhNRgCLLJzSe8tmEa53slaXL1w/5OYxzhgR0nHzc4xiM9
+	 vCLDDrRLvBeptqIbsHvpRLwQXskw90WD+hmbE1EVXdZlL0fKyuGfKNTsQkOnWzvqAMPYK
+	 gQneG4/28nNcQMZfyDLAj7RfJDZyl6wvUkgjBB1Ox3pe3YXmyeirzi+sB5B1lUb+/R1Xd
+	 rB1YpKQhuJ8IvVsYUiOxzAXlMGMRqR0qlE8HZlzPupy+1a2GMk3snFiXjAvA2UsvQyA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011838;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011815;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ANWT/yfx2UhN0rafXVKWKPXBTCBXsWp+E5MMs+sD+/M=;
-	b=Naq2wf3go6X6M7rAReTdNUrUopsalbSRnbBY36bdzshg0AAX8hh0wOhjGFPiei/lv4eT
-	 nqP0LmWoVcP9xhvNRHO65M4BgEMR+xAtnswKVspswL4P0BbMfzoIbMwXBgrAHQ3ClZFoc
-	 RK+cgfwVQ+UMj6YAZCyokoZxM6EPbHKVsDK/Nbe6PzTq47hg+R39XQ51Xhf4dqperHUn6
-	 me304grzYv8wiaSg+udX1Vsw2Vcm2xsBfOAQ8bxn8rAQGhL0ryjp02HobjIfIMh+23tKy
-	 XPlMkZCcfl7yKf4Z2s/TCn2+s07lnNkdI2RpXBq+a+zdxc01oX935f0qebLbQIGgcqw==
+	bh=bEFuudziwFSmGmTiu8EshfO7Ouxi+ckFIzuMTnn97HE=;
+	b=3+iLho5ZtZqv5Xo1YZbSXnNbLAn/1GQgFB2HnBEOUCU5CDxfVAAYuxJ1ktW5+Ze9V5mf
+	 MZ4DMKfRrcHLb2ovVGE7wTjlrVUGc5t51+aZTVwprzFB2wW276qOBY4zSflyXPyhm1q8E
+	 aibV2Ru5VtesYHQA9OrWiqO1Mol8//3AWbYLYecXxeVyh7d6nW/Mm87xWgaEIVz1OtucM
+	 rBLn7kRcyFWE6wqlatp5E5Wsh5DUyp+9DzWhewAlOyfBeCOZkjoQrmE+36i5VbBeP5v89
+	 hjT3dvdb6rwHIT90GjzKYi/JYeQOddHLuM2l+V0hG0S8lrrZ7tHXNdQrCk6KZWwFCkw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMhXHIRI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=go0ddtNk;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EFC606A81D;
-	Sat,  7 Nov 2026 00:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B19606A331;
+	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMhXHIRI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=go0ddtNk
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011837;
-	b=ykgojiHXCIygWkG0/JPqjnYV/HZ4gGttqOalTu1Zlg1zQTWtCvwGLSg85Z9ruRUFnGax
-	 g08MCHqCn3p4eA+LB0LdK7Vm4BO/sAUOq6rK58E59FS7NjeOp/kzrwm4JwtWio+aDvq4p
-	 qO2YmXVhwMthtt8Gcs1RgABpjGET3uiUvTAbUG5u3RNCtiYnneW6XOT2v3cHszhy8dgIt
-	 HfhN4vyKYx5uBIB3boG38paduYpqqAf1CZ6Nbf3TFcrAS0nDt4BaTdtTAsYqJuqx29nor
-	 ZZFBqQhRWxMf4A5WczPp2smCYqjjj01gLf+ChWUVfCjK4CwjxV4L/zhXOXOayUwRRZA==
+	t=1794011814;
+	b=sj3bO13uiJkgEDulNlXy/ux9ViLjXO+HPdg9em6EVKm0Iu82sEXOBSfCApOZc998lxqN
+	 RMFS0IQLqr0N4/n0MZ3tu/xktY9olsn3IuZ5KcLQlr5ha+9QtvnWyO1q/2pGRSSzlMkSr
+	 SreXShbV13UhSVWl5v06aVAfnswPvTni8qsENsDPO/ccHqjDSTq13l2r4aKPDAAUSg28R
+	 mWfIuvNEmrjnJezWcxhMGUHuWyvjHlNu9YeWq64tcQ0ROgHmdk+HyqkW+S7t/bVnaThoe
+	 z5bvhpPDorsqeZM8fi5b6whvIlrZaXzWkQFt0jxIpXWWL5LvDRLosfnkJ0Uqq+GdrRQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011837;
+	c=relaxed/relaxed; t=1794011814;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ANWT/yfx2UhN0rafXVKWKPXBTCBXsWp+E5MMs+sD+/M=;
-	b=PO70nIr1HAS5b1IKxYR+Lrxa/Y9Y1pKyel/9R5zQg+7XsOREMFZDLZJAnCTDJKCGR8cV
-	 M7epETpLYNLg/5IzpGOFKxKPI5MKcWw4QGjgMnaqfIpnByuZL8a92nRbKnTRYqhKtdpKu
-	 l40NEIApykGW/uc13HEXr6axb+tmlrHgbBl6bCgC+vPWjCijWVOgYh7PzjtxW56i/urNJ
-	 TlnwbbzhfahvpHkHpL6DsXCJQ0AFtE8RIT+RJjLSYr32R9VW6MBhpL8GYumHLDwrBWr80
-	 hC49xdCwHtCZq+nBVRA++eLW2F9/ydZHlzft8HlKCHig1c+OEwjMbP+mS3sOrccfTJA==
+	bh=bEFuudziwFSmGmTiu8EshfO7Ouxi+ckFIzuMTnn97HE=;
+	b=rguQEmboefWoUDAgqOpTNh6UUestJC9plg5ON/SpuVZwP4wddCAp3tpdLSAr4CaPfsgG
+	 CMUEbW4A+WZLtCE6bcFR2eE/o9zthvC9YiVHdCnVv5MoYHfaAq4SJuKs4ZVyFw9h5RvDg
+	 n4ygVX/uLtf8V/XUOfXOxyrsDCH9yLqNHeKJut42okwtet3mPKyk9fP4bwUe/MqyKIvOe
+	 +T2iaSEoFMPbIwbOkZGA8wnNEYdt0Kx2CmC9kSg4bkVC+2ld3DwVYxfO3zooFdVrk+iHT
+	 M0Wy/Q1stBEXWsd6pao+YBVXCpJ8BreQ4LlX4zpoqOT9QJYQEr/ARCLE3/f+TMMRSgw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 58D301F008AB;
-	Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 558EE1F008A2;
+	Sat,  7 Nov 2026 00:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011837;
-	bh=ANWT/yfx2UhN0rafXVKWKPXBTCBXsWp+E5MMs+sD+/M=;
+	s=k20260515; t=1794011814;
+	bh=bEFuudziwFSmGmTiu8EshfO7Ouxi+ckFIzuMTnn97HE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=kMhXHIRI8gNSATPETteSO2ApCNxqYfTFx7ivg+GysltwNGs0bAGLGsrjEx3d8B3WM
-	 FPatWjXzPLc4jxkF+0UWhtuXtPlljLxr1Sot6JH1ET2agAu7QaVtQWsPkSQLe38sQC
-	 x+3oIRxvm1uxHjy3PO9A/YuKsoPiCmKi2BT7P2hFfQaD+jPfcNQutfZp4lR6/fryil
-	 dHFKXChyT7XGafuE0Dkz7JdHSNNiZ0lEWBVU9xJbtHhu+Huo5hGTu8mtEtKiOWmewj
-	 dpSX99cuOIBLEJd/5hHVA3jVZCbXyBRi0BaEDsTQK8B+liFVk/JHOHGGdSr2w2aWl3
-	 Y54D8wh2+FsgA==
+	b=go0ddtNkzCV2U67JeVoRLFde0SDi29opIr8EGCo6XcYH7Dbs/0m+wpupMvakXqthE
+	 SF4TjHaTMADi2Caf62drH859H+H6S4kdHpeHoGdIhf+W6IT0Y+uWb3K5Y+CkbW49Je
+	 Ko9DnjHW5oUMUIpAHTpc+qbRC5yQjfPQx2mDk4dCYb0jK0sZbo/oxTY1sLoNxiIwA4
+	 EOoSlgptNRjkyFiNFLE7MQ3OIKifomPJyb0Eqv7/VQPX5dIZgTZWHYhyrvRGPJL7Is
+	 uFqzoi7Jc+VUxoaNzuIKJOIrDKb9vENFnyLL0Ci3fjeMpQZqtehgZjXBionEMfkyvn
+	 qZsu+8a377yvQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id BFD4C47A2C;
-	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id CFEC94791D;
+	Sat,  7 Nov 2026 00:36:52 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:46 -0800
-Subject: [PATCH RFC v3 72/88] KVM: selftests: Add initial VFIO test
- verifying device info
+Date: Fri, 06 Nov 2026 16:36:36 -0800
+Subject: [PATCH RFC v3 02/88] KVM: guest_memfd: Route folio allocation
+ through native provider operations
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-72-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-2-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -102,13 +102,14 @@ To: Alexey Kardashevskiy <aik@amd.com>,
  Xu Yilun <yilun.xu@linux.intel.com>, Fuad Tabba <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+ Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=5637;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=6480;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=qwwY1wogTiFJkGLjVl6X2EfDY2DAV1c/GKKv838ghMk=;
- b=NtT2E6e6NOXKRJJI6K8IGA2kAqoRSKGa8TTX9X40Mk2ZO0d+8X6Uf5VI8mskLD0aG5AXW51ZN
- DL61hLwxxv5D5p+w9bG47JvOxpnd9e/seVW7PI53w29SMhPOwZq8Bfy
+ bh=bisyKn0RgaRZ0PVB2Mv7Pnld9GN7IV0HnU91kmdFLiQ=;
+ b=gq6xO1p0AW6HJ3a3hco1/15XJuwF8ZjJ6hMogM8wPoSZT5ideRsVOcsBUoit0RKHaoeSkjrj9
+ x79iD7DGzB/BxddlQ+r7/EdRnP+zfTYvaH2ez3FpXBJB2NJoqqgzTeQ
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -119,190 +120,201 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a standalone selftest to verify that an emulated or physical
-Intel 82576 network card bound to the vfio cdev interface can be opened,
-bound to iommufd, and queried for device information without requiring
-an attached IOMMU page table or a running virtual machine.
+Conceptually refactor the buddy allocator providing guest_memfd with
+order-0 folios as the native provider.
 
-Structure test setup and teardown into a kselftest harness fixture,
-skipping cleanly if the device or /dev/iommu is unavailable, and
-verifying that queried device flags reflect PCI and reset capabilities.
+Define operations with an alloc_folio callback for the native provider,
+which still uses filemap_alloc_folio to allocate folios as before. Also
+define the attach callback to establish provider context. Route folio
+allocation in the get-folio path through provider ops, and set up the
+native provider during creation using a sentinel fd and attach.
+
+Attach the provider only after the entire inode and pseudo-file have been
+initialized. Exposing the inode to external providers before allocating the
+file or populating the file list risks race conditions and use-after-free
+bugs if an external provider immediately triggers operations on the
+guest_memfd inode.
+
+Now that the inode is exposed for other providers, add a write barrier to
+commit everything in the inode before the provider (and other racing
+provider threads) gets to use the gmem inode.
+
+Expose provider operations so external providers across the kernel can
+implement them.
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm           |   1 +
- .../selftests/kvm/x86/guest_memfd_vfio_test.c      | 153 +++++++++++++++++++++
- 2 files changed, 154 insertions(+)
+ include/linux/guest_memfd.h | 28 +++++++++++++++
+ virt/kvm/guest_memfd.c      | 86 ++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 110 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 5f7118bddfc36..05f87764b71e7 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -162,6 +162,7 @@ TEST_GEN_PROGS_x86 += x86/triple_fault_event_test
- TEST_GEN_PROGS_x86 += x86/recalc_apic_map_test
- TEST_GEN_PROGS_x86 += x86/aperfmperf_test
- TEST_GEN_PROGS_x86 += x86/guest_memfd_conversions_test
-+TEST_GEN_PROGS_x86 += x86/guest_memfd_vfio_test
- TEST_GEN_PROGS_x86 += access_tracking_perf_test
- TEST_GEN_PROGS_x86 += coalesced_io_test
- TEST_GEN_PROGS_x86 += dirty_log_perf_test
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
+diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
 new file mode 100644
-index 0000000000000..669acc6058b5b
+index 0000000000000..218de509769c1
 --- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-@@ -0,0 +1,153 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Minimal standalone test to verify an emulated or physical Intel 82576 (igb)
-+ * NIC bound to vfio-pci via IOMMUFD cdev, without creating a KVM guest.
-+ */
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
++++ b/include/linux/guest_memfd.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_GUEST_MEMFD_H
++#define _LINUX_GUEST_MEMFD_H
 +
-+#include <linux/iommufd.h>
-+#include <linux/pci_regs.h>
 +#include <linux/types.h>
-+#include <linux/compiler.h>
-+#include <linux/vfio.h>
 +
-+#include "kselftest_harness.h"
++struct file;
++struct folio;
++struct inode;
++struct mempolicy;
 +
-+#define PCI_VENDOR_ID_INTEL 0x8086
-+#define PCI_DEVICE_ID_INTEL_82576 0x10C9
-+
-+/* Intel 82576 BAR0 register offsets */
-+#define E1000_CTRL	0x00000 /* Device Control - RW */
-+#define E1000_STATUS	0x00008 /* Device Status - RO */
-+#define E1000_RAL0	0x05400 /* Receive Address Low (0) - RW */
-+#define E1000_RAH0	0x05404 /* Receive Address High (0) - RW */
-+
-+static char *find_igb_cdev_path(void)
-+{
-+	const char *sys_pci = "/sys/bus/pci/devices";
-+	struct dirent *dev_entry;
-+	DIR *dir = opendir(sys_pci);
-+	char cdev_path[PATH_MAX];
-+	char path[PATH_MAX];
-+
-+	if (!dir)
-+		return NULL;
-+
-+	while ((dev_entry = readdir(dir)) != NULL) {
-+		FILE *f;
-+		uint32_t vendor = 0, device = 0;
-+		DIR *vfio_dir;
-+		struct dirent *vfio_entry;
-+
-+		if (dev_entry->d_name[0] == '.')
-+			continue;
-+
-+		snprintf(path, sizeof(path), "%s/%s/vendor", sys_pci, dev_entry->d_name);
-+		f = fopen(path, "r");
-+		if (!f)
-+			continue;
-+		if (fscanf(f, "0x%x", &vendor) != 1) {
-+			fclose(f);
-+			continue;
-+		}
-+		fclose(f);
-+
-+		snprintf(path, sizeof(path), "%s/%s/device", sys_pci, dev_entry->d_name);
-+		f = fopen(path, "r");
-+		if (!f)
-+			continue;
-+		if (fscanf(f, "0x%x", &device) != 1) {
-+			fclose(f);
-+			continue;
-+		}
-+		fclose(f);
-+
-+		if (vendor != PCI_VENDOR_ID_INTEL || device != PCI_DEVICE_ID_INTEL_82576)
-+			continue;
-+
-+		/* Found an Intel 82576 device. Check if bound to vfio-pci cdev. */
-+		snprintf(path, sizeof(path), "%s/%s/vfio-dev", sys_pci, dev_entry->d_name);
-+		vfio_dir = opendir(path);
-+		if (!vfio_dir)
-+			continue;
-+
-+		while ((vfio_entry = readdir(vfio_dir)) != NULL) {
-+			if (strncmp(vfio_entry->d_name, "vfio", 4) == 0) {
-+				snprintf(cdev_path, sizeof(cdev_path), "/dev/vfio/devices/%s",
-+					 vfio_entry->d_name);
-+				closedir(vfio_dir);
-+				closedir(dir);
-+				return strdup(cdev_path);
-+			}
-+		}
-+		closedir(vfio_dir);
-+	}
-+
-+	closedir(dir);
-+	return NULL;
-+}
-+
-+FIXTURE(guest_memfd_vfio) {
-+	char *cdev_path;
-+	int iommufd;
-+	int vfio_fd;
++/**
++ * struct guest_memfd_provider_operations - Operations for external memory providers
++ * @attach: Attach to a resource file, perform filesystem-specific validation,
++ *          and return an opaque provider context.
++ * @alloc_folio: Allocate an uninserted folio for a given index and NUMA policy.
++ *               Must return a pointer to a struct folio on success, or an
++ *               ERR_PTR() error code on failure. Must never return NULL.
++ *
++ * Used by filesystems and device drivers that provide memory for guest_memfd.
++ */
++struct guest_memfd_provider_operations {
++	void *(*attach)(struct inode *gmem_inode, struct file *resource_file);
++	struct folio *(*alloc_folio)(void *provider, pgoff_t index,
++				     struct mempolicy *mpol);
 +};
 +
-+FIXTURE_SETUP(guest_memfd_vfio)
++#endif /* _LINUX_GUEST_MEMFD_H */
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index f865fa0e46840..545c3e646e9c1 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -3,6 +3,7 @@
+ #include <linux/backing-dev.h>
+ #include <linux/falloc.h>
+ #include <linux/fs.h>
++#include <linux/guest_memfd.h>
+ #include <linux/kvm_host.h>
+ #include <linux/maple_tree.h>
+ #include <linux/mempolicy.h>
+@@ -35,6 +36,9 @@ struct gmem_inode {
+ 	struct inode vfs_inode;
+ 	struct list_head gmem_file_list;
+ 
++	void *provider;
++	const struct guest_memfd_provider_operations *provider_ops;
++
+ 	u64 flags;
+ 	/*
+ 	 * Every index in this inode, whether memory is populated or
+@@ -50,6 +54,65 @@ static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
+ 	return container_of(inode, struct gmem_inode, vfs_inode);
+ }
+ 
++static void *gmem_native_attach(struct inode *gmem_inode,
++				struct file *resource_file)
 +{
-+	struct vfio_device_bind_iommufd bind_args = {};
-+	int ret;
++	return GMEM_I(gmem_inode);
++}
 +
-+	self->cdev_path = find_igb_cdev_path();
-+	if (!self->cdev_path)
-+		SKIP(return, "Intel 82576 device bound to vfio not found\n");
++static struct folio *gmem_native_alloc_folio(void *provider, pgoff_t index,
++					     struct mempolicy *mpol)
++{
++	struct gmem_inode *gi = provider;
++	struct folio *folio;
++	gfp_t gfp;
 +
-+	self->iommufd = open("/dev/iommu", O_RDWR);
-+	if (self->iommufd < 0) {
-+		free(self->cdev_path);
-+		self->cdev_path = NULL;
-+		SKIP(return, "Failed to open /dev/iommu\n");
++	gfp = mapping_gfp_mask(gi->vfs_inode.i_mapping);
++	folio = filemap_alloc_folio(gfp, 0, mpol);
++	if (!folio)
++		return ERR_PTR(-ENOMEM);
++
++	return folio;
++}
++
++static const struct guest_memfd_provider_operations gmem_native_provider_ops = {
++	.attach = gmem_native_attach,
++	.alloc_folio = gmem_native_alloc_folio,
++};
++
++#define GMEM_RESOURCE_FD_NATIVE (-1)
++
++static int kvm_gmem_attach_resource(struct inode *inode, int resource_fd)
++{
++	const struct guest_memfd_provider_operations *ops = NULL;
++	struct file *resource_file = NULL;
++	void *provider;
++
++	if (resource_fd == GMEM_RESOURCE_FD_NATIVE)
++		ops = &gmem_native_provider_ops;
++	else
++		return -EOPNOTSUPP;
++
++	provider = ops->attach(inode, resource_file);
++	if (IS_ERR(provider))
++		return PTR_ERR(provider);
++
++	GMEM_I(inode)->provider = provider;
++	GMEM_I(inode)->provider_ops = ops;
++
++	return 0;
++}
++
++static struct folio *gmem_provider_alloc_folio(struct gmem_inode *gi,
++					       pgoff_t index,
++					       struct mempolicy *mpol)
++{
++	if (gi->provider_ops && gi->provider_ops->alloc_folio)
++		return gi->provider_ops->alloc_folio(gi->provider, index, mpol);
++
++	return ERR_PTR(-EOPNOTSUPP);
++}
++
+ #define kvm_gmem_for_each_file(f, inode) \
+ 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
+ 
+@@ -143,11 +206,10 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 		return folio;
+ 
+ 	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
+-	folio = filemap_alloc_folio(mapping_gfp_mask(inode->i_mapping), 0,
+-				    policy);
++	folio = gmem_provider_alloc_folio(GMEM_I(inode), index, policy);
+ 	mpol_cond_put(policy);
+-	if (!folio)
+-		return ERR_PTR(-ENOMEM);
++	if (IS_ERR(folio))
++		return folio;
+ 
+ 	r = filemap_add_folio(inode->i_mapping, folio, index, GFP_KERNEL);
+ 	if (r) {
+@@ -996,6 +1058,20 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 	xa_init(&f->bindings);
+ 	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
+ 
++	/*
++	 * Ensure all inode and file initialization (such as gmem_file_list and
++	 * bindings) is globally visible before exposing the inode to the
++	 * provider in ->attach().
++	 */
++	smp_wmb();
++
++	err = kvm_gmem_attach_resource(inode, GMEM_RESOURCE_FD_NATIVE);
++	if (err) {
++		fput(file);
++		put_unused_fd(fd);
++		return err;
 +	}
 +
-+	self->vfio_fd = open(self->cdev_path, O_RDWR);
-+	ASSERT_GE(self->vfio_fd, 0);
-+
-+	bind_args.argsz = sizeof(bind_args);
-+	bind_args.iommufd = self->iommufd;
-+	ret = ioctl(self->vfio_fd, VFIO_DEVICE_BIND_IOMMUFD, &bind_args);
-+	ASSERT_EQ(0, ret);
-+}
-+
-+FIXTURE_TEARDOWN(guest_memfd_vfio)
-+{
-+	if (self->vfio_fd >= 0)
-+		close(self->vfio_fd);
-+	if (self->iommufd >= 0)
-+		close(self->iommufd);
-+	free(self->cdev_path);
-+}
-+
-+TEST_F(guest_memfd_vfio, get_device_info)
-+{
-+	struct vfio_device_info dev_info = {};
-+	int ret;
-+
-+	dev_info.argsz = sizeof(dev_info);
-+	ret = ioctl(self->vfio_fd, VFIO_DEVICE_GET_INFO, &dev_info);
-+	ASSERT_EQ(0, ret);
-+	ASSERT_TRUE(dev_info.flags & VFIO_DEVICE_FLAGS_PCI);
-+	ASSERT_TRUE(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
-+	ASSERT_GE(dev_info.num_regions, VFIO_PCI_NUM_REGIONS);
-+	ASSERT_GT(dev_info.num_irqs, 0);
-+}
-+
-+TEST_HARNESS_MAIN
+ 	fd_install(fd, file);
+ 	return fd;
+ 
+@@ -1355,6 +1431,8 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+ 	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN | MT_FLAGS_USE_RCU);
+ 
+ 	gi->flags = 0;
++	gi->provider = NULL;
++	gi->provider_ops = NULL;
+ 	INIT_LIST_HEAD(&gi->gmem_file_list);
+ 	return &gi->vfs_inode;
+ }
 
 -- 
 2.56.0.455.g6c5a503b38-goog
