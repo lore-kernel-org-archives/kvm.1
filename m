@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794098673;
-	b=DfmDKOiUZg1B+kHWyTC1I5dYZHS4hAunDLBzx+Hm9QaMPKpLX7wh5HBYFaNreWSRA091
-	 0z/Ded68gJIoo9ORgUjH/ccM4mJqr1VhiPtuoj4uYiX6VKPhhQGkQxZLz19NadH/mZ0iz
-	 qUYOoBgE4id8fdlYc+UoegRa6VMhwrIbe6QBbLFQTi2Ww/L0Q0KHE/Y3WfnIKigWI7YYh
-	 Oqu/H4AFICA0e80enqhaaXIMsdMXf4Yui6Cf4ItiJBPvNRQQ/7Of42U8Iw8PRdtesoWy7
-	 8fVOTbQTJqXxiFwnQWEmotjWnCQVXpzk3/cLz4iY3L6sOuTEj9/eQCAWEO0PS1X8t1A==
+	t=1794098674;
+	b=qsu9N7w2nz0EbJ5l6ILkYVO5IYGNV5q6+nDH1JNRYwhvfGhK4hSw0QSpPcEP1qfLxi9s
+	 0joBs/3giSziDnxSFHz1Hpxmqz9PGrbZQSUSCBul4sakTqRJRHWArp+Qux5psI+3D5u39
+	 4Wr36DAAwaGmI8ZmRxPLaLJaUsBDAoN12Jj3DgSjNlKm+0GVPjEZLytU8RNwE6hBf3/8e
+	 P7WUOSb0/lQ1kucSFY4eFSG7n0GCi4spySE1zQ8CVhylkK/ldnm/WTHa4p5rk9LxHoMQO
+	 G9zG+d5bP7FBg3/vrSNTKyD8n1UdibObD0eCjLO/U1GomqVBhP5v4nkc5Az0VfJ3KGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794098673;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098674;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=FYDflmfipi1PjLcDGCMu62uuoKoinLSLqz7eYoqq+KQ=;
-	b=GhPWO8qpGM8/0C88wqz6a3IYLfXuAuPcGXcsSj+ZIYiXYCdwGG9v8qM6zWVCMwHx0mZ3
-	 EzapYTgcWshW7Ver0LLoHM8E55MhogB4zYpjBsXxkGSRgzxLT2Gmq1s1SL7IoBLz/cYYH
-	 j+lA2yqcQL/gr4z5wXYJPxr9h65VhMqK8TKoonGpzHXtWg6TT2FSGgkUXJI6zsnfHbqhj
-	 Dq5StPA253CP8ReC5/hz8krvtf9BeT32yuxmLzG1Y4kx2pcRA1E5kI/xPxUc9mbWZd7ps
-	 7k3o9OukY32KOqhffDKL6RvP5APmzNw20uJI5XsNtcGa5lXx5vkkE6yHJppKbg03nKg==
+	bh=RmJ7M5blQgPkbOX5TxgxTr5nIo11N9om45iOa6C2Vkg=;
+	b=fFSP5B6rjWNiu80NmOLf7GoVg+iX0RdBmZBa8Z6s52A7BJmVWMD9Jv18L5BRWipyf+fq
+	 9bXM5Cl7UaoSq2Wh9bqM84XXr9OQGoFrja/yODd1liT+GA+lqsO8E1D6e+tI7hcPnCxGc
+	 Uo1W8tixSN+OEXTUp2MZkzfJoJfSsgXRJPpoqiyn87SEbZhU47Yg9s5fznrIwvTmjR5K+
+	 OCv9Gb28j1yOz2moLq4BVjj20FrrBf52lE/OMzkkpR8Hs+sb4AlXiNChsdhdLiBQ4oKUa
+	 ruYuBBDY9ByO68rKf5CMtWZHzCckfibHrJJXnPXBL4alFJBkZQRmHnM9bB6WDOCrAaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ROnDo2up;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KyjKx80N;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04179606D808
-	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D666606A331
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ROnDo2up
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D031F008A3;
-	Sun,  8 Nov 2026 00:44:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KyjKx80N
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657391F008A1;
+	Sun,  8 Nov 2026 00:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098672;
-	bh=FYDflmfipi1PjLcDGCMu62uuoKoinLSLqz7eYoqq+KQ=;
+	s=k20260515; t=1794098674;
+	bh=RmJ7M5blQgPkbOX5TxgxTr5nIo11N9om45iOa6C2Vkg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ROnDo2upa0yparepTbW0CMUrMFlVNDpAMXV4nnDDtZ5aSls0t0S4WbIrCopMEAQO3
-	 n4fcDVYvu2tYz31BvFH+Pz4lod5myGGr7GK1i2n2x6K5gvdN1GdaMDNmdoHGYx54aZ
-	 zpQ9R7gxyOMgEDpM5WYJXtsNDaPpiybZlN6pBC3Y+oen6u3Y93MhJL572CUBiW45i/
-	 SXfG4FPspabqXUCX655V3wv26QpLh2mY9o8eL313drTpnQH45ONM6zLHTjd7lO+pWV
-	 cnYZM5cnTje5SOd4Y+4YfjGLg6Yu6vM/alHVAgfKsfg13Tq9OpIh9CbTtMTUabOXid
-	 mdYE8LF6yNG+w==
-Message-ID: <sashiko-outbox-203479@kernel.org>
+	b=KyjKx80NzW7hR0AOJO5TecuHZDm4+kHqkWhd3wh/cikDNlwYq7UuehUENlT5VvGml
+	 51T6arQNg3tui+MEgdfVbZLsPAUKbhbjPxNEUAP2HSmD6YNMO228pR1/i9F3ZPcFlS
+	 8Ne1EuVQmlPDtlwwirP8xa91grh76JGNip1BTePfD3myMj1W14aKoNe1wHRx8L6Iu3
+	 ihwJLpdJmP/hP6iK71fRoJ5ls12dTAfLbKCvdUKUDuWGA0T0H0hnCFELotgiD0jjGa
+	 EtN2XJmsuubSnQOa0NPb+VUTiZe+s2VfnyK+Ody/GS0jkCXeFoUcGAhHQThU3PUiyi
+	 bniB0Jkhg+EEA==
+Message-ID: <sashiko-outbox-203480@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 68/88] vfio/pci: Use iov_iter for MMIO read and
- write
+Subject: Re: [PATCH RFC v3 69/88] vfio: Dispatch guest_memfd read and write
+ provider ops via vfio_device_ops
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -55,12 +55,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-68-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-69-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-68-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-69-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:31 +0000
+Date: Sun, 08 Nov 2026 00:44:32 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,119 +72,42 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] vfio/pci: missing linux/uio.h include in vfio_pci_rdwr.c breaks
-  build
+- [Low] vfio: missing kernel-doc for gmem_read and gmem_write in
+  vfio_device_ops
 --
 
-commit 857abb2cc1a3ab7c6f488750b101680f17be6f5d
+commit 1e0b7bdc6352dbf69f404e2847472ddba12fa151
 Author: Ackerley Tng <ackerleytng@google.com>
 
-vfio/pci: Use iov_iter for MMIO read and write
+vfio: Dispatch guest_memfd read and write provider ops via vfio_device_ops
 
-This commit refactors the internal MMIO read and write helpers in
-vfio_pci_rdwr.c to operate on struct iov_iter, while keeping
-vfio_pci_core_do_io_rw() unchanged by wrapping user buffers with
-import_ubuf().
+This commit implements the .read and .write callbacks on
+vfio_device_gmem_provider_ops to dispatch data-plane reads and writes to
+the bus driver's .gmem_read and .gmem_write callbacks on struct
+vfio_device_ops.
 
-> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci=
-_rdwr.c
-> index e5f1f60513709..cc64722d1ab9a 100644
-> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
-> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-> @@ -91,34 +91,34 @@ VFIO_IOREAD(32)
->  VFIO_IOREAD(64)
-> =20
->  #define VFIO_IORDWR(size)						\
-> -static int vfio_pci_iordwr##size(struct vfio_pci_core_device *vdev,\
-> -				bool iswrite, bool test_mem,		\
-> -				void __iomem *io, char __user *buf,	\
-> -				loff_t off, size_t *filled)		\
-> -{									\
-> -	u##size val;							\
-> -	int ret;							\
-> -									\
-> -	if (iswrite) {							\
-> -		if (copy_from_user(&val, buf, sizeof(val)))		\
-> -			return -EFAULT;					\
-> -									\
-> -		ret =3D vfio_pci_core_iowrite##size(vdev, test_mem,	\
-> -						  val, io + off);	\
-> -		if (ret)						\
-> -			return ret;					\
-> -	} else {							\
-> -		ret =3D vfio_pci_core_ioread##size(vdev, test_mem,	\
-> -						 &val, io + off);	\
-> -		if (ret)						\
-> -			return ret;					\
-> -									\
-> -		if (copy_to_user(buf, &val, sizeof(val)))		\
-> -			return -EFAULT;					\
-> -	}								\
-> -									\
-> -	*filled =3D sizeof(val);						\
-> -	return 0;							\
-> +static int vfio_pci_iordwr##size(struct vfio_pci_core_device *vdev,		\
-> +				bool iswrite, bool test_mem,			\
-> +				void __iomem *io, struct iov_iter *iter,	\
-> +				loff_t off, size_t *filled)			\
-> +{										\
-> +	u##size val;								\
-> +	int ret;								\
-> +										\
-> +	if (iswrite) {								\
-> +		if (!copy_from_iter_full(&val, sizeof(val), iter))		\
-> +			return -EFAULT;						\
-> +										\
-> +		ret =3D vfio_pci_core_iowrite##size(vdev, test_mem,		\
-> +						  val, io + off);		\
-> +		if (ret)							\
-> +			return ret;						\
-> +	} else {								\
-> +		ret =3D vfio_pci_core_ioread##size(vdev, test_mem,		\
-> +						 &val, io + off);		\
-> +		if (ret)							\
-> +			return ret;						\
-> +										\
-> +		if (!copy_to_iter_full(&val, sizeof(val), iter))		\
-> +			return -EFAULT;						\
-> +	}									\
-> +										\
-> +	*filled =3D sizeof(val);							\
-> +	return 0;								\
->  }									\
+> diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+> index 8022adedc26a6..012a233a375ab 100644
+> --- a/include/linux/vfio.h
+> +++ b/include/linux/vfio.h
+> @@ -130,6 +130,10 @@ struct vfio_device_ops {
+>  					 u64 attributes);
+>  	int (*gmem_lookup_pfn_range)(struct vfio_device *device, pgoff_t index,
+>  				     unsigned long *pfn, size_t *nr_pages);
+> +	ssize_t (*gmem_read)(struct vfio_device *device, void *buf,
+> +			     size_t count, loff_t *ppos);
+> +	ssize_t (*gmem_write)(struct vfio_device *device, const void *buf,
+> +			      size_t count, loff_t *ppos);
+>  	char	*name;
+>  	int	(*init)(struct vfio_device *vdev);
+>  	void	(*release)(struct vfio_device *vdev);
 
-[ ... ]
-
-> +ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool t=
-est_mem,
-> +			       void __iomem *io, char __user *buf,
-> +			       loff_t off, size_t count, size_t x_start,
-> +			       size_t x_end, bool iswrite,
-> +			       enum vfio_pci_io_width max_width)
-> +{
-> +	struct iov_iter iter;
-> +	int ret;
-> +
-> +	ret =3D import_ubuf(iswrite ? ITER_SOURCE : ITER_DEST, buf, count, &ite=
-r);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return __vfio_pci_core_do_io_rw(vdev, test_mem, io, &iter, off, count,
-> +					x_start, x_end, iswrite, max_width);
-> +}
-
-[Severity: High]
-Does drivers/vfio/pci/vfio_pci_rdwr.c need to include <linux/uio.h>?
-
-struct iov_iter, ITER_SOURCE, ITER_DEST, import_ubuf(), iov_iter_advance(),
-copy_from_iter_full(), and copy_to_iter_full() are defined in linux/uio.h,
-while linux/fs.h only forward-declares struct iov_iter. On x86_64 with
-CONFIG_IA32_EMULATION=3Dy, linux/uio.h happens to be pulled in transitively
-via asm/ia32.h -> linux/compat.h, but builds on architectures such as arm64
-(or x86_64 with CONFIG_IA32_EMULATION=3Dn) fail with an incomplete type for
-struct iov_iter and implicit function declarations.
+[Severity: Low]
+Should @gmem_read and @gmem_write be documented in the kernel-doc comment
+above struct vfio_device_ops?  Without descriptions for these new members,
+scripts/kernel-doc warns about undocumented struct members under W=3D1
+builds.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D68
+native-providers-v3-0-8484dde66a7e@google.com?part=3D69
