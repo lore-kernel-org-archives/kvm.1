@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794098680;
-	b=kdJnzPN4mLJcmahsyQK//L7kT5ZsQ+3RCt/lRB+d5tL6TDC0BfApJpUlb+U/kx6Oihib
-	 ImnJ57CpgSPhCvdztFxj/AzRTbk7O7s1z8/UTKBwlZ43b98ktdNcllFVCD95GdsZMf5Jn
-	 AXT2nBxwiAe/IOYIhFk/RbDrquOVKB5ywXH4PTZTUpk5lyk2DTpLeH/O0YI3oAxBFdkdJ
-	 4sL3LOgj7IDxD6klESQFSq/HPhajV8PXdgpuS7IRBKf120YPk2QAuoECUzicfhtJp5d/n
-	 svusMWLZMS9e6Z8G/fTk8VNNSbolufWJHigAAVzO7iEa3Z7fnNsOhE4j791yLq0ZLiQ==
+	t=1794098682;
+	b=2uIG2T2t/LQQJjY7nkxQjTkffLb46CnhgEdgBEQsK6eKQy+MwIKBq9mt5jkeLaO89PMg
+	 eW2lgSPmXB+07X2VTwCItJryoEEdHKActnfMUP/E847hObSnicBLfNWfbp2XuhsxGoS8m
+	 VbpjaersxacYeHVtK1CN1F7L2SE/VpjFlUz2HAEM5vKGXBA2wbcrDF6G1KSgbp9/t9ul5
+	 nKak4EwdK9ZVv+WeIMeswmT3Ex0LBgXFPyNLVNg1NmuNs1TM7ZUuBY5agUE48ocWQzTdb
+	 itXH4EfD5QmZjZKhVbNp95dZxaC47oGvsdlmf66+gMeBuvVPQA1//ymlugr6VowcL9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794098680;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098682;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=hcG40dDe6eONlWF95luQZ5gasf6jPGFMuaspMiLYjug=;
-	b=s9NVoxEhUCz2y49H8vHmUQVoXpoYccOeF8Cq4YShV3mHfIsCGDWs6FVAWgzPvdrwVGZc
-	 QbfNLRUrA/cGOzyzPN/EOhvLt+hae95BW8kARdMrRF3FMy/TMupw1XOZWcLP35LAP77df
-	 cbLkEO44mCZnlBlLrdCtTG+B5KC5qNzd1KYiMdzzm11wcOsjeWSlfMP6cxatAew6rSIvX
-	 kqrrHi3S+bik+Ey0eT6R1mBHefF3fIXsZ+zaWhPaYIxKNFXJYNAJ+kU4+Sgt3PJZBgvy2
-	 EVYMS7Rx6XO4t7yFm67OFmz5JksL2xAlXA0/QNlsv/8YOj24vypGfn2MJrkjgube8Vw==
+	bh=fR9Re5ZDd5XTnUKoH8w65OpXbdqyo213h0gpni69V6U=;
+	b=aSqolHSgaYuhHmNGCyk/h3NP9i10z35qwvyNABKkCCB4xKxHtjBjXnmBNenw5DBg71bu
+	 4ZPFThCjHF7zC8T1RoTKPHoNLOHYt2iLiOxlNzFRnlwsuA4eY6L2rxSQRiVbsJmFnHDNK
+	 9L2oC3bir2bmTFEyx0uZMgCu31g+uEw6HhQhSJLdX6bOQoQcXJiMia+kqlrbyL9pZLGyG
+	 DMx7kYow0A8xFBdrSIuomSljj2jhuG+fZTISRTits6jcihSOeo/cn/y6vN7+yPF15LTby
+	 ilm0NeQA3jTKRvazzOLLk22504CZhuJqfPt+O62Yoq7Gu1uR4cx/numTYcymE1jeRaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="TTavj1U/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=agTlvQRc;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02576606D819
-	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DB5606A32F
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TTavj1U/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DFA1F008A1;
-	Sun,  8 Nov 2026 00:44:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=agTlvQRc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2ED1F008A3;
+	Sun,  8 Nov 2026 00:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098679;
-	bh=hcG40dDe6eONlWF95luQZ5gasf6jPGFMuaspMiLYjug=;
+	s=k20260515; t=1794098682;
+	bh=fR9Re5ZDd5XTnUKoH8w65OpXbdqyo213h0gpni69V6U=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TTavj1U/myGqLFZD6+KicnmXy1BtBuGpP/tZKjRXIGCilnrf+Nd1AhZYlnCWwT9w8
-	 /XaZKfF4GX5UnsXwEQyZp8a0mrgCsSGEGIj/JYr/o0nbHKVlSDxLvEZ4tbcxUEMQF4
-	 3PKm2n+9G2AxihGhN9MT0wTofZH+75dBxGhLbMd78uUqsDd7NKyrQFeK2npVbc1TMm
-	 6QxtbLd/pHjL1KwlanGZDP4A5Bi8q4TojxuerELBfbyXQwzybjDlqptGuM6jTcQ1/f
-	 BNToga2SouexEh5H2LILp1uDJPz3WS8FeFQe5ervIkXzxjc6qtHxwOpXUz7+dSUujS
-	 eBUxSlD8vmUsQ==
-Message-ID: <sashiko-outbox-203490@kernel.org>
+	b=agTlvQRcexnHXTDYph5CQU33CYyOD/euPr8we+Ch/yQO1DVAXHt/3jJxWbOuIukPX
+	 YQrdOFz7Md5fELSDZOfOoy7N2zIl7ETEqkKXrQzG24mdwrSSAi9ojfzvFErRc9zNUJ
+	 kPNCRKB4b1TbtcSId5IvKYcV1gyt72SuDZN9d3jEm3Z3/bNmhmHksnvpC0nw7AH7X1
+	 zjAMdGWgUoAkcs17c3MEyWPOWNbCTAucnxnFsNj/gwg6dCCmFrvXAnN4bof9xuzcm5
+	 CzLXvBmar9533rGI/jlnUR0u+cEZOf3J3AOcPtmnbJ6yGWiG5edbdhZkWMKtBQrhuh
+	 lonp0zyOeKKRg==
+Message-ID: <sashiko-outbox-203498@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 79/88] KVM: selftests: Verify BAR revocation and
- access gating in low power state
+Subject: Re: [PATCH RFC v3 87/88] QUESTION: KVM: guest_memfd: Disallow
+ private mappings of shared-only PFNs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -55,12 +55,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-79-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-87-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-79-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-87-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:38 +0000
+Date: Sun, 08 Nov 2026 00:44:41 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,97 +72,91 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] KVM: selftests: low_power_bar_revocation() fails on direct
-  VFIO variant
+- [Medium] KVM: guest_memfd: private attribute on MSI-X BAR page blocks
+  VMM MMIO access
 --
 
-commit de038c6f26d71384fc01f1fa33e4f547141e9831
+commit e4385565a5ed77222308f8b663cc4c2b0a672e04
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: selftests: Verify BAR revocation and access gating in low power state
+QUESTION: KVM: guest_memfd: Disallow private mappings of shared-only PFNs
 
-This commit adds a low_power_bar_revocation subtest to guest_memfd_vfio_test
-to verify that entering D3hot revokes BAR mmap mappings and rejects
-pread/pwrite accesses until returning to D0.
+This commit replaces the check_set_attributes provider callback with the
+GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE PFN attribute so that VFIO PCI MSI-X
+pages are blocked from private stage-2 mappings and population at fault
+time rather than during attribute conversion.
 
-> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c b/to=
-ols/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-> index 03c324f7f618d..cf2d46a365504 100644
-> --- a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-> @@ -443,4 +443,90 @@ TEST_F(guest_memfd_vfio, device_reset)
->  	ASSERT_EQ(0, munmap(bar0, bar0_info.size));
->  }
-> =20
-> +TEST_F(guest_memfd_vfio, low_power_bar_revocation)
-> +{
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 385b517b49ed5..cd484bdcb3f0c 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
 [ ... ]
-> +	/* Enter low-power D3hot state */
-> +	feat.argsz =3D sizeof(feat);
-> +	feat.flags =3D VFIO_DEVICE_FEATURE_SET |
-> +		     VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY;
-> +	ret =3D ioctl(self->vfio_fd, VFIO_DEVICE_FEATURE, &feat);
-> +	ASSERT_EQ(0, ret);
-> +
-> +	/*
-> +	 * In low-power state, BARs are marked unavailable and mappings are
-> +	 * revoked.
-> +	 *
-> +	 * - Host mmap accesses trigger SIGBUS because page tables were zapped
-> +	 *   and get_pfn fails with -EFAULT while in low power state.
-> +	 * - Host pread() and pwrite() on the BAR descriptor fail with -EIO.
-> +	 */
-> +	TEST_EXPECT_SIGBUS((void)READ_ONCE(*(uint32_t *)((char *)bar0 + E1000_R=
-AL0)));
-> +	TEST_EXPECT_SIGBUS(WRITE_ONCE(*(uint32_t *)((char *)bar0 + E1000_RAL0),=
- 0x12345678));
-> +
-> +	val =3D 0;
-> +	ret_bytes =3D pread(self->bar_fd, &val, sizeof(val), bar0_info.offset +=
- E1000_STATUS);
-> +	ASSERT_EQ(-1, ret_bytes);
-> +	ASSERT_EQ(EIO, errno);
-> +
-> +	val =3D 0x12345678;
-> +	ret_bytes =3D pwrite(self->bar_fd, &val, sizeof(val), bar0_info.offset =
-+ E1000_RAL0);
-> +	ASSERT_EQ(-1, ret_bytes);
-> +	ASSERT_EQ(EIO, errno);
+> @@ -1128,12 +1118,6 @@ static int __kvm_gmem_set_attributes(struct inode =
+*inode, pgoff_t start,
+>  	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
+>  		goto out;
+> =20
+> -	r =3D gmem_provider_check_set_attributes(gi, start, nr_pages, attrs);
+> -	if (r) {
+> -		*err_index =3D start;
+> -		goto out;
+> -	}
+> -
+>  	mas_init(&mas, mt, start);
+>  	r =3D kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+>  	if (r) {
+> @@ -1774,10 +1758,11 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_=
+memory_slot *slot,
+> =20
+>  	/*
+>  	 * Private memory requires exclusive, writable guest ownership and
+> -	 * cannot be backed by a read-only frame.
+> +	 * cannot be backed by a read-only or shared-only frame.
+>  	 */
+>  	if (kvm_gmem_is_private_mem(file_inode(file), index) &&
+> -	    (*pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY)) {
+> +	    (*pfn_attrs & (GUEST_MEMFD_PFN_ATTRS_READONLY |
+> +			   GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE))) {
+>  		r =3D -EFAULT;
+>  		goto out_put_folio;
+>  	}
 
 [Severity: Medium]
-Will these pread() and pwrite() assertions fail in the direct fixture
-variant?
+If userspace converts an entire BAR to KVM_MEMORY_ATTRIBUTE_PRIVATE
+without carving out the MSI-X range, does that block the VMM from
+accessing the MSI-X Pending Bit Array or other device registers sharing
+the MSI-X page?
 
-In the guest_memfd variant, self->bar_fd is self->gmem_fd, and
-vfio_pci_core_gmem_rw() rejects the access with -EIO because
-vdev->bars_available is false.  In the direct variant, however,
-self->bar_fd is self->vfio_fd, and VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY
-wakes the device on any descriptor access through the VFIO uAPI:
+When a VFIO PCI device is attached to guest_memfd, it is bound with
+VFIO_DEVICE_BIND_FLAG_CTRL_ONLY, which rejects direct mmap(), pread(), and
+pwrite() on the VFIO device fd for mappable BARs.  Once
+__kvm_gmem_set_attributes() marks the MSI-X page private in
+gi->attributes, guest stage-2 faults are rejected here with -EFAULT, while
+host VMM accesses through guest_memfd are also rejected because both
+kvm_gmem_fault_user_mapping() and kvm_gmem_rw() require the page's
+software attribute to be shared:
 
-drivers/vfio/pci/vfio_pci_core.c:vfio_pci_rw() {
-	...
-	ret =3D pm_runtime_resume_and_get(&vdev->pdev->dev);
-	if (ret) {
-		pci_info_ratelimited(vdev->pdev, "runtime resume failed %d\n",
-				     ret);
-		return -EIO;
-	}
-
-	switch (index) {
-	...
-	case VFIO_PCI_BAR0_REGION_INDEX ... VFIO_PCI_BAR5_REGION_INDEX:
-		ret =3D vfio_pci_bar_rw(vdev, buf, count, ppos, iswrite);
-		break;
+virt/kvm/guest_memfd.c:kvm_gmem_fault_user_mapping() {
+    ...
+	if (!kvm_gmem_is_shared_mem(inode, vmf->pgoff)) {
+		r =3D -EACCES;
+    ...
 }
 
-Because vfio_pci_rw() resumes the device to PCI_D0 before calling
-vfio_pci_bar_rw(), and __vfio_pci_memory_enabled() only checks
-pdev->current_state < PCI_D3hot and PCI_COMMAND_MEMORY, pread() and
-pwrite() succeed and return sizeof(val) instead of failing with EIO.
-Should the pread()/pwrite() EIO checks be gated on variant->use_gmem, or
-should D3hot be entered via PCI_PM_CTRL in config space so both variants
-stay in D3hot across descriptor accesses?
+virt/kvm/guest_memfd.c:kvm_gmem_rw() {
+    ...
+		if (!kvm_gmem_range_has_attributes(inode, start, nr_pages, 0)) {
+			filemap_invalidate_unlock_shared(inode->i_mapping);
+			return total_done ?: -EFAULT;
+		}
+    ...
+}
+
+As a result, even if the VMM places a memslot hole over the MSI-X range to
+trap guest MMIO accesses, it has no way to read or write co-located
+registers on that page unless the MSI-X range is kept shared in
+gi->attributes.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D79
+native-providers-v3-0-8484dde66a7e@google.com?part=3D87
