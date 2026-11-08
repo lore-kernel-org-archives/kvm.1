@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794098635;
-	b=xO6S1qJ/CrWQk0K5FWeSp0PCyLgzIO8YpeiRszW9MP5rVH0vV74rjl3W6wTSxGZWJZtJ
-	 snMnEuumyRCJonaULJIclE5ugNaHWUXPCoBRJf34Gl2xAsNI+nbgA5t7srh8RkG11xy8U
-	 BFkKN7eq750MZvqKm6ZXJnMgmvgIJmtVKUG4mX87q/3TFWyG4mHRthsV6jAJK2PlX2Voo
-	 yh1tSjwpuzSx4FAKRWdA7i/NToBKnJtARNvsmyGPON7EPMgkn5BbhQaRkIzwuPdJ1dTIq
-	 Ez/thq71uXpjp8FzYztrrqxqWsJtG6JRsGXANwMCCQusHEedr+upf88RVthz045/weg==
+	t=1794098636;
+	b=oB/gySrlVmdm1KHeK9i0SZSpm7r5BIe3190CWGObeadl3FtFtP++9bVDV+0VNYmbK/ZM
+	 lamx+enjKjbWanrxPT07jiGKSsskzsFFk7aKF1b9J+4LjezUT6A26/ZNz2/xgtcLZBASq
+	 Qo0sv4UXCuuUM723v7qcW27EJfsqGUrbQyO5emYruLSYYWQFmp4Kx7u2I2uChFW56RyxT
+	 vIEr8V5s5yBZG5yKN9K0J8gGh5KjffAi8O/b37jF8HJBmhgVqGKB2cVhhvYp1A4f0Iy8R
+	 lR20+GGn92sIxOz9g3TaCSttD2mCpJgTwdE3cvGNxNEJdSCDhX+oLROfMN/ecJfJlaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794098635;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098636;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=5lTFbTp8SX1BqlpqFeKD2Roy979BsH+gPIoXkiOvO60=;
-	b=IevJHDj6ktbBcfgFe+JJKGLTBUQ7HxD9WWrH7BxsdIcvqOMxEZYGlTP+yLejB/PbrI4V
-	 tkYmhVeBscHCPXKDa0lTeP/A7abdJ97bV97/Ocu89AvUnL1SlwOAuTIJCggPkMMMvX4xw
-	 mQe29WSTDbEi3xFPkxW1RkxFsIAQYc/X7J+Ubx2w2/kGT/9VL8cmNN9NaLzcEi/qPacHC
-	 BQgxFSYuK/Qj+3Y7AtyBaX6+CyBOSqNil9Mgrswg2cN4FcwR+iHJW0wlnnIlw8WpFsZ9B
-	 toUMxQQECBkCa1LkSJ6jI/WnXRSKf30CUxpIENB0OgVbZIctJFM/DD2e6/DOpwpoCiw==
+	bh=zDhvwxe5afuvG0cscGKypAl/DKIeZ21ysxl5HSrSzUY=;
+	b=kijYxPmqquIzdZelu8ZJX75NPY8nseA8ZYgkFfGLXoVvJGjEKxRk1rrico7SzBVKk3ak
+	 NL4FbYCBYWv0oGOhPXPNW2yhX0dKIfgF7uIDx0byBbGjFrx72shWQvww2VmvrC7dR3JAe
+	 D5wQxabSjSDUbX0dptxnPHsfFTQf3aBqBIVUF/Z9aC+xrqFHIzMFUrIk6QqBrwjBqroBE
+	 VMbxCZpGNSVPgC60X0AnsydvZYHn4r8U9hRJ0VYtHVCWcAK65gjxne9iNyJ90+CEpbCRg
+	 A7cZylk5S+0hCAK3e8QOHyXMn/fGKIUToEbmnq9JK779YFGffZ9GbGAjKl309GMNSVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lX8TDov4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N834jSyC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F6F606A33D
-	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9FA606A33E
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lX8TDov4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9A61F008A2;
-	Sun,  8 Nov 2026 00:43:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N834jSyC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4DD1F008AB;
+	Sun,  8 Nov 2026 00:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098634;
-	bh=5lTFbTp8SX1BqlpqFeKD2Roy979BsH+gPIoXkiOvO60=;
+	s=k20260515; t=1794098636;
+	bh=zDhvwxe5afuvG0cscGKypAl/DKIeZ21ysxl5HSrSzUY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lX8TDov4ULNLvQ10fcrEqtKKu13fip9QIJo5CePbMJ8NETJvjJ9S2FNv+jKFHoe7g
-	 VQcOypSIbAzMrdXoS7G/+mRnuOSnPPULxsRuJsZP4yBmcGDtcvERXSNV3yxSdEuHsn
-	 Qr/2wmoUgCoN64RU7558YaG2EwPhCMeZhvO70rncM9rBbq1lGnTDI8c+ptucVqFtjL
-	 JCZLF2On7pd3qK4rtv+jNkWXu+rYnOoiA9c9N+QIP+NpU+E4mAQkMmFKQtLKaJU8WC
-	 utj+TXwK5Hi48SMtGqZ61YvZckB/NEh9hzl1RkhLa2WQJjHhOHdJjTjmZ0zzJog0L5
-	 Fu/00n9BEhDEg==
-Message-ID: <sashiko-outbox-203416@kernel.org>
+	b=N834jSyCk3yngtaInhSTG+aG4iD4w6O0KHMtgVlTqOx+RT2zRJM8Ge0bNuC95lKES
+	 F35F562EXYbYpH7wQgxqU3jb74BiX+6r51/mViDYvvuUoSD4ctLMG3fr4chrVBCwdU
+	 Ul+Albq0niCn0RkrWoHKs1b3kmnKJCe0kN4hDSWOc2tgwYINsivugwy0TCHQHzUdhz
+	 0KvHhE5HNtPLKdnFhvJpx+UUWBhVdVU89CdxSctY/Q6M4ZdMnoPtJ4JXznUxBuZB8w
+	 iweT4tqzXWVWbQupowJAW9xgej6aBWiVbQwhPcxY3zZTXEXQZtBNac+fVEQkxwjTKw
+	 td0sCqy7VTvqA==
+Message-ID: <sashiko-outbox-203417@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 05/88] KVM: guest_memfd: Support using resource
- provider
+Subject: Re: [PATCH RFC v3 06/88] KVM: selftests: Add helper to create
+ guest_memfd with a resource file
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -55,12 +55,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-5-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-6-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-5-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-6-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:43:53 +0000
+Date: Sun, 08 Nov 2026 00:43:54 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,147 +70,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [High] KVM: guest_memfd: movable allocation of unmovable
-  tmpfs-provided folios
-- [Medium] KVM: guest_memfd: fget_raw() mismatch with f_op in
-  kvm_gmem_attach_resource()
-- [Medium] kvm: guest_memfd: kvm_gmem_create() checks resource_fd when
-  flag is not set
+- [High] KVM: guest_memfd: missing release_folio() with
+  mapping_set_release_always()
+- [Medium] mm: shmem: unmovable guest_memfd folios allocated with
+  GFP_HIGHUSER_MOVABLE
 --
 
-commit 120a9139413a4330ef86fed3c561aeed63c5587f
+commit a3e5841f5c68c0e42d4540b30c82c6fced7d8d4f
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: guest_memfd: Support using resource provider
+KVM: selftests: Add helper to create guest_memfd with a resource file
 
-This commit adds the GUEST_MEMFD_FLAG_USE_RESOURCE flag and resource_fd
-field to struct kvm_create_guest_memfd so guest_memfd instances can attach
-to and release an external memory resource provider.
+This commit syncs the KVM UAPI header for GUEST_MEMFD_FLAG_USE_RESOURCE and
+adds selftest helpers to create a guest_memfd instance backed by a resource
+file descriptor.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index ee823f2ef0368..84877beed6701 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -85,15 +85,26 @@ static const struct guest_memfd_provider_operations g=
-mem_native_provider_ops =3D {
->  static int kvm_gmem_attach_resource(struct inode *inode, int resource_fd)
->  {
->  	const struct guest_memfd_provider_operations *ops =3D NULL;
-> +	void *provider =3D ERR_PTR(-EOPNOTSUPP);
->  	struct file *resource_file =3D NULL;
-> -	void *provider;
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testi=
+ng/selftests/kvm/include/kvm_util.h
+> index e2618877619e1..eca296539db79 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> @@ -809,26 +809,39 @@ static inline bool is_smt_on(void)
 > =20
-> -	if (resource_fd =3D=3D GMEM_RESOURCE_FD_NATIVE)
-> +	if (resource_fd =3D=3D GMEM_RESOURCE_FD_NATIVE) {
->  		ops =3D &gmem_native_provider_ops;
-> -	else
-> -		return -EOPNOTSUPP;
-> +	} else {
-> +		resource_file =3D fget_raw(resource_fd);
-> +		if (!resource_file)
-> +			return -EBADF;
-> +
-> +		if (resource_file->f_op)
-> +			ops =3D resource_file->f_op->gmem_provider_ops;
-> +	}
-
-[Severity: Medium]
-Why does kvm_gmem_attach_resource() use fget_raw() and then read
-resource_file->f_op->gmem_provider_ops?
-
-fget_raw() only differs from fget() by accepting O_PATH file descriptors
-(such as descriptors from fsmount(), open_tree(), or open(..., O_PATH)),
-for which do_dentry_open() sets f->f_op to &empty_fops rather than
-inode->i_fop.  As a result, any O_PATH descriptor accepted by fget_raw()
-finds resource_file->f_op->gmem_provider_ops =3D=3D NULL and fails with
--EOPNOTSUPP.
-
-If O_PATH descriptors are meant to be supported, gmem_provider_ops needs
-to be read from file_inode(resource_file)->i_fop; otherwise, fget() should
-be used so O_PATH descriptors are rejected with -EBADF.
-
-> +
-> +	if (ops && ops->attach && ops->alloc_folio)
-> +		provider =3D ops->attach(inode, resource_file);
+>  void vm_create_irqchip(struct kvm_vm *vm);
+> =20
+> -static inline int __vm_create_guest_memfd(struct kvm_vm *vm, u64 size,
+> -					  u64 flags)
+> +static inline int __vm_create_guest_memfd_resource(struct kvm_vm *vm, u6=
+4 size,
+> +						   u64 flags, int resource_fd)
+>  {
+>  	struct kvm_create_guest_memfd guest_memfd =3D {
+>  		.size =3D size,
+>  		.flags =3D flags,
+> +		.resource_fd =3D resource_fd,
+>  	};
+> =20
+>  	return __vm_ioctl(vm, KVM_CREATE_GUEST_MEMFD, &guest_memfd);
+>  }
 
 [Severity: High]
-Does attaching a tmpfs provider place non-migratable guest_memfd folios
-into movable pageblocks and ZONE_MOVABLE?
+In the underlying kernel support for provider folio invalidation added
+earlier in this series in commit "KVM: guest_memfd: Support provider folio
+invalidation", kvm_gmem_init_inode() calls
+mapping_set_release_always(inode->i_mapping), but kvm_gmem_aops does not
+implement .release_folio.  Can this cause mapping_evict_folio() to warn and
+evict guest_memfd folios without invalidating KVM MMU mappings or provider
+accounting?
 
-kvm_gmem_init_inode() marks inode->i_mapping with
-mapping_set_inaccessible() and GFP_HIGHUSER because guest_memfd folios
-cannot be migrated: kvm_gmem_migrate_folio() returns -EINVAL and
-move_to_new_folio() rejects mapping_inaccessible() folios with
--EOPNOTSUPP.  However, when attached to tmpfs via shmem_gmem_provider_ops,
-kvm_gmem_get_folio() calls shmem_gmem_alloc_folio(), which allocates with
-GFP_HIGHUSER_MOVABLE before inserting the folio into the inaccessible
-guest_memfd mapping:
+Because AS_RELEASE_ALWAYS is set, folio_needs_release() is true in
+filemap_release_folio(), which falls back to try_to_free_buffers() when
+a_ops->release_folio is NULL:
+
+fs/buffer.c:try_to_free_buffers() {
+	/* Misconfigured folio check */
+	if (WARN_ON_ONCE(!folio_buffers(folio)))
+		return true;
+
+When soft_offline_in_use_page() calls mapping_evict_folio() on a clean,
+unmapped guest_memfd folio, filemap_release_folio() triggers that warning
+and returns true.  mapping_evict_folio() then removes the folio from the
+page cache without calling kvm_gmem_invalidate_folio() or notifying the
+KVM MMU, leaving stage-2 page tables pointing to the freed page and leaking
+tmpfs provider block accounting.
+
+> -static inline int vm_create_guest_memfd(struct kvm_vm *vm, u64 size,
+> -					u64 flags)
+> +static inline int __vm_create_guest_memfd(struct kvm_vm *vm, u64 size,
+> +					  u64 flags)
+> +{
+> +	return __vm_create_guest_memfd_resource(vm, size, flags, 0);
+> +}
+> +
+> +static inline int vm_create_guest_memfd_resource(struct kvm_vm *vm, u64 =
+size,
+> +						 u64 flags, int resource_fd)
+>  {
+> -	int fd =3D __vm_create_guest_memfd(vm, size, flags);
+> +	int fd =3D __vm_create_guest_memfd_resource(vm, size, flags, resource_f=
+d);
+> =20
+>  	TEST_ASSERT(fd >=3D 0, KVM_IOCTL_ERROR(KVM_CREATE_GUEST_MEMFD, fd));
+>  	return fd;
+>  }
+
+[Severity: Medium]
+When a guest_memfd is created with a tmpfs resource_fd (via commit "mm:
+shmem: Implement guest_memfd provider operations for tmpfs" earlier in this
+series), does shmem_gmem_alloc_folio() place unmovable folios into
+ZONE_MOVABLE or MIGRATE_CMA?
+
+kvm_gmem_init_inode() sets GFP_HIGHUSER (without __GFP_MOVABLE) and marks
+the mapping AS_INACCESSIBLE because guest_memfd folios cannot be migrated.
+However, shmem_gmem_alloc_folio() allocates with GFP_HIGHUSER_MOVABLE:
 
 mm/shmem.c:shmem_gmem_alloc_folio() {
-    ...
+	...
 	if (mpol)
 		folio =3D folio_alloc_mpol(GFP_HIGHUSER_MOVABLE, 0, mpol, index,
 					 numa_node_id());
 	else
 		folio =3D folio_alloc(GFP_HIGHUSER_MOVABLE, 0);
-    ...
-}
 
-Allocating non-migratable folios with __GFP_MOVABLE pins MIGRATE_MOVABLE,
-MIGRATE_CMA, and ZONE_MOVABLE memory, breaking CMA allocations,
-compaction, and memory hot-unplug.  shmem_gmem_alloc_folio() should omit
-__GFP_MOVABLE (or honour mapping_gfp_mask(inode->i_mapping)) when
-allocating folios for guest_memfd.
-
-[ ... ]
-
-> @@ -1111,6 +1128,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_=
-t size, u64 flags)
-> =20
->  int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
->  {
-> +	int resource_fd =3D GMEM_RESOURCE_FD_NATIVE;
->  	loff_t size =3D args->size;
->  	u64 flags =3D args->flags;
-> =20
-> @@ -1120,7 +1138,15 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_cr=
-eate_guest_memfd *args)
->  	if (size <=3D 0 || !PAGE_ALIGNED(size))
->  		return -EINVAL;
-> =20
-> -	return __kvm_gmem_create(kvm, size, flags);
-> +	if (flags & GUEST_MEMFD_FLAG_USE_RESOURCE) {
-> +		if (args->resource_fd < 0)
-> +			return -EBADF;
-> +		resource_fd =3D args->resource_fd;
-> +	} else if (args->resource_fd) {
-> +		return -EINVAL;
-> +	}
-> +
-> +	return __kvm_gmem_create(kvm, size, flags, resource_fd);
->  }
-
-[Severity: Medium]
-Does rejecting a non-zero args->resource_fd when
-GUEST_MEMFD_FLAG_USE_RESOURCE is not set break backwards compatibility for
-KVM_CREATE_GUEST_MEMFD?
-
-Since 1a2b3c4d5e6f... wait - since a7800aa80ea4 ("KVM: Add
-KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory"),
-kvm_gmem_create() never validated that args->reserved[0..5] was zero.
-Carving resource_fd out of reserved[0] and requiring args->resource_fd =3D=
-=3D 0
-when GUEST_MEMFD_FLAG_USE_RESOURCE is clear causes a regression (-EINVAL)
-for existing userspace callers that leave reserved[] uninitialized on the
-stack, or that initialize unused file descriptor fields to -1.  In
-addition, args->pad and args->reserved[0..4] are still left unvalidated.
-
-Should args->resource_fd only be inspected when
-GUEST_MEMFD_FLAG_USE_RESOURCE is set (similar to how kvm_set_memory_region()
-only inspects guest_memfd when KVM_MEM_GUEST_MEMFD is set)?
+Once kvm_gmem_get_folio() inserts the folio into the AS_INACCESSIBLE
+guest_memfd mapping, migration is rejected, pinning the page in
+ZONE_MOVABLE or CMA and breaking CMA allocations or memory hot-unplug.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D5
+native-providers-v3-0-8484dde66a7e@google.com?part=3D6
