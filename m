@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794098652;
-	b=rcf7yT2dZ5rVqnlXBcKUhIvBdPEya0lxiVJgtE5sj6jlX/CSIiStLnF9+jVG5ylI5hrc
-	 4eUg43RvKaF2ubcFZQDAKaj8Tribv1ckp9tK2zdqmocsJfIZNTIi/mSBlA278o4sYvvFv
-	 0dBgiZGXOMGw9KnfhFLQF80Pdw8Ul6H8fqHw5uF+qKd4QtO3OGeGUoiDuUNGrPaFH+Krm
-	 9J8wqPpkANzWapHT4XTxTVE6e+EqP8hFGJrjRZMN213y7VPezSt7ur+uGryBnB1IAdbSS
-	 VOlsXtqQJikn5MR9b48vDVOY12hItrSYfzFq7MqNQ2IPL9kLrDmlm4dXrLd5qD3tMHw==
+	t=1794098653;
+	b=Pco7oUrW6BE0UuaHISiRUergs6w64FHRluKFMqSo0Hqpx1y/0U3ER//0EMXsdL/u7+nA
+	 jSzMsNldD94TTzwbtS42JrrHbBfwKIYllzx3I0GqooD3nVbh+WZGlx+vlZBVBJw/yLGtH
+	 52nfRIn01oBBK4GSJVI6lE0Zqcf5qI93tsGROzTK9E+cpJwHd6rU9tlUQmEXAqY1eCy78
+	 p6kNeHFl94VBqMGTxJZEnrizLxN4PZsKKUuPH8A9vF2Rl6At0NwtthXvVPqri2OM6KcnD
+	 XixuU+IfP8Vhaj+Oi+inkr7syloVne3RrPIHt+3ISViTCByg74Ma6ZHWGx9Yvqxfu6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794098652;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098653;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=h5Cd/VC6aFMP32fHph0UV0rTVC4GF8CgjbTF6S9e6Lc=;
-	b=NIc0QRVRl4FGhQqNxT6kYGRcp042DPzYzR9IIQ5cfrjZZVgJ0G5jveKM21Kz/TBoh4l5
-	 dm3fMZa2cEJ4MImglFVrh3gJ5Y19WMn71zSLF/CtUSS164QR54kK/rV8RSOTjUNKOgyfs
-	 L7tQWe8gpxKVz5d4KT7CQaFthTDR/NKUUp+XtmKu1pCmgpzp8SEX6XVcjJbqmcCBh3iAh
-	 m2vk0umEctlpCibVwWWm+FbdApcXoGGaKGoMKi9nFJAY8IZ6LfAUT+yOlIZUMF5AuVZS/
-	 fZVvG0mUYtFJ2kRhwfZ4jIePd/09DHk2C3GW54NTRbyN01p1hGRCsR8g/a3mOzUEb1Q==
+	bh=UGBKPRzEO0tszR5z3zc5sWYnix5oTgdEyRhav4QwANA=;
+	b=rd8ZklTBIw3B3vg4AYE1NI/JLzk+ZnZXkVSNMtjdqzM38XWU5m8mu0v1414dagRJKHa9
+	 sp6bru/rvk666nihRa7m3yAUUPYLsZbmq4zULwVHPBzIVRWFA8qQnPxGYd7CpnRcMmVMJ
+	 B2fd5l/HWK2Hi/6mG15xVwhiMrj3+LoYTfmd27lWczhCQjIZWLNxLrpspa/uw/rM2kd/p
+	 g8obqonsoREMbpLcJCvA4oizvNRS3xdNO8LZ8BSGWQi5Zw7R9S2+2225AhE1W0cmiXO2G
+	 SzfAFdnt/4mWGSO0zp65Wf4PI7+ngB7zNmf9PCvBxBe3QqXiGGpdMu3AF6yDStFDGdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NwnEeaMF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=miQzFWbC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8FE606A326
-	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB24606A334
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NwnEeaMF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E244F1F008A2;
-	Sun,  8 Nov 2026 00:44:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=miQzFWbC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417FD1F0089F;
+	Sun,  8 Nov 2026 00:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098651;
-	bh=h5Cd/VC6aFMP32fHph0UV0rTVC4GF8CgjbTF6S9e6Lc=;
+	s=k20260515; t=1794098653;
+	bh=UGBKPRzEO0tszR5z3zc5sWYnix5oTgdEyRhav4QwANA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NwnEeaMFpDr4HwL0jycs22k5go6EI2HbNKolbEPMKVV/MBMx1SZSnj3QssWkYGf5R
-	 Dap/Ofy6yw7+SYqovorn4ZfK/9TZ8Y/N4QsV2lnKLZCx14vRbF/bnBVDQrnaTRJm4C
-	 e3z4NpNHyY3gN669yrw6WTN7YThxXClelkxmre26uazpUXCOf5YXHd8nJV7c+JtVxO
-	 SC8QCK9J+b0MRxWztmJJXlEW6m2t2vdHSLd5xDmadP0lVP/p1vNgqGt4BCzTvMjKs4
-	 wCEyw6hW2w7OTOGohLpSAvYjrfsx65kxNuJ95NkPpH1kyN5IASsfxJAKHGITkJYlkK
-	 vWCtV5OnHCKqg==
-Message-ID: <sashiko-outbox-203459@kernel.org>
+	b=miQzFWbCpnHfvfdQ32bAxe+xMAtmIT0OgKdkBXv2CN6IIPy/P8g86o8G4bASKpFJd
+	 YOAiYHfw66IWmD3ezco3eUWkC9CQF91siIROZjHr5m+KepJ6Dte136RqqG2A3/XIU4
+	 U7WGR19JdHQ011rZv4veA5cEP1Ao+KeBVUhFWUvirUVWKp/ywg1FBhbCCB93W/xpQl
+	 9l1WWEr5yDtG4nz0xnrhTOV1P2Qm8vHqy7oY0hBitJIPDLg9whGhxwlr5DntXdSV7s
+	 eWxrlrVkNsLM1VnRqalToZ+tzP9Bde92IJP1922rzIefvXlNoBvv6wSuPIFyu+kvGf
+	 Vy5M7uVfee2EA==
+Message-ID: <sashiko-outbox-203460@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 48/88] samples/kvm: Support dynamic revocation
- via kvm_gmem_revoke
+Subject: Re: [PATCH RFC v3 49/88] samples/kvm: Implement lookup_pfn_range
+ provider operation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -55,12 +55,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-48-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-49-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-48-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-49-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:10 +0000
+Date: Sun, 08 Nov 2026 00:44:11 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,66 +72,66 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] samples/kvm: stale identifier names and patch references in
-  commit message
+- [Medium] samples/kvm: unexpected -EINVAL from
+  mp_gmem_lookup_pfn_range() past npages
 --
 
-commit 42b1d24c6caccfeaf35dd92048463c002a041484
+commit 547b053613c36c4e6a545e75a670dd8b4151e0c0
 Author: Ackerley Tng <ackerleytng@google.com>
 
-> samples/kvm: Support dynamic revocation via kvm_gmem_revoke
->
-> Support dynamic revocation in the sample memory provider module by
-> calling kvm_gmem_revoke() when pages are marked absent via
-> MPS_SET_PRESENT.
->
-> Note down the attaching gmem inode during .attach() and disallow double
-> attachment to the same provider file.
->
-> Clear the revoked pages after kvm_gmem_revoke() using mps_zero_range()
-> to ensure that stale data is wiped and cannot be observed when pages are
-> later marked present or reused.
->
-> Regarding locking and ordering:
-> - In mps_set_present(), mark the absent bitmap first before revoking so
->   any concurrent page fault immediately sees the page as absent and
->   rejects the lookup with -EFAULT.
-> - kvm_gmem_revoke() is called under info->lock to fully serialize
->   MPS_SET_PRESENT operations against each other and prevent races
->   between marking pages absent and present.
-> - The PFN passed to kvm_gmem_revoke() is derived from info->base_pfn +
->   start. The mapping between page index and physical PFN is static and
->   immutable for the lifetime of the provider file, ensuring that the
->   pfn mapping remains completely stable across the revoke call.
-> - Passing pfn directly to kvm_gmem_revoke() allows guest_memfd to
->   reclaim the physical range directly without calling back into the
->   provider. This keeps the lock hierarchy strictly top-down (info->lock
->   -> filemap_invalidate_lock -> mmu_lock) with no callbacks or deadlocks.
->
-> For now, nothing needs to be done when setting a page present, since users
-> should (re-)fault and (re-)obtain the PFN via .get_pfn(), to be added in a
-> later patch.
->
-> For users that don't support faulting, like the IOMMU, the counterpart to
-> kvm_gmem_revoke() will be made available for the first user to indicate
-> that the memory is now available. guest_memfd should then do the page tab=
-le
-> mappings as necessary, based on the shared/private status.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+samples/kvm: Implement lookup_pfn_range provider operation
 
-[Severity: Low]
-This isn't a bug, but the commit message has a few stale references from an
-earlier version of the series:
+This commit implements the .lookup_pfn_range callback in the sample
+memory provider so that it can act as a PFN-mode provider for
+guest_memfd.
 
-- MPS_SET_PRESENT, mps_zero_range(), and mps_set_present() were renamed to
-  MP_SET_PRESENT, mp_zero_range(), and mp_set_present().
-- Recording info->gmem_inode in .attach() and disallowing double attachment
-  was already done in commit "samples/kvm: Implement attach and release
-  provider ops in sample provider", not in this patch.
-- .get_pfn() was already added earlier in the series in commit "samples/kvm:
-  Implement get_pfn provider operation", rather than in a later patch.
+> diff --git a/samples/kvm/memory_provider.c b/samples/kvm/memory_provider.c
+> index 926f3cf68ed49..7fb7365b65940 100644
+> --- a/samples/kvm/memory_provider.c
+> +++ b/samples/kvm/memory_provider.c
+> @@ -249,10 +249,34 @@ static int mp_gmem_get_pfn(void *provider, pgoff_t =
+index, unsigned long *pfn,
+>  	return 0;
+>  }
+> =20
+> +static int mp_gmem_lookup_pfn_range(void *provider, pgoff_t index,
+> +				     unsigned long *pfn, size_t *nr_pages)
+> +{
+> +	struct file *resource_file =3D provider;
+> +	struct mp_info *info =3D resource_file->private_data;
+> +
+> +	if (index >=3D info->npages)
+> +		return -EINVAL;
+
+[Severity: Medium]
+Does returning -EINVAL when index >=3D info->npages trigger a WARN_ONCE()
+in kvm_gmem_pfn_reclaim() and kvm_gmem_make_shared()?
+
+Neither kvm_gmem_attach_resource() nor mp_gmem_attach() rejects attaching
+a guest_memfd whose inode size exceeds info->npages << PAGE_SHIFT.  When
+closing such a guest_memfd, kvm_gmem_destroy_inode() ->
+kvm_gmem_pfn_reclaim() walks up to i_size_read(inode) >> PAGE_SHIFT:
+
+virt/kvm/guest_memfd.c:kvm_gmem_pfn_reclaim() {
+	...
+		r =3D gmem_provider_lookup_pfn_range(gi, index, &pfn, &nr_pages);
+		if (!r || r =3D=3D -ENOENT) {
+			step =3D min_t(size_t, nr_pages, end - index);
+			if (!r)
+				kvm_arch_gmem_reclaim(pfn, step);
+		} else {
+			WARN_ONCE(1, "unexpected lookup_pfn_range error %d at index 0x%lx\n",
+				  r, index);
+		}
+	...
+}
+
+Once index reaches info->npages, returning -EINVAL hits the WARN_ONCE()
+and falls back to step =3D 1, iterating one page at a time across the
+remaining unbacked range in an unkillable loop.  Should this return
+-ENOENT with *nr_pages set to cover the unbacked tail (or should
+mp_gmem_attach() reject oversized guest_memfd inodes)?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D48
+native-providers-v3-0-8484dde66a7e@google.com?part=3D49
