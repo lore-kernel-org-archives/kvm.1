@@ -1,92 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794082215;
-	b=uHXW3fAvQtUp7AwtObeDMEY2z5xz2SuP20HBG6V+k8SvStKuexo39nTUdBe/7ZWaoWpI
-	 LD9qLi8kYqeizve7W5eR/GZIdZijURWkV1Ob8mRTQWduXYljpMX6dHWHjnPOrcFP14lF5
-	 sMS7c4eOwLqe3dL8NCLdc7ZfdmCFyqSFP71FUYAp8aA+9QqSBKdEX50t1PyuL9qvdDuZX
-	 TsqrRA31M8HFahZ37v08GKHuC8LdcGNG51utO8/8/0CIlaoXLPPHUUCTTPDfOagwLcFRL
-	 YMJn2PhLqPOtBJIsOt8GGlTIsXWOc06fFrOzdapk+ebBgATmGs5qPG+qZ7FyzhikI1w==
+	t=1794098632;
+	b=tsTPYZH7kjA72eqrM3zSlXyJWhu6P970wmH+aVcbXSMmmuycw/+zjxYzWgLAH4UYj3mt
+	 y7929vyWY4s2XDLzsNGZ/vbiw+NGxkALdiF6JdDTvoSp0yIg+T2l+HD/F2FFNyQyDaeVF
+	 hFWm+DANhEtWz4d55kBp/WmUuWCMbSNgz8eQxH4xsqSos+THRXVPfIYUMrJeMEBcb+EsX
+	 KLGz8saScg6xj2I7Hx6pV/DnL8BMFNX1VcIpw9ggW12TRw3ggZ4wKcpv19SWUAaQDCRu9
+	 Ef+qsSv5B8hceHQ/LHmBh/mTdrB5OcUr200jO0s3J4ACuWhz84Ob8pc7cBzLiv3uq5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794082215;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=CMFxkbGnr/NpLAXZXk8rbwy5EGs+66IVJk9lKIVoNp8=;
-	b=uX1djr4KrJAMZKxMVMBGYBEm/Gr7wt1qgnOzrDxZK9R1iSBgprGdLPyP6K/Kq5ISNBIN
-	 wMVrjJPxY+WYgwM6OzCuCxosnXy6wpI7W2HCMKsmd4geOY/3EXgMLxeQzoTZZKzIr/H56
-	 N3barsESmMZbnsBeKFP/sE+lvJdpfnVBVYh6KtGrA6YPQCjDC5vbFEdrF/uGb8eu08gGQ
-	 IIiYpTSbihqegc9CVuAUJXC/ca/2FRym+yV5s/6JKpiCAr5bxDzblan4+s6Pnbta5N+DB
-	 y+rKReozhIyNO+exF3zibImrmrZ/WANB3SHiefsi5qtkY52sPd3I9px3QHhTq1zuMRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098632;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=99AHfkNsSNOI9AkrucgD2vH4yfnn2CeIWT8FqF772VA=;
+	b=yL5IaTnvR+B3IVgkjroQ98KH/1Io/+XgHTWAGYYCZGDSuBTUp0IWt9EEw55JiWXiIJua
+	 vIIf7yeclcV+tdugpBBC9ONk4tC/2ZIXypO8NWvIjX0n4Z9Yt9UM9s4izwLIazSlNsh2a
+	 nmLsgu8YEAbsCFD9FKJJztGKatTnryy0tex5XSnK7LjTn6rtr2A2wjTc7SEgYXotb4fR1
+	 Q2bVtOL1QOX8vEImYxftuZRd8vYqyi6kKlJLuXRVSPKUVJ9/WMlDMHl0oXpnC0k6cYiQz
+	 N83DWqYfnRFptIBUePJjxwVQM7P+GDOuS3P2ivKB+SE2MT35MBC4JyyAllOTwZu8G3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iLeOYJRj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I8vJZKHY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830D7606A331;
-	Sat,  7 Nov 2026 20:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24323606A32E
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iLeOYJRj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D661F008A3;
-	Sat,  7 Nov 2026 20:09:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I8vJZKHY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD43C1F008A2;
+	Sun,  8 Nov 2026 00:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794082215;
-	bh=CMFxkbGnr/NpLAXZXk8rbwy5EGs+66IVJk9lKIVoNp8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iLeOYJRjjnhZl3LWMSGaUd1S27vEBJh9NrDzelAqlZmg4R2RciRfWoeIsojODwzqH
-	 AmV3EGrrSvx70iXnLVmV7/bs2dBDE1x/r3nyPcxADmxBtch4xZP+oTaqLUfx+eYAuG
-	 SGRWdAxli2sYIZwe/Tbuw0udh+c0QNfiwmJOXLSfQKYp1etxVNRgoDq0IPlAd0lt9t
-	 yDMA0BPoIWju9BFMAW7mO+dutMm2GHuzj6pjWBP8PMNdT9kLO2lCpBJij+NhIf7LIF
-	 N/2SXcwPj4meyprPc8KlcX/gZ5yZ2cdhj422kyiEPIrnEjIKnHoNmFfhk++nuATcLn
-	 UZoP1hyr/4Jww==
-Date: Sat, 7 Nov 2026 20:09:55 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, SJ Park <sj@kernel.org>, 
-	Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	John Johansen <john.johansen@canonical.com>, Georgia Garcia <georgia.garcia@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH 00/13] mm: continue vma_flags_t conversion
-Message-ID: <au-DXpEi4wHwsz0r@gremlin>
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org>
- <au3r0-geuwtRYPiC@gremlin>
- <1c0b1368-a381-4b25-bba9-7a4f8e92b764@kernel.org>
+	s=k20260515; t=1794098631;
+	bh=99AHfkNsSNOI9AkrucgD2vH4yfnn2CeIWT8FqF772VA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=I8vJZKHYJakO7f4cLsEgSxilcocWjesZCSYOx7AqR15RmgDcJEPpBb5tTLrkE1HH/
+	 iFrXVHRBsM40Ve+TxN7GsHkoG30W3C18E0BkTuR77YzG5EIJENz+/quVzOBsoI9Gxa
+	 ydPOKT7b8sNKag6/bRxL168Zo0Pu6H8WEb550DxI9yiYKMnsD97xWwhJc76V2olV1u
+	 pZCgnYMSKG6XiWEdBRYhUxmRtFWX+K4OUVciuZxic2yvfpSWW1tUC3Rns83aI1hI9B
+	 zIQgMAx5JJjSk/KHO40g5xHsx/f2K8LVi6SBoi/A0wSEER+VLbF7by5Tot2iurH0AW
+	 5FZHKVnBQhniA==
+Message-ID: <sashiko-outbox-203414@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v3 03/88] mm: shmem: Implement guest_memfd provider
+ operations for tmpfs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
+ Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "David Woodhouse" <dwmw2@infradead.org>, "Fred
+ Griffoul" <fgriffo@amazon.co.uk>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "Jianxiong
+ Gao" <jxgao@google.com>, "John Starks" <John.Starks@microsoft.com>, "Michael
+ Roth" <michael.roth@amd.com>, "Paolo Bonzini" <pbonzini@redhat.com>, "Samiullah
+ Khawaja" <skhawaja@google.com>, "Sean Christopherson" <seanjc@google.com>, "Suzuki
+ K Poulose" <suzuki.poulose@arm.com>, "Tarun Sahu" <tarunsahu@google.com>, "Vishal
+ Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
+ Tabba" <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com>
+References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 08 Nov 2026 00:43:50 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,83 +69,107 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1c0b1368-a381-4b25-bba9-7a4f8e92b764@kernel.org>
 
-I think we're slightly talking across purposes, so to be clear - I am totally
-fine with you taking any of this through your tree or whatever works for you and
-Andrew to avoid merge pain :)
-
-I was just talking more generally about how to merge series that touch a lot of
-subsystems and maintainers-who-may-never-reply, etc.
-
-These are the edge cases that make things... fun :)
-
-Anyway, I guess easiest resolution here is for you to take the bits that belong
-to your trees and Andrew takes the bits that belong elsewhere?
-
-I don't think anything here has an inter-dependency.
-
-
-On Sat, Nov 07, 2026 at 08:26:29PM +0100, David Hildenbrand (Arm) wrote:
-[ ... ]
->
-> Because of [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t which
-> is THP-only, and feels like it could go straight through one of my trees,
-> avoiding conflicts with Andrew's tree. But maybe there is more to it that I am
-> missing.
-
-Sorry about that! Please take that through your tree.
-
->
-> I assume stable topic branches would fix that, but they are currently
-> unfortunately not on the table ... :)
-
-I guess we need everybody-on-git for this!
-
-I guess when Liam and & I have the VMA tree we can do that at least for stuff
-that goes there :)
-
->
-> >
-> >>
-> >> Ideally, patches really only touch one component.
-> >
-> > Right, but sometimes functions are declared in one place and called in
-> > others. It is impossible to change the signature of one without also touching
-> > the others.
->
-> Yes. Something like that is unavoidable. Or if you need new APIs/
-
-Yes.
-
->
-> >
-> >>
-> >> [PATCH 07/13] mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
-> >>
-> >> is all over the place :)
-> >
-> > It's not really all over the place, it's converting vm_flags_t to
-> > vma_flags_t across madvise.c, which involves changing a few function
-> > signatures, whose callers must be updated.
->
-> Ah, yeah. What on earth does arch/powerpc/kvm/book3s_hv_uvmem.c do with madvise :(
-
-Yeah it's quite worrying that... :)
-
->
-> >
-> > I could split it up into 3 patches where 1 does internal-only, one changes 1
-> > function, and the next changes another, if that works?
->
-> No, these things really have to go in as one unit, no need to split that up.
-
-Thanks, yeah, it's a pain I know but eventually 'one fine day' (probably in
-2028) everything will be converted to vma_flags_t/mmap_prepare and we won't have
-to think about this :P
-
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [High] mm: shmem: shmem_gmem_alloc_folio() allocates unmovable folios
+  as movable
+- [High] mm: shmem: sbinfo->mpol refcount leak in
+  shmem_gmem_alloc_folio()
+- [Medium] mm: shmem: uncontextualized sb_mpol and ref leak in
+  shmem_gmem_alloc_folio()
 --
-Cheers, Lorenzo
+
+commit bbcb85338583bc4b9f5ee5e619a3f55d643e1098
+Author: Ackerley Tng <ackerleytng@google.com>
+
+mm: shmem: Implement guest_memfd provider operations for tmpfs
+
+This commit adds a guest_memfd_provider_operations pointer to struct
+file_operations and implements the callbacks in shmem so directory file
+descriptors on a tmpfs mount can provide memory to guest_memfd.
+
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 848316eaa7f4f..2a9faf8be7382 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+
+[ ... ]
+
+> @@ -5237,6 +5245,124 @@ static const struct inode_operations shmem_specia=
+l_inode_operations =3D {
+>  #endif
+>  };
+> =20
+> +#ifdef CONFIG_KVM_GUEST_MEMFD
+
+[ ... ]
+
+> +static struct folio *shmem_gmem_alloc_folio(void *provider, pgoff_t inde=
+x,
+> +					    struct mempolicy *mpol)
+> +{
+> +	struct mempolicy *sb_mpol =3D NULL;
+> +	struct vfsmount *mnt =3D provider;
+> +	struct shmem_sb_info *sbinfo;
+> +	struct folio *folio;
+> +
+> +	sbinfo =3D SHMEM_SB(mnt->mnt_sb);
+> +	if (sbinfo->max_blocks &&
+> +	    !percpu_counter_limited_add(&sbinfo->used_blocks,
+> +					sbinfo->max_blocks, 1))
+> +		return ERR_PTR(-ENOSPC);
+> +
+> +	if (!mpol) {
+> +		sb_mpol =3D shmem_get_sbmpol(sbinfo);
+> +		mpol =3D sb_mpol;
+> +	}
+
+[Severity: Medium]
+Can passing sb_mpol directly to folio_alloc_mpol() use an
+uncontextualized nodemask?
+
+mpol_parse_str() stores the parsed mount option nodemask in
+new->w.user_nodemask without calling mpol_set_nodemask(), expecting it to
+be cloned and contextualized later (as mpol_shared_policy_init() does for
+regular tmpfs files).  Using sb_mpol directly bypasses
+MPOL_F_RELATIVE_NODES translation and cpuset mems_allowed
+contextualization during NUMA node selection.
+
+> +	if (mpol)
+> +		folio =3D folio_alloc_mpol(GFP_HIGHUSER_MOVABLE, 0, mpol, index,
+> +					 numa_node_id());
+> +	else
+> +		folio =3D folio_alloc(GFP_HIGHUSER_MOVABLE, 0);
+
+[Severity: High]
+Should shmem_gmem_alloc_folio() use GFP_HIGHUSER instead of
+GFP_HIGHUSER_MOVABLE?
+
+Folios returned here are inserted into the guest_memfd mapping, which
+kvm_gmem_init_inode() marks with mapping_set_inaccessible() (setting
+AS_INACCESSIBLE and AS_UNEVICTABLE) and GFP_HIGHUSER because guest_memfd
+memory is neither migratable nor swappable.  Allocating with
+__GFP_MOVABLE allows the page allocator to place these unmovable folios
+into ZONE_MOVABLE and MIGRATE_CMA pageblocks, causing CMA allocations to
+fail with -EBUSY and memory hot-unplug to loop indefinitely trying to
+migrate them.
+
+> +
+> +	mpol_cond_put(sb_mpol);
+
+[Severity: High]
+Does mpol_cond_put(sb_mpol) leak a reference on sbinfo->mpol on every
+allocation when mpol is NULL?
+
+shmem_get_sbmpol() unconditionally increments sbinfo->mpol->refcnt via
+mpol_get(), whereas mpol_cond_put() only decrements refcnt when
+MPOL_F_SHARED is set in pol->flags.  Because sbinfo->mpol is allocated by
+mpol_parse_str() -> mpol_new() without MPOL_F_SHARED, mpol_cond_put() is
+a no-op here, preventing sbinfo->mpol from being freed on remount or
+unmount and eventually wrapping its atomic_t refcnt.  Should this call
+mpol_put(sb_mpol) instead?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
+native-providers-v3-0-8484dde66a7e@google.com?part=3D3
