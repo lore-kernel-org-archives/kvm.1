@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794098682;
-	b=2uIG2T2t/LQQJjY7nkxQjTkffLb46CnhgEdgBEQsK6eKQy+MwIKBq9mt5jkeLaO89PMg
-	 eW2lgSPmXB+07X2VTwCItJryoEEdHKActnfMUP/E847hObSnicBLfNWfbp2XuhsxGoS8m
-	 VbpjaersxacYeHVtK1CN1F7L2SE/VpjFlUz2HAEM5vKGXBA2wbcrDF6G1KSgbp9/t9ul5
-	 nKak4EwdK9ZVv+WeIMeswmT3Ex0LBgXFPyNLVNg1NmuNs1TM7ZUuBY5agUE48ocWQzTdb
-	 itXH4EfD5QmZjZKhVbNp95dZxaC47oGvsdlmf66+gMeBuvVPQA1//ymlugr6VowcL9w==
+	t=1794098681;
+	b=NkkA6Bh5biz8+kbS5/Stlbm4G1tYn1QDjlv0IPArdS0Jhu3f/cLrRpkGE0MX112+p4Ku
+	 El84frZDBFSjtv5mLxvSZ2FFWwND02fnvfcI94r1aEtJbtkpTTY38rZL5PyaUeaCRok8T
+	 qpJ+/J07avNxLCJIkY2xfRkpMd1LoUvKzpy+WAghq0ROoHs75Q4A9wyN4kRlyKg/fT06V
+	 hvtT5zizQZfQuMokeiT3fX8BPwnf8bfXX27yF7CU2pEVtvv5J5o6YMi6dn8kWEnbgRB38
+	 QjAzmlukpBzBmeQ2mtxx4AfNEHshaNkuIdA9GqOoiWVDLs1aSaIwAD+2ZE6z1NAntCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794098682;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098681;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=fR9Re5ZDd5XTnUKoH8w65OpXbdqyo213h0gpni69V6U=;
-	b=aSqolHSgaYuhHmNGCyk/h3NP9i10z35qwvyNABKkCCB4xKxHtjBjXnmBNenw5DBg71bu
-	 4ZPFThCjHF7zC8T1RoTKPHoNLOHYt2iLiOxlNzFRnlwsuA4eY6L2rxSQRiVbsJmFnHDNK
-	 9L2oC3bir2bmTFEyx0uZMgCu31g+uEw6HhQhSJLdX6bOQoQcXJiMia+kqlrbyL9pZLGyG
-	 DMx7kYow0A8xFBdrSIuomSljj2jhuG+fZTISRTits6jcihSOeo/cn/y6vN7+yPF15LTby
-	 ilm0NeQA3jTKRvazzOLLk22504CZhuJqfPt+O62Yoq7Gu1uR4cx/numTYcymE1jeRaA==
+	bh=8axrRMWyXoE+R/wxLxsNGire3Rwu8iDfjj2ot/P1Blw=;
+	b=gRrVT636pbNZmS/8DYlKmkMomhwVEgqDYnwXgdYl4xjVDjU31fVc8kY93wclBLDhCVZQ
+	 KFc9G294JFZhzxmfiV1IoGFA3bf0JO6mw5ZKRmm6PkWJXi71DVa3gF5sykDk8MpGV7bUh
+	 +XYrEjp/9VvlhBQbXPHOha5v2Iv4ke+jeCCV0s/jmDe8ttl3vktTZSM4y1jgYM5/d3Aeg
+	 uREL/LsX4guWuWYS53tW8TMRAl5n8OqBkuyn34E3C7ax5SHj79rgnLQdmE3kTusw5ESkz
+	 C9pEDLvgXzVGEWpX5mdtrS0w0B5Bov3gnP924Mo1tsd4mqtVb52PHAS3HzD/WPSHhcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=agTlvQRc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XfAn9IKr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DB5606A32F
-	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5117A606D811
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=agTlvQRc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2ED1F008A3;
-	Sun,  8 Nov 2026 00:44:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XfAn9IKr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514041F0089F;
+	Sun,  8 Nov 2026 00:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098682;
-	bh=fR9Re5ZDd5XTnUKoH8w65OpXbdqyo213h0gpni69V6U=;
+	s=k20260515; t=1794098681;
+	bh=8axrRMWyXoE+R/wxLxsNGire3Rwu8iDfjj2ot/P1Blw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=agTlvQRcexnHXTDYph5CQU33CYyOD/euPr8we+Ch/yQO1DVAXHt/3jJxWbOuIukPX
-	 YQrdOFz7Md5fELSDZOfOoy7N2zIl7ETEqkKXrQzG24mdwrSSAi9ojfzvFErRc9zNUJ
-	 kPNCRKB4b1TbtcSId5IvKYcV1gyt72SuDZN9d3jEm3Z3/bNmhmHksnvpC0nw7AH7X1
-	 zjAMdGWgUoAkcs17c3MEyWPOWNbCTAucnxnFsNj/gwg6dCCmFrvXAnN4bof9xuzcm5
-	 CzLXvBmar9533rGI/jlnUR0u+cEZOf3J3AOcPtmnbJ6yGWiG5edbdhZkWMKtBQrhuh
-	 lonp0zyOeKKRg==
-Message-ID: <sashiko-outbox-203498@kernel.org>
+	b=XfAn9IKr/dpG2JRZc//F4uTFnvXNh9b3+KCrQHlSIlxOea1iJgw4qrX0uGLnWZShn
+	 5jNK7cpb6yYZE2Hy7M4jgpQnPaxBwpn7qYLii6mgF6Pux8DiBlbrw8VGsnS+bF7Bsu
+	 5zRGAVDcHzDR4coG+prJirDO581MJnj/2nqUHStSeE35vOMO9X3NISsiwKvAX0AX6+
+	 pGVcF/ykdOlpmsBxUSEZeqqdjbuZzcaOmQlYFEGf1gcGggACrzrS6QxrebM3EIW/ym
+	 V1jco5E9SozLT1Zr28FkKHzLeuxG8/j52iFdakIpfLTEGPd7rl+RuP1gcjqAScXuYB
+	 4zqLDj2jOUyMQ==
+Message-ID: <sashiko-outbox-203492@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 87/88] QUESTION: KVM: guest_memfd: Disallow
- private mappings of shared-only PFNs
+Subject: Re: [PATCH RFC v3 81/88] KVM: selftests: Verify guest mapping for
+ VFIO BAR
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -55,12 +55,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-87-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-81-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-87-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-81-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:41 +0000
+Date: Sun, 08 Nov 2026 00:44:39 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,91 +72,92 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] KVM: guest_memfd: private attribute on MSI-X BAR page blocks
-  VMM MMIO access
+- [Low] KVM: selftests: guest_mapping() checks stage-1 PTE via
+  vm_get_pte()
 --
 
-commit e4385565a5ed77222308f8b663cc4c2b0a672e04
+commit 8a5370d54b044c85eadf5eb14da654ead8af47a1
 Author: Ackerley Tng <ackerleytng@google.com>
 
-QUESTION: KVM: guest_memfd: Disallow private mappings of shared-only PFNs
+KVM: selftests: Verify guest mapping for VFIO BAR
 
-This commit replaces the check_set_attributes provider callback with the
-GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE PFN attribute so that VFIO PCI MSI-X
-pages are blocked from private stage-2 mappings and population at fault
-time rather than during attribute conversion.
+This commit adds a selftest that configures a VFIO BAR into a KVM memslot
+and runs a guest vCPU to verify guest access to the BAR.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 385b517b49ed5..cd484bdcb3f0c 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
+> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c b/to=
+ols/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
+> index 79a0001ca1733..0339794fb6dd3 100644
+> --- a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
+> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
+
 [ ... ]
-> @@ -1128,12 +1118,6 @@ static int __kvm_gmem_set_attributes(struct inode =
-*inode, pgoff_t start,
->  	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
->  		goto out;
+
+> @@ -594,4 +595,60 @@ TEST_F(guest_memfd_vfio, host_vma_flags)
+>  	ASSERT_EQ(0, munmap(bar0_mmap, bar0_info.size));
+>  }
 > =20
-> -	r =3D gmem_provider_check_set_attributes(gi, start, nr_pages, attrs);
-> -	if (r) {
-> -		*err_index =3D start;
-> -		goto out;
-> -	}
-> -
->  	mas_init(&mas, mt, start);
->  	r =3D kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
->  	if (r) {
-> @@ -1774,10 +1758,11 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_=
-memory_slot *slot,
-> =20
->  	/*
->  	 * Private memory requires exclusive, writable guest ownership and
-> -	 * cannot be backed by a read-only frame.
-> +	 * cannot be backed by a read-only or shared-only frame.
->  	 */
->  	if (kvm_gmem_is_private_mem(file_inode(file), index) &&
-> -	    (*pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY)) {
-> +	    (*pfn_attrs & (GUEST_MEMFD_PFN_ATTRS_READONLY |
-> +			   GUEST_MEMFD_PFN_ATTRS_NO_PRIVATE))) {
->  		r =3D -EFAULT;
->  		goto out_put_folio;
->  	}
+> +static void guest_memslot_cacheability_code(uint64_t bar_gpa)
+> +{
+> +	uint32_t *reg =3D (uint32_t *)(bar_gpa + E1000_STATUS);
+> +	uint32_t val;
+> +
+> +	val =3D READ_ONCE(*reg);
+> +	GUEST_ASSERT(val !=3D 0xFFFFFFFF);
+> +
+> +	GUEST_DONE();
+> +}
+> +
+> +TEST_F(guest_memfd_vfio, guest_mapping)
+> +{
+> +	struct vfio_region_info bar0_info =3D {};
+> +	uint64_t bar_gpa =3D 0xc0000000;
+> +	struct kvm_vcpu *vcpu;
+> +	void *bar0_mmap;
+> +	uint64_t *pte;
+> +	int ret;
+> +
+> +	vfio_pci_enable_memory_and_bus_master(_metadata, self->vfio_fd);
+> +
+> +	bar0_info.argsz =3D sizeof(bar0_info);
+> +	bar0_info.index =3D VFIO_PCI_BAR0_REGION_INDEX;
+> +	ret =3D ioctl(self->vfio_fd, VFIO_DEVICE_GET_REGION_INFO, &bar0_info);
+> +	ASSERT_EQ(0, ret);
+> +	ASSERT_TRUE(bar0_info.flags & VFIO_REGION_INFO_FLAG_MMAP);
+> +
+> +	/* mmap the VFIO BAR directly into host userspace for memslot config */
+> +	bar0_mmap =3D mmap(NULL, bar0_info.size, PROT_READ | PROT_WRITE,
+> +			 MAP_SHARED, self->bar_fd, bar0_info.offset);
+> +	ASSERT_NE(MAP_FAILED, bar0_mmap);
+> +
+> +	vcpu =3D vm_vcpu_add(self->vm, 0, guest_memslot_cacheability_code);
+> +	if (variant->use_gmem)
+> +		vm_set_user_memory_region2(self->vm, 1, KVM_MEM_GUEST_MEMFD,
+> +					   bar_gpa, bar0_info.size, bar0_mmap,
+> +					   self->gmem_fd, bar0_info.offset);
+> +	else
+> +		vm_set_user_memory_region(self->vm, 1, 0, bar_gpa,
+> +					  bar0_info.size, bar0_mmap);
+> +
+> +	virt_map(self->vm, bar_gpa, bar_gpa, bar0_info.size >> self->vm->page_s=
+hift);
+> +
+> +	/* Run guest to fault in the page via stage 2, then verify S2 PTE */
+> +	vcpu_args_set(vcpu, 1, bar_gpa);
+> +	vcpu_run(vcpu);
+> +	ASSERT_EQ(UCALL_DONE, get_ucall(vcpu, NULL));
+> +
+> +	pte =3D vm_get_pte(self->vm, bar_gpa);
+> +	ASSERT_NE(NULL, pte);
+> +	ASSERT_TRUE(is_present_pte(&self->vm->mmu, pte));
 
-[Severity: Medium]
-If userspace converts an entire BAR to KVM_MEMORY_ATTRIBUTE_PRIVATE
-without carving out the MSI-X range, does that block the VMM from
-accessing the MSI-X Pending Bit Array or other device registers sharing
-the MSI-X page?
+[Severity: Low]
+Does vm_get_pte() check the guest stage-1 PTE rather than the stage-2 PTE?
 
-When a VFIO PCI device is attached to guest_memfd, it is bound with
-VFIO_DEVICE_BIND_FLAG_CTRL_ONLY, which rejects direct mmap(), pread(), and
-pwrite() on the VFIO device fd for mappable BARs.  Once
-__kvm_gmem_set_attributes() marks the MSI-X page private in
-gi->attributes, guest stage-2 faults are rejected here with -EFAULT, while
-host VMM accesses through guest_memfd are also rejected because both
-kvm_gmem_fault_user_mapping() and kvm_gmem_rw() require the page's
-software attribute to be shared:
-
-virt/kvm/guest_memfd.c:kvm_gmem_fault_user_mapping() {
-    ...
-	if (!kvm_gmem_is_shared_mem(inode, vmf->pgoff)) {
-		r =3D -EACCES;
-    ...
-}
-
-virt/kvm/guest_memfd.c:kvm_gmem_rw() {
-    ...
-		if (!kvm_gmem_range_has_attributes(inode, start, nr_pages, 0)) {
-			filemap_invalidate_unlock_shared(inode->i_mapping);
-			return total_done ?: -EFAULT;
-		}
-    ...
-}
-
-As a result, even if the VMM places a memslot hole over the MSI-X range to
-trap guest MMIO accesses, it has no way to read or write co-located
-registers on that page unless the MSI-X range is kept shared in
-gi->attributes.
+vm_get_pte() walks self->vm->mmu (the guest GVA-to-GPA page tables in
+guest memory), where virt_map() -> __virt_pg_map() already set
+PTE_PRESENT_MASK(&self->vm->mmu) before vcpu_run(), so is_present_pte()
+always succeeds without inspecting KVM's stage-2 page tables.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D87
+native-providers-v3-0-8484dde66a7e@google.com?part=3D81
