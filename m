@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794098650;
-	b=rruaf8ic7D8uVVJgeDx0A3UK8XTsz+P1efwUOMuhWEz5v3kPPu+loz6EWw4FtArka49Z
-	 j279P/sL1zM9emuAtUJodSiagU9cRap4+nO59uWZLwQMURNoqbyQpA/JbVTcixjAUVYjx
-	 DtUo9ed0xQAmlAJ2Wxv0KE4RpOiijRJl1UF0hsHKORXLUsDHAqTlfAN9RYED7HX2DfvYQ
-	 fBdoHu2yK5EEPwKWEgn2D0DtpGccAgqgMvjDHAaeamhxlZUSbi+9MBzeWzNarcM/PrdKJ
-	 QHXSScYxBaPnE6+aYYM6ckEohhk+9Ta7buNk+vf9Lci0Hmv73X0gGj0r8DYs8fCQLiQ==
+	t=1794098652;
+	b=rcf7yT2dZ5rVqnlXBcKUhIvBdPEya0lxiVJgtE5sj6jlX/CSIiStLnF9+jVG5ylI5hrc
+	 4eUg43RvKaF2ubcFZQDAKaj8Tribv1ckp9tK2zdqmocsJfIZNTIi/mSBlA278o4sYvvFv
+	 0dBgiZGXOMGw9KnfhFLQF80Pdw8Ul6H8fqHw5uF+qKd4QtO3OGeGUoiDuUNGrPaFH+Krm
+	 9J8wqPpkANzWapHT4XTxTVE6e+EqP8hFGJrjRZMN213y7VPezSt7ur+uGryBnB1IAdbSS
+	 VOlsXtqQJikn5MR9b48vDVOY12hItrSYfzFq7MqNQ2IPL9kLrDmlm4dXrLd5qD3tMHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794098650;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098652;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=jaIdnAxJjztQSfWl20YYnBy7sXlg6MoH5xzA2rv/cis=;
-	b=dhec/ndw7NKDPABKfzlCyOJrwcxn5vdVjG4kHBrn5vj2J+OzjD0WYKvEuwe52A7a2yCW
-	 0G7muJaE5QVT3COIUUKEnY4q4pMIoN4Xl3VSImpmGo2euCV141N2pGOYN+BNc3HzzZuZu
-	 ut5OBjuY6PWQRHzstUyX86CWK+G6BiUPfhWKwokdX62+N5odBwNBHrCxYNctr57mNJ7kA
-	 wKNGA2whPd+AN7p0iGBGxN0BuFrr7nsGDq66x7ZP4lB/4SzVgIIKdJQnAip0X6ZRDpVpf
-	 YHdKPYAqGTGopCmwe1wWc05LBtag7rdNeSahfMQ4O7AOaKhAsr9siy9eu7rIyuWG5uQ==
+	bh=h5Cd/VC6aFMP32fHph0UV0rTVC4GF8CgjbTF6S9e6Lc=;
+	b=NIc0QRVRl4FGhQqNxT6kYGRcp042DPzYzR9IIQ5cfrjZZVgJ0G5jveKM21Kz/TBoh4l5
+	 dm3fMZa2cEJ4MImglFVrh3gJ5Y19WMn71zSLF/CtUSS164QR54kK/rV8RSOTjUNKOgyfs
+	 L7tQWe8gpxKVz5d4KT7CQaFthTDR/NKUUp+XtmKu1pCmgpzp8SEX6XVcjJbqmcCBh3iAh
+	 m2vk0umEctlpCibVwWWm+FbdApcXoGGaKGoMKi9nFJAY8IZ6LfAUT+yOlIZUMF5AuVZS/
+	 fZVvG0mUYtFJ2kRhwfZ4jIePd/09DHk2C3GW54NTRbyN01p1hGRCsR8g/a3mOzUEb1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y7+mfPjM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NwnEeaMF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92386606A33B
-	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8FE606A326
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y7+mfPjM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABC21F008A5;
-	Sun,  8 Nov 2026 00:44:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NwnEeaMF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E244F1F008A2;
+	Sun,  8 Nov 2026 00:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098650;
-	bh=jaIdnAxJjztQSfWl20YYnBy7sXlg6MoH5xzA2rv/cis=;
+	s=k20260515; t=1794098651;
+	bh=h5Cd/VC6aFMP32fHph0UV0rTVC4GF8CgjbTF6S9e6Lc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Y7+mfPjMkcD36IPKM5O3HKPi5KW5XJ5KGR4qHuQU/tNPhGlB7RlgiOf8xjbTaj5Is
-	 IsyTy2gsgsPTMLOnAmNGq8aAx1dMtOIqhmsXndQiiENG4m/V3frzswiEUvtVYM7+Mg
-	 giABBBpDigt8TxU02+aawn8lHlgRACbsNr16oP4OV5cUN0HXs+hw5H5b6JP6Fvy/0A
-	 sBja4AaepR+r4xBId7g6Welp7faBTfEcWVJXS0IGtQE+hybYf6FbHV8h3+nlepz8dO
-	 lqvWyQhYG4dDSOtbA0wX7AUChRP9ut7fOy+TBG3q/LBLrItyvya+3CX8lLOF3kBlGH
-	 EfAWbXKY3O1aw==
-Message-ID: <sashiko-outbox-203455@kernel.org>
+	b=NwnEeaMFpDr4HwL0jycs22k5go6EI2HbNKolbEPMKVV/MBMx1SZSnj3QssWkYGf5R
+	 Dap/Ofy6yw7+SYqovorn4ZfK/9TZ8Y/N4QsV2lnKLZCx14vRbF/bnBVDQrnaTRJm4C
+	 e3z4NpNHyY3gN669yrw6WTN7YThxXClelkxmre26uazpUXCOf5YXHd8nJV7c+JtVxO
+	 SC8QCK9J+b0MRxWztmJJXlEW6m2t2vdHSLd5xDmadP0lVP/p1vNgqGt4BCzTvMjKs4
+	 wCEyw6hW2w7OTOGohLpSAvYjrfsx65kxNuJ95NkPpH1kyN5IASsfxJAKHGITkJYlkK
+	 vWCtV5OnHCKqg==
+Message-ID: <sashiko-outbox-203459@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 44/88] samples/kvm: Implement attach and release
- provider ops in sample provider
+Subject: Re: [PATCH RFC v3 48/88] samples/kvm: Support dynamic revocation
+ via kvm_gmem_revoke
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -55,12 +55,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-44-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-48-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-44-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-48-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:09 +0000
+Date: Sun, 08 Nov 2026 00:44:10 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,85 +72,66 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] samples/kvm: build failure when CONFIG_KVM_GUEST_MEMFD is
-  disabled
+- [Low] samples/kvm: stale identifier names and patch references in
+  commit message
 --
 
-commit 5fdcfe92c76b1d01309d2b39a0b5cac375eca5a7
+commit 42b1d24c6caccfeaf35dd92048463c002a041484
 Author: Ackerley Tng <ackerleytng@google.com>
 
-samples/kvm: Implement attach and release provider ops in sample provider
-
-This commit implements the .attach and .release guest_memfd provider
-operations in the sample memory provider module and registers them on
-mp_file_fops.
-
-> diff --git a/samples/kvm/memory_provider.c b/samples/kvm/memory_provider.c
-> index 81ac94ae1a4e9..6f86e3e3262e3 100644
-> --- a/samples/kvm/memory_provider.c
-> +++ b/samples/kvm/memory_provider.c
-
-[ ... ]
-
-> @@ -161,11 +164,45 @@ static long mp_file_ioctl(struct file *file, unsign=
-ed int cmd,
->  	}
->  }
-> =20
-> +static void *mp_gmem_attach(struct inode *gmem_inode,
-> +			    struct file *resource_file)
-> +{
-> +	struct mp_info *info =3D resource_file->private_data;
-> +
-> +	mutex_lock(&info->lock);
-> +	if (info->gmem_inode) {
-> +		mutex_unlock(&info->lock);
-> +		return ERR_PTR(-EBUSY);
-> +	}
-> +	info->gmem_inode =3D gmem_inode;
-> +	mutex_unlock(&info->lock);
-> +
-> +	return get_file(resource_file);
-> +}
-> +
-> +static void mp_gmem_release(void *provider)
-> +{
-> +	struct file *resource_file =3D provider;
-> +	struct mp_info *info =3D resource_file->private_data;
-> +
-> +	mutex_lock(&info->lock);
-> +	info->gmem_inode =3D NULL;
-> +	mutex_unlock(&info->lock);
-> +
-> +	fput(resource_file);
-> +}
-> +
-> +static const struct guest_memfd_provider_operations mp_gmem_provider_ops=
- =3D {
-> +	.attach		=3D mp_gmem_attach,
-> +	.release	=3D mp_gmem_release,
-> +};
-> +
->  static const struct file_operations mp_file_fops =3D {
->  	.owner		=3D THIS_MODULE,
->  	.release	=3D mp_file_release,
->  	.unlocked_ioctl	=3D mp_file_ioctl,
->  	.compat_ioctl	=3D compat_ptr_ioctl,
-> +	.gmem_provider_ops =3D &mp_gmem_provider_ops,
->  };
+> samples/kvm: Support dynamic revocation via kvm_gmem_revoke
+>
+> Support dynamic revocation in the sample memory provider module by
+> calling kvm_gmem_revoke() when pages are marked absent via
+> MPS_SET_PRESENT.
+>
+> Note down the attaching gmem inode during .attach() and disallow double
+> attachment to the same provider file.
+>
+> Clear the revoked pages after kvm_gmem_revoke() using mps_zero_range()
+> to ensure that stale data is wiped and cannot be observed when pages are
+> later marked present or reused.
+>
+> Regarding locking and ordering:
+> - In mps_set_present(), mark the absent bitmap first before revoking so
+>   any concurrent page fault immediately sees the page as absent and
+>   rejects the lookup with -EFAULT.
+> - kvm_gmem_revoke() is called under info->lock to fully serialize
+>   MPS_SET_PRESENT operations against each other and prevent races
+>   between marking pages absent and present.
+> - The PFN passed to kvm_gmem_revoke() is derived from info->base_pfn +
+>   start. The mapping between page index and physical PFN is static and
+>   immutable for the lifetime of the provider file, ensuring that the
+>   pfn mapping remains completely stable across the revoke call.
+> - Passing pfn directly to kvm_gmem_revoke() allows guest_memfd to
+>   reclaim the physical range directly without calling back into the
+>   provider. This keeps the lock hierarchy strictly top-down (info->lock
+>   -> filemap_invalidate_lock -> mmu_lock) with no callbacks or deadlocks.
+>
+> For now, nothing needs to be done when setting a page present, since users
+> should (re-)fault and (re-)obtain the PFN via .get_pfn(), to be added in a
+> later patch.
+>
+> For users that don't support faulting, like the IOMMU, the counterpart to
+> kvm_gmem_revoke() will be made available for the first user to indicate
+> that the memory is now available. guest_memfd should then do the page tab=
+le
+> mappings as necessary, based on the shared/private status.
+>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
 [Severity: Low]
-Does initializing .gmem_provider_ops on mp_file_fops break the build when
-CONFIG_KVM_GUEST_MEMFD is disabled?
+This isn't a bug, but the commit message has a few stale references from an
+earlier version of the series:
 
-struct file_operations only defines gmem_provider_ops under
-#ifdef CONFIG_KVM_GUEST_MEMFD, while SAMPLE_KVM_MEMORY_PROVIDER in
-samples/Kconfig only depends on CONTIG_ALLOC && X86_64 && m at this point in
-the series.  A later patch in the series, commit "samples/kvm: Support
-dynamic revocation via kvm_gmem_revoke", adds the KVM_GUEST_MEMFD dependency
-to SAMPLE_KVM_MEMORY_PROVIDER; moving that Kconfig dependency here avoids
-breaking bisection when CONFIG_KVM_GUEST_MEMFD is not enabled.
+- MPS_SET_PRESENT, mps_zero_range(), and mps_set_present() were renamed to
+  MP_SET_PRESENT, mp_zero_range(), and mp_set_present().
+- Recording info->gmem_inode in .attach() and disallowing double attachment
+  was already done in commit "samples/kvm: Implement attach and release
+  provider ops in sample provider", not in this patch.
+- .get_pfn() was already added earlier in the series in commit "samples/kvm:
+  Implement get_pfn provider operation", rather than in a later patch.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D44
+native-providers-v3-0-8484dde66a7e@google.com?part=3D48
