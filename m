@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794098666;
-	b=eb2bX/BOy60I5AQWmUC+bsZ3i4tbkxdjtnZSM8yFXb0iMe0qGQRf0k32Htxume6nYXvv
-	 jrbMAYnUoOMbZE48TfWCO809099GG9lry+5HTzVfk/jYFgMxBQDqWAyt9QcoPMAIXKqsm
-	 YuSpPCg2RA8AfFj5EGm/lPA+y6sz47YQ1ZAsvvtRdT/4KgkyB7f4f/SOA7lasEPUZjTU1
-	 gUnPpkweuKaqIYdGagrzTc9ohgQeFiqX5D9yC2GFM2ECsq3MDDWDm/b+1XtWLHScvlhZe
-	 23ZFUhetgKOMcsl3DnBcl5A/+ERfph8sGzqm+I6m/WdWLHQsO7gGk05r+LRFAEQWatA==
+	t=1794098667;
+	b=yixthyeyVnYVbQia5TRSQtwMJhvqJsj/BmSJiTUi3wRnt61O8emPKnZbzlW3WvimnCzi
+	 kWBXB+IUIbZaei2LU8QHkPAvItYJYHXCA9fu3lE7dVSsCFg3+NVKARhY5tyJnAfXXyWFz
+	 B5+JSww9VQpbA+t8q+q7i2dnDVtz2ZM+1ogwuqM6yB7YdVggP9H6uXwjTobuS8hy41lcm
+	 /UtWqZeZ15dZR6JNutVueg6p+cIQdhSNPRtVTQbKpGdyEO9d6mEl2ma6JC5EMIIvfrtLX
+	 s33c+ETlXYKTQTQ2hqq7GvyRPbeciXYp5ymPvI3LZ5kXCux4LlcKJJ0yqYohTwT9mrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794098666;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794098667;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=NzgKCaaOpO5OPZjM6cxLw3sOwHEdopBIm6vAoyagCf8=;
-	b=qKGLjUzaqCLZ3aNKWH4YM1d1yaAKEAvvFkCI5L+hhYYCsorBB9DVEMGg2qIT4QWZXTRi
-	 d+vzu09ujPMq34rHqel1SjOKj0cHqeluKoJ2RhgKjVtekH/af2Y7YwK0GcO6dDCkNsz7C
-	 ywhsFk5XX/rSxF17dh/RHGejzVEXrqq2nv3Gy/nlh1BM9Ugz76eMz+i/2+/X0QsgFRDjn
-	 xvuMR4hmIvKV34VUN2Rr5pnxy54/QVmwX+gs0MZJkeEd000bz1VqyWIUmbJGp7jBsiOHL
-	 LU6KolNVHa8Bnpau95xmqP9x+Iij8sqXyx/EW1pyscEJfERa2Kckip5Y3OIdbg1H7/Q==
+	bh=DQu96n0VZ/08CUzUzSjmxbmnQa9ZmqvzehBEI4XjsKY=;
+	b=e/CMR23wHPQBSujr+lTPh2CgVAMwvqFj7B+b19nklN4ok2vGUf7MLzAdhV1hnvZ4eOnp
+	 E76GZM9diq3mXKyZF+GhetktzZpeXlAtd+6vR7xOX11H0uBuDUi3USKGsxS62OqLmTC+2
+	 0RiQiy7SmdcAeJ8ODIWAYI9k8rmADqzN3IkHwT59XfY76BgwP+1qzxQv2+jhiTEHWtcmB
+	 haFNgVRyTqR2w54ZNJ37wTp38IZCNPiUJL9AdXbDQfEQhxo3lupc9MJDKqLeFK7jebQm+
+	 FEo8pX+KGmYHrPjzK4hMyclhUMAB+ksTyUgYA4J/fp3FCzCNxKQmVAJoc3xx0a2tuBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wde+O0Ho;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fiv9oq8y;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3552606A326
-	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BCB606D80F
+	for <kvm@vger.kernel.org>; Sun,  8 Nov 2026 00:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wde+O0Ho
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D355E1F008A1;
-	Sun,  8 Nov 2026 00:44:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fiv9oq8y
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264C61F0089F;
+	Sun,  8 Nov 2026 00:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098665;
-	bh=NzgKCaaOpO5OPZjM6cxLw3sOwHEdopBIm6vAoyagCf8=;
+	s=k20260515; t=1794098667;
+	bh=DQu96n0VZ/08CUzUzSjmxbmnQa9ZmqvzehBEI4XjsKY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Wde+O0HoNWg1ohadgAQE/p+7DRn/85zB1MFyBhSK9d7KpqnNeHXkE4s+xrL5MjcIa
-	 6nMWmxKm3/qYazJ/COTxszVi3+McLQIDRt1/3nLMTpXfg/XA8QkBJvdspnRym7df0l
-	 8NEvjSRRSGS8SZfcA3u2N+JRV+8OpPPwUZJQZ+ax4VPNV+Wbcc23FlJKzeoJLR7VMU
-	 yvlxCx04lFaH7eqSJz5qbCByEArLNGzc8FR4ZpdiMVwNkmzgug0HqSjfAZ9D0RTO6E
-	 F98Y+BXh3Yr8GB1oC8SMcNgnWSM4a61HHTkIqNfaSdLsE46YsZ/SPLPuPRSIY41DOb
-	 TI2DLjV79/1HA==
-Message-ID: <sashiko-outbox-203471@kernel.org>
+	b=Fiv9oq8yYVP5vsgwiMw3nunwdAT/AWs8HCr72UJm/erbxLm1Pfefo8GZz58hglXk3
+	 xDY4c69FqIMHTYpIRodeBYxIwI+ULyjVMJIKE7VX9mZx+ptBhRWQ/PU70ZZwxU74Yc
+	 ArgoHqIqMBTOPtnt8KyBOUV2SXBpbuPL8lnaHF5PoLseHCQg8VX2o/rwTdtf6PrfPy
+	 H45JqQi7rMKokWHpw796b2FBNOY9SYVGG993iee+krSQUh7c7PtOvqANawc5imlmuW
+	 6iGrZ15T29nF4fCC1L/0595DJZmQao88t+LxK1Jl1vodEIBVeXIDCRaoKRVdXfWkFj
+	 TvG7r3IfoT5bw==
+Message-ID: <sashiko-outbox-203472@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 60/88] vfio/pci: Implement get_pfn provider op
- for guest_memfd
+Subject: Re: [PATCH RFC v3 61/88] vfio: Implement mmap provider op for
+ guest_memfd
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -55,12 +55,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-60-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-61-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-60-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-61-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:23 +0000
+Date: Sun, 08 Nov 2026 00:44:25 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,102 +72,125 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [Medium] vfio/pci: sub-page mappable BARs rejected in
-  vfio_pci_core_gmem_get_pfn()
-- [Medium] vfio/pci: missing vfio_pci_core_get_iomap() check in
-  vfio_pci_core_gmem_get_pfn()
+- [High] vfio: uncached and decrypted vma->vm_page_prot lost in
+  guest_memfd fault
+- [Medium] vfio: vfio_device_fops_mmap() returns -EOPNOTSUPP instead of
+  -EINVAL
 --
 
-commit 1661618156a57f40eb0f4fe51d0d5dccb4378f2f
+commit 6c78c8834b1a41506b88de16d4e56626d4ac8609
 Author: Ackerley Tng <ackerleytng@google.com>
 
-vfio/pci: Implement get_pfn provider op for guest_memfd
+vfio: Implement mmap provider op for guest_memfd
 
-This commit implements the .gmem_get_pfn callback for vfio-pci to translate
-guest_memfd page offsets into physical PCI BAR frame numbers.
+This commit extracts a vfio_device_mmap() helper from
+vfio_device_fops_mmap() and wires up the .mmap provider callback in
+vfio_device_gmem_provider_ops to forward guest_memfd mappings to the bus
+driver's .mmap handler.
 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index c7b67fbce4cae..9551a067b5689 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -2731,6 +2731,44 @@ void vfio_pci_core_gmem_release(struct vfio_device=
- *core_vdev)
->  	up_write(&vdev->memory_lock);
+> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> index 93bd0a200ad22..979ed69c5ebf7 100644
+> --- a/drivers/vfio/vfio_main.c
+> +++ b/drivers/vfio/vfio_main.c
+> @@ -1503,20 +1503,25 @@ static ssize_t vfio_device_fops_write(struct file=
+ *filep,
+>  	return device->ops->write(device, buf, count, ppos);
 >  }
->  EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_release);
-> +
-> +int vfio_pci_core_gmem_get_pfn(struct vfio_device *core_vdev, pgoff_t in=
-dex,
-> +			       unsigned long *pfn, int *max_order,
-> +			       u64 *pfn_attrs)
+> =20
+> +static int vfio_device_mmap(struct vfio_device *device,
+> +			    struct vm_area_struct *vma)
 > +{
-> +	struct vfio_pci_core_device *vdev =3D
-> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> +	struct pci_dev *pdev =3D vdev->pdev;
-> +	unsigned int bar;
-> +	u64 pgoff;
+> +	if (unlikely(!device->ops->mmap))
+> +		return -EOPNOTSUPP;
+> +
+> +	return device->ops->mmap(device, vma);
+> +}
+> +
+>  static int vfio_device_fops_mmap(struct file *filep, struct vm_area_stru=
+ct *vma)
+>  {
+>  	struct vfio_device_file *df =3D filep->private_data;
+> -	struct vfio_device *device =3D df->device;
+>  	int ret;
+> =20
+>  	ret =3D vfio_df_check_full_access(df);
+>  	if (ret)
+>  		return ret;
+> =20
+> -	if (unlikely(!device->ops->mmap))
+> -		return -EINVAL;
+> -
+> -	return device->ops->mmap(device, vma);
+> +	return vfio_device_mmap(df->device, vma);
+>  }
+
+[Severity: Medium]
+Does extracting vfio_device_mmap() here cause a regression where
+vfio_device_fops_mmap() returns -EOPNOTSUPP instead of -EINVAL when a bus
+driver does not implement device->ops->mmap?
+
+Direct mmap(2) calls on full-access VFIO device fds for drivers without an
+.mmap callback (such as vfio-ccw or vfio-ap) previously returned -EINVAL,
+matching vfio_device_fops_read(), vfio_device_fops_write(), and
+vfio_device_fops_unl_ioctl().  Returning -EOPNOTSUPP changes the user-visib=
+le
+errno and makes a missing driver .mmap callback indistinguishable from a
+file descriptor bound with VFIO_DEVICE_BIND_FLAG_CTRL_ONLY.
+
+> @@ -1604,10 +1609,23 @@ static int vfio_device_gmem_get_pfn(void *provide=
+r, pgoff_t index,
+>  					 pfn_attrs);
+>  }
+> =20
+> +static int vfio_device_gmem_mmap(void *provider, struct vm_area_struct *=
+vma)
+> +{
+> +	struct file *file =3D provider;
+> +	struct vfio_device_file *df =3D file->private_data;
 > +
 > +	/*
-> +	 * Lockless check: if memory decoding is disabled or the device is in
-> +	 * low-power D3, fail immediately without blocking on memory_lock.
+> +	 * No control- vs. data-plane filtering is required because
+> +	 * vfio_device_mmap() already only allows mmap-ing the data plane.
 > +	 */
-> +	if (!smp_load_acquire(&vdev->bars_available))
-> +		return -EFAULT;
+> +	return vfio_device_mmap(df->device, vma);
+> +}
 > +
-> +	bar =3D index >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-> +	pgoff =3D index & ((1ULL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
-> +
-> +	if (bar >=3D PCI_STD_NUM_BARS || !vdev->bar_mmap_supported[bar])
-> +		return -EINVAL;
+>  static const struct guest_memfd_provider_operations vfio_device_gmem_pro=
+vider_ops =3D {
+>  	.attach  =3D vfio_device_gmem_attach,
+>  	.release =3D vfio_device_gmem_release,
+>  	.get_pfn =3D vfio_device_gmem_get_pfn,
+> +	.mmap    =3D vfio_device_gmem_mmap,
+>  };
+>  #endif
 
-[Severity: Medium]
-Does vfio_pci_core_gmem_get_pfn() also need to check
-vfio_pci_core_get_iomap(vdev, bar) before returning the BAR PFN?
+[Severity: High]
+When kvm_gmem_mmap() overrides vma->vm_ops with kvm_gmem_pfn_vm_ops after
+vfio_device_gmem_mmap() returns, does the guest_memfd fault handler discard
+the uncached and decrypted protections that vfio_pci_core_mmap() sets on
+vma->vm_page_prot?
 
-vfio_pci_probe_mmaps() sets vdev->bar_mmap_supported[bar] based on resource
-flags and alignment alone, while vfio_pci_core_map_bars() allows
-pci_request_selected_regions() and pci_iomap() to fail softly by recording =
-an
-ERR_PTR in vdev->barmap[bar]:
+vfio_pci_core_mmap() configures vma->vm_page_prot with pgprot_noncached()
+and pgprot_decrypted().  However, on a user fault,
+kvm_gmem_fault_user_mapping() -> gmem_insert_pfn() recomputes page
+protections from vma->vm_flags instead of using vma->vm_page_prot:
 
-drivers/vfio/pci/vfio_pci_core.c:vfio_pci_core_map_bars() {
-	...
-		if (pci_request_selected_regions(pdev, 1 << bar, "vfio")) {
-			pci_dbg(pdev, "Failed to reserve region %d\n", bar);
-			vdev->barmap[bar] =3D IOMEM_ERR_PTR(-EBUSY);
-			continue;
-		}
-	...
+virt/kvm/guest_memfd.c:gmem_insert_pfn() {
+    ...
+	return vmf_insert_pfn_prot(vma, vmf->address, pfn,
+				   vm_get_page_prot(flags));
 }
 
-Unlike vfio_pci_core_mmap() and vfio_pci_core_feature_dma_buf(), which veri=
-fy
-!IS_ERR(vfio_pci_core_get_iomap()), skipping that check here lets guest_mem=
-fd
-map physical BAR frames that VFIO failed to reserve (for example, when owned
-by another host driver such as efifb).
-
-> +
-> +	if (pgoff >=3D (pci_resource_len(pdev, bar) >> PAGE_SHIFT))
-> +		return -EINVAL;
-
-[Severity: Medium]
-Does shifting pci_resource_len(pdev, bar) without PAGE_ALIGN() reject
-page-aligned sub-page BARs?
-
-When a BAR is smaller than PAGE_SIZE (for example, a 4 KiB BAR on a 64 KiB
-PAGE_SIZE kernel) and page-aligned, vfio_pci_probe_mmaps() reserves the rest
-of the host page with a dummy resource and sets
-vdev->bar_mmap_supported[bar] =3D true.  Unlike vfio_pci_core_mmap(), which
-computes PAGE_ALIGN(pci_resource_len(pdev, index)),
-pci_resource_len(pdev, bar) >> PAGE_SHIFT evaluates to 0 for these BARs and
-causes even pgoff =3D=3D 0 to fail with -EINVAL.  Because bar_mmap_supporte=
-d[bar]
-is true, vfio_pci_core_is_ctrl_plane() also returns false and blocks
-read()/write() on a VFIO_DEVICE_BIND_FLAG_CTRL_ONLY descriptor, leaving the
-BAR inaccessible.
+Because vm_get_page_prot(flags) derives a fresh pgprot_t from
+protection_map[], both pgprot_noncached() and pgprot_decrypted() are lost.
+On architectures without PAT PFNMAP tracking in pfnmap_setup_cachemode_pfn()
+(such as arm64), PCI BAR MMIO pages are mapped into host userspace as
+write-back cacheable normal memory rather than Device memory and without
+PROT_NS_SHARED, which can corrupt MMIO accesses or trigger synchronous
+external aborts and SError.  On x86 systems with SME or SEV active,
+vm_get_page_prot() sets _PAGE_ENC, causing host userspace MMIO accesses to
+unencrypted device BARs to be performed with the encryption bit set.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D60
+native-providers-v3-0-8484dde66a7e@google.com?part=3D61
