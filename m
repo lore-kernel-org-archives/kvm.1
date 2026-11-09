@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.94
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214141;
-	b=21WeRxfauNrAjk8qyK7CdCTjkSaLcuDwqej8P5xOD64h3rVqtP0uLfZFcYSdHcpwuCGo
-	 8Xmi0TZ1VvpSDnXc80PCJ0r9IOKL4RomCZLf2JCYzCp13q7gGfSPW4PdiJ2U9SniJ+IKt
-	 4AR+Gqpl1gvPiEBT9PS76r2MLY7HWE5HM+lgUznvwmdWdNNMPqYfLZkotYIrPapr8OwIK
-	 XR2t5Fx9UaAks3xY8I2Z9mV5sD9I9L4BQ94s1tx1G+AKKxZ6q3jTJj3O3QTXG6Q+ar1s2
-	 P4QKDUNo+5di/DR6taESTi88zmjntzumaB3MHmp74oppaPYyqHqawnMLl8N/KfcqCtA==
+	t=1794214138;
+	b=jh44QvSgxejIl5YHQXcA9uW2dKSbaAnhvHPfzoH4p6363p+B7ZLvQ0NlZSZuLhNr/59S
+	 OgUfuhUUd7uJ22LN+XILCiYgLTTIwDlrNVVjO30MsJP4EnaIKwH0v6jKMXcmud2zeC61w
+	 EzADrAs38X75Em3StMHcBjO8QH5yyVpBGWBy2plkgh98GfUGs5TJVVGDh9k47o39noTLs
+	 vQdRDY8Rd+wfqkOljVn9qWcTTgWqbBQkAHZ0otui1516QcWkvvkkChQXr2Wy3+So5DgIC
+	 Iu+ec/cKwL1DD2D1UBEG25r8Dyv+2KjBXjWnovpOIXnN2xJhxsRJR/tlBZOEz21qxnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214141;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214138;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Wgtb9kfhJDQT6OIlDEFANW5PARd8orgbcoPjl6TcZEI=;
-	b=aHmhWevwtYnkNoZaFbt+1cmTXg4YJS/+0xSFGD6GqrYT4Q68sN7ijKv4QkZ6FCWnregN
-	 kyFqtq1oTlO/eV0XycDGAmPet4T2EZCfaN6Bk7286pQCK2JLpHjr1gIuGK+xFMPkydUgE
-	 BCCR0Q5sx+Yo4pi0tALhxRxlRFqOObD9OGY4qUR/qDaCAC/bi8b2dHGvcUkFSNGMA7b9Y
-	 Fk8LQX+iet8Q2kVdU6QJX6+F4CYMfYAqIWcv/2B3uJ0ueG7/NF4ums/DJEcaIqIYduCFn
-	 LqJmY4cIcSSL5iibSMNhBGcmLF9lmL2qxpGRdyIZYstuu83xnAhHsKrBkzij8QyN9QA==
+	bh=9EDiuahpoC5a8fdBVjn+7UwWB1qVxtY459zTXN5uFBc=;
+	b=3VL3sAin3UiLhFPup1EtGJYQ6THj0e1wlJx9SyKX2GLIRKEWsHAuwEyb0GUNW7FLF/Zl
+	 hiHsCq1EGm4H1wFVt4xAu9LjMU0QgZATxEkE42zGk8f3THrd3oI4Uuqe0Ax1RPxyDgyqq
+	 VoGp810qZoinp0FxijHwxNONcjcwBUjnimCq5AaV+H5ucn//1/6DsBlTDUgkvjykmLMbv
+	 cxJ3GssIz/7YiO3PQaZtSDglcALVeJcPpSKvShMUKmUpCEmz6QqV5bCzYILfJv98uju36
+	 CXWfYfBi5BDWweuMok8XJvYblnnlXN93qhW1SBXCqD9ZkIkp2UqOOk6UFJw0KNAQHJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xUE2XDbC;
-	arc=none smtp.remote-ip=95.215.58.124
-Received: from mta1.migadu.com (out-124.mta1.migadu.com [95.215.58.124])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aKniBgn2;
+	arc=none smtp.remote-ip=95.215.58.94
+Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF66606D828
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:49:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBF66606D828
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96C2606A325
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:48:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B96C2606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xUE2XDbC
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aKniBgn2
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=zy9OoZoEVLZKrHt/PA6PNvYObGqJuDPk1PHvlEStbBI=;
+DKIM-Signature: a=rsa-sha256; bh=zpKaD0TgIJfqXkuMLyaymhMm6AH9D97hWArAafrSB6U=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794214138; v=1; x=1794818938;
- b=xUE2XDbCaqBbVKskeiKy2ftjBsKJBTjKsKOUk3+AlUEt800GCDkt+XLsEzrDPP4++oLUe/Sc
- kltUsxIjUnyLZX/zbQFnEsrGZZLrBklow/92IZhTy3ulWM/mwL0qmesvCjtoWfPhMe/g48rfIYK
- YB9fG3I5Rk2G+j5CGS1UfY6I=
+ t=1794214136; v=1; x=1794818936;
+ b=aKniBgn25IHI6/+paezktja3kzUe2XHYTbZvR+c/c7IlRhOWL6NzzF3m11fb8KQs/r5okijz
+ /HUM78yf3sesqRmdI2T9Ze8vyBoxAkGO0SMDUqxoZWloB6hglXKhuB9wlHE1fyeWgZUyqlOV3x1
+ R8V3eI0h2bytT8Y8YlFyZWJ8=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id d8a3008bccb79f4a;
-	Mon, 09 Nov 2026 08:48:57 +0000
-X-Mizu-Trace-ID: d8a3008bccb79f4a
+Received: by smtp.migadu.com with ESMTPS id 9a819a32ecff5883;
+	Mon, 09 Nov 2026 08:48:55 +0000
+X-Mizu-Trace-ID: 9a819a32ecff5883
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -68,9 +68,9 @@ Cc: Will Deacon <will@kernel.org>,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 04/19] tools: arm-smccc: Add the pKVM memory sharing function IDs
-Date: Mon,  9 Nov 2026 08:48:39 +0000
-Message-ID: <20261109084854.840576-5-fuad.tabba@linux.dev>
+Subject: [PATCH v2 01/19] KVM: arm64: Hide generic ptrauth from protected VMs without ptrauth
+Date: Mon,  9 Nov 2026 08:48:36 +0000
+Message-ID: <20261109084854.840576-2-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109084854.840576-1-fuad.tabba@linux.dev>
 References: <20261109084854.840576-1-fuad.tabba@linux.dev>
@@ -85,59 +85,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The tools copy of arm-smccc.h lacks the pKVM guest hypercalls that the
-protected-VM selftests make.
+A protected VM without the ptrauth vCPU features shouldn't have pointer
+authentication in its ID registers. Commit 3d7ff00700d1 ("KVM: arm64:
+Rework specifying restricted features for protected VMs") gated APA,
+API, APA3 and GPA3 on vm_has_ptrauth(), but left GPA and GPI capped
+at IMP. So generic authentication is advertised to a protected guest
+without ptrauth, and PACGA UNDEFs.
 
-The kernel's arm-smccc.h defines the vendor-hyp UID with UUID_INIT(),
-which requires linux/uuid.h, and tools doesn't have one. So rather than
-sync the whole header, copy the function numbers and IDs of HYP_MEMINFO,
-MEM_SHARE and MEM_UNSHARE from include/linux/arm-smccc.h.
+Gate GPA and GPI on vm_has_ptrauth() too.
 
+Fixes: 3d7ff00700d1 ("KVM: arm64: Rework specifying restricted features for protected VMs")
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- tools/include/linux/arm-smccc.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/arm64/kvm/hyp/nvhe/sys_regs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/include/linux/arm-smccc.h b/tools/include/linux/arm-smccc.h
-index 63ce9bebccd32..8c8f4ad639018 100644
---- a/tools/include/linux/arm-smccc.h
-+++ b/tools/include/linux/arm-smccc.h
-@@ -111,6 +111,10 @@
- /* KVM "vendor specific" services */
- #define ARM_SMCCC_KVM_FUNC_FEATURES		0
- #define ARM_SMCCC_KVM_FUNC_PTP			1
-+/* Start of pKVM hypercall range */
-+#define ARM_SMCCC_KVM_FUNC_HYP_MEMINFO		2
-+#define ARM_SMCCC_KVM_FUNC_MEM_SHARE		3
-+#define ARM_SMCCC_KVM_FUNC_MEM_UNSHARE		4
- #define ARM_SMCCC_KVM_FUNC_FEATURES_2		127
- #define ARM_SMCCC_KVM_NUM_FUNCS			128
- 
-@@ -133,6 +137,24 @@
- 			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
- 			   ARM_SMCCC_KVM_FUNC_PTP)
- 
-+#define ARM_SMCCC_VENDOR_HYP_KVM_HYP_MEMINFO_FUNC_ID			\
-+	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
-+			   ARM_SMCCC_SMC_64,				\
-+			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
-+			   ARM_SMCCC_KVM_FUNC_HYP_MEMINFO)
-+
-+#define ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID			\
-+	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
-+			   ARM_SMCCC_SMC_64,				\
-+			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
-+			   ARM_SMCCC_KVM_FUNC_MEM_SHARE)
-+
-+#define ARM_SMCCC_VENDOR_HYP_KVM_MEM_UNSHARE_FUNC_ID			\
-+	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
-+			   ARM_SMCCC_SMC_64,				\
-+			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
-+			   ARM_SMCCC_KVM_FUNC_MEM_UNSHARE)
-+
- /* ptp_kvm counter type ID */
- #define KVM_PTP_VIRT_COUNTER			0
- #define KVM_PTP_PHYS_COUNTER			1
+diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+index 32e82653ebf7e..e5502d5651b05 100644
+--- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
++++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+@@ -157,8 +157,8 @@ static const struct pvm_ftr_bits pvmid_aa64isar1[] = {
+ 	MAX_FEAT(ID_AA64ISAR1_EL1, JSCVT, IMP),
+ 	MAX_FEAT(ID_AA64ISAR1_EL1, FCMA, IMP),
+ 	MAX_FEAT(ID_AA64ISAR1_EL1, LRCPC, LRCPC3),
+-	MAX_FEAT(ID_AA64ISAR1_EL1, GPA, IMP),
+-	MAX_FEAT(ID_AA64ISAR1_EL1, GPI, IMP),
++	MAX_FEAT_FUNC(ID_AA64ISAR1_EL1, GPA, IMP, vm_has_ptrauth),
++	MAX_FEAT_FUNC(ID_AA64ISAR1_EL1, GPI, IMP, vm_has_ptrauth),
+ 	MAX_FEAT(ID_AA64ISAR1_EL1, FRINTTS, IMP),
+ 	MAX_FEAT(ID_AA64ISAR1_EL1, SB, IMP),
+ 	MAX_FEAT(ID_AA64ISAR1_EL1, SPECRES, COSP_RCTX),
 -- 
 2.47.3
 
