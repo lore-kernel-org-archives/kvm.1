@@ -1,82 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794253220;
-	b=ePmlS95EckkhgRuzRqHYBSe3/5TeUwRaH8a325C38/AKcaM6+UeKiuu2UMlxufG3kQVz
-	 p7xQnmPNOTHpvcJqOEhK4Ix0hxgb0bECUHak/t3lSurktB92h2yBh5yCFCR74tBHnV552
-	 Kh1TizNDkkeU3pcWeLqKWufJm9DKZueJT5QIh4ftwj9lzMREtbA7j9Oj2m5+7zMkfuO+/
-	 raECMVSWIcGJ+NH2Qau5OvGS9T28weGXM6oQguBfDQZj8hKKQe1EQXABxaDFYQkSeLRfN
-	 h62yY6OC+LLcIGPp3qHR4OAWkfuCvpiuNZ56mKNOT/4+a2JFiOdpdz+SbUSa+b3tX/w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794253220;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=cSdUp+iMz6dZTnvvh+UyrpHr0aFeanxLOXVNeb5C0Jw=;
-	b=atPRB9fZez8E7qeW9Q8OxHOJVlESwjdcr2FBp9W+a1ZCDz7QeXp3JZAtrdSPPbOi1nIN
-	 rPyd1qOpSelVeKigXV5pVPi0g5W9VI7VA7QXhZJsQqEVtooT6Xo0tQFwfVksAJrsWmw0i
-	 ikrKbJFML3iuz37ZsoopQqdl1CgFVoFlUKMDoaKfEW9XqUiqqfJNkX/Dsq6BEx0wQyBWH
-	 swLqVdh1aynP9vXnFwH/1Y1NmAdPei39SHKyRqh8zINF1K9e7k69TIE618V9GYuGn1+Vw
-	 EhpeIQh26+dXV4mpc36waUiSekuBCwPK0qCoQbt3uXi+5VHNykpcOuulxzmcz2F6PNA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p+IiLjyU;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794254141;
+	b=rPqkUGSyYt4oWyz+afV3VUKrdalkcWeo3ViaF7PNFOBq5y0dyVxR6PAsm3vu4HbyR3wW
+	 CdLDZAfTFSN2A0Aq+yl+CL3JdZ2UqsQU4Pob5E3+ppIcS/F4+PxtQyUii/vtexCxkPa6V
+	 PTIt9HRPzeGvxGnhSm99X6rdvz7+5sDXDVvxtJ9o2CBnMoOLY+AdDDF7aVr6t/QqeqA9K
+	 YrA1Nvio+YBRF3zH8KLwU9dskalCaT7TjPBY6HVyw7/xiRaFQTyM2mWfQiw0Fg7CR48qF
+	 uJQFe/0VS6eCazb7139wINAnUQYA+LklV1DZtj/I+fpEKCUdLmeNDtoInWMOjnMTgAw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794254141;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=vsEcZqtV2lv2QZR9DYMmC/AF0mepkP+kQ617u7eTRdo=;
+	b=2/0fpeug0mnbkymXbT9N7IAN0PGRz9YvJz3vEKvuZ1dl8aVuVtSA4uZaI4WpORPA6l3c
+	 JVxRvWhE+B0oGGbExGkvCkSA+wpV/QKH9zxaDC4ZY6+URn3RyvDujQE7qJbEEVZOyDAbG
+	 Nzs/KuIA8xUE+tKvx1GSqD6RRTeX9r1wlKt6bwQYLR52fH5NKGeNeT6PanPADI0tYRP+y
+	 0I2QEobNIYUB6oFZ0JF4RkzfdDgB139XkhKkqlUYGgJcG3emUtRgUw+BIHPDMB5/mSH6G
+	 wmSRzDj9NMyjn+Ky/Hr6k1WTZwcaonxgeGWdUo2oN7fXvSb73T3HRrTulfjggLi7KMg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nNuGxWm8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.44
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C55606A339;
-	Mon,  9 Nov 2026 19:40:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15C55606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB2C60A2601
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 19:55:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABB2C60A2601
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p+IiLjyU
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9Hi6eQ016598;
-	Mon, 9 Nov 2026 19:40:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cSdUp+
-	iMz6dZTnvvh+UyrpHr0aFeanxLOXVNeb5C0Jw=; b=p+IiLjyU72+mDYtscn6S+8
-	dNBQ0Jddr2OsPP2Ui+b557Ts/IVitRalTOCEJV/Uqoz2PedRdIkP82b1PbauWe4h
-	9x+wEFuCr0X5ORE7BF5h+ys798PdwOREyzNABqKuzpABMlg4D0iwuy3Nlhq2Lv/1
-	hV/8pYb3FVKmZU++T3OC/SnLRZTxv9HGyCZHAmzLMx2M2a++gqdy0huXqGbI8o+N
-	4/qK+d9oEfe5XBwDBX5IVSfniAEQYBGIBqRbNQFfrZjLQlCKyY5x8IP/w/+p8bs/
-	mnuLbHYeXz8PTtpVTyv7dsFj681qemT4IxiMcjRuH0qnJ2o69jfs0YFYtyygVrOg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsuq6rvsx-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 19:40:16 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9IvXpG482195;
-	Mon, 9 Nov 2026 19:40:15 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hth0y2rn7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 19:40:15 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A9JeBOG16646592
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Nov 2026 19:40:11 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A8E442004F;
-	Mon,  9 Nov 2026 19:40:11 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B85D2004B;
-	Mon,  9 Nov 2026 19:40:11 +0000 (GMT)
-Received: from [9.111.35.129] (unknown [9.111.35.129])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Nov 2026 19:40:10 +0000 (GMT)
-Message-ID: <de7b6808-9f9e-4fcd-a0b2-335369dd7eac@linux.ibm.com>
-Date: Mon, 9 Nov 2026 20:40:10 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nNuGxWm8
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-91ebdf1c2d1so13797306d6.0
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 11:55:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794254139; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Cb7XQ3qTmMdWdBYZMNqIvJ6VES1lLcZpvmUK9i86n3XIrtXvEku+4zRLQtAQGG2iXu
+         51yvGmB9HGN8x+JcARLONVfCmU3LA6ALPP/k0OEQI6doOA5oms+ky/t9DVjNGL+1LnPf
+         QkQY+5KNS/KpPsXBKXEDOoRRgFs9iN22NLRS8Ko3e5ffh+RcV1sVAHx8Pu2/pc/1Clds
+         D9kQU03ug1Inj2OkczVPloNMJ6BGlBtNNXGdPVMbEO7JmDBPVbd0QgizkKgtKYQfIc8P
+         uYvLJzIdwyO6MbcUn3TXhhJxIA7DYHGhnpCR1H8tALKQ/t8K3v3FWT2CTyGU+ukKjIQC
+         ZpCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=vsEcZqtV2lv2QZR9DYMmC/AF0mepkP+kQ617u7eTRdo=;
+        fh=XFHjvTU0TZGPJrNmj/59QvCRh07yFRWVFNLhiBcrTTE=;
+        b=PUslnkVGK9IX0+gDnVAdv+fGroYEHAwkTuW+Yit8BqT4iSQcXuO6/vWYEWLG1rR70I
+         3IWFxaM8IzxLZXmoShqdtn5CQeTFy3iuVzjMp7+bWeJTjUa+wcgFCWymXDg5/BwA+AP8
+         3dxcnqL+IudZvc3rdFsEz+e8QgVYZTTWN01+MIqDf5F8eb9P5Ni9xea09Mfwp0tWkQlN
+         14wA/c7O4KdE82PqFw39AK17rkbmGQtW7MlGUoIyc2zZe2NkCzNE4f/5AzZC4UYGfMn6
+         xNhwJ9fEwIoestRoBQMMY/KgpmI9f0adsjW9JUVZgZxvgC7wF54duocSRYzrDTcTIvsv
+         h2fw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794254139; x=1794858939; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vsEcZqtV2lv2QZR9DYMmC/AF0mepkP+kQ617u7eTRdo=;
+        b=nNuGxWm8Llt4wMSkTawrXFCtJ01glbLkTUhNNxKxqyXsBD0dSWALjhimvqMhO2OxRn
+         QVdVQipKx5PjIzJEQQr/sF8toDoGfl0PguXQ/4OZetVUxLVDejmRRFUvTHUI/MQDaUm6
+         8xQcLCMRsZ/aD7IQSLJ8XJcnm66ipa+y/gsifit5VlukaYh7OimEPUbRz2bBDAJ2WA0s
+         jsSVMH6GELppwjZ5ZNBP0ONytHjT/rt0/OInzCOvGgAOh7rMmMb0lM1H77QtAB/hxoyt
+         ZF/DPHqsC6C3PkbWztg92OZJdOSd2fcopjzCFlKGZ6+neC1XBI7g0tv5xX/u8f5p6+/k
+         UDxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794254139; x=1794858939;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vsEcZqtV2lv2QZR9DYMmC/AF0mepkP+kQ617u7eTRdo=;
+        b=SWTFDYd+Z9Z139/wKQUv6PHmNMXUIhl0BPtdPywDI3SMNZvWPxx9HR53IPyGnsk8pE
+         FjA3qjo6dnxcyoiA0ynCralP4BgyyAJw1uxeqfc9VmbGzY1BRIsEnyXlJ2ckceS+JgYs
+         ySAhSVBZKO8caK6gm/yF74/Hjt9PuZBz/g5x1w0VDkP8U+mKA5VQuHJUSSVnR0cqC5Dh
+         sxFiidth6w1smYc22hYIb1Zp9eBBl/K/qz7JDPDu84nNvKEuDGuQ1Cx+4GOGUgbLEvCw
+         ii4xmbT5zTxtTUBn192DOi0z2GKqMLfnXeCcV/brtwZbrg+IJwh9kLOnlZ7m3o16ZlO2
+         iErw==
+X-Forwarded-Encrypted: i=1; AL+hErGRZciJikgb8E+pGWuYG1E9jDLtvw9VaqWBtZimuEe+YG7SvaJfCuE16+wRBs+CLItP8us=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/gcLBn0QgCnT8T5mGrzqkkRSRXNnrrJ2sWn8vW31tpYNc5V/S0
+	LRDztHZ2PZUTi40YOMUCVSkF+jaiigGpPyOybWszy2FmSpeGH5cauLUmgbPn+2/1BlwzkAT9hCR
+	uUpQr0VRIfGI0oRl2BFFVAJyx/XuMJ4mGEHpvwZkD
+X-Gm-Gg: AYBFou3o9L3RD7Wqp+YYSIb/K7BuXXiFnxf4fkpUSt2t41cTxEPwqC5Pl+D8gglDy36
+	nINp7Iu+Z/kzfLFeEaEcFrQCpf9FIpyG0j6yI//28ebWV5DJRQ9gKNifPZ8a+uIsCYms+SfRSz7
+	nHF2DDD5tApbfHRjD6/1QIO6FMQ9Wc8B8q/lkNoatkUBs37TgDaov96snFJK37C+zM2WiLU8Trm
+	c1VYuQnrKz1LpXEYVbblJTRg80+OTS5oqyQ1wXqo8MdOh1COQdAacqtZxcQ94kSqV4lIaCJa9vd
+	yCzl6PxNQgFuFYxjzhu5hRBszHyODygOUa9mZcVU5P+E65za2YGrjnvj17Q4qQ0M9q+pbsovrXq
+	5RSGb9qwgweXJ/skQW84yoEONvOwN6UG3R6WCX0Kpt1Ip8GwLLjyoUUkXjyEM8EDsjoTY4cifko
+	9cgEdepNHEBs0BU4OSlRO47gU=
+X-Received: by 2002:a05:620a:710b:b0:93e:49eb:a274 with SMTP id
+ af79cd13be357-9479f2fa7d5mr94788085a.23.1794254138721; Mon, 09 Nov 2026
+ 11:55:38 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 9 Nov 2026 11:55:37 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20261105-tdx-selftests-v16-9-2024e8fa517a@google.com>
+References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com> <20261105-tdx-selftests-v16-9-2024e8fa517a@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,95 +109,100 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] vfio/ccw: Flush notoper_work before returning from
- reset
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Yuho Choi <oss.patchbox@gmail.com>, Eric Farman <farman@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vineeth Vijayan
- <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Alex Williamson <alex@shazbot.org>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261106191029.469837-2-oss.patchbox@gmail.com>
- <4cb58287-4273-4518-8cac-aa3056dc28e2@linux.ibm.com>
- <20261109144953.GN663069@ziepe.ca>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20261109144953.GN663069@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA3NiBTYWx0ZWRfX4G1a4Pw/g7wM
- +82nkA3x0hUsk11oRX7zJtxN0EVQoMAL0jYQ0QccHyvNGC/AWCEEwRmhjd8/dWBOr901Oo2OCXb
- lQdyJeot1E45L1szg1CbOR7+506gn7U=
-X-Authority-Analysis: v=2.4 cv=HbCB3SE8 c=1 sm=1 tr=0 ts=6af221a0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=Pjkd0tzdIERNFELBtG8A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: k0hV1_7oyy_oMty6URswoLxqe5o577yE
-X-Proofpoint-GUID: 0zgPJs9UngTPOBHfZRc8TD4yKWd59kiu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA3NiBTYWx0ZWRfX7b7dUpyuAR0u
- RxcBxUBQITb5J45CQmhm9/O42OktyKwnJ3TEI0FWpvMTwWyI6FKRuT8qT3CmwFPZJf9YmJnNbu4
- GvG5CZNskrLsYrWGgWjznl8nOIICIxdQkVsY0iqAnxuOhymBXPwn8Or6+b9jq9EEAW/Q/AzO9XY
- /mFGk9cqWSOjE4RsCNOKp3RzkqZR8p1zOAHrPSgUrWvKgnedNvaCl98H0HW+hrjEQfMvDcNZ/5b
- ylttac8r+tgjR2JLNwtmrpl3l1xh3uK5ehOUpqYra6TwTXaXnfWOn2b529FQF22/uzRbpjG76G8
- wso80j93t+eqZJN8XViS72q6rPNL7bqr0FJ0dlOS8imThzTKWJSXORHLOSAf8+MHqyweN4hSdYz
- Fvcfe/+zgfuYJS2+DSs3fU58BtuVdG9a/0gsdDgop3r5HZVr1j8FtxnJyo8KwkmAehGIfidMdFS
- uhFZSssntnEldxXeNHQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-09_06,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 spamscore=0 bulkscore=0 phishscore=0
- impostorscore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611090076
+Date: Mon, 9 Nov 2026 11:55:37 -0800
+X-Gm-Features: AclHuK-fw27NEX4WLMeH0MQEMu23wQjUHEw6LG3xIqCQa_4vVj4k3LjJhmBS0EU
+Message-ID: <CAEvNRgFvkWCM_JDxiamzQW=stgOnY0Xum5aphVv-Zo941zx2sg@mail.gmail.com>
+Subject: Re: [PATCH v16 09/20] KVM: selftests: Set up TDX boot code region
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Lisa Wang <wyihan@google.com> writes:
 
+>
+> [...snip...]
+>
+>  /* Leave marker so size of td_boot code can be computed. */
+>  .globl td_boot_code_end
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> index 564144c40f0a..b4a7089b3636 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> @@ -1,8 +1,46 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>
+> +#include <linux/sizes.h>
+> +
+>  #include "processor.h"
+> +#include "tdx/td_boot.h"
+>  #include "tdx/tdx_util.h"
+>
+> +/* Arbitrarily selected to avoid overlaps with anything else */
+> +#define TD_BOOT_CODE_SLOT	20
+> +
+> +#define X86_RESET_VECTOR	0xfffffff0ul
+> +
+> +void tdx_vm_setup_boot_code_region(struct kvm_vm *vm)
+> +{
+> +	const size_t total_size = TD_BOOT_CODE_SIZE;
 
-Am 09.11.26 um 15:49 schrieb Jason Gunthorpe:
-> On Mon, Nov 09, 2026 at 01:38:44PM +0100, Christian Borntraeger wrote:
->> Am 06.11.26 um 20:10 schrieb Yuho Choi:
->>> vfio_ccw_dma_unmap() is the DMA invalidation callback, which must unpin
->>> the pages covering the range before it returns.  It calls
->>> vfio_ccw_mdev_reset(), which raises a CLOSE event.
->>>
->>> On the normal path fsm_close() calls cp_free() itself, so the pages are
->>> unpinned synchronously.  But if the subchannel cannot be disabled or
->>> quiesced, fsm_close() falls through to a NOT_OPER event.  Since commit
->>> 0c11f61a876e ("s390/vfio_ccw: Move cp cleanup out of not operational"),
->>> fsm_notoper() only queues notoper_work, which is where cp_free() then
->>> runs.  That commit flushes the work in vfio_ccw_mdev_close_device() and
->>> vfio_ccw_mdev_release_dev(), but nothing waits for it on the reset
->>> path, so the callback returns with the pages still pinned.
->>>
->>> Because notoper_work runs asynchronously, vfio_dma_do_unmap() can exhaust
->>> its 10 retries before cp_free() completes, hitting BUG_ON(++retries > 10)
->>> and taking the host down.  A further CLOSE cannot help either, as both
->>> CLOSE and OPEN are fsm_nop in the NOT_OPER state.
->>
->> Does the the iommufd backend have the same problem?
->> iopt_unmap_iova_range() keeps calling the unmap callback and gives up with
->> WARN_ON(tries > 100) and -EDEADLOCK. So that path is also fixed, I
->> guess.
-> 
-> Drivers are not allowed to refuse the shootdown, it is broken if
-> someone has done this.
+This caught my attention because it wasn't quite reverse-fir-tree
+ordering.
 
-Agreed, but isnt that what the patch fixes? when CLOSE fails, vfio-ccw
-currently returns from the unmap callback with the pages still pinned
-and leaves the unpin to notoper_work. With the flush the pages are
-unpinned before the callback returns, so the driver keeps the
-contract on both backends.
+Naming is confusing here since there's both TD_BOOT_CODE_SIZE and
+boot_code_size, so which is the boot code and what is the right size?
 
-  > Jason
+If the only use of TD_BOOT_CODE_SIZE is here then maybe we could just
+directly memcpy (td_boot_code_end - td_boot) and not have the macro.
 
+> +	const size_t boot_code_size = td_boot_reset_vector_trampoline - td_boot;
+> +	const gpa_t boot_code_gpa = X86_RESET_VECTOR - boot_code_size;
+> +	gpa_t alloc_gpa = round_down(boot_code_gpa, PAGE_SIZE);
+> +	size_t nr_pages = (SZ_4G - alloc_gpa) / PAGE_SIZE;
+> +	u64 gmem_flags = 0;
+> +	gpa_t gpa;
+> +	u8 *hva;
+> +
+> +	if (kvm_has_gmem_attributes)
+> +		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED | GUEST_MEMFD_FLAG_MMAP;
+> +	vm_mem_add(vm, VM_MEM_SRC_SHMEM, alloc_gpa, TD_BOOT_CODE_SLOT,
+> +		   nr_pages, KVM_MEM_GUEST_MEMFD, -1, 0, gmem_flags);
+> +
+> +	gpa = ____vm_phy_pages_alloc(vm, nr_pages, alloc_gpa,
+> +				     TD_BOOT_CODE_SLOT, true, false);
+> +	TEST_ASSERT(gpa == alloc_gpa, "Failed vm_phy_pages_alloc");
+> +
+> +	virt_map(vm, alloc_gpa, alloc_gpa, nr_pages);
+> +	hva = addr_gpa2hva(vm, boot_code_gpa);
+> +	memcpy(hva, td_boot, total_size);
+> +
+> +	hva += boot_code_size;
+> +	TEST_ASSERT(hva == addr_gpa2hva(vm, X86_RESET_VECTOR),
+> +		    "Expected RESET vector at hva 0x%lx, got %lx",
+> +		    (unsigned long)addr_gpa2hva(vm, X86_RESET_VECTOR), (unsigned long)hva);
+
+TEST_ASSERT_EQ would work here, same for the == assertion above.
+
+Not a huge issue,
+
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+
+> +}
+> +
+>  static const struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
+>  {
+>  	static struct kvm_tdx_capabilities *tdx_cap;
+>
+> --
+> 2.56.0.455.g6c5a503b38-goog
