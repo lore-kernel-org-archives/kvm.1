@@ -1,75 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794200611;
-	b=FAkwNUZ4Tms6vSvOnRH0BkMjtbogUu/XoNfYyB3R+Inp5lsAUWuxscYc0ysubMNv8+2i
-	 joaOptultq0749q1+aKJFosKuHXrt+ZqhLBfZDBLLH7H6tcPW19foCty/zBgYukVqgXIJ
-	 Lj8ZdPuAlDDzUyfEyrATfLP2xTebJmJAFfNFd0pJr6rWzQ6w78KNNHbGs647KkoSPs676
-	 V69id72bWpM39a8kH4SBuoVVVd7oSPiiwESGOqS9Y0p5Hq9toTpRi9cp/F6TT794ry17D
-	 bo+Lm0DR7oeS8TmegogO7tVEX+gS+OnnGKUPCgYEbXCR0xPvn75rJnp6fPhpq81tuGA==
+	t=1794201522;
+	b=1YyVEocVKtZcIQv364h8tVwqE4ow/M8lZyoKzD6xIT888kgisOr6eICiARnr8faysbkj
+	 RwfsbUxAcYgVrwk8ATRHYEAY+jvh3nqANGvubgf7HtQ+gbnILPylvAO5Eef/hfmQMrYDy
+	 0Zvsi+BnnffhzSMwDoaIdxE+JJjwZ0lRM2EvTeJh/nhS2bnVpvHjPPbSVMWEIQVzr0dDa
+	 tE9TvuhgGvdg8p2iJxz2iBpGch7G4EQNwMHY45o3P29vMmbjOrAlSwpiBI1Qk1Xl0JBWw
+	 h5JJjQojQE/YQRMpv9ZSCtrsGVAiMXxcNzVc7Cwc1B696eWYGheN5glgZQkNNWvLj3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794200611;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=WKDYdtIPpXv/RzXHp6m0fnJtTmWjQH/piwGs13om7po=;
-	b=i6DTyae+ZCpmfGzCGchOR5MeqPb2cTjv6nsF+B75NSOMyWIw7Rb2OF6OLJaUq01CCaN6
-	 zo+tQ65KCjVKL1jJ+RAH9sCVmdK8wRRiZ4olfsVW4YwA7wyi0VnKVup6tCqtDmP6mxRzy
-	 PQMwIIiF3jTx+W8b1wWk9w41j26X0sG4XsJkD12tZdlDcVTuEpUvzF5ykYNpHDxmPG/3u
-	 7D14x4uaQH+6EV7ohgmmrbbpxLQSKvZg+WlDraODRmq+6fKWpsQciVRh/vlw6ONGRmSvM
-	 tKV8SME2Qdx7PNeR0h4Fcfatu7D7mTrZgDWlvIfFciR5ois6bc+jAjsHuKWgOaNFAiA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794201522;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=inbRv9rqETpvmrvWY+hsNFNboYN1tmYS0qnuK2Kr/gs=;
+	b=tDn48CiI5PRkq/8ViaiBOYxAanfdSG3BPz/sPJ9Ed3qwVv8G9rujpj+c5F6ahtg8jHzs
+	 A3jioTrhdC1NdpX/En+t8CJnpSEitw8GBZ+lkAlg1ttS7vu77hjeTmFJjVQDp/RgZ9JxI
+	 +ndllnKrtFEPR8XXOud8gq8j76UksUevPBpR/hyLYF/O4NPE76lmcOGX6U4T743Kxg6cW
+	 KV6YPrXp4PnGcCXZaXYd86/NSeC0Mvg6ACCyeoyfWSS7DVL5JbDMqmQSwlf0ugjJbMGmu
+	 AhrRFJY/1DSwoyfHj3g1wESfEDPHvGYUTHExt1GETEAV+bkRf51jZ99spVTWbF+zWAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GD03ukNX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=codeconstruct.com.au;
+	spf=pass smtp.mailfrom=codeconstruct.com.au;
+	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=egf84Gcq;
+	arc=none smtp.remote-ip=203.29.241.158
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762EC606A31C;
-	Mon,  9 Nov 2026 05:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135E606A321;
+	Mon,  9 Nov 2026 05:18:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1135E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GD03ukNX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4746B1F0089F;
-	Mon,  9 Nov 2026 05:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794200611;
-	bh=WKDYdtIPpXv/RzXHp6m0fnJtTmWjQH/piwGs13om7po=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GD03ukNX3qpJy/ulw8mljNcuZ+ffE/s+zMEiPrDEJKEQ+cye+2q2ws/q05r9C/MwA
-	 8lK5saBohFqhyS1SyDBT7NAkEwD8aM3vrlD9P4LPvGRgDSSGrGefVUdGFsWkIN+fho
-	 KpZxXNBbAQhXwg6sB5B8D8Vm59TczWTrD2qm7awrv0ZfpqU3B5VLjxjl7H1AjqQp4S
-	 i75YS8Qrd7Vyem4PeyW90tc16A0bzx+XMbNpRh3pm5DhqNFrGg/rEHLk/84mg3sQqd
-	 qGoOtS7woGspYXn7FCWWhnpfaGDKLNbR/J6K7jjxa7wcob9PfNJ6OsgEBIyHaJT/Ms
-	 gyMazdqf0pplA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jianxiong Gao <jxgao@google.com>,
-	John Starks <John.Starks@microsoft.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tarun Sahu <tarunsahu@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	Ackerley Tng <ackerleytng@google.com>
-Subject: Re: [PATCH RFC v3 64/88] vfio: Add vfio_device_gmem_revoke helper
- for guest_memfd
-In-Reply-To: <20261106-gmem-alternative-providers-v3-64-8484dde66a7e@google.com>
-References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-64-8484dde66a7e@google.com>
-Date: Mon, 09 Nov 2026 10:33:20 +0530
-Message-ID: <yq5av766tx47.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=egf84Gcq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1794201519;
+	bh=inbRv9rqETpvmrvWY+hsNFNboYN1tmYS0qnuK2Kr/gs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=egf84Gcqai+t2RbzRcp/hsSqUjhQHhjh3vyzhBpm8hV2KWxqDFJxnPUahIU113EcT
+	 BgLm6wqU/Euo4rhk1oHtIX3Z9zvOL05mtWbK6K/L7+70zAOa6b9LxPeqiMFkTfAyXR
+	 sJ6r+I/RKBuOwB8hQ4kh0KzVB0J735kCbnMQRQlA7QvM+MYWUHFrMnQcdvVsUlq4qL
+	 OrhgI7yGlCRf9GdwPQCvkWPbpW6LqMolW9oQ7mrzBne/qL9+nOjj/aqp3F164dsqk2
+	 7rLero/HB4L0DSs1r+ug01+7VgG2RcG87tSeq7M4AqhpAUCMcl+W2qQMRVuMpXb4J2
+	 kfa7LW520ih5Q==
+Received: from [192.168.68.117] (unknown [180.150.112.139])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 083566E9E9;
+	Mon,  9 Nov 2026 13:18:31 +0800 (AWST)
+Message-ID: <4848c58f3152233477c4fa4786de2a49c9261c9c.camel@codeconstruct.com.au>
+Subject: Re: [PATCH 09/14] soc: aspeed: convert LPC and P2A control mmap
+ hooks to mmap_prepare
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Juergen Gross
+ <jgross@suse.com>,  Stefano Stabellini <sstabellini@kernel.org>, Oleksandr
+ Tyshchenko <oleksandr_tyshchenko@epam.com>, Madhavan Srinivasan	
+ <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael
+ Ellerman	 <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>,  "Ritesh Harjani (IBM)"	 <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Haiyang Zhang	
+ <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui	
+ <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang	
+ <jasowangio@gmail.com>, Eugenio =?ISO-8859-1?Q?P=E9rez?=
+ <eperezma@redhat.com>,  Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko
+ Sakkinen <jarkko@kernel.org>, Dave Hansen	 <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar	 <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Jan Kara <jack@suse.com>, Paul Moore
+ <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej =?UTF-8?Q?Mosn=C3=A1=C4=8Dek?=	 <omosnacek@gmail.com>, Joel Stanley
+ <joel@jms.id.au>, Ryan Chen	 <ryan_chen@aspeedtech.com>, Billy Tsai
+ <billy_tsai@aspeedtech.com>, Bjorn Andersson <andersson@kernel.org>, Konrad
+ Dybcio <konradybcio@kernel.org>, Abel Vesa	 <abelvesa@kernel.org>, Jens
+ Wiklander <jenswi@kernel.org>, Sumit Garg	 <sumit.garg@kernel.org>, Scott
+ Branden <scott.branden@broadcom.com>,  Broadcom internal kernel review list
+	 <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Richard Cochran
+ <richardcochran@gmail.com>, David Woodhouse	 <dwmw2@infradead.org>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller"	 <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski	 <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, 	virtualization@lists.linux.dev,
+ linux-sgx@vger.kernel.org, 	selinux@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, 	linux-aspeed@lists.ozlabs.org,
+ linux-arm-msm@vger.kernel.org, 	op-tee@lists.trustedfirmware.org,
+ netdev@vger.kernel.org
+Date: Mon, 09 Nov 2026 15:48:30 +1030
+In-Reply-To: <20261105-late-2026-mmap_prepare-v1-9-c56aadfbab8a@kernel.org>
+References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
+	 <20261105-late-2026-mmap_prepare-v1-9-c56aadfbab8a@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,23 +101,16 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
 
-Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-writes:
+On Thu, 2026-11-05 at 21:05 +0000, Lorenzo Stoakes (ARM) wrote:
+> Move from the deprecated mmap hook to the new mmap_prepare hook for both
+> the LPC control and P2A control drivers.
+>=20
+> Both remap a range of their reserved memory region, so use the PFN remap
+> mmap action to do so, retaining the -EAGAIN error on failure via the acti=
+on
+> error override.
+>=20
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> When physical device regions backing guest_memfd memory must be revoked
-> due to hardware reset, power state transitions, or memory decode state
-> changes, the bus driver must revoke and reclaim the memory ranges from
-> guest_memfd before modifying hardware state.
->
-
-Should we prevent such operations while the VFIO fd is attached to
-guest_memfd? Some of these operations can transition the device to the
-TDISP error state, and we should avoid host operations that can result
-in vfio_pci_zap_bars().
-
--aneesh
-
+Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
