@@ -1,73 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794239890;
-	b=09KV8C6bcKjvnHlLiL185SD0wXcRZkKHlsjB/VQTSGo4VC4TaIPFEwKXxIKYlNWdekQT
-	 EISDnOMtDncE0iZQ2py6u4xB20wDmGhlJq45XZ+p/MsUAtffIjzKV4dP2Jf3YuR7SlZQ0
-	 3o7tBDkKwOJu5jPoMObPk12+3M6zejs/MNATZJU49dWQUN8SPPVc9PZj7HD0kxZFeesI8
-	 CIx/rnPZekjprojXHTNmwPrl5AZht+WH+RFWAC6Oxg6cJPikpL5Lb/9Gbe8fai7Yq7jLx
-	 CFVpKmS412rfA17xr2N3pcgUru57aqpKcitxnmjIba60EYIV3NrwdMe14Qkf+yKHdzg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794239890;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=r3N87t7rpgxXMLe+tyGoCO5FBIgPlIswbKigTqDeBMY=;
-	b=d8pkCXN04eVDPbOJE2llJageSBflQAalMZU9/1mc0TrPmrrGnem9voGt2RT2b2n2IhDq
-	 ig3Qj4x8g1R7uGi9Be9V6Ja7KQFPYgksAiz5j/wzUD/4Jx1ZwPxBaQCvXMK4OJDOdqKcP
-	 u2BnwliKIRUv707yo9yfmUZ550RwskqnCBmpmj0Ao7VsFGF2jjDc8CNoJRR8EsHyug83C
-	 vffSrXRno7hQgRx4bYVDtgM1yuIQI/Sm+zqBNjSL2KblcjiExjTz3XJ4x+M3tbGvO2xct
-	 jCJ3vX1hCwg7qAwfJ8NyJGQq6zlW4UTo0ihwR1ooidWDBAiM2eL0WZbpHasHHUFRaCA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=wKvuv12L;
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794240043;
+	b=mcCSjgTF0vDcRtODLbl58lHd6nD+dH7p4Zz26LayWWb9vxhVcaWxxeTO++YO3Xg1UNHM
+	 npsulBk0o64aMU9jRftKjjQ0uPTLbK1THxE7aOCHCgp5u1ebo8doxrClbQkVPeokDiKhH
+	 3RkhGC+n0FWlynKoMMc9lz1lFlfNxpAZYZ7HWqcotcbg9kMaINBEM7O9vga702f6vnebT
+	 aikgCaDf7j+AsEZgvyHmPGrIiDgkC3ZAgIpdhxulfG+J5TVUFCf9j0sJBMZCpvtQ9vEFx
+	 nNhcOilHjVVRL1HLQJfrCjbOygA/RmmI5NcoGOXACYQd1EHkwTw99jLI5JAR/ZJMMig==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794240043;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
+	b=axr/mbZ+g4DAu5Z4dZtpbjtigyBs0SseqkWcs6uhDtzgXuFEe1KdEAioNQUvndSYzVEh
+	 oMjsoSpqkrxoIVJROUKIOZ7O33k9JxZXz2XrjKkd8PgE4xk1mZ9PKj6lpxbkVKhCUguyW
+	 VFV4RayNGKojVJNhNH2DSUHJ+k0+nWJwbi1OgCKNKUqoW+3t2TigkHq3phkhWBC1Dzdvr
+	 xh/QxSNnr1QRoPq5W6a6aGv75IBqLy2rqt+T1GYhwKLBD4C/SQW+CIeJp9RWK0bREb6MK
+	 s6bEWh+TlZXmE5nC1Jgcl9Nta8sM6vYlG4aRB7tT2Q85EJbHUUYY93czCSRCGvvodDg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eVKMSmAw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.50
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1431E606EE90;
-	Mon,  9 Nov 2026 15:58:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1431E606EE90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA056606A331
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 16:00:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA056606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=wKvuv12L
-Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id 29B6426662;
-	Mon,  9 Nov 2026 16:57:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1794239878;
-	bh=r3N87t7rpgxXMLe+tyGoCO5FBIgPlIswbKigTqDeBMY=; h=From:To:Subject;
-	b=wKvuv12Lgl0Lp7WVZrkuWV0q+WgXOfjxmJMsjTpLytkKqdbcUl/kMpoVFSyfhxlDd
-	 9gtu+weUURdk+Fh8084MwFYRd9oMIaUS0HD/3qiK/Mr02rmRLGfbhLzoWUJwRJjpK4
-	 lmY9f6yGi7T9OWGQ/RLiK73WuC7BgKOjFESkd+86Wm8dFImN3B6t03dT9P5HbjwGug
-	 RZdDH76en8sDjcg7b3CMAceUGkR/jfnxy0LVH0502kgUK993IRiwddwvXGBU7N7VXC
-	 gKKK1DDfR/iVxNj9wxg3Pz2u+1+BbYpKhLdcQQytGDKowFhjns4JDKgsNH6+N7/uEu
-	 cgEL6Nxvm5sKw==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-bsp@toradex.com,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [PATCH v2 0/8] ARM: dts: imx6ull-colibri-emmc: Add DPI display and VGA overlays
-Date: Mon,  9 Nov 2026 16:57:40 +0100
-Message-ID: <20261109155751.475875-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eVKMSmAw
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91ec396c93dso12257066d6.1
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 08:00:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794240042; cv=none;
+        d=google.com; s=arc-20260327;
+        b=J4Rmc0n4PDaniy0uhOLAn65pk6jI6lptDGTn3RNJhUviXQMiur9yLtE/J6huKfg82R
+         j3Ai9w/fngWcMs1MnnxHQ3++kgFueQR42eEHmGSbmx5geJCUvEYb4u3wRdyAplOG3vMw
+         iRNBfBkUK0NVm0En9UTZFNDJYmS4poG94blnkagwnGlTMRLv/I+jnAq5r9z+0VnY2cSU
+         Q37dG/Z43eDqsW0BmcA3WY4w2vzudMWQti7Y0xNnHwiQ6j0flMExKpJshF/8+fPRhUZi
+         RNPeyomtS+TilWzocr9NSwmAoiAMbijgpprpwDIwHMsn+l39cgT+M58+2Ka42DIpDHGW
+         /QNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
+        fh=gYGzUeNpI8+ZyZe2AGDTS9+2Kmmej0pNRdFVFyTmpr8=;
+        b=Ex8NIadjh1ZVKqQRkpp63bFd9hcMKv9ABHYO29754bGvVBfjJC+oY0L8boT9/uZHOa
+         am5wmYNeJibhTvG3uJj3DWSNq3+2YRywCzkw1pmRALALyOzj/ea7xQzEJDkAIgDnEk4f
+         C6TvEDo4/iCmP682uZWfCUxUukt8Y/a+Zs4HP2ulGHnyvMW9vOUf/TltO6LtCsSmBMwQ
+         pIEj3DtFn2dcq9nAHvE/kcQPk05nxBdhU2pWjTJC1nqMgJOY+SUwOW9Nhu14ruQNg2eN
+         CMj4/VEC0TpsCoSCLjKLRrqIyS5fZ+roI+XrXVobvI7wWP8mc77vmgFfCaX844H7WgoT
+         So0A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794240042; x=1794844842; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
+        b=eVKMSmAwRDJ5fSeCORPgxCIKcy35/jStL56anO2mdaDeqKQUdUUrs7cHpaWXPuZrEe
+         WjOcE/rFJJZDNtW8F5K7QKryfLTX9qxoE6LEGRTnqqKJhwB3SztHb1R2eVMupG+FZOKD
+         sHQhKEJTm4xF3gxKt0PCmeqvGwDrZSCcl83RNoSyuGQXOvtLSuWD+rtxn/xMmCiBh8wl
+         jqmJmZEGQxYee6qcqdzBIofbPAvCVKcaAD7DLmvkc9zIGZ0ND7pzzZOWCx4LszFh1ntA
+         yUlfb8w9bELqfWFcod9ve/nX20GnAdXBKewbx7uv+Qcr5Usw+tWjXtqTnTge+NHNW8Lw
+         nBig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794240042; x=1794844842;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1IVvR7owaTCfwRNK1gEl9dRHd5D6+SPRltJMKFkI3Z4=;
+        b=nQ0+9OwI/6vfWhjheEIp/JrekHfYcZhH+KtyswmbhYQzs4DB1bjinc3ZGvaUha6C3X
+         fUerqEDtgv04kVvqbRWGI/oxdKk2VjX79DLcZozR+qX/FJ17V6+64Ba/NMyA/yCCD7J7
+         6hRdmvm1LIuzAsuHyL36L1JVaRXJ4BWBqqUyADLafqeg34IaRbIZwza5ItO87RBFiahx
+         v00lEj2+6TroAPCBvFhcwz7pNb8ai++wLyOJ/KzR6+2HNJNtng14vTaqqx4X9qQITimp
+         ekvNtNEmW0BzVZ1cZ6CyR8Gy4KVBU2SYXy4GwdMkh9QOEvujRdUoKVaiWmqdpOlDfe/i
+         8k/A==
+X-Forwarded-Encrypted: i=1; AL+hErGTWPIsPI+H8xigZ5cs7xtL9IuQvJupYg37YVkLiOKZySzlrr0+RCtJvPZXq8bY0j6U7nw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/nIYwatk00WnKyYdOEoSvucHHtksNvwF/RhTIgNjZdDWCsLL4q
+	WJe4W2tO7Xszt7R8xfNBCYLXz6UPqxqN396jEGO+lr3LHv2jdcNh17Uu7ZrinYh0k6qcsHSiNY+
+	qUTtKJaMIec+MlTYwV9Fv00vj3HkFsyLjITNU/U2p
+X-Gm-Gg: AYBFou2qIVypLYcKMUWgH7USzans9JEGmdQuw/9QpZkQ/me/1j1kw7GYtPuGt2Tf3yS
+	zbuPonUdifZ2Bsd9D4Js+afnU6+0dHz3Az30jX8AzsnfabjdceffzEYchC9M8rQh527Ik7/UOq1
+	2zD92zZ3tdyjLPpUrdIR+HEi4WjVeeLwxgbbJjtzyvwwHz7yi79FxEvzohPzB0DdDy29mOctAsv
+	+2222uNeiSV9dSPXy/irPEup2cEOWti8hb7W0sR+k5Egb0lNBl8ygTMboIvEfEDe9bHHFMPSyFo
+	QgLVUkGsbgvQxWm47lfQVqc+Dzn+EFF0Nh2J/FrqI98AQCQvdPml/cpds6Yt7AsVBZogoJMlgpG
+	rringz8c9v8Fu3FT5leSTdEmYHNe8yt5oSBA7F3NLEnfi4ipRUqf4AzUBfIOZpVG98g==
+X-Received: by 2002:a05:6214:5402:b0:91e:ee31:55ba with SMTP id
+ 6a1803df08f44-91eef8c841emr97756d6.57.1794240035928; Mon, 09 Nov 2026
+ 08:00:35 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 9 Nov 2026 08:00:34 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20261105-tdx-selftests-v16-2-2024e8fa517a@google.com>
+References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com> <20261105-tdx-selftests-v16-2-2024e8fa517a@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,102 +108,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Mon, 9 Nov 2026 08:00:34 -0800
+X-Gm-Features: AclHuK8G0EZDW3tY7sTDlhlnaXZOXK3ScUEr2v83dxDnmQ6yymeVPIAKQ5tIQLE
+Message-ID: <CAEvNRgHhzFxfXB+jXy+RCwTWevFTEW3RH4q51xztrFZYa4Xe_w@mail.gmail.com>
+Subject: Re: [PATCH v16 02/20] KVM: selftests: Update kvm_init_vm_address_properties()
+ for TDX
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Adrian Hunter <adrian.hunter@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+Lisa Wang <wyihan@google.com> writes:
 
-Add device tree overlays for the Toradex display accessories on the
-Colibri iMX6ULL eMMC parallel RGB LCD interface, mirroring what was
-recently merged for the Colibri iMX7 eMMC:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>
+> Initialize the TDX S-bit and the GPA tag mask in
+> kvm_init_vm_address_properties() for TDX VMs, similar to how the C-bit
+> is initialized for SEV VMs.
+>
+> The TDX S-bit is used to distinguish between shared and private guest
+> physical addresses. Its position is determined by the guest physical
+> address width, which is either 48 or 52 bits for current TDX
+> implementations.
+>
+> Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Co-developed-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
- - Capacitive Touch Display 7" Parallel, touch on the 10-way Capacitive
-   Touch Interface connector (Iris v2, Aster)
- - Capacitive Touch Display 7" Parallel, touch through the Capacitive
-   Touch Adapter (Eval v3)
- - Resistive Touch Display 7" Parallel (Eval v3)
- - VGA output through a non-programmable video DAC (Aster, Eval v3,
-   Iris, Iris v2)
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 
-The panel, backlight and LCDIF part of each overlay is identical between
-the two modules, both using the same LCDIF binding and labels. Instead
-of duplicating it, each patch moves that part out of the corresponding
-Colibri iMX7 eMMC overlay into a dtsi shared by the two modules and
-includes it from both. Only the Atmel MaxTouch wiring, the conflicting
-PWM channels and the BL_ON pinctrl and GPIO driving the VGA DAC power-save
-input stay in the SoC specific overlays. The shared files follow the
-imx6ul-imx6ull-*.dtsi naming already used in the same directory.
-
-The overlay names are the Toradex product names of the accessories, and
-a product name is unique only together with its vendor. Following the
-discussion on the Apalis iMX6 overlays [1], the Toradex accessories get
-a "tdx" vendor prefix, the same way third-party accessories on Toradex
-boards already carry theirs, e.g. "rpi" in
-k3-am625-verdin-rpi-display-2-7in.dtso.
-
-Patches 1 and 2 are fixes and come first, so they can be backported
-without the rename. Patch 1 (from Emanuele) drives the VGA DAC power-save
-input through the BL_ON signal, without it the Eval and Aster carrier
-boards show a black image. Patch 2 adds the Colibri iMX7 eMMC touch
-adapter and resistive touch .dtbo to dtb-y, as they were built only as a
-dependency of the combined DTBs and never shipped by dtbs_install.
-Patch 3 adds the tdx vendor prefix to the existing Colibri iMX7 eMMC
-display overlays. Patch 4 aligns the Colibri iMX6ULL backlight
-brightness levels with the Colibri iMX7 ones, the LED driver of the 7"
-displays turns off below roughly 15% duty cycle and only the three
-highest of the current levels produced a visible image.
-
-[1] https://lore.kernel.org/all/20261026111149.GA46946@francesco-nb/
-
-v2:
- - add patch 3, tdx vendor prefix for the Colibri iMX7 eMMC display
-   overlays
- - add the tdx vendor prefix to the new Colibri iMX6ULL display
-   overlays, the shared dtsi and the combined DTBs
-v1: https://lore.kernel.org/all/20261001174924.3831455-1-francesco@dolcini.it/
-
-Emanuele Ghidoli (1):
-  ARM: dts: imx7d-colibri-emmc: Enable the VGA DAC
-
-Francesco Dolcini (7):
-  ARM: dts: imx7d-colibri-emmc: Add missing touch display overlays to
-    dtb-y
-  ARM: dts: imx7d-colibri-emmc: Add tdx vendor prefix to display
-    overlays
-  ARM: dts: imx6ull-colibri: Align backlight brightness levels with
-    Colibri iMX7
-  ARM: dts: imx6ull-colibri-emmc: Add Toradex Capacitive Touch Display
-    7" Parallel
-  ARM: dts: imx6ull-colibri-emmc: Add Toradex Capacitive Touch Display
-    7" Parallel with Touch Adapter
-  ARM: dts: imx6ull-colibri-emmc: Add Toradex Resistive Touch Display 7"
-    Parallel
-  ARM: dts: imx6ull-colibri-emmc: Add VGA overlay
-
- arch/arm/boot/dts/nxp/imx/Makefile            | 73 +++++++++++++++----
- ...ap-touch-7inch-parallel-touch-adapter.dtso | 46 ++++++++++++
- ...mc-tdx-panel-cap-touch-7inch-parallel.dtso | 31 ++++++++
- ...mc-tdx-panel-res-touch-7inch-parallel.dtso | 16 ++++
- .../dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso | 24 ++++++
- .../arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi |  4 +-
- ...ri-tdx-panel-cap-touch-7inch-parallel.dtsi | 29 ++++++++
- ...i-tdx-panel-res-touch-7inch-parallel.dtsi} |  8 +-
- .../dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi | 61 ++++++++++++++++
- ...p-touch-7inch-parallel-touch-adapter.dtso} | 16 +---
- ...c-tdx-panel-cap-touch-7inch-parallel.dtso} | 16 +---
- ...mc-tdx-panel-res-touch-7inch-parallel.dtso | 16 ++++
- .../dts/nxp/imx/imx7d-colibri-emmc-vga.dtso   | 49 ++-----------
- 13 files changed, 299 insertions(+), 90 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-tdx-panel-cap-touch-7inch-parallel.dtsi
- rename arch/arm/boot/dts/nxp/imx/{imx7d-colibri-emmc-panel-res-touch-7inch-parallel.dtso => imx6ull-imx7-colibri-tdx-panel-res-touch-7inch-parallel.dtsi} (77%)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi
- rename arch/arm/boot/dts/nxp/imx/{imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso => imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso} (90%)
- rename arch/arm/boot/dts/nxp/imx/{imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso => imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtso} (86%)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
-
--- 
-2.47.3
-
+>
+> [...snip...]
+>
