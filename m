@@ -1,100 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794210080;
-	b=TCUJc0YxNs+G4+D1H2mb8WZc7mSIcZfYrnEj43/DxZd00t73RMwqcivhGlGsCp/y95UM
-	 YfdckwTQ4RP5Zh1U8ggmjDETlxnRwRzQksoqr3sQUHQD5dEUaVWC6HMVNY+zIU4J+cWN+
-	 rSthPM3xlznrUOinQHRL5xBEgP664u7akPMuyQbAEFML0Q/JRwwkDHLqGCU6HcmjZwk7D
-	 WLrlZZK3UzEJuC5kgtvEX8KpKpFLUapLMWRAFRcsYfX0c2aEsO+VSmydXKLLssqgCY7YQ
-	 vH4BLraPgl1OxV0PeWkw3+5Axy+SN9wYlalgRGuahT84leucLWYRiIX/C9dCai6ZG5w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794210080;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
-	b=V+/yDYhlHhgPV8fqfIJtDN5T2ltp8UDZ9s6nxiKhbeWevSW+bMThsdyHLEvdAHXqz3WD
-	 vObZIz3OvBhoGjbf5anDIbGeH2qwvYwnk8aloU2tOpJ0hTFKrY85hSV6Q8a7yIx9N+DkT
-	 ZttA+UGA8NVgfrcr+m4V0Mn+s4b5xHrjzxqU7CXAetX2ylvB9afGYwBU0Q89AKknjhdgQ
-	 fxD0GLunf8FNPEG6zRAXkxWTNV3y2A7axTOPhhimX87uEtJaTxjufGyGWyz88QXIegLOB
-	 tWBd263qhbRqssCsWnSnQz5Lh7lLZgcJDTa3/k7hjTfuAayasTmD9Sf9/gHxE4D/m5w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=m4cYYQcL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.45
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794210331;
+	b=DkFDC8WgcjaGQXyqL3Ws9Xkefs1bAk0oZw1/jOBbZf+3LVaAmW2qPilYyukOzF4y/C/l
+	 KVPdkshqNO43KUinHOulacf0MNSuyF5GM3HOMWB4m0navgDIpg7hZcpTqOyFx5e73q/yf
+	 QmNZVOwjFMLRiEyaPG/FtZRp0Elbdnzej2OVThhu0F2Vxltr6mVL5Ix5kqM89nKlqqVz/
+	 9C4RmUhoofgG4tjh/Y1/uwSc4s0LdIYtOTA4SuzHbLEQASeVp13yv71QBFLHNnqIQVdXX
+	 QX3Gtq6r7+MYHkIcia6s53GrpK/IP0YvBsAeTW0EqXkp0Rdw1d7CfqaPKmOoweL7AXA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794210331;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=z9x0NO7zlXp/7FYiEEYfryJ5lKhGAhIxkcRFLTLWHCA=;
+	b=TQNHz2dzP7WZUSyPrS1nusx22Cc0qi1HX3s+XH1kKrUMqTUjitQ7HXWVPBDu0mtpXAdH
+	 mvIZ0e0ZygiJkOCrl8X/QfPnVEqcwmgnIgSa0/qsZjaSzY6QazytCnoLxh47jxX3CsjZ6
+	 TtQi0XAhaqKezvWcrpBgY92d8uvgGvvRQKX0LNjW+VKbMhCIwmxlUA8A2nxtDGUwc7ceQ
+	 hLxdOIFGMaAprWP5t2AplI6hyVLl0maLhUb/cacAK/9vBTDkESLXhBA88Gpul6b8dIrm6
+	 fFwsIK49hbOobXfijgP3M3ZrFdweE2Rgu6Z9LF4wP5zIQJKFwSTMWvHsenbuFhNMjEQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lGvy5Ghc;
+	arc=none smtp.remote-ip=198.175.65.13
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11084606A321
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 07:41:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11084606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DEA606A31C
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 07:45:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7DEA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=m4cYYQcL
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so2895e87.0
-        for <kvm@vger.kernel.org>; Sun, 08 Nov 2026 23:41:19 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794210078; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m/iuL/5xVBwasQ4RiCyMx0BJl57796OrLbJQYpWb8j9aqSuVVNW0zu/SQOP4SlaZFM
-         ccmU/O5vpxxdwAFzkeaLGuU5drG4aR094SKXHoTeryofalGGS3L9WjNEaJGx9z9HcBIH
-         veTtzWM4wTazDyYsekT+mIF9Md/20a4c6AomYJT2228dhIpqNZ4ZktJJBrv6V26irWig
-         /jwkW3utBeK5G21mv5pUuDXvdTkZre8l3ocVaE7TUT21uwR0vIA3k9HH6uYAcQO1bvoi
-         sd5hiki8A6mKs6oLo9GzBz+FOUAkfCJxTkiO1X84D/urEQH2UokfuXCY9Cln7Mw7v/nI
-         9v+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
-        fh=Vv2aEUQS8bHabk7InrCjHwMVi2HjVRz+W5bgkr7wYAE=;
-        b=fM44mQT2pFKdm137/bDRq+Q4r1JWExBvBoGfuiSOs+wF+9mOAJC1+vtF4UbGqPpR2O
-         J/3jl+9yXD2Gd7K/0sxTQV3URwkhWjlOsb2kUi98kHm1Nrudr/zGjvCpUGTFqDspX3wM
-         xKNZTjpTUXPVoO402BA0cCCV3A2inedXfcSzWF/IiqyVChzIOBj9BhJInnzI6Vl1VXau
-         WVcYLuldNn4jOr7CdozoEnS5xRWWswt/i9COXPsdme83H8aVJEGB8Fb8KniCJYyVYKw7
-         uymPZrCg92CBB1X5d71qE1GYh58Lboya66SDgzRvLjEnVA1EdpArjjYqqUCa79ojYjM5
-         CQOA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794210078; x=1794814878; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
-        b=m4cYYQcLOjDJNyLJBbj2eiWNCZgHWEYIjNWb5gxgks/V7UnS0mFtgDe+y8VrBj6HHj
-         O+wdwjFOPj8yVBMIKhWFUPWAj7f0zaVxCl522Ku0Xo6BXm4mLVZLzwKfzoALGzis5Hea
-         E01GsqmmaiAIffPd9GvMnzslyzkSTuUQb0fySKAjPwrHP1QXC8A4DyQ4nk9/2Si32oUd
-         6NM92zzswF4yN9nmShRGmKNU1MVeUtumJsAf5ZnU8vYEhHdh+OIC8byiAcU7f2e/T+SH
-         7x+u7qq6p5RH7JKpPnhfa0Y8tOFeUhscGnk7dDZI4l0ZveS8tYFBn3ffvs3MoSb6rI2k
-         XRvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794210078; x=1794814878;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
-        b=fOJsxj79ovWbfFUh2ALcjQ/JpMQDZyHb2Ua4KoVfiQ5+p0SSTrdvk8KLmbDgcVY3Gv
-         gMPJl4Lr7aLvtOuXGbdLI81rWyGitCx5n3Ifk6DNzGKE4tL9F+wAC8ok9tD6EiNd35Do
-         4vBdOG3M2e7yD77rv1un9g8UM66Q0Cp0wK7eEDPtr60g3yB+5OhsC0iEnu8pmGPpNhr9
-         hRNt54KtXQunmjZD2U0alkHOdAzXhfzxOWjDpiM1J0/ohbYHdEqG/fxLb/DAf6kUtvrQ
-         2Qnfro1c0iz9rq64K0QVNLK6md6qSmLVHGeo5rJHaJ3p0U2c40r/oxhWE8RAQWsspUP8
-         62FQ==
-X-Forwarded-Encrypted: i=1; AL+hErE5yBdgj344fEWUqySx2bx1KYwOP6bL1qdXAEl2ChN5LKVxdUuQy8tX9ZF9O6/Qvj8o66g=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+zPwPclTpVbQOwmOXShQ7FvoGPUy9jY614U2nac0DRZ1ACl+oW
-	3GOBAyeMG0tviW6ExSKXVVKA7qZCWiMiB9EQaMCoe72evucbcuCXn5CcEqyx4h9k+UlvWvo+Suj
-	SbjgVQXeX099sqahZWE+FkG7NxUR0JGJjcT3ax8V+
-X-Gm-Gg: AYBFou0zIudOwxYol6oXvmBS5zLYWRaP15nuu/XbYvfYf21xL2QalnPEeEpzhdeoMpn
-	Ua6wKR6Tk2bkb3B/Y4yVqNSvmBMibdhyQBBH73Xu447IKIPWIYGeEmaMgrqAhhlQcw1kVxfka9F
-	BTclDhwExATEgccHPkalIukmmrbWpk4cWOj09A8AvyeVXzN67O9sZO46Vh6iwm6t8F4z+hfZSVN
-	Ewa8aDQN5pdYjNBk+7oKzCjYqTzRle3hPMNhePEG2uFqpdqiFL7hI4ES1N8UfuqzOmicW7g+bx5
-	HXXAHuTwyBdVRDIt/TwAGeYryfH2LW4/od2JDEu9m2ZDcAeZfhVI21ZxowWtCO+dInd+/l9HKcS
-	RcBOp5XjoG5+ekoRTa3iMi2X8o9c6eJbxmHn+RgOisi+KxAYk0IIWxDNITC17CDjf3o+t0rarxU
-	8m4N3RCjLaWRvooj57/kHKolO3qQ==
-X-Received: by 2002:ac2:4bcb:0:b0:5c1:53b5:2029 with SMTP id
- 2adb3069b0e04-5c153b5217fmr3411e87.15.1794210077813; Sun, 08 Nov 2026
- 23:41:17 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lGvy5Ghc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794210330; x=1825746330;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=XN8LJJcBeJ8NO2WVvljzmuzA89fcGQ+LSPvL3RgdHgI=;
+  b=lGvy5GhcLtW7msGxW0c3imtaDo9S7Htx7AceohQGXhD0XoUkba9LwTBl
+   sSY4CZ55ak+ccrhXoGdwVPol/PBARGi6JF65xiBgfcrcuhZh7BLxAEVa0
+   LP1CMnk/6btmJl+kerFISwASs5yJhDa6dg6i7xY+z9sQDEkte+zJwhVhj
+   XDZbelgl1UTMDw7KNpirfS7FjyNLTReQ0WApCIRmkARvc8p8rZxoLBWYa
+   c1907uJo8pHNDAM8yVKgO4OkpfUsd29m45ptbLrelu9wXiVYS1bmLScLc
+   JWlMnOJ6Roud3Ai5jIb7cafdHIiWd4VaSi/UlAU2h7w5K3I5gvvctTxLV
+   A==;
+X-CSE-ConnectionGUID: 9VWpJauLRGW/dBA+Cb6H3w==
+X-CSE-MsgGUID: uDLXVPz4SvmkVDmaWO1V2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="2806116"
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="2806116"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 23:45:29 -0800
+X-CSE-ConnectionGUID: V1yP/jTsRhaI65qoKEAosw==
+X-CSE-MsgGUID: isseaBo+TbCTqz4DbN8FSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="8144247"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.246.211])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 23:45:21 -0800
+Date: Mon, 9 Nov 2026 09:45:17 +0200
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	"Serge Hallyn (AMD)" <sergeh@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	David.Kaplan@amd.com, Mathias.Brossard@arm.com
+Subject: Re: TDX migration model
+Message-ID: <avF6DcmdoGeWeRxg@tlindgre-MOBL1>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
+ <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
+ <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
+ <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
+ <auyZnIfxMnxYD8rT@shallyn-amd>
+ <85f899cd277b2188cd4b33f8f21b206fa2ff6f6f.camel@gmail.com>
+ <auyx8C67zCnbPpuL@hallyn.com>
+ <c77156d1-5a47-4a93-a18b-392081fad3ff@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,67 +108,71 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102141304.126883-1-steven.price@arm.com> <20261102141304.126883-11-steven.price@arm.com>
- <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com>
-In-Reply-To: <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Mon, 9 Nov 2026 07:40:41 +0000
-X-Gm-Features: AclHuK87iuKTvXEWJaczVerdWgxPEZxpPBN7O-wc8AIa5Wl9vz0b6-1H_UF4Qbg
-Message-ID: <CA+EHjTy970AWnhYoZ5OqxQ8ojCAELeejw60y2NmpDsM_ZMdu4Q@mail.gmail.com>
-Subject: Re: [PATCH 10/11] KVM: arm64: CCA: Support runtime faulting of memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c77156d1-5a47-4a93-a18b-392081fad3ff@intel.com>
 
-Hi Suzuki, Steve,
+On Thu, Nov 05, 2026 at 06:00:41PM -0800, Kishen Maloor wrote:
+> On 11/5/26 8:42 AM, Serge E. Hallyn wrote:
+> > On Thu, Nov 05, 2026 at 05:59:01PM +0200, Artem Bityutskiy wrote:
+> >> On Thu, 2026-11-05 at 08:58 -0600, Serge Hallyn (AMD) wrote:
+> >>> ...
+> >>> So, looking at the section '### How the Setup Session Works', is it safe
+> >>> to assume that you are using the qemu migration fd for the message
+> >>> transfers?  So basically qemu loops over KVM_MIGRATE_SETUP calls, which
+> >>> ...
+> >> Yes, that's the flow. I’m not sure about the migration fd part, I believe we
+> >> pass the setup session data via ioctl buffers. I am sure Kishen will can
+> >> clarify.
+> > 
+> > If you mean pass via ioctl buffers from tdx->kvm-> back to qemu, which passes
+> > it over the migration fd to the other side, then that's what I expected.
+> > Othewise I'll be interested to the details :)
+> 
+> Hi Serge,
+> 
+> Your understanding is right. Migration setup requires a handshake of some sort
+> between the source and destination. So the messages KVM_MIGRATE_SETUP returns
+> are transferred over QEMU's migration channel to the other side and processed
+> by a matching call.
 
-On Thu, 05 Nov 2026 17:30:16 +0000, Suzuki K Poulose
-<suzuki.poulose@arm.com> wrote:
-[...]
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-[...]
-> > @@ -1816,13 +1828,28 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
-> >         /* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
-> >         smp_rmb();
-> >
-> > +        if (kvm_vm_is_realm(kvm)) {
-> > +                is_realm_private = kvm_realm_is_private_address(&kvm->arch.realm,
-> > +                                                                s2fd->fault_ipa);
-> > +
-> > +                if (is_realm_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
-[...]
-> I am wondering there is a way to make it a bit more generic. The issue
-> is, only Realm has private memory with guest_memfd for now. Don't know
-> the pKVM plans for it.
+Serge, on the QEMU side, we have been enabling the return-path early for
+the key exchange before migration is active. Not sure if the key exchange
+can be done using a VMState, possibly could be if we can ensure it happens
+before the migration is active.
 
-The plan is for protected pKVM VMs to be backed by guest_memfd too,
-which would also hold each page's private/shared state [1]. So
-kvm_arch_has_private_mem() will be true for them, and this comparison
-applies as is. Only how the expected state is computed differs: for a
-pVM it comes from the per-page share state rather than an IPA bit.
+For the migration related commands, looks like we can just make the
+KVM_EXPORT_CMD and KVM_IMPORT_CMD subcommands a bit more finer grained and
+then drop the vendor flags until needed:
 
-Steve, could you gate the guest_memfd checks on
-kvm_arch_has_private_mem(kvm) rather than kvm_vm_is_realm(), this one
-and the memslot check you proposed for 02/11? Only the
-kvm_realm_is_private_address() and realm_map_ipa() calls are
-realm-specific, and they could be VM_REALM cases of a switch on
-vm_flavor, as Marc asked for on the v21 memslot check [2]. The macro
-would then only widen to protected VMs when pKVM's guest_memfd support
-lands.
+#define KVM_MIGRATE_EXCHANGE_KEYS	0 (New, was KVM_MIGRATE_SETUP and a flag)
+#define KVM_MIGRATE_SETUP		1 (Migrates the immutable state)
+#define KVM_MIGRATE_ITERATION		2 (Start a new pre-copy round)
+#define KVM_MIGRATE_ITERATION_FINAL	3 (New, last pre-copy round before pause)
+#define KVM_MIGRATE_PAUSE		4 (New, split from old STOP_AND_COPY)
+#define KVM_MIGRATE_MUTABLE_STATE	5 (New, split from old STOP_AND_COPY)
+#define KVM_MIGRATE_START_DESTINATION	6 (New, split from old STOP_AND_COPY)
+#define KVM_MIGRATE_START_POSTCOPY	7 (New, could return -EOPNOTSUPP for now?)
+#define KVM_MIGRATE_ABORT		8
+#define KVM_MIGRATE_END			9
 
-Cheers,
-/fuad
+For the above PAUSE is four the source only. START_DESTINATION is for both
+source and destination as source exports a start token for the destination.
+START_POSTCOPY is not implemented but would be destination only when
+implemented. ABORT is allowed at any point.
 
-[1] https://lore.kernel.org/all/CA+EHjTz+WgXEW5RTxXf4oGeEb1Tsm5Ha4nOc4S1jBcp7jxP4+A@mail.gmail.com/
-[2] https://lore.kernel.org/all/86mrsw2jrn.wl-maz@kernel.org/
+Any other subcommands needed at this point?
+
+Then for handling the results, the following seems to simplify things a bit:
+
+- Results are copied back only on success, vendor error is returned as is
+
+- Import is all or nothing, vendor code resumes on interruptions
+
+- For memory transfer, a GFN can only be transferred once per round,
+  duplicate import attempt returns -EINVAL
+
+Regards,
+
+Tony
