@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.138
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.153
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794213132;
-	b=T+VvLP9kwRG+aWF7j08eEpW+lVl5/jMDO96FmuE6v9l9nskIubsYMTLMWjxX6+JDMr3J
-	 xBuzcz5WXP8biorx0XF65kjboDrHt0tcPLU7aNsmnmKh9NeXI7sA9e/VUu9RC0AIOa/Dd
-	 v9gRkCr93pjynsO59vdxo3OIOdbcuMcHmq8Ne+WiyN/VvU+xHevpGAgfEh/zKKLpThO/i
-	 eTetRp1nfENAJ6YIbLoMuyt3MCx0s89XtNd3wonV6TXPPTZOMKcY5L6wGbITqjMtU8dlJ
-	 VrAq1m1RZT1Lx7t1yJNxeZO5/J4OmDmE4OSGYK2D00GvyGRV+c+OV0MQEOfE34FBkXQ==
+	t=1794213143;
+	b=UCNY7zkBAatwLF7BjI7VpEr/HQ54wkVuvVGbj14JTwrMZoHUxolTAN3uiPjj68twDCde
+	 BzMPd9i2gKbStD+c30ceBaxOyG4HX45oQyDoYr4doAGXZKSylIpEaHEOLH27rPQ1QA4rA
+	 oI/80H/IXqdYMTRGP3EYlquuVM8gRcGiEruZkmnnDJdvAc/MzIspOw+Bx9RPNSBSuTXdZ
+	 8BsN/MeafPiWussBjfAN9ZC3TojvXCqUUtghwvV5aMLR+NsmNQ0Ro4a49eNCYNI0zKyJ/
+	 dlAck2VWbNaurCamUI3J9C+vMiIL4dus80kYx0+An2oX1qI+P8o+wxeb+RbgE5Ap8tQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794213132;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794213143;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=yYnRMu74QSYMFyFnZroW2XAIK+45426ADoRmFNwN2fU=;
-	b=YQo85lw6g95Wi5Fno8QhrGpdVeXUK1xsg9Q5B+kXdGKa+qR1c9a38PJtUrNp0+nd71fG
-	 2Ef+EnbOU2uNnAyvoqRenHpv5xdMovcVvNZnDyHOGcXsft/HgOmqNNCgzu23bLFKFWUwn
-	 c6ppOSVAKD9h/DPaLpr9j6AO2UrJzIUlG5TaXTTm0EoalIb6x3tkXRBk9k9Jy9/9NPX8b
-	 WTl+fiTJ4R2nKaqhiKq3UcRztVGNwjjZav4o9L/Bnr+kK6pA/HfB00hUOAK/AplGRrVK6
-	 h67kz3R0HXT2fua/7+1E27C0FKxu7//neYfUQvOU6WlZ03SRznwJE9OFuUMulW+7cbQ==
+	bh=tp8Sq65lQy4n53kB120thiuvZdFv1/XatvTeKeD3ITY=;
+	b=ND1WwE4zOF2br2xHREmmxMrxF3YsiUyboRhJ6huycsX8vDHJOUQCcHvrBTJ8ru50HXML
+	 Bn4HfSTK6zcZrc9y8YW5cErbU0FPZYDk5+XKhBYX+HY0oZ+1rw+1y+0sWvW6kd3pDQjvN
+	 hdbZgx+XaiwqwvplJhVWtus/ngK+626AiSABDVXZSknn5kxocV5XxUY0ZW4J9HdBRoviM
+	 cb3faTYKuOC//3OgVzbjgymk0z2GJko+E5nofWMoSo2fXtdkdsy9IN53pCg1WcT3+5Ya/
+	 wtF7nxYRkepXqy10c9KSnNEjXHHt41su07cH/qsfUqhr50zuEa26nj0oRelgGjpbbkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="H/lVnO8m";
-	arc=none smtp.remote-ip=95.215.58.138
-Received: from mta1.migadu.com (out-138.mta1.migadu.com [95.215.58.138])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=m+q3r23Z;
+	arc=none smtp.remote-ip=95.215.58.153
+Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A0D606A33B
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:32:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04A0D606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17D3606D810
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:32:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B17D3606D810
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=H/lVnO8m
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=m+q3r23Z
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=scB/wdNHn77rOn8XuOwegyz93L7MG0cBY5PFUM4ImWI=;
+DKIM-Signature: a=rsa-sha256; bh=KMB0x3fjUA27PqmYAjvVUwJPxblEBWvc8qSTZOm4ABo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794213129; v=1; x=1794817929;
- b=H/lVnO8m1Sac2706uznVDfJOOjMcv/TmwFyofUliBSPJ5Tn6PI4gU4Lw1OieEKT7RcipLwgC
- STjm5Ps4uZTYyr21dBIUCj+xeC7gwuqB6w09bq/kZfOzVK0EXe4WCagGd4YVFtVWoDp0fF/H6YJ
- sm1s9PxO5nTj/GI69vomk4Ys=
+ t=1794213130; v=1; x=1794817930;
+ b=m+q3r23ZuJjIy3hL7OtVLmOCXQqZB/E7+e+hf7lwLkQ33ypd212oVb+UUCVtYCRFJ12nFmmb
+ s6XQMOjQ3GEWNeShkBXUUfJBEnj/jnV52KpXfwp8+PECDYoyKb0ysY1szmD5ivBOceGtgnLYfH1
+ tDOngyCBryXqDSbbCEC7D60I=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 8251e993a8e30812;
-	Mon, 09 Nov 2026 08:32:08 +0000
-X-Mizu-Trace-ID: 8251e993a8e30812
+Received: by smtp.migadu.com with ESMTPS id 08a1187800b712d4;
+	Mon, 09 Nov 2026 08:32:10 +0000
+X-Mizu-Trace-ID: 08a1187800b712d4
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -63,9 +63,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 02/16] KVM: arm64: Remove redundant kern_hyp_va() calls from the pKVM FP sync
-Date: Mon,  9 Nov 2026 08:31:51 +0000
-Message-ID: <20261109083205.806619-3-fuad.tabba@linux.dev>
+Subject: [PATCH 04/16] KVM: arm64: Advertise ID_AA64ZFR0_EL1 to protected VMs
+Date: Mon,  9 Nov 2026 08:31:53 +0000
+Message-ID: <20261109083205.806619-5-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109083205.806619-1-fuad.tabba@linux.dev>
 References: <20261109083205.806619-1-fuad.tabba@linux.dev>
@@ -80,45 +80,92 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With pKVM, EL2 saves a guest's FP and SVE state on exit into the hyp
-vCPU, whose kvm is the hyp VM's and whose sve_state is already a hyp
-address. kern_hyp_va() returns both unchanged.
+EL2 builds a protected guest's ID registers from the host's sanitised
+values, most of them capped per field. It has no case for
+ID_AA64ZFR0_EL1, so the register reads as 0, and a protected guest with
+SVE wouldn't see any of the SVE extensions the CPUs implement.
 
-Remove the two calls, in fpsimd_sve_sync() and __hyp_sve_save_guest().
-The one in __hyp_sve_restore_guest() stays, as nVHE without pKVM reaches
-it with the host's pointer.
-
-No functional change intended.
+Keep a copy of the host's sanitised ID_AA64ZFR0_EL1 at EL2, and
+advertise it when the guest has SVE, as KVM does for a non-protected
+guest. Cap each field at the highest value the sysreg file defines.
 
 Tested-by: Vincent Donnefort <vdonnefort@google.com>
 Reviewed-by: Vincent Donnefort <vdonnefort@google.com>
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- arch/arm64/kvm/hyp/nvhe/hyp-main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/kvm_hyp.h   |  1 +
+ arch/arm64/kvm/arm.c               |  1 +
+ arch/arm64/kvm/hyp/nvhe/sys_regs.c | 19 +++++++++++++++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-main.c b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-index 9958ca6d7b0a2..57c3f7a2d4b14 100644
---- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-+++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-@@ -482,7 +482,7 @@ static void __hyp_sve_save_guest(struct kvm_vcpu *vcpu)
- 	 * on the VL, so use a consistent (i.e., the maximum) guest VL.
- 	 */
- 	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1, SYS_ZCR_EL2);
--	sve_save_state(kern_hyp_va(vcpu->arch.sve_state), true);
-+	sve_save_state(vcpu->arch.sve_state, true);
- 	fpsimd_save_common(&vcpu->arch.ctxt.fp_regs);
- 	write_sysreg_s(sve_vq_from_vl(kvm_host_sve_max_vl) - 1, SYS_ZCR_EL2);
- }
-@@ -531,7 +531,7 @@ static void fpsimd_sve_sync(struct kvm_vcpu *vcpu)
- 	else
- 		fpsimd_save_state(&vcpu->arch.ctxt.fp_regs);
+diff --git a/arch/arm64/include/asm/kvm_hyp.h b/arch/arm64/include/asm/kvm_hyp.h
+index 22601a4e36f4e..920c1d8d45b1a 100644
+--- a/arch/arm64/include/asm/kvm_hyp.h
++++ b/arch/arm64/include/asm/kvm_hyp.h
+@@ -144,6 +144,7 @@ void __noreturn __host_enter(struct kvm_cpu_context *host_ctxt);
+ extern u64 kvm_nvhe_sym(id_aa64pfr0_el1_sys_val);
+ extern u64 kvm_nvhe_sym(id_aa64pfr1_el1_sys_val);
+ extern u64 kvm_nvhe_sym(id_aa64pfr2_el1_sys_val);
++extern u64 kvm_nvhe_sym(id_aa64zfr0_el1_sys_val);
+ extern u64 kvm_nvhe_sym(id_aa64isar0_el1_sys_val);
+ extern u64 kvm_nvhe_sym(id_aa64isar1_el1_sys_val);
+ extern u64 kvm_nvhe_sym(id_aa64isar2_el1_sys_val);
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index ec90a580e82a4..2753686982f0b 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -2827,6 +2827,7 @@ static void kvm_hyp_init_symbols(void)
+ 	kvm_nvhe_sym(id_aa64pfr0_el1_sys_val) = get_hyp_id_aa64pfr0_el1();
+ 	kvm_nvhe_sym(id_aa64pfr1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1);
+ 	kvm_nvhe_sym(id_aa64pfr2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64PFR2_EL1);
++	kvm_nvhe_sym(id_aa64zfr0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ZFR0_EL1);
+ 	kvm_nvhe_sym(id_aa64isar0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR0_EL1);
+ 	kvm_nvhe_sym(id_aa64isar1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR1_EL1);
+ 	kvm_nvhe_sym(id_aa64isar2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR2_EL1);
+diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+index 7a0aed1d8b0b3..8456bb44edd52 100644
+--- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
++++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+@@ -23,6 +23,7 @@
+ u64 id_aa64pfr0_el1_sys_val;
+ u64 id_aa64pfr1_el1_sys_val;
+ u64 id_aa64pfr2_el1_sys_val;
++u64 id_aa64zfr0_el1_sys_val;
+ u64 id_aa64isar0_el1_sys_val;
+ u64 id_aa64isar1_el1_sys_val;
+ u64 id_aa64isar2_el1_sys_val;
+@@ -124,6 +125,22 @@ static const struct pvm_ftr_bits pvmid_aa64pfr2[] = {
+ 	FEAT_END
+ };
  
--	has_fpmr = kvm_has_fpmr(kern_hyp_va(vcpu->kvm));
-+	has_fpmr = kvm_has_fpmr(vcpu->kvm);
- 	if (has_fpmr)
- 		__vcpu_assign_sys_reg(vcpu, FPMR, read_sysreg_s(SYS_FPMR));
- 
++static const struct pvm_ftr_bits pvmid_aa64zfr0[] = {
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, SVEver, SVE2p3, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, AES, AES2, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, EltPerm, IMP, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, BitPerm, IMP, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, BF16, EBF16, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, B16B16, B16MM, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, SHA3, IMP, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, SM4, IMP, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, I8MM, IMP, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, F16MM, IMP, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, F32MM, IMP, vm_has_sve),
++	MAX_FEAT_FUNC(ID_AA64ZFR0_EL1, F64MM, IMP, vm_has_sve),
++	FEAT_END
++};
++
+ static const struct pvm_ftr_bits pvmid_aa64mmfr0[] = {
+ 	MAX_FEAT_ENUM(ID_AA64MMFR0_EL1, PARANGE, 40),
+ 	MAX_FEAT_ENUM(ID_AA64MMFR0_EL1, ASIDBITS, 16),
+@@ -243,6 +260,8 @@ static u64 pvm_calc_id_reg(const struct kvm_vcpu *vcpu, u32 id)
+ 		return get_restricted_features(vcpu, id_aa64pfr1_el1_sys_val, pvmid_aa64pfr1);
+ 	case SYS_ID_AA64PFR2_EL1:
+ 		return get_restricted_features(vcpu, id_aa64pfr2_el1_sys_val, pvmid_aa64pfr2);
++	case SYS_ID_AA64ZFR0_EL1:
++		return get_restricted_features(vcpu, id_aa64zfr0_el1_sys_val, pvmid_aa64zfr0);
+ 	case SYS_ID_AA64ISAR0_EL1:
+ 		return id_aa64isar0_el1_sys_val;
+ 	case SYS_ID_AA64ISAR1_EL1:
 -- 
 2.47.3
 
