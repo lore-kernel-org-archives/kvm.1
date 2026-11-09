@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794188735;
-	b=YxBKSDbb6PkC9FmydhtmdumdEgpQsB7ZUFWhrgO2fHbn4dyuGLk5YKSvoAmVclc7twaH
-	 2+8GvSJqvGzJNYcNfX0gTCRPJBPM99Cb/2+7DcJMyPFG5izhZW3jVHnckR7Ims5PG4Lbk
-	 UbCN5IwTWUb/avkgVfOatk+qoMxqs2VAqpp4UtlApfcapkui+C6LmN68HkJpLUZuMPGC7
-	 xDO98DxPqD/+aHxksydpgFIuDmgIWMKIlgkOgnrMGecFpjGBUIy5ILPVjRFow8N9CO5Rl
-	 LfxK4B2fsJrKj762pjLFd/DhOIInlAZMPNZHlOzouqBkNYCTMJhIlfpm080i8qYLdsQ==
+	t=1794188848;
+	b=WrWUmg/saa5QSaAa2bJuz+m1vmeDCMTi3N1q+sKVu4NydBS05eldQks1gY70/UATrGEf
+	 ImBbmbQSfx/yDPTKiyFgc9KR8RX7NCP3vlQdTSD1OtitxcX8ZvuVN/QP/+w9nz+uTQOHh
+	 iXdWF3f7/JA+cwg2+3Ogfj6SOUk2aUpjjfhV3GoVh8seFvs+wbRS+n9rZupqjw9R+Ltaq
+	 dkbyMEkIxV0UFzCVZzygKwnz136jm3DT6YpCelgzSXn8LTipIRi3LX47/3Sjwgc7guBL+
+	 brp1yYFLZJ8rXEQ7WfY1629/ygB3OaoS+PcknoojQiQ8+gX1g5k62sN/g9AnJfT2tZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794188735;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794188848;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=BW2fDy/Vt2sJUYJgjwFLPoP/4bkeGxiEgE+3idyxGG8=;
-	b=puZgZ3kBJanSAyBNAsKtT6pQqMar6IduDoIbzL10CE4whDdu77autAr8iQyW9aQKPAto
-	 SZcluH+mxnv0PNJXeTLIqrQpPsntRJ6pBXaodeTJNlDULq7bOu4Vg4f02r9rcY3ck6BgU
-	 PV9EJA+qIGi0bsxcHIrBHrLy4wg3S0TgGxV8oTa794EDkqw46s2sQyUfh4K3JMKPKN1s6
-	 rKlag9y/q0VKK2Loi2vG+q4PmhIfjWPq7NvkHt+aSBzI57u/Zg35ePENfu8M/XX8q6Kmo
-	 yuAfQ0oDX+P90knol28Y6P8bgTAY3sqaNYADdImj0n1yD/RnyXChIeE08VEbkaYKV7w==
+	bh=oNyy0DWDA8yFVIzbVtf+fVoyIHOs2497EscnzATp9u4=;
+	b=ZpFBQ39NhurFmRUgorABLWg7WAkTEAL4aH3p6BOYRYqS6tssM1PEM09siBaWzOCM2fd4
+	 jMoopLYc1rCamkh/sINEk2xzbUYoEULP/q5X61hm2wHZdQpBfb9vQKmsau09d4arTgZwi
+	 dFMu6bveLvBMpenE0T2dWHFC8jJWIS6zMBOTZsP5Fi0ud4nwncBrMqbUbqSnKC+TnsuO6
+	 mD7i77lUyerUvhUVhlzUseChi6+ODftTBDuVrJDzmYb0ODrUYGHb0iW8rYSH5jwIMvGUH
+	 usULBpqEF6Y/OQIAhR7rOdFEQIIPqlKwUj641L3x/1g7SpPWmZHFl8O7q7jDWCaFOHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H7xz+w4Q;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IvuFo4qt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECF2606A320
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 01:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36922606A321
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 01:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H7xz+w4Q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D539B1F0089F;
-	Mon,  9 Nov 2026 01:45:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IvuFo4qt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DA91F0089F;
+	Mon,  9 Nov 2026 01:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794188735;
-	bh=BW2fDy/Vt2sJUYJgjwFLPoP/4bkeGxiEgE+3idyxGG8=;
+	s=k20260515; t=1794188847;
+	bh=oNyy0DWDA8yFVIzbVtf+fVoyIHOs2497EscnzATp9u4=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=H7xz+w4QwlHNv75gxSwEUlydcyLAr0WUawdBE1JMMiab1nwJZAstOvGhCtWCyssdW
-	 NRUVOtl7ddipqLp1FDgRbsWXvs6vUVQbt+bYRmghNRDpmJw87ylYBbeDeRWTkXTYU7
-	 W0ZvA00ds2bE4rFbCO3WOOFIr2zvPJDkuLsVMZPrnaRHbBM1NQSwaC+3cZveFyhfCH
-	 HCYKTvVWkUwoF6bRZqxzeZyX0zk9T4U/V82HuIO6Z+8bA8Sl6KsKur6TUXyd3q7tsN
-	 KIBCY8E9W1kUwJiPMd2l5trAFQ2sUzzX8Im3/AzVmrULiHsRR8agsbGkK6PccNG+Cx
-	 wb8lXUuxayMtg==
-Message-ID: <sashiko-outbox-204317@kernel.org>
+	b=IvuFo4qt6Ru9fKXnh1z4A5e1V5kO17l4EBfJ/b+9bPtvkHwwpXBwIWPKiuQgvUCtV
+	 nFXmIZ34I3Q7m1ufmrABrc0ygiqbtYzWTQynfPosfFRacM6TKNm6YFNoe082/44NZl
+	 Q/TqCKQu9W4wBOKV5rCZSFd6xybm2xph0npXRi3aiI9/5zp1xma2G8aPDvumGjsvda
+	 62IJ5NvVcTCnuFmjg7ztOEcinZPYxSl79QXjHykbx2/unEqh5tAyyC+UDWELdyCP3T
+	 icv6H3zX/rQW6xScqIoiJagJgwdCHs0XxzYJx726u/goEcMTm8HzcuY/N76RpWnnFc
+	 v8mHTgWcTKJyQ==
+Message-ID: <sashiko-outbox-204320@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 04/24] KVM: x86: Allow KVM master clock mode when
- TSCs are offset from each other
+Subject: Re: [PATCH v12 18/24] KVM: selftests: Add master clock offset test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261109012112.3415328-5-dwmw2@infradead.org>
+In-Reply-To: <20261109012112.3415328-19-dwmw2@infradead.org>
 References: <20261109012112.3415328-1-dwmw2@infradead.org>
- <20261109012112.3415328-5-dwmw2@infradead.org>
+ <20261109012112.3415328-19-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Nov 2026 01:45:34 +0000
+Date: Mon, 09 Nov 2026 01:47:27 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,46 +61,114 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] KVM: x86: missing masterclock update on error in
-  kvm_arch_vcpu_postcreate()
+- [Medium] KVM: selftests: get_pvtis() never reads guest pvclock pages
+  at KVMCLOCK_GPA
 --
 
-commit 63e87344888586250d53904cdb6246fdd7dee791
+commit afe5627be945a0319bdf870a16137575eb9a6ca5
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: x86: Allow KVM master clock mode when TSCs are offset from each other
+KVM: selftests: Add master clock offset test
 
-This commit tracks vCPU TSC frequency matching separately from TSC offset
-matching so that master clock mode remains enabled when vCPUs have
-matching frequencies but different TSC offsets, while requiring matched
-offsets for PVCLOCK_TSC_STABLE_BIT.
+This commit adds an x86 KVM selftest to verify that master clock mode
+remains active and pvclock readings stay consistent across vCPUs with
+different TSC offsets, both initially and after advancing the clock via
+KVM_SET_CLOCK.
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index d29e5bc75f7a5..73015825f2188 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
+> diff --git a/tools/testing/selftests/kvm/x86/masterclock_offset_test.c b/=
+tools/testing/selftests/kvm/x86/masterclock_offset_test.c
+> new file mode 100644
+> index 0000000000000..faf81872538eb
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/masterclock_offset_test.c
+> @@ -0,0 +1,203 @@
 
 [ ... ]
 
-> @@ -9568,6 +9636,7 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
-> =20
->  		raw_spin_lock_irqsave(&ka->tsc_write_lock, flags);
->  		WRITE_ONCE(ka->all_vcpus_matched_tsc, false);
-> +		ka->all_vcpus_matched_freq =3D false;
->  		raw_spin_unlock_irqrestore(&ka->tsc_write_lock, flags);
->  		return;
->  	}
+> +static void guest_code(u64 pvti_gpa)
+> +{
+> +	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, pvti_gpa | KVM_MSR_ENABLED);
+> +	for (;;)
+> +		GUEST_SYNC(0);
+> +}
+> +
+> +static void get_pvtis(struct kvm_vcpu **vcpus,
+> +		      struct pvclock_vcpu_time_info *pvti)
+> +{
+> +	int i;
+> +
+> +	for (i =3D 0; i < NR_VCPUS; i++) {
+> +		int idx =3D vcpu_order[i];
+> +
+> +		vcpu_get_clock_guest(vcpus[idx], &pvti[idx]);
 
-[Severity: Low]
-Does this error path also need to call kvm_update_masterclock(vcpu->kvm)
-when mutex_lock_killable(&vcpu->mutex) is interrupted?
+[ ... ]
 
-Without kvm_update_masterclock(), pvclock_update_vm_gtod_copy() does not
-run, so ka->use_master_clock stays true while the new unsynchronized vCPU
-is runnable, and already-running vCPUs do not receive a
-KVM_REQ_CLOCK_UPDATE broadcast to clear PVCLOCK_TSC_STABLE_BIT in their
-guest pvclock structures.
+> +static void test_set_clock_consistency(struct kvm_vm *vm,
+> +				       struct kvm_vcpu **vcpus,
+> +				       struct pvclock_vcpu_time_info *pvti,
+> +				       struct kvm_clock_data *clock,
+> +				       u64 offset0)
+> +{
+> +	struct kvm_clock_data setclk =3D { .clock =3D clock->clock + ONE_HOUR_N=
+S };
+> +	u64 clk0;
+> +	int i;
+> +
+> +	/*
+> +	 * Add an hour to the VM kvmclock via KVM_SET_CLOCK, run each
+> +	 * vCPU to pick up the update, and check they're still in sync.
+> +	 */
+> +	vm_set_clock(vm, &setclk);
+> +
+> +	/* Guest code does GUEST_SYNC then exits =E2=80=94 run each to see upda=
+te */
+> +	for (i =3D 0; i < NR_VCPUS; i++) {
+> +		vcpu_run(vcpus[vcpu_order[i]]);
+> +		TEST_ASSERT_KVM_EXIT_REASON(vcpus[vcpu_order[i]], KVM_EXIT_IO);
+> +	}
+> +
+> +	get_pvtis(vcpus, pvti);
+> +
+> +	TEST_ASSERT(pvti[0].system_time =3D=3D pvti[1].system_time &&
+> +		    pvti[0].system_time =3D=3D pvti[2].system_time,
+> +		    "system_time should still match after KVM_SET_CLOCK");
+
+[Severity: Medium]
+Should get_pvtis() read the per-vCPU pvclock_vcpu_time_info structures
+from guest memory at KVMCLOCK_GPA (or check both guest memory and
+vcpu_get_clock_guest())?
+
+The test sets up guest memory at KVMCLOCK_GPA, enables
+MSR_KVM_SYSTEM_TIME_NEW in guest_code(), and runs each vCPU after
+vm_set_clock() so kvm_guest_time_update() refreshes the guest pvclock
+structures.  However, get_pvtis() only calls vcpu_get_clock_guest()
+(KVM_GET_CLOCK_GUEST), which synthesizes hv_clock directly from the
+VM-wide master clock fields in struct kvm_arch without reading the guest
+pvclock pages:
+
+arch/x86/kvm/x86.c:kvm_vcpu_ioctl_get_clock_guest() {
+	...
+		hv_clock.tsc_timestamp =3D kvm_read_l1_tsc(v, ka->master_cycle_now);
+		hv_clock.system_time =3D ka->master_kernel_ns + ka->kvmclock_offset;
+		hv_clock.tsc_shift =3D ka->master_tsc_shift;
+		hv_clock.tsc_to_system_mul =3D ka->master_tsc_mul;
+		hv_clock.flags =3D READ_ONCE(ka->all_vcpus_matched_tsc) ?
+				 PVCLOCK_TSC_STABLE_BIT : 0;
+	...
+}
+
+As a result, the guest memory at KVMCLOCK_GPA is never inspected, and
+checking that tsc_to_system_mul, tsc_shift, and system_time match across
+vCPUs compares the same VM-wide ka->master_* fields against themselves
+regardless of whether vcpu_run() updated the guest pvclock structures.
+In addition, because vcpu_set_tsc_offset() on vcpus[2] in main() queues
+KVM_REQ_MASTERCLOCK_UPDATE only on vcpus[2], running vcpus[0..2] once in
+order populates the guest pvclock structures for vcpus[0] and vcpus[1]
+before vcpus[2] runs kvm_update_masterclock() and broadcasts
+KVM_REQ_CLOCK_UPDATE, leaving vcpus[0] and vcpus[1] with stale guest
+memory state until the next vcpu_run().
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109012112.3415=
-328-1-dwmw2@infradead.org?part=3D4
+328-1-dwmw2@infradead.org?part=3D18
