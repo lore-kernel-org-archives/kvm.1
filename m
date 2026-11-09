@@ -1,98 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794203421;
-	b=zasFx7jvyUkVabG4F3rObb4IG/9fskuWqLqexTdmETdgyC+hdAyHTN/solXrvBBOXbCa
-	 z5++M6f0ZY5PUSOO4fw2zsfx0DHaWpudVHgLlnZj2IXKca9e2ssbhwK7sA7hFgwle8NFi
-	 dFbDjCFLPl0zHKRUERyr9TMqxRx4qUekJovFDx3iYKq3iZqjzNyYmGPxnvT66yhIxbGqE
-	 9LSt2YExbBJizWXC9jWkDGHGcviwjny5rMUFMDvVVtHN8zYU3t6cGTqTLhzF+yeinwtT1
-	 2TiPNnFfyGR2lx7gYW1+LekdwpoaVKbmDxc57JCKH2suc8Ij0lAUYYLPOwhOxVXl6gQ==
+	t=1794203941;
+	b=FcmTKgqKB+3evTGdCqgHO7AnmcwupTCd/A0hW8vIW3XJ2MKB8K5EdGgOssDs2KhBfdUg
+	 2ZAJe/xJqVq8W7C9GQTOOVoK+2fbmbzMl8eSUrKZ5TcmnWrQ7TuPQsptYxwc7oysnYl6W
+	 6nByZGLwLB9AxXWr+L17CO3HE6sm1wWWZ9KLDDDAgOnuNHxysrNq5oFsSfB+41HbiZRYP
+	 lonr9j7IEKWxCqZVbGpm8zdszN5CWaoc/ulbggy7zZO0vUreCMnJD+8MCOIXHul+u908m
+	 GX1Q8D6UJOWDzJNv0BlTdcKrdr3EM+8UXQvJaN/KvT/3xde0xkwFqMbHvul1fWpNXWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794203421;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=zOU+uPjXYv6C9BQX655dlLqEf/JlKkzYX0WVqRX6Ues=;
-	b=EHrTdmYuCOa6+1Kptks0DaRWpNw0j4Wf5kGEe/FXyGYEsZ5RiFGo/L7xlIyTqOTa7Wb7
-	 iXKZ/llj4sQanmNBFDJ4FqkyDmPmvZKS5CeR+DUw2eIZG2wvMW1c/QCXK3avocdrvidnH
-	 vfdkhVRYG+ndMxx44H3II3Jnuh/b0fE6Z8dcIGnLQ4ykbnB4CHOt/I4yQNfw3lGWeAggi
-	 GTPGe8MO1CEmdI6vZwy4Pv9fh3SdT/raTw0nsNW2bTE8fZisaTy5265E5rRb9cVvRDXVV
-	 Bcp3RPyNKTKquwoT3rvRz9z6wotepG5sjVrrCPOocclKPlgWHRKOBUoCQKhkaBk93xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794203941;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=/E3ZtH8ojoi/vmsGrVMl6AMo0m24rPSDyRXvjqgo+0c=;
+	b=mHm2/eAFQ6tKBFgbrCdKdM9dWlCYgNOQMpVeRaPvSlj49m7qzt7BJFX8i8jXwhBxU6tv
+	 0rWJdNtHZSltmTlMInPxFg7gU6tF0BpNu3YKJkSBRME/IEg43zPBtV9pUHk8DHQN9Jfi2
+	 +UQWzMeAVXJgHSOfHIhvpJpMyO9DfbQnGn3KkMtcgpZ348XIucXaBD8iAkm0uRKOwImAi
+	 9NTvJUZW4g21nl4M6pcseh6ycsj7pcI9xeGhi6/Unm5B4uvdqR2cYR1/cwXczIruUEetX
+	 oqVez3yFVQOyNM2bbrRCZu2gMggmEPlpi9ibUCiOHyOdqxWRMoPHxz1fiiWBSyFTLYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H+JNnCsV;
-	arc=none smtp.remote-ip=209.85.221.49
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n8s+c+Xs;
+	arc=none smtp.remote-ip=192.198.163.19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D31606A31C
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 05:50:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77D31606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADB5606A31C;
+	Mon,  9 Nov 2026 05:59:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6ADB5606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H+JNnCsV
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-492fcbfaa88so299462f8f.3
-        for <kvm@vger.kernel.org>; Sun, 08 Nov 2026 21:50:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794203420; x=1794808220; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zOU+uPjXYv6C9BQX655dlLqEf/JlKkzYX0WVqRX6Ues=;
-        b=H+JNnCsVUCgEZDoYDAfHPe7mNmuUmXaMkyL2Meu2CESJ3eF/9IkHeMSJ5HmktqlVN4
-         n3KRuKvVmC6z+woxboJ9o7gIInrAYyhtmje2bHrLupmfpGViEjZuBcKKvrQZb4KycvgW
-         I59LI679DZHMSG3BNeHitkyEAqjCdUhhrK/FuJr2lHZwigU8/u5i7BEylOEuOC5mSYAy
-         AK9unokS5+oM+Td37rkq1ARnkUhE2qxqiD7CEce0Ms25ARC/Ori1wMfT8mYKm41dk8e9
-         bWcPaAlUaoRr6iiSlW3LAoDbVBYu9kOrU6cOxHwKFdad14q57OGh93Fc1w+vrX+WC1zf
-         MHSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794203420; x=1794808220;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zOU+uPjXYv6C9BQX655dlLqEf/JlKkzYX0WVqRX6Ues=;
-        b=fUto7k2KwAdi6s2faLhyx7qDLzR8XYkpOdErYatcCNYfFFGL3fWmKaFL+mTPsL734m
-         nWkyV5vGMNvL59KcksP+OztxP+zh6MtVtHT6Xw/WySq+BNUpE5HNOBRKFoF7M48yhj48
-         6LLfWGbrzZCbb/lLwUgeDv1sSYcSqdfWcPdFzdsM22Dr1Ym5jAurTeVSQ+I+o+MUuZZw
-         k4TU6f9ZOpBYPQSTqwj2WQ1k9NqCp7nfQcrr30p9L9FIoiSqkpTZjCogbJ5Tz7EDuaVo
-         hVhzptrRi5vTx9awhe1mf+XHilAkXAkNb4rv5ZmINibgM5HmMk5cr8ZVe9KkW2MRnnet
-         ZfrA==
-X-Forwarded-Encrypted: i=1; AL+hErEGyp/5ka85tTQcW/iLNmhFQwPfKlev5bfBwpTxMjZ4JIdvyRwK9OKTbQtIbDcuen/NMyg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z90MT/D3sZkVSfluRMpyRAdtWLFfaPnfx4I1rOaiYEZFAWD3u4/
-	eJh/7Zzqd9DkrKK3V4ImvL0GbXAfs4plj7luCmavhdkEgN+qIHCUS3dD
-X-Gm-Gg: AYBFou3QMx+3a0RQv722+j8tptEAi49XAxe3VrHqMThhAhtCFPwWiHAXP2nBfpKG3eT
-	y4FfnluUn6EXiVfckmrHGotrzI8u7hJTIBMnD9ZqLyYbq+yzwTC/PnRQqh5v1kWhMR3z1MrBIV2
-	PdVcdwIJDMP4jxDCmOQ5FYAaWUzcc+VNfBJA7BIHlsbPim451uD9rxMaA4vehOp60q65+oJ5KVL
-	6gPkK2oqWhdTX27DpbYXbDDntY6MzvVcMjDMqnzr4iCZm8aNpEgPIOoH0yARu/+VKbWS3ki7xSs
-	vraqzuy4qeRfgKMWDUyeAANic3WIbVnO10t+0dm9KcPzhldu3VNOyx5DxqqbDfnUeY7ed0oxDNZ
-	9ac7K3S/4rNG2h6d2WUMzKT5Iuwx21yFmM2flV2Ia5RCpZnH1m2XOFXAivVyXBLneLvrI6mSs4p
-	vui+kb7ffB97VjGW60QFdvFkDCOEfsR9quPf3ZuQwazyLflFeu4WjF78Hwew2siTZe8/Hfu9Oez
-	+Z951+i2MhNcnDiEUqPi8Y53u6cLrkfkaW+q4ndpAOslZVpIH0KyXcNUyv8r8+CVI1VX6tvLzQ4
-	yBu9fCrZaUbQclWPGFDdSE4N3tnOKfG/+gv1FpcPPK8BVKBGH2/0ikB+eNKQhMy2yXUrfV4ErCS
-	uO2IRlI5z1yzoIb2XBZ7K02w2raZlpUALCZUoyHRsYEfnfhIWR5UkJ3se+oYOj5NDCw==
-X-Received: by 2002:a05:6000:41f0:b0:492:c04f:1dfa with SMTP id ffacd0b85a97d-49582badc4dmr5288099f8f.9.1794203419718;
-        Sun, 08 Nov 2026 21:50:19 -0800 (PST)
-Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4959783e39esm7566761f8f.45.2026.11.08.21.50.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 21:50:18 -0800 (PST)
-Date: Mon, 9 Nov 2026 08:50:14 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Karthik Bhargavan <karthik@pereq.eu>,
-	=?iso-8859-1?Q?Cl=E9ment?= Blaudeau <clement@cryspen.com>
-Subject: Re: [PATCH] KVM: nVMX: Prevent potential user space corruption
-Message-ID: <avFfFqotCajjCzTf@stanley.mountain>
-References: <dab486f129c36ba1cfb322ceb56ec6fdef020ca3.1793959700.git.dan@cryspen.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n8s+c+Xs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794203941; x=1825739941;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OGKuaFtpJu/00zUw78GQThfCA7h7SYaZtzIWG6Z/hag=;
+  b=n8s+c+XsSLhKKjFbsklhOU6U+BeJe+3SW+GghvcCYq47gh0iHgB4uXuH
+   18vd3diU8jINCdayagu5+oQDK2/nU0MkSCPL3T6ZNcOUjQ56CS1c0jDOP
+   MOnZsU6rXhY8GlDB0dwBbQ4mX6ElxoxK0CLtrIEw6VKxKuCtYGhylI717
+   Nx/7SLg9LSLWs9R23boFZcKRKBW9lV99/RRsctXYCg0R70CnU7aQHXXIx
+   +L9cxTpGAVXuSxHBi24raF6hGPgV4h0Wx/I13ek51QE6CXiBnxpJBP3A6
+   mE//q1CZ7zyKzvj2EYGusOJZyru7sbVY2MDHnsnUmttgAUYc74xOmWeoD
+   A==;
+X-CSE-ConnectionGUID: pQb27N7WQxG6A0I+q/IJkw==
+X-CSE-MsgGUID: ZjEghJfXThyIxTuQhwwqyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="3022706"
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="3022706"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 21:59:00 -0800
+X-CSE-ConnectionGUID: tjo2rXZDQNSnB4+x8NjlaA==
+X-CSE-MsgGUID: wjgjw2klTIuEErLWbS1uLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="7789063"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 21:58:53 -0800
+Message-ID: <d28422d6-7ac6-48ad-a28b-553ba724581b@linux.intel.com>
+Date: Mon, 9 Nov 2026 13:58:51 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,13 +72,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dab486f129c36ba1cfb322ceb56ec6fdef020ca3.1793959700.git.dan@cryspen.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 03/20] KVM: selftests: Initialize the TDX VM
+To: Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com>
+ <20261105-tdx-selftests-v16-3-2024e8fa517a@google.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20261105-tdx-selftests-v16-3-2024e8fa517a@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Oops.  I sent this from the wrong mailbox so the From: header doesn't
-match.  I'll resend.
+On 11/6/2026 7:46 AM, Lisa Wang wrote:
+> From: Sagi Shahar <sagis@google.com>
+> 
+> Add tdx_init_vm() to handle the mandatory VM-level initialization
+> sequence required for Intel TDX.
+> 
+> For TDX, the VM's CPUID configuration must be "sealed" during
+> KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
+> the TDX module does not allow the host to create and initialize any
+> vCPUs before the VM's CPUID configuration is accepted and sealed into
+> the TDCS.
+> 
+> Additionally, to satisfy the strict requirements of the TDH.MNG.INIT
+> SEAMCALL, the helper masks the KVM-supported CPUID
+> (kvm_get_supported_cpuid()) against the "directly configurable" bits
+> reported by KVM_TDX_CAPABILITIES.
+> 
+> Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-regards,
-dan carpenter
-
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
