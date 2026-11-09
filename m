@@ -1,68 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214407;
-	b=gnnjf+tq83CNgjTk5THHgBJnYJjCDC53soM1T7zD0TN7nMfDz1rBo294VnqKCYDo3Cw8
-	 9ePS9Eu5anLCC04tdqxSn7ZcRXxvav84GBohrxrPESu23ylQyTjmVgVaXOul7slze4ZAl
-	 ooV6FXdnD+FpzwjOXBfLa4I59Dowmlr024Df0N5bmuzPxTohWT5REu1VaZ+hwyszhWwry
-	 FLe0Fwd063Bu8UBv0hjolTkw1yAgFmRqpbKEuCJ4iK2oSYzZfbHd3kddGR3M8MlTMqISe
-	 oH4/J2ApC2/kCNquSdMndMzkGILm4QhFpFtEwKYoHyhpp8I3OkQnSatz/rQqDCT8n0g==
+	t=1794214449;
+	b=M5uSpT0aHpvE61tLPTo1AIdUqFZlmmfSSBjPTWXM/9wHvzHWbenrh5Pa2Y/5wvl24/fS
+	 Wt7W11ycbxe7ySJTKKfdrOH9+F91FMPma18Z26I2YLRhJeyOGeyMNf+loHl0mcbcTBF1O
+	 CbRjhOnzmatPC3Ifp1E3Ej3MO3saJ6uW34qGZubE4/ZUZH1IIU/tABA3hFu/qNwcjTQl6
+	 ODyCzPOGA9lxyKKbJDJoxBIc7xIrF2gWglRita1d1bXFDqcA/SrJxVoICIgu22DwON64r
+	 yBnVzbGOVMGtk6lZOMElLaSONd9wC/OTmZ10WrgN4vxOE/jht230Ugaw6uw5wVLDMcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214407;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=6t+vf6iGGvmtu53Ld38Ljlix1wD8ca6ce6t34f5kd3M=;
-	b=sS8IhDFDTzDk/sUHwS+MGEnyevZgVrBCFj15thdR5ZNVDVTCFrH3Trdrav8ipr3nqTBN
-	 vZroAazKvijQp4aBRSpwvVJNN7TdJZpyDajqTuKKH1p2RdOH6b/PPe0xvblyZq8qhn+bk
-	 Wrj0gNY3CVIAxJLqtvjgpKY529r3IlHpJWQqqhRrzY9aeWDs2z7aOvblc8V95H9zLT3p4
-	 cntPoh9Y7+FRf1NWon55jz3EqoVOon5UTby8pCAwX/OKu4iEWFTBxW0rsjiWrevk0MMEP
-	 BZoAn+UHQ99tIA24ZAhPXsE9JKrGdJDEw8UkO8ZKTppXeQqMCmyxsl1Cz2Xa8pLTvSA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214449;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=iRY0hs3t1UIJHrMY7KhRUYSSk+YxXEfybfwdTdfJ8vM=;
+	b=qMvHr1YBjsx4Z108vgsnV1ZgdHOTw/S6irVePbukV6pcL38+DkyRB3v93dYo3s/8SDEJ
+	 yDMGzqAls0rz7o7XJip4bQnUcl88zeUHgLnp4IvjI3tRIe4/d1Sld/jyY00hj0qtuOiOK
+	 H9UVn75lhFVsAl59hwWnUxGFbn8cASs7C45iBFWAulUUyGTmuNf9fKhLthz2z2kQ9tOel
+	 Pv56pEW09yOxx5I5InQHvQiOF7TR3yh+RdqVmfaKKeAc7mzO0LE4xa3c0HUgJRbpRVwyQ
+	 Tvafi1HTLNdcVAjqOBzcPoe1XoJipdBNTket05I8kx5n4cH0TF80QH1zqI3Nc1JTK8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CNpScM05;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hq0uqR6B;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA19606D80F;
-	Mon,  9 Nov 2026 08:53:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAA19606D80F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF675606D806;
+	Mon,  9 Nov 2026 08:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CNpScM05
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794214407; x=1825750407;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=PDyVAs/P/xjSKJ+msEBqQaraDJZto4lbelsWIOUQKPQ=;
-  b=CNpScM05Ns0RBbVM0jDbjWh5GYs8pcJYVU9qjlPY2GeZ9OVju/Kacqeh
-   FnGn7kfoHc+jXaDKgl2ztsu3MLuAUPTRxPSs9Ui5+6FaFgYWB2F4B8hNo
-   2oVc+l4nirZM+utxlALzT6rN7z58FaViG8I5VExrjllyfJI+i54wC/zbh
-   LPkBEAAWWfTDcgpCO8W0Q4/CSkA4Utrj8Ow3w82oG84ri55vwJt/NIQg5
-   eUPxA+6fHiz/iQ5TMd2dqZf6LPnOuHL0Zm/lI8KhDGw6t7eo0rRPDvfk2
-   zGp3z9k/lyKd5itzvr6XN99l0uRtug5VxuzQGPm1fPCLftnIxJ0QKGN/x
-   Q==;
-X-CSE-ConnectionGUID: SKerGGctRCuFdvAyT5sFqw==
-X-CSE-MsgGUID: 19YoOawcSZef8vGSsv2P3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="2947798"
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="2947798"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 00:53:26 -0800
-X-CSE-ConnectionGUID: q/yk6RX0TLeiSS8T5mjpuw==
-X-CSE-MsgGUID: h1Nf3eMlRWeBVo2y3gRcPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="8156437"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 00:53:24 -0800
-Message-ID: <6c3b5480-258c-471d-b700-4931d408161f@linux.intel.com>
-Date: Mon, 9 Nov 2026 16:53:20 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hq0uqR6B
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD801F0089F;
+	Mon,  9 Nov 2026 08:54:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794214448;
+	bh=iRY0hs3t1UIJHrMY7KhRUYSSk+YxXEfybfwdTdfJ8vM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Hq0uqR6BElEaCwwSb+zjshC+xWB4fYkHuBrJhsj/MJrZYd+ijnbrh+ze9e0h6Titc
+	 Py4r6UvR+e6QQzNz+TLdZ5z3hOvgGFh0QEliWHGSZAm0tKT5fcZKeLQFbjiq+lwWv2
+	 /OValNsv6ATe/dw2KvU7A6U2fc3dx3wToMXYpbfc+HGdDxRULH//XsOCy9NFsSYq3A
+	 VSf01Y4dG7LzTtn6mnAFUc/Q/HvkzoPbwIj0bu4bTUh4/BuiWLMmlSfC4MTfWKelzt
+	 RtgXBqTOcrnnalfAUz5/NdLatUldL07jYYs+XTW7BrB0iUaIc35A0gz3Pa2zNaHA0V
+	 acnnKkgguBY/w==
+Message-ID: <sashiko-outbox-204633@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5/5] s390/hmcdrv: Replace page allocator calls with
+ k[mz]alloc()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?TWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KQ==?= <rppt@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>
+Cc: "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Janosch
+ Frank" <frankja@linux.ibm.com>, "Claudio Imbrenda" <imbrenda@linux.ibm.com>, "David
+ Hildenbrand" <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
+References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
+ <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Nov 2026 08:54:07 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,66 +64,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16.1] KVM: selftests: Add support for TDX ucalls, via
- TDVMCALL_REPORT_FATAL_ERROR
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sagi Shahar <sagis@google.com>,
- Lisa Wang <wyihan@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Ackerley Tng <ackerleytng@google.com>
-References: <20261105-tdx-selftests-v16-18-2024e8fa517a@google.com>
- <20261106164732.3939387-1-seanjc@google.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <20261106164732.3939387-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 11/7/2026 12:47 AM, Sean Christopherson wrote:
-> Add support for doing ucalls on TDX by abusing TDVMCALL_REPORT_FATAL_ERROR
-> to pass the address of the payload to the host.  The "fatal error" TDVMCALL
-> is perfectly suited for passing information to host userspace, as both the
-> TDX Module and KVM allow the guest to pass (almost) all registers to the
-> host, i.e. provide enough of a data payload to make a collision with a real
-> fatal error practically impossible.
-> 
-> TDX can't use port I/O, as the TDX ABI doesn't allow the guest to share
-> arbitrary register state with the host on a port I/O exit, and the port I/O
-> data payload is limited to 4 bytes, i.e. would potentially truncate the
-> ucall address.
-> 
-> Alternatively, TDX could use MMIO, but using a magic emulated MMIO address
-> is fragile (see the TODO in __vm_create()), especially for TDX since TDX
-> doesn't support read-only memslots, i.e. doesn't have line of sight towards
-> addressing the TODO.  E.g. TDX could hardcode the address to something that
-> is all but guaranteed to be unused on x86, e.g. the I/O APIC base address
-> or the HPET address, but that doesn't truly address the fragility concerns,
-> and it's ugly because ucall_arch_init() would completely ignore the passed
-> in @mmio_gpa despite obviously utilizing emulated MMIO.
-> 
-> Use a simple flag to route vCPUs/VMs to the right do_ucall() routine, and
-> take care to set the flag via write_guest_global() so that ucall_arch_init()
-> is thread safe (in the *extremely* unlikely scenario a single test creates
-> both TDX and non-TDX VMs *concurrently).
-                                       ^
-Nit: missing a '*'?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] s390/hmcdrv: zero-length requests rejected with -ENOMEM in
+  hmcdrv_ftp_cmd()
+--
 
-> 
-> Alternatively, a virtual function pointer could be used to dispatch to the
-> correct do_ucall() via an indirect branch, but that has zero advantages
-> other than making ucall_arch_do_ucall() look prettier, at the cost of being
-> slightly harder to understand and making ucall_arch_init() uglier.  KISS.
-> 
-> Cc: Sagi Shahar <sagis@google.com>
-> Cc: Lisa Wang <wyihan@google.com>
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Cc: Binbin Wu <binbin.wu@linux.intel.com>
-> Cc: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+commit 64ed22d8db2caf381431154b54f669d68274ef30
+Author: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+s390/hmcdrv: Replace page allocator calls with k[mz]alloc()
 
-BTW, the in-reply-to patch didn't trigger a new round of Sashiko review.
+This commit replaces get_zeroed_page(), __get_free_pages(), and
+free_page[s]() in the s390 hmcdrv driver with kzalloc(), kmalloc(), and
+kfree(), rounding buffer sizes up to PAGE_SIZE.
 
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redh=
+at.com
+
+> diff --git a/drivers/s390/char/hmcdrv_ftp.c b/drivers/s390/char/hmcdrv_ft=
+p.c
+> index 3312b2ac00a9d..e22789b532de2 100644
+> --- a/drivers/s390/char/hmcdrv_ftp.c
+> +++ b/drivers/s390/char/hmcdrv_ftp.c
+
+[ ... ]
+
+> @@ -238,16 +238,16 @@ EXPORT_SYMBOL(hmcdrv_ftp_probe);
+>  ssize_t hmcdrv_ftp_cmd(char __kernel *cmd, loff_t offset,
+>  		       char __user *buf, size_t len)
+>  {
+> -	int order;
+> -
+>  	struct hmcdrv_ftp_cmdspec ftp =3D {.len =3D len, .ofs =3D offset};
+>  	ssize_t retlen =3D hmcdrv_ftp_parse(cmd, &ftp);
+> =20
+>  	if (retlen)
+>  		return retlen;
+> =20
+> -	order =3D get_order(ftp.len);
+> -	ftp.buf =3D (void *) __get_free_pages(GFP_KERNEL | GFP_DMA, order);
+> +	if (!ftp.len || ftp.len > KMALLOC_MAX_SIZE)
+> +		return -ENOMEM;
+
+[Severity: Medium]
+Does rejecting !ftp.len here break zero-length commands such as
+HMCDRV_FTP_DELETE?
+
+Previously, get_order(0) returned 0 and __get_free_pages() allocated one
+page while leaving ftp.len set to 0, allowing a 0-byte read() or write()
+on /dev/hmcdrv (via hmcdrv_dev_transfer() -> hmcdrv_ftp_cmd()) to execute
+commands that carry no payload.  With this check, those requests fail with
+-ENOMEM.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261108-s390-char-=
+ready-v1-0-3db507722530@kernel.org?part=3D5
