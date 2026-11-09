@@ -1,82 +1,156 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794227933;
-	b=iu7rvftBaJtJt7GxltI5j+YTRaXBAJVkn4O/CR8Se+DmYjYkzhnkON2cAPRMExAnPsRj
-	 5nDDSDlAW+JY7Bg4Japw/fZAJ4fsuFqTNup6LxbvWNJhl+14u/8iszjmFOAS7cLvY55dL
-	 yFmdUDBH4ouO73vCVOeYSrkf3UW7Fz3M68iY3/UnLnLZqjjpxBbxUG8O+1Ae7imF0hBJE
-	 SlFIydhrDPwgT3sqUb4BbNqtzAboT5HmDgeb2v5L9N1JA/4Y4OM4H1E0E9yvpkr0Tkxph
-	 Fjq0j8ZcJadW70IO9p0gfyoekL9/9eDlGwv5OyB/V4eb52wNp3ILYvreNUQ/WGIJmDA==
+	t=1794229612;
+	b=CZBuO3s0Cjj7Ym1XdBFKALNhqusVEqLFukA5q8oDpJfBYrKkXr5FCDns+ShWNXr9oK6R
+	 NGCb3p0deBhQV01sBzUH5BN5mbxSvb7UfxJ9A55hCIH6ypbbAeNj6MRsZA6QF2yGEdiiA
+	 n6LFP3heNNmSzHPfnC5If0mx4pKExr/BevDtYejkZNXM+FjJXcgvJC61gUjTYgtBu4NRN
+	 aYlWmLRQAoHeOJcyOMwCeLNfK/nHLkY3ztp/DBR8J2KOxijCOTRhS75hyMMlAAVYGeB88
+	 k8eEQYbOVyWPOxGMATGUPw32Vfpof8p1ITqFtpZKCNWaAJiGZxZRbW5fP3PHPCEKqeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794227933;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=uBmYvYbcHcho6XsbPQIL2RqnpsMy4oDpCQXMyiH5tSk=;
-	b=nRljNMvJem5LTQ89d4FBZN6Ynpbc9o85GI5jTSmVWwHUIp+/4Mkj6bQFDOUXk+dU7pcm
-	 FXSOeksEYoC0sJp3axSxOt0PzTDnxpQRT9u9id4e5gWv0Oi3lcDnFj0SZIXap5PgzOAgj
-	 Hzh7Q/60mK1JL5OEsjcXYFf/4Ed0TJi9ah8s9GFP1wAotgW3afRh2nRoPxsnI6XsPs0HE
-	 PEZeXs7Jug82KlcOU57FaOdAIZQkuw8NaF1pe7NcL5000ApefenWWDLwXmw2Nc102EiNE
-	 tLfhq3JeUL7h2I5026RMh8cAhboZR1v26Xc4OW/wN0LHSoPBmiLWX5u5teTdK0ppOpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229612;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+	b=oVYHh7qn5obkiG4EYGGw2RV8L19GCS+G1dfICkHEcDepInMFWLsoMqC2z8qNeMSoUXiI
+	 zAl1TViUuTVJOjqc/FwA5FRz84WCgfHDeNLfpiiESt2QemdSJ+CPgF9CSl67E5SMMqSZt
+	 ujfrT64TBx1NNAfjEVIlWShcYykNF3uCLqXucblt8Ibwwyl4cFUKz4c8oh/WnWEiQgA+R
+	 SZNBKWxP8tC1IH6p0B/qbPCCIPcVwG/AzUJN67J0kzFtrb/eRu8G8ceele53/0UItZsbH
+	 tx7Jkw3vtSHvkcW8PEordSRunZBWQ17kk8nk+TxKtpTpiW7aVf6Dlk9E2fcdXS2Dklg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d9LiddVw;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UXmcXJOt;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=hvH2JAKU;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC1C606A31C;
-	Mon,  9 Nov 2026 12:38:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EC1C606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AD7606A321
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 13:06:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76AD7606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d9LiddVw
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9AEL4f1916083;
-	Mon, 9 Nov 2026 12:38:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=uBmYvY
-	bcHcho6XsbPQIL2RqnpsMy4oDpCQXMyiH5tSk=; b=d9LiddVw6uqFuHz6FCnUPM
-	1s+vxZO3Z2/4ZY7hJTL0HdEcDjU8bJKLvhzwLZ3Sv69Sb4+5vmsBjghspw21lrI7
-	pI0sL5RzaxbkuYNS+1qSZdPuOMq5w3pDJMdDCG0bKigfFPWaKGeFgcg15rJDLzJA
-	pDffqht3syaxUnYO7NanFIMy76ofNpcTsnwipydEvBH31mY5icA324WoiJU9QDVD
-	6ZBlVFWb1HLICaPwiNxQ/IEw2h/8WrhRzk3iKzAL/i5Tw5FOUVLcIYESdYn6XTyp
-	n9HXexeJD/tAR1kQ3Tq3Rw7UU+DhRyCepGtEpXG/rB4joicYZQ2jIO5afVaa1YfA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hstdfvx5n-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 12:38:49 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9A4vo54004496;
-	Mon, 9 Nov 2026 12:38:48 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4htfajyr0m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 12:38:48 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A9CciU532178486
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Nov 2026 12:38:44 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A344720043;
-	Mon,  9 Nov 2026 12:38:44 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 38FD520040;
-	Mon,  9 Nov 2026 12:38:44 +0000 (GMT)
-Received: from [9.68.16.159] (unknown [9.68.16.159])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Nov 2026 12:38:44 +0000 (GMT)
-Message-ID: <4cb58287-4273-4518-8cac-aa3056dc28e2@linux.ibm.com>
-Date: Mon, 9 Nov 2026 13:38:44 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UXmcXJOt;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=hvH2JAKU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794229610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+	b=UXmcXJOtilHFjGvwez6rO6q+AbZFLoTde0Y511FZa8Lb1Ab7Lbiewhz5vCV0eEA7Nz7xDA
+	A34uvJHDfl2e8bxZcRRR4hqBGi7MDd+AImCsbElrXtnX9MNkW6wqAu+HeVd0jcVCzvVv/X
+	0mIn02WplMqjvTFwaiUbo3BrR6zDdRM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-99-JDCuz20oMg6VIQJshk4fkQ-1; Mon, 09 Nov 2026 08:06:48 -0500
+X-MC-Unique: JDCuz20oMg6VIQJshk4fkQ-1
+X-Mimecast-MFC-AGG-ID: JDCuz20oMg6VIQJshk4fkQ_1794229608
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c25501f4aa2so95020666b.1
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 05:06:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794229607; x=1794834407; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+        b=hvH2JAKUSPVN6CLi6ISw5CHEFk3kPPwX1uKW23tcP+tjSVKeRNUFAITwWBNXNw3VXK
+         zAS0k7VgaTGEeOoiCTbdFHAyPaNCHkgQAr0Iw5CKQd5HTNSjYPUzjz/W2V6qPp1GfwlG
+         QXUlhHLmJG/B84GBezCBkFReNNINJG7gH0Pt261lGg1cSjRs1YY0rXZeXOmbC6NCKRgb
+         4Yyxk1tUUGitmRMqkX9FdvZT9B2RdJuzn/5xE59oCnobNDOJupirMcPqRWUWQ9w+2r39
+         x3nWRxdKdrdnuJIPiFXIw+j9wT+Nlanvnm41D3MtSFPF412jW0sWvm2PFteDKwoP38kK
+         360w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794229607; x=1794834407;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+        b=rRmnc3Aa6XJiWPBJb4wd8/hl8gs274dpH9IGZlKnNHWSzdB6LvCrDW4iUzv8K2W+LX
+         zAIufl3fzAehb0TiGiSgew0Zs0+r4xFDd/JFRTyMtO2VYFFy04N/MyazFd/V9skAMq4A
+         AeewKEm27SVsuOcRGrOcAAqKbaGOn9pGn1E/tnVuKMEvWUwCWD0+djlmZAS+t+2yLJIi
+         zJnAqIdwA3DqElgwBgxzWD7WcXx2IGTaRys16gJQLvK/6fCLARM2Fjiczh1Q3Y8PcfR7
+         xyDyZkhIVUwsob6ncYUBLr9tkCybQipYWbrDMlUXQU/BITfRPwpuYcvgy9jJcOWwQa+G
+         86fw==
+X-Forwarded-Encrypted: i=1; AL+hErEvmP9Kq1GMxZCIUMLZKJM45OzUW8GDQA3F6mZEHpaR7s/DV0ACQJGhxlRjXpuJ0jutLL4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/2HRPxcoNHpgmTjTvugT2fC3DTokTvI/Wed+d69TJmDdDS8QTk
+	Emu6mh4r6fQ3VE7trTbTAy72EqfCnZeKa0/nCBK448E1e0iOXLho+XPxEqfdepTwJc3zLB8Wl6R
+	lOwGWAG7UM5Te/llaBLWQqdTQtlsRS/NSoreenvhGoDlMpyXiMWSuhg==
+X-Gm-Gg: AYBFou3D3Nk49N83PLRsKzRuQ8xvfvkSgKte3ltV9tyCRqoNYa8oppVzarZij1WpA96
+	u4tTyFtb8YXu+G8uvxXEWAJlXr4RDg5aGL6g/B6OSb1SVpgTa5SaVNJBnr5XNF1BZQDuuobJOTu
+	POxorSWKwfp0xFLssKqksrb1GX8FINu6YiqOsyt1MQHwvJi5opTVxYgH+mP6zOwIOKElV1B832C
+	+6JsUvxgOQgpX4oenSLRne2TUS4Ow4YpmiF2GuIcAeW9cU23W/yJzyu9Tj5i2fCiX9RdGyr3UQW
+	oqiSXucPWuri6GMZZXUKy7ODjcOCyQLCNULt1Wp/H+DUaYBnjsuG0OJJN7sW7j6/VtGhdkAQ2ct
+	lQw4oPyFyd4i12hVFjwpxAy6pXlUoHkdwpNQXPf0m
+X-Received: by 2002:a17:907:18c3:b0:c25:f7db:4bec with SMTP id a640c23a62f3a-c4d6db5760cmr321579966b.18.1794229607347;
+        Mon, 09 Nov 2026 05:06:47 -0800 (PST)
+X-Received: by 2002:a17:907:18c3:b0:c25:f7db:4bec with SMTP id a640c23a62f3a-c4d6db5760cmr321574566b.18.1794229606674;
+        Mon, 09 Nov 2026 05:06:46 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d69f9384csm168299566b.13.2026.11.09.05.06.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 05:06:45 -0800 (PST)
+Date: Mon, 9 Nov 2026 08:06:38 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Scott Branden <scott.branden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+	linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 14/14] vhost-vdpa: convert mmap hook to mmap_prepare
+Message-ID: <20261109080616-mutt-send-email-mst@kernel.org>
+References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
+ <20261105-late-2026-mmap_prepare-v1-14-c56aadfbab8a@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,89 +160,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] vfio/ccw: Flush notoper_work before returning from
- reset
-To: Yuho Choi <oss.patchbox@gmail.com>, Eric Farman <farman@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: Halil Pasic <pasic@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20261106191029.469837-2-oss.patchbox@gmail.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20261106191029.469837-2-oss.patchbox@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=J+M/fwnS c=1 sm=1 tr=0 ts=6af1bed9 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=pGLkceISAAAA:8
- a=MGMQWwHRxuE3iItJiNIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA0OCBTYWx0ZWRfX5BjHtSlLwIWk
- VEjOYNO5uMgmvrdxkyVrvQJ7aDCRSOhbiN5CA5oKC0bpU2O+siO2aHy8hjsopmTEbCnLMPD5Otr
- kgoqfPcm+e1QUg0yIpFTHInOIAjsDQOD6x9FfJcqkSl0bZI2IJAk2f3mEBissh2wt9uLcfZJHna
- JvFja5C0UB8km5PZRREj0txU9M8rydZTrUi5zpvYVBD8dSTiZxeMNfzwX+jYmzXcoJKGCVYdKyt
- tUrjcmzfSxO9pb25o8u28vMorw0olY/sqeUf2Y/U4tX8o2T3PCosxnIW2ZE/OTrAvoUIGX6o8Ur
- 370uNunIftqRYkMxyq7PUliptwIFu3aJhbGUGQ/HA4lpPlAi9Z4tw/stDO0ekmZrZ87zXSWHZT+
- yh37/rdRtZKyiCh0UWjDAKQRU9WPE/XAlUaWWDfFwaO0Vnx399LNiXkpHWMocQvvGuWKwgik3hf
- VNUmYG4hpFaOkk1UAJQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA0OCBTYWx0ZWRfX9wRkrOhZw+yU
- yD5VzBkW+s70LodyExEuv6RNKfHbNcBjgCjzOmsrLl9DYmeR609ZR/S9fuCclc95sMNrQJLwgVx
- Eq4AWIrD2iMOW8yoC/6UDZfnNmvYey8=
-X-Proofpoint-GUID: 7PHhsw1CXkWbchPBwpBLaSAEodvwuPfj
-X-Proofpoint-ORIG-GUID: HbA3pKVglMtZK2G6Mk2_WubN5R9GxW8m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-09_04,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0 suspectscore=0
- malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611090048
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-late-2026-mmap_prepare-v1-14-c56aadfbab8a@kernel.org>
 
-Am 06.11.26 um 20:10 schrieb Yuho Choi:
-> vfio_ccw_dma_unmap() is the DMA invalidation callback, which must unpin
-> the pages covering the range before it returns.  It calls
-> vfio_ccw_mdev_reset(), which raises a CLOSE event.
+On Thu, Nov 05, 2026 at 09:05:45PM +0000, Lorenzo Stoakes (ARM) wrote:
+> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
+> only validates the request and sets the VMA flags, operations and page
+> protection.
 > 
-> On the normal path fsm_close() calls cp_free() itself, so the pages are
-> unpinned synchronously.  But if the subchannel cannot be disabled or
-> quiesced, fsm_close() falls through to a NOT_OPER event.  Since commit
-> 0c11f61a876e ("s390/vfio_ccw: Move cp cleanup out of not operational"),
-> fsm_notoper() only queues notoper_work, which is where cp_free() then
-> runs.  That commit flushes the work in vfio_ccw_mdev_close_device() and
-> vfio_ccw_mdev_release_dev(), but nothing waits for it on the reset
-> path, so the callback returns with the pages still pinned.
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+Who's merging this, me?
+> ---
+>  drivers/vhost/vdpa.c | 23 ++++++++++++-----------
+>  1 file changed, 12 insertions(+), 11 deletions(-)
 > 
-> Because notoper_work runs asynchronously, vfio_dma_do_unmap() can exhaust
-> its 10 retries before cp_free() completes, hitting BUG_ON(++retries > 10)
-> and taking the host down.  A further CLOSE cannot help either, as both
-> CLOSE and OPEN are fsm_nop in the NOT_OPER state.
+> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> index ff7d90719171..993b2d7c8927 100644
+> --- a/drivers/vhost/vdpa.c
+> +++ b/drivers/vhost/vdpa.c
+> @@ -1573,19 +1573,19 @@ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
+>  	.fault = vhost_vdpa_fault,
+>  };
+>  
+> -static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
+> +static int vhost_vdpa_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	struct vhost_vdpa *v = vma->vm_file->private_data;
+> +	struct vhost_vdpa *v = desc->file->private_data;
+>  	struct vdpa_device *vdpa = v->vdpa;
+>  	const struct vdpa_config_ops *ops = vdpa->config;
+>  	struct vdpa_notification_area notify;
+> -	unsigned long index = vma->vm_pgoff;
+> +	unsigned long index = desc->pgoff;
+>  
+> -	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
+> +	if (vma_desc_size(desc) != PAGE_SIZE)
+>  		return -EINVAL;
+> -	if ((vma->vm_flags & VM_SHARED) == 0)
+> +	if (!vma_desc_test(desc, VMA_SHARED_BIT))
+>  		return -EINVAL;
+> -	if (vma->vm_flags & VM_READ)
+> +	if (vma_desc_test(desc, VMA_READ_BIT))
+>  		return -EINVAL;
+>  	if (!ops->get_vq_notification)
+>  		return -ENOTSUPP;
+> @@ -1598,12 +1598,13 @@ static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
+>  		return -EINVAL;
+>  	if (notify.addr & (PAGE_SIZE - 1))
+>  		return -EINVAL;
+> -	if (vma->vm_end - vma->vm_start != notify.size)
+> +	if (vma_desc_size(desc) != notify.size)
+>  		return -ENOTSUPP;
+>  
+> -	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+> -	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
+> -	vma->vm_ops = &vhost_vdpa_vm_ops;
+> +	desc->page_prot = pgprot_noncached(desc->page_prot);
+> +	vma_desc_set_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT,
+> +			   VMA_DONTDUMP_BIT);
+> +	desc->vm_ops = &vhost_vdpa_vm_ops;
+>  	return 0;
+>  }
+>  #endif /* CONFIG_MMU */
+> @@ -1615,7 +1616,7 @@ static const struct file_operations vhost_vdpa_fops = {
+>  	.write_iter	= vhost_vdpa_chr_write_iter,
+>  	.unlocked_ioctl	= vhost_vdpa_unlocked_ioctl,
+>  #ifdef CONFIG_MMU
+> -	.mmap		= vhost_vdpa_mmap,
+> +	.mmap_prepare	= vhost_vdpa_mmap_prepare,
+>  #endif /* CONFIG_MMU */
+>  	.compat_ioctl	= compat_ptr_ioctl,
+>  };
+> 
+> -- 
+> 2.56.0
 
-Does the the iommufd backend have the same problem?
-iopt_unmap_iova_range() keeps calling the unmap callback and gives up with
-WARN_ON(tries > 100) and -EDEADLOCK. So that path is also fixed, I guess.
-
-[..]
-
-> Fixes: 0c11f61a876e ("s390/vfio_ccw: Move cp cleanup out of not operational")
-cc stable ?
-
-> Signed-off-by: Yuho Choi <oss.patchbox@gmail.com>
-
-
-Eric, Matt,
-
-can you have a look?
-
-[..]
