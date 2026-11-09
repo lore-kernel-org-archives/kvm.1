@@ -1,104 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794246636;
-	b=wjXiDl1GrWZDvZdgKpsNBRSpBU21bdwGSOk/+4p+IosNBaHkj0AbQdsZS5j+f1UyqbEE
-	 MAkLLhI6uAjctEnqJqTndJMbx929x2uTJkOewQ/noZHpLKa+ZbT7HUHkJP+2R14P6XYcR
-	 T0NmLNVUDyKVm3dc0uLZxR6lbx+GmFyLXO8tL0tEVu4GmorOwcNJN3C+DzY6B+USqU62f
-	 DfGFXxlURxnSVNtA5ItPRdfT0QC1gKZaIGaj7gNK8722AfshTODJpDWL657QHXOCCAIVg
-	 imx874Pt3WCnhrpybbrvae2gxmUKws1VGeTvos9PDtR9Lg/MAxCTdNEKWnLZ5GnCX1w==
+	t=1794246948;
+	b=BD7/f0A7cp+GVUY9/8Io5y5reyDlNYz4HkLuJ0DmZh3CyRFsOPZc7L983xMoRUYmCI/4
+	 Rr0nYNUYJpV5Pzvug6hgjwrO4DlBB0m0+5szTFv9gSGT+ORcyZw6zMy//l5YJzPWK4QA4
+	 4VgxY9JSuEfc/pvrB6yEmycOOprWoAruSKZ/TOc0aFIVaKWqJ37CAJBFWLTmhKHMGcAvv
+	 pKXwazb1BOLarvWTZ8KCe6sH/C4jNK+HlXhk+tu+Y6Bukf2DwOBzfwgK1au3gTpEeQ/Vj
+	 vxvrA7vQsllSFYivXWqJSzQCnpoYbdss5Mea7rG6FNiTyhMbsg9exj0LP7ZepovDgrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794246636;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-Id:
-	 In-Reply-To:References:X-Mailer:Mime-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=4Y+apbv0moZAbIC2JZwKUuLxptoIhomU3mV95VqD+l4=;
-	b=alw7wVpnrLdRiQSkBAeTekFUEfM/Dw2tkZGVqpx/i3zLsEK7N1YPWCklRK5mBY0LWSMx
-	 9tZ637L/GQ3EZkkQ5Z5JAE8Ux2suFpN9tbIK6EDWQcG1BMzpL9lnMn3+niISwt2PLTAZa
-	 T4AwYfxwLKMDI7kVgvXNIKoEj1wVVkPiRC+XrtIrhp7Z+vpgKSZmIl8fZccbFVeJbQATg
-	 myUGBTQ8Fma9BwnSsRserOFhtslIpbaXUloYLKt8tff4FOgWj/PgdoSoO2w8V1AFneFIX
-	 OjSoYcurOKD4V270egJtXYNZDghJi0Un8heVmy7dbFS8ZrAHmIihHzrO+LsYXzDzSDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794246948;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=6bKX3aMMhixRTUNzDdHxk7FZKlQ3NYr1JIqZdM+Irpc=;
+	b=pGgfE41FxKk/WMcmRhfcEBz2I9ooerf1DL+ow3NVwqK+pIb8TM7Oeb9NGFDpgf7IWTlC
+	 AzUmWvXECXgzRMwrg1jN/8LHVvtiYW7Zn4Qz2lK3DCBVsews1DtEwiLY8JwuU+++h57g6
+	 JsvQN8/hkU2g1TDMY4BMp4qk/G1rwAr/1pL+IUzd9YIp7uF72qcA9Ly/NeUptB7aRcJvP
+	 JdwyxTO01OTU/rS7jGYnakL0U8iK3Q3ig0JmfDnXCX1m0xxACvWRVgt1veENwDvlCndOS
+	 cLh1AR+i4OfEFcizAoAFrL3Y2pXrIwX4Yx4ncpg3/HJK3Z7HB5DELlWFpCHFK1i63Zg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b="alzL5p/E";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kN1nFyIr;
+	arc=none smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376BE606A31C;
-	Mon,  9 Nov 2026 17:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE26606A31C;
+	Mon,  9 Nov 2026 17:55:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AE26606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=alzL5p/E
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BE51F0089F;
-	Mon,  9 Nov 2026 17:50:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794246636;
-	bh=4Y+apbv0moZAbIC2JZwKUuLxptoIhomU3mV95VqD+l4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=alzL5p/E5TFjU0f4S3NCoMGJBvZNjLceDHvjdf7oUnrtQutT9d/lual9TYbQaYsV8
-	 BIDjLsHSLUcOK6q2LAzWt3YlvV/WiGiPoNNU3sNfH3m3TbLCyeOWWakP21fgtRFZY7
-	 MuUKvUaoZ86WAElRGG65TDNBtS7Dp15/zVMHHz1w=
-Date: Mon, 9 Nov 2026 09:50:33 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
- <peterx@redhat.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
- Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo
- <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang
- <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul
- Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache
- <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
- <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Usama Arif
- <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin
- <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel
- Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He
- <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky
- <leon@kernel.org>, SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
- David Rientjes <rientjes@google.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
- Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, John Johansen
- <john.johansen@canonical.com>, Georgia Garcia
- <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, James
- Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Mimi
- Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg
- <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, Stephen Smalley
- <stephen.smalley.work@gmail.com>, Ondrej =?UTF-8?Q?Mosn=C3=A1=C4=8Dek?=
- <omosnacek@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, damon@lists.linux.dev,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH 00/13] mm: continue vma_flags_t conversion
-Message-Id: <20261109095033.ed2b0334c862ca832389ea7d@linux-foundation.org>
-In-Reply-To: <ab4be2bc-8959-4c09-a120-37e216279dae@kernel.org>
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
-	<d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org>
-	<au3r0-geuwtRYPiC@gremlin>
-	<1c0b1368-a381-4b25-bba9-7a4f8e92b764@kernel.org>
-	<au-DXpEi4wHwsz0r@gremlin>
-	<93fef824-9f60-4940-9ee6-80c9c8e3f945@kernel.org>
-	<20261109094434.d23a227a869e76455ddff3b1@linux-foundation.org>
-	<ab4be2bc-8959-4c09-a120-37e216279dae@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kN1nFyIr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794246948; x=1825782948;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=8rkFS1gDTEYHVkLMdZ+zlX60pR3SDfNCsmHMqLuoh18=;
+  b=kN1nFyIrtI1E/j8/vTXFRKhdZDxpgSn+SHthu3ibxjqqudzyMhRM0rbL
+   rKEixvHWjI2x63X+FMKiHjzoUjke9FgZoJMO0sSMgb7HbtLRxVRtJyyR9
+   u8GS4E/giqIRHptl16zTj36HOY4T0bmYdAdseddKS8+Jgoy1b64afRSR8
+   tdGp6CGZmJR2pgu2utZRM1V/jnXyb7wqCZ7uZZxNLyR6oeOTzMWFJnyfu
+   R9Hlok+E83eCwMPUo5w5r777TSyt7rsZkU508sSOQXHWYQxBeDB3n/6Sc
+   kxzjnD1mzKYUJkjK+cYGdziP2GVVMXllXTNjAovf1CevEEpsdK4M15tej
+   Q==;
+X-CSE-ConnectionGUID: wfgVPIWvQriCtXbK8emzCw==
+X-CSE-MsgGUID: caWi0VCHR/2EQDgGktzmfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2878648"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2878648"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:55:44 -0800
+X-CSE-ConnectionGUID: U8vhVYsyR7euGllKRrqZTA==
+X-CSE-MsgGUID: o2O6LOgOTKS6H7TLgCe9Jg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="8248962"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:55:41 -0800
+Message-ID: <e977b107-7762-46d3-ba31-832eb9ae609c@intel.com>
+Date: Mon, 9 Nov 2026 11:55:39 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -107,48 +71,136 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-5-zide.chen@intel.com> <au4kyULjUYdqbfIq@google.com>
+ <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
+ <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 9 Nov 2026 18:48:07 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> On 11/9/26 18:44, Andrew Morton wrote:
-> > On Mon, 9 Nov 2026 14:40:48 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> > 
-> >> On 11/7/26 21:09, Lorenzo Stoakes (ARM) wrote:
-> >>> I think we're slightly talking across purposes, so to be clear - I am totally
-> >>> fine with you taking any of this through your tree or whatever works for you and
-> >>> Andrew to avoid merge pain :)
-> >>>
-> >>> I was just talking more generally about how to merge series that touch a lot of
-> >>> subsystems and maintainers-who-may-never-reply, etc.
-> >>>
-> >>> These are the edge cases that make things... fun :)
-> >>>
-> >>> Anyway, I guess easiest resolution here is for you to take the bits that belong
-> >>> to your trees and Andrew takes the bits that belong elsewhere?
-> >>
-> >> Yes, that's what I did now, applying #1,#3,#4,#5,#6
-> > 
-> > Cool.
-> > 
-> > I'll remove the whole series from mm.git immediately for
-> > collision-avoidance reasons - let's sort things out later.
+
+On 11/6/2026 4:35 PM, Yosry Ahmed wrote:
+> On Fri, Nov 6, 2026 at 2:19 PM Chen, Zide <zide.chen@intel.com> wrote:
+>>
+>>
+>>
+>> On 11/6/2026 1:09 PM, Yosry Ahmed wrote:
+>>>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+>>>> index b8875ed5502c..4f192429ed93 100644
+>>>> --- a/arch/x86/include/asm/kvm_host.h
+>>>> +++ b/arch/x86/include/asm/kvm_host.h
+>>>> @@ -595,7 +595,10 @@ struct kvm_pmu {
+>>>>              DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
+>>>>              atomic64_t __reprogram_pmi;
+>>>>      };
+>>>> -    DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
+>>>> +    union {
+>>>> +            DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
+>>>> +            u64 pmc_exists64;
+>>>
+>>> __pmc_exists would be more consistent with __reprogam_pmi above.
+>>
+>> I used the *64 suffix and without '__' to match the cntr_mask/cntr_mask64
+>> and fixed_cntr_mask/fixed_cntr_mask64 pattern in struct x86_pmu_capability
+>> (patch 7), whereas __reprogram_pmi used '__' because it is an atomic64_t
+>> rather than a scalar mask.
 > 
-> The mm-next merge today still worked (minor conflict on #7 due to one
-> unnecessary ksm.c hunk I commented on), so you could have likely just kept all
-> but the above patches.
-
-OK, I'll take a look at re-adding things...
-
-> > 
-> > I'll get better/more accurate about this soon - I need to set up
-> > infrastructure to fetch everyone else's trees, do test merges and
-> > figure out what should be removed/fixed in mm.git.  I might just base
-> > mm.git on everyone-else and always route its stuff ->david.  I need to
-> > spend a bit of time on this and discuss with the mm-next peeps.
+> I don't follow why the '__' prefix is specific to atomics, but anyway,
+> I will leave this up to you and Sean.
 > 
-> Ack!
+>>
+>> Also, arch/x86/events/perf_event.h has similar names:
+>>
+>>         union {
+>>                         u64             cntr_mask64;
+>>                         unsigned long
+>> cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
+>>         };
+>>         union {
+>>                         u64             fixed_cntr_mask64;
+>>                         unsigned long
+>> fixed_cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
+>>         };
+>>
+>> Seems either way won't be absolutely unifie
+>>
+>>>> @@ -120,6 +144,17 @@ static inline struct kvm_pmc *kvm_pmc_idx_to_pmc(struct kvm_pmu *pmu, int idx)
+>>>>                      continue;                               \
+>>>>              else                                            \
+>>>>
+>>>> +/*
+>>>> + * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
+>>>> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
+>>>> + * so iteration up to KVM's maximum counter count is safe.
+>>>> + */
+>>>> +#define kvm_for_each_gp_counter(i, mask)    \
+>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
+>>>> +
+>>>> +#define kvm_for_each_fixed_counter(i, mask) \
+>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
+>>>
+>>> These are not used in this patch, are they?
+>>>
+>>> They should probably be introduced when they are used. Also, do we
+>>> always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
+>>> yes, maybe we should pass in the pmu here instead?
+>>
+>> The intent was to group all bitmap accessor helpers together in this
+>> patch for easier review so that the big patch 5/18 could be kept to
+>> mostly mechanical replacements.
+>>
+>> But if you prefer introducing them on first use, I'll move their
+>> definitions to patch 5.
+> 
+> Yeah I think it's clearer to see what their definitions are with their usage.
 
-...once this is in place!
+OK, then I can move these two macros to the next patch.
+>>
+>> Regarding passing 'pmu' directly, I initially implemented it in this
+>> way, but I can't recall why I discarded it. I will take another look.
+> 
+> Thanks.
+
+How about these? With them, we can remove the {gp,fixed}_mask variables
+that you pointed out in your review of 5/18. The APIs are more
+complicated, but the caller code is much cleaner.
+
+static inline unsigned int __kvm_find_next_counter(struct kvm_pmu *pmu,
+                                             unsigned int base,
+                                             unsigned int max,
+                                             unsigned int prev)
+{
+        return find_next_bit(pmu->pmc_exists, base + max, base + prev) -
+base;
+}
+
+#define __kvm_for_each_counter(i, pmu, base, max)                       \
+        for ((i) = __kvm_find_next_counter((pmu), (base), (max), 0);
+     \
+             (i) < (max);                                               \
+             (i) = __kvm_find_next_counter((pmu), (base), (max), (i) + 1))
+
+/*
+ * Iterate over all general-purpose or fixed counters supported by @pmu.
+ */
+#define kvm_for_each_gp_counter(i, pmu) \
+        __kvm_for_each_counter(i, pmu, 0, KVM_MAX_NR_GP_COUNTERS)
+
+#define kvm_for_each_fixed_counter(i, pmu) \
+        __kvm_for_each_counter(i, pmu, KVM_FIXED_PMC_BASE_IDX,
+KVM_MAX_NR_FIXED_COUNTERS)
