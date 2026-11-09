@@ -1,62 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794247643;
-	b=Id/K83+EvlHDf3HFpWbmbiJyoe3/wTcxmiIHfkxCrAlWhVUz6JlB0NbhvN+Mb0q5bi5z
-	 2y8n6CJDMN4HiPkS/P+egI641uxr+keEGx3j4Zi6O32HB9g4sjTqO3PDvomDOwsg1PJpb
-	 /o4RICncbWD8nz3YWTUADS1c+AXyngd0aVeuSlr+fAOF5UFrsXhO8ff4Sk8PKZdszlGKy
-	 0O/R/TkjcO6fibM4nqkORdYdazNdk0YiJt5EJgMfTh9d+d+tuiNkDWCriZQZGZRjie4Cx
-	 zZIKDv5/m1gOlAHCYB1yPMKWF/bl3b7lPjSwKRp9xGNLUe6lXC5jdNvAOGVDmtQcLNg==
+	t=1794247648;
+	b=bEyrqFJWMmHgi1bGk7QU6uuea8Twbp2PPD4b2HfvedxJBdRnX3EC6zDbtvyl/HZUihVa
+	 u5xZO/cTgyb8SPb9WypPB2DM/9m3w5XBelMLCNfbC+R7Ev5RbRaoiA/AlnKVXeCNqZ/zV
+	 Bh7/CeUiqqpfYP4X7zSh1hQlWPPXaCmfz10melgZtsT3F4l4zk6a6fqrqaQOc894ypkrz
+	 WYA5qJca/8zU+Jd0z1jGXT5AJFPZkuJo/UysGrdO46qLqwCoztFUCQJ05swc8S+ecZpOM
+	 Tkmy8M48RQj1rm1i565IvGbdewJZ86BhpBum34QEPPtT7fjP2JHghuFn5JV6i7r30Ug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794247643;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=9SX+jH/mGjt4SuPHBiqFjWciDYJaR9hX+EeARBcc/oU=;
-	b=tcWXd5mhUo/MuihktqKk8HEFtQsbK9I2G6i+/VW5YYYOlrKQusC2R1tBt9hPIL3+S8kk
-	 kcO1Yw4T9mh8WDKsN+EX0zLzNdwtgs0BHn1D8x2kIE8fPoFgoVh6W9RcM8Bzdwm5c4ur/
-	 UUCil5Kc5LwVbW7gw7Ec7myfbxikxKYel7MSBhVrAjyMuwIRRdRKp9QA3kggZecD8kT2Y
-	 29do2ZUgDM1S1uGZuKq7bbIeV68fcLOBxONtpIl2WTVdNMX+GqUGOJQp3uAxQZLcmxlZ3
-	 4awcS8Cmiwe7+7kg8OZwMLxIzQHm9hNy+L6Mxke3po/689k5xOGcEH393e9TR1gZPHA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794247648;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=chIFJGd9aGjFqIdLQJRseW64QE/SzhDO/ltYFKnzUGM=;
+	b=mUOnLjPMY48h8aMrQlGY4nW0XAPRrfwO5rpbZhNdAmjyBYZSFVk3rDYy8fbtZc8M4ZY9
+	 ZVyftvbRW7iL/vs1mHOBouR1nzYEeC/8BD7JcHcSa2w72E+ed6Ru1dAB95uRMarpoJfEV
+	 0M9EqiL87cJ+pbD15C5nGvj9P02sxiblihoWli4qqpEGaqMF4Y7pshvz5SJEy9yuwQSwE
+	 yf5sA0Hop6iig4bwHhwkqa7vonnmwNx1bGxkLA/7MOqTNTZIi1JQK8CxcAn1/J8+AjV28
+	 obhQuwshDL0TQblhCwbWU2rKGtJx+nX2Nfs6AE9GzzkPJU1sXAFt/wZcJktjMIbR1ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qP+j2+Ou;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DA9606A321
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:07:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65DA9606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eS0xFi5F;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC377606A332
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qP+j2+Ou
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A57AC1476;
-	Mon,  9 Nov 2026 10:07:18 -0800 (PST)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F0173F85F;
-	Mon,  9 Nov 2026 10:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794247641; bh=sg6g4W54QBZxZYKEgqRqF44StZN9salD9l+AhfoCf24=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qP+j2+OuqLKE4Lm1XPuvDQfifQzUJQrjIkKWp7O+3YIWfTLRRKALZBcqMBJBQ4pVj
-	 UnRfSf2OfKmjhmX5moUFLtpmbRdwBu9Jh1YNNCvkMCNM20pc19zX+JUhymaFR6y48Q
-	 ODg7QF+BE2r+iUQBNRqwepfxrL0MrxFWU9EBIJ9Y=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	sashiko-reviews@lists.linux.dev,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	liuyonglong <liuyonglong@huawei.com>
-Subject: Re: [PATCH v5 11/15] KVM: arm64: Reserve dirty ring space for the HDBSS buffer
-Date: Mon,  9 Nov 2026 18:07:17 +0000
-Message-ID: <avIL1UFsFmQFXwew@LeoBrasDK>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <494abfd0-b19b-4ef3-a035-d21626828a6a@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-12-zhengtian10@huawei.com> <20260929110035.71FB41F000FF@smtp.kernel.org> <494abfd0-b19b-4ef3-a035-d21626828a6a@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eS0xFi5F
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD901F008BF
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:07:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794247647;
+	bh=chIFJGd9aGjFqIdLQJRseW64QE/SzhDO/ltYFKnzUGM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=eS0xFi5FxEskiC1znACA7+hIu3LnDW7B/+c3J/y6hk8vRCBQny/oqvRWbbRb0GHXt
+	 GHEGAUOvu4IDBTWOvc0dnIaOEr0AES2ERrqoO4uOQnORQTJd2IlFJ0DZ5+VMxK+fEF
+	 Aov4dm0JNFNyBGGJOz5r0bFuYUF+35ReNfK8lFGIsCzxdvOiy/GCv+B2j4dWPVY+dA
+	 d9Fba507gRyl2DY5baaHj57+7UPNKe+En4z28TePU/DJiYyUj/z0Wg9U6BaUSG38ap
+	 d9ILmaKXnuQc+w/+OoghM8MAh+APWPxi/0zzc2NAKOWJUpm3dHSZaoLvvZBm0Kelsj
+	 5GY+QfR2ez4DA==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4d7d591607so176862366b.2
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 10:07:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFed+15XbyB+tiF6lJPtuXQ9OT4ktTAyXrBTxfJeJ+01ItRUUuxujtBDZP1D2jbyoOkajE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/4mz8Mbfz5jyWJOvWcR+q8v13PmNU/GMwCQIrccMJxeEBvI0SF
+	I9Ie9CgzOp3nW8EX/tjyAE7RMDPGz0O3G5WyNlc+K4Qncmy7PqnXTPECCMJJd3+uUwSZLya2nX2
+	qMyCTqtT15JrtqEJvhj9O194najlViHo=
+X-Received: by 2002:a17:907:c1a:b0:c3f:e414:d35a with SMTP id
+ a640c23a62f3a-c504955f03emr11473366b.26.1794247646237; Mon, 09 Nov 2026
+ 10:07:26 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,105 +59,89 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20261106013927.166209-1-zide.chen@intel.com> <20261106013927.166209-5-zide.chen@intel.com>
+ <au4kyULjUYdqbfIq@google.com> <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
+ <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com> <e977b107-7762-46d3-ba31-832eb9ae609c@intel.com>
+In-Reply-To: <e977b107-7762-46d3-ba31-832eb9ae609c@intel.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 9 Nov 2026 10:07:14 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zPVt++jgZD3-Jd-DYKMjYyAfUuQkvEXD4pKqe0bdYE29A@mail.gmail.com>
+X-Gm-Features: AclHuK8___5umqnpPhXfPUyV53ks38eOF5SSE51KrETciHe4B3EcpzDOnG_Gs_I
+Message-ID: <CAO9r8zPVt++jgZD3-Jd-DYKMjYyAfUuQkvEXD4pKqe0bdYE29A@mail.gmail.com>
+Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
+To: "Chen, Zide" <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 09, 2026 at 06:03:03PM +0800, Tian Zheng wrote:
-> 
-> 
-> On 9/29/2026 7:00 PM, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> > - [High] arm64: kvm: UAPI breakage for dirty ring size on 64KB page systems
-> > --
-> > 
-> > commit 38dde0ab2f10c37402c620c7b1328624808205ad
-> > Author: Tian Zheng <zhengtian10@huawei.com>
-> > 
-> > KVM: arm64: Reserve dirty ring space for the HDBSS buffer
-> > 
-> > This commit reserves space in the dirty ring for CPU-side dirty buffers by
-> > implementing kvm_cpu_dirty_log_size(). It also pins the HDBSS buffer size to
-> > PAGE_SIZE when the dirty ring is enabled.
-> > 
-> > > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > > index 7bf82d65041c8..c1e09ba98d48a 100644
-> > > --- a/arch/arm64/kvm/mmu.c
-> > > +++ b/arch/arm64/kvm/mmu.c
-> > [ ... ]
-> > > @@ -2841,3 +2841,11 @@ void kvm_toggle_cache(struct kvm_vcpu *vcpu, bool was_enabled)
-> > >   	trace_kvm_toggle_cache(*vcpu_pc(vcpu), was_enabled, now_enabled);
-> > >   }
-> > > +
-> > > +int kvm_cpu_dirty_log_size(struct kvm *kvm)
-> > > +{
-> > > +	if (!system_supports_hdbss())
-> > > +		return 0;
-> > > +
-> > > +	return kvm_hdbss_buffer_size(kvm) / sizeof(u64);
-> > > +}
-> > 
-> > [Severity: High]
-> > Does this calculation break the UAPI for standard dirty ring size requests on
-> > 64KB page systems?
-> > 
-> > Since KVM_ARM_HDBSS_DEFAULT_SIZE is tied to PAGE_SIZE, this calculation scales
-> > with the system page size. On a 64KB page system, kvm_hdbss_buffer_size() yields
-> > 65536 bytes, returning 8192 reserved entries (65536 / 8).
-> > 
-> > When a userspace process requests a standard dirty ring size of 65536 bytes
-> > (64KB) via KVM_ENABLE_CAP for KVM_CAP_DIRTY_LOG_RING, it seems the ioctl will
-> > now fail:
-> > 
-> > virt/kvm/kvm_main.c:kvm_vm_ioctl_enable_cap() {
-> >      ...
-> > 	if (size < kvm_dirty_ring_get_rsvd_entries(kvm) *
-> > 	    sizeof(struct kvm_dirty_gfn) || size < PAGE_SIZE)
-> > 		return -EINVAL;
-> >      ...
-> > }
-> > 
-> > Because (8192 + 64) * 16 = 132096 bytes is greater than the requested 65536
-> > bytes, the ioctl rejects previously valid userspace configurations with -EINVAL,
-> > which would cause QEMU and other VMMs to fail to start VMs.
-> > 
-> > Could this buffer size be decoupled from PAGE_SIZE to avoid the entry inflation
-> > and ABI breakage on 64KB page systems?
-> > 
-> 
-> You were right, this is a real UAPI break on 64KB-page kernels. The
-> PAGE_SIZE default made the ring reservation scale with the kernel page
-> size, so a standard 64KB ring request got rejected there.
-> 
-> Leo, the PAGE_SIZE default goes back to your suggestion in the v4
-> discussion at [1]:
-> 
-> > That means 512 entries in 4kB pagesize, an 8K entries in 64kB
-> pagesize.
-> 
-> > I mean, yes, maybe we could allocate a 64k page, and set SZ=4K in
-> HDBSSBR, but that would be a waste of memory, right?
-> 
-> If we keep PAGE_SIZE, the ring ABI stays broken on larger-page kernels,
-> since the reservation keeps scaling with the page size. With SZ_4K there
-> is still some breakage, the smallest ring sizes (4KB and 8KB), but that
-> is the smallest scope we can get, because 4KB is the smallest buffer the
-> hardware can encode. Defaulting to SZ_4K also brings our ring
-> requirements in line with x86, where PML reserves the same fixed 576
-> entries.
-> 
-> Do you think we should default to SZ_4K and accept the page waste you
-> pointed out, or keep PAGE_SIZE?
-> 
+> >>>> +/*
+> >>>> + * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
+> >>>> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
+> >>>> + * so iteration up to KVM's maximum counter count is safe.
+> >>>> + */
+> >>>> +#define kvm_for_each_gp_counter(i, mask)    \
+> >>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
+> >>>> +
+> >>>> +#define kvm_for_each_fixed_counter(i, mask) \
+> >>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
+> >>>
+> >>> These are not used in this patch, are they?
+> >>>
+> >>> They should probably be introduced when they are used. Also, do we
+> >>> always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
+> >>> yes, maybe we should pass in the pmu here instead?
+> >>
+> >> The intent was to group all bitmap accessor helpers together in this
+> >> patch for easier review so that the big patch 5/18 could be kept to
+> >> mostly mechanical replacements.
+> >>
+> >> But if you prefer introducing them on first use, I'll move their
+> >> definitions to patch 5.
+> >
+> > Yeah I think it's clearer to see what their definitions are with their usage.
+>
+> OK, then I can move these two macros to the next patch.
+> >>
+> >> Regarding passing 'pmu' directly, I initially implemented it in this
+> >> way, but I can't recall why I discarded it. I will take another look.
+> >
+> > Thanks.
+>
+> How about these? With them, we can remove the {gp,fixed}_mask variables
+> that you pointed out in your review of 5/18. The APIs are more
+> complicated, but the caller code is much cleaner.
 
-Maybe we should rethink the way of handling this, and maybe reserved 
-entries is not the way out. 
+I don't understand why we can't keep the macros as-is, but just move the
+calls to kvm_gp_pmc_mask() and kvm_fixed_pmc_mask() inside the macros?
 
-(It was for x86, but it's a very different architecture, as I mentioned 
-before)
 
-Another approach could be to those reserved pages to not be counted in the 
-ring size limit, but that could become really messy.
-
-Thanks!
-Leo
+>
+> static inline unsigned int __kvm_find_next_counter(struct kvm_pmu *pmu,
+>                                              unsigned int base,
+>                                              unsigned int max,
+>                                              unsigned int prev)
+> {
+>         return find_next_bit(pmu->pmc_exists, base + max, base + prev) -
+> base;
+> }
+>
+> #define __kvm_for_each_counter(i, pmu, base, max)                       \
+>         for ((i) = __kvm_find_next_counter((pmu), (base), (max), 0);
+>      \
+>              (i) < (max);                                               \
+>              (i) = __kvm_find_next_counter((pmu), (base), (max), (i) + 1))
+>
+> /*
+>  * Iterate over all general-purpose or fixed counters supported by @pmu.
+>  */
+> #define kvm_for_each_gp_counter(i, pmu) \
+>         __kvm_for_each_counter(i, pmu, 0, KVM_MAX_NR_GP_COUNTERS)
+>
+> #define kvm_for_each_fixed_counter(i, pmu) \
+>         __kvm_for_each_counter(i, pmu, KVM_FIXED_PMC_BASE_IDX,
+> KVM_MAX_NR_FIXED_COUNTERS)
