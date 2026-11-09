@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.232
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794213150;
-	b=jucvGkY39WTgfnnIBcGBuuyl6V4S8IT5lxPBRpvYJkDxKT2FX419QvXLtdfzBw65Zja4
-	 QmyTN409RqfS5zcqUOjumyowJSI2gsiK36MiHw5gfw7yPOY9gfmsZBs3lOONJ+DkKWC63
-	 UDzq99PPetO5JPVi+lMoIExRH1YvQMRLVuZ5PoelLpsv7MTLxJNAx7JgCq1g7GcZQr16V
-	 cDx2WwlXBgQkd8/JweUi8BIGXvob1JOQYbglN27kGRht6ckH12BLfVACf0O+jgtuzzyuV
-	 XN0QHD1aerJeztf5Wt9NUowWaBkVWTrcv1zwqHPeAs6bMatlDGkTAbZkajnHkn24clw==
+	t=1794213166;
+	b=KecnLxmelh03vmX45gkDbjdy0HnDmWfWGplZolfPTxJKgZPAsYfx4OxFalaSoJfUZZKG
+	 Ow4Ee4o9j09OE4R5iYN9iy4NIkGtBGs/Chap+OlqY2Cp0tQoehaIuRf1G1eOQ4Q68xqTH
+	 9e1Jf+ZyKA2rsaOoT6L7W3Ybp4pC/YBZ4zx6M5HFubH4DdRwjub6POcbMQLg7M2Z7VkZJ
+	 ao4dHRR6b/phasdSQc5nP1Xf7hxeyMLGKCmb/H5lRUBjiqIRxjkOkgduRPX+RCdd7t240
+	 QT3+AFr5LU2LOZ995SUx0hmotSUHTgUjgcsIn+1eUak3+5wLr7hF9rMAgeLL6PlF3rA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794213150;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794213166;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=KXB74kWypKloRCmPJ/b9p8r0COb/RsH73q72omYlB+k=;
-	b=bVNKjZYOA+szLTKQb5g1myfdCFe5buGB2Mw0N+9DVJ/Va4DD+UwqL1OiiOSx9nNtWl47
-	 vnBI0+pQ5CvHPdY0gCU98g4673CoWfCjDZB8d3XDEian2fY8epOEpdpLErUXC4PzyzCnQ
-	 xpN+o6tID4tzqnW3F11cqDde+7I+UJ4BnTWOcZ3fHvdgViuql/FxHIScZGBFCZyvuLPVF
-	 Y8MzcOpfsUCir9zrInQE/rpPyMDPSi0df9ChMoNmfXB1omBI7Q6+2wWH+DrChA3LTMb95
-	 geIKCLRD2JK56D40aRyBzu6v4yIqtQHb0Cf73/OWh/UNGQTe1CZzqW/05hCarke29Tg==
+	bh=LF0Ejm61SZQjc0f58igDHYvnGorLWUKIVR39Ms9bxQo=;
+	b=IM9toZYyE6eihc7OyP4LFG9HVPAJmEq0jMGlEOGspmTc1ogpvhzffs2R1mGetDHRGj30
+	 YA/BA9dYZF+HAnTJimKi5m3FVL6NlezNrEdU3ZM7hne1Q0aYSgSJeItltBLxJDU3KDrEV
+	 u8Fkno5jXL+4CEsp6ETXbWH74BDIKpdt3uFZyu6RKde7jiyZxeBnswBQz5+Ut7GkH4iTn
+	 e3gfqsKM2MJwdqXa5u+aQcDKKWmOTCHWWjyzDRLeRCoVBmoZ4slJg+kd5KWWRcHSOiD9h
+	 PlsDAiDfP96cB2/O50Qg7VBbakXc13QSExumRGokay1OhKC9ETFB61hUW46iiSEVChA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="u/Fw5LRw";
-	arc=none smtp.remote-ip=95.215.58.189
-Received: from mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c7ZQEn84;
+	arc=none smtp.remote-ip=95.215.58.232
+Received: from mta1.migadu.com (out-232.mta1.migadu.com [95.215.58.232])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8048E606A332
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:32:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8048E606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FC6606D810
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:32:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24FC6606D810
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u/Fw5LRw
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c7ZQEn84
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=S+ysH1BuivVAwHxEv/xXCvirxD/LdCy9y543PHafoYk=;
+DKIM-Signature: a=rsa-sha256; bh=R5BdSBLcdM34a45EFlY1mo16mKvKHeF1lP9Vx+en0yQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794213146; v=1; x=1794817946;
- b=u/Fw5LRwcgD34YO7ZcAg1rHO7sakGirZL2RNGi3oP7cO3Rp3EDK+Yp4SjTKm7G7W82Rh/L0W
- 4gD/KlW/uvKRoEQyKdGZS4uxK+gdrB49Wvn31+4dyOn4/vQRjdB4N2Z+foGyxlND0pubD8G0rbK
- etM6ADRJ5T09y/4DsHwEFDXM=
+ t=1794213164; v=1; x=1794817964;
+ b=c7ZQEn846anLKcyzh+/HxcKvLUA6xYOP24jyL/eJjTjeZX7KrKAQHH3uN5gvzE7g2Rbu8A05
+ kbwFisq0r7ytJTZ8ZJQKGWc3hdmv9srq5En4kZkbHjNiqKzHtsE+ZdmZp1L9+LEOh3z0YJq6OA1
+ l7bVRdnP14Pk9TeWciO+Ny28=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 4d70107428964b21;
-	Mon, 09 Nov 2026 08:32:26 +0000
-X-Mizu-Trace-ID: 4d70107428964b21
+Received: by smtp.migadu.com with ESMTPS id 889bac94e9d75174;
+	Mon, 09 Nov 2026 08:32:44 +0000
+X-Mizu-Trace-ID: 889bac94e9d75174
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -63,9 +63,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 06/16] KVM: arm64: Move the VM's FGU initialisation into config.c
-Date: Mon,  9 Nov 2026 08:31:55 +0000
-Message-ID: <20261109083205.806619-7-fuad.tabba@linux.dev>
+Subject: [PATCH 10/16] KVM: arm64: Advertise FPMR to protected VMs
+Date: Mon,  9 Nov 2026 08:31:59 +0000
+Message-ID: <20261109083205.806619-11-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109083205.806619-1-fuad.tabba@linux.dev>
 References: <20261109083205.806619-1-fuad.tabba@linux.dev>
@@ -80,104 +80,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The first time one of a VM's vCPUs runs, kvm_calculate_traps() computes
-the VM's fine-grained UNDEF masks from its ID registers, one
-compute_fgu() call per FGT group, and sets KVM_ARCH_FLAG_FGU_INITIALIZED
-so that it computes them once. The next patch computes the same masks
-for protected VMs at EL2.
-
-Move the calls and the flag into kvm_init_fgu() in config.c, so that a
-group added later is computed at EL2 too. compute_fgu() then has no
-caller outside config.c, so make it static.
-
-No functional change intended.
+Advertise FEAT_FPMR to protected VMs, and reset FPMR to 0 as KVM does
+for a non-protected vCPU. With the field set, vcpu_set_hcrx() sets
+HCRX_EL2.EnFPM for them, and FPMR is switched with the rest of the FP
+state.
 
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- arch/arm64/include/asm/kvm_host.h |  2 +-
- arch/arm64/kvm/config.c           | 20 +++++++++++++++++++-
- arch/arm64/kvm/sys_regs.c         | 17 +----------------
- 3 files changed, 21 insertions(+), 18 deletions(-)
+ arch/arm64/kvm/hyp/nvhe/sys_regs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 97332ffcb1300..82ba4bb9573f1 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1748,7 +1748,7 @@ static inline bool kvm_arch_has_irq_bypass(void)
- }
+diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+index bcc35d6990e67..a937aad009348 100644
+--- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
++++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+@@ -128,6 +128,7 @@ static const struct pvm_ftr_bits pvmid_aa64pfr1[] = {
  
- void kvm_idregs_enforce_dependencies(struct kvm *kvm);
--void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt);
-+void kvm_init_fgu(struct kvm *kvm);
- struct resx get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg);
- void check_feature_map(void);
- void kvm_vcpu_load_fgt(struct kvm_vcpu *vcpu);
-diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-index adaf26ab93b85..c65cf1dd27330 100644
---- a/arch/arm64/kvm/config.c
-+++ b/arch/arm64/kvm/config.c
-@@ -1586,7 +1586,7 @@ static u64 compute_fgu_bits(struct kvm *kvm, const struct reg_feat_map_desc *r)
- 	return resx.res0 | resx.res1;
- }
+ static const struct pvm_ftr_bits pvmid_aa64pfr2[] = {
+ 	MAX_FEAT(ID_AA64PFR2_EL1, GCIE, NI),
++	MAX_FEAT(ID_AA64PFR2_EL1, FPMR, IMP),
+ 	FEAT_END
+ };
  
--void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt)
-+static void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt)
- {
- 	u64 val = 0;
+@@ -829,6 +830,7 @@ static const struct sys_reg_desc_reset pvm_sys_reg_reset_vals[] = {
+ 	RESET_UNKNOWN(TTBR1_EL1),
+ 	RESET_UNKNOWN(FAR_EL1),
+ 	RESET_VAL(VBAR_EL1, 0x1de7ec7edbadc000ULL),
++	RESET_ZERO(FPMR),
+ };
  
-@@ -1630,6 +1630,24 @@ void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt)
- 	kvm->arch.fgu[fgt] = val;
- }
- 
-+void kvm_init_fgu(struct kvm *kvm)
-+{
-+	if (test_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags))
-+		return;
-+
-+	compute_fgu(kvm, HFGRTR_GROUP);
-+	compute_fgu(kvm, HFGITR_GROUP);
-+	compute_fgu(kvm, HDFGRTR_GROUP);
-+	compute_fgu(kvm, HAFGRTR_GROUP);
-+	compute_fgu(kvm, HFGRTR2_GROUP);
-+	compute_fgu(kvm, HFGITR2_GROUP);
-+	compute_fgu(kvm, HDFGRTR2_GROUP);
-+	compute_fgu(kvm, ICH_HFGRTR_GROUP);
-+	compute_fgu(kvm, ICH_HFGITR_GROUP);
-+
-+	set_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags);
-+}
-+
- struct resx get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg)
- {
- 	struct resx resx;
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 850eba167aad6..bcec0a7d2b2f5 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -5841,22 +5841,7 @@ void kvm_calculate_traps(struct kvm_vcpu *vcpu)
- 	vcpu_set_hcr(vcpu);
- 	vcpu_set_ich_hcr(vcpu);
- 	vcpu_set_hcrx(vcpu);
--
--	if (test_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags))
--		goto out;
--
--	compute_fgu(kvm, HFGRTR_GROUP);
--	compute_fgu(kvm, HFGITR_GROUP);
--	compute_fgu(kvm, HDFGRTR_GROUP);
--	compute_fgu(kvm, HAFGRTR_GROUP);
--	compute_fgu(kvm, HFGRTR2_GROUP);
--	compute_fgu(kvm, HFGITR2_GROUP);
--	compute_fgu(kvm, HDFGRTR2_GROUP);
--	compute_fgu(kvm, ICH_HFGRTR_GROUP);
--	compute_fgu(kvm, ICH_HFGITR_GROUP);
--
--	set_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags);
--out:
-+	kvm_init_fgu(kvm);
- 	mutex_unlock(&kvm->arch.config_lock);
- }
- 
+ void kvm_reset_pvm_sys_regs(struct kvm_vcpu *vcpu)
 -- 
 2.47.3
 
