@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794257706;
-	b=j80HCMa46BwHtI+jyYnPdpm38As0EdWWUHFsQ+aUaYrbf1LkihsVZyy2WZtjLHoxLZkZ
-	 W5TSZUX05NWEaklZojS9Ge71GziB/DUI+m9cqY54ZcYiGPcRiYxQsphzNp5eYeDJA5xC4
-	 /gj3ZGRYDGrG2mgw1pY2qA4nsM2drrwN6OIQibSQMC2Ml6LhS+EXv1VJs0h6yflkjoJM9
-	 FkznMAYFLifsVqtBF9WDM+iLsJ3Hi/u5Uk0Oenku5RDZOEedVP1SfSLkGU3Lr/x5yc4b/
-	 vcFFG+sNh+E6r8rujqxz0tR90Z3yhxh4wNyzzMsiox7wzgW7ebjL/W48imas5w2xWaA==
+	t=1794257803;
+	b=PZ4FSrm4Ufbx7XE/xIzLOTFE2tpCzS0R/A4TZRvDUZKfIaDvl/Tn+1tZDNqSgemqd8vr
+	 RsnnhBbcfAesHgrMZrmbSlCaMBpfEVu79pBSakAld8e6U4FPbEK9q/EpQW4JH93hU5u0t
+	 MmKuGKyV88PQrY8TULrprCcYBViJphZvfBdOf+lDnn3htp4bmoyq+tduwH/jjuOhJo1M9
+	 6QRIkOi4mg9f2d6Tlnq5LImxm0j9nijgagkDW9BeQ71xt/WNNISl0R9K+aAph/rH+6l+j
+	 Qa+3kutD/i7YoGliIUWnqHw0TJI3M22LcQ8iYpkxlBLisSh3RhofYXAt265Ez+dIJRw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794257706;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794257803;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=y1VTS0UpwTi7iGDm58nlPTAXVAo5zOfjQYIrVOnYmzI=;
-	b=tbmUsa+3qvWVlqKvV0fCsLPlOnhggqdlIvj7mvyuVr4uwdqRaaBjD1Xn/afjC0mSLju8
-	 psYk6AxjH3n0AdYKAVONzLz56QnXq6aumLuGvVnRrmE9/O3G1ew5GGavBx7ObbvFFZPm5
-	 qMZlPppKs+oll0P9YaGNElALg670dMc1Aa9TgPJCY5Jem1biS/EdqLavUoJir9pFz788Z
-	 B3dBcPp6NykaNhqU4VIeLr3zBbp/ySERBLoCMjBElanLlfiWrSZEiZKOEkckU81Y4f9Va
-	 31rtHQ5hpr9MG90nZ7FwKAEBxuLKWCrA/9dz8dD610K9fY5N+jMlK5JwuRMQwanof8g==
+	bh=yQSdZKmmpcQWU+DJnbn5X081+EyRYqo2+GaLjQwTf6U=;
+	b=wFlb0a94qe8N7TJZ+XmUCIS8Fwes0/KE1V6sYDLKOv2zWhhyVJrZEcKnTLR8a++nfCm2
+	 oRip8m1E0Agr26dSCV5mAbJ40AhNZONDppZG5CYwJWxFpoxEfvuzUZ9g5El4z2gTfwlFx
+	 FpVfqG6JxljdJIuAfB+nQ2wgyhPHujapkV53VRXKQIPVE7S38ielqtuo0BAyuLGGiapK2
+	 SvYRgthKg1jga9EOwU+q430fbMjBXa93GCTkZ8l2bgJuFtok/h1xCrNU6REOXszsznTZR
+	 95Cnx0BQdPWfeCOuPf6PUIZ+sLf2ivlEadY5mIs1zUZzKpg7YiI8SKNV9kWRfrMBjIw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=d8MErA6a;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=frn5lMeg;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4FF606A325
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 20:55:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA4FF606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23F9606A326
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 20:56:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B23F9606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=d8MErA6a
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b579ed8da6so661a12.1
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 12:55:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794257704; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=frn5lMeg
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b71ee00f0dso634a12.1
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 12:56:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794257801; cv=none;
         d=google.com; s=arc-20260327;
-        b=cQw6429xNwi8aYksKLn0nw8HrctRJ36f1oiE+g1AK1D9NuHNP4d+xGosRhdZ1XCeCb
-         g1IpbQveMRzsqz15q687H3ECFiwktxgW8ORX+YyPeqART8530RB1YCXB1CSj0zkVO8h3
-         vREJF7UGogyJbjgfnXihga6pW3kAgKD7/gJPve7164glM4ymqCwVzI1BI4cfAQrQKyhR
-         haH/O4OboX9Zk75Z3E1uksanRIR9U9rJuQOjASfF2Lsyx3SUFxl3+loWC93jhKUwmVz8
-         mkLknaEjZCVi5ljvLsJJWiMn39HIWQn4WD3RRuEDYZ3NZFBSdXZC+ZVjKC5bgB2/zKNi
-         BKzg==
+        b=al1Uy/69jzQTqUpIuu5EzaZkDhVzdRYKRpwJxjP9W1mYRN2eCfOhySeUNHdJnp1TbG
+         QwXIHLf0BQi4uxXZO21P/1VlqaKjTYmbBF4CAvXKItwhgSVlDIVLSOo8SgNZ91bVJ9AX
+         i7SBuzPv6TGQddH1WQtKVL+7imbzppa7QKjK3Ax9owptb2jCi64A7g32GnyDRmxm3zwg
+         DFIZgwy3IvjIG0M0kcLTvjFud9PRl6vGh5sDQbHzVb0qGBdJE7u8HdBQmQivhNhlnjfy
+         3gfL5CFq6tyRdtpnJ4v+6Sp3UUYRCLGPrn7hI/6kgZNOJ4UjaJzH383qaLvJD3McclSe
+         +5sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=y1VTS0UpwTi7iGDm58nlPTAXVAo5zOfjQYIrVOnYmzI=;
-        fh=HZd/TUxqqQlyRXguYiIRz/YeSJAcyYo0DG3ranCLJps=;
-        b=UfmJaNxOkfy/T976oBQZER+6b3c2GuLLycHBIXHVYYnmjkDObxHMvTP/4kzBBCewyS
-         /1XH9ujamsDUl1qHjLmaTkrroMnSh5CcloND6/+SPxfaEfeP0OcM0Oy+yhiixAH3qKnA
-         zU9cdNkaoD94sJqilT92GhELC7YvvPaEzDjoeI4xcQt6AKPs+1xhnDD9QFkLD67yefSa
-         316uAAH7OXE8T4Q1CuLTvExqATFoz9DsG8U7nVorBuUnYKbAMDE7LbL21fhZIQT3KBVL
-         avjQme99zTB9ASEHWrk2Qiu35G74E5S1rirVfjW6lSGOCSoK0JC8rhz7/B78dpRGe+Mk
-         GD/g==;
+        bh=yQSdZKmmpcQWU+DJnbn5X081+EyRYqo2+GaLjQwTf6U=;
+        fh=AytPzH0S8y1++tqWrCfqJFU1ZWf7A5Ay7EZypeTSJw8=;
+        b=SVVXis6STqgJBExKVyELMfZSmwORC9ejL33LfPcbieqSNbEt3BQ4wPdEf4vYeNduG9
+         W6hxrSCIJI/obrWKQh+7EZ+DxRm3puOMLE9vnzeaVeU+1ERhToN1vuDfBJlT/zasKKan
+         Xgu4LMR64pma8KtZzlo027eha2yb36kZY3ZiUkO7MyLR3g7GOe1hKDJeFwgVlVO/vbYr
+         AR8YqUMQOT7nQnhUYdBfhu7XrYK9Z3aLTh32nZcCE4o1w+Tvn0nwjgKooOjIcFUridc+
+         JusPvpT6uerbCcOuerev1kJQg6Q/NjqoAPhBmfRJAHchac7i7EQgPKNzaqqnRjtiewrA
+         m0Sw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794257704; x=1794862504; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794257801; x=1794862601; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=y1VTS0UpwTi7iGDm58nlPTAXVAo5zOfjQYIrVOnYmzI=;
-        b=d8MErA6aqpZN3ltM/9izwfImOK3J34lAFY7OkGWDXXtoN/UO0qzBxnyFLxX7uhgIpM
-         QfoR55t7G706xABzrnQLgA2MNeFAgLNhoo+vk1ONKfNpVWwT/5ExOy4TgQ7vmUFvEs1b
-         irBSL1f6gyOQJCinu6YfH9i9NF2Nfri6O22srAsDlncVyuJjNMwrS4KZ4s1zvt0bo78s
-         F+R+fVib7cb+KBpjg4GHPpSWLCkTO2StsloEiLGxYzFwnroLyE2NyiMIYlz8QSLpfB6F
-         FHS0yJ+Vj8mRFGt+ATOxkODnspZ4I16AQzE7/jn4ui89AZzqE2qh7+q/HO6JCfYnlkcJ
-         raEQ==
+        bh=yQSdZKmmpcQWU+DJnbn5X081+EyRYqo2+GaLjQwTf6U=;
+        b=frn5lMegsdCiwPlyqKmc1WsbA+58aVroqKji9Soxm66qwDIEnhsfX/gJ8Sg4wHxUXw
+         xCGCqsF7GI2nojk3yrLYQWgOQFNI1lyX3L54l+9FC3DEV/wwE8pwYdSOC0H7827HD+mU
+         ZK6CZW2fqVjqAcxrb7FY7s5qPNp122oNkXTRSTGpf7QMhJYmsVYirRX5vi0hGxMUsqqi
+         emZ+Y9PHB6nwflTbpYdatipyRJHA+DBwiEb+ByBY4Yl4PAdiuhT22n0TH780kBSqfHB+
+         O4MvAhrvktpgp3UcBDzqJTnZP3rYv/MtTil8dHXpkonEYu1QNb4SKOcaEtO9FxPLRphJ
+         SMdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794257704; x=1794862504;
+        d=1e100.net; s=20260707; t=1794257801; x=1794862601;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y1VTS0UpwTi7iGDm58nlPTAXVAo5zOfjQYIrVOnYmzI=;
-        b=RJGfksKGCmLmsCL5i3UKsYb9CsPDydL7WxxAFfFl9S9yWrBPqq7Svg4HofeyuaID7x
-         MshiIGbH5Y9a+lGzqLBnD80sMcv75Sh0OKaWuPkYQ3oZx8Igq/5Q9gXGx5SQMzi1MsLS
-         af5TsRSLUNluVQXLQ7ry7RUE9Y8gtLHCdl6rpR0zZxB2eEsN8Fo1C8GfWoe3Q9nu0S7r
-         I0M4TYEJNPEUjiBJH8EuHWLi4YKY5sClGjzjuCPsHBRlmF+xGfxGgYUp/6L5oMlXkdCf
-         5HHGT43BZw9yc4mugRLas5zP+kl7Jzq9gxYKLVrKA96Mc3mqbxcVqiXhvMzC8pFaMhag
-         6wEA==
-X-Forwarded-Encrypted: i=1; AL+hErEHvXfFfYfkEg9DUknu4zAbYyv+HNJvA4cfVmgHb9CC2IPzOJ64f2yF7JwmkG+qKRzn1CE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+NolTAl/AhwiE/3Q2q16VzT/yORNWHV9ttH3JmS1NwEcgqUNWc
-	fb6WXuF3mAmhLWQ6g2bGmswjoKtVaXKiq73ZqyKMMBYngaMw0z9tK0khkpmCUKoKPOjis8SJ6zz
-	cZr5sWvJrYlWU6QgVtv4fNrWQI6outB9iJtrwzBwG
-X-Gm-Gg: AYBFou1ZokBNqYAtd9cleQBcGoW40kVhOFjnDEwnWpt2OzgwW4PhLDHE1JxDd/JR3A/
-	5g5H5wKxtqKE4Vb+pFp/i3JZvl5rrYgo+mAwXRszlbZ3PnjFNFvkaTBMNxu0mOZU24N4avcLBBs
-	XHy/nVpljgLifVB+fcFUkM5dBdqllO6QMCtmNZu0g7a5CSCp2LNqd+JhtCPRgF6zFiIvzHd+QMr
-	KML/KLnvHq6AH+Ph7Y7iukqVrxQ6zGIE5wIKVaI6LkKyLAPm802ojb+tGSu8OBQXMKmDHAw/rh/
-	eVPpAN9prb6jElvwbuS9eTjR9RoyrUDGNGTiZPCtg4ZGsDCNzukSGLi+r7YbigPEk6rxCyYAnL3
-	WnNUKiA8Mxu8ApT5TXJbbuzZNYmroIb1/ITao/WNS0FGSJbYCvKTIjPQ6qZHya0Eo9OCTVoGP
-X-Received: by 2002:a05:6402:a54d:10b0:6b4:18f4:94a0 with SMTP id
- 4fb4d7f45d1cf-6b757764774mr18897a12.1.1794257703560; Mon, 09 Nov 2026
- 12:55:03 -0800 (PST)
+        bh=yQSdZKmmpcQWU+DJnbn5X081+EyRYqo2+GaLjQwTf6U=;
+        b=ryJep0XSuL2CEDNPoAqeaFtzCs1dWIR9Qg1W0cUJFeyNbLX7646dEhh022x4k6v7AI
+         d3vuBxABuGjqNb7p6B1IUrW6FOHsHHi+bNQSGkTnf+7n2vsG28zr2CyibfeQt9Na7tF/
+         KEa7aJJe6u7mybIpYm0tcJ4XXJs+fddGcIGnQGhgcxPGMoG9d9vs/NmXoHkjZkKSzrBl
+         eTI8Iht2txfTlnFuds5qiAPLCdh/nLXxJjiNv025WzhPxDTq/aGXWBbBAqZQcHejPIqR
+         qx53d/HWKZ3Rafz2J6rXTEBcVu0q8jIXRqLroKszHdmug2Ohnj6YSxsQL50LgIl69oXn
+         smYg==
+X-Forwarded-Encrypted: i=1; AL+hErEwMQPifDw1Jx8LySbQwp7srKhStdPLEc/9v67JNjtz4TZpugNTa32od4FKL5BRucZeRgs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8kDXoEXgKvXLlqXbdVCzGOk9AZf0UUVZAjonZAdGS2fwoc5qqA
+	oIzcwkkv8bRhr3ke3ZsYgzmFSDyjEPXK025rsgkd6rL2gN2QJd7CrlVC0ztly1+8RZnEK8AHocT
+	/xTi/EbCQo4JYUbBK2ZhalccG0WMon0rGzfACptJ7
+X-Gm-Gg: AYBFou0xDEgvLy8Ho8yR8h+u3jawHt4MCBZR1fHNrgJ9SeQyHeyOQ7Zaqm3lacVGWBz
+	i7bCmE1kVknxUy96OR39LS4hrYRZ8iZAmpcEqvNxOuC9XRX9FMST4d7z6MnNa7RxCkn3x/IPA31
+	CLIPc65agEiCuELmaTQkBthvSWzUKfLdSBaMKu8q8xxoOYA02tB6DHEhigVQvPUDShDAfmBo3WY
+	iLzLUUQ7AuiOUjzP51E4CX55WMjysBlM0sw9UQuXJ3v75jFzXEYTo0DbYG1pm5if6s+qsa+QeBy
+	gLw65436KUjZF36J4UuephBsQSL7cfru/GzBMzsMLEt1enjDH4i639AffssnZLwsFslSPB9MNuV
+	DkeBo8X7P85vNQPn1ulNgCXjoZ/e45tAYkJiQi3g9j7oVg3MN7//RwTfZ5+ohLugCgI1mTPf9
+X-Received: by 2002:a05:6402:892:b0:6b1:bce6:1220 with SMTP id
+ 4fb4d7f45d1cf-6b75a448a1amr4902a12.12.1794257800635; Mon, 09 Nov 2026
+ 12:56:40 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,13 +104,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106013927.166209-1-zide.chen@intel.com> <20261106013927.166209-13-zide.chen@intel.com>
-In-Reply-To: <20261106013927.166209-13-zide.chen@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com> <20261106013927.166209-17-zide.chen@intel.com>
+In-Reply-To: <20261106013927.166209-17-zide.chen@intel.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Mon, 9 Nov 2026 12:54:51 -0800
-X-Gm-Features: AclHuK9VL9SJI6W8IBlFA0E771PuPYFu-UHiXMvW4iz27b7sgHB5YrbQONTlYQE
-Message-ID: <CALMp9eQRfFV8=e2QbeiV-eFWHYtCqp_wr7=V6jwnqmzo8OzHRg@mail.gmail.com>
-Subject: Re: [PATCH v3 12/18] KVM: x86/pmu: Emulate IA32_PERF_GLOBAL_INUSE MSR
+Date: Mon, 9 Nov 2026 12:56:28 -0800
+X-Gm-Features: AclHuK8ECB96A84bRe6hbcbSXoigF3kLgPk1H-sOcW8BUGbb2JnHVgbjP5uyQvM
+Message-ID: <CALMp9eSKP1SorDWRoYMZBimoBz+aJx8-iB3tfrqJCkmjJn20Xg@mail.gmail.com>
+Subject: Re: [PATCH v3 16/18] KVM: x86/pmu: Ignore AnyThread bit if
+ CPUID.0AH:EDX[15] is set
 To: Zide Chen <zide.chen@intel.com>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
@@ -124,19 +125,21 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Nov 5, 2026 at 5:50=E2=80=AFPM Zide Chen <zide.chen@intel.com> wrot=
 e:
 >
-> Intel PerfMon v4 introduces IA32_PERF_GLOBAL_INUSE (0x392) to track
-> which counters and the PMI are currently claimed by software agents,
-> allowing independent software agents to check counter availability
-> without a shared scheduler arbitrating between them.
+> Intel PerfMon v5 introduces the ANYTHREAD_DEPRECATION capability
+> (CPUID.0AH:EDX[15]) to indicate that AnyThread counting is deprecated
+> and that writes to the AnyThread bit in IA32_PERFEVTSELx and
+> IA32_FIXED_CTR_CTRL are ignored.
 >
-> IA32_PERF_GLOBAL_INUSE is a read-only MSR, and any write attempt
-> results in a #GP. The MSR is not part of the VM state, so it does
-> not need to be advertised to userspace, nor saved and restored during
-> live migration.
+> Preserve the guest-written value in guest-visible state so that guest
+> RDMSRs observe the AnyThread bit, but strip it before programming
+> hardware to ensure cross-VM SMT isolation.
 >
-> Always intercept IA32_PERF_GLOBAL_INUSE to prevent the guest from
-> erroneously observing filtered fixed counters as idle.
+> Continue to inject #GP when ANYTHREAD_DEPRECATION is not present in the
+> guest CPUID, e.g. for PerfMon v3/v4 guests or when the capability is
+> not configured for a PerfMon v5+ guest.
 >
-> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
+> Advertise CPUID.0AH:EDX[15] only for PMU version 5+ guests, since the
+> bit doesn't exist below version 5.
+>
 > Signed-off-by: Zide Chen <zide.chen@intel.com>
 Reviewed-by: Jim Mattson <jmattson@google.com>
