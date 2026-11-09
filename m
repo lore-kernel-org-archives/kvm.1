@@ -1,153 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.217
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794206210;
-	b=cAg8Dqec6k0C7abQ3njS6IT1rMQba6RzdMjJO1GDiDTQ/egXrJmNNFXH0SGjRWTygPY0
-	 x5YukVR+PPXd/G8HQhTKpyM31/86grWR2LmSUYNohqU0buSw9+2aESCtOkwfuV/yOpWVP
-	 E9ZGjZl29FaPxEPMSClHvMcv97BC7fpy8f6Kv/bvUIla6+j4BuJaPA+7Ok1jLNNEOWY22
-	 7T6bFPhXWHyHnuyrEF5Eco8qWzS2R3csBnkFY3T8lwKnxwoqwZYroMSirQelBprwKfe57
-	 yAiZfmQHfwlJoK3KnYb5E+aySgF/WODRNvwvsLF+LXPnLgx/UNhHRqWkS2lDQsew0jw==
+	t=1794206273;
+	b=Lqiczgn5ShBLSs9WosW1tSmwQS7PV4z45aRhpgbukYhpjPIysbMKeckU9KsbtTTaYb+c
+	 qLXY+2CHBAm792HTmtFT7xS2eAcOH0MRMnzfNxSY8Zj63LXfni9l5geC0faYktH8LaJWa
+	 q6B6vUneqHu8nDsNRljPSrLE+XPQy8j5ueUO8/YewjDstQr89rUi9t6ZUIMA9DtURqSo1
+	 N6C08wYRbfjP3oBgJuh1qGoPWONrmX7XUVJixd3aa4qQy6tXPj8mWTLljTkbpvS0S741/
+	 aBXGbEOz6oj7XVfcgV/6AUfG1ln6nZFPnk4vb7iglrATai2wGfNJjlSRqbYCwIdM3FA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794206210;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=AtsfehftEhocEg2I5bmWwp2ROneUNtV4068+F7Hlw8w=;
-	b=spizSneDKGXHMomI/uMVyXQpL+nVFXeKycUYGq0sYBKGN0nuwky1Wamcbcnf1OsVCS3i
-	 J2Sm9iefRYz3368PANTUwGcGII1AMUMwtrSM94gIdaeiPkuxdH1EU35W14Aar6LGBn4XD
-	 +KkPZ6G4WoXqkGOJG7p1U9nubCAA9E14Lf9twCDjK6krE0kg63uAjZ3Hcd9tYNj6jPjbi
-	 XvafkxsLKLoFbIgD+0FVKQG0mUlInriNr2wmwMrrsJTT3zFjcdOk+jc3rOPZQ4vvEZKsc
-	 aG9o275oAuA1NSB//UrD4VI5IF/mtOQwMYUaeL2jtzhL4bMYVGI7VsGXAaPccMCUuBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794206273;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=M/P3nZUlrFGneC24aMKHBNIgNzRFeJqMlKbeTayIEIA=;
+	b=1Kt4MvL4zZaNZTjFQJ9csBOA6IJQF6/f2TSICTOFdRLdxhkY0fm0cfET8BFz8GDa2kc3
+	 TkEnoot3pTPn4DuMoyid09hrMgpJBKvJeMZlTm8+5qJJMnIaawYQIGJq00Erbv6TOQzgi
+	 ccVPf3xjtVboYvDuBlhkWvQxPFLtzWLM+9eDlgXwlqVDR90w8hlBBPLNkwQIJNDy/5mp9
+	 R8Gh7m7WKvxIwDqDr2tKX82wwu0in8qMF91yb63BRR+7tP053nmmpiCr5iCIc6u8LXo8T
+	 44fwauEyS4vSVNwKTr0XmSxWhajRCixUM5NYDrXLDKvzDD9pAkj0wJuEy/I4rr++ohQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b="JHF72/UU";
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=KsfyCOJG;
+	arc=none smtp.remote-ip=113.46.200.217
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32DD606A321;
-	Mon,  9 Nov 2026 06:36:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F32DD606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB0C606A321
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 06:37:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AB0C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=JHF72/UU
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 56B0A40E04CD;
-	Mon,  9 Nov 2026 06:36:46 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id aOVENPtaFWK7; Mon,  9 Nov 2026 06:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1794206204; bh=AtsfehftEhocEg2I5bmWwp2ROneUNtV4068+F7Hlw8w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JHF72/UUi4yUT9aqIf+1NnxYf6RBnkvYAj3W0oNSoARYb9dCH6USJz/XwRB3zKAzN
-	 MWJW9xd/ygniOGVsaaW7GBZaf+qXYyhu3aJBhi2D/f1MdqaPIPAWinTyaFBOA9gM35
-	 5nUywwgnc62cQv4bfa4eoHQf48x0D4FJFNgLCt83+USeUOLy7Qh+2lSpB7trl1wz/p
-	 kEpq/vJ6nrjXE/KAhASp6qorwpWq2HXjCxbam8Cyo1Z2sIRXrUNhsh6zZ/KoYZL2i4
-	 1lmr105l2rgJ8qXntBB7PKSVPBF2/Z8bSDrAGXjT8NRQY6og6HlqYUIe5alwo9BgNF
-	 dx1kkKAsqjQxtJJM1XRbbhZFSRsQTaoRpIN6D9Rt0nTL0lKCj+axgl9IxZagHCy091
-	 r8Ki+ygh/0tcNG4AUVe5LTp4ch5qnCP4xKJ3OLYrbSXIXoab9f+zgIaxkW4jibdP8X
-	 3s6MuKTd4JCyKlo7AF17HWOnrGSmGTMzu5kqiIdy8sdRXtaPhqcCV+NSL9gv2T7SAZ
-	 ofaUI4PE6zr8T9OByuN3e8vf5AXpiMuzD+cRw/CoXMu517BCsSSS6nnJ+9Y0mm0MV/
-	 h2mAq7Jr8pQs6CouL4r0WevxUISKIjEtmSGk88S8UwKCzTVapUK5ItYrpXUIxXDEx2
-	 sCCf9g3g76KyyYwpg9RRhxLk=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B1AD640E01E1;
-	Mon,  9 Nov 2026 06:35:12 +0000 (UTC)
-Date: Sun, 8 Nov 2026 22:35:09 -0800
-From: Borislav Petkov <bp@alien8.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jini Susan George <jinisusan.george@amd.com>,
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Ian Campbell <ian.campbell@citrix.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Ilias Stamatis <ilstam@amazon.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Scott Soule Cheloha <scott.cheloha@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [RFC PATCH kernel 01/17] pci/dma/tsm: Call disable DMA bus hook
- on cleanup
-Message-ID: <20261109063509.GFavFpnZ-OM-rGcjdp@fat_crate.local>
-References: <20260916115159.1938195-1-aik@amd.com>
- <20260916115159.1938195-2-aik@amd.com>
- <20260916174929.GCaqrWqZ1fIhi4Rgbn@fat_crate.local>
- <9c83efe9-9367-472f-bf39-e07252e70c3c@amd.com>
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=KsfyCOJG
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=M/P3nZUlrFGneC24aMKHBNIgNzRFeJqMlKbeTayIEIA=;
+	b=KsfyCOJGtiNRpFJjcgoVwtHWHcYYl2M0rJcG4aTEiQ4vQN/T+AK5ESqu6qn6wq1eVQi6QOkaK
+	U4QViRgwRg3zzCBvwrVbgSKybvs1835guGKNoV+4bV3diqSLYhXaZm+HQRe9hbiLi/IPn5niTG7
+	RgKhQ+BmplOe9Sgp3twPCqo=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jNKnz4dslzcb4l;
+	Mon,  9 Nov 2026 14:37:11 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6333540538;
+	Mon,  9 Nov 2026 14:37:47 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 9 Nov 2026 14:37:46 +0800
+Message-ID: <d69dd4b6-2590-4a9d-91a2-1ff24d55723f@huawei.com>
+Date: Mon, 9 Nov 2026 14:37:46 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -157,22 +62,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9c83efe9-9367-472f-bf39-e07252e70c3c@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/15] KVM: Add kvm_arch_dirty_ring_size_updated() hook
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvmarm@lists.linux.dev>, Marc Zyngier <maz@kernel.org>,
+	<kvm@vger.kernel.org>, Oliver Upton <oupton@kernel.org>, liuyonglong
+	<liuyonglong@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com>
+ <20260929103655.85107-11-zhengtian10@huawei.com>
+ <20260929105253.0A2031F000FF@smtp.kernel.org>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <20260929105253.0A2031F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On Thu, Sep 17, 2026 at 12:28:50PM +1000, Alexey Kardashevskiy wrote:
-> Correct, the patches between v7.3-rc2 and 01/17 (can drop samples and tools,
-> obviously) are enough. It is basically recent tagged upstream + rebased
-> Dan's https://lore.kernel.org/r/20260705220819.2472765-1-djbw@kernel.org
 
-You probably should rebase that branch on 7.4 because it has caught a bunch of
-conflicts since the last time...
 
-Thx.
+On 9/29/2026 6:52 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] kvm: missing kvm_arch_dirty_ring_size_updated() stub causes build failure
+> --
+> 
+> commit 78c5608c44701deb8c1679c3f53cbd1303655474
+> Author: Tian Zheng <zhengtian10@huawei.com>
+> 
+> KVM: Add kvm_arch_dirty_ring_size_updated() hook
+> 
+> This commit adds a kvm_arch_dirty_ring_size_updated() hook called right
+> after kvm->dirty_ring_size is recorded. It provides a weak no-op default
+> implementation for architectures to override.
+> 
+>> diff --git a/include/linux/kvm_dirty_ring.h b/include/linux/kvm_dirty_ring.h
+>> index eb10d87adf7d5..c2b922791530d 100644
+>> --- a/include/linux/kvm_dirty_ring.h
+>> +++ b/include/linux/kvm_dirty_ring.h
+>> @@ -73,6 +73,7 @@ static inline void kvm_dirty_ring_free(struct kvm_dirty_ring *ring)
+>>   #else /* CONFIG_HAVE_KVM_DIRTY_RING */
+>>   
+>>   int kvm_cpu_dirty_log_size(struct kvm *kvm);
+>> +void kvm_arch_dirty_ring_size_updated(struct kvm *kvm);
+> 
+> [Severity: Low]
+> Does this cause a build failure on architectures that do not define
+> CONFIG_HAVE_KVM_DIRTY_RING?
+> 
+> The prototype is placed inside the #else block (when the feature is
+> enabled), but there is no static inline stub provided in the #ifndef
+> block. Furthermore, virt/kvm/dirty_ring.c (which contains the weak
+> definition) is not linked when the config is disabled.
+> 
+> [ ... ]
+> 
+>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+>> index 85f42289748dc..d109062f6a1cf 100644
+>> --- a/virt/kvm/kvm_main.c
+>> +++ b/virt/kvm/kvm_main.c
+>> @@ -5011,6 +5011,7 @@ static int kvm_vm_ioctl_enable_dirty_log_ring(struct kvm *kvm, u32 size)
+>>   		r = -EINVAL;
+>>   	} else {
+>>   		kvm->dirty_ring_size = size;
+>> +		kvm_arch_dirty_ring_size_updated(kvm);
+>>   		r = 0;
+>>   	}
+> 
+> [Severity: Low]
+> Since kvm_vm_ioctl_enable_dirty_log_ring() is unconditionally compiled,
+> will calling kvm_arch_dirty_ring_size_updated() here trigger an implicit
+> function declaration and link error on architectures like s390x or powerpc
+> that do not enable the dirty ring?
+> 
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Right. This hook is entirely dropped in the next version. The HDBSS
+buffer size is initialized at VM creation with PAGE_SIZE and the ring
+reservation reads it directly, so there is nothing left to notify. This
+report can be ignored.
