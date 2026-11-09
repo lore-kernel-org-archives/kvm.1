@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.229
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214176;
-	b=POrpkzOBACK898bcqM8UOtkpTDV6lUetbaMsCFoARow9Q7VBb6ytttiDiLZW1fYqwBlE
-	 yktdf+LWNlaw67scaikUDfMqdWP2kgeYwM90MY3PM7BAoMKHpPKL4ndfiRNCk2UZpKMxD
-	 eta70Prq0HnQMvnbFRnh2b+wOq+19Vv5TarUNfDK6wsNwksuazaQ2hiuZy6H/pLX8Dmje
-	 7m2LIgGYpVvfKYSkK62bbfKrF78UFzq6YlQWuH/ho+gxmLcTUHl4/uW34S+O7adOYbwRF
-	 DUPY7CJQB5sL+lqNjRWXjmDv+fgBAGlnKHgoBbxBgykM8OwGP1D5loq0x6FOd3fnjpQ==
+	t=1794214180;
+	b=ci5cfDbh3XonCUK7Mxlv+z1h+2f/gNRsyynUinHnIXMRhm+lpIwP6I93vwWOltnOLOqN
+	 cQLDezlVdZjjEXVXRglqkWUZGoPavSC+FCsnzE1Sgia6HUD8IdRBZayC1bWvPM+S81nQ0
+	 298YSfOOv+R9VqEGm7kJJPn0hiiZv3AiVVg0POS0U0i+9IiEQbmPOjNt8JaKuiU1aJnfc
+	 oP/E4yqvaagxHrTpAQe4tofO/4jOSKpIjxI7Z4sIID9cNm3DBtrwE98f30ALEjaY/Mm5G
+	 NI2A1oKEWbsi98sr61RtFKjlu+JIsJw8QFNIALdP+6anBHchXEY8HxBE8thwwFpQM3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214176;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214180;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ZqLRHECtu1IbyfmzqydS0xcErU/tndix94XGkirfv30=;
-	b=NcUIr9eyh3u5TwBcQmXigE46NwTQ00JCluehyoens8wvQVk/myyCTffG/yRPiI18YaGI
-	 qwA3Cs5iLzIaAEWVGaB3uzdCCcj8iPvwyLwFuo5b75XHuMo3lWgidPT6HbScSWRKqOakR
-	 NRbGN/XsEjgds/5PziLmvMeSjd9fXDuSvHOEheMKb5ETKQ4cIa+YTlDOdKkueNaogUfHe
-	 jEf3f7gGTJmxJJpsFXleX6aIY6CWmLlURW+I9wQ44PevRE41/9ux6L5aMmZDDIEVmLOH8
-	 QQFLFokTA1f3I8+1WStT1U+bgiX1JjtY92E1FlevySCSKNFQaXILvGL4D8WWNhKGB6Q==
+	bh=uWThlNDxx8k9coc2dZrQvIwrgPoJzUnjIpsnGUgbQxc=;
+	b=Wslmex17BVHEBrbADSVBrN/ZpghQGctR2Iy8HJ6zr/GSF1lkcn39Xkb3jaen+H0SAXp9
+	 bdhHj/m9TpCkfe1hQJvlb9zbohT6Hx1pEy74t8PlfbOgIOOLIQYueDS9hjzS+/DbLNOao
+	 QKZJnwbY0GN8/+Gxi1ZeK/KdL+3/iofAO98bicZYzb2TiSUJqJXWsjukU8GfD6Sb1pH8I
+	 0gWdUrKvkAA1K6c9jH2SKT1+4hfkj6QgQG+2T8iBJxkijf6co0Z7mR8l+bzDJaNleBoKY
+	 UPTWoI3PFeD5wbzWty2pXiISRi67tR5McTeMGkIeLzKX91NicHcmey/4N1HV8LLv8TQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NQxKjYUn;
-	arc=none smtp.remote-ip=95.215.58.229
-Received: from mta1.migadu.com (out-229.mta1.migadu.com [95.215.58.229])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cJxh6rnL;
+	arc=none smtp.remote-ip=95.215.58.9
+Received: from mta1.migadu.com (out-9.mta1.migadu.com [95.215.58.9])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86DB606D822
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:49:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C86DB606D822
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51F2608363D
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:49:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C51F2608363D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NQxKjYUn
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cJxh6rnL
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=f+5i3cnibFXJG4SEb8GtpTgqVNwtOWpsHcWaN7rrewI=;
+DKIM-Signature: a=rsa-sha256; bh=tieCJB5xPHFID0PWIkTmfQAHSOPwOh5HA6tVxBq05s0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794214174; v=1; x=1794818974;
- b=NQxKjYUnckKOknKJv2m0bxjLW1paI30H4PpVhZOlbVKCoe30d4MJL3e3zuK8zbdv6ixF28T2
- 4e43uyoR1iyzUv+6YPUlljOMwu88HhQYwmOuYvCo2TXDOSsijIPyIlPLrhRY/Ba8Q1Xk4lQ2kQ4
- Rneo6d6edZmqTUsmGqwqgTZg=
+ t=1794214178; v=1; x=1794818978;
+ b=cJxh6rnLXbxCuZPqeeBmne21czp+pycWMjO0JRGvpH6KqJB+PFnvqTX8giIRVm/+DKCn3PR0
+ STh/LXHDuWfcyuZgmU4tR0QKv68PXP1N748qHX3nsQC3d6J+uEU3BA1yxbpyV9VDHCnl+69UENT
+ sWp1j76O+mDnUvM24J3XKB7U=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c6b98e3bab36c25f;
-	Mon, 09 Nov 2026 08:49:33 +0000
-X-Mizu-Trace-ID: c6b98e3bab36c25f
+Received: by smtp.migadu.com with ESMTPS id 7e8d9e8db2fd6fbd;
+	Mon, 09 Nov 2026 08:49:37 +0000
+X-Mizu-Trace-ID: 7e8d9e8db2fd6fbd
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -68,9 +68,9 @@ Cc: Will Deacon <will@kernel.org>,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 11/19] KVM: arm64: selftests: Add pkvm_smccc hypercall test
-Date: Mon,  9 Nov 2026 08:48:46 +0000
-Message-ID: <20261109084854.840576-12-fuad.tabba@linux.dev>
+Subject: [PATCH v2 14/19] KVM: arm64: selftests: Add pkvm_irq interrupt test
+Date: Mon,  9 Nov 2026 08:48:49 +0000
+Message-ID: <20261109084854.840576-15-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109084854.840576-1-fuad.tabba@linux.dev>
 References: <20261109084854.840576-1-fuad.tabba@linux.dev>
@@ -85,138 +85,289 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-EL2 handles a protected guest's SMCCC calls other than PSCI rather than
-forwarding them to the host. The vendor-hyp feature bitmap advertises
-only FEATURES and the three memory calls.
+The host emulates a protected guest's vGIC, so EL2 copies the list
+registers to and from the host each time the host runs the vCPU. EL2
+also keeps its own copy of the guest's virtual timer state, which the
+host can't change.
 
-Check SMCCC_VERSION, the vendor-hyp UID and feature bitmap, that the
-calls EL2 doesn't implement (FF-A, TRNG, an unknown function) return
-NOT_SUPPORTED, and that an SMC makes the guest take an UNDEF.
+Check that the virtual timer's PPI arrives exactly once, with CVAL and
+CTL kept across exits, that SGIs pass between two vCPUs, and that the
+timer wakes a vCPU in WFI.
 
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../testing/selftests/kvm/arm64/pkvm_smccc.c  | 117 ++++++++++++++++++
- 2 files changed, 118 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_smccc.c
+ tools/testing/selftests/kvm/Makefile.kvm     |   1 +
+ tools/testing/selftests/kvm/arm64/pkvm_irq.c | 268 +++++++++++++++++++
+ 2 files changed, 269 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_irq.c
 
 diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 88c1159cb3bf1..6bb436bd36205 100644
+index 1e40e793aa6f3..13998964facd5 100644
 --- a/tools/testing/selftests/kvm/Makefile.kvm
 +++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -193,6 +193,7 @@ TEST_GEN_PROGS_arm64 += arm64/page_fault_test
+@@ -192,6 +192,7 @@ TEST_GEN_PROGS_arm64 += arm64/mmio_sign_ext
+ TEST_GEN_PROGS_arm64 += arm64/page_fault_test
  TEST_GEN_PROGS_arm64 += arm64/pkvm_host_abi
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_id_regs
++TEST_GEN_PROGS_arm64 += arm64/pkvm_irq
  TEST_GEN_PROGS_arm64 += arm64/pkvm_mem_share
  TEST_GEN_PROGS_arm64 += arm64/pkvm_psci
-+TEST_GEN_PROGS_arm64 += arm64/pkvm_smccc
- TEST_GEN_PROGS_arm64 += arm64/psci_test
- TEST_GEN_PROGS_arm64 += arm64/sea_to_user
- TEST_GEN_PROGS_arm64 += arm64/set_id_regs
-diff --git a/tools/testing/selftests/kvm/arm64/pkvm_smccc.c b/tools/testing/selftests/kvm/arm64/pkvm_smccc.c
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_smccc
+diff --git a/tools/testing/selftests/kvm/arm64/pkvm_irq.c b/tools/testing/selftests/kvm/arm64/pkvm_irq.c
 new file mode 100644
-index 0000000000000..64bfa12b26824
+index 0000000000000..f92fa6f0de8de
 --- /dev/null
-+++ b/tools/testing/selftests/kvm/arm64/pkvm_smccc.c
-@@ -0,0 +1,117 @@
++++ b/tools/testing/selftests/kvm/arm64/pkvm_irq.c
+@@ -0,0 +1,268 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * pkvm_smccc - the SMCCC calls EL2 handles for a protected VM, and its SMC.
++ * pkvm_irq - the virtual timer's PPI and SGIs in a protected VM.
 + *
-+ * Copyright (C) 2025 Google LLC
++ * Copyright (C) 2026 Google LLC
 + * Author: Fuad Tabba <fuad.tabba@linux.dev>
 + */
 +
-+#include <linux/arm-smccc.h>
-+#include <linux/bits.h>
++#include <pthread.h>
 +
++#include <linux/bitfield.h>
++#include <linux/psci.h>
++#include <asm/cputype.h>
++
++#include "arch_timer.h"
++#include "gic.h"
++#include "gic_v3.h"
 +#include "kvm_util.h"
 +#include "pkvm.h"
 +#include "processor.h"
 +#include "test_util.h"
 +
-+/* KVM UID 28b46fb6-2ec5-11e9-a9ca-4b564d003a74, as four SMCCC result regs. */
-+#define ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_0	0xb66fb428U
-+#define ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_1	0xe911c52eU
-+#define ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_2	0x564bcaa9U
-+#define ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_3	0x743a004dU
++#define TIMER_MS	10
++#define WAIT_MS		30000
++#define NR_EXITS	16
++#define SGI_ROUNDS	16
 +
-+/* The vendor-hyp feature bitmap EL2 advertises to protected guests. */
-+#define KVM_FEATURES (					\
-+	BIT(ARM_SMCCC_KVM_FUNC_FEATURES) |		\
-+	BIT(ARM_SMCCC_KVM_FUNC_HYP_MEMINFO) |		\
-+	BIT(ARM_SMCCC_KVM_FUNC_MEM_SHARE) |		\
-+	BIT(ARM_SMCCC_KVM_FUNC_MEM_UNSHARE))
++#define SGI_PING	1
++#define SGI_PONG	2
 +
-+#define FFA_VERSION_FUNC_ID						\
-+	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL, ARM_SMCCC_SMC_32,	\
-+			   ARM_SMCCC_OWNER_STANDARD, 0x63)
++/* Set in the guest's copy by the host before the first run. */
++static u32 vtimer_irq;
++static u64 boot_entry;
++static u64 vcpu_mpidr[2];
++static u64 vcpu_ctx[2];
 +
-+/* An unallocated vendor-hyp function id. */
-+#define UNKNOWN_FUNC_ID							\
-+	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL, ARM_SMCCC_SMC_64,	\
-+			   ARM_SMCCC_OWNER_VENDOR_HYP, 30)
++static u32 irqs[2];
++static u32 last_intid[2];
++static u32 ready;
 +
-+extern unsigned char smc_insn;
++#define wait_until(cond)							\
++do {										\
++	u64 __end = timer_get_cntct(VIRTUAL) + msec_to_cycles(WAIT_MS);	\
++										\
++	while (!(cond))								\
++		__GUEST_ASSERT(timer_get_cntct(VIRTUAL) < __end,		\
++			       "timed out waiting for %s", #cond);		\
++} while (0)
 +
-+static volatile u64 undef_pc;
-+
-+static void guest_code(void)
++static void guest_irq_handler(struct ex_regs *regs)
 +{
-+	struct arm_smccc_res res;
-+	unsigned long ret;
++	u32 intid = gic_get_and_ack_irq();
++	u32 cpu = guest_get_vcpuid();
 +
-+	pkvm_guest_init();
++	if (intid == IAR_SPURIOUS)
++		return;
 +
-+	/* The vendor-hyp calls require SMCCC 1.1. */
-+	ret = pkvm_hvc(ARM_SMCCC_VERSION_FUNC_ID, 0, 0, 0);
-+	__GUEST_ASSERT((s32)ret >= ARM_SMCCC_VERSION_1_1, "SMCCC_VERSION 0x%lx", ret);
-+
-+	smccc_hvc(ARM_SMCCC_VENDOR_HYP_CALL_UID_FUNC_ID, 0, 0, 0, 0, 0, 0, 0, &res);
-+	GUEST_ASSERT_EQ(res.a0, ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_0);
-+	GUEST_ASSERT_EQ(res.a1, ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_1);
-+	GUEST_ASSERT_EQ(res.a2, ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_2);
-+	GUEST_ASSERT_EQ(res.a3, ARM_SMCCC_VENDOR_HYP_UID_KVM_REG_3);
-+
-+	ret = pkvm_hvc(ARM_SMCCC_VENDOR_HYP_KVM_FEATURES_FUNC_ID, 0, 0, 0);
-+	GUEST_ASSERT_EQ(ret, KVM_FEATURES);
-+
-+	/* EL2 returns NOT_SUPPORTED for a call it doesn't implement, rather than forward it. */
-+	GUEST_ASSERT_EQ(pkvm_hvc(FFA_VERSION_FUNC_ID, 0, 0, 0), SMCCC_RET_NOT_SUPPORTED);
-+	GUEST_ASSERT_EQ(pkvm_hvc(ARM_SMCCC_TRNG_VERSION, 0, 0, 0), SMCCC_RET_NOT_SUPPORTED);
-+	GUEST_ASSERT_EQ(pkvm_hvc(UNKNOWN_FUNC_ID, 0, 0, 0), SMCCC_RET_NOT_SUPPORTED);
-+
-+	GUEST_DONE();
-+}
-+
-+static void undef_handler(struct ex_regs *regs)
-+{
-+	undef_pc = regs->pc;
-+	regs->pc += 4;
-+}
-+
-+/* EL2 injects an UNDEF for a protected guest's SMC. */
-+static void guest_smc(void)
-+{
-+	pkvm_guest_init();
-+
-+	{
-+		register u64 x0 asm("x0") = ARM_SMCCC_VENDOR_HYP_KVM_FEATURES_FUNC_ID;
-+
-+		asm volatile("smc_insn: smc #0" : "+r"(x0) : : "memory");
++	if (intid == vtimer_irq) {
++		__GUEST_ASSERT(timer_get_ctl(VIRTUAL) & CTL_ISTATUS, "CNTV_CTL 0x%x",
++			       timer_get_ctl(VIRTUAL));
++		GUEST_ASSERT(timer_get_cntct(VIRTUAL) >= timer_get_cval(VIRTUAL));
++		/* Mask the timer before the EOI, or its level-sensitive PPI is taken again. */
++		timer_set_ctl(VIRTUAL, CTL_IMASK);
 +	}
-+	GUEST_ASSERT_EQ(undef_pc, (u64)&smc_insn);
++
++	WRITE_ONCE(last_intid[cpu], intid);
++	gic_set_eoi(intid);
++	WRITE_ONCE(irqs[cpu], irqs[cpu] + 1);
++}
++
++static void guest_irq_init(unsigned int nr_cpus)
++{
++	local_irq_disable();
++	pkvm_guest_init();
++	gic_init(GIC_V3, nr_cpus);
++}
++
++static u64 start_vtimer(void)
++{
++	u64 cval = timer_get_cntct(VIRTUAL) + msec_to_cycles(TIMER_MS);
++
++	gic_irq_enable(vtimer_irq);
++	timer_set_cval(VIRTUAL, cval);
++	timer_set_ctl(VIRTUAL, CTL_ENABLE);
++	return cval;
++}
++
++static void guest_vtimer(void)
++{
++	u64 cval;
++	int i;
++
++	guest_irq_init(1);
++	cval = start_vtimer();
++
++	/* Exits before the timer fires, then with its interrupt pending but masked. */
++	for (i = 0; i < NR_EXITS; i++)
++		GUEST_SYNC(i);
++	wait_until(timer_get_ctl(VIRTUAL) & CTL_ISTATUS);
++	for (i = 0; i < NR_EXITS; i++)
++		GUEST_SYNC(i);
++
++	GUEST_ASSERT_EQ(timer_get_cval(VIRTUAL), cval);
++	GUEST_ASSERT_EQ(timer_get_ctl(VIRTUAL), CTL_ENABLE | CTL_ISTATUS);
++	GUEST_ASSERT_EQ(READ_ONCE(irqs[0]), 0);
++
++	local_irq_enable();
++	wait_until(READ_ONCE(irqs[0]));
++
++	/* The EOI must reach the host, or it presents the interrupt again. */
++	for (i = 0; i < NR_EXITS; i++)
++		GUEST_SYNC(i);
++	local_irq_disable();
++
++	GUEST_ASSERT_EQ(READ_ONCE(irqs[0]), 1);
++	GUEST_ASSERT_EQ(READ_ONCE(last_intid[0]), vtimer_irq);
 +	GUEST_DONE();
 +}
 +
-+static void run_guest(void *guest_code, bool smc)
++static void send_sgi(int id, u32 intid)
++{
++	u64 mpidr = vcpu_mpidr[id];
++
++	/* The target reads this vCPU's counters once it has taken the SGI. */
++	dsb(ishst);
++	write_sysreg_s(FIELD_PREP(ICC_SGI1R_SGI_ID_MASK, intid) |
++		       FIELD_PREP(ICC_SGI1R_AFFINITY_1_MASK, MPIDR_AFFINITY_LEVEL(mpidr, 1)) |
++		       FIELD_PREP(ICC_SGI1R_TARGET_LIST_MASK, BIT(MPIDR_AFFINITY_LEVEL(mpidr, 0))),
++		       SYS_ICC_SGI1R_EL1);
++	isb();
++}
++
++static void guest_sgi_primary(void)
++{
++	u32 k;
++
++	guest_irq_init(2);
++	gic_irq_enable(SGI_PONG);
++
++	GUEST_ASSERT_EQ(pkvm_hvc(PSCI_0_2_FN64_CPU_ON, vcpu_mpidr[1], boot_entry, vcpu_ctx[1]),
++			PSCI_RET_SUCCESS);
++	wait_until(READ_ONCE(ready));
++
++	local_irq_enable();
++	for (k = 1; k <= SGI_ROUNDS; k++) {
++		send_sgi(1, SGI_PING);
++
++		/* vCPU 1 sends PONG only once it has taken PING, so neither is in flight. */
++		wait_until(READ_ONCE(irqs[0]) >= k);
++		GUEST_ASSERT_EQ(READ_ONCE(irqs[0]), k);
++		GUEST_ASSERT_EQ(READ_ONCE(irqs[1]), k);
++		GUEST_ASSERT_EQ(READ_ONCE(last_intid[0]), SGI_PONG);
++		GUEST_ASSERT_EQ(READ_ONCE(last_intid[1]), SGI_PING);
++	}
++	local_irq_disable();
++
++	GUEST_DONE();
++}
++
++/* The primary's guest_irq_init() set up ucall and the distributor. */
++static void guest_sgi_secondary(void)
++{
++	u32 k;
++
++	gic_init(GIC_V3, 2);
++	gic_irq_enable(SGI_PING);
++	local_irq_enable();
++	WRITE_ONCE(ready, 1);
++
++	for (k = 1; k <= SGI_ROUNDS; k++) {
++		wait_until(READ_ONCE(irqs[1]) >= k);
++		send_sgi(0, SGI_PONG);
++	}
++	local_irq_disable();
++
++	GUEST_DONE();
++}
++
++static void guest_wfi(void)
++{
++	guest_irq_init(1);
++	start_vtimer();
++
++	/* WFI can complete before the timer fires, so wait in it until the handler has run. */
++	while (!READ_ONCE(irqs[0])) {
++		wfi();
++		local_irq_enable();
++		isb(); /* handle IRQ */
++		local_irq_disable();
++	}
++
++	GUEST_ASSERT_EQ(READ_ONCE(irqs[0]), 1);
++	GUEST_ASSERT_EQ(READ_ONCE(last_intid[0]), vtimer_irq);
++	GUEST_DONE();
++}
++
++static void irq_vm_setup(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++{
++	vm_install_exception_handler(vm, VECTOR_IRQ_CURRENT, guest_irq_handler);
++	write_guest_global(vm, vtimer_irq, vcpu_get_vtimer_irq(vcpu));
++}
++
++static void test_one_vcpu(void *guest_code)
 +{
 +	struct kvm_vcpu *vcpu;
 +	struct kvm_vm *vm;
 +
 +	vm = pkvm_vm_create_with_one_vcpu(&vcpu, guest_code);
-+	if (smc)
-+		vm_install_sync_handler(vm, VECTOR_SYNC_CURRENT, ESR_ELx_EC_UNKNOWN, undef_handler);
++	irq_vm_setup(vm, vcpu);
++
 +	pkvm_run_loop(vcpu, NULL);
++
++	kvm_vm_free(vm);
++}
++
++static void wire_mpidr(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++{
++	u64 mpidr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MPIDR_EL1));
++
++	write_guest_global(vm, vcpu_mpidr[vcpu->id], mpidr & MPIDR_HWID_BITMASK);
++}
++
++static void *vcpu_thread(void *vcpu)
++{
++	pkvm_run_loop(vcpu, NULL);
++	return NULL;
++}
++
++static void test_sgi(void)
++{
++	struct kvm_vcpu *vcpus[2];
++	pthread_t thread;
++	struct kvm_vm *vm;
++	gpa_t ctx;
++
++	vm = pkvm_vm_create(2, 0, vcpus);
++	irq_vm_setup(vm, vcpus[0]);
++
++	pkvm_vcpu_setup_boot(vcpus[0], guest_sgi_primary);
++	wire_mpidr(vm, vcpus[0]);
++	wire_mpidr(vm, vcpus[1]);
++	write_guest_global(vm, boot_entry, pkvm_idmap_gpa(vm));
++	ctx = pkvm_vcpu_setup_boot_secondary(vcpus[1], guest_sgi_secondary);
++	write_guest_global(vm, vcpu_ctx[1], ctx);
++
++	pthread_create(&thread, NULL, vcpu_thread, vcpus[1]);
++	pkvm_run_loop(vcpus[0], NULL);
++	pthread_join(thread, NULL);
++
 +	kvm_vm_free(vm);
 +}
 +
@@ -225,13 +376,14 @@ index 0000000000000..64bfa12b26824
 +	TEST_REQUIRE(pkvm_supported());
 +
 +	ksft_print_header();
-+	ksft_set_plan(2);
++	ksft_set_plan(3);
 +
-+	run_guest(guest_code, false);
-+	ksft_test_result_pass("SMCCC surface\n");
-+
-+	run_guest(guest_smc, true);
-+	ksft_test_result_pass("SMC takes an UNDEF\n");
++	test_one_vcpu(guest_vtimer);
++	ksft_test_result_pass("virtual timer PPI across exits\n");
++	test_sgi();
++	ksft_test_result_pass("SGIs between two vCPUs: %d rounds\n", SGI_ROUNDS);
++	test_one_vcpu(guest_wfi);
++	ksft_test_result_pass("the virtual timer wakes a vCPU waiting in WFI\n");
 +
 +	ksft_finished();
 +}
