@@ -1,56 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794189418;
-	b=XmVzJinaE12hC3rPJYLOtkEsnMzh796VGSgBlOy4Y021pKPe/sZSJRgxF1XC/S04Hpji
-	 gURjuOuAKH/aA5T1QJBiRZKYRDzD2T78RiQ3GfqBn1L/yGj9NPP70stA+8cEfda9rK84y
-	 qbnk+hzee3NX0zNDO1QDA1nna3yWmEsOOC3bCib60lTysDdZ/QkF1Yyi9z487d+EVkOGA
-	 5/YNdSSQ++gb9wadN+3PtNWnYdJZlv5QybkJJ4ZsBy77kTseaRSzo2NwSiJtUjAO8yIio
-	 iQ/Yj44D/tw7rihEbypA+bgvjLptJaRFYHDzJQQfzVUxdYpUjDgwFB+kHs7xRnQFivg==
+	t=1794191161;
+	b=uZpotuZS3CTg4oBxjwtfI6swkG4R1viUjtnHmV2JA6xw8qlL0NnsgClUcL3ZeiCrKe+a
+	 Bt/Tfh1tXKAxoNAqpeeqP3E+04689an66rCkezgmcH4LQlG6b5+dddlmyrNlZlZ8xt/dO
+	 dmF3oZcrzlUEGBC55sjHxNH+TmZETpq23dHDJ2vzsNx4VDx9uE6uijepJod6Mo38rgwlC
+	 JjUCXiHv6PoIEE6X8CxMonKAZnU1qlngOKlWjGDlI5aeEaZxWU9P1ua53tHUDlEjzkgVk
+	 7ru6QyHVdOYsAD0wibbAOXAlKbiA0gWF+C1xsrbDznHVIft7N5DQZR1BtVTZQpJlo4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794189418;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=HIXxxckU8X7ioBFfK2a7B6Yf5TAwcsSz+VVZm9Bydsg=;
-	b=o4C7GLTk0ocMRAcUk6SS+ORkx4F0gsPh5qrCW4bk3QMsdAbYO74kFVAhqwHyeledqgmI
-	 /4gZj9btoTTnkF3umTU9sISzZ3HymhJb1rpWSkrTJLTcmsjGC70MJS0d+iyI9Tokiyu8B
-	 KDn9D7FVXkfnjueg5+xLJPhU1Y16sB3oXQ9SXZOt7cuQEUfoZapUXRxV4dTCjNs/+TipN
-	 TZFjnDSfPfjnI6q32dDxOVRsMzizZy3BWZyCg6tMMRr821oe70THAR87162krwM6WZCr7
-	 16V2AnXsHO9umf969asXKUW6T14duv0HEpE5jcSIbEfxND7gaVh9k8kie45pfPVifrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794191161;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Cc:Subject:To:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=WtwmJoa5jwRbvW7yFmjKyxfZjcIBewf+YKrRBbn3v2s=;
+	b=AgeUnayzevh+ux1HGBMbSqZLntw1mM7owmcq8V+QEW8n8NrKG+SvOiFjvcK2/aJ6DEbZ
+	 P0PW7l4aCET775PDgf83fVHOSSX9brb0P2sS7VQJcBVvRp/PNlnyQiA6/NsklVNsFqVEw
+	 SG4FwKYbDNjvq6LZf4e80sP8wp8PrnyQVgpU19BMn0RDJ4KAa64EAB5rMuV3RJcS28L3Z
+	 3i3htwrYvgk/Z78QEyssmuCYOkP6PwKiv5uk1uVEjrJFboGWIH9ZWwzz8veoDgIexWAZW
+	 9RK+amq5EQm3g+utYYkwaMvTIX1CDq1dgFPe9xrpJ0ijTdRTH5ts8cEVZE2U9ldqD6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dgeThdc3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mxJ5f8vT;
+	arc=none smtp.remote-ip=95.215.58.20
+Received: from mta1.migadu.com (out-20.mta1.migadu.com [95.215.58.20])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7468606A320
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 01:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFB5606A32A
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 02:26:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EFB5606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dgeThdc3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303071F0089F;
-	Mon,  9 Nov 2026 01:56:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794189417;
-	bh=HIXxxckU8X7ioBFfK2a7B6Yf5TAwcsSz+VVZm9Bydsg=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=dgeThdc3RppR/+rqZkJxOmIerd+Xw8bSAA6M62w56ew1vtI0NraeH6dy2UGGd+doI
-	 gpaP4UA4jOU5uzu/vkCTTpAzLKFpAVGU5mrAOCqShrKhZtDnNgykWoUP0x9HMpOOAI
-	 C2ibMhk0NISKt+ux84f/S6r5JyKWGgJ3+KqnVqc8OVR5E8lxcULe4kJxkN+O+AAwva
-	 IOzoD/jTSVLpg3+6fdR9lUJ7NqAdBcw/hKnHy3bjW0Hg63oTUtzk0RS7vqNbhU2jh5
-	 hf436KHV9FhojbTZJkTRLZPH6iH0p0nxoNyMG/+k3V1QZvF8FU9zTHNGaYGmrQ6EBm
-	 XAxEjD2RZYQgw==
-Message-ID: <sashiko-outbox-204336@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 11/24] KVM: x86: Activate master clock from
- kvm_arch_init_vm()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261109012112.3415328-12-dwmw2@infradead.org>
-References: <20261109012112.3415328-1-dwmw2@infradead.org>
- <20261109012112.3415328-12-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Nov 2026 01:56:56 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mxJ5f8vT
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=3wQFNru/GSW5wMzbNQX/aezP9rAklvDUaKeBXnZI+gw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794191158; v=1; x=1794795958;
+ b=mxJ5f8vTD5vQI/xxFid8apJbYaunElojr7df5vF3uWKiE8sIfF7AXHUkOhzPmEzINJxLhVlA
+ QB5jKEX5FmNVqABGE1BGcfxACrjburhNnxQzOJ1Zb90mvmrXxE12AWSIOAg8A5UukyrxkPv8ZCP
+ tOv3XPDPn4x+AOdU9HhQ0lQg=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 1a20c7d2490421e5;
+	Mon, 09 Nov 2026 02:25:58 +0000
+X-Mizu-Trace-ID: 1a20c7d2490421e5
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a583bcd4-b502-4733-9592-58203e941d7d@linux.dev>
+Date: Mon, 9 Nov 2026 10:25:49 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,161 +57,245 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: cui.tao@linux.dev, linux-mm@kvack.org,
+ James.Bottomley@HansenPartnership.com, sumit.semwal@linaro.org,
+ christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
+ will@kernel.org, linux-scsi@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+ bobbyeshleman@meta.com, mathieu.desnoyers@efficios.com,
+ robin.murphy@arm.com, mason@kernel.org, aesteve@redhat.com,
+ tjmercier@google.com, harry@kernel.org, vbabka@suse.cz, cuitao@kylinos.cn,
+ media-ci@linuxtv.org
+Subject: Re: [PATCH 1/7] scsi: sg and st: account the command buffer memory to
+ memcg
+To: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org,
+ dgilbert@interlog.com, mkp@kernel.org, loberman@redhat.com,
+ jmeneghi@redhat.com, kraxel@redhat.com, vivek.kasireddy@intel.com,
+ mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com,
+ stefanha@redhat.com, sgarzare@redhat.com, rostedt@goodmis.org,
+ vdonnefort@google.com, mhiramat@kernel.org, jgg@ziepe.ca,
+ kevin.tian@intel.com, axboe@kernel.dk
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+ <20261106131829.3228926-2-cui.tao@linux.dev>
+ <sashiko-outbox-202918@kernel.org>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <sashiko-outbox-202918@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] KVM: x86: host-guest clock divergence in
-  __get_kvmclock_master_clock()
-- [Low] KVM: x86: dead initial TSC generation stores in
-  kvm_arch_init_vm()
---
+Hi,
 
-commit 862c03c2a3fcfa08f8c8dedc05fb896a0f4d58c9
-Author: David Woodhouse <dwmw@amazon.co.uk>
+在 2026/11/7 21:27, sashiko-bot@kernel.org 写道:
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issues to consider:
+> - [High] scsi: sg: GFP_ATOMIC | __GFP_ACCOUNT in sg_build_indirect()
+>   bypasses memcg max
+I'll take another look at the allocation context and whether GFP_ATOMIC
+is still required here.
+> - [Medium] scsi: sg: unrelated and broken blktrace CAP_SYS_ADMIN gate in
+>   sg_ioctl_common()
+The capability check doesn't belong in this patch.  It was accidentally
+carried over while splitting the series and should have remained in the
+separate blktrace patch.  I'll remove it from this patch.
+> - [Medium] scsi: st: misattributed GFP_KERNEL_ACCOUNT probe charges in
+>   new_tape_buffer()
+Thanks for pointing this out.  v2 drops the st side and keeps the
+accounting on the sg side.
+> - [Low] scsi: sg: commit message cites non-existent history in
+>   sg_build_indirect()
+The commit message is indeed inaccurate.  I'll fix the historical
+description and clarify the reserved buffer limit in the next revision.
+> It also noticed 1 related pre-existing issue this patch does not
+> introduce:
+> - [High] scsi: sg: shift-out-of-bounds in sg_build_indirect() [1]
+Thanks for pointing that out.  It predates the series, and I'll
+investigate it separately.
+> --
+> 
+> commit ec96b2b0cdd1df3575b4521cd9f81da9824bc2b2
+> Author: Tao Cui <cuitao@kylinos.cn>
+> 
+> scsi: sg and st: account the command buffer memory to memcg
+> 
+> This commit adds __GFP_ACCOUNT to buffer and descriptor allocations in the
+> sg and st drivers to charge them to the calling process's memory cgroup, and
+> adds a CAP_SYS_ADMIN check for blktrace ioctls in sg_ioctl_common().
+> 
+>> The sg data buffers are unaccounted: the per-fd reserved buffer, the
+>> scatter-gather page array, and the order-0..N pages behind it, plus the
+>> per-device tape buffer in st.  All of it is user controllable.  The
+>> reserved size is capped only by the device max_sectors, SG_MAX_QUEUE
+>> (16) commands can be in flight per fd, and the fd count is bounded by
+>> RLIMIT_NOFILE.  Nothing is charged to the memcg of the process driving
+>> it.  The September 2026 fixes in sg_build_indirect reshaped the element
+>> sizing and left the accounting alone.
+> 
+> [Severity: Low]
+> Is the commit message accurate about the history of sg_build_indirect() and
+> the reserved buffer cap?
+> 
+> In git history, sg_build_indirect() has not been modified since
+> aaff5ebaa269 ("scsi: remove the unchecked_isa_dma flag") in 2021, and its
+> element sizing has not changed since 10db10d144c0 ("sg: convert the indirect
+> IO path to use the block layer") in 2008.  In addition, the initial per-fd
+> reserved buffer in sg_add_sfp() is capped by min_t(int, def_reserved_size,
+> max_sectors_bytes(sdp->device->request_queue)), while only resizing via
+> SG_SET_RESERVED_SIZE is capped solely by max_sectors_bytes().
+> 
+>> diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+>> index 5408f002e6c01..80d919fa5cf91 100644
+>> --- a/drivers/scsi/sg.c
+>> +++ b/drivers/scsi/sg.c
+>> @@ -910,6 +910,19 @@ static int put_compat_request_table(struct compat_sg_req_info __user *o,
+>>  }
+>>  #endif
+>>  
+>> +/*
+>> + * The sg passthrough of the blktrace ioctls has the same exposure as the
+>> + * block device path: holding the node is the only requirement today, and
+>> + * a created trace outlives the fd.  Must match the gate in
+>> + * blk_trace_ioctl().
+>> + */
+>> +static bool sg_is_blktrace_cmd(unsigned int cmd)
+>> +{
+>> +	return cmd == BLKTRACESETUP || cmd == BLKTRACESETUP2 ||
+>> +	       cmd == BLKTRACESTART || cmd == BLKTRACESTOP ||
+>> +	       cmd == BLKTRACETEARDOWN;
+>> +}
+>> +
+>>  static long
+>>  sg_ioctl_common(struct file *filp, Sg_device *sdp, Sg_fd *sfp,
+>>  		unsigned int cmd_in, void __user *p)
+>> @@ -919,6 +932,9 @@ sg_ioctl_common(struct file *filp, Sg_device *sdp, Sg_fd *sfp,
+>>  	Sg_request *srp;
+>>  	unsigned long iflags;
+>>  
+>> +	if (sg_is_blktrace_cmd(cmd_in) && !capable(CAP_SYS_ADMIN))
+>> +		return -EPERM;
+>> +
+> 
+> [Severity: Medium]
+> Does this capability check belong in a memcg accounting commit, and does it
+> cause a UAPI regression for unprivileged users with access to /dev/sg*?
+> 
+> Despite the comment, blk_trace_ioctl() in kernel/trace/blktrace.c does not
+> check capable(CAP_SYS_ADMIN); block devices gate these ioctls only on access
+> to the device node.  Moreover, sg_is_blktrace_cmd() matches BLKTRACESETUP2
+> even though sg_ioctl_common() only implements BLKTRACESETUP, BLKTRACESTART,
+> BLKTRACESTOP, and BLKTRACETEARDOWN, so unprivileged callers now get -EPERM
+> instead of -ENOTTY for BLKTRACESETUP2.
+> 
+>> @@ -1841,7 +1857,7 @@ static int
+>>  sg_build_sgat(Sg_scatter_hold * schp, const Sg_fd * sfp, int tablesize)
+>>  {
+>>  	int sg_bufflen = tablesize * sizeof(struct page *);
+>> -	gfp_t gfp_flags = GFP_ATOMIC | __GFP_NOWARN;
+>> +	gfp_t gfp_flags = GFP_ATOMIC | __GFP_NOWARN | __GFP_ACCOUNT;
+>>  
+>>  	schp->pages = kzalloc(sg_bufflen, gfp_flags);
+>>  	if (!schp->pages)
+>> @@ -1856,7 +1872,8 @@ sg_build_indirect(Sg_scatter_hold * schp, Sg_fd * sfp, int buff_size)
+>>  	int ret_sz = 0, i, k, rem_sz, num, mx_sc_elems;
+>>  	int sg_tablesize = sfp->parentdp->sg_tablesize;
+>>  	int blk_size = buff_size, order;
+>> -	gfp_t gfp_mask = GFP_ATOMIC | __GFP_COMP | __GFP_NOWARN | __GFP_ZERO;
+>> +	gfp_t gfp_mask = GFP_ATOMIC | __GFP_COMP | __GFP_NOWARN |
+>> +			 __GFP_ACCOUNT | __GFP_ZERO;
+>>  
+>>  	if (blk_size < 0)
+>>  		return -EFAULT;
+> 
+> [Severity: High]
+> This problem wasn't introduced by this patch, but can the ret_sz shift in
+> sg_build_indirect() trigger a signed shift-out-of-bounds [1]?
+> 
+> drivers/scsi/sg.c:sg_build_indirect() {
+> 	...
+> 	num = scatter_elem_sz;
+> 	...
+> 	order = get_order(num);
+> retry:
+> 	ret_sz = 1 << (PAGE_SHIFT + order);
+> 	...
+> }
+> 
+> On 4 KB page architectures, setting the scatter_elem_sz module parameter
+> near INT_MAX gives order == 19, so 1 << (PAGE_SHIFT + order) evaluates the
+> signed 32-bit shift 1 << 31, triggering UBSAN or yielding a negative ret_sz
+> that corrupts the allocation loop.
+> 
+>> @@ -2146,7 +2163,7 @@ sg_add_sfp(Sg_device * sdp)
+>>  	unsigned long iflags;
+>>  	int bufflen;
+>>  
+>> -	sfp = kzalloc_obj(*sfp, GFP_ATOMIC | __GFP_NOWARN);
+>> +	sfp = kzalloc_obj(*sfp, GFP_ATOMIC | __GFP_NOWARN | __GFP_ACCOUNT);
+>>  	if (!sfp)
+>>  		return ERR_PTR(-ENOMEM);
+> 
+> [Severity: High]
+> Does combining GFP_ATOMIC with __GFP_ACCOUNT in sg_build_sgat(),
+> sg_build_indirect(), and sg_add_sfp() allow processes to bypass their memcg
+> memory.max limit?
+> 
+> GFP_ATOMIC sets __GFP_HIGH and lacks __GFP_DIRECT_RECLAIM.  When a memcg is
+> at memory.max, try_charge_memcg() skips reclaim because the allocation
+> cannot block and then force-charges past memory.max because __GFP_HIGH is
+> set:
+> 
+> mm/memcontrol.c:try_charge_memcg() {
+> 	...
+> nomem:
+> 	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
+> 		return -ENOMEM;
+> force:
+> 	page_counter_charge(&memcg->memory, nr_pages);
+> 	...
+> }
+> 
+> All callers of sg_add_sfp(), sg_build_sgat(), and sg_build_indirect()
+> (sg_open(), SG_SET_RESERVED_SIZE in sg_ioctl_common(), and sg_start_req())
+> run in sleepable process context holding only mutexes, so using GFP_KERNEL
+> would allow memcg reclaim and enforce memory.max.
+> 
+>> diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+>> index f1c3c49466379..7083d37622c08 100644
+>> --- a/drivers/scsi/st.c
+>> +++ b/drivers/scsi/st.c
+>> @@ -3973,7 +3973,7 @@ static struct st_buffer *new_tape_buffer(int max_sg)
+>>  {
+>>  	struct st_buffer *tb;
+>>  
+>> -	tb = kzalloc_obj(struct st_buffer);
+>> +	tb = kzalloc_obj(struct st_buffer, GFP_KERNEL_ACCOUNT);
+>>  	if (!tb) {
+>>  		printk(KERN_NOTICE "st: Can't allocate new tape buffer.\n");
+>>  		return NULL;
+>> @@ -3982,7 +3982,8 @@ static struct st_buffer *new_tape_buffer(int max_sg)
+>>  	tb->use_sg = max_sg;
+>>  	tb->buffer_size = 0;
+>>  
+>> -	tb->reserved_pages = kzalloc_objs(struct page *, max_sg);
+>> +	tb->reserved_pages = kzalloc_objs(struct page *, max_sg,
+>> +					  GFP_KERNEL_ACCOUNT);
+>>  	if (!tb->reserved_pages) {
+>>  		kfree(tb);
+>>  		return NULL;
+> 
+> [Severity: Medium]
+> Does using GFP_KERNEL_ACCOUNT in new_tape_buffer() charge the device probe
+> context instead of the process driving tape I/O?
+> 
+> new_tape_buffer() is only called from st_probe() when a tape device is
+> attached, and both tb and tb->reserved_pages live until scsi_tape_release(),
+> so they are never charged to the process performing I/O.  Meanwhile, the
+> per-I/O page array allocated in the driving process's context during direct
+> I/O in sgl_map_user_pages() (pages = kmalloc_objs(*pages, max_pages))
+> remains unaccounted.
+> 
+> [1] https://sashiko.dev/#/bug/linux-ccac9556-cc9e-4b08-b44f-5f7ffb342827
+> 
 
-KVM: x86: Activate master clock from kvm_arch_init_vm()
-
-This commit initializes the master clock snapshot in kvm_arch_init_vm(),
-adds a sanity check against raw clock divergence in
-__get_kvmclock_master_clock(), and refreshes the master clock when the
-first vCPU is created.
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a357efbf1d941..4afafe7ed8b8a 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-
-[ ... ]
-
-> @@ -1927,13 +1932,34 @@ static bool __get_kvmclock_master_clock(struct kv=
-m *kvm,
->  		u64 tsc_delta =3D data->host_tsc - ka->master_cycle_now;
-> =20
->  		tsc_delta =3D kvm_scale_tsc(tsc_delta, ka->master_tsc_scaling_ratio);
-> -		data->clock =3D hv_clock.system_time +
-> -			      pvclock_scale_delta(tsc_delta,
-> -						  hv_clock.tsc_to_system_mul,
-> -						  hv_clock.tsc_shift);
-> +		clock =3D hv_clock.system_time +
-> +			pvclock_scale_delta(tsc_delta,
-> +					    hv_clock.tsc_to_system_mul,
-> +					    hv_clock.tsc_shift);
->  	} else {
-> -		data->clock =3D __pvclock_read_cycles(&hv_clock, data->host_tsc);
-> +		clock =3D __pvclock_read_cycles(&hv_clock, data->host_tsc);
->  	}
-> +
-> +	/*
-> +	 * Sanity-check the snapshot: if the elapsed time it computes from
-> +	 * the host TSC disagrees with the raw clock by more than a second,
-> +	 * the TSC was reset (suspend/resume =E2=80=94 possibly re-inited by
-> +	 * firmware to an arbitrary value, including an underflowing one
-> +	 * below master_cycle_now) while nothing refreshed the snapshot.
-> +	 * That can happen while the VM has no vCPUs, since both the
-> +	 * resume compensation and the clocksource notifier work through
-> +	 * vCPUs. Use the fallback clock rather than returning a
-> +	 * discontinuity flagged KVM_CLOCK_TSC_STABLE.
-> +	 */
-> +	if (unlikely(abs((s64)(clock - hv_clock.system_time) -
-> +			 (get_kvmclock_base_ns() - ka->master_kernel_ns)) >
-> +		     NSEC_PER_SEC))
-> +		return false;
-
-[Severity: Medium]
-Can this sanity check trigger while vCPUs are active and cause a 1-second
-divergence between host-side get_kvmclock() and guest pvclock?
-
-Although the comment describes the no-vCPU window, this check runs even
-when vCPUs exist and ka->use_master_clock remains true.  While the master
-clock is active, ka->master_cycle_now and ka->master_kernel_ns are not
-re-anchored.  Because tk_core.timekeeper.tkr_raw uses a 22- or 23-bit
-multiplier from clocks_calc_mult_shift() whereas ka->master_tsc_mul uses a
-32-bit multiplier from kvm_get_time_scale() (plus intermediate rounding in
-kvm_scale_tsc() when TSC scaling is active), the two elapsed times drift
-apart over long uninterrupted uptime until their difference exceeds
-NSEC_PER_SEC.
-
-Once that threshold is crossed, __get_kvmclock_master_clock() returns
-false, causing get_kvmclock() (and KVM_GET_CLOCK) to jump by at least a
-second to get_kvmclock_base_ns() + ka->kvmclock_offset and drop
-KVM_CLOCK_TSC_STABLE, KVM_CLOCK_REALTIME, and KVM_CLOCK_HOST_TSC, while
-leaving data->host_tsc modified from the earlier
-kvm_get_walltime_and_clockread() call.  Meanwhile, kvm_guest_time_update()
-continues populating the guest's pvclock from the master clock snapshot
-with PVCLOCK_TSC_STABLE_BIT set.
-
-Should this check be gated on having no online/created vCPUs, or should
-ka->master_cycle_now and ka->master_kernel_ns be refreshed when the first
-vCPU is created so no fallback check is needed in
-__get_kvmclock_master_clock()?
-
-[ ... ]
-
-> @@ -10271,14 +10314,46 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned =
-long type)
->  	kvm->arch.cur_tsc_scaling_ratio =3D kvm_caps.default_tsc_scaling_ratio;
-> =20
->  	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
-> +
-> +	/*
-> +	 * Establish an initial TSC generation so that the master clock
-> +	 * snapshot taken below is immediately valid and KVM_GET_CLOCK
-> +	 * works before any vCPU exists. The snapshot is refreshed again
-> +	 * when the first vCPU is created, in case the host clocksource
-> +	 * changed (and changed back) in between: pvclock_gtod_update_fn()
-> +	 * does not notify a VM with no vCPUs.
-> +	 *
-> +	 * This generation is deliberately not matchable: cur_tsc_khz is
-> +	 * left at zero, which no vCPU frequency ever equals, so the first
-> +	 * vCPU opens its own generation with its TSC starting at zero,
-> +	 * exactly as it always has. Letting it match would make the first
-> +	 * vCPU's TSC start at the cycles elapsed since KVM_CREATE_VM =E2=80=94=
- a
-> +	 * silent guest-visible change over an unbounded window =E2=80=94 and
-> +	 * would hand it this offset verbatim even when a host suspend
-> +	 * reset the TSC in between, since the backwards-TSC compensation
-> +	 * in kvm_arch_enable_virtualization_cpu() detects the jump only
-> +	 * through existing vCPUs.
-> +	 */
-> +#ifdef CONFIG_X86_64
-> +	if (!kvm_get_time_and_clockread(&kvmclock_ns, &kvmclock_host_tsc))
-> +#endif
-> +	{
-> +		/*
-> +		 * If not simultaneous, we want the TSC to be zero slightly
-> +		 * *after* the kvmclock is zero.
-> +		 */
-> +		kvmclock_ns =3D get_kvmclock_base_ns();
-> +		kvmclock_host_tsc =3D rdtsc();
-> +	}
-> +	kvm->arch.cur_tsc_write =3D 0;
-> +	kvm->arch.cur_tsc_offset =3D -(s64)kvmclock_host_tsc;
-> +	kvm->arch.cur_tsc_nsec =3D kvmclock_ns;
-> +	kvm->arch.cur_tsc_generation =3D 1;
-> +	kvm->arch.kvmclock_offset =3D -kvmclock_ns;
-> +
->  	pvclock_update_vm_gtod_copy(kvm);
->  	raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
-
-[Severity: Low]
-Are the stores to cur_tsc_write, cur_tsc_offset, cur_tsc_nsec, and
-cur_tsc_generation (along with the kvmclock_host_tsc read) dead code?
-
-pvclock_update_vm_gtod_copy() takes its own snapshot into master_kernel_ns
-and master_cycle_now and does not read any of the cur_tsc_* fields.
-Because cur_tsc_khz is left at 0 and user_set_tsc is false, no caller can
-match or consume this initial generation before the first vCPU's
-__kvm_synchronize_tsc() call runs with matched =3D=3D false and overwrites
-cur_tsc_generation, cur_tsc_nsec, cur_tsc_write, and cur_tsc_offset.
-
-Also, the commit message states that this patch makes
-pvclock_update_vm_gtod_copy() succeed in kvm_arch_init_vm(), but earlier
-commits in the series (commit "KVM: x86: Replace nr_vcpus_matched_tsc
-count with all_vcpus_matched_tsc bool" and commit "KVM: x86: Allow KVM
-master clock mode when TSCs are offset from each other") already
-initialized all_vcpus_matched_tsc, cur_tsc_scaling_ratio, and
-all_vcpus_matched_freq in kvm_arch_init_vm().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109012112.3415=
-328-1-dwmw2@infradead.org?part=3D11
