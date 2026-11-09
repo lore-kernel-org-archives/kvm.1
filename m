@@ -1,122 +1,131 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794244323;
-	b=aeBIQLisp0vVm74g1nhCLtFmkiE4CebcfV9r1Lg+vtZ2SxcdaXNy/DeIMmnsef9yncOK
-	 omh/EJo3l6X6z+3WOsjdLYHE4zYpwr0iRFTsxiYzQnrB4488NCzpbPjCiTyfhaamcepP7
-	 LePMhWyC+5BGRIiWxQSidpHgXhRI6i8ckIF52FiQMwq5WQ5Sf0nJ/myTqJDHv757OCnqv
-	 eY3tDBPC3w37UD78Qhpeuc14h05kQgxdljGAHOYIOg4cGDRX/J8DUYxXKNPhTXFwpnEhh
-	 oVgacjW9QUkDiLnPpl0JNyX+SmtG82YZq4I5DT9KbKgwtRaeMJ7SQlH6xtKpPM/vvDg==
+	t=1794244359;
+	b=5EZp4muUpLhctOZIj42PII2IJWz1UupK0iIZmyBczJEUXuM2lXt4m7wnuspu/H5YfehR
+	 QSb3SngkaOIZ9/oxA2gGdAwQYw9LvafiHsyb0KPNksif2MmHZDczpZkQ4VHfKrObmCsWR
+	 LYp7R4wPh6Xdyg0mPSh36hhD1+kQBvloj0u+yaj4mdjRqWmyLJnIsN2PV9VWvkKwEJGO6
+	 ei5xudsaqvOdzBK2kyKwT+sSZQb1BjdcAoTtjB1GznPNkQ2ryp+1yEi7tw0U2rav4ZDiC
+	 dwIWdRGNl47/GEpVpfsedbk7FOkrAGfUjJbSaQmv8ebe2fP7lMcOASZ0IYNLtLwDEbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794244323;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=2oy46UchJMfFJizGJ2uCvfca/GcB6fo1sNhMCuF7ekg=;
-	b=L1Y1Wt39FutusXkqFp9kANseHX21A6kb+FHjOWwxWuwqpUOzUTTn+8JvqA7FQVkxCIHe
-	 eRtCAGRafHrUjjW+sJpSYN0TOfGy6+EtSEct+JqSKkTHWGW4M2aCAOAoQdEnQ+w7NO2Eg
-	 Fd/mcSxhPDKfqWmyfT/ipw39J4vyoysoR40QrTwKeH8ZADcOBbAbtv5tNOMbms4Y/cZpT
-	 jR3eAjxzYXfMws9eMoVxBSihPscA845/bvgtA2BZM2BZw3xOiw+2U5gZu1f2ZzcGKZi13
-	 f7vEaAoeZDOgz5aMfCv3YIE2JWUla5gTVL9IQfLp7t7pAj9DBEfKDEimMvGqKn56fUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794244359;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=mldVdWBWz+slWUX+6pvLrLM/2pda4Td9vv1hcuYueHI=;
+	b=pB+ZFSZe7miXAehvyXwAZO6zMOW88HMP8d97uv3V/p7yiFhbyPwsrceBSvKf7vZMV7uW
+	 kk/0chV0b9U6f8qtjt6WJttQ1YEMQ0GduY3i09MP0XKFazxcQxG9gM+r6j5AakbxTzsF3
+	 mpOOrgdEKyg2OwsDK+aQJXH9tTMj4p7yESONwQHYK4jcfhN9IHdB+BX9t7JZ5zFnajCIR
+	 xoEmSea2+8wuF+KLwXa+X8Ak+2AYGNtWWosi5EillISI/r5/t4IM1dtqKdSeHUm19oF7z
+	 GLELxi6v9YVj5/QZ+GsQVAjiDn+ryUgDHkA2FT4LqfrAlqLjQw0koNVMWE9riGMAUzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OyaQQw4Q;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Yl4Em7oV;
+	arc=none smtp.remote-ip=209.85.219.51
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D46606A326
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 17:12:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41D46606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595F0606A32A
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 17:12:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 595F0606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OyaQQw4Q
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9DEju51857823;
-	Mon, 9 Nov 2026 17:11:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=2oy46UchJMfFJizGJ
-	2uCvfca/GcB6fo1sNhMCuF7ekg=; b=OyaQQw4QUjjrpzs6DU2qn8Ei9V8v0K24W
-	63Qb5n/z+21Cxv5FAU2AbU9rFPnloEROO7LfuQpBMyC81Bkc+0OHNJ6+VXI5I0+V
-	stzt+nU5jG4JVDLOXY+7j4XBTHPaGwqEYo4L9cUkaovjg2rqvl4xYRUCVCgsHahG
-	cguNRP4I0EayZglQJRxLVxpBm/dVfY2Djfotn+DQgKAqMb0b1wcmXHiAIb4UYSFh
-	a2tuGx3EAkEI5v6YTskuCFwR41oEIGjbteRVlThK9lFBzfHg/uiatwsZn1Yl0Vxh
-	zCoNYKvJ5edisZlzIQALcWgsw3SV+ztkL6HgQB+cu46Z/AsqDY7wA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsunsykct-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 17:11:27 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9Gl3If131307;
-	Mon, 9 Nov 2026 17:11:26 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hth0y1guc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 17:11:26 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A9HBMlE44695856
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Nov 2026 17:11:23 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D1CCB20040;
-	Mon,  9 Nov 2026 17:11:22 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 579ED20043;
-	Mon,  9 Nov 2026 17:11:22 +0000 (GMT)
-Received: from a46lp03.lnxne.boe (unknown [9.87.84.240])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Nov 2026 17:11:22 +0000 (GMT)
-From: Bjoern Walk <bwalk@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Steffen Eiden <seiden@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>,
-        Bjoern Walk <bwalk@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        David Hildenbrand <david@kernel.org>,
-        Igor Mammedov <imammedo@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
-        Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>,
-        Xianglai Li <lixianglai@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Alex Williamson <alex@shazbot.org>,
-        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Weiwei Li <liwei1518@gmail.com>,
-        Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-        Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-        Chao Liu <chao.liu@processmission.com>, Peter Xu <peterx@redhat.com>,
-        Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
-        kvm@vger.kernel.org (open list:Overall KVM CPUs),
-        qemu-s390x@nongnu.org (open list:S390 PCI),
-        qemu-arm@nongnu.org (open list:ARM TCG CPUs),
-        qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
-        qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [RFC Patch 3/8] kvm: Prefer including "system/kvm.h" over <linux/kvm.h>
-Date: Mon,  9 Nov 2026 18:10:29 +0100
-Message-ID: <20261109171036.3806884-4-bwalk@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261109171036.3806884-1-bwalk@linux.ibm.com>
-References: <20261109171036.3806884-1-bwalk@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Yl4Em7oV
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-91e7fc8265aso13931716d6.0
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 09:12:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1794244358; x=1794849158; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mldVdWBWz+slWUX+6pvLrLM/2pda4Td9vv1hcuYueHI=;
+        b=Yl4Em7oVwrZZg0i63RkmLtgR+ZRN9euPgyMkxxN1Ob152+zGGnL2fm2jvTYJo4LVnF
+         vMEovACZqMWqSZBQO8MwjFgjN/VfTU1Hb0gUOSD50ReMsbb4x2PsB8Vqznx9hxIVJ9P/
+         ktueRojchyU0OBQAvs4hpd+FT+5Nl5MGAaSYHa1Vg/86pPRlmOn28BDAbJB366nQmarU
+         C7enZgKp8KEKbUHK1eQuucK6wGkqEYMXhjguAz7je3g8iMjLQyATGWC6+GeMkRPjj6b5
+         YcfHQWnHrd67gsof5g39Wok+gfkBlOMw1fVpw6g/CmgVLoFrpX+x7ke/8IMcGiq6ZU6J
+         xcKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794244358; x=1794849158;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mldVdWBWz+slWUX+6pvLrLM/2pda4Td9vv1hcuYueHI=;
+        b=1I1waW2ssitk3SSewk28kQiruYww8nHoTXVuM4qfv6nLML5GIxMlv51UorDRWbBqlf
+         AMH2yc7GboyzZU0bWxecJLUx1kJCULdWYSxJhVz0LIhnMXPQ+i5OvtCkKZYe7M2TJyyz
+         XdvGn/BWD+U+1ckd/WxOQ0ZAHG+wqA4XZPnsn7s5mlMYbC2QcBZKzigPYQC5Jc2hg+os
+         OLyApup8tBO6TfmKbdF7C10avKcpMcorqQvn2+99btn9qJal+qRHlRV+gW4atBEPvJuG
+         viBVSy8v7g672wkUngaS4KY1YzniIDHFp+WdBBYGkr5d8Lw6+VI5uKR13CgSVh4GOK60
+         pywA==
+X-Forwarded-Encrypted: i=1; AL+hErHRuc+GuZJvtK9W3NjwcYdPivHQS+HqWTocHGf/wlEdAT1oVUg5F7njafwZKINwxab/kBo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Zhzz6adqa5TgOUmIE1ZKwj6NYbDodLCgY3QlofY7v3jzzlVK0
+	XSrdWVMAH72dyYvxkMG3dq+dbsJPl1WXmwY+CS+yX4Jv2gxrz0P/oyFaONSArBMtntY=
+X-Gm-Gg: AYBFou2iFbeDsAKN9LDwGutXrkSdbCbFyGiXCP6vHN0DNT8PKF1BMV1RsS+AJLBQAch
+	tTVMiCy5ZK2voOpUB1G+4q/LbNZIyDgJo3ewVySrDUm8tb94u1xeCK3RYUTzmjBt/8rHhF3sfch
+	z6zrBxwnFKEWyRPTV5cF3X17Aj5g/QYGiczgT2pTOFd3WH+6x2u+K48WaNo/yxrtpLanHh1kQnb
+	rE9QWhhuOFOSeJ8/Np2ULAtdNGYlRBUy/5W+FrMgRehZUgUtHIYAslOqP1sZcu8yNZ29AL4O6z5
+	L7XY85hDpXb74t9wNpQf+3w3ATnNd7BRIpjyNvTGajqWDggPRRq8S3JCYyv37CucDZHVKyrL2aC
+	/onRcHBEFIuLv+CWa1B4N1nbjtSju+ki5OHRW3HeBkWfjIQ59J+AlSgs9fXqXwBg0G957g831Ne
+	ELgLgKZHXnKrrYfYnL4hYCKILAEMQWT375Y64ZIq5EaSLbR5W/afHRqW82bFDXDztMwx0ESvzss
+	RcSqNRMc2Oa4FNHXafvj8ZKOCqN2zmKggW9uFfmMTG27SJ0PZCe/koRKSEGyse0RdNCCl01+rgz
+	4Z6EhtI9AnxG1yKMYrVSWkM1CvRA2S0OHyj/zBr5LNHa+q8Qzl/hU7PYpAd0Jh/yFFrgOV4QaVq
+	81BjDecktSw==
+X-Received: by 2002:a05:620a:4625:b0:946:26a:22c4 with SMTP id af79cd13be357-9479f415545mr8700585a.73.1794244358097;
+        Mon, 09 Nov 2026 09:12:38 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef0540a8dsm277806d6.41.2026.11.09.09.12.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 09:12:37 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xQSv6-00000001ryf-1fz6;
+	Mon, 09 Nov 2026 13:12:36 -0400
+Date: Mon, 9 Nov 2026 13:12:36 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Peter Fang <peter.fang@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+	"drdeeglaze@gmail.com" <drdeeglaze@gmail.com>,
+	"James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Xing, Cedric" <cedric.xing@intel.com>,
+	"alistair.francis@wdc.com" <alistair.francis@wdc.com>,
+	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"ankita@nvidia.com" <ankita@nvidia.com>,
+	"jiri@resnulli.us" <jiri@resnulli.us>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Jiang, Dave" <dave.jiang@intel.com>,
+	"Quigley, David" <david.quigley@intel.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"jpiotrowski@nvidia.com" <jpiotrowski@nvidia.com>,
+	"Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
+	"lukas@wunner.de" <lukas@wunner.de>,
+	"jic23@kernel.org" <jic23@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"sameo@meta.com" <sameo@meta.com>, "aik@amd.com" <aik@amd.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"ksinyuk@kernel.org" <ksinyuk@kernel.org>,
+	"qinkun@google.com" <qinkun@google.com>
+Subject: Re: [PATCH RFC 20/20] attestation: Add the TDX family implementation
+Message-ID: <20261109171236.GP663069@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-21-jiri@resnulli.us>
+ <ed52bb6d48c87ab8023bf2165cadffa259e21725.camel@intel.com>
+ <20261023141218.GD3977851@ziepe.ca>
+ <343e4a12f2fdbb4e9a19c4afe49cf2b8908d6739.camel@intel.com>
+ <20261023220030.GM3977851@ziepe.ca>
+ <7843a833723e3aad40f8fc4de3a83f5a5059280f.camel@intel.com>
+ <20261103005851.GH3889730@ziepe.ca>
+ <au5LCE1jau0yDo5S@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -126,411 +135,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA2NiBTYWx0ZWRfX7eOTmVR4NBFt
- vjth9PGTZQ2/uTz9QeOFq2UEKpgR5hZgFXK6shEK9ZMdLR+nLgsSNeaUFJJsCmt6OcIHM8Dl9IS
- wlSArnj1XOp6zqx5PyzlYyzuBpD5OD91ivFanClEQlK3liJVGMitlMoPT5ZLiQch+Ps4Y7AORu6
- pKMH0Rny4yhMlMD7OL1J2QCrQRkK35CWzTYDzgYwi95ZLVJTA22jEOivZEYnpUgTGpws7VgFDSq
- V4Jc6hLPL7vk821D18MjfnGla0JQMyqdc2UV+Aa5/oPcYNtjUPrDEsP06GBzWip0ryc4TC71dqo
- HLpx+4bVPrqeU2UCC6XoNcCvlP/mZrvxrcCfcqs+5HvzABOPAwT8t2kk7dqGVsHURQ7Y45b+4nh
- pehAGORddxwWwxnFCB9ZL9q/vF7z6oeL+JfAZUHRpMDrapiXfcIJZfV2IdAR+6vQIbOrehAyMhU
- tUOcGt/C7VmR/cPWgmg==
-X-Proofpoint-ORIG-GUID: Ipap74PMJo4MHc9JHSGlzMkkjc9sOE2N
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA2NiBTYWx0ZWRfX1UQXTnUNN/Pl
- 8NPyv2ZdExEDsNyRjoeAsxpKkwlGdlAdbnOSh/hwWLrPF0AHAFtJmnV6vay+qbtVzl5YA1cCXYF
- ZwSnUvakutWlqUXIDrbpsSELsnRETaA=
-X-Authority-Analysis: v=2.4 cv=euZKXYpX c=1 sm=1 tr=0 ts=6af1fec0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=ln_9VpdSANE7LO6HYOUA:9
-X-Proofpoint-GUID: DehO9Ok2gL7DvHr44IvayByzvmd7lsFz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-09_05,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1011 suspectscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 impostorscore=0 adultscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611090066
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <au5LCE1jau0yDo5S@intel.com>
 
-"system/kvm.h" provides scaffolding around usage of KVM definitions from
-<linux/kvm.h> and can act as the central include for KVM-related definitions.
+On Fri, Nov 06, 2026 at 01:47:52PM -0800, Peter Fang wrote:
 
-Signed-off-by: Bjoern Walk <bwalk@linux.ibm.com>
----
- accel/kvm/kvm-accel-ops.c              | 1 -
- accel/kvm/kvm-all.c                    | 2 +-
- backends/hostmem-memfd.c               | 1 -
- hw/hyperv/hyperv.c                     | 1 -
- hw/i386/kvm/clock.c                    | 1 -
- hw/i386/kvm/i8254.c                    | 1 -
- hw/i386/kvm/xen_evtchn.c               | 1 -
- hw/i386/kvm/xen_overlay.c              | 1 -
- hw/intc/loongarch_dintc_kvm.c          | 1 -
- hw/intc/loongarch_extioi_kvm.c         | 1 -
- hw/s390x/s390-pci-kvm.c                | 2 +-
- hw/vfio/kvm-helpers.c                  | 1 -
- hw/vfio/kvm-spapr.c                    | 2 +-
- include/system/kvm.h                   | 1 +
- target/arm/kvm-consts.h                | 3 ++-
- target/arm/kvm.c                       | 2 --
- target/i386/kvm/kvm.c                  | 2 +-
- target/i386/kvm/kvm_i386.h             | 2 --
- target/i386/sev.c                      | 1 -
- target/loongarch/cpu.c                 | 3 ---
- target/loongarch/kvm/kvm.c             | 1 -
- target/ppc/kvm.c                       | 2 --
- target/riscv/kvm/kvm-cpu.c             | 2 --
- target/s390x/kvm/kvm.c                 | 2 +-
- target/s390x/kvm/pv.c                  | 2 --
- tests/qtest/migration/framework.c      | 2 +-
- tests/qtest/migration/migration-util.c | 2 +-
- 27 files changed, 10 insertions(+), 33 deletions(-)
+> For TDX, the direction so far has been to keep the guest as simple as
+> possible in the attestation process. So the "quote type" knowledge is
+> pushed into the TDX module and the remote verifier. The host kernel is
+> mostly tasked with transporting the quote blob from the TDX module back
+> to the guest. In other words, TDX doesn't have any quote type knowledge
+> outside of the module itself. And as far as I know, parsing these blobs
+> is sort of a pain.
+> 
+> The TDX DICE blobs are actually self-describing, meaning the verifier
+> can follow a schema, parse the blob straight away, and know what's
+> inside, including how to verify the signature. They're also
+> distinguishable from the legacy quotes. A launched guest is guaranteed
+> to have a stable format for its quotes. So this makes me wonder how the
+> labeling should be done. Do you think it makes sense to just have a
+> "primary raw TDX quote" label and let the TDX quote blob describe
+> itself? Also, I think currently there are no plans to add
+> secondary/supplementary blobs alongside the quote itself.
 
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index 47244d33..df29c130 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -25,7 +25,6 @@
- #include "qemu/guest-random.h"
- #include "qapi/error.h"
- 
--#include <linux/kvm.h>
- #include "kvm-cpus.h"
- 
- static void *kvm_vcpu_thread_fn(void *arg)
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 411f28dd..178788d2 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -17,7 +17,7 @@
- #include <sys/ioctl.h>
- #include <poll.h>
- 
--#include <linux/kvm.h>
-+#include "system/kvm.h"
- 
- #include "qemu/atomic.h"
- #include "qemu/option.h"
-diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
-index 46489212..9341169e 100644
---- a/backends/hostmem-memfd.c
-+++ b/backends/hostmem-memfd.c
-@@ -20,7 +20,6 @@
- #include "qom/object.h"
- #include "migration/cpr.h"
- #include "system/kvm.h"
--#include <linux/kvm.h>
- #include "qapi/qapi-type-infos-common.h"
- 
- OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendMemfd, MEMORY_BACKEND_MEMFD)
-diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
-index 900ff802..0db87a5b 100644
---- a/hw/hyperv/hyperv.c
-+++ b/hw/hyperv/hyperv.c
-@@ -15,7 +15,6 @@
- #include "system/memory.h"
- #include "exec/target_page.h"
- #include "exec/cpu-common.h"
--#include "linux/kvm.h"
- #include "system/kvm.h"
- #include "system/physmem.h"
- #include "qemu/bitops.h"
-diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c
-index e3dad136..3c2601a7 100644
---- a/hw/i386/kvm/clock.c
-+++ b/hw/i386/kvm/clock.c
-@@ -27,7 +27,6 @@
- #include "exec/cpu-common.h"
- #include "qapi/error.h"
- 
--#include <linux/kvm.h>
- #include "qom/object.h"
- 
- #define TYPE_KVM_CLOCK "kvmclock"
-diff --git a/hw/i386/kvm/i8254.c b/hw/i386/kvm/i8254.c
-index 70e8fd83..d99ee462 100644
---- a/hw/i386/kvm/i8254.c
-+++ b/hw/i386/kvm/i8254.c
-@@ -24,7 +24,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include <linux/kvm.h>
- #include "qapi/qapi-types-machine.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index 9379383e..b8982548 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -43,7 +43,6 @@
- 
- #include "system/kvm.h"
- #include "system/kvm_xen.h"
--#include <linux/kvm.h>
- #include <sys/eventfd.h>
- 
- #include "hw/xen/interface/memory.h"
-diff --git a/hw/i386/kvm/xen_overlay.c b/hw/i386/kvm/xen_overlay.c
-index 74cadffb..4cb16e31 100644
---- a/hw/i386/kvm/xen_overlay.c
-+++ b/hw/i386/kvm/xen_overlay.c
-@@ -25,7 +25,6 @@
- 
- #include "system/kvm.h"
- #include "system/kvm_xen.h"
--#include <linux/kvm.h>
- 
- #include "hw/xen/interface/memory.h"
- 
-diff --git a/hw/intc/loongarch_dintc_kvm.c b/hw/intc/loongarch_dintc_kvm.c
-index 1137bcd9..9bacf5e7 100644
---- a/hw/intc/loongarch_dintc_kvm.c
-+++ b/hw/intc/loongarch_dintc_kvm.c
-@@ -7,7 +7,6 @@
- 
- #include "qemu/osdep.h"
- #include "hw/intc/loongarch_dintc.h"
--#include "linux/kvm.h"
- #include "qapi/error.h"
- #include "system/kvm.h"
- 
-diff --git a/hw/intc/loongarch_extioi_kvm.c b/hw/intc/loongarch_extioi_kvm.c
-index aa2e8c75..d17d0511 100644
---- a/hw/intc/loongarch_extioi_kvm.c
-+++ b/hw/intc/loongarch_extioi_kvm.c
-@@ -7,7 +7,6 @@
- 
- #include "qemu/osdep.h"
- #include "hw/intc/loongarch_extioi.h"
--#include "linux/kvm.h"
- #include "qapi/error.h"
- #include "system/kvm.h"
- 
-diff --git a/hw/s390x/s390-pci-kvm.c b/hw/s390x/s390-pci-kvm.c
-index 9eef4fc3..12b6e8ba 100644
---- a/hw/s390x/s390-pci-kvm.c
-+++ b/hw/s390x/s390-pci-kvm.c
-@@ -11,7 +11,7 @@
- 
- #include "qemu/osdep.h"
- 
--#include <linux/kvm.h>
-+#include "system/kvm.h"
- 
- #include "kvm/kvm_s390x.h"
- #include "target/s390x/kvm/pv.h"
-diff --git a/hw/vfio/kvm-helpers.c b/hw/vfio/kvm-helpers.c
-index 5e73dddc..429e266e 100644
---- a/hw/vfio/kvm-helpers.c
-+++ b/hw/vfio/kvm-helpers.c
-@@ -21,7 +21,6 @@
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
- 
--#include <linux/kvm.h>
- #include "system/kvm.h"
- #include "exec/cpu-common.h"
- #include "hw/vfio/vfio-device.h"
-diff --git a/hw/vfio/kvm-spapr.c b/hw/vfio/kvm-spapr.c
-index ad71c5a8..beb53651 100644
---- a/hw/vfio/kvm-spapr.c
-+++ b/hw/vfio/kvm-spapr.c
-@@ -7,7 +7,7 @@
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
--#include <linux/kvm.h>
-+#include "system/kvm.h"
- 
- #include "hw/vfio/vfio-container-legacy.h"
- #include "hw/vfio/kvm-spapr.h"
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 5d7c0f98..84c2efe9 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -29,6 +29,7 @@
- # endif
- #else
- # define CONFIG_KVM_IS_POSSIBLE
-+# include <linux/kvm.h>
- #endif
- 
- #ifdef CONFIG_KVM_IS_POSSIBLE
-diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
-index 9fba3e88..1e4eb9e7 100644
---- a/target/arm/kvm-consts.h
-+++ b/target/arm/kvm-consts.h
-@@ -14,9 +14,10 @@
- #ifndef ARM_KVM_CONSTS_H
- #define ARM_KVM_CONSTS_H
- 
-+#include "system/kvm.h"
-+
- #ifdef COMPILING_PER_TARGET
- #ifdef CONFIG_KVM
--#include <linux/kvm.h>
- #include <linux/psci.h>
- #define MISMATCH_CHECK(X, Y) QEMU_BUILD_BUG_ON(X != Y)
- #endif
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index df86ad38..99d8f503 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -13,8 +13,6 @@
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
- 
--#include <linux/kvm.h>
--
- #include "qemu/timer.h"
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e29ecaba..47ee0590 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -24,7 +24,7 @@
- #include <sys/syscall.h>
- #include <sys/resource.h>
- 
--#include <linux/kvm.h>
-+#include "system/kvm.h"
- #include <linux/kvm_para.h>
- #include "standard-headers/asm-x86/kvm_para.h"
- #include "hw/xen/interface/arch-x86/cpuid.h"
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 2b653442..7166353b 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -44,8 +44,6 @@ void kvm_request_xsave_components(X86CPU *cpu, uint64_t mask);
- 
- #ifdef CONFIG_KVM
- 
--#include <linux/kvm.h>
--
- typedef struct KvmCpuidInfo {
-     struct kvm_cpuid2 cpuid;
-     struct kvm_cpuid_entry2 entries[KVM_MAX_CPUID_ENTRIES];
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 604c2255..3e19f6ec 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -13,7 +13,6 @@
- 
- #include "qemu/osdep.h"
- 
--#include <linux/kvm.h>
- #include <linux/kvm_para.h>
- #include <linux/psp-sev.h>
- 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 1f302226..5f242e19 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -25,9 +25,6 @@
- #include "system/reset.h"
- #endif
- #include "vec.h"
--#ifdef CONFIG_KVM
--#include <linux/kvm.h>
--#endif
- #include "tcg/tcg_loongarch.h"
- #include "disas/capstone.h"
- 
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 957e73eb..5100024e 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -8,7 +8,6 @@
- #include "qemu/osdep.h"
- #include "exec/target_long.h"
- #include <sys/ioctl.h>
--#include <linux/kvm.h>
- #include "asm-loongarch/kvm_para.h"
- #include "qapi/error.h"
- #include "qemu/timer.h"
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index cd19f7a6..ac49a3dd 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -19,8 +19,6 @@
- #include <sys/ioctl.h>
- #include <sys/vfs.h>
- 
--#include <linux/kvm.h>
--
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "cpu.h"
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 5beb6023..eba1b96a 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -20,8 +20,6 @@
- #include <sys/ioctl.h>
- #include <sys/prctl.h>
- 
--#include <linux/kvm.h>
--
- #include "qemu/timer.h"
- #include "qapi/error.h"
- #include "qapi/qapi-builtin-type-infos.h"
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index 76dd1e67..bd824fad 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -21,7 +21,7 @@
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
- 
--#include <linux/kvm.h>
-+#include "system/kvm.h"
- #include <asm/ptrace.h>
- 
- #include "cpu.h"
-diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
-index 3d508165..afea9e3f 100644
---- a/target/s390x/kvm/pv.c
-+++ b/target/s390x/kvm/pv.c
-@@ -11,8 +11,6 @@
-  */
- #include "qemu/osdep.h"
- 
--#include <linux/kvm.h>
--
- #include "qemu/units.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index b7aef6b2..60f85b72 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -27,7 +27,7 @@
- #include "qemu/sockets.h"
- 
- #ifdef CONFIG_LINUX
--#include <linux/kvm.h>
-+#include "system/kvm.h"
- #include <sys/ioctl.h>
- #endif
- 
-diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
-index db66d8b2..e145c3f8 100644
---- a/tests/qtest/migration/migration-util.c
-+++ b/tests/qtest/migration/migration-util.c
-@@ -35,7 +35,7 @@
- 
- /* For dirty ring test; so far only x86_64 is supported */
- #if defined(__linux__) && defined(HOST_X86_64)
--#include "linux/kvm.h"
-+#include "system/kvm.h"
- #endif
- 
- GQueue *tests;
--- 
-2.56.0
+I would be very happy if Intel came with some plan, documented in the
+ABI comments around their labels down the road.
 
+What I would like is that given a specific label any userspace can do
+a verification and full dump of that data, including signature
+validation, without need of any further external information.
+
+Ie it is entirely self describing under that label.
+
+So if someone has to say externally 'oh this was a legacy VM' to make
+parsing work then that needs to go in the label.
+
+Think of it this way, you should be able to run a command, lets imagine:
+
+$ attestctl dump report0
+   intel TDX A:
+     - Field 1
+     - Field 2
+   Signature VALID
+   Certificate chain
+      A
+      B
+      C
+
+It must not be something like:
+
+$ attestctl dump report0 --kind tdx_legacy
+$ attestctl dump report0 --kind tdx_dice
+
+Does it make sense?
+
+Whatever labeling you choose has to follow these goals, and there is
+some trade off between making thing self describing forever into the
+future and exposing protocol details into the guest kernel driver.
+
+The future scares me so I would always design to include a description
+of the blob from TDX module to the guest driver :)
+
+Jason
