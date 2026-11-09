@@ -1,68 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794246974;
-	b=NsrxmCxrwxqFW+j+L2A/wL93iWp6jPVeu0r2LT1fsOnAYCc0Lv/6bHvFfQdxH/pL0buo
-	 ISV+A0s4X2w/b27YVDb5o9mmxGavHx3NJQGBS2KzSUOCM7nxM1O2KHP9L6ndMlSNDMSfZ
-	 h+ROz4A0lVwD5sABizlsPxdHFPW4nx4jYGCiDFTZEpT//kZwv4tAEGt/l1xS8eh6B9jSM
-	 Bo9P5QMp1/m0ffhMwPxuUP4Ie2Vkcg9xhPw1DGCBOnvbrkgWXKC8RIFNqTB9ThZaffo4h
-	 2RTuFjHaYj0NdRy+OHeGotuP7RWqtWOp8oK+Jezej627yvuLRHziv/iJKe8vdBYK9FQ==
+	t=1794247643;
+	b=Id/K83+EvlHDf3HFpWbmbiJyoe3/wTcxmiIHfkxCrAlWhVUz6JlB0NbhvN+Mb0q5bi5z
+	 2y8n6CJDMN4HiPkS/P+egI641uxr+keEGx3j4Zi6O32HB9g4sjTqO3PDvomDOwsg1PJpb
+	 /o4RICncbWD8nz3YWTUADS1c+AXyngd0aVeuSlr+fAOF5UFrsXhO8ff4Sk8PKZdszlGKy
+	 0O/R/TkjcO6fibM4nqkORdYdazNdk0YiJt5EJgMfTh9d+d+tuiNkDWCriZQZGZRjie4Cx
+	 zZIKDv5/m1gOlAHCYB1yPMKWF/bl3b7lPjSwKRp9xGNLUe6lXC5jdNvAOGVDmtQcLNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794246974;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=iTmx0r81EUOeW+G7ZIvHemmzWYbW35OLP9Cl9c4f2Wk=;
-	b=btOjMJkoPBy0OJaBGEqMxie6sE0uoEcvH3gOA78eq1orQTc8U2q6vGkPou9EqRlA1b2/
-	 0MBkRMHpUn8gR4ND5TWBEkfPOoXO3GHmpNWGm9k1dx2gJ8A+brphMbAceikOCeN5QvLP9
-	 kIIV+KLux6TiDHIIUOVMXjVDH2HgrOkiM9tjMbbZpdIBJciOrec3q/wpn3wZ/OsqO1Wwy
-	 MCt9abc7VKqbrDmumwuBKyl1NTSbuYApnEYMm6ubj/lQOXMZ78qNeRhuIgS2vZ4CmrECW
-	 mYB41Hrwllh4jhYBlth83kkYGgfexvkwMGi7cfFNCObQE9h8KZ6qH+KjzsZ2ORvXFxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794247643;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=9SX+jH/mGjt4SuPHBiqFjWciDYJaR9hX+EeARBcc/oU=;
+	b=tcWXd5mhUo/MuihktqKk8HEFtQsbK9I2G6i+/VW5YYYOlrKQusC2R1tBt9hPIL3+S8kk
+	 kcO1Yw4T9mh8WDKsN+EX0zLzNdwtgs0BHn1D8x2kIE8fPoFgoVh6W9RcM8Bzdwm5c4ur/
+	 UUCil5Kc5LwVbW7gw7Ec7myfbxikxKYel7MSBhVrAjyMuwIRRdRKp9QA3kggZecD8kT2Y
+	 29do2ZUgDM1S1uGZuKq7bbIeV68fcLOBxONtpIl2WTVdNMX+GqUGOJQp3uAxQZLcmxlZ3
+	 4awcS8Cmiwe7+7kg8OZwMLxIzQHm9hNy+L6Mxke3po/689k5xOGcEH393e9TR1gZPHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bcpFB+Wg;
-	arc=none smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800AB606A31C;
-	Mon,  9 Nov 2026 17:56:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 800AB606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qP+j2+Ou;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DA9606A321
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:07:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65DA9606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bcpFB+Wg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794246974; x=1825782974;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iNokIAKhN+qj5LNCCEgSOCO90w6ZjTzjUxKkKV8ujyc=;
-  b=bcpFB+WgejPfonEeHdqFda93e/RJ5yl2zMkdjPodNUlUZhrKwVmnzCj0
-   6RTZpq7KIhv1ZRvoQsh7yKuhKDL96GukFaxb3laIu28V0zQjVe6JzTsyP
-   yOFuN/OLENAoeQZNWVXqzMfXqQwkIncCWFKpTCsJOqjYwnbowuDLIOEtZ
-   Y8vf497A3MsjLxDV5Q3o7eFPXNN96gRk9k7RTyHgXd5RHLk376+naSpUh
-   PNuBtBKP65GAi4n3ZWEdevR9c3FyOm8n/3RUN4MI9yP9M9z23uC0mms08
-   Rr6NkJxWW2+RElTAAeCRLFfEeNfd1eg/IkmVX7cfJTnDWMPOg+GAFKHVO
-   A==;
-X-CSE-ConnectionGUID: nWIuLS7aSAyDBBQyiOi/vw==
-X-CSE-MsgGUID: vlMJEdAyQQmNIpAOpb46Mg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2878718"
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="2878718"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:56:14 -0800
-X-CSE-ConnectionGUID: rEdqlWe8TiaPKz4X5TA2Dg==
-X-CSE-MsgGUID: QHfD0ympSZac0swZMJTAUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="8249114"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:56:13 -0800
-Message-ID: <31278ce8-77ed-4bd2-a237-815cbcc5b489@intel.com>
-Date: Mon, 9 Nov 2026 11:56:11 -0600
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qP+j2+Ou
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A57AC1476;
+	Mon,  9 Nov 2026 10:07:18 -0800 (PST)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F0173F85F;
+	Mon,  9 Nov 2026 10:07:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794247641; bh=sg6g4W54QBZxZYKEgqRqF44StZN9salD9l+AhfoCf24=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qP+j2+OuqLKE4Lm1XPuvDQfifQzUJQrjIkKWp7O+3YIWfTLRRKALZBcqMBJBQ4pVj
+	 UnRfSf2OfKmjhmX5moUFLtpmbRdwBu9Jh1YNNCvkMCNM20pc19zX+JUhymaFR6y48Q
+	 ODg7QF+BE2r+iUQBNRqwepfxrL0MrxFWU9EBIJ9Y=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	sashiko-reviews@lists.linux.dev,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	liuyonglong <liuyonglong@huawei.com>
+Subject: Re: [PATCH v5 11/15] KVM: arm64: Reserve dirty ring space for the HDBSS buffer
+Date: Mon,  9 Nov 2026 18:07:17 +0000
+Message-ID: <avIL1UFsFmQFXwew@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <494abfd0-b19b-4ef3-a035-d21626828a6a@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-12-zhengtian10@huawei.com> <20260929110035.71FB41F000FF@smtp.kernel.org> <494abfd0-b19b-4ef3-a035-d21626828a6a@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,61 +66,105 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20261106013927.166209-1-zide.chen@intel.com>
- <20261106013927.166209-5-zide.chen@intel.com> <au4kyULjUYdqbfIq@google.com>
- <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
- <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
- <2aeaac02-368c-40b4-9b2d-feef5e9d9ea8@linux.intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <2aeaac02-368c-40b4-9b2d-feef5e9d9ea8@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-
-
-On 11/9/2026 1:53 AM, Mi, Dapeng wrote:
+On Mon, Nov 09, 2026 at 06:03:03PM +0800, Tian Zheng wrote:
 > 
-> On 11/7/2026 6:35 AM, Yosry Ahmed wrote:
->> On Fri, Nov 6, 2026 at 2:19 PM Chen, Zide <zide.chen@intel.com> wrote:
->>>
->>>
->>> On 11/6/2026 1:09 PM, Yosry Ahmed wrote:
->>>>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
->>>>> index b8875ed5502c..4f192429ed93 100644
->>>>> --- a/arch/x86/include/asm/kvm_host.h
->>>>> +++ b/arch/x86/include/asm/kvm_host.h
->>>>> @@ -595,7 +595,10 @@ struct kvm_pmu {
->>>>>              DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
->>>>>              atomic64_t __reprogram_pmi;
->>>>>      };
->>>>> -    DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
->>>>> +    union {
->>>>> +            DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
->>>>> +            u64 pmc_exists64;
->>>> __pmc_exists would be more consistent with __reprogam_pmi above.
->>> I used the *64 suffix and without '__' to match the cntr_mask/cntr_mask64
->>> and fixed_cntr_mask/fixed_cntr_mask64 pattern in struct x86_pmu_capability
->>> (patch 7), whereas __reprogram_pmi used '__' because it is an atomic64_t
->>> rather than a scalar mask.
->> I don't follow why the '__' prefix is specific to atomics, but anyway,
->> I will leave this up to you and Sean.
 > 
-> Per my understanding, '__' prefix hints this function/variable should not
-> be accessed directly, it should be accessed via some wrapper helpers. So I
-> think it depends on if we hope the variable pmc_exists64 should be accessed
-> directly.
+> On 9/29/2026 7:00 PM, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> > - [High] arm64: kvm: UAPI breakage for dirty ring size on 64KB page systems
+> > --
+> > 
+> > commit 38dde0ab2f10c37402c620c7b1328624808205ad
+> > Author: Tian Zheng <zhengtian10@huawei.com>
+> > 
+> > KVM: arm64: Reserve dirty ring space for the HDBSS buffer
+> > 
+> > This commit reserves space in the dirty ring for CPU-side dirty buffers by
+> > implementing kvm_cpu_dirty_log_size(). It also pins the HDBSS buffer size to
+> > PAGE_SIZE when the dirty ring is enabled.
+> > 
+> > > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > > index 7bf82d65041c8..c1e09ba98d48a 100644
+> > > --- a/arch/arm64/kvm/mmu.c
+> > > +++ b/arch/arm64/kvm/mmu.c
+> > [ ... ]
+> > > @@ -2841,3 +2841,11 @@ void kvm_toggle_cache(struct kvm_vcpu *vcpu, bool was_enabled)
+> > >   	trace_kvm_toggle_cache(*vcpu_pc(vcpu), was_enabled, now_enabled);
+> > >   }
+> > > +
+> > > +int kvm_cpu_dirty_log_size(struct kvm *kvm)
+> > > +{
+> > > +	if (!system_supports_hdbss())
+> > > +		return 0;
+> > > +
+> > > +	return kvm_hdbss_buffer_size(kvm) / sizeof(u64);
+> > > +}
+> > 
+> > [Severity: High]
+> > Does this calculation break the UAPI for standard dirty ring size requests on
+> > 64KB page systems?
+> > 
+> > Since KVM_ARM_HDBSS_DEFAULT_SIZE is tied to PAGE_SIZE, this calculation scales
+> > with the system page size. On a 64KB page system, kvm_hdbss_buffer_size() yields
+> > 65536 bytes, returning 8192 reserved entries (65536 / 8).
+> > 
+> > When a userspace process requests a standard dirty ring size of 65536 bytes
+> > (64KB) via KVM_ENABLE_CAP for KVM_CAP_DIRTY_LOG_RING, it seems the ioctl will
+> > now fail:
+> > 
+> > virt/kvm/kvm_main.c:kvm_vm_ioctl_enable_cap() {
+> >      ...
+> > 	if (size < kvm_dirty_ring_get_rsvd_entries(kvm) *
+> > 	    sizeof(struct kvm_dirty_gfn) || size < PAGE_SIZE)
+> > 		return -EINVAL;
+> >      ...
+> > }
+> > 
+> > Because (8192 + 64) * 16 = 132096 bytes is greater than the requested 65536
+> > bytes, the ioctl rejects previously valid userspace configurations with -EINVAL,
+> > which would cause QEMU and other VMMs to fail to start VMs.
+> > 
+> > Could this buffer size be decoupled from PAGE_SIZE to avoid the entry inflation
+> > and ABI breakage on 64KB page systems?
+> > 
+> 
+> You were right, this is a real UAPI break on 64KB-page kernels. The
+> PAGE_SIZE default made the ring reservation scale with the kernel page
+> size, so a standard 64KB ring request got rejected there.
+> 
+> Leo, the PAGE_SIZE default goes back to your suggestion in the v4
+> discussion at [1]:
+> 
+> > That means 512 entries in 4kB pagesize, an 8K entries in 64kB
+> pagesize.
+> 
+> > I mean, yes, maybe we could allocate a 64k page, and set SZ=4K in
+> HDBSSBR, but that would be a waste of memory, right?
+> 
+> If we keep PAGE_SIZE, the ring ABI stays broken on larger-page kernels,
+> since the reservation keeps scaling with the page size. With SZ_4K there
+> is still some breakage, the smallest ring sizes (4KB and 8KB), but that
+> is the smallest scope we can get, because 4KB is the smallest buffer the
+> hardware can encode. Defaulting to SZ_4K also brings our ring
+> requirements in line with x86, where PML reserves the same fixed 576
+> entries.
+> 
+> Do you think we should default to SZ_4K and accept the page waste you
+> pointed out, or keep PAGE_SIZE?
+> 
 
-Agree, I vote for pmc_exists64 over __pmc_exists.
-> Thanks.
-> 
+Maybe we should rethink the way of handling this, and maybe reserved 
+entries is not the way out. 
+
+(It was for x86, but it's a very different architecture, as I mentioned 
+before)
+
+Another approach could be to those reserved pages to not be counted in the 
+ring size limit, but that could become really messy.
+
+Thanks!
+Leo
