@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214157;
-	b=iK8oTu1UVnqUig1KYMEZOVuBvsm+ifY9GBSi06QrrCFYhiiJfHI2vyDzOnUSFcSKFvuI
-	 m3+ahIO0281thIowRpwMT5RQrVvejweqsa41jC2XxyX6FDOlr938IucG+kAmF0Q5EsHJh
-	 bQYnh7A4iT4ya7zU7QTSB1xkP7hbIGt3vw93a+kqrM+j+hwFvxF/n2TVq3696/hfE2qiU
-	 v2VqrrgWe8UbJpKwYTq+MnwKo3Yz9W0t7nJCx0PrKfrkwIVIuhef97bYgr7rgmqHustaY
-	 vr/Qo1lRRdOmuoDaZxn+ZyRGxSYtLdA/Y4V5bqpm/QnRcWlsIofLpgzR6RAVccEK3nQ==
+	t=1794214158;
+	b=TEz4Al4QKDvJItotVnEoF5ZXhw/cE0/SrdUZnNKxhOrwRb4NJJZ9GdBQKspGoynxhZYp
+	 +oCZtKTg0Yek6TWcLFJaEBWHWWAZcf/a2BrQ1TMqOrmP9Xg0pQc/Ul4XkjdZLywsYe17z
+	 ks4PB4ft/XQuzgnzTvjEKF+5BlU6eumqxSuaFbThScrUX1VU1XjQU/wc6xBmexP800vbN
+	 y+LePYeLL6bDhJv+JboTGLt48bejBZvAdo+F6Z3tLuhxqsPB1NxjQ5uQ+lV9/8sCI2C2X
+	 uQcIOkW8GGKIfckPx14ToldfXdS5FIw1uY7KaLkkvZAAFEg5bklXLKfFGflEfbnV0Mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214157;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214158;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=zV83cBOy84RU8O9pg+oy+O4d35Nqre8Izu9ZB0pqdss=;
-	b=2BJr1t6+oevMMbRbjbKwS5NgbUYUsw7HrMFepEwOQp21YuKfuBhgKW/jui3eZC9xaOH8
-	 77jReTVAsAgdFJko4G4h/1l2o4xzKubgj76F92V7tXc0Lp5U4vPIJvEFwHjEj52GR+JKb
-	 tHaXSJIp3dTlZ4ifUMsgDWBBohHEzo9XjW2/YPOf+wGOh7ZlICVneyBJFn02F6TL5sle/
-	 CqV0LH77PapteV9hgJnB/qMNF+r36x0Abl5ndoMbHsWDs5627AvarCIxS/+/vMRmIIEuK
-	 rUxFQ7lDHUdt+hLY9cC06rTlnEDzlqtjBX5BMI9/+ta5mk/BhsmZ9yllJurrgknQ5Lw==
+	bh=a0vntZyOxF8rn7UjTorteWOOD/SsRuQQcJK6bvQrOpI=;
+	b=ss6ZdcNIj2SMuDf1a5S7pPGgclb9FcaNvwem41kPqm1ypSN75KBQux0QbJcf0W7q+JX7
+	 WrKbgWmxZahtl8f2jeV77n6cY2nE/bdfuFBiSplo43ywbT4dGnvdiR06ApWazLckwYOhI
+	 qRChjHIQzkYXFAzGEi2J91CSdxDD5zgJ/mlkR2cJir8FFhwZVZ40ztb+nnoM/JnTZxxCc
+	 NXFdpTprWjdYrWprJKI2LW2UkGo7MJIuvpTyJphHzEy6g/Tf5tpkGN2dkjntNjjULDqQZ
+	 C8e1hZwjnAsBZ2Lll/oceGgZVWGiX2zyp1LzIiiG+bwA8UjLIwMUTNWRQibuOOkta/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="t/vDo6jt";
-	arc=none smtp.remote-ip=91.218.175.16
-Received: from mta0.migadu.com (out-16.mta0.migadu.com [91.218.175.16])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l2Xh93UN;
+	arc=none smtp.remote-ip=95.215.58.174
+Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62F5606D81C
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:49:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A62F5606D81C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93102606EEB0
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:49:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93102606EEB0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=t/vDo6jt
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l2Xh93UN
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=uIZ6vQOatewDcLF1CVEzKXKmFmuT3AB0I9r88VqX4Hc=;
+DKIM-Signature: a=rsa-sha256; bh=AxaV3AfAPw4O30581l8EW3rn5dJ3MbmEJNZvvPbVb/c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794214154; v=1; x=1794818954;
- b=t/vDo6jtjV9dL6z49wsYmqXOmYaE2AauwWqetG6T+DyFEzqi243y9hrY20ywHjXO+9rykJhM
- wohLpBRZp/jF+dDXE/CJgnibF3oWKksu9VRBwOjRxbAjepXt/NulZEOZ8LgHPgj1RjzWS8Mo8Wm
- CKly++lZRASmyLG4bpfVOJAM=
+ t=1794214155; v=1; x=1794818955;
+ b=l2Xh93UNe159lXpKHCmo6A0bedY9CAVUMr8phiLP+OoRfzZqEyK1kzd3ftwWDkjEsRscGDYV
+ P1hKnzSh9Fbqo5xEW19WkTnoJXRbiVzTL5Obgbgsuzo4PADh2a7Z3Pc49e4kOEWESqsVzArWnkk
+ 51e/CJFskSzWdxssySu96ALw=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1eec5c458fbcf882;
-	Mon, 09 Nov 2026 08:49:14 +0000
-X-Mizu-Trace-ID: 1eec5c458fbcf882
+Received: by smtp.migadu.com with ESMTPS id 6e8dd72a3c31c95d;
+	Mon, 09 Nov 2026 08:49:15 +0000
+X-Mizu-Trace-ID: 6e8dd72a3c31c95d
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -68,9 +68,9 @@ Cc: Will Deacon <will@kernel.org>,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 06/19] KVM: arm64: selftests: Add protected-VM boot trampoline
-Date: Mon,  9 Nov 2026 08:48:41 +0000
-Message-ID: <20261109084854.840576-7-fuad.tabba@linux.dev>
+Subject: [PATCH v2 07/19] KVM: arm64: selftests: Add protected-VM library helpers
+Date: Mon,  9 Nov 2026 08:48:42 +0000
+Message-ID: <20261109084854.840576-8-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109084854.840576-1-fuad.tabba@linux.dev>
 References: <20261109084854.840576-1-fuad.tabba@linux.dev>
@@ -85,157 +85,346 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Will Deacon <will@kernel.org>
+A protected-VM test has to create the VM with the protected type and
+PSCI 0.2, boot each vCPU through the trampoline, and have the guest
+share the ucall pool before its first ucall.
 
-EL2 takes only PC and X0 from the host when it boots a protected vCPU,
-and resets everything else. So the registers the selftest library sets
-before the first run never reach the guest.
+Add lib/arm64/pkvm.c to do this. It also has a run loop, an SMCCC call
+for the guest and a reader of the locked-memory count. A secondary
+runs once with immediate_exit set, since a vCPU is a valid CPU_ON
+target only after its first KVM_RUN. No capability advertises pKVM,
+so pkvm_supported() tries to create a protected VM. The host filters
+capabilities per VM, so pkvm_has_cap() checks one on a protected
+VM's fd.
 
-Boot a protected guest through a trampoline that restores X0-X7, seven
-EL1 system registers and the stack pointer from a block X0 points to,
-then enables the MMU and branches to the guest's entry point.
-
+Co-developed-by: Will Deacon <will@kernel.org>
 Signed-off-by: Will Deacon <will@kernel.org>
 Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |  1 +
- .../selftests/kvm/include/arm64/pkvm.h        | 49 ++++++++++++++++
- .../selftests/kvm/lib/arm64/pvm-entry.S       | 57 +++++++++++++++++++
- 3 files changed, 107 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/include/arm64/pkvm.h
- create mode 100644 tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/arm64/pkvm.h        |  26 ++
+ tools/testing/selftests/kvm/lib/arm64/pkvm.c  | 255 ++++++++++++++++++
+ 3 files changed, 282 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/lib/arm64/pkvm.c
 
 diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 17a4256e90819..c254e82f9a786 100644
+index c254e82f9a786..e173a9adad3f2 100644
 --- a/tools/testing/selftests/kvm/Makefile.kvm
 +++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -35,6 +35,7 @@ LIBKVM_arm64 += lib/arm64/gic_v3.c
+@@ -34,6 +34,7 @@ LIBKVM_arm64 += lib/arm64/gic.c
+ LIBKVM_arm64 += lib/arm64/gic_v3.c
  LIBKVM_arm64 += lib/arm64/gic_v3_its.c
  LIBKVM_arm64 += lib/arm64/handlers.S
++LIBKVM_arm64 += lib/arm64/pkvm.c
  LIBKVM_arm64 += lib/arm64/processor.c
-+LIBKVM_arm64 += lib/arm64/pvm-entry.S
+ LIBKVM_arm64 += lib/arm64/pvm-entry.S
  LIBKVM_arm64 += lib/arm64/spinlock.c
- LIBKVM_arm64 += lib/arm64/ucall.c
- LIBKVM_arm64 += lib/arm64/vgic.c
 diff --git a/tools/testing/selftests/kvm/include/arm64/pkvm.h b/tools/testing/selftests/kvm/include/arm64/pkvm.h
-new file mode 100644
-index 0000000000000..29600342eca13
---- /dev/null
+index 29600342eca13..899be3d731b5a 100644
+--- a/tools/testing/selftests/kvm/include/arm64/pkvm.h
 +++ b/tools/testing/selftests/kvm/include/arm64/pkvm.h
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2025 Google LLC
-+ * Author: Will Deacon <will@kernel.org>
-+ */
+@@ -8,6 +8,9 @@
+ #define SELFTEST_KVM_ARM64_PKVM_H
+ 
+ #ifndef __ASSEMBLER__
++#include "kvm_util.h"
++#include "ucall_common.h"
 +
-+#ifndef SELFTEST_KVM_ARM64_PKVM_H
-+#define SELFTEST_KVM_ARM64_PKVM_H
+ /*
+  * Register state the boot trampoline (pvm-entry.S) restores. Only PC and X0
+  * survive to a protected guest's first run, so X0 points at this block.
+@@ -26,6 +29,29 @@ struct pvm_boot_args {
+ 	u64	tpidr_el1;
+ 	u64	sp_el1;
+ };
 +
-+#ifndef __ASSEMBLER__
-+/*
-+ * Register state the boot trampoline (pvm-entry.S) restores. Only PC and X0
-+ * survive to a protected guest's first run, so X0 points at this block.
-+ */
-+struct pvm_boot_args {
-+	u64	jump_tgt;
++/* Memslot of the trampoline's page. Test memslots start above it. */
++#define PKVM_IDMAP_MEMSLOT	1
 +
-+	u64	regs[8];
-+	u64	cpacr_el1;
-+	u64	sctlr_el1;
-+	u64	tcr_el1;
-+	u64	mair_el1;
-+	u64	ttbr0_el1;
-+	u64	vbar_el1;
++bool pkvm_supported(void);
++bool pkvm_has_cap(long cap);
++struct kvm_vm *pkvm_vm_create(unsigned int nr_vcpus, u32 features, struct kvm_vcpu *vcpus[]);
++struct kvm_vm *pkvm_vm_create_with_one_vcpu(struct kvm_vcpu **vcpu, void *guest_code);
 +
-+	u64	tpidr_el1;
-+	u64	sp_el1;
-+};
-+#endif
++/* Call after all register setup: later register writes don't reach the guest. */
++void pkvm_vcpu_setup_boot(struct kvm_vcpu *vcpu, void *guest_code);
 +
-+#define PVM_BOOT_ARGS_OFF_JUMP_TGT	0
-+#define PVM_BOOT_ARGS_OFF_X0		(PVM_BOOT_ARGS_OFF_JUMP_TGT + 8)
-+#define PVM_BOOT_ARGS_OFF_X1		(PVM_BOOT_ARGS_OFF_X0 + 8)
-+#define PVM_BOOT_ARGS_OFF_X2		(PVM_BOOT_ARGS_OFF_X1 + 8)
-+#define PVM_BOOT_ARGS_OFF_X3		(PVM_BOOT_ARGS_OFF_X2 + 8)
-+#define PVM_BOOT_ARGS_OFF_X4		(PVM_BOOT_ARGS_OFF_X3 + 8)
-+#define PVM_BOOT_ARGS_OFF_X5		(PVM_BOOT_ARGS_OFF_X4 + 8)
-+#define PVM_BOOT_ARGS_OFF_X6		(PVM_BOOT_ARGS_OFF_X5 + 8)
-+#define PVM_BOOT_ARGS_OFF_X7		(PVM_BOOT_ARGS_OFF_X6 + 8)
-+#define PVM_BOOT_ARGS_OFF_CPACR_EL1	(PVM_BOOT_ARGS_OFF_X7 + 8)
-+#define PVM_BOOT_ARGS_OFF_SCTLR_EL1	(PVM_BOOT_ARGS_OFF_CPACR_EL1 + 8)
-+#define PVM_BOOT_ARGS_OFF_TCR_EL1	(PVM_BOOT_ARGS_OFF_SCTLR_EL1 + 8)
-+#define PVM_BOOT_ARGS_OFF_MAIR_EL1	(PVM_BOOT_ARGS_OFF_TCR_EL1 + 8)
-+#define PVM_BOOT_ARGS_OFF_TTBR0_EL1	(PVM_BOOT_ARGS_OFF_MAIR_EL1 + 8)
-+#define PVM_BOOT_ARGS_OFF_VBAR_EL1	(PVM_BOOT_ARGS_OFF_TTBR0_EL1 + 8)
-+#define PVM_BOOT_ARGS_OFF_TPIDR_EL1	(PVM_BOOT_ARGS_OFF_VBAR_EL1 + 8)
-+#define PVM_BOOT_ARGS_OFF_SP_EL1	(PVM_BOOT_ARGS_OFF_TPIDR_EL1 + 8)
++/* Call before the primary's first run. */
++gpa_t pkvm_vcpu_setup_boot_secondary(struct kvm_vcpu *vcpu, void *guest_code);
++gpa_t pkvm_idmap_gpa(struct kvm_vm *vm);
 +
-+#endif /* SELFTEST_KVM_ARM64_PKVM_H */
-diff --git a/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S b/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
++void pkvm_run_loop(struct kvm_vcpu *vcpu, void (*on_sync)(struct kvm_vcpu *vcpu, struct ucall *uc));
++size_t pkvm_host_locked_vm(void);
++
++/* Called from the guest. */
++unsigned long pkvm_hvc(u32 func, u64 arg0, u64 arg1, u64 arg2);
++
++void pkvm_guest_init(void);
+ #endif
+ 
+ #define PVM_BOOT_ARGS_OFF_JUMP_TGT	0
+diff --git a/tools/testing/selftests/kvm/lib/arm64/pkvm.c b/tools/testing/selftests/kvm/lib/arm64/pkvm.c
 new file mode 100644
-index 0000000000000..d00abe03f8f84
+index 0000000000000..5119817f8b13b
 --- /dev/null
-+++ b/tools/testing/selftests/kvm/lib/arm64/pvm-entry.S
-@@ -0,0 +1,57 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/tools/testing/selftests/kvm/lib/arm64/pkvm.c
+@@ -0,0 +1,255 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
++ * Protected-VM support for the arm64 KVM selftest library.
++ *
 + * Copyright (C) 2025 Google LLC
++ * Author: Fuad Tabba <fuad.tabba@linux.dev>
 + * Author: Will Deacon <will@kernel.org>
 + */
 +
++#include <errno.h>
++
++#include <linux/arm-smccc.h>
++#include <linux/kernel.h>
++
++#include "kvm_util.h"
 +#include "pkvm.h"
++#include "processor.h"
++#include "ucall_common.h"
 +
-+	.text
-+	.balign 16
-+	.globl	pvm_entry_start
-+pvm_entry_start:
-+	mov	x30, x0
++/* Set in the guest's copy only, by pkvm_vm_create(). */
++static gpa_t pkvm_ucall_pool_gpa;
++static size_t pkvm_ucall_pool_size;
 +
-+	ldr	x0, [x30, #PVM_BOOT_ARGS_OFF_X0]
-+	ldr	x1, [x30, #PVM_BOOT_ARGS_OFF_X1]
-+	ldr	x2, [x30, #PVM_BOOT_ARGS_OFF_X2]
-+	ldr	x3, [x30, #PVM_BOOT_ARGS_OFF_X3]
-+	ldr	x4, [x30, #PVM_BOOT_ARGS_OFF_X4]
-+	ldr	x5, [x30, #PVM_BOOT_ARGS_OFF_X5]
-+	ldr	x6, [x30, #PVM_BOOT_ARGS_OFF_X6]
-+	ldr	x7, [x30, #PVM_BOOT_ARGS_OFF_X7]
++extern char pvm_entry_start[], pvm_entry_end[];
 +
-+	ldr	x8, [x30, #PVM_BOOT_ARGS_OFF_JUMP_TGT]
++#define ASSERT_BOOT_ARGS_OFF(field, off)				\
++	static_assert(offsetof(struct pvm_boot_args, field) == PVM_BOOT_ARGS_OFF_##off, #off)
 +
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_CPACR_EL1]
-+	msr	cpacr_el1, x9
++ASSERT_BOOT_ARGS_OFF(jump_tgt, JUMP_TGT);
++ASSERT_BOOT_ARGS_OFF(regs[0], X0);
++ASSERT_BOOT_ARGS_OFF(regs[1], X1);
++ASSERT_BOOT_ARGS_OFF(regs[2], X2);
++ASSERT_BOOT_ARGS_OFF(regs[3], X3);
++ASSERT_BOOT_ARGS_OFF(regs[4], X4);
++ASSERT_BOOT_ARGS_OFF(regs[5], X5);
++ASSERT_BOOT_ARGS_OFF(regs[6], X6);
++ASSERT_BOOT_ARGS_OFF(regs[7], X7);
++ASSERT_BOOT_ARGS_OFF(cpacr_el1, CPACR_EL1);
++ASSERT_BOOT_ARGS_OFF(sctlr_el1, SCTLR_EL1);
++ASSERT_BOOT_ARGS_OFF(tcr_el1, TCR_EL1);
++ASSERT_BOOT_ARGS_OFF(mair_el1, MAIR_EL1);
++ASSERT_BOOT_ARGS_OFF(ttbr0_el1, TTBR0_EL1);
++ASSERT_BOOT_ARGS_OFF(vbar_el1, VBAR_EL1);
++ASSERT_BOOT_ARGS_OFF(tpidr_el1, TPIDR_EL1);
++ASSERT_BOOT_ARGS_OFF(sp_el1, SP_EL1);
 +
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TCR_EL1]
-+	msr	tcr_el1, x9
++unsigned long pkvm_hvc(u32 func, u64 arg0, u64 arg1, u64 arg2)
++{
++	struct arm_smccc_res res;
 +
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_MAIR_EL1]
-+	msr	mair_el1, x9
++	smccc_hvc(func, arg0, arg1, arg2, 0, 0, 0, 0, &res);
++	return res.a0;
++}
 +
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TTBR0_EL1]
-+	msr	ttbr0_el1, x9
++/* Shares whole granules, so pages next to the pool are shared with it. */
++void pkvm_guest_init(void)
++{
++	u64 granule = pkvm_hvc(ARM_SMCCC_VENDOR_HYP_KVM_HYP_MEMINFO_FUNC_ID, 0, 0, 0);
++	gpa_t end = pkvm_ucall_pool_gpa + pkvm_ucall_pool_size;
++	gpa_t gpa;
 +
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_VBAR_EL1]
-+	msr	vbar_el1, x9
++	for (gpa = pkvm_ucall_pool_gpa & ~(granule - 1); gpa < end; gpa += granule)
++		GUEST_ASSERT_EQ(pkvm_hvc(ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID, gpa, 0, 0), 0);
++}
 +
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_TPIDR_EL1]
-+	msr	tpidr_el1, x9
++bool pkvm_supported(void)
++{
++	int kvm_fd, vm_fd;
 +
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_SP_EL1]
-+	mov	sp, x9
++	kvm_fd = open_kvm_dev_path_or_exit();
++	vm_fd = __kvm_ioctl(kvm_fd, KVM_CREATE_VM, (void *)KVM_VM_TYPE_ARM_PROTECTED);
 +
-+	/* No stale TLB entries, and the writes above in effect, before the MMU is on. */
-+	tlbi	vmalle1
-+	dsb	nsh
-+	isb
-+	ldr	x9, [x30, #PVM_BOOT_ARGS_OFF_SCTLR_EL1]
-+	msr	sctlr_el1, x9
-+	isb
++	if (vm_fd >= 0)
++		close(vm_fd);
++	close(kvm_fd);
 +
-+	br	x8
-+	.globl	pvm_entry_end
-+pvm_entry_end:
++	return vm_fd >= 0;
++}
++
++/* The host filters capabilities per VM, so ask a protected VM. */
++bool pkvm_has_cap(long cap)
++{
++	struct kvm_vm *vm = vm_create_barebones_type(KVM_VM_TYPE_ARM_PROTECTED);
++	bool ret = vm_check_cap(vm, cap);
++
++	kvm_vm_free(vm);
++	return ret;
++}
++
++/*
++ * The trampoline turns the MMU on, so it runs from an identity-mapped page:
++ * the first guest page of a host page at the top of the IPA space.
++ */
++gpa_t pkvm_idmap_gpa(struct kvm_vm *vm)
++{
++	unsigned int npages = vm_adjust_num_guest_pages(vm->mode, 1);
++
++	return (vm_compute_max_gfn(vm) + 1 - npages) * vm->page_size;
++}
++
++struct kvm_vm *pkvm_vm_create(unsigned int nr_vcpus, u32 features, struct kvm_vcpu *vcpus[])
++{
++	struct vm_shape shape = VM_SHAPE_DEFAULT;
++	struct kvm_vm *vm;
++	gpa_t idmap_gpa;
++	unsigned int i;
++
++	TEST_ASSERT(pvm_entry_end - pvm_entry_start +
++		    nr_vcpus * sizeof(struct pvm_boot_args) <= MIN_PAGE_SIZE,
++		    "trampoline and %u boot-args blocks overflow the idmap page", nr_vcpus);
++
++	shape.type = KVM_VM_TYPE_ARM_PROTECTED;
++	vm = __vm_create(shape, nr_vcpus, 0);
++
++	for (i = 0; i < nr_vcpus; i++) {
++		struct kvm_vcpu_init init;
++
++		kvm_get_default_vcpu_target(vm, &init);
++		init.features[0] |= features | BIT(KVM_ARM_VCPU_PSCI_0_2);
++		if (i > 0)
++			init.features[0] |= BIT(KVM_ARM_VCPU_POWER_OFF);
++
++		vcpus[i] = aarch64_vcpu_add(vm, i, &init, NULL);
++	}
++	kvm_arch_vm_finalize_vcpus(vm);
++
++	idmap_gpa = pkvm_idmap_gpa(vm);
++	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, idmap_gpa, PKVM_IDMAP_MEMSLOT,
++				    vm_adjust_num_guest_pages(vm->mode, 1), 0);
++	memcpy(addr_gpa2hva(vm, idmap_gpa), pvm_entry_start, pvm_entry_end - pvm_entry_start);
++	virt_map(vm, idmap_gpa, idmap_gpa, 1);
++
++	vm_init_descriptor_tables(vm);
++	for (i = 0; i < nr_vcpus; i++) {
++		vcpu_set_reg(vcpus[i], ARM64_CORE_REG(regs.pc), idmap_gpa);
++		vcpu_init_descriptor_tables(vcpus[i]);
++	}
++
++	write_guest_global(vm, pkvm_ucall_pool_gpa, get_ucall_pool_gpa(vm));
++	write_guest_global(vm, pkvm_ucall_pool_size,
++			   ucall_nr_pages_required(vm->page_size) * vm->page_size);
++
++	return vm;
++}
++
++/* Every block must be written before the primary's first run, when the host donates the page. */
++static gpa_t pkvm_boot_args_gpa(struct kvm_vcpu *vcpu)
++{
++	struct kvm_vm *vm = vcpu->vm;
++
++	return pkvm_idmap_gpa(vm) + vm->page_size - (vcpu->id + 1) * sizeof(struct pvm_boot_args);
++}
++
++static void pkvm_snapshot_boot_args(struct kvm_vcpu *vcpu, void *guest_code)
++{
++	struct pvm_boot_args *args = addr_gpa2hva(vcpu->vm, pkvm_boot_args_gpa(vcpu));
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(args->regs); i++)
++		args->regs[i] = vcpu_get_reg(vcpu, ARM64_CORE_REG(regs.regs[i]));
++
++	args->jump_tgt  = (u64)guest_code;
++	args->cpacr_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_CPACR_EL1));
++	args->sctlr_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_SCTLR_EL1));
++	args->tcr_el1   = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TCR_EL1));
++	args->mair_el1  = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MAIR_EL1));
++	args->ttbr0_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TTBR0_EL1));
++	args->vbar_el1  = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VBAR_EL1));
++	args->tpidr_el1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TPIDR_EL1));
++	args->sp_el1    = vcpu_get_reg(vcpu, ARM64_CORE_REG(sp_el1));
++}
++
++void pkvm_vcpu_setup_boot(struct kvm_vcpu *vcpu, void *guest_code)
++{
++	pkvm_snapshot_boot_args(vcpu, guest_code);
++	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.regs[0]), pkvm_boot_args_gpa(vcpu));
++}
++
++gpa_t pkvm_vcpu_setup_boot_secondary(struct kvm_vcpu *vcpu, void *guest_code)
++{
++	int ret;
++
++	pkvm_snapshot_boot_args(vcpu, guest_code);
++
++	/*
++	 * A guest's CPU_ON requires the target's hyp vCPU, which KVM_RUN creates.
++	 * With immediate_exit set, KVM_RUN returns before the vCPU runs.
++	 */
++	vcpu->run->immediate_exit = 1;
++	ret = __vcpu_run(vcpu);
++	vcpu->run->immediate_exit = 0;
++	TEST_ASSERT(ret == -1 && errno == EINTR,
++		    "secondary hyp-vCPU registration: rc %d errno %d", ret, errno);
++
++	return pkvm_boot_args_gpa(vcpu);
++}
++
++struct kvm_vm *pkvm_vm_create_with_one_vcpu(struct kvm_vcpu **vcpu, void *guest_code)
++{
++	struct kvm_vm *vm = pkvm_vm_create(1, 0, vcpu);
++
++	pkvm_vcpu_setup_boot(*vcpu, guest_code);
++	return vm;
++}
++
++void pkvm_run_loop(struct kvm_vcpu *vcpu, void (*on_sync)(struct kvm_vcpu *vcpu, struct ucall *uc))
++{
++	bool done = false;
++	struct ucall uc;
++
++	while (!done) {
++		u64 cmd;
++
++		vcpu_run(vcpu);
++
++		switch (cmd = get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			if (on_sync)
++				on_sync(vcpu, &uc);
++			break;
++		case UCALL_DONE:
++			done = true;
++			break;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			break;
++		case UCALL_PRINTF:
++			REPORT_GUEST_PRINTF(uc);
++			break;
++		default:
++			TEST_FAIL("Unexpected guest exit: ucall %lu, arg %lu", cmd, uc.args[1]);
++		}
++	}
++}
++
++/* Bytes the current process has locked, per RLIMIT_MEMLOCK accounting. */
++size_t pkvm_host_locked_vm(void)
++{
++	size_t size = 0, locked_kb = 0;
++	char *line = NULL;
++	FILE *f;
++
++	f = fopen("/proc/self/status", "r");
++	TEST_ASSERT(f, "fopen /proc/self/status");
++
++	while (getline(&line, &size, f) > 0) {
++		if (sscanf(line, "VmLck:\t%zu kB", &locked_kb) == 1)
++			break;
++	}
++
++	free(line);
++	fclose(f);
++
++	return locked_kb << 10;
++}
 -- 
 2.47.3
 
