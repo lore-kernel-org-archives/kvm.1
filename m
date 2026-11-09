@@ -1,107 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.63
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794260610;
-	b=bfGkrAbAsIFZYCEkWMQmysH7ogY1HVX744iEpXJCHKxDonfy0D2A+6rP4l3bDf8fzIUX
-	 FZ3fCj/W4yswOEbg30rJNqBbN3APch6n8Kksg3SCjf9BrOTFU/gKRxtEi5UnNBABlA/4T
-	 NXTsc3gb+qD4KF7CFQ7AdSPhqqpuUFwQzG5SjEJMGOmBv1iXyWPMx4YOYGCpeR5DEdnEh
-	 SilacwKAADdtQeCGSib+fQn6PWgT8tZ+4hXhGrfBp61kh2xP11nVGVo8uNeqG1nWu8DJB
-	 HZRzYHimF5vMrcnm8kVut8C0yCW3zS12Z6JI6L3VojspLCPxb7MBViZ22mrSdYYhAiQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794260610;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:From:Subject:To:Cc:References:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=PlGzrMtpD+UPBXWvU1hbKX8PvUUjtFAZffIPjAKWMj0=;
-	b=RLn2iX8JwFjJBaGdtMLGpWHWRkvFhvECiX/dx9H6gvq0m+PMAthumOfFJY0Tm3dvyyJF
-	 yj2bn4HyyicZQRXORmXETOmsCG1Zvn2tKObQUWN3EZguYTSHwQa3vIZiKumE9dOlATzLo
-	 PHWqjzSNvC5hSJlddZK2mn/Nt6aC4FC5Vhb6LyOQh8O+14CjLon1ngkfbIb00JDgNpLgF
-	 1xi8KAGgaIP4WaTa3BnjSWGJRFnKPKSLdcBepm7W/aKWe8Mm/8BErRo+gyQL9irlUgnYo
-	 j7cn2X72FX9jZLTOLz2JTXfI+axz1aq+YqKO4BwRagId/JbUzaELYXBj1gjYCUtDYAA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gObiwgO5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.63
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012063.outbound.protection.outlook.com [52.101.53.63])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794261614;
+	b=cErUu3ZV57+X09WE01wq2pNj0tPm2HfNI4mn6I0kXPS8Vs1scZGYfVgcB/tErOdjZQ9o
+	 eOzanDfG2Y4AElKgaO5LXUWRK7ck1201PKaa8t4EOxSsX5kd1+kD0FDaz+1wacRIL3YYv
+	 mm4M94LjbXXTjnrsTQjCOZwno7gQ3L8Cu0vHUCesAmSrNpYTT2XsIp8jxB1LtmkEI7esi
+	 AwOXPBXtuaAL98ltMd66Soe9hzKCxAxd8E+uDI8ZzoAfcSlIwF4yYKie2LsaBaxoR8Bsv
+	 OBLzcGz2Aq57Nj7Hbs0xdDYkwQDgqU+rTyJrrY64AyNr+Az1vmaevrQyLq77vbXuUnw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794261614;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=/tIMJ84JZNY36MRroCaRF81WiSus/b/UO47cyKClHKA=;
+	b=tLc/uRwLSr0e7TmC5ouJPBT8IJjn3OXuk4c8okljakE+coU2Gt+36vV2mhafqmbFBamj
+	 KFRThFH7l9ZgZngRYQs/9yotoCHjjqD5m4qGfgN6ha+zb8G89w0kOyf9o9WSOJx9O3if3
+	 3bTE06L5o9dQyPL0iCMPZ6q21SzN4++e5mZ0DY48Cq/cpxNtIbgTpFPzsCtjYqxEkW5M4
+	 bBbWso8E1mFNR0pMAUFZ7yGrja+2Hu+jairhOLYkIoPKkUBy10vYTBbR17V7+pT6IbRuP
+	 UGyQyqXBWlhmEkixuuWfoImdu2mA08X31Skd3kLpxAHXRmvn0Puqk7m8pi7TaSLGohA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O8iua+t7;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E232606A31C;
-	Mon,  9 Nov 2026 21:43:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E232606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1A8606A31C;
+	Mon,  9 Nov 2026 22:00:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF1A8606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gObiwgO5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wf+9vKFH8/2Ig1GtNXEerr7B+i1qIy1tVB59lOOK2jeWWJmdK+AjG2IIZAXDBmWhepb8LqiBcy9/DRe/wC9SNKz5yhC2ONK9Fn45kRCvAb7w0BhAEbtmnWZZZ6aJCEfwq0ImtX0ATtj7AMtjjUuYI/5ixPfH4mDWbOhnTSaqLPZ/1zsdadUdTIZvfE3XJkmvTiCRO0uFNolE0/Db7f1+5EFgjD6/56cHRvq3ztty8Zn69LjvG4cxJpDFsF9vWCJiUS1+/dKcU0f+LrMt8xeNYfffKrFilxYLx/pHeZMPO5UbkkZaHkqn/9TaTAzePKZzdFY/zVY4AA2bpy7pmLRUOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PlGzrMtpD+UPBXWvU1hbKX8PvUUjtFAZffIPjAKWMj0=;
- b=y9BuQJZ455qJJb1QL7JEQXpWoY/WTNOjRyWhqSGLkZ8n1HptPan67+txiVqwBJ8raGW+P6CNQ0l6IEIt4TKMFfcrmMgreAvadomO5uEK1ZsoSRWetpdDmZBPKduf011E8EprflDH8lUMGb0avNqU8I8e/QgzOYln82E9jXt//zcDCUMXwSIcBlP0XwyLaF3D4JWJ7auFUf14q4hwNnoMzGSe31m/6jNz3r5VplTVu6/UkfBsqYH0YvL4mrxoHVkri/SbSyb4czxlB0N76CXWjMdTrIP9o5HEl2gBgjQMqWhZZV3sxWkvuoj7Eu9Fb4s0jXtFuw93G/lvOLEKxp0QuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PlGzrMtpD+UPBXWvU1hbKX8PvUUjtFAZffIPjAKWMj0=;
- b=gObiwgO5EIS2Qo8bQ+y1GkujWo7nU2Iotsadh4tzbOclaIi4yZYDL9gdAZnmBTZkl0H6DZbJGxg/tTbW5UxdwLq9arScPjF5bpm+1dIA1CZRmJe80q/PUMaPNy1/ttgVfvOBQudr+fSSv0+PJzM2IasUeug1JnngdYBdmA9omazzYPmBtjK15Wk8lqmg6u8aZuauny/HcTiq0Xl5ID2R0iCCda3Y6ABgvEEXPDRNnjBEb7iIB826WsLPaP0bAd1cC6u+54Qd82O14ky/6kzWxXdBv+oh/SRzLVp7fExEX7BFW7sxb9ucZ/7Nd3tn0SCOTVeGBa7xlb/DkVYltV1+vQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY5PR12MB6549.namprd12.prod.outlook.com (2603:10b6:930:43::6)
- by BN7PPFA42F4F89B.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6dd) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
- 2026 21:43:24 +0000
-Received: from CY5PR12MB6549.namprd12.prod.outlook.com
- ([fe80::2cdd:a549:db13:202b]) by CY5PR12MB6549.namprd12.prod.outlook.com
- ([fe80::2cdd:a549:db13:202b%4]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
- 21:43:23 +0000
-Message-ID: <87abab04-2ee2-4765-b261-5268b0bc8bf1@nvidia.com>
-Date: Mon, 9 Nov 2026 16:43:16 -0500
-User-Agent: Mozilla Thunderbird
-From: Simon Song <xinmengs@nvidia.com>
-Subject: Re: [PATCH v5 7/9] rust: pci: add SR-IOV enable and disable tokens
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: dakr@kernel.org, kvm@vger.kernel.org, rust-for-linux@vger.kernel.org,
- nova-gpu@lists.linux.dev, linux-pci@vger.kernel.org, alex@shazbot.org,
- jgg@nvidia.com, yishaih@nvidia.com, skolothumtho@nvidia.com,
- kevin.tian@intel.com, airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, markus.probst@posteo.de,
- jhubbard@nvidia.com, apopple@nvidia.com, joelagnelf@nvidia.com,
- ecourtney@nvidia.com, cjia@nvidia.com, smitra@nvidia.com, kjaju@nvidia.com,
- alkumar@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com,
- kwankhede@nvidia.com, targupta@nvidia.com, linux-kernel@vger.kernel.org,
- zhiwang@kernel.org, zhiw@nvidia.com, boqun@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, work@onurozkan.dev,
- jgg@ziepe.ca, bhelgaas@google.com, kwilczynski@kernel.org,
- dri-devel@lists.freedesktop.org, peter@colberg.org
-References: <20261030171230.196717-8-xinmengs@nvidia.com>
- <DMQNRGDHAK0A.3EZQZGAHKYF47@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <DMQNRGDHAK0A.3EZQZGAHKYF47@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0P220CA0010.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::14) To CY5PR12MB6549.namprd12.prod.outlook.com
- (2603:10b6:930:43::6)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O8iua+t7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794261614; x=1825797614;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XA6H0x3ntr/Cc1TmCFZhqqstcdGHUz1VfSRh9Nu+IzQ=;
+  b=O8iua+t7DGtAAJF3anvBZkx0EVLFXdpeDs3VuPJtZaNDfqUKtNnBbGPE
+   X6mxbFueCnWvp8qpF+Ca0O17MEELse9MvvtI7u/GNZ9KwCgBDqXf3WI3v
+   idGHLtfaPr3tntubz00HPJ1zLQ8AOSgf4HWOZjHbrt7RcBydxtdYHU9C9
+   8z3jd8Uozvv0Rclpob4kciHDkpI76i6SRNkw4z21Gbc3P3JqZIQ55U8NJ
+   1m1lZj2uWcYAMUb1sTIHKFn26iJE6EpaiFNMmckCT74RioaWbiOsobbvX
+   IMa1SIXzrjIdYAEChm23s1dNWJ6Mm26wb9Y8UqUzORwqv+rp4KDwZejXf
+   Q==;
+X-CSE-ConnectionGUID: oGHOJyD5RpSppp7zaAz2gw==
+X-CSE-MsgGUID: v1YmuL+SQEWbryx8vuO6cA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3083033"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="3083033"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 13:59:47 -0800
+X-CSE-ConnectionGUID: 3TN/MOurRhKAiAia3RpTuw==
+X-CSE-MsgGUID: DdzIP4OsQ96zDL0G9A3n2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="8289484"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 13:59:28 -0800
+Message-ID: <650a864a-2f20-4864-b29f-7cbe822e894a@intel.com>
+Date: Mon, 9 Nov 2026 15:59:27 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -111,78 +72,144 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6549:EE_|BN7PPFA42F4F89B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 465c5c01-dc0e-48e1-f366-08df3eaa7a7a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|4143699003|11063799006|261021135927099003|56012099006|261026121527099003|18002099003|22082099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	q8O1Y6IJr/I9y8km4x8VzbGqS15autLqCQN602FmISiQ904lnA/nZ5egkTsStYGghqvCtj0ldUpeAMPwYtIRxEbQmCcIVuzOVnnzkGiteF2vxsggpH9I2jSvC+vtw8fSO6WhZ75k04Oh/qXhCo+g8M5qsbIxWbB7Y3jBTDMUNPMGBSZ0/y93iFnZSV061tL5RWdWX9/4SZ9Wm9j5f8Yy3c98oZUDDfJl7n5WL3ZRYGlrMuH9d9yJpzR9ILP7XmibVS/IPt8sdbpAx+mcj7m0w5dtDL8u5Ly94AI2EErTro9ZfBwUHYRTsetK0MxQTW4eEy6kLl3xIbnbfQ0dGq/+TZFdgIzI6++de5aNVn+zMsCyP5MZ3PpEE2Gzs6b7MBW2igwvBs19y7TI8Wp+qG+WWhMezbahesEDxvRVgr+1oEz4k6V1cTw8DGi9vFUwZEHNcR4bxKJhlAnrK6mn2LLgldNJPasXGeO1E+5ZWdxHJSfTe6XVskLFDCz37k0N17Bws7j7dZmppKcyFI3Gmry1I1LjpTVkYrh6E1DyYAnfKCrHO7G4lCBqotlQAzea2UEoGeYLJvwMnvPGYLWc0ROx/OIFI7G78g3WfXOjmXGeF+eM6+b8qm8oV7rqsY7oglcXqxC9k+sGBS/d/S0RA1RzIi+5XMwtGIIudZQ5npz7gFw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6549.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(4143699003)(11063799006)(261021135927099003)(56012099006)(261026121527099003)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mk1sN1U1Y3hFaURnNC9GSnpOWTJiYnpzNkYwRS90MzZTQlk1dkxQSmYzdlRm?=
- =?utf-8?B?U0ZtVGsxWEFqZU9TVVlFTkZrR0VhYTc5R1ZYVk92TlNiYVA3RDB1UTZLZ3V4?=
- =?utf-8?B?K1diZzRPS0ZwV2NVK3hiUlFXVWNpRGF1ODZEbW1IbkdFTDBXUE1kUWlzd1lT?=
- =?utf-8?B?K05KbWhOL0ZFWUd6UlQzenRWWERMRllYSnRvUWxHVVVoSis1RlBVZ2NzLzZG?=
- =?utf-8?B?ZnVLMmF5NCtKcG1mSWJKVjRiM1h1V00wTFY2czBiR0djVisrKzBrV1d3YUpN?=
- =?utf-8?B?a1hzYnRNTEd1cWhZTFFXNEdON0dCVmE4a0VDTitLYnhZMnJMSGUrbzVTN0JH?=
- =?utf-8?B?aHFUTWJZZ1VIOEdZR1NYYXpNRjhCUWtQM1Ard002VzBUM3d3bGUwV0xiTjdE?=
- =?utf-8?B?MHB3VjdMSysyVWcxOWNHalc3Q282cTlnRnZmRE9LTTlEOVFaNG40WWcxMldV?=
- =?utf-8?B?QVk0YVE2YkNHTmhjZnhjRmY2SWs2azJFOWxyRUpWSFJjdVAxVkdYa2RETSsy?=
- =?utf-8?B?aElReHBJa3ArU1QwVi9FTTI2WC8yVUJnNVRIY2RreUN4NVJyU3hiOTJKWit1?=
- =?utf-8?B?ZFBqY2RDUm5qcVM5VHdyQVhXbDJTLzZpYlZ5bUJmVVhzVkt1TzhPODFsKzdP?=
- =?utf-8?B?NHhJNDVxMWpkUmRGK1lZd29icmFES2g3a09EdEFJMWRsditBcFB4VVNMV0th?=
- =?utf-8?B?cFJ3cU5qdVdaS0tQYy9kNzBHbTl2dXdVekhMKytBYnZFbXE1VmFCNU5CNUMz?=
- =?utf-8?B?YVVvcFNkVU9HMFRHczZURjVDQU1yNURJU01XQ0tpVGtqMllHamY0MzBqQ0Va?=
- =?utf-8?B?VllrbXBUM2x6cWt5QkhacHgvbVdXaDVwaHJwQ3drSkRXSW5kaE85a0pJTzc5?=
- =?utf-8?B?RGdUbHhZd213WHl1VWlkSzI1NWhyamVWMSs3V2gyb0x6K1psS2gxNEJyMU95?=
- =?utf-8?B?YnhwdTdZTm5JeW5TTTVkTGJKTHZqbGsvNWVGVXdHZGRFa2hHNFNjelpteEc4?=
- =?utf-8?B?SVgxSDVHMkpGNXJjaTZMejNsOUFSZzZ2MEZpNGd4N0RoRDJUYkJyT1RVekJh?=
- =?utf-8?B?WE90cVAwVkxqQlZqaXd2ZWUzNENxd25MUTA4KzF6VmZLZzB6WGtaaU93bGdk?=
- =?utf-8?B?eDRNZXoyZzNSeHVSN1JCbjFnTjd2MnZEYTE4TE9kQ3ZCVFpreVZuVE85L2Er?=
- =?utf-8?B?Ukd6UC8xaXFaTEFRck1ZM2pZKzBoZ2k1TU5PMGZiM0lOQ1BYdzdycGdBQnJE?=
- =?utf-8?B?VDB3YXM2eG9MakxHVENXTEcyT2thczhFNkxUZnpmb0doaVlqV1dUR2RPQW81?=
- =?utf-8?B?R1NLYzlwUDFjMkRyMUlRMWNxLzUzSVBiNWR3V3pQMkx0cVBGdEkzSXkvME95?=
- =?utf-8?B?TGQ3V1hhRU9QUEZnKy9hMlFlcVNJQjA1U2lRZk5MTHAyZ2tOOG1UeE16TktL?=
- =?utf-8?B?Qmw3eUt5TEtTaENPZkIzb1Y0UjdZRWdLMFNVbTljR1RDdHFKUklRQlBmN2dU?=
- =?utf-8?B?YmdsNGxxQ0VKaUd6MDB3L0JSU3BibkE1NWNjTzQ0N290M1ErcU9FZWpGc0RI?=
- =?utf-8?B?WFQ2WGFkRmorcVhOVjIvdCtGaEUrVzNSUE9jMnU4UGdPdHRyempab2JkZlVP?=
- =?utf-8?B?OFlubjhHR0pKd2hvbnFqejZnZFJCTzVVQmZkV0IyaU5ZMlI4eHF6UUt0U3dl?=
- =?utf-8?B?akxXdkhaZHRIV0dSRTkvTjNqakc0dUxOR3hHbmNzSnlSU1FqZE5wT1NsQk4x?=
- =?utf-8?B?RU1ZVDg2VjRqS3FJUnZUVkE0SXdxVHRzSjBic1BZQ0s5MzNiZlh2cGJuTjg0?=
- =?utf-8?B?d0I5aER0MnpuYkZDQ2Vpd0tlcXRMc2lFTmFVcVpRT05mL1lCOGlaRE5NVk9q?=
- =?utf-8?B?eFg2NncrT1phNTZ2WDdDV0NVeWsxTXIrLzdUS1dMMCtkcTF0UU52eU1hMEF6?=
- =?utf-8?B?WVVoVHQrbzMzUUo3SlRUaUJ3bWxrZGdwYVcvVHVTck0wWFRxWnBWUlgvcUpz?=
- =?utf-8?B?NmNSS3AvL1RENGM3dTFxNWs0dnYzOXFGNkgxdksxZFRSc3Iyckhlck5EY3F6?=
- =?utf-8?B?T0psMk5NQXFBcG1wcU1CTmI5TG96MVlkcVRTbkRkR2I0Yzg3MVYzMHRsN0Q5?=
- =?utf-8?B?c29kZEJsdVVIeFduWUc0SVVUWnRkUTBmOGpZRkMwVVFwVDArSGUxTThWUHF5?=
- =?utf-8?B?ei9NemR6T1F1WlM0QWhnT0w2cTdTZnRzbEZBYlhJMTVnSStGYkh4SzB6Ymtz?=
- =?utf-8?B?cWhVdDhKZVpldlVkZDcwWlpDMU5GQlRxNER0eERwaHhDamJHZ01JcHpVakwr?=
- =?utf-8?B?bmt6WlNQK0NlY0xxOGVLaVpyOERiY1hFUk1ZdG9ZbEcyeklhYkhMQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 465c5c01-dc0e-48e1-f366-08df3eaa7a7a
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6549.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 21:43:23.6722
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wU7Fi0pSjGpeGTWOyMsjQQlpu2LASj+toDwVYi3Om+Vwhtum6GFQs+CDVwmCgJjlmCcuCd8iG93RJYu1lkDhWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFA42F4F89B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-5-zide.chen@intel.com> <au4kyULjUYdqbfIq@google.com>
+ <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
+ <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
+ <e977b107-7762-46d3-ba31-832eb9ae609c@intel.com>
+ <CAO9r8zPVt++jgZD3-Jd-DYKMjYyAfUuQkvEXD4pKqe0bdYE29A@mail.gmail.com>
+ <c2844568-f8f6-450e-a718-1e9e3b7b3e4b@intel.com>
+ <avI20tEzyvIshy2f@google.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <avI20tEzyvIshy2f@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon Nov 9, 2026 at 8:53 PM JST, Alexandre Courbot wrote:
-<...>
-> Also it would be nice if the returned errors could be documented, as
-> that would also document the conditions required for this method to run
-> (i.e. a VF registration must be active).
 
-I will document the returned error types in the next respin.
 
-Thanks,
-Simon
+On 11/9/2026 3:12 PM, Yosry Ahmed wrote:
+> On Mon, Nov 09, 2026 at 12:59:01PM -0600, Chen, Zide wrote:
+>>
+>>
+>> On 11/9/2026 12:07 PM, Yosry Ahmed wrote:
+>>>>>>>> +/*
+>>>>>>>> + * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
+>>>>>>>> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
+>>>>>>>> + * so iteration up to KVM's maximum counter count is safe.
+>>>>>>>> + */
+>>>>>>>> +#define kvm_for_each_gp_counter(i, mask)    \
+>>>>>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
+>>>>>>>> +
+>>>>>>>> +#define kvm_for_each_fixed_counter(i, mask) \
+>>>>>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
+>>>>>>>
+>>>>>>> These are not used in this patch, are they?
+>>>>>>>
+>>>>>>> They should probably be introduced when they are used. Also, do we
+>>>>>>> always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
+>>>>>>> yes, maybe we should pass in the pmu here instead?
+>>>>>>
+>>>>>> The intent was to group all bitmap accessor helpers together in this
+>>>>>> patch for easier review so that the big patch 5/18 could be kept to
+>>>>>> mostly mechanical replacements.
+>>>>>>
+>>>>>> But if you prefer introducing them on first use, I'll move their
+>>>>>> definitions to patch 5.
+>>>>>
+>>>>> Yeah I think it's clearer to see what their definitions are with their usage.
+>>>>
+>>>> OK, then I can move these two macros to the next patch.
+>>>>>>
+>>>>>> Regarding passing 'pmu' directly, I initially implemented it in this
+>>>>>> way, but I can't recall why I discarded it. I will take another look.
+>>>>>
+>>>>> Thanks.
+>>>>
+>>>> How about these? With them, we can remove the {gp,fixed}_mask variables
+>>>> that you pointed out in your review of 5/18. The APIs are more
+>>>> complicated, but the caller code is much cleaner.
+>>>
+>>> I don't understand why we can't keep the macros as-is, but just move the
+>>> calls to kvm_gp_pmc_mask() and kvm_fixed_pmc_mask() inside the macros?
+>>
+>> for_each_set_bit() requires a pointer (`const unsigned long *`) as
+>> input, but AFAICT a loop macro cannot declare a temporary local
+>> variable, nor it can use do { ... } while(0). So something like:
+>>
+>> #define kvm_for_each_gp_counter(i, pmu)                              \
+>>         unsigned long gp_mask = kvm_gp_pmc_mask(pmu);                   \
+>>         for_each_set_bit((i), &(gp_mask), KVM_MAX_NR_GP_COUNTERS)
+>>
+> 
+> Gemini suggested compount literals, and it seems to at least compile and
+> I see a few instances around the kernel:
+> 
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index f949fdbf359c6..3930680937577 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -1347,8 +1347,6 @@ static __always_inline u32 gp_eventsel_msr(u32 idx)
+>  static void kvm_pmu_load_guest_pmcs(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> -	unsigned long fixed_mask = kvm_fixed_pmc_mask(pmu);
+> -	unsigned long gp_mask = kvm_gp_pmc_mask(pmu);
+
+I am very happy to see these variables go away. Thank you!
+
+>  	struct kvm_pmc *pmc;
+>  	u32 i;
+>  
+> @@ -1357,14 +1355,14 @@ static void kvm_pmu_load_guest_pmcs(struct kvm_vcpu *vcpu)
+>  	 * is intercepted if hardware has counters that aren't visible to the
+>  	 * guest (KVM will inject #GP as appropriate).
+>  	 */
+> -	kvm_for_each_gp_counter(i, gp_mask) {
+> +	kvm_for_each_gp_counter(i, pmu) {
+>  		pmc = &pmu->gp_counters[i];
+>  
+>  		if (pmc->counter != rdpmc(i))
+>  			wrmsrq(gp_counter_msr(i), pmc->counter);
+>  		wrmsrq(gp_eventsel_msr(i), pmc->eventsel_hw);
+>  	}
+> -	kvm_for_each_fixed_counter(i, fixed_mask) {
+> +	kvm_for_each_fixed_counter(i, pmu) {
+>  		pmc = &pmu->fixed_counters[i];
+>  
+>  		if (pmc->counter != rdpmc(INTEL_PMC_FIXED_RDPMC_BASE | i))
+> diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+> index 98e6f2443b82e..37a6664fdb9c9 100644
+> --- a/arch/x86/kvm/pmu.h
+> +++ b/arch/x86/kvm/pmu.h
+> @@ -149,11 +149,11 @@ static inline struct kvm_pmc *kvm_pmc_idx_to_pmc(struct kvm_pmu *pmu, int idx)
+>   * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
+>   * so iteration up to KVM's maximum counter count is safe.
+>   */
+> -#define kvm_for_each_gp_counter(i, mask)	\
+> -	for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
+> +#define kvm_for_each_gp_counter(i, pmu)	\
+> +	for_each_set_bit((i), &(unsigned long){ kvm_gp_pmc_mask(pmu) }, KVM_MAX_NR_GP_COUNTERS)
+>  
+> -#define kvm_for_each_fixed_counter(i, mask)	\
+> -	for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
+> +#define kvm_for_each_fixed_counter(i, pmu)	\
+> +	for_each_set_bit((i), &(unsigned long){ kvm_fixed_pmc_mask(pmu) }, KVM_MAX_NR_FIXED_COUNTERS)
+
+Right, I didn't realize C99 compound literals could be used here.
+
+However, with this suggested code, kvm_gp_pmc_mask() would be
+re-evaluated on every iteration. It seems this “expression with side
+effects evaluated more than once” is not encouraged by the coding style,
+is it?
 
