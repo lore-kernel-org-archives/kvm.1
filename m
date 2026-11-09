@@ -1,62 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214266;
-	b=rahSxlZFmMRc4E1Cu2y5Pcrswql7S8wloOru/yoV7ynrKvK4om80lis651eU+CYHY1VR
-	 K297iTHx+OPa+udjV5Rv1vfBPLQTYuqPBU3owBbpGJlsGkdO4HWkaLDO584YHAlqWMQt2
-	 Maa8bVjL62W0MWAx3d5p8FBcMG1V3U+KQYwcuu5RMqZh4F5T0KTC6YHbsCgp0lSkQRIGB
-	 4ImeN5jCV6aRh9J516hB9Yo//gZS9AMZpDgR/88y0EpdA+/052u/zAI6cNjS6nMeJLFmi
-	 vMdQyCK/nXGmuvtQkVnbpTAiy+ElHzEeGNcRkWPZ342qQcS5dul491TKNhwqfCM3mfw==
+	t=1794214407;
+	b=gnnjf+tq83CNgjTk5THHgBJnYJjCDC53soM1T7zD0TN7nMfDz1rBo294VnqKCYDo3Cw8
+	 9ePS9Eu5anLCC04tdqxSn7ZcRXxvav84GBohrxrPESu23ylQyTjmVgVaXOul7slze4ZAl
+	 ooV6FXdnD+FpzwjOXBfLa4I59Dowmlr024Df0N5bmuzPxTohWT5REu1VaZ+hwyszhWwry
+	 FLe0Fwd063Bu8UBv0hjolTkw1yAgFmRqpbKEuCJ4iK2oSYzZfbHd3kddGR3M8MlTMqISe
+	 oH4/J2ApC2/kCNquSdMndMzkGILm4QhFpFtEwKYoHyhpp8I3OkQnSatz/rQqDCT8n0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214266;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=wK3Kj9ggnG7kxPcgujmWtBo3WnCYjA2Q28UFcLisF6c=;
-	b=ji3X/mgxtK+nCem3bjx1Rr69fRBzd99FWMZmbYIdfPSqHXRoysFYONwEVLY8bcellGHg
-	 axCUvZaegN159gm7Kxd0bmHY/dH2nb96/s1RDV0u+MjnGQAqZtjEIxo0dk6s3125dPgvP
-	 UzkNQR3yQqc14VAUO2sxQHaaFIkVZvCX/p7ARSNND6x0uRdzaDy17Z9+jdxy7oWPU7Vpz
-	 2IXduQkhIgZhu+Mk+DzF3s8yMmAzvWPr7/zbgUZ5b+qefBdRJtCnf0jEvUKIiv01PAIa/
-	 YYqHSDtd1Y0EjEarKcPpt/yzxOHo9o1jl4HalVkkHE0jEiUavMM/Qnmw8fnW8JaLRkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214407;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=6t+vf6iGGvmtu53Ld38Ljlix1wD8ca6ce6t34f5kd3M=;
+	b=sS8IhDFDTzDk/sUHwS+MGEnyevZgVrBCFj15thdR5ZNVDVTCFrH3Trdrav8ipr3nqTBN
+	 vZroAazKvijQp4aBRSpwvVJNN7TdJZpyDajqTuKKH1p2RdOH6b/PPe0xvblyZq8qhn+bk
+	 Wrj0gNY3CVIAxJLqtvjgpKY529r3IlHpJWQqqhRrzY9aeWDs2z7aOvblc8V95H9zLT3p4
+	 cntPoh9Y7+FRf1NWon55jz3EqoVOon5UTby8pCAwX/OKu4iEWFTBxW0rsjiWrevk0MMEP
+	 BZoAn+UHQ99tIA24ZAhPXsE9JKrGdJDEw8UkO8ZKTppXeQqMCmyxsl1Cz2Xa8pLTvSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Aelk5yEk;
-	arc=none smtp.remote-ip=91.218.175.139
-Received: from mta0.migadu.com (out-139.mta0.migadu.com [91.218.175.139])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CNpScM05;
+	arc=none smtp.remote-ip=198.175.65.18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8E660735DC
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:51:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F8E660735DC
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA19606D80F;
+	Mon,  9 Nov 2026 08:53:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAA19606D80F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Aelk5yEk
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=z1iR6/blDGadFjt4UJ120lWqA44OWbGZlUOQA5is+Kw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794214264; v=1; x=1794819064;
- b=Aelk5yEkc00Lbm2K98coLlcnHb5AzGWx3TkPoyFoqKE5XOdGh6jyzySuzROwP8lrRoLIauNm
- +brJgg8xmz+geyDxYSPsDF/PYv3FRHV1hQ1Wha/xJs5rNnX8xUOaSU0WP3Ydp2j9m/fgzqPCQAk
- wjoy33cDkD61DnQDkl548d6I=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 6bf2f7ddf1fb0613;
-	Mon, 09 Nov 2026 08:51:04 +0000
-X-Mizu-Trace-ID: 6bf2f7ddf1fb0613
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5c00d7ac49dso2543e87.1
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 00:51:00 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErH0hcSuffeDexStV3DzPrMRquJhutaDDXXb+Z0tqlLYDs9avkTnAcyDPvTij8hiSumwuHo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8wWF8aZrmtmGQR1KEg9m0LJzlv37MET9eFYzu9k7coWmHXnjBF
-	F0hZ4rxkpntsvwxRFbyS4KcIXHrrNtVg3kqjoNFD3k+SUCJx3vJbHBJwYbs0wsKP1hmVW67Xgao
-	+wxZkDppBL0R1wu6l1vfXk7cvUeKTL7QfYa8uO5Tu
-X-Received: by 2002:a05:6512:1192:b0:5bf:f0fb:2c9c with SMTP id
- 2adb3069b0e04-5c00b5c77a9mr135877e87.5.1794214259400; Mon, 09 Nov 2026
- 00:50:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CNpScM05
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794214407; x=1825750407;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PDyVAs/P/xjSKJ+msEBqQaraDJZto4lbelsWIOUQKPQ=;
+  b=CNpScM05Ns0RBbVM0jDbjWh5GYs8pcJYVU9qjlPY2GeZ9OVju/Kacqeh
+   FnGn7kfoHc+jXaDKgl2ztsu3MLuAUPTRxPSs9Ui5+6FaFgYWB2F4B8hNo
+   2oVc+l4nirZM+utxlALzT6rN7z58FaViG8I5VExrjllyfJI+i54wC/zbh
+   LPkBEAAWWfTDcgpCO8W0Q4/CSkA4Utrj8Ow3w82oG84ri55vwJt/NIQg5
+   eUPxA+6fHiz/iQ5TMd2dqZf6LPnOuHL0Zm/lI8KhDGw6t7eo0rRPDvfk2
+   zGp3z9k/lyKd5itzvr6XN99l0uRtug5VxuzQGPm1fPCLftnIxJ0QKGN/x
+   Q==;
+X-CSE-ConnectionGUID: SKerGGctRCuFdvAyT5sFqw==
+X-CSE-MsgGUID: 19YoOawcSZef8vGSsv2P3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="2947798"
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="2947798"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 00:53:26 -0800
+X-CSE-ConnectionGUID: q/yk6RX0TLeiSS8T5mjpuw==
+X-CSE-MsgGUID: h1Nf3eMlRWeBVo2y3gRcPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="8156437"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 00:53:24 -0800
+Message-ID: <6c3b5480-258c-471d-b700-4931d408161f@linux.intel.com>
+Date: Mon, 9 Nov 2026 16:53:20 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,30 +72,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109083205.806619-1-fuad.tabba@linux.dev> <20261109083205.806619-5-fuad.tabba@linux.dev>
- <sashiko-outbox-204612@kernel.org>
-In-Reply-To: <sashiko-outbox-204612@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Mon, 9 Nov 2026 08:50:22 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTwgOuCha6e7PREa8WkJMChtgiRfFZjTBadV-ZjzqA=miA@mail.gmail.com>
-X-Gm-Features: AclHuK--kTlM3MBNHvnwf6yTPpfzyPkz-vODHm7UL62nptqv6qWIB2G90_uWc1M
-Message-ID: <CA+EHjTwgOuCha6e7PREa8WkJMChtgiRfFZjTBadV-ZjzqA=miA@mail.gmail.com>
-Subject: Re: [PATCH 04/16] KVM: arm64: Advertise ID_AA64ZFR0_EL1 to protected VMs
-To: sashiko-reviews@lists.linux.dev
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16.1] KVM: selftests: Add support for TDX ucalls, via
+ TDVMCALL_REPORT_FATAL_ERROR
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sagi Shahar <sagis@google.com>,
+ Lisa Wang <wyihan@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Ackerley Tng <ackerleytng@google.com>
+References: <20261105-tdx-selftests-v16-18-2024e8fa517a@google.com>
+ <20261106164732.3939387-1-seanjc@google.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20261106164732.3939387-1-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, 9 Nov 2026 at 08:48, <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found no new issues
-> in this patch, but noticed 1 related pre-existing issue it does not
-> introduce:
-> - [High] KVM: arm64: GPA and GPI exposed without vm_has_ptrauth() in
->   pvmid_aa64isar1 [1]
+On 11/7/2026 12:47 AM, Sean Christopherson wrote:
+> Add support for doing ucalls on TDX by abusing TDVMCALL_REPORT_FATAL_ERROR
+> to pass the address of the payload to the host.  The "fatal error" TDVMCALL
+> is perfectly suited for passing information to host userspace, as both the
+> TDX Module and KVM allow the guest to pass (almost) all registers to the
+> host, i.e. provide enough of a data payload to make a collision with a real
+> fatal error practically impossible.
+> 
+> TDX can't use port I/O, as the TDX ABI doesn't allow the guest to share
+> arbitrary register state with the host on a port I/O exit, and the port I/O
+> data payload is limited to 4 bytes, i.e. would potentially truncate the
+> ucall address.
+> 
+> Alternatively, TDX could use MMIO, but using a magic emulated MMIO address
+> is fragile (see the TODO in __vm_create()), especially for TDX since TDX
+> doesn't support read-only memslots, i.e. doesn't have line of sight towards
+> addressing the TODO.  E.g. TDX could hardcode the address to something that
+> is all but guaranteed to be unused on x86, e.g. the I/O APIC base address
+> or the HPET address, but that doesn't truly address the fragility concerns,
+> and it's ugly because ucall_arch_init() would completely ignore the passed
+> in @mmio_gpa despite obviously utilizing emulated MMIO.
+> 
+> Use a simple flag to route vCPUs/VMs to the right do_ucall() routine, and
+> take care to set the flag via write_guest_global() so that ucall_arch_init()
+> is thread safe (in the *extremely* unlikely scenario a single test creates
+> both TDX and non-TDX VMs *concurrently).
+                                       ^
+Nit: missing a '*'?
 
-Fixed here:
+> 
+> Alternatively, a virtual function pointer could be used to dispatch to the
+> correct do_ucall() via an indirect branch, but that has zero advantages
+> other than making ucall_arch_do_ucall() look prettier, at the cost of being
+> slightly harder to understand and making ucall_arch_init() uglier.  KISS.
+> 
+> Cc: Sagi Shahar <sagis@google.com>
+> Cc: Lisa Wang <wyihan@google.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Binbin Wu <binbin.wu@linux.intel.com>
+> Cc: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-https://lore.kernel.org/all/20261109084854.840576-2-fuad.tabba@linux.dev/
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-/fuad
+BTW, the in-reply-to patch didn't trigger a new round of Sashiko review.
+
