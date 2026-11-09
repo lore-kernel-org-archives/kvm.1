@@ -1,83 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794263489;
-	b=eRm5Eg4II1Uw5PsVojLPS+tvG8s/dJpyTzlhu4UJrOiOw5AFOFNNvTn3wy76BCGA3T77
-	 jpokonqptsarDo+1NIX6qG5xNNKCT1B+w9JsmwjIvp5o7vCupYNLT2fA8VvpZP92tqd2V
-	 xq3ulGNP8T9Rd/vEmHJMv2hKVkKVhD42k9V3IthcZL1UyNZ3YbapLm8F/ABNar6Vx/KWS
-	 jjxWZl0TxGdA62SDQCDLYY9/0XTDaR3GIUe/VHoa8zHEzgHdrI5F6YVyLsILZb8D1emGe
-	 e2OywatK8v5T9CknHx4rjcpGYY6mR4ebZjV113JJS0SD3Aohxd8ne5VAmQuAjaV0G6w==
+	t=1794263492;
+	b=MeYQbIMidDyL5fPotGWYjuXOcQS46nGLUZbkJfaBIKuJK3aBChoe96KwbNhImDpDHjmg
+	 OIW95q98OUCQd9aHGmDxIC7NsdFdf3ZgQc0CascTk56U3JqAYnHq4EBfsWlcgSyZvoMSg
+	 MiqJbkgdO7slMrrjhGEoyKTm1AUjm4ArUuc9VoWazIwq4B09EbZA6oULsQqrJPD0jPR8s
+	 xpdp9bdBwnAltMFxerW7sti2/oPXDfa1djpVTuCUqF0EL8P/pu/5vDPP8DZdWRjbkGKU6
+	 3Iy4x0lrv79IhMG1o2huAq+b62qSa/aplG5lUbj86HxEYFIk2G/Q2hpQsJzaQshRVlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794263489;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794263492;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=sQYbIzhYybqZKpHEFkom106KOJMNZUoms04H7LpX2sA=;
-	b=Ilib9XS6a1SjPoty9eXs+yAH98uABVxWpzRxGvWnQrT7Ob3e5BAwF7jfmnAS+okVonOV
-	 MRqLEm8cZPk97sOXONlkj8YmLM/7fZrv/rB69HAQxL83nywoB7DL4pigtpA74S6fxuN11
-	 4JswD6HcaYT6IPNBubJzmVsBQ0NCQ+ENMu/LEmGAgQ6IdNwDjoRhKn+a+9EjsSnCj9wIQ
-	 TTF/Qgou26jKHPiM2RxSR669EiQ5Zd/MVEom5BV4990KO4MC2UhryvTGuEsOBezJEv4SF
-	 fxSK9iCp69JbzOnBTb9csOVFAi1oyzoR0yo+gACAjr/U+WwuVMM0YQEoH3cuZV/AUAg==
+	bh=dpKkV3dUzsFB7q79rXzQWVH/sr/9fyjU2C+7DXlAe6I=;
+	b=C1JAlK7mZ/QXW1TLL+HTVoomaF8+CUmnWz7//ox8iXunzewNNjxeEItAVV8I16QGYYkm
+	 vFPn2nkFsTuvz1hR0S9Asie0G6zPMjwjDpA3SWDdHEbR/HcFRLjQg7j9K3YaJlFl1awwQ
+	 giZCDVraMZBwjwmJpqgDttQ4J8EzGfZ2EzEdZa08RwqTRWTrmqzj8K7ZicqxKn9E6Zd5E
+	 HG0ihDCqI2KeVM2YX7f9Mq7biQq79HYswp0iflS10D6YdE3pmG4dpuccLPeP9f5lSAFf3
+	 DY+AglvEOhliXzO8fknIr5zJKbqmgz5OdDaHW4huZVDiILQH4AXSyfvXoihdBJzfRCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linaro.org;
 	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Rdn0+gj7;
-	arc=none smtp.remote-ip=209.85.210.173
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ZDY7bbQv;
+	arc=none smtp.remote-ip=209.85.210.178
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB24606A33B
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 22:31:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BB24606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CB6606A335
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 22:31:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91CB6606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Rdn0+gj7
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a058315c79so696093b3a.3
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 14:31:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ZDY7bbQv
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-886e61fa30fso588453b3a.1
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 14:31:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1794263489; x=1794868289; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1794263491; x=1794868291; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=sQYbIzhYybqZKpHEFkom106KOJMNZUoms04H7LpX2sA=;
-        b=Rdn0+gj7t6Dw9fvrgNfXEgvCn/Yy7ZmCPUuU3APnqa+fLhCWOXi4sJZ/kfS1NhkTKh
-         bMv7DyAlSdFvd34VTqrOnvTWOoJ2vZEzaw16/oPMQW+B64oYHKPfNGv10egYrzXvnFtS
-         jBxi3ctvv+wEFi2HF/VuzxowQMjDXfxgLdtcDi/B2Ep8DswE2cxcabJxB5EJPJ50xRLp
-         MrBCTNUu0+z+Tpvs8sX8DWRPYhVLkOVal1HAS3HqJaOeI3T7aIeTwaud8+OIRGbIbkHu
-         xLV2Hl8+KSLA3xbljnnAgTztjlgmsUC6A8OD0QzBfZlODIY6edDjjqkqqhDwHMgSJkTr
-         8X7g==
+        bh=dpKkV3dUzsFB7q79rXzQWVH/sr/9fyjU2C+7DXlAe6I=;
+        b=ZDY7bbQvdJckR8l2xLpkq3TJKEupmUTTiA3wJ567AWG5DtLyY/DFaZIPwYBxnMkCCi
+         Lat9FRIsOL3wbTuMq15Pk9LkcHpaTsQ6HLa9O6n8ozqSbFhWQMDW3LsVv2WPCPPBpvrv
+         pvUn1tmjLdKjgztGdOfBSvxNiR3jDlCnbvekeswxQ/gbt24cpfBnYYSAsaLCe0tB4WjE
+         NeydYVGpQD846x6SvxhmVbGDOCIjP/b5/Ag8tzOlLprDdfhuqwu7dxKzdG7aZQF9xsW1
+         enWyh2plSzpLiBqX+o12WtDjKclTGr73bwGBPEVakOuxsa/Vl7E/pZIu57xqIKhubV8a
+         wKXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794263489; x=1794868289;
+        d=1e100.net; s=20260707; t=1794263491; x=1794868291;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sQYbIzhYybqZKpHEFkom106KOJMNZUoms04H7LpX2sA=;
-        b=hkYbBhsqMM4njiUSiuyEUJL41MusD0SkscDKqViiAUdi/q+yrGc93f+es6eTq383O/
-         WUgYYUrU0ebgCn4goC9KgbYNtDasSoBp7w1zMYWJ9Dv/l1vXbhvRKqCZ4YF7RH+Qlknd
-         rEitoDw9nXFqMKkOIC8ud/NqHqadCCak0Fv2RxQ4dk1otmn4TMXWWlivs0ocH/SMdccc
-         0LzzJHvGT5xmKyLihWZw8l3YEB+oyXwnlRtayfuPefj22VOC9fZ25XAYYXQWHvjqEiQe
-         P0MPWLqwYfmJ0ZRBajmq5di45c1va1r13OzY1e07oqY2JfFoFfJN1st25TAKMk7zBrwq
-         NHMA==
-X-Forwarded-Encrypted: i=1; AL+hErEFEL81QYsoiWmULBoej08VuMEc8+U+YNv45Ly/RjsBRImknAoE+392rkOTVZp23y6cfUc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8i533MbmXqoVsGEL0rfHFCSGhGgrc36+H/wU/To931zXsgZc16
-	Nnz6pWgED3eYcdZdXwXtbJuGd4j+0TGhswX+oVSydeBoq7rliNiEt0bNBi6AvKlgevQ=
-X-Gm-Gg: AYBFou0hvoba2HYa8y4n62TaqsAZSgCYaA1xciDTfL7vd9z3UkUa6EyEh6f1f2MYnKj
-	tS7UUIPBprOtG9IvcbWA7RFcSUlNVxN80ESt/PKMNKrDUOR6TXnvIp9oYse934oFWi1w3jNwii/
-	9bPVVmeek/j4Ted2uRDvTK+SOslCv+WpI9ouGJlzd63hujELhUWMV3sp9NoMqyg95t/+mi/TB64
-	vL0s4JOGjRV/oTtVgTf01X0jXPP4NRnHQB5OZiN1Uj7IKVh6T9fFEld3T0F+/h99g/vb1onaQBZ
-	dENkdFEuoy8YzDzj5QYaZoeEuxKzPe+LkvoSdea7G6VV5NxxpvgP+GQE/cdBd6EiBqRaMKb181Y
-	0NIvyoFKCn3rot9kpBhscj2M6gZIwowZIqVDXMam5n75dAlTYJVQPuFY8u7N6Tua33J2Q9MmbuG
-	f5OYgyVwjGdJeWhUamO4l5C33I2PLC3xRyaevMtb4U4mKqMYQnFunJxKJ1yFJyXXl5Q8rvTBV1j
-	3iJapEq/wp6th7I4dBNUhg2Y+6Zj4FppRfidc+E/Duvn10S+fvALhACwAJVjuKUX7XQy/J1BykP
-	yY6h+ieHpvJlS/GIByAfXVb/ZWP6NkZYp/8rYV3brIWUu/k5cnsIbA==
-X-Received: by 2002:a05:6a00:812:b0:886:cae0:fb6f with SMTP id d2e1a72fcca58-8ba852368abmr890817b3a.14.1794263488778;
-        Mon, 09 Nov 2026 14:31:28 -0800 (PST)
+        bh=dpKkV3dUzsFB7q79rXzQWVH/sr/9fyjU2C+7DXlAe6I=;
+        b=FhzECwfhZjedUgtaIIUExQTQx2ZYaY+4d+YUBj7IzWjfDwNpcu8vVxUbReYGFkFKVc
+         +z29DzE03iuQxT5QgOw/N5qycT4y3t2ExYqtRyOg64Qo5f8b8RKEySeuB9+xC2DkiHBc
+         9ZIQSWb23nUo9WqT0qKBSEYHiLUSs4L9SYDdq1KHG+JegSffsD5S9jctN+Dxs2lcDNeE
+         LUi/kvqSv4tjqugUYRGyT+kaAnYUShfcGaMeFpyG9aQRXpfOi/ghOZ5PGS8Sf4/CX70O
+         s7+0rQEY/m22/NC279JemJ2YVJo10ytxbgDuMk6iBkOSHf48Jc7zIOQEia/wn+ObvOMy
+         B0Qw==
+X-Forwarded-Encrypted: i=1; AL+hErGn5jjQkEPN/f6KMMY05ZrbiqBSpZZS043MCIEI9DibJau6dpsVGkFWqgxdQaaiYT43UWk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8FgXqLOUP6+AygRy4toW5dgtSPqvEF4163w/5TWCNBE5xcWwQk
+	OotLbLHTcy7S/cQkQLDp3SfHmbzpAJSs6OJVbabOVgYrRVkaqSzaDbqNyb6sQeGWa+Y=
+X-Gm-Gg: AYBFou1IGnVcHczoueQOlxEn1lObbeIAp63TeJJiUU9AHIPcVQtR4qfVHHzBA8N7r3c
+	NEENT5U6IXpbvx0lwN1kS6aYMmdxYeZe/JVSq1QZHokjUV/eWY2t0xwHdOZ/U7aP11UF2zSG50c
+	TcfJrdLto9LfIULI0CGI4MJ14l1j4OIn1Ce2q5oDLucj8MyHGyI+WYuGpFgR3/WWlJRD6Ut3OaX
+	46K71OcMPUNMxyHFmgLu9vmZk52L7Ra0axXlhqPKvLvLJFZKFnS8fChmVGScDLJReuM7W8LUNPj
+	aXN8d/uBXg+ruVtoGGh7Ldp3NAhTFCH7DxXi8riodKjp4ooPtwldD44kQratArtr86FcKc/zwak
+	aWhRV6GkQLCyI52fpVidfAQQ+QU3esWcRYqMHnd8gbDCUr0enJEeZOcE5z6aacG57jbzcOQLFcK
+	Oe3qFkzqo9Ry3cGgxzS9Wau9S6GxwRIt5KQ00JGk3oCr2YPaJ+4CDbMaM03ErzqYclBlf/0ymZi
+	+/kbwGcXfqnGCX87ulYK83h40E5bUpI+XZjUG85hcJhLrNRvo4vi+i6GHtygipalj6gWexrjyVn
+	2fkIrK2ng1NxSYsOAbP3lYXo0Q/Zv1U4jFlBThrFqnGxfrNL2VX88fEe8lvwDTNyciu71UmMi8Y
+	=
+X-Received: by 2002:a05:6a00:3c87:b0:87c:f67f:f7d3 with SMTP id d2e1a72fcca58-8ba82773107mr899316b3a.0.1794263490880;
+        Mon, 09 Nov 2026 14:31:30 -0800 (PST)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:54d7:1b5:4356:16fb])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm165830b3a.0.2026.11.09.14.31.26
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm165830b3a.0.2026.11.09.14.31.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 14:31:27 -0800 (PST)
+        Mon, 09 Nov 2026 14:31:30 -0800 (PST)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -95,9 +96,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v6 07/23] target/arm/kvm: Use kvm_vm_check_extension() where necessary
-Date: Mon,  9 Nov 2026 16:30:54 -0600
-Message-ID: <20261109223110.1619504-8-mathieu.poirier@linaro.org>
+Subject: [PATCH v6 08/23] target/arm/kvm: Add support for PSCI 0.2 to 'features' flag
+Date: Mon,  9 Nov 2026 16:30:55 -0600
+Message-ID: <20261109223110.1619504-9-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261109223110.1619504-1-mathieu.poirier@linaro.org>
 References: <20261109223110.1619504-1-mathieu.poirier@linaro.org>
@@ -112,64 +113,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+From: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
 
-The Arm KVM code can return different values from KVM_CHECK_EXTENSION
-depending on the VM type. Use kvm_vm_check_extension() where necessary
-to ensure we get the right response from KVM.
+Starting with kernel 7.4, hosts initialing a confidential VM are
+required to support the KVM_CAP_ARM_PSCI_0_2 extension.
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- target/arm/kvm.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/arm/kvm.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 63a3e78efd53..dc1004785cb0 100644
+index dc1004785cb0..80296e0a867c 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -384,7 +384,7 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf, Error **errp
-                              1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
-     }
- 
--    if (kvm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
-+    if (kvm_vm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
-         init.features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
-         pmu_supported = true;
+@@ -390,6 +390,14 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf, Error **errp
          features |= 1ULL << ARM_FEATURE_PMU;
-@@ -695,7 +695,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         return -EINVAL;
      }
  
--    if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
-+    if (kvm_vm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
-         if (kvm_vm_enable_cap(s, KVM_CAP_ARM_NISV_TO_USER, 0)) {
-             error_report("Failed to enable KVM_CAP_ARM_NISV_TO_USER cap");
-         } else {
-@@ -726,11 +726,11 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         }
++    if (kvm_check_extension(kvm_state, KVM_CAP_ARM_PSCI_0_2)) {
++        /*
++         * Versions >= v0.2 are backward compatible with v0.2
++         * omit the feature flag for v0.1 .
++         */
++        init.features[0] |= 1 << KVM_ARM_VCPU_PSCI_0_2;
++    }
++
+     if (!kvm_arm_create_scratch_host_vcpu(fdarray, &init, errp)) {
+         return;
      }
- 
--    max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
-+    max_hw_wps = kvm_vm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
-     hw_watchpoints = g_array_sized_new(true, true,
-                                        sizeof(HWWatchpoint), max_hw_wps);
- 
--    max_hw_bps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
-+    max_hw_bps = kvm_vm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
-     hw_breakpoints = g_array_sized_new(true, true,
-                                        sizeof(HWBreakpoint), max_hw_bps);
- 
-@@ -1978,7 +1978,7 @@ void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
- 
- void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
- {
--    bool has_steal_time = kvm_check_extension(kvm_state, KVM_CAP_STEAL_TIME);
-+    bool has_steal_time = kvm_vm_check_extension(kvm_state, KVM_CAP_STEAL_TIME);
- 
-     if (cpu->kvm_steal_time == ON_OFF_AUTO_AUTO) {
-         if (!has_steal_time || !arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
 -- 
 2.53.0
 
