@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794263493;
-	b=Ob/dUDyDhjQ+As6Ie+OfQUDpHB/Pxa0RVNBrKbuMPPFL/VEhSE7GimTpKkVpI5NwDjRf
-	 gNO5rgj1eHLH2W+b4BcyIL9VFKOXc4q1mp8R23jn8maSyXY0ePRBVI18EWI7ElRIpLIew
-	 zjGhKNygWsGJHWUIYLEsP7KDuxRmez6NVRkfRozH24mrio7GtLUw7i1mZdycfV4zmnmHp
-	 qLRAgTlHgu2mwW4poPIEps3i/Ul9wgo/qJ4Jc8eWn/HgVWtT7A3DJdXChjvQaNDA/qFHS
-	 raRys8Z20pM9MH375w6LqquXQPwyVMoMTE9+Y1BBJlG+fZly9Y+nT1zCJFVLnxk8Hng==
+	t=1794263494;
+	b=MtqJ+wpigorzZ2QbjqHX/+LwmPLH8bXy6QgTTCv7nlqU35V37G6A2GaRaKaI6/wDtmed
+	 rOgynnTKSgHq4B1ZxzPN0WubaY1LluUIFSwTEduOo7nZ2oNBrQI1ccLsywfXjPL1LBOtB
+	 zxoiuLqpxwWB0OIQxGK+tD4rmb64nr2DxW7u81i/e+CKKDSPkD7r35/bb3r3WievwAcv5
+	 DRTq3hlHYkFZHXiI9U+ufpV/vcpp2AiwTsZW4HQFq7ivTlYBIwGVR7SWkwmiq8zb8Q43s
+	 qEjUH7dvI89ZxDJ/VbDTzXfsrEZFVTaPg4B0W5Fco4XhDUUvPBhjDmxfDHp09UVBd6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794263493;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794263494;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=l7cfw0TdjsR+3R0sW/rw9uWVrC9z73bNOgT/MeSJe90=;
-	b=XXSsENhFaOZWeHokmsFY0oXC/eQdvUXTdFUqzYj88aTUbNf9SN4xFgg2gGBTso4wb5yl
-	 IgZMVjoYKyPN/ST4gBaoVI7SJmfLci7IzEZhqRMssDI/liySUANaI0dXVd08M795sSj2b
-	 BNBNXgpI4iuucFzQOD9/JC4uqPXzhEcYwepAPJINFmuuTN4DYdbtKEugSQqMKofguw06K
-	 EmLuXWyfLcQMPpIVFaecTmCTEUUaEE9nLpIxZiByiTSprkbnNA5zrYMOknr0PojYUi2ut
-	 x+UbASdVd5W8whu67MUENXLbkQHgBK30zxN/XPdFYNGt6xyX72ARm03YCYuk6c0Jezw==
+	bh=btUbetnuXJs/xXAN/qzDAKN55zdtCIUFJdsrBrK8sZE=;
+	b=CoQLgpLxPLnd9SqveBghcFnrso9ZjRTlwOSCKLuzcpA/J/xcTGjn1NVBfO3f12/hwDB9
+	 9+N/BuzDvkjohlgU2aNKxAVBn552kmH2LhUzy1lEUELLam2IoCBWv2h3bEtpX0AiJhAuF
+	 1VfDcuU8krrNU4O6nUH2fRAa9qh4f6ibwcCE9iypIfz0WCLt+BGKJrI4ytQVSFAzDE2JO
+	 MXtvRKIyD5lFQXm+hY5IyPpUMhRxo6a+AbSgeA6w+YKOfoEtSdeo36Xa4CSyc7qMIoIzO
+	 J24v1vh84hww9Al0vhMgksBMrBP6Vq74okeA5nsgsxPKIvSRnc/v5GqJ9ezLehUCOAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linaro.org;
 	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=tLanvuIX;
-	arc=none smtp.remote-ip=209.85.210.170
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VK4H1u7P;
+	arc=none smtp.remote-ip=209.85.210.180
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04AA606A331
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 22:31:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F04AA606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C451606A31C
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 22:31:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C451606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=tLanvuIX
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-89d6bd67045so703088b3a.0
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 14:31:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VK4H1u7P
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b67f25e6e1so629306b3a.0
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 14:31:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1794263492; x=1794868292; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1794263494; x=1794868294; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l7cfw0TdjsR+3R0sW/rw9uWVrC9z73bNOgT/MeSJe90=;
-        b=tLanvuIXxbYYeUaaAaa31VSuUDHXaNMPKyV9EmyCvL+YD5fJQaqFYr/+/yiGM3pA2V
-         ZOjZoD8cv8tNZT4eZ4ZfhItladfJTrBsbeaPUA77yS3yIbyGHxsW2NYQmM2rWGYKDp/6
-         da9126kE/uq2kTBMEc82Lf8gZesSujMPUai4OadYbAVDTeJ4PsTbVrM0WLhpSHSs09ra
-         1rhPq6pgMViONseajdZBIjxldK2NmTHX9pkCoDm//QDm6SJRqkblU0cQTrIStuT86NJz
-         Ry/gyMobia6rDbdQnLzhFGYFaazMjn7mESg52/LjXUSqWM6cL92kfTlx3KpgaQKBJP71
-         ft0A==
+        bh=btUbetnuXJs/xXAN/qzDAKN55zdtCIUFJdsrBrK8sZE=;
+        b=VK4H1u7PiE/2vI3XhxzKuX5tozi8wYRlkf7imF2xpRMamqTemihftmuuqluS0+HFMY
+         zTIE8hI07sJm/QRfLQcEpPPeHP712ZenP6OjkVKMCVUTXiHgyBstwpBiT/6GE9y+spbw
+         I0N+eyIBMxC6eugolKMNK+AKC6IWdWiXjcWM2LnRowiNnAENEZgeRHB51SyJmxI+Zgs3
+         xUzTyOwAIjf/qBRSI9yv+3QrrkqURbz9LDMGXSsiZMU9g9rWlH2x80WZ7MnshGM1WaET
+         FQji/isKeA73G7RstKaLHKR3Qpzkwz5zArDI50sLhhfxwEymnM75qVhypx5APM7cyqq0
+         Ncxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794263492; x=1794868292;
+        d=1e100.net; s=20260707; t=1794263494; x=1794868294;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l7cfw0TdjsR+3R0sW/rw9uWVrC9z73bNOgT/MeSJe90=;
-        b=IOlTjOjQq1dBBp78U9BpKZH1fJL/fyyWK0Df1+OUE/1u4Us0v43t1ZBPuHAAJIRU8F
-         lMr7TXcej8ydIndp6QqeD/qWB/GSXtUZpIi/9/mCuRaQdBGaH2+my/jH/8qtlfaneObw
-         qsrYGmypU9P/hZrO1SPvtDvocMREQkv1R2KfdK+c6FfrlmcXjkYUe2avIrd3ijGo7CjR
-         O4y+jFUaUDGu5tebnwNG89kpI+SHdpCLljmIGzgQmYUlRxP21nqWbcuLvHk6/8kNHzjE
-         ivS7lo16V3fDXnL8T4X1a/gnSdquwL9GQeCAW4bW1qv3Hbb9Row0UcjbqSbgjJo2HjBI
-         VvbQ==
-X-Forwarded-Encrypted: i=1; AL+hErFJuqsNN0vRqcSdu59TqZafxHdncmLTVlKxm9pak4AcSO0yxMuezc74LSudTtTOO95TfD8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9ZCYW4odvarTg7hlpuKvxcdXCJQc8Pg8M0twC/75spndnN162D
-	tFraoTYoKEPpxys4Osb0ERCCtd2r7DuAVt4ldadbXLEQM7MgDbqO7nhAmQu/ylhRMSE=
-X-Gm-Gg: AYBFou1KRMq33NIOVHJIwgsuHCQ3DtqcR26tXtqdcWiDCNxwK7rYcEWOnBY+WEibO3H
-	mYFZRUBz2oOiz0uJcm3IFKulmNr5MOvNq9zPwUVw6Lsdsif0ryLgZ5j5/foHM2bCnI4qAiLVOvv
-	dbSEwXQs51BW0DHrZVm8e02CnvcVhKdwFUaFv/jocTi7RAweo92P5ZKiMYfFwF9MehvW9NRjC0z
-	pxza7q1O53xgHhyqozSP9+J7WDIyg0NHtgsYUdC/6NQbxCMA92F5YfF1bJZObDBfZ31P5DG9p6x
-	6mA53PEB79tX03VbHhe6Tq7getfs+Z4v7eTDArQFnsq6yf6SUQ7IhAa+HWsNSCL4DT+6PXRP47n
-	GTX/xkF7MyeFJ7Ifa4Jj4vfvtTgD1jhyLiuhvtOatE2c9VcxpI9rBx8vT/Q4MJgPzt0ByyTphEa
-	daf1k6Sqgik11v9YIrdYDdcMp/goGeHEptYW0snQ6JVP3leiKUt+iRVWhneD/NSSDPtAtEjyuaq
-	hu/+9ZOTXimHnYmR25jdg2PrzROnMWDbRg7608X3puEH9w+Xw4ucMsgbpDTW/ynWi4W7/C++KdG
-	8i7Jfs0Pvnx4VD3DNehNy6Fugd00rtyDaV8IaZPp/QrzH/u2FXJcJg==
-X-Received: by 2002:a05:6a00:b610:b0:881:e266:c3d8 with SMTP id d2e1a72fcca58-8ba98c48edcmr546467b3a.35.1794263492240;
-        Mon, 09 Nov 2026 14:31:32 -0800 (PST)
+        bh=btUbetnuXJs/xXAN/qzDAKN55zdtCIUFJdsrBrK8sZE=;
+        b=d8ASwQnhRwwHQ1GC4wCrqDbTeGKbkW1W0pAycbtltpPFkD+b4oc6WjjUgFG0CB2iir
+         5CnQ1xE3NDOOr4h+ZD37EcUZO0bffZzqWpM0yHmUFr1DYBHYg9qh3+PsA19IOBo6k3cZ
+         kjQMj9Mvh6AHP6lsXi/igrvQneVz9zeatXAay0kV2thE7p0daZcorNlzPOYrV5SKxzh6
+         bY0LXHSiHAOhlXAfsCqhR/5Ou9UAMaTD7R+tmz7uSTJ1r4Ti1XOES7e7p8XaQeTQ2OlU
+         ltADTNscpKg104jNi6drgGX420VCDSXz6iGQUfsJMaM91kUsZ8N3W7DKOOzZtHEgpLm1
+         cmQw==
+X-Forwarded-Encrypted: i=1; AL+hErEnbcftAFbORXvbmu14sGMSuZEcN3ahPCpcD6n6Yjt43fTnTA+Qn1TnjxYGsjv7dVXNL9M=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/uMfV/EHxgD9HGaQauh45R5nEmi7L7AlbpS4wKk/VXjjkPLgGr
+	t4lsEhlmnH7bijuIIgcJ3sJzmF03YM7VX9OEMWdY9xPOqo0ooHueI1FhyImMQJArykk=
+X-Gm-Gg: AYBFou1ZwsckUZbaRvqJGK97+px6HMtO5mbTe3bw1wd8wk0aN3TMk0hQuga2m75Rn9q
+	ta8ofowINYy5hx6qw/snSooY/l+MBBypbvo0BH0gjzeeea6p5/q7yU2xixz+dCfF88Q6JlSNCcQ
+	OhATLHTkYOmIJSc0egoIIDlRCN9Z9fYI6I8xMtrihggG7m+HC7vLR0om2R/zNFCn8UJwg3xXxNP
+	SYidyFXC6aPXvXu9EBEs4UdY/D0HWLo9OisCszrqNRxz/nrPrLALV3BjN11+cyzA8jaWzJwX5cv
+	yb2K5Nj66joNq08A7462rf2N0KSG5d/ZFuvNzjg+3lUFt7GiYz/gvnsom9Z+pZVkDGM3o9Z9PwJ
+	G8wC1hxfiTSROXCfYtfjphk2AlxRxiFkfr1oT2EpcHVDL0VL2uElgLRuysBB/Dr2BZBvF+rFRcD
+	SPOC4ubUEq07hqnGBPHorm0AhvLYDO5H4MvQVzeK5+Z0HW89FZ+GjDgt2wEg7TYWzV2MyF3qMdx
+	qj9NUPiMoDSbFibmE7vaNc1eVt/wHEOOpGiamy8WPnf8yj2GNOKWQBBbHC5/3FvVGjINeiTK2Fn
+	xIdbMubGCLPXHZaOTi6eSva8ey4ThFTc6/wDs2NmlpOau2ta6/7EyWI=
+X-Received: by 2002:a05:6a00:1885:b0:89e:9c7e:fd56 with SMTP id d2e1a72fcca58-8ba86d850cbmr871469b3a.33.1794263493533;
+        Mon, 09 Nov 2026 14:31:33 -0800 (PST)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:54d7:1b5:4356:16fb])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm165830b3a.0.2026.11.09.14.31.31
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm165830b3a.0.2026.11.09.14.31.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 14:31:31 -0800 (PST)
+        Mon, 09 Nov 2026 14:31:33 -0800 (PST)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -95,9 +95,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v6 09/23] target/arm/kvm-rme: Keep track of images loaded in Realm memory
-Date: Mon,  9 Nov 2026 16:30:56 -0600
-Message-ID: <20261109223110.1619504-10-mathieu.poirier@linaro.org>
+Subject: [PATCH v6 10/23] target/arm/kvm-rme: Populate Realm with runtime images
+Date: Mon,  9 Nov 2026 16:30:57 -0600
+Message-ID: <20261109223110.1619504-11-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261109223110.1619504-1-mathieu.poirier@linaro.org>
 References: <20261109223110.1619504-1-mathieu.poirier@linaro.org>
@@ -112,163 +112,222 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Once the Realm descriptor has been created, tell KVM to transfer runtime
+images (kernel, DT, and rootfs) from guest memory to Realm memory.
 
-Add a Rom notifier to keep track of binary blobs loaded in Realm memory.
-That way we can deterministically calculate the Realm Initial Measurement (RIM).
+This patch was originally authored by Jean-Philippe Brucker
+<jean-philippe@linaro.org> and updated to account for guest-memfd
+convert-in-place by Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>.
+It was later completely refactored by the current author.
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- hw/core/loader.c         | 24 ++++++++++++++++++++++++
- include/hw/core/loader.h | 14 ++++++++++++++
- target/arm/kvm-rme.c     | 30 ++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+)
+ target/arm/kvm-rme.c | 166 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 166 insertions(+)
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 5cbfba0a86d2..644d55c9e0ed 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -74,6 +74,8 @@
- #endif
+diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+index ca90bf5af890..0996cddf0849 100644
+--- a/target/arm/kvm-rme.c
++++ b/target/arm/kvm-rme.c
+@@ -15,6 +15,7 @@
+ #include "migration/blocker.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
++#include "qemu/memalign.h"
+ #include "qom/object_interfaces.h"
+ #include "system/confidential-guest-support.h"
+ #include "system/kvm.h"
+@@ -29,18 +30,182 @@ struct RmeGuest {
+     GSList *ram_regions;
+ };
  
- static int roms_loaded;
-+static NotifierList rom_loader_notifier =
-+    NOTIFIER_LIST_INITIALIZER(rom_loader_notifier);
++typedef struct RmeAlignedSlab {
++    hwaddr aligned_start, aligned_end;
++    hwaddr end;
++    GList *region_list;
++} RmeAlignedSlab;
++
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+                                           CONFIDENTIAL_GUEST_SUPPORT,
+                                           { TYPE_USER_CREATABLE }, { })
  
- /* return the size or -1 if error */
- int64_t get_image_size(const char *filename, Error **errp)
-@@ -1201,6 +1203,11 @@ MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
-     return mr;
- }
+ static RmeGuest *rme_guest;
  
-+void rom_add_load_notifier(Notifier *notifier)
++static void rme_populate_slab(gpointer data, gpointer err)
 +{
-+    notifier_list_add(&rom_loader_notifier, notifier);
++    RmeAlignedSlab *slab = data;
++    hwaddr aligned_start = slab->aligned_start;
++    hwaddr aligned_end = slab->aligned_end;
++    unsigned long page_size = qemu_real_host_page_size();
++    size_t aligned_size = aligned_end - aligned_start;
++    struct kvm_arm_rmi_populate populate_args;
++    GList *list = slab->region_list;
++    Error **errp = err;
++    void *buffer;
++    int ret;
++
++    if (*errp) {
++        goto out;
++    }
++
++    ret = kvm_set_memory_attributes_private(aligned_start, aligned_size);
++    if (ret) {
++        error_setg_errno(errp, -ret, "RME: failed to configure initial"
++                         "private guest memory");
++        goto out;
++    }
++
++    /* Allocate page-aligned memory */
++    buffer = qemu_memalign(page_size, aligned_size);
++    if (!buffer) {
++        goto out;
++    }
++
++    memset(buffer, 0, aligned_size);
++
++    for (GList *elem = g_list_first(list); elem; elem = g_list_next(elem)) {
++        RomLoaderNotifyData *region = elem->data;
++        hwaddr offset = region->addr - aligned_start;
++        memcpy(buffer + offset, region->data, region->len);
++    }
++
++    populate_args = (struct kvm_arm_rmi_populate) {
++        .base = aligned_start,
++        .size = aligned_size,
++        .source_uaddr = (uintptr_t)buffer,
++        .flags = KVM_ARM_RMI_POPULATE_FLAGS_MEASURE,
++    };
++
++    while (populate_args.size > 0) {
++        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
++        if (ret) {
++            error_setg_errno(errp, -ret,
++                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
++                aligned_start, aligned_end);
++            break;
++        }
++    }
++
++    qemu_vfree(buffer);
++out:
++    g_list_free_full(g_steal_pointer(&slab->region_list), g_free);
 +}
 +
- /* This function is specific for elf program because we don't need to allocate
-  * all the rom. We just allocate the first part and the rest is just zeros. This
-  * is why romsize and datasize are different. Also, this function takes its own
-@@ -1242,6 +1249,7 @@ ssize_t rom_add_option(const char *file, int32_t bootindex)
- static void rom_reset(void *unused)
- {
-     Rom *rom;
-+    RomLoaderNotifyData notify;
- 
-     QTAILQ_FOREACH(rom, &roms, next) {
-         if (rom->fw_file) {
-@@ -1290,6 +1298,22 @@ static void rom_reset(void *unused)
-         address_space_flush_icache_range(rom->as, rom->addr, rom->datasize);
- 
-         trace_loader_write_rom(rom->name, rom->addr, rom->datasize, rom->isrom);
++static RmeAlignedSlab *
++rme_init_aligned_slab(RomLoaderNotifyData *region)
++{
++    RmeAlignedSlab *slab = g_malloc0(sizeof(RmeAlignedSlab));
++    unsigned long page_size = qemu_real_host_page_size();
++    hwaddr base = region->addr;
++    hwaddr size = region->len;
 +
-+        if (rom->addr == -1) {
-+            /*
-+             * These blobs (ACPI tables) are not loaded into guest RAM at reset.
-+             * Instead the firmware will load them via fw_cfg and measure them
-+             * itself.
-+             */
++    slab->aligned_start = QEMU_ALIGN_DOWN(base, page_size);
++    slab->aligned_end = QEMU_ALIGN_UP(base + size, page_size);
++    slab->end = base + size;
++
++    slab->region_list = g_list_append(slab->region_list, region);
++
++    return slab;
++}
++
++static void rme_insert_in_aligned_slab(RmeAlignedSlab *slab,
++                                       RomLoaderNotifyData *region)
++{
++    slab->end = region->addr + region->len;
++    slab->region_list = g_list_append(slab->region_list, region);
++}
++
++static GList *rme_swizzle_memory_regions(void)
++{
++    GSList *tmp, *node = g_steal_pointer(&rme_guest->ram_regions);
++    GList *slab_list = NULL;
++    RomLoaderNotifyData *region;
++    RmeAlignedSlab *slab;
++
++    /* Memory regions, i.e @node, appear in ascending order */
++    while (node) {
++        region = (RomLoaderNotifyData *)node->data;
++        tmp = node;
++        node = g_slist_remove_link(node, tmp);
++        g_slist_free(tmp);
++
++        /*
++         * The slab list is empty, so simply create a slab based on the first
++         * entry we got from @rme_guest->ram_regions.  Since ->ram_regions are
++         * sorted, we are guaranteed to start with the lowest region.
++         */
++        if (!slab_list) {
++            slab = rme_init_aligned_slab(region);
++            slab_list = g_list_append(slab_list, slab);
 +            continue;
 +        }
 +
-+        notify = (RomLoaderNotifyData) {
-+            .addr = rom->addr,
-+            .len = rom->datasize,
-+            .data = rom->data,
-+        };
-+        notifier_list_notify(&rom_loader_notifier, &notify);
++        /*
++         * Slabs and ->ram_regions are sorted, so we know the last slab in the
++         * list is always the current one.
++         */
++        slab = g_list_last(slab_list)->data;
++
++        /*
++         * TODO: Add support for memory region that straddle two pages if we
++         * think it is important.  Doing so may lead to large memory areas that
++         * may not be accommodated easily by qemu_memalign() in
++         * rme_populate_slab().
++         */
++        if (region->addr < slab->aligned_end &&
++            region->addr + region->len > slab->aligned_end) {
++            error_report("Memory region [0x%"HWADDR_PRIx", 0x%lx]"
++                         "straddles two pages",
++                         region->addr, region->len);
++            g_free(region);
++            continue;
++        }
++
++        /* Add the memory region in the current slab if it fits */
++        if (region->addr >= slab->end &&
++            region->addr + region->len <= slab->aligned_end) {
++            rme_insert_in_aligned_slab(slab, region);
++            continue;
++        }
++
++        /*
++         * Allocate a new page aligned slab if the region can't be fitted
++         * in the current slab.
++         */
++        slab = rme_init_aligned_slab(region);
++        slab_list = g_list_append(slab_list, slab);
++    }
++
++    return slab_list;
++}
++
+ static void rme_vm_state_change(void *opaque, bool running, RunState state)
+ {
++    Error *errp = NULL;
++    GList *slab_list;
++
+     if (!running) {
+         return;
      }
- }
  
-diff --git a/include/hw/core/loader.h b/include/hw/core/loader.h
-index d9431e8a8d12..e22f587627f5 100644
---- a/include/hw/core/loader.h
-+++ b/include/hw/core/loader.h
-@@ -342,6 +342,20 @@ void *rom_ptr_for_as(AddressSpace *as, hwaddr addr, size_t size);
- ssize_t rom_add_vga(const char *file);
- ssize_t rom_add_option(const char *file, int32_t bootindex);
- 
-+typedef struct RomLoaderNotifyData {
-+    hwaddr  addr;   /* Address of the blob in guest memory */
-+    size_t  len;    /* Length of the blob */
-+    uint8_t *data;  /* Blob data */
-+} RomLoaderNotifyData;
++    slab_list = rme_swizzle_memory_regions();
++    g_list_foreach(slab_list, rme_populate_slab, &errp);
++    g_list_free_full(slab_list, g_free);
++    if (errp) {
++        return;
++    }
 +
-+/**
-+ * rom_add_load_notifier - Add a notifier for loaded images
-+ *
-+ * Add a notifier that will be invoked with a RomLoaderNotifyData structure for
-+ * each blob loaded into guest memory, after the blob is loaded.
-+ */
-+void rom_add_load_notifier(Notifier *notifier);
-+
- /* This is the usual maximum in uboot, so if a uImage overflows this, it would
-  * overflow on real hardware too. */
- #define UBOOT_MAX_DECOMPRESSED_BYTES (64 << 20)
-diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-index b3edfa8e0a95..ca90bf5af890 100644
---- a/target/arm/kvm-rme.c
-+++ b/target/arm/kvm-rme.c
-@@ -10,6 +10,7 @@
- 
- #include "hw/core/boards.h"
- #include "hw/core/cpu.h"
-+#include "hw/core/loader.h"
- #include "kvm_arm.h"
- #include "migration/blocker.h"
- #include "qapi/error.h"
-@@ -24,6 +25,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
- 
- struct RmeGuest {
-     ConfidentialGuestSupport parent_obj;
-+    Notifier rom_load_notifier;
-+    GSList *ram_regions;
- };
- 
- OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-@@ -41,6 +44,30 @@ static void rme_vm_state_change(void *opaque, bool running, RunState state)
      kvm_mark_guest_state_protected();
  }
  
-+static gint rme_compare_ram_regions(gconstpointer a, gconstpointer b)
-+{
-+    const RomLoaderNotifyData *ra = a;
-+    const RomLoaderNotifyData *rb = b;
-+
-+    g_assert(ra->addr != rb->addr);
-+    return ra->addr < rb->addr ? -1 : 1;
-+}
-+
-+static void rme_rom_load_notify(Notifier *notifier, void *data)
-+{
-+    RomLoaderNotifyData *region = g_memdup2(data,
-+                                            sizeof(struct RomLoaderNotifyData));
-+
-+    /*
-+     * The Realm Initial Measurement (RIM) depends on the order in which we
-+     * initialize and populate the RAM regions. To help a verifier
-+     * independently calculate the RIM, sort regions by GPA.
-+     */
-+    rme_guest->ram_regions = g_slist_insert_sorted(rme_guest->ram_regions,
-+                                                   region,
-+                                                   rme_compare_ram_regions);
-+}
-+
- static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     KVMState *s = KVM_STATE(current_accel());
-@@ -58,6 +85,9 @@ static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
-     error_setg(&rme_mig_blocker, "RME: migration is not implemented");
-     migrate_add_blocker(&rme_mig_blocker, &error_fatal);
+@@ -55,6 +220,7 @@ static gint rme_compare_ram_regions(gconstpointer a, gconstpointer b)
  
-+    rme_guest->rom_load_notifier.notify = rme_rom_load_notify;
-+    rom_add_load_notifier(&rme_guest->rom_load_notifier);
-+
-     /*
-      * The realm activation is done last, when the VM starts, after all images
-      * have been loaded and all vcpus finalized.
+ static void rme_rom_load_notify(Notifier *notifier, void *data)
+ {
++    /* Each memory region is free'ed in rme_populate_slab() */
+     RomLoaderNotifyData *region = g_memdup2(data,
+                                             sizeof(struct RomLoaderNotifyData));
+ 
 -- 
 2.53.0
 
