@@ -1,105 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.171
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794254506;
-	b=WElUTCbBatOywBEAZu0ub0gGnKAK5wled++w8dUSJipIB5YHp5Dua9INeJbpzBJkw6zR
-	 X2Fhz5yXH65XldK17rN+tZylfssQgjYr+8kE0gap26xBu4BJ5caqB1B6u2q3RrQQeSnr4
-	 P+B7B16n4FZf4HJJ0vFne7vDhXquYBGrv4iWHUnXdzaJR0rxmEjTR4h5tCS+C27CoN1DH
-	 L/ep0mQq5N2w2brHPaio79BN7QjOckkz8kxcw49HPQQXGBTG0Zz7wXKx2ZbO6to73Muie
-	 hXG11Qlm9JH+/RcA74rFlAIrQ+UiSXyR0uml1NIa5jPMnwpBQK+F1eXUbFBFFSQy6yA==
+	t=1794254570;
+	b=NcpEwVo5ADrkSMV+/NQN7RhG7t3AjwkWiavkqLOuKHyv6Gm/DMvl1FIHbRxNUmkjaTbz
+	 2cMfVL+dzZSIKSjCYkpkq9oUJeLFnXUJJB909p2i/82k9mc7qsEgmVR5nkYeJKkEha5Je
+	 B+67M/FN0ulJWViLDz9m3P8jGmlkNLHnZe0bZSVd/bpecMwGQueJxZ5Nt6vu5o0R5Hp+7
+	 CtW8n+aeD+wCmeB23HBlzqh5r2fL5pvOnFpTyNQtDS12oz0YOlUVSGN58VnSw5Ns6BL4X
+	 MsOPENG6iWC6h3NEORviIQxZFGzWv0Bm6dh4lYdAYfIpXWpMKN9FXnvQeVlHJHGP5RQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794254506;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794254570;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=J4VE9jPLkx8Wgxv9dqM+38TTLHjiOxYTXAGaI9TvUkM=;
-	b=5Q3JEkosRJdLE0GUYRW9YEO7H5ikKZYU+sbAjpBi4urUhsvEtoeKbiiXggiXRBeovNjJ
-	 zR87ybfTbpNur+xfNfQQyb8bVqobb/MgP9eBga4VQiTSNMfKpC9TCwicmZiQe7SnxUKj5
-	 y4YMe6rgGMBcf45j2VKr5qrgNLkReJF5yZYiR3aZ7ia6zh8tIomil38alM/sNyJs9sb7b
-	 AhW18J0J9BaRQddKceV7C0MHdQxkL0p9wSqxDL0oIPzCFrARV8NUqmUIDwBAKjCJw7x2Q
-	 IdHzzCCNws50CJ8YB/iK8aX16SyXHA+WfR447l365OG01/ztJIfJ0Du/klv+7Opr59Q==
+	bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
+	b=Zc7wu7/4k8ipAgMxZ9gbuTkjgIm3chT0ofOA5P9+KuUICKCwAduKj/kp5iu3r0rXBTd/
+	 e7dlkMOW1+4GZKsFQSTA0gr7ohhytD8URe3Io1x/yrE9TX+EP9AOpWQHHpwmKkHgeU55A
+	 VwUunq5l4c2h2Y+W3E1PWpvVvQIQdrekAPjnhtbTF/rxUnJmbG4QjZUWQ2agCsoOPXaBI
+	 YV3gNS0HqCsA9B7idnj1s3kIGv7Q/wpW+ik2cjHj+aCFl6c9KMrt3I29ZJAW+X+c6FeK+
+	 mK15l8y8pkx5FLin6Rr2yE+j6WiHorc/0u7+Mco1XfvUkXzXPC4s53GflzxhezN3Ogw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VVPYRW4J;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MDVfxjyH;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.171
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B39606A31C
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 20:01:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57B39606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B55606A33F
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 20:02:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04B55606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VVPYRW4J
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91e8a05ec5aso13196816d6.1
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 12:01:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794254505; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MDVfxjyH
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5e948e56af3so515431e0c.2
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 12:02:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794254569; cv=none;
         d=google.com; s=arc-20260327;
-        b=GrfSk3a3uvHSueBhhxzqcf+TNv59//aYu2xDhB8GSMAdhhWRPvolYQ37zFc2se6gJD
-         t6he++XyTPAbMkVuzYy1ddxKDitoANTsuWMr4Ph/KiH1l4Nl9PqSSM9YjQ7WmxbcPZU2
-         LfL6N3K++obbfkl8o8HQOrbQ8h5Ru535bBjPrOrm6vMZmauzgdXFt3yrjBPgt44JFtdg
-         Ee4lJnEGjP1wr/6qGYYa4mposWyByfaqciWlmJlnkGAdmYhai/0lPziXcv3WvN9PiKOK
-         UGkxHwFr6IPM05o2EeqeBBozVGOtIUAHsy0wEpfOJbvqNQvVuwqsY0hd17DLagvjq7CK
-         TrAQ==
+        b=aNGpkmChJsNNDaqkp8w3pgkfBLvwHgP5Ql4LIPuRZYAE+2TtWzF6VdLTltFVuSNNSf
+         Si+qDMLOKO+z1gWCGMKlNcTPjpuvHtx8mqc+sLBqmDw/yfVtIZMpP75bYJwh0yWz5mMA
+         rcUAjdqMTH+wbZP4zz/9F9sLP+2K0KwRlZVRBfaz46nsi1DdllJgxRxGIj7UCGdzef4q
+         KDJKDmXKkdgJpVdqTe/RLEHsjOhTC+L3NXt4iFAGaRaXNMmt02kk9Eo5pEDnc/LrSNZW
+         zcBfoSgqU4z86typ4WT4ppOMDMJb7eNft7KHF24J+Hi9vv/J6Aepk6vP/8dXjxa40LaF
+         u7nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=J4VE9jPLkx8Wgxv9dqM+38TTLHjiOxYTXAGaI9TvUkM=;
-        fh=HoZ0X4CaKhJ/7yeUikBYhw8k1BQ7SJw6RlUBjwDB0eE=;
-        b=CZtg3/cNm1AcQc8/JPtEFrT83tmrmOzShqA7xJRsRtrGHPIplEIG7X4/PTqzE1zdBB
-         pPIHp8CCmQNlN0Qq9JyEVlopjaYgJW9/bgTNsFQLkoy6U9cwhbiKGKiEjmwatLIWLHVn
-         2ZH1gr98o8VjsIZjy/mZV6PteLTUv2cJkcHiBTj7qyhE//mNOmBqNrnegI03FQfyZElr
-         FW9p5HJdQU5IQCByrXhLsiAje1iDrPcXYTVmHXuKawRF7vMW35K7KKTrrQ1gcbIxSVT5
-         m4GUuniCnzhGOXJsYQu41OvMYQahOQkzIzkFLO/acRiGhS2WwDm/DOIEK8GYmthhhP8O
-         T7Kg==;
+        bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
+        fh=E821u0XyiDBwxi2RzejhCwq43hPldgVm4cZi/Kl6uNo=;
+        b=o7IbWnPF/94lpL6EDH4trgBU8OunWjwMRp7OJLy2rT00fOLx3VgZ/H2SZ5fgts1ArK
+         GONwbMJHrlg4SWgylKaBZscUQyVjFlssRIFwvU5cwTFQUCdh28LEq0coG8Ma4s45yY2M
+         O3sAhO+D52Nlzaht7yAaetat+Zk9Clu309hsOOzAJbx8fN5remtetQdx9HT6T7UPZYHc
+         aPKql/4Q2PzZJdWPfZ9NWvHO1Es4uzldwzudWcdxDognDuxTx3Hn7QU3pnddtVjAleEO
+         GW5ItGRiXg0sRxg7+JizXlVavqL7kKd0LZop+RNUp0I45ykcBHNy1KDIZLArDqdaA4PN
+         XBlg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794254505; x=1794859305; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794254569; x=1794859369; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=J4VE9jPLkx8Wgxv9dqM+38TTLHjiOxYTXAGaI9TvUkM=;
-        b=VVPYRW4JPvKdjZtMe60xViJTU6BBoc2rCxcc+xXkxgWvR2IBMqJdLO9vMfmCodQgi2
-         LGdZQhiKlhxEoMvzgVUZ4nhj7VowzBl72y9cmNHm+o2uZmzMVEg0HyCOT5yj2bbO55hh
-         ZOr4VijaX1waBVZ1yPYmALNxxoWgCRVkceOUN4uxRgNQlYRiPD4ziOKRCYrqLawMAQNH
-         UQiD8UlIRpS2xubC9lWbVmcz23NYznk35FfNHKS+NUm39MjNGY8AkxFReM/KMJrKHrHA
-         6TKwrtxjuoEHCAjmZuEt8vQBDdkcr6zAOf1Edvi3KSYbgxUXL16UaEl9Y2kJoG2MHM3E
-         BeNQ==
+        bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
+        b=MDVfxjyHJJz7nSVac0/MzxNYBAz0gz5mw1nMRucJC8aUp+/mnDPCU44ZxNDT4hUiYs
+         0VO6PuphdsyMx+3xKWYiLk9jOaIwUsbGRkOu0zsaG5mQaDtr2x4nwdguACt/ZWzkD5Zw
+         LwYq1XXvp3WJjCiZQPyddb1UADLTSJUEFAooPlzFkNi3lS9+RDyZZ7VAuQXH7AQvz1Of
+         0ObyKgznWixBSZh4qMgT3j9WWstoilMA2gS6Kvgh4lHWmYaPSH2nkLlZVxbOEyXYahDe
+         7Oxcnxorznvrl/eWoXpjXz8oZ/hixEvnUQqbctYoU7NfzmkCWSo36Kc0RM5K/Bh9cL+5
+         qDPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794254505; x=1794859305;
+        d=1e100.net; s=20260707; t=1794254569; x=1794859369;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J4VE9jPLkx8Wgxv9dqM+38TTLHjiOxYTXAGaI9TvUkM=;
-        b=OPUwOW89ukWjZkRnOKPmIwBzdhD5aQMHMhJ3tdO30abgNrXi3Gw9YpYI8reo+G24mO
-         8qa8I0wcDjqikl6FhVsZoxsAiUk3Gy0SvKw1Cm9QQsFUxNAkXMi1Gf3g+tWjvrssGvyM
-         YDHmi4uj3YzaYPRDTFt/V8+ahYLvTmNKfXxJUq0obW+Lqiup/332UxVvgRVq+BgixaZo
-         UOlxGHNhaJpV2MwsQv7JjDUX8qHnZyUyQfqefQwFgcjzLxJQ8YPlaHwA2L2CAhH9mN9/
-         G8Erp1kNFaE8kCojGDtfkzKQ1v70a6pOdxXeJJ8fjHlLKxiFJ8JiFRVfYe2WeGXalhd3
-         0nTQ==
-X-Forwarded-Encrypted: i=1; AL+hErFrkDqpBwjpnok9Rgw8kJpOYKSn/g8GLWmh1rK8Jl7841o+fGrOcDfTin7KdjbneOMt5ZY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/JSjQl3Xe7qcPhS65IzYLTaqsk4+iX4LT+QHigyItABDB6Hn1k
-	6I7X7IDBgMvC8WBI+B4LDnwWDLPC/ZehqKB+1YztEyqinzI8R/jBl0IQRiB2dmIEsV5es8m0PoM
-	diz/OIsOV9MxxxSTI4DZfsKonsMNFV7Kt3xymYWsE
-X-Gm-Gg: AYBFou27JgcTxdkiBnJ3eIBJQ8L5ACmdd4ulI/Wi0aC8hT3Ri8m3vLF65deWmOfGrwU
-	tdmlO9O4RAJg6uEdOTj6xS2QQ7wLLdcDKIYL96zoldcLdOR57XXQR6TKG9uuyPZocsoDCjJ3R39
-	zwFz2Mprh59N1YdWCkKK9/IApI16LRvLBsy73SY2aHyjLaKQDJTO4dxbApuOZE1jxUgupmEBbkU
-	1Xqg6C9Mg02E9Iknb5wZMsJQXeMYEGhd74ba0pE54tVMy+u+72IZqOgOGftgtt82PmJ9LCrdGfq
-	OH03DNrR3WOGJFCBWqmcIwlmdvqUlSad95cXU83kn3A87iEwafcaYA/mPk5gcqXxzUBRPUv1zKn
-	zqiyy9LHI8vptb0wgsrna8nk/sOtP8Yo8XHr3BJKRKhrPlLxQRXSQxaDNnDV/0SYa2mlhVrT9fD
-	Bk+N79w7Btmdq0yG35S9lxG5A3SkxJ0cCLxkM8ju6haF1B
-X-Received: by 2002:a05:6214:1d21:b0:91e:9664:4e2b with SMTP id
- 6a1803df08f44-91eef7a3c83mr11947696d6.7.1794254504037; Mon, 09 Nov 2026
- 12:01:44 -0800 (PST)
+        bh=qGRFFPBB1wF37JYd4Ts1/YLImPhgtURF2AZXR3nqT7s=;
+        b=BnHYAj+iR+6cn0CUqH/x2Mwt22hDcut0AMsQGKlK8vCEE3gf0Ky65QbBMx/f7Otfz+
+         doWmv2wIEnpMubzZ6AR0BpOeGr3AoJHyENgTT6Cn8O7mGPs90eeCHimtYtg59fGjLYRs
+         /cRCok+qb6bkYwG6l9ZWjD7kWiwB8bGqvsPRuXCgBLwzH/OR0JXTgjk7tH344hwwRcLS
+         l14MdzpilOtYX3eLgbCtHq4BB9i5mehoyIA7LmSvT2BGM2ZVpTE+dATBOAOw+djDrnYd
+         BDZFxrFh45oM2HwzjxS5xlS4vY1qsjyGJEzsps1EIOSGzNdwoSM3yMx/784C9uD1sRPY
+         bLyA==
+X-Forwarded-Encrypted: i=1; AL+hErEUCBnOcqC+LHVFATj8JncpRlihYVW0/zfB1J/LE2mCwyAt4ToCJkhU23FBvENexo+9nak=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+FQulax8rGb7y7kmrod9VwD7XQ50LTkQBuceGu1KENtm5jODW8
+	mVqATsc6wt0YjQkQPcGx01cAJ2oI7cx1vL6kSe7jp705YuaMvTbULOtD+Fa9jHdLuwIrsnjnR3Z
+	+8OMZ/hZ99UY1Jxuj/bMmbzcbAxGxKnDkMC/COn8Y
+X-Gm-Gg: AYBFou10c9ToRxQVtnKIftTX/qyQMyHOu5sEhk8AMlELyVqg84RENBIgVkHu4tgjNR/
+	uIChzkNoH20aq0eVd2SeMLTjmbdNa9SicfoJk5cDrHKNNKgRznsCmdSy/ZMgbWrIaz6NRVdnmF2
+	MqsdNsY2pkIhCeEkgg+1OgIujXfwhRuIWzTi7c6HtnXd91ZWZpUS9TxJxqPgJCaVOVXAuOk9sFs
+	LKsSfSAv8sBHOzt3h8tDNEVAwSUDmjWuMiEBUN+QSbUvOZZT3W4BpJgpbVXJf9uHbD2spLq1/eq
+	0miFyJJ3hw/1mGR5ZjB3uV0apwwFA6ASElapp2EI7MFb+WSFEj7gl1CwOMFKikkDVpRYclSsxGK
+	Tal8eQyOdm69pCdIjQ83WuFp6hqLmzt1/S0I4EW3S9fW4+IyAXSwimJh1JYEN5IK7sQ1NPOJuKq
+	Epl3lV3/xJq3QDlIskrqAZEltpRFiPBDQaW1V0y+Ei+r4n
+X-Received: by 2002:a05:6122:218b:b0:5ea:b04a:cefd with SMTP id
+ 71dfb90a1353d-5ee0d0a58a3mr105598e0c.7.1794254568208; Mon, 09 Nov 2026
+ 12:02:48 -0800 (PST)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 9 Nov 2026 12:01:43 -0800
+ HTTPREST; Mon, 9 Nov 2026 12:02:47 -0800
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261105-tdx-selftests-v16-14-2024e8fa517a@google.com>
-References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com> <20261105-tdx-selftests-v16-14-2024e8fa517a@google.com>
+In-Reply-To: <20261105-tdx-selftests-v16-16-2024e8fa517a@google.com>
+References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com> <20261105-tdx-selftests-v16-16-2024e8fa517a@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,10 +109,11 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 9 Nov 2026 12:01:42 -0800
-X-Gm-Features: AclHuK965yyNFO13V7bpMX0YP25CWk-grxkHlMzQ2EkXDGXWn8vJSUwM5EQspQQ
-Message-ID: <CAEvNRgG4BGkr5QhNaOQrBLzGp5uy7Bc8Lv0c5a5tp5uUr047nQ@mail.gmail.com>
-Subject: Re: [PATCH v16 14/20] KVM: selftests: Set entry point for TDX guest code
+Date: Mon, 9 Nov 2026 12:02:47 -0800
+X-Gm-Features: AclHuK93pizTTBvqPPHn8tyB102k3E6xp0ArgfRjiMFhvMMSdBvoYQSIxOQgtlQ
+Message-ID: <CAEvNRgGQqdrcLcYbSbiXmFRAHwvGW5Ha_2NPWhMNs-qpnWhZCg@mail.gmail.com>
+Subject: Re: [PATCH v16 16/20] KVM: selftests: Load private memory and
+ finalize TDX VM in kvm_arch_vm_finalize_vcpus()
 To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
 	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -132,14 +133,49 @@ Lisa Wang <wyihan@google.com> writes:
 
 > From: Sagi Shahar <sagis@google.com>
 >
-> Since the rip register is inaccessible for TDX VMs, we need a different
-> way to set the guest entry point for TDX VMs. This is done by writing
-> the guest code address to a predefined location in the guest memory and
-> loading it into rip as part of the TDX boot code.
+> Initialize TDX private memory and finalize the TDX VM after VM and VCPU
+> creation.
+>
+> Hook tdx_load_private_memory() and tdx_vm_finalize() into
+> kvm_arch_vm_finalize_vcpus() to avoid the need for every TDX selftest to
+> manually load initial private memory and finalize the VM. While this
+> prevents TDX selftests that use vm_create() helpers from customizing
+> memory before it is locked, no current selftests require this.
+>
+> In TDX, finalization is a mandatory step to make the TD runnable. It
+> also finalizes the MRTD of the VM's initial memory and state, locking
+> them in for future attestation and preventing any further modifications.
 >
 > Signed-off-by: Sagi Shahar <sagis@google.com>
 > Signed-off-by: Lisa Wang <wyihan@google.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 > Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> ---
+>  tools/testing/selftests/kvm/lib/x86/processor.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+> index 11db6a3b0366..ee8a1715d844 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -1503,6 +1503,14 @@ bool kvm_arch_has_default_irqchip(void)
+>  	return true;
+>  }
+>
+> +void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
+> +{
+> +	if (is_tdx_vm(vm)) {
+> +		tdx_load_private_memory(vm);
+> +		tdx_vm_finalize(vm);
+> +	}
+> +}
+> +
+>  void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu, gpa_t smram_gpa,
+>  		 const void *smi_handler, size_t handler_size)
+>  {
+>
+> --
+> 2.56.0.455.g6c5a503b38-goog
 
 Reviewed-by: Ackerley Tng <ackerleytng@google.com>
