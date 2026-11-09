@@ -1,71 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794217252;
-	b=cw1Tw32ZSRhbduYODumsneFEbUQazAcNfeHjGCP2htClUqqxqxULPg5C9kkvlhQHKQ52
-	 2DD30Rg+gVQYweAew1mIccfr6gCB9DWNvyX2PqwaebbAcmJs07gyp0pdTBT5sMbgnQvFs
-	 byaE5pzDayFx2yvlqvVFsYFr/m6t+2sIkseRIegj+CympMax0xVFcHLGNoo75Jnq1k4pa
-	 nCZNAhvYiVPj+9rL7gsQglP/dSxgYspHpxJvZuIXtwOkNSm7J01jScbh5QDVKj673/zJ8
-	 9eA0f7EEwMTjWKBPTN/y/rSDlS0cOSwLK1J/E2eS6rV96wUSdjl+kYG0xaLQP1jILRw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794217252;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=XpJVqtXGRVn1elHP4O9yUrO0bCUpsQD5MQPAcM2JVcc=;
-	b=ZY/myUhAOVFEk0PTM9VKukG9+R8uOimEdk7WboQWsJcc9MhwoxzSyBAVT5xNZ8VXK+r/
-	 kPD0/OmYFO5MF4+EtjJQxsFKPGljHnDe3WEniMoxqnaNXJtNGacWYQzw9jTvtuNmfjCY4
-	 duVUEsrnv4h/E5EYoUsW2RAYGx1luv1Hc/Zi19fM56j11MnJOFbziRf4dFSdf+KWVBv8d
-	 SS8kDJRQ9bYU9GwtDV2619jfXg4bUKAkL87DcLqTmuGXQtJLNaWFqbDYmOGTXoe376qfy
-	 Zzmf7NQwrBj53u1ril/zYA8syK6g+hTMXa0S4PbCEVaGoG+J9+sxDksDwNRtBnP2lOA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZNTNv5wW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794217340;
+	b=Ulv/jqsu55PrhWSYhhbEBdCEBcSm3HPFc41sHhHWYBYnysHWCE6Y5hCaFPwMrvrCr5cA
+	 iURlfn9ErhP75GcHGxI2wyHQy6L5FrizB6Kz7EQsr5n3u3c/nm8AEqcjqZyIWQ+HXhM8i
+	 HTpUkIJiQtb6EDY2+L1SJKf0ma/YuqiQ2nN/0Gtdu/6xLBNtLZpleD4LbrxpWKBqJ26X6
+	 KkHNBDfOJ/bAmkjT+aPXu4tYPXOSaS8GeOlPtiMxd6tCRli2l9Es6D/JN/AIfL/yKpA6W
+	 f6hk5PV9TYIYXn4vg1RhYxJ6FlzNMIOuseuNhc7lS8WRhDdem9gh+crq5nAwIQwPIUA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794217340;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=dnTFqC7NFZ6LKcry7zosB7nFvDvPqEPM5rGL/V6wgTk=;
+	b=aY2M5eaByXXO8tTrX5bn3Hy0Q3iYa/pzUARpijaz815xVLGsZgBwuwRn6YS1SGbk2t86
+	 C3GAoIUze3NbV/tveyQW84nyRzlcdKgp5zDbcp2kltLJxPSgZAk0aA+StDzejp8Q4MW6O
+	 y4YH/8uIttjgmEeYKxVb20dmfGJb0vEfCAPnFw3wzZSJQWJW3kayaFrXk34ha56ZwGjb3
+	 vLwtaFhQ9ylHLuTkN0pkqV3+Ir6L/ZTxfzKPCZh8RtNt8VSGdSpjaosX7c0+7ZatICQn8
+	 8qJACFWncN2v0cHKiRBRLZkQ+WPFSasKbHdIyW/+wl3olLr3A9g9AZViv+4Y7SYFuEA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IW2nD7TB;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E232A606A321;
-	Mon,  9 Nov 2026 09:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5117B606A326
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 09:42:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5117B606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZNTNv5wW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9571F008A2;
-	Mon,  9 Nov 2026 09:40:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794217251;
-	bh=XpJVqtXGRVn1elHP4O9yUrO0bCUpsQD5MQPAcM2JVcc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ZNTNv5wWK7nnfG6wv+W63m5aMOEEQxK3zEw7kZDbgJn5GkjfXRY5IqWTe6BJv//Dx
-	 +nTxT2goIpIgum8IyIueDmq2egm/eS3hGTHeMqEpZnLEZ1/SmQNWailBnF9JUGpMtW
-	 VM/BCJeumeZOUYtxCHs/Br+l67VPe8sgz5Hla0sbbFPRhm5eosSPr+i4+YjM+RH7IF
-	 47vTv5puXn46+KWDkI1zmxASoJauaFoikb2K3nS3NzQwdKBvJ/pIGxXBZUVV5yLrFF
-	 6qc/3uD6Qf/qdyiH37ZFKYr0PqbLGU50aLqsdnkGoEHMLXQQfgRhCYAivcEas254YS
-	 RURHpKrHNs5Jw==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Fred Griffoul <griffoul@gmail.com>, linux-coco@lists.linux.dev
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	Alex Williamson <alex@shazbot.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [RFC PATCH v4 06/25] KVM: guest_memfd: Support device-backed
- PFN providers
-In-Reply-To: <20261104183754.10457-1-griffoul@gmail.com>
-References: <20261104150322.3516320-1-aneesh.kumar@kernel.org>
- <20261104150322.3516320-7-aneesh.kumar@kernel.org>
- <20261104183754.10457-1-griffoul@gmail.com>
-Date: Mon, 09 Nov 2026 15:10:40 +0530
-Message-ID: <yq5amrritk9z.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IW2nD7TB
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so3601e87.0
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 01:42:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794217338; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jGLwGALAFMXQirwN07GGX73gDUaFb8oQbAdhe/RweQvRp2n9BS4C/Vog4gH1ImWRjK
+         wMkMTEtpVJxEAvvDaMRQzsMYmFcqHj7rt8q/wmI4qzLFNaYN5M5WWJ2b14hWw2sNjuWn
+         NSKgF7DFZGo55aIhRvqbDpAm7ej+7XHVHgECpLEXWXsFMY7n5R6m7p2j+nKHHNDpdDpV
+         1MMA43B1tGJ5aZZYs+lUaAF8oWqRD0/tXtnupb5zTIPRpWJFouNI67T5VmQGQQawjNce
+         phpq/YLmuyzyiF3QYRMmyAc/tgUcpQayk+J+1qImRj0FuxC7rcfxv9w/VIqhjqBCk0nf
+         2+iQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=dnTFqC7NFZ6LKcry7zosB7nFvDvPqEPM5rGL/V6wgTk=;
+        fh=SbHnu8JtB448oo4w15dOMgQEmImkP4k8rimVoJTHg7c=;
+        b=abiGS7CwNRACoi9Uq3o/PpLyZEGzPQwAq8cPcP4LIyRh8uZZ/jRny+GdzRV0ond1xa
+         v+SlqWbQlZn9/mNq9BEVlBTIgTCR5vaZVyefRzejU1PjYuxXAlqJSbSzc7HSycGYrJYW
+         KgDmJWdfjfac9cQ/MKZ1bwUZLW2+M4XapOfu9+pyetyn3MQzT1S9tO9y3j8xfAoD9h2F
+         ZCA5TPz3NxvyCmNUZjb9D7FbboZOOSOdowSNmjEFC06K8Ez55loHZGEtwfbaxem7OYXZ
+         YhfbJw8Qpc4nTXsypNkh2kLIMjflsVxOKA57We5ddaE6iUNQH+iiQu+34p8+FQGV+ZJm
+         HHBw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794217338; x=1794822138; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dnTFqC7NFZ6LKcry7zosB7nFvDvPqEPM5rGL/V6wgTk=;
+        b=IW2nD7TBfpylCv/Q4iwboGxtpYLm77TPNHjYntv3vZdOMn07KGEJ8Z+jzF7pqd73le
+         R6C3pFcK024lUnAUYKpxEFVxXng9CqVrBsfIHokmvrFogJT4mwvbtoNbjyd3zvhbR9dO
+         Tw4VheWTrTOXCPqeGvIvJzC0Z6HIIVEnDDj9Ns+YAcSq1balXLUBN48TiDzLXdzu41kR
+         9VnpZtANr8A3VW8NxsBcw0PmQ4QkW8RflYfoiuG3LnC/PhIWHCa6XOWCsah8JQe3bTgn
+         Z0femMdJtIO84tqoLbepZiwyEsrNjYhK8lTxSrG6d3YNLh0lwnObvVFb9AYP4xZUrn7u
+         1R7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794217338; x=1794822138;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=dnTFqC7NFZ6LKcry7zosB7nFvDvPqEPM5rGL/V6wgTk=;
+        b=K8QNdbrJNAONGqW3Q0esQUFuISKbALhhjZp9bnr2r/IQ1XIL1xiEZmensJkqqFfed8
+         D3I8mwwjBgAjMUi3XXsuK3Pje0WdYLN94GlBXHomYr3SOSZ0VzVyFgWHDfUB03SqCrDA
+         ytE8AqTw1KSJFxNNPW7HBRDex8fH/1u37isCqxrWvpteVLvnmmuEoASxyBR+a17DzZsw
+         nfK0YwmzfyIGEAE7yC5JIltCfrVBgCaTNNV6Gp57OsqXFYdQjKR2Fc7hSB8DaZ6voLVv
+         zwGSG6jz2+4xBH3PTMpWGPPPUxHGsHpg3zQw0Uz4RhvyEX7geWgWb+15wOAvEERHncrM
+         6j9w==
+X-Forwarded-Encrypted: i=1; AL+hErEl+u91hlTqm0DVzD7fHQKhS54TtS9d49a9n5hrLuaYW2mgLdTjfnU5+FSH5t+hvJn2ozk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+V6D/h3EvkwGHO6AcGPKHLs9IUS86/FJxNsLBmeaGqvzOzqlpB
+	WwvWkwEkHEtao6ZnySOLfSapkokZMyfWUKi3Xsmxwn04jUayFxtosUFfWHKlFuC3rV0V6yRoTNm
+	XCx++uXG5cJGkMeP4dNsO3PfRolHC+JuXUSh5hgALN3O5qIxAeJiU6qXbO/4=
+X-Gm-Gg: AYBFou1ZEpqJDmm96vB8ZYpInIow044/OrVBwq0WcQY0oIamSNAaZRxrb9Zj5LLTn2G
+	LuUvZG/2O++RSgWK+6gn4Yuo7OqrYkrcFuXKDbmBwYVJwbES6vb769udxZLUNBfC7llGBNk8Wra
+	ddDY+0AqB/9/rGprFIY939gThxPNxu1mdwKAbkYPsenyxAA1eVTorYegXq5W3MKC69zXR3Db7Vp
+	0si1wA1X8cju/QguiXOaLiT1WNlyoCn7x94SJvr0oJhlkxeeSaKfyXDlrB+QGi+hxoA5giR1CUS
+	flkRN10Z/DEz5maHZ1XzvBmBAQl0GEbaiGtOyh3RhimhtbXqY7saL4uD72toCU4OgYLCJGuE8LA
+	+M6CWxb+7A5+CWItBX5pa3mjDByDaqb2KcVKRRjGV7z29uyoRfth6sjAbO33/geSYpfi7JRBggq
+	3Apo3Pzp9dmUh9jr4M2MjPZJ7K1aG1EjUsyJc/iDj5jX9U4U4=
+X-Received: by 2002:a05:6512:304c:b0:5bf:f81a:f24e with SMTP id
+ 2adb3069b0e04-5c00bd5bc9cmr144934e87.10.1794217337930; Mon, 09 Nov 2026
+ 01:42:17 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,89 +104,25 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260922071945.693714-1-fuad.tabba@linux.dev> <20261007074037.316564-1-fuad.tabba@linux.dev>
+In-Reply-To: <20261007074037.316564-1-fuad.tabba@linux.dev>
+From: Fuad Tabba <tabba@google.com>
+Date: Mon, 9 Nov 2026 09:41:41 +0000
+X-Gm-Features: AclHuK_MaYET6PTkt0ZnvA66k0DV_1M55e3jB2HzY2bpxHczb0VPvo1hIAKLqfY
+Message-ID: <CA+EHjTzaJx2nV_9YEExgYn7STSP1Kvhsqan8va8M7ba4WtCiqQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] KVM: selftests: Fix incremental build dependencies
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	James Houghton <jthoughton@google.com>, Will Deacon <will@kernel.org>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Fred Griffoul <griffoul@gmail.com> writes:
+Hi Sean, Paolo,
 
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
->
->> Device resources such as PCI BARs supply PFNs directly and cannot use
->> the folio allocation path. Store the mapping owner and device ID in the
->> core context during attach(), and use them when preparing device
->> memslots. Keep device memory separate from ordinary PFN-backed RAM.
->
-> The device rules you wrote down in api.rst and locking.rst helped a
-> lot. If I read v4 right, the device backing differs from the RAM PFN
-> backing in these places:
->
->   1. PFN mode calls RAM arch hooks: kvm_arch_gmem_make_shared() at
->      conversion, kvm_arch_gmem_make_private() at fault, and
->      kvm_arch_gmem_reclaim() on revoke and release. The device path
->      has to skip them.
->   2. lookup_pfn_range() only feeds those hooks, so the device path
->      does not need it.
->   3. The host mmap and stage-2 need a device memory type.
->   4. In PFN mode, a conversion to private only updates the attributes,
->      and the guest fault maps the page later. CCA has to map device
->      memory at conversion, because the guest validates the mapping
->      before it touches it.
->   5. The device provider needs lock()/unlock(), the private range
->      summary and prepare_memory_region().
->   6. The provider gets the VM and the vDEVICE binding at attach.
->
+Another gentle ping on this series. Is there anything else you'd like
+to see before it goes in?
 
-
-Your KVM suggestion below prompted me to take a closer look at
-eliminating the distinction between kvm_gmem_ram_pfn_backing_ops and
-kvm_gmem_device_backing_ops. This appears to be doable.
-
-> Would these changes to PFN mode be enough to drop the device table?
->
->   1. The arch hooks take the frame attributes. For RAM the arch does
->      the RMP work. For MMIO it skips it, or does the RMM work instead.
->
-
-We discussed making get_pfn() and lookup_pfn_range() return PFN
-attributes. We could define:
-
-#define GUEST_MEMFD_PFN_READONLY	(1ULL << 0)
-#define GUEST_MEMFD_PFN_MMIO	(1ULL << 1)
-#define GUEST_MEMFD_PFN_NOEXEC	(1ULL << 2)
-
-We can then use GUEST_MEMFD_PFN_MMIO to drive this. The attribute
-conversion then becomes:
-
-kvm_gmem_pfn_convert_attributes() {
-          gmem_provider_lookup_pfn_range()
-          ret = kvm_arch_gmem_convert(kvm, slot, gfn, pfn, nr_pages,
-				    pfn_attrs, attrs);
-
-}
-
-For RAM PFNs, there should be nothing to convert because
-lookup_pfn_range() will not find any pfns before they have been faulted-in?
-
->      
->   2. lookup_pfn_range() stays required. For vfio-pci it is the BAR
->      start plus the offset.
->   3. get_pfn() and lookup_pfn_range() report a memory type (MMIO) in
->      their attributes, next to read only. The core mmap and the KVM
->      fault path use it.
->   4. A conversion calls an arch hook in both directions, and the hook
->      can fail. CCA maps the private device range there.
->   5. lock()/unlock(), the private range summary and
->      prepare_memory_region() become optional ops for any PFN provider.
->      A provider that moves RAM between guests needs them too: it has
->      to order its moves with conversions and leave private pages
->      alone.
->
-> I'm less sure about 6. Could KVM ask the provider for the vDEVICE when
-> the memslot is created, passing the VM? The provider would then not
-> need to keep a VM pointer.
->
-
-We can pass that as an argument. This is also preferable because it
-avoids storing a KVM reference without a clearly documented lifetime
-rule.
-
--aneesh
+Cheers,
+/fuad
