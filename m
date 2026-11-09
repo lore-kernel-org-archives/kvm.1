@@ -1,105 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794252990;
-	b=shEY5Sm1a0Um4xRs+vdyP7odlQx4ZyM1CntKwLzk/5nlHl7m8lySHoax4rbkjQTvFQQD
-	 NtyMP5579qwUiFhnSVYES33D0dvM5nRrRu7PqdoespXMWVUrwYWat6b+9MDPbv77DTMWc
-	 7JbgMrsIidFmVbWEMzwQIKPOvqeEX26YidZ11PqZu92iyZx9N1IcfERLCEVQ3hgOe8Hvx
-	 YBjKG3YIQZzOv4+axmnX7UgoEfrKq0DdHcRtFP5tlWI1q7CwCgsBayCh7TkvxBlts+cxg
-	 smZI2aSOBXkT/XC7ST+rrsGfF9X5FSWaH5jlR7xGLZiq1nWmtEZ/J7C8RYBN/PYHBAQ==
+	t=1794253173;
+	b=42qNF0G67NHWsp0eNYUNOu/gT3sQeix7dwl9yXCCC41Lc8dvvKRSVS2fQ5GMqAuwyAHB
+	 5s9Q4eRzu8GluAAxGxNh87rNCBIGgFwpL/LY6a6E5NQvgXoz6ugfRaCyL1zZ37/wxGN9T
+	 g8UuGNqi/1mMtZYi+ztW8H6q3sEZ5x8S5cM5bEwmsFTvVBVdt4bqYebDsAd13pRpvgUAR
+	 2ezJpntpgxmLNAup5HtcnlPCh2DQvrh2Cy6z62YsK4twpgHzPCBz+aWI20g+iQzkA4qfS
+	 Wcgs2V0Mbw20AoIEHb9SpMraZKIQ75chBbVZ37WJ7cPKuC1Na58NIxYmAH5VXVJDe7g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794252990;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=FNS0rvY8L2G1kXx/9AEiQVl5+WbZi21fC5nZTW3I69E=;
-	b=QzoXJKUaTt6iCikfvigzaVFkk79w4XrbpTKcCmIbFxxT9z8R4u1Dl7giMZpt9PHM1Lcg
-	 HBUitQtZlQ2gUKIQYcGVU/k80UaHHda/rnBuIqY9YlNrfgwirapCIKnfEw04w3FQRDOwZ
-	 Vomam8VfmKkBnsfEvRUULQqbnsmY1k3rm2gQYR/eeokJnvTF/0NVThMRWFBC21FQGIVuJ
-	 34OObet5IofmpPvm2Mo4OmRg7FldDtwWhxAqF9YsRnPGLaLGEHUXOEXju30DskxQa2oIv
-	 wAx38iEsS8dKwakD9p2KK9SZdoEQspalFR+O6f+t4Vdytv0q52VZbWyIh3XBlf3lU0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794253173;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
+	b=3FSFvVhzv/Jk3Wlgb9+Hg6YT1HKZ90q+IZY+spG/WG+JmvbwYS+C7Pjh8uFS1z/B5+0t
+	 l2UXTKRybKMWvGBgDgo4KYOTAEtvrjbWZeEYuBlRgEKvxu02d4C08lf9jGkHndgQXhnXi
+	 zp4NedTJ+q5ZOrO0MmGPDa2fwiuodEgX+cpDg1kBT15odlWWBuHc2gKtfPWuvKcID+TTN
+	 qrQwt31fL4tERZgVTeBDvujRc1sBmcbPAMav8coxR5Vki1X+V0rwnW+5RBaa8F79L3SpZ
+	 sZl7avOdx35ecPt7UUNnB14EZtdCS/0EXKjUGpO+iAnOojgbsYWNWyMQSEgxy3nzTWQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fpKNcnVh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.46
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZNrmWxW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DF5606A31C;
+	Mon,  9 Nov 2026 19:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZNrmWxW
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794253172;
+	b=0NmJiQoL9uCY9dXfVNem3nvUDAD46sX4u6F+096w9DsfoF7wbMcYPCSXwEohn0UZMFdB
+	 KURk5DvuW6OSoupH2MlVBngnEpVizIcbrc+eaEtUbcvxC9gmrY511wK2GDpwEh49wqXXG
+	 LIjW/yXoVY66GjErXSWf25qS3iwLiFpQ7f0ZpVZDMj4BPbS0pVY/Os7qxZO1lvCrwkAjQ
+	 OskYGMHWjPP2yxsHCPC2+6qtll7HvHB685pvknT7HzEfJhQMdubOzKuap/B1sX8mY2jge
+	 H/ITbjq1FByjNQDJWZvhjxapb4sGTpKqk8Qqz8LO19H5rjThaRg6JaYcarl7oTmwgOw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794253172;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
+	b=0G+/98hUvMBhFEquEe83GkDDcxReMkRpc+AJQUVCf4+TMwWLmmBz0OIeRqoZP4TnCQw2
+	 J+jYlmtC1vEJwXj/O0u6ZkYZ0QPfglQ3zL2VdLRws9XZxaCCLO9++132ZMxVujBAjinGc
+	 r89cem3qQB6Vu81ohhMCFMdFKVaJNc13pktpzlruyCJ1uoMgfMP9kWPnyaXNwS2Je0FUP
+	 7PiR0sNjmcBLXEWSPI9VREAPBA07L4sGgREgbk7703U5lT9/nroxqifILlIQK8fLA7JTM
+	 /U7KFDIuBD17bHNFDOPu09HGryysmi1/BSmMU8Ic3GlZD8CVO4CcfYUBDDusQVYrUSw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82ED3606A31C
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 19:36:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82ED3606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fpKNcnVh
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91eb7d1478cso13136586d6.0
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 11:36:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794252989; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QZ+W97hOgw4r89dGI3y2rsdaxaQMIFomSpMVwCnJv+ZoZUx41V+whHXdilmTUx3vdS
-         oOUUF5mvGxomnexDPqp4PD+HjbQcD1cN73+BQ2xOC4mzMrIIMh6kJGRp3E8PFkgDVird
-         e9DS0tRQGCu4WOhV1HXT3b0cwTAZuuAt2y5JmcgCUjfQaeJ3n1P5FDfGf44smsSRb5tS
-         JdjVvarR+J4jghWTu2V+sk3jEsk65ijL3fTG+dVeXRkpTKbQxtQJ+EWb58y46+VGC8XT
-         Fw32QdN/9ZbgftYlyGXf+emm6WNfBsmKxgSDPYN3u7fLDjAVB/wic8GmIiRMmhcZ4VJG
-         udhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=FNS0rvY8L2G1kXx/9AEiQVl5+WbZi21fC5nZTW3I69E=;
-        fh=oqGs8c4NfjB7Bxif3EQbikqd7R3h4i8vJPJDrM2cHC8=;
-        b=V5Nzqv748hVWHKfT+xgc265RBZzxoXvnbhxtdiXHQwN3BPYaSMhWR56vLbohBlmzBh
-         PwoCySf+fVp7ZCE09qiz8qdDFe4+jdogFTp7182BltU1RRhVPygE56Ojn9/R/fU5Hqr0
-         AlkqNSxLEBd815xltw83HMX9FodZMQqKGW2/9+OwuLJooYiL38j3fe90yrujbwjTLAfX
-         zPg2lx4rRTaxMSvkbD5omjfBQy5rKwqzLtE/sFvbnfBd3QcedUrqwjxf3v43YggJrSi6
-         PrBWZqNbP2rk8m2DmW1ZYmLPjtEj58cMsgXvmNX0vTf0WtG4ME3uJCL6R0K9qxpJchrA
-         m/GQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794252989; x=1794857789; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FNS0rvY8L2G1kXx/9AEiQVl5+WbZi21fC5nZTW3I69E=;
-        b=fpKNcnVh/2I+iG6wihxClu2CwKcNoccri64fWdEO0ipq/RVkJMjOD222Zw3hXtrNg5
-         c5wuWhzONHfOhIG7rIUvYsVZh4882YDw9HhHd8OTJwi0exuJgK9afPsOmyj+srdxrI5Y
-         uK9KswQYhNbGVtJNawsDvvEt3GuVRvT+641RMqV/1NiOPinEAnpglkliHfuxFm0fdfkR
-         wrEtqzqstVjBlHG9WXc3TOLxGkrKyHhkporF9CHGN5y2CWWm3Eabzyyg499wD2x/rx93
-         s2zQPpA4Mf+DVx+gAmYsp0uWJ8kDas5Z8z1wvd+LD/29yo2wNby4TVy3ftswRFw6ADyz
-         y3Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794252989; x=1794857789;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FNS0rvY8L2G1kXx/9AEiQVl5+WbZi21fC5nZTW3I69E=;
-        b=M5JtTLsCj5BX4Pv0Jr7EH8Mn5QiCbQ1G/wytJDgjck2GHgt1nw5nu64mH+OpPSLQPx
-         DybkPbgKqnlOeAKeZHHll6eAKEHlYBwoczoZu60eyRPruSEG/BwzY2D+d56IISA7YSZu
-         j0yqP5NjfgK4+ftl+lx97FvsndGO0I7MFjeTEaUc8aWvdbZ34aVayRwL/oMPxLZvuIjY
-         w4XhCWq+i30uVLtEMRdXzVBRKXCeaN/tyAMjye5dkgxQTkdgXgpFP3nm9q+/WbCjMHfg
-         LPzBjQ2U4unvKxA7zo8NNRZka6MllD5SsGjvgZIp+HtedF5f8SEu7YZuKK0MHrS2pVbo
-         lXbg==
-X-Forwarded-Encrypted: i=1; AL+hErGKALmL3ym0/c1hXyOLUdS+vdx8ayjyuI261wUEJQa2GF43F/XzU0bDi/JCCGX3k+5ZqM8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+s2d5tBvAVEd6WN3EjrC93zz+wcbVsjE+keKotwxf3LC6fmFPL
-	yss4RuEVo5q2G3IhkHNtVuqY2uzX5/E6gF6ezUbBJPtXiBqMVCT2SlxhV1ZqXjmMjfM+/Eoo/Xq
-	Z+2U6/7AoE4Hb1/rd3wEOqFpsa4vamQspAKvgNsY+
-X-Gm-Gg: AYBFou1zTGJ0X4yVV3K7EfBCTnJ71AeRQ0Rib/wyQjVSsUjuxIKVeUDmzFoAUvYWPDm
-	9H9hlePHaX5sHcNYbGk+y+2pKDLBZGyNJiltiQ3+z3qaXfkyTYAS4l9ywExTv9H2xh+F+8v/EbG
-	8Z7+NSkg0tsVmC7UZkopSje2NGrcnARC7ZPah805qUxoIqkrMqYTmQ+8rYGC6dYUfZEHbRnKzRI
-	QgBQ/lgE+4azUYSaJIY3GcDb75IRh8j2kaz6Px14ZTxazaAor16kLH6w6X+9ymvUByEuBDPZJDc
-	I6XJ2/yJGgwAAO9YkosbwGN1HpbZq3iLYskUAzrgfci/J9DY9l4OKSMPFSIz9XXaCJVc3Rg1J4Q
-	Ic1K308lnEsjZWxDwHBCRhZZ/OzBWasmm+eIu5tC7pIw9UjJHNx4TPU+GW4K1JJuPeoqMU2hi8f
-	Q88mAcFnzdEMWDpeHHDKNfqRs=
-X-Received: by 2002:a05:6214:5bc5:b0:91e:8cb1:b84e with SMTP id
- 6a1803df08f44-91eef92240emr10728756d6.24.1794252988739; Mon, 09 Nov 2026
- 11:36:28 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 9 Nov 2026 11:36:27 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261105-tdx-selftests-v16-3-2024e8fa517a@google.com>
-References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com> <20261105-tdx-selftests-v16-3-2024e8fa517a@google.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id A21B11F0089F;
+	Mon,  9 Nov 2026 19:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794253172;
+	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=DZNrmWxWOFiKrNxNxneZOqnZ+6ZfXGIc2bp0EmcEtOWokJYPqrGYWXVW6O+1G1IzJ
+	 EeQuOmkqbhNbh1/wJnArvzqFVvDFSat/Yj0FZbBfqla51Ju9WYjajWhQFFK37u7Bei
+	 YCPnnBSIPZ2Len/+3zGdiD4Yvd2vn0Zp9QMJ9MKmuQc9vUIFmqbzKsFBACX7ouKQNb
+	 VTANWBzcNiYIm3kPNWimYOFABUsSk9b/OvoBzTXGUsei6MGAGUVFcyfO6+b58TmObM
+	 sHcHmrVqK1WQMOmB+FNAb2bKmQmceAymL45u9NyjhVMNvXMz/wTGzI8OIZTEtQRjou
+	 vWHeYR6V4j9Cw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id F291048619;
+	Mon,  9 Nov 2026 19:39:30 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Mon, 09 Nov 2026 20:39:24 +0100
+Subject: [PATCH net v4] vsock/virtio: clear vqs[] to avoid a UAF on a
+ failed PM restore
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,173 +83,145 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 9 Nov 2026 11:36:27 -0800
-X-Gm-Features: AclHuK-BA2NXsbSfd5J99KlC06brlgAuU8dZlouTP4cLRD_A5AkBQuIm7WWoo_s
-Message-ID: <CAEvNRgHKQVLVza1dw9-OrDAt4-b6zbhx4T64D421sqb2MPWs0w@mail.gmail.com>
-Subject: Re: [PATCH v16 03/20] KVM: selftests: Initialize the TDX VM
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261109-vsock-restore-uaf-send-v4-1-1df8dfb5d5de@eldare.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNQW6DMBAF0KtEXsfVjAGbZNV7RFkYZty4iaCyw
+ UqEuHsNXRRFirL8oz/vTyJy8BzFcTeJwMlH33c5lPudaC+2+2LpKWehQGkEQJli315l4Dj0geV
+ onYzckUTXmuKgncWGRH7+Cez8fYVPouNBnP+OcWy+uR0Wcqld/OI81vmEa/ndUkKJsiKrwRkwF
+ ehPvpEN/EG8jiS1YVT9klGZ0aayljRZg+UzU/wzCOVLpsgMaSDQZV03ldky8zz/AjpYukFhAQA
+ A
+X-Change-ID: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+To: Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794253170; l=4147;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=5YFXaOW8KllonSsjF6SOnB8HkwciO73pZwsUjT72k8E=;
+ b=o5Ui0yGmlrlsv7s3vDR3Ic3XgYduWqet+IqPcVhgBKc2puHQzgL+jxfeHT/pgfs6jWrU82E9J
+ /7KX0+ab2xgBwU5CsrABnE3TPB51T8iCBoYthWQ/phU9iNUse8McHiX
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
+Content-Transfer-Encoding: 7bit
 
-Lisa Wang <wyihan@google.com> writes:
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
->
-> [...snip...]
->
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> new file mode 100644
-> index 000000000000..564144c40f0a
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> @@ -0,0 +1,114 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include "processor.h"
-> +#include "tdx/tdx_util.h"
-> +
-> +static const struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
-> +{
-> +	static struct kvm_tdx_capabilities *tdx_cap;
-> +	int nr_cpuid_configs = 4;
-> +	int rc = -1;
-> +	int i;
-> +
-> +	if (tdx_cap)
-> +		return tdx_cap;
-> +
-> +	do {
-> +		nr_cpuid_configs *= 2;
-> +
-> +		tdx_cap = realloc(tdx_cap, sizeof(*tdx_cap) +
-> +					   (sizeof(struct kvm_cpuid_entry2) * nr_cpuid_configs));
+virtio_vsock_vqs_del() frees the virtqueues but leaves vsock->vqs[]
+pointing at them. If virtio_vsock_restore() then fails, the driver
+stays bound with a dangling vqs[], and the next freeze or unbind
+passes a freed virtqueue to virtqueue_detach_unused_buf():
 
-Would be nice if struct_size() could be used here instead of manual
-calculation of the size. Same below.
+  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
+   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
+   virtio_vsock_remove
+  Freed by task ...:
+   vp_del_vqs
+   virtio_vsock_freeze
 
-> +		TEST_ASSERT(tdx_cap,
-> +			    "Could not allocate memory for tdx capability nr_cpuid_configs %d",
-> +			    nr_cpuid_configs);
-> +
-> +		tdx_cap->cpuid.nent = nr_cpuid_configs;
-> +		rc = __tdx_vm_ioctl(vm, KVM_TDX_CAPABILITIES, 0, tdx_cap, NULL);
-> +	} while (rc < 0 && errno == E2BIG);
-> +
-> +	TEST_ASSERT(rc == 0, "KVM_TDX_CAPABILITIES failed: %d %d",
-> +		    rc, errno);
-> +
-> +	pr_debug("tdx_cap: supported_attrs: 0x%016llx\n"
-> +		 "tdx_cap: supported_xfam 0x%016llx\n",
-> +		 tdx_cap->supported_attrs, tdx_cap->supported_xfam);
-> +
-> +	for (i = 0; i < tdx_cap->cpuid.nent; i++) {
-> +		const struct kvm_cpuid_entry2 *config = &tdx_cap->cpuid.entries[i];
-> +
-> +		pr_debug("cpuid config[%d]: leaf 0x%x sub_leaf 0x%x eax 0x%08x ebx 0x%08x ecx 0x%08x edx 0x%08x\n",
-> +			 i, config->function, config->index,
-> +			 config->eax, config->ebx, config->ecx, config->edx);
-> +	}
-> +
-> +	return tdx_cap;
-> +}
-> +
-> +/*
-> + * For each CPUID leaf in @cpuid_data, filter out unsupported bits based on the
-> + * capabilities reported by KVM.
-> + */
-> +static void tdx_filter_cpuid(struct kvm_vm *vm,
-> +			     struct kvm_cpuid2 *cpuid_data)
-> +{
-> +	const struct kvm_tdx_capabilities *tdx_cap;
-> +	const struct kvm_cpuid_entry2 *config;
-> +	struct kvm_cpuid_entry2 *e;
-> +	int i;
-> +
-> +	tdx_cap = tdx_read_capabilities(vm);
-> +
-> +	i = 0;
-> +	while (i < cpuid_data->nent) {
-> +		e = cpuid_data->entries + i;
-> +		config = __get_cpuid_entry(&tdx_cap->cpuid, e->function, e->index);
-> +
-> +		if (!config) {
-> +			int left = cpuid_data->nent - i - 1;
-> +
-> +			if (left > 0)
-> +				memmove(cpuid_data->entries + i,
-> +					cpuid_data->entries + i + 1,
-> +					sizeof(*cpuid_data->entries) * left);
-> +			cpuid_data->nent--;
-> +			continue;
-> +		}
-> +
-> +		e->eax &= config->eax;
-> +		e->ebx &= config->ebx;
-> +		e->ecx &= config->ecx;
-> +		e->edx &= config->edx;
-> +
-> +		i++;
-> +	}
-> +}
-> +
-> +void tdx_init_vm(struct kvm_vm *vm)
-> +{
-> +	struct kvm_tdx_init_vm *init_vm;
-> +	const struct kvm_cpuid2 *tmp;
-> +
-> +	tmp = kvm_get_supported_cpuid();
-> +
-> +	init_vm = calloc(1, sizeof(*init_vm) +
-> +			 sizeof(init_vm->cpuid.entries[0]) * tmp->nent);
+Clear vqs[] after del_vqs() and when virtio_find_vqs() fails. Return
+early from virtio_vsock_vqs_del() when vqs[] is empty: the detach
+loops would pass NULL to virtqueue_detach_unused_buf(), and a second
+del_vqs() would free virtio-mmio's IRQ again, which only WARNs in
+free_irq() ("Trying to free already-free IRQ").
 
-Would it be possible to use struct_size() here?
-Or perhaps kvm_cpuid2_size(tmp->nent)?
+Found with the help of Anthropic's Claude and reproduced on virtio-pci
+and virtio-mmio by failing the restore with failslab, without other
+kernel changes; the virtio-mmio WARN was found by the netdev Sashiko
+review and reproduced with v1 of this patch. With this patch neither
+report appears on virtio-pci or virtio-mmio guests, and the vsock
+vmtest.sh single-VM tests pass. A find_vqs() failure after some
+virtqueues were set up was not exercised.
 
-> +	TEST_ASSERT(init_vm, "init_vm allocation failed");
-> +
-> +	memcpy(&init_vm->cpuid, tmp, kvm_cpuid2_size(tmp->nent));
-> +	init_vm->cpuid.padding = 0;
-> +	tdx_filter_cpuid(vm, &init_vm->cpuid);
+Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+Changes in v4:
+- Say why the early return is needed: the detach loops would pass NULL
+  to virtqueue_detach_unused_buf() (answering Stefano).
+- Say in the message and the comment that freeing virtio-mmio's IRQ
+  again only WARNs (Stefano).
+- Move the send queue purge before virtio_reset_device() (Stefano).
+- Message: the use-after-free also reproduces on virtio-mmio.
+- Rebase onto current net; rebuilt and retested on virtio-pci and
+  virtio-mmio, and the vmtest.sh single-VM tests rerun on this version.
+  The moved purge ran with an empty send queue only; the ns_* tests of
+  vmtest.sh were not run (they need root on the host). The reproducers
+  are available on request.
+- Link to v3: https://patch.msgid.link/20261104-vsock-restore-uaf-send-v3-1-d60d06488b57@eldare.de
+---
+ net/vmw_vsock/virtio_transport.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-How about something like this?
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 4f9aa9c4c3aa..cf63bc99f3cc 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -714,8 +714,10 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+ 	atomic_set(&vsock->queued_replies, 0);
+ 
+ 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
+-	if (ret < 0)
++	if (ret < 0) {
++		memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ 		return ret;
++	}
+ 
+ 	virtio_vsock_update_guest_cid(vsock);
+ 
+@@ -776,11 +778,19 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 	vsock->event_run = false;
+ 	mutex_unlock(&vsock->event_lock);
+ 
++	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
++
+ 	/* Flush all device writes and interrupts, device will not use any
+ 	 * more buffers.
+ 	 */
+ 	virtio_reset_device(vdev);
+ 
++	/* After a failed restore no virtqueues are live, and a second
++	 * del_vqs() would free virtio-mmio's IRQ again (a WARN in free_irq()).
++	 */
++	if (!vsock->vqs[VSOCK_VQ_RX])
++		return;
++
+ 	mutex_lock(&vsock->rx_lock);
+ 	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+ 		kfree_skb(skb);
+@@ -791,10 +801,10 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 		kfree_skb(skb);
+ 	mutex_unlock(&vsock->tx_lock);
+ 
+-	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+-
+ 	/* Delete virtqueues and flush outstanding callbacks if any */
+ 	vdev->config->del_vqs(vdev);
++
++	memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ }
+ 
+ static int virtio_vsock_probe(struct virtio_device *vdev)
 
-1. Query TDX capabilities first to get tdx_cap->cpuid.nent (let's say N).
-2. Allocate init_vm sized for at most N entries, since the filtered
-   result can never exceed TDX's supported CPUID set.
-3. Iterate over the TDX CPUID capabilities, look each one up in
-   kvm_get_supported_cpuid(), and append matching, masked entries
-   directly into init_vm->cpuid.entries.
+---
+base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
+change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
 
-This would avoid the memcpy and all the memmoves, though this works
-as-is. Just an optimization/different perspective.
+Best regards,
+--  
+Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 
-> +
-> +	/*
-> +	 * Set attributes and xfam to 0 to use KVM's baseline config, as KVM
-> +	 * automatically ORs in the mandatory fixed-1 bits during
-> +	 * KVM_TDX_INIT_VM.  Note, TDX_TD_ATTR_SEPT_VE_DISABLE is not required
-> +	 * because all initial private memory is pre-mapped before running the
-> +	 * TD.
-> +	 */
-> +	init_vm->attributes = 0;
-> +	init_vm->xfam = 0;
-> +
-> +	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
-> +
-> +	free(init_vm);
-> +}
->
-> --
-> 2.56.0.455.g6c5a503b38-goog
