@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794239890;
-	b=T2qjZbgAMLz9ZjggFj95xHX7CeXM++oblUYdgoanbsqhFFx3Db2+waJqeSi4phv+xlv3
-	 1vjLXMPtMpgcJ0Cpj+BAGiTyVo6cOHAdRySKq1sU0JWnNr2Ngfsf/oGa1LhhigbEz0TlH
-	 0g7KgRUHcqXVRBxe7ZGlfEURsZyvB9jUThSJeWULTzmiLz2FyiPdyJkFy1DzIYNPaCrgR
-	 W2Yvs33JUa5auoNsLbd89epw46sZMks3JH88bIg0Ho4KelQgV4yoV8WM+woad/2Y1g80U
-	 8Ii/IN9MwUbPFuxLoZJTvPsp3ItSARZHdqR3pniPnmVy2HJhYj9ZSXM2dTyf7HR2svA==
+	t=1794239892;
+	b=h2b2EhrNwuyg6vzSOedzGbexNfWU/pOd9Zi2KjLgRN9qg2bdS/M0LDYNlGp1N7OVYkFd
+	 cH5RJ6ByxIY/afc+cvpLuHq3szhVgjgShfcDyVHd8CEdBeBubccFxh/KnULAmkIDVDrjw
+	 nGFwzzNWTeq9GIWttr0+hcqV8uPnWl4JHNBfS54jlLLuuyifVRzRiIifiOMjL9AAevCrp
+	 sIWpiULd1YPlTrBbCht08zhE15o8OIHzH3rqhntwgEyaf24bqIc8D2wgighpPqdB3VbfV
+	 McC2Znq8Lbc62us4kPiSKzra9ff2g6Xstjv4Aw0jGszux/Q2sGaaxlNH+OBTtup+B2Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794239890;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794239892;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=BuAz2H6S6BQoz6NjweVUggSmY7ai2732ogYbCwWyPfE=;
-	b=cyLiLfsinR62CJt/Arwbcu/xA2lKxjKdtkczYnPrFhOPG6du4dRFU0prhCkEEoaJiKld
-	 RTx287lvGzPlpJafEmGv38JAuRs911BPWU8fXD5fvA0dW0mCo4pEkkWdLHKe8xORCGY8A
-	 bVBATH8YjPllEELpak/iKpriRNqszvC1hgZwHlYVOpU04kcy/NV0H2vevopqejIIB14QH
-	 PhySyc7ha/ZhZln2yqnSY2tKgF238BZZpPAa/0yG2Gr9VQFhT3b5TnzaJTOYCSf/c4Yf/
-	 JuGrQClLEOw/SehidN5adXOnLEnyKR2ksOgHumQIxtHjiONDw4Kds2zl4AyDVj+xOEg==
+	bh=W5tIw3pY4xf2AiHrKTA7p2regxxRaERCXmVIzX7a4PI=;
+	b=mmvM6Fi3JXqPjnEIs5Pq0Byuqh0qfWGb0aW5BdZDX4YaxE9BwUxHNLdcY+r89+xbrODp
+	 QKCtkrCL0+xWJdfjv7EHHffTqhL/HauqdltawQtFAhyY6McY8ZC7qV+bTENZ94WxOLe24
+	 ZpnXuxz+8IeDFaX/bEXtZgnKUT4oO4AfkEmDNuRh2afQwBTRRiN3J1XoChwH9iCHQc5Hj
+	 KRzUtMrN4WfzdBbRfR+8c/qdokguZwA71ntWs8TBxTYg88z9CfeNyEIy4nr4vX2SytTjH
+	 LVqS3LK+bbQ6l8aSJ4wOS7NoFvSSJcG8JpnSscCVj+LYU4pwcEVGsqX0FsXhx0nntUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=dolcini.it;
 	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=rsXCNE0r;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=Dvn5a4p5;
 	arc=none smtp.remote-ip=217.194.8.81
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5034A606A33A;
-	Mon,  9 Nov 2026 15:58:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5034A606A33A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A331606EEB7;
+	Mon,  9 Nov 2026 15:58:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A331606EEB7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=rsXCNE0r
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=Dvn5a4p5
 Received: from francesco-nb.. (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
-	by mail11.truemail.it (Postfix) with ESMTPA id A922026667;
-	Mon,  9 Nov 2026 16:58:00 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id E03FB26675;
+	Mon,  9 Nov 2026 16:58:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1794239881;
-	bh=BuAz2H6S6BQoz6NjweVUggSmY7ai2732ogYbCwWyPfE=; h=From:To:Subject;
-	b=rsXCNE0rkdnKoDDFlEX/4Yu7l9U/tawRTDXC6I2kIqgu8i7sT06EySLR9Wwd+tlEr
-	 14xfo1tUmy/vsrbHq0qdkQ+iWv6+4VhzENcYW0uUVdpxP7E1ZA5OD5NWA/9WhQSpeV
-	 MyUvaTFPZTC75BDiO9YJjYgduSdyRbZ7zsB4xjPHQRhP8qRzM46LTZg0dyuJOdzu3K
-	 NaLYUfKETuaSCqj4N46fPhWJyNbDfIEH6QiXOVUl+74I9/7wzxWAM14R916nYqlFop
-	 1UWJph9fZkDeN/ezH9Q+BvGj/rHQ8HgH650kp2WPZ7f14byXq53m3vTSJtHV0P4VVN
-	 ZnYZpWIeCw5Ow==
+	s=default; t=1794239885;
+	bh=W5tIw3pY4xf2AiHrKTA7p2regxxRaERCXmVIzX7a4PI=; h=From:To:Subject;
+	b=Dvn5a4p5G0Y5gz+4Je1sH6cDzjkNTkRwnbfNVu23JxKEwye1IMiJ7P6WgkmBopzo8
+	 9Gexv7W3+IiR70KCx/RMw3klqDNTm95LTPb2sYxZhAlol2oJn/dQ81SYyEE2CJpazl
+	 LxC80jDEt9MPQqupAk3dabe+zFYcZimtfudFnlyvgu84SrYNQGMeSjUH6AqNjrikCN
+	 zreeJhFG/Cz7Fxg77HQzlrOfIZbqI/VBlp/lcHCUUdi5JKu0shLSXHKor3I73mOcUb
+	 B9+lXgmdUy9WFRAlXHRGgfnzABthC7ZK2bxl43Kt1y3+xPaUletcY9OvZRhIjeaxEk
+	 SNY13ipwgM/HQ==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -65,9 +65,9 @@ Cc: devicetree@vger.kernel.org,
 	x86@kernel.org,
 	linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org
-Subject: [PATCH v2 3/8] ARM: dts: imx7d-colibri-emmc: Add tdx vendor prefix to display overlays
-Date: Mon,  9 Nov 2026 16:57:43 +0100
-Message-ID: <20261109155751.475875-4-francesco@dolcini.it>
+Subject: [PATCH v2 8/8] ARM: dts: imx6ull-colibri-emmc: Add VGA overlay
+Date: Mon,  9 Nov 2026 16:57:48 +0100
+Message-ID: <20261109155751.475875-9-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109155751.475875-1-francesco@dolcini.it>
 References: <20261109155751.475875-1-francesco@dolcini.it>
@@ -84,105 +84,240 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-The Toradex Capacitive Touch Display 7" Parallel and Resistive Touch
-Display 7" Parallel are Toradex accessories, and the overlay names are
-their product names. A product name is unique only within its vendor:
-"panel-cap-touch-7inch-parallel" on its own reads as a generic panel
-description and could just as well name another vendor's display.
+Add a device tree overlay for the VGA output on the Colibri iMX6ULL eMMC
+parallel RGB LCD interface. The VGA output is driven through a
+non-programmable video DAC without VESA DDC I2C signals to a DVI
+connector. The DAC power-save input is driven by the BL_ON signal on
+SODIMM 71, like on the Colibri iMX7.
 
-Prefix the accessory with its vendor, "tdx", as is already done for
-third-party accessories on Toradex boards, e.g. "rpi" in
-k3-am625-verdin-rpi-display-2-7in.dtso. The combined DTBs are renamed
-accordingly.
+The overlay content is identical to the Colibri iMX7 eMMC one, only the
+GPIO driving the DAC power-save input is SoC specific. To avoid
+duplicating it, rework the Colibri iMX7 eMMC overlay moving the common
+part to a new dtsi shared between the two modules, and include it from
+both overlays.
 
-Link: https://lore.kernel.org/all/20261026111149.GA46946@francesco-nb/
+The overlay is also combined with the Aster, Evaluation Board v3, Iris
+and Iris v2 carrier board device trees to provide ready-to-use DTBs.
+
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
-v2: new patch
+v2: no changes
 ---
- arch/arm/boot/dts/nxp/imx/Makefile            | 30 +++++++++----------
- ...p-touch-7inch-parallel-touch-adapter.dtso} |  0
- ...c-tdx-panel-cap-touch-7inch-parallel.dtso} |  0
- ...c-tdx-panel-res-touch-7inch-parallel.dtso} |  0
- 4 files changed, 15 insertions(+), 15 deletions(-)
- rename arch/arm/boot/dts/nxp/imx/{imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso => imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso} (100%)
- rename arch/arm/boot/dts/nxp/imx/{imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso => imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtso} (100%)
- rename arch/arm/boot/dts/nxp/imx/{imx7d-colibri-emmc-panel-res-touch-7inch-parallel.dtso => imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso} (100%)
+ arch/arm/boot/dts/nxp/imx/Makefile            | 21 +++++++
+ .../dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso | 24 ++++++++
+ .../dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi | 61 +++++++++++++++++++
+ .../dts/nxp/imx/imx7d-colibri-emmc-vga.dtso   | 52 ++--------------
+ 4 files changed, 112 insertions(+), 46 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi
 
 diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index f22abbd01434..c05cc9ff782d 100644
+index 060bb01f9396..4fc8fa5e8c79 100644
 --- a/arch/arm/boot/dts/nxp/imx/Makefile
 +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -424,21 +424,21 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ulz-14x14-evk.dtb \
- 	imx6ulz-bsh-smm-m2.dtb
+@@ -373,6 +373,22 @@ imx6ull-colibri-emmc-eval-v3-tdx-panel-res-touch-7inch-parallel-dtbs := \
+ 	imx6ull-colibri-emmc-eval-v3.dtb \
+ 	imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtbo
  
--imx7d-colibri-emmc-aster-panel-cap-touch-7inch-parallel-dtbs := \
-+imx7d-colibri-emmc-aster-tdx-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-aster.dtb \
--	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo
-+	imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo
++imx6ull-colibri-emmc-aster-vga-dtbs := \
++	imx6ull-colibri-emmc-aster.dtb \
++	imx6ull-colibri-emmc-vga.dtbo
++
++imx6ull-colibri-emmc-eval-v3-vga-dtbs := \
++	imx6ull-colibri-emmc-eval-v3.dtb \
++	imx6ull-colibri-emmc-vga.dtbo
++
++imx6ull-colibri-emmc-iris-vga-dtbs := \
++	imx6ull-colibri-emmc-iris.dtb \
++	imx6ull-colibri-emmc-vga.dtbo
++
++imx6ull-colibri-emmc-iris-v2-vga-dtbs := \
++	imx6ull-colibri-emmc-iris-v2.dtb \
++	imx6ull-colibri-emmc-vga.dtbo
++
+ dtb-$(CONFIG_SOC_IMX6UL) += \
+ 	imx6ul-14x14-evk.dtb \
+ 	imx6ul-ccimx6ulsbcexpress.dtb \
+@@ -402,15 +418,20 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
+ 	imx6ull-colibri-aster.dtb \
+ 	imx6ull-colibri-emmc-aster.dtb \
+ 	imx6ull-colibri-emmc-aster-tdx-panel-cap-touch-7inch-parallel.dtb \
++	imx6ull-colibri-emmc-aster-vga.dtb \
+ 	imx6ull-colibri-emmc-eval-v3.dtb \
+ 	imx6ull-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
+ 	imx6ull-colibri-emmc-eval-v3-tdx-panel-res-touch-7inch-parallel.dtb \
++	imx6ull-colibri-emmc-eval-v3-vga.dtb \
+ 	imx6ull-colibri-emmc-iris.dtb \
++	imx6ull-colibri-emmc-iris-vga.dtb \
+ 	imx6ull-colibri-emmc-iris-v2.dtb \
+ 	imx6ull-colibri-emmc-iris-v2-tdx-panel-cap-touch-7inch-parallel.dtb \
++	imx6ull-colibri-emmc-iris-v2-vga.dtb \
+ 	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo \
+ 	imx6ull-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
+ 	imx6ull-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtbo \
++	imx6ull-colibri-emmc-vga.dtbo \
+ 	imx6ull-colibri-eval-v3.dtb \
+ 	imx6ull-colibri-iris.dtb \
+ 	imx6ull-colibri-iris-v2.dtb \
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso
+new file mode 100644
+index 000000000000..4ecf221de27e
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-emmc-vga.dtso
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * Copyright (c) Toradex
++ *
++ * VGA output connected to the Colibri parallel RGB LCD interface through a
++ * non-programmable video DAC with a DVI connector.
++ *
++ * The VGA output is available on multiple carrier boards (including Iris,
++ * Eval, Aster) without VESA DDC I2C signals.
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++
++#include "imx6ull-imx7-colibri-vga.dtsi"
++
++&vga_encoder {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpio_bl_on>;
++	/* SODIMM 71 / BL_ON */
++	enable-gpios = <&gpio1 11 GPIO_ACTIVE_HIGH>;
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi
+new file mode 100644
+index 000000000000..7e323698f338
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-imx7-colibri-vga.dtsi
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * Copyright (c) Toradex
++ *
++ * VGA output connected to the Colibri parallel RGB LCD interface through a
++ * non-programmable video DAC with a DVI connector, shared by the Colibri
++ * iMX6ULL eMMC and Colibri iMX7 eMMC overlays.
++ *
++ * The VGA output is available on multiple carrier boards (including Iris,
++ * Eval, Aster) without VESA DDC I2C signals.
++ *
++ * The DAC power-save input is driven by the BL_ON signal on SODIMM 71, the
++ * SoC specific pinctrl and GPIO are described by the overlay including this
++ * file.
++ */
++
++&{/} {
++	vga_encoder: vga-encoder {
++		compatible = "dumb-vga-dac";
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++
++				vga_enc_in: endpoint {
++					remote-endpoint = <&lcdif_out>;
++				};
++			};
++
++			port@1 {
++				reg = <1>;
++
++				vga_enc_out: endpoint {
++					remote-endpoint = <&dvi_connector_in>;
++				};
++			};
++		};
++	};
++
++	dvi-connector {
++		compatible = "dvi-connector";
++		analog;
++
++		port {
++			dvi_connector_in: endpoint {
++				remote-endpoint = <&vga_enc_out>;
++			};
++		};
++	};
++};
++
++&lcdif {
++	status = "okay";
++};
++
++&lcdif_out {
++	remote-endpoint = <&vga_enc_in>;
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
+index 363c0c2cc43e..ae3d8da02e67 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-vga.dtso
+@@ -14,51 +14,11 @@
  
--imx7d-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel-dtbs := \
-+imx7d-colibri-emmc-iris-v2-tdx-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-iris-v2.dtb \
--	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo
-+	imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo
+ #include <dt-bindings/gpio/gpio.h>
  
--imx7d-colibri-emmc-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter-dtbs := \
-+imx7d-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter-dtbs := \
- 	imx7d-colibri-emmc-eval-v3.dtb \
--	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
-+	imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
+-&{/} {
+-	vga-encoder {
+-		compatible = "dumb-vga-dac";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_bl_on>;
+-		enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
++#include "imx6ull-imx7-colibri-vga.dtsi"
  
--imx7d-colibri-emmc-eval-v3-panel-res-touch-7inch-parallel-dtbs := \
-+imx7d-colibri-emmc-eval-v3-tdx-panel-res-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-eval-v3.dtb \
--	imx7d-colibri-emmc-panel-res-touch-7inch-parallel.dtbo
-+	imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtbo
- 
- imx7d-colibri-emmc-aster-vga-dtbs := \
- 	imx7d-colibri-emmc-aster.dtb \
-@@ -460,20 +460,20 @@ dtb-$(CONFIG_SOC_IMX7D) += \
- 	imx7d-cl-som-imx7.dtb \
- 	imx7d-colibri-aster.dtb \
- 	imx7d-colibri-emmc-aster.dtb \
--	imx7d-colibri-emmc-aster-panel-cap-touch-7inch-parallel.dtb \
-+	imx7d-colibri-emmc-aster-tdx-panel-cap-touch-7inch-parallel.dtb \
- 	imx7d-colibri-emmc-aster-vga.dtb \
- 	imx7d-colibri-emmc-iris.dtb \
- 	imx7d-colibri-emmc-iris-vga.dtb \
- 	imx7d-colibri-emmc-iris-v2.dtb \
--	imx7d-colibri-emmc-iris-v2-panel-cap-touch-7inch-parallel.dtb \
-+	imx7d-colibri-emmc-iris-v2-tdx-panel-cap-touch-7inch-parallel.dtb \
- 	imx7d-colibri-emmc-iris-v2-vga.dtb \
- 	imx7d-colibri-emmc-eval-v3.dtb \
--	imx7d-colibri-emmc-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
--	imx7d-colibri-emmc-eval-v3-panel-res-touch-7inch-parallel.dtb \
-+	imx7d-colibri-emmc-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
-+	imx7d-colibri-emmc-eval-v3-tdx-panel-res-touch-7inch-parallel.dtb \
- 	imx7d-colibri-emmc-eval-v3-vga.dtb \
--	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtbo \
--	imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
--	imx7d-colibri-emmc-panel-res-touch-7inch-parallel.dtbo \
-+	imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtbo \
-+	imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
-+	imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtbo \
- 	imx7d-colibri-emmc-vga.dtbo \
- 	imx7d-colibri-eval-v3.dtb \
- 	imx7d-colibri-iris.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-similarity index 100%
-rename from arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-rename to arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtso
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtso
-similarity index 100%
-rename from arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-cap-touch-7inch-parallel.dtso
-rename to arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-cap-touch-7inch-parallel.dtso
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-res-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
-similarity index 100%
-rename from arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-panel-res-touch-7inch-parallel.dtso
-rename to arch/arm/boot/dts/nxp/imx/imx7d-colibri-emmc-tdx-panel-res-touch-7inch-parallel.dtso
+-		ports {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			port@0 {
+-				reg = <0>;
+-
+-				vga_enc_in: endpoint {
+-					remote-endpoint = <&lcdif_out>;
+-				};
+-			};
+-
+-			port@1 {
+-				reg = <1>;
+-
+-				vga_enc_out: endpoint {
+-					remote-endpoint = <&dvi_connector_in>;
+-				};
+-			};
+-		};
+-	};
+-
+-	dvi-connector {
+-		compatible = "dvi-connector";
+-		analog;
+-
+-		port {
+-			dvi_connector_in: endpoint {
+-				remote-endpoint = <&vga_enc_out>;
+-			};
+-		};
+-	};
+-};
+-
+-&lcdif {
+-	status = "okay";
+-};
+-
+-&lcdif_out {
+-	remote-endpoint = <&vga_enc_in>;
++&vga_encoder {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpio_bl_on>;
++	/* SODIMM 71 / BL_ON */
++	enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
+ };
 -- 
 2.47.3
 
