@@ -1,55 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794247648;
-	b=bEyrqFJWMmHgi1bGk7QU6uuea8Twbp2PPD4b2HfvedxJBdRnX3EC6zDbtvyl/HZUihVa
-	 u5xZO/cTgyb8SPb9WypPB2DM/9m3w5XBelMLCNfbC+R7Ev5RbRaoiA/AlnKVXeCNqZ/zV
-	 Bh7/CeUiqqpfYP4X7zSh1hQlWPPXaCmfz10melgZtsT3F4l4zk6a6fqrqaQOc894ypkrz
-	 WYA5qJca/8zU+Jd0z1jGXT5AJFPZkuJo/UysGrdO46qLqwCoztFUCQJ05swc8S+ecZpOM
-	 Tkmy8M48RQj1rm1i565IvGbdewJZ86BhpBum34QEPPtT7fjP2JHghuFn5JV6i7r30Ug==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794247648;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=chIFJGd9aGjFqIdLQJRseW64QE/SzhDO/ltYFKnzUGM=;
-	b=mUOnLjPMY48h8aMrQlGY4nW0XAPRrfwO5rpbZhNdAmjyBYZSFVk3rDYy8fbtZc8M4ZY9
-	 ZVyftvbRW7iL/vs1mHOBouR1nzYEeC/8BD7JcHcSa2w72E+ed6Ru1dAB95uRMarpoJfEV
-	 0M9EqiL87cJ+pbD15C5nGvj9P02sxiblihoWli4qqpEGaqMF4Y7pshvz5SJEy9yuwQSwE
-	 yf5sA0Hop6iig4bwHhwkqa7vonnmwNx1bGxkLA/7MOqTNTZIi1JQK8CxcAn1/J8+AjV28
-	 obhQuwshDL0TQblhCwbWU2rKGtJx+nX2Nfs6AE9GzzkPJU1sXAFt/wZcJktjMIbR1ew==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eS0xFi5F;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.182
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794248128;
+	b=ckKswA2aI0gqNilEUPI4ujH/pg3oMuF1cEnqR+mL2T/HKru1D1mANuxHzJi7+NePcF2R
+	 /YWeVkW3HlotifrYzlHBPD+5dvBRSVGMAl4RQWehwZO6phjZ3hRE0XAmrOKj35qcdFZnv
+	 9id+CDvdZEvcTnP/2aEWRYukUOvH8k6hGOMGgVwiaVre2qnx5Cff1OMVkBwigcleJmp/j
+	 9ooGRNxXhWqCVVEj+rD8kxGJOQ9w31TCAjGnyn3KBtAWdweKbEyzyNdrkdgkbnsmz/PhB
+	 NMLmcJiK7GjFiz7jX+HZm48CWImFWzZnt7TTJ7zxTRrHprZC8wf0Vys5kElKTPXWjWg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794248128;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=A/qVClOCqu/XJfl5OHSDd/IqxT1Vn4LDahzKvulflyQ=;
+	b=F9AX1uUjmARpWwPPp8jfjCVOi1InOx8Cw5V6EDUDomGRtw60p8QKoK9F7soYjYuGYzFW
+	 k2NJCngSlh5MBqYPcXCTdak69p9eAJTS1W8xT10EvG5KFplTDSHc5jpq5eKvb5gVRHTSy
+	 kdUNlgRrIXIb78+Wi26Uwy9Tn0gKOtaDVk5XwPqFIMLtkq9WYOqAJ8KckTQn22LcPIlHV
+	 e0dA/u998zjLc5yXyVnaIf09hjK58ibh6hikNWnf12UrPfDllR2eR7wQsiER6ZZdGoAZJ
+	 Uhe1Hw5S1pvs4lQvEWw8ZiDXJldEqAYFvD4CrOOjwIHDu7GVlvWUluE7pt8PadANU5Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0HnyTglw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.182
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC377606A332
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135CA606A334
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:15:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 135CA606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eS0xFi5F
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD901F008BF
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:07:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794247647;
-	bh=chIFJGd9aGjFqIdLQJRseW64QE/SzhDO/ltYFKnzUGM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=eS0xFi5FxEskiC1znACA7+hIu3LnDW7B/+c3J/y6hk8vRCBQny/oqvRWbbRb0GHXt
-	 GHEGAUOvu4IDBTWOvc0dnIaOEr0AES2ERrqoO4uOQnORQTJd2IlFJ0DZ5+VMxK+fEF
-	 Aov4dm0JNFNyBGGJOz5r0bFuYUF+35ReNfK8lFGIsCzxdvOiy/GCv+B2j4dWPVY+dA
-	 d9Fba507gRyl2DY5baaHj57+7UPNKe+En4z28TePU/DJiYyUj/z0Wg9U6BaUSG38ap
-	 d9ILmaKXnuQc+w/+OoghM8MAh+APWPxi/0zzc2NAKOWJUpm3dHSZaoLvvZBm0Kelsj
-	 5GY+QfR2ez4DA==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4d7d591607so176862366b.2
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 10:07:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFed+15XbyB+tiF6lJPtuXQ9OT4ktTAyXrBTxfJeJ+01ItRUUuxujtBDZP1D2jbyoOkajE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/4mz8Mbfz5jyWJOvWcR+q8v13PmNU/GMwCQIrccMJxeEBvI0SF
-	I9Ie9CgzOp3nW8EX/tjyAE7RMDPGz0O3G5WyNlc+K4Qncmy7PqnXTPECCMJJd3+uUwSZLya2nX2
-	qMyCTqtT15JrtqEJvhj9O194najlViHo=
-X-Received: by 2002:a17:907:c1a:b0:c3f:e414:d35a with SMTP id
- a640c23a62f3a-c504955f03emr11473366b.26.1794247646237; Mon, 09 Nov 2026
- 10:07:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0HnyTglw
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3ab27e45e7cso8790241fa.3
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 10:15:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794248126; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XnGISX+fHK2lVIjoKNCwiMeRWgHPUatmhFjWuLuREYt8547BaIxXBim7sxGAyfydW/
+         m661HD4ERAXfyv/ST//PueThXTpfGk753WiAeqlmVsOJGCU5ldDVCoxTe5kPrGuSqgmK
+         Br113/HVfeb6k0l8gvElYNCUEyaDSXBYF8rJ6/40aRXT4HapQ0Ky2BpwQsmFMomPwdi7
+         Yv89Tz+a0FN50/YICHkL8J1tu8cNLLPsXwVXBjJ4Qo/YSpzWVqvLLw4zTGFJq2k7WQAn
+         zUwxlf0AFuLJrZS9A2p7a+JbTlp+D/52LdiIsA9KkHN7Vk260PVb1vL4Z9zmrbQNkH7X
+         jUTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=A/qVClOCqu/XJfl5OHSDd/IqxT1Vn4LDahzKvulflyQ=;
+        fh=JDGVSAwhQKeQN1PP/9NjfmZfla3Ufz3f18oLRiL9zp0=;
+        b=k7YnKb2RgEw6qDyV4fGC2zn+vqSu1QmKeXkV5BqvFHfjcSEepHzGun27mAKdTQ3Vw8
+         XxIV8q0s1xrZuiLHSr7yGMMpy7zLrRo2hCxqkuh8ts38PmVltyf0DNtVFezbBA7/4zIw
+         b+jNpKuANccZBKGJRRZvY0rZ2a/8lmKh3gGZywNwy33SITKpmMlzNVUHU+3zmukvanhE
+         lvj0ft6YejZJmuMEhUi1Jq9cU0JF8N0K9xFCGNNvB0JcLqd3Rp9ZeLKQP+h7lbU/f0wV
+         eP+ABIC70e2ssi30OJWpEaJq4OcNHG0TJASWdyg5hHZ3YG8dXIs5Sg81dW25ILkNl2lz
+         6Vrw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794248126; x=1794852926; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A/qVClOCqu/XJfl5OHSDd/IqxT1Vn4LDahzKvulflyQ=;
+        b=0HnyTglwTAL8gX+olVe8YavKHfLdVCs/Be3jlhbF7fiJ+BKhmXakYEsD8bV87zN8LX
+         5baMSU6AgQuNEbABjA/yInkUpowZckQGLi5G7NdLcn+Db94+JHJKoSUatxJTey1sUiIT
+         6Cc+a4BNwjPonJI5zoFYFSoxlc1OZu8/khdxk5l+nlPao2z4j3MXOPeLg7Qz3g9rmbxG
+         lT/Pzdl4hmjyBx0aKYC0DXlFboMzZFYWltciUjh9KNDjKugvCvNkvYTc/qgCopKva50A
+         j5/Z+wgveMoD9+aZ1FlmXreaQ+MGFHABZoYLDgqSbjYDrI9xXqGCmseyvdRwjNtX4ois
+         LlwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794248126; x=1794852926;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=A/qVClOCqu/XJfl5OHSDd/IqxT1Vn4LDahzKvulflyQ=;
+        b=QYgF7mejpsOf95JBKtnY//tC2HlAlhjlMxojLFt42tHHUlrID86cgoJUtp5bHx/9Xn
+         NZScTeq6cpkVPCfn2Wo3+DWCkffQE+MOm9IskzIoBpYIqvF9YkYm+uTychOUiF9PAGkF
+         QQgD/PGXzq9tkAcUyWLixD9HApFW5AGCcZlgDrg6dDNJwBqA3nMnCJK6hXE3tUcDNpdk
+         er/0a996gfgR5se2v9MGEguoHN45opNBsKUhJjvnMUgvhbj5Qyj1Bh+rxNpifmgqPRMh
+         6N6etyrb4g2qQM7vhiuQEyxOGoa2YF4enAaYvRM/0GCfxKxw10XOL8em8s2jOU+KpvrA
+         Qjxg==
+X-Forwarded-Encrypted: i=1; AL+hErFnFDpnGXlvBTug7BTiCBYhyXeUCaFTGGjqBqTHrXqGyZPxj07OBelYpRxrtD7YzZpN/XU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8/mHaXyKdsuyDJ3U73BdLwqnGDWNhKWCvpttIWqwkyzevlmNTY
+	0+7InxqM2+avKB/Tx1ub70bAfrIyhxXFJj2Woq4qG1RQXWP9n3F1zRiaNLAsBpY5WPRwsaPfmdi
+	BNN5ImMaPssiK2oFPTT9nbnlpaml3yvE=
+X-Gm-Gg: AYBFou39NARND7WyqzCMmfkWCEyyjKY73jrPFzuoVcX3sNGHTZJKPMSNiVjRDr4UDQm
+	Q8aMz29/Hn9iAxpT1r1cZFCreM2Vey+Vuv69Bw65FQVjtgNfB/+5SlUIFm3LyYfxndKnS3e0X+m
+	xtYXiK3O1sF0rQJsX9pn9cMnOzx1LxiWC6spIHk3sISbemlOPDOjDQDjkN24eto8e7N3V+OydZT
+	+9Du4hc7pR8Wu8/0SO7kKLf8R9EC1n2cKekPmmnYLJ+aZQaZXCQIshnGEjgeXCGkSjZyA5cBLWb
+	kSjdr3KVugmpjE03XZiDywyAZYN0dla3nMXHMV85Mm6FZHnTQL3Y4i2ZnyBEtqvyFyo1a9a8q4h
+	TtfP9BfOU2EI2NviWxkydlFCR9wr0oAZQ1sNxfPYOdiJ8s1EhBn5979lKVC0=
+X-Received: by 2002:a05:651c:1991:b0:3a9:a1ed:6341 with SMTP id
+ 38308e7fff4ca-3ae096266a2mr129721fa.11.1794248125851; Mon, 09 Nov 2026
+ 10:15:25 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,89 +103,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106013927.166209-1-zide.chen@intel.com> <20261106013927.166209-5-zide.chen@intel.com>
- <au4kyULjUYdqbfIq@google.com> <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
- <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com> <e977b107-7762-46d3-ba31-832eb9ae609c@intel.com>
-In-Reply-To: <e977b107-7762-46d3-ba31-832eb9ae609c@intel.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 9 Nov 2026 10:07:14 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zPVt++jgZD3-Jd-DYKMjYyAfUuQkvEXD4pKqe0bdYE29A@mail.gmail.com>
-X-Gm-Features: AclHuK8___5umqnpPhXfPUyV53ks38eOF5SSE51KrETciHe4B3EcpzDOnG_Gs_I
-Message-ID: <CAO9r8zPVt++jgZD3-Jd-DYKMjYyAfUuQkvEXD4pKqe0bdYE29A@mail.gmail.com>
-Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
+References: <20261106191029.469837-2-oss.patchbox@gmail.com> <4cb58287-4273-4518-8cac-aa3056dc28e2@linux.ibm.com>
+In-Reply-To: <4cb58287-4273-4518-8cac-aa3056dc28e2@linux.ibm.com>
+From: Yuho Choi <oss.patchbox@gmail.com>
+Date: Mon, 9 Nov 2026 13:15:12 -0500
+X-Gm-Features: AclHuK-kA47IWOIX7U2zRiO72EVz0LSCPAeXxYhlYbmsVsJrtKZ_L0q_mB3RhFw
+Message-ID: <CAGG=RgDu7-3g1yTGRYukfhpXnPgqE5BDQ_cAzMN=78QiUrOykg@mail.gmail.com>
+Subject: Re: [PATCH v2] vfio/ccw: Flush notoper_work before returning from reset
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Eric Farman <farman@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, 
+	Halil Pasic <pasic@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Vineeth Vijayan <vneethv@linux.ibm.com>, 
+	Peter Oberparleiter <oberpar@linux.ibm.com>, Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-> >>>> +/*
-> >>>> + * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
-> >>>> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
-> >>>> + * so iteration up to KVM's maximum counter count is safe.
-> >>>> + */
-> >>>> +#define kvm_for_each_gp_counter(i, mask)    \
-> >>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
-> >>>> +
-> >>>> +#define kvm_for_each_fixed_counter(i, mask) \
-> >>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
-> >>>
-> >>> These are not used in this patch, are they?
-> >>>
-> >>> They should probably be introduced when they are used. Also, do we
-> >>> always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
-> >>> yes, maybe we should pass in the pmu here instead?
-> >>
-> >> The intent was to group all bitmap accessor helpers together in this
-> >> patch for easier review so that the big patch 5/18 could be kept to
-> >> mostly mechanical replacements.
-> >>
-> >> But if you prefer introducing them on first use, I'll move their
-> >> definitions to patch 5.
-> >
-> > Yeah I think it's clearer to see what their definitions are with their usage.
+On Mon, 9 Nov 2026 at 07:38, Christian Borntraeger
+<borntraeger@linux.ibm.com> wrote:
 >
-> OK, then I can move these two macros to the next patch.
-> >>
-> >> Regarding passing 'pmu' directly, I initially implemented it in this
-> >> way, but I can't recall why I discarded it. I will take another look.
-> >
-> > Thanks.
->
-> How about these? With them, we can remove the {gp,fixed}_mask variables
-> that you pointed out in your review of 5/18. The APIs are more
-> complicated, but the caller code is much cleaner.
+> Does the the iommufd backend have the same problem?
+> iopt_unmap_iova_range() keeps calling the unmap callback and gives up with
+> WARN_ON(tries > 100) and -EDEADLOCK. So that path is also fixed, I guess.
 
-I don't understand why we can't keep the macros as-is, but just move the
-calls to kvm_gp_pmc_mask() and kvm_fixed_pmc_mask() inside the macros?
+Yes. With iommufd, vfio_ccw_dma_unmap() is reached through
+vfio_emulated_unmap(), so the pages are left pinned in the same way.
+iopt_unmap_iova_range() then retries, and if notoper_work has not run
+by then, it warns and fails the unmap with -EDEADLOCK instead of
+hitting the BUG_ON. With the flush, the pages are unpinned before the
+callback returns on both backends.
 
+> > Fixes: 0c11f61a876e ("s390/vfio_ccw: Move cp cleanup out of not operational")
+> cc stable ?
 
->
-> static inline unsigned int __kvm_find_next_counter(struct kvm_pmu *pmu,
->                                              unsigned int base,
->                                              unsigned int max,
->                                              unsigned int prev)
-> {
->         return find_next_bit(pmu->pmc_exists, base + max, base + prev) -
-> base;
-> }
->
-> #define __kvm_for_each_counter(i, pmu, base, max)                       \
->         for ((i) = __kvm_find_next_counter((pmu), (base), (max), 0);
->      \
->              (i) < (max);                                               \
->              (i) = __kvm_find_next_counter((pmu), (base), (max), (i) + 1))
->
-> /*
->  * Iterate over all general-purpose or fixed counters supported by @pmu.
->  */
-> #define kvm_for_each_gp_counter(i, pmu) \
->         __kvm_for_each_counter(i, pmu, 0, KVM_MAX_NR_GP_COUNTERS)
->
-> #define kvm_for_each_fixed_counter(i, pmu) \
->         __kvm_for_each_counter(i, pmu, KVM_FIXED_PMC_BASE_IDX,
-> KVM_MAX_NR_FIXED_COUNTERS)
+I'm not sure, so I'll leave that to you.
