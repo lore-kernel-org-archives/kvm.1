@@ -1,97 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794201522;
-	b=1YyVEocVKtZcIQv364h8tVwqE4ow/M8lZyoKzD6xIT888kgisOr6eICiARnr8faysbkj
-	 RwfsbUxAcYgVrwk8ATRHYEAY+jvh3nqANGvubgf7HtQ+gbnILPylvAO5Eef/hfmQMrYDy
-	 0Zvsi+BnnffhzSMwDoaIdxE+JJjwZ0lRM2EvTeJh/nhS2bnVpvHjPPbSVMWEIQVzr0dDa
-	 tE9TvuhgGvdg8p2iJxz2iBpGch7G4EQNwMHY45o3P29vMmbjOrAlSwpiBI1Qk1Xl0JBWw
-	 h5JJjQojQE/YQRMpv9ZSCtrsGVAiMXxcNzVc7Cwc1B696eWYGheN5glgZQkNNWvLj3g==
+	t=1794202637;
+	b=PcWC0N5HumTDv/VOfxyx8HB8r0mauEkLx3g0nOhUhZp80vPSbgwFyK3Bc68ACGcuA6kk
+	 lzIBVz/gHVAlDrG+sU0bIncJdcjjBAkeSs6FRsNVVSKPgY5nA0NXgykeqhiME+pA+Xp3J
+	 9EEAMRC9MB25P5QwTe4OJcNyj1QKWDRi9Rjoi6fU3i9kKyKJEOEdjt5d998spteayzZoF
+	 3u45JU4MxJYXVs//QsGfbCcdTb5eNpPAObHzeBZgCu9mrfOrk+82VIFSbsqOPvqiLzu1g
+	 yR0z5o2nsBLEYmfP0415lKkzHOyuKJkKu+hlPwLQ46Kru2r94Sw77VgInbHqQ4nzE/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794201522;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=inbRv9rqETpvmrvWY+hsNFNboYN1tmYS0qnuK2Kr/gs=;
-	b=tDn48CiI5PRkq/8ViaiBOYxAanfdSG3BPz/sPJ9Ed3qwVv8G9rujpj+c5F6ahtg8jHzs
-	 A3jioTrhdC1NdpX/En+t8CJnpSEitw8GBZ+lkAlg1ttS7vu77hjeTmFJjVQDp/RgZ9JxI
-	 +ndllnKrtFEPR8XXOud8gq8j76UksUevPBpR/hyLYF/O4NPE76lmcOGX6U4T743Kxg6cW
-	 KV6YPrXp4PnGcCXZaXYd86/NSeC0Mvg6ACCyeoyfWSS7DVL5JbDMqmQSwlf0ugjJbMGmu
-	 AhrRFJY/1DSwoyfHj3g1wESfEDPHvGYUTHExt1GETEAV+bkRf51jZ99spVTWbF+zWAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794202637;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=ozxqwrYfOeA2JdEt8v+EBV8WXqLYW6Q2JhJClZ3mZzM=;
+	b=Y1qwk5z3PfcvV/CaqmFCpFlXFN+6COS62SoJbe/ycLZlsRUeh75dNKh0Bjcv7tQx9biO
+	 EMjeBZuqjYhZmGr2wGqHO/tyYbt0a9D6StSy9DM+K+ToHFfHge64P1GoYyLPLUBPm+crm
+	 r2crpxLPybifTQN/HGpCXaU14AjOcMxk+mQIMckGq2QOgHosSOobRJrSl/FExBjV7cqUj
+	 4Lx42surnxyR+KYiZwPbioBz64mU1RiLklw3KDS9z6Vrrgjv7pcWMQfW6EPvHyuhXklph
+	 ErDexC2Ac1VtB9/dFPR3o75LVR6XeY1HItld2tutRgHq0RtmZzhYmDk8N+VXigwfEFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=codeconstruct.com.au;
-	spf=pass smtp.mailfrom=codeconstruct.com.au;
-	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=egf84Gcq;
-	arc=none smtp.remote-ip=203.29.241.158
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFz3Dfvs;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135E606A321;
-	Mon,  9 Nov 2026 05:18:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1135E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6EE606A31C;
+	Mon,  9 Nov 2026 05:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=egf84Gcq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1794201519;
-	bh=inbRv9rqETpvmrvWY+hsNFNboYN1tmYS0qnuK2Kr/gs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=egf84Gcqai+t2RbzRcp/hsSqUjhQHhjh3vyzhBpm8hV2KWxqDFJxnPUahIU113EcT
-	 BgLm6wqU/Euo4rhk1oHtIX3Z9zvOL05mtWbK6K/L7+70zAOa6b9LxPeqiMFkTfAyXR
-	 sJ6r+I/RKBuOwB8hQ4kh0KzVB0J735kCbnMQRQlA7QvM+MYWUHFrMnQcdvVsUlq4qL
-	 OrhgI7yGlCRf9GdwPQCvkWPbpW6LqMolW9oQ7mrzBne/qL9+nOjj/aqp3F164dsqk2
-	 7rLero/HB4L0DSs1r+ug01+7VgG2RcG87tSeq7M4AqhpAUCMcl+W2qQMRVuMpXb4J2
-	 kfa7LW520ih5Q==
-Received: from [192.168.68.117] (unknown [180.150.112.139])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 083566E9E9;
-	Mon,  9 Nov 2026 13:18:31 +0800 (AWST)
-Message-ID: <4848c58f3152233477c4fa4786de2a49c9261c9c.camel@codeconstruct.com.au>
-Subject: Re: [PATCH 09/14] soc: aspeed: convert LPC and P2A control mmap
- hooks to mmap_prepare
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Juergen Gross
- <jgross@suse.com>,  Stefano Stabellini <sstabellini@kernel.org>, Oleksandr
- Tyshchenko <oleksandr_tyshchenko@epam.com>, Madhavan Srinivasan	
- <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael
- Ellerman	 <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>,  "Ritesh Harjani (IBM)"	 <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Haiyang Zhang	
- <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui	
- <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang	
- <jasowangio@gmail.com>, Eugenio =?ISO-8859-1?Q?P=E9rez?=
- <eperezma@redhat.com>,  Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko
- Sakkinen <jarkko@kernel.org>, Dave Hansen	 <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar	 <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Jan Kara <jack@suse.com>, Paul Moore
- <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej =?UTF-8?Q?Mosn=C3=A1=C4=8Dek?=	 <omosnacek@gmail.com>, Joel Stanley
- <joel@jms.id.au>, Ryan Chen	 <ryan_chen@aspeedtech.com>, Billy Tsai
- <billy_tsai@aspeedtech.com>, Bjorn Andersson <andersson@kernel.org>, Konrad
- Dybcio <konradybcio@kernel.org>, Abel Vesa	 <abelvesa@kernel.org>, Jens
- Wiklander <jenswi@kernel.org>, Sumit Garg	 <sumit.garg@kernel.org>, Scott
- Branden <scott.branden@broadcom.com>,  Broadcom internal kernel review list
-	 <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Richard Cochran
- <richardcochran@gmail.com>, David Woodhouse	 <dwmw2@infradead.org>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller"	 <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski	 <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org, 	virtualization@lists.linux.dev,
- linux-sgx@vger.kernel.org, 	selinux@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, 	linux-aspeed@lists.ozlabs.org,
- linux-arm-msm@vger.kernel.org, 	op-tee@lists.trustedfirmware.org,
- netdev@vger.kernel.org
-Date: Mon, 09 Nov 2026 15:48:30 +1030
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-9-c56aadfbab8a@kernel.org>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
-	 <20261105-late-2026-mmap_prepare-v1-9-c56aadfbab8a@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFz3Dfvs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7101F0089F;
+	Mon,  9 Nov 2026 05:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794202637;
+	bh=ozxqwrYfOeA2JdEt8v+EBV8WXqLYW6Q2JhJClZ3mZzM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=SFz3Dfvsu49EC0/Dd5enhpMYmWj8WG1Qz9hgpIvpuXDuZX0vSXk4pAuw0K0wF1YuL
+	 WwDUfolgUFI2Z95Mj+vypcIBuavxOvqY7PYosR/ytl0T7qH7MNA9Y+7qQ/j1RJ9wZk
+	 4SiSD9XqUaDXctIFZTXendxhy90DdI3Bm1WydU9rMuQt9BOTWQ4IR3EsvkyBM8265K
+	 3hD7Ly6bu0ZlWsuggqeZ63OE7ec2LVGeSVpc6r9rFJUN87s8qYbt/Ura/kk+s3gp3j
+	 6CZzzWR+ksauY3XEPxzy8vViaLj4R4yfzyse28VDdlpdNmS/qXoV5AnmfzBBJgs3GU
+	 2jXPec4kDyPCg==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jianxiong Gao <jxgao@google.com>,
+	John Starks <John.Starks@microsoft.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tarun Sahu <tarunsahu@google.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	Ackerley Tng <ackerleytng@google.com>
+Subject: Re: [PATCH RFC v3 87/88] QUESTION: KVM: guest_memfd: Disallow
+ private mappings of shared-only PFNs
+In-Reply-To: <20261106-gmem-alternative-providers-v3-87-8484dde66a7e@google.com>
+References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-87-8484dde66a7e@google.com>
+Date: Mon, 09 Nov 2026 11:07:05 +0530
+Message-ID: <yq5ase1atvjy.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,16 +79,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain
 
-On Thu, 2026-11-05 at 21:05 +0000, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook for both
-> the LPC control and P2A control drivers.
->=20
-> Both remap a range of their reserved memory region, so use the PFN remap
-> mmap action to do so, retaining the -EAGAIN error on failure via the acti=
-on
-> error override.
->=20
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+writes:
 
-Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> From: Ackerley Tng <ackerleytng@google.com>
+>
+> Host kernel drivers directly write to the PCI MSI-X vector table to
+> program and mask interrupts. On confidential computing platforms, allowing
+> hardware protection tables (such as RMP, Secure-EPT, or GPT) to mark MSI-X
+> pages private causes subsequent host kernel interrupt updates to trigger
+> fatal hardware protection faults.
+>
+> I see 2 options here:
+>
+> 1. Prevent it at conversion time, and require INIT_SHARED
+> 2. Let guest_memfd track all conversions to private as per normal, but
+>    block setting the MSI-X range as private at the platform level by
+>    blocking platform config for SNP, ARM CCA at fault time, and by blocking
+>    faults for TDX.
+>
+> Implement (2) partially by introducing a PFN attribute bit indicating that
+> a physical frame cannot be mapped or populated as private, reporting that
+> attribute from VFIO PCI whenever a BAR page overlaps the MSI-X vector
+> table.
+>
+
+For the TDISP flow, we could initially treat all MMIO BARs as shared.
+The guest could then request that a specific BAR range be trusted
+through an mmio_validate request. The validation operation could call
+set_memory_attribute() to convert only the guest-requested range. This
+would allow the guest to control whether the MSI-X table and PBA ranges
+are trusted.
+
+Before reporting that the mmio_validate request succeeded, we would also
+need to ensure that the BAR range had been marked private and mapped
+into the guest VM.This is required for the device to transition to the
+RUN state. This also means we should not get a gmem fault on private
+device PFN. In my series, I enforce this in the architecture fault
+handler.
+
+The host must also be prevented from modifying the BAR attributes
+afterward, as that would cause an attested device to transition from
+TDISP RUN to the error state. An earlier discussion also considered
+whether the guest driver should be allowed to manage BME/MSE. VFIO
+currently emulates these, and the conclusion was that the VMM must not
+pass it through. Once the device is in the TDISP RUN state, the guest
+TSM manages the power state and BME/MSE changes.
+
+-aneesh
