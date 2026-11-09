@@ -1,45 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794165971;
-	b=DbncUnhxjSAUwJ6f15NkhGrcvK/NoeFzNMbaV3qka0pDzNuTy61eiWgmcCA/+ocrvNPO
-	 94GEekRSbB0Yj/ZvsoM+6hhsUPIfzBkf2pXEjJ4I+M8FF5EJ4z6tGRfub38zPI0rpDsfW
-	 tbwJI0TA9isdz6sEIeF+ZNt/PCsAOqPXM1IlhLsSJ6p/gXcEVlzLYnt6wbzY/PBsH3Q+V
-	 grStvduiRsdVaT3XU0cK3Ct6lQFF+GRsqnl9oK7NsXADlgFbYZA3AIJRW2IF0IKIkL1M/
-	 m92zUNavYqVhgCN47/2H3o5L2kM//Ot7TF0CAazr+30EKb/bFaxmSdTSWGlm6sJOlsQ==
+	t=1794184575;
+	b=LlcjF416JmG1z6ONcdvz/xN15oTng7qw8tH8lxFAMRhp3joOSCj2GDXA54Ql2aZRRMU8
+	 yvtm9Eml8LCd6DQ0XHKJjmkNl/t3n/J2DnhOgFPfkwgXfl5a2rpY8NgfrNDdFa9DHZYVH
+	 yBkKAX6I0la2rggFobvRnrU4p7t/+xyTt1l08WemJsGKpbOYqhqDFVyJB8yIIJmhiQJrG
+	 fZYNnSh7ZJgVcaocZGpB8YbrHxXO6vbVDCZaazdcwZf9P+78ChTK/wY7geAuEO5bV3qKl
+	 OliGCE6q12HkyOsvfQzN+o7PEcRqsUoXdLxdN9yskk7NhKYREHz0tsadSnIJ26WdqyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794165971;
-	h=Received:DKIM-Signature:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
-	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=7EGu+YSDO7LGtdXz5YjqyDiKnsMSMnT8rQzzEXbjKLA=;
-	b=dLuqfAaspMC4f06JfKaOkI+VajMHeu8uNYeTmcDC249+701y4SHolJjb+/rohqS7Y08D
-	 ge8MU4DF6mDmoMfHJ/VA6eqBqQ5wN6jQkkBFTYaJPRH8Gply3qy71rxfUN1IW7o8OINBK
-	 g/2ZIp+agDqOmxAQaO9Hj5AyJYog7b/BGi1msp/rwaf5obQPXSrT0QIJQkaouJqTpRkCr
-	 U0IqLX235nyGyL5KfgiN9C9HMhTKayEz9gvxT66OzTqWOgkoOo0A9pP3mi0iXHj+yzQq0
-	 SmyCspJShqbQ13B8z3PW697W3O0orl/QSZaLr/rSdNaJMXtVezgxYp3Kc2Ikl9dnlqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794184575;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=MrgV9fXwBYVj4uLezFVa59Hg+/XXAINskq6Fghy76zs=;
+	b=Y3QEe9UDXU0sDI1lJOXCIsjy/rr8+8gCM3hQ6DkdoVv61vehcj608GYkjHDEo2XHNoN6
+	 BQ7n8EsBUISgzKosUxj8oE9ImGkvlDBdFkx5FUv+ofpEliSgFdAXQcQnqfQ8cQNkDoku5
+	 CRvgJ6Czh2RUxN9LWc7q9CJefhxZgvuogd0U41kizGHt0q17ESS+nxIfV8gUjYGUMXQ2L
+	 IAptQNcezbNK5rEobLQzQfMCKP9aatyWNgqgClUyY0IWpEic7qTlnk+K8dFanNmytdRTE
+	 oSvoEgiuwBRsvHkbeJjMruxvXE5dQ/yJw8DzFDF+MNA0+YoWA0K20B5HIYxmP9CqdmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J0N5DkU5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FcaNjP8t;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 3BE84606A31C;
-	Sun,  8 Nov 2026 19:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40173606A31C;
+	Mon,  9 Nov 2026 00:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J0N5DkU5
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 61A111F0089F;
-	Sun,  8 Nov 2026 19:26:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FcaNjP8t
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B21E1F008A2;
+	Mon,  9 Nov 2026 00:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794165970;
-	bh=7EGu+YSDO7LGtdXz5YjqyDiKnsMSMnT8rQzzEXbjKLA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=J0N5DkU5fA6Xf8qOKlRzVnvxrZbP5zLF9omvL5YT9x68r5N5AR2DnxPF0is838+f4
-	 k9VLms5fXr0+iXqYRzHddNL/gWh0rpwidd3lqFf7MPEG1B9KUnMi5T8KIW38fl/FLn
-	 eP5IYvG4qaCTgQa8F8Dz2zP2at7ZVeX8AHZpPH6wNOld1XfN3zVM1H3bShkyRaQUHb
-	 A1/PORp8RtWgEpC+m6bDwG/wDbSYw8jMtno6SnITRvrsWs39xniJO+x6IeTBgeE0h5
-	 1aTJhaeYyCdenxS+YZJ5BC1w/0Hg5zBWSDon0CcepKyUtshtjh+QUE9je7ACD2IM6K
-	 6zram65I7Ujhw==
+	s=k20260515; t=1794184575;
+	bh=MrgV9fXwBYVj4uLezFVa59Hg+/XXAINskq6Fghy76zs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=FcaNjP8t3uYt8wwOigY7Jj/L+2eMml7Pwt9+M+mSCd1uTIiJ83mLqNitjPNkzxUnX
+	 TsKJW2EWvaOxz/qgCVLIwh0jhIWJlg9k+SYK8XoJxUcsnlcuFTIt7jL2qPnzYMIA8R
+	 6krCikJbxLI2mJdOEGp8WOzf4MMc9CDjLNnKTzeThgGr2tyouFKgK4intwgZGpiLoS
+	 /x/DQo3vqldDdcI0gSz57AHQb/FWFeohWbWHnzN9xNdZkMLb9NPkjyHrUc8n1aNzeS
+	 pvAZYnTMqKbllCvLgeWkhpc5ZQPor3KR9NYmKlgR8QYkjl84Eob3FSR3nH53DNfCK2
+	 7LikZBOQtZ2/w==
+Subject:
+ Re: [PATCH net 3/3] vsock/virtio: queue at most one credit update per socket
+From: netdev-bot+sashiko@kernel.org
+To: green@linuxhacker.ru
+Cc: sgarzare@redhat.com, stefanha@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+ bobbyeshleman@meta.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 00:36:13 +0000
+Message-ID: <179418457356.994134.15621990093990477357@kernel.org>
+In-Reply-To: <20261105000141.3617241-4-green@linuxhacker.ru>
+References: <20261105000141.3617241-4-green@linuxhacker.ru>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -49,74 +66,139 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 0/3] <linux/mod_devicetable.h> deprecation continues
-From: Nicolas Schier <nsc@kernel.org>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, 
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Nicolas Schier <nsc@kernel.org>, Armin Wolf <W_Armin@gmx.de>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, 
- Takashi Sakamoto <o-takashi@sakamocchi.jp>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Raag Jadav <raag.jadav@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>, 
- Andy Shevchenko <andriy.shevchenko@intel.com>, 
- Ingo Molnar <mingo@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Hasan Basbunar <basbunarhasan@gmail.com>, kvm@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-kbuild@vger.kernel.org
-In-Reply-To: <cover.1792144769.git.u.kleine-koenig@baylibre.com>
-References: <cover.1792144769.git.u.kleine-koenig@baylibre.com>
-Date: Sun, 08 Nov 2026 20:20:57 +0100
-Message-Id: <179416565740.60865.16102443399828949110.b4-review@b4>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=747; i=nsc@kernel.org;
- s=20250924; h=from:subject:message-id;
- bh=VAPx+XY+bQ337J//6PGukivx0Hid5rbw9BgqEnC2/Qw=;
- b=owEBbQKS/ZANAwAKAQdSCnAWJhJpAcsmYgBq8MubGxS86KupbtyVtfQGKmsgDdXwdrHjwvLkR
- QBrrmEGdOyJAjMEAAEKAB0WIQSHQTenhzckp4G+wsYHUgpwFiYSaQUCavDLmwAKCRAHUgpwFiYS
- aSi4EADrogCK8zsVY0nw5fce7s91WKgv+ThHm+22mUyZevxukgoOQr+OcvyN69zwLuLoe5iWsde
- 4b0bP7jKvGiELJhdUm3ASX0uqlt9nb4+Kv/uIpC68p1OAiBPapUkDjP42VGlDeDjXmSg5zmPh7M
- YcBEmNoqjYrLiOMfotWOVIm86wn1CeovwPOoHSy5o2glKSMENWcoBfD1lIYSlBAMTVDMq2tyWUN
- 0c1iK4Doge1F8Xv4v9q6AbxhJ4XUJR7h5p3vnRVFIItDXxBQwmFoGD6l7v1yJ5QwSm/mDbF84yf
- IHX4pMPmwLM7nsosfim7mCYZuSBSHi36LWhVdKoCSdSOhV2Vo8QsFYyUA9n+Q6c5Dwz9NIwhxuw
- /gxE0k/wJ3YkqNWXGzJtDDamdEgdUNu7gS+YENoGh0SIH4EQ47gooQJO70ajktC/ZpzCCCwOzCX
- TC3AZWouCZKjItvA5dbfE8AGLhXye5LQPpNLzf8jX+sI83bn3gsW1IbsFOCYvwR2/TBHh9wKGUf
- zsv6svwSvxIWO+Zq98PKY4blYU+M3g+ilVrKslM8uRn3Fcfh67pEm5374LGosuBcKeh9BoPsJVR
- AaUY7A+pobVgXK7WYlH0ymO/u/iOTrT/qZRcXZ76p+sQ6BEN+ijIC/0hteLbcGFkWezpVqD3zis
- EJEcnhkC6ZdwIZg==
-X-Developer-Key: i=nsc@kernel.org; a=openpgp;
- fpr=18ED52DBE34F860EE9FBC82B7D97093255A0CE7F
 
-> Hello,
-> 
-> v1 of this series is available from
-> https://lore.kernel.org/lkml/cover.1789988540.git.u.kleine-koenig@baylibre.com/
-> 
-> Changes since then are:
-> 
->  - rebase to v7.3-rc7
->  - Add a header guard and a comment about why it's necessary
->  - Add Acked-by: for Armin Wolf
-> 
-> Nathan identified two merge conflicts for v1 with commits in next. These
-> still happen and are easy to resolve as soon as the respective branches
-> are merged into a common tree.
-> 
-> Nathan already proposed to take this series via the Kbuild tree after
-> letting it cook in next after the upcomming merge window closes.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Ok, then let's go; I am going to put this on kbuild-next-unstable and
-kbuild-for-next.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Thanks.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Both the guest and vhost transports call
+  virtio_transport_credit_update_xmit() before the packet is actually…
+
+--
+
+vsock/virtio: queue at most one credit update per socket
+
+This patch limits how many credit update packets each virtio vsock socket
+can have queued. It tracks the last queued credit update skb in
+virtio_vsock_sock and suppresses new ones while that skb is pending.
+Transports call a new virtio_transport_credit_update_xmit() hook to
+refresh fwd_cnt/buf_alloc on the tracked skb and release tracking when it
+is sent. A tracked skb holds a refcount on virtio_vsock_sock to keep it
+alive.
+
+[ ... ]
+
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 74a8fdf825d50..65d6e0790e724 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -604,18 +604,68 @@ static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
+
+[ ... ]
+
+> +/* Called by the transports when @skb is put on the wire. */
+> +void virtio_transport_credit_update_xmit(struct sk_buff *skb)
+> +{
+> +	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
+> +	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> +
+> +	if (!vvs)
+> +		return;
+> +
+> +	spin_lock_bh(&vvs->rx_lock);
+> +	/* Still the socket's last packet: carry what was suppressed. */
+> +	if (vvs->credit_update == skb) {
+> +		vvs->credit_update = NULL;
+> +		vvs->last_fwd_cnt = vvs->fwd_cnt;
+> +		hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
+> +		hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
+> +	}
+> +	spin_unlock_bh(&vvs->rx_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(virtio_transport_credit_update_xmit);
+
+[Severity: Medium]
+This hook can't be undone once it has run. It clears vvs->credit_update,
+advances vvs->last_fwd_cnt and rewrites the header. Do the guest and vhost
+transports call it before the packet is actually committed?
+
+In the guest driver, virtio_transport_send_skb() calls it before
+virtqueue_add_sgs(), and that call fails when the tx vq is full:
+
+net/vmw_vsock/virtio_transport.c:virtio_transport_send_skb() {
+	virtio_transport_credit_update_xmit(skb);
+	...
+	ret = virtqueue_add_sgs(vq, sgs, out_sg, in_sg, skb, gfp);
+	if (ret < 0)
+		return ret;
+	...
+}
+
+virtio_transport_send_pkt_work() then puts the skb back at the head:
+
+	ret = virtio_transport_send_skb(skb, vq, vsock, GFP_KERNEL);
+	if (ret < 0) {
+		virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb);
+		break;
+	}
+
+When the fast path fails, virtio_transport_send_pkt() queues it at the
+tail instead.
+
+The requeued skb is no longer tracked. So the next
+virtio_transport_send_credit_update() is not suppressed, and it queues a
+second, tracked credit update behind the first.
+
+Doesn't that make the per-socket bound two, rather than the "at most one
+credit update" the commit message describes? Any later updates are still
+suppressed by the second tracked one, so the unbounded queuing stays
+fixed.
+
+In vhost, vhost_transport_do_send_pkt() calls the hook right after it
+gets a descriptor, before the checks that drop the skb:
+
+	virtio_transport_credit_update_xmit(skb);
+
+	if (out) {
+		restart_tx |= vhost_vsock_drop_skb(vsock, skb);
+		...
+	}
+
+	iov_len = iov_length(&vq->iov[out], in);
+	if (iov_len < sizeof(*hdr)) {
+		restart_tx |= vhost_vsock_drop_skb(vsock, skb);
+		...
+
+The copy_to_iter() and skb_copy_datagram_iter() fault paths drop the skb
+in the same way.
+
+Suppose updates were suppressed while this one was queued. Their fwd_cnt
+has been merged into this skb and recorded in last_fwd_cnt, but the
+guest never receives this skb.
+
+Before this patch, the suppressed update would have been a separate skb,
+delivered on the next descriptor. Now nothing resends it until more local
+reads happen. Could the guest-side sender then stall waiting for credit?
+
+Moving the hook after these checks would not be enough by itself, since
+the suppressed state is lost whenever a tracked update is dropped.
+
+The commit message says:
+
+  So a suppressed update always reaches the
+  peer, either in the queued one or in a later packet, and the fwd_cnt
+  the peer sees never goes back.
+
+Is that still true on these drop paths?
+
+[ ... ]
 
 -- 
-Nicolas
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105000141.3617241-1-green%40linuxhacker.ru
