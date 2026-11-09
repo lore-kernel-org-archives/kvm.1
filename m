@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.84
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214200;
-	b=jvLAPugXbR2Cpx9PhdjMrucb2fyigXC8q6+xnx9KtHOzyuqM9CUXFdyfHO9+MP8x6Z5q
-	 VxvjwzEpa7A0wTVcJ2tFJ9IAo2PnOerggt510ghuGmOQn+laukiXu0cTTq9Mh+/KYnXes
-	 j1bzivFyHdI7gC3CQmwtYh2O2Own5QMV64wu1D/Avml6oQQ4SUdzL+UOEi3W8TJoQ8i6V
-	 f7DN/YcLno1+vX05bHfibE28EBUO2J4vYXgqrdBZgJEpK5mvuWiOvkHaSHzIxWWamewjK
-	 MBJwZuVnQAs6MTfLqHdD6J5AHg3aEtStvEMc8CPjz0q/wCjKzGuJBJoh0ABV/zQTBQQ==
+	t=1794214197;
+	b=muVKD+nMGuNkbjQsJT2uI3vt3FdGs2h6DxMbvXGN/kxsoXRtyoXDTgXy5KeTcfG1yEfx
+	 zyFLL4r1yrHEkXqks28CKGQ1cbOhsxPqoAQqVoyWmED3L1BuQr0/gnfCdDHBB3NfgP34r
+	 R79kRBebI4JromPzxJwpy7941kr+wnSFjg2muSTsr+RF7bcmf8uHdOmsOM2DqJfP3RoES
+	 ti94RxR8jCmigwfQd/YIlpJgbThAgwJ/zRlluUwfau7K2vu4hDJvT8HgOxh5SOS1X2PJP
+	 7jRg1LEnEYGeIBjgTNwN6vJC3NYO4MApATrNsGUBhnjJWplPiXODiK1dtXXGHpWBEkQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214200;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214197;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=RKQQUYkySIuWXQVY7MpCGDxE52luhCcCeJyJckRYrE0=;
-	b=itXQglGJCHlxBTKxcA92KHr8dAr7uULxb6uO2a41WfxPAAsoTAWi1gBbSEnOL3/sQbXt
-	 8ausxKlwXsn3B5HnUvnPjqP5gV66Izvm73w2A4x+MyQ9Sys9GkoPTSFHZzy++8c6jQQBA
-	 Nxitv6OEbzN0bhnujeZcF0y+T2UGOuKktkqCrady2sGIfsvp1YtxXGpmFePedAFTCEAYY
-	 MjQMqOVGyHNi8fFYGgy6nHR52nDzw8uk7O88zpmKzrlvgT1bDAhnI/P8gbG6GAohsfOd1
-	 udJVc6NuoHTKMZ1go1kTwTxyP5g1PzFtgCSQMtWBar7HqrpAh7eGLckutwj04LjtAkQ==
+	bh=U2XBWSBfcfQCqve1wrsykzKjay5QUHR6JzVkYSHce1U=;
+	b=UI/wARtHiXRSE6zVqjuZmAT9E5XevYbn+8b7+nzgjMQ5qk6Tz2TrGeMYpygaOF168WYF
+	 DlvjVALzqzYa/EIdCm9v7BP5C8NqDIDRCJrJNqPEMMrXxmYxoHsqAvJbCNNZKD475MP2N
+	 yczP1eMfjVU0LXCrvq2eYti/DS0MXPjj1IMoeyQdxnbkmnXTgAvIo43u+rm2jSvTwyrnA
+	 phAgbVvtFHJPdXVwVLG/u00m6ASm2BW0R+xzcHUsN8jiZJc6CxohR7P9R1iQhFCLVUKMq
+	 V1IMVss22vjy1ewGxKOL+yWPZzM4xb9Fs2zILA0ue+D6EqMy1uTsk61CYwRYAPV6Frg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hAxNi3tI;
-	arc=none smtp.remote-ip=95.215.58.84
-Received: from mta1.migadu.com (out-84.mta1.migadu.com [95.215.58.84])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="rs8ZZ/2Y";
+	arc=none smtp.remote-ip=95.215.58.50
+Received: from mta1.migadu.com (out-50.mta1.migadu.com [95.215.58.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCD660A3831
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:49:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BCD660A3831
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2B6606EEAF
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 08:49:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B2B6606EEAF
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hAxNi3tI
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rs8ZZ/2Y
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=pvY9wx5XSdLlCtF08ytiK5bki8t7g1hmkb8W5MfUPHI=;
+DKIM-Signature: a=rsa-sha256; bh=p3Len8xL7Q9ENP4Ztv32/RbG11wP2iP1K8oXCC/ZeVA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794214197; v=1; x=1794818997;
- b=hAxNi3tIp7AiDzqFaKyNVmbI1VzG8WuBzzkfyaycbM86IAxwt+uFIY/JMjHvVG3jI5iM36Dt
- U64tZmbp6gN/ew7M0vYkHyBrKerYc+D1OTVBaKqxc0ZrFx5WcMmAEIETFuCwVKj7zRtQr1u+yNr
- 6DYqrdJKNsin+BEQTcJ4r6IM=
+ t=1794214194; v=1; x=1794818994;
+ b=rs8ZZ/2Y2aQw3Ulb9IQ9MKan7q+A+77pB/hj9cOBdr75eX1AOQjGLOvfzYU8xLEizUkxZBrc
+ Hg7yGDfeLMaeveOBP2aMZyli+jJ8WSRPxTi7ugf7hYFNwuEMStYCd8lnLkfW8PH9Im9/sJn0Ol9
+ aCBjBDihCYgnJRLNL7EsPWto=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 72df1d8da48c0203;
-	Mon, 09 Nov 2026 08:49:55 +0000
-X-Mizu-Trace-ID: 72df1d8da48c0203
+Received: by smtp.migadu.com with ESMTPS id 410a3ad52a9fa7ba;
+	Mon, 09 Nov 2026 08:49:53 +0000
+X-Mizu-Trace-ID: 410a3ad52a9fa7ba
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -68,9 +68,9 @@ Cc: Will Deacon <will@kernel.org>,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 19/19] KVM: arm64: selftests: Check MOPS, PIE, POE and FPMR in a protected VM
-Date: Mon,  9 Nov 2026 08:48:54 +0000
-Message-ID: <20261109084854.840576-20-fuad.tabba@linux.dev>
+Subject: [PATCH v2 16/19] KVM: arm64: selftests: Add pkvm_lifecycle teardown test
+Date: Mon,  9 Nov 2026 08:48:51 +0000
+Message-ID: <20261109084854.840576-17-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261109084854.840576-1-fuad.tabba@linux.dev>
 References: <20261109084854.840576-1-fuad.tabba@linux.dev>
@@ -85,125 +85,150 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For each of MOPS, S1PIE, S1POE and FPMR that a protected VM's ID
-registers advertise, EL2 has to set up the HCRX_EL2 enables, the
-fine-grained traps and the context switch to match.
+Each protected VM holds an entry in EL2's table of KVM_MAX_PVMS (255)
+VMs until teardown has reclaimed its pages, so if teardown leaks
+entries, KVM_CREATE_VM eventually fails.
 
-Check from the guest that each feature works when its ID field is set
-and UNDEFs when it is clear. Working means the registers read back what
-the guest writes, and a SETP/SETM/SETE fill completes. At v7.4-rc1 pKVM
-advertises none of the four, so only the UNDEF cases run. Also check
-that ID_AA64PFR2_EL1, ID_AA64ISAR3_EL1 and ID_AA64MMFR3_EL1 expose
-nothing beyond the supported features, and that WFxT and the 128-bit
-System register features stay hidden.
+Create, run and free twice that many VMs, four alive at once and freed
+in random order. Check that each VM's memory survives the others'
+teardown, and that freeing a VM drops the process's locked memory by
+what its runs added.
 
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- .../selftests/kvm/arm64/pkvm_id_regs.c        | 70 +++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/arm64/pkvm_lifecycle.c      | 110 ++++++++++++++++++
+ 2 files changed, 111 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/arm64/pkvm_lifecycle.c
 
-diff --git a/tools/testing/selftests/kvm/arm64/pkvm_id_regs.c b/tools/testing/selftests/kvm/arm64/pkvm_id_regs.c
-index 93ed557a30bc6..7a8367af3e009 100644
---- a/tools/testing/selftests/kvm/arm64/pkvm_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/pkvm_id_regs.c
-@@ -33,6 +33,11 @@
- #define DBGBCR_VAL	((0xfUL << 5) | (1UL << 1))
- #define DBGWCR_VAL	((0xffUL << 5) | (3UL << 3) | (1UL << 1))
- 
-+/* Allocated encodings only: a reserved one reads back UNKNOWN. */
-+#define PIR_PATTERN	0xeca87653210eca87UL
-+#define POR_PATTERN	0x76543210UL
-+#define FPMR_PATTERN	0x2a5a55c000UL
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 68bdd01f62270..214f38e3f67a7 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -194,6 +194,7 @@ TEST_GEN_PROGS_arm64 += arm64/pkvm_host_abi
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_id_regs
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_irq
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_isolation
++TEST_GEN_PROGS_arm64 += arm64/pkvm_lifecycle
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_mem_share
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_psci
+ TEST_GEN_PROGS_arm64 += arm64/pkvm_smccc
+diff --git a/tools/testing/selftests/kvm/arm64/pkvm_lifecycle.c b/tools/testing/selftests/kvm/arm64/pkvm_lifecycle.c
+new file mode 100644
+index 0000000000000..0ee475799abc5
+--- /dev/null
++++ b/tools/testing/selftests/kvm/arm64/pkvm_lifecycle.c
+@@ -0,0 +1,110 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * pkvm_lifecycle - more protected VMs than EL2's VM table holds, freed out of order.
++ *
++ * Copyright (C) 2026 Google LLC
++ * Author: Fuad Tabba <fuad.tabba@linux.dev>
++ */
 +
- extern unsigned char brk_insn;
- 
- static volatile bool undef_seen;
-@@ -132,6 +137,20 @@ static void assert_id_regs(void)
- 	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64ISAR2_EL1) &
- 			(ID_AA64ISAR2_EL1_APA3_MASK | ID_AA64ISAR2_EL1_GPA3_MASK), 0);
- 
-+	/* WFxT and the 128-bit System register and instruction features are hidden. */
-+	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64ISAR2_EL1) &
-+			(ID_AA64ISAR2_EL1_WFxT_MASK | ID_AA64ISAR2_EL1_SYSREG_128_MASK |
-+			 ID_AA64ISAR2_EL1_SYSINSTR_128_MASK), 0);
++#include <stdlib.h>
 +
-+	/* Of these registers, only the fields of the features pKVM supports can be set. */
-+	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64PFR2_EL1) & ~ID_AA64PFR2_EL1_FPMR_MASK, 0);
-+	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64ISAR3_EL1) &
-+			~(ID_AA64ISAR3_EL1_FPRCVT_MASK | ID_AA64ISAR3_EL1_LSFE_MASK |
-+			  ID_AA64ISAR3_EL1_FAMINMAX_MASK | ID_AA64ISAR3_EL1_LSUI_MASK), 0);
-+	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64MMFR3_EL1) &
-+			~(ID_AA64MMFR3_EL1_TCRX_MASK | ID_AA64MMFR3_EL1_SCTLRX_MASK |
-+			  ID_AA64MMFR3_EL1_S1PIE_MASK | ID_AA64MMFR3_EL1_S1POE_MASK), 0);
++#include "kvm_util.h"
++#include "pkvm.h"
++#include "processor.h"
++#include "test_util.h"
 +
- 	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64DFR1_EL1), 0);
- 	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64AFR0_EL1), 0);
- 	GUEST_ASSERT_EQ(read_sysreg_s(SYS_ID_AA64AFR1_EL1), 0);
-@@ -217,6 +236,56 @@ static void assert_undef_regs(void)
- 	GUEST_ASSERT_UNDEF(asm volatile(".arch_extension sve\n rdvl x0, #1" : : : "x0"));
- }
- 
-+/* setp [x0]!, x1!, x2; setm; sete */
-+static void mops_set(void *dst, u64 len, u64 val)
++/* EL2's VM table has KVM_MAX_PVMS entries, and a VM holds one until it's freed. */
++#define VM_TABLE_SIZE	255
++/* Enough that leaking the entry of one VM in two fills the table. */
++#define NR_VMS		(2 * VM_TABLE_SIZE)
++#define NR_ALIVE	4
++
++struct pvm {
++	struct kvm_vm *vm;
++	struct kvm_vcpu *vcpu;
++	u64 tag;
++	size_t locked;
++};
++
++/* Set in the guest's copy by the host before the first run. */
++static u64 tag;
++
++static void guest_code(void)
 +{
-+	register void *d asm("x0") = dst;
-+	register u64 n asm("x1") = len;
-+	register u64 v asm("x2") = val;
-+
-+	asm volatile(".inst 0x19c20420\n\t.inst 0x19c24420\n\t.inst 0x19c28420"
-+		     : "+r"(d), "+r"(n) : "r"(v) : "cc", "memory");
++	pkvm_guest_init();
++	for (;;)
++		GUEST_SYNC(READ_ONCE(tag));
 +}
 +
-+/* A feature's registers and instructions work when it's advertised and UNDEF when hidden. */
-+static void assert_feature_access(void)
++/* The tag comes from the guest's own memory, so the VM must survive the others' teardown. */
++static void run_vm(struct pvm *p)
 +{
-+	u64 mmfr3 = read_sysreg_s(SYS_ID_AA64MMFR3_EL1);
-+	u64 buf[4] = {};
-+	int i;
++	size_t locked = pkvm_host_locked_vm();
++	struct ucall uc;
++	u64 cmd;
 +
-+	if (SYS_FIELD_GET(ID_AA64MMFR3_EL1, S1PIE, mmfr3)) {
-+		GUEST_ASSERT_RW(SYS_PIR_EL1, PIR_PATTERN);
-+		GUEST_ASSERT_RW(SYS_PIRE0_EL1, PIR_PATTERN);
-+	} else {
-+		GUEST_ASSERT_UNDEF((void)read_sysreg_s(SYS_PIR_EL1));
-+		GUEST_ASSERT_UNDEF((void)read_sysreg_s(SYS_PIRE0_EL1));
++	vcpu_run(p->vcpu);
++
++	switch (cmd = get_ucall(p->vcpu, &uc)) {
++	case UCALL_SYNC:
++		break;
++	case UCALL_ABORT:
++		REPORT_GUEST_ASSERT(uc);
++		break;
++	default:
++		TEST_FAIL("Unexpected guest exit: ucall %lu", cmd);
 +	}
++	TEST_ASSERT_EQ(uc.args[1], p->tag);
 +
-+	if (SYS_FIELD_GET(ID_AA64MMFR3_EL1, S1POE, mmfr3)) {
-+		GUEST_ASSERT_RW(SYS_POR_EL1, POR_PATTERN);
-+		GUEST_ASSERT_RW(SYS_POR_EL0, POR_PATTERN);
-+	} else {
-+		GUEST_ASSERT_UNDEF((void)read_sysreg_s(SYS_POR_EL1));
-+		GUEST_ASSERT_UNDEF((void)read_sysreg_s(SYS_POR_EL0));
-+	}
-+
-+	if (SYS_FIELD_GET(ID_AA64PFR2_EL1, FPMR, read_sysreg_s(SYS_ID_AA64PFR2_EL1)))
-+		GUEST_ASSERT_RW(SYS_FPMR, FPMR_PATTERN);
-+	else
-+		GUEST_ASSERT_UNDEF((void)read_sysreg_s(SYS_FPMR));
-+
-+	if (SYS_FIELD_GET(ID_AA64ISAR2_EL1, MOPS, read_sysreg_s(SYS_ID_AA64ISAR2_EL1))) {
-+		undef_seen = false;
-+		mops_set(buf, sizeof(buf), 0x5a);
-+		GUEST_ASSERT(!undef_seen);
-+		for (i = 0; i < ARRAY_SIZE(buf); i++)
-+			GUEST_ASSERT_EQ(buf[i], 0x5a5a5a5a5a5a5a5aUL);
-+	} else {
-+		GUEST_ASSERT_UNDEF(mops_set(buf, sizeof(buf), 0x5a));
-+	}
++	p->locked += pkvm_host_locked_vm() - locked;
 +}
 +
- static void assert_host_handled(void)
- {
- 	/* Host-handled registers reach the guest with no UNDEF. */
-@@ -236,6 +305,7 @@ static void guest_baseline(void)
- 	else
- 		assert_debug_raz_wi();
- 	assert_undef_regs();
-+	assert_feature_access();
- 	assert_host_handled();
- 
- 	asm volatile("brk_insn: brk #0");
++static void create_vm(struct pvm *p, u64 tag_val)
++{
++	p->vm = pkvm_vm_create_with_one_vcpu(&p->vcpu, guest_code);
++	p->tag = tag_val;
++	p->locked = 0;
++	write_guest_global(p->vm, tag, tag_val);
++
++	run_vm(p);
++	TEST_ASSERT(p->locked, "VM %lu pinned no memory", tag_val);
++}
++
++static void free_vm(struct pvm *p)
++{
++	size_t locked = pkvm_host_locked_vm();
++
++	kvm_vm_free(p->vm);
++	TEST_ASSERT_EQ(locked - pkvm_host_locked_vm(), p->locked);
++}
++
++int main(void)
++{
++	struct pvm vms[NR_ALIVE];
++	int i, j;
++
++	TEST_REQUIRE(pkvm_supported());
++
++	ksft_print_header();
++	ksft_set_plan(1);
++
++	for (i = 0; i < NR_ALIVE; i++)
++		create_vm(&vms[i], i + 1);
++
++	for (; i < NR_VMS; i++) {
++		struct pvm *victim = &vms[random() % NR_ALIVE];
++
++		for (j = 0; j < NR_ALIVE; j++)
++			run_vm(&vms[j]);
++
++		free_vm(victim);
++		create_vm(victim, i + 1);
++	}
++
++	for (j = 0; j < NR_ALIVE; j++)
++		free_vm(&vms[j]);
++
++	ksft_test_result_pass("%d VMs, %d alive at once, freed in random order\n",
++			      NR_VMS, NR_ALIVE);
++	ksft_finished();
++}
 -- 
 2.47.3
 
