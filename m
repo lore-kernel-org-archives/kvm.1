@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.12
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.29
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794194426;
-	b=ROhHHbdQDI9+QB5GAywRJ3nQEABDe+k8mbExI/rlLdKoGexMLFAS04wkBMf73ajUpx62
-	 5jwMMMWn3a4Ke+4hm539NFvyOxeJEE+QUEHVOYCucSofBYVVYcq4AbfAHD84f4Rez94WC
-	 jzMlHTI1bys4kEZnQYp672msxP2cKNntQ4d0CcqLxGvImXKA040CMHKe5fD0OCBRN0fN0
-	 XKq/iXdKhotHqrsWYLhJfOTwq1EwfAyfl6oA71sXJIAOQPKFWme172bRTzbOLItn3C/mM
-	 TN0RIUUjNvXSTUkGlBByVDW2FwZZAvVqqdKqtRR0Rf0aKOou3BiWbO61oQommc+g2xg==
+	t=1794194459;
+	b=2jA0VRoDubyn+crBhMal1NURJvxGCK9IZ4aSUFf27BreXXujZjrn557q7c66KCP28hZS
+	 7U5V6lMGUMj+Hd4THgFlJ6R9Kho3E2qnChpI4sP9fE0SHe1moRB699qt8BGBbCJPrZKul
+	 jJELC27NBxv0ONoHo6xfLwTcc6faI//V36/qL59520IRw061TYPeXiFuHvdw0Tk7Ynnb2
+	 /18VrGaS+5P9/DvT9MiwygO9u9GXcDHtzU64rKyPJv1AxO58D1Mx5bJZBT30EwT2Vw1au
+	 koEGggJpNwyrqL5avbNEbaZNAOoNom8N7jchW2Qv71i9Kkxwbe45JBAargb7pawRRDw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794194426;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794194459;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
@@ -26,53 +26,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=vBaVdiSUvvQzVb4HWYaHiIK4SjFwsDSyuAqJzCs5gks=;
-	b=kH9ICk+kYVUvq4yf5fNf7k9N+IbeiP+k0aXV9BTsDRPYSWC9BG468MLoHU21X1+Fsv3x
-	 whtAMGaA7mPHrE9SpXPvTneT9wJ+NNlZNwMlnw3ifMffJYvVAiChKuZJSQyw7C0PFkwcX
-	 VfU/33LNCYGUYqbSvQp5+pXVwDCL8EKDdz0hP0JAuvjlunx8hGnivFIQRKKoVmnlh4vZ+
-	 eNqRGaD+/Mdo2iijhFhrhDf/oGMVFvNee7uornuAtT5E4FAohOdo5LWlLO2/ougdylmpF
-	 Mpca0HjQQMQyw59611+zFn6jWBxBE7EcO6PPRYq3dEjyR8qZtILdGj37+v8usP2QAiw==
+	bh=d35WHgpgxaTQDREQh3Q86nDso1zAf9HDMjlaXgwNHhU=;
+	b=YUY5EEkappmaxQMG2xoCgvh39N/FYEYrrAcx2nDPJjhwyYUlLhFyMdgCcYi5aTiLfwgh
+	 7D0sVbWybVbyTBs2E0C4jkqO0Mz23XU0MNZ0DrJdQ7o6evX7MQepZhcGc55ilnvXEB8gO
+	 +caodv/FCEmkfsaWQloXao3fnZEUgevGU/0UIv4WDWwQF2NmDfqkWOeQQfYCS/iPr0TO0
+	 bnP0G7Yh1NactIzLajQbXXYWPvZlJzrAZUyJiiH7FFQuJxnTgB6aLISLOUVp8i3PyNIPZ
+	 sZvtbMJCvQ+O3JQd/1hU9EWCVXc4K79hWsTA23P3oDFN0yjM+Nn1ypZLeLGtsPlFSBA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=19A3B2X5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.12
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010012.outbound.protection.outlook.com [52.101.193.12])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Yxlv5DKf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.29
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011029.outbound.protection.outlook.com [52.101.62.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76E1606A326;
-	Mon,  9 Nov 2026 03:20:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C76E1606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05E1606A320;
+	Mon,  9 Nov 2026 03:20:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C05E1606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=19A3B2X5
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Yxlv5DKf
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C42B3gs1ZaBUgw3Hjms04RZR+jvix8YqoMqWqKuhr8xPuOqutTcANMDs3SnwKRzsH9gyKcmgAcEKe2bEH697AFt+lozRyBUKSeSR4EvUNgnqfCLqbtCZRS2vTIagt6oy+kJP3CPy3NrGpOqfeqxXy3vLAVSTJiMNGpL1GOVgLgq22ANT5zp3PagdGI766hGlv9SMZScGjDJtFKAIEA5ccmKkNxLtBh22WNQiLwCNR9KC44ro6I2GahlBWHuLEwP5U/uD5RldHwl8kjoNqdyWKon+cpdJyK/hK0U9U0uARbnZP+NGddUlHAeB8S5NhoCLhoa9YtflJw6K7451XkScfA==
+ b=YUPFXU1jNZ+qFx9Bl5eY6jO5uHWtQ/zyKL4yEZLZ8Zlf2iNouZHouVghdseb+wzwAYYIdJwpWeXaLHnxne1A0xdAlx+iYQXfh44Wo6+rwRHTKkMxq57LOOU1UjBPVphOnZMV0tESOnSZMcx19Zr3BTJmuvCDKqO8bYsIZ/msQIw3ttl89UItC7O9R0J+xWh45zppkAGuE1CokfVF0sIyiixeyZrMBuhpTrAW/U+K3L278hAxliB2ciJECZtjNIF5D3GaB28ti5GDpFyspibNTxu2racP9giVs8JaeYcZAqSpEGK17tkJKKcwnZucSewskqRzak4CPiGXmRqBgzqe6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vBaVdiSUvvQzVb4HWYaHiIK4SjFwsDSyuAqJzCs5gks=;
- b=qs8BBw8tXCznlJaNnrWmfJ/IaOBUpU5Ox+HxDMsqS6N6S6SAtSG9lf1wg6UjFZGtLF6eJonuJb/Tmi6wagfAqV3ijpbQkhOjVSAartzj5HgcPc+UXS9sIWCXGIlXZRzUcy3pyHrhGFVV6w6iKEXj9ICk0QJ4iHBMt8IPnSy798mLWY+sYtaVYuwmNkxvJV6hbF5KAv9nYFnAjWi5OA05PyjbaoKVgiYJ7qgfIGeaWX7npunMN+uLbyES2Vq3Doc34uVQaKtq8pcz5V/lpjki3cO+y0AezhhMcZMb5qMKQwWENI52C0Q/q1ryIdt0tEJKYnKh5j+h7o/8mpm8vnfNHw==
+ bh=d35WHgpgxaTQDREQh3Q86nDso1zAf9HDMjlaXgwNHhU=;
+ b=e636y3xvjoj7v0lP7nD0qbaJFQ1KmtVyCHZL8DwxxiME1hpbGZ2Y4GZAVqyU/ggDHld0p6SRuDvPcnFtrNdobiz2keDXYc+ZfRquocpBlptHaNtKZHCgxrcON0zx21z4+4qscQ+Sog8hMUIPKp3cGbx9CgZybe30+qqAt+LtY7dvgusjGQaTH76JNm6Dv60GZTjv9koOGnxUVvd3GNYXXFf+1zsnm0StPr4zmooM/IjjYtYucF9Y0u05rhoaiDY/CP8PD1OiptZ+xg2ThcJTrOCotAcsA4sD83zRzxF3xSfppcmDOnf1VjhdmAkj+8Aszcyie384OIqQ27xVM2PfRA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vBaVdiSUvvQzVb4HWYaHiIK4SjFwsDSyuAqJzCs5gks=;
- b=19A3B2X53g9MKQnAkGsQMPA0iN5pTgyqKnGdo57kw8MKbKYuutDUUt3nzpiF0Q6rhUNCpoHymt7KgFO3CpJiNqnjx0IIS2LOQxp03gVTsC0YPwj/s7F9Cyv7peWPqvQE2KsWvNj0U6lGf7Fv1/5xbe+TO/A8O8vUk/PHnJIAqn0=
-Received: from CH2PR02CA0023.namprd02.prod.outlook.com (2603:10b6:610:4e::33)
- by CY3PR12MB9654.namprd12.prod.outlook.com (2603:10b6:930:ff::13) with
+ bh=d35WHgpgxaTQDREQh3Q86nDso1zAf9HDMjlaXgwNHhU=;
+ b=Yxlv5DKfIt2BdmAYjBTY6gpl5w1GA8Hjj8t10OxdgnrDXjk0oqVi2nsTwjXEd9ObwiIiceAL3gN6KfkA72pDaCDIMantnwY21fW6ISELle7Fl2XQyaKq6BkgNUySsSZPDJ4RA2YgepIghBfylLHDVdMULnP/OxOtJZtWeX+/iD0=
+Received: from CH5P223CA0019.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::6)
+ by IA4PR12MB9788.namprd12.prod.outlook.com (2603:10b6:208:5d5::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
- 2026 03:20:21 +0000
-Received: from BL6PEPF00022574.namprd02.prod.outlook.com
- (2603:10b6:610:4e:cafe::46) by CH2PR02CA0023.outlook.office365.com
- (2603:10b6:610:4e::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Mon, 9
- Nov 2026 03:20:20 +0000
+ 2026 03:20:31 +0000
+Received: from BL6PEPF00022570.namprd02.prod.outlook.com
+ (2603:10b6:610:1f3:cafe::19) by CH5P223CA0019.outlook.office365.com
+ (2603:10b6:610:1f3::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Mon, 9
+ Nov 2026 03:20:31 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -80,22 +80,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00022574.mail.protection.outlook.com (10.167.249.42) with Microsoft
+ BL6PEPF00022570.mail.protection.outlook.com (10.167.249.38) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 03:20:20 +0000
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 03:20:31 +0000
 Received: from purico-9dcchost.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Sun, 8 Nov
- 2026 21:20:20 -0600
+ 2026 21:20:30 -0600
 From: Melody Wang <huibo.wang@amd.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 	<bonzini@redhat.com>
 CC: LKML <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Joerg Roedel
 	<joro@8bytes.org>, <x86@kernel.org>, Melody Wang <huibo.wang@amd.com>,
 	"Thomas Lendacky" <thomas.lendacky@amd.com>
-Subject: [RFC PATCH v5 7/8] KVM: SVM: Add support for the SEV-SNP #HV IPI NAE event
-Date: Mon, 9 Nov 2026 03:18:39 +0000
-Message-ID: <84d844c08a9f09a2ea1a44df7d36fe0b21324a69.1794171754.git.huibo.wang@amd.com>
+Subject: [RFC PATCH v5 8/8] KVM: SVM: Enable Restricted Injection for an SEV-SNP guest
+Date: Mon, 9 Nov 2026 03:18:40 +0000
+Message-ID: <bc0064a430e360c06643586724098275f5bec394.1794171754.git.huibo.wang@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1794171754.git.huibo.wang@amd.com>
 References: <cover.1794171754.git.huibo.wang@amd.com>
@@ -114,136 +114,127 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022574:EE_|CY3PR12MB9654:EE_
-X-MS-Office365-Filtering-Correlation-Id: b31b9e89-d539-4df9-3b57-08df3e1062ca
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022570:EE_|IA4PR12MB9788:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68bbd297-9b6d-4a06-ffd2-08df3e106946
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|82310400026|36860700016|11063799006|56012099006|261021121427099003|261022105027099003|261009223027099003|261026140227099003|261026121527099003|261102130727099003|261028144727099003|261102123227099003|10067099003|18002099003|22082099003|3023799007;
+	BCL:0;ARA:13230040|1800799024|376014|23010399003|36860700016|82310400026|11063799006|56012099006|261021123027099003|261021121427099003|261022075727099003|261009223027099003|261102123227099003|10067099003|22082099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	1iI8K+cJsQLFDu7pBp8Tz2vv+GHtnb9DDmTw2pe5Dd3aKupgIjb74hQEavgPAY0nL1gv1nHGdHycurKCLqExCZHZiyLKBZUEYmVZsJFB3MK9feyqWchZa7PWMJ+bZMvAhxZD+axI5JG8x2J3oC5lUaIZDvP1hIIMoLc4YKO0bTtkY97TT/mfePP1YM+O2KgpRR2fb9Uby9MC+Kli83GCMVdzVARflNETJ605UNc2kSCEVPKEbbaGZ20Sryvp5b7fV7g6DrCuzcMJOnymNi/9Uu+bQBj/ANfbndFTUQ/R3ywaGrUMmdZ3JLMU6uhQQXHTJrNbmUKC5qIp4bikhlZqmKX0PWYK1rJPy7pqx/V3O2OB5S6Gf4sAllnBz7gXtWlC8IUTWU4el+87u4yqHrp6JwlTSh2OYOfQNUdklD3uMHNG67p5z1S8LGuav6Jzp0AxCjns6NPXQxnk0wsJbGL2u1PvGqrG2WYZKvZf/gTxJjJWXc3F7oHGW0zu+rsPiqDG+l3ksPb4fSX2qD6luoKrMjza7AV07ewvROAZlRb7Set6+8CrtVaRsrxo7iuhQ8XMGHXqTUDGelkGVWDaUXK2M1PWYLXYFhih6raiTA2beYi4ODrwdcq+S9ofgKx/Ay+GzgE2Lc6+vbcQ/k8XCQvnUSfXP+tPBmHhbPoj9hBLKuwnWxsGnGjwPIYP3ic0Fz33luxhH9sft3rc9dqjK6ZvZg==
+	o/PAQFfQIvIuDdR3YyB58ALjAzNGLybLjQu6kylqHQT9vvqZ2AbnOLPW4lyIFT1Q/aAUTtRgoZjkNGzVwBn1cGwg3JpKKXRVKnZlD7+laCFhg0LzaCkBw52JHNnRVK++vlvXOQf6fAm149XjlafmJImHGRsl1/y+aBKDF9kSvFtCVDARgpafvRawxXJSGOdwuOhLyVVQPM2wuJNSh54ont5qE0DdXUWs2CbeqNBPvW6NiAAFGDK3O6tt+qG+SuUKbuNAAC4WjlJ7eZ9n79EXwoolalf5UhRfp3HtffBxZHfiqjAQ2Q9IYfysDfbEX7mzepw28epKgFWXRyjmTi7/r/dr+OGZ65qG/OrTSqVWHguSjTFaHKdkemNcgb+0+l8FaF7TSj7TIKR8FgXz5uC8uj4XPRxRHSqByuvgS41sn+oLg2UyUIaOH3ES0IY6odp25PY6PQuZmkadnfA7xgljuWHuU1QjSAYSfti3ZabjL6cQUeMK/cgAnxi3D5A71CaLO94nNiTH7WnP/oJryW8AMeeoRZbAWm1piQxPiKkqfK3B2j+eUqq3oVW8GuIG4y80BTI1eRA3TWOYutJRNRKqDIi11doQipDgc6cZrZwFkqmGEpcypRvDLd9J1xe0NqdvW/iem4VBxKY2Jizf+p/SLfI6qmWkxVfxzX7feuMkY2EDCczqHAGKMs2gmHyOJzAGclJzPuCci17BQAcPNAQhzA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(82310400026)(36860700016)(11063799006)(56012099006)(261021121427099003)(261022105027099003)(261009223027099003)(261026140227099003)(261026121527099003)(261102130727099003)(261028144727099003)(261102123227099003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(36860700016)(82310400026)(11063799006)(56012099006)(261021123027099003)(261021121427099003)(261022075727099003)(261009223027099003)(261102123227099003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	YNaxYB7K7NvtjgcNiyeAV2LBBLBUkJJo66XbvdkKIc2TELcuXl4EkGijXDiDXFbVx3ABes7k6pPrYVzymf8hJViiTKrhYfiZ+V4YkbLi6VqWvrUdudlA3tPGZlrobL6/XUeddNFtvrvcWllQ+CKquzOJ1PPdgRamCrtJyi2dYxBwgTXatY8Wl2I9/prOsmTkUmkkfJvRdG2/7mve6l6es0WhLhiQwqfwfHiDsu9PMhmnqqHPcb8SPWb9Asr+XSpr6idoKBQYWdPW6tnWl8YzRxjYgIF7i3JGz/c35ebPgco7UaxY0haLmCVU16tHntYZyyLfIZVtHAYv1CIeRYYWbhTKJKaRk6OUqyYjTUdMsG+o5obnzrzgEJiQaCGwVKQM64/1xqFRK4FJq7zNbB/xt8iouVwxPgfzPYImFjHt6CpjmcHNEdLbrGZ/OWoFDgh/
+	rcpjCZ76TayrAeQHX+9J1pO4WqNQQytCF7zs0b03bYSBnuJVHTjjsJ9DQ8/bUtKFwoJehgJOPByAzZteJ7Mlju5P9Saz1cdVEupvo2WFE7xYS2i3AlaDI1TdvGCeGcdkG+7scbrJ8IubxUmmueOEY2HTiPCTdq3jNcz5Nmfut3txIRuOpQj8C/Gfn2XCHdb8yytk9RD6hsKBQMmEbK7XQoIQ6lmo3CnD8ZO+w0K7cl4VipbdKjsGGZSmlrOYSvJRKf8iQuDViAXLBGJD4StAWiorHD8dNtOBEuyMq4FDvMvQOyND7WtVHCCGYkr3asAQcKMSi4ie7xFu2zSGhoTokIo8pli7Z3hPiwgJkF4JHkDyw2U18SqBiiArmdm59nE81CCUGwVu8Fa0Li/CecF6dzoN4QLwftB7W9/vu2INZhIYcIDo4xpRjpBm+2a2r0ob
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 03:20:20.7285
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 03:20:31.6112
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b31b9e89-d539-4df9-3b57-08df3e1062ca
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68bbd297-9b6d-4a06-ffd2-08df3e106946
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022574.namprd02.prod.outlook.com
+	BL6PEPF00022570.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9654
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9788
 
-The #HV IPI NAE event allows the guest to send an IPI to other vCPUs in
-the guest when Restricted Injection is enabled. Implement the NAE event
-as per GHCB specification.
+Enable Restricted Injection in an SEV-SNP guest by setting the
+corresponding bit in the VMSA SEV features field (SEV_FEATURES[3]) from
+QEMU.
+
+Add Restricted Injection to the supported hypervisor features.
 
 Co-developed-by: Thomas Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Thomas Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Melody Wang <huibo.wang@amd.com>
 ---
- arch/x86/include/uapi/asm/svm.h |  1 +
- arch/x86/kvm/lapic.c            | 12 ++++++++++++
- arch/x86/kvm/lapic.h            |  2 ++
- arch/x86/kvm/svm/sev.c          | 21 +++++++++++++++++++++
- 4 files changed, 36 insertions(+)
+ arch/x86/include/asm/cpufeatures.h |  1 +
+ arch/x86/include/asm/sev-common.h  |  1 +
+ arch/x86/kvm/svm/sev.c             | 21 ++++++++++++++++++++-
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
-index d84a13ac4627..1c0165e9db16 100644
---- a/arch/x86/include/uapi/asm/svm.h
-+++ b/arch/x86/include/uapi/asm/svm.h
-@@ -122,6 +122,7 @@
- #define SVM_VMGEXIT_HVDB_SET			1
- #define SVM_VMGEXIT_HVDB_QUERY			2
- #define SVM_VMGEXIT_HVDB_CLEAR			3
-+#define SVM_VMGEXIT_HV_IPI			0x80000015ull
- #define SVM_VMGEXIT_SNP_RUN_VMPL		0x80000018ull
- #define SVM_VMGEXIT_SAVIC			0x8000001aull
- #define SVM_VMGEXIT_SAVIC_REGISTER_GPA		0
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 037a4599d6f1..3a83bdd13b5a 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -3673,3 +3673,15 @@ void kvm_lapic_exit(void)
- 	static_key_deferred_flush(&apic_sw_disabled);
- 	WARN_ON(static_branch_unlikely(&apic_sw_disabled.key));
- }
-+
-+int kvm_xapic_x2apic_send_ipi(struct kvm_vcpu *vcpu, u64 data)
-+{
-+	struct kvm_lapic *apic = vcpu->arch.apic;
-+
-+	if (!kvm_lapic_enabled(vcpu))
-+		return 1;
-+
-+	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
-+	return 0;
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_xapic_x2apic_send_ipi);
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 8530a6333bdd..e5e6730bfcca 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -194,6 +194,8 @@ int kvm_hv_vapic_msr_read(struct kvm_vcpu *vcpu, u32 msr, u64 *data);
- int kvm_lapic_set_pv_eoi(struct kvm_vcpu *vcpu, u64 data, unsigned long len);
- void kvm_lapic_exit(void);
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index f70ee74b5f92..c491c355fabd 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -466,6 +466,7 @@
+ #define X86_FEATURE_SNP_SECURE_TSC	(19*32+ 8) /* SEV-SNP Secure TSC */
+ #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* Virtual TSC_AUX */
+ #define X86_FEATURE_SME_COHERENT	(19*32+10) /* hardware-enforced cache coherency */
++#define X86_FEATURE_RESTRICTED_INJECTION (19*32+12) /* Restricted Injection */
+ #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* "debug_swap" SEV-ES full debug state swap support */
+ #define X86_FEATURE_RMPREAD		(19*32+21) /* RMPREAD instruction */
+ #define X86_FEATURE_SEGMENTED_RMP	(19*32+23) /* Segmented RMP support */
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 01a6e4dbe423..ee17a3541b55 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -136,6 +136,7 @@ enum psc_op {
  
-+int kvm_xapic_x2apic_send_ipi(struct kvm_vcpu *vcpu, u64 data);
-+
- u64 kvm_x2apic_disable_read_intercept_reg_mask(struct kvm_vcpu *vcpu);
+ #define GHCB_HV_FT_SNP			BIT_ULL(0)
+ #define GHCB_HV_FT_SNP_AP_CREATION	BIT_ULL(1)
++#define GHCB_HV_FT_SNP_RINJ		(BIT_ULL(2) | GHCB_HV_FT_SNP_AP_CREATION)
+ #define GHCB_HV_FT_SNP_MULTI_VMPL	BIT_ULL(5)
  
- static inline void kvm_lapic_set_irr(int vec, struct kvm_lapic *apic)
+ /*
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 9aafa6167ae6..b7c2993f8c63 100644
+index b7c2993f8c63..a7b290d3fd42 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -4414,6 +4414,22 @@ static int sev_snp_hv_doorbell_page(struct vcpu_svm *svm)
- 	return 0;
+@@ -42,7 +42,9 @@
+ #define GHCB_VERSION_MAX	2ULL
+ #define GHCB_VERSION_MIN	1ULL
+ 
+-#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREATION)
++#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP |		\
++				 GHCB_HV_FT_SNP_AP_CREATION |	\
++				 GHCB_HV_FT_SNP_RINJ)
+ 
+ /*
+  * The GHCB spec essentially states that all non-zero error codes other than
+@@ -3261,6 +3263,9 @@ void __init sev_hardware_setup(void)
+ 
+ 	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
+ 		sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
++
++	if (sev_snp_enabled && cpu_feature_enabled(X86_FEATURE_RESTRICTED_INJECTION))
++		sev_supported_vmsa_features |= SVM_SEV_FEAT_RESTRICTED_INJECTION;
  }
  
-+static int sev_snp_hv_ipi(struct vcpu_svm *svm)
+ void sev_hardware_unsetup(void)
+@@ -4862,10 +4867,22 @@ void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm)
+ 		vcpu->arch.reserved_gpa_bits &= ~(1UL << (best->ebx & 0x3f));
+ }
+ 
++static void sev_snp_init_vmcb(struct vcpu_svm *svm)
 +{
-+	struct kvm_vcpu *vcpu = &svm->vcpu;
-+	u64 icr_info;
++	struct kvm_sev_info *sev = &to_kvm_svm(svm->vcpu.kvm)->sev_info;
 +
-+	if (!is_sev_snp_guest(vcpu))
-+		return -EINVAL;
-+
-+	icr_info = svm->vmcb->control.exit_info_1;
-+
-+	if (kvm_xapic_x2apic_send_ipi(vcpu, icr_info))
-+		return -EINVAL;
-+
-+	return 0;
++	/* V_NMI is not supported when Restricted Injection is enabled */
++	if (sev->vmsa_features & SVM_SEV_FEAT_RESTRICTED_INJECTION) {
++		svm->vmcb->control.int_ctl &= ~V_NMI_ENABLE_MASK;
++		svm->vmcb->control.int_ctl &= ~V_GIF_ENABLE_MASK;
++	}
 +}
 +
- static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+ static void sev_es_init_vmcb(struct vcpu_svm *svm, bool init_event)
  {
- 	struct vmcb_control_area *control = &svm->vmcb->control;
-@@ -4566,6 +4582,7 @@ static bool is_snp_only_vmgexit(u64 exit_code)
- 	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
- 	case SVM_VMGEXIT_PSC:
- 	case SVM_VMGEXIT_HVDB_PAGE:
-+	case SVM_VMGEXIT_HV_IPI:
- 		return true;
- 	default:
- 		return false;
-@@ -4754,6 +4771,10 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+ 	struct kvm_sev_info *sev = to_kvm_sev_info(svm->vcpu.kvm);
+ 	struct vmcb *vmcb = svm->vmcb01.ptr;
++	struct kvm_vcpu *vcpu = &svm->vcpu;
  
- 		return 1;
-+	case SVM_VMGEXIT_HV_IPI:
-+		if (sev_snp_hv_ipi(svm))
-+			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
-+		return 1;
- 	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
- 		/*
- 		 * Note, the _guest_ is reporting an unsupported #VC, i.e. this
+ 	svm->vmcb->control.misc_ctl |= SVM_MISC_ENABLE_SEV_ES;
+ 
+@@ -4932,6 +4949,8 @@ static void sev_es_init_vmcb(struct vcpu_svm *svm, bool init_event)
+ 		set_ghcb_msr(svm, GHCB_MSR_SEV_INFO((__u64)sev->ghcb_version,
+ 						    GHCB_VERSION_MIN,
+ 						    sev_enc_bit));
++	if (sev_snp_guest(vcpu->kvm))
++		sev_snp_init_vmcb(svm);
+ }
+ 
+ void sev_init_vmcb(struct vcpu_svm *svm, bool init_event)
 -- 
 2.43.0
 
