@@ -1,58 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.222
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794209819;
-	b=abb6MThxZIhfguXDtJAu4smfta+CM9FycdGRyCp5nCCS+h4TrhpHSUlRvi6Ewg3AqYlG
-	 TZKnkL787oUefzqPy0AGz5mDopPBPz8TR6CEiGMHCMzKXjFIqaCImPdS7pieARzJmZXag
-	 Sr22CqD85chLhH8Whoq7dmsIE3n5bv4EGa6f9qedn8SR2wFMehdSW0x6P9n2AJJ4Y/ycd
-	 UDYqhrpGmxpEQUhgj/1RIiNL8ppowAwjgToAhffBE3NwNEBuPcPd9/Xg6uunI2trOkYAE
-	 qJrLJt1HQDvrGTNRiIbDvmn8vPlZ2S21h0urKFRs65qL5Kavszp6rs8R1ChaVEpiCxg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794209819;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=G4nBFLLn9aTpi8EYPD+/txX6SYamUtAxL+qhanQmPFg=;
-	b=RUftODScp68DMtbEwQaCl/Zau7A6JW1VbX6C6rg3Uy4WSwd7eMtr9YoYejz25+rXDaIR
-	 E0Yk0ZsfL/idyy59bFYbJ4+lob5NNVhn5jxMsluTSgDJCTvP942xVSIsoEwY3+ch0joaa
-	 tu4NA8UYmcDIwqrdxVfgQe8qn4k8JWZtytb/F89hYqcqmkJtUYdW3vAswxTgY0FkvDXr0
-	 XuRuF9VM3UTMhXja62GTmA0JMigcfJoP2+dd9pEaPX0ZYoI7gDDnKogH7rBDQ097NUfbp
-	 Gc70JnnPvCj8gaV4hcrPFp9jRbN/svF9CKWEFDKGD/FTUygyF2/cCjm4NK1OB4eDXEQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b="rJx/DI7/";
-	arc=none smtp.remote-ip=113.46.200.222
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794210080;
+	b=TCUJc0YxNs+G4+D1H2mb8WZc7mSIcZfYrnEj43/DxZd00t73RMwqcivhGlGsCp/y95UM
+	 YfdckwTQ4RP5Zh1U8ggmjDETlxnRwRzQksoqr3sQUHQD5dEUaVWC6HMVNY+zIU4J+cWN+
+	 rSthPM3xlznrUOinQHRL5xBEgP664u7akPMuyQbAEFML0Q/JRwwkDHLqGCU6HcmjZwk7D
+	 WLrlZZK3UzEJuC5kgtvEX8KpKpFLUapLMWRAFRcsYfX0c2aEsO+VSmydXKLLssqgCY7YQ
+	 vH4BLraPgl1OxV0PeWkw3+5Axy+SN9wYlalgRGuahT84leucLWYRiIX/C9dCai6ZG5w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794210080;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
+	b=V+/yDYhlHhgPV8fqfIJtDN5T2ltp8UDZ9s6nxiKhbeWevSW+bMThsdyHLEvdAHXqz3WD
+	 vObZIz3OvBhoGjbf5anDIbGeH2qwvYwnk8aloU2tOpJ0hTFKrY85hSV6Q8a7yIx9N+DkT
+	 ZttA+UGA8NVgfrcr+m4V0Mn+s4b5xHrjzxqU7CXAetX2ylvB9afGYwBU0Q89AKknjhdgQ
+	 fxD0GLunf8FNPEG6zRAXkxWTNV3y2A7axTOPhhimX87uEtJaTxjufGyGWyz88QXIegLOB
+	 tWBd263qhbRqssCsWnSnQz5Lh7lLZgcJDTa3/k7hjTfuAayasTmD9Sf9/gHxE4D/m5w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=m4cYYQcL;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.45
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1637606A321
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 07:36:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1637606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11084606A321
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 07:41:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11084606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=rJx/DI7/
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=G4nBFLLn9aTpi8EYPD+/txX6SYamUtAxL+qhanQmPFg=;
-	b=rJx/DI7/7jyPGgtfe8sKV6MCg5NTjxXm9S7Sr7f2MZieYDFz9wMxTwMLI11Gznr74bJx2I6FI
-	dmK3xxAryxFhyKChIvhogErkMu1H8UATMKhnc3GdozgYlojG0mE9YadyoY43LRXAyarkjlGNUAI
-	ech2wm5r/nRUcYAv+YekKt8=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jNM6d38qSzLlSJ;
-	Mon,  9 Nov 2026 15:36:41 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5AE314055B;
-	Mon,  9 Nov 2026 15:36:55 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 9 Nov 2026 15:36:54 +0800
-Message-ID: <f50df691-b935-41c7-b2bd-91a5288bab75@huawei.com>
-Date: Mon, 9 Nov 2026 15:36:54 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=m4cYYQcL
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so2895e87.0
+        for <kvm@vger.kernel.org>; Sun, 08 Nov 2026 23:41:19 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794210078; cv=none;
+        d=google.com; s=arc-20260327;
+        b=m/iuL/5xVBwasQ4RiCyMx0BJl57796OrLbJQYpWb8j9aqSuVVNW0zu/SQOP4SlaZFM
+         ccmU/O5vpxxdwAFzkeaLGuU5drG4aR094SKXHoTeryofalGGS3L9WjNEaJGx9z9HcBIH
+         veTtzWM4wTazDyYsekT+mIF9Md/20a4c6AomYJT2228dhIpqNZ4ZktJJBrv6V26irWig
+         /jwkW3utBeK5G21mv5pUuDXvdTkZre8l3ocVaE7TUT21uwR0vIA3k9HH6uYAcQO1bvoi
+         sd5hiki8A6mKs6oLo9GzBz+FOUAkfCJxTkiO1X84D/urEQH2UokfuXCY9Cln7Mw7v/nI
+         9v+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
+        fh=Vv2aEUQS8bHabk7InrCjHwMVi2HjVRz+W5bgkr7wYAE=;
+        b=fM44mQT2pFKdm137/bDRq+Q4r1JWExBvBoGfuiSOs+wF+9mOAJC1+vtF4UbGqPpR2O
+         J/3jl+9yXD2Gd7K/0sxTQV3URwkhWjlOsb2kUi98kHm1Nrudr/zGjvCpUGTFqDspX3wM
+         xKNZTjpTUXPVoO402BA0cCCV3A2inedXfcSzWF/IiqyVChzIOBj9BhJInnzI6Vl1VXau
+         WVcYLuldNn4jOr7CdozoEnS5xRWWswt/i9COXPsdme83H8aVJEGB8Fb8KniCJYyVYKw7
+         uymPZrCg92CBB1X5d71qE1GYh58Lboya66SDgzRvLjEnVA1EdpArjjYqqUCa79ojYjM5
+         CQOA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794210078; x=1794814878; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
+        b=m4cYYQcLOjDJNyLJBbj2eiWNCZgHWEYIjNWb5gxgks/V7UnS0mFtgDe+y8VrBj6HHj
+         O+wdwjFOPj8yVBMIKhWFUPWAj7f0zaVxCl522Ku0Xo6BXm4mLVZLzwKfzoALGzis5Hea
+         E01GsqmmaiAIffPd9GvMnzslyzkSTuUQb0fySKAjPwrHP1QXC8A4DyQ4nk9/2Si32oUd
+         6NM92zzswF4yN9nmShRGmKNU1MVeUtumJsAf5ZnU8vYEhHdh+OIC8byiAcU7f2e/T+SH
+         7x+u7qq6p5RH7JKpPnhfa0Y8tOFeUhscGnk7dDZI4l0ZveS8tYFBn3ffvs3MoSb6rI2k
+         XRvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794210078; x=1794814878;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3/KauWaXYG3OmrhCNO3AADgebVTxE9yJqLBY2sG9Sb0=;
+        b=fOJsxj79ovWbfFUh2ALcjQ/JpMQDZyHb2Ua4KoVfiQ5+p0SSTrdvk8KLmbDgcVY3Gv
+         gMPJl4Lr7aLvtOuXGbdLI81rWyGitCx5n3Ifk6DNzGKE4tL9F+wAC8ok9tD6EiNd35Do
+         4vBdOG3M2e7yD77rv1un9g8UM66Q0Cp0wK7eEDPtr60g3yB+5OhsC0iEnu8pmGPpNhr9
+         hRNt54KtXQunmjZD2U0alkHOdAzXhfzxOWjDpiM1J0/ohbYHdEqG/fxLb/DAf6kUtvrQ
+         2Qnfro1c0iz9rq64K0QVNLK6md6qSmLVHGeo5rJHaJ3p0U2c40r/oxhWE8RAQWsspUP8
+         62FQ==
+X-Forwarded-Encrypted: i=1; AL+hErE5yBdgj344fEWUqySx2bx1KYwOP6bL1qdXAEl2ChN5LKVxdUuQy8tX9ZF9O6/Qvj8o66g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+zPwPclTpVbQOwmOXShQ7FvoGPUy9jY614U2nac0DRZ1ACl+oW
+	3GOBAyeMG0tviW6ExSKXVVKA7qZCWiMiB9EQaMCoe72evucbcuCXn5CcEqyx4h9k+UlvWvo+Suj
+	SbjgVQXeX099sqahZWE+FkG7NxUR0JGJjcT3ax8V+
+X-Gm-Gg: AYBFou0zIudOwxYol6oXvmBS5zLYWRaP15nuu/XbYvfYf21xL2QalnPEeEpzhdeoMpn
+	Ua6wKR6Tk2bkb3B/Y4yVqNSvmBMibdhyQBBH73Xu447IKIPWIYGeEmaMgrqAhhlQcw1kVxfka9F
+	BTclDhwExATEgccHPkalIukmmrbWpk4cWOj09A8AvyeVXzN67O9sZO46Vh6iwm6t8F4z+hfZSVN
+	Ewa8aDQN5pdYjNBk+7oKzCjYqTzRle3hPMNhePEG2uFqpdqiFL7hI4ES1N8UfuqzOmicW7g+bx5
+	HXXAHuTwyBdVRDIt/TwAGeYryfH2LW4/od2JDEu9m2ZDcAeZfhVI21ZxowWtCO+dInd+/l9HKcS
+	RcBOp5XjoG5+ekoRTa3iMi2X8o9c6eJbxmHn+RgOisi+KxAYk0IIWxDNITC17CDjf3o+t0rarxU
+	8m4N3RCjLaWRvooj57/kHKolO3qQ==
+X-Received: by 2002:ac2:4bcb:0:b0:5c1:53b5:2029 with SMTP id
+ 2adb3069b0e04-5c153b5217fmr3411e87.15.1794210077813; Sun, 08 Nov 2026
+ 23:41:17 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,150 +104,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/15] KVM: arm64: Handle HDBSS faults
-To: <sashiko-reviews@lists.linux.dev>
-CC: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>, liuyonglong
-	<liuyonglong@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-10-zhengtian10@huawei.com>
- <20260929105348.E3CB21F000FF@smtp.kernel.org>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <20260929105348.E3CB21F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+References: <20261102141304.126883-1-steven.price@arm.com> <20261102141304.126883-11-steven.price@arm.com>
+ <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com>
+In-Reply-To: <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Mon, 9 Nov 2026 07:40:41 +0000
+X-Gm-Features: AclHuK87iuKTvXEWJaczVerdWgxPEZxpPBN7O-wc8AIa5Wl9vz0b6-1H_UF4Qbg
+Message-ID: <CA+EHjTy970AWnhYoZ5OqxQ8ojCAELeejw60y2NmpDsM_ZMdu4Q@mail.gmail.com>
+Subject: Re: [PATCH 10/11] KVM: arm64: CCA: Support runtime faulting of memory
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
+Hi Suzuki, Steve,
 
+On Thu, 05 Nov 2026 17:30:16 +0000, Suzuki K Poulose
+<suzuki.poulose@arm.com> wrote:
+[...]
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+[...]
+> > @@ -1816,13 +1828,28 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+> >         /* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+> >         smp_rmb();
+> >
+> > +        if (kvm_vm_is_realm(kvm)) {
+> > +                is_realm_private = kvm_realm_is_private_address(&kvm->arch.realm,
+> > +                                                                s2fd->fault_ipa);
+> > +
+> > +                if (is_realm_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
+[...]
+> I am wondering there is a way to make it a bit more generic. The issue
+> is, only Realm has private memory with guest_memfd for now. Don't know
+> the pKVM plans for it.
 
-On 9/29/2026 6:53 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] arm64: KVM checks DABT-specific HDBSSF bit on Instruction Aborts
-> - [High] KVM: guest-reachable WARN_ON_ONCE assertions in HDBSS fault handler
-> --
-> 
-> commit 93c9cd523cd96ee876cb40ad4d3ecad32cc8aeff
-> Author: Eillon <yezhenyu2@huawei.com>
-> 
-> KVM: arm64: Handle HDBSS faults
-> 
-> This commit introduces handling for hardware stopped promoting writable-clean
-> descriptors, which raises a stage-2 Permission fault with ESR_EL2.ISS2.HDBSSF.
-> It dispatches these from kvm_handle_guest_abort() via a new helper to clear
-> the fault and report -EFAULT.
-> 
->> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
->> index be0d12555c848..893a8c4248bcc 100644
->> --- a/arch/arm64/kvm/dirty_bit.c
->> +++ b/arch/arm64/kvm/dirty_bit.c
-> [ ... ]
->> +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu)
->> +{
->> +	u64 prod;
->> +	u64 fsc;
->> +
->> +	if (WARN_ON_ONCE(!system_supports_hdbss()))
->> +		return -EFAULT;
->> +
->> +	if (WARN_ON_ONCE(!vcpu_hdbss_enabled(vcpu)))
->> +		return -EFAULT;
-> 
-> [Severity: High]
-> Are these WARN_ON_ONCE assertions safe to expose on a guest-reachable path?
-> 
-> If a guest manages to inadvertently route execution here (for instance, via
-> an Instruction Abort matching the HDBSSF bit in its ISS2 field), these
-> assertions can be triggered directly by the guest.
-> 
-> If the host has panic_on_warn enabled, this could lead to a host kernel
-> panic and a complete denial of service. Should these be standard error
-> returns without the warnings instead?
-> 
+The plan is for protected pKVM VMs to be backed by guest_memfd too,
+which would also hold each page's private/shared state [1]. So
+kvm_arch_has_private_mem() will be true for them, and this comparison
+applies as is. Only how the expected state is computed differs: for a
+pVM it comes from the per-page share state rather than an IPA bit.
 
-Invalid. The guest cannot route execution here. ESR_EL2 is synthesized
-by hardware on exception entry, so the guest cannot forge the exit ESR
-the host sees, and on hardware without HDBSS the ISS2 HDBSSF bit is RES0
-and never set. The dispatch only reaches this handler when hardware
-itself raised an HDBSS fault.
+Steve, could you gate the guest_memfd checks on
+kvm_arch_has_private_mem(kvm) rather than kvm_vm_is_realm(), this one
+and the memslot check you proposed for 02/11? Only the
+kvm_realm_is_private_address() and realm_map_ipa() calls are
+realm-specific, and they could be VM_REALM cases of a switch on
+vm_flavor, as Marc asked for on the v21 memslot check [2]. The macro
+would then only widen to protected VMs when pKVM's guest_memfd support
+lands.
 
-The guards check host invariants rather than guest input, a boot-time
-cpufeature and the VTCR_EL2.HDBSS bit that only the host toggles. If
-either fires it is a host bug, and that is what a WARN is for. With
-panic_on_warn the admin has chosen to treat any warning as fatal, and
-returning a plain error instead would only silence the bug.
+Cheers,
+/fuad
 
->> +
->> +	prod = read_sysreg_s(SYS_HDBSSPROD_EL2);
->> +	fsc = FIELD_GET(HDBSSPROD_EL2_FSC_MASK, prod);
->> +
->> +	if (fsc == HDBSSPROD_EL2_FSC_OK)
->> +		/* Buffer full: the exit path drained it before handle_exit. */
->> +		return 1;
->> +
->> +	if (fsc != HDBSSPROD_EL2_FSC_ExternalAbort &&
->> +	    fsc != HDBSSPROD_EL2_FSC_GPF)
->> +		WARN_ONCE(1,
-> 
-> [Severity: High]
-> Similarly, could this WARN_ONCE be triggered by a guest-driven event?
-> 
-
-No, for the same reason. The condition reads the FSC field of
-HDBSSPROD_EL2, which hardware fills, so an unexpected value can only
-come from the hardware or from a host integration bug, never from
-anything the guest did.
-
->> +			  "Unexpected HDBSS fault type, FSC: 0x%llx (prod=0x%llx, vcpu=%d)\n",
->> +			  fsc, prod, vcpu->vcpu_id);
->> +
->> +	/* Clear FSC so hardware dirty state updates can resume. */
->> +	write_sysreg_s(prod & ~HDBSSPROD_EL2_FSC_MASK, SYS_HDBSSPROD_EL2);
->> +	return -EFAULT;
->> +}
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index 85a98d2c23a99..7bf82d65041c8 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
-> [ ... ]
->> @@ -2315,6 +2316,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>   
->>   	is_iabt = kvm_vcpu_trap_is_iabt(vcpu);
->>   
->> +	if (esr_iss2_is_hdbssf(esr))
->> +		return kvm_handle_hdbss_fault(vcpu);
->> +
-> 
-> [Severity: High]
-> Does this inadvertently check the HDBSSF bit for Instruction Aborts?
-> 
-> The esr_iss2_is_hdbssf() helper in arch/arm64/include/asm/esr.h extracts
-> the ISS2 bit without verifying the Exception Class. Because the ISS layout
-> is per-EC, an Instruction Abort's ISS2 field might coincidentally have this
-> bit set for an entirely unrelated reason.
-> 
-> If that happens, a valid Instruction Abort would be misidentified as a
-> HDBSS fault, routing execution into kvm_handle_hdbss_fault() and causing
-> guest breakage. Should this check be gated by !is_iabt or a specific
-> Exception Class check?
-> 
-
-Invalid.
-
-The guest cannot route execution here. ESR_EL2 is synthesized by
-hardware on exception entry, so the guest cannot forge the exit ESR the
-host sees, and on hardware without HDBSS the ISS2 HDBSSF bit is RES0 and
-never set. The dispatch only reaches this handler when hardware itself
-raised an HDBSS fault.
-
-The guards check host invariants rather than guest input: a boot-time
-cpufeature and the VTCR_EL2.HDBSS bit that only the host toggles. If
-either fires it is a host bug, and that is what a WARN is for. With
-panic_on_warn the admin has chosen to treat any warning as fatal, and
-returning a plain error instead would only silence the bug.
-
-Thanks,
-Tian
-
-
+[1] https://lore.kernel.org/all/CA+EHjTz+WgXEW5RTxXf4oGeEb1Tsm5Ha4nOc4S1jBcp7jxP4+A@mail.gmail.com/
+[2] https://lore.kernel.org/all/86mrsw2jrn.wl-maz@kernel.org/
