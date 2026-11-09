@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794263494;
-	b=MtqJ+wpigorzZ2QbjqHX/+LwmPLH8bXy6QgTTCv7nlqU35V37G6A2GaRaKaI6/wDtmed
-	 rOgynnTKSgHq4B1ZxzPN0WubaY1LluUIFSwTEduOo7nZ2oNBrQI1ccLsywfXjPL1LBOtB
-	 zxoiuLqpxwWB0OIQxGK+tD4rmb64nr2DxW7u81i/e+CKKDSPkD7r35/bb3r3WievwAcv5
-	 DRTq3hlHYkFZHXiI9U+ufpV/vcpp2AiwTsZW4HQFq7ivTlYBIwGVR7SWkwmiq8zb8Q43s
-	 qEjUH7dvI89ZxDJ/VbDTzXfsrEZFVTaPg4B0W5Fco4XhDUUvPBhjDmxfDHp09UVBd6w==
+	t=1794263497;
+	b=vFxjiU5OyGnf/KgZ4EVRju+XbyZyF9gb9B5POb3br97kbTvJA7Ys7KHxYSmdMOp/EB1P
+	 GpkvYJA2htQSezxzWlAjftJhLq7svpabTMqZSEA40b3EjFaXlJUc4n+NCecWpvbqlmVvX
+	 VxBj10wMMvVqEYIJaePaO5SorCgd1NLiy9og9Pnypvnyt84RAiZlcVmxucGWFpV6MyZct
+	 EqNO+q9Ul4wohqejdaMZ+h/K7FiWHS1NaPLS8TTPlLHqntHdZmjyAPz6uOEuxZaW7ZwaL
+	 Uv4Hg0CAG4oHlDRRR7V4NH0a5uEO9rQrfMkRRU/Nq0E2Zapm2qaTR8EJOJb3k+L65Eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794263494;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794263497;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=btUbetnuXJs/xXAN/qzDAKN55zdtCIUFJdsrBrK8sZE=;
-	b=CoQLgpLxPLnd9SqveBghcFnrso9ZjRTlwOSCKLuzcpA/J/xcTGjn1NVBfO3f12/hwDB9
-	 9+N/BuzDvkjohlgU2aNKxAVBn552kmH2LhUzy1lEUELLam2IoCBWv2h3bEtpX0AiJhAuF
-	 1VfDcuU8krrNU4O6nUH2fRAa9qh4f6ibwcCE9iypIfz0WCLt+BGKJrI4ytQVSFAzDE2JO
-	 MXtvRKIyD5lFQXm+hY5IyPpUMhRxo6a+AbSgeA6w+YKOfoEtSdeo36Xa4CSyc7qMIoIzO
-	 J24v1vh84hww9Al0vhMgksBMrBP6Vq74okeA5nsgsxPKIvSRnc/v5GqJ9ezLehUCOAA==
+	bh=qffBcw2XnFNxd/1mYXvqBIjMdDc+fw6jbgfRGioxHxs=;
+	b=fbmtSH0gqYmithlCWl9Kglpf0xvnZaFHIAq2gmK9rYn9SdUOp04PmI4LhxmvFa0SDLAG
+	 Cf+VQjYEwfDhqkcjcDIl1cj6IZzZRBEN/vpT1BFn2kfmAiH2+gD6WX8/5TZWZ8R/DKVI9
+	 gSQ+64nJXPvijRAruKbTcKip+F12wPgrUTPlrNP1rr4QhgqG3ED0SQO3SGCaY41aidiVB
+	 OWDq2P98cEubqbc33HF3Bm9+mX/BYOqiTvoxw/kEBhhpmsUWI2OvDVFRiQSq3Do/l0kRP
+	 vcsB4ysl6npWCW3+Y4q8NT2uI5KJFSHb60QVDSI1CMsLf49WYAVXt2z8L2iB/Y61j1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linaro.org;
 	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VK4H1u7P;
-	arc=none smtp.remote-ip=209.85.210.180
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=CkHRtPcW;
+	arc=none smtp.remote-ip=209.85.215.172
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C451606A31C
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 22:31:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C451606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5AA606A31C
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 22:31:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F5AA606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VK4H1u7P
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b67f25e6e1so629306b3a.0
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 14:31:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=CkHRtPcW
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ccca948203aso666721a12.3
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 14:31:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1794263494; x=1794868294; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1794263497; x=1794868297; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=btUbetnuXJs/xXAN/qzDAKN55zdtCIUFJdsrBrK8sZE=;
-        b=VK4H1u7PiE/2vI3XhxzKuX5tozi8wYRlkf7imF2xpRMamqTemihftmuuqluS0+HFMY
-         zTIE8hI07sJm/QRfLQcEpPPeHP712ZenP6OjkVKMCVUTXiHgyBstwpBiT/6GE9y+spbw
-         I0N+eyIBMxC6eugolKMNK+AKC6IWdWiXjcWM2LnRowiNnAENEZgeRHB51SyJmxI+Zgs3
-         xUzTyOwAIjf/qBRSI9yv+3QrrkqURbz9LDMGXSsiZMU9g9rWlH2x80WZ7MnshGM1WaET
-         FQji/isKeA73G7RstKaLHKR3Qpzkwz5zArDI50sLhhfxwEymnM75qVhypx5APM7cyqq0
-         Ncxg==
+        bh=qffBcw2XnFNxd/1mYXvqBIjMdDc+fw6jbgfRGioxHxs=;
+        b=CkHRtPcW8+t9/qisddL7cr8QDf3yqmdyyZeV65OwgKD9v7pv1W421EC/3hX9cXR5tS
+         syGdEwApXQ+ZaTEaRkw68BlTdGJO8YVW0+EyKK+sxA0nututJSHCCPnygQor3a+GWIkO
+         zF1DHLQ3llbNj7yx78aVDgjIPecjck/i3TCZXH81+TzJmeM9xTbqksydao8pjRdc49Fe
+         scRBDsalnuRb0MMzHSVjAdSL7gyldLVXfp6VJrjRyMrWN4CxIIbYt9EsEhszYz+HDxqs
+         78BvTrnlLAwgE8B3wj4ghK8/HUtnvBXjqNWG8uV3xdhvm/Q7+OBwXd71zV8iY3/JCBYR
+         uzng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794263494; x=1794868294;
+        d=1e100.net; s=20260707; t=1794263497; x=1794868297;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=btUbetnuXJs/xXAN/qzDAKN55zdtCIUFJdsrBrK8sZE=;
-        b=d8ASwQnhRwwHQ1GC4wCrqDbTeGKbkW1W0pAycbtltpPFkD+b4oc6WjjUgFG0CB2iir
-         5CnQ1xE3NDOOr4h+ZD37EcUZO0bffZzqWpM0yHmUFr1DYBHYg9qh3+PsA19IOBo6k3cZ
-         kjQMj9Mvh6AHP6lsXi/igrvQneVz9zeatXAay0kV2thE7p0daZcorNlzPOYrV5SKxzh6
-         bY0LXHSiHAOhlXAfsCqhR/5Ou9UAMaTD7R+tmz7uSTJ1r4Ti1XOES7e7p8XaQeTQ2OlU
-         ltADTNscpKg104jNi6drgGX420VCDSXz6iGQUfsJMaM91kUsZ8N3W7DKOOzZtHEgpLm1
-         cmQw==
-X-Forwarded-Encrypted: i=1; AL+hErEnbcftAFbORXvbmu14sGMSuZEcN3ahPCpcD6n6Yjt43fTnTA+Qn1TnjxYGsjv7dVXNL9M=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/uMfV/EHxgD9HGaQauh45R5nEmi7L7AlbpS4wKk/VXjjkPLgGr
-	t4lsEhlmnH7bijuIIgcJ3sJzmF03YM7VX9OEMWdY9xPOqo0ooHueI1FhyImMQJArykk=
-X-Gm-Gg: AYBFou1ZwsckUZbaRvqJGK97+px6HMtO5mbTe3bw1wd8wk0aN3TMk0hQuga2m75Rn9q
-	ta8ofowINYy5hx6qw/snSooY/l+MBBypbvo0BH0gjzeeea6p5/q7yU2xixz+dCfF88Q6JlSNCcQ
-	OhATLHTkYOmIJSc0egoIIDlRCN9Z9fYI6I8xMtrihggG7m+HC7vLR0om2R/zNFCn8UJwg3xXxNP
-	SYidyFXC6aPXvXu9EBEs4UdY/D0HWLo9OisCszrqNRxz/nrPrLALV3BjN11+cyzA8jaWzJwX5cv
-	yb2K5Nj66joNq08A7462rf2N0KSG5d/ZFuvNzjg+3lUFt7GiYz/gvnsom9Z+pZVkDGM3o9Z9PwJ
-	G8wC1hxfiTSROXCfYtfjphk2AlxRxiFkfr1oT2EpcHVDL0VL2uElgLRuysBB/Dr2BZBvF+rFRcD
-	SPOC4ubUEq07hqnGBPHorm0AhvLYDO5H4MvQVzeK5+Z0HW89FZ+GjDgt2wEg7TYWzV2MyF3qMdx
-	qj9NUPiMoDSbFibmE7vaNc1eVt/wHEOOpGiamy8WPnf8yj2GNOKWQBBbHC5/3FvVGjINeiTK2Fn
-	xIdbMubGCLPXHZaOTi6eSva8ey4ThFTc6/wDs2NmlpOau2ta6/7EyWI=
-X-Received: by 2002:a05:6a00:1885:b0:89e:9c7e:fd56 with SMTP id d2e1a72fcca58-8ba86d850cbmr871469b3a.33.1794263493533;
-        Mon, 09 Nov 2026 14:31:33 -0800 (PST)
+        bh=qffBcw2XnFNxd/1mYXvqBIjMdDc+fw6jbgfRGioxHxs=;
+        b=GIKmsIm2Wt06GjQ59ZwnXeaP3K8u22iQ9+nHAUpsHjpXrR+ighcOUTGmtGiknivN06
+         YQ021C/R0ORaFUW+Nw5maKWmgacQbRFArVFnMi7eiQXRb0ll/lzY4AV+4LdmRa0aXjoY
+         T0sJ1qf/8HyptVFwdiwB+Atz/Y9SRiz0FZnvWVYka4+ZbToeVzXeA1ThjIPR2INdAq09
+         NpztsvfbQQsCDn6ST9w1Pt0aeU9SEkwAuPgyU9kMIuxDpbuSY4v3u+Yh7z1vAgpBXHpl
+         9JqoDP6x+YpwyJs2RB7JMXtYdJbyWu4Huxx1H0Y/XiGfDtf3GUkUfzrz/UBWidlIgxBU
+         Cxhg==
+X-Forwarded-Encrypted: i=1; AL+hErE+exNPhcSzLm17pQyxfOZkP7BjBzsDQ63W5IQGskVAaFgmEx5rjZHlghAWE45ECDpw3jA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+nmdnlmJdQZfcREZqIUwYogJ/FVtPojzbpx//Vj4hVy+ddcsYA
+	fDKr5oj4Vhz40oP/OHcPNUJe9ajmEJcJ7022ekZjyppj9NOSTGX/s+wtbxu28X7lgLg=
+X-Gm-Gg: AYBFou02eyYQVM4GMSja7GhzXwH1RusqHNWnU1wz25jzTcksYptMb+gffc0lQUHwzaz
+	iS4jj7MqeKbOauI3NSQNtIf4BZk9qcLllpQAi30v+NQ1dvZ/fPOVuTCY9fJ9lZjL79os6blpxJG
+	q8DKNgpsy1VAV4tKzbRPP7WafsQ3TYe8jQM6FaeeZvf4zO33FzeGb+y/w1DVT1WedEL0vna7SFW
+	oC3TReGkiqhJxC+8zmYbli26DKCV9O+fsXcAa8xfIWdtkoAKXeHynjQwYcatJXvOF0L2mrDy87X
+	BiGMLFqXKlFnxeomepm5FAHnA8ivja2gS4E9JI7SOpbPR/qoxvVH1pNsdurw6fDS8NEuM9SU6j4
+	d6a542c4I7a/NUaOz2oqCmyY6vcdTlJFHj5P0Gz4EzxFrrxJXUr60AROwrmxJDdeL1nWlv9y+p8
+	figJHFq1xy2X42CMVA/+P+jvvKwbdqpz3U6ZVl9I9J4qDmKXNSNqgh/pZWVnDQAkI8pbpusvKpN
+	gPNBnD2GzdjD6JdDZFTfvaNAMdJYLTZWnEbCdDfzJ/lBHsgVR0XCV8aiywPNmU6eQLmK4xbqgzT
+	3EZ8jvrVZdCydjJ7FdarKvlJ1bobQ7vTCXlhoxONC8cOK2GoXMfq6w==
+X-Received: by 2002:a05:6a21:320b:b0:3e0:c346:734c with SMTP id adf61e73a8af0-3f190e9a4admr544580637.89.1794263496430;
+        Mon, 09 Nov 2026 14:31:36 -0800 (PST)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:54d7:1b5:4356:16fb])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm165830b3a.0.2026.11.09.14.31.32
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm165830b3a.0.2026.11.09.14.31.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 14:31:33 -0800 (PST)
+        Mon, 09 Nov 2026 14:31:35 -0800 (PST)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -95,9 +95,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v6 10/23] target/arm/kvm-rme: Populate Realm with runtime images
-Date: Mon,  9 Nov 2026 16:30:57 -0600
-Message-ID: <20261109223110.1619504-11-mathieu.poirier@linaro.org>
+Subject: [PATCH v6 12/23] target/arm/cpu: Set number of PMU counters in KVM
+Date: Mon,  9 Nov 2026 16:30:59 -0600
+Message-ID: <20261109223110.1619504-13-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261109223110.1619504-1-mathieu.poirier@linaro.org>
 References: <20261109223110.1619504-1-mathieu.poirier@linaro.org>
@@ -112,222 +112,162 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Once the Realm descriptor has been created, tell KVM to transfer runtime
-images (kernel, DT, and rootfs) from guest memory to Realm memory.
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-This patch was originally authored by Jean-Philippe Brucker
-<jean-philippe@linaro.org> and updated to account for guest-memfd
-convert-in-place by Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>.
-It was later completely refactored by the current author.
+Add a "num-pmu-counters" CPU parameter to configure the number of
+counters that KVM presents to the guest. This is needed for Realm VMs,
+whose parameters include the number of PMU counters and influence the
+Realm Initial Measurement.
 
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- target/arm/kvm-rme.c | 166 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 166 insertions(+)
+ target/arm/arm-qmp-cmds.c |  2 +-
+ target/arm/cpu.h          |  3 +++
+ target/arm/cpu64.c        | 41 +++++++++++++++++++++++++++++++++++++++
+ target/arm/kvm.c          | 34 ++++++++++++++++++++++++++++++++
+ 4 files changed, 79 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-index ca90bf5af890..0996cddf0849 100644
---- a/target/arm/kvm-rme.c
-+++ b/target/arm/kvm-rme.c
-@@ -15,6 +15,7 @@
- #include "migration/blocker.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-+#include "qemu/memalign.h"
- #include "qom/object_interfaces.h"
- #include "system/confidential-guest-support.h"
- #include "system/kvm.h"
-@@ -29,18 +30,182 @@ struct RmeGuest {
-     GSList *ram_regions;
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index 1c2f31db0d30..635ac2168b58 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -77,7 +77,7 @@ static const char *cpu_model_advertised_features[] = {
+     "sve1408", "sve1536", "sve1664", "sve1792", "sve1920", "sve2048",
+     "kvm-no-adjvtime", "kvm-steal-time",
+     "pauth", "pauth-impdef", "pauth-qarma3", "pauth-qarma5",
+-    "num-breakpoints", "num-watchpoints",
++    "num-breakpoints", "num-watchpoints", "num-pmu-counters",
+     NULL
  };
  
-+typedef struct RmeAlignedSlab {
-+    hwaddr aligned_start, aligned_end;
-+    hwaddr end;
-+    GList *region_list;
-+} RmeAlignedSlab;
-+
- OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-                                           CONFIDENTIAL_GUEST_SUPPORT,
-                                           { TYPE_USER_CREATABLE }, { })
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index dfabcfc5eda1..f36a9678a8cb 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1207,6 +1207,7 @@ struct ArchCPU {
+     /* Override the default configuration, only for RME vCPUs */
+     uint8_t num_bps;
+     uint8_t num_wps;
++    int8_t num_pmu_ctrs;
+ };
  
- static RmeGuest *rme_guest;
+ typedef struct ARMCPUInfo {
+@@ -2166,6 +2167,8 @@ FIELD(MFAR, FPA, 12, 40)
+ FIELD(MFAR, NSE, 62, 1)
+ FIELD(MFAR, NS, 63, 1)
  
-+static void rme_populate_slab(gpointer data, gpointer err)
-+{
-+    RmeAlignedSlab *slab = data;
-+    hwaddr aligned_start = slab->aligned_start;
-+    hwaddr aligned_end = slab->aligned_end;
-+    unsigned long page_size = qemu_real_host_page_size();
-+    size_t aligned_size = aligned_end - aligned_start;
-+    struct kvm_arm_rmi_populate populate_args;
-+    GList *list = slab->region_list;
-+    Error **errp = err;
-+    void *buffer;
-+    int ret;
++FIELD(PMCR, N, 11, 5)
 +
-+    if (*errp) {
-+        goto out;
-+    }
-+
-+    ret = kvm_set_memory_attributes_private(aligned_start, aligned_size);
-+    if (ret) {
-+        error_setg_errno(errp, -ret, "RME: failed to configure initial"
-+                         "private guest memory");
-+        goto out;
-+    }
-+
-+    /* Allocate page-aligned memory */
-+    buffer = qemu_memalign(page_size, aligned_size);
-+    if (!buffer) {
-+        goto out;
-+    }
-+
-+    memset(buffer, 0, aligned_size);
-+
-+    for (GList *elem = g_list_first(list); elem; elem = g_list_next(elem)) {
-+        RomLoaderNotifyData *region = elem->data;
-+        hwaddr offset = region->addr - aligned_start;
-+        memcpy(buffer + offset, region->data, region->len);
-+    }
-+
-+    populate_args = (struct kvm_arm_rmi_populate) {
-+        .base = aligned_start,
-+        .size = aligned_size,
-+        .source_uaddr = (uintptr_t)buffer,
-+        .flags = KVM_ARM_RMI_POPULATE_FLAGS_MEASURE,
-+    };
-+
-+    while (populate_args.size > 0) {
-+        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
-+        if (ret) {
-+            error_setg_errno(errp, -ret,
-+                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
-+                aligned_start, aligned_end);
-+            break;
-+        }
-+    }
-+
-+    qemu_vfree(buffer);
-+out:
-+    g_list_free_full(g_steal_pointer(&slab->region_list), g_free);
-+}
-+
-+static RmeAlignedSlab *
-+rme_init_aligned_slab(RomLoaderNotifyData *region)
-+{
-+    RmeAlignedSlab *slab = g_malloc0(sizeof(RmeAlignedSlab));
-+    unsigned long page_size = qemu_real_host_page_size();
-+    hwaddr base = region->addr;
-+    hwaddr size = region->len;
-+
-+    slab->aligned_start = QEMU_ALIGN_DOWN(base, page_size);
-+    slab->aligned_end = QEMU_ALIGN_UP(base + size, page_size);
-+    slab->end = base + size;
-+
-+    slab->region_list = g_list_append(slab->region_list, region);
-+
-+    return slab;
-+}
-+
-+static void rme_insert_in_aligned_slab(RmeAlignedSlab *slab,
-+                                       RomLoaderNotifyData *region)
-+{
-+    slab->end = region->addr + region->len;
-+    slab->region_list = g_list_append(slab->region_list, region);
-+}
-+
-+static GList *rme_swizzle_memory_regions(void)
-+{
-+    GSList *tmp, *node = g_steal_pointer(&rme_guest->ram_regions);
-+    GList *slab_list = NULL;
-+    RomLoaderNotifyData *region;
-+    RmeAlignedSlab *slab;
-+
-+    /* Memory regions, i.e @node, appear in ascending order */
-+    while (node) {
-+        region = (RomLoaderNotifyData *)node->data;
-+        tmp = node;
-+        node = g_slist_remove_link(node, tmp);
-+        g_slist_free(tmp);
-+
-+        /*
-+         * The slab list is empty, so simply create a slab based on the first
-+         * entry we got from @rme_guest->ram_regions.  Since ->ram_regions are
-+         * sorted, we are guaranteed to start with the lowest region.
-+         */
-+        if (!slab_list) {
-+            slab = rme_init_aligned_slab(region);
-+            slab_list = g_list_append(slab_list, slab);
-+            continue;
-+        }
-+
-+        /*
-+         * Slabs and ->ram_regions are sorted, so we know the last slab in the
-+         * list is always the current one.
-+         */
-+        slab = g_list_last(slab_list)->data;
-+
-+        /*
-+         * TODO: Add support for memory region that straddle two pages if we
-+         * think it is important.  Doing so may lead to large memory areas that
-+         * may not be accommodated easily by qemu_memalign() in
-+         * rme_populate_slab().
-+         */
-+        if (region->addr < slab->aligned_end &&
-+            region->addr + region->len > slab->aligned_end) {
-+            error_report("Memory region [0x%"HWADDR_PRIx", 0x%lx]"
-+                         "straddles two pages",
-+                         region->addr, region->len);
-+            g_free(region);
-+            continue;
-+        }
-+
-+        /* Add the memory region in the current slab if it fits */
-+        if (region->addr >= slab->end &&
-+            region->addr + region->len <= slab->aligned_end) {
-+            rme_insert_in_aligned_slab(slab, region);
-+            continue;
-+        }
-+
-+        /*
-+         * Allocate a new page aligned slab if the region can't be fitted
-+         * in the current slab.
-+         */
-+        slab = rme_init_aligned_slab(region);
-+        slab_list = g_list_append(slab_list, slab);
-+    }
-+
-+    return slab_list;
-+}
-+
- static void rme_vm_state_change(void *opaque, bool running, RunState state)
- {
-+    Error *errp = NULL;
-+    GList *slab_list;
-+
-     if (!running) {
-         return;
-     }
+ /* If adding a feature bit which corresponds to a Linux ELF
+  * HWCAP bit, remember to update the feature-bit-to-hwcap
+  * mapping in linux-user/elfload.c:get_elf_hwcap().
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index a34de3d2947c..42383cb22431 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -764,12 +764,53 @@ static void arm_cpu_set_num_bps(Object *obj, Visitor *v, const char *name,
+     cpu->num_bps = val;
+ }
  
-+    slab_list = rme_swizzle_memory_regions();
-+    g_list_foreach(slab_list, rme_populate_slab, &errp);
-+    g_list_free_full(slab_list, g_free);
-+    if (errp) {
++static void arm_cpu_get_num_pmu_ctrs(Object *obj, Visitor *v, const char *name,
++                                     void *opaque, Error **errp)
++{
++    uint8_t val;
++    ARMCPU *cpu = ARM_CPU(obj);
++
++    if (cpu->num_pmu_ctrs == -1) {
++        val = FIELD_EX64(cpu->isar.reset_pmcr_el0, PMCR, N);
++    } else {
++        val = cpu->num_pmu_ctrs;
++    }
++
++    visit_type_uint8(v, name, &val, errp);
++}
++
++static void arm_cpu_set_num_pmu_ctrs(Object *obj, Visitor *v, const char *name,
++                                     void *opaque, Error **errp)
++{
++    uint8_t val;
++    ARMCPU *cpu = ARM_CPU(obj);
++    uint8_t max_ctrs = FIELD_EX64(cpu->isar.reset_pmcr_el0, PMCR, N);
++
++    if (!visit_type_uint8(v, name, &val, errp)) {
 +        return;
 +    }
 +
-     kvm_mark_guest_state_protected();
++    if (val > max_ctrs) {
++        error_setg(errp, "invalid number of PMU counters");
++        return;
++    }
++
++    cpu->num_pmu_ctrs = val;
++}
++
+ static void aarch64_add_kvm_writable_properties(Object *obj)
+ {
++    ARMCPU *cpu = ARM_CPU(obj);
++
+     object_property_add(obj, "num-breakpoints", "uint8", &uint8_type_info,
+                         arm_cpu_get_num_bps, arm_cpu_set_num_bps, NULL, NULL);
+     object_property_add(obj, "num-watchpoints", "uint8", &uint8_type_info,
+                         arm_cpu_get_num_wps, arm_cpu_set_num_wps, NULL, NULL);
++
++    cpu->num_pmu_ctrs = -1;
++    object_property_add(obj, "num-pmu-counters", "uint8", &uint8_type_info,
++                        arm_cpu_get_num_pmu_ctrs, arm_cpu_set_num_pmu_ctrs,
++                        NULL, NULL);
+ }
+ #endif /* CONFIG_KVM */
+ 
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index c8a821d7fab6..572d0e294b1c 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -1025,9 +1025,43 @@ static void kvm_arm_configure_aa64dfr0(ARMCPU *cpu)
+     }
  }
  
-@@ -55,6 +220,7 @@ static gint rme_compare_ram_regions(gconstpointer a, gconstpointer b)
- 
- static void rme_rom_load_notify(Notifier *notifier, void *data)
++#define KVM_REG_ARM_PMCR_EL0            ARM64_SYS_REG(3, 3, 9, 12, 0)
++
++static void kvm_arm_configure_pmcr(ARMCPU *cpu)
++{
++    int ret;
++    uint64_t val, newval;
++    CPUState *cs = CPU(cpu);
++
++    if (cpu->num_pmu_ctrs == -1) {
++        return;
++    }
++
++    newval = FIELD_DP64(cpu->isar.reset_pmcr_el0, PMCR, N, cpu->num_pmu_ctrs);
++    ret = kvm_set_one_reg(cs, KVM_REG_ARM_PMCR_EL0, &newval);
++    if (ret) {
++        error_report("Failed to set KVM_REG_ARM_PMCR_EL0");
++        return;
++    }
++
++    /*
++     * Check if the write succeeded, since older versions of KVM ignore it.
++     */
++    ret = kvm_get_one_reg(cs, KVM_REG_ARM_PMCR_EL0, &val);
++    if (ret) {
++        error_report("Failed to get KVM_REG_ARM_PMCR_EL0");
++        return;
++    }
++
++    if (val != newval) {
++        error_report("Failed to update KVM_REG_ARM_PMCR_EL0");
++    }
++}
++
+ static void kvm_arm_configure_vcpu_regs(ARMCPU *cpu)
  {
-+    /* Each memory region is free'ed in rme_populate_slab() */
-     RomLoaderNotifyData *region = g_memdup2(data,
-                                             sizeof(struct RomLoaderNotifyData));
+     kvm_arm_configure_aa64dfr0(cpu);
++    kvm_arm_configure_pmcr(cpu);
+ }
  
+ /**
 -- 
 2.53.0
 
