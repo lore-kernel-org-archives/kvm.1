@@ -1,60 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.99.196.166
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794210623;
-	b=paWHMHFJWE5/EkyluiTYE2Ag9mCK3ollAtfpYukh0mQZbWTQtlt7r2UvtVn/PXpBXcre
-	 2oneBW1wZh+dHWWIgSZKIeR2b5WkGhkjoy2P53TmUROlrvkQK6V0Kfpqv61eyb2UAB7yK
-	 8ZYmfAwTxizh/V2o3AAdfpfQOG7THbdCdCzUa8FehtavdEuJUIrsjRJCqDkJEAGo2HU8e
-	 9/V284Lfj/jc3RnUlignBk/4uM51Pg5zx9hqwwVWYWWc0uKGflYsFbkvkvveiLRlUOK08
-	 UTweZpgWYzmTjZ+NKk2cc7AVz6ndRrbQrV6I52Kv5La53gEUr+/l3OVZGccbjBdgNLA==
+	t=1794210797;
+	b=yqnLwOGPn29q3xL+LVyU6PX44yp+S/olIcSZ44sy88noHPanLvsEewkP1b5IHc7oMUXs
+	 hkZhQy5wSdhml0frE6cHhAkOgntBU+h5YssrjZG4sZpPc46lgvySq6SN+vWO9vjkHu/oT
+	 u5++3JZMME/RiZ/df0UXC8c7zqaQN16Ly0I8RiEuor581G+6D3Z8PSFZlE1JIB/kmSFWM
+	 6Pq2T6QHAd+EDt8x2Oz9kvfAQ8YRvLobFPvBSDF7p2MWPo22alNLKLnsJxeduNAvCk9tU
+	 OR8Ut57gFbv0VxZEBHHi/9IIYrst5OOswIVYO51rmlw4lfzSu9x2VMu92ihFkFStLjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794210623;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Date:From:To:cc:
-	 Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
-	bh=FfVfXKB4UwJOvTzIpoGIW/5MDy7wdA8hCv+2HC7E7rM=;
-	b=aV/deBSqsMvT9WsLXOFV7vkD98BzVbTqqHul9DHOgpP7CoczV11b88n+09HPDudL/IlO
-	 PveHV+w33kNvjAEdVv9DjSVZImOdM+G/ljwmYPlQRbj34VH7qxlKYp7nqtEe3s3ukFW9U
-	 BkyuBEXxs2/315hyX32l7eHM002TP4JrRtQm4M4Viubq4xI8lE2unschREgwvkDHCjIKT
-	 dMc3QlGuF66hVcGgbUCpT/DRAjRNo3x2263QNZ2nMh0vZ0tttqd1XqDWFYBK0wsdHnWRw
-	 U8VdgCf/s6cVSWrexO2qgMfPZ+xOWy97kvdXBFPA4x/+q8zPSoEnEeoSgnChcyBgcTQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794210797;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=ekIw17i4+Cy0WA0lfjGw3LVAomYDJS2Tj+aYGoSnnao=;
+	b=gy1qEoB1baQ2fEKxeVTiFduqdd1FoEoZ4x/qQxlyMm9LqTQ4nJ3G94Jo6fQkB92atR0c
+	 8FslxQ8XpM1ptFjSRXqV29Zggit1YOBlfVqrXZoqmDkq74Q4+tU+GvBTG7hkjCQ6z0ANW
+	 mDmfL+hTSMXyZPzDYr7CJym+YRambzqjVrfd/J01Rz4g083egi02kVyVpUHjrF/rn8a0D
+	 QhXlUBpR0GPTfL/tRTUQZk2N6Cn6C9sxQZrGLlJbO30uksupYeXhp8YZ1eVwUIYP0GxFR
+	 Fw/EzAfqeaxG4gc8tFjz9b1ZVOxxMBtO4Qdyy2stZN2ywL39ezYfRVHDYEAOt6ca1qg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=namei.org;
-	spf=pass smtp.mailfrom=namei.org;
-	dkim=pass header.d=namei.org header.i=@namei.org header.a=rsa-sha256 header.s=2 header.b=llOAJIgb;
-	arc=none smtp.remote-ip=65.99.196.166
-Received: from mail.namei.org (namei.org [65.99.196.166])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=faCEPrtp;
+	arc=none smtp.remote-ip=198.175.65.16
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B31606A321;
-	Mon,  9 Nov 2026 07:50:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1B31606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=namei.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=namei.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C76C606A321;
+	Mon,  9 Nov 2026 07:53:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C76C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=namei.org header.i=@namei.org header.a=rsa-sha256 header.s=2 header.b=llOAJIgb
-Received: from localhost (localhost [127.0.0.1])
-	by mail.namei.org (Postfix) with ESMTPS id 44C982FD;
-	Mon,  9 Nov 2026 07:50:16 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.namei.org 44C982FD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=namei.org; s=2;
-	t=1794210616; bh=FfVfXKB4UwJOvTzIpoGIW/5MDy7wdA8hCv+2HC7E7rM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=llOAJIgbI3V5UyyycoFhCmxQwROPVnsbKhAaikUS7I/FEelUeLEtTUriwPopJdlWO
-	 bxO/T9JQ8KcBuXGr9I34nfDaWkQ5DRmMpwn2Sdsgv9Rj/eL/UVmFwavcoRqf1WYtqe
-	 /eyrqPFCRJD3pL1Owdm8AZ21dBX3PYMCKXjpmAjo=
-Date: Sun, 8 Nov 2026 23:50:16 -0800 (PST)
-From: James Morris <jmorris@namei.org>
-To: Yangyu Chen <cyy@cyyself.name>
-cc: anup@brainfault.org, atish.patra@linux.dev, pjw@kernel.org, 
-    palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-    kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-    linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-    stable@vger.kernel.org, Jason Montleon <jmontleo@redhat.com>
-Subject: Re: [PATCH] RISC-V: KVM: Fix G-stage page table memory leak on VM
- destroy
-In-Reply-To: <tencent_C8B170AF63DC42F81A47F9EA044BB4B11C09@qq.com>
-Message-ID: <81ddd9e-791-9ca-3f3-f8381c785cd@namei.org>
-References: <tencent_C8B170AF63DC42F81A47F9EA044BB4B11C09@qq.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=faCEPrtp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794210796; x=1825746796;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6ohVP8VdMNiP3olnLQYYifetx/XcaqaIFJmgBOWF4Gw=;
+  b=faCEPrtp8OqnmjXgKhdfEb7kptBZ55V1rv4BKd3DeDcoKHo8SltXYtoG
+   MtpiNZXOAb8TAOtf1l5qtMCP0TNH54De+gEI0r84t0QVHiRXbPyc50+h/
+   V6A9qQp1WWXCo56LZ5GpLYm6gCJ7KR8ewaiS5aj8GCayzl3HdDWuqCN56
+   kpcloISYr2pw1O3KGF+nr6RY0uBDUvLvW5bLUBClbABOwp72+o746cMBF
+   bOZ3b6ojKfW6BQqiDxvrt+MMaPEvR9rVULwOM4TcJ+kltaoWgtTqh/3Yt
+   35yHJhUZaXRmTe4d/3cF2k47qtI6GACz1N60mmgfQTfYyDq7ERe4Ns6Rt
+   w==;
+X-CSE-ConnectionGUID: vKMn/+90RT2wAj9gbH36CA==
+X-CSE-MsgGUID: n83HlRejRdWmpEnhS+MbwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="2917629"
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="2917629"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 23:53:15 -0800
+X-CSE-ConnectionGUID: XO1L8Ht/Ro+eKqGLHg8BNg==
+X-CSE-MsgGUID: vpVNX5mRQZWxkuFwmWEvYg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
+   d="scan'208";a="8375725"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 23:53:12 -0800
+Message-ID: <2aeaac02-368c-40b4-9b2d-feef5e9d9ea8@linux.intel.com>
+Date: Mon, 9 Nov 2026 15:53:09 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,26 +72,103 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
+To: Yosry Ahmed <yosry@kernel.org>, "Chen, Zide" <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-5-zide.chen@intel.com> <au4kyULjUYdqbfIq@google.com>
+ <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
+ <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, 31 Oct 2026, Yangyu Chen wrote:
 
-> Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programming")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yangyu Chen <cyy@cyyself.name>
+On 11/7/2026 6:35 AM, Yosry Ahmed wrote:
+> On Fri, Nov 6, 2026 at 2:19 PM Chen, Zide <zide.chen@intel.com> wrote:
+>>
+>>
+>> On 11/6/2026 1:09 PM, Yosry Ahmed wrote:
+>>>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+>>>> index b8875ed5502c..4f192429ed93 100644
+>>>> --- a/arch/x86/include/asm/kvm_host.h
+>>>> +++ b/arch/x86/include/asm/kvm_host.h
+>>>> @@ -595,7 +595,10 @@ struct kvm_pmu {
+>>>>              DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
+>>>>              atomic64_t __reprogram_pmi;
+>>>>      };
+>>>> -    DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
+>>>> +    union {
+>>>> +            DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
+>>>> +            u64 pmc_exists64;
+>>> __pmc_exists would be more consistent with __reprogam_pmi above.
+>> I used the *64 suffix and without '__' to match the cntr_mask/cntr_mask64
+>> and fixed_cntr_mask/fixed_cntr_mask64 pattern in struct x86_pmu_capability
+>> (patch 7), whereas __reprogram_pmi used '__' because it is an atomic64_t
+>> rather than a scalar mask.
+> I don't follow why the '__' prefix is specific to atomics, but anyway,
+> I will leave this up to you and Sean.
 
-Tested-by: James Morris <jmorris@namei.org>
+Per my understanding, '__' prefix hints this function/variable should not
+be accessed directly, it should be accessed via some wrapper helpers. So I
+think it depends on if we hope the variable pmc_exists64 should be accessed
+directly.
 
-Assisted by an LLM.
-
-On a SpacemiT K3 CoM260 host (Sv39x4), a native port of your reproducer 
-showed about 16 MiB lost per VM on Fedora's 7.3.1 kernel. With the same 
-source rebuilt with this patch, each run averaged under 0.1 MiB lost per 
-VM (130 measured VMs total), consistent with noise. Both figures count 
-free pages held on the per-CPU lists as free.
+Thanks.
 
 
--- 
-James Morris
-<jmorris@namei.org>
-
+>
+>> Also, arch/x86/events/perf_event.h has similar names:
+>>
+>>         union {
+>>                         u64             cntr_mask64;
+>>                         unsigned long
+>> cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
+>>         };
+>>         union {
+>>                         u64             fixed_cntr_mask64;
+>>                         unsigned long
+>> fixed_cntr_mask[BITS_TO_LONGS(X86_PMC_IDX_MAX)];
+>>         };
+>>
+>> Seems either way won't be absolutely unifie
+>>
+>>>> @@ -120,6 +144,17 @@ static inline struct kvm_pmc *kvm_pmc_idx_to_pmc(struct kvm_pmu *pmu, int idx)
+>>>>                      continue;                               \
+>>>>              else                                            \
+>>>>
+>>>> +/*
+>>>> + * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
+>>>> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
+>>>> + * so iteration up to KVM's maximum counter count is safe.
+>>>> + */
+>>>> +#define kvm_for_each_gp_counter(i, mask)    \
+>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
+>>>> +
+>>>> +#define kvm_for_each_fixed_counter(i, mask) \
+>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
+>>> These are not used in this patch, are they?
+>>>
+>>> They should probably be introduced when they are used. Also, do we
+>>> always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
+>>> yes, maybe we should pass in the pmu here instead?
+>> The intent was to group all bitmap accessor helpers together in this
+>> patch for easier review so that the big patch 5/18 could be kept to
+>> mostly mechanical replacements.
+>>
+>> But if you prefer introducing them on first use, I'll move their
+>> definitions to patch 5.
+> Yeah I think it's clearer to see what their definitions are with their usage.
+>
+>> Regarding passing 'pmu' directly, I initially implemented it in this
+>> way, but I can't recall why I discarded it. I will take another look.
+> Thanks.
