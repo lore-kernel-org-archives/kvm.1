@@ -1,90 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794250786;
-	b=fXccuq6Hq5GPeGMCQJgmokyO/Dzyy3djwT8FJvMjhjcvRkh7DJ1EZ0r7+H3+V2PDm4x7
-	 Cq6bQB5ZHHMQ1yF9UAVlXBOgb6MPPVZIF+wq3tS1wPQM2M+tewvEDN1zV/NrWjwIp2PyK
-	 rTnYbVI7o48GYfC1GhEMIOAQ1EK6EL0O9a1B8LWZ0eaeK4Ud6oq0n2Sc/kQEFxHZ4AqTu
-	 Pvy6Fv9U7O2MtDXoCh1qFSBuleo+rm7KjjkSSbtsAQFRWTR9All7yJxN5X/0CYqNEV0MK
-	 2D+cNNDyLQFTZ/3E3XvVEjynz2O2wbbUFaX06lcNWJ56BktCLKgyZJoQkHswudVbjHw==
+	t=1794252596;
+	b=4qscwZ11IhRhe+Cng+HJDhqrlsNgTW9kndbViRucv+c00KUTrCtm8rqeXIwuH23I6Rr4
+	 tyHvBug818IbM3LX1hHVRxfnCsD95yhwD0xdofNYkvWq4XVwCUtP2pf05qAR4OC2FMf0Q
+	 XviFl5ElgMf6BkBut6j+K35/0krACdj2pank5yUgAUcAq711QL/ZqDF3odj0VN6X7sPpA
+	 db7AwwelfXitb1S+k8cdFDOjpxL7ZwVVCNaGKRSXJ17zIQtUlZ7diW9c3esieHy4Ffm66
+	 I1osI6z7shsBCt+V21Ph5MkJTUe2EOkL2is7EIt02iIGoykiUrNeWLgpV928+isDgUg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794250786;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794252596;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=OBhOYGW63+HK7TQ6MenaEpD8gvCGw1S/+JkFwZX0PFI=;
-	b=VCXSRbp3VQ9s3bNYFZPKi7MzjhRTdlOXzICCkFkzIXX8iwbi/6KP2parCzdmv6YbfQvT
-	 YM+Svut5wHAW6z1fE/mbr6WJmaGrlF+JScTyDOUSpRPpDi9/iMQdEeJ3xWatsNjxG1fkD
-	 D1xCa8Wgs2vcEtbi67S73fQ33kI4DqstExFYGaPFHlj7O7lTVeWv+cNJadZg9Q12Kh9bJ
-	 lVuL1rcmoNZwlvxiwknf96IHy1uJiNfacOqddTYjnoJTRllS3HKZRlrS17AgcTJsSZz5K
-	 tmmFeESN+CxYCxyNbHJ+/i9Z2Mttq7l1yNkJth73Iod6VPaDrG2tFA0KAcRGfVX3mKg==
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:Reply-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:User-Agent:X-Scanned-By;
+	bh=yLKJIK5/ZcW8RAnCT7nGCDiPMbPMc6KlTX0/sYBvPAY=;
+	b=DNxwGYZDWBbtEt5K0EwoXiMhGOeGrqrSs4PITf/RMav1DD4esiQShrZtXfy6R/TWJzqv
+	 UZvWzTPadupMqBJaPc/vUB2wEva9k9NatFrEMDPufBRgKmzdUd4T4+y+PnzJzxcktdDK8
+	 D5Hd76jS6oFUV1bxFqrDv6cb/4hwIHkc6F01V8xPUzeFW/xnvrOu8/U9XX4RvhMIqgyjb
+	 envBdJY7vSWxDJQJ1nSxFyLJkBCKDoC0jZ9SXlIEf1uUHNqDWICjHPSusfGm20OuunmH1
+	 59gESKQuxzfMBnc0zdD5BTtJYDRHD3miDwttjHtqPhLOMXlpjnZxPRykrWCiEDAKYcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Py4Iabyh;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J0jl5gJt;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E30606A330
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:59:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03E30606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FF5606A325
+	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 19:29:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73FF5606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Py4Iabyh
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J0jl5gJt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794250785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OBhOYGW63+HK7TQ6MenaEpD8gvCGw1S/+JkFwZX0PFI=;
-	b=Py4Iabyh13tIX+fOeXrEw08EpdC9zhxQXZabujVLPSW2s6eV1Y+OFY5SFQmu4rCGGGWnW2
-	8Xc7BG+7EUL3is4X9EOLZfJwMVUj6YJKYkVbXraH14h4cloqM+0E6xBcEQx12hD5qdKt3e
-	WF6VjSe+FrWhxVpOS+00uiRamA0cHhU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	s=mimecast20190719; t=1794252594;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=yLKJIK5/ZcW8RAnCT7nGCDiPMbPMc6KlTX0/sYBvPAY=;
+	b=J0jl5gJtqSqCQ3Sbpv1oQiHk2VmidUGuCtfCYHfiwz8coXZR95HompMHxcYxI405VE8und
+	JrqybNQcXdTTZ1Oro51iiZKhGC/Ka3oR9rnyFPiD2tNcB+0KgLvWJbHM0RIQijEbJ3l4Ja
+	tSsHalkVZgvmOdtu/XlACbcuzKk8SXQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-vpTCLsTbPRmlaLBpyEUBxQ-1; Mon,
- 09 Nov 2026 13:59:42 -0500
-X-MC-Unique: vpTCLsTbPRmlaLBpyEUBxQ-1
-X-Mimecast-MFC-AGG-ID: vpTCLsTbPRmlaLBpyEUBxQ_1794250780
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-7-X8OwQWWVMZe_ZFXQoFmNbw-1; Mon,
+ 09 Nov 2026 14:29:51 -0500
+X-MC-Unique: X8OwQWWVMZe_ZFXQoFmNbw-1
+X-Mimecast-MFC-AGG-ID: X8OwQWWVMZe_ZFXQoFmNbw_1794252590
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F508195BDF0;
-	Mon,  9 Nov 2026 18:59:40 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.81])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 779C61956087;
-	Mon,  9 Nov 2026 18:59:37 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
-	=?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B82E118001F6;
+	Mon,  9 Nov 2026 19:29:49 +0000 (UTC)
+Received: from redhat.com (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0805B195608B;
+	Mon,  9 Nov 2026 19:29:44 +0000 (UTC)
+Date: Mon, 9 Nov 2026 19:29:42 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	David Gibson <david@gibson.dropbear.id.au>,
 	Alistair Francis <alistair.francis@wdc.com>,
 	Stefan Weil <sw@weilnetz.de>,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+	=?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
 	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
 	Richard Henderson <richard.henderson@linaro.org>,
 	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
-	John Snow <jsnow@redhat.com>
-Subject: [PATCH 7/7] debug/mem: HACK add qemu_name_buffer
-Date: Mon,  9 Nov 2026 13:59:07 -0500
-Message-ID: <20261109185907.3220584-8-jsnow@redhat.com>
-In-Reply-To: <20261109185907.3220584-1-jsnow@redhat.com>
+	Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: Re: [PATCH 1/7] debug/mem: add utility to name anonymous memory
+ mappings
+Message-ID: <avIfJqbcTHFAGvqf@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 References: <20261109185907.3220584-1-jsnow@redhat.com>
+ <20261109185907.3220584-2-jsnow@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,194 +92,148 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261109185907.3220584-2-jsnow@redhat.com>
+User-Agent: Mutt/2.4.3 (2026-10-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-This is a hack to allow us to name malloc'd buffers that are backed by
-anonymous mmap allocations.
+On Mon, Nov 09, 2026 at 01:59:01PM -0500, John Snow wrote:
+> Add support to name mmap'd memory regions using
+> PR_SET_VMA_ANON_NAME. On supported platforms, the QEMU utility
+> functions are no-ops.
+> 
+> This is useful primarily for debugging and profiling QEMU; beind able
+> to see and correlate each VMA segment with a specific use within QEMU.
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  include/qemu/mmap-vma.h | 18 +++++++++++
+>  util/mmap-vma.c         | 67 +++++++++++++++++++++++++++++++++++++++++
+>  util/meson.build        |  1 +
+>  3 files changed, 86 insertions(+)
+>  create mode 100644 include/qemu/mmap-vma.h
+>  create mode 100644 util/mmap-vma.c
+> 
+> diff --git a/include/qemu/mmap-vma.h b/include/qemu/mmap-vma.h
+> new file mode 100644
+> index 00000000000..763ea5a5cab
+> --- /dev/null
+> +++ b/include/qemu/mmap-vma.h
+> @@ -0,0 +1,18 @@
+> +/*
+> + * Utility for naming VMA allocations in linux
+> + *
+> + * Copyright (c) Red Hat, Inc 2026
+> + *
+> + * SPDX-License-Identifier: LGPL-2.1-or-later
+> + */
+> +
+> +#ifndef __QEMU_MMAP_VMA_H
+> +#define __QEMU_MMAP_VMA_H
+> +
+> +#include <stddef.h>
+> +#include "osdep.h"
+> +
+> +int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
+> +    G_GNUC_PRINTF(3, 4);
+> +
+> +#endif
+> diff --git a/util/mmap-vma.c b/util/mmap-vma.c
+> new file mode 100644
+> index 00000000000..7dcef3b7455
+> --- /dev/null
+> +++ b/util/mmap-vma.c
+> @@ -0,0 +1,67 @@
+> +/*
+> + * Utility for naming VMA allocations in linux
+> + *
+> + * Copyright (c) Red Hat, Inc 2026
+> + *
+> + * SPDX-License-Identifier: LGPL-2.1-or-later
+> + */
+> +#include "qemu/mmap-vma.h"
+> +#include "qemu/osdep.h"
+> +
+> +#include <errno.h>
+> +#include <stddef.h>
+> +#include <stdio.h>
+> +
+> +#if defined(__linux__)
+> +#include <sys/prctl.h>
+> +#endif
+> +
+> +#define VMA_PREFIX " qemu: "
+> +#define VMA_MAXLEN 80
+> +
+> +/*
+> + * Give a human-readable name to a previously mmap'd memory segment.
+> + * This feature is only available on Linux >= 5.17, and only when the
+> + * kernel was configured with CONFIG_ANON_VMA_NAME=y.
+> + *
+> + * For systems without this option, prctl() will return -1 and set
+> + * errno to EINVAL, and can be safely ignored.
+> + *
+> + * For systems with this option, these human-readable names will be
+> + * visible in /proc/$pid/[s]maps, pmap output, etc.
+> + */
+> +G_GNUC_PRINTF(3, 0)
+> +static int qemu_vname_vma(void *ptr, size_t sz, const char *fmt, va_list args)
+> +{
+> +    int rc = 0;
+> +
+> +#if defined(PR_SET_VMA_ANON_NAME)
+> +    char strbuf[VMA_MAXLEN];
+> +
+> +    assert(sizeof(VMA_PREFIX) < sizeof(strbuf));
+> +    strncpy(strbuf, VMA_PREFIX, sizeof(strbuf));
+> +    rc = vsnprintf(strbuf + sizeof(VMA_PREFIX),
+> +                   sizeof(strbuf) - sizeof(VMA_PREFIX), fmt, args);
+> +    if (rc < 0) {
+> +        return -errno;
+> +    } else if (rc >= (sizeof(strbuf) - sizeof(VMA_PREFIX))) {
+> +        sprintf(strbuf + sizeof(strbuf) - 4, "...");
+> +    }
+> +
+> +    rc = prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ptr, sz, strbuf);
+> +    if (rc) {
+> +        return -errno;
+> +    }
+> +#endif
+> +
+> +    return rc;
+> +}
+> +
+> +G_GNUC_PRINTF(3, 4)
+> +int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
+> +{
+> +    va_list args;
+> +
+> +    va_start(args, fmt);
+> +    return qemu_vname_vma(ptr, sz, fmt, args);
 
-Quite useful in my debugging, probably not quite appropriate for
-upstream unless we can figure out a more robust method for identifying
-when we get an mmap'd page from malloc and adjusting the pointer
-offset accordingly - I am currently subtracting a fixed 16 bytes
-because that "works on my system", and I have no clue if that's
-appropriate everywhere or not.
+We need a va_end here too.
 
-At least this way, my trick is published to the list for posterity.
+> +}
+> diff --git a/util/meson.build b/util/meson.build
+> index fa174c07a57..861ee228d5b 100644
+> --- a/util/meson.build
+> +++ b/util/meson.build
+> @@ -1,5 +1,6 @@
+>  util_ss.add(files('osdep.c', 'cutils.c', 'unicode.c', 'qemu-timer-common.c'))
+>  util_ss.add(files('thread-context.c'), numa)
+> +util_ss.add(files('mmap-vma.c'))
+>  if host_os != 'windows'
+>    util_ss.add(files('aio-posix.c'))
+>    util_ss.add(files('fdmon-poll.c'))
+> -- 
+> 2.56.0
+> 
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- include/qemu/bitmap.h   |  6 ++++++
- include/qemu/mmap-vma.h |  3 +++
- hw/core/loader.c        |  3 +++
- hw/i386/x86-common.c    |  3 +++
- system/device_tree.c    |  2 ++
- system/physmem.c        |  8 ++++++--
- util/mmap-vma.c         | 23 +++++++++++++++++++++++
- 7 files changed, 46 insertions(+), 2 deletions(-)
-
-diff --git a/include/qemu/bitmap.h b/include/qemu/bitmap.h
-index 0044333cb51..6681c87737f 100644
---- a/include/qemu/bitmap.h
-+++ b/include/qemu/bitmap.h
-@@ -104,6 +104,12 @@ static inline unsigned long *bitmap_try_new(long nbits)
-     return g_try_new0(unsigned long, nelem);
- }
- 
-+static inline size_t bitmap_size(long nbits)
-+{
-+    long nelem = BITS_TO_LONGS(nbits);
-+    return sizeof(unsigned long) * nelem;
-+}
-+
- static inline unsigned long *bitmap_new(long nbits)
- {
-     long nelem = BITS_TO_LONGS(nbits);
-diff --git a/include/qemu/mmap-vma.h b/include/qemu/mmap-vma.h
-index 763ea5a5cab..4646657022c 100644
---- a/include/qemu/mmap-vma.h
-+++ b/include/qemu/mmap-vma.h
-@@ -15,4 +15,7 @@
- int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
-     G_GNUC_PRINTF(3, 4);
- 
-+int qemu_name_buffer(void *ptr, size_t sz, const char *fmt, ...)
-+    G_GNUC_PRINTF(3, 4);
-+
- #endif
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 5cbfba0a86d..cc0e0d6979a 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -45,6 +45,7 @@
- #include "qemu/osdep.h"
- #include "qemu/datadir.h"
- #include "qemu/error-report.h"
-+#include "qemu/mmap-vma.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine.h"
- #include "qapi/type-helpers.h"
-@@ -1111,6 +1112,8 @@ ssize_t rom_add_file(const char *file, const char *fw_dir,
-         goto err;
-     }
- 
-+    qemu_name_buffer(rom->data, size, "%s", file);
-+
-     if (fw_dir) {
-         rom->fw_dir  = g_strdup(fw_dir);
-         rom->fw_file = g_strdup(file);
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index dcd4fa8eb79..608c4cf4202 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -25,6 +25,7 @@
- #include "qemu/cutils.h"
- #include "qemu/units.h"
- #include "qemu/datadir.h"
-+#include "qemu/mmap-vma.h"
- #include "qapi/error.h"
- #include "system/numa.h"
- #include "system/system.h"
-@@ -914,6 +915,8 @@ void x86_load_linux(X86MachineState *x86ms,
- 
-     setup  = g_malloc(setup_size);
-     kernel = g_malloc(kernel_size);
-+    qemu_name_buffer(kernel, kernel_size, "%s", kernel_filename);
-+
-     fseek(f, 0, SEEK_SET);
-     if (fread(setup, 1, setup_size, f) != setup_size) {
-         fprintf(stderr, "fread() failed\n");
-diff --git a/system/device_tree.c b/system/device_tree.c
-index 48365435ea0..816874fb299 100644
---- a/system/device_tree.c
-+++ b/system/device_tree.c
-@@ -27,6 +27,7 @@
- #include "hw/core/loader.h"
- #include "hw/core/boards.h"
- #include "qemu/config-file.h"
-+#include "qemu/mmap-vma.h"
- #include "qapi/qapi-commands-machine.h"
- #include "qobject/qdict.h"
- 
-@@ -41,6 +42,7 @@ void *create_device_tree(int *sizep)
- 
-     *sizep = FDT_MAX_SIZE;
-     fdt = g_malloc0(FDT_MAX_SIZE);
-+    qemu_name_buffer(fdt, FDT_MAX_SIZE, "device_tree");
-     ret = fdt_create(fdt, FDT_MAX_SIZE);
-     if (ret < 0) {
-         goto fail;
-diff --git a/system/physmem.c b/system/physmem.c
-index 202e3a5cd00..dc0e9540919 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -26,6 +26,7 @@
- #include "qemu/hbitmap.h"
- #include "qemu/madvise.h"
- #include "qemu/lockable.h"
-+#include "qemu/mmap-vma.h"
- 
- #ifdef CONFIG_TCG
- #include "accel/tcg/cpu-ops.h"
-@@ -2105,7 +2106,7 @@ void qemu_ram_msync(RAMBlock *block, ram_addr_t start, ram_addr_t length)
- }
- 
- /* Called with ram_list.mutex held */
--static void dirty_memory_extend(ram_addr_t new_ram_size)
-+static void dirty_memory_extend(ram_addr_t new_ram_size, const char *nickname)
- {
-     unsigned int old_num_blocks = ram_list.num_dirty_blocks;
-     unsigned int new_num_blocks = DIV_ROUND_UP(new_ram_size,
-@@ -2133,6 +2134,9 @@ static void dirty_memory_extend(ram_addr_t new_ram_size)
- 
-         for (j = old_num_blocks; j < new_num_blocks; j++) {
-             new_blocks->blocks[j] = bitmap_new(DIRTY_MEMORY_BLOCK_SIZE);
-+            qemu_name_buffer(new_blocks->blocks[j],
-+                             bitmap_size(DIRTY_MEMORY_BLOCK_SIZE),
-+                             "bitmap<%s>", nickname);
-         }
- 
-         qatomic_rcu_set(&ram_list.dirty_memory[i], new_blocks);
-@@ -2254,7 +2258,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-     }
- 
-     ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
--    dirty_memory_extend(ram_size);
-+    dirty_memory_extend(ram_size, new_block->mr->name);
-     /* Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
-      * QLIST (which has an RCU-friendly variant) does not have insertion at
-      * tail, so save the last element in last_block.
-diff --git a/util/mmap-vma.c b/util/mmap-vma.c
-index 93ca7f608d7..9b1309df635 100644
---- a/util/mmap-vma.c
-+++ b/util/mmap-vma.c
-@@ -69,3 +69,26 @@ int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
-     va_start(args, fmt);
-     return qemu_vname_vma(ptr, sz, fmt, args);
- }
-+
-+G_GNUC_PRINTF(3, 4)
-+int qemu_name_buffer(void *ptr, size_t sz, const char *fmt, ...)
-+{
-+    /*
-+     * this is hacky as hell, but ptmalloc will occasionally use
-+     * mmap() for large buffers - when it does so, you get a pointer
-+     * to 16 bytes after the actual mmap. This function compensates
-+     * for that to guess at what the real mmap allocation was.
-+     *
-+     * This can be used unconditionally whether or not the allocation
-+     * was actually mmap'd - if it wasn't, this just fails. Yes, it's
-+     * still very ugly.
-+     */
-+    va_list args;
-+    size_t pagesz = qemu_real_host_page_size();
-+
-+    ptr = ptr - 0x10;
-+    sz = ROUND_UP(sz + 0x10, pagesz);
-+
-+    va_start(args, fmt);
-+    return qemu_vname_vma(ptr, sz, fmt, args);
-+}
+With regards,
+Daniel
 -- 
-2.56.0
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
 
