@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794187290;
-	b=e5ElgW3jZ41oNKH1cNPiCx/pYgwjNl5aTP+DAJVBlGgWkJfg20tqPaWOlbDAjqzBADmJ
-	 Dd3CsDipO03mDVlxJfhMqj3rk+prQ+Xi45IoBB95l+z49BAbQp9K5rC5ZqNp72KMwqIk5
-	 Dsh9nvX9sj9yw0eY2qrqx9ec2lsblIuCCRywjuAPr/1tagGDwFUvj+webwedjXs2la4jH
-	 8PiY5KMfJHRzaB18ux7R2CrO+PvQP95Rr6BjGfTTINzl0yOy2/bXoTofpMVaRNPBOXrq9
-	 eniUNfuKDLjLrxCDRoOmiL/4kQ0npPYWHhUSPRsH1bqoOyhb/I0F6YoFh/Om0dDu2Mw==
+	t=1794187287;
+	b=vu0KYs72X7oVc64EiXQ5zd/zDHgdUFL13m+Me7S8dpYJSQKoAWEkIyAD1PWDwhfpQLxn
+	 IO2nqz+wIrxr6sXoBODxooS2pmDy3smZFgTAu4Z2zBWXwOWLhbXZPNcpWkzlMu6s/NN3q
+	 H8qPov6M8Xc4abvfqE5q6euvdhnUURwBgtRFUx6pcx16eyRw9B+1465g2Zwglb9O1aYqE
+	 Ra6DMmn3x+FbDjCJBDDeZwiytSc4Jikg3rdgrUvNigAX0Ao1pBD9035rNXWlkn5xtkwsG
+	 ZLtfofYJEYfa37T45WJVQBz925FnpdU+LhTcFkoWrSFHCQU7DBPjm7EucPIjoHx9QgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794187290;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794187287;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=uvJs1XZO+BRbpw9Q5qKzk8gQ53RD8ANqfHZjGN9ZqsM=;
-	b=WfJDof7izmB4tO625UBw9kj9Fbs/V5iXrg5lWE3TbFvosCwAeEtMOLpeziWzcbsIBE09
-	 W2gQWydpJjZuYi3vj0yor5B1ToP5CLRj2F+XK3WDXAxU1NrFq14he/gbL3xgFFSDBe+dp
-	 pMhze5kUPxWv7PnXvUvhfHy/y4dZ5OYSGwY93JM5LR3DE2cNOUNyE9g8ealwpGIkmxz6b
-	 yMD2iE11ki3YMym8+oTSgLJfVy6je/tsM1v6BzISXGIaHoWxM9uxlQBTa7QigjA0kAouk
-	 heFucbumMR7l/6HTqNmHIbCU8liktXiK1f92hhKiA5aVHK6eFlGdyVSO+hvgwevspcA==
+	bh=3DD8/zti5JW+GMX6GLipO6+sjXFYNOO3sf30XX4R/kY=;
+	b=x2HN/wMGuvSZMZPZmFp/nCzkL4vFF2j5PJLic7RLgtsUpbqTRMVzpm1myVzvFXSMP3K6
+	 NE20ukSfcDdk3Nn0bqiYFp3F2LDxiHqual8bbCs2tTqi1yeBSnCq1WW3j+ywDK3DT+tef
+	 D2V9HCG9ScPcai2vho/mR5/vbDIHYuOsLR6DGpcMEslk1OTYFImqxUxjU9id8CmIwWdyX
+	 yxW/WO3s29zsG+0nZjKkEAb/xDdNurLtBjRH/Jp74zbuMCHocdnpSBK7dJW5PQkXBPbew
+	 nrYF519MvY9v2eMmP6KMFoOdQe2a+DY2C0Hk3WsrO8Q/p306aInDgSzkNuooKtVr6eA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=KFE5rFbR;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=pm9g8Yvb;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EC7606A336;
-	Mon,  9 Nov 2026 01:21:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7EC7606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462DD606EE86;
+	Mon,  9 Nov 2026 01:21:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 462DD606EE86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=KFE5rFbR
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=pm9g8Yvb
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description;
-	bh=uvJs1XZO+BRbpw9Q5qKzk8gQ53RD8ANqfHZjGN9ZqsM=; b=KFE5rFbR/Cl1WJCZCdAJq9H/Xq
-	zzMY6MC0J8v4NB/ROVzbHuk2MJ3uKnfjYYff+Yq11NIU/mcXm8IGxEN1zGo4xDZtptr6noN/PIjP8
-	rzrs4JdF3H0MgzWP2TIYVqKeMUPR6gCxrv+/S6KH59WOYM0gc2LU4wDgrgxQuCpqfI8vgXwXs0Dhy
-	1w1LzFOamLvRuoFj1CL9PDj7BfMocxCUbb073vgpvFcd3PB26vBn2EmeZISNodstcEl1YBzjLiAoB
-	iS0lCTFm6A3NnffH429VgKVEI1SD0NXXab3f6Zl2dtwJm/Cym1E/c6zqaGTyn+tzcU1AGOBswpD8l
-	m6THnrgg==;
+	bh=3DD8/zti5JW+GMX6GLipO6+sjXFYNOO3sf30XX4R/kY=; b=pm9g8YvbH1FBFv1ccfDdPgLQVM
+	hRmI02G9nE9mM0KIfzicxQ4ZbUE1s93vcoQWqBNyOg45eYI6/L2rO7y0+2G/vFDD69hiNrU6VMwKu
+	/yFTQOrSyhbeU8RoiCy82a4xiayaeM8M6Kwq0+wJBvhFRc4HL8Z1QBOVDSz0PgI1DNcJJYeYMjEQu
+	4uXEtPLfBGi/HKDgL60fm+ICYIxiUmOOr6xzjunUk1Eyx1uVkrEfutAI2I9pYlL1IskEEaH0jUDrA
+	30JMs/QoUub8JfBHfRPrYzjyzng3HKqyQXAIZV6+y/vmv3oT2QY+NJbGmymMAlxaXOTOg4CRFurtN
+	U7eV5n+A==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xQE4S-00000006AYL-023G;
+	id 1xQE4S-00000006AYJ-024J;
 	Mon, 09 Nov 2026 01:21:16 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xQE4P-0000000EKVf-21Al;
+	id 1xQE4P-0000000EKVJ-17v9;
 	Mon, 09 Nov 2026 01:21:13 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -78,9 +78,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Dongli Zhang <dongli.zhang@oracle.com>,
 	joe.jin@oracle.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v12 24/24] KVM: x86: Keep master clock for guests using legacy MSR_KVM_SYSTEM_TIME
-Date: Sun,  8 Nov 2026 17:21:10 -0800
-Message-ID: <20261109012112.3415328-25-dwmw2@infradead.org>
+Subject: [PATCH v12 19/24] KVM: selftests: Add Xen/generic CPUID timing leaf test
+Date: Sun,  8 Nov 2026 17:21:05 -0800
+Message-ID: <20261109012112.3415328-20-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261109012112.3415328-1-dwmw2@infradead.org>
 References: <20261109012112.3415328-1-dwmw2@infradead.org>
@@ -100,206 +100,329 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Commit 54750f2cf042 ("KVM: x86: workaround SuSE's 2.6.16 pvclock vs
-masterclock issue") disables the master clock entirely for any guest
-whose boot vCPU uses the legacy MSR. SUSE's 2.6.16 kernel treats a
-pvclock tsc_timestamp more than 1/5 jiffie behind the TSC as suspect
-and re-requests the time by rewriting the MSR; against the master
-clock's long-lived reference point the delta never shrinks, so it
-re-requests in a loop and fails to boot.
+Verify that userspace can correctly populate Xen and generic CPUID
+timing leaves using the KVM_GET_TSC_KHZ ioctl and
+KVM_VCPU_TSC_SCALE attribute.
 
-Satisfy the guest's freshness heuristic instead of capitulating to it:
-a guest write to the legacy MSR now requests a masterclock update,
-sliding the reference point forward before the pvclock is written (the
-masterclock request is serviced before KVM_REQ_CLOCK_UPDATE on the
-same guest entry). The re-requested pvclock then carries a recent
-tsc_timestamp, the delta is back under the threshold, and the 2.6.16
-heuristic is content. The reference point moving is invisible to any
-correct guest — the clock remains the same function of the guest TSC.
+This validates that commit 7d3bd21e457b ("KVM: x86: Remove runtime Xen
+TSC frequency CPUID update") doesn't break guests: userspace queries the effective TSC and bus
+frequencies, computes the pvclock mul/shift, populates the CPUID leaves,
+and the guest verifies the values match.
 
-A guest hammering the legacy MSR now forces repeated VM-wide
-masterclock updates, but only its own VM's: a guest has always been
-able to burn its own cycles. Re-anchoring just the writing vCPU's
-pvclock along the masterclock line would avoid even that, but isn't
-worth the extra plumbing for a 2006 guest kernel.
+The test exercises:
+ - KVM_GET_TSC_KHZ at native and scaled frequencies
+ - KVM_VCPU_TSC_SCALE ratio verification against effective frequency
+ - Generic timing leaf 0x40000010 (EAX=tsc_khz, EBX=bus_khz)
+ - Xen leaf 3 sub-leaf 0 (ECX=guest TSC kHz)
+ - Xen leaf 3 sub-leaf 1 (ECX=mul, EDX=shift)
 
-This removes the last way a guest could force the master clock off.
-The remaining disable, backwards_tsc_observed, is the host's own
-doing. The pvclock_test selftest grows a legacy-MSR case proving the
-master clock survives and the rewritten pvclock is fresh.
+Where KVM_CAP_XEN_HVM is available, the guest is given the Xen
+signature leaf and the Xen hypercall MSR is enabled — the exact
+configuration in which the removed runtime update used to fire — and
+a sentinel is planted in leaf 3 sub-leaf 2 EAX, where it used to
+write, which the guest verifies survives untouched.
 
-Not tested against a real SLES10 image; the behaviour it demands is
-reconstructed from the guest comment quoted in 54750f2cf042.
+Gracefully skips TSC scaling tests on hardware without support, and
+skips requested frequencies within tsc_tolerance_ppm of the host's,
+where hardware scaling does not engage and the effective frequency is
+the requested one with an identity ratio.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/include/asm/kvm_host.h               |  1 -
- arch/x86/kvm/msrs.c                           | 26 ++++----
- arch/x86/kvm/x86.c                            | 15 +----
- .../testing/selftests/kvm/x86/pvclock_test.c  | 63 +++++++++++++++++++
- 4 files changed, 77 insertions(+), 28 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/x86/xen_cpuid_timing_test.c | 271 ++++++++++++++++++
+ 2 files changed, 272 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 8af808fbf6ce..59260f087654 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1272,7 +1272,6 @@ struct kvm_arch {
- #endif
- 
- 	bool backwards_tsc_observed;
--	bool boot_vcpu_runs_old_kvmclock;
- 	u32 bsp_vcpu_id;
- 
- 	u64 disabled_quirks;
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index d07831b5dfb8..94cd4d73689a 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -1275,19 +1275,19 @@ static void kvm_write_wall_clock(struct kvm *kvm, gpa_t wall_clock, int sec_hi_o
- static void kvm_write_system_time(struct kvm_vcpu *vcpu, gpa_t system_time,
- 				  bool old_msr, bool host_initiated)
- {
--	struct kvm_arch *ka = &vcpu->kvm->arch;
--
--	if (vcpu->vcpu_id == 0 && !host_initiated) {
--		/*
--		 * Store the flag before requesting the masterclock update:
--		 * the update may now be performed by another vCPU (which
--		 * consumes this request), and it must observe the new value.
--		 */
--		if (ka->boot_vcpu_runs_old_kvmclock != old_msr) {
--			ka->boot_vcpu_runs_old_kvmclock = old_msr;
--			kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
--		}
--	}
-+	/*
-+	 * Slide the master clock reference point forward, so that the
-+	 * pvclock written below carries a recent tsc_timestamp. SUSE's
-+	 * 2.6.16 kernel (the only known user of the legacy MSR with a
-+	 * reason to care) re-requests the time by rewriting this MSR
-+	 * whenever tsc_timestamp falls more than 1/5 jiffie behind the
-+	 * TSC, and would livelock against a fixed reference point; each
-+	 * rewrite now genuinely freshens it. A write with the enable
-+	 * bit clear deactivates the pvclock; there is nothing to
-+	 * freshen.
-+	 */
-+	if (old_msr && !host_initiated && (system_time & 1))
-+		kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
- 
- 	vcpu->arch.time = system_time;
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index de3b5086f17c..2136c1f68032 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1144,21 +1144,8 @@ static bool kvm_use_master_clock(struct kvm *kvm)
- {
- 	struct kvm_arch *ka = &kvm->arch;
- 
--	/*
--	 * The 'old kvmclock' check is a workaround (from 2015) for a
--	 * SUSE 2.6.16 kernel that didn't boot if the system_time in
--	 * its kvmclock was too far behind the current time. So the
--	 * mode of just setting the reference point and allowing time
--	 * to proceed linearly from there makes it fail to boot.
--	 * Despite that being kind of the *point* of the way the clock
--	 * is exposed to the guest. By coincidence, the offending
--	 * kernels used the old MSR_KVM_SYSTEM_TIME, which was moved
--	 * only because it resided in the wrong number range. So the
--	 * workaround is activated for *all* guests using the old MSR.
--	 */
- 	return ka->all_vcpus_matched_freq &&
--		!ka->backwards_tsc_observed &&
--		!ka->boot_vcpu_runs_old_kvmclock;
-+		!ka->backwards_tsc_observed;
- }
- 
- static void kvm_track_tsc_matching(struct kvm_vcpu *vcpu, bool update_mclock)
-diff --git a/tools/testing/selftests/kvm/x86/pvclock_test.c b/tools/testing/selftests/kvm/x86/pvclock_test.c
-index 039a2b802d84..1599fb0c7275 100644
---- a/tools/testing/selftests/kvm/x86/pvclock_test.c
-+++ b/tools/testing/selftests/kvm/x86/pvclock_test.c
-@@ -213,6 +213,8 @@ static void run_at_frequency(u64 tsc_khz, unsigned int sleep_sec)
- 
- static void test_tsc_stable_bit(void);
- static void test_clock_guest_with_offsets(void);
-+static void test_legacy_msr(void);
-+static void run_vcpu_once(struct kvm_vcpu *vcpu);
- 
- static void usage(const char *name)
- {
-@@ -273,10 +275,71 @@ int main(int argc, char *argv[])
- 
- 	test_tsc_stable_bit();
- 	test_clock_guest_with_offsets();
-+	test_legacy_msr();
- 
- 	return 0;
- }
- 
-+static void guest_code_legacy_msr(void)
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 4d4eff41c525..79d26de18bf3 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -152,6 +152,7 @@ TEST_GEN_PROGS_x86 += x86/xss_msr_test
+ TEST_GEN_PROGS_x86 += x86/debug_regs
+ TEST_GEN_PROGS_x86 += x86/tsc_msrs_test
+ TEST_GEN_PROGS_x86 += x86/vmx_pmu_caps_test
++TEST_GEN_PROGS_x86 += x86/xen_cpuid_timing_test
+ TEST_GEN_PROGS_x86 += x86/xen_shinfo_test
+ TEST_GEN_PROGS_x86 += x86/xen_vmcall_test
+ TEST_GEN_PROGS_x86 += x86/sev_dbg_test
+diff --git a/tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c b/tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c
+new file mode 100644
+index 000000000000..70d3d38966f2
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c
+@@ -0,0 +1,271 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Test that userspace can correctly populate Xen and generic CPUID
++ * timing leaves using KVM_GET_TSC_KHZ and KVM_VCPU_TSC_SCALE.
++ *
++ * This validates that the removal of KVM's runtime Xen CPUID modification
++ * doesn't break guests, because userspace has all the information needed.
++ */
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++
++
++#define XEN_CPUID_BASE		0x40000100
++#define XEN_CPUID_LEAF(n)	(XEN_CPUID_BASE + (n))
++#define GENERIC_TIMING_LEAF	0x40000010
++
++/*
++ * Sentinel in Xen leaf 3 sub-leaf 2 EAX (where the removed runtime
++ * update used to write the vCPU's tsc_khz): it must survive untouched.
++ */
++#define XEN_SENTINEL		0xdeadbeef
++
++/* Values set by host, verified by guest */
++static u32 expected_tsc_khz;
++static u32 expected_bus_khz;
++static u32 expected_tsc_mul;
++static s8   expected_tsc_shift;
++static u64 host_khz;
++static bool xen_enabled;
++
++static void guest_code(void)
 +{
-+	wrmsr(MSR_KVM_SYSTEM_TIME, KVMCLOCK_GPA | KVM_MSR_ENABLED);
++	u32 eax, ebx, ecx, edx;
++
++	/* Check generic timing leaf 0x40000010 */
++	__cpuid(GENERIC_TIMING_LEAF, 0, &eax, &ebx, &ecx, &edx);
++	GUEST_ASSERT_EQ(eax, expected_tsc_khz);
++	GUEST_ASSERT_EQ(ebx, expected_bus_khz);
++
++	/* Check Xen leaf 3, sub-leaf 0: ECX = guest TSC frequency */
++	__cpuid(XEN_CPUID_LEAF(3), 0, &eax, &ebx, &ecx, &edx);
++	GUEST_ASSERT_EQ(ecx, expected_tsc_khz);
++
++	/* Check Xen leaf 3, sub-leaf 1: ECX = mul, EDX = shift */
++	__cpuid(XEN_CPUID_LEAF(3), 1, &eax, &ebx, &ecx, &edx);
++	GUEST_ASSERT_EQ(ecx, expected_tsc_mul);
++	GUEST_ASSERT_EQ((s8)edx, expected_tsc_shift);
++
++	if (xen_enabled) {
++		/*
++		 * With the Xen signature present and Xen enabled, verify the
++		 * sentinel survives: KVM's removed runtime CPUID update used
++		 * to clobber this sub-leaf for exactly this configuration.
++		 */
++		__cpuid(XEN_CPUID_LEAF(3), 2, &eax, &ebx, &ecx, &edx);
++		GUEST_ASSERT_EQ(eax, XEN_SENTINEL);
++	}
++
 +	GUEST_SYNC(0);
-+	/* Re-request the time, as SUSE's 2.6.16 kernel would. */
-+	wrmsr(MSR_KVM_SYSTEM_TIME, KVMCLOCK_GPA | KVM_MSR_ENABLED);
-+	GUEST_SYNC(1);
++}
++
++static void add_cpuid_entry(struct kvm_vcpu *vcpu, u32 function,
++			    u32 index, u32 eax, u32 ebx,
++			    u32 ecx, u32 edx)
++{
++	struct kvm_cpuid2 *cpuid = vcpu->cpuid;
++	struct kvm_cpuid_entry2 *entry;
++	int n = cpuid->nent;
++
++	cpuid = realloc(vcpu->cpuid,
++			sizeof(*cpuid) + (n + 1) * sizeof(*entry));
++	TEST_ASSERT(cpuid, "Failed to grow vCPU CPUID array");
++	vcpu->cpuid = cpuid;
++	cpuid->nent = n + 1;
++
++	entry = &cpuid->entries[n];
++	memset(entry, 0, sizeof(*entry));
++	entry->function = function;
++	entry->index = index;
++	entry->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
++	entry->eax = eax;
++	entry->ebx = ebx;
++	entry->ecx = ecx;
++	entry->edx = edx;
 +}
 +
 +/*
-+ * A guest using the legacy MSR_KVM_SYSTEM_TIME must no longer lose the
-+ * master clock, and rewriting the MSR must slide the reference point
-+ * forward so the pvclock's tsc_timestamp is recent — that freshness is
-+ * what SUSE's 2.6.16 kernel demands instead of tolerating a fixed
-+ * reference point.
++ * Compute pvclock mul/shift from frequency, matching kvm_get_time_scale().
 + */
-+static void test_legacy_msr(void)
++static void compute_tsc_mul_shift(u64 tsc_hz, u32 *mul, s8 *shift)
 +{
-+	struct pvclock_vcpu_time_info *pvti;
-+	struct kvm_clock_data clock;
++	u64 scaled = 1000000000ULL;
++	u64 base = tsc_hz;
++	s32 s = 0;
++	u32 base32;
++
++	while (base > scaled * 2 || base >> 32) {
++		base >>= 1;
++		s--;
++	}
++	base32 = (u32)base;
++	while (base32 <= scaled || scaled >> 32) {
++		if (scaled >> 32 || base32 & (1U << 31))
++			scaled >>= 1;
++		else
++			base32 <<= 1;
++		s++;
++	}
++	*mul = (u32)((scaled << 32) / base32);
++	*shift = (s8)s;
++}
++
++static void run_test(u64 tsc_khz)
++{
 +	struct kvm_vcpu *vcpu;
 +	struct kvm_vm *vm;
-+	u64 tsc_now, age_limit;
++	struct ucall uc;
++	u32 effective_tsc_khz, effective_bus_khz;
++	int bus_cycle_ns, ret;
 +
-+	pr_info("Testing the legacy MSR_KVM_SYSTEM_TIME\n");
++	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
 +
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code_legacy_msr);
-+	configure_pvclock(vm);
++	if (tsc_khz) {
++		pr_info("Testing at TSC frequency %lu kHz\n", tsc_khz);
++		vcpu_ioctl(vcpu, KVM_SET_TSC_KHZ, (void *)(unsigned long)tsc_khz);
++	} else {
++		pr_info("Testing at native TSC frequency\n");
++	}
 +
-+	run_vcpu_once(vcpu);
-+	vm_ioctl(vm, KVM_GET_CLOCK, &clock);
-+	TEST_ASSERT(clock.flags & KVM_CLOCK_TSC_STABLE,
-+		    "Legacy MSR_KVM_SYSTEM_TIME should not disable the master clock");
++	ret = __vcpu_ioctl(vcpu, KVM_GET_TSC_KHZ, NULL);
++	TEST_ASSERT(ret > 0, "KVM_GET_TSC_KHZ failed: %d", ret);
++	effective_tsc_khz = ret;
++	bus_cycle_ns = vm_check_cap(vm, KVM_CAP_X86_APIC_BUS_CYCLES_NS);
++	effective_bus_khz = bus_cycle_ns > 0 ? 1000000 / bus_cycle_ns : 1000000;
 +
-+	/* Age the master clock reference point, then re-request. */
-+	usleep(300 * 1000);
-+	run_vcpu_once(vcpu);
++	pr_info("  Effective TSC: %u kHz, Bus: %u kHz\n", effective_tsc_khz, effective_bus_khz);
 +
-+	pvti = addr_gpa2hva(vm, KVMCLOCK_GPA);
-+	tsc_now = vcpu_get_msr(vcpu, MSR_IA32_TSC);
++	/* Also exercise KVM_VCPU_TSC_SCALE if available */
++	if (!__vcpu_has_device_attr(vcpu, KVM_VCPU_TSC_CTRL,
++				    KVM_VCPU_TSC_SCALE)) {
++		struct kvm_vcpu_tsc_scale scale;
++
++		vcpu_device_attr_get(vcpu, KVM_VCPU_TSC_CTRL,
++				     KVM_VCPU_TSC_SCALE, &scale);
++		pr_info("  TSC scale: ratio=%llu frac_bits=%llu\n",
++			scale.tsc_ratio, scale.tsc_frac_bits);
++
++		/*
++		 * A requested frequency within tsc_tolerance_ppm of the
++		 * host's does not engage hardware scaling: the effective
++		 * frequency is the requested one but the ratio stays 1.0,
++		 * so the ratio cross-check cannot hold. Skip only that
++		 * check — the CPUID leaf population and guest verification
++		 * below are about the effective frequency and remain valid.
++		 */
++		if (tsc_khz &&
++		    scale.tsc_ratio == (1ULL << scale.tsc_frac_bits)) {
++			pr_info("  Requested frequency within host tolerance; scaling not engaged, skipping ratio cross-check\n");
++		} else if (tsc_khz) {
++			/*
++			 * Verify: applying the ratio to the host TSC frequency
++			 * should give approximately the effective frequency.
++			 */
++			u64 computed = ((__uint128_t)host_khz * scale.tsc_ratio) >> scale.tsc_frac_bits;
++			s64 diff = (s64)computed - (s64)effective_tsc_khz;
++
++			TEST_ASSERT(diff >= -1 && diff <= 1,
++				    "TSC_SCALE ratio mismatch: computed %lu vs effective %u (diff %ld)",
++				    computed, effective_tsc_khz, diff);
++		}
++	}
++
++	compute_tsc_mul_shift((u64)effective_tsc_khz * 1000,
++			      &expected_tsc_mul, &expected_tsc_shift);
++
++	expected_tsc_khz = effective_tsc_khz;
++	expected_bus_khz = effective_bus_khz;
++
++	sync_global_to_guest(vm, expected_tsc_khz);
++	sync_global_to_guest(vm, expected_bus_khz);
++	sync_global_to_guest(vm, expected_tsc_mul);
++	sync_global_to_guest(vm, expected_tsc_shift);
++
++	/* Populate CPUID leaves as a VMM would */
++	add_cpuid_entry(vcpu, GENERIC_TIMING_LEAF, 0,
++			effective_tsc_khz, effective_bus_khz, 0, 0);
++	add_cpuid_entry(vcpu, XEN_CPUID_LEAF(3), 0,
++			0, 0, effective_tsc_khz, 0);
++	add_cpuid_entry(vcpu, XEN_CPUID_LEAF(3), 1,
++			0, 0, expected_tsc_mul,
++			(u32)(s32)expected_tsc_shift);
 +
 +	/*
-+	 * The rewrite slid the reference point, so the pvclock must be
-+	 * anchored after the 300ms sleep: allow 250ms of slack for the
-+	 * ioctls around it. SUSE's real threshold was 1/5 jiffie, but
-+	 * asserting that tightly would flake on a loaded host.
++	 * Where possible, make this a real Xen guest: install the Xen
++	 * signature leaf and enable the Xen hypercall MSR, which is the
++	 * configuration in which KVM's removed runtime CPUID update used
++	 * to fire, and plant a sentinel where it used to write.
 +	 */
-+	age_limit = (u64)__vcpu_ioctl(vcpu, KVM_GET_TSC_KHZ, NULL) * 250;
-+	TEST_ASSERT(tsc_now - pvti->tsc_timestamp < age_limit,
-+		    "pvclock tsc_timestamp should be fresh after legacy MSR rewrite (age %llu cycles, limit %llu)",
-+		    (unsigned long long)(tsc_now - pvti->tsc_timestamp),
-+		    (unsigned long long)age_limit);
++	xen_enabled = kvm_has_cap(KVM_CAP_XEN_HVM);
++	if (xen_enabled) {
++		struct kvm_xen_hvm_config cfg = {
++			.msr = 0x40000200,
++		};
 +
-+	vm_ioctl(vm, KVM_GET_CLOCK, &clock);
-+	TEST_ASSERT(clock.flags & KVM_CLOCK_TSC_STABLE,
-+		    "Master clock should survive a legacy MSR rewrite");
++		vm_ioctl(vm, KVM_XEN_HVM_CONFIG, &cfg);
++		add_cpuid_entry(vcpu, XEN_CPUID_BASE, 0, XEN_CPUID_LEAF(4),
++				0x566e6558 /* "XenV" */,
++				0x65584d4d /* "MMXe" */,
++				0x4d4d566e /* "nVMM" */);
++		add_cpuid_entry(vcpu, XEN_CPUID_LEAF(3), 2,
++				XEN_SENTINEL, 0, 0, 0);
++	}
++	sync_global_to_guest(vm, xen_enabled);
++
++	vcpu_set_cpuid(vcpu);
++
++	pr_info("  pvclock mul=%u shift=%d\n", expected_tsc_mul, expected_tsc_shift);
++
++	vcpu_run(vcpu);
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++	switch (get_ucall(vcpu, &uc)) {
++	case UCALL_ABORT:
++		REPORT_GUEST_ASSERT(uc);
++		break;
++	case UCALL_SYNC:
++		break;
++	default:
++		TEST_FAIL("Unexpected ucall");
++	}
 +
 +	kvm_vm_free(vm);
 +}
 +
- static volatile u32 vcpu_counter;
- static void guest_code_stable_bit(void)
- {
++int main(void)
++{
++	u64 freq;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	bool have_tsc_scale;
++
++	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
++
++	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++	have_tsc_scale = !__vcpu_has_device_attr(vcpu, KVM_VCPU_TSC_CTRL,
++						 KVM_VCPU_TSC_SCALE);
++	host_khz = __vcpu_ioctl(vcpu, KVM_GET_TSC_KHZ, NULL);
++	kvm_vm_free(vm);
++
++	/* Native frequency */
++	run_test(0);
++
++	/* Scaled frequencies, when hardware TSC scaling is available */
++	if (have_tsc_scale) {
++		for (freq = 1000000; freq <= 4000000; freq += 1000000) {
++			if (freq == host_khz)
++				continue;
++			run_test(freq);
++		}
++	} else {
++		pr_info("Skipping scaled frequencies (no TSC scaling)\n");
++	}
++
++	pr_info("PASS: All CPUID timing leaf tests passed\n");
++	return 0;
++}
 -- 
 2.43.0
 
