@@ -1,62 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794229949;
-	b=AR8UEC27jUhj+ekb9HVTMdgRysZJtZHKmg6PLwCCtqeP6b+1KLJ9ukUs43Y/Z3jGsczp
-	 tyZlDFVFDnePFhC5p8BEPBLyL0zEvf8+Ol93/12XLLlGEVOBr2pXARr8/LQjCo7Vsl/d6
-	 ysLBbbzffWU/lvyA1bmQp31QPM1BZBHDqfgcsVxNSEdFcm7W4W+M4MPHfIEWjZDLXn2+Y
-	 dzvyk0UW5LIjDIt1vM5uQidfJMSAd3x4KT+xptPRI+GOhlD1DHuUz1y2cI+KxtDA4wBCf
-	 NJEe5UbSq9mfU7ylksGIvKJ9Be5eT7kzfIhqARtd6eDK/TBoe2h11z425gKzgA4n9hw==
+	t=1794231072;
+	b=kzZl37a+FglJtDd3hbEQxcoXRX49IpGWFZ648qKGHeQP+Zbta4XTZS03iSXqjjFqgI6a
+	 uQwf6f12oFmZlbkjdeu4/3/UAr623CEqJFjxgSsRiwBY4ufjEVVWcHqvsYZFsEYldBAMs
+	 ZCfoIPCrYAzK7xDfL3DGWrhboZRqzTmVmChqt8tguu7yzJ2SPN81sJB8UR+Na+hZLTnHh
+	 f+v5hiahKSkMOmNXy0615nBqiOuMfahz3b+7Nz+YfwHNyoZtPT+eD/pCga/+JKLzQ5dhz
+	 uDZxvd/EgEB/o/atsLXXd+xqIGGCPT7FsQnHn1ufl58ZQ4LUK0UKgCjlf0SugLOYeCw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794229949;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=VcGX3S/ok2ofcwS3uJdO8rQXnNkquiVnumUqc1g1VFE=;
-	b=jT2siNO0rRqw1LYKZQylJY8KhIatIRVH7/Zr4JYXQKcQtd00thzsBKO1uMS7/i3A4NN6
-	 YP9qfCCrJcK6YSrfAfaKDuHWt5tMJHmF+fUVrmyMx36X2T+4UnoGU5/XSvv7EcsHp2meI
-	 BeOqaNRcFiG6i7VCbLQMOEz9C63mThPxGxNY5lSv3HIQWbJn11B353hiYeNmlVom6mBLx
-	 MF45khks5N+BBCcxnWd6bGw9U2kGgpsVy8PMrTNGftx+2j2oLt/01ciC1jwZCaUoPy/aK
-	 xQys0z7YyCoooe0Wc+oU/VOTgatYHbtKuABvRseyM54h7ThbKHDqWAPXitjXHrrwcxw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794231072;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=HZb1ecY9gAspjaczVb/ho/JkduHza/gfWZak6QZzsog=;
+	b=C6uDIIIoU9BiCJ0CV8DLmPkkg9RC2jB4EuePHMT8q5gxbCeylY8YJ0fzj/oB3NHuAk1W
+	 dxTiPYTmvHAqU/oKBDPaNHb7etKN3gXfrIIVlVVI5kEi3GhMHctVKPH995S+O2L3uKE6G
+	 DJznco/9A3kWPt2Z3vydT/zYOvGTOvVsa731fwZtCjSOGg7SMzvapZUvecq9ecxZyJ9RE
+	 sAqcXHb73ljluVRWhefXCvgJ6pQEXuI/rF1IQ/yTU4I6iutLx6nmTsNxC+X62Yw7vd0SD
+	 62LVSjDuPLA9oBL+cLV7hpWxIEVTV8Ps69FZY9K+TefwJQx4zMLPYIBELkkr7quXtyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TAPWF1vE;
-	arc=none smtp.remote-ip=91.218.175.188
-Received: from mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=moJaaXVs;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009E3606A31C
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 13:12:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 009E3606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907F7606A31C;
+	Mon,  9 Nov 2026 13:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TAPWF1vE
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9ZfmGyDfW24qGm7656Xt3E7F30kmlnVfQdHu0DS+Udo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794229947; v=1; x=1794834747;
- b=TAPWF1vE23T/rmSuzIaKjZULYiIASkCK5Il444WSwHX1hqQzfwlJhqS5SOswi9ALc/i1sO8y
- ZnQjxzIBeC54/HBDUrH2Dg5svQIEK8hfSoJEJRDclhZnrArh5V1IR9OsfarHkaGQhdwSyh8ToWL
- Oth2Wsq7bTs9vnwi8RsBOiTA=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 7a0e11d1b4e7a2f8;
-	Mon, 09 Nov 2026 13:12:27 +0000
-X-Mizu-Trace-ID: 7a0e11d1b4e7a2f8
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5c144eb2f43so3406e87.1
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 05:12:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEpJTAEdjm+eHJwp6bVrnjPPeSzSla/gX76yTHvYV3+dnDFmtTY1TlA8Jr7eAPQE9BLefU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8/bm+mVu9ah7LYvWtHKm1srEEm0+RFv2WALFHANe1ZRT5/K3dT
-	nn8IK3dBckrWg4AbCnL04YBM6gpJIBaHxS8CcozPbFndVkAKslEtXY3GaElnQU+PETEAeqdutVs
-	JGw0EOpMZxyURfgLGasLZVbHtDQQqI+DfsjAy9rop
-X-Received: by 2002:a05:6512:1109:b0:5bf:c3e1:532b with SMTP id
- 2adb3069b0e04-5c00b60a427mr195461e87.5.1794229945777; Mon, 09 Nov 2026
- 05:12:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=moJaaXVs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A331F0089F;
+	Mon,  9 Nov 2026 13:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794231071;
+	bh=HZb1ecY9gAspjaczVb/ho/JkduHza/gfWZak6QZzsog=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=moJaaXVsjzU7SL4CI8JBlVbPKjmyaTD3NHAgdTnwk/M1L60N+Lk5weuwkobiTd93C
+	 8s5kF6qwjOZc6FI/CH+6n9ves3n9Dt3ncPHme7MMz8CrOWrXu7GVA3alW12QVQxfFC
+	 dYdxN3at+z/1sifp3qbo3ReksK4F/0ytjastLvz2FzQpT5Hf4HIrH6DUDcYCRbwUm+
+	 dEj416YDQH6bI4b6I/NGuMzR1qG7vWeEqkoYkCakzFXeyTPSKb1bte6mOADwhhJ34m
+	 oj57425c6Psc1SXo2+31xoM4HAfQoI0isPU+xPj1eF0X/18EEWq+95be4Si8H/sog8
+	 62xe9bzzf6Bpg==
+From: David Hildenbrand <david@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+ David Rientjes <rientjes@google.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Georgia Garcia <georgia.garcia@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ kvm@vger.kernel.org, damon@lists.linux.dev, 
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+In-Reply-To: <20261105-late-2026-vma-flags-v1-6-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-6-0d3cd15ab75f@kernel.org>
+Subject: Re: [PATCH 06/13] mm/ksm: convert VMA flag tests to use
+ vma_flags_t
+Message-Id: <179423105176.12172.13163434370832642610.b4-ty@b4>
+Date: Mon, 09 Nov 2026 14:30:51 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,53 +112,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102141304.126883-1-steven.price@arm.com> <20261102141304.126883-11-steven.price@arm.com>
- <fa0ee5a1-4c49-4c1f-bfbb-c270dc4b6301@arm.com> <CA+EHjTy970AWnhYoZ5OqxQ8ojCAELeejw60y2NmpDsM_ZMdu4Q@mail.gmail.com>
- <06e52c9c-9026-4279-b8c0-53a54a667dad@arm.com>
-In-Reply-To: <06e52c9c-9026-4279-b8c0-53a54a667dad@arm.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Mon, 9 Nov 2026 13:11:49 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTzJ1O8=q0rL5CkLKN3CBDr=TkujEw_M-W0H=BJfmrTEzg@mail.gmail.com>
-X-Gm-Features: AclHuK9lv_i4f5zskQj2LbWryVS8Q4D5sdKCijE4VdtfsoeeW5x-cT5K6pQCDgo
-Message-ID: <CA+EHjTzJ1O8=q0rL5CkLKN3CBDr=TkujEw_M-W0H=BJfmrTEzg@mail.gmail.com>
-Subject: Re: [PATCH 10/11] KVM: arm64: CCA: Support runtime faulting of memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
 
-Hi Suzuki,
+On Thu, 05 Nov 2026 21:30:57 +0000, Lorenzo Stoakes (ARM) wrote:
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values where
+> KSM tests VMA flags directly.
+> 
+> The ksm_madvise() interface continues to take legacy flags for the time
+> being.
+> 
+> No functional change intended.
+> 
+> [...]
 
-On Mon, 09 Nov 2026 11:35:31 +0000, Suzuki K Poulose
-<suzuki.poulose@arm.com> wrote:
-[...]
->> applies as is. Only how the expected state is computed differs: for a
->> pVM it comes from the per-page share state rather than an IPA bit.
->
-> When you say, per-page, you mean per-IPA or per "backing page" ? i.e.,
-> can pKVM do something like :
->
->     kvm_ipa_is_private(kvm, ipa) ?
->
-> (similar to Realm) or does it need the struct page backing the "ipa" ?
+Applied, thanks!
 
-Per IPA, so kvm_ipa_is_private(kvm, ipa) would work for pKVM too. A
-pVM's page is private unless the guest has shared it, and that state
-is in its stage-2 PTE at EL2, not in the struct page. The host kernel
-doesn't have a copy today, since EL2 handles the share and unshare
-hypercalls and the new state is only at EL2, so the pKVM side of the
-check, a hypercall or a host-side mirror, is part of pKVM's
-guest_memfd support when that lands.
+tree: mm/core.git
+branch: ksm-7.5.misc
 
+Applied patches will appear soon in mm-next, followed by linux-next.
+
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
+
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[06/13] mm/ksm: convert VMA flag tests to use vma_flags_t
+        https://git.kernel.org/mm/core/c/4ec4530e
+
+-- 
 Cheers,
-/fuad
+
+David
+
