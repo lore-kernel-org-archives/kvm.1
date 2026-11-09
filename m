@@ -1,127 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794250144;
-	b=5V7UUDzn99vien6REdY/efz4EDMkvdippGfykysEaTVDBT1d1NOlH+Eg4i3gTVQU2tB3
-	 vDqMrIqUtOX7LXZiovaK9rnD1dDxwocC7bS/eznLx/AS7mJOT70EdzKCg3Ttgl7zEusGa
-	 uIfGn3zt2EzBkFH6Jdr1YTmEAPK63vUaXzNSE9OGOQVN5NwD0OlQh+Uv2lYYDhpoITPZD
-	 Ktjmp8nVjAJI1n4vgfUtMjM7C3Cmt8n90o/7Qg1PuqT88jOYNjgaCdmep+cGkXz2j6XhK
-	 hXbDGI91wUMexCm0yW4RGfU77nOzz2iDsFvnLBzY5aQtwWzkZcUhw9mnTonMbXolyvw==
+	t=1794250744;
+	b=t/FId4NeaF9S3DH3Muua0OVhYBF9zLef8vaIQ0ApIsKMwzoLholu9auqywG8d37pL2EC
+	 ZRoJhmNkIAmbES9SxQXKNiPnE5NfvhL88/McjQgR30Di91nRopXskCDkk7L680dfXy5eS
+	 2oKaixzXVvdRWB/E0EMx3KuPIQw42VPO3rlq0+valbogt25hAMdSilnFIDwTN1ugk+xAd
+	 mDNTmA4YWgAVLQOK0vG7rqzHPYHZJ/WPMXB/Sz19wc3OEnqbVg96rhyFk0FSR7PWwpIJq
+	 fd1/WhBfCJl9RN5stRAb/imLLHg3szMLd2BPFjuKqZnvHnNgdJAqTh7BhEtQ3+fl2gg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794250144;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=O+PQWQ9PbJFOCn9EB5efiBTAKX4GJUUBrxAtO9OF3Dc=;
-	b=cQA8Mhj9KmWzCY6NlVT01uOLO9Jb1jnZdsGLbjUL9bqVbCnZ8p9BWesJxULs12asc/0m
-	 pvjFi8gjIowZYwaXH1v1K4GsYT2HrfUnC7IchT2O6qWbetNQa524AFpPEMXnLOj5eUCUc
-	 FkgycgskMBj5PX2nkHN8yGbIrNkMexYqmJqYQME1U0qjrdkCejHchEr9ZSAZ8GZWN/DvF
-	 kvyRXO9WJjfc4iRrxGkT8zWZNE5meQZdSGKoHexPz16D8NfjzhvDPnolZEE4x3vALufBo
-	 6ns6S3QfHl4HsbrSfR2wyyNi9FvLRsmvahEiKOfIFJbeqg0mptVScp2ZYSM8S+2RqiA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794250744;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=LqNUCTwonD4qgQd7U3RjoH/3r5q1OfnLhIwKQqjeFFY=;
+	b=SEBnIGoRLuaZt0JRcGt6lhIuoYl9T2/4fjzAA3Iomp/+xCZ/J6Ym6sUI86ByF3Sce9VS
+	 F3js6Ja9LzJ+ZGOYXohAxGsNDLXPzS3VoOoo5g7ri0amXDM6Qdjevt60b2isj1c6q9AS+
+	 vueGQP7efVeXZe+WM6yg3EBg0MLou54OTFsUiKOoasBEkKLFiEEVMD9Ql50NuvhDkBC75
+	 gUMfSmJMFWf2nX4py/jCmiOpZ2I9MShqcZ31cNPmq2SQNZClmaaUfIjVEcbSh9xZpEU4F
+	 1z/VvmxAy5aEQqsKknXGsFHpm3w1RZvSD55aeyRfBlyVxNLfWbB4DClC/J5P4540DEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=PuTYdyOK;
-	arc=none smtp.remote-ip=209.85.160.181
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ke9yLAU1;
+	arc=none smtp.remote-ip=198.175.65.18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CFA606A331
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 18:49:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20CFA606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C574606A326;
+	Mon,  9 Nov 2026 18:59:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C574606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=PuTYdyOK
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-53cd0c8614eso7666641cf.0
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 10:49:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794250143; x=1794854943; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=O+PQWQ9PbJFOCn9EB5efiBTAKX4GJUUBrxAtO9OF3Dc=;
-        b=PuTYdyOKu7rUl19nMbVLJ6he+g7v6e//cAur3W6t4momB8sYNUVcG6lgvYQzXWRQd2
-         wePZJZy5/Izh8q/jhlELM4Aipu2Kq5puT9fASJ7I8RXck/tzsZK36x2w1kVB5L3uvFRk
-         yCZ8eBzX92sdtZMINMf4iRP4iSymdt3sV7+lf2q+Dsmme4JB4gladVLELQlWGhTX5UO8
-         5gjS4JxeWLhg0KwGwZu9rV52lCtsH+msY+e7JnZinD7YQ8GhOWkxw69O2Z8OZoKSY78S
-         rg/ompvsongIANmOMkI5ZtERdMKe9Hsz2Yso7Bgyp2VgeTgP3bwtobBH8NpvH4k6adr8
-         N8TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794250143; x=1794854943;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=O+PQWQ9PbJFOCn9EB5efiBTAKX4GJUUBrxAtO9OF3Dc=;
-        b=cMgpZvrk5iR2ar4yDjAVP7PmbmUQxN8MEeLJioQQ/oWIhAglhHi65YYfa2zKljP1l1
-         tVMErnVM4Qh8EMfR2+0/bYqWNkwm/R3f6T0YvcZLnmnMYd+V80BXGMu+/S0KxyiNe8fl
-         zOvOOhox4J/uB+zf3RQnusOEcjJSgb1tsckACbppFixvVsppm7itjpJY6kupCUYJgkVY
-         8pKWE729fQNFuUHqvIuIJ8AejT7qlYRSy7um/wxBLx7Ozb7/vUbZdkcXRCrqzY4CtSIA
-         qZ357gwfROlTfhonx2IDju8lDirTykxJzhtTl49V7SfsbHYVk7G2gFI98GuFe6SW0t3F
-         jblQ==
-X-Forwarded-Encrypted: i=1; AL+hErF6t02Jx4cWjB915Gdn1ioYOL5Z7w27AIxjmHRUUSOR5uUTR0Y4Gf1AMilICXAmInzFWyc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+eBnARjPtTs7GT4dzzuDnn4whXfGWeILCNJdZEtOsq63fW26Z3
-	94i9NXA5KWzLFhA2e58XVwGgddHaWW18s9bv313AYDUQiA4uXiyqHckKu/YvHP+EBHE=
-X-Gm-Gg: AYBFou2Wi4tnj7Jy86jtsik5sDBnnyMzDNhUJdWDkx1YERyAuxTvYgGzj4BD5H6T9RK
-	37teGYKs0ez0XzjP00s7P2PmKr+IZjtj2VeOuDkvsLv7mtbASaCxOWGDQxaYS7Sbq9Sl8S3XSx+
-	qsbR+UpheExrIUgPRbpETgjGnPStsDIqFP3umPfM2JV0WYl3SufK1D7QaclgnJcW3OQ7RyzkLqZ
-	PgUZen1QqWXITwtDqyzKdl2tHhXoPUZSwR7qU33zDywM+hl9JN6MqM3TPH/7RfvbUu5aHH0snYY
-	vgUZU4VZfblpOa+xysxFzwJtu7L3Qrm4V9uPCMrIKRcAufZD4VBO+1QMCqp5pUI73XIGkVl/ogq
-	kT+W+hCN6B9xPySJga50mhIShnC1zqfP8YJJ3QXowfSXb5N2WHUVFlKzEeee4D0rZKQloiBrhJA
-	tmr6/bjp/QcekP03qTLjdqh7T80WzvAoZV3Mq0ATKZvrqvBgEelea+G79CWdzBKveHPCmNENnfT
-	4P1s4k+CZyIGl42kYlLQUYUlTpCDnUl0egRYCBUtONADr6Q+JXqX2k1018l3eE+jUYUAowaH4lT
-	Yj1xzxw+Q2V+Fa43QUtW+8P8Yre8lSgZWcUJn1zj/RbyJAltSYh50eIIf0DPRmvgHQt+G7wvy1Z
-	07ZWmQg+/FbwGrvCzIiD2DehiXrLjPo4=
-X-Received: by 2002:a05:622a:40e:b0:536:3600:f0af with SMTP id d75a77b69052e-555253df92fmr3996711cf.7.1794250142846;
-        Mon, 09 Nov 2026 10:49:02 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550af60493sm3967801cf.4.2026.11.09.10.49.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 10:49:02 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xQUQP-00000002A6b-35np;
-	Mon, 09 Nov 2026 14:49:01 -0400
-Date: Mon, 9 Nov 2026 14:49:01 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Jacob Pan <jacob.pan@linux.microsoft.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH v8 12/15] iommufd/viommu: Allow PCI TSM backends to
- provide vIOMMU operations
-Message-ID: <20261109184901.GQ663069@ziepe.ca>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-13-aneesh.kumar@kernel.org>
- <20261104152351.00002565@linux.microsoft.com>
- <20261105004934.GE3889730@ziepe.ca>
- <20261105091622.00004a9c@linux.microsoft.com>
- <CO1PR11MB48352506BB91C461F25147098C762@CO1PR11MB4835.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ke9yLAU1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794250743; x=1825786743;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Zl86r/WqsMRqvdcxZq1TAYG1DXcTzNj8CbVMSFqnAlk=;
+  b=ke9yLAU1Koh7ur8iXbT4esSkdUcQhtW+zMVm12vwNQukGwX56rVPPU2C
+   U5gaXF1nU5QlUXoDKvITbc+e+XyHjTVIJCMamcRVPFARdz30C9YVSXCcs
+   3PW6ZmGJ6N4vJDZsMg3TpVG/dHzyAdPT+Sa+sVZgP4FXsQBlagfppHrRC
+   fSTzBlMiTsyiUpr2pZD1AJb7KMdBOv8qo+BaFip60JgnOpX/+LLCDjPBA
+   qE+8AzXf3k4s+wvwpoyx3elq036ccbezcqfwZEI4pjKtBLnGs6ANWRJRW
+   4XZUeNCZeYjDcpoyi2pxucl/xvQ/TjcpaanQ69dhan09lkzjUL2vhD07/
+   Q==;
+X-CSE-ConnectionGUID: RjIMUTa7RoCed+h+BsGpgw==
+X-CSE-MsgGUID: dbWGMxgcRNGh9PKDkG+aUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2995999"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2995999"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 10:59:03 -0800
+X-CSE-ConnectionGUID: l7OWGRkJTTaBqE69Dgk0dQ==
+X-CSE-MsgGUID: G1svxf/VSD+X3tvVbc+Msg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="7961067"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 10:59:02 -0800
+Message-ID: <c2844568-f8f6-450e-a718-1e9e3b7b3e4b@intel.com>
+Date: Mon, 9 Nov 2026 12:59:01 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -131,60 +72,124 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CO1PR11MB48352506BB91C461F25147098C762@CO1PR11MB4835.namprd11.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/18] KVM: x86/pmu: Add PMC bitmap accessor helpers
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-5-zide.chen@intel.com> <au4kyULjUYdqbfIq@google.com>
+ <531bd088-dc5e-4b2e-953a-6d9d6f14b61e@intel.com>
+ <CAO9r8zMs+aBPN-w7L3nZxwVV-Dr2f0tBYBjicDsdYVp_Mc2AWg@mail.gmail.com>
+ <e977b107-7762-46d3-ba31-832eb9ae609c@intel.com>
+ <CAO9r8zPVt++jgZD3-Jd-DYKMjYyAfUuQkvEXD4pKqe0bdYE29A@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CAO9r8zPVt++jgZD3-Jd-DYKMjYyAfUuQkvEXD4pKqe0bdYE29A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 06, 2026 at 08:03:48AM +0000, Tian, Kevin wrote:
-> > From: Jacob Pan <jacob.pan@linux.microsoft.com>
-> > Sent: Friday, November 6, 2026 1:16 AM
-> > 
-> > Hi Jason,
-> > 
-> > On Wed, 4 Nov 2026 20:49:34 -0400
-> > Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > 
-> > > On Wed, Nov 04, 2026 at 03:23:51PM -0800, Jacob Pan wrote:
-> > >
-> > > > I am thinking MSHV/pKVM can register an assignment-only tsm_dev to
-> > > > leverage this? Could PCI/TSM support this role without
-> > > > device-security?
-> > >
-> > > It is certainly not what TSM was originally imagined for, but with our
-> > > new arrangement, yah maybe so?
-> > I will rebase on this set and send out patches for a detailed review.
-> > 
-> > > TSM basically just becomes this weird overlay driver on the PCI device
-> > > that does stuff. Some of the stuff it might do:
-> > >  - Register an attestation subsystem device to do SPDM
-> > >  - Register to allow iommufd to create a viommu
-> > >  - Some status sysfs ?
-> > >  - ??
-> > >
-> > So we may expand pci tsm to have more than one role? currently it has
-> > one.
-> > int pci_tsm_register(struct tsm_dev *tsm_dev) {
-> > ...
-> > 	roles = is_link_tsm(tsm_dev) + is_devsec_tsm(tsm_dev) +
-> > 		is_assignment_tsm(tsm_dev);
-> > 	if (roles != 1)
-> > 		return -EINVAL;
+
+
+On 11/9/2026 12:07 PM, Yosry Ahmed wrote:
+>>>>>> +/*
+>>>>>> + * @mask is expected to be a scalar unsigned long derived from pmu->pmc_exists,
+>>>>>> + * which is already constrained by KVM_MAX_NR_{AMD,INTEL}_{GP,FIXED}_COUNTERS,
+>>>>>> + * so iteration up to KVM's maximum counter count is safe.
+>>>>>> + */
+>>>>>> +#define kvm_for_each_gp_counter(i, mask)    \
+>>>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_GP_COUNTERS)
+>>>>>> +
+>>>>>> +#define kvm_for_each_fixed_counter(i, mask) \
+>>>>>> +    for_each_set_bit((i), &(mask), KVM_MAX_NR_FIXED_COUNTERS)
+>>>>>
+>>>>> These are not used in this patch, are they?
+>>>>>
+>>>>> They should probably be introduced when they are used. Also, do we
+>>>>> always end up passing kvm_gp_pmc_mask() and kvm_fixed_pmc_mask()? If
+>>>>> yes, maybe we should pass in the pmu here instead?
+>>>>
+>>>> The intent was to group all bitmap accessor helpers together in this
+>>>> patch for easier review so that the big patch 5/18 could be kept to
+>>>> mostly mechanical replacements.
+>>>>
+>>>> But if you prefer introducing them on first use, I'll move their
+>>>> definitions to patch 5.
+>>>
+>>> Yeah I think it's clearer to see what their definitions are with their usage.
+>>
+>> OK, then I can move these two macros to the next patch.
+>>>>
+>>>> Regarding passing 'pmu' directly, I initially implemented it in this
+>>>> way, but I can't recall why I discarded it. I will take another look.
+>>>
+>>> Thanks.
+>>
+>> How about these? With them, we can remove the {gp,fixed}_mask variables
+>> that you pointed out in your review of 5/18. The APIs are more
+>> complicated, but the caller code is much cleaner.
 > 
-> Not sure what'd be a proper name for this, but it sounds to me that
-> it tries to over-abstract something into tsm. The reused logic related
-> to assignment or viommu is relatively small, so the other option below
-> sounds better if it can work.
-> 
-> Or it may be the original provider framework that Aneesh proposed,
-> so tsm/MSHV/pKVM can each register its own backend...
+> I don't understand why we can't keep the macros as-is, but just move the
+> calls to kvm_gp_pmc_mask() and kvm_fixed_pmc_mask() inside the macros?
 
-That is definately undesirable for TSM
+for_each_set_bit() requires a pointer (`const unsigned long *`) as
+input, but AFAICT a loop macro cannot declare a temporary local
+variable, nor it can use do { ... } while(0). So something like:
 
-I think the very best answer for this is to get the viommu from the
-"kvm" fd, I just don't quite know how you implement it..
+#define kvm_for_each_gp_counter(i, pmu)                              \
+        unsigned long gp_mask = kvm_gp_pmc_mask(pmu);                   \
+        for_each_set_bit((i), &(gp_mask), KVM_MAX_NR_GP_COUNTERS)
 
-Maybe just register something like a notifier chain where the struct
-file * and the viommu type value goes in and a viommu object comes
-back out?
+It compiles in current code, but it may cause a few issues:
 
-Jason
+1. It fails to compile if called twice in the same function.
+
+ kvm_for_each_gp_counter(i, pmu) { blahblah; }
+ kvm_for_each_gp_counter(i, pmu) { blahblah; }
+
+This would result in a redefinition of gp_mask.
+
+2. It could fail to compile or lead to subtle bugs when used under if (...):
+
+if (pmu->version >= 2)
+	kvm_for_each_gp_counter(i, pmu)
+		foo(i);
+
+which would expand to:
+
+if (pmu->version >= 2)
+	unsigned long gp_mask = kvm_gp_pmc_mask(pmu);
+for_each_set_bit((i), &(gp_mask), ...)
+	foo(i);
+
+>>
+>> static inline unsigned int __kvm_find_next_counter(struct kvm_pmu *pmu,
+>>                                              unsigned int base,
+>>                                              unsigned int max,
+>>                                              unsigned int prev)
+>> {
+>>         return find_next_bit(pmu->pmc_exists, base + max, base + prev) -
+>> base;
+>> }
+>>
+>> #define __kvm_for_each_counter(i, pmu, base, max)                       \
+>>         for ((i) = __kvm_find_next_counter((pmu), (base), (max), 0);
+>>      \
+>>              (i) < (max);                                               \
+>>              (i) = __kvm_find_next_counter((pmu), (base), (max), (i) + 1))
+>>
+>> /*
+>>  * Iterate over all general-purpose or fixed counters supported by @pmu.
+>>  */
+>> #define kvm_for_each_gp_counter(i, pmu) \
+>>         __kvm_for_each_counter(i, pmu, 0, KVM_MAX_NR_GP_COUNTERS)
+>>
+>> #define kvm_for_each_fixed_counter(i, pmu) \
+>>         __kvm_for_each_counter(i, pmu, KVM_FIXED_PMC_BASE_IDX,
+>> KVM_MAX_NR_FIXED_COUNTERS)
+
