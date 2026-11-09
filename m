@@ -1,49 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794224439;
-	b=RV6f7VFiMt4ACZRNdoDPDhaC6MfJpzHqNPPMHR8y9tDlCvL6LE1nuSsV+lvlYpYcHjjJ
-	 wgaXjXwRmDSNvsf2HuvIh1TrO4/Pv9amJ+CsMIw2CjaKnrFNJ+wTacXugNSDWJrKQ1R3z
-	 3DG4QXYdJZZYQh5OCYilDDWPxpEV1bvXwGewJDDI9KlO02d5+1RG3u9ZNNM7moYpduhGP
-	 jEk2ZM8efei0arQhTSeQMNBI5ZlZUE310k2HzNzTrlLa5RRF2CRDF0Z8ZbH7OgaqMCub/
-	 V7HQjFbzm5sLdflOGwXTqVaRX9lnXUYVsycb1CsFRav/0x4G3OzQB6kfiPMc65K3k7Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794224439;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=P6FEhudR6ogRTinDCF4ByfUrAD0LKnaB9jVuLbde22U=;
-	b=YrAOm4kU4hLq8yJBljy72C3v4yKucSx6EDG5D6hGv6+UykDcUz1AbdbLETlhqtKtpsZt
-	 jJ5Zfkxt6MAQqEVuMSVPQF8YCwMUzxWMWUhnaJ2+hs9eOosjh3YT7iQBDl8xNyeyGjVM8
-	 8pGzhJK41cQMMZAy0JH/0qJm3Jlr19G2XnpyvmLXCcRz9m4HQJpF0ayhkblRju78YeDyJ
-	 u3FWMunCrV7WW40uHsrGwEHbKdiJa1o/aX0/p+3pZdy6b29xa0+BSF14LZXSrs0sm8vQu
-	 urKXnwRgRNe7hNBQKExzN7PqoZKcJ3QfN2fypXuSA/FjEq1KoZd4fht3yhSw3zPPKEA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=NJbxBxRz;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD66606A322
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 11:40:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BD66606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794225170;
+	b=JIOtqglJQnrGLo3wy60tXWJn8lhe8tmT1iTS8V+ehpIJZFyH7udwEQ/CXtxNfPtEhKgw
+	 /ESCqZbrzTxi/U15Qg4YUHv5pw+WLol9Y09GVnL1dd8TcEHHba0wQI/bd/Q2MY/ox5MLm
+	 Smu8lpClcxp6KhbO5EgjXBOVGPM+JtXRaCS8crX3y1lMEq/pN9m9xGRqKGc4Af/72Qabv
+	 yN56UetUUH7xEaI9755TmmiYzzID9vGR1oV+cbDW3V1N5TN/E8MHTOjPU/MdMwnvFTBxl
+	 VxOnNN0Q5IXSXPx+xj6LnvEDLp2zCh/rwCA8b4ngJYKKafzOueJvaTs3IvZ8d7SsduQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794225170;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:Date:
+	 Message-Id:Cc:Subject:From:To:Content-Transfer-Encoding:References:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=6QzpL0g8z9bS7RE0/qjXvS3AMH2NIGaqGEcTDCO/PQg=;
+	b=kNPAizwzjMGIkaHI83NxV6odiegHr9O+um9dCMz+5SEpA5B98rCiPS4l1PNk5itEqpFT
+	 c+8GBiGAa10GcgcaDfov7oPKegp631SY6GfA2SqUb2/r7Uvu4EasLvynasXDjtxAIJ+pw
+	 saJs2iggdAnizG8jxNjfHHHVpORf6LuUERIpTz/DEePLZDGkSk6g6p5/0B/rLRtpiMFah
+	 cBHrljWOyqYA/rjScfbYj75YpZjtpdoKKrW+TiSU46mI8+FpjVjcEZ6c9zI+09mzfND5R
+	 nimoR0IpHaKiiI+49l/0w+APKcl41kixDw2axZZCil/S/TT7KdX0JW/ipHwmcmY3lnA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=U8Nxj9Pe;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.42
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011042.outbound.protection.outlook.com [52.101.52.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B4E606A321;
+	Mon,  9 Nov 2026 11:52:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04B4E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=NJbxBxRz
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1E811516;
-	Mon,  9 Nov 2026 03:40:34 -0800 (PST)
-Received: from [10.57.60.25] (unknown [10.57.60.25])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18CCA3F85F;
-	Mon,  9 Nov 2026 03:40:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794224438; bh=uO5FVvRUavaqZi2S2bczdX18f8tYe8+iWi9xblGgeKI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NJbxBxRzdd9XX/idxIQIYdRoG7/DHFZ2pE2GGmkGH11OSsGFKQAOucsXjcBgn64Ys
-	 KH6pduBr3QDl+RRD1jv5BRgYSIU+hbhP9fXHS6r708/NWaLzmxOENIoj3DXysni5fv
-	 k/Oe8QgVzWzSPmmLkWCTkm+YECh4nzcVbC9dW7/U=
-Message-ID: <641e8e57-a0b4-498f-b0d2-b8250802cf67@arm.com>
-Date: Mon, 9 Nov 2026 11:40:30 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=U8Nxj9Pe
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B/iZOORejtaFWixUEjjvqE34oJmsBL6Y79Kt0Dws9nyo2oibSeiW0IkRVRwyAkEfB7ciODTKUL0fcQuQGN9kQVmN0zqVGj3bWryZPRY3qzGyeXiXNJOE59kHinu9euK7ZgmPDUxKKqUZ3xPWyUycqNR3RedOsGDRVklEfXJ5l9rEFvE9TyOlRSWyWRl/6UjrZyzFwn8qe7s+uDbs98h4zjc6CLvq/cch+OMmX1GOby4taaIFymPdWee2JUuBRzdrFz+AJn2AGZIxCQ5rok8YX2+MpdSVwc0Z9AQa5w4Fq7A5t9vYr1Hdac/WI2B4kUhIo2/qMa7T9CoX3R9YVSJvbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6QzpL0g8z9bS7RE0/qjXvS3AMH2NIGaqGEcTDCO/PQg=;
+ b=u0ROis2z0/PDOyRh9aLj2OAECcloHGq74ila8LaorBbcnyf9DVR2/gDRU2N463W4Qtfq6oo7ZZBa/vGyyteCyE9L4lHc4DOl80Udl8JDqNajhQ8KwkRm3iBEmCOMcB4wYqVLl12PN82QpVjR8CegTJ43ksYnL/PcesWzalQgDIMbtukfMnLQSY2Jj2FcRtBbn9+ii/GiHQZHPAQJxzm7mKX2s4otTTXq3ckfmokDIwwhbTAxahM/53DyRMYqeA/91Kx6BrHqTl3I+YwIOxJypLyDu7m40Bc+3dgq6PZmTOeo9HxBY5iaU/EPeNPgIOHuQOvHWN8/4Y+ce9kr5IgQQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6QzpL0g8z9bS7RE0/qjXvS3AMH2NIGaqGEcTDCO/PQg=;
+ b=U8Nxj9PerxqKg6NkyYzwhloR+QCZq5E5bPyesmjlSEfLfE5QoH1mRPkETbsaRE/atTdzmmu3Lh4/6OpmjEZ6PN58o9nXYaOZsPOSZA1jcPGIehXyogGdrJPeZvYH58B8VfgTIb/B6JOxtAkK/TacQ+lHAcosDa0bvI0J5rUlFha4hNgpw6tpm9zJWJK6Likk+Po6rGy97kRWov/1ji/IKTIeaWf9IylgTYBez7UrhVSjdkoPZDsfsmFOZ/coLDlvU9LhHVX44YvwgLx/wP/b6xZsPvgCffeSbGIh6C00yR13MdnAeHNhGOcM2q4BbXWLjcM7NTcAsE9V4PEMT+EEWA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by CH3PR12MB7713.namprd12.prod.outlook.com (2603:10b6:610:14d::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
+ 2026 11:52:43 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 11:52:43 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 20:52:40 +0900
+Message-Id: <DMQNQJRORDDH.2NFX9UZO7SAK9@nvidia.com>
+Cc: <dakr@kernel.org>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+ <jhubbard@nvidia.com>, <apopple@nvidia.com>, <joelagnelf@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>
+Subject: Re: [PATCH v5 1/9] rust: pci: add internal SR-IOV enable and
+ disable helpers
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Simon Song" <xinmengs@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+References: <20261030171230.196717-1-xinmengs@nvidia.com>
+ <20261030171230.196717-2-xinmengs@nvidia.com>
+In-Reply-To: <20261030171230.196717-2-xinmengs@nvidia.com>
+X-ClientProxiedBy: TYWP286CA0025.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:262::13) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,374 +113,172 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/11] KVM: arm64: CCA: Prevent memslot modifications
- after Realm creation
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-10-steven.price@arm.com>
- <sashiko-outbox-193708@kernel.org>
- <9489ebe7-4c75-4229-811e-3f618028d367@arm.com>
- <a2dfb2ad-7c52-43e1-8b77-cacb2fa00c05@arm.com>
- <0d5a4b59-f38c-4c1d-a59e-202e7efb4b54@arm.com>
- <80a956c7-b2b2-411e-99c7-d703c92f3c34@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <80a956c7-b2b2-411e-99c7-d703c92f3c34@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CH3PR12MB7713:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb9b3222-9fcd-4688-a765-08df3e57f6b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|23010399003|376014|7416014|366016|1800799024|18002099003|22082099003|6133799003|10067099003|4143699003|56012099006|11063799006|261028144727099003|261026121527099003|261102123227099003|261022115727099003|261022113327099003|261022075727099003|261022105027099003|261021130227099003|261021121427099003|261021123027099003|261026140227099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	woPwEWUrTNk7P6wakLiB/imQwNutBVgVy/mGm5wM6plxDWWvkLFWG7UllKpAeugY2mAbQ0y9cUU0Tlt6h1eWRsbsS9XLAzYWKRCz/B22xfAaO8YzNU+/Q8kt6i2bIz1+oMNckjf3DZeJp/2aDn/+RFE2mzywrAQJrwwi3eFwjNJh7Wikv6zLyTFvePubLJysmw6TEGFChyoEohCh0fREVwekw57gGSNv8HnJOf2zYUO4cqrS5gFcgFgjNakBru1mA7/UlGKpWc7u4bC6r9plusS5PlwbVTcDxUAqQab2e5XD8tP37G8dOc0kqWEyikIxcZb3mu6vxeR6zuB/o3ItH+iuBuqoTU3LJTdQU3hxjYAGkzCM02U6FlVV+D+SSh+0ZOWmddyBHhcN125ynoO5HZzcSIGfUVY59dcHBMYRdl1KbszyxpS5Dy6oC4D/rpRuzRYtus5q10H5QcTjn04PzFqHuqC6qvs4eLlV4eut+cHrR17/qdW4fewqt/7gAQomASWR+4z4A33TnMh9DpNi6XO8DQPI4OdYmG7QDjyV6iaCN5QuPdv1FeKY/GXK7igRXtaQaXMnMuZRt1lSa4/ZD7Rz7G5SqaJM8cpG0xSeWUoL7EqJDteapcMusKd/dYl3kGY56E9SuNWqid8EB0tPcafnYfTjeMy07LmIJtU1N9E=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(376014)(7416014)(366016)(1800799024)(18002099003)(22082099003)(6133799003)(10067099003)(4143699003)(56012099006)(11063799006)(261028144727099003)(261026121527099003)(261102123227099003)(261022115727099003)(261022113327099003)(261022075727099003)(261022105027099003)(261021130227099003)(261021121427099003)(261021123027099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZWh4WVRaK3NPQlFxaHc3QUpUV3VpS0RoVkVuT3RTenBmWG42S3c0WFNrcDhU?=
+ =?utf-8?B?empQVEYweEdTZHo3MlNnZE94REdqR1BEMHQvSTJjNDF3eURvdUVhcm9seEF3?=
+ =?utf-8?B?b2hsbnY0OEtxS2puSW90ZC80QmsvcVVPRkliZzZOMUExSkhrQmJQRThHZE56?=
+ =?utf-8?B?aHRNRk13UDNRNkZxNzhmNExPT2xWZHc0d21mMGZwQ0FvSXdjT3NTWWhtWk1Q?=
+ =?utf-8?B?OUtCWGxrUG8rVG9DbXh5Ym4xanN0MzZsM1h3eldUc0NlVGdpdDBwd0ZEQk5r?=
+ =?utf-8?B?ZnV1WGQ5TzJuUjgwWGMycXkySWNmY1lhbE9aVWZaSXcvWmhVTG1vRi93QTJI?=
+ =?utf-8?B?T0ZnN2lybDlRMHVUMTdySi9kc2wrWnhPSUVhc0E4U1JpSkM1aVIvMnc3SnNN?=
+ =?utf-8?B?MU9ocmtQMjZZcHZlOWtlRzg2OUN2aWcvN2VGNEduaWE2S3J6Qm92YUg4Z0Ex?=
+ =?utf-8?B?UXRvQUZldjJGaGE5V25Zc0hJY2YrRkVsbVpFYXZqNjRFQjNYZUJoZU5zSkxy?=
+ =?utf-8?B?RWJtYUU3MnB4U1IwSndmK1BpZXI0QU9QeEk2Y2cva3NXdjBCanNWUjN3V0I4?=
+ =?utf-8?B?TEU4ZDkrSHd3UzNoRUhldUh6bHZZQlFIUFN4dmNiTXk0a09HRzU3R2dJRy9L?=
+ =?utf-8?B?Z3VmVkkxRXBReTBxTitCYUFiUGpUTkhNaHNab1ZsdFVIMVN3aE5abEpnVGE1?=
+ =?utf-8?B?eGhGQ09ubjRUOVh3c3Z5MTU1VFp0NVNuT3VvMXdXZmVRTXoxSU03MHhwR2Yr?=
+ =?utf-8?B?Nk54b1lac1RVZERpYUc4RUNmUGUyaDc2Y2p0bVdZNWtuSC9XT2x3aVEzb2tP?=
+ =?utf-8?B?UndZdGx6L3VNQTkwbFdrVURUd3UzVWl1TGM3NXpkdDluU1N0YnlrM3hzNXZj?=
+ =?utf-8?B?ekVHd1dJZUlKZEJyRHoyYSt0NTZ0RVp6MEtvb01hcEJxT1VzVXIrVzlwOEdq?=
+ =?utf-8?B?dVNxbDA1Mk0vN2pSSnBrTmp5QVpVVXRDVzI0RnNlcXZxb3VNbGlaZkVtb3V1?=
+ =?utf-8?B?WGg1MGhrUVNDYVN3UTh1TVBNa090ayszQmk0TkJYTVNDR3Bnayt4RFN2K05u?=
+ =?utf-8?B?SzJCakV2WktJRkpLVFdFalRkQjRLQUJ3NE5TaURrWm91bDRzK1dqalJnMC8w?=
+ =?utf-8?B?M0tSUWZkM3RXZEhLZ3Q2NU9RTEo1VzI3NUsvd2RPdGliUlROODZDcUdVOVFH?=
+ =?utf-8?B?UXd6K3g3cXl4YWhmRStNWjNQbXc1aDZvMDE0bnhFQnBqWXBxaE1aRUc1MWZ2?=
+ =?utf-8?B?T1VyTk5MZnRVYjlRVTdkS2FmM0VjK3h4L3F4TUdwMWQ5QW9LbXpJcGtFM2V0?=
+ =?utf-8?B?MzNrNzAyNDZodWdSK3lUWCtwRGF2Z1d0dVVPU0ZrM0RIVDJlcFNlU28rdUNy?=
+ =?utf-8?B?TnBUSzM2R2tjSzBJMTZ4dkNmTlphTG1OVHUyMkpJUlRQODBya2c0ZDZOSFJL?=
+ =?utf-8?B?aFpjcDIwV2I4UU0wYmZSbXdaOFZ5RGlFQ1E3UEtieXJsNkVidHZqNnZNdjVL?=
+ =?utf-8?B?WXNNMDBzOVRNSE5kSTBTcmxxUEhoVk1HZDBqV2xkRWh5RGlKMTRmb05EWHFR?=
+ =?utf-8?B?YmJjSkpWdjJtaE1kSFNEY1FPbXhrVWhJbjlsY3MrMGVoUElKdzJJTnVWVTB2?=
+ =?utf-8?B?bW8rMnUxV3MyaHJaczYyTStTVnl4c3RJL3ZGb25MMTF4d2JNbVIwOHRBMkdZ?=
+ =?utf-8?B?WjBYY1d6NWVNRXFvVXFtTm8rR2dodXV0RUV5VnBqT0hiTTRIRitjUHN3VjZs?=
+ =?utf-8?B?N1lqVnBPNmFYWlVXTlJMZ0dWZkF3YzlBRGIwV25tVEFZZFNwZ3h0ZFVPbU1E?=
+ =?utf-8?B?Mzloa0t3NUMyVmloVWJ6WTIxQU9zTkxtdktPY0FIUVE1Tm5KV3JxL2lxY2tZ?=
+ =?utf-8?B?VjQzNXYxOENrQXVNOUtSVmVlbVU4aXJvN1NHUHBZWDdWY2ZVNHhaL09kcVZP?=
+ =?utf-8?B?OU52amdDKzNEV09td2tMbkFvMjM4RzVCMmxYMEVndUR6RE9OY3EwZjh3cC9q?=
+ =?utf-8?B?d2NUSUQ4RVByNE10dTFkRHRmR0lXM3FuN3MxUklkTVkyVzR4UktSNmtEZ1lK?=
+ =?utf-8?B?UkZmZzZUVTdoL1VTNGxRUXgvOG1RUHJXUWFYTjIyS09ER005ekxScmJFSVFr?=
+ =?utf-8?B?RncrQ01YSnZwd0M0R01adFlnd0RNa2NxY1BqUjdVTDZHUFpZbzYzcFNjUnAy?=
+ =?utf-8?B?ems4NkJQRmJrSm5udzRiKzdzRFBXZjIwUUlGcVpaSks1KzRlOXhxOG9CUEhL?=
+ =?utf-8?B?SmdNRlpGNHJ1TEdUSEYvQ1NtQmZjTDVpUm50dnJvQVRXNkZpNWNxc3pJOGpF?=
+ =?utf-8?B?b3RuQW15a0FBQ1U5THZpa1Iyd3NNQnNsa3QyVW5OdytqQVo3K3FaRUxINnd3?=
+ =?utf-8?Q?44G/LpDg5QRjTygfwvXpwJrIqz6kTSXamRtQ4vTFwMqok?=
+X-MS-Exchange-AntiSpam-MessageData-1: NOV8XJ7KQEVdiQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb9b3222-9fcd-4688-a765-08df3e57f6b2
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 11:52:43.4448
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CoLVZU+Qonnb2V4fJYbvIik/mg52Nc8DU0me0SYEYX91/l+4xONwl0V1itvtVoSgYCBtSr03njWq6uUU2ys6cA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7713
 
-On 06/11/2026 16:40, Suzuki K Poulose wrote:
-> 
-> 
-> On 05/11/2026 17:31, Suzuki K Poulose wrote:
->>
->>
->> On 05/11/2026 15:06, Suzuki K Poulose wrote:
->>> On 04/11/2026 11:15, Steven Price wrote:
->>>> On 02/11/2026 15:50, sashiko-bot@kernel.org wrote:
->>>>> Thank you for your contribution! Sashiko AI review found 1
->>>>> potential issue(s) to consider:
->>>>> - [High] KVM: arm64: CCA: guest_memfd memslot delete rejected after
->>>>> Stage-2 unmap
->>>>> -- 
->>>>>
->>>>> commit 5106402397c36eec1e5fa59a5bb2c5adf4ee2aa8
->>>>> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>
->>>>> KVM: arm64: CCA: Prevent memslot modifications after Realm creation
->>>>>
->>>>> This commit updates kvm_arch_prepare_memory_region() to disallow
->>>>> creating,
->>>>> modifying, or deleting guest_memfd-backed memslots once a Realm has
->>>>> been
->>>>> created.
->>>>>
->>>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>>>>> index 51fda7b2ff7f3..eb8c5f9e9791d 100644
->>>>>> --- a/arch/arm64/kvm/mmu.c
->>>>>> +++ b/arch/arm64/kvm/mmu.c
->>>>>> @@ -2862,13 +2862,28 @@ int kvm_arch_prepare_memory_region(struct
->>>>>> kvm *kvm,
->>>>>>           (new->flags & (KVM_MEM_LOG_DIRTY_PAGES |
->>>>>> KVM_MEM_READONLY)))
->>>>>>           return -EPERM;
->>>>>> -    if (kvm->arch.vm_flavor == VM_PROTECTED_PKVM) {
->>>>>> +    switch (kvm->arch.vm_flavor) {
->>>>>> +    case VM_PROTECTED_PKVM:
->>>>>>           /* Cannot modify memslots once a pVM has run. */
->>>>>>           if (pkvm_hyp_vm_is_created(kvm) &&
->>>>>> -            (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
->>>>>> +            (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
->>>>>>               return -EPERM;
->>>>>> -        }
->>>>>> +        break;
->>>>>> +    case VM_REALM:
->>>>>> +        /*
->>>>>> +         * Once the Realm is created, we cannot modify any slots
->>>>>> that
->>>>>> +         * could be providing private memory. i.e., guest_memfd
->>>>>> backed
->>>>>> +         * slots.
->>>>>> +         * TODO: Handle trusted device private memory slots
->>>>>> +         */
->>>>>> +        if (!kvm_realm_is_created(kvm))
->>>>>> +            break;
->>>>>> +        if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
->>>>>> +            return -EPERM;
->>>>>
->>>>> [Severity: High]
->>>>> Does checking kvm_slot_has_gmem(old) in
->>>>> kvm_arch_prepare_memory_region() run
->>>>> too late to prevent Stage-2 unmapping when deleting a guest_memfd-
->>>>> backed
->>>>> memslot on a created Realm?
->>>>>
->>>>> In virt/kvm/kvm_main.c:kvm_set_memory_region(), non-delete changes
->>>>> (KVM_MR_MOVE and KVM_MR_FLAGS_ONLY) on KVM_MEM_GUEST_MEMFD memslots
->>>>> are
->>>>> already rejected upfront with -EINVAL, so kvm_slot_has_gmem(old) is
->>>>> reached
->>>>> here when change == KVM_MR_DELETE.
->>>>>
->>>>> However, in virt/kvm/kvm_main.c:kvm_set_memslot(), KVM invalidates and
->>>>> flushes the old memslot before calling kvm_prepare_memory_region():
->>>>>
->>>>> virt/kvm/kvm_main.c:kvm_set_memslot() {
->>>>>     if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
->>>>>         invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
->>>>>         if (!invalid_slot) {
->>>>>             mutex_unlock(&kvm->slots_arch_lock);
->>>>>             return -ENOMEM;
->>>>>         }
->>>>>         kvm_invalidate_memslot(kvm, old, invalid_slot);
->>>>>     }
->>>>>
->>>>>     r = kvm_prepare_memory_region(kvm, old, new, change);
->>>>>     if (r)
->>>>>         goto err;
->>>>> }
->>>>>
->>>>> kvm_invalidate_memslot() marks the active slot as
->>>>> KVM_MEMSLOT_INVALID and
->>>>> calls arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot():
->>>>>
->>>>> arch/arm64/kvm/mmu.c:kvm_arch_flush_shadow_memslot() {
->>>>>     write_lock(&kvm->mmu_lock);
->>>>>     kvm_stage2_unmap_range(&kvm->arch.mmu, gpa, size, true);
->>>>>     kvm_nested_unmap_cipa_range(kvm, gpa, size, true);
->>>>>     write_unlock(&kvm->mmu_lock);
->>>>> }
->>>>>
->>>>> For a Realm VM, kvm_stage2_unmap_range() invokes
->>>>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() with
->>>>> KVM_FILTER_PRIVATE | KVM_FILTER_SHARED:
->>>>>
->>>>> arch/arm64/kvm/rmi.c:kvm_realm_unmap_range_filter() {
->>>>>     if (attr_filter & KVM_FILTER_SHARED)
->>>>>         realm_unmap_shared_range(kvm, start, end, may_block);
->>>>>     if (attr_filter & KVM_FILTER_PRIVATE)
->>>>>         realm_unmap_private_range(kvm, start, end, may_block);
->>>>> }
->>>>>
->>>>> By the time kvm_arch_prepare_memory_region() returns -EPERM and
->>>>> kvm_set_memslot() restores the old memslot in the error path, hasn't
->>>>> realm_unmap_private_range() already unmapped and undelegated the
->>>>> Realm's
->>>>> private Stage-2 DATA granules across the memslot's GPA range?
->>>>>
->>>>
->>>> I think this should be fixable by checking in
->>>> kvm_arch_flush_shadow_memslot() and preserving the stage-2 mappings by
->>>> returning early. kvm_arch_prepare_memory_region() will then reject the
->>>> operation but the mappings will still be in place.
->>>
->>> Or is the better fix to delay the kvm_invalidate_memslot() after
->>> kvm_prepare_memory_region() ? i.e., if we the KVM backend doesn't
->>> approve the change, why do invalidate the slot ? For most of the CoCo
->>> VMs, this would be disastrous.
->>
->>
->> Ignore this, driver for CCA is doing the wrong thing. Instead of
->> flushing (which is a NOP for CCA), we were removing the mapping.
-> 
-> Well, I got it confused with arm64 calling stage2_flush_memslot()
-> (called for flushing the dcache for a memory slot) with
-> kvm_arch_flush_shadow_memslot() (unmapping a memslot from the guest).
-> 
-> We do have a problem with the memslot code ordering. For all VMs, on a
-> memslot deletion, we first invalidate the memslot and then run the
-> "prepare" hook for the architecture, which could reject a DELETE. This
-> is particularly an issue for the Coco VMs, if they want to reject
-> deletion of memslots while the VM is active ( e.g., Realm and pKVM),
-> unless the VM prevents the stage2 modification (e.g., pKVM ignores
-> stage2 unmap requests). Even there, the pKVM may keep the memory mapped
-> when the memslot is deleted. But the page pinning keeps the pages in
-> tact.
-> 
-> Something like the following could work:
+On Sat Oct 31, 2026 at 2:12 AM JST, Simon Song wrote:
+> From: Peter Colberg <peter@colberg.org>
+>
+> Wrap pci_enable_sriov() and pci_disable_sriov() on Device<CoreInternal>
+> for use by the SR-IOV callback tokens and their rollback guard.
+> Keep these operations internal so drivers can only enable or disable
+> VFs through the callback-scoped API introduced later in this series.
+>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Peter Colberg <peter@colberg.org>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Simon Song <xinmengs@nvidia.com>
 
-Yes, that's better than the hack I had locally - I'll pick that patch up
-for v2.
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Thanks,
-Steve
+One tiny nit below.
 
-> ---8>---
-> 
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Date: Fri, 6 Nov 2026 16:31:15 +0000
-> Subject: [PATCH] KVM: Allow architectures to reject memslot changes before
->  invalidation
-> 
-> Architectures may need to reject deletion of a memory slot without
-> changing the guest's memory mappings. Currently, KVM invalidates the slot
-> and calls kvm_arch_flush_shadow_memslot() before
-> kvm_arch_prepare_memory_region() can reject the request. On arm64, this
-> unmaps the slot from stage-2. Restoring the old memslot on failure does not
-> restore those mappings, so even a rejected deletion has side effects.
-> 
-> Add kvm_arch_validate_memory_region() and invoke it before invalidating
-> the slot, with slots_lock and slots_arch_lock held. The hook performs
-> validation only, allowing architectures to reject a request without
-> changing the memslot or its mappings. Provide a weak no-op implementation
-> for architectures that do not need early validation.
-> 
-> Move arm64's protected VM checks into the new hook so that unsupported
-> deletions and moves are rejected before stage-2 unmapping. Keep resource
-> preparation after invalidation, since invalidation drops slots_arch_lock
-> and allows concurrent updates to architecture-specific memslot metadata.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
->  arch/arm64/kvm/mmu.c     | 22 ++++++++++++++++------
->  arch/arm64/kvm/pkvm.c    |  2 +-
->  include/linux/kvm_host.h |  4 ++++
->  virt/kvm/kvm_main.c      | 33 ++++++++++++++++++++++++++-------
->  4 files changed, 47 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 1db10d8d6db7..c3469551fe3c 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -2806,13 +2806,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->      }
->  }
-> 
-> -int kvm_arch_prepare_memory_region(struct kvm *kvm,
-> -                   const struct kvm_memory_slot *old,
-> -                   struct kvm_memory_slot *new,
-> -                   enum kvm_mr_change change)
-> +int kvm_arch_validate_memory_region(struct kvm *kvm,
-> +                    const struct kvm_memory_slot *old,
-> +                    const struct kvm_memory_slot *new,
-> +                    enum kvm_mr_change change)
->  {
-> -    hva_t hva, reg_end;
-> -    int ret = 0;
-> +    lockdep_assert_held(&kvm->slots_lock);
-> 
->      if (kvm_vm_is_protected(kvm)) {
->          /* Cannot modify memslots once a pVM has run. */
-> @@ -2827,6 +2826,17 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->          }
->      }
-> 
-> +    return 0;
-> +}
+>  rust/kernel/pci.rs     |  2 ++
+>  rust/kernel/pci/iov.rs | 48 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 50 insertions(+)
+>  create mode 100644 rust/kernel/pci/iov.rs
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index f47974d3e76..e522fdddc34 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -36,6 +36,8 @@
+>  mod cap;
+>  mod id;
+>  mod io;
+> +#[cfg(CONFIG_PCI_IOV)]
+> +mod iov;
+>  mod irq;
+> =20
+>  pub use self::cap::{
+> diff --git a/rust/kernel/pci/iov.rs b/rust/kernel/pci/iov.rs
+> new file mode 100644
+> index 00000000000..6f8f95ed618
+> --- /dev/null
+> +++ b/rust/kernel/pci/iov.rs
+> @@ -0,0 +1,48 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +int kvm_arch_prepare_memory_region(struct kvm *kvm,
-> +                   const struct kvm_memory_slot *old,
-> +                   struct kvm_memory_slot *new,
-> +                   enum kvm_mr_change change)
-> +{
-> +    hva_t hva, reg_end;
-> +    int ret = 0;
+> +//! Abstractions for PCI Single Root I/O Virtualization (SR-IOV) drivers=
+.
 > +
->      if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
->              change != KVM_MR_FLAGS_ONLY)
->          return 0;
-> diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
-> index 016997288fd2..552a40871ab1 100644
-> --- a/arch/arm64/kvm/pkvm.c
-> +++ b/arch/arm64/kvm/pkvm.c
-> @@ -262,7 +262,7 @@ int pkvm_create_hyp_vm(struct kvm *kvm)
->      int ret = 0;
-> 
->      /*
-> -     * Synchronise with kvm_arch_prepare_memory_region(), as we
-> +     * Synchronise with kvm_arch_validate_memory_region(), as we
->       * prevent memslot modifications on a pVM that has been run.
->       */
->      mutex_lock(&kvm->slots_lock);
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index e7fc94e2910a..310afcaf7021 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -1255,6 +1255,10 @@ int kvm_set_internal_memslot(struct kvm *kvm,
->                   const struct kvm_userspace_memory_region2 *mem);
->  void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot);
->  void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen);
-> +int kvm_arch_validate_memory_region(struct kvm *kvm,
-> +                    const struct kvm_memory_slot *old,
-> +                    const struct kvm_memory_slot *new,
-> +                    enum kvm_mr_change change);
->  int kvm_arch_prepare_memory_region(struct kvm *kvm,
->                  const struct kvm_memory_slot *old,
->                  struct kvm_memory_slot *new,
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index cf4cb586f140..3ef370d71818 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -1682,6 +1682,20 @@ static void kvm_swap_active_memslots(struct kvm
-> *kvm, int as_id)
->      slots->generation = gen;
->  }
-> 
-> +/*
-> + * Validate a memslot change before invalidation, which may
-> irreversibly reclaim
-> + * private guest memory. Called with slots_lock and slots_arch_lock held.
-> + * Implementations must not modify memslot state or allocate resources;
-> leave
-> + * those operations to kvm_arch_prepare_memory_region().
-> + */
-> +__weak int kvm_arch_validate_memory_region(struct kvm *kvm,
-> +                       const struct kvm_memory_slot *old,
-> +                       const struct kvm_memory_slot *new,
-> +                       enum kvm_mr_change change)
-> +{
-> +    return 0;
-> +}
+> +use super::Device;
 > +
->  static int kvm_prepare_memory_region(struct kvm *kvm,
->                       const struct kvm_memory_slot *old,
->                       struct kvm_memory_slot *new,
-> @@ -1934,6 +1948,10 @@ static int kvm_set_memslot(struct kvm *kvm,
->       */
->      mutex_lock(&kvm->slots_arch_lock);
-> 
-> +    r = kvm_arch_validate_memory_region(kvm, old, new, change);
-> +    if (r)
-> +        goto unlock_err;
+> +use crate::{
+> +    bindings,
+> +    device,
+> +    error::to_result,
+> +    prelude::*, //
+> +};
 > +
->      /*
->       * Invalidate the old slot if it's being deleted or moved.  This is
->       * done prior to actually deleting/moving the memslot to allow
-> vCPUs to
-> @@ -1950,22 +1968,22 @@ static int kvm_set_memslot(struct kvm *kvm,
->      if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
->          invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
->          if (!invalid_slot) {
-> -            mutex_unlock(&kvm->slots_arch_lock);
-> -            return -ENOMEM;
-> +            r = -ENOMEM;
-> +            goto unlock_err;
->          }
->          kvm_invalidate_memslot(kvm, old, invalid_slot);
->      }
-> 
->      r = kvm_prepare_memory_region(kvm, old, new, change);
->      if (r)
-> -        goto err;
-> +        goto revert_slot;
-> 
->      if (change == KVM_MR_CREATE && (new->flags & KVM_MEM_GUEST_MEMFD)) {
->          r = kvm_gmem_commit_memory_region(kvm, new);
->          if (r) {
->              kvm_arch_free_memslot(kvm, new);
->              kvm_destroy_dirty_bitmap(new);
-> -            goto err;
-> +            goto unlock_err;
->          }
->      }
-> 
-> @@ -2000,7 +2018,7 @@ static int kvm_set_memslot(struct kvm *kvm,
-> 
->      return 0;
-> 
-> -err:
-> +revert_slot:
->      /*
->       * For DELETE/MOVE, revert the above INVALID change.  No modifications
->       * required since the original slot was preserved in the inactive
-> slots.
-> @@ -2009,9 +2027,10 @@ static int kvm_set_memslot(struct kvm *kvm,
->      if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
->          kvm_activate_memslot(kvm, invalid_slot, old);
->          kfree(invalid_slot);
-> -    } else {
-> -        mutex_unlock(&kvm->slots_arch_lock);
-> +        return r;
->      }
-> +unlock_err:
-> +    mutex_unlock(&kvm->slots_arch_lock);
->      return r;
->  }
-> 
+> +impl Device<device::CoreInternal<'_>> {
+> +    /// Enable the Single Root I/O Virtualization (SR-IOV) capability fo=
+r this device,
+> +    /// where `nr_virtfn` is number of Virtual Functions (VF) to enable.
+> +    #[inline]
+> +    #[expect(dead_code)]
+> +    pub(crate) fn enable_sriov(&self, nr_virtfn: u16) -> Result {
+> +        // SAFETY:
+> +        // - `self.as_raw` returns a valid pointer to a `struct pci_dev`=
+.
+> +        //
+> +        // - `pci_enable_sriov()` checks that the enable operation is va=
+lid:
+> +        //   - the device is a Physical Function (PF),
+> +        //   - SR-IOV is currently disabled, and
+> +        //   - `nr_virtfn` does not exceed the total number of supported=
+ VFs.
+> +        //
+> +        // - The [`CoreInternal`] device context inherits from the [`Bou=
+nd`] device context,
 
+nit: since these aren't doccomments, you should drop the `[` brackets as
+they won't turn into links.
+
+> +        //   which guarantees that the PF device is bound to a driver.
+> +        to_result(unsafe { bindings::pci_enable_sriov(self.as_raw(), nr_=
+virtfn.into()) })
+> +    }
+> +
+> +    /// Disable the Single Root I/O Virtualization (SR-IOV) capability f=
+or this device.
+> +    #[inline]
+> +    #[expect(dead_code)]
+> +    pub(crate) fn disable_sriov(&self) {
+> +        // SAFETY:
+> +        // - `self.as_raw` returns a valid pointer to a `struct pci_dev`=
+.
+> +        //
+> +        // - `pci_disable_sriov()` checks that the disable operation is =
+valid:
+> +        //   - the device is a Physical Function (PF), and
+> +        //   - SR-IOV is currently enabled.
+> +        //
+> +        // - The [`CoreInternal`] device context inherits from the [`Bou=
+nd`] device context,
+
+Same here.
