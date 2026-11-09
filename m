@@ -1,74 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794244473;
-	b=QRpnSXA4wEUWwiD4/P4PG1jWW1qxnA3m5Zw69qaHDzJRr78JMWxiarXriAj7zouIVS/6
-	 BbZmPiqW1X4/T/Ez3BozqJg5npzs3ZROm8uh7tt+pf4aXiwWM8gnW9C2wySff2EObN6Yh
-	 PcMi89gZgz2OHC75WeDBFjAj066NlVbw8QktzRg60Ek1Zd+2y4+i5FdnDk1pRkX5QX+m1
-	 T+J9PHqhhINUxViphhasZdff/++F3XZsGpvYB3pcShu5amJkJ4c93LUjOtLLqlNk5E54B
-	 o/VOrS4bDYp/rGjcgr6GoPZdK/gNl53GhoQnCWHthJZFF9Es+kWPC571WmBXL1pQo/Q==
+	t=1794246278;
+	b=lpKdW/HL0ovCcLeX7Engrr6a6mmA+CJOK/6gaSEtOkvtUEskJKZsfhjWftoE0mD+UvIl
+	 LpXFidORSfMUSpyg+dIrYIwKxuok7qx7jlSvPDJJqQePwWycjQF9kwjss37UJdIognzyf
+	 k/Qg6ts10aXBNhIF0Bw+VP/ZVfz39r5BjsQ9ex0+l/cPXtZ2QEh36r1DfmX4OKR67W0jO
+	 5x6o6PoVxBaPf+4+acAO5KWdtNdRZBFz3x2tbqYrT/+RRXV0jxkACnwNRVuUxqIgBonYS
+	 ulQRYaQP5qh2To8jN0nvv7dvvDcI8iwBMffdyB+KDfiWX1RI/XtVu0J6XfWfPXtRQug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794244473;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=8jtvppWK1r44koRv7kGc410EeXeuVJn2yevktxLuiSM=;
-	b=XzrTgOnPvtyE6AJDUKmpI7ENasZGq7HF2smHJLLOF54my2jeaOKGu0LjuTblG0lBn2zQ
-	 TkizMoZNQgLVIpto4HDlM7URNkW0N0KnmTACrZc5t1ZkrFMkjBQfUuvyS9i3speJ1y784
-	 cEFTJP4agh3vez1zaZeOY68ThTWvTD2awRgf4+awGcITmIwkA2+aOvD3MihIgT1Wa6htK
-	 p84BOnTmHGdOsqQMROTclrL2Cejw5MEM22V+tnjC+ItaBBDJqTt//r+GUs6c446jkc8P1
-	 BrMaIJHqD48dpZEkDdZabDosZPNdENf6JPX1Fiz1niw5dfoPLx9VdicZiFCD7ReJdXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794246278;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-Id:
+	 In-Reply-To:References:X-Mailer:Mime-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=+EpjN/DsBpVyfyR8n/gQ0lrO4LV9kbgQU5k49WPSPeE=;
+	b=gI0vXvZWQsMtHFwcHnhFN+boumpvFQb2l1QvBzu7si8jY6r58KFzl/ES7AAIPPL91I+V
+	 yrR+Ftt48zm1Or5k4dVfqnzBKvqfS1bD+YEUhIb9oNVqgCHqQQUZZ8yD9G95+1hm+zdIy
+	 HMBHW7BqagF+76eihdYNfLCcQjZbcNfB76Y/obXVJk8HJER9M3f4l9BvC/HuYTS3h3J/L
+	 5zkgnaJ8HjWu0fOCoP8CsQbhXCCXx6qtDg5IgfiZRkrAqFbh74GBRdh6WkSepgvKM3Vww
+	 7EPxKCA0s9yg/4SGiTz9UBFKyXA1SuMcRzPWSlMByvA3LoARZNhMblDbRAHdNVJcIZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cfDEwHnA;
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=gzaCyMM1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08434606A321
-	for <kvm@vger.kernel.org>; Mon,  9 Nov 2026 17:14:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08434606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D9F606A31C;
+	Mon,  9 Nov 2026 17:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cfDEwHnA
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8b32efd7ec4so835050b3a.3
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 09:14:32 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=gzaCyMM1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2301F0089F;
+	Mon,  9 Nov 2026 17:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794244472; x=1794849272; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8jtvppWK1r44koRv7kGc410EeXeuVJn2yevktxLuiSM=;
-        b=cfDEwHnAjkjINNuQSEBYfr0VIaSnYuojPe6iCL31rE0vyVH5GIT2jhbSgw8IDBC78e
-         wIlcf6SwizR1c1qu3vw2OYVzKuIo52iHw4FnsT37VFxdZWCPURCQXMcEhfdFz+E/u5F1
-         2xnGoTxB6pLW9nPiLT4XN+8NzE34TkcSNrqWb25HTRAT4Q0NOzrb4nPWEQivO6uvaN7X
-         ecHZzVDFEYTGF/opFS0vjbueL7N2WqIRseAx9W1t8JWNYSq8JXYQibM64QfPx1f3n+A9
-         wQ4zQAMAbiLBWGkMrrE6ApMlGXh1xG39Ai8yHnOCiNYhjwNX9Ye/a/UZSoWINnr5mO0f
-         8/xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794244472; x=1794849272;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8jtvppWK1r44koRv7kGc410EeXeuVJn2yevktxLuiSM=;
-        b=ZX5xifYOII0iwsSm3Fjsf+vgLM7Pv4BrbWCvm3hl8fxBh8YEIRjFriWPbFThuQ19l8
-         JYWyWxspoJbCyYmXZdj4Q4kcO6aj5jIxTtpnhb+qbGdklGqB0GuepP4oAdS54ae7OFXe
-         cUWlFwC7SyrAK4+iDhzzhRZLUV7ivJ8zw2cK/hNKcDxYfI+SYLMRQlM49vMd4DBK+HRw
-         qh6BkED82+GHNehhE5IlqLx7qWm7Hnp+bFdRry/Pn/QBhULQnSIC4vbLUzpl0RXe4SSv
-         j29V9WIb4rhl4pUDbHsYpfDCje+/6hRzYysS+D7SMYnQlfOQIx3C4Tgh8DlCLynDjfOe
-         6Q4Q==
-X-Forwarded-Encrypted: i=1; AL+hErH8IkvG/A/zEmYYnso+dBUwyZ4149enzKMukIpCWba7ZUdDrEVerPjZBHGWFLwSRmRtvOA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/QtPjN+43+XnnplJZazy3pwVf6E8iKrCfJ6x9/beSD33mFvKTs
-	vkeXRGhYEjoYVBECGO8YKP5OiQ50ovZx9pHRsSLwP9n9ITC4oldgAKoGMOb1qQDZ/3uZeQPtiSh
-	RY2Socg==
-X-Received: from pgac19.prod.google.com ([2002:a05:6a02:2953:b0:cdb:932c:948b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:8b0f:b0:3e1:1e99:9463
- with SMTP id adf61e73a8af0-3eed2b02236mr5016786637.38.1794244472001; Mon, 09
- Nov 2026 09:14:32 -0800 (PST)
-Date: Mon, 9 Nov 2026 17:14:31 +0000
-In-Reply-To: <avFfFqotCajjCzTf@stanley.mountain>
+	d=linux-foundation.org; s=korg; t=1794246277;
+	bh=+EpjN/DsBpVyfyR8n/gQ0lrO4LV9kbgQU5k49WPSPeE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gzaCyMM1cJrjP8mVfAdfm9Tk0MNbUwWsCzu5aBYFwIXvHqXzHyjNWYvmsk0qAwsED
+	 GA9iUPuLXd53UNdhLXbucDDSJCBnpyT4AdCqpMXhvrVqGpYP2eidMHAWz42rUr0Xzx
+	 9ZMkq6R2Q8unfhnRO7BxhFf1Z4gUeAYDiBZoVcbY=
+Date: Mon, 9 Nov 2026 09:44:34 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+ <peterx@redhat.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo
+ <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang
+ <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul
+ Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache
+ <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin
+ <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel
+ Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He
+ <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky
+ <leon@kernel.org>, SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
+ David Rientjes <rientjes@google.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
+ Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
+ Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, John Johansen
+ <john.johansen@canonical.com>, Georgia Garcia
+ <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, James
+ Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Mimi
+ Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg
+ <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, Stephen Smalley
+ <stephen.smalley.work@gmail.com>, Ondrej =?UTF-8?Q?Mosn=C3=A1=C4=8Dek?=
+ <omosnacek@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, damon@lists.linux.dev,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH 00/13] mm: continue vma_flags_t conversion
+Message-Id: <20261109094434.d23a227a869e76455ddff3b1@linux-foundation.org>
+In-Reply-To: <93fef824-9f60-4940-9ee6-80c9c8e3f945@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+	<d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org>
+	<au3r0-geuwtRYPiC@gremlin>
+	<1c0b1368-a381-4b25-bba9-7a4f8e92b764@kernel.org>
+	<au-DXpEi4wHwsz0r@gremlin>
+	<93fef824-9f60-4940-9ee6-80c9c8e3f945@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,20 +106,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <dab486f129c36ba1cfb322ceb56ec6fdef020ca3.1793959700.git.dan@cryspen.com>
- <avFfFqotCajjCzTf@stanley.mountain>
-Message-ID: <avH_dx3-8qshOXvT@google.com>
-Subject: Re: [PATCH] KVM: nVMX: Prevent potential user space corruption
-From: Sean Christopherson <seanjc@google.com>
-To: Dan Carpenter <error27@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Karthik Bhargavan <karthik@pereq.eu>, "=?utf-8?Q?Cl=C3=A9ment?= Blaudeau" <clement@cryspen.com>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 09, 2026, Dan Carpenter wrote:
-> Oops.  I sent this from the wrong mailbox so the From: header doesn't
-> match.  I'll resend.
+On Mon, 9 Nov 2026 14:40:48 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-No need to resend, already posted: https://lore.kernel.org/all/20261022021820.298886-2-seanjc@google.com
+> On 11/7/26 21:09, Lorenzo Stoakes (ARM) wrote:
+> > I think we're slightly talking across purposes, so to be clear - I am totally
+> > fine with you taking any of this through your tree or whatever works for you and
+> > Andrew to avoid merge pain :)
+> > 
+> > I was just talking more generally about how to merge series that touch a lot of
+> > subsystems and maintainers-who-may-never-reply, etc.
+> > 
+> > These are the edge cases that make things... fun :)
+> > 
+> > Anyway, I guess easiest resolution here is for you to take the bits that belong
+> > to your trees and Andrew takes the bits that belong elsewhere?
+> 
+> Yes, that's what I did now, applying #1,#3,#4,#5,#6
+
+Cool.
+
+I'll remove the whole series from mm.git immediately for
+collision-avoidance reasons - let's sort things out later.
+
+I'll get better/more accurate about this soon - I need to set up
+infrastructure to fetch everyone else's trees, do test merges and
+figure out what should be removed/fixed in mm.git.  I might just base
+mm.git on everyone-else and always route its stuff ->david.  I need to
+spend a bit of time on this and discuss with the mm-next peeps.
+
