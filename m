@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794286946;
-	b=5io8dfRQWrN9KLrMrC4JOHn/k6AEmwdh5UJY0iH9m5uEluTN+limjw2o5OA0iDpFbP6F
-	 YJ4YUo6d1yaaaX5DI+Kcdfmw2E/5AEuXMhgkAF3l8RJq6n7KYl4bKhHfV2IopsfkB5pw2
-	 D9zUw+ss7YboaA2xuw8w86IROeDNO1uVycH7uhtaHPtSt6H6XGefCSuV3ItOb0uzEKNYv
-	 5MT8UENwigRaNx3UzrFVACnGMGJysDsBdqayS3QnOYr7OzP0DEsZCzREUZM6PrKr1XXe8
-	 HRbFCIFXXVjsEinShseduKzG4yebSp/KH9VwmjST5HG6vGeA1CCFPGIjpNcXxbM3Now==
+	t=1794286944;
+	b=HKOZ0RWQjkSMm5Dbb2ISvMkndjs3On13yHRpkWj1z/oc59z3SaStuRa7qOX2wsQGhIZI
+	 TwMLU+ioTLnIkkLVDQSLIpOoaXEM2geIs0DKsThU8MHvVw6MuABSN2tjOMJSVNFMJqAkf
+	 f77VB4s9u6C+Fd7TzruJfSegdXyNjJbFoOsEifervMTJRFYnJ7ODyp+akOs6/czxYRv90
+	 rWL6gm08mshbyaJscafQo4WMVS92nMkF7HkHo5cvMnomoMk7TYwAg679uh2luEOvqtH1n
+	 lBjiil3ExWDGFJp+it1ZOFUrPtpG8402drYx9byNKBwzi4q1PqNjsjP0EQsstUH+ksg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794286946;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794286944;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
-	b=J3IM/2+HxTHKzLG1i1RTj3AQIIHtGsUybYvun6lflYK5rhsmiFBy6w4aftj36ccfV1XV
-	 u2qtS6574kqPLYWdeNBP6Reau0ScMrFd065pP1TTniD0m/jO0fi+OkBdmljpkTRHR+pSF
-	 SDK38M1tYbNpMCS5Ev/qseSWkvlLQVWl4ooEw5v1bYyg6DgwEoFB7M1HkaNQKZRsZv73Q
-	 ai0/RpXF2dDYYsGHcUrBgFp7c1NcuTe6XDLqOdi/atSQ0Y32UOYXPqwr72HxFZ8EGfda/
-	 DeM77lNcRiOB55FbxB1VNWsj81BhTNGJ3lbiyemGfrrE4mtALapmbqCKFl3YVieHbXQ==
+	bh=vA8W8np9fXaskA2k2ROSy6+asR0jHvCl6wOsZYrc5lM=;
+	b=pOd09H1Em/nc44Fu83F+r9x23LAu7E6DAmCy1WyEbVHr8xmGbEx40axlKXFK7uoRVOjU
+	 i0d5VdnMjmemBs2wm1OvL4+pF+nlnaYgN+EWR6WWWQknrGtsQnIlkzTICRBzm+6P6eg1j
+	 UP6ip+VDmHbhlEAgALyLtjS1Qgs+I+hN55qiet+JvkLrHR6HABpZ50Z72GLZ/ZnCF6pnf
+	 lZoP658zVvQjKKyx8AmjZ1NLn1gOdySEybqWmO1cEbZxB6Bih9oreVFNkVPkHSCcpnl4I
+	 xOW+1UBJyecK/j2EnnSuEP4l08sjkn+K6dkUECsDzNTek6l9/c0GVrZZliflKIQ/3nQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="lNZ/Bmo1";
-	arc=none smtp.remote-ip=209.85.208.69
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=J11IQvut;
+	arc=none smtp.remote-ip=209.85.208.70
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D1D606E492
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6D1D606E492
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7958606D688
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7958606D688
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lNZ/Bmo1
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6b76329afcdso43498a12.2
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=J11IQvut
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a615ab0c06so1441655a12.2
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286944; x=1794891744; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794286942; x=1794891742; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
-        b=lNZ/Bmo1B5y2EaXYYAVuaMVIjPQaf0oOdvrpwSasoz6u5vTy/z+s4fr8W3wcvM74hV
-         PaIpbKX0Zy0GO/WpCVuxnl6CIkmyb2Z7JhqF88PI/zT6il+h64sSv3oldqJe8UbM7SLD
-         h/O1D4qaSAzV9xwZ7wV/yEo47kj6LKtxAVWAc+Urh4R2csyjH+d6FrgmNKsXCn+a8cFf
-         hzAO3YKZH2J6mNoE4D57WnD5hoSVzTNT+Y+CyRAYNjmHITTcLWAEmST8KJwRNqm9SkeJ
-         cw01d/rm0O7ajm0OSMfPpPXT0+uHLzEX7H+Vq3OznKrXqgMRG7XhDUID7zQIe5xPufj4
-         mAAg==
+        bh=vA8W8np9fXaskA2k2ROSy6+asR0jHvCl6wOsZYrc5lM=;
+        b=J11IQvutznv7alHSYW+ileIdcaJle7tPBTMQ3BmvDs25hAAFgzAsxSJz0rnNQWr0E2
+         dmX5W3yk11lDE4EqaJ8vZcNx+UOxFFOEoMTK/1JaGySqUbetFhOwUADDs0uDcewIxLor
+         gwZRQ/HbWyM/6lMltejznhpQEEv7cKm3Kjy0eVbsvSCNmskTwbQpckrb5wTsTzluxDDz
+         Isu1m49ruIhvMecyF3xVIUKz/upK6MWZR+UaT3YQEiedou74ngO+Aa4wEZB+l7f6jCDB
+         9oEqAU+TwMLKayXJJeB6uz6lfyeJpROUNNZBxe+pb4KKHfIY9+FX8ZEj7getkREkF4/h
+         SnwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286944; x=1794891744;
+        d=1e100.net; s=20260707; t=1794286942; x=1794891742;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
-        b=LfGrRZfjLM/hxeh8COvBFOq+FtUssOZ9sBXUZ9JPWGwfk5bX3wQJ5LA6WlSZsMBGrh
-         iAx1IQ5vPCBXiajoOeoC/SOBEcnXBrgBxD016JxLnjyx63ShOXNhyJEaRor76bRjKoUP
-         eL5IyM4n6/6XzrRZtcl5Ji4Q2QmuJhZROCUrRyKarkxfBok+9PCh0FvNLP3kBmvvai4n
-         lId3CN/Bai7Tj0/d+cZzPQWgSopZowr02jfdWWQI8ypsbQvVYtuDc7SmY9Q6wCNy71AE
-         jajXCJsi7mAyHfA7GazGkwBrHJXuBq7qkwQ3wY+7rFPfL+/L8tUokTaFylHVknJteqE1
-         m1VA==
-X-Forwarded-Encrypted: i=1; AL+hErEkBs1SGeEyvBh5RWtEYz63wpiXJ+liNN0BPPdBCGa/HsgX0CDyzjZGFGi2cUbLN0ofZXY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9UfFNyxqfLuDUPIEGKQgpAur5s61/SDCO4oZM9KeQ7uCQXB3/r
-	ukZEcqrSQeSsPDf7aBgLJva/MxIKJucsETBj8yaJyXZDkKVDBnMbiRXP2BuNAE8EGnLesv5NWib
-	PrRRD8RIzhka2r4ov8w==
-X-Received: from edtj4.prod.google.com ([2002:aa7:ca44:0:b0:6b7:3b3e:5148])
+        bh=vA8W8np9fXaskA2k2ROSy6+asR0jHvCl6wOsZYrc5lM=;
+        b=aXT6yTk0DOUcQP38gOdKTlj0a4qVqBbqq0PHfu65690m2kVHutN6GhvSzm03hMTdO3
+         xhibKFrIv3VtVHGMmCDjmnRV4iXLAsOyPOm0AWeQHQfepDNQDlaJG6dWZGZ5H08MwKZv
+         FjM0X3boDs339RJ44wgmrpuihFf/2RWYnC0CK6oPLWWLpGMHMybe5B5ACTxLnkdyEr0w
+         /6NYkPVSjHNGQ33AENxtGxIIi0EftRPTZPamqsotZDyezO7kobA8ehvNuPcOIuCK1DGe
+         C39qdGUbQkPPePL+BKx3cFDYb9JGV2ffD9I/9OO6PnWNow5AZ9sKZmENGeRGKXn1Hxpo
+         eHdg==
+X-Forwarded-Encrypted: i=1; AL+hErHEHEK2/wTi8MBmede9M1VAAgfFfE5Mo5T5kVOrBGGqs00PaM/4N9/nWmILNulgj3EU3Pk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8heqrsO/Bv7OIUYkwaOgeCg0obhqwCnU9AX3CBWfu3nU4NLY/b
+	9T3vV4vyFd99UL12adhKm8Oh77s8nd1CcJNgHOqw9EzQCwQYSvKfga/GpM7ITZwmDhUjBylkjZj
+	KiKwog4DlNhz0833LxQ==
+X-Received: from edty17.prod.google.com ([2002:aa7:ccd1:0:b0:6b5:5ee4:9030])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:d496:0:b0:6ac:934e:a9ca with SMTP id 4fb4d7f45d1cf-6b755626f5fmr907953a12.0.1794286944079;
- Mon, 09 Nov 2026 21:02:24 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:02:00 +0000
+ 2002:a05:6402:5516:b0:6b4:87b8:1348 with SMTP id 4fb4d7f45d1cf-6b756ae845cmr1164654a12.27.1794286941928;
+ Mon, 09 Nov 2026 21:02:21 -0800 (PST)
+Date: Tue, 10 Nov 2026 05:01:58 +0000
 In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-18-tarunsahu@google.com>
-Subject: [PATCH v4 17/19] mm: memfd_luo: Add feature header to struct memfd_luo_ser
+Message-ID: <20261110050202.529473-16-tarunsahu@google.com>
+Subject: [PATCH v4 15/19] PCI: liveupdate: Add feature header to struct pci_ser
 From: Tarun Sahu <tarunsahu@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
 	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
@@ -99,236 +99,341 @@ Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Precede struct memfd_luo_ser with struct kho_ser_hdr using
-DECLARE_KHO_SER. Later memfd features can be appended under new
-feature indices without breaking compatibility between adjacent kernels.
+struct pci_ser currently defines its own PCI-specific required_flags and
+optional_flags bitmasks (capped at 64 bits without recorded structure
+size) and stores dev_ser_size in the parent structure even though KHO
+block headers now record entry_size directly. In addition, struct
+pci_ser and struct pci_dev_ser still carry __packed despite having
+naturally aligned fields on 64-bit architectures.
 
-Allocate both the memfd_luo_ser feature header and the kho_vmalloc
-feature header in the same preserved folio. On restore and retrieve,
-validate incoming required features before accessing payload fields.
+Precede struct pci_ser with struct kho_ser_hdr via DECLARE_KHO_SER,
+removing required_flags, optional_flags, and
+PCI_SER_REQUIRED_FLAGS_SUPPORTED. Remove dev_ser_size and
+PCI_DEV_SER_MIN_SIZE so restoration derives the struct pci_dev_ser stride
+from the KHO block header entry_size. Drop __packed from struct pci_ser
+and struct pci_dev_ser, adding an explicit u32 reserved field to struct
+pci_ser for 8-byte alignment, and bump PCI_LUO_FLB_COMPATIBLE from pci to
+pci-v2.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- include/linux/kho/abi/memfd.h |  7 ++--
- mm/memfd_luo.c                | 67 ++++++++++++++++++++++++-----------
- 2 files changed, 51 insertions(+), 23 deletions(-)
+ drivers/pci/liveupdate.c    | 74 +++++++++++++++++--------------------
+ include/linux/kho/abi/pci.h | 63 +++++++++++--------------------
+ 2 files changed, 55 insertions(+), 82 deletions(-)
 
-diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-index b0597c438973..27f8880ee593 100644
---- a/include/linux/kho/abi/memfd.h
-+++ b/include/linux/kho/abi/memfd.h
-@@ -83,6 +83,8 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-  * @nr_folios:   Number of folios in the folios array.
-  * @folios_fhdr: Pointer to KHO vmalloc descriptor for the array of
-  *               struct memfd_luo_folio_ser.
-+ *
-+ * Preceded by &struct kho_ser_hdr.
+diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+index 6f92d4ddca2b..0bda94f4a7e4 100644
+--- a/drivers/pci/liveupdate.c
++++ b/drivers/pci/liveupdate.c
+@@ -233,7 +233,7 @@ static struct pci_liveupdate_global pci_liveupdate = {
+ 
+ /**
+  * struct pci_flb_outgoing - Outgoing PCI FLB object
+- * @ser: Pointer to the preserved struct pci_ser.
++ * @fhdr: Pointer to the serialization feature header.
+  * @block_set: The KHO block set holding the outgoing devices.
+  *
+  * This structure holds the runtime state for the outgoing PCI Live Update
+@@ -241,14 +241,14 @@ static struct pci_liveupdate_global pci_liveupdate = {
+  * the serialized entries.
   */
- struct memfd_luo_ser {
- 	u64 pos;
-@@ -93,9 +95,8 @@ struct memfd_luo_ser {
- 	DECLARE_KHOSER_PTR(folios_fhdr, DECLARE_KHO_SER_HDR(kho_vmalloc, *));
+ struct pci_flb_outgoing {
+-	struct pci_ser *ser;
++	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
+ 	struct kho_block_set block_set;
  };
  
--static_assert(sizeof(struct memfd_luo_ser) == 40);
--static_assert(!IS_ENABLED(CONFIG_64BIT) ||
--	      __alignof__(struct memfd_luo_ser) == 8);
-+/* Register memfd_luo_ser with KHO serialization accessors */
-+DECLARE_KHO_SER(memfd_luo_ser, 40, 0, 0);
+ /**
+  * struct pci_flb_incoming - Incoming PCI FLB object
+- * @ser: The incoming struct pci_ser from the previous kernel.
+- * @xa: Xarray used to quickly lookup devices in @ser.
++ * @fhdr: Pointer to the serialization feature header.
++ * @xa: Xarray used to quickly lookup preserved devices.
+  * @block_set: The KHO block set holding the incoming devices.
+  *
+  * This structure holds the runtime state for the incoming PCI Live Update
+@@ -256,17 +256,11 @@ struct pci_flb_outgoing {
+  * the serialized entries, and an xarray for fast lookups.
+  */
+ struct pci_flb_incoming {
+-	struct pci_ser *ser;
++	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
+ 	struct xarray xa;
+ 	struct kho_block_set block_set;
+ };
  
- /* The compatibility string for memfd file handler */
- #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v3"
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 74c1ff5877c3..94510f73a606 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -256,16 +256,21 @@ static void memfd_luo_unpreserve_folios(DECLARE_KHO_SER_HDR(kho_vmalloc, *folios
- 
- static size_t memfd_luo_ser_size(void)
+-/*
+- * Bits in struct pci_ser::required_flags that this kernel knows how to handle.
+- * No flags are currently defined.
+- */
+-#define PCI_SER_REQUIRED_FLAGS_SUPPORTED	0ULL
+-
+ /* PCI_LIVEUPDATE depends on 64BIT, so domain and bdf always fit. */
+ static unsigned long pci_ser_xa_key(u32 domain, u16 bdf)
  {
--	return sizeof(struct memfd_luo_ser) + kho_ser_size(kho_vmalloc);
-+	return kho_ser_size(memfd_luo_ser) + kho_ser_size(kho_vmalloc);
- }
- 
--static struct memfd_luo_ser *memfd_luo_ser_init(void *mem)
-+static struct memfd_luo_ser *
-+memfd_luo_ser_init(DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr))
+@@ -276,27 +270,28 @@ static unsigned long pci_ser_xa_key(u32 domain, u16 bdf)
+ static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
  {
- 	DECLARE_KHO_SER_HDR(kho_vmalloc, *folios_fhdr);
--	struct memfd_luo_ser *ser = mem;
-+	struct memfd_luo_ser *ser;
-+
-+	kho_ser_init(fhdr, memfd_luo_ser);
-+	folios_fhdr = (void *)fhdr + kho_ser_size(memfd_luo_ser);
+ 	struct pci_flb_outgoing *outgoing __free(kfree) = NULL;
++	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
+ 	struct pci_ser *ser;
  
--	folios_fhdr = mem + sizeof(struct memfd_luo_ser);
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 	KHOSER_STORE_PTR(ser->folios_fhdr, folios_fhdr);
-+
- 	return ser;
- }
+ 	outgoing = kzalloc_obj(*outgoing);
+ 	if (!outgoing)
+ 		return -ENOMEM;
  
-@@ -273,6 +278,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- {
- 	struct inode *inode = file_inode(args->file);
- 	struct memfd_luo_folio_ser *folios_ser;
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
- 	struct memfd_luo_ser *ser;
- 	int err = 0, seals;
- 	u64 inode_size;
-@@ -304,12 +310,12 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	}
+-	ser = kho_alloc_preserve(sizeof(*ser));
+-	if (IS_ERR(ser))
+-		return PTR_ERR(ser);
++	fhdr = kho_alloc_preserve(kho_ser_size(pci_ser));
++	if (IS_ERR(fhdr))
++		return PTR_ERR(fhdr);
  
- 	/* Allocate the main serialization structure in preserved memory */
--	ser = kho_alloc_preserve(memfd_luo_ser_size());
--	if (IS_ERR(ser)) {
--		err = PTR_ERR(ser);
-+	fhdr = kho_alloc_preserve(memfd_luo_ser_size());
-+	if (IS_ERR(fhdr)) {
-+		err = PTR_ERR(fhdr);
- 		goto err_unlock;
- 	}
--	ser = memfd_luo_ser_init(ser);
-+	ser = memfd_luo_ser_init(fhdr);
+-	ser->required_flags = 0;
+-	ser->optional_flags = 0;
+-	ser->dev_ser_size = sizeof(struct pci_dev_ser);
++	kho_ser_init(fhdr, pci_ser);
++	ser = kho_ser_payload(fhdr, pci_ser);
+ 	ser->nr_devices = 0;
++	ser->reserved = 0;
+ 	ser->devices = 0;
  
- 	ser->pos = args->file->f_pos;
- 	ser->size = inode_size;
-@@ -323,12 +329,12 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	inode_unlock(inode);
+-	outgoing->ser = ser;
++	outgoing->fhdr = fhdr;
+ 	kho_block_set_init(&outgoing->block_set, sizeof(struct pci_dev_ser));
  
- 	args->private_data = folios_ser;
--	args->serialized_data = virt_to_phys(ser);
-+	args->serialized_data = virt_to_phys(fhdr);
- 
+ 	args->obj = no_free_ptr(outgoing);
+-	args->data = virt_to_phys(ser);
++	args->data = virt_to_phys(fhdr);
+ 	pr_debug("Preserved struct pci_ser (0x%llx)\n", args->data);
  	return 0;
+ }
+@@ -307,9 +302,9 @@ static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
  
- err_free_ser:
--	kho_unpreserve_free(ser);
-+	kho_unpreserve_free(fhdr);
- err_unlock:
- 	shmem_freeze(inode, false);
- 	inode_unlock(inode);
-@@ -337,12 +343,14 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 	pr_debug("Unpreserving struct pci_ser (0x%llx)\n", args->data);
  
- static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
- {
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
- 	struct memfd_luo_ser *ser;
- 
- 	if (WARN_ON_ONCE(!args->serialized_data))
- 		return -EINVAL;
- 
--	ser = phys_to_virt(args->serialized_data);
-+	fhdr = phys_to_virt(args->serialized_data);
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 
- 	/*
- 	 * The pos might have changed since prepare. Everything else stays the
-@@ -356,6 +364,7 @@ static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
- static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
- {
- 	struct inode *inode = file_inode(args->file);
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
- 	struct memfd_luo_ser *ser;
- 
- 	if (WARN_ON_ONCE(!args->serialized_data))
-@@ -364,13 +373,14 @@ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
- 	inode_lock(inode);
- 	shmem_freeze(inode, false);
- 
--	ser = phys_to_virt(args->serialized_data);
-+	fhdr = phys_to_virt(args->serialized_data);
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 
- 	memfd_luo_unpreserve_folios(KHOSER_LOAD_PTR(ser->folios_fhdr),
- 				    args->private_data,
- 				    ser->nr_folios);
- 
--	kho_unpreserve_free(ser);
-+	kho_unpreserve_free(fhdr);
- 	inode_unlock(inode);
+-	WARN_ON(outgoing->ser->nr_devices);
++	WARN_ON(kho_ser_payload(outgoing->fhdr, pci_ser)->nr_devices);
+ 	kho_block_set_destroy(&outgoing->block_set);
+-	kho_unpreserve_free(outgoing->ser);
++	kho_unpreserve_free(outgoing->fhdr);
+ 	kfree(outgoing);
  }
  
-@@ -402,6 +412,7 @@ static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_se
- static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+@@ -321,35 +316,29 @@ static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
+  */
+ static int pci_flb_retrieve(struct liveupdate_flb_op_args *args)
  {
- 	struct memfd_luo_folio_ser *folios_ser;
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
- 	struct memfd_luo_ser *ser;
+-	struct pci_ser *ser = phys_to_virt(args->data);
++	DECLARE_KHO_SER_HDR(pci_ser, *fhdr) = phys_to_virt(args->data);
+ 	struct pci_flb_incoming *incoming;
+ 	struct pci_dev_ser *dev_ser;
+ 	struct kho_block_set_it it;
++	struct pci_ser *ser;
+ 	int ret;
  
- 	/*
-@@ -412,10 +423,16 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	if (args->retrieve_status)
+ 	pr_debug("Retrieving struct pci_ser (0x%llx)\n", args->data);
+ 
+-	if (ser->required_flags & ~PCI_SER_REQUIRED_FLAGS_SUPPORTED)
+-		panic("Incoming PCI FLB requires unsupported features (0x%llx)\n",
+-		      ser->required_flags & ~PCI_SER_REQUIRED_FLAGS_SUPPORTED);
++	ret = kho_ser_validate(fhdr, pci_ser);
++	if (ret)
++		panic("Failed to validate incoming PCI FLB feature header (%d)\n", ret);
+ 
+-	/*
+-	 * The previous kernel may have appended fields to struct pci_dev_ser,
+-	 * which this kernel ignores, but every entry must be at least the
+-	 * minimum size.
+-	 */
+-	if (ser->dev_ser_size < PCI_DEV_SER_MIN_SIZE)
+-		panic("Incoming PCI FLB has unsupported struct pci_dev_ser size (%u)\n",
+-		      ser->dev_ser_size);
++	ser = kho_ser_payload(fhdr, pci_ser);
+ 
+ 	incoming = kzalloc_obj(*incoming);
+ 	if (!incoming)
+ 		panic("Failed to allocate struct pci_flb_incoming\n");
+ 
+-	incoming->ser = ser;
++	incoming->fhdr = fhdr;
+ 	xa_init(&incoming->xa);
+ 
+-	kho_block_set_init(&incoming->block_set, ser->dev_ser_size);
++	kho_block_set_init(&incoming->block_set, sizeof(struct pci_dev_ser));
+ 	ret = kho_block_set_restore(&incoming->block_set, ser->devices);
+ 	if (ret)
+ 		panic("Failed to restore devices KHO block set (%d)\n", ret);
+@@ -393,7 +382,7 @@ static void pci_check_all_devices_finished(struct pci_flb_incoming *incoming)
+ 	 * This runs once the last reference to the incoming FLB is dropped, so
+ 	 * there are no finishers left in flight.
+ 	 */
+-	nr_devices = incoming->ser->nr_devices;
++	nr_devices = kho_ser_payload(incoming->fhdr, pci_ser)->nr_devices;
+ 	if (nr_devices == 0)
  		return;
  
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (WARN_ON_ONCE(!args->serialized_data))
- 		return;
+@@ -428,7 +417,7 @@ static void pci_flb_finish(struct liveupdate_flb_op_args *args)
  
-+	fhdr = phys_to_virt(args->serialized_data);
-+	if (kho_ser_validate(fhdr, memfd_luo_ser)) {
-+		pr_warn("invalid feature header, folios not discarded\n");
-+		goto out;
-+	}
-+
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 	if (ser->nr_folios) {
- 		folios_ser = kho_restore_vmalloc(KHOSER_LOAD_PTR(ser->folios_fhdr));
- 		if (!folios_ser)
-@@ -426,7 +443,7 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	}
- 
- out:
--	kho_restore_free(ser);
-+	kho_restore_free(fhdr);
+ 	xa_destroy(&incoming->xa);
+ 	kho_block_set_destroy(&incoming->block_set);
+-	kho_restore_free(incoming->ser);
++	kho_restore_free(incoming->fhdr);
+ 	kfree(incoming);
  }
  
- static int memfd_luo_retrieve_folios(struct file *file,
-@@ -533,14 +550,24 @@ static int memfd_luo_retrieve_folios(struct file *file,
- static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- {
- 	struct memfd_luo_folio_ser *folios_ser;
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
- 	struct memfd_luo_ser *ser;
- 	struct file *file;
- 	int err;
+@@ -522,7 +511,7 @@ static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
+ 		return 0;
  
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (WARN_ON_ONCE(!args->serialized_data))
- 		return -EINVAL;
- 
-+	fhdr = phys_to_virt(args->serialized_data);
-+	err = kho_ser_validate(fhdr, memfd_luo_ser);
-+	if (err) {
-+		pr_err("memfd_luo_ser feature validation failed: %pe\n",
-+		       ERR_PTR(err));
-+		goto free_ser;
-+	}
-+
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
-+
- 	/* Make sure the file only has seals supported by this version. */
- 	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
- 		err = -EOPNOTSUPP;
-@@ -581,14 +608,14 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	}
- 
- 	args->file = file;
--	kho_restore_free(ser);
-+	kho_restore_free(fhdr);
- 
+ 	pci_info(dev, "Device will no longer be preserved across next Live Update\n");
+-	outgoing->ser->nr_devices--;
++	kho_ser_payload(outgoing->fhdr, pci_ser)->nr_devices--;
+ 	memset(dev_ser, 0, sizeof(*dev_ser));
+ 	dev->liveupdate.outgoing = NULL;
  	return 0;
+@@ -580,6 +569,7 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
+ 	}
  
- put_file:
- 	fput(file);
- free_ser:
--	kho_restore_free(ser);
-+	kho_restore_free(fhdr);
- 	return err;
- }
+ 	if (!dev->liveupdate.outgoing) {
++		struct pci_ser *ser = kho_ser_payload(outgoing->fhdr, pci_ser);
+ 		struct pci_dev_ser *dev_ser;
  
+ 		dev_ser = pci_flb_alloc_dev_ser(outgoing);
+@@ -587,8 +577,8 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
+ 			return PTR_ERR(dev_ser);
+ 
+ 		pci_info(dev, "Device will be preserved across next Live Update\n");
+-		outgoing->ser->nr_devices++;
+-		outgoing->ser->devices = kho_block_set_head_pa(&outgoing->block_set);
++		ser->nr_devices++;
++		ser->devices = kho_block_set_head_pa(&outgoing->block_set);
+ 
+ 		dev_ser->domain = pci_domain_nr(dev->bus);
+ 		dev_ser->bdf = pci_dev_id(dev);
+@@ -876,6 +866,7 @@ static int pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *dev
+ void pci_liveupdate_finish(struct pci_dev *dev)
+ {
+ 	struct pci_flb_incoming *incoming;
++	struct pci_ser *ser;
+ 
+ 	guard(rwsem_write)(&pci_liveupdate.rwsem);
+ 
+@@ -885,8 +876,9 @@ void pci_liveupdate_finish(struct pci_dev *dev)
+ 		return;
+ 	}
+ 
++	ser = kho_ser_payload(incoming->fhdr, pci_ser);
+ 	for_each_pci_dev_in_path(dev) {
+-		if (pci_liveupdate_finish_device(incoming->ser, dev))
++		if (pci_liveupdate_finish_device(ser, dev))
+ 			break;
+ 	}
+ 
+diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
+index c2e3a5949f73..f53f6350e53d 100644
+--- a/include/linux/kho/abi/pci.h
++++ b/include/linux/kho/abi/pci.h
+@@ -8,9 +8,8 @@
+ #ifndef _LINUX_KHO_ABI_PCI_H
+ #define _LINUX_KHO_ABI_PCI_H
+ 
+-#include <linux/bug.h>
+-#include <linux/compiler.h>
+-#include <linux/stddef.h>
++#include <linux/build_bug.h>
++#include <linux/kho/abi/feature.h>
+ #include <linux/types.h>
+ 
+ /**
+@@ -18,33 +17,20 @@
+  *
+  * The PCI core preserves its state across kexec as Live Update
+  * File-Lifecycle Bound (FLB) data, identified by the compatible string
+- * ``"pci"`` and laid out as described by the structs below.
++ * ``"pci-v2"`` and laid out as described by the structs below.
+  *
+- * This layout is a contract between kernels. Rather than being versioned, it
+- * is extended according to the following rules:
++ * struct pci_ser is preceded by &struct kho_ser_hdr, which records the
++ * total size of the serialization and feature flags. See
++ * include/linux/kho/abi/feature.h for the feature header layout, feature
++ * rules, and validation.
+  *
+- *  * Existing fields must never be moved, resized, removed, or have their
+- *    meaning changed. New fields may only be appended to the end of a struct.
+- *
+- *  * A bit set in ``pci_ser.required_flags`` marks a feature that the next
+- *    kernel must understand to safely take over the preserved devices. The
+- *    next kernel panics if it finds a bit it does not know how to handle.
+- *
+- *  * A bit set in ``pci_ser.optional_flags`` marks a feature that the next
+- *    kernel can safely ignore if it does not understand it.
+- *
+- *  * Fields appended to struct pci_ser must be accompanied by a flag that
+- *    indicates they are present, since the size of struct pci_ser is not
+- *    recorded.
+- *
+- *  * The size of each struct pci_dev_ser is recorded in
+- *    ``pci_ser.dev_ser_size`` and is never smaller than
+- *    ``PCI_DEV_SER_MIN_SIZE``. The next kernel ignores any fields beyond the
+- *    ones it knows about, and must handle entries that are smaller than its
+- *    own struct pci_dev_ser.
++ * Preserved devices are serialized as struct pci_dev_ser entries stored in
++ * a KHO block set. The block header records the entry size, allowing the
++ * next kernel to step through entries using the source kernel's stride
++ * even if fields are added in later versions.
+  */
+ 
+-#define PCI_LUO_FLB_COMPATIBLE "pci"
++#define PCI_LUO_FLB_COMPATIBLE "pci-v2"
+ 
+ /**
+  * struct pci_dev_ser - Serialized state about a single PCI device.
+@@ -61,13 +47,9 @@ struct pci_dev_ser {
+ 	u32 domain;
+ 	u16 bdf;
+ 	u16 refcount;
+-} __packed;
++};
+ 
+-/*
+- * The size of struct pci_dev_ser when this ABI was introduced. Since fields
+- * can only be appended, every struct pci_dev_ser is at least this large.
+- */
+-#define PCI_DEV_SER_MIN_SIZE offsetofend(struct pci_dev_ser, refcount)
++static_assert(sizeof(struct pci_dev_ser) == 8);
+ 
+ /**
+  * struct pci_ser - PCI Subsystem Live Update State
+@@ -77,20 +59,19 @@ struct pci_dev_ser {
+  * core; the state a driver needs to resume its device is preserved separately
+  * by that driver.
+  *
+- * @required_flags: Features that the next kernel must support to take over
+- *                  the preserved devices. No flags are currently defined.
+- * @optional_flags: Features that the next kernel may ignore if it does not
+- *                  support them. No flags are currently defined.
+- * @dev_ser_size: The size in bytes of each struct pci_dev_ser in @devices.
++ * Preceded by &struct kho_ser_hdr.
++ *
+  * @nr_devices: The number of devices that were preserved.
++ * @reserved: Reserved for alignment.
+  * @devices: Physical address of the first KHO block containing pci_dev_ser.
+  */
+ struct pci_ser {
+-	u64 required_flags;
+-	u64 optional_flags;
+-	u32 dev_ser_size;
+ 	u32 nr_devices;
++	u32 reserved;
+ 	u64 devices;
+-} __packed;
++};
++
++/* Register pci_ser with KHO serialization accessors */
++DECLARE_KHO_SER(pci_ser, 16, 0, 0);
+ 
+ #endif /* _LINUX_KHO_ABI_PCI_H */
 -- 
 2.56.0.506.g506a7eabc5-goog
 
