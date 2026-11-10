@@ -1,68 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794267908;
-	b=QgkU+13TkAznI5ZJ/ElJKitOkRhSP1aFb8uLm7IXzQGP+PiW1nJCJvzc5VHp+CKC/4xQ
-	 eYMsA05t/h3iLEmc65SF2zNfvJ5K5ofyesW1ZfL2zvtfpkEbnExYox3S0u+eVhPZHEvGv
-	 anS7HsA8R82PNqaBkLtXuLsi1cL3MdUiRzTjL/vps8MvoUtcrx2alrEDnX3/iNw9I/nZ9
-	 PZHdUp6oIQPPz16DLzdreH9UATn7OKuq/bTsLGGKIfprr3vIrN3Ub7ouL2RmPcYQypqtt
-	 UG6cKteg7GKk5SiM4LQTCi+PrTZnN/CNz/T0VTpj3x6qAfcKq9mhICHv+v7QbBBH2Pg==
+	t=1794269425;
+	b=aVsGzPqb492Iy9PICnwRej89Ibl8nWir+YN/GHqBfAaih3suDyaVfMM6e49y1gCEnCch
+	 zdI4XoGZnoGl0Jx06c5QzKveeJgyciVg1C7HwXDbpJeSZwghZROjGEj6PdxFxz9zGxEmv
+	 XvnzyxBhzdSD54qvduX8yNI9RE+bMVIbJ0kxy/trpJrUTiPk6IvVNmVanTiXyHnJnjW1Q
+	 wF7CInjdFugY16jj1nHMxWgLF5h9XnxnvE19S6AX/tZd+LGvIHD+PLRzQDZth55NzEaC3
+	 CUbDRpQiGO8C58SqOYbp4cbOAujNCAARPBcnpzbokomHI9YyGa2eaodG01u704hwoYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794267908;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:From:Subject:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=ARFzZMYbi8INs9UqTEW+/SstEKOn1k1E9h0yDC2zdqg=;
-	b=OILCceh8PgcTaD+HD2rX0x9ykarhLPGaJqHWYD9CshIeWE6VBKe2g45RPLXpW4qHVcN5
-	 cIwbPeSQxnkLk4We/pb17X0JzP02mflhxoVnoIvUq38x+73ZB+4oIlewwdjNqm4juilv9
-	 3+LTGinEz6LBh4GzECAXcgnN1dtz7Pgx75JjRcrakCaNKqafgETEEsDUBfT6LU1YmMUOh
-	 YPuQ1/bY9pB4oWmQ++OXuNiPDkI6hTG1361fsnhk9PM700m/r1CV4P+RmcuaoXPHXSuB4
-	 seg1D9lWlNQ0YV+k7pd1xYNxtIy1usPFRQB/SxFPM5g7g2ublgBzKRYUT5y8WwwEPcA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794269425;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=dz2fvkSwnZplQkX1U9pzrU7rFR3GRdiaB6bhtOf/H60=;
+	b=M+1cEN/cQBJSaELCHfZ/mD8TzpMtIv13v55vcPrbLXSE9/kQKM50wM1sYaSlJEE26ryV
+	 u4T1TnmgaSxkgmZN+XYRsDyDwS4ZJL4rtiqXtQACrnr0oDFd8krcv7Bho/eIjMzR/AjfO
+	 obPu1bAXUU5zwAJh7gLwG9/Chs5iN8yHOKQO+g82+7MQ3IjwRX+Jg645CZlYZJo0OAjyd
+	 uB0V0N8WO/omk6KNRauGBRbNwA+PVEjrNMysj0hd0+6IlgggP/EouI7qAtwiSmFd84yvH
+	 Hq37c9ocAxcnMVfiwP93KLU+RDnOGXTmfB717Kb/4ghtjhDQTxSGImZdEFFP0UtPEKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HUfB4O0A;
-	arc=none smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCj5FFRq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36375606A31C;
-	Mon,  9 Nov 2026 23:45:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36375606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615CF606A321;
+	Tue, 10 Nov 2026 00:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HUfB4O0A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794267901; x=1825803901;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=P7pSRE/Bdy3ii9bQ2nejb/HYjJ8HUx8CzOOf5E5L+p0=;
-  b=HUfB4O0AROHYJqXn5XPm+aOS6bluStG6zzy4eurRjv/z8i3omz/z2Njz
-   frucyEF9tO0xHEpffmMNCvHGcne/L23FKtmUImaxYYH3oas3VV6Vgn1z5
-   VWWksnbXcsiRbHCiUtKzVc7VtdLu39hBwJV5l4nTgibyBXdnmvigE0HMm
-   Cjjptui0p/B6gWH/J5alB8vkhxGPu92l0/JLmdmildXdgxPHhfnf52B1X
-   E4YqjjrF/8TlO3V2rDns9PW7a83j6JCwoM7ku0NVN6vPD7i53vgxlKFt+
-   JJYwKOXyWRa51SkHbzfgTHWy9kkYOuf+kiZnUIXZs1nR4aQ7B2rwZM89T
-   w==;
-X-CSE-ConnectionGUID: 3FVg3yfDRB+t9OUvlqCIZw==
-X-CSE-MsgGUID: EkyDXQjGSiW9tDSn6spTRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2890291"
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="2890291"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 15:45:00 -0800
-X-CSE-ConnectionGUID: A+8GozaLQV+NoWRR/jVRAg==
-X-CSE-MsgGUID: oD9iay6cQ4yk/Go6KrnHUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="7986194"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 15:44:59 -0800
-Message-ID: <6afef7f3-4b34-4598-8dab-98611aa0a6c7@intel.com>
-Date: Mon, 9 Nov 2026 17:44:57 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCj5FFRq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F9A1F0089F;
+	Tue, 10 Nov 2026 00:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794269425;
+	bh=dz2fvkSwnZplQkX1U9pzrU7rFR3GRdiaB6bhtOf/H60=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=fCj5FFRqRM5NX6wqVhMfGWJhXWGI7k4HNPP5SYpZXp6fIJhbYuBhGZKgm1VP/hYUx
+	 X7pD03O7uixBW0BaNJND7Bid20cISEoxJZKHTeonSfF2sT0j9AeQBu/5YoeeymcnCX
+	 LSiPs/fChguo2+aRIj3pwETTiHs8H007sRY4/6XgYpJFi5tAKCKADUSjxZFIXquoI6
+	 C8CTEFVTVb1vZpgDfBIBvwf0R3fS8wUvLVWW7NYCzivSwM+cCoP5TmPssSeFD5zO+O
+	 ShBEsE7tgGUR0AXBmBb+GQiZMRtQXA1eXAntv/bny6a5v1fR5quH6iyfGteoEmSUxU
+	 DftRxsHV17FjA==
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,233 +48,100 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Chen, Zide" <zide.chen@intel.com>
-Subject: Re: [PATCH v3 11/18] KVM: x86/pmu: Emulate
- IA32_PERF_GLOBAL_STATUS_SET MSR
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20261106013927.166209-1-zide.chen@intel.com>
- <20261106013927.166209-12-zide.chen@intel.com> <au44SIwBF52nsIkk@google.com>
-Content-Language: en-US
-In-Reply-To: <au44SIwBF52nsIkk@google.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 10 Nov 2026 01:10:16 +0100
+Message-Id: <DMR3FALTBPDB.15ASJDTIC5GXS@kernel.org>
+Subject: Re: [PATCH v2 06/12] rust: pci: add a bind callback after
+ installing driver data
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>, <beata.michalska@arm.com>
+To: "Simon Song" <xinmengs@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261023154009.2246627-1-xinmengs@nvidia.com>
+ <20261023154009.2246627-7-xinmengs@nvidia.com>
+In-Reply-To: <20261023154009.2246627-7-xinmengs@nvidia.com>
 
+On Fri Oct 23, 2026 at 5:40 PM CEST, Simon Song wrote:
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index adc7e92d44e..1951b3c8a5c 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -154,6 +154,13 @@ extern "C" fn probe_callback(
+>              let data =3D T::probe(pdev, info);
+> =20
+>              pdev.as_ref().set_drvdata(data)?;
+> +            // SAFETY: `set_drvdata` installed the pinned `T::Data` abov=
+e.
+> +            let data =3D unsafe { pdev.as_ref().drvdata_borrow::<T::Data=
+<'_>>() };
+> +            if let Err(error) =3D T::bind(pdev, data) {
+> +                // SAFETY: Failed bind leaves no callbacks borrowing the=
+ installed data.
+> +                drop(unsafe { pdev.as_ref().drvdata_obtain::<T::Data<'_>=
+>() });
+> +                return Err(error);
+> +            }
+>              Ok(0)
+>          })
+>      }
+> @@ -416,6 +423,15 @@ fn probe<'bound>(
+>          id_info: Option<&'bound Self::IdInfo>,
+>      ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
+> =20
+> +    /// Complete probe after the pinned driver data has been installed.
+> +    ///
+> +    /// Called with the PCI device lock held. On error, the data is drop=
+ped without calling
+> +    /// [`Self::unbind`]. Any callbacks started here must be stopped bef=
+ore returning an error.
+> +    fn bind<'bound>(dev: &Device<device::Core<'_>>, this: Pin<&Self::Dat=
+a<'bound>>) -> Result {
+> +        let _ =3D (dev, this);
+> +        Ok(())
+> +    }
 
+No, please don't introduce a new bus callback for the sake of ordering
+registrations against each other, it does not scale.
 
-On 11/6/2026 2:35 PM, Yosry Ahmed wrote:
-> On Thu, Nov 05, 2026 at 06:39:20PM -0700, Zide Chen wrote:
->> Intel PerfMon v4 introduces IA32_PERF_GLOBAL_STATUS_SET (0x391) to
->> allow software to set individual bits in the global status MSR. Reads
->> of IA32_PERF_GLOBAL_STATUS_SET always return zero.
->>
->> IA32_PERF_GLOBAL_STATUS_SET is not part of the VM state, so it doesn't
->> need to be advertised to userspace, nor saved and restored during live
->> migration.
->>
->> Always intercept IA32_PERF_GLOBAL_STATUS_SET to prevent the guest from
->> modifying status bits that are not virtualized by KVM.
->>
->> Bit 63 (CondChgd) stays unreserved in pmu->global_status_rsvd to
->> architecturally allow the guest to write this bit on STATUS_RESET (0x390)
->> to clear it, and allow userspace to set it on GLOBAL_STATUS (0x38E).
->>
->> However, bit 63 is architecturally reserved in STATUS_SET per the SDM.
->> Reject writes to bit 63, injecting #GP for guest writes. While older
->> processors had silicon errata that accepted writes without #GP (e.g.
->> SKX95), strictly enforce the architectural specification for
->> deterministic behavior across migrations.
->>
->> Platform-specific EDS clarifies that CondChgd indicates a change to
->> IA32_MISC_ENABLE[7], which KVM intercepts and keeps strictly read-only
->> for guests. This guarantees hardware will never assert CondChgd during
->> guest execution.
->>
->> Thus, the architectural asymmetry among these three MSRs is safe; being
->> unable to restore bit 63 to hardware via STATUS_SET is benign because
->> the guest will never legitimately observe CondChgd. Filter it out
->> defensively before writing to hardware in intel_mediated_pmu_load().
->>
->> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> v3:
->> - Split from combined v2 patch into standalone GLOBAL_STATUS_SET patch.
->> - Always intercept IA32_PERF_GLOBAL_STATUS_SET to prevent passthrough of
->>   unvirtualized status bits. (Jim)
->> - Reject writing bit 63 (CondChgd) to IA32_PERF_GLOBAL_STATUS_SET. (Jim)
->> - Filter out bit 63 before writing to hardware in intel_mediated_pmu_load().
->> - Move validation for MSR_CORE_PERF_GLOBAL_STATUS_SET to pmu_intel.c rather
->>   than common pmu.c to avoid exposing the Intel MSR on AMD.
->>
->> v2:
->> - Add the missing vmcs02 updates for these two MSRs.
->> - Change "> 3" to ">= 4" to make the "v4-gated" more obvious and match
->>   the existing code style.
->> ---
->>  arch/x86/kvm/pmu.c           | 13 +++++++++++++
->>  arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++--
->>  2 files changed, 25 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
->> index 27d6a9169821..2cb5bccc7044 100644
->> --- a/arch/x86/kvm/pmu.c
->> +++ b/arch/x86/kvm/pmu.c
->> @@ -855,6 +855,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
->>  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
->>  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
->> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
->>  		msr_info->data = 0;
->>  		break;
->>  	default:
->> @@ -921,6 +922,18 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>  		if (!msr_info->host_initiated)
->>  			pmu->global_status &= ~data;
->>  		break;
->> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
->> +		/*
->> +		 * Bit 63 (CondChgd) is architecturally reserved in STATUS_SET.
->> +		 * Older CPUs errantly accepted writes without #GP (e.g. SKX95),
->> +		 * but KVM strictly enforces the architectural spec to ensure
->> +		 * consistent behavior across migrations.
->> +		 */
->> +		if (data & (pmu->global_status_rsvd | GLOBAL_STATUS_COND_CHG))
->> +			return 1;
-> 
-> Is it intentional to disallow userspace from writing
-> GLOBAL_STATUS_COND_CHG through MSR_CORE_PERF_GLOBAL_STATUS_SET, even tho
-> it's allowed through MSR_CORE_PERF_GLOBAL_STATUS?
+The answer is almost always to use a new registration data container and, w=
+here
+needed, self-referential pin-init in order to represent ordering dependenci=
+es.
 
-Yes, this is intentionally, since bit 63 is architecturally reserved in
-MSR 0x391.
+Fixed ordering imposed by bus callbacks falls apart with different driver n=
+eeds,
+whereas separate registration data containers and self-referential pin-init=
+ are
+flexible and represent data dependencies and lifetimes directly.
 
-> 
->> +		if (!msr_info->host_initiated)
->> +			pmu->global_status |= data;
->> +		break;
->>  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
->>  		if (!msr_info->host_initiated)
->>  			pmu->global_status |= data & ~pmu->global_status_rsvd;
->> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
->> index ce668ea08da5..e81a3f8b9b02 100644
->> --- a/arch/x86/kvm/vmx/pmu_intel.c
->> +++ b/arch/x86/kvm/vmx/pmu_intel.c
->> @@ -197,6 +197,8 @@ static bool intel_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
->>  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
->>  	case MSR_CORE_PERF_FIXED_CTR_CTRL:
->>  		return kvm_pmu_has_perf_global_ctrl(pmu);
->> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
->> +		return pmu->version >= 4;
->>  	case MSR_IA32_PEBS_ENABLE:
->>  		ret = vcpu_get_perf_capabilities(vcpu) & PERF_CAP_PEBS_FORMAT;
->>  		break;
->> @@ -827,8 +829,16 @@ static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu)
->>  	toggle = pmu->global_status ^ global_status;
->>  	if (global_status & toggle)
->>  		wrmsrq(MSR_CORE_PERF_GLOBAL_OVF_CTRL, global_status & toggle);
->> -	if (pmu->global_status & toggle)
->> -		wrmsrq(MSR_CORE_PERF_GLOBAL_STATUS_SET, pmu->global_status & toggle);
->> +
->> +	/*
->> +	 * CondChgd is architecturally reserved in GLOBAL_STATUS_SET. Unless
->> +	 * set by malicious userspace, this bit should never be set in
->> +	 * pmu->global_status; filter it out defensively to protect against
->> +	 * a host #GP.
-> 
-> IIUC, this will ignore bit 63 completely when written by userspace,
-> should KVM be doing this?
+IIUC, this comes down to the runtime PM implementation in this series, so p=
+lease
+base your code on the generic runtime PM work [1] from Beata (Cc) instead.
 
-Yes, if userspace writes GLOBAL_STATUS (0x38E) with bit 63 set, it would
-be silently dropped here before writing to hardware.
+If you respin this series before Beata respins the runtime PM work, please =
+take
+my latest feedback on her series into account, since it may affect how this
+series integrates with it.
 
-Because KVM always intercepts IA32_MISC_ENABLE, bit 63 is not supposed
-to be set for guest GLOBAL_STATUS.
+I'd also suggest splitting out the runtime PM support as separate patches a=
+t the
+end of this series, so we can start landing the rest independently.
 
-The case you mention should not happen in reality, but theoretically it
-exists and this sounds not clean enough.
-
-I'm thinking of doing it differently: similar to the CTR_Frz bit, KVM
-can keep bit 63 CondChgd reserved, and provide a backdoor to allow
-writing this bit to 0x390:
-
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 393068093757..1429da7148bd 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -925,9 +925,11 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct
-msr_data *msr_info)
-        case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
--               if (data & pmu->global_status_rsvd)
-+               if (data & (pmu->global_status_rsvd &
-~GLOBAL_STATUS_COND_CHG))
-                        return 1;
-                fallthrough;
-        case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-@@ -935,13 +937,7 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct
-msr_data *msr_info)
-                        pmu->global_status &= ~data;
-                break;
-        case MSR_CORE_PERF_GLOBAL_STATUS_SET:
--               if (data & (pmu->global_status_rsvd |
-GLOBAL_STATUS_COND_CHG))
-+               if (data & pmu->global_status_rsvd)
-                        return 1;
-                if (!msr_info->host_initiated)
-                        pmu->global_status |= data;
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 117ff54d4aea..0f426634373e 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -652,7 +652,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
-        pmu->global_ctrl_rsvd = counter_rsvd;
-
-        pmu->global_status_rsvd = pmu->global_ctrl_rsvd
--                       & ~(GLOBAL_STATUS_BUFFER_OVF |
-GLOBAL_STATUS_COND_CHG);
-+                       & ~GLOBAL_STATUS_BUFFER_OVF;
-        if (vmx_pt_mode_is_host_guest())
-                pmu->global_status_rsvd &= ~GLOBAL_STATUS_TRACE_TOPAPMI;
-
-@@ -892,13 +892,7 @@ static void intel_mediated_pmu_load(struct kvm_vcpu
-*vcpu)
-        if (global_status & toggle)
-                wrmsrq(MSR_CORE_PERF_GLOBAL_OVF_CTRL, global_status &
-toggle);
-
--       /*
--        * CondChgd is architecturally reserved in GLOBAL_STATUS_SET. Unless
--        * set by malicious userspace, this bit should never be set in
--        * pmu->global_status; filter it out defensively to protect against
--        * a host #GP.
--        */
--       set_bits = (pmu->global_status & toggle) & ~GLOBAL_STATUS_COND_CHG;
-+       set_bits = pmu->global_status & toggle;
-        if (set_bits)
-                wrmsrq(MSR_CORE_PERF_GLOBAL_STATUS_SET, set_bits);
-
->> +	 */
->> +	if ((pmu->global_status & toggle) & ~GLOBAL_STATUS_COND_CHG)
-> 
-> Maybe store this in a variable as it's used in wrmsrq() as well?
-
-Yes, thought about it. One more variable vs cleaner code. Will do.
-
-> 
->> +		wrmsrq(MSR_CORE_PERF_GLOBAL_STATUS_SET,
->> +		       (pmu->global_status & toggle) & ~GLOBAL_STATUS_COND_CHG);
->>  
->>  	wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, pmu->fixed_ctr_ctrl_hw);
->>  }
->> -- 
->> 2.56.0
->>
-
+[1] https://lore.kernel.org/all/20261026120523.526942-2-beata.michalska@arm=
+.com/
