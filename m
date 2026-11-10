@@ -1,92 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.139.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794312718;
-	b=TO4rMjpz2ah87AVbM+ZJrLJoCbNuDRdKMjpolLdpVPVrxehFUJyOAMd1cOLje55RdcCJ
-	 1w0emrhAo+UatfbAAxc6rIGP6uORvl3Lv9CwN7yyxVggZWocY5+M6d16d0nQxTfp9UMXO
-	 ky4sDsLe1nPmW+/PRZeuvIUD/7vGLcKndETU+Irt64qEpFlyl+YeyNss3twK6ublLSgOD
-	 ujkPfB9lpGYu3GXnJVBbeqnJ8pq+wT9stN9+K1McicadWLHkJcWVqV+fuwReh/uLEMU8X
-	 GzGD09zbFc5fSXqVQSd5ZiCB72AMzrkqTeDpX9DJYCAaX+BUTsw6UqNbkdUHao62ImQ==
+	t=1794314553;
+	b=Mer85/K+XmjnOnc1rVJaL1ngxv8Jn/p/uiApoPkQw59SEJzZCdLCYSb116xdwCWxdbt2
+	 /0LchGTRNJvdo8D7gvtQOIDW2Vxk5iYyqNLhhGBOQgEs6X+yU19RYnybe1iLbCILiz/Bj
+	 +UeikLwN5yqoAstyM4YzS9b8KxGPnyphgOYS22/WhDlReQZlWR3MjUZauQb2lo0z/DBVC
+	 LSLRGGfDWznUsZhyswU55xVvvwZNLGs0ktO5X4dxrbXIaj6M78zBXzJ3CViW1sWXW/WQG
+	 gDWXdDXLRpfjDSCL4Ue/CATpFkxxKDQqCQMFScp1WEeocXXGA7TzD6zxZdSs8O9oMPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312718;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794314553;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=xPi/3K5EgSO8uxLuJimni9tpMpXLjb9QZkfq/GsXYRI=;
-	b=2MFE5OIdsVvbgHFfNxn18w1FpYECuA+8udGtzY/VCxaEBAtZazSIqa36ItYyJzqqTmDx
-	 5cDd6NP8HS7hRE34l4mST0sy5XmSNP5OO/AWXiJK1rZbhJRlOBGVmFu8rbJ1goNZ9zJ5X
-	 eiBeF+ogTMZnIBN2gaP2wxXpfjiad055ndu2Z6NgVnvYAVU0s1E6g0JfXNE6DXhisQl8p
-	 XOeBh8q3N7ei8Z8bThE978VSvdtFpUOOiR7cgfAHsBk4d0FG1Z+z0d4KIQJ0P8RIOh+Ft
-	 gr6bUWUmOAguuaBPBuVqyEM1X6VabMgUp+6YI6Cm37+1FeaX4FhfSPWbXvKr6B7Dq7A==
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Message-ID:
+	 Subject:From:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=u5SJhx0uN8f0xkp5nVpcIHHCQXZAvgQAW4sa6y83OM4=;
+	b=ri+/VmFXQYvxarbz82ihPOBJhikzthLU9WM+5s0XQDvW3DdBDGLhrhPeT4V8S98TkTeX
+	 PUGwxDwOaevaz/JjbdfiUmfukTDFZD3oij3DyTPN6g8prvKPmQONDwtU2Ccz40+1alOHf
+	 Ql3EWB4DWukecHfSjGdGNnJsRiJ1m9kbeg+bFareYFPD2n3A+tvyJLyDtq0AwatZ1GspF
+	 FcGqpOLxcweEggK1MEp1Yc2ymaFPg5b2/CTJZ4eaaEebBkEpB/zm9CcBdTQc0DGfB3B1v
+	 60WLvLwhOBmnlFBU+FWi80DuVTjbbFXGYtYaEugYprttNabJrkr3RxfoTQgUAD+28BQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=DgKtYllK;
-	arc=none smtp.remote-ip=68.232.139.130
-Received: from esa5.hc1455-7.c3s2.iphmx.com (esa5.hc1455-7.c3s2.iphmx.com [68.232.139.130])
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="APRjc/Sc";
+	arc=none smtp.remote-ip=198.175.65.19
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B278606A33D;
-	Tue, 10 Nov 2026 12:11:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B278606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C89606A333
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 12:42:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70C89606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=DgKtYllK
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1794312717; x=1825848717;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2Eio9nYqq1HUIYESAuWhCyeK9Re+Weog6uesd4h1oSo=;
-  b=DgKtYllKTeTwRZ213gzZEjfL7eD+fqSfJAhsmkaqP1AGBn+eY26t9L4C
-   +p/vbR84Zq2DQurFs7azQBD0BP0NvKOXWKv3cRwu4GmUrC6brnlSrwojW
-   m5BNujLqDiPx4gLEeSHHPXLv/fybBFjgcnZEAeY1hn3i1Hb9GIjusieKp
-   dWotSKLGlPstqR4mtCZvcUXwdcuQqkKLNiI9ezPuFvAJH+PIrSkRINKl3
-   g/KrEt5C7O5J55mde5yKfR6VqlzS/9w1agRw8RobzVb8KENS2v837BA1j
-   6TV5OI2R6HVscAjSj6tJI0mWaxF3cfWxiB7u5kPVq/jmU8+flf9tKGgI5
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=APRjc/Sc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794314552; x=1825850552;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=4f1/JbJEc6iwOF4/Zc1eG20czIZ5ns5wDzKkIqMs/SY=;
+  b=APRjc/Scd/RzA268Mtau8x+7Xxuu35KYb2nXmstPN9G2KoiI0LeyXo2t
+   LwCnNnk1svSSf6qsiKNLKd/c0oYYD0G5juCsXXniad7fY8bc3GAXRU7Yu
+   iroU6UTSmMAtNsf77rM6xd60BQHHlJ7zDdbVJBwfxk8QZ+V9Sj+17imm/
+   iQodjtWnW2kH3ECACDwiF6JcHCQpNZ8pIdiX9yYaiDDyUdwHkQgev2iJg
+   NPvVTm7+JGN1zXbbmrFfkwmqzD5o+9j1AhlpvFjqIOGaLYc5kt+caHtVh
+   94jGv1i5QLSmcv30JvLOxyAK7oaV55Yq2izFN2z9mt4OjXEMVNQ5zojwc
    Q==;
-X-CSE-ConnectionGUID: VzIQzazDQDWy8ViB7/XKKg==
-X-CSE-MsgGUID: 5qkYb5xfTi+7nhE6TDQUnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="259489026"
-X-IronPort-AV: E=Sophos;i="6.27,205,1786978800"; 
-   d="scan'208";a="259489026"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 21:11:49 +0900
-Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id D4C581C01688;
-	Tue, 10 Nov 2026 12:11:49 +0000 (UTC)
-Received: from az2uksmom1.o.css.fujitsu.com (unknown [10.151.22.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id 87A0314003DA;
-	Tue, 10 Nov 2026 12:11:49 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.61.34])
-	by az2uksmom1.o.css.fujitsu.com (Postfix) with SMTP id E5AFE1800A47;
-	Tue, 10 Nov 2026 12:11:40 +0000 (UTC)
-Date: Tue, 10 Nov 2026 21:11:39 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH 00/11] KVM: arm64: CCA: Prepare Realm memory management
-Message-ID: <avMI__K5XBf3z7wv@FCCLS0092175.localdomain>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <avLgdqlfUPMAI-r9@FCCLS0092175.localdomain>
- <e9bc3885-4e29-44a0-a186-463337f57d9e@arm.com>
+X-CSE-ConnectionGUID: skNhifkYTBWTkwckiz5BcA==
+X-CSE-MsgGUID: 1KaNjxMxS5qeeG3I+1Ichw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3095602"
+X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
+   d="scan'208";a="3095602"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 04:42:31 -0800
+X-CSE-ConnectionGUID: cDYGt7P7QhOMvZa6p8q2DQ==
+X-CSE-MsgGUID: hQnKdKpoS3iW7yzNUmBOyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
+   d="scan'208";a="10008643"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmviesa013.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 04:42:31 -0800
+Received: from [10.245.245.51] (abityuts-desk1.ger.corp.intel.com [10.245.245.51])
+	by linux.intel.com (Postfix) with ESMTP id D0E3F20B8CD1;
+	Tue, 10 Nov 2026 04:42:23 -0800 (PST)
+Message-ID: <61437761ac1bbdf10204084c08a066ee6168feca.camel@linux.intel.com>
+Subject: Re: [RFC PATCH v2 1/4] Documentation: KVM: Add live migration API
+ for confidential guests
+From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+To: Tony Lindgren <tony.lindgren@linux.intel.com>, Paolo Bonzini
+	 <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, Jon Grimm
+	 <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, Tom Lendacky	
+ <thomas.lendacky@amd.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton	
+ <oliver.upton@linux.dev>, Steven Price <steven.price@arm.com>, Anup Patel	
+ <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>, Jakub
+ =?UTF-8?Q?R=C5=AF=C5=BEi=C4=8Dka?=	 <jakub.ruzicka@matfyz.cz>,
+ =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,  Vishal Annapurve
+ <vannapurve@google.com>, Elena Reshetova <elena.reshetova@intel.com>, Kai
+ Huang <kai.huang@intel.com>,  Kishen Maloor <kishen.maloor@intel.com>, Mika
+ Westerberg <mika.westerberg@linux.intel.com>, Peter Fang	
+ <peter.fang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Xiaoyao Li	 <xiaoyao.li@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	kvm@vger.kernel.org
+Date: Tue, 10 Nov 2026 14:42:22 +0200
+In-Reply-To: <20260831071304.762939-2-tony.lindgren@linux.intel.com>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
+	 <20260831071304.762939-2-tony.lindgren@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,51 +99,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e9bc3885-4e29-44a0-a186-463337f57d9e@arm.com>
 
-On 11/10 11:54, Suzuki K Poulose wrote:
-> Hi Kohei
-> 
-> On 10/11/2026 09:24, Kohei Enju wrote:
-> > On 11/02 14:12, Steven Price wrote:
-> > > This series adds the memory plumbing for CCA building on the basic
-> > > plumbing[1] that has just been merged.
-> > > 
-> > > These patches add the internal realm VM state and RMM feature checks,
-> > > prepare realm stage-2 setup and teardown, and provide RTT mapping and
-> > > invalidation helpers. Realm memslots are now contrained to the lower
-> > > half of the IPA space, because faults treat the protected and shared
-> > > halves as aliasing. The final patch then connects these helpers to the
-> > > KVM stage-2 MMU operations.
-> > > 
-> > > There's also an integration branch[2] that builds on this series and
-> > > includes the realm descriptor creation, REC entry/exit, activation and
-> > > the new uAPI. This series by itself is also available as a git
-> > > branch[3]. However the new code isn't generally active without the full
-> > > integration branch.
-> > > 
-> > > [1] https://lore.kernel.org/all/20261007073537.2454351-1-suzuki.poulose@arm.com/
-> > > [2] https://gitlab.arm.com/linux-arm/linux-cca
-> > >      branch: cca-host-mm/v1/integration
-> > 
-> > Hi Steve, thanks for your work on CCA upstreaming.
-> > 
-> > For testing purposes, could you clarify which TF-RMM revision (or commit
-> > hash) you tested with? Although this MM series itself doesn't seem to be
-> > particularly sensitive to changes in TF-RMM, testing the integration
-> > branch could be affected by subtle changes in the RMM.
-> 
-> Tip of both the repositories should work (tf-a and tf-rmm).
+On Mon, 2026-08-31 at 10:13 +0300, Tony Lindgren wrote:
 
-Hi Suzuki,
+> +  /**
+> +   * @command: One of the defined KVM_MIGRATE commands
+> +   * @flags: Hardware specific flags
+> +   * @reserved: Reserved for future use
+> +   * @buf: Userspace buffer for hardware specific data
+> +   */
+> +  struct kvm_migrate_cmd {
+> +	__u16 command;
+> +	__u16 flags;
+> +	__u32 reserved;
+> +	struct kvm_transfer_buffer buf;
+> +  };
 
-Thanks for the clarification.
+I think everything should be _u64. And there should be something like
 
-Then, unless otherwise specified in the cover letter or elsewhere, I'll
-assume that the latest revisions of both repositories are expected to
-work together going forward.
+__u64 reserved[14];
+
+with a requirement to be set to 0. This may be useful for possible future
+extensions.
+
+Rationale: If the system can afford CoCo VMs and their live migration,
+this must be a relatively powerful system, 64-bit today, where we do
+not need to save memory by using __u16 and __u32 and not adding extra
+reserved space.
 
 Thanks,
-Kohei
+Artem.
