@@ -1,101 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794338309;
-	b=fN9yXHiIeJjk5bpMN/Q42I3mQ4SPqrEgZ39H9A3CX1i07pYPYn4Oxqe8P5Mwx2C0dbP+
-	 FQh1ZlU/G91niX8PXsQVQyP9Cw0mcsShn5Ddo7j/jmHATGPzwX7inikJwi8vuCTqRkhiW
-	 NSj3si/fw4yziqHS/J9UkWiT/yRvrEDAJxHLAVl1xe8ydK2G+BaCQDF1yJ/AkH7Lk6GPK
-	 PFGd/gif67icTAL+r04GpT7v6vqImLKjaVSVLIuonX7tq9RhnkKQ4UzcXzWiOYNbQdM+P
-	 w+Vgl4Emofx4YZWviijImLEglEd7AwOrNs/1c72kZZAMEEdb1aOAdNuOwM+oy7P6AzA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794338309;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=bbKNwN70bb9RlNiCImh5gAr765/eNXsrDR4TFosl/go=;
-	b=DGGZNySvdVO9Z6dcpGUPqRk4zfoBYRXw3gWZmtQ8T1wshMa0IWHXEx0bjCeKcjy6kpOB
-	 PzWpmrD645OEwvOLPhrtjEoUXDgFGhhCa1/tzyHVZXPf/8eGPPdVjrdHbr6pgpqge2PSg
-	 OryrLv9N4jLC0z/pYLm45D36gX+T6zWJTY4MLJGkRM4iMdh4k3NlxeonO14645lQ8XaJc
-	 WiUywR55UPrS9KWbTujCngBaCCDY+b+JwLyAgliROw5hO192KtuRoe7ExfqanPPSz0STA
-	 xdhwMvloSoGQ5o3T6fbko4QRnmjaQ0p/AJmwC2iJFICLsGf9qJloj32ympAuNQLEhBg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Fb5CkZn8;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794338550;
+	b=F7wqSht+R6BV1XMyfNbtrtg5n8whqp1jzkSG4ocViAeFcAlXuJaWWtkx+eA78a8MJWvS
+	 6IqeBc1QwLEW6cfVjLhG/1ORAXj49B6oqm4NU4IoxqDRZ3TeaY4FlwkGi96tatRy8Z88Y
+	 idb9zuhtQSttZ1Gg68C/3jhxNdPJQn1mUBSTpUk23zfYD5K6Mq97awt6ADqQKUttjuKTp
+	 BihdHHTEaTp0/h4zD0g/55Rjpyl+1DES1nP6uUYkazNMf2aFZF1gkwzKQkIR8HDm/ofEV
+	 TtBnPWSWNXHCSijwh6zsen1LI7p2w//a56JNm0oSvgMz9VX0bKCa6ict5lnRmmKjVgQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794338550;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=w82bV3O4CTnUIOtRe4QKHo0rl8s7//SUTJbVojJ2aQs=;
+	b=4cU5pTILA3eX5ngXbct4hQPGHMGuhjyuPeIVdZLa+EmmUPVtyzBzhteY2CoYnC1nBwF7
+	 dtKGRQ4s23pzKAhLIP5lND5oWiUfEDF/6lT9FV/XfVUIXeW0NuQrKgbDRXnxr11lsZ5Ye
+	 ZIaCA4bOGSVhenk0emGMka4D7GErb/hxhuWOtoIpuSiKgqOjOMKtv6tDLQTH+EIJkA5HX
+	 yh0rGDf+CR28d2LDMZzUJKWCjDDE9jrLK9DOjOZm+85GcQUYtanpp+uQHjxSJmdBHgmb2
+	 XqY1G1mHhlvHAQQTmuiE4U3XaOn8f/rJcAKmHLAO6eZxcpLYZXUKU0QS+DHeD8W4N/w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kuJa6fLa;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA441606A321
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 19:18:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA441606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11669606A323;
+	Tue, 10 Nov 2026 19:22:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11669606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Fb5CkZn8
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b579ed8da6so1264a12.1
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 11:18:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794338307; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xam+Jfzt+FES4CU3ckmZorG7gnF+1q/OrWG0g4vYuWfFVNSBYxp9Ha1sWhK+oKfMrU
-         ZJjyf6k3i98A9IANl7nW5BTrDoRuluqM00Syg2ODTVpdu9Xlv2X9yviqFIECzpHmSQ2Q
-         xuedIIafteS0nlbEYSw9SkVfkvfAYSr4t67a+svSPuzil/M8QTQ5UC3+1155K2bOF+Qp
-         SfljOesLfCITKQeBH08ItPWTP3pBbh4Lpx4RYsnTMwj7DsD3BJK2hUByxS9Oc4xzvh+p
-         +gYyHdOPaCpQgS9eNjkPk213OICi6wHPw2DDY3Sul9CUhnFU+9iOE+XgdAkvM4iotGMp
-         twZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bbKNwN70bb9RlNiCImh5gAr765/eNXsrDR4TFosl/go=;
-        fh=dlouwAAX8pqsdq4Fw2W3AekcHb0cPx9vypU0h/jcw0c=;
-        b=J2lFocDlXw4fiw05HtCvWhjId/GPof6Vcnwh7sBUPyC00llnNqMBFGQz3/bjamfnvH
-         80/hnxzkXYhBdB7ueE5pmOmfZAHj57wJl4zNbGiFhMiC5AbB3txDkFjk8qJRYm4K/FoM
-         yqhanpaxB9g3IzeMsdzGQFu1xLxTnHszC/PJuwfThTanf55XkY5+3gxySFgnmqTHW1Zm
-         8RVPCL+5SAvQ7jM3jFalDLFVDYrvsxqkc9dpP3meOFj56Eor9CqOKj1hAu3pGj4iGHhA
-         TzrujW87vQQ69iL1fhm+tRrkIw/8WYUfAYbdi6XiLgfhLOE/dfgjPEq07c0pVTsgVd2L
-         Pp5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794338307; x=1794943107; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bbKNwN70bb9RlNiCImh5gAr765/eNXsrDR4TFosl/go=;
-        b=Fb5CkZn8cnlba1M9AzMPVlWVe9hCWLJaZXx4jCfQNplJdtXJQbQAgQoe7th0jyBMeo
-         ubEPlFtyCICt7oeG34mpOY38A+b0dCtz8r3GnOYdYzaDbuCuJsqBCFsBAYWs4Ow2BZn2
-         1SLgIr78QmyPFd+8i8Ue2gW5kEEdFh2+2rjs0OSKihT4Fvck8650c4EAanDxp8IapiUc
-         HsC2LC/qC2AMamLSEp67W7Kcri0Cp3dv6m4ccBAWk4YA9QxapGXisdt6ueLBxNO9aIfA
-         O7lO4A2RuiTSNN1OPMDvK2OvakiIWlx5HjgiwrvWnhgG1ChTlNWe29ZZKw7PdvQmNuZH
-         +FWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794338307; x=1794943107;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bbKNwN70bb9RlNiCImh5gAr765/eNXsrDR4TFosl/go=;
-        b=nspzDIuBsDvF+rPudm8Jyvi6FHNMXd1MZtpZhzkQOyERh2L2lhZ1AGbV1a/vii4AAv
-         CfK3DNv3A+X0TqryAkiHGjgbMJ62STuhBE5geWMYg4CaeZAmBRnuEMjTxbLsq2NysnWm
-         tLo40v2kYv0X10luaU3XixvPFkB7MacXefTRMXMh5vligx2KlI923IkxRGEl0DnrjbZz
-         2Ohjt+EBVnmoJIN/7UGFeS+lXorbX+Ef0szIP38XPvIIriaMaugji/qYq3WAtrmQtAHJ
-         hZhFoaL84DcBiVgwB4JtKK5DXTKBG3PBER6D7QWAMb2hxqkIZZJSwGAwB1fjb6OIAQ5T
-         V01w==
-X-Forwarded-Encrypted: i=1; AL+hErFxFqnW61q9D+0b5TcWQaC7KRAyQPMMy11yQI6Xa2RO37C+jBAA1FHpBTYQ6tu4auM+mnM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/tdVWB0c1WZQT296ks4gSw8QfUrA8ECXtFZmQBanf436WUGV5j
-	ikFYsk9w5iUpaK+xGuTUI55KrzpMJBfH+MnDAtUkcqlxL2D5BA1E6nMOlsB+mP1N558HUxld5K+
-	hmXIE8XGG50R6c4eT54+39PFQIiAeEyGRDBZ0dDIT
-X-Gm-Gg: AYBFou06utgojbdVhuCKg5W6RKqW45Odu88qbkGVEILl8jsRfrrc9PCHFw5SP5e21o4
-	49Pus60WTqoBj3XbwlQrJMzjM/t7nkq/nSuy4otci1U5kakVIT1B3+XH6bjE/y86CWbUtwEfm/4
-	hn3cyzrPbw3PhT5yfXKKhgGVuc/jgQBroTjBgcrLRCrsOcIR3aqZh8gnscEtaSkwHGHHBckZSn4
-	oOKBoHhe5q2unr/i1xnUUW+EsxYAG9l2vXrvfu/YlZB+ODc0rRm6HPqHsigLR7mXos90/zqVgp4
-	qAmuw8Wzoi97/B/7mx5KKPStHa1CSTg9z8tVwLPWl/bEUroQIAeIbiVAbBd67zWR5YLfeG6sItg
-	XZ4KFMRdu3+gTgjHyyHObAHtDX153g2+ikCRVBCxuUTL+CRFhbY2Oy8FtIZnrqi6WxqhvTXk5kK
-	EQgGDT0Fs4yejYZcV6XA==
-X-Received: by 2002:a05:6402:a20e:20b0:6b3:b648:314d with SMTP id
- 4fb4d7f45d1cf-6b777eb5cc3mr6144a12.6.1794338306508; Tue, 10 Nov 2026 11:18:26
- -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kuJa6fLa
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AAJEiA83166888;
+	Tue, 10 Nov 2026 19:22:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=w82bV3
+	O4CTnUIOtRe4QKHo0rl8s7//SUTJbVojJ2aQs=; b=kuJa6fLar1e7+5FXvFx71T
+	l2aYvUWNOeqjOHugZA4fd163QOCM1TOXTXeHY9MKywgiQhE36dEmwnmo4rcGpVW9
+	L8isjWhvlr0C1YwjvmxVXdaK+ZZrJHGj+yWKIYDHQZR7JZejMWJnl6D/UUuNSAKv
+	5eJqSaBAg8YnJy6g7+PUDvvwONmQo0DXQEulfUCgKAuJOcHf9Hempx2eu6AtXGZX
+	oR/b9bMfqv6V5KVtRZ/4ETONHoSRNJNDq59pHmEokUtrx1qaInopTwMb41McW36B
+	YfUOmNxxpuYCARlPnumS65F2nAf5N6wvhTukK0XiCNnvDaEYNrgrHP7wO8JQZwJQ
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsumuwyu3-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 19:22:06 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AAJ6sZ82228193;
+	Tue, 10 Nov 2026 19:22:06 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4htepw03kt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 19:22:06 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AAJLxwL31392392
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Nov 2026 19:21:59 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 99B892004B;
+	Tue, 10 Nov 2026 19:21:59 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0567E20043;
+	Tue, 10 Nov 2026 19:21:56 +0000 (GMT)
+Received: from [9.124.212.251] (unknown [9.124.212.251])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 10 Nov 2026 19:21:55 +0000 (GMT)
+Message-ID: <b6a7ba26-e3f1-4dfe-a429-8dd3379e665a@linux.ibm.com>
+Date: Wed, 11 Nov 2026 00:51:54 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,100 +86,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110004037.125692-1-jmattson@google.com> <avNYjOevOv5s2o5k@google.com>
-In-Reply-To: <avNYjOevOv5s2o5k@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 10 Nov 2026 11:18:14 -0800
-X-Gm-Features: AclHuK-Ld1Gchzb01Fm0YtLo-9CmGcGk_lAVK4ne9i34kKI8Zz7QGeRNBrUyoNc
-Message-ID: <CALMp9eQAxDhnJGrxt8MquPKE2jsUzezn+nbRXV7E_OiATFhsow@mail.gmail.com>
-Subject: Re: [PATCH] KVM: nSVM: Add missing CET VMRUN consistency checks
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	John Allen <john.allen@amd.com>, Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/5] powerpc: Add RTAS based error injection support
+ for pSeries
+To: Narayana Murty N <nnmlinux@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Timothy Pearson <tpearson@raptorengineering.com>,
+        Alex Williamson <alex@shazbot.org>
+Cc: sourabhjain@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
+        harshpb@linux.ibm.com
+References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
+Content-Language: en-US
+From: tasmiya <tasmiya@linux.ibm.com>
+In-Reply-To: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDA3NiBTYWx0ZWRfX8sIjR/YGNfAH
+ M/JUOPs4R6h2I+sNX7xbP8FUV9RErvctybBoEwtKvZ2V+oYwI4nf2Qyjw6jzJIqKlWN7Y6CDS19
+ hKOpENFmabpTuuc5euBtG6YNWnLZnxg=
+X-Authority-Analysis: v=2.4 cv=GISdgeNK c=1 sm=1 tr=0 ts=6af36edf cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=wt1o8H50IsT6fsVrqxAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: bF2VkZfhLSNJRRigfk4ZzzsrTrbZ4s-V
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDA3NiBTYWx0ZWRfX3+76r3m+rW4K
+ j0IqymTxuc9aQAgLVFtT6932MCMg93b9WiqIZwhmYwfrqlX02R/mWtsIzKuN2n47JLvYGVK92kE
+ KaBpKwUxUYHXwXEMS3HJ5t5lT127GEG7bwMUgPATHmchIa4NkKWF/BN6FZNjF6TXbNqYjibjYLM
+ Ndh9MsXhZuamwtqAf1kIXRzBkoX3VJxutSvoFZH65B/dzi5hSDpZsIwloRO3jcxdpHV+ryEe+0j
+ PnPeA6pRR5oftFdAemdT6Mj3FjU9e0sPrcK5QwbRGAM3roqRQYIzPyRJy6l7wCaP1koCt1e63j0
+ cA5SdwcKZVFc4znLcMJFFKFIxJEcdFbn+DnDLFsJvumAYgH+RuyQzaS495qaiyZsFhnoo3tI+T5
+ 38iMhlBPFQT928XVmHqe7AOsPVDve/ya84Y2tQHvHWrFPh6FchRtNswMVA/LZZ0XIJ9xlNv7tiu
+ Dmsvv6nJlwNhvzWty1Q==
+X-Proofpoint-ORIG-GUID: 4wOdbhRt4fq1tVao8zd49rlv59CDfrtr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-10_06,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1011 adultscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611100076
 
-On Tue, Nov 10, 2026 at 9:56=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Mon, Nov 09, 2026 at 04:40:37PM -0800, Jim Mattson wrote:
-> > Per the APM, "Canonicalization and Consistency Checks,"
-> >
-> >   [t]he following conditions are considered illegal state combinations:
-> >
-> >    - CR4.CET=3D1 when CR0.WP=3D0
-> >    - Any reserved bit set in S_CET
-> >    - CR4.CET=3D1 and U_CET.SS=3D1 when EFLAGS.VM=3D1
-> >
-> > Check these conditions in software before trying to VMRUN vmcb02, so th=
-at
-> > the illegal states result in a #VMEXIT to L1 rather than an exit to
-> > userspace with KVM_EXIT_FAIL_ENTRY.
-> >
-> > Fixes: c5ba49458513 ("KVM: nSVM: Save/load CET Shadow Stack state to/fr=
-om vmcb12/vmcb02")
-> > Signed-off-by: Jim Mattson <jmattson@google.com>
-> > ---
-> >  arch/x86/kvm/svm/nested.c | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index af0ef678433d..20ede403b62d 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -469,6 +469,21 @@ static bool nested_vmcb_check_save(struct kvm_vcpu=
- *vcpu,
-> >       if (CC(!__kvm_is_valid_cr4(vcpu, save->cr4)))
-> >               return false;
-> >
-> > +     if (CC((save->cr4 & X86_CR4_CET) && !(save->cr0 & X86_CR0_WP)))
-> > +             return false;
->
-> Why aren't we checking X86_FEATURE_SHSTK here as well? Do we know if
-> older CPUs that didn't support CET had the consistency check?
+Greetings,
 
-CR4.CET is reserved if an AMD CPU doesn't have X86_FEATURE_SHSTK.
-Hence, older CPUs without CET support cannot fail the consistency
-check.
+I have tested this patch on my KVM guest environment. I am able to 
+inject EEH errors from host console as well as on guest console using 
+location code for a VFIO passthrough device.
 
-> > +
-> > +     if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
-> > +         CC(!kvm_is_valid_u_s_cet(vcpu, save->s_cet)))
-> > +             return false;
-> > +
-> > +     if ((save->cr4 & X86_CR4_CET) && (save->rflags & X86_EFLAGS_VM)) =
-{
-> > +             u64 u_cet =3D 0;
-> > +
-> > +             if (!__kvm_emulate_msr_read(vcpu, MSR_IA32_U_CET, &u_cet)=
- &&
->
-> If X86_FEATURE_SHSTK is not enumerated by the vCPU, then whether or not
-> the consistency check is done depends on ignore_msr. If ignore_msr=3D0,
-> the MSR read will fail and we won't do the consistency check, but if
-> ignore_msr=3D1 the MSR read will silently return 0, so the consistency
-> check will be done but will always succeed.
+Tested-by: Tasmiya Nalatwad <tasmiya@linux.ibm.com>
+Reported-by: Tasmiya Nalatwad <tasmiya@linux.ibm.com>
 
-If X86_FEATURE_SHSTK is not enumerated by the vCPU, then CR4.CET =3D=3D 0
-and this entire block is skipped.
 
-> Instead of this implicit dependency, should we check for
-> X86_FEATURE_SHSTK explicitly?
 
-That seems superfluous.
-
-> Also, if X86_FEATURE_SHSTK is enumberated by the vCPU, and the MSR read
-> fails, the consistency check will silently be skipped. But I don't think
-> this can/should happen. Maybe we should WARN in this case.
-
-You're right; failure to read the MSR should result in a failed VMRUN,
-and a warning would help triage the failure.
-
-> One last question, in the restore path, the MSR may have not been
-> restored yet, right? Can the consistency check mistakenly fail in this
-> case?
-
-Not with a legal snapshot. Note that on the restore path, the 'save'
-area holds L1 state. Hence, RFLAGS.VM must be clear, because VMRUN
-raises #UD in V8086 mode.
+Thank you
+Tasmiya
