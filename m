@@ -1,133 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794335252;
-	b=hODHP1vDhJ2bZ37a1f0RtqoKZuC1/sMC1vfmCj91BYSSKeBD2zD/L4V4eK3hzXyFe7W+
-	 RETb2PaiDgkgv9MCRedO2L4jV7qOj6m4HHckMC19mo+BfRjc45jFFMdNBXirQ+47xgNVC
-	 yf0JHjL94Ga6XfRdrINHtxTLNouEs9Uqe0KX8rDnxmrWvdMUa+/AfCN3sTqFsE2xNl4Hr
-	 G5QiII9tUC4xAIhdN+xCqeF4CR5DotxyVAFdJy7QGn0EYIhJUMFnXTsKagF7tMILvrzsB
-	 DbFcpU+2pM6wnPmBHXvzlPxr0YB6YcpOPRKgXH5okyz5aO1hRuixfksnSp/0PqFDZiA==
+	t=1794335713;
+	b=MlPkErave86IDfxQ+NVJk/GYNJm/Rf0uK4VyoCu7u0uzCIuvRvAx6Q9+rDQ8IFwGCy1l
+	 0jQtN6mTSuCVR2OkYApt2nI0uXZQR2UYKom8bleelrpGtJOrwS4MgbicP1wJa9L0Kj+at
+	 dtlmcfzIGoQSmHBy4K07/z7S2k0EqJ334q0JtHFuaDBA65+RbdstUfILoHnZKaIl9aC10
+	 CBCwaSew5cGYXgWsmP7oaVWts4hLzNYYEU9Fyd4sE6WRM00ruozFZX1gddHJJMTTTXib0
+	 Mj3ozP5bSN+0uZulnfpDc2StU2wYcCoMaVC/NqyAlhq+jRlycxtEEjSRNX6iLD6wz1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794335252;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794335713;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=YXIy2qRY3m4JoNqfvZNIVm9KUne3fxI0qe7Yqqt3EGs=;
-	b=GM9cgFrgCJeWZqZskFrTPzs6mJKUUCWVPlkpiPlrxuDAfN669s9hC7idwC/sAw/iWydw
-	 xBQYU7K1cwQyPEy5yXHdemPY894ssh1eM01SRXYpKDnXmc4vPVCJTq/dejpos1niKgiPO
-	 GekSl3LC3md8dU/l3Sq+SW90guFUPDE4tmEeqeUsoLVZw7R6fo3EHAHVCbZ0BDEKiyC/G
-	 gp+RapvELeSQyhKrGk0fUjKiFbZ0Z5HRGfpWYkxeTOKPdaTypTlOHkRgLUSxwCWBx3fR8
-	 IIG8dAeoyiXDF6/Fri90n0v7Q1VJ4vtO0lPTy/r+gMt8PzWSuTAMjd/OtoGPrgHxOkw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=dCp0Db26sWh4sAbqSPzWp1M0J6ydStL+IzHoLsVEdug=;
+	b=nHAtDEIg7N8yGaOfsHHDq1D+d0pMaQjwyX0ZXQ9496+vkNAqWsKv3m2gq+G8yxGlLYIj
+	 EK2f+vldDMyJTMW+jpUlcnPprNM3K9BWPUXKttaGZiAf+7yZsCe/Rkk78h5AZR9iylVfu
+	 GKot5UpTmiAD4MVSN3llBDFVrEiJUbGHrZ4mcgAkwn0n3BtZGzb744BuLlF5MsN0k+skQ
+	 qUtciXL7jOq3U44R8YyWEswK75PRUMVOFQMj3+aLY/Ap2a3oZuGGGGyNJwSLw7CZq1uKB
+	 neTq4/s/Z1i+7ROmqDK18PwD7dAX9reADz5JCze7hhftoR8sVDNoc5y40fkOJ9lGolw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=J7TMm8T3;
-	arc=none smtp.remote-ip=209.85.160.176
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ctx22OId;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35457606A327
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 18:27:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35457606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255C8606A325
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 18:35:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 255C8606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=J7TMm8T3
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5364d86f7f0so25845101cf.1
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 10:27:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ctx22OId
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc4216aee8fso2482218a12.1
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 10:35:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794335250; x=1794940050; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YXIy2qRY3m4JoNqfvZNIVm9KUne3fxI0qe7Yqqt3EGs=;
-        b=J7TMm8T34Tu4l5OHcANKwx0/ZOzfapRBnEg4cXPKDFAtzJrkdsQLmXQH1PNBaI+LZH
-         HQxhcvnWaPMv4Mdu99jEJKX1gAfpkqK9bmVZNQr4gKf5Et/58JlVsH9oOxDsx7bqpFQu
-         ZXW3WV+2lrudMoNdhU32xg9MgdSNO1NqIogSK+UVa/6AQgjRkJQkqGErKB9UAMu1XqgJ
-         3fZPTlqW+B98MNIeDrnpleLnnPacRQ56XVQM2pIc4xb54sJcW/ZDtQ/K4p7vR1GL4gM3
-         rK7V1sGMQaqI7HfANYUEMk0S5fY/S6x9xF1CTrUP9NqUwRARSKYQRXehKzOgiVLCp6ft
-         i0vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794335250; x=1794940050;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794335711; x=1794940511; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YXIy2qRY3m4JoNqfvZNIVm9KUne3fxI0qe7Yqqt3EGs=;
-        b=UwNA5zq/3wLaafXnw/Uaua3Z+Gnt0c0YO1/cgJTTjuveylCv7V2rGPmq5M1U4GZjhT
-         G1t/ffgKtHprb/R2HdMTd86vB+U9ufStenKHKSCaxSCLLMmCVBO8Sv3JPPUIYKAI77hf
-         KN1RGsXajWeDjO8UZjP+5SK7DSg+zucGj2ISgajyWRZxORyyXSxIv9cuQxqR3LB1aP0g
-         djC0e1PYciynshkAhZrClWEK2Y+4vQ/oUwcmhVsqOy2GzAqpnB5XMkucLHMpdckywoWT
-         1n3BqPK8r41/PFHOcbpSk6M1CBC2xOx2Vvfw9QlFFMVs4KuVk15QYSzxvF1oRzxzMKP3
-         gj5g==
-X-Forwarded-Encrypted: i=1; AL+hErGQko21W64vVDk0YZ/dF8uTeki4C7gv6ct43PyMWSncYyO7Ho4NVTgr9O0wLi5YAJRk6Uc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z84p2EPQkfngIcCGU7Uwzl/DPPc2c+vqR6U9pbIZi4MKbC/0qdj
-	qE/cRifjbjJjtJg36hxoijKutELAqNj4gReBFd5gnKQT/9b2kt5m+ri9ZFxUAY85xuE=
-X-Gm-Gg: AYBFou3wJdUPlRpCxu4Lfe/yEbWp8wiOq9c13672vXBLrfl1XWa2sS/XlcfqMRuXSUm
-	XiuricYlywA6vfSaONUoNsSL3dxxoJrcoxxMYxHS88dtDP9TU1UKkRglPpWZVaI+GFevXVZXBB2
-	WQowNDiTor+Mt/aHP1ALNJWZNQ3T5cFYGR/+wSjqquWVz707pHE5O9DT04HGBkMw9qbX8rzcbOM
-	ZATTPicq/anDUtVddW/eWSpdPt6bTcePwUNnvsNLoC2NA7fBcXiZT+JwEb+pzEgA1hHAMx7mLZo
-	8Pp9adRdVYqbgk12wqH7pT84VHKRJACO2iYlUz2GitxlrqQRHUdkrj3KJZcrwavfDClA27Rpcol
-	LsvLCGdyAflJCiH4lks7YnCsoKbeCLR0Y3kzkNKgpOuAtIBA1TkrkZskTRWC1pOzDoW3hHs2hSL
-	VjtFlY/orX5ktdTQipkz3802O2EprbJRlwO51DM5pQEi5oKpfg0hBZtB193mr3m7I6yeZWbqehR
-	g674r7jeVLjSAN0zZqxbBe2iPqQKbeVom7vfub8z6to5FuN9XwK0zwu7b8XxWnYe5pw4OpRBZCQ
-	XgU8fMFGG9E+2SR3b9QOdLqG2NbvQ1tZMAEkrUeQ6YU6n5HlCymx+gNu6b+uvFz9y/n8Ww+fbxS
-	7eI0W0lmPpB8=
-X-Received: by 2002:a05:622a:313:b0:51c:1590:8e13 with SMTP id d75a77b69052e-555257c5f22mr54402921cf.4.1794335250028;
-        Tue, 10 Nov 2026 10:27:30 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-555093d9c3fsm30362981cf.3.2026.11.10.10.27.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 10:27:28 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xQqZ5-00000006j4S-49JU;
-	Tue, 10 Nov 2026 14:27:27 -0400
-Date: Tue, 10 Nov 2026 14:27:27 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Peter Fang <peter.fang@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"drdeeglaze@gmail.com" <drdeeglaze@gmail.com>,
-	"James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>,
-	"aik@amd.com" <aik@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"Xing, Cedric" <cedric.xing@intel.com>,
-	"alistair.francis@wdc.com" <alistair.francis@wdc.com>,
-	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"ankita@nvidia.com" <ankita@nvidia.com>,
-	"jiri@resnulli.us" <jiri@resnulli.us>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"Quigley, David" <david.quigley@intel.com>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"jpiotrowski@nvidia.com" <jpiotrowski@nvidia.com>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"lukas@wunner.de" <lukas@wunner.de>,
-	"Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
-	"jic23@kernel.org" <jic23@kernel.org>,
-	"ksinyuk@kernel.org" <ksinyuk@kernel.org>,
-	"sameo@meta.com" <sameo@meta.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"qinkun@google.com" <qinkun@google.com>,
-	"pgonda@google.com" <pgonda@google.com>
-Subject: Re: [PATCH RFC 20/20] attestation: Add the TDX family implementation
-Message-ID: <20261110182727.GA663069@ziepe.ca>
-References: <20261023220030.GM3977851@ziepe.ca>
- <7843a833723e3aad40f8fc4de3a83f5a5059280f.camel@intel.com>
- <20261103005851.GH3889730@ziepe.ca>
- <au5LCE1jau0yDo5S@intel.com>
- <20261109171236.GP663069@ziepe.ca>
- <cbef9bda9241ffe98652172edb67fab3eb1c35ee.camel@intel.com>
- <20261109234252.GR663069@ziepe.ca>
- <4c75b369b68c98c5c35e296895b6935342dc7dc1.camel@intel.com>
- <20261110131114.GV663069@ziepe.ca>
- <avNfZ0lLl-OrkCHs@intel.com>
+        bh=dCp0Db26sWh4sAbqSPzWp1M0J6ydStL+IzHoLsVEdug=;
+        b=ctx22OId3b1A89h+/g0DLFFIvF1rE/LJiVCOg314dN1i0WsgjGNLUdr9g5ogDUofXQ
+         iTytv8eWhKYvvAc1PGv3tO469SZSEgiiM8pzHozoBPZ+JLjj4U60kg4GE7ooJgxxgMLD
+         yYkNR/2PgzAqsrdBgcDkGmqae2glgyxhphW8A59/68tE1XL5f9uZe+BYr1Q+iDODYe5d
+         DYjN8zKbWgC5M1atPcdss9TOVd98YuPqehqpzIzO8IOUKFSKplq5o47oSsn2tnQxaxmm
+         uT0VRNaOVvoGtA5U6P1PyJMJR89m+mn5fyW1gkyhmmAlacc90Jj+otaDm3KCwrVsse/H
+         ntQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794335711; x=1794940511;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dCp0Db26sWh4sAbqSPzWp1M0J6ydStL+IzHoLsVEdug=;
+        b=O1M3uNjfIwk01fheBhYucQnQwm0mJZ7+Rfe73uSJGb2WH0aQC3unb07rOMtzV2gsOw
+         z1S9mZdNuRpDOIr3yL2929X2GoVYYq0xPRNSY0Rz/DTqLwLqsIpCmBFDmUsbWEmw1ups
+         z9L0aBAY4uISP2KLMLqDKvJMxYjpxeeJ7XRiI7iGb1a7YQq3lowIvnDdd35d78iz0M05
+         rWH/e4dNb7f2LlKIk5KODey00nEp7s5iXazPAYJUYCuk/TkotHaGkHJgdevMzmQQAh9m
+         z9nci5idafAiIghnfLN3Dc+HH2THstyAfQWaKDj0lcKat/U30jHlwZDyqKArheuYoktt
+         3/kg==
+X-Forwarded-Encrypted: i=1; AL+hErEoDGxRtF8sfO20on8Q4CAYAXFdtsRYJ+dNKLj9AB/XCxc11n7a0/L7fHOJEOWysCORW3g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9gZO1FUCj4cMrvS33vujpGlacacVekbPbrTnY9cTNP2wa+RnnK
+	TtsQb2mSJxjD30grs+O78aIFOWPEZu5UpO87T/pJeoTo3jTl93a9aUWnetOO95KDSu2jlUBkpB2
+	P0kt22A==
+X-Received: from pgbbo3.prod.google.com ([2002:a05:6a02:383:b0:cd8:ba74:813f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7907:b0:3e1:bcb:1d19
+ with SMTP id adf61e73a8af0-3f1901885e4mr3216153637.67.1794335711215; Tue, 10
+ Nov 2026 10:35:11 -0800 (PST)
+Date: Tue, 10 Nov 2026 10:35:10 -0800
+In-Reply-To: <CA+EHjTz-Nb-g9YQKX2fKk61hC2BfzXfmUHv=2j+eZ18YuTv2Eg@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -136,25 +77,40 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avNfZ0lLl-OrkCHs@intel.com>
+Mime-Version: 1.0
+References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
+ <20261110110724.3614412-2-fuad.tabba@linux.dev> <avM81YcTBTJ8zCMX@seanjc-mac.roam.internal>
+ <CA+EHjTz-Nb-g9YQKX2fKk61hC2BfzXfmUHv=2j+eZ18YuTv2Eg@mail.gmail.com>
+Message-ID: <avNj3kdnvQiY_ity@seanjc-mac.roam.internal>
+Subject: Re: [PATCH 1/2] KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's dirty
+ ring is full
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, 
+	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Nov 10, 2026 at 10:16:07AM -0800, Peter Fang wrote:
-> > It is not local quote processing. This is labeling data properly so a
-> > verifier is possible without the user having to manually and directly
-> > inform the system what versions of Intel CPUs and TDX modules it
-> > should expect to have.
+On Tue, Nov 10, 2026, Fuad Tabba wrote:
+> Hi Sean,
 > 
-> With labeling like tdx-quote-sgx-1.0 and tdx-quote-eat-cwt-1.0, and
-> enough knowledge of these labels, I think this can be achieved.
+> On Tue, 10 Nov 2026 15:48:37 +0000, Sean Christopherson
+> <seanjc@google.com> wrote:
+> > On Tue, Nov 10, 2026, Fuad Tabba wrote:
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> [...]
+> > > @@ -4461,6 +4461,12 @@ static int kvm_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+> > >                          break;
+> > >                  }
+> > >
+> > > +                /* Like KVM_RUN: only the iteration crossing the soft limit uses the reserve. */
+> >
+> > Please don't include AI comments verbatim.
+> 
+> The series is LLM-assisted, but the comment was actually me.
 
-Yeah, that's all I'm asking for here, and it sounds like the magic
-bytes are enough for the kernel to deduce it and pass it to userspace.
-
-In future please transfer labels along with the blobs through out all
-your paths so we don't have to parse magic bytes to know what data we
-are holding.
-
-Jason
+LOL, I think all of us are getting a bit corrupted.  :-)
