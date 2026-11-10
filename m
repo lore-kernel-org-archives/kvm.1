@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794286931;
-	b=qsRZvbUb8tKW0NImnCHhex1tRxZUpSPg0uzOdjo+es/2fRsRim3dR5ravF43LA6MoKUa
-	 FTvrtK78y/UbeMu6/nqcttuQKFzaHzCEwNuZuZaTjadjTjz/bspl82CnNJ1VxaZqF2wHj
-	 V+uHM7ebEHuT4iRnE1z/Tgsgd6GXBvRJf7oeE1+0si+aiCoFKGEFwX0hEDRBcqcOZ9WjV
-	 p+wd7tyBrYeC/8UvNQorhcRCMIMY/00ooRT2g4/qhmTz34fVStyb2KhOXInTeX5/7qbXp
-	 M2ag2u3nsg3atWpwD0dIPIM/FXAmp4jZyZdZnmiW4YgBYT+QqrtNcaL0cEzVivrQ74w==
+	t=1794286934;
+	b=M3exjXYcOBcF/xCiQuBBfW6+DPUh2AbBL4O6lTbFtQWJ8Hb1A/PqspWDvL4XBesEcqhU
+	 unMT3iAqtdLBqdpZZyU5/6uu37uyEAejf3QAd269jCETqoSkhxSn0mb513A27nSlteRVz
+	 ZQiiYLbXTJxzFXoFg9pikYyHDip53xxz0Zohjz40Ow1VXX0mFqkx0xB+PP/ZkjlIgKhaT
+	 mEc+ZuBpaTY0W7TSh+EV5dCUZDFM/AAn0mAetUvjsuVM4+ezMsfgQqrDuIwKAR7+C9aOG
+	 MwIgEGLasQMcdDT/o8MQnR/9jy++e86qb8zMiFqwD84uok8Pa9aXkk+twNZP41ocZAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794286931;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794286934;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=Sj2aHvE/30fRUSODl4VGY86EHM+govAz/p3nvPD2KF0=;
-	b=2lfFYoACVFKmVN0Yg2Rm0OHLeKS/0idERwTlehHUqegEDGuEcCGJALC/eJd+4crNTnNR
-	 vWkVS/qYUiV2xGoS1P1EMp/SMuChGqOA4B+Acu+6C6q26Tn/z38COYyIKr0zi2IBpb+uJ
-	 g8X6RT9YWmW8VoUC+JGnGCVnhcOsJhmlkOT9lNNk8PXAR6wIcUYhudOfAUK+WDR6jjAWI
-	 dir8wcqW8P3Pm/XPhrvPhyZKmIa9YAJ5au4fz1L1cHCN3QKusAR1G5gT3c/GB1NfJZocC
-	 bXDq5gJflvk8ihQUUFQXHYZg2zpFbHXwqi0FmT5PNxN/wx7/g1lT5My8G1MvN70gkqQ==
+	bh=7IgLF3AO1jBgBbxTE6gThjrdHr/S4nDjr0YcBANCh54=;
+	b=VqkjaYRCR3sxHVznT62mAOCel79MDChk5vQSbxpuij+9Q7wz/1Q3bOO4Z0WeagSxGhTh
+	 GqMGSbu0eXItAHtCGVK+VBDrALdwyAyepGMeLxNJ+lc+bPiyL52qddLi5kHjeA7nZyGW1
+	 w2I/TtMAV9pLkhv6Atg/GUGZFrU1weSZ6rySnsZgOey4A7zzy/H9t/X4QdLE6CCLv3bhN
+	 GX4pxon+F2oJ2Pkmz/sOL68tWl2wTAwKUTHDdTeMiom9JR46kgZcnfd4oalZ/kpf3hCJS
+	 lSvRrkHcbKHL117dE/MI142vSaUJGVKX1ALnnx22ryyK+YmZ70d05YcUnAnUBl8g+wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Cgg8+hEJ;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RK98XkIM;
 	arc=none smtp.remote-ip=209.85.218.72
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F62606A33A
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2F62606A33A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B153C60A2637
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B153C60A2637
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Cgg8+hEJ
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c4d4d318759so45308266b.2
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RK98XkIM
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c504991a35eso44686466b.3
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286929; x=1794891729; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794286932; x=1794891732; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Sj2aHvE/30fRUSODl4VGY86EHM+govAz/p3nvPD2KF0=;
-        b=Cgg8+hEJHtrduALRlDiOuRmoz9daznQJncUd/jI6D1C0a0P78gfVMq1qYSSUBIxntu
-         uzXynVIrtpVGqCarHL1/1aoU94CADB9J10XDrxnovtEKs0Jdqz/K3PlePHwjS8mWM3Zz
-         cid57aUvJKRjdygiNpoDC4iNrsWhp8zzvvMg7mbwJhxh8YtCrKP6yZCrIdqwK/vLZWt8
-         UGvFori/1IDbq7YClAL+WVkGTfOQKxdw23JdG+hhmLLaaDVj4iv/HXYVp4e1+tikXLYj
-         Xdwjzs0SaTkQjTR59vbrWznYw651/XxcelWfMcwICWnh7LbKTSEqQgqMgm+8s1dsg6ou
-         7bEg==
+        bh=7IgLF3AO1jBgBbxTE6gThjrdHr/S4nDjr0YcBANCh54=;
+        b=RK98XkIMArO5krnjlZsSPUNp58bEz7fkWGksIzf/a4YyyV6wR8+oHD+evYV99pLhUf
+         pNBkBUY+Pl612sERdsqtIxSba65O89Bmzv9755S3WKvQmfF5z6w0si2gTD9U5CrblayS
+         MINQ0Mo4EpmOaAHD4UB3m8DsxAFl7vKWOfB7UcpnAJkU5ypysemMiaeyUPVzak4rDzqB
+         8gMeeQvUwawzaHCCNTKyZ7G8EwLrSXkpAUsFhno4lL4r9EMV3TdhXjSrao4uzXgMw3pH
+         uIoJojUFcGxgWYBi7mx7VtM0WMcYjsqk5B4Uau8dWWnIkzA6BdfGyRWenXuTRmkQtNdT
+         dE2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286929; x=1794891729;
+        d=1e100.net; s=20260707; t=1794286932; x=1794891732;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Sj2aHvE/30fRUSODl4VGY86EHM+govAz/p3nvPD2KF0=;
-        b=tGV76HSqVTg7ZLn2VcaGmq9VnuBZZZZUXMJGOsMvTmlPcnZoCiS8IN5nd6wlluj+cS
-         40HMegUubs7sz3tw/dFfU5O3F+GzJA6SfCOtsRoLfENjVFywSIaWCcVanyaPZI3guHgI
-         zHo0UiZQbOYzIaMAuNdifum2S5uVq/wLNcB7dD+VQGnuVkTnUAQn5oJqCaD2YJ6/MDCt
-         TyyhbuB+ZSEqN6t64x3U+AOu7kGRbOaIXUW+iyWAEbRNMtVxvh7g29oaGMFaVK73K+Cp
-         tFX0xLQeW4Qg3LbTxGKtc6JCGh2F0zBXBrDzYqr8B0p6baC3+kdPRedEeonSSjlKovgy
-         LDtg==
-X-Forwarded-Encrypted: i=1; AL+hErH0qwMlRPW6ZxpKLACQ4k2KCMEMjnxSVazktN/kQTrL3OWkwJZ7g6xi6MJflYxu3gbxPEM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8QD6YcU9xGxlOAiZXTLWSGt3jvq9SW7UA6J7Z2Pr97v+PjQ2Jd
-	IjlSVFlPHzPDqp32YEKR8bz4UzyM+getXnQ/qusDAltQRaGUe3r8oW1pklPKJVPSVhSyyx9LRAw
-	fDKRRzzCplB/K3MWQjQ==
-X-Received: from ejczh1.prod.google.com ([2002:a17:907:e901:b0:c42:9eb:1d43])
+        bh=7IgLF3AO1jBgBbxTE6gThjrdHr/S4nDjr0YcBANCh54=;
+        b=G56Eqi14h4k3lAoJa4PgmDXeTHgTbAyh233Lmxg/rDw2FMZ4g234RLcrZo17eCD8ID
+         OlaWgqDDxFNyq+rUyFgkG6rC2+qNRKuQ1yXkKRzPMw7DHMkQ+/Z3fWEJ5B5AHmFy4Vec
+         wTTCnFByKIf3kVgVGGg9ktwU/ENiUle23H0Bt8q0aYRDO2mQxIUKppASUK8cuqHFUDU8
+         Ui3lvkKsCNy6eH5PdhiUybtgbJUi9ZXTvYk0STFKis2mmuIj5hsoQ/TvKUKWRdTWzveT
+         EjhY0YxMw2jZtBujFGeCkbc5R2MvLHk1m0me04KAtVnPc8OMsoc5jyio0Fk+EjlsUs9L
+         Kv0Q==
+X-Forwarded-Encrypted: i=1; AL+hErECi4BYxUmnoGp/CCszoAwOLTFJhUumI5hj4QCYQ/3g7zvzNl/3RAjHF0vgWT6tY795d7I=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8fFKiVShPikHbg3cwHKN+UpkSCOv5OITzBYEuS+pWNauCMnyMg
+	7aLpUnAvi1vWd8TR8UgvsprebDRr52kGa/fzFeqeRO+JRIOgd9jfVSYwa++odYiAiAHUtnM0Jkt
+	aSQY/lc8mhSq5fZQI0A==
+X-Received: from ejbwr20.prod.google.com ([2002:a17:907:7014:b0:c3f:b33c:8124])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3f03:b0:c50:475d:9804 with SMTP id a640c23a62f3a-c5049583bf0mr103443266b.13.1794286928328;
- Mon, 09 Nov 2026 21:02:08 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:01:46 +0000
+ 2002:a17:907:3f0d:b0:c2e:4a61:d436 with SMTP id a640c23a62f3a-c50495d6ee1mr114117566b.36.1794286931810;
+ Mon, 09 Nov 2026 21:02:11 -0800 (PST)
+Date: Tue, 10 Nov 2026 05:01:49 +0000
 In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,9 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-4-tarunsahu@google.com>
-Subject: [PATCH v4 03/19] kho, memfd_luo: Reference struct kho_vmalloc via
- serialized pointer
+Message-ID: <20261110050202.529473-7-tarunsahu@google.com>
+Subject: [PATCH v4 06/19] kho: kexec_metadata: Add the feature header
 From: Tarun Sahu <tarunsahu@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
 	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
@@ -100,340 +99,154 @@ Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Subsystems preserving vmalloc allocations currently embed struct
-kho_vmalloc directly by value in their serialized structures or device
-tree properties. For example, struct memfd_luo_ser embeds struct
-kho_vmalloc folios, and test_kho writes the structure directly into the
-folios_info FDT property.
+The kexec metadata subtree currently uses a monolithic u32 version field
+to identify the metadata structure layout. Any change to the structure,
+even an optional additive field, requires incrementing the version and
+breaks compatibility between adjacent kernels.
 
-Embedding struct kho_vmalloc directly couples the containing layout's
-field offsets and size to struct kho_vmalloc. Any modification to struct
-kho_vmalloc shifts subsequent fields in the containing structure and
-breaks the handover ABI across kexec.
+Replace the u32 version field in struct kho_kexec_metadata with
+struct kho_ser_hdr using DECLARE_KHO_SER. Later fields can be appended
+under new feature indices without breaking compatibility across kexec.
+Also make the 3-byte padding hole between previous_release and kexec_count
+explicit as reserved[3].
 
-Convert callers to hold a DECLARE_KHOSER_PTR pointer to struct
-kho_vmalloc instead of embedding it by value. In memfd_luo, allocate the
-main structure and struct kho_vmalloc in the same preserved folio, placing
-struct kho_vmalloc in the remaining 8-byte-aligned space, and bump the
-compatibility string to memfd-v3. In test_kho, place struct kho_vmalloc
-in the remaining space of the FDT folio, store the serialized pointer in
-the folios_info property, and bump the compatibility string to
-kho-test-v2.
+During deserialization, validate the blob size against the header size
+and reject unknown required features. A legacy v1 metadata blob is
+ignored with a warning.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- include/linux/kho/abi/kexec_handover.h |  6 +++
- include/linux/kho/abi/memfd.h          |  8 ++--
- lib/test_kho.c                         | 29 ++++++++----
- mm/memfd_luo.c                         | 63 ++++++++++++++++----------
- 4 files changed, 68 insertions(+), 38 deletions(-)
+ include/linux/kho/abi/kexec_metadata.h | 17 +++++++-----
+ kernel/liveupdate/kexec_handover.c     | 38 ++++++++++++++------------
+ 2 files changed, 31 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-index 6f12f5037ea5..bee75a7006e8 100644
---- a/include/linux/kho/abi/kexec_handover.h
-+++ b/include/linux/kho/abi/kexec_handover.h
-@@ -11,6 +11,8 @@
- #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
+diff --git a/include/linux/kho/abi/kexec_metadata.h b/include/linux/kho/abi/kexec_metadata.h
+index e9e3f7e38a7c..316b3e5ad01b 100644
+--- a/include/linux/kho/abi/kexec_metadata.h
++++ b/include/linux/kho/abi/kexec_metadata.h
+@@ -18,28 +18,31 @@
+ #ifndef _LINUX_KHO_ABI_KEXEC_METADATA_H
+ #define _LINUX_KHO_ABI_KEXEC_METADATA_H
  
- #include <linux/bits.h>
 +#include <linux/build_bug.h>
-+#include <linux/kconfig.h>
- #include <linux/log2.h>
- #include <linux/math.h>
++#include <linux/kho/abi/feature.h>
  #include <linux/types.h>
-@@ -177,6 +179,10 @@ struct kho_vmalloc {
- 	unsigned short order;
- };
+ #include <linux/utsname.h>
  
-+static_assert(sizeof(struct kho_vmalloc) == 16);
-+static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-+	      __alignof__(struct kho_vmalloc) == 8);
-+
- /**
-  * DOC: KHO persistent memory tracker
-  *
-diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-index 376a724a1d8c..7b49dd6d7e2a 100644
---- a/include/linux/kho/abi/memfd.h
-+++ b/include/linux/kho/abi/memfd.h
-@@ -81,7 +81,7 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-  *             to directly use them in the ABI.
-  * @flags:     Flags for the file. Unused flag bits must be set to 0.
-  * @nr_folios: Number of folios in the folios array.
-- * @folios:    KHO vmalloc descriptor pointing to the array of
-+ * @folios:    Pointer to KHO vmalloc descriptor for the array of
-  *             struct memfd_luo_folio_ser.
-  */
- struct memfd_luo_ser {
-@@ -90,14 +90,14 @@ struct memfd_luo_ser {
- 	u32 seals;
- 	u32 flags;
- 	u64 nr_folios;
--	struct kho_vmalloc folios;
-+	DECLARE_KHOSER_PTR(folios, struct kho_vmalloc *);
- };
- 
--static_assert(sizeof(struct memfd_luo_ser) == 48);
-+static_assert(sizeof(struct memfd_luo_ser) == 40);
- static_assert(!IS_ENABLED(CONFIG_64BIT) ||
- 	      __alignof__(struct memfd_luo_ser) == 8);
- 
- /* The compatibility string for memfd file handler */
--#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
-+#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v3"
- 
- #endif /* _LINUX_KHO_ABI_MEMFD_H */
-diff --git a/lib/test_kho.c b/lib/test_kho.c
-index aa6a0956bb8b..cd0f183ff68e 100644
---- a/lib/test_kho.c
-+++ b/lib/test_kho.c
-@@ -25,7 +25,7 @@
- 
- #define KHO_TEST_MAGIC	0x4b484f21	/* KHO! */
- #define KHO_TEST_FDT	"kho_test"
--#define KHO_TEST_COMPAT "kho-test-v1"
-+#define KHO_TEST_COMPAT "kho-test-v2"
- 
- static long max_mem = (PAGE_SIZE << MAX_PAGE_ORDER) * 2;
- module_param(max_mem, long, 0644);
-@@ -34,7 +34,7 @@ struct kho_test_state {
- 	unsigned int nr_folios;
- 	struct folio **folios;
- 	phys_addr_t *folios_info;
--	struct kho_vmalloc folios_info_phys;
-+	DECLARE_KHOSER_PTR(folios_info_phys, struct kho_vmalloc *);
- 	int nr_folios_preserved;
- 	struct folio *fdt;
- 	__wsum csum;
-@@ -47,13 +47,13 @@ static void kho_test_unpreserve_data(struct kho_test_state *state)
- 	for (int i = 0; i < state->nr_folios_preserved; i++)
- 		kho_unpreserve_folio(state->folios[i]);
- 
--	kho_unpreserve_vmalloc(&state->folios_info_phys);
-+	if (KHOSER_LOAD_PTR(state->folios_info_phys))
-+		kho_unpreserve_vmalloc(KHOSER_LOAD_PTR(state->folios_info_phys));
- 	vfree(state->folios_info);
- }
- 
- static int kho_test_preserve_data(struct kho_test_state *state)
- {
--	struct kho_vmalloc folios_info_phys;
- 	phys_addr_t *folios_info;
- 	int err;
- 
-@@ -61,11 +61,10 @@ static int kho_test_preserve_data(struct kho_test_state *state)
- 	if (!folios_info)
- 		return -ENOMEM;
- 
--	err = kho_preserve_vmalloc(folios_info, &folios_info_phys);
-+	err = kho_preserve_vmalloc(folios_info, KHOSER_LOAD_PTR(state->folios_info_phys));
- 	if (err)
- 		goto err_free_info;
- 
--	state->folios_info_phys = folios_info_phys;
- 	state->folios_info = folios_info;
- 
- 	for (int i = 0; i < state->nr_folios; i++) {
-@@ -123,14 +122,19 @@ static int kho_test_prepare_fdt(struct kho_test_state *state, ssize_t fdt_size)
- 
- static int kho_test_preserve(struct kho_test_state *state)
- {
--	ssize_t fdt_size;
-+	struct kho_vmalloc *folios_vmalloc;
-+	ssize_t fdt_size, alloc_size;
- 	int err;
- 
- 	fdt_size = state->nr_folios * sizeof(phys_addr_t) + PAGE_SIZE;
--	state->fdt = folio_alloc(GFP_KERNEL, get_order(fdt_size));
-+	alloc_size = fdt_size + sizeof(struct kho_vmalloc);
-+	state->fdt = folio_alloc(GFP_KERNEL, get_order(alloc_size));
- 	if (!state->fdt)
- 		return -ENOMEM;
- 
-+	folios_vmalloc = folio_address(state->fdt) + fdt_size;
-+	KHOSER_STORE_PTR(state->folios_info_phys, folios_vmalloc);
-+
- 	err = kho_preserve_folio(state->fdt);
- 	if (err)
- 		goto err_free_fdt;
-@@ -234,7 +238,8 @@ static int kho_test_save(void)
- 
- static int kho_test_restore_data(const void *fdt, int node)
- {
--	const struct kho_vmalloc *folios_info_phys;
-+	const DECLARE_KHOSER_PTR(*folios_info_phys, struct kho_vmalloc *);
-+	const struct kho_vmalloc *folios_vmalloc;
- 	const unsigned int *nr_folios;
- 	phys_addr_t *folios_info;
- 	const __wsum *old_csum;
-@@ -255,7 +260,11 @@ static int kho_test_restore_data(const void *fdt, int node)
- 	if (!folios_info_phys || len != sizeof(*folios_info_phys))
- 		return -EINVAL;
- 
--	folios_info = kho_restore_vmalloc(folios_info_phys);
-+	folios_vmalloc = KHOSER_LOAD_PTR(*folios_info_phys);
-+	if (!folios_vmalloc)
-+		return -EINVAL;
-+
-+	folios_info = kho_restore_vmalloc(folios_vmalloc);
- 	if (!folios_info)
- 		return -EINVAL;
- 
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 6b68220275eb..4471cced57db 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -85,9 +85,8 @@
- #include "internal.h"
- 
- static int memfd_luo_preserve_folios(struct file *file,
--				     struct kho_vmalloc *kho_vmalloc,
--				     struct memfd_luo_folio_ser **out_folios_ser,
--				     u64 *nr_foliosp)
-+				     struct memfd_luo_ser *ser,
-+				     struct memfd_luo_folio_ser **out_folios_ser)
- {
- 	struct inode *inode = file_inode(file);
- 	struct memfd_luo_folio_ser *folios_ser;
-@@ -104,7 +103,8 @@ static int memfd_luo_preserve_folios(struct file *file,
- 	 * are not set.
- 	 */
- 	if (!size) {
--		*nr_foliosp = 0;
-+		ser->folios.phys = 0;
-+		ser->nr_folios = 0;
- 		*out_folios_ser = NULL;
- 		return 0;
- 	}
-@@ -200,12 +200,12 @@ static int memfd_luo_preserve_folios(struct file *file,
- 		pfolio->index = folio->index;
- 	}
- 
--	err = kho_preserve_vmalloc(folios_ser, kho_vmalloc);
-+	err = kho_preserve_vmalloc(folios_ser, KHOSER_LOAD_PTR(ser->folios));
- 	if (err)
- 		goto err_unpreserve;
- 
- 	kvfree(folios);
--	*nr_foliosp = nr_folios;
-+	ser->nr_folios = nr_folios;
- 	*out_folios_ser = folios_ser;
- 
- 	/*
-@@ -254,37 +254,43 @@ static void memfd_luo_unpreserve_folios(struct kho_vmalloc *kho_vmalloc,
- 	vfree(folios_ser);
- }
- 
-+static size_t memfd_luo_ser_size(void)
-+{
-+	return sizeof(struct memfd_luo_ser) + sizeof(struct kho_vmalloc);
-+}
-+
-+static struct memfd_luo_ser *memfd_luo_ser_init(void *mem)
-+{
-+	struct kho_vmalloc *kho_vmalloc = mem + sizeof(struct memfd_luo_ser);
-+	struct memfd_luo_ser *ser = mem;
-+
-+	KHOSER_STORE_PTR(ser->folios, kho_vmalloc);
-+	return ser;
-+}
-+
- static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- {
- 	struct inode *inode = file_inode(args->file);
- 	struct memfd_luo_folio_ser *folios_ser;
- 	struct memfd_luo_ser *ser;
--	u64 nr_folios, inode_size;
- 	int err = 0, seals;
-+	u64 inode_size;
- 
- 	inode_lock(inode);
- 	shmem_freeze(inode, true);
- 
--	/* Allocate the main serialization structure in preserved memory */
--	ser = kho_alloc_preserve(sizeof(*ser));
--	if (IS_ERR(ser)) {
--		err = PTR_ERR(ser);
--		goto err_unlock;
--	}
+-#define KHO_KEXEC_METADATA_VERSION 1
 -
- 	seals = memfd_get_seals(args->file);
- 	if (seals < 0) {
- 		err = seals;
--		goto err_free_ser;
-+		goto err_unlock;
- 	}
- 
- 	/* Make sure the file only has the seals supported by this version. */
- 	if (seals & ~MEMFD_LUO_ALL_SEALS) {
- 		err = -EOPNOTSUPP;
--		goto err_free_ser;
-+		goto err_unlock;
- 	}
- 
--	ser->pos = args->file->f_pos;
- 	inode_size = i_size_read(inode);
- 
- 	/*
-@@ -293,18 +299,26 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	 */
- 	if (DIV_ROUND_UP_ULL(inode_size, PAGE_SIZE) > UINT_MAX) {
- 		err = -EFBIG;
--		goto err_free_ser;
-+		goto err_unlock;
-+	}
+ /**
+  * struct kho_kexec_metadata - Kexec metadata passed between kernels
+- * @version: ABI version of this struct (must be first field)
+  * @previous_release: Kernel version string that initiated the kexec
++ * @reserved: Reserved for structure alignment; must be zero
+  * @kexec_count: Number of kexec boots since last cold boot
+  *
+- * This structure is preserved across kexec and allows the new kernel to
++ * This structure is preserved across kexec and allows the target kernel to
+  * identify which kernel it was booted from and how many kexec reboots
+- * have occurred.
++ * have occurred. Preceded by &struct kho_ser_hdr.
+  *
+  * __NEW_UTS_LEN is part of uABI, so it safe to use it in here.
+  */
+ struct kho_kexec_metadata {
+-	u32 version;
+ 	char previous_release[__NEW_UTS_LEN + 1];
++	u8 reserved[3];
+ 	u32 kexec_count;
+-} __packed;
++} __aligned(8);
 +
-+	/* Allocate the main serialization structure in preserved memory */
-+	ser = kho_alloc_preserve(memfd_luo_ser_size());
-+	if (IS_ERR(ser)) {
-+		err = PTR_ERR(ser);
-+		goto err_unlock;
- 	}
-+	ser = memfd_luo_ser_init(ser);
++/* Register kho_kexec_metadata with KHO serialization accessors */
++DECLARE_KHO_SER(kho_kexec_metadata, 72, 0, 0);
  
-+	ser->pos = args->file->f_pos;
- 	ser->size = inode_size;
- 	ser->seals = seals;
-+	ser->flags = 0;
+ #define KHO_METADATA_NODE_NAME "kexec-metadata"
  
--	err = memfd_luo_preserve_folios(args->file, &ser->folios,
--					&folios_ser, &nr_folios);
-+	err = memfd_luo_preserve_folios(args->file, ser, &folios_ser);
- 	if (err)
- 		goto err_free_ser;
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 4b1d173d48ff..641a3b4c88fb 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1762,6 +1762,7 @@ static __init int kho_out_fdt_setup(void)
  
--	ser->nr_folios = nr_folios;
- 	inode_unlock(inode);
- 
- 	args->private_data = folios_ser;
-@@ -351,7 +365,8 @@ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
- 
- 	ser = phys_to_virt(args->serialized_data);
- 
--	memfd_luo_unpreserve_folios(&ser->folios, args->private_data,
-+	memfd_luo_unpreserve_folios(KHOSER_LOAD_PTR(ser->folios),
-+				    args->private_data,
- 				    ser->nr_folios);
- 
- 	kho_unpreserve_free(ser);
-@@ -401,7 +416,7 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+ static void __init kho_in_kexec_metadata(void)
+ {
++	DECLARE_KHO_SER_HDR(kho_kexec_metadata, *fhdr);
+ 	struct kho_kexec_metadata *metadata;
+ 	phys_addr_t metadata_phys;
+ 	size_t blob_size;
+@@ -1773,27 +1774,28 @@ static void __init kho_in_kexec_metadata(void)
+ 		/* This is fine, previous kernel didn't export metadata */
  		return;
  
- 	if (ser->nr_folios) {
--		folios_ser = kho_restore_vmalloc(&ser->folios);
-+		folios_ser = kho_restore_vmalloc(KHOSER_LOAD_PTR(ser->folios));
- 		if (!folios_ser)
- 			goto out;
+-	/* Check that, at least, "version" is present */
+-	if (blob_size < sizeof(u32)) {
++	if (blob_size < sizeof(*fhdr)) {
+ 		pr_warn("kexec-metadata blob too small (%zu bytes)\n",
+ 			blob_size);
+ 		return;
+ 	}
  
-@@ -552,7 +567,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	i_size_write(file_inode(file), ser->size);
+-	metadata = phys_to_virt(metadata_phys);
+-
+-	if (metadata->version != KHO_KEXEC_METADATA_VERSION) {
+-		pr_warn("kexec-metadata version %u not supported (expected %u)\n",
+-			metadata->version, KHO_KEXEC_METADATA_VERSION);
++	fhdr = phys_to_virt(metadata_phys);
++	if (fhdr->size != blob_size) {
++		pr_warn("kexec-metadata size invalid (%u != %zu), ignoring metadata\n",
++			fhdr->size, blob_size);
+ 		return;
+ 	}
  
- 	if (ser->nr_folios) {
--		folios_ser = kho_restore_vmalloc(&ser->folios);
-+		folios_ser = kho_restore_vmalloc(KHOSER_LOAD_PTR(ser->folios));
- 		if (!folios_ser) {
- 			err = -EINVAL;
- 			goto put_file;
+-	if (blob_size < sizeof(*metadata)) {
+-		pr_warn("kexec-metadata blob too small for v%u (%zu < %zu)\n",
+-			metadata->version, blob_size, sizeof(*metadata));
++	err = kho_ser_validate(fhdr, kho_kexec_metadata);
++	if (err) {
++		pr_warn("kexec-metadata feature validation failed: %pe\n",
++			ERR_PTR(err));
+ 		return;
+ 	}
+ 
++	metadata = kho_ser_payload(fhdr, kho_kexec_metadata);
++
+ 	/*
+ 	 * Copy data to the kernel structure that will persist during
+ 	 * kernel lifetime.
+@@ -1813,23 +1815,25 @@ static void __init kho_in_kexec_metadata(void)
+  */
+ static __init int kho_out_kexec_metadata(void)
+ {
++	DECLARE_KHO_SER_HDR(kho_kexec_metadata, *fhdr);
+ 	struct kho_kexec_metadata *metadata;
+ 	int err;
+ 
+-	metadata = kho_alloc_preserve(sizeof(*metadata));
+-	if (IS_ERR(metadata))
+-		return PTR_ERR(metadata);
++	fhdr = kho_alloc_preserve(kho_ser_size(kho_kexec_metadata));
++	if (IS_ERR(fhdr))
++		return PTR_ERR(fhdr);
++	kho_ser_init(fhdr, kho_kexec_metadata);
+ 
+-	metadata->version = KHO_KEXEC_METADATA_VERSION;
++	metadata = kho_ser_payload(fhdr, kho_kexec_metadata);
+ 	strscpy(metadata->previous_release, init_uts_ns.name.release,
+ 		sizeof(metadata->previous_release));
++	memset(metadata->reserved, 0, sizeof(metadata->reserved));
+ 	/* kho_in.kexec_count is set to 0 on cold boot */
+ 	metadata->kexec_count = kho_in.kexec_count + 1;
+ 
+-	err = kho_add_subtree(KHO_METADATA_NODE_NAME, metadata,
+-			      sizeof(*metadata));
++	err = kho_add_subtree(KHO_METADATA_NODE_NAME, fhdr, fhdr->size);
+ 	if (err)
+-		kho_unpreserve_free(metadata);
++		kho_unpreserve_free(fhdr);
+ 
+ 	return err;
+ }
 -- 
 2.56.0.506.g506a7eabc5-goog
 
