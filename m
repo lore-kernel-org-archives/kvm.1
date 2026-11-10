@@ -1,85 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.129
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794320559;
-	b=BNeh34nLobnj/z/7m+dqq/N67XWDGTYxrASGjqLIDYBAjObF/ywzJTrvY38vs0pkgKwW
-	 PNJBNqkZKQ+1E8jrmMLjRWHaRWzHxzYaC3NNgSpDPoJEazRz5C4jMYRUQz4ejWMnWBWpk
-	 Fr2RdpLMc9HTtmxrlCcaPJGoFTvDbsm6L2gGrkCcYlnzHR1jScjwyy1pszENR5gozFebD
-	 JKY1/5YsvPIcXPnBcEE9Xrgye+Jja3dZbT7QxGBDiNdSnfRDxO3RAYn1FQQreUmoJFmlw
-	 rqXmPVnUZP1zKJS98Gwe34tSFidEFkcQddPiOZp49JQCj1H5EkxddiKcWKZdJAB8QTA==
+	t=1794320555;
+	b=jazu6YvrCjU3NnnpUSCxhjZpDip/ZHUqAD6OHNaA+Gse4j0u5W1HBJsLxvc6QS9wjoN9
+	 yWRncGNzBbti4tHxEJbMGpKdQFuhXseddoUskDn6nprpyuPOmNoe4dLP85COgS++8st3s
+	 Rjs4Rpxie/tVjfIy7l0BxCdev7TlBnnAdUlQ+whRSVXy+mGQBYQhXsYRckKA00XTllvSP
+	 3ChqYpCEk2lUS+9WYmyasyVhtHZAoDm3YYhNiQMwK4U/VZRQECvU38ztpjQeFYIgFuFir
+	 Vz/mqjFQECPGUJq3VW55iogh4Tt7weNWZ/rqrMM8tYY0x2arUtJi5k0lTga1i0IZq0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794320559;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=vW6Me650CnRCbqpTMm9ScZes8RV1bkmpcr+ZWjp/+oI=;
-	b=vYl90hCFnPntuALExRUIPHvx9d/2ZwEn4eZwDHNEGtKljkuIIp6UqU29Mk+6nQEfRxOq
-	 PT1jb/aYgslw4H2NDGqloRErqQL13uqFGPfnayMm4o3QkuQJ4HnnHPX6KBuRFIQ0CKoL1
-	 PP3TnVVos5los3DC7M4Zn9F12q1w6Tli2bhds2aKA1nzLsfEGY/FAvDYluGJo833sBBbt
-	 bq8jqQ4TcDY065ULVWUHpWJq3u7b5Yl0YvHZh/J5rBu7y5TeE5KqT8pj28OlVI33My0n5
-	 XlEGXFijGIyh4dJgVkDELbVHZ8Ne0fWOAu+m8iPqs3D2KCUunmjWZaO1/j9ew/jZ/MA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794320555;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=AIYmoG2ZPhdsPOSGAKvMRGDsvTlHJm2tfagrMZ0h6+E=;
+	b=haI81llh4d+hmntsPjEuiw8zOxuUJbUWj6xw9/vM/2wrLlm7j+zATpY4T2g3+BJzO1M1
+	 6X+NTE15N5cWuR2Uq3NP+S0Kzoke2mMFww/UZFA5SqyYuhAccPQta95C3K1KDRyF+m34/
+	 +CHYHiu2K4ygdRyeh+21pXAdpy0yA+dLR7ya6fa0yVABu5kWUpT6YdAQwanoNFKPfVgy5
+	 uT/5fe3bPewWM9ZtgB+SSUZb7uF0wCRsYb54oVdXaigLyJUTjE8fL5nuQRSMMjJbYc4dL
+	 VDAAR7YnFqB1/bQ9v3zotyWhJ32vX4mCUGkb+Yan0s0e5qBpovnAdeONK4BAokSEn8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=x+S1rZsg;
-	arc=none smtp.remote-ip=74.125.227.129
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MLutfqhQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FB8606A32E
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 14:22:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93FB8606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEE0606A325;
+	Tue, 10 Nov 2026 14:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=x+S1rZsg
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-3b0d11b85f0so1250862a91.0
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 06:22:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794320559; x=1794925359; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vW6Me650CnRCbqpTMm9ScZes8RV1bkmpcr+ZWjp/+oI=;
-        b=x+S1rZsg7K4t+eNcKA8bN9ONE2k8DAq5dMIW0eRDE/qBx3gUIRLbancnNA0XJL3wuN
-         rbv3XHNXNLA+thMDnuUTZl6mU5nEFo4LVh9MAxmWN8TbYGgfWFv4Yd28Q9m/A50jnvX6
-         OBS8Qy/wqYLqq3zQv1XmMRjNhixHEUwZ4BVbpeIz+cnyXlnk1LpxwfCeglZNgFz754km
-         1dwW6vLRW2pFsGlw3cbbmULYIxHu7as7ECpGXHxEnzpmYsgR+YMPkHXCaRtM7ACwgZjz
-         4z2lgKosNm1g1/jdXNvjXd8U8DCX66L+uihyjJ+pbd937my0cer6wMSqTJpAoD/ohHlD
-         6eXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794320559; x=1794925359;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vW6Me650CnRCbqpTMm9ScZes8RV1bkmpcr+ZWjp/+oI=;
-        b=nizKmhChsqrW97W0Jhi4TrG8Z+kuHbCWYOJT5EnXVKxQVagPQlvXiR5wUvnvKPqYOL
-         gSKnxl9eIsE6ayieuxK37aL0tEBF1ysivGAMNgllgjebiGyvf6OQ6RLUz5KmeJhZoRwQ
-         aKLfWXqAGaXBHHfXpGmdVHqzD5TjVSgdMyJ7i6nNmbykGqc7j2VHuwb8WwLEiKQZmVbz
-         0epoDjC+DEri+aY2J7fYVE29qcdHTWIFT/49CX8RRnwwm+EG2TLeIH7Hum1UA/2jEaUK
-         E68240HMF1NpefANW3e1ggDqmjYnMPr43DabpIPsxA3nPdWwmQT7DDfQ6Wd7Yi6WY3rX
-         7g6w==
-X-Gm-Message-State: APuU4Z+GwpRd9AvnKqwG0dYn8IOQbtavq7HEqANMnHGlWpUAWDKPPQdL
-	G3oX+fm7Dq/GZx4xOJTCcMEzalZ8Y94jK7wHVfwuNQk8mnNCP7UeegTXvn2CDRcBSaxHHg==
-X-Gm-Gg: AYBFou0jEtpLrlHqUQQgR05pNGW1/0n2l8aMM+5gAAXhQyqPJAb+FVOnxDFGsxbsR5M
-	5plwYi3S8YaLJzRqSiSkSrzdhT2k7R7xfe2hQeciwbB/hvlb4R8BF/932G/0JmTlUPspymNa2gm
-	PF5Uj28OenUXMaorj4yx31/E/yosjNCO4UYfDQ4b4UOf9oW7YWi9vaqejaIioWxD1jqqbwABg7a
-	vWfCCWc/aJReJZ2in6WbWU2hAvBlkDEglR2LqPHAbLNiWHVi9Py6r53N086GhX8xEk+UwqaoMkX
-	5KjH77TDsh+2d6dzl5fXDbjQeEqOvz8hcjQj6hOXm8TVuWeboFDhztLhyoYkfU3SXDoYkYLDaEg
-	8Z3Xq/N7LvpINv0/A/Mig5YDSiGGstSQIh4pc44eHu8rnT2Fe13+kE10RKp78owRf8gYqAoYFRe
-	ZttH4qxVSJARC33KFGaalHqgFmsXBW6BhATaNOpl5oQ6yuJRrNIu7ge/BpvocfOYhk4bB2X7LaO
-	zYwa292EkWKiaLxACyh3qZfsEALwo6liJEMdnLkKKz3LC3w7nkabtaqOg7lo3o6NbxAaCP+hqKM
-	R4ZV5FmUX7ix32s0QW/DTS0wsMFD/jV7wSjGmutCIToqyj+WC2V68Q8s2+aR2ELMk/5g
-X-Received: by 2002:a17:90b:562d:b0:3b0:968f:fdef with SMTP id 98e67ed59e1d1-3b166cda37emr3135880a91.49.1794320558504;
-        Tue, 10 Nov 2026 06:22:38 -0800 (PST)
-Received: from [192.168.50.100] ([114.252.97.9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db9d1fbsm70817a91.15.2026.11.10.06.22.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 06:22:38 -0800 (PST)
-Message-ID: <ce2231cc-e554-44fd-b931-5627219b534c@gmail.com>
-Date: Tue, 10 Nov 2026 22:22:33 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MLutfqhQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE24C1F0089F;
+	Tue, 10 Nov 2026 14:22:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794320554;
+	bh=AIYmoG2ZPhdsPOSGAKvMRGDsvTlHJm2tfagrMZ0h6+E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MLutfqhQmJMPBfQRVeyFBDU38p+SbvJq26SP6tRR8X3nTowgeWvkIgFkjEscpShhN
+	 QPjaeep4T1pWmb0KBVrDmVr1rejK9/RtWGyI0s35lO3GQlPDoxuJy0muqBDA+7MtK7
+	 QzZn47pNtf+AQotB1glSYUN6JsUOkWBiwYcfAALas71fhQPgQpK1hhn+BeqUD8+ImU
+	 MwQGR8H3CI9DobyIHL6BQFbPyZSC6BhygkQf2pt09xzlX7aFb73H9S41CVBFzm+YVR
+	 bpr0jSKmXzqhd9sfKsTP9WUkDF9BEo7FZPqgMlUBD3Q94YTuNXjGf/pUH01bIwD8rp
+	 CeOAlZWlhyhdQ==
+Date: Tue, 10 Nov 2026 14:22:26 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Wei-Lin Chang <weilin.chang@arm.com>, 
+	Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's dirty
+ ring is full
+Message-ID: <avMiLt3ZXjYesS3X@gremlin>
+References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
+ <20261110110724.3614412-2-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,42 +63,146 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 9/9] iommu/riscv: Add riscv_iommu_attach_dev_nested
-To: Tan Chi <tanchi25@mails.ucas.ac.cn>, gong.shuai@sanechips.com.cn
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev
-References: <20261110115137.184160-1-gong.shuai@sanechips.com.cn>
- <20261110135615.8073-1-tanchi25@mails.ucas.ac.cn>
-From: Gong Shuai <gsh517025@gmail.com>
-In-Reply-To: <20261110135615.8073-1-tanchi25@mails.ucas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110110724.3614412-2-fuad.tabba@linux.dev>
 
-Hi Tan Chi,
+On Tue, Nov 10, 2026 at 11:07:23AM +0000, Fuad Tabba wrote:
+> Pre-faulting can map a dirty-logged page writable, which pushes it to
+> the vCPU's dirty ring. KVM_RUN exits with KVM_EXIT_DIRTY_RING_FULL
+> before the ring overflows, but the pre-fault loop never checks it, so
+> one call over more such pages than the ring has free trips the WARN in
+> kvm_dirty_ring_push() and overwrites entries userspace hasn't
+> harvested. On x86:
+>
+>   WARNING: arch/x86/kvm/../../../virt/kvm/dirty_ring.c:225 at kvm_dirty_ring_push+0x7a/0xd0
+>   Call Trace:
+>    make_spte+0x2cc/0x450
+>    kvm_tdp_mmu_map+0x5e1/0x7f0
+>    kvm_tdp_page_fault+0x12c/0x1b0
+>    kvm_mmu_do_page_fault+0x181/0x250
+>    kvm_arch_vcpu_pre_fault_memory+0x136/0x1d0
+>    kvm_vcpu_pre_fault_memory+0xcf/0x180
+>    kvm_vcpu_ioctl+0x455/0x770
 
-On 11/10/2026 9:56 PM, Tan Chi wrote:
-> Hi Shuai,
-> 
-> On Tue, Nov 10, 2026 at 07:51:37PM +0800, Gong Shuai wrote:
->>   2. Use the guest PSCID directly, but allocate a separate host
->>      GSCID for each vIOMMU.
-> 
-> I agree with option 2 as well. My earlier suggestion did not account
-> for independent PSCID namespaces across multiple vIOMMUs sharing the
-> same S2 parent.
-> 
-> Allocating a separate GSCID for each vIOMMU seems simpler than
-> maintaining an additional PSCID mapping table.
+If you have a local repro maybe worth sending a regression test for this?... and
+I type that, then check the 2/2 and see that you already did :) ok haha thanks!
 
-Agreed. I’ll work on the new version soon.
+>
+> Stop the loop once the ring is soft full, returning the pages already
+> processed, or -ENOSPC when there are none, since a retry can't succeed
+> until userspace harvests the ring. kvm_dirty_ring_check_request() fills
+> in a KVM_RUN exit, so test the ring's state directly. The stub for
+> !HAVE_KVM_DIRTY_RING is for s390, which has the ioctl but no ring.
+>
+> Fixes: bc1a5cd002116 ("KVM: Add KVM_PRE_FAULT_MEMORY vcpu ioctl to pre-populate guest memory")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-Thanks,
-Shuai
+Yikes, nasty. Thanks for addressing this!
 
-> 
-> Thanks,
-> Tan Chi
-> 
+LGTM so:
 
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  Documentation/virt/kvm/api.rst | 9 +++++++--
+>  include/linux/kvm_dirty_ring.h | 6 ++++++
+>  virt/kvm/dirty_ring.c          | 2 +-
+>  virt/kvm/kvm_main.c            | 6 ++++++
+>  4 files changed, 20 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index e95c9cda085d9..89eb6be9bc6e3 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6544,6 +6544,7 @@ Errors:
+>    ENOENT     The specified `gpa` is outside defined memslots.
+>    ENOEXEC    The vCPU has not been initialised (arm64).
+>    EINTR      An unmasked signal is pending and no page was processed.
+> +  ENOSPC     The vCPU's dirty ring is full and no page was processed.
+>    EFAULT     The parameter address was invalid.
+>    EHWPOISON  A poisoned host page was encountered.
+>    EOPNOTSUPP Mapping memory for a GPA is unsupported by the
+> @@ -6588,7 +6589,9 @@ case, the ioctl can be called in parallel.
+>
+>  When the ioctl returns, the input values are updated to point to the
+>  remaining range.  If `size` > 0 on return, the caller can just issue
+> -the ioctl again with the same `struct kvm_map_memory` argument.
+> +the ioctl again with the same `struct kvm_pre_fault_memory` argument.
+> +If that fails with ENOSPC, the vCPU's dirty ring has to be harvested
+> +and reset first.
+>
+>  On x86, shadow page tables cannot support this ioctl because they
+>  are indexed by virtual address or nested guest physical address.
+> @@ -8957,7 +8960,9 @@ Therefore, the ioctl must be called *before* reading the content of
+>  the dirty pages.
+>
+>  The dirty ring can get full.  When it happens, the KVM_RUN of the
+> -vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL.
+> +vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL, and
+> +KVM_PRE_FAULT_MEMORY on the vcpu will process no more pages until the
+> +ring has been harvested and reset.
+>
+>  The dirty ring interface has a major difference comparing to the
+>  KVM_GET_DIRTY_LOG interface in that, when reading the dirty ring from
+> diff --git a/include/linux/kvm_dirty_ring.h b/include/linux/kvm_dirty_ring.h
+> index eb10d87adf7d5..88b4f2a009274 100644
+> --- a/include/linux/kvm_dirty_ring.h
+> +++ b/include/linux/kvm_dirty_ring.h
+> @@ -60,6 +60,11 @@ static inline void kvm_dirty_ring_push(struct kvm_vcpu *vcpu,
+>  {
+>  }
+>
+> +static inline bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline struct page *kvm_dirty_ring_get_page(struct kvm_dirty_ring *ring,
+>  						   u32 offset)
+>  {
+> @@ -81,6 +86,7 @@ int kvm_dirty_ring_alloc(struct kvm *kvm, struct kvm_dirty_ring *ring,
+>  int kvm_dirty_ring_reset(struct kvm *kvm, struct kvm_dirty_ring *ring,
+>  			 int *nr_entries_reset);
+>  void kvm_dirty_ring_push(struct kvm_vcpu *vcpu, u32 slot, u64 offset);
+> +bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring);
+>
+>  bool kvm_dirty_ring_check_request(struct kvm_vcpu *vcpu);
+>
+> diff --git a/virt/kvm/dirty_ring.c b/virt/kvm/dirty_ring.c
+> index 572b854edf740..f73f92102cb7a 100644
+> --- a/virt/kvm/dirty_ring.c
+> +++ b/virt/kvm/dirty_ring.c
+> @@ -40,7 +40,7 @@ static u32 kvm_dirty_ring_used(struct kvm_dirty_ring *ring)
+>  	return READ_ONCE(ring->dirty_index) - READ_ONCE(ring->reset_index);
+>  }
+>
+> -static bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
+> +bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
+>  {
+>  	return kvm_dirty_ring_used(ring) >= ring->soft_limit;
+>  }
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index cf4cb586f1407..da1b76ceb65e3 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -4461,6 +4461,12 @@ static int kvm_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+>  			break;
+>  		}
+>
+> +		/* Like KVM_RUN: only the iteration crossing the soft limit uses the reserve. */
+> +		if (vcpu->kvm->dirty_ring_size && kvm_dirty_ring_soft_full(&vcpu->dirty_ring)) {
+> +			r = -ENOSPC;
+> +			break;
+> +		}
+> +
+>  		r = kvm_arch_vcpu_pre_fault_memory(vcpu, range);
+>  		if (WARN_ON_ONCE(r == 0 || r == -EIO))
+>  			break;
+> --
+> 2.47.3
+>
+
+--
+Cheers, Lorenzo
