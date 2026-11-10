@@ -1,49 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794323205;
-	b=xcJ5MzVQ/XcASOyosiiznoc4YhcLel33Ou2KJVdOK7QJqvGIk0U/OrqzqmfdPAbN9WvV
-	 diUsaVz1OdZPPyYzfymgfA5nwX4WEPq5pgpw+yckKHG1xgMs/z7GOpPgdEYKmjP91WsOd
-	 vO5leX8nasFwxXNURu33eri8z4z8KGqahq1hMsehbw384Ymalo5KVAp9i7DWhadFRpuqu
-	 zY78Wb+m4YWQIYStFrXrAaAiyGCtBrmcPlomcI26MHB8U9p6/lL/QCOyI7WJbnq1WWQOm
-	 eShAtINHkcAqzAAC9+35DV/Kf9xqeeE7qQMIm8AwfF8/P6CXlMXnlmAatwRNeCBwK4w==
+	t=1794323302;
+	b=0YPuZUy62e+enITomDMTud/htnwj24x4IyjGfdw9eR3A8U8tKjf46txopWLXQFBgQudo
+	 6ga9eubyaW2rUDHSqQJ1Hru1Ft8J6ZdyTsX3a4GjCdVYlth4X3VIYOz0v6GDZOdH+CMcu
+	 IEpt1rWVfjVntqtjclwwoT8AgtpUWmBUXHjEyuzS+/lxnOHZMvQZTZ08701lfE/eJndFp
+	 DDSuFkPQqm8SM/keLAEmA8/6rvMDDZ06zeky2X6RmTQ1t3ZOgMjoHCXShBHkasTSdSx0B
+	 DEGhSrTNfo6MR0wGgvEJndl3fY4fUhhlUjB4FaXRajmkK/psncPE0mWUNINyo1uyKzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794323205;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Z9mSb2fKY5P4mSCROzwhq12HIFLb50lizJbHfw87JAk=;
-	b=UM3BKG7dfhLV6hxAPFy7aKCTQpF7TNP7zHo3TMbmzDwNZoih2b6i64tz9FfHBOMPT2lh
-	 i0QrZzWk8lq0Sz6qRLd7IXH7K3+BkTgEjtEiZqYDt3uqjGVVkYEk/6KSIknIC/EInK1ik
-	 sHwQa2cMDdK3RpHKwN2VK3U9lkYBHmJhtGwxx66cxriZk0Wp0Bmd9Z9Wf7EO7/DElDct4
-	 WVlC+uPRCNq9i942e4B5NEoTXXGkQH5mkzYNeIMuAyic1bu2whDqO+E4lrTwrjh4rMNcn
-	 mf59EBUpcmuHYBWDWGb8yA5BarWq8O0GBqAqWtLTMzo9DncufNNE4DqVmbxXy2eF1Zw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794323302;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
+	 Cc:In-Reply-To:References:Date:Message-Id:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=WKAEhFQ+Dah3DMHVjGDEQ1FI4504gN8wbhTTvAQenls=;
+	b=4vYhL2NmaEoJjexRm7CbhKRkFaf2bJz8+alttabUKPeJ49n1C6JS3GdsNX8MZJjHZNYp
+	 PPB02ESKte/ExBGGxSkJbYJtIJT2mpuOzcFTdOoMX6cpyVB8xhKJ579liwaa/wnF8SvSD
+	 vUqL6ury8fQdblGbcWlZDBi6JM2+emXMxOFmojujYcM4b6O4VFHVPvwFjFLAk8IWG+Xtx
+	 Mn1/f7Zx1ts96ETKJaiPW18VCDpI3IRL4oWxNNllzKyE5k6DRKfR7cBpOoqj+XbPcNF1D
+	 kyJS8zGdJRYl2HQQx8vxGCMRkF2+LIUczeCzMo/0POYIyS5xPm+pBKULcdydMf18pFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Ab8k8ewK;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72CF60A2607
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 15:06:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E72CF60A2607
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=soleen.com;
+	spf=pass smtp.mailfrom=soleen.com;
+	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b="MY7/VxB1";
+	arc=none smtp.remote-ip=209.85.222.44
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9A6606A332
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 15:08:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B9A6606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Ab8k8ewK
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4CA3E1477;
-	Tue, 10 Nov 2026 07:06:41 -0800 (PST)
-Received: from [10.0.154.42] (e121487-lin.cambridge.arm.com [10.0.154.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 963143F85F;
-	Tue, 10 Nov 2026 07:06:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794323204; bh=3AVzy3LH/1lk5LMXc+9PvHcKygJvWkNZG8Ry0iHFvns=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ab8k8ewKYHGmHgYuEIcO6FkKErMHR2SspTHB22RMqygNyUptQi5r24oV4BAjoUK0S
-	 BLVt3pxo3D9PSRuPdLO4a+rrO2dzStTeXSbD/iywfdWOl14f/3tRuu+OvEsGKAsBZc
-	 3EXMXU9zZnauzmsJpS4e4liImaEGargDhCm0Fhlo=
-Message-ID: <839a24e5-5797-4077-ba4a-0a76f644a4b7@arm.com>
-Date: Tue, 10 Nov 2026 15:06:40 +0000
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=MY7/VxB1
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-99b49d6a5caso490206241.2
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 07:08:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1794323300; x=1794928100; darn=vger.kernel.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WKAEhFQ+Dah3DMHVjGDEQ1FI4504gN8wbhTTvAQenls=;
+        b=MY7/VxB1O/0DDBob4OhFBhE2r7AqoArsc4vheQsUZdhXDD+b5y1y1TaQrVm/bdwM31
+         v+wvR1Xa3Ogoqeh918QB8QJkmxoGqB/R4NBJ2DOJcela0Ni/GKwIGZk8KpF3tas6I5PQ
+         qKvtJzIG9/afJgpmJCT8Wdk0JCrpgGt8FzAo9UC1qJ+1YInuolQ9XLeruvGJazzi6dQA
+         6/dnbpjLZxKCsl3iAfGw/gz7uTLTFH0Bl0FPaSew7qw4Mq3brXG6aw9DcGgQGyAglMNu
+         RxiC7KvyFW8YJvykaeY5KOEMdF2MdmBGATrfsR7KNl7p0+qOdzVYWZayVDtF6hymuNJo
+         lB+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794323300; x=1794928100;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WKAEhFQ+Dah3DMHVjGDEQ1FI4504gN8wbhTTvAQenls=;
+        b=yC8WlzuLeHA9g7qpJueRemrtScaaBZpCs4lhTddoU/C0akbmOl86LeytqoM36dpiVt
+         /gD29ehQwStaewlXYe6oREryySzSYJmwmkX735p1xJe8bNBzU0PrXfBS/q1OZ8P9mTJ8
+         L/HaoUuJ3tNWquGs4XDCN/+5e/Gwv4vdKTQsKYnD4dQOFyBG8MsI602e0U+rOzw/EjWY
+         mQaYQphUuaFg2hrMt8SbiUF+2rIQy3i2xqi2tsEB6ZefyKI2G30VbNgYwSnKqCqMm1hx
+         jmFbhR9Ed0G+P/kCBrIP8hM3hxknXoPFRH8KcXZVzCS6aoOYg8GkGJVSL0FEx472+PXT
+         NBdQ==
+X-Forwarded-Encrypted: i=1; AL+hErEVUaweQtdxvAhiwXlToFVUs6b34nAc8x3kcS0Ei4r715wms+Y4wJLNwsXqn8lHbburwFo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z81/H7Zfuoq5zhUurmcZ3mwcvJOQDN2enGMGFCbmswgn+4AkWSO
+	oyR3nIpMh6EE4GMLQMAJvg3tWSAz1W3Dq+5UuIDlcnOo+zeIlvW4NInITHyKReJ+QXM=
+X-Gm-Gg: AYBFou37pr01u+paVrWJbscMA8XrkVYloFsI3Ev9AvFNfCbpvvOsbZSyOCpCIE6SeBL
+	Um9jI07ZLLyZO4kV7gybrt+ZkQbiaxBpkO2PzYVdPcRKL4Ray8ODTAiGu1FomBW/4tURJ73v0jB
+	fKIYBI1WAR0Y+tlyqh+0KfORUlxrVo+7gPwdajtH636QNx0xZ5PXoyBWbzxfujaLcWQ4nofLeZt
+	WxxpSOyXVXm7HN/XEMAXMvlWfPPaztKyVWd6rC1PzOclmi+kfQHAbCYg8y9ejuuFjEKRMvfO7WI
+	jPr0z0P5hqvRUJQs+Rzw7hbagLvhHvOW2OaOKUn+L8o18qn9oMbNsm7xgl4y4w0ZUWF2hhJQee5
+	EkbGxMhuWcvukkEnVL7x4uq+0/Nwt9MHrgKsqqac1cnnQZMKIt1LaZY3Wb667vO6HUKpHnqGyRP
+	yXcU3ZJS0whWkQXgBxbOu02/hqyA59+cj33SllC38AqmPdoos0dn7I766l+p6V1lL2da5Tz60R2
+	KYPZBNc8C5sjFFWcO+oOfKo/rYYfAhg8bS1RBd+tsQaKy9Q7l3s9/VrdUqX3ElhAVcCd+f1Gf11
+	Q6zCstI9G6HF0nVrDBNGLmiM479agsYh3W4OSai9UPg2HJsaH+7Nz7ZREq453YTobnB84j6htPZ
+	FDbqus3ZNbDN1sXVCLVWAzMXSZ+wDStLOnYPwtug191Rm
+X-Received: by 2002:a05:6122:468c:b0:5da:a74:d6a4 with SMTP id 71dfb90a1353d-5ee0d1254cdmr983516e0c.15.1794323299946;
+        Tue, 10 Nov 2026 07:08:19 -0800 (PST)
+Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe63asm1965122241.4.2026.11.10.07.08.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 07:08:18 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,49 +90,128 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH kvmtool v4 08/23] arm64: Start GICv5 SPI line allocation
- at zero
-To: Sascha Bischoff <sascha.bischoff@arm.com>, will@kernel.org,
- julien.thierry.kdev@gmail.com
-Cc: maz@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- timothy.hayes@arm.com, Peter Maydell <peter.maydell@linaro.org>
-References: <20261102213413.4136118-1-sascha.bischoff@arm.com>
- <20261102213413.4136118-9-sascha.bischoff@arm.com>
-Content-Language: en-GB
-From: Vladimir Murzin <vladimir.murzin@arm.com>
-In-Reply-To: <20261102213413.4136118-9-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 06/19] kho: kexec_metadata: Add the feature header
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, 
+ will@kernel.org, David Matlack <dmatlack@google.com>, 
+ Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, 
+ loganodell@google.com, arnd@arndb.de, dwmw2@infradead.org, 
+ baolu.lu@linux.intel.com, Bjorn Helgaas <bhelgaas@google.com>, 
+ oupton@kernel.org, alex@shazbot.org, gle.com@google.com, 
+ pbonzini@redhat.com, Andrew Morton <akpm@linux-foundation.org>, 
+ kevin.tian@intel.com, joro@8bytes.org, kvmarm@lists.linux.dev, 
+ linux-pci@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+ kexec@lists.infradead.org, kvm@vger.kernel.org, iommu@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, skhawaja@google.com, sagis@google.com, 
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261110050202.529473-7-tarunsahu@google.com>
+References: <20261110050202.529473-1-tarunsahu@google.com>
+ <20261110050202.529473-7-tarunsahu@google.com>
+Date: Tue, 10 Nov 2026 10:08:12 -0500
+Message-Id: <179432329215.2329176.14453669404153142360.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3169;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=QPKh6oqVuep5a0uq5kk2HJ+pkn4UzCARnNzVJdUZk/E=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq8zNhLa8G7KPQhtpqNqIaC7iUSrItiw95IH4+W
+ 4FZp+mLRNmJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCavMzYQAKCRC7dyhM23N6
+ 3ixyD/9hSlVPu6pn+Usl6EKxRh1wkp2nNTAGfSwd0T80brdKlRNG7a8mQqhUQi1H7cXmovyHBUq
+ ES73eQCtV9EEqD3V+9mhbM/vQ3DNxapFoBftgUpOKocv/TyzS+fnYCCd+V4qkZp6JbEE04DX5ph
+ RXIIzYY1cOoM3lIFUa3WAKuQ5IlLTqUrcCnmCGDDA2ABc3Dn4YGxVfA+j1TEgs3i5/pZ3Jg6vPm
+ 2w2Rki59ZZh1OvjNwqaQcNxFUaUzOua2A1T1C5uWqXUw29+H364g+FPC9TsTFighlf5Dm5nInFm
+ sy05T7yV7PmS1d4eRFn5VjWQo2hboOwrVmB5E3sLTnbZ+oXkY0TgWbPqKYlXfKYQ1RF1dttkf3y
+ L666oJVxxNOxQuWbB80WyaaQp1G11CUhLjsRBaxuJqYWD3LuhT6NKGc7rkKJ+4Y1QHbv77qrsL0
+ xU62OLvV+UYlxbDgjPM1r4q1njY/2zmio3uMBSt4oubrAmtiUMAW6J6dY86mFHlcm8xgbSUbn5B
+ HOb83UbLMhoMCV4Zf4R9ofmr8Zb5PO+Ieg4+UAv33DElEYGHzsZJuh7rv0KDrtHn6JA4zqY3vNY
+ KpfJSWU9gzyoa94bAOMSWiRRC/83AeXcMfiQw7G8I+bNVH6Sm/Q6RfvqXkiiTkw9BXIWwqNbXQH
+ 2NBA/068NaYZqOw==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 
-On 11/2/26 21:33, Sascha Bischoff wrote:
-> GICv5 SPIs start at zero, while earlier GICs use an offset of 32.
-> Select the zero offset before allocating any interrupt lines.
+> The kexec metadata subtree currently uses a monolithic u32 version field
+> to identify the metadata structure layout. Any change to the structure,
+> even an optional additive field, requires incrementing the version and
+> breaks compatibility between adjacent kernels.
 > 
-> Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arm64/gic.c | 3 +++
->  1 file changed, 3 insertions(+)
+> Replace the u32 version field in struct kho_kexec_metadata with
+> struct kho_ser_hdr using DECLARE_KHO_SER. Later fields can be appended
+> under new feature indices without breaking compatibility across kexec.
+> Also make the 3-byte padding hole between previous_release and kexec_count
+> explicit as reserved[3].
 > 
-> diff --git a/arm64/gic.c b/arm64/gic.c
-> index df5689a7..58644036 100644
-> --- a/arm64/gic.c
-> +++ b/arm64/gic.c
-> @@ -234,6 +234,9 @@ static int gic__set_spi(enum irqchip_type type)
->  		break;
->  	}
+> During deserialization, validate the blob size against the header size
+> and reject unknown required features. A legacy v1 metadata blob is
+> ignored with a warning.
+> 
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+>
+> diff --git a/include/linux/kho/abi/kexec_metadata.h b/include/linux/kho/abi/kexec_metadata.h
+> index e9e3f7e38a7c..316b3e5ad01b 100644
+> --- a/include/linux/kho/abi/kexec_metadata.h
+> +++ b/include/linux/kho/abi/kexec_metadata.h
+> @@ -18,28 +18,31 @@
+>  #ifndef _LINUX_KHO_ABI_KEXEC_METADATA_H
+>  #define _LINUX_KHO_ABI_KEXEC_METADATA_H
 >  
-> +	if (gic_spi_base == GICV5_SPI_IRQ_BASE)
-> +		return irq__init_irq_offset(gic_spi_base);
+> +#include <linux/build_bug.h>
+> +#include <linux/kho/abi/feature.h>
+>  #include <linux/types.h>
+>  #include <linux/utsname.h>
+>  
+> -#define KHO_KEXEC_METADATA_VERSION 1
+> -
+>  /**
+>   * struct kho_kexec_metadata - Kexec metadata passed between kernels
+> - * @version: ABI version of this struct (must be first field)
+>   * @previous_release: Kernel version string that initiated the kexec
+> + * @reserved: Reserved for structure alignment; must be zero
+>   * @kexec_count: Number of kexec boots since last cold boot
+>   *
+> - * This structure is preserved across kexec and allows the new kernel to
+> + * This structure is preserved across kexec and allows the target kernel to
+>   * identify which kernel it was booted from and how many kexec reboots
+> - * have occurred.
+> + * have occurred. Preceded by &struct kho_ser_hdr.
+>   *
+>   * __NEW_UTS_LEN is part of uABI, so it safe to use it in here.
+>   */
+>  struct kho_kexec_metadata {
+> -	u32 version;
+>  	char previous_release[__NEW_UTS_LEN + 1];
+> +	u8 reserved[3];
+>  	u32 kexec_count;
+> -} __packed;
+> +} __aligned(8);
+
+Why __packed was not removed in the first commit? __aligned(8) should 
+not be needed, given that it must follow DECLARE_KHO_SER which is 8-byte 
+aligned.
+
 > +
->  	return 0;
->  }
+> +/* Register kho_kexec_metadata with KHO serialization accessors */
+here and in all other places, please remove this comment.
+
+> +DECLARE_KHO_SER(kho_kexec_metadata, 72, 0, 0);
 >  
-> -- 2.34.1
-> 
+>  #define KHO_METADATA_NODE_NAME "kexec-metadata"
+>  
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 6f1f55fe3181..2edd772bb6d3 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1740,6 +1740,7 @@ static __init int kho_out_fdt_setup(void)
+>  
+>  static void __init kho_in_kexec_metadata(void)
+>  {
+> +	DECLARE_KHO_SER_HDR(kho_kexec_metadata, *fhdr);
 
-FWIW
+Please don't do this, use kho_ser_hdr directly.
 
-Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
+-- 
+Pasha
 
