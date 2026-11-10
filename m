@@ -1,75 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794286938;
-	b=BjVbs2ERR7RwITegDR12MzlDKD2sbk7gKkC/DIOylubOXyHKNwN5VvHk2ebnyFw2rxOm
-	 YK2pbtYQdfb8Rr9YRPWmRh59551SubkNf7h8vbqp2RxE4za3cFusmBq9iUb6rGsLMQsV8
-	 OCTuT4xetFlplF0Xk9+5JaiivbF0LXN1/0PyrrwcBqB4luNFf4tUy55CN3AlThOiCwu05
-	 pwsABwy6x4mzEdLKOD0/uvVMOb9f7qzTk+8Pf/rJEoZOL5jONUqUYrPsT/YjwcyNiHh2m
-	 3eq/yVFi/Za3JHzLYartYQVk2eYJHR0cZy1qErkxE8Po6VeB5Eg5DfllOTR+CrOSXMg==
+	t=1794287810;
+	b=kN2WxbXKv0bQcgJrYR/NkIvPksZ9HRfw0AMznqoXOjG7lw/bAnBzGZtT6/3PV4J2pjvi
+	 lkFO8ANM47R3Jzsm9YUUr43mzWSrJwYTYU/5cfXM3IbnbYRl89QigQaHNO026/rHLPtB6
+	 TIOKawc6IE5KnDnN6VsPjNX2yF5WtF81RVOo4KZjJu9KRBgFufPqH6+ryUMqBophMjF2H
+	 h9EJOwbEJeusYeC2/8rHC3AGeR7MgN2ZUSSLALO083+yORHkQ2KPqW5Qupv6rcPeXW/cP
+	 hxnBIhSbYil5XDmQdmp3HvZkDE8E1QXjwJGC2cn1qkQ/XZbOSD1/051o+l4ogiUoQZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794286938;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=KlBTWBMpEbDIIvafpldBklRCZ2ctie9uKxzA73glXH4=;
-	b=k45UbFha+S2TUKKtoakfU659oNvO4npEYJeUhuFq/a5HpYS6hJ++kW5EmE4rFOidIjRK
-	 sdcnVrld9dLtFUZUF2AFSQ8PO6xnK5fVbpkhckSJ2RySefU8hZ5YvBTX8yUEsAnJi/q7y
-	 SJMawFwSOXyExLfy6XjDuIybH9GvQe8nK+e1ogFgNs76U29fe3sjNvrYn2Q2tQn3/8CY2
-	 caM8joWqjlCel0TSDSqh4aSkiZ9aodytHw6PWsHHSQIgv0y/yjLNqc5WCL5K0OBwvt2Io
-	 aYTWxjoAHMtn6mGekcvDXF8RYcu2/dKPecV5FsN1KKpFFWNYb/gBB1jT6H9eoTKKlsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794287810;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=4/nfkGQBu5KSWivhAQOet9GrZ8o9njJFE99m/pz7QN4=;
+	b=PFus/GNdhA60/ajISekrZQCuOpZb1IJfm+M7ZpY1PQVAzltL42NWvmfw+W6B7Es996PA
+	 AZ68hag1csANe7C2MImbAsMpj4NxfYRBlAs+1yl0wg8Dc/8MTseqW+Brsv7rtaI11X6UP
+	 8Z4o4KeHyPh6xhZVZvFRvqtPEDNvXEOME3fN6CqpJdvA2/fxdzu8sbwNZYR11neDICcs8
+	 qQ5ssRK+eEDNEQ0X04aqT9FhIcohF8m7CwUadq7MCQPYWxHKrJekH7cDpdNGNUb0z/vC0
+	 cCUh1uEbXkpM3GON1UevStjx/xXfxC/StlMbfYB1k6vKq1uQJHxUSlGuNr+iT3/cR0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iBz0EbZq;
-	arc=none smtp.remote-ip=209.85.218.70
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AqhCKZ2d;
+	arc=none smtp.remote-ip=198.175.65.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18E0606B08E
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F18E0606B08E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C29606A321
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:16:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8C29606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iBz0EbZq
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c49b95262a5so126321466b.3
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286935; x=1794891735; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KlBTWBMpEbDIIvafpldBklRCZ2ctie9uKxzA73glXH4=;
-        b=iBz0EbZqdPBJBsCarnrDk2uL4XfOM4ye0i1t/kBn242eRDJmJPQNI3hSlfK/QO5Mu4
-         5m9oG5U8RsLZY5KreEx+DUdTGArWDAySXd5Z4lFESt8JgSkgezSjru2LD0DPer+wI42R
-         x3mYmUTlpHqoP5xDjk1Q8OcQwXMtdVzfK/vwKKTG8eXadnbV5XogbG6rpLrDAeoNrGRF
-         2FtdRxGnNn5e5cHS/YiNR/c5xKUevGc1RfgveoQfARdFS12Fw30fSfyOiPKEXipMhMHd
-         /1oJIec+UwiFIwHGr6QQ2qWIYidzY2uhIWHCLPGtOCcPhkZmBQghr60GF6TSysE60mAf
-         TRuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286935; x=1794891735;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KlBTWBMpEbDIIvafpldBklRCZ2ctie9uKxzA73glXH4=;
-        b=WaDxqJXjMTSUEEmePxH4HrAkSbhzWXu5b+HKffc7Vo0c1wzWeEZhgb4+ZylKoqX4me
-         xtuPgWlOtkLXaDM06ooEawHW1ODXFbwTaLTqQ/lZuWyYyg1Zv23Ien00ZjAUYMumOyRb
-         UWr3YOgAxKwLye60KUucmEXtVh+6ytQk9rDwujysLH1M+8hpx1PNhWqnuOgEUyhkhzZ+
-         drA09PvqZmd3MxudrReU8qQux5e/bd+X8871QX2Mh14QVRGiSB823cEDDgSsx9ilRpDe
-         5Ovd0xTy1seGar/2bYZgorLENt3oB+YQwwzNly0dSgFnv7/xH8Czu4XO0XFzphbDeDqR
-         qzGw==
-X-Forwarded-Encrypted: i=1; AL+hErEA+mv24Tdi5jPSD2we1006InNY7ed7CCN1pYt1J3Ga/IJYAplv2IVlTQvFfvqJJtZWLWk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9fqzOiLnSYPQUz5P60a5B/ECP1w+Lps9vgcb+XGpVKIXw0yVOz
-	0ND1+XDFksK+8ugLzz5Tptl+MhoRyVdaCAgA/uTAnEMTfVDuVk10bIBOYfOBfhZOGIYRW8zMAN0
-	m8C8Hawy/y/ACv63LbA==
-X-Received: from ejpg24.prod.google.com ([2002:a17:906:7c58:b0:c3f:eea3:d5e9])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3d8f:b0:c44:9a32:b27 with SMTP id a640c23a62f3a-c5049623935mr98305266b.25.1794286935134;
- Mon, 09 Nov 2026 21:02:15 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:01:52 +0000
-In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AqhCKZ2d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794287809; x=1825823809;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=p4O4GdlJfGDIXIXY0gm97ZySDZdgE24htA+wTQdqa5o=;
+  b=AqhCKZ2djYNR4X3fZbhwoXPrNfCXn9Bm82Tyra1GUB/sAbih1xIAVtUI
+   9/SV38RXwtU9C2BTsiI+SK1YnsMi4b2hs+4QBNNjCXvsn6n4mXT+2O8Nu
+   cbG4fNrSzBMPxK9rvM9y66WBn7Uc7CGiEn16GIHxjLrjZRHmHzZ7rhIiu
+   jsDhjRzIDzB8rtOKpLBr6c+JoiYsG15UPuCmnIjygVxJSG345ut7NhwPC
+   YAQqhpnMx+8kvTq307+/PuUmbuGO1TThncmfNV08uq0bnaMmdetG8C8Xb
+   KDap7NlI55mw3CDIw8qHLRB3pBN68VOHf9U+8ZOPebFqRQ5Pa73eIT9om
+   w==;
+X-CSE-ConnectionGUID: w7e9oPc6ShiFKi5dRmWOqg==
+X-CSE-MsgGUID: mvJm+/R6SEqtBJB8WcRUGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2928066"
+X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
+   d="scan'208";a="2928066"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 21:16:20 -0800
+X-CSE-ConnectionGUID: ZMMNINYhSGe8SPmhWKPbdw==
+X-CSE-MsgGUID: x0Ml0elmSm+U1+T+BPTwhw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
+   d="scan'208";a="7911534"
+Received: from pgcooper-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.26])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 21:16:10 -0800
+Date: Tue, 10 Nov 2026 07:16:06 +0200
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: "Serge Hallyn (AMD)" <sergeh@kernel.org>
+Cc: Kishen Maloor <kishen.maloor@intel.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	David.Kaplan@amd.com, Mathias.Brossard@arm.com, tycho@kernel.org,
+	"Adam, Mahmoud" <Mahmoud.Adam@amd.com>
+Subject: Re: TDX migration model
+Message-ID: <avKolvbIuZj-aLD-@tlindgre-MOBL1>
+References: <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
+ <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
+ <auyZnIfxMnxYD8rT@shallyn-amd>
+ <85f899cd277b2188cd4b33f8f21b206fa2ff6f6f.camel@gmail.com>
+ <auyx8C67zCnbPpuL@hallyn.com>
+ <c77156d1-5a47-4a93-a18b-392081fad3ff@intel.com>
+ <avF6DcmdoGeWeRxg@tlindgre-MOBL1>
+ <avJGEYIohYUN9l10@shallyn-amd>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,300 +108,111 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com>
-X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-10-tarunsahu@google.com>
-Subject: [PATCH v4 09/19] liveupdate: Add feature header to struct luo_ser
-From: Tarun Sahu <tarunsahu@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
-	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
-Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Tarun Sahu <tarunsahu@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <avJGEYIohYUN9l10@shallyn-amd>
 
-LUO and its file handlers currently rely solely on coarse-grained
-compatibility strings (such as luo-v6 and memfd-v3) to validate
-handed-over state across kexec. Because compatibility is checked only
-at the whole-structure level, any change to a serialized structure,
-even an optional additive field, requires bumping the compatibility
-string and breaks live update between adjacent kernels.
+On Mon, Nov 09, 2026 at 04:15:45PM -0600, Serge Hallyn (AMD) wrote:
+> (Adding Tycho and Mahmoud, who will be working with me on this)
+> 
+> On Mon, Nov 09, 2026 at 09:45:17AM +0200, Tony Lindgren wrote:
+> > On Thu, Nov 05, 2026 at 06:00:41PM -0800, Kishen Maloor wrote:
+> > > On 11/5/26 8:42 AM, Serge E. Hallyn wrote:
+> > > > On Thu, Nov 05, 2026 at 05:59:01PM +0200, Artem Bityutskiy wrote:
+> > > >> On Thu, 2026-11-05 at 08:58 -0600, Serge Hallyn (AMD) wrote:
+> > > >>> ...
+> > > >>> So, looking at the section '### How the Setup Session Works', is it safe
+> > > >>> to assume that you are using the qemu migration fd for the message
+> > > >>> transfers?  So basically qemu loops over KVM_MIGRATE_SETUP calls, which
+> > > >>> ...
+> > > >> Yes, that's the flow. I’m not sure about the migration fd part, I believe we
+> > > >> pass the setup session data via ioctl buffers. I am sure Kishen will can
+> > > >> clarify.
+> > > > 
+> > > > If you mean pass via ioctl buffers from tdx->kvm-> back to qemu, which passes
+> > > > it over the migration fd to the other side, then that's what I expected.
+> > > > Othewise I'll be interested to the details :)
+> > > 
+> > > Hi Serge,
+> > > 
+> > > Your understanding is right. Migration setup requires a handshake of some sort
+> > > between the source and destination. So the messages KVM_MIGRATE_SETUP returns
+> > > are transferred over QEMU's migration channel to the other side and processed
+> > > by a matching call.
+> > 
+> > Serge, on the QEMU side, we have been enabling the return-path early for
+> > the key exchange before migration is active. Not sure if the key exchange
+> > can be done using a VMState, possibly could be if we can ensure it happens
+> > before the migration is active.
+> 
+> Key exchange requires bidirectional communication, so I don't think a
+> VMState would work, at least not on its own. If the destination's
+> info got send to the source out of band and delivered through migrate
+> command option, that could work, but it seems much nicer to me if it's
+> all done more transparently.  OTOH if this simplifies the qemu code
+> enough, maybe it's worth it.
 
-Precede the centralized struct luo_ser with struct kho_ser_hdr using
-DECLARE_KHO_SER. Subsystems can now evolve their serialized state at
-per-feature granularity. Each subsystem groups the fields of its
-serialized structure under feature indices, starting with index 0 for the
-base fields. When a subsystem adds a new capability, it appends any new
-fields to the end of its payload structure under a new feature index.
-Retired fields are kept in place so existing field offsets never shift;
-if the type or format of a field needs to change, the existing field and
-feature are kept intact until retired and a new feature index with an
-appended field of the new type is added. Only when a change requires a
-complete break in the serialized layout or semantics that feature flags
-cannot handle, a new handler can be introduced with an incremented version
-number in its compatibility string.
+Yeah agreed and can be revisited.
+ 
+> > For the migration related commands, looks like we can just make the
+> > KVM_EXPORT_CMD and KVM_IMPORT_CMD subcommands a bit more finer grained and
+> > then drop the vendor flags until needed:
+> > 
+> > #define KVM_MIGRATE_EXCHANGE_KEYS	0 (New, was KVM_MIGRATE_SETUP and a flag)
+> 
+> We are currently looking at a couple of messages back and forth during the
+> setup negotiation, to accomplish both key exchange and verification of
+> attestation reports.  I was actually just using KVM_MIGRATE_SETUP with
+> flags for that.  Maybe KVM_MIGRATE_EXCHANGE_KEYS could be renamed to
+> KVM_MIGRATE_NEGOTIATE?  Flags aren't strictly needed, if the
+> KVM_MIGRATE_NEGOTIATE ioctl will be repeated depending on the return
+> value.
 
-Signed-off-by: Logan Odell <loganodell@google.com>
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- include/linux/kho/abi/luo.h  | 64 +++++++++++++++---------------------
- kernel/liveupdate/luo_core.c | 39 +++++++++++++---------
- 2 files changed, 50 insertions(+), 53 deletions(-)
+OK geat, KVM_MIGRATE_NEGOTIATE sounds good to me.
 
-diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index f1152470f71a..dfa7ea434d0d 100644
---- a/include/linux/kho/abi/luo.h
-+++ b/include/linux/kho/abi/luo.h
-@@ -9,29 +9,26 @@
-  * DOC: Live Update Orchestrator ABI
-  *
-  * Live Update Orchestrator uses the stable Application Binary Interface
-- * defined below to pass state from a pre-update kernel to a post-update
-- * kernel. The ABI is built upon the Kexec HandOver framework and registers
-- * the central `struct luo_ser` via the KHO raw subtree API.
-+ * defined below to pass state from a source kernel to a target kernel.
-+ * The ABI is built upon the Kexec HandOver framework and registers the
-+ * central `struct luo_ser` via the KHO raw subtree API.
-  *
-- * This interface is a contract. Any modification to the structure fields,
-- * compatible strings, or the layout of the `__packed` serialization
-- * structures defined here constitutes a breaking change. Such changes require
-- * incrementing the version number in the relevant `_COMPATIBLE` string to
-- * prevent a new kernel from misinterpreting data from an old kernel.
-- *
-- * Changes are allowed provided the compatibility version is incremented;
-- * however, backward/forward compatibility is only guaranteed for kernels
-- * supporting the same ABI version.
-+ * This interface is a contract. `struct luo_ser`, and the serialized state
-+ * of each file handler that uses it, are preceded by `struct kho_ser_hdr`.
-+ * See the KHO Serialization Feature Header ABI documentation in
-+ * include/linux/kho/abi/feature.h for the header layout, the feature rules
-+ * and validation.
-  *
-  * KHO Structure Overview:
-  *   The entire LUO state is encapsulated within a single KHO entry named "LUO".
-- *   This entry contains the `struct luo_ser` structure.
-+ *   This entry contains a `struct kho_ser_hdr` followed by the
-+ *   `struct luo_ser` payload.
-  *
-  * Serialization Structures:
-  *   - struct luo_ser:
-- *     The central ABI structure that contains the overall state of the LUO.
-- *     It includes the compatibility string, the liveupdate-number, and pointers
-- *     to sessions and FLBs.
-+ *     The central ABI payload structure that contains the overall state of
-+ *     the LUO (the liveupdate-number and physical pointers to sessions and
-+ *     FLBs), preceded by `struct kho_ser_hdr`.
-  *
-  *   - struct luo_session_ser:
-  *     Metadata for a single session, including its name and a physical pointer
-@@ -40,7 +37,7 @@
-  *
-  *   - struct luo_file_ser:
-  *     Metadata for a single preserved file. Contains the `compatible` string to
-- *     find the correct handler in the new kernel, a user-provided `token` for
-+ *     find the correct handler in the target kernel, a user-provided `token` for
-  *     identification, and an opaque `data` handle for the handler to use.
-  *
-  *   - struct luo_flb_header_ser:
-@@ -57,39 +54,36 @@
- #ifndef _LINUX_KHO_ABI_LUO_H
- #define _LINUX_KHO_ABI_LUO_H
- 
--#include <linux/align.h>
- #include <linux/build_bug.h>
- #include <linux/kconfig.h>
- #include <linux/kho/abi/block.h>
-+#include <linux/kho/abi/feature.h>
- #include <linux/kho/abi/kexec_handover.h>
-+#include <linux/types.h>
- #include <uapi/linux/liveupdate.h>
- 
- /*
-  * The LUO state is registered under this KHO entry name.
-  */
- #define LUO_KHO_ENTRY_NAME	"LUO"
--#define LUO_ABI_COMPATIBLE	"luo-v6"
--#define LUO_ABI_COMPAT_LEN	ALIGN(sizeof(LUO_ABI_COMPATIBLE), 8)
- 
- /**
-- * struct luo_ser - Centralized LUO ABI header.
-- * @compatible:     Compatibility string identifying the LUO ABI version.
-+ * struct luo_ser - Centralized LUO ABI payload.
-  * @liveupdate_num: A counter tracking the number of successful live updates.
-  * @sessions_pa:    Physical address of the first session block header.
-  * @flbs_pa:        Physical address of the FLB header.
-  *
-- * This structure is the root of all preserved LUO state.
-+ * This structure is the root payload of all preserved LUO state, preceded by
-+ * &struct kho_ser_hdr.
-  */
- struct luo_ser {
--	char compatible[LUO_ABI_COMPAT_LEN];
- 	u64 liveupdate_num;
- 	u64 sessions_pa;
- 	u64 flbs_pa;
- };
- 
--static_assert(sizeof(struct luo_ser) == 32);
--static_assert(!IS_ENABLED(CONFIG_64BIT) ||
--	      __alignof__(struct luo_ser) == 8);
-+/* Register luo_ser with KHO serialization accessors */
-+DECLARE_KHO_SER(luo_ser, 24, 0, 0);
- 
- #define LIVEUPDATE_HNDL_COMPAT_LENGTH	48
- 
-@@ -98,8 +92,6 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-  * @compatible:  File handler compatible string.
-  * @data:        Private data
-  * @token:       User provided token for this file
-- *
-- * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
-  */
- struct luo_file_ser {
- 	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
-@@ -138,10 +130,8 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-  *
-  * This structure is used to package session-specific metadata for transfer
-  * between kernels via Kexec Handover. An array of these structures (one per
-- * session) is created and passed to the new kernel, allowing it to reconstruct
-- * the session context.
-- *
-- * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
-+ * session) is created and passed to the target kernel, allowing it to
-+ * reconstruct the session context.
-  */
- struct luo_session_ser {
- 	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
-@@ -180,13 +170,13 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
- /**
-  * struct luo_flb_ser - Represents the serialized state of a single FLB object.
-  * @name:    The unique compatibility string of the FLB object, used to find the
-- *           corresponding &struct liveupdate_flb handler in the new kernel.
-+ *           corresponding &struct liveupdate_flb in the target kernel.
-  * @data:    The opaque u64 handle returned by the FLB's .preserve() operation
-- *           in the old kernel. This handle encapsulates the entire state needed
-- *           for restoration.
-+ *           in the source kernel. This handle encapsulates the entire state
-+ *           needed for restoration.
-  * @count:   The reference count at the time of serialization; i.e., the number
-  *           of preserved files that depended on this FLB. This is used by the
-- *           new kernel to correctly manage the FLB's lifecycle.
-+ *           target kernel to correctly manage the FLB's lifecycle.
-  *
-  * An array of these structures is created in a preserved memory region and
-  * passed to the new kernel. Each entry allows the LUO core to restore one
-diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-index 1b2bda22902d..d0f72f27001d 100644
---- a/kernel/liveupdate/luo_core.c
-+++ b/kernel/liveupdate/luo_core.c
-@@ -66,7 +66,7 @@
- 
- static struct {
- 	bool enabled;
--	struct luo_ser *luo_ser_out;
-+	DECLARE_KHO_SER_HDR(luo_ser, *luo_ser_out);
- 	u64 liveupdate_num;
- } luo_global;
- 
-@@ -83,6 +83,7 @@ early_param("liveupdate", early_liveupdate_param);
- 
- static int __init luo_early_startup(void)
- {
-+	DECLARE_KHO_SER_HDR(luo_ser, *fhdr);
- 	phys_addr_t luo_ser_phys;
- 	struct luo_ser *luo_ser;
- 	size_t len;
-@@ -107,17 +108,21 @@ static int __init luo_early_startup(void)
- 		return 0;
- 	}
- 
--	if (len < sizeof(*luo_ser)) {
--		pr_err("LUO state is too small (%zu < %zu)\n", len, sizeof(*luo_ser));
--		return -EINVAL;
-+	fhdr = phys_to_virt(luo_ser_phys);
-+	if (len < sizeof(*fhdr) || fhdr->size > len) {
-+		pr_err("LUO state size invalid (source kernel header size=%u, KHO len=%zu)\n",
-+		       len >= sizeof(*fhdr) ? fhdr->size : 0, len);
-+		err = -EINVAL;
-+		goto out_free_ser;
- 	}
- 
--	luo_ser = phys_to_virt(luo_ser_phys);
--	if (strncmp(luo_ser->compatible, LUO_ABI_COMPATIBLE, LUO_ABI_COMPAT_LEN)) {
--		pr_err("LUO state is incompatible with '%s'\n", LUO_ABI_COMPATIBLE);
--		return -EINVAL;
-+	err = kho_ser_validate(fhdr, luo_ser);
-+	if (err) {
-+		pr_err("LUO state feature validation failed: %pe\n", ERR_PTR(err));
-+		goto out_free_ser;
- 	}
- 
-+	luo_ser = kho_ser_payload(fhdr, luo_ser);
- 	luo_global.liveupdate_num = luo_ser->liveupdate_num;
- 	pr_info("Retrieved live update data, liveupdate number: %lld\n",
- 		luo_global.liveupdate_num);
-@@ -131,7 +136,7 @@ static int __init luo_early_startup(void)
- 	err = 0;
- 
- out_free_ser:
--	kho_restore_free(luo_ser);
-+	kho_restore_free(fhdr);
- 	return err;
- }
- 
-@@ -153,16 +158,18 @@ early_initcall(liveupdate_early_init);
- /* Called during boot to create outgoing LUO state */
- static int __init luo_state_setup(void)
- {
-+	DECLARE_KHO_SER_HDR(luo_ser, *fhdr);
- 	struct luo_ser *luo_ser;
- 	int err;
- 
--	luo_ser = kho_alloc_preserve(sizeof(*luo_ser));
--	if (IS_ERR(luo_ser)) {
-+	fhdr = kho_alloc_preserve(kho_ser_size(luo_ser));
-+	if (IS_ERR(fhdr)) {
- 		pr_err("failed to allocate/preserve LUO state memory\n");
--		return PTR_ERR(luo_ser);
-+		return PTR_ERR(fhdr);
- 	}
-+	kho_ser_init(fhdr, luo_ser);
- 
--	strscpy(luo_ser->compatible, LUO_ABI_COMPATIBLE, sizeof(luo_ser->compatible));
-+	luo_ser = kho_ser_payload(fhdr, luo_ser);
- 	luo_ser->liveupdate_num = luo_global.liveupdate_num + 1;
- 
- 	luo_session_setup_outgoing(&luo_ser->sessions_pa);
-@@ -171,16 +178,16 @@ static int __init luo_state_setup(void)
- 	if (err)
- 		goto exit_free_luo_ser;
- 
--	err = kho_add_subtree(LUO_KHO_ENTRY_NAME, luo_ser, sizeof(*luo_ser));
-+	err = kho_add_subtree(LUO_KHO_ENTRY_NAME, fhdr, fhdr->size);
- 	if (err)
- 		goto exit_free_luo_ser;
- 
--	luo_global.luo_ser_out = luo_ser;
-+	luo_global.luo_ser_out = fhdr;
- 
- 	return 0;
- 
- exit_free_luo_ser:
--	kho_unpreserve_free(luo_ser);
-+	kho_unpreserve_free(fhdr);
- 	pr_err("failed to prepare LUO state: %d\n", err);
- 
- 	return err;
--- 
-2.56.0.506.g506a7eabc5-goog
+> > #define KVM_MIGRATE_SETUP		1 (Migrates the immutable state)
+> > #define KVM_MIGRATE_ITERATION		2 (Start a new pre-copy round)
+> > #define KVM_MIGRATE_ITERATION_FINAL	3 (New, last pre-copy round before pause)
+> > #define KVM_MIGRATE_PAUSE		4 (New, split from old STOP_AND_COPY)
+> > #define KVM_MIGRATE_MUTABLE_STATE	5 (New, split from old STOP_AND_COPY)
+> > #define KVM_MIGRATE_START_DESTINATION	6 (New, split from old STOP_AND_COPY)
+> > #define KVM_MIGRATE_START_POSTCOPY	7 (New, could return -EOPNOTSUPP for now?)
+> > #define KVM_MIGRATE_ABORT		8
+> > #define KVM_MIGRATE_END			9
+> > 
+> > For the above PAUSE is four the source only. START_DESTINATION is for both
+> > source and destination as source exports a start token for the destination.
+> > START_POSTCOPY is not implemented but would be destination only when
+> > implemented. ABORT is allowed at any point.
+> > 
+> > Any other subcommands needed at this point?
+> 
+> Not absolutely certain, but it looks like this might be complete.
 
+OK thanks for checking. Might make sense to allocate a range of numbers
+for each of the live migration phases.
+
+And instead of the flags, we could add a range also for vendor specific
+subcommands if/when needed.
+
+Sounds like the subcommands should be u64 from the start.
+ 
+> > Then for handling the results, the following seems to simplify things a bit:
+> > 
+> > - Results are copied back only on success, vendor error is returned as is
+> > 
+> > - Import is all or nothing, vendor code resumes on interruptions
+> > 
+> > - For memory transfer, a GFN can only be transferred once per round,
+> >   duplicate import attempt returns -EINVAL
+> 
+> Hm, does the platform independent code need to worry about this?
+
+At least so far we've had the vendor code manage to handle the busy
+interruptions for TDX no problem so either success or error can be
+returned.
+
+For the duplicate GFNs, the TDX module will produce an error and Peter
+asked about that earlier so seems like a good policy to establish.
