@@ -1,98 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794338832;
-	b=d5TbZWG1TSJbI1AVkVxIyFI7uiczoneJbQDijKjhuLlrpK/PabcvQH64V216HPmaZFKc
-	 eBQQpfhABVez0rxFgntzhdcBJRyTtmBVhKBy96rMC5doYt2ZXsuwwudgC5EgfSswQ8k93
-	 vJzV5CVDqnnKTEV8/z0hfGAnv3HTiXLuR5gepxqCTSMMf56ysPgTWXnOrN5XWmIrsi1na
-	 eyyOzNd0izcnTKw0sqU8TVUKNuE/7yLEtuK53vJD4+VLJMWQV7z9mTgpA8nAk0Ju4HR8e
-	 ostCRmd7To7TX7PMawx9YFHB5qr5jGnytwTIVdgCemCWaeBYw8lr4YtVy0xoPzq9QGg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794338832;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:
-	 References:User-Agent:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ODatzweUCW7o26hwhl5kE9FWoziqlEwZz6tErIYcf3Q=;
-	b=k8M6dz08z013fZ7xjtqK07Ro7hbIjyW34+xRvrQyT860rT48HHr9+7B6RZR6qFM+iY61
-	 31jEcQd/8eM/b1zOSrJPKG5tVQmT/k1fxiHWnD8FxC4SZ1MTdsnuslF4at2i6lMNUEaqV
-	 F3GkIMnyS6OUsEdiWp2uK8XGcYGYuVohBHM5N2ZBg4L2QCehEVIdTAiGMzmBShZulkTMq
-	 I2ILYJ4oBjCYNh6KsZ40X9lhyGhSPw5jl6CaXqJysZNF49UrTyvXRJaf7QGKdQkrWtvN8
-	 VJwoJn9XKuB1WOrvsdBXpB5H879Etjxar6pXFhxwUmm2caTHwx4lQ6XBEdSO4Ys9Tiw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=axFxc57Y;
-	arc=fail smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794339013;
+	b=5MoTGjtnhO3p+wac97saGBOyWFL7Cot1KnW9I4L8llhuYPlz2119Rq9akNmLCr5qu0vG
+	 iFpIEIy991ltLGlSOytDag3XwabsQ1z20ukgcYYpBtueWZFldB12DvFVdon5RKUbf3Uos
+	 dAVjTOuwF13XDzh5hHDAQdrUQsLpRT+mX5HNNt1cmbid+pnuFURIqNY23iBBJMHplasOs
+	 MI1FYj3PBvXZkcG+4CgtR+Hjz9+HL4c9hmoCDea3mef97MPmt0bdNYQshlE/tpB/K7XIY
+	 0fDYHGL6BbiJvXOfg9uUYziQze2nbV/231DwQMGsJ4cO39TjLvgvsmxY0AsuJky2iIQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794339013;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=LGPIl1X2938Koi0DR0rm/YsbCnI/0WOoEQgD2bU/dEM=;
+	b=SdV85ZKHon0zTu7f/KA8d64W146G15kiBjkQA61/PIQQ2OEn4BVYlzb0vRCRLqUW0g+g
+	 ywxWegTzf39UvC3JkvoGKwpbXGftnC0gau7Z7utcHgkMEZ2+p2sNEWCPf0XgBTps8aoDJ
+	 lpNGl4hoiJYg/4rOwnLBhghbYmBFZcKQpmEI7mzWCR4jy+0qIw5/22NsXMeF0igC+nRm4
+	 wzzEi7Vj4WKvaxgjoYnAoMnU6XqMRwRzFR7CZO8GiKPOMFmhef1clqysP5cvm83Xz3PfP
+	 UAqb05WbbtFYMCjQVSc1gGw4nrVQNefZ7PEjy8MmOADR6rusw3KREcAsBd4ko/sRTWg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IBP3n8Ip;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFF8606A323;
-	Tue, 10 Nov 2026 19:27:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECFF8606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFFE606A326
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 19:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=axFxc57Y
-Received: from ratatoskr.pengutronix.de (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
-	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8BD0E201F43;
-	Tue, 10 Nov 2026 20:27:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794338824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ODatzweUCW7o26hwhl5kE9FWoziqlEwZz6tErIYcf3Q=;
-	b=axFxc57YGOskhC2HI2z4xDSvzgCtzuAXY8Knr9qFzsc+a7wrW8VAQx/IsBszC7lven9owS
-	2FfsB78fRdwzNe47fV2HcPaI0iWunzz5ZMUGJc2mr4/dy6FWo8ACnpoMxBeA/6pKKhXJUR
-	QB3+86oOjzX81gKVi130N9q1McuVWktylsu+C1gXCgXIQDDDEPPptbQn6t6JuUcyf5BOE4
-	rKPfn33jjKEZPYEw6ihaClJbFpa9kvhDCCqrhWT9o6YQO3z3EP83rBubBfgXjyfPN2jINo
-	NDFYV+f8O4KudinwcrmPWIyVTtNnn033e6cTBF8QesUYgkucwN+v2YtOz+SXIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794338824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ODatzweUCW7o26hwhl5kE9FWoziqlEwZz6tErIYcf3Q=;
-	b=BuwLSFTXEPbgZoXPmMfP847UiDdg7yfDag5qeRedm6DCAisISY+tAM3ib9uJL4DxX+esnL
-	UcBIrds43eOXIbYN7JjoIqbYjk4eKlPgP+FebysRP8HEGfHmg2ycjF2biXZEnolOYSVAE3
-	/i8EdUzhzUue/XFv6aUoSDDK17iwNsGl/uZT11NPJOfp5zNEDiUmqMXI/QET/lFq8S8ys2
-	J+SFA/7woz09hIdZqXi71fQ4Z1jhE7gvLXvkjy3VT7kwq3QamOH+D5JYCJoFx81dbKRNyX
-	SMoAygzG2W/5j1E0sCrtBN7LYbyUmvkphAhjmRkN8Q3ZMh+cFaiyWcpw8Cis7Q==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794338824; a=rsa-sha256;
-	cv=none;
-	b=VP+KPQ5a7GMBOJPnXBnWZlwAKh3chavc2oaAqwJmKA6Me6u1CuToWDrd0RMFVCdEPgwjDb
-	WYEG6EhF6UgqsEk7/lKNVmEajmnuzmlhyx3UCrzdBqz/P4M3oU2csBLGv1nzZ1ABCfApN+
-	DA5gGKCqUBokK5qbDEaDBpJlQXjBYs+O/OeqXvmjFBqbEa83bTUcI0vZ+kcU5ZZ726Df6m
-	Awfrcmmy/VJT8poW8tYP3PEU1kmUeLJ/JhMLw9EfHh12unTwm2mxUs4nk8YJOf7XZ4xE47
-	krNeN+kXbw6/OEJauq2nn4qBSTWYxRQhLBig3Y1jGv29PGIe0DOepYTHrmGfXA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>,  "David S. Miller" <davem@davemloft.net>,
-  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  Richard Cochran <richardcochran@gmail.com>,  Andrew Lunn
- <andrew+netdev@lunn.ch>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
- <eperezma@redhat.com>,  Jason Wang
- <jasowangio@gmail.com>,  Alexei Starovoitov <ast@kernel.org>,  Daniel
- Borkmann <daniel@iogearbox.net>,  Jesper Dangaard Brouer
- <hawk@kernel.org>,  John Fastabend <john.fastabend@gmail.com>,  Stanislav
- Fomichev <sdf@fomichev.me>,  Eric Dumazet <edumazet@kernel.org>,
-  virtualization@lists.linux.dev,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  bpf@vger.kernel.org,  kvm@vger.kernel.org
-Subject: Re: [PATCH RFC v4 5/6] virtio-net: add XDP rx timestamp metadata
-In-Reply-To: <willemdebruijn.kernel.9c17365c41b3@gmail.com>
-References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-	<20261026-v6-7-topic-virtio-net-ptp-v4-5-008af03cd43b@pengutronix.de>
-	<willemdebruijn.kernel.9c17365c41b3@gmail.com>
-User-Agent: mu4e 1.14.3; emacs 31.1
-Date: Tue, 10 Nov 2026 20:27:04 +0100
-Message-ID: <87pkwczdvb.fsf@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IBP3n8Ip
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4B71F008A4
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 19:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794339012;
+	bh=LGPIl1X2938Koi0DR0rm/YsbCnI/0WOoEQgD2bU/dEM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IBP3n8IpUOKN570ejMS1wTKMubTQbrYborJlAKacYFBb3RkCQJKF9bFu567TqFwF9
+	 WvtZJw2pTmDpuCWySoKkB5DbvxuzMeJVx5bg8W8OWpytajZIn2tS+H5V3Zrb2DyVTJ
+	 jjp791kF7/1g3A427A/5b1LKcyHt0k6XuaJzXrX3UincO5dbMUqAnFUM2BJ60XCEVf
+	 FOTmc7A7MbEPEmin2NVL8+9gIXUUjXR/YkEG3HEptsjeFs58PlmSEL4u0gslwswFiz
+	 tS2A2lEMXpuYfY/zzEImtlFB4WljBKsH2sga/uaVUcXZirubnEfPt7w3VmVXa5gJ/k
+	 ObfJhC1Iau6sA==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c411e139259so127399066b.2
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 11:30:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEv3w1S7n6gnSOSD/1h4bSRbNd1rCZfA0mgCxpIPyUQGwKA7lLeTmYp2fQY4a/alg2TvF8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+MUFbszvx+aSJoMvpH0HxBmeCF0ZUD4skUNx4jBgh+0CxcC35B
+	m1OoTUIrcV4bwTeD/HF011lS6xQxD3wsDP8ziFTuMtq8dIex4539tT6os0eH7cii2W9jPzHLGWW
+	1zug+rJJ+Dgy8MU2QJqMoUBPZMh8UqIM=
+X-Received: by 2002:a17:906:f5a4:b0:c2a:ad55:b3fa with SMTP id
+ a640c23a62f3a-c5066983ae0mr9587466b.7.1794339011019; Tue, 10 Nov 2026
+ 11:30:11 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,99 +59,124 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20261110004037.125692-1-jmattson@google.com> <avNYjOevOv5s2o5k@google.com>
+ <CALMp9eQAxDhnJGrxt8MquPKE2jsUzezn+nbRXV7E_OiATFhsow@mail.gmail.com>
+In-Reply-To: <CALMp9eQAxDhnJGrxt8MquPKE2jsUzezn+nbRXV7E_OiATFhsow@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 10 Nov 2026 11:29:59 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zN6W=95uOEUhzSenbJeBECjWk-HRgX7PSewwJZgfmQLoQ@mail.gmail.com>
+X-Gm-Features: AclHuK_PZKyUeReg_hid0eJ_EJBgYl9g5LBEmic378BD6K5Cm1sdvKm6xOKGm0Q
+Message-ID: <CAO9r8zN6W=95uOEUhzSenbJeBECjWk-HRgX7PSewwJZgfmQLoQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nSVM: Add missing CET VMRUN consistency checks
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	John Allen <john.allen@amd.com>, Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 2026-11-01 at 10:12 -05, Willem de Bruijn <willemdebruijn.kernel@gmail.c=
-om> wrote:
+On Tue, Nov 10, 2026 at 11:18=E2=80=AFAM Jim Mattson <jmattson@google.com> =
+wrote:
+>
+> On Tue, Nov 10, 2026 at 9:56=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Mon, Nov 09, 2026 at 04:40:37PM -0800, Jim Mattson wrote:
+> > > Per the APM, "Canonicalization and Consistency Checks,"
+> > >
+> > >   [t]he following conditions are considered illegal state combination=
+s:
+> > >
+> > >    - CR4.CET=3D1 when CR0.WP=3D0
+> > >    - Any reserved bit set in S_CET
+> > >    - CR4.CET=3D1 and U_CET.SS=3D1 when EFLAGS.VM=3D1
+> > >
+> > > Check these conditions in software before trying to VMRUN vmcb02, so =
+that
+> > > the illegal states result in a #VMEXIT to L1 rather than an exit to
+> > > userspace with KVM_EXIT_FAIL_ENTRY.
+> > >
+> > > Fixes: c5ba49458513 ("KVM: nSVM: Save/load CET Shadow Stack state to/=
+from vmcb12/vmcb02")
+> > > Signed-off-by: Jim Mattson <jmattson@google.com>
+> > > ---
+> > >  arch/x86/kvm/svm/nested.c | 15 +++++++++++++++
+> > >  1 file changed, 15 insertions(+)
+> > >
+> > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > > index af0ef678433d..20ede403b62d 100644
+> > > --- a/arch/x86/kvm/svm/nested.c
+> > > +++ b/arch/x86/kvm/svm/nested.c
+> > > @@ -469,6 +469,21 @@ static bool nested_vmcb_check_save(struct kvm_vc=
+pu *vcpu,
+> > >       if (CC(!__kvm_is_valid_cr4(vcpu, save->cr4)))
+> > >               return false;
+> > >
+> > > +     if (CC((save->cr4 & X86_CR4_CET) && !(save->cr0 & X86_CR0_WP)))
+> > > +             return false;
+> >
+> > Why aren't we checking X86_FEATURE_SHSTK here as well? Do we know if
+> > older CPUs that didn't support CET had the consistency check?
+>
+> CR4.CET is reserved if an AMD CPU doesn't have X86_FEATURE_SHSTK.
+> Hence, older CPUs without CET support cannot fail the consistency
+> check.
 
-> Steffen Trumtrar wrote:
-> > For the skb, the timestamp is read from the header before the XDP
-> > program runs, so XDP_PASS keeps it even if the program changes the
-> > packet. XDP therefore works with rx timestamping enabled.
-> >=20
-> > Add xmo_rx_timestamp so XDP programs can read the timestamp with
-> > bpf_xdp_metadata_rx_timestamp(). It returns -ENODATA if timestamping
-> > is not enabled or the device did not timestamp the packet. Install the
-> > metadata ops also if only VIRTIO_NET_F_RX_TSTAMP is negotiated;
-> > rx_hash returns -ENODATA then.
-> >=20
-> > Like virtnet_xdp_rx_hash(), the callback finds the header relative to
-> > xdp->data, so it has to be called before bpf_xdp_adjust_head().
-> >=20
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > Assisted-by: Claude:claude-opus-5-5
-> > ---
-> >  drivers/net/virtio_net.c | 26 ++++++++++++++++++++++++++
-> >  1 file changed, 26 insertions(+)
-> >=20
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index 23af10c613b48..e79b65653fad7 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -6848,8 +6848,30 @@ static int virtnet_xdp_rx_hash(const struct xdp_=
-md *_ctx, u32 *hash,
-> >  	return 0;
-> >  }
-> >=20=20
-> > +static int virtnet_xdp_rx_timestamp(const struct xdp_md *_ctx, u64 *ti=
-mestamp)
-> > +{
-> > +	const struct xdp_buff *xdp =3D (void *)_ctx;
-> > +	const struct virtio_net_common_hdr *hdr;
-> > +	struct virtnet_info *vi;
-> > +	u64 tstamp;
-> > +
-> > +	vi =3D netdev_priv(xdp->rxq->dev);
-> > +	if (!READ_ONCE(vi->hwts_rx_en))
-> > +		return -ENODATA;
-> > +
-> > +	hdr =3D (const struct virtio_net_common_hdr *)(xdp->data - vi->hdr_le=
-n);
->=20
->     Reading `hdr->tstamp` in place from `xdp->data - vi->hdr_len` violate=
-s the XDP
->     metadata area contract (`Documentation/networking/xdp-rx-metadata.rst=
-`: drivers
->     must copy device-reserved metadata out of `[data_hard_start, data)` b=
-efore
->     presenting the frame to XDP) and breaks standard XDP metadata consume=
-rs:
->     - `hdr->tstamp` sits at `[xdp->data - 8, xdp->data)`. Standard XDP pr=
-ograms=E2=80=94such
->       as `tools/testing/selftests/bpf/progs/xdp_hw_metadata.c`=E2=80=94ca=
-ll
->       `bpf_xdp_adjust_meta(ctx, -(int)sizeof(struct xdp_meta))` first, in=
-itialize
->       fields in `meta` (e.g. `meta->hint_valid =3D 0` at `[xdp->data - 4,=
- xdp->data)`),
->       and only then call `bpf_xdp_metadata_rx_timestamp(ctx, &meta->rx_ti=
-mestamp)`.
->       Initializing `meta` overwrites `hdr->tstamp` (and `hdr->hash_v1_hdr=
-`) before
->       this kfunc runs.
->     - Calling `bpf_xdp_adjust_head()` before reading metadata also shifts=
- `xdp->data`,
->       reading arbitrary bytes at `xdp->data - vi->hdr_len`.
->=20
->     Wrap `struct xdp_buff` in a driver struct on the stack (`container_of=
-`, and in
->     `struct xdp_buff_xsk`'s `cb` verified with `XSK_CHECK_PRIV_TYPE()` fo=
-r AF_XDP,
->     matching `gve`/`igc`/`ice`/`mlx5`) and stash `tstamp` (already extrac=
-ted in
->     `receive_buf()` and `virtnet_receive_xsk_buf()` before XDP runs) and =
-the hash
->     fields before `bpf_prog_run_xdp()`.
+Oh I missed this, thanks.
 
-Agreed, Sashiko complained about the same thing. I'll stash the
-timestamp in a wrapper around xdp_buff before the program runs.
+>
+> > > +
+> > > +     if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
+> > > +         CC(!kvm_is_valid_u_s_cet(vcpu, save->s_cet)))
+> > > +             return false;
 
+I wonder if we should clear the cached s_cet based on
+X86_FEATURE_SHSTK, similar to how we sanitize some cached control
+fields in __nested_copy_vmcb_control_to_cache(). Mostly orthogonal to
+this patch tho.
 
-Steffen
+> > > +
+> > > +     if ((save->cr4 & X86_CR4_CET) && (save->rflags & X86_EFLAGS_VM)=
+) {
+> > > +             u64 u_cet =3D 0;
+> > > +
+> > > +             if (!__kvm_emulate_msr_read(vcpu, MSR_IA32_U_CET, &u_ce=
+t) &&
+> >
+> > If X86_FEATURE_SHSTK is not enumerated by the vCPU, then whether or not
+> > the consistency check is done depends on ignore_msr. If ignore_msr=3D0,
+> > the MSR read will fail and we won't do the consistency check, but if
+> > ignore_msr=3D1 the MSR read will silently return 0, so the consistency
+> > check will be done but will always succeed.
+>
+> If X86_FEATURE_SHSTK is not enumerated by the vCPU, then CR4.CET =3D=3D 0
+> and this entire block is skipped.
 
---=20
-Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+Ack.
+
+> > Instead of this implicit dependency, should we check for
+> > X86_FEATURE_SHSTK explicitly?
+>
+> That seems superfluous.
+
+Given the above, yes.
+
+>
+> > Also, if X86_FEATURE_SHSTK is enumberated by the vCPU, and the MSR read
+> > fails, the consistency check will silently be skipped. But I don't thin=
+k
+> > this can/should happen. Maybe we should WARN in this case.
+>
+> You're right; failure to read the MSR should result in a failed VMRUN,
+> and a warning would help triage the failure.
+>
+> > One last question, in the restore path, the MSR may have not been
+> > restored yet, right? Can the consistency check mistakenly fail in this
+> > case?
+>
+> Not with a legal snapshot. Note that on the restore path, the 'save'
+> area holds L1 state. Hence, RFLAGS.VM must be clear, because VMRUN
+> raises #UD in V8086 mode.
+
+Oh that's subtle, but yes, makes sense. I was going to suggest a
+comment, but I can't find a good place for it :)
