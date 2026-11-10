@@ -1,118 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794328467;
-	b=efKh+/HBbLEdPBEjQ4k5G7JM0r3tFEHSHxNLLyWYtcJWGSJy79BQ2CVZRMOJGrp21XLt
-	 9T9lRAtiw8jHM5oFrUC7rbvKj3G8ge3Bwv49zTJ/51qRD751iZ56iCqS0X7weZLAypqPh
-	 mHlubQTJebM6pzqx7W2zvAkq5gL7iTXeJsRcsVFFN98yf1gZ9MTLKKvkgn8kMmWenrdym
-	 rF0+Fw94GRzljX7ioTFf5xolGha8ZkXLljKgTwGQs/Y1jB3NKWoghaJHyM2EDetH2SZ6N
-	 rU2gzWAsAcNRor+mrWHKl2dfzr0Y1LPlJ2AO/V2qqODfYWPCJ821TGcT1Jnj3aMt31A==
+	t=1794328774;
+	b=OyG7AHxhTNHLVwgYmpa6cT9PI6X8uTRKWk2CdG5tt8jEwoxfmhGUbQH7mL5DoWUEo/2a
+	 2BK8HOc+gY6ob+5N0du5KSht2tH96Il1KH71OYlDI5QmXz5PRNSZaK2Ss9YzWVNtYjIKu
+	 pENotB7fLTIctzsYdUNryclCgM89Efer1LSyXoL86gLiCo/KivGhddPFYiY5KtxbOGG61
+	 fnRXRkVUZ0vDYcd7mwqwIIKPRMz5T1wi1dTA+GMgnB9Xlfhadhw5aDV2+xNROgqTyXYkj
+	 oKQnJVURJjBCB2DJMuYxHhakiqLsiM+vC5hChjND9Eg2NudrL6yL77omdru3E7PtTPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794328467;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794328774;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
-	b=SefXVyDJbpQCli24gtaG9miYUt27DGMW2/1ry0HfrECbBlZshLe8TfQW1gTzCzbO4eTY
-	 rsrSblKMx+fcBgiiwfljAGSYf8kiK2/LdML6Lbfd7yNb6TZQlBKP1faofo2PZNzZ0iStB
-	 GsPaoUj8NRrf/wJsi6GyAlusoyH0/k68khrfEucw2mn+JiEsB+5hQi6lReIy5nSkK1vRM
-	 q1igmG3GAnqUUqb5vqGrWMfnvi02nIElLN8QDjLF/t7ylHufzthi31a8UfCx8tjHNLmCu
-	 WEuj0WG7NutS6x/Qtog7rwMgM+sp49EscdEcZ5PpboHOQKZKvF9XpuYtago6aZOmGcA==
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=KprtAoIZUPQy03e7SCEXrO4BhVdW6Lml6VdK8wkVG2w=;
+	b=f19tELDtOBigGAS0KFPij/0gaiIRpLlkP61rmKZA2l+qA+3yC/LWeTKzofTH7AMIaRFx
+	 JlepgpuBaTdSKBx5SMnX34BWDbzW5dun9ncjMuWJysqhy6qEnsRUO3t2hzsvK7Xkxn6jJ
+	 R4bouBo5n86YsqRYrPrKj+G/H5VtM0ib+eBWoe/oPOaz02HsjkK1tBNk7FAJqVWujaFZd
+	 5kIL82aR+hXNjF+ZpwmAd1jM6vhodB8pqbMP8A1V/qpL6aSelPuBCBXg7nOCnUkc/nGPd
+	 UaL8D6xZTtosrBfZjlNiReUUVb/tnDi14qA78e/10NyxnF+wUKRugOOo5l+s5wXRemQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5;
-	arc=none smtp.remote-ip=209.85.222.41
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Af3onASr;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E847606A8A5
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 16:34:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E847606A8A5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B68660A263A
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 16:39:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B68660A263A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-998d151f441so573438241.2
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 08:34:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Af3onASr
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3b0b3438540so1424821a91.0
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 08:39:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794328466; x=1794933266; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+        d=google.com; s=20260707; t=1794328774; x=1794933574; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
-        b=fSy8tcC5IqRPJ8T9YRj22z1qFAkPgpRi2kcT3apWfgMEplaE1W0onrcdvaL/BL/ywE
-         rOSS0ydfaat3r8gteyf5+yftpLD+2I78ebj6isd5tSmAO9uXKA6drfZE2fPbEDLgB8tv
-         4nj5eU6BbFuMME+jx7QiJhMbdOwnH56XkB3/HT/fr1ZGQooLEtuVaD6KLZUnJ4xbTN5H
-         VkTk3pY/yOZ/w9fPvBKK5wNUDrb1f6zcpKrwD0C4hM87Oys5nnQ81EVXkI7GaiyDb9rK
-         5iOj/aarsL/qQFbE1WK3Ho0Kl6BxOfVqScOWNlF4Xqlcyi87wAdVUnIdMg2NDVulzXnv
-         hkjA==
+        bh=KprtAoIZUPQy03e7SCEXrO4BhVdW6Lml6VdK8wkVG2w=;
+        b=Af3onASrXSp7ZkNpgiwe/Q2+oXpI2XjcCAiLbtB+390MxJDRDjSFaW1jd9q05Yg8tN
+         JlwAwdyX7S+G/Tn5f64UiFDiRZlle3R5xR0Jw9PSv3k3c3Mh6pWQZ1CGzhvf+hw38y5X
+         dU8RoU0RUVyNKFjWhU9rF0Vf1Z6e73VWXTGSSlYsDn9yMfJsKqoBa9utqC0AN7pUvUvn
+         iHzNcnQeTol0BMW07/jYQ/6NveZ+1XR51qNPvL0SG7sBtMz0KYYFVBgzvWx1EUDw7Jym
+         huQ7iDW1WlGdR43JlVdcrlnpjIjyp5m2PtmwMdYy5JhTpS5krOGamd/BQhmEp5dJQ1Oi
+         hSbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794328466; x=1794933266;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1794328774; x=1794933574;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
-        b=E9b0Yo9/ieb30iODBquY7WA3ws8vBnoYgMVAX0AgzPhypU2kHa9RzlxUcFnl+Xb8Ct
-         4u5hwixsuAm2mI4vqXtdjlJtYGDrMYLsvDf+3z6lakQhuEIx5CZQQhLPJgSlikBWolPD
-         5un8tRbZACtOt3Fg/4CRLtvSX3vWc/vNwvA/xjGDy482R6QeX3/Id9FL+I7t1sLfnDBG
-         lJwX76oPW0KL49V04jN9INceNg7I5wzbB5wHEVVmmB7XArAwn3BemmcZqoO8XL9s6lhc
-         6iUD7vkcB6C/fMakOpHBuuQE0wijTFES7BvhWSDVi9todNkoeDTiNg9D7Dd98Vpn+ru/
-         geUQ==
-X-Forwarded-Encrypted: i=1; AL+hErHSm5N7/Dh32/UcR67POqG8PXxC50Q0qd3I4uAam4HJqhkAFmGCHNdjo+O61QrgY8/3tJo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+yZVvgoJvzkgnxG991X4lmwvwUc/JKkwopccbQiN/qhzenRB2z
-	mcXK6VzVA7EX7Icd3Z5RCq7Ose8uBUzwVgUmoATvUoAaiYKrkNC1vxcrHmbn6Q==
-X-Gm-Gg: AYBFou1QiM+Eh4obJRqirJ/+n+LdrLnQqzMKL/G8xkzEAPd0sLPiMuj/l8MwJjrNLQN
-	msuxBybdJnZkvhxZ7+xv0IhRTlp2HTSi6dbKGZCvlQbkloL1lgrw6r49n/V4Kq6bpTzlmcBUm/0
-	gC9+VKCsWZptyec8LvA3R4PUOGohT6tYS0CqXfenvKs0dLcz98xNKX9IHpQxxSO5mfbjB5sgihn
-	j1gDM9Onh45GDR2g4YYCLzVjz339vs/elBTddEzKBmikSyknXSEXHRKc8rnx9DXw9rnb++MGXJ+
-	fzMW2iC2eQLn9hUjR4l2XNNLYxcfOtS17/yzqTLkkibVWs/CDJMghNjgrNrFsGeDzUTExE6q0L2
-	rZaZSJ0rpWq3xFG+cnBhrWjMlc3gi3PclsmokiGatL4O2fdUEzFG+g8ILhreZXs9ydGZNhZTHsN
-	qBThvCJ2oeLhxP2nQZ1mhx5xu5enEtyeTUtcd3ScyH5rBrkXiT2+dDHVF8fGrMlBhY8EbDMmkI0
-	xwQlZ9HdcutI6Q2q407TYI7v9Sh4jM/9MKLcq2+3Ann/pMFMs2yTdiy34Gdh83i7PZrxuiaTnv7
-	9c0fPNcAICMMoTQUn0ieaa0wBBmOamhyraQ8EVniqCKDbPqXimQf+/d7KpKw2ORekeotrhZo7Nn
-	XaNmwOxhFChk1xSux0A3ThhKn0JqF3ji+PMalg0G/oPeUN7uPcRxQeiaNk6XpggQY7gFBZ1X/ax
-	dR6+r+8MqRTSbDaDvE
-X-Received: by 2002:a05:6102:c54:b0:7b5:7cd5:2a1b with SMTP id ada2fe7eead31-7d301b9d79fmr866580137.10.1794328466169;
-        Tue, 10 Nov 2026 08:34:26 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c200838f0sm2147394241.9.2026.11.10.08.34.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 08:34:25 -0800 (PST)
-Date: Tue, 10 Nov 2026 11:34:25 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- kuba@kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Eric Dumazet <edumazet@kernel.org>, 
- virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, 
- kvm@vger.kernel.org, 
- namangulati@google.com
-Message-ID: <willemdebruijn.kernel.4096b48e9e59@gmail.com>
-In-Reply-To: <874ido29iy.fsf@pengutronix.de>
-References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
- <willemdebruijn.kernel.1d6388f036c46@gmail.com>
- <874ido29iy.fsf@pengutronix.de>
-Subject: Re: [PATCH RFC v4 0/6] virtio-net: add receive timestamp support
+        bh=KprtAoIZUPQy03e7SCEXrO4BhVdW6Lml6VdK8wkVG2w=;
+        b=G2rIQ307r/3VDzINj8oVPL75QU4mh8V4F1FvS9MZM6V+SSEU1BjkjzHXiXSW6q4eiv
+         jVyV4Or7ANSjUobtUiCc+GoykOS24f8TuKxTzib0BuUOQhQArLpxJlP244SPVvaFE/fJ
+         XWprNid0z+78V/5Rhs9U77D14o7RdOQmbRyPWETkwNw/xrI1DmW4qtvYBqQAqZRoT5Ix
+         TfL/ioqsDc+gLawhkiUDDQzQDkTpxqhG2wQHCx9yRiJ8V6rBa0YzjDhC2S3JPn2OYeZN
+         a2463naOIFtthCykyL9W7dxD0H48xpL/xN60PSseMAgEqSwOLGbbokd89l1c4TUHZpO5
+         whiA==
+X-Forwarded-Encrypted: i=1; AL+hErGgRzWCl1DcBoD0nB46W2lYv5Y84nYAyGEDVJ92c/1XtUx2SRpuhU7hBtOt1KMQiVCf6qc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/12+Ck5sfkcRaWsMGLzvDCUSJZPtpyT+CgLW9eMAo7cgzAaDUM
+	5F8bTt7W8EnBumkWeE4tZxSLoW5l9wUZOILtI/BkfQTfDBh40ha7lKGRe/hMyfB8TA==
+X-Gm-Gg: AYBFou0Va9jeke0H5LZx34Q9zwhxtSbICW2jaaD8T4VDlIXs5lth64rTHEbRE0Ry3jJ
+	0xAITNWDHwylsP5And9R0OZeHY2Ie/0rXI9kzYwX0eivCKczxme7GmJENTe+l1leiiwvaDvh62t
+	jxtRpP8W20EPc+iDJrXr+Mb3MqeVyOSj8M1JFUqcdnW1OAeQ0FgU249DCPpjh39s0wp9uSWSr1S
+	q11TypRxOgnNcLoJVh1yIKboFkx1Ww0jaoz0eR+YWVvYsa9h78xtA8Pa8pp3iFe3kY9Mu1zYKrD
+	nW2z35qc9Ktc2pygDjIlGajDI0TPeWH8l4UbOcAh2cSjYBX1u3mEcz16Lfuur2Wci6QJ+ftqbXs
+	cKJkzwWKbBWwnYi5yCfyevoOrE2Gt7uUMcUMYNOHXLLVn593ZyVZqLbdHUkmgWGQuJkgsCtrnkv
+	DFJOfN00b7oyn3smiPR3aybYpa2aWu3U4OUplyP93Znc0P1HUBqE+T4e0albe9Ce1d6/uauVz1s
+	FewnpDQgcwjnFCM9nOC4qncEJoQDbTwiOeVkNOxNc1oXhvshDuXi+W9zp+fER70u3o3IVxAmGbF
+	Al8bvKeAO8r9It9HvRa9v7GwQ0nuCUJmMMlSVZeiognNITBre8CKDwGMb9Q+r+su
+X-Received: by 2002:a17:90a:d444:b0:3ac:9d83:8861 with SMTP id 98e67ed59e1d1-3b166e3c924mr3152630a91.67.1794328773194;
+        Tue, 10 Nov 2026 08:39:33 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b168a8de09sm2418499a91.0.2026.11.10.08.39.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 08:39:31 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -121,92 +87,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 16:39:31 +0000
+Message-Id: <DMROGPTP93G4.13PA42UFKZJNJ@google.com>
+Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
+ <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
+ <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 15/19] PCI: liveupdate: Add feature header to struct
+ pci_ser
+From: "David Matlack" <dmatlack@google.com>
+To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
+ <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
+ Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
+ <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
+ <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
+ <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
+X-Mailer: aerc 0.21.0
+References: <20261110050202.529473-1-tarunsahu@google.com>
+ <20261110050202.529473-16-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-16-tarunsahu@google.com>
 
-Steffen Trumtrar wrote:
-> 
-> Hi Willem,
-> 
-> On 2026-11-01 at 09:57 -05, Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
-> 
-> > Steffen Trumtrar wrote:
-> > > This series picks up Willem de Bruijn's work on a virtio-net receive
-> > > timestamp. The device puts the time of arrival (TAI, ns) into the
-> > > virtio-net header so the guest can use it for PTP and RTT estimation
-> > > without taking the timestamp itself after the host-to-guest latency.
-> > > 
-> > > The series is an RFC. I am mostly interested in feedback on the
-> > > approach and on the wire format:
-> > 
-> > At a high level +1 from me.
-> 
-> Thanks!
-> 
-> > 
-> > Some comments inline.
-> > > 
-> > >  - The timestamp is a new field at the end of virtio_net_common_hdr
-> > >    after outer_nh_offset and ipsec, offset 32 (see virtio spec),
-> > >    negotiated with VIRTIO_NET_F_RX_TSTAMP (bit 49). Header size now 40
-> > >    bytes.
-> > >    Willem noted on v3 that virtio_net_common_hdr was not meant to be
-> > >    extended this way; I kept it as the simplest approach, but a
-> > >    separate struct for the timestamp header is an option.
-> > >  - Timestamping is enabled at runtime with SIOCSHWTSTAMP; all
-> > >    supported rx filters behave the same for now.
-> > >  - XDP programs can read the timestamp with
-> > >    bpf_xdp_metadata_rx_timestamp().
-> > >  - vhost-net passes the feature through; the timestamp itself is
-> > >    written by tun. The tun patch is only meant as a reference
-> > >    implementation for the device side.
-> > >  - The timestamp is in TAI.
-> > 
-> > Is this a requirement? It is common for PHCs to be synced to TAI,
-> > but not 100% the case. Does virtio need to specify this.
-> >
-> 
-> No, I don't think it has to be TAI. TAI is only what the tun reference
-> implementation does (ktime_get_clocktai_ns()). What the guest really
-> needs is to know which clock the timestamp comes from, so it can compare
-> it with something.
-> 
-> One idea for the spec change: don't fix the time base in virtio-net at
-> all, only say the timestamp is in nanoseconds of some device clock, and
-> let the device tell the driver which clock that is. virtio_rtc already
-> has clock ids with a type (UTC, TAI, monotonic, ...), and the Linux
-> driver registers a PHC for each of them (with VIRTIO_RTC_PTP).
-> virtio-net could carry the virtio_rtc clock id in its config space, and
-> the driver reports the index of that PHC in get_ts_info. That would also
-> fix the phc_index == -1 problem you pointed out in 2/6.
-> 
-> What I don't like about it: virtio-net then depends on a second device
-> being there, and with more than one virtio_rtc device the clock id alone
-> is not enough to find the right one. Without virtio_rtc the driver would
-> not offer hardware timestamps at all.
-> 
-> The alternative is a PHC in virtio-net itself (gettime over the control
-> vq), which is a lot more spec for one timestamp field.
-> 
-> Do you think the virtio_rtc way is reasonable, or is there something
-> simpler I'm missing?
+On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
+> PCI_SER_REQUIRED_FLAGS_SUPPORTED. Remove dev_ser_size and
+> PCI_DEV_SER_MIN_SIZE so restoration derives the struct pci_dev_ser stride
+> from the KHO block header entry_size. Drop __packed from struct pci_ser
 
-I don't have an obvious answer. This needs consensus.
+Taking the stride from the block header is good, but dropping
+PCI_DEV_SER_MIN_SIZE removes the only check that incoming entries are
+large enough to hold the fields this kernel reads.
+kho_block_set_restore() only rejects an entry_size of 0, so
+pci_flb_retrieve() will now read past the end of entries smaller than
+offsetofend(struct pci_dev_ser, refcount) instead of panicking. Please
+keep an equivalent check against the incoming entry size.
 
-Hardcoding clock base to TAI is definitely easiest.
+> from the KHO block header entry_size. Drop __packed from struct pci_ser
+> and struct pci_dev_ser, adding an explicit u32 reserved field to struct
+> pci_ser for 8-byte alignment, and bump PCI_LUO_FLB_COMPATIBLE from pci to
 
-Outside of virtio, the relationship between PHY RX timestamps and PHC
-is well understood. It would make some sense for virtio to follow that
-model.
+Please move this to patch 1, which drops __packed from the other ABI
+structs.
 
-But indeed when having multiple NICs and multiple PHCs, how to map them
-I think is an unresolved issue in general? Of course, aslo moot if they
-are all synced, which I think may be an implicit assumption especially
-in the world of spec compliant PTP.
+> pci_ser for 8-byte alignment, and bump PCI_LUO_FLB_COMPATIBLE from pci to
+> pci-v2.
 
-And, if virtualizing anyway, it is feasible to do the clock conversion
-in the software device, not having to bother with all this complexity
-inside the VM. Though maybe not for direct HW virtio-net queues.
+The PCI Live Update ABI hasn't been in a release yet, so maybe we don't
+need a version bump?
 
+[...]
+
+> - *  * The size of each struct pci_dev_ser is recorded in
+> - *    ``pci_ser.dev_ser_size`` and is never smaller than
+> - *    ``PCI_DEV_SER_MIN_SIZE``. The next kernel ignores any fields beyon=
+d the
+> - *    ones it knows about, and must handle entries that are smaller than=
+ its
+> - *    own struct pci_dev_ser.
+> + * Preserved devices are serialized as struct pci_dev_ser entries stored=
+ in
+> + * a KHO block set. The block header records the entry size, allowing th=
+e
+> + * next kernel to step through entries using the source kernel's stride
+> + * even if fields are added in later versions.
+
+Please keep the rules for extending struct pci_dev_ser. I'd say
+something like: fields appended to struct pci_dev_ser must be gated by
+a feature in struct pci_ser's header, entries are never smaller than
+PCI_DEV_SER_MIN_SIZE, and the next kernel must not read fields beyond
+the incoming entry size.
+
+[...]
+
+>  struct pci_flb_outgoing {
+> -	struct pci_ser *ser;
+> +	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
+>  	struct kho_block_set block_set;
+>  };
+
+I'd keep the ser pointer here (and in struct pci_flb_incoming) and add
+the header pointer alongside it. The header is only needed to free the
+allocation and for args->data, and keeping ser avoids sprinkling
+kho_ser_payload(outgoing->fhdr, pci_ser)-> throughout the file.
+
+Also, please call it header rather than fhdr, here and throughout the
+series. fhdr isn't obvious to someone reading this code for the first
+time, whereas header is very obvious and clear.
+
+[...]
+
+> + * @reserved: Reserved for alignment.
+
+Please document that this must be zero, so it can be used by a future
+feature.
