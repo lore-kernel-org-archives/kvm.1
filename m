@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794286944;
-	b=HKOZ0RWQjkSMm5Dbb2ISvMkndjs3On13yHRpkWj1z/oc59z3SaStuRa7qOX2wsQGhIZI
-	 TwMLU+ioTLnIkkLVDQSLIpOoaXEM2geIs0DKsThU8MHvVw6MuABSN2tjOMJSVNFMJqAkf
-	 f77VB4s9u6C+Fd7TzruJfSegdXyNjJbFoOsEifervMTJRFYnJ7ODyp+akOs6/czxYRv90
-	 rWL6gm08mshbyaJscafQo4WMVS92nMkF7HkHo5cvMnomoMk7TYwAg679uh2luEOvqtH1n
-	 lBjiil3ExWDGFJp+it1ZOFUrPtpG8402drYx9byNKBwzi4q1PqNjsjP0EQsstUH+ksg==
+	t=1794286941;
+	b=VDjKJUcCpeixmUDPohmamEvIdpdqVGTUYSJdQF6r/+CdMd1PqGoNrBTNSNXKW5khzATc
+	 gdbsvlVDepY2Ia6RcRBPvB7soUL1M8xaKahiCc41yorZ3gKHMlPcRqiQwZt4Gu7CrrNmq
+	 1n8HvSmeqTn7bkr5f17OD7+t1g1WX64QUhhns8EJyBBg7K3QP7W5tJ+4VQgef56KzBi3v
+	 ZXkr4JrIARCXvJKf72w2ZDwFh7PLdbwl1tu7gnQQV3BePiTYCzRJxtz5N4DyEhHi4mZPI
+	 rrxYs1Ploypla21xjpQ7izaJUo++hhVJXhG0ymLFRwBOjGeVYk2a7LAvkaA0xAoOfGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794286944;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794286941;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=vA8W8np9fXaskA2k2ROSy6+asR0jHvCl6wOsZYrc5lM=;
-	b=pOd09H1Em/nc44Fu83F+r9x23LAu7E6DAmCy1WyEbVHr8xmGbEx40axlKXFK7uoRVOjU
-	 i0d5VdnMjmemBs2wm1OvL4+pF+nlnaYgN+EWR6WWWQknrGtsQnIlkzTICRBzm+6P6eg1j
-	 UP6ip+VDmHbhlEAgALyLtjS1Qgs+I+hN55qiet+JvkLrHR6HABpZ50Z72GLZ/ZnCF6pnf
-	 lZoP658zVvQjKKyx8AmjZ1NLn1gOdySEybqWmO1cEbZxB6Bih9oreVFNkVPkHSCcpnl4I
-	 xOW+1UBJyecK/j2EnnSuEP4l08sjkn+K6dkUECsDzNTek6l9/c0GVrZZliflKIQ/3nQ==
+	bh=hqbeun0C1/XgWjYnTEG1QqOg75mMAInimMPRhrMj/I8=;
+	b=Y/v8mvuPnek+RdnATTRXzRIVeGoVTtmI3CIP4y96AI+R+IkUYdjRt4PDr0a3EyWrenN2
+	 /kjUZ+nuyoesyyUHOYT7w7P/QBTpX2k56IZdFoYwWi6LZZQImHirV0FRDBsCcSKBPHKGb
+	 ayFJWjzBtwb5LQHnd3tkA1mFK/RHtdvjZQXnM0EKLrC/L21Zdv/6nvZ5Sa90s8fw3OTe9
+	 ojTnUyxEQM5fXqTsRrcC65xY2rxnRuEPWA+gGXIkaG8Svme35ZEUDYTeKE1xRgv9Cgc+J
+	 Ryy9I9ny0/beZZRj6oxwMW0oth9kzI52YoJbDRGn70V0YEVB6SEQPMryh5dqAOpILGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=J11IQvut;
-	arc=none smtp.remote-ip=209.85.208.70
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dkXkrqwE;
+	arc=none smtp.remote-ip=209.85.218.70
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7958606D688
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7958606D688
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD7C60A5BC6
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2AD7C60A5BC6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=J11IQvut
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a615ab0c06so1441655a12.2
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dkXkrqwE
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c4048584447so134549966b.1
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286942; x=1794891742; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794286940; x=1794891740; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vA8W8np9fXaskA2k2ROSy6+asR0jHvCl6wOsZYrc5lM=;
-        b=J11IQvutznv7alHSYW+ileIdcaJle7tPBTMQ3BmvDs25hAAFgzAsxSJz0rnNQWr0E2
-         dmX5W3yk11lDE4EqaJ8vZcNx+UOxFFOEoMTK/1JaGySqUbetFhOwUADDs0uDcewIxLor
-         gwZRQ/HbWyM/6lMltejznhpQEEv7cKm3Kjy0eVbsvSCNmskTwbQpckrb5wTsTzluxDDz
-         Isu1m49ruIhvMecyF3xVIUKz/upK6MWZR+UaT3YQEiedou74ngO+Aa4wEZB+l7f6jCDB
-         9oEqAU+TwMLKayXJJeB6uz6lfyeJpROUNNZBxe+pb4KKHfIY9+FX8ZEj7getkREkF4/h
-         SnwQ==
+        bh=hqbeun0C1/XgWjYnTEG1QqOg75mMAInimMPRhrMj/I8=;
+        b=dkXkrqwEGNEDtfAJrBWu9i+56LtaxxhGwkb9g1/jwQEf/fxYtpkn3fbxvgYGkrkwkU
+         CeYwrcybh/KpQIpSNgBX2H625aG+ztkGYiGlOqvFI28+Fco7oggacZmuZkGx0VsmKzm8
+         ylDjZJFS8JvZxO7Uz54jYPuKANhX+QU/gO3NWiHYij8wLM+zGJJAqeXI38mS4R/QLdaf
+         EjShecLrks8cWfdhup4973WJG2mvGpBHycAJWz0WM8YOLjAu00ttLKfxhznSrGUO66lr
+         jLktiZ7Y9LuUURVD9vtr7HFu0MjZYiXjsJl1EyLcKIyKd0zET84ZHuXK9ndP9wBwxHn8
+         hyyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286942; x=1794891742;
+        d=1e100.net; s=20260707; t=1794286940; x=1794891740;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vA8W8np9fXaskA2k2ROSy6+asR0jHvCl6wOsZYrc5lM=;
-        b=aXT6yTk0DOUcQP38gOdKTlj0a4qVqBbqq0PHfu65690m2kVHutN6GhvSzm03hMTdO3
-         xhibKFrIv3VtVHGMmCDjmnRV4iXLAsOyPOm0AWeQHQfepDNQDlaJG6dWZGZ5H08MwKZv
-         FjM0X3boDs339RJ44wgmrpuihFf/2RWYnC0CK6oPLWWLpGMHMybe5B5ACTxLnkdyEr0w
-         /6NYkPVSjHNGQ33AENxtGxIIi0EftRPTZPamqsotZDyezO7kobA8ehvNuPcOIuCK1DGe
-         C39qdGUbQkPPePL+BKx3cFDYb9JGV2ffD9I/9OO6PnWNow5AZ9sKZmENGeRGKXn1Hxpo
-         eHdg==
-X-Forwarded-Encrypted: i=1; AL+hErHEHEK2/wTi8MBmede9M1VAAgfFfE5Mo5T5kVOrBGGqs00PaM/4N9/nWmILNulgj3EU3Pk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8heqrsO/Bv7OIUYkwaOgeCg0obhqwCnU9AX3CBWfu3nU4NLY/b
-	9T3vV4vyFd99UL12adhKm8Oh77s8nd1CcJNgHOqw9EzQCwQYSvKfga/GpM7ITZwmDhUjBylkjZj
-	KiKwog4DlNhz0833LxQ==
-X-Received: from edty17.prod.google.com ([2002:aa7:ccd1:0:b0:6b5:5ee4:9030])
+        bh=hqbeun0C1/XgWjYnTEG1QqOg75mMAInimMPRhrMj/I8=;
+        b=SbNNJZj0bUm4kxFRM7/oXb+oakT9FETa9hkvyHy3SrPRaGpHKAxEt4BzuA/Yh0CGWK
+         7Wn40cXu7WcPoi4N5JBgQlHvFF7B5wJIqp1VxpYq0bT1ONsHg88+5Su/rlDA/RqK1+vL
+         357bB3Ygdqphv8c0HKw1Sj08PT8NZNFRuxHUIUCIoJZCYa3yYSWrEe0LWIqkSDI0u4lv
+         68/ezTnaCq9EKa6u+i8cqGMoELw+dv2Gn3NP5GCm/ZFZP/AAYYMOFtN6OrLINCrCzUK4
+         NIB357r6+fJGH6IYuJ2CZHtrBtpcXI4u+WBpYS30rx/PndXAB0tmLb70mBYnriLBUOa6
+         EcQw==
+X-Forwarded-Encrypted: i=1; AL+hErF3kx42Fcv35waBhvtYkPuX5SafCiEld3aJfRIc918Pct+r2k9IbBguYiqhIU33x296mZg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+9njH6UujtXggCu3+MjznAvD/8fh8QQpd0urQGRZhiXwxJNKs1
+	0Y3hpJUl63zutWryLkil/e442wJmnYoc+Jrg0U+5QlDFxfSWyXyKTQd4GG09w3o1NXZtxPvq7a1
+	9VmpTQcPaUcHyNjKbKw==
+X-Received: from ejqs13.prod.google.com ([2002:a17:906:454d:b0:c3f:2fd1:c5c])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:5516:b0:6b4:87b8:1348 with SMTP id 4fb4d7f45d1cf-6b756ae845cmr1164654a12.27.1794286941928;
- Mon, 09 Nov 2026 21:02:21 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:01:58 +0000
+ 2002:a17:907:6d0d:b0:c41:e0c0:e6b7 with SMTP id a640c23a62f3a-c504951cddfmr104842866b.12.1794286939400;
+ Mon, 09 Nov 2026 21:02:19 -0800 (PST)
+Date: Tue, 10 Nov 2026 05:01:56 +0000
 In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-16-tarunsahu@google.com>
-Subject: [PATCH v4 15/19] PCI: liveupdate: Add feature header to struct pci_ser
+Message-ID: <20261110050202.529473-14-tarunsahu@google.com>
+Subject: [PATCH v4 13/19] liveupdate: Add feature header to struct luo_flb_header_ser
 From: Tarun Sahu <tarunsahu@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
 	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
@@ -99,341 +99,147 @@ Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-struct pci_ser currently defines its own PCI-specific required_flags and
-optional_flags bitmasks (capped at 64 bits without recorded structure
-size) and stores dev_ser_size in the parent structure even though KHO
-block headers now record entry_size directly. In addition, struct
-pci_ser and struct pci_dev_ser still carry __packed despite having
-naturally aligned fields on 64-bit architectures.
+Precede struct luo_flb_header_ser with struct kho_ser_hdr via
+DECLARE_KHO_SER so future File-Lifecycle-Bound (FLB) header features can
+append fields to struct luo_flb_header_ser without breaking compatibility
+between adjacent kernels.
 
-Precede struct pci_ser with struct kho_ser_hdr via DECLARE_KHO_SER,
-removing required_flags, optional_flags, and
-PCI_SER_REQUIRED_FLAGS_SUPPORTED. Remove dev_ser_size and
-PCI_DEV_SER_MIN_SIZE so restoration derives the struct pci_dev_ser stride
-from the KHO block header entry_size. Drop __packed from struct pci_ser
-and struct pci_dev_ser, adding an explicit u32 reserved field to struct
-pci_ser for 8-byte alignment, and bump PCI_LUO_FLB_COMPATIBLE from pci to
-pci-v2.
+Initialize the header in luo_flb_setup_outgoing() and place the outgoing
+entry array immediately after kho_ser_size(luo_flb_header_ser). On the
+incoming path in luo_flb_setup_incoming(), validate the feature header
+with kho_ser_validate() and locate the incoming entry array at
+fhdr->size so entries remain properly aligned even if the source kernel
+serialized a different header layout.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- drivers/pci/liveupdate.c    | 74 +++++++++++++++++--------------------
- include/linux/kho/abi/pci.h | 63 +++++++++++--------------------
- 2 files changed, 55 insertions(+), 82 deletions(-)
+ include/linux/kho/abi/luo.h      |  6 ++----
+ kernel/liveupdate/luo_core.c     |  4 +---
+ kernel/liveupdate/luo_flb.c      | 36 +++++++++++++++++++++-----------
+ kernel/liveupdate/luo_internal.h |  2 +-
+ 4 files changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index 6f92d4ddca2b..0bda94f4a7e4 100644
---- a/drivers/pci/liveupdate.c
-+++ b/drivers/pci/liveupdate.c
-@@ -233,7 +233,7 @@ static struct pci_liveupdate_global pci_liveupdate = {
- 
- /**
-  * struct pci_flb_outgoing - Outgoing PCI FLB object
-- * @ser: Pointer to the preserved struct pci_ser.
-+ * @fhdr: Pointer to the serialization feature header.
-  * @block_set: The KHO block set holding the outgoing devices.
+diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+index 38b4658183a2..4913707ba0d3 100644
+--- a/include/linux/kho/abi/luo.h
++++ b/include/linux/kho/abi/luo.h
+@@ -157,16 +157,14 @@ DECLARE_KHO_SER(luo_session_ser, 72, 0, 0);
+  * This structure is located at the physical address specified by the
+  * flbs_pa in luo_ser.
   *
-  * This structure holds the runtime state for the outgoing PCI Live Update
-@@ -241,14 +241,14 @@ static struct pci_liveupdate_global pci_liveupdate = {
-  * the serialized entries.
+- * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
++ * Preceded by &struct kho_ser_hdr.
   */
- struct pci_flb_outgoing {
--	struct pci_ser *ser;
-+	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
- 	struct kho_block_set block_set;
+ struct luo_flb_header_ser {
+ 	u64 pgcnt;
+ 	u64 count;
  };
  
- /**
-  * struct pci_flb_incoming - Incoming PCI FLB object
-- * @ser: The incoming struct pci_ser from the previous kernel.
-- * @xa: Xarray used to quickly lookup devices in @ser.
-+ * @fhdr: Pointer to the serialization feature header.
-+ * @xa: Xarray used to quickly lookup preserved devices.
-  * @block_set: The KHO block set holding the incoming devices.
-  *
-  * This structure holds the runtime state for the incoming PCI Live Update
-@@ -256,17 +256,11 @@ struct pci_flb_outgoing {
-  * the serialized entries, and an xarray for fast lookups.
-  */
- struct pci_flb_incoming {
--	struct pci_ser *ser;
-+	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
- 	struct xarray xa;
- 	struct kho_block_set block_set;
- };
+-static_assert(sizeof(struct luo_flb_header_ser) == 16);
+-static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+-	      __alignof__(struct luo_flb_header_ser) == 8);
++DECLARE_KHO_SER(luo_flb_header_ser, 16, 0, 0);
  
--/*
-- * Bits in struct pci_ser::required_flags that this kernel knows how to handle.
-- * No flags are currently defined.
-- */
--#define PCI_SER_REQUIRED_FLAGS_SUPPORTED	0ULL
+ /**
+  * struct luo_flb_ser - Represents the serialized state of a single FLB object.
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index d0f72f27001d..79bb5f64bfac 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -131,9 +131,7 @@ static int __init luo_early_startup(void)
+ 	if (err)
+ 		goto out_free_ser;
+ 
+-	luo_flb_setup_incoming(luo_ser->flbs_pa);
 -
- /* PCI_LIVEUPDATE depends on 64BIT, so domain and bdf always fit. */
- static unsigned long pci_ser_xa_key(u32 domain, u16 bdf)
- {
-@@ -276,27 +270,28 @@ static unsigned long pci_ser_xa_key(u32 domain, u16 bdf)
- static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
- {
- 	struct pci_flb_outgoing *outgoing __free(kfree) = NULL;
-+	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
- 	struct pci_ser *ser;
+-	err = 0;
++	err = luo_flb_setup_incoming(luo_ser->flbs_pa);
  
- 	outgoing = kzalloc_obj(*outgoing);
- 	if (!outgoing)
- 		return -ENOMEM;
+ out_free_ser:
+ 	kho_restore_free(fhdr);
+diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+index cd715a7c1d99..a8dcdb8456fd 100644
+--- a/kernel/liveupdate/luo_flb.c
++++ b/kernel/liveupdate/luo_flb.c
+@@ -53,7 +53,7 @@
  
--	ser = kho_alloc_preserve(sizeof(*ser));
--	if (IS_ERR(ser))
--		return PTR_ERR(ser);
-+	fhdr = kho_alloc_preserve(kho_ser_size(pci_ser));
+ #define LUO_FLB_PGCNT		1ul
+ #define LUO_FLB_MAX		(((LUO_FLB_PGCNT << PAGE_SHIFT) -	\
+-		sizeof(struct luo_flb_header_ser)) / sizeof(struct luo_flb_ser))
++		kho_ser_size(luo_flb_header_ser)) / sizeof(struct luo_flb_ser))
+ 
+ struct luo_flb_header {
+ 	struct luo_flb_header_ser *header_ser;
+@@ -559,33 +559,45 @@ int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp)
+ 
+ int __init luo_flb_setup_outgoing(u64 *flbs_pa)
+ {
++	DECLARE_KHO_SER_HDR(luo_flb_header_ser, *fhdr);
+ 	struct luo_flb_header_ser *header_ser;
+ 
+-	header_ser = kho_alloc_preserve(LUO_FLB_PGCNT << PAGE_SHIFT);
+-	if (IS_ERR(header_ser))
+-		return PTR_ERR(header_ser);
++	fhdr = kho_alloc_preserve(LUO_FLB_PGCNT << PAGE_SHIFT);
 +	if (IS_ERR(fhdr))
 +		return PTR_ERR(fhdr);
  
--	ser->required_flags = 0;
--	ser->optional_flags = 0;
--	ser->dev_ser_size = sizeof(struct pci_dev_ser);
-+	kho_ser_init(fhdr, pci_ser);
-+	ser = kho_ser_payload(fhdr, pci_ser);
- 	ser->nr_devices = 0;
-+	ser->reserved = 0;
- 	ser->devices = 0;
- 
--	outgoing->ser = ser;
-+	outgoing->fhdr = fhdr;
- 	kho_block_set_init(&outgoing->block_set, sizeof(struct pci_dev_ser));
- 
- 	args->obj = no_free_ptr(outgoing);
--	args->data = virt_to_phys(ser);
-+	args->data = virt_to_phys(fhdr);
- 	pr_debug("Preserved struct pci_ser (0x%llx)\n", args->data);
- 	return 0;
- }
-@@ -307,9 +302,9 @@ static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
- 
- 	pr_debug("Unpreserving struct pci_ser (0x%llx)\n", args->data);
- 
--	WARN_ON(outgoing->ser->nr_devices);
-+	WARN_ON(kho_ser_payload(outgoing->fhdr, pci_ser)->nr_devices);
- 	kho_block_set_destroy(&outgoing->block_set);
--	kho_unpreserve_free(outgoing->ser);
-+	kho_unpreserve_free(outgoing->fhdr);
- 	kfree(outgoing);
- }
- 
-@@ -321,35 +316,29 @@ static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
-  */
- static int pci_flb_retrieve(struct liveupdate_flb_op_args *args)
- {
--	struct pci_ser *ser = phys_to_virt(args->data);
-+	DECLARE_KHO_SER_HDR(pci_ser, *fhdr) = phys_to_virt(args->data);
- 	struct pci_flb_incoming *incoming;
- 	struct pci_dev_ser *dev_ser;
- 	struct kho_block_set_it it;
-+	struct pci_ser *ser;
- 	int ret;
- 
- 	pr_debug("Retrieving struct pci_ser (0x%llx)\n", args->data);
- 
--	if (ser->required_flags & ~PCI_SER_REQUIRED_FLAGS_SUPPORTED)
--		panic("Incoming PCI FLB requires unsupported features (0x%llx)\n",
--		      ser->required_flags & ~PCI_SER_REQUIRED_FLAGS_SUPPORTED);
-+	ret = kho_ser_validate(fhdr, pci_ser);
-+	if (ret)
-+		panic("Failed to validate incoming PCI FLB feature header (%d)\n", ret);
- 
--	/*
--	 * The previous kernel may have appended fields to struct pci_dev_ser,
--	 * which this kernel ignores, but every entry must be at least the
--	 * minimum size.
--	 */
--	if (ser->dev_ser_size < PCI_DEV_SER_MIN_SIZE)
--		panic("Incoming PCI FLB has unsupported struct pci_dev_ser size (%u)\n",
--		      ser->dev_ser_size);
-+	ser = kho_ser_payload(fhdr, pci_ser);
- 
- 	incoming = kzalloc_obj(*incoming);
- 	if (!incoming)
- 		panic("Failed to allocate struct pci_flb_incoming\n");
- 
--	incoming->ser = ser;
-+	incoming->fhdr = fhdr;
- 	xa_init(&incoming->xa);
- 
--	kho_block_set_init(&incoming->block_set, ser->dev_ser_size);
-+	kho_block_set_init(&incoming->block_set, sizeof(struct pci_dev_ser));
- 	ret = kho_block_set_restore(&incoming->block_set, ser->devices);
- 	if (ret)
- 		panic("Failed to restore devices KHO block set (%d)\n", ret);
-@@ -393,7 +382,7 @@ static void pci_check_all_devices_finished(struct pci_flb_incoming *incoming)
- 	 * This runs once the last reference to the incoming FLB is dropped, so
- 	 * there are no finishers left in flight.
- 	 */
--	nr_devices = incoming->ser->nr_devices;
-+	nr_devices = kho_ser_payload(incoming->fhdr, pci_ser)->nr_devices;
- 	if (nr_devices == 0)
- 		return;
- 
-@@ -428,7 +417,7 @@ static void pci_flb_finish(struct liveupdate_flb_op_args *args)
- 
- 	xa_destroy(&incoming->xa);
- 	kho_block_set_destroy(&incoming->block_set);
--	kho_restore_free(incoming->ser);
-+	kho_restore_free(incoming->fhdr);
- 	kfree(incoming);
- }
- 
-@@ -522,7 +511,7 @@ static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
- 		return 0;
- 
- 	pci_info(dev, "Device will no longer be preserved across next Live Update\n");
--	outgoing->ser->nr_devices--;
-+	kho_ser_payload(outgoing->fhdr, pci_ser)->nr_devices--;
- 	memset(dev_ser, 0, sizeof(*dev_ser));
- 	dev->liveupdate.outgoing = NULL;
- 	return 0;
-@@ -580,6 +569,7 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
- 	}
- 
- 	if (!dev->liveupdate.outgoing) {
-+		struct pci_ser *ser = kho_ser_payload(outgoing->fhdr, pci_ser);
- 		struct pci_dev_ser *dev_ser;
- 
- 		dev_ser = pci_flb_alloc_dev_ser(outgoing);
-@@ -587,8 +577,8 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
- 			return PTR_ERR(dev_ser);
- 
- 		pci_info(dev, "Device will be preserved across next Live Update\n");
--		outgoing->ser->nr_devices++;
--		outgoing->ser->devices = kho_block_set_head_pa(&outgoing->block_set);
-+		ser->nr_devices++;
-+		ser->devices = kho_block_set_head_pa(&outgoing->block_set);
- 
- 		dev_ser->domain = pci_domain_nr(dev->bus);
- 		dev_ser->bdf = pci_dev_id(dev);
-@@ -876,6 +866,7 @@ static int pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *dev
- void pci_liveupdate_finish(struct pci_dev *dev)
- {
- 	struct pci_flb_incoming *incoming;
-+	struct pci_ser *ser;
- 
- 	guard(rwsem_write)(&pci_liveupdate.rwsem);
- 
-@@ -885,8 +876,9 @@ void pci_liveupdate_finish(struct pci_dev *dev)
- 		return;
- 	}
- 
-+	ser = kho_ser_payload(incoming->fhdr, pci_ser);
- 	for_each_pci_dev_in_path(dev) {
--		if (pci_liveupdate_finish_device(incoming->ser, dev))
-+		if (pci_liveupdate_finish_device(ser, dev))
- 			break;
- 	}
- 
-diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-index c2e3a5949f73..f53f6350e53d 100644
---- a/include/linux/kho/abi/pci.h
-+++ b/include/linux/kho/abi/pci.h
-@@ -8,9 +8,8 @@
- #ifndef _LINUX_KHO_ABI_PCI_H
- #define _LINUX_KHO_ABI_PCI_H
- 
--#include <linux/bug.h>
--#include <linux/compiler.h>
--#include <linux/stddef.h>
-+#include <linux/build_bug.h>
-+#include <linux/kho/abi/feature.h>
- #include <linux/types.h>
- 
- /**
-@@ -18,33 +17,20 @@
-  *
-  * The PCI core preserves its state across kexec as Live Update
-  * File-Lifecycle Bound (FLB) data, identified by the compatible string
-- * ``"pci"`` and laid out as described by the structs below.
-+ * ``"pci-v2"`` and laid out as described by the structs below.
-  *
-- * This layout is a contract between kernels. Rather than being versioned, it
-- * is extended according to the following rules:
-+ * struct pci_ser is preceded by &struct kho_ser_hdr, which records the
-+ * total size of the serialization and feature flags. See
-+ * include/linux/kho/abi/feature.h for the feature header layout, feature
-+ * rules, and validation.
-  *
-- *  * Existing fields must never be moved, resized, removed, or have their
-- *    meaning changed. New fields may only be appended to the end of a struct.
-- *
-- *  * A bit set in ``pci_ser.required_flags`` marks a feature that the next
-- *    kernel must understand to safely take over the preserved devices. The
-- *    next kernel panics if it finds a bit it does not know how to handle.
-- *
-- *  * A bit set in ``pci_ser.optional_flags`` marks a feature that the next
-- *    kernel can safely ignore if it does not understand it.
-- *
-- *  * Fields appended to struct pci_ser must be accompanied by a flag that
-- *    indicates they are present, since the size of struct pci_ser is not
-- *    recorded.
-- *
-- *  * The size of each struct pci_dev_ser is recorded in
-- *    ``pci_ser.dev_ser_size`` and is never smaller than
-- *    ``PCI_DEV_SER_MIN_SIZE``. The next kernel ignores any fields beyond the
-- *    ones it knows about, and must handle entries that are smaller than its
-- *    own struct pci_dev_ser.
-+ * Preserved devices are serialized as struct pci_dev_ser entries stored in
-+ * a KHO block set. The block header records the entry size, allowing the
-+ * next kernel to step through entries using the source kernel's stride
-+ * even if fields are added in later versions.
-  */
- 
--#define PCI_LUO_FLB_COMPATIBLE "pci"
-+#define PCI_LUO_FLB_COMPATIBLE "pci-v2"
- 
- /**
-  * struct pci_dev_ser - Serialized state about a single PCI device.
-@@ -61,13 +47,9 @@ struct pci_dev_ser {
- 	u32 domain;
- 	u16 bdf;
- 	u16 refcount;
--} __packed;
-+};
- 
--/*
-- * The size of struct pci_dev_ser when this ABI was introduced. Since fields
-- * can only be appended, every struct pci_dev_ser is at least this large.
-- */
--#define PCI_DEV_SER_MIN_SIZE offsetofend(struct pci_dev_ser, refcount)
-+static_assert(sizeof(struct pci_dev_ser) == 8);
- 
- /**
-  * struct pci_ser - PCI Subsystem Live Update State
-@@ -77,20 +59,19 @@ struct pci_dev_ser {
-  * core; the state a driver needs to resume its device is preserved separately
-  * by that driver.
-  *
-- * @required_flags: Features that the next kernel must support to take over
-- *                  the preserved devices. No flags are currently defined.
-- * @optional_flags: Features that the next kernel may ignore if it does not
-- *                  support them. No flags are currently defined.
-- * @dev_ser_size: The size in bytes of each struct pci_dev_ser in @devices.
-+ * Preceded by &struct kho_ser_hdr.
-+ *
-  * @nr_devices: The number of devices that were preserved.
-+ * @reserved: Reserved for alignment.
-  * @devices: Physical address of the first KHO block containing pci_dev_ser.
-  */
- struct pci_ser {
--	u64 required_flags;
--	u64 optional_flags;
--	u32 dev_ser_size;
- 	u32 nr_devices;
-+	u32 reserved;
- 	u64 devices;
--} __packed;
-+};
+-	*flbs_pa = virt_to_phys(header_ser);
++	kho_ser_init(fhdr, luo_flb_header_ser);
++	header_ser = kho_ser_payload(fhdr, luo_flb_header_ser);
 +
-+/* Register pci_ser with KHO serialization accessors */
-+DECLARE_KHO_SER(pci_ser, 16, 0, 0);
++	*flbs_pa = virt_to_phys(fhdr);
  
- #endif /* _LINUX_KHO_ABI_PCI_H */
+ 	header_ser->pgcnt = LUO_FLB_PGCNT;
+ 	luo_flb_global.outgoing.header_ser = header_ser;
+-	luo_flb_global.outgoing.ser = (void *)(header_ser + 1);
++	luo_flb_global.outgoing.ser = (void *)fhdr + kho_ser_size(luo_flb_header_ser);
+ 	luo_flb_global.outgoing.active = true;
+ 
+ 	return 0;
+ }
+ 
+-void __init luo_flb_setup_incoming(u64 flbs_pa)
++int __init luo_flb_setup_incoming(u64 flbs_pa)
+ {
+-	struct luo_flb_header_ser *header_ser;
++	DECLARE_KHO_SER_HDR(luo_flb_header_ser, *fhdr);
++	int err;
+ 
+ 	if (!flbs_pa)
+-		return;
++		return 0;
+ 
+-	header_ser = phys_to_virt(flbs_pa);
+-	luo_flb_global.incoming.header_ser = header_ser;
+-	luo_flb_global.incoming.ser = (void *)(header_ser + 1);
++	fhdr = phys_to_virt(flbs_pa);
++	err = kho_ser_validate(fhdr, luo_flb_header_ser);
++	if (err)
++		return err;
++
++	luo_flb_global.incoming.header_ser =
++		kho_ser_payload(fhdr, luo_flb_header_ser);
++	luo_flb_global.incoming.ser = (void *)fhdr + fhdr->size;
+ 	luo_flb_global.incoming.active = true;
++
++	return 0;
+ }
+ 
+ /**
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index e22a8cf39d91..df8306d73768 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -121,7 +121,7 @@ void luo_flb_file_unpreserve(struct liveupdate_file_handler *fh);
+ void luo_flb_file_finish(struct liveupdate_file_handler *fh);
+ void luo_flb_unregister_all(struct liveupdate_file_handler *fh);
+ int __init luo_flb_setup_outgoing(u64 *flbs_pa);
+-void __init luo_flb_setup_incoming(u64 flbs_pa);
++int __init luo_flb_setup_incoming(u64 flbs_pa);
+ void luo_flb_serialize(void);
+ 
+ #ifdef CONFIG_LIVEUPDATE_TEST
 -- 
 2.56.0.506.g506a7eabc5-goog
 
