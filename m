@@ -1,68 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794328156;
-	b=obSVCqmTZ/O7+8TDfPI8x5bh8kHjAKZPf5cI2psur04wJdFVVTAzAMEQjlQ+zJVUyhNK
-	 1p7ltnaKQG83e6al4pIhXByeHGmymQJeom6yRnkAtGLl1MLFdH+lnQDuB2Yc18yLdlbe9
-	 BHI2gxrUXBiXiyA1yQoZU6kh03hS0Nn/dC/JGp9lBqXHIvm1rOO+5nUCNKYj0IgpRv2PP
-	 buusvOW6LVGqaxZ8Ps4OAnyzv2AR8IUb+HcfO0v2RiBIs9PVQMWOZREbDZWojfN99sJMv
-	 7ZN2L3AOuQJxRsTgtmnPiRXUd3f0MvrAzQeXMCXk54aotv3FbjKSgC380rzpQaTZCJA==
+	t=1794328467;
+	b=efKh+/HBbLEdPBEjQ4k5G7JM0r3tFEHSHxNLLyWYtcJWGSJy79BQ2CVZRMOJGrp21XLt
+	 9T9lRAtiw8jHM5oFrUC7rbvKj3G8ge3Bwv49zTJ/51qRD751iZ56iCqS0X7weZLAypqPh
+	 mHlubQTJebM6pzqx7W2zvAkq5gL7iTXeJsRcsVFFN98yf1gZ9MTLKKvkgn8kMmWenrdym
+	 rF0+Fw94GRzljX7ioTFf5xolGha8ZkXLljKgTwGQs/Y1jB3NKWoghaJHyM2EDetH2SZ6N
+	 rU2gzWAsAcNRor+mrWHKl2dfzr0Y1LPlJ2AO/V2qqODfYWPCJ821TGcT1Jnj3aMt31A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794328156;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=+E9BQxBpAXcPRNo1Ybi/jYn5qRwnyAzD2avHbDcjlBQ=;
-	b=DceU1oB1sQQLMYn9iK/Ekv99n5ZSnvTT5iCsIsTGemoy2bvvaDyVulXhdGXnBOruYb+W
-	 Kwk3Cu4XKO/3zItwuqzVolgQ/I0m/5a4u0WsLq2HI0IDA3K0XXGBNtxOnhiSnELIrluQO
-	 +2/nivVb/Z/yZiBT7BoTkaZZDwIbpNr2+cmDkIM7QgKo1OExDsIyOPfdIhowhWQRA6Pq1
-	 VJ1rNwg8g/EYF9vCAGUcLAMllTm26ByKg5dawcAt+Oqmg/mL3ZYWzGcBg9ww3NeG4BJHw
-	 wndXbWruocWbyjgUDa7CP/zQ9LWiUY+EIdlitDaoKXEvWSRRnX3gyKfaFN5LKwGn9wA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794328467;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
+	b=SefXVyDJbpQCli24gtaG9miYUt27DGMW2/1ry0HfrECbBlZshLe8TfQW1gTzCzbO4eTY
+	 rsrSblKMx+fcBgiiwfljAGSYf8kiK2/LdML6Lbfd7yNb6TZQlBKP1faofo2PZNzZ0iStB
+	 GsPaoUj8NRrf/wJsi6GyAlusoyH0/k68khrfEucw2mn+JiEsB+5hQi6lReIy5nSkK1vRM
+	 q1igmG3GAnqUUqb5vqGrWMfnvi02nIElLN8QDjLF/t7ylHufzthi31a8UfCx8tjHNLmCu
+	 WEuj0WG7NutS6x/Qtog7rwMgM+sp49EscdEcZ5PpboHOQKZKvF9XpuYtago6aZOmGcA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jL6ukbKa;
-	arc=none smtp.remote-ip=192.198.163.17
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5;
+	arc=none smtp.remote-ip=209.85.222.41
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CA5606A200;
-	Tue, 10 Nov 2026 16:29:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61CA5606A200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E847606A8A5
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 16:34:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E847606A8A5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jL6ukbKa
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794328155; x=1825864155;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2gBxwoDRUGadueQkivfRE2boh1VzodrRaTQrgu4WoN4=;
-  b=jL6ukbKaybNcISz/JssdOherRoXU8Ny17NszB3e65rKk4S1JoFtSIGQj
-   1E4qcVZeeHAmP/PsmsKoJgNQS/ypBes4c3mSnBNFmZyCPBrbC6G+pFlpy
-   7Rj32+JGKUOSrD6NFi49e7Byp3+cKAv81HTlALmemdN9pLT9CxMmv0rtm
-   RFTXFhppGPlCCyzrKTD7cXXvWPaId9BU0pTXQtyJ8SMW25inFeZvgA+5x
-   82E/hiloLjOCu6xCBIcgrPkoQ8l+5XhFWbgmaiKLV1vM86jKwmmWIU/wZ
-   H0Hz7tHEabTGAnM/Dc6cV3t9lRSJcN0uMikfHqi4M/fmw7wVwCgmWQkVa
-   g==;
-X-CSE-ConnectionGUID: jt3YthWxRo2/PayLS+myXA==
-X-CSE-MsgGUID: EvXTooiNSkm7vcNXd/mjzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3083025"
-X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="3083025"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 08:29:14 -0800
-X-CSE-ConnectionGUID: AJErk0/tTzyAGpnKRhUKVg==
-X-CSE-MsgGUID: 1pWss2dMQnKEDL3zKuzz+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="8157400"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 08:29:14 -0800
-Message-ID: <5f129d63-10c6-414b-86a9-a604e42038ce@intel.com>
-Date: Tue, 10 Nov 2026 10:29:13 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fSy8tcC5
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-998d151f441so573438241.2
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 08:34:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794328466; x=1794933266; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
+        b=fSy8tcC5IqRPJ8T9YRj22z1qFAkPgpRi2kcT3apWfgMEplaE1W0onrcdvaL/BL/ywE
+         rOSS0ydfaat3r8gteyf5+yftpLD+2I78ebj6isd5tSmAO9uXKA6drfZE2fPbEDLgB8tv
+         4nj5eU6BbFuMME+jx7QiJhMbdOwnH56XkB3/HT/fr1ZGQooLEtuVaD6KLZUnJ4xbTN5H
+         VkTk3pY/yOZ/w9fPvBKK5wNUDrb1f6zcpKrwD0C4hM87Oys5nnQ81EVXkI7GaiyDb9rK
+         5iOj/aarsL/qQFbE1WK3Ho0Kl6BxOfVqScOWNlF4Xqlcyi87wAdVUnIdMg2NDVulzXnv
+         hkjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794328466; x=1794933266;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y+V2JxIlVOChITFgo1z9lTreH4E5kp3RpfFu+UewLVo=;
+        b=E9b0Yo9/ieb30iODBquY7WA3ws8vBnoYgMVAX0AgzPhypU2kHa9RzlxUcFnl+Xb8Ct
+         4u5hwixsuAm2mI4vqXtdjlJtYGDrMYLsvDf+3z6lakQhuEIx5CZQQhLPJgSlikBWolPD
+         5un8tRbZACtOt3Fg/4CRLtvSX3vWc/vNwvA/xjGDy482R6QeX3/Id9FL+I7t1sLfnDBG
+         lJwX76oPW0KL49V04jN9INceNg7I5wzbB5wHEVVmmB7XArAwn3BemmcZqoO8XL9s6lhc
+         6iUD7vkcB6C/fMakOpHBuuQE0wijTFES7BvhWSDVi9todNkoeDTiNg9D7Dd98Vpn+ru/
+         geUQ==
+X-Forwarded-Encrypted: i=1; AL+hErHSm5N7/Dh32/UcR67POqG8PXxC50Q0qd3I4uAam4HJqhkAFmGCHNdjo+O61QrgY8/3tJo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+yZVvgoJvzkgnxG991X4lmwvwUc/JKkwopccbQiN/qhzenRB2z
+	mcXK6VzVA7EX7Icd3Z5RCq7Ose8uBUzwVgUmoATvUoAaiYKrkNC1vxcrHmbn6Q==
+X-Gm-Gg: AYBFou1QiM+Eh4obJRqirJ/+n+LdrLnQqzMKL/G8xkzEAPd0sLPiMuj/l8MwJjrNLQN
+	msuxBybdJnZkvhxZ7+xv0IhRTlp2HTSi6dbKGZCvlQbkloL1lgrw6r49n/V4Kq6bpTzlmcBUm/0
+	gC9+VKCsWZptyec8LvA3R4PUOGohT6tYS0CqXfenvKs0dLcz98xNKX9IHpQxxSO5mfbjB5sgihn
+	j1gDM9Onh45GDR2g4YYCLzVjz339vs/elBTddEzKBmikSyknXSEXHRKc8rnx9DXw9rnb++MGXJ+
+	fzMW2iC2eQLn9hUjR4l2XNNLYxcfOtS17/yzqTLkkibVWs/CDJMghNjgrNrFsGeDzUTExE6q0L2
+	rZaZSJ0rpWq3xFG+cnBhrWjMlc3gi3PclsmokiGatL4O2fdUEzFG+g8ILhreZXs9ydGZNhZTHsN
+	qBThvCJ2oeLhxP2nQZ1mhx5xu5enEtyeTUtcd3ScyH5rBrkXiT2+dDHVF8fGrMlBhY8EbDMmkI0
+	xwQlZ9HdcutI6Q2q407TYI7v9Sh4jM/9MKLcq2+3Ann/pMFMs2yTdiy34Gdh83i7PZrxuiaTnv7
+	9c0fPNcAICMMoTQUn0ieaa0wBBmOamhyraQ8EVniqCKDbPqXimQf+/d7KpKw2ORekeotrhZo7Nn
+	XaNmwOxhFChk1xSux0A3ThhKn0JqF3ji+PMalg0G/oPeUN7uPcRxQeiaNk6XpggQY7gFBZ1X/ax
+	dR6+r+8MqRTSbDaDvE
+X-Received: by 2002:a05:6102:c54:b0:7b5:7cd5:2a1b with SMTP id ada2fe7eead31-7d301b9d79fmr866580137.10.1794328466169;
+        Tue, 10 Nov 2026 08:34:26 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c200838f0sm2147394241.9.2026.11.10.08.34.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 08:34:25 -0800 (PST)
+Date: Tue, 10 Nov 2026 11:34:25 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ kuba@kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, 
+ kvm@vger.kernel.org, 
+ namangulati@google.com
+Message-ID: <willemdebruijn.kernel.4096b48e9e59@gmail.com>
+In-Reply-To: <874ido29iy.fsf@pengutronix.de>
+References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
+ <willemdebruijn.kernel.1d6388f036c46@gmail.com>
+ <874ido29iy.fsf@pengutronix.de>
+Subject: Re: [PATCH RFC v4 0/6] virtio-net: add receive timestamp support
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,157 +122,91 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/18] KVM: x86/pmu: Populate CPUID.0AH:ECX
- fixed-counter bitmap
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20261106013927.166209-1-zide.chen@intel.com>
- <20261106013927.166209-14-zide.chen@intel.com> <au491iiV7koeP0t6@google.com>
- <f20b59bb-a3c6-4129-ba61-5cec4d975601@intel.com>
- <f12bcb27-9c17-4b8c-b48c-c36a17e70ab6@linux.intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <f12bcb27-9c17-4b8c-b48c-c36a17e70ab6@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-
-
-On 11/10/2026 12:28 AM, Mi, Dapeng wrote:
+Steffen Trumtrar wrote:
 > 
-> On 11/10/2026 4:41 AM, Chen, Zide wrote:
->>
->> On 11/6/2026 3:00 PM, Yosry Ahmed wrote:
->>> On Thu, Nov 05, 2026 at 06:39:22PM -0700, Zide Chen wrote:
->>>> PerfMon v5 adds a fixed-counter support bitmap in CPUID.0AH:ECX.
->>>> This is the superset of EDX[4:0] which indicates the contiguous
->>>> counters starting from 0. For backward compatibility, it's recommended
->>>> to use the following to determine if a fixed counter is supported:
->>>>
->>>> FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i);
->>>>
->>>> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
->>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
->>>> ---
->>>> v3:
->>>> - Remove '&' when populating entry->ecx. (Jim)
->>>> - Gate entry->ecx on kvm_pmu_cap.version >= 5 in intel_pmu_refresh() to
->>>>   avoid enabling v5 fixed counters on hosts where KVM caps PMU at v2.
->>>> ---
->>>>  arch/x86/kvm/cpuid.c         | 5 ++++-
->>>>  arch/x86/kvm/vmx/pmu_intel.c | 8 ++++++++
->>>>  2 files changed, 12 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
->>>> index 3310c370c5fa..00a2ca6d3049 100644
->>>> --- a/arch/x86/kvm/cpuid.c
->>>> +++ b/arch/x86/kvm/cpuid.c
->>>> @@ -1554,7 +1554,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->>>>  
->>>>  		entry->eax = eax.full;
->>>>  		entry->ebx = kvm_pmu_cap.events_mask;
->>>> -		entry->ecx = 0;
->>>> +		if (kvm_pmu_cap.version >= 5)
->>>> +			entry->ecx = (u32)kvm_pmu_cap.fixed_cntr_mask64;
->>>> +		else
->>>> +			entry->ecx = 0;
->>>>  		entry->edx = edx.full;
->>>>  		break;
->>>>  	}
->>>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
->>>> index 1372091dc1f8..37b34b588601 100644
->>>> --- a/arch/x86/kvm/vmx/pmu_intel.c
->>>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
->>>> @@ -597,7 +597,15 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
->>>>  				  find_first_zero_bit(kvm_pmu_cap.fixed_cntr_mask,
->>>>  						      KVM_MAX_NR_FIXED_COUNTERS));
->>>>  
->>>> +	/* FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i) */
->>>>  	fixed_mask = BIT_ULL(nr_fixed_counters) - 1;
->>>> +	/*
->>>> +	 * Do not enable fixed counters via the v5 ECX bitmap if KVM caps
->>>> +	 * PMU version below 5 (e.g. when mediated PMU is disabled or on
->>>> +	 * older hosts), matching KVM's advertised CPUID.0AH:ECX capability.
->>>> +	 */
->>>> +	if (kvm_pmu_cap.version >= 5 && pmu->version >= 5)
->>> Having to check both versions is confusing. Can they go out of sync?
->>> Should we clamp pmu->version to kvm_pmu_cap.version and only check the
->>> former?
->> Yes, actually, other fields (bit_width, mask_length, and
->> nr_{gp,fixed}_counters) in intel_pmu_refresh() are clamped to
->> kvm_pmu_cap as well.
->>
->> pmu->version = min_t(int, eax.split.version_id, kvm_pmu_cap.version);
+> Hi Willem,
 > 
-> I'm not quite sure if we could do such clamp. I remember Sean ever said KVM
-> should allow user space to set the PMU capabilities which KVM doesn't
-> support, like what currently kselftest pmu_counters_test does, e.g., KVM
-> only supports up to PMU version 2 in non-mediated vPMU mode, but
-> pmu_counters_test can set PMU versions larger than 2.
->
+> On 2026-11-01 at 09:57 -05, Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+> 
+> > Steffen Trumtrar wrote:
+> > > This series picks up Willem de Bruijn's work on a virtio-net receive
+> > > timestamp. The device puts the time of arrival (TAI, ns) into the
+> > > virtio-net header so the guest can use it for PTP and RTT estimation
+> > > without taking the timestamp itself after the host-to-guest latency.
+> > > 
+> > > The series is an RFC. I am mostly interested in feedback on the
+> > > approach and on the wire format:
+> > 
+> > At a high level +1 from me.
+> 
+> Thanks!
+> 
+> > 
+> > Some comments inline.
+> > > 
+> > >  - The timestamp is a new field at the end of virtio_net_common_hdr
+> > >    after outer_nh_offset and ipsec, offset 32 (see virtio spec),
+> > >    negotiated with VIRTIO_NET_F_RX_TSTAMP (bit 49). Header size now 40
+> > >    bytes.
+> > >    Willem noted on v3 that virtio_net_common_hdr was not meant to be
+> > >    extended this way; I kept it as the simplest approach, but a
+> > >    separate struct for the timestamp header is an option.
+> > >  - Timestamping is enabled at runtime with SIOCSHWTSTAMP; all
+> > >    supported rx filters behave the same for now.
+> > >  - XDP programs can read the timestamp with
+> > >    bpf_xdp_metadata_rx_timestamp().
+> > >  - vhost-net passes the feature through; the timestamp itself is
+> > >    written by tun. The tun patch is only meant as a reference
+> > >    implementation for the device side.
+> > >  - The timestamp is in TAI.
+> > 
+> > Is this a requirement? It is common for PHCs to be synced to TAI,
+> > but not 100% the case. Does virtio need to specify this.
+> >
+> 
+> No, I don't think it has to be TAI. TAI is only what the tun reference
+> implementation does (ktime_get_clocktai_ns()). What the guest really
+> needs is to know which clock the timestamp comes from, so it can compare
+> it with something.
+> 
+> One idea for the spec change: don't fix the time base in virtio-net at
+> all, only say the timestamp is in nanoseconds of some device clock, and
+> let the device tell the driver which clock that is. virtio_rtc already
+> has clock ids with a type (UTC, TAI, monotonic, ...), and the Linux
+> driver registers a PHC for each of them (with VIRTIO_RTC_PTP).
+> virtio-net could carry the virtio_rtc clock id in its config space, and
+> the driver reports the index of that PHC in get_ts_info. That would also
+> fix the phc_index == -1 problem you pointed out in 2/6.
+> 
+> What I don't like about it: virtio-net then depends on a second device
+> being there, and with more than one virtio_rtc device the clock id alone
+> is not enough to find the right one. Without virtio_rtc the driver would
+> not offer hardware timestamps at all.
+> 
+> The alternative is a PHC in virtio-net itself (gettime over the control
+> vq), which is a lot more spec for one timestamp field.
+> 
+> Do you think the virtio_rtc way is reasonable, or is there something
+> simpler I'm missing?
 
-KVM's principle of "not policing guest CPUID" means KVM allows userspace
-to configure an arbitrary guest CPUID without rejecting the ioctl or
-mutating the vCPUID entries.
+I don't have an obvious answer. This needs consensus.
 
-However, KVM's internal vCPU state (pmu->version) tracks the "effective
-PMU version" that KVM can actually virtualize.
+Hardcoding clock base to TAI is definitely easiest.
 
-This distinction is documented in commit 4f1bd6b16074 ("KVM: selftests:
-Test Intel PMU architectural events on gp counters"):
+Outside of virtio, the relationship between PHY RX timestamps and PHC
+is well understood. It would make some sense for virtio to follow that
+model.
 
-"KVM only officially supports up to version 2, but the behavior of the
-counters is backwards compatible, i.e. KVM shouldn't do something
-completely different for a higher, architecturally-defined vPMU version.
-Verify KVM behavior against the effective vPMU version, e.g. dvertising
-vPMU 5 when KVM only supports vPMU 2 shouldn't magically unlock vPMU 5
-features."
+But indeed when having multiple NICs and multiple PHCs, how to map them
+I think is an unresolved issue in general? Of course, aslo moot if they
+are all synced, which I think may be an implicit assumption especially
+in the world of spec compliant PTP.
 
-pmu_counters_test itself explicitly mentions this rule:
-
-/*
- * Return the effective PMU version, i.e. the minimum between what KVM
- * supports and what is enumerated to the guest.  The host deliberately
- * advertises a PMU version to the guest beyond what is actually
- * supported by KVM to verify KVM doesn't freak out and do something
- * bizarre with an architecturally valid, but unsupported, version.
- */
-  return min_t(u8, kvm_pmu_version,
-this_cpu_property(X86_PROPERTY_PMU_VERSION));
-
-In my understanding, clamping pmu->version perfectly reflects the above
-rule, and it's similar to other KVM code, e.g.:
-
-        eax.split.bit_width = min_t(int, eax.split.bit_width,
-                                    kvm_pmu_cap.bit_width_gp);
-        eax.split.mask_length = min_t(int, eax.split.mask_length,
-                                      kvm_pmu_cap.events_mask_len);
-
-Without a PMU version cap, guest resource validation could become
-increasingly complicated as more advanced PMU features are supported, as
-KVM would need to allow the guest to access PMU resources only when it
-satisfies both the vPMU version and the KVM capability.
-
->>
->> Without this, as more advanced PMU features are supported in KVM, we
->> will have to manually validate guest features, and it seems this doesn't
->> violate the general principles of "not policing CPUID configurations"
->> and using the "effective vPMU version".
->>
->>>> +		fixed_mask |= entry->ecx;
->>>>  	fixed_mask &= kvm_pmu_cap.fixed_cntr_mask64;
->>> I see why this is needed now, to re-apply KVM's fixed counter mask after
->>> reading it, but if this is only needed there, it's probably clearer to
->>> do:
->>>
->>> 	if (version >= 5)
->>> 		fixed_mask |= (entry->ecx & kvm_pmu_cap.fixed_cntr_mask64);
->> Agreed, this is cleaner. Will update accordingly. Thanks!
+And, if virtualizing anyway, it is feasible to do the clock conversion
+in the software device, not having to bother with all this complexity
+inside the VM. Though maybe not for direct HW virtio-net queues.
 
