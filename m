@@ -1,62 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794326549;
-	b=m4gtuCqOh4z5nNnwvbWVaIGJ8dyxPzvHSWZJSEf7cbyibgGdzMqbL1uk/GM+Jxq2Pqmm
-	 1Q9FMbtSKxtcQGshlFN1o7FIUfbM567Nes4h3zCgPN67aLgpQZwACFNR1kOIqapUxhBO0
-	 kc+GjqVKDyY1+aapMTEhZohWc/BQYwXtzPhJKlSUCD98dfg+AyEW2LMwFaQk6iF+SLvzs
-	 /lspT8orDnotBR9P/V+0UnyaZ1MvgS8CEIR8jsDVLfy2Y1XfMZ/9zSHl/+06dBUlFn2u3
-	 Z/bYyCPpv47CSbX1qna02aswRn9jEutsfoSJDSAN3QavNX8bKpvBCeT/gZYsihbQhHQ==
+	t=1794327836;
+	b=PPawI47qPboKwHWfQJKQI+63mK5UmHnbqVUhNW1LB7P6B2x2SMJP3o5YuMjceQWyGBiO
+	 a5+Wl7VyVP9FebTWkxQs4qDNoimfmZLLQ3YrMbJr09cjjJrpkj2hgMBYQ+ljbZaFsn5hW
+	 sWLGhCNJVkZhUpil6PUJIgkBGHJQAsEEInxD6r1wfCyH9fbn4HXggv8O1CHlpnD8mWIjn
+	 ouKAJloMudwOprmV4UjZszeOrLINTmHPR0AqLJTWT03eoR2MwcrHKaJZrkkGRNhwCIK9j
+	 3o1jqpMvueCAYzdqFh+Yx3EwpLa21krC+0Fx44zk/TJLZulOokkj63lEIxdlZwUsyAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794326549;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=8npCNmyNjIE2pJbjFcsGaVN8VHiMIR3RoakRQ7io9Yc=;
-	b=Pjn8Aro1zcHhvKKuATMZzO+wu6fnhlqH8AMMw93xP57FmlBu/GPfvh2Zi/+xLirvqxye
-	 e2maJakMCC0cDgJUfP8w4mCCFnijsLZM+fllNz+OGvGq2rt5jMszngvBNtBenqR7RNB9r
-	 VdTTJSR8ttwCV6Yic2ANJeXEjJgKMqfG6LpZNUBYsdl3eGa4Oo4JM5V0vrXP9CmDbKU7p
-	 RToIDv7jsXseuo/NapntEOo/NpJTCNU8IrMoJgGJZw82giUQge3byhF+aZKMG2YWro4N+
-	 izSZooNhMuFTfFOQPDK35uvLvpZn5KNgOhvpkqNBZz0TYO6daYj2jL7d6+ZfPp4I+Wg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794327836;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=Mw9iOCkEBWkvxdLSgoJVCB6jT3T4ThA8jIPRTFH0lnY=;
+	b=zN0cwEeC1dfVm+2rYmqQpUutvoRPPluvXYXPEBICzaeDU3i5n8HAzuBztBu4/x3xn1zT
+	 l3UdMf4P7blH5Vc2Ut+qTmYvCcDFjihN4Q0wlS68Lmu7+Q6G5DnG56pwJPGTOliUMPXxx
+	 8MHKq67Rptesapf3Db9RvlCHjGO4fm+znCpm87BdJOqaVzEJ5KHJ57rziAJPo9UOqpNQL
+	 eT/sjhLmMqZIoMcjkf4sIHbebpKwdMTd2KXmy4y6CjyzfiXwsPei+dzsNp2bbMzwZmRgo
+	 MJdReODb7ykzAqXF6I400iB1i63B/i2DfpTDfupvAsJ8gs94ywQxJJ774pW3d8dT6bw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQ3xHtNM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VSPzJL76;
+	arc=none smtp.remote-ip=209.85.214.180
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3475D606A31C;
-	Tue, 10 Nov 2026 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383F4606A326
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 16:23:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 383F4606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQ3xHtNM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C1A1F0089F;
-	Tue, 10 Nov 2026 16:02:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794326548;
-	bh=8npCNmyNjIE2pJbjFcsGaVN8VHiMIR3RoakRQ7io9Yc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CQ3xHtNM0fEUOWRCRgWtk59j0P8jSaTryPnb2RKY4dFnKizwLXx4yGZfLdlYmHAgx
-	 TAo0sFtyqTc+3ZGkL80xa9+Cu06CgzQBDFEzIxFKi5ZsYK8tWB1ZVKnqp/Yn7wcDmA
-	 1X7Y5I1ooIc2wDkaWs7EwLkCDhqj1sBUjwR09JrV7uCU0ofja+oiZ/UZvGjINFSoaW
-	 LGbJ9ajsorBJEyPsfQNw1oSlQvI2v/XJJU2d5nGMgib2ub1Z4edaLtJJeKgVpSok0v
-	 8sdin6B+NaKId7yQrwE3chP/YXRk4cm6kxCPRx+ksI4RkJmM88sSP3ta+BbGogi1IE
-	 CUIrG8UAgHYsg==
-Date: Tue, 10 Nov 2026 16:02:21 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Wei-Lin Chang <weilin.chang@arm.com>, 
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 2/2] KVM: selftests: Test KVM_PRE_FAULT_MEMORY against a
- full dirty ring
-Message-ID: <avM_FXXF9oBkderF@gremlin>
-References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
- <20261110110724.3614412-3-fuad.tabba@linux.dev>
- <avMoubwqgXbpflwM@gremlin>
- <CA+EHjTxT_9NghyLSZmOOi_oQboQw-g+6z9WxwaF=-7RdaGbMNw@mail.gmail.com>
- <avM9_7aWUDJSL3Lq@seanjc-mac.roam.internal>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VSPzJL76
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e987a2ba0cso13295045ad.3
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 08:23:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794327836; x=1794932636; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Mw9iOCkEBWkvxdLSgoJVCB6jT3T4ThA8jIPRTFH0lnY=;
+        b=VSPzJL76+wTF7+tRHaTvgknu/rdXasZus90UA5dew9kegykwMMzKH/F1V6GxO7RQBH
+         4/OoTFVOHyB4E03Dq2sjac2puiHJm+c4fvoFKJLJ6EEpCLTW90+KxQKP8Xk4x1JCosEq
+         Qn1NC6kr4qdwt4JzE8ObsRxCsUeZmKjtT2SBeeizeKBMIl7bOARS8kw8yLezlhGZJVv0
+         o52jzOWxsMkIIBT3ThUaLCPi/QAmSZxKSqqb6hMrak99PMeAxD3u0dk/TP7xs21D2Iw/
+         Ez/eieBRGPY5ouf/XdRZ3e00nlnuno9Ot9UU0ZRzVZtwWy7hL9Ca1MHSbWRqNGS8EsIb
+         6SQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794327836; x=1794932636;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mw9iOCkEBWkvxdLSgoJVCB6jT3T4ThA8jIPRTFH0lnY=;
+        b=u5ntUKsYMTkzTUx+gnUK6dXjZNDp5dpmFxEYFntW9qSBDjw9gv5S7lbNmdbp4hZsok
+         2J5/1AoRdIl4CspLXlHIH2TFnUs8DRObAhMPeHG05fxEZlaqUrsvmjqTtLmLw/+0danM
+         QecFm/bUFjZCim7r7adhVEOOS6gVLJIbK61n0Seu9hn+I7r7X8YhaHCaeOx/POctx+k+
+         PHo1NSOI9kq8ZSJ2rMlUF6Ae36+yx7sshu9O4g2iB0e7LRNSHVtoa4fO2sa5maFNENEA
+         ZGmWs2CMp+euTBSGOUi2NfRda7JaQiXAkHiLIBf4dW7Nygx8O0JZ2skJQP+o8FsWbpZT
+         rpdA==
+X-Forwarded-Encrypted: i=1; AL+hErGVLy/tK2P61NRoPQ2mTtguT3Kju0EyYqynroWSI56Y6KtZzV8zSdfy/uTTXRdwtWQ1isM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/gfWvy0d02cWvxEcuRcIC9h+fTfIxlxjIqknbyyMx4Jgff0BcQ
+	XF1Ch39ovD14F4lWF2vdJJ8RPVMYUduFNan90cxohRHU3/+unBgiTEg0o9uombW4+Q==
+X-Gm-Gg: AYBFou01+WZUhHXAgX++P82603jr01BbKtbRBiRyMs+x+9lueNHEm9NrkQEkt00b7gJ
+	Jh3U699qAeyjOFiFZgtl+D1cKNvidIPByyuhJLI/2vhsEjG7GP4sRMtE/ra84eiN5nH5GUaD1Ev
+	AEdeqpaYsJmpwxhe5v4ZsUVvvPDorBb96FoZzxn0epNKW8IbsOQVxF1Yg4odmvs5zdHlE/jUaLV
+	0YIMNq5ZZexXPW1QZvOCrSUvPfjj002HmWYthg/3gyPivO2tIlryLCqTb4VBW/XDDpDD608G0Mb
+	p8+H+PaNmMOK209FhOrrVx4fpJVXHq9RTKWuZtdSssxr4/wydLJMheC9kOo1MqzrFo4FIHWtKw3
+	1Fwtvekj19WnfeQArn6hPnZsBcS0mHrcpaUm6Rx6gqQfxQoM4s4/uYee+YK1TX1ZZq9YNe9D1w8
+	tQXGXuGwidPxaBmZvJ7rv+rNg9fibERNoC9MGfCyrKtJ4nippReR+GvnmCzBPoyZfJaFYWkJWHU
+	Oeg/8V42o0vJDb5wsLqWD+8Vet5mo7T/9VYQ6dt/6jMe0TxFnkfmb0FvPokh26etO86FeCmyAc2
+	Wx0JvzTLEMxJwHTB2l5pOoY3vfl4yj8V78bmNs6yI1uXnvWZvV7H9ArAPahNhggc
+X-Received: by 2002:a17:902:d4cc:b0:2e8:18ca:5f46 with SMTP id d9443c01a7336-2edb9146ba8mr28990585ad.14.1794327834955;
+        Tue, 10 Nov 2026 08:23:54 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d7d964sm11306915ad.32.2026.11.10.08.23.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 08:23:54 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -65,67 +87,91 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avM9_7aWUDJSL3Lq@seanjc-mac.roam.internal>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 16:23:53 +0000
+Message-Id: <DMRO4QXXB8H4.127C1CPT3RZ18@google.com>
+Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
+ <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
+ <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 16/19] PCI: liveupdate: Add feature header to struct
+ pci_dev_ser
+From: "David Matlack" <dmatlack@google.com>
+To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
+ <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
+ Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
+ <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
+ <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
+ <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
+X-Mailer: aerc 0.21.0
+References: <20261110050202.529473-1-tarunsahu@google.com>
+ <20261110050202.529473-17-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-17-tarunsahu@google.com>
 
-On Tue, Nov 10, 2026 at 07:53:35AM -0800, Sean Christopherson wrote:
-> On Tue, Nov 10, 2026, Fuad Tabba wrote:
-> > Hi Lorenzo,
-> >
-> > On Tue, 10 Nov 2026 14:38:27 +0000, "Lorenzo Stoakes (ARM)"
-> > <ljs@kernel.org> wrote:
-> > > On Tue, Nov 10, 2026 at 11:07:24AM +0000, Fuad Tabba wrote:
-> > > > Pre-fault more populated, dirty-logged pages than the vCPU's dirty ring
-> > > > holds, and check that each call stops before the ring overflows, that a
-> > > > retry returns ENOSPC without progress, and that the harvested entries
-> > > > are the pages in order. A read pre-fault can map a page read-only, or
-> > >
-> > > Are we asserting an invariant that prefaulting happens in address order
-> > > here?  Is that explicitly presumed in the prefault API, or just how it
-> > > happens to pan out?
-> > >
-> > > I wonder if we might decide for whatever reason in future to do things
-> > > differently there. Bit nitty I know, but wonder if it's asserting an
-> > > implementation detail?
-> >
-> > Yes, the API doesn't guarantee an order. I'll assert that every page
-> > is reported exactly once instead.
-> >
-> > [...]
-> > > > diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
-> > [...]
-> > > > +static void test_pre_fault_dirty_ring(void)
-> > [...]
-> > > > +    /* Populate the pages, so that pre-faulting can map them writable. */
-> > >
-> > > Reviewed below, but I wonder how x86 could then read fault these?
-> >
-> > KVM_PRE_FAULT_MEMORY is defined as a read fault, but x86 maps the page
-> > writable when the host page is, and marks it dirty, unless it falls
-> > back to access tracking (below). Populating the pages makes sure they
-> > aren't backed by the zero page.
->
-> Before we effectively solidify the behavior, I think we should have an explicit
-> discussion about the desired behavior of KVM_PRE_FAULT_MEMORY when dirty logging
-> is enabled.  E.g. the only reason I kept the existing behavior in my auto-prefault
-> series was because I couldn't think of a good reason to change it.  But we never
-> made a concious decision in the first place, i.e. we never considered what would
-> happen if prefaulting collided with dirty logging (as evidenced by this bug).
+On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
+> Precede each serialized PCI device entry in the PCI Live Update KHO block
+> set with struct kho_ser_hdr via DECLARE_KHO_SER so future per-device PCI
+> Live Update features can append fields to struct pci_dev_ser without
+> breaking compatibility between adjacent kernels.
 
-Yeah, I do worry about implicit assumptions (also commented re: ordering).
+Elements of a collection should not have their own feature headers. This
+applies to patches 10, 12, 14, 16 and 18. I raised this during the v2
+discussion [1][2], but I don't think it was addressed.
 
-I guess what makes sense, given the general approach for prefaulting = injecting
-a synthetic read fault, is for the expectation to be that it matches the
-behaviour of an ordinary read fault.
+All entries in a KHO block set are written by the same kernel using the
+same struct, and the block set has a single entry_size, so every entry
+header is necessarily identical. They don't convey anything that the
+header of the struct that owns the collection can't. In this case,
+struct pci_ser's header can define features that describe fields in
+struct pci_dev_ser, and the PCI core checks them once before iterating.
+If a feature only applies to some devices, the field's value in each
+entry says whether that device uses it.
 
-Or do you feel that it makes sense for the pre-faulting to do something special
-in these cases and establish a sensible invariant?
+Per-entry headers also cost a lot for small entries. struct pci_dev_ser
+goes from 8 to 16 bytes, and to 24 bytes once the first feature is
+added. Patch 18 does the same for every preserved memfd folio, which for
+a large guest backed by 4K pages adds gigabytes of preserved metadata.
 
-If the pre-faulting does indeed dirty the pages, you'd need the dirty logging to
-do its usual thing (not familiar with the code, so I'm guessing logging the page
-:) though right?
+They also add new ways to read out of bounds. kho_ser_payload() trusts
+nr_required/nr_optional in each entry, and nothing checks that the entry
+header plus payload fit within entry_size. In patches 14 and 18 the walk
+uses each entry's fhdr->size to find the next entry, so one bad header
+throws off every entry after it.
 
---
-Cheers, Lorenzo
+Instead I would keep struct pci_dev_ser as a plain struct, take the
+entry size from the KHO block header (patch 2), and in pci_flb_retrieve()
+check once that the entry size covers the base fields, plus the fields
+of any features set in struct pci_ser's header, e.g.:
+
+	entry_size =3D kho_block_set_entry_size(&incoming->block_set);
+	if (entry_size < offsetofend(struct pci_dev_ser, refcount))
+		panic(...);
+
+That also restores the minimum entry size check that the v10 PCI series
+had with PCI_DEV_SER_MIN_SIZE, which this version drops.
+
+[...]
+
+> -	kho_block_set_init(&incoming->block_set, sizeof(struct pci_dev_ser));
+> +	kho_block_set_init(&incoming->block_set, kho_ser_size(pci_dev_ser));
+
+This size is never used. kho_block_set_restore() overwrites it with the
+entry size recorded by the previous kernel. Passing this kernel's size
+here is misleading: pci_flb_retrieve() (and the LUO session/file restore
+paths) read as if they iterate incoming entries with the outgoing entry
+size, which would be a bug.
+
+Incoming block sets should not take an entry size at all.
+kho_block_set_restore() should initialize the block set itself from the
+incoming block headers, and the incoming paths should drop the
+kho_block_set_init() call.
+
+[1] https://lore.kernel.org/kexec/atl6K2Juy6Bh29lh@google.com/
+[2] https://lore.kernel.org/kexec/at-8vkVpN2SF3XgB@google.com/
+
