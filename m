@@ -1,101 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.5
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794310233;
-	b=ZzodYwGt+CHSy022FhNYWqxUPRJNZXyiCUN60YOjLXHn3khJ5fsYFFZwsmJ1QRUvgkFY
-	 Z7s+8HihC1S6GTczaaT5L/vFOIqDTrVGxUBUfgvrs7N/aV9tTdQkCvB0MuYa4ggbqwadL
-	 N6p6pzcHoC7y+UFQS8ELjMn9qSrWDwUR8txF+KzCZqqJQMleB34QnUgELjtBuow88z8OD
-	 SzUmUBTtjFZHotBlHIZV6TVzSfAM6WwRBESQ/sbSK+FsmeF9UvurqujMmOyuoNoHh2xB5
-	 VTkpA7y9r9d1NhW15nzkIXPDf9H5amfNiJux7TY5Z5xxI47psXab4myrViJ8MZo7fTQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794310233;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
-	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=bLz1iOD0oef+Yz6taD9bKYocjt3emrbb+TnfFnOafm8=;
-	b=qIWLVXntjxVoeSRrSyWYioQLFnFoC8gWgaW4B4OgjhJRP3R50199p1NNSU8Scx8XdLqh
-	 jdf7Gr8G56k3EOSY0Ap+LhZJnd7loIB5fZXAtSX0m0AMGvrcUYFAd7OB4Nv4R+h3UgB2H
-	 G8QtVV+Em+7+4gPqEWc6p2e3/IZvnPtEURzLnZx3+pej5+2nWTuW1dJ0GH+/xdNQXV9p6
-	 6ZKVG/PxD7Cg0aU1hfmmEkx90tNwDzRNSlmVVc98wLoveOTQDQgdFV71OUZdKGVwD4AJ7
-	 wHsv7BY77zVTw9rOwkacejA83Y9U4lbSDq1jPIYt75K8rrM0JN+TIEIsF2exB1KtbUA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=1rqEntWq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.5
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011005.outbound.protection.outlook.com [40.93.194.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=139.138.36.225
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794310979;
+	b=4lWLukAwH2TWeojb94cPsmUdSxFpTfYZcsGUCGHn5Nuhs5u5hl8WxeZP75JA1hZm7KN8
+	 o5cUjKdkhc4RsaRhoL6TlQDVYiBHPjKRNxO9JsME6nzNV78K6fEmqrwJXzsvitzOE1+Vc
+	 4Qzd0jWH78Ie8aYOuClzLkhP8/tS8D4wFUWuqq5IkKjfNLk4MN0+Z2W7UcXzjygQSIBsg
+	 Qa8u0D8qcGHgh7AnLcNdlMlEoNL1pzOXm8MK0oLqHiLB6sz6Do4igk5VGYtKLG4YyrOqJ
+	 /4CWd//ECF2VC02gCeLz490bijbVF+tshIGmL89JRL9UcJMXViiyE7rPus1Ogr640Qg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794310979;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=UDfjj6f+4UQA+nIrJmQDTbohlU8B0SuA2IAGCHYP12U=;
+	b=e386NiPNAqQO5Z5iU2zw2eIHra+SVZrKUQaBD/lzaTObPB5uJ6NqlrxXIybL/XuMIAHc
+	 ec1OK3kJuNTXC4oZTNdqpVkf5w2x8ynaxtGs3dpDCrIhUJG0JiUtJZAC9wDNLEEHYwjWi
+	 6We8bbKcYU2jA/FIId4jMKa04Ieti1ka0wg8SpvdetROuyxFngZTfi2gvl1Ly9qZvbwqg
+	 34hPwu/gtl5vdH//ANONYtm577kyhflvqCJ4oBBEQ0HTssARm5S+mEVTnLr+6/IBNx94y
+	 odeAj7Bg0E75sZKLUHad/aOg4m4/mCMp3FA3ISp7UiL+hdPZo6Y0FmQr7apZRKOR6CQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=fujitsu.com;
+	spf=pass smtp.mailfrom=fujitsu.com;
+	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=EtPhqJ26;
+	arc=none smtp.remote-ip=139.138.36.225
+Received: from esa10.hc1455-7.c3s2.iphmx.com (esa10.hc1455-7.c3s2.iphmx.com [139.138.36.225])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E4460A2611
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 11:30:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6E4460A2611
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494A8606A32A;
+	Tue, 10 Nov 2026 11:42:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 494A8606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=1rqEntWq
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iHj1Ni5mrUKMxoWACXCpbRZvkTkL2r/WwORw6PvRX4v2O1LgpuxP7r6Hwk9oozZLBg1e3EUgyXbwAIaS7yk0A3U6gtBjExAhPqTNAFO1lmaYNo4j82PPE/o1g1GvjRCGFcDwWKaSQ+/5iTvBdceSymwg/DhITG1M7r/lxUMGGQG3XE/AMxOzlY3iTkQqlGBCPXOYJj4DO1EN4F/23rTdCsgi2rylXs3BrS/0jMhcxIEaZwEyq4UJn/orFM9I45i6dITBXHHnNKq5UwlpYlAkLmMCn+sjZ0PhD4rZHEy1UcvoHD9g+AxFWH1dD1ELo+58MyoMwOhIK/rXcdPkSq7fmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bLz1iOD0oef+Yz6taD9bKYocjt3emrbb+TnfFnOafm8=;
- b=a2tBBzIG8Qbwbl++ga7dYmaNns1NwtEuQ/D4b7iHBqDVVafarqQz45/mC2lJ6KJa6LW42DlJhDcIrTvZ0cWDyVAPAJmQXxNHCrb1y5QLBqqppfeZdaNGeJo6P3zq9MZMDSc8ZOhS7leZZs5L1a99JJhhu/EqxkJHN5RJOSXfPgXM5QC2BBivhAcOXTqnhyylw7qXQrS0Tr5baXxZoQ3Y37wxJPNbgoQaJd7DIyUf0h1v9N9Lsrmw0OVHwgUqUQjJT9yHdsXdelKiridXas2IodEDV50iQtx3pOLjHijz83Qcd/WmkLDdmZP/npvSosoAQWkK2C6hHsmch3LSpPEfoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bLz1iOD0oef+Yz6taD9bKYocjt3emrbb+TnfFnOafm8=;
- b=1rqEntWqGzGmESgwZqIy68UivZm4/B0Wta/c4uB+SbjKo1gMYwrKFhFYou+4AK4n8hb0wVyQMtjGJQZlsRNZ5YJ+5Ckg1m59QCWdSK8eYCTYHgHFsFX/Wi03Unav2gujggLAmy4b98QMOVuPwDAI3/f6JmUSvxUF1g2AS3qFSHk=
-Received: from MW4PR03CA0252.namprd03.prod.outlook.com (2603:10b6:303:b4::17)
- by SA3PR12MB706199.namprd12.prod.outlook.com (2603:10b6:806:53c::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
- 2026 11:30:30 +0000
-Received: from MW2PEPF00014674.namprd04.prod.outlook.com
- (2603:10b6:303:b4:cafe::ac) by MW4PR03CA0252.outlook.office365.com
- (2603:10b6:303:b4::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Tue,
- 10 Nov 2026 11:30:29 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MW2PEPF00014674.mail.protection.outlook.com (10.167.249.181) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Tue, 10 Nov 2026 11:30:29 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 10 Nov
- 2026 05:30:28 -0600
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 10 Nov
- 2026 05:30:28 -0600
-Received: from [192.168.29.87] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Tue, 10 Nov 2026 05:30:22 -0600
-Message-ID: <a156f924-a430-47ff-9fb9-22723acccdfc@amd.com>
-Date: Tue, 10 Nov 2026 17:00:21 +0530
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=EtPhqJ26
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1794310986; x=1825846986;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=D3SLBgY9fe7hrDb5SERRAgjehrb+Hk8BhBruccWqiF8=;
+  b=EtPhqJ262woSGcP1G7/lceHwE1UpToCiYvh+SgTpKISUI7Gezr+NWn3P
+   pTf3LW0GPEwS3fnqh+amdurhDflw+SZbpu8+Cc4qYEjGv5prFGe7E8McI
+   eNg/XQBsEtlXT2HosP0rMlvcvG966X3GZ/u2m2cVPXuBbFahv6JnBWv7y
+   pJr0UYgmIgdAslmxhoauFCcjyCQggEcZ/dL+RpR0GhGO/UUsT0727qRyo
+   0HtgZGh7gp/IWHvprmjisp/jPdJ4JGMW1684AlV6tb0NVEAQbWTzPZwfy
+   fdQErQElxQVBca9/kkoV+zee7wWiASisEl6y/g3iNyseE/IeU5PK89gmD
+   A==;
+X-CSE-ConnectionGUID: qqCIi7PASkSTbxlUdPXPDQ==
+X-CSE-MsgGUID: OwcQXHB8QNyrVY6+YH9OLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="247475806"
+X-IronPort-AV: E=Sophos;i="6.27,205,1786978800"; 
+   d="scan'208";a="247475806"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 20:42:58 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 1D5DE10000DA;
+	Tue, 10 Nov 2026 11:42:51 +0000 (UTC)
+Received: from az2nlsmom1.o.css.fujitsu.com (unknown [10.150.26.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id C26E5C00D78;
+	Tue, 10 Nov 2026 11:42:50 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.61.34])
+	by az2nlsmom1.o.css.fujitsu.com (Postfix) with SMTP id 6AF96829EC7;
+	Tue, 10 Nov 2026 11:42:40 +0000 (UTC)
+Date: Tue, 10 Nov 2026 20:42:38 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH 02/11] KVM: arm64: CCA: Introduce Realms
+Message-ID: <avL9kNR2mGmqmcA9@FCCLS0092175.localdomain>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-3-steven.price@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,286 +95,209 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] KVM: SVM: Add support for IBS Virtualization
-To: Jim Mattson <jmattson@google.com>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <mingo@redhat.com>,
-	<bp@alien8.de>, <kvm@vger.kernel.org>, <x86@kernel.org>,
-	<santosh.shukla@amd.com>, <nikunj.dadhania@amd.com>, <Naveen.Rao@amd.com>,
-	<dapeng1.mi@linux.intel.com>, <ravi.bangoria@amd.com>,
-	<peterz@infradead.org>, <Sandipan.Das@amd.com>, Yosry Ahmed
-	<yosry@kernel.org>, <manali.shukla@amd.com>
-References: <20260310060022.15120-1-manali.shukla@amd.com>
- <20260310060022.15120-7-manali.shukla@amd.com>
- <20261008191950.816113-1-jmattson@google.com>
-Content-Language: en-US
-From: Manali Shukla <manali.shukla@amd.com>
-In-Reply-To: <20261008191950.816113-1-jmattson@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW2PEPF00014674:EE_|SA3PR12MB706199:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5528f4f0-3e3d-44c3-97a3-08df3f1e0654
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|36860700016|82310400026|11063799006|4143699003|56012099006|261021123027099003|261022075727099003|261021121427099003|261022105027099003|261026140227099003|261026121527099003|261028144727099003|261102123227099003|261009223027099003|10067099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	Adtwqgw05vSZ0fR354YBMr5VSlEH1xgyAmc8gI8oiDsy/KKir32g5DA08MeopBPuElBiKfp3DB+m/1C5Fha2g2THi7vlOyUJnOr56YVhusHHtPHIgNGxO8HMnZK/OthkW2wql+z4wnRKZL4XnQrT3plkczKt6GL/POS7S48IgiPCB/Ldf09sY65eDa5RaxHG5706lz237y8bj530h6TIN6rZs/afjZXnvg7BSomIhUWrR4MtBt7d6mHUL+QyQ16ysZk3C3pkLZ7Jl81SXiP3QBlCmtdTS9joYIP8FXAFvqTLm4TtCbiCNXi/gjU5LHueC0GB19vdPtQ5meEPbQ4Sf0A0aNbngratPnpF2YHSwgoBqBhDhGQWL7Zftvb0u6Xql0eo9vW8KdG79Mi/FgFXsmpN2dhO259AOr3cCJD+oRD35m+8/mCTqTPmwUQQnJHzvdVzd/lD5ykAgJNIzYrdfuzLU1n8OHVymRuxBYYTXSfXiOK7u1HwP6baymSU/UKc0j+zQA4XPYdQT2YhcoG0x8Xj/Ziha62OuEP8VXhRgfh9F/1+IATFKnid6d2HYWKrWrkoAa1mNE1apHqKCdz8wbLTTSRuQesOhPc4cYRMQdnrd2fpj4zwcv8w3+rp6vZg96MnPQHLkk7fniK5BluGfw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(36860700016)(82310400026)(11063799006)(4143699003)(56012099006)(261021123027099003)(261022075727099003)(261021121427099003)(261022105027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261102123227099003)(261009223027099003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	3UawY6VRqtOS2fZYSfKbMnIMRe0UMYCSn3CdE1gOwY1Kx/iPstdo5MjsPUPpHB4h1UcIr3h8BhCF7kA566pjd2akHD8GdX8Cst4KbplfOcQBZQgunQDY1EYd/Bpkir3zEVGig4Aevtd8lBqnbGhmy9MViE3eajuyU0zhpsCN9u1tVnETxTltznLEzpMr6bckNtEos1wAytj5mOfL95sRG+x2+RbYC4YNZCX6OfBNouA6N3zpHohO4VFkwcOBt16+lyeEXRx1bWGo4QCwNqGd8BN8dt2VL9+9Pks/AkGRIrntILE6lihW3LgOcyJT5I5OnAojGBd5xJKR7VNj//KhafRwWLD4IOSGye3Meqf+EndYcy+n2WBYz3KddLow+9mAtCSAoZ6kW7gTFs1gx0QlYDywRoOUdZ22V5AFZk3KKIsIdFCkLgFl9Y6kz98lgJxz
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 11:30:29.6313
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5528f4f0-3e3d-44c3-97a3-08df3f1e0654
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MW2PEPF00014674.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB706199
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261102141304.126883-3-steven.price@arm.com>
 
-Hi Jim,
+Hi Steve,
 
-Thank you for reviewing my patches.
-
-On 10/9/2026 12:49 AM, Jim Mattson wrote:
-> On Tue, Mar 10, 2026 at 06:00:18AM +0000, Manali Shukla wrote:
->> From: Santosh Shukla <santosh.shukla@amd.com>
->>
->> IBS virtualization (VIBS) allows a guest to collect Instruction-Based
->> Sampling (IBS) data using hardware-assisted virtualization. With VIBS
->> enabled, the hardware automatically saves and restores guest IBS state
->> during VM-Entry and VM-Exit via the VMCB State Save Area.
->>
->> IBS-generated interrupts are delivered directly to the guest without
->> causing a VMEXIT.
->>
->> VIBS depends on mediated PMU mode and requires either AVIC or NMI
->> virtualization for interrupt delivery. However, since AVIC can be
->> dynamically inhibited, VIBS requires VNMI to be enabled to ensure
->> reliable interrupt delivery. If AVIC is inhibited and VNMI is
->> disabled, the guest can encounter a VMEXIT_INVALID when IBS
->> virtualization is enabled for the guest.
+On 11/02 14:12, Steven Price wrote:
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> APM vol. 2, section 15.38, disagrees. Without virtualized interrupt
-> delivery, "an IBS interrupt occurring in the guest will not be delivered to
-> either the guest or the hypervisor."  The only VMEXIT_INVALID that section
-> 15.38 describes is for VMRUN of an SEV-ES or SEV-SNP guest with IbsFetchEn
-> or IbsOpEn set.
-
-This is what I have observed: when I tested IBS virtualization with
-kvm_amd.avic=1 and kvm_amd.vnmi=0, VMRUN fails with VMEXIT_INVALID
-whenever AVIC is inhibited. The APM might have missed mentioning it.
-
+> Add foundational work for supporting Realms.
+>  - Add a new VM flavor.
+>  - At KVM init, check if the KVM can support Realms (though not functional
+>    yet) and will be advertised by static key kvm_rmi_is_available. This
+>    will be turned on in a later patch, once we have all the bits and
+>    pieces ready. For now check if we are blessed with KVM_MODE_RMM.
+>  - Add realm specific tracking in kvm_arch. Since Realm and protected pKVM
+>    states are mutually exclusive, move them into a union.
+>  - Also adjust the memslot preparation checks to reflect the changes.
 > 
->> Because IBS state is classified as swap type C, the hypervisor must
->> save its own IBS state before VMRUN and restore it after VMEXIT. It
->> must also disable IBS before VMRUN and re-enable it afterward. This
->> will be handled using mediated PMU support in subsequent patches by
->> enabling mediated PMU capability for IBS PMUs.
+> Please note that we cannot create Realm VMs yet. This requires further
+> changes to the UABI and core RMI driver support, which will come later.
 > 
-> On hardware with IBS_CAPS_DIS, perf_ibs_stop() does not clear IbsFetchEn or
-> IbsOpEn. perf_ibs_disable_event() only sets CTL2[Dis], and
-> IBS_{FETCH|OP}_CTL[En] stays 1. Section 15.38 says that these bits must be
-> 0 at VMRUN of an SEV-ES or SEV-SNP guest with IBS virtualization enabled
-> (otherwise VMRUN fails with VMEXIT_INVALID), and that they should be 0 for
-> other guests, "to prevent host IBS interrupts from leaking across a world
-> switch."  Section 15.38 does not say that CTL2[Dis]=1 is sufficient. Is it?
-> If not, the host must also clear En before VMRUN on hardware with
-> IBS_CAPS_DIS.
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>  arch/arm64/include/asm/kvm_emulate.h   | 16 +++++++
+>  arch/arm64/include/asm/kvm_host.h      | 57 +++++++++++++++++-------
+>  arch/arm64/include/asm/kvm_rmi.h       | 61 ++++++++++++++++++++++++++
+>  arch/arm64/include/asm/virt.h          |  1 +
+>  arch/arm64/kvm/Makefile                |  2 +-
+>  arch/arm64/kvm/arm.c                   | 24 ++++++++--
+>  arch/arm64/kvm/hyp/include/nvhe/pkvm.h |  2 +-
+>  arch/arm64/kvm/hyp/nvhe/switch.c       |  4 +-
+>  arch/arm64/kvm/hyp/nvhe/timer-sr.c     |  2 +-
+>  arch/arm64/kvm/mmu.c                   | 13 +++---
+>  arch/arm64/kvm/rmi.c                   | 18 ++++++++
+>  11 files changed, 169 insertions(+), 31 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+>  create mode 100644 arch/arm64/kvm/rmi.c
 > 
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index 334211b8b2ee..32021bdf2610 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -831,4 +831,20 @@ static inline void kvm_reset_vcpu_psci(struct kvm_vcpu *vcpu,
+>  	vcpu_set_reg(vcpu, 0, reset_state->r0);
+>  }
+>  
+> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
+> +{
+> +	return READ_ONCE(kvm->arch.realm.state);
+> +}
+> +
+> +static inline void kvm_set_realm_state(struct kvm *kvm,
+> +				       enum realm_state new_state)
+> +{
+> +	WRITE_ONCE(kvm->arch.realm.state, new_state);
+> +}
+> +
+> +static inline bool kvm_realm_is_created(struct kvm *kvm)
+> +{
+> +	return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+> +}
+> +
+>  #endif /* __ARM64_KVM_EMULATE_H__ */
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index ccd2dc8f73c3..7d0222047ca1 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -29,6 +29,7 @@
+>  #include <asm/kvm.h>
+>  #include <asm/kvm_asm.h>
+>  #include <asm/kvm_hcall.h>
+> +#include <asm/kvm_rmi.h>
+>  #include <asm/vncr_mapping.h>
+>  
+>  #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+> @@ -48,6 +49,13 @@
+>  #define KVM_VCPU_MAX_FEATURES 10
+>  #define KVM_VCPU_VALID_FEATURES	(BIT(KVM_VCPU_MAX_FEATURES) - 1)
+>  
+> +#define KVM_REALM_VCPU_VALID_FEATURES			\
+> +	(BIT(KVM_ARM_VCPU_POWER_OFF)		|	\
+> +	 BIT(KVM_ARM_VCPU_PSCI_0_2)		|	\
+> +	 BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)	|	\
+> +	 BIT(KVM_ARM_VCPU_SVE)			|	\
+> +	 BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
+> +
+>  #define KVM_REQ_SLEEP \
+>  	KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+>  #define KVM_REQ_IRQ_PENDING		KVM_ARCH_REQ(1)
+> @@ -409,6 +417,7 @@ enum kvm_arm_vm_flavor {
+>  	VM_PKVM,		/* Normal guests on pKVM */
+>  	MARKER(__VM_PROTECTED),
+>  	VM_PROTECTED_PKVM,	/* Protected VM */
+> +	VM_REALM,		/* CCA */
+>  	VM_FLAVOR_MAX
+>  };
+>  
+> @@ -502,11 +511,14 @@ struct kvm_arch {
+>  	/* Count the number of VNCR_EL2 TLBs */
+>  	atomic_t vncr_tlb_count;
+>  
+> -	/*
+> -	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+> -	 * the associated pKVM instance in the hypervisor.
+> -	 */
+> -	struct kvm_protected_vm pkvm;
+> +	union {
+> +		/*
+> +		 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+> +		 * the associated pKVM instance in the hypervisor.
+> +		 */
+> +		struct kvm_protected_vm pkvm;
+> +		struct realm realm;
+> +	};
+>  
+>  #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
+>  	/* Nested virtualization info */
+> @@ -1572,30 +1584,43 @@ struct kvm *kvm_arch_alloc_vm(void);
+>  
+>  #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+>  
+> -#ifdef __KVM_NVHE_HYPERVISOR__
+> +#define kvm_vm_is_protected(kvm)	((kvm)->arch.vm_flavor >= __VM_PROTECTED)
+>  
+> -#define kvm_vm_is_protected(kvm)			\
+> -	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+> +#ifdef __KVM_NVHE_HYPERVISOR__
+>  /*
+>   * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to convert the
+>   * pointer to the hyp VA. With pKVM, the nVHE code runs with the hyp_vcpu,
+> - * which is populated correctly and is gated on is_protected_kvm_enabled().
+> + * which is populated correctly. Always vcpu_is_protected_pkvm(), which is
+> + * gated on is_protected_kvm_enabled().
+> + */
+> +#define vcpu_is_protected(vcpu)		BUILD_BUG_ON(1)
+> +#else
+> +#define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
+> +#endif
+> +
+> +#define kvm_vm_is_protected_pkvm(kvm)					\
+> +	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+> +
+> +/*
+> + * Rely on is_protected_kvm_enabled() check in kvm_vm_is_protected_pkvm() to
+> + * make sure the vcpu->kvm is always valid VA in the context
+>   */
+> -#define vcpu_is_protected(vcpu)						\
+> +#define vcpu_is_protected_pkvm(vcpu)					\
+>  	({								\
+>  		struct kvm *__kvm = READ_ONCE((vcpu)->kvm);		\
+>  									\
+> -		(__kvm && kvm_vm_is_protected(__kvm));			\
+> +		(__kvm && kvm_vm_is_protected_pkvm(__kvm));		\
+>  	})
 
-Yes, Hardware checks the effective IBS op and fetch enables in VMRUN to
-a SEV-SE/SEV-SNP guest. And it is already updated in APM.
+I've tested the integration branch and found that the secondary CPU
+bring-up fails:
+    [    1.426502] smp: Bringing up secondary CPUs ...
+    [    9.194442] CPU1: failed to come online
+    [    9.194558] CPU1: failed in unknown state : 0x0
+    [    9.197714] smp: Brought up 1 node, 1 CPU
+    [    9.197775] SMP: Total of 1 processors activated.
 
-https://docs.amd.com/v/u/en-US/40332_4.11_APM_Vol1-5
+It seems that this patch missed replacing a use of
+vcpu_is_protected() introduced by the following commit:
 
->> More details about IBS virtualization can be found at [1].
->>
->> [1]: https://bugzilla.kernel.org/attachment.cgi?id=306250
->>      AMD64 Architecture Programmer’s Manual, Vol 2, Section 15.38
->>      Instruction-Based Sampling Virtualization.
->>
->> Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
->> Co-developed-by: Manali Shukla <manali.shukla@amd.com>
->> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
->> ---
->>  arch/x86/include/asm/svm.h |  2 ++
->>  arch/x86/kvm/svm/svm.c     | 73 +++++++++++++++++++++++++++++++++++++-
->>  2 files changed, 74 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
->> index 4296efc1dafe..17aa6bf76bce 100644
->> --- a/arch/x86/include/asm/svm.h
->> +++ b/arch/x86/include/asm/svm.h
->> @@ -226,6 +226,8 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
->>
->>  #define SVM_INT_VECTOR_MASK GENMASK(7, 0)
->>
->> +#define SVM_MISC_ENABLE_V_IBS BIT_ULL(2)
->> +
-> 
-> This bit is in misc_ctl2, not misc_ctl. Please name it SVM_MISC2_ENABLE_V_IBS
-> and place it after SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE.
-> 
+    25d726dddc23 ("KVM: arm64: Reject host power-on of a vCPU that EL2 holds powered off")
 
-Will update it in V4.
+The following diff fixes the issue for me. Also, though not included in
+the diff, I think vcpu_is_protected() in __pkvm_create_hyp_vcpu() should
+be replaced with vcpu_is_protected_pkvm() as well.
 
-> [...]
-> 
->> @@ -779,6 +782,26 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
->>  				  MSR_TYPE_RW, intercept);
->>  }
->>
->> +static void svm_recalc_ibs_msr_intercepts(struct kvm_vcpu *vcpu)
->> +{
->> +	bool intercept = !(guest_cpu_cap_has(vcpu, X86_FEATURE_IBS) &&
->> +			   kvm_vcpu_has_mediated_pmu(vcpu));
->> +
->> +	if (!enable_mediated_pmu || !vibs)
->> +		return;
->> +
->> +	svm_set_intercept_for_msr(vcpu, MSR_AMD64_IBSFETCHCTL, MSR_TYPE_RW, intercept);
-> 
-> For SEV-ES and SEV-SNP guests, section 15.38 says that IBS virtualization
-> is enabled by bit 12 of SEV_FEATURES in the VMSA, not by bit 2 at offset
-> B8h in the VMCB. This patch sets only the VMCB bit, but it disables these
-> intercepts for every vCPU that has X86_FEATURE_IBS and a mediated PMU,
-> *including* SEV-ES guests.  IBS virtualization is not enabled for SEV-ES
-> guests, so they will be able to read and write the host's IBS MSRs!
-> 
+Thanks,
+Kohei
 
-You are right. I will fix it in V4. IBS MSRs for SEV-ES/SEV-SNP guests
-will be passed through only when bit 12 of SEV_FEATURES in VMSA is enabled.
+---8<---
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 522a837637fe..be676c13e219 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -960,7 +960,8 @@ static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu, u32 mp_state)
+ /* The guest's own CPU_OFF: EL2 has already powered the vCPU off. */
+ void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+ {
+-       u32 mp_state = vcpu_is_protected(vcpu) ? KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
++       u32 mp_state = vcpu_is_protected_pkvm(vcpu) ?
++                      KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
 
-> Since nested_vmcb02_prepare_control() does not set SVM_MISC_ENABLE_V_IBS in
-> vmcb02->control.misc_ctl2, nested SVM has a similar problem. If L1 does not
-> set INTERCEPT_MSR_PROT in vmcb12, vmcb02 uses vmcb01's msrpm, which
-> disables these MSR intercepts. Because VIBS is disabled in vmcb02, L2 can
-> read and write the host's physical IBS MSRs.
-> 
-> OTOH, if L1 sets INTERCEPT_MSR_PROT in vmcb12 and clears the IBS MSR
-> intercept bits in msrpm12, nested_svm_init_msrpm_merge_offsets() does not
-> include the IBS MSRs in merge_msrs[], so msrpm02 still intercepts them, and
-> L0 injects #GP into L2 on accesses to IBS_FETCH_CTL, IBS_OP_CTL, etc.
-> 
-
-You are right. Both the scenarios are not handled currently. I will fix
-them in V4.
-
-> Furthermore, the guest's IBS state is in the VMCB save area, but userspace
-> has no way to save or restore it. The IBS MSRs are not in msrs_to_save[],
-> and svm_get_msr() and svm_set_msr() reject them, so KVM_{GET,SET}_MSRS will
-> fail. Hence, the IBS state is lost on suspend/resume.
-> 
-
-Right. I will add the IBS MSRs to msrs_to_save[] and handle them in
-svm_get_msr() and svm_set_msr() in V4.
-
-> [...]
-> 
->> @@ -2880,6 +2904,27 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>  	case MSR_AMD64_DE_CFG:
->>  		msr_info->data = svm->msr_decfg;
->>  		break;
->> +
->> +	case MSR_AMD64_IBSCTL:
->> +		if (guest_cpu_cap_has(vcpu, X86_FEATURE_IBS))
->> +			msr_info->data = IBSCTL_LVT_OFFSET_VALID;
->> +		else
->> +			msr_info->data = 0;
->> +		break;
-> 
-> Before this patch, KVM synthesized a #GP when a guest without
-> X86_FEATURE_IBS read MSR_AMD64_IBSCTL. Now it returns 0.
-> 
-> The condition should also test for kvm_vcpu_has_mediated_pmu(vcpu).
-
-Agreed. I will take care of this in V4.
-
-> 
->> +
->> +
-> 
-> Nit: there is an extra blank line above.
-> 
-
-Ack.
-
->> +	/*
->> +	 * When IBS virtualization is enabled, guest reads from
->> +	 * MSR_AMD64_IBSFETCHPHYSAD and MSR_AMD64_IBSDCPHYSAD must return 0.
->> +	 * This is done for security reasons, as guests should not be allowed to
->> +	 * access or infer any information about the system's physical
->> +	 * addresses.
->> +	 */
->> +	case MSR_AMD64_IBSDCPHYSAD:
->> +	case MSR_AMD64_IBSFETCHPHYSAD:
->> +		msr_info->data = 0;
->> +		break;
->> +
-> 
-> These new cases should be conditional. Before this patch, KVM synthesized
-> a #GP for a guest without X86_FEATURE_IBS. Now it returns 0.
-> 
-> But, is this even necessary? APM vol. 2, section 15.38, says that when IBS
-> virtualization is enabled in the VMCB, the processor returns 0 on guest
-> reads from IbsFetchPhysAd and IbsDcPhysAd and ignores guest writes to
-> them. Can't we just disable interception of these MSRs when VIBS is enabled
-> for the vCPU, and let the hardware handle them?
-> 
-
-I agree. This is an oversight from my side. I missed to disable the
-interception of these MSRs when VIBS is enabled. I will disable the
-interception in V4.
-
->>  	default:
->>  		return kvm_get_msr_common(vcpu, msr_info);
->>  	}
->> @@ -3171,6 +3216,16 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
->>  		svm->msr_decfg = data;
->>  		break;
->>  	}
->> +	/*
->> +	 * When IBS virtualization is enabled, guest writes to
->> +	 * MSR_AMD64_IBSFETCHPHYSAD and MSR_AMD64_IBSDCPHYSAD must be ignored.
->> +	 * This is done for security reasons, as guests should not be allowed to
->> +	 * access or infer any information about the system's physical
->> +	 * addresses.
->> +	 */
->> +	case MSR_AMD64_IBSDCPHYSAD:
->> +	case MSR_AMD64_IBSFETCHPHYSAD:
->> +		return 1;
-> 
-> Returning 1 does not "ignore" the write; it induces a #GP. But, see the
-> point I made above.
-
-Ack.
-
-> 
-> [...]
-> 
->> @@ -4678,6 +4733,11 @@ static void svm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
->>  	if (guest_cpuid_is_intel_compatible(vcpu))
->>  		guest_cpu_cap_clear(vcpu, X86_FEATURE_V_VMSAVE_VMLOAD);
->>
->> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_IBS))
->> +		svm->vmcb->control.misc_ctl2 |= SVM_MISC_ENABLE_V_IBS;
->> +	else
->> +		svm->vmcb->control.misc_ctl2 &= ~SVM_MISC_ENABLE_V_IBS;
->> +
-> 
-> The condition should also check kvm_vcpu_has_mediated_pmu(vcpu), as in
-> svm_recalc_ibs_msr_intercepts().
-
-Ack. I will add it in V4.
-
-
--Manali
+        spin_lock(&vcpu->arch.mp_state_lock);
+        __kvm_arm_vcpu_power_off(vcpu, mp_state);
+diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
+index b01f8d44033f..6674e8d6ff4c 100644
+--- a/arch/arm64/kvm/psci.c
++++ b/arch/arm64/kvm/psci.c
+@@ -68,7 +68,7 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu *source_vcpu)
+         * STOPPED before that is the VMM's pause.
+         */
+        if (!kvm_arm_vcpu_stopped(vcpu) ||
+-           (vcpu_is_protected(vcpu) && !kvm_pkvm_vcpu_is_powered_off(vcpu))) {
++           (vcpu_is_protected_pkvm(vcpu) && !kvm_pkvm_vcpu_is_powered_off(vcpu))) {
+                if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
+                        ret = PSCI_RET_ALREADY_ON;
+                else
 
