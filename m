@@ -1,97 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794312242;
-	b=re/Z6VyjAYUAMOEtZk45vo7Hm45xUO+kj/FS2RGZ1I4Ir6O1O+6u51f/xwiQOBadZdHo
-	 pWFeDOITICkub6diLeo14k654SSHKX5XCbC8623NiW83GsO9VLVcm9X73FFLRoMhnAweX
-	 BKsGwMwSxmmKkSB9ghjHtFs4JIeuP09FHDE5COkzCB/HjbKgJlTqcBqto0GDAxA+ytNjj
-	 C+VMbnpgKpj19gt5frqn+w9Bdnl7ipA7gDrBDgXmDTXdL7HOWd4i0thQEOu2jqK7tXIfY
-	 X70JxyZirwr/vuxUXKDlNucnbXXoO/HZm3/dz3R9JVz2yLIjDGcD3WEXradXOLyjxzQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312242;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Xl0fVCch92j+6LkHOJo0qMLJL8zDliEYx5Jdv4lsA7c=;
-	b=BIPegB+1c1UH0f4DI3PNMHRb4g+sOaPfw97hXWLpqGZR4DfhK7Iz5Um0Iprt+3Aj9F+p
-	 hmJjesuwLBdwWZ71tQrMN35WE4tA6oitA56soRUka5OT0vzY6Uo42ViVuwNmTzfrzwvgj
-	 qqPpV+40O6MLyQtVSR9b7pbQg3cVrtvNOHYh8fDebXDEbltNaFYYSDDMiXIzWT0r7Q2r0
-	 1gVcnHXnDGwnxkuh36FltVTTSvyimvLc5W4OMrfZI62M8yXykKl+bVsMcOCanlmg1i9+X
-	 LXZGsYrLKF0knF4k0BzNHnzZm6D8+JeN1N/Z9s1JRxM9+E2Ze/VA6BbdE7RT+YmACng==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="l2lBwg/y";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.50
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012050.outbound.protection.outlook.com [52.101.43.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.139.130
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794312718;
+	b=TO4rMjpz2ah87AVbM+ZJrLJoCbNuDRdKMjpolLdpVPVrxehFUJyOAMd1cOLje55RdcCJ
+	 1w0emrhAo+UatfbAAxc6rIGP6uORvl3Lv9CwN7yyxVggZWocY5+M6d16d0nQxTfp9UMXO
+	 ky4sDsLe1nPmW+/PRZeuvIUD/7vGLcKndETU+Irt64qEpFlyl+YeyNss3twK6ublLSgOD
+	 ujkPfB9lpGYu3GXnJVBbeqnJ8pq+wT9stN9+K1McicadWLHkJcWVqV+fuwReh/uLEMU8X
+	 GzGD09zbFc5fSXqVQSd5ZiCB72AMzrkqTeDpX9DJYCAaX+BUTsw6UqNbkdUHao62ImQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794312718;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=xPi/3K5EgSO8uxLuJimni9tpMpXLjb9QZkfq/GsXYRI=;
+	b=2MFE5OIdsVvbgHFfNxn18w1FpYECuA+8udGtzY/VCxaEBAtZazSIqa36ItYyJzqqTmDx
+	 5cDd6NP8HS7hRE34l4mST0sy5XmSNP5OO/AWXiJK1rZbhJRlOBGVmFu8rbJ1goNZ9zJ5X
+	 eiBeF+ogTMZnIBN2gaP2wxXpfjiad055ndu2Z6NgVnvYAVU0s1E6g0JfXNE6DXhisQl8p
+	 XOeBh8q3N7ei8Z8bThE978VSvdtFpUOOiR7cgfAHsBk4d0FG1Z+z0d4KIQJ0P8RIOh+Ft
+	 gr6bUWUmOAguuaBPBuVqyEM1X6VabMgUp+6YI6Cm37+1FeaX4FhfSPWbXvKr6B7Dq7A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=fujitsu.com;
+	spf=pass smtp.mailfrom=fujitsu.com;
+	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=DgKtYllK;
+	arc=none smtp.remote-ip=68.232.139.130
+Received: from esa5.hc1455-7.c3s2.iphmx.com (esa5.hc1455-7.c3s2.iphmx.com [68.232.139.130])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A59660A381F
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 12:04:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A59660A381F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B278606A33D;
+	Tue, 10 Nov 2026 12:11:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B278606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=l2lBwg/y
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j8XO0s+yyBFUvvuQGZxjEr1JmC5yzR95LdwZ0/K2jtqzKRcWVleJv9YzESD61o+nULK0cFgjGC9APBNEY/WvH29gVOd1J+Oj2OYvGUsS/+kem52k5vHH2YcEGFTqM0H2hSFU/r8H6xEYSec8fNIbaNhUVS0QsY5JzIt06bMrXSDWdQOkh5w711g9VKfAOJSGz12bMJAO09rPTGl092OiYR4/PBLU5B1k4u9wJbn0VQqDCr1X7szXe3IIW554oSWYg3RsdATvTTwcpvGJNCiTF9MFuPRCm080FRp0OoaHty40iwGnGYeQNAwkMHvXuSs1lmz31ejMI2+OrCVvHaGWPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xl0fVCch92j+6LkHOJo0qMLJL8zDliEYx5Jdv4lsA7c=;
- b=zH5JIetS3+irfEq/35l5PrkM72CTUb2oif/TELpMlf/sqj9Py/vXDFhE1r13rrqOhwL9gepctuwVGCgADnILxMPk0/bZfxvx9VYXrM5DVDhkhSVo46bEGBov8gsCGJjzYOVZ1lRGGlBh2Dn4ihg1Vy6uuSxVLFBEAv9LsLDZaGu9rMGaHbdSHw6vQUml2jNjWFNpbO1cLxR+xdWaHk2EArNQjCuwTcOrfOztZd+m2vTeg4lTAcETN7ApHOI6YQB8m7yxRS7M+qtjNdsF/jopts1CUVfr51ZC8CFDmCe/h7fa8u9bFh9xFNVL+v/LThPoNOIGTegE8XLKhwgBvnPy8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xl0fVCch92j+6LkHOJo0qMLJL8zDliEYx5Jdv4lsA7c=;
- b=l2lBwg/yQgzWNFuNaHNCQxhqN+X0ndjn5jrXCVPB7zEH2ynw43mdZAsRK97V4JtvBNIC7bmEepNouJFemaL0El2CwzdMKJDZBXOfXVageY1Ks9AFSppp6NrKnJ8MfBlBWPrhET1lnccIYytI1PsXKVVKoQ5f6udCGHLUddu/6os=
-Received: from MW4PR04CA0217.namprd04.prod.outlook.com (2603:10b6:303:87::12)
- by LV0PR12MB850562.namprd12.prod.outlook.com (2603:10b6:408:608::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
- 2026 12:03:59 +0000
-Received: from CO1PEPF0001886A.namprd03.prod.outlook.com
- (2603:10b6:303:87:cafe::1) by MW4PR04CA0217.outlook.office365.com
- (2603:10b6:303:87::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Tue, 10
- Nov 2026 12:03:58 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CO1PEPF0001886A.mail.protection.outlook.com (10.167.249.155) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Tue, 10 Nov 2026 12:03:58 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 10 Nov
- 2026 06:03:58 -0600
-Received: from [192.168.29.87] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Tue, 10 Nov 2026 06:03:51 -0600
-Message-ID: <ccde63f2-6177-4760-9bc9-c40cd6eacd4b@amd.com>
-Date: Tue, 10 Nov 2026 17:33:45 +0530
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=DgKtYllK
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1794312717; x=1825848717;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2Eio9nYqq1HUIYESAuWhCyeK9Re+Weog6uesd4h1oSo=;
+  b=DgKtYllKTeTwRZ213gzZEjfL7eD+fqSfJAhsmkaqP1AGBn+eY26t9L4C
+   +p/vbR84Zq2DQurFs7azQBD0BP0NvKOXWKv3cRwu4GmUrC6brnlSrwojW
+   m5BNujLqDiPx4gLEeSHHPXLv/fybBFjgcnZEAeY1hn3i1Hb9GIjusieKp
+   dWotSKLGlPstqR4mtCZvcUXwdcuQqkKLNiI9ezPuFvAJH+PIrSkRINKl3
+   g/KrEt5C7O5J55mde5yKfR6VqlzS/9w1agRw8RobzVb8KENS2v837BA1j
+   6TV5OI2R6HVscAjSj6tJI0mWaxF3cfWxiB7u5kPVq/jmU8+flf9tKGgI5
+   Q==;
+X-CSE-ConnectionGUID: VzIQzazDQDWy8ViB7/XKKg==
+X-CSE-MsgGUID: 5qkYb5xfTi+7nhE6TDQUnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="259489026"
+X-IronPort-AV: E=Sophos;i="6.27,205,1786978800"; 
+   d="scan'208";a="259489026"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 21:11:49 +0900
+Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id D4C581C01688;
+	Tue, 10 Nov 2026 12:11:49 +0000 (UTC)
+Received: from az2uksmom1.o.css.fujitsu.com (unknown [10.151.22.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id 87A0314003DA;
+	Tue, 10 Nov 2026 12:11:49 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.61.34])
+	by az2uksmom1.o.css.fujitsu.com (Postfix) with SMTP id E5AFE1800A47;
+	Tue, 10 Nov 2026 12:11:40 +0000 (UTC)
+Date: Tue, 10 Nov 2026 21:11:39 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH 00/11] KVM: arm64: CCA: Prepare Realm memory management
+Message-ID: <avMI__K5XBf3z7wv@FCCLS0092175.localdomain>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <avLgdqlfUPMAI-r9@FCCLS0092175.localdomain>
+ <e9bc3885-4e29-44a0-a186-463337f57d9e@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,110 +96,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] KVM: SVM: Add support for IBS Virtualization
-To: Sean Christopherson <seanjc@google.com>, Jim Mattson <jmattson@google.com>
-CC: <pbonzini@redhat.com>, <mingo@redhat.com>, <bp@alien8.de>,
-	<kvm@vger.kernel.org>, <x86@kernel.org>, <santosh.shukla@amd.com>,
-	<nikunj.dadhania@amd.com>, <Naveen.Rao@amd.com>,
-	<dapeng1.mi@linux.intel.com>, <ravi.bangoria@amd.com>,
-	<peterz@infradead.org>, <Sandipan.Das@amd.com>, Yosry Ahmed
-	<yosry@kernel.org>, <manali.shukla@amd.com>
-References: <20260310060022.15120-1-manali.shukla@amd.com>
- <20260310060022.15120-7-manali.shukla@amd.com>
- <20261008191950.816113-1-jmattson@google.com>
- <CALMp9eRkd-kgBpWTS4nYHaCuDH-PPgB-zvtomBXv-GS7G7M1tA@mail.gmail.com>
- <atJKVRcCsAYewGl7@google.com>
-Content-Language: en-US
-From: Manali Shukla <manali.shukla@amd.com>
-In-Reply-To: <atJKVRcCsAYewGl7@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF0001886A:EE_|LV0PR12MB850562:EE_
-X-MS-Office365-Filtering-Correlation-Id: ead8280d-5653-4083-792d-08df3f22b3c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|23010399003|376014|7416014|5023799004|11063799006|4143699003|56012099006|18002099003|22082099003|10067099003|261009223027099003|261102123227099003|261026121527099003|261021121427099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	bBLLrDFlZBMe+2UeOz0OrWjZCHdw1q7Pwnwuf56pOcD76qx3Vg6LYG/8qPGEYWE7n22vJi8AOQMjciKZCtcc1oZKdmJoOVlMuhIACvi/Om7yWxitSlqlG09cvPJAWjwQSJe2JWFC3e4qo5TvXprWM7JLlSXQbeX6Q8pSrWWCaPpnEtzGx6BM/s/Y1SDrQTnA2znYVVHS8xAnEoYmIRKgB5n+dZ0m/71QNwS9LhZ3lr06cOsrzvcolvS9vWf8WNF+ZZ3iFhplewscXYG2M43Ync/AtXZZ0oOrm0NdbdwkvY2FcTndLfjJETjXqpFfW+xUNQpyOpJqZL633tl2UMrqJU24T4tuZ6zikhulDQeXThjw1ST8YZ+enIoJOjwJtSCgmUhJ2wyk8F6ZsfrQ3qBSCPdMscKCXUDQ97Ps3IuhcYYoW80zqawSt/BsiZ9NrmPv+i+mA5BeCHunjPrOlFYoJoAl57RuSvsP1Ho+YsD7o0y/B1T3cvyq6oHYoJ4mkfb4jbHaFKG4mXz4gmAPqDmLOs7py1/3NvJ5hUQ/Ua5G+VMbzcatEzgFl4Ktm4IkkIbU1s7t/eFQDSo1aFbVRHyG2JeYB5xgpP3LyXCjo7dPX/foBcJiL4CsFcJ0bKbRj5o+TL+wrhOkzmvrKXSRBViD98bvkkGw7GIX7koSUGCO4SN7kkuO9eIDc5Z0xrU3P2GBlT5/zP9kXTsAleFPtrwgMg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(23010399003)(376014)(7416014)(5023799004)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003)(10067099003)(261009223027099003)(261102123227099003)(261026121527099003)(261021121427099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	BYF6RDMXra5JrUNV57hjDWG5CWZ8cBzqYW8DMVOPiMAh4Bi4HNxVI4CoHSUht2pEJRYqlvtDYVTxEGPHdFjSFUOA7cyLFG7NKth6/8cZCABziCRICiCxLhu/4w1cZwBbyFIEAiDHDrgbh0cDUXsuIb62V4UlXAdThaP1orOuzTrwSXR6hUS/betk4PRdD1Y9Qy4lGjtHTcMHc5Z5XTQ8yhQcgx8X1bVSaapx85vtNTfTqZsiXn/c/BE93x0qxxUGUpNvg/xeTztGo9aeQ2sSTD91WRXNlbkNYcdP3ugurls4wn5CgYbk5Z9H19iUBAXlQLJqS07lmq4zoKYY+oHvDCxKOP2IRHGXish8QJVykL7MskEdzVMHH/2gcTsl9lxwXkO/Ixawsb44ipsIEdR3rOaA0Kig/EQURhqJK6YKB8GCR9QLtVkNBmN88QXB9M9u
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 12:03:58.6335
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ead8280d-5653-4083-792d-08df3f22b3c1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF0001886A.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR12MB850562
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e9bc3885-4e29-44a0-a186-463337f57d9e@arm.com>
 
-On 10/16/2026 9:31 PM, Sean Christopherson wrote:
-> On Thu, Oct 08, 2026, Jim Mattson wrote:
->> On Thu, Oct 8, 2026 at 12:19 PM Jim Mattson <jmattson@google.com> wrote:
->>>
->>> On Tue, Mar 10, 2026 at 06:00:18AM +0000, Manali Shukla wrote:
->>>> +     /*
->>>> +      * When IBS virtualization is enabled, guest reads from
->>>> +      * MSR_AMD64_IBSFETCHPHYSAD and MSR_AMD64_IBSDCPHYSAD must return 0.
+On 11/10 11:54, Suzuki K Poulose wrote:
+> Hi Kohei
 > 
-> This is incorrect.  Hardware returns 0 because it (presumably) doesn't want to
-> translate the address on the fly.  KVM isn't bound by such a restriction.
+> On 10/11/2026 09:24, Kohei Enju wrote:
+> > On 11/02 14:12, Steven Price wrote:
+> > > This series adds the memory plumbing for CCA building on the basic
+> > > plumbing[1] that has just been merged.
+> > > 
+> > > These patches add the internal realm VM state and RMM feature checks,
+> > > prepare realm stage-2 setup and teardown, and provide RTT mapping and
+> > > invalidation helpers. Realm memslots are now contrained to the lower
+> > > half of the IPA space, because faults treat the protected and shared
+> > > halves as aliasing. The final patch then connects these helpers to the
+> > > KVM stage-2 MMU operations.
+> > > 
+> > > There's also an integration branch[2] that builds on this series and
+> > > includes the realm descriptor creation, REC entry/exit, activation and
+> > > the new uAPI. This series by itself is also available as a git
+> > > branch[3]. However the new code isn't generally active without the full
+> > > integration branch.
+> > > 
+> > > [1] https://lore.kernel.org/all/20261007073537.2454351-1-suzuki.poulose@arm.com/
+> > > [2] https://gitlab.arm.com/linux-arm/linux-cca
+> > >      branch: cca-host-mm/v1/integration
+> > 
+> > Hi Steve, thanks for your work on CCA upstreaming.
+> > 
+> > For testing purposes, could you clarify which TF-RMM revision (or commit
+> > hash) you tested with? Although this MM series itself doesn't seem to be
+> > particularly sensitive to changes in TF-RMM, testing the integration
+> > branch could be affected by subtle changes in the RMM.
 > 
+> Tip of both the repositories should work (tf-a and tf-rmm).
 
-Agreed. I will correct the comment in V4.
+Hi Suzuki,
 
->>>> +      * This is done for security reasons, as guests should not be allowed to
->>>> +      * access or infer any information about the system's physical
->>>> +      * addresses.
->>>> +      */
->>>> +     case MSR_AMD64_IBSDCPHYSAD:
->>>> +     case MSR_AMD64_IBSFETCHPHYSAD:
->>>> +             msr_info->data = 0;
->>>> +             break;
->>>> +
->>>
->>> These new cases should be conditional. Before this patch, KVM synthesized
->>> a #GP for a guest without X86_FEATURE_IBS. Now it returns 0.
->>>
->>> But, is this even necessary? APM vol. 2, section 15.38, says that when IBS
->>> virtualization is enabled in the VMCB, the processor returns 0 on guest
->>> reads from IbsFetchPhysAd and IbsDcPhysAd and ignores guest writes to
->>> them. Can't we just disable interception of these MSRs when VIBS is enabled
->>> for the vCPU, and let the hardware handle them?
->>
->> Doh! As I realized later in the series, KVM_FEP requires that KVM must
->> be able to emulate reads and writes of every virtualized MSR...even if
->> virtualization just means "ignore."
-> 
-> Not just FEP.  As proposed, the MSR is intercepted and so what hardware does is
-> irrelevant.
+Thanks for the clarification.
 
-Yes, as I mentioned earlier, these will be passed through in V4 when
-VIBS is enabled.
+Then, unless otherwise specified in the cover letter or elsewhere, I'll
+assume that the latest revisions of both repositories are expected to
+work together going forward.
 
-> 
-> I'm confused by (at least) one thing: why can software write these MSRs?  IIUC,
-> they are outputs from the CPU.
-> 
-> If these were read-only, couldn't KVM use gva_to_gpa() with MSR_AMD64_IBSDCLINAD
-> and MSR_AMD64_IBSFETCHLINAD to get the GPA for the guest?  The MSRs being writable
-> is bizarre.
-
-
-As per APM, vol 2, section 15.38, with VIBS, hardware also clears the
-PhysAd valid bits in IbsFetchCtl[IbsPhyAddrValid] and
-IbsOpData3[IbsDcPhyAddrValid]. So even if KVM provides GPA, the guest
-won't be able to use PhysAd.
-
--Manali
-
-
+Thanks,
+Kohei
