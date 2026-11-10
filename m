@@ -1,73 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794345283;
-	b=XyxHRhZdwBUXvH8/zsGsK88Cb0DKtbujxuVbA2Mhh1a2kZc39UQYEICHvqOgXCd8yUPK
-	 o0GRjsAF3A/keYPD9OR8c5OZDektAbW4HO3JhMTaxz4jS2IWFsF/FmfSCYn3ie558whQv
-	 tJ1K38XrAFdDx5/9yZyZ3VeGC/RPcUjM7WbqRbo1AUNIuWcMwxUg9cfjtyS7QGCqYtNc5
-	 sIVwN3+twXZ/Y0Y94NVPSDg1GBBvbGS3pjg1ifAS35LAMDlb783Ea2shWGF6e0JDNXPZJ
-	 1mjdYhX4J+K1HujpmR+xTAgHZUnEVmHSv/kV5wbhV99AJGUgKRyZ1csI5FtxaSUFYzA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794345283;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:User-Agent:MIME-Version:
-	 X-SRS-Rewrite;
-	bh=QQrHnYDyygVgTjK8FaoUWk5CM7nixWrNnX9TzMFQ8J4=;
-	b=1jafEDAdltwih56JqyCmmZI7HhhNZJsRsZcVTRBTOtIuyzU29iIH+rMxQbEEpWHy615y
-	 W1LzE6QeONSPgnWJmkrB86BowzFgWEIfyiXdix0qlNevq0yMlHIZ5pBaY8XmE+afIKxkA
-	 OZVcU+l9h6gkIHBrkJX5BwTmTsrGAOq/ShKs5OPPrehBNA5EY5Let04BFn2ura5ubKODW
-	 ZPkloybykXD8sVR9TYldpLPRPfmG1Nc92TSXj7GwU8raD+dewHtN6aRM5Nu2qIuMADFAS
-	 HShlJGvE9IOY1ng4uVlL47icMdXN8AL+SSH04mRYUFpoj3AUs+Td5yYOhKafiiwGPqw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b="IFBUK6/x";
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.182
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794346785;
+	b=ClWOTgPnqEH3x0j7+R1YIGZYTS0EzKxIoI0aGJGrSedmwlvRlkYDz30Q6Efg2Isqtlb8
+	 /l0KkjdHTcCahll1KXPzy1saWLUeU7RhAZGZ5U3C1TWkWbek1ILQD7y3cU7cGX1nZM1Jd
+	 +dPVUTI//Y3TjkyPYX7TsaaaHAMfVZdULk+PWfP5iy9odpmV3mn2HgekYckJF0cld327J
+	 /mp8OzQcw+d/WwkNEWYoHJH+jb+5TY7EKLvq6ojxRs8rZASj228/9M2kjpbFGFnym3MY8
+	 HcGXz5pvppXoBzbTbKOCBNlcoR+aB73OU6UVWen76tshE+4hMb/L5T7FE1moFxq15LQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794346785;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=iE/aw4N49+XkvXz5BpRtqkYQEcfxLRfryXdyEysnhdM=;
+	b=w0hKSSII1H/kV/rtlAeBwPKVTd+D/vT26H9RSjsM+cQoV+oxm3PHBphXs5+E6M0ONNB0
+	 9noXBcxAEmBpqJO5L08KDNtCiTRcCWVDWSWFPYDcFa7+HbouY1cpygKwedPmUZh/BTRCz
+	 sDqr5VyWAaUnjA2za+/OlEo8rTAhrp0Fu32ajQcyINEFsvHrDx+GAgbzQvC/YvVnqW91X
+	 IdzGFLGtenjfsZbrPMs2Y92CCGZhmEp58OuQSTebB0YqnBaaH0IX14MvUqBG+1D5M5jOd
+	 wQ5QPQJf9sM6xnztJp9b3weSlbkhUrq031ticjhG7v+/+WkbfWU2B/kTtZhaxCT0VYA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=H+ckaDOt;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.182
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE2F606A31C;
-	Tue, 10 Nov 2026 21:14:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8EE2F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080BA606A326
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 21:39:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 080BA606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=IFBUK6/x
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QQrHnYDyygVgTjK8FaoUWk5CM7nixWrNnX9TzMFQ8J4=; b=IFBUK6/xeWArcLZFycxYfzmDgi
-	PwfRXLKo2PvxTZ8mYB0Pj6PqKXFpFhpXrBA4Y+Jt6auQnhClZn/xyMfJhZ7ZayrFC9mVGj4xZlbw2
-	XJRIqfPeR0Wpux3IPHtLzs4OlnWS64ov+70DKxiU08eWrzRaBpMN8Cvvh0Z/UIaLY/khqMS49hdO8
-	X76ObEuNvC1/k1H4/GLk3k0u/9Y7SpaxvTon83u5Cn5gjtnVInkw3/g99WDUt2/nSTu48apqbWu9X
-	+fb0nGrebm1Ayb4f4h4oMsm/+g6EBWR//CI1mcUpRwRbZJGvdmVEcCoAhvuGUBl2Y+rb4ccH0x3fK
-	i3oTDI5w==;
-Received: from [205.251.233.52] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xQtAl-00000001hqw-2Yls;
-	Tue, 10 Nov 2026 21:14:35 +0000
-Message-ID: <ccaa2d3b80a798e1513956fa436742c1e0fb50fe.camel@infradead.org>
-Subject: Re: [PATCH v2 06/20] KVM: x86: Request the guest TLB flush from
- record_steal_time()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, rcu@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Paul
- Durrant <paul@xen.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, Fred
- Griffoul <fgriffo@amazon.co.uk>,  "Paul E . McKenney"	
- <paulmck@kernel.org>, Kunwu Chan <kunwu.chan@linux.dev>, Kunwu Chan	
- <kunwu.chan@gmail.com>,
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Date: Tue, 10 Nov 2026 13:14:26 -0800
-In-Reply-To: <avN8aJIHiX4xyTNO@seanjc-mac.roam.internal>
-References: <20261105020104.2507083-1-dwmw2@infradead.org>
-	 <20261105020104.2507083-7-dwmw2@infradead.org>
-	 <avN8aJIHiX4xyTNO@seanjc-mac.roam.internal>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-9Cprd400OC3+mQXdbHGV"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=H+ckaDOt
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-9440304604aso267599785a.0
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 13:39:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794346784; cv=none;
+        d=google.com; s=arc-20260327;
+        b=E56ny5pDpOwZZNlrb+el05Wj1E1JP7r2Km7aA9x5V0McySGv/gnz4g2dfWS3Zs1lAl
+         sY35PcS7qqskiZ9A6ELk6yrt7PGb+TErGsJjVsIHaLz0qa8EORA4rCfLN/3/tm3aUDQK
+         hBVGSYGp32YG4QLHPDQxo2fADwXUbGTA/n7q6G1OpGA+gbg7LzzwdWz7lI7+sF62ITjl
+         gXEVphuPqxvi2AqKwqcWkXPTQHykHSN9PDlNHMhHpUWce5HfizP2I4OcQufmtpcyCMHA
+         qo17RV50zeDQYzJ/84Eod2Ql0itm8Q/7EnRRpoiJp211k8B2A2yJddWzjWs3teLdUjTd
+         +GiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=iE/aw4N49+XkvXz5BpRtqkYQEcfxLRfryXdyEysnhdM=;
+        fh=LYJv460e8gEfpZEscGwkn4BVujR4JKi7AMSryzh1T+Y=;
+        b=Xo9d2b+y9Gq5SQCqbVsmWU5YE+6H9esctp4NsBa3EELEh+LQfuhCxrYifBDWQ7MSMz
+         BRDqgpi4yxR8qVMsq2ljgGWQN4bLcBF/jM7stT08SB9CBVvpPBz9uA4UE6+aV8GTPuT5
+         X3gNo9rTtrT+qEudGuuPQjOX+X9TMpNm/ax6jZ3CnF2bvH967V0JsvpMTuqdjqnuNZy4
+         8gQOmQrZfmbZ1Q9r5/Dd09tDhtx97MFt0PEX95nKaCO8njEibcAGYqZxC6e17SdtRa5j
+         V/0J2Ww6Rkg0fJ+W+aR30Gx0F+K3bpZsLTlKzlAP+d98vEbozcXfBbtPfJVA7bcC/CLS
+         SZFA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794346784; x=1794951584; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iE/aw4N49+XkvXz5BpRtqkYQEcfxLRfryXdyEysnhdM=;
+        b=H+ckaDOtIOCnhx/jrqwxkuv0aBI9KiHdzFKcnxZzU+YavdoHOOF9T5gZQo/BKGIJd6
+         vCJnxtEyU1t8zXCF3zy+dayh8XujIc/IDqGWgWoCnFXN+9nfBJKvyCxGiciUfGkS2rp5
+         GkwFHqpBAqPv88LVBaKM29pKQ2NHdr7fWYPMlYuj9M9RjNd1yT7GkteG0UXzt0nebfjV
+         AH03p3zKot1FGaLx5ZPgGcPWpjOhVvnAgyO0lQNfm8L++CW2G81vD9mpYU9EgA2nEkbU
+         OoZe9O/RcFH4+xgWiH4r4R6urcB+QQiMnBrRLf8CLR6hcUkikZCiBALj+XhMgQsgGAvY
+         a6Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794346784; x=1794951584;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iE/aw4N49+XkvXz5BpRtqkYQEcfxLRfryXdyEysnhdM=;
+        b=V5vuEtJsJSnUnxjCxFc2WrmfdmVo7dGF0sKvgNtHGLF390Z7c58LnBxOk00aO3ejwx
+         +jTUloJJueFv7e0b2L2X8cRf6BVmnhv+WUBI6uG1izJoFgOy/7OUso50qH3LQlfbVuLY
+         c0+3C3c/A4A5gcYOteB10csmRMZ7RpxzudYhQXuYE9dikhXIhtYJ/9+q283wDiJZJ/cE
+         3N99o9z+lY4lPs15d9pKg20lARJh7W/JcfzgwAg/awH5ubSYyVeCyNpRa9cGhrHjB2v+
+         kO9QpX0rTMtFCxfIwGS81VZIP/nssd5YmOMi+If6WANSg+O976uj2W4kk5JkmsLilMIo
+         5Q3A==
+X-Forwarded-Encrypted: i=1; AL+hErF0WrD2c9GC0F+F+i28KzFa17pZ+vcAlrwU9kPKZ6sQkL6GfZDoeLv53dr486clathaHwo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+awuRbvgNgcvIvEEerKj3o90R0XUorIkhL3mL7Y872lmV2cRkT
+	TTLLNPijF9aGhrenMFXAJrPRqpGUE4C0JAnjN9JI4mRSLe7FG9CKh+YAQspoWSnQJUMLizMTsXq
+	zWWZottKoS5WGvKh9p7qTisAlVu3lBi8dK+KEp6Vk
+X-Gm-Gg: AYBFou2TLxN0jSIFSyY2ZRMzUijO0K8A5lKdsJwyt/FKc6JvtE25ojngI9BEKzjI+mr
+	Nr1+9cf25KqrZSgJ4wzTTChs01CUK89y46w2i93I+tOHw3nIvx7ksVSyJ/wSIrg/1a9jw2mquA9
+	6OllYQEhMLmJTNmzZEGcIgQD6+Fvn/AuUPrHZMPNNv2NoQHIf1hnNMYk735LQ5JMtVm7XGQvUEA
+	x9CjX4fbGQNpyhS3PSPkmScgpmYyc/CRmgiRnZBc5zx5v0IXHwkFrSoCCDpjXSBObBQnznTd3ux
+	FjOjWESnboCGF186RpwmsvwKwnQ5Z9vWKWgt/5jvHsdZS2MNEbRklTgoaD0yoewGEDKzz1Ht0T8
+	phrimj2g/M3LsHrpSEiSsEAKts2ZseHAcWE3QUAJmzv0lS62YLzoiaG99VAsfU0YRxskdnbTDAF
+	fZKlq8sSU9xmGC+d6DLfsDtrI=
+X-Received: by 2002:a05:620a:6cc8:b0:93e:c12d:4ec7 with SMTP id
+ af79cd13be357-947ae8caf53mr124925085a.39.1794346783277; Tue, 10 Nov 2026
+ 13:39:43 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 10 Nov 2026 13:39:41 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <avNpDjWxrgThIUXE@seanjc-mac.roam.internal>
+References: <20261105-tdx-selftests-v16-0-2024e8fa517a@google.com>
+ <20261105-tdx-selftests-v16-3-2024e8fa517a@google.com> <CAEvNRgHKQVLVza1dw9-OrDAt4-b6zbhx4T64D421sqb2MPWs0w@mail.gmail.com>
+ <avNpDjWxrgThIUXE@seanjc-mac.roam.internal>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,224 +111,88 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-9Cprd400OC3+mQXdbHGV
+Date: Tue, 10 Nov 2026 13:39:41 -0800
+X-Gm-Features: AclHuK_rifyMl6fGwEhJizkpiNdLB8JMLlwRf05wofhoaOCF7vOAUu20dn_gm7k
+Message-ID: <CAEvNRgF+-12qeZQyrHb4Z8MWOjOGEYQj1hebnxs2gC9nY+M5RA@mail.gmail.com>
+Subject: Re: [PATCH v16 03/20] KVM: selftests: Initialize the TDX VM
+To: Sean Christopherson <seanjc@google.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-11-10 at 12:19 -0800, Sean Christopherson wrote:
-> On Thu, Nov 05, 2026, David Woodhouse wrote:
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> >=20
-> > record_steal_time() performs a TLB flush on the guest's behalf when
-> > the
-> > guest sets KVM_VCPU_FLUSH_TLB. With shadow paging,
-> > kvm_vcpu_flush_tlb_guest() ends up in mmu_sync_children(), which
-> > can
-> > reschedule via cond_resched_rwlock_write(). That is why the flush
-> > currently sits between a user_access_end() and a fresh
-> > user_access_begin(): it cannot be done while the guest page is
-> > mapped
-> > for access.
-> >=20
-> > Raise KVM_REQ_TLB_FLUSH_GUEST instead of flushing inline, and move
-> > the
-> > processing of KVM_REQ_STEAL_UPDATE ahead of where the TLB flush
-> > requests
-> > are serviced in vcpu_enter_guest() so that the flush still happens
-> > before
-> > the vCPU enters the guest. There is no requirement for it to
-> > complete any
-> > earlier than that.
-> >=20
-> > kvm_make_request() on the vCPU which is running is nothing more
-> > than a
-> > barrier and a set_bit(), so unlike the flush itself it can be done
-> > from
-> > any context =E2=80=94 which lets the surrounding access be simplified
-> > later.
-> >=20
-> > Note that the xchg() must stay where it is: it atomically consumes
-> > any
-> > KVM_VCPU_FLUSH_TLB which the guest has set, as required by commit
-> > b043138246a4 ("x86/KVM: Make sure KVM_VCPU_FLUSH_TLB flag is not
-> > missed").
-> >=20
-> > Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-> > Closes:
-> > https://lore.kernel.org/all/20260530061932.7849D1F00893@smtp.kernel.org
-> > Suggested-by: Sean Christopherson <seanjc@google.com>
-> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> > ---
-> > =C2=A0arch/x86/kvm/x86.c | 26 +++++++++++++++++++++++---
-> > =C2=A01 file changed, 23 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index 6a1f0404f029..3c26c0eb9865 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -2117,8 +2117,22 @@ static void record_steal_time(struct
-> > kvm_vcpu *vcpu)
-> > =C2=A0
-> > =C2=A0		trace_kvm_pv_tlb_flush(vcpu->vcpu_id,
-> > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 st_preempted &
-> > KVM_VCPU_FLUSH_TLB);
-> > +		/*
-> > +		 * Request the flush instead of performing it
-> > inline. With
-> > +		 * shadow paging kvm_vcpu_flush_tlb_guest() can
-> > reschedule
-> > +		 * (via mmu_sync_children()), so it could not be
-> > called while
-> > +		 * the user access above was open. Requesting is
-> > just a bit
-> > +		 * set on the running vCPU, and the request is
-> > serviced
-> > +		 * before the vCPU enters the guest; nothing
-> > requires the
-> > +		 * flush to have completed any earlier than that.
->=20
-> Argh, I completely forgot about this.=C2=A0 It throws a big wrench in my =
-plans to fix
-> a mishandled TLB flush without using a deferred mechanism[1].=C2=A0 I rea=
-lly don't like
-> having to re-introduce deferred flags, but the diff is a lot smaller[2].=
-=C2=A0 On the
-> other hand, I still don't like the idea of delaying the MMU sync until th=
-e nested
-> VM-Exit.
->=20
-> I think I'll see how gross it is to do something like add a
-> KVM_REQ_PV_TLB_FLUSH.
->=20
-> [1] https://lore.kernel.org/all/au0R41xbEJ_9W_9z@google.com
-> [2] https://lore.kernel.org/all/auDkX94UTjrLNmqp@google.com
+Sean Christopherson <seanjc@google.com> writes:
 
-It's still OK just to do the TLB flush synchronously from the end of
-record_steal_time() after clearing KVM_VCPU_FLUSH_TLB and dropping the
-GPC lock.
+> On Mon, Nov 09, 2026, Ackerley Tng wrote:
+>> Lisa Wang <wyihan@google.com> writes:
+>> > +static const struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
+>> > +{
+>> > +	static struct kvm_tdx_capabilities *tdx_cap;
+>> > +	int nr_cpuid_configs = 4;
+>> > +	int rc = -1;
+>> > +	int i;
+>> > +
+>> > +	if (tdx_cap)
+>> > +		return tdx_cap;
+>> > +
+>> > +	do {
+>> > +		nr_cpuid_configs *= 2;
+>> > +
+>> > +		tdx_cap = realloc(tdx_cap, sizeof(*tdx_cap) +
+>> > +					   (sizeof(struct kvm_cpuid_entry2) * nr_cpuid_configs));
+>>
+>> Would be nice if struct_size() could be used here instead of manual
+>> calculation of the size. Same below.
+>
+> ...
+>
+>> > +void tdx_init_vm(struct kvm_vm *vm)
+>> > +{
+>> > +	struct kvm_tdx_init_vm *init_vm;
+>> > +	const struct kvm_cpuid2 *tmp;
+>> > +
+>> > +	tmp = kvm_get_supported_cpuid();
+>> > +
+>> > +	init_vm = calloc(1, sizeof(*init_vm) +
+>> > +			 sizeof(init_vm->cpuid.entries[0]) * tmp->nent);
+>>
+>> Would it be possible to use struct_size() here?
+>> Or perhaps kvm_cpuid2_size(tmp->nent)?
+>>
+>> > +	TEST_ASSERT(init_vm, "init_vm allocation failed");
+>> > +
+>> > +	memcpy(&init_vm->cpuid, tmp, kvm_cpuid2_size(tmp->nent));
+>> > +	init_vm->cpuid.padding = 0;
+>> > +	tdx_filter_cpuid(vm, &init_vm->cpuid);
+>>
+>> How about something like this?
+>>
+>> 1. Query TDX capabilities first to get tdx_cap->cpuid.nent (let's say N).
+>> 2. Allocate init_vm sized for at most N entries, since the filtered
+>>    result can never exceed TDX's supported CPUID set.
+>> 3. Iterate over the TDX CPUID capabilities, look each one up in
+>>    kvm_get_supported_cpuid(), and append matching, masked entries
+>>    directly into init_vm->cpuid.entries.
+>>
+>> This would avoid the memcpy and all the memmoves, though this works
+>> as-is. Just an optimization/different perspective.
+>
+> At this point, I'll do minimial fixup when applying, e.g. if switching to
+> struct_size() Just Works.  But I don't want to do anything more invasive at this
+> point so that we can get TDX selftests landed asap.  To be clear, I'm not opposed
+> to more cleanups, I just want to do them on top.
 
-You suggested using KVM_REQ_TLB_FLUSH_GUEST in
-https://lore.kernel.org/all/aidiOemcna1Un9wG@google.com/ but if it now
-makes you sad, I'm happy to go back to the original approach (noting
-that it loses the coalescing of multiple flushes).
+Good to know that this series is ready for Sean's apply + small
+fixes. Don't worry about my suggestions on refactoring.
 
---=-9Cprd400OC3+mQXdbHGV
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-zkWWw3ewrC6+wtxtI7TdkuQAAAAAAAA=
-
-
---=-9Cprd400OC3+mQXdbHGV--
+Sean, for this series, is the next step to wait for the merge to
+kvm-x86/coco? Do you need anything else from us?
