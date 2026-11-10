@@ -1,74 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794271849;
-	b=zPWaZtVu77kKc04++tGtZY+AmiZqDFUGXKv4TAf7LWKIwu6RelRY8Xs6Y88dqkDxYnFu
-	 XF1d8jUy0jag1B8w8zrR7KKyGqlBeFj53Cdm1Vo0dMhM90wiQtn5CNQvQjXOTO9W+X3fc
-	 qLcFgdogNs7rd8es1PIeK3tjWkqSTQdYTg5RGDly4aYq6VGX9m9CcisNMgxR4IRdtpSxJ
-	 pOJ6Ya0zBPkSlPAivVMxEUPOCGBbNntC9XB3FhsNXasIZ/cBQoFAMgKDqqPFePml9PFV9
-	 iGIZ23Q4YAKHrvuorgjDZe/fCJYevW7pX0OO24b/VV/8ilCoQtUZA+3azAQfuxzFWKw==
+	t=1794272675;
+	b=oyVDN1Jm5877l3GGlE0PhSB1npcdR4myuoGVWyTJTBxcYe2Y5PIHlswtWZsWEySQbGyA
+	 hif3AZupRMxUU4aCY2kuIG5xXyb7jCYFfiwpopwkZ3O2Su1omn9xwZgleSEeWYCbCH8If
+	 ZpTR9rL5tUkt6opGgZqIM1+lJSHnJaICdARqPaMoTak56ea8zAgS0E+oo4vWd4C1S5Neb
+	 3TnhU8IxATTBHN/CEF1oCMG2qHripyHfvAgwg6gSZtkB7EX/nmAloAZDA1VSPvwSYXJ/i
+	 hqOrNLKX5kNXgLgZZLeFHYgpAenK22QvIWjoFQdp71HuzIlkzfxCHu4Qj2RHtJZ8EcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794271849;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=9aUmjjXy2UpFvwIaZx+Kc6emVkBoaRCWFUjyBYUuXe4=;
-	b=4tyrJuZYMUEziLWlSUrEMuBOUrz9FgDaky2kLjS9wKybXlaw2xgpqUv+1j/b0hEXP74U
-	 f1baJgsNA0tialqZJOaifFIubXueqmNPo1YWP09CjsNlXLFRHUwECeA+yeK/C+6WyhtdE
-	 psCPeFen7/nvQCPCPWpAmorteNfZDqjuyHQXzF9tYBewwuSlAJe2XYZTyt4KqRcyNGwLh
-	 STcTFVHfluTZHdE1EYq0Gdkg5gD1Lp2uftjlwJCQbz56bUQqtvyEEtJZP26nA3E9AghyG
-	 ncnCgtsEPl/gorC0BhmqFnFyTY6K3MtTeOL0O8RLgSy/y8BO4KNm+SH5m19MkSi+cFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794272675;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
+	 In-Reply-To;
+	bh=Bv0ooEsqQhG/+6pm98YOZvLWwFhBUu/sWcsdtUoLwy4=;
+	b=L6gFi7ZHncAbVx6LhIKSpE6cUXYL69rpmIujODnU3L3r9WWLmScq2trj3tolMW+SXmMR
+	 cc+wUbc0SMVgS0njzCMI3ExwtdZl/Vb4GsSdMNcYLT4wgrJCjbqQnsEUn3WwBmKgKEgHe
+	 QBTz9V+6UVZicNJJfWauIaEYmc3kgNkQYE6x8ETQTh9Tee9V9W1GvfKj8hcMSFUXziWf1
+	 vq3PTYixCVKBtgcW+7EBAciclKDUbNUQyo2kAf8Ou/QnH7cT1QGrWjmkP3Y+XuG/FOplj
+	 vq/V2QjVwIGaR7uSV8vtMXHOs4VjeQmvucO/JxsopaOxbJNR/4m3a54Nv4UvEykM9BQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Rxqy6ixe;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Y/IdNdDl";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026DE606A330
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 00:50:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 026DE606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3266606A31C;
+	Tue, 10 Nov 2026 01:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Rxqy6ixe
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cdaf2073b0cso862474a12.0
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 16:50:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794271848; x=1794876648; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9aUmjjXy2UpFvwIaZx+Kc6emVkBoaRCWFUjyBYUuXe4=;
-        b=Rxqy6ixetikDYH4GXTU6DVlNgIzULph56hr/ylPgKBEq0LAlCxBeqtn3zqJLm8xcn9
-         /8L8gEpu0FFua1AhJKLHLRbGekFetzUJMpAhLvBkyd6Io4I8yVRJ1QPbOdpOumJxKtNh
-         oMHHHRmbLW+xy9nfrbL3O/Y/GIENxUCBo+qprlcK5nHvk8Mf74MAkBQAagwOLqXMK0gK
-         01XQLwADmqO9ZRtOrPv4jag12vYH76y4TtBVV6TFN0ri4rMmBiFegEp+AZT1vNUQOljj
-         UCk05FbvXMpWSKjhnKf5Yt/0k1VwOGa3C7NyCBNMU6nsHzQkxBdxpMV8/sXi1UpwGU7s
-         PIyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794271848; x=1794876648;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9aUmjjXy2UpFvwIaZx+Kc6emVkBoaRCWFUjyBYUuXe4=;
-        b=qNyHC/xFhfUe9P6arZl4pfFaZeU/g3aICwUIlOouFQACWBT8EPl9FU/z22Wx0vnS6u
-         xiZbMw/V7XbzgoQKhwXooSrZtsp0kPKJzWLR/tYGU3DCpGBgG3z/14e9ZaHGdZtumub0
-         i4APDHYE3u84iaqk+ebpykgAYLmTZofUEu8y6lsjlDVmS1AtJwjiUg/UwuROB88P8f4u
-         Pec1zNtQsMLmC16d7UNSnK2U9sjcIMVfgCYoTIyt18uq2Js3APOP25rAaP4Mi455A1ow
-         fKdpOgLHXNu/bmPQzlAKyjo8ZP7unbnBBsvxVDDZex7ehwmTPv9d16aJWVgIk+dCC5R8
-         +5sA==
-X-Forwarded-Encrypted: i=1; AL+hErFdxnf/ZpNBqtFQ+/M4bo4MBlvWGeX7VvRCqAvaxlswDY75pky+4RlqYD0/oE8YBoAL/k8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8PtKgpav624GrD4C6A+zfxfhidPG0mJO1QO8vxDskcJAxByt0i
-	FnrKQNpkUEdLit5Gq+YmBF7MBQHrvUiYfLzncCVMhSlQHsH6lPMxe255SzsPMN6nGmicVp+GOAJ
-	Zp88nqQ==
-X-Received: from pjdq9.prod.google.com ([2002:a17:90a:2e09:b0:3ad:32d0:ca0a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a48:b0:3ae:898e:a123
- with SMTP id 98e67ed59e1d1-3b166cd70c0mr1265220a91.14.1794271848067; Mon, 09
- Nov 2026 16:50:48 -0800 (PST)
-Date: Mon, 9 Nov 2026 16:50:47 -0800
-In-Reply-To: <CA+EHjTzaJx2nV_9YEExgYn7STSP1Kvhsqan8va8M7ba4WtCiqQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y/IdNdDl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351B11F0089F;
+	Tue, 10 Nov 2026 01:04:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794272674;
+	bh=Bv0ooEsqQhG/+6pm98YOZvLWwFhBUu/sWcsdtUoLwy4=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=Y/IdNdDllQ8txzmqlTq5n+jUNGUsT1AxrfTY2ikBxw33Ci2JnCEerTvPmnB/3QMAl
+	 OjNGcxMFLFoWuhjU9RzXBnDylktnvyRr7vcG/VsWjAmjC3ARmbReleTmjFt1KWirol
+	 utOgbEJ1hwQVm7nJ3+hkfywBaxif6Gd9FPgyDuJH+X4x56JZVehKpU2+hi4qtwbwin
+	 jSQfm77qQHMo+h+nG9Vf6+/1Ffoekt6SHMkzEwJUypYrjKykbmUp3ukB6J7sduL2i5
+	 wGnTT4nFjBjWBgxpiuYPx4ghgn2dIsiLQSdxNPvuZ29n5zLB/eObLqV1Cz2xMqSEf7
+	 vf4f15+YNFK4A==
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,25 +49,54 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20260922071945.693714-1-fuad.tabba@linux.dev> <20261007074037.316564-1-fuad.tabba@linux.dev>
- <CA+EHjTzaJx2nV_9YEExgYn7STSP1Kvhsqan8va8M7ba4WtCiqQ@mail.gmail.com>
-Message-ID: <avJqZzKX1ZVAMGr-@seanjc-mac.roam.internal>
-Subject: Re: [PATCH v2 0/2] KVM: selftests: Fix incremental build dependencies
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	"Michal =?utf-8?Q?Koutn=C3=BD?=" <mkoutny@suse.com>, James Houghton <jthoughton@google.com>, Will Deacon <will@kernel.org>, 
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 02:04:25 +0100
+Message-Id: <DMR4KREJHY3Q.4VWNF1EO3UE0@kernel.org>
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <boqun@kernel.org>,
+ <daniel.almeida@collabora.com>, <tamird@kernel.org>, <work@onurozkan.dev>,
+ <jgg@ziepe.ca>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <peter@colberg.org>
+To: "Simon Song" <xinmengs@nvidia.com>, <zhiw@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 00/12] Rust VFIO PCI support and NVIDIA vGPU driver
+References: <20261023154009.2246627-1-xinmengs@nvidia.com>
+In-Reply-To: <20261023154009.2246627-1-xinmengs@nvidia.com>
 
-On Mon, Nov 09, 2026, Fuad Tabba wrote:
-> Hi Sean, Paolo,
-> 
-> Another gentle ping on this series. Is there anything else you'd like
-> to see before it goes in?
+On Fri Oct 23, 2026 at 5:39 PM CEST, Simon Song wrote:
+>   rust: vfio: add PCI variant driver abstractions
+>   rust: vfio: use the PCI adapter for variant drivers
+>   rust: vfio: separate common device handling from PCI
 
-I'll grab the KVM change, but I would prefer the cgroup change go through the
-cgroup tree, even though Michal already acked it. AFAICT there are no dependencies,
-and it really has nothing to do with KVM.
+Those three commits introduce quite some back and forth in terms of deletin=
+g and
+refactoring previously introduce code.
+
+(I won't review them individually for this reason, but I can go over the en=
+d
+result and provide some feedback.)
+
+For patch ordering, "rust: vfio: separate common device handling from PCI"
+should be the first patch which establishes a shared representation of a ba=
+se
+VFIO device; the other two patches should be squashed into a single patch.
+
+(I think a separate adapter type for vfio-pci could still have some advanta=
+ges,
+but this can be a subsequent consideration, for now I'd stick with the core=
+ PCI
+one.)
+
+Thanks,
+Danilo
