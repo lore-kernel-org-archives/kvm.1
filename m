@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794286936;
-	b=3pKKz15MUr6U969yMEMG5oRuaHtI5dLGIjf9l/R456KPcYOgSa52haxhQQlQLhcsWFBz
-	 hDkT04oVR62k4eIOTy9tKafLXZ+Ypu/vJ7Ue9usKgkccJbZDzkqW0UaXt54aPBBvlSmNj
-	 Ll/fi/mBex/HqIXrI4M5VFvz5jOx7EXCXiMvGgaCgods1yzrAEAKuRag9paaT9QWZG7Vi
-	 1PY6vdKT3jZblbsH8UtifhOZwcgRFLcpj4rzC5BmCsAWUAez5IOSCGQoZyI2aVgTtGdOA
-	 N8ipqKNO/9UAMnzDIDGulLfCvxED4IQXwX4MBGU+6paAq0u/FsMLPBMttIxovQYI/4w==
+	t=1794286946;
+	b=5io8dfRQWrN9KLrMrC4JOHn/k6AEmwdh5UJY0iH9m5uEluTN+limjw2o5OA0iDpFbP6F
+	 YJ4YUo6d1yaaaX5DI+Kcdfmw2E/5AEuXMhgkAF3l8RJq6n7KYl4bKhHfV2IopsfkB5pw2
+	 D9zUw+ss7YboaA2xuw8w86IROeDNO1uVycH7uhtaHPtSt6H6XGefCSuV3ItOb0uzEKNYv
+	 5MT8UENwigRaNx3UzrFVACnGMGJysDsBdqayS3QnOYr7OzP0DEsZCzREUZM6PrKr1XXe8
+	 HRbFCIFXXVjsEinShseduKzG4yebSp/KH9VwmjST5HG6vGeA1CCFPGIjpNcXxbM3Now==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794286936;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794286946;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=cb7nq1igl8hjGZd6Q7sjhu2jG9fgOV2JfLPhKUQGV+M=;
-	b=kmjHCWrCWWP1zBg9ZMs8U5jlXFa39ubW3xcUaMxBEO5exAXxkudLGWO/X7HDAPOMCqcl
-	 tlpWwLrkrMnHCBvViQDcycm6QFTe9npPTiq+irKgVVeKHCM3hyEGIa6vLA696EaRXdDZJ
-	 LhqjXB/klfdGuHZtuaGU0FmrDnGHihLE3uD3Io3HEZGIaThhyl37aN8l9Its6R+FoLxeb
-	 OKw5r4tIO1CAc2KhQBcTrzhIuG+21Q/DX3+H39RU96qOwuKxhhYlTn5MBekH3qBtE+RwH
-	 9PISLK8XAlYqheE5fx9NDHkMAfBKSYP6iFu9mEsfy2J5xGEUMQk8+PGJPPTjTWFPbIg==
+	bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
+	b=J3IM/2+HxTHKzLG1i1RTj3AQIIHtGsUybYvun6lflYK5rhsmiFBy6w4aftj36ccfV1XV
+	 u2qtS6574kqPLYWdeNBP6Reau0ScMrFd065pP1TTniD0m/jO0fi+OkBdmljpkTRHR+pSF
+	 SDK38M1tYbNpMCS5Ev/qseSWkvlLQVWl4ooEw5v1bYyg6DgwEoFB7M1HkaNQKZRsZv73Q
+	 ai0/RpXF2dDYYsGHcUrBgFp7c1NcuTe6XDLqOdi/atSQ0Y32UOYXPqwr72HxFZ8EGfda/
+	 DeM77lNcRiOB55FbxB1VNWsj81BhTNGJ3lbiyemGfrrE4mtALapmbqCKFl3YVieHbXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NZLCPowE;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="lNZ/Bmo1";
 	arc=none smtp.remote-ip=209.85.208.69
 Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199F060A6F78
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 199F060A6F78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D1D606E492
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 05:02:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6D1D606E492
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NZLCPowE
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6b6ed7a9f9bso916393a12.1
-        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lNZ/Bmo1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6b76329afcdso43498a12.2
+        for <kvm@vger.kernel.org>; Mon, 09 Nov 2026 21:02:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286934; x=1794891734; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794286944; x=1794891744; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cb7nq1igl8hjGZd6Q7sjhu2jG9fgOV2JfLPhKUQGV+M=;
-        b=NZLCPowEszpUFC7yCKf4alJbSnOnIfXigRmc3ebveA6E1MwAckdOmEPbwa1TMsSzan
-         YOaI6NWwk7Yt1MBLe7yxoxfmHXGtgkW5O1Pw6w89/wLJ7q7mS70Rt/8+X5Net+hyO3Z6
-         2LleCC5eTzZYFuvg1HPw1jo5zDGsyoIOoCNC0RMdFlnNK5gAgMafFC7qZw/JYMc+ZqgJ
-         hvzaDhB6bTqZSTMxQofWLZ5DiC8jYriGF3m3VsqkAWddwgqXquoPN6EqyuWWlSWTLAep
-         DEiHprk9ALcUQ4PyULPNqInNfIKqnHAids3gK2qrhayrUbjWMvRXS4+9+mR74NK1mhDq
-         Bt2g==
+        bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
+        b=lNZ/Bmo1B5y2EaXYYAVuaMVIjPQaf0oOdvrpwSasoz6u5vTy/z+s4fr8W3wcvM74hV
+         PaIpbKX0Zy0GO/WpCVuxnl6CIkmyb2Z7JhqF88PI/zT6il+h64sSv3oldqJe8UbM7SLD
+         h/O1D4qaSAzV9xwZ7wV/yEo47kj6LKtxAVWAc+Urh4R2csyjH+d6FrgmNKsXCn+a8cFf
+         hzAO3YKZH2J6mNoE4D57WnD5hoSVzTNT+Y+CyRAYNjmHITTcLWAEmST8KJwRNqm9SkeJ
+         cw01d/rm0O7ajm0OSMfPpPXT0+uHLzEX7H+Vq3OznKrXqgMRG7XhDUID7zQIe5xPufj4
+         mAAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286934; x=1794891734;
+        d=1e100.net; s=20260707; t=1794286944; x=1794891744;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cb7nq1igl8hjGZd6Q7sjhu2jG9fgOV2JfLPhKUQGV+M=;
-        b=p4UtfpohVT46+mJ66XFhBqY5ocjDHZdmVAtQjz28OWCYGNcU6UQ6bigX0U9MUQwLM+
-         PbG8IR4zFtAvaxDQemlDHn+P6Zy94eexWnp5XxAxjPtpfCwfii3mnBbLEBJspFLqjhDN
-         G0E+wj7idXDmjmqFRgjFa2L0+uwonWU1oEgKxLDazexXUCb0FUa/EfdVZEyKTnbjVWBK
-         KMJi+nPxbxOJR/pDI20vtB0sFPEcXzyAmdqjlhnA9hVWvHb1z1WaGcw1/HG9o+z/J3Qd
-         mpcetafmoEfE0QM7gc30z5Ke2YhznOux1nHKTb81nKR/BQ7XEWP1lTfz2p0xRQkk9C1i
-         dyng==
-X-Forwarded-Encrypted: i=1; AL+hErFxxaF/7rON4IewIX1A6hJ1ZzgCFE8or1iNahFTUe/y8/iSbONBoci+4JUm5loAUQ39NOA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9+N59StuYoRaVlprLSEgz6RD/V+i1QTNL4MmDhgozqWNyRbI2w
-	Wv8qnfBWEpcpZlJ1UnM0HrwEalKBx60x0om5GjVb8ZNHj0q4Li9o7v4h/LnZ2oUozflHF8uwQVc
-	/fuM8Y9FYZrsKj1uuGA==
-X-Received: from edt12.prod.google.com ([2002:a05:6402:454c:b0:6b5:6cd3:e463])
+        bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
+        b=LfGrRZfjLM/hxeh8COvBFOq+FtUssOZ9sBXUZ9JPWGwfk5bX3wQJ5LA6WlSZsMBGrh
+         iAx1IQ5vPCBXiajoOeoC/SOBEcnXBrgBxD016JxLnjyx63ShOXNhyJEaRor76bRjKoUP
+         eL5IyM4n6/6XzrRZtcl5Ji4Q2QmuJhZROCUrRyKarkxfBok+9PCh0FvNLP3kBmvvai4n
+         lId3CN/Bai7Tj0/d+cZzPQWgSopZowr02jfdWWQI8ypsbQvVYtuDc7SmY9Q6wCNy71AE
+         jajXCJsi7mAyHfA7GazGkwBrHJXuBq7qkwQ3wY+7rFPfL+/L8tUokTaFylHVknJteqE1
+         m1VA==
+X-Forwarded-Encrypted: i=1; AL+hErEkBs1SGeEyvBh5RWtEYz63wpiXJ+liNN0BPPdBCGa/HsgX0CDyzjZGFGi2cUbLN0ofZXY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9UfFNyxqfLuDUPIEGKQgpAur5s61/SDCO4oZM9KeQ7uCQXB3/r
+	ukZEcqrSQeSsPDf7aBgLJva/MxIKJucsETBj8yaJyXZDkKVDBnMbiRXP2BuNAE8EGnLesv5NWib
+	PrRRD8RIzhka2r4ov8w==
+X-Received: from edtj4.prod.google.com ([2002:aa7:ca44:0:b0:6b7:3b3e:5148])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:c6d5:0:b0:6a9:8863:ada4 with SMTP id 4fb4d7f45d1cf-6b7571c10acmr763572a12.3.1794286934091;
- Mon, 09 Nov 2026 21:02:14 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:01:51 +0000
+ 2002:aa7:d496:0:b0:6ac:934e:a9ca with SMTP id 4fb4d7f45d1cf-6b755626f5fmr907953a12.0.1794286944079;
+ Mon, 09 Nov 2026 21:02:24 -0800 (PST)
+Date: Tue, 10 Nov 2026 05:02:00 +0000
 In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-9-tarunsahu@google.com>
-Subject: [PATCH v4 08/19] kho: block: Add the feature header to blocks
+Message-ID: <20261110050202.529473-18-tarunsahu@google.com>
+Subject: [PATCH v4 17/19] mm: memfd_luo: Add feature header to struct memfd_luo_ser
 From: Tarun Sahu <tarunsahu@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
 	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
@@ -99,429 +99,236 @@ Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Subsystems using the KHO Serialization Blocks framework currently rely
-on whole-structure compatibility strings to validate serialized block
-sets across kexec. Any modification to the block structure layout
-constitutes a breaking change and breaks compatibility between adjacent
-kernels.
+Precede struct memfd_luo_ser with struct kho_ser_hdr using
+DECLARE_KHO_SER. Later memfd features can be appended under new
+feature indices without breaking compatibility between adjacent kernels.
 
-Precede struct kho_block_header_ser with struct kho_ser_hdr using
-DECLARE_KHO_SER. Each block in a block set starts with struct
-kho_ser_hdr followed by struct kho_block_header_ser. Serialized entries
-start immediately after the header payload at offset fhdr->size.
-Block capacity is computed as (KHO_BLOCK_SIZE - fhdr->size) /
-bs->entry_size. Subsystems can append future block-level metadata under
-new feature indices without altering existing offsets.
-
-On restore, the location of the first entry and the block capacity no
-longer depend on the caller. They are derived from the header size and
-entry size the source kernel serialized with, even if the target kernel
-structures have a different size. Fields that the source kernel did not
-serialize are absent: a subsystem must not access them unless the
-corresponding feature is present in the incoming header, as doing so
-reads memory outside the serialized data.
-
-During restoration, blocks whose header does not fit the block are
-rejected, and the chain walk stops at such a block. Validate each block
-header and reject unknown required features.
+Allocate both the memfd_luo_ser feature header and the kho_vmalloc
+feature header in the same preserved folio. On restore and retrieve,
+validate incoming required features before accessing payload fields.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- include/linux/kho/abi/block.h |  15 ++--
- include/linux/kho_block.h     |   8 +-
- kernel/liveupdate/kho_block.c | 144 ++++++++++++++++++++++++----------
- 3 files changed, 113 insertions(+), 54 deletions(-)
+ include/linux/kho/abi/memfd.h |  7 ++--
+ mm/memfd_luo.c                | 67 ++++++++++++++++++++++++-----------
+ 2 files changed, 51 insertions(+), 23 deletions(-)
 
-diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
-index a40b0906c821..5f26c23506e9 100644
---- a/include/linux/kho/abi/block.h
-+++ b/include/linux/kho/abi/block.h
-@@ -28,6 +28,7 @@
- #include <asm/page.h>
- #include <linux/build_bug.h>
- #include <linux/kconfig.h>
-+#include <linux/kho/abi/feature.h>
- #include <linux/types.h>
- 
- /**
-@@ -40,14 +41,12 @@
- 
- /**
-  * struct kho_block_header_ser - Header for the serialized data block.
-- * @next:       Physical address of the next struct kho_block_header_ser.
-- * @count:      The number of entries that immediately follow this header in the
-- *              memory block.
-+ * @next:       Physical address of the next block.
-+ * @count:      The number of entries that follow the header in the memory block.
-  * @entry_size: The size in bytes of each serialized entry in the block.
-  *
-- * This structure is located at the beginning of a block of physical memory
-- * preserved across a kexec. It provides the necessary metadata to interpret
-- * the array of entries that follow.
-+ * This structure is located at the beginning of each block of physical memory
-+ * preserved across a kexec, preceded by &struct kho_ser_hdr.
+diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+index b0597c438973..27f8880ee593 100644
+--- a/include/linux/kho/abi/memfd.h
++++ b/include/linux/kho/abi/memfd.h
+@@ -83,6 +83,8 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+  * @nr_folios:   Number of folios in the folios array.
+  * @folios_fhdr: Pointer to KHO vmalloc descriptor for the array of
+  *               struct memfd_luo_folio_ser.
++ *
++ * Preceded by &struct kho_ser_hdr.
   */
- struct kho_block_header_ser {
- 	u64 next;
-@@ -55,8 +54,6 @@ struct kho_block_header_ser {
- 	u64 entry_size;
+ struct memfd_luo_ser {
+ 	u64 pos;
+@@ -93,9 +95,8 @@ struct memfd_luo_ser {
+ 	DECLARE_KHOSER_PTR(folios_fhdr, DECLARE_KHO_SER_HDR(kho_vmalloc, *));
  };
  
--static_assert(sizeof(struct kho_block_header_ser) == 24);
+-static_assert(sizeof(struct memfd_luo_ser) == 40);
 -static_assert(!IS_ENABLED(CONFIG_64BIT) ||
--	      __alignof__(struct kho_block_header_ser) == 8);
-+DECLARE_KHO_SER(kho_block_header_ser, 24, 0, 0);
+-	      __alignof__(struct memfd_luo_ser) == 8);
++/* Register memfd_luo_ser with KHO serialization accessors */
++DECLARE_KHO_SER(memfd_luo_ser, 40, 0, 0);
  
- #endif /* _LINUX_KHO_ABI_BLOCK_H */
-diff --git a/include/linux/kho_block.h b/include/linux/kho_block.h
-index 93a7cc2be5f5..776b57ae83bd 100644
---- a/include/linux/kho_block.h
-+++ b/include/linux/kho_block.h
-@@ -13,12 +13,12 @@
+ /* The compatibility string for memfd file handler */
+ #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v3"
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index 74c1ff5877c3..94510f73a606 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -256,16 +256,21 @@ static void memfd_luo_unpreserve_folios(DECLARE_KHO_SER_HDR(kho_vmalloc, *folios
  
- /**
-  * struct kho_block - Internal representation of a serialization block.
-- * @list: List head for linking blocks in memory.
-- * @ser:  Pointer to the serialized header in preserved memory.
-+ * @list:     List head for linking blocks in memory.
-+ * @fhdr:     Pointer to the serialized feature header in preserved memory.
-  */
- struct kho_block {
- 	struct list_head list;
--	struct kho_block_header_ser *ser;
-+	DECLARE_KHO_SER_HDR(kho_block_header_ser, *fhdr);
- };
- 
- /**
-@@ -63,7 +63,7 @@ struct kho_block_set_it {
- 	.blocks = LIST_HEAD_INIT((_name).blocks),			\
- 	.entry_size = _entry_size,					\
- 	.count_per_block = (KHO_BLOCK_SIZE -				\
--			    sizeof(struct kho_block_header_ser)) /	\
-+			    kho_ser_size(kho_block_header_ser)) /	\
- 			   (_entry_size),				\
- }
- 
-diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
-index 9b148009085e..20e85ce7fd5f 100644
---- a/kernel/liveupdate/kho_block.c
-+++ b/kernel/liveupdate/kho_block.c
-@@ -21,7 +21,9 @@
-  * append fields to an entry, so the kernel that writes a block and the kernel
-  * that reads it can use different entry sizes. The reader steps through the
-  * entries with the recorded size, so every entry is found, and it does not read
-- * beyond the recorded size of an entry.
-+ * beyond the recorded size of an entry. Fields appended to an entry are read
-+ * only when the feature header of the structure that owns the block set shows
-+ * them present.
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -54,10 +56,13 @@ void kho_block_set_init(struct kho_block_set *bs, size_t entry_size)
- 	WARN_ON_ONCE(!bs->count_per_block);
- }
- 
--/* Serialized entries start immediately after the block header */
-+/*
-+ * The entries start at the size recorded in the block header, so this works
-+ * for blocks this kernel wrote and for blocks handed over by another kernel.
-+ */
- static void *kho_block_entries(struct kho_block *block)
+ static size_t memfd_luo_ser_size(void)
  {
--	return (void *)(block->ser + 1);
-+	return (void *)block->fhdr + block->fhdr->size;
+-	return sizeof(struct memfd_luo_ser) + kho_ser_size(kho_vmalloc);
++	return kho_ser_size(memfd_luo_ser) + kho_ser_size(kho_vmalloc);
  }
  
- /* Get the address of the serialized entry at the specified index */
-@@ -68,22 +73,23 @@ static void *kho_block_entry(struct kho_block_set_it *it, u64 index)
- 
- /* Free serialized data */
- static void kho_block_free_ser(struct kho_block_set *bs,
--			       struct kho_block_header_ser *ser)
-+			       DECLARE_KHO_SER_HDR(kho_block_header_ser, *fhdr))
+-static struct memfd_luo_ser *memfd_luo_ser_init(void *mem)
++static struct memfd_luo_ser *
++memfd_luo_ser_init(DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr))
  {
- 	if (bs->incoming)
--		kho_restore_free(ser);
-+		kho_restore_free(fhdr);
- 	else
--		kho_unpreserve_free(ser);
-+		kho_unpreserve_free(fhdr);
+ 	DECLARE_KHO_SER_HDR(kho_vmalloc, *folios_fhdr);
+-	struct memfd_luo_ser *ser = mem;
++	struct memfd_luo_ser *ser;
++
++	kho_ser_init(fhdr, memfd_luo_ser);
++	folios_fhdr = (void *)fhdr + kho_ser_size(memfd_luo_ser);
+ 
+-	folios_fhdr = mem + sizeof(struct memfd_luo_ser);
++	ser = kho_ser_payload(fhdr, memfd_luo_ser);
+ 	KHOSER_STORE_PTR(ser->folios_fhdr, folios_fhdr);
++
+ 	return ser;
  }
  
--static struct kho_block_header_ser *kho_block_alloc_ser(struct kho_block_set *bs)
-+static DECLARE_KHO_SER_HDR(kho_block_header_ser,
-+			   *kho_block_alloc_ser(struct kho_block_set *bs))
+@@ -273,6 +278,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
  {
- 	WARN_ON_ONCE(bs->incoming);
- 	return kho_alloc_preserve(KHO_BLOCK_SIZE);
- }
+ 	struct inode *inode = file_inode(args->file);
+ 	struct memfd_luo_folio_ser *folios_ser;
++	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+ 	struct memfd_luo_ser *ser;
+ 	int err = 0, seals;
+ 	u64 inode_size;
+@@ -304,12 +310,12 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 	}
  
- static int kho_block_add(struct kho_block_set *bs,
--			 struct kho_block_header_ser *ser)
-+			 DECLARE_KHO_SER_HDR(kho_block_header_ser, *fhdr))
- {
- 	struct kho_block *block, *last;
+ 	/* Allocate the main serialization structure in preserved memory */
+-	ser = kho_alloc_preserve(memfd_luo_ser_size());
+-	if (IS_ERR(ser)) {
+-		err = PTR_ERR(ser);
++	fhdr = kho_alloc_preserve(memfd_luo_ser_size());
++	if (IS_ERR(fhdr)) {
++		err = PTR_ERR(fhdr);
+ 		goto err_unlock;
+ 	}
+-	ser = memfd_luo_ser_init(ser);
++	ser = memfd_luo_ser_init(fhdr);
  
-@@ -94,33 +100,38 @@ static int kho_block_add(struct kho_block_set *bs,
- 	if (!block)
- 		return -ENOMEM;
+ 	ser->pos = args->file->f_pos;
+ 	ser->size = inode_size;
+@@ -323,12 +329,12 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 	inode_unlock(inode);
  
--	block->ser = ser;
-+	block->fhdr = fhdr;
- 	last = list_last_entry_or_null(&bs->blocks, struct kho_block, list);
- 	list_add_tail(&block->list, &bs->blocks);
- 	bs->nblocks++;
- 
--	if (last)
--		last->ser->next = virt_to_phys(ser);
--	else
--		bs->head_pa = virt_to_phys(ser);
-+	if (last) {
-+		kho_ser_payload(last->fhdr, kho_block_header_ser)->next =
-+			virt_to_phys(fhdr);
-+	} else {
-+		bs->head_pa = virt_to_phys(fhdr);
-+	}
+ 	args->private_data = folios_ser;
+-	args->serialized_data = virt_to_phys(ser);
++	args->serialized_data = virt_to_phys(fhdr);
  
  	return 0;
+ 
+ err_free_ser:
+-	kho_unpreserve_free(ser);
++	kho_unpreserve_free(fhdr);
+ err_unlock:
+ 	shmem_freeze(inode, false);
+ 	inode_unlock(inode);
+@@ -337,12 +343,14 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 
+ static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
+ {
++	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+ 	struct memfd_luo_ser *ser;
+ 
+ 	if (WARN_ON_ONCE(!args->serialized_data))
+ 		return -EINVAL;
+ 
+-	ser = phys_to_virt(args->serialized_data);
++	fhdr = phys_to_virt(args->serialized_data);
++	ser = kho_ser_payload(fhdr, memfd_luo_ser);
+ 
+ 	/*
+ 	 * The pos might have changed since prepare. Everything else stays the
+@@ -356,6 +364,7 @@ static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
+ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
+ {
+ 	struct inode *inode = file_inode(args->file);
++	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+ 	struct memfd_luo_ser *ser;
+ 
+ 	if (WARN_ON_ONCE(!args->serialized_data))
+@@ -364,13 +373,14 @@ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
+ 	inode_lock(inode);
+ 	shmem_freeze(inode, false);
+ 
+-	ser = phys_to_virt(args->serialized_data);
++	fhdr = phys_to_virt(args->serialized_data);
++	ser = kho_ser_payload(fhdr, memfd_luo_ser);
+ 
+ 	memfd_luo_unpreserve_folios(KHOSER_LOAD_PTR(ser->folios_fhdr),
+ 				    args->private_data,
+ 				    ser->nr_folios);
+ 
+-	kho_unpreserve_free(ser);
++	kho_unpreserve_free(fhdr);
+ 	inode_unlock(inode);
  }
  
- static int kho_block_set_grow_one(struct kho_block_set *bs)
+@@ -402,6 +412,7 @@ static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_se
+ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
  {
-+	DECLARE_KHO_SER_HDR(kho_block_header_ser, *fhdr);
- 	struct kho_block_header_ser *ser;
+ 	struct memfd_luo_folio_ser *folios_ser;
++	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+ 	struct memfd_luo_ser *ser;
+ 
+ 	/*
+@@ -412,10 +423,16 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+ 	if (args->retrieve_status)
+ 		return;
+ 
+-	ser = phys_to_virt(args->serialized_data);
+-	if (!ser)
++	if (WARN_ON_ONCE(!args->serialized_data))
+ 		return;
+ 
++	fhdr = phys_to_virt(args->serialized_data);
++	if (kho_ser_validate(fhdr, memfd_luo_ser)) {
++		pr_warn("invalid feature header, folios not discarded\n");
++		goto out;
++	}
++
++	ser = kho_ser_payload(fhdr, memfd_luo_ser);
+ 	if (ser->nr_folios) {
+ 		folios_ser = kho_restore_vmalloc(KHOSER_LOAD_PTR(ser->folios_fhdr));
+ 		if (!folios_ser)
+@@ -426,7 +443,7 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+ 	}
+ 
+ out:
+-	kho_restore_free(ser);
++	kho_restore_free(fhdr);
+ }
+ 
+ static int memfd_luo_retrieve_folios(struct file *file,
+@@ -533,14 +550,24 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ {
+ 	struct memfd_luo_folio_ser *folios_ser;
++	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+ 	struct memfd_luo_ser *ser;
+ 	struct file *file;
  	int err;
  
--	ser = kho_block_alloc_ser(bs);
--	if (IS_ERR(ser))
--		return PTR_ERR(ser);
-+	fhdr = kho_block_alloc_ser(bs);
-+	if (IS_ERR(fhdr))
-+		return PTR_ERR(fhdr);
+-	ser = phys_to_virt(args->serialized_data);
+-	if (!ser)
++	if (WARN_ON_ONCE(!args->serialized_data))
+ 		return -EINVAL;
  
-+	kho_ser_init(fhdr, kho_block_header_ser);
-+	ser = kho_ser_payload(fhdr, kho_block_header_ser);
- 	ser->entry_size = bs->entry_size;
- 
--	err = kho_block_add(bs, ser);
-+	err = kho_block_add(bs, fhdr);
- 	if (err) {
--		kho_block_free_ser(bs, ser);
-+		kho_block_free_ser(bs, fhdr);
- 		return err;
++	fhdr = phys_to_virt(args->serialized_data);
++	err = kho_ser_validate(fhdr, memfd_luo_ser);
++	if (err) {
++		pr_err("memfd_luo_ser feature validation failed: %pe\n",
++		       ERR_PTR(err));
++		goto free_ser;
++	}
++
++	ser = kho_ser_payload(fhdr, memfd_luo_ser);
++
+ 	/* Make sure the file only has seals supported by this version. */
+ 	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
+ 		err = -EOPNOTSUPP;
+@@ -581,14 +608,14 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
  	}
  
-@@ -137,12 +148,12 @@ static void kho_block_set_shrink_one(struct kho_block_set *bs)
- 	last = list_last_entry(&bs->blocks, struct kho_block, list);
- 	list_del(&last->list);
- 	bs->nblocks--;
--	kho_block_free_ser(bs, last->ser);
-+	kho_block_free_ser(bs, last->fhdr);
- 	kfree(last);
+ 	args->file = file;
+-	kho_restore_free(ser);
++	kho_restore_free(fhdr);
  
- 	new_last = list_last_entry_or_null(&bs->blocks, struct kho_block, list);
- 	if (new_last)
--		new_last->ser->next = 0;
-+		kho_ser_payload(new_last->fhdr, kho_block_header_ser)->next = 0;
- 	else
- 		bs->head_pa = 0;
- }
-@@ -203,6 +214,23 @@ void kho_block_set_shrink(struct kho_block_set *bs, u64 count)
- 		kho_block_set_shrink_one(bs);
- }
+ 	return 0;
  
-+/*
-+ * Payload of a block, or NULL if its feature header does not fit the
-+ * block. Used on handed-over blocks (restore, cycle check and cleanup)
-+ * to bound fhdr->size before the payload is used.
-+ */
-+static struct kho_block_header_ser *
-+kho_block_get_header_ser(const DECLARE_KHO_SER_HDR(kho_block_header_ser, *fhdr))
-+{
-+	if (fhdr->size < kho_ser_hdr_size(fhdr) +
-+	    offsetofend(struct kho_block_header_ser, entry_size) ||
-+	    fhdr->size >= KHO_BLOCK_SIZE ||
-+	    !IS_ALIGNED(fhdr->size, sizeof(u64)))
-+		return NULL;
-+
-+	return kho_ser_payload(fhdr, kho_block_header_ser);
-+}
-+
- /*
-  * kho_block_set_is_cyclic - Check for cycles in a linked list of blocks.
-  * Uses Floyd's cycle-finding algorithm to ensure sanity of the incoming list.
-@@ -211,28 +239,35 @@ void kho_block_set_shrink(struct kho_block_set *bs, u64 count)
-  */
- static bool kho_block_set_is_cyclic(struct kho_block_set *bs)
- {
--	struct kho_block_header_ser *fast;
--	struct kho_block_header_ser *slow;
-+	const DECLARE_KHO_SER_HDR(kho_block_header_ser, *fast);
-+	const DECLARE_KHO_SER_HDR(kho_block_header_ser, *slow);
-+	struct kho_block_header_ser *fast_ser;
-+	struct kho_block_header_ser *slow_ser;
- 	int count = 0;
- 
- 	fast = phys_to_virt(bs->head_pa);
- 	slow = fast;
- 
- 	while (fast) {
--		if (count++ >= KHO_MAX_BLOCKS) {
--			pr_err("Block set is corrupted\n");
-+		if (++count > KHO_MAX_BLOCKS) {
-+			pr_err("Block set exceeds max blocks: %d\n", count);
- 			return true;
- 		}
- 
--		if (!fast->next)
-+		fast_ser = kho_block_get_header_ser(fast);
-+		if (!fast_ser || !fast_ser->next)
- 			break;
- 
--		fast = phys_to_virt(fast->next);
--		if (!fast->next)
-+		fast = phys_to_virt(fast_ser->next);
-+		fast_ser = kho_block_get_header_ser(fast);
-+		if (!fast_ser || !fast_ser->next)
- 			break;
- 
--		fast = phys_to_virt(fast->next);
--		slow = phys_to_virt(slow->next);
-+		fast = phys_to_virt(fast_ser->next);
-+		slow_ser = kho_block_get_header_ser(slow);
-+		if (!slow_ser)
-+			break;
-+		slow = phys_to_virt(slow_ser->next);
- 
- 		if (slow == fast) {
- 			pr_err("Block set is corrupted\n");
-@@ -257,7 +292,7 @@ static bool kho_block_set_is_cyclic(struct kho_block_set *bs)
-  */
- int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
- {
--	struct kho_block_header_ser *ser;
-+	DECLARE_KHO_SER_HDR(kho_block_header_ser, *fhdr);
- 	u64 next_pa = head_pa;
- 	u64 entry_size = 0;
- 	int err;
-@@ -274,9 +309,25 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
- 	}
- 
- 	while (next_pa) {
-+		struct kho_block_header_ser *ser;
- 		u64 capacity;
- 
--		ser = phys_to_virt(next_pa);
-+		fhdr = phys_to_virt(next_pa);
-+		ser = kho_block_get_header_ser(fhdr);
-+		if (!ser) {
-+			pr_warn("Block has an invalid header size: %u\n",
-+				fhdr->size);
-+			err = -EINVAL;
-+			goto err_destroy;
-+		}
-+
-+		err = kho_ser_validate(fhdr, kho_block_header_ser);
-+		if (err) {
-+			pr_warn("Block header feature validation failed: %pe\n",
-+				ERR_PTR(err));
-+			goto err_destroy;
-+		}
-+
- 		if (!ser->entry_size || (entry_size && ser->entry_size != entry_size)) {
- 			pr_warn("Block contains invalid entry size: %llu\n",
- 				ser->entry_size);
-@@ -285,7 +336,7 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
- 		}
- 		entry_size = ser->entry_size;
- 		bs->entry_size = entry_size;
--		capacity = (KHO_BLOCK_SIZE - sizeof(*ser)) / bs->entry_size;
-+		capacity = (KHO_BLOCK_SIZE - fhdr->size) / bs->entry_size;
- 		bs->count_per_block = capacity;
- 
- 		if (!ser->count || ser->count > capacity) {
-@@ -294,7 +345,7 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
- 			err = -EINVAL;
- 			goto err_destroy;
- 		}
--		err = kho_block_add(bs, ser);
-+		err = kho_block_add(bs, fhdr);
- 		if (err)
- 			goto err_destroy;
- 		next_pa = ser->next;
-@@ -307,10 +358,12 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
- 
- 	/* Free the remaining un-restored blocks in the physical chain */
- 	while (next_pa) {
--		struct kho_block_header_ser *next_ser = phys_to_virt(next_pa);
-+		struct kho_block_header_ser *next_ser;
- 
--		next_pa = next_ser->next;
--		kho_block_free_ser(bs, next_ser);
-+		fhdr = phys_to_virt(next_pa);
-+		next_ser = kho_block_get_header_ser(fhdr);
-+		next_pa = next_ser ? next_ser->next : 0;
-+		kho_block_free_ser(bs, fhdr);
- 	}
+ put_file:
+ 	fput(file);
+ free_ser:
+-	kho_restore_free(ser);
++	kho_restore_free(fhdr);
  	return err;
  }
-@@ -325,7 +378,7 @@ void kho_block_set_destroy(struct kho_block_set *bs)
  
- 	list_for_each_entry_safe(block, tmp, &bs->blocks, list) {
- 		list_del(&block->list);
--		kho_block_free_ser(bs, block->ser);
-+		kho_block_free_ser(bs, block->fhdr);
- 		kfree(block);
- 	}
- 	bs->nblocks = 0;
-@@ -341,8 +394,12 @@ void kho_block_set_clear(struct kho_block_set *bs)
- 	struct kho_block *block;
- 
- 	list_for_each_entry(block, &bs->blocks, list) {
--		block->ser->count = 0;
--		memset(block->ser + 1, 0, KHO_BLOCK_SIZE - sizeof(*block->ser));
-+		struct kho_block_header_ser *ser =
-+			kho_ser_payload(block->fhdr, kho_block_header_ser);
-+
-+		ser->count = 0;
-+		memset(kho_block_entries(block), 0,
-+		       KHO_BLOCK_SIZE - block->fhdr->size);
- 	}
- }
- 
-@@ -371,6 +428,7 @@ void kho_block_set_it_init(struct kho_block_set_it *it, struct kho_block_set *bs
-  */
- void *kho_block_set_it_reserve_entry(struct kho_block_set_it *it)
- {
-+	struct kho_block_header_ser *ser;
- 	void *entry;
- 
- 	if (!it->block)
-@@ -384,7 +442,8 @@ void *kho_block_set_it_reserve_entry(struct kho_block_set_it *it)
- 	}
- 
- 	entry = kho_block_entry(it, it->i++);
--	it->block->ser->count = it->i;
-+	ser = kho_ser_payload(it->block->fhdr, kho_block_header_ser);
-+	ser->count = it->i;
- 	return entry;
- }
- 
-@@ -403,10 +462,13 @@ void *kho_block_set_it_reserve_entry(struct kho_block_set_it *it)
-  */
- void *kho_block_set_it_read_entry(struct kho_block_set_it *it)
- {
-+	struct kho_block_header_ser *ser;
-+
- 	if (!it->block)
- 		return NULL;
- 
--	if (it->i == it->block->ser->count) {
-+	ser = kho_ser_payload(it->block->fhdr, kho_block_header_ser);
-+	if (it->i == ser->count) {
- 		if (list_is_last(&it->block->list, &it->bs->blocks))
- 			return NULL;
- 		it->block = list_next_entry(it->block, list);
 -- 
 2.56.0.506.g506a7eabc5-goog
 
