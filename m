@@ -1,97 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794307267;
-	b=d+llXIbwOs6hwia1m488MHdjGO6ddHLftgmXzzDK29pasIzDmFyeRQ/PCA4Gm4HOonkQ
-	 WfddxRplkdi5Rd/Ei0XPVMKk2a4MLQCP7NAB3FuI5mjTC6WGNbW6adUmgyt/3KsqEgEfY
-	 TQU4tBROIguY2t8uDAA4z1/j2ROryPgAp+Y27yGQUoqgGb8ItZAcTLnIZNUtMEEEjMYSu
-	 vHbK0vTWUH1oMrrySwL4M5++iejxxWc8OO47LOyMrnRd0zw7o8sxAQQmSg1kp/NGzkRf8
-	 Lzlet/lx2RdyzW3cE51GxoV+4zeupMEQ7f5+DN6QLowlG4vmxa2Dr+fQSmAb/dShTqQ==
+	t=1794308850;
+	b=f3MEnMQpweWM0v/XOOgu41OzCzJEdbKPVIS0wK7EP/Fo7pxsHv/0XcT/us8Zg69Ahc9n
+	 9LCXTDCfpp9FAf/Ke0kpB9RxLJEjyVpXGk1pSbj/se6TwSDtkePIyBDBOhWhQKHzwCyOV
+	 XmKPPfrEDIkIb4cj2Way+eqECC69/fKtOPH0ZRBCiqGi3UxYOuqB6BJ/NL24fHYnCRTGo
+	 7Zzrs8Qbu1kL7l2U+btFkJx2m/nb91++E7myJ0hfsETxD0F/QZthlFiTpKNHHHeNRh1Q9
+	 7QGdpsasArnUGVmHyeCu4YMzBLbzIq5RF/VxpQkGbrcIUuXfO79Jp5LpURnEuvvUNpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794307267;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=9RvJebEHN0ToJdhmNwuM3zN40XxviuMMEwwuGiw6/Qg=;
-	b=QHTFYwiz4OUoVA7hy2QBSdd6Dnc5JjYxZ9ME2LmuwfPsA0PBc5FfypV4KNDCxY71xDIa
-	 CrR44OZk7DJvzVvZk49QTCkXmmszacF6usEMbZT3fkCU7tSfZzbYuOAE/Kf/bmQtk5C/4
-	 oCAOf539qsybl3aq6/TwOt2t31JiinCWXbQR8PkpjGJZcK8j4vkwuNGqJXPIdtsFud2Wc
-	 zYPd9O2CYP57s6TR1BEuyCGmYFC5Y1EEooti9Rzv7NhXdPHEmRI+ybNaEIEnOp945Vbwb
-	 jRfdQD9pu1TrEO0kCxpYYuZtjN9wqpZsmT6phyGgGb5QCqksVLzYgsbnMKplbzvj09g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794308850;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Gk5/z5UHtpWXsmW1+RWmjFtC0T17jkciMDqpUKmwIl8=;
+	b=H6AlDAgKJ93oxITMToQq5DYki1MIyUH7YMaAil1LLd7pMH1ChQY8sV17PHlDN99tkvsy
+	 VNp6Rz+UYQmIiLCP+JpjolRsvWgl+lxj/Q/bH0kyLi+j1t3nJ0rqZWzVWEAjmxS3A/sYS
+	 pFMTIRm82rP69XjAATYxzsaOsACx2c2fOIcKUsQZ7KcpSgFrOnrSTpMKxIenEj0ffEb00
+	 VebBvkwvyGfR6cxdL3YRRr55i7G+EEjKTFgpGrBlBIJaUFPff2BR4o1p0VQhO17i5wj3z
+	 kxfZf04tUE2Jjf9myMfnlVLZ2sbP7q1vuq49Zr3JFyV8udply2/i2O1l5kDjkQEZsbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HA5nYWRr;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qXfWzAa+;
+	arc=none smtp.remote-ip=95.215.58.70
+Received: from mta1.migadu.com (out-70.mta1.migadu.com [95.215.58.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D09B606A33B
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 10:41:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D09B606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E9F606A336
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 11:07:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41E9F606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HA5nYWRr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794307265;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9RvJebEHN0ToJdhmNwuM3zN40XxviuMMEwwuGiw6/Qg=;
-	b=HA5nYWRrHEVWrXwvv5J8wG/3xnsycmnr6AK8d/bPb+UnylSXLXdOEHIotLlHFeQPzkJSIp
-	rJ27HWyuOSvve2965Z+1Ge8VSHt9uodlDqhAIyeaZO399oirLvy3BV2Z95YqgXaLK/mU4G
-	oUa81jfISRe0h2hI1w/kZ9urlEIYxlk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-TOY0otYhNVWo4ajIt8-xfA-1; Tue,
- 10 Nov 2026 05:41:01 -0500
-X-MC-Unique: TOY0otYhNVWo4ajIt8-xfA-1
-X-Mimecast-MFC-AGG-ID: TOY0otYhNVWo4ajIt8-xfA_1794307259
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B032D18004F9;
-	Tue, 10 Nov 2026 10:40:58 +0000 (UTC)
-Received: from pabeni-thinkpadp1gen8.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CA62626C;
-	Tue, 10 Nov 2026 10:40:51 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: bobbyeshleman@meta.com
-Cc: sgarzare@redhat.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	stefanha@redhat.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	shuah@kernel.org,
-	rdunlap@infradead.org,
-	donald.hunter@gmail.com,
-	edumazet@kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org,
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qXfWzAa+
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=BXrmF/fjfe9y8XP2JkR7Eemnuq82V/mUf87aDFH49v8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794308847; v=1; x=1794913647;
+ b=qXfWzAa+8dZDdq/ERMCS5bJOt9rypRbyzZpB+ChIlRsChLLryno7WD31lF5ziUkr2o6Bw9mn
+ p5Pcqb/eM+mW0b3w+/Q7D30FKgLAGjg4iUIdnWpdePz93Iz7lRyf5uVWEiUVVfX/x4EnjaOhooJ
+ lZ8lICA/WTSYDgXQHe04wJGA=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 6ea7a5a5c9741bf1;
+	Tue, 10 Nov 2026 11:07:27 +0000
+X-Mizu-Trace-ID: 6ea7a5a5c9741bf1
+X-Migadu-Flow: FLOW_OUT
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
-	sargun@sargun.me,
-	jlinbox@meta.com,
-	bobbyeshleman@gmail.com
-Subject: Re: [PATCH net-next v5 5/7] vsock/virtio: support guest device network namespace
-Date: Tue, 10 Nov 2026 11:40:35 +0100
-Message-ID: <20261110104035.225429-1-pabeni@redhat.com>
-In-Reply-To: <20261103-vsock-guest-ns-v5-5-48179b9b66b8@meta.com>
-References: <20261103-vsock-guest-ns-v5-5-48179b9b66b8@meta.com>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	kvmarm@lists.linux.dev,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's dirty ring is full
+Date: Tue, 10 Nov 2026 11:07:23 +0000
+Message-ID: <20261110110724.3614412-2-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261110110724.3614412-1-fuad.tabba@linux.dev>
+References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,226 +82,128 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+Pre-faulting can map a dirty-logged page writable, which pushes it to
+the vCPU's dirty ring. KVM_RUN exits with KVM_EXIT_DIRTY_RING_FULL
+before the ring overflows, but the pre-fault loop never checks it, so
+one call over more such pages than the ring has free trips the WARN in
+kvm_dirty_ring_push() and overwrites entries userspace hasn't
+harvested. On x86:
+
+  WARNING: arch/x86/kvm/../../../virt/kvm/dirty_ring.c:225 at kvm_dirty_ring_push+0x7a/0xd0
+  Call Trace:
+   make_spte+0x2cc/0x450
+   kvm_tdp_mmu_map+0x5e1/0x7f0
+   kvm_tdp_page_fault+0x12c/0x1b0
+   kvm_mmu_do_page_fault+0x181/0x250
+   kvm_arch_vcpu_pre_fault_memory+0x136/0x1d0
+   kvm_vcpu_pre_fault_memory+0xcf/0x180
+   kvm_vcpu_ioctl+0x455/0x770
+
+Stop the loop once the ring is soft full, returning the pages already
+processed, or -ENOSPC when there are none, since a retry can't succeed
+until userspace harvests the ring. kvm_dirty_ring_check_request() fills
+in a KVM_RUN exit, so test the ring's state directly. The stub for
+!HAVE_KVM_DIRTY_RING is for s390, which has the ioctl but no ring.
+
+Fixes: bc1a5cd002116 ("KVM: Add KVM_PRE_FAULT_MEMORY vcpu ioctl to pre-populate guest memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
---- Patch [5]: [PATCH net-next v5 5/7] vsock/virtio: support guest device network namespace ---
-I found three issues in this patch: one functional regression, one commit message problem, and one existing tap leak that the patch now reaches.
+ Documentation/virt/kvm/api.rst | 9 +++++++--
+ include/linux/kvm_dirty_ring.h | 6 ++++++
+ virt/kvm/dirty_ring.c          | 2 +-
+ virt/kvm/kvm_main.c            | 6 ++++++
+ 4 files changed, 20 insertions(+), 3 deletions(-)
 
-commit 074136a5d2f57598d227b743b7c490274cb32bed
-Author: Bobby Eshleman <bobbyeshleman@meta.com>
-
-vsock/virtio: support guest device network namespace
-
-This patch makes the virtio-vsock guest device assignable to a network
-namespace. virtio_transport_rx_work() now re-reads the assigned netns for
-each packet and passes it to virtio_transport_recv_pkt(). The listen and
-connecting receive paths now call vsock_maybe_set_connected() instead of
-vsock_insert_connected(), and virtio_transport_send_pkt() gains a
-reachability check.
-
-> Make the virtio-vsock device assignable to a namespace and initialize it
-> to init_net. Because virtio-vsock and init_net are both hardcoded to
-> global mode, nothing changes until the assign command is issued.
-
-[ ... ]
-
-> it wins the race to the table and does NOT pass the reachability tests,
-> then it will be reset. This is the purpose of the new helper
-> 'vsock_maybe_set_connected()'.
-
-[Severity: Low]
-[Finding: main-1-1]
-[Sources: opus-5-5]
-This isn't a bug, but does this description match what this patch does?
-
-The previous commit in the series ("vsock: add a netlink command to
-assign the g2h device to a netns") already defines and exports
-vsock_maybe_set_connected(). The same commit adds netns_assign_allow to
-struct vsock_transport and initializes the g2h netns to init_net:
-
-net/vmw_vsock/af_vsock.c:
-    static struct net __rcu *vsock_g2h_net = RCU_INITIALIZER(&init_net);
-
-This patch only calls the helper and sets .netns_assign_allow = true.
-
-The reachability check added to virtio_transport_send_pkt() is only
-described in the v4 changelog below the --- line, so it won't reach git
-history. Could the commit message say that virtio_transport_send_pkt()
-now drops packets from a netns that cannot reach the device and returns
--ENETUNREACH? That includes credit updates, shutdown packets and RST
-replies.
-
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> index eced6929405df..06df82b130cff 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
-> @@ -256,6 +256,15 @@ virtio_transport_send_pkt(struct sk_buff *skb, struct net *net)
->  		goto out_rcu;
->  	}
->  
-> +	/* A socket reset by an assign can still send credit updates from
-> +	 * recvmsg() and setsockopt(SO_RCVLOWAT).
-> +	 */
-> +	if (!vsock_g2h_net_reachable(net)) {
-> +		kfree_skb(skb);
-> +		len = -ENETUNREACH;
-> +		goto out_rcu;
-> +	}
-> +
-
-[ ... ]
-
-> @@ -682,10 +697,15 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  
->  			virtio_transport_deliver_tap_pkt(skb);
->  
-
-[Severity: High]
-[Finding: main-6-6]
-[Sources: opus-5-5]
-This isn't a bug introduced by this patch, but this patch extends it to
-the guest device, which can now be isolated. Can tap delivery leak the
-assigned namespace's traffic to vsockmon devices in other namespaces?
-
-virtio_transport_deliver_tap_pkt() runs before the netns-aware
-virtio_transport_recv_pkt(). The call chain
-vsock_deliver_tap()->__vsock_deliver_tap() then walks the global
-vsock_tap_all list without any netns filter:
-
-net/vmw_vsock/af_vsock_tap.c:__vsock_deliver_tap() {
-    ...
-	list_for_each_entry_rcu(tmp, &vsock_tap_all, list) {
-		ret = __vsock_deliver_tap_skb(skb, tmp->dev);
-    ...
-}
-
-This loop never compares dev_net(tmp->dev) with the packet's namespace.
-vsockmon_link_ops has no netns restriction. RTM_NEWLINK only needs
-CAP_NET_ADMIN in the user namespace that owns the netns.
-
-So an unprivileged user can run unshare -Urn and create a vsockmon link.
-The module autoloads through MODULE_ALIAS_RTNL_LINK("vsockmon"). The user
-can then capture on that link with AF_PACKET.
-
-Wouldn't that let any namespace see the traffic of the local-mode
-namespace the guest device was assigned to? The tap paths in vhost-vsock
-and vsock_loopback have the same problem.
-
-> -			/* Force virtio-transport into global mode since it
-> -			 * does not yet support local-mode namespacing.
-> +			/* Only grab a reference if the net changes underneath
-> +			 * us.
->  			 */
-> -			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
-> +			if (unlikely(!vsock_g2h_net_eq(net))) {
-> +				put_net_track(net, &ns_tracker);
-> +				net = vsock_g2h_net_get(&ns_tracker);
-> +			}
-> +
-> +			virtio_transport_recv_pkt(t, skb, net);
->  		}
->  	} while (!virtqueue_enable_cb(vq));
-
-[ ... ]
-
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 1e762a480df49..7efcbdc7e04fc 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-
-[ ... ]
-
-> @@ -1478,9 +1478,14 @@ virtio_transport_recv_connecting(struct sock *sk,
->  
->  	switch (le16_to_cpu(hdr->op)) {
->  	case VIRTIO_VSOCK_OP_RESPONSE:
-> -		sk->sk_state = TCP_ESTABLISHED;
-> +		if (!vsock_maybe_set_connected(vsk)) {
-> +			virtio_transport_reset_no_sock(t, skb, net);
-
-[Severity: High]
-[Finding: main-1-0]
-[Sources: opus-5-5]
-Can this RST ever reach the host?
-
-virtio_transport_reset_no_sock() ends in t->send_pkt(reply, net). The
-check this patch adds to virtio_transport_send_pkt() frees the reply when
-net cannot reach the device:
-
-	if (!vsock_g2h_net_reachable(net)) {
-		kfree_skb(skb);
-		len = -ENETUNREACH;
-		goto out_rcu;
-	}
-
-The v5 changelog says the arrival netns is passed here instead of
-sock_net(sk) so that the RST is not dropped. But vsock_net_check_mode()
-looks like an equivalence relation:
-
-	if (net_eq(ns0, ns1))
-		return true;
-	...
-	return mode0 == VSOCK_NET_MODE_GLOBAL && mode0 == mode1;
-
-A netns's mode is also fixed when the netns is created: vsock_net_init()
-sets it, and later writes to the ns_mode sysctl return -EPERM.
-
-virtio_transport_recv_pkt() finds the socket through
-__vsock_find_{connected,bound}_socket_net(), which requires
-vsock_net_check_mode(sock_net(sk), net). vsock_maybe_set_connected() only
-fails when sock_net(sk) cannot reach the newly assigned g2h netns.
-
-So the arrival netns cannot reach it either, and
-vsock_g2h_net_reachable(net) is false whenever this branch runs.
-
-An assign can land after the per-packet snapshot in
-virtio_transport_rx_work() and before the check in
-vsock_maybe_set_connected(). That is the race the commit message
-describes.
-
-In this OP_RESPONSE case the host already holds an ESTABLISHED socket. If
-the RST is dropped, won't that connection stay half-open until the host
-sends something? A host that only reads would wait forever.
-
-The commit message says such a socket "will be reset", but only the
-local socket is closed.
-
-The same applies to the new failure path in
-virtio_transport_recv_listen():
-
-	if (!vsock_maybe_set_connected(vchild)) {
-		release_sock(child);
-		virtio_transport_reset_no_sock(t, skb, net);
-		sock_put(child);
-		return -ENETUNREACH;
-	}
-
-Here the host's connect() gets neither a RESPONSE nor an RST. It waits for
-its connect timeout instead of failing with ECONNRESET.
-
-By the same reasoning, the other virtio_transport_reset_no_sock() calls in
-virtio_transport_recv_listen() that v5 moved from sock_net(sk) to net
-behave the same either way.
-
-Would getting the RST out need a different approach? For example, it
-could be sent on the newly assigned g2h netns, or replies could be exempt
-from the check in virtio_transport_send_pkt().
-
-> +			skerr = ECONNRESET;
-> +			err = -ENETUNREACH;
-> +			goto close;
-> +		}
-> +
->  		sk->sk_socket->state = SS_CONNECTED;
-> -		vsock_insert_connected(vsk);
->  		sk->sk_state_change(sk);
->  		break;
-
-[ ... ]
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index e95c9cda085d9..89eb6be9bc6e3 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -6544,6 +6544,7 @@ Errors:
+   ENOENT     The specified `gpa` is outside defined memslots.
+   ENOEXEC    The vCPU has not been initialised (arm64).
+   EINTR      An unmasked signal is pending and no page was processed.
++  ENOSPC     The vCPU's dirty ring is full and no page was processed.
+   EFAULT     The parameter address was invalid.
+   EHWPOISON  A poisoned host page was encountered.
+   EOPNOTSUPP Mapping memory for a GPA is unsupported by the
+@@ -6588,7 +6589,9 @@ case, the ioctl can be called in parallel.
+ 
+ When the ioctl returns, the input values are updated to point to the
+ remaining range.  If `size` > 0 on return, the caller can just issue
+-the ioctl again with the same `struct kvm_map_memory` argument.
++the ioctl again with the same `struct kvm_pre_fault_memory` argument.
++If that fails with ENOSPC, the vCPU's dirty ring has to be harvested
++and reset first.
+ 
+ On x86, shadow page tables cannot support this ioctl because they
+ are indexed by virtual address or nested guest physical address.
+@@ -8957,7 +8960,9 @@ Therefore, the ioctl must be called *before* reading the content of
+ the dirty pages.
+ 
+ The dirty ring can get full.  When it happens, the KVM_RUN of the
+-vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL.
++vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL, and
++KVM_PRE_FAULT_MEMORY on the vcpu will process no more pages until the
++ring has been harvested and reset.
+ 
+ The dirty ring interface has a major difference comparing to the
+ KVM_GET_DIRTY_LOG interface in that, when reading the dirty ring from
+diff --git a/include/linux/kvm_dirty_ring.h b/include/linux/kvm_dirty_ring.h
+index eb10d87adf7d5..88b4f2a009274 100644
+--- a/include/linux/kvm_dirty_ring.h
++++ b/include/linux/kvm_dirty_ring.h
+@@ -60,6 +60,11 @@ static inline void kvm_dirty_ring_push(struct kvm_vcpu *vcpu,
+ {
+ }
+ 
++static inline bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
++{
++	return false;
++}
++
+ static inline struct page *kvm_dirty_ring_get_page(struct kvm_dirty_ring *ring,
+ 						   u32 offset)
+ {
+@@ -81,6 +86,7 @@ int kvm_dirty_ring_alloc(struct kvm *kvm, struct kvm_dirty_ring *ring,
+ int kvm_dirty_ring_reset(struct kvm *kvm, struct kvm_dirty_ring *ring,
+ 			 int *nr_entries_reset);
+ void kvm_dirty_ring_push(struct kvm_vcpu *vcpu, u32 slot, u64 offset);
++bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring);
+ 
+ bool kvm_dirty_ring_check_request(struct kvm_vcpu *vcpu);
+ 
+diff --git a/virt/kvm/dirty_ring.c b/virt/kvm/dirty_ring.c
+index 572b854edf740..f73f92102cb7a 100644
+--- a/virt/kvm/dirty_ring.c
++++ b/virt/kvm/dirty_ring.c
+@@ -40,7 +40,7 @@ static u32 kvm_dirty_ring_used(struct kvm_dirty_ring *ring)
+ 	return READ_ONCE(ring->dirty_index) - READ_ONCE(ring->reset_index);
+ }
+ 
+-static bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
++bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
+ {
+ 	return kvm_dirty_ring_used(ring) >= ring->soft_limit;
+ }
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cf4cb586f1407..da1b76ceb65e3 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4461,6 +4461,12 @@ static int kvm_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 			break;
+ 		}
+ 
++		/* Like KVM_RUN: only the iteration crossing the soft limit uses the reserve. */
++		if (vcpu->kvm->dirty_ring_size && kvm_dirty_ring_soft_full(&vcpu->dirty_ring)) {
++			r = -ENOSPC;
++			break;
++		}
++
+ 		r = kvm_arch_vcpu_pre_fault_memory(vcpu, range);
+ 		if (WARN_ON_ONCE(r == 0 || r == -EIO))
+ 			break;
 -- 
-This is an AI-generated review.
+2.47.3
 
