@@ -1,45 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794272675;
-	b=oyVDN1Jm5877l3GGlE0PhSB1npcdR4myuoGVWyTJTBxcYe2Y5PIHlswtWZsWEySQbGyA
-	 hif3AZupRMxUU4aCY2kuIG5xXyb7jCYFfiwpopwkZ3O2Su1omn9xwZgleSEeWYCbCH8If
-	 ZpTR9rL5tUkt6opGgZqIM1+lJSHnJaICdARqPaMoTak56ea8zAgS0E+oo4vWd4C1S5Neb
-	 3TnhU8IxATTBHN/CEF1oCMG2qHripyHfvAgwg6gSZtkB7EX/nmAloAZDA1VSPvwSYXJ/i
-	 hqOrNLKX5kNXgLgZZLeFHYgpAenK22QvIWjoFQdp71HuzIlkzfxCHu4Qj2RHtJZ8EcA==
+	t=1794272859;
+	b=QxC9cyDb/LdRuMMAHTJ010K4KPjk8hlA1D6U8UmJ027x047ybYv/8co4whSHODM9VJBd
+	 s2OQ+Hxjmd/apUYEMcNjFhc/viyPjcWdpu6srHbgCWZ5nCXnnEb04McWCWA5wenkvF3D1
+	 foR1+P/w0Nl8Jhln1WO5ZYMD1f5eFS3IMgz+24YmR89L2ynbPFQd48bNUKdcsZYf5Q+Lu
+	 Yhs1UBnVrQwzHqZVYRdXUeuU387d/fczkvG6R8tNly9tNNR1H4nZpozAP7xxGqK/3YSm2
+	 y+4IRATA9EsuZ7PR0ZPJO8ze03FtRpPVofuF3mdaTClgqS3F/ZiT2kILmPzdQMhMdAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794272675;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
-	 In-Reply-To;
-	bh=Bv0ooEsqQhG/+6pm98YOZvLWwFhBUu/sWcsdtUoLwy4=;
-	b=L6gFi7ZHncAbVx6LhIKSpE6cUXYL69rpmIujODnU3L3r9WWLmScq2trj3tolMW+SXmMR
-	 cc+wUbc0SMVgS0njzCMI3ExwtdZl/Vb4GsSdMNcYLT4wgrJCjbqQnsEUn3WwBmKgKEgHe
-	 QBTz9V+6UVZicNJJfWauIaEYmc3kgNkQYE6x8ETQTh9Tee9V9W1GvfKj8hcMSFUXziWf1
-	 vq3PTYixCVKBtgcW+7EBAciclKDUbNUQyo2kAf8Ou/QnH7cT1QGrWjmkP3Y+XuG/FOplj
-	 vq/V2QjVwIGaR7uSV8vtMXHOs4VjeQmvucO/JxsopaOxbJNR/4m3a54Nv4UvEykM9BQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794272859;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=zwfaXHecdN8//zGlUM0oJnZYXc8xSubLgMGeXzCP9ac=;
+	b=3zWW6fDVM4/QI82iNTGLAmASoNHSBfxDiRkAkIc5MfnpQwC0kD2rmWZ1q9l+ziVRaI/f
+	 Jgy4gAgjeAtA6hns9vCMbhD2AGCGrqPFZQUo3Hq03AaazMqJWD5PnVDTPDYpSJrj3mMqs
+	 uPg2oeUIyw8SIO6+09Sb6JRS6IXOnEM1cope6muqHVhwDvug7EfLdbYYxhmirXFcWUyio
+	 9U0OXdYTG5gyA2X6F9LsRWJ/o0JNidH/Odd8LYk+APu341Jxmtr/3phpznMiseI/3eTcJ
+	 jguxj362cyAJ4RrhxlvShVWzafNm5D2k8xVhCSBRyxUsBCs7hK2usvE0iq/7OGLVqhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Y/IdNdDl";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FJPHNzCZ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3266606A31C;
-	Tue, 10 Nov 2026 01:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E11C606A31C
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 01:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y/IdNdDl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351B11F0089F;
-	Tue, 10 Nov 2026 01:04:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FJPHNzCZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F031F0089F;
+	Tue, 10 Nov 2026 01:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794272674;
-	bh=Bv0ooEsqQhG/+6pm98YOZvLWwFhBUu/sWcsdtUoLwy4=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=Y/IdNdDllQ8txzmqlTq5n+jUNGUsT1AxrfTY2ikBxw33Ci2JnCEerTvPmnB/3QMAl
-	 OjNGcxMFLFoWuhjU9RzXBnDylktnvyRr7vcG/VsWjAmjC3ARmbReleTmjFt1KWirol
-	 utOgbEJ1hwQVm7nJ3+hkfywBaxif6Gd9FPgyDuJH+X4x56JZVehKpU2+hi4qtwbwin
-	 jSQfm77qQHMo+h+nG9Vf6+/1Ffoekt6SHMkzEwJUypYrjKykbmUp3ukB6J7sduL2i5
-	 wGnTT4nFjBjWBgxpiuYPx4ghgn2dIsiLQSdxNPvuZ29n5zLB/eObLqV1Cz2xMqSEf7
-	 vf4f15+YNFK4A==
+	s=k20260515; t=1794272859;
+	bh=zwfaXHecdN8//zGlUM0oJnZYXc8xSubLgMGeXzCP9ac=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FJPHNzCZM1fxuU/fbIe261lSaY0u+9zAcQjQFnIPHp2N1Sh5N9zA/M36cn5AnVQFL
+	 cu5g0T9DPt8S84J2wa6iY+S3ntA8t+iaPgnc/qP/m+JM/R5VJmxEDRYHkRFd2qlVeW
+	 99eIqKwSdegZYuA76Pqqf55QhiDWaOU7gmBbBfxdgkXbYStEWSSHXgz0XLnzuo2w/4
+	 nFibF5w6b6dsdLUYUoqUNJR5TytjoAmtvtsWRGfIczbg7w1Dr1VL17ZpuxcrtAKeFB
+	 LbM0zxxmQmdvDzGgFq/OAtobOvo6D9uqBPjpLBErRXHg0cr2lWxMtkY5V8jO5jRwbe
+	 vI0xwfGDYRLPg==
+Message-ID: <sashiko-outbox-205939@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: nSVM: Add missing CET VMRUN consistency checks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jim Mattson" <jmattson@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261110004037.125692-1-jmattson@google.com>
+References: <20261110004037.125692-1-jmattson@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 10 Nov 2026 01:07:38 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -48,55 +58,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 02:04:25 +0100
-Message-Id: <DMR4KREJHY3Q.4VWNF1EO3UE0@kernel.org>
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
- <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <boqun@kernel.org>,
- <daniel.almeida@collabora.com>, <tamird@kernel.org>, <work@onurozkan.dev>,
- <jgg@ziepe.ca>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <dri-devel@lists.freedesktop.org>, <peter@colberg.org>
-To: "Simon Song" <xinmengs@nvidia.com>, <zhiw@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 00/12] Rust VFIO PCI support and NVIDIA vGPU driver
-References: <20261023154009.2246627-1-xinmengs@nvidia.com>
-In-Reply-To: <20261023154009.2246627-1-xinmengs@nvidia.com>
 
-On Fri Oct 23, 2026 at 5:39 PM CEST, Simon Song wrote:
->   rust: vfio: add PCI variant driver abstractions
->   rust: vfio: use the PCI adapter for variant drivers
->   rust: vfio: separate common device handling from PCI
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [High] KVM: nSVM: vCPU left in guest mode when enter_svm_guest_mode()
+  fails in RSM [1]
+--
 
-Those three commits introduce quite some back and forth in terms of deletin=
-g and
-refactoring previously introduce code.
+commit b87b2411f4552cf28fa62d1f5b9a2e342f4694d4
+Author: Jim Mattson <jmattson@google.com>
 
-(I won't review them individually for this reason, but I can go over the en=
-d
-result and provide some feedback.)
+KVM: nSVM: Add missing CET VMRUN consistency checks
 
-For patch ordering, "rust: vfio: separate common device handling from PCI"
-should be the first patch which establishes a shared representation of a ba=
-se
-VFIO device; the other two patches should be squashed into a single patch.
+This commit adds software VMRUN consistency checks for illegal CET state
+combinations in nested_vmcb_check_save() so that invalid states trigger a
+nested #VMEXIT to L1 instead of KVM_EXIT_FAIL_ENTRY.
 
-(I think a separate adapter type for vfio-pci could still have some advanta=
-ges,
-but this can be a subsequent consideration, for now I'd stick with the core=
- PCI
-one.)
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index f9090b601efaa..a3affdbc15c24 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -469,6 +469,21 @@ static bool nested_vmcb_check_save(struct kvm_vcpu *=
+vcpu,
+>  	if (CC(!__kvm_is_valid_cr4(vcpu, save->cr4)))
+>  		return false;
+> =20
+> +	if (CC((save->cr4 & X86_CR4_CET) && !(save->cr0 & X86_CR0_WP)))
+> +		return false;
+> +
+> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
+> +	    CC(!kvm_is_valid_u_s_cet(vcpu, save->s_cet)))
+> +		return false;
+> +
+> +	if ((save->cr4 & X86_CR4_CET) && (save->rflags & X86_EFLAGS_VM)) {
+> +		u64 u_cet =3D 0;
+> +
+> +		if (!__kvm_emulate_msr_read(vcpu, MSR_IA32_U_CET, &u_cet) &&
+> +		    CC(u_cet & CET_SHSTK_EN))
+> +			return false;
+> +	}
+> +
+>  	if (CC(!kvm_valid_efer(vcpu, save->efer)))
+>  		return false;
 
-Thanks,
-Danilo
+[Severity: High]
+This problem wasn't introduced by this patch, but can nested_vmcb_check_sav=
+e()
+allow an illegal save->cr3 through on RSM and leave the vCPU stranded in
+guest mode [1]?
+
+nested_vmcb_check_save() only checks save->cr3 with kvm_vcpu_is_legal_cr3()
+when both EFER_LME and X86_CR0_PG are set.  When resuming an L2 guest from
+SMM with either bit clear and save->cr3 bits set beyond MAXPHYADDR,
+svm_leave_smm() passes nested_svm_check_cached_vmcb12() and calls
+enter_svm_guest_mode():
+
+arch/x86/kvm/svm/nested.c:enter_svm_guest_mode() {
+	...
+	svm_switch_vmcb(svm, &svm->nested.vmcb02);
+	nested_vmcb02_prepare_control(svm);
+	nested_vmcb02_prepare_save(svm);
+
+	ret =3D nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
+				  nested_npt_enabled(svm), from_vmrun);
+	if (ret)
+		return ret;
+	...
+}
+
+nested_svm_load_cr3() unconditionally checks kvm_vcpu_is_legal_cr3() and
+returns -EINVAL before kvm_init_mmu() runs, after the vCPU has already
+switched to vmcb02, set HF_GUEST_MASK, and pointed vcpu->arch.mmu at
+guest_mmu.  Because emulator_leave_smm() returns X86EMUL_UNHANDLEABLE
+immediately when leave_smm() fails, it skips the kvm_leave_nested() cleanup
+at the end of the function, leaving the subsequent KVM_REQ_TRIPLE_FAULT to
+run in guest mode with an uninitialized guest_mmu and un-restored SMM state.
+
+[1] https://sashiko.dev/#/bug/linux-c0e90666-2e32-44be-b404-c06898a02416
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110004037.1256=
+92-1-jmattson@google.com?part=3D1
