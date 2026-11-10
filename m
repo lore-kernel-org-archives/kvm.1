@@ -1,62 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.82
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794325070;
-	b=HCmMbswl1VVLvnqLmfNNqa7fI2X7NuuLrcUXY0129/Bdy+sGKCT3CkV7KPvryiL+Vp3C
-	 WOXIh+IxREQM6izBOsEms5Giba6WzloGoo2COT/6mrq5rhrXOlNEq4XYJoZHa3eoI3aVg
-	 yNyJqkdCS+W/L9KlHhtBuxpY43GuZwGlKXEgJZm26d/DH5XOJOKrnxZsCdwqVB5cgZFKZ
-	 V7ZD5e/PFC79szWJPe7vU5veVjJ2EjlAveDqm3m3OCIO4mcGz8unMLJz+WNM58kGs9kyu
-	 XoY0Mbufi6RVNBa+5uh6G8lvZUMj8nDBpmMkJAl4M2rmkGaLBvWI1j3BeetWVCbMH+Q==
+	t=1794325474;
+	b=jvl4MHHkQB9Ld0Xdt1NWfW4lckbBCq/301UKWPYSaKtXrlXb56rkrFHf9Fc5p0yoNO+z
+	 q7tmR0ldlYNOmLDqEN1Z9Z5XOl1tCPR8s7lKdcjanfbGZQSu0mY2ya7uW1cYCHdnWsILX
+	 dO+x4A4rM6To+eiUjpruKDon2M5kjGBMaHeakGuMD6QUrp04OmAnU2GnjWBz9LKPJR6Mv
+	 bTCF1gHMi32yXls7iOUXOkfAdKP096zkPpkuEOZAOsNVluMwDQUKiuRitTBwEAFswtMPU
+	 sXxjc05WZmpDtlU5H4Tjx7lFZIOEYp+hEokUvESnvIsJV0mssvXJyDozvj/k6CqHmXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794325070;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=ogFCUAuBZLZXOutM4r4leQllES0UKlFJyoU3ZQqHWYw=;
-	b=nSNqdEBEU1QT0hhElS1lMYqA1jnMUitlUdA8CpZnoyKkNnD6kA7R6Jttq6w8VEnuhOfR
-	 MZuWoy3GItGodo2G1Tt2CtATs5aon9KqRbnrbQfpgUFawzhBs/AF88X1QLEe7wfULG5iU
-	 l4B+uE8q/2uGfb5H4simQRUw6I23eEg5BeZ6Iaf9NS68T9PGQQb0Tl8ujliSbSnQIuoMb
-	 AeJqxmVumqRRgcKrpR9ZYga+a85PrtKVKH/9yUoAitBpzAIoyxP+hyqTBVAhhNebVR+JV
-	 HUp+Ufzhfy9JUhe7oPCj27oH3RwFkc8XWaANI1MKI7nbc9Bq6qm8CT3t/2gkrioVlVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794325474;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-TM-AS-GCONF:X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=PNlP9f6Wrf+sUQn6QPmno7fsahkNAHws9ylX2pvBoqc=;
+	b=Z0wan56DkdMdOA9P45lHPjWvPKC6I7EgWKXNEFMo/nwGBsWOkhCRFTr1WbHKry4nctMv
+	 fCuU4nuKlxQhZs0G36Z7eSJmC1GMaAadpk+1wljjBrD+0Qp+ZELj0ifD9LwNo2Flwtfjo
+	 s7bjulGQrGClc/K73B4xlVG0T4S3ziTVC7UiPzKuQ/mmTGV8w9UL36YdtFtKExZd8kG16
+	 H9RRYw/k6R4MIu+3zzD8UkmbdH+yEWq7ejhlOy4QnDOzz1nkSssJ5kyN7qvoTMfYO7xXE
+	 hRANnymSrgVQlMeVpjWmIuXOBGHXemPw0J+2r7tIUrboWqT9Sakwq+emfYgN3+iwHjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MGkJK4Ls;
-	arc=none smtp.remote-ip=95.215.58.82
-Received: from mta1.migadu.com (out-82.mta1.migadu.com [95.215.58.82])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sxZoPAPr;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7DB606A321
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 15:37:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A7DB606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EEF606A332
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 15:44:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65EEF606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MGkJK4Ls
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=OU2BxWs+fl9KwiOZrZ7MCmCnoYNRzpKdLi98U8rTU+I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794325067; v=1; x=1794929867;
- b=MGkJK4LsxUPiK8fFdTMjwZ+4h8LZup3UYVKpKVZuPqAwwcoLwijZdLeeb/g73663HIlgwehl
- qFqTAnkJ1rrSJPCzWPb83tt2LaGEWCb+1XWYSBk7VIZ8iXHdGWaBRF8Air3TGXe5sKtKkiuMkFK
- xQzLpgzgfTmsQP7jW9LU4Gao=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 06257da5d4926c27;
-	Tue, 10 Nov 2026 15:37:47 +0000
-X-Mizu-Trace-ID: 06257da5d4926c27
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5c144eb2f43so5264e87.1
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 07:37:43 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGksKpEiUppczE36vaZBpiiZEpHDGRqeFbwcX3OENVSjpAqnPYG6Ij9qra4jDuyAHkAMkg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+tC7aOP+CqPzQQ4qmY/6eMorVefqr48syv2cLNQInunqI5tlHC
-	3omZnexhM/JU2TSPYcWs6B8XkVaGZlGub7NNJK33MpgSSZwfLF1my+Gbpp1V5po54npJ8t9eSbu
-	0BP1mpz1qV9WHRQH3FV+BQ/9Ti4BMj783S0aAeIVP
-X-Received: by 2002:a05:6512:1052:b0:5c0:7c6e:4559 with SMTP id
- 2adb3069b0e04-5c157db2ba2mr143661e87.9.1794325062152; Tue, 10 Nov 2026
- 07:37:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sxZoPAPr
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AAFECoj2667195;
+	Tue, 10 Nov 2026 15:44:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=PNlP9f6Wrf+sUQn6QPmno7fsahkNAHws9ylX2pvBo
+	qc=; b=sxZoPAPrd2MlOVa/FhHY+4jxfS/cmpI9Hf0J2Diw8znSyrIxqXL5Gqt7r
+	jUyufx+JnXx7MejWRCjWy0k0KXxuhUThwAgdRUEqSX9PSDUshLxgCagVue41TD5r
+	N2aNss5xvw15yv1KSgNOcNM/NMb7FrdVvraRQigDybXUITQ3S9gVT1S2WBeW3gcy
+	cRZ95J72Q62uxnUQRCQXSfpj9BFdpfDQ7JA5Z+fEjjfuLzjtiYOFm8C2pO5ScEHG
+	yl/9+2IyTImY3EIrbQP7D5Olcvric1+UdIT8mv31KQ6JsfInZLkzSFMdGb+bzkU6
+	MTxn2rzvg462KshgfaKXoXII7V09Q==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsuq6wngv-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 15:44:26 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AAF4wpw1880673;
+	Tue, 10 Nov 2026 15:44:25 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hv3320nj5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 15:44:25 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AAFiLMk48693680
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Nov 2026 15:44:21 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B4E7D20043;
+	Tue, 10 Nov 2026 15:44:21 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 066C820040;
+	Tue, 10 Nov 2026 15:44:20 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.39.31.184])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 10 Nov 2026 15:44:19 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org
+Subject: [PATCH] powerpc: Link with -z notext
+Date: Tue, 10 Nov 2026 21:14:15 +0530
+Message-ID: <20261110154415.46220-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,109 +91,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
- <20261110110724.3614412-3-fuad.tabba@linux.dev> <avMoubwqgXbpflwM@gremlin>
-In-Reply-To: <avMoubwqgXbpflwM@gremlin>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 10 Nov 2026 15:37:05 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTxT_9NghyLSZmOOi_oQboQw-g+6z9WxwaF=-7RdaGbMNw@mail.gmail.com>
-X-Gm-Features: AclHuK9GxiFUgfn5RkRxiSl8D-ZsDGIbAcDrgyXgHWZ0Aza6Wilt0GEOkKm-eWo
-Message-ID: <CA+EHjTxT_9NghyLSZmOOi_oQboQw-g+6z9WxwaF=-7RdaGbMNw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] KVM: selftests: Test KVM_PRE_FAULT_MEMORY against a
- full dirty ring
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, 
-	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDA2MiBTYWx0ZWRfX65r6+Laa4BA1
+ 6MAxt1xuDBzeOuoJiWB/f35TPMeIJW6a0Ie2aCXXEruenoXVKIIJfwTEXy4a0SvFmBxspAcFk5K
+ /SEXOqVUPiWE10bXxgorkhkZohpaHzY=
+X-Authority-Analysis: v=2.4 cv=HbCB3SE8 c=1 sm=1 tr=0 ts=6af33bda cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=_iiAB3vgKD867NDUgDgA:9
+X-Proofpoint-ORIG-GUID: L2jU7n3C7WxHLaCnRZ2cLLSuHaux1D9G
+X-Proofpoint-GUID: L2jU7n3C7WxHLaCnRZ2cLLSuHaux1D9G
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDA2MiBTYWx0ZWRfX1KoVsvXBCIHN
+ Umfnk7C29chGhse5Hv9y1h2uk7nZFR5Gxs3HX6S9DSm+Z82/9xyFmRgEiCw9OR32oM68Y5mxdfS
+ kWtds/0u1ehOK1ZTeLcQWMBnB0ul2Ac9dTL07M9xSNoPPDMC1MS1fxnlWXRbjwDrESyPKy3R/Vz
+ GKo7hyYcz59XNrDpOb/tAqOwFhZI4ovsNA1UZBUDLEPfmt7Jdh/uLnnUzRZub9MhSCVryAW4B0Q
+ 1VVIJk4772l/ShQajuAiiJgGwdrp0j9qxxlHufZfuhsF37Bk53BiI94sML91lluLgxR93sHg5V3
+ BdnUYkXEathc4S00EuBeIo+w0QRSdIhXX54RjGiBLiz2yBejo/c8ZqMcV2AxZ7faH/ICfA+1oJ8
+ p7cPIyq03OA8rYAOaglQIuGga7E0XDBw4pZiYvR2Jr4Ts4rVIbBy4kBfM86oDF5z0s6sQ93lpzg
+ LfNr8c+NFvm28bv5/RQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-10_05,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 spamscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611100062
 
-Hi Lorenzo,
+Building the powerpc tests with GNU ld 2.46.1 fails when linking the
+test binaries:
 
-On Tue, 10 Nov 2026 14:38:27 +0000, "Lorenzo Stoakes (ARM)"
-<ljs@kernel.org> wrote:
-> On Tue, Nov 10, 2026 at 11:07:24AM +0000, Fuad Tabba wrote:
-> > Pre-fault more populated, dirty-logged pages than the vCPU's dirty ring
-> > holds, and check that each call stops before the ring overflows, that a
-> > retry returns ENOSPC without progress, and that the harvested entries
-> > are the pages in order. A read pre-fault can map a page read-only, or
->
-> Are we asserting an invariant that prefaulting happens in address order
-> here?  Is that explicitly presumed in the prefault API, or just how it
-> happens to pan out?
->
-> I wonder if we might decide for whatever reason in future to do things
-> differently there. Bit nitty I know, but wonder if it's asserting an
-> implementation detail?
+  /usr/bin/ld.bfd: error: read-only segment has dynamic relocations
 
-Yes, the API doesn't guarantee an order. I'll assert that every page
-is reported exactly once instead.
+The tests are linked with -pie and relocate themselves at boot (see
+relocate() in powerpc/reloc64.c, called from powerpc/cstart64.S).
+Newer GNU ld rejects relocations in read-only segments by default.  The
+Makefile already checks after linking that only R_PPC64_RELATIVE
+relocations are present.
 
-[...]
-> > diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
-[...]
-> > +static void test_pre_fault_dirty_ring(void)
-[...]
-> > +    /* Populate the pages, so that pre-faulting can map them writable. */
->
-> Reviewed below, but I wonder how x86 could then read fault these?
+Fix this by adding `-z notext` to the powerpc linker flags, as was done
+for arm64 in commit 5d67db4e1860 ("arm64: Link with -z notext").
 
-KVM_PRE_FAULT_MEMORY is defined as a read fault, but x86 maps the page
-writable when the host page is, and marks it dirty, unless it falls
-back to access tracking (below). Populating the pages makes sure they
-aren't backed by the zero page.
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+ powerpc/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[...]
-> > +    while (range.size) {
->
-> NIT: n could be scoped to this block instead.
+diff --git a/powerpc/Makefile b/powerpc/Makefile
+index 41e752b070bc..35fe58835726 100644
+--- a/powerpc/Makefile
++++ b/powerpc/Makefile
+@@ -78,7 +78,7 @@ include $(SRCDIR)/scripts/asm-offsets.mak
+ 
+ FLATLIBS = $(libcflat) $(LIBFDT_archive)
+ %.elf: CFLAGS += $(arch_CFLAGS)
+-%.elf: LDFLAGS += $(arch_LDFLAGS) -pie -n
++%.elf: LDFLAGS += $(arch_LDFLAGS) -pie -n -z notext
+ %.elf: %.o $(FLATLIBS) $(SRCDIR)/powerpc/flat.lds $(cstart.o) $(reloc.o) %.aux.o
+ 	$(LD) $(LDFLAGS) -o $@ \
+ 		-T $(SRCDIR)/powerpc/flat.lds --build-id=none \
 
-Will do.
+base-commit: 5a221342a025948fa7d84f0c404748f6ba57f3ad
+-- 
+2.54.0 (Apple Git-157)
 
-[...]
-> > +        for (n = 0; ; n++) {
->
-> Could this loop forever if cur->flags always == KVM_DIRTY_GFN_F_DIRTY? Or
-> is that guaranteed not to be the case?
-
-It can't. Every harvested entry is set to KVM_DIRTY_GFN_F_RESET and
-stays that way until KVM_RESET_DIRTY_RINGS, which runs after the loop,
-so one pass stops after at most a full ring.
-
-> > +            cur = &gfns[fetch % entries];
-> > +            if (smp_load_acquire(&cur->flags) != KVM_DIRTY_GFN_F_DIRTY)
->
-> Is this and the below release paired with equivalent stuff in the dirty ring code?
-
-Yes, the acquire pairs with the smp_wmb() in kvm_dirty_ring_push()
-ahead of the flag store, and the release with the smp_load_acquire()
-in kvm_dirty_gfn_harvested(). dirty_log_test does the same.
-
-[...]
-> > +        /* A read pre-fault can map a page read-only, or access-tracked on x86. */
->
-> Hmm under what circumstances would that happen? Is there no way to ensure pages
-> are dirtied by prefaulting? I imagine not though!
-
-No, it's up to the architecture. arm64 maps a read fault read-only
-while the slot is logged with a bitmap, and x86 with EPT but no A/D
-bits maps it access-tracked. Neither pushes anything to the ring.
-
-> > +        if (!n && !harvested && !range.size) {
->
-> Hmm, so !n && (harvested || range_size) will pass this, but then you assert
-> n immediately below, so it seems like n is an unconditional requirement.
->
-> So I wonder whether this should just be !n in this conditional or maybe the
-> assert afterwards should be dropped?
-
-The skip is for when pre-faulting dirties nothing at all: the first
-call maps the whole range without pushing a single entry, so there's
-nothing to test. Any other empty harvest is a bug, which the assert
-reports, so I'd rather keep both as they are.
-
-Cheers,
-/fuad
