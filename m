@@ -1,94 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794311242;
-	b=W3YCF1/N2DewUmuVfP6b+ZADZcA+WIdI1fqfzLnYsJYUTrbBGu3tW/DJ1UknmlWtiCUp
-	 0jjdWP0xgI8yBdtqPNiBySRR+phbBdpz1UILWdT7ozdOc+Gf3HWmcYofekAzd9m7m6To4
-	 yqIFW7A5LuygHRBaT15RLEa9bjERFV0+x9561NDqPID8olEXgQ1009JIS0hN7DGUVyD1w
-	 uozT0IybE6GIwhCV6X4YDyRei5OGDpDH8xOrlYB3T1+tq9kCnVecDy6K17//nitfjVKPI
-	 xqqWCSkA8doRuFcrX4JP/WdaxcjSArypcZGLSKX4MGtPIwkIIN8PtRmBZ0ZN2TchIzA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794311242;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:
-	 References:User-Agent:Date:Message-ID:MIME-Version:Content-Type;
-	bh=q12MRiSZeyXmoo+5T0Mg9dGA+4+cznjBdzDiNfqHOTQ=;
-	b=ZWRWGKNq5IoJStGzaG/hGhFEOq9Qy5yv8VJgu+vzrAczFxHxSyqUTsQfxQxPRP+vyPXS
-	 E1sTqi5OIrXTMYTKXPFvczT+IgfEdluGYcIKiUCOS4pnphm26lbbidtIHM4weCZIbUBZc
-	 ZEXVdjkO/tBSYEpQX9X3ncgZ2i7VhLdpPlo8Wh5LGSDyLDeqZMF1FPP9S4FyKBvJ2XX/q
-	 y3kLjQ71vFV+BukmnLf0lCtFH+64YeOFhfiSwQ8NWuy44VJo+k4pDXYkK+7+DQvZiuAIG
-	 XDwVs5hSMkteUdRwLo2LNfV+3wgKqKBEw5l1mt+jir8Nhts8TM+WO9mi6yD8MWZl8Zg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=LpURkmIl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794311521;
+	b=ugJ09e6iPIcC8m8S7gEpP1D7CVJ1o+/Qh++HFLy0rY55ukujIJafY3JDTkv8IsQQwE0b
+	 Yc38kt5d4SDE5QpoD8GljU8zkyqzECCFM976yp4Bbnb27lAxGZ19jXMv5+Lc/061LaZiS
+	 A9DAoqQ88uNIiJDmWf3ay2TN9EMJQisJ83sSvttU6XfUZRKHHNJAYbruGMLiGNfZs1kwO
+	 VUatVVqQOM0hmM6AtYg51MSmt48htHAaFmg6wlLQ/snjXmoZbVMsmCfEN6NPfQdXxqntg
+	 S5lVr8MSI9JApdZLdjw4CyuP7kJOf2GF7nHWGpJ1Nak+EVIW/dPwFpZSXH11UehSaag==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794311521;
+	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
+	 X-Zmail-LocalSMTP:X-Zmail-RealSender:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 X-ZMAIL-USEORIGINALEMLTOOUTBOUND:Content-Transfer-Encoding:X-MAIL:
+	 X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
+	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=4q4KITe/x0LR89wVeImCxXpGZNZhR+1TKC6XBD/Ac4g=;
+	b=gmLmzRxCat8o8Ig1ueDe8Z75/8mezoDm/QUA0FU+EkUXa52oFEEK28UWLQ+qlaoNOM0v
+	 p51iWSA7RKxhE9yHmOXdTit0+nBorncCcSvNdi+OPz9/mZ7JGOefaSXrbUsYKo5a2jKdp
+	 OOg3PhL90T0C+ODXDhBNisAY8wHRRHNIVePHKAJ7e5F595S9R6LQZ8WgucBXEkN4O6+mb
+	 2E3kjnSOJLSSo2qbv4LUkkmnpMQ2qsFfcERB3fy6EHW/sfe4SJp6Swd9LJfPqA7V1YKRA
+	 W3lOCW+/62/jNRhdvIzwBc9CDxZ0+E7frl72IcQbGceUTPFZM9wZqOZIWbMv6zAVZCw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=sanechips.com.cn;
+	spf=pass smtp.mailfrom=sanechips.com.cn;
+	arc=none smtp.remote-ip=160.30.148.35
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97502606A331;
-	Tue, 10 Nov 2026 11:47:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97502606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=LpURkmIl
-Received: from ratatoskr.pengutronix.de (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
-	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3403F20087B;
-	Tue, 10 Nov 2026 12:47:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794311238;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q12MRiSZeyXmoo+5T0Mg9dGA+4+cznjBdzDiNfqHOTQ=;
-	b=LpURkmIlZ2LRrROhU+IRV5IvjuyOzdFaYoSzofAzgfL5hEoabKG+YZ0xr9oAXzFFEybIub
-	Bb3MD+LngnmhTIsTKSP8PEs3DysTOqP6+7S7jsqAG+IJhc5/A1dbAmjgaHLNs3fvb7bQYe
-	Mgbjo8TY5EiIsmAU4zma5efjxgZUoxuhqZtYdj9GHECKXRfhXsPF658M62nwhiarScNuJ7
-	MIffzUI2A+pisxwPn8H7Q6QyQTDxeWrgtvYdd3XsfQV7iuo0/b5nImItOVun3KeyTtyYyY
-	r2VadY6EkRiw6G11Ap05QaCYgBB+UoIY+jcGfUIIKxOhUt5aeU8MHe08JfxRBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794311238;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q12MRiSZeyXmoo+5T0Mg9dGA+4+cznjBdzDiNfqHOTQ=;
-	b=NnrDYON0IoSe9qPdbH3EfN+Oagv5vcaBzhDgeDWRyoQX+4Xi9InHItlXmLGPz/YpEGxsJb
-	kiMbii9v1qWTYpdSaMPBr8BbppUKmTn730IIIkPsSaTO0JjiujUwZdDiWIebB68wm6ef1K
-	w0rJZYCoo5BS66DWlvu6wIyGHXe3D7qLAaEJokuax+Wqqs1UwPjvz25LO4o6OMglNb0mo6
-	gsi88AUVjzLrIb0Sa68aZxrzQ5HJEqVsKBy/keSGzjzJCH3mzuLJN6CdDPxVxFqZY8CMZ4
-	JXjo1YumwNvEWKvhe7HjlnL5v73t8YSSpGA2RDstaEbAU3CrZDGPfCK7nUkSzw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794311238; a=rsa-sha256;
-	cv=none;
-	b=SWAEBG8GR4oDdUdw7UC4IDZxkNUNrqrxB/JYmznZFGIR2Io6NrZsRF+PS2Z81ylYNtVVUH
-	U5v6DEdRIrVBy8t+74FY1f6zqlfqiWkqc8W7GSsaxZggVw6MEbXoV4ns8hmtrgysL52EnD
-	E2yAERx9NPzu30SL7tcQFW7VGSsiqIQCAUmrKp9B5HRcCT4MySo+b0mMhV4T/gqoynHdOo
-	uZRLWs1vaXy6xbhin8l5eF4vHCIJL4VdOumjsLZv9uLgEdxkF1My+E4781Ew9Jn2ogpDP7
-	fhEtASyIIsjO1e0Aweby+angdx8L+Z/F56wk/7ksE9NaWrB0OZuvFGBe+iZ3HQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>,  "David S. Miller" <davem@davemloft.net>,
-  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  Richard Cochran <richardcochran@gmail.com>,  Andrew Lunn
- <andrew+netdev@lunn.ch>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
- <eperezma@redhat.com>,  Jason Wang
- <jasowangio@gmail.com>,  Alexei Starovoitov <ast@kernel.org>,  Daniel
- Borkmann <daniel@iogearbox.net>,  Jesper Dangaard Brouer
- <hawk@kernel.org>,  John Fastabend <john.fastabend@gmail.com>,  Stanislav
- Fomichev <sdf@fomichev.me>,  Eric Dumazet <edumazet@kernel.org>,
-  virtualization@lists.linux.dev,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  bpf@vger.kernel.org,  kvm@vger.kernel.org
-Subject: Re: [PATCH RFC v4 0/6] virtio-net: add receive timestamp support
-In-Reply-To: <willemdebruijn.kernel.1d6388f036c46@gmail.com>
-References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-	<willemdebruijn.kernel.1d6388f036c46@gmail.com>
-User-Agent: mu4e 1.14.3; emacs 31.1
-Date: Tue, 10 Nov 2026 12:47:17 +0100
-Message-ID: <874ido29iy.fsf@pengutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211BA606A31C;
+	Tue, 10 Nov 2026 11:51:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 211BA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jP4kc0NQRz8XrrX;
+	Tue, 10 Nov 2026 19:51:52 +0800 (CST)
+Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
+	by mse-fl2.zte.com.cn with SMTP id 6AABpdZk005559;
+	Tue, 10 Nov 2026 19:51:39 +0800 (+08)
+	(envelope-from gong.shuai@sanechips.com.cn)
+Received: from ubuntu-35-gs (unknown [10.230.214.35])
+	by smtp (Zmail) with SMTP;
+	Tue, 10 Nov 2026 19:51:42 +0800
+X-Zmail-TransId: 3e816af3054502b-e4c51
+X-Zmail-LocalSMTP: 1
+X-Zmail-RealSender: gong.shuai@sanechips.com.cn
+From: Gong Shuai <gong.shuai@sanechips.com.cn>
+To: tanchi25@mails.ucas.ac.cn
+Cc: alex@ghiti.fr, andrew.jones@oss.qualcomm.com, anup@brainfault.org,
+        aou@eecs.berkeley.edu, atish.patra@linux.dev,
+        fangyu.yu@linux.alibaba.com, gong.shuai@sanechips.com.cn,
+        gsh517025@gmail.com, iommu@lists.linux.dev, jgg@ziepe.ca,
+        joro@8bytes.org, kevin.tian@intel.com, kvm-riscv@lists.infradead.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, palmer@dabbelt.com,
+        pbonzini@redhat.com, pjw@kernel.org, robin.murphy@arm.com,
+        seanjc@google.com, tomasz.jeznach@linux.dev, will@kernel.org,
+        wu.fei9@sanechips.com.cn, zhao.qingye@sanechips.com.cn
+Subject: Re: [RFC PATCH v2 9/9] iommu/riscv: Add riscv_iommu_attach_dev_nested
+Date: Tue, 10 Nov 2026 19:51:37 +0800
+Message-ID: <20261110115137.184160-1-gong.shuai@sanechips.com.cn>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261105144944.10193-1-tanchi25@mails.ucas.ac.cn>
+References: <20261105144944.10193-1-tanchi25@mails.ucas.ac.cn>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -98,112 +76,116 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
+Content-Transfer-Encoding: 8bit
+X-MAIL:mse-fl2.zte.com.cn 6AABpdZk005559
+X-TLS: YES
+X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 10 Nov 2026 19:51:52 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AF30558.000/4jP4kc0NQRz8XrrX
 
+Hi Tan Chi,
 
-Hi Willem,
+Thanks for your review and for pointing these out.
 
-On 2026-11-01 at 09:57 -05, Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
-
-> Steffen Trumtrar wrote:
-> > This series picks up Willem de Bruijn's work on a virtio-net receive
-> > timestamp. The device puts the time of arrival (TAI, ns) into the
-> > virtio-net header so the guest can use it for PTP and RTT estimation
-> > without taking the timestamp itself after the host-to-guest latency.
-> > 
-> > The series is an RFC. I am mostly interested in feedback on the
-> > approach and on the wire format:
+> Hi Shuai and Fei,
 > 
-> At a high level +1 from me.
+> I noticed a potential issue with fixing the physical DC's PSCID to 0.
+> 
+> In QEMU, different VFIO devices can have separate stage-1 HWPTs while
+> sharing the same vIOMMU and stage-2 parent. This means two devices may
+> have different first-stage page table roots but the same host GSCID
+> and PSCID=0.
+> 
+> According to the RISC-V IOMMU specification, DC.ta.PSCID identifies
+> the first-stage address space when PDTV=0 and the first stage is not
+> Bare. Could this cause the physical IOMMU to reuse cached translations
+> across different stage-1 address spaces? Even broader invalidations
+> would not prevent such cache aliasing.
 
-Thanks!
+You are right. We kept PSCID at zero as a simplification for the RFC,
+but this was based on a misunderstanding of the PSCID semantics. When
+PDTV=0 and stage 1 is not Bare, DC.ta.PSCID identifies the S1
+address space. Sharing it across different page tables can cause cached
+translations to alias.
 
 > 
-> Some comments inline.
-> > 
-> >  - The timestamp is a new field at the end of virtio_net_common_hdr
-> >    after outer_nh_offset and ipsec, offset 32 (see virtio spec),
-> >    negotiated with VIRTIO_NET_F_RX_TSTAMP (bit 49). Header size now 40
-> >    bytes.
-> >    Willem noted on v3 that virtio_net_common_hdr was not meant to be
-> >    extended this way; I kept it as the simplest approach, but a
-> >    separate struct for the timestamp header is an option.
-> >  - Timestamping is enabled at runtime with SIOCSHWTSTAMP; all
-> >    supported rx filters behave the same for now.
-> >  - XDP programs can read the timestamp with
-> >    bpf_xdp_metadata_rx_timestamp().
-> >  - vhost-net passes the feature through; the timestamp itself is
-> >    written by tun. The tun patch is only meant as a reference
-> >    implementation for the device side.
-> >  - The timestamp is in TAI.
+> There also seems to be a related issue in patch 6.
+> riscv_viommu_cache_invalidate() unconditionally forces PSCV=1 and
+> PSCID=0. However, an IOTINVAL.VMA with PSCV=0 also invalidates global
+> mappings, while PSCV=1 excludes them. This appears to narrow the
+> guest's requested invalidation scope and could leave stale global
+> translations cached.
+
+Agreed.
+
 > 
-> Is this a requirement? It is common for PHCs to be synced to TAI,
-> but not 100% the case. Does virtio need to specify this.
->
+> One possible approach might be to use the PSCID from the guest-provided
+> DC.ta when allocating the nested domain, and preserve the guest's PSCID
+> and PSCV settings during invalidation while substituting the host GSCID.
+> I'm not sure whether additional considerations are needed for PSCID
+> reuse or domain lifetime, though.
 
-No, I don't think it has to be TAI. TAI is only what the tun reference
-implementation does (ktime_get_clocktai_ns()). What the guest really
-needs is to know which clock the timestamp comes from, so it can compare
-it with something.
+Thanks for the suggestion. While analyzing this issue, we found that
+using the guest PSCID is the right direction, but preserving it alone
+is not sufficient when multiple vIOMMUs share the same host GSCID.
+Different vIOMMUs may have independent guest PSCID namespaces, so two
+vIOMMUs sharing an S2 parent may use the same guest PSCID for different
+S1 address spaces.
 
-One idea for the spec change: don't fix the time base in virtio-net at
-all, only say the timestamp is in nanoseconds of some device clock, and
-let the device tell the driver which clock that is. virtio_rtc already
-has clock ids with a type (UTC, TAI, monotonic, ...), and the Linux
-driver registers a PHC for each of them (with VIRTIO_RTC_PTP).
-virtio-net could carry the virtio_rtc clock id in its config space, and
-the driver reports the index of that PHC in get_ts_info. That would also
-fix the phc_index == -1 problem you pointed out in 2/6.
+My understanding is that the ultimate goal is to ensure that the
+(GSCID, PSCID) pair programmed into the physical DC uniquely identifies
+the correct nested address space, and therefore the cached translations
+belonging to it.
 
-What I don't like about it: virtio-net then depends on a second device
-being there, and with more than one virtio_rtc device the clock id alone
-is not enough to find the right one. Without virtio_rtc the driver would
-not offer hardware timestamps at all.
+So far, we have identified three possible approaches:
 
-The alternative is a PHC in virtio-net itself (gettime over the control
-vq), which is a lot more spec for one timestamp field.
+  1. Share the S2 parent's GSCID and use the guest PSCID directly.
 
-Do you think the virtio_rtc way is reasonable, or is there something
-simpler I'm missing?
+     This requires PSCID uniqueness across all vIOMMUs sharing that S2
+     parent, so that different S1 address spaces cannot be assigned the
+     same (GSCID, PSCID) pair. This uniqueness can be provided by the
+     guest itself or through VMM/guest coordination.
 
-> >    The driver reports it as
-> >    SOF_TIMESTAMPING_RAW_HARDWARE without a PTP clock (phc_index -1),
-> >    so userspace cannot tell which clock it refers to and may compare
-> >    it against CLOCK_REALTIME (currently off by 37s). Options I see:
-> >    convert to the guest's system time in the driver (correct only if
-> >    host and guest agree on the TAI offset), expose a PHC so the
-> >    time base is explicit, or keep the raw TAI value and leave the
-> >    conversion to userspace. Which one is preferred?
-> >  - Like the existing rx_hash, the XDP timestamp callback locates the
-> >    header relative to xdp->data, so it must be called before
-> >    bpf_xdp_adjust_head().
-> > 
-> > A virtio spec change is needed as well and not yet proposed.
-> > 
-> > Testing: the feature needs a QEMU that knows VIRTIO_NET_F_RX_TSTAMP and
-> > sets the matching vnet header size; see
-> > https://github.com/strumtrar/qemu/tree/v11.0.1/virtio-rx-stamps
-> > 
-> > Performance: I measured the receive rate with 64 byte UDP packets in
-> > a nested QEMU/KVM setup with vhost-net. The variance between runs is
-> > larger than any difference between the variants (without the series,
-> > series without the feature, feature negotiated, feature enabled), so
-> > I cannot show a measurable cost or the absence of one. Numbers from
-> > bare metal will follow with a non-RFC version.
+     The current ARM mainline model similarly uses the guest ASID directly
+     while inheriting the VMID from the S2 parent. For Linux guests, the
+     SMMUv3 driver's global ASID allocator can provide ASID uniqueness
+     across vSMMUs. The Linux RISC-V driver also uses a global PSCID
+     allocator. The main question is whether we want to rely on this
+     guest implementation property.
+
+  2. Use the guest PSCID directly, but allocate a separate host GSCID for
+     each vIOMMU.
+
+     This allows independent vIOMMUs to reuse the same guest PSCID without
+     aliasing, even when they share an S2 parent.
+
+     The proposed ARM series follows this model by moving VMID allocation
+     from the S2 domain to the vSMMU [1].
+
+  3. Share the GSCID and maintain a per-vIOMMU mapping from each guest
+     PSCID to a host-allocated PSCID.
+
+     AMD mainline uses an analogous model for DomID. It maintains a
+     per-vIOMMU gDomID-to-hDomID mapping and programs the mapped hDomID
+     into the physical DTE.
+
+Option 2 seems better because it gives each vIOMMU its own GSCID, which
+isolates the PSCID namespace of each vIOMMU without requiring a mapping
+table or relying on a guest implementation property such as a global
+PSCID allocator. Its main costs are additional GSCID consumption and the
+need to invalidate each vIOMMU's GSCID whenever the shared S2 parent
+changes. I would appreciate your thoughts on which approach we should
+take.
+
+[1] https://lore.kernel.org/lkml/05dd00dcb2f0d077f59bcbccac1820534ad7b5cf.1773949042.git.nicolinc@nvidia.com/
+
+Thanks,
+Shuai
+
 > 
-> This does not seem performance sensitive to me. And it is opt-in.
-> IMHO no need for extensive testing for performance regressions.
+> Thanks,
+> Tan Chi
 > 
-
-Performance measurements where requested in some of the previous
-versions because of the increased header size. But now, as this is
-really opt-in, I'll drop that part from the cover letter.
-
-
-Steffen
-
--- 
-Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
