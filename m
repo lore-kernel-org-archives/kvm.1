@@ -1,59 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794321516;
-	b=epgWk66n4ulelrlUQ+jDZnxXgkjyPkfnLhVrhzyHnnmXb/YRfNNK/z4bnCKS3RiOE9ez
-	 L3xFExrzv1atgUIpqXpKTcEU62aZP+Jeidt3MT9Fvsa5JiVcEUdN5KvuCEMrhSqj8vk/L
-	 h+cpTLljMbaurFLv72bfOlg54jz6kGh+FdkbuATq7KIzaUwUBKddmIeRgDOH/TwPzwG0o
-	 y6k0XM/Jop9Lp0szd0qh+Vrne6gjdotiv5XS1fzcFFroapcyAtKNIvfEVtFuXurKdf+S2
-	 VnKvLlEpxIv2w5/bIG3S64BlqBGyS5q+sQqLhdU50P2LgYsuKDT/AkHmsnkyfPETevw==
+	t=1794322062;
+	b=hm8l43V635bG5Y2g2KTbhwST45mTC9rywqmN/oxd0f4uqGlRHIQOwHG9lvYaCNIqtQNu
+	 L8X/7q2yAiTRiSL4493mypoJXwox18q+H2aiSh2djBKmuWc+FZQ/mLRHsiYDup1pmKcSK
+	 APTAjm/UDIGoFgoGDfammQfWD+tpHgbiWusp3wUsb4g/KKYRReSw9YGn67G81VLczjbv2
+	 a0s34Mn2gM08K+3zpy+wM6nA/lW7OzOCHo+pV4ugjmCBMHEn1PipsaUjm3uZpphz3GmA5
+	 d3RSEylzbYmjWUpD4pLvQ+sq3WZ1WH2s5TLbc02G67L5Sh0witXmBo64hufXdhfFh6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794321516;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ZFnL1ntqolxL08fuMI08M9PJX/8t5EaSGsOH7b+bnDc=;
-	b=HcTZKWDtdZ+vLNN775HB/IJG7rXaOywczxS7j9WrFZUGfiPlWDfE1erCU9KcbxTaGLCn
-	 QTYAeuWAOxCRGcAxSkzxkvave0sOPyHpjtUKF+D8LSHMMgmh3+xGqeM/V4hlleJCiMRTD
-	 kSyDibB6p6mDLrUnkuqzUWUg+hAC6pmflN3iW7g8ZttnRtau6WPEU9E+vo1wPPHODEccZ
-	 LIcgvPkhoVda+tGC5TfOBTXxJ5urJHqSDhbiIZVSWXa2f5XbaTFKujA8d0JqWiE/L8++r
-	 yM3j5WKFgV6KsgWdLsYPq3AwKAyHqjCu5X9bfeRBpnI0BoivGRG4NGfr+lEzEuN2IIw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794322062;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
+	 Cc:In-Reply-To:References:Date:Message-Id:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=ZFEAJe5RSOFhQbOQqwNvxFPxejburOXhpBzwnwwZqdo=;
+	b=Wa50ymHxLRUd24Ju0Xktfw0D756wTVquqlI+nhzmzPBnVN64KSF7I1vRLLByCtrigMSw
+	 xE653LKX0TP06+MHWkIyl0rpgTUz0L/eTSkXxb6PODLT3Re9H4nDx1jw/0LwsZz0JAUi4
+	 lLlIPGvcyYx9yL0h3JytbMJ+vlaBEsSlsuqotf87DDcTCwZl9WnL3DI0/64qAZOLsDTZ1
+	 H7K/E6Wqj0aAcwHWg6ol1Q/GuaOEQgUQ8Wk64bsocTywZ4rceYD0xiJLdXzcK/I02CahO
+	 DFeR0RMVq7xDfxF0S1Hf+rfzce4r24P42uGHViGKB7pdBVZ53iZk6kEIyLz8djSN5DA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AHgLJxmS;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=soleen.com;
+	spf=pass smtp.mailfrom=soleen.com;
+	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b="f0p/9ton";
+	arc=none smtp.remote-ip=209.85.217.48
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60A060A5BD1;
-	Tue, 10 Nov 2026 14:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA7760A2615
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 14:47:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AA7760A2615
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AHgLJxmS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1F91F008A6;
-	Tue, 10 Nov 2026 14:38:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794321515;
-	bh=ZFnL1ntqolxL08fuMI08M9PJX/8t5EaSGsOH7b+bnDc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AHgLJxmSIK0goX9ZoiHOTLpeYCPeQPCf4Ahk6tNBjy/aiOqDDvtdzeCM5/6GGy5hX
-	 GaSDDlHFt8bVNhNAGkajizBEbDYIzwglX0nIc52FqkFxTkZl2HOZdydnCbP/UWd10w
-	 E1Cjkrp5G5HoJhXnEw0R5Mqf5EyQeWG7NnBn6sC2nG7NXlA3yl9XkouNjpMZG0Y0hh
-	 +cetXM3Ps+2XrHG8WT/7nxuqq0G78CqGjap7Lrg9LYZxUSi5pJEbNkVBWtYxNW/H5u
-	 YRx9/T7j6uD21BGIVYTrg1uJoyhTALNQXM9bbI907mtVuDgJfIDqe2TPEeFpTqj9QB
-	 VL+HVqsiEhHsA==
-Date: Tue, 10 Nov 2026 14:38:27 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Wei-Lin Chang <weilin.chang@arm.com>, 
-	Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH 2/2] KVM: selftests: Test KVM_PRE_FAULT_MEMORY against a
- full dirty ring
-Message-ID: <avMoubwqgXbpflwM@gremlin>
-References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
- <20261110110724.3614412-3-fuad.tabba@linux.dev>
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=f0p/9ton
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-7d2da166818so1069065137.0
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 06:47:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1794322061; x=1794926861; darn=vger.kernel.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ZFEAJe5RSOFhQbOQqwNvxFPxejburOXhpBzwnwwZqdo=;
+        b=f0p/9tono6w5KMbcB2YOWm+TL1bShXXnItauTtZcZIA3ZauQXIbiJ6XJ3s2djH87ip
+         I++QPXZ24umXJMRImSi8/Qtd6+iFrcnT1HCa/uiivkfR0qrd/97rzFC1hadvLbEESsaB
+         etu/IGSL3ldDcWfkSkPBixVVJFSZv3iv/bSMW1Rio9VCub4uYaphZ0lH5RCS/fOG3ABi
+         /O6QwjFsFbHtDlsKHFz0JeXBwhyg7Z7sLtN8pt+pKSeElAl0i1sTmRS4FRBJVDtQlrzt
+         EhBrv7K/eUdt9HAfk01RcYnkVOJY9hzzR0qNueqX0ulGGRpYW+6IC8NOTlwyCaBHLrkt
+         cfqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794322061; x=1794926861;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZFEAJe5RSOFhQbOQqwNvxFPxejburOXhpBzwnwwZqdo=;
+        b=lRwu+KQulR4ItxgGyWqYLEzSW2nDN1CWtKony5YAxLVb61g2o76geE4h9ehlbBfEzV
+         oN/K+4+60fhU0TexmZqEmm0UZC+sWZiZOv6WQxlEIWmDkcQ04SfWZyu6dP7cuU0x3bb3
+         a0PmJ0OhctwSmUuPze6aZ6a5yBrK8HGohMUUHQkkwxU0YuuwoT46UfrWt+kufG7C5tRA
+         o+d1FRWF2LbeDcVpAqH8BQPUe33ZOz582jRvEYQVhX3OJAM7Ny2IfIvEndfjNPAVo+TT
+         DXVP3J8CAozfzMLr/Ju6P3j3GETZXL7YPDN57Ruv/VU10/9U9mtNTUvExnAdWIat+vr0
+         Yb2w==
+X-Forwarded-Encrypted: i=1; AL+hErHYN2PlIf4JXKGEal/DW21GZlL4e7j0Pf+E4bK84xi1e/jk78wN70g4NL3+DN74tFHTv2Q=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9G+k5jzX+nWacYphTVa/g9e2RyWhKUYiBSl5eMCAq4GiwNu6sH
+	qAP/l4efP15kVtMNfDKAoSkyBY5SbSvbr7uX/ikOp6C9lkjZcWmEGuUzhL0wvjdGM5M=
+X-Gm-Gg: AYBFou1HJwn0WtXko191RIEv90Ub2DvbkR8Sv15XYrhN9TdHMQCemrAoTXNEofzs3gG
+	C56Oaher052Cf1ExsUlavLZzNDhUkvagoxz3+LcQWnrS093Idcon+OE5ljSp9la19ObBv1fwGYM
+	BnP9vvPxy9FO9+H53HOWyGryDVwEdh0tvm8sdmRK+aYUf5JnY8v0tcUuskU9ldmcerbb3cylycd
+	GPs/SgV39v5f8RkTOjyDukIvOETLBqr0Ticd8WuR1zAH2wrUZhHvUb28KlYsvGFTL9/BQIHZm2q
+	6tUc+MGFgiUOfkUfnAmkOER7GBL5ysuFM+XhYZd4zK6K84XN+VJieByyjqDFt9/4PEdaMhATrU4
+	NijbgVdtWdOs7bZKhcVX5cw1W23H7zYtb750I7Ja1eXZtNf9PVg6e2j1V+KvOvBIBjzstuCOP6f
+	rMmD5nmhh5OraB+G+T+wO7lZ03yPl4zVD+zBCXQsZMltADXRtasPQXPUwbDaQ6mg6EvUwJA3Rtx
+	rTjKcT3PAoaRLq5CrPUi1d5epSkiorbPwWVoRTLUKafzcEVaVBNhpKor7+tyFPW+T/cIiNshEjj
+	Gz2J/ExzqU6iMHt9/dCEuaWe1auuHtJTR8vYKIy5V0r5sDkIJdP/pmMhka780dQBKd0ewMscp8N
+	L4Sz1ztgOrrakus5nU244E7uMwh8e3kLOcOQHI5+NPo79XLg=
+X-Received: by 2002:a67:e706:0:b0:7cc:26a8:e716 with SMTP id ada2fe7eead31-7d301c2b6b9mr1064638137.18.1794322061210;
+        Tue, 10 Nov 2026 06:47:41 -0800 (PST)
+Received: from soleen.c.googlers.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c2003b37csm1895903241.6.2026.11.10.06.47.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 06:47:40 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,175 +90,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110110724.3614412-3-fuad.tabba@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 04/19] liveupdate: Reference struct luo_file_set_ser
+ via serialized pointer
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, 
+ will@kernel.org, David Matlack <dmatlack@google.com>, 
+ Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, 
+ loganodell@google.com, arnd@arndb.de, dwmw2@infradead.org, 
+ baolu.lu@linux.intel.com, Bjorn Helgaas <bhelgaas@google.com>, 
+ oupton@kernel.org, alex@shazbot.org, gle.com@google.com, 
+ pbonzini@redhat.com, Andrew Morton <akpm@linux-foundation.org>, 
+ kevin.tian@intel.com, joro@8bytes.org, kvmarm@lists.linux.dev, 
+ linux-pci@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+ kexec@lists.infradead.org, kvm@vger.kernel.org, iommu@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, skhawaja@google.com, sagis@google.com, 
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261110050202.529473-5-tarunsahu@google.com>
+References: <20261110050202.529473-1-tarunsahu@google.com>
+ <20261110050202.529473-5-tarunsahu@google.com>
+Date: Tue, 10 Nov 2026 09:47:35 -0500
+Message-Id: <179432205559.2329176.7688399969919556416.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=791;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=qYrWWLSjrMyi3btEEyRhgD14ybrNmyQeqN8ETOUOvP4=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq8y6LmPCnN2SrnZCSda58BBnTZsMnjk7g+kA/g
+ 6Wo/AVJiseJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCavMuiwAKCRC7dyhM23N6
+ 3qrED/9liUyRUpQr+Sv1ioZ2pUvLcetyB+2JoLxaB/0UYYNHqDXpwWtEHhSP3eAYwEET2WAzSzb
+ cINjQ0UdR20OJBBxpWT+3R6jrxl6smFx5lA1+CtzCdBONdl5NiW3+NITRy2Ip//vGFZKdNjWFk/
+ 5Y0ii3L7iz6hVXT9R9y6mqGOo2TBCSa84xWnOGrVJ8ijAnCqgOeAMhmqVN+rkl/dWCvzMcCFZZP
+ AYRuSxmCQaOa9GxsOttPL5pX10r/UbwioXQZu/aJ6RcG+ql2liIZFv1+3mcSyInleN3SlnUZOVi
+ inOQM3Yp2D1a6ekPH7F6Uzb45X4qnnJ8DSfO2LkVSWgmzzpsKuXUePJ8Pe0a7FfO9mUYj5Fp9wg
+ IxfJUyigWzzPN0aOcgePZcZBT4fLUlw+zQV3UGnfTiTzevMagmFWU2+B/s0Zt7u6TidXvFQsMFI
+ 6ZlD5aySuQGLYM3+UdGdp96SY6FEGgvqmSCG63zPbq7Y2WqSBl153diBep17zLt4CJ8n3Fd+YrU
+ E2rPF9GR7k6MT1Qc2tSSvCCk+cTjcDt4Fm3op7Z6LrxP3BQDFa0Fh2afBgG5mCHbK8fSxd2uggj
+ NuHbXeBNgQpe1vKYQQd97AUSoFlymseer2cfqgpdkxtIZwGdPAYPchrVuPHKx6mZDNkSz6VZZ49
+ k5DwAzPXt9kz4Og==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 
-On Tue, Nov 10, 2026 at 11:07:24AM +0000, Fuad Tabba wrote:
-> Pre-fault more populated, dirty-logged pages than the vCPU's dirty ring
-> holds, and check that each call stops before the ring overflows, that a
-> retry returns ENOSPC without progress, and that the harvested entries
-> are the pages in order. A read pre-fault can map a page read-only, or
+On Tue, 10 Nov 2026 05:01:47 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
+> struct luo_session_ser currently embeds struct luo_file_set_ser directly
+> by value. Embedding struct luo_file_set_ser couples the session layout's
+> size and field offsets to struct luo_file_set_ser, preventing either
+> structure from appending fields independently across kexec.
+> 
+> Convert struct luo_session_ser to hold a DECLARE_KHOSER_PTR pointer to
+> struct luo_file_set_ser instead of embedding it by value. Reserve space
+> for both structures in each session block-set entry, placing struct
+> luo_file_set_ser immediately after struct luo_session_ser, and bump
+> LUO_ABI_COMPATIBLE from luo-v5 to luo-v6.
+> 
+> [...]
 
-Are we asserting an invariant that prefaulting happens in address order
-here?  Is that explicitly presumed in the prefault API, or just how it
-happens to pan out?
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-I wonder if we might decide for whatever reason in future to do things
-differently there. Bit nitty I know, but wonder if it's asserting an
-implementation detail?
+-- 
+Pasha
 
-> access-tracked on x86 without EPT A/D bits, so skip the case if
-> pre-faulting dirties nothing.
->
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
-> ---
->  .../selftests/kvm/pre_fault_memory_test.c     | 85 +++++++++++++++++++
->  1 file changed, 85 insertions(+)
->
-> diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
-> index 3082fe09b95fa..18fc1d69acbf0 100644
-> --- a/tools/testing/selftests/kvm/pre_fault_memory_test.c
-> +++ b/tools/testing/selftests/kvm/pre_fault_memory_test.c
-> @@ -5,6 +5,7 @@
->   * Author:
->   * Isaku Yamahata <isaku.yamahata at gmail.com>
->   */
-> +#include <asm/barrier.h>
->  #include <linux/sizes.h>
->
->  #include <test_util.h>
-> @@ -17,6 +18,8 @@
->  /* Arbitrarily chosen values */
->  #define TEST_BASE_SIZE		SZ_2M
->  #define TEST_SLOT		10
-> +/* Large enough for the entries every architecture reserves. */
-> +#define TEST_RING_SIZE		SZ_64K
->
->  /* Storage of test info to share with guest code */
->  struct test_config {
-> @@ -281,6 +284,87 @@ static void test_pre_fault_memory(unsigned long vm_type, enum vm_mem_backing_src
->  	for_each_guest_mode(__test_pre_fault_memory, &p);
->  }
->
-> +/*
-> + * Pre-fault more dirty-logged pages than the ring holds: each call has to stop
-> + * before the ring overflows, and no entry may be lost.
-> + */
-> +static void test_pre_fault_dirty_ring(void)
-> +{
-> +	const u64 entries = TEST_RING_SIZE / sizeof(struct kvm_dirty_gfn);
-> +	const u64 npages = entries + entries / 4;
-> +	struct kvm_pre_fault_memory range, left;
-> +	struct kvm_dirty_gfn *gfns, *cur;
-> +	u64 harvested = 0, n, size;
-> +	struct kvm_vcpu *vcpu;
-> +	int ret, stops = 0;
-> +	struct kvm_vm *vm;
-> +	u32 fetch = 0;
-> +	gpa_t gpa;
-> +
-> +	if (!kvm_has_cap(KVM_CAP_DIRTY_LOG_RING) && !kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL)) {
-> +		pr_info("Skipping the dirty ring test: no dirty ring\n");
-> +		return;
-> +	}
-> +
-> +	vm = vm_create(1);
-> +	vm_enable_dirty_ring(vm, TEST_RING_SIZE);
-> +	vcpu = vm_vcpu_add(vm, 0, NULL);
-> +	gfns = vcpu_map_dirty_ring(vcpu);
-> +
-> +	size = npages * vm->page_size;
-> +	gpa = align_down(vm->max_gfn * vm->page_size - size, SZ_2M);
-> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, gpa, TEST_SLOT, npages,
-> +				    KVM_MEM_LOG_DIRTY_PAGES);
-> +
-> +	/* Populate the pages, so that pre-faulting can map them writable. */
-
-Reviewed below, but I wonder how x86 could then read fault these?
-
-> +	memset(addr_gpa2hva(vm, gpa), 1, size);
-> +
-> +	range = (struct kvm_pre_fault_memory) { .gpa = gpa, .size = size };
-> +	while (range.size) {
-
-NIT: n could be scoped to this block instead.
-
-> +		vcpu_ioctl(vcpu, KVM_PRE_FAULT_MEMORY, &range);
-> +
-> +		if (range.size) {
-> +			left = range;
-> +			ret = __vcpu_ioctl(vcpu, KVM_PRE_FAULT_MEMORY, &range);
-> +			TEST_ASSERT_VM_VCPU_IOCTL(ret == -1 && errno == ENOSPC,
-> +						  KVM_PRE_FAULT_MEMORY, ret, vm);
-> +			TEST_ASSERT(range.gpa == left.gpa && range.size == left.size,
-> +				    "KVM_PRE_FAULT_MEMORY made progress on a full ring");
-> +			stops++;
-> +		}
-> +
-> +		for (n = 0; ; n++) {
-
-Could this loop forever if cur->flags always == KVM_DIRTY_GFN_F_DIRTY? Or
-is that guaranteed not to be the case?
-
-> +			cur = &gfns[fetch % entries];
-> +			if (smp_load_acquire(&cur->flags) != KVM_DIRTY_GFN_F_DIRTY)
-
-Is this and the below release paired with equivalent stuff in the dirty ring code?
-
-> +				break;
-> +
-> +			TEST_ASSERT(cur->slot == TEST_SLOT && cur->offset == harvested + n,
-> +				    "Ring entry %u: slot %u offset 0x%llx, expected slot %u offset 0x%lx",
-> +				    fetch, cur->slot, cur->offset, TEST_SLOT, harvested + n);
-> +			smp_store_release(&cur->flags, KVM_DIRTY_GFN_F_RESET);
-> +			fetch++;
-> +		}
-> +
-> +		/* A read pre-fault can map a page read-only, or access-tracked on x86. */
-
-Hmm under what circumstances would that happen? Is there no way to ensure pages
-are dirtied by prefaulting? I imagine not though!
-
-> +		if (!n && !harvested && !range.size) {
-
-Hmm, so !n && (harvested || range_size) will pass this, but then you assert
-n immediately below, so it seems like n is an unconditional requirement.
-
-So I wonder whether this should just be !n in this conditional or maybe the
-assert afterwards should be dropped?
-
-> +			pr_info("Skipping the dirty ring test: pre-faulting dirtied no pages\n");
-> +			kvm_vm_free(vm);
-> +			return;
-> +		}
-> +		TEST_ASSERT(n, "KVM_PRE_FAULT_MEMORY pushed nothing to the ring");
-> +		TEST_ASSERT(kvm_vm_reset_dirty_ring(vm) == n,
-> +			    "KVM_RESET_DIRTY_RINGS didn't reset %lu entries", n);
-> +		harvested += n;
-> +	}
-> +
-> +	TEST_ASSERT(harvested == npages, "%lu ring entries for %lu pages", harvested, npages);
-> +	TEST_ASSERT(stops, "KVM_PRE_FAULT_MEMORY never stopped for a %lu-entry ring", entries);
-> +	pr_info("Pre-faulted %lu pages through a %lu-entry ring, stopping %d times\n",
-> +		npages, entries, stops);
-> +
-> +	kvm_vm_free(vm);
-> +}
-> +
->  static void help(char *name)
->  {
->  	puts("");
-> @@ -320,5 +404,6 @@ int main(int argc, char *argv[])
->  	test_pre_fault_memory(KVM_X86_SW_PROTECTED_VM, backing, false);
->  	test_pre_fault_memory(KVM_X86_SW_PROTECTED_VM, backing, true);
->  #endif
-> +	test_pre_fault_dirty_ring();
->  	return 0;
->  }
-> --
-> 2.47.3
->
-
---
-Cheers, Lorenzo
