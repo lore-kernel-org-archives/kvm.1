@@ -1,86 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794323302;
-	b=0YPuZUy62e+enITomDMTud/htnwj24x4IyjGfdw9eR3A8U8tKjf46txopWLXQFBgQudo
-	 6ga9eubyaW2rUDHSqQJ1Hru1Ft8J6ZdyTsX3a4GjCdVYlth4X3VIYOz0v6GDZOdH+CMcu
-	 IEpt1rWVfjVntqtjclwwoT8AgtpUWmBUXHjEyuzS+/lxnOHZMvQZTZ08701lfE/eJndFp
-	 DDSuFkPQqm8SM/keLAEmA8/6rvMDDZ06zeky2X6RmTQ1t3ZOgMjoHCXShBHkasTSdSx0B
-	 DEGhSrTNfo6MR0wGgvEJndl3fY4fUhhlUjB4FaXRajmkK/psncPE0mWUNINyo1uyKzw==
+	t=1794323545;
+	b=pLzMOLya1EU7WQdNSaBbqINvAlPkHFb/CbRvH27eYGk+n/4nNShFO0/ucoNDZ8KNigku
+	 LijKoOvblK4BqUxDDt7iNeqN04JW3XbrL3NgNHIq86ROnrka/PeYc4u8oABqH4lpec8dH
+	 Zy7U5omuNZ1xBvy4izWKZOP6RcNWbkLXMfEL20P2+dgxvqWuu9cwswIGnBiefPBxxdjXt
+	 UTpWeuaEsFp2zb+/s1O6EoCB5BcTf34zgyc+tKSRt1gWy4OHfUpBGQkg/DPR1n3AZ5pGt
+	 DIvpkJqeIuzHP8bStFXUES3/+ByitIdlPmNuADa9JhsbqZ2g8EtQuFOidL8dX9XaMHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794323302;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794323545;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
-	 Cc:In-Reply-To:References:Date:Message-Id:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=WKAEhFQ+Dah3DMHVjGDEQ1FI4504gN8wbhTTvAQenls=;
-	b=4vYhL2NmaEoJjexRm7CbhKRkFaf2bJz8+alttabUKPeJ49n1C6JS3GdsNX8MZJjHZNYp
-	 PPB02ESKte/ExBGGxSkJbYJtIJT2mpuOzcFTdOoMX6cpyVB8xhKJ579liwaa/wnF8SvSD
-	 vUqL6ury8fQdblGbcWlZDBi6JM2+emXMxOFmojujYcM4b6O4VFHVPvwFjFLAk8IWG+Xtx
-	 Mn1/f7Zx1ts96ETKJaiPW18VCDpI3IRL4oWxNNllzKyE5k6DRKfR7cBpOoqj+XbPcNF1D
-	 kyJS8zGdJRYl2HQQx8vxGCMRkF2+LIUczeCzMo/0POYIyS5xPm+pBKULcdydMf18pFg==
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=KpEwWty65XIKqwE7JeJ6p16oyvStp8N2eZzOQMIZadI=;
+	b=X7eQvJKwrmx/O0nJV90jq/5YIzL+UrBFpG2UHEB1dwAgMpR51KHFr9JaeJqPSoltMVLK
+	 Nz/YrtrkGii64Lr+maevexxAY+a29olA9LqEXXx+TbG5PX2af9aIG8y3V5JlXAnTqxgaF
+	 iZzwtLtJS2Wu0VZPywBb2sDOYy2OAaXIGJEDRgb5KGk1ybIE4Vy6dIMbLchSYo5i58G6O
+	 ZbB86UcAoJhhTiGbeBDDJ45lGyEzJ+XtrDu3hFHsWcxB2mtvW7z4V8eg1ujyRT4DnuDII
+	 iOA7HF5hUaLl+In9Il5f9UV3zuVd7yU9xx7UHDAbfub5rCcs3/npl88BS49SLXPW+4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=soleen.com;
 	spf=pass smtp.mailfrom=soleen.com;
-	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b="MY7/VxB1";
-	arc=none smtp.remote-ip=209.85.222.44
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b="YOUBG/UJ";
+	arc=none smtp.remote-ip=209.85.221.172
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9A6606A332
-	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 15:08:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B9A6606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC6460A2608
+	for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 15:12:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FC6460A2608
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=MY7/VxB1
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-99b49d6a5caso490206241.2
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 07:08:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=YOUBG/UJ
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5ea969fafeeso744063e0c.0
+        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 07:12:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1794323300; x=1794928100; darn=vger.kernel.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
+        d=soleen.com; s=google; t=1794323544; x=1794928344; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=WKAEhFQ+Dah3DMHVjGDEQ1FI4504gN8wbhTTvAQenls=;
-        b=MY7/VxB1O/0DDBob4OhFBhE2r7AqoArsc4vheQsUZdhXDD+b5y1y1TaQrVm/bdwM31
-         v+wvR1Xa3Ogoqeh918QB8QJkmxoGqB/R4NBJ2DOJcela0Ni/GKwIGZk8KpF3tas6I5PQ
-         qKvtJzIG9/afJgpmJCT8Wdk0JCrpgGt8FzAo9UC1qJ+1YInuolQ9XLeruvGJazzi6dQA
-         6/dnbpjLZxKCsl3iAfGw/gz7uTLTFH0Bl0FPaSew7qw4Mq3brXG6aw9DcGgQGyAglMNu
-         RxiC7KvyFW8YJvykaeY5KOEMdF2MdmBGATrfsR7KNl7p0+qOdzVYWZayVDtF6hymuNJo
-         lB+w==
+        bh=KpEwWty65XIKqwE7JeJ6p16oyvStp8N2eZzOQMIZadI=;
+        b=YOUBG/UJDUN4UyxvkhIoLhefkcKvcqtCc43YY9icyFLipWGwJr4yRhoF61ai04yb3G
+         /3oA/YdYUik8WvsHFnI3gFCqTxtjsY0R+rgJT3k6h2A7QoXojCu8iohoASLyE0xrRsG6
+         r77coPHPIo9sHj3xb1YOG5IhOJKV9qF8R6gyeeM54RzrM2UnL6uNga7Md3t05uiI9v6o
+         5KldDRCzbIk9P4MYLEtb+lU5m6ZqVMMuwQ4336EDEh3PepvHzOcgNGzJe9mzOCIKRb4w
+         P2iFaU19sefu/7GQ+UIx4MnWmqodZKnGvXovtykItH/b2HiCw11TEk6EiCg3vu0DA4qv
+         p42g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794323300; x=1794928100;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794323544; x=1794928344;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WKAEhFQ+Dah3DMHVjGDEQ1FI4504gN8wbhTTvAQenls=;
-        b=yC8WlzuLeHA9g7qpJueRemrtScaaBZpCs4lhTddoU/C0akbmOl86LeytqoM36dpiVt
-         /gD29ehQwStaewlXYe6oREryySzSYJmwmkX735p1xJe8bNBzU0PrXfBS/q1OZ8P9mTJ8
-         L/HaoUuJ3tNWquGs4XDCN/+5e/Gwv4vdKTQsKYnD4dQOFyBG8MsI602e0U+rOzw/EjWY
-         mQaYQphUuaFg2hrMt8SbiUF+2rIQy3i2xqi2tsEB6ZefyKI2G30VbNgYwSnKqCqMm1hx
-         jmFbhR9Ed0G+P/kCBrIP8hM3hxknXoPFRH8KcXZVzCS6aoOYg8GkGJVSL0FEx472+PXT
-         NBdQ==
-X-Forwarded-Encrypted: i=1; AL+hErEVUaweQtdxvAhiwXlToFVUs6b34nAc8x3kcS0Ei4r715wms+Y4wJLNwsXqn8lHbburwFo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z81/H7Zfuoq5zhUurmcZ3mwcvJOQDN2enGMGFCbmswgn+4AkWSO
-	oyR3nIpMh6EE4GMLQMAJvg3tWSAz1W3Dq+5UuIDlcnOo+zeIlvW4NInITHyKReJ+QXM=
-X-Gm-Gg: AYBFou37pr01u+paVrWJbscMA8XrkVYloFsI3Ev9AvFNfCbpvvOsbZSyOCpCIE6SeBL
-	Um9jI07ZLLyZO4kV7gybrt+ZkQbiaxBpkO2PzYVdPcRKL4Ray8ODTAiGu1FomBW/4tURJ73v0jB
-	fKIYBI1WAR0Y+tlyqh+0KfORUlxrVo+7gPwdajtH636QNx0xZ5PXoyBWbzxfujaLcWQ4nofLeZt
-	WxxpSOyXVXm7HN/XEMAXMvlWfPPaztKyVWd6rC1PzOclmi+kfQHAbCYg8y9ejuuFjEKRMvfO7WI
-	jPr0z0P5hqvRUJQs+Rzw7hbagLvhHvOW2OaOKUn+L8o18qn9oMbNsm7xgl4y4w0ZUWF2hhJQee5
-	EkbGxMhuWcvukkEnVL7x4uq+0/Nwt9MHrgKsqqac1cnnQZMKIt1LaZY3Wb667vO6HUKpHnqGyRP
-	yXcU3ZJS0whWkQXgBxbOu02/hqyA59+cj33SllC38AqmPdoos0dn7I766l+p6V1lL2da5Tz60R2
-	KYPZBNc8C5sjFFWcO+oOfKo/rYYfAhg8bS1RBd+tsQaKy9Q7l3s9/VrdUqX3ElhAVcCd+f1Gf11
-	Q6zCstI9G6HF0nVrDBNGLmiM479agsYh3W4OSai9UPg2HJsaH+7Nz7ZREq453YTobnB84j6htPZ
-	FDbqus3ZNbDN1sXVCLVWAzMXSZ+wDStLOnYPwtug191Rm
-X-Received: by 2002:a05:6122:468c:b0:5da:a74:d6a4 with SMTP id 71dfb90a1353d-5ee0d1254cdmr983516e0c.15.1794323299946;
-        Tue, 10 Nov 2026 07:08:19 -0800 (PST)
-Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe63asm1965122241.4.2026.11.10.07.08.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 07:08:18 -0800 (PST)
+        bh=KpEwWty65XIKqwE7JeJ6p16oyvStp8N2eZzOQMIZadI=;
+        b=laXcGQzEKGMH9hekjdMzdx+Sajcb7N1nWLXHKUod+kiMnAb2m0R0cNKQ95IG/HURAL
+         qaYwE/gwEWPMPdM0QXadNYgC0b4zx7imTUbV6k3jxGSgLrsikvQqIcIcezXfdcPz7/3m
+         UWkv9u2yCWNQy2XnZo2tF4D9EE4X1fI3a/wpEvZsQeiTDrnPdXd/XfXzyHy/luF0La3O
+         gYe3dQzwHK4T23IND+ODtFXr2tIGEDMEoy02SXhq0PVN6O1BX07Tv6Z2LbolJ14Q1Awg
+         rZaciicSgwFTlWoNAbFvU8eFg+ORFjcwnE38E+VOOZ7Y1eXQqupGAbicfwcwq42b9jwm
+         kkXg==
+X-Forwarded-Encrypted: i=1; AL+hErH/bvzkCdO17q+8UviomiD33FyghcWVB9yl5qWUWjx8r1yQ6tTxDnGEvBx1EOasbC6qUtg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+cgJPcbxKhtoZrLe/Pl4BUJJ71sMgbkYOobtW3L31xuqW173nY
+	X1zOvYAtL30U3KnpqXA8t/fUlnIkZpefKyv1ZCwnzv3Pl0n6efJbUHgxXXWeGeYc9og=
+X-Gm-Gg: AYBFou1EqwVNOZMPUQfQG92aGbDLKgAfENOmXw9kGMBBtKVcLIb4ogb5YQgzngG+PIc
+	N/ebQhXi6w/hthk2G4hk1nTUHr0+QxkLSVyzGMLXhEhgbXR2ZeU0xN7tBt1M4bKmZAIH7XCm6iz
+	vJkLWKi0zXEWaqiLdA2SGTW30greQg08uIajku70mNfqeYA34bwg43Jum1Nbh4cp1HJObek/FGr
+	Hz3/COs/NjZobR6Eqd2O0TGL7NYwr2HTGY0fApgi5sB164D7mwKfLpgdC3D+KxdE2j28utnWUqM
+	6KeimstlaMFr7m2IvTsB6gt8cqRVkawOJnp9tPiph+bsUl9tRdAUZIQPVPSeR2dWh6PI6K8yw9D
+	DRffDbYX6EkVhDXNPo64YxKDsQY4otrcxsDWkGgLY0w7uIiVvERyTEq3x/j3j3XgvJjQ4QNhESl
+	KExSLdWqz4CmsTeGPYNsUID5ocVLnZnND1lqIR3huBBlxRdPjmVjsYinf+eWVtEtGb/tQ9vT5BK
+	XiWYHQdpMo5LO+f9pXTBRwfYoxMsHcjhzI8BbJq8pUfqY+IpwplrIS+s02QAM7T3mLfG26tdCgT
+	4beuMeVvhFVC/BILm7ygv3PjdNau7lF493J94XLZw8No4j/Z4aOxo/fgG495ls5PQ5JyZtir/kt
+	xPU4NxldO1WjAIn2fLQYt0qlLY3Tt
+X-Received: by 2002:a05:6122:5313:b0:5ea:a0f0:192f with SMTP id 71dfb90a1353d-5ee0d0cd07bmr947867e0c.10.1794323544266;
+        Tue, 10 Nov 2026 07:12:24 -0800 (PST)
+Received: from localhost (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee0c45a110sm2039560e0c.2.2026.11.10.07.12.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 07:12:23 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,129 +88,81 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 06/19] kho: kexec_metadata: Add the feature header
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, 
- will@kernel.org, David Matlack <dmatlack@google.com>, 
- Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, 
- loganodell@google.com, arnd@arndb.de, dwmw2@infradead.org, 
- baolu.lu@linux.intel.com, Bjorn Helgaas <bhelgaas@google.com>, 
- oupton@kernel.org, alex@shazbot.org, gle.com@google.com, 
- pbonzini@redhat.com, Andrew Morton <akpm@linux-foundation.org>, 
- kevin.tian@intel.com, joro@8bytes.org, kvmarm@lists.linux.dev, 
- linux-pci@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
- kexec@lists.infradead.org, kvm@vger.kernel.org, iommu@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, skhawaja@google.com, sagis@google.com, 
- linux-arch@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261110050202.529473-7-tarunsahu@google.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 10:12:22 -0500
+Message-Id: <DMRMLZSZ0LAZ.D4P70QWX0IHB@soleen.com>
+Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
+ <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
+ <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 05/19] kho: Add feature header for fine-grained ABI
+ compatibility
+From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
+To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
+ <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
+ Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
+ <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
+ <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
+ <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
+X-Mailer: aerc 0.22.0-39-g5d7784875be2
 References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-7-tarunsahu@google.com>
-Date: Tue, 10 Nov 2026 10:08:12 -0500
-Message-Id: <179432329215.2329176.14453669404153142360.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3169;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=QPKh6oqVuep5a0uq5kk2HJ+pkn4UzCARnNzVJdUZk/E=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq8zNhLa8G7KPQhtpqNqIaC7iUSrItiw95IH4+W
- 4FZp+mLRNmJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCavMzYQAKCRC7dyhM23N6
- 3ixyD/9hSlVPu6pn+Usl6EKxRh1wkp2nNTAGfSwd0T80brdKlRNG7a8mQqhUQi1H7cXmovyHBUq
- ES73eQCtV9EEqD3V+9mhbM/vQ3DNxapFoBftgUpOKocv/TyzS+fnYCCd+V4qkZp6JbEE04DX5ph
- RXIIzYY1cOoM3lIFUa3WAKuQ5IlLTqUrcCnmCGDDA2ABc3Dn4YGxVfA+j1TEgs3i5/pZ3Jg6vPm
- 2w2Rki59ZZh1OvjNwqaQcNxFUaUzOua2A1T1C5uWqXUw29+H364g+FPC9TsTFighlf5Dm5nInFm
- sy05T7yV7PmS1d4eRFn5VjWQo2hboOwrVmB5E3sLTnbZ+oXkY0TgWbPqKYlXfKYQ1RF1dttkf3y
- L666oJVxxNOxQuWbB80WyaaQp1G11CUhLjsRBaxuJqYWD3LuhT6NKGc7rkKJ+4Y1QHbv77qrsL0
- xU62OLvV+UYlxbDgjPM1r4q1njY/2zmio3uMBSt4oubrAmtiUMAW6J6dY86mFHlcm8xgbSUbn5B
- HOb83UbLMhoMCV4Zf4R9ofmr8Zb5PO+Ieg4+UAv33DElEYGHzsZJuh7rv0KDrtHn6JA4zqY3vNY
- KpfJSWU9gzyoa94bAOMSWiRRC/83AeXcMfiQw7G8I+bNVH6Sm/Q6RfvqXkiiTkw9BXIWwqNbXQH
- 2NBA/068NaYZqOw==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+ <20261110050202.529473-6-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-6-tarunsahu@google.com>
 
-> The kexec metadata subtree currently uses a monolithic u32 version field
-> to identify the metadata structure layout. Any change to the structure,
-> even an optional additive field, requires incrementing the version and
-> breaks compatibility between adjacent kernels.
-> 
-> Replace the u32 version field in struct kho_kexec_metadata with
-> struct kho_ser_hdr using DECLARE_KHO_SER. Later fields can be appended
-> under new feature indices without breaking compatibility across kexec.
-> Also make the 3-byte padding hole between previous_release and kexec_count
-> explicit as reserved[3].
-> 
-> During deserialization, validate the blob size against the header size
-> and reject unknown required features. A legacy v1 metadata blob is
-> ignored with a warning.
-> 
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->
-> diff --git a/include/linux/kho/abi/kexec_metadata.h b/include/linux/kho/abi/kexec_metadata.h
-> index e9e3f7e38a7c..316b3e5ad01b 100644
-> --- a/include/linux/kho/abi/kexec_metadata.h
-> +++ b/include/linux/kho/abi/kexec_metadata.h
-> @@ -18,28 +18,31 @@
->  #ifndef _LINUX_KHO_ABI_KEXEC_METADATA_H
->  #define _LINUX_KHO_ABI_KEXEC_METADATA_H
->  
-> +#include <linux/build_bug.h>
-> +#include <linux/kho/abi/feature.h>
->  #include <linux/types.h>
->  #include <linux/utsname.h>
->  
-> -#define KHO_KEXEC_METADATA_VERSION 1
-> -
->  /**
->   * struct kho_kexec_metadata - Kexec metadata passed between kernels
-> - * @version: ABI version of this struct (must be first field)
->   * @previous_release: Kernel version string that initiated the kexec
-> + * @reserved: Reserved for structure alignment; must be zero
->   * @kexec_count: Number of kexec boots since last cold boot
->   *
-> - * This structure is preserved across kexec and allows the new kernel to
-> + * This structure is preserved across kexec and allows the target kernel to
->   * identify which kernel it was booted from and how many kexec reboots
-> - * have occurred.
-> + * have occurred. Preceded by &struct kho_ser_hdr.
->   *
->   * __NEW_UTS_LEN is part of uABI, so it safe to use it in here.
->   */
->  struct kho_kexec_metadata {
-> -	u32 version;
->  	char previous_release[__NEW_UTS_LEN + 1];
-> +	u8 reserved[3];
->  	u32 kexec_count;
-> -} __packed;
-> +} __aligned(8);
+On Tue Nov 10, 2026 at 12:01 AM EST, Tarun Sahu wrote:
 
-Why __packed was not removed in the first commit? __aligned(8) should 
-not be needed, given that it must follow DECLARE_KHO_SER which is 8-byte 
-aligned.
+> +/**
+> + * DECLARE_KHO_SER - Register a serialized payload structure with KHO.
+> + * @name:         Structure tag name (e.g. luo_ser).
+> + * @payload_size: Compile-time expected size of struct @name in bytes.
+> + * @nr_required:  Total number of defined required features.
+> + * @nr_optional:  Total number of defined optional features.
+> + *
+> + * Size and 8-byte alignment are asserted under CONFIG_64BIT: KHO and LU=
+O are
+> + * 64-bit only, while !CONFIG_KEXEC_HANDOVER stubs pull ABI headers into
+> + * 32-bit builds where u64 has 4-byte or 2-byte alignment.
+> + */
+> +#define DECLARE_KHO_SER(name, payload_size, nr_required, nr_optional)	\
+> +	static_assert(!IS_ENABLED(CONFIG_64BIT) ||			\
+> +		      sizeof(struct name) =3D=3D (payload_size),		\
+> +		      "struct " #name " size mismatch");		\
+> +	static_assert(!IS_ENABLED(CONFIG_64BIT) ||			\
+> +		      __alignof__(struct name) =3D=3D 8,			\
+> +		      "struct " #name " must be 8-byte aligned");	\
+> +	extern struct kho_ser_hdr __kho_ser_hdr_##name;			\
 
+Remove this extern.
+
+> +	enum {								\
+> +		__KHO_SER_SIZE_##name =3D (payload_size),			\
+> +		__KHO_SER_NR_REQUIRED_##name =3D (nr_required),		\
+> +		__KHO_SER_NR_OPTIONAL_##name =3D (nr_optional),		\
+> +	}
 > +
-> +/* Register kho_kexec_metadata with KHO serialization accessors */
-here and in all other places, please remove this comment.
+> +/**
+> + * DECLARE_KHO_SER_HDR - Declare a feature header variable, field, or pa=
+rameter.
+> + * @name: Structure tag name registered with DECLARE_KHO_SER().
+> + * @decl: Declarator (e.g. *fhdr, **out_fhdr, or * inside DECLARE_KHOSER=
+_PTR).
+> + *
+> + * Declares @decl with type struct kho_ser_hdr while checking at compile=
+ time
+> + * that @name was registered with DECLARE_KHO_SER(), documenting which
+> + * serialized payload structure a feature header pointer belongs to.
+> + */
+> +#define DECLARE_KHO_SER_HDR(name, decl)	typeof(__kho_ser_hdr_##name) dec=
+l
 
-> +DECLARE_KHO_SER(kho_kexec_metadata, 72, 0, 0);
->  
->  #define KHO_METADATA_NODE_NAME "kexec-metadata"
->  
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 6f1f55fe3181..2edd772bb6d3 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1740,6 +1740,7 @@ static __init int kho_out_fdt_setup(void)
->  
->  static void __init kho_in_kexec_metadata(void)
->  {
-> +	DECLARE_KHO_SER_HDR(kho_kexec_metadata, *fhdr);
+Remove DECLARE_KHO_SER_HDR, use kho_ser_hdr directly.
 
-Please don't do this, use kho_ser_hdr directly.
-
--- 
+--=20
 Pasha
 
