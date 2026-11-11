@@ -1,71 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794369422;
-	b=pHSDABCgRq0QU7HFj6/0GKAFhp0WPbkQatzm390vLRAEyYBwLdh1sRxvBhxGWOG3cXRY
-	 BKz+lCgHQ0o8DDdNVQMUjQ0+aBdhQRKCto2mbrisO3OVZlPS/nl0gXuWZxuj0nV8HtugD
-	 Eooh52K1PdPC33S0rxNH6i7YjY5C2fPtk6TRntEgUK12YxkX7Q0aDW4Ay9R6UzcCbixGU
-	 11jrB9Ojbh5QdyeCU7e2cCUZiweakPlWjCoz7tn2m5nHn7WKeoHrQWpqBkJnfw/wRg6MC
-	 lsiM+fZTaixSuyfJc/euhEe64yGzC+ldNJJBL6rrXoLrBmqmJGs4+jqGXSdYTEpzwuQ==
+	t=1794369436;
+	b=kNcUeKjKKn4lRiybvs+kYZ42MsWa4HldXygTY+XLHaoIf3O3cYcGhlEDP67N/JBJ+Fwy
+	 tycFIodJkRRpwtGvLhQEfFlehOF+mJelI8YCo6uOIkwvPWfnn6DqQOOt4B5pK/Zl4cOWx
+	 xCUaB4oiTuIZgfZ2enWgpjTpRCuzoindnm00pG2KtTtL+F+mPyH41RpD3ByvJYsI651ey
+	 i8xk4S7fTh+6Qw47ZERe6kBvPGaAkHH2vENDvM6WRm0+fUTbkre1RN3y4sC5XpvJom5e7
+	 zxos2bYKUBZkonBwaOdy3PXBmocnKIK5WCnzZTVp7ovQGo/fDP8M8Vx5rZ2P5JzHsWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794369422;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794369436;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=aW52MSVMDUNqdZBYe8tY4GK6/Ss5cefT5msxBqz4Pw8=;
-	b=vYUDcWSiQAbqWsJ8qn5+FswNk0yqPZdNfnn+r4A7tR8UY7vAe68EUQ8Xd9mKmDPX+D3q
-	 GWq3oaX8NZXEro0Typn1XdflMPGANjGdE+HJDWSgqLL1BnDF8ovQIMjjlQC87IkH6IWPr
-	 tWOkIAOLa8df42lmRWpSHN0o+EBg3qZF/DXIVHcq8uG0BGczo1/D6cNca0jLV4BbH2sky
-	 H5ZedAT6PVS6uWnKXrixEmGXelVFBLtTigzCM5hcdQyI0Hv4jo/gxIqnPYfv/zChDN94y
-	 7Rd3Bnxpg0KDwbjSHKJcNt1Pc89EuDPHzIMq6NGteSGQUrvv3YuUg0hWhvXnlxNYrtw==
+	bh=7MvVAMDXjWprOoMaeDSufi45I2IYcPXv9qZ9yhWbMgY=;
+	b=EOT8Bu2DLlOsa2YaaM2rtcVnl3aDWuy8gRjv5oVV2sMzdVLBeDVva/KDGDkpZO3zUMqn
+	 JI4VyIJj4Yfu5etY6w1Gjh46rWHh9NDImSp08vbbxh1wDareB2TPPxp0re3Ht6K7UHPOX
+	 aqZs7KLO0BliE/gP7hE7gqQxMmKEyOhapK9V9o+gPridywSMajhkFQlhYA29j/swxxxBz
+	 3WqFQuheKxlC9xkNZxJrPGvm8JMfPHqvggAY4YPgoFO+88vzN62bimDDyA+AZhOGtOIY0
+	 GFtVEyblnWvak3iJVIiRddSguGLaJPgeQPYknC145MVXTXYj0npYu/7eu7XqVP7ca+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VAZ7groP;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UX5NyaWH;
 	arc=none smtp.remote-ip=198.175.65.21
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFB5606A330;
-	Wed, 11 Nov 2026 03:57:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1AFB5606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49597606A327;
+	Wed, 11 Nov 2026 03:57:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49597606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VAZ7groP
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UX5NyaWH
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794369422; x=1825905422;
+  t=1794369436; x=1825905436;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=ytxrf9xHT5lRbCb14me1YZtsQUFkAuoEaA5HyzvQy6U=;
-  b=VAZ7groPif+2a/JenjCgleJjJWKmNIVHfr5yIbchAagxTF3p4Z/Btokp
-   t44ls8fo5u+xVNI94qzSFPf+Y4IU/jOw2ikoAhcUtluJxF23qF5HFV2Sc
-   9WxOYBPUxfqE2Hjr+02txH6LNL2mnSp5JTcbPnSbTAIOT5CD6xdRhp2kQ
-   R+Tz1G3GS/J3f8ykwSvCnrVvdoAnh85ouLq+gyUrsZQ86DwdMFIeOftIf
-   dmzIbxVzBHZWyf2BYhUEyC15KwY5DRwvLAcKxq8WJJz6F8aaaMDccFmad
-   zAxxfWXRv2JfkOL37m1TuXFUh/MfE/WaEvZ9k7xsePbLSlDNxqi8hB8bC
-   Q==;
-X-CSE-ConnectionGUID: 85ihy/IeRemORLlSOcyFmA==
-X-CSE-MsgGUID: KdGBjkx2RKGxkaL7xfijrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3220276"
+  bh=q1BHDHU/0pUZdsMwgo31e76yqiOl0ElefJdhMfsUuq0=;
+  b=UX5NyaWHzoIY8CRKb7oyhHDtQqiKi3M+1WV/Gv45p4akbRZWoDxVQQzn
+   Vsr87uagduFRTLnjaSTeuBV6tALxMNow9AkvMDEVtcVotTO6cLmcXO9vq
+   Pjce8x+Itkb2bHotk4ZXwuEXsBCpYe37k8Ogzc1zp7lTxvLwcOZXru2z9
+   FK19UG5HV2DW0yyfq+buJqb29viAVFjBPAbciBDFRTS746qi6pDI03Y4N
+   tqlPusyL6PNLiXNuoV5IJ4u9b251ys/vD+zjvldivXNlKutjLPZ8mekLi
+   FJagyTJcGWHsxUPbd+Yw5Kx98TyZs/1YzagddLnSlU32JifpCmHtneBbp
+   A==;
+X-CSE-ConnectionGUID: dvbmrv8eSM+yctIsjycbpA==
+X-CSE-MsgGUID: RTFwes0QR9W3tYAlnLvHKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3220294"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3220276"
+   d="scan'208";a="3220294"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:57:02 -0800
-X-CSE-ConnectionGUID: iTq/pHswSaqElNNUK2y9EA==
-X-CSE-MsgGUID: dfeMHGvDSzuLBsUsydYiPA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:57:16 -0800
+X-CSE-ConnectionGUID: PlO4BXijSmyIqoW3Zbmcqw==
+X-CSE-MsgGUID: YISC4jpESuSNmpiDSHelWQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="10199227"
+   d="scan'208";a="10199256"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
-  by fmviesa013.fm.intel.com with ESMTP; 10 Nov 2026 19:56:58 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 10 Nov 2026 19:57:12 -0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-Date: Wed, 11 Nov 2026 11:48:42 +0800
-Subject: [PATCH v5 1/6] x86/virt/tdx: Move TDH.SYS.CONFIG operations into a
- wrapper
+Date: Wed, 11 Nov 2026 11:48:45 +0800
+Subject: [PATCH v5 4/6] x86/virt/tdx: Support DPAMT when adding memory for
+ the extensions
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,7 +77,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-tdx-module-ext-v5-1-c74f764abc3d@linux.intel.com>
+Message-Id: <20261111-tdx-module-ext-v5-4-c74f764abc3d@linux.intel.com>
 References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
 In-Reply-To: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
 To: x86@kernel.org, linux-coco@lists.linux.dev, 
@@ -91,122 +91,85 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
  peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
  chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3847;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2719;
  i=yilun.xu@linux.intel.com; h=from:subject:message-id;
- bh=ytxrf9xHT5lRbCb14me1YZtsQUFkAuoEaA5HyzvQy6U=;
- b=owGbwMvMwCH2Zztz45IFPbcYT6slMWR9frp89cES5hdna4Ilv8dlfa+cEbB03cKLFj4rJiQ8N
- zTcvao2tqOThUGMg8FQTJFlgccspynts5i2ftp5DWYOKxPIEGGZysyc0jy9ilKHzLyS1By95Pxc
- Bi5OAZgq7gyGf0pT0z93fb0+6ULpPZWwq8d6dR6LH1u279ZuPrtJwT2n1lkwMpxe4qXupdludvV
- jm+pP3xeX+GXyU2tdZoXofXU7vbZ2HgsA
+ bh=q1BHDHU/0pUZdsMwgo31e76yqiOl0ElefJdhMfsUuq0=;
+ b=owGbwMvMwCH2Zztz45IFPbcYT6slMWR9frpCauGmJmW34k9XrzHPZ7bVyXjyN0vKsfTT3PXiC
+ yfNNSiR7OhkYRDjYDAUU2RZ4DHLaUr7LKatn3Zeg5nDygQyRFimMjOnNE+votQhM68kNUcvOT+X
+ gYtTAKbqhAUjw6mJhYLnKlYxF2/c9X/zY91/sXfvZq1/cfveZN+lH96KXUpj+Ke6hb9WO9tQ4rb
+ mA64N70wiFwZOXf3HLket+PJF8xyOal4A
 X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
  fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
 
-TDH.SYS.CONFIG is currently not wrapped in a SEAMCALL wrapper because it
-is not exposed to external callers (such as KVM), also because the
-level of TDX ABI details needed to perform the call is low enough to
-flow well with the calling code.
+The TDX module uses PAMT to track some state for private pages. The
+memory for the extensions needs PAMT backing cause the TDX module
+transitions it to private pages when accepting it.
 
-But as more configurations are being added to this SEAMCALL leaf, more
-ABI details are leaked into the surrounding caller code, which decreases
-the readability of the caller logic. The first case is that the Dynamic
-PAMT (DPAMT) change [1] tweaks the R8 argument based on whether DPAMT is
-supported by the loaded TDX module.
+The Dynamic PAMT (DPAMT) feature allows saving memory by allocating
+4KB-level PAMT dynamically. The kernel must install DPAMT before adding
+any 4KB pages to the TDX module. Although the memory for the extensions
+is tens of megabytes and the kernel allocates it in a large chunk, the
+TDX module accepts it in the form of an HPA array, which specifies each
+page at 4KB granularity. Thus the kernel still needs to install DPAMT
+for this memory, otherwise TDH.EXT.MEM.ADD would fail to execute.
 
-A follow-up case comes as the TDX architecture has evolved the ABI to
-introduce new leaf versions. The host must select the version to call
-based on what new features are supported by the loaded TDX module.
+That said, don't worry about bisectability cause the extensions can't be
+enabled yet without a feature that uses them.
 
-Before the version selection makes the caller logic even messier, move
-the register ABI operations into a wrapper.
+The kernel has helpers to install DPAMT for a 4KB page. Call
+tdx_pamt_get() for each extension page before adding it to the TDX
+module. Normally, these operations should not fail, and if they do,
+intentionally keep the error handling as simple as before - leak all
+pages, including the installed DPAMT.
 
 The original changelog was written by hand. AI was used to help correct
 grammatical errors and polish individual sentences for better
 readability.
 
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Link: https://lore.kernel.org/all/20260904215841.303070-10-rick.p.edgecombe@intel.com/ # [1]
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 ---
 v5:
- - Drop the tdmr_info_pa_array stuff (Dave)
- - Simplify the changelog (Dave)
- - Remove all Reviewed-by tags due to code change
+ - Clarify that the bisectability won't be hurt
+ - Refactor the first 2 paragraphs.
+ - Collect Reviewed-by tags
  - Better clarify the AI usage
 
 v4:
- - Cut the redundant opening words in the 1st paragraph (Rick)
+ - Explain in changelog that TDH.EXT.MEM.ADD won't work without this
+   patch when DPAMT is on by default. (Tony)
+ - Move this patch right after the one that implements TDH.EXT.MEM.ADD
  - Collect Reviewed-by tags
 
 v3:
- - sizeof(tdmr_pa_array->phys[0]) instead of sizeof(u64) (Rick)
- - Re-phrase the code comments for struct tdmr_info_pa_array (Tony)
- - Refactor the changelog
- - Collect Reviewed-by tags
-
-v2:
- - Remove TDH.SYS.UPDATE wrapper (Dave & Rick)
- - Talk about the handling of in-memory ABIs for SEAMCALL wrappers
-   (Rick)
- - Refactor the entire changelog according to Rick's suggestion (Rick)
- - Add code comment for struct tdmr_info_pa_array (AI nitpicker)
- - Use kernel data type for nr_tdmr_pa parameter (AI nitpicker)
-
-v1:
- - This patch is split out from the last series (Rick)
+ - New patch
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 96ced0494b68..c7bd0b01786d 100644
+index 865d8089d343..3440f1878978 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1033,10 +1033,26 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+@@ -1318,8 +1318,15 @@ static __init int tdx_ext_mem_setup(void)
+ 		struct page *chunk = page + added_pages;
+ 		unsigned int i;
  
- #define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
- 
-+static __init int tdx_sys_config(u64 *tdmr_pa_array, unsigned int nr_tdmr_pa,
-+				 u64 global_keyid)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = __pa(tdmr_pa_array),
-+		.rdx = nr_tdmr_pa,
-+		.r8 = global_keyid,
-+	};
+-		for (i = 0; i < chunk_pages; i++)
++		for (i = 0; i < chunk_pages; i++) {
++			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
++			if (ret) {
++				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
++				goto out_free_hpa_list;
++			}
 +
-+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-+		pr_info("Enable Dynamic PAMT\n");
-+		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
-+	}
-+
-+	return seamcall_prerr(TDH_SYS_CONFIG, &args);
-+}
-+
- static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 				    u64 global_keyid)
- {
--	struct tdx_module_args args = {};
- 	u64 *tdmr_pa_array;
- 	size_t array_sz;
- 	int i, ret;
-@@ -1058,16 +1074,8 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 	for (i = 0; i < tdmr_list->nr_consumed_tdmrs; i++)
- 		tdmr_pa_array[i] = __pa(tdmr_entry(tdmr_list, i));
+ 			hpa_list->phys[i] = page_to_phys(chunk + i);
++		}
  
--	args.rcx = __pa(tdmr_pa_array);
--	args.rdx = tdmr_list->nr_consumed_tdmrs;
--	args.r8 = global_keyid;
--
--	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
--		pr_info("Enable Dynamic PAMT\n");
--		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
--	}
--
--	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
-+	ret = tdx_sys_config(tdmr_pa_array, tdmr_list->nr_consumed_tdmrs,
-+			     global_keyid);
- 
- 	/* Free the array as it is not required anymore. */
- 	kfree(tdmr_pa_array);
+ 		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
+ 		if (ret) {
 
 -- 
 2.25.1
