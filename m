@@ -1,68 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794367743;
-	b=TbTpw/s9LP7z5PC4kQzyEqastBYXijEtZVyBkRA0zJa7OJV9PmDjDqRWX6hEB15H1qc+
-	 AYnataVyJuM4Ol4ikQ/bdhp/Z+9X0eauMxasFAzvFze16J3N3oj7hkiS4h8S/WmHQt/v9
-	 WCy5PpWZ3y5Yi9qoES/E6SKH3HNmQLX4bb28ePD7hAsLQk0aSHcpVGpKhCSZnvGpimSTa
-	 xDSKx2StRUfXEBLk5SdTi/KY5jY3ngu7RF2C1fzvubjxvzoWbQm9Hil2h7cTrVrcy7RxP
-	 Q0i3CUxu2YGk8wvET+w5ETRBZ7hmEygBh5UiitfsJtw8E+eU6LPlJCp/42z5uGZ6IYA==
+	t=1794369418;
+	b=bR99gtRg+3X486PRL2zARXiEbSNjx2VSwRh5EHYAeNtU4QVU8MeQSuV1S525TPDAKg0P
+	 DQOssZiT9g93h1CYIkISm9Jv3raF9BaqsmDLGQwEMJFynZ0vLoUQAw5E2u6gktQaRYijs
+	 tZR/4P5e/4XzKyqwW8ijo4CFpMU423cbKRr66CK1ITv6p6lqM+vo1cVc/s5GHyLTsrdh/
+	 8LPVEJNLGD+6Cmv8eeyYmrjgQgmUBtgIh518v9mhQgF33udQjqvYBrAy8wU+gfthqafsu
+	 2UCi2WCXLciSn0fKdMqs9HK6pq1Z74s4i16fKD4rZ8DvNqMY9QlOf3PVkPeQN4yz2Eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794367743;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794369418;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=3shCqHpoO/77+ZajI3JbwZXKqJGThMJGmuA8MAb9XKo=;
-	b=egWuRpSPVVqw4Ho1lmlxYK7AefmzE+NJgxxsea9Gu/sua/mLXi52herAv2ARYIayE2UH
-	 N2wel7CKpXMfLHDrf7RcIvrPtW7hAnH8ft6aaObQoozZQQ+65YwLrkxMWfVrNFICjDUAt
-	 ViI36nY70g0mPZuMDNXW0ovT1TulBmnxZUcK/jstlF1o3VwhLBeXGcQ1KJdc+dcFTzbnp
-	 vJ76tc2ymEx7woZD79bRfVoivNIPJsFLYkSmU7l35sKfkEWdrtVNYC6nhY/65fUgKF9cx
-	 2GuLi1BM/K9U+WlG0PCyJHStZE+cE2OPsZFyxMiJPY/zWqFPA1DEef8A85d67eyW+yA==
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=zZDSaA2m1LuQ85T5Lp7wmP+f7M3OPYpfTRV4JXx1l9s=;
+	b=LWL3R6VdFofjgDW9zuAAZEEjR6xL78Lm2og8b/PNjbLjq0ifVyBa5AcvGkJshZHJrwji
+	 AK1BpKuhX7DArrm1aSVJGjynbv9FzeugEEXu5CRdFGjq9+B9xh2Ouc2o/Kv++m9ixyubr
+	 hKVJ9jJOqhISSy9IFuqOUSoOIKKd0Q+xuveZ8UZfCdxsvePlmx7T2KjRPHSoiuLxhT+fg
+	 zesZfj9sgNKTbypcQye71Np1xV+1GYexjFZRAFziE3Obx6OpJABp7+tKi82AJA45mFIXI
+	 drDSaZKEtFrBajxdJ103MUnpmt+gAY6jIS88Hmv/b2K/q8p9Me46Bi8UXqcmu5WL8hQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QFqjd941;
-	arc=none smtp.remote-ip=198.175.65.20
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q8biu2XQ;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8754C606A320;
-	Wed, 11 Nov 2026 03:29:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8754C606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A44606A320;
+	Wed, 11 Nov 2026 03:56:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4A44606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QFqjd941
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q8biu2XQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794367743; x=1825903743;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LIqe+UaWIv5xD2OLQNWbOHAajfuaJ0LtwTwlPHLih5s=;
-  b=QFqjd941ooOH/kOF5SvbgsqAw63JgOs94hMY8pLaY+6dvXXoRBpXlt0m
-   Du4hYaDxWK+PMqP+jh2c/Sd973vJZe7cs6sfmGRR6LHfFqZ9/WshuWWcv
-   Esgoy8+XrynFiiHssSfZONMD3jtSgQrXf8VK7o1/vzb9LBncC0BCV4tJT
-   jGG21z7gBzK/VIuxXsWJZ+zKO5O+ea5X7p60qNJmJollSMLWhnn4yyaF6
-   n8yD3bsjDCGb4uiYtu0O0W+eozjuQpOX/YpoTek5TNSaqI6qNIK6AV8fA
-   xlW2dRYNcTZjtohzfNjfQUR+xzvgu6AoNK9O0Ub/YVxw+E7ic2ghOav+H
-   w==;
-X-CSE-ConnectionGUID: RGwRE3iSRtimbd4/721C0A==
-X-CSE-MsgGUID: ys48Tz6ZTReGT34sBFPcfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3164728"
+  t=1794369418; x=1825905418;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=ev94+/CgdQfZh0Ci5qm8+0rb62bXposxq3SwiVYhvY4=;
+  b=Q8biu2XQwCSA+A1PWn6eHfTrO4FFRGSiAwLREoYo3R++FU0UwqAGu5a1
+   TdvQxEgl3cqR/TrZQ7EXHVNR8kCcKAFOclBJh4oUTe5B5hAg5VP+OfXrd
+   TrHHpazDq2sM9oGHcKq7JHm7ibZehKK1b8Q1PF/qARDXUiwv4Pak0gDbn
+   0LYHGEW6MgcUeI2IlmQl1D625qbOmFPpOcgZUr9FPe2ayT9EbbyF/JB85
+   ziXLDNC2YS7faeLJqUmqQVXeNZJ8z24Zflh0manEZFEm/Bj92giGvGoXZ
+   p9TztnqapoH5k7ndoAuFeV/xMrrslQJHIM/7lGVwQbsxV9ABRT2SP7WAr
+   A==;
+X-CSE-ConnectionGUID: 7ao2M/kAT/6brxahaYfnQQ==
+X-CSE-MsgGUID: bwtrSGWJQVKBv+VnGbd7Xg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3220271"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3164728"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:29:02 -0800
-X-CSE-ConnectionGUID: DYOdHDRGTmKxfokK3Y5okg==
-X-CSE-MsgGUID: FB+bV/FkQ72g55I1buRHQA==
+   d="scan'208";a="3220271"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:56:57 -0800
+X-CSE-ConnectionGUID: 4qZ/tp/pRaGtcwq4wegYUQ==
+X-CSE-MsgGUID: APQreALKSDK7RWdwfYPE9A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="10108612"
-Received: from ssivasu2-mobl.amr.corp.intel.com (HELO [10.246.166.85]) ([10.246.166.85])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:29:01 -0800
-Message-ID: <970e231b-c3ce-4159-ab27-ac371426500c@intel.com>
-Date: Tue, 10 Nov 2026 21:28:59 -0600
+   d="scan'208";a="10199168"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
+  by fmviesa013.fm.intel.com with ESMTP; 10 Nov 2026 19:56:53 -0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH v5 0/6] Enable TDX module extensions
+Date: Wed, 11 Nov 2026 11:48:41 +0800
+Message-Id: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,208 +75,162 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/18] KVM: x86/pmu: Populate CPUID.0AH:ECX
- fixed-counter bitmap
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20261106013927.166209-1-zide.chen@intel.com>
- <20261106013927.166209-14-zide.chen@intel.com> <au491iiV7koeP0t6@google.com>
- <f20b59bb-a3c6-4129-ba61-5cec4d975601@intel.com>
- <f12bcb27-9c17-4b8c-b48c-c36a17e70ab6@linux.intel.com>
- <5f129d63-10c6-414b-86a9-a604e42038ce@intel.com>
- <51089074-1be0-47e3-8d53-732ca33f29a2@intel.com>
- <fceb4f61-621a-4d62-a648-a1cdd0de1671@linux.intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <fceb4f61-621a-4d62-a648-a1cdd0de1671@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJnl82oC/2XPy2rEMAwF0F8JXlfB7ziz6n+ULhxb7hjyaB0nZ
+ Bjy73XSLgayEhehw9WTzJgizuRWPUnCNc5xGktQbxVxdzt+IURfMuGUa9oyDdlvMEx+6RFwy+A
+ tawUNQjgqSTn6ThjidoIfnyWHNA2Q7wntK6NYmcrUDRO0aYHBI/bLWG/Lex/HZavjmLGv3TT8k
+ wl/llIt/7mkszNC2Q4x3yqtucHGS6c7rpzxzAQmpEJhOfWcGd5aiw1KctS5xzlP6XG+u4oTOyo
+ xSi+frQIo+E5x11HVtcxcuh3gKl8QJi6IPBBUIVinlWzoFdn3/ReYF/97hgEAAA==
+X-Change-ID: 20260916-tdx-module-ext-da1930f33c04
+To: x86@kernel.org, linux-coco@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+Cc: Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, 
+ kvm@vger.kernel.org, yilun.xu@intel.com, yilun.xu@linux.intel.com, 
+ xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
+ chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5586;
+ i=yilun.xu@linux.intel.com; h=from:subject:message-id;
+ bh=ev94+/CgdQfZh0Ci5qm8+0rb62bXposxq3SwiVYhvY4=;
+ b=owGbwMvMwCH2Zztz45IFPbcYT6slMWR9frrs98cPhW+eBfxnrP/+4tlXYXfuzr8xC39W6yffK
+ 43PD+t62tHJwiDGwWAopsiywGOW05T2WUxbP+28BjOHlQlkiLBMZWZOaZ5eRalDZl5Jao5ecn4u
+ AxenAExV/iVGhhY+wb+unxV3TJk7jfXlhMiqXad7vk1s9dieoMD7aJa1P1DFS/trgs1HzU7xlMm
+ 8T5x3Wbg4Y11JFeuPD7suvtdetGklMwA=
+X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
+ fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
 
+Hi,
 
+In v4, Dave raised concerns about the first patch. I refactored it and
+dropped its RBs, so it needs more review from TDX developers/reviewers.
 
-On 11/10/2026 6:25 PM, Mi, Dapeng wrote:
-> 
-> On 11/11/2026 6:56 AM, Chen, Zide wrote:
->>
->> On 11/10/2026 10:29 AM, Chen, Zide wrote:
->>>
->>> On 11/10/2026 12:28 AM, Mi, Dapeng wrote:
->>>> On 11/10/2026 4:41 AM, Chen, Zide wrote:
->>>>> On 11/6/2026 3:00 PM, Yosry Ahmed wrote:
->>>>>> On Thu, Nov 05, 2026 at 06:39:22PM -0700, Zide Chen wrote:
->>>>>>> PerfMon v5 adds a fixed-counter support bitmap in CPUID.0AH:ECX.
->>>>>>> This is the superset of EDX[4:0] which indicates the contiguous
->>>>>>> counters starting from 0. For backward compatibility, it's recommended
->>>>>>> to use the following to determine if a fixed counter is supported:
->>>>>>>
->>>>>>> FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i);
->>>>>>>
->>>>>>> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
->>>>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
->>>>>>> ---
->>>>>>> v3:
->>>>>>> - Remove '&' when populating entry->ecx. (Jim)
->>>>>>> - Gate entry->ecx on kvm_pmu_cap.version >= 5 in intel_pmu_refresh() to
->>>>>>>   avoid enabling v5 fixed counters on hosts where KVM caps PMU at v2.
->>>>>>> ---
->>>>>>>  arch/x86/kvm/cpuid.c         | 5 ++++-
->>>>>>>  arch/x86/kvm/vmx/pmu_intel.c | 8 ++++++++
->>>>>>>  2 files changed, 12 insertions(+), 1 deletion(-)
->>>>>>>
->>>>>>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
->>>>>>> index 3310c370c5fa..00a2ca6d3049 100644
->>>>>>> --- a/arch/x86/kvm/cpuid.c
->>>>>>> +++ b/arch/x86/kvm/cpuid.c
->>>>>>> @@ -1554,7 +1554,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->>>>>>>  
->>>>>>>  		entry->eax = eax.full;
->>>>>>>  		entry->ebx = kvm_pmu_cap.events_mask;
->>>>>>> -		entry->ecx = 0;
->>>>>>> +		if (kvm_pmu_cap.version >= 5)
->>>>>>> +			entry->ecx = (u32)kvm_pmu_cap.fixed_cntr_mask64;
->>>>>>> +		else
->>>>>>> +			entry->ecx = 0;
->>>>>>>  		entry->edx = edx.full;
->>>>>>>  		break;
->>>>>>>  	}
->>>>>>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
->>>>>>> index 1372091dc1f8..37b34b588601 100644
->>>>>>> --- a/arch/x86/kvm/vmx/pmu_intel.c
->>>>>>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
->>>>>>> @@ -597,7 +597,15 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
->>>>>>>  				  find_first_zero_bit(kvm_pmu_cap.fixed_cntr_mask,
->>>>>>>  						      KVM_MAX_NR_FIXED_COUNTERS));
->>>>>>>  
->>>>>>> +	/* FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i) */
->>>>>>>  	fixed_mask = BIT_ULL(nr_fixed_counters) - 1;
->>>>>>> +	/*
->>>>>>> +	 * Do not enable fixed counters via the v5 ECX bitmap if KVM caps
->>>>>>> +	 * PMU version below 5 (e.g. when mediated PMU is disabled or on
->>>>>>> +	 * older hosts), matching KVM's advertised CPUID.0AH:ECX capability.
->>>>>>> +	 */
->>>>>>> +	if (kvm_pmu_cap.version >= 5 && pmu->version >= 5)
->>>>>> Having to check both versions is confusing. Can they go out of sync?
->>>>>> Should we clamp pmu->version to kvm_pmu_cap.version and only check the
->>>>>> former?
->>>>> Yes, actually, other fields (bit_width, mask_length, and
->>>>> nr_{gp,fixed}_counters) in intel_pmu_refresh() are clamped to
->>>>> kvm_pmu_cap as well.
->>>>>
->>>>> pmu->version = min_t(int, eax.split.version_id, kvm_pmu_cap.version);
->>>> I'm not quite sure if we could do such clamp. I remember Sean ever said KVM
->>>> should allow user space to set the PMU capabilities which KVM doesn't
->>>> support, like what currently kselftest pmu_counters_test does, e.g., KVM
->>>> only supports up to PMU version 2 in non-mediated vPMU mode, but
->>>> pmu_counters_test can set PMU versions larger than 2.
->>>>
->>> KVM's principle of "not policing guest CPUID" means KVM allows userspace
->>> to configure an arbitrary guest CPUID without rejecting the ioctl or
->>> mutating the vCPUID entries.
->>>
->>> However, KVM's internal vCPU state (pmu->version) tracks the "effective
->>> PMU version" that KVM can actually virtualize.
->>>
->>> This distinction is documented in commit 4f1bd6b16074 ("KVM: selftests:
->>> Test Intel PMU architectural events on gp counters"):
->>>
->>> "KVM only officially supports up to version 2, but the behavior of the
->>> counters is backwards compatible, i.e. KVM shouldn't do something
->>> completely different for a higher, architecturally-defined vPMU version.
->>> Verify KVM behavior against the effective vPMU version, e.g. dvertising
->>> vPMU 5 when KVM only supports vPMU 2 shouldn't magically unlock vPMU 5
->>> features."
->>>
->>> pmu_counters_test itself explicitly mentions this rule:
->>>
->>> /*
->>>  * Return the effective PMU version, i.e. the minimum between what KVM
->>>  * supports and what is enumerated to the guest.  The host deliberately
->>>  * advertises a PMU version to the guest beyond what is actually
->>>  * supported by KVM to verify KVM doesn't freak out and do something
->>>  * bizarre with an architecturally valid, but unsupported, version.
->>>  */
->>>   return min_t(u8, kvm_pmu_version,
->>> this_cpu_property(X86_PROPERTY_PMU_VERSION));
->>>
->>> In my understanding, clamping pmu->version perfectly reflects the above
->>> rule, and it's similar to other KVM code, e.g.:
->>>
->>>         eax.split.bit_width = min_t(int, eax.split.bit_width,
->>>                                     kvm_pmu_cap.bit_width_gp);
->>>         eax.split.mask_length = min_t(int, eax.split.mask_length,
->>>                                       kvm_pmu_cap.events_mask_len);
->>>
->>> Without a PMU version cap, guest resource validation could become
->>> increasingly complicated as more advanced PMU features are supported, as
->>> KVM would need to allow the guest to access PMU resources only when it
->>> satisfies both the vPMU version and the KVM capability.
->> The above sounds reasonable at first glance, but in practice it is
->> problematic because it arbitrarily masks out features that can be 100%
->> emulated in software even when there is zero host hardware dependency:
->>
->> - Features that can be emulated entirely in software (e.g. there is no
->> problem emulating the PerfMon v5 AnyThread deprecation, or emulating
->> MSRs like GLOBAL_STATUS_SET or GLOBAL_INUSE on a v2/v3 host). Clamping
->> the version unnecessarily prevents the guest from using features that
->> correspond to its configured PMU version.
->>
->> - Features that actually need host hardware support need to be checked
->> against both guest and host PMU capabilities.
->>
->> I'd propose something like this instead, leaving pmu->version unclamped:
->>
->> static inline bool kvm_pmu_has_version(struct kvm_pmu *pmu, u8 version)
->> {
->>         return pmu->version >= version &&
->>                kvm_pmu_cap.version >= version;
->> }
-> 
-> pmu->version currently indicates the guest PMU version, it may exceed the
-> kvm_pmu_cap.version in current emulated vPMU,  that's why I don't think we
-> can do the clamp directly. I think the key point is if KVM depends on the
-> hardware to virtualize the PMU features (that's what currently mediated
-> vPMU intends to do). If one day we completely retires the emulated vPMU, we
-> may can clamp the guest pmu version with kvm_pmu_cap.version.
+Based on some offline discussion, I refactored changelog for patch 3/4/5.
+I also simplified the changelog for the rest of the patches. But the RBs
+for Patch 2-6 are kept, please speak out if you object.
 
-I think whether it is an emulated or mediated vPMU, userspace can
-configure a higher vPMU version than the host. The reason why we cannot
-clamp the guest PMU version is that doing so makes the clamped version
-the effective PMU version, features that can be emulated entirely in
-software (MSR 0x391, 0x392, Anythread depreciation, etc.), would never
-be emulated. This remains true for both emulated and mediated vPMUs.
-> I agree we could need this function for the future mediated vPMU feature
-> support, but could we change the function name to be mediated-vpmu
-> specific? maybe kvm_mediated_pmu_supported_version() or something better?
+If these patches (especially Patch 1) get good reviews and no major
+concern, Dave, please help take a look. Otherwise, feel free to ignore.
 
-Thus, I would not suggest using a mediated-specific API name here.
+== Changes ==
 
->>
->> /* FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i) */
->> fixed_mask = BIT_ULL(nr_fixed_counters) - 1;
->> if (kvm_pmu_has_version(pmu, 5))
->>       fixed_mask |= (entry->ecx & kvm_pmu_cap.fixed_cntr_mask64);
->>
->> And potentially this API can be used for other advanced features like
->> CPUID leaf 0x23H, PMUv6, etc.
->>
->>>>> Without this, as more advanced PMU features are supported in KVM, we
->>>>> will have to manually validate guest features, and it seems this doesn't
->>>>> violate the general principles of "not policing CPUID configurations"
->>>>> and using the "effective vPMU version".
->>>>>
->>>>>>> +		fixed_mask |= entry->ecx;
->>>>>>>  	fixed_mask &= kvm_pmu_cap.fixed_cntr_mask64;
->>>>>> I see why this is needed now, to re-apply KVM's fixed counter mask after
->>>>>> reading it, but if this is only needed there, it's probably clearer to
->>>>>> do:
->>>>>>
->>>>>> 	if (version >= 5)
->>>>>> 		fixed_mask |= (entry->ecx & kvm_pmu_cap.fixed_cntr_mask64);
->>>>> Agreed, this is cleaner. Will update accordingly. Thanks!
+Dave pointed out that the Patch 1 contained too much information, so
+that it was hard to find out why a wrapper is immediately needed. He
+also pointed out that introducing the new structure, tdmr_info_pa_array,
+is orthogonal. Drop the new structure part. Further simplify the
+changelog to make explicit the reason for the wrapper.
+
+Dave pointed out that the changelog of Patch 4 doesn't catch the point
+of why DPAMT support is needed. He also pointed out that the
+bisectability concern between Patch 3 & 4 is not well explained.
+Refactor the changelog of Patch 3 & 4.
+
+We had an internal discussion about simplifying the Quoting extension
+initialization flow. The conclusion is to integrate the TDH.QUOTE.INIT
+operations (and potentially similar operations for other extensions)
+into TDH.EXT.INIT. This raised a question about how to handle errors for
+TDH.EXT.INIT if one extension fails while other extensions are good. The
+solution in this series is to fail the whole TDX initialization on any
+error, though we planned a solution when a nice-to-have extension
+appears in the future. Describe the error handling in the changelog of
+Patch 5, no code change.
+
+v4: https://lore.kernel.org/r/20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com
+
+v3: https://lore.kernel.org/r/20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com
+
+v2: https://lore.kernel.org/all/20260915102658.713079-1-yilun.xu@linux.intel.com/
+
+v1: https://lore.kernel.org/all/20260821032920.256225-1-yilun.xu@linux.intel.com/
+
+Quoting v2: https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+Quoting v1: https://lore.kernel.org/all/20260522034128.3144354-1-yilun.xu@linux.intel.com/
+
+== Overview ==
+
+To date, SEAMCALL execution must either complete quickly to avoid
+stalling the host, or yield quickly at pre-defined interrupt
+checkpoints. This is acceptable for the existing SEAMCALL leafs,
+which perform simple, bounded operations.
+
+However, some new features such as attestation and TD migration require
+higher level security protocols inside the TDX module, which cannot fit
+within that constraint. TDX solves this by making those operations
+inherently preemptible and resumable like OS tasks. TDX provides a
+separate SEAMCALL execution environment - the TDX module extensions -
+for those operations.
+
+This capability allows for higher-level SEAMCALL ABI design - like
+"create a DICE-based attestation quote". Several new features, such as
+DICE-based attestation, TDISP and TD migration, use SEAMCALL leafs
+backed by the TDX module extensions.
+
+The TDX module extensions need memory for their execution environment
+to serve these SEAMCALL leafs, so they need extra setup steps during TDX
+module initialization. The bulk of this series implements these setup
+steps.
+
+At runtime, the host invokes these SEAMCALL leafs just as normal ones -
+if interrupted, simply re-invoke the leaf to resume.
+
+For more information on TDX module extensions, please refer to [1].
+
+[1] https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+== Branch stack ==
+
+This is based on v7.4-rc1. You can find the full branch stack at [2].
+The DICE part is in the full branch as an example for extensions. But it
+does not include the other DICE feedbacks.
+
+The full branch contains:
+
+  This series: Patch 1~7: This series, including this cover-letter.
+  Use case:    Patch 8~N: The old DICE part as an example.
+
+[2] https://github.com/intel-staging/tdx/tree/tdx-module-ext
+
+== Test ==
+
+We made agreement with TDX module team about some ABI changes, it
+involves TDH.EXT.INIT, TDH.SYS.UPDATE.
+
+This series is written against these unreleased changes. So we did 2
+kinds of tests.
+
+ 1. Add some workaround patches in kernel then test on existing TDX
+    module & real HW. See the full branch listed in "Branch stack"
+    section.
+
+ 2. Customize the TDX module, mock the ABI change, run with the module
+    in a virtual machine environment with virtual SEAM support, no real
+    security in this environment.
+
+---
+Xu Yilun (6):
+      x86/virt/tdx: Move TDH.SYS.CONFIG operations into a wrapper
+      x86/virt/tdx: Configure add-on features on TDX module init
+      x86/virt/tdx: Add extra memory to TDX module for the extensions
+      x86/virt/tdx: Support DPAMT when adding memory for the extensions
+      x86/virt/tdx: Make TDX module initialize the extensions
+      x86/virt/tdx: Re-initialize the extensions on runtime TDX module update
+
+ arch/x86/include/asm/tdx.h                  |   1 +
+ arch/x86/include/asm/tdx_global_metadata.h  |   4 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 234 ++++++++++++++++++++++++++--
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  14 ++
+ 5 files changed, 244 insertions(+), 11 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260916-tdx-module-ext-da1930f33c04
+
+Best regards,
+-- 
+Xu Yilun <yilun.xu@linux.intel.com>
+
