@@ -1,54 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794392234;
-	b=08Co27VnyiWErrLxNKCzktvfS1CvOp/G41yyL5C/uLCRHOa3OqPJScZjpGmXSf9iQOvr
-	 A6FApT/OY+wQc4E1GCwcSJO+0tRWSLUPjxgpNcMcZjIH4tYANm41JAGdorJw3u67I82Tl
-	 j5k+v3Mmcx1YzSfWNftSwl71v8FIyMtOHMEw0EpaWPIJyRBfV8gfMLkyFW1AsC/I5WIW+
-	 u1+xziWy4gTN0O+iMhgkHUwpDtSR0SnOopOdkwNJhyD7xXvqNM8oql6MLJmiDPhjJ4s+V
-	 bYPK7dLns1yciN4cUFoa/YahH8EqciCjxoikC25JwujRXZExZmuyw4vFK3EA+kb/vog==
+	t=1794394142;
+	b=SbyYkNq1VphX3ovDNk+GDxszihGu/+D2SQEHPdyf/0pVT29QbdrHU2/DQ8fkSfigdevL
+	 QqqqaZm3Ml2KgDmxOxP60aJrS1faBhegzSkI+XeLHcDqBrCmPxC9k0RzeHeBGkT4oT49N
+	 Vo/SjUFX89KM4RF94quN05gLHtNvUDEaz7qqrtiGGEFrm3C5p9E+77meUwNb0BcP6iWrT
+	 E7CDEYsnPikG7+mACclk+SPpUHXHRBtSpmbb37QyqX8WoPtX0c4xC99I8vNLC76HwxQR2
+	 q2FsCTYhkzmeyMRWTUrtt2dL/51sg8Uy2MdKKGLhUCWbHuKzipRXXa4BU5U7VUQ85Kw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794392234;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=JbBNsjPSZF1wcC+Lzw7Db1u6xr38qqIN65CXWEk/Dng=;
-	b=d/3eS36lp0IMZTw8yE77cbkTOfH1BweoVi9NckNF2B1MNjL4X5DwcNRzEeJwP3p2flFa
-	 0xgmYYL3uBFoj3zw+laM3VMhtabF6QAa1lp1dKR5SQNkTmZc5g3QlTKM+a9j/61o0+Xaf
-	 yND4DEu87S3zUGnBoF3xXrGfA7TYTXUfVyBjPbQ8Se9k93OQ0BPFio/b0zYFuxJN2oN7U
-	 GEyWC8Nb1CGLo0pyg8wIBhKU/z4/jK6uKFyaIw3vYuElMR2htU4jSKVUubIHP8C7kJAtu
-	 /GrOKD08BphDF3E8NZsYY/T43AhD1AHUb8JkaNhrE0AGQEMPBQulyw5gC+JlhxXZF7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794394142;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:From:To:Cc:References:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=UcIU49IoMwkMcPqVgct5VcN4m8udnqO+yv6+Crgi7s8=;
+	b=wwMNrYwUyT1KqQUN1FeAB+wuLFcg4rG5cc1tstljq0MFmmAYBQgUZXWH+ehPGYPgGS9z
+	 WVt//TV+aivXxAa3NrubBcKumR5OfkGFBbl6wUOuBEFvRcJDdqyg8C06M6I/BWaFsnmMv
+	 JTJZ5zTtMlDyc/0m4GxUGL0wFA/Da81LUfiuGVdzRLGAjnqB1Flfa/FrDVglZB1EpXYuY
+	 QjCBiMUNRSQbPpTkTPTAsODIKnXjs7YYg/O3iYQmN/JSGdkFiERr8VjliY8Rsd8TRRxha
+	 oeqUQFFS5GYtfj88Xe0En20B4X9sZRTV9UN3FEwj0jm2uNABBTZ3Uenatm35GPSQwDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QoULDpR0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=ozlabs.org;
+	spf=pass smtp.mailfrom=ozlabs.org;
+	dkim=pass header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=Wzpapjrr;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FF1606A321
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 10:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31228606A32A;
+	Wed, 11 Nov 2026 10:49:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31228606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QoULDpR0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1E31F00A06;
-	Wed, 11 Nov 2026 10:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794392234;
-	bh=JbBNsjPSZF1wcC+Lzw7Db1u6xr38qqIN65CXWEk/Dng=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=QoULDpR01MJbsbsH7yEegxZxaMD+DWmBPOLXxPoIWmJRTVEGCDQj7Z4XCblr3KfRr
-	 EX4jQGVON5a5bwiZ0HTcxD4tRwA0/OA9C2qmEdKbApZiUQIW08n1H1ckP9j1WChjWM
-	 Zrwsgq58JypLITIq1hQ3mcLGIWNdZXQ9qoXqEg5h4bXcogbae6MpARfN3wePaeEthp
-	 0d0bxLapW/ZOGOc49dE2lWbk/SIwMCPtAUDiFaf+E7uDT5I6Xok7XunkBQ5Tu9bf/x
-	 gP88h7fgK0jx85dDQ1Qk9iSUlzCeIQdGLCiTH4ijJIw/u4uAF7j7/hLfx0dGHAGmHK
-	 ATao1cAvq6qSQ==
-Message-ID: <sashiko-outbox-208769@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH]  x86/kvm: Use RCU for svm_vm_data_hash
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sairaj Kodilkar" <sarunkod@amd.com>, kvm@vger.kernel.org
-In-Reply-To: <20261111100246.4425-1-sarunkod@amd.com>
-References: <20261111100246.4425-1-sarunkod@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 10:17:14 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=Wzpapjrr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1794394138;
+	bh=UcIU49IoMwkMcPqVgct5VcN4m8udnqO+yv6+Crgi7s8=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Wzpapjrrl5t3gWo9iDKn1jyk+NtYI3fWGuLAdCwwM44sKU9JbK4sXihTqucOVCMmC
+	 mQbeyBBAQffCtcG4/uX5Ernoz8F+8c1wcp4YZ8eK+Q83xlTCOYMnoj1LZpKci57MEc
+	 CaB2iUEZ7k/HBnRqh02BnwjwOlfFW0TRXj1b0u77E9vFWILuk+dZO7luBhYApBhchK
+	 N/UxzXMRqHfNaDWsmwfENCVcXqKrpCheglaAAxj9b1YJUyvPKncLXGmzMysGu9+49A
+	 NzwUNL9cSRrgLBNhlfGxiIUfojcjZ8MTe7XArRgtHAP7/ZiL4WRsbdCqpgMf/aVlBn
+	 73ZNIXg1s6sAg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4jPgHR2Zsdz4wKs;
+	Wed, 11 Nov 2026 21:48:50 +1100 (AEDT)
+Message-ID: <df301c78-2745-4c64-a331-c830efb74660@ozlabs.org>
+Date: Wed, 11 Nov 2026 10:48:47 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,139 +59,158 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 8/9] vfio/pci: Support mmap() of a VFIO DMABUF
+From: Matt Evans <matt@ozlabs.org>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Alex Mastro <amastro@fb.com>, Leon Romanovsky <leon@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Kevin Tian <kevin.tian@intel.com>,
+ Pranjal Shrivastava <praan@google.com>, Longfang Liu
+ <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20261006193643.76330-1-matt@ozlabs.org>
+ <20261006193643.76330-9-matt@ozlabs.org>
+ <20261013171347.54e856c7@shazbot.org>
+ <0bd00c26-4f53-4387-86be-99f0c37fa47c@ozlabs.org>
+Content-Language: en-GB
+In-Reply-To: <0bd00c26-4f53-4387-86be-99f0c37fa47c@ozlabs.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] KVM: SVM: UAF in avic_ga_log_notifier() and
-  avic_vm_pre_destroy() with RCU
-- [Low] KVM: SVM: unnecessary guard() removal in
-  avic_add_vm_to_ga_log_list()
---
+Hi Alex,
 
-commit 460915a518276bc08e3b21ecfcfa94bc27d07493
-Author: Sairaj Kodilkar <sarunkod@amd.com>
+On 14/10/2026 21:38, Matt Evans wrote:
+> Hi Alexes,
+> 
+> On 14/10/2026 00:13, Alex Williamson wrote:
+>> On Tue,  6 Oct 2026 20:36:36 +0100
+>> Matt Evans <matt@ozlabs.org> wrote:
+>>
+>>> A VFIO DMABUF can export a subset of a BAR to userspace by fd; add
+>>> support for mmap() of this fd.  This provides another route for a
+>>> process to map BARs, in which the process can only map a specific
+>>> subset of a BAR represented by the exported DMABUF.
+>>>
+>>> mmap() support enables userspace drivers to safely delegate BAR
+>>> sub-ranges to other processes by sharing a DMABUF fd, without having
+>>> to share the (omnipotent) VFIO device fd with them.
+>>>
+>>> Since the main VFIO BAR mmap() is now DMABUF-aware, the new mmap() 
+>>> reuses
+>>> the existing vm_ops.
+>>>
+>>> The lifecycle of an exported DMABUF remains decoupled from that of the
+>>> device fd it came from, i.e. the device fd could be closed with DMABUF
+>>> VMAs present, meaning a fault on a VMA could happen concurrently with
+>>> vfio_pci_dma_buf_cleanup().
+>>>
+>>> To deal with this scenario, the fault handler now temporarily takes a
+>>> VFIO device registration to ensure the vdev remains valid, and then
+>>> vdev locks can be taken.
+>>
+>> This sounds like potentially measurable overhead if something is
+>> slamming the fault handler where huge-fault is not supported or active.
+>> Have you considered a fast path for the internal dmabuf where the
+>> lifecycle is constrained?
+> [snip]
+> 
+> Hmm.  I'll hack up a test to try to measure the relative overhead of VMA 
+> faults before/after (modulo access to meaningful HW).
 
-x86/kvm: Use RCU for svm_vm_data_hash
+Alex Mastro and I have put together some tests, and measured this 
+overhead on the v8 series.
 
-This commit replaces the spinlock-protected lookup of svm_vm_data_hash in
-avic_ga_log_notifier() with an RCU read-side critical section, and updates
-insertion and removal to use hash_add_rcu() and hash_del_rcu().
+https://github.com/evansm7/vfio-playground/tree/master/vfio-barmap-perf
 
-> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-> index 3b037e3855234..ba12aa5872255 100644
-> --- a/arch/x86/kvm/svm/avic.c
-> +++ b/arch/x86/kvm/svm/avic.c
-> @@ -250,7 +250,6 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
->   */
->  static int avic_ga_log_notifier(u32 ga_tag)
->  {
-> -	unsigned long flags;
->  	struct kvm_svm *kvm_svm;
->  	struct kvm_vcpu *vcpu =3D NULL;
->  	u32 vm_id =3D AVIC_GATAG_TO_VMID(ga_tag);
-> @@ -259,14 +258,14 @@ static int avic_ga_log_notifier(u32 ga_tag)
->  	pr_debug("SVM: %s: vm_id=3D%#x, vcpu_idx=3D%#x\n", __func__, vm_id, vcp=
-u_idx);
->  	trace_kvm_avic_ga_log(vm_id, vcpu_idx);
-> =20
-> -	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
-> -	hash_for_each_possible(svm_vm_data_hash, kvm_svm, hnode, vm_id) {
-> +	rcu_read_lock();
-> +	hash_for_each_possible_rcu(svm_vm_data_hash, kvm_svm, hnode, vm_id) {
->  		if (kvm_svm->avic_vm_id !=3D vm_id)
->  			continue;
->  		vcpu =3D kvm_get_vcpu(&kvm_svm->kvm, vcpu_idx);
->  		break;
->  	}
-> -	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
-> +	rcu_read_unlock();
-> =20
->  	/* Note:
->  	 * At this point, the IOMMU should have already set the pending
-> @@ -319,13 +318,14 @@ static void avic_add_vm_to_ga_log_list(struct kvm *=
-kvm)
->  	struct kvm_svm *kvm_svm =3D to_kvm_svm(kvm);
->  	struct kvm_svm *k2;
->  	u32 vm_id;
-> +	unsigned long flags;
-> =20
->  	lockdep_assert_held(&kvm->lock);
-> =20
->  	if (kvm_svm->avic_vm_id)
->  		return;
-> =20
-> -	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
-> +	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
->   again:
->  	vm_id =3D next_vm_id =3D (next_vm_id + 1) & AVIC_VM_ID_MASK;
->  	if (vm_id =3D=3D 0) { /* id is 1-based, zero is not okay */
-> @@ -340,7 +340,8 @@ static void avic_add_vm_to_ga_log_list(struct kvm *kv=
-m)
->  		}
->  	}
->  	kvm_svm->avic_vm_id =3D vm_id;
-> -	hash_add(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
-> +	hash_add_rcu(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
-> +	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
->  }
+Alex also generated a similar test with a slightly different method:
+  https://github.com/opsound/vfio-tools/blob/main/vfio_bar_bench.c
 
-[Severity: Low]
-This isn't a bug, but commits 4fa9a3767d1a ("KVM: SVM: Do all per-VM AVIC
-initialization during vCPU precreation phase") and 78684b65fcc0 ("KVM: SVM:
-Remove VM from the GA Log notifier list before VM destruction") switched
-avic_add_vm_to_ga_log_list() and avic_vm_pre_destroy() to
-guard(spinlock_irqsave)(&svm_vm_data_hash_lock), which can still be kept
-here instead of open-coding spin_lock_irqsave() and spin_unlock_irqrestore(=
-).
 
->  int avic_vcpu_precreate(struct kvm *kvm)
-> @@ -369,13 +370,14 @@ int avic_vcpu_precreate(struct kvm *kvm)
->  void avic_vm_pre_destroy(struct kvm *kvm)
->  {
->  	struct kvm_svm *kvm_svm =3D to_kvm_svm(kvm);
-> +	unsigned long flags;
-> =20
->  	if (WARN_ON_ONCE(!enable_apicv) || !kvm_svm->avic_vm_id)
->  		return;
-> =20
-> -	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
-> -
-> -	hash_del(&kvm_svm->hnode);
-> +	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
-> +	hash_del_rcu(&kvm_svm->hnode);
-> +	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
->  }
+Test method:
 
-[Severity: High]
-Can this cause a use-after-free on struct kvm_svm and struct kvm_vcpu
-when a VM is destroyed concurrently with avic_ga_log_notifier()?
+Time accesses to a VFIO mmap'd BAR immediately after the mmap, to 
+measure the 'cold' initial fault time.  Re-time a second pass for which 
+the pagetable should now be populated, and subtract.  This should 
+isolate the cost of the fault (uarch exception, generic pagefault 
+plumbing, VFIO fault handler) from common costs (the MMIO access itself, 
+TLB misses, the loop iterating across the BAR).  Maximise the number of 
+faults by disabling hugepages (per concern above).
 
-CPU0                              CPU1
-avic_ga_log_notifier()            kvm_destroy_vm()
-  rcu_read_lock()                   ...
-  hash_for_each_possible_rcu(...)   avic_vm_pre_destroy()
-    vcpu =3D kvm_get_vcpu(...)          hash_del_rcu(&kvm_svm->hnode)
-  rcu_read_unlock()                 ...
-                                    kvm_destroy_vcpus()
-                                      kmem_cache_free(..., vcpu)
-                                    kvm_arch_free_vm()
-                                      vfree(kvm)
-  kvm_vcpu_wake_up(vcpu)  <-- use-after-free
+This is done both for a single-threaded case which just iterates across 
+a new BAR mapping, and a multi-threaded contended case.  Rather than 
+just pthreads, this test fork()s to try to avoid seeing contention on 
+per-mm locks (e.g. mmap_lock) and to focus on the VMA/VFIO locking.
 
-avic_vm_pre_destroy() unlinks kvm_svm->hnode with hash_del_rcu(), but
-nothing waits for an RCU grace period before kvm_destroy_vcpus() frees the
-vCPUs and kvm_arch_free_vm() frees struct kvm_svm (the intervening SRCU
-synchronizations in kvm_destroy_vm() only cover private SRCU domains). An
-in-flight reader on the same hash bucket can therefore dereference freed
-kvm_svm or vcpu memory.
+The default test mmaps before forking, meaning there's one shared 
+mapping/DMABUF accessed from both processes.  The fault handler should 
+then contend on dmabuf->resv, vdev->memory_lock, and vdev->dmabuf_lock.
 
-In addition, avic_ga_log_notifier() calls rcu_read_unlock() before
-kvm_vcpu_wake_up(vcpu). Because kvm_get_vcpu() does not take a reference,
-dropping the RCU read lock early leaves vcpu unpinned even if
-avic_vm_pre_destroy() waits for a grace period. Calling kvm_vcpu_wake_up()
-inside the rcu_read_lock() critical section and adding synchronize_rcu()
-after hash_del_rcu() in avic_vm_pre_destroy() would close both windows.
+For comparison/curiosity, the --mt-map-late option mmaps _after_ 
+forking; this leads to a mapping/DMABUF in each process so I expect no 
+contention on dmabuf->resv (but still on memory_lock/dmabuf_lock).
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111100246.4425=
--1-sarunkod@amd.com?part=3D1
+Alex's test instead runs threads in-process, and goes further with 
+supporting a larger number of threads (though with the caveat that they 
+may also be fighting over intra-process mm locks).  It also supports a 
+mode where threads can access per-thread VMAs (which is comparable to 
+the 'mt-map-late' option of my test).  Both are interesting approaches IMO.
+
+
+Findings:
+
+On the dusty AMD Ryzen 3950X under my desk (targeting a 256MB BAR) I 
+found the following averaged over 200 runs:
+
+  - A single-threaded/uncontended fault became 5.8% slower
+  - A two-process contended case became 8.7% slower
+   - 0.5% of this is the "early mmap" dmabuf->resv contention, i.e. using
+     mt-map-late (a mapping in each process) reduces by 0.5%.
+
+Alex's runs on fancier EPYC 9334 machines show a similar (slightly 
+lower) overhead in the 1-2 case, and go on to show fairly high overhead 
+when many threads are involved (baseline times in ns, relative series v8 
+behaviour in percentage change):
+
+   Threads    One shared mapping   Mapping per thread
+              7.3     v8            7.3     v8
+   --------------------------------------------
+      1       761   +4.5%           777   +2.7%
+      2       869   +6.6%           840   +5.6%
+      8      1465    +78%          1363    +47%
+     16      4152    +97%          4258    +19%
+     32      9927    +92%         10158    +12%
+
+
+Now.  The absolute timings of these sub-microsecond faults indicate a 
+realistic application won't see a human-visible change.  Small BARs 
+mapped with 4k pages are still fast to map;  it is reasonable to ask 
+that applications map huge (GBs/TBs) BARs using huge (MB/GB) pages!  Of 
+course, this is just a one-time cost of warming up the VMA, not ongoing.
+
+
+Alex, my preference is not to complicate the fault handler with a fast 
+path just yet.  It's easy to think of a contrived scenario where this 
+matters but in middle-of-the-road application behaviour it would be 
+surprising if this was noticeable.  What are your thoughts?
+
+(In the previous mail I suggested keying off priv->vfile (or a flag 
+thereof), and it seems ~straightforward to skip the extra 
+synchronisation.  If you feel strongly that the fault handler doesn't 
+have enough if() statements yet and needs more paths then we could bring 
+this into v9, but would prefer to follow up later. :)  A fastpath diff 
+appears small but the reasoning overhead is bigger.)
+
+
+Thanks,
+
+
+Matt
+
