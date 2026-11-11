@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794380761;
-	b=CoTQ23nydlwXgUTedf0nbpU2EoeQRVfADeuRfYjBMZWkcmRveeVyqJjCf/C01QMGAjDU
-	 qubAtiX3CFStNUliJAV055/Coboyri55kUT4SLXGFSWx3N4zeNL51Rgbow49P0BoZc413
-	 sWJC/QwFAbhM5rsPhc3KCSyphAa/qwdI78IVT26cRng6A6UnNbodlQaNlhYERZhMqHNLQ
-	 8tcQYxQJ6RBfMGjMoh2MhVjT5hd06AzYaUrusEEtAz/HNpnNhYX/J1YjnC4LI9CmMJhE7
-	 RuF7iEo0JoWeocisEtfQM+d3S7cBlfhAC3PVLu6hgFUr828YmYwBK+AtCrS3gOeieBg==
+	t=1794381318;
+	b=AWchy2kdywHs39vvQC4GrDGhW5v1iJ6HMEyVThD8hCX7/ms3kFqUIQ4d9hHXRw7cuAkw
+	 ELd0YSdpI8Iq7KA+likiO9RvNDVtm0zJDi8SPQi/KP57eAP+LK3q+8BF6vU9vYzHKqudl
+	 BZAAU2VYOMLwb7AIo465iYiFy4sZf5nceQwzUbAOnhzej0rOYd2lOtWtHGrVc717F2Q42
+	 tUnXMm9uFUQ8cvuS9Fqq3aTlta8z+u6YSu0Utra4dBQAG/8Nkok9eZ4WyklGQGW0arhfm
+	 X9612oSGf+//sbeXcYnOEWKDVDSe+sZ9LKLPNjqhF8ufqe6ieX7xTN00aTThNeBXYSQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794380761;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794381318;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=up0JdiB5n9SroiBNejK/lvU9Z0Dv/KHd3jE+Q0sTkSQ=;
-	b=xoBtgzIdj0O42ES5R9M/KIveB9spYEzLglUfysWziXd+2vfN/HSj3A6C68o+6Xn+TrF8
-	 jvK5uuVOXIZL71bKotq+xt2yaS592Sjlv3SsG5C/+q7aiI3FBHf6HIOAA83Z/p/L2590x
-	 6gkWsbATNZIvynvnCnigQlwsFK869ipkcnaleHW7df1KVv6NZ6efbMzsLzUm6X4LW8g0K
-	 MV4DbFf8Ild60xqZyTjwp/aS6mYagAPZ7ciQq/KoCePC/7ZMp/kRBQp7jWM9B0jvMwf/N
-	 0PdZOpRJKkQdnCMOia+m84fJ32yX/zfZOzmbrXa4dd273WhmHedWIjqXi2ZuZmAav5g==
+	bh=AoJgv7dVRnfhf34/wVONE7S/4tJx9d9kLDaewhKb9Qc=;
+	b=AdjjpSNTizUzNcyNV3lzT9Bng1A24Ok6LTNs5Mh2kTB/374Sv8E6XaQpuEy+5shVeDW7
+	 UyFzKqhXSKoEKT2zAYtnloiK4t8KxyuIt3Jg+/qFNPjLTXkeZmJojw+NDh5LCiJFOmASk
+	 uuI8NWraaBPTSxULgkb6UPlqjoe7tCBDnTolykkRItvlZOucmmbkLifkaOo2vNrlaJnq5
+	 FSjXMXgUUgDpIAmurvXTeyzSCmyEvk58MyTKKyjh7eYgvXs3JrRrZQH7WY0ubfGoAEBpO
+	 DugEeUbYxWIli7YbfV/Cb9GWHzgs3K4g8B6yR2zETuiGdFraqQRUEcVo/Fh8aXB4iEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IVAkZFsM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hNOnyRgf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A935C606A326
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 07:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B37D606A320
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 07:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IVAkZFsM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196771F00A08;
-	Wed, 11 Nov 2026 07:06:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hNOnyRgf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66B01F00A05;
+	Wed, 11 Nov 2026 07:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794380761;
-	bh=up0JdiB5n9SroiBNejK/lvU9Z0Dv/KHd3jE+Q0sTkSQ=;
+	s=k20260515; t=1794381317;
+	bh=AoJgv7dVRnfhf34/wVONE7S/4tJx9d9kLDaewhKb9Qc=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=IVAkZFsMoVahCYfZhKmCjXdAv922nMc+SJJlmQGuldiaotQ/JR+/u5ZdQ/UXWw1xz
-	 GDA8yuwxJkDF+XbgquTanXgC5o71wWFl6epb/dk8MS0KwA0mX7TdpB/MsA6/HKqlH7
-	 o+Q18XT5MDpkMHcBr+r1/LQHVHzqXiK277Je9XJgQMFDCeJFm2xystuwJarA4Wodw1
-	 Ieo2PfqQ+OEW1i8q1oKnn8skZWoWI+v1/hhN7O4LOjW7i/X9HsXr5EQQgeUYbbZicT
-	 eIdlOR46sIOIcmWiL5uOSEe7FiRHNltnH+luafk3gEXwgomlUi9VNehtXfTNBqQ/Wr
-	 Vh0w2KfvAQ9Dg==
-Message-ID: <sashiko-outbox-208489@kernel.org>
+	b=hNOnyRgf2Zm0wpJkZl/voCePAr9KLFnssJvtMa3aMMZIXu+Q8O5B9//jwIWQffevj
+	 RxROgEpMPvfuTPkJV9UTGiAGxmA+DuYndYrNvWVmx1vd7wwojWviV7/lJice3x8JqW
+	 SIdTpuiN7F5yYiDVaf7jZmUFPOa1uU8Ql170jb4GM2C43LJH5u2GUE8keggsFRDCoa
+	 FvtpLvNEY3OnYAfZAYX7odYLhDdSax8P+p2Jq8OLhMx7TD1WdQgFZJuFQJEWTAr5BQ
+	 /6eFyXMYB3FH1yWUPeGzpDS6/3Bnq3dVfWRpFTJ+CiYmoyDwTk4xm9wlU8siFT5lNF
+	 w9vz9hslXgzDQ==
+Message-ID: <sashiko-outbox-208500@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 7/7] iommu/amd: Provide kernel command line option to
- enable GAPPI
+Subject: Re: [PATCH v7 6/7] KVM: SVM: Add support for AMD IOMMU Guest APIC
+ Physical Processor Interrupt (GAPPI)
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sairaj Kodilkar" <sarunkod@amd.com>, kvm@vger.kernel.org
-In-Reply-To: <20261111064242.29336-8-sarunkod@amd.com>
+In-Reply-To: <20261111064242.29336-7-sarunkod@amd.com>
 References: <20261111064242.29336-1-sarunkod@amd.com>
- <20261111064242.29336-8-sarunkod@amd.com>
+ <20261111064242.29336-7-sarunkod@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 07:06:00 +0000
+Date: Wed, 11 Nov 2026 07:15:17 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,79 +60,164 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] iommu/amd: enable_iommus_vapic() leaves amd_iommu_gappi true
-  on early return
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] KVM: SVM: circular lock dependency in __avic_vcpu_load() with
+  GAPPI
+- [Medium] KVM: SVM: non-blocking vCPUs queued on wakeup list on
+  AVIC_STOP_RUNNING
+- [Low] KVM: SVM: stale commit message and cleanup churn in
+  avic_hardware_unsetup()
 --
 
-commit c24e6331ec8e811c471b1e85ddce5dfb41ecad29
+commit 569af3da1a9a9cddca4d1455d68973d185c0555b
 Author: Sairaj Kodilkar <sarunkod@amd.com>
 
-iommu/amd: Provide kernel command line option to enable GAPPI
+KVM: SVM: Add support for AMD IOMMU Guest APIC Physical Processor Interrupt=
+ (GAPPI)
 
-This commit adds the amd_iommu=3Dgappi kernel command-line option to enable
-GAPPI when the IOMMU GAPPISup extended feature bit is supported, and
-documents the option and mechanism.
+This commit adds KVM SVM support for AMD IOMMU Guest APIC Physical Processor
+Interrupt (GAPPI) to wake blocked vCPUs via POSTED_INTR_WAKEUP_VECTOR inste=
+ad
+of the legacy GA log mechanism.
 
-> diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-> index 054ef7262f3cc..6a248327047ac 100644
-> --- a/drivers/iommu/amd/init.c
-> +++ b/drivers/iommu/amd/init.c
+> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> index b975f08825ce2..ebfd74adc4cbd 100644
+> --- a/arch/x86/kvm/svm/avic.c
+> +++ b/arch/x86/kvm/svm/avic.c
 
 [ ... ]
 
-> @@ -3131,18 +3141,27 @@ static void enable_iommus_vapic(void)
->  	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))
->  		return;
+> @@ -1018,7 +1038,7 @@ enum avic_vcpu_action {
+>  };
 > =20
-> +	if (amd_iommu_gappi &&
-> +	    !(check_feature(FEATURE_GAPPI) &&
-> +	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-> +		pr_warn("GAPPI is not supported.\n");
-> +		amd_iommu_gappi =3D false;
+>  static void avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int a=
+picid,
+> -					    enum avic_vcpu_action action)
+> +					    int cpu, enum avic_vcpu_action action)
+>  {
+>  	bool wakeup_intr =3D (action & AVIC_START_BLOCKING);
+>  	bool is_running =3D apicid >=3D 0;
+> @@ -1027,6 +1047,36 @@ static void avic_update_iommu_vcpu_affinity(struct=
+ kvm_vcpu *vcpu, int apicid,
+> =20
+>  	lockdep_assert_held(&svm->ir_list_lock);
+> =20
+> +	if (!amd_iommu_gappi)
+> +		goto skip_wakeup_handler;
+> +
+> +	if (action & AVIC_TOGGLE_ON_OFF) {
+> +		/*
+> +		 * When AVIC is disabled, IOMMU switches to legacy IRTE and
+> +		 * does not generate wakeup notification. Hence there is no
+> +		 * need to add vCPU on wakeup list. This reduces the number of
+> +		 * vCPUs on the list, effectively reducing interrupt handler
+> +		 * time and avoiding spurious wakeup to the vCPU.
+> +		 */
+> +		if (is_running)
+> +			/*
+> +			 * Store the CPU so that next call with
+> +			 * AVIC_STOP_RUNNING can add the vCPU on to
+> +			 * appropriate wakeup list.
+> +			 */
+> +			svm->gappi_cpu =3D cpu;
+> +		goto skip_wakeup_handler;
+> +	}
+> +
+> +	if (is_running) {
+> +		kvm_pi_disable_wakeup_handler(vcpu, svm->gappi_cpu);
+> +		svm->gappi_cpu =3D cpu;
+
+[Severity: Medium]
+Does calling kvm_pi_disable_wakeup_handler() while holding svm->ir_list_lock
+introduce a lockdep circular locking dependency with the scheduler runqueue
+lock?
+
+CPU0 (<hardirq>)        CPU1                     CPU2
+----                    ----                     ----
+lock(wakeup_vcpus_on_cpu_lock)
+                        lock(&rq->__lock)
+                        lock(&svm->ir_list_lock)
+                                                 lock(&svm->ir_list_lock)
+                                                 lock(wakeup_vcpus_on_cpu_l=
+ock)
+lock(&rq->__lock)
+
+ *** DEADLOCK ***
+
+CPU0: kvm_pi_wakeup_handler() -> kvm_vcpu_wake_up() -> try_to_wake_up()
+CPU1: schedule() -> kvm_sched_out() -> ... -> __avic_vcpu_put()
+CPU2: __avic_vcpu_load() -> ... -> kvm_pi_disable_wakeup_handler()
+
+kvm_pi_enable_wakeup_handler() uses PI_LOCK_SCHED_OUT to avoid a cycle when
+called under rq->__lock during kvm_sched_out(), while
+kvm_pi_disable_wakeup_handler() acquires wakeup_vcpus_on_cpu_lock at
+subclass 0 before acquiring PI_LOCK_SCHED_OUT.  Because __avic_vcpu_put()
+acquires svm->ir_list_lock under rq->__lock when a running vCPU is preempte=
+d,
+calling kvm_pi_disable_wakeup_handler() under svm->ir_list_lock in
+__avic_vcpu_load() bridges rq->__lock to wakeup_vcpus_on_cpu_lock at
+subclass 0 and triggers a lockdep splat on CONFIG_PROVE_LOCKING kernels.
+
+> +	} else {
+> +		apicid =3D cpu_physical_id(svm->gappi_cpu);
+> +		kvm_pi_enable_wakeup_handler(vcpu, svm->gappi_cpu);
 > +	}
 
 [Severity: Medium]
-Does the early return when !AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir)
-make the AMD_IOMMU_GUEST_IR_VAPIC() check right below it unreachable when
-false and leave amd_iommu_gappi set to true?
+Should kvm_pi_enable_wakeup_handler() only be called when wakeup_intr is tr=
+ue
+(action & AVIC_START_BLOCKING)?
 
-parse_amd_iommu_options() sets amd_iommu_gappi =3D true before Virtual APIC
-support is validated.  If the kernel is booted with amd_iommu=3Dgappi and
-IOMMU Virtual APIC is disabled or downgraded (for example with
-amd_iommu_intr=3Dlegacy or when check_vapic_support() falls back to legacy
-GA mode), enable_iommus_vapic() returns before clearing amd_iommu_gappi
-(and likewise if the IOMMU is disabled or fails to initialize).
+When a vCPU is preempted or exits to userspace without blocking,
+avic_vcpu_put() calls __avic_vcpu_put(vcpu, AVIC_STOP_RUNNING), where
+is_running is false and wakeup_intr is false.  Enqueuing the vCPU here puts
+non-blocking vCPUs onto per_cpu(wakeup_vcpus_on_cpu, svm->gappi_cpu) on eve=
+ry
+vcpu_put(), causing kvm_pi_wakeup_handler() to scan their vAPIC IRR bitmaps=
+ on
+every wakeup interrupt and requiring every subsequent __avic_vcpu_load() to
+take wakeup_vcpus_on_cpu_lock to remove them.
 
-When CPU AVIC is active in KVM SVM, avic_update_iommu_vcpu_affinity() and
-avic_vcpu_free() check amd_iommu_gappi before checking whether the vCPU
-has any IOMMU IRTEs:
+[ ... ]
 
-arch/x86/kvm/svm/avic.c:avic_update_iommu_vcpu_affinity() {
-	...
-	if (!amd_iommu_gappi)
-		goto skip_wakeup_handler;
-	...
-	if (is_running) {
-		kvm_pi_disable_wakeup_handler(vcpu, svm->gappi_cpu);
-		svm->gappi_cpu =3D cpu;
-	} else {
-		apicid =3D cpu_physical_id(svm->gappi_cpu);
-		kvm_pi_enable_wakeup_handler(vcpu, svm->gappi_cpu);
-	}
+> @@ -1308,6 +1358,13 @@ static bool __init avic_want_avic_enabled(void)
+>  	return true;
+>  }
+> =20
+> +bool avic_vcpu_irq_pending(struct kvm_vcpu *vcpu)
+> +{
+> +	struct vcpu_svm *svm =3D to_svm(vcpu);
+> +
+> +	return kvm_lapic_find_highest_irr(&svm->vcpu) >=3D 0;
+> +}
+> +
+>  /*
+>   * Note:
+>   * - The module param avic enable both xAPIC and x2APIC mode.
+> @@ -1351,6 +1408,8 @@ bool __init avic_hardware_setup(void)
+> =20
+>  void avic_hardware_unsetup(void)
+>  {
+> -	if (avic)
+> -		amd_iommu_register_ga_log_notifier(NULL);
+> +	if (!avic)
+> +		return;
+> +
+> +	amd_iommu_register_ga_log_notifier(NULL);
+>  }
 
-skip_wakeup_handler:
-	if (list_empty(&svm->ir_list))
-		return;
-	...
-}
-
-Leaving amd_iommu_gappi set to true when CONTROL_GAPPI_EN is not enabled
-causes KVM to register and unregister per-CPU wakeup handlers on every
-vCPU load, put, block, and free even though IOMMU Virtual APIC is not in
-use.
+[Severity: Low]
+This isn't a bug, but the change in avic_hardware_unsetup() looks like
+leftover churn from when wakeup handler unregistration lived in SVM rather
+than common x86 code.  Along the same lines, the commit message states that
+SVM registers the GAPPI handler via kvm_set_posted_intr_wakeup_handler() and
+walks the local vCPU list, which was moved to common x86 code in earlier
+commit "KVM: VMX: Factor out wakeup list handling code to KVM".  Also,
+avic_vcpu_irq_pending() can pass vcpu directly to kvm_lapic_find_highest_ir=
+r()
+without converting through to_svm(vcpu).
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111064242.2933=
-6-1-sarunkod@amd.com?part=3D7
+6-1-sarunkod@amd.com?part=3D6
