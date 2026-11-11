@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794420578;
-	b=DGGzVrj6CPhhZMzzcwi1oLZYduywMUMrM8yotnRdJLAdGNgMO9HA5bs2NqWO5dDmhmbR
-	 Al1qbnVvcMfZuY3mVgsRvWfigC0OByS4gw3/IwskabugZUhxz/tbNp4CPq2W1JEhTkw+g
-	 h4+3TRH2n+rNDh72i11HXZQY1Y7uqJzER5oyaHQExRGvIi5MGvQNdOiHDfyUdN5Agqagu
-	 y+AGueOZLXcN+CmEsj+mbvIApa9ZES5T4I0YIAJ3WzMCR7rBXo4osH72x3nniFmqRzNAc
-	 lv4Z0ZJm4qOzdhnVHbU8m9benFxVJPjUd02GePVXx/Bl7z2BsKCWewH0Nu+fOuYdZ9A==
+	b=FD4rZ/Dq1+ihgVS8a5mVrsehyljMXUo78x+SbEcbrdIYVim4Z/E6WoP0fq/ptI3Yg/FB
+	 0g3GbQzlGxmRBo8M/5A10YcDm/UUzcGbTsbXHYUHjabCh9XmW/ak0e+awkzqhpqd9Jmla
+	 OKh56kDfpnqv1IeBy9s3hVD+VOzJwGEaebiuiSE9e5R8HkLWra+x+0+NBOB1C9wO8tW1H
+	 8eqxenRUtP9fu3WKQiYkQORI58Bkxde8qemBOaPODWCjHy2xEg+3ELONwRIyKIgT5w8MM
+	 OeTvD+a+XrwEabz1fm3DWccgkU3nbr/XWSqGKsUCcfaeQB47YrePyhkTGMLiEDrt4tw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794420578;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=4ef/OanmIYVhZ39mmN9i+3nPMTOvgl3kuiqty0UYfVQ=;
-	b=VfZeOT93vw15DXFk+nHnh5x98zQqtEXgeXcCxGh+NuA9m3WIoT4bmpux16P/9Ncff1Bu
-	 0P/W2DhcYzQ9FP8l8lUjsw3TXBm7mKERKsX51xuvfkW98C6k2hqKnygIiGyip/unuekOx
-	 nBDq3i6l48vGi9qTEa5Rkt1Iqi84Q/C/OASKPyAxhum3S7xMsBlUeE5U6KlXE3I+ueAx9
-	 hOzD1CvzufGV3X6e5euPQ6il81giVAr2fXcyIpGYDmQdRHZ0PhjOUkM9dr8U08SgVBZ7W
-	 Po8wNdGoPCVKf2I9Sfwa77F+fZ7Ls0EIZz+5StXy44rQRPXBKb/RvLRueOGvV9/Pipw==
+	bh=vWs4t5uxl9jHxvt00tM8dY6zv888q/Xb7jvTWjeauvw=;
+	b=DWVMiWGcZ5Aeksey36CFnkKNSPFsa8Va689cQp1ikSrSfouqpdQu1CcsV/JHiph1SZFW
+	 BIc6+6GIMN0//fcd5pil+3Pth+Rwc/B05N4xuhe6tsAviWX2FFW4RfuZ3yv7WWE8fcJkT
+	 aGnZvjVGzLC9LPrttyDz5UZB/79zOnicOjOveg7i69aZ/oVq6RKZnz7spwtsSKRHIsDO1
+	 mZqzakBkyezts3uBux2QOQ79X13RJAb+CL8kigcEuO+FSVeEnHoZAexqqWb7RyGHLcK4J
+	 psnlehOZP0qHn5V8uLeYhsZ/eJWq4HRdoE+Gf1E6sfuYNsifoBcRueGsNcMJfBxePXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=SD0xiGvv;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=B0c6cVsS;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367E7606B786;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367AC606B784;
 	Wed, 11 Nov 2026 18:09:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 367E7606B786
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 367AC606B784
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=SD0xiGvv
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=B0c6cVsS
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description;
-	bh=4ef/OanmIYVhZ39mmN9i+3nPMTOvgl3kuiqty0UYfVQ=; b=SD0xiGvvBw2dlcpqPpcWV9L2+k
-	mjhmtahbMru1wSFigKkPtLdMIbq6ARAi+aPrLpmV2mivUqywxfvTIaNiGfRnwPaPSsSFrZaJL1bdv
-	2y8Xyu4Lob3V1L+GpGysy+IcDHm8riQaTRPULdapwbWb7Afm3NOYjqlcTX1tgRxnEGBmouft6brAr
-	FOCFYggCV9wL2ICBKLWhAC1yAFx5/Tih0QCnu/dtzCF7i07S+zmJIghGHHoeATwhcRriZgDJvlwHN
-	W8/AezTrx8Relfr7KFhyfQqeAoUbI8TfPHLJcEcs42UfFfalxobACwOIN174UAsdKnrXC+XzUUTrM
-	Ld2X3mOQ==;
+	bh=vWs4t5uxl9jHxvt00tM8dY6zv888q/Xb7jvTWjeauvw=; b=B0c6cVsSxce2OrrqxC/zRui5F5
+	Dz5AvMue4Sv/ggFoLJPcscu4jQ2t/mbe8NsBBgsFONIdLXMf/1TuOTjrC7eg84Jy4OEEfhzW0BxBk
+	zmhWDaef/8um3IflDZOaVmKbiXcFF06V2cA+cpTEjwebiyWi/Sqh6m8QDYSIa30HzqvMw+txcFOuY
+	3ReiaJO74Zg1lCyFEgM6kWjc3yF0DWQoR5Yyq3W6IpzbgMIp/giuE6K0lPyEPnG6ah46LNofAyBfg
+	9BVFanOuzGu6OxCh6bGsQ1IX5MGwusfghV698fp+p5F8OJSgzwtbhC2Zy5hHCwaF6ezbMujeTZ1sC
+	cQl6Yh+A==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRClB-00000009PvU-3Bk1;
+	id 1xRClB-00000009PvN-3CJy;
 	Wed, 11 Nov 2026 18:09:25 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRCl9-0000000HWtS-2zfy;
+	id 1xRCl9-0000000HWsW-0ONu;
 	Wed, 11 Nov 2026 18:09:23 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -78,9 +78,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Dongli Zhang <dongli.zhang@oracle.com>,
 	joe.jin@oracle.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v13 22/26] KVM: selftests: Add Xen runstate migration test
-Date: Wed, 11 Nov 2026 10:09:18 -0800
-Message-ID: <20261111180922.4177927-23-dwmw2@infradead.org>
+Subject: [PATCH v13 08/26] KVM: x86: Avoid redundant masterclock updates from multiple vCPUs
+Date: Wed, 11 Nov 2026 10:09:04 -0800
+Message-ID: <20261111180922.4177927-9-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261111180922.4177927-1-dwmw2@infradead.org>
 References: <20261111180922.4177927-1-dwmw2@infradead.org>
@@ -100,291 +100,282 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Test that Xen runstate (steal time) is correctly accounted across a
-simulated live migration using KVM_XEN_VCPU_ATTR and KVM_[GS]ET_CLOCK_GUEST.
+When a masterclock update is triggered (e.g. by the clocksource change
+notifier), KVM_REQ_MASTERCLOCK_UPDATE is set on all vCPUs, and each of
+them independently re-executed the whole pvclock_update_vm_gtod_copy()
+sequence, serialized only by tsc_write_lock. Every redundant
+re-snapshot moves the reference point.
 
-The test simulates what a real VMM does during migration:
-1. Creates a VM with Xen HVM config and runstate tracking
-2. Runs the guest to accumulate some kvmclock time
-3. Saves clock (KVM_GET_CLOCK_GUEST), TSC offset, and runstate
-4. Marks the saved state as RUNSTATE_runnable (vCPU not running)
-5. Destroys the source VM
-6. Sleeps 10ms (simulating migration network transfer time)
-7. Creates a new VM and restores all state precisely as saved
-8. Runs the guest and verifies the migration gap appears as steal
+Let the first vCPU to take the lock do the update and clear the
+request on the others, which then bail out; the caller in
+vcpu_enter_guest() uses the non-clearing kvm_test_request(), since the
+clearing happens under the lock. Concurrent updaters are refcounted:
+each broadcasts its KVM_REQ_MCLOCK_INPROGRESS kicks before contending
+for the lock, and only the last one out releases them, so a finishing
+updater cannot free vCPUs into the guest while another update is in
+flight. The seqcount write section opens before the pending requests
+are consumed — a vCPU which sees its request gone and heads into
+kvm_guest_time_update() spins until the new snapshot is live — and
+closes before the KVM_REQ_CLOCK_UPDATE broadcast, so readers do not
+spin across the request loops. Those loops run with interrupts off
+under tsc_write_lock: bounded by the vCPU count, paid once per
+deduplicated update.
 
-The VM is placed in long mode explicitly (KVM_XEN_ATTR_TYPE_LONG_MODE)
-so the kernel writes the 64-bit runstate layout; nothing in this test
-writes the hypercall-page MSR, which is what would otherwise latch the
-mode from the guest's EFER.
+Since the update now consumes pending requests, the Hyper-V
+reenlightenment notifier must invalidate the Hyper-V TSC page itself;
+previously a surviving request refreshed the page later.
 
-The guest TSC is transferred via the KVM_VCPU_TSC_OFFSET attribute. As
-the "migration" is to a new VM on the same host, restoring the same
-offset makes the guest TSC continue uninterrupted across the gap, so the
-restored pvclock yields a kvmclock which has kept running too. That is
-what makes the migration gap visible: the destination kvmclock is ahead
-of the saved state_entry_time by (at least) the gap duration, rather
-than restarting from the destination VM's creation time.
+Deduplication also strips the paper off an old race on the Hyper-V
+TSC page which the preceding commit fixed properly: every vCPU
+re-running the broadcast used to re-mark the page by accident, so the
+masterclock update paths must now re-mark it on purpose, as
+KVM_SET_CLOCK already does, once the new snapshot is published.
 
-The kernel accounts the gap because: on vcpu_load, it transitions from
-RUNSTATE_runnable to RUNSTATE_running, computing delta = kvmclock_now -
-state_entry_time. Since kvmclock has advanced past the saved entry time
-(real time elapsed during migration), the delta is added to time_runnable.
-
-The result is reported through the kselftest TAP machinery.
-
+Suggested-by: Dongli Zhang <dongli.zhang@oracle.com>
+Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/x86/xen_migration_test.c    | 227 ++++++++++++++++++
- 2 files changed, 228 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/xen_migration_test.c
+ arch/x86/include/asm/kvm_host.h |   1 +
+ arch/x86/kvm/msrs.c             |  11 ++-
+ arch/x86/kvm/x86.c              | 122 +++++++++++++++++++++++++++-----
+ 3 files changed, 115 insertions(+), 19 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 79d26de18bf3..1edc78845fd3 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -153,6 +153,7 @@ TEST_GEN_PROGS_x86 += x86/debug_regs
- TEST_GEN_PROGS_x86 += x86/tsc_msrs_test
- TEST_GEN_PROGS_x86 += x86/vmx_pmu_caps_test
- TEST_GEN_PROGS_x86 += x86/xen_cpuid_timing_test
-+TEST_GEN_PROGS_x86 += x86/xen_migration_test
- TEST_GEN_PROGS_x86 += x86/xen_shinfo_test
- TEST_GEN_PROGS_x86 += x86/xen_vmcall_test
- TEST_GEN_PROGS_x86 += x86/sev_dbg_test
-diff --git a/tools/testing/selftests/kvm/x86/xen_migration_test.c b/tools/testing/selftests/kvm/x86/xen_migration_test.c
-new file mode 100644
-index 000000000000..e316e6cd82de
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/xen_migration_test.c
-@@ -0,0 +1,227 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Test Xen runstate (steal time) preservation across simulated migration.
-+ *
-+ * Verifies that the kernel correctly accounts the migration gap as
-+ * steal time (runnable) when runstate data is saved and restored
-+ * precisely, but real time elapses during the migration.
-+ *
-+ * The key insight: userspace saves the runstate with state=RUNSTATE_runnable
-+ * (the vCPU is not running during migration). On restore, the kernel sees
-+ * that kvmclock has advanced past state_entry_time, and accounts the
-+ * difference as time spent in the runnable state.
-+ */
-+#include <inttypes.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+
-+#include <asm/pvclock-abi.h>
-+
-+#define SHINFO_GPA	0xc0000000ULL
-+#define RUNSTATE_GPA	(SHINFO_GPA + 0x1000)
-+
-+#define RUNSTATE_running  0
-+#define RUNSTATE_runnable 1
-+#define RUNSTATE_blocked  2
-+#define RUNSTATE_offline  3
-+
-+/*
-+ * The 64-bit (long mode) layout: 'state' is followed by 4 bytes of
-+ * padding so state_entry_time is naturally aligned. The VM is placed
-+ * in long mode explicitly below; without that, KVM would latch 32-bit
-+ * mode (no hypercall-page write ever happens here to latch it from
-+ * EFER) and write the packed compat layout instead.
-+ */
-+struct vcpu_runstate_info {
-+	u32 state;
-+	u64 state_entry_time;
-+	u64 time[4];
-+};
-+
-+static void guest_code(void)
-+{
-+	volatile struct vcpu_runstate_info *rs =
-+		(void *)(unsigned long)RUNSTATE_GPA;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 74306a81e882..3f5aa1d3f6bb 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1241,6 +1241,7 @@ struct kvm_arch {
+ 	raw_spinlock_t tsc_write_lock;
+ 	u32 cur_tsc_khz;
+ 	u64 cur_tsc_scaling_ratio;
++	int mclock_updaters; /* protected by tsc_write_lock */
+ 	u64 cur_tsc_nsec;
+ 	u64 cur_tsc_write;
+ 	u64 cur_tsc_offset;
+diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+index a2dffa1c706f..26eb30f10c43 100644
+--- a/arch/x86/kvm/msrs.c
++++ b/arch/x86/kvm/msrs.c
+@@ -1278,10 +1278,15 @@ static void kvm_write_system_time(struct kvm_vcpu *vcpu, gpa_t system_time,
+ 	struct kvm_arch *ka = &vcpu->kvm->arch;
+ 
+ 	if (vcpu->vcpu_id == 0 && !host_initiated) {
+-		if (ka->boot_vcpu_runs_old_kvmclock != old_msr)
++		/*
++		 * Store the flag before requesting the masterclock update:
++		 * the update may now be performed by another vCPU (which
++		 * consumes this request), and it must observe the new value.
++		 */
++		if (ka->boot_vcpu_runs_old_kvmclock != old_msr) {
++			ka->boot_vcpu_runs_old_kvmclock = old_msr;
+ 			kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
+-
+-		ka->boot_vcpu_runs_old_kvmclock = old_msr;
++		}
+ 	}
+ 
+ 	vcpu->arch.time = system_time;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index f7af94d8b3bb..0b3b04a156da 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1756,13 +1756,72 @@ static void pvclock_update_vm_gtod_copy(struct kvm *kvm)
+ 
+ static void kvm_make_mclock_inprogress_request(struct kvm *kvm)
+ {
++	unsigned long flags;
 +
 +	/*
-+	 * Report runstate times — no need to enable the kvmclock MSR,
-+	 * the kernel writes runstate using its internal kvmclock.
++	 * Count updaters in flight: several can broadcast their
++	 * KVM_REQ_MCLOCK_INPROGRESS kicks and then contend for
++	 * tsc_write_lock, and whoever finishes (or bails out) first must
++	 * not clear the kicks out from under the updates still pending —
++	 * vCPUs would re-enter the guest mid-update and miss the
++	 * un-kicked KVM_REQ_CLOCK_UPDATE made at the end.
 +	 */
-+	GUEST_SYNC_ARGS(0, rs->time[RUNSTATE_runnable],
-+			rs->time[RUNSTATE_running], 0, 0);
-+}
++	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
++	kvm->arch.mclock_updaters++;
++	raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
 +
-+static struct kvm_vm *create_xen_vm(struct kvm_vcpu **vcpu)
+ 	kvm_make_all_cpus_request(kvm, KVM_REQ_MCLOCK_INPROGRESS);
+ }
+ 
+-static void __kvm_start_pvclock_update(struct kvm *kvm)
++/* Drop an updater; the last one out re-allows guest entries. */
++static void kvm_put_mclock_updater(struct kvm *kvm)
 +{
-+	struct kvm_vm *vm;
-+	int xen_caps;
-+
-+	vm = vm_create_with_one_vcpu(vcpu, guest_code);
-+
-+	xen_caps = kvm_check_cap(KVM_CAP_XEN_HVM);
-+	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_SHARED_INFO);
-+	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_RUNSTATE);
-+
-+	/* Map pages */
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+				    SHINFO_GPA, 1, 2, 0);
-+	virt_map(vm, SHINFO_GPA, SHINFO_GPA, 2);
-+
-+	/* Enable Xen HVM with MSR interception (enables runstate tracking) */
-+	struct kvm_xen_hvm_config cfg = {
-+		.flags = KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL,
-+		.msr = 0x40000000,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_CONFIG, &cfg);
-+
-+	/* The guest runs in long mode; make the runstate layout match. */
-+	struct kvm_xen_hvm_attr lm = {
-+		.type = KVM_XEN_ATTR_TYPE_LONG_MODE,
-+		.u.long_mode = 1,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &lm);
-+
-+	/* Set shared_info */
-+	struct kvm_xen_hvm_attr ha = {
-+		.type = KVM_XEN_ATTR_TYPE_SHARED_INFO,
-+		.u.shared_info.gfn = SHINFO_GPA >> 12,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &ha);
-+
-+	/* Set runstate address */
-+	struct kvm_xen_vcpu_attr rs_addr = {
-+		.type = KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_ADDR,
-+		.u.gpa = RUNSTATE_GPA,
-+	};
-+	vcpu_ioctl(*vcpu, KVM_XEN_VCPU_SET_ATTR, &rs_addr);
-+
-+	return vm;
-+}
-+
-+int main(void)
-+{
-+	struct pvclock_vcpu_time_info pvti;
-+	struct kvm_xen_vcpu_attr runstate_save;
 +	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	u64 tsc_offset;
-+	int ret;
++	unsigned long i;
 +
-+	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_CLOCK_GUEST));
++	lockdep_assert_held(&kvm->arch.tsc_write_lock);
 +
-+	ksft_print_header();
-+	ksft_set_plan(1);
++	if (--kvm->arch.mclock_updaters)
++		return;
 +
-+	/* === SOURCE SIDE === */
-+	pr_info("=== Source: create VM and run guest ===\n");
-+	vm = create_xen_vm(&vcpu);
-+
-+	/* Run guest once to accumulate some runstate time */
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_SYNC);
-+
-+	pr_info("  Guest sees: runnable=%" PRIu64 " running=%" PRIu64 "\n",
-+		uc.args[2], uc.args[3]);
-+
-+	/* Save clock state */
-+	vcpu_get_clock_guest(vcpu, &pvti);
-+
-+	/*
-+	 * Save the guest TSC offset. This test migrates to a new VM on
-+	 * the same host, so restoring the same offset makes the guest
-+	 * TSC continue uninterrupted across the migration gap, and the
-+	 * restored pvclock (KVM_SET_CLOCK_GUEST) then yields a kvmclock
-+	 * which has also kept running across the gap. (A real migration
-+	 * to a different host would compute the destination offset from
-+	 * KVM_GET_CLOCK's {host_tsc, realtime} pair as described in
-+	 * Documentation/virt/kvm/devices/vcpu.rst.)
-+	 */
-+	tsc_offset = vcpu_get_tsc_offset(vcpu);
-+
-+	/* Save runstate — the vCPU is now "runnable" (not running) */
-+	runstate_save.type = KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_DATA;
-+	vcpu_ioctl(vcpu, KVM_XEN_VCPU_GET_ATTR, &runstate_save);
-+
-+	/*
-+	 * Transition to runnable state before saving — the vCPU is
-+	 * not running during migration.
-+	 */
-+	runstate_save.u.runstate.state = RUNSTATE_runnable;
-+
-+	pr_info("  Saved runstate: running=%" PRIu64 " runnable=%" PRIu64
-+		" entry=%" PRIu64 "\n",
-+		(u64)runstate_save.u.runstate.time_running,
-+		(u64)runstate_save.u.runstate.time_runnable,
-+		(u64)runstate_save.u.runstate.state_entry_time);
-+
-+	u64 saved_runnable = runstate_save.u.runstate.time_runnable;
-+
-+	kvm_vm_free(vm);
-+
-+	/* === MIGRATION GAP === */
-+	pr_info("=== Simulating migration (sleeping 10ms) ===\n");
-+	usleep(10000);
-+
-+	/* === DESTINATION SIDE === */
-+	pr_info("=== Destination: create new VM and restore ===\n");
-+	vm = create_xen_vm(&vcpu);
-+
-+	/* Restore the guest TSC offset (same host: TSC continues) */
-+	vcpu_set_tsc_offset(vcpu, tsc_offset);
-+
-+	/* Restore clock — kvmclock will now be ~10ms ahead of the snapshot */
-+	vcpu_set_clock_guest(vcpu, &pvti);
-+
-+	/* Restore runstate exactly as saved (state=runnable) */
-+	runstate_save.type = KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_DATA;
-+	ret = __vcpu_ioctl(vcpu, KVM_XEN_VCPU_SET_ATTR, &runstate_save);
-+	TEST_ASSERT(!ret, "Restore runstate failed: errno %d", errno);
-+
-+	/*
-+	 * Run the guest. When the vCPU enters vcpu_run, the kernel
-+	 * transitions from RUNSTATE_runnable to RUNSTATE_running.
-+	 * It computes: delta = kvmclock_now - state_entry_time
-+	 * This delta (which includes the migration gap) is added to
-+	 * time_runnable (steal time).
-+	 */
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_SYNC);
-+
-+	u64 guest_runnable = uc.args[2];
-+	u64 guest_running = uc.args[3];
-+
-+	pr_info("  Guest sees: runnable=%" PRIu64 " running=%" PRIu64 "\n",
-+		guest_runnable, guest_running);
-+
-+	u64 steal_increase = guest_runnable - saved_runnable;
-+	pr_info("  Steal time increase: %" PRIu64 " ns (migration gap)\n",
-+		steal_increase);
-+
-+	/*
-+	 * The steal time increase should be at least 10ms (the sleep).
-+	 * The actual gap runs from the source's state_entry_time to the
-+	 * destination's kvmclock "now" at vcpu_load time, which includes
-+	 * everything from the source guest's last runstate transition
-+	 * through VM teardown and re-creation — so the upper bound exists
-+	 * only to catch wild miscalculation (e.g. an unscaled TSC delta),
-+	 * and is deliberately generous for slow or loaded hosts.
-+	 */
-+	TEST_ASSERT(steal_increase >= 10000000ULL &&
-+		    steal_increase < 60000000000ULL,
-+		    "Steal time increase %" PRIu64 " ns not in expected range "
-+		    "[10ms, 60s]", steal_increase);
-+
-+	kvm_vm_free(vm);
-+	ksft_test_result_pass("migration gap accounted as steal time\n");
-+	ksft_finished();
++	kvm_for_each_vcpu(i, vcpu, kvm)
++		kvm_clear_request(KVM_REQ_MCLOCK_INPROGRESS, vcpu);
 +}
++
++static bool __kvm_start_pvclock_update(struct kvm *kvm, struct kvm_vcpu *requesting_vcpu)
+ {
++	struct kvm_vcpu *vcpu;
++	unsigned long i;
++
+ 	raw_spin_lock_irq(&kvm->arch.tsc_write_lock);
++
++	/*
++	 * If another vCPU already did the update while we were waiting
++	 * for the lock, our request will have been cleared. Bail out,
++	 * dropping this updater's hold on KVM_REQ_MCLOCK_INPROGRESS.
++	 */
++	if (requesting_vcpu &&
++	    !kvm_test_request(KVM_REQ_MASTERCLOCK_UPDATE, requesting_vcpu)) {
++		kvm_put_mclock_updater(kvm);
++		raw_spin_unlock_irq(&kvm->arch.tsc_write_lock);
++		return false;
++	}
++
++	/*
++	 * Open the seqcount before consuming the other vCPUs' requests:
++	 * a vCPU which sees its KVM_REQ_MASTERCLOCK_UPDATE gone and goes
++	 * straight to kvm_guest_time_update() must then spin on the
++	 * seqcount until the new snapshot is live, rather than read the
++	 * old one (and, via kvm_hv_setup_tsc_page(), consume the Hyper-V
++	 * TSC page's pending state against it).
++	 */
+ 	write_seqcount_begin(&kvm->arch.pvclock_sc);
++
++	/* The update is VM-wide; prevent other vCPUs from redoing it. */
++	kvm_for_each_vcpu(i, vcpu, kvm)
++		kvm_clear_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
++
++	return true;
+ }
+ 
+ static void kvm_start_pvclock_update(struct kvm *kvm)
+@@ -1770,7 +1829,7 @@ static void kvm_start_pvclock_update(struct kvm *kvm)
+ 	kvm_make_mclock_inprogress_request(kvm);
+ 
+ 	/* no guest entries from this point */
+-	__kvm_start_pvclock_update(kvm);
++	__kvm_start_pvclock_update(kvm, NULL);
+ }
+ 
+ static void kvm_end_pvclock_update(struct kvm *kvm)
+@@ -1779,14 +1838,22 @@ static void kvm_end_pvclock_update(struct kvm *kvm)
+ 	struct kvm_vcpu *vcpu;
+ 	unsigned long i;
+ 
++	/*
++	 * The new snapshot is complete; close the seqcount first so
++	 * readers stop spinning while the requests are broadcast. The
++	 * CLOCK_UPDATE requests must precede the release of the
++	 * INPROGRESS holds, so that a vCPU allowed back into the guest
++	 * is guaranteed to refresh its pvclock on the way in.
++	 */
+ 	write_seqcount_end(&ka->pvclock_sc);
+-	raw_spin_unlock_irq(&ka->tsc_write_lock);
++
+ 	kvm_for_each_vcpu(i, vcpu, kvm)
+ 		kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
+ 
+-	/* guest entries allowed */
+-	kvm_for_each_vcpu(i, vcpu, kvm)
+-		kvm_clear_request(KVM_REQ_MCLOCK_INPROGRESS, vcpu);
++	/* guest entries allowed, unless another update is in flight */
++	kvm_put_mclock_updater(kvm);
++
++	raw_spin_unlock_irq(&ka->tsc_write_lock);
+ }
+ 
+ /*
+@@ -1819,12 +1886,27 @@ static void kvm_hv_remark_tsc_page(struct kvm *kvm)
+ #endif
+ }
+ 
+-static void kvm_update_masterclock(struct kvm *kvm)
++static void kvm_update_masterclock(struct kvm *kvm, struct kvm_vcpu *vcpu)
+ {
++	/*
++	 * The Hyper-V TSC page request is made before the dedupe check
++	 * in __kvm_start_pvclock_update() because it takes a mutex and
++	 * so cannot sit inside the tsc_write_lock critical section where
++	 * the winning updater is known. A losing vCPU may therefore mark
++	 * the page HOST_CHANGED after the winner has already rewritten
++	 * it; the next clock update then rewrites the page again with
++	 * the same contents, which the TSC-page sequence protocol makes
++	 * safe against concurrently running guests.
++	 */
+ 	kvm_hv_request_tsc_page_update(kvm);
+-	kvm_start_pvclock_update(kvm);
+-	pvclock_update_vm_gtod_copy(kvm);
+-	kvm_end_pvclock_update(kvm);
++	kvm_make_mclock_inprogress_request(kvm);
++
++	if (__kvm_start_pvclock_update(kvm, vcpu)) {
++		pvclock_update_vm_gtod_copy(kvm);
++		kvm_end_pvclock_update(kvm);
++
++		kvm_hv_remark_tsc_page(kvm);
++	}
+ }
+ 
+ /*
+@@ -4604,7 +4686,6 @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, void __user *argp)
+ 	ka->kvmclock_offset = data.clock - now_raw_ns;
+ 	kvm_end_pvclock_update(kvm);
+ 
+-	/* As in kvm_update_masterclock(): re-mark after publishing. */
+ 	kvm_hv_remark_tsc_page(kvm);
+ 	return 0;
+ }
+@@ -6961,9 +7042,18 @@ static void kvm_hyperv_tsc_notifier(void)
+ 	kvm_caps.max_guest_tsc_khz = tsc_khz;
+ 
+ 	list_for_each_entry(kvm, &vm_list, vm_list) {
+-		__kvm_start_pvclock_update(kvm);
++		/*
++		 * Invalidate the Hyper-V TSC page explicitly: the update
++		 * below consumes any pending KVM_REQ_MASTERCLOCK_UPDATE,
++		 * which would otherwise have refreshed the page from
++		 * kvm_update_masterclock().
++		 */
++		kvm_hv_request_tsc_page_update(kvm);
++		__kvm_start_pvclock_update(kvm, NULL);
+ 		pvclock_update_vm_gtod_copy(kvm);
+ 		kvm_end_pvclock_update(kvm);
++
++		kvm_hv_remark_tsc_page(kvm);
+ 	}
+ 
+ 	mutex_unlock(&kvm_lock);
+@@ -8367,8 +8457,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 			kvm_mmu_free_obsolete_roots(vcpu);
+ 		if (kvm_check_request(KVM_REQ_MIGRATE_TIMER, vcpu))
+ 			__kvm_migrate_timers(vcpu);
+-		if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
+-			kvm_update_masterclock(vcpu->kvm);
++		if (kvm_test_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
++			kvm_update_masterclock(vcpu->kvm, vcpu);
+ 		if (kvm_check_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu))
+ 			kvm_gen_kvmclock_update(vcpu);
+ 		if (kvm_check_request(KVM_REQ_CLOCK_UPDATE, vcpu)) {
+@@ -9766,13 +9856,13 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+ 		 * master clock does not stay in its previous mode with
+ 		 * running siblings keeping PVCLOCK_TSC_STABLE_BIT.
+ 		 */
+-		kvm_update_masterclock(vcpu->kvm);
++		kvm_update_masterclock(vcpu->kvm, NULL);
+ 		return;
+ 	}
+ 	vcpu_load(vcpu);
+ 	kvm_synchronize_tsc(vcpu, NULL);
+ 	if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
+-		kvm_update_masterclock(vcpu->kvm);
++		kvm_update_masterclock(vcpu->kvm, NULL);
+ 	vcpu_put(vcpu);
+ 
+ 	/* poll control enabled by default */
 -- 
 2.43.0
 
