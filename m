@@ -1,72 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794367314;
-	b=su/3JSBCHrJ1/HdsGmhCKO8qqPX/FRtm4j1EbRqwCRfWd53vgi/hGgN9iedl4jVOzxFH
-	 SBFFmm/Pf+IoZJZmVHeaI+wpHg3jYuymWChdDHGWNXVWe/iL2UQmKtRCD0rTEFnNT3E31
-	 0XuBkZwAwuDdTcMq0wueF+0a+X/MslvBoYr0lWsQjnp5QofO+Vkzyyo7A/Th422rW1HEV
-	 nOq8qciPqCiKt9HLjZCJpv0Owd9X2WeETMg5Mc7OdcXqxpzRnhDXErFuMNq9q6/IvBe2N
-	 3GvKccT8fkaXBu0A+5vUq+8DtmyYwzrqhGJ1pAtbU5W+LbLh9rlDKpAaG3qPM6SdgUA==
+	t=1794367743;
+	b=TbTpw/s9LP7z5PC4kQzyEqastBYXijEtZVyBkRA0zJa7OJV9PmDjDqRWX6hEB15H1qc+
+	 AYnataVyJuM4Ol4ikQ/bdhp/Z+9X0eauMxasFAzvFze16J3N3oj7hkiS4h8S/WmHQt/v9
+	 WCy5PpWZ3y5Yi9qoES/E6SKH3HNmQLX4bb28ePD7hAsLQk0aSHcpVGpKhCSZnvGpimSTa
+	 xDSKx2StRUfXEBLk5SdTi/KY5jY3ngu7RF2C1fzvubjxvzoWbQm9Hil2h7cTrVrcy7RxP
+	 Q0i3CUxu2YGk8wvET+w5ETRBZ7hmEygBh5UiitfsJtw8E+eU6LPlJCp/42z5uGZ6IYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794367314;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
-	 Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=/4/b18xONg/TjeQwy2IjOoUIlFYOpF2rQUSoZ4nHhKY=;
-	b=yHi1EKB1OefZ/BsEL3WHKdNyKchRwiu8UkYTuyC9EpXH6QvSdJL0wDTUqD+PKgbFzlce
-	 76JXRhMKVo3gUiKpGcthjCAFJmBf7642+001vEeuGg9kOhDyiC1z/I/iGbQWGqc0/sFAt
-	 HMnHxXfdtV4tVQOZvzQ4yhs7J4j2NyrCUgyccjFWqK08W9n+PJS15IXeEIPuSa/COyDtw
-	 usazl9lGl9DPK3tzqAM3EY1P3sRBSxWQFBWckAkE31BLYiP5QGpjInHIjmWSF4TQTRuOG
-	 xqCX2Jw365Or9hdLcjDzLvYC8Jc+2SZhCroCkUIuznQV5jx9SL084ggKDVBl4Jho5lg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794367743;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=3shCqHpoO/77+ZajI3JbwZXKqJGThMJGmuA8MAb9XKo=;
+	b=egWuRpSPVVqw4Ho1lmlxYK7AefmzE+NJgxxsea9Gu/sua/mLXi52herAv2ARYIayE2UH
+	 N2wel7CKpXMfLHDrf7RcIvrPtW7hAnH8ft6aaObQoozZQQ+65YwLrkxMWfVrNFICjDUAt
+	 ViI36nY70g0mPZuMDNXW0ovT1TulBmnxZUcK/jstlF1o3VwhLBeXGcQ1KJdc+dcFTzbnp
+	 vJ76tc2ymEx7woZD79bRfVoivNIPJsFLYkSmU7l35sKfkEWdrtVNYC6nhY/65fUgKF9cx
+	 2GuLi1BM/K9U+WlG0PCyJHStZE+cE2OPsZFyxMiJPY/zWqFPA1DEef8A85d67eyW+yA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FrU9LBlm;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QFqjd941;
+	arc=none smtp.remote-ip=198.175.65.20
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9239F606A334
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 03:21:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9239F606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8754C606A320;
+	Wed, 11 Nov 2026 03:29:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8754C606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FrU9LBlm
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b09a466295so2265845a91.2
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 19:21:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794367314; x=1794972114; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/4/b18xONg/TjeQwy2IjOoUIlFYOpF2rQUSoZ4nHhKY=;
-        b=FrU9LBlm8MLY/US0EdtNgcWsRfNYQxpoBBeb929r2EwX09owXcs15woBd+/VJSBaFo
-         LYyVIMzB+LQSB3SLbcLvOKHS9ZTg5v19pSgSFCOlrinjY1nZ0ICxl2EPA50EVkyPo72J
-         Dm7blxhkCYsKqdo4MFJffP2qhj6GtdmG+faaS1omx4Szv4ivBbHNVkv8HbKdVKlJB7AS
-         B18sEh/Utc7AZ4VBtwkCQc+j7d413/RQsqfJLf8Wl7JOpqUCotnoV3RrMhtxqDgbpWY/
-         TqPKyLxuoINUJqPTLlyLtDc882yQFGDc7EftXu1fW/oYZxV4+yulpEni3Vwe2VRgBotr
-         Pd7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794367314; x=1794972114;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=/4/b18xONg/TjeQwy2IjOoUIlFYOpF2rQUSoZ4nHhKY=;
-        b=kHMrohYBc/sWgAAXUncH7QpMUpmdTcoul4r34DOltlB7vBK7pFerItbqjxc5ruwEIk
-         /ZPmaFXfBU4nXq48qIgesdiGQYAUx1rf6qJpWXeB5H/id64DHklEt0tM5Pnb8ECit85h
-         6oHQlQ+bP+dd8pRb5uItt03EQ+viqVYINWRiHkjlgTTQkJsutESqM7ojOT1keEd4WwlF
-         1yq0RWHtb9OV+Oi9V7JVcqCDSyYQGkj+ECqHRIQaMuAvB32lT99+9SWsg9ulbFKDEPYQ
-         PmrWrIChmo+nLZaMC2lJGFfwYavUe13eIk+byWKqB8pvjCxmoDAvfz2/99ncD6aVE2MM
-         ZSkA==
-X-Gm-Message-State: APuU4Z81aMLP2KMnbChMPB5Ga++2SWVBJ0IyXHLSryqRhHjXat3+EYMu
-	Im5Er5WRwWU7TG+F0Z/tZMipK/sGpn0bL55MohIzYX2hUoBRQevDAfI1ar30ozVTrxWm6KYf0/q
-	WqRqAhQ==
-X-Received: from pjdq9.prod.google.com ([2002:a17:90a:2e09:b0:3ad:32d0:ca0a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5110:b0:3a0:7261:d58e
- with SMTP id 98e67ed59e1d1-3b182f65fcemr1096371a91.22.1794367313660; Tue, 10
- Nov 2026 19:21:53 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Nov 2026 19:21:47 -0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QFqjd941
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794367743; x=1825903743;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=LIqe+UaWIv5xD2OLQNWbOHAajfuaJ0LtwTwlPHLih5s=;
+  b=QFqjd941ooOH/kOF5SvbgsqAw63JgOs94hMY8pLaY+6dvXXoRBpXlt0m
+   Du4hYaDxWK+PMqP+jh2c/Sd973vJZe7cs6sfmGRR6LHfFqZ9/WshuWWcv
+   Esgoy8+XrynFiiHssSfZONMD3jtSgQrXf8VK7o1/vzb9LBncC0BCV4tJT
+   jGG21z7gBzK/VIuxXsWJZ+zKO5O+ea5X7p60qNJmJollSMLWhnn4yyaF6
+   n8yD3bsjDCGb4uiYtu0O0W+eozjuQpOX/YpoTek5TNSaqI6qNIK6AV8fA
+   xlW2dRYNcTZjtohzfNjfQUR+xzvgu6AoNK9O0Ub/YVxw+E7ic2ghOav+H
+   w==;
+X-CSE-ConnectionGUID: RGwRE3iSRtimbd4/721C0A==
+X-CSE-MsgGUID: ys48Tz6ZTReGT34sBFPcfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3164728"
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="3164728"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:29:02 -0800
+X-CSE-ConnectionGUID: DYOdHDRGTmKxfokK3Y5okg==
+X-CSE-MsgGUID: FB+bV/FkQ72g55I1buRHQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="10108612"
+Received: from ssivasu2-mobl.amr.corp.intel.com (HELO [10.246.166.85]) ([10.246.166.85])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:29:01 -0800
+Message-ID: <970e231b-c3ce-4159-ab27-ac371426500c@intel.com>
+Date: Tue, 10 Nov 2026 21:28:59 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,15 +71,209 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261111032147.166134-1-seanjc@google.com>
-Subject: [ANNOUNCE] PUCK Agenda - 2026.11.11 - CANCELED
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 13/18] KVM: x86/pmu: Populate CPUID.0AH:ECX
+ fixed-counter bitmap
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20261106013927.166209-1-zide.chen@intel.com>
+ <20261106013927.166209-14-zide.chen@intel.com> <au491iiV7koeP0t6@google.com>
+ <f20b59bb-a3c6-4129-ba61-5cec4d975601@intel.com>
+ <f12bcb27-9c17-4b8c-b48c-c36a17e70ab6@linux.intel.com>
+ <5f129d63-10c6-414b-86a9-a604e42038ce@intel.com>
+ <51089074-1be0-47e3-8d53-732ca33f29a2@intel.com>
+ <fceb4f61-621a-4d62-a648-a1cdd0de1671@linux.intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <fceb4f61-621a-4d62-a648-a1cdd0de1671@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-PUCK is canceled for tomorrow (today for some of you?), as many people are
-traveling for KVM Forum.  My apologies for the super late notice, I completely
-spaced on sending the official cancelation.
+
+
+On 11/10/2026 6:25 PM, Mi, Dapeng wrote:
+> 
+> On 11/11/2026 6:56 AM, Chen, Zide wrote:
+>>
+>> On 11/10/2026 10:29 AM, Chen, Zide wrote:
+>>>
+>>> On 11/10/2026 12:28 AM, Mi, Dapeng wrote:
+>>>> On 11/10/2026 4:41 AM, Chen, Zide wrote:
+>>>>> On 11/6/2026 3:00 PM, Yosry Ahmed wrote:
+>>>>>> On Thu, Nov 05, 2026 at 06:39:22PM -0700, Zide Chen wrote:
+>>>>>>> PerfMon v5 adds a fixed-counter support bitmap in CPUID.0AH:ECX.
+>>>>>>> This is the superset of EDX[4:0] which indicates the contiguous
+>>>>>>> counters starting from 0. For backward compatibility, it's recommended
+>>>>>>> to use the following to determine if a fixed counter is supported:
+>>>>>>>
+>>>>>>> FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i);
+>>>>>>>
+>>>>>>> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
+>>>>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>>>>>>> ---
+>>>>>>> v3:
+>>>>>>> - Remove '&' when populating entry->ecx. (Jim)
+>>>>>>> - Gate entry->ecx on kvm_pmu_cap.version >= 5 in intel_pmu_refresh() to
+>>>>>>>   avoid enabling v5 fixed counters on hosts where KVM caps PMU at v2.
+>>>>>>> ---
+>>>>>>>  arch/x86/kvm/cpuid.c         | 5 ++++-
+>>>>>>>  arch/x86/kvm/vmx/pmu_intel.c | 8 ++++++++
+>>>>>>>  2 files changed, 12 insertions(+), 1 deletion(-)
+>>>>>>>
+>>>>>>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+>>>>>>> index 3310c370c5fa..00a2ca6d3049 100644
+>>>>>>> --- a/arch/x86/kvm/cpuid.c
+>>>>>>> +++ b/arch/x86/kvm/cpuid.c
+>>>>>>> @@ -1554,7 +1554,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+>>>>>>>  
+>>>>>>>  		entry->eax = eax.full;
+>>>>>>>  		entry->ebx = kvm_pmu_cap.events_mask;
+>>>>>>> -		entry->ecx = 0;
+>>>>>>> +		if (kvm_pmu_cap.version >= 5)
+>>>>>>> +			entry->ecx = (u32)kvm_pmu_cap.fixed_cntr_mask64;
+>>>>>>> +		else
+>>>>>>> +			entry->ecx = 0;
+>>>>>>>  		entry->edx = edx.full;
+>>>>>>>  		break;
+>>>>>>>  	}
+>>>>>>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+>>>>>>> index 1372091dc1f8..37b34b588601 100644
+>>>>>>> --- a/arch/x86/kvm/vmx/pmu_intel.c
+>>>>>>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+>>>>>>> @@ -597,7 +597,15 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>>>>>>>  				  find_first_zero_bit(kvm_pmu_cap.fixed_cntr_mask,
+>>>>>>>  						      KVM_MAX_NR_FIXED_COUNTERS));
+>>>>>>>  
+>>>>>>> +	/* FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i) */
+>>>>>>>  	fixed_mask = BIT_ULL(nr_fixed_counters) - 1;
+>>>>>>> +	/*
+>>>>>>> +	 * Do not enable fixed counters via the v5 ECX bitmap if KVM caps
+>>>>>>> +	 * PMU version below 5 (e.g. when mediated PMU is disabled or on
+>>>>>>> +	 * older hosts), matching KVM's advertised CPUID.0AH:ECX capability.
+>>>>>>> +	 */
+>>>>>>> +	if (kvm_pmu_cap.version >= 5 && pmu->version >= 5)
+>>>>>> Having to check both versions is confusing. Can they go out of sync?
+>>>>>> Should we clamp pmu->version to kvm_pmu_cap.version and only check the
+>>>>>> former?
+>>>>> Yes, actually, other fields (bit_width, mask_length, and
+>>>>> nr_{gp,fixed}_counters) in intel_pmu_refresh() are clamped to
+>>>>> kvm_pmu_cap as well.
+>>>>>
+>>>>> pmu->version = min_t(int, eax.split.version_id, kvm_pmu_cap.version);
+>>>> I'm not quite sure if we could do such clamp. I remember Sean ever said KVM
+>>>> should allow user space to set the PMU capabilities which KVM doesn't
+>>>> support, like what currently kselftest pmu_counters_test does, e.g., KVM
+>>>> only supports up to PMU version 2 in non-mediated vPMU mode, but
+>>>> pmu_counters_test can set PMU versions larger than 2.
+>>>>
+>>> KVM's principle of "not policing guest CPUID" means KVM allows userspace
+>>> to configure an arbitrary guest CPUID without rejecting the ioctl or
+>>> mutating the vCPUID entries.
+>>>
+>>> However, KVM's internal vCPU state (pmu->version) tracks the "effective
+>>> PMU version" that KVM can actually virtualize.
+>>>
+>>> This distinction is documented in commit 4f1bd6b16074 ("KVM: selftests:
+>>> Test Intel PMU architectural events on gp counters"):
+>>>
+>>> "KVM only officially supports up to version 2, but the behavior of the
+>>> counters is backwards compatible, i.e. KVM shouldn't do something
+>>> completely different for a higher, architecturally-defined vPMU version.
+>>> Verify KVM behavior against the effective vPMU version, e.g. dvertising
+>>> vPMU 5 when KVM only supports vPMU 2 shouldn't magically unlock vPMU 5
+>>> features."
+>>>
+>>> pmu_counters_test itself explicitly mentions this rule:
+>>>
+>>> /*
+>>>  * Return the effective PMU version, i.e. the minimum between what KVM
+>>>  * supports and what is enumerated to the guest.  The host deliberately
+>>>  * advertises a PMU version to the guest beyond what is actually
+>>>  * supported by KVM to verify KVM doesn't freak out and do something
+>>>  * bizarre with an architecturally valid, but unsupported, version.
+>>>  */
+>>>   return min_t(u8, kvm_pmu_version,
+>>> this_cpu_property(X86_PROPERTY_PMU_VERSION));
+>>>
+>>> In my understanding, clamping pmu->version perfectly reflects the above
+>>> rule, and it's similar to other KVM code, e.g.:
+>>>
+>>>         eax.split.bit_width = min_t(int, eax.split.bit_width,
+>>>                                     kvm_pmu_cap.bit_width_gp);
+>>>         eax.split.mask_length = min_t(int, eax.split.mask_length,
+>>>                                       kvm_pmu_cap.events_mask_len);
+>>>
+>>> Without a PMU version cap, guest resource validation could become
+>>> increasingly complicated as more advanced PMU features are supported, as
+>>> KVM would need to allow the guest to access PMU resources only when it
+>>> satisfies both the vPMU version and the KVM capability.
+>> The above sounds reasonable at first glance, but in practice it is
+>> problematic because it arbitrarily masks out features that can be 100%
+>> emulated in software even when there is zero host hardware dependency:
+>>
+>> - Features that can be emulated entirely in software (e.g. there is no
+>> problem emulating the PerfMon v5 AnyThread deprecation, or emulating
+>> MSRs like GLOBAL_STATUS_SET or GLOBAL_INUSE on a v2/v3 host). Clamping
+>> the version unnecessarily prevents the guest from using features that
+>> correspond to its configured PMU version.
+>>
+>> - Features that actually need host hardware support need to be checked
+>> against both guest and host PMU capabilities.
+>>
+>> I'd propose something like this instead, leaving pmu->version unclamped:
+>>
+>> static inline bool kvm_pmu_has_version(struct kvm_pmu *pmu, u8 version)
+>> {
+>>         return pmu->version >= version &&
+>>                kvm_pmu_cap.version >= version;
+>> }
+> 
+> pmu->version currently indicates the guest PMU version, it may exceed the
+> kvm_pmu_cap.version in current emulated vPMU,  that's why I don't think we
+> can do the clamp directly. I think the key point is if KVM depends on the
+> hardware to virtualize the PMU features (that's what currently mediated
+> vPMU intends to do). If one day we completely retires the emulated vPMU, we
+> may can clamp the guest pmu version with kvm_pmu_cap.version.
+
+I think whether it is an emulated or mediated vPMU, userspace can
+configure a higher vPMU version than the host. The reason why we cannot
+clamp the guest PMU version is that doing so makes the clamped version
+the effective PMU version, features that can be emulated entirely in
+software (MSR 0x391, 0x392, Anythread depreciation, etc.), would never
+be emulated. This remains true for both emulated and mediated vPMUs.
+> I agree we could need this function for the future mediated vPMU feature
+> support, but could we change the function name to be mediated-vpmu
+> specific? maybe kvm_mediated_pmu_supported_version() or something better?
+
+Thus, I would not suggest using a mediated-specific API name here.
+
+>>
+>> /* FxCtr[i]_is_supported := ECX[i] || (EDX[4:0] > i) */
+>> fixed_mask = BIT_ULL(nr_fixed_counters) - 1;
+>> if (kvm_pmu_has_version(pmu, 5))
+>>       fixed_mask |= (entry->ecx & kvm_pmu_cap.fixed_cntr_mask64);
+>>
+>> And potentially this API can be used for other advanced features like
+>> CPUID leaf 0x23H, PMUv6, etc.
+>>
+>>>>> Without this, as more advanced PMU features are supported in KVM, we
+>>>>> will have to manually validate guest features, and it seems this doesn't
+>>>>> violate the general principles of "not policing CPUID configurations"
+>>>>> and using the "effective vPMU version".
+>>>>>
+>>>>>>> +		fixed_mask |= entry->ecx;
+>>>>>>>  	fixed_mask &= kvm_pmu_cap.fixed_cntr_mask64;
+>>>>>> I see why this is needed now, to re-apply KVM's fixed counter mask after
+>>>>>> reading it, but if this is only needed there, it's probably clearer to
+>>>>>> do:
+>>>>>>
+>>>>>> 	if (version >= 5)
+>>>>>> 		fixed_mask |= (entry->ecx & kvm_pmu_cap.fixed_cntr_mask64);
+>>>>> Agreed, this is cleaner. Will update accordingly. Thanks!
