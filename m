@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794436160;
-	b=rCMKo6z9zLj+3wmiop3yDgXzHpn68XGyxbTDGyW44KPqJWB7Dp8K02Mye3cTu8Mu500r
-	 JqTXjjHfJo2zc5Bbk6XvWZa+ztOuhEKvFVSjv7oDS7BAEGva8iBHUq5CduKVFes6AhUuy
-	 yGWSYwkOaqqWuVn5UKgpI04tLU764nsWDOFhZk2eWAvCk0Rqx/yEgExMf9A928m3NJaOr
-	 AuLamFR55DKhCCSFcf7OeOgj4Sw86h/bqFTWlJgsmE5fkwp/1OokoqNxlUcqU9iUkfpM1
-	 SwjG+z3mLJBYbtLj0BdpXx9QuN9doOj9GZZzlaWNOOqy0fvaNpTVmQZAo7KJI5FucMw==
+	t=1794436157;
+	b=D/UDft/JgxfAQsezW4g1tfFwg8KNlrPBEe17tCJeNvxE3mpP0jsjQIyBV6GjgZ6nTb8z
+	 zHQ4dfnTlOUvZbzPVh1HlDjyYG2aiFQyzY3zkPmCUvtU+30I/w9BhQ+sAKO31oGTWW6le
+	 m9YuWgsZAq9G+pGbSBrqVIk/Y3UvxfrRckRpk55pE3sS8YIz98M3TqlcNDXbrPJXkc5Qf
+	 sH5enW8MXuya2xswqb9KSmOW2SeZP0yW3KC743XjioMxxKcl0ZrbN0lIQn8qI3TvaEtHm
+	 DN4ukWTJUJggsfDVT9g/olXF8EphCD/myk4nE+livdkQTJl1zkOIHdXcX3LsmS3n3gQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794436160;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794436157;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=hNcFDdx6SEsMQ2wb+0TdBub7tg0kF/xbhNU9Q5R/+fI=;
-	b=vv9NwfncDeb2p3PSo9fHxANQvJB9/MnxuhvbCmkrJvUm+8jF6w+36qxhGWtK/Md7Tw7y
-	 O7I+Xx22a6puTwANHEbPnNpcOctosXRYT9QrgpjCgUF4sI8+PNkl6Qo/mEbYPC8vBiDz3
-	 f2CbGyjR/Ejaw+dvVL5vdglNfGS6miyoddcL8FM7XmCJJnCZQOvUhF3hqx4o//iR8tKYQ
-	 8IS2ah9K6u3ao4+hOOGYew6CKSOTgHdq2jkEr1HjHLnITXr9eRba4hV0ycHoKKKSsU8ra
-	 0yuBLurd8cVR+fipgXl5Dd0tsWQcMqdpQj34SQqUkYDn3R2wf7rdqXvjCiwmNDKTrSw==
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=vestvomZ7rRP1B3U6q1sqnTnXF0ZBci1/XWHqSLuq/k=;
+	b=Iw0DIVQM61JOw39dNv3ABJWtPweXVFuKiisleBKV+MMIEP0zcZiEqkNwkqrSl7BK8tME
+	 nYDCeJ8mCT11mIp9Lna2LMBk8GRHjbOQIQxghegVETPNjcL323ExJMRO5VmYh+1G+kKKj
+	 UKjH8VF8yGYyxQZQ+77+o8pX3jfVsAl/h5pODaQppTTo9XgZRMVOsRi6iKRgm7qzEFZ9d
+	 KbqzXegtfUpoOZdY1h1q2oXHG0yxFvsJf50kH8LgAngY7dfyT2ub10Gg5+2TsavxU9rXi
+	 WrxnQks/sEl/Gic6PEpMR6HUdYll6sB8NSPGPajxIjGziuBIucEM7y0LQt/AYroVmfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=nWz1gFPi;
-	arc=none smtp.remote-ip=90.155.92.199
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	spf=none smtp.mailfrom=casper.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=rVKR4EoU;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CD160A2628;
-	Wed, 11 Nov 2026 22:29:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8CD160A2628
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDDC606A327;
+	Wed, 11 Nov 2026 22:29:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6EDDC606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=nWz1gFPi
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=rVKR4EoU
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=hNcFDdx6SEsMQ2wb+0TdBub7tg0kF/xbhNU9Q5R/+fI=; b=nWz1gFPieTMjS6ZWY7nAHM/nOJ
-	syw4NbeMkSO0aHt+eO0M1dMge7tZNU7ehYKvmryl84z8rwj+DmAtGbpkvydeEKAcnNNw7+jYyD5t4
-	5sxuulgOozKiHvuBZx2/ltbcOJucbl3aEMjTjPGGZtuwMFAUW+4UIl/9RnjpEs5wzYs//JOQCxVfe
-	Z5vV95kf3tW2bfUmND973isg/ref1Y14Ui9VcW5OAU9bFdTYvOD/IO7iUOyLzG5ENC+BD8ktH62+N
-	CNhTo0V4MYK/g3P3FYB65jEOYAjZy162p7oL8xg+UySIOd4jizNQ1HXVfvs38/yhP7RmuPdZR+eB6
-	2JplI6gg==;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=vestvomZ7rRP1B3U6q1sqnTnXF0ZBci1/XWHqSLuq/k=; b=rVKR4EoUQukRzLiXFIHcDb9FFd
+	FDPcPWaxhE71qH5PIZSv7vooQkW/zUyHhGtRqED26UkFVzwPEHPjFAbqH5Q6ieOCbmFdxI5w45Z30
+	eByqRPQq92Bya32NwARx4RG92gh6GgCi36gOy5C7w1naV8uv4DjPTJ+ncmoYZ38+CysdwXsD6xvcI
+	E3nAPKxMXpgdUPCoeBt7q8pmVKI64kxT6ezto8ryI6Bqmeue2U3D8766FSDk4w+oKFmBMjl7VOx+P
+	mEd8bqEdU52KUELDf63jeToigmnIuEp/7aGvhlrrgK74hFb9ENUC8/BrNfZV7GzlfJyIXQmLKm7z2
+	yVO5Xfaw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRGoc-00000009dbX-29VX;
-	Wed, 11 Nov 2026 22:29:14 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRGoa-0000000G3o0-1gsK;
+	Wed, 11 Nov 2026 22:29:12 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRGoZ-0000000007o-1y0L;
-	Wed, 11 Nov 2026 22:29:11 +0000
+	id 1xRGoa-0000000008i-0uyB;
+	Wed, 11 Nov 2026 22:29:12 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -74,12 +74,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	Sriram Nambakam <snambakam@linux.microsoft.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH 00/16] KVM: Fixes for the Planes + SEV-SNP series
-Date: Wed, 11 Nov 2026 14:28:55 -0800
-Message-ID: <20261111222911.477-1-dwmw2@infradead.org>
+Subject: [PATCH 14/16] KVM: x86: Derive runtime CPUID bits from the executing plane
+Date: Wed, 11 Nov 2026 14:29:09 -0800
+Message-ID: <20261111222911.477-15-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
+In-Reply-To: <20261111222911.477-1-dwmw2@infradead.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
+ <20261111222911.477-1-dwmw2@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,117 +90,250 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Mushahid Hussain <hmushi@amazon.co.uk>
 
-I rebased Jörg's KVM Planes + SEV-SNP series¹ to 7.4-rc2² and used it
-to add VSM support³. Here's a batch of fixes.
+Some CPUID bits follow registers of the vCPU: CPUID.1:ECX.OSXSAVE
+follows CR4.OSXSAVE, CPUID.7:ECX.OSPKE follows CR4.PKE, CPUID.1:EDX.APIC
+follows the APIC enable, CPUID.1:ECX.MWAIT follows MISC_ENABLE, and the
+XSAVE area sizes in leaf 0xD follow XCR0 and XSS. KVM keeps the CPUID
+table of a vCPU in the state its planes share, and refreshes those bits
+into the table from the state of whichever vCPU runs when the table is
+dirty. The planes of a vCPU have their own control registers, so after
+one plane sets CR4.OSXSAVE, CPUID on every plane of that vCPU reports
+OSXSAVE until a plane with it clear refreshes the table, and the other
+way round. The architecture requires CPUID to describe the processor
+that executes it, and for a plane that is the plane's own registers.
 
-Thirteen of the sixteen apply in order, without conflicts, to the
-kvm-planes-v7.1 branch. The other three need what has landed upstream
-since v7.1: patch 1 fixes the s390 arm64 KVM module, which only
-arrived in 7.4; patch 12 touches the PID-table clearing in
-vmx_vcpu_free() from b41f2ca6c060; and patch 16 extends the VMSA
-invalidation from d1a3c2162334.
+A Windows guest with Virtual Secure Mode shows the leak. Its secure
+kernel runs on a plane whose CR4.OSXSAVE is clear while the normal
+kernel on the other plane has set it. The secure kernel executes the
+usual probe, CPUID.1 followed by a test of OSXSAVE, reads the bit set
+and executes XGETBV, which raises #UD because its own CR4 does not
+permit it.
 
-The ones that matter:
+Compute the bits that follow vCPU registers when CPUID is emulated,
+from the registers of the vCPU that executes it, and no longer refresh
+the shared table on that path. The table keeps the view of plane 0 for
+KVM_GET_CPUID2 and KVM_SET_CPUID2, which act on the plane 0 vCPU, and
+their refresh stays as it is.
 
- - 01 s390: arm64: Pass plane_level to the kvm_set_routing_entry() stub
-   The arm64 KVM module on s390 kept the old prototype; the kernel
-   test robot caught it on the rebased tree.
+Fixes the shared runtime CPUID bits in "kvm: x86: Move CPUID state to
+struct kvm_vcpu_arch_common".
 
- - 05 Initialise Hyper-V state on every plane vCPU
-   kvm_set_cpuid() passed the plane 0 vCPU to kvm_hv_vcpu_init() for
-   every plane, and a twin created late got vp_index -1.
+[dwmw2: dropped the plane selftest hunk; this branch has no
+ plane_x86_test.c.  The per-VTL OSXSAVE contract is pinned by the
+ hyperv_vsm tests on the vsm-v2 branch of
+ git://git.infradead.org/users/dwmw2/kvm-unit-tests.git instead.]
+Fixes: https://lore.kernel.org/all/20260608144252.351443-44-joro@8bytes.org/
+Not-signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ Documentation/virt/kvm/api.rst |   7 +++
+ arch/x86/kvm/cpuid.c           | 107 +++++++++++++++++++++++----------
+ arch/x86/kvm/cpuid.h           |   5 +-
+ 3 files changed, 86 insertions(+), 33 deletions(-)
 
- - 08 Publish a new plane only once KVM_CREATE_PLANE cannot fail
-   A failed create left a freed plane in kvm->planes[], where the SNP
-   VMPL switch could still find it, and VM teardown freed it again.
-
- - 10 Keep current_vcpu in sync in vcpu_load()
-   A reschedule inside an ioctl on a plane fd put and loaded the wrong
-   twin, and a failed twin create left current_vcpu dangling.
-
- - 11 Load each plane twin while updating it after KVM_SET_CPUID
-   On VMX the vendor callback wrote the twins' controls into the
-   caller's VMCS.
-
- - 12 Leave the IPIv PID-table entry to the plane 0 vCPU
-   A twin has the same vCPU ID as plane 0, so creating or freeing one
-   repointed or cleared plane 0's entry. Latent for now, since planes
-   inhibit APICv.
-
- - 13 Leave TSC matching to the plane 0 vCPUs
-   Each twin counted as another vCPU with a matching TSC, so the master
-   clock could never come back on.
-
- - 14 Derive runtime CPUID bits from the executing plane
-   OSXSAVE, OSPKE, APIC, MWAIT and the XSAVE sizes follow per-plane
-   registers, but the table they live in is shared.
-
-Three things I've noticed and *not* fixed here:
-
- - The AVIC physical ID table is indexed by vCPU ID too, so it has the
-   same collision as the IPIv PID table in patch 12. It's masked while
-   APICv is inhibited for planes, as it is today.
-
- - A host-side TSC write on plane 0 (or KVM_SET_TSC_KHZ) after the
-   twins exist doesn't reach them. Fixing that means loading each twin,
-   and I'd rather agree how before doing it.
-
- - For Jörg and Tom: the SNP VMPL switch stops the current plane with
-   kvm_vcpu_set_plane_stopped() and no latch, so KVM_GET_PLANE_RUN_STATE
-   reports it as STOPPED, and a VMM that saves and restores that value
-   turns it into a userspace stop. Does VMPL want a notion of
-   KVM-initiated suspension of its own, or is that the intended
-   contract?
-
-¹ https://lore.kernel.org/all/20260608144252.351443-1-joro@8bytes.org/
-² https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/vsm2/planes-fixes
-³ https://lore.kernel.org/kvm/20261017122501.610248-1-dwmw2@infradead.org/
-
-David Woodhouse (14):
-  KVM: s390: arm64: Pass plane_level to the kvm_set_routing_entry() stub
-  KVM: SVM: Derive the plane limit from the immutable VM type
-  KVM: planes: Report KVM_MAX_PLANES from the system fd
-  KVM: Guard the per-plane KVM_SIGNAL_MSI cases with __KVM_HAVE_MSI
-  KVM: x86: Initialise Hyper-V state on every plane vCPU
-  KVM: x86: Widen the plane vCPU fd ioctl allowlist
-  KVM: x86/mmu: Free obsolete roots of all planes
-  KVM: planes: Publish a new plane only once KVM_CREATE_PLANE cannot
-    fail
-  KVM: planes: Kick the running twin's pCPU, not the request target's
-  KVM: planes: Keep current_vcpu in sync in vcpu_load()
-  KVM: x86: Load each plane twin while updating it after KVM_SET_CPUID
-  KVM: VMX: Leave the IPIv PID-table entry to the plane 0 vCPU
-  KVM: planes: Annotate the lockless twin-publication protocol
-  KVM: SVM: Make KVM_REQ_VMSA_PAGE_RELOAD per plane
-
-Mushahid Hussain (2):
-  KVM: x86: Leave TSC matching to the plane 0 vCPUs
-  KVM: x86: Derive runtime CPUID bits from the executing plane
-
- Documentation/virt/kvm/api.rst  |  21 ++++--
- arch/s390/kvm/arm64/arm.c       |   3 +-
- arch/x86/include/asm/kvm_host.h |   3 +-
- arch/x86/kvm/cpuid.c            | 128 +++++++++++++++++++++++---------
- arch/x86/kvm/cpuid.h            |   6 +-
- arch/x86/kvm/hyperv.c           |   7 +-
- arch/x86/kvm/irq.c              |   5 +-
- arch/x86/kvm/mmu/mmu.c          |  16 +++-
- arch/x86/kvm/svm/sev.c          |  29 ++++++--
- arch/x86/kvm/svm/svm.c          |  10 ++-
- arch/x86/kvm/svm/svm.h          |   2 -
- arch/x86/kvm/vmx/vmx.c          |  10 ++-
- arch/x86/kvm/x86.c              |  87 ++++++++++++++++++++--
- include/linux/kvm_host.h        |   7 +-
- virt/kvm/kvm_main.c             | 115 +++++++++++++++++++++++-----
- 15 files changed, 365 insertions(+), 84 deletions(-)
-
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index d21378183c51..c1a6536354fd 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -370,6 +370,13 @@ cpu's hardware control block.
+ VCPUs for non-zero planes can only be created if the VCPU the same index has
+ already been created for plane zero.
+ 
++The planes of a vCPU share its CPUID model, set through the plane 0 fd with
++KVM_SET_CPUID2.  The CPUID bits that follow a vCPU's own registers (OSXSAVE
++from CR4.OSXSAVE, OSPKE from CR4.PKE, the APIC enable, MWAIT from
++MISC_ENABLE, and the XSAVE area sizes from XCR0 and XSS) reflect the plane
++that executes CPUID, since every plane has these registers of its own.
++KVM_GET_CPUID2 returns them as plane 0 sees them.
++
+ 4.8 KVM_GET_DIRTY_LOG
+ ---------------------
+ 
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index c9b7dfc5c967..c5fa0551ddd5 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -173,6 +173,9 @@ static int kvm_check_cpuid(struct kvm_vcpu *vcpu)
+ 
+ static u32 kvm_apply_cpuid_pv_features_quirk(struct kvm_vcpu *vcpu);
+ static void kvm_update_cpuid_runtime(struct kvm_vcpu *vcpu);
++static void kvm_cpuid_apply_runtime(struct kvm_vcpu *vcpu, u32 function,
++				    u32 index, u32 *eax, u32 *ebx, u32 *ecx,
++				    u32 *edx);
+ 
+ /* Check whether the supplied CPUID data is equal to what is already set for the vCPU. */
+ static int kvm_cpuid_check_equal(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
+@@ -280,50 +283,50 @@ static u64 cpuid_get_supported_xss(struct kvm_vcpu *vcpu)
+ 	return (best->ecx | ((u64)best->edx << 32)) & kvm_caps.supported_xss;
+ }
+ 
+-static __always_inline void kvm_update_feature_runtime(struct kvm_vcpu *vcpu,
+-						       struct kvm_cpuid_entry2 *entry,
+-						       unsigned int x86_feature,
+-						       bool has_feature)
+-{
+-	cpuid_entry_change(entry, x86_feature, has_feature);
+-	guest_cpu_cap_change(vcpu->common, x86_feature, has_feature);
+-}
+-
++/* The table keeps plane 0's view of the runtime bits for KVM_GET_CPUID2. */
+ static void kvm_update_cpuid_runtime(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_cpuid_entry2 *best;
+ 
++	/*
++	 * Compute from the plane-0 twin no matter which plane triggered
++	 * the refresh: KVM_SET_CPUID runs this for every plane in turn.
++	 */
++	if (vcpu->common->vcpus[0])
++		vcpu = vcpu->common->vcpus[0];
++
+ 	vcpu->common->arch.cpuid_dynamic_bits_dirty = false;
+ 
+ 	best = kvm_find_cpuid_entry(vcpu, 1);
+ 	if (best) {
+-		kvm_update_feature_runtime(vcpu, best, X86_FEATURE_OSXSAVE,
+-					   kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE));
+-
+-		kvm_update_feature_runtime(vcpu, best, X86_FEATURE_APIC,
+-					   vcpu->arch.apic_base & MSR_IA32_APICBASE_ENABLE);
+-
++		kvm_cpuid_apply_runtime(vcpu, 1, 0, &best->eax, &best->ebx,
++					&best->ecx, &best->edx);
++		guest_cpu_cap_change(vcpu->common, X86_FEATURE_OSXSAVE,
++				     cpuid_entry_has(best, X86_FEATURE_OSXSAVE));
++		guest_cpu_cap_change(vcpu->common, X86_FEATURE_APIC,
++				     cpuid_entry_has(best, X86_FEATURE_APIC));
+ 		if (!kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT))
+-			kvm_update_feature_runtime(vcpu, best, X86_FEATURE_MWAIT,
+-						   vcpu->arch.ia32_misc_enable_msr &
+-						   MSR_IA32_MISC_ENABLE_MWAIT);
++			guest_cpu_cap_change(vcpu->common, X86_FEATURE_MWAIT,
++					     cpuid_entry_has(best, X86_FEATURE_MWAIT));
+ 	}
+ 
+ 	best = kvm_find_cpuid_entry_index(vcpu, 7, 0);
+-	if (best)
+-		kvm_update_feature_runtime(vcpu, best, X86_FEATURE_OSPKE,
+-					   kvm_is_cr4_bit_set(vcpu, X86_CR4_PKE));
+-
++	if (best) {
++		kvm_cpuid_apply_runtime(vcpu, 7, 0, &best->eax, &best->ebx,
++					&best->ecx, &best->edx);
++		guest_cpu_cap_change(vcpu->common, X86_FEATURE_OSPKE,
++				     cpuid_entry_has(best, X86_FEATURE_OSPKE));
++	}
+ 
+ 	best = kvm_find_cpuid_entry_index(vcpu, 0xD, 0);
+ 	if (best)
+-		best->ebx = xstate_required_size(vcpu->arch.xcr0, false);
++		kvm_cpuid_apply_runtime(vcpu, 0xd, 0, &best->eax, &best->ebx,
++					&best->ecx, &best->edx);
+ 
+ 	best = kvm_find_cpuid_entry_index(vcpu, 0xD, 1);
+-	if (best && (cpuid_entry_has(best, X86_FEATURE_XSAVES) ||
+-		     cpuid_entry_has(best, X86_FEATURE_XSAVEC)))
+-		best->ebx = xstate_required_size(vcpu->arch.xcr0 |
+-						 vcpu->arch.ia32_xss, true);
++	if (best)
++		kvm_cpuid_apply_runtime(vcpu, 0xd, 1, &best->eax, &best->ebx,
++					&best->ecx, &best->edx);
+ }
+ 
+ bool kvm_cpuid_has_hyperv(struct kvm_vcpu *vcpu)
+@@ -2133,17 +2136,58 @@ get_out_of_range_cpuid_entry(struct kvm_vcpu *vcpu, u32 *fn_ptr, u32 index)
+ 	return kvm_find_cpuid_entry_index(vcpu, basic->eax, index);
+ }
+ 
++/*
++ * The planes share the CPUID table but not CR4, the APIC enable, MISC_ENABLE
++ * or XCR0/XSS: the bits that follow those come from the executing plane.
++ */
++static void kvm_cpuid_apply_runtime(struct kvm_vcpu *vcpu, u32 function,
++				    u32 index, u32 *eax, u32 *ebx, u32 *ecx,
++				    u32 *edx)
++{
++	switch (function) {
++	case 1:
++		*ecx &= ~feature_bit(OSXSAVE);
++		if (kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE))
++			*ecx |= feature_bit(OSXSAVE);
++
++		*edx &= ~feature_bit(APIC);
++		if (vcpu->arch.apic_base & MSR_IA32_APICBASE_ENABLE)
++			*edx |= feature_bit(APIC);
++
++		if (!kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT)) {
++			*ecx &= ~feature_bit(MWAIT);
++			if (vcpu->arch.ia32_misc_enable_msr &
++			    MSR_IA32_MISC_ENABLE_MWAIT)
++				*ecx |= feature_bit(MWAIT);
++		}
++		break;
++	case 7:
++		if (index)
++			break;
++		*ecx &= ~feature_bit(OSPKE);
++		if (kvm_is_cr4_bit_set(vcpu, X86_CR4_PKE))
++			*ecx |= feature_bit(OSPKE);
++		break;
++	case 0xd:
++		if (index == 0)
++			*ebx = xstate_required_size(vcpu->arch.xcr0, false);
++		else if (index == 1 &&
++			 (*eax & (feature_bit(XSAVES) | feature_bit(XSAVEC))))
++			*ebx = xstate_required_size(vcpu->arch.xcr0 |
++						    vcpu->arch.ia32_xss, true);
++		break;
++	default:
++		break;
++	}
++}
++
+ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
+ 	       u32 *ecx, u32 *edx, bool exact_only)
+ {
+ 	u32 orig_function = *eax, function = *eax, index = *ecx;
+-	struct kvm_vcpu_common *common = vcpu->common;
+ 	struct kvm_cpuid_entry2 *entry;
+ 	bool exact, used_max_basic = false;
+ 
+-	if (common->arch.cpuid_dynamic_bits_dirty)
+-		kvm_update_cpuid_runtime(vcpu);
+-
+ 	entry = kvm_find_cpuid_entry_index(vcpu, function, index);
+ 	exact = !!entry;
+ 
+@@ -2157,6 +2201,7 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
+ 		*ebx = entry->ebx;
+ 		*ecx = entry->ecx;
+ 		*edx = entry->edx;
++		kvm_cpuid_apply_runtime(vcpu, function, index, eax, ebx, ecx, edx);
+ 		if (function == 7 && index == 0) {
+ 			u64 data;
+ 			if ((*ebx & (feature_bit(RTM) | feature_bit(HLE))) &&
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 02dbd02c8f80..0128cb38b0f2 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -276,8 +276,9 @@ static __always_inline bool guest_cpu_cap_has(struct kvm_vcpu *vcpu,
+ 	struct kvm_vcpu_common *common = vcpu->common;
+ 
+ 	/*
+-	 * Except for MWAIT, querying dynamic feature bits is disallowed, so
+-	 * that KVM can defer runtime updates until the next CPUID emulation.
++	 * Except for MWAIT, querying dynamic feature bits is disallowed: the
++	 * guest gets them from the state of the plane that executes CPUID, and
++	 * the table copy is refreshed only for the CPUID ioctls.
+ 	 */
+ 	BUILD_BUG_ON(x86_feature == X86_FEATURE_APIC ||
+ 		     x86_feature == X86_FEATURE_OSXSAVE ||
 -- 
 2.50.1
 
