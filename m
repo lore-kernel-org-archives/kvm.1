@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794425064;
-	b=PtJ11extlK9VpTbYTaIsZrIDYtia1eHq8cm/ZNOcVFlGQXOF0zk4x7Hoqap3fvqKRD24
-	 bruJI/P3fK9eHDj/27b//sPGkjClKHuiOCGnI+THszYW5++QUSkfC73DECTPsoyC+bHyV
-	 1kCH8+r9mPm/zwtF9C85TkeUAGQM45UHWXBJor4AZl1qUOydmENRUI8Qb7sqPkpXBrZfq
-	 yxqA50OMQggVjyRBVYK+LZGP91hAqwWU9RD9RGV84oYrldn5yj5TRsuEr6FzTuz4754cx
-	 rSypxXpwH8JACPD9q1GM/Rqlb4aRuf1j0x+l8rsa6S/74+ZSTLVB2CU0igcNxez171A==
+	t=1794425059;
+	b=lqqwX7joRlQTd7Dj0tX+WbXcAOR+l3l6QolzH/JT5B4UfFSHmolxx48brINZT8z+fhhP
+	 bliMpjmyLjp+yae8YKZTBxCzSM7CR6c68i4LH8yEImhkXsv/TCo+TgTw3dG8ASS5G8NPw
+	 LeToabLxi5a0YD9s1uTP5B77tNID2OOojbz1XfH45StJrQV3ql8hQow8wbiPhkflZYwMn
+	 k67RLKSB8/Fbb8lsNVc0eA/wsyYQ81nZbWam+IcZuFs83TOFlqA+wQXVjKkvrL4aLC3k0
+	 g+voHdnZcifJxAblutMuA1TFfRl0joacaK0mx3IfRxo/adiLehUNASfhGgL9snDxdkA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794425064;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794425059;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=GZrkVSPnOLbwhYzrPljddPiSGOm8sAR0nI/sR9X9KfM=;
-	b=EJFX9BDqpT/hJ/0yQOjft/ecgnBakuewynUwIrM3KbjKtOYxfK1W+WQau49019qsDMdj
-	 u7UvzyOHw62MJRXGitf8TCsU/N3pU2/BQqW31AzHghgQffaG5IlV0Bbs7lCs1HVO6L8ks
-	 kqhpik/00NYhI4x6fvnXr3io3urYgy7TIK9f9Gjk4A23Ba3K4D0wdXO7ZxLRDWv5q2Rf/
-	 wCLh3b65h4DUcykKkJoeEsBmczdoRx5rZZTDFsQkR1tIijfnjWg85GwbV/lyGITFdTpCv
-	 VvdtBSjm38K9/16yhk3qVCx7sHumprgwBiCO16A8Rw1hqnKLO3ZDjBXGHXhzaG+dVtg==
+	bh=s6lt1PxCFx0agGLbXpFKlY/hoUAzM5xkPqAiIkWnGNA=;
+	b=aYlX6atkFy5whM1VqEwAz9nzyodXnfqGpS14PDs+kJgqmKNCnFuZxF9GaLFo1EPeAe5y
+	 3r/bOLwazMeeVZosxWC+J7SP1mIW0LOf3QXP7itdJG1CsVfzkIKO3ZDqGzJJxaeSCXiSS
+	 LLFJMEGBeb7MBFCIY/Li4YSQcbmILfJtY+USE739A7YPdgWwnyhss7QI1aX6ajamuHHrD
+	 DXjgaBJa6UY/XRK7nqRVMXlblyXgyBy+hWx3uQKcCJpXj+oA76N3SQuu4g8E+yf95YY5W
+	 zJnZhe56Ov48ztjTc5C8Uk4p5C36XGp9YOSmPHaSMCnaOAqONc3Qz3dPSXntoxqL4Yw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=C8mJidRl;
-	arc=none smtp.remote-ip=209.85.167.200
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UOq3nT8j;
+	arc=none smtp.remote-ip=209.85.167.199
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C9C606B5E2
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 19:24:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66C9C606B5E2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4708E606DD5D
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 19:24:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4708E606DD5D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=C8mJidRl
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4c467e19391so5248705b6e.3
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:24:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UOq3nT8j
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4cc89e86e9eso4180544b6e.3
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:24:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794425062; x=1795029862; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794425058; x=1795029858; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GZrkVSPnOLbwhYzrPljddPiSGOm8sAR0nI/sR9X9KfM=;
-        b=C8mJidRloxlSfZbT6vz1c4ZNIn+miuKpjO2mPIxJ1PT/KnTuIZ3U1UGeEJKxQl3bI0
-         EYvIa2/QIpzwaxDrjivW3Y73fFtq6G/Ska0GFJhtdxumBfEPZd3qejbghifrtttYw90x
-         rf47GmsJUp7ipGL8m72MwqJMJpHvg5RRshIDEpbZm6nttL9298GyyRtlK2XUEDzueh6C
-         //8cVyO1I6cqy0k+v2dqglVMOUdferTx8y0HlXQzJfwcs+tf/QI7NpPoeH3Fm63HlHSe
-         lA4lKR+ySUQSFGM15MKxl6yKTjwAk+FRtubeC/4iTVxNKZSGc3H7e9C52oxp102WBmUb
-         PkBQ==
+        bh=s6lt1PxCFx0agGLbXpFKlY/hoUAzM5xkPqAiIkWnGNA=;
+        b=UOq3nT8jfNIxrMk+znyvt21C9lwSewOGrh1jpeVu5iK5VmdqJeDT4fPjN6nDS+s/rz
+         E6Ho+bO3iAXvXkGBGN7CjciNZSs05x40V5C4Z9f0REOobKvYRI7U+31LkNo568hjhRz2
+         VA+FxI4lBIGhJ+ugD1He8j+J8VFk+dt26q+Q+oobnfzOprmYbN898bflauRMBfEEy4rd
+         5Njig5Se7CnUBaBXRSmjOERE/lZ83r/qYtfGEy9EiotAynG+Zijcmr8jieR2cggp/ebU
+         BtjWu6T0pL3mwZ94u0gf7+eonYPgaPav+OYjwJPpOUc8KIt158SxR+gGtte9ruBukesx
+         e0+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794425062; x=1795029862;
+        d=1e100.net; s=20260707; t=1794425058; x=1795029858;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GZrkVSPnOLbwhYzrPljddPiSGOm8sAR0nI/sR9X9KfM=;
-        b=vWQazuq+q/Y8OzxZDKm2HLa2cVxRt8iHjKn1+ENzIlWIkPk4vIb2jPBZLI6xRuJFFS
-         CYueg4oPUlJe3A9fNMfZCbxaVgreK0n6u+ZpAXd0QKPFWYFcRmCcOLH4o+Js3lf0a1Sr
-         v80GxBvDmFKeS7thOs58q9eW6rf0zIJOrEoJ7qHGca/bulQl/bmRHfD/zMrMIbscLEeg
-         rcwXJP/7I1iLW0bbZxpXKyoLLxHp0OPDfH+kXHctU9ArsvsY7sjVpP0GFPB39upI4fub
-         xc87IzqCYzvnmqceB2JHS6d/fQdWVnF2jOtpoiYHWCLB+pkCk1Xgomjtk5tTzCAaeAez
-         9IdA==
-X-Forwarded-Encrypted: i=1; AL+hErEzkqzf96JJpsTSt1gzx4kn02FarSklgovaW2oQ1AhPTZy6t/Xvwy9R76SqS05wcxAMyiM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9u2wgBHNZHJsrDmwdU+juMpOWNjUIQojtRsHKKtM+rvwApfK9Y
-	ThmImNoeNeDJ18qY7U3Difuop7wjPozDCtFiIDrmPl40Li14f8iOFRyhWlX9A9+F+TECPBZs5tX
-	SUfwXxeQpPxOyBQ==
-X-Received: from ilbec1.prod.google.com ([2002:a05:6e02:4701:b0:527:120b:a51d])
+        bh=s6lt1PxCFx0agGLbXpFKlY/hoUAzM5xkPqAiIkWnGNA=;
+        b=QF8z8s64dWV7TY2lIKqDcEzCZluoJlyk+hFklA/1HP0rzV2uRqTDevqXgV7+/JbRn5
+         e+IpZ+SYBWxbNQQ4D0lBDONK8IEfMQswwFPtWp3z78oypaGC60yLzfYjjcJkabDC1Ypr
+         dUeHknnlmcJ+sNZuyiWp4NAA42cBgSMkbUZQpIy8wuFwQ201nvxXEzi4nq3/tUofPx7b
+         xmbuHPhHRiW51ffO5riGaWU9Sc2BM27cgrFwfTlD9/vlLWEiZvIfSncTzncTulpyHM1q
+         F+Mlnqo+CjTgBj9hvifaDeull9OJcOH6vKDCW2nuXaTd7msg438DANrj1C2Tu4v0zKH7
+         e2UA==
+X-Forwarded-Encrypted: i=1; AL+hErHKJ+Jr69Iyv0R9bJ72d7Dzrts8YqLCu8bi1egf3BlUGHOOmwxs936hQrO+xjKHv+5liRo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9GQ+xbfDRJRjUxMTQwCjQl0knpzHGu3EqTqTrqii6/fic4yK2o
+	/NeNikePlkAx8HcA/aLVdk23+pBQ4tSv1NIGmH/mJuAAeq5AoryATlc024q8Mx16N3gCq6bbJib
+	meHF4/mvPpFMeEA==
+X-Received: from iltr6.prod.google.com ([2002:a92:c5a6:0:b0:542:f469:6209])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:191f:b0:53f:3c0e:c74b with SMTP id 5614622812f47-56b93447ed4mr3152606b6e.9.1794425061950;
- Wed, 11 Nov 2026 11:24:21 -0800 (PST)
-Date: Wed, 11 Nov 2026 19:24:09 +0000
+ 2002:a05:6808:23c7:b0:568:e5f:5dbe with SMTP id 5614622812f47-56b97d0f43cmr3278637b6e.61.1794425058062;
+ Wed, 11 Nov 2026 11:24:18 -0800 (PST)
+Date: Wed, 11 Nov 2026 19:24:06 +0000
 In-Reply-To: <20261111192411.4133780-1-dmatlack@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261111192411.4133780-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
-Message-ID: <20261111192411.4133780-6-dmatlack@google.com>
-Subject: [RFC PATCH 5/7] vfio: selftests: Add iommu_map_file() helper
+Message-ID: <20261111192411.4133780-3-dmatlack@google.com>
+Subject: [RFC PATCH 2/7] vfio: selftests: Verify memory behavior in vfio_pci_find_mem_bar()
 From: David Matlack <dmatlack@google.com>
 To: dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, 
 	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
@@ -98,84 +98,86 @@ Cc: Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
 	Sumit Semwal <sumit.semwal@linaro.org>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add iommu_map_file() and __iommu_map_file() to map a file descriptor
-(such as a memfd or VFIO PCI dma-buf) into an iommufd IOAS via
-IOMMU_IOAS_MAP_FILE. Also skip regions without a host virtual address in
-__iommu_hva2iova(), since file-backed DMA mappings do not require one.
+Write and read back test patterns before returning a BAR from
+vfio_pci_find_mem_bar(), restoring the original contents and
+PCI_COMMAND_MEMORY state afterward.
 
+QEMU's pci-testdev exposes a readable, writable, mmap-capable BAR2
+whenever membar=<size> is passed, even if membar-backed=on was omitted
+and accesses are dropped as unimplemented MMIO. Probing the BAR upfront
+lets callers skip cleanly instead of failing later DMA or fault checks.
+
+Suggested-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- .../vfio/lib/include/libvfio/iommu.h          |  9 ++++++
- tools/testing/selftests/vfio/lib/iommu.c      | 29 +++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ .../selftests/vfio/lib/vfio_pci_device.c      | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-index e9a3386a4719..2b39c49e66da 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-@@ -42,6 +42,15 @@ static inline void iommu_map(struct iommu *iommu, struct dma_region *region)
- 	VFIO_ASSERT_EQ(__iommu_map(iommu, region), 0);
- }
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index d5308fe61490..9840463594ab 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -13,6 +13,7 @@
+ #include <sys/mman.h>
  
-+int __iommu_map_file(struct iommu *iommu, int fd, u64 file_offset,
-+		     struct dma_region *region);
-+
-+static inline void iommu_map_file(struct iommu *iommu, int fd, u64 file_offset,
-+				  struct dma_region *region)
+ #include <linux/align.h>
++#include <linux/io.h>
+ #include <linux/iommufd.h>
+ #include <linux/kernel.h>
+ #include <linux/limits.h>
+@@ -265,6 +266,33 @@ static const struct vfio_pci_mem_bar_desc mem_bar_descs[] = {
+ 	},
+ };
+ 
++static bool vfio_pci_mem_bar_verify(struct vfio_pci_device *device, void *vaddr)
 +{
-+	VFIO_ASSERT_EQ(__iommu_map_file(iommu, fd, file_offset, region), 0);
++	const u64 pattern = 0x55aa55aa55aa55aaULL;
++	u16 orig_cmd;
++	u64 orig;
++	bool ok;
++
++	orig_cmd = vfio_pci_config_readw(device, PCI_COMMAND);
++	if (!(orig_cmd & PCI_COMMAND_MEMORY))
++		vfio_pci_config_writew(device, PCI_COMMAND,
++				       orig_cmd | PCI_COMMAND_MEMORY);
++
++	orig = readq(vaddr);
++	writeq(pattern, vaddr);
++	ok = (readq(vaddr) == pattern);
++	if (ok) {
++		writeq(~pattern, vaddr);
++		ok = (readq(vaddr) == ~pattern);
++	}
++	writeq(orig, vaddr);
++
++	if (!(orig_cmd & PCI_COMMAND_MEMORY))
++		vfio_pci_config_writew(device, PCI_COMMAND, orig_cmd);
++
++	return ok;
 +}
 +
- int __iommu_unmap(struct iommu *iommu, struct dma_region *region, u64 *unmapped);
+ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
+ 			   struct vfio_pci_mem_bar *mem_bar)
+ {
+@@ -273,6 +301,8 @@ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
+ 				  VFIO_REGION_INFO_FLAG_WRITE;
+ 	size_t i;
  
- static inline void iommu_unmap(struct iommu *iommu, struct dma_region *region)
-diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
-index b6f3c5c84e01..ba602685f892 100644
---- a/tools/testing/selftests/vfio/lib/iommu.c
-+++ b/tools/testing/selftests/vfio/lib/iommu.c
-@@ -71,6 +71,9 @@ int __iommu_hva2iova(struct iommu *iommu, void *vaddr, iova_t *iova)
- 	struct dma_region *region;
- 
- 	list_for_each_entry(region, &iommu->dma_regions, link) {
-+		if (!region->vaddr)
-+			continue;
++	min_size = max_t(u64, min_size, sizeof(u64));
 +
- 		if (vaddr < region->vaddr)
+ 	for (i = 0; i < ARRAY_SIZE(mem_bar_descs); i++) {
+ 		const struct vfio_pci_mem_bar_desc *desc = &mem_bar_descs[i];
+ 		struct vfio_pci_bar *bar;
+@@ -300,6 +330,9 @@ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
+ 		if (size < min_size)
  			continue;
  
-@@ -149,6 +152,32 @@ int __iommu_map(struct iommu *iommu, struct dma_region *region)
- 	return 0;
- }
- 
-+int __iommu_map_file(struct iommu *iommu, int fd, u64 file_offset,
-+		     struct dma_region *region)
-+{
-+	struct iommu_ioas_map_file args = {
-+		.size = sizeof(args),
-+		.flags = IOMMU_IOAS_MAP_READABLE |
-+			 IOMMU_IOAS_MAP_WRITEABLE |
-+			 IOMMU_IOAS_MAP_FIXED_IOVA,
-+		.ioas_id = iommu->ioas_id,
-+		.fd = fd,
-+		.start = file_offset,
-+		.length = region->size,
-+		.iova = region->iova,
-+	};
++		if (!vfio_pci_mem_bar_verify(device, bar->vaddr + desc->offset))
++			continue;
 +
-+	if (!iommu->iommufd)
-+		return -EOPNOTSUPP;
-+
-+	if (ioctl(iommu->iommufd, IOMMU_IOAS_MAP_FILE, &args))
-+		return -errno;
-+
-+	list_add(&region->link, &iommu->dma_regions);
-+
-+	return 0;
-+}
-+
- static int __vfio_iommu_unmap(int fd, u64 iova, u64 size, u32 flags, u64 *unmapped)
- {
- 	struct vfio_iommu_type1_dma_unmap args = {
+ 		*mem_bar = (struct vfio_pci_mem_bar){
+ 			.bar = bar,
+ 			.vaddr = bar->vaddr + desc->offset,
 -- 
 2.56.0.567.gdb80ae8cd5-goog
 
