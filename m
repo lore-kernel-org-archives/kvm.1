@@ -1,81 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794430725;
-	b=P+IhqMaeHS1VvWdxcpQtpBj41UK89pffoQWYRb2UhjAfdRIT21ayfOPCLJYRVyS/hUvB
-	 KlMZVscJxswdUxIaqto66KQTSee/QaVimCeZIkGk4EzRpRInqa3CmMxdGb4r6Tkxblf4G
-	 fXeUBVSTj00RfArEq2yBRqeQ1TQRf7oqda7FzZxijOMnfjXjk92ZvlINezY2HtTETcE2A
-	 Qtiv+2EalDwKcuy4AFFRpgIRhow0WHtTqp0maRnHqG+ixPTnaFq/y9CHupBgkZhGQQtbS
-	 Y9bDU2y7THa4FfEo7YFWqm7lMuj219R0xy/5reewsk6rEf4R6oWMTkyz4LnJRz4tXdA==
+	t=1794432155;
+	b=yRjaC52SUfIPjzv6KUZ5Wwg7zk+9wIzo39P9JyV8yp4L9Xwj/twdRHBHDs2eFck+ctB/
+	 MvVgrRed4FtG+Dv3zIYDo1pZAtnewnKGSTqvrGTN3tjn/hm4uI2dA2DsEE5nIBj9ZVCyQ
+	 XkZ3jtNk8+81MqI6QUMN8aiLviVHEvopsenkRB1XsVhMh99cyQBXljar+Ah7gEIAMzyrw
+	 lMsM4bjYPaFVZQ72n67WOVnqaZuvJhbAduBeTTHaYjsCO7XoY+4EwnMq/OrTUYy9KRlpa
+	 NKOrC0KMZk7NQqCXJq0xmW7qDhT0O+FGYIDCmfKIO0CDuomqSeoUvMJup/05x4992oA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794430725;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=dome5fqoVGfpsjSJgZWU5i54tZyBrmW6npW+H6ZvLLM=;
-	b=WZ6wzT7MnOqqJAKSlNtfcEUp/HxVJcRYH2uqLhPqWJPXyabj1TDJCRw6PMz8Sf/jvadu
-	 fwM1V4Q2xeqIvU8vjAQPz6/Q3m+2cxFHoE1YzQMuirE/z9JB5OYVY+/QY1/YQ/wHd0VVg
-	 4tb56wsOXeMfSx39hEmlpdHtJzzDG3AGcW/VXUwmmZeevWjl3HRA1EO31afrS5WvnGR1r
-	 4f3X46z3BnTvpnMKVIDpYiyvNtB5nZMzE1oNDV94nTBaU6hgu6nRdoy0y/eSQeNvnsbb9
-	 HG239pKwhZFA4KhACRreq1aK1qG1SapCSeIBbUqy3QXMlT3yjqOnT+j96OyHUnM3dow==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794432155;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=+oAf0BkbRu+vNfrOyA/+J4KnB3Q8SHhNdpONYGE1NDY=;
+	b=osWXU8LuxP4Iyc0z0ew8X7lcITyxTiDWTSHLUWlNwJqOoiNmQ/3sQ0Sd7R0HK23/sH1G
+	 2hKr4VcalW3h367kQGk1Trm5KKK5RzT6nfLkz38/ZDmEutDDlAtC1juyHTy3poTWTKp9U
+	 sUjn1OqrrB7Se1VsOlLQIS0ReoXVJQrygqoqh2HOd5EyWAJyGjRYf51m0skVWJliBJhEo
+	 x319bsJuRr8HW6Nn3Qjm4xg7gSGH3eJ3f6TCRJqP8plW2g+VVM38Cv/ugdbTn/ZaMKOoD
+	 j0O9saEXqNqXjwfSYYn6gWbSnNC+x18j6+ExFub5qtDAEbFSZNoNh/wt5vU9bYrV0pQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=I+k4aFJr;
-	arc=none smtp.remote-ip=90.155.92.199
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a8wigrzi;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BBF606A89C;
-	Wed, 11 Nov 2026 20:58:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14BBF606A89C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F2A606A31C
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 21:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=I+k4aFJr
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=dome5fqoVGfpsjSJgZWU5i54tZyBrmW6npW+H6ZvLLM=; b=I+k4aFJrAfYpQqzL5iMhIm16Nq
-	3ZBtgaf6TesW8Pp6mraNXlG7dyUNjgHD09SJfZaPSHFEn8JV5zrYJGE7BraAd7Cv1AV+0BWTbJWqb
-	iRevFPcdiKtlBYbnQbHcZXUlNgW9EyL5X2k2BXJCodDY3HzNWMYSZifIhW0at2lKvDmp6WkgQz1S1
-	QZIZttv5J+tRnWQd+rrg0uVVQFLYOz7fcFamiCR0jTIILCCD1r1cGKQ6S8xbRHS4lpClDQrpyKOaE
-	BW5MlUUsCJ+sfyc74PpRTAcmYk7+hqLgixc4xUUsNCNIckOd3y27ik3WzYZgQE5hUBJnqIOqlHqdh
-	c0twW3FA==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRFOx-00000009ZGs-26fG;
-	Wed, 11 Nov 2026 20:58:39 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRFOu-0000000HZ7h-2WHE;
-	Wed, 11 Nov 2026 20:58:36 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Thara Gopinath <tgopinath@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Nikolas Wipper <nik.wipper@gmx.de>,
-	Mushahid Hussain <hmushi@amazon.co.uk>,
-	Sriram Nambakam <snambakam@linux.microsoft.com>,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH 1/4] KVM: x86: hyper-v: Add KVM_CAP_HYPERV_FORWARD_HCALL
-Date: Wed, 11 Nov 2026 12:58:33 -0800
-Message-ID: <20261111205836.4186584-2-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261111205836.4186584-1-dwmw2@infradead.org>
-References: <20261111205836.4186584-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a8wigrzi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AA11F00A05;
+	Wed, 11 Nov 2026 21:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794432154;
+	bh=+oAf0BkbRu+vNfrOyA/+J4KnB3Q8SHhNdpONYGE1NDY=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=a8wigrzii32IeBquFlWwhnbttOuP/bJRreFfID0omezDExcNdf695FpvPVkc+n5KM
+	 qxP4UT4A7hBLXi9bbpv2tx0VmFH3v3aAvHNkgYOpm0uB/hTplpFOyna7j/gVDWemvA
+	 Qn22upHNRfQ0KHUjA45OvxyKvopJDUJBhQ8LC0dSyAemYQ00ceBrZztWsWir1Q3EF1
+	 Hp26N/JA/93TX0CD1vFTLIt4ZT6O3DsWzLTsAJrL+xqsCIsCcjFTNPYIpXiAJVNiAd
+	 MCYj7pEBDSUz+1iTaRKS5uTJXbMopbQfOyloU30Mrr7q5YSj0G/wtIHdhkKo2gkyAm
+	 BZhn8iWqznHhA==
+Message-ID: <sashiko-outbox-209699@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v13 10/26] KVM: x86: Re-synchronize TSC after
+ KVM_SET_TSC_KHZ
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
+In-Reply-To: <20261111180922.4177927-11-dwmw2@infradead.org>
+References: <20261111180922.4177927-1-dwmw2@infradead.org>
+ <20261111180922.4177927-11-dwmw2@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 21:22:34 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,218 +59,311 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] KVM: x86: wrong scaling of tsc_offset_adjustment in
+  __kvm_synchronize_tsc_at()
+- [Medium] KVM: x86: uninitialized l1_tsc_scaling_ratio in
+  kvm_set_tsc_khz()
+- [Medium] KVM: x86: kvm_set_tsc_khz() sync breaks per-vCPU init and
+  restore
+--
 
-A VMM that implements Hyper-V hypercalls KVM does not know about has
-no way to receive them. kvm_hv_hypercall() fails an unknown code with
-HV_STATUS_INVALID_HYPERCALL_CODE, and only a fixed set (the synthetic
-debugger, memory-based extended hypercalls, HvCallPostMessage and the
-HvCallSignalEvent fallback) ever exits to userspace.
+commit 28669172288cdaaabe3c3f647bfb5b2ebfc1d816
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-Add a VM capability whose KVM_CHECK_EXTENSION value is a bitmask of the
-hypercall handling features the kernel implements, as KVM_CAP_XEN_HVM
-and KVM_CAP_EXIT_HYPERCALL do. KVM_ENABLE_CAP takes the subset to
-enable and rejects any bit the kernel does not report, so a VMM can
-probe for exactly the behaviour it relies on.
+KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
 
-The first feature, KVM_HYPERV_HCALL_FORWARD_UNKNOWN, sends a hypercall
-KVM would have failed as unknown, and an extended hypercall in fast
-form, out through the existing KVM_EXIT_HYPERV_HCALL. That exit already
-carries the control value and both parameter registers, and XMM state
-is reachable through the ordinary vCPU state ioctls, so no new exit
-format is needed.
+This commit re-synchronizes a vCPU's TSC when its frequency is changed via
+KVM_SET_TSC_KHZ, sampling the current guest TSC and host clock before
+updating the scaling ratio and computing the new offset against that
+reference point.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- Documentation/virt/kvm/api.rst  | 49 +++++++++++++++++++++++++++++++++
- arch/x86/include/asm/kvm_host.h |  2 ++
- arch/x86/kvm/hyperv.c           |  7 ++++-
- arch/x86/kvm/hyperv.h           |  8 ++++++
- arch/x86/kvm/x86.c              | 14 ++++++++++
- include/uapi/linux/kvm.h        |  4 +++
- 6 files changed, 83 insertions(+), 1 deletion(-)
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 1d4b66257b35f..cf35363366f14 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -1073,10 +1073,20 @@ static int set_tsc_khz(struct kvm_vcpu *vcpu, u32=
+ user_tsc_khz, bool scale)
+>  	return 0;
+>  }
+> =20
+> -static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
+> +static void __kvm_synchronize_tsc_at(struct kvm_vcpu *vcpu, u64 *value,
+> +				     u64 host_tsc, s64 ns,
+> +				     bool user_initiated);
+> +
+> +static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz, bool=
+ init)
+>  {
+> +	bool freq_changed =3D (vcpu->arch.virtual_tsc_khz !=3D user_tsc_khz);
+>  	u32 thresh_lo, thresh_hi;
+> +	u32 tsc_mult;
+> +	s8 tsc_shift;
+>  	int use_scaling =3D 0;
+> +	u64 tsc, host_tsc;
+> +	unsigned long flags;
+> +	s64 ns;
+> =20
+>  	/* tsc_khz can be zero if TSC calibration fails */
+>  	if (user_tsc_khz =3D=3D 0) {
+> @@ -1085,11 +1095,19 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu,=
+ u32 user_tsc_khz)
+>  		return -1;
+>  	}
+> =20
+> +	/*
+> +	 * Setting the current frequency again is a no-op, as documented
+> +	 * =E2=80=94 unconditionally, including a frequency the hardware could
+> +	 * not honour at vCPU creation (which commits it regardless):
+> +	 * re-running set_tsc_khz() would turn the documented no-op into
+> +	 * -EINVAL.
+> +	 */
+> +	if (!init && !freq_changed)
+> +		return 0;
+> +
+>  	/* Compute a scale to convert nanoseconds in TSC cycles */
+>  	kvm_get_time_scale(user_tsc_khz * 1000LL, NSEC_PER_SEC,
+> -			   &vcpu->arch.virtual_tsc_shift,
+> -			   &vcpu->arch.virtual_tsc_mult);
+> -	vcpu->arch.virtual_tsc_khz =3D user_tsc_khz;
+> +			   &tsc_shift, &tsc_mult);
+> =20
+>  	/*
+>  	 * Compute the variation in TSC rate which is acceptable
+> @@ -1104,7 +1122,92 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, =
+u32 user_tsc_khz)
+>  			 user_tsc_khz, thresh_lo, thresh_hi);
+>  		use_scaling =3D 1;
+>  	}
+> -	return set_tsc_khz(vcpu, user_tsc_khz, use_scaling);
+> +
+> +	/*
+> +	 * Sample the guest TSC before changing the ratio, so continuity
+> +	 * can be preserved across the change =E2=80=94 as a {guest TSC, host
+> +	 * clock} tuple, not a bare value: the synchronization below
+> +	 * computes the new offset against the tuple's own reference
+> +	 * point, so the guest TSC keeps counting through this function.
+> +	 * Preemption stays disabled from the sample until tsc_write_lock
+> +	 * is held =E2=80=94 not for timing, but because this task's own preempt
+> +	 * notifier (kvm_sched_in -> kvm_arch_vcpu_load) is the one
+> +	 * writer which could apply a pending backwards-TSC compensation
+> +	 * to the offset the sample was read through; a compensation
+> +	 * still pending when the lock is taken is folded in there.
+> +	 */
+> +	if (!init) {
+> +		preempt_disable();
+> +#ifdef CONFIG_X86_64
+> +		if (!kvm_get_time_and_clockread(&ns, &host_tsc))
+> +#endif
+> +		{
+> +			unsigned long irqflags;
+> +
+> +			/*
+> +			 * The two reads must form one coherent reference
+> +			 * point.
+> +			 */
+> +			local_irq_save(irqflags);
+> +			host_tsc =3D rdtsc();
+> +			ns =3D get_kvmclock_base_ns();
+> +			local_irq_restore(irqflags);
+> +		}
+> +		tsc =3D kvm_read_l1_tsc(vcpu, host_tsc);
+> +	}
+> +
+> +	/*
+> +	 * Commit the new frequency only once set_tsc_khz() can no longer
+> +	 * fail: a failed ioctl must leave no trace, or a retry with the
+> +	 * still-active frequency would wrongly look like a change. The
+> +	 * exception is vCPU creation (@init), whose caller ignores the
+> +	 * return value: commit the requested frequency even when the
+> +	 * hardware cannot scale to it, as creation always has, rather
+> +	 * than leave the vCPU with the zeroed frequency from allocation
+> +	 * (KVM_GET_TSC_KHZ would report 0, and the catchup path would
+> +	 * compute with a zero mult).
+> +	 */
+> +	if (set_tsc_khz(vcpu, user_tsc_khz, use_scaling) && !init) {
+> +		preempt_enable();
+> +		return -1;
+> +	}
+> +
+> +	vcpu->arch.virtual_tsc_shift =3D tsc_shift;
+> +	vcpu->arch.virtual_tsc_mult =3D tsc_mult;
+> +	vcpu->arch.virtual_tsc_khz =3D user_tsc_khz;
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index e95c9cda085d..092f6f9ad8a0 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -7312,6 +7312,17 @@ Hyper-V SynIC state change. Notification is used to remap SynIC
- event/message pages and to enable/disable SynIC messages/events processing
- in userspace.
- 
-+	- KVM_EXIT_HYPERV_HCALL -- a hypercall for userspace to handle.
-+
-+'input' holds the hypercall control value and 'params' the two parameter
-+registers.  Userspace sets 'result' to the hypercall result value before
-+resuming the vCPU; KVM then writes it to the guest and advances past the
-+hypercall instruction.  HvCallPostMessage, HvCallSignalEvent for a
-+connection with no registered eventfd, the synthetic debugger hypercalls
-+and memory-based extended hypercalls exit this way;
-+KVM_CAP_HYPERV_FORWARD_HCALL (see section 7.48) adds the hypercalls KVM
-+does not implement.
-+
- 	- KVM_EXIT_HYPERV_SYNDBG -- synchronously notify user-space about
- 
- Hyper-V Synthetic debugger state change. Notification is used to either update
-@@ -9181,6 +9192,44 @@ enabled, cmma can't be enabled anymore and pfmfi and the storage key
- interpretation are disabled. If cmma has already been enabled or the
- hpage_2g module parameter is not set to 1, -EINVAL is returned.
- 
-+7.48 KVM_CAP_HYPERV_FORWARD_HCALL
-+---------------------------------
-+
-+:Architectures: x86
-+:Target: VM
-+:Parameters: args[0] is a bitmask of KVM_HYPERV_HCALL_* features to enable
-+:Returns: 0 on success, -EINVAL if args[0] contains an unsupported bit
-+
-+KVM_CHECK_EXTENSION for this capability returns a bitmask of the Hyper-V
-+hypercall handling features that KVM implements.  KVM_ENABLE_CAP takes
-+the subset that userspace wants active and replaces the previously
-+enabled set; it can be called at any time.  A bit that KVM_CHECK_EXTENSION
-+does not report is rejected with -EINVAL, so a VMM can enable exactly the
-+features it was written for and learn which ones the kernel lacks.
-+
-+The defined bits are::
-+
-+  #define KVM_HYPERV_HCALL_FORWARD_UNKNOWN	(1ULL << 0)
-+
-+KVM_HYPERV_HCALL_FORWARD_UNKNOWN: a hypercall that KVM would otherwise
-+fail with HV_STATUS_INVALID_HYPERCALL_CODE exits to userspace with
-+KVM_EXIT_HYPERV_HCALL instead, and an extended hypercall in fast form
-+exits the same way instead of failing with HV_STATUS_INVALID_PARAMETER.
-+The VMM can then implement hypercalls that KVM does not.  The synthetic
-+debugger hypercalls (HvCallResetDebugSession, HvCallPostDebugData,
-+HvCallRetrieveDebugData) are an exception: while the synthetic debugger
-+is not enabled they still fail in KVM, with HV_STATUS_INVALID_PARAMETER
-+for the fast form of HvCallPostDebugData and HvCallRetrieveDebugData
-+and with HV_STATUS_INVALID_HYPERCALL_CODE otherwise.
-+
-+For a fast hypercall, 'params' carries RDX and R8 from a 64-bit caller,
-+or the EBX:ECX and EDI:ESI pairs from a 32-bit caller.  XMM input and
-+output registers of a fast hypercall are read and written with the
-+ordinary vCPU state ioctls (KVM_GET_XSAVE/KVM_SET_XSAVE or
-+KVM_GET_FPU/KVM_SET_FPU) before the vCPU is resumed.  Hypercalls that
-+KVM implements itself, and the CPUID-enforcement checks KVM applies
-+before dispatching a hypercall, are unaffected.
-+
- 8. Other capabilities.
- ======================
- 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 1ee4b127004d..fce46ae26137 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1072,6 +1072,8 @@ struct kvm_hv {
- 	struct mutex hv_lock;
- 	u64 hv_guest_os_id;
- 	u64 hv_hypercall;
-+	/* KVM_HYPERV_HCALL_* features enabled by KVM_CAP_HYPERV_FORWARD_HCALL */
-+	u64 hcall_features;
- 	u64 hv_tsc_page;
- 	enum hv_tsc_page_status hv_tsc_page_status;
- 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 5d2e3617c952..e72539f9acc9 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2692,12 +2692,17 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 		goto hypercall_userspace_exit;
- 	}
- 	case HV_EXT_CALL_QUERY_CAPABILITIES ... HV_EXT_CALL_MAX:
--		if (unlikely(hc.fast)) {
-+		if (unlikely(hc.fast) &&
-+		    !kvm_hv_hcall_feature(vcpu->kvm,
-+					  KVM_HYPERV_HCALL_FORWARD_UNKNOWN)) {
- 			ret = HV_STATUS_INVALID_PARAMETER;
- 			break;
- 		}
- 		goto hypercall_userspace_exit;
- 	default:
-+		if (kvm_hv_hcall_feature(vcpu->kvm,
-+					 KVM_HYPERV_HCALL_FORWARD_UNKNOWN))
-+			goto hypercall_userspace_exit;
- 		ret = HV_STATUS_INVALID_HYPERCALL_CODE;
- 		break;
- 	}
-diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
-index 622a6553e9ac..20d40261c75b 100644
---- a/arch/x86/kvm/hyperv.h
-+++ b/arch/x86/kvm/hyperv.h
-@@ -205,6 +205,14 @@ static inline bool kvm_hv_hypercall_enabled(struct kvm_vcpu *vcpu)
- 	return vcpu->arch.hyperv_enabled && to_kvm_hv(vcpu->kvm)->hv_guest_os_id;
- }
- 
-+/* Features reported and accepted by KVM_CAP_HYPERV_FORWARD_HCALL. */
-+#define KVM_HYPERV_HCALL_SUPPORTED	KVM_HYPERV_HCALL_FORWARD_UNKNOWN
-+
-+static inline bool kvm_hv_hcall_feature(struct kvm *kvm, u64 feature)
-+{
-+	return READ_ONCE(to_kvm_hv(kvm)->hcall_features) & feature;
-+}
-+
- int kvm_hv_hypercall(struct kvm_vcpu *vcpu);
- 
- void kvm_hv_irq_routing_update(struct kvm *kvm);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 26e7beaff8a0..d8de7742a0da 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2305,6 +2305,11 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_EXIT_HYPERCALL:
- 		r = KVM_EXIT_HYPERCALL_VALID_MASK;
- 		break;
-+#ifdef CONFIG_KVM_HYPERV
-+	case KVM_CAP_HYPERV_FORWARD_HCALL:
-+		r = KVM_HYPERV_HCALL_SUPPORTED;
-+		break;
-+#endif
- 	case KVM_CAP_SET_GUEST_DEBUG2:
- 		return KVM_GUESTDBG_VALID_MASK;
- #ifdef CONFIG_KVM_XEN
-@@ -4144,6 +4149,15 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		kvm->arch.hypercall_exit_enabled = cap->args[0];
- 		r = 0;
- 		break;
-+#ifdef CONFIG_KVM_HYPERV
-+	case KVM_CAP_HYPERV_FORWARD_HCALL:
-+		r = -EINVAL;
-+		if (cap->args[0] & ~KVM_HYPERV_HCALL_SUPPORTED)
-+			break;
-+		WRITE_ONCE(to_kvm_hv(kvm)->hcall_features, cap->args[0]);
-+		r = 0;
-+		break;
-+#endif
- 	case KVM_CAP_EXIT_ON_EMULATION_FAILURE:
- 		r = -EINVAL;
- 		if (cap->args[0] & ~1)
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 8dff2fc1972e..7194c213a742 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -126,6 +126,9 @@ struct kvm_hyperv_exit {
- 	} u;
- };
- 
-+/* KVM_CAP_HYPERV_FORWARD_HCALL feature bits */
-+#define KVM_HYPERV_HCALL_FORWARD_UNKNOWN	(1ULL << 0)
-+
- struct kvm_xen_exit {
- #define KVM_EXIT_XEN_HCALL          1
- 	__u32 type;
-@@ -1000,6 +1003,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_PPC_COMPAT_CAPS 250
- #define KVM_CAP_ARM_PMU_V3_STRICT 251
- #define KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES 252
-+#define KVM_CAP_HYPERV_FORWARD_HCALL 253
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
--- 
-2.50.1
+[Severity: Medium]
+When init is true and set_tsc_khz() fails or enables catchup mode, does
+this leave vcpu->arch.l1_tsc_scaling_ratio and vcpu->arch.tsc_scaling_ratio
+at 0 instead of kvm_caps.default_tsc_scaling_ratio?
 
+arch/x86/kvm/x86.c:set_tsc_khz() {
+	...
+	/* TSC scaling supported? */
+	if (!kvm_caps.has_tsc_control) {
+		if (user_tsc_khz > tsc_khz) {
+			vcpu->arch.tsc_catchup =3D 1;
+			vcpu->arch.tsc_always_catchup =3D 1;
+			return 0;
+		} else {
+			pr_warn_ratelimited("user requested TSC rate below hardware speed\n");
+			return -1;
+		}
+	}
+
+	/* TSC scaling required  - calculate ratio */
+	ratio =3D mul_u64_u32_div(1ULL << kvm_caps.tsc_scaling_ratio_frac_bits,
+				user_tsc_khz, tsc_khz);
+
+	if (ratio =3D=3D 0 || ratio >=3D kvm_caps.max_tsc_scaling_ratio) {
+		pr_warn_ratelimited("Invalid TSC scaling ratio - virtual-tsc-khz=3D%u\n",
+			            user_tsc_khz);
+		return -1;
+	}
+}
+
+Because a newly allocated vCPU starts with a zeroed arch struct, neither
+the !kvm_caps.has_tsc_control path nor the invalid ratio path calls
+kvm_vcpu_write_tsc_multiplier().  A zero ratio causes kvm_scale_tsc() to
+scale host_tsc by 0, sets kvm->arch.cur_tsc_scaling_ratio to 0 in
+kvm_arch_vcpu_postcreate() (disabling the masterclock), and leaves VMX's
+TSC_MULTIPLIER VMCS field at 0 (causing KVM_EXIT_FAIL_ENTRY on VM-Entry).
+In addition, because virtual_tsc_khz is committed on creation even when
+set_tsc_khz() failed, the new "!init && !freq_changed" early return above
+causes a later vCPU KVM_SET_TSC_KHZ ioctl with that same unsupported
+default_tsc_khz to return 0 instead of -EINVAL.
+
+> +
+> +	/*
+> +	 * At vCPU creation (@init) the vCPU is not yet counted in
+> +	 * online_vcpus, so synchronizing here would corrupt the VM-wide
+> +	 * matching state (and leave it corrupted if creation subsequently
+> +	 * fails). The initial synchronization happens in
+> +	 * kvm_arch_vcpu_postcreate() instead.
+> +	 */
+> +	if (init)
+> +		return 0;
+> +
+> +	/*
+> +	 * Changing the frequency changes the vCPU's position on the
+> +	 * generation's cycle timeline, so re-synchronize. For a vCPU
+> +	 * which has run, preserve the guest TSC value read above across
+> +	 * the change; likewise if userspace has written a TSC on this
+> +	 * vCPU =E2=80=94 a zero write would discard it. Otherwise the vCPU hol=
+ds
+> +	 * only its creation-time synchronization, so synchronize as for
+> +	 * a zero write. When the generation is already at the new
+> +	 * frequency this places the vCPU on its timeline rather than
+> +	 * opening a gratuitous new generation and orphaning the matched
+> +	 * state of its siblings; the first vCPU to adopt a new frequency
+> +	 * necessarily opens a new generation, starting at zero =E2=80=94 mixed
+> +	 * frequencies within a VM forfeit the master clock anyway.
+> +	 */
+> +	raw_spin_lock_irqsave(&vcpu->kvm->arch.tsc_write_lock, flags);
+> +	preempt_enable();
+> +	if (vcpu->arch.last_vmentry_cpu !=3D -1 || vcpu->arch.user_set_tsc)
+> +		__kvm_synchronize_tsc_at(vcpu, &tsc, host_tsc, ns, false);
+> +	else
+> +		__kvm_synchronize_tsc_at(vcpu, NULL, host_tsc, ns, false);
+> +	raw_spin_unlock_irqrestore(&vcpu->kvm->arch.tsc_write_lock, flags);
+> +	return 0;
+>  }
+
+[Severity: Medium]
+Does synchronizing in kvm_set_tsc_khz() break TSC and frequency matching
+when userspace initializes or restores vCPUs one by one?
+
+If a VMM creates and configures each vCPU in a loop (KVM_CREATE_VCPU
+followed by KVM_SET_TSC_KHZ(F_new) per vCPU), vCPU 0's KVM_SET_TSC_KHZ sets
+kvm->arch.cur_tsc_khz to F_new in generation 2.  Creating vCPU 1 then runs
+kvm_arch_vcpu_postcreate() -> kvm_synchronize_tsc() at default_tsc_khz,
+which sees virtual_tsc_khz !=3D cur_tsc_khz, bumps cur_tsc_freq_generation
+and cur_tsc_generation to 3, and resets cur_tsc_khz back to
+default_tsc_khz.  When KVM_SET_TSC_KHZ(F_new) then runs on vCPU 1,
+virtual_tsc_khz =3D=3D cur_tsc_khz is false in __kvm_synchronize_tsc_at(), =
+so
+vCPU 1 opens generation 4 at data =3D 0 with a new offset and leaves vCPU 0
+permanently orphaned in generation 2 with all_vcpus_matched_freq and
+all_vcpus_matched_tsc both false (disabling the masterclock and
+PVCLOCK_TSC_STABLE_BIT).  The same generation ping-pong happens when all
+vCPUs are created first at default_tsc_khz and userspace restores each vCPU
+in turn by writing MSR_IA32_TSC followed by KVM_SET_TSC_KHZ(F_new),
+Despite commit "KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the documentation
+on TSC migration" later in the series documenting that userspace should
+create all vCPUs before setting their frequency, existing VMMs already
+perform per-vCPU setup and restore in a loop.
+
+[ ... ]
+
+> @@ -1511,40 +1616,84 @@ static void __kvm_synchronize_tsc(struct kvm_vcpu=
+ *vcpu, u64 offset, u64 tsc,
+>  	kvm_track_tsc_matching(vcpu, !matched);
+>  }
+> =20
+> -void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
+> +/*
+> + * Synchronize the vCPU's TSC against an explicit {host_tsc, ns} referen=
+ce
+> + * point: @value (when non-NULL) is the guest TSC *at* @host_tsc, not at
+> + * some unspecified "now". The offset is computed against that reference,
+> + * so a sampled value stays valid however much time passes between the
+> + * sampling and this call.
+> + */
+> +static void __kvm_synchronize_tsc_at(struct kvm_vcpu *vcpu, u64 *value,
+> +				     u64 host_tsc, s64 ns,
+> +				     bool user_initiated)
+>  {
+> -	u64 data =3D user_value ? *user_value : 0;
+> +	u64 data =3D value ? *value : 0;
+>  	struct kvm *kvm =3D vcpu->kvm;
+> -	u64 offset, host_tsc, elapsed;
+> -	s64 ns;
+> -	unsigned long flags;
+> +	u64 elapsed_cycles =3D 0;
+> +	s64 elapsed;
+> +	u64 offset;
+>  	bool matched =3D false;
+>  	bool synchronizing =3D false;
+> =20
+> -	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
+> +	lockdep_assert_held(&kvm->arch.tsc_write_lock);
+> =20
+> -#ifdef CONFIG_X86_64
+> -	if (!kvm_get_time_and_clockread(&ns, &host_tsc))
+> -#endif
+> -	{
+> -		host_tsc =3D rdtsc();
+> -		ns =3D get_kvmclock_base_ns();
+> -	}
+> +	/*
+> +	 * A backwards-TSC compensation pending now was not in a sampled
+> +	 * @value: it is applied to the vCPU's offset only at vcpu_load,
+> +	 * and the sample was read through the uncompensated offset. Fold
+> +	 * it in (scaled as adjust_tsc_offset_host() would), since
+> +	 * __kvm_synchronize_tsc() clears the pending adjustment as
+> +	 * superseded by the absolute offset installed here. A
+> +	 * user-initiated value is the desired guest TSC *now*, and needs
+> +	 * no correction.
+> +	 */
+> +	if (unlikely(vcpu->arch.tsc_offset_adjustment) &&
+> +	    value && !user_initiated)
+> +		data +=3D kvm_scale_tsc(vcpu->arch.tsc_offset_adjustment,
+> +				      vcpu->arch.l1_tsc_scaling_ratio);
+
+[Severity: Medium]
+Doesn't this scale vcpu->arch.tsc_offset_adjustment with the new scaling
+ratio instead of the old one?
+
+In kvm_set_tsc_khz(), tsc is sampled via kvm_read_l1_tsc() before
+set_tsc_khz() runs, so the sample reflects the uncompensated offset under
+the old l1_tsc_scaling_ratio.  set_tsc_khz() then overwrites
+vcpu->arch.l1_tsc_scaling_ratio with the new ratio before calling
+__kvm_synchronize_tsc_at().  If kvm_arch_enable_virtualization_cpu() queued
+a backwards-TSC adjustment before tsc_write_lock was taken, scaling
+tsc_offset_adjustment by the new l1_tsc_scaling_ratio here introduces a
+step jump of kvm_scale_tsc(adj, R_new) - kvm_scale_tsc(adj, R_old) into the
+preserved guest TSC and desynchronizes the vCPU from its siblings.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111180922.4177=
+927-1-dwmw2@infradead.org?part=3D10
