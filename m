@@ -1,68 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794436898;
-	b=hF52i5wjXcBo09JVWFfhQtqiDCoFyFIYh69J42MuJR/CLhfO7aYkoxvq20w2VwoYZ7JL
-	 3aU0mfmxwTIaOVS2Ki7AYY7GhqWV0RP3Fuz0dj0cB548MnIR6kVIkf1GA6ydPS9yE4ENE
-	 xDMnxaQ6j+pTr/qvl4DDTQz1J/Mk/603j7hxD5fBEiBnQCAMAhnFx9WEBVJHU4PXorE21
-	 8EebjiSbL066WY+GcfPEdW7CEus2yNU0LCskwuoSSGMTd9Zkabaug3/G7+TQY0CRdxF44
-	 8BbQUXDxeVr1rNZF7PpzMUiWrXnecfhVvxGDwHGio7lmVSOS12+gcGtPrptEIIEWB8g==
+	t=1794438928;
+	b=Lw8P8O3u9gaU8fWvOPyk9qW14uvyTOSu6DJ3vzWimedSkcVPXAKtl+t17+VJldYvzsKp
+	 1VEVrA4HCCbMjczMpXDEaOyaU8DmlLaW9gsOYMhK19piujBEYlOSZxmV31Z/eY1ZdSIN4
+	 LQrvTl3/+E0VUleUhhozc4oelCihZFs9RUfNcgjo/NPQdpEq4UhPc4KTeR4PIdXZGqaYC
+	 QPgPYR/5Ck5NKIb5AU0G3CuVMugf6qziLWfxh9CzzdmUq0jZHHAR+rucny4dPlBVuqzHL
+	 gZ2BaG+WVmqfi1Hf3DmmfbFj/SeC2Y2LJ21Ee1B71ZoPfO8AllHEBJs6WPJpo47IQvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794436898;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=artujVBtkITv0xul/f4LcgQN/4n5We9dzsh5W3Leptw=;
-	b=RbbJnpEEENc8N9IYCYDH5ubFc67SbNDnYOEfIPWkXpR1vhusiZpGG/+/o0XtA3dudz1e
-	 Q2JCxG64eiFTuyhlEnHQ6ZqVLvmMeWZOo2m1b4J38alWUOepApnoogiAEqcX/gNQzVlcz
-	 hXu+JQ9vdXfJmEuF/TfGPfs6gh5a846AGKviYZ8+6xe9h+HsiOW+AfZws05HoSv3/TGXc
-	 8mft6dZbys8or2Dt93VlYzQOp1sf8Riliv3mk1zJpalo7F3sao7weJN/Ab7LR8bEv6dWS
-	 vxSIPaZdzZdDAV1CEMge2frl9ODan28mqiNjm4pl4IiVbjpUEf86ZRBLKBYcXj27dRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794438928;
+	h=DMARC-Filter:Received:Received:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Rspamd-Server:X-Rspamd-Queue-Id:
+	 X-Stat-Signature:X-Spam-Status:X-Session-Marker:X-Session-ID:
+	 DKIM-Signature:X-HE-Tag:X-HE-Meta;
+	bh=gmDNsQ8h2wciKasKQCbqVP3maaL4qbrw5sZmT7BnjeA=;
+	b=ad9zTcEOvfB01rrFDqzazNxSbDqW5SUq7SpYouQB1u89uZuRuGAOl7YC+VGvuPf0XwLU
+	 CIqcT5VwHPvB3dbKyDeZps9xMPhjGaiw5Y0e6eD7JLJyQ/SuR8lnBUcxnTl4FCE9wIT6r
+	 cNnLaEtoNtIvPhNkfgrP744QDeIax2z8pDSRutZka5ShTD/KclMgLfG6CKHzZhlhb1gbR
+	 Xesxi7Pabh2fAlqoYnCj2kLj7uU1sqTUNAIgRQNyregfAGqWanzUNVVLf8G27Lwp3SPQe
+	 0jVMhALLKRQ9hIwUa5j1Fv5zKNeh7ztpxgtZs5fGxeKD7iG8jw2WtgkjGIBlG9HylIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BZELOpHA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=goodmis.org;
+	spf=pass smtp.mailfrom=goodmis.org;
+	dkim=pass header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b="7BpeV/CN";
+	arc=none smtp.remote-ip=216.40.44.13
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66808606A33D;
-	Wed, 11 Nov 2026 22:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E69606A337;
+	Wed, 11 Nov 2026 23:15:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1E69606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BZELOpHA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6CA1F00A0A;
-	Wed, 11 Nov 2026 22:41:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794436898;
-	bh=artujVBtkITv0xul/f4LcgQN/4n5We9dzsh5W3Leptw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=BZELOpHA05LqzQ806/IA3hS/mble4JA4SMN5wo/zZjQaqIWC0OCBlMBDK2sQhvV+n
-	 dkA7m+l9XAXrrJ1vyvuvsCgDJ/n1YkeFfGi5ibtx5yBDc6YnZBeNneFpO6Am8qxS2m
-	 UQulPJ79zSsWSZr4aSoYUBmRPIIEF3JPNSnHPhViMlkc4d6j2fkLwElxe1ezZ5JGwy
-	 ku4SNNqQ4WTMY6p5pFj0Wv+mM+gzbo/k3+40qdSCIAMGoySt1wld4Bdz7vIeKjrwhD
-	 1EbT+YjayK34qLqRx9lukCB8yqmedx6P8IsSOoZXBBKuYH/g2B+tmEv2oTzfBfytUd
-	 /bFe8kKnUK0Vg==
-Date: Wed, 11 Nov 2026 16:41:36 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v13 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
-Message-ID: <20261111224136.GA754433@bhelgaas>
+	dkim=pass (1024-bit key) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=7BpeV/CN
+Received: from omf12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42BF340216;
+	Wed, 11 Nov 2026 23:15:15 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id 7DEE41A;
+	Wed, 11 Nov 2026 23:14:54 +0000 (UTC)
+Date: Wed, 11 Nov 2026 18:14:47 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: Tao Cui <cui.tao@linux.dev>, akpm@linux-foundation.org,
+ dgilbert@interlog.com, mkp@kernel.org, loberman@redhat.com,
+ jmeneghi@redhat.com, kraxel@redhat.com, vivek.kasireddy@intel.com,
+ mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com,
+ stefanha@redhat.com, sgarzare@redhat.com, mhiramat@kernel.org,
+ jgg@ziepe.ca, kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
+ James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
+ christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
+ will@kernel.org, linux-scsi@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
+ mathieu.desnoyers@efficios.com, robin.murphy@arm.com, mason@kernel.org,
+ aesteve@redhat.com, tjmercier@google.com, harry@kernel.org, vbabka@suse.cz,
+ cuitao@kylinos.cn
+Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
+ metadata to memcg
+Message-ID: <20261111181447.3c483a50@fedora>
+In-Reply-To: <avScKhR22kFOQ1z4@google.com>
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+	<20261106131829.3228926-5-cui.tao@linux.dev>
+	<avScKhR22kFOQ1z4@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,79 +77,88 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111121602.GQ8635@unreal>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspamout05
+X-Rspamd-Queue-Id: 7DEE41A
+X-Stat-Signature: d4cfzmoxk13pg5m5ihp4akmy4hyu64j7
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18kGGg1w/ZySP1UptBt2yyJGC8WbNBioPU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=gmDNsQ8h2wciKasKQCbqVP3maaL4qbrw5sZmT7BnjeA=; b=7BpeV/CNBK0xn7L5qTZRDTfRvQV7U2cQp/mCdojV1+x96AlRZ9rtulOhbTPnbSonEkl9dmgz3eGjHb8p+E0h3XDjeebpimn+FH/g477dsAXlpcaBL9IKpa4sWBqls3LUz3Nl8QeSDhvVfF3uaAU+FhhTMPtyWJPI5tA4IvX91lQ=
+X-HE-Tag: 1794438894-129449
+X-HE-Meta: U2FsdGVkX1+FAoSScfo676HReBJlhh89iBeR1SRWVaCqtKRtwKahRcTeRtp0PW6X+8tP0+cIcuPmi2dveZHq+M/PfpnjBQfOKdRrGrE6L6XJMKcHrkYMPwWfT5W0HZpH0ZA4Tjcgp99PZuSv7mPL4a7u5MFDGa5PSeaKjEeGZ88gtDz4qBX9Zmj8tooxKlDTcIzzVtZdHTNqYaysHU8krqFFZhQV25li+r73imgz99krf7wx8TB68OGyy17GR6OQunJdYHkV2EjKXilR7+DL4H7NvH48tc6IGNBrCqnO6wIQzDRZ3F+KJfPb6Hec+mdDc+COvRxaHejVamxGg/o8L4iQ0lpkg48J
 
-On Wed, Nov 11, 2026 at 02:16:02PM +0200, Leon Romanovsky wrote:
-> On Thu, Nov 05, 2026 at 12:04:31PM +0200, Leon Romanovsky wrote:
-> > Punch line for Linus from Jason:
-> > "Enhance detecting if the PCI fabric can support a peer to peer path
-> > by evaluating the full bi-directional fabric path over each of the
-> > three traffic type ACS controls. Expand the number of fabric
-> > configurations where the P2P algorithm makes the correct determination
-> > of support to include non-uniform ACS and situations where translated
-> > takes different routes from untranslated."
+On Wed, 11 Nov 2026 16:47:38 +0000
+Vincent Donnefort <vdonnefort@google.com> wrote:
+
+> On Fri, Nov 06, 2026 at 09:18:26PM +0800, Tao Cui wrote:
+> > From: Tao Cui <cuitao@kylinos.cn>
+> > 
+> > Creating an instance immediately allocates two full sets of per-cpu
+> > ring buffers, array buffer plus snapshot, about 1.375MB per cpu per set
+> > on the default config, plus the trace_array and its name.  None of it
+> > is charged: neither trace.c nor ring_buffer.c passes __GFP_ACCOUNT,
+> > while user_events in the same directory accounts everything it
+> > allocates.
+
+As the name suggests, "user_events" are for users and are special.
+
+> > 
+> > Instance creation is currently gated by tracefs file permissions
+> > alone, so a
+> > rootful container with the host tracefs bound in can create instances
+> > until the host runs out of memory.
+
+You mean, "works as expected"?
+
+>  Charge the ring buffer pages and
+> > the trace_array metadata to the creating cgroup.
+> > 
+> > Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> > ---
+> >  kernel/trace/ring_buffer.c | 8 +++++++-
+> >  kernel/trace/trace.c       | 6 +++---
+> >  2 files changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> > index 1fd28a72e6ee..676c059c112c 100644
+> > --- a/kernel/trace/ring_buffer.c
+> > +++ b/kernel/trace/ring_buffer.c
+> > @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
+> >  	 * gracefully without invoking oom-killer and the system is not
+> >  	 * destabilized.
+> >  	 */
+> > -	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
+> > +	/*
+> > +	 * The subbuffers are charged to the memcg of whoever caused the
+> > +	 * allocation: the creator of a trace instance, or root at boot for
+> > +	 * the global trace.
+> > +	 */
+> > +	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
+> > +		  __GFP_ACCOUNT;
+> >  
+> >  	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
+> >  	if (!page)  
 > 
-> Bjorn,
+> Hum, by default tracefs is root only. 
 > 
-> Just a friendly reminder.
+> And even if made accessible to other users: 
+> 
+>   1. The life span of a trace instance is not tied to the caller.
+>   2. The ring buffer is shared by multiple users.
 
-Thanks for the reminder.  I put this on pci/p2pdma for build testing
-(no issues expected; I always try to get build testing before merging
-into linux-next).
+Right. Is there a use case out there that allows non-admin to create an
+instance? Tracing ring buffers can expose a lot and should not be given
+to unprivileged users.
 
-I'm still struggling to describe this in a way that connects to the
-code changes and is accessible to non-experts, so please correct
-things I get wrong here.
+What exactly is this trying to achieve?
 
-I had the impression that this series helps VMs by making P2PDMA work
-with passthrough devices in cases where it currently doesn't, but
-maybe that's not the case; I don't see any mention of that in the
-series.
+-- Steve
 
-IIUC the P2PDMA core doesn't actually *control* any TLP routing, i.e.,
-it doesn't change any ACS controls or change any TLP attributes that
-affect how TLPs are routed, so to me, these subject lines suggest more
-than is actually happening:
 
-  Route Relaxed Ordering Completions directly
-  Reject Translated Requests blocked by Translation Blocking
-  Route Translated Requests under Direct Translated P2P
+> 
+> Overall I am not convinced charging the creator makes much sense.
+> 
+> Eventually a few allocations for iterators could be GFP_ACCOUNT.
+> 
 
-It seems like we're just *learning* whether RO Completions will be
-routed directly, whether Translated Requests will be rejected, etc?
-
-I think the core basically looks at the ACS controls on the path
-between two devices and decides whether:
-
-  (a) the devices can do P2P DMA directly (PCI_P2PDMA_MAP_BUS_ADDR),
-
-  (b) they can do P2P DMA but only through host bridges on the
-  allowlist (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE),
-
-  (c) no P2P DMA is possible (PCI_P2PDMA_MAP_NOT_SUPPORTED),
-
-  (d) PCI_P2PDMA_MAP_NONE -- I don't understand this one; the comment
-  says "not a P2PDMA transfer", and pci_p2pdma_state() returns it when
-  the page is not a p2pdma_page, I guess because
-  pci_p2pdma_add_resource() has not set MEMORY_DEVICE_PCI_P2PDMA?
-  Not sure how this is used.
-
-I guess one benefit of this series is that a path where P2P Completion
-Redirect is set used to mean that pci_p2pdma_map_type() would return
-PCI_P2PDMA_MAP_NOT_SUPPORTED (unless the RC was allow-listed), and now
-it might return PCI_P2PDMA_MAP_BUS_ADDR because if P2P Request
-Redirect is clear, Requests can be routed directly?
-
-That sounds great as long as the Request uses Relaxed Ordering, so the
-Completion won't be affected by P2P Completion Redirect.  But devices
-aren't *required* to use RO even if enabled, and I'm doubtful that a
-non-RO Completion redirected to the RC is going to work.  So I don't
-understand how p2pdma.c can guarantee safety.
-
-Translated Requests seems similar -- are we assuming that if ACS
-Direct Translated P2P is set and ATS Enable is set, the device
-*always* generates Translated Requests?
-
-Bjorn
