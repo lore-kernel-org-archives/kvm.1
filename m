@@ -1,107 +1,107 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794386910;
-	b=btA1JoBl0qz+u9g6ifKOARFz+/MwFK1lgpfT7WBZAdf/mwZKWQbrx2US3rmXmMBzdTOS
-	 lFHlXlIqGL88AdLuUYRvCUQhcmBjSMAfqmHWT6Ads9iLzicXt793QnR/KTBmg7IO7apFA
-	 viTYiFGSoN1gl5CAJrStQFBUNKmJQ+YuDdWusvUjcfiXCSYBqnA+jb0poKE+9DLyJ4J9r
-	 +sUlEq/IZrScelWead7O+rd/I0ybSPax+yHQ4++XBWQgvy2jRANY0rqiYSzhsYTKJW20m
-	 +t7uSPsoLD9d/P0ApXjgbIASE+QNQWu5c4eTmGDG0d/Pt3R1CfG05a050zUpN8y8pPw==
+	t=1794387191;
+	b=RTcblG0ji6p4ZM9oMZtCqq4HmJAiJdWfe7rUE0d744GztabXVCseUicVx26WQro0auvr
+	 t6uLyboTQRVRNPSqInmj5zt1V2KzK7cA0tL2Z/feRMLcdhrTZJ4O7BUgJ5Rw4fMfwJ9gI
+	 TZoet2oU8i2PCV+lt4GIbgXT9RmkueXQlF/lrLO9001jOlmoTpNT3MevmwUay/0tItK8c
+	 V6vVJvH7DM2Ar4ZQ2sh+1uxZBDp5mFE85CGbPxnc03+Wu3rUGkO7V8VP7GrrfAz/NZVBq
+	 jEEtliY9DjBvbNwgvlRvNALEPLYl+/xFZ44Fg9nXCmRt+6vvbCFhy6HUCEnyYE7q+Lg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794386910;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794387191;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 From:To:References:Content-Language:Autocrypt:In-Reply-To:
+	 To:Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=yp8s2J/InivNK5nKc/stCkmRC15VJslKGiXFwHcA1KY=;
-	b=qtNQ25egHGFOHoDwXKOLqVTJT9EE/EU1Y4eMyd5wFmMoCOHkx2Tn3UQ/YYUUZrFL1QZ0
-	 Nejd0da10imWLA75pLFnPn2oSOPSZm7KQDpARXYh7PWi/mRIIa+gLbktmKWKLlFEHlrXf
-	 XAMKQtcgXj4UWuNLeeNY8o7oIofUczW7PktfHifzNG6SUBFx/1McTqbPu9NN150AYziXx
-	 pP6wgWQ7nd4D0wiR5DFW+BSsjOe8vqUODYwl60HmmQGCynus62rlXbKHQdVAjpu0bpj3o
-	 5zspN2RK+Hg2aiaIIsU9Cq2RknbUwed/5ZdeKZDXUtz05ELZbu9moHohoCiBlXSVkUA==
+	bh=Bup+crGi6YtoSqoBJS8ljgeQUiUJYX9ZeouKCgYprC8=;
+	b=eJ91UvV5/UDOi10LKsW2AK6nsz5R4AWkTcdouOzdlgsmP0rqpO8UKPwAGaFn5xkxXs3E
+	 qApUn7Iz++ueT+iuXWK3D0R5HOcQfOlZnPqtUzwK11x6rOgBj6LQ1UuP//joM7nXsu+Qp
+	 ksYZ3dnfnq1iat6KqM/5KEfnbAKKmHEE239+3tD2vhZq7TsHqPRZcGReO9UM2gwdWjlDn
+	 KayoONn7/VsSfEL9KoEO3UrmrpYQLDhxtL/1tMwhy5K/L2NDElkcVesKSr7NXP3QMoGv2
+	 /hZIUf7MAroGthWL2vSoFPEOP8OpVi1e35WBQMcUB/gsHXJtUWx/S3e3/hpBLkwPpyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="a+gy/bon";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="fsshDl/W";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a2TgLUez;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fApUEOLS;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C18606A327
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:48:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84C18606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C513C606A326
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:53:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C513C606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a+gy/bon;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fsshDl/W
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a2TgLUez;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fApUEOLS
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794386908;
+	s=mimecast20190719; t=1794387189;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yp8s2J/InivNK5nKc/stCkmRC15VJslKGiXFwHcA1KY=;
-	b=a+gy/bonjwnOwCaeHhnQHDM9omCtfOCfkoGSYxxO67zRIkkU6+2HxfKJ68NaOH3q2k+KnK
-	Tr9dhz/GDTULwALtxcboHLK3mryqOfbGra+ec3mqzUXRvcSB2ogXALjIAlXhBEMFgv5Pmk
-	V9i3WKZRbywYf6OIBusFEXn8QrM6B5c=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Bup+crGi6YtoSqoBJS8ljgeQUiUJYX9ZeouKCgYprC8=;
+	b=a2TgLUezpEn1aqdatrsPP/g8UhCZp1ga/RYbeYJRNwAQf9oHrtmqHmIXBpYj6RkkJ5sX7P
+	4GQVDyiLLwjFpm46KJ3uLLY9G+qCpQwwHPw/5fHxBxmOzPneZglqrEJ+DXMbHZLRHdrxx/
+	eTb3r6KhCMyxSSj81V9yOlFqyfS9FCA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-260-AN7B0wZ7MmadF48Yqa1yKA-1; Wed, 11 Nov 2026 03:48:26 -0500
-X-MC-Unique: AN7B0wZ7MmadF48Yqa1yKA-1
-X-Mimecast-MFC-AGG-ID: AN7B0wZ7MmadF48Yqa1yKA_1794386905
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-490ab0a20ebso2196186f8f.1
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 00:48:26 -0800 (PST)
+ us-mta-376-cctxvdK0OECQ5MhIddgUQQ-1; Wed, 11 Nov 2026 03:53:08 -0500
+X-MC-Unique: cctxvdK0OECQ5MhIddgUQQ-1
+X-Mimecast-MFC-AGG-ID: cctxvdK0OECQ5MhIddgUQQ_1794387187
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-49337a224a8so2620157f8f.3
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 00:53:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794386905; x=1794991705; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:references:to:from:subject:user-agent:mime-version
+        d=redhat.com; s=google; t=1794387187; x=1794991987; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yp8s2J/InivNK5nKc/stCkmRC15VJslKGiXFwHcA1KY=;
-        b=fsshDl/WgMi6hvMfkGVQ1HUT3TJWN6K/bfBtrPGjwbpm8mv6jDUs3J90RHcss+qO11
-         nJWgEJq2XcUmGW8ZaHq+A3d1KEzHXZhcuTJnSu7o/3ilAwRBPIhiUH6mwjbLdLRYWuNj
-         XJlIILH7CofYVsaRGLy2L7sghr14fYsMkvKXICp9FI+Yypcx4SQmxeOr+uWZ7e91tkw9
-         k4znT2Ro09QAR5XPwhZvjiNiXvH+OtMWcCjrmWQ/jlxMduUigEqDcf1ySszeBlhFrDh1
-         UQva5HQxobViJCQ6VrymGVM92jCjuwYBrOhzsnBQSbN2g2Ek5f8ejFNJFpyrYWVjiE5M
-         ijJQ==
+        bh=Bup+crGi6YtoSqoBJS8ljgeQUiUJYX9ZeouKCgYprC8=;
+        b=fApUEOLSfUCrD40rwwqOxCVXmLJttNbBKaz6sx2UQfao+dpMuEzAev7ALCEhWDDJDK
+         7baRnwOMoGocz2UE4Zt2FF2h02ggNP2ZpUEiKfzH/eXFoYR5+ueNKqNiBnToRR1Jtbku
+         DS7OXoXT9NlKjErxpEivQd3s0N7Qi6snDrJeEaJTODT3WrPXtF66TNhfbgdFr6Xywp8B
+         PY9PqNXy56wB4M2NeQNHdJD/c/6B7vdauCvun9CdndvkRGuY7S9Oy/+grjYhEKBGoX9j
+         P7s1mTkuvtmMbaJNgHHO1FsJqTa/d9XW0wa3EF01AE6M8S4Z5JptpW23Ua8fb9SoG79d
+         Z41g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794386905; x=1794991705;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:references:to:from:subject:user-agent:mime-version
+        d=1e100.net; s=20260707; t=1794387187; x=1794991987;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yp8s2J/InivNK5nKc/stCkmRC15VJslKGiXFwHcA1KY=;
-        b=A//bw7cyUGFKu4SvyHBfBS3eAjq5ImZVWYJ2YfWH5XxENIXHNBfstNWQN0Vb+2TRSB
-         40LAE01ZODrwVxMqrcX9uqTIL669epLjSpPqgMBlWHF1T7KtL3sT8FXeT+tlW82ykr0a
-         3nKgaX2a8VnsA7FHu9/ff9reR6on9FAuEcC/UQp0TPtI+7OFvZf1aynppget3L/EYvGZ
-         hY33dWz7O+WQl2lCAm2cJel/f9zUx+MBBqqthVBR1+QgBjC/NUP6RDRCFi7wqVGJJ0Ut
-         FYWtozu95oRqqm+HwUc0vV5ac2wDj0LAc9r6imYLlK9G06IyPrFgaFcaDBFWOTBGPx5q
-         a0kQ==
-X-Forwarded-Encrypted: i=1; AL+hErH8T+AUQqiUIhJz72LEIm6uX7Rl3M6KKkA4N7fVz5IsIiXT2LwxoxFdGgo9an7pOnSapAk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/oCwpBFuJ/HAL0U7rYvNta8v5chSkjEU15gZvpVAhCA/hpGr5p
-	Ub8s1EhUMtgtFIT1iER1EQeD9Ns6nPYiAtKBzHW0HVj3/McsRxO+p9o8VBiBc088SOflHwszsP+
-	KrbCnJ52d/zll89J/hPqcSGg59YDTLxRQISSFQNg/zo46jJ91tPdfmg==
-X-Gm-Gg: AYBFou2eRA9V28DTCFputX0kzxkIR6ppNYKQiDpQ3y5RFa4Lvf26Vr/kBOKvyvc0X1m
-	fhsWup7d3+CeeqTg8yb5aqbHEF/tFlMgvs+ofE4zmPRFoW8C3YWOcN3Ld/mdYjEw9H3zT0/SIsZ
-	jF0GJ6Z2scI6IStWeHzmZbxPZh3GcBmwJzxNqrIiTxOJ3GiXoQM4rbc6iUJ4uWTHdRLB5wxopLq
-	UZYf0hRi+jw2mQGrWnGVH8vV2QpOhp2iEe85HZeNbIgB22vmkAXJ35XOgKHDuw5pLFlw3q/SQfF
-	Do2L6dXi9nX5JM4JcLH9yboytpfDNL5Vh0DAcaCgcw17juqnZEsny8V6GPZqzX6KI+WIIqrHZ88
-	fojLqbvK7gg+St0PeqkfYIRKXhTGAcj+xt2i7bG+E8T4Emw==
-X-Received: by 2002:a05:6000:4a18:b0:491:3fdd:af34 with SMTP id ffacd0b85a97d-499c81d65ecmr2447517f8f.36.1794386905360;
-        Wed, 11 Nov 2026 00:48:25 -0800 (PST)
-X-Received: by 2002:a05:6000:4a18:b0:491:3fdd:af34 with SMTP id ffacd0b85a97d-499c81d65ecmr2447491f8f.36.1794386904977;
-        Wed, 11 Nov 2026 00:48:24 -0800 (PST)
+        bh=Bup+crGi6YtoSqoBJS8ljgeQUiUJYX9ZeouKCgYprC8=;
+        b=lopZwqcijMRcMy5r4kzgdxqW+Lm4C3QXgT7CASO8v7mx6WhO62cpEVJ0PMFoF2KWaU
+         uB8ydZJq4nQ9VsX2k31UC2r/On/q03+e2oBSryOgvXbVc7jZTz2cE4wqkzp+phk1w/0X
+         vJObQj2QO4Etsk25cUaDYXG+F/pr1tzjF48EhEl9LF0YGeXHdheswaaDqoxKzouCMzHt
+         6/kSKDn6oRFgtPxF5Zpt9q4l3eBjHxAnZRJ87ViVdg6YVDEICQlFa4OE6r4d0bmt1uLp
+         JfqUR9dAs0D4iQqbnoNMdMdxePyxhpiTVaRhwZNe8aOSzBeBbLf/Mz5MBzgR1fDxMhtI
+         sFwg==
+X-Forwarded-Encrypted: i=1; AL+hErEtwe6+5UtFniVmbBRuyRQ+iWeRyTJDLHow5vgSguTbE65ck17WxJQ4JVUKbyZbd7CuYik=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/3ZuunAjW41fjFuiwcQn6o3+/69K7kjJhTeHR2j3bmS5mopHAp
+	jkWn03UYCKMnoMbKeid6F3Hk4S870IzGJTaX7PhU2VubgRIU6VyySA14E2lfdmquuOfU2HvmiZV
+	Wg4OXGvCx6Iu6Iu6KyZ+IETnrBTRgXpe6r+aW3DgDq7KDqf30Bmr2kw==
+X-Gm-Gg: AYBFou1cqRnVE+x86Bnnj2/qQlX660X6WUA33rRUbEuxPjjKgeaLVWSTxBuNhOi+Efr
+	fjnW8kb4OJW4r9U40bwlSaQCwJq4n5gx+QDLGR+HyBClMu33Sd+7RbT9z50nPU7ZPtl0ylLx2bb
+	eckdsp4eFiaBtWoHvgPQJLwG8/DU0UcUZEdr265CXptU+aXvrHZLKCmqiA0r/7dwNXFj8VsQjQQ
+	CF4WGfCnob687EGDXlhu1AW8YIOs5p47MxFwPNkKCl3zPmOdwcF+P49aG8z1s4gk5LUSRlJpVEV
+	ANVA0ttTxEyyfpaZ6emhGBotqnYeMlUfikN1bsVSNLXmLT5BlbNO6B8JsS7IAXi2V3b3sKuux/u
+	LPvxV9XpDIcOi/tBcWfs1zuBE3Mcf090GuhlrmT4YNNLG
+X-Received: by 2002:a05:600c:1989:b0:4a1:e0db:8cf8 with SMTP id 5b1f17b1804b1-4ba0931beb1mr28238405e9.3.1794387187057;
+        Wed, 11 Nov 2026 00:53:07 -0800 (PST)
+X-Received: by 2002:a05:600c:1989:b0:4a1:e0db:8cf8 with SMTP id 5b1f17b1804b1-4ba0931beb1mr28238055e9.3.1794387186718;
+        Wed, 11 Nov 2026 00:53:06 -0800 (PST)
 Received: from [192.168.0.9] ([47.64.115.75])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4983600bc9asm8946568f8f.29.2026.11.11.00.48.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01fe2c5asm191780205e9.5.2026.11.11.00.53.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 00:48:24 -0800 (PST)
-Message-ID: <3430a395-8e25-495c-b74d-52e2d2918297@redhat.com>
-Date: Wed, 11 Nov 2026 09:48:23 +0100
+        Wed, 11 Nov 2026 00:53:06 -0800 (PST)
+Message-ID: <fe4b7c46-2467-464e-91de-c3868d290acc@redhat.com>
+Date: Wed, 11 Nov 2026 09:53:04 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,12 +112,14 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH] lib/x86/desc: Remove unused variable
- "exception"
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-References: <20261111081833.69641-1-thuth@redhat.com>
+Subject: Re: [kvm-unit-tests PATCH 2/2] x86/desc: Remove unused exception flag
+To: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Jones <andrew.jones@linux.dev>
+Cc: Greg Thelen <gthelen@google.com>, kvm@vger.kernel.org
+References: <20261022204413.856786-1-yosry@kernel.org>
+ <20261022204413.856786-3-yosry@kernel.org>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -160,33 +162,54 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20261111081833.69641-1-thuth@redhat.com>
+In-Reply-To: <20261022204413.856786-3-yosry@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Am 11.11.26 um 09:18 schrieb Thomas Huth:
-> The variable used to be the return value for test_for_exception(), but
-> commit 932ba2d2f530 ("x86: simplify test_for_exception trigger functions"),
-> changed the logic of that function, so that it is now unused. Clang from
-> Fedora 45 started to complain about this:
+Am 22.10.26 um 22:44 schrieb Yosry Ahmed:
+> exception is set to true in exception_handler() but is never read
+> because exception recovery redirects regs->rip to
+> exception_handler_longjmp(). Clang 24 warns on this with
+> -Wunused-but-set-global:
 > 
->   lib/x86/desc.c:483:13: error: variable 'exception' set but not used
+>    lib/x86/desc.c:483:13: error: variable 'exception' set but not used
 >    [-Werror,-Wunused-but-set-global]
->     483 | static bool exception;
->         |             ^
->   1 error generated.
 > 
-> Remove it to fix the problem.
+> Remove the unused variable.
 > 
 > Fixes: 932ba2d2f530 ("x86: simplify test_for_exception trigger functions")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Co-developed-by: Greg Thelen <gthelen@google.com>
+> Signed-off-by: Greg Thelen <gthelen@google.com>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 > ---
 >   lib/x86/desc.c | 2 --
 >   1 file changed, 2 deletions(-)
-Never mind, I just saw that a patch for this has already been posted three 
-weeks ago:
+> 
+> diff --git a/lib/x86/desc.c b/lib/x86/desc.c
+> index f4cdfbc92c560..b5d4056260a1d 100644
+> --- a/lib/x86/desc.c
+> +++ b/lib/x86/desc.c
+> @@ -480,7 +480,6 @@ void setup_alt_stack(void)
+>   }
+>   #endif
+>   
+> -static bool exception;
+>   static jmp_buf *exception_jmpbuf;
+>   
+>   static void exception_handler_longjmp(void)
+> @@ -491,7 +490,6 @@ static void exception_handler_longjmp(void)
+>   static void exception_handler(struct ex_regs *regs)
+>   {
+>   	/* longjmp must happen after iret, so do not do it now.  */
+> -	exception = true;
+>   	regs->rip = (unsigned long)&exception_handler_longjmp;
+>   	regs->cs = read_cs();
+>   }
 
-  https://lore.kernel.org/kvm/20261022204413.856786-3-yosry@kernel.org/
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-  Thomas
+... and committed it now to the repository.
+
+  Thanks,
+    Thomas
 
