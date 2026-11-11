@@ -1,57 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794414602;
-	b=eHAqO920Iol4MeJGlG42LdH4grZWg1Cik+cJPKwW5Fp5dReH5Bh+0PXCbT+Re3Qi1COn
-	 3Sm1nvxic+KV4+sQ57RjziiKSpNh49tkYgPWAn4TppIW2OUyU/bmaB8lupKJszUD8Q/h2
-	 xqpVcjBAQPXmmLlKGZAZnjX4bfXGWnKuAlLfa185688kC0gUzqdsiqIvTz2GK+85g5rWR
-	 FYDS9JEjsxUtwBXQSesC/zGcQ+97ZVBlLLfbROzX2PU0Wsok/bLyZpz5fLHCOyoOD3F3i
-	 SwnHT2nHg+uHKIvMuGCk1yV2dW0jQPCDiQBqiCEDeDlScjuoEQeXBkDsyqgSp/IYeSQ==
+	t=1794415664;
+	b=UVUqTlNUX1rzTqWO8NpMTaZBmum1H2ZNIvn5tCPGjtEyTr6h6QJ2m4NAEy8xXYQ5oQ+k
+	 2T+JWNpsgA2yPGS1617NNoxPHsWjppPLkYHAPKA8YyxU2/SzRVcf2tMR1EwEa/UjGm4sk
+	 wfagEogZRIWusgZrYcsSj9pgv3Qk9Y3IpJeNdBGKZl1fcR0BvMJvRYGnlYGtqR1xhIQ+Q
+	 aqcoMV85V33LXyk2SZzKgTboqqj4BGwGVQ3haW82aU+y/UZLu6LRAR98+THdlPHF7wc5T
+	 tJVo0PlIVlkNWLqYj2dh1T0KyH/k89lGMTEBsjJfJTfJ3Bx4t3f0A92gWLmWgtUgsug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794414602;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=OTgmmvmFoFwlCxssmfqD6UcdBcRA0ZDfykReKIVhCIY=;
-	b=I62O5J/N1dSihVwTksDixx5Rh8kpnslKc2c/r24eRwjdqQ4wBOuYZ/zO9eiwg1c8Eknz
-	 IvB+uzEtdli7NBXzX3Oh4JHabt86IekzjSPYZNaPIHiASEsx5wpDJ+/Ba1lxmzsEg5wF8
-	 xXKTPmPySAwp83A1n7FWpznpIGwP5rJJvBR4Q2xmJZ/4SNZfNI2DV1TqIA9uh7V8Y/dVz
-	 5oUPvwItFwS8fxe5jXa92W8cIAseYdTkRbi/XmSr3216PPHO+/r3xfxr/G4ZkYFofUZm2
-	 3vUuzFuBzRkG1XIZYWiyx0S+C3l4LXE3SQCIaflJ8UL7iBpHB3WFdrVLPnojnsYyFfQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794415664;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
+	b=U4TmZtlNexytZkMokE+Rc+hgVxRXeCIEDX84O3NPAhXFRmIdTDOWQqjaSipj3i+AtOHh
+	 rzWHjNQD+lYBOPoiwR1nicSDVwuk3jeCCmpx+TUQ3ASxDtSyCySB8DoY+IvQem0Jzty/l
+	 oGny8XeKhFih9+OiH+4IZusjgTmpK1yFXKN7NUBpjCqgMoJG/bOhoDAxzDaHrXisMfqJm
+	 IVdITE/31gd0MarbNQl7DjvZB5il5ERMLuZ0bfywX3gozMbti2OfgbVjCbDo9g8ySoNAQ
+	 M2HX0YZbjI/mjfXMyQD3X8bZiCIAbwwOLf2/x6zyAlsJPjYPEkqXPX95yZoh26sLCfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NHVCSdOu;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Arhv0r+C;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D84606A334;
-	Wed, 11 Nov 2026 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69254606A32E
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 16:47:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69254606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NHVCSdOu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226741F00A05;
-	Wed, 11 Nov 2026 16:30:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794414602;
-	bh=OTgmmvmFoFwlCxssmfqD6UcdBcRA0ZDfykReKIVhCIY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NHVCSdOu4lEREh1wFivmxZVUbjU/BKRrn2jlJgK1c9meBq66cEph+GYI0YfrIsflR
-	 uDlQc00b0kGZpLsp3oAcKobK6lSEfBHh3Gf3FY0glUCbs3i2Xkofcppbu7iaaHD3K2
-	 vLTszxZQbDjaXfOwqx7NT4exBy8GxV+pz2fS/vSaSwz4Mq2IPHK8uujWmba73XxCTz
-	 sYOeYjyKj2+s5Gt+1PcNjidBtgR63uGAp1APZIFpKX3Of4iiI5x/mg5ejlHZ2kJ5wC
-	 vpzgeCJZrQ082+i2zGIjjECQN9TftPR8e7y1bkjk19G7ySyd/F5IMzrUcpdPV8OzAK
-	 jr5ZFHExSWYXw==
-Message-ID: <sashiko-outbox-209288@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 02/12] KVM: arm64: guest_memfd: Check mmap support
- when preparing memslot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steven Price" <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
-In-Reply-To: <20261111145758.217946-3-steven.price@arm.com>
-References: <20261111145758.217946-1-steven.price@arm.com>
- <20261111145758.217946-3-steven.price@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 16:30:01 +0000
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Arhv0r+C
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so239045e9.1
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:47:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794415663; x=1795020463; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
+        b=Arhv0r+CzJ6kd+TulLavcwx/mGrglYS422JYKTdbpa5un1a18rj23MyxqxLhddkmnB
+         gNcaXJ2IrojyJbxM+OgBPEAeEpsNpzWgOGqEgdEdfbdQsuKembFEQ+6KhZaeIYR30gze
+         IooSZe2fNj/7K3ZNeH8x15dEsu+UQLaI/m1IWuoX86P9po90K2PyeQK2TvubNwe2um3L
+         oa28twmLTolBcK1wc4TjQY120ADR9pALZ4st9GAliG4qO1r6wi1yEW2L29tlSgZjmr2h
+         E0qSshK5f4Tgf9M06nnSpMmyfbMbMx74mcpO6fx0yDufhfISeijTTqV/EjmW0IdaeTyH
+         ahNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794415663; x=1795020463;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
+        b=fyKn1quJdWpcUPxbAL56MPCpx2i0jTlCDq+daP/SePvyCmeGoWyE+EelZq6BuIWGYt
+         UezgL7iEc/vOwu61cv5Q1CstJyeVt+Qib1ELQ6lHweXTOfyjxhhmMf764cZVpRPSm4Xd
+         p5OVXwuq23b0JK5TPIh0A10oxYzJimLTrtO6hpVLnxMN3owJzTt/TVg/tLXBKT9ayegc
+         YqPGAR+uwXnE0rlFZ+9G354sKeBYiV9QYD890l7wq0nqY0J03Xl0M6DM3ZyhhIpd1o/v
+         1djYZP3MRNBeaHifKNVxOv1Lpos6Gr+YK4jQbuDNm8WgRaC76GROzzzu3Q/PIVqS/BuU
+         2tfQ==
+X-Forwarded-Encrypted: i=1; AL+hErGmys24ITDY7/G7M1Wvcq0w6HdqTx5pu7VKrvoPuzytyxEgz+47e90cxlxc+jtEjs6cyQE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+1mJnTScfEqsjFKMdlu/0oEeFgBTUvGfPj6Kal1hGOVbZNGVIy
+	SMLLXUmHERiKuNS2f7G9fJP47TUqHTxPPvvf9iVFjaDsCpGolBfMZ/RqIWfyHmEIpA==
+X-Gm-Gg: AYBFou2e08XLztk78UAYyyuvTxJhjdfRGyIp0fOHt+TEbCR1jXE3Jz7yn4jOAgt3GTs
+	MpJ3HyWkzdUXI8nRn/VXr6+2rewX+Gl27AuELw6HX1PNert8rnZ5drt+JhygDmb1NbTjS89MjVG
+	JR2ClgPOhkJ4bf3rHi/9yDh4gXn6DrX3mlfbk1F/ZuzMO4GEzckZm0xcYBTPRTy/QmxOHHzKtW+
+	qC1O9NaJXCJtjclQ6BRy5lqeIBsOAXXgpgipjWRggHsudwUoPsCaFPLwrEgtIvJlOpfCbWLYYUu
+	vSIRfmw6Xv1CfzQaQ7XfzyJRt9+2EHgIktkqjGXMfGWOBFmh/Qnd7QgCUNK4F8x/n5WGg/vDB77
+	sgVYt2WlzW/bBc+gIV5GPSHyFN2e63HUSQ5YVsPdxeTL+GCxOgPiN4UyEEgNigtGblCROLDvhwI
+	ijZlE/xROD52ASEu64h/n9X9ODvdj4yyzFuDRtg9JZI2m8OaFaUeGKJOidD6QbZTJZEbdscpkwd
+	3/wq+BhRfQf8ylDaSHH5e1iJznz0PtOpbR37q10mCIim5l6bMmcp7IjlFvrZdg9OS4SMTXHadFu
+	Nd4XUR3RdkdRtEGt0dA7kqMTjXddTemt2y2iB3oP+nNVMB4e9OWhY7qWkat82xVGgQ==
+X-Received: by 2002:a05:600c:3f07:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4bb4e27994emr1100895e9.6.1794415662004;
+        Wed, 11 Nov 2026 08:47:42 -0800 (PST)
+Received: from google.com (0.182.34.34.bc.googleusercontent.com. [34.34.182.0])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cd06fsm11724877f8f.40.2026.11.11.08.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 08:47:41 -0800 (PST)
+Date: Wed, 11 Nov 2026 16:47:38 +0000
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Tao Cui <cui.tao@linux.dev>
+Cc: akpm@linux-foundation.org, dgilbert@interlog.com, mkp@kernel.org,
+	loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
+	vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com,
+	eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com,
+	rostedt@goodmis.org, mhiramat@kernel.org, jgg@ziepe.ca,
+	kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
+	James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
+	will@kernel.org, linux-scsi@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
+	mathieu.desnoyers@efficios.com, robin.murphy@arm.com,
+	mason@kernel.org, aesteve@redhat.com, tjmercier@google.com,
+	harry@kernel.org, vbabka@suse.cz, cuitao@kylinos.cn
+Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
+ metadata to memcg
+Message-ID: <avScKhR22kFOQ1z4@google.com>
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+ <20261106131829.3228926-5-cui.tao@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,60 +112,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106131829.3228926-5-cui.tao@linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] KVM: arm64: mmap check bypassed in
-  kvm_arch_prepare_memory_region()
---
-
-commit 30a76d4c8b8b8454f9d59879df7f0b5de9a2cdbb
-Author: Steven Price <steven.price@arm.com>
-
-KVM: arm64: guest_memfd: Check mmap support when preparing memslot
-
-This commit adds kvm_gmem_slot_supports_mmap() and updates
-kvm_arch_prepare_memory_region() to check whether the guest_memfd backing
-file supports mmap rather than checking kvm_memslot_is_gmem_only().
-
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 1db10d8d6db73..a146f6cde3d02 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -2839,10 +2839,11 @@ int kvm_arch_prepare_memory_region(struct kvm *kv=
-m,
->  		return -EFAULT;
-> =20
->  	/*
-> -	 * Only support guest_memfd backed memslots with mappable memory, since
-> -	 * there aren't any CoCo VMs that support only private memory on arm64.
-> +	 * Protected VMs currently require guest_memfd backed memslots with
-> +	 * mappable memory to support shared mappings.
+On Fri, Nov 06, 2026 at 09:18:26PM +0800, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
+> 
+> Creating an instance immediately allocates two full sets of per-cpu
+> ring buffers, array buffer plus snapshot, about 1.375MB per cpu per set
+> on the default config, plus the trace_array and its name.  None of it
+> is charged: neither trace.c nor ring_buffer.c passes __GFP_ACCOUNT,
+> while user_events in the same directory accounts everything it
+> allocates.
+> 
+> Instance creation is currently gated by tracefs file permissions
+> alone, so a
+> rootful container with the host tracefs bound in can create instances
+> until the host runs out of memory.  Charge the ring buffer pages and
+> the trace_array metadata to the creating cgroup.
+> 
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+>  kernel/trace/ring_buffer.c | 8 +++++++-
+>  kernel/trace/trace.c       | 6 +++---
+>  2 files changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index 1fd28a72e6ee..676c059c112c 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
+>  	 * gracefully without invoking oom-killer and the system is not
+>  	 * destabilized.
 >  	 */
-> -	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
-> +	if (kvm_arch_has_private_mem(kvm) && kvm_slot_has_gmem(new) &&
-> +	    !kvm_gmem_slot_supports_mmap(new))
->  		return -EINVAL;
+> -	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
+> +	/*
+> +	 * The subbuffers are charged to the memcg of whoever caused the
+> +	 * allocation: the creator of a trace instance, or root at boot for
+> +	 * the global trace.
+> +	 */
+> +	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
+> +		  __GFP_ACCOUNT;
+>  
+>  	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
+>  	if (!page)
 
-[Severity: Medium]
-Does gating this check on kvm_arch_has_private_mem(kvm) cause a
-regression that allows binding non-mappable guest_memfds to non-Realm VMs
-on arm64?
+Hum, by default tracefs is root only. 
 
-At this commit kvm_arch_has_private_mem(kvm) resolves to the stub in
-include/linux/kvm_host.h that unconditionally returns false, and even
-after commit "KVM: arm64: CCA: Prevent memslot modifications after Realm
-creation" defines it as kvm_vm_is_realm(kvm), it remains false for all
-non-Realm VMs.
+And even if made accessible to other users: 
 
-Userspace can then create a guest_memfd without GUEST_MEMFD_FLAG_MMAP and
-bind it to a normal VM via KVM_SET_USER_MEMORY_REGION2.  Stage-2 faults
-in kvm_vm_mem_abort() -> gmem_abort() will fault those unmappable pages
-into the guest while HVA-based KVM accesses via slot->userspace_addr
-(such as kvm_read_guest() and kvm_write_guest()) access unrelated VMA
-memory.  Dropping the kvm_arch_has_private_mem(kvm) condition here would
-preserve the requirement across all arm64 VMs.
+  1. The life span of a trace instance is not tied to the caller.
+  2. The ring buffer is shared by multiple users.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111145758.2179=
-46-1-steven.price@arm.com?part=3D2
+Overall I am not convinced charging the creator makes much sense.
+
+Eventually a few allocations for iterators could be GFP_ACCOUNT.
+
+-- 
+Vincent
+
+> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+> index e8c4efa8107b..04b60b9cc4f5 100644
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+> @@ -8693,11 +8693,11 @@ trace_array_create_systems(const char *name, const char *systems,
+>  	int ret;
+>  
+>  	ret = -ENOMEM;
+> -	tr = kzalloc_obj(*tr);
+> +	tr = kzalloc_obj(*tr, GFP_KERNEL_ACCOUNT);
+>  	if (!tr)
+>  		return ERR_PTR(ret);
+>  
+> -	tr->name = kstrdup(name, GFP_KERNEL);
+> +	tr->name = kstrdup(name, GFP_KERNEL_ACCOUNT);
+>  	if (!tr->name)
+>  		goto out_free_tr;
+>  
+> @@ -8708,7 +8708,7 @@ trace_array_create_systems(const char *name, const char *systems,
+>  		goto out_free_tr;
+>  
+>  	if (systems) {
+> -		tr->system_names = kstrdup_const(systems, GFP_KERNEL);
+> +		tr->system_names = kstrdup_const(systems, GFP_KERNEL_ACCOUNT);
+>  		if (!tr->system_names)
+>  			goto out_free_tr;
+>  	}
+> -- 
+> 2.43.0
+> 
