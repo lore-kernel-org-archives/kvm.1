@@ -1,72 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794425057;
-	b=LKRVHHn9TwgcqKMgO8Zscn4WrxD51/46O+eYPsqeJNSrwT8nGH9ULRELfdW9/JjVaYw+
-	 8iI8/Pdw57RG/Gq8RoGj9heNx6CHkPmJ0YgmvnvDQqWKsbkmkA99BizCzQjtzISy3zYi8
-	 kV6ppti00VcAyKDjm3nrCfqlx/3rztsZDYFaXznyIgSvfejhVL5HIWDc8JnM2yf7habdD
-	 qjj6DX5Pr5VEeE7cDgt1QvX/C8fDjpPR3jQN7esGNFnG9V24Xs+kcKYrwKEO/VoNas5rF
-	 oBB4fGMXlsKxrqYIbB2JHm8AkFv9glW6ROmai3I7B5XLxPcpOhrjLtKkkM76uEVTL9A==
+	t=1794425063;
+	b=i/mZC2fc7U03w0iT6g6fjv3YnVirMZQqzFoIZ7JmFcW0H3aAcYlIBvR1hOHNPZQ0cDJz
+	 lnDLbMABP0HgL6r0iUqtrVgWpRw8RH16Wj/pkcp9Re8koEB+w6NxWf6I+MIivqSOG8zdw
+	 WyiRpvHEinaut5zz4tWbC/+gxkLrQnDEY2L2o0U5flOhDY0d/GIsB97hzf4/ZhhDzQHal
+	 k38bT5hrRkJ5tfG2pRERnwrucCMwDfz4OqqnMnG8m39kJG1tMTJE6OVqncPjIYpvd5kzY
+	 1AHxNNUUNzZan0xPQxhBcwfp9RtIciDRD+38AoQWbB3LfP/jT4gOO4ZgKl6blRW/cRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794425057;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794425063;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=J+uUyLbFsNGSkOGPD0jT6rigmy2Vf3Zbwe9gzT+xN/I=;
-	b=zlVu4zsHSudjbHIG/7qtZdin7AaEpH/+z5aKc07yJ78zkiDp/m0/OZ+W8BppNKs4r8By
-	 EcmpkG7XTuBGCp8Mi8WaVQ/sYO7dmwVAJvg48a79Vqoq4LJHy72Lzv/RYV/gAvyI7gCZf
-	 0uQ9M/1/suvon09XdNpMk/wvmy3DpsSpnfDDIwteswI+7033hLJOgxwxoE2mhf4OVw73r
-	 74O0mjZQ7WB9Z5MeCmaGv+C3Z/IsXA2xhu6FIugXVWw0iPqP6thltqoC6Rqm0EBNIFtJG
-	 TLf6iLe86jbUJD79wREMAMLjENX4k+YUvz7TMWVIlsECoqq+ZldBaltGBx7CXs7s4hQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=9sL5fqWbHi6g8R+z+W0YnlVdwW61K08vu/pGLyPlBpM=;
+	b=46Kwvwlc+kSMsAQQt4j33e9i1eK0ATgPOubxliR3aWFXEOXioqDT5l+aND3ZavjsQQcP
+	 GdHL925qhD8mRXEq4q1f9NXELT3d6G2UD607+3saIHaHOfUNL134sx+4umxbgmKQyr71z
+	 29uDxxT1MNRNvlxYJYtGaGjXVlMI8LCUMmigP8UyW1xSO5LvcSmxDW78TV05ku0D6XThC
+	 nMhIqeG8VDTofBHyZuw2gi1tE0A1bnUSO2PrKD6ZBxoA1T+DYfZbf11lgF8Qs5bK5NLGx
+	 DpDrAQaUsc1R83gB8Wt8vf13XY+ed4PFOBbxSAvao59hKVHm/vKm6J0KaU71lfbiYeQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bct53YYd;
-	arc=none smtp.remote-ip=209.85.167.200
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pZTOcxAM;
+	arc=none smtp.remote-ip=209.85.160.71
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA65606A330
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 19:24:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABA65606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FED60A3804
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 19:24:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07FED60A3804
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bct53YYd
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-5641cd2cc13so4047069b6e.0
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:24:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pZTOcxAM
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-46509ab0149so3411168fac.2
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:24:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794425055; x=1795029855; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J+uUyLbFsNGSkOGPD0jT6rigmy2Vf3Zbwe9gzT+xN/I=;
-        b=bct53YYdtbgtUmhubrpZsAWGUgLjA9hISyCMKqMULu7BEuPjSS6vCchZXNAy+6zCcz
-         qAmnSfMyH2qlejUY90LUJNv/xN7fCXcZHmDXMOGmJPR20Y5m8K0OYNDR0IG7kNQzGjHc
-         uTW6FftrbWz4GY+d/yQPnwnVe4SU8YCbd7OtDjIxEQV+ic5gEOHW3Ehq1x0w8dBl793O
-         /PITlGGZKZ1ilXDFLA2L28ebXG/wwNk3Nm2SV4SOP605IuG9Brr47y5ZkyHxP4LPw6nG
-         w+tpLVeXcUV4ObCMMCQZY2dO17xlCAiMVVXWGon8e/HQI/fjGtNh7Kphak3G1Rl2rE9l
-         x4VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794425055; x=1795029855;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794425061; x=1795029861; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=J+uUyLbFsNGSkOGPD0jT6rigmy2Vf3Zbwe9gzT+xN/I=;
-        b=HajpN7UoQsouzmB7kr03TiSaGLfHyL9n6Tgk2TNqzEljPUTUPGqofpZOjQNgy/Gt3K
-         +sN7u+LEXqyyxClucv46J+wpROh2prhJaaAtdzBJYJKWOAa31BeIWSGDK/3hiiWmzx3z
-         4a/h//fsEw8r5ZlXbbg5AJPYPPmDIaivm0g2e2e/Q81gXmgkvjryobwrX7cvaTMgV593
-         cjszAi9ggc3MXe412XkhYWYBh6kIGRHzonz4f1vZk1uplz9PW9XXqKwC7sBb6+pstArT
-         v9PXUCNcwcPQtRNUyEuQ0tYnwmVMMG3UClYYygS1hcLM6khyjYlbYQTajr3h9v+fttJm
-         jSEw==
-X-Forwarded-Encrypted: i=1; AL+hErHVahggECqzHzcKCBje64+EO7jtATCtoyoZBYCQY3tH5uemcDZsCD0Qs0JdZQNZ6PcPy98=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8w5m4tZ+0Tr7DYlmakMj3GV9gcyfi6ExW8tWKStIFIjL5sQCsy
-	3HPcYgNQayVLyuKn5Vor7o/C48XSZZxj8kgW2bVFcL+mTw0UJEbzR3vyCm1idpMvwH4Cee40XEr
-	nvwzsQHsFQSV+bw==
-X-Received: from iouw14.prod.google.com ([2002:a05:6602:34e:b0:9e0:ee3f:c3a])
+        bh=9sL5fqWbHi6g8R+z+W0YnlVdwW61K08vu/pGLyPlBpM=;
+        b=pZTOcxAMe2HFmz+bPshkgOR+7KO8iHxJ+wj3Rb1mEHykp8ygXHT1yX/VZuKQEzNyFZ
+         OxzCcEtd8wsygn6pbQtVKusfgOYUdMPixogPaHOp93IVkrj6RYyVIgGsUsjc8Tyu89vS
+         9WTbfZpYCQHLnbKoC9o8fA8m6ivSKeiw48VhetF/qY+RnFeAXz91CqaQCXAG9qE+NcSL
+         LU+e+nnwoZhhBCX21HvZEklDzQxLNbCBbCR7AOJ72AE794mG2MjWDQtVBGcLvM6Tch/b
+         9Fk71tqKxbDj8x8gleLdF0UWF/JCtrJgc12gX45P8vYPoLBi4ijOxEBv8bvv1SThw3Lp
+         iJJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794425061; x=1795029861;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9sL5fqWbHi6g8R+z+W0YnlVdwW61K08vu/pGLyPlBpM=;
+        b=QREdGaT1+gG5zyGTox/6idZqvgh8eh8QogWGdDFnxvehxtv+Kt9J7oH0lasl+jT1qF
+         gAEN1WOXo2cwpXvr+g/m0uTB9bWD7s2h1/kTth8mfX7HT2jMXdzPYJacL6f28IhJGhbO
+         a+tA6pQvEx8LtTUaxTHcQjbzwKVFCpHjdOHB6au/PyeIm+g4WfRVx5CTgenVXhNQJFPR
+         3kD2vjqT/xLjV7mio9YI8hT6nPVxsfDNG6SCSNf20g1XS48wIHnKQwh0fg7/TdVlwhzs
+         S1NHrormv3jAPWne9aFYuAmP7UR/036xUJzSYIO3NBLLEIuwSuCoOvgmGgAWXYcr5E1m
+         Vi8w==
+X-Forwarded-Encrypted: i=1; AL+hErGQYQF7bKAZHE8ju04+kBPFYo6+s6E59vK9ZT5Xv0bsx0IZgvD7XxvtWk3Z0BnOWaJbvDw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+E1UOIpfhQ6tmmU7IfSWEH6mOtbFOJaKszf7shgeVQ8KU+uddV
+	65I3NjllIrhsHqGEq4FnxVswVu9h02sHHc6BxJiZorejAwFIshPV9dxQBBw/I2oD9sLl9aDRn6P
+	XyZq65hV98dH7kg==
+X-Received: from oabus13.prod.google.com ([2002:a05:6870:df8d:b0:4ad:8f23:4d1b])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:c1b2:b0:4d6:90f4:48ab with SMTP id 5614622812f47-56b97c18413mr3157501b6e.45.1794425055330;
- Wed, 11 Nov 2026 11:24:15 -0800 (PST)
-Date: Wed, 11 Nov 2026 19:24:04 +0000
+ 2002:a05:6870:1644:b0:49e:f7c:fa52 with SMTP id 586e51a60fabf-4ae46ba7423mr2997611fac.36.1794425060739;
+ Wed, 11 Nov 2026 11:24:20 -0800 (PST)
+Date: Wed, 11 Nov 2026 19:24:08 +0000
+In-Reply-To: <20261111192411.4133780-1-dmatlack@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,9 +79,10 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261111192411.4133780-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
-Message-ID: <20261111192411.4133780-1-dmatlack@google.com>
-Subject: [RFC PATCH 0/7] vfio: selftests: Add peer-to-peer DMA selftest
+Message-ID: <20261111192411.4133780-5-dmatlack@google.com>
+Subject: [RFC PATCH 4/7] vfio: selftests: Add vfio_pci_dmabuf_create() helper
 From: David Matlack <dmatlack@google.com>
 To: dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, 
 	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
@@ -94,154 +98,84 @@ Cc: Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
 	Sumit Semwal <sumit.semwal@linaro.org>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This series can be found on GitHub:
+Add vfio_pci_dmabuf_create() and __vfio_pci_dmabuf_create() to export a
+VFIO PCI region range as a dma-buf fd via VFIO_DEVICE_FEATURE_DMA_BUF,
+and preserve -errno on failure in vfio_device_feature_ioctl().
 
-  https://github.com/dmatlack/linux/tree/vfio/selftests/p2pdma/rfc/v1
+Native iommufd maps device MMIO BARs for peer-to-peer DMA via dma-buf
+file descriptors rather than VM_PFNMAP virtual addresses.
 
-This series adds a peer-to-peer (P2P) DMA selftest to the VFIO
-selftests. The test pairs an initiator device supported by the VFIO
-selftests driver framework (dsa, igb, ioat, mlx5, or nv_falcon) with a
-target device that exposes a memory BAR, maps the target's BAR into the
-IOMMU, and uses the initiator to perform DMA reads and writes targeting
-the BAR.
+Signed-off-by: David Matlack <dmatlack@google.com>
+---
+ .../lib/include/libvfio/vfio_pci_device.h     |  5 +++
+ .../selftests/vfio/lib/vfio_pci_device.c      | 33 +++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-No changes to struct vfio_pci_driver_ops are needed. Because
-vfio_pci_driver_memcpy() already takes source and destination IOVAs, any
-existing selftests driver can drive P2P DMA once a peer's BAR is mapped
-into its IOMMU address space.
-
-There are two motivations for adding P2P DMA support to VFIO selftests:
-
-  1. Exercise the P2P DMA paths in VFIO and iommufd end-to-end,
-     including mapping BAR mmaps via VFIO_IOMMU_MAP_DMA in legacy
-     type1/type1v2 modes and exporting BARs via
-     VFIO_DEVICE_FEATURE_DMA_BUF + IOMMU_IOAS_MAP_FILE (and dma-buf
-     revocation) in native iommufd.
-
-  2. Lay the groundwork for testing uninterrupted P2P DMA across a Live
-     Update in the future, building on VFIO PCI Live Update support [1]
-     and the PCI core changes to keep preserved devices accessible
-     across kexec [2].
-
-Patch 1 comes from v3 of Mina's huge_fault series [3] and is included
-here for convenience. It adds vfio_pci_find_mem_bar() to locate a BAR
-range that behaves like ordinary memory, starting with QEMU's
-pci-testdev.
-
-This series applies on top of vfio/next (vfio-v7.4-rc1).
-
-[1] https://lore.kernel.org/kvm/20261102153656.1431701-1-vipinsh@google.com/
-[2] https://lore.kernel.org/linux-pci/20261019213054.3157159-1-dmatlack@google.com/
-[3] https://lore.kernel.org/kvm/20261102230445.3993629-3-almasrymina@google.com/
-
-Series Overview
----------------
-
-This series implements the following:
-
-  1. Add vfio_pci_find_mem_bar() to locate a BAR range that can be
-     safely read and written like memory, starting with QEMU's
-     pci-testdev, and verify that writes stick before returning it so
-     that unbacked pci-testdev BARs are skipped (patches 1-2).
-
-  2. Allow VFIO_SELFTESTS_BDF to contain multiple whitespace-separated
-     BDFs so multi-device tests can run via run_kselftest.sh while
-     single-device tests continue to use the first BDF (patch 3).
-
-  3. Add vfio_pci_dmabuf_create() and iommu_map_file() helpers to export
-     a VFIO PCI region range via VFIO_DEVICE_FEATURE_DMA_BUF and map it
-     into an iommufd IOAS via IOMMU_IOAS_MAP_FILE (patches 4-5).
-
-  4. Add vfio_pci_find_p2p_pair() to find a compatible (initiator,
-     target) pair from an array of VFIO PCI devices, providing a central
-     place to check P2P topology reachability in the future (patch 6).
-
-  5. Add vfio_pci_p2pdma_test, covering RAM-to-BAR, BAR-to-RAM,
-     BAR-to-BAR, and RAM-BAR-RAM roundtrip copies across all supported
-     IOMMU modes, plus iommufd dma-buf revocation when
-     PCI_COMMAND_MEMORY is cleared on the target (patch 7).
-
-Open Questions
---------------
-
-  - Re-mapping after dma-buf revocation: Clearing PCI_COMMAND_MEMORY on
-    the target device calls vfio_pci_dma_buf_move(vdev, true), which
-    notifies iommufd via iopt_revoke_notify() and unmaps the BAR from
-    the IOMMU domain. Re-enabling PCI_COMMAND_MEMORY calls
-    vfio_pci_dma_buf_move(vdev, false), allowing the dma-buf to be
-    mapped again, but dma-buf has no callback to re-populate iommufd, so
-    the existing IOAS mapping stays unmapped until userspace calls
-    IOMMU_IOAS_UNMAP and IOMMU_IOAS_MAP_FILE again.
-
-    Is requiring userspace to re-issue IOMMU_IOAS_MAP_FILE the expected
-    uAPI behavior? VFIO_DEVICE_RESET (and runtime PM transitions) on the
-    target device also bracket the reset with
-    vfio_pci_dma_buf_move(vdev, true) and vfio_pci_dma_buf_move(vdev,
-    false), tearing down any active IOMMU_IOAS_MAP_FILE mapping of that
-    device's BAR even though PCI_COMMAND_MEMORY remains enabled when
-    VFIO_DEVICE_RESET returns.
-
-  - Physical target devices and P2P topology checks: mem_bar_descs[]
-    currently only matches QEMU's pci-testdev, and
-    vfio_pci_has_p2p_path() does not yet check PCI topology or ACS to
-    verify that P2P traffic can flow between two physical endpoints.
-
-    Suggestions on physical target BARs to add to mem_bar_descs[] and on
-    checking P2P reachability from userspace are welcome.
-
-Testing
--------
-
-All patches were build-tested individually. The series was tested on
-x86_64 in QEMU 11.1 (membar-backed=on requires QEMU 10.1+) using an
-emulated Intel 82576 NIC (igb) and a pci-testdev with a 1G RAM-backed
-BAR2 behind an emulated Intel IOMMU:
-
-  qemu-system-x86_64 \
-    -M q35,accel=kvm,kernel-irqchip=split \
-    -device intel-iommu,intremap=on,caching-mode=on,device-iotlb=on \
-    -netdev user,id=net0 \
-    -device pcie-root-port,id=rp0,slot=2 \
-    -device igb,bus=rp0,addr=0.0,netdev=net0 \
-    -device pci-testdev,membar=1G,membar-backed=on \
-    ...
-
-Inside the guest, bind both devices to vfio-pci and run the test (BDF
-order does not matter):
-
-  # tools/testing/selftests/vfio/scripts/setup.sh 0000:01:00.0 0000:00:0d.0
-  # tools/testing/selftests/vfio/scripts/run.sh \
-      tools/testing/selftests/vfio/vfio_pci_p2pdma_test
-
-Or via run_kselftest.sh:
-
-  # VFIO_SELFTESTS_BDF="0000:01:00.0 0000:00:0d.0" \
-      ./run_kselftest.sh -t vfio:vfio_pci_p2pdma_test
-
-
-David Matlack (6):
-  vfio: selftests: Verify memory behavior in vfio_pci_find_mem_bar()
-  vfio: selftests: Allow multiple BDFs in VFIO_SELFTESTS_BDF
-  vfio: selftests: Add vfio_pci_dmabuf_create() helper
-  vfio: selftests: Add iommu_map_file() helper
-  vfio: selftests: Add vfio_pci_find_p2p_pair() helper
-  vfio: selftests: Add P2P DMA selftest
-
-Mina Almasry (1):
-  vfio: selftests: Add vfio_pci_find_mem_bar() helper
-
- tools/testing/selftests/vfio/Makefile         |   1 +
- .../vfio/lib/include/libvfio/iommu.h          |   9 +
- .../lib/include/libvfio/vfio_pci_device.h     |  23 +
- tools/testing/selftests/vfio/lib/iommu.c      |  29 ++
- tools/testing/selftests/vfio/lib/libvfio.c    |  53 ++-
- .../selftests/vfio/lib/vfio_pci_device.c      | 181 ++++++++
- .../selftests/vfio/vfio_pci_p2pdma_test.c     | 435 ++++++++++++++++++
- 7 files changed, 717 insertions(+), 14 deletions(-)
- create mode 100644 tools/testing/selftests/vfio/vfio_pci_p2pdma_test.c
-
-
-base-commit: 076d7e989cb69f6ded7d60f2a080eb909930061b
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+index 19d458adba1a..fd130f680a2d 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+@@ -172,6 +172,11 @@ static inline bool vfio_pci_device_match(struct vfio_pci_device *device,
+ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
+ 			   struct vfio_pci_mem_bar *mem_bar);
+ 
++int __vfio_pci_dmabuf_create(struct vfio_pci_device *device, u32 region_index,
++			     u64 offset, u64 length, u32 open_flags);
++int vfio_pci_dmabuf_create(struct vfio_pci_device *device, u32 region_index,
++			   u64 offset, u64 length, u32 open_flags);
++
+ const char *vfio_pci_get_cdev_path(const char *bdf);
+ 
+ void vfio_pci_group_setup(struct vfio_pci_device *device, const char *bdf);
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index 9840463594ab..eca6eb13d7f0 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -153,11 +153,44 @@ static int vfio_device_feature_ioctl(int fd, u32 flags, void *data,
+ 	feature->flags = flags;
+ 
+ 	ret = ioctl(fd, VFIO_DEVICE_FEATURE, feature);
++	if (ret < 0)
++		ret = -errno;
+ 	free(feature);
+ 
+ 	return ret;
+ }
+ 
++int __vfio_pci_dmabuf_create(struct vfio_pci_device *device, u32 region_index,
++			     u64 offset, u64 length, u32 open_flags)
++{
++	u8 buf[sizeof(struct vfio_device_feature_dma_buf) +
++	       sizeof(struct vfio_region_dma_range)] = {};
++	struct vfio_device_feature_dma_buf *dma_buf = (void *)buf;
++
++	dma_buf->region_index = region_index;
++	dma_buf->open_flags = open_flags;
++	dma_buf->nr_ranges = 1;
++	dma_buf->dma_ranges[0].offset = offset;
++	dma_buf->dma_ranges[0].length = length;
++
++	return vfio_device_feature_ioctl(device->fd,
++					 VFIO_DEVICE_FEATURE_GET |
++					 VFIO_DEVICE_FEATURE_DMA_BUF,
++					 buf, sizeof(buf));
++}
++
++int vfio_pci_dmabuf_create(struct vfio_pci_device *device, u32 region_index,
++			   u64 offset, u64 length, u32 open_flags)
++{
++	int fd;
++
++	fd = __vfio_pci_dmabuf_create(device, region_index, offset, length,
++				      open_flags);
++	VFIO_ASSERT_GE(fd, 0, "VFIO_DEVICE_FEATURE_DMA_BUF failed: %d\n", fd);
++
++	return fd;
++}
++
+ static void vfio_device_feature_set(int fd, u16 feature, void *data, size_t data_size)
+ {
+ 	u32 flags = VFIO_DEVICE_FEATURE_SET | feature;
 -- 
 2.56.0.567.gdb80ae8cd5-goog
 
