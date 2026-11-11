@@ -1,74 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794378825;
-	b=t+9G6tRt4VOzxy6jyX2DAd9SWkRpFSKLOoL5cPR55SJMN6usMQjyfg10Uy9rckHnMWiV
-	 AIWSw4ARwQuupz5BQ4dJu5KnJzcMNfXAq8JwGIInyyBck68gjaN7YbtBK/dkn3dsN0YxL
-	 waAXFYk4ubA2Bs3EMO2SojJC/gPxG85pOCT0dnmD0sp7PUU91dOVpqKUAsxaDcKc4AsAg
-	 e54+txU7Z37aq8WdYVFRHyEbHEwrKToj2EceZDY8QfIMglkH1UxFTGxnBAQXQEbUFhnkm
-	 jaZa6PZGCoiizinIwrEha96YJTTWrfBzQZXaKBZ6xEI1eEeN+fCItLkc1LNVZW01X+g==
+	t=1794379013;
+	b=XA9sjgqJlzRqmH3+p0kZnb7w5CjjDCaQCJxM8ISuWDLqbHnlB865v59T8KCjfZvkjMzg
+	 El6bMJoyfF25SQ+o/ESVYzqEuYbQ24dIF0fxABjYD5u1AS/jjyt2jP7q+vqpFG9mKVu3k
+	 BGEdtRKArgaLaattPszvRq6efYfel4t4piLfhFdidKxN9MOFgIrszBDJ8lDU+Bbb6KXTj
+	 QArukW911LEnb6gHUfzZ0zeIlPtib9BM1ky0dm5ydNil/L2ajXXY4qAhPt2c4ijNv5tXM
+	 8K3Yy5OLkgYfi+UXIRbiJ6jbXO4etvjJ/G/cPlKr86fem2aiHfkcBLTfD1bNHtYrU2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794378825;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=N2mgW6LEnNu8wNmnoa3+p3F6g8tYE7yJEu2kZeiGcR0=;
-	b=IFT+tIB+1Fw73/MWXYQNSkQcWGhT/vFpObsoEzzHvEwL9T2yByMMOtFXOEcPQFIPs1ZK
-	 PsUXrhKEQR+1810LqYxxu4vzJbZxydvgfLICIADY3IXT7Wo+KrHzTzuIKtqN/REgSmBk1
-	 /QspCMN8POZABqrYVgTcOIqVsMr+JHwk03i8DpOXAYihGxzoxtxkYjPiET4yd/uqpkMRc
-	 wz/Y5hkYPsa43NaJUUcThsZ5YjJBCGRvpcYLXY5nnzTd35wC0mAwIIUAot1y5r0ggaph3
-	 qVQ9v2ZlMh8zkMAQG84tA5cmX/pafgIyYZCAEjkBS+Le2qAHozDvvoHzKN+KJ7oVFhg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794379013;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=McH6AeIL65GsxoJHWP5gRjiU20cMoDx/jzFU0pTy1+4=;
+	b=UIo+nbGvOdeYHT8juAnGCbVa2SRpszKUUJk5rxsZ1QSeUa1b/9I4ZAt+bpceyCucKi46
+	 3JX0Zeg7zbYfvemgUVaJFjDQahD6Wu22EWDub5XM8KGTO+ZE8OEtZYfwMczSKGLUGmizd
+	 dLqadoHlnGIx9ymGUIqJuu3ZiZsahzTznzqKhrPj/3neW0Exrryj6YVXHuGBwoiAyaoJW
+	 AgFu3s5Hz9POAyF6f5AQvO02af5oWNX49cJw8doIlhzTubLjGWWHM8E7Tzv6ibuo8cJ3k
+	 YTlKphbpcCi4zkjSW23wPeDjMgzCiH1F+xJfWsvv44sxZLninZQy6ltxFOXooJc5yIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="Qms/pbQJ";
-	arc=none smtp.remote-ip=209.85.208.71
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZjUt+aO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D1C606A320
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 06:33:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51D1C606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0064606A31C
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 06:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Qms/pbQJ
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6b787b2746eso189518a12.2
-        for <kvm@vger.kernel.org>; Tue, 10 Nov 2026 22:33:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794378824; x=1794983624; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N2mgW6LEnNu8wNmnoa3+p3F6g8tYE7yJEu2kZeiGcR0=;
-        b=Qms/pbQJW3ljqh8X0oJjLVKNPkfZm0ujNUtE79vHO+UL16Xvk/VRqm7w0xI7VxNgtN
-         wyzqIbxIDNIS+ON/Ysasnc4MNsAPaN5eCc0IPDV+A2a4erhA0tU7vYvtFP5F0QgFirWs
-         Cx5gmMw21ZzUnvbkoMJkv5gp0buI38Uq2v2H6t27d0T75Pkb+uKVMtMqGjrcw+tYvmPd
-         G1z52RcWFEv7CuMQiHnZVCXwBoTlb8un4IgbRArViwjGM7XoOGmKMRXM03sV9Bs6qcO8
-         1F+9nMKUPw0cGrNBtowIegT/2FlFdOTVvJvDNPqjA1VGdr0eMuPdV/9y6h9Mm4Osl73A
-         5Dew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794378824; x=1794983624;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=N2mgW6LEnNu8wNmnoa3+p3F6g8tYE7yJEu2kZeiGcR0=;
-        b=Ar5oDmCzYx2lxsFpnfv9RKLCd4TeJr95bOHYOUQ2Og2IBLh4z/yGNLt4rQb8ODWfPR
-         odfg3+EqrLJvbUuT/hNggJffnWSTUFOejBPhbP9f9K1cjC9dmKzSa5cXDXUA9jv8bYNS
-         MJoGfsFp/65BCDKAJcd+DHdLZcwgfeURppEgTpmjEzsLW9wFdci1SeHZEKNqMN9PP+Ch
-         XEJNgcJbkUD7DDIbCtbSCYejnnz0klgQjDUiDHK4L7Agy4zGTyeqbeVZN0EGKJ9T529Q
-         uWUcNuQO/wJMO4WH2/LEBv2mYtafsCacR/eKimACRhrY2kPzt3WL7Z18YYNwZzwpcEft
-         b7pQ==
-X-Forwarded-Encrypted: i=1; AL+hErHJjgrYb/X3iG0izChR2FfgO0vjJ+CpTt0EIH1Ya/ZjYav2pT4j0e6iwUZJm5fxzvg6Vk4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8NCaD0LQ6LWHpW0sM8F0b70BOs8r93feTun/hpAvM7SqZE58IP
-	GqnEqPZaFNv4/Cx14UVoxORdPaxqdnbjNEZhVz/LBFST4uurHlz1ltgAqm39sttOpLeeYkSGVTZ
-	0hcYPTuGn3zR0U7OiqA==
-X-Received: from edgi9-n1.prod.google.com ([2002:a05:6402:a589:10b0:6b7:8226:b2f0])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:613:b0:6b1:ce0f:eb6b with SMTP id 4fb4d7f45d1cf-6b777700516mr806340a12.31.1794378823419;
- Tue, 10 Nov 2026 22:33:43 -0800 (PST)
-Date: Wed, 11 Nov 2026 06:33:42 +0000
-In-Reply-To: <179432329215.2329176.14453669404153142360.b4-review@b4>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZjUt+aO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB7B1F00A06;
+	Wed, 11 Nov 2026 06:36:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794379013;
+	bh=McH6AeIL65GsxoJHWP5gRjiU20cMoDx/jzFU0pTy1+4=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=gZjUt+aO7oKIfhlnQvcphuoEIPS2wKrJThC8QoD7q+lHeyGVzRbuMVQUCrwBqRzBF
+	 WgJOqKpKIbAOYgxpXHg2/pqgArciVEkB08A0PN1g8yPnW5fF2GsSdAjtLIv4OXVvhN
+	 m0rd8Q725G6/IdKub+VkYvdg2LKH/GM6l0aw0bpvbfRKZUl+mBecWo1+9Ts4vTDYca
+	 m22TOsfy0XB+T9b/xK/ekLvks464LaoC6gUZxxxQedTvUypl4vubPTtJnBkDmoF6Nn
+	 b4l2J6jJI6YdxdZFfmRo1dRAADhApDqPJr0/mIm59viCPQRNrMN4fts8XAPzMcIXRD
+	 UN0LaakesregA==
+Message-ID: <sashiko-outbox-208452@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 07/12] KVM: x86: Route nested VMware backdoors to KVM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zack Rusin" <zack.rusin@broadcom.com>, kvm@vger.kernel.org
+In-Reply-To: <e03558351edde6ccd508fb38d9c2fd63e85370db.1794374897.git.zack.rusin@broadcom.com>
+References: <cover.1794374897.git.zack.rusin@broadcom.com>
+ <e03558351edde6ccd508fb38d9c2fd63e85370db.1794374897.git.zack.rusin@broadcom.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 06:36:52 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,118 +58,154 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-7-tarunsahu@google.com>
- <179432329215.2329176.14453669404153142360.b4-review@b4>
-Message-ID: <9huzv763q3ll.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 06/19] kho: kexec_metadata: Add the feature header
-From: tarunsahu@google.com
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
-	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org, 
-	kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+Thank you for your contribution! Sashiko AI review found 4 potential
+issues to consider:
+- [High] KVM: VMX: nested backdoor #GP emulation checks L1 I/O
+  intercepts
+- [Medium] KVM: VMX: handle_exception_nmi() misses nested backdoor check
+  for L2
+- [Medium] KVM: x86: nested backdoor #GP filter allows RDPMC and imm8
+  I/O opcodes
+- [Medium] KVM: x86: nested backdoor #GP check ignores vectoring and
+  error code
+--
 
->> The kexec metadata subtree currently uses a monolithic u32 version field
->> to identify the metadata structure layout. Any change to the structure,
->> even an optional additive field, requires incrementing the version and
->> breaks compatibility between adjacent kernels.
->> 
->> Replace the u32 version field in struct kho_kexec_metadata with
->> struct kho_ser_hdr using DECLARE_KHO_SER. Later fields can be appended
->> under new feature indices without breaking compatibility across kexec.
->> Also make the 3-byte padding hole between previous_release and kexec_count
->> explicit as reserved[3].
->> 
->> During deserialization, validate the blob size against the header size
->> and reject unknown required features. A legacy v1 metadata blob is
->> ignored with a warning.
->> 
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->>
->> diff --git a/include/linux/kho/abi/kexec_metadata.h b/include/linux/kho/abi/kexec_metadata.h
->> index e9e3f7e38a7c..316b3e5ad01b 100644
->> --- a/include/linux/kho/abi/kexec_metadata.h
->> +++ b/include/linux/kho/abi/kexec_metadata.h
->> @@ -18,28 +18,31 @@
->>  #ifndef _LINUX_KHO_ABI_KEXEC_METADATA_H
->>  #define _LINUX_KHO_ABI_KEXEC_METADATA_H
->>  
->> +#include <linux/build_bug.h>
->> +#include <linux/kho/abi/feature.h>
->>  #include <linux/types.h>
->>  #include <linux/utsname.h>
->>  
->> -#define KHO_KEXEC_METADATA_VERSION 1
->> -
->>  /**
->>   * struct kho_kexec_metadata - Kexec metadata passed between kernels
->> - * @version: ABI version of this struct (must be first field)
->>   * @previous_release: Kernel version string that initiated the kexec
->> + * @reserved: Reserved for structure alignment; must be zero
->>   * @kexec_count: Number of kexec boots since last cold boot
->>   *
->> - * This structure is preserved across kexec and allows the new kernel to
->> + * This structure is preserved across kexec and allows the target kernel to
->>   * identify which kernel it was booted from and how many kexec reboots
->> - * have occurred.
->> + * have occurred. Preceded by &struct kho_ser_hdr.
->>   *
->>   * __NEW_UTS_LEN is part of uABI, so it safe to use it in here.
->>   */
->>  struct kho_kexec_metadata {
->> -	u32 version;
->>  	char previous_release[__NEW_UTS_LEN + 1];
->> +	u8 reserved[3];
->>  	u32 kexec_count;
->> -} __packed;
->> +} __aligned(8);
->
-> Why __packed was not removed in the first commit? __aligned(8) should 
-> not be needed, given that it must follow DECLARE_KHO_SER which is 8-byte 
-> aligned.
+commit 4e4e8d804a5f44b6aaf5283d27ac3c5b02f0876c
+Author: Zack Rusin <zack.rusin@broadcom.com>
 
-because this structure is not naturally aligned and we have o add
-reserved[3] to make it aligned. So it will be ABI breakage. Adding
-the KHO_SER_HDR is also ABI breakage, So I kept both changes in the same patch.
+KVM: x86: Route nested VMware backdoors to KVM
 
-For the __aligned(8) part, yes we can remove it, I will update it.
+This commit adds KVM_VMWARE_ENABLE_NESTED_BACKDOOR so KVM can handle #GP
+exceptions from CPL3 VMware backdoor I/O accesses in L2 guests even when
+L1 intercepts #GP.
 
->
->> +
->> +/* Register kho_kexec_metadata with KHO serialization accessors */
-> here and in all other places, please remove this comment.
->
-Got it.
+Link: https://lore.kernel.org/r/CADH9ctAGt_VriKA7Ch1L9U+xud-6M54GzaPOM_2sSA=
+780TpAYw@mail.gmail.com
+Link: https://lore.kernel.org/r/CABgObfb3Ttfg6H+_RpNQGSYKw9BLEwx3+EysXdL-wb=
+pd1pkGHQ@mail.gmail.com
+Link: https://lore.kernel.org/r/aAjrOgsooR4RYIJr@google.com
+Link: https://lore.kernel.org/r/aIEnm7Y1VN-PCfF8@google.com
 
-~Tarun
+> diff --git a/arch/x86/kvm/vmware.c b/arch/x86/kvm/vmware.c
+> index 8407dccf81fd9..066f033e7ea3b 100644
+> --- a/arch/x86/kvm/vmware.c
+> +++ b/arch/x86/kvm/vmware.c
+> @@ -117,6 +117,14 @@ int kvm_vmware_hypercall(struct kvm_vcpu *vcpu)
+>  	return 0;
+>  }
+> =20
+> +bool kvm_is_vmware_nested_backdoor(struct kvm_vcpu *vcpu, u32 cpl)
+> +{
+> +	return kvm_is_vmware_nested_backdoor_enabled(vcpu->kvm) && cpl =3D=3D 3=
+ &&
+> +	       lower_32_bits(kvm_rax_read_raw(vcpu)) =3D=3D VMWARE_HYPERVISOR_M=
+AGIC &&
+> +	       kvm_is_vmware_io_port(vcpu, kvm_rdx_read_raw(vcpu));
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_is_vmware_nested_backdoor);
 
->> +DECLARE_KHO_SER(kho_kexec_metadata, 72, 0, 0);
->>  
->>  #define KHO_METADATA_NODE_NAME "kexec-metadata"
->>  
->> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->> index 6f1f55fe3181..2edd772bb6d3 100644
->> --- a/kernel/liveupdate/kexec_handover.c
->> +++ b/kernel/liveupdate/kexec_handover.c
->> @@ -1740,6 +1740,7 @@ static __init int kho_out_fdt_setup(void)
->>  
->>  static void __init kho_in_kexec_metadata(void)
->>  {
->> +	DECLARE_KHO_SER_HDR(kho_kexec_metadata, *fhdr);
->
-> Please don't do this, use kho_ser_hdr directly.
->
-> -- 
-> Pasha
+[Severity: Medium]
+Can an L2 CPL3 guest use kvm_is_vmware_nested_backdoor() to execute RDPMC
+or immediate-port IN/OUT instructions in L0 instead of delivering #GP or a
+nested intercept to L1?
+
+kvm_is_vmware_nested_backdoor() checks only CPL, EAX, and DX, while
+EMULTYPE_VMWARE_GP validates the instruction with
+kvm_is_vmware_backdoor_opcode(), which also accepts RDPMC (0x0f 0x33) and
+8-bit immediate IN/OUT (opcodes 0xe4..0xe7).  If L2 at CPL3 executes RDPMC
+with ECX set to a VMware pseudo-PMC (0x10000..0x10002) while EAX holds
+VMWARE_HYPERVISOR_MAGIC and DX holds 0x5658 or 0x5659, SVM emulates the
+pseudo-PMC RDPMC in L0 (because gp_interception() passes
+EMULTYPE_NO_DECODE and check_rdpmc() does not check is_guest_mode()) and
+VMX fails emulation in vmx_check_intercept() with X86EMUL_UNHANDLEABLE;
+similarly, an IN/OUT imm8 on SVM for a port permitted by L2's IOPL/TSS
+bitmap bypasses L1's VMCB12 IOPM intercept.
+
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 1a98f28651f70..2d12970365649 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+[ ... ]
+> @@ -6490,6 +6491,10 @@ static bool nested_vmx_l0_wants_exit(struct kvm_vc=
+pu *vcpu,
+>  			return true;
+>  		else if (is_ve_fault(intr_info))
+>  			return true;
+> +		else if (is_gp_fault(intr_info) &&
+> +			 kvm_is_vmware_nested_backdoor(vcpu,
+> +						       vmx_get_cpl(vcpu)))
+> +			return true;
+>  		return false;
+
+[Severity: High]
+Does claiming the #GP here cause KVM to synthesize a nested
+EXIT_REASON_IO_INSTRUCTION VM-Exit to L1 instead of emulating the backdoor
+in L0 when L1 intercepts the I/O port?
+
+After nested_vmx_l0_wants_exit() returns true, handle_exception_nmi()
+calls kvm_emulate_instruction(vcpu, EMULTYPE_VMWARE_GP) without
+EMULTYPE_NO_DECODE:
+
+arch/x86/kvm/x86.c:x86_emulate_instruction() {
+    ...
+	r =3D x86_emulate_insn(ctxt, is_guest_mode(vcpu) &&
+				   !(emulation_type & EMULTYPE_NO_DECODE));
+    ...
+}
+
+Because check_intercepts is true, x86_emulate_insn() calls
+vmx_check_intercept() at X86_ICPT_PRE_EXCEPT (before check_perm_in() /
+check_perm_out()) and X86_ICPT_POST_EXCEPT.  When vmcs12 intercepts I/O
+ports via CPU_BASED_UNCOND_IO_EXITING or CPU_BASED_USE_IO_BITMAPS,
+vmx_check_intercept() reflects EXIT_REASON_IO_INSTRUCTION to L1 instead of
+handling the backdoor in L0, and also allows L2 CPL3 code to force a
+synthetic I/O exit to L1 on any intercepted port 0x00..0xff via IN/OUT
+imm8.
+
+[Severity: Medium]
+What happens on VMX when L1 does not intercept #GP in
+vmcs12->exception_bitmap?
+
+vmx_update_exception_bitmap() intercepts GP_VECTOR in vmcs02 whenever
+kvm_is_vmware_backdoor_enabled() is true, and when
+nested_vmx_l1_wants_exit() returns false, nested_vmx_reflect_vmexit()
+routes the L2 #GP to handle_exception_nmi():
+
+arch/x86/kvm/vmx/vmx.c:handle_exception_nmi() {
+    ...
+	if (!vmx->rmode.vm86_active && is_gp_fault(intr_info)) {
+		WARN_ON_ONCE(!kvm_is_vmware_backdoor_enabled(vcpu));
+		if (error_code) {
+			kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
+			return 1;
+		}
+		return kvm_emulate_instruction(vcpu, EMULTYPE_VMWARE_GP);
+	}
+    ...
+}
+
+Unlike SVM's gp_interception(), handle_exception_nmi() does not check
+is_guest_mode(vcpu) or kvm_is_vmware_nested_backdoor(), so L0 emulates
+EMULTYPE_VMWARE_GP for L2 even when KVM_VMWARE_ENABLE_NESTED_BACKDOOR is
+disabled and without the CPL3/EAX/DX filter.
+
+[Severity: Medium]
+Can nested_vmx_l0_wants_exit() and SVM's gp_interception() claim a #GP
+that occurred during L2 event vectoring (or with a non-zero error code on
+VMX)?
+
+Neither check verifies that the #GP came from instruction execution rather
+than IDT event delivery (IDT_VECTORING_INFO_FIELD valid on VMX or
+exit_int_info valid on SVM).  If an interrupt or exception vectors in L2
+at CPL3 while EAX =3D=3D VMWARE_HYPERVISOR_MAGIC and DX is a backdoor port =
+and
+IDT vectoring raises #GP(0), L0 claims the exit and emulates the
+instruction at RIP instead of reflecting the vectoring #GP to L1; on VMX,
+handle_exception_nmi() runs before the VECTORING_INFO_VALID_MASK check and
+x86_emulate_instruction() calls kvm_clear_exception_queue(), dropping any
+vectored exception queued from IDT_VECTORING_INFO_FIELD.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1794374897.gi=
+t.zack.rusin@broadcom.com?part=3D7
