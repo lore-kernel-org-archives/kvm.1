@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794420571;
-	b=SjonVUR8SP3niVCYOarEZI4UMHZlZh0fKCTCRjUCUO8rUt/BLz+5KiTAFAZ+mA1BvH65
-	 wbB5JxZmUJkQQxQtMmkakyv7tXw8EWsHdWjrOvPM+W9bJX5Mz53uqEtU/FUnxOfcCfwru
-	 ue+i1Pw6nk/gjuz+EP5ExEhN0kn8tzM9FgQUzf59aq16hA4v/yOYz1VEoSAWywGNI1GYU
-	 9UjHlGon7gniz7wENklltPJdu59kV5JXkmmPZ284DWQKbyARfq5upwoFs8cg2G6aZECVA
-	 rfuZtciijqIGhlLGu1xp/4jr3feAwEiqMkY+CggGi3bvOlo6z2qCI5WV2joqqYA7BoQ==
+	t=1794420570;
+	b=NoNxxNYHJeXU9irhGDFtEshJkwHeHxFxRT8xC/xwifmt7aewPPK233/ms8WICoHMLtCR
+	 hmbiRZynIxnDsCivgDHoWwLWczUGgfraQv2unuEckBLbcQBXiVbJYf/vPg8L5d26OiNSq
+	 DaTNXSQQQLteuhBVC1FhvOEEf7szagv2rm8GTCG/ZzTzO03OuTb1+5M7Oblc2KK/B2QC0
+	 DAMjlaGflP2t/UbfqG0/SgqezNL/FF8lxbFKsBY+z7/J7Fkj+l7dpCV5QRhhyS46Q4P86
+	 4lJjyHM7vNa6dlV682M7NdU8yOC0MOpa2tcst7F8Ta4ltM+s3ny1nOFk5XliWFh2Ipg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794420571;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794420570;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=0Cp728EjuFyU5LORJlGxffVkYMCDOu/AruEqIXPRi9Q=;
-	b=YX8r/0b1HVgu4ugyvSLTL6oV6GV8AhLJP21OgKp5iHLx4zbRz6XewDWAOAvzlYDdEvnP
-	 j3T6zK+CPy96FlajRcHu4/oQmZiMtftxVRQrK1XU4TuT8jK+Bt4BNBjs/DMkSbFAQi1p/
-	 L/nBdE5pStsqr6G+YNyGE7kYy2o6LfaPoobC2jT2ug1q5oHEs4jjAgpfXLgEgmY6ZkLxT
-	 9ExIdw2kCUgj0QnOYQsCbQ+ebiIQ+Pwnv/CkTW8BjolUhltwPgyhY85QIoIESfyhCRXNw
-	 YncOdeDIHhjlC5WB+HWdxIGTnWeLJcaV3ZqHDJLLUYTBJHFluuxH6d+RJLV2lmHA1Lg==
+	bh=c7IHUPvn0FTv4nhZrlIYskcq6KzbA1Y3PUHGVTFDTII=;
+	b=e32yKrfoS/CtFEWISk8iHs2ga86CtsUTWMXb6HpaX3TlmqTI5HLd+OTEQk3y2GmTMpsY
+	 GRUK7JOzWJypkD8VO3VkMsTV8sZ1lM4rpPTA2QazMK16QM7KRS6zFUl1dl2M6JSg3bNwb
+	 0dZoExOCZlS4VPx5KPAod1bsIwJpybyB/CRlTgMNQmwgC5Y3hUtOmr0C4y1XTGnFJ8L2O
+	 +grxMOV+/iNXMh4hBpd1oFcsO1W3NDzD3+4ktCadjJIglpNUVbS2Ar+ND6yQIAGZYkEs+
+	 dNB8ewdLfuaTxYzjCrUpVAIlCqvGxKDNPuFCW8nta8ehUgzEXFxBWHizIAYCRc8bTyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b="c/SVvFgU";
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b="W/Kqrfs9";
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60BE60A260A;
-	Wed, 11 Nov 2026 18:09:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C60BE60A260A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4763606A321;
+	Wed, 11 Nov 2026 18:09:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4763606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=c/SVvFgU
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=W/Kqrfs9
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=0Cp728EjuFyU5LORJlGxffVkYMCDOu/AruEqIXPRi9Q=; b=c/SVvFgUYUltwDQy6ocScA7wHO
-	KDoZoGedwvN5LpuW2FtpeUkIzdNyiihEgq/LyX3Uq9oy4j2LonpGeYMKQ2RS7yWZg/eoSCv4oq0lw
-	S3ZM/Ld9X5h+qTJmhBdET9q9IU1URjld7jQ97nkeAXiDOIjz2DuigjH/hSzftnBD/GQCJO/Z84IGb
-	+MqHzegkwud4+Mg0M9MHMIvcgU3aq3YHQQaJxKEtO7ENMjcH0Bfs45lk33sMt6uqagCYqp2qRy4ML
-	0xSRAaYu8hxpabFkbj0vog8BZcwL1alMG9b3Zp007JNE0pWlPNS3PdBh/9CFY+XkXZgtDfc6cDq/0
-	ce2fmYJg==;
+	bh=c7IHUPvn0FTv4nhZrlIYskcq6KzbA1Y3PUHGVTFDTII=; b=W/Kqrfs9FVuwmhDDBSfI5xq9nL
+	apeIKqR4cGBVdji2JSe0HO2czujbhfwt7nveDrRewLK0txz7G8hX55QRDP9MDJZac8mkgOl7oDQi1
+	QJoGLbLOQJAhnveFvuBNg5PUTE2cjnIaDStpChL0f7xJO36OM/jEfVcnTBQ4OymblQN2ZYLRx4a1W
+	po686OGJGScsBQXWsoEwFRURJZMf9Xe6OLPHNi1gOhve/RCbmus/kcYZnpLPzKSKYVmUEio+8nBkQ
+	585LTUxUmEHjcE+R0TvwMMCwPLhxXfbyVX7cKOj81QkSYIQHgcRvQSe0ys6cn8GA+5qHe6j2CTbBJ
+	SJtlEeeg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRClA-0000000CKxI-0Kt3;
-	Wed, 11 Nov 2026 18:09:24 +0000
+	id 1xRCl9-0000000CKvc-1ynj;
+	Wed, 11 Nov 2026 18:09:23 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRCl9-0000000HWtk-3gXj;
+	id 1xRCl9-0000000HWsm-181T;
 	Wed, 11 Nov 2026 18:09:23 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -78,9 +78,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Dongli Zhang <dongli.zhang@oracle.com>,
 	joe.jin@oracle.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v13 25/26] KVM: x86: Use a single time snapshot in kvm_vm_ioctl_set_clock()
-Date: Wed, 11 Nov 2026 10:09:21 -0800
-Message-ID: <20261111180922.4177927-26-dwmw2@infradead.org>
+Subject: [PATCH v13 12/26] KVM: x86: Remove pvclock_gtod_data and private timekeeping code
+Date: Wed, 11 Nov 2026 10:09:08 -0800
+Message-ID: <20261111180922.4177927-13-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261111180922.4177927-1-dwmw2@infradead.org>
 References: <20261111180922.4177927-1-dwmw2@infradead.org>
@@ -99,88 +99,92 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The KVM_CLOCK_REALTIME handling read CLOCK_REALTIME with
-ktime_get_real_ns() and then anchored the result at a different
-instant: the master clock reference point captured a few lines
-earlier, or a separate get_kvmclock_base_ns() read. The time elapsed
-between the two reads is added to the restored clock as error --
-bounded by the interrupts-off critical section, but gratuitous now
-that the timekeeping core can snapshot CLOCK_REALTIME and
-CLOCK_MONOTONIC_RAW at the same instant.
+Remove the now-unused KVM-private timekeeping infrastructure:
 
-Take one ktime_get_snapshot_id(CLOCK_REALTIME) snapshot and derive
-both the realtime correction and the raw reference point from it. In
-master clock mode, keep anchoring at master_kernel_ns -- so that
-'system_time' cannot go negative for a very small data.clock, as the
-existing comment explains -- by projecting the snapshot's realtime
-value back to that reference point; CLOCK_REALTIME and
-CLOCK_MONOTONIC_RAW tick at the same rate across the few ns in
-between, give or take NTP slew.
+ - struct pvclock_clock and struct pvclock_gtod_data
+ - update_pvclock_gtod() and its seqcount-protected state copy
+   (the private readers were already removed when their last callers
+   went away)
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/x86.c | 40 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 35 insertions(+), 5 deletions(-)
+ arch/x86/kvm/x86.c | 56 ----------------------------------------------
+ 1 file changed, 56 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b9d3b2715403..921d834b9682 100644
+index f7dd4129dc51..bd82c9b38233 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -5143,19 +5143,49 @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, void __user *argp)
- 	 * 'system_time' when 'data.clock' is very small.
- 	 */
- 	if (data.flags & KVM_CLOCK_REALTIME) {
--		u64 now_real_ns = ktime_get_real_ns();
-+		struct system_time_snapshot snap = {};
-+		u64 now_real_ns;
-+
-+		/*
-+		 * Snapshot CLOCK_REALTIME and CLOCK_MONOTONIC_RAW at the
-+		 * same instant, so that the elapsed time applied to
-+		 * data.clock and the reference point the result is anchored
-+		 * to are coherent.
-+		 */
-+		ktime_get_snapshot_id(CLOCK_REALTIME, &snap);
-+		now_real_ns = ktime_to_ns(snap.systime);
-+		now_raw_ns = ktime_to_ns(ktime_mono_to_any(snap.monoraw,
-+							   TK_OFFS_BOOT));
-+
-+		/*
-+		 * When the master clock is in use, anchor at its reference
-+		 * point instead, projecting the realtime value back to the
-+		 * same instant. The two clocks tick at the same rate across
-+		 * the few ns in between, give or take NTP slew. In the
-+		 * absurd case that the projection would take a
-+		 * CLOCK_REALTIME set to within moments of the 1970 epoch
-+		 * (legal with CAP_SYS_TIME) below zero, clamp it to zero;
-+		 * the anchor must still move to master_kernel_ns, from
-+		 * which the master clock consumers compute system_time,
-+		 * lest a near-zero data.clock wrap it below zero.
-+		 */
-+		if (ka->use_master_clock) {
-+			u64 delta = now_raw_ns - ka->master_kernel_ns;
-+
-+			now_real_ns = now_real_ns > delta ? now_real_ns - delta : 0;
-+			now_raw_ns = ka->master_kernel_ns;
-+		}
+@@ -889,60 +889,6 @@ static inline bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu)
+ 	       kvm_request_pending(vcpu) || xfer_to_guest_mode_work_pending();
+ }
  
- 		/*
- 		 * Avoid stepping the kvmclock backwards.
- 		 */
- 		if (now_real_ns > data.realtime)
- 			data.clock += now_real_ns - data.realtime;
--	}
+-#ifdef CONFIG_X86_64
+-struct pvclock_clock {
+-	int vclock_mode;
+-	u64 cycle_last;
+-	u64 mask;
+-	u32 mult;
+-	u32 shift;
+-	u64 base_cycles;
+-	u64 offset;
+-};
 -
--	if (ka->use_master_clock)
-+	} else if (ka->use_master_clock) {
- 		now_raw_ns = ka->master_kernel_ns;
--	else
-+	} else {
- 		now_raw_ns = get_kvmclock_base_ns();
-+	}
- 	ka->kvmclock_offset = data.clock - now_raw_ns;
- 	kvm_end_pvclock_update(kvm);
+-struct pvclock_gtod_data {
+-	seqcount_t	seq;
+-
+-	struct pvclock_clock clock; /* extract of a clocksource struct */
+-	struct pvclock_clock raw_clock; /* extract of a clocksource struct */
+-
+-	ktime_t		offs_boot;
+-	u64		wall_time_sec;
+-};
+-
+-static struct pvclock_gtod_data pvclock_gtod_data;
+-
+-static void update_pvclock_gtod(struct timekeeper *tk)
+-{
+-	struct pvclock_gtod_data *vdata = &pvclock_gtod_data;
+-
+-	write_seqcount_begin(&vdata->seq);
+-
+-	/* copy pvclock gtod data */
+-	vdata->clock.vclock_mode	= tk->tkr_mono.clock->vdso_clock_mode;
+-	vdata->clock.cycle_last		= tk->tkr_mono.cycle_last;
+-	vdata->clock.mask		= tk->tkr_mono.mask;
+-	vdata->clock.mult		= tk->tkr_mono.mult;
+-	vdata->clock.shift		= tk->tkr_mono.shift;
+-	vdata->clock.base_cycles	= tk->tkr_mono.xtime_nsec;
+-	vdata->clock.offset		= tk->tkr_mono.base;
+-
+-	vdata->raw_clock.vclock_mode	= tk->tkr_raw.clock->vdso_clock_mode;
+-	vdata->raw_clock.cycle_last	= tk->tkr_raw.cycle_last;
+-	vdata->raw_clock.mask		= tk->tkr_raw.mask;
+-	vdata->raw_clock.mult		= tk->tkr_raw.mult;
+-	vdata->raw_clock.shift		= tk->tkr_raw.shift;
+-	vdata->raw_clock.base_cycles	= tk->tkr_raw.xtime_nsec;
+-	vdata->raw_clock.offset		= tk->tkr_raw.base;
+-
+-	vdata->wall_time_sec            = tk->xtime_sec;
+-
+-	vdata->offs_boot		= tk->offs_boot;
+-
+-	write_seqcount_end(&vdata->seq);
+-}
+-#endif
+-
+ static s64 get_kvmclock_base_ns(void)
+ {
+ 	/* Count up from boot time, but with the frequency of the raw clock.  */
+@@ -7455,8 +7401,6 @@ static int pvclock_gtod_notify(struct notifier_block *nb, unsigned long unused,
+ {
+ 	struct timekeeper *tk = priv;
  
+-	update_pvclock_gtod(tk);
+-
+ 	/*
+ 	 * Pairs with the READ_ONCE() in the lockless readers; the race is
+ 	 * benign by design, relying on eventual consistency (the notifier
 -- 
 2.43.0
 
