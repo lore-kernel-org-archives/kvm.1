@@ -1,69 +1,107 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794385120;
-	b=nkCS5tIYflP4SMQJSSdG6pfejuz6IpYcSF1xViyRyVsY5QcWWXTm2zlI9MjBzAt+jDtS
-	 5tyiKo+HRINZdeJ17VJ9HXRNT/uVyMVyu3BViNJtkh8Q85UDGjSd72sR+2SisXToLSPg2
-	 wsRAFPXKrdYwlpUoVsYcvByy8M8X8+0Vl+1j89c9pB4qb7CkzS32xlEvxGnkuu85ro7cH
-	 ncCMtcWyoyW6agxJh3Ye1W6NVvwKYSU3BtWw4LQ7fLrHuNyOD4Yvw1CQbwOdoZyiIP0pC
-	 bTLS4fDKCEdJ2iO8ZW7ofIDPPLsYBkP8WHXORSWG8HSABrkIMP17zuUdWtD4lRs93hg==
+	t=1794385834;
+	b=v8aEckAsZzl5R0KO9pt34m5A4YOSfpO6zxbNtkea1CnbcQW/O+3FwtpupdrkhQGvtxUM
+	 ucY16p1beFHJQlHyTeGPU45aGBKohabSWKTUk12ep7FgoN0FnaU2zE9F50SBMgCt7wz2y
+	 KWr1Ofiy54MPkMZCrjFleMH48hXe+KO8XynLRxZxeHbbee2TaVjQoek13KCIzXPicxUfU
+	 E8vQMqFrgV4vJaWh3+1XIdoU/f7+Y0/34mq3mme4onWTnAxSem+5VXwp/N9MweLwwsvWk
+	 DkPuHlWBLZJ54SvoHdtB+7Hto2Vnx9HfuqxduxUFQuUv/pLXJnfz/EJCX7oFVApK/Rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794385120;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794385834;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
-	bh=VnybPefRESdO1ApreizUoK/GZcifV+vbb0Q/Cy6Xtbc=;
-	b=s9PH1LDEAZRKBPDXLPxm0LDOkrFaQO4Ln38pO3iMVA5Z/THJqleOWRKkqa95Dq6sOK5B
-	 YmJqy4B2wZqYJJ68GZ8O120vDCQ826XcvZX6ugvnkwidJRHSzsuFD/nRDMZimhPMPDxZQ
-	 Y/19dWgmf3KY3OhnRl8qkESm6tyiE0G+X8VdN2IUasOiBv44DUUos89ndXlHSYChj8x1j
-	 aDREnRc5sYqUttYBNtpH1KN/ykVILjaZ4pqJdxUbAaqRZ0WcOdqqWjXtEmP9yzNe7it6F
-	 sbSqi7+pXGAo7g4K2u9qms20kHU3pHCkdXgMXfPWTiSnjwiAauZqaAoQIc0NH0mawrg==
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=mpfsiWos8F/vl9UH8UsPq3EZ0RisGA+Dhf9KlrFQ204=;
+	b=e/xCqtWyb+S26JcP28zq9RNDyUn49PkJKu8OodtDmvUWYkCwy0O0Cvg9XmAOql8ox224
+	 M0GTTsOoRykcqy5FhQpPa+jEs52BgeLlGUlmIwvdm9XwCwdkrRkMHzhel7484YSCZKljY
+	 LF9bVSIvbZ2kBYnN53+muYfuSW72mKdhuaHt5ukkk8cCMSZ2ZMqfWki/HxrfjopnuXQ1r
+	 Oi3nFN/ek/rBdp6EyWMvRlHaFlBr1Tbkv0gDDRJJu4lY0aJgcODiDNjVJplBOAs5hph9Z
+	 U7ABJ0QSKurW3elx5H/q4yy1TG9ismNkG5mODc5sv340jYQaCe1Kpqa0Lm98J3kT3fw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z+fM5pI5;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TwVTyPj3;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Nni6Jgu8;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4229606A31C
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:18:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4229606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C7B606A31C
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:30:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5C7B606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z+fM5pI5
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TwVTyPj3;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Nni6Jgu8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794385118;
+	s=mimecast20190719; t=1794385832;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VnybPefRESdO1ApreizUoK/GZcifV+vbb0Q/Cy6Xtbc=;
-	b=Z+fM5pI5AVgF69envAqDKxd63bytWfQgxriHkRJfWqnyvAj4R7aephXbeuEaVZIlPzE68S
-	T8jbPqIINJEnbCMuz0hD6f0B5UBn4JPDqSmJ96IRAqtd419mZaUX8dE5G7IscwB4E/aqeq
-	XaVf55uYYQL9sR56HNPnA1QZvloUzfA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-FRRxnAuoMvWlrpKlhWZweA-1; Wed,
- 11 Nov 2026 03:18:36 -0500
-X-MC-Unique: FRRxnAuoMvWlrpKlhWZweA-1
-X-Mimecast-MFC-AGG-ID: FRRxnAuoMvWlrpKlhWZweA_1794385116
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 12BBC180035D
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:18:36 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.44.32.37])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 037C6410;
-	Wed, 11 Nov 2026 08:18:34 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org
-Subject: [kvm-unit-tests PATCH] lib/x86/desc: Remove unused variable "exception"
-Date: Wed, 11 Nov 2026 09:18:33 +0100
-Message-ID: <20261111081833.69641-1-thuth@redhat.com>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mpfsiWos8F/vl9UH8UsPq3EZ0RisGA+Dhf9KlrFQ204=;
+	b=TwVTyPj3/lQP9JwFqfkiRPNNf3IFdlo8fxH8x8M6XZSERy0hUAgnuapHu/NgMN1tgsgr03
+	Xk7fUthBDT+7uEqhWZLL4PFI24gNv8j+ua9V722lXFouOKB0njPNnOzddflW0KtwxjyRL5
+	A58p4JbbBLI7R7d4GTrJnNKSOu1T5ys=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-646-FH6l2vHQMyKpusVuPahw5g-1; Wed, 11 Nov 2026 03:30:31 -0500
+X-MC-Unique: FH6l2vHQMyKpusVuPahw5g-1
+X-Mimecast-MFC-AGG-ID: FH6l2vHQMyKpusVuPahw5g_1794385830
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4ae2756fa7aso21197095e9.0
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 00:30:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794385830; x=1794990630; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mpfsiWos8F/vl9UH8UsPq3EZ0RisGA+Dhf9KlrFQ204=;
+        b=Nni6Jgu8hzP8pXi6vbq9MMa7TYe326yIX4NFRlgJio9dzwLYhUVY6vjtgmPX5M3FPV
+         s52kyluCZKesIu1ViohLpEqtcZf0fHS9d9UGpc3Kji1bpzFmLfYH9yF+PVhfqVsx+Y0T
+         TYj1JrUOn0tNkICTS4Kry7IQuukCgAgoHCr0tzF3SLc5NAEdWfO5x4pIODx79Eeedolv
+         rfCREpzG+0zr/jUIa+Q6gfmyad2c1rp2eC161RhD6D2bfv53UOe1aonjVyEHUuieexGn
+         QfwQ5CV98oTCVhsoHemah/JNXnqccN01y6ZgHhqTZ0pZM7uwybvrOgxb6Dw+lgU/h/zw
+         n8Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794385830; x=1794990630;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mpfsiWos8F/vl9UH8UsPq3EZ0RisGA+Dhf9KlrFQ204=;
+        b=VgRzF047VehsUIhr9Ep8ZshsMHpBONnmXMlZLDhLiNK3aKSMn7ARUPqEXdhHRGZacv
+         pQgL1y8Z1MPPbXAYeMBarMlNjcV+RUuPTeAFnS+hpzdTLv8FWp233gFiJq0/rVShu3yh
+         3nUOPOL10IfulLGtodYUbFadmircvMSdY/dSqc1Hi4ZPhR4mFx4CoSFIj06+F6FxevKw
+         ZuqzHgUkoWp7MBSnFBKiliSsMNW+HXjo5omIhuTEWKh+tROLPlN7LwonrDfSgEHJjuZI
+         Ckiz06ZrQbkkm4JzSFtI/9Ti65uuku8XMIhB2iaC4I2Tis+GSnFK2BGLMfaR0nJPTd7Q
+         ik9w==
+X-Forwarded-Encrypted: i=1; AL+hErFRlWJP7T5jc3Ltw3FY8ZOlbtgNYGzJWRkCZcZ0e4Ep92fygDvQOKbWOq47dkrbgmJsgx4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9p5S/1DfVNocGw6z6sMWnjngJeg8bFxhiyC1XLIzFGUJ/qX6yZ
+	joGFOYPIvuAie06eq+tNe+Ivq0niJlbYH3yZHHC5egQNMTMmT6tU+hs0oJqhP8L/bpge4K1OqL1
+	Gb2JDMLlUwOE8KQRYzUGYohAsTYubq30Sefkk067EdJWIIqaQ7QgFpg==
+X-Gm-Gg: AYBFou17VC2aRN2pPxZZvqr2rUDrwPYJUEAD6CldrmsDMLxKaVr1rMrXnGbOjv5qyts
+	1mYHFusZVJB+P8eZrqgTXb8LXRcdSRVXh2dxCcy7G3JHIKX8m9WXHLoQLzwCKg8T9CdN6U/PriX
+	9EhI2uRMBPXG7Z7CmXKfiHOkoY6v8VOTdIftw2wZjPwqJRh/5nNBMi/dZtP0FVq4h2TRYMVr7tA
+	TD0OhmomtvO4YgjvHJWjuwOfE8HfoPViFXMHM2RNAek4lS/RPSxCHUTxR1DqDe4snIeCG9oUpqD
+	ssSzn30N3U44h5HxpPLQ6bRRs3ZpwOyjXXjinUxgmCUnS0H3HmxlBqIa2SBpUwP/aFzvLGNmqFL
+	lwBIGuoTJYf6iCOaOfKOI22aEJAmUoXDlaP07nnbaMMQJ
+X-Received: by 2002:a05:600c:3554:b0:4a5:e6fd:65e5 with SMTP id 5b1f17b1804b1-4ba0937ded6mr26339995e9.31.1794385829961;
+        Wed, 11 Nov 2026 00:30:29 -0800 (PST)
+X-Received: by 2002:a05:600c:3554:b0:4a5:e6fd:65e5 with SMTP id 5b1f17b1804b1-4ba0937ded6mr26339535e9.31.1794385829582;
+        Wed, 11 Nov 2026 00:30:29 -0800 (PST)
+Received: from [192.168.0.9] ([47.64.115.75])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba0951f237sm26744945e9.4.2026.11.11.00.30.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Nov 2026 00:30:28 -0800 (PST)
+Message-ID: <620ad58f-50ed-4b0b-9d13-b4df34276448@redhat.com>
+Date: Wed, 11 Nov 2026 09:30:26 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,48 +111,101 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: Link with -z notext
+To: Amit Machhiwal <amachhiw@linux.ibm.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20261110154415.46220-1-amachhiw@linux.ibm.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20261110154415.46220-1-amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The variable used to be the return value for test_for_exception(), but
-commit 932ba2d2f530 ("x86: simplify test_for_exception trigger functions"),
-changed the logic of that function, so that it is now unused. Clang from
-Fedora 45 started to complain about this:
+Am 10.11.26 um 16:44 schrieb Amit Machhiwal:
+> Building the powerpc tests with GNU ld 2.46.1 fails when linking the
+> test binaries:
+> 
+>    /usr/bin/ld.bfd: error: read-only segment has dynamic relocations
+> 
+> The tests are linked with -pie and relocate themselves at boot (see
+> relocate() in powerpc/reloc64.c, called from powerpc/cstart64.S).
+> Newer GNU ld rejects relocations in read-only segments by default.  The
+> Makefile already checks after linking that only R_PPC64_RELATIVE
+> relocations are present.
+> 
+> Fix this by adding `-z notext` to the powerpc linker flags, as was done
+> for arm64 in commit 5d67db4e1860 ("arm64: Link with -z notext").
+> 
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+>   powerpc/Makefile | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/powerpc/Makefile b/powerpc/Makefile
+> index 41e752b070bc..35fe58835726 100644
+> --- a/powerpc/Makefile
+> +++ b/powerpc/Makefile
+> @@ -78,7 +78,7 @@ include $(SRCDIR)/scripts/asm-offsets.mak
+>   
+>   FLATLIBS = $(libcflat) $(LIBFDT_archive)
+>   %.elf: CFLAGS += $(arch_CFLAGS)
+> -%.elf: LDFLAGS += $(arch_LDFLAGS) -pie -n
+> +%.elf: LDFLAGS += $(arch_LDFLAGS) -pie -n -z notext
+>   %.elf: %.o $(FLATLIBS) $(SRCDIR)/powerpc/flat.lds $(cstart.o) $(reloc.o) %.aux.o
+>   	$(LD) $(LDFLAGS) -o $@ \
+>   		-T $(SRCDIR)/powerpc/flat.lds --build-id=none \
+Another thought: Why are we only using -pie for the LDFLAGS, but we rather 
+seem to compile with -fno-pic in the CFLAGS? That looks weird ... I guess 
+the -fno-pic is required for certain targets (s390x and the non-EFI builds 
+of the other targets?), but maybe we should only add it only where it is 
+required and compile the targets that have relocation code with -fpie in the 
+CFLAGS instead?
 
- lib/x86/desc.c:483:13: error: variable 'exception' set but not used
-  [-Werror,-Wunused-but-set-global]
-   483 | static bool exception;
-       |             ^
- 1 error generated.
-
-Remove it to fix the problem.
-
-Fixes: 932ba2d2f530 ("x86: simplify test_for_exception trigger functions")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- lib/x86/desc.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/lib/x86/desc.c b/lib/x86/desc.c
-index f4cdfbc9..b5d40562 100644
---- a/lib/x86/desc.c
-+++ b/lib/x86/desc.c
-@@ -480,7 +480,6 @@ void setup_alt_stack(void)
- }
- #endif
- 
--static bool exception;
- static jmp_buf *exception_jmpbuf;
- 
- static void exception_handler_longjmp(void)
-@@ -491,7 +490,6 @@ static void exception_handler_longjmp(void)
- static void exception_handler(struct ex_regs *regs)
- {
- 	/* longjmp must happen after iret, so do not do it now.  */
--	exception = true;
- 	regs->rip = (unsigned long)&exception_handler_longjmp;
- 	regs->cs = read_cs();
- }
--- 
-2.56.0
+  Thomas
 
