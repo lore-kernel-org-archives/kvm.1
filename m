@@ -1,110 +1,137 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794394964;
-	b=cI4rzpwc1gKXeyEREr68dKajk87rND8CdSHITTWELG8AVxhbBF2IMyftyofuoLyMecsx
-	 FRPjsv8EN9OfI2Xl713B3wM3++dXZj3QH2Z5e0qtm5ReLeveAXjeAssuVP+LLC11RWKOZ
-	 /d8bv6tzteDBO6hKuw1ST73nKC3+RzBeJpS+Mfx59HQYnfCoxaxIo4v2caYv+orgC+W0o
-	 PVOxVwL4ALpo7RUGQNSLn/tJmwf59iJ1ojEV1FueN3pUDBEZlsgzwgIjkkpq7SEpuBOxV
-	 vqramx1SJoX+konE0H61J6kfSNdFFqeoUQhyFiLJZD/KZY+S6gvOzdzQ3E627JxkQMA==
+	t=1794395112;
+	b=VDAWrn4Bel9QgPAbsBBlmqaPiAbA8gVp2y5SGXWn+b5R1Crg3I0DvyTHOcYIKw6/A7bN
+	 2a0o5UUAXQSWn9x2fqB/bhQZylFCAOwEO6AyypdvYQ0csz89LMCErb+w7/rAVeN+70sTp
+	 1jyBQvQHVrjTdrKAD7tvj8+/ENnQOjCfH5SAHYrLzTg4d6OiUGetrMHmtAm1snmMD4tfB
+	 3/M/m8gpNIbYNhGdtgdF9o8s63eT/Y52rKxzneLbLZ/eLNrj+/qGfJvHac8QMXTPk1J9/
+	 6HONpNWOhOqHTx4KRcdMOg0TDQcPTzVkW/fR0ZfZV8S1hljzGyLvtdn4xRzZv/4AjGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794394964;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794395112;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
 	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=eMsmI+/7+hjyoTexqu24HTN/smZwOt+pO64WR6k1XnE=;
-	b=I0dtZGBk1It02R6fVlGKk3nZEBpLN4mChJ/NEeLLrGbDdBylLymeB+CHGwn9gMoqcFmv
-	 iZQIcNM4h7KOdODGqs6xQHniKrB63DBd3MMkm7s5AzPyEXpCtUVs5+m4Fxk5WHMta0VbU
-	 9yqgHLbu+XZpNVvVEDIQgh8rk13jjfRySoofKqjsIUdcj63qCMsIGncsTze62xSyhXgZe
-	 odg+u4JS+SnSg2SqN60/kkiKU+QWaytXyd1wfTTvt0wFwgxUWt+bswYnm7qduO6Upt5jo
-	 jX+3s0aZov5gWsSKgjdatHPS5MsgsPAu70b5LhhNZ7MMpgRbVewtwY1r2PhE8ZSjCcQ==
+	 Content-Disposition:In-Reply-To:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=aWDnnNx26bu9eNBEE5EhcsojfHfv5oN9+T/oze9PJL4=;
+	b=pJ6TrRjytAN79pBFICMnr2TRGsq6SPEcOLVoOeqqHTp+p8wGhRIBGTwzROoFzuu/m1VO
+	 ATtj24icGvKlKnWyb671Z/wYcCK/YsrhwWJdEZACtLVMumupa7nbJflbMOzRYAZkyagQt
+	 ndwFljYQXRlm5T8RC9HGvSU9GGA7nCAZ49ZG9CCo3UQwv0U31dH3+whiopqF77TcZSecu
+	 ipZvx50aXjpbD4ZjiibNG+2tO25QTGcH5ey8+JJpasdf1FucymNxBi7vye6axOE9NLYfX
+	 hLprqB2WmirG2LHsZT+Gq42pj7u7Dnz+ifeECxWeVeWLoZT82y3HNnhmian0ttJQqsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A4YhUDwb;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kf2WDEUN;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=mz7BvnsU;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="EzLuUJ//";
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2A4606A31C
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:02:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED2A4606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2268606A32A
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:05:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2268606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A4YhUDwb;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kf2WDEUN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794394963;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eMsmI+/7+hjyoTexqu24HTN/smZwOt+pO64WR6k1XnE=;
-	b=A4YhUDwbgmaeeKgxR/z7zgM3THHCoU9f+qUZmoGT9SE33B+nP2P6F2CiPrfMsVMNPhqpyU
-	qzUPSFEqXFju9ih/cYV7craUHnj3wv4Fh5LVDevTtmvRgq6fV14omcnlQYBmokEnFKfEtS
-	KurBapqBRaimoSrX5hnEVpWD8tpLwtQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-bscFvGDzNmuZUIQy7x5hqA-1; Wed, 11 Nov 2026 06:02:41 -0500
-X-MC-Unique: bscFvGDzNmuZUIQy7x5hqA-1
-X-Mimecast-MFC-AGG-ID: bscFvGDzNmuZUIQy7x5hqA_1794394960
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a204f135ffso17243705e9.1
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 03:02:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=mz7BvnsU;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=EzLuUJ//
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABAjqMq300737
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:05:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=aWDnnNx26bu9eNBEE5Ehcsoj
+	fHfv5oN9+T/oze9PJL4=; b=mz7BvnsUk9uvZQBPrlrCP0FY0EpKMK8Fnk/BJHJZ
+	eIoz6x8b3e5HhK20kdOqW2ekkFFf4tIzIIQd5SEedf5uMjSOn1lfN3HMweVk6lH5
+	ntz+LJKj1xA3zC1lWMiPjWdkI7P4ItEVdW191lQ5ipmefuyWEOahTrGjWcSdxLuU
+	6o+wZx4H6jlX5sycKyAHYbwEDsNvpGFbhB0YgljGlpALYPGUt4AeZiDZLjWRE7EO
+	9Vv4M/xETI0XHrHJGE+QWvWV4JiSzyR+bb63NyL/COQ00bTFpK9FUgmvXY0PAZvi
+	blXIaVCaAkAuxykk5ieBxYSJL7zNSqx6hLI4vaa2D1tpzA==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hv7c5ky0f-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:05:10 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-37158b53d06so487452eec.1
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 03:05:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794394960; x=1794999760; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1794395110; x=1794999910; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=eMsmI+/7+hjyoTexqu24HTN/smZwOt+pO64WR6k1XnE=;
-        b=kf2WDEUNfvrisDpOtBpb13xlM6JVz8JnvTsgZY7KuJcLL9gNaYmA2NhnuEMGbiesLB
-         r2tpUwacc89O/jbIZbvvhFUBM70jGySGr9uPStKIjFbEwP304TxwYbuB6FqrX9pJ6+1G
-         zJ7am+EgtCltGiWOWDtVva7yTUUoJWXhrafhamjmu39a8Urt/GpIP2EDkr5QdvovAAFw
-         7+oXAsImlJLsupq/TxtyGnqhCYTEH+XGcZAzwTR0odwiti3nFJMtzLSTmpIwhkCu5Gc9
-         2AKFXX6yUQIbiH1LuRqUfBM7P5uLADWkt0/UknATqrAHDlEaoWQtlPQ43QtQhG0TsVVA
-         BHUw==
+        bh=aWDnnNx26bu9eNBEE5EhcsojfHfv5oN9+T/oze9PJL4=;
+        b=EzLuUJ//xrWGfwX+3r8k/nxd7OXTopxuBG/mXXyND/7E3CnLEwXXVJ0042K6vTwmiA
+         cZAi8Y6U7C5eTDfduKkzZaA+IemJrrv58lK9Mh3xtpf1bxYsRJc6gU9EnT/WwjPJn0Wt
+         0pkCX30kVPDexZb1VCpIznA5suqMd6AL9A26ECMm85jHamay/XsOVGDjad3c+F/U0F2l
+         9zm/LWmn1cMEybuA6JWpRP+7oiVlTJbHuAIIn660mkyWMAY4HIJHe9eyh+8ztKDNG+le
+         JYbMnYoGMwuolq75QXCU111y3/yR2b3AmDeyuW5HKEDgI2IwVSWYT9AkL1H4R+KF40AS
+         BZbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794394960; x=1794999760;
+        d=1e100.net; s=20260707; t=1794395110; x=1794999910;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eMsmI+/7+hjyoTexqu24HTN/smZwOt+pO64WR6k1XnE=;
-        b=iwy0VGY2zHMgkw43nGwnc7LwHkS3R2SKvXhCM2s3K5UcSuaU5B+hvOib40G8+/5JB7
-         gD6mbmGobo3Z1M72g9Owid1W1/BJF+VpYYb1j9wQVOOfakTl083MUp18s/KbYD+9NZIU
-         3sqstDT9F6XUXTr81BRy33slroV1ovMDaHAzo6BwcKopx/mwWnMFSHRtH/F07nJUaiyY
-         cHkXG36Aa8BmdJXC+TXAF01scf7/ivIgHQ+H/Z/K8sDrHz1T5JS6YFj8ABsuCrpHQwh8
-         byhlMDl8VYNbWgFniasr4qXHXFPfef6/dp5jK/7WD3SW9dVZA/o1rqHuCiQPxtSIWGGz
-         dC8w==
-X-Gm-Message-State: APuU4Z8oRa4xkm6aYlSDnto3kdKcxpq1OBtnO6pYMJcFZaKdN6iTwso5
-	jQCamxTRL3KwYAWLaBuwbANseqK+xjxFb8ztt7C2Y9+uAkA/5z8edQx3rzcjrxsOPjOZ+3XUuoh
-	4y74lfPWlv9/YvqGrXEnWD4FWDy8UOVeKrXkmPgvC/FFXQxip228SgXcxG/kwrg==
-X-Gm-Gg: AYBFou0wwhxq8VvSgaKkpcZWEs/B7bPxYgrMDXQSu/15MHM+Z4Ouh71OCzTKCczHmbB
-	cuJcFpUaGzCqCuwX1pMw1RURM47joTRCRYTtQ/iLQEBkBa/OyWjamRqpx0gRoaXEAEixAeSh1HB
-	AeXXfYgxcZ3Oxc/oQWtoCJoRlCCxF5UNpoD3UDYEhj79/IySJz9nY4pqmwMFyejHvlsP3hZTtM3
-	zBtG8T+57Ko8U8HrfkDVZfunKPD4GHk5HOVScPZP6ojCbtiWo82wVuUAIaMhvlI0/jUt2oFw37m
-	uIi6SBExAklvkQzYO5pnFEd6vkI5M/9NXRo5+1oNVEF+ohQyXtRiJJm+luR2dQiIHG8VdWNxtUS
-	zJOQ72t15h11PakDiN7v23bZYjTZHXQ7LESNFnPz39A==
-X-Received: by 2002:a05:600c:4f84:b0:4a3:59c2:b41e with SMTP id 5b1f17b1804b1-4ba0931ed6bmr34912475e9.4.1794394960289;
-        Wed, 11 Nov 2026 03:02:40 -0800 (PST)
-X-Received: by 2002:a05:600c:4f84:b0:4a3:59c2:b41e with SMTP id 5b1f17b1804b1-4ba0931ed6bmr34911955e9.4.1794394959666;
-        Wed, 11 Nov 2026 03:02:39 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01fe2f09sm149131315e9.4.2026.11.11.03.02.36
+        bh=aWDnnNx26bu9eNBEE5EhcsojfHfv5oN9+T/oze9PJL4=;
+        b=zlkMfCA4QDNoj70PiuAXG+JZpArGeUvnm9BksB/T8T+mLBWl+3RE6jt/UAyMppltSv
+         AgpCcx65NBC8cQYZ4LHDv99MT9J+tBt/VIjYeFEZtuGhG5UcmPQfhOjLAlbuXWODzffB
+         XS74OyY6WSnfHxSUi3f7bplI+HwQbddUhVQYtOxuuiEZ0SDPkbWBh53E93x5jjynSMO+
+         Vrre1z8ExMgozKuibQkf/r5hobsoeygn5UAWK3x/QCwuRdJBh/ExXPbzbkAWoLu1d74i
+         OtvjuE6m7W1rFRIf7lyZho1l8x5N1cSxH0lex1ofaGnQjbq/+CC5/xXraXf/bmWpJvcX
+         RW/g==
+X-Forwarded-Encrypted: i=1; AL+hErH8zkN/wEmMNdJyE81Ext2TRK/mdccXCKfG/VTskUbuENJT5q9w9TJ/OOoia58agDI/ZQc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9shF2XJMeZX5tawup0oHD3SDSglVvhgQ3i75E1Ebo7xhkEj9k3
+	vP/9pFhIhvRyhvCa9NcdKZIAmJ0dx/UorBKykGiKYz+8vln0cwGweYZ2qOKxo46J0kS2nhKBqWD
+	L3RMWgceSEkIjaJzbeSD7Be9UibSHQIs8zpXYvad0AMZHa5rOdHHSikA=
+X-Gm-Gg: AYBFou2Zby/l0RzYxH2x+t/DwglFNdg+G2w2voUXxbQVt8f0slW2/+R6Axty4ZOvjFH
+	PbNGvVI6HDvTlZ8yU8dnRQ2VCy2Z6wWYvzzYVC7OJq5E5gG4MdaHt+SHNYWfLwGAlY0ygIZVhT0
+	eStTfRiEpkfurL77AZLDfjtinYYQaIs0Uz8qOgQ45WPC5BY/0auOHnhuQU8MbzgyaoCN8vAYR3n
+	8WGoaBvk+zQzyYIEr21mP9QA0c3icdOAzQ2yqlcML7V6At91qu19nIHCFVCBrV7KDQuv4P03T9w
+	38EmoWxpUqTdURos08N95GrozvRtT62pfP5iV4ebCo2pAcM2shv40FQ8Wrls9TK9i5/JOmivQ6t
+	PJAoK5iOlkDAK1UszKaSAMKc0X73PYwk4C9fMDGKT7wPQJk5qz/bGyUapMb8kCW8u2NarLfkluc
+	V+XXcb0Sc=
+X-Received: by 2002:a05:693c:6391:10b0:376:c208:ed7a with SMTP id 5a478bee46e88-376c208ef25mr1678160eec.8.1794395109766;
+        Wed, 11 Nov 2026 03:05:09 -0800 (PST)
+X-Received: by 2002:a05:693c:6391:10b0:376:c208:ed7a with SMTP id 5a478bee46e88-376c208ef25mr1678128eec.8.1794395109019;
+        Wed, 11 Nov 2026 03:05:09 -0800 (PST)
+Received: from hu-vkatoch-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520608b52sm13502136eec.13.2026.11.11.03.05.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 03:02:38 -0800 (PST)
-Date: Wed, 11 Nov 2026 06:02:35 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] vfio/pci: fall back to platform ROM when
- pci_map_rom() fails
-Message-ID: <20261111055054-mutt-send-email-mst@kernel.org>
-References: <c5d91752c7bbd40d89f5fce5da8582f1673cdfc3.1792566536.git.mst@redhat.com>
- <20261110165221.7fb75f91@shazbot.org>
+        Wed, 11 Nov 2026 03:05:08 -0800 (PST)
+Date: Wed, 11 Nov 2026 16:34:56 +0530
+From: Vinayak Katoch <vinayak.katoch@oss.qualcomm.com>
+To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Jean-Philippe Brucker <jpb@kernel.org>, Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Tomasz Nowicki <tomasz.nowicki@caviumnetworks.com>,
+        Eric Auger <eric.auger@redhat.com>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Srinath Mannam <srinath.mannam@broadcom.com>,
+        Oza Pawandeep <quic_poza@quicinc.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Alex Williamson <alex@shazbot.org>, iommu@lists.linux.dev,
+        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+        devicetree@vger.kernel.org, kvm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+        Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org,
+        Vishnu Reddy <busanna.reddy@oss.qualcomm.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Subject: Re: [PATCH v7 0/5] of_iommu: add support for "iommu-ranges"
+Message-ID: <avRL2AeIXEpA8SE/@hu-vkatoch-hyd.qualcomm.com>
+References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -116,163 +143,98 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110165221.7fb75f91@shazbot.org>
+In-Reply-To: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA0NCBTYWx0ZWRfXwPy5Q7QRj3dk
+ o/5u2L//k2X9LPQ3tb6P2GUzaTbtBMVOgusHT0v6LoWwSIP1WOy1FegNb8/ZcR89TcfKXDmdJ0g
+ j3TvFcfm0p3VRLSoLchas+59q8tPTkNdWtNNWOnZWs7Kt/TLRs1G/CVX8l/mnGU7P4ibKsFOY5F
+ oZ87sNeJBlCw2MC0/AGWVualxh/Zg4XX5qxeHvV4pxHeubfPdbgxc8qWmyrrsYL2Fmzs51b3HIX
+ DCDvzhihmev7TH9cdHTmUxOrohN7ZPH8es7KEcnZcIzwlZjAxJAwzajRBOTnMAA2t4M4mAH8JOs
+ 7NNcyxTvO1FExT4OO0o870kXfOoMEsjbycDyCAzifD7de2dN0O3Y2VqMo2w+S8JEzzX9XW07cSx
+ m1AzpX+KLr5WNFHn1U673bEWNTN1hkUZcib8Gfys0IdmYsgkVuBAq+coqdXIld7XjW3NfH+27oH
+ Nt43s9jfi2LXoWnNNeA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA0NCBTYWx0ZWRfX6N09xKI91jxv
+ 1rjmmSlTLNVRW7Lqz+TXLUqNmmPZDWKEJ67h3CjNBThiYX/xItlroTItsHAATusHqZRxj4i0L3J
+ kIwomsuxhvHI5eTsxhqM0dOO4ln1O5A=
+X-Proofpoint-ORIG-GUID: yAYfzuPTDei-V1nmMujv-xRggzj2Wm8h
+X-Authority-Analysis: v=2.4 cv=eq9KXYpX c=1 sm=1 tr=0 ts=6af44be6 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=DzlgiSjgYWYhIfnXaHkA:9
+ a=CjuIK1q_8ugA:10 a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-GUID: yAYfzuPTDei-V1nmMujv-xRggzj2Wm8h
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-11_02,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611110044
 
-On Tue, Nov 10, 2026 at 04:52:21PM -0700, Alex Williamson wrote:
-> On Wed, 21 Oct 2026 04:20:32 -0400
-> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+On Fri, Nov 06, 2026 at 10:44:23PM +0530, Vikash Garodia wrote:
+> The series adds support for recently introduced property 
+> "iommu-ranges". It adds the required checks to error out for cases 
+> which are not following the schema definition.
 > 
-> > When pci_resource_start() returns non-zero but pci_map_rom() fails
-> > (ROM BAR exists but content is unreadable), the pdev->rom fallback
-> > is unreachable because it's behind an else-if that only triggers
-> > when pci_resource_start() is zero.
-> > 
-> > Try pdev->rom whenever the ROM BAR didn't produce a mapping, in both
-> > the region info ioctl and the read path.
+> Iommu-ranges was defined in schema with this PR
+> https://github.com/devicetree-org/dt-schema/pull/207
 > 
-> Here's the crazy thing, users actually update firmware through
-> vfio-pci.  Therefore, what's an invalid ROM image on one check, may be
-> a valid ROM image next round.  If we fall through to a different ROM
-> provider, we might actually be presenting a changing view of the
-> device.
-
-
-This is out of spec anyway. The spec is pretty clear that _ROM if
-present takes precedence over the ROM BAR.  I decided not to change that
-if ROM BAR is valid to reduce the chance of breaking a working setup.
-
-From ACPI 6.3, Section A.3.3 "_ROM (Get ROM Data)", page 1123:
-
-	If _ROM is present, it is preferred over the image read through the
-	standard PCI interface, in order to allow platform runtime firmware to
-	provide re-configured ROM data via the method.
-
-
-Would you like me to simply implement the spec? Use _ROM if there
-even if pci rom bar is valid?
-
-
-> I believe this is why we intentionally always report the physical ROM
-> BAR when present and mapped, regardless of the contents.
-
-No such setups should have _ROM, since rombar would then be ignored.
-
-> QEMU, of course, has the ability to take the ROM as a file and override
-> whatever is provided through the kernel interface.  This is how I had
-> previously made use of a secondary GPU on a laptop, dumping the ACPI
-> ROM to a file to provide directly to QEMU.
-
-First we need a way to get the ROM from _ROM.
-
+> The patch series is being posted as revision v6, since the patches 
+> were initially part of the media series [1]. The patches are moved out 
+> to get review comments from iommu reviewers, which was otherwise looking 
+> as a media series. Happy to move this back to media series if anyone have 
+> any concerns. 
+> [1] 
+> https://lore.kernel.org/linux-media/20260926-vpu_iommu_iova_handling-v5-0-0322ca5dc10c@oss.qualcomm.com/
 > 
-> Does your GPU support a ROM BAR?  The v1 patch didn't have this and
-> would have exposed the physical RAM BAR if present, so I'm guessing not.
-> Thanks,
+> Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+> ---
+> Changes in v7:
+> - Move the "iommu-addresses" behaviour change ("reg" required, non-direct
+>   mappings rejected) into its own patch before the iommu-ranges patch (Bryan)
+> - Make OF_IOMMU depend on OF_ADDRESS and drop the #if guards (Rob)
+> - Use resource_size_t for the size in vfio_find_dma() (Sashiko)
+> - End the derived trailing reserved region at PHYS_ADDR_MAX - 1 to avoid
+>   overflow (Sashiko)
+> - Add a dma-iommu fix to protect the IOVA rbtree anchor on 32-bit with
+>   64-bit dma_addr_t (Sashiko)
+> - Use the "iommu/of:" prefix and fix the subject case
+> - Link to v6: https://lore.kernel.org/r/20261103-add_iommu_ranges-v6-0-361f3921a133@oss.qualcomm.com
 > 
-> Alex
-
-It has a bar but it is not accessible. _ROM overrides that, as per spec, and this
-appears to be how nvidia drivers use it and expect to use it.
-
-
->  
-> > Fixes: e021e6cbfb5a ("vfio/pci: Expose setup ROM at ROM bar when needed")
-> > Cc: Yunxiang Li <Yunxiang.Li@amd.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > 
-> > Notes (changelog):
-> >     v1->v2:
-> >         bound reads by the ROM image rather than the BAR once the
-> >         pdev->rom fallback is selected, so reads match the reported
-> >         region size (a pread spanning the image used to fail with
-> >         -EINVAL past the BAR size)
-> >         add Fixes: tag
-> > 
-> >  drivers/vfio/pci/vfio_pci_core.c |  4 +++-
-> >  drivers/vfio/pci/vfio_pci_rdwr.c | 32 ++++++++++++++++++++++++--------
-> >  2 files changed, 27 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> > index 050e7542952e..630474d03e3b 100644
-> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -1128,7 +1128,9 @@ int vfio_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
-> >  				pci_unmap_rom(pdev, io);
-> >  			}
-> >  			vfio_pci_memory_unlock_and_restore(vdev, cmd);
-> > -		} else if (pdev->rom && pdev->romlen) {
-> > +		}
-> > +
-> > +		if (!info->size && pdev->rom && pdev->romlen) {
-> >  			info->flags = VFIO_REGION_INFO_FLAG_READ;
-> >  			/* Report BAR size as power of two. */
-> >  			info->size = roundup_pow_of_two(pdev->romlen);
-> > diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-> > index 3bfbb879a005..6e47d529cbb9 100644
-> > --- a/drivers/vfio/pci/vfio_pci_rdwr.c
-> > +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-> > @@ -219,7 +219,8 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
-> >  	int bar = VFIO_PCI_OFFSET_TO_INDEX(*ppos);
-> >  	size_t x_start = 0, x_end = 0;
-> >  	resource_size_t end;
-> > -	void __iomem *io;
-> > +	void __iomem *io = NULL;
-> > +	bool rom_is_mapped = false;
-> >  	struct resource *res = &vdev->pdev->resource[bar];
-> >  	ssize_t done;
-> >  	enum vfio_pci_io_width max_width = VFIO_PCI_IO_WIDTH_8;
-> > @@ -231,11 +232,6 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
-> >  	else
-> >  		return -EINVAL;
-> >  
-> > -	if (pos >= end)
-> > -		return -EINVAL;
-> > -
-> > -	count = min(count, (size_t)(end - pos));
-> > -
-> >  	if (bar == PCI_ROM_RESOURCE) {
-> >  		/*
-> >  		 * The ROM can fill less space than the BAR, so we start the
-> > @@ -244,10 +240,30 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
-> >  		 */
-> >  		if (pci_resource_start(pdev, bar)) {
-> >  			io = pci_map_rom(pdev, &x_start);
-> > -		} else {
-> > +			if (io)
-> > +				rom_is_mapped = true;
-> > +		}
-> > +
-> > +		/*
-> > +		 * The BAR can also exist but be unreadable, e.g. on a GPU
-> > +		 * that was never POSTed.  Fall back to the ROM image stashed
-> > +		 * by the boot loader; the region then follows the image size
-> > +		 * rather than the BAR, so bound the access only after the
-> > +		 * source of the ROM content is known.
-> > +		 */
-> > +		if (!io && pdev->rom && pdev->romlen) {
-> > +			end = roundup_pow_of_two(pdev->romlen);
-> >  			io = ioremap(pdev->rom, pdev->romlen);
-> >  			x_start = pdev->romlen;
-> >  		}
-> > +	}
-> > +
-> > +	if (pos >= end)
-> > +		return -EINVAL;
-> > +
-> > +	count = min(count, (size_t)(end - pos));
-> > +
-> > +	if (bar == PCI_ROM_RESOURCE) {
-> >  		if (!io)
-> >  			return -ENOMEM;
-> >  		x_end = end;
-> > @@ -283,7 +299,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
-> >  		*ppos += done;
-> >  
-> >  	if (bar == PCI_ROM_RESOURCE) {
-> > -		if (pci_resource_start(pdev, bar))
-> > +		if (rom_is_mapped)
-> >  			pci_unmap_rom(pdev, io);
-> >  		else
-> >  			iounmap(io);
-
+> Changes in v6:
+> - Addressed sashiko comments.
+> - Addressed comment from Bryan.
+> - Link to v5: https://lore.kernel.org/all/20260926-vpu_iommu_iova_handling-v5-4-0322ca5dc10c@oss.qualcomm.com/
+> 
+> ---
+> Vikash Garodia (5):
+>       iommu/dma: Keep reserved regions below the IOVA rbtree anchor
+>       iommu: Use resource_size_t for reserved region length
+>       iommu/of: Make OF_IOMMU depend on OF_ADDRESS
+>       iommu/of: Require reg for iommu-addresses
+>       iommu/of: Add support for "iommu-ranges" on a device node
+> 
+>  drivers/iommu/Kconfig           |   2 +-
+>  drivers/iommu/amd/iommu.c       |   2 +-
+>  drivers/iommu/dma-iommu.c       |  32 +++++----
+>  drivers/iommu/intel/iommu.c     |   2 +-
+>  drivers/iommu/iommu.c           |   2 +-
+>  drivers/iommu/of_iommu.c        | 147 ++++++++++++++++++++++++++++++++++------
+>  drivers/iommu/virtio-iommu.c    |   2 +-
+>  drivers/of/address.c            |   2 +-
+>  drivers/vfio/vfio_iommu_type1.c |   2 +-
+>  include/linux/iommu.h           |   4 +-
+>  include/linux/of_address.h      |   2 +-
+>  11 files changed, 155 insertions(+), 44 deletions(-)
+> ---
+> base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+> change-id: 20261103-add_iommu_ranges-549cf3fb0867
+> 
+> Best regards,
+> -- 
+> Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+> 
+FYI, we need this series too, for the extended mapping support [1] in
+the fastrpc driver. I'll be posting a new version of that series soon.
+[1] https://lore.kernel.org/all/20261007-extended-mapping-v2-0-5dca3aa2c2d3@oss.qualcomm.com/
