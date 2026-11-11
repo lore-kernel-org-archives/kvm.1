@@ -1,94 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.59
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794409944;
-	b=ij/tiugWSG/RToiVGykY/BKapLKgYiGHGx1IVhMfoaEnnj+7VptFyF8DjtotPJIm5J7i
-	 yGSAzuNRsD313/BdP3pv2V5lsvfrNlBTs/11ev8c5scIT62JWg3bbAYCi3HfZX4RacV1s
-	 bT+Bvn0CAMzYNGC0ljR3EuJ1K1HNflALZ6bDVoTPkNMGRoBJBiMPz3LMnUWgEZoJdaduQ
-	 FdzlvO8vMzDSMOCFkKSbq1VAJX0rX2nIEokN1iT+xCIaScYk7nMIBFrFQJFUiSQcjxvcO
-	 JCew9a0GB/VQlBFKkS5fnWi2OyYtZpLNOZlXTAbmAkZGGVDJqAVbhjs5Y2g7w7UOahQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794409944;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:CC:Subject:To:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=mn9ld1gVFfd6wg4+Ebt8VC8FCqe18cp2d4DjwP94yec=;
-	b=hXE+Uol1VzO1eJ3eJC9MNP/57spMmIwIWBn14lLs5K/4LOoeHD5sx5oOjidjOCHreINo
-	 4DU7rVddwfC1d7OWUxhbVAZsa4hsrJsRgVmXn2J2tgKjsIirovO2JsKsXSIbyrB7NMF1X
-	 EGaYtIPafJsHrSJ5+ZNMUgwItvfe/uywP+AggC5xVT9Bq61DX8/oivdq0qkubWEzee5+F
-	 dXqpNFA3nY+T062Z4rxYTi/+Lj7orGpRFXX8IK2NawKr1Cu+iCE3Mm2n+rZTYVo8I2mlL
-	 SU/zkY2FnfKXISp2JPFY72BsQJ+MO9F38T1q8N/kPGXK89ffs+hJ4exqjqSMm+RAv/A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=XblU7YvE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.59
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012059.outbound.protection.outlook.com [52.101.48.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABE1606A337;
-	Wed, 11 Nov 2026 15:12:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8ABE1606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794410471;
+	b=UlM8zs88ImAbZ+sPpuknXhpJE4OKQGwZUPKK1HtnOxChjVN29grsLWrCs+ZxfDRub0xa
+	 BxaGJbAU2CjkPNHcWWodOpeNRBU/UvUbmqd62nSLddmiN4oQz3uPiTIsqMb8drPqvkR3S
+	 0KXcG5vEVOEaXklnqeydulnW2812IeFRw0Bl/vzQfrmz4mqldL0Kp8ircwG3od0ZgBHUY
+	 p8K/m2hQaTsWFQphELdzKIxX5n7Ih9VlXzUbsB5QKgdI+jiXXdDZPiw0In0O92JZay3Pm
+	 b3vu8iwoJNK/IFA3/zbM3eaIHy4206FWz6RewFzPc0BpxGTGoUjxr8r5M52PBBJy6NQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794410471;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=LS22Ygw4td6cYP7DxbERi9ddUHoq6vQVTmOxe4Gax9E=;
+	b=QMCmZhg7ZDYNcVSsi7B4P5c3Xm/KEfSYLSNwoXtQOFJl1H8KPDXAC1gPsbwr7miC4dwe
+	 5K3iqDxHDAXd9YQq0SwOor/lupL11pkmsIp42ofksw9cKa0/lLQ3t1LqcNz4J+JNYTgep
+	 dRKuttgvvogyXwrtSiE79VjwPOST7L0KeDCSvoUHChEuLEiro6FZrixBMOZ+4qBN73xSw
+	 rssakIuyDyaVs6rxmawYlvxKmCfv3G496bwokudMDCD8ivvPzrAUO57clWlZbRInQwr5s
+	 94C2lb147WvL+z4hhuinKA/5TM5FEz9PW5cNKlDiD1WspHFbGnxU83mvkPoZmbUsPbw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=B1KyA7Kg;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F73606A330;
+	Wed, 11 Nov 2026 15:21:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24F73606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=XblU7YvE
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u788tGm356UXizfppci0Z7Vd5XDJiulSG6MJ8C3NbAalJQYIQBIt/itqBhCIhuD0hj2U5sDvxzivVIwfkmMrsFV4yd9qkdZtygGL2ykTJWm8cFQ3PcFjWxsrmvQiKmRBDpfJQjXsIZH4Zr/VbfhRq+p3WXh7nFFBW4lyXJh2/IT4GsVFh9mI5F0ykxjETI/+9EH2XbeFjT6YoyxXNjuqp1Z1MMQpacRkAjTjrWzkyba84AJ21MjxWTPGxQ488TNlx7zS0HrttZhaIqSUPVVs7K1JdCaOlqg8cpOb0z20GWNsZg+b+PXAKf/DTME/f+Outcfv8mVhqJJMvx9mxIPTYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mn9ld1gVFfd6wg4+Ebt8VC8FCqe18cp2d4DjwP94yec=;
- b=WmB25WIS9UMDHpTwpQbJs11+yt9A5z3Q00YlsCFNXo4TnvojyXaDXPVoZkpLWGmumMZSX53toKlgwXG33/evy5jknYhO+PQkYAYnMVZDMYkpCZSiN/PwCmsHPJ7MB/Aw8uYFji+stDei8NDjRwFs9F9dIongZL6oy5U36FP7d/XR/9RmwaiHgDMGajqaQe5AgEEXsSM1Wg+J22nnJ9hIzJjh+3TmJ7zxMbOiNyFRZLSNX/xsnC4nm73g9rSKOMGsX86JBudP2lKFHK5kc6IuYoGmX04MO9VbkG2cJ0ucjKCUcQksu2MlsJ4gWXK7OdR74OHVpmHeGzkF1J4wrss2dA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mn9ld1gVFfd6wg4+Ebt8VC8FCqe18cp2d4DjwP94yec=;
- b=XblU7YvEPZCfnQXcLiBMIc9oBMSm3MRSU/rrX07+Lw73WGxpuNJUN6mFRkfupwl0MfSaXNUZOgLgp3ESyPw4vEQFLXcSj0ZlqYN5YELHuRh1eT0TJeDS/ofpaaY1Z7n+Q64P8HjMXGDPKwNjbBzr+N73XJArq4Vnb99TW18Jumw=
-Received: from CH0PR08CA0007.namprd08.prod.outlook.com (2603:10b6:610:33::12)
- by IA4PR12MB9833.namprd12.prod.outlook.com (2603:10b6:208:55b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
- 2026 15:12:20 +0000
-Received: from CH01EPF000BE942.namprd02.prod.outlook.com
- (2603:10b6:610:33:cafe::3a) by CH0PR08CA0007.outlook.office365.com
- (2603:10b6:610:33::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Wed, 11
- Nov 2026 15:12:20 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH01EPF000BE942.mail.protection.outlook.com (10.167.244.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Wed, 11 Nov 2026 15:12:20 +0000
-Received: from [192.168.0.108] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 11 Nov
- 2026 09:12:15 -0600
-Message-ID: <771dd3be-0c64-4d40-8dd0-de63b3867f70@amd.com>
-Date: Wed, 11 Nov 2026 20:42:12 +0530
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=B1KyA7Kg
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A1831576;
+	Wed, 11 Nov 2026 07:21:07 -0800 (PST)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5EAA83F632;
+	Wed, 11 Nov 2026 07:21:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794410470; bh=DmAs+HkipAZuaZn8YrcV1VGdsx0DsSHBMvKZ5WRURDE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B1KyA7Kgss5vCsVOUwiYdwJToTKixvHpOMmrCnzlwf8ErGjQhgtBbGyav0GClivkZ
+	 lp//gb99/8oKdkwlD95FPXsCE80n++pFolGayiV6aRyTe92skXFv/ZLH0ilvIkCfQ4
+	 M6OOgcFofaLnBKsdKA4qQ/dtT8uB26RdhGQ8SVMw=
+Message-ID: <fbc33983-cb8a-48e4-854f-ce009cc5668f@arm.com>
+Date: Wed, 11 Nov 2026 15:21:05 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -99,96 +54,110 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-CC: <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar
-	<mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
-	<tglx@kernel.org>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<x86@kernel.org>, <vasant.hegde@amd.com>, <suravee.suthikulpanit@amd.com>
-Subject: Re: [PATCH v2] x86/kvm: Use RCU for svm_vm_data_hash
-To: Sean Christopherson <seanjc@google.com>
-References: <20261111122128.12998-1-sarunkod@amd.com>
- <avSD4O4AELPcmhqb@seanjc-mac.roam.internal>
-From: Sairaj Kodilkar <sarunkod@amd.com>
+Subject: Re: [PATCH v2 02/12] KVM: arm64: guest_memfd: Check mmap support when
+ preparing memslot
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <20261111145758.217946-3-steven.price@arm.com>
 Content-Language: en-US
-In-Reply-To: <avSD4O4AELPcmhqb@seanjc-mac.roam.internal>
-Content-Type: text/plain; charset="UTF-8"
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261111145758.217946-3-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH01EPF000BE942:EE_|IA4PR12MB9833:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b0ca4fd-1d59-4971-58be-08df40062e8c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|82310400026|7416014|23010399003|376014|18002099003|22082099003|4143699003|11063799006|10067099003|261028144727099003|261026140227099003|261026121527099003|261022105027099003|261021123027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	MqJxdh6tKmJ7XqKChQxmB5WT6c7zty6LBXOrbZw8ZduTXZZF9zhbC4EvzUHibdcWIJQnjmCZz7BZvg0q79mQAS/bOMSaxUXibsyafVrYvkkggNseTMXzBKj2s00JewPKpIoKDlvDmuNDds0m7umaqjDNa2zEkkddJcmj9CVZ/M1ny/Z7/IwX9/r6XLohOphdkvTONJp4yIE/6esCq7X2xgYWwQUVdJ+3g2VrL8e8K23sL7/XXhse1D/ogL+tHJdSVQtKda2GkJGVzRYyxnr9IasgttBykA5Ru1+IdNEWsd0rWi7Nm9Yzfhfnr8bUn5IzhjX7M9IsOH+rC6dCsoFKXTe6CZl4m4ZFvXGl8+cFqJeRPOSfKCCmLogySzf9ZiXlyX90YKD6juzx0Pm5R9XLR2ATgXbztUYJsTik9aukF3LcEA1P+ElhU3JcqpKM3pggUKagYv93L2XhLpJVRHvuP1yPrGqG+F0Wdit9jdxYKLhNyqV1vtkostByJz+NsOn90AJjnDXR1i+N/YXYfRsLCPzQXw2Q3MkigL5hpkkz7eiqku4/QVMR0c2TqQdgYVSfb57WQuoVsWnPiuXxqFTC7n6PBmQIBNLpFvP8BkxAfxR49GOXzko03t5wKI0eic8bWwMMV08CJnbSkBR6jpNNWEfW2EayHvCVfdgV+jHtFAzfe+RZ2UV5mu/yBBbOPJaPzrE159TkiU7t5e5dFVu6lw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(82310400026)(7416014)(23010399003)(376014)(18002099003)(22082099003)(4143699003)(11063799006)(10067099003)(261028144727099003)(261026140227099003)(261026121527099003)(261022105027099003)(261021123027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	1U0Qwa0D1E+zknC7rEzPozuk3Gf5dgRZdHloc8tPA6JQS1wHCRJaPVksXLRrlBaeu9dFgQglPhekBqXAZIMyZcEFCsbgNebPzJOaQyS3VIg3trOKKcUhLiWVWdZ2S5uFjB7qEj28zcewISbdnPYKS3ARFEs9Cr+wwDkIR8VTe9+Iayeis7m6wCZsh6qdGE/icikcrepivS+mkJGw3q30zeVSKwFQZffLpfpb7fDF6YU0YXk0jCUEtxtVbif4V/o2p/cXfijb7WmboGZn3nzeVde16rHOl/msx6XI/PNTkuWw/5VUl+jiKKrgnPwKd3pXGBVGp13voQmgjAL/eOrrQv69l6d2cgJcBK1+wL+FDLOpntShLDYBxmQmrHjYmM/iZjI+XXFt43piid6hJ7QRxq64qCMf4/KTqjwEvCYu2BoMwG8iALlo4lsQ4oAJoAJR
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 15:12:20.4283
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b0ca4fd-1d59-4971-58be-08df40062e8c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH01EPF000BE942.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9833
 
-
-
-On 11/11/2026 8:34 PM, Sean Christopherson wrote:
-> KVM: SVM:
+On 11/11/2026 14:57, Steven Price wrote:
+> Check the guest_memfd backing file when deciding whether an arm64
+> memslot has mappable memory rather than checking whether the slot is
+> gmem only. A public helper function is added to be able to reuse the
+> static kvm_gmem_supports_mmap() function.
 > 
-> "x86/kvm:" is specifically for guest-side code, e.g. arch/x86/kernel/kvm.c
-> 
->> Changes since v1:
-> 
-> In the future, please wait the "normal" amount of time before sending a new
-> version, e.g. a day or two for something relatively simple like this.  I.e.
-> treat feedback from Sashiko like feedback from a human reviewer, and don't spam
-> patches.
-> 
-> There are times when it's acceptable to break the "don't spam patches" rule, but
-> this isn't one of those times.
 
-Hi Sean
+Please could you explain why we need this ? Why not rely on
+kvm_memslot_is_gmem_only(), which already tells kvm_gmem_supports_mmap() 
+? With inplace conversion support gmem supports mmap.
 
-Sorry about this, did not mean to spam the patches. I accidently sent
-wrong version upstream, thats why decided to respin it. I'll be careful
-from next time onwards.
 
+
+> Signed-off-by: Steven Price <steven.price@arm.com>
 > 
->>  int avic_vcpu_precreate(struct kvm *kvm)
->> @@ -373,9 +373,12 @@ void avic_vm_pre_destroy(struct kvm *kvm)
->>  	if (WARN_ON_ONCE(!enable_apicv) || !kvm_svm->avic_vm_id)
->>  		return;
->>  
->> -	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
->> +	{
->> +		guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
->> +		hash_del_rcu(&kvm_svm->hnode);
+> ---
+> Changes since v1:
+> - New patch in v2. Check the guest_memfd backing file rather than the
+>    memslot flag when deciding whether arm64 can map the backing memory.
+> ---
+>   arch/arm64/kvm/mmu.c     | 7 ++++---
+>   include/linux/kvm_host.h | 1 +
+>   virt/kvm/guest_memfd.c   | 6 ++++++
+>   3 files changed, 11 insertions(+), 3 deletions(-)
 > 
-> Eww.  Don't open code scoped_guard(), e.g. this should work:
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 1db10d8d6db7..a146f6cde3d0 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -2839,10 +2839,11 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>   		return -EFAULT;
+>   
+>   	/*
+> -	 * Only support guest_memfd backed memslots with mappable memory, since
+> -	 * there aren't any CoCo VMs that support only private memory on arm64.
+> +	 * Protected VMs currently require guest_memfd backed memslots with
+> +	 * mappable memory to support shared mappings.
+>   	 */
+> -	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
+> +	if (kvm_arch_has_private_mem(kvm) && kvm_slot_has_gmem(new) &&
+> +	    !kvm_gmem_slot_supports_mmap(new))
+>   		return -EINVAL;
+>   
+>   	/* guest_memfd is incompatible with MTE. */
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index e7fc94e2910a..f65728a713ec 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2614,6 +2614,7 @@ static inline bool kvm_is_private_gfn(struct kvm *kvm, gfn_t gfn)
+>   
+>   #ifdef CONFIG_KVM_GUEST_MEMFD
+>   bool kvm_gmem_is_private_gfn(struct kvm *kvm, gfn_t gfn);
+> +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot);
+>   bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm);
+>   
+>   static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 8c97a69b16dc..3dd8d227bebb 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -442,6 +442,12 @@ static bool kvm_gmem_supports_mmap(struct inode *inode)
+>   	return GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_MMAP;
+>   }
+>   
+> +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot)
+> +{
+> +	/* The guest_memfd file is pinned while preparing a new memslot. */
 
-Ahh right, I missed that.
+We should gate this on kvm_slot_has_gmem() and how do we ensure that the
+call comes after it is prepared ?
 
-> 
-> 	scoped_guard(spinlock_irqsave, &svm_vm_data_hash_lock)
-> 		hash_del(&kvm_svm->hnode);
-> 
-> 	synchronize_rcu();
-> 
-> I'm a little hesitant to put a full synchronize_rcu() in the destroy path, but
-> in practice it's should be ok.
+> +	return kvm_gmem_supports_mmap(file_inode(slot->gmem.file));
+> +}
+> +
+>   static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>   {
+>   	struct inode *inode = file_inode(vmf->vma->vm_file);
 
-Thanks
-Sairaj
 
+Cheers
+Suzuki
