@@ -1,71 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794369418;
-	b=bR99gtRg+3X486PRL2zARXiEbSNjx2VSwRh5EHYAeNtU4QVU8MeQSuV1S525TPDAKg0P
-	 DQOssZiT9g93h1CYIkISm9Jv3raF9BaqsmDLGQwEMJFynZ0vLoUQAw5E2u6gktQaRYijs
-	 tZR/4P5e/4XzKyqwW8ijo4CFpMU423cbKRr66CK1ITv6p6lqM+vo1cVc/s5GHyLTsrdh/
-	 8LPVEJNLGD+6Cmv8eeyYmrjgQgmUBtgIh518v9mhQgF33udQjqvYBrAy8wU+gfthqafsu
-	 2UCi2WCXLciSn0fKdMqs9HK6pq1Z74s4i16fKD4rZ8DvNqMY9QlOf3PVkPeQN4yz2Eg==
+	t=1794369427;
+	b=l4nCyifN4OHP1qXPjGMno9eWiV+ARI8l5oJIy6JlF2Z6neHZHhyO42LA+wg332htWGHp
+	 +u7frXHmFJv9e7gDJMXI2xPk/cTuIqGxoezuMOmpgp4PI3Az0/vXJWO7QslnEWKOC3Ra5
+	 udDJBxmr/tIOJ6FW3pmE9PWnFGuRlKzSiD43fIIS6pFDy1v60Uzz+XjZQvg92934kR+VD
+	 rmwr8SjbONT0n3aKXXQyF3BQCdMtjTf2aRqIOHwsOQR1dMPWXPBYrMnPKp5BhfN9DaL/+
+	 Jxg4hx8LLLQaKO2VZICkeeEst2rH0UDemjibe5hqhe+aMAONMyT4uDFtT2y44EyhbBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794369418;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794369427;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Subject:Date:
-	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=zZDSaA2m1LuQ85T5Lp7wmP+f7M3OPYpfTRV4JXx1l9s=;
-	b=LWL3R6VdFofjgDW9zuAAZEEjR6xL78Lm2og8b/PNjbLjq0ifVyBa5AcvGkJshZHJrwji
-	 AK1BpKuhX7DArrm1aSVJGjynbv9FzeugEEXu5CRdFGjq9+B9xh2Ouc2o/Kv++m9ixyubr
-	 hKVJ9jJOqhISSy9IFuqOUSoOIKKd0Q+xuveZ8UZfCdxsvePlmx7T2KjRPHSoiuLxhT+fg
-	 zesZfj9sgNKTbypcQye71Np1xV+1GYexjFZRAFziE3Obx6OpJABp7+tKi82AJA45mFIXI
-	 drDSaZKEtFrBajxdJ103MUnpmt+gAY6jIS88Hmv/b2K/q8p9Me46Bi8UXqcmu5WL8hQ==
+	bh=CSEz8qxghozwaDtTAs+AP/lbLZJS5cfpZ0YaPk3UawY=;
+	b=vjbg2LWPDV6eIc6NO3CM1O4giWcOSJ4HOHd3dkaQpGL0AiuagM2JX5wba5387igoZHl5
+	 eU5hnxLeX53gkCbTJQfW9SdrVJ9eacbrMzHPsx7h5O5MFxnl6SmMMStNFQ1km9s9O0kJj
+	 y9XxHCkzLYo8x1gz8rFoqKR3Fa/AhracqOA14uuhaMLSy8n8g5YJqp7fDBKTprjMh3EEl
+	 45sWhObt7D6NR3MxpXwPvPwentUUIU2SboGhTJM06+bWFhYKXKA7cfFpPLPwM7tVQu6CQ
+	 NOMorLAmL2hMYSZ6E5FeukU7ZA14+/8BNNNMiD6wbLgJ2MN8+wiw5Neqya0LF1FhgNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q8biu2XQ;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dAwJfF3K;
 	arc=none smtp.remote-ip=198.175.65.21
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A44606A320;
-	Wed, 11 Nov 2026 03:56:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4A44606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1268606A324;
+	Wed, 11 Nov 2026 03:57:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1268606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q8biu2XQ
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dAwJfF3K
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794369418; x=1825905418;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=ev94+/CgdQfZh0Ci5qm8+0rb62bXposxq3SwiVYhvY4=;
-  b=Q8biu2XQwCSA+A1PWn6eHfTrO4FFRGSiAwLREoYo3R++FU0UwqAGu5a1
-   TdvQxEgl3cqR/TrZQ7EXHVNR8kCcKAFOclBJh4oUTe5B5hAg5VP+OfXrd
-   TrHHpazDq2sM9oGHcKq7JHm7ibZehKK1b8Q1PF/qARDXUiwv4Pak0gDbn
-   0LYHGEW6MgcUeI2IlmQl1D625qbOmFPpOcgZUr9FPe2ayT9EbbyF/JB85
-   ziXLDNC2YS7faeLJqUmqQVXeNZJ8z24Zflh0manEZFEm/Bj92giGvGoXZ
-   p9TztnqapoH5k7ndoAuFeV/xMrrslQJHIM/7lGVwQbsxV9ABRT2SP7WAr
+  t=1794369427; x=1825905427;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=1AgkZMDZ9wupKpCh5EP7vtfRDJS7fB/MjH80W+f07lc=;
+  b=dAwJfF3Kn0tNnki9kbmgrPCy0olgLnRfbbUNkqFpdPrP7u8Ln29ScggN
+   0ubi+6xHKn/U2b2ccyb509ejji/LINA4ktaC88SefyM2v3/y/OzI/+Azn
+   68copSynapPFH96tGG2n62YxfyYR3eXqaCGN08ymhECleCKkJUcrCznPL
+   FWjoeyi7DOqLroV3Z2fKYmsY1SvgN2p7dGaq7NUe7xL1+HXl53zZOn2/7
+   +6IBfi4nl1ZCY2n9NA+wCygZ+TSZrXrTHWpkT8t+wljPjFJpmEV/PSmfy
+   iC6NzHXehRLGTwkHQs4jEO0NQBfwhUk4IJVs9/jtauuN4caCmAMGNUpAZ
    A==;
-X-CSE-ConnectionGUID: 7ao2M/kAT/6brxahaYfnQQ==
-X-CSE-MsgGUID: bwtrSGWJQVKBv+VnGbd7Xg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3220271"
+X-CSE-ConnectionGUID: huSvUD52RiOSLGG5oUZovg==
+X-CSE-MsgGUID: mTNVikPXTyOWyNPRnC7hjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3220281"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3220271"
+   d="scan'208";a="3220281"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:56:57 -0800
-X-CSE-ConnectionGUID: 4qZ/tp/pRaGtcwq4wegYUQ==
-X-CSE-MsgGUID: APQreALKSDK7RWdwfYPE9A==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 19:57:07 -0800
+X-CSE-ConnectionGUID: +8MGP+gYReaiQ6k3MS2Zhg==
+X-CSE-MsgGUID: dXsbyxssTFKDp7T4cpu9UQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="10199168"
+   d="scan'208";a="10199240"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
-  by fmviesa013.fm.intel.com with ESMTP; 10 Nov 2026 19:56:53 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 10 Nov 2026 19:57:03 -0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH v5 0/6] Enable TDX module extensions
-Date: Wed, 11 Nov 2026 11:48:41 +0800
-Message-Id: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
+Date: Wed, 11 Nov 2026 11:48:43 +0800
+Subject: [PATCH v5 2/6] x86/virt/tdx: Configure add-on features on TDX
+ module init
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,12 +77,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJnl82oC/2XPy2rEMAwF0F8JXlfB7ziz6n+ULhxb7hjyaB0nZ
- Bjy73XSLgayEhehw9WTzJgizuRWPUnCNc5xGktQbxVxdzt+IURfMuGUa9oyDdlvMEx+6RFwy+A
- tawUNQjgqSTn6ThjidoIfnyWHNA2Q7wntK6NYmcrUDRO0aYHBI/bLWG/Lex/HZavjmLGv3TT8k
- wl/llIt/7mkszNC2Q4x3yqtucHGS6c7rpzxzAQmpEJhOfWcGd5aiw1KctS5xzlP6XG+u4oTOyo
- xSi+frQIo+E5x11HVtcxcuh3gKl8QJi6IPBBUIVinlWzoFdn3/ReYF/97hgEAAA==
-X-Change-ID: 20260916-tdx-module-ext-da1930f33c04
+Message-Id: <20261111-tdx-module-ext-v5-2-c74f764abc3d@linux.intel.com>
+References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
+In-Reply-To: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
 To: x86@kernel.org, linux-coco@lists.linux.dev, 
  linux-kernel@vger.kernel.org
 Cc: Kiryl Shutsemau <kas@kernel.org>, 
@@ -94,143 +91,128 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
  peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
  chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5586;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4418;
  i=yilun.xu@linux.intel.com; h=from:subject:message-id;
- bh=ev94+/CgdQfZh0Ci5qm8+0rb62bXposxq3SwiVYhvY4=;
- b=owGbwMvMwCH2Zztz45IFPbcYT6slMWR9frrs98cPhW+eBfxnrP/+4tlXYXfuzr8xC39W6yffK
- 43PD+t62tHJwiDGwWAopsiywGOW05T2WUxbP+28BjOHlQlkiLBMZWZOaZ5eRalDZl5Jao5ecn4u
- AxenAExV/iVGhhY+wb+unxV3TJk7jfXlhMiqXad7vk1s9dieoMD7aJa1P1DFS/trgs1HzU7xlMm
- 8T5x3Wbg4Y11JFeuPD7suvtdetGklMwA=
+ bh=1AgkZMDZ9wupKpCh5EP7vtfRDJS7fB/MjH80W+f07lc=;
+ b=owGbwMvMwCH2Zztz45IFPbcYT6slMWR9frpcT+3Kz62Pk+aJHj+4I8rB083KUk9E0PJf0f3Fx
+ jMusqmKdHSyMIhxMBiKKbIs8JjlNKV9FtPWTzuvwcxhZQIZIixTmZlTmqdXUeqQmVeSmqOXnJ/L
+ wMUpAFN14xfDX7mMp1qHT235dnh6OuvMTYHT7Z4Iqs3c8tj4aNf5KUZ3J01jZFi7YH30efNPoQr
+ 8jztCJ9/+s2VtjaOX4N3Mm/KvjriX63ICAA==
 X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
  fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
 
-Hi,
+The TDX architecture identifies some features that are off by default.
+They are classified as add-on features because enabling them affects
+existing TDX systems: they may change existing feature behavior, or
+reserve more memory.
 
-In v4, Dave raised concerns about the first patch. I refactored it and
-dropped its RBs, so it needs more review from TDX developers/reviewers.
+However, the impact of the first add-on features will be low enough to
+pursue a simple approach - the kernel just enables them when supported.
+If a feature with a very high overhead appears in the future, this can
+be revisited.
 
-Based on some offline discussion, I refactored changelog for patch 3/4/5.
-I also simplified the changelog for the rest of the patches. But the RBs
-for Patch 2-6 are kept, please speak out if you object.
+The TDX module extends TDH.SYS.CONFIG with a new register argument to
+specify which add-on features to enable. This new argument is a bitmap
+that uses the same feature bits as TDX_FEATURES0. Note that Dynamic PAMT
+is an exception: although it is an add-on feature, it is controlled via
+a legacy, dedicated register argument [1].
 
-If these patches (especially Patch 1) get good reviews and no major
-concern, Dave, please help take a look. Otherwise, feel free to ignore.
+Pass the bitmap of features that are supported by both kernel & TDX
+module to TDH.SYS.CONFIG. Initially, the bitmap is 0. It will be updated
+to contain specific feature bits as full kernel support lands.
 
-== Changes ==
+The TDX module requires leaf version 1 for TDH.SYS.CONFIG when passing
+the new bitmap argument. Set the version field to 1 if the argument is
+used to enable any add-on feature, otherwise keep the version as 0. This
+retains backward compatibility with older modules that don't recognize
+version 1.
 
-Dave pointed out that the Patch 1 contained too much information, so
-that it was hard to find out why a wrapper is immediately needed. He
-also pointed out that introducing the new structure, tdmr_info_pa_array,
-is orthogonal. Drop the new structure part. Further simplify the
-changelog to make explicit the reason for the wrapper.
+The original changelog was written by hand. AI was used to help correct
+grammatical errors and polish individual sentences for better
+readability.
 
-Dave pointed out that the changelog of Patch 4 doesn't catch the point
-of why DPAMT support is needed. He also pointed out that the
-bisectability concern between Patch 3 & 4 is not well explained.
-Refactor the changelog of Patch 3 & 4.
-
-We had an internal discussion about simplifying the Quoting extension
-initialization flow. The conclusion is to integrate the TDH.QUOTE.INIT
-operations (and potentially similar operations for other extensions)
-into TDH.EXT.INIT. This raised a question about how to handle errors for
-TDH.EXT.INIT if one extension fails while other extensions are good. The
-solution in this series is to fail the whole TDX initialization on any
-error, though we planned a solution when a nice-to-have extension
-appears in the future. Describe the error handling in the changelog of
-Patch 5, no code change.
-
-v4: https://lore.kernel.org/r/20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com
-
-v3: https://lore.kernel.org/r/20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com
-
-v2: https://lore.kernel.org/all/20260915102658.713079-1-yilun.xu@linux.intel.com/
-
-v1: https://lore.kernel.org/all/20260821032920.256225-1-yilun.xu@linux.intel.com/
-
-Quoting v2: https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
-
-Quoting v1: https://lore.kernel.org/all/20260522034128.3144354-1-yilun.xu@linux.intel.com/
-
-== Overview ==
-
-To date, SEAMCALL execution must either complete quickly to avoid
-stalling the host, or yield quickly at pre-defined interrupt
-checkpoints. This is acceptable for the existing SEAMCALL leafs,
-which perform simple, bounded operations.
-
-However, some new features such as attestation and TD migration require
-higher level security protocols inside the TDX module, which cannot fit
-within that constraint. TDX solves this by making those operations
-inherently preemptible and resumable like OS tasks. TDX provides a
-separate SEAMCALL execution environment - the TDX module extensions -
-for those operations.
-
-This capability allows for higher-level SEAMCALL ABI design - like
-"create a DICE-based attestation quote". Several new features, such as
-DICE-based attestation, TDISP and TD migration, use SEAMCALL leafs
-backed by the TDX module extensions.
-
-The TDX module extensions need memory for their execution environment
-to serve these SEAMCALL leafs, so they need extra setup steps during TDX
-module initialization. The bulk of this series implements these setup
-steps.
-
-At runtime, the host invokes these SEAMCALL leafs just as normal ones -
-if interrupted, simply re-invoke the leaf to resume.
-
-For more information on TDX module extensions, please refer to [1].
-
-[1] https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
-
-== Branch stack ==
-
-This is based on v7.4-rc1. You can find the full branch stack at [2].
-The DICE part is in the full branch as an example for extensions. But it
-does not include the other DICE feedbacks.
-
-The full branch contains:
-
-  This series: Patch 1~7: This series, including this cover-letter.
-  Use case:    Patch 8~N: The old DICE part as an example.
-
-[2] https://github.com/intel-staging/tdx/tree/tdx-module-ext
-
-== Test ==
-
-We made agreement with TDX module team about some ABI changes, it
-involves TDH.EXT.INIT, TDH.SYS.UPDATE.
-
-This series is written against these unreleased changes. So we did 2
-kinds of tests.
-
- 1. Add some workaround patches in kernel then test on existing TDX
-    module & real HW. See the full branch listed in "Branch stack"
-    section.
-
- 2. Customize the TDX module, mock the ABI change, run with the module
-    in a virtual machine environment with virtual SEAM support, no real
-    security in this environment.
-
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Link: https://lore.kernel.org/all/20260904215841.303070-10-rick.p.edgecombe@intel.com/ # [1]
 ---
-Xu Yilun (6):
-      x86/virt/tdx: Move TDH.SYS.CONFIG operations into a wrapper
-      x86/virt/tdx: Configure add-on features on TDX module init
-      x86/virt/tdx: Add extra memory to TDX module for the extensions
-      x86/virt/tdx: Support DPAMT when adding memory for the extensions
-      x86/virt/tdx: Make TDX module initialize the extensions
-      x86/virt/tdx: Re-initialize the extensions on runtime TDX module update
+v5:
+ - Simplify the changelog, saved 5 lines
+ - Better clarify the AI usage
 
- arch/x86/include/asm/tdx.h                  |   1 +
- arch/x86/include/asm/tdx_global_metadata.h  |   4 +
- arch/x86/virt/vmx/tdx/tdx.h                 |   2 +
- arch/x86/virt/vmx/tdx/tdx.c                 | 234 ++++++++++++++++++++++++++--
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  14 ++
- 5 files changed, 244 insertions(+), 11 deletions(-)
+v4:
+ - Add explanation why kernel enables add-on features solely on
+   available support in the 3rd paragraph of the changelog. (Rick)
+ - Collect Reviewed-by tags
+
+v3:
+ - Update the stale changlog for bitmap arg of the wrapper (Chao)
+ - s/get_tdx_addon_features0()/get_tdx_usable_addon_features0() (Tony)
+ - Collect Reviewed-by tags
+
+v2:
+ - Don't pass addon_features0 parameter around, get it in the wrappers
+  (Dave)
+ - Remove TDH.SYS.UPDATE wrapper (Dave & Rick)
+ - Drop the changelog section explaining why add-on feature enabling is
+   needed in this series, as it is a generally understood pattern (Rick)
+ - Add a note in the changelog that Dynamic PAMT is not enabled via the
+   new bitmap argument (Rick)
+ - Add __init tag for get_tdx_addon_features0() (AI nitpicker)
+
+v1:
+ - Use tdx_module_args.version to assign SEAMCALL leaf versions (Dave)
+ - Remove DICE specific descriptions (Rick)
+ - Remove the global var tdx_addon_features0 (Chao)
+ - Add a Macro to collect kernel supported add-on feature bits (Rick)
+ - Changelog & code comments change
 ---
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260916-tdx-module-ext-da1930f33c04
+ arch/x86/virt/vmx/tdx/tdx.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-Best regards,
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index c7bd0b01786d..3bfe78b4b538 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1033,9 +1033,19 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+ 
+ #define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
+ 
++/* List all kernel-supported add-on features0 bits here */
++#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
++
++static __init u64 get_tdx_usable_addon_features0(void)
++{
++	return tdx_sysinfo.features.tdx_features0 &
++		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
++}
++
+ static __init int tdx_sys_config(u64 *tdmr_pa_array, unsigned int nr_tdmr_pa,
+ 				 u64 global_keyid)
+ {
++	u64 addon_features0 = get_tdx_usable_addon_features0();
+ 	struct tdx_module_args args = {
+ 		.rcx = __pa(tdmr_pa_array),
+ 		.rdx = nr_tdmr_pa,
+@@ -1047,6 +1057,15 @@ static __init int tdx_sys_config(u64 *tdmr_pa_array, unsigned int nr_tdmr_pa,
+ 		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
+ 	}
+ 
++	/*
++	 * Use SEAMCALL version 1 that supports add-on features if any are
++	 * requested. Otherwise use version 0 for backward compatibility.
++	 */
++	if (addon_features0) {
++		args.r9 = addon_features0;
++		args.version = 1;
++	}
++
+ 	return seamcall_prerr(TDH_SYS_CONFIG, &args);
+ }
+ 
+
 -- 
-Xu Yilun <yilun.xu@linux.intel.com>
+2.25.1
 
