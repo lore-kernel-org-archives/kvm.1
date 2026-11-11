@@ -1,81 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794417477;
-	b=pkHDSCBxkiFPIP0pBAJ1fKH4B3hPmx0xBBi9AKfDUVOp9abCms/h6IVRQto4WvaZT6Z6
-	 EReJe+22efujT0B90+iNeqac4a/FhnOlRcZEJEJ0EmBxXBD4Tm6wW1+pTsdIKrqe0mq8d
-	 1zc+jApntS7phUGfFH6HR9eyNJRSoNORUszo3dAQQk7EwzLBYn32UlqscsODJVgVK1GI/
-	 M3Nfo/iIcT3g+MEdrcTjBpndUOPRumaanL73RYqH0Hlxa7yDf/4tmqkEJmKwewKBWxOSO
-	 +7uHTrP/+I7Agdw2wEM8oaZ8IH9KhPGhUs2nZg+s9X9L70gWCbm0K0qsnKdkbnTwy7w==
+	t=1794417661;
+	b=EZrlbkT8pK1BwcGAovIpPRkOfu0GAeBX4vwJovZxvU52gInNqd8Bzxlu4We+uPpoyZlQ
+	 7jcSAO2gFqu45Zszyv27TBFptJk3k/SvvZ8YiPNEWuR9Fxov08079LYUNOlEHPKbJHWrQ
+	 s2OX7/wtUd8Fbp+sGKlUmkorYWGXsHWZSXN7iA+zNGASVsHrOjQRBmlHK47eB2DhzCkC5
+	 u90d4rf5MfHVi4qoHLuFEVH+YcvAISTPyEm+hOcVZIk2IZ4+J7ozOhFFJRQ7q6BncOfYC
+	 7qDq0W9ivhQa32fbHtOpYTROLeD9n4sDH2jdLFV1t++74YJ7jyXufviML2vyzYl0tDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794417477;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=aYc6TQFiJmyshVr2VWxnAYpxH7I6QL5S37wt5PeFjLM=;
-	b=x0eWUkxj8yxpv6pTVe8zCxQ3i8kQQWEwh66FCVpoRix2g2F7nwLPmdPJ+rX3bIhz7KNm
-	 Bg/poXM2SkSfAfz5+4NZbjkLIkphZbfe2eRNpa7GuQfDrp9cBgkG661ZsngaPaiPW9a61
-	 jfDAQPkuvRIzdroH43QyP0SC2Ic8ftDuoHSxGlz9gKGPbkJWf3FjfFh+cFz0DRmCXvFvO
-	 cQ43+XST9yjlUIlPCEl9o6cdLdN9nIhfkOZxws6HF8DJGv5ECaS0UDwrV9wlgoSXpS0Y4
-	 wlOjnbn0vXPutiJOiI4fJ+PV9sWoDJuGUEL65q2/9KaIWulleY7WkJyGyVGHtxf9ttQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794417661;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=FKOJ8KDuosOi8BJQqftHePAK8e5SSSs2999hEBZf9eE=;
+	b=eIQPst/ntPtfUX6deEeiB47sg11jUcT8xiMkNbtfqrqwrU17Yq/jBMX9onKkS1PCvipQ
+	 ZAYaRngBA8pit98gwSn8Q29PoL55SIh5QXvYiRXEzjLj19R6xNip1RKCgNDc0QCv5HZkQ
+	 x8s1zAjdL7r4rGXrRpoxYKA8zrBXlTgl5U3ALyWHfEQQZWWs+ty5I61M3nhQjKEymgL9T
+	 31s7RnVJ7Vs3dlgos8MEKkTG6c9WOiQPZz/BCjcPFZ4Ja1r5usb35Sg0sntZqmZ0V3loT
+	 dyLf9qJpZt0dFuw6r3bwEbdbPvnnCny07DZep6yS5VkSXq5Uzg4aevynqSl2qXBdqgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVSf5qWm;
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="SeU/cBwg";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7046606A324;
-	Wed, 11 Nov 2026 17:17:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7046606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB79A606A321;
+	Wed, 11 Nov 2026 17:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVSf5qWm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794417477; x=1825953477;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9h+SOuV2JorUEvU3zSn8GmfEBQ5z2NPxmYGV4bE90qw=;
-  b=mVSf5qWmDZ4xDRgnP6/XRCCj0/gowX73pPJXLsexkgvzW6cD+a+j3pm9
-   CqoHe5C0K1PEvkuszd4sTAvp2FYTxZASCAWTLF7WWOnNMdRRndjbZKAy/
-   GsvXLZn87peIgcv9Vv46D7QZQTNBvt+elklTiSW2n60/siKZLBOc0p41A
-   Hi7P1CmTWzUVDoXmMBI3juuRXy413I19F6vl45dLM2zmHNgKitYL3PAfX
-   kv97zjAVQ53vRMqYs4GTDGDFLmB02CwXTfrR35nWOrn4eoKIsKScUBhmS
-   BwoVO8y5uGIfxfDXXcqt9ZD0ADBuaBFIRbV4soDeFPjV8gdhFKosVCaO9
-   Q==;
-X-CSE-ConnectionGUID: pJmCDACTR4e2a7tQTNtALg==
-X-CSE-MsgGUID: 0/htu46zQySX12Ps599AhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3237201"
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="3237201"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 09:17:56 -0800
-X-CSE-ConnectionGUID: lFmZw9txTsqnb0hBWg7mpw==
-X-CSE-MsgGUID: XMizP/EzSK+XFVQ/tWbM8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="8803116"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa001.fm.intel.com with ESMTP; 11 Nov 2026 09:17:53 -0800
-Date: Thu, 12 Nov 2026 01:09:52 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, yilun.xu@intel.com, arjan.van.de.ven@intel.com,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [RFC PATCH v2 1/2] x86/virt/seamldr: Support large TDX module
- binaries
-Message-ID: <avShYPmuMItx/tsJ@yilunxu-OptiPlex-7050>
-References: <20261106132159.1551365-1-chao.gao@intel.com>
- <20261106132159.1551365-2-chao.gao@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SeU/cBwg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDDD1F00A05;
+	Wed, 11 Nov 2026 17:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794417660;
+	bh=FKOJ8KDuosOi8BJQqftHePAK8e5SSSs2999hEBZf9eE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SeU/cBwgH2gsHJ56ZYshk+tzucy4trXksw3HuYDfxBhFeYUYMCD/FYQudcN1prdPn
+	 atVlENmq53VO9OWPceztO37Q6x1KVGAR7MD4rsv7jPl8kDTwyNeQY8wVEtdbHpRoyc
+	 GArhhBO211YMXJiWiayLVJkXAMOY8sLkhnjR9HW4KrC+C14WpSaHl4rnvokABdsxXT
+	 0SsLyKuPHgoGcuP66JJw0McOQmluoHjCRFGJkFm8q+zZLahRb9nzC0APdZzbr/ZDog
+	 5WieUQCfTTa9MrtrUWRRy7Av9sONLxHb/RccGTIuCEav54a6S0JF6R++dzAxtsRwKY
+	 swZDayWCksjGg==
+Message-ID: <sashiko-outbox-209403@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v13 2/5] s390/pci: Improve function measurement state
+ management
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Omar Elghoul" <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261111162758.9792-3-oelghoul@linux.ibm.com>
+References: <20261111162758.9792-1-oelghoul@linux.ibm.com>
+ <20261111162758.9792-3-oelghoul@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 17:20:59 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,80 +61,78 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106132159.1551365-2-chao.gao@intel.com>
 
-On Fri, Nov 06, 2026 at 05:21:55AM -0800, Chao Gao wrote:
-> The module binary is handed to P-SEAMLDR as a list of page physical
-> addresses in 'struct seamldr_params'. The list has 496 entries, which
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] s390/pci: zpci_reenable_device() enables FMB on disabled PCI
+  devices
+--
 
-Is it better we specify why 496 entries?
+commit fa84ea4339ffa82b899be0638304928f5c7daa03
+Author: Omar Elghoul <oelghoul@linux.ibm.com>
 
-  The struct seamldr_params is contained in a 4KB page, the first 128
-  bytes of the page are the metadata, the rests are the list of page
-  phsical addresses for the module binary.
+s390/pci: Improve function measurement state management
 
+This commit tracks the desired function measurement state in
+zdev->statistics_on and restores it when enabling, disabling, or
+re-enabling a zPCI device.
 
-> caps a module at 496 pages.
-> 
-> TDX modules are gaining features and are about to outgrow that limit.
-> 
-> The P-SEAMLDR ABI was extended to chain the list across 4KB pages. For
+> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+> index c055a9ad09724..f49736386eb7c 100644
+> --- a/arch/s390/pci/pci.c
+> +++ b/arch/s390/pci/pci.c
 
-With the knowledge of the first 4KB page, it is nature to say the ABI
-extends the list to more 4KB pages.
+[ ... ]
 
-> a module over 495 pages, the last of the 496 entries points to another
-> page of entries instead of to a module page. The last entry of that
+> @@ -737,8 +769,14 @@ int zpci_reenable_device(struct zpci_dev *zdev)
+>  	}
+> =20
+>  	rc =3D zpci_iommu_register_ioat(zdev, &status);
+> -	if (rc)
+> +	if (rc) {
+>  		zpci_disable_device(zdev);
+> +		return rc;
+> +	}
+> +
+> +	guard(mutex)(&zdev->fmb_lock);
+> +	if (zdev->statistics_on)
+> +		zpci_fmb_enable(zdev);
+> =20
+>  	return rc;
+>  }
 
-Maybe we don't have to emphasize the 495/496? The last entry of each
-page points to the next page.
+[Severity: Medium]
+Does this enable FMB measurement in firmware when the PCI device is
+disabled?
 
-> page can point to yet another page, and so on, until every module page
-> is listed.
-> 
+zdev->statistics_on is initialized to 1 in zpci_create_device() and
+remains 1 after pcibios_disable_device() disables FMB.  Callers such as
+_do_recover() and vfio_pci_core_disable() -> ... -> zpci_hot_reset_device()
+disable or remove the struct pci_dev before calling
+zpci_reenable_device(zdev):
 
-[...]
+arch/s390/pci/pci_sysfs.c:_do_recover() {
+	pci_stop_and_remove_bus_device(pdev);
+	if (zdev_enabled(zdev)) {
+		ret =3D zpci_disable_device(zdev);
+		...
+	}
 
-> -#define SEAMLDR_MAX_NR_MODULE_PAGES	496
-> +/*
-> + * module_pages_pa_list[] spans multiple pages. The last entry of each
-> + * page points to the next page and does not hold a module page, so the
-> + * maximum number of module pages is the array size minus one entry per
-> + * page.
-> + *
-> + * SEAMLDR_PARAMS_NR_PAGES is somewhat arbitrary. It allows modules of
-> + * up to about 32MB. Increase it if modules outgrow that.
-> + */
-> +#define SEAMLDR_PARAMS_NR_PAGES		16
-> +#define SEAMLDR_NR_MODULE_PA_ENTRIES	(496 + 512 * (SEAMLDR_PARAMS_NR_PAGES - 1))
+	ret =3D zpci_reenable_device(zdev);
+}
 
-The number 496 is not meaningful when the seamldr_params is no longer
-one page size. We need comments to explain how it is derivee. But instead
-of text explanation, is it better:
+Because zdev->statistics_on is still 1, zpci_reenable_device() allocates
+zdev->fmb and enables FMB DMA in firmware even though pcibios_disable_devic=
+e()
+already ran.  If no driver re-enables the PCI device, firmware FMB
+measurement stays active on a disabled device, and at this commit
+zpci_release_device() leaks zdev->fmb if the device is later deconfigured
+(though commit "s390/pci: Improve FMB memory management" later in the
+series frees zdev->fmb on release).  When a driver does later enable the
+device, pcibios_enable_device() -> zpci_fmb_enable() sees zdev->fmb
+already allocated and returns -EINVAL instead of zeroing zdev->fmb and
+resetting the software IOMMU counters.
 
-#define SEAMLDR_NR_MODULE_PA_ENTRIES	(SEAMLDR_PARAMS_NR_PAGES * 512 - 16)
-
-Or:
-
-#define SEAMLDR_NR_MODULE_PA_ENTRIES	\
-	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE -	\
-	  offsetof(struct seamldr_params, module_pages_pa_list)) / \
-	 sizeof(u64))
-
-> +#define SEAMLDR_MAX_NR_MODULE_PAGES	(SEAMLDR_NR_MODULE_PA_ENTRIES - SEAMLDR_PARAMS_NR_PAGES)
->  #define SEAMLDR_MAX_NR_SIG_PAGES	1
->  
->  /*
-> @@ -48,10 +59,10 @@ struct seamldr_params {
->  	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
->  	u8	reserved[104];
->  	u64	module_nr_pages;
-> -	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
-> +	u64	module_pages_pa_list[SEAMLDR_NR_MODULE_PA_ENTRIES];
->  } __packed;
->  
-> -static_assert(sizeof(struct seamldr_params) == 4096);
-> +static_assert(sizeof(struct seamldr_params) == SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE);
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111162758.9792=
+-1-oelghoul@linux.ibm.com?part=3D2
