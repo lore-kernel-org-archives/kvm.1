@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794425059;
-	b=lqqwX7joRlQTd7Dj0tX+WbXcAOR+l3l6QolzH/JT5B4UfFSHmolxx48brINZT8z+fhhP
-	 bliMpjmyLjp+yae8YKZTBxCzSM7CR6c68i4LH8yEImhkXsv/TCo+TgTw3dG8ASS5G8NPw
-	 LeToabLxi5a0YD9s1uTP5B77tNID2OOojbz1XfH45StJrQV3ql8hQow8wbiPhkflZYwMn
-	 k67RLKSB8/Fbb8lsNVc0eA/wsyYQ81nZbWam+IcZuFs83TOFlqA+wQXVjKkvrL4aLC3k0
-	 g+voHdnZcifJxAblutMuA1TFfRl0joacaK0mx3IfRxo/adiLehUNASfhGgL9snDxdkA==
+	t=1794425064;
+	b=Xenr5A7sQHlAJpZo5tg9Ab94nB+fgYXtvT5v3VM1cSvjsniYqjsm7cBps6J1DF7+KmUa
+	 4xlVeJC6u8tGEFpM74m6jlOBQrA1WjGH7HXlPu5q38WOdsQpfxudsBAT95JXrmEOFf4sR
+	 nTH2sVE3wRkBo7E2fGlER/hDE4rfMo4aVqOVelo6/3idD89i5zsaYmBWRNdBfEem7rnCm
+	 FJJIAR9EtOY/ufo4aZeyuc+kun6Vd/ewKjQPvL71KQRNDumMIw0cB06UrM9srZoFtn9nR
+	 yLxB5bQFaqWXZwSlnBGqYnmnNqUJv4czi/uZys7+rBwJE7ck31L9nJMb3iEvqHLA7aQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794425059;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794425064;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=s6lt1PxCFx0agGLbXpFKlY/hoUAzM5xkPqAiIkWnGNA=;
-	b=aYlX6atkFy5whM1VqEwAz9nzyodXnfqGpS14PDs+kJgqmKNCnFuZxF9GaLFo1EPeAe5y
-	 3r/bOLwazMeeVZosxWC+J7SP1mIW0LOf3QXP7itdJG1CsVfzkIKO3ZDqGzJJxaeSCXiSS
-	 LLFJMEGBeb7MBFCIY/Li4YSQcbmILfJtY+USE739A7YPdgWwnyhss7QI1aX6ajamuHHrD
-	 DXjgaBJa6UY/XRK7nqRVMXlblyXgyBy+hWx3uQKcCJpXj+oA76N3SQuu4g8E+yf95YY5W
-	 zJnZhe56Ov48ztjTc5C8Uk4p5C36XGp9YOSmPHaSMCnaOAqONc3Qz3dPSXntoxqL4Yw==
+	bh=S4+DQ/5hS2/5UfXO0mi1ZgFeMRsr05x8y1FYZlBsi/k=;
+	b=c+O8CGSNp6OyEJsdlMizcRmkmdMuqmmDO4pkhs1Wx4YDfOjBihejosxw9tnGfD3GVuS2
+	 9MaMBst6bmGDjfZ2GesjbRX7LE02ySUaQVRVpObLxaDHb3HqypoqPjGwAAo5EW9zTedMW
+	 xL3FgQ8ox/3w0cQG5plFdLq+Gq91YvVtmEU8dwc8tllf22CFrFQ262XpGFKq8/UBhACFX
+	 itTc1OUfR10Je8OVb1ubhpSyS8FeOUOA4nrq8v4xgj6D8KsHUPcfCjT2c9XH3IVb+mOhw
+	 3tQ/nxGEtjf7cpkoEZxvndzKpolJ/UX/5o8x0Oh5GQcbJP0cYys8l7UdMyu+tlvxlMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UOq3nT8j;
-	arc=none smtp.remote-ip=209.85.167.199
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="lM/CPmgi";
+	arc=none smtp.remote-ip=209.85.167.198
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4708E606DD5D
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 19:24:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4708E606DD5D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AF960A380A
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 19:24:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83AF960A380A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UOq3nT8j
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4cc89e86e9eso4180544b6e.3
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:24:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lM/CPmgi
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ea2c058e67so3962078b6e.1
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:24:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794425058; x=1795029858; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794425063; x=1795029863; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=s6lt1PxCFx0agGLbXpFKlY/hoUAzM5xkPqAiIkWnGNA=;
-        b=UOq3nT8jfNIxrMk+znyvt21C9lwSewOGrh1jpeVu5iK5VmdqJeDT4fPjN6nDS+s/rz
-         E6Ho+bO3iAXvXkGBGN7CjciNZSs05x40V5C4Z9f0REOobKvYRI7U+31LkNo568hjhRz2
-         VA+FxI4lBIGhJ+ugD1He8j+J8VFk+dt26q+Q+oobnfzOprmYbN898bflauRMBfEEy4rd
-         5Njig5Se7CnUBaBXRSmjOERE/lZ83r/qYtfGEy9EiotAynG+Zijcmr8jieR2cggp/ebU
-         BtjWu6T0pL3mwZ94u0gf7+eonYPgaPav+OYjwJPpOUc8KIt158SxR+gGtte9ruBukesx
-         e0+w==
+        bh=S4+DQ/5hS2/5UfXO0mi1ZgFeMRsr05x8y1FYZlBsi/k=;
+        b=lM/CPmgi2MxnhCIljbY1J6j5HJCMMekv0//LIx4rqPP+rmTASzEwn/BZTlI+Fvfwof
+         f5lzQB0rVXFPhPx5zlOmCXnEZsPPgqwyajdOHm2HucaXGcohS4WqmpNnnr0r28fxAkpE
+         lg/UcKD+gr2bXmw6OtsYfNTumii+2oGuZptwjhXEy2C8uOHAWNG0YYDFtvZLbBscAarT
+         KRjZxsb4x9C8/ukL2U6mxnyYxFXQQR0ZKVLlW4ebshXJs56UjXEXgV5bCqzi520CgmbZ
+         ytScVeEa8/BkQ5DOx6FUZPGNcU6+g53Tsl0ljpXVfOyoViGc3s7rFDA5dCAACnp88HpA
+         e5IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794425058; x=1795029858;
+        d=1e100.net; s=20260707; t=1794425063; x=1795029863;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=s6lt1PxCFx0agGLbXpFKlY/hoUAzM5xkPqAiIkWnGNA=;
-        b=QF8z8s64dWV7TY2lIKqDcEzCZluoJlyk+hFklA/1HP0rzV2uRqTDevqXgV7+/JbRn5
-         e+IpZ+SYBWxbNQQ4D0lBDONK8IEfMQswwFPtWp3z78oypaGC60yLzfYjjcJkabDC1Ypr
-         dUeHknnlmcJ+sNZuyiWp4NAA42cBgSMkbUZQpIy8wuFwQ201nvxXEzi4nq3/tUofPx7b
-         xmbuHPhHRiW51ffO5riGaWU9Sc2BM27cgrFwfTlD9/vlLWEiZvIfSncTzncTulpyHM1q
-         F+Mlnqo+CjTgBj9hvifaDeull9OJcOH6vKDCW2nuXaTd7msg438DANrj1C2Tu4v0zKH7
-         e2UA==
-X-Forwarded-Encrypted: i=1; AL+hErHKJ+Jr69Iyv0R9bJ72d7Dzrts8YqLCu8bi1egf3BlUGHOOmwxs936hQrO+xjKHv+5liRo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9GQ+xbfDRJRjUxMTQwCjQl0knpzHGu3EqTqTrqii6/fic4yK2o
-	/NeNikePlkAx8HcA/aLVdk23+pBQ4tSv1NIGmH/mJuAAeq5AoryATlc024q8Mx16N3gCq6bbJib
-	meHF4/mvPpFMeEA==
-X-Received: from iltr6.prod.google.com ([2002:a92:c5a6:0:b0:542:f469:6209])
+        bh=S4+DQ/5hS2/5UfXO0mi1ZgFeMRsr05x8y1FYZlBsi/k=;
+        b=tRBQGm0G0undKluslmogn/nfD466stC1kKaL3A63tqNDM/aQXWK85BHOp0BNiDZb4Y
+         4mNYDV+bkgRIvmdVY+0mNiZv/TvFHpShHa2y+fmI9oX+bNKy/uZy/espNUK0p/+1Qgiu
+         AP9mpxwemydBxTA+HxIWwn+kzgNCOO82Ddyk+MHfa9GBzFIZPitUhLSqt/tNj5ff0X1u
+         XOjuawETGK714z1sWJQCt7VL/EtLOzPbbARMQ91uT412R3c9iPxkIvl5bt8dXVkx7LDj
+         2X3IUyYNrxZJ7lHgdi3G5/UKwfXtW371fvZIznB6qYoz6yXfdXOBa/tYrL4+Z8Vh7rfo
+         9tMQ==
+X-Forwarded-Encrypted: i=1; AL+hErHHGsoD3lzxw16fCz6EYUUvDOYkVsdLYMbx4i28DFpZxnh4uzhJPGPsbddUfkmwaFUvuZc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8qH9SQGTVHCR3QRVkD8DMxRJZTdPjeJ2vrAX0p6cvM/aha++KU
+	L1Yc4uALX80KOKr3exSj7gmHUXgKS+0neV/YDmU8pcpTqHfoT4ciCoqVbkX/hhILii+Th7f72V1
+	ZKLKBGArQk1MLZA==
+X-Received: from jabll4.prod.google.com ([2002:a05:6638:9804:b0:61f:e4cd:8716])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:23c7:b0:568:e5f:5dbe with SMTP id 5614622812f47-56b97d0f43cmr3278637b6e.61.1794425058062;
- Wed, 11 Nov 2026 11:24:18 -0800 (PST)
-Date: Wed, 11 Nov 2026 19:24:06 +0000
+ 2002:a05:6808:318a:b0:4af:5d69:1cb4 with SMTP id 5614622812f47-56b96ad0615mr3028788b6e.15.1794425063307;
+ Wed, 11 Nov 2026 11:24:23 -0800 (PST)
+Date: Wed, 11 Nov 2026 19:24:10 +0000
 In-Reply-To: <20261111192411.4133780-1-dmatlack@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261111192411.4133780-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
-Message-ID: <20261111192411.4133780-3-dmatlack@google.com>
-Subject: [RFC PATCH 2/7] vfio: selftests: Verify memory behavior in vfio_pci_find_mem_bar()
+Message-ID: <20261111192411.4133780-7-dmatlack@google.com>
+Subject: [RFC PATCH 6/7] vfio: selftests: Add vfio_pci_find_p2p_pair() helper
 From: David Matlack <dmatlack@google.com>
 To: dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, 
 	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
@@ -98,86 +98,104 @@ Cc: Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
 	Sumit Semwal <sumit.semwal@linaro.org>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Write and read back test patterns before returning a BAR from
-vfio_pci_find_mem_bar(), restoring the original contents and
-PCI_COMMAND_MEMORY state afterward.
+Add vfio_pci_find_p2p_pair() to locate an initiator device with memcpy
+driver support and a distinct target device with a memory BAR of at
+least min_bar_size bytes from an array of VFIO PCI devices.
 
-QEMU's pci-testdev exposes a readable, writable, mmap-capable BAR2
-whenever membar=<size> is passed, even if membar-backed=on was omitted
-and accesses are dropped as unimplemented MMIO. Probing the BAR upfront
-lets callers skip cleanly instead of failing later DMA or fault checks.
+Factor out vfio_pci_has_p2p_path() as the central place to validate PCI
+topology and P2P DMA reachability between the two devices in the future.
 
-Suggested-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- .../selftests/vfio/lib/vfio_pci_device.c      | 33 +++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ .../lib/include/libvfio/vfio_pci_device.h     |  8 ++++
+ .../selftests/vfio/lib/vfio_pci_device.c      | 48 +++++++++++++++++++
+ 2 files changed, 56 insertions(+)
 
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index d5308fe61490..9840463594ab 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -13,6 +13,7 @@
- #include <sys/mman.h>
- 
- #include <linux/align.h>
-+#include <linux/io.h>
- #include <linux/iommufd.h>
- #include <linux/kernel.h>
- #include <linux/limits.h>
-@@ -265,6 +266,33 @@ static const struct vfio_pci_mem_bar_desc mem_bar_descs[] = {
- 	},
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+index fd130f680a2d..9bda93712859 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+@@ -42,6 +42,12 @@ struct vfio_pci_device {
+ 	struct vfio_pci_driver driver;
  };
  
-+static bool vfio_pci_mem_bar_verify(struct vfio_pci_device *device, void *vaddr)
++struct vfio_pci_p2p_pair {
++	struct vfio_pci_device *initiator;
++	struct vfio_pci_device *target;
++	struct vfio_pci_mem_bar mem_bar;
++};
++
+ #define dev_info(_dev, _fmt, ...) printf("%s: " _fmt, (_dev)->bdf, ##__VA_ARGS__)
+ #define dev_err(_dev, _fmt, ...) fprintf(stderr, "%s: " _fmt, (_dev)->bdf, ##__VA_ARGS__)
+ 
+@@ -171,6 +177,8 @@ static inline bool vfio_pci_device_match(struct vfio_pci_device *device,
+ 
+ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
+ 			   struct vfio_pci_mem_bar *mem_bar);
++bool vfio_pci_find_p2p_pair(struct vfio_pci_device **devices, int nr_devices,
++			    u64 min_bar_size, struct vfio_pci_p2p_pair *pair);
+ 
+ int __vfio_pci_dmabuf_create(struct vfio_pci_device *device, u32 region_index,
+ 			     u64 offset, u64 length, u32 open_flags);
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index eca6eb13d7f0..16fc98ed170b 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -378,6 +378,54 @@ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
+ 	return false;
+ }
+ 
++static bool vfio_pci_has_p2p_path(struct vfio_pci_device *initiator,
++				  struct vfio_pci_device *target)
 +{
-+	const u64 pattern = 0x55aa55aa55aa55aaULL;
-+	u16 orig_cmd;
-+	u64 orig;
-+	bool ok;
-+
-+	orig_cmd = vfio_pci_config_readw(device, PCI_COMMAND);
-+	if (!(orig_cmd & PCI_COMMAND_MEMORY))
-+		vfio_pci_config_writew(device, PCI_COMMAND,
-+				       orig_cmd | PCI_COMMAND_MEMORY);
-+
-+	orig = readq(vaddr);
-+	writeq(pattern, vaddr);
-+	ok = (readq(vaddr) == pattern);
-+	if (ok) {
-+		writeq(~pattern, vaddr);
-+		ok = (readq(vaddr) == ~pattern);
-+	}
-+	writeq(orig, vaddr);
-+
-+	if (!(orig_cmd & PCI_COMMAND_MEMORY))
-+		vfio_pci_config_writew(device, PCI_COMMAND, orig_cmd);
-+
-+	return ok;
++	/*
++	 * TODO: Check PCI topology / ACS / host bridge support to verify that
++	 * P2P DMA transactions from @initiator can reach @target.
++	 */
++	return initiator != target;
 +}
 +
- bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
- 			   struct vfio_pci_mem_bar *mem_bar)
- {
-@@ -273,6 +301,8 @@ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
- 				  VFIO_REGION_INFO_FLAG_WRITE;
- 	size_t i;
- 
-+	min_size = max_t(u64, min_size, sizeof(u64));
++bool vfio_pci_find_p2p_pair(struct vfio_pci_device **devices, int nr_devices,
++			    u64 min_bar_size, struct vfio_pci_p2p_pair *pair)
++{
++	struct vfio_pci_mem_bar mem_bar;
++	int i, j;
 +
- 	for (i = 0; i < ARRAY_SIZE(mem_bar_descs); i++) {
- 		const struct vfio_pci_mem_bar_desc *desc = &mem_bar_descs[i];
- 		struct vfio_pci_bar *bar;
-@@ -300,6 +330,9 @@ bool vfio_pci_find_mem_bar(struct vfio_pci_device *device, u64 min_size,
- 		if (size < min_size)
- 			continue;
- 
-+		if (!vfio_pci_mem_bar_verify(device, bar->vaddr + desc->offset))
++	for (i = 0; i < nr_devices; i++) {
++		struct vfio_pci_device *initiator = devices[i];
++		const struct vfio_pci_driver_ops *ops = initiator->driver.ops;
++
++		if (!ops || !ops->memcpy_start || !ops->memcpy_wait)
 +			continue;
 +
- 		*mem_bar = (struct vfio_pci_mem_bar){
- 			.bar = bar,
- 			.vaddr = bar->vaddr + desc->offset,
++		for (j = 0; j < nr_devices; j++) {
++			struct vfio_pci_device *target = devices[j];
++
++			if (i == j)
++				continue;
++
++			if (!vfio_pci_has_p2p_path(initiator, target))
++				continue;
++
++			if (!vfio_pci_find_mem_bar(target, min_bar_size,
++						   &mem_bar))
++				continue;
++
++			*pair = (struct vfio_pci_p2p_pair){
++				.initiator = initiator,
++				.target = target,
++				.mem_bar = mem_bar,
++			};
++			return true;
++		}
++	}
++
++	return false;
++}
++
+ void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
+ 			    size_t config, size_t size, void *data)
+ {
 -- 
 2.56.0.567.gdb80ae8cd5-goog
 
