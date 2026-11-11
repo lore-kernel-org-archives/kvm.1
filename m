@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794377807;
-	b=3QgYcRi6O2NKjIqE98xYYVyOqEgGYX5mw71p9Y7PnIB0W6Lpnd15TXwuA2erZnPMLwS2
-	 VyWQlvwd5kEU5r97Hl4rpBx35/HlKRqDvvveYExG6mreGd94sXJXlE2pqpgn0lcq1Dew1
-	 qLzOA3S/sQRT8t61ST9eVjXrWniAnHLr2ZbRmC/os6pM3wdT8CMVPllmhJeZYVAMqHs2S
-	 Mn1aTWL0CCdWofPwMGnlRyfQVvLTkdd/7ZW9Qp5qJLvX0kiP6hhg2lBn14NtaoSJ4FwnC
-	 eDQEu3XYE5jNzoZafofxrgUD6rND43JG21bsIUoznOrBXiMSZqr+4+UBdDbtj6Vjtqw==
+	t=1794377819;
+	b=YL/jz7mc8TxoYUtri8DW/sLGtajqfohKy1CLs0qyR1NZtUr8lHbIaIn0JfCzdUp8TTuj
+	 A43n49EgqcNwuHfk+iz/qfXhYx1w73pFxoAhZKJ3nvlmhaf5aCXq7cULAf8y+5sljqM2Q
+	 ZNj+liWDk4ULTDq9P0eIRmgzD9pdv2BqjtwO19jWoReC8LLkUwJjaEvxsQg4mMz210/q1
+	 uKLdb6IBLRfYumSMbwAXR9bLSdUuNhmSyMAF5XfzyX1Clh4nOI9uZADU8lKofLt+Rz/CJ
+	 dDQv9/wjyebAG3HnqUYwYeEwrrKlZVmlHtyrbb2lAeaz1x5ZAOxOMVZLdG3mfcYpR5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794377807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794377819;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=QHfiaWxCcZhurl6F9ZemW3Q0LNncHtCBCbMGBWelkuM=;
-	b=yD6bKxRN4yfGAATx8I54If1smQJfx8z0x4Kpz5bwARqhFVks1UpsRS0Di2UvLCpuAvKQ
-	 SkQQIKLsHZCxSMjhmF2qG4NUG6x1a+d6Y1YeNcp2YsRSrjIhp3x3/BYVWWcIu6aS/I09+
-	 MS/JrCECyx6kzN+BcDYapVnKoLVcMaJSmCwcUe1ig5F1CWvwDpzpNeov4FpmQyaLgu+WY
-	 OQuZ087eW7Tagr/+7W+KVgFhpdqe6UXWjpF5SPHZV/h65kFM57YdsWnH32r29RKpDmbuY
-	 NO866qHIsnc/CoA9VviB8sPbFdr/L1AUp1AjNySyrMhGKg9KNipMgjXmIRnlljWIItA==
+	bh=0CG1UcJOAjSNTO8JIN0pN5xZ098zwfCHiKYXyozJu5g=;
+	b=c2FFLjqpJ2L77+wtcwOuJbmSN96CaDo1G2OskQu7yJGS6IB6G/RODRh/vtiJu03wva1c
+	 gBeil0qo8MgFdx37oX9v3JFO29+OUieSD56yKDbzQSFHHZsWAIyP7RaThlP2Qp1+Gg8Km
+	 RNGXklzhW7bwKPNYPlfjjX/mStEz88BwQYacHUKAnBSxhQaVa1RhRN5FtuLxx7ANhgRuQ
+	 oD79qDg/L3fyxfYtiJnd6ym2wGwXi6CHicG5GK1l0uXpDqdJVd5BnAa48KWbE/bgiHeKf
+	 9ICwRHL0X/LJ8RT0k8D3UhF/Msfju1WyjJxz+MdMRl6xzyl62ooaE6UE3CKcamDABmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EImt61fl;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MbNXobAQ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3EA606A320;
-	Wed, 11 Nov 2026 06:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6577606A32D;
+	Wed, 11 Nov 2026 06:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EImt61fl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF7C1F00A05;
-	Wed, 11 Nov 2026 06:16:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MbNXobAQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215CD1F00A05;
+	Wed, 11 Nov 2026 06:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794377807;
-	bh=QHfiaWxCcZhurl6F9ZemW3Q0LNncHtCBCbMGBWelkuM=;
+	s=k20260515; t=1794377819;
+	bh=0CG1UcJOAjSNTO8JIN0pN5xZ098zwfCHiKYXyozJu5g=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EImt61flV5cq+7e4hR+ft3m7e7xCstobBu6qSNOHi0GZRaD7AB3LXX/d6RpGrMMHM
-	 lwiKJBhIYkVVBiy95ALKfS6qYNOgl5pRLKP8Opd7WFLVXOQSm48YVTbFQ5ctAaUmiv
-	 LrNh9151rRHt5atGrFLvwc+vq1Ol/kdiFvqBgWJyi+speMlFnmyJP/b+i/H+aHBIfX
-	 SvYO1rGxI/3Tgu2yX1fDFkvTW1qDhgDRUFnvcdw0W6DIgmW1BTuWCTsZl2b7L0SVFU
-	 aLqq+V/0C696+ioxmJX5IFJA7ARzQz5QYrbKcogK/13TeXUd6HI65dkA0VCU7pk0L2
-	 xWNejiZNeMcOw==
-Message-ID: <sashiko-outbox-208414@kernel.org>
+	b=MbNXobAQp8xUF/BBqw0Es8S0zNZqgPpsP8tSno3whHxWT+eG/GJdAXRflVIdGyAKb
+	 TfsZkz+mzhAgqkksMKP8UwAl6jQyxasiCBrTlL6LOV7UVW0MxW2KT0LtffLtBCtU5k
+	 KwQTpERdezry2cljcogaGSA8gWqU2BRUOschZo8q5gNjz5FKq731YnejwrxtrzDjrI
+	 Adj6uwLe/JvRxCEEQUvvB0yhiZbtLhpM9ajpet7kB1P2xZmjCob5z/COmv1IDGKRTo
+	 6k1hrtDHqhtipPQWp771Pk1tPIi/U4O2LWEO/ArfmJ7qEZrWuu+hnCJ6TZCaoAhXfD
+	 C5n0O4pSW+0wQ==
+Message-ID: <sashiko-outbox-208421@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 11/19] liveupdate: Add feature header to struct
- luo_file_set_ser
+Subject: Re: [PATCH v4 18/19] mm: memfd_luo: Add feature header to struct
+ memfd_luo_folio_ser
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike
  Rapoport" <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, "David
@@ -50,12 +50,12 @@ To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen
  Helgaas" <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, gle.com@google.com, pbonzini@redhat.com, "Andrew
  Morton" <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
 Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, "Pratyush Yadav" <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, skhawaja@google.com, sagis@google.com, linux-mm@kvack.org
-In-Reply-To: <20261110050202.529473-12-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-19-tarunsahu@google.com>
 References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-12-tarunsahu@google.com>
+ <20261110050202.529473-19-tarunsahu@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 06:16:45 +0000
+Date: Wed, 11 Nov 2026 06:16:57 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -67,65 +67,147 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] liveupdate: DECLARE_KHO_SER_HDR() mangles kernel-doc in
-  luo_file.c
+- [Medium] mm: memfd_luo: folio leak on kho_ser_validate() failure in
+  retrieve/discard
 --
 
-commit 56a2b87048122363acff436905ac6fad2da6e4c3
+commit c3d8dd278c3f1e63ea2c973472e060bae843ec49
 Author: Tarun Sahu <tarunsahu@google.com>
 
-liveupdate: Add feature header to struct luo_file_set_ser
+mm: memfd_luo: Add feature header to struct memfd_luo_folio_ser
 
-This commit precedes struct luo_file_set_ser with struct kho_ser_hdr via
-DECLARE_KHO_SER and updates the file-set freeze, unfreeze, and
-deserialization routines to initialize and validate the feature header.
+This commit adds a struct kho_ser_hdr feature header to each serialized
+memfd folio entry and validates it during retrieve and discard.
 
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index a39992da504fb..02d09a80d7852 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -440,8 +440,8 @@ static void __luo_file_unfreeze(struct luo_file_set *=
-file_set,
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> index 94510f73a6069..c00daa8a508e1 100644
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+
+[ ... ]
+
+> @@ -384,16 +391,23 @@ static void memfd_luo_unpreserve(struct liveupdate_=
+file_op_args *args)
+>  	inode_unlock(inode);
+>  }
 > =20
->  /**
->   * luo_file_freeze - Freezes all preserved files and serializes their me=
-tadata.
-> - * @file_set:     The file_set whose files are to be frozen.
-> - * @file_set_ser: Where to put the serialized file_set.
-> + * @file_set:      The file_set whose files are to be frozen.
-> + * @file_set_fhdr: Where to put the serialized file_set.
->   *
->   * This function is called from the reboot() syscall path, just before t=
-he
->   * kernel transitions to the new image via kexec. Its purpose is to perf=
-orm the
-> @@ -472,12 +472,14 @@ static void __luo_file_unfreeze(struct luo_file_set=
- *file_set,
->   * Return: 0 on success, or a negative errno on failure.
->   */
->  int luo_file_freeze(struct luo_file_set *file_set,
-> -		    struct luo_file_set_ser *file_set_ser)
-> +		    DECLARE_KHO_SER_HDR(luo_file_set_ser, *file_set_fhdr))
+> -static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *f=
+olios_ser,
+> +static void memfd_luo_discard_folios(const DECLARE_KHO_SER_HDR(memfd_luo=
+_folio_ser, *folios_ser),
+>  				     u64 nr_folios)
+>  {
+> +	const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) =3D folios_ser;
+>  	u64 i;
+> =20
+> -	for (i =3D 0; i < nr_folios; i++) {
+> -		const struct memfd_luo_folio_ser *pfolio =3D &folios_ser[i];
+> +	for (i =3D 0; i < nr_folios; i++, fhdr =3D (const void *)fhdr + fhdr->s=
+ize) {
+> +		const struct memfd_luo_folio_ser *pfolio;
+>  		struct folio *folio;
+>  		phys_addr_t phys;
+> =20
+> +		if (kho_ser_validate(fhdr, memfd_luo_folio_ser)) {
+> +			pr_warn("invalid folio feature header, folios not discarded\n");
+> +			return;
+> +		}
+> +
+> +		pfolio =3D kho_ser_payload(fhdr, memfd_luo_folio_ser);
+>  		if (!pfolio->pfn)
+>  			continue;
 
-[Severity: Low]
-Does using DECLARE_KHO_SER_HDR() in documented function prototypes break
-kernel-doc output when building htmldocs?
+[ ... ]
 
-Documentation/core-api/liveupdate.rst includes kernel/liveupdate/luo_file.c
-with :internal:, which processes luo_file_freeze(), luo_file_unfreeze(), and
-luo_file_deserialize().  Unlike DECLARE_KHOSER_PTR(), DECLARE_KHO_SER_HDR()
-has no CMatch transform in tools/lib/python/kdoc/xforms_lists.py.  When
-create_parameter_list() in tools/lib/python/kdoc/kdoc_parser.py splits the
-parameter list, it replaces the comma inside the macro with '#' and never
-restores it, emitting invalid C syntax in Sphinx:
+> @@ -447,9 +461,10 @@ static void memfd_luo_finish(struct liveupdate_file_=
+op_args *args)
+>  }
+> =20
+>  static int memfd_luo_retrieve_folios(struct file *file,
+> -				     struct memfd_luo_folio_ser *folios_ser,
+> +				     const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser),
+>  				     u64 nr_folios)
+>  {
+> +	const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) =3D folios_ser;
+>  	struct inode *inode =3D file_inode(file);
+>  	struct address_space *mapping =3D inode->i_mapping;
+>  	struct folio *folio;
+> @@ -457,12 +472,20 @@ static int memfd_luo_retrieve_folios(struct file *f=
+ile,
+>  	int err =3D -EIO;
+>  	long i;
+> =20
+> -	for (i =3D 0; i < nr_folios; i++) {
+> -		const struct memfd_luo_folio_ser *pfolio =3D &folios_ser[i];
+> +	for (i =3D 0; i < nr_folios; i++, fhdr =3D (const void *)fhdr + fhdr->s=
+ize) {
+> +		const struct memfd_luo_folio_ser *pfolio;
+>  		phys_addr_t phys;
+>  		u64 index;
+>  		int flags;
+> =20
+> +		err =3D kho_ser_validate(fhdr, memfd_luo_folio_ser);
+> +		if (err) {
+> +			pr_err("memfd_luo_folio_ser feature validation failed: %pe\n",
+> +			       ERR_PTR(err));
+> +			goto put_folios;
+> +		}
+> +
+> +		pfolio =3D kho_ser_payload(fhdr, memfd_luo_folio_ser);
+>  		if (!pfolio->pfn)
+>  			continue;
+> =20
+> @@ -472,7 +495,7 @@ static int memfd_luo_retrieve_folios(struct file *fil=
+e,
+>  			pr_err("Unable to restore folio at physical address: %llx\n",
+>  			       phys);
+>  			err =3D -EIO;
+> -			goto put_folios;
+> +			goto next_put_folios;
+>  		}
+>  		index =3D pfolio->index;
+>  		flags =3D pfolio->flags;
+> @@ -524,15 +547,22 @@ static int memfd_luo_retrieve_folios(struct file *f=
+ile,
+>  unlock_folio:
+>  	folio_unlock(folio);
+>  	folio_put(folio);
+> +next_put_folios:
+> +	i++;
+> +	fhdr =3D (const void *)fhdr + fhdr->size;
+>  put_folios:
+>  	/*
+>  	 * Note: don't free the folios already added to the file. They will be
+>  	 * freed when the file is freed. Free the ones not added yet here.
+>  	 */
+> -	for (long j =3D i + 1; j < nr_folios; j++) {
+> -		const struct memfd_luo_folio_ser *pfolio =3D &folios_ser[j];
+> +	for (; i < nr_folios; i++, fhdr =3D (const void *)fhdr + fhdr->size) {
+> +		const struct memfd_luo_folio_ser *pfolio;
+>  		phys_addr_t phys;
+> =20
+> +		if (kho_ser_validate(fhdr, memfd_luo_folio_ser))
+> +			break;
+> +
+> +		pfolio =3D kho_ser_payload(fhdr, memfd_luo_folio_ser);
+>  		if (!pfolio->pfn)
+>  			continue;
 
-  .. c:function:: int luo_file_freeze (struct luo_file_set *file_set, DECLA=
-RE_KHO_SER_HDR(luo_file_set_ser# *file_set_fhdr))
+[Severity: Medium]
+Does this leak the remaining preserved folios when kho_ser_validate()
+fails?
 
-Adding a CMatch("DECLARE_KHO_SER_HDR") rule in
-tools/lib/python/kdoc/xforms_lists.py alongside DECLARE_KHOSER_PTR would
-let kernel-doc expand the macro cleanly.
+When kho_ser_validate() fails on entry i in memfd_luo_retrieve_folios(),
+it jumps to put_folios with fhdr still pointing at entry i.  The cleanup
+loop then calls kho_ser_validate(fhdr, memfd_luo_folio_ser) on that same
+entry and immediately breaks, leaving entry i and all subsequent entries
+un-restored and permanently leaked.
+
+Similarly, memfd_luo_discard_folios() returns on the first validation
+failure instead of continuing or still restoring pfolio->pfn across the
+array using fhdr->size, which only checks for unknown required feature
+bits while the base payload and entry stride remain valid.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110050202.5294=
-73-1-tarunsahu@google.com?part=3D11
+73-1-tarunsahu@google.com?part=3D18
