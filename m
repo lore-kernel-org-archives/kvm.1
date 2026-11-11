@@ -1,70 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794391340;
-	b=zwPnCoD5LZI0GOgrRS2VZjuHcE3/VmmnTR/mJ33TZHHZkyGILrDEqPDJbJzQN00TZwD/
-	 Kc6wTzJMMMCht9nwzRG2OfFGnq78sB+V33hJwQb1vZF3FAVdIWLFRs0v2Kx6nLufmgZ0k
-	 +3tgRj7tqYFKEEHvojr0219hsZ8TQIeeqPnFddUo0xYyGsSOjxi9FPtXFYhsCV+gMWLu8
-	 0DzoK8F1I6JsskttFZSYh7F7EEYa388ol/he6S2P5PNs4KSHVXSuEQ933S8IqSN7tZQ5X
-	 TGyNtpvYqt369YA1mSwN/AxL4eAga8CVXAHfNo9sCnvrqlrp5tf8QswwtrB1wIIGMKA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794391340;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=/008Nq1DBBEIqx5PPz70GiPaNVyQI+eFBJTDZljb44Q=;
-	b=K9DY4uzIKihVFv5D0UCDjKCdAo/tHNodheQW4W2DKrKRwcP2IAEsPQUzrhjY4HMvDgGZ
-	 z3uABubM89zASLlB4jJrwsjvYS/IlfNBVwP3kspQ7cOf1oehMt5ym61Ne+aJqJpyLcrWE
-	 14wBaeRJoALvq1GR9PKGeW8PD6jAwE5crTeIDu9+fa7KlgndlSN4OKxT360WbiShwmVn5
-	 bSpXLCo9ffQbKOAQQQN7cNQdC4NiK50sJxFvqtYZafzHIgAaN5jqlJiOCU/P2Vl+FjQ+p
-	 8oqR47aahS2dnp4HRuHsFICfENpgZUG5u92bxAyU0xuy806OhoZQyjX5n2n4uigCtvA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=O6IdHv3P;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0673460A261C;
-	Wed, 11 Nov 2026 10:02:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0673460A261C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.24
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794391400;
+	b=lzw+lcWPmkrVmYRVwzsVJcJmY+UCUbiGu0gyFCPKUWbCKh+EsjY9wRSBQ0Id4WFF6zQI
+	 b5brjG8UJx3fGo2v4WZDtzJXNKRbXntkYxJJu2dsEHcacv1T+YZVb97XffoL22MJWLp3c
+	 8E7DdpFLb6TzRl+1N/of9xtBX+6cmIpZBfPcGyNEYscYZF7bCOheEQdPH6rvhj4Mc7nV/
+	 6vFg/JIdLLOl6BbfvkWXCRAiZjr0CYGckISHseHPT5wiP0/oF8qXs7fzDc8cfQPC+syTI
+	 ItDirKS3jwIFORCQHh42E8E1CK9aLhpjzgMal+58OGPLQlewo/hAhOpOWBOA8uPeHFA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794391400;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=/+NX2yKuQDALUUU1wyPskGBzHnH8uRRukydv+keUaZA=;
+	b=kRQe6t+UfMVk1ZU1q9kcBLUMikfV7m8A49FyzBNxGrRmbcCf+1AxQ9Ni/qmtx6qh1lSl
+	 t537AI5BDbPxeHoS2WfqbYFftZ0KOnpbkIqmHMs/byvyS3FcSLaUYQAxavZ7tL0ALQnOd
+	 e6ITzb+pFYR4/+URArkggg6pEKAl/WYeB59iqydZVHl/GXmNLzgxOQqnXJ6Xx53f3plL6
+	 +jMjH7drvbgPU6CVzRZpqae5bcY7Wg7EERWAK1jU5StP6PgjE9QW9fG6eHVvjUO3hASJj
+	 NGE2aOEjvy3q89Fv1hhP1T2r22sbtTYQ/+wUtQoayEH3uxb0EOdW5hD1EGHRoMX8pwQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=CdrmedQS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.24
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013024.outbound.protection.outlook.com [40.93.196.24])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB9D606A321;
+	Wed, 11 Nov 2026 10:03:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCB9D606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=O6IdHv3P
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A8041576;
-	Wed, 11 Nov 2026 02:02:16 -0800 (PST)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8B973F673;
-	Wed, 11 Nov 2026 02:02:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794391339; bh=iBX7/caJMXnRG4auS6ChraoO4dSo/zwj7eCa2+s/N48=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O6IdHv3Pa6BF4W/gj+tmwDWoCPsjfXKjFP32FDKfEVDMDMDI8b+AdWLJIeDX4vXWL
-	 5tTlEk8MizP4FV96CYNLY32LXX4mXYgk+F1dgumoIHRXhgBBrmbT7eHPSDKAQZbgOE
-	 L/w7KjxCQz+kqbd4w3gQ9WrqNb468FzIICjG6R/k=
-Date: Wed, 11 Nov 2026 10:02:14 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
-	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 2/2] KVM: selftests: Test KVM_PRE_FAULT_MEMORY against a
- full dirty ring
-Message-ID: <avQ9Jhsnq7e3KPw-@raptor>
-References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
- <20261110110724.3614412-3-fuad.tabba@linux.dev>
- <avMoubwqgXbpflwM@gremlin>
- <CA+EHjTxT_9NghyLSZmOOi_oQboQw-g+6z9WxwaF=-7RdaGbMNw@mail.gmail.com>
- <avM9_7aWUDJSL3Lq@seanjc-mac.roam.internal>
- <avM_FXXF9oBkderF@gremlin>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=CdrmedQS
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SQerkBRB9rE9B+Ws/GOVCZSCY+tF7DX0wzorZZ5HJCFIkNK74TSaIrRvvQq9PQXKFwkd4AAO3CvgW2IpP7gAm7cQYY6vhLXc8X89kTjLWSOzgOytsO0jRC2mDJM0iLOORuxSxroy1UhUPPjCHKBMVgFYv5pnLh0BVUf5IlMihk8bfLquyimhzeftDqMLSopUY1TBYkSlgjVj+J7ZTFmOrnVis0HZBx9fC5YEsFxuBxrFGtBgm5gYnUvXC0gbz0be4+bRxea/Q8gYBf1DAtlIjAJ59A8J2c5VHgp9QG2KdXWImqpBZMlrLh+d2VJW7d82+1T4iRz4jrAf2ARYTog1Qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/+NX2yKuQDALUUU1wyPskGBzHnH8uRRukydv+keUaZA=;
+ b=AarlkDYkdI4ixdS6ceYWwuBPsOCXhjmonWJyFiBGFHwV0uCEJve1maBnyxvoYjF899umbk6jBS5U65H8nMcPnEq7MD8haeroYne3vpexAkkpYbco3hxtqZxtg2ns/q5/NwtFLHUc8EDGHpHK1h9oA7N1V0NfnlRHt7kAT8ePzr29MGbLTbmbEE1+lkB5wg6svW4HiXRkRUVbNhwOhO6cc7JdI/mmxd7q2wlZkyiL9UTXdRFpB7dL+QiDgVcVmvRKM4WCiJSq1km6ae3yIpmrHxScuHUGHdQmeTStHJCPL3EvnHlheVTLIQ96rzdhSCMnCV6961mnguXtGnP5DXN27A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/+NX2yKuQDALUUU1wyPskGBzHnH8uRRukydv+keUaZA=;
+ b=CdrmedQSclV2+T41gFK6YbY3gXUIrZCPrLdPIe3zGN6/b3lgU7QRVH9PpF1PCIanEblPvt83OvZvAjt2ffw/o7EINb3R2u2uo4lUds4e69kBqKcNLHWhD8dN2x2pOnSz3LjvAWl168DWUyIOT4hQblsXzZdJFsyy76cDkS27BEw=
+Received: from CY5P221CA0134.NAMP221.PROD.OUTLOOK.COM (2603:10b6:930:1f::20)
+ by SA5PPFB9BA66B77.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8df) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
+ 2026 10:03:15 +0000
+Received: from PH2PEPF00048918.namprd05.prod.outlook.com
+ (2603:10b6:930:1f:cafe::40) by CY5P221CA0134.outlook.office365.com
+ (2603:10b6:930:1f::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Wed, 11
+ Nov 2026 10:03:15 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ PH2PEPF00048918.mail.protection.outlook.com (10.167.243.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Wed, 11 Nov 2026 10:03:14 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 11 Nov
+ 2026 04:03:10 -0600
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
+CC: <vasant.hegde@amd.com>, <suravee.suthikulpanit@amd.com>, Sairaj Kodilkar
+	<sarunkod@amd.com>
+Subject: [PATCH]  x86/kvm: Use RCU for svm_vm_data_hash
+Date: Wed, 11 Nov 2026 15:32:46 +0530
+Message-ID: <20261111100246.4425-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,79 +108,147 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avM_FXXF9oBkderF@gremlin>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH2PEPF00048918:EE_|SA5PPFB9BA66B77:EE_
+X-MS-Office365-Filtering-Correlation-Id: f66e87df-71ea-4288-a505-08df3fdb0083
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|7416014|36860700016|1800799024|82310400026|921020|10067099003|11063799006|56012099006|261021121427099003|261021123027099003|261009223027099003|261102123227099003|261026140227099003|261022105027099003|261028144727099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	mE2VXXkizKs4AqIuR7UUlGCIHgo/l3YNAx1XeZQO2BTC4I1DD1zaG81zAXwdGzICKosokQvv8Q5NBNl50c7HckhvUwEsmK1vobNUz85ot6iI1ETtLM3w25sIpMhlKaP3FZ7c4ori6S9DNOoOh3Mo3Ybd5Gd3iwIGRgV+VQlSf+SHyhDz6YsfZ7xoblbZbMLSqCuD6pcXG3cZ35nWnvrGbEJZ+MsWwI2FKB23jcli1LbQBVIp584oiFtPWuZip1H+Sn7oHwDtcA4mQ+klmbrmT3PkBdL9XHj5pBa99jx1qzW4xSWDy4I20GxWJMxHQ+c+Su/wJDzwszn86oKNVHCvLPpqT8lS/oPEwWv5wOY3zVkeIbdHUxoOeCJ6RgTXlqGqNlbSlAkFpRrJO4wDmWpBqK9FaJeLtT7gBwY+bYn/JCqTtP8VL2/6Ti8sX3J0DSnrlLdDu0zPT8pGwTinZmCFRNx+Xyavz4fpLGItzbjQT/7NbNa8OcBX71speP4I866cP+UDkPaf0kXEu/m2pIWQH4+QkVMFlTS5gYqbWWx5wcgCMtYCcfqPvP4aWuJD4DBF15fpueGRIVCoFMdXkSERrX+IgZFrbDHjJUsdAnIf+3z17SEizk0Ow2XNZanprBiBXvFZYLg9ggsLBApidI7eayU5wkT2ott44L1BkPxQSeJDo8EGmmpr6hXgSW042H06B1pNFwyBoPCdJC0eWpTJbmzaHePsix9F1ZZA1wzIkTj/sHvGg87Fph+H2tIko4j2
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(36860700016)(1800799024)(82310400026)(921020)(10067099003)(11063799006)(56012099006)(261021121427099003)(261021123027099003)(261009223027099003)(261102123227099003)(261026140227099003)(261022105027099003)(261028144727099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	7GG/cNssCIoQoWichmp9G8A9YHsCiCHzFxjpt3qjZAksCdNzNuX5xHjt5h/GvDFtPX3ZiDvo5Vof472SD9pKITySG/xM2vHONtoRjtijye6MuppYdzhuqi8+l3q7qmst6DiPk5Nbm6dRIQI6TNU2wdWsKag5osX0C9sehXZYhzkYNX7PWP9pUfdYxlR5cDwS3dh/k7ddBeu1ghQJ9le0e30dfpxEHjyC0ynLN755ZWvgnPI7g4d3qJlQlEQonCpX/HLOjwKkJN8sfGxQ4Fs20mwJdeSH5SO3ZnCQZNK7qRzZxumszB5DJSrEwo76EKJ41Wz37Ff1z4xCp25R/mH3F+TplfZ/9S8guFvnlKJTXUgMIULTPF35fJSTQKH4CeCyHEIAdFwO9fBKfMH8Dpka5ZFL6Uxs5oG91HVGXUulV6ejHUOuWrLdstsFTuNczwYq
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 10:03:14.8137
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f66e87df-71ea-4288-a505-08df3fdb0083
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	PH2PEPF00048918.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFB9BA66B77
 
-Hi all,
+GALOG notifier iterates svm_vm_data_hash to find the `struct kvm_vcpu`
+for the given vm id and vcpu id. Holding spinlock is not ideal here since
+it allows only a single reader to iterate over the hash. This degrades
+performance when interrupt rate is high and large number of readers are
+waiting for the spinlock. Hence replace spinlock with the RCU.
 
-On Tue, Nov 10, 2026 at 04:02:21PM +0000, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Nov 10, 2026 at 07:53:35AM -0800, Sean Christopherson wrote:
-> > On Tue, Nov 10, 2026, Fuad Tabba wrote:
-> > > Hi Lorenzo,
-> > >
-> > > On Tue, 10 Nov 2026 14:38:27 +0000, "Lorenzo Stoakes (ARM)"
-> > > <ljs@kernel.org> wrote:
-> > > > On Tue, Nov 10, 2026 at 11:07:24AM +0000, Fuad Tabba wrote:
-> > > > > Pre-fault more populated, dirty-logged pages than the vCPU's dirty ring
-> > > > > holds, and check that each call stops before the ring overflows, that a
-> > > > > retry returns ENOSPC without progress, and that the harvested entries
-> > > > > are the pages in order. A read pre-fault can map a page read-only, or
-> > > >
-> > > > Are we asserting an invariant that prefaulting happens in address order
-> > > > here?  Is that explicitly presumed in the prefault API, or just how it
-> > > > happens to pan out?
-> > > >
-> > > > I wonder if we might decide for whatever reason in future to do things
-> > > > differently there. Bit nitty I know, but wonder if it's asserting an
-> > > > implementation detail?
-> > >
-> > > Yes, the API doesn't guarantee an order. I'll assert that every page
-> > > is reported exactly once instead.
-> > >
-> > > [...]
-> > > > > diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
-> > > [...]
-> > > > > +static void test_pre_fault_dirty_ring(void)
-> > > [...]
-> > > > > +    /* Populate the pages, so that pre-faulting can map them writable. */
-> > > >
-> > > > Reviewed below, but I wonder how x86 could then read fault these?
-> > >
-> > > KVM_PRE_FAULT_MEMORY is defined as a read fault, but x86 maps the page
-> > > writable when the host page is, and marks it dirty, unless it falls
-> > > back to access tracking (below). Populating the pages makes sure they
-> > > aren't backed by the zero page.
-> >
-> > Before we effectively solidify the behavior, I think we should have an explicit
-> > discussion about the desired behavior of KVM_PRE_FAULT_MEMORY when dirty logging
-> > is enabled.  E.g. the only reason I kept the existing behavior in my auto-prefault
-> > series was because I couldn't think of a good reason to change it.  But we never
-> > made a concious decision in the first place, i.e. we never considered what would
-> > happen if prefaulting collided with dirty logging (as evidenced by this bug).
-> 
-> Yeah, I do worry about implicit assumptions (also commented re: ordering).
-> 
-> I guess what makes sense, given the general approach for prefaulting = injecting
-> a synthetic read fault, is for the expectation to be that it matches the
-> behaviour of an ordinary read fault.
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+---
 
-Unfortunately, what happens in this case is not as obvious as it sounds,
-because a read fault on a memslot backed by guest_memfd maps the GPA with
-read *and* write permission on arm64 (if the memslot is not readonly,
-haven't checked what x86 does).
+Tested on a 2-socket AMD EPYC 9965 host against the same kernel without
+this change:
 
-Thanks,
-Alex
+  - 12 VMs, each with 32 vCPUs and one passed-through NVMe device
+  - vCPUs pinned NUMA-local, at 1:1, 1:2, 1:3 and 1:4 pCPU:vCPU
+  - fio in each guest: randread, bs=4k, iodepth=32, numjobs=32,
+    ioengine=libaio, direct=1, 60s
 
-> 
-> Or do you feel that it makes sense for the pre-faulting to do something special
-> in these cases and establish a sensible invariant?
-> 
-> If the pre-faulting does indeed dirty the pages, you'd need the dirty logging to
-> do its usual thing (not familiar with the code, so I'm guessing logging the page
-> :) though right?
-> 
-> --
-> Cheers, Lorenzo
-> 
+Time spent in the hash lookup in avic_ga_log_notifier(), measured with
+a temporary tracepoint around the lookup, averaged over 12 VMs and
+3 runs:
+
+             |         mean           |          p99         |
+             |------------------------|----------------------|
+  pCPU:vCPU  | spinlock  |     RCU    | spinlock  |     RCU  |
+-------------|-----------|------------|-----------|----------|
+  1:1        | 409.8 ns  |  132.6 ns  |   960 ns  |  750 ns  |
+  1:2        | 977.3 ns  |   21.9 ns  |  3530 ns  |   30 ns  |
+  1:3        | 747.5 ns  |   23.7 ns  |  2150 ns  |   40 ns  |
+  1:4        | 614.8 ns  |   23.5 ns  |  1610 ns  |   40 ns  |
+
+Total IOPS was unchanged at every ratio.
+
+---
+ arch/x86/kvm/svm/avic.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index 96ca39c0045f..9e2c11d60798 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -250,7 +250,6 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
+  */
+ static int avic_ga_log_notifier(u32 ga_tag)
+ {
+-	unsigned long flags;
+ 	struct kvm_svm *kvm_svm;
+ 	struct kvm_vcpu *vcpu = NULL;
+ 	u32 vm_id = AVIC_GATAG_TO_VMID(ga_tag);
+@@ -259,14 +258,14 @@ static int avic_ga_log_notifier(u32 ga_tag)
+ 	pr_debug("SVM: %s: vm_id=%#x, vcpu_idx=%#x\n", __func__, vm_id, vcpu_idx);
+ 	trace_kvm_avic_ga_log(vm_id, vcpu_idx);
+ 
+-	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
+-	hash_for_each_possible(svm_vm_data_hash, kvm_svm, hnode, vm_id) {
++	rcu_read_lock();
++	hash_for_each_possible_rcu(svm_vm_data_hash, kvm_svm, hnode, vm_id) {
+ 		if (kvm_svm->avic_vm_id != vm_id)
+ 			continue;
+ 		vcpu = kvm_get_vcpu(&kvm_svm->kvm, vcpu_idx);
+ 		break;
+ 	}
+-	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
++	rcu_read_unlock();
+ 
+ 	/* Note:
+ 	 * At this point, the IOMMU should have already set the pending
+@@ -319,13 +318,14 @@ static void avic_add_vm_to_ga_log_list(struct kvm *kvm)
+ 	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
+ 	struct kvm_svm *k2;
+ 	u32 vm_id;
++	unsigned long flags;
+ 
+ 	lockdep_assert_held(&kvm->lock);
+ 
+ 	if (kvm_svm->avic_vm_id)
+ 		return;
+ 
+-	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
++	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
+  again:
+ 	vm_id = next_vm_id = (next_vm_id + 1) & AVIC_VM_ID_MASK;
+ 	if (vm_id == 0) { /* id is 1-based, zero is not okay */
+@@ -340,7 +340,8 @@ static void avic_add_vm_to_ga_log_list(struct kvm *kvm)
+ 		}
+ 	}
+ 	kvm_svm->avic_vm_id = vm_id;
+-	hash_add(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
++	hash_add_rcu(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
++	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
+ }
+ 
+ int avic_vcpu_precreate(struct kvm *kvm)
+@@ -369,13 +370,14 @@ int avic_vcpu_precreate(struct kvm *kvm)
+ void avic_vm_pre_destroy(struct kvm *kvm)
+ {
+ 	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
++	unsigned long flags;
+ 
+ 	if (WARN_ON_ONCE(!enable_apicv) || !kvm_svm->avic_vm_id)
+ 		return;
+ 
+-	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
+-
+-	hash_del(&kvm_svm->hnode);
++	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
++	hash_del_rcu(&kvm_svm->hnode);
++	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
+ }
+ 
+ void avic_vm_destroy(struct kvm *kvm)
+-- 
+2.34.1
+
