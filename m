@@ -1,87 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794417805;
-	b=Br5Sg/hDXba/18otj9qdMAJTqYDmEyAiLPTGaehVKx+VmU1SvuSUs9AB1kE6TiVPV8ei
-	 wsccmSuoEaii5yDA1jibRXL8IYTQWbs0QEk5lo1ah+fAV49uaz7aovwSOv8biddBdDJ4K
-	 /S0ZwtVAZsCzyPYal9j8eqWk9vya7QFC/GLgxhk5FYlM/aLByqcF5bLM7hGKZCxndN5rC
-	 l3XFwTgT9RBL8FDevB0/AJ5WuJn006gFJsCS/e3yM+bQ8UmjTA/T8A9tKK3Mv+zP7F1p7
-	 Ek1VVjt1tuvcOxF4ECMT0e2Vn4MsbXy3Z4hMkBGcGfNke+wYDmDOv+p0QC00uBxxB4Q==
+	t=1794418682;
+	b=JNOWEIJgHM30x87gv7BeLmoyR702DXQ4XXl2YTKrAvXqVARrSKu666nrQeVvA7NY1eGl
+	 SeXtpKcFrjjKEKWlkDPyJrsM9IsBK8rsXuPWA9eTJaAFLrYa0fxlUENvWQ+dv9hKa9y34
+	 e8tUrXU9q2DpW6Ko4WCT3GG4z67RiWIFfJDXcSY6QyX7RPmmAUMVdFRzj19LiJJ/VZhb7
+	 +lhLopNUsgNKmpEMEFKs5+LXimHIC7JeOag/45o67g1LU7Ye5yENnAGaXbJgloXysbahr
+	 jRJNGJC+pWUUqOTr4xTlugi8Wi+Lrn1cnWpCXUZsDal4ni2z26uCxVFKbGaWtcf7S3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794417805;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=Mc75NFpbRxzzIwWJ8CCnT2l1oCuJRiHbJaR6G/yXCvM=;
-	b=sf6tmhoyCgLS/t8hMIAvoiMHvAJc5EnOxfnAA3wDHXutJIcy6PTMuSQ8A93dbKCYqhvx
-	 dwiEEPA0hDhgRYByIqmc3qb5Wrp61phD3fVBp0oYBwCGvEXlnXcfeLOdccYc7MKcrZuvc
-	 A/pjvaXGqB92mzjXjhy8sbyJfaEyKXx4e6iSWiqLLs+7F5DzjyYvXLQQ93FLtwHt8Z2KN
-	 mCf9vGDx+e5xPL/NZEntsDXe6tnKav0YmRMD2cX74786jEaAIGOuKZazNPJiETpph5vHc
-	 Hh7GDG1sBbgIbnRxndCDMQt+v49JwS0QC2u8/VcBUVt2zVOdDfLzdmcYxbVfddBJUuA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794418682;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=IGymzurcCAqkuazrSBLvvuD8i7vbGW+naOWdeyf6NCQ=;
+	b=uhuNZVLXm5GddLxP1AEps20Dj34ZZqyzhVkGT1kdlZ3bL5yqLcEq7feKw0KKX38DVmh3
+	 sbc21Zojr/kpnf4SnsU7sKIyMhv2WhpDeJFBdUDgqpJi9B2HVmH27sri3gMJB8EprS1Fj
+	 EG6pVpWu1vhLDP692mb7SyKEO9O3K/4i734gn0mtFJB/A6aXtEeAxnHJ9k54IwJS2cNyh
+	 HpfdlpautsqBW2v3tSI9+z+I6d3uPoyJRm5mr4Aw58hXho8g+t7CwgjJjvu1o60cBh1Ak
+	 oKQR03feXca1WYXbgLt/vqoVOJWa6wP+Xf2+euLf0EkBQewcfuJ1f4kXfbQi2OOqGKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JE4TLWjA;
-	arc=none smtp.remote-ip=192.198.163.14
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=W3hKeEu5;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C8F606A32A;
-	Wed, 11 Nov 2026 17:23:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96C8F606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD58606A324
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 17:38:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AD58606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JE4TLWjA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794417804; x=1825953804;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RZ0vaLA8sc1p8PfnxnpTBwN213VIpWvjXVmbbJQ2Xp0=;
-  b=JE4TLWjAJBoMESyPufcU1ciE89V5yLRuF86y7VHEZpx7rWgfXEDJ1Ep6
-   F/3AO/0t8CyRZBk4dfmxkJHoNVUJ3EPg+ow168/szuevldCYqkp+6xKh9
-   fuhsJuzrb8NjKLDlaDm1FXiu4mTxz9SVRuJ0ndMT+NjX2xSN0UToW1J4b
-   xQLyIQfD4mzM//tUz4TBUHwh/8RnjRMFXvDazvURV/zWR5eyYydm9baxP
-   HS4cHlYtl+agfcHvNurocOVVGvL168axF9oTURHougdtubAoMceRVGlAE
-   USZcb4htmTbxT27FrdVE8POcQ3HqK2RZzAaXjDwnw7qMDsKvyPjIlVu9C
-   g==;
-X-CSE-ConnectionGUID: MNrxARglQK25rqcb7MmDow==
-X-CSE-MsgGUID: qyAfLKTUQE6GoswNw+Q2+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3225160"
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="3225160"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 09:23:24 -0800
-X-CSE-ConnectionGUID: /3mmSiG/TZif2qCOeBhiZg==
-X-CSE-MsgGUID: b6ZS1m5UTbW5pNkd/tOQpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="8542441"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa001.jf.intel.com with ESMTP; 11 Nov 2026 09:23:21 -0800
-Date: Thu, 12 Nov 2026 01:15:20 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Van De Ven, Arjan" <arjan.van.de.ven@intel.com>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>
-Subject: Re: [RFC PATCH v2 1/2] x86/virt/seamldr: Support large TDX module
- binaries
-Message-ID: <avSiqAfMX1Rc/SOc@yilunxu-OptiPlex-7050>
-References: <20261106132159.1551365-1-chao.gao@intel.com>
- <20261106132159.1551365-2-chao.gao@intel.com>
- <0ee3d9592e4e73bd0e5bedafc836033fdfc9f120.camel@intel.com>
- <avQf9L0CYU0LfgJh@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=W3hKeEu5
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdb91e288d7so2983725a12.3
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 09:38:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794418682; x=1795023482; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IGymzurcCAqkuazrSBLvvuD8i7vbGW+naOWdeyf6NCQ=;
+        b=W3hKeEu5ne0Z6PaSfmfb9DW+puWYizeutlxNeO2s90LplTe7xMtet67BGtg+i4FoAX
+         5jJAIJ447E0tWe6RkDMVfNacWyREuOXywZDYUQZooM1/VSBCTrfp8mIXlHqgqxwLMniN
+         5cCBagiWFIxmwglO0dKp3xdbN27i4S0UhUM5L7kgP6u9nHqLIEVvY/5G4a+r1S7s6ENZ
+         ouFk9/0+5KOapKMs2UKBcVzcM406tcPyr0z1BCrPzAIpnU6aCQxObxRxpQ8fc5E3Dpmy
+         FuupIhRV4IqHTJ30Z+zcEu2cNqTCZEtAmqGA71lw8FUXBRPr02UsYVz0SOzRO1lWw3mm
+         WFHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794418682; x=1795023482;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IGymzurcCAqkuazrSBLvvuD8i7vbGW+naOWdeyf6NCQ=;
+        b=1zZ1q8SfJYksdQbN1asvULvi5l9SrrxN7QhEcMSsL30U5hZbLYyucT9SyrcQseIuaA
+         XSl04EuttLS46IFqsTS4XfsWvOlLX5Z/B34Eha3+rPvZNTL7v6qW835PeutO+4htrc8D
+         GRqMukJjiuYNhUE3vz1KDPhvah4UhRFG2qib2EdmER42XL2TbQceqB6Jc5np3FE+ljuk
+         iwFXEu735x5TYE54arV/bVhq1nU4Y+JCQ0eJDn1sOpDH7+I6SD7VAetSlalquJx3TXax
+         xT5TT8mG8pbwczEMB26qhsDN5PJepMVn2UBBOgLTIfN1yeWxYCDYzVKO60S1ys2xYI3Y
+         O7fA==
+X-Forwarded-Encrypted: i=1; AL+hErGj4P2byv2MZ2sMKZ9QHVUTG8fch/dDFL/4EsNR1tpnT2MrAvVkYsfTz55w7Pjk5inXE60=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9nfowwSZ+/Re7smJUaTp2m4zN5eGDVWjFrgAQceAiAAFRb7iF9
+	DzOqjspLoY5qXk1eo8KRXB/2ELpHBfPfwIpA+QAxVuwjLQgu2A+B0YjdgpgS/MaSQPfOd+NVmcI
+	gKEcPWg==
+X-Received: from pgoo5.prod.google.com ([2002:a05:6a02:3485:b0:cd8:b51c:c0b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7349:b0:3e2:6b5a:fea3
+ with SMTP id adf61e73a8af0-3f2ff4cfa62mr3490465637.71.1794418681497; Wed, 11
+ Nov 2026 09:38:01 -0800 (PST)
+Date: Wed, 11 Nov 2026 09:38:00 -0800
+In-Reply-To: <auzSxEsGAcm3MYtN@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -90,23 +77,53 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avQf9L0CYU0LfgJh@intel.com>
+Mime-Version: 1.0
+References: <20260714160411.302386-1-alexandru.elisei@arm.com>
+ <amPCdAswlk24Xilf@google.com> <anxAGkdyPYXBlS00@raptor> <autwsR83Ii-tRrqF@gremlin>
+ <auzSxEsGAcm3MYtN@google.com>
+Message-ID: <avSn-IW8DMybO-Tg@seanjc-mac.roam.internal>
+Subject: Re: [PATCH v2] KVM: Ignore MMU notifiers for guest_memfd-only memslots
+From: Sean Christopherson <seanjc@google.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, maz@kernel.org, oupton@kernel.org, 
+	suzuki.poulose@arm.com, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, david@kernel.org, mark.rutland@arm.com, 
+	ackerleytng@google.com
+Content-Type: text/plain; charset="us-ascii"
 
-> >> Thanks to Yilun for the idea of allocating the chain pages together
-> >> with 'struct seamldr_params'.
-> >
-> >I'm not sure what this means.
+On Thu, Nov 05, 2026, Sean Christopherson wrote:
+> On Wed, Nov 04, 2026, Lorenzo Stoakes (ARM) wrote:
+> > [updated David's email address to @kernel.org]
+> > 
+> > On Wed, Aug 12, 2026 at 10:42:50AM +0100, Alexandru Elisei wrote:
+> > [ ... ]
+> > > On Fri, Jul 24, 2026 at 12:52:20PM -0700, Sean Christopherson wrote:
+> > > > It'll probably take me a few weeks to circle back to this, as I finally crawled
+> > > > out from underneath a pile of urgent and am just now getting back into review
+> > > > mode, but this is fairly high on my todo list, so with luck we might still squeeze
+> > > > this into 7.3.
+> > 
+> > Hey Sean,
+> > 
+> > I wondered whether you'd had a chance to look at this?
+> > 
+> > After discussing this with Marc and Alex it is clear that this is really a
+> > blocker for Alex's SPE series, as we need a sensible means of ensuring
+> > that stage-2 mappings stay in place.
+> > 
+> > So ideally would prefer to get something like this in in the next cycle,
+> > if you don't have any objections to it? :)
+> > 
+> > If it'd be easier, I think a smaller version of the same patch would also
+> > give us what we need? I.e. your snippet from June with the page ageing part
+> > dropped, as below.
 > 
-> I previously allocated the chained pages separately, as many as the module
-> needed, and linked them from 'struct seamldr_params'. Yilun suggested
-> growing 'struct seamldr_params' to include the chained pages, so a single
-> allocation covers both.
-> 
-> I will credit Yilun with a Suggested-by tag.
+> The GPC invalidation fix landed, so we can go straight to the super simple v1.
+> Compile tested only at this point, I'll formally post this (hopefully today),
+> assuming nothing explodes in testing.
 
-Thanks, but I think we drop it in next version to keep the tags simple.
-As the review goes on, more and more suggestions come, we don't record
-them all.
+/facepalm
+
+I spaced on sending this (and I think on testing it too...).  I'll try to get it
+posted in the next few days.
