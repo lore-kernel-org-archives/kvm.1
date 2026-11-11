@@ -1,47 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794377800;
-	b=LmsNHmVYMBnivKiLEBN/kki2IH0Fq1olA2ZUKKQCx0D4Ph8rX2igh33bc8U3CK5GZOY4
-	 wi17A6g0a1huAqNJ7pAXXZ9yIU7UW8B17elCjlKD0TaJyj70BH12/ArWxttzrQ3X4M5Jg
-	 Zl8PWdhLj9xs+AsV1rzpn1cCYMeBAtlmlPuMn174v7sKFKkB/IyUTrrOMzpsWlgWszlhe
-	 bi3h6PCWXsJrTfrb7GqwqKoGgKPUAmqXoAZ8isDKneXuRReIw3wDluJXJwBWE6eAe+NVa
-	 GTVSlBEEtgYvy3akpd1ewLA2Fm/WSJdwQO1uOBm9wWO4ZwD88QvW7QJ4UptPkPsBtkw==
+	t=1794377812;
+	b=Zhm6GvOVSH81HDuPEuLcrfprEtfovdgrLIz7v3qatKepFFj3Ar3NED6kUqMvEyx+0EZW
+	 bDEA/7WFH8j7IFjywcwrv4bvY6LquG4eCAztyEHYX8DJHlh+NxZ5uzKh5OveAabHH2Swx
+	 NfgdeARsGZl7WNGOHksNn4JfwYV1syWSvGSLOsg4GsNIy/vkS57XRQ40yh4II5jS9vNOC
+	 5ccyuEcp4/RZ3vH78UXFRn0a8wJhQVpFLLtzNzNAUTCCUQxnJBpElCKSKh9VvMS5mnyIP
+	 gPShTsKfmUQXOAU5KiZxemzFas+j7CpnFPqYA1OGrrfufy5q+BD/GB8X5gJv7qj3Eog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794377800;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794377812;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=JERGqFws7qn21ShXzjckTRjjEX/5sLFCO5JaN4J8wCg=;
-	b=N4t639OqjGEwlGXmvdwwOoaoH10fn4A/o2nmoBOElAptfWZrIsCT+8ov8G21c14MNLa6
-	 Uenl4j6ssBeKrhg7lhEZ34y2uDMg7ot+An6njRpdI4xOjJZ21/fgR/ahnjDhnrs+bFDND
-	 E6eMXTLI1t0tHRO6pYiKR3qOmwvA9XP+mEAjgVirbKawWTp18FpemujFVfLnLpmtbUOrM
-	 qhD30vwfT3ZfUKqocXL2hAyF9tabH/MbM+Mw0nnfJl+weR4xDp0xGQvQ8qVZTTUcMr1dE
-	 TuCe9r6vT3rVP7pHb+f4g39rpitrvcFoGX4JEjITI1f6wvRgztM3FNfvpN6T1LSy28g==
+	bh=cs0evi9dVSmKWqiPi75Cnylb6/Wxv9tJ6r+A8LIBuRE=;
+	b=r/I0JJb6pL1eMWvrMRZzegzIOnIPRJcTCtTeXr2A3IYSXkIguA2Y6YjGOzOVMSVVwjmn
+	 yo4/w3yymO9gwk1LYGp6++jc2XzCQyGF+ZfsMcM3wbgLE6FgdtnmN1mqX64s3xiy3ijlt
+	 LC36Z8N35RtZ7YWBorFJWf6b2c76//dYf6w+3v7FPavAGGXaj8NPIZEoVdzE0S7+bwb12
+	 q6bshfHF3zXhg9VXQBt4oNmF5gscWsrU7dJ2DmBwlTepbGfKF1VrxD2O2mX8gceEPjiny
+	 EER8TWhlnWLW8N72xL2DI6I6dbQCtBcBd7s4iBZ5FCSN5+iBSuOw3gTK0PHQ+2HIrCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KM9itt4L;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TJ19gYVp;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC9D606A326;
-	Wed, 11 Nov 2026 06:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA13606A339;
+	Wed, 11 Nov 2026 06:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KM9itt4L
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD181F00A06;
-	Wed, 11 Nov 2026 06:16:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TJ19gYVp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E6A1F00A11;
+	Wed, 11 Nov 2026 06:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794377799;
-	bh=JERGqFws7qn21ShXzjckTRjjEX/5sLFCO5JaN4J8wCg=;
+	s=k20260515; t=1794377812;
+	bh=cs0evi9dVSmKWqiPi75Cnylb6/Wxv9tJ6r+A8LIBuRE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KM9itt4Li+SU8W4ZUm6NUV+NH2YtdQgT3L8jEt3MPeFsmYirWnAZopelOz8bCf0pG
-	 iqHmWS6HgsFtY4lfE3JD4l2pJYVw6hUULXKp5CDhwbs7ZOhfCpPygc8p4KO5K8zoas
-	 99HMJRArDHIopB+FH5oO56JwJhLZa27s+v24ZNo5LSY8P15evCwp0ZxExmcxPxGGAo
-	 7uq/JhmST7nQc7BgHVRrAgK1UAJkuK9Rzz9fc71C36mrNYsxsoqnjWWRRQrRAuVJH6
-	 a2N0EpdzBd+a5ORwmaxcKZD5QLP5VULR8QvK7Ov6tAc4qp/loTXqiL3hdxb87ru8I0
-	 gQEBag1wDFS9A==
-Message-ID: <sashiko-outbox-208410@kernel.org>
+	b=TJ19gYVponJXD+6bXVDXHTYShKtvx4kcBfVwQuS7qpbOzWRj8Pp+US+SAxz+Udt0Q
+	 svT7zXCMBNACh8E1zYYtOhtP9+zlXPJtNcVsiM03nuZVZoz5nqfBwsj+3GD6N0k5NZ
+	 sRnybVSechBWdKccJWIc2b+VF88rIjd4wikq3LoCuAKD4JiN/Lo1S8bDqCEB48nAl/
+	 xn/xBGef74dOtIMPWFnhCYH1ClDI3VARcH4/lPQ94XXZGeZd8zdNYdIGE+xYO/ajVm
+	 jLOxNdr10MlfUw+3DdwrRxoUo7o/5FkniBmLmn2RYbgz5Yjb4OfmpvIfDucaGGLNEf
+	 u4DA/vs9XvuGg==
+Message-ID: <sashiko-outbox-208417@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 07/19] kho: vmalloc: Add the feature header
+Subject: Re: [PATCH v4 14/19] liveupdate: Add feature header to struct
+ luo_flb_ser
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike
  Rapoport" <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, "David
@@ -49,12 +50,12 @@ To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen
  Helgaas" <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, gle.com@google.com, pbonzini@redhat.com, "Andrew
  Morton" <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
 Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, "Pratyush Yadav" <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, skhawaja@google.com, sagis@google.com, linux-mm@kvack.org
-In-Reply-To: <20261110050202.529473-8-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-15-tarunsahu@google.com>
 References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-8-tarunsahu@google.com>
+ <20261110050202.529473-15-tarunsahu@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 06:16:37 +0000
+Date: Wed, 11 Nov 2026 06:16:50 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,101 +67,81 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] kho: missing DECLARE_KHO_SER_HDR() kdoc transform breaks
-  kernel-doc
+- [Medium] liveupdate: -EOPNOTSUPP collision in luo_flb_retrieve_one()
+  on validation
 --
 
-commit 5eeff1f169bf967112c6cc25130cc4d0e9b8a838
+commit f2fc7f3d05b147a7eeaad5c4521b29383721337e
 Author: Tarun Sahu <tarunsahu@google.com>
 
-kho: vmalloc: Add the feature header
+liveupdate: Add feature header to struct luo_flb_ser
 
-This commit registers struct kho_vmalloc with the KHO serialization feature
-header mechanism and updates kho_preserve_vmalloc(), kho_unpreserve_vmalloc=
-(),
-kho_restore_vmalloc(), and their callers to pass typed feature header
-pointers.
+This commit adds a struct kho_ser_hdr feature header to each serialized
+struct luo_flb_ser entry and validates each entry header during retrieval
+in luo_flb_retrieve_one().
 
-> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-> index 7b49dd6d7e2af..b0597c4389732 100644
-> --- a/include/linux/kho/abi/memfd.h
-> +++ b/include/linux/kho/abi/memfd.h
-> @@ -80,9 +80,9 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->   * @seals:     The seals present on the memfd. The seals are uABI so it =
-is safe
->   *             to directly use them in the ABI.
->   * @flags:     Flags for the file. Unused flag bits must be set to 0.
-> - * @nr_folios: Number of folios in the folios array.
-> - * @folios:    Pointer to KHO vmalloc descriptor for the array of
-> - *             struct memfd_luo_folio_ser.
-> + * @nr_folios:   Number of folios in the folios array.
-> + * @folios_fhdr: Pointer to KHO vmalloc descriptor for the array of
-> + *               struct memfd_luo_folio_ser.
->   */
->  struct memfd_luo_ser {
->  	u64 pos;
-> @@ -90,7 +90,7 @@ struct memfd_luo_ser {
->  	u32 seals;
->  	u32 flags;
->  	u64 nr_folios;
-> -	DECLARE_KHOSER_PTR(folios, struct kho_vmalloc *);
-> +	DECLARE_KHOSER_PTR(folios_fhdr, DECLARE_KHO_SER_HDR(kho_vmalloc, *));
->  };
+> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+> index a8dcdb8456fd2..d38c223741ff4 100644
+> --- a/kernel/liveupdate/luo_flb.c
+> +++ b/kernel/liveupdate/luo_flb.c
+[ ... ]
+> @@ -177,10 +178,18 @@ static int luo_flb_retrieve_one(struct liveupdate_f=
+lb *flb)
+>  	if (!fh->active)
+>  		return -ENODATA;
 > =20
->  static_assert(sizeof(struct memfd_luo_ser) =3D=3D 40);
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
-_handover.c
-> index 369ce411928d3..919210d7a91ab 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1382,20 +1382,20 @@ static void kho_vmalloc_unpreserve_chunk(struct k=
-ho_vmalloc_chunk *chunk,
->  /**
->   * kho_preserve_vmalloc - preserve memory allocated with vmalloc() acros=
-s kexec
->   * @ptr: pointer to the area in vmalloc address space
-> - * @preservation: placeholder for preservation metadata
-> + * @fhdr:         placeholder for preservation metadata
->   *
->   * Instructs KHO to preserve the area in vmalloc address space at @ptr. =
-The
->   * physical pages mapped at @ptr will be preserved and on successful ret=
-urn
-> - * @preservation will hold the physical address of a structure that desc=
-ribes
-> - * the preservation.
-> + * @fhdr will hold the preservation metadata.
->   *
->   * NOTE: The memory allocated with vmalloc_node() variants cannot be rel=
-iably
->   * restored on the same node
->   *
->   * Return: 0 on success, error code on failure
->   */
-> -int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
-> +int kho_preserve_vmalloc(void *ptr, DECLARE_KHO_SER_HDR(kho_vmalloc, *fh=
-dr))
+> -	for (int i =3D 0; i < fh->header_ser->count; i++) {
+> -		if (!strcmp(fh->ser[i].name, flb->compatible)) {
+> -			private->incoming.data =3D fh->ser[i].data;
+> -			refcount_set(&private->incoming.count, fh->ser[i].count);
+> +	for (u64 i =3D 0; i < fh->header_ser->count;
+> +	     i++, fhdr =3D (void *)fhdr + fhdr->size) {
+> +		struct luo_flb_ser *ser;
+> +
+> +		err =3D kho_ser_validate(fhdr, luo_flb_ser);
+> +		if (err)
+> +			return err;
+> +
+> +		ser =3D kho_ser_payload(fhdr, luo_flb_ser);
+> +		if (!strcmp(ser->name, flb->compatible)) {
+> +			private->incoming.data =3D ser->data;
+> +			refcount_set(&private->incoming.count, ser->count);
+>  			found =3D true;
+>  			break;
+>  		}
 
-[Severity: Low]
-Does using DECLARE_KHO_SER_HDR() here and in kho_unpreserve_vmalloc(),
-kho_restore_vmalloc(), and struct memfd_luo_ser break kernel-doc without a
-matching CTransforms rule in tools/lib/python/kdoc/xforms_lists.py?
+[Severity: Medium]
+Does returning -EOPNOTSUPP from kho_ser_validate() collide with the
+-EOPNOTSUPP return value that liveupdate_flb_get_incoming() uses to
+indicate that Live Update is disabled?
 
-In kernel/liveupdate/kexec_handover.c, KernelDoc.create_parameter_list()
-replaces the comma inside DECLARE_KHO_SER_HDR(kho_vmalloc, *fhdr) with '#'
-and parses the parameter name as "fhdr)", causing W=3D1 builds and make
-htmldocs to warn about undescribed parameter "fhdr)" and excess parameter
-"fhdr" while emitting malformed ReST c:function directives.  In
-include/linux/kho/abi/memfd.h, CTokenArgs.groups() splits the outer
-DECLARE_KHOSER_PTR() on the inner comma of DECLARE_KHO_SER_HDR(), truncating
-the struct member in the generated documentation to
-"DECLARE_KHO_SER_HDR(kho_vmalloc folios_fhdr;".
+When an incoming struct luo_flb_ser entry has an unsupported required
+feature bit set, kho_ser_validate() returns -EOPNOTSUPP, which
+liveupdate_flb_get_incoming() propagates to callers:
 
-Adding (CMatch("DECLARE_KHO_SER_HDR"), r"struct kho_ser_hdr \2") to
-CTransforms.struct_xforms (before DECLARE_KHOSER_PTR) and
-CTransforms.function_xforms in tools/lib/python/kdoc/xforms_lists.py would
-avoid both issues.
+drivers/pci/liveupdate.c:pci_liveupdate_flb_get_incoming() {
+	...
+	ret =3D liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&incomin=
+g);
+
+	/* Live Update is not enabled. */
+	if (ret =3D=3D -EOPNOTSUPP)
+		return NULL;
+	...
+}
+
+Instead of panicking on incompatible incoming state, the PCI subsystem
+treats Live Update as disabled and proceeds with normal enumeration over
+preserved devices.
+
+Also, kho_ser_validate() runs on every entry before checking ser->name, so
+an unsupported required feature on an earlier entry fails lookups for later
+compatible FLBs, and returning before refcount_set(&private->incoming.count,
+ser->count) leaves private->incoming.count at 0, which underflows in
+liveupdate_flb_put_incoming() during luo_file_finish().  Validating all
+luo_flb_ser entries up front in luo_flb_setup_incoming() (or translating
+the validation error code) would avoid both issues.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110050202.5294=
-73-1-tarunsahu@google.com?part=3D7
+73-1-tarunsahu@google.com?part=3D14
