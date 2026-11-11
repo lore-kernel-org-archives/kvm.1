@@ -1,49 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794397840;
-	b=LKjU/3eML/NZ/JtTqQFNeia8OsDIBTRdgV7m6gntNPgqAFqUky3Rzd5UB+fAtrK5coY+
-	 LN8FQATGkb8AnArpZr+FkB26DSZDUf4uMirTL7d1nJxYpSSt7lJWMOKrigxjZUPIUjA64
-	 3Ss9VRapwFnPC8gj6CATce4luxY0ESr3+aOqoMV3E2UZtetOBaPWuwNTkIm83SD1iCe2H
-	 G7FcsCkDfttRIBZDaV72UJB0cneJT/SZgbefgWQo1OarVnuubiqKsV+wbVJ4utLIVQxsW
-	 e3+e05Ifu0x6eozPRS0DuhecIZhi22xqNM/y2szU3l+cuBykTDsMlvIRqRdcYB0reEA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794397840;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=gfQN0hMrJpebnFtfB3nFk4J0C2Eu+zl/G3b5N/8lp78=;
-	b=OPQxEhVgz4Gglr/QYwrQhGUhiuUFidOTA38gNneCjbx3WoZmuec3vu+OXD6b46h5OSVt
-	 PHCmztSs6oaC/EHrjkk7DfTvpwJ6Ya7ydqTYKSIXBdG8j4JV4/qRFDpB440z/LTUECyps
-	 fU9uUmgsXmo9KOewmIjrBkKpERLF47oLQytrF/uwCZFSral+2BSn76fqta48n0wgMsfWU
-	 kUFY6pSPQ1N9eAP73xudJqoPZ+Pg1mhXCasZpr88l2R0YgGRrjVCE5+oT4f9bij6URP5p
-	 oyqbtY3LBmESNjADJ2/LQts9x7irrinM2fKzfi4q2nzBuSylc1bGw0eLWpUACWj8YVw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BAz0SLBh;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B523A606A321;
-	Wed, 11 Nov 2026 11:50:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B523A606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.10
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794398246;
+	b=2YERFk9n9l3WwHdY0Ao0nJW4Z50T0WDk/uRqm2EGiflAUXGdUUZbCW6rKh6IzWbFV6Lx
+	 QGo8TLpXXS1Ueh9cB7/1X8OP93xozQTS2H9luQOkUDAQLZlu9h7uVZpZtu3nMxOgTWSoF
+	 RLwwGTF/qwhBHfQ8wS+5CgQJJflIgQDoTkDIbI8z8Tvg50IlqCah2quJM+jPIZTgdr+nU
+	 t3OrEA8O8XbfMhPwzSHIPsXJF+gKmQ7LutrwWgUu951LUn+/nC1IqN3fk2U+jygDXi4k1
+	 pJt4BTC41yLGuILmqAVq0rTjsDzwUcqY2L3qfFGjPDuwpcmLYe6X26XahvhdFkJT4lA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794398246;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:CC:Subject:Content-Language:
+	 To:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=UJObeX0hpu3z0Fe2b6YL+3MKJg28upvLTa8enX3NTuU=;
+	b=g5D64PQbnOx9IrzMJ3bf6vOTHEC7UA6hDyskgMFl2HlRTXqUscy3scCQAVGtJIoQ8Ysk
+	 m0iIowzL7/69NSSihy8Z05mzPhR/lOkfKRBhiplLGxdJIZJf4Bn5Ll5vhylmLFE+FUad5
+	 GsliqCkNgwR7ugg8bzuy+LUNk4xl08M9c1UHFyFj5AErICK/J8c/QFltFDVAF8s3oX7y1
+	 LGbH9w6oqxj1jJE6r02ybHKxJ3syj+OUySyp6anyXGQgQNReqyxqW/E22/ut/J4bUZPLZ
+	 LPXcgDYlXqqetN32CTuNHDRZ8YCjk+IxHRFl7la2UaErI/+q/ynqbVsr06AXLleOr+g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=BdTXENaJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.10
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012010.outbound.protection.outlook.com [40.93.195.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E86D606A31C
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:57:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E86D606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BAz0SLBh
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECE621682;
-	Wed, 11 Nov 2026 03:50:35 -0800 (PST)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 548DC3F673;
-	Wed, 11 Nov 2026 03:50:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794397838; bh=QYRD5cHtWE3Lh3GhJPCByXK67dadoiQhXWmM3J3/Jfs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BAz0SLBhnueEmQl9vDjr56MnS+BmajY/nu3VlrSEXinmhqSzv3qlfU+MvimRVe4QS
-	 BzSgmhhRNX5eBQoFexSLrdTRMyFMWfoTZssWTTtN6b3YT+d4jZAB8IL12nYr8Pud64
-	 f0sYfESii1dr0txt9edbmVvQJXJ+7ZnnMNMpa6vw=
-Message-ID: <d26da6b2-e494-4297-a21d-623c6d141afa@arm.com>
-Date: Wed, 11 Nov 2026 11:50:33 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=BdTXENaJ
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=imS5auzoGlRd9AlqBxJJAE4z2U3/+eMABT+PSZdAyuJRbt0sRGUtRgavzwbtAYMZOBzaz8sTnf1gs4Yh9dTnTAld0+NHwQ0zzekBGMxOGjV03nSh2vSSxymUf8FE7vd1QSTfzo0W5+UAHqvUTHOaxpgMfoK0mot6RSdHgMQgtIvh/ey2YoRb1nuCSsALbgUaVtc7YRcoGoRJn1Hsw1h9RSX/HYSr3cB8xN/BZz38eTDQdihbLIXpdnS/fV30IxWJFzX0ipADlz0NqCGa5A8wlltUseM31nmW88YyLyCcQ84wMj6IbJbwUbu52N61VoH8fVoYnHS3E85GoabcRgDc5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UJObeX0hpu3z0Fe2b6YL+3MKJg28upvLTa8enX3NTuU=;
+ b=IwvFBk1GNgRSd3MvS6YE0RsJp2EGv4kKw+obSoGmlu5d+PFMQD6UGyDoAvpR4X24S7uB09ocp25YK+4M41RJudH+Wt7R8DvgTYZLKF4B7QsOLIj5rwqU1coFn4yiw4X0Vux7sG7VqIwoMsxAkoOx+W6V5NzzlAuNalfQsVUSsyuBTYSxJ7Z7Q0X7bmCa1DVgWPgcWreIvxzl6lySQXm6PhYIos4qumejPcsMID9i9icotBEB+OmDcwD56J/sJG1Nr+ZunWAIpVJkglaG2FrVl9rGCxWc1Q85S3o6lsF1duGOx17cmLHoynz36TMYgVxO18KYZdPmeRTjcFTmarO/3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UJObeX0hpu3z0Fe2b6YL+3MKJg28upvLTa8enX3NTuU=;
+ b=BdTXENaJyrikq9PFGRnjaFSPoqX9qdaFkVqhL4Ti0P0MWIyqZLacf22LlI83My4KbCT7QCl70ldxcBQ+zyj54qDYi9hTb4Mo+IQ4wu7fNWC29/9ufdAl6DePx7TsIxsTRTlN1w+qmHxb0mnkAUvefIy9TAB36M+wOn1fHOWWz4Q=
+Received: from MW4PR04CA0228.namprd04.prod.outlook.com (2603:10b6:303:87::23)
+ by IA1PR12MB8467.namprd12.prod.outlook.com (2603:10b6:208:448::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
+ 2026 11:57:18 +0000
+Received: from SJ1PEPF000026CA.namprd04.prod.outlook.com
+ (2603:10b6:303:87:cafe::65) by MW4PR04CA0228.outlook.office365.com
+ (2603:10b6:303:87::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9 via Frontend Transport; Wed, 11
+ Nov 2026 11:57:18 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF000026CA.mail.protection.outlook.com (10.167.244.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Wed, 11 Nov 2026 11:57:17 +0000
+Received: from [192.168.0.108] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 11 Nov
+ 2026 05:57:15 -0600
+Message-ID: <a2a4c5e6-8264-47e1-80de-375dc2eac048@amd.com>
+Date: Wed, 11 Nov 2026 17:27:07 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,331 +99,181 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/11] KVM: arm64: CCA: Introduce Realms
-To: Steven Price <steven.price@arm.com>, Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-3-steven.price@arm.com>
- <avL9kNR2mGmqmcA9@FCCLS0092175.localdomain>
- <45104e19-4197-4584-895a-0486c0782c9c@arm.com>
- <bc0a6290-ddca-4005-9d22-b74833f435b9@arm.com>
- <d938b49d-331e-4332-ac01-911708f6135b@arm.com>
+CC: <sarunkod@amd.com>
+Subject: Re: [PATCH] x86/kvm: Use RCU for svm_vm_data_hash
 Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <d938b49d-331e-4332-ac01-911708f6135b@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 11/11/2026 11:46, Steven Price wrote:
-> On 11/11/2026 10:14, Suzuki K Poulose wrote:
->> On 11/11/2026 10:11, Steven Price wrote:
->>> On 10/11/2026 11:42, Kohei Enju wrote:
->>>> Hi Steve,
->>>
->>> Hi Kohei,
->>>
->>>> On 11/02 14:12, Steven Price wrote:
->>>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>
->>>>> Add foundational work for supporting Realms.
->>>>>    - Add a new VM flavor.
->>>>>    - At KVM init, check if the KVM can support Realms (though not
->>>>> functional
->>>>>      yet) and will be advertised by static key kvm_rmi_is_available.
->>>>> This
->>>>>      will be turned on in a later patch, once we have all the bits and
->>>>>      pieces ready. For now check if we are blessed with KVM_MODE_RMM.
->>>>>    - Add realm specific tracking in kvm_arch. Since Realm and
->>>>> protected pKVM
->>>>>      states are mutually exclusive, move them into a union.
->>>>>    - Also adjust the memslot preparation checks to reflect the changes.
->>>>>
->>>>> Please note that we cannot create Realm VMs yet. This requires further
->>>>> changes to the UABI and core RMI driver support, which will come later.
->>>>>
->>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>>> ---
->>>>>    arch/arm64/include/asm/kvm_emulate.h   | 16 +++++++
->>>>>    arch/arm64/include/asm/kvm_host.h      | 57 +++++++++++++++++-------
->>>>>    arch/arm64/include/asm/kvm_rmi.h       | 61 ++++++++++++++++++++++
->>>>> ++++
->>>>>    arch/arm64/include/asm/virt.h          |  1 +
->>>>>    arch/arm64/kvm/Makefile                |  2 +-
->>>>>    arch/arm64/kvm/arm.c                   | 24 ++++++++--
->>>>>    arch/arm64/kvm/hyp/include/nvhe/pkvm.h |  2 +-
->>>>>    arch/arm64/kvm/hyp/nvhe/switch.c       |  4 +-
->>>>>    arch/arm64/kvm/hyp/nvhe/timer-sr.c     |  2 +-
->>>>>    arch/arm64/kvm/mmu.c                   | 13 +++---
->>>>>    arch/arm64/kvm/rmi.c                   | 18 ++++++++
->>>>>    11 files changed, 169 insertions(+), 31 deletions(-)
->>>>>    create mode 100644 arch/arm64/include/asm/kvm_rmi.h
->>>>>    create mode 100644 arch/arm64/kvm/rmi.c
->>>>>
->>>>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
->>>>> include/asm/kvm_emulate.h
->>>>> index 334211b8b2ee..32021bdf2610 100644
->>>>> --- a/arch/arm64/include/asm/kvm_emulate.h
->>>>> +++ b/arch/arm64/include/asm/kvm_emulate.h
->>>>> @@ -831,4 +831,20 @@ static inline void kvm_reset_vcpu_psci(struct
->>>>> kvm_vcpu *vcpu,
->>>>>        vcpu_set_reg(vcpu, 0, reset_state->r0);
->>>>>    }
->>>>>    +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
->>>>> +{
->>>>> +    return READ_ONCE(kvm->arch.realm.state);
->>>>> +}
->>>>> +
->>>>> +static inline void kvm_set_realm_state(struct kvm *kvm,
->>>>> +                       enum realm_state new_state)
->>>>> +{
->>>>> +    WRITE_ONCE(kvm->arch.realm.state, new_state);
->>>>> +}
->>>>> +
->>>>> +static inline bool kvm_realm_is_created(struct kvm *kvm)
->>>>> +{
->>>>> +    return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) !=
->>>>> REALM_STATE_NONE;
->>>>> +}
->>>>> +
->>>>>    #endif /* __ARM64_KVM_EMULATE_H__ */
->>>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
->>>>> asm/kvm_host.h
->>>>> index ccd2dc8f73c3..7d0222047ca1 100644
->>>>> --- a/arch/arm64/include/asm/kvm_host.h
->>>>> +++ b/arch/arm64/include/asm/kvm_host.h
->>>>> @@ -29,6 +29,7 @@
->>>>>    #include <asm/kvm.h>
->>>>>    #include <asm/kvm_asm.h>
->>>>>    #include <asm/kvm_hcall.h>
->>>>> +#include <asm/kvm_rmi.h>
->>>>>    #include <asm/vncr_mapping.h>
->>>>>      #define __KVM_HAVE_ARCH_INTC_INITIALIZED
->>>>> @@ -48,6 +49,13 @@
->>>>>    #define KVM_VCPU_MAX_FEATURES 10
->>>>>    #define KVM_VCPU_VALID_FEATURES    (BIT(KVM_VCPU_MAX_FEATURES) - 1)
->>>>>    +#define KVM_REALM_VCPU_VALID_FEATURES            \
->>>>> +    (BIT(KVM_ARM_VCPU_POWER_OFF)        |    \
->>>>> +     BIT(KVM_ARM_VCPU_PSCI_0_2)        |    \
->>>>> +     BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)    |    \
->>>>> +     BIT(KVM_ARM_VCPU_SVE)            |    \
->>>>> +     BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
->>>>> +
->>>>>    #define KVM_REQ_SLEEP \
->>>>>        KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
->>>>>    #define KVM_REQ_IRQ_PENDING        KVM_ARCH_REQ(1)
->>>>> @@ -409,6 +417,7 @@ enum kvm_arm_vm_flavor {
->>>>>        VM_PKVM,        /* Normal guests on pKVM */
->>>>>        MARKER(__VM_PROTECTED),
->>>>>        VM_PROTECTED_PKVM,    /* Protected VM */
->>>>> +    VM_REALM,        /* CCA */
->>>>>        VM_FLAVOR_MAX
->>>>>    };
->>>>>    @@ -502,11 +511,14 @@ struct kvm_arch {
->>>>>        /* Count the number of VNCR_EL2 TLBs */
->>>>>        atomic_t vncr_tlb_count;
->>>>>    -    /*
->>>>> -     * For an untrusted host VM, 'pkvm.handle' is used to lookup
->>>>> -     * the associated pKVM instance in the hypervisor.
->>>>> -     */
->>>>> -    struct kvm_protected_vm pkvm;
->>>>> +    union {
->>>>> +        /*
->>>>> +         * For an untrusted host VM, 'pkvm.handle' is used to lookup
->>>>> +         * the associated pKVM instance in the hypervisor.
->>>>> +         */
->>>>> +        struct kvm_protected_vm pkvm;
->>>>> +        struct realm realm;
->>>>> +    };
->>>>>      #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
->>>>>        /* Nested virtualization info */
->>>>> @@ -1572,30 +1584,43 @@ struct kvm *kvm_arch_alloc_vm(void);
->>>>>      #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
->>>>>    -#ifdef __KVM_NVHE_HYPERVISOR__
->>>>> +#define kvm_vm_is_protected(kvm)    ((kvm)->arch.vm_flavor >=
->>>>> __VM_PROTECTED)
->>>>>    -#define kvm_vm_is_protected(kvm)            \
->>>>> -    (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor ==
->>>>> VM_PROTECTED_PKVM))
->>>>> +#ifdef __KVM_NVHE_HYPERVISOR__
->>>>>    /*
->>>>>     * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to
->>>>> convert the
->>>>>     * pointer to the hyp VA. With pKVM, the nVHE code runs with the
->>>>> hyp_vcpu,
->>>>> - * which is populated correctly and is gated on
->>>>> is_protected_kvm_enabled().
->>>>> + * which is populated correctly. Always vcpu_is_protected_pkvm(),
->>>>> which is
->>>>> + * gated on is_protected_kvm_enabled().
->>>>> + */
->>>>> +#define vcpu_is_protected(vcpu)        BUILD_BUG_ON(1)
->>>>> +#else
->>>>> +#define vcpu_is_protected(vcpu)        kvm_vm_is_protected((vcpu)-
->>>>>> kvm)
->>>>> +#endif
->>>>> +
->>>>> +#define kvm_vm_is_protected_pkvm(kvm)                    \
->>>>> +    (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor ==
->>>>> VM_PROTECTED_PKVM))
->>>>> +
->>>>> +/*
->>>>> + * Rely on is_protected_kvm_enabled() check in
->>>>> kvm_vm_is_protected_pkvm() to
->>>>> + * make sure the vcpu->kvm is always valid VA in the context
->>>>>     */
->>>>> -#define vcpu_is_protected(vcpu)                        \
->>>>> +#define vcpu_is_protected_pkvm(vcpu)                    \
->>>>>        ({                                \
->>>>>            struct kvm *__kvm = READ_ONCE((vcpu)->kvm);        \
->>>>>                                        \
->>>>> -        (__kvm && kvm_vm_is_protected(__kvm));            \
->>>>> +        (__kvm && kvm_vm_is_protected_pkvm(__kvm));        \
->>>>>        })
->>>>
->>>> I've tested the integration branch and found that the secondary CPU
->>>> bring-up fails:
->>>>       [    1.426502] smp: Bringing up secondary CPUs ...
->>>>       [    9.194442] CPU1: failed to come online
->>>>       [    9.194558] CPU1: failed in unknown state : 0x0
->>>>       [    9.197714] smp: Brought up 1 node, 1 CPU
->>>>       [    9.197775] SMP: Total of 1 processors activated.
->>>>
->>>> It seems that this patch missed replacing a use of
->>>> vcpu_is_protected() introduced by the following commit:
->>>>
->>>>       25d726dddc23 ("KVM: arm64: Reject host power-on of a vCPU that
->>>> EL2 holds powered off")
->>>>
->>>> The following diff fixes the issue for me. Also, though not included in
->>>> the diff, I think vcpu_is_protected() in __pkvm_create_hyp_vcpu() should
->>>> be replaced with vcpu_is_protected_pkvm() as well.
->>>
->>> Thanks for the patch - I'll include that in v2.
->>
->> Please could we make it something like this :
->>
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 4edcaf1090f9..2108c1bf5481 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -989,7 +989,8 @@ static bool kvm_arm_vcpu_suspended(struct kvm_vcpu
->> *vcpu)
->>   /* Only the guest's CPU_ON may start a vCPU EL2 holds powered off. */
->>   bool kvm_pkvm_vcpu_is_powered_off(struct kvm_vcpu *vcpu)
->>   {
->> -       return READ_ONCE(vcpu->arch.mp_state.mp_state) ==
->> KVM_MP_STATE_UNINITIALIZED;
->> +       return vcpu_is_protected_pkvm(vcpu) &&
->> +               READ_ONCE(vcpu->arch.mp_state.mp_state) ==
->> KVM_MP_STATE_UNINITIALIZED;
->>   }
-> 
-> This part looks good.
-> 
->>   int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
->> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
->> index b01f8d44033f..b7606c3542f8 100644
->> --- a/arch/arm64/kvm/psci.c
->> +++ b/arch/arm64/kvm/psci.c
->> @@ -68,7 +68,7 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu
->> *source_vcpu)
->>           * STOPPED before that is the VMM's pause.
->>           */
->>          if (!kvm_arm_vcpu_stopped(vcpu) ||
->> -           (vcpu_is_protected(vcpu) && !
->> kvm_pkvm_vcpu_is_powered_off(vcpu))) {
->> +           !kvm_pkvm_vcpu_is_powered_off(vcpu)) {
->>                  if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
->>                          ret = PSCI_RET_ALREADY_ON;
->>                  else
-> 
-> I think this is broken. kvm_pkvm_vcpu_is_powered_off() is defined as:
-> 
-> bool kvm_pkvm_vcpu_is_powered_off(struct kvm_vcpu *vcpu)
-> {
-> 	return vcpu_is_protected_pkvm(vcpu) &&
-> 		READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_UNINITIALIZED;
-> }
-> 
-> So if !vcpu_is_protected_pkvm() then it's always false, so this would
-> break non-pKVM VMs.
-
-That case shouldn't be there for the non-pKVM VMs at all. Basically
-it checks for a pKVM that is powered off. If it is not a pKVM protected
-VCPU, we don't have to check that at all. Only protected VCPUs are
-meant to be in that state, all others are in STOPPED state.
-
-Cheers
-Suzuki
+To: <sashiko-reviews@lists.linux.dev>, <kvm@vger.kernel.org>
+References: <20261111100246.4425-1-sarunkod@amd.com>
+ <sashiko-outbox-208769@kernel.org>
+From: Sairaj Kodilkar <sarunkod@amd.com>
+In-Reply-To: <sashiko-outbox-208769@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000026CA:EE_|IA1PR12MB8467:EE_
+X-MS-Office365-Filtering-Correlation-Id: a59ba448-34da-49df-81ea-08df3feaef5b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|82310400026|376014|36860700016|1800799024|22082099003|18002099003|6133799003|56012099006|11063799006|5023799004|261102123227099003|261009223027099003|261026121527099003|261021121427099003|261021123027099003|261022075727099003|261022105027099003|10067099003|261028144727099003|4143699003|261026140227099003;
+X-Microsoft-Antispam-Message-Info:
+	TDggxe8+u3xQqAnbgidytGVAvJAf/mlT1oZrLSaSjwDx6Beaeg4Pm2ZbPZc5yrZNWwn2mzctZM6U8qJO1yjXindLgXeMAClTZf9zhh52LPCDZyHykjvjLl+ae5oPkSTXKWYTrstB9CFk+1MuFKaAFJ1Im4IjlZGhIjKIBDiLTkpNCz0Uey5gDh1Z/MVi63+aQ3TpN6i3ZdJ4T4yKUnL1odCS2gPNyLSJR6d2fusbdENrevhZrNiyxdzQgIpiOmahz98KUikcJMEGNO8Jb7f1PAkXliN3qun87Mo1FckHC5IN0w/CdlqYKhU7leo6MW3lTxHuXU9m5JzZsh2gXFvuG7yedmGEnYbdmDP+vo7OZ4HnoXLJLtbDWZSGfIgZnxbO2G3KeG7SCCPZb7hb8ZydAUhk67pMQmZZojLCXXaeUCC9clkP7CUcTPczDF/Yxfd0HRwYksV4PCF32q3fVFENgwNlGKgh6nyZQhfKw/xecJjtzFFeGnGs/HMi8gJPur+e+KK3FRgckz6r5tvqCoNtCPlEXEXDj4Od48AW+8jFHgLAHTucFRCvsPDwWQA2cKjqV2T82grCjfcI3s/DdZAL9SiPax2QrkHcrQTl1xvqW3M06du1Cre+frxp855El7DKsuWzpkXDkzzz/y2kwJR6vc0oZlvK/zAuVqQneNJBuiEYfCUILY+OeWXuZD3TD/vaZu2AcMY7vVhAW0k1fP56uQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(376014)(36860700016)(1800799024)(22082099003)(18002099003)(6133799003)(56012099006)(11063799006)(5023799004)(261102123227099003)(261009223027099003)(261026121527099003)(261021121427099003)(261021123027099003)(261022075727099003)(261022105027099003)(10067099003)(261028144727099003)(4143699003)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	SlZReFrot5Qj7Jt/DeTYxPirFC9tfA5ueY18AyWFJBAgtoLC+Abv0dD9GxcXts4wY7+TTcn542hkgQvoOJUG9oRY4RvZtGWF+XUPHMx+WyUSYWW1A82bifvml8Z3L6SmRF+hc6NbABGd2dPR96cmJcwUIYquZ3lwoExalqZKMj4/prN2ikZclb3bhFZjbJpNbpi4tQcL40AIuGp0PBYW03V5SEQWPEF0+Pnp9BT5qp2GBOyu0n3wWrLvxevqNih31ZdbaSS3lKPIVScOWCUrTcx0oHr7b4d/kuBxatiS/c+EtOY48bPb8LvDF7HVD7PZrqhA6nHlSjEXli60xaitmyVkL27Z4+bYzOBQlMI74DNkIbJ5yGo1rxu887e985ZPw9zSTmKmh0alaPqA2MCO0U3fNpG/G4OxDJzI3j5Amw339qTkEpW3v6O0Ps7quLLm
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 11:57:17.9268
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a59ba448-34da-49df-81ea-08df3feaef5b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000026CA.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8467
 
 
+
+On 11/11/2026 3:47 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [High] KVM: SVM: UAF in avic_ga_log_notifier() and
+>   avic_vm_pre_destroy() with RCU
+> - [Low] KVM: SVM: unnecessary guard() removal in
+>   avic_add_vm_to_ga_log_list()
+> --
 > 
-> Thanks,
-> Steve
+> commit 460915a518276bc08e3b21ecfcfa94bc27d07493
+> Author: Sairaj Kodilkar <sarunkod@amd.com>
 > 
->>
->> i.e, check for pkvm vcpu as it should have been in the first case,
->> rather than spilling the check for protected vcpu and an explicit
->> check to see if that is powered off ?
->>
->>
->> Suzuki>
->>> Thanks,
->>> Steve
->>>
->>>> Thanks,
->>>> Kohei
->>>>
->>>> ---8<---
->>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>>> index 522a837637fe..be676c13e219 100644
->>>> --- a/arch/arm64/kvm/arm.c
->>>> +++ b/arch/arm64/kvm/arm.c
->>>> @@ -960,7 +960,8 @@ static void __kvm_arm_vcpu_power_off(struct
->>>> kvm_vcpu *vcpu, u32 mp_state)
->>>>    /* The guest's own CPU_OFF: EL2 has already powered the vCPU off. */
->>>>    void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
->>>>    {
->>>> -       u32 mp_state = vcpu_is_protected(vcpu) ?
->>>> KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
->>>> +       u32 mp_state = vcpu_is_protected_pkvm(vcpu) ?
->>>> +                      KVM_MP_STATE_UNINITIALIZED :
->>>> KVM_MP_STATE_STOPPED;
->>>>
->>>>           spin_lock(&vcpu->arch.mp_state_lock);
->>>>           __kvm_arm_vcpu_power_off(vcpu, mp_state);
->>>> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
->>>> index b01f8d44033f..6674e8d6ff4c 100644
->>>> --- a/arch/arm64/kvm/psci.c
->>>> +++ b/arch/arm64/kvm/psci.c
->>>> @@ -68,7 +68,7 @@ static unsigned long kvm_psci_vcpu_on(struct
->>>> kvm_vcpu *source_vcpu)
->>>>            * STOPPED before that is the VMM's pause.
->>>>            */
->>>>           if (!kvm_arm_vcpu_stopped(vcpu) ||
->>>> -           (vcpu_is_protected(vcpu) && !
->>>> kvm_pkvm_vcpu_is_powered_off(vcpu))) {
->>>> +           (vcpu_is_protected_pkvm(vcpu) && !
->>>> kvm_pkvm_vcpu_is_powered_off(vcpu))) {
->>>>                   if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
->>>>                           ret = PSCI_RET_ALREADY_ON;
->>>>                   else
->>>>
->>>
->>
+> x86/kvm: Use RCU for svm_vm_data_hash
+> 
+> This commit replaces the spinlock-protected lookup of svm_vm_data_hash in
+> avic_ga_log_notifier() with an RCU read-side critical section, and updates
+> insertion and removal to use hash_add_rcu() and hash_del_rcu().
+> 
+>> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+>> index 3b037e3855234..ba12aa5872255 100644
+>> --- a/arch/x86/kvm/svm/avic.c
+>> +++ b/arch/x86/kvm/svm/avic.c
+>> @@ -250,7 +250,6 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
+>>   */
+>>  static int avic_ga_log_notifier(u32 ga_tag)
+>>  {
+>> -	unsigned long flags;
+>>  	struct kvm_svm *kvm_svm;
+>>  	struct kvm_vcpu *vcpu = NULL;
+>>  	u32 vm_id = AVIC_GATAG_TO_VMID(ga_tag);
+>> @@ -259,14 +258,14 @@ static int avic_ga_log_notifier(u32 ga_tag)
+>>  	pr_debug("SVM: %s: vm_id=%#x, vcpu_idx=%#x\n", __func__, vm_id, vcpu_idx);
+>>  	trace_kvm_avic_ga_log(vm_id, vcpu_idx);
+>>  
+>> -	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
+>> -	hash_for_each_possible(svm_vm_data_hash, kvm_svm, hnode, vm_id) {
+>> +	rcu_read_lock();
+>> +	hash_for_each_possible_rcu(svm_vm_data_hash, kvm_svm, hnode, vm_id) {
+>>  		if (kvm_svm->avic_vm_id != vm_id)
+>>  			continue;
+>>  		vcpu = kvm_get_vcpu(&kvm_svm->kvm, vcpu_idx);
+>>  		break;
+>>  	}
+>> -	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
+>> +	rcu_read_unlock();
+>>  
+>>  	/* Note:
+>>  	 * At this point, the IOMMU should have already set the pending
+>> @@ -319,13 +318,14 @@ static void avic_add_vm_to_ga_log_list(struct kvm *kvm)
+>>  	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
+>>  	struct kvm_svm *k2;
+>>  	u32 vm_id;
+>> +	unsigned long flags;
+>>  
+>>  	lockdep_assert_held(&kvm->lock);
+>>  
+>>  	if (kvm_svm->avic_vm_id)
+>>  		return;
+>>  
+>> -	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
+>> +	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
+>>   again:
+>>  	vm_id = next_vm_id = (next_vm_id + 1) & AVIC_VM_ID_MASK;
+>>  	if (vm_id == 0) { /* id is 1-based, zero is not okay */
+>> @@ -340,7 +340,8 @@ static void avic_add_vm_to_ga_log_list(struct kvm *kvm)
+>>  		}
+>>  	}
+>>  	kvm_svm->avic_vm_id = vm_id;
+>> -	hash_add(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
+>> +	hash_add_rcu(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
+>> +	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
+>>  }
+> 
+> [Severity: Low]
+> This isn't a bug, but commits 4fa9a3767d1a ("KVM: SVM: Do all per-VM AVIC
+> initialization during vCPU precreation phase") and 78684b65fcc0 ("KVM: SVM:
+> Remove VM from the GA Log notifier list before VM destruction") switched
+> avic_add_vm_to_ga_log_list() and avic_vm_pre_destroy() to
+> guard(spinlock_irqsave)(&svm_vm_data_hash_lock), which can still be kept
+> here instead of open-coding spin_lock_irqsave() and spin_unlock_irqrestore().
 > 
 
+Right, will remove this
+
+>>  int avic_vcpu_precreate(struct kvm *kvm)
+>> @@ -369,13 +370,14 @@ int avic_vcpu_precreate(struct kvm *kvm)
+>>  void avic_vm_pre_destroy(struct kvm *kvm)
+>>  {
+>>  	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
+>> +	unsigned long flags;
+>>  
+>>  	if (WARN_ON_ONCE(!enable_apicv) || !kvm_svm->avic_vm_id)
+>>  		return;
+>>  
+>> -	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
+>> -
+>> -	hash_del(&kvm_svm->hnode);
+>> +	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
+>> +	hash_del_rcu(&kvm_svm->hnode);
+>> +	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
+>>  }
+> 
+> [Severity: High]
+> Can this cause a use-after-free on struct kvm_svm and struct kvm_vcpu
+> when a VM is destroyed concurrently with avic_ga_log_notifier()?
+> 
+> CPU0                              CPU1
+> avic_ga_log_notifier()            kvm_destroy_vm()
+>   rcu_read_lock()                   ...
+>   hash_for_each_possible_rcu(...)   avic_vm_pre_destroy()
+>     vcpu = kvm_get_vcpu(...)          hash_del_rcu(&kvm_svm->hnode)
+>   rcu_read_unlock()                 ...
+>                                     kvm_destroy_vcpus()
+>                                       kmem_cache_free(..., vcpu)
+>                                     kvm_arch_free_vm()
+>                                       vfree(kvm)
+>   kvm_vcpu_wake_up(vcpu)  <-- use-after-free
+> 
+> avic_vm_pre_destroy() unlinks kvm_svm->hnode with hash_del_rcu(), but
+> nothing waits for an RCU grace period before kvm_destroy_vcpus() frees the
+> vCPUs and kvm_arch_free_vm() frees struct kvm_svm (the intervening SRCU
+> synchronizations in kvm_destroy_vm() only cover private SRCU domains). An
+> in-flight reader on the same hash bucket can therefore dereference freed
+> kvm_svm or vcpu memory.
+> 
+> In addition, avic_ga_log_notifier() calls rcu_read_unlock() before
+> kvm_vcpu_wake_up(vcpu). Because kvm_get_vcpu() does not take a reference,
+> dropping the RCU read lock early leaves vcpu unpinned even if
+> avic_vm_pre_destroy() waits for a grace period. Calling kvm_vcpu_wake_up()
+> inside the rcu_read_lock() critical section and adding synchronize_rcu()
+> after hash_del_rcu() in avic_vm_pre_destroy() would close both windows.
+> 
+
+Right, will do it
+
+Thanks
+Sairaj
