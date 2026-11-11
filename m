@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794420578;
-	b=ofQj6whpgweKxa1OUOHoOZ8b9cZ4LJBNVpzMqWVQdesbhb57CBN7ULZPKq2KpzgIKsjk
-	 N3IUwBIbdOtUEtK5R7i7qnjV/zkSVjuDvHk5TEtZ+V/iLAcqWNJ/9pyy1uqDLCKIXEIMI
-	 W3Q/gen5tQ/BzbvRw2MnUfaANhjYS4R0DVhg/5qhOv89eQEoaozijJS/B6GfBgfzRMlE9
-	 GoNpawiVzugBEaMzoIB4HkKwjVPo8bSPANze/5lSGh8fcdGdMO+5k3u9xZucSQnIEKHMK
-	 yf5ccb6CvLt57I2mIpaOry1uDn/C1rtl9N8xzJUww/dqYYWZ8PaFVQa3bTXeU7PNo/g==
+	b=fjGLwlkmSJIvTPH1YjG2s59lt6XIWGN3EVOYKSYCHSDfu3FWnWtcbAKfxhumCSFHtuhn
+	 LvrMRXmT4RlhQfbctAQfzam6R15WJiRsHTRh2sesfTlyuEO7fFYXIZA/lmgHA8aPmqb/T
+	 GHmemD/IBFuFFj5Ef+JwVg30WuoQ21Yb0N82Vv7h2y8j4/22Ao/UyOUMpSurHgK7vvpif
+	 uQktza/N8O5DRFPE/Zcu6aGrz0UF34il707ki0AEZKmsOfSS7zc+NAHCAbP2Gc6yFMFXW
+	 l+ahQRd3kdLj807nd0g27kCIik661lAh0OshWZUWd2wJUVThRMr03rhh1u1KT6vZ/+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794420578;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=cXjQZKqIl2OYPcFHIBDb+bTEqqXL97xMp1LRSEJsias=;
-	b=VIUKEfHGE7JMKNLXuZazj+d54AkJsh38TQN2lEBaOGkIK7TDnVByFf/SricOnaDE8MFC
-	 N0F476RQkkeIzB8NoEeGyQ2W+hBv4AyDISNY4dfSLLNW1BGjDVMRkRlqTx01hSHaF+l8T
-	 N1Qf62ubAAauCfXh+e6RPy4qpbVBveFidEFWXmmAszRILYj4OmxjGalDsSqmjA0WMOUfv
-	 PTLqSiM8NwF5l1uB6y1ZDVBi3KZNF5JRJCiF5LWAoQ0bWCGbLYLosu/LaBx5n6BLCxZXG
-	 C/9VXBvUHMBnd8Y724GS6xYp2W9r+3Oyf+ln5yR60yE+78udg+fIynsNnXIm4VLgpxQ==
+	bh=1V/mMwjMcC+MDxHM1oxRcKL+FYzfa4UsShC/QgnT6ts=;
+	b=UHvq9hO1ACn4MJ/p20Ma1jzzPw5ZMs9jC21sTYxsHjwUlTYEBJebh/lkgou4+a6vSQ9v
+	 gXm+I0BtwpHagULJ+OukpXUqnij0t1OKCO/if7bOXI/WhcTLYjgDMzoHSnvsR7m5XjGky
+	 5Ehs19KE6tUlhDQ4NO3qUmWiFfXcpFD20zU/lHuv3NY/J8nhLdzt2nGpde2uDWndJDrnH
+	 eLWa2Evz8+zzdrWzer6imeVcP2M6Afh3PV29WGmfHmJZHgZxAhSrgxUTGZgrL0ASJOVZY
+	 d87XR/8MFpF3nnrwSs6ys5bk1Jce4Mg1s2xitJRCeZnaDpeO8scHQVd5kiZ27TqMhTA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=aEYDQ803;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rdCdM0Bg;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115FD606B7B0;
-	Wed, 11 Nov 2026 18:09:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 115FD606B7B0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B09A606C155;
+	Wed, 11 Nov 2026 18:09:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B09A606C155
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=aEYDQ803
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rdCdM0Bg
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description;
-	bh=cXjQZKqIl2OYPcFHIBDb+bTEqqXL97xMp1LRSEJsias=; b=aEYDQ803CRaehE4cut3cAiMuGk
-	plgaJ+v+zciptCjVs+y7SKylPtGeqiFg6EyAFTILn+LQ8SPH6IggBpbvP/pVChFgXGCgsxrUIMM6z
-	sJbBUr1S7vcqfLaYQYa9QMperqX8B8E9llZOTBrgmSknUi+PY0QhsR0D0eLuWxB9RJD785TPl8b0k
-	Xnfk/zjsWJbw81WfvsgzsOOPmR+8/OUdJXM7J9a37peSj9IS+cEEPCs0f9rf0uoq6YWgofBS7dxVy
-	WBjdAz/8KiPxEtAPEferIrkBBOPfbHjofdzbjNeVsEuMmqaBiNy9q79bPRlIciywVYVI/c5qg8jHF
-	8OBYFeFQ==;
+	bh=1V/mMwjMcC+MDxHM1oxRcKL+FYzfa4UsShC/QgnT6ts=; b=rdCdM0Bga8RtX//t2h5oWGV5nk
+	NrobMdHnlsWWu0fgt/I6d+ha7L+1JiD2Yc69jvBxcI0t87Fu1wdOzrbXUF9Sl9320wCVdwrZw9cJj
+	NbhmdPRAuOGTvIuEGQLSGH9X+krDkyse4Uw4uoGtbdSBbLPrCx26hLJfYW/Yiz3obm/FgivEyR71R
+	KOTaGZLj6mqMvr1sMoN9zYhouAr/CwehIYcUGB+yqMCzdNILkxNX+221aePpyOCf+nOIMb5T6xD5m
+	B1LVp9DnDtrKs93W47JR2nQ+MoRKidU8EDEwvrJ/xvN0opSznxIg6wJh1sgPhmS7Vl3rjPD7iBDcr
+	4P99dECw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRClB-00000009PvT-3DMi;
+	id 1xRClB-00000009PvM-3ChP;
 	Wed, 11 Nov 2026 18:09:30 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRCl9-0000000HWtO-2oOe;
+	id 1xRCl9-0000000HWsS-0BMB;
 	Wed, 11 Nov 2026 18:09:23 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -78,9 +78,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Dongli Zhang <dongli.zhang@oracle.com>,
 	joe.jin@oracle.com,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v13 21/26] KVM: selftests: Add Xen/generic CPUID timing leaf test
-Date: Wed, 11 Nov 2026 10:09:17 -0800
-Message-ID: <20261111180922.4177927-22-dwmw2@infradead.org>
+Subject: [PATCH v13 07/26] KVM: x86: Don't latch the Hyper-V TSC page from a superseded snapshot
+Date: Wed, 11 Nov 2026 10:09:03 -0800
+Message-ID: <20261111180922.4177927-8-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261111180922.4177927-1-dwmw2@infradead.org>
 References: <20261111180922.4177927-1-dwmw2@infradead.org>
@@ -100,355 +100,187 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Verify that userspace can correctly populate Xen and generic CPUID
-timing leaves using the KVM_GET_TSC_KHZ ioctl and
-KVM_VCPU_TSC_SCALE attribute.
+The Hyper-V TSC page is rewritten from kvm_guest_time_update() when its
+HOST_CHANGED state is set, and latches to HV_TSC_PAGE_SET, which blocks
+further rewrites. But the state is set before the new pvclock snapshot
+is published (setting it takes hv_lock, a mutex, so it cannot happen
+inside the tsc_write_lock section), and nothing validates the snapshot
+the consumer is holding. Two interleavings latch stale parameters which
+nothing then rewrites until some unrelated clock event invalidates the
+page again:
 
-This validates that commit 7d3bd21e457b ("KVM: x86: Remove runtime Xen
-TSC frequency CPUID update") doesn't break guests: userspace queries
-the effective TSC and bus frequencies, computes the pvclock mul/shift,
-populates the CPUID leaves, and the guest verifies the values match.
+ - A vCPU handling an unrelated KVM_REQ_CLOCK_UPDATE completes its
+   pvclock read, is preempted (or sleeps in kvm_write_guest(), holding
+   hv_lock), a KVM_SET_CLOCK completes meanwhile, and the vCPU then
+   writes the page from the old snapshot and sets HV_TSC_PAGE_SET —
+   consuming the state intended for the new one.
 
-The test exercises:
- - KVM_GET_TSC_KHZ at native and scaled frequencies
- - KVM_VCPU_TSC_SCALE ratio verification against effective frequency
- - Generic timing leaf 0x40000010 (EAX=tsc_khz, EBX=bus_khz)
- - Xen leaf 3 sub-leaf 0 (ECX=guest TSC kHz)
- - Xen leaf 3 sub-leaf 1 (ECX=mul, EDX=shift)
+ - The state is consumed legitimately an instant before the publish,
+   writing values which were current at that moment and superseded the
+   next; the CLOCK_UPDATE broadcast which follows the publish finds
+   HV_TSC_PAGE_SET and rewrites nothing.
 
-Where KVM_CAP_XEN_HVM is available, the guest is given the Xen
-signature leaf and the Xen hypercall MSR is enabled — the exact
-configuration in which the removed runtime update used to fire — and
-a sentinel is planted in leaf 3 sub-leaf 2 EAX, where it used to
-write, which the guest verifies survives untouched.
+For a KVM_SET_CLOCK stepping kvmclock_offset — a live migration
+restore — the page is left disagreeing with the restored clock by the
+full step.
 
-The scaled runs are skipped on hardware without TSC scaling. For a
-requested frequency within tsc_tolerance_ppm of the host's (where no
-scaling engages and the ratio stays identity), only the ratio
-cross-check is skipped, and the skip is gated on the frequencies
-themselves — read from the kernel's actual tsc_tolerance_ppm — not on
-the reported ratio, which is exactly what a broken KVM would get
-wrong. Results go through the kselftest TAP machinery, a fixed plan
-of five.
+Close the first at the consumer: kvm_hv_setup_tsc_page() revalidates
+the pvclock seqcount under hv_lock — it must be under the lock, or the
+consumer could be preempted between a check and the consumption — and
+requeues the clock update rather than consume the state against a
+superseded snapshot. Close the second by re-marking the page once the
+new snapshot is published, with a CLOCK_UPDATE queued on every vCPU
+behind the re-mark: the broadcast from kvm_end_pvclock_update() can
+have been entirely consumed by then, and no vCPU in particular is
+guaranteed to ever run again. The hv_lock mutex which lets a consumer
+sleep across the whole update is also what serializes its write
+against the re-mark, so the queued consumer always finds either fresh
+page contents or the HOST_CHANGED state; guests which never enabled
+the page skip the broadcast entirely.
 
+Fixes: cc9cfddb0433 ("KVM: x86: hyper-v: Track Hyper-V TSC page status")
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/x86/xen_cpuid_timing_test.c | 293 ++++++++++++++++++
- 2 files changed, 294 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c
+ arch/x86/kvm/hyperv.c | 20 ++++++++++++++++++--
+ arch/x86/kvm/hyperv.h | 10 ++++++----
+ arch/x86/kvm/x86.c    | 36 +++++++++++++++++++++++++++++++++++-
+ 3 files changed, 59 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 4d4eff41c525..79d26de18bf3 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -152,6 +152,7 @@ TEST_GEN_PROGS_x86 += x86/xss_msr_test
- TEST_GEN_PROGS_x86 += x86/debug_regs
- TEST_GEN_PROGS_x86 += x86/tsc_msrs_test
- TEST_GEN_PROGS_x86 += x86/vmx_pmu_caps_test
-+TEST_GEN_PROGS_x86 += x86/xen_cpuid_timing_test
- TEST_GEN_PROGS_x86 += x86/xen_shinfo_test
- TEST_GEN_PROGS_x86 += x86/xen_vmcall_test
- TEST_GEN_PROGS_x86 += x86/sev_dbg_test
-diff --git a/tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c b/tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c
-new file mode 100644
-index 000000000000..33b5300efa03
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/xen_cpuid_timing_test.c
-@@ -0,0 +1,293 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index 5d2e3617c952..56da410a7f32 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -1182,9 +1182,11 @@ static inline bool tsc_page_update_unsafe(struct kvm_hv *hv)
+ 		hv->hv_tsc_emulation_control;
+ }
+ 
+-void kvm_hv_setup_tsc_page(struct kvm *kvm,
+-			   struct pvclock_vcpu_time_info *hv_clock)
++void kvm_hv_setup_tsc_page(struct kvm_vcpu *v,
++			   struct pvclock_vcpu_time_info *hv_clock,
++			   unsigned int seq)
+ {
++	struct kvm *kvm = v->kvm;
+ 	struct kvm_hv *hv = to_kvm_hv(kvm);
+ 	u32 tsc_seq;
+ 	u64 gfn;
+@@ -1202,6 +1204,20 @@ void kvm_hv_setup_tsc_page(struct kvm *kvm,
+ 	if (!(hv->hv_tsc_page & HV_X64_MSR_TSC_REFERENCE_ENABLE))
+ 		return;
+ 
++	/*
++	 * @hv_clock derives from the pvclock snapshot current at @seq.
++	 * Consuming the HOST_CHANGED state against a superseded snapshot
++	 * would latch stale parameters as HV_TSC_PAGE_SET, which nothing
++	 * then rewrites; the check must be made here, under hv_lock, or
++	 * this vCPU could be preempted between a check and the
++	 * consumption while an update completes. Leave the state alone
++	 * and requeue; the retry reads the new snapshot.
++	 */
++	if (read_seqcount_retry(&kvm->arch.pvclock_sc, seq)) {
++		kvm_make_request(KVM_REQ_CLOCK_UPDATE, v);
++		return;
++	}
++
+ 	gfn = hv->hv_tsc_page >> HV_X64_MSR_TSC_REFERENCE_ADDRESS_SHIFT;
+ 	/*
+ 	 * Because the TSC parameters only vary when there is a
+diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
+index 622a6553e9ac..62e7922440aa 100644
+--- a/arch/x86/kvm/hyperv.h
++++ b/arch/x86/kvm/hyperv.h
+@@ -284,8 +284,9 @@ static inline bool kvm_hv_invtsc_suppressed(struct kvm_vcpu *vcpu)
+ 
+ void kvm_hv_process_stimers(struct kvm_vcpu *vcpu);
+ 
+-void kvm_hv_setup_tsc_page(struct kvm *kvm,
+-			   struct pvclock_vcpu_time_info *hv_clock);
++void kvm_hv_setup_tsc_page(struct kvm_vcpu *v,
++			   struct pvclock_vcpu_time_info *hv_clock,
++			   unsigned int seq);
+ void kvm_hv_request_tsc_page_update(struct kvm *kvm);
+ 
+ void kvm_hv_xsaves_xsavec_maybe_warn(struct kvm_vcpu *vcpu);
+@@ -377,8 +378,9 @@ static inline void kvm_hv_nested_transtion_tlb_flush(struct kvm_vcpu *vcpu,
+ 
+ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu);
+ #else /* CONFIG_KVM_HYPERV */
+-static inline void kvm_hv_setup_tsc_page(struct kvm *kvm,
+-					 struct pvclock_vcpu_time_info *hv_clock) {}
++static inline void kvm_hv_setup_tsc_page(struct kvm_vcpu *v,
++					 struct pvclock_vcpu_time_info *hv_clock,
++					 unsigned int seq) {}
+ static inline void kvm_hv_request_tsc_page_update(struct kvm *kvm) {}
+ static inline void kvm_hv_xsaves_xsavec_maybe_warn(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_hv_init_vm(struct kvm *kvm) {}
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 05c801973a7f..f7af94d8b3bb 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1789,6 +1789,36 @@ static void kvm_end_pvclock_update(struct kvm *kvm)
+ 		kvm_clear_request(KVM_REQ_MCLOCK_INPROGRESS, vcpu);
+ }
+ 
 +/*
-+ * Test that userspace can correctly populate Xen and generic CPUID
-+ * timing leaves using KVM_GET_TSC_KHZ and KVM_VCPU_TSC_SCALE.
-+ *
-+ * This validates that the removal of KVM's runtime Xen CPUID modification
-+ * doesn't break guests, because userspace has all the information needed.
++ * Re-mark the Hyper-V TSC page once a new pvclock snapshot is published:
++ * the mark made before the update may have been legitimately consumed an
++ * instant before the publish, writing values the publish then superseded.
++ * The consumer must be queued after the re-mark: the CLOCK_UPDATE
++ * broadcast from kvm_end_pvclock_update() can have been entirely consumed
++ * by the time the re-mark lands, since a consumer may sleep in
++ * kvm_hv_setup_tsc_page() (hv_lock is a mutex) across the whole update —
++ * the same sleep which serializes it against this re-mark. Queue on
++ * every vCPU: any one suffices (the page is VM-wide), but none in
++ * particular is guaranteed to ever run again.
 + */
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <string.h>
-+
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+
-+
-+#define XEN_CPUID_BASE		0x40000100
-+#define XEN_CPUID_LEAF(n)	(XEN_CPUID_BASE + (n))
-+#define GENERIC_TIMING_LEAF	0x40000010
-+
-+/*
-+ * Sentinel in Xen leaf 3 sub-leaf 2 EAX (where the removed runtime
-+ * update used to write the vCPU's tsc_khz): it must survive untouched.
-+ */
-+#define XEN_SENTINEL		0xdeadbeef
-+
-+/* Values set by host, verified by guest */
-+static u32 expected_tsc_khz;
-+static u32 expected_bus_khz;
-+static u32 expected_tsc_mul;
-+static s8   expected_tsc_shift;
-+static u64 host_khz;
-+static bool xen_enabled;
-+
-+static void guest_code(void)
++static void kvm_hv_remark_tsc_page(struct kvm *kvm)
 +{
-+	u32 eax, ebx, ecx, edx;
-+
-+	/* Check generic timing leaf 0x40000010 */
-+	__cpuid(GENERIC_TIMING_LEAF, 0, &eax, &ebx, &ecx, &edx);
-+	GUEST_ASSERT_EQ(eax, expected_tsc_khz);
-+	GUEST_ASSERT_EQ(ebx, expected_bus_khz);
-+
-+	/* Check Xen leaf 3, sub-leaf 0: ECX = guest TSC frequency */
-+	__cpuid(XEN_CPUID_LEAF(3), 0, &eax, &ebx, &ecx, &edx);
-+	GUEST_ASSERT_EQ(ecx, expected_tsc_khz);
-+
-+	/* Check Xen leaf 3, sub-leaf 1: ECX = mul, EDX = shift */
-+	__cpuid(XEN_CPUID_LEAF(3), 1, &eax, &ebx, &ecx, &edx);
-+	GUEST_ASSERT_EQ(ecx, expected_tsc_mul);
-+	GUEST_ASSERT_EQ((s8)edx, expected_tsc_shift);
-+
-+	if (xen_enabled) {
-+		/*
-+		 * With the Xen signature present and Xen enabled, verify the
-+		 * sentinel survives: KVM's removed runtime CPUID update used
-+		 * to clobber this sub-leaf for exactly this configuration.
-+		 */
-+		__cpuid(XEN_CPUID_LEAF(3), 2, &eax, &ebx, &ecx, &edx);
-+		GUEST_ASSERT_EQ(eax, XEN_SENTINEL);
-+	}
-+
-+	GUEST_SYNC(0);
-+}
-+
-+static void add_cpuid_entry(struct kvm_vcpu *vcpu, u32 function,
-+			    u32 index, u32 eax, u32 ebx,
-+			    u32 ecx, u32 edx)
-+{
-+	struct kvm_cpuid2 *cpuid = vcpu->cpuid;
-+	struct kvm_cpuid_entry2 *entry;
-+	int n = cpuid->nent;
-+
-+	cpuid = realloc(vcpu->cpuid,
-+			sizeof(*cpuid) + (n + 1) * sizeof(*entry));
-+	TEST_ASSERT(cpuid, "Failed to grow vCPU CPUID array");
-+	vcpu->cpuid = cpuid;
-+	cpuid->nent = n + 1;
-+
-+	entry = &cpuid->entries[n];
-+	memset(entry, 0, sizeof(*entry));
-+	entry->function = function;
-+	entry->index = index;
-+	entry->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-+	entry->eax = eax;
-+	entry->ebx = ebx;
-+	entry->ecx = ecx;
-+	entry->edx = edx;
-+}
-+
-+/*
-+ * Compute pvclock mul/shift from frequency, matching kvm_get_time_scale().
-+ */
-+static void compute_tsc_mul_shift(u64 tsc_hz, u32 *mul, s8 *shift)
-+{
-+	u64 scaled = 1000000000ULL;
-+	u64 base = tsc_hz;
-+	s32 s = 0;
-+	u32 base32;
-+
-+	while (base > scaled * 2 || base >> 32) {
-+		base >>= 1;
-+		s--;
-+	}
-+	base32 = (u32)base;
-+	while (base32 <= scaled || scaled >> 32) {
-+		if (scaled >> 32 || base32 & (1U << 31))
-+			scaled >>= 1;
-+		else
-+			base32 <<= 1;
-+		s++;
-+	}
-+	*mul = (u32)((scaled << 32) / base32);
-+	*shift = (s8)s;
-+}
-+
-+static void run_test(u64 tsc_khz)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	u32 effective_tsc_khz, effective_bus_khz;
-+	int bus_cycle_ns, ret;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+
-+	if (tsc_khz) {
-+		pr_info("Testing at TSC frequency %lu kHz\n", tsc_khz);
-+		vcpu_ioctl(vcpu, KVM_SET_TSC_KHZ, (void *)(unsigned long)tsc_khz);
-+	} else {
-+		pr_info("Testing at native TSC frequency\n");
-+	}
-+
-+	ret = __vcpu_ioctl(vcpu, KVM_GET_TSC_KHZ, NULL);
-+	TEST_ASSERT(ret > 0, "KVM_GET_TSC_KHZ failed: %d", ret);
-+	effective_tsc_khz = ret;
-+	bus_cycle_ns = vm_check_cap(vm, KVM_CAP_X86_APIC_BUS_CYCLES_NS);
-+	effective_bus_khz = bus_cycle_ns > 0 ? 1000000 / bus_cycle_ns : 1000000;
-+
-+	pr_info("  Effective TSC: %u kHz, Bus: %u kHz\n", effective_tsc_khz, effective_bus_khz);
-+
-+	/* Also exercise KVM_VCPU_TSC_SCALE if available */
-+	if (!__vcpu_has_device_attr(vcpu, KVM_VCPU_TSC_CTRL,
-+				    KVM_VCPU_TSC_SCALE)) {
-+		struct kvm_vcpu_tsc_scale scale;
-+
-+		vcpu_device_attr_get(vcpu, KVM_VCPU_TSC_CTRL,
-+				     KVM_VCPU_TSC_SCALE, &scale);
-+		pr_info("  TSC scale: ratio=%llu frac_bits=%llu\n",
-+			scale.tsc_ratio, scale.tsc_frac_bits);
-+
-+		/*
-+		 * A requested frequency within tsc_tolerance_ppm of the
-+		 * host's does not engage hardware scaling: the effective
-+		 * frequency is the requested one but the ratio stays 1.0,
-+		 * so the ratio cross-check cannot hold. Skip only that
-+		 * check — the CPUID leaf population and guest verification
-+		 * below are about the effective frequency and remain valid.
-+		 *
-+		 * Judge "within tolerance" from the frequencies, not from
-+		 * the reported ratio: an identity ratio for a frequency
-+		 * far outside tolerance is exactly the regression the
-+		 * cross-check exists to catch, and must not take the skip
-+		 * path. Read the kernel's actual tsc_tolerance_ppm, and
-+		 * compute the bounds exactly as kvm_set_tsc_khz() does
-+		 * (multiply then truncate), so the window matches even at
-+		 * its edges and when the parameter has been tuned.
-+		 */
-+		u64 tol_ppm = get_kvm_param_integer("tsc_tolerance_ppm");
-+		u64 thresh_lo = host_khz * (1000000 - tol_ppm) / 1000000;
-+		u64 thresh_hi = host_khz * (1000000 + tol_ppm) / 1000000;
-+		bool within_tol = tsc_khz >= thresh_lo &&
-+				  tsc_khz <= thresh_hi;
-+
-+		if (tsc_khz && within_tol &&
-+		    scale.tsc_ratio == (1ULL << scale.tsc_frac_bits)) {
-+			pr_info("  Requested frequency within host tolerance; scaling not engaged, skipping ratio cross-check\n");
-+		} else if (tsc_khz) {
-+			/*
-+			 * Verify: applying the ratio to the host TSC frequency
-+			 * should give approximately the effective frequency.
-+			 */
-+			u64 computed = ((__uint128_t)host_khz * scale.tsc_ratio) >> scale.tsc_frac_bits;
-+			s64 diff = (s64)computed - (s64)effective_tsc_khz;
-+
-+			TEST_ASSERT(diff >= -1 && diff <= 1,
-+				    "TSC_SCALE ratio mismatch: computed %lu vs effective %u (diff %ld)",
-+				    computed, effective_tsc_khz, diff);
-+		}
-+	}
-+
-+	compute_tsc_mul_shift((u64)effective_tsc_khz * 1000,
-+			      &expected_tsc_mul, &expected_tsc_shift);
-+
-+	expected_tsc_khz = effective_tsc_khz;
-+	expected_bus_khz = effective_bus_khz;
-+
-+	sync_global_to_guest(vm, expected_tsc_khz);
-+	sync_global_to_guest(vm, expected_bus_khz);
-+	sync_global_to_guest(vm, expected_tsc_mul);
-+	sync_global_to_guest(vm, expected_tsc_shift);
-+
-+	/* Populate CPUID leaves as a VMM would */
-+	add_cpuid_entry(vcpu, GENERIC_TIMING_LEAF, 0,
-+			effective_tsc_khz, effective_bus_khz, 0, 0);
-+	add_cpuid_entry(vcpu, XEN_CPUID_LEAF(3), 0,
-+			0, 0, effective_tsc_khz, 0);
-+	add_cpuid_entry(vcpu, XEN_CPUID_LEAF(3), 1,
-+			0, 0, expected_tsc_mul,
-+			(u32)(s32)expected_tsc_shift);
++#ifdef CONFIG_KVM_HYPERV
++	kvm_hv_request_tsc_page_update(kvm);
 +
 +	/*
-+	 * Where possible, make this a real Xen guest: install the Xen
-+	 * signature leaf and enable the Xen hypercall MSR, which is the
-+	 * configuration in which KVM's removed runtime CPUID update used
-+	 * to fire, and plant a sentinel where it used to write.
++	 * Racy, but benign: a transition to HV_TSC_PAGE_SET in the
++	 * instants after the re-mark means a consumer has just written
++	 * the page from the current snapshot, and a guest which never
++	 * enabled the page (UNSET/BROKEN, the common case) needs no
++	 * broadcast at all.
 +	 */
-+	xen_enabled = kvm_has_cap(KVM_CAP_XEN_HVM);
-+	if (xen_enabled) {
-+		struct kvm_xen_hvm_config cfg = {
-+			.msr = 0x40000200,
-+		};
-+
-+		vm_ioctl(vm, KVM_XEN_HVM_CONFIG, &cfg);
-+		add_cpuid_entry(vcpu, XEN_CPUID_BASE, 0, XEN_CPUID_LEAF(4),
-+				0x566e6558 /* "XenV" */,
-+				0x65584d4d /* "MMXe" */,
-+				0x4d4d566e /* "nVMM" */);
-+		add_cpuid_entry(vcpu, XEN_CPUID_LEAF(3), 2,
-+				XEN_SENTINEL, 0, 0, 0);
-+	}
-+	sync_global_to_guest(vm, xen_enabled);
-+
-+	vcpu_set_cpuid(vcpu);
-+
-+	pr_info("  pvclock mul=%u shift=%d\n", expected_tsc_mul, expected_tsc_shift);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+	switch (get_ucall(vcpu, &uc)) {
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
-+	case UCALL_SYNC:
-+		break;
-+	default:
-+		TEST_FAIL("Unexpected ucall");
-+	}
-+
-+	kvm_vm_free(vm);
++	if (READ_ONCE(to_kvm_hv(kvm)->hv_tsc_page_status) ==
++	    HV_TSC_PAGE_HOST_CHANGED)
++		kvm_make_all_cpus_request(kvm, KVM_REQ_CLOCK_UPDATE);
++#endif
 +}
 +
-+int main(void)
-+{
-+	u64 freq;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	bool have_tsc_scale;
+ static void kvm_update_masterclock(struct kvm *kvm)
+ {
+ 	kvm_hv_request_tsc_page_update(kvm);
+@@ -1961,6 +1991,7 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+ 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
+ #else
+ 	const bool use_master_clock = false;
++	unsigned int seq = read_seqcount_begin(&ka->pvclock_sc);
+ #endif
+ 	/*
+ 	 * Ensure reading the TSC+frequency pair is done on the same CPU.  When
+@@ -2056,7 +2087,7 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+ 		hv_clock.flags &= ~PVCLOCK_GUEST_STOPPED;
+ 	}
+ 
+-	kvm_hv_setup_tsc_page(v->kvm, &hv_clock);
++	kvm_hv_setup_tsc_page(v, &hv_clock, seq);
+ 
+ #ifdef CONFIG_KVM_XEN
+ 	/*
+@@ -4572,6 +4603,9 @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, void __user *argp)
+ 		now_raw_ns = get_kvmclock_base_ns();
+ 	ka->kvmclock_offset = data.clock - now_raw_ns;
+ 	kvm_end_pvclock_update(kvm);
 +
-+	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+	have_tsc_scale = !__vcpu_has_device_attr(vcpu, KVM_VCPU_TSC_CTRL,
-+						 KVM_VCPU_TSC_SCALE);
-+	host_khz = __vcpu_ioctl(vcpu, KVM_GET_TSC_KHZ, NULL);
-+	kvm_vm_free(vm);
-+
-+	ksft_print_header();
-+	ksft_set_plan(5);
-+
-+	/* Native frequency */
-+	run_test(0);
-+	ksft_test_result_pass("native frequency (%lu kHz)\n",
-+			      (unsigned long)host_khz);
-+
-+	/* Scaled frequencies, when hardware TSC scaling is available */
-+	for (freq = 1000000; freq <= 4000000; freq += 1000000) {
-+		if (!have_tsc_scale) {
-+			ksft_test_result_skip("%lu kHz (no TSC scaling)\n",
-+					      (unsigned long)freq);
-+		} else if (freq == host_khz) {
-+			ksft_test_result_skip("%lu kHz is the host frequency\n",
-+					      (unsigned long)freq);
-+		} else {
-+			run_test(freq);
-+			ksft_test_result_pass("%lu kHz\n", (unsigned long)freq);
-+		}
-+	}
-+
-+	ksft_finished();
-+}
++	/* As in kvm_update_masterclock(): re-mark after publishing. */
++	kvm_hv_remark_tsc_page(kvm);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
