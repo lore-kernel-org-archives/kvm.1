@@ -1,54 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794432699;
-	b=0wjXvO93L6YAhCYH+suye59cBYkF0TLk6aIsoykQJDAIPPYGNX26dOAekuO0HS5N81Zj
-	 TLsT7fUshWsR5MiHCzwMC0OBbxmRgWwAcEVFMrCADUobbjY59UY9uKTu6nvJnNO+jHv39
-	 LoJZX7PYN9ddkmB+LNwgL8lhr/QmnvHG641fkoFFKLRXqGeOsoR8JjN/66ANoWXMXEg/e
-	 xCsMPIox8eavg2XfsmykrADVBOC9UtGDk34Hg4wQIyhkazPD0L0mKGGqxm6B8fDbVXJum
-	 yz7bV8ZEsT52A2Ndf0f8xnp3cnm6RcZWsbgxHnas6sda09mofEr15AMeGthGk8ktSxA==
+	t=1794433786;
+	b=KXlUSXtvswK4tKAUqcJjoMyTm1GlhBXJhkZy3R7WwjI2F4v3DXlZ3n7ZH4v58UGRnNPg
+	 rjktJbV0NBXRud63RdN1qmWlB7oY4btPRDVFsjHj8+OFhDVjwNB4ifBhRGDAIF9m2HlYO
+	 9wKJlV5UnT25YPbWiBGwmKwiNkdytgau3BQSWNXeDxTIBCWnWAF35I3BkMFagZa0ndB4V
+	 Bzgz+oFR95jnHXy1HfJp8E+bYdvkoSVpYgxT4C9MzmrW4J7PnIy8NGYO8Sdp2M0ahfwjY
+	 DzD0DMyYX3VHzGhzqX7/Fh/L7frRTORLqPVHLqDRKAtfAhCl4EGpOqpUPAbbfyu4Njw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794432699;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=UVG/CGDtj+WnEdQHJR7jPrTzEBlnNFXUpNMHguIfMb4=;
-	b=Q+NPfI7jXdPFh1pYO/6mDMESswU0z8tdiRBGz8UKnbUVs8QSFcx/GmV4DCJkJ+BRk/gw
-	 pZyPeIxUNFzTPt9VNrvJ0b4fvptCLuMiEAX+ZT97xl819eINYTlCg3Si3qJ4gr0GWhuxV
-	 nOhJQ89tktpPfKDHoehLJrnoFqoU/voLTGCsx7RwFa6Zl3vLLS6flzoL9BECSlE4nkBsh
-	 VuF0HX4r1y0fdMKNkmP+ekYfw3y/v4yVk77fJCANsoMM87dJ+rJCQHSmZVnkJ9xGobf3m
-	 KApdxxK3/0m17niH/fsPIrb57NDkGmoGwKMBFJVHEbbQky3V3LHO4ZFgmKEYeQ+fTWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794433786;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=rk/CBjYjLf7zZ4GcPg89td12CIO5508/QyBpAj9r7oQ=;
+	b=D08x2lA6Kmfx2SuPx1+MIjS7egMpzlk/cKk+tVpCEVkFMS6zFev2Te31k9BqgYcHDRXT
+	 fMHOBinDfInKbIAch1JA4ga3ufr3oO4Bg/J6Puu0kQ/kQCWr7J+GVHs/hfZoJcvk7c7l5
+	 Bq1Z6N3YTxSZnC3qaCYSkYzUAtU78bl9qL93gtxWaroXqbTCvvaAJyWD245XJ9Bu9cAFd
+	 zQjczAELu08NWBBhuTkTdHF40DscqoVGPx1+zje2H8TGGpry4VqgWvztRZi2gYtAmiQzl
+	 DOsdsHGbOHbMKHrj1+eGWVQRwz8joS3w8G2zuw9pAzH+9f+ENecq5ACGzDf/IAQZu8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=pass smtp.mailfrom=infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b="Gz+KM/8E";
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OsT8YemS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3806D606A321;
-	Wed, 11 Nov 2026 21:31:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3806D606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EBC606A321;
+	Wed, 11 Nov 2026 21:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Gz+KM/8E
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=UVG/CGDtj+WnEdQHJR7jPrTzEBlnNFXUpNMHguIfMb4=; b=Gz+KM/8Efvp4Gv5jveINaF1L7U
-	B2bI72LQUT+elW3NVEGKWQvbtDRb2WnF1FWV7f/QQ9VCM+eSUNYmPCQUGTrAEEeZboL45BxGTR3Wc
-	hbEyYehDEk+qjUsuhPxmquHogbDfY3jtca9FJXkCe+gpMkZKdai5ZWFYEP5Z1pWOTt0/XmpaHvNr/
-	4Rp/CcZkiVypa3kbL2gDuC27IkyBJhsGivGu7l3W8XgCySwdTjViNgsb6cB3V2GVTamUTm7yar4VB
-	jTDT/Fi4uQlq5Pky2pFMVJvcCHNx05I7RdmgUK3g7JjEU0ZG/LQH0Q14L3z9o8Y4Do2IlFSTDtyMQ
-	t1zYYAyQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRFur-00000007p3u-2ymr;
-	Wed, 11 Nov 2026 21:31:37 +0000
-Message-ID: <15a3112f-5411-43b2-93f5-5f62d627c920@infradead.org>
-Date: Wed, 11 Nov 2026 13:31:35 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OsT8YemS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683F01F00A05;
+	Wed, 11 Nov 2026 21:49:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794433785;
+	bh=rk/CBjYjLf7zZ4GcPg89td12CIO5508/QyBpAj9r7oQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OsT8YemSXRS2jViqx7kOVKJwMe0A6jKMij01GPXzSvzOnkgsfcpFSPuRnQa4m1Yyi
+	 IL4KEz0N9NRGghWFECR4is5QPQXSo+gjvdKcsXMbGSQAmy08RQnzPrmlfChIVVWUvI
+	 +bOHGc+3rGlqYJnNOCkJV6d47e3rMhOKwkuvWClYSHv1T+jOeqVgKqxuLthkzkUTJR
+	 ck4bKIeklb7wWi62ChPKK250i2IyzOrGeQYH4XJN4B+j4RltJV3RfnHRixzjYbhNEh
+	 yDNYhYXeNVSqGmbRWalix8WT1DCCPlhZKjeLi+ljrXYX7c4acKCd3kXIG1Uuwf4U+F
+	 dT/vl+K5tGUEg==
+Message-ID: <sashiko-outbox-209724@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/4] KVM: selftests: Add Hyper-V hypercall forwarding
+ test
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org
+In-Reply-To: <20261111205836.4186584-5-dwmw2@infradead.org>
+References: <20261111205836.4186584-1-dwmw2@infradead.org>
+ <20261111205836.4186584-5-dwmw2@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 21:49:44 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,48 +60,96 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] KVM: Fix comments that refer to non-existent
- identifiers
-To: Fuad Tabba <fuad.tabba@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Huacai Chen <chenhuacai@kernel.org>, linux-mips@vger.kernel.org,
- Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>
-References: <20261111085448.1130701-1-fuad.tabba@linux.dev>
- <20261111085448.1130701-6-fuad.tabba@linux.dev>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20261111085448.1130701-6-fuad.tabba@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] KVM: selftests: missing volatile and XMM constraints in
+  guest_code()
+--
 
+commit 10757ad97814a547a0e0ce57f22b5e41e1c14071
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-On 11/11/26 12:54 AM, Fuad Tabba wrote:
-> Comments in the generic KVM code and its headers refer to functions,
-> structures, fields, capabilities and Kconfig symbols that have been
-> misspelled or renamed. Use the current names.
-> 
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+KVM: selftests: Add Hyper-V hypercall forwarding test
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+This commit adds a kselftest for KVM_CAP_HYPERV_FORWARD_HCALL covering feat=
+ure
+mask validation, memory-based and fast hypercall exits to userspace, XMM
+register output, 64-bit result handling, and KVM_HYPERV_HCALL_UD fault
+injection.
 
-> ---
->  include/linux/kvm_dirty_ring.h | 2 +-
->  include/linux/kvm_host.h       | 4 ++--
->  include/linux/kvm_irqfd.h      | 4 ++--
->  include/uapi/linux/kvm.h       | 2 +-
->  virt/kvm/binary_stats.c        | 2 +-
->  virt/kvm/eventfd.c             | 2 +-
->  virt/kvm/kvm_main.c            | 2 +-
->  7 files changed, 9 insertions(+), 9 deletions(-)
+> diff --git a/tools/testing/selftests/kvm/x86/hyperv_forward_hcall.c b/too=
+ls/testing/selftests/kvm/x86/hyperv_forward_hcall.c
+> new file mode 100644
+> index 0000000000000..5afc99ed533c8
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/hyperv_forward_hcall.c
+> @@ -0,0 +1,268 @@
+[ ... ]
+> +static void guest_code(gpa_t pgs_gpa)
+> +{
+> +	__sse128_u in, out;
+> +	u64 status;
+> +	u8 vector;
+[ ... ]
+> +	/*
+> +	 * Fast form: the register parameters and XMM0 reach userspace, and
+> +	 * the XMM1 value userspace writes reaches the guest.
+> +	 */
+> +	in.as_u64[0] =3D XMM_IN_MARKER;
+> +	in.as_u64[1] =3D XMM_IN_MARKER + 1;
+> +	out.as_u64[0] =3D 0;
+> +	out.as_u64[1] =3D 0;
+> +	write_sse_reg(0, &in.vec);
+> +	write_sse_reg(1, &out.vec);
+> +	vector =3D __hyperv_hypercall(HVCALL_TEST_CODE | HV_HYPERCALL_FAST_BIT,
+> +				    FAST_PARAM0, FAST_PARAM1, &status);
+> +	read_sse_reg(1, &out.vec);
+> +	GUEST_ASSERT(!vector);
+> +	GUEST_ASSERT_EQ(status, USERSPACE_STATUS);
+> +	GUEST_ASSERT_EQ(out.as_u64[0], XMM_OUT_MARKER);
+> +	GUEST_ASSERT_EQ(out.as_u64[1], XMM_OUT_MARKER + 1);
+> +	GUEST_SYNC(STAGE_FAST);
 
--- 
-~Randy
+[Severity: Low]
+Can compiler instruction scheduling or XMM register allocation reorder
+read_sse_reg() or clobber xmm0 across __hyperv_hypercall()?
+
+x86 KVM selftests are built with -O2 -march=3Dx86-64-v2 (with SSE enabled),=
+ and
+read_sse_reg() and write_sse_reg() omit both volatile and XMM register
+constraints:
+
+tools/testing/selftests/kvm/include/x86/processor.h:read_sse_reg() {
+	switch (reg) {
+    ...
+	case 1:
+		asm("movdqa %%xmm1, %0" : "=3Dm"(*data));
+		break;
+    ...
+}
+
+tools/testing/selftests/kvm/include/x86/processor.h:write_sse_reg() {
+	switch (reg) {
+	case 0:
+		asm("movdqa %0, %%xmm0" : : "m"(*data));
+		break;
+    ...
+}
+
+Because read_sse_reg() has an output operand, no input operands, and no
+volatile qualifier, the compiler treats it as a movable computation with no
+side effects, and the memory clobber in __hyperv_hypercall() does not preve=
+nt
+hoisting read_sse_reg(1, &out.vec) ahead of the hypercall since out is a
+non-escaping local variable.  In addition, because neither write_sse_reg() =
+nor
+__hyperv_hypercall() declares XMM register operands or clobbers, the compil=
+er
+can use xmm0 when zero-initializing out after write_sse_reg(0, &in.vec),
+causing spurious test assertion failures in handle_fast_hcall() or
+guest_code().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111205836.4186=
+584-1-dwmw2@infradead.org?part=3D4
