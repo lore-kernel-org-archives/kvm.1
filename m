@@ -1,109 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794415664;
-	b=UVUqTlNUX1rzTqWO8NpMTaZBmum1H2ZNIvn5tCPGjtEyTr6h6QJ2m4NAEy8xXYQ5oQ+k
-	 2T+JWNpsgA2yPGS1617NNoxPHsWjppPLkYHAPKA8YyxU2/SzRVcf2tMR1EwEa/UjGm4sk
-	 wfagEogZRIWusgZrYcsSj9pgv3Qk9Y3IpJeNdBGKZl1fcR0BvMJvRYGnlYGtqR1xhIQ+Q
-	 aqcoMV85V33LXyk2SZzKgTboqqj4BGwGVQ3haW82aU+y/UZLu6LRAR98+THdlPHF7wc5T
-	 tJVo0PlIVlkNWLqYj2dh1T0KyH/k89lGMTEBsjJfJTfJ3Bx4t3f0A92gWLmWgtUgsug==
+	t=1794415869;
+	b=UKo7gGCPxP56u7rUcQUBaqGV3jvQM62YumIMCwss2RCKCGswUtivGlU94Ac0XYqgDj3B
+	 OBB6GyRXw2DBww9r1JGi0RuwZH8NbGqODLD/D+72gQkzHZ+ohwjoX+LN+VD+4Q3eaYsYt
+	 OcRCGcimEJsC3ZeWDxWfwNPqBVo7Z7hDUiS/2XMHbfCk4PME6OFyCNUNHJ3sUwlysuc2m
+	 /OpAoXJde1PdAAQCTfw9giWyA4bj6PtTdfR1EEpirshUB7KbeTz7WhG+CQTfX3NksOio2
+	 OJ99RnZtm1r4db1SecqKEW/LtrH4vFeef2NdJaHETpJ3YZNt4UbTU6/DhAw1v+O0HZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794415664;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794415869;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
-	b=U4TmZtlNexytZkMokE+Rc+hgVxRXeCIEDX84O3NPAhXFRmIdTDOWQqjaSipj3i+AtOHh
-	 rzWHjNQD+lYBOPoiwR1nicSDVwuk3jeCCmpx+TUQ3ASxDtSyCySB8DoY+IvQem0Jzty/l
-	 oGny8XeKhFih9+OiH+4IZusjgTmpK1yFXKN7NUBpjCqgMoJG/bOhoDAxzDaHrXisMfqJm
-	 IVdITE/31gd0MarbNQl7DjvZB5il5ERMLuZ0bfywX3gozMbti2OfgbVjCbDo9g8ySoNAQ
-	 M2HX0YZbjI/mjfXMyQD3X8bZiCIAbwwOLf2/x6zyAlsJPjYPEkqXPX95yZoh26sLCfA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=gg3re7vfdE1PsPwfbeOVGKGJ4XbC0yjKrXDhwXuaVP4=;
+	b=Af4eb5F8W4lEuaG5ZzTLKc819IJsSqSmiRZtoaIXNqnelKdO1TgUvtUnY14LaRgQw01m
+	 4vQiFFZjC9gRYE/pL7ZadNhvXJEuOn3hx+IaIIEwA/8qx8nomUJQ5Cix9FkR1tMDHtdd6
+	 7umWAD0fBMSn5TWOdcmdejpGEOcw4esrkUqzbQY2C0sjMhbIC6VkkPDspSPBbSD25r75G
+	 h6/qLDQuBi1nExX9cpsRBnVMPLMYbBFqX/aMcO6tk3psiRKHZXydAUH0Gmw8eI5XOseIC
+	 uDvsKlHFIt+T3oov7uZrcPwzOawg5m1rRPx7f/KvygU/0NZTxHcyNjvAtQsPJbNRcmw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Arhv0r+C;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DpFIQAw4;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69254606A32E
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 16:47:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69254606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A10D606A32A
+	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 16:51:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A10D606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Arhv0r+C
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so239045e9.1
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:47:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DpFIQAw4
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ad53f538d2so2775934a91.3
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 08:51:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794415663; x=1795020463; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
-        b=Arhv0r+CzJ6kd+TulLavcwx/mGrglYS422JYKTdbpa5un1a18rj23MyxqxLhddkmnB
-         gNcaXJ2IrojyJbxM+OgBPEAeEpsNpzWgOGqEgdEdfbdQsuKembFEQ+6KhZaeIYR30gze
-         IooSZe2fNj/7K3ZNeH8x15dEsu+UQLaI/m1IWuoX86P9po90K2PyeQK2TvubNwe2um3L
-         oa28twmLTolBcK1wc4TjQY120ADR9pALZ4st9GAliG4qO1r6wi1yEW2L29tlSgZjmr2h
-         E0qSshK5f4Tgf9M06nnSpMmyfbMbMx74mcpO6fx0yDufhfISeijTTqV/EjmW0IdaeTyH
-         ahNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794415663; x=1795020463;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794415869; x=1795020669; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
-        b=fyKn1quJdWpcUPxbAL56MPCpx2i0jTlCDq+daP/SePvyCmeGoWyE+EelZq6BuIWGYt
-         UezgL7iEc/vOwu61cv5Q1CstJyeVt+Qib1ELQ6lHweXTOfyjxhhmMf764cZVpRPSm4Xd
-         p5OVXwuq23b0JK5TPIh0A10oxYzJimLTrtO6hpVLnxMN3owJzTt/TVg/tLXBKT9ayegc
-         YqPGAR+uwXnE0rlFZ+9G354sKeBYiV9QYD890l7wq0nqY0J03Xl0M6DM3ZyhhIpd1o/v
-         1djYZP3MRNBeaHifKNVxOv1Lpos6Gr+YK4jQbuDNm8WgRaC76GROzzzu3Q/PIVqS/BuU
-         2tfQ==
-X-Forwarded-Encrypted: i=1; AL+hErGmys24ITDY7/G7M1Wvcq0w6HdqTx5pu7VKrvoPuzytyxEgz+47e90cxlxc+jtEjs6cyQE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+1mJnTScfEqsjFKMdlu/0oEeFgBTUvGfPj6Kal1hGOVbZNGVIy
-	SMLLXUmHERiKuNS2f7G9fJP47TUqHTxPPvvf9iVFjaDsCpGolBfMZ/RqIWfyHmEIpA==
-X-Gm-Gg: AYBFou2e08XLztk78UAYyyuvTxJhjdfRGyIp0fOHt+TEbCR1jXE3Jz7yn4jOAgt3GTs
-	MpJ3HyWkzdUXI8nRn/VXr6+2rewX+Gl27AuELw6HX1PNert8rnZ5drt+JhygDmb1NbTjS89MjVG
-	JR2ClgPOhkJ4bf3rHi/9yDh4gXn6DrX3mlfbk1F/ZuzMO4GEzckZm0xcYBTPRTy/QmxOHHzKtW+
-	qC1O9NaJXCJtjclQ6BRy5lqeIBsOAXXgpgipjWRggHsudwUoPsCaFPLwrEgtIvJlOpfCbWLYYUu
-	vSIRfmw6Xv1CfzQaQ7XfzyJRt9+2EHgIktkqjGXMfGWOBFmh/Qnd7QgCUNK4F8x/n5WGg/vDB77
-	sgVYt2WlzW/bBc+gIV5GPSHyFN2e63HUSQ5YVsPdxeTL+GCxOgPiN4UyEEgNigtGblCROLDvhwI
-	ijZlE/xROD52ASEu64h/n9X9ODvdj4yyzFuDRtg9JZI2m8OaFaUeGKJOidD6QbZTJZEbdscpkwd
-	3/wq+BhRfQf8ylDaSHH5e1iJznz0PtOpbR37q10mCIim5l6bMmcp7IjlFvrZdg9OS4SMTXHadFu
-	Nd4XUR3RdkdRtEGt0dA7kqMTjXddTemt2y2iB3oP+nNVMB4e9OWhY7qWkat82xVGgQ==
-X-Received: by 2002:a05:600c:3f07:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4bb4e27994emr1100895e9.6.1794415662004;
-        Wed, 11 Nov 2026 08:47:42 -0800 (PST)
-Received: from google.com (0.182.34.34.bc.googleusercontent.com. [34.34.182.0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cd06fsm11724877f8f.40.2026.11.11.08.47.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 08:47:41 -0800 (PST)
-Date: Wed, 11 Nov 2026 16:47:38 +0000
-From: Vincent Donnefort <vdonnefort@google.com>
-To: Tao Cui <cui.tao@linux.dev>
-Cc: akpm@linux-foundation.org, dgilbert@interlog.com, mkp@kernel.org,
-	loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
-	vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com,
-	eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com,
-	rostedt@goodmis.org, mhiramat@kernel.org, jgg@ziepe.ca,
-	kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
-	James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
-	christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
-	will@kernel.org, linux-scsi@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
-	mathieu.desnoyers@efficios.com, robin.murphy@arm.com,
-	mason@kernel.org, aesteve@redhat.com, tjmercier@google.com,
-	harry@kernel.org, vbabka@suse.cz, cuitao@kylinos.cn
-Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
- metadata to memcg
-Message-ID: <avScKhR22kFOQ1z4@google.com>
-References: <20261106131829.3228926-1-cui.tao@linux.dev>
- <20261106131829.3228926-5-cui.tao@linux.dev>
+        bh=gg3re7vfdE1PsPwfbeOVGKGJ4XbC0yjKrXDhwXuaVP4=;
+        b=DpFIQAw4llDvNG5hev7PFtpFHBY0O0Gx1r2iMDRF3rDzmMVzBttMpdTyEIIC/a817f
+         kPw3q+yaFWD6wKP92abhdMfT1k1wfhjBi4n8FLvonfw/Rova2XV8BU8A1L2PI5CrRVSe
+         YMFYI82jrSpje3YIjTWlAQkiwI0Cl7gQy5LX3P5D60tSbDgRPcuqdbDgQk35QBohd0Kf
+         gjCps2EGCxVFY5zFSr6AsqnFy1pAxoglo4mWLkw8CbCXpbG2Yxg0MxIj2sjiNceSnzUe
+         xSfAIS1MEtVqQ7rHC8C1ZluanraXLIGOsbeX46MD/MWVd54NkgnGBgIOKOQ/DuXMKJ5s
+         gb6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794415869; x=1795020669;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gg3re7vfdE1PsPwfbeOVGKGJ4XbC0yjKrXDhwXuaVP4=;
+        b=NGoZnsAgMkEkBEr44A9h3zZWtl8pJh2iWy38RlfShQVi93BHbZo18K7qME/03HQwX6
+         /O/eYITq5x4yik6vZTvamEL5NKCIsxu/Fm49Wla4o+MxybgvhtUmDaRfwb9NF7uEH3JI
+         Guu/ajmZ9pbW1B0cM5zAP6K1hfQDmrWCjr6Cv9CT1gZbczp1p0M7J6b3y6Sx2oIxNVL9
+         NET4tVPz5MyOkjOSEUZN+11IkSl8jmmflxcRoV2V96CDMXH3YwW9YfEeEY+lNDChphZi
+         bg6hAF1nkOJtdil2jhWfmVWAFDUTs2pHlZLPX2usr4jy3AKZ8GlMmr6g7AxSGxGf8t1G
+         ITXA==
+X-Forwarded-Encrypted: i=1; AL+hErHxFajVdAKVohxScFsmJO3HyRKwXa5mqWfmtt92RDLtXJaQQYSRnn/znF8vUlAwykkNbX0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/xDRV7p/KuhuHkP6YO0zOlakPXJs+0rdnUEyx3m10YDMciV2Hd
+	tJxK53axAT/Vexvn/AvteTe+3damOTXhS9+naSIcm61zt7AGuUArAS9zcRySbCZF6UZdEFLl+IR
+	LoZaLdA==
+X-Received: from pjbev6.prod.google.com ([2002:a17:90a:eac6:b0:3b0:e553:8f2c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1647:b0:3a8:c0cd:57f9
+ with SMTP id 98e67ed59e1d1-3b182f26a0emr3165414a91.25.1794415868591; Wed, 11
+ Nov 2026 08:51:08 -0800 (PST)
+Date: Wed, 11 Nov 2026 08:51:07 -0800
+In-Reply-To: <20261106051726.3964374-1-jrhilke@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,94 +77,172 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106131829.3228926-5-cui.tao@linux.dev>
+Mime-Version: 1.0
+References: <20261106051726.3964374-1-jrhilke@google.com>
+Message-ID: <avSc-7J5JpEamGGl@seanjc-mac.roam.internal>
+Subject: Re: [PATCH v7] vfio: selftests: Find devices that have VFIO selftest drivers
+From: Sean Christopherson <seanjc@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Vipin Sharma <vipinsh@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Nov 06, 2026 at 09:18:26PM +0800, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
+On Fri, Nov 06, 2026, Josh Hilke wrote:
+> Add a new script, list_supported_devices.sh, which prints out the
+> segment:bus:device.function (SBDF) numbers and names of devices on a
+> machine that have a VFIO selftest driver. This makes it easier to
+> determine if the system is capable of running VFIO selftests.
 > 
-> Creating an instance immediately allocates two full sets of per-cpu
-> ring buffers, array buffer plus snapshot, about 1.375MB per cpu per set
-> on the default config, plus the trace_array and its name.  None of it
-> is charged: neither trace.c nor ring_buffer.c passes __GFP_ACCOUNT,
-> while user_events in the same directory accounts everything it
-> allocates.
+> Some of these devices are on the vfio-pci denylist, so vfio-pci refuses
+> to bind them unless vfio_pci.disable_denylist=Y. The script marks such
+> devices as DENYLISTED and prints how to enable them, so the user is not
+> left wondering why the selftests cannot use a "supported" device.
 > 
-> Instance creation is currently gated by tracefs file permissions
-> alone, so a
-> rootful container with the host tracefs bound in can create instances
-> until the host runs out of memory.  Charge the ring buffer pages and
-> the trace_array metadata to the creating cgroup.
+> Includes a -q (quiet) argument which prints just the SBDFs of devices
+> that vfio-pci can bind, so that the output can be passed directly to
+> tools/testing/selftests/vfio/scripts/setup.sh. Does not print the SBDF
+> of a device on the denylist.
 > 
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->  kernel/trace/ring_buffer.c | 8 +++++++-
->  kernel/trace/trace.c       | 6 +++---
->  2 files changed, 10 insertions(+), 4 deletions(-)
+> Examples on a host with eight Intel DSA devices:
 > 
-> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-> index 1fd28a72e6ee..676c059c112c 100644
-> --- a/kernel/trace/ring_buffer.c
-> +++ b/kernel/trace/ring_buffer.c
-> @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
->  	 * gracefully without invoking oom-killer and the system is not
->  	 * destabilized.
->  	 */
-> -	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
-> +	/*
-> +	 * The subbuffers are charged to the memcg of whoever caused the
-> +	 * allocation: the creator of a trace instance, or root at boot for
-> +	 * the global trace.
-> +	 */
-> +	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
-> +		  __GFP_ACCOUNT;
->  
->  	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
->  	if (!page)
-
-Hum, by default tracefs is root only. 
-
-And even if made accessible to other users: 
-
-  1. The life span of a trace instance is not tied to the caller.
-  2. The ring buffer is shared by multiple users.
-
-Overall I am not convinced charging the creator makes much sense.
-
-Eventually a few allocations for iterators could be GFP_ACCOUNT.
-
--- 
-Vincent
-
-> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> index e8c4efa8107b..04b60b9cc4f5 100644
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -8693,11 +8693,11 @@ trace_array_create_systems(const char *name, const char *systems,
->  	int ret;
->  
->  	ret = -ENOMEM;
-> -	tr = kzalloc_obj(*tr);
-> +	tr = kzalloc_obj(*tr, GFP_KERNEL_ACCOUNT);
->  	if (!tr)
->  		return ERR_PTR(ret);
->  
-> -	tr->name = kstrdup(name, GFP_KERNEL);
-> +	tr->name = kstrdup(name, GFP_KERNEL_ACCOUNT);
->  	if (!tr->name)
->  		goto out_free_tr;
->  
-> @@ -8708,7 +8708,7 @@ trace_array_create_systems(const char *name, const char *systems,
->  		goto out_free_tr;
->  
->  	if (systems) {
-> -		tr->system_names = kstrdup_const(systems, GFP_KERNEL);
-> +		tr->system_names = kstrdup_const(systems, GFP_KERNEL_ACCOUNT);
->  		if (!tr->system_names)
->  			goto out_free_tr;
->  	}
-> -- 
-> 2.43.0
+> $ cat /sys/module/vfio_pci/parameters/disable_denylist
+> N
 > 
+> $ ./list_supported_devices.sh
+> 0000:6a:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+> 0000:6f:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+> ...
+> vfio-pci does not bind DENYLISTED devices while
+> vfio_pci.disable_denylist=N. To use them, reload vfio-pci:
+>   modprobe -r vfio-pci
+>   modprobe vfio-pci disable_denylist=1
+> If vfio-pci is built into the kernel, boot with
+> vfio_pci.disable_denylist=1 instead.
+> 
+> With vfio_pci.disable_denylist=Y, the script lists the same devices with
+> "(DENYLISTED, but vfio_pci.disable_denylist=Y)", prints no hint, and
+> includes them in the -q output:
+
+Sorry for dragging this on, but I still find the output painful to read.
+
+To me, this does not make it obvious that the devices are usable/available:
+
+  # ./list_supported_devices.sh
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+  0000:74:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+  0000:79:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED, but vfio_pci.disable_denylist=Y)
+
+Especially if I glance at the output of the "bad" state:
+
+  # ./list_supported_devices.sh
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  0000:74:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  0000:79:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25] (DENYLISTED)
+  vfio-pci does not bind DENYLISTED devices while
+  vfio_pci.disable_denylist=N. To use them, reload vfio-pci:
+    modprobe -r vfio-pci
+    modprobe vfio-pci disable_denylist=1
+  If vfio-pci is built into the kernel, boot with
+  vfio_pci.disable_denylist=1 instead.
+
+IMO, the blurb at the end is also unnecessarily noisy.  I don't think we need to
+tell the user how to manage kernel modules.  I realize I'm setting a double
+standard with respect to assumed knowledge, but IMO knowing how to load kernel
+modules is table stakes for anyone running this script.
+
+The blurb (and strictly speaking, the scirpt as a whole) is also somewhat
+misleading because it doesn't actually verify that vfio-pci is loaded.
+
+Rather than squish everything into a the per-device output, what if we organize
+the devices so that it's more obvious what is what, and so that the output isn't
+as noisy/redundant.  E.g. something like the below.  And for the -q output, it
+probably makes sense to also provide a flag to show/hide unusable devices.  Probably
+to show?  i.e. have -q output show only fully supported devices by default?  And
+maybe fail -q outright if vfio-pci isn't loaded?  Dunno about that last one, not
+sure what would be the least confusing.
+
+If vfio-pci is loaded with disable_denylist=1 and there are both allowed and
+denied-by-default devices (ignore that they're all the same device):
+
+# ./list_supported_devices.sh
+Supported
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+  0000:74:01.0 - Intel DSA SPR [8086:0b25]
+  0000:79:01.0 - Intel DSA SPR [8086:0b25]
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25]
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25]
+
+Supported (on denylist, but denylist disabled)
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+  0000:74:01.0 - Intel DSA SPR [8086:0b25]
+  0000:79:01.0 - Intel DSA SPR [8086:0b25]
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25]
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25]
+
+Versus if vfio-pci is loaded with disable_denylist=0:
+
+# ./list_supported_devices.sh
+Supported
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+  0000:74:01.0 - Intel DSA SPR [8086:0b25]
+  0000:79:01.0 - Intel DSA SPR [8086:0b25]
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25]
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25]
+
+Unusable (available, but denylisted by the kernel):
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+  0000:74:01.0 - Intel DSA SPR [8086:0b25]
+  0000:79:01.0 - Intel DSA SPR [8086:0b25]
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25]
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25]
+
+  To use denylisted devices, load vfio-pci with disable_denylist=1
+  (or boot the kernel with vfio_pci.disable_denylist=1).
+
+Versus if vfio-pci isn't loaded at all:
+
+# ./list_supported_devices.sh
+Unusable (available, but vfio-pci not loaded)
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+  0000:74:01.0 - Intel DSA SPR [8086:0b25]
+  0000:79:01.0 - Intel DSA SPR [8086:0b25]
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25]
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25]
+
+Unusable (available, but vfio-pci not loaded, and denylisted by the kernel):
+  0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+  0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+  0000:74:01.0 - Intel DSA SPR [8086:0b25]
+  0000:79:01.0 - Intel DSA SPR [8086:0b25]
+  0000:e7:01.0 - Intel DSA SPR [8086:0b25]
+  0000:ec:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f1:01.0 - Intel DSA SPR [8086:0b25]
+  0000:f6:01.0 - Intel DSA SPR [8086:0b25]
+
+  To use denylisted devices, load vfio-pci with disable_denylist=1
+  (or boot the kernel with vfio_pci.disable_denylist=1).
