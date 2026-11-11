@@ -1,49 +1,70 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794388106;
-	b=tZyjdLMkFLsXSZZEfaukv0xm5S0fOkaizk6TNxtdftvHNp29XACef7T293CyB/7kB2Ou
-	 YPuEVS7MMGC/a4Gl1SnOGnQMPJrldf/UydE5umAii+evxzycA6WQa+76qH5MVTyrNBiGe
-	 HbmKDfy8D9QHNque/Pm3GDdGXS+vi9Bs28DP8G0kln0rE168abVBTaWfKQdaUfiX4met5
-	 AZR9R7ePQDX9A9tw5wfOMPxdXOYPSAlENFolsbmbkPjyuUhL/XTAy2RZbS9nV+05FuUtD
-	 8R6jwbF0Obvv3XDznmfXEWq3KCK+merDeKupnVRIC/dJN09LhyHDknTxu9VqtYPo71w==
+	t=1794391340;
+	b=zwPnCoD5LZI0GOgrRS2VZjuHcE3/VmmnTR/mJ33TZHHZkyGILrDEqPDJbJzQN00TZwD/
+	 Kc6wTzJMMMCht9nwzRG2OfFGnq78sB+V33hJwQb1vZF3FAVdIWLFRs0v2Kx6nLufmgZ0k
+	 +3tgRj7tqYFKEEHvojr0219hsZ8TQIeeqPnFddUo0xYyGsSOjxi9FPtXFYhsCV+gMWLu8
+	 0DzoK8F1I6JsskttFZSYh7F7EEYa388ol/he6S2P5PNs4KSHVXSuEQ933S8IqSN7tZQ5X
+	 TGyNtpvYqt369YA1mSwN/AxL4eAga8CVXAHfNo9sCnvrqlrp5tf8QswwtrB1wIIGMKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794388106;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=411x4IUu5f63wpL/igqSv/CLQ5Z6cNypZUlf1yFV00w=;
-	b=R65V0BvexTw5OCwzUQaxlJNBv4QeejMvAZu8w9WPcNzkUTdhS+s1aRGvkukUKo3qASQN
-	 3SmRt1SI3k3YWvEzQh2mqxbJ+2NPjkretOYdF4Ym7X2cQdmdPh3az1euaxYNk/ZyVGG/P
-	 Syc5zsmk8fPlcfTNgs1EodrrbSdMgb4qN20UgDhWC0Ai9TNYtrGeDfoGMQ/BIM1pf7pN0
-	 Pgh5MG/98mR4BDCcmpeibnlu2pxwWnD0c5VDRGeVByTtuwEanl+F3eFz0EzQoYYNxGx7v
-	 hhlBuiWBJToXs9/TFjSMd2BBrGLkxOpfTbAq1IKUEwEAFVuKLXNlIXIE0S0Ob41NPmw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794391340;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=/008Nq1DBBEIqx5PPz70GiPaNVyQI+eFBJTDZljb44Q=;
+	b=K9DY4uzIKihVFv5D0UCDjKCdAo/tHNodheQW4W2DKrKRwcP2IAEsPQUzrhjY4HMvDgGZ
+	 z3uABubM89zASLlB4jJrwsjvYS/IlfNBVwP3kspQ7cOf1oehMt5ym61Ne+aJqJpyLcrWE
+	 14wBaeRJoALvq1GR9PKGeW8PD6jAwE5crTeIDu9+fa7KlgndlSN4OKxT360WbiShwmVn5
+	 bSpXLCo9ffQbKOAQQQN7cNQdC4NiK50sJxFvqtYZafzHIgAaN5jqlJiOCU/P2Vl+FjQ+p
+	 8oqR47aahS2dnp4HRuHsFICfENpgZUG5u92bxAyU0xuy806OhoZQyjX5n2n4uigCtvA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HXqCwPK6;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=O6IdHv3P;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BEB606A32D;
-	Wed, 11 Nov 2026 09:08:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5BEB606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0673460A261C;
+	Wed, 11 Nov 2026 10:02:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0673460A261C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HXqCwPK6
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=O6IdHv3P
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BADC1576;
-	Wed, 11 Nov 2026 01:08:20 -0800 (PST)
-Received: from [10.0.128.239] (Suzukis-MBP.cambridge.arm.com [10.0.128.239])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7216E3F673;
-	Wed, 11 Nov 2026 01:08:20 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A8041576;
+	Wed, 11 Nov 2026 02:02:16 -0800 (PST)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8B973F673;
+	Wed, 11 Nov 2026 02:02:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794388103; bh=nSaH8ajMJJME+6Ks3xnSitadsLP4ZRVuIcCsdKoA3qA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HXqCwPK6XA6YFtPLkolK5F9poJFn8YqHan7BIIVpk9L0jQy1AAjBhpENzctGIYJWl
-	 tkA/irUhDCLtTR+BG9LjZF6RdW+xZP7x9b82BUD8Zbtes3/2hBiKngUrV++kNfZ3qa
-	 VeVNBW10FPqQgr98xdcciLotqwK5aP458TqJDa+E=
-Message-ID: <9dc56bf6-b417-4000-b49b-037bee250dba@arm.com>
-Date: Wed, 11 Nov 2026 09:08:19 +0000
+	t=1794391339; bh=iBX7/caJMXnRG4auS6ChraoO4dSo/zwj7eCa2+s/N48=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O6IdHv3Pa6BF4W/gj+tmwDWoCPsjfXKjFP32FDKfEVDMDMDI8b+AdWLJIeDX4vXWL
+	 5tTlEk8MizP4FV96CYNLY32LXX4mXYgk+F1dgumoIHRXhgBBrmbT7eHPSDKAQZbgOE
+	 L/w7KjxCQz+kqbd4w3gQ9WrqNb468FzIICjG6R/k=
+Date: Wed, 11 Nov 2026 10:02:14 +0000
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
+	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 2/2] KVM: selftests: Test KVM_PRE_FAULT_MEMORY against a
+ full dirty ring
+Message-ID: <avQ9Jhsnq7e3KPw-@raptor>
+References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
+ <20261110110724.3614412-3-fuad.tabba@linux.dev>
+ <avMoubwqgXbpflwM@gremlin>
+ <CA+EHjTxT_9NghyLSZmOOi_oQboQw-g+6z9WxwaF=-7RdaGbMNw@mail.gmail.com>
+ <avM9_7aWUDJSL3Lq@seanjc-mac.roam.internal>
+ <avM_FXXF9oBkderF@gremlin>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,248 +74,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/11] KVM: arm64: CCA: Introduce Realms
-To: Kohei Enju <enju.kohei@fujitsu.com>, Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20261102141304.126883-1-steven.price@arm.com>
- <20261102141304.126883-3-steven.price@arm.com>
- <avL9kNR2mGmqmcA9@FCCLS0092175.localdomain>
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <avL9kNR2mGmqmcA9@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avM_FXXF9oBkderF@gremlin>
 
-Hi Kohei
+Hi all,
 
-On 10/11/2026 11:42, Kohei Enju wrote:
-> Hi Steve,
+On Tue, Nov 10, 2026 at 04:02:21PM +0000, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Nov 10, 2026 at 07:53:35AM -0800, Sean Christopherson wrote:
+> > On Tue, Nov 10, 2026, Fuad Tabba wrote:
+> > > Hi Lorenzo,
+> > >
+> > > On Tue, 10 Nov 2026 14:38:27 +0000, "Lorenzo Stoakes (ARM)"
+> > > <ljs@kernel.org> wrote:
+> > > > On Tue, Nov 10, 2026 at 11:07:24AM +0000, Fuad Tabba wrote:
+> > > > > Pre-fault more populated, dirty-logged pages than the vCPU's dirty ring
+> > > > > holds, and check that each call stops before the ring overflows, that a
+> > > > > retry returns ENOSPC without progress, and that the harvested entries
+> > > > > are the pages in order. A read pre-fault can map a page read-only, or
+> > > >
+> > > > Are we asserting an invariant that prefaulting happens in address order
+> > > > here?  Is that explicitly presumed in the prefault API, or just how it
+> > > > happens to pan out?
+> > > >
+> > > > I wonder if we might decide for whatever reason in future to do things
+> > > > differently there. Bit nitty I know, but wonder if it's asserting an
+> > > > implementation detail?
+> > >
+> > > Yes, the API doesn't guarantee an order. I'll assert that every page
+> > > is reported exactly once instead.
+> > >
+> > > [...]
+> > > > > diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
+> > > [...]
+> > > > > +static void test_pre_fault_dirty_ring(void)
+> > > [...]
+> > > > > +    /* Populate the pages, so that pre-faulting can map them writable. */
+> > > >
+> > > > Reviewed below, but I wonder how x86 could then read fault these?
+> > >
+> > > KVM_PRE_FAULT_MEMORY is defined as a read fault, but x86 maps the page
+> > > writable when the host page is, and marks it dirty, unless it falls
+> > > back to access tracking (below). Populating the pages makes sure they
+> > > aren't backed by the zero page.
+> >
+> > Before we effectively solidify the behavior, I think we should have an explicit
+> > discussion about the desired behavior of KVM_PRE_FAULT_MEMORY when dirty logging
+> > is enabled.  E.g. the only reason I kept the existing behavior in my auto-prefault
+> > series was because I couldn't think of a good reason to change it.  But we never
+> > made a concious decision in the first place, i.e. we never considered what would
+> > happen if prefaulting collided with dirty logging (as evidenced by this bug).
 > 
-> On 11/02 14:12, Steven Price wrote:
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->> Add foundational work for supporting Realms.
->>   - Add a new VM flavor.
->>   - At KVM init, check if the KVM can support Realms (though not functional
->>     yet) and will be advertised by static key kvm_rmi_is_available. This
->>     will be turned on in a later patch, once we have all the bits and
->>     pieces ready. For now check if we are blessed with KVM_MODE_RMM.
->>   - Add realm specific tracking in kvm_arch. Since Realm and protected pKVM
->>     states are mutually exclusive, move them into a union.
->>   - Also adjust the memslot preparation checks to reflect the changes.
->>
->> Please note that we cannot create Realm VMs yet. This requires further
->> changes to the UABI and core RMI driver support, which will come later.
->>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/include/asm/kvm_emulate.h   | 16 +++++++
->>   arch/arm64/include/asm/kvm_host.h      | 57 +++++++++++++++++-------
->>   arch/arm64/include/asm/kvm_rmi.h       | 61 ++++++++++++++++++++++++++
->>   arch/arm64/include/asm/virt.h          |  1 +
->>   arch/arm64/kvm/Makefile                |  2 +-
->>   arch/arm64/kvm/arm.c                   | 24 ++++++++--
->>   arch/arm64/kvm/hyp/include/nvhe/pkvm.h |  2 +-
->>   arch/arm64/kvm/hyp/nvhe/switch.c       |  4 +-
->>   arch/arm64/kvm/hyp/nvhe/timer-sr.c     |  2 +-
->>   arch/arm64/kvm/mmu.c                   | 13 +++---
->>   arch/arm64/kvm/rmi.c                   | 18 ++++++++
->>   11 files changed, 169 insertions(+), 31 deletions(-)
->>   create mode 100644 arch/arm64/include/asm/kvm_rmi.h
->>   create mode 100644 arch/arm64/kvm/rmi.c
->>
->> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
->> index 334211b8b2ee..32021bdf2610 100644
->> --- a/arch/arm64/include/asm/kvm_emulate.h
->> +++ b/arch/arm64/include/asm/kvm_emulate.h
->> @@ -831,4 +831,20 @@ static inline void kvm_reset_vcpu_psci(struct kvm_vcpu *vcpu,
->>   	vcpu_set_reg(vcpu, 0, reset_state->r0);
->>   }
->>   
->> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
->> +{
->> +	return READ_ONCE(kvm->arch.realm.state);
->> +}
->> +
->> +static inline void kvm_set_realm_state(struct kvm *kvm,
->> +				       enum realm_state new_state)
->> +{
->> +	WRITE_ONCE(kvm->arch.realm.state, new_state);
->> +}
->> +
->> +static inline bool kvm_realm_is_created(struct kvm *kvm)
->> +{
->> +	return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
->> +}
->> +
->>   #endif /* __ARM64_KVM_EMULATE_H__ */
->> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
->> index ccd2dc8f73c3..7d0222047ca1 100644
->> --- a/arch/arm64/include/asm/kvm_host.h
->> +++ b/arch/arm64/include/asm/kvm_host.h
->> @@ -29,6 +29,7 @@
->>   #include <asm/kvm.h>
->>   #include <asm/kvm_asm.h>
->>   #include <asm/kvm_hcall.h>
->> +#include <asm/kvm_rmi.h>
->>   #include <asm/vncr_mapping.h>
->>   
->>   #define __KVM_HAVE_ARCH_INTC_INITIALIZED
->> @@ -48,6 +49,13 @@
->>   #define KVM_VCPU_MAX_FEATURES 10
->>   #define KVM_VCPU_VALID_FEATURES	(BIT(KVM_VCPU_MAX_FEATURES) - 1)
->>   
->> +#define KVM_REALM_VCPU_VALID_FEATURES			\
->> +	(BIT(KVM_ARM_VCPU_POWER_OFF)		|	\
->> +	 BIT(KVM_ARM_VCPU_PSCI_0_2)		|	\
->> +	 BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)	|	\
->> +	 BIT(KVM_ARM_VCPU_SVE)			|	\
->> +	 BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
->> +
->>   #define KVM_REQ_SLEEP \
->>   	KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
->>   #define KVM_REQ_IRQ_PENDING		KVM_ARCH_REQ(1)
->> @@ -409,6 +417,7 @@ enum kvm_arm_vm_flavor {
->>   	VM_PKVM,		/* Normal guests on pKVM */
->>   	MARKER(__VM_PROTECTED),
->>   	VM_PROTECTED_PKVM,	/* Protected VM */
->> +	VM_REALM,		/* CCA */
->>   	VM_FLAVOR_MAX
->>   };
->>   
->> @@ -502,11 +511,14 @@ struct kvm_arch {
->>   	/* Count the number of VNCR_EL2 TLBs */
->>   	atomic_t vncr_tlb_count;
->>   
->> -	/*
->> -	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
->> -	 * the associated pKVM instance in the hypervisor.
->> -	 */
->> -	struct kvm_protected_vm pkvm;
->> +	union {
->> +		/*
->> +		 * For an untrusted host VM, 'pkvm.handle' is used to lookup
->> +		 * the associated pKVM instance in the hypervisor.
->> +		 */
->> +		struct kvm_protected_vm pkvm;
->> +		struct realm realm;
->> +	};
->>   
->>   #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
->>   	/* Nested virtualization info */
->> @@ -1572,30 +1584,43 @@ struct kvm *kvm_arch_alloc_vm(void);
->>   
->>   #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
->>   
->> -#ifdef __KVM_NVHE_HYPERVISOR__
->> +#define kvm_vm_is_protected(kvm)	((kvm)->arch.vm_flavor >= __VM_PROTECTED)
->>   
->> -#define kvm_vm_is_protected(kvm)			\
->> -	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
->> +#ifdef __KVM_NVHE_HYPERVISOR__
->>   /*
->>    * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to convert the
->>    * pointer to the hyp VA. With pKVM, the nVHE code runs with the hyp_vcpu,
->> - * which is populated correctly and is gated on is_protected_kvm_enabled().
->> + * which is populated correctly. Always vcpu_is_protected_pkvm(), which is
->> + * gated on is_protected_kvm_enabled().
->> + */
->> +#define vcpu_is_protected(vcpu)		BUILD_BUG_ON(1)
->> +#else
->> +#define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
->> +#endif
->> +
->> +#define kvm_vm_is_protected_pkvm(kvm)					\
->> +	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
->> +
->> +/*
->> + * Rely on is_protected_kvm_enabled() check in kvm_vm_is_protected_pkvm() to
->> + * make sure the vcpu->kvm is always valid VA in the context
->>    */
->> -#define vcpu_is_protected(vcpu)						\
->> +#define vcpu_is_protected_pkvm(vcpu)					\
->>   	({								\
->>   		struct kvm *__kvm = READ_ONCE((vcpu)->kvm);		\
->>   									\
->> -		(__kvm && kvm_vm_is_protected(__kvm));			\
->> +		(__kvm && kvm_vm_is_protected_pkvm(__kvm));		\
->>   	})
+> Yeah, I do worry about implicit assumptions (also commented re: ordering).
 > 
-> I've tested the integration branch and found that the secondary CPU
-> bring-up fails:
->      [    1.426502] smp: Bringing up secondary CPUs ...
->      [    9.194442] CPU1: failed to come online
->      [    9.194558] CPU1: failed in unknown state : 0x0
->      [    9.197714] smp: Brought up 1 node, 1 CPU
->      [    9.197775] SMP: Total of 1 processors activated.
+> I guess what makes sense, given the general approach for prefaulting = injecting
+> a synthetic read fault, is for the expectation to be that it matches the
+> behaviour of an ordinary read fault.
 
-I can reproduce this and can confirm that your patch below fixes the
-problem. I need to check if we can make the same restrictions for
-Realms. The restrictions applied by the pKVM applies to the Realms
-too. i.e., A REC cannot be made active before the Guest issues a
-PSCI CPU_ON.
+Unfortunately, what happens in this case is not as obvious as it sounds,
+because a read fault on a memslot backed by guest_memfd maps the GPA with
+read *and* write permission on arm64 (if the memslot is not readonly,
+haven't checked what x86 does).
 
-
-Cheers
-Suzuki
+Thanks,
+Alex
 
 > 
-> It seems that this patch missed replacing a use of
-> vcpu_is_protected() introduced by the following commit:
+> Or do you feel that it makes sense for the pre-faulting to do something special
+> in these cases and establish a sensible invariant?
 > 
->      25d726dddc23 ("KVM: arm64: Reject host power-on of a vCPU that EL2 holds powered off")
+> If the pre-faulting does indeed dirty the pages, you'd need the dirty logging to
+> do its usual thing (not familiar with the code, so I'm guessing logging the page
+> :) though right?
 > 
-> The following diff fixes the issue for me. Also, though not included in
-> the diff, I think vcpu_is_protected() in __pkvm_create_hyp_vcpu() should
-> be replaced with vcpu_is_protected_pkvm() as well.
+> --
+> Cheers, Lorenzo
 > 
-> Thanks,
-> Kohei
-> 
-> ---8<---
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 522a837637fe..be676c13e219 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -960,7 +960,8 @@ static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu, u32 mp_state)
->   /* The guest's own CPU_OFF: EL2 has already powered the vCPU off. */
->   void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
->   {
-> -       u32 mp_state = vcpu_is_protected(vcpu) ? KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
-> +       u32 mp_state = vcpu_is_protected_pkvm(vcpu) ?
-> +                      KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
-> 
->          spin_lock(&vcpu->arch.mp_state_lock);
->          __kvm_arm_vcpu_power_off(vcpu, mp_state);
-> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
-> index b01f8d44033f..6674e8d6ff4c 100644
-> --- a/arch/arm64/kvm/psci.c
-> +++ b/arch/arm64/kvm/psci.c
-> @@ -68,7 +68,7 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu *source_vcpu)
->           * STOPPED before that is the VMM's pause.
->           */
->          if (!kvm_arm_vcpu_stopped(vcpu) ||
-> -           (vcpu_is_protected(vcpu) && !kvm_pkvm_vcpu_is_powered_off(vcpu))) {
-> +           (vcpu_is_protected_pkvm(vcpu) && !kvm_pkvm_vcpu_is_powered_off(vcpu))) {
->                  if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
->                          ret = PSCI_RET_ALREADY_ON;
->                  else
-> 
-
-
-
