@@ -1,92 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794391793;
-	b=5rzFPi2MO48/s2SBRYdD7Qw2aclBLx8CNC6XNH8xvPBERywRAezPI0LG2w6SAYUcOq61
-	 O4uSwJdRLmLiWNd/2yIkQqBWrx7O/Xxg1hb3LNQX+otzKiLYroEZVS4hbKTfMfRlFqeg9
-	 yrKzWco1MASM6hvuceO5DbcuALugWC9iReFTSn1hOPnjAzlUUQZj5SK0ePqqPE2elKX9N
-	 UV4vnwg3yQnT6hSzN95+k906gkaGiK5ozlWRtNZ7ElG8oDzaiQ99oeMtzXd8/g93AkWAU
-	 h4eksLXaDerIhjziKdg2GE/7GKl3fEKmnaO3bhREvVV9EDGBxISaffYVT04GAOICSzQ==
+	t=1794391928;
+	b=evvXRzC0So5ONjTTbMn6QnfrUynoFKQRwUxE+ovhZdp8KLLqAuoA3cnhP4KeWfqyYFQi
+	 733m+/CrspyVHA3el7GjK0yCSzGhmYcfCZ4sZhVPRqcdXsahM7S8dnFsg8MCIPnJJzWpb
+	 5xXVy2UDQWprae0HbFhhD17SSsyLjFBOYnruvG63cBv944VJcSVdjK1mzi24TWQPKDs9z
+	 7miYJlitTtDikC7BUAJS9/5LXFWzb2NplERkm6dK5QF2FnYLy9qQXlYLas6Wl7ex7S2ri
+	 ZoTKj2lElc6Znt4zlF5z0/s+pB4KALUw4sVCOjq8ivQpJoHnylFhxjuyjBG2z7N40BQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794391793;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:Mail-Followup-To:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=jEhEi9CeTKpVUmtThXx0AkKDXprkxUCaOiZAqez0tQw=;
-	b=UUo19wysm3rZzzL5+2RYziFxkhqIpfPL5G3E64fLOk5KG/tKrerh4c5ynPTcjpfWgFN/
-	 6BjeBVndcLixq2F8n/TfFQu5Wq2kmJCe2/zI3WagyItkcRmwX2DlgoUNSNjGy0k973kOe
-	 tfq08vgHywr91RONY40M50S0B1G4zprUSkuCLdsWLbwmaSDXsxqorP5Oeo+WvRULnpNVO
-	 vqVomkUM7UBYtckO6ET+pXyPaF830mwxLemtKpoC1MeYpFwmy3k4PO4KGxesWHWhMXsxU
-	 Fs8UTP6G7LU8fkZ0mAHVofx82/aBsUdoZ/DYQvyWVl5uPOsPeFvPe6nYiDzR6mnLrDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794391928;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=VuyKRdrMZpDQ9UatPJJ3JEvFFz5JnQi2SOHA5CB64Uw=;
+	b=bLea5fRxQIlkrK/L5Qckye4DCIMXQxwGCJ5Phvw27XY8FUAYIThHXFAotxLQnz0+n6pm
+	 g8Q76TF8eQXZesic0gc0DGwbutxvsJoMO21FOWJLWR1HL7meEiR66HSw8b13pbXjQnri1
+	 okq7n+5mJKYlGIyEAhmdlHfxJk90ABWgWraRzNEdYOMw7dvlfkTU00CsKOP0tqOfqCU61
+	 oMa8y1F3rFwkFRnY8WtkTBRsCPJhvUyjSdqcLdeGQcaKKWx+Vcwg/JgZya8nujyeWASsh
+	 XbQOZL0aFJZnTM6QB2I7ZTLRJnXAsPGbI9keao8bOVHxk+GP2CdiueNsP/1rplsF5aA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LQz86sXB;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BA9606A327
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 10:09:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0BA9606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MtwvCWs5;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142D6606A335;
+	Wed, 11 Nov 2026 10:12:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 142D6606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LQz86sXB
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AB5iOUu285435;
-	Wed, 11 Nov 2026 10:09:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=jEhEi9CeTKpVUmtThXx0AkKDXprkxU
-	CaOiZAqez0tQw=; b=LQz86sXB3GnIarAyMjAb8YgUzSwGW0MZ1BrNpoNwec7PAD
-	VxF7TR4hH4sC/9FYtwS4f4VwQRM3O4YOSf1EI5NVdPlDAZ6jU8eHXmex8VzaNaRg
-	cJ/J+5wJdPRJqMsv0LU5TxQqx6Ks4E3dpPKnvGrqhtKmCr8Prcai908Y5OfPJEoo
-	IzDIE7GXQNMAHE3QPcM6fQxTlkLRy94NQnshtfiKUsThfSyJvOMts0B0uzfM5rhT
-	ZIFKJ6qKQuixvsUp8Dn6fgNK2F8HrLybHDhOGOJiurewfc9Ir5B4hYR8mf6aBtrG
-	+oZ1ZIYEGtQwm7w9hh72dP3OwTEcMkbgpAXpe/jQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsuq71kg3-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 11 Nov 2026 10:09:46 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AB77ocY3005842;
-	Wed, 11 Nov 2026 10:09:45 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hvkq0rget-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Nov 2026 10:09:45 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ABA9fNq47645102
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Nov 2026 10:09:41 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04F6220049;
-	Wed, 11 Nov 2026 10:09:41 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9260420040;
-	Wed, 11 Nov 2026 10:09:39 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 11 Nov 2026 10:09:39 +0000 (GMT)
-Date: Wed, 11 Nov 2026 15:48:07 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
-Subject: Re: [PATCH] powerpc: Link with -z notext
-Message-ID: <20261111145459.6b15a2c5-eb-amachhiw@linux.ibm.com>
-Mail-Followup-To: Thomas Huth <thuth@redhat.com>, 
-	Laurent Vivier <lvivier@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
-References: <20261110154415.46220-1-amachhiw@linux.ibm.com>
- <1346902a-67ba-49e5-9dfc-fc3990c3329d@redhat.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MtwvCWs5
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 658591576;
+	Wed, 11 Nov 2026 02:12:04 -0800 (PST)
+Received: from [10.57.58.72] (unknown [10.57.58.72])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B98CA3F632;
+	Wed, 11 Nov 2026 02:12:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794391927; bh=cYcKb3RX9QGRSzFMkAahbYSc8AeAarkr7WmGQ0NOoDw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MtwvCWs5SRKC2Orr20vW6mRVmteTOwkgHNTfxdyM3a6Eis+iiZoAFQ9Q4+7WiV8i1
+	 f7rZ75vp3pINj+8FOqRZz0VQostLsd2yOrMM4Qu39WTY3k/7DXi+jFDezhCic5e8/9
+	 st7EOpLut3nYpunDrgrN8tKSJJi72h14p10E3XxA=
+Message-ID: <45104e19-4197-4584-895a-0486c0782c9c@arm.com>
+Date: Wed, 11 Nov 2026 10:11:58 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,86 +53,241 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1346902a-67ba-49e5-9dfc-fc3990c3329d@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDAzOCBTYWx0ZWRfXwaphTl4YCSnO
- lIVRmRYdxR+7sQ48iSfhNJQAaAseUqxKaByAP/rZd9G3svYhiCgTPpd8LK/ygLluhrSmXcFZImx
- UZklAN71fn3d60x7vP23XrfCsZxn5Xo=
-X-Authority-Analysis: v=2.4 cv=HbCB3SE8 c=1 sm=1 tr=0 ts=6af43eea cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=GCA8b2iqAg_wZIL1NzYA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: 1WC-CqiRryi4i_MNQ-p0ehpCRyHYwX-H
-X-Proofpoint-GUID: 1WC-CqiRryi4i_MNQ-p0ehpCRyHYwX-H
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDAzOCBTYWx0ZWRfX6xvHSqKGOtB1
- XbQ2pYsu6kNxSYOCdI/lNGxonQHL0edTglBmnoFf7jO5JlKRXNrx1/q5VoJVKGJL3OOUhRD8ybv
- YrPMXG3DL4tSaruyvyhh52/oBr8qeJ9+hmt8QwYlNYg1aPxUASsTYF2B9tvT5NlzoQN4/HCwZLv
- NfLsDUoM1GtWUD4QCYLUnkmECJ5KEi7Q3n+WbDhRX9BdSVG/keD/3FyZI49ab5Wa1KYjnkFqKiI
- 6aAqGvZrqpLocAoGDOd7IP6k3LZh8GAGTEIfyiRz7HmUuMQl/z6PRszqeY90avOL4sw+WVQd8iN
- r4dsgrjZHlXMxXnHns9srALbr0sN7PZIVO3f7mKmvFNEGY/llKP0vbFOLak7lFYsG+ezrAY7X/f
- eKJAT8Ba58rlW00PMARlW1HviCjW+ogU+1cS8Uzr3S/oq3Ua/AVW6YH8XLOF4q83igyZn5KPnC3
- bkDftLy55drzt3qyKsA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-11_02,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 spamscore=0 bulkscore=0 phishscore=0
- impostorscore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611110038
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/11] KVM: arm64: CCA: Introduce Realms
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20261102141304.126883-1-steven.price@arm.com>
+ <20261102141304.126883-3-steven.price@arm.com>
+ <avL9kNR2mGmqmcA9@FCCLS0092175.localdomain>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <avL9kNR2mGmqmcA9@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Thomas,
+On 10/11/2026 11:42, Kohei Enju wrote:
+> Hi Steve,
 
-On 2026/11/11 08:54 AM, Thomas Huth wrote:
-> Am 10.11.26 um 16:44 schrieb Amit Machhiwal:
-> > Building the powerpc tests with GNU ld 2.46.1 fails when linking the
-> > test binaries:
-> > 
-> >    /usr/bin/ld.bfd: error: read-only segment has dynamic relocations
->  Hi!
+Hi Kohei,
+
+> On 11/02 14:12, Steven Price wrote:
+>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>
+>> Add foundational work for supporting Realms.
+>>  - Add a new VM flavor.
+>>  - At KVM init, check if the KVM can support Realms (though not functional
+>>    yet) and will be advertised by static key kvm_rmi_is_available. This
+>>    will be turned on in a later patch, once we have all the bits and
+>>    pieces ready. For now check if we are blessed with KVM_MODE_RMM.
+>>  - Add realm specific tracking in kvm_arch. Since Realm and protected pKVM
+>>    states are mutually exclusive, move them into a union.
+>>  - Also adjust the memslot preparation checks to reflect the changes.
+>>
+>> Please note that we cannot create Realm VMs yet. This requires further
+>> changes to the UABI and core RMI driver support, which will come later.
+>>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>>  arch/arm64/include/asm/kvm_emulate.h   | 16 +++++++
+>>  arch/arm64/include/asm/kvm_host.h      | 57 +++++++++++++++++-------
+>>  arch/arm64/include/asm/kvm_rmi.h       | 61 ++++++++++++++++++++++++++
+>>  arch/arm64/include/asm/virt.h          |  1 +
+>>  arch/arm64/kvm/Makefile                |  2 +-
+>>  arch/arm64/kvm/arm.c                   | 24 ++++++++--
+>>  arch/arm64/kvm/hyp/include/nvhe/pkvm.h |  2 +-
+>>  arch/arm64/kvm/hyp/nvhe/switch.c       |  4 +-
+>>  arch/arm64/kvm/hyp/nvhe/timer-sr.c     |  2 +-
+>>  arch/arm64/kvm/mmu.c                   | 13 +++---
+>>  arch/arm64/kvm/rmi.c                   | 18 ++++++++
+>>  11 files changed, 169 insertions(+), 31 deletions(-)
+>>  create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+>>  create mode 100644 arch/arm64/kvm/rmi.c
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+>> index 334211b8b2ee..32021bdf2610 100644
+>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>> @@ -831,4 +831,20 @@ static inline void kvm_reset_vcpu_psci(struct kvm_vcpu *vcpu,
+>>  	vcpu_set_reg(vcpu, 0, reset_state->r0);
+>>  }
+>>  
+>> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
+>> +{
+>> +	return READ_ONCE(kvm->arch.realm.state);
+>> +}
+>> +
+>> +static inline void kvm_set_realm_state(struct kvm *kvm,
+>> +				       enum realm_state new_state)
+>> +{
+>> +	WRITE_ONCE(kvm->arch.realm.state, new_state);
+>> +}
+>> +
+>> +static inline bool kvm_realm_is_created(struct kvm *kvm)
+>> +{
+>> +	return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+>> +}
+>> +
+>>  #endif /* __ARM64_KVM_EMULATE_H__ */
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>> index ccd2dc8f73c3..7d0222047ca1 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -29,6 +29,7 @@
+>>  #include <asm/kvm.h>
+>>  #include <asm/kvm_asm.h>
+>>  #include <asm/kvm_hcall.h>
+>> +#include <asm/kvm_rmi.h>
+>>  #include <asm/vncr_mapping.h>
+>>  
+>>  #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+>> @@ -48,6 +49,13 @@
+>>  #define KVM_VCPU_MAX_FEATURES 10
+>>  #define KVM_VCPU_VALID_FEATURES	(BIT(KVM_VCPU_MAX_FEATURES) - 1)
+>>  
+>> +#define KVM_REALM_VCPU_VALID_FEATURES			\
+>> +	(BIT(KVM_ARM_VCPU_POWER_OFF)		|	\
+>> +	 BIT(KVM_ARM_VCPU_PSCI_0_2)		|	\
+>> +	 BIT(KVM_ARM_VCPU_PTRAUTH_ADDRESS)	|	\
+>> +	 BIT(KVM_ARM_VCPU_SVE)			|	\
+>> +	 BIT(KVM_ARM_VCPU_PTRAUTH_GENERIC))
+>> +
+>>  #define KVM_REQ_SLEEP \
+>>  	KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+>>  #define KVM_REQ_IRQ_PENDING		KVM_ARCH_REQ(1)
+>> @@ -409,6 +417,7 @@ enum kvm_arm_vm_flavor {
+>>  	VM_PKVM,		/* Normal guests on pKVM */
+>>  	MARKER(__VM_PROTECTED),
+>>  	VM_PROTECTED_PKVM,	/* Protected VM */
+>> +	VM_REALM,		/* CCA */
+>>  	VM_FLAVOR_MAX
+>>  };
+>>  
+>> @@ -502,11 +511,14 @@ struct kvm_arch {
+>>  	/* Count the number of VNCR_EL2 TLBs */
+>>  	atomic_t vncr_tlb_count;
+>>  
+>> -	/*
+>> -	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+>> -	 * the associated pKVM instance in the hypervisor.
+>> -	 */
+>> -	struct kvm_protected_vm pkvm;
+>> +	union {
+>> +		/*
+>> +		 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+>> +		 * the associated pKVM instance in the hypervisor.
+>> +		 */
+>> +		struct kvm_protected_vm pkvm;
+>> +		struct realm realm;
+>> +	};
+>>  
+>>  #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
+>>  	/* Nested virtualization info */
+>> @@ -1572,30 +1584,43 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>  
+>>  #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+>>  
+>> -#ifdef __KVM_NVHE_HYPERVISOR__
+>> +#define kvm_vm_is_protected(kvm)	((kvm)->arch.vm_flavor >= __VM_PROTECTED)
+>>  
+>> -#define kvm_vm_is_protected(kvm)			\
+>> -	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+>> +#ifdef __KVM_NVHE_HYPERVISOR__
+>>  /*
+>>   * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to convert the
+>>   * pointer to the hyp VA. With pKVM, the nVHE code runs with the hyp_vcpu,
+>> - * which is populated correctly and is gated on is_protected_kvm_enabled().
+>> + * which is populated correctly. Always vcpu_is_protected_pkvm(), which is
+>> + * gated on is_protected_kvm_enabled().
+>> + */
+>> +#define vcpu_is_protected(vcpu)		BUILD_BUG_ON(1)
+>> +#else
+>> +#define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
+>> +#endif
+>> +
+>> +#define kvm_vm_is_protected_pkvm(kvm)					\
+>> +	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+>> +
+>> +/*
+>> + * Rely on is_protected_kvm_enabled() check in kvm_vm_is_protected_pkvm() to
+>> + * make sure the vcpu->kvm is always valid VA in the context
+>>   */
+>> -#define vcpu_is_protected(vcpu)						\
+>> +#define vcpu_is_protected_pkvm(vcpu)					\
+>>  	({								\
+>>  		struct kvm *__kvm = READ_ONCE((vcpu)->kvm);		\
+>>  									\
+>> -		(__kvm && kvm_vm_is_protected(__kvm));			\
+>> +		(__kvm && kvm_vm_is_protected_pkvm(__kvm));		\
+>>  	})
 > 
-> This does not happen for me (using GNU ld version 2.46.1-1.fc44 from Fedora
-> 44) ... which compiler and distro are you using?
+> I've tested the integration branch and found that the secondary CPU
+> bring-up fails:
+>     [    1.426502] smp: Bringing up secondary CPUs ...
+>     [    9.194442] CPU1: failed to come online
+>     [    9.194558] CPU1: failed in unknown state : 0x0
+>     [    9.197714] smp: Brought up 1 node, 1 CPU
+>     [    9.197775] SMP: Total of 1 processors activated.
+> 
+> It seems that this patch missed replacing a use of
+> vcpu_is_protected() introduced by the following commit:
+> 
+>     25d726dddc23 ("KVM: arm64: Reject host power-on of a vCPU that EL2 holds powered off")
+> 
+> The following diff fixes the issue for me. Also, though not included in
+> the diff, I think vcpu_is_protected() in __pkvm_create_hyp_vcpu() should
+> be replaced with vcpu_is_protected_pkvm() as well.
 
-Thanks for checking!
-
-I'm also using the same GNU ld version on Fedora 44 PPC64LE host (more details
-are below).  Are you cross compiling on an x86 host by any chance where you are
-not seeing this problem?
-
-Assuming that you are, the difference is due to the default linker configuration
-between native and cross-compilation packages on Fedora:
-
-On native Fedora 44 ppc64le:
-----------------------------
-  $ ld --help | grep -E '\-z (no)?text'
-    -z text                     Treat DT_TEXTREL in output as error (default)
-    -z notext                   Don't treat DT_TEXTREL in output as error
-    -z textoff                  Don't treat DT_TEXTREL in output as error
-
-On Fedora x86_64 cross-linker (powerpc64le-linux-gnu-ld):
----------------------------------------------------------
-  $ powerpc64le-linux-gnu-ld --help | grep -E '\-z (no)?text'
-    -z text                     Treat DT_TEXTREL in output as error
-    -z notext                   Don't treat DT_TEXTREL in output as error (default)
-    -z textoff                  Don't treat DT_TEXTREL in output as error (default)
-
-Because the cross-linker defaults to `-z notext`, cross-compiling on x86_64
-succeeds silently, whereas native builds fail:
-
-  /usr/bin/ld.bfd: error: read-only segment has dynamic relocations
-
-Toolchain & host details (ppc64le native):
-------------------------------------------
-$ uname -a
-Linux fedora 7.3.3-200.fc44.ppc64le #1 SMP PREEMPT_DYNAMIC Fri Nov  6 20:22:11 UTC 2026 ppc64le GNU/Linux
-
-$ ld --version
-GNU ld version 2.46.1-1.fc44
+Thanks for the patch - I'll include that in v2.
 
 Thanks,
-Amit
+Steve
+
+> Thanks,
+> Kohei
+> 
+> ---8<---
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 522a837637fe..be676c13e219 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -960,7 +960,8 @@ static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu, u32 mp_state)
+>  /* The guest's own CPU_OFF: EL2 has already powered the vCPU off. */
+>  void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+>  {
+> -       u32 mp_state = vcpu_is_protected(vcpu) ? KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
+> +       u32 mp_state = vcpu_is_protected_pkvm(vcpu) ?
+> +                      KVM_MP_STATE_UNINITIALIZED : KVM_MP_STATE_STOPPED;
+> 
+>         spin_lock(&vcpu->arch.mp_state_lock);
+>         __kvm_arm_vcpu_power_off(vcpu, mp_state);
+> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
+> index b01f8d44033f..6674e8d6ff4c 100644
+> --- a/arch/arm64/kvm/psci.c
+> +++ b/arch/arm64/kvm/psci.c
+> @@ -68,7 +68,7 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu *source_vcpu)
+>          * STOPPED before that is the VMM's pause.
+>          */
+>         if (!kvm_arm_vcpu_stopped(vcpu) ||
+> -           (vcpu_is_protected(vcpu) && !kvm_pkvm_vcpu_is_powered_off(vcpu))) {
+> +           (vcpu_is_protected_pkvm(vcpu) && !kvm_pkvm_vcpu_is_powered_off(vcpu))) {
+>                 if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
+>                         ret = PSCI_RET_ALREADY_ON;
+>                 else
+> 
+
