@@ -1,104 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794423690;
-	b=WZ78ONkGsCaUU1unEV7MG0jBh2aknuAZbjkvxNKgo3y9uUhE6HwEFlKexSHRhHW5+ZZ7
-	 MplhSmIIGNMXdjnpkn1f7CZ3/UKIZF1MBULOa1iKGMVMb6rsu7zr94ZRBJWCiDePEhNqP
-	 1cSdGCJZukKiRTJ8/i5Yv1A5JOZJ23thO/c6QAs5Ksjjxa5FJJ+xryxfVkJ4BnEetpYPH
-	 Wd6udPKO5HUQgfFT4S75b3B/tEf66TURUs6v3istumgsdSHaZFXScohBBX5WVXooHdmPg
-	 f9EkoRhP9E4fc+T/50tJXm/JB1yCbqem+0zebPyWf4h5F7ELaFzem3veR+bNcI8CEZA==
+	t=1794425000;
+	b=4Z4nenvw/7a4tMyYtGhxTiYhc1HcQThVAYzbAuIiedSQZ8scrI0WjtVoc1ESPOI/Knw9
+	 s/XwRLBQmEeu3HpVSkaxu/inFt7bkciIFjTXntA9iPI6OgyUadNA4q98Pi3dcmQdXdGJc
+	 XMqFDr3u6jtPrmHvPFszwE/q6tTuRcQ8H6wgluONGCfjtXrtWerlH5LCaY3HOJHcp3rWP
+	 Uxx8LbV7tN/ttlpFhQuLcBTNNfgmaBk9ntrpJLLk3wnuml/b9KS1rt3n54T16PVOy1J09
+	 1ykIQn5Y7cXPrUiPaApeeL1RWaIb6URKtikQgWHLkun/0qRCXQJZ92PtXzSZ6CmNGjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794423690;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=04CmMlHtyA+HZtytO/qkm53kP2CS5CYWPfp8WeZQAe8=;
-	b=1KIXruflyS8Gb3PtgmH2eSBQyQBX44ERNIxHEnvhBZ/FYa15NyOZgO6W0ya7rDLGfg+9
-	 qVwfFl5cLWnucqNBxH18em/Gw1mW1DXIMMcPatjZXAYYXF07DEeeEMJW0x4j0McZ+SsOU
-	 Two0XPcbNyMtTgGA+0VMBbbq84agCzd52hmn1nZMwd3ynIuj6FzotNI1SMTguR6B12HOV
-	 99lUelW78ex3S5u+GdzuYjkXWMXFMryp4+2R+UIJr21kEWu5Jh5bpCg7nV/IYUe6XbUcA
-	 XgCwoyqtLE4a6qYa+mEMWg2puCQHkf+Foa+rUNhtK8KQRTjqnE39okPQsDc5HPm3hJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794425000;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-TM-AS-GCONF:X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=1OYlMqVxmreQEAJwG52M6TsnjfE3/VsBgRd8k7XJlTQ=;
+	b=mYtTWSH1wrGsq8MjqYmxR7RIKx21CUzk6pOuWA037l6HCGjmYxz0lQAL8Z5Nct5PFoI9
+	 uprlwiNMJEG2SmNbMzjP5qATuAoHDEHhE68BZeiMYYN7za3aaQpLGtZrMTn1myijzXF7H
+	 LnqeNfTVSL2Lc9RrFi1XAKRIqkyMcT2i/M1Ue6Aq3MHSqFkgQD/as1lk3cVimbd1Yh0LW
+	 nA/87YMNnsooEgn78K9hVz640dr37XVtCUi059liM9VL7LBTm97VDIa/2vZRaDRN0UJo6
+	 EFI51/Ohb0gM0vQ1lzq6wTt3fuE3ainJjK9TeG8iZqLf413kKkJQRcxWaV2/+M5YGwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=tenstorrent.com;
-	spf=pass smtp.mailfrom=tenstorrent.com;
-	dkim=pass header.d=tenstorrent.com header.i=@tenstorrent.com header.a=rsa-sha256 header.s=google header.b=KWXpn2n4;
-	arc=none smtp.remote-ip=74.125.224.45
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DAqLHKDh;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C3C606A882
-	for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 19:01:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8C3C606A882
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tenstorrent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tenstorrent.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C481C606A31C;
+	Wed, 11 Nov 2026 19:23:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C481C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.a=rsa-sha256 header.s=google header.b=KWXpn2n4
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-67c08c7adadso3033029d50.0
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 11:01:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tenstorrent.com; s=google; t=1794423689; x=1795028489; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=04CmMlHtyA+HZtytO/qkm53kP2CS5CYWPfp8WeZQAe8=;
-        b=KWXpn2n49e53R03JJkYNnRsbr3Hlg485ZMj1LWiO7b/ZYZmxB5hymIG+jrKnj4yJiF
-         2VqC3woerV9BzzvrZeHlOdB3ocRNH1IxZb1ELVj38DpmV3AHutF8djYW4f4WnvT6TKFS
-         Bn+50Yoft8BQEFVm1xczaIlIsB3sV/S+RNC4aZMb2ofnQVwf1W3MCoVyIY28+9wk+N6d
-         JjxylBmH/rfvCHaEEEbtB994x1wq9ddOZrdOhHs0RAOkbfUsXNrQTA/nBIN6PZguB7B6
-         XbYjKjTyMcQt7uERdwcy+KXoQQVci03j0FZZN3sZbJ04OIgdCvIhUa8I3yAV+yUSNO0n
-         5o+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794423689; x=1795028489;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=04CmMlHtyA+HZtytO/qkm53kP2CS5CYWPfp8WeZQAe8=;
-        b=1IeqaFjravp5Ow+f8aPmFJtSX/Z5jv5ADnW+yPLn3Ss+Pexw2k4wRPQB25nKK6r4K3
-         VzbmAnLssaDa62ftVzP6rrOe09JIkZU8I7nYW8qNeW4DVz2k901iC3/k/Na255d+h/Nl
-         AEUBoz6DrAwauBVhKUe2ZL/hZ3lv0YpJDwZPzq4KHAkTeJcjI83ELNKwPh/5FkQ4Awnj
-         HJd6wsjbZIE04ZFTw/FfYWo3j8+wSaMphgO5VM3ln6SGM5r1YQG/mvJ0FnZ07+1rZyhr
-         TkaPxWbRjopNldJP48jlLr+cWUQ/FQfPOt5w62lO8DLGI0dt82jAPdjEc2bAuozmO9sj
-         6FoQ==
-X-Forwarded-Encrypted: i=1; AL+hErGrtm428osMykpxzaqpmX6EvPVPiSXs1shCUtNrgaonsmqH0pak4ZLTSvhkTBmsTJPAYFQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9zzW9srEN/qmRGVcHACmVQC54cGPd0iFmMNdqroGYS9ExpF9Rg
-	vbhIaZsZ51MY1wRuHdfAsWUk5kOOWStHsPGRzefF4ZartB5dKzzGoYMZohQO5NY6yjw=
-X-Gm-Gg: AYBFou2yMeyWJNXWL4Pjs2IfpuRtumx0dXQUZh+NCaie2PERU8yNsGJY7+8oLK2uqwx
-	SGcvWcgkym8rD0MOUdq2LlDouAULiWT4tGXcsVYG6Extf8wULBwainhqMTP/4+ehBLUXJd+reXk
-	+KpY048P7dmLlXjALK6P7p7bgio686LkwpQhyI2SWVf56Cucdji1O5fpnx91uBRRd9fXYwrGDuu
-	hj4+vC3HcQyWUnFv7+y9kUDryMUvqcWLzk4cBfOYHdMszfu5QETRzwHCKv0zmXH6FoUJA/h1CPU
-	XMG63q4c6f7WzM6Cg7n/nXyjPi60vB4RWq9L77AcYynWDNOjjXm/NlCqVNhZ8k6kTG6txlSKkCH
-	eg6UGlLhI7cJOovsfKZa9ACxSW/ypTPJgKO/CF+TTuZV60+vSFTWLxAYI+bHbPSlG1yuQ1cCPV4
-	rRkbtv1cC6FGINdqw3J1+Yyo5Tihy3yw8Z+pAuYPhGWah5H0uWwMZa2ddnCPW6sDedLjtHbeSOm
-	1VHdDnulrrIPPKIR477E0bvh3dO2BbHVRxJ1SoIEpFtloLwKhWiI/w3zNBPRGJC1YxzmxPi3eLs
-	ddPaA5+kYW8Ub3thOpVGwXyq/tKY7lOr4XljLMzMFmMrqlh+gyXF1LFBaJ4F95cBcvWW6GtsSRO
-	APZZA6XOagqethL2ptj0At3fk8boeDnQOPKZDuE10ves1AwY=
-X-Received: by 2002:a05:690e:1381:b0:67b:f85b:737 with SMTP id 956f58d0204a3-67c68051586mr1824026d50.57.1794423688530;
-        Wed, 11 Nov 2026 11:01:28 -0800 (PST)
-Received: from lima-default.tail89d63.ts.net (108-196-157-19.lightspeed.austtx.sbcglobal.net. [108.196.157.19])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c589a2354sm5209197d50.6.2026.11.11.11.01.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 11:01:27 -0800 (PST)
-From: Andy Chiu <tchiu@tenstorrent.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org
-Cc: andybnac@gmail.com,
-	Andy Chiu <tchiu@tenstorrent.com>,
-	dfustini@oss.tenstorrent.com,
-	greentime.hu@sifive.com
-Subject: [PATCH v7 6/6] riscv: KVM: do not save host vector context for vcpu
-Date: Wed, 11 Nov 2026 12:43:28 -0600
-Message-ID: <20261111184359.1239821-7-tchiu@tenstorrent.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261111184359.1239821-1-tchiu@tenstorrent.com>
-References: <20261111184359.1239821-1-tchiu@tenstorrent.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DAqLHKDh
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABIiaj31888036;
+	Wed, 11 Nov 2026 19:23:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=1OYlMqVxmreQEAJwG52M6TsnjfE3/VsBgRd8k7XJl
+	TQ=; b=DAqLHKDhaaP5irz0QL701YKgU24XFuPqaeZSMtJMP18N9qd+ZqfZFotq9
+	YPlBoHtlI2haK1PBDYogoR0jWVTJl0T8yUumop6l0KX27MvEBzG0RRfT6rlFVktw
+	qPaKaJuMrFPimyZghcKoZfY+36gS1lzOcDsm5e0hpOXRmAMalW8FqkpCaIY50M9H
+	pnquo3oeYUWhkKzj95CydGCIl7P43PqXR6hqHhgEveIubo7BEOAMIhtUGNOy8olQ
+	6v3RD0BjpIRakIJ6u1yk2TsoY/z7ddY2einICpYTL+dzOHn6PmwMB9sVkUr1B918
+	9b1pKMgYSozjEz33WcJm79e/dyXGw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsuq74191-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 11 Nov 2026 19:23:13 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABIZ4N13822817;
+	Wed, 11 Nov 2026 19:23:12 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4htfthv6s0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Nov 2026 19:23:12 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ABJNA037799616
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Nov 2026 19:23:10 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E78158065;
+	Wed, 11 Nov 2026 19:23:10 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8982358052;
+	Wed, 11 Nov 2026 19:23:09 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.182.62])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Nov 2026 19:23:09 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+Subject: [PATCH v13 00/14] s390/vfio-ap: Add live guest migration support
+Date: Wed, 11 Nov 2026 14:22:54 -0500
+Message-ID: <20261111192308.2585984-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,119 +95,160 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA3NiBTYWx0ZWRfX/i6QduJn0T4x
+ ycLTBvN5/wuO054Z3GO5JHJUOKMIYBQ5y3ys/n12tUxWhJnYPXwx+imukRGXPzmJY0ayXXeI1XW
+ 3CeSAv70E+5jbC3iCv+X8ECk1j/Dryc=
+X-Authority-Analysis: v=2.4 cv=HbCB3SE8 c=1 sm=1 tr=0 ts=6af4c0a1 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=XCssrilYV6wRj-C0hOMA:9
+X-Proofpoint-ORIG-GUID: afz4RzWNx85EgT5v4zpNoOIPONJ4btDy
+X-Proofpoint-GUID: afz4RzWNx85EgT5v4zpNoOIPONJ4btDy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA3NiBTYWx0ZWRfX7+sPV6B0jkNC
+ AbUUwncxLlEwNYRUDsGG986/6qIiQTiG7i5Ge7MX+DQYRZQn9bbEUORsI+uAn71WF0GYQ766zQ0
+ 98DUDBs79KbV8iyQct+/7/XOwbDXp6RNWODVBv+S32lK7B6lT2/YLDptZCtwMbwEsnndbjUi6Lw
+ x3Jz5khNJPhYqt7lnmk4jm4WbXd7EA0nBPXJX3kCJX/LvsMfAS94kIVcT2pRSGImza7Sx/t6o0n
+ y3bqqVPzvI+Vb1sZIP16Rk/kzU+7oCztpkAifwDdxTh5wJJ6VYG2DcugFVEOYw0FSKg21XcQm1y
+ KANKUHxClaVcZ1hTqLHGyJ1zmHNwtDgXi+hz6KilhuCmoa1a4b628GaWQzCk+Y62XuwjhrJN4ri
+ +skSsYwYBtmwwGkPZLzrFLe3oRnkyxCSRGevblyUxKEzL2+vc+Y+d7afwZzdX8+w9YvRBm4eHwL
+ KC7wVWgHs01RzCmOdNg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-11_05,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 spamscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611110076
 
-Host's vector contexts are already managed in per-thread's struct by
-regular context switch routines. Saving and restoring the context in
-preempt-notifier is redundant.
+This patch series implements live guest migration support for KVM guests
+with s390 AP (Adjunct Processor) devices passed through via the VFIO
+mediated device framework.
 
-Signed-off-by: Andy Chiu <tchiu@tenstorrent.com>
----
-Note: I haven't been able to get a statistically significant result on
-how this help/regress KVM performance running a nginx server in guest.
-I am happy to carry out a test again and post the number if there is any
-suggestions on what workload can benefit from this, thanks!
+Background
+~~~~~~~~~~
 
-Changelog v7:
- - new patch since v7
----
- arch/riscv/include/asm/kvm_vcpu_vector.h |  9 ++-------
- arch/riscv/kvm/vcpu.c                    |  3 +--
- arch/riscv/kvm/vcpu_vector.c             | 20 ++------------------
- 3 files changed, 5 insertions(+), 27 deletions(-)
+The vfio-ap device driver differs from typical VFIO device drivers in that
+it does not virtualize a physical device. Instead, it manages AP
+configuration metadata identifying the AP adapters, domains, and control
+domains to which a guest will be granted access. These AP resources are
+configured by assigning them to a vfio-ap mediated device via its sysfs
+assignment interfaces. When the fd for the VFIO device is opened by
+userspace, the vfio_ap device driver sets the guest's AP configuration
+from the metadata stored with the mediated device. As such, the AP devices
+are not accessed directly through the vfio_ap driver, so the driver has no
+internal AP device state to migrate. What it does migrate is the AP
+configuration metadata of the source guest.
 
-diff --git a/arch/riscv/include/asm/kvm_vcpu_vector.h b/arch/riscv/include/asm/kvm_vcpu_vector.h
-index 60fa28030944..06409c870a06 100644
---- a/arch/riscv/include/asm/kvm_vcpu_vector.h
-+++ b/arch/riscv/include/asm/kvm_vcpu_vector.h
-@@ -35,8 +35,7 @@ void kvm_riscv_vcpu_guest_vector_save(struct kvm_cpu_context *cntx,
- 				      unsigned long *isa);
- void kvm_riscv_vcpu_guest_vector_restore(struct kvm_cpu_context *cntx,
- 					 unsigned long *isa);
--void kvm_riscv_vcpu_host_vector_save(struct kvm_cpu_context *cntx);
--void kvm_riscv_vcpu_host_vector_restore(struct kvm_cpu_context *cntx);
-+void kvm_riscv_vcpu_host_vector_restore(void);
- int kvm_riscv_vcpu_alloc_vector_context(struct kvm_vcpu *vcpu);
- void kvm_riscv_vcpu_free_vector_context(struct kvm_vcpu *vcpu);
- void kvm_riscv_register_vctx_callback(void (*func)(void));
-@@ -77,11 +76,7 @@ static inline void kvm_riscv_vcpu_guest_vector_restore(struct kvm_cpu_context *c
- {
- }
- 
--static inline void kvm_riscv_vcpu_host_vector_save(struct kvm_cpu_context *cntx)
--{
--}
--
--static inline void kvm_riscv_vcpu_host_vector_restore(struct kvm_cpu_context *cntx)
-+static inline void kvm_riscv_vcpu_host_vector_restore(void)
- {
- }
- 
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index caf6e0ad72ef..d9d31851ee62 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -650,7 +650,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	kvm_riscv_vcpu_guest_fp_restore(&vcpu->arch.guest_context,
- 					vcpu->arch.isa);
- 	get_cpu_vector_context();
--	kvm_riscv_vcpu_host_vector_save(&vcpu->arch.host_context);
- 	kvm_riscv_vcpu_guest_vector_restore(&vcpu->arch.guest_context,
- 					    vcpu->arch.isa);
- 	put_cpu_vector_context();
-@@ -677,7 +676,7 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
- 	get_cpu_vector_context();
- 	kvm_riscv_vcpu_guest_vector_save(&vcpu->arch.guest_context,
- 					 vcpu->arch.isa);
--	kvm_riscv_vcpu_host_vector_restore(&vcpu->arch.host_context);
-+	kvm_riscv_vcpu_host_vector_restore();
- 	put_cpu_vector_context();
- 
- 	if (kvm_riscv_nacl_available()) {
-diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
-index 730c32f7de50..6129a6e18404 100644
---- a/arch/riscv/kvm/vcpu_vector.c
-+++ b/arch/riscv/kvm/vcpu_vector.c
-@@ -61,17 +61,9 @@ void kvm_riscv_vcpu_guest_vector_restore(struct kvm_cpu_context *cntx,
- 	}
- }
- 
--void kvm_riscv_vcpu_host_vector_save(struct kvm_cpu_context *cntx)
-+void kvm_riscv_vcpu_host_vector_restore(void)
- {
--	/* No need to check host sstatus as it can be modified outside */
--	if (!kvm_riscv_isa_check_host(V))
--		kvm_riscv_vector_save(cntx);
--}
--
--void kvm_riscv_vcpu_host_vector_restore(struct kvm_cpu_context *cntx)
--{
--	if (!kvm_riscv_isa_check_host(V))
--		kvm_riscv_vector_restore(cntx);
-+	riscv_v_vstate_set_restore(current, task_pt_regs(current));
- 	riscv_v_flags_set(riscv_v_flags() & ~(RISCV_V_VCPU_CTX | RISCV_V_VCPU_NEED_RESTORE));
- }
- 
-@@ -81,20 +73,12 @@ int kvm_riscv_vcpu_alloc_vector_context(struct kvm_vcpu *vcpu)
- 	if (!vcpu->arch.guest_context.vector.datap)
- 		return -ENOMEM;
- 
--	vcpu->arch.host_context.vector.datap = kzalloc(riscv_v_vsize, GFP_KERNEL_ACCOUNT);
--	if (!vcpu->arch.host_context.vector.datap) {
--		kfree(vcpu->arch.guest_context.vector.datap);
--		vcpu->arch.guest_context.vector.datap = NULL;
--		return -ENOMEM;
--	}
--
- 	return 0;
- }
- 
- void kvm_riscv_vcpu_free_vector_context(struct kvm_vcpu *vcpu)
- {
- 	kfree(vcpu->arch.guest_context.vector.datap);
--	kfree(vcpu->arch.host_context.vector.datap);
- }
- 
- void kvm_riscv_vcpu_flush_vector(void)
+Implementation Approach
+~~~~~~~~~~~~~~~~~~~~~~~
+
+This series implements the VFIO migration protocol using the STOP_COPY
+migration flow. The key aspects are:
+
+1. On transition of the migration state from STOP to STOP_COPY
+   - The vfio_ap device driver creates a filestream for userspace to use to
+     read the guest's AP configuration from the mdev
+
+2. During the STOP_COPY phase
+   - Userspace uses the filestream created in #1 to read the source guest's
+     AP configuration
+   - The vfio_ap device driver copies the source guest's AP configuration
+     information to userspace
+
+3. On transition of the migration state from STOP to RESUMING
+   - The vfio_ap device driver creates a filestream for userspace to use to
+     write the source guest's AP configuration information so it can be
+     restored to the mdev on the destination host.
+
+4. During the RESUMING phase
+   - Userspace uses the filestream created in #3 to send the source guest's
+     AP configuration information to the vfio_ap device driver on the
+     destination host.
+   - The vfio_ap device driver first verifies the source guest's AP
+     configuration is compatible with the destination host's.
+   - The driver restores AP configuration to the mdev on the destination
+     host which automatically hot plugs the AP resources identified
+     therein.
+
+5. Documentation
+   - Add live guest migration chapter to vfio-ap.rst
+
+Compatibility Validation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The series includes comprehensive validation to ensure source and
+destination AP configurations are compatible. For each queue, the following
+characteristics must match:
+
+- AP type (target must be same or newer than source)
+- Installed facilities (APSC, APQKM, AP4KC, SLCF)
+- Operating mode (CCA, Accelerator, XCP)
+- APXA facility setting
+- Classification (native vs stateless functions)
+- Queue usability (binding/associated state)
+
+When incompatibilities are detected, migration fails with detailed error
+messages identifying the specific queue and characteristic that caused
+the failure.
+
+Configuration Management
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This implementation does not prevent configuration changes during
+migration. Configuration stability is an orchestration-layer
+responsibility, consistent with other VFIO device types. The driver's
+role is to validate configurations and provide clear diagnostics when
+incompatibilities are detected, enabling orchestration tools to implement
+appropriate policies.
+
+QEMU patches exploiting this series:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://lore.kernel.org/qemu-devel/20260409141352.997844-1-akrowiak@linux.ibm.com/
+
+Change log v12 => v13:
+~~~~~~~~~~~~~~~~~~~~~
+Patch 12/14: Set up for vfio-ap device migration
+* Fixed commit message
+  ~ Removed bullets for initializing mig_state and
+    resuming_mig_data_complete
+* vfio_ap_setup_vfio_device_migration()
+  ~ Moved below the definition of vfio_ap_migration_ops
+  ~ Removed forward declaration of vfio_ap_migration_ops
+
+Anthony Krowiak (14):
+  s390/vfio-ap: Provide function to get the number of queues assigned to
+    mdev
+  s390/vfio-ap: Data structures for facilitating vfio device migration
+  s390/vfio-ap: Functions to initialize/release vfio device migration
+    data
+  s390/vfio-ap: Reset migration state on VFIO_DEVICE_RESET and device
+    close
+  s390/vfio-ap: Callback to get/set vfio device mig state during guest
+    migration
+  s390/vfio-ap: Transition guest migration state from STOP to STOP_COPY
+  s390/vfio-ap: File ops called to save the vfio device migration state
+  s390/vfio-ap: Transition device migration state from STOP to RESUMING
+  s390/vfio-ap: File ops called to resume the vfio device migration
+  s390/vfio-ap: Transition device migration state to from/to STOP
+  s390/vfio-ap: Callback to get the size of data to be migrated during
+    guest migration
+  s390/vfio-ap: Set up for vfio-ap device migration
+  s390/vfio-ap: Add 'migration' feature to sysfs 'features' attribute
+  s390/vfio-ap: Add live guest migration chapter to vfio-ap.rst
+
+ Documentation/arch/s390/vfio-ap.rst     |  643 ++++++++--
+ drivers/s390/crypto/Makefile            |    2 +-
+ drivers/s390/crypto/vfio_ap_drv.c       |   14 +-
+ drivers/s390/crypto/vfio_ap_migration.c | 1454 +++++++++++++++++++++++
+ drivers/s390/crypto/vfio_ap_ops.c       |   70 +-
+ drivers/s390/crypto/vfio_ap_private.h   |   12 +
+ 6 files changed, 2089 insertions(+), 106 deletions(-)
+ create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
+
 -- 
-2.43.0
+2.53.0
 
