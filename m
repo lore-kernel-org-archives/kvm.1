@@ -1,118 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.28
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794501205;
-	b=Elezj2ee1DK6zeOzs1f5aWctlItRslBiIgYPQcHOF7YXZhvtOEkZyoGCeg92cb0Ii8Ay
-	 uCCEWvpF+VQioHzyVCe4sK1fnWtMU4+N3GW7iTL47Fe3ouxwlmm4vx60vf6kMXvExij5i
-	 +RWSf+q1PNhPLPKTU/0WGO2QJJuC8lkW+fAt1aDF58RS/OLC0nNOnf94CaaGKyWY8h691
-	 8nHhjQEY8EplAOTg+ZWjUHwmaLggw36ltibt5QJCgFmd2+rI47ntYiXrkvMvQ5l4errWV
-	 EJNDdcuZBCeaVkhW9HKvy6nF75MF59zP5ZcbkwjQXZI/vsxlObjQVaiPWDOUWBS2fTA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794501205;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Date:From:To:CC:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=MdDMpn1E237DWMEcWSJ+1x4vI1+JS6BzFl+hQXT8pFc=;
-	b=XJQu+2TxK6HwwIV5FV74OjXomzb15bnfbeijLA4XiAytwx0Oamb1VITDnRb60nuatipz
-	 34BAUoKMJRb5k1ushtVd5z9M/XRcQbeSUtTSly2BGW4SCvIAJ1zcuJEfvaqsAEmjD83Ay
-	 Ga/rZlpROJm6UIULBFTvqRA3LY7BNt6gjTuq53bBgtaVhATwC7rcKCk89eJP9Z6yQ3M5s
-	 EU4t53O6eZRLF3FH1DO0+ZvV4YGouHDcg2AUcQYUU5TnKTL6YRmzPRSqxNkrSrKuOtnpV
-	 05e7bnsYDMeITLb/ZhTaf+T4+GewhNg8wn3zF/UZKsW/p3qzaDU2sQqwsroknztJfhw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=lohlGJF0;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.28
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010028.outbound.protection.outlook.com [52.101.61.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9187160A2602;
-	Thu, 12 Nov 2026 16:33:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9187160A2602
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794501342;
+	b=T2TjuIq4vySoUI7YKsTaDWQyNQH66JU9VkCMn9JsMBH7SkJpvncgoR+EuvREpTR3fbgt
+	 IffMjlyGkUasKKTWNBBOQYiebsD1EGJPmd7GN/9+XLEj34zHvhOnkuI5NQGYvvxnJxSbC
+	 A47yVLYn/fXBcvHiZ8RQJzJD/+ktDDzsBM6atM8YF3AJ3BJ5EHOy5xgiRUrncaeLQQD05
+	 Ub1ukLHmDZOuRq9ArqQiYmj/zIwM/E8h5lRvcsVdh1ioNGHef8tZf7pojjvYe4+0zw5k6
+	 p+XOKfFLW84u52YH6RkqgomvIkF7hu/MCN2VtJt73NRiiYILsGcQLmczHI0lwyqJoPg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794501342;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=wWL8E9/FzqN09J68Lnx5883U9S+W8XARlqWFahZqWE8=;
+	b=Ul3+OyJMWmDZAk5kxupJo8f+MlGGTQSS0kg8EEocFxMz6cyw/v0rGb5zAZYhGTaENHge
+	 QuAGPuxugj7MT6J/RHuVNBlX13Yw7K9qJf+rAXUph4uNUcvc/3XiSZq+GPh8fYhiDprdl
+	 RFZzgxk+/ltXBsS1Y4T6CG982USpusvDUZFx65U4oJz2T0AHJRGSMRBg74TUsmj857WYQ
+	 76mP7jH7hIDpUH8CEJFSVxhYQxkRBehagFER71issNkiUhVCtF7CsW5RxNJrtmwTcat3S
+	 HJGvc0ZdFFXKZ81FukdaV3gHkaWhK6GbECYgiBUpxeCBFioEZMWMuumf/MuGvqnDB6Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="e8p0n/4q";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEF2606AB04;
+	Thu, 12 Nov 2026 16:35:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1EEF2606AB04
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=lohlGJF0
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bD5mXiKtK+RDImc5uiuPzv4JupOq9QIAJ2/++jUvTXTTKUHjNkN7A/OfspaP5xWnu3eFi8yUn5MSTgM0PTxf0kLxLDTQP8k0VHLFu2d/hrS0khhkO/0oEFGzLslRNbtGySlrXGqdPgu56n/cMR4NF1HNu399c7R5jBlZbeOYhaZYfamcKYXQ9LBkLNuuZRiaZaWyTWtBaCzd9/MhUmgvU450jX48YlfUX3e3Us2SgPSk8qyt3dRb49ELMLyTlQRG5fKEwLpF8W/XQpED5y0+1Ab5Guilba8PqTg07Zn7z1XBlTQWfvgvOkcGD2UA3zXWhL5FVJDi0UakSObGzM0OPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MdDMpn1E237DWMEcWSJ+1x4vI1+JS6BzFl+hQXT8pFc=;
- b=YM4eX6t+OQGd0wT+Ue1LMCvsD/tq6b3WYdhTTfRaSFykjxgSYgg8+/ZWiAxQoz77SWvERY60LZfmaRrP9Jzl3ZIislPLlUWUFmWCzJ18N4emSWSaGWkWlce+HZONb/mKRXJAVYMvx7OwnPsppdS5qZLR/GOpr81VvzSDBXq+JNuIC6uAiyvoS58b/QSNQpTGRUPWm24EJIYuf2Odd/uVPeqvv9jF+iNjXPLXSzA2wCdnocf7gnXDT9UzDmgUjNOgzzljbnKJy/SQ9WXFiUOIm0MrAdnyDloa09BwuOtjpnm3olptv9x1uY3IE3PSCj6FxNg2M3BgR/p8AMW2oytHIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MdDMpn1E237DWMEcWSJ+1x4vI1+JS6BzFl+hQXT8pFc=;
- b=lohlGJF0GtlI+2QR3tEh57/riOgWpTtMWYUYKyy1ItotCTGGCNwdv6X4O+5ZdOgoT07KaqJIwZjPIin/tBeAtmQBWdIjwO9EgPwS+INlfUXJe5UUxTaK6rAxj9omAnkopccRLOQ7CoLBfj9TYU7xC6B6TfWGekE/oJWEPF74atY=
-Received: from SJ0PR03CA0271.namprd03.prod.outlook.com (2603:10b6:a03:39e::6)
- by MN0PR12MB5930.namprd12.prod.outlook.com (2603:10b6:208:37d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Thu, 12 Nov
- 2026 16:31:46 +0000
-Received: from PH4PEPF0000B60E.namprd21.prod.outlook.com
- (2603:10b6:a03:39e:cafe::81) by SJ0PR03CA0271.outlook.office365.com
- (2603:10b6:a03:39e::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Thu, 12
- Nov 2026 16:31:46 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- PH4PEPF0000B60E.mail.protection.outlook.com (10.167.243.89) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.0 via Frontend Transport; Thu, 12 Nov 2026 16:31:45 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 12 Nov
- 2026 10:31:45 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 12 Nov
- 2026 10:31:38 -0600
-Received: from amd.com (10.180.168.240) by satlexmb07.amd.com (10.181.42.216)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53 via Frontend
- Transport; Thu, 12 Nov 2026 10:31:30 -0600
-Date: Thu, 12 Nov 2026 16:31:27 +0000
-From: Ankit Soni <Ankit.Soni@amd.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-CC: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse
-	<dwmw2@infradead.org>, Pranjal Shrivastava <praan@google.com>, Robin Murphy
-	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
-	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
-	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
- Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Vipin Sharma <vipinsh@google.com>, Nicolin Chen <nicolinc@nvidia.com>, "John
- Starks" <dev@jstarks.net>
-Subject: Re: [PATCH v7 02/18] iommu/pages: Add APIs to
- preserve/unpreserve/restore iommu pages
-Message-ID: <wirs4vcszlt6wkw2wfauhjnxve4n5ivnnpkg35fqid34htepet@fn4opgt3lt2x>
-References: <20261110040828.1774343-1-skhawaja@google.com>
- <20261110040828.1774343-3-skhawaja@google.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=e8p0n/4q
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BCBC1516;
+	Thu, 12 Nov 2026 08:35:38 -0800 (PST)
+Received: from [10.57.67.215] (unknown [10.57.67.215])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 740E93F673;
+	Thu, 12 Nov 2026 08:35:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794501341; bh=vTYfjBdjeqxRbi+MJ2rG5iyba+KEUTEpSaYPJP9Bu+Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=e8p0n/4q9s8RBofHWjQWNiYG1+QrvR3aODbKwPBwYIpdLJjzLHXx7WnElo/f9a5eR
+	 ttF4y1qTnBH3ytKlJM2/Ac7bDbdglxlicr1DogG70oCm3NDLdzVCm2opITWZY+4BEv
+	 WNvpixt1WR4JCSqd1HrwvzWh311YVhWC70r5sfw8=
+Message-ID: <26a29420-8d27-4069-bbd5-28692c9e8542@arm.com>
+Date: Thu, 12 Nov 2026 16:35:35 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -122,241 +53,150 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261110040828.1774343-3-skhawaja@google.com>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH4PEPF0000B60E:EE_|MN0PR12MB5930:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1e51c2a-fd48-4c3c-376e-08df40da7150
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|23010399003|36860700016|4143699003|261026140227099003|261022113327099003|11063799006|10067099003|56012099006|261026130827099003|261022105027099003|261022115727099003|261021121427099003|261026121527099003|261021130227099003|261028144727099003|261022075727099003|261021123027099003|261102130727099003|261021135927099003|261102123227099003|261009223027099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	gcv8q9LASyoR5PTbwBTxNOvb4rZ3kqFw02Fm0J0H57WeB2+DEDd7PEmGIpBF2pb5xhSCtMs7MmCaIxqmIx7ZD33okUEvXGBfrDhP1KYqukh7CjNW3XNjlEbVQbdUFKP7AyMoAL24wVupD6D9uxnV49kNWTjVl7yeM6hJ0EI+ZHsREHDxQudL91iSEoBP0UjoUeBe/F7rvGaW+pTQ6SNdhV3wA7q4+jsrvs2ToylzESyoXEWGSWrSIGE4SsOG6ohsi0DzJQM+Os6fXJ3CpV/+yFkL3hF1U0F3s0L1FmdIeyRA8TujVuw3RxsyzhanaSHaO4za7c8vou37r6E4X77/tmvGF08oS1J2ysv5C0ICavDEOuk4skLppOruht7U1uW0VBeZfOCzaBdK1uIhs9KegEoNsT/Uo+q34z4j7JdccFvFwca66gnDuPP3y6/UC/HxmU5NSN7bDh4tbRP5W0GxEErsR1ifFPdf9R5kHoXQ/DG1vLgOwhQSW1EfhO5OUvKOKQt1IA0VNzg4DHrhnOJYkFnmarx7udN0iZPdrGJD89aezpxcU5796sDi8mqHbVmoJjiTESymm1qvwSZtnic+XoVHMkfFN1O2MQwYvvAwWmuoi/FDAUV+2nFynTwQ32hUKsL6HmzJJyRRa5iIEmSikmFPUGQUx3CBDEvxrVKNjFE8/TRBIWcEpzXV9w83wqDMRqsD2JZcaAtuhZf7THdXJw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(4143699003)(261026140227099003)(261022113327099003)(11063799006)(10067099003)(56012099006)(261026130827099003)(261022105027099003)(261022115727099003)(261021121427099003)(261026121527099003)(261021130227099003)(261028144727099003)(261022075727099003)(261021123027099003)(261102130727099003)(261021135927099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	kOoCFkF49m1skZCxHv5Pvl5fQfalUkBQ7P4+ACALb97CV/1XWms1yGMa+S7C+RiheRv7yD2Dt1//anSF0sP157J+lviqgUOeUq4Cx//zasOHRUe/Py2TpefNDbgnkw8J0/kycG+NsPhfI+fC5N9c3UPAkSxYTBofTv05gC92W9+FBPmNj3flwxw/nCBbv14CaRb4Hh8Nj0IWNeRuJ24YqpKUhqRjrnBxK6N09fHjbNjfv01MKCzvq+dNOdx02iMsx1nH2h08Il0vYEbmA3x6sD+au6nHlmM8LY1aIYpgHfvVpt0cmfyF/LHBbv3KKdhLj0+G1ZvkGLDHVS4eJV/M4goggdrthJvB8desqcdrN9RlUkN4ciPCUiYfEp0jOIbtGe2l4Tgr2FwnykLZT3XpQ5T2iShe1Dhb7/UD1Sxs2AwGO+I1iPv58g01iJD6GiYX
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 16:31:45.6794
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1e51c2a-fd48-4c3c-376e-08df40da7150
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	PH4PEPF0000B60E.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5930
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/12] KVM: arm64: guest_memfd: Check mmap support when
+ preparing memslot
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <20261111145758.217946-3-steven.price@arm.com>
+ <fbc33983-cb8a-48e4-854f-ce009cc5668f@arm.com>
+ <1e02dfff-c1ad-46bb-9834-fd4bbaa46179@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <1e02dfff-c1ad-46bb-9834-fd4bbaa46179@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 10, 2026 at 04:08:08AM +0000, Samiullah Khawaja wrote:
-> IOMMU pages are allocated/freed using APIs using struct ioptdesc. For
-> the proper preservation and restoration of ioptdesc add helper
-> functions.
+On 12/11/2026 10:43, Steven Price wrote:
+> On 11/11/2026 15:21, Suzuki K Poulose wrote:
+>> On 11/11/2026 14:57, Steven Price wrote:
+>>> Check the guest_memfd backing file when deciding whether an arm64
+>>> memslot has mappable memory rather than checking whether the slot is
+>>> gmem only. A public helper function is added to be able to reuse the
+>>> static kvm_gmem_supports_mmap() function.
+>>>
+>>
+>> Please could you explain why we need this ? Why not rely on
+>> kvm_memslot_is_gmem_only(), which already tells
+>> kvm_gmem_supports_mmap() ? With inplace conversion support gmem supports
+>> mmap.
 > 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> Unless I'm missing something it's still possible to create a guest_memfd
+> that doesn't support mmap() by not passing the GUEST_MEMFD_FLAG_MMAP
+> flag. So kvm_memslot_is_gmem_only() doesn't actually guarantee that it's
+> a guest_memfd that supports mmap().
 
-Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
+I see, while the KVM decides that, with inplace conversion shared pages
+come from gmem, we do allow creation of gmem without MMAP set, implying
+we would fail the mmap request from VMM, which is pretty pointless. But
+should the KVM fail this when VMM is shooting on its foot ? Only makes
+sense if there are no untrusted device DMA for the CoCo Guest.
 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-> ---
->  drivers/iommu/iommu-pages.c | 109 ++++++++++++++++++++++++++++++++++--
->  drivers/iommu/iommu-pages.h |  30 ++++++++++
->  2 files changed, 135 insertions(+), 4 deletions(-)
+Am I missing something ?
+
+Cheers
+Suzuki
+
+
+
+
 > 
-> diff --git a/drivers/iommu/iommu-pages.c b/drivers/iommu/iommu-pages.c
-> index 3bab175d8557..0aa18c771baa 100644
-> --- a/drivers/iommu/iommu-pages.c
-> +++ b/drivers/iommu/iommu-pages.c
-> @@ -6,6 +6,7 @@
->  #include "iommu-pages.h"
->  #include <linux/dma-mapping.h>
->  #include <linux/gfp.h>
-> +#include <linux/kexec_handover.h>
->  #include <linux/mm.h>
->  
->  #define IOPTDESC_MATCH(pg_elm, elm)                    \
-> @@ -28,6 +29,13 @@ static inline size_t ioptdesc_mem_size(struct ioptdesc *desc)
->  	return 1UL << (folio_order(ioptdesc_folio(desc)) + PAGE_SHIFT);
->  }
->  
-> +static inline void iommu_folio_update_stats(struct folio *folio,
-> +					    unsigned long nr_pages)
-> +{
-> +	mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, nr_pages);
-> +	lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, nr_pages);
-> +}
-> +
->  /**
->   * iommu_alloc_pages_node_sz - Allocate a zeroed page of a given size from
->   *                             specific NUMA node
-> @@ -80,8 +88,7 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size)
->  	 * rather large, i.e. multiple gigabytes in size.
->  	 */
->  	pgcnt = 1UL << order;
-> -	mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, pgcnt);
-> -	lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, pgcnt);
-> +	iommu_folio_update_stats(folio, pgcnt);
->  
->  	return folio_address(folio);
->  }
-> @@ -95,8 +102,7 @@ static void __iommu_free_desc(struct ioptdesc *iopt)
->  	if (IOMMU_PAGES_USE_DMA_API)
->  		WARN_ON_ONCE(iopt->incoherent);
->  
-> -	mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, -pgcnt);
-> -	lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, -pgcnt);
-> +	iommu_folio_update_stats(folio, -pgcnt);
->  	folio_put(folio);
->  }
->  
-> @@ -131,6 +137,101 @@ void iommu_put_pages_list(struct iommu_pages_list *list)
->  }
->  EXPORT_SYMBOL_GPL(iommu_put_pages_list);
->  
-> +#if IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE)
-> +/**
-> + * iommu_unpreserve_pages - Unpreserve pages that were preserved in KHO
-> + * @virt: Virtual address of page to be unpreserved
-> + */
-> +void iommu_unpreserve_pages(void *virt)
-> +{
-> +	kho_unpreserve_folio(ioptdesc_folio(virt_to_ioptdesc(virt)));
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_unpreserve_pages);
-> +
-> +/**
-> + * iommu_preserve_pages - Preserve pages using KHO
-> + * @virt: Virtual address of page to preserve
-> + *
-> + * Returns 0 on success, negative error on failure
-> + */
-> +int iommu_preserve_pages(void *virt)
-> +{
-> +	return kho_preserve_folio(ioptdesc_folio(virt_to_ioptdesc(virt)));
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_preserve_pages);
-> +
-> +/**
-> + * iommu_unpreserve_pages_list - Unpreserve a list of KHO preserved pages
-> + * @list: List of pages to unpreserve
-> + */
-> +void iommu_unpreserve_pages_list(struct iommu_pages_list *list)
-> +{
-> +	struct ioptdesc *iopt;
-> +
-> +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm)
-> +		kho_unpreserve_folio(ioptdesc_folio(iopt));
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_unpreserve_pages_list);
-> +
-> +/**
-> + * iommu_restore_pages - Restore pages that were preserved in KHO
-> + * @phys: Physical address of page to restore
-> + */
-> +void iommu_restore_pages(u64 phys)
-> +{
-> +	struct ioptdesc *iopt;
-> +	struct folio *folio;
-> +	unsigned long pgcnt;
-> +	unsigned int order;
-> +
-> +	folio = kho_restore_folio(phys);
-> +	if (!folio)
-> +		panic("Failed to restore preserved IOMMU page %llx\n", phys);
-> +
-> +	iopt = folio_ioptdesc(folio);
-> +
-> +	/*
-> +	 * For the restored pages incoherent is set to false as these are not
-> +	 * mapped using the DMA_API. The remapping of these pages using DMA_API
-> +	 * is not needed as these are not going to be written to by the new
-> +	 * kernel.
-> +	 */
-> +	iopt->incoherent = false;
-> +
-> +	order = folio_order(folio);
-> +	pgcnt = 1UL << order;
-> +	iommu_folio_update_stats(folio, pgcnt);
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_restore_pages);
-> +
-> +/**
-> + * iommu_preserve_pages_list - Preserve list of pages using KHO
-> + * @list: List of pages to preserve
-> + *
-> + * Returns 0 on success, negative error on failure
-> + */
-> +int iommu_preserve_pages_list(struct iommu_pages_list *list)
-> +{
-> +	struct ioptdesc *iopt;
-> +	int ret;
-> +
-> +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm) {
-> +		ret = kho_preserve_folio(ioptdesc_folio(iopt));
-> +		if (ret)
-> +			goto err;
-> +	}
-> +
-> +	return 0;
-> +
-> +err:
-> +	list_for_each_entry_continue_reverse(iopt, &list->pages, iopt_freelist_elm)
-> +		kho_unpreserve_folio(ioptdesc_folio(iopt));
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_preserve_pages_list);
-> +#endif
-> +
->  /**
->   * iommu_pages_start_incoherent - Setup the page for cache incoherent operation
->   * @virt: The page to setup
-> diff --git a/drivers/iommu/iommu-pages.h b/drivers/iommu/iommu-pages.h
-> index e9e605b5fa3a..3c409ec3d170 100644
-> --- a/drivers/iommu/iommu-pages.h
-> +++ b/drivers/iommu/iommu-pages.h
-> @@ -53,6 +53,36 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size);
->  void iommu_free_pages(void *virt);
->  void iommu_put_pages_list(struct iommu_pages_list *list);
->  
-> +#if IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE)
-> +int iommu_preserve_pages(void *virt);
-> +void iommu_unpreserve_pages(void *virt);
-> +int iommu_preserve_pages_list(struct iommu_pages_list *list);
-> +void iommu_unpreserve_pages_list(struct iommu_pages_list *list);
-> +void iommu_restore_pages(u64 phys);
-> +#else
-> +static inline int iommu_preserve_pages(void *virt)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline void iommu_unpreserve_pages(void *virt)
-> +{
-> +}
-> +
-> +static inline int iommu_preserve_pages_list(struct iommu_pages_list *list)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline void iommu_unpreserve_pages_list(struct iommu_pages_list *list)
-> +{
-> +}
-> +
-> +static inline void iommu_restore_pages(u64 phys)
-> +{
-> +}
-> +#endif
-> +
->  /**
->   * iommu_pages_list_add - add the page to a iommu_pages_list
->   * @list: List to add the page to
-> -- 
-> 2.56.0.506.g506a7eabc5-goog
+>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>
+>>> ---
+>>> Changes since v1:
+>>> - New patch in v2. Check the guest_memfd backing file rather than the
+>>>     memslot flag when deciding whether arm64 can map the backing memory.
+>>> ---
+>>>    arch/arm64/kvm/mmu.c     | 7 ++++---
+>>>    include/linux/kvm_host.h | 1 +
+>>>    virt/kvm/guest_memfd.c   | 6 ++++++
+>>>    3 files changed, 11 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index 1db10d8d6db7..a146f6cde3d0 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -2839,10 +2839,11 @@ int kvm_arch_prepare_memory_region(struct kvm
+>>> *kvm,
+>>>            return -EFAULT;
+>>>          /*
+>>> -     * Only support guest_memfd backed memslots with mappable memory,
+>>> since
+>>> -     * there aren't any CoCo VMs that support only private memory on
+>>> arm64.
+>>> +     * Protected VMs currently require guest_memfd backed memslots with
+>>> +     * mappable memory to support shared mappings.
+>>>         */
+>>> -    if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
+>>> +    if (kvm_arch_has_private_mem(kvm) && kvm_slot_has_gmem(new) &&
+>>> +        !kvm_gmem_slot_supports_mmap(new))
 > 
+> Sashiko has identified I've screwed up this condition though.
+> kvm_arch_has_private_mem(kvm) shouldn't be in there as that allows a
+> non-private VM to bind a non-mmappable gmem.
+> 
+>>>            return -EINVAL;
+>>>          /* guest_memfd is incompatible with MTE. */
+>>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+>>> index e7fc94e2910a..f65728a713ec 100644
+>>> --- a/include/linux/kvm_host.h
+>>> +++ b/include/linux/kvm_host.h
+>>> @@ -2614,6 +2614,7 @@ static inline bool kvm_is_private_gfn(struct kvm
+>>> *kvm, gfn_t gfn)
+>>>      #ifdef CONFIG_KVM_GUEST_MEMFD
+>>>    bool kvm_gmem_is_private_gfn(struct kvm *kvm, gfn_t gfn);
+>>> +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot);
+>>>    bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm);
+>>>      static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+>>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>>> index 8c97a69b16dc..3dd8d227bebb 100644
+>>> --- a/virt/kvm/guest_memfd.c
+>>> +++ b/virt/kvm/guest_memfd.c
+>>> @@ -442,6 +442,12 @@ static bool kvm_gmem_supports_mmap(struct inode
+>>> *inode)
+>>>        return GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_MMAP;
+>>>    }
+>>>    +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot)
+>>> +{
+>>> +    /* The guest_memfd file is pinned while preparing a new memslot. */
+>>
+>> We should gate this on kvm_slot_has_gmem() and how do we ensure that the
+>> call comes after it is prepared ?
+> 
+> I'm not sure what you mean by "gate this on kvm_slot_has_gmem()" - yes
+> this function only makes sense on a gmem slot - the user above checks
+> that first. I'm not sure what value the function should call if you call
+> it on a non-gmem slot?
+> 
+> Thanks,
+> Steve
+> 
+>>> +    return kvm_gmem_supports_mmap(file_inode(slot->gmem.file));
+>>> +}
+>>> +
+>>>    static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>>>    {
+>>>        struct inode *inode = file_inode(vmf->vma->vm_file);
+>>
+>>
+>> Cheers
+>> Suzuki
+> 
+
