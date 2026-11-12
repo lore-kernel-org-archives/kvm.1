@@ -1,69 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794494547;
-	b=GhpLjV3ss1U2Q9U1gUsvfqlLcAK7WHl9kzg3xeBKpD21LR5+o1N0DY+T8Fb7VmNvWCo4
-	 ijj6oWjxkJJIg2At969qpF2qrYgoU1CJkLAdmaH9RhOEtyodiCzSl2t+WvX4SHeypqETQ
-	 E1+Nf6/5ffKuI6AV+F5hj7zvgEXS93KKQNSbflTmP22Lh2qvBa0B7oX4al4yNK8Jrn4uv
-	 IOe+pqMtvOQBEU5ZXdYmPWCOojxulII6lAQCit6pvxkriy6VofF+Snj/+QpVM40vl5VI1
-	 CyAQOCu5eqjcVgiUX1GtwozPmbNR4OrbYg1tZ5OSjqD0cY4QWkcMgKSQhVIL+ezI9cQ==
+	t=1794494824;
+	b=Fwb8iTiAfmLuH4HM8OYJlwSESRvZuoAWfszZiXrqin1hgrjovBw8iu/wCz+ydwXh3n13
+	 F06HVNj97RM+3tW4VfIkT/PSJDLBZPJRBPQZTto9I3ennZgIzy4C43X4JgglADTEtpIc4
+	 11GKQepadyGE4Z2vpMbRhA/q9IVUzE0wLeoR4XkTxcp/ezpL9rv/SugU9QTH9mdoPxGq1
+	 q4uyD6nlqtbCHF3mDbKJYUNO7hUjdwHUzCltmGNzWzTQXz3uq+ETuUcOiYbWceSYac26i
+	 wKOGeDVTyFiBQE3lfM6rubzlsg5p/JBvr/9rwTqVqL5NoQG3KoEDqwkqkDAsgDLVtSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794494547;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 Sender:X-SRS-Rewrite;
-	bh=qZYyj62zk4DKgGeMeAwMpBAlP2Mi8ofGhkV/pgn7PNs=;
-	b=2mfYcYSbdOLsrU1MpTVJMsqehR30PQxLUTMhWGEzPF6CpJcOJJTJwTvOVCXBQeS5iPyc
-	 ZNsUttfbC60VrgcNy/HA3H6dmhEOPoRNTQfnRcqNiLZsErU/iRqW+tXMTOrEwoiWT6vBZ
-	 VvXppOpB6nTzppF8s+kfyO2UyujpZ7FP25oyaGTfpFKI3OY0jNNHnGOTMB6OrDfSIK4EU
-	 TU3oEZa498xlKUV0c3oLFKVSxnpmTXWgwtA8go2OgCmRDKIvdZbf0r0V3+SPl3JKoT7j0
-	 Wne47XqPJxAMMP2jpOv3dwCztT49O804MQj9xAHjcQokpUmt0wWUGrc9wnp7xXVB3og==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794494824;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=/sI9ftla+VY6fpQdVbCFxddsP+aGVLAyaKEHm8V8lwY=;
+	b=FT7D1vhth+fYGWalhmvA24II21OMQ+UkZ1tvA72UGuNQgyRrl+mGAW+8U5KXgFGwbIO6
+	 Te73RwFpACp04DiJSVqsQ5KW+5pQdil7TcVHGrAc/Z0iYFW8d+dWsNGbdCar/TjwfVrfF
+	 J6EQprBFQnd2Swz607f69tKPvgUnPnq9KvSqf73mXre8eIPAw6cr8xWzagAupeXuOvqYP
+	 513lH2vEgIcsEIwEDWlzGcOwl/Vy7kTwVgeT+kwaFpKmuH8yVqwaj25q8N1nV9227RHoa
+	 MF13BAINQTjLS+HhFh0vxZvG56GAT6Ah7jxqVroe9/EkrP1x+T/akAba5QQFp1OyXKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qSmsmSGf;
-	arc=none smtp.remote-ip=90.155.92.199
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DOu0IRpR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2E1606A31C;
-	Thu, 12 Nov 2026 14:42:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F2E1606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1F6606A32E;
+	Thu, 12 Nov 2026 14:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qSmsmSGf
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=qZYyj62zk4DKgGeMeAwMpBAlP2Mi8ofGhkV/pgn7PNs=; b=qSmsmSGfb1mtxy7pnlkZ7QJVdY
-	M5PqfEID+y88Y0NyMwhrF+tZ6z2nHfHWYkTAg+cmRggQYOJw1m+kAwlDNDceoDktqtq072X8fofrD
-	fvOHzETrBlCATXTp7rtjFgDzYbUczA2arBII3GwSgWvm5dd7IOatsTxTHxRMjciefd1HnnqCiJ5ud
-	u0xwRF/qFB+NEXx4qESQzSyBYAOByukM+HJnLg18lj3PSyUKT2x7B58A3exvNb00DhX/FWmL6IZ/S
-	LQmPetx0sN3Fk2663fmOTk4JUywQ+otRwPNy02MjopFS44uVA+rHiYv+Pc4qeDqmxh8mc64GcdsDa
-	y1DRP+0A==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRW0O-0000000ARvJ-00Aj;
-	Thu, 12 Nov 2026 14:42:23 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRW0K-0000000080t-3EEa;
-	Thu, 12 Nov 2026 14:42:20 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Anish Moorthy <amoorthy@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH] KVM: selftests: Drop stale exact flags check in private_mem_kvm_exits_test
-Date: Thu, 12 Nov 2026 14:42:20 +0000
-Message-ID: <20261112144220.30801-1-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DOu0IRpR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA2B1F00A05;
+	Thu, 12 Nov 2026 14:47:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794494824;
+	bh=/sI9ftla+VY6fpQdVbCFxddsP+aGVLAyaKEHm8V8lwY=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=DOu0IRpRGdAldGvPPdf0bdNRpkZKUUa6sxb+7kmEG32E5QRAo3lwicDEOmyxatKqz
+	 m4fJXoDhqt6m0WfQPN+f0oC7yLHgb4FIStFRhJaPVN+qozpielcBdkBRixkhBrspcz
+	 n0UnGC/Y7ZzRvc9Ag39k7XASO1vRTTLNgmPfl9aEO1ce561/ozJLHY4WAo2cT3n3oe
+	 sdzfZvfMH9Usoa4D9UYqWSLYvcv4jsUu98WYzpKOh0CyyVRZGn1n2L8qpNRvdOJpMl
+	 f8C4KxRj3lcGstqKWVKUqNSqFdapNVoqTZfX7NYVb1RysoNPC5yQMfm088vTvSlIbV
+	 UrUnXMCt9dY5g==
+Message-ID: <sashiko-outbox-211378@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v3 11/20] vfio/pci: Use access ops for hardware
+ information queries
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shameer Kolothum" <skolothumtho@nvidia.com>, kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20261112141632.918954-12-skolothumtho@nvidia.com>
+References: <20261112141632.918954-1-skolothumtho@nvidia.com>
+ <20261112141632.918954-12-skolothumtho@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 12 Nov 2026 14:47:03 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,45 +59,122 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] vfio/pci: VFIO_DEVICE_GET_INFO fails with -EIO on VF when PF is
+  closed
+- [Medium] vfio/pci: lockdep circular locking dependency in
+  vfio_pci_access_atomic_cap()
+--
 
-Commit 7d0afe669374 ("KVM: selftests: Take into account mixed memory
-fault flags") relaxed the memory_fault.flags checks so that they only
-test for KVM_MEMORY_EXIT_FLAG_PRIVATE, since KVM may report the access
-type alongside it. In test_private_access_memslot_deleted() it added
-the relaxed check but left the exact match above it, and with the
-READ flag now reported the test fails for me there:
+commit 8a20ca42b1e7365162ac6cecdd060d990d426a4f
+Author: Shameer Kolothum <skolothumtho@nvidia.com>
 
-  x86/private_mem_kvm_exits_test.c:93: vcpu->run->memory_fault.flags == KVM_MEMORY_EXIT_FLAG_PRIVATE
-  0x9 != 0x8 (vcpu->run->memory_fault.flags != KVM_MEMORY_EXIT_FLAG_PRIVATE)
+vfio/pci: Use access ops for hardware information queries
 
-Drop the exact match, leaving the check that the fault was private.
+This commit routes AtomicOps and ROM region hardware information queries
+through VFIO PCI access ops so they participate in device error recovery.
 
-Fixes: 7d0afe669374 ("KVM: selftests: Take into account mixed memory fault flags")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c | 1 -
- 1 file changed, 1 deletion(-)
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index fc6b2673be88c..da7166669dc75 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1178,6 +1178,33 @@ static int vfio_pci_info_atomic_cap(struct vfio_pc=
+i_core_device *vdev,
+>  	return vfio_info_add_capability(caps, &cap.header, sizeof(cap));
+>  }
+> =20
+> +static long vfio_pci_access_atomic_cap_target(struct vfio_pci_core_devic=
+e *vdev,
+> +					      void *data)
+> +{
+> +	return vfio_pci_info_atomic_cap(vdev, data);
+> +}
+> +
+> +static long vfio_pci_access_atomic_cap(struct vfio_pci_core_device *vdev,
+> +				       void *data)
+> +{
+> +	struct vfio_pci_core_device *pf_vdev =3D vdev->sriov_pf_core_dev;
+> +
+> +	if (!pf_vdev || !pf_vdev->pci_recovery_supported)
+> +		return vfio_pci_info_atomic_cap(vdev, data);
+> +
+> +	/*
+> +	 * VF AtomicOps queries read the PF's configuration. The PF association
+> +	 * lasts until VF removal, but its SRCU instance exists only while
+> +	 * the PF is open.
+> +	 */
+> +	guard(mutex)(&pf_vdev->access_lock);
 
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index ed8edde9b718..e07f4972ab7e 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -90,7 +90,6 @@ static void test_private_access_memslot_deleted(void)
- 		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
- 	} else {
- 		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
- 		TEST_ASSERT(vcpu->run->memory_fault.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE,
- 			    "Memory fault didn't occur on a private memory access");
- 		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
+[Severity: Medium]
+Can locking pf_vdev->access_lock here trigger a lockdep circular locking
+warning?
 
-base-commit: e71c4e83c03926c300f6c43e79b783d47ba8b588
--- 
-2.50.1
+vfio_pci_ioctl_get_info() calls vfio_pci_core_access() on the VF, which
+takes srcu_read_lock(&vdev->access_srcu) before entering
+vfio_pci_access_atomic_cap() and acquiring pf_vdev->access_lock.  Because
+every struct vfio_pci_core_device initializes access_lock and access_srcu
+at the same mutex_init() and init_srcu_struct() call sites, the VF and PF
+share lockdep classes.
 
+Meanwhile, vfio_pci_core_close_device() holds vdev->access_lock while
+vfio_pci_core_block_access() calls synchronize_srcu(&vdev->access_srcu),
+establishing the opposite access_lock -> access_srcu class order:
+
+CPU0                              CPU1
+----                              ----
+lock(&vdev->access_lock)
+                                  srcu_read_lock(&vdev->access_srcu)
+                                  lock(&pf_vdev->access_lock)
+synchronize_srcu(&vdev->access_srcu)
+
+ *** DEADLOCK ***
+
+CPU0: vfio_pci_core_close_device() -> vfio_pci_core_block_access()
+CPU1: vfio_pci_ioctl_get_info() -> vfio_pci_core_access() ->
+      vfio_pci_access_atomic_cap()
+
+> +	if (!pf_vdev->device_open)
+> +		return -EIO;
+> +
+> +	return vfio_pci_core_access(pf_vdev, vfio_pci_access_atomic_cap_target,
+> +				    data);
+> +}
+> +
+>  static int vfio_pci_ioctl_get_info(struct vfio_pci_core_device *vdev,
+>  				   struct vfio_device_info __user *arg)
+>  {
+> @@ -1209,10 +1236,12 @@ static int vfio_pci_ioctl_get_info(struct vfio_pc=
+i_core_device *vdev,
+>  		return ret;
+>  	}
+> =20
+> -	ret =3D vfio_pci_info_atomic_cap(vdev, &caps);
+> +	ret =3D vfio_pci_core_access(vdev, vfio_pci_access_atomic_cap, &caps);
+>  	if (ret && ret !=3D -ENODEV) {
+> -		pci_warn(vdev->pdev,
+> -			 "Failed to setup AtomicOps info capability\n");
+> +		if (ret !=3D -EIO)
+> +			pci_warn(vdev->pdev,
+> +				 "Failed to setup AtomicOps info capability\n");
+> +		kfree(caps.buf);
+>  		return ret;
+>  	}
+
+[Severity: High]
+Does this cause VFIO_DEVICE_GET_INFO on a VF to fail with -EIO whenever its
+recovery-capable vfio-pci PF is not currently open in userspace?
+
+A PF bound to vfio-pci does not need to stay open while its VFs are in use;
+for example, userspace can open the PF only long enough to configure
+vf_token and then close the PF fd before opening VFs, while
+vfio_pci_core_sriov_configure() keeps the PF in PCI_D0.  When
+pf_vdev->device_open is false, vfio_pci_access_atomic_cap() returns -EIO
+and vfio_pci_ioctl_get_info() aborts the entire ioctl, breaking
+VFIO_DEVICE_GET_INFO on healthy VFs even if AtomicOps are not supported.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112141632.9189=
+54-1-skolothumtho@nvidia.com?part=3D11
