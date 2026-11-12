@@ -1,103 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794477062;
-	b=3Tdt3P09qPikbGRMAWtjaDpknsjrcno2cZupJ4fLI+pUXSDyJIJ5uUKu1d8NV5fWiXNg
-	 yI2pEqYjN16Cf6dKHsEiVDX9kFRY9etcqOfd3aCQg93m5SvKiyzE6B9w7gLg8lvWV5lCK
-	 7WO7WjK5cFiPcKgo7q/usyHqJrKOmUpuxkLLUVqsSPjkGQSLUy+aqbL8LdXbD+GVKWPfp
-	 B6rPCRg2xyzXqo24GXBZY4OXHreRRLKdc+QCEs6PTs7TMLdw5APrCzKsQtFbdyQpOlJjx
-	 WwklIqCUkzN7Wb9KJxdV4aVTGOiTFs7YlAr8rRz9M3Cd5jCHo15ApMvbpzIieQCcCYA==
+	t=1794478215;
+	b=GbCPJWL0ZWq3lLWT5YLHA5ZueZx6duPnXqqK50vEq0DatCV9yjWzG+B/1o9Hfsm+efiT
+	 u676HKoNKHI9zVCucPDmXi6LE4U51DCo6pGg5UDKtHGErxRSIF8RHPydEvJ5DDZ869LRc
+	 MxsIgxe4v8iFyrJ8B/cLKMK8DvcNzeuqG3o0P/bPiTq/lvIzlHf39W7Efa4ByZBoD1d/0
+	 3LC+tcZyyTGOtnNcYGTN7xaIdZDInGk917T0L4YjPiA0rd3GPR5N5GaWAGiF5DTNlHwTW
+	 qtZkHPmhX6MRki/9eAAA6Y5wrpwkFfqJUXEhz7tK8+A1i6cDymkZU4ordTFalckcO2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794477062;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794478215;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
 	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-	b=II1L6/wy1HUJ4jqNi2vApzKvAZOC/bmGQenPAUTEZv1iIVoCfwlTooXQB6TLZdf4YepU
-	 Lve5N7Uub013UZwJ/APjGemz8HOiPCAWMWT/LeOBJpiDIEbwCR75rBkKJpvUqnowK5w+o
-	 06VSpm1XsULg+2xLXJ3cj5pGlfKg6rqvfw6Q/r7/tS+d3TTWFt25N2aRfpzj6z7pkP4UM
-	 7ycJtBtQ47In7wG3Qdg9TtIZrMjVEX6ziEP/shNOdHkCXe4LtVuUF4n59D8h9a+zy+/3K
-	 goQL312AX3MkC1SiCa/i1HwYyF6nwRggsN5Kj17CxCCv1FSip8x+cf17CfiTxtFYS0Q==
+	bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+	b=OxGruEaU7fawluxITkjT480g0eSwXOFqr2ovqY25pDW5X9jz2fKaUzub95vm5WUAaCi7
+	 1fZT9+Wzd00Kl0Hp5d/sogPAGZYbmGkvJuyhyjp6bd7VDsoVa0kZMH1rfFHjFPR3QTxjy
+	 0fX7mw75AA3VM3zSItOvIVxiYapFzfmHMscRpJ1UR0V1YgL5TauBEV8K0LgJZe2mf+1Lm
+	 +SG+FE6PgV+ll04weavKA6SPilK6QwdmjEVVJf3bu01ypjTwGQQj933KFRaK8TzZECBUS
+	 TYk04px6eZzg3GyqTh6nenkR1MQtwWRUEYChR4xo90OI/JUFE2XhQJqHqEa50w1QNvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RXWiPM9g;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=HvSQNiof;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QQrBqtsI;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="ZZS/98e7";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0B6606A32D
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 09:51:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD0B6606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77BD606A321
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 10:10:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A77BD606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RXWiPM9g;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=HvSQNiof
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QQrBqtsI;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZZS/98e7
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794477060;
+	s=mimecast20190719; t=1794478213;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-	b=RXWiPM9glKt8c84teQV76D3GrDKVCOBLB6mn2I1ijFJCQb4OMmrlLDFWCcFqryVtl+9qRw
-	S3cfhJCt406aNjQazTVjoMN1ShBkX16QufH020lkNxDnsh6+qRCYZrayYpANo3TONKVu6z
-	RBoTMv3PIYpNxhWQR2LTSjOAj9vwT1o=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+	b=QQrBqtsIUCFfSxE0LtH6ciVAJuzh0yx3iXtu8OdcCyy1Z4D726B6PeM2lDMXz39IkHIR0q
+	eHK/mfbPfh0/rD6JBOoMBU2VVnpk871lVkAUWF8ZSnKASb69cU8eAmdRZhMxXt0yb+24pG
+	Ofk5HGFZkwh9G3llc/8kaWQoSmKMYZo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-ZEVWKeifMHueMiQ1lsCgrw-1; Thu, 12 Nov 2026 04:50:59 -0500
-X-MC-Unique: ZEVWKeifMHueMiQ1lsCgrw-1
-X-Mimecast-MFC-AGG-ID: ZEVWKeifMHueMiQ1lsCgrw_1794477058
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so3028030f8f.1
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 01:50:58 -0800 (PST)
+ us-mta-159-VGGZlsoNNuqvW_65NUuPhA-1; Thu, 12 Nov 2026 05:10:12 -0500
+X-MC-Unique: VGGZlsoNNuqvW_65NUuPhA-1
+X-Mimecast-MFC-AGG-ID: VGGZlsoNNuqvW_65NUuPhA_1794478211
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a77c1cbd15so32890395e9.0
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 02:10:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794477058; x=1795081858; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1794478211; x=1795083011; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-        b=HvSQNiofO5MTaoGZNkYzRuRHopzkuvp3+GS2bTyrBYNyU2XApZTbnO9dVYsmw9pQEO
-         u7wzQ2aWtdtRFTIztMJJsgTx39/POVQP9dyZ5IM6G/ETYMaKmspp9H3yuTMRgKIHrJGO
-         96KMkkavkEelnK6PmoP9pWug6pG/eKsHqujIiZkGdhHQA4Jb4gEwhkXw1JRSEJXl6REc
-         n/2kpSwt25FOrDU9jmi5GCBG/u8KUGhCJMUWQbmdcmqnQsWmAkQORYz7MmKxBe+tfhmC
-         OsFsYaRyx66zHQXoGMycSYhZA/ZA/dKS9NrqTLOyqAXu5vUG8wRd5Y/IX+9s4sXfbUEw
-         VNGg==
+        bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+        b=ZZS/98e7hTzHTSGfkOQMtdtVMwRHf5R7ryuR7PCPA2eB8uSBpyDzPAsYTDUrE8c1s7
+         6Bbcw7gA0UnCboWXBGHyBwOAEpWX7QNbRNZKReLPknfCZLjPGuvHRe/GlpozugwnC4r+
+         ckxIBN40YsOOfEKk9gs+W21PqXpi5M0XTINP/tW0/SGXqbDKWTDy1Yv2u25fvFiBXzqL
+         ZauUIgbHEEHf3ys0/Hr37zfwpFJu4rue8u3BAwHjL+wS6nMjReXaWeWspg7NzFyHeZas
+         dKncXM1E+AtVPk9wxpke/tfyEod4k7XIGOfYDxW7wVQ2XtDXCAvM8gSCxGQyHWvT6f5n
+         RR3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794477058; x=1795081858;
+        d=1e100.net; s=20260707; t=1794478211; x=1795083011;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PWjpZTISxAW1ioWo7zAlKfMSm3zMo7GsaFnXjvMiMuw=;
-        b=K/eV+UErvfiKFEFFl4Q2TwRvjsC/bSUyh27hDoM3wO4/cjDK9x43UFKmDiWCQCSuqa
-         EsBW0XwOWWnoKtRARHsjhR5wmqMhYud4FvOU5cL24tBiS7og+OKWsZtmq4OQ5AjeIAl/
-         x3nzXz99fPC8regI12QXxDhaRcfXP6pEATzB52xqHGK1flGUqGvjdf9OJvYFuNqP2Ri1
-         AKCSkWV0GN/M3eA/YLxxhgftwSe0JeSxeQu0+mYpSMuwathBiqKGo6cNr0J4AIJC/Y/k
-         VUcSoVOWuCrD4qtIC8qknYSp2adPyl5h+hc5I+SiOgNTk6uwClWHHq+EncSdh29v9v4l
-         h7mg==
-X-Forwarded-Encrypted: i=1; AL+hErE/4GzlGz9BYmDrYmKw1bPhWdW60YwhDkiFi8IX7qwU50SSHk7P4Erv9i+vd2IwJ9oVun4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8flPGMENBU86lxXqhmxE58mlrIoQGA0jfQXe28LVS6Hn6FfDNQ
-	Qtf06I4QYI9AZy4BrUBt5ox35wjnd+xW792c4DQZWnztI8Zd2GAfnjKck0/j4UyrSuFDJWmtamd
-	MJKUmo1tKmAbpjQT3WBTJLs4LhFXpmBzDuHtVpxmqluSBQ4VHcZF/Mw==
-X-Gm-Gg: AYBFou0fYefsN/gi42smMwbpsauNuSdTKtgJK9IYbp+FcvdTa+FRLXoVCaeMhUHYemr
-	7oOk7xCDBcmRPhymC39HRA35RLSBvxqc3NJ+MKztwD82PsUSzRIQDVX7F0t4uAL6KbY6CYvSghj
-	EO5Ebk6QYpOiOdCWjcMncYZ4hCj/iXtcv9XN/b+o0KVALwCuOHDbiDkT6cx9ZQI+F/3KT3XEF6I
-	rRA9hyGH8vI6P4XCUErrca5uyo4XyuDfOKFcesgyrYQO4qfvAM7jlkI/sk7cNLQm8wZIeFxW1r6
-	NXka0rbJSAxxOzEitfhR4uwnpWAA2hcmqj5HvS8czsPLMFJFwqLrYVQ3kiYQqN4YF2c++Nmzrcb
-	6mI2pnDLoDc+m5G+tqp52tDkgbVSY1OHq2f2b0LKOCg==
-X-Received: by 2002:a5d:5f91:0:b0:48d:f9a4:bd68 with SMTP id ffacd0b85a97d-499c7dfe760mr9013244f8f.27.1794477057314;
-        Thu, 12 Nov 2026 01:50:57 -0800 (PST)
-X-Received: by 2002:a5d:5f91:0:b0:48d:f9a4:bd68 with SMTP id ffacd0b85a97d-499c7dfe760mr9013178f8f.27.1794477056650;
-        Thu, 12 Nov 2026 01:50:56 -0800 (PST)
+        bh=dZQUAiljUbxO/eu4TRCEfrOqVOK81+mbOuXnFblvr+8=;
+        b=kWEZv/xVSI80IBRn1kL6hKhPKdgTOsnESptkszSUKgh5vi5il/6Xvq1zxY5++mJY+L
+         GZvU+u4tvUicdSwoin/V1yzoHryDmRJLnq7I2s5JDw5Q66BVpdda5JArNSaOvgV0EV4R
+         FP3d8XAws56Wv7nfyJZY+0SgUR8WjtAiTk5Nug4sfh0RSiyrH32f7NZZbeHMAFcJluKB
+         02iU+dB6El5Ul2RbNP52VHR+dU4+mLrk19ZIFyNT/Qo2cEdWuOTJd/Ga4wwUYrrEpYF5
+         njoGOjP4KZuHzYpsvk2W/0yx4CExiktsvgFDAYrxzYseazC/EPpCM6jnP7F7no+axOdu
+         AQVA==
+X-Forwarded-Encrypted: i=1; AL+hErHorywVYCjdLKDlDavQq5Xghd8zKuUz7yW7epd2OQ84eOh2IFDfMwz55P88tR5qxIU9ZeU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Zd7EQhnXlWIsnMGQyUiTemLttKIGy22ZrO5W56ZoQ17vtAklo
+	viXd9RLIwatuzMyrKKaTcbFWgRyIMou8VZumw9KUAnohxfhxwnnyLx9f9FVR/JpeYd3ICSzHN1A
+	+e1MFqasxwqPKTdRY38B5g/1Mq1j78NkzO+wonhUBLiI74Od8hOzrNw==
+X-Gm-Gg: AYBFou3Lcp2RtApxCy3MqrOzyVMc/fTq92EToOItwb5TjWOvptjEERt5QLrMSJ29Cix
+	/iWDPmd0KlQa+8Lj0MVqE/itIvhsYT+vT7AfNGmdfafAPIC+eHGs7EkQn30L12OSjIDOYZCR4BE
+	Sww2pMPbQBPOxBnfzHJxaJqZj98q6a+vp1IPiw9sGJJv7a5cyVnYrAi9cLLlTpOxZCETMWkBfLL
+	rtVMlgkIo4prkyxYrLNGX95wzHXGs/vuxG58C0OpJW8irFqrOmccedHGJiUzXO8Qv8N95GnGjHY
+	DL9JjnxfX+QeHnrV5Rx7QOD4a8pfjb6w+5T0Z8gxvXjzZUFxgXR1WXA3fSEf8Dc2z4rPN6+tveY
+	GgytVjwk6eufG5C4+iidd+QJqPgoSKl9uJv7TU/0AJQ==
+X-Received: by 2002:a05:600c:6214:b0:4b5:d95c:2378 with SMTP id 5b1f17b1804b1-4ba0939815cmr87754455e9.34.1794478210580;
+        Thu, 12 Nov 2026 02:10:10 -0800 (PST)
+X-Received: by 2002:a05:600c:6214:b0:4b5:d95c:2378 with SMTP id 5b1f17b1804b1-4ba0939815cmr87753625e9.34.1794478209938;
+        Thu, 12 Nov 2026 02:10:09 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-499823761f5sm10614988f8f.2.2026.11.12.01.50.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cbfc6sm16943454f8f.41.2026.11.12.02.10.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 01:50:55 -0800 (PST)
-Date: Thu, 12 Nov 2026 04:50:52 -0500
+        Thu, 12 Nov 2026 02:10:08 -0800 (PST)
+Date: Thu, 12 Nov 2026 05:10:06 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: zhaoguohan@kylinos.cn
 Cc: jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
@@ -105,7 +105,7 @@ Cc: jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 1/2] vhost: set dirty log bits without pinning pages on
  x86
-Message-ID: <20261112044557-mutt-send-email-mst@kernel.org>
+Message-ID: <20261112045853-mutt-send-email-mst@kernel.org>
 References: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
  <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 X-Mailing-List: kvm@vger.kernel.org
@@ -173,80 +173,42 @@ On Thu, Nov 12, 2026 at 04:56:30PM +0800, zhaoguohan@kylinos.cn wrote:
 >  }
 >  
 > +#ifdef CONFIG_X86
-> +static bool set_bit_to_user_fast(int nr, void __user *addr)
-> +{
-> +	u8 __user *p = addr;
-> +	u8 old;
-> +	int retries = 4;
-> +	bool success = false;
-> +
-> +	/*
-> +	 * log_write() passes a byte address and a bit number in [0, 7].
-> +	 * On x86, update just that byte to avoid crossing a page boundary.
-> +	 * Bound retries so a contended byte cannot hold up the worker.
-> +	 */
-> +	pagefault_disable();
-> +	if (!user_access_begin(p, sizeof(*p)))
-> +		goto out;
-> +	unsafe_get_user(old, p, fault);
-> +	do {
-> +		if (unsafe_try_cmpxchg_user(p, &old, old | BIT(nr), fault)) {
-> +			success = true;
-> +			break;
-> +		}
-> +	} while (--retries);
-> +fault:
-> +	user_access_end();
-> +out:
-> +	pagefault_enable();
-> +	return success;
-> +}
-> +#else
-> +static bool set_bit_to_user_fast(int nr, void __user *addr)
-> +{
-> +	return false;
-> +}
-> +#endif /* CONFIG_X86 */
-> +
-> +static int set_bit_to_user(int nr, void __user *addr)
-> +{
-> +	if (set_bit_to_user_fast(nr, addr))
-> +		return 0;
-> +	/* Resolve faults, or use the native bit layout on other architectures. */
-> +	return set_bit_to_user_slow(nr, addr);
-> +}
-> +
->  static int log_write(void __user *log_base,
->  		     u64 write_address, u64 write_length)
->  {
+
+Wait this is x86 specific anyway? So let's just implement it
+properly, why do we need all these hacks?
+
+I run a quick test on this in a VM, feel free to reuse:
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
 
-Actually why do we need all the unsafe trickery, is there
-a reason? below seems way simpler?
 
-+static int set_bit_to_user(int nr, void __user *addr)
-+{
-+       u8 __user *p = addr;
-+       u8 old;
-+       int i, ret;
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 3a0dd3c2b233e..3ed49c91a7434 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -594,6 +594,23 @@ _label:									\
+ 	__ret;								\
+ 							})
+ 
++#define set_bit_user(nr, addr)					\
++({									\
++	int __err = 0;							\
++	__uaccess_begin();						\
++	asm volatile("\n"						\
++		     "1: " LOCK_PREFIX "btsb %[bit], %[ptr]\n"		\
++		     "2:\n"						\
++		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
++					   %[errout])			\
++		     : [errout] "=r" (__err),				\
++		       [ptr] "+m" (*(u8 __user *)(addr))		\
++		     : [bit] "r" ((unsigned int)(nr))			\
++		     : "memory", "cc");				\
++	__uaccess_end();						\
++	__err ? -EFAULT : 0;						\
++})
 +
-+       if (get_user(old, p))
-+               return set_bit_to_user_slow(nr, addr);
-+       for (i = 0; i < 4; i++) {
-+               ret = __try_cmpxchg_user(p, &old, old | BIT(nr), fault);
-+               if (!ret)
-+                       return 0;
-+       }
-+       return set_bit_to_user_slow(nr, addr);
-+}
-
-
-
-
-
-
-
-
-> -- 
-> 2.43.0
+ /*
+  * We want the unsafe accessors to always be inlined and use
+  * the error labels - thus the macro games.
 
