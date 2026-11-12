@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794442402;
-	b=4lph/pqkNtjnVFml9pVviA9fvX9ZajszYPPQ5Lx3xMu9K4Bau/zHyXU7h40s7m52ceo7
-	 NcPzPZwP7PQ6yDyPTdluYANinBqNCT82cuUtHVJ9IX3u/IjBpRxJDkHDHtRJw5RLqUbNY
-	 zrAWLOv3jHGlCasFkslDK/fTlxvaxj4ofBQF0OGZ+FCEM+iErXe/Hi374Z/yJ5zNxQQwN
-	 M7COMN0W4C9qkQwwh0a4RLjLDbTmtrJBYOKNDaXzLCIueMArldgt2WzJSWrULNTreeVp2
-	 WgYX1QbLJznHzqvEznrQS1qGzGxWG0OYbNNt9nQZPzR2B3UIysmoc8Bj6iZWipCYsVQ==
+	t=1794442462;
+	b=ekAcCi3SRej+LoRCcTfuXkm/4OftXkSlsvroahjGJQwIXI4la+YtjV/cxjIep+h5vSzF
+	 1gy674q12I+8tYEu+tMgccF8cSUcptQsHnLiup7SAMBNkWKji+4IeZ/1pDy71Wu+nMXm7
+	 EBg8T3j14uSbuypbtMnZbH1f9O8Cm+yqimUmk7yQlRMXIZRXrigR0Y3fiKv7aFh3/rXxx
+	 7iAIZKZeRBIErfYKz4xvdj+aMmAe4SpkJaKma/3poJlPLsMk7D0Dm5jk8IR+racbct1qP
+	 xEvBr50CtitNfB4qIlq1JnR6IAnKPZwt9tpXK1FzNzHh2wEDaAolgFNiRqnktCCUTNw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794442402;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794442462;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
-	b=uKZ8SsQZUObir3+Yz1+Slrqx6ZlS5ZNt0vgFvgfn/uKU0YcPV16f5k7I35KP22GUdqa4
-	 ZCKDk6DusIugIgdVmnAU2wR4iyeyEyx6WLO4t9G0Z7lPzgjVsiBKxpYpaIZNJBbhO1xVT
-	 ONi/SGiju5ntcU84JRSSUD+/n4JC0a+L8f8BgW4xjcoufPIyn4Y+HcZwqRvy4rrhk6Ss2
-	 fHdXoAaK3GJMZ6A04+ZnR+G5At8OknJYHHGJtHKM3Ve+kI+NHDOm4QwPHEnFVTZgvGnT/
-	 y5ak+Jfpd3Pvnd6essfAgfD/cBym+Uyl4gAOISFjhi+CeZ9aw78fEMBCjlM4Wmt0f4Q==
+	bh=38yqiB2sXmOQNevupAUQiKNneKLB/boGfQXhDS/dCY8=;
+	b=KJKZmvtDi7TthhsmxQCdZJoSF4aohmlkeatytUfbCo9CCZ0SqO4w2fiHguyEWqj5sRjN
+	 PDBnWnJX1wn+g0465cXp6kCfUIAbKg+nzbYKoXDuCQlTY3tUH6LZMHrI1Y75LHxxJp+25
+	 L4X1nmO97uKXdVuHpR3k+Uym2hIwzGSlrDJcKv7Zn948GCFZDNgUQM1dPIemK15mf9Qlq
+	 Zv83KhHgNsgz65G2tZcwsfzWC+FuazBSvFdwNH9cGeyA6TWW+eNUyI3Yd/gHLuQjq37B0
+	 9GjnvRt2rEXO8A1llX7NcQetOj2oD1sYYXPl7wRb5v1fR+uqE8SsbFLN29rIcmlLXFA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="iH/wd37L";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SDyjaxyb;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B68606A326
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 00:13:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8B68606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9B8606A324
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 00:14:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD9B8606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iH/wd37L
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b571a45a2aso2605a12.0
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 16:13:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794442400; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SDyjaxyb
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso2492a12.0
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 16:14:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794442460; cv=none;
         d=google.com; s=arc-20260327;
-        b=FKJNS1FA8hreUnENyg17NgShoUz69NVHasnZj4MOdLfSInGqvIh+hDwIifHFW727e4
-         XnP+wheuZ8/aZKhskjHUbDlNU3QdKBd6nHwDWZV2ZuZ/T9qJmgQ93Ceg0FNXHKmo4sym
-         ZJvgaGXPGB0Vp+yaFtHEnctV6geZAVQPmtSHdpGfRJEPG5wVGdKP9xAw1irCyJznaYz9
-         NIuJdqmRLj9tL6C0acS4pj0QofZ8Se319+YiFNy0rIw7H+dVLLMePZt176/RYijpgvX1
-         yRTJHTxSjxZg/emPAp7VKtbK14qBvOJEzpSs0BiBjsItpKNsES6Xqb/zZl2w7CErSBpG
-         WmHQ==
+        b=r35T7BerL2daiya9nB0KhEGnkho8gOklCcx3PHDRWPlsAKZF8R6pv8jjqAVH/WV7lk
+         VQY3TMPsizoPXC9Cx+ZnfkLZBcYvFl04dfh/ybyfbKqE85+KOhayHrTjJ8SAGExRFmsP
+         NpAhdZ7SEsobyaWektiFEEJyr2/YbGyrTEfSKOOasvgXPOHZz4aX/LMyaY9Z0ZqHp3k6
+         XCM6XGACQ3QVKpuXHGAOX1aFSDu2x3qAYbFn1Yb3qRXq+E2SqYTZwHf+k4zlRvTX+85q
+         9deHzcjlO3vGUqkZPddoMaVGM/E8/mbxnMjwJAlZfOhR/++jj07faLsU+in1QQuoVmfD
+         IQlQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
-        fh=n+T7JFG246dIBFAkioO/ooGuV7OMs4RK0i9AZiaJPIA=;
-        b=bgI4e3H3YXY2qqIULohrxBiHCS8Dfbxmd5d6TGioatf7h5YC/7qarFWNSa3A/6tFpP
-         LjDaXJgJmYxu2WTHapN0sP2VZMzDN/dJPq8S1uD5cfCJ7KiaMgrTzUILwGh974EHE3MM
-         4bdxC60uH5Ljq+H1ojLQFY6Z8cBVTscevax8uaJWyydQoF5qFkOzgCYrYD4TDQYyTfFQ
-         OW6nRGsLmkwL8KDsp1b1BjWBiA2qTkK+HK82uX2ESs6UkleWbA2wD7aouWc1Rnj4/Okz
-         fzm3g00uOYwZeB8hxInAB85niW0cUdmC2Rc61HS+KC0PXh/88Q2a3SfwVaU+jAZnbLDi
-         pgow==;
+        bh=38yqiB2sXmOQNevupAUQiKNneKLB/boGfQXhDS/dCY8=;
+        fh=by93oJayI/HZYT/cv0YqVsWx4YriQJdg4mUAoPmkLSM=;
+        b=icO10aB7/SOIxqFXovWDzKTowbaEu7bs5zjh+wpcLaq4/S669yMq+c1E9ydIrIccsU
+         Xf1KyrUwCLrQBchq3icnck+M66J+upNnunIEFeAMkdK+dvJJ/SyL8plHVvGdkhdFzMiJ
+         WPd/Uw73aPKDclTNgQzjnfR/WW/8+hllzl/bbYqTbJuSDrRjJbWNwuYRapG5Z0MMWZVn
+         Mgmc0gfPynDuBi/+H5LM58gGYJ0fn3AUGdm0eQd6S9039ZIRfV2UsuD/8XyJPrBiKllP
+         Ml8QesRv7vo3F8Fh5QVGDEgiqtHIYbmGlGv5PC2uYnFNRlyVHDEe91HcNwMeu9z2Pl1R
+         xq+A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794442400; x=1795047200; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794442460; x=1795047260; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
-        b=iH/wd37LOg2hD3TTD1m4q0qaLfhoXoQUtQjEilEqBxnKJxbifvZHG67+MeME0M8WGu
-         Ux8INvsQJMiPw/PdFkvNsGCSdtaFu6NBxDAsk1VA6RyZR1qKKE4Ckl/UH6Rig7phjNE9
-         WklDOtODfrt37ymWxn1AQUGJUokgTSG1AgdjMwN1gkaesF4YiZ1DgZnnrUJr+yqaPWAT
-         UUtWdqd0zZJpy8uuQOIaki113+rawIwWPmfRJmt0rGg8wPGEBlnazc8MLfvWbf9d4Z3L
-         zt0wT6rl8FNYicdd1gO8Al8EClUL06yC17IuiUHAhAeEQ1K6vFZhcjqE0SueEd0Jut4F
-         XEkw==
+        bh=38yqiB2sXmOQNevupAUQiKNneKLB/boGfQXhDS/dCY8=;
+        b=SDyjaxybfpDZ+GWIRXwXHRgNXxO+19SgUyPxzBxooYLTFpYqLIiTwWA4lKfCpMdefA
+         ADzdSU7SYgKFDnyosvW7whHJ6ZFRKXJswAkYa/ScGcEVt0/cAWuqiv3shn7VsTJdDFUH
+         Gayd79YDMjQ+hlLvmp7jtusCjGIeemXeOBh+dZChDXwF0xZfsjg1vt8sxm/z1dT37fAG
+         uF3sXlwYAzk7LBljJaLhKboJHyc+MrKQQ7jJPuxiBPYP/Kc3RHhWIvNS7kCumAqjAxJp
+         kZjJlWqbexuSuxva3sF7tsLWP3si7+ok/PkDEwCBrX0Mr98Trfvvel6FVCg7CdOnTBwX
+         dKnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794442400; x=1795047200;
+        d=1e100.net; s=20260707; t=1794442460; x=1795047260;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
-        b=WpVmFwn9s0EQ4G9kGAtVrboYIdRZ3nKTUPzwWXcVda2pLUcWSD98AAubWE4bwBzK8w
-         buvBjb0VoqeSdoLfmKr7LuUHyBuPPkuRef1BpMh98pVtDFZtPLFmoGPxiacv5LIaVoil
-         AnHQ3uVRgqG08ZK71m8/pYGCbUOBPLFSIpIOHbQPDBaprSVtdUq/l/QZGlOLwXIgvxto
-         9lblwrvlNC3/4Pm9iijA1f9E/RLIMwAEQ+jQk8d1BA1/l2W0fOeB7z1xVF4bod2dnOo8
-         3iDNaOEgYzon8zTmxzn4yCLGRb1AbM/hIcEb9uVXw4FQgxRsaZp3ptuePoHOV+mkfy9W
-         a7sA==
-X-Forwarded-Encrypted: i=1; AL+hErF14VRanLiCnWJL2C+S8KbM869rofO+zc1J1zBHRPIsZlty4ahoJai5YvIOxM4+hnbbRC0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8v/1kOUvIcOiUTNDPzEFGAbRH9rNhQQX7Fhfi9SeYLmjVHkIeI
-	3VWoBOYq+ucJwaW90tZ71MT/m42cAQ6CBDGbOCmGF1XgHuKBIv3JI3vBMlU779U3RfAOozvqlpv
-	1Aasd+1xWAq+YWzY8n0rbgVEjA0eq8zHbTLoHzx8Y
-X-Gm-Gg: AYBFou0VBt6KiVBdwaDl0V4gcXWanIonxp/M+QAU+vVcbIgEHxsdJVkl+t6iJATAVZd
-	ZzRL7CKoaX+z36yF1kl4CO6zBlnxJNaqydUGrJC3gvKFPRE5b9PyBBSjSSiT1gzkBbTMXA6NooZ
-	+S5bgMk1OvADV3D78xz0goGYwkoWhvmrz26omFiTJONvgUlV82jJAduwFAV5LGaUo2ty8/n1z3q
-	gOsZH7uE+5nFavdfkJeYiJ+aB7+s4zyN1K2s+ISfVGLVEK8coUQLwrivdcFrC+Vp9n2rwX5Zt98
-	0p9uVXT6pSiztLRFtKPRtG+5Hp5xvlmdPMhmOq6Lmiox0RQmOUvarBI7FO1edqZ8edMzx28BI/c
-	AnVbHol1opXtqKYRy/1uT6Zz1ZRjJ2YqWySSfTU/SFuLt5PAMNWGbGafZHssJR1oTid5SWp0n
-X-Received: by 2002:aa7:d1d7:0:b0:6b5:77a4:e7c9 with SMTP id
- 4fb4d7f45d1cf-6b79f51181fmr33260a12.2.1794442399569; Wed, 11 Nov 2026
- 16:13:19 -0800 (PST)
+        bh=38yqiB2sXmOQNevupAUQiKNneKLB/boGfQXhDS/dCY8=;
+        b=pCnC8tdgk+amSp4ZByZkH4tJtMBxz9AfTyhL5P5a9zzPQOrpQn6LUQsM1R6K23Rcib
+         9K7Q53jt4f5KD7BJDAmVGa0bInenHt/tW/bk7FKj1XFuMsemdSbmgCv+qHZDu/AWDrLg
+         d9WO0lFQeP6qdACU9566T9WlKzb2wmpvmuwiMlhEez96l+UnDvRi48JNlWHHD0fyoLze
+         HNmLjNpq7p3x1v0P1XGaffZCP6Bt9g8DZijy0o0YLodfmNdELYXKo3UA7heG7C0P9+QB
+         HJofvGoboneCjzYXeJUNrKjUzqag5LUYZzwsrkJcfuDTLYvME3arcmqA6okOvSkG35AE
+         Bxmw==
+X-Forwarded-Encrypted: i=1; AL+hErGhwfh/pRhim5bkNGf0mjjt8yG3xRXsk5AnwZN3ss+Pa/VvbdOpBLA1a/G485iZ4GZUel4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/3h9CRCagjhcmR3AAoLy5KLrL02K1lDz+FDqo+Ualpt7JInRwA
+	7bytj1jmCVxUp2lObUsG+k//AyhkSTf+6NxiuuX2+kVoh2Iqa5KqQW2TtduwxYRuu+Ycg7ESlkp
+	zUv/NXX7QtV/tksnCcOLYho2H2wcE7QzHI0k+E7P3
+X-Gm-Gg: AYBFou24KwEkQrDNQHEapBbJiD0YtDiWZKsBf7YTz+FaNHvUlLydfnIb16ZvYOpc0vZ
+	S1utpu7Kz9QnOcOe2p6+DP+ueXzhTCQYmHQX1/Cmq7WAlVtpd4/m0H2JIJaXKZi5tyJFADKG6Ad
+	/CFbbJmdaesm6Ni26utbuvl0UAIcBLzxnTdXjesh/26cDeHKUXUpQL+Ou3sDzZ7Gi4rgM+pgApF
+	z3k66AQYO3G8myzNAeep5dZFSqhU0AiuQPa9PMrN+T6JVI9MjFT5O+9VL58YDkoeTPNZCZ4YLqO
+	A5VdmDHMJhtuvavHFf7JQ3bFdAIHizvm+oeSPJGEj9VSz+MvobHf73gZ3KW+JKq649ovTmdN+rR
+	4rkTJln3DJh5n1pGb6eN8Q5zUlFYEXKnJcASL2b9pwK5F+r8G5pmoQmeSgwqML+tbFVewcnyY
+X-Received: by 2002:a05:6402:911:b0:6a6:8513:7e14 with SMTP id
+ 4fb4d7f45d1cf-6b7a29d3f71mr25280a12.9.1794442459610; Wed, 11 Nov 2026
+ 16:14:19 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,14 +104,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1794374897.git.zack.rusin@broadcom.com> <e08e3b6d0a8dcd25f1ee3e97a64acc1cbd3c0f1d.1794374897.git.zack.rusin@broadcom.com>
-In-Reply-To: <e08e3b6d0a8dcd25f1ee3e97a64acc1cbd3c0f1d.1794374897.git.zack.rusin@broadcom.com>
+References: <cover.1794374897.git.zack.rusin@broadcom.com> <07581ff5998d40092c2f171ffe1fb05ac48f9446.1794374897.git.zack.rusin@broadcom.com>
+In-Reply-To: <07581ff5998d40092c2f171ffe1fb05ac48f9446.1794374897.git.zack.rusin@broadcom.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Wed, 11 Nov 2026 16:13:07 -0800
-X-Gm-Features: AclHuK8odVhxcsphtnxehMA2gTchgOO8TDhX7Llo8FUPPxJ2xf2wIKtREyW4NxM
-Message-ID: <CALMp9eQ5CAZ5GASL80qQBB-86nKskdiadFinbw+6g0=9ycYXGw@mail.gmail.com>
-Subject: Re: [PATCH v3 01/12] KVM: x86/pmu: Honor enable_vmware_backdoor for
- VMware pseudo-PMCs
+Date: Wed, 11 Nov 2026 16:14:07 -0800
+X-Gm-Features: AclHuK_DBL8YBFb4m-FcpIKCAISr9plqpjdioafs2WWldumLjrzVfpqUvhMg3BU
+Message-ID: <CALMp9eQ8ihM7LKSUHHOf-i=R+Gx=7ETZ3r_83P3SGovBEFX87w@mail.gmail.com>
+Subject: Re: [PATCH v3 02/12] KVM: x86: Move VMware backdoor support to
+ separate files
 To: Zack Rusin <zack.rusin@broadcom.com>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
 	Doug Covelli <doug.covelli@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
@@ -127,20 +127,25 @@ Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 10, 2026 at 10:08=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.co=
+On Tue, Nov 10, 2026 at 10:02=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.co=
 m> wrote:
 >
-> Check enable_vmware_backdoor before kvm_pmu_rdpmc() hands an RDPMC of a
-> VMware pseudo-PMC to the VMware emulation.
+> Move the enable_vmware_backdoor module parameter, the VMware backdoor
+> port and pseudo-PMC definitions, and the VMware pseudo-PMC and opcode
+> helpers out of x86.c, emulate.c and pmu.{c,h} into new vmware.{c,h}
+> files, and add a MAINTAINERS entry for the new files.
 >
-> The pseudo-PMCs are part of the VMware backdoor, but only the
-> emulator's check for RDPMC at CPL3 with CR4.PCE clear honors
-> enable_vmware_backdoor.  An RDPMC that KVM intercepts at CPL0, or at
-> CPL3 with CR4.PCE set, returns the host TSC or time to any guest, even
-> with the backdoor disabled.  Inject #GP instead, as for any other
-> invalid PMC index.
+> KVM's VMware emulation is spread across the emulator, the PMU code and
+> x86.c, and both vendor modules read the module parameter directly.  The
+> following patches make the VMware interfaces a per-VM setting, add a
+> userspace exit for VMware hypercalls and allow compiling the emulation
+> out.  Collect the code in one place first, as KVM already does for
+> Hyper-V and Xen emulation, so that those changes stay local and the
+> code movement can be reviewed on its own.
 >
-> Fixes: 2d7921c499af ("KVM: x86: Add support for VMware backdoor Pseudo-PM=
-Cs")
+> No functional change intended.
+>
+> Link: https://lore.kernel.org/r/aIEgVpjXDR0BXgHq@google.com
+> Link: https://lore.kernel.org/r/aIEwOToiAkKfQA-4@google.com
 > Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
  Reviewed-by: Jim Mattson <jmattson@google.com>
