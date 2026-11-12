@@ -1,23 +1,23 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794473805;
-	b=QQfJUGQQ9gkfdRJyctVm1ddKmKCsepJUczozXsculMjB5BfhqOYg3wOvNaPk+TvLnRF3
-	 mxGfc0iOMyPtU2LHDjax5SpOCZ1jbuel54uHd6ZFCtCpxz5Q0pGUD2JtGoKURyQZK75ae
-	 4LnfxIPthsH/iSxGoZXKENS+OPpJig1/0UBgX7mV/GAECYTHLe6rmVpW9xKN/Pkxe90oa
-	 h/bd4mP4M2V1HhyRhqtMPqiejdJdbQ0Fd/tkrFLAvrEcJRC6WOgW3YEBPLCZPHplrPgke
-	 FuzAk/elIHlpLkbYYxWV3E/pz1yBL+yipTOo92oEg2D3V6naUSCdMiwW6xleYu2rhzg==
+	t=1794473810;
+	b=qtO3pTzT9+T6tJpMTGov38g4JvwWKVLG7LlR4QedBS2yenakAMdmQ83SQdFhuHHqkups
+	 mWsLMYRY+Bh5oT3RN/dCRprCesCgBvV7sZrPNhiMBEsF04smHMgkoxsCdMazgY9rmH4ai
+	 AWRIdsfZpQ/b14gLZbPqJm8X7TZYtgq8xaK6W3DM3Q00ul1vFTrrZqguat1tTlY7BbDSd
+	 ZjWCz7jhXpu3r1z13tgb7S8ksZu6KiFbfgjYFsuYRhfgQZd1gVgi/K8KYNngpqClb1IKg
+	 EcLsHr1SAh18DwBVsHObIbUQrvgQuYxtZJ7S9Wrwom04N5/eGukLdQ51Qqb6hng6Uqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794473805;
-	h=DMARC-Filter:X-UUID:X-CID-P-RULE:X-CID-O-INFO:X-CID-META:X-CID-BVR:
-	 X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=LxcEEAoCt6n89bCpZ37twcsUB6ZoqztAQdy/4BmRnjc=;
-	b=gJF8KAGePhzwzsbTakESBINYw2FEKlQG9fn7aYZUc26w0HwpHdDR18fOKbPB5VJ18yaS
-	 wynl3uYPZRV16vx/jdI7+nNZXu2oVALA5X1RO11eZZduzj74esjMVD5keFAguTyvDamhc
-	 OhRSbfGxC9pNhG1lx3DJtbUPtEV/Ybge84W+fCKxxmxyNy+lrDOa0tEfGKQD799yyqiHq
-	 3WuTgmNnKqcknEeMEngcQf/MIcLOy+WLZfVgfPQpbqVD/1E3lyHsr1RH0g4y60iG68AZn
-	 3jRStHq3ypl1TwGn8RyyYtvQYSmJzzjfKmS/SxPiU4MgS5IgTuIZ+e34KGpSbGYASLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794473810;
+	h=DMARC-Filter:X-UUID:X-CID-CACHE:X-CID-P-RULE:X-CID-O-INFO:X-CID-META:
+	 X-CID-BVR:X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=3rmNGZ3FyLxulD7mp5QOdVRfcfOUI6QTy1OLeUY9pY0=;
+	b=1MxAjYvTBrFidE6Fcs/1uhYtL7ANfs8cJ2TttS5rbXNOjB9xI3lxnJsBaWFmk1xVIKkq
+	 WyUKZ4Je+pOCPzVBqQRQc9+5qRLnoXSKdSw7iL3knh2NcezBu015c0sbRN13q5tkbR6HX
+	 OCFf5yuCsmw0gf/M/qQn52m7Xou0KbJXih1j57xzQMOeFeJUOYleh1UJX6kfbfkLxtsZb
+	 JFdkD/UpbznUN89PrzP67DZe615PFW+JYy7r/RMDeabXdwjaxYX14J2kQz0C8VI4R3Zlu
+	 7srdPnuddVLwCxBmtzP6LJB5l+UhjkZ6d4yVMCxmbG4ytIz323Wl9k0iC/pS8jKGbIQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=kylinos.cn;
 	spf=pass smtp.mailfrom=kylinos.cn;
@@ -26,17 +26,18 @@ Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FF9606A323;
-	Thu, 12 Nov 2026 08:56:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25FF9606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8FA606A8B0;
+	Thu, 12 Nov 2026 08:56:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE8FA606A8B0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f805aa50de7611f19a56ed5b684f684d-20261112
+X-UUID: fc264180de7611f19a56ed5b684f684d-20261112
+X-CID-CACHE: Type:Local,Time:202611121605+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:e5d3c368-e4ec-46dd-b66a-e06561e210f7,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:20
-X-CID-META: VersionHash:7db8b62,CLOUDID:92feb5b01784c7e2b70c8a08b12f3392,BulkI
+X-CID-O-INFO: VERSION:1.3.19,REQID:b76f948c-f57b-4d42-80b7-cf3d90f2704f,IP:0,U
+	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:25
+X-CID-META: VersionHash:7db8b62,CLOUDID:24f61df2c0030f820d9e23753848eb35,BulkI
 	D:nil,BulkQuantity:0,SF:102|123|865|898,TC:nil,Content:0|15|50|99,EDM:5,IP
 	:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
 	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -44,12 +45,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f805aa50de7611f19a56ed5b684f684d-20261112
+X-UUID: fc264180de7611f19a56ed5b684f684d-20261112
 X-User: zhaoguohan@kylinos.cn
 Received: from ubuntu.. [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <zhaoguohan@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1107669512; Thu, 12 Nov 2026 16:56:37 +0800
+	with ESMTP id 847822666; Thu, 12 Nov 2026 16:56:44 +0800
 From: zhaoguohan@kylinos.cn
 To: mst@redhat.com
 Cc: jasowangio@gmail.com,
@@ -59,10 +60,12 @@ Cc: jasowangio@gmail.com,
 	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] vhost: set dirty log bits without pinning pages on x86
-Date: Thu, 12 Nov 2026 16:56:29 +0800
-Message-ID: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
+Subject: [PATCH 1/2] vhost: set dirty log bits without pinning pages on x86
+Date: Thu, 12 Nov 2026 16:56:30 +0800
+Message-ID: <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
+References: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,53 +79,101 @@ Content-Transfer-Encoding: 8bit
 
 From: Khan Zhao <zhaoguohan@kylinos.cn>
 
-We use vhost-net with live migration in our product. While dirty
-logging is enabled, every used ring update and every logged write goes
-through set_bit_to_user(), which pins the log page, maps it, sets a
-single bit and unpins it again. The TODO above that function has noted
-for a long time that a direct user access would be better.
+set_bit_to_user() pins the log page with pin_user_pages_fast(), maps it
+with kmap_atomic(), sets one bit and then unpins the page and marks it
+dirty. This runs for every bit set in the dirty log, e.g. on each used
+ring update while logging is enabled for live migration.
 
-Patch 1 does that on x86: it tries a byte-sized cmpxchg on the user
-address with page faults disabled, and falls back to the existing
-pin/kmap path if the access faults or keeps losing to concurrent
-updates of the same byte. Other architectures are unchanged, since
-unsafe_try_cmpxchg_user() is only implemented on x86.
+log_write() always passes a byte address and a bit number in [0, 7], so
+the update can be done as a byte-sized cmpxchg on the user address. On
+x86, try that first using unsafe_try_cmpxchg_user() inside a
+user_access_begin()/user_access_end() section with page faults disabled.
+If the access faults (page not present, read-only or needing COW), or
+the cmpxchg loses to concurrent updates of the same byte four times in
+a row, fall back to the existing pin/kmap/set_bit path, which can fault
+the page in.
 
-Patch 2 adds a userspace test in tools/virtio that drives used-ring
-logging through vhost_test and checks the bitmap, including fault,
-COW, shared-file and concurrent cases, plus a small benchmark mode.
+unsafe_try_cmpxchg_user() is only implemented on x86, so other
+architectures keep using the existing path.
 
-On an x86_64 KVM guest (i7-12800HX host), the benchmark with logging
-enabled went from 243.60 to 171.11 ns per descriptor, averaged over
-five alternating runs. This is the per-descriptor cost in the vhost
-worker; I have not measured the effect on total migration time.
+On an x86_64 KVM guest (i7-12800HX host), a synthetic used-ring
+workload with logging enabled went from 243.60 to 171.11 ns per
+descriptor, averaged over five alternating runs. This is the
+end-to-end cost per descriptor, not live migration performance.
 
-Tool usage: the test, its documentation and the benchmark in patch 2
-were largely generated with OpenAI Codex (gpt-6.1-sol) from a request
-to exercise vhost used-ring dirty logging, and Codex helped run the
-build and VM tests. The changelogs were edited with help from an AI
-assistant. I have reviewed all of the code and take responsibility
-for it.
+Signed-off-by: Khan Zhao <zhaoguohan@kylinos.cn>
+---
+ drivers/vhost/vhost.c | 50 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
 
-Testing: x86_64 with SMAP under QEMU/KVM, running the test from
-patch 2 against both the unmodified and patched vhost modules. i386
-and arm64 are build-tested only; non-x86 has not been runtime tested.
-
-Khan Zhao (2):
-  vhost: set dirty log bits without pinning pages on x86
-  tools/virtio: add a vhost dirty log test
-
- drivers/vhost/vhost.c           |  50 +++-
- tools/virtio/.gitignore         |   1 +
- tools/virtio/Makefile           |   7 +-
- tools/virtio/vhost_log_test.c   | 393 ++++++++++++++++++++++++++++++++
- tools/virtio/vhost_log_test.rst |  53 +++++
- 5 files changed, 497 insertions(+), 7 deletions(-)
- create mode 100644 tools/virtio/vhost_log_test.c
- create mode 100644 tools/virtio/vhost_log_test.rst
-
-
-base-commit: 9d66f26fefacebfeed15de31c1123451a17ff119
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index e29f154706da..9c3045504709 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2527,11 +2527,7 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
+ }
+ EXPORT_SYMBOL_GPL(vhost_dev_ioctl);
+ 
+-/* TODO: This is really inefficient.  We need something like get_user()
+- * (instruction directly accesses the data, with an exception table entry
+- * returning -EFAULT). See Documentation/arch/x86/exception-tables.rst.
+- */
+-static int set_bit_to_user(int nr, void __user *addr)
++static int set_bit_to_user_slow(int nr, void __user *addr)
+ {
+ 	unsigned long log = (unsigned long)addr;
+ 	struct page *page;
+@@ -2550,6 +2546,50 @@ static int set_bit_to_user(int nr, void __user *addr)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_X86
++static bool set_bit_to_user_fast(int nr, void __user *addr)
++{
++	u8 __user *p = addr;
++	u8 old;
++	int retries = 4;
++	bool success = false;
++
++	/*
++	 * log_write() passes a byte address and a bit number in [0, 7].
++	 * On x86, update just that byte to avoid crossing a page boundary.
++	 * Bound retries so a contended byte cannot hold up the worker.
++	 */
++	pagefault_disable();
++	if (!user_access_begin(p, sizeof(*p)))
++		goto out;
++	unsafe_get_user(old, p, fault);
++	do {
++		if (unsafe_try_cmpxchg_user(p, &old, old | BIT(nr), fault)) {
++			success = true;
++			break;
++		}
++	} while (--retries);
++fault:
++	user_access_end();
++out:
++	pagefault_enable();
++	return success;
++}
++#else
++static bool set_bit_to_user_fast(int nr, void __user *addr)
++{
++	return false;
++}
++#endif /* CONFIG_X86 */
++
++static int set_bit_to_user(int nr, void __user *addr)
++{
++	if (set_bit_to_user_fast(nr, addr))
++		return 0;
++	/* Resolve faults, or use the native bit layout on other architectures. */
++	return set_bit_to_user_slow(nr, addr);
++}
++
+ static int log_write(void __user *log_base,
+ 		     u64 write_address, u64 write_length)
+ {
 -- 
 2.43.0
 
