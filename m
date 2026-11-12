@@ -1,122 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794503079;
-	b=A1XDEIFVfNupaMh1HPdmJximlf9PtYu4vqtbVOHj/8tO5Gd8oXnNVKYpuC2Q6FH9OIMc
-	 Ms6yB7jsF7FrGw8jVN0zG5ZO7cOMriB9Az/dtkLVuqsF5uPQURDX+FFzlQyKRtaQiWECx
-	 wKzyH9SpMFz11L/l5u08k+5S/9Nx70E7KI/rJLcjMJWaSIUZGMLSbnN7Ei2RjDSshglIv
-	 xsvnzIhQ3lTItKoBPchwD+1NERUQWFJgJdf/yGUj9cnYZ2B9ERUWhYTtMq+O3UNyR+46k
-	 rifcWtOvlYkKPDuaS5gPxfoZ5NIcWpoiuSbunkYlBCjBvgC+L29ssRVH+JHRa1vnVoA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794503079;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:From:In-Reply-To:References:MIME-Version:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=snSHFcywNjYaU+V8VNJTtf/b2PyC3xXSLz2Yl9hABOc=;
-	b=VlBrhbrqQaaC5R776vd5/NFmMf/1maTdJjvb+hPLqxoI2T1ZKqJ3RfO3Cv0MWsCgxZqG
-	 QRKRAuzQGwotXbSiMB6812mGmlEocSfUoVTt7JXbhSt7FpPnieT57c4g6qrrfhw8eZLd5
-	 b/tT0BlvBC6y3ysYOMjyYxI/RB1sIRC4GSDM/szLuTS6mJud+0mQQExhGRzdbNbYBBpfx
-	 SrwVxM3OwPmAzTzVPlX22LXywksNXhiHA8HLssPmj5DsS1igjjsSABvQKqNdoUeGRVPJ3
-	 rkhuQX+AUHHxCFclP1slJ5AxXjn5QJvxZxo+3auuKYz5JdbZHGdMTq5/gGzGVt/tY/w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I6ri4AEr;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=j1MT0Aag;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.177.32
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794503227;
+	b=JqKqw+KqXAnfmu+JQxHe35Xq28fCwQje5Xz+uQDShcXGsmhEe3NhiujT3plw7eNRQTid
+	 skuRr9CUkdkR6upHXEiWHsSnNfX+J8Mh7AKNoLtysM+A5Me1IDZjJ1twxmzjIJeoUc4Km
+	 3ROgFkSUA5YyCoUmtUXW3b2K2MehIOdUc+HCBslX8gB5X3F5jiaKjBJ5ARwYLGl7x89Q8
+	 +7Xm5+XFV7LUj/mNOTqWRL7dZvvHiZ8GlCimMN0TIe8V+oD0GHKib2gUk+0noAfG0vrmF
+	 jKz26Sd/KBYRYKsAwu52FQGzHYvGTzeIIYqT4PcAZizKZtxTL5hsEfYTpH5bwHWjwvQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794503227;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info;
+	bh=lLJ36rSMdNFze5jl4LOnhfR78kjXJTUSd1d+vQWrrJQ=;
+	b=0GyemJI9uVBx4XyXn8xKk2VQQFUSN2Sm3c/mhyvcnhFIB1MmxMoJL+6KaRIvZsaY9g5s
+	 h56wDli8bLdV+cNiPwsZjBE/qxbzd9l2ByWazbwtDwkoekZYRKsUXW/h6MUxRKaGy/wze
+	 S1cEMGVWnWhelOavKM2RnDTg94oOj481+oWAYvN8EIYGPHrS6LXh4/IbXWmvf3ZSdsnnG
+	 cxXpAnU8wQpt7ZZKjluxw2SoCHAA2xil2Wc7FMyEGpLHPiGMwE89dbqX2GJ3k0Yv2v1MQ
+	 TiUWH731C17K8wayHKMr8rje7Dx9jajtUeyqa2/mU03aFP2dtJE6O6YbPsdaXA+jb5w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oracle.com;
+	spf=pass smtp.mailfrom=oracle.com;
+	dkim=pass header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=c0dJhObN;
+	arc=none smtp.remote-ip=205.220.177.32
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3D2606A31C
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 17:04:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF3D2606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEB2606A327;
+	Thu, 12 Nov 2026 17:07:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AEB2606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I6ri4AEr;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=j1MT0Aag
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794503077;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=snSHFcywNjYaU+V8VNJTtf/b2PyC3xXSLz2Yl9hABOc=;
-	b=I6ri4AErRxA6WV+hkDDx6zlpwp4PaNngP9iT6CGCdWaVb6KjdseXBqO/Nsq4GdELvSNWvZ
-	pAhRhNEsMLP/YjiEq657e6e3Fx7or9rvSm4/dTWdHM49ItOw3jfKBlKAFSpM/vy6TkDCw1
-	nrHuAIKHJ8k0nQSEjcUauxRUNpPWWXI=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-tlLgT0V7NkW7yoqtZ7hLIA-1; Thu, 12 Nov 2026 12:04:36 -0500
-X-MC-Unique: tlLgT0V7NkW7yoqtZ7hLIA-1
-X-Mimecast-MFC-AGG-ID: tlLgT0V7NkW7yoqtZ7hLIA_1794503075
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-91c046843f1so644846d6.1
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 09:04:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794503075; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z8kyGXw6mTFdkdckckbpV+DZq0RDwN2xzE7+kFVT2atniGmey8Oi4yUNYp3HYz0vhI
-         vB/IYYZyPg2wDzTLH7Df6E6ipZUIz17XfBMY7jVpEKjg8DwMPCYkpkbsH/MVm+0a1akd
-         tzss8/8h2QTEH9spqGJRfyLSxgEzDuFzo/g4Vu8lnpE0IWfDJiuaxgnDb+DIAK1bMrWK
-         5ED8JtmamoKjlDaVJpXN/iJVBeyTd1YY7VfoCCNlg+huVqMw8ANyMutR5gSIzwiEUzzD
-         gx6DIoiWmzgOCjgKUlodQ3Xd8Rn2EWspEQt/IGXYDnnEpd6NVuGK0/WuZeX00ivxaP4L
-         wmdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=snSHFcywNjYaU+V8VNJTtf/b2PyC3xXSLz2Yl9hABOc=;
-        fh=j6vnxYeHorpqu2eIPxAJ+sFA848cLY5zpptBpCuQuTE=;
-        b=VnO65tshnNXvuw5xDu33zzmr9x8mr8rquwfHBICcr11f7U3S+VXxXlxbPG5l2p/6UN
-         R/k7NvzA38nQWdXxNPBRoA34xaUPIO8JPM37iA/GRk/jHaweMhLdpxuMVBmpU/dJ53MM
-         xv5ux5vRINL4+K8oZmTgDzDkecjJTlOFq/BOHX1IY9mmmW1NPuWNLfXj2m8tujUL1KPd
-         i/+OX5SxlcqDM7LortgT6PTrphN5mZau2are4OdMe5KtrYO9b6c78imjqUfW/fkbJ9pm
-         A6QbpCiXYbvZGowBfg+pDyoPGijxx7DDmTGKwCA05jegUr9YdGyEHe/H9ZS5+5p3uQkN
-         k/Pg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794503075; x=1795107875; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=snSHFcywNjYaU+V8VNJTtf/b2PyC3xXSLz2Yl9hABOc=;
-        b=j1MT0AagyoJNEZdNKleHIZEQIBW9wPTUIkQC+rWJSyVlQRA6uuWD9QN3SRdvkg6y6J
-         KCpCZcdctv7ZMKFJ2w8PQFu0vruy9/xKScfXgqScsEFs57t9xM8e3Kz+6q2g0XjkLBoJ
-         tpCMgF1HVlVZdktMmJXFMJIQ0CovIEBFHAT26gCtwrkwA0cGswgUIVnUMjfHnmn6q2QS
-         Q0CzFITPtni8av1b/xUltkMgM2EceTexQvdIAYmhb9nDnQWUQMN5bFqwrNhIAek+6zOg
-         J3ydNWOw2mRiZLpbFqY44OWQ7DaIpEJ/a6JHmYt2e5UFCk89A8VvPVtRvNoFotYYNO5a
-         5APw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794503075; x=1795107875;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=snSHFcywNjYaU+V8VNJTtf/b2PyC3xXSLz2Yl9hABOc=;
-        b=WJc0T6xGhlIi4QxOcr/XxkfOczelcZ8efH60fAryambvRHytZe0yHcKEGCPutdg8Bx
-         +0kgh60iHxAr/yn4abIx/I+H4l6+Qo4xwCSLQsC4Nq+0XJy2OlyR+oMrcX9z0ggL8SZm
-         OwFmVm9mpAlXvL8EeYWo5lWFA9k7a8slI19/bdqgEH1v1zJeyP9obZQyEZ/QADEe6zf8
-         JtNRnO/EV9ubKfdCBK2uIL9/wsudMqyLUisLPEh7ZLg/mJDP7mXcKtHJ4FCSUXTM/tlP
-         bkUbOhq9W03JiVefwHWUxlVpplAXpCGktdH/AJeJ5YKNbm2yp1pf9ki6PiQXnQ6bkFvz
-         uMKA==
-X-Forwarded-Encrypted: i=1; AL+hErGXHVLBrdhxOZ/uRganAh+hm7+b4TxYDQxHvm9Y7Km+Z9x37LIMLEEav+MB7sfKkLJWpuE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8La3KiAJgyjNCcLzPKa6dO5kCvUYgABNw81jLahWqm1yXlW873
-	Y+yApNWfcs+6uBD3kAqotnOiB542d+mqmLr5ytCvZgTSzXZrvG4go3JhxjRd+tlUDTERerPXcyg
-	N1ToFXkmsyCIJ2dKvkajYXxe2b/EJpsJuieb5ksWxufDcgq49RD34GaejwpSizdtUwdxZqnrwp1
-	aLrWuTad2aqksuaWxmBH4k23+Zg//8
-X-Gm-Gg: AYBFou1LnWPcAucfmrRb7nuoVyndjjf8OL9FaQBoFzvLPAmrBEwmbmCPwgYRABPjmVb
-	MRV8gCUn39guIq2Jp+DHlK1cpspwT15EE/3VBNjYi9CbL2Z4j5l8uXzRQ+UOARXIxPmZTUQUuHV
-	6xbX2mQs1QCjKXy5mwjRzqUw2W/bGXcbAp+sBSeYYv3vUmXGGWDJ0y0Nw=
-X-Received: by 2002:a05:6214:3d11:b0:91c:79eb:ea55 with SMTP id 6a1803df08f44-91f040c0da4mr105370856d6.28.1794503075086;
-        Thu, 12 Nov 2026 09:04:35 -0800 (PST)
-X-Received: by 2002:a05:6214:3d11:b0:91c:79eb:ea55 with SMTP id
- 6a1803df08f44-91f040c0da4mr105356616d6.28.1794503063345; Thu, 12 Nov 2026
- 09:04:23 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 12 Nov 2026 11:04:22 -0600
-From: Sergio Lopez Pascual <slp@redhat.com>
-In-Reply-To: <DMGNAV67LK3F.2FNLTD5NVHDEA@gmail.com>
-References: <20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org> <DMGNAV67LK3F.2FNLTD5NVHDEA@gmail.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=c0dJhObN
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ACENMER1230998;
+	Thu, 12 Nov 2026 17:06:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=lLJ36rSMdNFze5jl4LOnhfR78kjXJ
+	TUSd1d+vQWrrJQ=; b=c0dJhObNjYv7M2/azQ8AvraFa4PITdLFMeo7czklfDG53
+	c3W15o/n5HuKY1zAHGjw2rZne+cW1jphLyzP2QHuy4AZ+KdlCgJAQJCTcmIK25pT
+	gTI46uH5pr0xX0G4T0xNGkBBzAaYACBA74PUQZMJCLRsSIu71u6HpGWYbQV+HSUC
+	98ZJwx9uuJaPpZymqGOBkg1lMN2xI9cldotn5fn10eLY2gdzNVy18yecAGsvvA5O
+	9t6IDyMBqs4pDNRO1j6KkFiE3sSQ7nPb/NHqshQQLsYv1lhgx5b3CvyjCtTz1WE5
+	zM1+Z8sL1D3W/ku9OS7wE33bk4msMEU/fhkVgBMgg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4hsts1qtkh-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Thu, 12 Nov 2026 17:06:51 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.11/8.18.1.11) with ESMTP id 6ACGvTpR3774706;
+	Thu, 12 Nov 2026 17:06:51 GMT
+Received: from donglzha-e6-vfio-setup.osdevelopmeniad.oraclevcn.com (donglzha-e6-vfio-setup.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.255.69])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4hwew50bwk-1;
+	Thu, 12 Nov 2026 17:06:51 +0000 (GMT)
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: x86@kernel.org, kvm@vger.kernel.org
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, hpa@zytor.com,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH RFC v2 1/1] x86/irq/i8259: Ack PIC vectors in the LAPIC ISR
+Date: Thu, 12 Nov 2026 17:06:04 +0000
+Message-ID: <20261112170604.1971438-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.7
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -126,100 +76,255 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 12 Nov 2026 11:04:22 -0600
-X-Gm-Features: AclHuK8-kXlDfbY9EpdjADOfLMjXVcZNZptS66ye_0dxL9--qQit5gRpAYjKWyc
-Message-ID: <CAAiTLFVrvmrLoFxAdJ+ObY5trjgKvNJW5im7XaRQ+K1PG-_M-Q@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/8] vsock: add datagram support to virtio and vhost
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
-	Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-12_02,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=941 malwarescore=0
+ spamscore=0 suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2611040001 definitions=main-2611120067
+X-Authority-Analysis: v=2.4 cv=YPYKWhGx c=1 sm=1 tr=0 ts=6af5f22c cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=o5oIOnhZENCTenyL_yNV:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=JW85imeA6ZLr9y5tCYAA:9
+X-Proofpoint-GUID: maoDPFY154l4ucuzSvJvV7wd2r8pkZUW
+X-Proofpoint-ORIG-GUID: maoDPFY154l4ucuzSvJvV7wd2r8pkZUW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA2NyBTYWx0ZWRfX1WPL+6tSDHq+
+ ryR9oHVb32Xj0aXIsvWXwqefo+ME1GXuKDBKrBPjT15sJPYNbtIrZiZ7yL7z8WIQoGCMsu3zqM2
+ yTNQpe0F1ROJoVPBp+pU13YpgUfTKYs87hM0G/CkjyvLlzVphH2o2srRAaOlVk+K7wZTBVxeRkT
+ d618O4euZGxp9uQe4VFk/peygBFGlLWSU/vM46HmK9Xj9Is9wXQ2evKB3kcs+AJd+NzO4+KtA1B
+ cOAHI9KZ3Mwy8D+/+Iqs8zEv+5c5UVTP1pUMlDp3u6ippU+zrk9f0m7CAlBI1oq/O5LmXSd3aGT
+ X7ahaB5mNY2P7HteBr0UYL0ineY1y/8seYc38w9p0wGD2K96NIJRLrr8MozaGMn1gmG/0VcLPGh
+ JwJWoM2pSeyMLgeUMXl2xkRtsthLxBlUp9nkl9wnQadwJSrrqVISha/sqYTbV23N6m5CUARNsW5
+ mmAQpUcU0tbouw6QvKQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA2NyBTYWx0ZWRfX8PxDd5wGnPEk
+ M1iODFsZdIsqyHAT1fFA8NDsbpKEHdEmNC1GRdoMlCtSsdiuQyxPVd5PZYl21UUi8u4KsSxCcPr
+ 1yl+WrVEONQuqr/cwTA7Mo7C2+OgL2CKYLiSVBR4olh7QyBNhoDF
 
-"Alexei Starovoitov" <alexei.starovoitov@gmail.com> writes:
+This is to fix a LAPIC ISR stall that can happen in a kdump kernel, but can
+also happen in other scenarios.
 
-> On Wed, Oct 28, 2026 at 09:04 AM Sergio Lopez <slp@redhat.com> wrote:
->> This series implements SOCK_DGRAM support for virtio-vsock and
->> vhost-vsock, allowing applications to exchange connectionless messages
->> through the existing AF_VSOCK datagram API.
->
-> The cover doesn't say who needs it.
->
-> Bobby and Amery took the same feature to v6:
-> https://lore.kernel.org/all/20240710212555.1617795-1-amery.hung@bytedance.com/
-> Stefano said there that it can work well and that the virtio spec change
-> is the next step. The last mails of the thread have Amery's v7 WIP and a
-> short list of what is left.
-> The cover doesn't mention it. The spec change is still missing.
->
-> Why not finish v7 instead ?
+The issue can be intermittently reproduced in a QEMU/KVM guest when there
+are large number of VMs on the same host.
 
-The previous series is more that two years old, and vsock has changed
-significantly since then. I thought this deserved a complete refresh.
+Device interrupts can use the PIC, IOAPIC, or MSI-X. Nowadays, most x86
+device interrupts use MSI-X or the IOAPIC. However, the PIC handler does
+not send a LAPIC EOI, even when the interrupt it handles has set a bit in
+the LAPIC ISR.
 
-I should have linked the old series in the cover, though. I'll do that
-in v2.
+For example, suppose there is a QEMU/KVM guest using virtio-net.
 
-As for the spec, I asked Stefano and we agreed it'd be better to have a
-series that's pretty close to be merged before sending the spec change,
-and I agree that's a good idea. In fact, adopting SEQPACKET's strategy
-for splitting up packets in the vq would have an impact on the spec.
+1. virtio-net is about to deliver vector 52 to CPU 2 (APIC ID 2), but the
+guest suddenly panics on that CPU.
 
-> This RFC goes the other way in these places:
->
->   what               v6                        this RFC
->   -----------------  ------------------------  ----------------------------
->   (cid, port) space  own bind table for dgram  shared with stream. The 2nd
->                                                bind() gets EADDRINUSE
->   vsk->transport     empty until connect(),    g2h or h2g, picked in
->                      lookup per packet         socket(). -ENODEV with
->                                                vsock_loopback only
->   routing            one helper for stream     2nd copy of the chain in
->                      and dgram                 vsock_assign_transport()
->   recvmsg()          in af_vsock.c,            dgram_dequeue() stays,
->                      no dgram_dequeue()        dgram_payload_len() is new
->   VMCI               fallback                  first. No virtio dgram when
->                                                its module is loaded
->   dgram > RX buffer  drop, EHOSTUNREACH in     every RX buffer is 64K
->                      the error queue
->
->> Datagrams use destination-based routing across guest-to-host,
->> host-to-guest and loopback transports while retaining the socket's
->> transport state. VMCI keeps priority as the dedicated datagram
->
-> A dgram socket uses two members of struct virtio_vsock_sock: tx_lock and
-> bytes_unsent. They serve SIOCOUTQ only.
-> virtio_transport_alloc_skb() does skb_set_owner_w() already.
-> udp_ioctl() returns sk_wmem_alloc_get() for SIOCOUTQ.
->
-> Without them a dgram socket has no transport state, like in v6.
-> Then no need for the owner transport, dgram_transport_match(),
-> fallback_transport, tx_accounted, the skb destructor, etc.
->
->> transport.  Guest RX buffers accommodate complete messages when
->> datagrams are negotiated, preserving message boundaries.
->
-> That's 64K per RX buffer instead of 4K, for stream and seqpacket too.
-> It undoes commit 03a92f036a04 ("vsock/virtio: Resize receive buffers so
-> that each SKB fits in a 4K page").
->
-> pskb_trim_unique() doesn't reduce skb->truesize. So a datagram of 1 byte
-> charges more than 64K to sk_rmem_alloc of the guest socket.
-> The default sk_rcvbuf is about 208K on x86-64. The 5th datagram in the
-> queue is dropped.
+2. The kdump kernel boots on APIC ID 2, which becomes CPU 0 in the new
+kernel.
 
-Thanks for the review, I'm putting together a v2 addressing these
-concerns.
+3. Suppose delivery of the interrupt is delayed, so vector 52 has not
+reached the CPU yet.
 
-Cheers,
-Sergio.
+4. On the new CPU 0, init_ISA_irqs() initially sets up the legacy IRQs to
+use the PIC. Vector 52 maps to IRQ4, which is normally used by the serial
+console.
+
+5. Before these legacy IRQs are handed over to the IOAPIC, suppose the
+delayed vector 52 arrives through the LAPIC and sets its ISR bit.
+
+6. The new kernel handles it as PIC IRQ4. Since mask_and_ack_8259A()
+does not send a LAPIC EOI, the ISR bit for vector 52 remains set.
+
+The below is an example when vector is 55.
+
+(qemu) info lapic 2
+dumping local APIC state for CPU 2
+
+LVT0	 0x00010700 active-hi edge  masked                      ExtINT (vec 0)
+LVT1	 0x00000400 active-hi edge                              NMI
+LVTPC	 0x00000400 active-hi edge                              NMI
+LVTERR	 0x000000fe active-hi edge                              Fixed  (vec 254)
+LVTTHMR	 0x00010000 active-hi edge  masked                      Fixed  (vec 0)
+LVTT	 0x000400ec active-hi edge                 tsc-deadline Fixed  (vec 236)
+Timer	 DCR=0x0 (divide by 2) initial_count = 0 current_count = 0
+SPIV	 0x000001ff APIC enabled, focus=off, spurious vec 255
+ICR	 0x000c0400 physical edge de-assert all
+ICR2	 0x00000000
+ESR	 0x00000000
+ISR	 55
+IRR	 37 38 39 40 48 56
+
+APR 0x00 TPR 0x10 DFR 0x0f LDR 0x00 PPR 0x30
+
+This is painful when it happens in production. The kdump kernel stalls, so
+we cannot collect a vmcore for analysis.
+
+The issue is easier to reproduce with a customized KVM host kernel that
+allows arbitrary vectors to be injected through debugfs and
+kvm_apic_set_irq(). I can stall the guest kernel by injecting vector 50
+into vCPU 0, even after the guest has booted successfully. Vector 50 maps
+to IRQ2, the cascade interrupt between the two 8259A chips. IRQ2 is not
+taken over by the IOAPIC.
+
+For other vectors, I can reproduce the issue by adding mdelay() at the
+beginning of setup_IO_APIC() and injecting the vectors during the delay
+through the modified KVM host kernel.
+
+In theory, a normal kexec reboot may also hit this issue if device
+interrupts arrive late.
+
+Fix this by checking the LAPIC ISR bit corresponding to the PIC vector and
+sending a LAPIC EOI only if it is set. Cover both normal and auto-EOI
+modes.
+
+Send an EOI only when the LAPIC is ready. Use a per-CPU flag to track
+readiness across initialization, disable, and resume.
+
+Assisted-by: OpenAI Codex
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+---
+v1: https://lore.kernel.org/all/20261029063112.203893-1-dongli.zhang@oracle.com
+
+v1->v2:
+  - Mark the patch as RFC, as the APIC readiness and disable paths need
+    further review (I tried my best).
+  - Introduce a per-CPU flag to track APIC readiness to fix issue
+    mentioned by Sashiko for v1.
+
+Reproducer:
+https://lore.kernel.org/all/e4070a8b-fa4d-4ba1-a333-e7cf72da416e@oracle.com
+
+Suggestions for improving the readiness checks or alternative solutions are
+welcome.
+
+ arch/x86/include/asm/apic.h |  3 +++
+ arch/x86/kernel/apic/apic.c | 26 ++++++++++++++++++++++++++
+ arch/x86/kernel/i8259.c     | 11 ++++++++++-
+ 3 files changed, 39 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 9cd493d467d4..13406e79185a 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -123,6 +123,8 @@ static inline bool apic_is_x2apic_enabled(void)
+ 
+ extern void enable_IR_x2apic(void);
+ 
++void apic_eoi_cond(unsigned int vector);
++
+ extern int lapic_get_maxlvt(void);
+ extern void clear_local_APIC(void);
+ extern void disconnect_bsp_APIC(int virt_wire_setup);
+@@ -181,6 +183,7 @@ extern void topology_init_possible_cpus(void);
+ extern void topology_reset_possible_cpus_up(void);
+ 
+ #else /* !CONFIG_X86_LOCAL_APIC */
++static inline void apic_eoi_cond(unsigned int vector) { }
+ static inline void lapic_shutdown(void) { }
+ #define local_apic_timer_c2_ok		1
+ static inline void init_apic_mappings(void) { }
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 90025451ace2..60347bf17abe 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -91,6 +91,20 @@ static bool virt_ext_dest_id __ro_after_init;
+ /* For parallel bootup. */
+ unsigned long apic_mmio_base __ro_after_init;
+ 
++static DEFINE_PER_CPU(bool, lapic_eoi_ready);
++
++void apic_eoi_cond(unsigned int vector)
++{
++	u32 isr;
++
++	if (!this_cpu_read(lapic_eoi_ready))
++		return;
++
++	isr = apic_read(APIC_ISR + APIC_VECTOR_TO_REG_OFFSET(vector));
++	if (isr & BIT(APIC_VECTOR_TO_BIT_NUMBER(vector)))
++		apic_eoi();
++}
++
+ static inline bool apic_accessible(void)
+ {
+ 	return x2apic_mode || apic_mmio_base;
+@@ -1164,6 +1178,8 @@ void apic_soft_disable(void)
+ {
+ 	u32 value;
+ 
++	this_cpu_write(lapic_eoi_ready, false);
++
+ 	clear_local_APIC();
+ 
+ 	/* Soft disable APIC (implies clearing of registers for 82489DX!). */
+@@ -1509,6 +1525,7 @@ static void apic_clear_isr(void)
+ static void setup_local_APIC(void)
+ {
+ 	int cpu = smp_processor_id();
++	unsigned long flags;
+ 	unsigned int value;
+ 
+ 	if (apic_is_disabled) {
+@@ -1557,7 +1574,15 @@ static void setup_local_APIC(void)
+ 	value |= 0x10;
+ 	apic_write(APIC_TASKPRI, value);
+ 
++	/*
++	 * Keep interrupts disabled across ISR cleanup and readiness setup
++	 * to prevent races with apic_eoi_cond() in legacy interrupt
++	 * handlers.
++	 */
++	local_irq_save(flags);
+ 	apic_clear_isr();
++	this_cpu_write(lapic_eoi_ready, apic != &apic_noop);
++	local_irq_restore(flags);
+ 
+ 	/*
+ 	 * Now that we are all set up, enable the APIC
+@@ -2513,6 +2538,7 @@ static void lapic_resume(void *data)
+ 
+ 	irq_remapping_reenable(x2apic_mode);
+ 
++	this_cpu_write(lapic_eoi_ready, apic != &apic_noop);
+ 	local_irq_restore(flags);
+ }
+ 
+diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
+index f7a86b94a0dd..78c6d90e9765 100644
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -190,6 +190,9 @@ static void mask_and_ack_8259A(struct irq_data *data)
+ 		outb(0x60+irq, PIC_MASTER_CMD);	/* 'Specific EOI to master */
+ 	}
+ 	raw_spin_unlock_irqrestore(&i8259A_lock, flags);
++
++	apic_eoi_cond(ISA_IRQ_VECTOR(irq));
++
+ 	return;
+ 
+ spurious_8259A_irq:
+@@ -224,6 +227,12 @@ static void mask_and_ack_8259A(struct irq_data *data)
+ 	}
+ }
+ 
++static void mask_and_ack_8259A_auto(struct irq_data *data)
++{
++	disable_8259A_irq(data);
++	apic_eoi_cond(ISA_IRQ_VECTOR(data->irq));
++}
++
+ struct irq_chip i8259A_chip = {
+ 	.name		= "XT-PIC",
+ 	.irq_mask	= disable_8259A_irq,
+@@ -386,7 +395,7 @@ static void init_8259A(int auto_eoi)
+ 		 * In AEOI mode we just have to mask the interrupt
+ 		 * when acking.
+ 		 */
+-		i8259A_chip.irq_mask_ack = disable_8259A_irq;
++		i8259A_chip.irq_mask_ack = mask_and_ack_8259A_auto;
+ 	else
+ 		i8259A_chip.irq_mask_ack = mask_and_ack_8259A;
+ 
+-- 
+2.43.7
 
