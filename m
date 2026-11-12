@@ -1,115 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794493334;
-	b=WwhDtalAB0NpRHLOmIGX66qXV+uV3Y+tbdq3VNgNQvEiNDmOkGMVsXt1SnciMW3SVyHq
-	 r8kRIPa2Z5OvKvpyKGoBZUaaNu2ofSKPJgCT8Emuni3+lfTQyVBSg0+Rm6fBdrxMg8LJy
-	 2PhVPDLNROaulBs2TTFODD2udEN5aBaPmas8ut+axYQhaXax5dQvenit+czouhnXWN9m2
-	 br/Gxa3orv3u2C2H/wrCTNWm+6WBaAIaPVAUZ5Cm9igTpP4sFHhwWi38ykbYoCKv4iKG4
-	 /DE5D9YYzv3NfE+Pbom5LZDvmapCOLET1SB7jqohLGiQRX6uZBhBov4M6aFvEFr2x8Q==
+	t=1794493535;
+	b=o8ixdHFPjsZFHCqfb1lM5HGcqo5V7BPfWBIlGsmxLAnJnSUWmUrv3BLyoCBmYNWuc29e
+	 og0T4gQDfCRbauU14DmQ0VQ0BLNlluX9/Z8pU9l6qwt3cAAvbcZZdrIZrvOG1V8JOsSqB
+	 jVn14Lf2At42R/eMM7rDNd7ik5qGos+zhrz5K3rXjFwhvfht9dsRPGckdSAxzBmqn2GQD
+	 uHna95udwJAPF2THQLAQkMBvyRSrj3wY3J2XlFQ6d2wHlP8VOoSqNqSo7lK9kRmCylkXn
+	 OjmJoWalc9NpTpEbbLuWStyhO2WUansj4hqTtmbGMRdTWJKyCccQHYRLMr10sq0XfOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794493334;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=q5ycgM6KpIgl8GosUfIZQ6wJ8AxoFNABYsI2jhCC9jo=;
-	b=n7UmdptfkyUGIHI7PjXB+goWf/A3ecrQ13plqX4WP02onVOh6IrUTBTAPF646cW4a9eg
-	 NvNjZ3aa91g9nB8q15QIsP3mOZYAq7LyMYqHdvVLnwXF36nhzuAXNZMgB6eQ8GIfTfHBP
-	 JQ/raRo4LzjTmwX1gYYXDrWW0pMVEx7QKkK5j0FkQUb9uDMRPnMQb2A4+JgzRQ5UePA4J
-	 YixwQ8TxZymSnUPzXWmH9zBQazl5gT+9WMrnSVdVy6mTuTDu0l5c4p7Apb/ucdJcCvDQd
-	 stezuzU3JPhScbzl2TPGaFG1bbVj25GK4vS1o9EbmLgVCvTYT0fLSM7UQRRf8bvd5LA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794493535;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Spam-Flag:X-Spam-Level:X-Spamd-Result:X-Spam-Score;
+	bh=LXnLw2dXuPgpiMbQNtTJhA3OydD17Gjgr9VksJJ+Wms=;
+	b=JKjS2zBUazHW77aBnAKXy/I6L7+OZVfMstmSo60rhg5sqINOdnCNYSOOSmEkchtqQsye
+	 wfonWejD2ynCI/vdCXc2ap3Tc7vUcPaCcLesUvUFoyLK7kK2t0917K12dZ6Pe61n9m3Fy
+	 CY+JfC9g8RN5nLgp1DxXPTIQj4fk0fNel6LXmSRqzT++nHYSL2+hWoJVWGvVvRC+oe+HY
+	 OuwXbskvYd7QfDbr2Pv775ufpNlStPM1X/hjvkjW6+yWMdI9kYw88UI+EOEF/4hfg9NC/
+	 mk5Hrumzow3jPflHgG6Frhu2qBBBQJ7G0vc3O/jr+B+pg+VLca983qSDw0BWu1F5N9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JOEWwrZI;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=PqIaq6tp;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=XOPq9hkB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VRwNGR11;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NWCP7kfa;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=emN3tH4j;
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE048606A896
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 14:22:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE048606A896
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273706072A02;
+	Thu, 12 Nov 2026 14:25:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 273706072A02
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JOEWwrZI;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=PqIaq6tp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794493332;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q5ycgM6KpIgl8GosUfIZQ6wJ8AxoFNABYsI2jhCC9jo=;
-	b=JOEWwrZIr2tHSZ/6Tiq1eZjnTMtV58BpppujzfCPAdRqvytVZhzuZCyOGdnIiDV0uxVtvF
-	a57iXWpZLtMM3b1eY8J2+5K9it8/1HSmTtAbwIXUShJEGiIcPzX1aWsk/u/xQ8AZQ6oKju
-	9ihSpfSpi+/s9twX+qIFcGe9SUzcJ9U=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-HtRYilcxOlGSedR-p2p6xg-1; Thu, 12 Nov 2026 09:22:11 -0500
-X-MC-Unique: HtRYilcxOlGSedR-p2p6xg-1
-X-Mimecast-MFC-AGG-ID: HtRYilcxOlGSedR-p2p6xg_1794493331
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4dc57e2a3f2so5949457b6e.0
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 06:22:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794493331; x=1795098131; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q5ycgM6KpIgl8GosUfIZQ6wJ8AxoFNABYsI2jhCC9jo=;
-        b=PqIaq6tpC3qulR4Jy7cYgsLAsKcRKjTfd+W1Zx/p92JVotlZkNLwJOjvEXnB2U/9hh
-         aEM4/hvy4HCjf6aatFLi0NjUjD+R9TaMzZlqjQ1pqv8x375HgB/q1ttcZAPJgjPxQAOo
-         hLl8KuBqTu/Bm7P/POJMrXnu9OsA1i0ukxm6EuPox763QDa3wzazZOvJV5FJah0tsvOg
-         c4DtdIxFVsSeMrHUlrqLjAjVoEshb/woPzb14frNfnJx872mITsv3cqXRRXvyTBImpxh
-         IDOVklDCjjyB1NeGDr5os4/s2mwdAQi5BJ+/C5C5IwL4NjDjYF/ZS+dg5ByCiBQjbd+W
-         FRDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794493331; x=1795098131;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q5ycgM6KpIgl8GosUfIZQ6wJ8AxoFNABYsI2jhCC9jo=;
-        b=VgP1zINwy9Bw1ZWyj/u7tWAFHCYIE2qIGWeyviWTiuzEvcwA16TVVMuRdCKNJB5p40
-         BQQQqzF/Fob5tz8mh4faDqA00VHOe7o0abFLTl5aCX4+NkJQRn/ZXSPDfd5S12Ep5MWL
-         USdZOWFJ/2jVLRswCTGC6Wy8biJcFvgznQgjiqmm1ntC8qhpBvaRCWsAEX7YPBZVJ1JO
-         GlMke+RWFWewg1KZm9actw29YhHDbXdMQORHcoJQXQwRmJ0aZROKtSe56TPXBc38EJf8
-         spdPsjxMSKHTTqO577PUyo3kdPl/rfOFHfWz1cAitWxez4VJ7PVJp6JAQF9fnzUZ8gg0
-         p1+Q==
-X-Forwarded-Encrypted: i=1; AL+hErEqKQDeSWGfN4698IMCQpCNdajuph3n4m62bwqWBQ7eQZ7slFmAqtgSI4wwjEW4ZgrTduM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+wO7lVtWwk0wXaY8NcopgH2t2CI992N/wDTGxgFvU3kHUA3Lu/
-	gx7mN4udK1S/hbouJRV+m+YSgCguFN6BGVHdw4lmvNiqj1Bni7Mc72eZVjQWm/ZK2qjLH35EdHI
-	KDDiagX6goIBWAEM03aEblJi658abMJOyr2y6zDNFSsedZ4RFAPwXUA==
-X-Gm-Gg: AYBFou3tpQznFPSk9u7r8oqgun4B0fEV+3YrZ1L0ihY8S1JvLzDHHYPHD8sLplUlkiP
-	rxLq9mO42szS/BjDi8ZNkkQcFoYxWdzP9JsvFbb+JLSR99RUh+QicwCyMKhn57ZRMqeqTA89HQJ
-	Vn3CyjYhx4q0mFNTNsi+BLN469wfJOmRd39Ley3ES+59LBtnFroJ4H/NDu5hvebeZiaGZSdBZjO
-	c3oJanzH3xHhIH7LB0jYRVYuI1VdsptClvJ0xdLkAxi3Mubzkysqug49dMDWJ2/h5953VOKixbL
-	ZtJW1O0VMi1wZSVwwrXdOlCCxA5AXm6kxDYO1uxyXgxtx4tLmnp7zChNea6Uzzj122tWPyBtbhY
-	UcfWgKlPTY8IMj+ULhuU1tqoQOH3cxZePHd4rDnvyzI2LoRWScf1a
-X-Received: by 2002:a05:6808:5198:b0:4f4:9314:af39 with SMTP id 5614622812f47-56b96bd3b81mr4468291b6e.28.1794493330942;
-        Thu, 12 Nov 2026 06:22:10 -0800 (PST)
-X-Received: by 2002:a05:6808:5198:b0:4f4:9314:af39 with SMTP id 5614622812f47-56b96bd3b81mr4468260b6e.28.1794493329942;
-        Thu, 12 Nov 2026 06:22:09 -0800 (PST)
-Received: from sgarzare-redhat ([209.52.143.85])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ae22fbc9c5sm5819481fac.9.2026.11.12.06.22.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 06:22:09 -0800 (PST)
-Date: Thu, 12 Nov 2026 15:21:53 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Oleg Drokin <green@linuxhacker.ru>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, bobbyeshleman@meta.com, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 1/3] vhost/vsock: release the accounting of
- packets dropped on rx errors
-Message-ID: <avXG51ibBiap9tG9@sgarzare-redhat>
-References: <20261106050244.602625-1-green@linuxhacker.ru>
- <20261106050244.602625-2-green@linuxhacker.ru>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=XOPq9hkB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VRwNGR11;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NWCP7kfa;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=emN3tH4j
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 80C781F7A3;
+	Thu, 12 Nov 2026 14:25:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794493532; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LXnLw2dXuPgpiMbQNtTJhA3OydD17Gjgr9VksJJ+Wms=;
+	b=XOPq9hkBTmQ12iX179lstxBX0lJifWx5Qm8tfaSvLPJ/xa6bL60x3pVd0MMANIzfIfoUb5
+	xsInpqLoStIjcqlkfVfwsJdrR0m1jMZRAdsAMGFYj1UG6ZFToJwZBCnbV3OEjKTNzO40PV
+	Z8PG7GaQzfRtKADBnjJ5j/XdMLCgVbo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794493532;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LXnLw2dXuPgpiMbQNtTJhA3OydD17Gjgr9VksJJ+Wms=;
+	b=VRwNGR11Y+aNPLjA4hhU+3I4OV3XzYVJZ5z4iWfh87WEEx9uDh2prUNx4qs1O1kFzayFhu
+	taiZ4I/6RhCbgnCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794493530; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LXnLw2dXuPgpiMbQNtTJhA3OydD17Gjgr9VksJJ+Wms=;
+	b=NWCP7kfaAS6UvLRCwbVy1JZAGPa4tbILC1ena2duuOVPDBL5kDNRJZTuWevPSSZNxgPalD
+	VMPHtfL5DHhHJYVZF3zuJfljmNh9o+gTj8y1jOE+4uHTjvvbJQdxas0w3MnUPBMou/o/RQ
+	E2bJ8WbEb93bbIjypp5KSDy6iD4/ZMk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794493530;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LXnLw2dXuPgpiMbQNtTJhA3OydD17Gjgr9VksJJ+Wms=;
+	b=emN3tH4jzFF8oNkMNtJjgsZAgTEiPGpWFjct/O7xIU+MiOl95wPfxLfQCl+2tyqTQ4fnwa
+	D3mdcN1E7GSkkzCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5912713432;
+	Thu, 12 Nov 2026 14:25:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id w9GzDFnM9WoAPwAAD6G6ig
+	(envelope-from <clopez@suse.de>); Thu, 12 Nov 2026 14:25:29 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	peterx@redhat.com,
+	ljs@kernel.org,
+	imbrenda@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	frankja@linux.ibm.com,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v3 0/9] KVM: don't zap secondary MMU on permission upgrade
+Date: Thu, 12 Nov 2026 15:20:29 +0100
+Message-ID: <20261112142039.907090-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -119,123 +123,205 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261106050244.602625-2-green@linuxhacker.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spamd-Result: default: False [-12.30 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lpc.events:url,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -12.30
 
-On Fri, Nov 06, 2026 at 12:02:42AM -0500, Oleg Drokin wrote:
->When vhost_transport_do_send_pkt() fails to deliver a packet to the guest
->(unexpected output buffers, a buffer smaller than the header, a fault
->while copying the header or the payload) it frees the skb with
->kfree_skb() and gives up. The success path does more:
->virtio_transport_consume_skb_sent() subtracts the payload from the
->socket's bytes_unsent (SIOCOUTQ), and for a reply the queued_replies
->counter is decremented, restarting the guest's tx queue once it drops
->below the ring size.
->
->The error paths skip both. Every such drop leaves SIOCOUTQ too high for
->the life of the socket, and every dropped reply permanently takes one
->slot of the queued_replies budget, so that after a ring's worth of them
->vhost stops processing the guest's tx queue for good.
->
->Release both on the error paths, as the success path does.
->
->Found by an LLM-assisted security review of vhost-vsock, done while
->porting a project from Xen to KVM. These error paths were not
->reproduced: they need a guest that posts malformed rx buffers.
->
->Fixes: 433fc58e6bf2 ("VSOCK: Introduce vhost_vsock.ko")
->Fixes: e6ab45005772 ("vsock/virtio: add SIOCOUTQ support for all virtio based transports")
+Stop KVM from zapping its mappings on permission upgrades on x86 and
+s390, as these keep the PFNs unchanged and revoke no access. KVM faults
+in the new permissions on demand, so dropping mappings early gains
+nothing.
 
-Why this Fixes tag?
+To do so, add an MMU notifier flag that marks an
+MMU_NOTIFY_PROTECTION_VMA invalidation as a strict permission upgrade.
+For the flag to be accurate, change_protection() keeps writable entries
+writable on such changes. A few cases where it needlessly makes or
+leaves entries read-only are fixed along the way.
 
->Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
->---
-> drivers/vhost/vsock.c | 23 +++++++++++++++++++----
-> 1 file changed, 19 insertions(+), 4 deletions(-)
->
->diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index 88a310390eb0..b0004cb48999 100644
->--- a/drivers/vhost/vsock.c
->+++ b/drivers/vhost/vsock.c
->@@ -104,6 +104,21 @@ static bool vhost_transport_has_remote_cid(struct 
->vsock_sock *vsk, u32 cid)
-> 	return found;
-> }
->
->+/* Undo the send accounting of an undelivered skb; true if tx may restart. */
->+static bool vhost_vsock_drop_skb(struct vhost_vsock *vsock, struct sk_buff *skb)
->+{
->+	bool restart_tx = false;
->+
->+	if (virtio_vsock_skb_reply(skb)) {
->+		int val = atomic_dec_return(&vsock->queued_replies);
->+
->+		restart_tx = val + 1 == vsock->vqs[VSOCK_VQ_TX].num;
+Background
+==========
 
-Can we add a comment to explain this check?
+change_protection() pairs every protection change with an
+MMU_NOTIFY_PROTECTION_VMA invalidation, and KVM zaps its SPTEs in
+response, as it cannot tell whether permissions widened or narrowed.
+This is costly, e.g. during a QEMU background snapshot, which uses
+uffd-wp to write-protect guest RAM and unprotects each page once it is
+saved. Every unprotect then makes the guest refault memory it could
+already access.
 
->+	}
+Secondary MMUs that share the CPU page tables (e.g. ARM SMMU,
+IOMMU/ATS) can keep read-only entries in their TLBs that a fault does
+not flush, so they are already notified of permission upgrades on the
+CPU TLB flush path [1]. KVM keeps its own page tables and faults in
+permissions on demand, so it needs no notification, as Sean noted when
+that signalling was first proposed [2].
 
-nit: try to follow the style, e.g. leave a blank line here.
+Series overview
+===============
 
->+	virtio_transport_consume_skb_sent(skb, false);
+Patches 1-4 fix cases where change_protection() needlessly makes or
+leaves entries read-only, so that the next write to them faults. They
+only affect performance and can be picked up independently.
 
-mmm, this entire function is very similar to the code we have in 
-vhost_transport_do_send_pkt() where we also call 
-virtio_transport_consume_skb_sent() but with consume=true.
+Patches 5-6 add MM_CP_PERM_UPGRADE for mprotect() calls that only add
+permissions, and MMU_NOTIFIER_RANGE_PERM_UPGRADE, which is set for these
+and for userfaultfd unprotects.
 
-What about renaming this entire function to vhost_vsock_release_skb(), 
-adding a new `delivered` parameter to be passed to 
-virtio_transport_consume_skb_sent() (and to be used to call or not 
-kfree_skb()) ?
+Patches 7-9 pass the MMU notifier event and flags to KVM and skip the
+zap on x86 and s390.
 
-Thanks,
-Stefano
+Considerations
+==============
 
->+	kfree_skb(skb);
->+	return restart_tx;
->+}
->+
-> static void
-> vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
-> 			    struct vhost_virtqueue *vq)
->@@ -162,14 +177,14 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
-> 		}
->
-> 		if (out) {
->-			kfree_skb(skb);
->+			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
-> 			vq_err(vq, "Expected 0 output buffers, got %u\n", out);
-> 			break;
-> 		}
->
-> 		iov_len = iov_length(&vq->iov[out], in);
-> 		if (iov_len < sizeof(*hdr)) {
->-			kfree_skb(skb);
->+			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
-> 			vq_err(vq, "Buffer len [%zu] too small\n", iov_len);
-> 			break;
-> 		}
->@@ -212,7 +227,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
->
-> 		nbytes = copy_to_iter(hdr, sizeof(*hdr), &iov_iter);
-> 		if (nbytes != sizeof(*hdr)) {
->-			kfree_skb(skb);
->+			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
-> 			vq_err(vq, "Faulted on copying pkt hdr\n");
-> 			break;
-> 		}
->@@ -221,7 +236,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
-> 					   offset,
-> 					   &iov_iter,
-> 					   payload_len)) {
->-			kfree_skb(skb);
->+			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
-> 			vq_err(vq, "Faulted on copying pkt buf\n");
-> 			break;
-> 		}
->-- 
->2.56.0
->
+1. This series covers only x86 and s390. Claudio confirmed that
+   skipping the zap should be safe on s390 and offered to test it [3],
+   so patch 9 is only compile-tested. Other architectures should be
+   able to skip it as well, but I have not tested or benchmarked
+   them. Moving the code to arch-independent KVM would also avoid the
+   SEV cache flush in kvm_arch_guest_memory_reclaimed().
+
+2. struct kvm_gfn_range carries the MMU notifier event and flags, as
+   agreed at LPC [4] and proposed in the past for other purposes
+   [5] [6]. The fields are only set for MMU notifier invalidations.
+
+3. Writable migration and device-private entries are still made
+   read-only on a permission upgrade. This does not affect secondary
+   MMUs (see patch 6), but the downgrade could be skipped as well if
+   preferred.
+
+4. hugetlb does not benefit, as hugetlb_change_protection() does
+   not restore the write bit and may unshare page tables (see patch 6).
+
+5. The notification cannot simply be skipped in MM code (see [7]).
+   Secondary MMUs that keep their own page tables but cannot fault
+   rely on it to pick up new permissions. A flag lets each user opt
+   in instead.
+
+Benchmarks
+==========
+
+These were measured on v1.
+
+AMD EPYC 9654 96-Core Processor host running a recent Linux kernel
+(6b4b543fa187), with a 64GB, 64-vCPU guest running stress-ng --vm while
+the host takes a QEMU background snapshot. Results are aggregated over
+5 runs on a stock kernel and on one with this series, rebooting the
+guest between runs, with NUMA balancing disabled.
+
+pf/s and tlb/s (per-second deltas of KVM's pf_taken and remote_tlb_flush
+debugfs stats):
+
+  guest pattern          baseline                    patched
+  -----------------------------------------------------------------------
+  read64   (read)        pf/s=950,015   tlb/s=1,440  pf/s=2,503 tlb/s=0.1
+  rand-set (read+write)  pf/s=1,004,353 tlb/s=862    pf/s=4,073 tlb/s=0.3
+  write64  (write)       pf/s=968,018   tlb/s=94     pf/s=2,292 tlb/s=0.3
+
+Guest read latency was sampled with a paced probe thread in the guest,
+reading one byte per page with an idle gap between reads, while
+stress-ng ran with read64. Each figure is the median across 5 runs, with
+the run-to-run min and max, in ns:
+
+  metric           baseline             patched
+  ------------------------------------------------------
+  p50 (min max)      340     (270 380)   260   (250 260)
+  p99 (min max)    19789 (16885 20200)  5207 (4076 5638)
+  p99.9 (min max)  23445 (22845 24036)  6850 (6259 7110)
+
+The median improves modestly, while p99 drops ~3.8x.
+
+A separate stress-ng run with write64 and --verify showed no data
+corruption and no livelocks.
+
+Changes in v3
+=============
+
+- Patch 4 (was 5): check the old entry in the existing write-bit
+  helpers, for any MM_CP_TRY_CHANGE_WRITABLE change (David).
+- Patch 6: add mm_cp_is_perm_upgrade() here instead of in the old
+  patch 5.
+- Trim some commit messages.
+
+Changes in v2
+=============
+
+- New patch 1: fix setting MM_CP_TRY_CHANGE_WRITABLE for shmem with
+  uffd-wp or soft-dirty (Sashiko).
+- New patches 2-3: honor MM_CP_TRY_CHANGE_WRITABLE in change_huge_pud(),
+  adding pud_soft_dirty() on riscv (Sashiko).
+- Patch 4 (was 1): only treat changes to the read, write and execute
+  flags as an upgrade, plus VM_ACCOUNT (Sashiko).
+- New patch 5: keep writable entries writable on permission upgrades
+  (Sashiko).
+- Patch 6 (was 2): don't set the flag for hugetlb (Sashiko).
+- Patch 7 (was 3): pass the MMU notifier event and flags instead of a
+  bool (Claudio).
+- Patch 8 (was 4): check the flag in range->flags. The APIC-access page
+  reload issue that Sashiko pointed out is pre-existing.
+- New patch 9: skip the unmap on s390 as well (Claudio).
+
+v1: https://lore.kernel.org/all/20261029143336.390231-3-clopez@suse.de/
+v2: https://lore.kernel.org/all/20261105165004.2663799-4-clopez@suse.de/
+
+References
+==========
+
+[1] https://lore.kernel.org/linux-mm/cover.1eca029b8603ef4eebe5b41eae51facfc5920c41.1690292440.git-series.apopple@nvidia.com/
+[2] https://lore.kernel.org/linux-mm/ZGu1vsbscdO48V6h@google.com/
+[3] https://lore.kernel.org/all/20261030133939.630e29af@p-imbrenda/
+[4] https://lpc.events/event/20/contributions/2552/
+[5] https://lore.kernel.org/all/20240801183453.57199-1-seanjc@google.com
+[6] https://lore.kernel.org/all/20231110003734.1014084-1-jackyli@google.com
+[7] https://lore.kernel.org/all/7ba2ca65-1eab-40fd-ae4c-f7cd9e156d8c@suse.de/
+
+Carlos López (9):
+  mm: fix eager write-bit restore for write-notified shared mappings
+  riscv: mm: add pud_soft_dirty()
+  mm/huge_memory: honor MM_CP_TRY_CHANGE_WRITABLE in change_huge_pud()
+  mm: keep writable entries writable on protection changes
+  mm/mprotect: add MM_CP_PERM_UPGRADE
+  mm/mmu_notifier: add MMU_NOTIFIER_RANGE_PERM_UPGRADE
+  KVM: pass the mmu_notifier event and flags to kvm_gfn_range
+  KVM: x86/mmu: don't zap secondary MMU on permission upgrade
+  KVM: s390: don't unmap the gmap on permission upgrade
+
+ arch/riscv/include/asm/pgtable.h |  5 ++++
+ arch/s390/kvm/arm64/arm.c        |  7 +++++
+ arch/s390/kvm/s390/s390.c        |  7 +++++
+ arch/x86/kvm/mmu/mmu.c           |  7 +++++
+ include/linux/kvm_host.h         |  3 +++
+ include/linux/mm.h               |  2 ++
+ include/linux/mmu_notifier.h     |  5 ++++
+ include/linux/pgtable.h          |  5 ++++
+ mm/huge_memory.c                 | 46 ++++++++++++++++++++++++++++----
+ mm/hugetlb.c                     |  4 +++
+ mm/internal.h                    |  7 +++++
+ mm/mprotect.c                    | 29 ++++++++++++++++++--
+ mm/vma.h                         | 23 +++++++++-------
+ virt/kvm/kvm_main.c              |  8 ++++++
+ 14 files changed, 142 insertions(+), 16 deletions(-)
+
+-- 
+2.51.0
 
