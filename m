@@ -1,75 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794524947;
-	b=zR39I2sJDTIXwHed++GHB5ZBLtiCY/o6CDSSAqgk09gEFdIHjv7XZhCYbXBPMDHMyQ1a
-	 db1BaPxzs4iuc8EVBhx+vm8SU9hiYx7mpTs6AV/qPSsjwK/A+WspI8AU72q9/lIbuONYv
-	 fNxD35INOkzmZ02Qoej/yLPeMvRspOihVFF2r2E8GfwIZ2BsRiHy6JV+pwIk+NJezGfcL
-	 7MX2Cg38Z4ZHSy8t7ucSICjgwAs9/lPXAhklukBwwPfXZApU/xSQyaUpP8ICb+mUj5HIy
-	 szIUMwbULR9x6Nxhq1ckkheb2tpQc2IyFwR5nW/HLOItMC5DmQdd3iYyv4LYq0JNP7Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794524947;
-	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=emYzY9rxTmsRQY49t45MjQb7ODP9YJHFljtMoqyKXro=;
-	b=l+shOlNUJAvfeq3WqdP0njug+XsLykI+ZrZNAgDgp2x32qRa8F825koEXfAI/ZX3mfKF
-	 XhQnxvNiFkHWcQ2njq8NAYyT6DfPyHJi2Vy6e+W2i9KWbYIyDtJWJLMND7ptSCATQbLBd
-	 R3BBjUawweONMEBEK4+4+k9BntLjQ02FE7wKFWUvPG+5MTMjFu+GmSuNbj9DVOGmlPGep
-	 N9aD3A8fMk43qWvTjN+XNo+nuT2FPsqPaIvqKIDq3lhtBP92kCfAPrlP2TdmggMAxGMvv
-	 lo1bjEHYSty0G3rJET+U5MLF7Iv3oh5nUtwzIOIvkgw4Uu5c16len327OZ1giG7O7zw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=pfKgLnIk;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=VZdxRlJL;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794525434;
+	b=ezWW43DkE86rNEXM1n9irWKn3UFXvUHQgtLpMnnZmsCgrYTHhu1bnjbRSb9tmpUGppeR
+	 yn9d+NvCzyMF8aBxu53UffjH0YXGAndefaVhwBWv4YT86vFvlSyBEeIP7bB6nlAFLBOjA
+	 3ZNBgA4H67VynmU4giXV0QcX9M2dOs/iORsY3oiUsC6eEAFszubnpab1e2sRCbsBJUXtF
+	 Fbkn3Ft/hKUerNw10S8gsCIfZMjPYgNzb9dGh54cx8ofmeDMUTOixiV5lu4ZcwZ6T+DXU
+	 TloQjc4toIlIiKoo5VP+irIqTCViRORVTXHy+YU9n7Ct3aV501zUzgvRKI0Q/E5Tl7A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794525434;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=HYer4KNej6OjpPHSLUJVrnFp2nfCzxQPfaR3MfS134g=;
+	b=GmPkhPtp5VhZHjwI8qVUpRYFPfwwucPe90xFOj+RDlwRPIvJrTIrragFHekZklJ9GuVg
+	 EV2gjPsSGc9m7Euju7EJ47lGLsyNJMuW08mArYWcj2kOR758iNeVaxxb1e71k2V1fytVz
+	 5KMK22vqWvjoz/P6Xxer2Z8yjvEXaehbo1IJb3MFkr/gBiaMCpUKvHmVnen97ELEV/mU6
+	 rvHuq3g5kpE1RGpWP+KJTrog7PAX2GAtNITYZ0dbf33gzXJg16Qtlyup52zTd+6kQ3ElF
+	 Um829QPqt96LTIMIMpVJMiZmnWuv78PZf2k6hGDqRrfNoxgCIVqR4ZW1Yo1/vIN9gpg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=efvAcmws;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC0D606A327;
-	Thu, 12 Nov 2026 23:09:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAC0D606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB76E606A31C
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 23:17:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB76E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=pfKgLnIk;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=VZdxRlJL
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1794524944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=emYzY9rxTmsRQY49t45MjQb7ODP9YJHFljtMoqyKXro=;
-	b=pfKgLnIkK5VYqxPXw/M/4onCiSqQpEAn0SKKM9UQxmZNYVZziYIUtso0pp5z7ddJ62g+v2
-	R7kERzca9PZinbChyJJ6v44XOHuFPjude15qpxtMjYnkWQyA5uhF4TI4GrPg9OjUbOvzZs
-	T+JKOxZhMb9CX+A3sBz3uueKlELrSpQubaSLC0d45rge/tmoyhgu6Z5aQvdD+TI82PSLqD
-	o+Ghwxg6PqTNKj34u5xEXSmA/W7w4VKVo+Sn2Jn4CzXcs6yUEY0HV8O1Xm+eBA1pREwy7z
-	3iMQjNhAmISHDCruy9jhcpEEjYfrqoelQ8QlouXngnoGF8/rAdFnd1KEFVKzHA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1794524944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=emYzY9rxTmsRQY49t45MjQb7ODP9YJHFljtMoqyKXro=;
-	b=VZdxRlJLITpXNo7LZV6xq9adCQJAtQYOFQXQICK7SSFj+2fp4OiHzjxdUItzp7Fri+vDWy
-	xtm81V/SbLf2yYCQ==
-To: Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Breno
- Leitao <leitao@debian.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, Sean Christopherson
- <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, vlad.wing@gmail.com,
- security@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 6.18.y] x86/cpufeatures: Make X86_FEATURE leaf 17
- Linux-specific
-In-Reply-To: <29B14106-19E4-4589-BE40-3D42BA646CE3@alien8.de>
-References: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org>
- <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local>
- <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com>
- <29B14106-19E4-4589-BE40-3D42BA646CE3@alien8.de>
-Date: Fri, 13 Nov 2026 00:09:03 +0100
-Message-ID: <87o6btsl4g.ffs@fw13>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=efvAcmws
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b571a45a2aso823a12.0
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 15:17:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794525432; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PwhJ6Ijhx1WZA/vTeGU8PFqTN53F2z6ruMRQWvT7Nfsik8fPwBDp09Dw4sCk5Lrhn5
+         r2zkZl2A6FPRkPySgpeokduhLyPgPJWKDpuOrfR8NMmtXBuD1RwTofhKz6tJqlIG7h0n
+         Typ9btWfwNMvv0GsRtQU4oPNtBALZ4qzSo6UrwjGYA/FY6Ov0yNduf9lieGFN7/Zvbti
+         r/TguJrxLkoQ3HMhkkMgf8G95wrc9+0eCxKkCKvyx6YiznWIpPZQy/UWRdLibrJ94RGI
+         A1u8uxxoaCBgQAhgyxU9QdUllKF5OhQIA2YbEH66VzdyfenW8aj+GUiYReH45aw4rrny
+         yTwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HYer4KNej6OjpPHSLUJVrnFp2nfCzxQPfaR3MfS134g=;
+        fh=nCtEYoJCci/SFN6LvDfsaSDLfn0Ea3Kt8T79M/uMEF8=;
+        b=szD72VgmlDzcm97YPW2Yn7POlAOllOQi13cFcbGnF3/MZx7jBMH5V5TExIV6xNiUwf
+         axVBC2pbT/gC57EPGxF1Y7G6qfjlQklUoxdOq1zOcEpPyOxBeYPK0SiFQh0l5OebAkiV
+         SmUgGK6zZqIePz0S0aK8X6pyvQRz/Ng2zsWL8Pq8hPBXCjUo/7Hj01Y6lYwjwiJBhy2k
+         oNdOcpWScGsyTEnB4Ah/nRvzE72kved2I2+4Bm7/PjZ61MwgL4fqias03sWZq4b9Y3xo
+         XggefIM9vXhkmZhR/R4wKXPNqRrz81StUP7p6FQuL3BTpwZUIm2rWoF15Yd5KKttgsoa
+         t5FQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794525432; x=1795130232; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HYer4KNej6OjpPHSLUJVrnFp2nfCzxQPfaR3MfS134g=;
+        b=efvAcmws6mhucmMwtkeQlmU3MLbS53DQ04Wr3YnRmRD6wIfE+rw7KL5dIx2p6qIDXS
+         SO5kDbGGsUeLXiZu6Cf5P4opNv48rExtOY4DuVQ9NgPgg3hV2ZdQm/7v3fvs0AWzl54b
+         7SU61YK8w346V3DYAVXp5xQU/RB5kwS/LTyatJvbVBNsZA5k1bqATk9Auujv3dB1918l
+         6CuZoA9+yOIqFaP+/6+lsSq9AQrmIN2+ALBeTetWFLgmt06uyZpauy7tmcxwVJilOa9x
+         MlphQNAPsVZ/17fIAnI0lxNc6jyFJU5BRXU6iIoOGf0TbBLXpbfwsj7BUfrJWnnmzsvX
+         P7hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794525432; x=1795130232;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HYer4KNej6OjpPHSLUJVrnFp2nfCzxQPfaR3MfS134g=;
+        b=1P8wj1TU5Qn+8pzOcLacpqQKMdxbq5sPHlqI0JkU514nRQVw8i43rsedXLn+5YyLFM
+         WtM9c1avcROmxb0wZleXb21pHF2NBedwsuZZMZbp+yr7nqjGuImdqY6W42n1XUJEqQRN
+         Jkd+zyOoLxUaYfiNN0aEPtNbMPnk8+jWPhp3O2EjDPHGNoGlNLkj3A+6fPpxXDN7qBOW
+         MXEQgxKSE+syRI/2Gt8cOY1WfeRSFFOCltN1/1Jtsr8gt4GXoLqhL2zrhcx51tTX73ur
+         G8+i5brcSdF/UV5w+9jZWnoTWt4cJ+yhmBe/Jc7t+dzWnKrlxTLNBE5gMiLcyzjcVAx4
+         blHA==
+X-Forwarded-Encrypted: i=1; AL+hErHeVZpoy3ju+9Rb68wWdKvyynopVgWPsLSe/JOwEGUq0kFGlD8uqFJRs11pQxPulMj+OmA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+ckBh9HkuAl/AKPAkf2pSt+ndX83ZjzG8leXbpyvvg7FpzgHiT
+	933YXbgnreq80E4Yj2rC/5erSu4rFjNHTTLQh2aCA/jgqvQaKss+Yqb9eRK6LEjbsNbDxQIPY0V
+	A6V9enz4GJpKqDBDBWAMQ4fKFNGK4kxKvx2XZWdOR
+X-Gm-Gg: AYBFou2+ELezTnlL2K5WzoUUwO5ipgYL/Mb3EObiT9238O13yf0DWW/XY1OHDh/zqmQ
+	ErZ1qLuVLS24s3l3jmMpr2j/pLA6a/5LQuWVVg5eJt5hGm8Kc33uf3AoxWv8vzWP4YmX5FdYrHZ
+	Aef3BVPW4sJgInXZ76dD0sqpcdQgZRqAF1TpQESL9vewQChcy/iuRnJ6DsmOmNRqAEORL90Dx4J
+	v1onw6CCobGNN5Ubnn0owiciSu9NGnTF0ywDfBYZfhn+vWya/t2BO/7a+NW+8y9AlC3oSIcguLo
+	jh92hC/OJWa8pBQTEmYMukRhWx8wX/fFA/5Jwfcl5J2Zsujo9Jb5zR5Gv2UqC05IQdYzzpe9pyY
+	lIcqvb4fCimlfysl2aPXJ/7vnwEcVpgLnx6JvfddhQh2nVFFYPj7DWRDIwxiZtFrJjoGyFYwW
+X-Received: by 2002:a05:6402:1246:b0:6b6:eccd:ce77 with SMTP id
+ 4fb4d7f45d1cf-6b7c82b1e66mr16244a12.9.1794525431853; Thu, 12 Nov 2026
+ 15:17:11 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,45 +104,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20261112212628.265262-1-jmattson@google.com> <CAO9r8zMkKXRT0N18haYG+=jyO6FvL7VE84-=n9kpm7vnARH5UA@mail.gmail.com>
+In-Reply-To: <CAO9r8zMkKXRT0N18haYG+=jyO6FvL7VE84-=n9kpm7vnARH5UA@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 12 Nov 2026 15:16:59 -0800
+X-Gm-Features: AclHuK9ZK_GSTisZi4uuT65jTyFZEXSzRQMsAQ_YhJ2__8gddMdEVlL8gP2vTNw
+Message-ID: <CALMp9eRmJ8BpWHrveE=nTD6vF9OrB=OiwNA15_4Df-=kUzmMnA@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nSVM: Gate CET state copy in svm_copy_vmrun_state()
+ on guest SHSTK
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 12 2026 at 22:23, Borislav Petkov wrote:
-> On November 12, 2026 10:13:31 PM UTC, "H. Peter Anvin" <hpa@zytor.com> wrote:
->> Still, I have to wonder if it really makes sense to fold these leaves
->> like this, since they are going to be populated soon. Surely we're not
->> that short of bits?
->>
+On Thu, Nov 12, 2026 at 2:41=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
 >
-> If you mean the leaves in scattered.c, I'm thinking the moment a leaf
-> appears there with half of its bits, it'll get moved to its own
-> separate leaf.
+> On Thu, Nov 12, 2026 at 1:26=E2=80=AFPM Jim Mattson <jmattson@google.com>=
+ wrote:
+> >
+> > Like nested_vmcb02_prepare_save() and nested_svm_vmexit_update_vmcb12()=
+,
+> > svm_copy_vmrun_state() should gate copying s_cet, isst_addr, and ssp on
+> > guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) (i.e. the feature is adverti=
+sed
+> > to the guest). Instead, copying is gated on
+> > kvm_cpu_cap_has(X86_FEATURE_SHSTK) (i.e. the host supports shadow stack=
+s).
+>
+> This is a bit confusing, nested_vmcb02_prepare_save() and
+> nested_svm_vmexit_update_vmcb12() are about vmcb12 <-> vmcb02, so L2's
+> state, while svm_copy_vmrun_state() is for L1's state. I think the
+> patch is correct, but the examples are confusing.
+>
+> Perhaps a better example would be __kvm_set_msr() and __kvm_get_msr()?
 
-Crap.
-
-Even if a new leaf has only _ONE_ bit defined then it's a new leaf. This
-whole "save space" nonsense has been source of a gazillion of subtle
-bugs in the past and we just continue to "fix" them instead of actually
-tackling the underlying problem.
-
-Linux specific leafs want to be in a space which is reserved by
-hardware for software purposes and not arbitrarily hacked into "holes".
-
-Hardware defined leafs have to be represented by a proper entry even if
-there is only one relevant bit in a leaf.
-
-That's what I have proposed long ago and the CPUID database project
-
-       https://x86-cpuid.org/
-
-laid the ground for changing this whole mess to something structured and
-well defined.
-
-Some initial changes have made their way into mainline, but then Intel
-stopped funding it and AMD has no money for that either...
-
-So this will trickle along for another two decades with the same bugs
-repeating themself over and over. WTF?
-
-Thanks,
-
-        tglx
+Or, perhaps I should just drop the examples?
