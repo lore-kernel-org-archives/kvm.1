@@ -1,11 +1,11 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794516230;
-	b=NYDFcZNv9s/XSmNOCRLDYj7eOmjeCGHD+11NigVYd91d4N9OCHEs2ZdGKEGfEM2ccmXp
-	 qU0g2KDoTesmzO/rVhrhFPfXVnzfA3Rdm1noF0q7olsf6rlCZVK+Xjewwm4f00FFJ18Xy
-	 1qfz0uGSrasd34hO3KFSDqmldVkYu47OC7Nns0ARWv9Zh+A6NctVFctBgOx7J3+yqEFRx
-	 UMNeAmVIq1o5wDs6gkNQr+c549itJwF7zpG1cDjLFLdr/1uPixbq7ZvuTAcSmp5mG16rU
-	 Jjsalk6TT7Y2r4DCRuVZOIkcQxcWTIO9/DVZq6Fl/xOpcxKFYDpxN6Q6pxyclvb8Efg==
+	b=mwYNo9kdpi7FYXq/OSH9uI9VG90I0T8nqOpO9PPoOWl2EJk8K34XK12hs0g6r7Rb4aWt
+	 5UB9FMuWJEdIvkRF/6ig6d8brb1YvbIj42Be2PQfH+0AVQqSDFD8J8TVYqIL5YjGd85ZC
+	 +8IZ3rzSqsxxQnSwNl+GI7lKc4NpqaMkSp0BF2IPQmWWbJplsmrjlwxydFJvj/WsFdNoY
+	 YRW6410nVwkSVz/hZuSR6ApFWkLEy4PNT2wUL7zvzHGUEY2aOJ3L320AeKLvOqL4V02Rs
+	 OWcvfGWr5g3HEJJN720Z3UBdMEmApwn3N3Tw/S9yLjYFKRp7N7WeeJstnExhd0KotVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794516230;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
@@ -13,52 +13,52 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Izb7xswF5tDNO3/2ZFSJ7xBbUNYnWHh0GiHEwa/FiEA=;
-	b=bNcvBsDeO2usLAnEsaQMGSfshIV4GkHOGBAgEeO0OWUfkk5ombK/c/cyom1yz/5V3jex
-	 2sZOHthGmTZ2sStE4c2LoS+ncfEMAsG99zCpf/S8+pxRTh6S8fhbU+IPauXVgwe7qu3Cb
-	 QKtbZ/Q3MtBBvWdPnHuGshY/OskgJFs+4NJlG9YR0yCF/XPtJCkjgdJk/WJlRgtz942Sc
-	 XfJGjSdEWGV9/z4RvTfe/BbqbxPIYR7tslN9RDbgFoKYsO66xDfFSAXC/+MzwB2J+WqFB
-	 jS/JyOE5UbFw1vtGZjbbK2ZW4M9Co1UOWCrSQ4uRYWOliT4xv/4mEje4Evd1qkxWrZw==
+	bh=DpJeVq5Af3h76fC87FYMdmCsO875zyo7iv2ORJR1dp8=;
+	b=cR39XYs0c3XmsYwfiOpN63colMa+5fFliya2PgrrKiNFxGqsku4OJluXYKgq2YQms4I8
+	 VCwt8j1qmqAqx33MKvXCMLmSoszPeuINFiRsxXruH+Se7aGkeqUDCz8K6H63C8prgpozX
+	 PzOw2Z2aW5sFbG5JhAnsp+qwS3an0OfYMSgcLC0fHi7yLEGSPRv7Cnt1/D0FFXQxhzAli
+	 mG3ioPGy0/Bo+7lUdD9ahOVJMKsEz8BbaEXJEvHrmNpg9Ec9m9C+z8ffY6XYXlXC2sDVM
+	 0w4tgK6bGa9WnorCD4wD2bBx42yKziirwLdh+qKynwXt1DfdaQbZf1WGAddFn6W/7LA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hJRAIhVf;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Trn40thW;
 	arc=none smtp.remote-ip=192.198.163.9
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B2860A2616;
-	Thu, 12 Nov 2026 20:43:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07B2860A2616
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDCA60A2607;
+	Thu, 12 Nov 2026 20:43:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BFDCA60A2607
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hJRAIhVf
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Trn40thW
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1794516230; x=1826052230;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yeZQlEu9eMJvbfV20JjUB42sSRxGNtXUebZlHM4MrYw=;
-  b=hJRAIhVfeApLrjpt2371CCGI8c3Ds2pLmI0THN57aok1J5mRekBoGriB
-   8pS9VQgJPMjnDGAtMk33ba30yU3nDjlZMMJ2yVBQAcWFIgPO996REDljc
-   Q5/7sqtybwPBrBbU4jeRBw3pUi1kDVI1E8FemQNGxSLwZSWlSiFU0No1x
-   DFTlKRwz+Zj3LJ3dBju1EIHFuLiMIrIi0/fzAAgGW/PCA1fw+MkEp9pCL
-   ImFowF0prin4//RhVirwpWrR+8ue+ESfaTP+9qpMAzL7L0jg4/IepJWXi
-   OZ7n72DR5YO3MY8MD8GrtYF3LqGqRjWO6HUYV2BCgHy5814Ud8m6Cy/a/
+  bh=QJTc4D297zDURXjoyOpF1vj7y3gLtfhEpzDS1BjmDpw=;
+  b=Trn40thWAtiiFYEDJtCd1+1nrL/M+/juFw/VSah7weZNyp5eE4gB5Pij
+   i439mlq4glN47AJ6O+ALT8+D1VJ2itVlO4fCF9e8ADq99Wm11rz0AfEvz
+   tG8qNsFsjoWw4S1tdD9UOIjlEiePwOHr0iAjqGbNd4qL0AXQDihEOghLL
+   hiqLx9SVali/QVF+0NKZF82awEf/oA21CijpaL7ryzJy71LybqlubqjD9
+   /zqVGTHR/hqbFiHiy4UvCuyfqyFGkNzrWn7bsDKhmJxz05jJX5dPdxwHo
+   ZQUHYp3CbGpiuXC+EX51v/YeCz46vLWUdYnfcYCpwineODO4E40W2gRC7
    g==;
-X-CSE-ConnectionGUID: idKUWEIRTUWGLJ1q1y+80w==
-X-CSE-MsgGUID: SGA43xTEQxm6VRO+kOMQPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3192276"
+X-CSE-ConnectionGUID: +QxRhFJBT/qzK4isOtFFXw==
+X-CSE-MsgGUID: IzORqreEQcGSRfK0O1GvQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3192270"
 X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="3192276"
+   d="scan'208";a="3192270"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
   by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:43:49 -0800
-X-CSE-ConnectionGUID: zKENZnvDS4aK6lkfA32X4g==
-X-CSE-MsgGUID: ple9Tv2GSfaZTQ3LMgwIbA==
+X-CSE-ConnectionGUID: yXJA2m2bRICAIEl7pi8k2Q==
+X-CSE-MsgGUID: 9+qFgqOrTtScdtPGtmMenA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="9087905"
+   d="scan'208";a="9087900"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:43:49 -0800
 From: Zide Chen <zide.chen@intel.com>
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v4 11/21] KVM: x86/pmu: Document GLOBAL_STATUS_RESET passthrough erratum
-Date: Thu, 12 Nov 2026 13:32:17 -0700
-Message-ID: <20261112203227.289379-12-zide.chen@intel.com>
+Subject: [PATCH v4 10/21] perf/x86: Remove num_counters_{gp,fixed} from x86_pmu_capability
+Date: Thu, 12 Nov 2026 13:32:16 -0700
+Message-ID: <20261112203227.289379-11-zide.chen@intel.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261112203227.289379-1-zide.chen@intel.com>
 References: <20261112203227.289379-1-zide.chen@intel.com>
@@ -94,60 +94,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-IA32_PERF_GLOBAL_STATUS_RESET, introduced in PerfMon version 4,
-inherits the MSR address and architecturally defined bits from
-IA32_PERF_GLOBAL_OVF_CTRL, while providing additional bits to clear
-new indicators in IA32_PERF_GLOBAL_STATUS.
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-From an emulation perspective, KVM handles it identically to the legacy
-OVF_CTRL MSR: reads return zero, and intercepted writes are guarded
-against pmu->global_status_rsvd. No code changes are needed in KVM
-to emulate this MSR.
+Now that KVM has switched to bitmap-based PMU capabilities,
+num_counters_{gp,fixed} can be removed from x86_pmu_capability.
 
-However, to reduce VM-exits on performance-critical paths, KVM passes
-through this MSR in mediated PMU mode when all hardware counters are
-exposed to the guest. Consequently, writes to bits that are valid in
-hardware but unvirtualized by KVM will not trigger #GP (unlike when
-intercepted). This is safe because such unvirtualized bits are never set
-while the guest runs, so clearing them has no effect, and because the
-MSR is read-as-zero and write-to-clear, passing it through cannot leak
-host state.
-
-Document this divergence in errata.rst.
-
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
-v4:
-- Clarify in errata.rst that passthrough occurs when all hardware
-  counters are exposed to the guest, and that guest writes cannot
-  clobber host state. (Yosry)
+ arch/x86/events/core.c            | 2 --
+ arch/x86/include/asm/perf_event.h | 2 --
+ 2 files changed, 4 deletions(-)
 
-v3:
-- New patch. (Jim)
----
- Documentation/virt/kvm/x86/errata.rst | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/virt/kvm/x86/errata.rst b/Documentation/virt/kvm/x86/errata.rst
-index a9cf0e004651..70fd8a638ef7 100644
---- a/Documentation/virt/kvm/x86/errata.rst
-+++ b/Documentation/virt/kvm/x86/errata.rst
-@@ -84,4 +84,12 @@ memory.
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index a9b86cecbc78..990d3be5a07f 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -3156,8 +3156,6 @@ void perf_get_x86_pmu_capability(struct x86_pmu_capability *cap)
+ 	 * base PMU holds the correct number of counters for P-cores.
+ 	 */
+ 	cap->version		= x86_pmu.version;
+-	cap->num_counters_gp	= x86_pmu_num_counters(NULL);
+-	cap->num_counters_fixed	= x86_pmu_num_counters_fixed(NULL);
+ 	cap->cntr_mask64	= x86_pmu.cntr_mask64;
+ 	cap->fixed_cntr_mask64	= x86_pmu.fixed_cntr_mask64;
+ 	cap->bit_width_gp	= cap->cntr_mask64 ? x86_pmu.cntval_bits : 0;
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 190fda412a61..17b0bc7dfce7 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -300,8 +300,6 @@ union cpuid_0x80000022_ebx {
  
- Note, this erratum does not affect AMD CPUs, which fully virtualize CR0.CD in
- hardware, i.e. put the CPU caches into "no fill" mode when CR0.CD=1, even when
--running in the guest.
-\ No newline at end of file
-+running in the guest.
-+
-+IA32_PERF_GLOBAL_STATUS_RESET
-+-----------------------------
-+To reduce VM-exits on performance-critical paths, KVM passes through writes
-+to IA32_PERF_GLOBAL_STATUS_RESET (0x390) in mediated PMU mode when all
-+hardware counters are exposed to the guest, without injecting #GP on
-+unvirtualized bits.  Because the MSR is read-as-zero and write-to-clear, this
-+cannot leak host information or clobber host state.
+ struct x86_pmu_capability {
+ 	int		version;
+-	int		num_counters_gp;
+-	int		num_counters_fixed;
+ 	union {
+ 		u64	cntr_mask64;
+ 		DECLARE_BITMAP(cntr_mask, X86_PMC_IDX_MAX);
 -- 
 2.56.1
 
