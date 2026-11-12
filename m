@@ -1,55 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794518161;
-	b=tpaEVn1/iKqmnXCwaizQG09whpK5nnsnTnmxAb9MxNYQdovb1iiwi/T6ljGS0XF8rAds
-	 MYaX75DrWne8P2HTZbRc98foFQTwl2YsC1UhdecB2Br5nNCnpjIh03z4RJjz8xVqs5re3
-	 ddE8NjO7ojsiccF+6KZhmFXNF6gy2JUIGM+urhM24sWQtkehW+UhQvTeZVcIg0vBQjOzu
-	 fdEi1wPNr0+QYWgFhYSwb+vY4o2zt0nfS5Irs3AxCT/uN2DlcZr246BVyYmPSocJ9KxYT
-	 Q3yKhye+yRm5y6+du7MlbfKK0ZdjVwx+eawDqSJ+6rafhwCnTAK8St+4e55h00wJ3AA==
+	t=1794518792;
+	b=rVFvWzyyqqoJe57/qioxPrEo6sgDti7qU6fcwky9srJyX/EevhYxEs2EHx5diIgp4/BB
+	 4X3iIxTMNc7+p9FEFWtjVIQiWFRuXU4wiL514CFrrVbIgj41+WLvqkvqPh1KpurKDH8U4
+	 P5GFjubu6PJpJne4cnshfjFpksNcUb0xD97204SmcbbSLI3J1ScQxLEAT0rak8pCX9mkg
+	 xUlUSTO9yiMiOIF9YNnjCBQTPLYJjvDuD9EkEEuUBHntPtkb5GHn0AhuEaDj7w7jC2ET+
+	 u7N6HWXbWkHRrDXzXChBjAxXGdtQ1cEkLTHIF5yzD3zM9WmP65nsG+RhqE2QZD+Flbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794518161;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=OAbQKWrixu0wQSE6vk14hxuTjczqzGi6Jtfww5IhWVQ=;
-	b=C55yIrNKUwZeiOZcbXOU0H+3ywluYZqVzkyKK5jHdC89HyvH1qvBogExqUjtkgjIKehZ
-	 2z7a7nkQSPmJtjxlcZ9jd+zPJSiH0Gfe1D8fdeNf6eecNL08cYeL41WhZpf8MqyJtMvDz
-	 rEXxssuj8N7jUu3aS/vXbh5uHjQlNBrbsAcVvruQ+9AhpIwQTV/Ao9F9EYPLeI3kT8EPe
-	 cenef+grrY3WESrySKMV0csvfU1xUP+u+yFkFu+HAREGZnkjAFo5hvwIZESfTyWZoysiA
-	 BD9FB6GPQyfxxj5Tryxr1QzVNQntt1299LJaT4aQ5N1g0VW9Gli6YFCtMaiI2MbOAoA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794518792;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=TESmgCxUPr1Vm2wbKzVzpf5OFlB+4n+j8+LrMnvA4m0=;
+	b=MJADMAL+CCy7ey3A8iw5keRStTuA9qGyzjiaovO6HvGjnwxSXvvtwYcN1usSEHsr5xCo
+	 YG4ny7tnMWPvbFwhe8iDCL7dSN+9D2jjyWrPNyk1brOhnljcCAykEkKSFrnwAJTQNp6L6
+	 AYkM1/HvPrGPppgIx/jU8BswhmjqWXqonFhTg61g0neKZkImtXzJjiyeH7DIavFDIr8DK
+	 Oq1+j9cfyF9siNNDQRVeiaNmt1ts7FlCYrD0NLhR11MLQ8bJvnX91DmYxI5ULeE38sD2D
+	 RjVkSQHShHivCJ5csTc1ky2M+XCzWDogToczfoNJEnrOjww0DU4GEVwAwHypXSpI3Qg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hHlCWz54;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QopOShDW;
+	arc=none smtp.remote-ip=209.85.167.197
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC45C606A31C;
-	Thu, 12 Nov 2026 21:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA37606A323
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 21:26:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CA37606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hHlCWz54
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BB61F000C4;
-	Thu, 12 Nov 2026 21:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794518161;
-	bh=OAbQKWrixu0wQSE6vk14hxuTjczqzGi6Jtfww5IhWVQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=hHlCWz542xxydIzT2yuDqQ8U75V99Cn3AM80pImqgll47hifHTKLM8ZyYW81rlwS2
-	 hOPDyZkp7rzc5uhivFw03m/eCZ4eS3ZE6pDZnL5KZWzrX08mJBidrsZJrgK7e5A8kl
-	 PoLc66CEQr4vPVZSkt8c5A0EmV0TRG3seCxCBgMBQo3Ax3jAk6bUU4W+AtCCoSle+x
-	 WNhlfbFBBBlxtwJ13VlGLTzoysCKenhqb1Ldb2CBxH/OdisHDsFzhIawdOlKEApb6s
-	 W6/0uwvtVNCa94XjyYRwvm/FNX5v7NwPMgYWZ65xQaUIxfNFZWUEWKW/8rrPSP0VTP
-	 1NxJEoomjUk4Q==
-Date: Thu, 12 Nov 2026 15:16:00 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alex@shazbot.org, jgg@ziepe.ca,
-	kevin.tian@intel.com, kbusch@meta.com, michal.winiarski@intel.com,
-	satyanarayana.k.v.p@intel.com, sonangp@nvidia.com,
-	ankita@nvidia.com, nathanc@nvidia.com, mochs@nvidia.com
-Subject: Re: [RFC PATCH v3 02/20] PCI/PM: Add a power-state helper that tries
- the bus lock
-Message-ID: <20261112211600.GA904814@bhelgaas>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QopOShDW
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4a41f46d629so342573b6e.3
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 13:26:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794518791; x=1795123591; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TESmgCxUPr1Vm2wbKzVzpf5OFlB+4n+j8+LrMnvA4m0=;
+        b=QopOShDWxI1E9RX0pzFGc+2f6Yy/h/7mxtYw/URNk09ek9vnzDdKKHqbOQOLYYr107
+         W3c4GBMYzAq3EZQDEFB46+KF7OUH7hhj7YXrqJFdfWod/vmoz3E5GLU/DOd54WPRQXZP
+         Vv9I4/KLG0tqV61NjaimWDUhruut1Ko1g9y9QtVRNjqmLPyJB+kiLEcwIOawzTS6r5DJ
+         EBsPkkwES+VIt5PIsVZNt2/cuxYbrpfAS5xsfkA3jv77Sk9gschHDf1nIeaC4lknV/dO
+         4Q3x2lWbtwuApUZKD2lGdOvgDf1AxVdPnpEvyWl3jbfRkl1lLcF0s486KNAQ010czhRe
+         o8iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794518791; x=1795123591;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TESmgCxUPr1Vm2wbKzVzpf5OFlB+4n+j8+LrMnvA4m0=;
+        b=oGQZQxvFhaqw0hmeY6p4tIbnCKhiohilZS/trcpymFgvl9nquo+4nNQKWZews89D+X
+         B2/bMyL/Qm46017acCzve2GWsad9Z7Cb9COFe8YP2fB/uhDkl9SkTpr2kabK/gh/TVQl
+         4LBK2BNXwCgzKiCFKNjWivsOA5udgiNm43ghfjhrNvkdwiIO5OSruQ5kyJjuNeNBRKaA
+         Ox00um5DOcRr6XeYN+7SgpPahEtV2fSkz87SC3fpySXelZj+8T65lvz5GV4uMvT4FnCr
+         7olEaY9S6RGk3CiXdb3FnIyCB2Hcf4y97+k88j2SkClkwG9J0fkiQ8HDc8fCDxGP7csj
+         ftZQ==
+X-Forwarded-Encrypted: i=1; AL+hErFsx9S5YWvr5CYY+UVkLqvXh/gqA46ImjImvOgO6nQt40OlBInUzAhXgB2t6IjzTUEV4AQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Dy7kQ+7QCk9nslKUGBX/dnzH5tdjVnXCh3rAXilZgrHxXuxq/
+	+CBW9DL2qId/EN+T9i+Se7CfL6T6axxwB2rExvhRzaVEUa2wvtC6xKDKv7rq3oFX4fyRnPApM/d
+	Lu6XQCQaRibAXAg==
+X-Received: from iofe23.prod.google.com ([2002:a05:6602:82d7:b0:9c7:9256:112a])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:250d:b0:4ec:4c7e:37b5 with SMTP id 5614622812f47-56e641d6157mr456217b6e.29.1794518791076;
+ Thu, 12 Nov 2026 13:26:31 -0800 (PST)
+Date: Thu, 12 Nov 2026 13:26:28 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,104 +75,45 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112141632.918954-3-skolothumtho@nvidia.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
+Message-ID: <20261112212628.265262-1-jmattson@google.com>
+Subject: [PATCH] KVM: nSVM: Gate CET state copy in svm_copy_vmrun_state() on
+ guest SHSTK
+From: Jim Mattson <jmattson@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Nov 12, 2026 at 02:16:14PM +0000, Shameer Kolothum wrote:
-> PCI error recovery can hold pci_bus_sem for reading while waiting for a
-> lock held by a driver. If that driver also needs the bus read lock to
-> bring a device to D0, a queued writer can block it. Recovery, the driver
-> and the writer then all wait for each other.
-> 
-> Add pci_try_set_power_state(), which returns -EAGAIN if it cannot take
-> the bus lock immediately. The caller can then release its locks. Once
-> the bus lock is held, use pci_set_power_state_locked() for the transition.
-> Keep the existing cases that need no power-state change. The transition
-> itself can still sleep.
-> 
-> Callers that already hold the bus read lock must use the locked helper
-> instead.
-> 
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+Like nested_vmcb02_prepare_save() and nested_svm_vmexit_update_vmcb12(),
+svm_copy_vmrun_state() should gate copying s_cet, isst_addr, and ssp on
+guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) (i.e. the feature is advertised
+to the guest). Instead, copying is gated on
+kvm_cpu_cap_has(X86_FEATURE_SHSTK) (i.e. the host supports shadow stacks).
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Check guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) instead of
+kvm_cpu_cap_has(X86_FEATURE_SHSTK) in svm_copy_vmrun_state().
 
-> ---
->  include/linux/pci.h |  3 +++
->  drivers/pci/pci.c   | 37 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 40 insertions(+)
-> 
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index aa3765a20a96..542fa4af0a43 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -1535,6 +1535,7 @@ int pci_load_and_free_saved_state(struct pci_dev *dev,
->  int pci_platform_power_transition(struct pci_dev *dev, pci_power_t state);
->  int pci_set_power_state(struct pci_dev *dev, pci_power_t state);
->  int pci_set_power_state_locked(struct pci_dev *dev, pci_power_t state);
-> +int pci_try_set_power_state(struct pci_dev *dev, pci_power_t state);
->  pci_power_t pci_choose_state(struct pci_dev *dev, pm_message_t state);
->  bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
->  void pci_pme_active(struct pci_dev *dev, bool enable);
-> @@ -2216,6 +2217,8 @@ static inline int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
->  { return 0; }
->  static inline int pci_set_power_state_locked(struct pci_dev *dev, pci_power_t state)
->  { return 0; }
-> +static inline int pci_try_set_power_state(struct pci_dev *dev, pci_power_t state)
-> +{ return 0; }
->  static inline int pci_wake_from_d3(struct pci_dev *dev, bool enable)
->  { return 0; }
->  static inline pci_power_t pci_choose_state(struct pci_dev *dev,
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 7c6f2aba8144..f2ebd19204aa 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -1655,6 +1655,43 @@ int pci_set_power_state_locked(struct pci_dev *dev, pci_power_t state)
->  }
->  EXPORT_SYMBOL(pci_set_power_state_locked);
->  
-> +/**
-> + * pci_try_set_power_state - Set power state without waiting for the bus lock
-> + * @dev: PCI device to handle
-> + * @state: Target PCI power state
-> + *
-> + * Like pci_set_power_state(), but return -EAGAIN without changing the power
-> + * state if the bus lock cannot be acquired immediately. The transition
-> + * itself can sleep.
-> + *
-> + * Callers already holding the bus read lock must use
-> + * pci_set_power_state_locked().
-> + */
-> +int pci_try_set_power_state(struct pci_dev *dev, pci_power_t state)
-> +{
-> +	int ret;
-> +
-> +	if (state > PCI_D3cold)
-> +		state = PCI_D3cold;
-> +	else if (state < PCI_D0)
-> +		state = PCI_D0;
-> +	else if ((state == PCI_D1 || state == PCI_D2) && pci_no_d1d2(dev))
-> +		return 0;
-> +
-> +	if (dev->current_state == state)
-> +		return 0;
-> +	if (state >= PCI_D3hot && (dev->dev_flags & PCI_DEV_FLAGS_NO_D3))
-> +		return 0;
-> +
-> +	if (!down_read_trylock(&pci_bus_sem))
-> +		return -EAGAIN;
-> +	ret = pci_set_power_state_locked(dev, state);
-> +	up_read(&pci_bus_sem);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(pci_try_set_power_state);
-> +
->  #define PCI_EXP_SAVE_REGS	7
->  
->  static struct pci_cap_saved_state *_pci_find_saved_cap(struct pci_dev *pci_dev,
-> -- 
-> 2.43.0
-> 
+Fixes: c5ba49458513 ("KVM: nSVM: Save/load CET Shadow Stack state to/from vmcb12/vmcb02")
+Signed-off-by: Jim Mattson <jmattson@google.com>
+---
+ arch/x86/kvm/svm/nested.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 1299fdadeb73..b73bc9c3ebdb 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1248,7 +1248,7 @@ void svm_copy_vmrun_state(struct kvm_vcpu *vcpu, struct vmcb_save_area *to_save,
+ 	to_save->rip = from_save->rip;
+ 	to_save->cpl = 0;
+ 
+-	if (kvm_cpu_cap_has(X86_FEATURE_SHSTK)) {
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK)) {
+ 		to_save->s_cet  = from_save->s_cet;
+ 		to_save->isst_addr = from_save->isst_addr;
+ 		to_save->ssp = from_save->ssp;
+-- 
+2.56.1.703.gf848ed807c-goog
+
