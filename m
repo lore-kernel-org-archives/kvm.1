@@ -1,124 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794505212;
-	b=09BTiWdstPEmwInog7q0HtWxB4qvpvPCBPR8I7CLWnSwK4WQLd03h0SqDGJ4YZj49w4j
-	 ph4uLNYKfvwXsJQhhNkBKbQOXxQEtD8nkUqJumIuuiZx9myX9wSl1rqiYIyLx/ecWKwZC
-	 TVebEOi4bq20FVXL8yzz+ho/pDAQgfSmRvBF0AI4BnmMY/Uv4ujWeEFEel4WVKPLlrQI7
-	 IK8Lsma1BrRFur/REpbbSM/lR4XnK6lSYh/5tFb9KQ1jZBZVEQHquJiop4gEczlnq60xs
-	 nFmkPaL2HSiVGRTxRO6KAj7tVOl9N3Vr60pXF7BSOQaTwa1W03L3j9KqlPz9XLerlGQ==
+	t=1794505356;
+	b=G9UV4/jy1L8KQ+AFRuSBzD/rcxsUV5nOlu2a/NsD3InnAn25mrXLKBYy9/+Du9HToVEM
+	 8j3nx3STkQ3X4CG7PfP12FhaZ53o6RfpwVg/AfC9dr0bp97y6+2lphM2aZEXCimmC7qM2
+	 Iex7C7OipYe8xm9BdAY87U0DirvQl5ZE8DVFHbVxFRDCa3I0um+FYp7j8n6z7gxeh4SGj
+	 oNsJnasY+KTa8gsv2/LuRJIKEER1RlOpZjcuPrA4d8uoDrwkZpqX3XbieuJLmH9ScC6Pp
+	 7oNNw4ZrseuVS4zeJY0Xlyovp84fogu0AII6vUkZyR+djoDQp2Efsx3SM4zGJYy5t2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794505212;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=GMK7MSqRNNJITd9VKn9EN01v+V/w/ND04vZqm17dQrA=;
-	b=MvOkDiBdDJxG4EzazO3ojY89X5OZtvbf92DBSgOcNm4y+3tc6eQJ7M4Aj514OC9VPQIp
-	 ho4AGWS04qdyn0UI/1kt65665x2nHcMbWWmnGRknJaamjI8fu6PjzGnQgD9CQc5v1uPba
-	 bXV1ymxPMe/DUv7D2hqPY4ceRWN8xTU+pgoAcZsoVzcpFYeBtfp/VC18g5gdYH+vnhu1U
-	 2ZSMCzzngi0Gi/eAhb3UJxdPx2jOV93EsE/oA/QyjTa1w+tnFfQaUpMlIe6YIc1D9dw2B
-	 r9D3mqob1TMxfwL7bqyHvv0eTITb5bJSEu6LwcF9nV1hLbfNjv/ew8QGpaRiMkDpoBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794505356;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:CC:Subject:
+	 User-Agent:In-Reply-To:References:Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-SRS-Rewrite;
+	bh=dhhn+7b+E0uHrS+RfB6VPpH7GUzc/qwFeX5mWbYxz3o=;
+	b=ecni/6fZ+A21RlvQzWPuycTa1riVKUlAnec3uvmHo6VAxMdcPlfdIkMMCPB/zD20x8DJ
+	 SwdzcSg3dvwlpU43rqXwaK5yIr7sxgfnL+/rbI9ti/Mz4aLv51zQpF0+GgF2lEIUgPi5m
+	 X3f3Ot8HRDMTzF5S1wXTkK3rd5gMJFrmw87+faxpc6boQFog8E8TUyUZ3tvmKAGmpzldQ
+	 U3mq8HVIUVpTDGSS9Wjf4MmH1RqwB4EQ1hg/n2802oLVLqNQkTJjFN7xWa+LSiXWqE2XI
+	 UAI1BQNfNiMcoVRSjzJuoNVWP9Wluex0YdNYsv6XU+hojLVwYyMmUCz+Ijn8zOXh5Ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=E7m+7oWT;
-	arc=none smtp.remote-ip=209.85.160.178
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=infradead.org;
+	spf=none smtp.mailfrom=desiato.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AmUywf5c;
+	arc=none smtp.remote-ip=90.155.92.199
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E150E606C347
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 17:40:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E150E606C347
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C778606A88D;
+	Thu, 12 Nov 2026 17:42:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C778606A88D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=E7m+7oWT
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-53634b8328eso38026671cf.0
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 09:40:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794505211; x=1795110011; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GMK7MSqRNNJITd9VKn9EN01v+V/w/ND04vZqm17dQrA=;
-        b=E7m+7oWT5vnwPeCygHD6YEjh7jOWPEC+ZDjeuPdczK1vYBKrloATpEDBVihXvtG9m1
-         oi1WkqSgA2COI/tL0rIYwv4W397NzbGvplbxnoPs3COp53kkX/jdv8cbobRJAd8QOxjw
-         SNF4IJ69TrBKYjc7paHmPNKvqMzmje7Wlk5KplK3lm03LceoOPQMDRpFo1Z/+zVyEiZe
-         cqGu0Or2btrBpahALI8LEKNKbF+yWWsBWtj2Wo3iwDjvCiVEfw0hGu0rLNrZiM3ldNX3
-         3TsHxI16od7ea4V61ESiHMCGExqr3qn22Hh6C2DtYSQdOCTdsfdQZMKCCJswEIr5YG7/
-         5Vog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794505211; x=1795110011;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GMK7MSqRNNJITd9VKn9EN01v+V/w/ND04vZqm17dQrA=;
-        b=j6jVd5cSzBwO/vJVSjAXvLD641cBGm6oY4eLczTBdqzEOs+H6e7fa1bRiZ87tyAKMK
-         8XnBwstp7bOZ+SK7s2UVAG73/YDKOYTsy/Ma/CfYITFT4Ouxxpl26ccJJ1Pw7AmCya1H
-         /c81lG/Xb7bzjmUGmZrkOfEHmKZQ7y0udtHFHr6+DhT67zQO3fcpgoPBqC8904/tVUlJ
-         J1YuVke7dYf7Ea17vK/KQL2UR1+CVegZVhfXYOiug+7NDIr9OprOlmlrOVndkTbOXufj
-         4ID5wjIxkeP0EFyIcpm+g+a5P/A1QhuItGldeI/hSL1RrHBNtSn40vzRUeUEDn3uS/BG
-         cKWA==
-X-Forwarded-Encrypted: i=1; AL+hErGRj4XDykBvu4j81GBajwW08ncTMM0gX8btu4xD9jQTKEJqIWF6LKUfUVFxhyBj8M4hhgU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+94XMpEd2YnKWim1pcH2Pa/CabbHB2EzPbeUHAdwPkis/tCreK
-	gOAviA85eZBCxyXhz509isYOcd80VbRwXdu8tiU2isZCVdsf385KsYVq8Dqj3SsUjsA=
-X-Gm-Gg: AYBFou1ZYv/uwOHLuuytlrBceonZZFf/AEK9ejnLO3fYuRB8ouK+GuaqFw1MST1qIGV
-	j8lS/DXwTvLlC1cvtPlyxA6Fgq3rgGRR3txJT6GgUDs0hFJ8fSU0SVk+iuTU2OMkCgUQvxnjdV0
-	rYGG7i8GpifmCruAiawo92R9V4TcpAuHbtMdj3vzCejCazuWJd+DEKu/AQGURwju3DUf0gt/ept
-	JbUutE07oxgo6cVkSfvJSWzGN3NoppezbtifXn7gw75Y1+b0a2lj5LWcbeVPpxXLsFGiFmTaM7a
-	pwnJBhEbvb8M017dCz/qYxNBZR5d3JuO2Hnzs724XCcac1zFyBSMHAt8tAaIjH1rDQ6fPiCinwS
-	EHUdJIH/cEf5svp9hHA2ZajzhKEGayIAiOiKTLrMO0oRWo5sltu1phzTwOLu2bdSgwpR5n0esFL
-	01Yx43N6zxpUgQZ+1o8ii4kYOerCPeQz+qsmUYaC71sMknznWaxe8Omp0/pwR50xbiJDkLhMYAA
-	AuVcPbv0jyDI+X4JiXt7pRy4O5e921S7MamLwnJwIlnqDNx0dnFC3VDV9KCbdrn3lmocyVqpUSY
-	WqUO5g==
-X-Received: by 2002:ac8:5fcb:0:b0:533:8e6b:260e with SMTP id d75a77b69052e-55ac78597d2mr1668441cf.31.1794505210728;
-        Thu, 12 Nov 2026 09:40:10 -0800 (PST)
-Received: from ziepe.ca ([142.166.156.71])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d70489sm890336d6.21.2026.11.12.09.40.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 09:40:10 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xRYmP-0000000FjX1-1XQV;
-	Thu, 12 Nov 2026 13:40:09 -0400
-Date: Thu, 12 Nov 2026 13:40:09 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH v8 06/15] iommufd/device: Hold a KVM file reference for
- the device lifetime
-Message-ID: <20261112174009.GB2532299@ziepe.ca>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-7-aneesh.kumar@kernel.org>
- <CO1PR11MB4835982DE81AFE060EEE01B88C762@CO1PR11MB4835.namprd11.prod.outlook.com>
- <97053bb6-c221-4ae0-972c-603b194ec25a@amd.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AmUywf5c
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=dhhn+7b+E0uHrS+RfB6VPpH7GUzc/qwFeX5mWbYxz3o=; b=AmUywf5cub6TGT7GkBFrjaIEnx
+	VQ9jBElSsX7kqt1UOOgaFWPVwyiCVR2GVXdzRBQRTYe9Hp9BAoMr8VUeDV0vKDsFgeGJz0Y+AzyZ5
+	HfGKy6St0LD8EBTWgfRy/dQtlMDlYIjv9/AbSAbaW+wfBr1DgtvCrlz4FdXCpADdVDZ5yZNdhv7mt
+	KL7+QAynBdbvbaNp/9Mc4ehmo3eFFChstEfzlT5z7sVLMoCcjg58H9Mkek7XnLR80mE4AXXgBez4y
+	JQvIXZ3VaszEfmZvLKAoz4Cw3Ld8ntjiJkWrNDwkSElK/j+hBHIPjxNnDwAc47mCKN9aAljSaUGZf
+	K29Ey6wg==;
+Received: from [69.196.88.181] (helo=ehlo.thunderbird.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRYoh-0000000Ad1t-1Sec;
+	Thu, 12 Nov 2026 17:42:32 +0000
+Date: Thu, 12 Nov 2026 10:42:22 -0700
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+CC: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Anish Moorthy <amoorthy@google.com>, Shuah Khan <shuah@kernel.org>,
+ Nicolas Saenz Julienne <nsaenz@amazon.com>, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, David Woodhouse <dwmw@amazon.co.uk>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_KVM=3A_selftests=3A_Drop_stale_exac?=
+ =?US-ASCII?Q?t_flags_check_in_private=5Fmem=5Fkvm=5Fexits=5Ftest?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <avX13o0qRkidIwWo@google.com>
+References: <20261112144220.30801-1-dwmw2@infradead.org> <avX13o0qRkidIwWo@google.com>
+Message-ID: <B98231C0-1516-4781-9C31-3CEE9922C8A6@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -128,40 +69,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97053bb6-c221-4ae0-972c-603b194ec25a@amd.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, Nov 12, 2026 at 11:25:46PM +1100, Alexey Kardashevskiy wrote:
-> > > Once the remaining KVM file references are released, a later ioctl on
-> > > the still-open iommufd can access the stale pointer:
-> > > 
-> > >    iommufd_fops_ioctl()
-> > >      iommufd_viommu_alloc_ioctl()
-> > >        iommufd_get_device()         /* finds the surviving device ID */
-> > >        get_file(idev->kvm_file)     /* accesses the freed KVM file */
-> > > 
-> > > Take a KVM file reference when binding the device and release it when
-> > > the iommufd_device is actually destroyed. Release it before the igroup
-> > > check in the destructor so that bind failure cleanup is covered too.
-> > > Document the ownership in the bind API and device structure.
-> > 
-> > I don't think this needs to be fixed. There is already a WARN_ON()
-> > in iommufd_object_destroy_user() and many bad things could
-> > happen afterwards...
+On 12 November 2026 10:22:38 GMT-07:00, Sean Christopherson <seanjc@google=
+=2Ecom> wrote:
+>On Thu, Nov 12, 2026, David Woodhouse wrote:
+>> From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+>>=20
+>> Commit 7d0afe669374 ("KVM: selftests: Take into account mixed memory
+>> fault flags") relaxed the memory_fault=2Eflags checks so that they only
+>> test for KVM_MEMORY_EXIT_FLAG_PRIVATE, since KVM may report the access
+>> type alongside it=2E In test_private_access_memslot_deleted() it added
+>> the relaxed check but left the exact match above it, and with the
+>> READ flag now reported the test fails for me there:
+>
+>Ah, this is against kvm/kvm-memprot-v4=2E
+>
+>Paolo, what are your plans with that branch?  Sashiko had valid complaint=
+s, e=2Eg=2E
+>against patch 1[*], so I assume the branch won't be merged as-is=2E
+>
+>[*] https://lore=2Ekernel=2Eorg/all/sashiko-outbox-193903@kernel=2Eorg
 
-Yeah, it shouldn't be fixed like this.
+Yeah, I have a whole ASCII art diagram for VSM of the various branches it =
+depends on, all of which need to come together=2E
 
-Either we need to rethink that warn_on path for some way to actually
-wait forever or we leave it.
+Not sure how it'll survive being pasted on my phone=2E=2E=2E
 
-AFAIK nothing here is going to make that warn on trigger.
+```
+  *   e7bf7087c71e (vsm-v2, vsm2/rollup) Merge branch 'vsm2/translate-prob=
+e-fix' into vsm2/rollup
+  |\
+  | * 2041e48469c9 (vsm2/translate-probe-fix) KVM: selftests: Add a test f=
+or KVM_TRANSLATE write permission
+  | * 11e4bc669f5a KVM: x86: Report the guest's write permission from KVM_=
+TRANSLATE
+  | * (base: v7=2E4-rc2)                                    =E2=86=90 post=
+able =E2=84=962, [RFC]
+  |
+  * 711d67d9ee59 (vsm2/vsm-extras) =E2=8B=AF 10 EXTRA commits =E2=8B=AF
+  |      TLB-flush-inhibit group [Nikolas=C3=975 + 1 ours], suspended-stat=
+e,
+  |      hugepage selftest [Mushahid], stats, KVM_TRANSLATE allowlist
+  |
+  * 45e6e98c313e (vsm2/vsm-min, tag: vsm2-min1) =E2=8B=AF 32 MIN commits =
+=E2=8B=AF
+  |      per-plane attrs =E2=86=92 TSC page =E2=86=92 TLB flush =E2=86=92 =
+VTL call/return =E2=86=92
+  |      forced entry =E2=86=92 SynIC/overlays =E2=86=92 intercepts =E2=86=
+=92 SVM state =E2=86=92 selftests
+  |      [29 dwmw, 2 Mushahid incl=2E folds, 1 Sriram]
+  |
+  *   2dba8e6aa231 Merge branch 'vsm2/hcall-exit' into vsm2/vsm-min
+  |\
+  | * ab78e5f86ef8 (vsm2/hcall-exit) KVM: selftests: Add Hyper-V hypercall=
+ forwarding test
+  | * b5db9e2e8a73 KVM: x86: hyper-v: Advertise XMM fast hypercall output
+  | * 13c74a93fa3a KVM: x86: hyper-v: Let userspace fault a forwarded hype=
+rcall
+  | * 365758d0df84 KVM: x86: hyper-v: Add KVM_CAP_HYPERV_FORWARD_HCALL
+  | * (base: v7=2E4-rc2)                                    =E2=86=90 post=
+able =E2=84=961
+  |
+  *   d834e6e32d45 Merge branch 'vsm2/memattrs' into vsm2/vsm-min
+  |\
+  | *   2fd5c2a710a2 (vsm2/memattrs) Merge 'kvm-memprot-v4' of kvm=2Egit
+  | |\
+  | | * =E2=8B=AF 45 commits, Paolo, verbatim =E2=8B=AF
+  | |/
+  | * (base: v7=2E4-rc2)
+  |
+  * 08140f5dfd94 (vsm2/planes-uapi) =E2=8B=AF 9 commits =E2=8B=AF
+  |      KVM_CAP_PLANES opt-in, run-state ioctls, request fan-out,
+  |      APICv inhibit, XCR0 sharing, selftests [8 dwmw, 1 Paolo-reworked]
+  |
+  * 52a6b958f643 (vsm2/planes-fixes) =E2=8B=AF 16 commits =E2=8B=AF
+  |      s390 lkp fix first; Hyper-V init, allowlist, current_vcpu/IPIv,
+  |      TSC matching, CPUID [13 dwmw, 3 Mushahid]
+  |
+  * ea638a7ede9e (vsm2/planes) =E2=8B=AF 60 commits, J=C3=B6rg, verbatim =
+=E2=8B=AF
+  |
+  * (v7=2E4-rc2)
 
-> > If we really think an ioctl could take more than 60s in sane scenarios,
-> 
-> It is quite possible when some TSM operation involves (in)validation
-> of hundreds GBs of MMIO.
+  parked, not merged anywhere:
+  * de563700e7ed (vsm2/translate2) ours =C3=971 (squashed probe) on =E2=8B=
+=AF Nikolas =C3=9716 =E2=8B=AF on vsm2/memattrs
 
-That won't be under these locks though.
 
-Jason
+```
