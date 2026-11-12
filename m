@@ -1,90 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=139.138.37.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794474505;
-	b=0L9FhV7Z5NTcMplyZXLJt49W/rixwvxi9VIJJ75CP/ZrtdwDj9yNSjqa7V0D1Z06EXXG
-	 NwLa0MhE9YTN7CM+Obe6HdrX1fRr5sPKmKT7zCwle1jjwjNQKWzPNpvOD+yrDdSdPMVsh
-	 gS6rpmQKir43fIm/At8zbuaT4dY1avE7eHxr/+fUpsOGo5xWy435ymhtM8s961mFc+EOn
-	 bE7yk7oUhetp4H8nbjRBGpiMkyUG3NlV6hXrdK/DtozHpPuD0maJm4r2VATwSOREGiWOU
-	 AT7+6L63FvuW2r/ejsD6hXFOL2jUyh9wIVi2g/Ovz3w2fk4DN3qJr6CY1kVIdr0ev9w==
+	t=1794474940;
+	b=gJF3VTuVj/WnOYpD7A7q5IopVUhGKMISdloZ0mPRv1ZwLmVhQwaMrrdJQr3X6W8VgScs
+	 3p/HGryFLgv36cd4MXvhffomNhbLmADYF1yKFJUB5Ajwn/+hWbxtx0smfhw+5ZZucnWCO
+	 hR98YmjuP++e3EEv3lS2+R+QojkGILXirKGz6WwOpbsIkwesuqlh3/CmpSZ4BxW5D8S7u
+	 YSknDMTFOsrpvk6COfJP/PZlLnf9hFtMvSwz/t4fHO4PntDbWfOwQLx3OtL4n7egKk2fK
+	 Pch2ICbpwgLUjh7tNqc1zws3RveG7tQJtZ/S7FBTaW4roKQcnQfRh4XQkjI8o+Ujo8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794474505;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=s27wvHS07SuwEnoAPuKZTYMrrXbi2Voqx1f7y+dH6O0=;
-	b=1YVLsTbYS7dxAzdPhq6caCN9qo5k5HHMJ2cpV9r+4F0PvUXsbEIZIgVasKeOw5mhhfAy
-	 MYtxQr1hYvzingBwB3THK34EQw6+SbnrkFOrxT6fAAHpI5vA+79FaHstnYr4PLCrz59Aj
-	 H8fxCrINs7h7uWy5lI9hpuMmmjlSZeUuj3n7JxQ7CIzkZhpqeCy4RGf+rtigqpgJlD3TB
-	 6J4pehcq9axpvlcxGqCu9bg14/PqBpl8uLV8uSM6vXlQVLy/R9BnVpKIOruvTZgOFN6QY
-	 e0J4MaDHgIkoYBinH9hHrxm3JNWCQOYRmbXi4gRT4eCmTs5L1tMu1xK02X/ZLNvG0qQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794474940;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+	b=4EZBFpgS5kUgsaai+P7846qKrH7u6GhjXbLl86s8tOHpgIwZyLqTn0tIK8FkEy+1e5z9
+	 RgP07FMsp29kVopNIkPhQOnZjxLlM2aJf2ZTMC/JGrPEhKmEMcPnUEDZOdoqPl4IZ+bX8
+	 cJBb+qJVbuT9kpVM/Xu90FTYml2EGjiRb1CF/iP5yQTMdpd/WSMY5sBMU2JQv4nwKlJoD
+	 +XZZr4nr05u7F51CmfHpQmtTXo66C7m0XnXTY8OH2AmQzUybp2I+u3ifkq7qQwqg94I3I
+	 sKkdpRKxtARIh0VZ4sY8LCkFUi9L8ksx1qUDARx2IsNYFL4WyHIM95kJoytp1TZjoYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b="epVh3cc/";
-	arc=none smtp.remote-ip=139.138.37.100
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMuTvq3q;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RBjixnsW;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4925B606A321;
-	Thu, 12 Nov 2026 09:08:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4925B606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82590606A8AC
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 09:15:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82590606A8AC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=epVh3cc/
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1794474512; x=1826010512;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9Tx2kYwYrf5VVNfDHDCGqna3I8YOzDbxeRSc934oNm0=;
-  b=epVh3cc/pkQhLt3UJdzvm86Y3kYvCJLNwaNki17DbQXtEzkIRLkOGHby
-   EK4nuiDMTsJXGpmSsUjeajFTQphuvbxYDyoQHn40j3g3VFmzjpjlMatyy
-   U2yUK3aQqQMy3sOXnl9gplkvZBgV8flXp1v3ekdMSiK+ICh69GFiF6OlD
-   tZDbjCddW4HiSxK5nJYlAxrht6FwH2Zg+GTxRzW4xErPOutt6MqHmHgKL
-   lBvoWJQETE8lnq1XWjaBu9Rf5+UwM+CEaqGpnuIfsLK+1IJs1St8qFWnH
-   m6twrJOmy/8SzaDnuaVQVU6fQosg0EClOyY7RGS7JrmndrtSMRkyooEQg
-   w==;
-X-CSE-ConnectionGUID: NG+XFSSlTIm7W4O3T9sDMA==
-X-CSE-MsgGUID: 751GRAQ1SmamqssaWwpKGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="239285216"
-X-IronPort-AV: E=Sophos;i="6.27,209,1786978800"; 
-   d="scan'208";a="239285216"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 18:08:24 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id E5C131003E6D;
-	Thu, 12 Nov 2026 09:08:16 +0000 (UTC)
-Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 9215B1C000EB;
-	Thu, 12 Nov 2026 09:08:16 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.86.149])
-	by az2uksmom4.o.css.fujitsu.com (Postfix) with SMTP id 706EA405EFB;
-	Thu, 12 Nov 2026 09:08:07 +0000 (UTC)
-Date: Thu, 12 Nov 2026 18:08:06 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v2 00/12] KVM: arm64: CCA: Prepare Realm memory management
-Message-ID: <avV-P2_fOkFWQVnM@FCCLS0092175.localdomain>
-References: <20261111145758.217946-1-steven.price@arm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMuTvq3q;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RBjixnsW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794474938;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+	b=aMuTvq3qIoH43sv+1a7P8mAUyk7hzIxGncQhFZS7l5317fpGTaPqEkVvZk8AEWtDZgKSf/
+	TaUUy3y1dNhIVRxz2oO0WwtmwY2WePLpuTTo+D0BoeK6BYN8YQ/YcUyZS/yDPgRp54OsGX
+	Tk62qEa3stwnAzxKVZq2EX1rI2opIuU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113-4LYXOo65Ohqw3GmhrzZDKw-1; Thu, 12 Nov 2026 04:15:37 -0500
+X-MC-Unique: 4LYXOo65Ohqw3GmhrzZDKw-1
+X-Mimecast-MFC-AGG-ID: 4LYXOo65Ohqw3GmhrzZDKw_1794474936
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4916d47eeb5so3279844f8f.1
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 01:15:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794474936; x=1795079736; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+        b=RBjixnsW08WSzYaCIeMMgfDMxPNjBHIl29W/hMUL87tEOBmVisUX3PMetALgCVp1OX
+         TZbZ1VfJRXWZ8BFWFchwd7tgIJoXRAMZ1nRX5repU5Q31o9xRq0O705WrzyZCRzxWddb
+         YzmuGdP+BRePNQ1n67DeI4eA92tJVnyS+DaC8eQoIrM/soc8PR2bRDqAqpO4lWc9OeBY
+         c5+uNuKmNSGznIGKIs8ZALZpia3CJOVSRzKC0zetFO/gA8PKmjmviNBxx4Fe7zOqIGOM
+         D98ld0NhCtGmG7X8A60u7hB2G3VvOiQYhEqVBCgco8EMqeWC5jtGqCnPUtPrqYNvdkS7
+         AcfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794474936; x=1795079736;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=in0wT3kSv8v4L0CNiG/ZIgaYFBbYCntKXbAs/Vd5cP4=;
+        b=fJLaeixNudM6+AoQ+fGFXgf5sxdoBrm8o7Ari97TVSSoRtX1y7i1NCAxMvWyD8m5Hx
+         ClI360srpwIPwgEgyhc6hoCMGZX7L2/I4B47eLedEMXowJqJXS0fZO/d+HU752oZyTrr
+         NMcqFleEp4KQvsjnVAnN2jcBsIXnQMUY09R7MKeNFqQbffkYOQTy839qfJO6AtnoxHaR
+         swTa4J6JbCh19GNGlIUPqQ1JJnp0S1GSarcScqLjbqASk5INLWKBQQFzcs/TMlGZYB1g
+         8C5nNex9FBZbdoK2ldqZwO3MU5cbbTE3SU3SKVYEIFTfOu29FDKGGFSZutD7DvszxSRI
+         EvuA==
+X-Forwarded-Encrypted: i=1; AL+hErHZ7HAb3E8mbjYGeowNs+Rg/nhmnvR9XBeWzvoOQQPu6OqUNjoLXoZyN3alydaetMavTKc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8RRGX8pZXA2xpsHY1lQ8IF3OnzkyxMG7eL7rDW7go3Da4oAJwP
+	/PRh4NAiArPX+gAMrN+oxflAHWPjyy2LtQyPDjVPutdNpTB17d6cRbzgWmDKzxIcnUPdoNpBV0x
+	EWcNjZqQvYzwFxNcBBOPLmh35NTnF0QSwj32fj8/j7a7/cFngSCi8aw==
+X-Gm-Gg: AYBFou1HoSlW33eSOl1U1avptiMIjDkEWTUjXs0C7GrNtBj9s8nkauys3+uxNS16hpO
+	lRQvXsZFE+Ma1gTJAhlLPpfYcVthjH7Zuzc8v7Wu3ETMOHRwYWW0AwGuYBXeDamtYBxItzpIfPz
+	pOlovUOl/qH3oKNQtNzDuu6DyXTHnKcxJ6G2uapePAIfjq3nTHfHtMoqGJqII3PoPmugEcj3XB3
+	qdxShAPexTh7ZfWKnPqy/qdGKGkFi23vK0CMNNHjmAcaPna7HSXHkOkOI255dlifXI1Mkvbvpdu
+	hgq8LFFHy0cukmp6zhHaMC34qWFBvvEiMPz+2EcCs5NYg3j84+HZdDXIZIUQZok++DOiBeww0ol
+	9J3neLCdVbcwzQMJtDmUaBD+mZkvUn30uTjn+Y2cprw==
+X-Received: by 2002:a05:6000:4b13:b0:487:88b:4681 with SMTP id ffacd0b85a97d-499c6027597mr7970526f8f.10.1794474935556;
+        Thu, 12 Nov 2026 01:15:35 -0800 (PST)
+X-Received: by 2002:a05:6000:4b13:b0:487:88b:4681 with SMTP id ffacd0b85a97d-499c6027597mr7970448f8f.10.1794474934931;
+        Thu, 12 Nov 2026 01:15:34 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498361f674fsm15808324f8f.33.2026.11.12.01.15.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 01:15:34 -0800 (PST)
+Date: Thu, 12 Nov 2026 04:15:31 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: zhaoguohan@kylinos.cn
+Cc: jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] vhost: set dirty log bits without pinning pages on
+ x86
+Message-ID: <20261112040926-mutt-send-email-mst@kernel.org>
+References: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
+ <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,79 +117,135 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261111145758.217946-1-steven.price@arm.com>
+In-Reply-To: <20261112085631.128819-2-zhaoguohan@kylinos.cn>
 
-Hi Steve,
+On Thu, Nov 12, 2026 at 04:56:30PM +0800, zhaoguohan@kylinos.cn wrote:
+> From: Khan Zhao <zhaoguohan@kylinos.cn>
+> 
+> set_bit_to_user() pins the log page with pin_user_pages_fast(), maps it
+> with kmap_atomic(), sets one bit and then unpins the page and marks it
+> dirty. This runs for every bit set in the dirty log, e.g. on each used
+> ring update while logging is enabled for live migration.
+> 
+> log_write() always passes a byte address and a bit number in [0, 7], so
+> the update can be done as a byte-sized cmpxchg on the user address. On
+> x86, try that first using unsafe_try_cmpxchg_user() inside a
+> user_access_begin()/user_access_end() section with page faults disabled.
+> If the access faults (page not present, read-only or needing COW), or
+> the cmpxchg loses to concurrent updates of the same byte four times in
+> a row, fall back to the existing pin/kmap/set_bit path, which can fault
+> the page in.
+> 
+> unsafe_try_cmpxchg_user() is only implemented on x86, so other
+> architectures keep using the existing path.
+> 
+> On an x86_64 KVM guest (i7-12800HX host), a synthetic used-ring
+> workload with logging enabled went from 243.60 to 171.11 ns per
+> descriptor, averaged over five alternating runs. This is the
+> end-to-end cost per descriptor, not live migration performance.
+> 
+> Signed-off-by: Khan Zhao <zhaoguohan@kylinos.cn>
+> ---
+>  drivers/vhost/vhost.c | 50 ++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 45 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index e29f154706da..9c3045504709 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -2527,11 +2527,7 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
+>  }
+>  EXPORT_SYMBOL_GPL(vhost_dev_ioctl);
+>  
+> -/* TODO: This is really inefficient.  We need something like get_user()
+> - * (instruction directly accesses the data, with an exception table entry
+> - * returning -EFAULT). See Documentation/arch/x86/exception-tables.rst.
+> - */
+> -static int set_bit_to_user(int nr, void __user *addr)
+> +static int set_bit_to_user_slow(int nr, void __user *addr)
+>  {
+>  	unsigned long log = (unsigned long)addr;
+>  	struct page *page;
+> @@ -2550,6 +2546,50 @@ static int set_bit_to_user(int nr, void __user *addr)
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_X86
+> +static bool set_bit_to_user_fast(int nr, void __user *addr)
+> +{
+> +	u8 __user *p = addr;
+> +	u8 old;
+> +	int retries = 4;
+> +	bool success = false;
+> +
+> +	/*
+> +	 * log_write() passes a byte address and a bit number in [0, 7].
+> +	 * On x86, update just that byte to avoid crossing a page boundary.
+> +	 * Bound retries so a contended byte cannot hold up the worker.
+> +	 */
+> +	pagefault_disable();
+> +	if (!user_access_begin(p, sizeof(*p)))
+> +		goto out;
+> +	unsafe_get_user(old, p, fault);
+> +	do {
+> +		if (unsafe_try_cmpxchg_user(p, &old, old | BIT(nr), fault)) {
+> +			success = true;
+> +			break;
+> +		}
+> +	} while (--retries);
+> +fault:
+> +	user_access_end();
+> +out:
+> +	pagefault_enable();
+> +	return success;
+> +}
 
-On 11/11 14:57, Steven Price wrote:
-> This series adds the memory management plumbing for CCA, building on the
-> basic RMM support [1]. Thank you to those who reviewed v1 - I'm
-> attempted to address all the comments.
-> 
-> The patches introduce internal Realm VM state and RMI feature checks,
-> prepare Realm stage-2 setup and teardown, and provide RTT mapping and
-> invalidation helpers. Realm memslots are restricted to the lower half
-> of the IPA space because the protected and shared halves alias each
-> other. The final patch connects the helpers to KVM's stage-2 MMU
-> operations.
-> 
-> This is the memory management portion of the larger Realm host series.
-> Realm descriptor creation, REC entry and exit, activation, and the new
-> uAPI follow in the integration stack. This series alone does not enable
-> Realm creation.
-> 
-> As before there's an integration branch[2] that includes the realm
-> creation, REC entry/exit etc building on top of this series. I've also
-> pushed a git branch[3] of just this series.
-> 
-> Changes since v1:
-> - Add a guest_memfd prerequisite patch that checks whether the backing
->   file supports mmap when preparing an arm64 memslot.
-> - Combine the RMI availability and feature checks into one patch, and
->   move Realm vCPU feature restrictions to the integration stack.
-> - Correct Realm IPA sizing and RTT teardown, including teardown before
->   activation, RTT accounting, and handling of missing or folded RTTs.
-> - Rework RTT mapping to respect IPA and physical alignment, handle
->   partial RMI progress, and retry interrupted operations.
-> - Preserve private mappings when a Realm guest_memfd memslot deletion is
->   rejected, and tighten Realm fault handling and stage-2 destruction.
-> 
-> [1] https://lore.kernel.org/all/20261007073537.2454351-1-suzuki.poulose@arm.com/
-> [2] https://gitlab.arm.com/linux-arm/linux-cca
->     branch: cca-host-mm/v2/integration
-> [3] https://gitlab.arm.com/linux-arm/linux-cca
->     branch: cca-host-mm/v2/mm
-> 
-> Steven Price (7):
->   KVM: arm64: CCA: Reserve the RMM mode
->   KVM: arm64: guest_memfd: Check mmap support when preparing memslot
->   KVM: arm64: CCA: Check RMI support and features at init
->   KVM: arm64: CCA: Add basic infrastructure for creating a realm
->   KVM: arm64: CCA: Tear down RTTs
->   KVM: arm64: CCA: Add Realm RTT mapping and invalidation helpers
->   KVM: arm64: CCA: Support runtime faulting of memory
-> 
-> Suzuki K Poulose (5):
->   KVM: arm64: CCA: Introduce Realms
->   KVM: arm64: Handle attributes in stage2_unmap_range
->   KVM: Allow architectures to reject memslot changes before invalidation
->   KVM: arm64: CCA: Prevent memslot modifications after Realm creation
->   KVM: arm64: CCA: Add Realm stage-2 MMU operations
+Yes we wanted this for the longest time!
+But can we use the nice scoped_user_rw_access API?
+Something like:
 
-I've tested the integration branch [2] including this series on our
-hardware using the QEMU-VMM proposed in:
-  https://lore.kernel.org/qemu-devel/20261002202026.1204110-1-mathieu.poirier@linaro.org/
 
-The Realm guest VM (32 vCPUs, 16 GiB RAM) booted successfully. To
-exercise the guest with a more realistic workload, I also performed a
-full Linux kernel build, which completed successfully.
+        pagefault_disable();
+        scoped_user_rw_access(p, efault) {
+                unsafe_get_user(old, p, efault);
+                do {
+                        if (unsafe_try_cmpxchg_user(p, &old, old | BIT(nr), efault)) {
+                                success = true;
+                                break;
+                        }
+                } while (--retries);
+        }
+        pagefault_enable();
+        return success;
+efault:
+        pagefault_enable();
+        return false;
 
-A Tested-by tag might not be carried over to the next revision, if any,
-but anyway, for this series:
 
-Tested-by: Kohei Enju <enju.kohei@fujitsu.com>
+maybe?
 
-Thanks,
-Kohei
+
+
+> +#else
+> +static bool set_bit_to_user_fast(int nr, void __user *addr)
+> +{
+> +	return false;
+> +}
+> +#endif /* CONFIG_X86 */
+> +
+> +static int set_bit_to_user(int nr, void __user *addr)
+> +{
+> +	if (set_bit_to_user_fast(nr, addr))
+> +		return 0;
+> +	/* Resolve faults, or use the native bit layout on other architectures. */
+> +	return set_bit_to_user_slow(nr, addr);
+> +}
+> +
+>  static int log_write(void __user *log_base,
+>  		     u64 write_address, u64 write_length)
+>  {
+> -- 
+> 2.43.0
+
