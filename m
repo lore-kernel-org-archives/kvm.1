@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794458635;
-	b=Rome891T4riK7bzGJ6LMyW+Pu2YyTUgBWtaBQn8XTtQ09Cf+LYapmdqJrjgLZGaFPYhn
-	 r4NCZ8I1AEDb/xGaF8Ku43W9S/9+EDkekK2vBwTE0buaBwSN6OBAlZgr/vjELv7FhcDBb
-	 KhDHrfwLAj7tDyU9PFf4tK/wL0myP2AIGK0l79C84E08s3JNmB9i1zOmGBC1C7d/UCkQO
-	 RUPgVzBh9l3d0yDOJ82FlW+lYrwiiZo5LipKRcbXkZvm26guqP1uefwzt0hiiHVd5A0FW
-	 qhKnbHMd09GbTEJw3RSGB2Aa38BCABzSSjvcm0kRpWfQJlgqmVIhGoH6YOGfndNi2tw==
+	t=1794458638;
+	b=CeF5qVukzwlTwBdOL7UlA1zFfy/NkzfaO361qFqE4SNQ0GXCdWhOkAbHxrp5AKQj//xt
+	 hZUnIlVykyikF382838OVKBt+ocdDe3a0wsmsmZxXbzEele5b2SPX6So/6b+obXO/gxis
+	 nd94UVqkXPyUJkkIEIdvuzxK6iQYoMuOT84dpRsVfy+VTgosQ2OW7mmhFeJQX1k0DsfOd
+	 zvHoUZCR6PJ/Whx6M9G23v1CSwSKrMxTzwpof/un4T1w1nIyYsLQfvRTWJ6p8WeZKJ1d3
+	 UE4qbk7jRC4WFFuwtoF6lYCT7e3yEBI3ABfVg9uHV4OPUm9dk5Nmw9hQAui/VJNS+KQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794458635;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794458638;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=OoHMoMToIprNUXVBdA2mO+/FOcNrc2DuZ0JLihC2jkM=;
-	b=aZEg2bO4x75UH5rJpjeMJOYhN6ksV2pF/fhKYukkL5AFl4CFhGP2twRSvFMZF8rF+zlV
-	 6B+JusydA4+lmLWOYPLGbg7SdjUAjkoXdy80TdzZDOBpS9o5SVHBJVciZCc+GHY9ZZhpo
-	 BReUGDnGErw7DsHCHVYy9p5I9p8OUtLs3H1uHRC0r2cayiH6LPcvFE1F0EsJXdQH7tzZi
-	 rqimLbK/4z9gup45GsOGZRC0xdHuv+DxsoFVhekQcIpedBDDYfTBke1ZQROmlg9eqTCCY
-	 N9BV1yJwvnRZDdis9o7oUdfGapbNlEJe7U53TFG+8rzewssqd1XGfHPnOxajyjOhW8Q==
+	bh=Gk4J3PRpXVbZG/2lFq7fiUjf5VSexltmx6rvP44K9sA=;
+	b=OZPugpo+PEv7lSHBG1U7jdlDGVqUjLrDSBoj1dlZAv5vVFNvGTaY0w/4YBcVnWPXVKw0
+	 RaqPbCtXi0dXygkl5c7OhDLTEurO1EOiU/IEPwM4b4NmEsyPbJtK6mj6mMDaQEteTT2ng
+	 UI8lbALEFqO5eLk3qLdzKzQeYJuGG6S5zH2ykg/IfZUQwq2xon0h9+j0RKrYeL1jXv8tx
+	 0kEFZ09koADYoNRGbN2xoyspnNxQ9dI/Y/W31L/bZkzIXuCmMyenGL3nsiIoFBNPnAfuY
+	 G0G40Z2RICJBExXwMbbZXgqB6S8JaQ2NihMC6wOJn1+2NDYY8KNyNojnc6QidWDNpxg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DZXfL7Os;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LyGdR2sC;
 	arc=none smtp.remote-ip=198.175.65.21
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9890C606A893;
-	Thu, 12 Nov 2026 04:43:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9890C606A893
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53655606A893;
+	Thu, 12 Nov 2026 04:43:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53655606A893
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DZXfL7Os
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LyGdR2sC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794458634; x=1825994634;
+  t=1794458638; x=1825994638;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hCWt7wIqylSLc7vcyqZ/asKX+Bzo7aUx/mqcDdFe6k8=;
-  b=DZXfL7OsUjCnf4wgVxEpfh97+ssssmAQgSeCG9sIMMy4axZHEudULaiL
-   S6P+1Uow+z9qpymXlo4Pm+UhXT2Ttfqv0HqLmmRpBK9AMKNZ6qyqajmcY
-   oqQGdmiprUblwnUiFY62UPm4Um5sb2h/EOvXbbu6gyhOnajP7nYFQKYJU
-   IQP9ufsV/YDOJW9ncMxJP2Z86VW+OB8bZ6c6eeo4NtTS6qq8nUuySutIX
-   vyT1NdmsxqVPogI9DEqWOrSGoYl2cTM1xhhLPfhFJQ1i5Aepk6EWTAM71
-   +iJcqjisBMCAUW6WsETgImRn2/uaIoGBDBCY7SIfsjTHlmMJu/Q5EyeGk
-   Q==;
-X-CSE-ConnectionGUID: c0a6vDnxSDeFDpjkBQyMBQ==
-X-CSE-MsgGUID: zkbWZbB0S5CdeLv814iTUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3318326"
+  bh=r/2u0wGr7E5y5ntq8rOUm26jo3YlOd8PNzJksxhIC7U=;
+  b=LyGdR2sCXUzrivlFEgZTRZScsabt1ngwNeTiJUNES2Y46gE4sY2qRbJt
+   LW9rDEJN9nSYjtqP2wu23M1s1SHbptVwK0mDZ+X/Mjoyh7Ts5KYLLHobz
+   LTvKCJ/Ide5HX2Y12q/ZhC/v6ntHBkhllrD0NKjnCnKScbxn7nBnkXcgT
+   Zf1jCpVbFjUod+11ue5hB05L31ZQcie8UXxgCyrwtsLVCJYuWLlayKb8k
+   yUC8ictuSsq32WEeYmAejt0oeZBVmfRemALBoQPW2qOE40NYFxhTu8+oC
+   XEPKcR+E+Yfqzb/kWkuf1sA9U6AICvFi3BJqy7ANb7+dB7iaQmEqoxRNm
+   w==;
+X-CSE-ConnectionGUID: CbD6aZE9TRKvyDlO9kwM6g==
+X-CSE-MsgGUID: jYdk5A3ZSzKVbgh8UNnH0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3318335"
 X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="3318326"
+   d="scan'208";a="3318335"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 20:43:54 -0800
-X-CSE-ConnectionGUID: GeU2LoC1Suadvhir2Oz7jA==
-X-CSE-MsgGUID: PXJA8cVyRXaN9Y52OwJwDQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 20:43:58 -0800
+X-CSE-ConnectionGUID: cSPp3ndbQPe5ZhGNw3dc/g==
+X-CSE-MsgGUID: VtYE1s2XQGCzWcVo8aTUpA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="8728625"
+   d="scan'208";a="8728628"
 Received: from allen-box.sh.intel.com ([10.239.48.101])
-  by fmviesa002.fm.intel.com with ESMTP; 11 Nov 2026 20:43:51 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 11 Nov 2026 20:43:54 -0800
 From: Lu Baolu <baolu.lu@linux.intel.com>
 To: iommu@lists.linux.dev,
 	x86@kernel.org,
@@ -76,9 +76,9 @@ Cc: Jason Gunthorpe <jgg@ziepe.ca>,
 	Binbin Wu <binbin.wu@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
 	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: [PATCH v3 2/9] x86/virt/tdx: Read global metadata for trusted IOMMU
-Date: Thu, 12 Nov 2026 12:30:47 +0800
-Message-ID: <20261112043054.2664857-3-baolu.lu@linux.intel.com>
+Subject: [PATCH v3 3/9] x86/virt/tdx: Export Dynamic PAMT helpers to tdx-host
+Date: Thu, 12 Nov 2026 12:30:48 +0800
+Message-ID: <20261112043054.2664857-4-baolu.lu@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
 References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
@@ -93,96 +93,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for reading the global metadata of the trusted IOMMU.
+With Dynamic PAMT, any page handed to the TDX module needs PAMT backing
+first, via tdx_pamt_get(), and must drop it with tdx_pamt_put() once the
+TDX module gives the page back. Besides KVM, the tdx-host driver now
+hands pages to the TDX module: the IOMMU_MT pages for TDH.IOMMU.SETUP.
 
-The trusted IOMMU feature is optionally enumerated via TDX_FEATURES0.
-Check this feature bit before reading the metadata to avoid causing
-the entire TDX initialization to fail on platforms that do not support
-it.
-
-The read value represents the number of pages required for the IOMMU
-metadata. The host will allocate this count of pages and provide them to
-the TDX module when it configures the IOMMU to operate in Secure TDX mode
-via the TDH.IOMMU.SETUP SEAMCALL.
+Export the two helpers to tdx-host as well. A symbol can only be
+exported once, so replace EXPORT_SYMBOL_FOR_KVM() with an explicit list.
+Only kvm-intel calls these helpers in KVM.
 
 Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 ---
- arch/x86/include/asm/tdx.h                  |  1 +
- arch/x86/include/asm/tdx_global_metadata.h  |  5 +++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 20 ++++++++++++++++++++
- 3 files changed, 26 insertions(+)
+ arch/x86/virt/vmx/tdx/tdx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index d077990802b9..0ed0062c9b0a 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -35,6 +35,7 @@
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index a1f35188a272..3b9cfab6cf68 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2426,7 +2426,7 @@ int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache)
  
- /* Bit definitions of TDX_FEATURES0 metadata field */
- #define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
-+#define TDX_FEATURES0_TDXCONNECT	BIT_ULL(6)
- #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
- #define TDX_FEATURES0_DYNAMIC_PAMT	BIT_ULL(36)
- #define TDX_FEATURES0_EXT		BIT_ULL(39)
-diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index f18e63b671c2..e5e54159ad36 100644
---- a/arch/x86/include/asm/tdx_global_metadata.h
-+++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -51,12 +51,17 @@ struct tdx_sys_info_ext {
- 	u32 required_pages;
- };
- 
-+struct tdx_sys_info_connect {
-+	u16 iommu_mt_page_count;
-+};
-+
- struct tdx_sys_info {
- 	struct tdx_sys_info_version version;
- 	struct tdx_sys_info_features features;
- 	struct tdx_sys_info_tdmr tdmr;
- 	struct tdx_sys_info_td_ctrl td_ctrl;
- 	struct tdx_sys_info_td_conf td_conf;
-+	struct tdx_sys_info_connect tdx_connect;
- };
- 
- #endif
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 9ab4d021017f..9b46f34cb469 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -139,6 +139,20 @@ static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
- 	return 0;
- }
- 
-+static __init int get_tdx_sys_info_connect(struct tdx_sys_info_connect *sysinfo_connect)
-+{
-+	int ret;
-+	u64 val;
-+
-+	ret = read_sys_metadata_field(0x3000000100000003, &val);
-+	if (ret)
-+		return ret;
-+
-+	sysinfo_connect->iommu_mt_page_count = val;
-+
-+	return 0;
-+}
-+
- static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- {
- 	int ret = 0;
-@@ -164,5 +178,11 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 	if (!ret && tdx_supports_dynamic_pamt(sysinfo))
- 		ret = get_tdx_sys_info_tdmr_dpamt(&sysinfo->tdmr);
- 
-+	if (ret)
-+		return ret;
-+
-+	if (sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT)
-+		ret = get_tdx_sys_info_connect(&sysinfo->tdx_connect);
-+
  	return ret;
  }
+-EXPORT_SYMBOL_FOR_KVM(tdx_pamt_get);
++EXPORT_SYMBOL_FOR_MODULES(tdx_pamt_get, "kvm-intel,tdx-host");
+ 
+ /* Drop DPAMT refcount for the given pfn and free DPAMT backing if needed. */
+ void tdx_pamt_put(kvm_pfn_t pfn)
+@@ -2470,7 +2470,7 @@ void tdx_pamt_put(kvm_pfn_t pfn)
+ out_unlock:
+ 	spin_unlock(&dpamt_lock);
+ }
+-EXPORT_SYMBOL_FOR_KVM(tdx_pamt_put);
++EXPORT_SYMBOL_FOR_MODULES(tdx_pamt_put, "kvm-intel,tdx-host");
+ 
+ void tdx_free_pamt_cache(struct tdx_pamt_cache *cache)
+ {
 -- 
 2.43.0
 
