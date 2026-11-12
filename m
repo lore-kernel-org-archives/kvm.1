@@ -1,80 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794482418;
-	b=vKM8SiOBgYo9GhWsDviQrm0Bi4rBiBNa31pD+rOkkD4CaIWXh/bxXGzUVcv5KvHJdimg
-	 IbkatpaUW569MWaqRPVRbvISrz9uOw3EFKviqmSl269Hom+KN57k2yVWWDYbQuNHXypVw
-	 VFMbz+PODhlQyL6yLGYEnMdyZwkHV2oPamO84Ns6z37SnyMH9owI47dVTUv59eKEWdRdP
-	 QrrE6FzqScKZzFybAhlw1ZOsbFsJt3vN2THH03LBPG9qscetUIQc7iwZSsWp//wEZKr0u
-	 edD46xmHvxTkTLmnu7JL0ydvtIc9bN27pzZviYZULyu+YuVQPTxIHk4eUpgdi9NXFxQ==
+	t=1794482420;
+	b=fgE+L8U1aVQEUpirpg7LVRI6ltv+gNkZSd1Ei6AvhBvhTsqhMaMjt2e+LVjxdQxGXUUl
+	 IguYAsyWipDHrSqNP4HCnfd8Vfy9CoTFgVxX0k4/qY7laYZpTr4J5YTjD7+WN/6olSMrJ
+	 jMoVftR0La2dKZOG/GZWoimfj+lxrzu8I7n4uA/y/cl/X7cLv5rvFCzcz2I7g6GrhQ//Z
+	 x9jjOSRiJrzNs3Gc3fpGLqoTP5J86egFSBBITWP4ZhYNlxoOrzvG38YC4OqQtc8rnaj7b
+	 blFRqIYf8PUyxr8Ijulp5Tr6JO8ElpZWwRRcIBv6CnAnEX6tcl74bH5Z48iK9Sx6ylA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794482418;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794482420;
 	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=4HakfNUpavLFvhu3nO9oY0qI71HCwNPZRBM/MdlEYYQ=;
-	b=V2ZnAdz5Bms5CmviNbCJdQE03BrzgM1dX15FBdfHnJdWwwoeGn/sgmWCG8y60wC4krXD
-	 3PYN348GQD5dOGGf/5ofs7Ifg5m29In/eBoni4uPEwfQKVcbMOvwuV5hNya4My7QhjxUh
-	 WIDl9nVPn6+5FATNRTg2ixvAy+AVXVCmjwArNqIW1hvaSN23qjZrtwotE10tPndF5DLfj
-	 /tXCRj1KfkAIzmaC8R2Rku/1fbiDwKux8UIdeffm29g6raW6zSzM0aoX83e4412MXXHJv
-	 yQh9qYO0JuM39SyCKp7uQY7uxPhjing8kDEH8WfeSh1e2JKwaoNCWv4zpmCA+YsrAIQ==
+	bh=m36al0+4iVX7mIEwm1TNnxEJqBCQUyFbjtZhiSN+ckg=;
+	b=qiafbBJd/fh0TVeoW3/KZSpEsEQyOshMgLW8LX5frVdrasf2jeveEjQXcPDRwp9H57sr
+	 wG8NDXZzSfiEFY1GQtu2sqhxeuROpbiu2SbgxHGgTs8w11ogK8OsM2S59w1NPskAYa1KO
+	 VosWbhkzcaKqwP1VRRSrilL7v4icmLLkoZa2DnY8VVtjeZwBI+aMB6QkSy50FxyGPyBvO
+	 gLg025ANOSQp66zOKUkgRhKvcg0BBCQEd7dTTX/+yrjzeEGbB3/JYv5DMLWkxbb5gxpc8
+	 GA6QjTU2JOmxGg5t9doULr1aA1GaaAu3FTBoWsIM9CLBfs8nlzzGkYvlB74PWoAJPsw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bh8wSklX;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=fZVvZasw;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB2760A3826;
-	Thu, 12 Nov 2026 11:20:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CAB2760A3826
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338F360728F3;
+	Thu, 12 Nov 2026 11:20:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 338F360728F3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bh8wSklX
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=fZVvZasw
 Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
 	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B5A3A202C94;
-	Thu, 12 Nov 2026 12:20:15 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5C84B2058D6;
+	Thu, 12 Nov 2026 12:20:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794482416;
+	s=20260414; t=1794482418;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4HakfNUpavLFvhu3nO9oY0qI71HCwNPZRBM/MdlEYYQ=;
-	b=bh8wSklX5e+zTILl8u+ZohhCu6n7DPf+8o3kjVrDwVshc+L12LvLa2dpNuRr+vTc4a7RM/
-	HsnAPDTjn4rQeJebd/+dWTo/GFUMlLB/HqP0yHuHL6x/A6dHMqW1UBSwN06Zs9f1M/o4vr
-	c+yaVZ0z9qQyzh56NtLS0G7fX/izP8vHHvQmGRYy+8VnPbgFWwor34GILXdvCfPgs6qapI
-	dSpsZUsRjFH8RqQykr+EOSAGxI/jUgDgubBB3i5C+AuEaHoGurKgaRP/Hb2th09lh1IvOt
-	r6uFnTp9EnV2LYxLhkrNb8097wW+JpN0uPg5TEVf8aPE5dxuNDRBtbvR3G0/rA==
+	bh=m36al0+4iVX7mIEwm1TNnxEJqBCQUyFbjtZhiSN+ckg=;
+	b=fZVvZaswqX/e6CLJC7uWofURD9U8dQJwEYQKTIx7HB2qKEzJx2MIatfZes3KV8Ah0bbUTp
+	2QZQdXeJZBsOWtwhUFfIoPgvDRy9u1lWqnx+fK0tqLN1PzOl9iEC77cfX29DtJanFdioKt
+	yF84Eev/q4welquakTQg3KjYH2Pmc99uCvKOOqgwiWOtX4dxPJRkuohmSHZ1XJtYWdsFfp
+	Z6SwSDztsaObf5b0HSM9sOWrZtcaCYpEgLACE6hl/yUScMTadfFdL3qX7evCkwR84ujEd8
+	Nn0wcvHrqWaLb5TgyGsSatgkzi406Af9izYxpPF0EOzCVISBGju7MjSVW6qsdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794482416;
+	s=20260414; t=1794482418;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4HakfNUpavLFvhu3nO9oY0qI71HCwNPZRBM/MdlEYYQ=;
-	b=I85TVBhjAV+aqjxkeV/KNUchO6w7TCziQSGkddsaOviu9UWrdcGvrL4SJcAGBMrDx93kvx
-	rNDQ05UxJCT5aik6C/NOW1npsaLLFzl1SADCr3dV1iX0hemXbFOuUFfdEqDZ+oS2gYHZ06
-	CNq2q7sKtIDF5rFqD66JKhV3gjjswPmwzwuXZswqN4UDpl58o3Q0lqxptIvOiSlFs8Foyt
-	/zUvVo4lQojyDSzLEpv7kZgHA0xTRqr8cHoomCfT4N7wezBxAV26wEMcyUFK4of+q8x6Gl
-	/mLA3jXZeZP3er0bgUkNoob0iP/Uh1VFVqBxVpOxEWMawbGc22O/DBe2L3710w==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794482416; a=rsa-sha256;
+	bh=m36al0+4iVX7mIEwm1TNnxEJqBCQUyFbjtZhiSN+ckg=;
+	b=JR4N1y1VOXzk+xY3eqNoJN5wykqRiZVIkCcJqo6yg/QYvcaSP8PDQ78RelNk5g729iIyI5
+	h/JJpIE5qtCNBwBT0IANEVb+L89Ha0AV/xXBZbe8Y3/H/dw6IxRs9/9EOMSsPEHd0TgToh
+	FWd0CobhUwEfAWAgDG4HXB482Q5XB4vS7uPMQmnnLhdzrI9ylWF5bGknYOKH6pLq8azjqe
+	gZTqJmzCTjR4JBik/5lu77n7xyDv9hvP4OmQkZIDS7ngOU6MHKICYgHd0vGUJKGZhynW0D
+	y7HzDbrm1PxSCobB9hf1CDc3HbdNW0M/gGi5AXDG3KIsP0i61bzX/nrALmyZfg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794482418; a=rsa-sha256;
 	cv=none;
-	b=ITmFWfsVMIJxS96+buBJxgxoCOoyyWi5nDGMNLljnFCiPdA+6L1oWvGB/9xaaTf2xl8b8C
-	HOPHHfS3c4h5uVYwHVEvP2qrh76ky3BemqZv63ADj3WAq/5pJf+Be4u8+G5zteltnqTNGi
-	D8l3Rvve6FkNHWEtVX+Q3TZUkOFMbHo3Z1AnoEL5F8Sg/L9Il3UIoAaXIRkpd0IcNrWXpk
-	nuSqwLcFPjZexkV/GvpqCisTX7JaasndCifVVBRa/2Gjh7mKcrFHtX4xHomWrdDmv6UlX+
-	DwVlk+XLtuFI5wSqLuaQCKDcrs/GI6V80IxbsAhIo5ppd2aeMRhZo7IWzJbg/Q==
+	b=GhNmj5zDzqmRnaGVHwxwQOnpXoqs1m1KDkMSwz+gOvICdZ04Val+rbjCYVx9lq+orOv7rj
+	fnbhlFxcsTRcWbP7y40qi2YBBspNIOLniCjKL6eW0o+J2Mo4DegbIYgvRqM2QlYeoZAn2q
+	pdXBZhPeCRrZRNkmKPL038Z2WScrFPhxNJNtI+CbJOYTNBWbmPS260a56zu2fJKs9fJ8Qy
+	68i0R2GH2vh/9sfG/VwUXERT4xU3p+qf24WI+VEHWgjomwv7BhnXKnPYAntMuEhAUkJOxs
+	BodPMzw6WzQhApnBklSdz/G3/Beez1X5UDem27+YyDnBfz3//aJmXobyklXq6g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 12 Nov 2026 12:19:36 +0100
-Subject: [PATCH net-next v5 4/9] virtio-net: move virtio_net_common_hdr to
- virtio_net.h
+Date: Thu, 12 Nov 2026 12:19:41 +0100
+Subject: [PATCH net-next v5 9/9] tun: add rx timestamp to the vnet header
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,7 +85,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-v6-7-topic-virtio-net-ptp-v5-4-7ab67b572f4f@pengutronix.de>
+Message-Id: <20261112-v6-7-topic-virtio-net-ptp-v5-9-7ab67b572f4f@pengutronix.de>
 References: <20261112-v6-7-topic-virtio-net-ptp-v5-0-7ab67b572f4f@pengutronix.de>
 In-Reply-To: <20261112-v6-7-topic-virtio-net-ptp-v5-0-7ab67b572f4f@pengutronix.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -108,69 +107,120 @@ Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kvm@vger.kernel.org, 
  kernel@pengutronix.de, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1812;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3819;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=qMefS7zluiz+QPZvSp9MZa6S58FNyzU/Kg6hGBw/qXw=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bXBW9mO59TqD0oW1irtf26ylPXM1M/GNt8aVtTnLV1d
- Yrlmwk7O0pZGMS4GGTFFFlUFlbwiXp88IycJsIFM4eVCWQIAxenAExk8wyGfzbTVPt3bU29dTjw
- xtY9VTNNb/08wqSa7Dhvy7L8ACdekTUM/1MmVfR1Hqw9/ri9Z16gcrxAWfDh5aaGwXdmHzVXtU0
- 9yQsA
+ bh=sHvGg59eOg5DQGGBFOkvl7QZBIqLz3Bc5qdr7aC+s+s=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bXBW8PNkjN/GYjuZ79qeOeFw0GZbWWVaEvM/svGaqsr
+ z/Ld727o5SFQYyLQVZMkUVlYQWfqMcHz8hpIlwwc1iZQIYwcHEKwEQ2WzP8jzXfqFD9w4BVaHLW
+ 9U/6f5Kslczcjm9yfTFhxo+8fya3mhj+e9Tpan4UN2FVUKhasWXF1YeKOnppIRK7SqfJsa+Y1nu
+ XHQA=
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-tun and vhost need to know the layout and size of the virtio-net
-header as the driver uses it, e.g. to fill in fields behind
-virtio_net_hdr_v1_hash_tunnel. Move struct virtio_net_common_hdr to
-the kernel-internal header that they include already.
+Reference implementation of the device side of VIRTIO_NET_F_RX_TSTAMP: if
+the configured vnet_hdr_sz covers the tstamp field, write the current
+TAI time into the header when a packet is handed to userspace or vhost.
+__tun_vnet_hdr_put() now takes the full struct virtio_net_common_hdr
+and copies as much of it as vnet_hdr_sz holds.
 
-No functional change.
+This is not intended to be merged. A full test needs a QEMU that knows
+the feature and sets the matching vnet_hdr_sz in
+virtio_net_set_mrg_rx_bufs(); see
+https://github.com/strumtrar/qemu/tree/v11.0.1/virtio-rx-stamps
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/net/virtio_net.c   | 9 ---------
- include/linux/virtio_net.h | 9 +++++++++
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/tun.c      | 14 +++++++++-----
+ drivers/net/tun_vnet.h | 18 ++++++++++++------
+ 2 files changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index ffd7313663c18..23e7f62a6ff64 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -511,15 +511,6 @@ virtio_net_hash_value(const struct virtio_net_hdr_v1_hash *hdr_hash)
- 		(__le16_to_cpu(hdr_hash->hash_value_hi) << 16);
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 8920c797acfd7..1a8c3377753d7 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -57,6 +57,7 @@
+ #include <linux/math.h>
+ #include <linux/nsproxy.h>
+ #include <linux/virtio_net.h>
++#include <linux/unaligned.h>
+ #include <linux/rcupdate.h>
+ #include <net/net_namespace.h>
+ #include <net/netns/generic.h>
+@@ -2168,12 +2169,16 @@ static ssize_t tun_put_user(struct tun_struct *tun,
+ 	}
+ 
+ 	if (vnet_hdr_sz) {
+-		struct virtio_net_hdr_v1_hash_tunnel hdr;
+-		struct virtio_net_hdr *gso;
++		struct virtio_net_common_hdr hdr;
+ 
+ 		memset(&hdr, 0, sizeof(hdr));
++
++		/* The configured header covers the tstamp field */
++		if (vnet_hdr_sz >= offsetofend(struct virtio_net_common_hdr, tstamp))
++			put_unaligned_le64(ktime_get_clocktai_ns(), hdr.tstamp);
++
+ 		ret = tun_vnet_hdr_tnl_from_skb(tun->flags, tun->dev, skb,
+-						&hdr);
++						&hdr.tnl_hdr);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -2181,9 +2186,8 @@ static ssize_t tun_put_user(struct tun_struct *tun,
+ 		 * Drop the packet if the configured header size is too small
+ 		 * WRT the enabled offloads.
+ 		 */
+-		gso = (struct virtio_net_hdr *)&hdr;
+ 		ret = __tun_vnet_hdr_put(vnet_hdr_sz, tun->dev->features,
+-					 iter, gso);
++					 iter, &hdr);
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
+index f4c652b1fa44d..d4cc56dac98d6 100644
+--- a/drivers/net/tun_vnet.h
++++ b/drivers/net/tun_vnet.h
+@@ -153,19 +153,21 @@ static inline int tun_vnet_hdr_get(int sz, unsigned int flags,
+ 	return __tun_vnet_hdr_get(sz, flags, 0, from, hdr);
  }
  
--struct virtio_net_common_hdr {
--	union {
--		struct virtio_net_hdr hdr;
--		struct virtio_net_hdr_mrg_rxbuf	mrg_hdr;
--		struct virtio_net_hdr_v1_hash hash_v1_hdr;
--		struct virtio_net_hdr_v1_hash_tunnel tnl_hdr;
--	};
--};
--
- static struct virtio_net_common_hdr xsk_hdr;
- 
- static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index d6466f96cdd00..a6de308b8f25e 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -10,6 +10,15 @@
- #include <uapi/linux/tcp.h>
- #include <uapi/linux/virtio_net.h>
- 
-+struct virtio_net_common_hdr {
-+	union {
-+		struct virtio_net_hdr hdr;
-+		struct virtio_net_hdr_mrg_rxbuf	mrg_hdr;
-+		struct virtio_net_hdr_v1_hash hash_v1_hdr;
-+		struct virtio_net_hdr_v1_hash_tunnel tnl_hdr;
-+	};
-+};
-+
- static inline bool virtio_net_hdr_match_proto(__be16 protocol, __u8 gso_type)
++/* hdr is fully initialized, copy as much of it as the configured size holds */
+ static inline int __tun_vnet_hdr_put(int sz, netdev_features_t features,
+ 				     struct iov_iter *iter,
+-				     const struct virtio_net_hdr *hdr)
++				     const struct virtio_net_common_hdr *hdr)
  {
- 	switch (gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
+-	unsigned int parsed_size = tun_vnet_parse_size(features);
++	unsigned int put_size = min_t(unsigned int, sizeof(*hdr), sz);
+ 
+-	if (unlikely(iov_iter_count(iter) < sz))
++	if (unlikely(iov_iter_count(iter) < sz ||
++		     sz < tun_vnet_parse_size(features)))
+ 		return -EINVAL;
+ 
+-	if (unlikely(copy_to_iter(hdr, parsed_size, iter) != parsed_size))
++	if (unlikely(copy_to_iter(hdr, put_size, iter) != put_size))
+ 		return -EFAULT;
+ 
+-	if (iov_iter_zero(sz - parsed_size, iter) != sz - parsed_size)
++	if (iov_iter_zero(sz - put_size, iter) != sz - put_size)
+ 		return -EFAULT;
+ 
+ 	return 0;
+@@ -174,7 +176,11 @@ static inline int __tun_vnet_hdr_put(int sz, netdev_features_t features,
+ static inline int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
+ 				   const struct virtio_net_hdr *hdr)
+ {
+-	return __tun_vnet_hdr_put(sz, 0, iter, hdr);
++	struct virtio_net_common_hdr common_hdr = {};
++
++	common_hdr.hdr = *hdr;
++
++	return __tun_vnet_hdr_put(sz, 0, iter, &common_hdr);
+ }
+ 
+ static inline int tun_vnet_hdr_to_skb(unsigned int flags, struct sk_buff *skb,
 
 -- 
 2.56.0
