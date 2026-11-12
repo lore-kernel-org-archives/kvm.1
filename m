@@ -1,73 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794504160;
-	b=oVsyoSbKkPWs2bZFb9kpxvdagtW8EpU4wyjB8rATHR6Rk9lzL4kSk8g4EtjYTgehUctH
-	 N5LfLfYRYnX7Rxm+vzyFctYzRxlPWV5UskIMTfP6c1VXNBlbmqWJs5CLjAENWexOCaiLX
-	 /q1Ep5+QiuM0Wc3AcnNaihRH0giKR1tgkljgO58Ww/aYQfBExULHonZA1ToziVZxiZwIx
-	 9M2bJys0mcMx5e7J2ONGsEl0QAr+2pGUr1d5PpkOcOSEvDYRvD9Y+e0Jr8gG87Y6NzxLQ
-	 q1TYWoqz5FGKjRHFcYk0Pw8Q1GLyFq03j/TXgdRsWMd5ylacbwIbLtwGgPcFq0l4ktQ==
+	t=1794504204;
+	b=dK2AmdXsjwS/vaUDdZdF5uisgyAI/TLakIzHSrJkSOBZxqXU1nEhJNNhE5IlhImJn+H/
+	 cm7qBBCZlHheh2bK6LMVnKqwdaBHMU+FPjPbjuxKgoKpDF1Ij2w9mcOcmEh9OQuptK8KU
+	 nnLO4+BUxLfkgM8nHbbG1pkXtzrHCEQxKHu7SudhkPR9aji2YS7229orjUSIkOBnmnJzC
+	 o6pAWu4Zs+V8glMQsEbT2rCTrJq5+zgpMnXfSn0gR08lE5hw+moBzpVkZ/vom1/Uow1Un
+	 WNMp5b9Ij/kTOQtyja2It0OHPxrEMzlUQFwfBzq6Pu8d/u8+dzp4eBLSBgBNlG3dJBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794504160;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794504204;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=/AzCjpFBcsxFuApem78XlXxlBTt4SuIRCgZJ1fWdV1M=;
-	b=LIaRSsTLPJMxp3OJrH0DvlcyfMMVkZtQYckFaQHMNimVRDKPn8iLS9pMl8pRzq4GWaHB
-	 vK6Ff4REXKSzgGUO8wCbKoR3W+yW0JbfJ7cubD9NFyGyooH+0rFr/JTWWlMzmiZsMnaZI
-	 eFkicdGQFObqmnbn9wz1iZqa/qU/X0NpBlOPMYDMOmC0mDDvwsPCq4KY0f1ShZU3wQZOG
-	 r0bVSjftMnOpvAPC2ODnOuj/2gtqrbmVH7DKK9vXwqv3AAn902i8Ol7rj6NJJx6jMuMZH
-	 Zl+plm6SjgKIEfw+UxE5+OdhUdBOi3mGUF1+tfKmWsoWGpZF8ZPR7+Ta40d6v7SivDg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=NNydOJUW1Uu0hLKP/XG0kMJ5M+aQH3O72D2qUnIH2lc=;
+	b=k+xj/QL1Xpq2Fu7cJ9eBj/mNylO9Ezo7yMCwZcIhYgaXfK1BU2Vm8jtK0ADacSYN7VHK
+	 ka1kSRUfaP9n4LaHxeSxTzPHs2+l7hiHzv4jb36OC7KmvtaVo7lVRFscQZtOCKceAus2i
+	 VP/9KTvXzv1XbjFoRF98dAZC/gVaWL8YL5+3xOTVRbgUzQRw7vyAQyDu2bvMDfDffZq8H
+	 G3xrDLQ/XJmCvhgSuVqSku1KrqV469nxzKx7/9pFnYMJvc1mXI6g7r+gG0Ijj0KTgD2FL
+	 33dd6z/M9GM/bzGuOyMwvsOfy9tldiZY6w0FVXPaDpd+HHafzg3I5bBKUnDc6AFUckA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=El2U0FFa;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ejWgwFIs;
+	arc=none smtp.remote-ip=209.85.128.175
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A00606A327
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 17:22:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47A00606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3033606A327
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 17:23:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3033606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=El2U0FFa
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ed05900df7so817735ad.1
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 09:22:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ejWgwFIs
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8b349d21fd1so945887b3.2
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 09:23:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794504159; x=1795108959; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/AzCjpFBcsxFuApem78XlXxlBTt4SuIRCgZJ1fWdV1M=;
-        b=El2U0FFa/1kTNlfAoi4s3lVxhBnMS+TuFDyQDMzpDozCU6OYPkMXzTzlLBheS9ebNi
-         V0Yd3DCF7EeGNz2s9mFP+56Ruqn5gQnxeYbpeRRJbqvh/Lp4jyBdq8ocd/vt5KAPkAKT
-         D2VNZQrDAoe3xJRCdLhvJxcSdqmg8Zi8tz0zysXNjqZDq7aPJfbnYWJP5HY08syecLfA
-         bcg/mgjsaMvtszdLpZzl6hLZpgAK2xSBvLRHDKfm82rvyrOvqxUJhgBscGukgwQfbg2B
-         92fjHtg2Yb2kMZDDZug49EaL6Pb0qkXMtcPvRdekwPocdqBwhwGYlBYOHOlmPkMzVAR7
-         BhYA==
+        d=gmail.com; s=20260707; t=1794504202; x=1795109002; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NNydOJUW1Uu0hLKP/XG0kMJ5M+aQH3O72D2qUnIH2lc=;
+        b=ejWgwFIsHtYh0uCQoLEHq08Y2Pj7NF5YE+ECJoAtUFgt0qvZppCX4B93ykiIxIdGw1
+         J89HkaYbUrK1zkusAzZ9nUjM5MA18whuNYaEldgA+slWya6dggdQ8IcUgoMWNjgdEBeL
+         8lmnn1wiH5J8UmoKIxL9ZEyJsfIKirXL5gexiLXTBAl1nSIR5iolUnLy5oeKLzTf/X9x
+         Q2jtTG4GRrrywnYO6IDyStJJq7EYkZ2NCWx2UvMNDq27lbljK4aJV1EKugebaw1l+VZe
+         TFwhGRdK4copxVM7TioHDTfjZ2cXpoFCsEzBwbJcYB6r9KDWaRRdmaHksTaTv4aVezIG
+         fGZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794504159; x=1795108959;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/AzCjpFBcsxFuApem78XlXxlBTt4SuIRCgZJ1fWdV1M=;
-        b=smXQRb2dcV+cdc2EIvl5IRx9ID2WtxuU8PytcM3WDwjm24FNy4uUTpOraTEhSbPkyS
-         yG3YlL78b+CVqICM9100ruoBhi37wJ4AmTr3V4h415Q8QN6lmxxc2GcjQWQWWTAb66Cm
-         uwua+3He1iuJs9MNJtTRFIxYXZNP0iDWSvkG56vzUxdRzaRBwP98zAJ/TRheVDv/byBD
-         8demdfe7AxBNQhvh7xPqeDmzNu8y86ZBGhdBPXHudLMOcQgxS+PPDXamma1gQ3Kg/IXL
-         oQh2Dnc6XxQs2izYzsq2KrJb94Cqnt2kVxgjX1nWO/K17ckDQtaJRuD4NbVv5bpYqNON
-         G17Q==
-X-Gm-Message-State: APuU4Z8edF1or1XKo+xjB4mDHqLoCKPc5IePgx08Tq6K+9VR0l6RhgUE
-	jQEG5aTvta8bardIfMAxdOMNRCz1r5hW720PDSt/iRBTQMltHDXvN8po4ASJNk4LCHS3YYC/4Fw
-	GbW4A2w==
-X-Received: from plgs10.prod.google.com ([2002:a17:902:ea0a:b0:2e9:5b68:4b7d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d2c8:b0:2eb:4a05:4b4b
- with SMTP id d9443c01a7336-2ee0dcc3023mr420945ad.49.1794504159130; Thu, 12
- Nov 2026 09:22:39 -0800 (PST)
-Date: Thu, 12 Nov 2026 09:22:38 -0800
-In-Reply-To: <20261112144220.30801-1-dwmw2@infradead.org>
+        d=1e100.net; s=20260707; t=1794504202; x=1795109002;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NNydOJUW1Uu0hLKP/XG0kMJ5M+aQH3O72D2qUnIH2lc=;
+        b=w/BR4OCBwR6JXTiBc5YjeQ8ubE6aBsnMa/fGJt/fhABOfTZecsTRlNV8kArfCModTu
+         wKUv9K0NF3qw1ceitUUbP2iVlf3hC3qLEKsiI5sJ/MIivim/2I1R7ORDPCe4wVzVAU9E
+         Y3YXSUwZbgOsPPkdt3WYb6elWsT9jwcScMWaG2Oq9Xsdg0C9Vrj6Q2qyGCWzidPpeAnA
+         UZcoNrrGfRyTa7hTGLE5QcfjOkfTMDiyaGb0PPIlCSu39EZSwJ8hAOVOn0YJnJ4ypevP
+         hYWJ6dF2wOX/pQCYiVP48aXKd92DquIB/C3HxL2GY/ui03RTODRuzRei9/mvXyU3Tn+A
+         3Whw==
+X-Forwarded-Encrypted: i=1; AL+hErGzLAdlPkuO5z4Rfl6czANVW8TxkF32vHOoxpaipRiMqr4iFlizzD5wOy+oVGeIHv/N6Rc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/zrS0DEjP9xVNyt6I5ix6k2u/hePeuS8FYL+lsoCVXORIFgKtY
+	3JNUvfejXRAoMHco71Yqk3CSZeSZFHbLM/NlPq8b8rZTR0Cxbn0w4xmB
+X-Gm-Gg: AYBFou15FN2zLiACN44fX2Yv4/YPdJiYzIIgRbItJelyWkZPy6gMDEj9apYwpk9e6Fo
+	V4nenW/+A/tw9abwGxKJ2c80wR54l31/vdTJyGgHiMAoLoWKF2HevhwjOtygjToaLDmvod99uq4
+	vjNAFhRZE6SmUCoS/+47FhvFnOZlt0CtjPHe/crY/V7l9KU1MMmmY9CdF4+WpH/L2Ue1gPRY3x+
+	mX6ZB+NgOR/gCYSoBm7Nmo+9kMwGSxtEvpdi7H6M4Dd/NkYQBiuG2RSeiUfV2GupmWJO1mPeyYT
+	+vkdcxh6tjIINAfI34iAKZg5DTbewYP5R8HS9KsDcLmfbfnIgXPnAXLL/Yso2ftV/Bgh000DHB/
+	3noWVuAzIO8CRK8Zxp5a2eVnvRnmSgBLfSG1IMyfN4SPSaHMg/8KouIMuudIEIZ7xKLUhxQOGDG
+	DJ/kJgnU90fdpEMktNemxd5ccH363oB1Y/ZIJXAtYk7vUJEIaEPAwrJX5EGvJfxVP4sdImYWJ1Y
+	QQ/WlP+VPV8ogHQgF35CPJS1TJYgrgaml/qDmgjPy9iPmFljWAAeTPbpyWd5inxBZUvePqIR43h
+	GrtNGv+yQbtlapUue4nSBZSVA4rZLmQaOGJVmUeAW5YNgA==
+X-Received: by 2002:a05:690c:f07:b0:8b1:bc81:6ffe with SMTP id 00721157ae682-8b4aa38f280mr1204937b3.94.1794504201827;
+        Thu, 12 Nov 2026 09:23:21 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:5::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa9c4ffesm623097b3.32.2026.11.12.09.23.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 09:23:12 -0800 (PST)
+Date: Thu, 12 Nov 2026 09:23:07 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, netdev@vger.kernel.org,
+	stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com,
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v5 4/5] vsock/virtio: coalesce native RX
+ write-space notifications
+Message-ID: <avX1+7zxl9OWGUGI@devvm29614.prn0.facebook.com>
+References: <20261103041134.33310-1-physicalmtea@gmail.com>
+ <20261103041134.33310-5-physicalmtea@gmail.com>
+ <auxHe77Kv3tS4hjJ@sgarzare-redhat>
+ <CAJwVaMK6UpxOmCbuzGK15h+DhN5H6cj6cy-=gCHtSxoVbLfzwA@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,31 +103,457 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261112144220.30801-1-dwmw2@infradead.org>
-Message-ID: <avX13o0qRkidIwWo@google.com>
-Subject: Re: [PATCH] KVM: selftests: Drop stale exact flags check in private_mem_kvm_exits_test
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Anish Moorthy <amoorthy@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Nicolas Saenz Julienne <nsaenz@amazon.com>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, David Woodhouse <dwmw@amazon.co.uk>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJwVaMK6UpxOmCbuzGK15h+DhN5H6cj6cy-=gCHtSxoVbLfzwA@mail.gmail.com>
 
-On Thu, Nov 12, 2026, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+On Fri, Nov 06, 2026 at 08:49:17PM +0800, Jia Jia wrote:
+> >
+> > On Tue, Nov 03, 2026 at 12:11:33PM +0800, Jia Jia wrote:
+> > >Each received packet can update peer credit and call sk_write_space(). A
+> > >writer cannot consume that credit while the virtio RX worker retains the
+> > >socket lock, so repeated native write-space notifications in one RX batch
+> > >are unnecessary.
+> > >
+> > >This patch coalesces write-space notifications on the native AF_VSOCK path;
+> > >data-ready remains per-packet here.
+> > >
+> > >The batching patch establishes batch ownership before its first packet.
+> > >This lets this patch record a pending notification for that packet and
+> > >flush it even if the packet immediately ends the batch. Deliver it while
+> > >holding the socket lock to preserve the callback context of the existing
+> > >receive path. A following patch changes that timing together with
+> > >data-ready handling.
+> >
+> > Can you report performance data related to this patch also here?
+> >
+> > IIUC this is not giving a lot of advantage, so my question is if this
+> > more complexity really add a value for us.
+> >
 > 
-> Commit 7d0afe669374 ("KVM: selftests: Take into account mixed memory
-> fault flags") relaxed the memory_fault.flags checks so that they only
-> test for KVM_MEMORY_EXIT_FLAG_PRIVATE, since KVM may report the access
-> type alongside it. In test_private_access_memslot_deleted() it added
-> the relaxed check but left the exact match above it, and with the
-> READ flag now reported the test fails for me there:
+> Sure. The performance tests currently cover patches 4 and 5 together,
+> so I will include those results here.
+> 
+> They do not add another broad throughput improvement. I kept the
+> combined notification change because of the cycles/byte results.
+> 
+> With P1-P3 only, against baseline:
+> 
+>   Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+>   64B        66.728    61.220  -8.25% [-18.99%, +3.91%]
+>   256B       14.363    14.515  +1.06% [ -4.22%, +6.64%]
+>   512B        7.792     7.578  -2.74% [ -6.55%, +1.23%]
+>   1K          3.988     4.032  +1.09% [ -1.64%, +3.88%]
+>   4K          2.063     1.973  -4.38% [ -8.23%, -0.37%]
+>   8K          1.702     1.667  -2.06% [ -7.99%, +4.25%]
+>   16K         1.473     1.475  +0.17% [ -5.06%, +5.68%]
+>   64K         1.385     1.358  -1.96% [-10.61%, +7.53%]
+> 
+> Only the 4K interval excluded zero. With the full series, against
+> baseline:
+> 
+>   Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+>   64B        65.282    57.843  -11.40% [-13.77%, -8.95%]
+>   256B       14.710    13.813   -6.10% [ -7.89%, -4.28%]
+>   512B        7.709     7.188   -6.75% [ -8.79%, -4.66%]
+>   1K          4.075     3.862   -5.23% [ -6.80%, -3.63%]
+>   4K          2.034     1.887   -7.21% [ -8.67%, -5.72%]
+>   8K          1.664     1.568   -5.78% [ -7.83%, -3.69%]
+>   16K         1.450     1.385   -4.48% [ -6.08%, -2.86%]
+>   64K         1.338     1.317   -1.51% [ -3.21%, +0.22%]
+> 
+> From 64B through 16K those intervals stay below zero. 64B through 1K
+> did not show that in the P1-P3 run.
+> 
+> This is also why I spent the time making this work with sockmap.
+> 
+> The value I see is lower RX CPU cost, not another large throughput
+> gain. I am still unsure the extra code is worth it, and I would like
+> your opinion.
+> 
+> Thanks,
+> Jia
+> 
+> > >
+> > >Capture the native write-space callback before socket publication and
+> > >access it through AF_VSOCK helpers. Sockmap can change the protocol,
+> > >write-space callback, and psock marker without the socket lock. Serialize
+> > >each batch eligibility check with sk_callback_lock; if a packet boundary
+> > >observes a replacement, finish the batch and use the regular per-packet
+> > >path.
+> > >
+> > >Packets admitted on the native path use the saved native callback at batch
+> > >finish. Reloading a current sockmap callback would not synchronize its
+> > >invocation with teardown; a wrapper seen before teardown need not forward
+> > >the native wakeup after its psock is gone.
+> >
+> > I really don't understand the goal of this patch, and why we need to
+> > store the "native" sk_write_space.
+> >
+> 
+> Actually, I kept this as a separate patch so the two notification changes
+> could be tested separately. This patch provides a complete intermediate
+> state: it coalesces native sk_write_space() notifications while keeping the
+> callback invocation under the socket lock. Patch 5 then coalesces
+> sk_data_ready() and moves both deferred callbacks after release_sock().
+> 
+> The coalescing is limited to packets for which can_receive() sees
+> sk_write_space still set to the native callback. That callback wakes waiters.
+> The sockmap wrapper can also schedule psock work before forwarding
+> the saved callback, so I do not coalesce it.
+> 
+> Batch finish also needs the saved pointer if the callback changes before
+> the batch ends. If another packet arrives, can_receive() detects the
+> replacement
+> and its caller finishes the batch. A write-space notification already
+> recorded for
+> the batch still uses the native callback.
+> 
+> Reloading sk->sk_write_space at finish could capture the sockmap wrapper just
+> before teardown. If teardown removes the psock before the callback is invoked,
+> the wrapper no longer forwards the native wakeup.
 
-Ah, this is against kvm/kvm-memprot-v4.
+I'm not sure I understand the bug avoided by saving sk_write_space.
 
-Paolo, what are your plans with that branch?  Sashiko had valid complaints, e.g.
-against patch 1[*], so I assume the branch won't be merged as-is.
+If it changes mid-batch to the psock callback, the work that gets
+scheduled by sockmap will eventually acquire the socket lock via
+sock_sendmsg(), so the present batch will become owned in whole by the
+new socket anyway.
 
-[*] https://lore.kernel.org/all/sashiko-outbox-193903@kernel.org
+I think that is perfectly acceptable semantics (when you redirect with
+sockmap, any current or later batch will be owned by the new sender). I
+don't think we need pkt redirection to be exactly in sync with
+installing the socket into sockmap at the exact pkt boundary if at least
+the batch boundary is in sync. The batch would just be "eventually
+consistent" with the new sockmap state.
+
+WDYT?
+
+I understand the sk_data_ready is a different matter because of the
+per-skb ->read_skb callback.
+
+My suggestion, if it works, would be to just do one sk_write_space call
+per batch, whichever cb it happens to be when the batch processing is
+done.
+
+> 
+> > >
+> > >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> > >---
+> > > include/linux/virtio_vsock.h            |  4 +-
+> > > include/net/af_vsock.h                  |  7 +++
+> > > net/vmw_vsock/af_vsock.c                | 16 +++++
+> > > net/vmw_vsock/virtio_transport_common.c | 78 +++++++++++++++++--------
+> > > 4 files changed, 81 insertions(+), 24 deletions(-)
+> > >
+> > >diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+> > >index 748633aa0cc81..bf28e8e32e280 100644
+> > >--- a/include/linux/virtio_vsock.h
+> > >+++ b/include/linux/virtio_vsock.h
+> > >@@ -287,12 +287,14 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> > >  * Initialize a batch to zero before use. A non-empty batch owns @sk's socket
+> > >  * lock and the reference returned by vsock_find_connected_socket_net(). The
+> > >  * caller retains both until it calls virtio_transport_rx_batch_finish(). An
+> > >- * empty batch owns neither.
+> > >+ * empty batch owns neither. A pending native write-space notification belongs
+> > >+ * to the lock holder and is delivered by virtio_transport_rx_batch_finish().
+> > >  */
+> > > struct virtio_transport_rx_batch {
+> > >       struct sock *sk;
+> > >       unsigned int pkts;
+> > >       size_t bytes;
+> > >+      bool write_space_pending;
+> > > };
+> > >
+> > > static inline bool
+> > >diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> > >index 5549298c1ec6b..b76ab565ea58b 100644
+> > >--- a/include/net/af_vsock.h
+> > >+++ b/include/net/af_vsock.h
+> > >@@ -63,6 +63,11 @@ struct vsock_sock {
+> > >       u32 peer_shutdown;
+> > >       bool sent_request;
+> > >       bool ignore_connecting_rst;
+> > >+      /*
+> > >+       * Captured before the socket is published. This identifies AF_VSOCK's
+> > >+       * native write-space callback after a consumer has replaced it.
+> > >+       */
+> > >+      void (*native_write_space)(struct sock *sk);
+> > >
+> > >       /* Protected by lock_sock(sk) */
+> > >       u64 buffer_size;
+> > >@@ -78,6 +83,8 @@ s64 vsock_stream_has_data(struct vsock_sock *vsk);
+> > > s64 vsock_stream_has_space(struct vsock_sock *vsk);
+> > > struct sock *vsock_create_connected(struct sock *parent);
+> > > void vsock_data_ready(struct sock *sk);
+> > >+bool vsock_write_space_is_native(const struct sock *sk);
+> > >+void vsock_call_native_write_space(struct sock *sk);
+> > >
+> > > /**** TRANSPORT ****/
+> > >
+> > >diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> > >index 44cee74519555..e39567990539f 100644
+> > >--- a/net/vmw_vsock/af_vsock.c
+> > >+++ b/net/vmw_vsock/af_vsock.c
+> > >@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
+> > >               sk->sk_type = type;
+> > >
+> > >       vsk = vsock_sk(sk);
+> > >+      vsk->native_write_space = sk->sk_write_space;
+> > >       vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
+> > >       vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
+> > >
+> > >@@ -1122,6 +1123,21 @@ void vsock_data_ready(struct sock *sk)
+> > > }
+> > > EXPORT_SYMBOL_GPL(vsock_data_ready);
+> > >
+> > >+bool vsock_write_space_is_native(const struct sock *sk)
+> > >+{
+> > >+      const struct vsock_sock *vsk = vsock_sk(sk);
+> > >+
+> > >+      return READ_ONCE(sk->sk_write_space) ==
+> > >+             READ_ONCE(vsk->native_write_space);
+> > >+}
+> > >+EXPORT_SYMBOL_GPL(vsock_write_space_is_native);
+> > >+
+> > >+void vsock_call_native_write_space(struct sock *sk)
+> > >+{
+> > >+      vsock_sk(sk)->native_write_space(sk);
+> > >+}
+> > >+EXPORT_SYMBOL_GPL(vsock_call_native_write_space);
+> > >+
+> > > /* Dummy callback required by sockmap.
+> > >  * See unconditional call of saved_close() in sock_map_close().
+> > >  */
+> > >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> > >index f83e5b2edce35..af26344678e41 100644
+> > >--- a/net/vmw_vsock/virtio_transport_common.c
+> > >+++ b/net/vmw_vsock/virtio_transport_common.c
+> > >@@ -1865,31 +1865,55 @@ virtio_transport_rx_batch_can_continue(struct virtio_transport *t,
+> > >              !virtio_transport_rx_buf_full(vvs);
+> > > }
+> > >
+> > >-/* The caller holds sk's socket lock. */
+> > >+/* The caller holds sk's socket and callback locks. */
+> > > static bool
+> > >-virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
+> > >-                                    struct sock *sk, u32 len)
+> > >+__virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
+> > >+                                      struct sock *sk, u32 len)
+> > > {
+> > >       if (!virtio_transport_rx_batch_can_continue(t, sk, len))
+> > >               return false;
+> > >
+> > >       /*
+> > >-       * Sockmap can replace sk_prot and publish a psock without the socket lock.
+> > >-       * Check both at each packet boundary; a boundary that sees a replacement
+> > >-       * returns to the existing per-packet path.
+> > >+       * Sockmap can replace sk_prot or sk_write_space, and publish a psock,
+> > >+       * without the socket lock. Coalescing is safe only for the native
+> > >+       * write-space callback, so a boundary that sees a replacement returns to
+> > >+       * the existing per-packet path.
+> > >        */
+> > >       return READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
+> > >+             vsock_write_space_is_native(sk) &&
+> >
+> > I'm confused, why for sk_prot we are doing the check here, while for
+> > sk_write_space we need a new API?
+> >
+> 
+> sk_prot can be compared with sk_prot_creator. sk_write_space
+> has no field like that, and sock_def_write_space() is static.
+> I save the callback in __vsock_create(), after the socket is
+> initialized and before it is published. The helpers compare
+> against that pointer and call it.
+> 
+> > >              !virtio_transport_sock_has_psock(sk);
+> > > }
+> > >
+> > >+/*
+> > >+ * Sockmap teardown restores the native protocol and write-space callback
+> > >+ * under sk_callback_lock. Serialize each packet admission check with those
+> > >+ * updates.
+> > >+ */
+> > >+static bool
+> > >+virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
+> > >+                                    struct sock *sk, u32 len)
+> > >+{
+> > >+      bool batchable;
+> > >+
+> > >+      read_lock_bh(&sk->sk_callback_lock);
+> > >+      batchable = __virtio_transport_rx_batch_can_receive(t, sk, len);
+> > >+      read_unlock_bh(&sk->sk_callback_lock);
+> > >+
+> > >+      return batchable;
+> > >+}
+> > >+
+> > > /*
+> > >  * The caller holds sk's socket lock. If @batchable is non-NULL, update it
+> > >  * after processing @skb to say whether a native STREAM/RW batch can continue.
+> > >+ * When @batch is non-NULL, record a native write-space notification for batch
+> > >+ * finish. A writer cannot consume the updated credit until this lock is
+> > >+ * released.
+> > >  */
+> > > static void
+> > > virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> > >                                struct sk_buff *skb, struct sock *sk,
+> > >-                               struct net *net, bool *batchable)
+> > >+                               struct net *net, bool *batchable,
+> > >+                               struct virtio_transport_rx_batch *batch)
+> >
+> > Do we really need bot batchable and batch ?
+> >
+> 
+> Agreed, we don't. I'll clean that up in the next version. Thanks
+> 
+> > > {
+> > >       struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> > >       struct vsock_sock *vsk = vsock_sk(sk);
+> > >@@ -1921,8 +1945,12 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> > >       if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
+> > >               vsk->local_addr.svm_cid = le64_to_cpu(hdr->dst_cid);
+> > >
+> > >-      if (space_available)
+> > >-              sk->sk_write_space(sk);
+> > >+      if (space_available) {
+> > >+              if (batch)
+> > >+                      batch->write_space_pending = true;
+> > >+              else
+> > >+                      sk->sk_write_space(sk);
+> > >+      }
+> > >
+> > >       switch (sk->sk_state) {
+> > >       case TCP_LISTEN:
+> > >@@ -1947,7 +1975,7 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> > >       }
+> > >
+> > >       if (batchable)
+> > >-              *batchable = virtio_transport_rx_batch_can_receive(t, sk, 0);
+> > >+              *batchable = virtio_transport_rx_batch_can_continue(t, sk, 0);
+> >
+> > Why this change?
+> >
+> 
+> This runs after the packet has been handled. can_receive() decides
+> whether a packet may be processed in the batch, so I do not call it
+> again here. can_continue() checks whether the socket state, type,
+> transport, and RX limits still allow the batch to remain active. If it
+> returns false, the caller releases the socket lock and drops the
+> connected reference.
+> 
+> A change to sk_prot, sk_write_space, or the psock is seen by
+> can_receive() before the next packet is processed, and that packet takes
+> the regular path.
+
+I think squashing would avoid the churn.
+
+> 
+> > > }
+> > >
+> > > /* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+> > >@@ -1991,7 +2019,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> > >               goto free_pkt;
+> > >
+> > >       lock_sock(sk);
+> > >-      virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL);
+> > >+      virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL, NULL);
+> > >
+> > >       release_sock(sk);
+> > >
+> > >@@ -2008,20 +2036,31 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
+> > >
+> > > /*
+> > >  * Release an active RX batch. A non-empty batch holds the socket lock and the
+> > >- * reference returned by vsock_find_connected_socket_net(). An empty batch
+> > >- * holds neither.
+> > >+ * reference returned by vsock_find_connected_socket_net(). Deliver any
+> > >+ * deferred native write-space notification while holding the lock, preserving
+> > >+ * the callback context of the regular receive path. An empty batch holds
+> > >+ * neither.
+> > >  */
+> > > void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
+> > > {
+> > >+      bool write_space_pending = batch->write_space_pending;
+> > >       struct sock *sk = batch->sk;
+> > >
+> > >       batch->sk = NULL;
+> > >       batch->pkts = 0;
+> > >       batch->bytes = 0;
+> > >+      batch->write_space_pending = false;
+> > >
+> > >       if (!sk)
+> > >               return;
+> > >
+> > >+      /*
+> > >+       * The packet was admitted with the native callback. Do not reload a current
+> > >+       * callback here: sockmap can replace or remove its wrapper independently.
+> > >+       */
+> > >+      if (write_space_pending)
+> > >+              vsock_call_native_write_space(sk);
+> > >+
+> > >       release_sock(sk);
+> > >       sock_put(sk);
+> > > }
+> > >@@ -2080,7 +2119,8 @@ virtio_transport_rx_batch_process(struct virtio_transport *t,
+> > >               return;
+> > >       }
+> > >
+> > >-      virtio_transport_recv_pkt_locked(t, skb, batch->sk, net, &batchable);
+> > >+      virtio_transport_recv_pkt_locked(t, skb, batch->sk, net, &batchable,
+> > >+                                       batch);
+> > >       if (!batchable) {
+> > >               virtio_transport_rx_batch_finish(batch);
+> > >               return;
+> > >@@ -2158,16 +2198,8 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+> > >       }
+> > >
+> > >       lock_sock(sk);
+> > >-      /*
+> > >-       * Serialize initial admission with sockmap's callback updates. Later
+> > >-       * packet boundaries recheck native state and end a batch when they
+> > >-       * observe a replacement.
+> > >-       */
+> > >-      read_lock_bh(&sk->sk_callback_lock);
+> > >       batchable = virtio_transport_rx_batch_can_receive(t, sk, len);
+> > >-      read_unlock_bh(&sk->sk_callback_lock);
+> >
+> > Can we avoid this change and do this in the previous patch?
+> >
+> > Please avoid as much as you can change code introduced in the same series.
+> >
+> 
+> Sure, understood.
+> 
+> > >       if (!batchable) {
+> > >-              /* State or receive-buffer failures keep the regular lookup path. */
+> >
+> > Why removing this comment just added by previous patch?
+> >
+> 
+> This patch adds a replaced sk_write_space as another reason for
+> can_receive() to return false, and that case does not take the regular
+> lookup path. I removed the old comment because it no longer
+> described the distinction completely, but I forgot to add the replacement.
+> Sorry about that, and thanks for catching it.
+> 
+> > >               if (!virtio_transport_rx_batch_can_continue(t, sk, len)) {
+> > >                       release_sock(sk);
+> > >                       sock_put(sk);
+> > >@@ -2176,7 +2208,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+> > >
+> > >               virtio_transport_trace_recv_pkt(hdr, &src, &dst);
+> > >               if (virtio_transport_recv_pkt_set_owner(skb, sk))
+> > >-                      virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL);
+> > >+                      virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL, NULL);
+> > >               else
+> > >                       kfree_skb(skb);
+> > >
+> > >--
+> > >2.53.0
+> > >
+> >
+
+
+Thanks,
+Bobby
