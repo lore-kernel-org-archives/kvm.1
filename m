@@ -1,92 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794489920;
-	b=fsqmaWAgF5EDYaVpPVFlnm26Pvxzec29ckYBaaYGMQ1QXsI6QWZWILW6PT9o5WxCaYZ9
-	 Dbo3659tja5DXcUCtyiP2zExG5jN5VEUdGnoUqE3Yn5EtS5OzPY8ebVwiZbhw4YhACPUQ
-	 ttTLLho9ZPeuP+4tiyrhU9emGcZDa6VMfKdTaB7d9X/OMv9ggBZMrEMDTz4ypqAgUVWuT
-	 1YGbUMij7Y0YUUgfNMYC/TzM42F2mLNVkYGOV0Dodb4AgwU3b0EG/f4CAxTbenTzkj4gn
-	 Fb3iEe5pk930m4DxvpVPy+BmWDfXNPjU4BVuVlpsZF6w1cNdlnOEgp1FPeuDdxxAsMA==
+	t=1794489945;
+	b=nAWlruWguIUClAD06pr4QjWwP08dJ6CL96TRyiSdRFMHkVWSRD/e5ETy7kxPpnSRPoHF
+	 9kO3opc/uAFd8PNfkw+QoNMAa0wKCRp9xxHOjxTzRvKYkcLmLHSuTL23Fc5KzXSK1Hhwc
+	 ixNHzwQKn/2bHs5/JvepDrFYd65P5teNhn+xwRR9IZtUwLYSVm385v+i0+Ijs70AYg9rT
+	 Ud+ZTJvkKB/92ZyZ/rjrI1ZrDK1ekUpTXqD79NYbkhI8MhrMT6kdw5Vq1ILgfQJAU8ZSq
+	 pC5jRQ2D5Sy2a0vIqpB+rhzJYgAaLs+OjQdvHMkIw5umjpwVlrkNIUG3LnfH1ZVWx6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794489920;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=EK+8SMQbD6BCNXEB/btN5Fdx6HGhkX9byuug8RS/Ijw=;
-	b=1wH2LANCwCk+7xZ0nwdxo517QyJ3LObt+Ld3qNvf2N1/iO1CQouEYT3YGj3f6OnwxiJL
-	 FO8EYk3mUpmEfLmcDdVCcbJS58cTh9s4r3ey4b67Da5UjJ1zHDD1L9cZBFcNRp3cHWWhn
-	 e6TRuTqR/wzWY3odmYjk9ZquZSbfZgJUJiZ5MXfZm0ltxboQ1xpZbjPdQc1sWM43xlmqQ
-	 dyeOilEb0iSc+fkiRpa6t/G5COFGkTbd8ddmEi8dRFeAWticuFc7afK/KhE15FrrXCdLn
-	 Djb4obCMenK4/dewKcUm811nC2rDFsd1MRtVaM7kfGtBKw6TrPfRSBthyWBla7/gKCg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794489945;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=cNcoAHu7FTp6aY8nOsRpj+j/XbB9If11dkNsmr5G/As=;
+	b=R+03yHBXrN2RT3fHKPi0KdZfjdlKWCJ1lkwxDuF/YYLhEgG7yJ4n0ByTeONyAE26aPZs
+	 QO80XKOpqaaZq+2dgYnnUX9gUVBuL0TKMlwWQwVD2fhbKqxse1q/Nn7+6SlVkoDJ7z9SF
+	 7XrMmCMKZ4hgFh7Q3il1gwLpiqgTxObgJp5FwLqy3mxPyU0w9Ev8VaSpcY+gOD4u6HipZ
+	 pVIEeZ63nMNq8UVLATeDAUygHFAsOQCff/uOKBi/WWkhA+nHVWQLyKX0HlDl58X5DeAUk
+	 kno1TAJ7qs+qwJWrE4Cb1QnJKUYFhlWMP5x7QJvF3p6u2W8gH7VKdbWR/v5qow0u22w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fUXpoxOz;
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=de.ibm.com;
+	spf=pass smtp.mailfrom=de.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HX+9KrAR;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6390606A31C
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 13:25:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6390606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA75A606A327;
+	Thu, 12 Nov 2026 13:25:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA75A606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fUXpoxOz
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b0d0b80fb9so2540395a91.1
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 05:25:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794489919; x=1795094719; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EK+8SMQbD6BCNXEB/btN5Fdx6HGhkX9byuug8RS/Ijw=;
-        b=fUXpoxOz/e9Byb2r/nTez6z2D7p5ytz3sLY838y2HCcn0SEzSRRSkX0MfZJliHpGqj
-         3hqn6AlZrOwUYdDdp1sGTUjT/u9YktIde+UPCiejdNvh6OWGnWY4C49KHfDdSg1i7qcd
-         LK15iWW+rJrQT7r89oO0Tljpvf22d8YHh57wJbVb4tkkwnBmPjbELkGHaFrOD1Aoubec
-         vH95RliSOSxfcZh4woOCeaD+kdzC1H/dSp9D58l7mmjzSt5etHpdKRsw17NDab7/xB2+
-         74PX9oisGyZCCNAiOzmCzUtploBivo+uz+xSZ1adqTsgZtm9C/ZpBKpC/8RV+10dbOy3
-         46eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794489919; x=1795094719;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EK+8SMQbD6BCNXEB/btN5Fdx6HGhkX9byuug8RS/Ijw=;
-        b=iHEV/5cgsSJvI6vBQ3ngFVx36TULBep0AmEYGBLfUqhdU0BMr/Ir16VEFsln/LGT+k
-         kBcGIDs3euo77Tlv13MQwHpt3L4+Z31bpBNAF2vAzW29RYOX035ZpJkjvl5KegLn19vk
-         sxF8hRt49UGa7ClEQkX4rAg168Z7o4dtIcO7cK4fpUcRJXaKjzs+Zarq+VCX7hZn0kJv
-         3TrwqASpHboX1ahXWRUXxMvDUl8DCLfNYa11g9XZfiZ/mj0Psmi33fXMst3OcOTPTERy
-         tD8WZ+l8BdYOr0O9d20YQCViNqSMkGVxuak6va6ZHztH48xMP3Oc87m+AM8OJ77hck4j
-         7Yvw==
-X-Forwarded-Encrypted: i=1; AL+hErFsQKGMm2oN2tcy1wNwq6Uhdkp6F4NfqXuxWZKnBmRcituPa0G2WRmNmMhpKtUm8vrJLok=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9RflKguxESauzPlkaqPt6FNw9zYh3oXtTYGyWLwxNmnAgk7Cz+
-	lD3Hh1L0a01dsqg5Velv5pVwRU5vLdZySNWjERJJ/diJlvcoLuqCZoOv
-X-Gm-Gg: AYBFou31MB5Pzw21Kl71QWDQ/34lYGdTrQLcUp2NOJLpU73Z0zWTLJYJYc52kJ/Sx8u
-	dDHxgt/8UV28/45Bo9zJ1gGP8AzEm1zhbWW0XznilTLIP2yQlP0NqnpgEgRqJGiuS7/3R23edRj
-	zAXuwfwddJOcv+J2Nvx+jKfXc+WSmkj4bNa3+/VORevP/ww51kx5+ESxhGnkrTWAL85aixKq/zK
-	f42YoiIR0czBMQiydqld8zNQg4yNletQneFk4egkDLgc51nGvOfLUUk5TMt2hTKHijzkk91nG5M
-	7tTj51VZOanpnSdcQQOuhuLhcTAtuHfNgEN/mQsHbp8h/v0CiOAE1u2Ip0oE7cnrTCRo8ZrmnJ0
-	9HFoMl3RvD3GG7nrUm+icS6dY3mY+b9htDnW7RQOA1ySahzb+WQINhTmCODzuGXAryvkj0zWRza
-	DpGYBwb0F8hhe7tMtSEGjKWIat1rcmAzyQxMHT9xkRGDghQDPMNqTEqV/ze2n8zzZEYuH/rX0Pa
-	Oj2C9xZloPdqdpAyTYueMf1wPdBZo6N0sZ0ZGg528eozcwmBTtZa3Q0SBa9oSCB+MhAl5thLUCp
-	hiuuorBJ5AUkTN3geuvBDLoK/JSeLwKTSgASrswNbeaqc7M=
-X-Received: by 2002:a17:90b:1647:b0:3a8:c0cd:57f9 with SMTP id 98e67ed59e1d1-3b182f26a0emr5570553a91.25.1794489918695;
-        Thu, 12 Nov 2026 05:25:18 -0800 (PST)
-Received: from LIKEXU-MC4 ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddbf3c0f6fsm54468a12.5.2026.11.12.05.25.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 12 Nov 2026 05:25:17 -0800 (PST)
-From: Like Xu <like.xu.linux@gmail.com>
-X-Google-Original-From: Like Xu <likexu@tencent.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Oliver Upton <oupton@google.com>,
-	kvm@vger.kernel.org
-Subject: [PATCH] KVM: x86: Don't patch L2's hypercall if L1 intercepts #UD
-Date: Thu, 12 Nov 2026 21:25:12 +0800
-Message-ID: <20261112132512.68348-1-likexu@tencent.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HX+9KrAR
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AC2ifNL2796514;
+	Thu, 12 Nov 2026 13:25:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=cNcoAH
+	u7FTp6aY8nOsRpj+j/XbB9If11dkNsmr5G/As=; b=HX+9KrARYQBYgHkeDBg4hD
+	V0D9HeNgtjjGLFN9BJJNwtXch/zKHpYebbDovRsCz7C8WtC3eOwnoF4TKktpD/Re
+	voApLLE6JykbsmlfeHvcwX6QpmlCbjg99dEpZFYPPYH2A8yNOR5vySJFRsdVtJ6B
+	If3qk9uK6kW3Z9t0XYHz1GlUHSKjN5NDRF/4Z63WiopAXW+KMNpUzBybm66A1WUq
+	hnHll1mK39MiCvTsfM+HtjaHJ2vx52QED2slbIgo2pYJdRZ1SaqAPZtdzbAEpGAg
+	H8dYbkAr+QMRUigWfRlfO6/+JXS9CQeZTq20hrgUy2ZNRAELcNX2TnfolPec54qw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hssdky5vy-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 12 Nov 2026 13:25:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ACD0Dp5106728;
+	Thu, 12 Nov 2026 13:25:41 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hv4nt0hux-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Nov 2026 13:25:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ACDPbU117301912
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Nov 2026 13:25:37 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 156772006E;
+	Thu, 12 Nov 2026 13:25:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C04020072;
+	Thu, 12 Nov 2026 13:25:34 +0000 (GMT)
+Received: from [9.111.75.87] (unknown [9.111.75.87])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Nov 2026 13:25:34 +0000 (GMT)
+Message-ID: <ee7a1419-e7d3-49ca-ac1f-325dbde16d87@de.ibm.com>
+Date: Thu, 12 Nov 2026 14:25:33 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,55 +85,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 5/5] KVM: s390: vsie: Fix pinning using the wrong flag
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, frankja@linux.ibm.com, david@kernel.org,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+References: <20261105153705.208516-1-imbrenda@linux.ibm.com>
+ <20261105153705.208516-6-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+In-Reply-To: <20261105153705.208516-6-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=POqaavqC c=1 sm=1 tr=0 ts=6af5be55 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=9Sq7UIcimCeLBsPmCeIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA1MiBTYWx0ZWRfX6ng+hdtwnI8T
+ 2RM1xdH2hvotp/nZgCzLUlW/UZ7C8Jx1FN7FCk4TxeyZuv/TOpwaQRqtetPU0ml4a2sCV85dYsP
+ G/vB7vlFXFxv8anRGi8+Y2Zk+LgMC84sQwbSp/kWnVWSbBrtYt1qqtsu9l5b5UNMzuDbMdSM4Mj
+ T+adn5TGJsMO2j74WTHMYaGKkdaJMIZWTSfVkwxLcw15hkbBlIb7Qb3zMw/Fs6zQgxnEU+v1ARN
+ MhIRePbuABTdDE35+k8/SKrO79by2+X27Kw8MMshDNFBE2Rl0z4NxSLsy4k7ZKArn129bSZ1MNO
+ GYXDH2O1pTRJwXcVcr/HAkANEDguiqwMEMCaeEwFtQ3/4CKd5qfilP5aGxYqmDmQgs/xUMpff7L
+ m2I7Zwbp0ZNfZ3PnQqnyXmQrcmI1nykEJtMdSEWf7DQq7A6Y1UaVYYiLdPujgTKs9aan2PuHuzx
+ gAOc/wfDHcP3ISLG9ow==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA1MiBTYWx0ZWRfX5OVlrIrDuzVm
+ l9d0c5QbVt59n0HOP+5hGRSI8CcR3Q2JL0rqnZhf4zVWCBDicE9fUgaCVcb67KRgRVfFXAg7zZL
+ Sb7fF55c0k4UEv2eCkH2eTFBPCIknZw=
+X-Proofpoint-ORIG-GUID: 3_OCCltaU1blaOYDWH80YrRXrDAiYVt2
+X-Proofpoint-GUID: 3_OCCltaU1blaOYDWH80YrRXrDAiYVt2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-12_01,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611120052
 
-From: Like Xu <likexu@tencent.com>
+Am 05.11.26 um 16:37 schrieb Claudio Imbrenda:
+> When pinning guest memory using pin_blocks(), gfn_to_page() was used,
+> which under the hood uses FOLL_GET, which is the wrong type of flag for
+> memory that is accessed directly by hardware.
+> 
+> Fix by using kvm_vcpu_{,un}map(), which uses FOLL_PIN and is the
+> correct thing to do.
+> 
+> While technically a bugfix, the previous behaviour can only lead to
+> guest corruption in extremely convoluted test scenarios that cannot
+> happen in real/production systems.
+> 
+> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-The fix_hypercall_test selftest fails when run in an L1 VM on an AMD host:
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-  ret == (u64)-EFAULT
 
-On SVM, L0 always intercepts #UD in vmcb01, so nested_svm_exit_special()
-claims every #UD from L2 for L0, before L1's intercepts are consulted.
-L0 then emulates L2's VMCALL and, based on the quirk that L0 userspace
-configured for L1, patches it to VMMCALL. This ignores L1's decision to
-disable KVM_X86_QUIRK_FIX_HYPERCALL_INSN for L2.
-
-Synthesize #UD instead if the vCPU is in L2 and L1 intercepts #UD, so
-the nested exception machinery reflects it to L1.  Keep patching L2's
-instruction when L1 doesn't intercept #UD, as existing userspace relies
-on it, e.g. nested SVM selftests execute VMCALL in L2 and expect L1 to
-see SVM_EXIT_VMMCALL.
-
-Fixes: f1a9761fbb00 ("KVM: x86: Allow userspace to opt out of hypercall patching")
-Signed-off-by: Like Xu <likexu@tencent.com>
----
- arch/x86/kvm/x86.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 2cd9ee316aada..8c1ae90f1f4b4 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7507,9 +7507,15 @@ static int emulator_fix_hypercall(struct x86_emulate_ctxt *ctxt)
- 
- 	/*
- 	 * If the quirk is disabled, synthesize a #UD and let the guest pick up
--	 * the pieces.
--	 */
--	if (!kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_FIX_HYPERCALL_INSN)) {
-+	 * the pieces.  Do the same if L1 intercepts #UD from L2, as fixing up
-+	 * L2's hypercall is then L1's responsibility; the #UD is reflected to
-+	 * L1.  If L1 doesn't intercept #UD, keep patching L2's instruction, as
-+	 * existing L1 code (e.g. nested SVM selftests executing VMCALL in L2)
-+	 * relies on it.
-+	 */
-+	if (!kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_FIX_HYPERCALL_INSN) ||
-+	    (is_guest_mode(vcpu) &&
-+	     kvm_nested_call(is_exception_vmexit)(vcpu, UD_VECTOR, 0))) {
- 		ctxt->exception.error_code_valid = false;
- 		ctxt->exception.vector = UD_VECTOR;
- 		ctxt->have_exception = true;
--- 
-2.43.7
-
+> Cc: stable@vger.kernel.org #7.0+
+> ---
+>   arch/s390/kvm/s390/vsie.c | 133 ++++++++++++++------------------------
+>   1 file changed, 47 insertions(+), 86 deletions(-)[..]
