@@ -1,68 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794505660;
-	b=2tNLCErxVXRQhF3D7uWMriVRWlc0sL7hDEXMA40sV/sfZQQXvuNUsQ2lA90iT2IVEeJy
-	 EWfDKN+rUoooT5btLEq26zIiZKbQBT/v6Tg1tHmRYx95sVdsXOhwENB1Q49kH60Gg3LJo
-	 /oSTrHbf1+hDnm99+OVUy1zy44tv82raV95Ahji+LohFUS8hPg1gl5FSSo2HpVEtgnfPm
-	 thXIHjD9u30ypFkEuSQJs+vQYjxrn+meTQrP5jjny4XOKITGombEcCEbXKsJM/cCmsXwo
-	 C1JBP9tjaTbgTxq0i4WMEvh/WL5b9a+Yvg3aZtiyvK7lYnb8LqlnY+Gzm32pr1h/hBw==
+	t=1794506867;
+	b=4lXNUi+ZQk/vWdLXr237I/ALdlBf6QC0VhpMd2vIMR9RH8w3IM1CR6P//Jx8P/l4DEMg
+	 egWx7YNvwUARh/zORNaVtohoc6U9/9meEzZCXS3qZbTIlLgWwKpSkPzDWoVIw7AdUT/ah
+	 W7JZffm1rAZFYxJ83rWFaXpr/8kjxD+CgiUeCvvD03bCz31nlTBoDjUrnIv97HuykjmVu
+	 zMlTXFawSxl4sIpan12UWuk8b1uPWxvfm9YgpCApJIe+Su6OW3BfqEIdin2KR6bG92hUh
+	 FUeQ+qaVEQfPLXbFDX8rIYwzbAYYF3a53xNuz3JUUXpT+VYgcjKDuv6lnM4lVkHi5yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794505660;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=KjRbeyRXk5bJOhswe1U9i7zg56tEqkEOemdqgbV7Zkw=;
-	b=fA+dIgNBmwfkfXw04sT7462wt/2nKvE5oF1hrmPguPmBFBXJNukFdIm6gGpfRkRICstS
-	 Folqg4m9rLEkFnFSBi70wV4tYM6D8Zo2JoYjUx3p+4dfQoqoSa1jmlZKd7y+KzF5KhE4p
-	 x+DPvYFI9oCkokvKyYzV/NXDBsn/u8Ff2Kz6bulp4yFtR2uXJUVnsnPW7+U+hP+nbRq0j
-	 lEiHTr2RZap7qcCHfFhRQI7f5mCbF87MhxDlEOiApgI3NI1pdHPUwFSrVgP+6GuBr4Cgq
-	 62zErkytBqHXs9PP+4OCZC4YVD0yy5LjV6O110QAdlfP1y7pcWVgEjCchdEWZuvHBzQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794506867;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=k1iKJ3ce6I7V1KzAt6ijmlB03GjSeH93EgIWrRWokzQ=;
+	b=MLVH9CZJiQtvSuhwnMJQcS+maPJGecWFrPd5BNzdxagqzu/38MlovfTXbXIc+UU5KFSh
+	 5yfsIVSyh9Q/XUezI8Dlbj9pmUsxNJrFeHlfhAT0Ni38E75T/F6AnIw7BG1dl1rJYg10k
+	 jSsSbWxN4HmJZ8mdguxxB2zbkaoeT3EufjpVSw9C4Q4Atr/h/gnYTI71xQAuDWxnEqMX/
+	 ScaYscBYDBpltATxXGR+W9AE/DYaIuvqaPbQZYzwTkceVVRbA4EyEYcVyjKYrYaUQxFet
+	 vdGk1D2aHtP+AF1PAYpMQh7yKMqO2OuS/QeudNH8QJjWJZvmdydPYZ7qHFvGiVR5pxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fGJnXgNv;
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WSZWdqmJ;
+	arc=none smtp.remote-ip=209.85.215.171
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C674606A31C;
-	Thu, 12 Nov 2026 17:47:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C674606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCAB606A33B
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 18:07:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CCAB606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fGJnXgNv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794505659; x=1826041659;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=eURjzySlnvsr7LWwcPduHPLyS2bRt1YK7k1xhKtV630=;
-  b=fGJnXgNv6n1LG2uy/zEFMhsJdQCVFqajiaIHjGxpYzV3KwWwfPgLX6Te
-   oQalcKYtyRNhaihZQU2Rfse2UhFTXoevzTsrilCIuUTTfqtC712YBCdMw
-   Ahi5f68LtSHLnyKRHGevVZwAnkJ7FIy4VXMRIr/8LDFGWiq5SbWf+/OgX
-   528RMwjO2QFJH6qFg8cjOeE/RfKnQPd6PaiItIXMDsuRm6HhkiLMXIwwa
-   InF0WewXsXlARbMG0t72PqAt/eAcbaovEgsQqV8fUtLZcLLILgEInhrS+
-   qpjYuRWxKTmNpi1ZTCl+wrlzRmIo3JzBl88q+k+T4Me4Kh7J70nohqbOI
-   w==;
-X-CSE-ConnectionGUID: DU0Cb3q7SVSFqqxEd8qM1g==
-X-CSE-MsgGUID: HwDrKdqKRdujhIqiUr7XPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3222061"
-X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="3222061"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 09:47:38 -0800
-X-CSE-ConnectionGUID: Duu2TAq1RHiHk/1SshfiCw==
-X-CSE-MsgGUID: bXnn1gnXQQyHXnTvlVLjyA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="8581264"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 09:47:37 -0800
-Message-ID: <f70b54de-7b25-4767-adea-d37dff6eda7b@intel.com>
-Date: Thu, 12 Nov 2026 11:47:36 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WSZWdqmJ
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc4c02ddd62so66530a12.0
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 10:07:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794506866; x=1795111666; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k1iKJ3ce6I7V1KzAt6ijmlB03GjSeH93EgIWrRWokzQ=;
+        b=WSZWdqmJqh+OgDpd0veh5NM3ZyaOZ2OD+CYCh11RQq/LhbAg+F59TVE2w8HLbiP37J
+         AfTia6KAhVbRb3q5CFV5LOmYNMAQTDpEizJzAl+yYiIxvlcIsur+hL4XmOqbxN4Nrut5
+         TAFERQq9ERTYuSdV1fZrNdPArb5TYPyPVddgh92h5N1IBbrCf0ATn9y5vSDDGfTAJR+w
+         bG1hiauO5vPHMRNODgze/wKmPq5+m9DBT7Ch5CgS31kXkSIQbhBArKQDZUrVHryy0dQO
+         2rHE3pUWOrEnhxHsV8torug94foBqDARJ+gDNh+HlEse6Cn3+uOV9GU2wUtfHYSTqcLP
+         MGWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794506866; x=1795111666;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k1iKJ3ce6I7V1KzAt6ijmlB03GjSeH93EgIWrRWokzQ=;
+        b=kuhPDFvjPMiTtTeqMKLpRN24qGAxZmCH/7iKSZJDKnmQURGooZSF0HilzGCzoS/KOo
+         HpeQ4G318pdju6WjMnGfi1Qmp+J0H/HH/kNlq8tGsNVIsk3rj3BI8mPQf8/20ZHId2Cb
+         JdxqOX5SniDMyLNZ+VsHPIaBxRYY9pEXccl4lHrDWcmtdTSqo3Xy3MXKRLdRMP7bEFGO
+         tUDtFLilSMAk+LXAuZ3lMKGusZgg+L+oBZv030R90G6Wg08P90zQ1mijHR5dnR5DKxHF
+         L6+SOGfbvL/HswOJdd4RvN7rtALjCL52XNHa8d9uxAJz5/w+InErYyKzSUp3aecFLEhN
+         j4rQ==
+X-Forwarded-Encrypted: i=1; AL+hErGrgbjQJKdsN7ai5I85UPBpcCI5HleIOSoE6k/cz/u7BPwby7RENpiGv/4Q1u6vU/L6ej4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8udGhTvxtk4SjqutYgfXZ111UVq4ZFDRZMeXUXVQ8dpf95JpXF
+	MtSFwuEWMJf32CT4UI05GEdf7qBQEDGPQEoBZTT5R28mx4NXyPnlLQ7o
+X-Gm-Gg: AYBFou2e+0Sx6QOU5B1NiPpq4NMvhueHS37Ftz9wVCXvnbNVjQBW99JT1XICXRN4nwa
+	RYOz0SepmT9MO2NL2W1wUkGNKNsA2Zu5yfxEsupZwWjBcCfhQt1Qmh2TE6O0CduDSq9ZXksm9he
+	0quEc6S8v0vrqr7BdIL7TXClYqPmocZvBs4y30x4qTNkLPRT8hd59gAuyYdjw1jSYqZRCCd3/Ze
+	ocIVVNcIZ55rHPXACpTGqUp6Hf2YHR+sqc8pl0unFn9myJi/2Mb07vEvUxGtutcn9qKoMRgOn+J
+	15eb6WUA2y7OYdcOLaheRXAaE3I1udKEAeohKeLCjZ4KRJE0PdkpeOpIsJWbYrniyKsufkir3+O
+	pU7VHN+1DHrMdxgc7sTjJ/PfL8mDPktFQr8xd9uc19X25tlAWj+LvAqIpszpo2VqwJfSnsIb3bf
+	HGxzuV0DthzNBCzhWweZOBvrypxvNnerz3W4FPPfNNvXQCHGcyxL1H6XwgXg2lAVpwP55jcZ8jZ
+	kV+QPhiFx/f6L2QG7V29aSCUt36xEPxrpNy9B5Nq1aqo7NkWnNdJBemDpXuPUaMp/vRvXHF6xeQ
+	MYkQumPxqBPfbUZtgz8JTpyWGxyz+IuUb4vp+YkXPVXYw1cfuZdvDfgr2PaHwF/KSxdbM2vZMFh
+	w3t/yI8aHtEPEc7mcgNtymy1mQx4PLO06lkrV9datbAqAtKE2bC4knNqXAaGQThXEq2RAKsi8Lb
+	IdDoLDOX/yQsXqyV0m/KBOW4QZKlnOuReKpHPW52JM
+X-Received: by 2002:a17:90a:e387:b0:3b1:8380:a9a0 with SMTP id 98e67ed59e1d1-3b18380ac2fmr4732901a91.46.1794506866237;
+        Thu, 12 Nov 2026 10:07:46 -0800 (PST)
+Received: from sid-dev-env.cgrhrlrrq2nuffriizdlnb1x4b.xx.internal.cloudapp.net ([4.155.54.158])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b181f8fd59sm5540773a91.1.2026.11.12.10.07.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 10:07:45 -0800 (PST)
+From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Zhou Wang <wangzhou1@hisilicon.com>,
+	Navneet Singh <navneetsingh@microsoft.com>,
+	apais@microsoft.com,
+	rlmenge@gmail.com,
+	hargar@linux.microsoft.com,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+Date: Thu, 12 Nov 2026 18:07:41 +0000
+Message-ID: <20261112180741.17614-1-sidchintamaneni@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <040cf379-baba-4e3a-bf3d-6bc009a9e28d@app.fastmail.com>
+References: <20261023070110.1833446-1-fuad.tabba@linux.dev> <20261023070110.1833446-2-fuad.tabba@linux.dev> <86fqxwzul7.wl-maz@kernel.org> <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com> <86ecdgzp6m.wl-maz@kernel.org> <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com> <ad724195-3452-495a-a50a-5e5c8093a483@app.fastmail.com> <CA+EHjTyLnAXanf9R7SuoL3gFZUNewX7QOnW=mc3qzwvaxg7jJg@mail.gmail.com> <040cf379-baba-4e3a-bf3d-6bc009a9e28d@app.fastmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,78 +119,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/18] KVM: x86/pmu: Populate CPUID.0AH:ECX
- fixed-counter bitmap
-To: Sean Christopherson <seanjc@google.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>, Yosry Ahmed <yosry@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20261106013927.166209-14-zide.chen@intel.com>
- <au491iiV7koeP0t6@google.com>
- <f20b59bb-a3c6-4129-ba61-5cec4d975601@intel.com>
- <f12bcb27-9c17-4b8c-b48c-c36a17e70ab6@linux.intel.com>
- <5f129d63-10c6-414b-86a9-a604e42038ce@intel.com>
- <51089074-1be0-47e3-8d53-732ca33f29a2@intel.com>
- <fceb4f61-621a-4d62-a648-a1cdd0de1671@linux.intel.com>
- <970e231b-c3ce-4159-ab27-ac371426500c@intel.com>
- <avSLss14zigMfUww@seanjc-mac.roam.internal>
- <3d4804e9-3e5a-447e-8a54-8fa5d1c28f5b@intel.com>
- <avXyxMgGzRBGbBN3@google.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <avXyxMgGzRBGbBN3@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+On Tue, Oct 27, 2026 at 02:48:29PM +0100, Arnd Bergmann wrote:
+> On Sat, Oct 24, 2026, at 09:14, Fuad Tabba wrote:
+> > On a host that runs at EL1 (nVHE or hVHE), this also requires
+> > __init_el2_fgt to set nACCDATA_EL1 in HFGRTR_EL2 and HFGWTR_EL2, and
+> > __init_el2_hcrx to set HCRX_EL2.EnAS0. Without them, the ACCDATA_EL1
+> > access traps to EL2 and the hypervisor panics, and so does ST64BV0
+> > once SCTLR_EL1.EnAS0 is set. Happy to write those and the KVM change
+> > once you're ready to post this.
+>
+> Thanks for the offer, that part is definitely not my area.
 
+Hi Arnd, Fuad,
 
-On 11/12/2026 11:09 AM, Sean Christopherson wrote:
-> On Wed, Nov 11, 2026, Zide Chen wrote:
->> On 11/11/2026 9:37 AM, Sean Christopherson wrote:
->>> On Tue, Nov 10, 2026, Zide Chen wrote:
->>>>>>> KVM's principle of "not policing guest CPUID" means KVM allows userspace
->>>>>>> to configure an arbitrary guest CPUID without rejecting the ioctl or
->>>>>>> mutating the vCPUID entries.
-> 
-> ...
-> 
->>> Just because we *can* do something in KVM doesn't mean we *should* do that thing
->>> in KVM.    
->>
->> Got it.
->>
->>>>>> - Features that actually need host hardware support need to be checked
->>>>>> against both guest and host PMU capabilities.
->>>>>>
->>>>>> I'd propose something like this instead, leaving pmu->version unclamped:
->>>
->>> Why?  What real world use case is there for KVM actively supporting a PMU version
->>> "greater" than the underlying hardware?  E.g. emulating AnyThread deprecation is
->>> (presumably) easy, emulating *all* of v5 on a v3 host, not so much...
->>
->> Got it. I can think of a few discrepancies:
->>
->> For example, the guest is supposed to handle Freeze_LBRs_On_PMI (legacy
->> vs. streamlined) based on the guest PMU version. If KVM emulates the
->> legacy behavior, but a v4+ guest expects the streamlined one, it may
->> run into issues.
-> 
-> Well, yeah.  Because I'm saying KVM should *NOT* support running guests with a
-> "greater" vPMU version than is present in underlying hardware.  That's nothing
-> new; KVM rarely emulates features that don't exist in underlying hardare.
-> 
-> KVM doesn't generally enforce the virtual CPU model presented to the guest though,
-> because (a) userspace can do all of the same checks KVM can, e.g. by validating
-> its configuration against KVM_GET_SUPPORTED_CPUID, (b) adding that validation
-> in KVM would require a ton of code and create all kinds of ABI issues, and (c)
-> there are legitimate use cases for exposing a virtual CPU model that appears to
-> be insane/nonsensical.
+We are preparing to post the Microsoft Smart Data Accelerator (SDA) VF
+dmaengine driver for Microsoft Cobalt SoCs, which uses IOMMU SVA with
+direct EL0 ST64BV0 portal submissions carrying the process PASID in
+ACCDATA_EL1.
 
-Thanks! That makes complete sense. I'll drop kvm_pmu_has_version() and
-clamp pmu->version to kvm_pmu_cap.version in v4.
+Now that Fuad's KVM guest FEAT_LS64_ACCDATA series is queued, are you
+planning to post the host ST64BV0 SVA + EL2/KVM patches as a standalone
+series soon?
 
+Either way, we have Cobalt hardware with FEAT_LS64_ACCDATA available and
+would be happy to test your patches on silicon, or help put together and
+carry any remaining pieces alongside our driver series if you prefer.
+
+Thanks,
+Siddharth
