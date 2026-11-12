@@ -1,99 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794522150;
-	b=QHvc51P0hu8LP0eo3Z9CKpbT8DHtawthQcdB23sgG9e8sgxsry5W4XoeUvvS22xEnawE
-	 7wK5zWw6FWzjg4vZz5FmG1nfnxYS+QAbH6IhsoVt/L6AMDuit850+LfytJXGvD7FeKBPg
-	 Iwf6lA+kiU+kM4ItnQC5O+FmY8a1PutNF3akNI2UaxetZw8Zi4sKQG4iOZ3xZLrSG29K7
-	 pxVtd69ZYw+h4ao364Z3VKmh8R99aCYYfiktC0DBYDQbwrRJwsT46i+X9i/STi9gzWLS9
-	 ZK6VuX7drvadddgYZ++kIIWNgFbUTS1c243QTMUr9rWy8kWkeDEc9Y6AgGvJ+h+j6Dw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794522150;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=QrgIfCS7YStc9wryNUO5eUzghFQY2XE+PPHAxJEeCS4=;
-	b=b1ODV8X2KTFHeLCug6AphLvApIWSUm4JRvym31UAqT2Za8rjcxy/FDNp8+26IRdHc/vJ
-	 r62QSIOdMqrF/4V6M1T30d2lpKjwgywLYvb4EjRYo8xmNV57AU1fhnpa2tiB4FE1vR7lp
-	 YYPDEZABkLZxRpiXzIi/STed6/4+zmHdJdHfEdVTk08/iEB4cMrVwYcYEoRY+nBgDdwsj
-	 AO9qkwz0Ijidq2iKb6qQCI4oyMVQas1jLeH+nhttd5jpacdGYnJ27XFhyQ+txOyYdlMUL
-	 krDlRlKdo2JgxI/BPBOLz+adZw+PgcDuFBO7Zzc5EnOngtlCZuN3VRGzYJqAteeilQQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Y5hgE3vK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794522249;
+	b=oPujZWaG3c4Z04yq1r2PKmVcPgLHtY8jyhF3+a11U5rA7BAH49qCwhoB/aeqMA+8VfRQ
+	 geqFFwMecJwHiauLkGlTPzXZ2RRg12UDQrbn6DmSkUAIzbo5AljQZHjASFHkzmOOoCB1i
+	 /com7p0ftaplA34GvHURW252+NRyqX2WLnV9niVMw/lbTUNOIB+gbNpSv3yUhktSlQYtH
+	 sqTw0f/b4r7M54CbaUid7s8U5fcXbSL3SQtjoxmnePE1u5K3fq+GTeuomBCyhaVYVd7oL
+	 59BZPGR2R4Eq+vHhbJNw76kr5Qe2IHF8H9WCxX5Q3YMYwvL1xKAggRu/Cm5+PO/GZOA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794522249;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:CC:Subject:User-Agent:In-Reply-To:References:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=S6Cy3EpSYBPEqoUBkddb4jPru4ujktF/dPMRtIFOmkM=;
+	b=3BfVqgHroUl+TYfifKzZsqpTMBLVF9v/1GMd8hIuQhO+5QYyRiOPbA7e5MZc4KtV8jvy
+	 LmjVK/5W+BfeJeaPN21eyWCRxRutnFElQsej8oRdl/9A65/a2RwF7oRupPTqXKqcf1xsN
+	 +h/W0YY7j88iYmyUoNBcashiFVPe53RPa8WxDy4Qz1DJB37eribWFGQLtm5LqQlWu3WlT
+	 YL4ELbvn3RAQ4zL7qhtz31E74YPRT4GyEyJbIMV1wCZb1k+cLPihSW5ZbQu3QbA5Iwb/v
+	 JmK5HRmj4SUJCrRg2GtNbg2XYQ1XHcl8rXf+is4sRWM4vzdmAm3o7f6Mhly9Dmox/7A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b="B1GaFK/v";
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28233606A31C
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 22:22:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28233606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4364C606A321;
+	Thu, 12 Nov 2026 22:24:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4364C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Y5hgE3vK
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b791a4b732so1714a12.1
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 14:22:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794522148; cv=none;
-        d=google.com; s=arc-20260327;
-        b=llBtVBpjKghm9noCa8D8VHh91MHKR0/VU+c/2bTnAQTUN1WC5cIrc2YECXsPiSVp3Z
-         2xuMg1LqopDjmTsPG1YExVhJasZ12y17CBd2Gu6ScFxaRfBKwGuZRjYUooeO1L5Ueota
-         +zMf6TRrw/K35Ff7+b83oplEVbmmsQOkqMOIhlVXkkkohIEIl3+6vXR/C6k4wyyz7XNk
-         5DKT5+JA3lFszGyhQgJoW597t3dFtYuZp/xlyRsbYJ/3/1i+3qBBUBPwOGRRlffGjBxZ
-         tRyNWePNV2IlFR/Ae9JwRGL0RwAttua6918t1OaIzQRuTsD/tYHwEAAynsVvI3G8rIL1
-         Qhfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QrgIfCS7YStc9wryNUO5eUzghFQY2XE+PPHAxJEeCS4=;
-        fh=fItrUtV5UsY1KSNx1ZNnzv3miYMbODbRRQWQ18AP5Zc=;
-        b=iW/LgjarM3hoB0X5Eg0/cfVbd/VJEmY7wgo1KvKUl/+lhuq7EsjK6cwdOmCwhFYoUE
-         VqjfKQrlzfJp+TWv1Ux0gUiG4MU3sbKRs5QKiXrE91rUrFoReEQ37vm8vpoEuUp/KzaZ
-         hVHBCQ7ZUl89F3GLSRJuh0b4fHWkYG5aoMi7yX9XRimmp7rYM1/c7Oaow7nQkSehFhi1
-         Npq40O5vFpHtqS+bydVyV8d4yigjUiapfxz6QqU4/HC7IkymyUOTkeAaTCDhrriFmp/6
-         axoK9YbyDbPCn1IpN8tAww0HSbpkwnBXvswrzoLkL+moyrXbWI808GlFF8ee2SMmR48B
-         xZ4w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794522148; x=1795126948; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QrgIfCS7YStc9wryNUO5eUzghFQY2XE+PPHAxJEeCS4=;
-        b=Y5hgE3vKttPPkVmtDtDb2sfF2uF8q0MoLrCJ2JEF5RNgxA9RNSugE6RYV88by9kuOU
-         19t97nLUNAGvadKueOneLu9y4OmJapv8Yb3Hdq4OoMuYTDAQdKG3dt7/F8fqWlPVMqzd
-         EPrwnUxtGRkCSplvGl160DeA2gzIXVJBX1MhdXE7mzAdi5dPOTgSd7v6kzB5ev91vKLs
-         E3YZcOCeRBXnFSVB63f0Bhy0gC5Jjoej+ZeMqFXzoLzHRgJ7Ze7yKDlATyKi9nzAqaai
-         3yS4FXE5bUHtO4QHm2/5jRLsJeaQYEuWrG072yTTqlTKm3bDjT+O6P0yfv4djHzBoGkW
-         41Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794522148; x=1795126948;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QrgIfCS7YStc9wryNUO5eUzghFQY2XE+PPHAxJEeCS4=;
-        b=glRVwnc7917RGj1C23AreDjulDEGMF1CqounHMvRNLW+RFMKMR/PAAZsqP9dhAMq0k
-         qNc0TaZRZOm+k1pEfGjLOpPiOMZbhXLdMWGU9r9tA9dGUJwBNDlQLDT8ElA73Mar3Qfj
-         XGnd6hIIcdObvLLm+2Bp63DYow9OlD9seXYVNw2SMNupfMVVOigokbmQ6D6WpqArmwFS
-         Wb2NCU4s8EM/S8jFomuqnTjHxwrDa3RSeRMPJlKckzM0piFC+1r5CX1ulmiJD79gqEMP
-         UaQ1rcfINoww/3HIwMgYj6zM8VlaZhCD1PGbet3uRNjvHP7o7ic30yq/L6v+Gta/2eKV
-         uzzA==
-X-Gm-Message-State: APuU4Z/9WmidrfJ9m89iFNjIx2rilZD6lnJVI5u8j/ocXenwnQ6Z7n/6
-	rfkOyfyS8Jb2O/Is2lpMgLxBxf3L5BFGuNQJ+TWNz9rVDqx6XhPAKJGOJ0ROWvk4j3Lx6GxmDHV
-	KCAgMEcYYxN7lodlKf4+ZYNKLjv9nRdxFyvTgS8Gw
-X-Gm-Gg: AYBFou2OVIWwb8vLgermOU/Va6jy4sZLlstGOF1DG+quRHQzw8/E6r6a9wJc+GcNYrP
-	JI4Ud5JlZaFOWJaICPdlh8ibOkmTsZXEu8GnO+NTULIa+knqrfUez1Jdk9l4XUr2zbjMHSLvb7M
-	egi7RTrCuRjZY1I653m2JUp2+qNUkghLgQ0x2ecLHPwWz9lyvsAfJWMgC8fKJg4Q2vA7EFd26Dz
-	/HJL09+QpWeKQkr9NtJIQnLKCfYyLu8bvnFgvkAN+r2Rke2WdiTm9uZ+2LCwJv3bSVAVPr57Uuu
-	EeafGr2V28qMVLonGryYpkFrm/fGAHP8M6hJD33KalB+0cC1TSxsGUwzna67PZTJm9zwmED/9+1
-	ORcqhlESSaLqm/qG2hN9LLj4oWZXjRzhburcc7lXBAgXeZjaifSZ+Fbg9/+AqDNbZ5fSY0QV9
-X-Received: by 2002:a05:6402:a306:b0:6b5:5d24:5d90 with SMTP id
- 4fb4d7f45d1cf-6b7c33b4044mr33238a12.3.1794522148143; Thu, 12 Nov 2026
- 14:22:28 -0800 (PST)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=B1GaFK/v
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9FF0340E0231;
+	Thu, 12 Nov 2026 22:24:05 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id T5saqsF50iug; Thu, 12 Nov 2026 22:24:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1794522242; bh=S6Cy3EpSYBPEqoUBkddb4jPru4ujktF/dPMRtIFOmkM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=B1GaFK/vWQrKG1uX3J1hargPwDG6JnkRgO9kyuJ87pumCZNN3Xd/Z+vceAWmDvLA5
+	 szJajHThhNmMaWrQ5EEzPNyGcFPUJ5sDGTsmd+JiDwBrn7il6rBaQ64PcRqmzPJZ6o
+	 4AQY/CFaxeqYH/MgkJloD25Z1SU8lRb+9z1Ji8ENpMTFPq3acj/FsQ4C2J/d0EMMe/
+	 P4e8bBIZ1khLndBpbKQv0zRSqoPQ670BdNunhvoxAn9zTkPwzQfvdote3MThpAdwnK
+	 OfoZsVw6qV/ZYiL9LAOjLHBq/MkPDfAkeQ260GS1/FY5oXuAuLdzP914xKP9nFLYEs
+	 T/FinBagE7BIa1grsqXZg8qrSaAhOwPgbXtYLxK93mTx8KD2LwI8WLULaMz8wWVO7/
+	 wso03iRG/pKw9JCGZSNmB8HOhEekLpWVUefepp9yxl48GveQiQDIM78g4GVl8DypZe
+	 J9KQO1R0bWqkFMKCxNSKc3M5DqrD8vBkJ1cvgOjW4sCl0qNGTwBmII73Ohkhr/KtCr
+	 1lfv7pYAOUqscBHBUKJv7qaSBm9HcM9sWP38+MVkUFOSzx2+S9AgdZMDsZdxMjSvYi
+	 DRmNu3AcWhLbpq2izjZVHcLtC2G2PF/esv0/B5MsqknjgLsuivNYPYmrZ8YkSvGWpI
+	 m06kREaU09u7AwXy/Ed8zfyk=
+Received: from ehlo.thunderbird.net (mobile-166-172-120-26.mycingular.net [166.172.120.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C6EA940E015B;
+	Thu, 12 Nov 2026 22:23:48 +0000 (UTC)
+Date: Thu, 12 Nov 2026 22:23:43 +0000
+From: Borislav Petkov <bp@alien8.de>
+To: "H. Peter Anvin" <hpa@zytor.com>, Breno Leitao <leitao@debian.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, vlad.wing@gmail.com,
+ security@kernel.org, kernel-team@meta.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_6=2E18=2Ey=5D_x86/cpufeatures=3A_M?=
+ =?US-ASCII?Q?ake_X86=5FFEATURE_leaf_17_Linux-specific?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com>
+References: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org> <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local> <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com>
+Message-ID: <29B14106-19E4-4589-BE40-3D42BA646CE3@alien8.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,72 +85,20 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261112212628.265262-1-jmattson@google.com> <sashiko-outbox-211867@kernel.org>
-In-Reply-To: <sashiko-outbox-211867@kernel.org>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 12 Nov 2026 14:22:15 -0800
-X-Gm-Features: AclHuK9ee6Z7MEJHoBdy4dj0b2KNlvJa6JYEsQ4nMaHf-mKBUBV3DO4EK52PSLU
-Message-ID: <CALMp9eQWBoeroBs1oXCYVH59ZX0P2kEaWxOYeLFHMN1vjPESfQ@mail.gmail.com>
-Subject: Re: [PATCH] KVM: nSVM: Gate CET state copy in svm_copy_vmrun_state()
- on guest SHSTK
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 12, 2026 at 1:32=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+On November 12, 2026 10:13:31 PM UTC, "H=2E Peter Anvin" <hpa@zytor=2Ecom> =
+wrote:
+>Still, I have to wonder if it really makes sense to fold these leaves lik=
+e this, since they are going to be populated soon=2E Surely we're not that =
+short of bits?
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [High] KVM: nSVM: undeclared vcpu in svm_copy_vmrun_state() breaks
->   build
-> --
->
-> commit 11b89023661c173dccf1cc07088879a6b4ff0bef
-> Author: Jim Mattson <jmattson@google.com>
->
-> KVM: nSVM: Gate CET state copy in svm_copy_vmrun_state() on guest SHSTK
->
-> This commit changes svm_copy_vmrun_state() to check
-> guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) instead of
-> kvm_cpu_cap_has(X86_FEATURE_SHSTK) before copying CET shadow stack fields=
-.
->
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index f9090b601efaa..2a1c279bd54a1 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -1218,7 +1218,7 @@ void svm_copy_vmrun_state(struct vmcb_save_area *=
-to_save,
-> >       to_save->rip =3D from_save->rip;
-> >       to_save->cpl =3D 0;
-> >
-> > -     if (kvm_cpu_cap_has(X86_FEATURE_SHSTK)) {
-> > +     if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK)) {
-> >               to_save->s_cet  =3D from_save->s_cet;
-> >               to_save->isst_addr =3D from_save->isst_addr;
-> >               to_save->ssp =3D from_save->ssp;
->
-> [Severity: High]
-> Does this fail to build because vcpu is undeclared in
-> svm_copy_vmrun_state()?  The function only takes to_save and from_save, s=
-o
-> its signature and callers in svm_set_nested_state(), svm_enter_smm(), and
-> svm_leave_smm() need to pass vcpu as well.
 
-I should have mentioned that the base-commit is
-dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4.
+If you mean the leaves in scattered=2Ec, I'm thinking the moment a leaf ap=
+pears there with half of its bits, it'll get moved to its own separate leaf=
+=2E
 
-Commit cd0e6f4d7cec ("KVM: SVM: Add a vCPU-aware helper to get
-supported DEBUGCTL bits") changed the signature of
-svm_copy_vmrun_state().
-
-Odd that you quote me as writing:
-
-@@ -1218,7 +1218,7 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to_s=
-ave,
-
-when, in fact, I wrote:
-
-@@ -1248,7 +1248,7 @@ void svm_copy_vmrun_state(struct kvm_vcpu *vcpu,
-struct vmcb_save_area *to_save,
+--=20
+Small device=2E Typos and formatting crap
