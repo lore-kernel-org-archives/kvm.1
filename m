@@ -1,72 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794442126;
-	b=kuxmDDTlDwKdg2AuYopxf0+dIweq3OA3zZdbZsVvAzNOf0kW00BP0+FP2QKxdkVluI/n
-	 Ibtd0gD1Jm9xvq1dCAa06iWf0irlOcRAZ3fdfIwmwJPzGhFxwO4HqHWGZBr+y7h+Gw/I1
-	 AqMUgUdFiE7M0Lc5jD2C3VyEyLO6FpyU7sqMXCvYAMqluk7+1dVhVKu9yQuiA7HHhOOcg
-	 L/zBGvShLF+KyVK7XteuDV0UnTT+M3QDcBbKrTUPVGGV7Na+aLPKwp6HNMtNYBUIgVv9q
-	 88X75zSskPXUtWUpm+METOUKGJeAwB700b+3SmLkDJmj6gyEQzfIVxyWkOaFkXarH0g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794442126;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794442402;
+	b=4lph/pqkNtjnVFml9pVviA9fvX9ZajszYPPQ5Lx3xMu9K4Bau/zHyXU7h40s7m52ceo7
+	 NcPzPZwP7PQ6yDyPTdluYANinBqNCT82cuUtHVJ9IX3u/IjBpRxJDkHDHtRJw5RLqUbNY
+	 zrAWLOv3jHGlCasFkslDK/fTlxvaxj4ofBQF0OGZ+FCEM+iErXe/Hi374Z/yJ5zNxQQwN
+	 M7COMN0W4C9qkQwwh0a4RLjLDbTmtrJBYOKNDaXzLCIueMArldgt2WzJSWrULNTreeVp2
+	 WgYX1QbLJznHzqvEznrQS1qGzGxWG0OYbNNt9nQZPzR2B3UIysmoc8Bj6iZWipCYsVQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794442402;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=deHK5iaGQ16uFonBvAPJyDuQf3J5jqXGDNfUZjZLMXo=;
-	b=iJOJ7VrEOErDgGrXoMY5Kq5jnV4l86otzYQQrkV/MFarb8KE3LBfWkxXrWDb11FY3g2Z
-	 TFUP/uQBJZMB/cqF1GN5kzrvZ3aPKnyyjZABqSLIQC2AiUN1fhetoLWHBTDIDTWh/klvW
-	 KGppvy8LayX8QBk8Abs144wrDbZlX4iNWo7tG0a+UXpdkdxnZ/9/IiAJ9z7Qsw1jDIIB0
-	 HV18rUYj7WJSAIvuTqxPiYqM8J0BQ1JnLL8KCozsfc9r6XRgFE/8TAQ6PSphAVOPvqh9f
-	 jlbzFDSHOcFNY7eqR3hyIDPbBcRDcX1JO8I6gsGqysfLf/AXvSpik086SZuwORqNbQw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
+	b=uKZ8SsQZUObir3+Yz1+Slrqx6ZlS5ZNt0vgFvgfn/uKU0YcPV16f5k7I35KP22GUdqa4
+	 ZCKDk6DusIugIgdVmnAU2wR4iyeyEyx6WLO4t9G0Z7lPzgjVsiBKxpYpaIZNJBbhO1xVT
+	 ONi/SGiju5ntcU84JRSSUD+/n4JC0a+L8f8BgW4xjcoufPIyn4Y+HcZwqRvy4rrhk6Ss2
+	 fHdXoAaK3GJMZ6A04+ZnR+G5At8OknJYHHGJtHKM3Ve+kI+NHDOm4QwPHEnFVTZgvGnT/
+	 y5ak+Jfpd3Pvnd6essfAgfD/cBym+Uyl4gAOISFjhi+CeZ9aw78fEMBCjlM4Wmt0f4Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VIdsIopc;
-	arc=none smtp.remote-ip=209.85.167.198
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="iH/wd37L";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB230606A321
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 00:08:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB230606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B68606A326
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 00:13:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8B68606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VIdsIopc
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4c55ba309c2so4560053b6e.1
-        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 16:08:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iH/wd37L
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b571a45a2aso2605a12.0
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 16:13:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794442400; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FKJNS1FA8hreUnENyg17NgShoUz69NVHasnZj4MOdLfSInGqvIh+hDwIifHFW727e4
+         XnP+wheuZ8/aZKhskjHUbDlNU3QdKBd6nHwDWZV2ZuZ/T9qJmgQ93Ceg0FNXHKmo4sym
+         ZJvgaGXPGB0Vp+yaFtHEnctV6geZAVQPmtSHdpGfRJEPG5wVGdKP9xAw1irCyJznaYz9
+         NIuJdqmRLj9tL6C0acS4pj0QofZ8Se319+YiFNy0rIw7H+dVLLMePZt176/RYijpgvX1
+         yRTJHTxSjxZg/emPAp7VKtbK14qBvOJEzpSs0BiBjsItpKNsES6Xqb/zZl2w7CErSBpG
+         WmHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
+        fh=n+T7JFG246dIBFAkioO/ooGuV7OMs4RK0i9AZiaJPIA=;
+        b=bgI4e3H3YXY2qqIULohrxBiHCS8Dfbxmd5d6TGioatf7h5YC/7qarFWNSa3A/6tFpP
+         LjDaXJgJmYxu2WTHapN0sP2VZMzDN/dJPq8S1uD5cfCJ7KiaMgrTzUILwGh974EHE3MM
+         4bdxC60uH5Ljq+H1ojLQFY6Z8cBVTscevax8uaJWyydQoF5qFkOzgCYrYD4TDQYyTfFQ
+         OW6nRGsLmkwL8KDsp1b1BjWBiA2qTkK+HK82uX2ESs6UkleWbA2wD7aouWc1Rnj4/Okz
+         fzm3g00uOYwZeB8hxInAB85niW0cUdmC2Rc61HS+KC0PXh/88Q2a3SfwVaU+jAZnbLDi
+         pgow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794442125; x=1795046925; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=deHK5iaGQ16uFonBvAPJyDuQf3J5jqXGDNfUZjZLMXo=;
-        b=VIdsIopceTRxZSn5lZP/j7PhHpzTe5M7Wj3xajq6FrRjrQhFwByIu7oyAPblgJXHmV
-         jNph+KDfNbafA7m4DOZsUkJsw5V2y4t03jgGzrEBQwtCAM2hSr1muHhcCLV+lAqS/F8U
-         5h1XTpIzZSxAb3/5H1W3oK2a5hGt4bUmmg8VSy0Tl8XLH9ANiMHWXrsqzrgfmisb1ks8
-         VC/bH7pSc5zGnzrWSkOSio+Rase2Sd77psbglQzCrj319djV+/96y9Du36EtzIvlKbt4
-         95MEorimc8ru4A6R6ypWgO9WhFEISl8OX1Sd4yNnzrYiquvmv0GHRs2831U8uDLL/PTI
-         ZUfw==
+        d=google.com; s=20260707; t=1794442400; x=1795047200; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
+        b=iH/wd37LOg2hD3TTD1m4q0qaLfhoXoQUtQjEilEqBxnKJxbifvZHG67+MeME0M8WGu
+         Ux8INvsQJMiPw/PdFkvNsGCSdtaFu6NBxDAsk1VA6RyZR1qKKE4Ckl/UH6Rig7phjNE9
+         WklDOtODfrt37ymWxn1AQUGJUokgTSG1AgdjMwN1gkaesF4YiZ1DgZnnrUJr+yqaPWAT
+         UUtWdqd0zZJpy8uuQOIaki113+rawIwWPmfRJmt0rGg8wPGEBlnazc8MLfvWbf9d4Z3L
+         zt0wT6rl8FNYicdd1gO8Al8EClUL06yC17IuiUHAhAeEQ1K6vFZhcjqE0SueEd0Jut4F
+         XEkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794442125; x=1795046925;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1794442400; x=1795047200;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=deHK5iaGQ16uFonBvAPJyDuQf3J5jqXGDNfUZjZLMXo=;
-        b=Z9TM+jsjhlsGh0ifO71BgxmwqcDICpqVxONEADEE+RrzjqmaTkivZQ8vpc5keWXdHq
-         sFFpNWda5gqZxvBoWV9qrcriYdJy2dRSPU+pk9Ls1Bo3rUw5+1Rqr9Tn7Q6iCp05kPON
-         wqUkqjDTDZOTVOKbZu3VqJNJL/gMHFeMY6dOen9AdFPDGLbuqo8bEfcvJ18uRmvqmIoQ
-         7ACtOz7v7lzv9YuYY8HonQapJmAyuicg86wKww/cj+qjdYoS6SHiBcWTjM4Jwm1/L99d
-         j0rNhdHB2P5ITz0VDTKyQlwYb0IOnNTUVdhwC8SMQz/97tD/39iR0EEY3ARWfZOT14Xz
-         ujMg==
-X-Forwarded-Encrypted: i=1; AL+hErHN7uILm5/h/FaGcVUhheNsfS0eBNRP6GwlOzpzden6iPerk7kI36v+Y5PjT98jhFuYO6Y=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+pG70hx7UAghAsGRpM/uK9IDhKxgGXu2N91L4lP1AU+mKpR5id
-	E1JbCzEI1IN/k9UKlZyJALoLJAGF1o8XiIqd4nKp00g0t71tglK1UhpgRepzcZB0zyxDjf/oXOT
-	MO/aKkZcy+rvAmA==
-X-Received: from ilbdw15-n1.prod.google.com ([2002:a05:6e02:410f:10b0:51a:346:d73b])
- (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:c168:b0:4d6:90f4:48b7 with SMTP id 5614622812f47-56b986255cbmr3796223b6e.57.1794442124402;
- Wed, 11 Nov 2026 16:08:44 -0800 (PST)
-Date: Wed, 11 Nov 2026 16:08:41 -0800
+        bh=x6GQlR97tIMyvsNz+qk5iDCNekyRuVayoebvkV1BUAA=;
+        b=WpVmFwn9s0EQ4G9kGAtVrboYIdRZ3nKTUPzwWXcVda2pLUcWSD98AAubWE4bwBzK8w
+         buvBjb0VoqeSdoLfmKr7LuUHyBuPPkuRef1BpMh98pVtDFZtPLFmoGPxiacv5LIaVoil
+         AnHQ3uVRgqG08ZK71m8/pYGCbUOBPLFSIpIOHbQPDBaprSVtdUq/l/QZGlOLwXIgvxto
+         9lblwrvlNC3/4Pm9iijA1f9E/RLIMwAEQ+jQk8d1BA1/l2W0fOeB7z1xVF4bod2dnOo8
+         3iDNaOEgYzon8zTmxzn4yCLGRb1AbM/hIcEb9uVXw4FQgxRsaZp3ptuePoHOV+mkfy9W
+         a7sA==
+X-Forwarded-Encrypted: i=1; AL+hErF14VRanLiCnWJL2C+S8KbM869rofO+zc1J1zBHRPIsZlty4ahoJai5YvIOxM4+hnbbRC0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8v/1kOUvIcOiUTNDPzEFGAbRH9rNhQQX7Fhfi9SeYLmjVHkIeI
+	3VWoBOYq+ucJwaW90tZ71MT/m42cAQ6CBDGbOCmGF1XgHuKBIv3JI3vBMlU779U3RfAOozvqlpv
+	1Aasd+1xWAq+YWzY8n0rbgVEjA0eq8zHbTLoHzx8Y
+X-Gm-Gg: AYBFou0VBt6KiVBdwaDl0V4gcXWanIonxp/M+QAU+vVcbIgEHxsdJVkl+t6iJATAVZd
+	ZzRL7CKoaX+z36yF1kl4CO6zBlnxJNaqydUGrJC3gvKFPRE5b9PyBBSjSSiT1gzkBbTMXA6NooZ
+	+S5bgMk1OvADV3D78xz0goGYwkoWhvmrz26omFiTJONvgUlV82jJAduwFAV5LGaUo2ty8/n1z3q
+	gOsZH7uE+5nFavdfkJeYiJ+aB7+s4zyN1K2s+ISfVGLVEK8coUQLwrivdcFrC+Vp9n2rwX5Zt98
+	0p9uVXT6pSiztLRFtKPRtG+5Hp5xvlmdPMhmOq6Lmiox0RQmOUvarBI7FO1edqZ8edMzx28BI/c
+	AnVbHol1opXtqKYRy/1uT6Zz1ZRjJ2YqWySSfTU/SFuLt5PAMNWGbGafZHssJR1oTid5SWp0n
+X-Received: by 2002:aa7:d1d7:0:b0:6b5:77a4:e7c9 with SMTP id
+ 4fb4d7f45d1cf-6b79f51181fmr33260a12.2.1794442399569; Wed, 11 Nov 2026
+ 16:13:19 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,65 +103,44 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
-Message-ID: <20261112000841.3013324-1-jmattson@google.com>
-Subject: [PATCH v2] KVM: nSVM: Add missing CET VMRUN consistency checks
+MIME-Version: 1.0
+References: <cover.1794374897.git.zack.rusin@broadcom.com> <e08e3b6d0a8dcd25f1ee3e97a64acc1cbd3c0f1d.1794374897.git.zack.rusin@broadcom.com>
+In-Reply-To: <e08e3b6d0a8dcd25f1ee3e97a64acc1cbd3c0f1d.1794374897.git.zack.rusin@broadcom.com>
 From: Jim Mattson <jmattson@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>
+Date: Wed, 11 Nov 2026 16:13:07 -0800
+X-Gm-Features: AclHuK8odVhxcsphtnxehMA2gTchgOO8TDhX7Llo8FUPPxJ2xf2wIKtREyW4NxM
+Message-ID: <CALMp9eQ5CAZ5GASL80qQBB-86nKskdiadFinbw+6g0=9ycYXGw@mail.gmail.com>
+Subject: Re: [PATCH v3 01/12] KVM: x86/pmu: Honor enable_vmware_backdoor for
+ VMware pseudo-PMCs
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Doug Covelli <doug.covelli@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+	Shuah Khan <shuah@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, Xin Li <xin@zytor.com>, 
+	Francesco Lavra <flavra@baylibre.com>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>, 
+	Liran Alon <liran.alon@oracle.com>, Arbel Moshe <arbel.moshe@oracle.com>, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Per the APM, "Canonicalization and Consistency Checks,"
-
-  [t]he following conditions are considered illegal state combinations:
-
-   - CR4.CET=1 when CR0.WP=0
-   - Any reserved bit set in S_CET
-   - CR4.CET=1 and U_CET.SS=1 when EFLAGS.VM=1
-
-Check these conditions in software before trying to VMRUN vmcb02, so that
-the illegal states result in a #VMEXIT to L1 rather than an exit to
-userspace with KVM_EXIT_FAIL_ENTRY.
-
-Fixes: c5ba49458513 ("KVM: nSVM: Save/load CET Shadow Stack state to/from vmcb12/vmcb02")
-Signed-off-by: Jim Mattson <jmattson@google.com>
----
-v1 -> v2:
- - Warn and fail VMRUN if reading MSR_IA32_U_CET fails [Yosry]
-
-v1: https://lore.kernel.org/all/20261110004037.125692-1-jmattson@google.com/
-
- arch/x86/kvm/svm/nested.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index af0ef678433d..6298160458bc 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -469,6 +469,21 @@ static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu,
- 	if (CC(!__kvm_is_valid_cr4(vcpu, save->cr4)))
- 		return false;
- 
-+	if (CC((save->cr4 & X86_CR4_CET) && !(save->cr0 & X86_CR0_WP)))
-+		return false;
-+
-+	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
-+	    CC(!kvm_is_valid_u_s_cet(vcpu, save->s_cet)))
-+		return false;
-+
-+	if ((save->cr4 & X86_CR4_CET) && (save->rflags & X86_EFLAGS_VM)) {
-+		u64 u_cet = 0;
-+
-+		if (WARN_ON_ONCE(__kvm_emulate_msr_read(vcpu, MSR_IA32_U_CET, &u_cet)) ||
-+		    CC(u_cet & CET_SHSTK_EN))
-+			return false;
-+	}
-+
- 	if (CC(!kvm_valid_efer(vcpu, save->efer)))
- 		return false;
- 
--- 
-2.56.0.567.gdb80ae8cd5-goog
-
+On Tue, Nov 10, 2026 at 10:08=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.co=
+m> wrote:
+>
+> Check enable_vmware_backdoor before kvm_pmu_rdpmc() hands an RDPMC of a
+> VMware pseudo-PMC to the VMware emulation.
+>
+> The pseudo-PMCs are part of the VMware backdoor, but only the
+> emulator's check for RDPMC at CPL3 with CR4.PCE clear honors
+> enable_vmware_backdoor.  An RDPMC that KVM intercepts at CPL0, or at
+> CPL3 with CR4.PCE set, returns the host TSC or time to any guest, even
+> with the backdoor disabled.  Inject #GP instead, as for any other
+> invalid PMC index.
+>
+> Fixes: 2d7921c499af ("KVM: x86: Add support for VMware backdoor Pseudo-PM=
+Cs")
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+ Reviewed-by: Jim Mattson <jmattson@google.com>
