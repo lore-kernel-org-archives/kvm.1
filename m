@@ -1,56 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794494521;
-	b=5jjXy983Yoj3RdgXzSkvmPY77xmIiiZisxHPKXVG4ahVtw2ydSTwF2m9ccXgOHbaIghE
-	 Vj8LDyEOZwWlDuYWXi/3p1czw+BdizD0fvZrgoeDtDsaHbsrU2OuitkZjDiZCQOxLx9TK
-	 rMifOwXReWJ6vzOo0PW4WSLz7zcrA+LgQOnBu8z2+3qch5Jg7qM0EgxRWmQ3rhrsVE+x4
-	 UUafPoDpEYaXzOGcKNXr0PkcB13lQ+mvVvXBgpijww6EOF6RjbuvoAoVDtSgi8bQwMg0R
-	 F+Fr2ospp7nvcgqJp6527sBrw7wvXYw0xmdSD5rYgwcjMs7bQsbUXpBvu9l4kSfQ08w==
+	t=1794494547;
+	b=GhpLjV3ss1U2Q9U1gUsvfqlLcAK7WHl9kzg3xeBKpD21LR5+o1N0DY+T8Fb7VmNvWCo4
+	 ijj6oWjxkJJIg2At969qpF2qrYgoU1CJkLAdmaH9RhOEtyodiCzSl2t+WvX4SHeypqETQ
+	 E1+Nf6/5ffKuI6AV+F5hj7zvgEXS93KKQNSbflTmP22Lh2qvBa0B7oX4al4yNK8Jrn4uv
+	 IOe+pqMtvOQBEU5ZXdYmPWCOojxulII6lAQCit6pvxkriy6VofF+Snj/+QpVM40vl5VI1
+	 CyAQOCu5eqjcVgiUX1GtwozPmbNR4OrbYg1tZ5OSjqD0cY4QWkcMgKSQhVIL+ezI9cQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794494521;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=hVx7Dj2VllEMGVnE2iIOn3J/Pbm59VYk/0/n8Y/LNnY=;
-	b=ntODuKZBJs2cGRsMlXRUprWj2dR+cxP0uM7AAQT8Nx37N86N/cZ1n+kvml7O7AqR7lB2
-	 b1mngv6BPr6ZyIpoedhD3k3lf8Jn0knbvZd1jbBcmIylqMIWBGEvPTSAGHASASnwtYMtd
-	 wz2TuO9ziPx9lDAVKzO9cOVftZTovl7vo/X9OR5OpDstGZC8+5Lj82Xtf2CjzffVR1fNs
-	 D/G5WYSsN03XhxSgXbVdni5k8ONY/W4iR/dfJW7PPn3YhNBdn/RB8NuWihPh4QmYcTrGb
-	 91nEECdDHQj5zhoh+VoxLHECMyeIe/b6S3I+z/oD8Uh6zM2xgVKmzlTCa/8NV9cK5EA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794494547;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 Sender:X-SRS-Rewrite;
+	bh=qZYyj62zk4DKgGeMeAwMpBAlP2Mi8ofGhkV/pgn7PNs=;
+	b=2mfYcYSbdOLsrU1MpTVJMsqehR30PQxLUTMhWGEzPF6CpJcOJJTJwTvOVCXBQeS5iPyc
+	 ZNsUttfbC60VrgcNy/HA3H6dmhEOPoRNTQfnRcqNiLZsErU/iRqW+tXMTOrEwoiWT6vBZ
+	 VvXppOpB6nTzppF8s+kfyO2UyujpZ7FP25oyaGTfpFKI3OY0jNNHnGOTMB6OrDfSIK4EU
+	 TU3oEZa498xlKUV0c3oLFKVSxnpmTXWgwtA8go2OgCmRDKIvdZbf0r0V3+SPl3JKoT7j0
+	 Wne47XqPJxAMMP2jpOv3dwCztT49O804MQj9xAHjcQokpUmt0wWUGrc9wnp7xXVB3og==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TgO046Fa;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=infradead.org;
+	spf=none smtp.mailfrom=desiato.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qSmsmSGf;
+	arc=none smtp.remote-ip=90.155.92.199
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1764F606A321;
-	Thu, 12 Nov 2026 14:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2E1606A31C;
+	Thu, 12 Nov 2026 14:42:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F2E1606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TgO046Fa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8061F00A05;
-	Thu, 12 Nov 2026 14:42:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794494520;
-	bh=hVx7Dj2VllEMGVnE2iIOn3J/Pbm59VYk/0/n8Y/LNnY=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=TgO046Fa1jJEr6/jYfcb5YkWX8UxKjlU+HpmE9r3I8V7+cgXLKpuO+RRqJSf8ArE7
-	 +nMuSwBFcqwQQ6zZIdVz0TWTSQiz8j0TTl3jYSCNNn3UHIM4jrhWVaXKEMvYkUueLy
-	 MYFiLCKU1NnlvMhGwQlPSChF8XX3D8RTvuucXVeWgKB8OoFJF1IigayvEUv4o8NU5j
-	 GvLzR+4hTb0lxEpuFlfALgCRRf09dpivXHrSyIPQKRZiMItlz2GVS7itgvToXliEZX
-	 37DnAbKCXSLW/9J1+xW3/MHzotGZUKNKFRZXglEh/9tZDZqoHpgw6RzObqHBQqqxJi
-	 5TxPDqOw9MafQ==
-Message-ID: <sashiko-outbox-211365@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 04/20] vfio/pci: Use access ops for config-space
- accesses
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shameer Kolothum" <skolothumtho@nvidia.com>, kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261112141632.918954-5-skolothumtho@nvidia.com>
-References: <20261112141632.918954-1-skolothumtho@nvidia.com>
- <20261112141632.918954-5-skolothumtho@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 14:41:58 +0000
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qSmsmSGf
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=qZYyj62zk4DKgGeMeAwMpBAlP2Mi8ofGhkV/pgn7PNs=; b=qSmsmSGfb1mtxy7pnlkZ7QJVdY
+	M5PqfEID+y88Y0NyMwhrF+tZ6z2nHfHWYkTAg+cmRggQYOJw1m+kAwlDNDceoDktqtq072X8fofrD
+	fvOHzETrBlCATXTp7rtjFgDzYbUczA2arBII3GwSgWvm5dd7IOatsTxTHxRMjciefd1HnnqCiJ5ud
+	u0xwRF/qFB+NEXx4qESQzSyBYAOByukM+HJnLg18lj3PSyUKT2x7B58A3exvNb00DhX/FWmL6IZ/S
+	LQmPetx0sN3Fk2663fmOTk4JUywQ+otRwPNy02MjopFS44uVA+rHiYv+Pc4qeDqmxh8mc64GcdsDa
+	y1DRP+0A==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRW0O-0000000ARvJ-00Aj;
+	Thu, 12 Nov 2026 14:42:23 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xRW0K-0000000080t-3EEa;
+	Thu, 12 Nov 2026 14:42:20 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: kvm@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Anish Moorthy <amoorthy@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Nicolas Saenz Julienne <nsaenz@amazon.com>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH] KVM: selftests: Drop stale exact flags check in private_mem_kvm_exits_test
+Date: Thu, 12 Nov 2026 14:42:20 +0000
+Message-ID: <20261112144220.30801-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,99 +72,45 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] vfio/pci: pci_bus_sem lock inversion in config-space FLR under
-  access_srcu
---
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 07dee5e58e5bbc760b7e991d4fc5ab36537fd5e0
-Author: Shameer Kolothum <skolothumtho@nvidia.com>
+Commit 7d0afe669374 ("KVM: selftests: Take into account mixed memory
+fault flags") relaxed the memory_fault.flags checks so that they only
+test for KVM_MEMORY_EXIT_FLAG_PRIVATE, since KVM may report the access
+type alongside it. In test_private_access_memslot_deleted() it added
+the relaxed check but left the exact match above it, and with the
+READ flag now reported the test fails for me there:
 
-vfio/pci: Use access ops for config-space accesses
+  x86/private_mem_kvm_exits_test.c:93: vcpu->run->memory_fault.flags == KVM_MEMORY_EXIT_FLAG_PRIVATE
+  0x9 != 0x8 (vcpu->run->memory_fault.flags != KVM_MEMORY_EXIT_FLAG_PRIVATE)
 
-This commit runs PCI config-space accesses through vfio_pci_core_access(),
-routes power-state transitions through vfio_pci_access_ops, and defers
-PCI_PM_CTRL D0 transitions until after leaving access_srcu.
+Drop the exact match, leaving the check that the fault was private.
 
-> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_p=
-ci_config.c
-> index 9914f3ac69aef..1e54e2e8b2ef8 100644
-> --- a/drivers/vfio/pci/vfio_pci_config.c
-> +++ b/drivers/vfio/pci/vfio_pci_config.c
+Fixes: 7d0afe669374 ("KVM: selftests: Take into account mixed memory fault flags")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-[ ... ]
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+index ed8edde9b718..e07f4972ab7e 100644
+--- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
++++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+@@ -90,7 +90,6 @@ static void test_private_access_memslot_deleted(void)
+ 		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
+ 	} else {
+ 		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
+-		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
+ 		TEST_ASSERT(vcpu->run->memory_fault.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE,
+ 			    "Memory fault didn't occur on a private memory access");
+ 		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
 
-> @@ -1957,11 +2017,21 @@ ssize_t vfio_pci_config_rw_single(struct vfio_pci=
-_core_device *vdev,
->  		if (copy_from_user(&val, buf, count))
->  			return -EFAULT;
-> =20
-> -		ret =3D perm->writefn(vdev, *ppos, count, perm, offset, val);
-> +		access.val =3D val;
-> +		ret =3D vfio_pci_core_access(vdev, vfio_pci_access_config, &access);
-> +		if (ret < 0)
-> +			return ret;
-> +		if (access.power_up) {
-> +			int err =3D vfio_lock_and_set_power_state(vdev, PCI_D0);
-> +
-> +			if (err)
-> +				return err;
-> +		}
+base-commit: e71c4e83c03926c300f6c43e79b783d47ba8b588
+-- 
+2.50.1
 
-[Severity: High]
-Can a config-space FLR write in vfio_exp_config_write() or
-vfio_af_config_write() invert the lock order between access_srcu and
-pci_bus_sem when the device is in a low-power state?
-
-vfio_pm_config_write() defers D0 transitions outside access_srcu so that
-pcie_aspm_pm_state_change() does not block on pci_bus_sem while AER waits
-for access_srcu readers.  However, if userspace puts the device into
-D1-D3hot via PCI_PM_CTRL and then writes PCI_EXP_DEVCTL_BCR_FLR or
-PCI_AF_CTRL_FLR, vfio_pci_core_access() runs the handler inside
-access_srcu, where it takes vdev->memory_lock and calls
-pci_try_reset_function():
-
-drivers/pci/pci.c:pci_dev_save_and_disable() {
-    ...
-	pci_set_power_state(dev, PCI_D0);
-    ...
-}
-
-pci_set_power_state() calls pci_set_full_power_state(dev, false) ->
-pcie_aspm_pm_state_change() -> down_read(&pci_bus_sem) while holding both
-access_srcu and vdev->memory_lock:
-
-CPU0                              CPU1 (AER recovery)
-----                              -------------------
-                                  down_read(&pci_bus_sem)
-vfio_pci_config_rw_single()
-  vfio_pci_core_access()
-    srcu_read_lock(&access_srcu)
-    ...
-    vfio_exp_config_write()
-      down_write(&memory_lock)
-      pci_try_reset_function()
-        ...
-        down_read(&pci_bus_sem)
-                                  synchronize_srcu(&access_srcu)
-
- *** DEADLOCK ***
-
-(if a writer is queued on pci_bus_sem, or against any path nesting
-pci_bus_sem -> access_srcu / memory_lock)
-
-In addition, letting pci_dev_save_and_disable() perform the D3hot -> D0
-transition directly bypasses vfio_pci_try_set_power_state() and skips
-restoring vdev->pm_save on NoSoftRst- devices.
-
-Calling vfio_pci_try_set_power_state(vdev, PCI_D0) before
-pci_try_reset_function() in vfio_exp_config_write() and
-vfio_af_config_write() (as commit 358432f8bbe9 ("vfio/pci: Avoid waiting
-for the bus lock when preparing D0") did for vfio_pci_ioctl_reset()), or
-deferring the FLR outside access_srcu, would avoid this.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112141632.9189=
-54-1-skolothumtho@nvidia.com?part=3D4
